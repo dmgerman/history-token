@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
@@ -14,6 +15,23 @@ macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &lt;asm/arch/assabet.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &quot;sa1111.h&quot;
+DECL|variable|neponset_device
+r_static
+r_struct
+id|device
+id|neponset_device
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;Neponset&quot;
+comma
+id|bus_id
+suffix:colon
+l_string|&quot;nep_bus&quot;
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Install handler for Neponset IRQ.  Note that we have to loop here&n; * since the ETHERNET and USAR IRQs are level based, and we need to&n; * ensure that the IRQ signal is deasserted before returning.  This&n; * is rather unfortunate.&n; */
 r_static
 r_void
@@ -346,6 +364,23 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+id|ret
+op_assign
+id|device_register
+c_func
+(paren
+op_amp
+id|neponset_device
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_return
+id|ret
+suffix:semicolon
 id|neponset_init_irq
 c_func
 (paren
@@ -358,74 +393,18 @@ id|NCR_GP01_OFF
 suffix:semicolon
 multiline_comment|/*&n;&t; * Neponset has SA1111 connected to CS4.  We know that after&n;&t; * reset the chip will be configured for variable latency IO.&n;&t; */
 multiline_comment|/* FIXME: setup MSC2 */
-multiline_comment|/*&n;&t; * Probe for a SA1111.&n;&t; */
-id|ret
-op_assign
-id|sa1111_probe
-c_func
-(paren
-l_int|0x40000000
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
+multiline_comment|/*&n;&t; * Probe and initialise the SA1111.&n;&t; */
 r_return
-id|ret
-suffix:semicolon
-multiline_comment|/*&n;&t; * We found it.  Wake the chip up.&n;&t; */
-id|sa1111_wake
+id|sa1111_init
 c_func
 (paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * The SDRAM configuration of the SA1110 and the SA1111 must&n;&t; * match.  This is very important to ensure that SA1111 accesses&n;&t; * don&squot;t corrupt the SDRAM.  Note that this ungates the SA1111&squot;s&n;&t; * MBGNT signal, so we must have called sa1110_mb_disable()&n;&t; * beforehand.&n;&t; */
-id|sa1111_configure_smc
-c_func
-(paren
-l_int|1
+op_amp
+id|neponset_device
 comma
-id|FExtr
-c_func
-(paren
-id|MDCNFG
+l_int|0x40000000
 comma
-id|MDCNFG_SA1110_DRAC0
-)paren
-comma
-id|FExtr
-c_func
-(paren
-id|MDCNFG
-comma
-id|MDCNFG_SA1110_TDL0
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * We only need to turn on DCLK whenever we want to use the&n;&t; * DMA.  It can otherwise be held firmly in the off position.&n;&t; */
-id|SKPCR
-op_or_assign
-id|SKPCR_DCLKEN
-suffix:semicolon
-multiline_comment|/*&n;&t; * Enable the SA1110 memory bus request and grant signals.&n;&t; */
-id|sa1110_mb_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Initialise SA1111 IRQs&n;&t; */
-id|sa1111_init_irq
-c_func
-(paren
 id|IRQ_NEPONSET_SA1111
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|neponset_init
