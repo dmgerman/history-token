@@ -413,8 +413,6 @@ comma
 l_string|&quot;Initial message level (default = 1)&quot;
 )paren
 suffix:semicolon
-DECL|macro|RUN_CONTEXT
-mdefine_line|#define&t;RUN_CONTEXT (in_irq () ? &quot;in_irq&quot; &bslash;&n;&t;&t;&t;: (in_interrupt () ? &quot;in_interrupt&quot; : &quot;can sleep&quot;))
 macro_line|#ifdef DEBUG
 DECL|macro|devdbg
 mdefine_line|#define devdbg(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net-&gt;name , ## arg)
@@ -7206,17 +7204,17 @@ id|nc_header
 (brace
 singleline_comment|// packed:
 DECL|member|hdr_len
-id|u16
+id|__le16
 id|hdr_len
 suffix:semicolon
 singleline_comment|// sizeof nc_header (LE, all)
 DECL|member|packet_len
-id|u16
+id|__le16
 id|packet_len
 suffix:semicolon
 singleline_comment|// payload size (including ethhdr)
 DECL|member|packet_id
-id|u16
+id|__le16
 id|packet_id
 suffix:semicolon
 singleline_comment|// detects dropped packets
@@ -7241,7 +7239,7 @@ r_struct
 id|nc_trailer
 (brace
 DECL|member|packet_id
-id|u16
+id|__le16
 id|packet_id
 suffix:semicolon
 )brace
@@ -8562,6 +8560,11 @@ id|nc_trailer
 op_star
 id|trailer
 suffix:semicolon
+id|u16
+id|hdr_len
+comma
+id|packet_len
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8627,13 +8630,17 @@ op_star
 )paren
 id|skb-&gt;data
 suffix:semicolon
-id|le16_to_cpus
+id|hdr_len
+op_assign
+id|le16_to_cpup
 (paren
 op_amp
 id|header-&gt;hdr_len
 )paren
 suffix:semicolon
-id|le16_to_cpus
+id|packet_len
+op_assign
+id|le16_to_cpup
 (paren
 op_amp
 id|header-&gt;packet_len
@@ -8644,7 +8651,7 @@ c_cond
 (paren
 id|FRAMED_SIZE
 (paren
-id|header-&gt;packet_len
+id|packet_len
 )paren
 OG
 id|MAX_PACKET
@@ -8657,7 +8664,7 @@ id|dbg
 (paren
 l_string|&quot;packet too big, %d&quot;
 comma
-id|header-&gt;packet_len
+id|packet_len
 )paren
 suffix:semicolon
 id|nc_ensure_sync
@@ -8673,7 +8680,7 @@ r_else
 r_if
 c_cond
 (paren
-id|header-&gt;hdr_len
+id|hdr_len
 OL
 id|MIN_HEADER
 )paren
@@ -8685,7 +8692,7 @@ id|dbg
 (paren
 l_string|&quot;header too short, %d&quot;
 comma
-id|header-&gt;hdr_len
+id|hdr_len
 )paren
 suffix:semicolon
 id|nc_ensure_sync
@@ -8701,7 +8708,7 @@ r_else
 r_if
 c_cond
 (paren
-id|header-&gt;hdr_len
+id|hdr_len
 OG
 id|MIN_HEADER
 )paren
@@ -8711,7 +8718,7 @@ id|dbg
 (paren
 l_string|&quot;header OOB, %d bytes&quot;
 comma
-id|header-&gt;hdr_len
+id|hdr_len
 op_minus
 id|MIN_HEADER
 )paren
@@ -8727,7 +8734,7 @@ id|skb_pull
 (paren
 id|skb
 comma
-id|header-&gt;hdr_len
+id|hdr_len
 )paren
 suffix:semicolon
 id|trailer
@@ -8762,7 +8769,7 @@ r_if
 c_cond
 (paren
 (paren
-id|header-&gt;packet_len
+id|packet_len
 op_amp
 l_int|0x01
 )paren
@@ -8775,7 +8782,7 @@ c_cond
 (paren
 id|skb-&gt;data
 (braket
-id|header-&gt;packet_len
+id|packet_len
 )braket
 op_ne
 id|PAD_BYTE
@@ -8808,7 +8815,7 @@ c_cond
 (paren
 id|skb-&gt;len
 op_ne
-id|header-&gt;packet_len
+id|packet_len
 )paren
 (brace
 id|dev-&gt;stats.rx_frame_errors
@@ -8820,7 +8827,7 @@ l_string|&quot;bad packet len %d (expected %d)&quot;
 comma
 id|skb-&gt;len
 comma
-id|header-&gt;packet_len
+id|packet_len
 )paren
 suffix:semicolon
 id|nc_ensure_sync
@@ -8851,9 +8858,15 @@ id|dbg
 (paren
 l_string|&quot;(2+ dropped) rx packet_id mismatch 0x%x 0x%x&quot;
 comma
+id|le16_to_cpu
+(paren
 id|header-&gt;packet_id
+)paren
 comma
+id|le16_to_cpu
+(paren
 id|trailer-&gt;packet_id
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -13453,6 +13466,79 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
+macro_line|#ifdef&t;CONFIG_PM
+DECL|function|usbnet_suspend
+r_static
+r_int
+id|usbnet_suspend
+(paren
+r_struct
+id|usb_interface
+op_star
+id|intf
+comma
+id|u32
+id|state
+)paren
+(brace
+r_struct
+id|usbnet
+op_star
+id|dev
+op_assign
+id|usb_get_intfdata
+c_func
+(paren
+id|intf
+)paren
+suffix:semicolon
+id|netif_device_detach
+(paren
+id|dev-&gt;net
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|usbnet_resume
+r_static
+r_int
+id|usbnet_resume
+(paren
+r_struct
+id|usb_interface
+op_star
+id|intf
+)paren
+(brace
+r_struct
+id|usbnet
+op_star
+id|dev
+op_assign
+id|usb_get_intfdata
+c_func
+(paren
+id|intf
+)paren
+suffix:semicolon
+id|netif_device_attach
+(paren
+id|dev-&gt;net
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#else&t;/* !CONFIG_PM */
+DECL|macro|usbnet_suspend
+mdefine_line|#define&t;usbnet_suspend&t;NULL
+DECL|macro|usbnet_resume
+mdefine_line|#define&t;usbnet_resume&t;NULL
+macro_line|#endif&t;/* CONFIG_PM */
+multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifndef&t;HAVE_HARDWARE
 macro_line|#error You need to configure some hardware for this driver
 macro_line|#endif
@@ -14561,6 +14647,16 @@ dot
 id|disconnect
 op_assign
 id|usbnet_disconnect
+comma
+dot
+id|suspend
+op_assign
+id|usbnet_suspend
+comma
+dot
+id|resume
+op_assign
+id|usbnet_resume
 comma
 )brace
 suffix:semicolon
