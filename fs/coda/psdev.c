@@ -1381,7 +1381,7 @@ c_func
 (paren
 id|CODA_PSDEV_MAJOR
 comma
-l_string|&quot;coda_psdev&quot;
+l_string|&quot;coda&quot;
 comma
 op_amp
 id|coda_psdev_fops
@@ -1409,7 +1409,7 @@ c_func
 (paren
 id|THIS_MODULE
 comma
-l_string|&quot;coda_psdev&quot;
+l_string|&quot;coda&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1556,7 +1556,7 @@ c_func
 (paren
 id|CODA_PSDEV_MAJOR
 comma
-l_string|&quot;coda_psdev&quot;
+l_string|&quot;coda&quot;
 )paren
 suffix:semicolon
 id|out
@@ -1745,7 +1745,7 @@ c_func
 (paren
 id|CODA_PSDEV_MAJOR
 comma
-l_string|&quot;coda_psdev&quot;
+l_string|&quot;coda&quot;
 )paren
 suffix:semicolon
 id|coda_sysctl_clean
@@ -1858,7 +1858,7 @@ c_func
 (paren
 id|CODA_PSDEV_MAJOR
 comma
-l_string|&quot;coda_psdev&quot;
+l_string|&quot;coda&quot;
 )paren
 suffix:semicolon
 id|coda_sysctl_clean
