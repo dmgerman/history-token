@@ -13,6 +13,7 @@ mdefine_line|#define pcibios_assign_all_busses() 0
 multiline_comment|/*&n; * Platform helper functions&n; */
 macro_line|#include &quot;platform.h&quot;
 multiline_comment|/*&n; * Platform-specific bits&n; */
+macro_line|#include &quot;enp2611.h&quot;&t;&t;/* ENP-2611 */
 macro_line|#include &quot;ixdp2x00.h&quot;&t;&t;/* IXDP2400/2800 */
 macro_line|#include &quot;ixdp2x01.h&quot;&t;&t;/* IXDP2401/2801 */
 macro_line|#endif  /* _ASM_ARCH_HARDWARE_H__ */
