@@ -1399,11 +1399,6 @@ id|mmc_data
 op_assign
 (brace
 dot
-id|mclk
-op_assign
-l_int|14745600
-comma
-dot
 id|ocr_mask
 op_assign
 id|MMC_VDD_32_33
