@@ -37,16 +37,6 @@ id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/* blk_dev_struct is:&n; *&t;request_queue&n; *&t;*queue&n; */
-DECL|variable|blk_dev
-r_struct
-id|blk_dev_struct
-id|blk_dev
-(braket
-id|MAX_BLKDEV
-)braket
-suffix:semicolon
-multiline_comment|/* initialized by blk_dev_init() */
 multiline_comment|/*&n; * Number of requests per queue.  This many for reads and for writes (twice&n; * this number, total).&n; */
 DECL|variable|queue_nr_requests
 r_static
@@ -370,24 +360,6 @@ c_func
 op_amp
 id|nr_iowait_tasks
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * bdev_get_queue: - return the queue that matches the given device&n; * @bdev:    device&n; *&n; * Description:&n; *     Given a specific device, return the queue that will hold I/O&n; *     for it. This is either a &amp;struct blk_dev_struct lookup and a&n; *     call to the -&gt;queue() function defined, or the default queue&n; *     stored in the same location.&n; *&n; **/
-DECL|function|bdev_get_queue
-r_inline
-id|request_queue_t
-op_star
-id|bdev_get_queue
-c_func
-(paren
-r_struct
-id|block_device
-op_star
-id|bdev
-)paren
-(brace
-r_return
-id|bdev-&gt;bd_queue
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * blk_get_backing_dev_info - get the address of a queue&squot;s backing_dev_info&n; * @dev:&t;device&n; *&n; * Locates the passed device&squot;s request queue and returns the address of its&n; * backing_dev_info&n; *&n; * Will return NULL if the request queue cannot be located.&n; */
@@ -7449,13 +7421,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|blk_init_queue
-)paren
-suffix:semicolon
-DECL|variable|bdev_get_queue
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|bdev_get_queue
 )paren
 suffix:semicolon
 DECL|variable|blk_cleanup_queue

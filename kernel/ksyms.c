@@ -1849,13 +1849,6 @@ id|tty_std_termios
 )paren
 suffix:semicolon
 multiline_comment|/* block device driver support */
-DECL|variable|blk_dev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|blk_dev
-)paren
-suffix:semicolon
 DECL|variable|bdev_read_only
 id|EXPORT_SYMBOL
 c_func

@@ -20,10 +20,6 @@ mdefine_line|#define REALLY_SLOW_IO
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR HD_MAJOR
-DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;hd_queue)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#ifdef __arm__
 DECL|macro|HD_IRQ
@@ -112,6 +108,12 @@ r_struct
 id|request_queue
 id|hd_queue
 suffix:semicolon
+DECL|macro|MAJOR_NR
+mdefine_line|#define MAJOR_NR HD_MAJOR
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;hd_queue)
+DECL|macro|CURRENT
+mdefine_line|#define CURRENT elv_next_request(&amp;hd_queue)
 DECL|macro|TIMEOUT_VALUE
 mdefine_line|#define TIMEOUT_VALUE&t;(6*HZ)
 DECL|macro|HD_DELAY
@@ -154,8 +156,6 @@ r_static
 r_int
 id|hd_error
 suffix:semicolon
-DECL|macro|SUBSECTOR
-mdefine_line|#define SUBSECTOR(block) (CURRENT-&gt;current_nr_sectors &gt; 0)
 multiline_comment|/*&n; *  This struct defines the HD&squot;s and their types.&n; */
 DECL|struct|hd_i_struct
 r_struct

@@ -750,27 +750,6 @@ id|bio
 suffix:semicolon
 DECL|macro|rq_for_each_bio
 mdefine_line|#define rq_for_each_bio(bio, rq)&t;&bslash;&n;&t;if ((rq-&gt;bio))&t;&t;&t;&bslash;&n;&t;&t;for (bio = (rq)-&gt;bio; bio; bio = bio-&gt;bi_next)
-DECL|struct|blk_dev_struct
-r_struct
-id|blk_dev_struct
-(brace
-multiline_comment|/*&n;&t; * queue_proc has to be atomic&n;&t; */
-DECL|member|request_queue
-id|request_queue_t
-id|request_queue
-suffix:semicolon
-DECL|member|queue
-id|queue_proc
-op_star
-id|queue
-suffix:semicolon
-DECL|member|data
-r_void
-op_star
-id|data
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|sec_size
 r_struct
 id|sec_size
@@ -784,26 +763,6 @@ r_int
 id|block_size_bits
 suffix:semicolon
 )brace
-suffix:semicolon
-multiline_comment|/*&n; * Used to indicate the default queue for drivers that don&squot;t bother&n; * to implement multiple queues.  We have this access macro here&n; * so as to eliminate the need for each and every block device&n; * driver to know about the internal structure of blk_dev[].&n; */
-DECL|macro|BLK_DEFAULT_QUEUE
-mdefine_line|#define BLK_DEFAULT_QUEUE(_MAJOR)  &amp;blk_dev[_MAJOR].request_queue
-r_extern
-r_struct
-id|sec_size
-op_star
-id|blk_sec
-(braket
-id|MAX_BLKDEV
-)braket
-suffix:semicolon
-r_extern
-r_struct
-id|blk_dev_struct
-id|blk_dev
-(braket
-id|MAX_BLKDEV
-)braket
 suffix:semicolon
 r_extern
 r_void
@@ -825,19 +784,6 @@ r_struct
 id|bio
 op_star
 id|bio
-)paren
-suffix:semicolon
-r_extern
-r_inline
-id|request_queue_t
-op_star
-id|bdev_get_queue
-c_func
-(paren
-r_struct
-id|block_device
-op_star
-id|bdev
 )paren
 suffix:semicolon
 r_extern
@@ -1047,6 +993,24 @@ op_star
 id|q
 )paren
 suffix:semicolon
+DECL|function|bdev_get_queue
+r_static
+r_inline
+id|request_queue_t
+op_star
+id|bdev_get_queue
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+id|bdev
+)paren
+(brace
+r_return
+id|bdev-&gt;bd_queue
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * get ready for proper ref counting&n; */
 DECL|macro|blk_put_queue
 mdefine_line|#define blk_put_queue(q)&t;do { } while (0)

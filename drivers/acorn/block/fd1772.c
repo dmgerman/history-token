@@ -24,16 +24,6 @@ macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
-DECL|macro|FLOPPY_DMA
-mdefine_line|#define FLOPPY_DMA 0
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) ( (minor(device) &amp; 3) | ((minor(device) &amp; 0x80 ) &gt;&gt; 5 ))
-DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;floppy_queue)
 macro_line|#include &lt;linux/blk.h&gt;
 multiline_comment|/* Note: FD_MAX_UNITS could be redefined to 2 for the Atari (with&n; * little additional rework in this file). But I&squot;m not yet sure if&n; * some other code depends on the number of floppies... (It is defined&n; * in a public header!)&n; */
 macro_line|#if 0
@@ -59,6 +49,16 @@ r_struct
 id|request_queue
 id|floppy_queue
 suffix:semicolon
+DECL|macro|MAJOR_NR
+mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
+DECL|macro|FLOPPY_DMA
+mdefine_line|#define FLOPPY_DMA 0
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;floppy_queue)
+DECL|macro|CURRENT
+mdefine_line|#define CURRENT elv_next_request(&amp;floppy_queue)
 multiline_comment|/* Disk types: DD */
 DECL|struct|archy_disk_type
 r_static

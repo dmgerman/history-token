@@ -14,10 +14,6 @@ macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR&t;MFM_ACORN_MAJOR
-DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;mfm_queue)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -54,6 +50,12 @@ id|mfm_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+DECL|macro|MAJOR_NR
+mdefine_line|#define MAJOR_NR&t;MFM_ACORN_MAJOR
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;mfm_queue)
+DECL|macro|CURRENT
+mdefine_line|#define CURRENT elv_next_request(&amp;mfm_queue)
 multiline_comment|/*&n; * This sort of stuff should be in a header file shared with ide.c, hd.c, xd.c etc&n; */
 macro_line|#ifndef HDIO_GETGEO
 DECL|macro|HDIO_GETGEO

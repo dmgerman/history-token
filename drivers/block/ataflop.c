@@ -26,12 +26,6 @@ macro_line|#include &lt;asm/atarihw.h&gt;
 macro_line|#include &lt;asm/atariints.h&gt;
 macro_line|#include &lt;asm/atari_stdma.h&gt;
 macro_line|#include &lt;asm/atari_stram.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
-DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;floppy_queue)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 DECL|macro|FD_MAX_UNITS
@@ -44,6 +38,14 @@ r_struct
 id|request_queue
 id|floppy_queue
 suffix:semicolon
+DECL|macro|MAJOR_NR
+mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;floppy_queue)
+DECL|macro|CURRENT
+mdefine_line|#define CURRENT elv_next_request(&amp;floppy_queue)
 multiline_comment|/* Disk types: DD, HD, ED */
 DECL|struct|atari_disk_type
 r_static

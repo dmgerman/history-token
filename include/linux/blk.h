@@ -162,18 +162,6 @@ id|req
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(MAJOR_NR) || defined(IDE_DRIVER)
-macro_line|#if (MAJOR_NR != SCSI_TAPE_MAJOR) &amp;&amp; (MAJOR_NR != OSST_MAJOR)
-macro_line|#if !defined(IDE_DRIVER)
-macro_line|#ifndef QUEUE
-DECL|macro|QUEUE
-macro_line|# define QUEUE (&amp;blk_dev[MAJOR_NR].request_queue)
-macro_line|#endif
-macro_line|#ifndef CURRENT
-DECL|macro|CURRENT
-macro_line|# define CURRENT elv_next_request(QUEUE)
-macro_line|#endif
-macro_line|#endif /* !defined(IDE_DRIVER) */
 multiline_comment|/*&n; * If we have our own end_request, we do not want to include this mess&n; */
 macro_line|#ifndef LOCAL_END_REQUEST
 DECL|function|end_request
@@ -231,7 +219,5 @@ id|req
 suffix:semicolon
 )brace
 macro_line|#endif /* !LOCAL_END_REQUEST */
-macro_line|#endif /* (MAJOR_NR != SCSI_TAPE_MAJOR) */
-macro_line|#endif /* defined(MAJOR_NR) || defined(IDE_DRIVER) */
 macro_line|#endif /* _BLK_H */
 eof
