@@ -358,6 +358,14 @@ id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|r128_getparam
+c_func
+(paren
+id|DRM_IOCTL_ARGS
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|r128_freelist_reset
 c_func
@@ -632,6 +640,16 @@ DECL|macro|R128_DST_PITCH_OFFSET_C
 mdefine_line|#define R128_DST_PITCH_OFFSET_C&t;&t;0x1c80
 DECL|macro|R128_DST_TILE
 macro_line|#&t;define R128_DST_TILE&t;&t;&t;(1 &lt;&lt; 31)
+DECL|macro|R128_GEN_INT_CNTL
+mdefine_line|#define R128_GEN_INT_CNTL&t;&t;0x0040
+DECL|macro|R128_CRTC_VBLANK_INT_EN
+macro_line|#&t;define R128_CRTC_VBLANK_INT_EN&t;&t;(1 &lt;&lt;  0)
+DECL|macro|R128_GEN_INT_STATUS
+mdefine_line|#define R128_GEN_INT_STATUS&t;&t;0x0044
+DECL|macro|R128_CRTC_VBLANK_INT
+macro_line|#&t;define R128_CRTC_VBLANK_INT&t;&t;(1 &lt;&lt;  0)
+DECL|macro|R128_CRTC_VBLANK_INT_AK
+macro_line|#&t;define R128_CRTC_VBLANK_INT_AK&t;&t;(1 &lt;&lt;  0)
 DECL|macro|R128_GEN_RESET_CNTL
 mdefine_line|#define R128_GEN_RESET_CNTL&t;&t;0x00f0
 DECL|macro|R128_SOFT_RESET_GUI
