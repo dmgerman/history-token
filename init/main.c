@@ -1359,12 +1359,6 @@ c_func
 id|mempages
 )paren
 suffix:semicolon
-id|buffer_init
-c_func
-(paren
-id|mempages
-)paren
-suffix:semicolon
 id|radix_tree_init
 c_func
 (paren

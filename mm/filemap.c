@@ -2,28 +2,19 @@ multiline_comment|/*&n; *&t;linux/mm/filemap.c&n; *&n; * Copyright (C) 1994-1999
 multiline_comment|/*&n; * This file handles the generic file mmap semantics used by&n; * most &quot;normal&quot; filesystems (but you don&squot;t /have/ to use this:&n; * the NFS filesystem used to do this differently, for example)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/shm.h&gt;
-macro_line|#include &lt;linux/mman.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
-macro_line|#include &lt;linux/pagemap.h&gt;
-macro_line|#include &lt;linux/swap.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/file.h&gt;
-macro_line|#include &lt;linux/swapctl.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/mman.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/file.h&gt;
+macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
-macro_line|#include &lt;linux/highmem.h&gt;
 multiline_comment|/*&n; * Shared mappings implemented 30.11.1994. It&squot;s not fully working yet,&n; * though.&n; *&n; * Shared mappings now work. 15.8.1995  Bruno.&n; *&n; * finished &squot;unifying&squot; the page and buffer cache and SMP-threaded the&n; * page-cache, 21.05.1999, Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; * SMP-threaded pagemap-LRU 1999, Andrea Arcangeli &lt;andrea@suse.de&gt;&n; */
-multiline_comment|/*&n; * Lock ordering:&n; *&t;pagemap_lru_lock ==&gt; page_lock ==&gt; i_shared_lock&n; */
+multiline_comment|/*&n; * Lock ordering:&n; *&n; *  pagemap_lru_lock&n; *  -&gt;i_shared_lock&t;&t;(vmtruncate)&n; *    -&gt;i_bufferlist_lock&t;(__free_pte-&gt;__set_page_dirty_buffers)&n; *      -&gt;unused_list_lock&t;(try_to_free_buffers)&n; *        -&gt;mapping-&gt;page_lock&n; *      -&gt;inode_lock&t;&t;(__mark_inode_dirty)&n; *        -&gt;sb_lock&t;&t;(fs/fs-writeback.c)&n; */
 DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|pagemap_lru_lock
@@ -31,10 +22,6 @@ id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|macro|CLUSTER_PAGES
-mdefine_line|#define CLUSTER_PAGES&t;&t;(1 &lt;&lt; page_cluster)
-DECL|macro|CLUSTER_OFFSET
-mdefine_line|#define CLUSTER_OFFSET(x)&t;(((x) &gt;&gt; page_cluster) &lt;&lt; page_cluster)
 multiline_comment|/*&n; * Remove a page from the page cache and free it. Caller has to make&n; * sure the page is locked and that nobody else uses it - or that usage&n; * is safe.  The caller must hold a write_lock on the mapping&squot;s page_lock.&n; */
 DECL|function|__remove_inode_page
 r_void
@@ -202,87 +189,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * Add a page to the dirty page list.&n; */
-DECL|function|set_page_dirty
-r_void
-id|set_page_dirty
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|TestSetPageDirty
-c_func
-(paren
-id|page
-)paren
-)paren
-(brace
-r_struct
-id|address_space
-op_star
-id|mapping
-op_assign
-id|page-&gt;mapping
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mapping
-)paren
-(brace
-id|write_lock
-c_func
-(paren
-op_amp
-id|mapping-&gt;page_lock
-)paren
-suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|page-&gt;list
-)paren
-suffix:semicolon
-id|list_add
-c_func
-(paren
-op_amp
-id|page-&gt;list
-comma
-op_amp
-id|mapping-&gt;dirty_pages
-)paren
-suffix:semicolon
-id|write_unlock
-c_func
-(paren
-op_amp
-id|mapping-&gt;page_lock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mapping-&gt;host
-)paren
-id|mark_inode_dirty_pages
-c_func
-(paren
-id|mapping-&gt;host
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 multiline_comment|/**&n; * invalidate_inode_pages - Invalidate all the unlocked pages of one inode&n; * @inode: the inode which pages we want to invalidate&n; *&n; * This function only removes the unlocked pages, if you want to&n; * remove all the pages of one inode, you must call truncate_inode_pages.&n; */
 DECL|function|invalidate_inode_pages
@@ -619,7 +525,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We remove the page from the page cache _after_ we have&n;&t; * destroyed all buffer-cache references to it. Otherwise some&n;&t; * other process might think this inode page is not in the&n;&t; * page cache and creates a buffer-cache alias to it causing&n;&t; * all sorts of fun problems ...  &n;&t; */
 id|ClearPageDirty
 c_func
 (paren
@@ -645,6 +550,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Writeback walks the page list in -&gt;prev order, which is low-to-high file&n; * offsets in the common case where he file was written linearly. So truncate&n; * walks the page list in the opposite (-&gt;next) direction, to avoid getting&n; * into lockstep with writeback&squot;s cursor.  To prune as many pages as possible&n; * before the truncate cursor collides with the writeback cursor.&n; */
 DECL|function|truncate_list_pages
 r_static
 r_int
@@ -689,7 +595,7 @@ id|restart
 suffix:colon
 id|curr
 op_assign
-id|head-&gt;prev
+id|head-&gt;next
 suffix:semicolon
 r_while
 c_loop
@@ -774,7 +680,7 @@ op_logical_neg
 id|failed
 )paren
 multiline_comment|/* Restart after this page */
-id|list_add_tail
+id|list_add
 c_func
 (paren
 id|head
@@ -784,7 +690,7 @@ id|curr
 suffix:semicolon
 r_else
 multiline_comment|/* Restart on this page */
-id|list_add
+id|list_add_tail
 c_func
 (paren
 id|head
@@ -901,7 +807,7 @@ suffix:semicolon
 )brace
 id|curr
 op_assign
-id|curr-&gt;prev
+id|curr-&gt;next
 suffix:semicolon
 )brace
 r_return
@@ -961,14 +867,14 @@ suffix:semicolon
 r_do
 (brace
 id|unlocked
-op_assign
+op_or_assign
 id|truncate_list_pages
 c_func
 (paren
 id|mapping
 comma
 op_amp
-id|mapping-&gt;clean_pages
+id|mapping-&gt;io_pages
 comma
 id|start
 comma
@@ -985,6 +891,22 @@ id|mapping
 comma
 op_amp
 id|mapping-&gt;dirty_pages
+comma
+id|start
+comma
+op_amp
+id|partial
+)paren
+suffix:semicolon
+id|unlocked
+op_assign
+id|truncate_list_pages
+c_func
+(paren
+id|mapping
+comma
+op_amp
+id|mapping-&gt;clean_pages
 comma
 id|start
 comma
@@ -1057,7 +979,7 @@ id|unlocked
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * The page is locked and we hold the mapping lock as well&n;&t; * so both page_count(page) and page_buffers stays constant here.&n;&t; */
+multiline_comment|/*&n;&t; * The page is locked and we hold the mapping lock as well&n;&t; * so both page_count(page) and page_buffers stays constant here.&n;&t; * AKPM: fixme: No global lock any more.  Is this still OK?&n;&t; */
 r_if
 c_cond
 (paren
@@ -1153,10 +1075,12 @@ op_amp
 id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
-id|block_invalidate_page
+id|block_flushpage
 c_func
 (paren
 id|page
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1431,6 +1355,17 @@ c_func
 id|mapping
 comma
 op_amp
+id|mapping-&gt;io_pages
+)paren
+suffix:semicolon
+id|unlocked
+op_or_assign
+id|invalidate_list_pages2
+c_func
+(paren
+id|mapping
+comma
+op_amp
 id|mapping-&gt;locked_pages
 )paren
 suffix:semicolon
@@ -1687,6 +1622,23 @@ id|writeout_one_page
 )paren
 suffix:semicolon
 id|retval
+op_assign
+id|do_buffer_fdatasync
+c_func
+(paren
+id|mapping
+comma
+op_amp
+id|mapping-&gt;io_pages
+comma
+id|start_idx
+comma
+id|end_idx
+comma
+id|writeout_one_page
+)paren
+suffix:semicolon
+id|retval
 op_or_assign
 id|do_buffer_fdatasync
 c_func
@@ -1730,6 +1682,23 @@ id|mapping
 comma
 op_amp
 id|mapping-&gt;dirty_pages
+comma
+id|start_idx
+comma
+id|end_idx
+comma
+id|waitfor_one_page
+)paren
+suffix:semicolon
+id|retval
+op_or_assign
+id|do_buffer_fdatasync
+c_func
+(paren
+id|mapping
+comma
+op_amp
+id|mapping-&gt;io_pages
 comma
 id|start_idx
 comma
@@ -1836,7 +1805,7 @@ c_func
 id|fail_writepage
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *      filemap_fdatasync - walk the list of dirty pages of the given address space&n; *     &t;and writepage() all of them.&n; * &n; *      @mapping: address space structure to write&n; *&n; */
+multiline_comment|/**&n; *  filemap_fdatasync - walk the list of dirty pages of the given address space&n; *                      and writepage() all of them.&n; *&n; *  @mapping: address space structure to write&n; *&n; */
 DECL|function|filemap_fdatasync
 r_int
 id|filemap_fdatasync
@@ -1848,177 +1817,30 @@ op_star
 id|mapping
 )paren
 (brace
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-(paren
-op_star
-id|writepage
-)paren
-(paren
-r_struct
-id|page
-op_star
-)paren
-op_assign
-id|mapping-&gt;a_ops-&gt;writepage
-suffix:semicolon
-id|write_lock
-c_func
-(paren
-op_amp
-id|mapping-&gt;page_lock
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|mapping-&gt;dirty_pages
-)paren
-)paren
-(brace
-r_struct
-id|page
-op_star
-id|page
-op_assign
-id|list_entry
-c_func
-(paren
-id|mapping-&gt;dirty_pages.prev
-comma
-r_struct
-id|page
-comma
-id|list
-)paren
-suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|page-&gt;list
-)paren
-suffix:semicolon
-id|list_add
-c_func
-(paren
-op_amp
-id|page-&gt;list
-comma
-op_amp
-id|mapping-&gt;locked_pages
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|PageDirty
+id|mapping-&gt;a_ops-&gt;writeback_mapping
+)paren
+r_return
+id|mapping-&gt;a_ops
+op_member_access_from_pointer
+id|writeback_mapping
 c_func
 (paren
-id|page
-)paren
-)paren
-r_continue
-suffix:semicolon
-id|page_cache_get
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|write_unlock
-c_func
-(paren
-op_amp
-id|mapping-&gt;page_lock
-)paren
-suffix:semicolon
-id|lock_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|PageDirty
-c_func
-(paren
-id|page
-)paren
-)paren
-(brace
-r_int
-id|err
-suffix:semicolon
-id|ClearPageDirty
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|err
-op_assign
-id|writepage
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-op_logical_and
-op_logical_neg
-id|ret
-)paren
-id|ret
-op_assign
-id|err
-suffix:semicolon
-)brace
-r_else
-id|UnlockPage
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|page_cache_release
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|write_lock
-c_func
-(paren
-op_amp
-id|mapping-&gt;page_lock
-)paren
-suffix:semicolon
-)brace
-id|write_unlock
-c_func
-(paren
-op_amp
-id|mapping-&gt;page_lock
+id|mapping
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
-id|ret
+id|generic_writeback_mapping
+c_func
+(paren
+id|mapping
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *      filemap_fdatawait - walk the list of locked pages of the given address space&n; *     &t;and wait for all of them.&n; * &n; *      @mapping: address space structure to wait for&n; *&n; */
@@ -9179,6 +9001,12 @@ OL
 l_int|0
 )paren
 r_break
+suffix:semicolon
+id|balance_dirty_pages_ratelimited
+c_func
+(paren
+id|mapping
+)paren
 suffix:semicolon
 )brace
 r_while

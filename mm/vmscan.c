@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -1716,10 +1717,35 @@ c_func
 id|page
 )paren
 op_logical_and
-id|mapping
+id|page-&gt;mapping
+op_logical_and
+(paren
+id|gfp_mask
+op_amp
+id|__GFP_FS
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * It is not critical here to write it only if&n;&t;&t;&t; * the page is unmapped beause any direct writer&n;&t;&t;&t; * like O_DIRECT would set the page&squot;s dirty bitflag&n;&t;&t;&t; * on the phisical page after having successfully&n;&t;&t;&t; * pinned it and after the I/O to the page is finished,&n;&t;&t;&t; * so the direct writes to the page cannot get lost.&n;&t;&t;&t; */
+r_struct
+id|address_space_operations
+op_star
+id|a_ops
+suffix:semicolon
+r_int
+(paren
+op_star
+id|writeback
+)paren
+(paren
+r_struct
+id|page
+op_star
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
 r_int
 (paren
 op_star
@@ -1731,19 +1757,24 @@ id|page
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * There&squot;s no guarantee that writeback() will actually&n;&t;&t;&t; * start I/O against *this* page.  Which is broken if we&squot;re&n;&t;&t;&t; * trying to free memory in a particular zone.  FIXME.&n;&t;&t;&t; */
+id|a_ops
+op_assign
+id|mapping-&gt;a_ops
+suffix:semicolon
+id|writeback
+op_assign
+id|a_ops-&gt;vm_writeback
+suffix:semicolon
 id|writepage
 op_assign
-id|mapping-&gt;a_ops-&gt;writepage
+id|a_ops-&gt;writepage
 suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|gfp_mask
-op_amp
-id|__GFP_FS
-)paren
-op_logical_and
+id|writeback
+op_logical_or
 id|writepage
 )paren
 (brace
@@ -1772,12 +1803,36 @@ op_amp
 id|pagemap_lru_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|writeback
+)paren
+(brace
+r_int
+id|nr_to_write
+op_assign
+id|WRITEOUT_PAGES
+suffix:semicolon
+id|writeback
+c_func
+(paren
+id|page
+comma
+op_amp
+id|nr_to_write
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|writepage
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
+)brace
 id|page_cache_release
 c_func
 (paren

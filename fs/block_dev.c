@@ -796,6 +796,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * AKPM: fixme.  unneeded stuff here.&n; */
 DECL|function|__block_fsync
 r_static
 r_int
@@ -3589,6 +3590,14 @@ comma
 id|commit_write
 suffix:colon
 id|blkdev_commit_write
+comma
+id|writeback_mapping
+suffix:colon
+id|generic_writeback_mapping
+comma
+id|vm_writeback
+suffix:colon
+id|generic_vm_writeback
 comma
 id|direct_IO
 suffix:colon

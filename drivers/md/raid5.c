@@ -2362,10 +2362,6 @@ id|bh-&gt;b_size
 op_assign
 id|sh-&gt;size
 suffix:semicolon
-id|bh-&gt;b_list
-op_assign
-id|BUF_LOCKED
-suffix:semicolon
 r_return
 id|bh
 suffix:semicolon

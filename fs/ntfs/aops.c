@@ -417,6 +417,8 @@ c_func
 id|page
 comma
 id|blocksize
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|bh
@@ -1754,6 +1756,8 @@ c_func
 id|page
 comma
 id|blocksize
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|bh
@@ -2820,6 +2824,8 @@ c_func
 id|page
 comma
 id|blocksize
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|bh

@@ -1658,17 +1658,6 @@ comma
 id|BJ_Reserved
 )paren
 suffix:semicolon
-multiline_comment|/* And pull it off BUF_DIRTY, onto BUF_CLEAN */
-id|refile_buffer
-c_func
-(paren
-id|jh2bh
-c_func
-(paren
-id|jh
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * The buffer is now hidden from bdflush.   It is&n;&t;&t;&t; * metadata against the current transaction.&n;&t;&t;&t; */
 id|JBUFFER_TRACE
 c_func
@@ -2494,24 +2483,6 @@ comma
 id|BJ_Reserved
 )paren
 suffix:semicolon
-id|JBUFFER_TRACE
-c_func
-(paren
-id|jh
-comma
-l_string|&quot;refile&quot;
-)paren
-suffix:semicolon
-id|refile_buffer
-c_func
-(paren
-id|jh2bh
-c_func
-(paren
-id|jh
-)paren
-)paren
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -3223,12 +3194,6 @@ id|BH_JBDDirty
 comma
 op_amp
 id|bh-&gt;b_state
-)paren
-suffix:semicolon
-id|set_buffer_flushtime
-c_func
-(paren
-id|bh
 )paren
 suffix:semicolon
 id|J_ASSERT_JH
@@ -5068,8 +5033,6 @@ id|try_to_free_buffers
 c_func
 (paren
 id|page
-comma
-id|gfp_mask
 )paren
 suffix:semicolon
 r_return
@@ -5487,15 +5450,7 @@ id|bh
 )paren
 )paren
 suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|BH_Uptodate
-comma
-op_amp
-id|bh-&gt;b_state
-)paren
-suffix:semicolon
+singleline_comment|//&t;clear_bit(BH_Uptodate, &amp;bh-&gt;b_state);
 id|clear_bit
 c_func
 (paren
@@ -5706,8 +5661,6 @@ id|try_to_free_buffers
 c_func
 (paren
 id|page
-comma
-l_int|0
 )paren
 )paren
 r_return
@@ -6117,20 +6070,6 @@ comma
 id|jh-&gt;b_transaction-&gt;t_state
 op_eq
 id|T_RUNNING
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* Onto BUF_DIRTY for writeback */
-id|refile_buffer
-c_func
-(paren
-id|jh2bh
-c_func
-(paren
-id|jh
-)paren
 )paren
 suffix:semicolon
 )brace

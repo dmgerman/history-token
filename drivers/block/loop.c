@@ -2282,10 +2282,6 @@ op_amp
 id|lo-&gt;lo_lock
 )paren
 suffix:semicolon
-id|current-&gt;flags
-op_or_assign
-id|PF_NOIO
-suffix:semicolon
 multiline_comment|/*&n;&t; * up sem, we are running&n;&t; */
 id|up
 c_func

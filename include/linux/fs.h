@@ -168,6 +168,8 @@ DECL|macro|MS_REC
 mdefine_line|#define MS_REC&t;&t;16384
 DECL|macro|MS_VERBOSE
 mdefine_line|#define MS_VERBOSE&t;32768
+DECL|macro|MS_FLUSHING
+mdefine_line|#define MS_FLUSHING&t;(1&lt;&lt;16)&t;/* inodes are currently under writeout */
 DECL|macro|MS_ACTIVE
 mdefine_line|#define MS_ACTIVE&t;(1&lt;&lt;30)
 DECL|macro|MS_NOUSER
@@ -204,6 +206,8 @@ DECL|macro|IS_SYNC
 mdefine_line|#define IS_SYNC(inode)&t;&t;(__IS_FLG(inode, MS_SYNCHRONOUS) || ((inode)-&gt;i_flags &amp; S_SYNC))
 DECL|macro|IS_MANDLOCK
 mdefine_line|#define IS_MANDLOCK(inode)&t;__IS_FLG(inode, MS_MANDLOCK)
+DECL|macro|IS_FLUSHING
+mdefine_line|#define IS_FLUSHING(inode)&t;__IS_FLG(inode, MS_FLUSHING)
 DECL|macro|IS_QUOTAINIT
 mdefine_line|#define IS_QUOTAINIT(inode)&t;((inode)-&gt;i_flags &amp; S_QUOTA)
 DECL|macro|IS_NOQUOTA
@@ -345,14 +349,6 @@ DECL|enumerator|BH_Async
 id|BH_Async
 comma
 multiline_comment|/* 1 if the buffer is under end_buffer_io_async I/O */
-DECL|enumerator|BH_Wait_IO
-id|BH_Wait_IO
-comma
-multiline_comment|/* 1 if we should write out this buffer */
-DECL|enumerator|BH_launder
-id|BH_launder
-comma
-multiline_comment|/* 1 if we should throttle on this buffer */
 DECL|enumerator|BH_JBD
 id|BH_JBD
 comma
@@ -369,13 +365,6 @@ r_struct
 id|buffer_head
 (brace
 multiline_comment|/* First cache line: */
-DECL|member|b_next
-r_struct
-id|buffer_head
-op_star
-id|b_next
-suffix:semicolon
-multiline_comment|/* Hash queue list */
 DECL|member|b_blocknr
 id|sector_t
 id|b_blocknr
@@ -387,12 +376,6 @@ r_int
 id|b_size
 suffix:semicolon
 multiline_comment|/* block size */
-DECL|member|b_list
-r_int
-r_int
-id|b_list
-suffix:semicolon
-multiline_comment|/* List that this buffer appears */
 DECL|member|b_bdev
 r_struct
 id|block_device
@@ -410,26 +393,6 @@ r_int
 id|b_state
 suffix:semicolon
 multiline_comment|/* buffer state bitmap (see above) */
-DECL|member|b_flushtime
-r_int
-r_int
-id|b_flushtime
-suffix:semicolon
-multiline_comment|/* Time when (dirty) buffer should be written */
-DECL|member|b_next_free
-r_struct
-id|buffer_head
-op_star
-id|b_next_free
-suffix:semicolon
-multiline_comment|/* lru/free list linkage */
-DECL|member|b_prev_free
-r_struct
-id|buffer_head
-op_star
-id|b_prev_free
-suffix:semicolon
-multiline_comment|/* doubly linked list of buffers */
 DECL|member|b_this_page
 r_struct
 id|buffer_head
@@ -437,20 +400,6 @@ op_star
 id|b_this_page
 suffix:semicolon
 multiline_comment|/* circular list of buffers in one page */
-DECL|member|b_pprev
-r_struct
-id|buffer_head
-op_star
-op_star
-id|b_pprev
-suffix:semicolon
-multiline_comment|/* doubly linked list of hash-queue */
-DECL|member|b_data
-r_char
-op_star
-id|b_data
-suffix:semicolon
-multiline_comment|/* pointer to data block */
 DECL|member|b_page
 r_struct
 id|page
@@ -458,6 +407,12 @@ op_star
 id|b_page
 suffix:semicolon
 multiline_comment|/* the page this bh is mapped to */
+DECL|member|b_data
+r_char
+op_star
+id|b_data
+suffix:semicolon
+multiline_comment|/* pointer to data block */
 DECL|member|b_end_io
 r_void
 (paren
@@ -720,6 +675,54 @@ id|page
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* Write back some dirty pages from this mapping. */
+DECL|member|writeback_mapping
+r_int
+(paren
+op_star
+id|writeback_mapping
+)paren
+(paren
+r_struct
+id|address_space
+op_star
+comma
+r_int
+op_star
+id|nr_to_write
+)paren
+suffix:semicolon
+multiline_comment|/* Perform a writeback as a memory-freeing operation. */
+DECL|member|vm_writeback
+r_int
+(paren
+op_star
+id|vm_writeback
+)paren
+(paren
+r_struct
+id|page
+op_star
+comma
+r_int
+op_star
+id|nr_to_write
+)paren
+suffix:semicolon
+multiline_comment|/* Set a page dirty */
+DECL|member|set_page_dirty
+r_int
+(paren
+op_star
+id|set_page_dirty
+)paren
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * ext3 requires that a successful prepare_write() call be followed&n;&t; * by a commit_write() call - they must be balanced&n;&t; */
 DECL|member|prepare_write
 r_int
@@ -865,6 +868,12 @@ id|list_head
 id|locked_pages
 suffix:semicolon
 multiline_comment|/* list of locked pages */
+DECL|member|io_pages
+r_struct
+id|list_head
+id|io_pages
+suffix:semicolon
+multiline_comment|/* being prepared for I/O */
 DECL|member|nrpages
 r_int
 r_int
@@ -900,6 +909,12 @@ id|spinlock_t
 id|i_shared_lock
 suffix:semicolon
 multiline_comment|/* and spinlock protecting it */
+DECL|member|dirtied_when
+r_int
+r_int
+id|dirtied_when
+suffix:semicolon
+multiline_comment|/* jiffies of first page dirtying */
 DECL|member|gfp_mask
 r_int
 id|gfp_mask
@@ -1029,10 +1044,15 @@ r_struct
 id|list_head
 id|i_dirty_buffers
 suffix:semicolon
+multiline_comment|/* uses i_bufferlist_lock */
 DECL|member|i_dirty_data_buffers
 r_struct
 id|list_head
 id|i_dirty_data_buffers
+suffix:semicolon
+DECL|member|i_bufferlist_lock
+id|spinlock_t
+id|i_bufferlist_lock
 suffix:semicolon
 DECL|member|i_ino
 r_int
@@ -2136,15 +2156,21 @@ r_int
 r_int
 id|s_blocksize
 suffix:semicolon
-DECL|member|s_blocksize_bits
-r_int
-r_char
-id|s_blocksize_bits
-suffix:semicolon
 DECL|member|s_old_blocksize
 r_int
 r_int
 id|s_old_blocksize
+suffix:semicolon
+DECL|member|s_writeback_gen
+r_int
+r_int
+id|s_writeback_gen
+suffix:semicolon
+multiline_comment|/* To avoid writeback livelock */
+DECL|member|s_blocksize_bits
+r_int
+r_char
+id|s_blocksize_bits
 suffix:semicolon
 DECL|member|s_dirt
 r_int
@@ -3596,7 +3622,7 @@ op_star
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Inode state bits.. */
+multiline_comment|/* Inode state bits.  Protected by inode_lock. */
 DECL|macro|I_DIRTY_SYNC
 mdefine_line|#define I_DIRTY_SYNC&t;&t;1 /* Not dirty enough for O_DATASYNC */
 DECL|macro|I_DIRTY_DATASYNC
@@ -3664,28 +3690,6 @@ c_func
 id|inode
 comma
 id|I_DIRTY_SYNC
-)paren
-suffix:semicolon
-)brace
-DECL|function|mark_inode_dirty_pages
-r_static
-r_inline
-r_void
-id|mark_inode_dirty_pages
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-id|__mark_inode_dirty
-c_func
-(paren
-id|inode
-comma
-id|I_DIRTY_PAGES
 )paren
 suffix:semicolon
 )brace
@@ -5121,20 +5125,6 @@ c_func
 r_struct
 id|page
 op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|refile_buffer
-c_func
-(paren
-r_struct
-id|buffer_head
-op_star
-id|buf
 )paren
 suffix:semicolon
 r_extern
@@ -5148,6 +5138,10 @@ op_star
 comma
 r_int
 r_int
+comma
+r_int
+r_int
+id|b_state
 )paren
 suffix:semicolon
 r_extern
@@ -5176,14 +5170,6 @@ op_star
 id|bh
 )paren
 suffix:semicolon
-DECL|macro|BUF_CLEAN
-mdefine_line|#define BUF_CLEAN&t;0
-DECL|macro|BUF_LOCKED
-mdefine_line|#define BUF_LOCKED&t;1&t;/* Buffers scheduled for write */
-DECL|macro|BUF_DIRTY
-mdefine_line|#define BUF_DIRTY&t;2&t;/* Dirty buffers, not yet scheduled for write */
-DECL|macro|NR_LIST
-mdefine_line|#define NR_LIST&t;&t;3
 DECL|function|get_bh
 r_static
 r_inline
@@ -5279,26 +5265,6 @@ suffix:semicolon
 )brace
 DECL|macro|atomic_set_buffer_clean
 mdefine_line|#define atomic_set_buffer_clean(bh) test_and_clear_bit(BH_Dirty, &amp;(bh)-&gt;b_state)
-DECL|function|__mark_buffer_clean
-r_static
-r_inline
-r_void
-id|__mark_buffer_clean
-c_func
-(paren
-r_struct
-id|buffer_head
-op_star
-id|bh
-)paren
-(brace
-id|refile_buffer
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
-)brace
 DECL|function|mark_buffer_clean
 r_static
 r_inline
@@ -5312,52 +5278,20 @@ op_star
 id|bh
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|atomic_set_buffer_clean
+id|clear_bit
 c_func
+(paren
+id|BH_Dirty
+comma
+op_amp
 (paren
 id|bh
 )paren
-)paren
-id|__mark_buffer_clean
-c_func
-(paren
-id|bh
+op_member_access_from_pointer
+id|b_state
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|FASTCALL
-c_func
-(paren
-id|__mark_dirty
-c_func
-(paren
-r_struct
-id|buffer_head
-op_star
-id|bh
-)paren
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|FASTCALL
-c_func
-(paren
-id|__mark_buffer_dirty
-c_func
-(paren
-r_struct
-id|buffer_head
-op_star
-id|bh
-)paren
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|FASTCALL
@@ -5375,12 +5309,13 @@ id|bh
 suffix:semicolon
 r_extern
 r_void
-id|FASTCALL
-c_func
-(paren
 id|buffer_insert_list
 c_func
 (paren
+id|spinlock_t
+op_star
+id|lock
+comma
 r_struct
 id|buffer_head
 op_star
@@ -5389,12 +5324,11 @@ r_struct
 id|list_head
 op_star
 )paren
-)paren
 suffix:semicolon
-DECL|function|buffer_insert_inode_queue
 r_static
 r_inline
 r_void
+DECL|function|buffer_insert_inode_queue
 id|buffer_insert_inode_queue
 c_func
 (paren
@@ -5412,6 +5346,9 @@ id|inode
 id|buffer_insert_list
 c_func
 (paren
+op_amp
+id|inode-&gt;i_bufferlist_lock
+comma
 id|bh
 comma
 op_amp
@@ -5419,10 +5356,10 @@ id|inode-&gt;i_dirty_buffers
 )paren
 suffix:semicolon
 )brace
-DECL|function|buffer_insert_inode_data_queue
 r_static
 r_inline
 r_void
+DECL|function|buffer_insert_inode_data_queue
 id|buffer_insert_inode_data_queue
 c_func
 (paren
@@ -5440,6 +5377,9 @@ id|inode
 id|buffer_insert_list
 c_func
 (paren
+op_amp
+id|inode-&gt;i_bufferlist_lock
+comma
 id|bh
 comma
 op_amp
@@ -5583,24 +5523,6 @@ id|inode
 suffix:semicolon
 )brace
 r_extern
-r_void
-id|set_buffer_flushtime
-c_func
-(paren
-r_struct
-id|buffer_head
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|balance_dirty
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|check_disk_change
 c_func
@@ -5687,22 +5609,6 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|sync_inodes
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sync_unlocked_inodes
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|write_inode_now
 c_func
 (paren
@@ -5775,19 +5681,13 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|osync_buffers_list
-c_func
-(paren
-r_struct
-id|list_head
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|fsync_buffers_list
 c_func
 (paren
+id|spinlock_t
+op_star
+id|lock
+comma
 r_struct
 id|list_head
 op_star
@@ -5811,6 +5711,9 @@ id|fsync_buffers_list
 c_func
 (paren
 op_amp
+id|inode-&gt;i_bufferlist_lock
+comma
+op_amp
 id|inode-&gt;i_dirty_buffers
 )paren
 suffix:semicolon
@@ -5832,6 +5735,9 @@ r_return
 id|fsync_buffers_list
 c_func
 (paren
+op_amp
+id|inode-&gt;i_bufferlist_lock
+comma
 op_amp
 id|inode-&gt;i_dirty_data_buffers
 )paren
@@ -6491,6 +6397,17 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|__iget
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|clear_inode
@@ -7255,23 +7172,19 @@ id|gfp_mask
 suffix:semicolon
 r_extern
 r_int
-id|discard_bh_page
+id|block_flushpage
 c_func
 (paren
 r_struct
 id|page
 op_star
+id|page
 comma
 r_int
 r_int
-comma
-r_int
+id|offset
 )paren
 suffix:semicolon
-DECL|macro|block_flushpage
-mdefine_line|#define block_flushpage(page, offset) discard_bh_page(page, offset, 1)
-DECL|macro|block_invalidate_page
-mdefine_line|#define block_invalidate_page(page) discard_bh_page(page, 0, 0)
 r_extern
 r_int
 id|block_symlink
@@ -7639,6 +7552,21 @@ r_struct
 id|file
 op_star
 id|filp
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|generic_vm_writeback
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+op_star
+id|nr_to_write
 )paren
 suffix:semicolon
 r_extern
@@ -8092,6 +8020,20 @@ r_return
 id|res
 suffix:semicolon
 )brace
+r_void
+id|__buffer_error
+c_func
+(paren
+r_char
+op_star
+id|file
+comma
+r_int
+id|line
+)paren
+suffix:semicolon
+DECL|macro|buffer_error
+mdefine_line|#define buffer_error() __buffer_error(__FILE__, __LINE__)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_FS_H */
 eof

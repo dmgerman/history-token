@@ -437,6 +437,8 @@ suffix:semicolon
 id|buffer_insert_list
 c_func
 (paren
+l_int|NULL
+comma
 id|bh
 comma
 id|list
@@ -3096,7 +3098,8 @@ id|unbh
 )paren
 suffix:semicolon
 multiline_comment|/* mark it dirty now to prevent commit_write from adding&n;&t;    ** this buffer to the inode&squot;s dirty buffer list&n;&t;    */
-id|__mark_buffer_dirty
+multiline_comment|/*&n;&t;&t; * AKPM: changed __mark_buffer_dirty to mark_buffer_dirty().&n;&t;&t; * It&squot;s still atomic, but it sets the page dirty too,&n;&t;&t; * which makes it eligible for writeback at any time by the&n;&t;&t; * VM (which was also the case with __mark_buffer_dirty())&n;&t;&t; */
+id|mark_buffer_dirty
 c_func
 (paren
 id|unbh

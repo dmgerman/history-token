@@ -510,12 +510,6 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|refile_buffer
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
 id|__brelse
 c_func
 (paren
@@ -863,20 +857,6 @@ c_func
 id|bh
 comma
 l_string|&quot;finished async writeout: refile&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* It can sometimes be on BUF_LOCKED due to migration&n;&t;&t;&t; * from syncdata to asyncdata */
-r_if
-c_cond
-(paren
-id|bh-&gt;b_list
-op_ne
-id|BUF_CLEAN
-)paren
-id|refile_buffer
-c_func
-(paren
-id|bh
 )paren
 suffix:semicolon
 id|__brelse
@@ -1450,6 +1430,14 @@ op_amp
 id|bh-&gt;b_state
 )paren
 suffix:semicolon
+id|mark_buffer_uptodate
+c_func
+(paren
+id|bh
+comma
+l_int|1
+)paren
+suffix:semicolon
 id|bh-&gt;b_end_io
 op_assign
 id|journal_end_buffer_io_sync
@@ -1975,6 +1963,14 @@ id|jh2bh
 c_func
 (paren
 id|descriptor
+)paren
+suffix:semicolon
+id|mark_buffer_uptodate
+c_func
+(paren
+id|bh
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|ll_rw_block

@@ -242,6 +242,15 @@ r_void
 suffix:semicolon
 r_extern
 r_int
+r_int
+id|nr_free_pagecache_pages
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|nr_active_pages
 suffix:semicolon
 r_extern

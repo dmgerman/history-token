@@ -937,12 +937,6 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|refile_buffer
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
 id|__brelse
 c_func
 (paren
@@ -1315,14 +1309,6 @@ id|new_bh
 )paren
 suffix:semicolon
 multiline_comment|/* keep subsequent assertions sane */
-id|new_bh-&gt;b_prev_free
-op_assign
-l_int|0
-suffix:semicolon
-id|new_bh-&gt;b_next_free
-op_assign
-l_int|0
-suffix:semicolon
 id|new_bh-&gt;b_state
 op_assign
 l_int|0

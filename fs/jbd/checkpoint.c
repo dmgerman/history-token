@@ -145,13 +145,6 @@ comma
 l_string|&quot;release&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* BUF_LOCKED -&gt; BUF_CLEAN (fwiw) */
-id|refile_buffer
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
 id|__brelse
 c_func
 (paren
@@ -438,7 +431,7 @@ r_goto
 id|out_return_1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * We used to test for (jh-&gt;b_list != BUF_CLEAN) here.&n;&t;&t; * But unmap_underlying_metadata() can place buffer onto&n;&t;&t; * BUF_CLEAN. Since refile_buffer() no longer takes buffers&n;&t;&t; * off checkpoint lists, we cope with it here&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We used to test for (jh-&gt;b_list != BUF_CLEAN) here.&n;&t;&t; * But unmap_underlying_metadata() can place buffer onto&n;&t;&t; * BUF_CLEAN.&n;&t;&t; */
 multiline_comment|/*&n;&t;&t; * AKPM: I think the buffer_jdirty test is redundant - it&n;&t;&t; * shouldn&squot;t have NULL b_transaction?&n;&t;&t; */
 id|next_jh
 op_assign
@@ -477,12 +470,6 @@ id|jh
 )paren
 suffix:semicolon
 id|__journal_remove_journal_head
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
-id|refile_buffer
 c_func
 (paren
 id|bh
