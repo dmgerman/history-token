@@ -333,7 +333,6 @@ multiline_comment|/* Tx */
 multiline_comment|/* Wire BRG1 to SCC1 */
 id|cpm2_immr-&gt;im_cpmux.cmx_scr
 op_and_assign
-op_complement
 l_int|0x00ffffff
 suffix:semicolon
 id|cpm2_immr-&gt;im_cpmux.cmx_scr
@@ -388,7 +387,6 @@ l_int|0x00030000
 suffix:semicolon
 id|cpm2_immr-&gt;im_cpmux.cmx_scr
 op_and_assign
-op_complement
 l_int|0xff00ffff
 suffix:semicolon
 id|cpm2_immr-&gt;im_cpmux.cmx_scr
@@ -443,7 +441,6 @@ l_int|0x00030000
 suffix:semicolon
 id|cpm2_immr-&gt;im_cpmux.cmx_scr
 op_and_assign
-op_complement
 l_int|0xffff00ff
 suffix:semicolon
 id|cpm2_immr-&gt;im_cpmux.cmx_scr
@@ -497,7 +494,6 @@ suffix:semicolon
 multiline_comment|/* Tx */
 id|cpm2_immr-&gt;im_cpmux.cmx_scr
 op_and_assign
-op_complement
 l_int|0xffffff00
 suffix:semicolon
 id|cpm2_immr-&gt;im_cpmux.cmx_scr
