@@ -6219,7 +6219,7 @@ comma
 id|rpn-&gt;flow_ctrl
 )paren
 suffix:semicolon
-id|rpn-&gt;flow_ctrl
+id|flow_ctrl
 op_assign
 id|RFCOMM_RPN_FLOW_NONE
 suffix:semicolon
@@ -6253,7 +6253,7 @@ comma
 id|rpn-&gt;xon_char
 )paren
 suffix:semicolon
-id|rpn-&gt;xon_char
+id|xon_char
 op_assign
 id|RFCOMM_RPN_XON_CHAR
 suffix:semicolon
@@ -6287,7 +6287,7 @@ comma
 id|rpn-&gt;xoff_char
 )paren
 suffix:semicolon
-id|rpn-&gt;xoff_char
+id|xoff_char
 op_assign
 id|RFCOMM_RPN_XOFF_CHAR
 suffix:semicolon
