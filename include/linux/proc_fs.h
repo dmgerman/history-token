@@ -1116,6 +1116,7 @@ op_star
 id|PROC_I
 c_func
 (paren
+r_const
 r_struct
 id|inode
 op_star
@@ -1144,6 +1145,7 @@ op_star
 id|PDE
 c_func
 (paren
+r_const
 r_struct
 id|inode
 op_star
