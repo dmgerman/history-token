@@ -278,6 +278,9 @@ r_void
 )paren
 suffix:semicolon
 r_struct
+id|mm_struct
+suffix:semicolon
+r_struct
 id|dentry
 op_star
 id|proc_pid_lookup
@@ -335,6 +338,16 @@ id|dirent
 comma
 id|filldir_t
 id|filldir
+)paren
+suffix:semicolon
+r_int
+r_int
+id|task_vsize
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
 )paren
 suffix:semicolon
 r_extern

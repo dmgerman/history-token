@@ -322,6 +322,13 @@ id|vsize
 op_assign
 l_int|0
 suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -351,6 +358,13 @@ id|tbp-&gt;rblock-&gt;kblock
 )paren
 suffix:semicolon
 )brace
+id|up_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 r_return
 id|vsize
 suffix:semicolon
