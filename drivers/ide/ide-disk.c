@@ -275,6 +275,11 @@ id|dma
 op_assign
 l_int|0
 suffix:semicolon
+r_else
+id|lba48
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -325,9 +330,7 @@ id|drive-&gt;select.b.lba
 r_if
 c_cond
 (paren
-id|drive-&gt;addressing
-op_eq
-l_int|1
+id|lba48
 )paren
 (brace
 id|task_ioreg_t
