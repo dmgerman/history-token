@@ -175,19 +175,19 @@ DECL|macro|IPR_WR_BUF_DOWNLOAD_AND_SAVE
 mdefine_line|#define&t;IPR_WR_BUF_DOWNLOAD_AND_SAVE&t;&t;&t;0x05
 multiline_comment|/*&n; * Timeouts&n; */
 DECL|macro|IPR_SHUTDOWN_TIMEOUT
-mdefine_line|#define IPR_SHUTDOWN_TIMEOUT&t;&t;&t;(10 * 60 * HZ)
+mdefine_line|#define IPR_SHUTDOWN_TIMEOUT&t;&t;&t;(ipr_fastfail ? 60 * HZ : 10 * 60 * HZ)
 DECL|macro|IPR_VSET_RW_TIMEOUT
-mdefine_line|#define IPR_VSET_RW_TIMEOUT&t;&t;&t;(2 * 60 * HZ)
+mdefine_line|#define IPR_VSET_RW_TIMEOUT&t;&t;&t;(ipr_fastfail ? 30 * HZ : 2 * 60 * HZ)
 DECL|macro|IPR_ABBREV_SHUTDOWN_TIMEOUT
 mdefine_line|#define IPR_ABBREV_SHUTDOWN_TIMEOUT&t;&t;(10 * HZ)
 DECL|macro|IPR_DEVICE_RESET_TIMEOUT
-mdefine_line|#define IPR_DEVICE_RESET_TIMEOUT&t;&t;(30 * HZ)
+mdefine_line|#define IPR_DEVICE_RESET_TIMEOUT&t;&t;(ipr_fastfail ? 10 * HZ : 30 * HZ)
 DECL|macro|IPR_CANCEL_ALL_TIMEOUT
-mdefine_line|#define IPR_CANCEL_ALL_TIMEOUT&t;&t;(30 * HZ)
+mdefine_line|#define IPR_CANCEL_ALL_TIMEOUT&t;&t;(ipr_fastfail ? 10 * HZ : 30 * HZ)
 DECL|macro|IPR_ABORT_TASK_TIMEOUT
-mdefine_line|#define IPR_ABORT_TASK_TIMEOUT&t;&t;(30 * HZ)
+mdefine_line|#define IPR_ABORT_TASK_TIMEOUT&t;&t;(ipr_fastfail ? 10 * HZ : 30 * HZ)
 DECL|macro|IPR_INTERNAL_TIMEOUT
-mdefine_line|#define IPR_INTERNAL_TIMEOUT&t;&t;&t;(30 * HZ)
+mdefine_line|#define IPR_INTERNAL_TIMEOUT&t;&t;&t;(ipr_fastfail ? 10 * HZ : 30 * HZ)
 DECL|macro|IPR_WRITE_BUFFER_TIMEOUT
 mdefine_line|#define IPR_WRITE_BUFFER_TIMEOUT&t;&t;(10 * 60 * HZ)
 DECL|macro|IPR_SET_SUP_DEVICE_TIMEOUT
@@ -195,7 +195,7 @@ mdefine_line|#define IPR_SET_SUP_DEVICE_TIMEOUT&t;&t;(2 * 60 * HZ)
 DECL|macro|IPR_REQUEST_SENSE_TIMEOUT
 mdefine_line|#define IPR_REQUEST_SENSE_TIMEOUT&t;&t;(10 * HZ)
 DECL|macro|IPR_OPERATIONAL_TIMEOUT
-mdefine_line|#define IPR_OPERATIONAL_TIMEOUT&t;&t;(5 * 60 * HZ)
+mdefine_line|#define IPR_OPERATIONAL_TIMEOUT&t;&t;(5 * 60)
 DECL|macro|IPR_WAIT_FOR_RESET_TIMEOUT
 mdefine_line|#define IPR_WAIT_FOR_RESET_TIMEOUT&t;&t;(2 * HZ)
 DECL|macro|IPR_CHECK_FOR_RESET_TIMEOUT
