@@ -615,6 +615,17 @@ c_func
 (paren
 l_int|0x03f0
 comma
+l_int|0x0605
+)paren
+)brace
+comma
+multiline_comment|/* 2200C */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x03f0
+comma
 l_int|0x0901
 )paren
 )brace
@@ -731,17 +742,6 @@ l_int|0x0601
 )brace
 comma
 multiline_comment|/* 6300C */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x03f0
-comma
-l_int|0x605
-)paren
-)brace
-comma
-multiline_comment|/* 2200C */
 multiline_comment|/* iVina */
 (brace
 id|USB_DEVICE
@@ -1669,6 +1669,28 @@ l_int|0x0331
 )brace
 comma
 multiline_comment|/* OneTouch 8600 EPP/USB */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0461
+comma
+l_int|0x0345
+)paren
+)brace
+comma
+multiline_comment|/* 6200 (actually Primax?) */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0461
+comma
+l_int|0x0371
+)paren
+)brace
+comma
+multiline_comment|/* Onetouch 8920 USB (actually Primax?) */
 (brace
 )brace
 multiline_comment|/* Terminating entry */
