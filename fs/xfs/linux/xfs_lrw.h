@@ -122,6 +122,8 @@ comma
 id|loff_t
 op_star
 comma
+r_int
+comma
 r_struct
 id|cred
 op_star
@@ -151,6 +153,8 @@ comma
 id|loff_t
 op_star
 comma
+r_int
+comma
 r_struct
 id|cred
 op_star
@@ -171,6 +175,8 @@ op_star
 comma
 id|loff_t
 op_star
+comma
+r_int
 comma
 r_int
 comma

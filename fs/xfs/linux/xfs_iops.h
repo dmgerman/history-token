@@ -76,6 +76,11 @@ suffix:semicolon
 r_extern
 r_struct
 id|file_operations
+id|linvfs_invis_file_operations
+suffix:semicolon
+r_extern
+r_struct
+id|file_operations
 id|linvfs_dir_operations
 suffix:semicolon
 r_extern

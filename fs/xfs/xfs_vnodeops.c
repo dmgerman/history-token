@@ -57,6 +57,8 @@ id|file
 op_star
 comma
 r_int
+comma
+r_int
 r_int
 comma
 r_int
@@ -3386,6 +3388,9 @@ id|uio_t
 op_star
 id|uiop
 comma
+r_int
+id|ioflags
+comma
 id|cred_t
 op_star
 id|credp
@@ -3558,9 +3563,9 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|uiop-&gt;uio_fmode
+id|ioflags
 op_amp
-id|FINVIS
+id|IO_INVIS
 )paren
 )paren
 (brace

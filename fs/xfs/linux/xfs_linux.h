@@ -189,8 +189,6 @@ DECL|macro|dfltprid
 mdefine_line|#define dfltprid&t;DEFAULT_PROJID
 DECL|macro|MAXPATHLEN
 mdefine_line|#define MAXPATHLEN&t;1024
-DECL|macro|FINVIS
-mdefine_line|#define FINVIS&t;&t;0x0100&t;/* don&squot;t update timestamps - XFS */
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b)&t;(min(a,b))
 DECL|macro|MAX
