@@ -101,7 +101,7 @@ suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* Read queue size */
 DECL|macro|TUN_READQ_SIZE
-mdefine_line|#define TUN_READQ_SIZE&t;10
+mdefine_line|#define TUN_READQ_SIZE&t;500
 multiline_comment|/* TUN device flags */
 DECL|macro|TUN_TUN_DEV
 mdefine_line|#define TUN_TUN_DEV &t;0x0001&t;
