@@ -1,9 +1,8 @@
-multiline_comment|/*&n; * include/asm-ppc/platforms/prpmc750.h&n; *&n; * Definitions for Motorola PrPMC750 board support&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * include/asm-ppc/platforms/prpmc750.h&n; *&n; * Definitions for Motorola PrPMC750 board support&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001-2004 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_PRPMC750_H__
 DECL|macro|__ASM_PRPMC750_H__
 mdefine_line|#define __ASM_PRPMC750_H__
-macro_line|#include &lt;linux/serial_reg.h&gt;
 multiline_comment|/*&n; * Due to limiations imposed by legacy hardware (primaryily IDE controllers),&n; * the PrPMC750 carrier board operates using a PReP address map.&n; *&n; * From Processor (physical) -&gt; PCI:&n; *   PCI Mem Space: 0xc0000000 - 0xfe000000 -&gt; 0x00000000 - 0x3e000000 (768 MB)&n; *   PCI I/O Space: 0x80000000 - 0x90000000 -&gt; 0x00000000 - 0x10000000 (256 MB)&n; *&t;Note: Must skip 0xfe000000-0xfe400000 for CONFIG_HIGHMEM/PKMAP area&n; *&n; * From PCI -&gt; Processor (physical):&n; *   System Memory: 0x80000000 -&gt; 0x00000000&n; */
 DECL|macro|PRPMC750_ISA_IO_BASE
 mdefine_line|#define PRPMC750_ISA_IO_BASE&t;&t;PREP_ISA_IO_BASE
@@ -71,6 +70,16 @@ DECL|macro|PRPMC750_TBEN_REG
 mdefine_line|#define PRPMC750_TBEN_REG&t;&t;0xfef880c0
 DECL|macro|PRPMC750_TBEN_MASK
 mdefine_line|#define PRPMC750_TBEN_MASK&t;&t;0x01
+multiline_comment|/* UART Defines. */
+DECL|macro|RS_TABLE_SIZE
+mdefine_line|#define RS_TABLE_SIZE  4
+multiline_comment|/* Rate for the 1.8432 Mhz clock for the onboard serial chip */
+DECL|macro|BASE_BAUD
+mdefine_line|#define BASE_BAUD  (PRPMC750_BASE_BAUD / 16)
+DECL|macro|STD_COM_FLAGS
+mdefine_line|#define STD_COM_FLAGS ASYNC_BOOT_AUTOCONF
+DECL|macro|SERIAL_PORT_DFNS
+mdefine_line|#define SERIAL_PORT_DFNS &bslash;&n;        { 0, BASE_BAUD, PRPMC750_SERIAL_0, 1, STD_COM_FLAGS, &bslash;&n;&t;&t;iomem_base: (unsigned char *)PRPMC750_SERIAL_0, &bslash;&n;&t;&t;iomem_reg_shift: 4, &bslash;&n;&t;&t;io_type: SERIAL_IO_MEM } /* ttyS0 */
 macro_line|#endif&t;&t;&t;&t;/* __ASM_PRPMC750_H__ */
 macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */
 eof
