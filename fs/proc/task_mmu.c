@@ -81,6 +81,7 @@ l_string|&quot;VmData:&bslash;t%8lu kB&bslash;n&quot;
 l_string|&quot;VmStk:&bslash;t%8lu kB&bslash;n&quot;
 l_string|&quot;VmExe:&bslash;t%8lu kB&bslash;n&quot;
 l_string|&quot;VmLib:&bslash;t%8lu kB&bslash;n&quot;
+l_string|&quot;VmPTE:&bslash;t%8lu kB&bslash;n&quot;
 comma
 (paren
 id|mm-&gt;total_vm
@@ -129,6 +130,19 @@ comma
 id|text
 comma
 id|lib
+comma
+(paren
+id|PTRS_PER_PTE
+op_star
+r_sizeof
+(paren
+id|pte_t
+)paren
+op_star
+id|mm-&gt;nr_ptes
+)paren
+op_rshift
+l_int|10
 )paren
 suffix:semicolon
 r_return

@@ -1090,6 +1090,10 @@ id|mm-&gt;core_waiters
 op_assign
 l_int|0
 suffix:semicolon
+id|mm-&gt;nr_ptes
+op_assign
+l_int|0
+suffix:semicolon
 id|mm-&gt;page_table_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED

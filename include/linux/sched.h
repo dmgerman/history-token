@@ -628,6 +628,7 @@ DECL|member|exec_vm
 DECL|member|stack_vm
 DECL|member|reserved_vm
 DECL|member|def_flags
+DECL|member|nr_ptes
 r_int
 r_int
 id|exec_vm
@@ -637,6 +638,8 @@ comma
 id|reserved_vm
 comma
 id|def_flags
+comma
+id|nr_ptes
 suffix:semicolon
 DECL|member|saved_auxv
 r_int
