@@ -2541,7 +2541,7 @@ suffix:semicolon
 DECL|macro|pos_in_item
 mdefine_line|#define pos_in_item(path) ((path)-&gt;pos_in_item)
 DECL|macro|INITIALIZE_PATH
-mdefine_line|#define INITIALIZE_PATH(var) &bslash;&n;struct path var = {ILLEGAL_PATH_ELEMENT_OFFSET, }
+mdefine_line|#define INITIALIZE_PATH(var) &bslash;&n;struct path var = {.path_length = ILLEGAL_PATH_ELEMENT_OFFSET,}
 multiline_comment|/* Get path element by path and path position. */
 DECL|macro|PATH_OFFSET_PELEMENT
 mdefine_line|#define PATH_OFFSET_PELEMENT(p_s_path,n_offset)  ((p_s_path)-&gt;path_elements +(n_offset))
@@ -6412,6 +6412,26 @@ op_star
 comma
 r_char
 op_star
+)paren
+suffix:semicolon
+r_void
+id|reiserfs_init_alloc_options
+(paren
+r_struct
+id|super_block
+op_star
+id|s
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * given a directory, this will tell you what packing locality&n; * to use for a new object underneat it.  The locality is returned&n; * in disk byte order (le).&n; */
+id|u32
+id|reiserfs_choose_packing
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|dir
 )paren
 suffix:semicolon
 r_int

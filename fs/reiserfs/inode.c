@@ -7192,12 +7192,11 @@ suffix:semicolon
 multiline_comment|/* item head of new item */
 id|ih.ih_key.k_dir_id
 op_assign
-id|INODE_PKEY
+id|reiserfs_choose_packing
+c_func
 (paren
 id|dir
 )paren
-op_member_access_from_pointer
-id|k_objectid
 suffix:semicolon
 id|ih.ih_key.k_objectid
 op_assign
