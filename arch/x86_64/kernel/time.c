@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/vsyscall.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/hpet.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 macro_line|#include &lt;asm/apic.h&gt;
@@ -526,7 +527,6 @@ c_func
 id|do_settimeofday
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_FRAME_POINTER)
 DECL|function|profile_pc
 r_int
 r_int
@@ -549,6 +549,7 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+multiline_comment|/* Assume the lock function has either no stack frame or only a single word.&n;&t;   This checks if the address on the stack looks like a kernel text address.&n;&t;   There is a small window for false hits, but in that case the tick&n;&t;   is just accounted to the spinlock function.&n;&t;   Better would be to write these functions in assembler again&n;&t;   and check exactly. */
 r_if
 c_cond
 (paren
@@ -558,15 +559,81 @@ c_func
 id|pc
 )paren
 )paren
-r_return
+(brace
+r_char
 op_star
+id|v
+op_assign
+op_star
+(paren
+r_char
+op_star
+op_star
+)paren
+id|regs-&gt;rsp
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|v
+op_ge
+id|_stext
+op_logical_and
+id|v
+op_le
+id|_etext
+)paren
+op_logical_or
+(paren
+id|v
+op_ge
+id|_sinittext
+op_logical_and
+id|v
+op_le
+id|_einittext
+)paren
+op_logical_or
+(paren
+id|v
+op_ge
+(paren
+r_char
+op_star
+)paren
+id|MODULES_VADDR
+op_logical_and
+id|v
+op_le
+(paren
+r_char
+op_star
+)paren
+id|MODULES_END
+)paren
+)paren
+r_return
+(paren
+r_int
+r_int
+)paren
+id|v
+suffix:semicolon
+r_return
+(paren
 (paren
 r_int
 r_int
 op_star
 )paren
-id|regs-&gt;rbp
+id|regs-&gt;rsp
+)paren
+(braket
+l_int|1
+)braket
 suffix:semicolon
+)brace
 r_return
 id|pc
 suffix:semicolon
@@ -578,7 +645,6 @@ c_func
 id|profile_pc
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * In order to set the CMOS clock precisely, set_rtc_mmss has to be called 500&n; * ms after the second nowtime has started, because when nowtime is written&n; * into the registers of the CMOS clock, it will jump to the next second&n; * precisely 500 ms later. Check the Motorola MC146818A or Dallas DS12887 data&n; * sheet for details.&n; */
 DECL|function|set_rtc_mmss
 r_static
