@@ -1,3 +1,6 @@
+macro_line|#ifndef _PPC64_HVCALL_H
+DECL|macro|_PPC64_HVCALL_H
+mdefine_line|#define _PPC64_HVCALL_H
 DECL|macro|H_Success
 mdefine_line|#define H_Success&t;0
 DECL|macro|H_Busy
@@ -300,4 +303,5 @@ op_star
 id|out4
 )paren
 suffix:semicolon
+macro_line|#endif /* _PPC64_HVCALL_H */
 eof
