@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  arch/ppc/4xx_io/serial_sicc.c&n; *&n; *  Driver for IBM STB3xxx SICC serial port&n; *&n; *  Based on drivers/char/serial_amba.c, by ARM Ltd.&n; *&n; *  Copyright 2001 IBM Crop.&n; *  Author: IBM China Research Lab&n; *            Yudong Yang &lt;yangyud@cn.ibm.com&gt;&n; *            Yi Ge       &lt;geyi@cn.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; * This is a driver for SICC serial port on IBM Redwood 4 evaluation board.&n; * The driver support both as a console device and normal serial device and&n; * is compatible with normal ttyS* devices.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -213,8 +214,6 @@ macro_line|#ifndef FALSE
 DECL|macro|FALSE
 mdefine_line|#define FALSE 0
 macro_line|#endif
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG 0
 multiline_comment|/*&n; * Things needed by tty driver&n; */
 DECL|variable|siccnormal_driver
 r_static
@@ -2414,8 +2413,7 @@ id|cflag
 op_assign
 id|info-&gt;tty-&gt;termios-&gt;c_cflag
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;siccuart_set_cflag(0x%x) called&bslash;n&quot;
@@ -2423,7 +2421,6 @@ comma
 id|cflag
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* byte size and parity */
 r_switch
 c_cond
@@ -3587,8 +3584,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;siccuart_flush_buffer(%d) called&bslash;n&quot;
@@ -3596,7 +3592,6 @@ comma
 id|tty-&gt;index
 )paren
 suffix:semicolon
-macro_line|#endif
 id|save_flags
 c_func
 (paren
@@ -5500,9 +5495,7 @@ id|state
 op_assign
 id|info-&gt;state
 suffix:semicolon
-macro_line|#ifdef DEBUG
-singleline_comment|//printk(&quot;siccuart_close() called&bslash;n&quot;);
-macro_line|#endif
+singleline_comment|//pr_debug(&quot;siccuart_close() called&bslash;n&quot;);
 id|save_flags
 c_func
 (paren
@@ -5870,8 +5863,7 @@ id|jiffies
 op_plus
 id|timeout
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;siccuart_wait_until_sent(%d), jiff=%lu, expire=%lu  char_time=%lu...&bslash;n&quot;
@@ -5885,7 +5877,6 @@ comma
 id|char_time
 )paren
 suffix:semicolon
-macro_line|#endif
 r_while
 c_loop
 (paren
@@ -7096,14 +7087,12 @@ suffix:semicolon
 r_int
 id|c
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;siccuart_console_read() called&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|c
 op_assign
 l_int|0
