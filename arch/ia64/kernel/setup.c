@@ -960,6 +960,47 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+multiline_comment|/**&n; * early_console_setup - setup debugging console&n; *&n; * Consoles started here require little enough setup that we can start using&n; * them very early in the boot process, either right after the machine&n; * vector initialization, or even before if the drivers can detect their hw.&n; *&n; * Returns non-zero if a console couldn&squot;t be setup.&n; */
+r_static
+r_int
+id|__init
+DECL|function|early_console_setup
+id|early_console_setup
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_SGI_L1_SERIAL_CONSOLE
+(brace
+r_extern
+r_int
+id|sn_serial_console_early_setup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sn_serial_console_early_setup
+c_func
+(paren
+)paren
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_void
 id|__init
 DECL|function|setup_arch
@@ -1034,6 +1075,27 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* If we register an early console, allow CPU 0 to printk */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|early_console_setup
+c_func
+(paren
+)paren
+)paren
+id|cpu_set
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+id|cpu_online_map
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/* Initialize the ACPI boot-time table parser */
 id|acpi_table_init
