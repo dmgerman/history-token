@@ -787,8 +787,8 @@ r_if
 c_cond
 (paren
 id|lost_count
-op_eq
-l_int|50
+OG
+l_int|25
 )paren
 id|cpufreq_delayed_get
 c_func
@@ -1113,6 +1113,14 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_CPU_FREQ
 macro_line|#include &lt;linux/workqueue.h&gt;
+DECL|variable|cpufreq_delayed_issched
+r_static
+r_int
+r_int
+id|cpufreq_delayed_issched
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|cpufreq_init
 r_static
 r_int
@@ -1155,6 +1163,10 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
+id|cpufreq_delayed_issched
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* if we notice lost ticks, schedule a call to cpufreq_get() as it tries&n; * to verify the CPU frequency the timing core thinks the CPU is running&n; * at is still correct.&n; */
 DECL|function|cpufreq_delayed_get
@@ -1171,7 +1183,22 @@ r_if
 c_cond
 (paren
 id|cpufreq_init
+op_logical_and
+op_logical_neg
+id|cpufreq_delayed_issched
 )paren
+(brace
+id|cpufreq_delayed_issched
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Losing some ticks... checking if CPU frequency changed.&bslash;n&quot;
+)paren
+suffix:semicolon
 id|schedule_work
 c_func
 (paren
@@ -1179,6 +1206,7 @@ op_amp
 id|cpufreq_delayed_get_work
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* If the CPU frequency is scaled, TSC-based delays will need a different&n; * loops_per_jiffy value to function properly.&n; */
 DECL|variable|ref_freq
