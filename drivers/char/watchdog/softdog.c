@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;SoftDog&t;0.06:&t;A Software Watchdog Device&n; *&n; *&t;(c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&n; *&t;Software only watchdog driver. Unlike its big brother the WDT501P&n; *&t;driver this won&squot;t always recover a failed machine.&n; *&n; *  03/96: Angelo Haritsis &lt;ah@doc.ic.ac.uk&gt; :&n; *&t;Modularised.&n; *&t;Added soft_margin; use upon insmod to change the timer delay.&n; *&t;NB: uses same minor as wdt (WATCHDOG_MINOR); we could use separate&n; *&t;    minors.&n; *&n; *  19980911 Alan Cox&n; *&t;Made SMP safe for 2.3.x&n; *&n; *  20011214 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *      Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *      Didn&squot;t add timeout option, as soft_margin option already exists.&n; */
+multiline_comment|/*&n; *&t;SoftDog&t;0.06:&t;A Software Watchdog Device&n; *&n; *&t;(c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&n; *&t;Software only watchdog driver. Unlike its big brother the WDT501P&n; *&t;driver this won&squot;t always recover a failed machine.&n; *&n; *  03/96: Angelo Haritsis &lt;ah@doc.ic.ac.uk&gt; :&n; *&t;Modularised.&n; *&t;Added soft_margin; use upon insmod to change the timer delay.&n; *&t;NB: uses same minor as wdt (WATCHDOG_MINOR); we could use separate&n; *&t;    minors.&n; *&n; *  19980911 Alan Cox&n; *&t;Made SMP safe for 2.3.x&n; *&n; *  20011127 Joel Becker (jlbec@evilplan.org&gt;&n; *&t;Added soft_noboot; Allows testing the softdog trigger without &n; *&t;requiring a recompile.&n; *&t;Added WDIOC_GETTIMEOUT and WDIOC_SETTIMOUT.&n; *&n; *  20020530 Joel Becker &lt;joel.becker@oracle.com&gt;&n; *  &t;Added Matt Domsch&squot;s nowayout module option.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -24,12 +24,43 @@ op_assign
 id|TIMER_MARGIN
 suffix:semicolon
 multiline_comment|/* in seconds */
+macro_line|#ifdef ONLY_TESTING
+DECL|variable|soft_noboot
+r_static
+r_int
+id|soft_noboot
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|soft_noboot
+r_static
+r_int
+id|soft_noboot
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif  /* ONLY_TESTING */
 id|MODULE_PARM
 c_func
 (paren
 id|soft_margin
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|soft_noboot
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
@@ -65,12 +96,6 @@ comma
 l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
 )paren
 suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *&t;Our timer&n; */
 r_static
 r_void
@@ -100,6 +125,7 @@ suffix:semicolon
 DECL|variable|timer_alive
 r_static
 r_int
+r_int
 id|timer_alive
 suffix:semicolon
 multiline_comment|/*&n; *&t;If the timer expires..&n; */
@@ -114,15 +140,20 @@ r_int
 id|data
 )paren
 (brace
-macro_line|#ifdef ONLY_TESTING
+r_if
+c_cond
+(paren
+id|soft_noboot
+)paren
 id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;SOFTDOG: Would Reboot.&bslash;n&quot;
+l_string|&quot;SOFTDOG: Triggered - Reboot ignored.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#else
+r_else
+(brace
 id|printk
 c_func
 (paren
@@ -139,10 +170,10 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;WATCHDOG: Reboot didn&squot;t ?????&bslash;n&quot;
+l_string|&quot;SOFTDOG: Reboot didn&squot;t ?????&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 )brace
 multiline_comment|/*&n; *&t;Allow only one person to hold it open&n; */
 DECL|function|softdog_open
@@ -165,7 +196,14 @@ id|file
 r_if
 c_cond
 (paren
+id|test_and_set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|timer_alive
+)paren
 )paren
 (brace
 r_return
@@ -198,10 +236,6 @@ id|HZ
 )paren
 )paren
 suffix:semicolon
-id|timer_alive
-op_assign
-l_int|1
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -227,8 +261,7 @@ multiline_comment|/*&n;&t; *&t;Shut off the timer.&n;&t; * &t;Lock it in if it&s
 r_if
 c_cond
 (paren
-op_logical_neg
-id|nowayout
+id|expect_close
 )paren
 (brace
 id|del_timer
@@ -249,9 +282,14 @@ l_string|&quot;SOFTDOG: WDT device closed unexpectedly.  WDT will not stop!&bsla
 )paren
 suffix:semicolon
 )brace
-id|timer_alive
-op_assign
+id|clear_bit
+c_func
+(paren
 l_int|0
+comma
+op_amp
+id|timer_alive
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -412,6 +450,9 @@ r_int
 id|arg
 )paren
 (brace
+r_int
+id|new_margin
+suffix:semicolon
 r_static
 r_struct
 id|watchdog_info
@@ -517,6 +558,75 @@ id|HZ
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+r_case
+id|WDIOC_SETTIMEOUT
+suffix:colon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|new_margin
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_margin
+OL
+l_int|1
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|soft_margin
+op_assign
+id|new_margin
+suffix:semicolon
+id|mod_timer
+c_func
+(paren
+op_amp
+id|watchdog_ticktock
+comma
+id|jiffies
+op_plus
+(paren
+id|soft_margin
+op_star
+id|HZ
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Fall */
+r_case
+id|WDIOC_GETTIMEOUT
+suffix:colon
+r_return
+id|put_user
+c_func
+(paren
+id|soft_margin
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
 suffix:semicolon
 )brace
 )brace
