@@ -13,6 +13,8 @@ macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/smpboot.h&gt;
+macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/arch_hooks.h&gt;
 multiline_comment|/* Set if we find a B stepping CPU&t;&t;&t;*/
 DECL|variable|smp_b_stepping
 r_static
@@ -4287,5 +4289,64 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
+DECL|function|smp_intr_init
+r_void
+id|__init
+id|smp_intr_init
+c_func
+(paren
+)paren
+(brace
+multiline_comment|/*&n;&t; * IRQ0 must be given a fixed assignment and initialized,&n;&t; * because it&squot;s used before the IO-APIC is set up.&n;&t; */
+id|set_intr_gate
+c_func
+(paren
+id|FIRST_DEVICE_VECTOR
+comma
+id|interrupt
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * The reschedule interrupt is a CPU-to-CPU reschedule-helper&n;&t; * IPI, driven by wakeup.&n;&t; */
+id|set_intr_gate
+c_func
+(paren
+id|RESCHEDULE_VECTOR
+comma
+id|reschedule_interrupt
+)paren
+suffix:semicolon
+multiline_comment|/* IPI for invalidation */
+id|set_intr_gate
+c_func
+(paren
+id|INVALIDATE_TLB_VECTOR
+comma
+id|invalidate_interrupt
+)paren
+suffix:semicolon
+multiline_comment|/* IPI for generic function call */
+id|set_intr_gate
+c_func
+(paren
+id|CALL_FUNCTION_VECTOR
+comma
+id|call_function_interrupt
+)paren
+suffix:semicolon
+multiline_comment|/* thermal monitor LVT interrupt */
+macro_line|#ifdef CONFIG_X86_MCE_P4THERMAL
+id|set_intr_gate
+c_func
+(paren
+id|THERMAL_APIC_VECTOR
+comma
+id|thermal_interrupt
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 eof
