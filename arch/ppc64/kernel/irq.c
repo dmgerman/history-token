@@ -1541,7 +1541,7 @@ l_int|1
 )braket
 op_assign
 (brace
-l_int|1
+l_int|0
 comma
 l_int|0
 )brace
