@@ -531,6 +531,13 @@ op_or
 id|IRQ_INPROGRESS
 )paren
 )paren
+op_logical_and
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|action
 )paren
 id|i8259_unmask_irq
 c_func
