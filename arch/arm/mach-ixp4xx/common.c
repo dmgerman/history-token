@@ -667,7 +667,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Catch up with the real idea of time&n;&t; */
 r_do
 (brace
-id|do_timer
+id|timer_tick
 c_func
 (paren
 id|regs

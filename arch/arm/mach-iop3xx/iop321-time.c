@@ -108,7 +108,7 @@ id|tisr
 )paren
 )paren
 suffix:semicolon
-id|do_timer
+id|timer_tick
 c_func
 (paren
 id|regs

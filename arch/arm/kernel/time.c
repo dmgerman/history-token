@@ -53,19 +53,6 @@ macro_line|#endif
 multiline_comment|/* change this if you have some constant time drift */
 DECL|macro|USECS_PER_JIFFY
 mdefine_line|#define USECS_PER_JIFFY&t;(1000000/HZ)
-DECL|function|dummy_set_rtc
-r_static
-r_int
-id|dummy_set_rtc
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * hook for setting the RTC&squot;s idea of the current time.&n; */
 DECL|variable|set_rtc
 r_int
@@ -76,8 +63,6 @@ id|set_rtc
 (paren
 r_void
 )paren
-op_assign
-id|dummy_set_rtc
 suffix:semicolon
 DECL|function|dummy_gettimeoffset
 r_static
@@ -142,6 +127,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Handle kernel profile stuff...&n; */
 DECL|function|do_profile
+r_static
+r_inline
 r_void
 id|do_profile
 c_func
@@ -230,6 +217,8 @@ id|next_rtc_update
 suffix:semicolon
 multiline_comment|/*&n; * If we have an externally synchronized linux clock, then update&n; * CMOS clock accordingly every ~11 minutes.  set_rtc() has to be&n; * called as close as possible to 500 ms before the new second&n; * starts.&n; */
 DECL|function|do_set_rtc
+r_static
+r_inline
 r_void
 id|do_set_rtc
 c_func
@@ -865,7 +854,10 @@ id|leds_event
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_LEDS_TIMER
 DECL|function|do_leds
+r_static
+r_inline
 r_void
 id|do_leds
 c_func
@@ -901,6 +893,10 @@ id|led_timer
 suffix:semicolon
 )brace
 )brace
+macro_line|#else
+DECL|macro|do_leds
+mdefine_line|#define&t;do_leds()
+macro_line|#endif
 DECL|function|do_gettimeofday
 r_void
 id|do_gettimeofday
@@ -1173,6 +1169,40 @@ c_func
 id|do_settimeofday
 )paren
 suffix:semicolon
+DECL|function|timer_tick
+r_void
+id|timer_tick
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|do_profile
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+id|do_leds
+c_func
+(paren
+)paren
+suffix:semicolon
+id|do_set_rtc
+c_func
+(paren
+)paren
+suffix:semicolon
+id|do_timer
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+)brace
 DECL|variable|init_arch_time
 r_void
 (paren

@@ -1274,23 +1274,13 @@ op_star
 id|regs
 )paren
 (brace
-id|do_timer
+id|timer_tick
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
-id|do_set_rtc
-c_func
-(paren
-)paren
-suffix:semicolon
-id|do_profile
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
+multiline_comment|/* Why not using do_leds interface?? */
 (brace
 multiline_comment|/* Twinkle the lights. */
 r_static
