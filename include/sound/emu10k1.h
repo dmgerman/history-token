@@ -3418,23 +3418,13 @@ id|name
 l_int|128
 )braket
 suffix:semicolon
-DECL|member|gpr_valid
-r_int
-r_int
+id|DECLARE_BITMAP
+c_func
+(paren
 id|gpr_valid
-(braket
+comma
 l_int|0x200
-op_div
-(paren
-r_sizeof
-(paren
-r_int
-r_int
 )paren
-op_star
-l_int|8
-)paren
-)braket
 suffix:semicolon
 multiline_comment|/* bitmask of valid initializers */
 DECL|member|gpr_map
@@ -3491,23 +3481,13 @@ op_star
 id|gpr_list_controls
 suffix:semicolon
 multiline_comment|/* listed GPR controls */
-DECL|member|tram_valid
-r_int
-r_int
+id|DECLARE_BITMAP
+c_func
+(paren
 id|tram_valid
-(braket
+comma
 l_int|0x100
-op_div
-(paren
-r_sizeof
-(paren
-r_int
-r_int
 )paren
-op_star
-l_int|8
-)paren
-)braket
 suffix:semicolon
 multiline_comment|/* bitmask of valid initializers */
 DECL|member|tram_data_map
@@ -3528,23 +3508,13 @@ l_int|0x100
 )braket
 suffix:semicolon
 multiline_comment|/* map initializers */
-DECL|member|code_valid
-r_int
-r_int
+id|DECLARE_BITMAP
+c_func
+(paren
 id|code_valid
-(braket
+comma
 l_int|1024
-op_div
-(paren
-r_sizeof
-(paren
-r_int
-r_int
 )paren
-op_star
-l_int|8
-)paren
-)braket
 suffix:semicolon
 multiline_comment|/* bitmask of valid instructions */
 DECL|member|code
