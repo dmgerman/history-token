@@ -13,8 +13,6 @@ DECL|macro|info
 mdefine_line|#define info(format, arg...) printk(KERN_INFO &quot;%s: &quot; format, MY_NAME , ## arg)
 DECL|macro|warn
 mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;%s: &quot; format, MY_NAME , ## arg)
-DECL|macro|SLOT_MAGIC
-mdefine_line|#define SLOT_MAGIC&t;0x67267322
 multiline_comment|/* name size which is used for entries in pcihpfs */
 DECL|macro|SLOT_NAME_SIZE
 mdefine_line|#define SLOT_NAME_SIZE&t;KOBJ_NAME_LEN&t;&t;/* {_SUN} */
@@ -32,10 +30,6 @@ DECL|struct|slot
 r_struct
 id|slot
 (brace
-DECL|member|magic
-id|u32
-id|magic
-suffix:semicolon
 DECL|member|number
 id|u8
 id|number

@@ -856,10 +856,6 @@ id|slot-&gt;hotplug_slot-&gt;name
 r_goto
 id|error_info
 suffix:semicolon
-id|slot-&gt;magic
-op_assign
-id|SLOT_MAGIC
-suffix:semicolon
 id|slot-&gt;number
 op_assign
 id|i
