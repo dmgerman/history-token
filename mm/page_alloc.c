@@ -2509,7 +2509,7 @@ id|ret-&gt;nr_dirty
 op_assign
 l_int|0
 suffix:semicolon
-id|ret-&gt;nr_locked
+id|ret-&gt;nr_writeback
 op_assign
 l_int|0
 suffix:semicolon
@@ -2553,9 +2553,9 @@ id|ret-&gt;nr_dirty
 op_add_assign
 id|ps-&gt;nr_dirty
 suffix:semicolon
-id|ret-&gt;nr_locked
+id|ret-&gt;nr_writeback
 op_add_assign
-id|ps-&gt;nr_locked
+id|ps-&gt;nr_writeback
 suffix:semicolon
 id|ret-&gt;nr_pagecache
 op_add_assign
