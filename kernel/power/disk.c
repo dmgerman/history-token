@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;power.h&quot;
@@ -98,12 +99,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|device_power_down
-c_func
-(paren
-id|PM_SUSPEND_DISK
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -113,6 +108,12 @@ id|mode
 r_case
 id|PM_DISK_PLATFORM
 suffix:colon
+id|device_power_down
+c_func
+(paren
+id|PM_SUSPEND_DISK
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|pm_ops
@@ -134,6 +135,11 @@ c_func
 l_string|&quot;Powering off system&bslash;n&quot;
 )paren
 suffix:semicolon
+id|device_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
 id|machine_power_off
 c_func
 (paren
@@ -144,6 +150,11 @@ suffix:semicolon
 r_case
 id|PM_DISK_REBOOT
 suffix:colon
+id|device_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
 id|machine_restart
 c_func
 (paren
