@@ -1389,9 +1389,10 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: This magic number seems to be bogous. */
+multiline_comment|/* This used to be 0x7fffffff, but since now we use the maximal drive&n;&t; * capacity value used by other kernel subsystems as well.&n;&t; */
 r_return
-l_int|0x7fffffff
+op_complement
+l_int|0UL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is used to issue WIN_SPECIFY, WIN_RESTORE, and WIN_SETMULT commands to&n; * a drive.  It used to do much more, but has been scaled back.&n; */
@@ -1650,6 +1651,7 @@ suffix:semicolon
 r_static
 id|ide_startstop_t
 id|do_reset1
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -1658,7 +1660,7 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* needed below */
-multiline_comment|/*&n; * ATAPI_reset_pollfunc() gets invoked to poll the interface for completion every 50ms&n; * during an ATAPI drive reset operation. If the drive has not yet responded,&n; * and we have not yet hit our maximum waiting time, then the timer is restarted&n; * for another 50ms.&n; */
+multiline_comment|/*&n; * Poll the interface for completion every 50ms during an ATAPI drive reset&n; * operation. If the drive has not yet responded, and we have not yet hit our&n; * maximum waiting time, then the timer is restarted for another 50ms.&n; */
 DECL|function|atapi_reset_pollfunc
 r_static
 id|ide_startstop_t
@@ -1802,7 +1804,7 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * reset_pollfunc() gets invoked to poll the interface for completion every 50ms&n; * during an ide reset operation. If the drives have not yet responded,&n; * and we have not yet hit our maximum waiting time, then the timer is restarted&n; * for another 50ms.&n; */
+multiline_comment|/*&n; * Poll the interface for completion every 50ms during an ata reset operation.&n; * If the drives have not yet responded, and we have not yet hit our maximum&n; * waiting time, then the timer is restarted for another 50ms.&n; */
 DECL|function|reset_pollfunc
 r_static
 id|ide_startstop_t
@@ -3527,10 +3529,11 @@ id|wcount
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * ide_error() takes action based on the error returned by the drive.&n; */
+multiline_comment|/*&n; * Take action based on the error returned by the drive.&n; */
 DECL|function|ide_error
 id|ide_startstop_t
 id|ide_error
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -3893,10 +3896,11 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Issue a simple drive command&n; * The drive must be selected beforehand.&n; */
+multiline_comment|/*&n; * Issue a simple drive command.  The drive must be selected beforehand.&n; */
 DECL|function|ide_cmd
 r_void
 id|ide_cmd
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -3977,7 +3981,7 @@ id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * drive_cmd_intr() is invoked on completion of a special DRIVE_CMD.&n; */
+multiline_comment|/*&n; * Invoked on completion of a special DRIVE_CMD.&n; */
 DECL|function|drive_cmd_intr
 r_static
 id|ide_startstop_t
@@ -4147,7 +4151,7 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This routine busy-waits for the drive status to be not &quot;busy&quot;.&n; * It then checks the status for all of the &quot;good&quot; bits and none&n; * of the &quot;bad&quot; bits, and if all is okay it returns 0.  All other&n; * cases return 1 after invoking ide_error() -- caller should just return.&n; *&n; * This routine should get fixed to not hog the cpu during extra long waits..&n; * That could be done by busy-waiting for the first jiffy or two, and then&n; * setting a timer to wake up at half second intervals thereafter,&n; * until timeout is achieved, before timing out.&n; */
+multiline_comment|/*&n; * Busy-wait for the drive status to be not &quot;busy&quot;.  Check then the status for&n; * all of the &quot;good&quot; bits and none of the &quot;bad&quot; bits, and if all is okay it&n; * returns 0.  All other cases return 1 after invoking ide_error() -- caller&n; * should just return.&n; *&n; * This routine should get fixed to not hog the cpu during extra long waits..&n; * That could be done by busy-waiting for the first jiffy or two, and then&n; * setting a timer to wake up at half second intervals thereafter, until&n; * timeout is achieved, before timing out.&n; */
 DECL|function|ide_wait_stat
 r_int
 id|ide_wait_stat
@@ -5369,7 +5373,7 @@ id|rq
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ide_stall_queue() can be used by a drive to give excess bandwidth back&n; * to the hwgroup by sleeping for timeout jiffies.&n; */
+multiline_comment|/*&n; * This is used by a drive to give excess bandwidth back to the hwgroup by&n; * sleeping for timeout jiffies.&n; */
 DECL|function|ide_stall_queue
 r_void
 id|ide_stall_queue
@@ -5402,7 +5406,7 @@ op_plus
 id|jiffies
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * choose_drive() selects the next drive which will be serviced.&n; */
+multiline_comment|/*&n; * Select the next drive which will be serviced.&n; */
 DECL|function|choose_drive
 r_static
 r_inline
@@ -6233,7 +6237,7 @@ comma
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * disable dma for now, but remember that we did so because of&n;&t; * a timeout -- we&squot;ll reenable after we finish this next request&n;&t; * (or rather the first chunk of it) in pio.&n;&t; */
+multiline_comment|/*&n;&t; * Disable dma for now, but remember that we did so because of&n;&t; * a timeout -- we&squot;ll reenable after we finish this next request&n;&t; * (or rather the first chunk of it) in pio.&n;&t; */
 id|drive-&gt;retry_pio
 op_increment
 suffix:semicolon
@@ -6758,7 +6762,7 @@ op_star
 id|hwgroup
 )paren
 (brace
-id|byte
+id|u8
 id|stat
 suffix:semicolon
 r_struct
@@ -9018,7 +9022,7 @@ id|channel
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Remove us from the kernel&squot;s knowledge&n;&t; */
+multiline_comment|/*&n;&t; * Remove us from the kernel&squot;s knowledge.&n;&t; */
 id|unregister_blkdev
 c_func
 (paren
@@ -9340,7 +9344,7 @@ id|intr
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* (CONFIG_AMIGA) || (CONFIG_MAC) */
+macro_line|#endif
 r_default
 suffix:colon
 id|hw-&gt;io_ports
@@ -9651,7 +9655,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Compatability function with existing drivers.  If you want&n; * something different, use the function above.&n; */
+multiline_comment|/*&n; * Compatability function for existing drivers.  If you want&n; * something different, use the function above.&n; */
 DECL|function|ide_register
 r_int
 id|ide_register
@@ -9707,6 +9711,7 @@ suffix:semicolon
 DECL|function|ide_add_setting
 r_void
 id|ide_add_setting
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -10716,7 +10721,7 @@ op_star
 id|drive
 )paren
 (brace
-multiline_comment|/*&n; *&t;&t;&t;drive&t;setting name&t;&t;read/write access&t;&t;&t;&t;read ioctl&t;&t;write ioctl&t;&t;data type&t;min&t;max&t;&t;&t;&t;mul_factor&t;div_factor&t;data pointer&t;&t;&t;set function&n; */
+multiline_comment|/*&t;&t;&t;drive&t;setting name&t;&t;read/write access&t;&t;&t;&t;read ioctl&t;&t;write ioctl&t;&t;data type&t;min&t;max&t;&t;&t;&t;mul_factor&t;div_factor&t;data pointer&t;&t;&t;set function */
 id|ide_add_setting
 c_func
 (paren
@@ -12532,10 +12537,12 @@ id|ide_drive_t
 op_star
 id|drive
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
+r_int
+id|res
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* not changed */
 id|drive
 op_assign
 id|get_info_ptr
@@ -12543,9 +12550,12 @@ c_func
 (paren
 id|i_rdev
 )paren
-)paren
-op_eq
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drive
 )paren
 r_return
 op_minus
@@ -12582,7 +12592,8 @@ id|drive
 op_member_access_from_pointer
 id|check_media_change
 )paren
-r_return
+id|res
+op_assign
 id|ata_ops
 c_func
 (paren
@@ -12596,7 +12607,8 @@ id|drive
 )paren
 suffix:semicolon
 r_else
-r_return
+id|res
+op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* assume it was changed */
@@ -12612,7 +12624,7 @@ id|drive
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|res
 suffix:semicolon
 )brace
 DECL|function|ide_fixstring
@@ -12777,6 +12789,7 @@ op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 )brace
+multiline_comment|/****************************************************************************&n; * FIXME: rewrite the following crap:&n; */
 multiline_comment|/*&n; * stridx() returns the offset of c within s,&n; * or -1 if c is &squot;&bslash;0&squot; or not found within s.&n; */
 DECL|function|stridx
 r_static
@@ -12821,7 +12834,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * match_parm() does parsing for ide_setup():&n; *&n; * 1. the first char of s must be &squot;=&squot;.&n; * 2. if the remainder matches one of the supplied keywords,&n; *     the index (1 based) of the keyword is negated and returned.&n; * 3. if the remainder is a series of no more than max_vals numbers&n; *     separated by commas, the numbers are saved in vals[] and a&n; *     count of how many were saved is returned.  Base10 is assumed,&n; *     and base16 is allowed when prefixed with &quot;0x&quot;.&n; * 4. otherwise, zero is returned.&n; */
+multiline_comment|/*&n; * Parsing for ide_setup():&n; *&n; * 1. the first char of s must be &squot;=&squot;.&n; * 2. if the remainder matches one of the supplied keywords,&n; *     the index (1 based) of the keyword is negated and returned.&n; * 3. if the remainder is a series of no more than max_vals numbers&n; *     separated by commas, the numbers are saved in vals[] and a&n; *     count of how many were saved is returned.  Base10 is assumed,&n; *     and base16 is allowed when prefixed with &quot;0x&quot;.&n; * 4. otherwise, zero is returned.&n; */
 DECL|function|match_parm
 r_static
 r_int
@@ -13306,24 +13319,21 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
+macro_line|#endif
 multiline_comment|/*&n;&t; * Look for drive options:  &quot;hdx=&quot;&n;&t; */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
 id|s
-(braket
-l_int|0
-)braket
-op_eq
-l_char|&squot;h&squot;
-op_logical_and
-id|s
-(braket
-l_int|1
-)braket
-op_eq
-l_char|&squot;d&squot;
+comma
+l_string|&quot;hd&quot;
+comma
+l_int|2
+)paren
 op_logical_and
 id|s
 (braket
@@ -13454,26 +13464,20 @@ multiline_comment|/*&n;&t;&t; * Look for last lun option:  &quot;hdxlun=&quot;&n
 r_if
 c_cond
 (paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+op_amp
 id|s
 (braket
 l_int|3
 )braket
-op_eq
-l_char|&squot;l&squot;
-op_logical_and
-id|s
-(braket
-l_int|4
-)braket
-op_eq
-l_char|&squot;u&squot;
-op_logical_and
-id|s
-(braket
-l_int|5
-)braket
-op_eq
-l_char|&squot;n&squot;
+comma
+l_string|&quot;lun&quot;
+comma
+l_int|3
+)paren
 )paren
 (brace
 r_if
@@ -13744,7 +13748,7 @@ suffix:semicolon
 r_goto
 id|bad_option
 suffix:semicolon
-macro_line|#endif /* defined(CONFIG_BLK_DEV_IDESCSI) &amp;&amp; defined(CONFIG_SCSI) */
+macro_line|#endif
 r_case
 l_int|3
 suffix:colon
@@ -13802,57 +13806,19 @@ id|bad_option
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|s
-(braket
-l_int|0
-)braket
-op_ne
-l_char|&squot;i&squot;
-op_logical_or
-id|s
-(braket
-l_int|1
-)braket
-op_ne
-l_char|&squot;d&squot;
-op_logical_or
-id|s
-(braket
-l_int|2
-)braket
-op_ne
-l_char|&squot;e&squot;
-)paren
-r_goto
-id|bad_option
-suffix:semicolon
 multiline_comment|/*&n;&t; * Look for bus speed option:  &quot;idebus=&quot;&n;&t; */
 r_if
 c_cond
 (paren
+id|strncmp
+c_func
+(paren
 id|s
-(braket
-l_int|3
-)braket
-op_eq
-l_char|&squot;b&squot;
-op_logical_and
-id|s
-(braket
-l_int|4
-)braket
-op_eq
-l_char|&squot;u&squot;
-op_logical_and
-id|s
-(braket
-l_int|5
-)braket
-op_eq
-l_char|&squot;s&squot;
+comma
+l_string|&quot;idebus&quot;
+comma
+l_int|6
+)paren
 )paren
 (brace
 r_if
@@ -13920,6 +13886,17 @@ multiline_comment|/*&n;&t; * Look for interface options:  &quot;idex=&quot;&n;&t
 r_if
 c_cond
 (paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|s
+comma
+l_string|&quot;ide&quot;
+comma
+l_int|3
+)paren
+op_logical_and
 id|s
 (braket
 l_int|3
@@ -13935,7 +13912,7 @@ op_le
 id|max_hwif
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Be VERY CAREFUL changing this: note hardcoded indexes below&n;&t;&t; * -8,-9,-10 : are reserved for future idex calls to ease the hardcoding.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Be VERY CAREFUL changing this: note hardcoded indexes below&n;&t;&t; * -8,-9,-10. -11 : are reserved for future idex calls to ease the hardcoding.&n;&t;&t; */
 r_const
 r_char
 op_star
@@ -14154,7 +14131,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_ALI14XX */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_UMC8672
 r_case
 op_minus
@@ -14178,7 +14155,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_UMC8672 */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_DTC2278
 r_case
 op_minus
@@ -14202,7 +14179,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_DTC2278 */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_CMD640
 r_case
 op_minus
@@ -14223,7 +14200,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_CMD640 */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_HT6560B
 r_case
 op_minus
@@ -14247,7 +14224,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_HT6560B */
+macro_line|#endif
 macro_line|#if CONFIG_BLK_DEV_QD65XX
 r_case
 op_minus
@@ -14271,7 +14248,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_QD65XX */
+macro_line|#endif
 r_case
 op_minus
 l_int|11
@@ -14308,7 +14285,7 @@ suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
-macro_line|#else /* !CONFIG_BLK_DEV_IDEPCI */
+macro_line|#else
 id|hwif-&gt;udma_four
 op_assign
 l_int|0
@@ -14316,7 +14293,7 @@ suffix:semicolon
 r_goto
 id|bad_hwif
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
+macro_line|#endif
 r_case
 op_minus
 l_int|6
@@ -14589,6 +14566,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/****************************************************************************/
 multiline_comment|/* This is the default end request function as well */
 DECL|function|ide_end_request
 r_int

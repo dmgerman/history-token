@@ -1065,13 +1065,13 @@ op_logical_and
 id|u
 op_amp
 (paren
-(paren
 l_int|1
 op_lshift
+(paren
 id|i
-)paren
 op_plus
 l_int|12
+)paren
 )paren
 )paren
 )paren
