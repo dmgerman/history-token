@@ -4,14 +4,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ftape.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,16)
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#else
-DECL|macro|__initdata
-mdefine_line|#define __initdata
-DECL|macro|__initfunc
-mdefine_line|#define __initfunc(__arg) __arg
-macro_line|#endif
 macro_line|#include &quot;../lowlevel/ftape-tracing.h&quot;
 macro_line|#include &quot;../lowlevel/fdc-io.h&quot;
 DECL|struct|param_table
