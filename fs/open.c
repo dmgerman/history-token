@@ -1274,6 +1274,10 @@ r_else
 r_if
 c_cond
 (paren
+id|current-&gt;fsuid
+op_ne
+id|inode-&gt;i_uid
+op_logical_and
 (paren
 id|error
 op_assign
