@@ -482,7 +482,16 @@ op_star
 id|drv
 )paren
 (brace
-singleline_comment|//&t;driver_for_each_dev(drv,drv,do_driver_unbind);
+id|driver_for_each_dev
+c_func
+(paren
+id|drv
+comma
+id|drv
+comma
+id|do_driver_unbind
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * device_register - register a device&n; * @dev:&t;pointer to the device structure&n; *&n; * First, make sure that the device has a parent, create&n; * a directory for it, then add it to the parent&squot;s list of&n; * children.&n; *&n; * Maintains a global list of all devices, in depth-first ordering.&n; * The head for that list is device_root.g_list.&n; */
 DECL|function|device_register
