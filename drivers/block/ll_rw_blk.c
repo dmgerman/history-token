@@ -4246,7 +4246,7 @@ id|rw
 )braket
 op_ge
 id|q-&gt;nr_requests
-op_logical_or
+op_logical_and
 op_logical_neg
 id|elv_may_queue
 c_func
