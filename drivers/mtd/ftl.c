@@ -3566,15 +3566,6 @@ comma
 id|minor
 )paren
 suffix:semicolon
-multiline_comment|/* Flush all writes */
-id|invalidate_device
-c_func
-(paren
-id|inode-&gt;i_rdev
-comma
-l_int|1
-)paren
-suffix:semicolon
 multiline_comment|/* Wait for any pending erase operations to complete */
 r_if
 c_cond

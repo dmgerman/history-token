@@ -3886,14 +3886,6 @@ comma
 l_string|&quot;NFTL_release&bslash;n&quot;
 )paren
 suffix:semicolon
-id|invalidate_device
-c_func
-(paren
-id|inode-&gt;i_rdev
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
