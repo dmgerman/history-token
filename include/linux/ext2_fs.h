@@ -31,10 +31,6 @@ DECL|macro|EXT2_BAD_INO
 mdefine_line|#define&t;EXT2_BAD_INO&t;&t; 1&t;/* Bad blocks inode */
 DECL|macro|EXT2_ROOT_INO
 mdefine_line|#define EXT2_ROOT_INO&t;&t; 2&t;/* Root inode */
-DECL|macro|EXT2_ACL_IDX_INO
-mdefine_line|#define EXT2_ACL_IDX_INO&t; 3&t;/* ACL inode */
-DECL|macro|EXT2_ACL_DATA_INO
-mdefine_line|#define EXT2_ACL_DATA_INO&t; 4&t;/* ACL inode */
 DECL|macro|EXT2_BOOT_LOADER_INO
 mdefine_line|#define EXT2_BOOT_LOADER_INO&t; 5&t;/* Boot loader inode */
 DECL|macro|EXT2_UNDEL_DIR_INO
@@ -87,8 +83,6 @@ macro_line|#else
 DECL|macro|EXT2_BLOCK_SIZE
 macro_line|# define EXT2_BLOCK_SIZE(s)&t;&t;(EXT2_MIN_BLOCK_SIZE &lt;&lt; (s)-&gt;s_log_block_size)
 macro_line|#endif
-DECL|macro|EXT2_ACLE_PER_BLOCK
-mdefine_line|#define EXT2_ACLE_PER_BLOCK(s)&t;&t;(EXT2_BLOCK_SIZE(s) / sizeof (struct ext2_acl_entry))
 DECL|macro|EXT2_ADDR_PER_BLOCK
 mdefine_line|#define&t;EXT2_ADDR_PER_BLOCK(s)&t;&t;(EXT2_BLOCK_SIZE(s) / sizeof (__u32))
 macro_line|#ifdef __KERNEL__
@@ -129,66 +123,6 @@ macro_line|# define EXT2_FRAG_SIZE(s)&t;&t;(EXT2_MIN_FRAG_SIZE &lt;&lt; (s)-&gt;
 DECL|macro|EXT2_FRAGS_PER_BLOCK
 macro_line|# define EXT2_FRAGS_PER_BLOCK(s)&t;(EXT2_BLOCK_SIZE(s) / EXT2_FRAG_SIZE(s))
 macro_line|#endif
-multiline_comment|/*&n; * ACL structures&n; */
-DECL|struct|ext2_acl_header
-r_struct
-id|ext2_acl_header
-multiline_comment|/* Header of Access Control Lists */
-(brace
-DECL|member|aclh_size
-id|__u32
-id|aclh_size
-suffix:semicolon
-DECL|member|aclh_file_count
-id|__u32
-id|aclh_file_count
-suffix:semicolon
-DECL|member|aclh_acle_count
-id|__u32
-id|aclh_acle_count
-suffix:semicolon
-DECL|member|aclh_first_acle
-id|__u32
-id|aclh_first_acle
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|ext2_acl_entry
-r_struct
-id|ext2_acl_entry
-multiline_comment|/* Access Control List Entry */
-(brace
-DECL|member|acle_size
-id|__u32
-id|acle_size
-suffix:semicolon
-DECL|member|acle_perms
-id|__u16
-id|acle_perms
-suffix:semicolon
-multiline_comment|/* Access permissions */
-DECL|member|acle_type
-id|__u16
-id|acle_type
-suffix:semicolon
-multiline_comment|/* Type of entry */
-DECL|member|acle_tag
-id|__u16
-id|acle_tag
-suffix:semicolon
-multiline_comment|/* User or group identity */
-DECL|member|acle_pad1
-id|__u16
-id|acle_pad1
-suffix:semicolon
-DECL|member|acle_next
-id|__u32
-id|acle_next
-suffix:semicolon
-multiline_comment|/* Pointer on next entry for the */
-multiline_comment|/* same inode or on next free entry */
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * Structure of a blocks group descriptor&n; */
 DECL|struct|ext2_group_desc
 r_struct
@@ -613,6 +547,8 @@ DECL|macro|EXT2_MOUNT_MINIX_DF
 mdefine_line|#define EXT2_MOUNT_MINIX_DF&t;&t;0x0080&t;/* Mimics the Minix statfs */
 DECL|macro|EXT2_MOUNT_NO_UID32
 mdefine_line|#define EXT2_MOUNT_NO_UID32&t;&t;0x0200  /* Disable 32-bit UIDs */
+DECL|macro|EXT2_MOUNT_XATTR_USER
+mdefine_line|#define EXT2_MOUNT_XATTR_USER&t;&t;0x4000&t;/* Extended user attributes */
 DECL|macro|clear_opt
 mdefine_line|#define clear_opt(o, opt)&t;&t;o &amp;= ~EXT2_MOUNT_##opt
 DECL|macro|set_opt
@@ -978,7 +914,7 @@ mdefine_line|#define EXT2_FEATURE_INCOMPAT_META_BG&t;&t;0x0010
 DECL|macro|EXT2_FEATURE_INCOMPAT_ANY
 mdefine_line|#define EXT2_FEATURE_INCOMPAT_ANY&t;&t;0xffffffff
 DECL|macro|EXT2_FEATURE_COMPAT_SUPP
-mdefine_line|#define EXT2_FEATURE_COMPAT_SUPP&t;0
+mdefine_line|#define EXT2_FEATURE_COMPAT_SUPP&t;EXT2_FEATURE_COMPAT_EXT_ATTR
 DECL|macro|EXT2_FEATURE_INCOMPAT_SUPP
 mdefine_line|#define EXT2_FEATURE_INCOMPAT_SUPP&t;(EXT2_FEATURE_INCOMPAT_FILETYPE| &bslash;&n;&t;&t;&t;&t;&t; EXT2_FEATURE_INCOMPAT_META_BG)
 DECL|macro|EXT2_FEATURE_RO_COMPAT_SUPP

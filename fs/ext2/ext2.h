@@ -652,10 +652,20 @@ r_struct
 id|inode_operations
 id|ext2_dir_inode_operations
 suffix:semicolon
+r_extern
+r_struct
+id|inode_operations
+id|ext2_special_inode_operations
+suffix:semicolon
 multiline_comment|/* symlink.c */
 r_extern
 r_struct
 id|inode_operations
 id|ext2_fast_symlink_inode_operations
+suffix:semicolon
+r_extern
+r_struct
+id|inode_operations
+id|ext2_symlink_inode_operations
 suffix:semicolon
 eof
