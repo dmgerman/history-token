@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  acpi_bus.c - ACPI Bus Driver ($Revision: 77 $)&n; *&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/*&n; *  acpi_bus.c - ACPI Bus Driver ($Revision: 79 $)&n; *&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -3354,10 +3354,18 @@ id|cid
 l_int|0
 )braket
 )paren
+(brace
+id|acpi_os_free
+c_func
+(paren
+id|buffer.pointer
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOENT
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3369,8 +3377,22 @@ comma
 id|cid
 )paren
 )paren
+(brace
+id|acpi_os_free
+c_func
+(paren
+id|buffer.pointer
+)paren
+suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+id|acpi_os_free
+c_func
+(paren
+id|buffer.pointer
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -5816,7 +5838,7 @@ suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
-l_string|&quot;acpi_bus_scan&quot;
+l_string|&quot;acpi_bus_scan_fixed&quot;
 )paren
 suffix:semicolon
 r_if
@@ -6358,18 +6380,12 @@ op_amp
 id|acpi_fadt
 )brace
 suffix:semicolon
-r_int
-id|progress
-op_assign
-l_int|0
-suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
 l_string|&quot;acpi_bus_init&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * [0] Initailize the ACPI Core Subsystem.&n;&t; */
 id|status
 op_assign
 id|acpi_initialize_subsystem
@@ -6395,19 +6411,10 @@ id|PREFIX
 l_string|&quot;Unable to initialize the ACPI Interpreter&bslash;n&quot;
 )paren
 suffix:semicolon
-id|result
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
 r_goto
-id|end
+id|error0
 suffix:semicolon
 )brace
-id|progress
-op_increment
-suffix:semicolon
-multiline_comment|/*&n;&t; * [1] Load the ACPI tables.&n;&t; */
 id|status
 op_assign
 id|acpi_load_tables
@@ -6433,19 +6440,10 @@ id|PREFIX
 l_string|&quot;Unable to load the System Description Tables&bslash;n&quot;
 )paren
 suffix:semicolon
-id|result
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
 r_goto
-id|end
+id|error0
 suffix:semicolon
 )brace
-id|progress
-op_increment
-suffix:semicolon
-multiline_comment|/*&n;&t; * [2] Check the blacklist&n;&t; */
 r_if
 c_cond
 (paren
@@ -6455,19 +6453,11 @@ c_func
 )paren
 )paren
 (brace
-id|result
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
 r_goto
-id|end
+id|error1
 suffix:semicolon
 )brace
-id|progress
-op_increment
-suffix:semicolon
-multiline_comment|/*&n;&t; * [3] Get a separate copy of the FADT for use by other drivers.&n;&t; */
+multiline_comment|/*&n;&t; * Get a separate copy of the FADT for use by other drivers.&n;&t; */
 id|status
 op_assign
 id|acpi_get_table
@@ -6499,19 +6489,10 @@ id|PREFIX
 l_string|&quot;Unable to get the FADT&bslash;n&quot;
 )paren
 suffix:semicolon
-id|result
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
 r_goto
-id|end
+id|error1
 suffix:semicolon
 )brace
-id|progress
-op_increment
-suffix:semicolon
-multiline_comment|/*&n;&t; * [4] Enable the ACPI Core Subsystem.&n;&t; */
 id|status
 op_assign
 id|acpi_enable_subsystem
@@ -6538,13 +6519,58 @@ id|PREFIX
 l_string|&quot;Unable to start the ACPI Interpreter&bslash;n&quot;
 )paren
 suffix:semicolon
+r_goto
+id|error1
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_ACPI_EC
+multiline_comment|/*&n;&t; * ACPI 2.0 requires the EC driver to be loaded and work before&n;&t; * the EC device is found in the namespace. This is accomplished&n;&t; * by looking for the ECDT table, and getting the EC parameters out&n;&t; * of that.&n;&t; */
 id|result
 op_assign
-op_minus
-id|ENODEV
+id|acpi_ec_ecdt_probe
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+)paren
+(brace
+r_goto
+id|error1
+suffix:semicolon
+)brace
+macro_line|#endif
+id|status
+op_assign
+id|acpi_initialize_objects
+c_func
+(paren
+id|ACPI_FULL_INITIALIZATION
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+c_func
+(paren
+id|status
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PREFIX
+l_string|&quot;Unable to initialize ACPI objects&bslash;n&quot;
+)paren
 suffix:semicolon
 r_goto
-id|end
+id|error1
 suffix:semicolon
 )brace
 id|printk
@@ -6555,10 +6581,7 @@ id|PREFIX
 l_string|&quot;Interpreter enabled&bslash;n&quot;
 )paren
 suffix:semicolon
-id|progress
-op_increment
-suffix:semicolon
-multiline_comment|/*&n;&t; * [5] Get the system interrupt model and evaluate &bslash;_PIC.&n;&t; */
+multiline_comment|/*&n;&t; * Get the system interrupt model and evaluate &bslash;_PIC.&n;&t; */
 id|result
 op_assign
 id|acpi_bus_init_irq
@@ -6572,12 +6595,9 @@ c_cond
 id|result
 )paren
 r_goto
-id|end
+id|error1
 suffix:semicolon
-id|progress
-op_increment
-suffix:semicolon
-multiline_comment|/*&n;&t; * [6] Register for all standard device notifications.&n;&t; */
+multiline_comment|/*&n;&t; * Register the for all standard device notifications.&n;&t; */
 id|status
 op_assign
 id|acpi_install_notify_handler
@@ -6617,13 +6637,10 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|end
+id|error1
 suffix:semicolon
 )brace
-id|progress
-op_increment
-suffix:semicolon
-multiline_comment|/*&n;&t; * [7] Create the root device.&n;&t; */
+multiline_comment|/*&n;&t; * Create the root device in the bus&squot;s device tree&n;&t; */
 id|result
 op_assign
 id|acpi_bus_add
@@ -6645,12 +6662,9 @@ c_cond
 id|result
 )paren
 r_goto
-id|end
+id|error2
 suffix:semicolon
-id|progress
-op_increment
-suffix:semicolon
-multiline_comment|/*&n;&t; * [8] Create the root file system.&n;&t; */
+multiline_comment|/*&n;&t; * Create the top ACPI proc directory&n;&t; */
 id|acpi_device_dir
 c_func
 (paren
@@ -6678,7 +6692,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|end
+id|error3
 suffix:semicolon
 )brace
 id|acpi_root_dir
@@ -6689,10 +6703,7 @@ c_func
 id|acpi_root
 )paren
 suffix:semicolon
-id|progress
-op_increment
-suffix:semicolon
-multiline_comment|/*&n;&t; * [9] Install drivers required for proper enumeration of the&n;&t; *     ACPI namespace.&n;&t; */
+multiline_comment|/*&n;&t; * Install drivers required for proper enumeration of the&n;&t; * ACPI namespace.&n;&t; */
 id|acpi_system_init
 c_func
 (paren
@@ -6727,10 +6738,7 @@ c_func
 suffix:semicolon
 multiline_comment|/* ACPI PCI Root Bridge */
 macro_line|#endif
-id|progress
-op_increment
-suffix:semicolon
-multiline_comment|/*&n;&t; * [10] Enumerate devices in the ACPI namespace.&n;&t; */
+multiline_comment|/*&n;&t; * Enumerate devices in the ACPI namespace.&n;&t; */
 id|result
 op_assign
 id|acpi_bus_scan_fixed
@@ -6745,7 +6753,7 @@ c_cond
 id|result
 )paren
 r_goto
-id|end
+id|error4
 suffix:semicolon
 id|result
 op_assign
@@ -6761,28 +6769,16 @@ c_cond
 id|result
 )paren
 r_goto
-id|end
+id|error4
 suffix:semicolon
-id|end
-suffix:colon
-multiline_comment|/*&n;&t; * Clean up if anything went awry.&n;&t; */
-r_if
-c_cond
+id|return_VALUE
+c_func
 (paren
-id|result
+l_int|0
 )paren
-(brace
-r_switch
-c_cond
-(paren
-id|progress
-)paren
-(brace
-r_case
-l_int|10
-suffix:colon
-r_case
-l_int|9
+suffix:semicolon
+multiline_comment|/* Mimic structured exception handling */
+id|error4
 suffix:colon
 id|remove_proc_entry
 c_func
@@ -6792,8 +6788,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_case
-l_int|8
+id|error3
 suffix:colon
 id|acpi_bus_remove
 c_func
@@ -6803,8 +6798,7 @@ comma
 id|ACPI_BUS_REMOVAL_NORMAL
 )paren
 suffix:semicolon
-r_case
-l_int|7
+id|error2
 suffix:colon
 id|acpi_remove_notify_handler
 c_func
@@ -6817,47 +6811,20 @@ op_amp
 id|acpi_bus_notify
 )paren
 suffix:semicolon
-r_case
-l_int|6
-suffix:colon
-r_case
-l_int|5
-suffix:colon
-r_case
-l_int|4
-suffix:colon
-r_case
-l_int|3
-suffix:colon
-r_case
-l_int|2
+id|error1
 suffix:colon
 id|acpi_terminate
 c_func
 (paren
 )paren
 suffix:semicolon
-r_case
-l_int|1
-suffix:colon
-r_case
-l_int|0
-suffix:colon
-r_default
+id|error0
 suffix:colon
 id|return_VALUE
 c_func
 (paren
 op_minus
 id|ENODEV
-)paren
-suffix:semicolon
-)brace
-)brace
-id|return_VALUE
-c_func
-(paren
-l_int|0
 )paren
 suffix:semicolon
 )brace
