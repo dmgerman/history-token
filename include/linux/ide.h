@@ -6378,6 +6378,7 @@ c_func
 (paren
 id|ide_hwif_t
 op_star
+id|drive
 )paren
 (brace
 suffix:semicolon
