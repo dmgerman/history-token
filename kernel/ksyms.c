@@ -2528,6 +2528,13 @@ c_func
 id|sys_sched_yield
 )paren
 suffix:semicolon
+DECL|variable|__cond_resched
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__cond_resched
+)paren
+suffix:semicolon
 DECL|variable|set_user_nice
 id|EXPORT_SYMBOL
 c_func

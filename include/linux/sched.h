@@ -3244,6 +3244,14 @@ id|TIF_NEED_RESCHED
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|__cond_resched
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|cond_resched
 r_static
 r_inline
@@ -3262,7 +3270,7 @@ c_func
 (paren
 )paren
 )paren
-id|schedule
+id|__cond_resched
 c_func
 (paren
 )paren
