@@ -2172,7 +2172,7 @@ id|index
 suffix:semicolon
 macro_line|#ifdef DEBUG
 DECL|macro|dbg
-mdefine_line|#define dbg(format, arg...) printk(KERN_DEBUG __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
+mdefine_line|#define dbg(format, arg...) printk(KERN_DEBUG &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
 macro_line|#else
 DECL|macro|dbg
 mdefine_line|#define dbg(format, arg...) do {} while (0)
