@@ -18393,10 +18393,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|pci_enable_device
 c_func
 (paren
 id|pcidev
+)paren
 )paren
 )paren
 (brace
@@ -18413,8 +18417,7 @@ id|pcidev
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENODEV
+id|err
 suffix:semicolon
 )brace
 r_if

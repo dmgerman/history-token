@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/pci-acpi.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifdef&t;CONFIG_IA64
@@ -27,6 +28,19 @@ DECL|macro|METHOD_NAME__HPP
 mdefine_line|#define&t;METHOD_NAME__HPP&t;&quot;_HPP&quot;
 DECL|macro|METHOD_NAME_OSHP
 mdefine_line|#define&t;METHOD_NAME_OSHP&t;&quot;OSHP&quot;
+multiline_comment|/* Status code for running acpi method to gain native control */
+DECL|macro|NC_NOT_RUN
+mdefine_line|#define NC_NOT_RUN&t;0
+DECL|macro|OSC_NOT_EXIST
+mdefine_line|#define OSC_NOT_EXIST&t;1
+DECL|macro|OSC_RUN_FAILED
+mdefine_line|#define OSC_RUN_FAILED&t;2
+DECL|macro|OSHP_NOT_EXIST
+mdefine_line|#define OSHP_NOT_EXIST&t;3
+DECL|macro|OSHP_RUN_FAILED
+mdefine_line|#define OSHP_RUN_FAILED&t;4
+DECL|macro|NC_RUN_SUCCESS
+mdefine_line|#define NC_RUN_SUCCESS&t;5
 DECL|macro|PHP_RES_BUS
 mdefine_line|#define&t;PHP_RES_BUS&t;&t;0xA0
 DECL|macro|PHP_RES_IO
@@ -361,7 +375,7 @@ id|ab
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|acpi_run_oshp
 (paren
 r_struct
@@ -369,6 +383,20 @@ id|acpi_bridge
 op_star
 id|ab
 )paren
+suffix:semicolon
+DECL|variable|osc_run_status
+r_static
+r_int
+id|osc_run_status
+op_assign
+id|NC_NOT_RUN
+suffix:semicolon
+DECL|variable|oshp_run_status
+r_static
+r_int
+id|oshp_run_status
+op_assign
+id|NC_NOT_RUN
 suffix:semicolon
 DECL|function|acpi_add_slot_to_php_slots
 r_static
@@ -512,6 +540,15 @@ c_func
 id|ab
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|osc_run_status
+op_eq
+id|OSC_NOT_EXIST
+)paren
+id|oshp_run_status
+op_assign
 id|acpi_run_oshp
 c_func
 (paren
@@ -939,7 +976,7 @@ suffix:semicolon
 )brace
 DECL|function|acpi_run_oshp
 r_static
-r_void
+r_int
 id|acpi_run_oshp
 (paren
 r_struct
@@ -1007,8 +1044,26 @@ comma
 id|status
 )paren
 suffix:semicolon
+id|oshp_run_status
+op_assign
+(paren
+id|status
+op_eq
+id|AE_NOT_FOUND
+)paren
+ques
+c_cond
+id|OSHP_NOT_EXIST
+suffix:colon
+id|OSHP_RUN_FAILED
+suffix:semicolon
 )brace
 r_else
+(brace
+id|oshp_run_status
+op_assign
+id|NC_RUN_SUCCESS
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -1019,7 +1074,19 @@ comma
 id|status
 )paren
 suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;acpi_pciehprm:%s oshp_run_status =0x%x&bslash;n&quot;
+comma
+id|path_name
+comma
+id|oshp_run_status
+)paren
+suffix:semicolon
+)brace
 r_return
+id|oshp_run_status
 suffix:semicolon
 )brace
 DECL|function|acpi_evaluate_crs
@@ -4674,6 +4741,64 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|status
+op_assign
+id|pci_osc_control_set
+(paren
+id|OSC_PCI_EXPRESS_NATIVE_HP_CONTROL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+c_func
+(paren
+id|status
+)paren
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;%s: status %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|status
+)paren
+suffix:semicolon
+id|osc_run_status
+op_assign
+(paren
+id|status
+op_eq
+id|AE_NOT_FOUND
+)paren
+ques
+c_cond
+id|OSC_NOT_EXIST
+suffix:colon
+id|OSC_RUN_FAILED
+suffix:semicolon
+)brace
+r_else
+(brace
+id|osc_run_status
+op_assign
+id|NC_RUN_SUCCESS
+suffix:semicolon
+)brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: osc_run_status %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|osc_run_status
+)paren
+suffix:semicolon
 id|build_a_bridge
 c_func
 (paren
@@ -4991,6 +5116,34 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|oshp_run_status
+op_ne
+id|NC_RUN_SUCCESS
+)paren
+op_logical_and
+(paren
+id|osc_run_status
+op_ne
+id|NC_RUN_SUCCESS
+)paren
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;Fails to gain control of native hot-plug&bslash;n&quot;
+)paren
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|dbg
 c_func
 (paren
