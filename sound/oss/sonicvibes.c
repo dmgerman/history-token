@@ -612,8 +612,6 @@ r_static
 r_int
 r_int
 id|wavetable_mem
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|ld2
@@ -13764,11 +13762,6 @@ id|reverb
 (braket
 id|NR_DEVICE
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 macro_line|#if 0
 r_static
@@ -13777,11 +13770,6 @@ id|wavetable
 (braket
 id|NR_DEVICE
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 macro_line|#endif
 DECL|variable|devindex
@@ -13789,8 +13777,6 @@ r_static
 r_int
 r_int
 id|devindex
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func

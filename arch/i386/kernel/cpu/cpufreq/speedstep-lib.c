@@ -799,6 +799,7 @@ id|set_state
 )paren
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* get current speed */
@@ -817,6 +818,7 @@ op_logical_neg
 id|prev_speed
 )paren
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 id|local_irq_save
@@ -853,6 +855,7 @@ id|low_speed
 (brace
 id|ret
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -887,6 +890,7 @@ id|high_speed
 (brace
 id|ret
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
@@ -905,6 +909,7 @@ id|high_speed
 (brace
 id|ret
 op_assign
+op_minus
 id|ENODEV
 suffix:semicolon
 r_goto

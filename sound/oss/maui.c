@@ -22,8 +22,6 @@ r_static
 r_volatile
 r_int
 id|irq_ok
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|maui_osp
 r_static
@@ -1867,8 +1865,6 @@ DECL|variable|fw_load
 r_static
 r_int
 id|fw_load
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|cfg
 r_static

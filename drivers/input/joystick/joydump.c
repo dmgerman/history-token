@@ -244,15 +244,10 @@ id|i
 op_assign
 l_int|1
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|u
@@ -351,7 +346,7 @@ id|t
 op_increment
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

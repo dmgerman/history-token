@@ -27,6 +27,14 @@ c_func
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|do_suspend_lowlevel
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * acpi_system_restore_state - OS-specific restoration of state&n; * @state:&t;sleep state we&squot;re exiting&n; *&n; * Note that if we&squot;re coming back from S4, the memory image should have already&n; * been loaded from the disk and is already in place. (Otherwise how else would we&n; * be here?).&n; */
 id|acpi_status
 DECL|function|acpi_system_restore_state
@@ -101,7 +109,7 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * acpi_system_save_state - save OS specific state and power down devices&n; * @state:&t;sleep state we&squot;re entering.&n; *&n; * This handles saving all context to memory, and possibly disk.&n; * First, we call to the device driver layer to save device state.&n; * Once we have that, we save whatevery processor and kernel state we&n; * need to memory.&n; * If we&squot;re entering S4, we then write the memory image to disk.&n; *&n; * Only then is it safe for us to power down devices, since we may need&n; * the disks and upstream buses to write to.&n; */
+multiline_comment|/**&n; * acpi_system_save_state - save OS specific state and power down devices&n; * @state:&t;sleep state we&squot;re entering.&n; *&n; * This handles saving all context to memory, and possibly disk.&n; * First, we call to the device driver layer to save device state.&n; * Once we have that, we save whatevery processor and kernel state we&n; * need to memory.&n; */
 id|acpi_status
 DECL|function|acpi_system_save_state
 id|acpi_system_save_state
@@ -323,7 +331,6 @@ id|state
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
 r_case
 id|ACPI_STATE_S2
 suffix:colon
@@ -338,7 +345,6 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 r_case
 id|ACPI_STATE_S4
 suffix:colon

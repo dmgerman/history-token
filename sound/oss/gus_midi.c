@@ -9,12 +9,8 @@ DECL|variable|input_opened
 r_static
 r_int
 id|midi_busy
-op_assign
-l_int|0
 comma
 id|input_opened
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|my_dev
 r_static
@@ -25,8 +21,6 @@ DECL|variable|output_used
 r_static
 r_int
 id|output_used
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|gus_midi_control
 r_static

@@ -1205,6 +1205,12 @@ r_sizeof
 id|dev-&gt;bus_id
 )paren
 )paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * the scsi_ioctl() function differs from most ioctls in that it does&n; * not take a major/minor number as the dev field.  Rather, it takes&n; * a pointer to a scsi_devices[] element, a structure. &n; */

@@ -357,13 +357,11 @@ DECL|macro|PCI_DEVICE_ID_ATI_215_LS
 mdefine_line|#define PCI_DEVICE_ID_ATI_215_LS&t;0x4c53
 DECL|macro|PCI_DEVICE_ID_ATI_264_LT
 mdefine_line|#define PCI_DEVICE_ID_ATI_264_LT&t;0x4c54
-multiline_comment|/* Mach64 VT */
-DECL|macro|PCI_DEVICE_ID_ATI_264VT
-mdefine_line|#define PCI_DEVICE_ID_ATI_264VT&t;&t;0x5654
-DECL|macro|PCI_DEVICE_ID_ATI_264VU
-mdefine_line|#define PCI_DEVICE_ID_ATI_264VU&t;&t;0x5655
-DECL|macro|PCI_DEVICE_ID_ATI_264VV
-mdefine_line|#define PCI_DEVICE_ID_ATI_264VV&t;&t;0x5656
+multiline_comment|/* Radeon M4 */
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_LE
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_LE&t;0x4d45
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_LF
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_LF&t;0x4d46
 multiline_comment|/* Rage128 Pro GL */
 DECL|macro|PCI_DEVICE_ID_ATI_Rage128_PA
 mdefine_line|#define PCI_DEVICE_ID_ATI_Rage128_PA&t;0x5041
@@ -416,50 +414,6 @@ DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_PW
 mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_PW&t;0x5057
 DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_PX
 mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_PX&t;0x5058
-multiline_comment|/* Rage128 GL */
-DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RE
-mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RE&t;0x5245
-DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RF
-mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RF&t;0x5246
-DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RG
-mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RG&t;0x534b
-DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RH
-mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RH&t;0x534c
-DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RI
-mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RI&t;0x534d
-multiline_comment|/* Rage128 VR */
-DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RK
-mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RK&t;0x524b
-DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RL
-mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RL&t;0x524c
-DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RM
-mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RM&t;0x5345
-DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RN
-mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RN&t;0x5346
-DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RO
-mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RO&t;0x5347
-multiline_comment|/* Rage128 M3 */
-DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_LE
-mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_LE&t;0x4c45
-DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_LF
-mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_LF&t;0x4c46
-multiline_comment|/* Rage128 Pro Ultra */
-DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_U1
-mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_U1&t;0x5446
-DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_U2
-mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_U2&t;0x544C
-DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_U3
-mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_U3&t;0x5452
-multiline_comment|/* Radeon M4 */
-DECL|macro|PCI_DEVICE_ID_ATI_RADEON_LE
-mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_LE&t;0x4d45
-DECL|macro|PCI_DEVICE_ID_ATI_RADEON_LF
-mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_LF&t;0x4d46
-multiline_comment|/* Radeon NV-100 */
-DECL|macro|PCI_DEVICE_ID_ATI_RADEON_N1
-mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_N1&t;0x5159
-DECL|macro|PCI_DEVICE_ID_ATI_RADEON_N2
-mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_N2&t;0x515a
 multiline_comment|/* Radeon R100 */
 DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QD
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QD&t;0x5144
@@ -469,11 +423,6 @@ DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QF
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QF&t;0x5146
 DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QG
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QG&t;0x5147
-multiline_comment|/* Radeon RV100 (VE) */
-DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QY
-mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QY&t;0x5159
-DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QZ
-mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QZ&t;0x515a
 multiline_comment|/* Radeon R200 (8500) */
 DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QL
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QL&t;0x514c
@@ -490,6 +439,16 @@ DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QW
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QW&t;0x5157
 DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QX
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QX&t;0x5158
+multiline_comment|/* Radeon NV-100 */
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_N1
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_N1&t;0x5159
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_N2
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_N2&t;0x515a
+multiline_comment|/* Radeon RV100 (VE) */
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QY
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QY&t;0x5159
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_QZ
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_QZ&t;0x515a
 multiline_comment|/* Radeon RV250 (9000) */
 DECL|macro|PCI_DEVICE_ID_ATI_RADEON_Id
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_Id&t;0x4964
@@ -537,9 +496,62 @@ DECL|macro|PCI_DEVICE_ID_ATI_RADEON_RC
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_RC&t;0x5146
 DECL|macro|PCI_DEVICE_ID_ATI_RADEON_RD
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_RD&t;0x5147
+multiline_comment|/* Rage128 GL */
+DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RE
+mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RE&t;0x5245
+DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RF
+mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RF&t;0x5246
+DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RG
+mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RG&t;0x534b
+DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RH
+mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RH&t;0x534c
+DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RI
+mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RI&t;0x534d
+multiline_comment|/* Rage128 VR */
+DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RK
+mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RK&t;0x524b
+DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RL
+mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RL&t;0x524c
+DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RM
+mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RM&t;0x5345
+DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RN
+mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RN&t;0x5346
+DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_RO
+mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_RO&t;0x5347
+multiline_comment|/* Rage128 M3 */
+DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_LE
+mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_LE&t;0x4c45
+DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_LF
+mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_LF&t;0x4c46
+multiline_comment|/* Rage128 Pro Ultra */
+DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_U1
+mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_U1&t;0x5446
+DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_U2
+mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_U2&t;0x544C
+DECL|macro|PCI_DEVICE_ID_ATI_RAGE128_U3
+mdefine_line|#define PCI_DEVICE_ID_ATI_RAGE128_U3&t;0x5452
+multiline_comment|/* Mach64 VT */
+DECL|macro|PCI_DEVICE_ID_ATI_264VT
+mdefine_line|#define PCI_DEVICE_ID_ATI_264VT&t;&t;0x5654
+DECL|macro|PCI_DEVICE_ID_ATI_264VU
+mdefine_line|#define PCI_DEVICE_ID_ATI_264VU&t;&t;0x5655
+DECL|macro|PCI_DEVICE_ID_ATI_264VV
+mdefine_line|#define PCI_DEVICE_ID_ATI_264VV&t;&t;0x5656
 multiline_comment|/* RadeonIGP */
-DECL|macro|PCI_DEVICE_ID_ATI_RADEON_IGP
-mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_IGP&t;0xCAB0
+DECL|macro|PCI_DEVICE_ID_ATI_RS100
+mdefine_line|#define PCI_DEVICE_ID_ATI_RS100&t;&t;0xcab0
+DECL|macro|PCI_DEVICE_ID_ATI_RS200
+mdefine_line|#define PCI_DEVICE_ID_ATI_RS200&t;&t;0xcab2
+DECL|macro|PCI_DEVICE_ID_ATI_RS250
+mdefine_line|#define PCI_DEVICE_ID_ATI_RS250&t;&t;0xcab3
+DECL|macro|PCI_DEVICE_ID_ATI_RS300_100
+mdefine_line|#define PCI_DEVICE_ID_ATI_RS300_100&t;0x5830
+DECL|macro|PCI_DEVICE_ID_ATI_RS300_133
+mdefine_line|#define PCI_DEVICE_ID_ATI_RS300_133&t;0x5831
+DECL|macro|PCI_DEVICE_ID_ATI_RS300_166
+mdefine_line|#define PCI_DEVICE_ID_ATI_RS300_166&t;0x5832
+DECL|macro|PCI_DEVICE_ID_ATI_RS300_200
+mdefine_line|#define PCI_DEVICE_ID_ATI_RS300_200&t;0x5833
 DECL|macro|PCI_VENDOR_ID_VLSI
 mdefine_line|#define PCI_VENDOR_ID_VLSI&t;&t;0x1004
 DECL|macro|PCI_DEVICE_ID_VLSI_82C592

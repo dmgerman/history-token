@@ -230,8 +230,6 @@ DECL|variable|PRO_RATE_LOCKED
 r_static
 r_int
 id|PRO_RATE_LOCKED
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|PRO_RATE_RESET
 r_static

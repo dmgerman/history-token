@@ -633,6 +633,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|function|dtc2278_mod_init
+r_static
 r_int
 id|__init
 id|dtc2278_mod_init
@@ -690,8 +691,9 @@ id|dtc2278_mod_init
 )paren
 suffix:semicolon
 DECL|function|dtc2278_mod_exit
+r_static
 r_void
-id|__init
+id|__exit
 id|dtc2278_mod_exit
 c_func
 (paren

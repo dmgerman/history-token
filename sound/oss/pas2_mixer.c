@@ -39,8 +39,6 @@ DECL|variable|mode_control
 r_static
 r_int
 id|mode_control
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|POSSIBLE_RECORDING_DEVICES
 mdefine_line|#define POSSIBLE_RECORDING_DEVICES&t;(SOUND_MASK_SYNTH | SOUND_MASK_SPEAKER | SOUND_MASK_LINE | SOUND_MASK_MIC | &bslash;&n;&t;&t;&t;&t;&t; SOUND_MASK_CD | SOUND_MASK_ALTPCM)

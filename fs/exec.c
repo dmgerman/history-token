@@ -1339,6 +1339,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|arg_size
+suffix:semicolon
 macro_line|#ifdef CONFIG_STACK_GROWSUP
 multiline_comment|/* Move the argument and environment strings to the bottom of the&n;&t; * stack space.&n;&t; */
 r_int
@@ -1537,6 +1540,12 @@ id|mm-&gt;arg_start
 op_assign
 id|stack_base
 suffix:semicolon
+id|arg_size
+op_assign
+id|i
+op_lshift
+id|PAGE_SHIFT
+suffix:semicolon
 multiline_comment|/* zero pages that were copied above */
 r_while
 c_loop
@@ -1567,6 +1576,20 @@ op_assign
 id|bprm-&gt;p
 op_plus
 id|stack_base
+suffix:semicolon
+id|arg_size
+op_assign
+id|STACK_TOP
+op_minus
+(paren
+id|PAGE_MASK
+op_amp
+(paren
+r_int
+r_int
+)paren
+id|mm-&gt;arg_start
+)paren
 suffix:semicolon
 macro_line|#endif
 id|bprm-&gt;p
@@ -1612,19 +1635,7 @@ c_cond
 id|security_vm_enough_memory
 c_func
 (paren
-(paren
-id|STACK_TOP
-op_minus
-(paren
-id|PAGE_MASK
-op_amp
-(paren
-r_int
-r_int
-)paren
-id|bprm-&gt;p
-)paren
-)paren
+id|arg_size
 op_rshift
 id|PAGE_SHIFT
 )paren

@@ -3127,7 +3127,7 @@ id|PCI_FIXUP_FINAL
 comma
 id|PCI_VENDOR_ID_ATI
 comma
-id|PCI_DEVICE_ID_ATI_RADEON_IGP
+id|PCI_DEVICE_ID_ATI_RS100
 comma
 id|quirk_ati_exploding_mce
 )brace

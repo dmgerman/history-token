@@ -59,12 +59,6 @@ DECL|variable|client_usage
 r_static
 id|usage_t
 id|client_usage
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-)brace
 suffix:semicolon
 multiline_comment|/*&n; * prototypes&n; */
 r_static

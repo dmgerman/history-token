@@ -161,8 +161,6 @@ r_static
 r_int
 r_int
 id|hercules_egpio_disable
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* if non-zero set all EGPIO to 0 */
 id|MODULE_PARM

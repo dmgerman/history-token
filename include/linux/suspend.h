@@ -13,10 +13,6 @@ r_int
 r_char
 id|software_suspend_enabled
 suffix:semicolon
-DECL|macro|NORESUME
-mdefine_line|#define NORESUME&t; 1
-DECL|macro|RESUME_SPECIFIED
-mdefine_line|#define RESUME_SPECIFIED 2
 macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
 multiline_comment|/* page backup entry */
 DECL|struct|pbe
@@ -138,16 +134,8 @@ r_void
 suffix:semicolon
 multiline_comment|/* kernel/suspend.c */
 r_extern
-r_void
+r_int
 id|software_suspend
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|software_resume
 c_func
 (paren
 r_void
@@ -241,16 +229,18 @@ macro_line|#else&t;/* CONFIG_SOFTWARE_SUSPEND */
 DECL|function|software_suspend
 r_static
 r_inline
-r_void
+r_int
 id|software_suspend
 c_func
 (paren
 r_void
 )paren
 (brace
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
 )brace
-DECL|macro|software_resume
-mdefine_line|#define software_resume()&t;&t;do { } while(0)
 DECL|macro|register_suspend_notifier
 mdefine_line|#define register_suspend_notifier(a)&t;do { } while(0)
 DECL|macro|unregister_suspend_notifier

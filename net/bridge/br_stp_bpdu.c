@@ -1246,7 +1246,7 @@ id|br-&gt;lock
 suffix:semicolon
 id|err
 suffix:colon
-id|kfree
+id|kfree_skb
 c_func
 (paren
 id|skb

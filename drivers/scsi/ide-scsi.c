@@ -4681,7 +4681,6 @@ c_cond
 id|elv_queue_empty
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 )paren
 )paren
@@ -4813,7 +4812,6 @@ op_assign
 id|elv_next_request
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 )paren
 )paren

@@ -379,6 +379,14 @@ id|disk-&gt;rdev
 op_assign
 id|rdev
 suffix:semicolon
+id|blk_queue_stack_limits
+c_func
+(paren
+id|mddev-&gt;queue
+comma
+id|rdev-&gt;bdev-&gt;bd_disk-&gt;queue
+)paren
+suffix:semicolon
 id|disk-&gt;size
 op_assign
 id|rdev-&gt;size

@@ -76,8 +76,6 @@ r_static
 r_int
 r_char
 id|pss_mixer
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 DECL|struct|pss_mixerdata
@@ -173,15 +171,11 @@ DECL|variable|pss_initialized
 r_static
 r_int
 id|pss_initialized
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|nonstandard_microcode
 r_static
 r_int
 id|nonstandard_microcode
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|pss_cdrom_port
 r_static
@@ -196,8 +190,6 @@ DECL|variable|pss_enable_joystick
 r_static
 r_int
 id|pss_enable_joystick
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Parameter for enabling the joystick */
 DECL|function|pss_write

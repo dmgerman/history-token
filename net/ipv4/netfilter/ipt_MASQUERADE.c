@@ -370,11 +370,6 @@ id|nfmark
 macro_line|#endif
 )brace
 )brace
-comma
-dot
-id|oif
-op_assign
-id|out-&gt;ifindex
 )brace
 suffix:semicolon
 r_if
@@ -393,11 +388,47 @@ op_ne
 l_int|0
 )paren
 (brace
-multiline_comment|/* Shouldn&squot;t happen */
+multiline_comment|/* Funky routing can do this. */
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren
-l_string|&quot;MASQUERADE: No route: Rusty&squot;s brain broke!&bslash;n&quot;
+l_string|&quot;MASQUERADE:&quot;
+l_string|&quot; No route: Rusty&squot;s brain broke!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|NF_DROP
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|rt-&gt;u.dst.dev
+op_ne
+id|out
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;MASQUERADE:&quot;
+l_string|&quot; Route sent us somewhere else.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

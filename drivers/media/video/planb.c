@@ -11440,10 +11440,6 @@ id|i
 comma
 id|result
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|memset
 (paren
 (paren
@@ -11740,17 +11736,6 @@ id|pb-&gt;intr_mask
 op_assign
 id|PLANB_CLR_IRQ
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|result
 op_assign
 id|request_irq
@@ -11822,12 +11807,6 @@ r_int
 id|pb-&gt;irq
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|result
 suffix:semicolon
@@ -11836,12 +11815,6 @@ id|disable_irq
 c_func
 (paren
 id|pb-&gt;irq
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Now add the template and register the device unit. */

@@ -69,6 +69,17 @@ comma
 id|error_interrupt
 )paren
 suffix:semicolon
+multiline_comment|/* thermal monitor LVT interrupt */
+macro_line|#ifdef CONFIG_X86_MCE_P4THERMAL
+id|set_intr_gate
+c_func
+(paren
+id|THERMAL_APIC_VECTOR
+comma
+id|thermal_interrupt
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* Using APIC to generate smp_local_timer_interrupt? */
 DECL|variable|using_apic_timer

@@ -4124,6 +4124,15 @@ id|ifm
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pid
+)paren
+id|nlh-&gt;nlmsg_flags
+op_or_assign
+id|NLM_F_MULTI
+suffix:semicolon
 id|ifm
 op_assign
 id|NLMSG_DATA

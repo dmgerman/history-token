@@ -35,8 +35,6 @@ DECL|variable|already_initialized
 r_static
 r_int
 id|already_initialized
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|C928
 mdefine_line|#define C928&t;1
@@ -100,16 +98,12 @@ DECL|variable|c924pnp
 r_static
 r_char
 id|c924pnp
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* &quot;     &quot;           &quot;    C924 */
 DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* debugging output */
 macro_line|#ifdef DDB
@@ -2754,8 +2748,6 @@ id|hw_config
 r_static
 r_int
 id|mpu_attached
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 r_char

@@ -9,12 +9,8 @@ r_static
 r_volatile
 r_int
 id|opened
-op_assign
-l_int|0
 comma
 id|tmr_running
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|tmr_offs
 DECL|variable|tmr_ctr

@@ -56,8 +56,6 @@ DECL|variable|debugmem
 r_static
 r_int
 id|debugmem
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* switched off by default */
 DECL|variable|dma_buffsize

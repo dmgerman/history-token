@@ -132,8 +132,6 @@ DECL|variable|irq_installed
 r_static
 r_int
 id|irq_installed
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif /* MODULE */
 multiline_comment|/* control over who can modify resources shared between play/record */
@@ -141,15 +139,11 @@ DECL|variable|shared_resource_owner
 r_static
 id|mode_t
 id|shared_resource_owner
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|shared_resources_initialised
 r_static
 r_int
 id|shared_resources_initialised
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;     *  Mid level stuff&n;     */
 DECL|variable|dmasound

@@ -129,8 +129,6 @@ r_static
 r_volatile
 r_int
 id|open_devs
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|lock
 r_static

@@ -792,6 +792,29 @@ DECL|macro|ALI_CACHE_FLUSH_ADDR_MASK
 mdefine_line|#define ALI_CACHE_FLUSH_ADDR_MASK&t;0xFFFFF000
 DECL|macro|ALI_CACHE_FLUSH_EN
 mdefine_line|#define ALI_CACHE_FLUSH_EN&t;&t;0x100
+multiline_comment|/* ATI register */
+DECL|macro|ATI_APBASE
+mdefine_line|#define ATI_APBASE                  0x10
+DECL|macro|ATI_GART_MMBASE_ADDR
+mdefine_line|#define ATI_GART_MMBASE_ADDR        0x14
+DECL|macro|ATI_RS100_APSIZE
+mdefine_line|#define ATI_RS100_APSIZE            0xac
+DECL|macro|ATI_RS300_APSIZE
+mdefine_line|#define ATI_RS300_APSIZE            0xf8
+DECL|macro|ATI_RS100_IG_AGPMODE
+mdefine_line|#define ATI_RS100_IG_AGPMODE        0xb0
+DECL|macro|ATI_RS300_IG_AGPMODE
+mdefine_line|#define ATI_RS300_IG_AGPMODE        0xfc
+DECL|macro|ATI_GART_FEATURE_ID
+mdefine_line|#define ATI_GART_FEATURE_ID         0x00
+DECL|macro|ATI_GART_BASE
+mdefine_line|#define ATI_GART_BASE               0x04
+DECL|macro|ATI_GART_CACHE_SZBASE
+mdefine_line|#define ATI_GART_CACHE_SZBASE       0x08
+DECL|macro|ATI_GART_CACHE_CNTRL
+mdefine_line|#define ATI_GART_CACHE_CNTRL        0x0c
+DECL|macro|ATI_GART_CACHE_ENTRY_CNTRL
+mdefine_line|#define ATI_GART_CACHE_ENTRY_CNTRL  0x10
 multiline_comment|/* Serverworks Registers */
 DECL|macro|SVWRKS_APSIZE
 mdefine_line|#define SVWRKS_APSIZE&t;&t;0x10

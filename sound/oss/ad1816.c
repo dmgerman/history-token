@@ -5587,8 +5587,6 @@ DECL|variable|isapnpjump
 r_static
 r_int
 id|isapnpjump
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func

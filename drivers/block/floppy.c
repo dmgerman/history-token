@@ -21,6 +21,7 @@ multiline_comment|/*&n; * 1999/08/13 -- Paul Slootman -- floppy stopped working 
 multiline_comment|/*&n; * 2000/08/28 -- Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * - get rid of check_region&n; * - s/suser/capable/&n; */
 multiline_comment|/*&n; * 2001/08/26 -- Paul Gortmaker - fix insmod oops on machines with no&n; * floppy controller (lingering task on list after module is gone... boom.)&n; */
 multiline_comment|/*&n; * 2002/02/07 -- Anton Altaparmakov - Fix io ports reservation to correct range&n; * (0x3f2-0x3f5, 0x3f7). This fix is a bit of a hack but the proper fix&n; * requires many non-obvious changes in arch dependent code.&n; */
+multiline_comment|/* 2003/07/28 -- Daniele Bellucci &lt;bellucda@tiscali.it&gt;.&n; * Better audit of register_blkdev.&n; */
 DECL|macro|FLOPPY_SANITY_CHECK
 mdefine_line|#define FLOPPY_SANITY_CHECK
 DECL|macro|FLOPPY_SILENT_DCL_CLEAR
@@ -18619,6 +18620,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|register_blkdev
 c_func
 (paren
@@ -18627,16 +18631,10 @@ comma
 l_string|&quot;fd&quot;
 )paren
 )paren
-(brace
-id|err
-op_assign
-op_minus
-id|EBUSY
-suffix:semicolon
+)paren
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|floppy_queue
 op_assign
 id|blk_init_queue
@@ -19431,6 +19429,12 @@ id|disks
 (braket
 id|i
 )braket
+)paren
+suffix:semicolon
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;floppy&quot;
 )paren
 suffix:semicolon
 r_return

@@ -1314,9 +1314,8 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;agpgart: Detected an NVIDIA &quot;
-l_string|&quot;nForce/nForce2 chipset, but could not find &quot;
-l_string|&quot;the secondary devices.&bslash;n&quot;
+l_string|&quot;Detected an NVIDIA nForce/nForce2 &quot;
+l_string|&quot;chipset, but could not find the secondary devices.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

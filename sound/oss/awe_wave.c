@@ -214,16 +214,12 @@ DECL|variable|current_sf_id
 r_static
 r_int
 id|current_sf_id
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* current number of fonts */
 DECL|variable|locked_sf_id
 r_static
 r_int
 id|locked_sf_id
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* locked position */
 DECL|variable|sfhead
@@ -232,13 +228,9 @@ r_static
 id|sf_list
 op_star
 id|sfhead
-op_assign
-l_int|NULL
 comma
 op_star
 id|sftail
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* linked-lists */
 DECL|macro|awe_free_mem_ptr
@@ -535,8 +527,6 @@ DECL|variable|isapnp
 r_static
 r_int
 id|isapnp
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 id|MODULE_AUTHOR
@@ -625,8 +615,6 @@ DECL|variable|patch_opened
 r_static
 r_int
 id|patch_opened
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* sample already loaded? */
 DECL|variable|atten_relative
@@ -640,8 +628,6 @@ DECL|variable|atten_offset
 r_static
 r_int
 id|atten_offset
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|awe_present
 r_static
@@ -699,8 +685,6 @@ DECL|variable|current_alloc_time
 r_static
 r_int
 id|current_alloc_time
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* voice allocation index for channel mode */
 DECL|variable|awe_info
@@ -29024,12 +29008,8 @@ DECL|variable|finetune
 r_static
 r_int
 id|coarsetune
-op_assign
-l_int|0
 comma
 id|finetune
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|xg_mapping
 r_static
@@ -29042,8 +29022,6 @@ DECL|variable|xg_bankmode
 r_static
 r_int
 id|xg_bankmode
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* effect sensitivity */
 DECL|macro|FX_CUTOFF

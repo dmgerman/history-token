@@ -33,8 +33,6 @@ DECL|variable|write_sq_ignore_int
 r_static
 r_int
 id|write_sq_ignore_int
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* ++TeSche: used for Falcon */
 DECL|variable|expand_bal
@@ -5769,8 +5767,6 @@ multiline_comment|/* ++TeSche: if you should want to test this... */
 r_static
 r_int
 id|cnt
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

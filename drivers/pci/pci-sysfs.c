@@ -225,6 +225,11 @@ id|size
 op_assign
 l_int|64
 suffix:semicolon
+id|loff_t
+id|init_off
+op_assign
+id|off
+suffix:semicolon
 multiline_comment|/* Several chips lock up trying to read undefined config space */
 r_if
 c_cond
@@ -317,6 +322,8 @@ suffix:semicolon
 id|buf
 (braket
 id|off
+op_minus
+id|init_off
 )braket
 op_assign
 id|val
@@ -361,6 +368,8 @@ suffix:semicolon
 id|buf
 (braket
 id|off
+op_minus
+id|init_off
 )braket
 op_assign
 id|val
@@ -370,6 +379,8 @@ suffix:semicolon
 id|buf
 (braket
 id|off
+op_minus
+id|init_off
 op_plus
 l_int|1
 )braket
@@ -385,6 +396,8 @@ suffix:semicolon
 id|buf
 (braket
 id|off
+op_minus
+id|init_off
 op_plus
 l_int|2
 )braket
@@ -400,6 +413,8 @@ suffix:semicolon
 id|buf
 (braket
 id|off
+op_minus
+id|init_off
 op_plus
 l_int|3
 )braket
@@ -447,6 +462,8 @@ suffix:semicolon
 id|buf
 (braket
 id|off
+op_minus
+id|init_off
 )braket
 op_assign
 id|val
@@ -510,6 +527,11 @@ id|size
 op_assign
 id|count
 suffix:semicolon
+id|loff_t
+id|init_off
+op_assign
+id|off
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -559,6 +581,8 @@ comma
 id|buf
 (braket
 id|off
+op_minus
+id|init_off
 )braket
 )paren
 suffix:semicolon
@@ -591,6 +615,8 @@ op_assign
 id|buf
 (braket
 id|off
+op_minus
+id|init_off
 )braket
 suffix:semicolon
 id|val
@@ -602,6 +628,8 @@ r_int
 id|buf
 (braket
 id|off
+op_minus
+id|init_off
 op_plus
 l_int|1
 )braket
@@ -617,6 +645,8 @@ r_int
 id|buf
 (braket
 id|off
+op_minus
+id|init_off
 op_plus
 l_int|2
 )braket
@@ -632,6 +662,8 @@ r_int
 id|buf
 (braket
 id|off
+op_minus
+id|init_off
 op_plus
 l_int|3
 )braket
@@ -675,6 +707,8 @@ comma
 id|buf
 (braket
 id|off
+op_minus
+id|init_off
 )braket
 )paren
 suffix:semicolon

@@ -268,8 +268,6 @@ DECL|variable|old_hardware
 r_static
 r_char
 id|old_hardware
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 DECL|function|sleep
@@ -1548,8 +1546,6 @@ r_static
 r_int
 r_char
 id|codec_dma_bits
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2382,15 +2378,11 @@ DECL|variable|sscape_detected
 r_static
 r_int
 id|sscape_detected
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|sscape_is_pnp
 r_static
 r_int
 id|sscape_is_pnp
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|attach_sscape
 r_void

@@ -943,6 +943,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|l4_init
+r_static
 r_int
 id|__init
 id|l4_init
@@ -1380,8 +1381,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|l4_exit
+r_static
 r_void
-id|__init
+id|__exit
 id|l4_exit
 c_func
 (paren
