@@ -4035,7 +4035,7 @@ op_amp
 id|PCI_BASE_ADDRESS_MEM_MASK
 )paren
 suffix:semicolon
-singleline_comment|// set aperture size
+multiline_comment|/* set aperture size */
 id|pci_write_config_word
 c_func
 (paren
@@ -4048,7 +4048,7 @@ comma
 id|current_size-&gt;size_value
 )paren
 suffix:semicolon
-singleline_comment|// set gart pointer
+multiline_comment|/* set gart pointer */
 id|pci_write_config_dword
 c_func
 (paren
@@ -4061,7 +4061,7 @@ comma
 id|agp_bridge-&gt;gatt_bus_addr
 )paren
 suffix:semicolon
-singleline_comment|// enable aperture and GTLB
+multiline_comment|/* enable aperture and GTLB */
 id|pci_read_config_dword
 c_func
 (paren
