@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/jhash.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
@@ -10678,7 +10679,11 @@ multiline_comment|/* could print option size, but that is af dependent. */
 l_int|1
 comma
 multiline_comment|/* timers active (only the expire timer) */
+id|jiffies_to_clock_t
+c_func
+(paren
 id|ttd
+)paren
 comma
 id|req-&gt;retrans
 comma
@@ -10876,9 +10881,13 @@ id|tp-&gt;copied_seq
 comma
 id|timer_active
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|timer_expires
 op_minus
 id|jiffies
+)paren
 comma
 id|tp-&gt;retransmits
 comma
@@ -11029,7 +11038,11 @@ l_int|0
 comma
 l_int|3
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|ttd
+)paren
 comma
 l_int|0
 comma
