@@ -1181,7 +1181,7 @@ comma
 l_string|&quot;major minor  #blocks  name&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Don&squot;t show non-partitionable devices or empty devices */
+multiline_comment|/* Don&squot;t show non-partitionable removeable devices or empty devices */
 r_if
 c_cond
 (paren
@@ -1192,9 +1192,17 @@ c_func
 id|sgp
 )paren
 op_logical_or
+(paren
 id|sgp-&gt;minors
 op_eq
 l_int|1
+op_logical_and
+(paren
+id|sgp-&gt;flags
+op_amp
+id|GENHD_FL_REMOVABLE
+)paren
+)paren
 )paren
 r_return
 l_int|0

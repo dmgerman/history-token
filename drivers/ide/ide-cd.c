@@ -14317,6 +14317,8 @@ suffix:semicolon
 id|g-&gt;flags
 op_assign
 id|GENHD_FL_CD
+op_or
+id|GENHD_FL_REMOVABLE
 suffix:semicolon
 r_if
 c_cond

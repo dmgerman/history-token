@@ -19356,6 +19356,15 @@ id|queue
 op_assign
 id|floppy_queue
 suffix:semicolon
+id|disks
+(braket
+id|drive
+)braket
+op_member_access_from_pointer
+id|flags
+op_or_assign
+id|GENHD_FL_REMOVABLE
+suffix:semicolon
 id|add_disk
 c_func
 (paren
