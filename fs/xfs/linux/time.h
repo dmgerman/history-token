@@ -21,9 +21,11 @@ r_int
 id|ticks
 )paren
 (brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_UNINTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func

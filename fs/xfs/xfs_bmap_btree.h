@@ -1365,7 +1365,7 @@ comma
 id|xfs_exntst_t
 )paren
 suffix:semicolon
-macro_line|#ifdef XFSDEBUG
+macro_line|#ifdef DEBUG
 multiline_comment|/*&n; * Get the data from the pointed-to record.&n; */
 r_int
 id|xfs_bmbt_get_rec
