@@ -3946,6 +3946,10 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|port-&gt;tty-&gt;driver_data
+op_assign
+l_int|NULL
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -3963,10 +3967,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-id|port-&gt;tty-&gt;driver_data
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 id|up
 (paren
