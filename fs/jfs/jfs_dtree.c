@@ -1086,9 +1086,6 @@ suffix:semicolon
 id|uint
 id|page_offset
 suffix:semicolon
-r_int
-id|rc
-suffix:semicolon
 r_struct
 id|tlock
 op_star
@@ -1246,9 +1243,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|rc
-op_assign
 id|xtInsert
 c_func
 (paren
@@ -1268,7 +1262,6 @@ comma
 l_int|0
 )paren
 )paren
-)paren
 (brace
 id|jfs_warn
 c_func
@@ -1276,9 +1269,22 @@ c_func
 l_string|&quot;add_index: xtInsert failed!&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EPERM
+id|memcpy
+c_func
+(paren
+op_amp
+id|jfs_ip-&gt;i_dirtable
+comma
+id|temp_table
+comma
+r_sizeof
+(paren
+id|temp_table
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|clean_up
 suffix:semicolon
 )brace
 id|ip-&gt;i_size
@@ -1331,9 +1337,22 @@ comma
 id|COMMIT_PWMAP
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EPERM
+id|memcpy
+c_func
+(paren
+op_amp
+id|jfs_ip-&gt;i_dirtable
+comma
+id|temp_table
+comma
+r_sizeof
+(paren
+id|temp_table
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|clean_up
 suffix:semicolon
 )brace
 id|tlck
@@ -1477,9 +1496,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|rc
-op_assign
 id|xtInsert
 c_func
 (paren
@@ -1499,7 +1515,6 @@ comma
 l_int|0
 )paren
 )paren
-)paren
 (brace
 id|jfs_warn
 c_func
@@ -1507,12 +1522,8 @@ c_func
 l_string|&quot;add_index: xtInsert failed!&quot;
 )paren
 suffix:semicolon
-id|jfs_ip-&gt;next_index
-op_decrement
-suffix:semicolon
-r_return
-op_minus
-id|EPERM
+r_goto
+id|clean_up
 suffix:semicolon
 )brace
 id|ip-&gt;i_size
@@ -1594,9 +1605,8 @@ c_func
 l_string|&quot;add_index: get/read_metapage failed!&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EPERM
+r_goto
+id|clean_up
 suffix:semicolon
 )brace
 id|lock_index
@@ -1658,6 +1668,14 @@ id|mp
 suffix:semicolon
 r_return
 id|index
+suffix:semicolon
+id|clean_up
+suffix:colon
+id|jfs_ip-&gt;next_index
+op_decrement
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;free_index()&n; *&n; *&t;Marks an entry to the directory index table as free.&n; */
