@@ -596,6 +596,12 @@ DECL|member|ro
 r_int
 id|ro
 suffix:semicolon
+DECL|member|gendisk
+r_struct
+id|gendisk
+op_star
+id|gendisk
+suffix:semicolon
 multiline_comment|/* Superblock information */
 DECL|member|major_version
 r_int
