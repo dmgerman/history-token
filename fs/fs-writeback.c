@@ -14,7 +14,7 @@ id|super_block
 op_star
 id|blockdev_superblock
 suffix:semicolon
-multiline_comment|/**&n; *&t;__mark_inode_dirty -&t;internal function&n; *&t;@inode: inode to mark&n; *&t;@flags: what kind of dirty (i.e. I_DIRTY_SYNC)&n; *&t;Mark an inode as dirty. Callers should use mark_inode_dirty or&n; *  &t;mark_inode_dirty_sync.&n; *&n; * Put the inode on the super block&squot;s dirty list.&n; *&n; * CAREFUL! We mark it dirty unconditionally, but move it onto the&n; * dirty list only if it is hashed or if it refers to a blockdev.&n; * If it was not hashed, it will never be added to the dirty list&n; * even if it is later hashed, as it will have been marked dirty already.&n; *&n; * In short, make sure you hash any inodes _before_ you start marking&n; * them dirty.&n; *&n; * This function *must* be atomic for the I_DIRTY_PAGES case -&n; * set_page_dirty() is called under spinlock in several places.&n; */
+multiline_comment|/**&n; *&t;__mark_inode_dirty -&t;internal function&n; *&t;@inode: inode to mark&n; *&t;@flags: what kind of dirty (i.e. I_DIRTY_SYNC)&n; *&t;Mark an inode as dirty. Callers should use mark_inode_dirty or&n; *  &t;mark_inode_dirty_sync.&n; *&n; * Put the inode on the super block&squot;s dirty list.&n; *&n; * CAREFUL! We mark it dirty unconditionally, but move it onto the&n; * dirty list only if it is hashed or if it refers to a blockdev.&n; * If it was not hashed, it will never be added to the dirty list&n; * even if it is later hashed, as it will have been marked dirty already.&n; *&n; * In short, make sure you hash any inodes _before_ you start marking&n; * them dirty.&n; *&n; * This function *must* be atomic for the I_DIRTY_PAGES case -&n; * set_page_dirty() is called under spinlock in several places.&n; *&n; * Note that for blockdevs, inode-&gt;dirtied_when represents the dirtying time of&n; * the block-special inode (/dev/hda1) itself.  And the -&gt;dirtied_when field of&n; * the kernel-internal blockdev inode represents the dirtying time of the&n; * blockdev&squot;s pages.  This is why for I_DIRTY_PAGES we always use&n; * page-&gt;mapping-&gt;host, so the page-dirtying time is recorded in the internal&n; * blockdev inode.&n; */
 DECL|function|__mark_inode_dirty
 r_void
 id|__mark_inode_dirty
@@ -110,13 +110,6 @@ id|inode-&gt;i_state
 op_amp
 id|I_DIRTY
 suffix:semicolon
-r_struct
-id|address_space
-op_star
-id|mapping
-op_assign
-id|inode-&gt;i_mapping
-suffix:semicolon
 id|inode-&gt;i_state
 op_or_assign
 id|flags
@@ -180,7 +173,7 @@ op_logical_neg
 id|was_dirty
 )paren
 (brace
-id|mapping-&gt;dirtied_when
+id|inode-&gt;dirtied_when
 op_assign
 id|jiffies
 suffix:semicolon
@@ -462,7 +455,7 @@ id|inode-&gt;i_state
 op_or_assign
 id|I_DIRTY_PAGES
 suffix:semicolon
-id|mapping-&gt;dirtied_when
+id|inode-&gt;dirtied_when
 op_assign
 id|jiffies
 suffix:semicolon
@@ -487,7 +480,7 @@ id|I_DIRTY
 )paren
 (brace
 multiline_comment|/* Redirtied */
-id|mapping-&gt;dirtied_when
+id|inode-&gt;dirtied_when
 op_assign
 id|jiffies
 suffix:semicolon
@@ -644,7 +637,7 @@ id|wbc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Write out a superblock&squot;s list of dirty inodes.  A wait will be performed&n; * upon no inodes, all inodes or the final one, depending upon sync_mode.&n; *&n; * If older_than_this is non-NULL, then only write out mappings which&n; * had their first dirtying at a time earlier than *older_than_this.&n; *&n; * If we&squot;re a pdlfush thread, then implement pdflush collision avoidance&n; * against the entire list.&n; *&n; * WB_SYNC_HOLD is a hack for sys_sync(): reattach the inode to sb-&gt;s_dirty so&n; * that it can be located for waiting on in __writeback_single_inode().&n; *&n; * Called under inode_lock.&n; *&n; * If `bdi&squot; is non-zero then we&squot;re being asked to writeback a specific queue.&n; * This function assumes that the blockdev superblock&squot;s inodes are backed by&n; * a variety of queues, so all inodes are searched.  For other superblocks,&n; * assume that all inodes are backed by the same queue.&n; *&n; * FIXME: this linear search could get expensive with many fileystems.  But&n; * how to fix?  We need to go from an address_space to all inodes which share&n; * a queue with that address_space.  (Easy: have a global &quot;dirty superblocks&quot;&n; * list).&n; *&n; * The inodes to be written are parked on sb-&gt;s_io.  They are moved back onto&n; * sb-&gt;s_dirty as they are selected for writing.  This way, none can be missed&n; * on the writer throttling path, and we get decent balancing between many&n; * throttled threads: we don&squot;t want them all piling up on __wait_on_inode.&n; */
+multiline_comment|/*&n; * Write out a superblock&squot;s list of dirty inodes.  A wait will be performed&n; * upon no inodes, all inodes or the final one, depending upon sync_mode.&n; *&n; * If older_than_this is non-NULL, then only write out inodes which&n; * had their first dirtying at a time earlier than *older_than_this.&n; *&n; * If we&squot;re a pdlfush thread, then implement pdflush collision avoidance&n; * against the entire list.&n; *&n; * WB_SYNC_HOLD is a hack for sys_sync(): reattach the inode to sb-&gt;s_dirty so&n; * that it can be located for waiting on in __writeback_single_inode().&n; *&n; * Called under inode_lock.&n; *&n; * If `bdi&squot; is non-zero then we&squot;re being asked to writeback a specific queue.&n; * This function assumes that the blockdev superblock&squot;s inodes are backed by&n; * a variety of queues, so all inodes are searched.  For other superblocks,&n; * assume that all inodes are backed by the same queue.&n; *&n; * FIXME: this linear search could get expensive with many fileystems.  But&n; * how to fix?  We need to go from an address_space to all inodes which share&n; * a queue with that address_space.  (Easy: have a global &quot;dirty superblocks&quot;&n; * list).&n; *&n; * The inodes to be written are parked on sb-&gt;s_io.  They are moved back onto&n; * sb-&gt;s_dirty as they are selected for writing.  This way, none can be missed&n; * on the writer throttling path, and we get decent balancing between many&n; * throttled threads: we don&squot;t want them all piling up on __wait_on_inode.&n; */
 r_static
 r_void
 DECL|function|sync_sb_inodes
@@ -848,7 +841,7 @@ c_cond
 id|time_after
 c_func
 (paren
-id|mapping-&gt;dirtied_when
+id|inode-&gt;dirtied_when
 comma
 id|start
 )paren
@@ -864,7 +857,7 @@ op_logical_and
 id|time_after
 c_func
 (paren
-id|mapping-&gt;dirtied_when
+id|inode-&gt;dirtied_when
 comma
 op_star
 id|wbc-&gt;older_than_this
@@ -920,7 +913,7 @@ op_eq
 id|WB_SYNC_HOLD
 )paren
 (brace
-id|mapping-&gt;dirtied_when
+id|inode-&gt;dirtied_when
 op_assign
 id|jiffies
 suffix:semicolon

@@ -820,12 +820,6 @@ id|atomic_t
 id|truncate_count
 suffix:semicolon
 multiline_comment|/* Cover race condition with truncate */
-DECL|member|dirtied_when
-r_int
-r_int
-id|dirtied_when
-suffix:semicolon
-multiline_comment|/* jiffies of first page dirtying */
 DECL|member|flags
 r_int
 r_int
@@ -1147,6 +1141,12 @@ r_int
 r_int
 id|i_state
 suffix:semicolon
+DECL|member|dirtied_when
+r_int
+r_int
+id|dirtied_when
+suffix:semicolon
+multiline_comment|/* jiffies of first dirtying */
 DECL|member|i_flags
 r_int
 r_int
