@@ -799,7 +799,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_void
+r_static
+r_int
 id|__init
 DECL|function|pcibios_init
 id|pcibios_init
