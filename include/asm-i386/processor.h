@@ -789,6 +789,8 @@ DECL|macro|IO_BITMAP_OFFSET
 mdefine_line|#define IO_BITMAP_OFFSET offsetof(struct tss_struct,io_bitmap)
 DECL|macro|INVALID_IO_BITMAP_OFFSET
 mdefine_line|#define INVALID_IO_BITMAP_OFFSET 0x8000
+DECL|macro|INVALID_IO_BITMAP_OFFSET_LAZY
+mdefine_line|#define INVALID_IO_BITMAP_OFFSET_LAZY 0x9000
 DECL|struct|i387_fsave_struct
 r_struct
 id|i387_fsave_struct

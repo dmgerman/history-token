@@ -1811,34 +1811,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The IO bitmap in the TSS needs updating: copy the relevant&n;&t; * range of the new task&squot;s IO bitmap. Normally this is 128 bytes&n;&t; * or less:&n;&t; */
-id|memcpy
-c_func
-(paren
-id|tss-&gt;io_bitmap
-comma
-id|next-&gt;io_bitmap_ptr
-comma
-id|max
-c_func
-(paren
-id|tss-&gt;io_bitmap_max
-comma
-id|next-&gt;io_bitmap_max
-)paren
-)paren
-suffix:semicolon
-id|tss-&gt;io_bitmap_max
-op_assign
-id|next-&gt;io_bitmap_max
-suffix:semicolon
-id|tss-&gt;io_bitmap_owner
-op_assign
-id|next
-suffix:semicolon
+multiline_comment|/*&n;&t; * Lazy TSS&squot;s I/O bitmap copy. We set an invalid offset here&n;&t; * and we let the task to get a GPF in case an I/O instruction&n;&t; * is performed.  The handler of the GPF will verify that the&n;&t; * faulting task has a valid I/O bitmap and, it true, does the&n;&t; * real copy and restart the instruction.  This will save us&n;&t; * redundant copies when the currently switched task does not&n;&t; * perform any I/O during its timeslice.&n;&t; */
 id|tss-&gt;io_bitmap_base
 op_assign
-id|IO_BITMAP_OFFSET
+id|INVALID_IO_BITMAP_OFFSET_LAZY
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This special macro can be used to load a debugging register&n; */

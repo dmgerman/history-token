@@ -415,29 +415,10 @@ id|t-&gt;io_bitmap_max
 op_assign
 id|bytes
 suffix:semicolon
-multiline_comment|/* Update the TSS: */
-id|memcpy
-c_func
-(paren
-id|tss-&gt;io_bitmap
-comma
-id|t-&gt;io_bitmap_ptr
-comma
-id|bytes_updated
-)paren
-suffix:semicolon
-id|tss-&gt;io_bitmap_max
-op_assign
-id|bytes
-suffix:semicolon
-id|tss-&gt;io_bitmap_owner
-op_assign
-op_amp
-id|current-&gt;thread
-suffix:semicolon
+multiline_comment|/*&n;&t; * Sets the lazy trigger so that the next I/O operation will&n;&t; * reload the correct bitmap.&n;&t; */
 id|tss-&gt;io_bitmap_base
 op_assign
-id|IO_BITMAP_OFFSET
+id|INVALID_IO_BITMAP_OFFSET_LAZY
 suffix:semicolon
 id|put_cpu
 c_func
