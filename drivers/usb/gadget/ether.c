@@ -436,7 +436,7 @@ DECL|macro|DEV_CONFIG_CDC
 mdefine_line|#define&t;DEV_CONFIG_CDC
 macro_line|#endif
 multiline_comment|/* For CDC-incapable hardware, choose the simple cdc subset.&n; * Anything that talks bulk (without notable bugs) can do this.&n; */
-macro_line|#ifdef CONFIG_USB_GADGET_PXA
+macro_line|#ifdef CONFIG_USB_GADGET_PXA2XX
 DECL|macro|DEV_CONFIG_SUBSET
 mdefine_line|#define&t;DEV_CONFIG_SUBSET
 macro_line|#endif
@@ -8309,6 +8309,7 @@ op_assign
 id|ep
 suffix:semicolon
 multiline_comment|/* claim */
+macro_line|#if defined(DEV_CONFIG_CDC) || defined(CONFIG_USB_ETH_RNDIS)
 multiline_comment|/* CDC Ethernet control interface doesn&squot;t require a status endpoint.&n;&t; * Since some hosts expect one, try to allocate one anyway.&n;&t; */
 r_if
 c_cond
@@ -8365,7 +8366,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-macro_line|#ifdef&t;DEV_CONFIG_CDC
 )brace
 r_else
 r_if
@@ -8379,9 +8379,9 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* FIXME remove endpoint from descriptor list */
+)brace
+)brace
 macro_line|#endif
-)brace
-)brace
 multiline_comment|/* one config:  cdc, else minimal subset */
 r_if
 c_cond
@@ -8550,7 +8550,7 @@ id|dev-&gt;zlp
 op_assign
 id|zlp
 suffix:semicolon
-multiline_comment|/* Module params for these addresses should come from ID proms.&n;&t; * The host side address is used with CDC and RNDIS, and commonly&n;&t; * end ups in a persistent config database.&n;&t; */
+multiline_comment|/* Module params for these addresses should come from ID proms.&n;&t; * The host side address is used with CDC and RNDIS, and commonly&n;&t; * ends up in a persistent config database.&n;&t; */
 id|get_ether_addr
 c_func
 (paren
