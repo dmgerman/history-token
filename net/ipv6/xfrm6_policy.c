@@ -811,6 +811,8 @@ op_or
 id|RTCF_MULTICAST
 op_or
 id|RTCF_LOCAL
+op_or
+id|RTF_NDISC
 )paren
 suffix:semicolon
 id|x-&gt;u.rt6.rt6i_metric
