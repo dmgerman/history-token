@@ -3,9 +3,9 @@ multiline_comment|/*&n;&t;Copyright 2001,2003 Jeff Garzik &lt;jgarzik@pobox.com&
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;de2104x&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;0.6&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&quot;0.7&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&t;&quot;Sep 1, 2003&quot;
+mdefine_line|#define DRV_RELDATE&t;&t;&quot;Mar 17, 2004&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -5581,36 +5581,27 @@ id|status
 comma
 id|tmp
 suffix:semicolon
-multiline_comment|/*&n;&t; * Reset MAC.  Copied from de4x5.c.&n;&t; */
-id|tmp
-op_assign
-id|dr32
-(paren
-id|BusMode
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * Reset MAC.  de4x5.c and tulip.c examined for &quot;advice&quot;&n;&t; * in this area.&n;&t; */
 r_if
 c_cond
 (paren
-id|tmp
+id|dr32
+c_func
+(paren
+id|BusMode
+)paren
 op_eq
 l_int|0xffffffff
 )paren
 r_return
 op_minus
-id|ENODEV
+id|EBUSY
 suffix:semicolon
-id|mdelay
-(paren
-l_int|1
-)paren
-suffix:semicolon
+multiline_comment|/* Reset the chip, holding bit 0 set at least 50 PCI cycles. */
 id|dw32
 (paren
 id|BusMode
 comma
-id|tmp
-op_or
 id|CmdReset
 )paren
 suffix:semicolon
@@ -5623,7 +5614,7 @@ id|dw32
 (paren
 id|BusMode
 comma
-id|tmp
+id|de_bus_mode
 )paren
 suffix:semicolon
 id|mdelay
