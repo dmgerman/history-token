@@ -1782,6 +1782,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|key_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|security_init
 c_func
 (paren
@@ -2062,11 +2067,6 @@ c_func
 )paren
 suffix:semicolon
 id|usermodehelper_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|key_init
 c_func
 (paren
 )paren

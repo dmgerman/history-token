@@ -930,6 +930,23 @@ id|cpu_timers
 l_int|3
 )braket
 suffix:semicolon
+multiline_comment|/* keep the process-shared keyrings here so that they do the right&n;&t; * thing in threads created with CLONE_THREAD */
+macro_line|#ifdef CONFIG_KEYS
+DECL|member|session_keyring
+r_struct
+id|key
+op_star
+id|session_keyring
+suffix:semicolon
+multiline_comment|/* keyring inherited over fork */
+DECL|member|process_keyring
+r_struct
+id|key
+op_star
+id|process_keyring
+suffix:semicolon
+multiline_comment|/* keyring private to this process */
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Bits in flags field of signal_struct.&n; */
@@ -1788,20 +1805,6 @@ op_star
 id|user
 suffix:semicolon
 macro_line|#ifdef CONFIG_KEYS
-DECL|member|session_keyring
-r_struct
-id|key
-op_star
-id|session_keyring
-suffix:semicolon
-multiline_comment|/* keyring inherited over fork */
-DECL|member|process_keyring
-r_struct
-id|key
-op_star
-id|process_keyring
-suffix:semicolon
-multiline_comment|/* keyring private to this process (CLONE_THREAD) */
 DECL|member|thread_keyring
 r_struct
 id|key
