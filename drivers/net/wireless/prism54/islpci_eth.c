@@ -925,7 +925,11 @@ multiline_comment|/* extract the relevant data from the header */
 id|u32
 id|clock
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|hdr-&gt;clock
+)paren
 suffix:semicolon
 id|u8
 id|rate
@@ -935,7 +939,7 @@ suffix:semicolon
 id|u16
 id|freq
 op_assign
-id|be16_to_cpu
+id|le16_to_cpu
 c_func
 (paren
 id|hdr-&gt;freq
@@ -1047,7 +1051,7 @@ id|avs_80211_1_header
 suffix:semicolon
 id|avs-&gt;version
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|P80211CAPTURE_VERSION
@@ -1055,7 +1059,7 @@ id|P80211CAPTURE_VERSION
 suffix:semicolon
 id|avs-&gt;length
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 r_sizeof
@@ -1067,15 +1071,19 @@ id|avs_80211_1_header
 suffix:semicolon
 id|avs-&gt;mactime
 op_assign
-id|__cpu_to_be64
+id|cpu_to_be64
+c_func
+(paren
+id|le64_to_cpu
 c_func
 (paren
 id|clock
 )paren
+)paren
 suffix:semicolon
 id|avs-&gt;hosttime
 op_assign
-id|__cpu_to_be64
+id|cpu_to_be64
 c_func
 (paren
 id|jiffies
@@ -1083,7 +1091,7 @@ id|jiffies
 suffix:semicolon
 id|avs-&gt;phytype
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 l_int|6
@@ -1092,7 +1100,7 @@ suffix:semicolon
 multiline_comment|/*OFDM: 6 for (g), 8 for (a) */
 id|avs-&gt;channel
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|channel_of_freq
@@ -1104,7 +1112,7 @@ id|freq
 suffix:semicolon
 id|avs-&gt;datarate
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|rate
@@ -1114,7 +1122,7 @@ l_int|5
 suffix:semicolon
 id|avs-&gt;antenna
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 l_int|0
@@ -1123,7 +1131,7 @@ suffix:semicolon
 multiline_comment|/*unknown */
 id|avs-&gt;priority
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 l_int|0
@@ -1132,24 +1140,26 @@ suffix:semicolon
 multiline_comment|/*unknown */
 id|avs-&gt;ssi_type
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
-l_int|2
+l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/*2: dBm, 3: raw RSSI */
 id|avs-&gt;ssi_signal
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|rssi
+op_amp
+l_int|0x7f
 )paren
 suffix:semicolon
 id|avs-&gt;ssi_noise
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|priv-&gt;local_iwstatistics.qual.noise
@@ -1158,7 +1168,7 @@ suffix:semicolon
 multiline_comment|/*better than &squot;undefined&squot;, I assume */
 id|avs-&gt;preamble
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 l_int|0
@@ -1167,7 +1177,7 @@ suffix:semicolon
 multiline_comment|/*unknown */
 id|avs-&gt;encoding
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 l_int|0
