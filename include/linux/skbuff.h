@@ -4,7 +4,6 @@ DECL|macro|_LINUX_SKBUFF_H
 mdefine_line|#define _LINUX_SKBUFF_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;

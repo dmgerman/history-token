@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/atmdev.h&gt;
 macro_line|#include &lt;linux/sonet.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/sched.h&gt; /* for xtime */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
