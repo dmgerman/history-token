@@ -1,9 +1,10 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001 Red Hat, Inc.&n; *&n; * Created by Arjan van de Ven &lt;arjanv@redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: compr_rubin.c,v 1.13 2001/09/23 10:06:05 rmk Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by Arjan van de Ven &lt;arjanv@redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: compr_rubin.c,v 1.16 2002/01/25 01:49:26 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &quot;compr_rubin.h&quot;
 macro_line|#include &quot;histo_mips.h&quot;
 DECL|function|init_rubin
+r_static
 r_void
 id|init_rubin
 c_func
@@ -76,6 +77,7 @@ id|c
 suffix:semicolon
 )brace
 DECL|function|encode
+r_static
 r_int
 id|encode
 c_func
@@ -242,6 +244,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|end_rubin
+r_static
 r_void
 id|end_rubin
 c_func
@@ -301,6 +304,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|init_decode
+r_static
 r_void
 id|init_decode
 c_func
@@ -496,6 +500,7 @@ id|rec_q
 suffix:semicolon
 )brace
 DECL|function|decode
+r_static
 r_int
 id|decode
 c_func
@@ -796,6 +801,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|rubin_do_compress
+r_static
 r_int
 id|rubin_do_compress
 c_func
@@ -817,11 +823,11 @@ r_char
 op_star
 id|cpage_out
 comma
-id|__u32
+r_uint32
 op_star
 id|sourcelen
 comma
-id|__u32
+r_uint32
 op_star
 id|dstlen
 )paren
@@ -961,7 +967,7 @@ suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* _compress returns the compressed size, -1 if bigger */
 r_int
-id|rubinmips_compress
+id|jffs2_rubinmips_compress
 c_func
 (paren
 r_int
@@ -974,11 +980,11 @@ r_char
 op_star
 id|cpage_out
 comma
-id|__u32
+r_uint32
 op_star
 id|sourcelen
 comma
-id|__u32
+r_uint32
 op_star
 id|dstlen
 )paren
@@ -1002,9 +1008,9 @@ id|dstlen
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|dynrubin_compress
+DECL|function|jffs2_dynrubin_compress
 r_int
-id|dynrubin_compress
+id|jffs2_dynrubin_compress
 c_func
 (paren
 r_int
@@ -1017,11 +1023,11 @@ r_char
 op_star
 id|cpage_out
 comma
-id|__u32
+r_uint32
 op_star
 id|sourcelen
 comma
-id|__u32
+r_uint32
 op_star
 id|dstlen
 )paren
@@ -1045,7 +1051,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|__u32
+r_uint32
 id|mysrclen
 comma
 id|mydstlen
@@ -1415,6 +1421,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|rubin_do_decompress
+r_static
 r_void
 id|rubin_do_decompress
 c_func
@@ -1436,10 +1443,10 @@ r_char
 op_star
 id|page_out
 comma
-id|__u32
+r_uint32
 id|srclen
 comma
-id|__u32
+r_uint32
 id|destlen
 )paren
 (brace
@@ -1501,9 +1508,9 @@ id|rs
 suffix:semicolon
 )brace
 )brace
-DECL|function|rubinmips_decompress
+DECL|function|jffs2_rubinmips_decompress
 r_void
-id|rubinmips_decompress
+id|jffs2_rubinmips_decompress
 c_func
 (paren
 r_int
@@ -1516,10 +1523,10 @@ r_char
 op_star
 id|cpage_out
 comma
-id|__u32
+r_uint32
 id|sourcelen
 comma
-id|__u32
+r_uint32
 id|dstlen
 )paren
 (brace
@@ -1540,9 +1547,9 @@ id|dstlen
 )paren
 suffix:semicolon
 )brace
-DECL|function|dynrubin_decompress
+DECL|function|jffs2_dynrubin_decompress
 r_void
-id|dynrubin_decompress
+id|jffs2_dynrubin_decompress
 c_func
 (paren
 r_int
@@ -1555,10 +1562,10 @@ r_char
 op_star
 id|cpage_out
 comma
-id|__u32
+r_uint32
 id|sourcelen
 comma
-id|__u32
+r_uint32
 id|dstlen
 )paren
 (brace

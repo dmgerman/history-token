@@ -138,8 +138,6 @@ DECL|macro|FS_NO_PRELIM
 mdefine_line|#define FS_NO_PRELIM&t;4 /* prevent preloading of dentries, even if&n;&t;&t;&t;   * FS_NO_DCACHE is not set.&n;&t;&t;&t;   */
 DECL|macro|FS_NOMOUNT
 mdefine_line|#define FS_NOMOUNT&t;16 /* Never mount from userland */
-DECL|macro|FS_LITTER
-mdefine_line|#define FS_LITTER&t;32 /* Keeps the tree in dcache */
 DECL|macro|FS_ODD_RENAME
 mdefine_line|#define FS_ODD_RENAME&t;32768&t;/* Temporary stuff; will go away as soon&n;&t;&t;&t;&t;  * as nfs_rename() will be cleaned up&n;&t;&t;&t;&t;  */
 multiline_comment|/*&n; * These are the fs-independent mount-flags: up to 32 flags are supported&n; */
@@ -576,7 +574,6 @@ mdefine_line|#define touch_buffer(bh)&t;mark_page_accessed(bh-&gt;b_page)
 macro_line|#include &lt;linux/pipe_fs_i.h&gt;
 multiline_comment|/* #include &lt;linux/umsdos_fs_i.h&gt; */
 macro_line|#include &lt;linux/romfs_fs_i.h&gt;
-macro_line|#include &lt;linux/cramfs_fs_sb.h&gt;
 multiline_comment|/*&n; * Attribute flags.  These should be or-ed together to figure out what&n; * has been changed!&n; */
 DECL|macro|ATTR_MODE
 mdefine_line|#define ATTR_MODE&t;1
@@ -2027,7 +2024,6 @@ DECL|macro|MNT_FORCE
 mdefine_line|#define MNT_FORCE&t;0x00000001&t;/* Attempt to forcibily umount */
 DECL|macro|MNT_DETACH
 mdefine_line|#define MNT_DETACH&t;0x00000002&t;/* Just detach from the tree */
-macro_line|#include &lt;linux/minix_fs_sb.h&gt;
 macro_line|#include &lt;linux/ext2_fs_sb.h&gt;
 macro_line|#include &lt;linux/ext3_fs_sb.h&gt;
 macro_line|#include &lt;linux/hpfs_fs_sb.h&gt;
@@ -2048,7 +2044,6 @@ macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/bfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/udf_fs_sb.h&gt;
 macro_line|#include &lt;linux/ncp_fs_sb.h&gt;
-macro_line|#include &lt;linux/cramfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_sb.h&gt;
 r_extern
 r_struct
@@ -2195,11 +2190,6 @@ suffix:semicolon
 multiline_comment|/* Informational name */
 r_union
 (brace
-DECL|member|minix_sb
-r_struct
-id|minix_sb_info
-id|minix_sb
-suffix:semicolon
 DECL|member|ext2_sb
 r_struct
 id|ext2_sb_info
@@ -2309,11 +2299,6 @@ DECL|member|jffs2_sb
 r_struct
 id|jffs2_sb_info
 id|jffs2_sb
-suffix:semicolon
-DECL|member|cramfs_sb
-r_struct
-id|cramfs_sb_info
-id|cramfs_sb
 suffix:semicolon
 DECL|member|generic_sbp
 r_void
@@ -3856,6 +3841,18 @@ r_void
 op_star
 )paren
 suffix:semicolon
+DECL|member|kill_sb
+r_void
+(paren
+op_star
+id|kill_sb
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+)paren
+suffix:semicolon
 DECL|member|owner
 r_struct
 id|module
@@ -3982,6 +3979,46 @@ op_star
 comma
 r_int
 )paren
+)paren
+suffix:semicolon
+r_void
+id|kill_block_super
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+suffix:semicolon
+r_void
+id|kill_anon_super
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+suffix:semicolon
+r_void
+id|kill_litter_super
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+suffix:semicolon
+r_void
+id|deactivate_super
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
 )paren
 suffix:semicolon
 multiline_comment|/* Alas, no aliases. Too much hassle with bringing module.h everywhere */

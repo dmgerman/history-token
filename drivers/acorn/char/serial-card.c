@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
@@ -10,24 +11,23 @@ macro_line|#ifndef NUM_SERIALS
 DECL|macro|NUM_SERIALS
 mdefine_line|#define NUM_SERIALS&t;MY_NUMPORTS * MAX_ECARDS
 macro_line|#endif
-macro_line|#ifdef MODULE
-DECL|variable|__serial_ports
+DECL|variable|serial_ports
 r_static
 r_int
-id|__serial_ports
+id|serial_ports
 (braket
 id|NUM_SERIALS
 )braket
 suffix:semicolon
-DECL|variable|__serial_pcount
+DECL|variable|serial_pcount
 r_static
 r_int
-id|__serial_pcount
+id|serial_pcount
 suffix:semicolon
-DECL|variable|__serial_addr
+DECL|variable|serial_addr
 r_static
 r_int
-id|__serial_addr
+id|serial_addr
 (braket
 id|NUM_SERIALS
 )braket
@@ -42,16 +42,6 @@ id|expcard
 id|MAX_ECARDS
 )braket
 suffix:semicolon
-DECL|macro|ADD_ECARD
-mdefine_line|#define ADD_ECARD(ec,card) expcard[(card)] = (ec)
-DECL|macro|ADD_PORT
-mdefine_line|#define ADD_PORT(port,addr)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__serial_ports[__serial_pcount] = (port);&t;&bslash;&n;&t;&t;__serial_addr[__serial_pcount] = (addr);&t;&bslash;&n;&t;&t;__serial_pcount += 1;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
-macro_line|#else
-DECL|macro|ADD_ECARD
-mdefine_line|#define ADD_ECARD(ec,card)
-DECL|macro|ADD_PORT
-mdefine_line|#define ADD_PORT(port,addr)
-macro_line|#endif
 DECL|variable|serial_cids
 r_static
 r_const
@@ -127,11 +117,12 @@ id|req
 )paren
 suffix:semicolon
 )brace
-DECL|function|INIT
+DECL|function|serial_card_init
 r_static
 r_int
 id|__init
-id|INIT
+id|serial_card_init
+c_func
 (paren
 r_void
 )paren
@@ -234,13 +225,23 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-id|ADD_PORT
-c_func
-(paren
+id|serial_ports
+(braket
+id|serial_pcount
+)braket
+op_assign
 id|line
-comma
+suffix:semicolon
+id|serial_addr
+(braket
+id|serial_pcount
+)braket
+op_assign
 id|address
-)paren
+suffix:semicolon
+id|serial_pcount
+op_add_assign
+l_int|1
 suffix:semicolon
 )brace
 r_if
@@ -254,13 +255,12 @@ id|ecard_claim
 id|ec
 )paren
 suffix:semicolon
-id|ADD_ECARD
-c_func
-(paren
-id|ec
-comma
+id|expcard
+(braket
 id|card
-)paren
+)braket
+op_assign
+id|ec
 suffix:semicolon
 )brace
 r_else
@@ -286,16 +286,16 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-DECL|function|EXIT
+DECL|function|serial_card_exit
 r_static
 r_void
 id|__exit
-id|EXIT
+id|serial_card_exit
+c_func
 (paren
 r_void
 )paren
 (brace
-macro_line|#ifdef MODULE
 r_int
 id|i
 suffix:semicolon
@@ -308,7 +308,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|__serial_pcount
+id|serial_pcount
 suffix:semicolon
 id|i
 op_increment
@@ -317,7 +317,7 @@ op_increment
 id|unregister_serial
 c_func
 (paren
-id|__serial_ports
+id|serial_ports
 (braket
 id|i
 )braket
@@ -326,7 +326,7 @@ suffix:semicolon
 id|release_region
 c_func
 (paren
-id|__serial_addr
+id|serial_addr
 (braket
 id|i
 )braket
@@ -365,9 +365,14 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 id|EXPORT_NO_SYMBOLS
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Russell King&quot;
+)paren
 suffix:semicolon
 id|MODULE_LICENSE
 c_func
@@ -375,18 +380,18 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|variable|INIT
+DECL|variable|serial_card_init
 id|module_init
 c_func
 (paren
-id|INIT
+id|serial_card_init
 )paren
 suffix:semicolon
-DECL|variable|EXIT
+DECL|variable|serial_card_exit
 id|module_exit
 c_func
 (paren
-id|EXIT
+id|serial_card_exit
 )paren
 suffix:semicolon
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/mm/init.c&n; *&n; *  Copyright (C) 1995-2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/arch/arm/mm/init.c&n; *&n; *  Copyright (C) 1995-2002 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -38,7 +38,7 @@ DECL|macro|TABLE_OFFSET
 mdefine_line|#define TABLE_OFFSET&t;0
 macro_line|#endif
 DECL|macro|TABLE_SIZE
-mdefine_line|#define TABLE_SIZE&t;((TABLE_OFFSET + PTRS_PER_PTE) * sizeof(void *))
+mdefine_line|#define TABLE_SIZE&t;((TABLE_OFFSET + PTRS_PER_PTE) * sizeof(pte_t))
 DECL|variable|totalram_pages
 r_static
 r_int
@@ -1083,8 +1083,7 @@ id|PTRS_PER_PGD
 op_star
 r_sizeof
 (paren
-r_void
-op_star
+id|pgd_t
 )paren
 )paren
 suffix:semicolon

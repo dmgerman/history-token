@@ -7831,6 +7831,10 @@ id|get_sb
 suffix:colon
 id|jffs_get_sb
 comma
+id|kill_sb
+suffix:colon
+id|kill_block_super
+comma
 id|fs_flags
 suffix:colon
 id|FS_REQUIRES_DEV

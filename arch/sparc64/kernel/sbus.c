@@ -3013,9 +3013,9 @@ op_assign
 (brace
 l_int|0
 comma
-l_int|2
+l_int|4
 comma
-l_int|2
+l_int|4
 comma
 l_int|7
 comma
@@ -3030,9 +3030,9 @@ comma
 multiline_comment|/* SBUS slot 0 */
 l_int|0
 comma
-l_int|2
+l_int|4
 comma
-l_int|2
+l_int|4
 comma
 l_int|7
 comma
@@ -3047,9 +3047,9 @@ comma
 multiline_comment|/* SBUS slot 1 */
 l_int|0
 comma
-l_int|2
+l_int|4
 comma
-l_int|2
+l_int|4
 comma
 l_int|7
 comma
@@ -3064,9 +3064,9 @@ comma
 multiline_comment|/* SBUS slot 2 */
 l_int|0
 comma
-l_int|2
+l_int|4
 comma
-l_int|2
+l_int|4
 comma
 l_int|7
 comma
@@ -3079,7 +3079,7 @@ comma
 l_int|9
 comma
 multiline_comment|/* SBUS slot 3 */
-l_int|3
+l_int|4
 comma
 multiline_comment|/* Onboard SCSI */
 l_int|5

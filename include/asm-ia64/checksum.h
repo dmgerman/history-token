@@ -228,35 +228,5 @@ op_complement
 id|sum
 suffix:semicolon
 )brace
-DECL|macro|_HAVE_ARCH_IPV6_CSUM
-mdefine_line|#define _HAVE_ARCH_IPV6_CSUM
-r_extern
-r_int
-r_int
-r_int
-id|csum_ipv6_magic
-(paren
-r_struct
-id|in6_addr
-op_star
-id|saddr
-comma
-r_struct
-id|in6_addr
-op_star
-id|daddr
-comma
-id|__u16
-id|len
-comma
-r_int
-r_int
-id|proto
-comma
-r_int
-r_int
-id|sum
-)paren
-suffix:semicolon
 macro_line|#endif /* _ASM_IA64_CHECKSUM_H */
 eof

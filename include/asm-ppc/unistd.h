@@ -443,6 +443,8 @@ DECL|macro|__NR_lremovexattr
 mdefine_line|#define __NR_lremovexattr&t;219
 DECL|macro|__NR_fremovexattr
 mdefine_line|#define __NR_fremovexattr&t;220
+DECL|macro|__NR_futex
+mdefine_line|#define __NR_futex&t;&t;221
 DECL|macro|__NR
 mdefine_line|#define __NR(n)&t;#n
 DECL|macro|__syscall_return

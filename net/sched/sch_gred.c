@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * net/sched/sch_gred.c&t;Generic Random Early Detection queue.&n; *&n; *&n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              as published by the Free Software Foundation; either version&n; *              2 of the License, or (at your option) any later version.&n; *&n; * Authors:    J Hadi Salim (hadi@nortelnetworks.com) 1998,1999&n; *&n; *             991129: -  Bug fix with grio mode&n; *&t;&t;       - a better sing. AvgQ mode with Grio(WRED)&n; *&t;&t;       - A finer grained VQ dequeue based on sugestion&n; *&t;&t;         from Ren Liu&n; *&t;&t;       - More error checks&n; *&n; *&n; *&n; *  For all the glorious comments look at Alexey&squot;s sch_red.c&n; */
+multiline_comment|/*&n; * net/sched/sch_gred.c&t;Generic Random Early Detection queue.&n; *&n; *&n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              as published by the Free Software Foundation; either version&n; *              2 of the License, or (at your option) any later version.&n; *&n; * Authors:    J Hadi Salim (hadi@cyberus.ca) 1998-2002&n; *&n; *             991129: -  Bug fix with grio mode&n; *&t;&t;       - a better sing. AvgQ mode with Grio(WRED)&n; *&t;&t;       - A finer grained VQ dequeue based on sugestion&n; *&t;&t;         from Ren Liu&n; *&t;&t;       - More error checks&n; *&n; *&n; *&n; *  For all the glorious comments look at Alexey&squot;s sch_red.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1898,7 +1898,7 @@ l_int|NULL
 op_eq
 id|table-&gt;tab
 (braket
-id|ctl-&gt;DP
+id|table-&gt;def
 )braket
 )paren
 r_return
@@ -2254,6 +2254,8 @@ r_struct
 id|tc_gred_qopt
 op_star
 id|opt
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|tc_gred_qopt
@@ -2380,10 +2382,6 @@ c_func
 (paren
 l_string|&quot;NO GRED Queues setup!&bslash;n&quot;
 )paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
 suffix:semicolon
 )brace
 r_for
@@ -2631,11 +2629,28 @@ id|skb-&gt;tail
 op_minus
 id|b
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|opt
+)paren
+suffix:semicolon
 r_return
 id|skb-&gt;len
 suffix:semicolon
 id|rtattr_failure
 suffix:colon
+r_if
+c_cond
+(paren
+id|opt
+)paren
+id|kfree
+c_func
+(paren
+id|opt
+)paren
+suffix:semicolon
 id|DPRINTK
 c_func
 (paren

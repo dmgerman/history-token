@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_SN_PCI_BRIDGE_H
 DECL|macro|_ASM_SN_PCI_BRIDGE_H
 mdefine_line|#define _ASM_SN_PCI_BRIDGE_H
@@ -46,7 +46,7 @@ mdefine_line|#define BRIDGE_SSRAM_64K&t;0x00010000&t;/* 64kB */
 DECL|macro|BRIDGE_SSRAM_0K
 mdefine_line|#define BRIDGE_SSRAM_0K&t;&t;0x00000000&t;/* 0kB */
 multiline_comment|/* ========================================================================&n; *    Bridge address map&n; */
-macro_line|#if defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS)
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef __cplusplus
 r_extern
 l_string|&quot;C&quot;
@@ -1078,7 +1078,7 @@ id|error
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* Error occurred  */
+multiline_comment|/* Error occurred */
 DECL|member|barr
 id|barr
 suffix:colon
@@ -2041,7 +2041,7 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|berr_field
 mdefine_line|#define berr_field&t;berr_un.berr_st
-macro_line|#endif&t;&t;&t;&t;/* LANGUAGE_C */
+macro_line|#endif&t;&t;&t;&t;/* __ASSEMBLY__ */
 multiline_comment|/*&n; * The values of these macros can and should be crosschecked&n; * regularly against the offsets of the like-named fields&n; * within the &quot;bridge_t&quot; structure above.&n; */
 multiline_comment|/* Byte offset macros for Bridge internal registers */
 DECL|macro|BRIDGE_WID_ID
@@ -2337,10 +2337,10 @@ DECL|macro|BRIDGE_DEVIO_2MB
 mdefine_line|#define BRIDGE_DEVIO_2MB&t;0x00200000&t;/* Device IO Offset (0..1) */
 DECL|macro|BRIDGE_DEVIO_1MB
 mdefine_line|#define BRIDGE_DEVIO_1MB&t;0x00100000&t;/* Device IO Offset (2..7) */
-macro_line|#if&t;LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|BRIDGE_DEVIO
 mdefine_line|#define BRIDGE_DEVIO(x)&t;&t;((x)&lt;=1 ? BRIDGE_DEVIO0+(x)*BRIDGE_DEVIO_2MB : BRIDGE_DEVIO2+((x)-2)*BRIDGE_DEVIO_1MB)
-macro_line|#endif&t;&t;&t;&t;/* LANGUAGE_C */
+macro_line|#endif&t;&t;&t;&t;/* __ASSEMBLY__ */
 DECL|macro|BRIDGE_EXTERNAL_FLASH
 mdefine_line|#define BRIDGE_EXTERNAL_FLASH&t;0x00C00000&t;/* External Flash PROMS */
 multiline_comment|/* ========================================================================&n; *    Bridge register bit field definitions&n; */
@@ -2440,6 +2440,14 @@ DECL|macro|BRIDGE_CTRL_CLR_TLLP_CNT
 mdefine_line|#define BRIDGE_CTRL_CLR_TLLP_CNT&t;(0x1 &lt;&lt; 10)
 DECL|macro|BRIDGE_CTRL_SYS_END
 mdefine_line|#define BRIDGE_CTRL_SYS_END&t;&t;(0x1 &lt;&lt; 9)
+DECL|macro|BRIDGE_CTRL_BUS_SPEED
+mdefine_line|#define BRIDGE_CTRL_BUS_SPEED(n)        ((n) &lt;&lt; 4)
+DECL|macro|BRIDGE_CTRL_BUS_SPEED_MASK
+mdefine_line|#define BRIDGE_CTRL_BUS_SPEED_MASK      (BRIDGE_CTRL_BUS_SPEED(0x3))
+DECL|macro|BRIDGE_CTRL_BUS_SPEED_33
+mdefine_line|#define BRIDGE_CTRL_BUS_SPEED_33        0x00
+DECL|macro|BRIDGE_CTRL_BUS_SPEED_66
+mdefine_line|#define BRIDGE_CTRL_BUS_SPEED_66        0x10
 DECL|macro|BRIDGE_CTRL_MAX_TRANS
 mdefine_line|#define BRIDGE_CTRL_MAX_TRANS(n)&t;((n) &lt;&lt; 4)
 DECL|macro|BRIDGE_CTRL_MAX_TRANS_MASK
@@ -2850,7 +2858,7 @@ DECL|macro|PCI32_MAPPED_BASE
 mdefine_line|#define PCI32_MAPPED_BASE&t;&t;BRIDGE_DMA_MAPPED_BASE
 DECL|macro|PCI32_DIRECT_BASE
 mdefine_line|#define PCI32_DIRECT_BASE&t;&t;BRIDGE_DMA_DIRECT_BASE
-macro_line|#if&t;LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|IS_PCI32_LOCAL
 mdefine_line|#define IS_PCI32_LOCAL(x)&t;((uint64_t)(x) &lt; PCI32_MAPPED_BASE)
 DECL|macro|IS_PCI32_MAPPED
@@ -2859,7 +2867,7 @@ DECL|macro|IS_PCI32_DIRECT
 mdefine_line|#define IS_PCI32_DIRECT(x)&t;((uint64_t)(x) &gt;= PCI32_MAPPED_BASE)
 DECL|macro|IS_PCI64
 mdefine_line|#define IS_PCI64(x)&t;&t;((uint64_t)(x) &gt;= PCI64_BASE)
-macro_line|#endif&t;&t;&t;&t;/* LANGUAGE_C */
+macro_line|#endif&t;&t;&t;&t;/* __ASSEMBLY__ */
 multiline_comment|/*&n; * The GIO address space.&n; */
 multiline_comment|/* Xtalk to GIO PIO */
 DECL|macro|BRIDGE_GIO_MEM32_BASE
@@ -2873,14 +2881,14 @@ DECL|macro|GIO_MAPPED_BASE
 mdefine_line|#define GIO_MAPPED_BASE&t;&t;&t;BRIDGE_DMA_MAPPED_BASE
 DECL|macro|GIO_DIRECT_BASE
 mdefine_line|#define GIO_DIRECT_BASE&t;&t;&t;BRIDGE_DMA_DIRECT_BASE
-macro_line|#if&t;LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|IS_GIO_LOCAL
 mdefine_line|#define IS_GIO_LOCAL(x)&t;&t;((uint64_t)(x) &lt; GIO_MAPPED_BASE)
 DECL|macro|IS_GIO_MAPPED
 mdefine_line|#define IS_GIO_MAPPED(x)&t;((uint64_t)(x) &lt; GIO_DIRECT_BASE &amp;&amp; &bslash;&n;&t;&t;&t;&t;&t;(uint64_t)(x) &gt;= GIO_MAPPED_BASE)
 DECL|macro|IS_GIO_DIRECT
 mdefine_line|#define IS_GIO_DIRECT(x)&t;((uint64_t)(x) &gt;= GIO_MAPPED_BASE)
-macro_line|#endif&t;&t;&t;&t;/* LANGUAGE_C */
+macro_line|#endif&t;&t;&t;&t;/* __ASSEMBLY__ */
 multiline_comment|/* PCI to xtalk mapping */
 multiline_comment|/* given a DIR_OFF value and a pci/gio 32 bits direct address, determine&n; * which xtalk address is accessed&n; */
 DECL|macro|BRIDGE_DIRECT_32_SEG_SIZE
@@ -2906,7 +2914,7 @@ DECL|macro|PCI64_ATTR_RMF_MASK
 mdefine_line|#define PCI64_ATTR_RMF_MASK&t;0x00ff000000000000
 DECL|macro|PCI64_ATTR_RMF_SHFT
 mdefine_line|#define PCI64_ATTR_RMF_SHFT&t;48
-macro_line|#if LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Address translation entry for mapped pci32 accesses */
 DECL|union|ate_u
 r_typedef
@@ -3052,7 +3060,7 @@ DECL|typedef|ate_t
 )brace
 id|ate_t
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* LANGUAGE_C */
+macro_line|#endif&t;&t;&t;&t;/* __ASSEMBLY__ */
 DECL|macro|ATE_V
 mdefine_line|#define ATE_V&t;&t;(1 &lt;&lt; 0)
 DECL|macro|ATE_CO
@@ -3082,7 +3090,7 @@ DECL|macro|ATE_SWAP_OFF
 mdefine_line|#define ATE_SWAP_OFF(x)&t;&t;((x) &amp;= ~(1 &lt;&lt; ATE_SWAPSHIFT))
 DECL|macro|is_xbridge
 mdefine_line|#define is_xbridge(bridge) &bslash;&n;        (XWIDGET_PART_NUM(bridge-&gt;b_wid_id) == XBRIDGE_WIDGET_PART_NUM)
-macro_line|#if&t;LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* ========================================================================&n; */
 macro_line|#ifdef&t;MACROFIELD_LINE
 multiline_comment|/*&n; * This table forms a relation between the byte offset macros normally&n; * used for ASM coding and the calculated byte offsets of the fields&n; * in the C structure.&n; *&n; * See bridge_check.c and bridge_html.c for further details.&n; */

@@ -3302,10 +3302,8 @@ c_func
 id|size
 )paren
 suffix:semicolon
-id|zone-&gt;wait_table_shift
+id|zone-&gt;wait_table_bits
 op_assign
-id|BITS_PER_LONG
-op_minus
 id|wait_table_bits
 c_func
 (paren

@@ -50,16 +50,6 @@ op_star
 id|data
 )paren
 suffix:semicolon
-r_void
-id|kill_super
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
-)paren
-suffix:semicolon
 r_int
 id|__init
 id|init_rootfs
@@ -774,7 +764,7 @@ c_func
 id|mnt
 )paren
 suffix:semicolon
-id|kill_super
+id|deactivate_super
 c_func
 (paren
 id|sb

@@ -20,9 +20,6 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-multiline_comment|/* Following value should be &gt; 32k + RPC overhead */
-DECL|macro|XPRT_MIN_WRITE_SPACE
-mdefine_line|#define XPRT_MIN_WRITE_SPACE (35000 + SOCK_MIN_WRITE_SPACE)
 r_extern
 id|spinlock_t
 id|rpc_queue_lock
@@ -4382,24 +4379,14 @@ id|xprt-&gt;shutdown
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* Wait until we have enough socket memory */
+multiline_comment|/* Wait until we have enough socket memory. */
 r_if
 c_cond
 (paren
-id|sock_wspace
+id|sock_writeable
 c_func
 (paren
 id|sk
-)paren
-OL
-id|min_t
-c_func
-(paren
-r_int
-comma
-id|sk-&gt;sndbuf
-comma
-id|XPRT_MIN_WRITE_SPACE
 )paren
 )paren
 r_return

@@ -9842,7 +9842,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|save_flags_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -9861,7 +9861,7 @@ c_func
 id|host
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

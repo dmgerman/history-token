@@ -1,8 +1,9 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_SN_PCI_PCIBR_PRIVATE_H
 DECL|macro|_ASM_SN_PCI_PCIBR_PRIVATE_H
 mdefine_line|#define _ASM_SN_PCI_PCIBR_PRIVATE_H
 multiline_comment|/*&n; * pcibr_private.h -- private definitions for pcibr&n; * only the pcibr driver (and its closest friends)&n; * should ever peek into this file.&n; */
+macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio_private.h&gt;
 macro_line|#include &lt;asm/sn/ksys/l1.h&gt;
 multiline_comment|/*&n; * convenience typedefs&n; */
@@ -248,12 +249,6 @@ DECL|macro|bi_dev
 mdefine_line|#define&t;bi_dev&t;&t;bi_pi.pi_dev&t;/* associated pci card */
 DECL|macro|bi_lines
 mdefine_line|#define&t;bi_lines&t;bi_pi.pi_lines&t;/* which PCI interrupt line(s) */
-DECL|macro|bi_func
-mdefine_line|#define&t;bi_func&t;&t;bi_pi.pi_func&t;/* handler function (when connected) */
-DECL|macro|bi_arg
-mdefine_line|#define&t;bi_arg&t;&t;bi_pi.pi_arg&t;/* handler parameter (when connected) */
-DECL|macro|bi_tinfo
-mdefine_line|#define bi_tinfo&t;bi_pi.pi_tinfo&t;/* Thread info (when connected) */
 DECL|macro|bi_mustruncpu
 mdefine_line|#define bi_mustruncpu&t;bi_pi.pi_mustruncpu /* Where we must run. */
 DECL|macro|bi_irq
@@ -455,6 +450,16 @@ id|xwidgetnum_t
 id|bs_mxid
 suffix:semicolon
 multiline_comment|/* master&squot;s xtalk ID number */
+DECL|member|bs_first_slot
+id|pciio_slot_t
+id|bs_first_slot
+suffix:semicolon
+multiline_comment|/* first existing slot */
+DECL|member|bs_last_slot
+id|pciio_slot_t
+id|bs_last_slot
+suffix:semicolon
+multiline_comment|/* last existing slot */
 DECL|member|bs_dir_xbase
 id|iopaddr_t
 id|bs_dir_xbase
@@ -580,6 +585,10 @@ DECL|member|bssd_base
 id|iopaddr_t
 id|bssd_base
 suffix:semicolon
+DECL|member|bssd_ref_cnt
+r_int
+id|bssd_ref_cnt
+suffix:semicolon
 DECL|member|bss_devio
 )brace
 id|bss_devio
@@ -670,9 +679,23 @@ id|bs_rrb_res
 l_int|8
 )braket
 suffix:semicolon
+DECL|member|bs_rrb_res_dflt
+r_int
+id|bs_rrb_res_dflt
+(braket
+l_int|8
+)braket
+suffix:semicolon
 DECL|member|bs_rrb_valid
 r_int
 id|bs_rrb_valid
+(braket
+l_int|16
+)braket
+suffix:semicolon
+DECL|member|bs_rrb_valid_dflt
+r_int
+id|bs_rrb_valid_dflt
 (braket
 l_int|16
 )braket
@@ -853,5 +876,76 @@ DECL|macro|pcibr_soft_get
 mdefine_line|#define pcibr_soft_get(v)       ((pcibr_soft_t)hwgraph_fastinfo_get((v)))
 DECL|macro|pcibr_soft_set
 mdefine_line|#define pcibr_soft_set(v,i)     (hwgraph_fastinfo_set((v), (arbitrary_info_t)(i)))
+multiline_comment|/* Use io spin locks. This ensures that all the PIO writes from a particular&n; * CPU to a particular IO device are synched before the start of the next&n; * set of PIO operations to the same device.&n; */
+DECL|macro|pcibr_lock
+mdefine_line|#define pcibr_lock(pcibr_soft)&t;&t;io_splock(&amp;pcibr_soft-&gt;bs_lock)
+DECL|macro|pcibr_unlock
+mdefine_line|#define pcibr_unlock(pcibr_soft,s)&t;io_spunlock(&amp;pcibr_soft-&gt;bs_lock,s)
+multiline_comment|/*&n; * mem alloc/free macros&n; */
+DECL|macro|NEWAf
+mdefine_line|#define NEWAf(ptr,n,f)&t;(ptr = snia_kmem_zalloc((n)*sizeof (*(ptr)), (f&amp;PCIIO_NOSLEEP)?KM_NOSLEEP:KM_SLEEP))
+DECL|macro|NEWA
+mdefine_line|#define NEWA(ptr,n)&t;(ptr = snia_kmem_zalloc((n)*sizeof (*(ptr)), KM_SLEEP))
+DECL|macro|DELA
+mdefine_line|#define DELA(ptr,n)&t;(kfree(ptr))
+DECL|macro|NEWf
+mdefine_line|#define NEWf(ptr,f)&t;NEWAf(ptr,1,f)
+DECL|macro|NEW
+mdefine_line|#define NEW(ptr)&t;NEWA(ptr,1)
+DECL|macro|DEL
+mdefine_line|#define DEL(ptr)&t;DELA(ptr,1)
+DECL|typedef|cfg_p
+r_typedef
+r_volatile
+r_int
+op_star
+id|cfg_p
+suffix:semicolon
+DECL|typedef|reg_p
+r_typedef
+r_volatile
+id|bridgereg_t
+op_star
+id|reg_p
+suffix:semicolon
+DECL|macro|PCIBR_RRB_SLOT_VIRTUAL
+mdefine_line|#define PCIBR_RRB_SLOT_VIRTUAL  8
+DECL|macro|PCIBR_VALID_SLOT
+mdefine_line|#define PCIBR_VALID_SLOT(s)     (s &lt; 8)
+DECL|macro|PCIBR_D64_BASE_UNSET
+mdefine_line|#define PCIBR_D64_BASE_UNSET    (0xFFFFFFFFFFFFFFFF)
+DECL|macro|PCIBR_D32_BASE_UNSET
+mdefine_line|#define PCIBR_D32_BASE_UNSET    (0xFFFFFFFF)
+DECL|macro|INFO_LBL_PCIBR_ASIC_REV
+mdefine_line|#define INFO_LBL_PCIBR_ASIC_REV &quot;_pcibr_asic_rev&quot;
+DECL|macro|PCIBR_SOFT_LIST
+mdefine_line|#define PCIBR_SOFT_LIST 1
+macro_line|#if PCIBR_SOFT_LIST
+DECL|typedef|pcibr_list_p
+r_typedef
+r_struct
+id|pcibr_list_s
+op_star
+id|pcibr_list_p
+suffix:semicolon
+DECL|struct|pcibr_list_s
+r_struct
+id|pcibr_list_s
+(brace
+DECL|member|bl_next
+id|pcibr_list_p
+id|bl_next
+suffix:semicolon
+DECL|member|bl_soft
+id|pcibr_soft_t
+id|bl_soft
+suffix:semicolon
+DECL|member|bl_vhdl
+id|devfs_handle_t
+id|bl_vhdl
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif /* PCIBR_SOFT_LIST */
 macro_line|#endif&t;&t;&t;&t;/* _ASM_SN_PCI_PCIBR_PRIVATE_H */
 eof

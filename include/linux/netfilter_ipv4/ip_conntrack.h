@@ -145,9 +145,7 @@ macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_ftp.h&gt;
-macro_line|#if defined(CONFIG_IP_NF_IRC) || defined(CONFIG_IP_NF_IRC_MODULE)
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_irc.h&gt;
-macro_line|#endif
 DECL|struct|ip_conntrack
 r_struct
 id|ip_conntrack
@@ -232,13 +230,11 @@ r_struct
 id|ip_ct_ftp
 id|ct_ftp_info
 suffix:semicolon
-macro_line|#if defined(CONFIG_IP_NF_IRC) || defined(CONFIG_IP_NF_IRC_MODULE)
 DECL|member|ct_irc_info
 r_struct
 id|ip_ct_irc
 id|ct_irc_info
 suffix:semicolon
-macro_line|#endif
 DECL|member|help
 )brace
 id|help

@@ -1,11 +1,24 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001 Red Hat, Inc.&n; *&n; * Created by Arjan van de Ven &lt;arjanv@redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: compr.c,v 1.17 2001/09/23 09:56:46 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by Arjan van de Ven &lt;arjanv@redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: compr.c,v 1.23 2002/01/25 01:49:26 dwmw2 Exp $&n; *&n; */
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#else 
+DECL|macro|KERN_DEBUG
+mdefine_line|#define KERN_DEBUG
+DECL|macro|KERN_NOTICE
+mdefine_line|#define KERN_NOTICE
+DECL|macro|KERN_WARNING
+mdefine_line|#define KERN_WARNING
+DECL|macro|printk
+mdefine_line|#define printk printf
+macro_line|#include &lt;stdio.h&gt;
+macro_line|#include &lt;stdint.h&gt;
+macro_line|#include &lt;errno.h&gt;
+macro_line|#endif
 macro_line|#include &lt;linux/jffs2.h&gt;
 r_int
-id|zlib_compress
+id|jffs2_zlib_compress
 c_func
 (paren
 r_int
@@ -18,17 +31,17 @@ r_char
 op_star
 id|cpage_out
 comma
-id|__u32
+r_uint32
 op_star
 id|sourcelen
 comma
-id|__u32
+r_uint32
 op_star
 id|dstlen
 )paren
 suffix:semicolon
 r_void
-id|zlib_decompress
+id|jffs2_zlib_decompress
 c_func
 (paren
 r_int
@@ -41,15 +54,15 @@ r_char
 op_star
 id|cpage_out
 comma
-id|__u32
+r_uint32
 id|srclen
 comma
-id|__u32
+r_uint32
 id|destlen
 )paren
 suffix:semicolon
 r_int
-id|rtime_compress
+id|jffs2_rtime_compress
 c_func
 (paren
 r_int
@@ -62,17 +75,17 @@ r_char
 op_star
 id|cpage_out
 comma
-id|__u32
+r_uint32
 op_star
 id|sourcelen
 comma
-id|__u32
+r_uint32
 op_star
 id|dstlen
 )paren
 suffix:semicolon
 r_void
-id|rtime_decompress
+id|jffs2_rtime_decompress
 c_func
 (paren
 r_int
@@ -85,15 +98,15 @@ r_char
 op_star
 id|cpage_out
 comma
-id|__u32
+r_uint32
 id|srclen
 comma
-id|__u32
+r_uint32
 id|destlen
 )paren
 suffix:semicolon
 r_int
-id|rubinmips_compress
+id|jffs2_rubinmips_compress
 c_func
 (paren
 r_int
@@ -106,17 +119,17 @@ r_char
 op_star
 id|cpage_out
 comma
-id|__u32
+r_uint32
 op_star
 id|sourcelen
 comma
-id|__u32
+r_uint32
 op_star
 id|dstlen
 )paren
 suffix:semicolon
 r_void
-id|rubinmips_decompress
+id|jffs2_rubinmips_decompress
 c_func
 (paren
 r_int
@@ -129,15 +142,15 @@ r_char
 op_star
 id|cpage_out
 comma
-id|__u32
+r_uint32
 id|srclen
 comma
-id|__u32
+r_uint32
 id|destlen
 )paren
 suffix:semicolon
 r_int
-id|dynrubin_compress
+id|jffs2_dynrubin_compress
 c_func
 (paren
 r_int
@@ -150,17 +163,17 @@ r_char
 op_star
 id|cpage_out
 comma
-id|__u32
+r_uint32
 op_star
 id|sourcelen
 comma
-id|__u32
+r_uint32
 op_star
 id|dstlen
 )paren
 suffix:semicolon
 r_void
-id|dynrubin_decompress
+id|jffs2_dynrubin_decompress
 c_func
 (paren
 r_int
@@ -173,10 +186,10 @@ r_char
 op_star
 id|cpage_out
 comma
-id|__u32
+r_uint32
 id|srclen
 comma
-id|__u32
+r_uint32
 id|destlen
 )paren
 suffix:semicolon
@@ -197,11 +210,11 @@ r_char
 op_star
 id|cpage_out
 comma
-id|__u32
+r_uint32
 op_star
 id|datalen
 comma
-id|__u32
+r_uint32
 op_star
 id|cdatalen
 )paren
@@ -211,7 +224,7 @@ id|ret
 suffix:semicolon
 id|ret
 op_assign
-id|zlib_compress
+id|jffs2_zlib_compress
 c_func
 (paren
 id|data_in
@@ -237,7 +250,7 @@ suffix:semicolon
 macro_line|#if 0 /* Disabled 23/9/1. With zlib it hardly ever gets a look in */
 id|ret
 op_assign
-id|dynrubin_compress
+id|jffs2_dynrubin_compress
 c_func
 (paren
 id|data_in
@@ -264,7 +277,7 @@ macro_line|#endif
 macro_line|#if 0 /* Disabled 26/2/1. Obsoleted by dynrubin */
 id|ret
 op_assign
-id|rubinmips_compress
+id|jffs2_rubinmips_compress
 c_func
 (paren
 id|data_in
@@ -291,7 +304,7 @@ macro_line|#endif
 multiline_comment|/* rtime does manage to recompress already-compressed data */
 id|ret
 op_assign
-id|rtime_compress
+id|jffs2_rtime_compress
 c_func
 (paren
 id|data_in
@@ -376,10 +389,10 @@ r_char
 op_star
 id|data_out
 comma
-id|__u32
+r_uint32
 id|cdatalen
 comma
-id|__u32
+r_uint32
 id|datalen
 )paren
 (brace
@@ -423,7 +436,7 @@ suffix:semicolon
 r_case
 id|JFFS2_COMPR_ZLIB
 suffix:colon
-id|zlib_decompress
+id|jffs2_zlib_decompress
 c_func
 (paren
 id|cdata_in
@@ -440,7 +453,7 @@ suffix:semicolon
 r_case
 id|JFFS2_COMPR_RTIME
 suffix:colon
-id|rtime_decompress
+id|jffs2_rtime_decompress
 c_func
 (paren
 id|cdata_in
@@ -458,7 +471,7 @@ r_case
 id|JFFS2_COMPR_RUBINMIPS
 suffix:colon
 macro_line|#if 0 /* Disabled 23/9/1 */
-id|rubinmips_decompress
+id|jffs2_rubinmips_decompress
 c_func
 (paren
 id|cdata_in
@@ -485,7 +498,7 @@ r_case
 id|JFFS2_COMPR_DYNRUBIN
 suffix:colon
 macro_line|#if 1 /* Phase this one out */
-id|dynrubin_decompress
+id|jffs2_dynrubin_decompress
 c_func
 (paren
 id|cdata_in

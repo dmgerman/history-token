@@ -84,6 +84,7 @@ macro_line|#include &lt;net/bluetooth/hci.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/usbdevice_fs.h&gt;
 macro_line|#include &lt;linux/nbd.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 multiline_comment|/* Use this to get at 32-bit user passed pointers. &n;   See sys_sparc32.c for description about these. */
 DECL|macro|A
 mdefine_line|#define A(__x) ((unsigned long)(__x))
@@ -23707,11 +23708,6 @@ id|HDIO_SET_PIO_MODE
 id|COMPATIBLE_IOCTL
 c_func
 (paren
-id|HDIO_SCAN_HWIF
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
 id|HDIO_SET_NICE
 )paren
 multiline_comment|/* 0x02 -- Floppy ioctls */
@@ -26439,6 +26435,37 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|WIOCGSTAT
+)paren
+multiline_comment|/* Big R */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RNDGETENTCNT
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RNDADDTOENTCNT
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RNDGETPOOL
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RNDADDENTROPY
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RNDZAPENTCNT
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RNDCLEARPOOL
 )paren
 multiline_comment|/* Bluetooth ioctls */
 id|COMPATIBLE_IOCTL

@@ -99,7 +99,13 @@ c_cond
 (paren
 id|sk
 op_logical_and
-id|sk-&gt;num
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|num
 op_eq
 id|protocol
 op_logical_and

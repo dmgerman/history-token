@@ -11519,6 +11519,10 @@ id|get_sb
 suffix:colon
 id|devfs_get_sb
 comma
+id|kill_sb
+suffix:colon
+id|kill_anon_super
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*  File operations for devfsd follow  */

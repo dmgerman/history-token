@@ -8,11 +8,17 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
-DECL|variable|sal_lock
+DECL|variable|__cacheline_aligned
 id|spinlock_t
 id|sal_lock
+id|__cacheline_aligned
 op_assign
 id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|variable|sal_platform_features
+r_int
+r_int
+id|sal_platform_features
 suffix:semicolon
 r_static
 r_struct
@@ -421,7 +427,7 @@ c_func
 l_string|&quot;bad signature in system table!&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * revisions are coded in BCD, so %x does the job for us&n;&t; */
+multiline_comment|/*&n;&t; * revisions are coded in BCD, so %x does the job for us&n;&t; */
 id|printk
 c_func
 (paren
@@ -613,6 +619,10 @@ op_star
 )paren
 id|p
 suffix:semicolon
+id|sal_platform_features
+op_assign
+id|pf-&gt;feature_mask
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -624,11 +634,7 @@ c_cond
 (paren
 id|pf-&gt;feature_mask
 op_amp
-(paren
-l_int|1
-op_lshift
-l_int|0
-)paren
+id|IA64_SAL_PLATFORM_FEATURE_BUS_LOCK
 )paren
 id|printk
 c_func
@@ -641,11 +647,7 @@ c_cond
 (paren
 id|pf-&gt;feature_mask
 op_amp
-(paren
-l_int|1
-op_lshift
-l_int|1
-)paren
+id|IA64_SAL_PLATFORM_FEATURE_IRQ_REDIR_HINT
 )paren
 (brace
 id|printk
@@ -677,11 +679,7 @@ c_cond
 (paren
 id|pf-&gt;feature_mask
 op_amp
-(paren
-l_int|1
-op_lshift
-l_int|2
-)paren
+id|IA64_SAL_PLATFORM_FEATURE_IPI_REDIR_HINT
 )paren
 (brace
 id|printk
@@ -708,6 +706,19 @@ id|SMP_IPI_REDIRECTION
 suffix:semicolon
 macro_line|#endif
 )brace
+r_if
+c_cond
+(paren
+id|pf-&gt;feature_mask
+op_amp
+id|IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;ITC_Drift &quot;
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren

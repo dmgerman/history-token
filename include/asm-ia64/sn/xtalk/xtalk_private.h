@@ -1,8 +1,11 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#ifndef _ASM_SN_XTALK_XTALK_PRIVATE_H
 DECL|macro|_ASM_SN_XTALK_XTALK_PRIVATE_H
 mdefine_line|#define _ASM_SN_XTALK_XTALK_PRIVATE_H
 macro_line|#include &lt;asm/sn/ioerror.h&gt;        /* for error function and arg types */
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
+macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 multiline_comment|/*&n; * xtalk_private.h -- private definitions for xtalk&n; * crosstalk drivers should NOT include this file.&n; */
 multiline_comment|/*&n; * All Crosstalk providers set up PIO using this information.&n; */
 DECL|struct|xtalk_piomap_s

@@ -738,7 +738,13 @@ op_assign
 (paren
 id|sk
 op_logical_and
-id|sk-&gt;daddr
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|daddr
 )paren
 ques
 c_cond

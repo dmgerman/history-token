@@ -1,13 +1,14 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_LABELCL_H
-DECL|macro|_ASM_SN_LABELCL_H
-mdefine_line|#define _ASM_SN_LABELCL_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_LABELCL_H
+DECL|macro|_ASM_IA64_SN_LABELCL_H
+mdefine_line|#define _ASM_IA64_SN_LABELCL_H
+macro_line|#include &lt;asm/sn/hcl.h&gt;
 DECL|macro|LABELCL_MAGIC
 mdefine_line|#define LABELCL_MAGIC 0x4857434c&t;/* &squot;HWLC&squot; */
 DECL|macro|LABEL_LENGTH_MAX
 mdefine_line|#define LABEL_LENGTH_MAX 256&t;&t;/* Includes NULL char */
 DECL|macro|INFO_DESC_PRIVATE
-mdefine_line|#define INFO_DESC_PRIVATE -1      &t;/* default */
+mdefine_line|#define INFO_DESC_PRIVATE (-1)      &t;/* default */
 DECL|macro|INFO_DESC_EXPORT
 mdefine_line|#define INFO_DESC_EXPORT  0       &t;/* export info itself */
 multiline_comment|/*&n; * Internal Error codes.&n; */
@@ -326,5 +327,5 @@ id|devfs_entry
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif /* _ASM_SN_LABELCL_H */
+macro_line|#endif /* _ASM_IA64_SN_LABELCL_H */
 eof

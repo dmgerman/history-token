@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Kernel exception handling table support.  Derived from arch/alpha/mm/extable.c.&n; *&n; * Copyright (C) 1998, 1999, 2001 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999, 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Kernel exception handling table support.  Derived from arch/alpha/mm/extable.c.&n; *&n; * Copyright (C) 1998, 1999, 2001-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
@@ -235,6 +235,14 @@ id|archdata
 op_star
 )paren
 id|mp-&gt;archdata_start
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|archdata
+)paren
+r_continue
 suffix:semicolon
 id|entry
 op_assign

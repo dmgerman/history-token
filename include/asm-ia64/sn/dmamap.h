@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_DMAMAP_H
-DECL|macro|_ASM_SN_DMAMAP_H
-mdefine_line|#define _ASM_SN_DMAMAP_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_DMAMAP_H
+DECL|macro|_ASM_IA64_SN_DMAMAP_H
+mdefine_line|#define _ASM_IA64_SN_DMAMAP_H
 macro_line|#include &lt;asm/sn/sv.h&gt;
 macro_line|#ifdef __cplusplus
 r_extern
@@ -196,10 +196,6 @@ r_int
 id|a32_mapsize
 suffix:semicolon
 r_extern
-id|lock_t
-id|dmamaplock
-suffix:semicolon
-r_extern
 id|sv_t
 id|dmamapout
 suffix:semicolon
@@ -215,5 +211,5 @@ DECL|macro|DMAMAP_INPLACE
 mdefine_line|#define&t;DMAMAP_INPLACE&t;0x4
 DECL|macro|DMAMAP_FLAGS
 mdefine_line|#define&t;DMAMAP_FLAGS&t;0x7
-macro_line|#endif /* _ASM_SN_DMAMAP_H */
+macro_line|#endif /* _ASM_IA64_SN_DMAMAP_H */
 eof

@@ -9,9 +9,5 @@ DECL|macro|MY_BASE_ADDRESS
 mdefine_line|#define MY_BASE_ADDRESS(ec) &bslash;&n;&t;ecard_address ((ec), ECARD_IOC, ECARD_SLOW) + (0x2000 &gt;&gt; 2)
 DECL|macro|MY_PORT_ADDRESS
 mdefine_line|#define MY_PORT_ADDRESS(port,cardaddr) &bslash;&n;&t;((cardaddr) + 0x200 - (port) * 0x100)
-DECL|macro|INIT
-mdefine_line|#define INIT serial_card_atomwide_init
-DECL|macro|EXIT
-mdefine_line|#define EXIT serial_card_atomwide_exit
 macro_line|#include &quot;serial-card.c&quot;
 eof

@@ -1,11 +1,12 @@
-multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * SNI64 specific PCI support for SNI IO.&n; *&n; * Copyright (C) 1997, 1998, 2000 Colin Ngam&n; */
+multiline_comment|/* &n; *&n; * SNI64 specific PCI support for SNI IO.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1997, 1998, 2000-2001 Silicon Graphics, Inc.  All rights reserved.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/iobus.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/sn/pio.h&gt;
@@ -907,18 +908,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef BRINGUP
-r_if
-c_cond
-(paren
-id|IS_RUNNING_ON_SIMULATOR
-c_func
-(paren
-)paren
-)paren
-r_return
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* sn1_io_infrastructure_init(); */
 id|pci_conf
 op_assign
@@ -942,15 +931,6 @@ suffix:semicolon
 r_int
 r_int
 id|size
-suffix:semicolon
-id|devfs_handle_t
-id|bridge_vhdl
-op_assign
-id|pci_bus_to_vertex
-c_func
-(paren
-id|d-&gt;bus-&gt;number
-)paren
 suffix:semicolon
 multiline_comment|/* IOC3 only decodes 0x20 bytes of the config space, reading&n;&t; * beyond that is relatively benign but writing beyond that&n;&t; * (especially the base address registers) will shut down the&n;&t; * pci bus...so avoid doing so.&n;&t; * NOTE: this means we can&squot;t program the intr_pin into the device,&n;&t; *       currently we hack this with special code in &n;&t; *&t; sgi_pci_intr_support()&n;&t; */
 id|DBG
@@ -1068,5 +1048,42 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|function|sn1_pci_find_bios
+r_void
+id|sn1_pci_find_bios
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+DECL|function|pci_fixup_ioc3
+r_void
+id|pci_fixup_ioc3
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|d
+)paren
+(brace
+)brace
+DECL|variable|pci_root_buses
+r_struct
+id|list_head
+id|pci_root_buses
+suffix:semicolon
+DECL|variable|pci_root_buses
+r_struct
+id|list_head
+id|pci_root_buses
+suffix:semicolon
+DECL|variable|pci_devices
+r_struct
+id|list_head
+id|pci_devices
+suffix:semicolon
 macro_line|#endif /* CONFIG_PCI */
 eof

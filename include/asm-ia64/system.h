@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_SYSTEM_H
 DECL|macro|_ASM_IA64_SYSTEM_H
 mdefine_line|#define _ASM_IA64_SYSTEM_H
-multiline_comment|/*&n; * System defines. Note that this is included both from .c and .S&n; * files, so it does only defines, not any C code.  This is based&n; * on information published in the Processor Abstraction Layer&n; * and the System Abstraction Layer manual.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
+multiline_comment|/*&n; * System defines. Note that this is included both from .c and .S&n; * files, so it does only defines, not any C code.  This is based&n; * on information published in the Processor Abstraction Layer&n; * and the System Abstraction Layer manual.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 DECL|macro|KERNEL_START
@@ -279,7 +279,7 @@ suffix:semicolon
 DECL|macro|IA64_FETCHADD
 mdefine_line|#define IA64_FETCHADD(tmp,v,n,sz)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (sz) {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 4:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__ (&quot;fetchadd4.rel %0=[%1],%2&quot;&t;&t;&bslash;&n;&t;&t;&t;&t;      : &quot;=r&quot;(tmp) : &quot;r&quot;(v), &quot;i&quot;(n) : &quot;memory&quot;);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 8:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__ (&quot;fetchadd8.rel %0=[%1],%2&quot;&t;&t;&bslash;&n;&t;&t;&t;&t;      : &quot;=r&quot;(tmp) : &quot;r&quot;(v), &quot;i&quot;(n) : &quot;memory&quot;);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      default:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__bad_size_for_ia64_fetch_and_add();&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|ia64_fetch_and_add
-mdefine_line|#define ia64_fetch_and_add(i,v)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__u64 _tmp;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;volatile __typeof__(*(v)) *_v = (v);&t;&t;&t;&t;&t;&bslash;&n;&t;switch (i) {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case -16:&t;IA64_FETCHADD(_tmp, _v, -16, sizeof(*(v))); break;&t;&bslash;&n;&t;      case  -8:&t;IA64_FETCHADD(_tmp, _v,  -8, sizeof(*(v))); break;&t;&bslash;&n;&t;      case  -4:&t;IA64_FETCHADD(_tmp, _v,  -4, sizeof(*(v))); break;&t;&bslash;&n;&t;      case  -1:&t;IA64_FETCHADD(_tmp, _v,  -1, sizeof(*(v))); break;&t;&bslash;&n;&t;      case   1:&t;IA64_FETCHADD(_tmp, _v,   1, sizeof(*(v))); break;&t;&bslash;&n;&t;      case   4:&t;IA64_FETCHADD(_tmp, _v,   4, sizeof(*(v))); break;&t;&bslash;&n;&t;      case   8:&t;IA64_FETCHADD(_tmp, _v,   8, sizeof(*(v))); break;&t;&bslash;&n;&t;      case  16:&t;IA64_FETCHADD(_tmp, _v,  16, sizeof(*(v))); break;&t;&bslash;&n;&t;      default:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tmp = __bad_increment_for_ia64_fetch_and_add();&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(__typeof__(*v)) (_tmp + (i));&t;/* return new value */&t;&t;&t;&bslash;&n;})
+mdefine_line|#define ia64_fetch_and_add(i,v)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__u64 _tmp;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;volatile __typeof__(*(v)) *_v = (v);&t;&t;&t;&t;&t;&bslash;&n;&t;switch (i) {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case -16:&t;IA64_FETCHADD(_tmp, _v, -16, sizeof(*(v))); break;&t;&bslash;&n;&t;      case  -8:&t;IA64_FETCHADD(_tmp, _v,  -8, sizeof(*(v))); break;&t;&bslash;&n;&t;      case  -4:&t;IA64_FETCHADD(_tmp, _v,  -4, sizeof(*(v))); break;&t;&bslash;&n;&t;      case  -1:&t;IA64_FETCHADD(_tmp, _v,  -1, sizeof(*(v))); break;&t;&bslash;&n;&t;      case   1:&t;IA64_FETCHADD(_tmp, _v,   1, sizeof(*(v))); break;&t;&bslash;&n;&t;      case   4:&t;IA64_FETCHADD(_tmp, _v,   4, sizeof(*(v))); break;&t;&bslash;&n;&t;      case   8:&t;IA64_FETCHADD(_tmp, _v,   8, sizeof(*(v))); break;&t;&bslash;&n;&t;      case  16:&t;IA64_FETCHADD(_tmp, _v,  16, sizeof(*(v))); break;&t;&bslash;&n;&t;      default:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tmp = __bad_increment_for_ia64_fetch_and_add();&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(__typeof__(*(v))) (_tmp + (i));&t;/* return new value */&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * This function doesn&squot;t exist, so you&squot;ll get a linker error if&n; * something tries to do an invalid xchg().&n; */
 r_extern
 r_void
@@ -490,15 +490,16 @@ macro_line|# define IS_IA32_PROCESS(regs)&t;&t;0
 macro_line|#endif
 multiline_comment|/*&n; * Context switch from one thread to another.  If the two threads have&n; * different address spaces, schedule() has already taken care of&n; * switching to the new address space by calling switch_mm().&n; *&n; * Disabling access to the fph partition and the debug-register&n; * context switch MUST be done before calling ia64_switch_to() since a&n; * newly created thread returns directly to&n; * ia64_ret_from_syscall_clear_r8.&n; */
 r_extern
-r_struct
-id|task_struct
-op_star
+r_void
 id|ia64_switch_to
 (paren
 r_void
 op_star
 id|next_task
 )paren
+suffix:semicolon
+r_struct
+id|task_struct
 suffix:semicolon
 r_extern
 r_void
@@ -520,15 +521,22 @@ op_star
 id|task
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PERFMON)
+DECL|macro|PERFMON_IS_SYSWIDE
+macro_line|# define PERFMON_IS_SYSWIDE() (local_cpu_data-&gt;pfm_syst_wide != 0)
+macro_line|#else
+DECL|macro|PERFMON_IS_SYSWIDE
+macro_line|# define PERFMON_IS_SYSWIDE() (0)
+macro_line|#endif
 DECL|macro|__switch_to
-mdefine_line|#define __switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((prev)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(prev)))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_save_extra(prev);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((next)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(next)))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_load_extra(next);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(last) = ia64_switch_to((next));&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define __switch_to(prev,next) do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((prev)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(prev)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_save_extra(prev);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((next)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(next)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_load_extra(next);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_switch_to((next));&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n;   * In the SMP case, we save the fph state when context-switching&n;   * away from a thread that modified fph.  This way, when the thread&n;   * gets scheduled on another CPU, the CPU can pick up the state from&n;   * task-&gt;thread.fph, avoiding the complication of having to fetch&n;   * the latest fph state from another CPU.&n;   */
 DECL|macro|switch_to
-macro_line|# define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ia64_psr(ia64_task_regs(prev))-&gt;mfh) {&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_psr(ia64_task_regs(prev))-&gt;mfh = 0;&t;&t;&t;&bslash;&n;&t;&t;(prev)-&gt;thread.flags |= IA64_THREAD_FPH_VALID;&t;&t;&t;&bslash;&n;&t;&t;__ia64_save_fpu((prev)-&gt;thread.fph);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(ia64_task_regs(prev))-&gt;dfh = 1;&t;&t;&t;&t;&bslash;&n;&t;__switch_to(prev,next,last);&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
+macro_line|# define switch_to(prev,next) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ia64_psr(ia64_task_regs(prev))-&gt;mfh) {&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_psr(ia64_task_regs(prev))-&gt;mfh = 0;&t;&t;&t;&bslash;&n;&t;&t;(prev)-&gt;thread.flags |= IA64_THREAD_FPH_VALID;&t;&t;&t;&bslash;&n;&t;&t;__ia64_save_fpu((prev)-&gt;thread.fph);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(ia64_task_regs(prev))-&gt;dfh = 1;&t;&t;&t;&t;&bslash;&n;&t;__switch_to(prev,next);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
 macro_line|#else
 DECL|macro|switch_to
-macro_line|# define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(ia64_task_regs(next))-&gt;dfh = (ia64_get_fpu_owner() != (next));&t;&bslash;&n;&t;__switch_to(prev,next,last);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|# define switch_to(prev,next) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(ia64_task_regs(next))-&gt;dfh = (ia64_get_fpu_owner() != (next));&t;&bslash;&n;&t;__switch_to(prev,next);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASSEMBLY__ */

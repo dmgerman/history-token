@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Initialize MMU support.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Initialize MMU support.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
+macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/efi.h&gt;
@@ -60,21 +61,49 @@ r_int
 r_int
 id|totalram_pages
 suffix:semicolon
+DECL|variable|pgt_cache_water
+r_static
 r_int
-DECL|function|do_check_pgt_cache
-id|do_check_pgt_cache
-(paren
-r_int
-id|low
+id|pgt_cache_water
+(braket
+l_int|2
+)braket
+op_assign
+(brace
+l_int|25
 comma
+l_int|50
+)brace
+suffix:semicolon
 r_int
-id|high
+DECL|function|check_pgt_cache
+id|check_pgt_cache
+(paren
+r_void
 )paren
 (brace
 r_int
+id|low
+comma
+id|high
+comma
 id|freed
 op_assign
 l_int|0
+suffix:semicolon
+id|low
+op_assign
+id|pgt_cache_water
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|high
+op_assign
+id|pgt_cache_water
+(braket
+l_int|1
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -121,30 +150,6 @@ r_int
 r_int
 )paren
 id|pmd_alloc_one_fast
-c_func
-(paren
-l_int|0
-comma
-l_int|0
-)paren
-)paren
-comma
-op_increment
-id|freed
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pte_quicklist
-)paren
-id|free_page
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|pte_alloc_one_fast
 c_func
 (paren
 l_int|0
@@ -944,7 +949,7 @@ id|out
 suffix:semicolon
 id|pte
 op_assign
-id|pte_alloc
+id|pte_alloc_map
 c_func
 (paren
 op_amp
@@ -976,10 +981,9 @@ id|pte
 )paren
 )paren
 (brace
-id|pte_ERROR
+id|pte_unmap
 c_func
 (paren
-op_star
 id|pte
 )paren
 suffix:semicolon
@@ -1005,6 +1009,12 @@ id|page
 comma
 id|PAGE_GATE
 )paren
+)paren
+suffix:semicolon
+id|pte_unmap
+c_func
+(paren
+id|pte
 )paren
 suffix:semicolon
 )brace

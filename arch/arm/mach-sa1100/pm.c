@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * SA1100 Power Management Routines&n; *&n; * Copyright (c) 2001 Cliff Brake &lt;cbrake@accelent.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2001-02-06:&t;Cliff Brake         Initial code&n; *&n; * 2001-02-25:&t;Sukjae Cho &lt;sjcho@east.isi.edu&gt; &amp;&n; * &t;&t;Chester Kuo &lt;chester@linux.org.tw&gt;&n; * &t;&t;&t;Save more value for the resume function! Support&n; * &t;&t;&t;Bitsy/Assabet/Freebird board&n; *&n; * 2001-08-29:&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;&t;&t;Cleaned up, pushed platform dependent stuff&n; * &t;&t;&t;in the platform specific files.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -7,6 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -563,4 +565,11 @@ id|pm_init
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|pm_do_suspend
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pm_do_suspend
+)paren
+suffix:semicolon
 eof

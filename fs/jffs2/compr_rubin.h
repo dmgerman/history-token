@@ -1,7 +1,7 @@
 multiline_comment|/* Rubin encoder/decoder header       */
 multiline_comment|/* work started at   : aug   3, 1994  */
 multiline_comment|/* last modification : aug  15, 1994  */
-multiline_comment|/* $Id: compr_rubin.h,v 1.5 2001/02/26 13:50:01 dwmw2 Exp $ */
+multiline_comment|/* $Id: compr_rubin.h,v 1.6 2002/01/25 01:49:26 dwmw2 Exp $ */
 macro_line|#include &quot;pushpull.h&quot;
 DECL|macro|RUBIN_REG_SIZE
 mdefine_line|#define RUBIN_REG_SIZE   16
@@ -49,70 +49,5 @@ l_int|8
 )braket
 suffix:semicolon
 )brace
-suffix:semicolon
-r_void
-id|init_rubin
-(paren
-r_struct
-id|rubin_state
-op_star
-id|rs
-comma
-r_int
-id|div
-comma
-r_int
-op_star
-id|bits
-)paren
-suffix:semicolon
-r_int
-id|encode
-(paren
-r_struct
-id|rubin_state
-op_star
-comma
-r_int
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
-r_void
-id|end_rubin
-(paren
-r_struct
-id|rubin_state
-op_star
-)paren
-suffix:semicolon
-r_void
-id|init_decode
-(paren
-r_struct
-id|rubin_state
-op_star
-comma
-r_int
-id|div
-comma
-r_int
-op_star
-id|bits
-)paren
-suffix:semicolon
-r_int
-id|decode
-(paren
-r_struct
-id|rubin_state
-op_star
-comma
-r_int
-comma
-r_int
-)paren
 suffix:semicolon
 eof

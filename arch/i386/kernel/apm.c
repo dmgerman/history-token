@@ -58,9 +58,9 @@ DECL|macro|APM_MINOR_DEV
 mdefine_line|#define&t;APM_MINOR_DEV&t;134
 multiline_comment|/*&n; * See Documentation/Config.help for the configuration options.&n; *&n; * Various options can be changed at boot time as follows:&n; * (We allow underscores for compatibility with the modules code)&n; *&t;apm=on/off&t;&t;&t;enable/disable APM&n; *&t;    [no-]allow[-_]ints&t;&t;allow interrupts during BIOS calls&n; *&t;    [no-]broken[-_]psr&t;&t;BIOS has a broken GetPowerStatus call&n; *&t;    [no-]realmode[-_]power[-_]off&t;switch to real mode before&n; *&t;    &t;&t;&t;&t;&t;powering off&n; *&t;    [no-]debug&t;&t;&t;log some debugging messages&n; *&t;    [no-]power[-_]off&t;&t;power off on shutdown&n; *&t;    bounce[-_]interval=&lt;n&gt;&t;number of ticks to ignore suspend&n; *&t;    &t;&t;&t;&t;bounces&n; *          idle[-_]threshold=&lt;n&gt;       System idle percentage above which to&n; *                                      make APM BIOS idle calls. Set it to&n; *                                      100 to disable.&n; *          idle[-_]period=&lt;n&gt;          Period (in 1/100s of a second) over&n; *                                      which the idle percentage is&n; *                                      calculated.&n; */
 multiline_comment|/* KNOWN PROBLEM MACHINES:&n; *&n; * U: TI 4000M TravelMate: BIOS is *NOT* APM compliant&n; *                         [Confirmed by TI representative]&n; * ?: ACER 486DX4/75: uses dseg 0040, in violation of APM specification&n; *                    [Confirmed by BIOS disassembly]&n; *                    [This may work now ...]&n; * P: Toshiba 1950S: battery life information only gets updated after resume&n; * P: Midwest Micro Soundbook Elite DX2/66 monochrome: screen blanking&n; * &t;broken in BIOS [Reported by Garst R. Reese &lt;reese@isn.net&gt;]&n; * ?: AcerNote-950: oops on reading /proc/apm - workaround is a WIP&n; * &t;Neale Banks &lt;neale@lowendale.com.au&gt; December 2000&n; *&n; * Legend: U = unusable with APM patches&n; *         P = partially usable with APM patches&n; */
-multiline_comment|/*&n; * Define to always call the APM BIOS busy routine even if the clock was&n; * not slowed by the idle routine.&n; */
+multiline_comment|/*&n; * Define as 1 to make the driver always call the APM BIOS busy&n; * routine even if the clock was not reported as slowed by the&n; * idle routine.  Otherwise, define as 0.&n; */
 DECL|macro|ALWAYS_CALL_BUSY
-mdefine_line|#define ALWAYS_CALL_BUSY
+mdefine_line|#define ALWAYS_CALL_BUSY   1
 multiline_comment|/*&n; * Define to make the APM BIOS calls zero all data segment registers (so&n; * that an incorrect BIOS implementation will cause a kernel panic if it&n; * tries to write to arbitrary memory).&n; */
 DECL|macro|APM_ZERO_SEGS
 mdefine_line|#define APM_ZERO_SEGS
@@ -228,10 +228,10 @@ r_static
 r_int
 id|standbys_pending
 suffix:semicolon
-DECL|variable|waiting_for_resume
+DECL|variable|ignore_sys_suspend
 r_static
 r_int
-id|waiting_for_resume
+id|ignore_sys_suspend
 suffix:semicolon
 DECL|variable|ignore_normal_resume
 r_static
@@ -528,6 +528,88 @@ l_string|&quot;No APM present&quot;
 suffix:semicolon
 DECL|macro|ERROR_COUNT
 mdefine_line|#define ERROR_COUNT&t;(sizeof(error_table)/sizeof(lookup_t))
+multiline_comment|/**&n; *&t;apm_error&t;-&t;display an APM error&n; *&t;@str: information string&n; *&t;@err: APM BIOS return code&n; *&n; *&t;Write a meaningful log entry to the kernel log in the event of&n; *&t;an APM error.&n; */
+DECL|function|apm_error
+r_static
+r_void
+id|apm_error
+c_func
+(paren
+r_char
+op_star
+id|str
+comma
+r_int
+id|err
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ERROR_COUNT
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|error_table
+(braket
+id|i
+)braket
+dot
+id|key
+op_eq
+id|err
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+OL
+id|ERROR_COUNT
+)paren
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;apm: %s: %s&bslash;n&quot;
+comma
+id|str
+comma
+id|error_table
+(braket
+id|i
+)braket
+dot
+id|msg
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;apm: %s: unknown error code %#2.2x&bslash;n&quot;
+comma
+id|str
+comma
+id|err
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * These are the actual BIOS calls.  Depending on APM_ZERO_SEGS and&n; * apm_info.allow_ints, we are being really paranoid here!  Not only&n; * are interrupts disabled, but all the segment registers (except SS)&n; * are saved and zeroed this means that if the BIOS tries to reference&n; * any data without explicitly loading the segment registers, the kernel&n; * will fault immediately rather than have some unforeseen circumstances&n; * for the rest of the kernel.  And it will be very obvious!  :-) Doing&n; * this depends on CS referring to the same physical memory as DS so that&n; * DS can be zeroed before the call. Unfortunately, we can&squot;t do anything&n; * about the stack segment/pointer.  Also, we tell the compiler that&n; * everything could change.&n; *&n; * Also, we KNOW that for the non error case of apm_bios_call, there&n; * is no useful data returned in the low order 8 bits of eax.&n; */
 DECL|macro|APM_DO_CLI
 mdefine_line|#define APM_DO_CLI&t;&bslash;&n;&t;if (apm_info.allow_ints) &bslash;&n;&t;&t;__sti(); &bslash;&n;&t;else &bslash;&n;&t;&t;__cli();
@@ -1008,11 +1090,11 @@ r_return
 id|APM_SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;apm_set_power_state - set system wide power state&n; *&t;@state: which state to enter&n; *&n; *&t;Transition the entire system into a new APM power state.&n; */
-DECL|function|apm_set_power_state
+multiline_comment|/**&n; *&t;set_system_power_state - set system wide power state&n; *&t;@state: which state to enter&n; *&n; *&t;Transition the entire system into a new APM power state.&n; */
+DECL|function|set_system_power_state
 r_static
 r_int
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|u_short
@@ -1041,9 +1123,6 @@ r_void
 (brace
 id|u32
 id|eax
-suffix:semicolon
-r_int
-id|slowed
 suffix:semicolon
 r_if
 c_cond
@@ -1108,7 +1187,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|slowed
+id|clock_slowed
 op_assign
 (paren
 id|apm_info.bios.flags
@@ -1118,19 +1197,8 @@ id|APM_IDLE_SLOWS_CLOCK
 op_ne
 l_int|0
 suffix:semicolon
-macro_line|#ifdef ALWAYS_CALL_BUSY
-id|clock_slowed
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-id|clock_slowed
-op_assign
-id|slowed
-suffix:semicolon
-macro_line|#endif
 r_return
-id|slowed
+id|clock_slowed
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;apm_do_busy&t;-&t;inform the BIOS the CPU is busy&n; *&n; *&t;Request that the BIOS brings the CPU back to full performance. &n; */
@@ -1150,6 +1218,8 @@ r_if
 c_cond
 (paren
 id|clock_slowed
+op_logical_or
+id|ALWAYS_CALL_BUSY
 )paren
 (brace
 (paren
@@ -1179,12 +1249,12 @@ DECL|macro|IDLE_CALC_LIMIT
 mdefine_line|#define IDLE_CALC_LIMIT   (HZ * 100)
 DECL|macro|IDLE_LEAKY_MAX
 mdefine_line|#define IDLE_LEAKY_MAX    16
-DECL|variable|sys_idle
+DECL|variable|original_pm_idle
 r_static
 r_void
 (paren
 op_star
-id|sys_idle
+id|original_pm_idle
 )paren
 (paren
 r_void
@@ -1211,25 +1281,22 @@ r_void
 r_static
 r_int
 id|use_apm_idle
-op_assign
-l_int|0
 suffix:semicolon
+multiline_comment|/* = 0 */
 r_static
 r_int
 r_int
 id|last_jiffies
-op_assign
-l_int|0
 suffix:semicolon
+multiline_comment|/* = 0 */
 r_static
 r_int
 r_int
 id|last_stime
-op_assign
-l_int|0
 suffix:semicolon
+multiline_comment|/* = 0 */
 r_int
-id|apm_is_idle
+id|apm_idle_done
 op_assign
 l_int|0
 suffix:semicolon
@@ -1243,7 +1310,7 @@ id|last_jiffies
 suffix:semicolon
 r_int
 r_int
-id|t1
+id|bucket
 suffix:semicolon
 id|recalc
 suffix:colon
@@ -1312,7 +1379,7 @@ op_assign
 id|current-&gt;times.tms_stime
 suffix:semicolon
 )brace
-id|t1
+id|bucket
 op_assign
 id|IDLE_LEAKY_MAX
 suffix:semicolon
@@ -1352,7 +1419,7 @@ c_func
 r_case
 l_int|0
 suffix:colon
-id|apm_is_idle
+id|apm_idle_done
 op_assign
 l_int|1
 suffix:semicolon
@@ -1367,10 +1434,10 @@ id|jiffies
 r_if
 c_cond
 (paren
-id|t1
+id|bucket
 )paren
 (brace
-id|t1
+id|bucket
 op_assign
 id|IDLE_LEAKY_MAX
 suffix:semicolon
@@ -1382,10 +1449,10 @@ r_else
 r_if
 c_cond
 (paren
-id|t1
+id|bucket
 )paren
 (brace
-id|t1
+id|bucket
 op_decrement
 suffix:semicolon
 r_continue
@@ -1396,20 +1463,25 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|apm_is_idle
+id|apm_idle_done
 op_assign
 l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+(brace
+)brace
+multiline_comment|/* BIOS refused */
 )brace
 )brace
 r_if
 c_cond
 (paren
-id|sys_idle
+id|original_pm_idle
 )paren
-id|sys_idle
+id|original_pm_idle
 c_func
 (paren
 )paren
@@ -1440,7 +1512,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|apm_is_idle
+id|apm_idle_done
 )paren
 id|apm_do_busy
 c_func
@@ -1596,7 +1668,7 @@ r_else
 (paren
 r_void
 )paren
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_OFF
@@ -2091,88 +2163,6 @@ suffix:semicolon
 )brace
 r_return
 id|APM_SUCCESS
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;apm_error&t;-&t;display an APM error&n; *&t;@str: information string&n; *&t;@err: APM BIOS return code&n; *&n; *&t;Write a meaningful log entry to the kernel log in the event of&n; *&t;an APM error.&n; */
-DECL|function|apm_error
-r_static
-r_void
-id|apm_error
-c_func
-(paren
-r_char
-op_star
-id|str
-comma
-r_int
-id|err
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|ERROR_COUNT
-suffix:semicolon
-id|i
-op_increment
-)paren
-r_if
-c_cond
-(paren
-id|error_table
-(braket
-id|i
-)braket
-dot
-id|key
-op_eq
-id|err
-)paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|i
-OL
-id|ERROR_COUNT
-)paren
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;apm: %s: %s&bslash;n&quot;
-comma
-id|str
-comma
-id|error_table
-(braket
-id|i
-)braket
-dot
-id|msg
-)paren
-suffix:semicolon
-r_else
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;apm: %s: unknown error code %#2.2x&bslash;n&quot;
-comma
-id|str
-comma
-id|err
-)paren
 suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_APM_DISPLAY_BLANK) &amp;&amp; defined(CONFIG_VT)
@@ -2766,7 +2756,7 @@ id|apm_info.connection_version
 OG
 l_int|0x100
 )paren
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_REJECT
@@ -2777,7 +2767,7 @@ op_assign
 op_minus
 id|EBUSY
 suffix:semicolon
-id|waiting_for_resume
+id|ignore_sys_suspend
 op_assign
 l_int|0
 suffix:semicolon
@@ -2812,7 +2802,7 @@ c_func
 suffix:semicolon
 id|err
 op_assign
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_SUSPEND
@@ -2827,6 +2817,10 @@ id|set_time
 c_func
 (paren
 )paren
+suffix:semicolon
+id|ignore_normal_resume
+op_assign
+l_int|1
 suffix:semicolon
 id|sti
 c_func
@@ -2892,10 +2886,6 @@ id|APM_NORMAL_RESUME
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-id|ignore_normal_resume
-op_assign
-l_int|1
 suffix:semicolon
 id|out
 suffix:colon
@@ -2969,7 +2959,7 @@ c_func
 suffix:semicolon
 id|err
 op_assign
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_STANDBY
@@ -3211,7 +3201,7 @@ id|apm_info.connection_version
 OG
 l_int|0x100
 )paren
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_REJECT
@@ -3236,7 +3226,7 @@ id|apm_info.connection_version
 OG
 l_int|0x100
 )paren
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_REJECT
@@ -3249,11 +3239,11 @@ multiline_comment|/*&n;&t;&t;&t; * If we are already processing a SUSPEND,&n;&t;
 r_if
 c_cond
 (paren
-id|waiting_for_resume
+id|ignore_sys_suspend
 )paren
 r_return
 suffix:semicolon
-id|waiting_for_resume
+id|ignore_sys_suspend
 op_assign
 l_int|1
 suffix:semicolon
@@ -3292,7 +3282,7 @@ suffix:colon
 r_case
 id|APM_STANDBY_RESUME
 suffix:colon
-id|waiting_for_resume
+id|ignore_sys_suspend
 op_assign
 l_int|0
 suffix:semicolon
@@ -3469,7 +3459,7 @@ l_string|&quot;apm: setting state busy&bslash;n&quot;
 suffix:semicolon
 id|err
 op_assign
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_BUSY
@@ -6376,7 +6366,7 @@ OL
 l_int|100
 )paren
 (brace
-id|sys_idle
+id|original_pm_idle
 op_assign
 id|pm_idle
 suffix:semicolon
@@ -6413,7 +6403,7 @@ id|set_pm_idle
 )paren
 id|pm_idle
 op_assign
-id|sys_idle
+id|original_pm_idle
 suffix:semicolon
 r_if
 c_cond

@@ -909,6 +909,10 @@ id|get_sb
 suffix:colon
 id|devpts_get_sb
 comma
+id|kill_sb
+suffix:colon
+id|kill_anon_super
+comma
 )brace
 suffix:semicolon
 DECL|function|devpts_pty_new

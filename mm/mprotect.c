@@ -1496,6 +1496,8 @@ op_or
 id|PROT_WRITE
 op_or
 id|PROT_EXEC
+op_or
+id|PROT_SEM
 )paren
 )paren
 r_return

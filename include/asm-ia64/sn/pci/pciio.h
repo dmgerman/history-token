@@ -1,32 +1,28 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_SN_PCI_PCIIO_H
 DECL|macro|_ASM_SN_PCI_PCIIO_H
 mdefine_line|#define _ASM_SN_PCI_PCIIO_H
 multiline_comment|/*&n; * pciio.h -- platform-independent PCI interface&n; */
 macro_line|#include &lt;asm/sn/ioerror.h&gt;
-macro_line|#include &lt;asm/sn/iobus.h&gt;
-macro_line|#if defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS)
+macro_line|#include &lt;asm/sn/driver.h&gt;
+macro_line|#include &lt;asm/sn/hcl.h&gt;
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/sn/dmamap.h&gt;
 macro_line|#include &lt;asm/sn/alenlist.h&gt;
-macro_line|#ifdef __cplusplus
-r_extern
-l_string|&quot;C&quot;
-(brace
-macro_line|#endif
 DECL|typedef|pciio_vendor_id_t
 r_typedef
 r_int
 id|pciio_vendor_id_t
 suffix:semicolon
 DECL|macro|PCIIO_VENDOR_ID_NONE
-mdefine_line|#define PCIIO_VENDOR_ID_NONE&t;-1
+mdefine_line|#define PCIIO_VENDOR_ID_NONE&t;(-1)
 DECL|typedef|pciio_device_id_t
 r_typedef
 r_int
 id|pciio_device_id_t
 suffix:semicolon
 DECL|macro|PCIIO_DEVICE_ID_NONE
-mdefine_line|#define PCIIO_DEVICE_ID_NONE&t;-1
+mdefine_line|#define PCIIO_DEVICE_ID_NONE&t;(-1)
 DECL|typedef|pciio_bus_t
 r_typedef
 r_uint8
@@ -587,22 +583,9 @@ id|pciio_intr_connect_f
 (paren
 id|pciio_intr_t
 id|intr_hdl
-comma
-multiline_comment|/* pciio intr resource handle */
-id|intr_func_t
-id|intr_func
-comma
-multiline_comment|/* pciio intr handler */
-id|intr_arg_t
-id|intr_arg
-comma
-multiline_comment|/* arg to intr handler */
-r_void
-op_star
-id|thread
 )paren
 suffix:semicolon
-multiline_comment|/* intr thread to use */
+multiline_comment|/* pciio intr resource handle */
 r_typedef
 r_void
 DECL|typedef|pciio_intr_disconnect_f
@@ -1939,10 +1922,6 @@ c_func
 id|devfs_handle_t
 )paren
 suffix:semicolon
-macro_line|#ifdef __cplusplus
-)brace
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif&t;&t;&t;&t;/* C or C++ */
 macro_line|#endif&t;&t;&t;&t;/* _ASM_SN_PCI_PCIIO_H */
 eof

@@ -1250,11 +1250,11 @@ c_func
 id|dump_fpu
 )paren
 suffix:semicolon
-DECL|variable|pte_alloc_one
+DECL|variable|pte_alloc_one_kernel
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pte_alloc_one
+id|pte_alloc_one_kernel
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP

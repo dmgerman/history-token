@@ -218,6 +218,32 @@ DECL|struct|inet_opt
 r_struct
 id|inet_opt
 (brace
+multiline_comment|/* Socket demultiplex comparisons on incoming packets. */
+DECL|member|daddr
+id|__u32
+id|daddr
+suffix:semicolon
+multiline_comment|/* Foreign IPv4 addr */
+DECL|member|rcv_saddr
+id|__u32
+id|rcv_saddr
+suffix:semicolon
+multiline_comment|/* Bound local IPv4 addr */
+DECL|member|dport
+id|__u16
+id|dport
+suffix:semicolon
+multiline_comment|/* Destination port */
+DECL|member|num
+id|__u16
+id|num
+suffix:semicolon
+multiline_comment|/* Local port */
+DECL|member|saddr
+id|__u32
+id|saddr
+suffix:semicolon
+multiline_comment|/* Sending source */
 DECL|member|ttl
 r_int
 id|ttl
@@ -238,6 +264,11 @@ id|ip_options
 op_star
 id|opt
 suffix:semicolon
+DECL|member|sport
+id|__u16
+id|sport
+suffix:semicolon
+multiline_comment|/* Source port */
 DECL|member|hdrincl
 r_int
 r_char
@@ -254,6 +285,15 @@ id|__u8
 id|mc_loop
 suffix:semicolon
 multiline_comment|/* Loopback */
+DECL|member|pmtudisc
+id|__u8
+id|pmtudisc
+suffix:semicolon
+DECL|member|id
+id|__u16
+id|id
+suffix:semicolon
+multiline_comment|/* ID counter for DF pkts */
 DECL|member|recverr
 r_int
 id|recverr
@@ -264,15 +304,6 @@ DECL|member|freebind
 id|freebind
 suffix:colon
 l_int|1
-suffix:semicolon
-DECL|member|id
-id|__u16
-id|id
-suffix:semicolon
-multiline_comment|/* ID counter for DF pkts */
-DECL|member|pmtudisc
-id|__u8
-id|pmtudisc
 suffix:semicolon
 DECL|member|mc_index
 r_int

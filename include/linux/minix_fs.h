@@ -35,7 +35,7 @@ mdefine_line|#define MINIX_V1&t;&t;0x0001&t;&t;/* original minix fs */
 DECL|macro|MINIX_V2
 mdefine_line|#define MINIX_V2&t;&t;0x0002&t;&t;/* minix V2 fs */
 DECL|macro|INODE_VERSION
-mdefine_line|#define INODE_VERSION(inode)&t;inode-&gt;i_sb-&gt;u.minix_sb.s_version
+mdefine_line|#define INODE_VERSION(inode)&t;minix_sb(inode-&gt;i_sb)-&gt;s_version
 multiline_comment|/*&n; * This is the original minix inode layout on disk.&n; * Note the 8-bit gid and atime and ctime.&n; */
 DECL|struct|minix_inode
 r_struct
@@ -186,6 +186,7 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/minix_fs_i.h&gt;
+macro_line|#include &lt;linux/minix_fs_sb.h&gt;
 multiline_comment|/*&n; * change the define below to 0 if you want names &gt; info-&gt;s_namelen chars to be&n; * truncated. Else they will be disallowed (ENAMETOOLONG).&n; */
 DECL|macro|NO_TRUNCATE
 mdefine_line|#define NO_TRUNCATE 1
@@ -548,6 +549,25 @@ r_struct
 id|dentry_operations
 id|minix_dentry_operations
 suffix:semicolon
+DECL|function|minix_sb
+r_static
+r_inline
+r_struct
+id|minix_sb_info
+op_star
+id|minix_sb
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
+suffix:semicolon
+)brace
 DECL|function|minix_i
 r_static
 r_inline

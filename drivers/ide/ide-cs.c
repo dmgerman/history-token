@@ -1647,7 +1647,11 @@ id|info-&gt;ndev
 id|ide_unregister
 c_func
 (paren
+op_amp
+id|ide_hwifs
+(braket
 id|info-&gt;hd
+)braket
 )paren
 suffix:semicolon
 id|MOD_DEC_USE_COUNT

@@ -1,10 +1,11 @@
 macro_line|#ifndef _ASM_IA64_PCI_H
 DECL|macro|_ASM_IA64_PCI_H
 mdefine_line|#define _ASM_IA64_PCI_H
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 multiline_comment|/*&n; * Can be used to override the logic in pci_scan_bus for skipping already-configured bus&n; * numbers - to be used for buggy BIOSes or architectures with incomplete PCI setup by the&n; * loader.&n; */
@@ -17,6 +18,9 @@ mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0x10000000
 r_struct
 id|pci_dev
 suffix:semicolon
+multiline_comment|/*&n; * The PCI address space does equal the physical memory address space.&n; * The networking and block device layers use this boolean for bounce&n; * buffer decisions.&n; */
+DECL|macro|PCI_DMA_BUS_IS_PHYS
+mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;(1)
 r_static
 r_inline
 r_void
@@ -103,7 +107,7 @@ multiline_comment|/* The ia64 platform always supports 64-bit addressing. */
 DECL|macro|pci_dac_dma_supported
 mdefine_line|#define pci_dac_dma_supported(pci_dev, mask)&t;(1)
 DECL|macro|pci_dac_page_to_dma
-mdefine_line|#define pci_dac_page_to_dma(dev,pg,off,dir)&t;((dma64_addr_t) page_to_bus(pg) + (off))
+mdefine_line|#define pci_dac_page_to_dma(dev,pg,off,dir)&t;((dma_addr_t) page_to_bus(pg) + (off))
 DECL|macro|pci_dac_dma_to_page
 mdefine_line|#define pci_dac_dma_to_page(dev,dma_addr)&t;(virt_to_page(bus_to_virt(dma_addr)))
 DECL|macro|pci_dac_dma_to_offset

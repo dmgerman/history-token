@@ -20,6 +20,8 @@ DECL|macro|PCI_BIOS_SORT
 mdefine_line|#define PCI_BIOS_SORT&t;&t;0x0200
 DECL|macro|PCI_NO_CHECKS
 mdefine_line|#define PCI_NO_CHECKS&t;&t;0x0400
+DECL|macro|PCI_USE_PIRQ_MASK
+mdefine_line|#define PCI_USE_PIRQ_MASK&t;0x0800
 DECL|macro|PCI_ASSIGN_ROMS
 mdefine_line|#define PCI_ASSIGN_ROMS&t;&t;0x1000
 DECL|macro|PCI_BIOS_IRQ_SCAN

@@ -22,6 +22,10 @@ op_star
 l_int|16
 )braket
 suffix:semicolon
+r_extern
+r_int
+id|pcat_compat
+suffix:semicolon
 DECL|variable|aux_device_present
 r_int
 r_char
@@ -183,13 +187,28 @@ suffix:semicolon
 multiline_comment|/* XXX fake */
 )brace
 r_void
+id|__init
 DECL|function|dig_irq_init
 id|dig_irq_init
 (paren
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t; * Disable the compatibility mode interrupts (8259 style), needs IN/OUT support&n;&t; * enabled.&n;&t; */
+r_if
+c_cond
+(paren
+id|pcat_compat
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Disable the compatibility mode interrupts (8259 style), needs IN/OUT support&n;&t;&t; * enabled.&n;&t;&t; */
+id|printk
+c_func
+(paren
+l_string|&quot;%s: Disabling PC-AT compatible 8259 interrupts&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|outb
 c_func
 (paren
@@ -206,5 +225,18 @@ comma
 l_int|0x21
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: System doesn&squot;t have PC-AT compatible dual-8259 setup. &quot;
+l_string|&quot;Nothing to be done&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+)brace
 )brace
 eof

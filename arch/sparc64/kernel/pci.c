@@ -1633,7 +1633,7 @@ id|user32
 op_assign
 id|user_offset
 op_amp
-l_int|0xffffffffUL
+id|pci_memspace_mask
 suffix:semicolon
 r_int
 r_int
@@ -1777,7 +1777,7 @@ op_amp
 id|PAGE_MASK
 )paren
 op_amp
-l_int|0xffffffffUL
+id|pci_memspace_mask
 suffix:semicolon
 r_if
 c_cond
@@ -1851,7 +1851,9 @@ op_assign
 id|largest_base
 op_amp
 op_complement
-l_int|0xffffffffUL
+(paren
+id|pci_memspace_mask
+)paren
 )paren
 op_or
 id|user32

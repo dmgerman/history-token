@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__&t;/* see &lt;asm/unistd.h&gt; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -7,13 +7,16 @@ macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/efi.h&gt;
+macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/perfmon.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -21,6 +24,13 @@ macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unwind.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
+macro_line|#ifdef CONFIG_IA64_SGI_SN
+macro_line|#include &lt;asm/sn/idle.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_PERFMON
+macro_line|# include &lt;asm/perfmon.h&gt;
+macro_line|#endif
+macro_line|#include &quot;sigframe.h&quot;
 r_static
 r_void
 DECL|function|do_show_stack
@@ -110,6 +120,39 @@ c_func
 id|info
 )paren
 op_ge
+l_int|0
+)paren
+suffix:semicolon
+)brace
+r_void
+DECL|function|show_trace_task
+id|show_trace_task
+(paren
+r_struct
+id|task_struct
+op_star
+id|task
+)paren
+(brace
+r_struct
+id|unw_frame_info
+id|info
+suffix:semicolon
+id|unw_init_from_blocked_task
+c_func
+(paren
+op_amp
+id|info
+comma
+id|task
+)paren
+suffix:semicolon
+id|do_show_stack
+c_func
+(paren
+op_amp
+id|info
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -423,15 +466,17 @@ comma
 id|regs-&gt;r31
 )paren
 suffix:semicolon
-multiline_comment|/* print the stacked registers if cr.ifs is valid: */
 r_if
 c_cond
 (paren
-id|regs-&gt;cr_ifs
-op_amp
-l_int|0x8000000000000000
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
 )paren
 (brace
+multiline_comment|/* print the stacked registers */
 r_int
 r_int
 id|val
@@ -553,22 +598,74 @@ l_string|&quot; &quot;
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
+r_else
 id|show_stack
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
+)brace
+r_void
+DECL|function|do_notify_resume_user
+id|do_notify_resume_user
+(paren
+id|sigset_t
+op_star
+id|oldset
+comma
+r_struct
+id|sigscratch
+op_star
+id|scr
+comma
+r_int
+id|in_syscall
+)paren
+(brace
+macro_line|#ifdef CONFIG_PERFMON
+r_if
+c_cond
+(paren
+id|current-&gt;thread.pfm_ovfl_block_reset
+)paren
+id|pfm_ovfl_block_reset
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* deal with pending signal delivery */
+r_if
+c_cond
+(paren
+id|test_thread_flag
+c_func
+(paren
+id|TIF_SIGPENDING
+)paren
+)paren
+id|ia64_do_signal
+c_func
+(paren
+id|oldset
+comma
+id|scr
+comma
+id|in_syscall
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * We use this if we don&squot;t have any better idle routine..&n; */
+r_static
+r_void
+DECL|function|default_idle
+id|default_idle
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* may want to do PAL_LIGHT_HALT here... */
 )brace
 r_void
 id|__attribute__
@@ -587,15 +684,6 @@ id|unused
 )paren
 (brace
 multiline_comment|/* endless idle loop with no priority at all */
-id|init_idle
-c_func
-(paren
-)paren
-suffix:semicolon
-id|current-&gt;nice
-op_assign
-l_int|20
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -627,8 +715,40 @@ c_func
 (paren
 )paren
 )paren
-r_continue
+(brace
+macro_line|#ifdef CONFIG_IA64_SGI_SN
+id|snidle
+c_func
+(paren
+)paren
 suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|pm_idle
+)paren
+(paren
+op_star
+id|pm_idle
+)paren
+(paren
+)paren
+suffix:semicolon
+r_else
+id|default_idle
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_IA64_SGI_SN
+id|snidleoff
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 id|normal_xtp
 c_func
@@ -643,18 +763,6 @@ c_func
 suffix:semicolon
 id|check_pgt_cache
 c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pm_idle
-)paren
-(paren
-op_star
-id|pm_idle
-)paren
 (paren
 )paren
 suffix:semicolon
@@ -707,6 +815,19 @@ id|pfm_save_regs
 c_func
 (paren
 id|task
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|local_cpu_data-&gt;pfm_syst_wide
+)paren
+id|pfm_syst_wide_update_task
+c_func
+(paren
+id|task
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -777,6 +898,19 @@ id|pfm_load_regs
 c_func
 (paren
 id|task
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|local_cpu_data-&gt;pfm_syst_wide
+)paren
+id|pfm_syst_wide_update_task
+c_func
+(paren
+id|task
+comma
+l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1027,6 +1161,8 @@ op_assign
 id|user_stack_base
 op_plus
 id|user_stack_size
+op_minus
+l_int|16
 suffix:semicolon
 id|child_ptregs-&gt;ar_bspstore
 op_assign
@@ -1154,10 +1290,29 @@ id|p
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PERFMON
+multiline_comment|/*&n;&t; * reset notifiers and owner check (may not have a perfmon context)&n;&t; */
+id|atomic_set
+c_func
+(paren
+op_amp
+id|p-&gt;thread.pfm_notifiers_check
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|p-&gt;thread.pfm_owners_check
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;thread.pfm_context
+id|current-&gt;thread.pfm_context
 )paren
 id|retval
 op_assign
@@ -1830,6 +1985,43 @@ r_return
 id|error
 suffix:semicolon
 )brace
+r_void
+DECL|function|ia64_set_personality
+id|ia64_set_personality
+(paren
+r_struct
+id|elf64_hdr
+op_star
+id|elf_ex
+comma
+r_int
+id|ibcs2_interpreter
+)paren
+(brace
+id|set_personality
+c_func
+(paren
+id|PER_LINUX
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|elf_ex-&gt;e_flags
+op_amp
+id|EF_IA_64_LINUX_EXECUTABLE_STACK
+)paren
+id|current-&gt;thread.flags
+op_or_assign
+id|IA64_THREAD_XSTACK
+suffix:semicolon
+r_else
+id|current-&gt;thread.flags
+op_and_assign
+op_complement
+id|IA64_THREAD_XSTACK
+suffix:semicolon
+)brace
 id|pid_t
 DECL|function|kernel_thread
 id|kernel_thread
@@ -1944,7 +2136,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_PERFMON
-multiline_comment|/*&n; * By the time we get here, the task is detached from the tasklist. This is important&n; * because it means that no other tasks can ever find it as a notifiied task, therfore&n; * there is no race condition between this code and let&squot;s say a pfm_context_create().&n; * Conversely, the pfm_cleanup_notifiers() cannot try to access a task&squot;s pfm context if&n; * this other task is in the middle of its own pfm_context_exit() because it would alreayd&n; * be out of the task list. Note that this case is very unlikely between a direct child&n; * and its parents (if it is the notified process) because of the way the exit is notified&n; * via SIGCHLD.&n; */
+multiline_comment|/*&n; * by the time we get here, the task is detached from the tasklist. This is important&n; * because it means that no other tasks can ever find it as a notified task, therfore there&n; * is no race condition between this code and let&squot;s say a pfm_context_create().&n; * Conversely, the pfm_cleanup_notifiers() cannot try to access a task&squot;s pfm context if this&n; * other task is in the middle of its own pfm_context_exit() because it would already be out of&n; * the task list. Note that this case is very unlikely between a direct child and its parents&n; * (if it is the notified process) because of the way the exit is notified via SIGCHLD.&n; */
 r_void
 DECL|function|release_thread
 id|release_thread
@@ -1984,6 +2176,35 @@ c_func
 id|task
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|task-&gt;thread.pfm_owners_check
+)paren
+OG
+l_int|0
+)paren
+id|pfm_cleanup_owners
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|task-&gt;thread.pfm_smpl_buf_list
+)paren
+id|pfm_cleanup_smpl_buf
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * Clean up state associated with current thread.  This is called when&n; * the thread calls exit().&n; */
@@ -2013,31 +2234,36 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PERFMON
-multiline_comment|/* stop monitoring */
+multiline_comment|/* if needed, stop monitoring and flush state to perfmon context */
 r_if
 c_cond
 (paren
-(paren
-id|current-&gt;thread.flags
-op_amp
-id|IA64_THREAD_PM_VALID
+id|current-&gt;thread.pfm_context
 )paren
-op_ne
-l_int|0
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * we cannot rely on switch_to() to save the PMU&n;&t;&t; * context for the last time. There is a possible race&n;&t;&t; * condition in SMP mode between the child and the&n;&t;&t; * parent.  by explicitly saving the PMU context here&n;&t;&t; * we garantee no race.  this call we also stop&n;&t;&t; * monitoring&n;&t;&t; */
 id|pfm_flush_regs
 c_func
 (paren
 id|current
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * make sure that switch_to() will not save context again&n;&t;&t; */
+multiline_comment|/* free debug register resources */
+r_if
+c_cond
+(paren
+(paren
 id|current-&gt;thread.flags
-op_and_assign
-op_complement
-id|IA64_THREAD_PM_VALID
+op_amp
+id|IA64_THREAD_DBG_VALID
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|pfm_release_debug_registers
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -2321,6 +2547,125 @@ suffix:semicolon
 id|machine_halt
 c_func
 (paren
+)paren
+suffix:semicolon
+)brace
+r_void
+id|__init
+DECL|function|init_task_struct_cache
+id|init_task_struct_cache
+(paren
+r_void
+)paren
+(brace
+)brace
+r_struct
+id|task_struct
+op_star
+DECL|function|dup_task_struct
+id|dup_task_struct
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|orig
+)paren
+(brace
+r_struct
+id|task_struct
+op_star
+id|tsk
+suffix:semicolon
+id|tsk
+op_assign
+id|__get_free_pages
+c_func
+(paren
+id|GFP_KERNEL
+comma
+id|KERNEL_STACK_SIZE_ORDER
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tsk
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|tsk
+comma
+id|orig
+comma
+r_sizeof
+(paren
+r_struct
+id|task_struct
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|thread_info
+)paren
+)paren
+suffix:semicolon
+id|tsk-&gt;thread_info
+op_assign
+(paren
+r_struct
+id|thread_info
+op_star
+)paren
+(paren
+(paren
+r_char
+op_star
+)paren
+id|tsk
+op_plus
+id|IA64_TASK_SIZE
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|tsk-&gt;usage
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_return
+id|tsk
+suffix:semicolon
+)brace
+r_void
+DECL|function|__put_task_struct
+id|__put_task_struct
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+id|free_pages
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|tsk
+comma
+id|KERNEL_STACK_SIZE_ORDER
 )paren
 suffix:semicolon
 )brace

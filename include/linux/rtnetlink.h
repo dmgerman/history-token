@@ -775,12 +775,19 @@ DECL|macro|IFLA_PRIORITY
 mdefine_line|#define IFLA_PRIORITY IFLA_PRIORITY
 DECL|enumerator|IFLA_MASTER
 id|IFLA_MASTER
+comma
 DECL|macro|IFLA_MASTER
 mdefine_line|#define IFLA_MASTER IFLA_MASTER
+DECL|enumerator|IFLA_WIRELESS
+id|IFLA_WIRELESS
+comma
+multiline_comment|/* Wireless Extension event - see wireless.h */
+DECL|macro|IFLA_WIRELESS
+mdefine_line|#define IFLA_WIRELESS IFLA_WIRELESS
 )brace
 suffix:semicolon
 DECL|macro|IFLA_MAX
-mdefine_line|#define IFLA_MAX IFLA_MASTER
+mdefine_line|#define IFLA_MAX IFLA_WIRELESS
 DECL|macro|IFLA_RTA
 mdefine_line|#define IFLA_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct ifinfomsg))))
 DECL|macro|IFLA_PAYLOAD

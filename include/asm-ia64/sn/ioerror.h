@@ -1,8 +1,10 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_IOERROR_H
-DECL|macro|_ASM_SN_IOERROR_H
-mdefine_line|#define _ASM_SN_IOERROR_H
-macro_line|#if defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS)
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_IOERROR_H
+DECL|macro|_ASM_IA64_SN_IOERROR_H
+mdefine_line|#define _ASM_IA64_SN_IOERROR_H
+macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/sn/types.h&gt;
 multiline_comment|/*&n; * Macros defining the various Errors to be handled as part of&n; * IO Error handling.&n; */
 multiline_comment|/*&n; * List of errors to be handled by each subsystem.&n; * &quot;error_code&quot; field will take one of these values.&n; * The error code is built up of single bits expressing&n; * our confidence that the error was that type; note&n; * that it is possible to have a PIO or DMA error where&n; * we don&squot;t know whether it was a READ or a WRITE, or&n; * even a READ or WRITE error that we&squot;re not sure whether&n; * to call a PIO or DMA.&n; *&n; * It is also possible to set both PIO and DMA, and possible&n; * to set both READ and WRITE; the first may be nonsensical&n; * but the second *could* be used to designate an access&n; * that is known to be a read-modify-write cycle. It is&n; * quite possible that nobody will ever use PIO|DMA or&n; * READ|WRITE ... but being flexible is good.&n; */
 DECL|macro|IOECODE_UNSPEC
@@ -254,7 +256,6 @@ DECL|macro|IOERROR_FIELDVALID
 mdefine_line|#define&t;IOERROR_FIELDVALID(e,f)&t;(((e)-&gt;ie_v.iev_b.ievb_ ## f) != 0)
 DECL|macro|IOERROR_GETVALUE
 mdefine_line|#define&t;IOERROR_GETVALUE(e,f)&t;(ASSERT(IOERROR_FIELDVALID(e,f)),((e)-&gt;ie_ ## f))
-macro_line|#if&t;IP27 || IP35
 multiline_comment|/* hub code likes to call the SysAD address &quot;hubaddr&quot; ... */
 DECL|macro|ie_hubaddr
 mdefine_line|#define&t;ie_hubaddr&t;ie_sysioaddr
@@ -284,7 +285,6 @@ DECL|typedef|ioerror_mode_t
 )brace
 id|ioerror_mode_t
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* C || C++ */
 DECL|typedef|error_handler_f
 r_typedef
 r_int
@@ -335,5 +335,5 @@ mdefine_line|#define&t;IOERROR_DUMP(x, y, z, t)
 DECL|macro|IOERR_PRINTF
 mdefine_line|#define&t;IOERR_PRINTF(x)
 macro_line|#endif&t;&t;&t;&t;/* ERROR_DEBUG */
-macro_line|#endif&t;&t;&t;&t;/* _ASM_SN_IOERROR_H */
+macro_line|#endif /* _ASM_IA64_SN_IOERROR_H */
 eof
