@@ -5629,17 +5629,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_IDESCSI
-macro_line|# ifdef CONFIG_SCSI
-id|idescsi_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|# else
-macro_line|#error ATA SCSI emulation selected but no SCSI-subsystem in kernel
-macro_line|# endif
-macro_line|#endif
 id|initializing
 op_assign
 l_int|0
