@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt; /* for invalidate_bdev */
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -9750,6 +9751,19 @@ comma
 op_amp
 id|thread-&gt;flags
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
 )paren
 suffix:semicolon
 id|clear_bit
