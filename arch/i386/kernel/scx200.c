@@ -150,13 +150,6 @@ id|scx200_probe
 comma
 )brace
 suffix:semicolon
-DECL|variable|scx200_gpio_lock
-id|DEFINE_SPINLOCK
-c_func
-(paren
-id|scx200_gpio_lock
-)paren
-suffix:semicolon
 r_static
 id|DEFINE_SPINLOCK
 c_func
@@ -448,7 +441,7 @@ r_return
 id|config
 suffix:semicolon
 )brace
-DECL|function|scx200_gpio_dump
+macro_line|#if 0
 r_void
 id|scx200_gpio_dump
 c_func
@@ -631,7 +624,9 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0  */
 DECL|function|scx200_init
+r_static
 r_int
 id|__init
 id|scx200_init
@@ -658,6 +653,7 @@ id|scx200_pci_driver
 suffix:semicolon
 )brace
 DECL|function|scx200_cleanup
+r_static
 r_void
 id|__exit
 id|scx200_cleanup
@@ -710,25 +706,11 @@ c_func
 id|scx200_gpio_shadow
 )paren
 suffix:semicolon
-DECL|variable|scx200_gpio_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scx200_gpio_lock
-)paren
-suffix:semicolon
 DECL|variable|scx200_gpio_configure
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|scx200_gpio_configure
-)paren
-suffix:semicolon
-DECL|variable|scx200_gpio_dump
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scx200_gpio_dump
 )paren
 suffix:semicolon
 DECL|variable|scx200_cb_base
