@@ -48,7 +48,7 @@ id|value
 op_logical_or
 (paren
 id|bus
-OG
+op_ge
 id|MAX_MP_BUSSES
 )paren
 op_logical_or
@@ -224,7 +224,7 @@ c_cond
 (paren
 (paren
 id|bus
-OG
+op_ge
 id|MAX_MP_BUSSES
 )paren
 op_logical_or
