@@ -3315,6 +3315,10 @@ r_int
 r_char
 id|subtyp
 suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|protocol
 r_int
 id|protocol

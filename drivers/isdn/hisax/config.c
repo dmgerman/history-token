@@ -3458,6 +3458,13 @@ id|cs-&gt;typ
 op_assign
 id|card-&gt;typ
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|cs-&gt;lock
+)paren
+suffix:semicolon
 id|SET_MODULE_OWNER
 c_func
 (paren
