@@ -162,6 +162,14 @@ op_star
 id|p
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|cap_syslog
+(paren
+r_int
+id|type
+)paren
+suffix:semicolon
 DECL|function|cap_netlink_send
 r_static
 r_inline
