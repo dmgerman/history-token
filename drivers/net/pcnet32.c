@@ -1476,6 +1476,43 @@ op_assign
 id|pcnet32_dwio_reset
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+DECL|function|pcnet32_poll_controller
+r_static
+r_void
+id|pcnet32_poll_controller
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|disable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|pcnet32_interrupt
+c_func
+(paren
+l_int|0
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* only probes for non-PCI devices, the rest are handled by &n; * pci_register_driver via pcnet32_probe_pci */
 r_static
 r_void
@@ -3387,6 +3424,12 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+id|pcnet32_poll_controller
+suffix:semicolon
+macro_line|#endif    
 multiline_comment|/* Fill in the generic fields of the device structure. */
 r_if
 c_cond

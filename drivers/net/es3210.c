@@ -1177,6 +1177,12 @@ op_assign
 op_amp
 id|es_close
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+id|ei_poll
+suffix:semicolon
+macro_line|#endif
 id|NS8390_init
 c_func
 (paren

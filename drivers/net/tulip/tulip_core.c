@@ -1301,6 +1301,17 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_static
+r_void
+id|poll_tulip
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
 DECL|function|tulip_set_power_state
 r_static
 r_void
@@ -8917,6 +8928,13 @@ id|dev-&gt;set_multicast_list
 op_assign
 id|set_rx_mode
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+op_amp
+id|poll_tulip
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9634,6 +9652,43 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* pci_power_off (pdev, -1); */
 )brace
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+multiline_comment|/*&n; * Polling &squot;interrupt&squot; - used by things like netconsole to send skbs&n; * without having to re-enable interrupts. It&squot;s not called while&n; * the interrupt routine is executing.&n; */
+DECL|function|poll_tulip
+r_static
+r_void
+id|poll_tulip
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+multiline_comment|/* disable_irq here is not very nice, but with the lockless&n;&t;   interrupt handler we have no other choice. */
+id|disable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|tulip_interrupt
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|variable|tulip_driver
 r_static
 r_struct
