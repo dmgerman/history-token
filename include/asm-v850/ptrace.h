@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/ptrace.h -- Access to CPU registers&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/ptrace.h -- Access to CPU registers&n; *&n; *  Copyright (C) 2001,02,03  NEC Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_PTRACE_H__
 DECL|macro|__V850_PTRACE_H__
 mdefine_line|#define __V850_PTRACE_H__
@@ -143,10 +143,18 @@ DECL|macro|PT_CTBP
 mdefine_line|#define PT_CTBP&t;&t;((NUM_GPRS + 4) * _PT_REG_SIZE)
 DECL|macro|PT_KERNEL_MODE
 mdefine_line|#define PT_KERNEL_MODE&t;((NUM_GPRS + 5) * _PT_REG_SIZE)
-DECL|macro|PT_SYSCALL
-mdefine_line|#define PT_SYSCALL&t;PT_GPR(0)
+multiline_comment|/* Where the current syscall number is stashed; obviously only valid in&n;   the kernel!  */
+DECL|macro|PT_CUR_SYSCALL
+mdefine_line|#define PT_CUR_SYSCALL&t;PT_GPR(0)
 multiline_comment|/* Size of struct pt_regs, including alignment.  */
 DECL|macro|PT_SIZE
 mdefine_line|#define PT_SIZE&t;&t;((NUM_GPRS + 6) * _PT_REG_SIZE)
+multiline_comment|/* These are `magic&squot; values for PTRACE_PEEKUSR that return info about where&n;   a process is located in memory.  */
+DECL|macro|PT_TEXT_ADDR
+mdefine_line|#define PT_TEXT_ADDR&t;(PT_SIZE + 1)
+DECL|macro|PT_TEXT_LEN
+mdefine_line|#define PT_TEXT_LEN&t;(PT_SIZE + 2)
+DECL|macro|PT_DATA_ADDR
+mdefine_line|#define PT_DATA_ADDR&t;(PT_SIZE + 3)
 macro_line|#endif /* __V850_PTRACE_H__ */
 eof

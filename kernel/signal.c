@@ -33,15 +33,7 @@ id|max_queued_signals
 op_assign
 l_int|1024
 suffix:semicolon
-multiline_comment|/*********************************************************&n;&n;    POSIX thread group signal behavior:&n;&n;----------------------------------------------------------&n;|                    |  userspace       |  kernel        |&n;----------------------------------------------------------&n;|  SIGHUP            |  load-balance    |  kill-all      |&n;|  SIGINT            |  load-balance    |  kill-all      |&n;|  SIGQUIT           |  load-balance    |  kill-all+core |&n;|  SIGILL            |  specific        |  kill-all+core |&n;|  SIGTRAP           |  specific        |  kill-all+core |&n;|  SIGABRT/SIGIOT    |  specific        |  kill-all+core |&n;|  SIGBUS            |  specific        |  kill-all+core |&n;|  SIGFPE            |  specific        |  kill-all+core |&n;|  SIGKILL           |  n/a             |  kill-all      |&n;|  SIGUSR1           |  load-balance    |  kill-all      |&n;|  SIGSEGV           |  specific        |  kill-all+core |&n;|  SIGUSR2           |  load-balance    |  kill-all      |&n;|  SIGPIPE           |  specific        |  kill-all      |&n;|  SIGALRM           |  load-balance    |  kill-all      |&n;|  SIGTERM           |  load-balance    |  kill-all      |&n;|  SIGCHLD           |  load-balance    |  ignore        |&n;|  SIGCONT           |  load-balance    |  ignore        |&n;|  SIGSTOP           |  n/a             |  stop-all      |&n;|  SIGTSTP           |  load-balance    |  stop-all      |&n;|  SIGTTIN           |  load-balance    |  stop-all      |&n;|  SIGTTOU           |  load-balance    |  stop-all      |&n;|  SIGURG            |  load-balance    |  ignore        |&n;|  SIGXCPU           |  specific        |  kill-all+core |&n;|  SIGXFSZ           |  specific        |  kill-all+core |&n;|  SIGVTALRM         |  load-balance    |  kill-all      |&n;|  SIGPROF           |  specific        |  kill-all      |&n;|  SIGPOLL/SIGIO     |  load-balance    |  kill-all      |&n;|  SIGSYS/SIGUNUSED  |  specific        |  kill-all+core |&n;|  SIGSTKFLT         |  specific        |  kill-all      |&n;|  SIGWINCH          |  load-balance    |  ignore        |&n;|  SIGPWR            |  load-balance    |  kill-all      |&n;|  SIGRTMIN-SIGRTMAX |  load-balance    |  kill-all      |&n;----------------------------------------------------------&n;&n;    non-POSIX signal thread group behavior:&n;&n;----------------------------------------------------------&n;|                    |  userspace       |  kernel        |&n;----------------------------------------------------------&n;|  SIGEMT            |  specific        |  kill-all+core |&n;----------------------------------------------------------&n;*/
-multiline_comment|/* Some systems do not have a SIGSTKFLT and the kernel never&n; * generates such signals anyways.&n; */
-macro_line|#ifdef SIGSTKFLT
-DECL|macro|M_SIGSTKFLT
-mdefine_line|#define M_SIGSTKFLT&t;M(SIGSTKFLT)
-macro_line|#else
-DECL|macro|M_SIGSTKFLT
-mdefine_line|#define M_SIGSTKFLT&t;0
-macro_line|#endif
+multiline_comment|/*&n; * In POSIX a signal is sent either to a specific thread (Linux task)&n; * or to the process as a whole (Linux thread group).  How the signal&n; * is sent determines whether it&squot;s to one thread or the whole group,&n; * which determines which signal mask(s) are involved in blocking it&n; * from being delivered until later.  When the signal is delivered,&n; * either it&squot;s caught or ignored by a user handler or it has a default&n; * effect that applies to the whole thread group (POSIX process).&n; *&n; * The possible effects an unblocked signal set to SIG_DFL can have are:&n; *   ignore&t;- Nothing Happens&n; *   terminate&t;- kill the process, i.e. all threads in the group,&n; * &t;&t;  similar to exit_group.  The group leader (only) reports&n; *&t;&t;  WIFSIGNALED status to its parent.&n; *   coredump&t;- write a core dump file describing all threads using&n; *&t;&t;  the same mm and then kill all those threads&n; *   stop &t;- stop all the threads in the group, i.e. TASK_STOPPED state&n; *&n; * SIGKILL and SIGSTOP cannot be caught, blocked, or ignored.&n; * Other signals when not blocked and set to SIG_DFL behaves as follows.&n; * The job control signals also have other special effects.&n; *&n; *&t;+--------------------+------------------+&n; *&t;|  POSIX signal      |  default action  |&n; *&t;+--------------------+------------------+&n; *&t;|  SIGHUP            |  terminate&t;|&n; *&t;|  SIGINT            |&t;terminate&t;|&n; *&t;|  SIGQUIT           |&t;coredump &t;|&n; *&t;|  SIGILL            |&t;coredump &t;|&n; *&t;|  SIGTRAP           |&t;coredump &t;|&n; *&t;|  SIGABRT/SIGIOT    |&t;coredump &t;|&n; *&t;|  SIGBUS            |&t;coredump &t;|&n; *&t;|  SIGFPE            |&t;coredump &t;|&n; *&t;|  SIGKILL           |&t;terminate(+)&t;|&n; *&t;|  SIGUSR1           |&t;terminate&t;|&n; *&t;|  SIGSEGV           |&t;coredump &t;|&n; *&t;|  SIGUSR2           |&t;terminate&t;|&n; *&t;|  SIGPIPE           |&t;terminate&t;|&n; *&t;|  SIGALRM           |&t;terminate&t;|&n; *&t;|  SIGTERM           |&t;terminate&t;|&n; *&t;|  SIGCHLD           |&t;ignore   &t;|&n; *&t;|  SIGCONT           |&t;ignore(*)&t;|&n; *&t;|  SIGSTOP           |&t;stop(*)(+)  &t;|&n; *&t;|  SIGTSTP           |&t;stop(*)  &t;|&n; *&t;|  SIGTTIN           |&t;stop(*)  &t;|&n; *&t;|  SIGTTOU           |&t;stop(*)  &t;|&n; *&t;|  SIGURG            |&t;ignore   &t;|&n; *&t;|  SIGXCPU           |&t;coredump &t;|&n; *&t;|  SIGXFSZ           |&t;coredump &t;|&n; *&t;|  SIGVTALRM         |&t;terminate&t;|&n; *&t;|  SIGPROF           |&t;terminate&t;|&n; *&t;|  SIGPOLL/SIGIO     |&t;terminate&t;|&n; *&t;|  SIGSYS/SIGUNUSED  |&t;coredump &t;|&n; *&t;|  SIGSTKFLT         |&t;terminate&t;|&n; *&t;|  SIGWINCH          |&t;ignore   &t;|&n; *&t;|  SIGPWR            |&t;terminate&t;|&n; *&t;|  SIGRTMIN-SIGRTMAX |&t;terminate       |&n; *&t;+--------------------+------------------+&n; *&t;|  non-POSIX signal  |  default action  |&n; *&t;+--------------------+------------------+&n; *&t;|  SIGEMT            |  coredump&t;|&n; *&t;+--------------------+------------------+&n; *&n; * (+) For SIGKILL and SIGSTOP the action is &quot;always&quot;, not just &quot;default&quot;.&n; * (*) Special job control effects:&n; * When SIGCONT is sent, it resumes the process (all threads in the group)&n; * from TASK_STOPPED state and also clears any pending/queued stop signals&n; * (any of those marked with &quot;stop(*)&quot;).  This happens regardless of blocking,&n; * catching, or ignoring SIGCONT.  When any stop signal is sent, it clears&n; * any pending/queued SIGCONT signals; this happens regardless of blocking,&n; * catching, or ignored the stop signal, though (except for SIGSTOP) the&n; * default action of stopping the process may happen later or never.&n; */
 macro_line|#ifdef SIGEMT
 DECL|macro|M_SIGEMT
 mdefine_line|#define M_SIGEMT&t;M(SIGEMT)
@@ -58,8 +50,6 @@ mdefine_line|#define M(sig) (1UL &lt;&lt; ((sig)-1))
 macro_line|#endif
 DECL|macro|T
 mdefine_line|#define T(sig, mask) (M(sig) &amp; (mask))
-DECL|macro|SIG_KERNEL_BROADCAST_MASK
-mdefine_line|#define SIG_KERNEL_BROADCAST_MASK (&bslash;&n;&t;M(SIGHUP)    |  M(SIGINT)    |  M(SIGQUIT)   |  M(SIGILL)    | &bslash;&n;&t;M(SIGTRAP)   |  M(SIGABRT)   |  M(SIGBUS)    |  M(SIGFPE)    | &bslash;&n;&t;M(SIGKILL)   |  M(SIGUSR1)   |  M(SIGSEGV)   |  M(SIGUSR2)   | &bslash;&n;&t;M(SIGPIPE)   |  M(SIGALRM)   |  M(SIGTERM)   |  M(SIGXCPU)   | &bslash;&n;&t;M(SIGXFSZ)   |  M(SIGVTALRM) |  M(SIGPROF)   |  M(SIGPOLL)   | &bslash;&n;&t;M(SIGSYS)    |  M_SIGSTKFLT  |  M(SIGPWR)    |  M(SIGCONT)   | &bslash;&n;        M(SIGSTOP)   |  M(SIGTSTP)   |  M(SIGTTIN)   |  M(SIGTTOU)   | &bslash;&n;        M_SIGEMT )
 DECL|macro|SIG_KERNEL_ONLY_MASK
 mdefine_line|#define SIG_KERNEL_ONLY_MASK (&bslash;&n;&t;M(SIGKILL)   |  M(SIGSTOP)                                   )
 DECL|macro|SIG_KERNEL_STOP_MASK
@@ -1981,7 +1971,7 @@ op_star
 id|parent
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Handle magic process-wide effects of stop/continue signals, and SIGKILL.&n; * Unlike the signal actions, these happen immediately at signal-generation&n; * time regardless of blocking, ignoring, or handling.  This does the&n; * actual continuing for SIGCONT, but not the actual stopping for stop&n; * signals.  The process stop is done as a signal action for SIG_DFL.&n; */
+multiline_comment|/*&n; * Handle magic process-wide effects of stop/continue signals.&n; * Unlike the signal actions, these happen immediately at signal-generation&n; * time regardless of blocking, ignoring, or handling.  This does the&n; * actual continuing for SIGCONT, but not the actual stopping for stop&n; * signals.  The process stop is done as a signal action for SIG_DFL.&n; */
 DECL|function|handle_stop_signal
 r_static
 r_void
@@ -3937,7 +3927,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * These are for backward compatibility with the rest of the kernel source.&n; */
-multiline_comment|/*&n; * XXX should probably nix these interfaces and update the kernel&n; * to specify explicitly whether the signal is a group signal or&n; * specific to a thread.&n; */
+multiline_comment|/*&n; * These two are the most common entry points.  They send a signal&n; * just to the specific thread.&n; */
 r_int
 DECL|function|send_sig_info
 id|send_sig_info
@@ -3968,33 +3958,6 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|T
-c_func
-(paren
-id|sig
-comma
-id|SIG_KERNEL_BROADCAST_MASK
-)paren
-)paren
-(brace
-id|ret
-op_assign
-id|group_send_sig_info
-c_func
-(paren
-id|sig
-comma
-id|info
-comma
-id|p
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
 id|spin_lock_irq
 c_func
 (paren
@@ -4021,7 +3984,6 @@ op_amp
 id|p-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
-)brace
 id|read_unlock
 c_func
 (paren
@@ -4071,6 +4033,59 @@ l_int|0
 comma
 id|p
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * This is the entry point for &quot;process-wide&quot; signals.&n; * They will go to an appropriate thread in the thread group.&n; */
+r_int
+DECL|function|send_group_sig_info
+id|send_group_sig_info
+c_func
+(paren
+r_int
+id|sig
+comma
+r_struct
+id|siginfo
+op_star
+id|info
+comma
+r_struct
+id|task_struct
+op_star
+id|p
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|group_send_sig_info
+c_func
+(paren
+id|sig
+comma
+id|info
+comma
+id|p
+)paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 r_void
@@ -5736,6 +5751,13 @@ c_func
 id|send_sig_info
 )paren
 suffix:semicolon
+DECL|variable|send_group_sig_info
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|send_group_sig_info
+)paren
+suffix:semicolon
 DECL|variable|sigprocmask
 id|EXPORT_SYMBOL
 c_func
@@ -5940,10 +5962,12 @@ r_int
 id|how
 comma
 id|sigset_t
+id|__user
 op_star
 id|set
 comma
 id|sigset_t
+id|__user
 op_star
 id|oset
 comma
@@ -6128,6 +6152,7 @@ id|do_sigpending
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|set
 comma
@@ -6236,6 +6261,7 @@ id|sys_rt_sigpending
 c_func
 (paren
 id|sigset_t
+id|__user
 op_star
 id|set
 comma
@@ -6260,6 +6286,7 @@ id|copy_siginfo_to_user
 c_func
 (paren
 id|siginfo_t
+id|__user
 op_star
 id|to
 comma
@@ -6635,16 +6662,19 @@ c_func
 (paren
 r_const
 id|sigset_t
+id|__user
 op_star
 id|uthese
 comma
 id|siginfo_t
+id|__user
 op_star
 id|uinfo
 comma
 r_const
 r_struct
 id|timespec
+id|__user
 op_star
 id|uts
 comma
@@ -7209,6 +7239,7 @@ r_int
 id|sig
 comma
 id|siginfo_t
+id|__user
 op_star
 id|uinfo
 )paren
@@ -7557,10 +7588,12 @@ id|do_sigaltstack
 (paren
 r_const
 id|stack_t
+id|__user
 op_star
 id|uss
 comma
 id|stack_t
+id|__user
 op_star
 id|uoss
 comma
@@ -7808,6 +7841,7 @@ id|sys_sigpending
 c_func
 (paren
 id|old_sigset_t
+id|__user
 op_star
 id|set
 )paren
@@ -7838,10 +7872,12 @@ r_int
 id|how
 comma
 id|old_sigset_t
+id|__user
 op_star
 id|set
 comma
 id|old_sigset_t
+id|__user
 op_star
 id|oset
 )paren
@@ -8072,11 +8108,13 @@ comma
 r_const
 r_struct
 id|sigaction
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|sigaction
+id|__user
 op_star
 id|oact
 comma

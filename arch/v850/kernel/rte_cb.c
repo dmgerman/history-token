@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/rte_cb.c -- Midas lab RTE-CB series of evaluation boards&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/rte_cb.c -- Midas lab RTE-CB series of evaluation boards&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
@@ -55,71 +55,10 @@ r_void
 suffix:semicolon
 macro_line|#endif
 "&f;"
-macro_line|#ifdef CONFIG_ROM_KERNEL
-multiline_comment|/* Initialization for kernel in ROM.  */
-DECL|function|rom_kernel_init
-r_static
-r_inline
-id|rom_kernel_init
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* If the kernel is in ROM, we have to copy any initialized data&n;&t;   from ROM into RAM.  */
-r_extern
-r_int
-r_int
-id|_data_load_start
-comma
-id|_sdata
-comma
-id|_edata
-suffix:semicolon
-r_register
-r_int
-r_int
-op_star
-id|src
-op_assign
-op_amp
-id|_data_load_start
-suffix:semicolon
-r_register
-r_int
-r_int
-op_star
-id|dst
-op_assign
-op_amp
-id|_sdata
-comma
-op_star
-id|end
-op_assign
-op_amp
-id|_edata
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|dst
-op_ne
-id|end
-)paren
-op_star
-id|dst
-op_increment
-op_assign
-op_star
-id|src
-op_increment
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_ROM_KERNEL */
-DECL|function|mach_early_init
+DECL|function|rte_cb_early_init
 r_void
 id|__init
-id|mach_early_init
+id|rte_cb_early_init
 (paren
 r_void
 )paren
@@ -128,12 +67,7 @@ id|nb85e_intc_disable_irqs
 (paren
 )paren
 suffix:semicolon
-macro_line|#if defined (CONFIG_ROM_KERNEL)
-id|rom_kernel_init
-(paren
-)paren
-suffix:semicolon
-macro_line|#elif defined (CONFIG_RTE_CB_MULTI)
+macro_line|#ifdef CONFIG_RTE_CB_MULTI
 id|multi_init
 (paren
 )paren

@@ -1,11 +1,12 @@
 multiline_comment|/* &n; * dmx.h&n; *&n; * Copyright (C) 2000 Marcus Metzler &lt;marcus@convergence.de&gt;&n; *                  &amp; Ralph  Metzler &lt;ralph@convergence.de&gt;&n;                      for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
-macro_line|#ifndef _DMX_H_
-DECL|macro|_DMX_H_
-mdefine_line|#define _DMX_H_
+macro_line|#ifndef _DVBDMX_H_
+DECL|macro|_DVBDMX_H_
+mdefine_line|#define _DVBDMX_H_
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#else
 macro_line|#include &lt;stdint.h&gt;
+macro_line|#include &lt;time.h&gt;
 macro_line|#endif
 DECL|macro|DMX_FILTER_SIZE
 mdefine_line|#define DMX_FILTER_SIZE 16
@@ -304,10 +305,32 @@ id|DMX_SOURCE_DVR2
 comma
 DECL|enumerator|DMX_SOURCE_DVR3
 id|DMX_SOURCE_DVR3
-comma
 DECL|typedef|dmx_source_t
 )brace
 id|dmx_source_t
+suffix:semicolon
+DECL|struct|dmx_stc
+r_struct
+id|dmx_stc
+(brace
+DECL|member|num
+r_int
+r_int
+id|num
+suffix:semicolon
+multiline_comment|/* input : which STC? 0..N */
+DECL|member|base
+r_int
+r_int
+id|base
+suffix:semicolon
+multiline_comment|/* output: divisor for stc to get 90 kHz clock */
+DECL|member|stc
+r_uint64
+id|stc
+suffix:semicolon
+multiline_comment|/* output: stc in &squot;base&squot;*90 kHz units */
+)brace
 suffix:semicolon
 DECL|macro|DMX_START
 mdefine_line|#define DMX_START                _IO(&squot;o&squot;,41) 
@@ -322,10 +345,12 @@ mdefine_line|#define DMX_SET_BUFFER_SIZE      _IO(&squot;o&squot;,45)
 DECL|macro|DMX_GET_EVENT
 mdefine_line|#define DMX_GET_EVENT            _IOR(&squot;o&squot;,46,struct dmx_event)
 DECL|macro|DMX_GET_PES_PIDS
-mdefine_line|#define DMX_GET_PES_PIDS         _IOR(&squot;o&squot;,47,uint16_t)
+mdefine_line|#define DMX_GET_PES_PIDS         _IOR(&squot;o&squot;,47,uint16_t[5])
 DECL|macro|DMX_GET_CAPS
 mdefine_line|#define DMX_GET_CAPS             _IOR(&squot;o&squot;,48,dmx_caps_t)
 DECL|macro|DMX_SET_SOURCE
 mdefine_line|#define DMX_SET_SOURCE           _IOW(&squot;o&squot;,49,dmx_source_t)
-macro_line|#endif /*_DMX_H_*/
+DECL|macro|DMX_GET_STC
+mdefine_line|#define DMX_GET_STC              _IOWR(&squot;o&squot;,50,struct dmx_stc)
+macro_line|#endif /*_DVBDMX_H_*/
 eof

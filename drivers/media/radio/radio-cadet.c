@@ -2351,7 +2351,7 @@ c_func
 (paren
 id|pnp
 comma
-id|id_table
+id|cadet_pnp_devices
 )paren
 suffix:semicolon
 DECL|function|cadet_pnp_probe

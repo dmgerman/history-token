@@ -3058,9 +3058,11 @@ id|len
 suffix:semicolon
 id|len
 op_assign
-id|skb-&gt;len
-op_minus
-id|skb-&gt;data_len
+id|skb_headlen
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 id|skb_dma
 op_assign

@@ -39,5 +39,13 @@ macro_line|#else
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS 16
 macro_line|#endif
+DECL|macro|FPU_IRQ
+mdefine_line|#define FPU_IRQ&t;&t;&t;13
+DECL|macro|FIRST_VM86_IRQ
+mdefine_line|#define&t;FIRST_VM86_IRQ&t;&t;3
+DECL|macro|LAST_VM86_IRQ
+mdefine_line|#define LAST_VM86_IRQ&t;&t;15
+DECL|macro|invalid_vm86_irq
+mdefine_line|#define invalid_vm86_irq(irq)&t;((irq) &lt; 3 || (irq) &gt; 15)
 macro_line|#endif /* _ASM_IRQ_VECTORS_H */
 eof

@@ -1922,6 +1922,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|name_user
 comma
@@ -2853,7 +2854,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|set_obsolete
-r_extern
 r_int
 id|set_obsolete
 c_func
@@ -4481,27 +4481,6 @@ id|STB_WEAK
 )paren
 r_break
 suffix:semicolon
-macro_line|#if defined(CONFIG_SPARC32) || defined(CONFIG_SPARC64)
-multiline_comment|/* Ok if Sparc register directive. */
-r_if
-c_cond
-(paren
-id|ELF_ST_TYPE
-c_func
-(paren
-id|sym
-(braket
-id|i
-)braket
-dot
-id|st_info
-)paren
-op_eq
-id|STT_REGISTER
-)paren
-r_break
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -5128,6 +5107,7 @@ id|load_module
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|umod
 comma
@@ -5137,6 +5117,7 @@ id|len
 comma
 r_const
 r_char
+id|__user
 op_star
 id|uargs
 )paren
@@ -6701,6 +6682,7 @@ id|sys_init_module
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|umod
 comma
@@ -6710,6 +6692,7 @@ id|len
 comma
 r_const
 r_char
+id|__user
 op_star
 id|uargs
 )paren

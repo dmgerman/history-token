@@ -2,8 +2,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;asm/apic.h&gt;
-macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;cobalt.h&quot;
 macro_line|#include &quot;mach_apic.h&quot;
@@ -19,73 +17,6 @@ id|apic_version
 (braket
 id|MAX_APICS
 )braket
-suffix:semicolon
-DECL|variable|mp_bus_id_to_type
-r_int
-id|mp_bus_id_to_type
-(braket
-id|MAX_MP_BUSSES
-)braket
-suffix:semicolon
-DECL|variable|mp_bus_id_to_node
-r_int
-id|mp_bus_id_to_node
-(braket
-id|MAX_MP_BUSSES
-)braket
-suffix:semicolon
-DECL|variable|mp_bus_id_to_pci_bus
-r_int
-id|mp_bus_id_to_pci_bus
-(braket
-id|MAX_MP_BUSSES
-)braket
-op_assign
-(brace
-(braket
-l_int|0
-dot
-dot
-dot
-id|MAX_MP_BUSSES
-op_minus
-l_int|1
-)braket
-op_assign
-op_minus
-l_int|1
-)brace
-suffix:semicolon
-DECL|variable|mp_current_pci_id
-r_int
-id|mp_current_pci_id
-suffix:semicolon
-multiline_comment|/* I/O APIC entries */
-DECL|variable|mp_ioapics
-r_struct
-id|mpc_config_ioapic
-id|mp_ioapics
-(braket
-id|MAX_IO_APICS
-)braket
-suffix:semicolon
-multiline_comment|/* # of MP IRQ source entries */
-DECL|variable|mp_irqs
-r_struct
-id|mpc_config_intsrc
-id|mp_irqs
-(braket
-id|MAX_IRQ_SOURCES
-)braket
-suffix:semicolon
-multiline_comment|/* MP IRQ source entries */
-DECL|variable|mp_irq_entries
-r_int
-id|mp_irq_entries
-suffix:semicolon
-DECL|variable|nr_ioapics
-r_int
-id|nr_ioapics
 suffix:semicolon
 DECL|variable|pic_mode
 r_int
@@ -113,39 +44,11 @@ op_assign
 op_minus
 l_int|1U
 suffix:semicolon
-multiline_comment|/* Internal processor count */
-DECL|variable|num_processors
-r_static
-r_int
-r_int
-id|num_processors
-suffix:semicolon
 multiline_comment|/* Bitmask of physically existing CPUs */
 DECL|variable|phys_cpu_present_map
 r_int
 r_int
 id|phys_cpu_present_map
-suffix:semicolon
-DECL|variable|raw_phys_apicid
-id|u8
-id|raw_phys_apicid
-(braket
-id|NR_CPUS
-)braket
-op_assign
-(brace
-(braket
-l_int|0
-dot
-dot
-dot
-id|NR_CPUS
-op_minus
-l_int|1
-)braket
-op_assign
-id|BAD_APICID
-)brace
 suffix:semicolon
 multiline_comment|/*&n; * The Visual Workstation is Intel MP compliant in the hardware&n; * sense, but it doesn&squot;t have a BIOS(-configuration table).&n; * No problem for Linux.&n; */
 DECL|function|MP_processor_info
@@ -233,9 +136,6 @@ op_assign
 id|logical_apicid
 suffix:semicolon
 )brace
-id|num_processors
-op_increment
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -254,9 +154,6 @@ id|m-&gt;mpc_apicid
 comma
 id|MAX_APICS
 )paren
-suffix:semicolon
-op_decrement
-id|num_processors
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -303,15 +200,6 @@ id|m-&gt;mpc_apicid
 )braket
 op_assign
 id|ver
-suffix:semicolon
-id|raw_phys_apicid
-(braket
-id|num_processors
-op_minus
-l_int|1
-)braket
-op_assign
-id|m-&gt;mpc_apicid
 suffix:semicolon
 )brace
 DECL|function|find_smp_config

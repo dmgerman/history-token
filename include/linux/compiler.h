@@ -1,6 +1,17 @@
 macro_line|#ifndef __LINUX_COMPILER_H
 DECL|macro|__LINUX_COMPILER_H
 mdefine_line|#define __LINUX_COMPILER_H
+macro_line|#ifdef __CHECKER__
+DECL|macro|__user
+mdefine_line|#define __user&t;__attribute__((noderef, address_space(1)))
+DECL|macro|__kernel
+mdefine_line|#define __kernel&t;/* default address space */
+macro_line|#else
+DECL|macro|__user
+mdefine_line|#define __user
+DECL|macro|__kernel
+mdefine_line|#define __kernel
+macro_line|#endif
 macro_line|#if (__GNUC__ &gt; 3) || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt;= 1)
 DECL|macro|inline
 mdefine_line|#define inline&t;&t;__inline__ __attribute__((always_inline))

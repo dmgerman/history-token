@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;asm/m68360.h&gt;
 macro_line|#include &lt;asm/commproc.h&gt;
 macro_line|#ifdef CONFIG_KGDB

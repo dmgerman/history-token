@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/v850/kernel/mb_a_pci.c -- PCI support for Midas lab RTE-MOTHER-A board&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * arch/v850/kernel/mb_a_pci.c -- PCI support for Midas lab RTE-MOTHER-A board&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -471,10 +471,6 @@ id|MB_A_PCI_PCICR
 op_assign
 l_int|0x147
 suffix:semicolon
-id|MB_A_PCI_DMLBAM
-op_assign
-l_int|0x0
-suffix:semicolon
 id|MB_A_PCI_PCIBAR0
 op_assign
 l_int|0x007FFF00
@@ -501,13 +497,8 @@ op_complement
 l_int|0
 suffix:semicolon
 multiline_comment|/* Clear errors.  */
-multiline_comment|/* Reprogram the motherboard&squot;s IO/config address space,&n;&t;&t;   as we don&squot;t support the GCS7 address space that the&n;&t;&t;   default uses.  Note that we have to give the address&n;&t;&t;   from the motherboard&squot;s point of view, which is&n;&t;&t;   different than the CPU&squot;s.  */
-id|MB_A_PCI_DMLBAI
-op_assign
-id|MB_A_PCI_IO_ADDR
-op_minus
-id|GCS5_ADDR
-suffix:semicolon
+multiline_comment|/* Reprogram the motherboard&squot;s IO/config address space,&n;&t;&t;   as we don&squot;t support the GCS7 address space that the&n;&t;&t;   default uses.  */
+multiline_comment|/* Significant address bits used for decoding PCI GCS5 space&n;&t;&t;   accessess.  */
 id|MB_A_PCI_DMRR
 op_assign
 op_complement
@@ -515,6 +506,32 @@ op_complement
 id|MB_A_PCI_MEM_SIZE
 op_minus
 l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* I don&squot;t understand this, but the SolutionGear example code&n;&t;&t;   uses such an offset, and it doesn&squot;t work without it.  XXX */
+macro_line|#if GCS5_SIZE == 0x00800000
+DECL|macro|GCS5_CFG_OFFS
+mdefine_line|#define GCS5_CFG_OFFS 0x00800000
+macro_line|#else
+mdefine_line|#define GCS5_CFG_OFFS 0
+macro_line|#endif
+multiline_comment|/* Address bit values for matching.  Note that we have to give&n;&t;&t;   the address from the motherboard&squot;s point of view, which is&n;&t;&t;   different than the CPU&squot;s.  */
+multiline_comment|/* PCI memory space.  */
+id|MB_A_PCI_DMLBAM
+op_assign
+id|GCS5_CFG_OFFS
+op_plus
+l_int|0x0
+suffix:semicolon
+multiline_comment|/* PCI I/O space.  */
+id|MB_A_PCI_DMLBAI
+op_assign
+id|GCS5_CFG_OFFS
+op_plus
+(paren
+id|MB_A_PCI_IO_ADDR
+op_minus
+id|GCS5_ADDR
 )paren
 suffix:semicolon
 id|mb_pci_bus

@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
+macro_line|#include &quot;io_ports.h&quot;
 DECL|macro|APIC_LOCKUP_DEBUG
 macro_line|#undef APIC_LOCKUP_DEBUG
 DECL|macro|APIC_LOCKUP_DEBUG
@@ -2405,6 +2406,26 @@ id|irqbalance_disabled
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* disable irqbalance completely if there is only one processor online */
+r_if
+c_cond
+(paren
+id|num_online_cpus
+c_func
+(paren
+)paren
+OL
+l_int|2
+)paren
+(brace
+id|irqbalance_disabled
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Enable physical balance only if more than 1 physical processor&n;&t; * is present&n;&t; */
 r_if
 c_cond
@@ -4528,7 +4549,14 @@ id|FIRST_SYSTEM_VECTOR
 )paren
 (brace
 id|offset
-op_increment
+op_assign
+(paren
+id|offset
+op_plus
+l_int|1
+)paren
+op_amp
+l_int|7
 suffix:semicolon
 id|current_vector
 op_assign
@@ -4537,19 +4565,6 @@ op_plus
 id|offset
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|current_vector
-op_eq
-id|FIRST_SYSTEM_VECTOR
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;ran out of interrupt sources!&quot;
-)paren
-suffix:semicolon
 id|IO_APIC_VECTOR
 c_func
 (paren
@@ -9020,7 +9035,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&n; * IRQ&squot;s that are handled by the old PIC in all cases:&n; * - IRQ2 is the cascade IRQ, and cannot be a io-apic IRQ.&n; *   Linux doesn&squot;t really care, as it&squot;s not actually used&n; *   for any interrupt handling anyway.&n; * - There used to be IRQ13 here as well, but all&n; *   MPS-compliant must not use it for FPU coupling and we&n; *   want to use exception 16 anyway.  And there are&n; *   systems who connect it to an I/O APIC for other uses.&n; *   Thus we don&squot;t mark it special any longer.&n; *&n; * Additionally, something is definitely wrong with irq9&n; * on PIIX4 boards.&n; */
 DECL|macro|PIC_IRQS
-mdefine_line|#define PIC_IRQS&t;(1&lt;&lt;2)
+mdefine_line|#define PIC_IRQS&t;(1 &lt;&lt; PIC_CASCADE_IR)
 DECL|function|setup_IO_APIC
 r_void
 id|__init

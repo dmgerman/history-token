@@ -3289,7 +3289,7 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; *  We should switch state to LAP_NRM_P, but&n;&t;&t;&t;&t; *  that is not possible since we must be sure&n;&t;&t;&t;&t; *  that we poll the other side. Since we have&n;&t;&t;&t;&t; *  used up our time, the poll timer should&n;&t;&t;&t;&t; *  trigger anyway now, so we just wait for it&n;&t;&t;&t;&t; *  DB&n;&t;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t;&t; * Sorry, but that&squot;s not totally true. If&n;&t;&t;&t;&t; * we send 2000B packets, we may wait another&n;&t;&t;&t;&t; * 1000B until our turnaround expire. That&squot;s&n;&t;&t;&t;&t; * why we need to be proactive in avoiding&n;&t;&t;&t;&t; * comming here. - Jean II&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Sorry, but that&squot;s not totally true. If&n;&t;&t;&t;&t; * we send 2000B packets, we may wait another&n;&t;&t;&t;&t; * 1000B until our turnaround expire. That&squot;s&n;&t;&t;&t;&t; * why we need to be proactive in avoiding&n;&t;&t;&t;&t; * coming here. - Jean II&n;&t;&t;&t;&t; */
 r_return
 op_minus
 id|EPROTO

@@ -2,7 +2,6 @@ multiline_comment|/*&n; ********************************************************
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1977,28 +1976,34 @@ id|file_operations
 id|emu10k1_midi_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|emu10k1_midi_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|emu10k1_midi_write
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|emu10k1_midi_poll
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|emu10k1_midi_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|emu10k1_midi_release
 comma
 )brace

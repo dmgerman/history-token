@@ -10125,10 +10125,10 @@ suffix:semicolon
 id|flagsize
 op_assign
 (paren
+id|skb_headlen
+c_func
 (paren
-id|skb-&gt;len
-op_minus
-id|skb-&gt;data_len
+id|skb
 )paren
 op_lshift
 l_int|16

@@ -744,7 +744,7 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * The default interrupt routing model is PIC (8259).  This gets&n;&t; * overriden if IOAPICs are enumerated (below).&n;&t; */
+multiline_comment|/*&n;&t; * The default interrupt routing model is PIC (8259).  This gets&n;&t; * overridden if IOAPICs are enumerated (below).&n;&t; */
 id|acpi_irq_model
 op_assign
 id|ACPI_IRQ_MODEL_PIC
@@ -794,6 +794,18 @@ id|KERN_NOTICE
 id|PREFIX
 l_string|&quot;BIOS passes blacklist&bslash;n&quot;
 )paren
+suffix:semicolon
+r_extern
+r_int
+id|disable_apic
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|disable_apic
+)paren
+r_return
+l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/* &n;&t; * MADT&n;&t; * ----&n;&t; * Parse the Multiple APIC Description Table (MADT), if exists.&n;&t; * Note that this table provides platform SMP configuration &n;&t; * information -- the successor to MPS tables.&n;&t; */
@@ -863,7 +875,7 @@ id|PREFIX
 l_string|&quot;Multiple MADT tables exist&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Local APIC&n;&t; * ----------&n;&t; * Note that the LAPIC address is obtained from the MADT (32-bit value)&n;&t; * and (optionally) overriden by a LAPIC_ADDR_OVR entry (64-bit value).&n;&t; */
+multiline_comment|/* &n;&t; * Local APIC&n;&t; * ----------&n;&t; * Note that the LAPIC address is obtained from the MADT (32-bit value)&n;&t; * and (optionally) overridden by a LAPIC_ADDR_OVR entry (64-bit value).&n;&t; */
 id|result
 op_assign
 id|acpi_table_parse_madt

@@ -306,14 +306,13 @@ id|rng_hw_via
 comma
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|rng_vendor_ops
 r_static
 r_struct
 id|rng_operations
 id|rng_vendor_ops
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 multiline_comment|/* rng_hw_none */

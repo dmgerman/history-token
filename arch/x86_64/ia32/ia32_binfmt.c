@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Written 2000,2002 by Andi Kleen. &n; * &n; * Losely based on the sparc64 and IA64 32bit emulation loaders.&n; * This tricks binfmt_elf.c into loading 32bit binaries using lots &n; * of ugly preprocessor tricks. Talk about very very poor man&squot;s inheritance.&n; */
+multiline_comment|/* &n; * Written 2000,2002 by Andi Kleen. &n; * &n; * Loosely based on the sparc64 and IA64 32bit emulation loaders.&n; * This tricks binfmt_elf.c into loading 32bit binaries using lots &n; * of ugly preprocessor tricks. Talk about very very poor man&squot;s inheritance.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/config.h&gt; 

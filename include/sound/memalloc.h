@@ -621,7 +621,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PCI */
 multiline_comment|/*&n; * wrappers&n; */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 4, 0)
 macro_line|#ifdef CONFIG_PCI
 macro_line|#if defined(__i386__) || defined(__ppc__) || defined(__x86_64__)
 DECL|macro|HACK_PCI_ALLOC_CONSISTENT
@@ -647,6 +646,5 @@ id|dma_handle
 suffix:semicolon
 macro_line|#endif /* arch */
 macro_line|#endif /* CONFIG_PCI */
-macro_line|#endif /* LINUX &gt;= 2.4.0 */
 macro_line|#endif /* __SOUND_MEMALLOC_H */
 eof

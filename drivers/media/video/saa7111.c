@@ -73,10 +73,6 @@ id|sat
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|I2C_SAA7111
-mdefine_line|#define   I2C_SAA7111        0x48
-DECL|macro|I2C_DELAY
-mdefine_line|#define   I2C_DELAY   10
 DECL|variable|normal_i2c
 r_static
 r_int
@@ -106,6 +102,12 @@ id|I2C_CLIENT_END
 )brace
 suffix:semicolon
 id|I2C_CLIENT_INSMOD
+suffix:semicolon
+DECL|variable|client_template
+r_static
+r_struct
+id|i2c_client
+id|client_template
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------------------- */
 DECL|function|saa7111_attach
@@ -143,6 +145,7 @@ id|i2c_client
 op_star
 id|client
 suffix:semicolon
+multiline_comment|/* who wrote this? init[] is used for i2c_master_send() which expects an array that&n;&t;   will be used for the &squot;buf&squot; part of an i2c message unchanged. so, the first byte&n;&t;   needs to be the subaddress to start with, then follow the data bytes... */
 r_static
 r_const
 r_int
@@ -154,123 +157,78 @@ op_assign
 (brace
 l_int|0x00
 comma
+multiline_comment|/* start address */
 l_int|0x00
 comma
 multiline_comment|/* 00 - ID byte */
-l_int|0x01
-comma
 l_int|0x00
 comma
 multiline_comment|/* 01 - reserved */
 multiline_comment|/*front end */
-l_int|0x02
-comma
 l_int|0xd0
 comma
 multiline_comment|/* 02 - FUSE=3, GUDL=2, MODE=0 */
-l_int|0x03
-comma
 l_int|0x23
 comma
 multiline_comment|/* 03 - HLNRS=0, VBSL=1, WPOFF=0, HOLDG=0, GAFIX=0, GAI1=256, GAI2=256 */
-l_int|0x04
-comma
 l_int|0x00
 comma
 multiline_comment|/* 04 - GAI1=256 */
-l_int|0x05
-comma
 l_int|0x00
 comma
 multiline_comment|/* 05 - GAI2=256 */
 multiline_comment|/* decoder */
-l_int|0x06
-comma
 l_int|0xf3
 comma
 multiline_comment|/* 06 - HSB at  13(50Hz) /  17(60Hz) pixels after end of last line */
-l_int|0x07
-comma
 l_int|0x13
 comma
 multiline_comment|/* 07 - HSS at 113(50Hz) / 117(60Hz) pixels after end of last line */
-l_int|0x08
-comma
 l_int|0xc8
 comma
 multiline_comment|/* 08 - AUFD=1, FSEL=1, EXFIL=0, VTRC=1, HPLL=0, VNOI=0 */
-l_int|0x09
-comma
 l_int|0x01
 comma
 multiline_comment|/* 09 - BYPS=0, PREF=0, BPSS=0, VBLB=0, UPTCV=0, APER=1 */
-l_int|0x0a
-comma
 l_int|0x80
 comma
 multiline_comment|/* 0a - BRIG=128 */
-l_int|0x0b
-comma
 l_int|0x47
 comma
 multiline_comment|/* 0b - CONT=1.109 */
-l_int|0x0c
-comma
 l_int|0x40
 comma
 multiline_comment|/* 0c - SATN=1.0 */
-l_int|0x0d
-comma
 l_int|0x00
 comma
 multiline_comment|/* 0d - HUE=0 */
-l_int|0x0e
-comma
 l_int|0x01
 comma
 multiline_comment|/* 0e - CDTO=0, CSTD=0, DCCF=0, FCTC=0, CHBW=1 */
-l_int|0x0f
-comma
 l_int|0x00
 comma
 multiline_comment|/* 0f - reserved */
-l_int|0x10
-comma
 l_int|0x48
 comma
 multiline_comment|/* 10 - OFTS=1, HDEL=0, VRLN=1, YDEL=0 */
-l_int|0x11
-comma
 l_int|0x1c
 comma
 multiline_comment|/* 11 - GPSW=0, CM99=0, FECO=0, COMPO=1, OEYC=1, OEHV=1, VIPB=0, COLO=0 */
-l_int|0x12
-comma
 l_int|0x00
 comma
 multiline_comment|/* 12 - output control 2 */
-l_int|0x13
-comma
 l_int|0x00
 comma
 multiline_comment|/* 13 - output control 3 */
-l_int|0x14
-comma
 l_int|0x00
 comma
 multiline_comment|/* 14 - reserved */
-l_int|0x15
-comma
 l_int|0x00
 comma
 multiline_comment|/* 15 - VBI */
-l_int|0x16
-comma
 l_int|0x00
 comma
 multiline_comment|/* 16 - VBI */
-l_int|0x17
-comma
 l_int|0x00
 comma
 multiline_comment|/* 17 - VBI */
@@ -303,20 +261,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|memset
-c_func
-(paren
-id|client
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|client
-)paren
-)paren
-suffix:semicolon
 id|client_template.adapter
 op_assign
 id|adap
@@ -482,7 +426,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s_attach: chip version %x&bslash;n&quot;
+l_string|&quot;%s_attach: chip version %x @ 0x%08x&bslash;n&quot;
 comma
 id|client-&gt;dev.name
 comma
@@ -495,6 +439,8 @@ l_int|0x00
 )paren
 op_rshift
 l_int|4
+comma
+id|addr
 )paren
 suffix:semicolon
 )brace
@@ -529,6 +475,34 @@ op_star
 id|adap
 )paren
 (brace
+multiline_comment|/* probing unknown devices on any Matrox i2c-bus takes ages due to the&n;&t;   slow bit banging algorithm used. because of the fact a saa7111(a)&n;&t;   is *never* present on a Matrox gfx card, we can skip such adapters&n;&t;   here */
+r_if
+c_cond
+(paren
+l_int|0
+op_ne
+(paren
+id|adap-&gt;id
+op_amp
+id|I2C_HW_B_G400
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;saa7111: probing %s i2c adapter [id=0x%x]&bslash;n&quot;
+comma
+id|adap-&gt;dev.name
+comma
+id|adap-&gt;id
+)paren
+suffix:semicolon
 r_return
 id|i2c_probe
 c_func
@@ -1427,6 +1401,13 @@ id|i2c_driver
 id|i2c_driver_saa7111
 op_assign
 (brace
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,54)
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+macro_line|#endif
 dot
 id|name
 op_assign

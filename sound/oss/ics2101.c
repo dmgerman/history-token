@@ -18,7 +18,7 @@ id|gus_base
 suffix:semicolon
 r_extern
 id|spinlock_t
-id|lock
+id|gus_lock
 suffix:semicolon
 DECL|variable|volumes
 r_static
@@ -253,7 +253,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|lock
+id|gus_lock
 comma
 id|flags
 )paren
@@ -309,7 +309,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|lock
+id|gus_lock
 comma
 id|flags
 )paren
@@ -781,20 +781,24 @@ id|mixer_operations
 id|ics2101_mixer_operations
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|id
-suffix:colon
+op_assign
 l_string|&quot;ICS2101&quot;
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;ICS2101 Multimedia Mixer&quot;
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|ics2101_mixer_ioctl
 )brace
 suffix:semicolon

@@ -1830,7 +1830,7 @@ id|alpha_panic_block
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ALPHA_GENERIC
-multiline_comment|/* Assume that we&squot;ve booted from SRM if we havn&squot;t booted from MILO.&n;&t;   Detect the later by looking for &quot;MILO&quot; in the system serial nr.  */
+multiline_comment|/* Assume that we&squot;ve booted from SRM if we haven&squot;t booted from MILO.&n;&t;   Detect the later by looking for &quot;MILO&quot; in the system serial nr.  */
 id|alpha_using_srm
 op_assign
 id|strncmp
@@ -2187,7 +2187,7 @@ id|machine_halt
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t; * Indentify and reconfigure for the current system.&n;&t; */
+multiline_comment|/*&n;&t; * Identify and reconfigure for the current system.&n;&t; */
 id|cpu
 op_assign
 (paren

@@ -4,7 +4,7 @@ multiline_comment|/*&n;    History and copyrights:&n;&n;    Driver skeleton&n;  
 multiline_comment|/*&n;    There are currently two motherboards that I know of in the&n;    professional workstation. The only one that I know is the&n;    intel panther motherboard. -- ard&n;*/
 multiline_comment|/*&n;The pws is equipped with an intel 82596. This is a very intelligent controller&n;which runs its own micro-code. Communication with the hostprocessor is done&n;through linked lists of commands and buffers in the hostprocessors memory.&n;A complete description of the 82596 is available from intel. Search for&n;a file called &quot;29021806.pdf&quot;. It is a complete description of the chip itself.&n;To use it for the pws some additions are needed regarding generation of&n;the PORT and CA signal, and the interrupt glue needed for a pc.&n;I/O map:&n;PORT  SIZE ACTION MEANING&n;0xCB0    2 WRITE  Lower 16 bits for PORT command&n;0xCB2    2 WRITE  Upper 16 bits for PORT command, and issue of PORT command&n;0xCB4    1 WRITE  Generation of CA signal&n;0xCB8    1 WRITE  Clear interrupt glue&n;All other communication is through memory!&n;*/
 DECL|macro|SLOW_DOWN_IO
-mdefine_line|#define SLOW_DOWN_IO udelay(5);
+mdefine_line|#define SLOW_DOWN_IO udelay(5)
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -466,7 +466,6 @@ DECL|function|va_to_pa
 id|va_to_pa
 c_func
 (paren
-r_volatile
 r_void
 op_star
 id|x
@@ -933,35 +932,30 @@ r_int
 id|last_restart
 suffix:semicolon
 DECL|member|rbd_list
-r_volatile
 r_struct
 id|i596_rbd
 op_star
 id|rbd_list
 suffix:semicolon
 DECL|member|rbd_tail
-r_volatile
 r_struct
 id|i596_rbd
 op_star
 id|rbd_tail
 suffix:semicolon
 DECL|member|rx_tail
-r_volatile
 r_struct
 id|i596_rfd
 op_star
 id|rx_tail
 suffix:semicolon
 DECL|member|cmd_tail
-r_volatile
 r_struct
 id|i596_cmd
 op_star
 id|cmd_tail
 suffix:semicolon
 DECL|member|cmd_head
-r_volatile
 r_struct
 id|i596_cmd
 op_star
@@ -980,6 +974,10 @@ DECL|member|stats
 r_struct
 id|net_device_stats
 id|stats
+suffix:semicolon
+DECL|member|cmd_lock
+id|spinlock_t
+id|cmd_lock
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1170,7 +1168,6 @@ r_int
 id|ct
 )paren
 (brace
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -1229,6 +1226,11 @@ c_func
 l_int|5
 )paren
 suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_return
 l_int|0
@@ -1250,7 +1252,6 @@ r_int
 id|num
 )paren
 (brace
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -1724,7 +1725,6 @@ op_star
 id|cmdname
 )paren
 (brace
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -1732,7 +1732,6 @@ id|lp
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-r_volatile
 id|u16
 op_star
 id|outp
@@ -1888,7 +1887,6 @@ op_star
 id|dev
 )paren
 (brace
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -2039,6 +2037,11 @@ c_func
 l_int|5
 )paren
 suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* I find here boguscnt==100, so no delay was required. */
 r_return
@@ -2057,7 +2060,6 @@ op_star
 id|dev
 )paren
 (brace
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -2194,6 +2196,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2229,7 +2236,6 @@ id|net_device
 op_star
 id|dev
 comma
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -2468,7 +2474,6 @@ op_star
 id|dev
 )paren
 (brace
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -2515,6 +2520,7 @@ id|rfd
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i596_rx: NULL rfd?&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2598,6 +2604,11 @@ id|lp-&gt;scb.pa_rfd
 op_assign
 id|rfd-&gt;pa_next
 suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_return
 id|frames
@@ -2615,7 +2626,6 @@ op_star
 id|dev
 )paren
 (brace
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -2772,6 +2782,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2798,10 +2813,9 @@ id|lp-&gt;cmd_head
 )paren
 suffix:semicolon
 )brace
-r_static
-r_inline
-r_void
 DECL|function|i596_reset
+r_static
+r_void
 id|i596_reset
 c_func
 (paren
@@ -2810,7 +2824,6 @@ id|net_device
 op_star
 id|dev
 comma
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -2849,6 +2862,11 @@ op_or
 id|RX_ABORT
 suffix:semicolon
 id|CA
+c_func
+(paren
+)paren
+suffix:semicolon
+id|barrier
 c_func
 (paren
 )paren
@@ -2913,7 +2931,6 @@ op_star
 id|cmd
 )paren
 (brace
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -2946,15 +2963,13 @@ id|cmd-&gt;pa_next
 op_assign
 id|I596_NULL
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;cmd_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -3027,9 +3042,12 @@ c_func
 id|lp-&gt;scb.pa_cmd
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;cmd_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3053,13 +3071,16 @@ c_cond
 (paren
 id|tickssofar
 OL
-l_int|25
+id|HZ
+op_div
+l_int|4
 )paren
 r_return
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: command unit timed out, status resetting.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3077,9 +3098,9 @@ id|ioaddr
 suffix:semicolon
 )brace
 )brace
+DECL|function|i596_open
 r_static
 r_int
-DECL|function|i596_open
 id|i596_open
 c_func
 (paren
@@ -3118,6 +3139,7 @@ id|i
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: IRQ %d not free&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3149,6 +3171,7 @@ id|RX_RING_SIZE
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: only able to allocate %d receive buffers&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3164,7 +3187,6 @@ OL
 l_int|4
 )paren
 (brace
-singleline_comment|// release buffers
 id|free_irq
 c_func
 (paren
@@ -3195,9 +3217,9 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Always succeed */
 )brace
+DECL|function|i596_start_xmit
 r_static
 r_int
-DECL|function|i596_start_xmit
 id|i596_start_xmit
 (paren
 r_struct
@@ -3211,7 +3233,6 @@ op_star
 id|dev
 )paren
 (brace
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -3226,36 +3247,6 @@ id|tx_cmd
 suffix:semicolon
 r_int
 id|length
-suffix:semicolon
-multiline_comment|/* If some higher level thinks we&squot;ve missed a tx-done interrupt&n;&t;   we are passed NULL. n.b. dev_tint handles the cli()/sti()&n;&t;   itself. */
-r_if
-c_cond
-(paren
-id|skb
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;What about dev_tint&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* dev_tint(dev); */
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* shouldn&squot;t happen */
-r_if
-c_cond
-(paren
-id|skb-&gt;len
-op_le
-l_int|0
-)paren
-r_return
-l_int|0
 suffix:semicolon
 id|length
 op_assign
@@ -3333,7 +3324,9 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: i596_xmit Memory squeeze, dropping packet.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3461,7 +3454,6 @@ op_star
 id|dev
 )paren
 (brace
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -3476,7 +3468,9 @@ id|dev-&gt;base_addr
 suffix:semicolon
 multiline_comment|/* Transmitter timeout, serious problems. */
 id|printk
+c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: transmit timed out, status resetting.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3543,9 +3537,9 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+DECL|function|print_eth
 r_static
 r_void
-DECL|function|print_eth
 id|print_eth
 c_func
 (paren
@@ -3661,9 +3655,9 @@ l_int|13
 )paren
 suffix:semicolon
 )brace
+DECL|function|lp486e_probe
 r_int
 id|__init
-DECL|function|lp486e_probe
 id|lp486e_probe
 c_func
 (paren
@@ -3673,7 +3667,6 @@ op_star
 id|dev
 )paren
 (brace
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -3832,6 +3825,13 @@ r_sizeof
 r_struct
 id|i596_private
 )paren
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|lp-&gt;cmd_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Do we really have this thing?&n;&t; */
@@ -4127,7 +4127,6 @@ id|net_device
 op_star
 id|dev
 comma
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -4143,7 +4142,6 @@ op_star
 id|ack_cmdp
 )paren
 (brace
-r_volatile
 r_struct
 id|i596_cmd
 op_star
@@ -4161,6 +4159,19 @@ l_int|0
 suffix:semicolon
 r_int
 id|cmd_val
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|lp-&gt;cmd_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|cmd
 op_assign
@@ -4519,6 +4530,11 @@ op_assign
 id|jiffies
 suffix:semicolon
 )brace
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|cmd
 op_assign
@@ -4548,6 +4564,11 @@ c_func
 id|cmd-&gt;pa_next
 )paren
 suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -4565,6 +4586,15 @@ id|va_to_pa
 c_func
 (paren
 id|lp-&gt;cmd_head
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|lp-&gt;cmd_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -4598,7 +4628,6 @@ op_star
 )paren
 id|dev_instance
 suffix:semicolon
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -4617,24 +4646,6 @@ id|frames_in
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;i596_interrupt(): irq %d for unknown device.&bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|lp
 op_assign
 (paren
@@ -4853,7 +4864,6 @@ op_star
 id|dev
 )paren
 (brace
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -4974,7 +4984,6 @@ op_star
 id|dev
 )paren
 (brace
-r_volatile
 r_struct
 id|i596_private
 op_star
@@ -5055,6 +5064,7 @@ l_int|NULL
 (brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;%s: set_multicast Memory squeeze.&bslash;n&quot;
 comma
 id|dev-&gt;name

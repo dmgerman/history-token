@@ -3283,7 +3283,18 @@ c_func
 (paren
 id|new_bh
 comma
-l_string|&quot;reusing block %ld&quot;
+l_string|&quot;%s block %ld&quot;
+comma
+(paren
+id|old_bh
+op_eq
+id|new_bh
+)paren
+ques
+c_cond
+l_string|&quot;keeping&quot;
+suffix:colon
+l_string|&quot;reusing&quot;
 comma
 id|new_bh-&gt;b_blocknr
 )paren
@@ -3373,6 +3384,12 @@ multiline_comment|/* Keep this block. */
 id|new_bh
 op_assign
 id|old_bh
+suffix:semicolon
+id|get_bh
+c_func
+(paren
+id|new_bh
+)paren
 suffix:semicolon
 id|ext2_xattr_cache_insert
 c_func
@@ -3747,13 +3764,6 @@ suffix:semicolon
 )brace
 id|cleanup
 suffix:colon
-r_if
-c_cond
-(paren
-id|old_bh
-op_ne
-id|new_bh
-)paren
 id|brelse
 c_func
 (paren

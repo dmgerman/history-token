@@ -116,6 +116,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* We need to be told about new modules so we don&squot;t attribute to a previously&n; * loaded module, or drop the samples on the floor.&n; */
 DECL|function|module_load_notify
 r_static
 r_int
@@ -136,6 +137,7 @@ op_star
 id|data
 )paren
 (brace
+macro_line|#ifdef CONFIG_MODULES
 r_if
 c_cond
 (paren
@@ -177,6 +179,7 @@ op_amp
 id|buffer_sem
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

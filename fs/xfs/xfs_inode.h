@@ -1547,16 +1547,6 @@ r_int
 )paren
 suffix:semicolon
 r_int
-id|xfs_ibusy_check
-c_func
-(paren
-id|xfs_inode_t
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_int
 id|xfs_iaccess
 c_func
 (paren

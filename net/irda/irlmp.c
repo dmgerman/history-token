@@ -3175,7 +3175,7 @@ id|client-&gt;disco_callback
 r_return
 suffix:semicolon
 multiline_comment|/*&n;&t; * Locking notes :&n;&t; * the old code was manipulating the log directly, which was&n;&t; * very racy. Now, we use copy_discoveries, that protects&n;&t; * itself while dumping the log for us.&n;&t; * The overhead of the copy is compensated by the fact that&n;&t; * we only pass new discoveries in normal mode and don&squot;t&n;&t; * pass the same old entry every 3s to the caller as we used&n;&t; * to do (virtual function calling is expensive).&n;&t; * Jean II&n;&t; */
-multiline_comment|/*&n;&t; * Now, check all discovered devices (if any), and notify client&n;&t; * only about the services that the client is interested in&n;&t; * We also notify only about the new devices unless the caller&n;&t; * explicity request a dump of the log. Jean II&n;&t; */
+multiline_comment|/*&n;&t; * Now, check all discovered devices (if any), and notify client&n;&t; * only about the services that the client is interested in&n;&t; * We also notify only about the new devices unless the caller&n;&t; * explicitly request a dump of the log. Jean II&n;&t; */
 id|discoveries
 op_assign
 id|irlmp_copy_discoveries

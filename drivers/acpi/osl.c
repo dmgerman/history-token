@@ -2435,6 +2435,10 @@ suffix:semicolon
 id|spin_lock
 c_func
 (paren
+(paren
+id|spinlock_t
+op_star
+)paren
 id|handle
 )paren
 suffix:semicolon
@@ -2485,6 +2489,10 @@ suffix:semicolon
 id|spin_unlock
 c_func
 (paren
+(paren
+id|spinlock_t
+op_star
+)paren
 id|handle
 )paren
 suffix:semicolon

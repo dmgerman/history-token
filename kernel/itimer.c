@@ -232,14 +232,14 @@ r_int
 r_int
 id|interval
 suffix:semicolon
-id|send_sig
+id|send_group_sig_info
 c_func
 (paren
 id|SIGALRM
 comma
-id|p
+id|SEND_SIG_PRIV
 comma
-l_int|1
+id|p
 )paren
 suffix:semicolon
 id|interval

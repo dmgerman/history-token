@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/v850/kernel/nb85e_intc.c -- NB85E cpu core interrupt controller (INTC)&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * arch/v850/kernel/nb85e_intc.c -- NB85E cpu core interrupt controller (INTC)&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
@@ -35,6 +35,73 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
+DECL|function|nb85e_intc_end_irq
+r_static
+r_void
+id|nb85e_intc_end_irq
+(paren
+r_int
+id|irq
+)paren
+(brace
+r_int
+r_int
+id|psw
+comma
+id|temp
+suffix:semicolon
+multiline_comment|/* Clear the highest-level bit in the In-service priority register&n;&t;   (ISPR), to allow this interrupt (or another of the same or&n;&t;   lesser priority) to happen again.&n;&n;&t;   The `reti&squot; instruction normally does this automatically when the&n;&t;   PSW bits EP and NP are zero, but we can&squot;t always rely on reti&n;&t;   being used consistently to return after an interrupt (another&n;&t;   process can be scheduled, for instance, which can delay the&n;&t;   associated reti for a long time, or this process may be being&n;&t;   single-stepped, which uses the `dbret&squot; instruction to return&n;&t;   from the kernel).&n;&n;&t;   We also set the PSW EP bit, which prevents reti from also&n;&t;   trying to modify the ISPR itself.  */
+multiline_comment|/* Get PSW and disable interrupts.  */
+id|asm
+r_volatile
+(paren
+l_string|&quot;stsr psw, %0; di&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|psw
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* We don&squot;t want to do anything for NMIs (they don&squot;t use the ISPR).  */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|psw
+op_amp
+l_int|0xC0
+)paren
+)paren
+(brace
+multiline_comment|/* Transition to `trap&squot; state, so that an eventual real&n;&t;&t;   reti instruction won&squot;t modify the ISPR.  */
+id|psw
+op_or_assign
+l_int|0x40
+suffix:semicolon
+multiline_comment|/* Fake an interrupt return, which automatically clears the&n;&t;&t;   appropriate bit in the ISPR.  */
+id|asm
+r_volatile
+(paren
+l_string|&quot;mov hilo(1f), %0;&quot;
+l_string|&quot;ldsr %0, eipc; ldsr %1, eipsw;&quot;
+l_string|&quot;reti;&quot;
+l_string|&quot;1:&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|temp
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|psw
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Initialize HW_IRQ_TYPES for INTC-controlled irqs described in array&n;   INITS (which is terminated by an entry with the name field == 0).  */
 DECL|function|nb85e_intc_init_irq_types
@@ -110,7 +177,7 @@ id|irq_nop
 suffix:semicolon
 id|hwit-&gt;end
 op_assign
-id|irq_nop
+id|nb85e_intc_end_irq
 suffix:semicolon
 multiline_comment|/* Initialize kernel IRQ infrastructure for this interrupt.  */
 id|init_irq_handlers

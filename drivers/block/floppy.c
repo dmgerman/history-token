@@ -19400,8 +19400,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -19418,8 +19416,6 @@ l_string|&quot;Unable to grab IRQ%d for the floppy driver&bslash;n&quot;
 comma
 id|FLOPPY_IRQ
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -19468,8 +19464,6 @@ id|fd_free_irq
 c_func
 (paren
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -19738,8 +19732,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -20069,8 +20061,6 @@ suffix:semicolon
 id|fdc
 op_assign
 id|old_fdc
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE

@@ -209,8 +209,7 @@ op_amp
 id|device-&gt;req_queue
 )paren
 op_logical_or
-op_logical_neg
-id|blk_queue_empty
+id|elv_next_request
 c_func
 (paren
 op_amp
@@ -307,8 +306,7 @@ c_func
 id|queue
 )paren
 op_logical_and
-op_logical_neg
-id|blk_queue_empty
+id|elv_next_request
 c_func
 (paren
 id|queue
@@ -623,8 +621,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-op_logical_neg
-id|blk_queue_empty
+id|elv_next_request
 c_func
 (paren
 id|queue
@@ -720,8 +717,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-op_logical_neg
-id|blk_queue_empty
+id|elv_next_request
 c_func
 (paren
 op_amp

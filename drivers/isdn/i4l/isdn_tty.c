@@ -8683,14 +8683,14 @@ c_cond
 (paren
 id|dev-&gt;profd
 )paren
-id|send_sig
+id|group_send_sig_info
 c_func
 (paren
 id|SIGIO
 comma
-id|dev-&gt;profd
+id|SEND_SIG_PRIV
 comma
-l_int|1
+id|dev-&gt;profd
 )paren
 suffix:semicolon
 )brace

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|variable|pci_probe
 r_int
@@ -414,6 +415,9 @@ id|ln-&gt;next
 suffix:semicolon
 )brace
 )brace
+r_struct
+id|pbus_set_ranges_data
+suffix:semicolon
 r_void
 id|__devinit
 DECL|function|pcibios_fixup_pbus_ranges
@@ -530,6 +534,10 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+r_extern
+id|u8
+id|pci_cache_line_size
+suffix:semicolon
 DECL|function|pcibios_init
 r_static
 r_int
@@ -557,6 +565,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|pci_cache_line_size
+op_assign
+id|boot_cpu_data.x86_clflush_size
+op_rshift
+l_int|2
+suffix:semicolon
 id|pcibios_resource_survey
 c_func
 (paren

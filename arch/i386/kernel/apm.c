@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &quot;io_ports.h&quot;
 r_extern
 id|spinlock_t
 id|i8253_lock
@@ -70,6 +71,7 @@ mdefine_line|#define ALWAYS_CALL_BUSY   1
 multiline_comment|/*&n; * Define to make the APM BIOS calls zero all data segment registers (so&n; * that an incorrect BIOS implementation will cause a kernel panic if it&n; * tries to write to arbitrary memory).&n; */
 DECL|macro|APM_ZERO_SEGS
 mdefine_line|#define APM_ZERO_SEGS
+macro_line|#include &quot;apm.h&quot;
 multiline_comment|/*&n; * Define to make all _set_limit calls use 64k limits.  The APM 1.1 BIOS is&n; * supposed to provide limit information that it recognizes.  Many machines&n; * do this correctly, but many others do not restrict themselves to their&n; * claimed limit.  When this happens, they will cause a segmentation&n; * violation in the kernel at boot time.  Most BIOS&squot;s, however, will&n; * respect a 64k limit, so we use that.  If you want to be pedantic and&n; * hold your BIOS to its claims, then undefine this.&n; */
 DECL|macro|APM_RELAX_SEGMENTS
 mdefine_line|#define APM_RELAX_SEGMENTS
@@ -718,10 +720,6 @@ DECL|macro|APM_DECL_SEGS
 macro_line|#&t;define APM_DECL_SEGS &bslash;&n;&t;&t;unsigned int saved_fs; unsigned int saved_gs;
 DECL|macro|APM_DO_SAVE_SEGS
 macro_line|#&t;define APM_DO_SAVE_SEGS &bslash;&n;&t;&t;savesegment(fs, saved_fs); savesegment(gs, saved_gs)
-DECL|macro|APM_DO_ZERO_SEGS
-macro_line|#&t;define APM_DO_ZERO_SEGS &bslash;&n;&t;&t;&quot;pushl %%ds&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&quot;pushl %%es&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&quot;xorl %%edx, %%edx&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&quot;mov %%dx, %%ds&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&quot;mov %%dx, %%es&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&quot;mov %%dx, %%fs&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&quot;mov %%dx, %%gs&bslash;n&bslash;t&quot;
-DECL|macro|APM_DO_POP_SEGS
-macro_line|#&t;define APM_DO_POP_SEGS &bslash;&n;&t;&t;&quot;popl %%es&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&quot;popl %%ds&bslash;n&bslash;t&quot;
 DECL|macro|APM_DO_RESTORE_SEGS
 macro_line|#&t;define APM_DO_RESTORE_SEGS &bslash;&n;&t;&t;loadsegment(fs, saved_fs); loadsegment(gs, saved_gs)
 macro_line|#else
@@ -729,10 +727,6 @@ DECL|macro|APM_DECL_SEGS
 macro_line|#&t;define APM_DECL_SEGS
 DECL|macro|APM_DO_SAVE_SEGS
 macro_line|#&t;define APM_DO_SAVE_SEGS
-DECL|macro|APM_DO_ZERO_SEGS
-macro_line|#&t;define APM_DO_ZERO_SEGS
-DECL|macro|APM_DO_POP_SEGS
-macro_line|#&t;define APM_DO_POP_SEGS
 DECL|macro|APM_DO_RESTORE_SEGS
 macro_line|#&t;define APM_DO_RESTORE_SEGS
 macro_line|#endif
@@ -837,68 +831,24 @@ id|APM_DO_CLI
 suffix:semicolon
 id|APM_DO_SAVE_SEGS
 suffix:semicolon
-multiline_comment|/*&n;&t; * N.B. We do NOT need a cld after the BIOS call&n;&t; * because we always save and restore the flags.&n;&t; */
-id|__asm__
-id|__volatile__
+id|apm_bios_call_asm
 c_func
 (paren
-id|APM_DO_ZERO_SEGS
-l_string|&quot;pushl %%edi&bslash;n&bslash;t&quot;
-l_string|&quot;pushl %%ebp&bslash;n&bslash;t&quot;
-l_string|&quot;lcall *%%cs:apm_bios_entry&bslash;n&bslash;t&quot;
-l_string|&quot;setc %%al&bslash;n&bslash;t&quot;
-l_string|&quot;popl %%ebp&bslash;n&bslash;t&quot;
-l_string|&quot;popl %%edi&bslash;n&bslash;t&quot;
-id|APM_DO_POP_SEGS
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-op_star
-id|eax
-)paren
-comma
-l_string|&quot;=b&quot;
-(paren
-op_star
-id|ebx
-)paren
-comma
-l_string|&quot;=c&quot;
-(paren
-op_star
-id|ecx
-)paren
-comma
-l_string|&quot;=d&quot;
-(paren
-op_star
-id|edx
-)paren
-comma
-l_string|&quot;=S&quot;
-(paren
-op_star
-id|esi
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
 id|func
-)paren
 comma
-l_string|&quot;b&quot;
-(paren
 id|ebx_in
-)paren
 comma
-l_string|&quot;c&quot;
-(paren
 id|ecx_in
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
 comma
-l_string|&quot;cc&quot;
+id|eax
+comma
+id|ebx
+comma
+id|ecx
+comma
+id|edx
+comma
+id|esi
 )paren
 suffix:semicolon
 id|APM_DO_RESTORE_SEGS
@@ -1027,75 +977,20 @@ id|APM_DO_CLI
 suffix:semicolon
 id|APM_DO_SAVE_SEGS
 suffix:semicolon
-(brace
-r_int
-id|cx
-comma
-id|dx
-comma
-id|si
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * N.B. We do NOT need a cld after the BIOS call&n;&t;&t; * because we always save and restore the flags.&n;&t;&t; */
-id|__asm__
-id|__volatile__
+id|error
+op_assign
+id|apm_bios_call_simple_asm
 c_func
 (paren
-id|APM_DO_ZERO_SEGS
-l_string|&quot;pushl %%edi&bslash;n&bslash;t&quot;
-l_string|&quot;pushl %%ebp&bslash;n&bslash;t&quot;
-l_string|&quot;lcall *%%cs:apm_bios_entry&bslash;n&bslash;t&quot;
-l_string|&quot;setc %%bl&bslash;n&bslash;t&quot;
-l_string|&quot;popl %%ebp&bslash;n&bslash;t&quot;
-l_string|&quot;popl %%edi&bslash;n&bslash;t&quot;
-id|APM_DO_POP_SEGS
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-op_star
+id|func
+comma
+id|ebx_in
+comma
+id|ecx_in
+comma
 id|eax
 )paren
-comma
-l_string|&quot;=b&quot;
-(paren
-id|error
-)paren
-comma
-l_string|&quot;=c&quot;
-(paren
-id|cx
-)paren
-comma
-l_string|&quot;=d&quot;
-(paren
-id|dx
-)paren
-comma
-l_string|&quot;=S&quot;
-(paren
-id|si
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|func
-)paren
-comma
-l_string|&quot;b&quot;
-(paren
-id|ebx_in
-)paren
-comma
-l_string|&quot;c&quot;
-(paren
-id|ecx_in
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-comma
-l_string|&quot;cc&quot;
-)paren
 suffix:semicolon
-)brace
 id|APM_DO_RESTORE_SEGS
 suffix:semicolon
 id|local_irq_restore
@@ -2846,7 +2741,7 @@ c_func
 (paren
 l_int|0x34
 comma
-l_int|0x43
+id|PIT_MODE
 )paren
 suffix:semicolon
 multiline_comment|/* binary, mode 2, LSB/MSB, ch 0 */
@@ -2863,7 +2758,7 @@ id|LATCH
 op_amp
 l_int|0xff
 comma
-l_int|0x40
+id|PIT_CH0
 )paren
 suffix:semicolon
 multiline_comment|/* LSB */
@@ -2880,7 +2775,7 @@ id|LATCH
 op_rshift
 l_int|8
 comma
-l_int|0x40
+id|PIT_CH0
 )paren
 suffix:semicolon
 multiline_comment|/* MSB */

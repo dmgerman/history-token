@@ -97,7 +97,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* frame pointer must be last for get_wchan */
-multiline_comment|/* It would be more efficient to let the compiler clobber most of these registers.&n;   Clobbering all is not possible because that lets reload freak out. Even just &n;   clobbering six generates wrong code with gcc 3.1 for me so do it this way for now.&n;   rbp needs to be always explicitely saved because gcc cannot clobber the&n;   frame pointer and the scheduler is compiled with frame pointers. -AK */
+multiline_comment|/* It would be more efficient to let the compiler clobber most of these registers.&n;   Clobbering all is not possible because that lets reload freak out. Even just &n;   clobbering six generates wrong code with gcc 3.1 for me so do it this way for now.&n;   rbp needs to be always explicitly saved because gcc cannot clobber the&n;   frame pointer and the scheduler is compiled with frame pointers. -AK */
 DECL|macro|SAVE_CONTEXT
 mdefine_line|#define SAVE_CONTEXT &bslash;&n;&t;__PUSH(rsi) __PUSH(rdi) &bslash;&n;    __PUSH(r12) __PUSH(r13) __PUSH(r14) __PUSH(r15)  &bslash;&n;&t;__PUSH(rdx) __PUSH(rcx) __PUSH(r8) __PUSH(r9) __PUSH(r10) __PUSH(r11)  &bslash;&n;&t;__PUSH(rbx) __PUSH(rbp) 
 DECL|macro|RESTORE_CONTEXT

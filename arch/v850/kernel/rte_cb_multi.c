@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * include/asm-v850/rte_multi.c -- Support for Multi debugger monitor ROM&n; * &t;on Midas lab RTE-CB series of evaluation boards&n; *&n; *  Copyright (C) 2001,02,03  NEC Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+DECL|macro|IRQ_ADDR
+mdefine_line|#define IRQ_ADDR(irq) (0x80 + (irq) * 0x10)
 multiline_comment|/* A table of which interrupt vectors to install, since blindly&n;   installing all of them makes the debugger stop working.  This is a&n;   list of offsets in the interrupt vector area; each entry means to&n;   copy that particular 16-byte vector.  An entry less than zero ends&n;   the table.  */
 DECL|variable|multi_intv_install_table
 r_static
@@ -10,54 +12,173 @@ id|multi_intv_install_table
 )braket
 op_assign
 (brace
+multiline_comment|/* Trap vectors */
 l_int|0x40
 comma
 l_int|0x50
 comma
-multiline_comment|/* trap vectors */
 macro_line|#ifdef CONFIG_RTE_CB_MULTI_DBTRAP
+multiline_comment|/* Illegal insn / dbtrap.  These are used by multi, so only handle&n;&t;   them if configured to do so.  */
 l_int|0x60
 comma
-multiline_comment|/* illegal insn / dbtrap */
 macro_line|#endif
-multiline_comment|/* Note -- illegal insn trap is used by the debugger.  */
-l_int|0xD0
+multiline_comment|/* GINT1 - GINT3 (note, not GINT0!) */
+id|IRQ_ADDR
+(paren
+id|IRQ_GINT
+c_func
+(paren
+l_int|1
+)paren
+)paren
 comma
-l_int|0xE0
+id|IRQ_ADDR
+(paren
+id|IRQ_GINT
+c_func
+(paren
+l_int|2
+)paren
+)paren
 comma
-l_int|0xF0
+id|IRQ_ADDR
+(paren
+id|IRQ_GINT
+c_func
+(paren
+l_int|3
+)paren
+)paren
 comma
-multiline_comment|/* GINT1 - GINT3 */
-l_int|0x240
+multiline_comment|/* Timer D interrupts (up to 4 timers) */
+id|IRQ_ADDR
+(paren
+id|IRQ_INTCMD
+c_func
+(paren
+l_int|0
+)paren
+)paren
 comma
-l_int|0x250
+macro_line|#if IRQ_INTCMD_NUM &gt; 1
+id|IRQ_ADDR
+(paren
+id|IRQ_INTCMD
+c_func
+(paren
+l_int|1
+)paren
+)paren
 comma
-l_int|0x260
+macro_line|#if IRQ_INTCMD_NUM &gt; 2
+id|IRQ_ADDR
+(paren
+id|IRQ_INTCMD
+c_func
+(paren
+l_int|2
+)paren
+)paren
 comma
-l_int|0x270
+macro_line|#if IRQ_INTCMD_NUM &gt; 3
+id|IRQ_ADDR
+(paren
+id|IRQ_INTCMD
+c_func
+(paren
+l_int|3
+)paren
+)paren
 comma
-multiline_comment|/* timer D interrupts */
-l_int|0x2D0
+macro_line|#endif
+macro_line|#endif
+macro_line|#endif
+multiline_comment|/* UART interrupts (up to 3 channels) */
+id|IRQ_ADDR
+(paren
+id|IRQ_INTSER
+(paren
+l_int|0
+)paren
+)paren
 comma
-l_int|0x2E0
+multiline_comment|/* err */
+id|IRQ_ADDR
+(paren
+id|IRQ_INTSR
+(paren
+l_int|0
+)paren
+)paren
 comma
-l_int|0x2F0
+multiline_comment|/* rx */
+id|IRQ_ADDR
+(paren
+id|IRQ_INTST
+(paren
+l_int|0
+)paren
+)paren
 comma
-multiline_comment|/* UART channel 0 */
-l_int|0x310
+multiline_comment|/* tx */
+macro_line|#if IRQ_INTSR_NUM &gt; 1
+id|IRQ_ADDR
+(paren
+id|IRQ_INTSER
+(paren
+l_int|1
+)paren
+)paren
 comma
-l_int|0x320
+multiline_comment|/* err */
+id|IRQ_ADDR
+(paren
+id|IRQ_INTSR
+(paren
+l_int|1
+)paren
+)paren
 comma
-l_int|0x330
+multiline_comment|/* rx */
+id|IRQ_ADDR
+(paren
+id|IRQ_INTST
+(paren
+l_int|1
+)paren
+)paren
 comma
-multiline_comment|/* UART channel 1 */
-l_int|0x350
+multiline_comment|/* tx */
+macro_line|#if IRQ_INTSR_NUM &gt; 2
+id|IRQ_ADDR
+(paren
+id|IRQ_INTSER
+(paren
+l_int|2
+)paren
+)paren
 comma
-l_int|0x360
+multiline_comment|/* err */
+id|IRQ_ADDR
+(paren
+id|IRQ_INTSR
+(paren
+l_int|2
+)paren
+)paren
 comma
-l_int|0x370
+multiline_comment|/* rx */
+id|IRQ_ADDR
+(paren
+id|IRQ_INTST
+(paren
+l_int|2
+)paren
+)paren
 comma
-multiline_comment|/* UART channel 2 */
+multiline_comment|/* tx */
+macro_line|#endif
+macro_line|#endif
 op_minus
 l_int|1
 )brace

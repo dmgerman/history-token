@@ -553,7 +553,7 @@ id|PAGE_CACHE_SHIFT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Preallocate as many pages as we will need.&n;&t; */
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -610,7 +610,7 @@ id|page
 )paren
 r_continue
 suffix:semicolon
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -625,7 +625,7 @@ c_func
 id|mapping
 )paren
 suffix:semicolon
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -658,7 +658,7 @@ id|ret
 op_increment
 suffix:semicolon
 )brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp

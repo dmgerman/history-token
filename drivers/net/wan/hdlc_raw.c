@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Generic HDLC support routines for Linux&n; * HDLC support&n; *&n; * Copyright (C) 1999 - 2001 Krzysztof Halasa &lt;khc@pm.waw.pl&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
+multiline_comment|/*&n; * Generic HDLC support routines for Linux&n; * HDLC support&n; *&n; * Copyright (C) 1999 - 2003 Krzysztof Halasa &lt;khc@pm.waw.pl&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License&n; * as published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -13,30 +13,29 @@ macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/lapb.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/hdlc.h&gt;
-DECL|function|raw_rx
+DECL|function|raw_type_trans
 r_static
-r_void
-id|raw_rx
+r_int
+r_int
+id|raw_type_trans
 c_func
 (paren
 r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 (brace
-id|skb-&gt;protocol
-op_assign
-id|htons
+r_return
+id|__constant_htons
 c_func
 (paren
 id|ETH_P_IP
-)paren
-suffix:semicolon
-id|netif_rx
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 )brace
@@ -205,7 +204,7 @@ id|PARITY_DEFAULT
 )paren
 id|new_settings.parity
 op_assign
-id|PARITY_NONE
+id|PARITY_CRC16_PR1_CCITT
 suffix:semicolon
 id|result
 op_assign
@@ -257,7 +256,11 @@ l_int|NULL
 suffix:semicolon
 id|hdlc-&gt;netif_rx
 op_assign
-id|raw_rx
+l_int|NULL
+suffix:semicolon
+id|hdlc-&gt;type_trans
+op_assign
+id|raw_type_trans
 suffix:semicolon
 id|hdlc-&gt;proto
 op_assign
@@ -274,6 +277,12 @@ suffix:semicolon
 id|dev-&gt;type
 op_assign
 id|ARPHRD_RAWHDLC
+suffix:semicolon
+id|dev-&gt;flags
+op_assign
+id|IFF_POINTOPOINT
+op_or
+id|IFF_NOARP
 suffix:semicolon
 id|dev-&gt;addr_len
 op_assign

@@ -1,5 +1,6 @@
-multiline_comment|/* &n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* &n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/sn/simulator.h&gt;
@@ -141,10 +142,17 @@ id|addr
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * sn2_mmiob - I/O space memory barrier&n; *&n; * Acts as a memory mapped I/O barrier for platforms that queue writes to &n; * I/O space.  This ensures that subsequent writes to I/O space arrive after&n; * all previous writes.  For most ia64 platforms, this is a simple&n; * &squot;mf.a&squot; instruction.  For other platforms, mmiob() may have to read&n; * a chipset register to ensure ordering.&n; *&n; * On SN2, we wait for the PIO_WRITE_STATUS SHub register to clear.&n; * See PV 871084 for details about the WAR about zero value.&n; *&n; */
+DECL|variable|sn_io_addr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sn_io_addr
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * sn_mmiob - I/O space memory barrier&n; *&n; * Acts as a memory mapped I/O barrier for platforms that queue writes to &n; * I/O space.  This ensures that subsequent writes to I/O space arrive after&n; * all previous writes.  For most ia64 platforms, this is a simple&n; * &squot;mf.a&squot; instruction.  For other platforms, mmiob() may have to read&n; * a chipset register to ensure ordering.&n; *&n; * On SN2, we wait for the PIO_WRITE_STATUS SHub register to clear.&n; * See PV 871084 for details about the WAR about zero value.&n; *&n; */
 r_void
-DECL|function|sn2_mmiob
-id|sn2_mmiob
+DECL|function|sn_mmiob
+id|sn_mmiob
 (paren
 r_void
 )paren
@@ -161,7 +169,7 @@ r_int
 )paren
 (paren
 op_star
-id|pda-&gt;pio_write_status_addr
+id|pda.pio_write_status_addr
 )paren
 )paren
 op_amp

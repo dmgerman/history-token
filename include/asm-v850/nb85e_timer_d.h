@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/nb85e_timer_d.h -- `Timer D&squot; component often used&n; *&t;with the NB85E cpu core&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/nb85e_timer_d.h -- `Timer D&squot; component often used&n; *&t;with the NB85E cpu core&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_NB85E_TIMER_D_H__
 DECL|macro|__V850_NB85E_TIMER_D_H__
 mdefine_line|#define __V850_NB85E_TIMER_D_H__
@@ -14,7 +14,7 @@ multiline_comment|/* Count compare registers for timer D.  */
 DECL|macro|NB85E_TIMER_D_CMD_ADDR
 mdefine_line|#define NB85E_TIMER_D_CMD_ADDR(n) (NB85E_TIMER_D_CMD_BASE_ADDR + 0x10 * (n))
 DECL|macro|NB85E_TIMER_D_CMD
-mdefine_line|#define NB85E_TIMER_D_CMD(n)&t;  (*(u16 *)NB85E_TIMER_D_CMD_ADDR(n))
+mdefine_line|#define NB85E_TIMER_D_CMD(n)&t;  (*(volatile u16 *)NB85E_TIMER_D_CMD_ADDR(n))
 multiline_comment|/* Control registers for timer D.  */
 DECL|macro|NB85E_TIMER_D_TMCD_ADDR
 mdefine_line|#define NB85E_TIMER_D_TMCD_ADDR(n) (NB85E_TIMER_D_TMCD_BASE_ADDR + 0x10 * (n))

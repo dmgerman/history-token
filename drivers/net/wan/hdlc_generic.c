@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Generic HDLC support routines for Linux&n; *&n; * Copyright (C) 1999 - 2001 Krzysztof Halasa &lt;khc@pm.waw.pl&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Current status:&n; *    - this is work in progress&n; *    - not heavily tested on SMP&n; *    - currently supported:&n; *&t;* raw IP-in-HDLC&n; *&t;* Cisco HDLC&n; *&t;* Frame Relay with ANSI or CCITT LMI (both user and network side)&n; *&t;* PPP&n; *&t;* X.25&n; *&n; * Use sethdlc utility to set line parameters, protocol and PVCs&n; */
+multiline_comment|/*&n; * Generic HDLC support routines for Linux&n; *&n; * Copyright (C) 1999 - 2003 Krzysztof Halasa &lt;khc@pm.waw.pl&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License&n; * as published by the Free Software Foundation.&n; *&n; * Currently supported:&n; *&t;* raw IP-in-HDLC&n; *&t;* Cisco HDLC&n; *&t;* Frame Relay with ANSI or CCITT LMI (both user and network side)&n; *&t;* PPP&n; *&t;* X.25&n; *&n; * Use sethdlc utility to set line parameters, protocol and PVCs&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -20,7 +20,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;HDLC support module revision 1.11&quot;
+l_string|&quot;HDLC support module revision 1.14&quot;
 suffix:semicolon
 DECL|function|hdlc_change_mtu
 r_static
@@ -111,11 +111,22 @@ op_star
 id|p
 )paren
 (brace
+id|hdlc_device
+op_star
+id|hdlc
+op_assign
 id|dev_to_hdlc
 c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hdlc-&gt;netif_rx
+)paren
+id|hdlc
 op_member_access_from_pointer
 id|netif_rx
 c_func
@@ -123,6 +134,19 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+r_else
+(brace
+id|hdlc-&gt;stats.rx_dropped
+op_increment
+suffix:semicolon
+multiline_comment|/* Shouldn&squot;t happen */
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -130,6 +154,10 @@ suffix:semicolon
 macro_line|#ifndef CONFIG_HDLC_RAW
 DECL|macro|hdlc_raw_ioctl
 mdefine_line|#define hdlc_raw_ioctl(hdlc, ifr)&t;-ENOSYS
+macro_line|#endif
+macro_line|#ifndef CONFIG_HDLC_RAW_ETH
+DECL|macro|hdlc_raw_eth_ioctl
+mdefine_line|#define hdlc_raw_eth_ioctl(hdlc, ifr)&t;-ENOSYS
 macro_line|#endif
 macro_line|#ifndef CONFIG_HDLC_PPP
 DECL|macro|hdlc_ppp_ioctl
@@ -201,6 +229,9 @@ r_case
 id|IF_PROTO_HDLC
 suffix:colon
 r_case
+id|IF_PROTO_HDLC_ETH
+suffix:colon
+r_case
 id|IF_PROTO_PPP
 suffix:colon
 r_case
@@ -236,6 +267,18 @@ id|IF_PROTO_HDLC
 suffix:colon
 r_return
 id|hdlc_raw_ioctl
+c_func
+(paren
+id|hdlc
+comma
+id|ifr
+)paren
+suffix:semicolon
+r_case
+id|IF_PROTO_HDLC_ETH
+suffix:colon
+r_return
+id|hdlc_raw_eth_ioctl
 c_func
 (paren
 id|hdlc
@@ -397,8 +440,6 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -413,13 +454,18 @@ op_star
 id|hdlc
 )paren
 (brace
+id|rtnl_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|hdlc_proto_detach
 c_func
 (paren
 id|hdlc
 )paren
 suffix:semicolon
-id|unregister_netdev
+id|unregister_netdevice
 c_func
 (paren
 id|hdlc_to_dev
@@ -429,7 +475,10 @@ id|hdlc
 )paren
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
+id|rtnl_unlock
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 id|MODULE_AUTHOR
@@ -447,7 +496,7 @@ suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
-l_string|&quot;GPL&quot;
+l_string|&quot;GPL v2&quot;
 )paren
 suffix:semicolon
 DECL|variable|hdlc_ioctl
