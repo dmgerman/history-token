@@ -39,16 +39,6 @@ id|page
 op_star
 id|ia32_shared_page
 (braket
-(paren
-id|PAGE_ALIGN
-c_func
-(paren
-id|IA32_PAGE_SIZE
-)paren
-op_div
-id|PAGE_SIZE
-)paren
-op_star
 id|NR_CPUS
 )braket
 suffix:semicolon
