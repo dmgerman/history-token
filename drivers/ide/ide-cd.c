@@ -8586,7 +8586,11 @@ c_cond
 op_logical_neg
 id|stat
 op_logical_and
+(paren
 id|last_written
+OG
+id|toc-&gt;capacity
+)paren
 )paren
 (brace
 id|toc-&gt;capacity
