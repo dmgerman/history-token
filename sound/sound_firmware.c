@@ -1,11 +1,8 @@
 macro_line|#include &lt;linux/vmalloc.h&gt;
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|do_mod_firmware_load
 r_static

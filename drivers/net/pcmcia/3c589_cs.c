@@ -895,6 +895,13 @@ id|link-&gt;irq.Instance
 op_assign
 id|lp
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|link-&gt;release
+)paren
+suffix:semicolon
 id|link-&gt;release.function
 op_assign
 op_amp

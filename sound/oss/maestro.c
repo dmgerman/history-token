@@ -1511,6 +1511,7 @@ l_int|100
 op_div
 id|mh-&gt;scale
 suffix:semicolon
+)brace
 r_else
 (brace
 id|right

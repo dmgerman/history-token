@@ -735,7 +735,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Get/put a kernel symbol (calls should be symmetric) */
 DECL|macro|symbol_get
-mdefine_line|#define symbol_get(x) (&amp;(x))
+mdefine_line|#define symbol_get(x) ({ extern typeof(x) x __attribute__((weak)); &amp;(x); })
 DECL|macro|symbol_put
 mdefine_line|#define symbol_put(x) do { } while(0)
 DECL|macro|symbol_put_addr
