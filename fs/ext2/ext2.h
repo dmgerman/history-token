@@ -355,17 +355,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|ext2_fsync_inode
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* ialloc.c */
 r_extern
 r_struct

@@ -1073,8 +1073,8 @@ r_int
 id|sync
 )paren
 (brace
-r_if
-c_cond
+r_while
+c_loop
 (paren
 id|inode-&gt;i_state
 op_amp
@@ -1114,8 +1114,6 @@ id|inode_lock
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
 id|__sync_one
 c_func
 (paren
@@ -1124,7 +1122,6 @@ comma
 id|sync
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|sync_list
 r_static
