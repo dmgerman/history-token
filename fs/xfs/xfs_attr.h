@@ -149,11 +149,16 @@ DECL|typedef|attrnames_t
 id|attrnames_t
 suffix:semicolon
 DECL|macro|ATTR_NAMECOUNT
-mdefine_line|#define ATTR_NAMECOUNT&t;3
+mdefine_line|#define ATTR_NAMECOUNT&t;4
 r_extern
 r_struct
 id|attrnames
 id|attr_user
+suffix:semicolon
+r_extern
+r_struct
+id|attrnames
+id|attr_secure
 suffix:semicolon
 r_extern
 r_struct
@@ -237,6 +242,8 @@ DECL|macro|ATTR_ROOT
 mdefine_line|#define ATTR_ROOT&t;0x0002&t;/* use attrs in root (trusted) namespace */
 DECL|macro|ATTR_TRUST
 mdefine_line|#define ATTR_TRUST&t;0x0004&t;/* -- unused, from IRIX -- */
+DECL|macro|ATTR_SECURE
+mdefine_line|#define ATTR_SECURE&t;0x0008&t;/* use attrs in security namespace */
 DECL|macro|ATTR_CREATE
 mdefine_line|#define ATTR_CREATE&t;0x0010&t;/* pure create: fail if attr already exists */
 DECL|macro|ATTR_REPLACE

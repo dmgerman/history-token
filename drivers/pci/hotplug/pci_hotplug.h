@@ -118,7 +118,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|to_hotplug_attr
 mdefine_line|#define to_hotplug_attr(n) container_of(n, struct hotplug_slot_attribute, attr);
-multiline_comment|/**&n; * struct hotplug_slot_ops -the callbacks that the hotplug pci core can use&n; * @owner: The module owner of this structure&n; * @enable_slot: Called when the user wants to enable a specific pci slot&n; * @disable_slot: Called when the user wants to disable a specific pci slot&n; * @set_attention_status: Called to set the specific slot&squot;s attention LED to&n; * the specified value&n; * @hardware_test: Called to run a specified hardware test on the specified&n; * slot.&n; * @get_power_status: Called to get the current power status of a slot.&n; * &t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; * &t;will be used when this value is requested by a user.&n; * @get_attention_status: Called to get the current attention status of a slot.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; * @get_latch_status: Called to get the current latch status of a slot.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; * @get_adapter_status: Called to get see if an adapter is present in the slot or not.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; * @get_max_bus_speed: Called to get the max bus speed for a slot.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; * @get_cur_bus_speed: Called to get the current bus speed for a slot.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; *&n; * The table of function pointers that is passed to the hotplug pci core by a&n; * hotplug pci driver.  These functions are called by the hotplug pci core when&n; * the user wants to do something to a specific slot (query it for information,&n; * set an LED, enable / disable power, etc.)&n; */
+multiline_comment|/**&n; * struct hotplug_slot_ops -the callbacks that the hotplug pci core can use&n; * @owner: The module owner of this structure&n; * @enable_slot: Called when the user wants to enable a specific pci slot&n; * @disable_slot: Called when the user wants to disable a specific pci slot&n; * @set_attention_status: Called to set the specific slot&squot;s attention LED to&n; * the specified value&n; * @hardware_test: Called to run a specified hardware test on the specified&n; * slot.&n; * @get_power_status: Called to get the current power status of a slot.&n; * &t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; * &t;will be used when this value is requested by a user.&n; * @get_attention_status: Called to get the current attention status of a slot.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; * @get_latch_status: Called to get the current latch status of a slot.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; * @get_adapter_status: Called to get see if an adapter is present in the slot or not.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; * @get_address: Called to get pci address of a slot.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; * @get_max_bus_speed: Called to get the max bus speed for a slot.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; * @get_cur_bus_speed: Called to get the current bus speed for a slot.&n; *&t;If this field is NULL, the value passed in the struct hotplug_slot_info&n; *&t;will be used when this value is requested by a user.&n; *&n; * The table of function pointers that is passed to the hotplug pci core by a&n; * hotplug pci driver.  These functions are called by the hotplug pci core when&n; * the user wants to do something to a specific slot (query it for information,&n; * set an LED, enable / disable power, etc.)&n; */
 DECL|struct|hotplug_slot_ops
 r_struct
 id|hotplug_slot_ops
@@ -255,6 +255,23 @@ op_star
 id|value
 )paren
 suffix:semicolon
+DECL|member|get_address
+r_int
+(paren
+op_star
+id|get_address
+)paren
+(paren
+r_struct
+id|hotplug_slot
+op_star
+id|slot
+comma
+id|u32
+op_star
+id|value
+)paren
+suffix:semicolon
 DECL|member|get_max_bus_speed
 r_int
 (paren
@@ -293,7 +310,7 @@ id|value
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * struct hotplug_slot_info - used to notify the hotplug pci core of the state of the slot&n; * @power: if power is enabled or not (1/0)&n; * @attention_status: if the attention light is enabled or not (1/0)&n; * @latch_status: if the latch (if any) is open or closed (1/0)&n; * @adapter_present: if there is a pci board present in the slot or not (1/0)&n; *&n; * Used to notify the hotplug pci core of the status of a specific slot.&n; */
+multiline_comment|/**&n; * struct hotplug_slot_info - used to notify the hotplug pci core of the state of the slot&n; * @power: if power is enabled or not (1/0)&n; * @attention_status: if the attention light is enabled or not (1/0)&n; * @latch_status: if the latch (if any) is open or closed (1/0)&n; * @adapter_present: if there is a pci board present in the slot or not (1/0)&n; * @address: (domain &lt;&lt; 16 | bus &lt;&lt; 8 | dev)&n; *&n; * Used to notify the hotplug pci core of the status of a specific slot.&n; */
 DECL|struct|hotplug_slot_info
 r_struct
 id|hotplug_slot_info
@@ -313,6 +330,10 @@ suffix:semicolon
 DECL|member|adapter_status
 id|u8
 id|adapter_status
+suffix:semicolon
+DECL|member|address
+id|u32
+id|address
 suffix:semicolon
 DECL|member|max_bus_speed
 r_enum

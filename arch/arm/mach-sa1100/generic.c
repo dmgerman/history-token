@@ -257,6 +257,13 @@ op_star
 l_int|100
 suffix:semicolon
 )brace
+DECL|variable|sa11x0_getspeed
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sa11x0_getspeed
+)paren
+suffix:semicolon
 macro_line|#else
 multiline_comment|/*&n; * We still need to provide this so building without cpufreq works.&n; */
 DECL|function|cpufreq_get

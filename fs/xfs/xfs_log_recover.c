@@ -5505,6 +5505,8 @@ id|obuf_f
 suffix:semicolon
 id|ushort
 id|flags
+op_assign
+l_int|0
 suffix:semicolon
 id|first_item
 op_assign

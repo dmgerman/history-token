@@ -9,15 +9,43 @@ DECL|macro|pull
 mdefine_line|#define pull            lsr
 DECL|macro|push
 mdefine_line|#define push            lsl
-DECL|macro|byte
-mdefine_line|#define byte(x)         (x*8)
+DECL|macro|get_byte_0
+mdefine_line|#define get_byte_0      lsl #0
+DECL|macro|get_byte_1
+mdefine_line|#define get_byte_1&t;lsr #8
+DECL|macro|get_byte_2
+mdefine_line|#define get_byte_2&t;lsr #16
+DECL|macro|get_byte_3
+mdefine_line|#define get_byte_3&t;lsr #24
+DECL|macro|put_byte_0
+mdefine_line|#define put_byte_0      lsl #0
+DECL|macro|put_byte_1
+mdefine_line|#define put_byte_1&t;lsl #8
+DECL|macro|put_byte_2
+mdefine_line|#define put_byte_2&t;lsl #16
+DECL|macro|put_byte_3
+mdefine_line|#define put_byte_3&t;lsl #24
 macro_line|#else
 DECL|macro|pull
 mdefine_line|#define pull            lsl
 DECL|macro|push
 mdefine_line|#define push            lsr
-DECL|macro|byte
-mdefine_line|#define byte(x)         ((3-x)*8)
+DECL|macro|get_byte_0
+mdefine_line|#define get_byte_0&t;lsr #24
+DECL|macro|get_byte_1
+mdefine_line|#define get_byte_1&t;lsr #16
+DECL|macro|get_byte_2
+mdefine_line|#define get_byte_2&t;lsr #8
+DECL|macro|get_byte_3
+mdefine_line|#define get_byte_3      lsl #0
+DECL|macro|put_byte_0
+mdefine_line|#define put_byte_0&t;lsl #24
+DECL|macro|put_byte_1
+mdefine_line|#define put_byte_1&t;lsl #16
+DECL|macro|put_byte_2
+mdefine_line|#define put_byte_2&t;lsl #8
+DECL|macro|put_byte_3
+mdefine_line|#define put_byte_3      lsl #0
 macro_line|#endif
 multiline_comment|/*&n; * Data preload for architectures that support it&n; */
 macro_line|#if __LINUX_ARM_ARCH__ &gt;= 5

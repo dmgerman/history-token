@@ -5,17 +5,14 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/arch/cerf.h&gt;
 macro_line|#include &quot;sa1100_generic.h&quot;
-macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
-DECL|macro|CERF_SOCKET
-mdefine_line|#define CERF_SOCKET&t;0
-macro_line|#else
 DECL|macro|CERF_SOCKET
 mdefine_line|#define CERF_SOCKET&t;1
-macro_line|#endif
 DECL|variable|irqs
 r_static
 r_struct
@@ -28,7 +25,7 @@ op_assign
 (brace
 id|CERF_SOCKET
 comma
-id|IRQ_GPIO_CF_CD
+id|CERF_IRQ_GPIO_CF_CD
 comma
 l_string|&quot;CF_CD&quot;
 )brace
@@ -36,7 +33,7 @@ comma
 (brace
 id|CERF_SOCKET
 comma
-id|IRQ_GPIO_CF_BVD2
+id|CERF_IRQ_GPIO_CF_BVD2
 comma
 l_string|&quot;CF_BVD2&quot;
 )brace
@@ -44,7 +41,7 @@ comma
 (brace
 id|CERF_SOCKET
 comma
-id|IRQ_GPIO_CF_BVD1
+id|CERF_IRQ_GPIO_CF_BVD1
 comma
 l_string|&quot;CF_BVD1&quot;
 )brace
@@ -64,7 +61,7 @@ id|skt
 (brace
 id|skt-&gt;irq
 op_assign
-id|IRQ_GPIO_CF_IRQ
+id|CERF_IRQ_GPIO_CF_IRQ
 suffix:semicolon
 r_return
 id|sa11xx_request_irqs
@@ -135,26 +132,22 @@ suffix:semicolon
 id|state-&gt;detect
 op_assign
 (paren
-(paren
 id|levels
 op_amp
-id|GPIO_CF_CD
-)paren
-op_eq
-l_int|0
+id|CERF_GPIO_CF_CD
 )paren
 ques
 c_cond
-l_int|1
-suffix:colon
 l_int|0
+suffix:colon
+l_int|1
 suffix:semicolon
 id|state-&gt;ready
 op_assign
 (paren
 id|levels
 op_amp
-id|GPIO_CF_IRQ
+id|CERF_GPIO_CF_IRQ
 )paren
 ques
 c_cond
@@ -167,7 +160,7 @@ op_assign
 (paren
 id|levels
 op_amp
-id|GPIO_CF_BVD1
+id|CERF_GPIO_CF_BVD1
 )paren
 ques
 c_cond
@@ -180,7 +173,7 @@ op_assign
 (paren
 id|levels
 op_amp
-id|GPIO_CF_BVD2
+id|CERF_GPIO_CF_BVD2
 )paren
 ques
 c_cond
@@ -227,20 +220,12 @@ id|state-&gt;Vcc
 r_case
 l_int|0
 suffix:colon
-r_break
-suffix:semicolon
 r_case
 l_int|50
 suffix:colon
 r_case
 l_int|33
 suffix:colon
-macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
-id|GPCR
-op_assign
-id|GPIO_PWR_SHUTDOWN
-suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_default
@@ -269,21 +254,17 @@ op_amp
 id|SS_RESET
 )paren
 (brace
-macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
 id|GPSR
 op_assign
-id|GPIO_CF_RESET
+id|CERF_GPIO_CF_RESET
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
-macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
 id|GPCR
 op_assign
-id|GPIO_CF_RESET
+id|CERF_GPIO_CF_RESET
 suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 l_int|0
@@ -356,12 +337,12 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|init
+id|hw_init
 op_assign
 id|cerf_pcmcia_hw_init
 comma
 dot
-id|shutdown
+id|hw_shutdown
 op_assign
 id|cerf_pcmcia_hw_shutdown
 comma
