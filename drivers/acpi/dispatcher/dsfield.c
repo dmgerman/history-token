@@ -405,7 +405,10 @@ op_or
 id|u8
 )paren
 (paren
-id|arg-&gt;common.value.integer32
+(paren
+id|u32
+)paren
+id|arg-&gt;common.value.integer
 op_rshift
 l_int|8
 )paren
@@ -418,7 +421,7 @@ op_assign
 id|u8
 )paren
 (paren
-id|arg-&gt;common.value.integer32
+id|arg-&gt;common.value.integer
 )paren
 suffix:semicolon
 r_break
@@ -702,7 +705,10 @@ id|arg-&gt;common.next
 suffix:semicolon
 id|info.field_flags
 op_assign
-id|arg-&gt;common.value.integer8
+(paren
+id|u8
+)paren
+id|arg-&gt;common.value.integer
 suffix:semicolon
 id|info.attribute
 op_assign
@@ -1098,7 +1104,10 @@ id|arg-&gt;common.next
 suffix:semicolon
 id|info.bank_value
 op_assign
-id|arg-&gt;common.value.integer32
+(paren
+id|u32
+)paren
+id|arg-&gt;common.value.integer
 suffix:semicolon
 multiline_comment|/* Fourth arg is the field flags */
 id|arg
@@ -1107,7 +1116,10 @@ id|arg-&gt;common.next
 suffix:semicolon
 id|info.field_flags
 op_assign
-id|arg-&gt;common.value.integer8
+(paren
+id|u8
+)paren
+id|arg-&gt;common.value.integer
 suffix:semicolon
 multiline_comment|/* Each remaining arg is a Named Field */
 id|info.field_type
@@ -1277,7 +1289,10 @@ id|arg-&gt;common.next
 suffix:semicolon
 id|info.field_flags
 op_assign
-id|arg-&gt;common.value.integer8
+(paren
+id|u8
+)paren
+id|arg-&gt;common.value.integer
 suffix:semicolon
 multiline_comment|/* Each remaining arg is a Named Field */
 id|info.field_type

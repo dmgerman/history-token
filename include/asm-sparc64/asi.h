@@ -186,7 +186,7 @@ mdefine_line|#define ASI_PST8_S&t;&t;0xc1 /* Secondary, 8 8-bit, partial&t;&t;*/
 DECL|macro|ASI_PST16_P
 mdefine_line|#define ASI_PST16_P&t;&t;0xc2 /* Primary, 4 16-bit, partial&t;&t;*/
 DECL|macro|ASI_PST16_S
-mdefine_line|#define ASI_PST16_S&t;&t;0xc3 /* Seconary, 4 16-bit, partial&t;&t;*/
+mdefine_line|#define ASI_PST16_S&t;&t;0xc3 /* Secondary, 4 16-bit, partial&t;&t;*/
 DECL|macro|ASI_PST32_P
 mdefine_line|#define ASI_PST32_P&t;&t;0xc4 /* Primary, 2 32-bit, partial&t;&t;*/
 DECL|macro|ASI_PST32_S
@@ -198,7 +198,7 @@ mdefine_line|#define ASI_PST8_SL&t;&t;0xc9 /* Secondary, 8 8-bit, partial, littl
 DECL|macro|ASI_PST16_PL
 mdefine_line|#define ASI_PST16_PL&t;&t;0xca /* Primary, 4 16-bit, partial, little&t;*/
 DECL|macro|ASI_PST16_SL
-mdefine_line|#define ASI_PST16_SL&t;&t;0xcb /* Seconary, 4 16-bit, partial, little&t;*/
+mdefine_line|#define ASI_PST16_SL&t;&t;0xcb /* Secondary, 4 16-bit, partial, little&t;*/
 DECL|macro|ASI_PST32_PL
 mdefine_line|#define ASI_PST32_PL&t;&t;0xcc /* Primary, 2 32-bit, partial, little&t;*/
 DECL|macro|ASI_PST32_SL

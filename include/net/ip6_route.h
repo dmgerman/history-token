@@ -251,7 +251,7 @@ r_extern
 r_struct
 id|rt6_info
 op_star
-id|ndisc_get_dummy_rt
+id|ip6_dst_alloc
 c_func
 (paren
 r_void

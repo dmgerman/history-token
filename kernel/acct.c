@@ -986,16 +986,10 @@ id|current-&gt;gid
 suffix:semicolon
 id|ac.ac_tty
 op_assign
-(paren
 id|current-&gt;tty
-)paren
 ques
 c_cond
-id|kdev_t_to_nr
-c_func
-(paren
 id|current-&gt;tty-&gt;device
-)paren
 suffix:colon
 l_int|0
 suffix:semicolon

@@ -6,11 +6,11 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 multiline_comment|/* include comes from machine specific directory */
 macro_line|#include &quot;irq_vectors.h&quot;
-DECL|function|irq_cannonicalize
+DECL|function|irq_canonicalize
 r_static
 id|__inline__
 r_int
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 r_int

@@ -2342,6 +2342,7 @@ op_assign
 (brace
 dot
 id|valid
+op_assign
 l_int|0
 comma
 )brace
@@ -2353,6 +2354,7 @@ op_assign
 (brace
 dot
 id|valid
+op_assign
 l_int|0
 comma
 )brace

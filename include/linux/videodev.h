@@ -14,7 +14,6 @@ macro_line|# undef HAVE_V4L2
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 DECL|struct|video_device
 r_struct

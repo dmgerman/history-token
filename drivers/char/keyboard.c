@@ -5399,7 +5399,7 @@ id|tty
 )paren
 op_logical_and
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|chars_in_buffer
 c_func
 (paren

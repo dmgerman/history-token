@@ -2779,7 +2779,7 @@ comma
 dot
 id|dev_name
 op_assign
-l_string|&quot;ttyAM%d&quot;
+l_string|&quot;ttyAM&quot;
 comma
 dot
 id|major

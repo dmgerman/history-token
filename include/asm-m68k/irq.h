@@ -31,11 +31,11 @@ mdefine_line|#define IRQ7&t;&t;(7)&t;/* level 7 interrupt (non-maskable) */
 multiline_comment|/*&n; * &quot;Generic&quot; interrupt sources&n; */
 DECL|macro|IRQ_SCHED_TIMER
 mdefine_line|#define IRQ_SCHED_TIMER&t;(8)    /* interrupt source for scheduling timer */
-DECL|function|irq_cannonicalize
+DECL|function|irq_canonicalize
 r_static
 id|__inline__
 r_int
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 r_int

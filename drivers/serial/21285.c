@@ -2054,7 +2054,7 @@ comma
 dot
 id|dev_name
 op_assign
-l_string|&quot;ttyFB%d&quot;
+l_string|&quot;ttyFB&quot;
 comma
 dot
 id|major

@@ -695,8 +695,9 @@ id|cyclades_port
 op_star
 id|info
 comma
-id|kdev_t
-id|device
+r_char
+op_star
+id|name
 comma
 r_const
 r_char
@@ -711,7 +712,7 @@ r_char
 op_star
 id|badmagic
 op_assign
-l_string|&quot;Warning: bad magic number for serial struct (%d, %d) in %s&bslash;n&quot;
+l_string|&quot;Warning: bad magic number for serial struct (%s) in %s&bslash;n&quot;
 suffix:semicolon
 r_static
 r_const
@@ -719,7 +720,7 @@ r_char
 op_star
 id|badinfo
 op_assign
-l_string|&quot;Warning: null cyclades_port for (%d, %d) in %s&bslash;n&quot;
+l_string|&quot;Warning: null cyclades_port for (%s) in %s&bslash;n&quot;
 suffix:semicolon
 r_static
 r_const
@@ -727,7 +728,7 @@ r_char
 op_star
 id|badrange
 op_assign
-l_string|&quot;Warning: cyclades_port out of range for (%d, %d) in %s&bslash;n&quot;
+l_string|&quot;Warning: cyclades_port out of range for (%s) in %s&bslash;n&quot;
 suffix:semicolon
 r_if
 c_cond
@@ -741,17 +742,7 @@ c_func
 (paren
 id|badinfo
 comma
-id|major
-c_func
-(paren
-id|device
-)paren
-comma
-id|minor
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -801,17 +792,7 @@ c_func
 (paren
 id|badrange
 comma
-id|major
-c_func
-(paren
-id|device
-)paren
-comma
-id|minor
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -833,17 +814,7 @@ c_func
 (paren
 id|badmagic
 comma
-id|major
-c_func
-(paren
-id|device
-)paren
-comma
-id|minor
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -1223,9 +1194,9 @@ macro_line|#ifdef SERIAL_DEBUG_OTHER
 id|printk
 c_func
 (paren
-l_string|&quot;cy_stop ttyS%d&bslash;n&quot;
+l_string|&quot;cy_stop %s&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* */
@@ -1238,7 +1209,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;cy_stop&quot;
 )paren
@@ -1338,9 +1309,9 @@ macro_line|#ifdef SERIAL_DEBUG_OTHER
 id|printk
 c_func
 (paren
-l_string|&quot;cy_start ttyS%d&bslash;n&quot;
+l_string|&quot;cy_start %s&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* */
@@ -1353,7 +1324,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;cy_start&quot;
 )paren
@@ -4819,9 +4790,9 @@ macro_line|#ifdef SERIAL_DEBUG_IO
 id|printk
 c_func
 (paren
-l_string|&quot;cy_put_char ttyS%d(0x%02x)&bslash;n&quot;
+l_string|&quot;cy_put_char %s(0x%02x)&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|ch
 )paren
@@ -4835,7 +4806,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;cy_put_char&quot;
 )paren
@@ -4950,9 +4921,9 @@ macro_line|#ifdef SERIAL_DEBUG_IO
 id|printk
 c_func
 (paren
-l_string|&quot;cy_flush_chars ttyS%d&bslash;n&quot;
+l_string|&quot;cy_flush_chars %s&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* */
@@ -4965,7 +4936,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;cy_flush_chars&quot;
 )paren
@@ -5072,9 +5043,9 @@ macro_line|#ifdef SERIAL_DEBUG_IO
 id|printk
 c_func
 (paren
-l_string|&quot;cy_write ttyS%d&bslash;n&quot;
+l_string|&quot;cy_write %s&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* */
@@ -5087,7 +5058,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;cy_write&quot;
 )paren
@@ -5440,9 +5411,9 @@ macro_line|#ifdef SERIAL_DEBUG_IO
 id|printk
 c_func
 (paren
-l_string|&quot;cy_write_room ttyS%d&bslash;n&quot;
+l_string|&quot;cy_write_room %s&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* */
@@ -5455,7 +5426,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;cy_write_room&quot;
 )paren
@@ -5515,9 +5486,9 @@ macro_line|#ifdef SERIAL_DEBUG_IO
 id|printk
 c_func
 (paren
-l_string|&quot;cy_chars_in_buffer ttyS%d %d&bslash;n&quot;
+l_string|&quot;cy_chars_in_buffer %s %d&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|info-&gt;xmit_cnt
 )paren
@@ -5532,7 +5503,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;cy_chars_in_buffer&quot;
 )paren
@@ -5577,9 +5548,9 @@ macro_line|#ifdef SERIAL_DEBUG_IO
 id|printk
 c_func
 (paren
-l_string|&quot;cy_flush_buffer ttyS%d&bslash;n&quot;
+l_string|&quot;cy_flush_buffer %s&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* */
@@ -5592,7 +5563,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;cy_flush_buffer&quot;
 )paren
@@ -5726,9 +5697,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;cy_throttle ttyS%d&bslash;n&quot;
+l_string|&quot;cy_throttle %s&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5740,7 +5711,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;cy_nthrottle&quot;
 )paren
@@ -5881,9 +5852,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;cy_unthrottle ttyS%d&bslash;n&quot;
+l_string|&quot;cy_unthrottle %s&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5895,7 +5866,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;cy_nthrottle&quot;
 )paren
@@ -7462,9 +7433,9 @@ macro_line|#ifdef SERIAL_DEBUG_OTHER
 id|printk
 c_func
 (paren
-l_string|&quot;cy_ioctl ttyS%d, cmd = %x arg = %lx&bslash;n&quot;
+l_string|&quot;cy_ioctl %s, cmd = %x arg = %lx&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|cmd
 comma
@@ -7973,9 +7944,9 @@ macro_line|#ifdef SERIAL_DEBUG_OTHER
 id|printk
 c_func
 (paren
-l_string|&quot;cy_set_termios ttyS%d&bslash;n&quot;
+l_string|&quot;cy_set_termios %s&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -8085,9 +8056,9 @@ macro_line|#ifdef SERIAL_DEBUG_OTHER
 id|printk
 c_func
 (paren
-l_string|&quot;cy_close ttyS%d&bslash;n&quot;
+l_string|&quot;cy_close %s&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -8102,7 +8073,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;cy_close&quot;
 )paren
@@ -8115,9 +8086,9 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;cy_close ttyS%d, count = %d&bslash;n&quot;
+l_string|&quot;cy_close %s, count = %d&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|info-&gt;count
 )paren
@@ -8263,10 +8234,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -8432,9 +8403,9 @@ macro_line|#ifdef SERIAL_DEBUG_OTHER
 id|printk
 c_func
 (paren
-l_string|&quot;cy_hangup ttyS%d&bslash;n&quot;
+l_string|&quot;cy_hangup %s&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* */
@@ -8447,7 +8418,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;cy_hangup&quot;
 )paren
@@ -8595,7 +8566,7 @@ multiline_comment|/*&n;     * If this is a callout device, then just make sure t
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren
@@ -8724,9 +8695,9 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;block_til_ready before block: ttyS%d, count = %d&bslash;n&quot;
+l_string|&quot;block_til_ready before block: %s, count = %d&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|info-&gt;count
 )paren
@@ -8973,9 +8944,9 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;block_til_ready blocking: ttyS%d, count = %d&bslash;n&quot;
+l_string|&quot;block_til_ready blocking: %s, count = %d&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|info-&gt;count
 )paren
@@ -9036,9 +9007,9 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;block_til_ready after blocking: ttyS%d, count = %d&bslash;n&quot;
+l_string|&quot;block_til_ready after blocking: %s, count = %d&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|info-&gt;count
 )paren
@@ -9092,13 +9063,7 @@ suffix:semicolon
 multiline_comment|/* CP(&squot;O&squot;); */
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond
@@ -9146,9 +9111,9 @@ macro_line|#ifdef SERIAL_DEBUG_OTHER
 id|printk
 c_func
 (paren
-l_string|&quot;cy_open ttyS%d&bslash;n&quot;
+l_string|&quot;cy_open %s&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* */
@@ -9161,7 +9126,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;cy_open&quot;
 )paren
@@ -9176,9 +9141,9 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;cy_open ttyS%d, count = %d&bslash;n&quot;
+l_string|&quot;cy_open %s, count = %d&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|info-&gt;count
 )paren
@@ -9260,7 +9225,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren
@@ -10032,7 +9997,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|cy_serial_driver.name
 op_assign
-l_string|&quot;tts/%d&quot;
+l_string|&quot;tts/&quot;
 suffix:semicolon
 macro_line|#else
 id|cy_serial_driver.name
@@ -10165,7 +10130,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|cy_callout_driver.name
 op_assign
-l_string|&quot;cua/%d&quot;
+l_string|&quot;cua/&quot;
 suffix:semicolon
 macro_line|#else
 id|cy_callout_driver.name

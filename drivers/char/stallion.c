@@ -4276,7 +4276,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;stl_open(tty=%x,filp=%x): device=%x&bslash;n&quot;
+l_string|&quot;stl_open(tty=%x,filp=%x): device=%s&bslash;n&quot;
 comma
 (paren
 r_int
@@ -4288,17 +4288,13 @@ r_int
 )paren
 id|filp
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
 id|minordev
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 suffix:semicolon
 id|brdnr
 op_assign
@@ -4625,7 +4621,7 @@ multiline_comment|/*&n; *&t;Based on type of open being done check if it can ove
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|STL_DRVTYPCALLOUT
 )paren
@@ -4762,7 +4758,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|STL_DRVTYPSERIAL
 )paren

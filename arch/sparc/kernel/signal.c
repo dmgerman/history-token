@@ -3873,7 +3873,11 @@ id|regs
 comma
 id|SVR4_SF_ALIGNED
 op_plus
-id|REGWIN_SZ
+r_sizeof
+(paren
+r_struct
+id|reg_window
+)paren
 )paren
 suffix:semicolon
 r_if

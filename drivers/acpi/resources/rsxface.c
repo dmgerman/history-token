@@ -501,10 +501,10 @@ id|status
 )paren
 suffix:semicolon
 )brace
-DECL|macro|COPY_FIELD
-mdefine_line|#define COPY_FIELD(out, in, field)  out-&gt;field = in-&gt;field
-DECL|macro|COPY_ADDRESS
-mdefine_line|#define COPY_ADDRESS(out, in)                      &bslash;&n;&t;COPY_FIELD(out, in, resource_type);             &bslash;&n;&t;COPY_FIELD(out, in, producer_consumer);         &bslash;&n;&t;COPY_FIELD(out, in, decode);                    &bslash;&n;&t;COPY_FIELD(out, in, min_address_fixed);         &bslash;&n;&t;COPY_FIELD(out, in, max_address_fixed);         &bslash;&n;&t;COPY_FIELD(out, in, attribute);                 &bslash;&n;&t;COPY_FIELD(out, in, granularity);               &bslash;&n;&t;COPY_FIELD(out, in, min_address_range);         &bslash;&n;&t;COPY_FIELD(out, in, max_address_range);         &bslash;&n;&t;COPY_FIELD(out, in, address_translation_offset); &bslash;&n;&t;COPY_FIELD(out, in, address_length);            &bslash;&n;&t;COPY_FIELD(out, in, resource_source);
+DECL|macro|ACPI_COPY_FIELD
+mdefine_line|#define ACPI_COPY_FIELD(out, in, field)  ((out)-&gt;field = (in)-&gt;field)
+DECL|macro|ACPI_COPY_ADDRESS
+mdefine_line|#define ACPI_COPY_ADDRESS(out, in)                      &bslash;&n;&t;ACPI_COPY_FIELD(out, in, resource_type);             &bslash;&n;&t;ACPI_COPY_FIELD(out, in, producer_consumer);         &bslash;&n;&t;ACPI_COPY_FIELD(out, in, decode);                    &bslash;&n;&t;ACPI_COPY_FIELD(out, in, min_address_fixed);         &bslash;&n;&t;ACPI_COPY_FIELD(out, in, max_address_fixed);         &bslash;&n;&t;ACPI_COPY_FIELD(out, in, attribute);                 &bslash;&n;&t;ACPI_COPY_FIELD(out, in, granularity);               &bslash;&n;&t;ACPI_COPY_FIELD(out, in, min_address_range);         &bslash;&n;&t;ACPI_COPY_FIELD(out, in, max_address_range);         &bslash;&n;&t;ACPI_COPY_FIELD(out, in, address_translation_offset); &bslash;&n;&t;ACPI_COPY_FIELD(out, in, address_length);            &bslash;&n;&t;ACPI_COPY_FIELD(out, in, resource_source);
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_resource_to_address64&n; *&n; * PARAMETERS:  resource                - Pointer to a resource&n; *              out                     - Pointer to the users&squot;s return&n; *                                        buffer (a struct&n; *                                        struct acpi_resource_address64)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: If the resource is an address16, address32, or address64,&n; *              copy it to the address64 return buffer.  This saves the&n; *              caller from having to duplicate code for different-sized&n; *              addresses.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_resource_to_address64
@@ -555,7 +555,7 @@ op_star
 op_amp
 id|resource-&gt;data
 suffix:semicolon
-id|COPY_ADDRESS
+id|ACPI_COPY_ADDRESS
 c_func
 (paren
 id|out
@@ -578,7 +578,7 @@ op_star
 op_amp
 id|resource-&gt;data
 suffix:semicolon
-id|COPY_ADDRESS
+id|ACPI_COPY_ADDRESS
 c_func
 (paren
 id|out
@@ -601,7 +601,7 @@ op_star
 op_amp
 id|resource-&gt;data
 suffix:semicolon
-id|COPY_ADDRESS
+id|ACPI_COPY_ADDRESS
 c_func
 (paren
 id|out

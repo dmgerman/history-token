@@ -3726,6 +3726,7 @@ op_or
 id|COMMIT_DELETE
 )paren
 )paren
+(brace
 id|atomic_inc
 c_func
 (paren
@@ -3733,6 +3734,20 @@ op_amp
 id|tblk-&gt;ip-&gt;i_count
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Avoid a rare deadlock&n;&t;&t; *&n;&t;&t; * If the inode is locked, we may be blocked in&n;&t;&t; * jfs_commit_inode.  If so, we don&squot;t want the&n;&t;&t; * lazy_commit thread doing the last iput() on the inode&n;&t;&t; * since that may block on the locked inode.  Instead,&n;&t;&t; * commit the transaction synchronously, so the last iput&n;&t;&t; * will be done by the calling thread (or later)&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|tblk-&gt;ip-&gt;i_state
+op_amp
+id|I_LOCK
+)paren
+id|tblk-&gt;xflag
+op_and_assign
+op_complement
+id|COMMIT_LAZY
+suffix:semicolon
+)brace
 id|ASSERT
 c_func
 (paren

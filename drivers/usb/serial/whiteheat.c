@@ -2761,10 +2761,10 @@ multiline_comment|/*&n; * Not currently in use; tty_wait_until_sent() calls&n; *
 r_if
 c_cond
 (paren
-id|port-&gt;tty-&gt;driver.flush_buffer
+id|port-&gt;tty-&gt;driver-&gt;flush_buffer
 )paren
 id|port-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren

@@ -4466,7 +4466,7 @@ id|ide_cfg_sem
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|ata_lock

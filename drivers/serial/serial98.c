@@ -346,7 +346,7 @@ comma
 dot
 id|dev_name
 op_assign
-l_string|&quot;ttyS%d&quot;
+l_string|&quot;ttyS&quot;
 comma
 dot
 id|major

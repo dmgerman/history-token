@@ -25,8 +25,6 @@ macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/i2c-old.h&gt;
-DECL|macro|MAP_NR
-mdefine_line|#define     MAP_NR(x)       virt_to_page(x)
 DECL|macro|ZORAN_HARDWARE
 mdefine_line|#define     ZORAN_HARDWARE  VID_HARDWARE_ZR36067
 macro_line|#include &lt;linux/videodev.h&gt;
@@ -526,10 +524,10 @@ id|off
 op_add_assign
 id|PAGE_SIZE
 )paren
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
-id|MAP_NR
+id|virt_to_page
 c_func
 (paren
 id|mem
@@ -824,10 +822,10 @@ id|off
 op_add_assign
 id|PAGE_SIZE
 )paren
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
-id|MAP_NR
+id|virt_to_page
 c_func
 (paren
 id|mem
@@ -1136,10 +1134,10 @@ id|off
 op_add_assign
 id|PAGE_SIZE
 )paren
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
-id|MAP_NR
+id|virt_to_page
 c_func
 (paren
 id|mem
@@ -1251,10 +1249,10 @@ l_int|4
 op_lshift
 l_int|1
 suffix:semicolon
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
-id|MAP_NR
+id|virt_to_page
 c_func
 (paren
 id|mem
@@ -1423,10 +1421,10 @@ id|off
 op_add_assign
 id|PAGE_SIZE
 )paren
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
-id|MAP_NR
+id|virt_to_page
 (paren
 id|mem
 op_plus
@@ -1507,10 +1505,10 @@ id|j
 )paren
 r_break
 suffix:semicolon
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
-id|MAP_NR
+id|virt_to_page
 (paren
 id|bus_to_virt
 (paren

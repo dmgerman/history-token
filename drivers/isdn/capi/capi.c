@@ -5916,7 +5916,7 @@ l_string|&quot;capi_nc&quot;
 suffix:semicolon
 id|drv-&gt;name
 op_assign
-l_string|&quot;capi/%d&quot;
+l_string|&quot;capi/&quot;
 suffix:semicolon
 id|drv-&gt;major
 op_assign

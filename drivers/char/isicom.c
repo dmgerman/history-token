@@ -1766,8 +1766,9 @@ r_const
 op_star
 id|port
 comma
-id|kdev_t
-id|dev
+r_char
+op_star
+id|name
 comma
 r_const
 r_char
@@ -1806,11 +1807,7 @@ c_func
 (paren
 id|badport
 comma
-id|cdevname
-c_func
-(paren
-id|dev
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -1832,11 +1829,7 @@ c_func
 (paren
 id|badmagic
 comma
-id|cdevname
-c_func
-(paren
-id|dev
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -4446,7 +4439,7 @@ multiline_comment|/* trying to open a callout device... check for constraints */
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren
@@ -4951,13 +4944,7 @@ suffix:semicolon
 macro_line|#endif&t;
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 macro_line|#ifdef ISICOM_DEBUG&t;
 id|printk
@@ -5094,7 +5081,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isicom_open&quot;
 )paren
@@ -5206,7 +5193,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren
@@ -5532,7 +5519,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isicom_close&quot;
 )paren
@@ -5740,10 +5727,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -5918,7 +5905,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isicom_write&quot;
 )paren
@@ -6225,7 +6212,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isicom_put_char&quot;
 )paren
@@ -6349,7 +6336,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isicom_flush_chars&quot;
 )paren
@@ -6414,7 +6401,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isicom_write_room&quot;
 )paren
@@ -6478,7 +6465,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isicom_chars_in_buffer&quot;
 )paren
@@ -7296,7 +7283,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isicom_ioctl&quot;
 )paren
@@ -7611,7 +7598,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isicom_set_termios&quot;
 )paren
@@ -7727,7 +7714,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isicom_throttle&quot;
 )paren
@@ -7816,7 +7803,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isicom_unthrottle&quot;
 )paren
@@ -7893,7 +7880,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isicom_stop&quot;
 )paren
@@ -7940,7 +7927,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isicom_start&quot;
 )paren
@@ -8033,7 +8020,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isicom_hangup&quot;
 )paren
@@ -8108,7 +8095,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isicom_flush_buffer&quot;
 )paren

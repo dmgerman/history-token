@@ -5438,7 +5438,7 @@ id|PCI_INT_INT_PEND
 )paren
 )paren
 r_return
-id|IRQ_HANDLED
+id|IRQ_NONE
 suffix:semicolon
 id|PRINTD
 c_func

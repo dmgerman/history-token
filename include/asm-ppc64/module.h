@@ -34,5 +34,23 @@ l_string|&quot;.section .stubs,&bslash;&quot;ax&bslash;&quot;,@nobits; .align 3;
 )paren
 suffix:semicolon
 macro_line|#endif
+r_struct
+id|exception_table_entry
+suffix:semicolon
+r_void
+id|sort_ex_table
+c_func
+(paren
+r_struct
+id|exception_table_entry
+op_star
+id|start
+comma
+r_struct
+id|exception_table_entry
+op_star
+id|finish
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASM_PPC64_MODULE_H */
 eof

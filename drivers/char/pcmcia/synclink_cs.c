@@ -3261,8 +3261,9 @@ id|MGSLPC_INFO
 op_star
 id|info
 comma
-id|kdev_t
-id|device
+r_char
+op_star
+id|name
 comma
 r_const
 r_char
@@ -3299,11 +3300,7 @@ c_func
 (paren
 id|badinfo
 comma
-id|cdevname
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -3325,11 +3322,7 @@ c_func
 (paren
 id|badmagic
 comma
-id|cdevname
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -3515,7 +3508,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;tx_pause&quot;
 )paren
@@ -3601,7 +3594,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;tx_release&quot;
 )paren
@@ -7002,7 +6995,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgslpc_put_char&quot;
 )paren
@@ -7135,7 +7128,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgslpc_flush_chars&quot;
 )paren
@@ -7285,7 +7278,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgslpc_write&quot;
 )paren
@@ -7589,7 +7582,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgslpc_write_room&quot;
 )paren
@@ -7719,7 +7712,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgslpc_chars_in_buffer&quot;
 )paren
@@ -7827,7 +7820,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgslpc_flush_buffer&quot;
 )paren
@@ -7956,7 +7949,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgslpc_send_xchar&quot;
 )paren
@@ -8059,7 +8052,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgslpc_throttle&quot;
 )paren
@@ -8180,7 +8173,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgslpc_unthrottle&quot;
 )paren
@@ -10281,7 +10274,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgslpc_break&quot;
 )paren
@@ -10405,7 +10398,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgslpc_ioctl&quot;
 )paren
@@ -10999,7 +10992,7 @@ id|__FILE__
 comma
 id|__LINE__
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* just return if nothing has changed */
@@ -11221,7 +11214,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgslpc_close&quot;
 )paren
@@ -11396,10 +11389,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -11502,7 +11495,7 @@ id|__FILE__
 comma
 id|__LINE__
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 comma
 id|info-&gt;count
 )paren
@@ -11575,7 +11568,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgslpc_wait_until_sent&quot;
 )paren
@@ -11830,7 +11823,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgslpc_hangup&quot;
 )paren
@@ -11936,13 +11929,13 @@ id|__FILE__
 comma
 id|__LINE__
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren
@@ -12120,7 +12113,7 @@ id|__FILE__
 comma
 id|__LINE__
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 comma
 id|info-&gt;count
 )paren
@@ -12349,7 +12342,7 @@ id|__FILE__
 comma
 id|__LINE__
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 comma
 id|info-&gt;count
 )paren
@@ -12403,7 +12396,7 @@ id|__FILE__
 comma
 id|__LINE__
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 comma
 id|info-&gt;count
 )paren
@@ -12455,13 +12448,7 @@ suffix:semicolon
 multiline_comment|/* verify range of specified line number */
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond
@@ -12556,7 +12543,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgslpc_open&quot;
 )paren
@@ -12581,7 +12568,7 @@ id|__FILE__
 comma
 id|__LINE__
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 comma
 id|info-&gt;count
 )paren
@@ -12782,7 +12769,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren

@@ -14,8 +14,8 @@ id|bad_pmd_string
 (braket
 )braket
 suffix:semicolon
-DECL|macro|lpmd_alloc_one
-mdefine_line|#define lpmd_alloc_one(mm,address)       ({ BUG(); ((pmd_t *)2); })
+DECL|macro|pmd_alloc_one
+mdefine_line|#define pmd_alloc_one(mm,address)       ({ BUG(); ((pmd_t *)2); })
 DECL|function|pte_free_kernel
 r_static
 r_inline

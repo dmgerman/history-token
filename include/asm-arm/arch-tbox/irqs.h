@@ -27,6 +27,6 @@ DECL|macro|IRQ_EXPMODCS0
 mdefine_line|#define IRQ_EXPMODCS0&t;&t;12
 DECL|macro|IRQ_EXPMODCS1
 mdefine_line|#define IRQ_EXPMODCS1&t;&t;13
-DECL|macro|irq_cannonicalize
-mdefine_line|#define irq_cannonicalize(i)&t;(i)
+DECL|macro|irq_canonicalize
+mdefine_line|#define irq_canonicalize(i)&t;(i)
 eof

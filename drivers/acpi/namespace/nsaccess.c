@@ -1087,7 +1087,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Extract one ACPI name from the front of the pathname */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|simple_name

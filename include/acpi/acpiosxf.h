@@ -301,7 +301,7 @@ id|acpi_os_read_port
 id|acpi_io_address
 id|address
 comma
-r_void
+id|u32
 op_star
 id|value
 comma
@@ -315,7 +315,7 @@ id|acpi_os_write_port
 id|acpi_io_address
 id|address
 comma
-id|acpi_integer
+id|u32
 id|value
 comma
 id|u32
@@ -329,7 +329,7 @@ id|acpi_os_read_memory
 id|acpi_physical_address
 id|address
 comma
-r_void
+id|u32
 op_star
 id|value
 comma
@@ -343,7 +343,7 @@ id|acpi_os_write_memory
 id|acpi_physical_address
 id|address
 comma
-id|acpi_integer
+id|u32
 id|value
 comma
 id|u32

@@ -98,6 +98,7 @@ suffix:semicolon
 r_extern
 r_int
 id|devfs_mk_symlink
+c_func
 (paren
 r_const
 r_char
@@ -111,7 +112,7 @@ id|link
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+r_int
 id|devfs_mk_dir
 c_func
 (paren
@@ -304,7 +305,7 @@ suffix:semicolon
 DECL|function|devfs_mk_dir
 r_static
 r_inline
-id|devfs_handle_t
+r_int
 id|devfs_mk_dir
 c_func
 (paren
@@ -319,7 +320,7 @@ dot
 )paren
 (brace
 r_return
-l_int|NULL
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|devfs_remove

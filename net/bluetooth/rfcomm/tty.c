@@ -2385,13 +2385,7 @@ id|id
 suffix:semicolon
 id|id
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 id|BT_DBG
 c_func
@@ -3918,7 +3912,7 @@ macro_line|#ifdef CONFIG_DEVFS_FS
 dot
 id|name
 op_assign
-l_string|&quot;bluetooth/rfcomm/%d&quot;
+l_string|&quot;bluetooth/rfcomm/&quot;
 comma
 macro_line|#else
 dot

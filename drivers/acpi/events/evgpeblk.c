@@ -30,9 +30,8 @@ id|acpi_gpe_block_info
 op_star
 id|gpe_block
 suffix:semicolon
-id|ACPI_FUNCTION_NAME
+id|ACPI_FUNCTION_ENTRY
 (paren
-l_string|&quot;ev_valid_gpe_event&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* No need for spin lock since we are not changing any list elements */
@@ -73,7 +72,12 @@ op_logical_and
 op_amp
 id|gpe_block-&gt;event_info
 (braket
+(paren
+(paren
+id|acpi_size
+)paren
 id|gpe_block-&gt;register_count
+)paren
 op_star
 l_int|8
 )braket
@@ -265,13 +269,13 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_FUNCTION_NAME
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ev_save_method_info&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Extract the name from the object and convert to a string */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 id|name
 comma
@@ -337,7 +341,7 @@ id|name
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -379,7 +383,7 @@ id|name
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -411,7 +415,7 @@ l_int|8
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Not valid for this GPE block, just ignore it&n;&t;&t; * However, it may be valid for a different GPE block, since GPE0 and GPE1&n;&t;&t; * methods both appear under &bslash;_GPE.&n;&t;&t; */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -458,7 +462,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -477,13 +481,14 @@ id|gpe_number
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_get_gpe_xrupt_block&n; *&n; * PARAMETERS:  interrupt_level     - Interrupt for a GPE block&n; *&n; * RETURN:      A GPE interrupt block&n; *&n; * DESCRIPTION: Get or Create a GPE interrupt block.  There is one interrupt&n; *              block per unique interrupt level used for GPEs.&n; *              Should be called only when the GPE lists are semaphore locked&n; *              and not subject to change.&n; *&n; ******************************************************************************/
+r_static
 r_struct
 id|acpi_gpe_xrupt_info
 op_star
@@ -507,6 +512,11 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
+id|ACPI_FUNCTION_TRACE
+(paren
+l_string|&quot;ev_get_gpe_xrupt_block&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* No need for spin lock since we are not changing any list elements here */
 id|next_gpe_xrupt
 op_assign
@@ -526,7 +536,7 @@ op_eq
 id|interrupt_level
 )paren
 (brace
-r_return
+id|return_PTR
 (paren
 id|next_gpe_xrupt
 )paren
@@ -556,7 +566,7 @@ op_logical_neg
 id|gpe_xrupt
 )paren
 (brace
-r_return
+id|return_PTR
 (paren
 l_int|NULL
 )paren
@@ -638,14 +648,41 @@ comma
 id|gpe_xrupt
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Could not install GPE interrupt handler at level 0x%X&bslash;n&quot;
+comma
+id|interrupt_level
+)paren
+)paren
+suffix:semicolon
+id|return_PTR
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
 )brace
-r_return
+)brace
+id|return_PTR
 (paren
 id|gpe_xrupt
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_delete_gpe_xrupt&n; *&n; * PARAMETERS:  gpe_xrupt       - A GPE interrupt info block&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove and free a gpe_xrupt block. Remove an associated&n; *              interrupt handler if not the SCI interrupt.&n; *&n; ******************************************************************************/
+r_static
 id|acpi_status
 DECL|function|acpi_ev_delete_gpe_xrupt
 id|acpi_ev_delete_gpe_xrupt
@@ -758,6 +795,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_install_gpe_block&n; *&n; * PARAMETERS:  gpe_block       - New GPE block&n; *              interrupt_level - Level to be associated with this GPE block&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install new GPE block with mutex support&n; *&n; ******************************************************************************/
+r_static
 id|acpi_status
 DECL|function|acpi_ev_install_gpe_block
 id|acpi_ev_install_gpe_block
@@ -1066,6 +1104,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_create_gpe_info_blocks&n; *&n; * PARAMETERS:  gpe_block   - New GPE block&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create the register_info and event_info blocks for this GPE block&n; *&n; ******************************************************************************/
+r_static
 id|acpi_status
 DECL|function|acpi_ev_create_gpe_info_blocks
 id|acpi_ev_create_gpe_info_blocks

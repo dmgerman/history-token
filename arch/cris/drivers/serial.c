@@ -3617,7 +3617,7 @@ OL
 id|TTY_THROTTLE_LIMIT
 )paren
 id|info-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|throttle
 c_func
 (paren
@@ -4552,7 +4552,7 @@ OG
 id|TTY_THROTTLE_LIMIT
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|unthrottle
 c_func
 (paren
@@ -9644,10 +9644,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -10109,7 +10109,7 @@ multiline_comment|/*&n;&t; * If this is a callout device, then just make sure th
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren
@@ -10574,13 +10574,7 @@ suffix:semicolon
 multiline_comment|/* find which port we want to open */
 id|line
 op_assign
-id|MINOR
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond
@@ -10619,13 +10613,11 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;[%d] rs_open %s%d, count = %d&bslash;n&quot;
+l_string|&quot;[%d] rs_open %s, count = %d&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
-id|tty-&gt;driver.name
-comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|info-&gt;count
 )paren
@@ -10829,7 +10821,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren

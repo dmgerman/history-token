@@ -665,7 +665,7 @@ r_else
 (brace
 id|dev-&gt;irq
 op_assign
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 id|dev-&gt;irq

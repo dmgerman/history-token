@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/moduleloader.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;asm/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* FIXME: We don&squot;t do .init separately.  To do this, we&squot;d need to have&n;   a separate r2 value in the init and core section, and stub between&n;   them, too.&n;&n;   Using a magic allocator which places modules within 32MB solves&n;   this, and makes other things simpler.  Anton?&n;   --RR.  */
 macro_line|#if 0
@@ -1755,23 +1756,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* In arch/ppc64/mm/extable.c */
-r_extern
-r_void
-id|sort_ex_table
-c_func
-(paren
-r_struct
-id|exception_table_entry
-op_star
-id|start
-comma
-r_struct
-id|exception_table_entry
-op_star
-id|finish
-)paren
-suffix:semicolon
 DECL|function|module_finalize
 r_int
 id|module_finalize
@@ -1796,8 +1780,18 @@ id|me
 id|sort_ex_table
 c_func
 (paren
+(paren
+r_struct
+id|exception_table_entry
+op_star
+)paren
 id|me-&gt;extable
 comma
+(paren
+r_struct
+id|exception_table_entry
+op_star
+)paren
 id|me-&gt;extable
 op_plus
 id|me-&gt;num_exentries
