@@ -573,7 +573,6 @@ DECL|macro|touch_buffer
 mdefine_line|#define touch_buffer(bh)&t;mark_page_accessed(bh-&gt;b_page)
 macro_line|#include &lt;linux/pipe_fs_i.h&gt;
 multiline_comment|/* #include &lt;linux/umsdos_fs_i.h&gt; */
-macro_line|#include &lt;linux/romfs_fs_i.h&gt;
 multiline_comment|/*&n; * Attribute flags.  These should be or-ed together to figure out what&n; * has been changed!&n; */
 DECL|macro|ATTR_MODE
 mdefine_line|#define ATTR_MODE&t;1
@@ -1190,12 +1189,6 @@ id|i_generation
 suffix:semicolon
 r_union
 (brace
-multiline_comment|/* struct umsdos_inode_info&t;umsdos_i; */
-DECL|member|romfs_i
-r_struct
-id|romfs_inode_info
-id|romfs_i
-suffix:semicolon
 DECL|member|generic_ip
 r_void
 op_star
@@ -2024,17 +2017,14 @@ DECL|macro|MNT_FORCE
 mdefine_line|#define MNT_FORCE&t;0x00000001&t;/* Attempt to forcibily umount */
 DECL|macro|MNT_DETACH
 mdefine_line|#define MNT_DETACH&t;0x00000002&t;/* Just detach from the tree */
-macro_line|#include &lt;linux/ext2_fs_sb.h&gt;
 macro_line|#include &lt;linux/ext3_fs_sb.h&gt;
 macro_line|#include &lt;linux/hpfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/ntfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/msdos_fs_sb.h&gt;
 macro_line|#include &lt;linux/iso_fs_sb.h&gt;
-macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/sysv_fs_sb.h&gt;
 macro_line|#include &lt;linux/affs_fs_sb.h&gt;
 macro_line|#include &lt;linux/ufs_fs_sb.h&gt;
-macro_line|#include &lt;linux/efs_fs_sb.h&gt;
 macro_line|#include &lt;linux/romfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/smb_fs_sb.h&gt;
 macro_line|#include &lt;linux/hfs_fs_sb.h&gt;
@@ -2043,7 +2033,6 @@ macro_line|#include &lt;linux/qnx4_fs_sb.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/bfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/udf_fs_sb.h&gt;
-macro_line|#include &lt;linux/ncp_fs_sb.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_sb.h&gt;
 r_extern
 r_struct
@@ -2190,11 +2179,6 @@ suffix:semicolon
 multiline_comment|/* Informational name */
 r_union
 (brace
-DECL|member|ext2_sb
-r_struct
-id|ext2_sb_info
-id|ext2_sb
-suffix:semicolon
 DECL|member|ext3_sb
 r_struct
 id|ext3_sb_info
@@ -2220,11 +2204,6 @@ r_struct
 id|isofs_sb_info
 id|isofs_sb
 suffix:semicolon
-DECL|member|nfs_sb
-r_struct
-id|nfs_sb_info
-id|nfs_sb
-suffix:semicolon
 DECL|member|sysv_sb
 r_struct
 id|sysv_sb_info
@@ -2239,11 +2218,6 @@ DECL|member|ufs_sb
 r_struct
 id|ufs_sb_info
 id|ufs_sb
-suffix:semicolon
-DECL|member|efs_sb
-r_struct
-id|efs_sb_info
-id|efs_sb
 suffix:semicolon
 DECL|member|shmem_sb
 r_struct
@@ -2289,11 +2263,6 @@ DECL|member|udf_sb
 r_struct
 id|udf_sb_info
 id|udf_sb
-suffix:semicolon
-DECL|member|ncpfs_sb
-r_struct
-id|ncp_sb_info
-id|ncpfs_sb
 suffix:semicolon
 DECL|member|jffs2_sb
 r_struct
@@ -4019,6 +3988,64 @@ r_struct
 id|super_block
 op_star
 id|sb
+)paren
+suffix:semicolon
+r_int
+id|set_anon_super
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|s
+comma
+r_void
+op_star
+id|data
+)paren
+suffix:semicolon
+r_struct
+id|super_block
+op_star
+id|sget
+c_func
+(paren
+r_struct
+id|file_system_type
+op_star
+id|type
+comma
+r_int
+(paren
+op_star
+id|test
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_void
+op_star
+)paren
+comma
+r_int
+(paren
+op_star
+id|set
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_void
+op_star
+)paren
+comma
+r_void
+op_star
+id|data
 )paren
 suffix:semicolon
 multiline_comment|/* Alas, no aliases. Too much hassle with bringing module.h everywhere */

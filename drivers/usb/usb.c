@@ -8545,7 +8545,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|variable|usb_init
-id|module_init
+id|subsys_initcall
 c_func
 (paren
 id|usb_init

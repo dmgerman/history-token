@@ -797,8 +797,6 @@ DECL|macro|HDIO_GET_BUSSTATE
 mdefine_line|#define HDIO_GET_BUSSTATE&t;0x031a&t;/* get the bus state of the hwif */
 DECL|macro|HDIO_TRISTATE_HWIF
 mdefine_line|#define HDIO_TRISTATE_HWIF&t;0x031b&t;/* execute a channel tristate */
-DECL|macro|HDIO_DRIVE_RESET
-mdefine_line|#define HDIO_DRIVE_RESET&t;0x031c&t;/* execute a device reset */
 DECL|macro|HDIO_DRIVE_TASK
 mdefine_line|#define HDIO_DRIVE_TASK&t;&t;0x031e&t;/* execute task and special drive command */
 DECL|macro|HDIO_DRIVE_CMD

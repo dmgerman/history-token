@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#include &quot;ata-timing.h&quot;
 DECL|macro|OPTI621_MAX_PIO
 mdefine_line|#define OPTI621_MAX_PIO 3
 multiline_comment|/* In fact, I do not have any PIO 4 drive&n; * (address: 25 ns, data: 70 ns, recovery: 35 ns),&n; * but OPTi 82C621 is programmable and it can do (minimal values):&n; * on 40MHz PCI bus (pulse 25 ns):&n; *  address: 25 ns, data: 25 ns, recovery: 50 ns;&n; * on 20MHz PCI bus (pulse 50 ns):&n; *  address: 50 ns, data: 50 ns, recovery: 100 ns.&n; */
@@ -68,19 +68,37 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pio
+op_eq
+id|PIO_DONT_KNOW
+)paren
 id|drive-&gt;drive_data
 op_assign
-id|ide_get_best_pio_mode
+id|min
+c_func
+(paren
+id|ata_timing_mode
 c_func
 (paren
 id|drive
 comma
-id|pio
+id|XFER_PIO
+op_or
+id|XFER_EPIO
+)paren
+op_minus
+id|XFER_PIO_0
 comma
 id|OPTI621_MAX_PIO
-comma
-l_int|NULL
 )paren
+suffix:semicolon
+r_else
+id|drive-&gt;drive_data
+op_assign
+id|pio
 suffix:semicolon
 r_for
 c_loop
@@ -120,16 +138,22 @@ id|PIO_DONT_KNOW
 )paren
 id|drive-&gt;drive_data
 op_assign
-id|ide_get_best_pio_mode
+id|min
+c_func
+(paren
+id|ata_timing_mode
 c_func
 (paren
 id|drive
 comma
-l_int|255
+id|XFER_PIO
+op_or
+id|XFER_EPIO
+)paren
+op_minus
+id|XFER_PIO_0
 comma
 id|OPTI621_MAX_PIO
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#ifdef OPTI621_DEBUG
@@ -355,26 +379,30 @@ id|PIO_NOT_EXIST
 (brace
 r_int
 id|adr_setup
-comma
+suffix:semicolon
+r_int
 id|data_pls
+suffix:semicolon
+r_struct
+id|ata_timing
+op_star
+id|t
+suffix:semicolon
+id|t
+op_assign
+id|ata_timing_data
+c_func
+(paren
+id|pio
+)paren
 suffix:semicolon
 id|adr_setup
 op_assign
-id|ide_pio_timings
-(braket
-id|pio
-)braket
-dot
-id|setup_time
+id|t-&gt;setup
 suffix:semicolon
 id|data_pls
 op_assign
-id|ide_pio_timings
-(braket
-id|pio
-)braket
-dot
-id|active_time
+id|t-&gt;active
 suffix:semicolon
 id|clks-&gt;address_time
 op_assign
@@ -401,12 +429,7 @@ op_assign
 id|cmpt_clk
 c_func
 (paren
-id|ide_pio_timings
-(braket
-id|pio
-)braket
-dot
-id|cycle_time
+id|t-&gt;cycle
 op_minus
 id|adr_setup
 op_minus

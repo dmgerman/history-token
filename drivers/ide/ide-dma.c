@@ -57,31 +57,31 @@ op_assign
 (brace
 l_string|&quot;Micropolis 2112A&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;CONNER CTMA 4000&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;CONNER CTT8000-A&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;ST34342A&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )brace
 )brace
 suffix:semicolon
@@ -96,31 +96,31 @@ op_assign
 (brace
 l_string|&quot;WDC AC11000H&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;WDC AC22100H&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;WDC AC32500H&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;WDC AC33100H&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;WDC AC31600H&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
@@ -138,167 +138,168 @@ comma
 (brace
 l_string|&quot;Compaq CRD-8241B&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;CRD-8400B&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;CRD-8480B&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;CRD-8480C&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;CRD-8482B&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;CRD-84&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;SanDisk SDP3B&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;SanDisk SDP3B-64&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;SANYO CD-ROM CRD&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;HITACHI CDR-8&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;HITACHI CDR-8335&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;HITACHI CDR-8435&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;Toshiba CD-ROM XM-6202B&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;CD-532E-A&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;E-IDE CD-ROM CR-840&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;CD-ROM Drive/F5A&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;RICOH CD-R/RW MP7083A&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;WPI CDD-820&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;SAMSUNG CD-ROM SC-148C&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;SAMSUNG CD-ROM SC-148F&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;SAMSUNG CD-ROM SC&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;SanDisk SDP3B-64&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;SAMSUNG CD-ROM SN-124&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;PLEXTOR CD-R PX-W8432T&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;ATAPI CD-ROM DRIVE 40X MAXIMUM&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
 l_string|&quot;_NEC DV5800A&quot;
 comma
-l_string|&quot;ALL&quot;
+l_int|NULL
 )brace
 comma
 (brace
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )brace
 )brace
 suffix:semicolon
 DECL|function|in_drive_list
+r_static
 r_int
 id|in_drive_list
 c_func
@@ -339,6 +340,8 @@ id|id-&gt;model
 op_logical_and
 (paren
 (paren
+id|drive_table-&gt;id_firmware
+op_logical_and
 op_logical_neg
 id|strstr
 c_func
@@ -351,13 +354,7 @@ id|id-&gt;fw_rev
 op_logical_or
 (paren
 op_logical_neg
-id|strcmp
-c_func
-(paren
 id|drive_table-&gt;id_firmware
-comma
-l_string|&quot;ALL&quot;
-)paren
 )paren
 )paren
 )paren
@@ -368,7 +365,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else /* !CONFIG_IDEDMA_NEW_DRIVE_LISTINGS */
+macro_line|#else
 multiline_comment|/*&n; * good_dma_drives() lists the model names (from &quot;hdparm -i&quot;)&n; * of drives which do not support mode2 DMA but which are&n; * known to work fine with this interface under Linux.&n; */
 DECL|variable|good_dma_drives
 r_const
@@ -391,7 +388,7 @@ multiline_comment|/* for Sun Ultra */
 l_int|NULL
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * bad_dma_drives() lists the model names (from &quot;hdparm -i&quot;)&n; * of drives which supposedly support (U)DMA but which are&n; * known to corrupt data with this interface under Linux.&n; *&n; * This is an empirical list. Its generated from bug reports. That means&n; * while it reflects actual problem distributions it doesn&squot;t answer whether&n; * the drive or the controller, or cabling, or software, or some combination&n; * thereof is the fault. If you don&squot;t happen to agree with the kernel&squot;s &n; * opinion of your drive - use hdparm to turn DMA on.&n; */
+multiline_comment|/*&n; * bad_dma_drives() lists the model names (from &quot;hdparm -i&quot;)&n; * of drives which supposedly support (U)DMA but which are&n; * known to corrupt data with this interface under Linux.&n; *&n; * This is an empirical list. Its generated from bug reports. That means&n; * while it reflects actual problem distributions it doesn&squot;t answer whether&n; * the drive or the controller, or cabling, or software, or some combination&n; * thereof is the fault. If you don&squot;t happen to agree with the kernel&squot;s&n; * opinion of your drive - use hdparm to turn DMA on.&n; */
 DECL|variable|bad_dma_drives
 r_const
 r_char
@@ -416,7 +413,7 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_IDEDMA_NEW_DRIVE_LISTINGS */
+macro_line|#endif
 multiline_comment|/*&n; * dma_intr() is the handler for disk read/write DMA interrupts&n; */
 DECL|function|ide_dma_intr
 id|ide_startstop_t
@@ -2057,12 +2054,12 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_BLK_DEV_IDEDMA_TIMEOUT
-multiline_comment|/*&n; * 1 dmaing, 2 error, 4 intr&n; */
+multiline_comment|/*&n; * 1 dma-ing, 2 error, 4 intr&n; */
 DECL|function|dma_timer_expiry
 r_static
 r_int
 id|dma_timer_expiry
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -2155,120 +2152,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else /* CONFIG_BLK_DEV_IDEDMA_TIMEOUT */
-DECL|function|ide_dma_timeout_revovery
-r_static
-id|ide_startstop_t
-id|ide_dma_timeout_revovery
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-id|ide_hwif_t
-op_star
-id|hwif
-op_assign
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-r_int
-id|enable_dma
-op_assign
-id|drive-&gt;using_dma
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|ide_startstop_t
-id|startstop
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|ide_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|hwgroup-&gt;handler
-op_assign
-l_int|NULL
-suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|hwgroup-&gt;timer
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|ide_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|drive-&gt;waiting_for_dma
-op_assign
-l_int|0
-suffix:semicolon
-id|startstop
-op_assign
-id|ide_do_reset
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|enable_dma
-)paren
-op_logical_and
-op_logical_neg
-(paren
-id|drive-&gt;using_dma
-)paren
-)paren
-(paren
-r_void
-)paren
-id|hwif
-op_member_access_from_pointer
-id|dmaproc
-c_func
-(paren
-id|ide_dma_on
-comma
-id|drive
-)paren
-suffix:semicolon
-r_return
-id|startstop
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_TIMEOUT */
 DECL|function|ide_toggle_bounce
 r_static
 r_void
@@ -2605,24 +2488,6 @@ id|ATA_DISK
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_TIMEOUT
-id|ide_set_handler
-c_func
-(paren
-id|drive
-comma
-op_amp
-id|ide_dma_intr
-comma
-l_int|2
-op_star
-id|WAIT_CMD
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/* issue cmd to drive */
-macro_line|#else
 id|ide_set_handler
 c_func
 (paren
@@ -2637,7 +2502,6 @@ id|dma_timer_expiry
 )paren
 suffix:semicolon
 multiline_comment|/* issue cmd to drive */
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2919,120 +2783,15 @@ suffix:semicolon
 r_case
 id|ide_dma_timeout
 suffix:colon
-singleline_comment|// FIXME: Many IDE chipsets do not permit command file register access
-singleline_comment|// FIXME: while the bus-master function is still active.
-singleline_comment|// FIXME: To prevent deadlock with those chipsets, we must be extremely
-singleline_comment|// FIXME: careful here (and in ide_intr() as well) to NOT access any
-singleline_comment|// FIXME: registers from the 0x1Fx/0x17x sets before terminating the
-singleline_comment|// FIXME: bus-master operation via the bus-master control reg.
-singleline_comment|// FIXME: Otherwise, chipset deadlock will occur, and some systems will
-singleline_comment|// FIXME: lock up completely!!
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_TIMEOUT
-multiline_comment|/*&n;&t;&t;&t; * Have to issue an abort and requeue the request&n;&t;&t;&t; * DMA engine got turned off by a goofy ASIC, and&n;&t;&t;&t; * we have to clean up the mess, and here is as good&n;&t;&t;&t; * as any.  Do it globally for all chipsets.&n;&t;&t;&t; */
-id|outb
-c_func
-(paren
-l_int|0x00
-comma
-id|dma_base
-)paren
-suffix:semicolon
-multiline_comment|/* stop DMA */
-id|dma_stat
-op_assign
-id|inb
-c_func
-(paren
-id|dma_base
-op_plus
-l_int|2
-)paren
-suffix:semicolon
-multiline_comment|/* get DMA status */
-id|outb
-c_func
-(paren
-id|dma_stat
-op_or
-l_int|6
-comma
-id|dma_base
-op_plus
-l_int|2
-)paren
-suffix:semicolon
-multiline_comment|/* clear the INTR &amp; ERROR bits */
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %s: Lets do it again!&quot;
-"&bslash;"
-l_string|&quot;stat = 0x%02x, dma_stat = 0x%02x&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|ide_dmafunc_verbose
-c_func
-(paren
-id|func
-)paren
-comma
-id|GET_STAT
-c_func
-(paren
-)paren
-comma
-id|dma_stat
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dma_stat
-op_amp
-l_int|0xF0
-)paren
-r_return
-id|ide_dma_timeout_revovery
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%s: %s: (restart_request) Lets do it again!&quot;
-"&bslash;"
-l_string|&quot;stat = 0x%02x, dma_stat = 0x%02x&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|ide_dmafunc_verbose
-c_func
-(paren
-id|func
-)paren
-comma
-id|GET_STAT
-c_func
-(paren
-)paren
-comma
-id|dma_stat
+l_string|&quot;ide_dmaproc: DMA timeout occured!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|restart_request
-c_func
-(paren
-id|drive
-)paren
+l_int|1
 suffix:semicolon
-singleline_comment|// BUG: return types do not match!!
-singleline_comment|//#else
-singleline_comment|//&t;&t;&t;return HWGROUP(drive)-&gt;handler(drive);
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_TIMEOUT */
 r_case
 id|ide_dma_retune
 suffix:colon
@@ -3079,7 +2838,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Needed for allowing full modular support of ide-driver&n; */
 DECL|function|ide_release_dma
-r_int
+r_void
 id|ide_release_dma
 c_func
 (paren
@@ -3174,9 +2933,6 @@ suffix:semicolon
 id|hwif-&gt;dma_base
 op_assign
 l_int|0
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This can be called for a dynamically installed interface. Don&squot;t __init it&n; */

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: tg3.h,v 1.37.2.30 2002/03/05 10:08:39 davem Exp $&n; * tg3.h: Definitions for Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001 Jeff Garzik (jgarzik@mandrakesoft.com)&n; */
+multiline_comment|/* $Id: tg3.h,v 1.37.2.32 2002/03/11 12:18:18 davem Exp $&n; * tg3.h: Definitions for Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001 Jeff Garzik (jgarzik@mandrakesoft.com)&n; */
 macro_line|#ifndef _T3_H
 DECL|macro|_T3_H
 mdefine_line|#define _T3_H
@@ -1321,8 +1321,12 @@ DECL|macro|HIGH_RXCOL_TICKS
 mdefine_line|#define  HIGH_RXCOL_TICKS&t;&t; 0x00000096
 DECL|macro|HOSTCC_TXCOL_TICKS
 mdefine_line|#define HOSTCC_TXCOL_TICKS&t;&t;0x00003c0c
+DECL|macro|LOW_TXCOL_TICKS
+mdefine_line|#define  LOW_TXCOL_TICKS&t;&t; 0x00000096
 DECL|macro|DEFAULT_TXCOL_TICKS
 mdefine_line|#define  DEFAULT_TXCOL_TICKS&t;&t; 0x0000012c
+DECL|macro|HIGH_TXCOL_TICKS
+mdefine_line|#define  HIGH_TXCOL_TICKS&t;&t; 0x00000145
 DECL|macro|HOSTCC_RXMAX_FRAMES
 mdefine_line|#define HOSTCC_RXMAX_FRAMES&t;&t;0x00003c10
 DECL|macro|LOW_RXMAX_FRAMES
@@ -1333,8 +1337,12 @@ DECL|macro|HIGH_RXMAX_FRAMES
 mdefine_line|#define  HIGH_RXMAX_FRAMES&t;&t; 0x00000012
 DECL|macro|HOSTCC_TXMAX_FRAMES
 mdefine_line|#define HOSTCC_TXMAX_FRAMES&t;&t;0x00003c14
+DECL|macro|LOW_TXMAX_FRAMES
+mdefine_line|#define  LOW_TXMAX_FRAMES&t;&t; 0x00000035
 DECL|macro|DEFAULT_TXMAX_FRAMES
 mdefine_line|#define  DEFAULT_TXMAX_FRAMES&t;&t; 0x0000004b
+DECL|macro|HIGH_TXMAX_FRAMES
+mdefine_line|#define  HIGH_TXMAX_FRAMES&t;&t; 0x00000052
 DECL|macro|HOSTCC_RXCOAL_TICK_INT
 mdefine_line|#define HOSTCC_RXCOAL_TICK_INT&t;&t;0x00003c18
 DECL|macro|DEFAULT_RXCOAL_TICK_INT
@@ -3289,6 +3297,7 @@ DECL|struct|tg3_coalesce_config
 r_struct
 id|tg3_coalesce_config
 (brace
+multiline_comment|/* Current settings. */
 DECL|member|rx_coalesce_ticks
 id|u32
 id|rx_coalesce_ticks
@@ -3324,6 +3333,88 @@ suffix:semicolon
 DECL|member|stats_coalesce_ticks
 id|u32
 id|stats_coalesce_ticks
+suffix:semicolon
+multiline_comment|/* Default settings. */
+DECL|member|rx_coalesce_ticks_def
+id|u32
+id|rx_coalesce_ticks_def
+suffix:semicolon
+DECL|member|rx_max_coalesced_frames_def
+id|u32
+id|rx_max_coalesced_frames_def
+suffix:semicolon
+DECL|member|rx_coalesce_ticks_during_int_def
+id|u32
+id|rx_coalesce_ticks_during_int_def
+suffix:semicolon
+DECL|member|rx_max_coalesced_frames_during_int_def
+id|u32
+id|rx_max_coalesced_frames_during_int_def
+suffix:semicolon
+DECL|member|tx_coalesce_ticks_def
+id|u32
+id|tx_coalesce_ticks_def
+suffix:semicolon
+DECL|member|tx_max_coalesced_frames_def
+id|u32
+id|tx_max_coalesced_frames_def
+suffix:semicolon
+DECL|member|tx_coalesce_ticks_during_int_def
+id|u32
+id|tx_coalesce_ticks_during_int_def
+suffix:semicolon
+DECL|member|tx_max_coalesced_frames_during_int_def
+id|u32
+id|tx_max_coalesced_frames_during_int_def
+suffix:semicolon
+DECL|member|stats_coalesce_ticks_def
+id|u32
+id|stats_coalesce_ticks_def
+suffix:semicolon
+multiline_comment|/* Adaptive RX/TX coalescing parameters. */
+DECL|member|rate_sample_jiffies
+id|u32
+id|rate_sample_jiffies
+suffix:semicolon
+DECL|member|pkt_rate_low
+id|u32
+id|pkt_rate_low
+suffix:semicolon
+DECL|member|pkt_rate_high
+id|u32
+id|pkt_rate_high
+suffix:semicolon
+DECL|member|rx_coalesce_ticks_low
+id|u32
+id|rx_coalesce_ticks_low
+suffix:semicolon
+DECL|member|rx_max_coalesced_frames_low
+id|u32
+id|rx_max_coalesced_frames_low
+suffix:semicolon
+DECL|member|tx_coalesce_ticks_low
+id|u32
+id|tx_coalesce_ticks_low
+suffix:semicolon
+DECL|member|tx_max_coalesced_frames_low
+id|u32
+id|tx_max_coalesced_frames_low
+suffix:semicolon
+DECL|member|rx_coalesce_ticks_high
+id|u32
+id|rx_coalesce_ticks_high
+suffix:semicolon
+DECL|member|rx_max_coalesced_frames_high
+id|u32
+id|rx_max_coalesced_frames_high
+suffix:semicolon
+DECL|member|tx_coalesce_ticks_high
+id|u32
+id|tx_coalesce_ticks_high
+suffix:semicolon
+DECL|member|tx_max_coalesced_frames_high
+id|u32
+id|tx_max_coalesced_frames_high
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -3408,6 +3499,11 @@ r_struct
 id|net_device_stats
 id|net_stats
 suffix:semicolon
+DECL|member|net_stats_prev
+r_struct
+id|net_device_stats
+id|net_stats_prev
+suffix:semicolon
 DECL|member|phy_crc_errors
 r_int
 r_int
@@ -3439,12 +3535,16 @@ DECL|macro|TG3_FLAG_HOST_TXDS
 mdefine_line|#define TG3_FLAG_HOST_TXDS&t;&t;0x00000001
 DECL|macro|TG3_FLAG_TXD_MBOX_HWBUG
 mdefine_line|#define TG3_FLAG_TXD_MBOX_HWBUG&t;&t;0x00000002
-DECL|macro|TG3_FLAG_BROKEN_CHECKSUMS
-mdefine_line|#define TG3_FLAG_BROKEN_CHECKSUMS&t;0x00000004
+DECL|macro|TG3_FLAG_RX_CHECKSUMS
+mdefine_line|#define TG3_FLAG_RX_CHECKSUMS&t;&t;0x00000004
 DECL|macro|TG3_FLAG_USE_LINKCHG_REG
 mdefine_line|#define TG3_FLAG_USE_LINKCHG_REG&t;0x00000008
 DECL|macro|TG3_FLAG_USE_MI_INTERRUPT
 mdefine_line|#define TG3_FLAG_USE_MI_INTERRUPT&t;0x00000010
+DECL|macro|TG3_FLAG_ADAPTIVE_RX
+mdefine_line|#define TG3_FLAG_ADAPTIVE_RX&t;&t;0x00000020
+DECL|macro|TG3_FLAG_ADAPTIVE_TX
+mdefine_line|#define TG3_FLAG_ADAPTIVE_TX&t;&t;0x00000040
 DECL|macro|TG3_FLAG_PHY_RESET_ON_INIT
 mdefine_line|#define TG3_FLAG_PHY_RESET_ON_INIT&t;0x00000100
 DECL|macro|TG3_FLAG_PCIX_TARGET_HWBUG
@@ -3479,6 +3579,14 @@ DECL|macro|TG3_FLAG_JUMBO_ENABLE
 mdefine_line|#define TG3_FLAG_JUMBO_ENABLE&t;&t;0x00800000
 DECL|macro|TG3_FLAG_10_100_ONLY
 mdefine_line|#define TG3_FLAG_10_100_ONLY&t;&t;0x01000000
+DECL|macro|TG3_FLAG_PAUSE_AUTONEG
+mdefine_line|#define TG3_FLAG_PAUSE_AUTONEG&t;&t;0x02000000
+DECL|macro|TG3_FLAG_PAUSE_RX
+mdefine_line|#define TG3_FLAG_PAUSE_RX&t;&t;0x04000000
+DECL|macro|TG3_FLAG_PAUSE_TX
+mdefine_line|#define TG3_FLAG_PAUSE_TX&t;&t;0x08000000
+DECL|macro|TG3_FLAG_BROKEN_CHECKSUMS
+mdefine_line|#define TG3_FLAG_BROKEN_CHECKSUMS&t;0x10000000
 DECL|macro|TG3_FLAG_INIT_COMPLETE
 mdefine_line|#define TG3_FLAG_INIT_COMPLETE&t;&t;0x80000000
 DECL|member|msg_enable
@@ -3516,6 +3624,24 @@ DECL|member|bufmgr_config
 r_struct
 id|tg3_bufmgr_config
 id|bufmgr_config
+suffix:semicolon
+DECL|member|rx_pending
+id|u32
+id|rx_pending
+suffix:semicolon
+macro_line|#if TG3_MINI_RING_WORKS
+DECL|member|rx_mini_pending
+id|u32
+id|rx_mini_pending
+suffix:semicolon
+macro_line|#endif
+DECL|member|rx_jumbo_pending
+id|u32
+id|rx_jumbo_pending
+suffix:semicolon
+DECL|member|tx_pending
+id|u32
+id|tx_pending
 suffix:semicolon
 multiline_comment|/* cache h/w values, often passed straight to h/w */
 DECL|member|rx_mode

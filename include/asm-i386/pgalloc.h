@@ -891,5 +891,7 @@ id|end
 (brace
 multiline_comment|/* i386 does not keep any page table caches in TLB */
 )brace
+DECL|macro|check_pgt_cache
+mdefine_line|#define check_pgt_cache()&t;do { } while (0)
 macro_line|#endif /* _I386_PGALLOC_H */
 eof

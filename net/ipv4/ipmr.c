@@ -3432,7 +3432,13 @@ id|sk-&gt;type
 op_ne
 id|SOCK_RAW
 op_logical_or
-id|sk-&gt;num
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|num
 op_ne
 id|IPPROTO_IGMP
 )paren

@@ -808,6 +808,20 @@ id|s-&gt;u.generic_sbp
 op_assign
 id|sbi
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|sbi
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|minix_sb_info
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* N.B. These should be compile-time tests.&n;&t;   Unfortunately that is impossible. */
 r_if
 c_cond

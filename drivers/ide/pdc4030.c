@@ -2039,9 +2039,6 @@ op_star
 )paren
 id|task-&gt;tfRegister
 suffix:semicolon
-id|ide_startstop_t
-id|startstop
-suffix:semicolon
 r_int
 r_int
 id|timeout

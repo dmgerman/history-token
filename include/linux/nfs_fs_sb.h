@@ -115,17 +115,15 @@ comma
 DECL|member|lru_busy
 id|lru_busy
 suffix:semicolon
-)brace
+DECL|member|fh
+r_struct
+id|nfs_fh
+id|fh
 suffix:semicolon
-multiline_comment|/*&n; * nfs super-block data in memory&n; */
-DECL|struct|nfs_sb_info
+DECL|member|addr
 r_struct
-id|nfs_sb_info
-(brace
-DECL|member|s_server
-r_struct
-id|nfs_server
-id|s_server
+id|sockaddr_in
+id|addr
 suffix:semicolon
 )brace
 suffix:semicolon

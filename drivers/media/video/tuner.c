@@ -708,7 +708,7 @@ id|Alps
 comma
 id|PAL_I
 comma
-multiline_comment|/* tested (UK UHF) with Modtec MM205 */
+multiline_comment|/* tested (UK UHF) with Modulartech MM205 */
 l_int|16
 op_star
 l_float|133.25
@@ -939,7 +939,7 @@ l_int|623
 )brace
 comma
 (brace
-l_string|&quot;Temic PAL (4009 FR5)&quot;
+l_string|&quot;Temic PAL_BG (4009 FR5) or PAL_I (4069 FR5)&quot;
 comma
 id|TEMIC
 comma
@@ -1606,6 +1606,7 @@ suffix:semicolon
 macro_line|#endif
 singleline_comment|// Initalization as described in &quot;MT203x Programming Procedures&quot;, Rev 1.2, Feb.2001
 DECL|function|mt2032_init
+r_static
 r_int
 id|mt2032_init
 c_func
@@ -2091,6 +2092,7 @@ suffix:semicolon
 )brace
 singleline_comment|// IsSpurInBand()?
 DECL|function|mt2032_spurcheck
+r_static
 r_int
 id|mt2032_spurcheck
 c_func
@@ -2256,6 +2258,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|mt2032_compute_freq
+r_static
 r_int
 id|mt2032_compute_freq
 c_func
@@ -2853,6 +2856,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|mt2032_check_lo_lock
+r_static
 r_int
 id|mt2032_check_lo_lock
 c_func
@@ -2971,6 +2975,7 @@ id|lock
 suffix:semicolon
 )brace
 DECL|function|mt2032_optimize_vco
+r_static
 r_int
 id|mt2032_optimize_vco
 c_func
@@ -3157,6 +3162,7 @@ id|lock
 suffix:semicolon
 )brace
 DECL|function|mt2032_set_if_freq
+r_static
 r_void
 id|mt2032_set_if_freq
 c_func
@@ -3551,6 +3557,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|mt2032_set_tv_freq
+r_static
 r_void
 id|mt2032_set_tv_freq
 c_func
@@ -4696,6 +4703,9 @@ op_star
 id|adap
 )paren
 (brace
+r_int
+id|rc
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4723,18 +4733,32 @@ id|this_adap
 op_assign
 l_int|0
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 id|adap-&gt;id
-op_eq
-(paren
+)paren
+(brace
+r_case
 id|I2C_ALGO_BIT
 op_or
 id|I2C_HW_B_BT848
+suffix:colon
+r_case
+id|I2C_ALGO_SAA7134
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;tuner: probing %s i2c adapter [id=0x%x]&bslash;n&quot;
+comma
+id|adap-&gt;name
+comma
+id|adap-&gt;id
 )paren
-)paren
-r_return
+suffix:semicolon
+id|rc
+op_assign
 id|i2c_probe
 c_func
 (paren
@@ -4746,8 +4770,28 @@ comma
 id|tuner_attach
 )paren
 suffix:semicolon
-r_return
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;tuner: ignoring %s i2c adapter [id=0x%x]&bslash;n&quot;
+comma
+id|adap-&gt;name
+comma
+id|adap-&gt;id
+)paren
+suffix:semicolon
+id|rc
+op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* nothing */
+)brace
+r_return
+id|rc
 suffix:semicolon
 )brace
 DECL|function|tuner_detach
@@ -5322,16 +5366,28 @@ id|i2c_driver
 id|driver
 op_assign
 (brace
+id|name
+suffix:colon
 l_string|&quot;i2c TV tuner driver&quot;
 comma
+id|id
+suffix:colon
 id|I2C_DRIVERID_TUNER
 comma
+id|flags
+suffix:colon
 id|I2C_DF_NOTIFY
 comma
+id|attach_adapter
+suffix:colon
 id|tuner_probe
 comma
+id|detach_client
+suffix:colon
 id|tuner_detach
 comma
+id|command
+suffix:colon
 id|tuner_command
 comma
 )brace
@@ -5343,25 +5399,23 @@ id|i2c_client
 id|client_template
 op_assign
 (brace
+id|name
+suffix:colon
 l_string|&quot;(unset)&quot;
 comma
-multiline_comment|/* name       */
-op_minus
-l_int|1
+id|flags
+suffix:colon
+id|I2C_CLIENT_ALLOW_USE
 comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
+id|driver
+suffix:colon
 op_amp
 id|driver
+comma
 )brace
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|tuner_init_module
+r_static
 r_int
 id|tuner_init_module
 c_func
@@ -5381,6 +5435,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|tuner_cleanup_module
+r_static
 r_void
 id|tuner_cleanup_module
 c_func
@@ -5409,6 +5464,8 @@ c_func
 (paren
 id|tuner_cleanup_module
 )paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 eof

@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/fd.h&gt;
 macro_line|#include &lt;linux/ppp_defs.h&gt;
 macro_line|#include &lt;linux/if_ppp.h&gt;
 macro_line|#include &lt;linux/if_pppox.h&gt;
+macro_line|#include &lt;linux/if_tun.h&gt;
 macro_line|#include &lt;linux/mtio.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/loop.h&gt;
@@ -23815,6 +23816,16 @@ id|BLKFLSBUF
 id|COMPATIBLE_IOCTL
 c_func
 (paren
+id|BLKRASET
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BLKFRASET
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
 id|BLKSECTSET
 )paren
 id|COMPATIBLE_IOCTL
@@ -24181,6 +24192,41 @@ c_func
 (paren
 id|SCSI_IOCTL_SEND_COMMAND
 )paren
+multiline_comment|/* Big T */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TUNSETNOCSUM
+)paren
+suffix:semicolon
+DECL|variable|COMPATIBLE_IOCTL
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TUNSETDEBUG
+)paren
+suffix:semicolon
+DECL|variable|TUNSETIFF
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TUNSETIFF
+)paren
+suffix:semicolon
+DECL|variable|TUNSETPERSIST
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TUNSETPERSIST
+)paren
+suffix:semicolon
+DECL|variable|TUNSETOWNER
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TUNSETOWNER
+)paren
+suffix:semicolon
 multiline_comment|/* Big V */
 id|COMPATIBLE_IOCTL
 c_func
@@ -24814,6 +24860,16 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|SIOCSMIIREG
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCGIFVLAN
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SIOCSIFVLAN
 )paren
 multiline_comment|/* SG stuff */
 id|COMPATIBLE_IOCTL
@@ -27013,6 +27069,13 @@ id|hdio_getgeo
 id|HANDLE_IOCTL
 c_func
 (paren
+id|BLKRAGET
+comma
+id|w_long
+)paren
+id|HANDLE_IOCTL
+c_func
+(paren
 id|BLKGETSIZE
 comma
 id|w_long
@@ -27023,6 +27086,13 @@ c_func
 l_int|0x1260
 comma
 id|broken_blkgetsize
+)paren
+id|HANDLE_IOCTL
+c_func
+(paren
+id|BLKFRAGET
+comma
+id|w_long
 )paren
 id|HANDLE_IOCTL
 c_func

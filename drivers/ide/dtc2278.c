@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#include &quot;ata-timing.h&quot;
 multiline_comment|/*&n; * Changing this #undef to #define may solve start up problems in some systems.&n; */
 DECL|macro|ALWAYS_SET_DTC2278_PIO_MODE
 macro_line|#undef ALWAYS_SET_DTC2278_PIO_MODE
@@ -130,17 +130,17 @@ id|flags
 suffix:semicolon
 id|pio
 op_assign
-id|ide_get_best_pio_mode
+id|ata_timing_mode
 c_func
 (paren
 id|drive
 comma
-id|pio
-comma
-l_int|4
-comma
-l_int|NULL
+id|XFER_PIO
+op_or
+id|XFER_EPIO
 )paren
+op_minus
+id|XFER_PIO_0
 suffix:semicolon
 r_if
 c_cond

@@ -1527,6 +1527,7 @@ id|driver
 )brace
 suffix:semicolon
 DECL|function|tda7432_init
+r_static
 r_int
 id|tda7432_init
 c_func
@@ -1574,6 +1575,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|tda7432_fini
+r_static
 r_void
 id|tda7432_fini
 c_func

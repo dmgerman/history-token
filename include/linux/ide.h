@@ -2368,14 +2368,6 @@ id|kdev_t
 id|i_rdev
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Start a reset operation for an IDE interface.&n; * The caller should return immediately after invoking this.&n; */
-id|ide_startstop_t
-id|ide_do_reset
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Re-Start an operation for an IDE interface.&n; * The caller should return immediately after invoking this.&n; */
 id|ide_startstop_t
 id|restart_request
@@ -3162,8 +3154,10 @@ op_star
 id|drive
 )paren
 suffix:semicolon
-r_int
+r_extern
+r_void
 id|ide_release_dma
+c_func
 (paren
 id|ide_hwif_t
 op_star

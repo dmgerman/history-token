@@ -718,7 +718,7 @@ id|req
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * nfs_coalesce_requests - Split coalesced requests out from a list.&n; * @head: source list&n; * @dst: destination list&n; * @nmax: maximum number of requests to coalesce&n; *&n; * Moves a maximum of &squot;nmax&squot; elements from one list to another.&n; * The elements are checked to ensure that they form a contiguous set&n; * of pages, and that they originated from the same file.&n; */
+multiline_comment|/**&n; * nfs_coalesce_requests - Split coalesced requests out from a list.&n; * @head: source list&n; * @dst: destination list&n; * @nmax: maximum number of requests to coalesce&n; *&n; * Moves a maximum of &squot;nmax&squot; elements from one list to another.&n; * The elements are checked to ensure that they form a contiguous set&n; * of pages, and that the RPC credentials are the same.&n; */
 r_int
 DECL|function|nfs_coalesce_requests
 id|nfs_coalesce_requests
@@ -787,9 +787,9 @@ id|prev
 r_if
 c_cond
 (paren
-id|req-&gt;wb_file
+id|req-&gt;wb_cred
 op_ne
-id|prev-&gt;wb_file
+id|prev-&gt;wb_cred
 )paren
 r_break
 suffix:semicolon
@@ -864,7 +864,7 @@ r_return
 id|npages
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * nfs_scan_forward - Coalesce more requests&n; * @req: First request to add&n; * @dst: destination list&n; * @nmax: maximum number of requests to coalesce&n; *&n; * Tries to coalesce more requests by traversing the request&squot;s wb_list.&n; * Moves the resulting list into dst. Requests are guaranteed to be&n; * contiguous, and to originate from the same file.&n; */
+multiline_comment|/*&n; * nfs_scan_forward - Coalesce more requests&n; * @req: First request to add&n; * @dst: destination list&n; * @nmax: maximum number of requests to coalesce&n; *&n; * Tries to coalesce more requests by traversing the request&squot;s wb_list.&n; * Moves the resulting list into dst. Requests are guaranteed to be&n; * contiguous, and have the same RPC credentials.&n; */
 r_static
 r_int
 DECL|function|nfs_scan_forward
@@ -907,11 +907,11 @@ op_assign
 id|req-&gt;wb_list_head
 suffix:semicolon
 r_struct
-id|file
+id|rpc_cred
 op_star
-id|file
+id|cred
 op_assign
-id|req-&gt;wb_file
+id|req-&gt;wb_cred
 suffix:semicolon
 r_int
 r_int
@@ -1043,9 +1043,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|req-&gt;wb_file
+id|req-&gt;wb_cred
 op_ne
-id|file
+id|cred
 )paren
 r_break
 suffix:semicolon

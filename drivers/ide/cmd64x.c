@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#include &quot;ata-timing.h&quot;
 macro_line|#ifndef SPLIT_BYTE
 DECL|macro|SPLIT_BYTE
 mdefine_line|#define SPLIT_BYTE(B,H,L)&t;((H)=(B&gt;&gt;4), (L)=(B-((B&gt;&gt;4)&lt;&lt;4)))
@@ -1999,7 +1999,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Attempts to set the interface PIO mode.&n; * The preferred method of selecting PIO modes (e.g. mode 4) is &n; * &quot;echo &squot;piomode:4&squot; &gt; /proc/ide/hdx/settings&quot;.  Special cases are&n; * 8: prefetch off, 9: prefetch on, 255: auto-select best mode.&n; * Called with 255 at boot time.&n; */
+multiline_comment|/*&n; * Attempts to set the interface PIO mode.&n; * The preferred method of selecting PIO modes (e.g. mode 4) is&n; * &quot;echo &squot;piomode:4&squot; &gt; /proc/ide/hdx/settings&quot;.  Special cases are&n; * 8: prefetch off, 9: prefetch on, 255: auto-select best mode.&n; * Called with 255 at boot time.&n; */
 DECL|function|cmd64x_tuneproc
 r_static
 r_void
@@ -2014,17 +2014,9 @@ id|mode_wanted
 )paren
 (brace
 r_int
-id|setup_time
-comma
-id|active_time
-comma
 id|recovery_time
 comma
 id|clock_time
-comma
-id|pio_mode
-comma
-id|cycle_time
 suffix:semicolon
 id|byte
 id|recovery_count2
@@ -2038,8 +2030,10 @@ id|active_count
 comma
 id|recovery_count
 suffix:semicolon
-id|ide_pio_data_t
-id|d
+r_struct
+id|ata_timing
+op_star
+id|t
 suffix:semicolon
 r_switch
 c_cond
@@ -2077,67 +2071,49 @@ l_string|&quot;dis&quot;
 suffix:semicolon
 r_return
 suffix:semicolon
-)brace
+r_case
+l_int|255
+suffix:colon
 id|mode_wanted
 op_assign
-id|ide_get_best_pio_mode
+id|ata_timing_mode
+c_func
 (paren
 id|drive
 comma
+id|XFER_PIO
+op_or
+id|XFER_EPIO
+)paren
+suffix:semicolon
+)brace
+id|t
+op_assign
+id|ata_timing_data
+c_func
+(paren
+id|XFER_PIO_0
+op_plus
+id|min_t
+c_func
+(paren
+id|byte
+comma
 id|mode_wanted
 comma
-l_int|5
-comma
-op_amp
-id|d
+l_int|4
 )paren
-suffix:semicolon
-id|pio_mode
-op_assign
-id|d.pio_mode
-suffix:semicolon
-id|cycle_time
-op_assign
-id|d.cycle_time
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * I copied all this complicated stuff from cmd640.c and made a few minor changes.&n;&t; * For now I am just going to pray that it is correct.&n;&t; */
-r_if
-c_cond
-(paren
-id|pio_mode
-OG
-l_int|5
-)paren
-id|pio_mode
-op_assign
-l_int|5
-suffix:semicolon
-id|setup_time
-op_assign
-id|ide_pio_timings
-(braket
-id|pio_mode
-)braket
-dot
-id|setup_time
-suffix:semicolon
-id|active_time
-op_assign
-id|ide_pio_timings
-(braket
-id|pio_mode
-)braket
-dot
-id|active_time
-suffix:semicolon
 id|recovery_time
 op_assign
-id|cycle_time
+id|t-&gt;cycle
 op_minus
 (paren
-id|setup_time
+id|t-&gt;setup
 op_plus
-id|active_time
+id|t-&gt;active
 )paren
 suffix:semicolon
 id|clock_time
@@ -2149,7 +2125,7 @@ suffix:semicolon
 id|cycle_count
 op_assign
 (paren
-id|cycle_time
+id|t-&gt;cycle
 op_plus
 id|clock_time
 op_minus
@@ -2161,7 +2137,7 @@ suffix:semicolon
 id|setup_count
 op_assign
 (paren
-id|setup_time
+id|t-&gt;setup
 op_plus
 id|clock_time
 op_minus
@@ -2173,7 +2149,7 @@ suffix:semicolon
 id|active_count
 op_assign
 (paren
-id|active_time
+id|t-&gt;active
 op_plus
 id|clock_time
 op_minus
@@ -2261,22 +2237,17 @@ suffix:semicolon
 id|cmdprintk
 c_func
 (paren
-l_string|&quot;%s: selected cmd646 PIO mode%d : %d (%dns)%s, clocks=%d/%d/%d&bslash;n&quot;
+l_string|&quot;%s: selected cmd646 PIO mode%d : %d (%dns), clocks=%d/%d/%d&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
-id|pio_mode
+id|t.mode
+op_minus
+id|XFER_PIO_0
 comma
 id|mode_wanted
 comma
 id|cycle_time
-comma
-id|d.overridden
-ques
-c_cond
-l_string|&quot; (overriding vendor mode)&quot;
-suffix:colon
-l_string|&quot;&quot;
 comma
 id|setup_count
 comma
@@ -2553,17 +2524,17 @@ suffix:semicolon
 id|byte
 id|set_pio
 op_assign
-id|ide_get_best_pio_mode
+id|ata_timing_mode
 c_func
 (paren
 id|drive
 comma
-l_int|4
-comma
-l_int|5
-comma
-l_int|NULL
+id|XFER_PIO
+op_or
+id|XFER_EPIO
 )paren
+op_minus
+id|XFER_PIO_0
 suffix:semicolon
 id|cmd64x_tuneproc
 c_func
@@ -2669,17 +2640,17 @@ suffix:semicolon
 id|u8
 id|set_pio
 op_assign
-id|ide_get_best_pio_mode
+id|ata_timing_mode
 c_func
 (paren
 id|drive
 comma
-l_int|4
-comma
-l_int|5
-comma
-l_int|NULL
+id|XFER_PIO
+op_or
+id|XFER_EPIO
 )paren
+op_minus
+id|XFER_PIO_0
 suffix:semicolon
 id|pci_read_config_byte
 c_func

@@ -17,7 +17,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#include &quot;ata-timing.h&quot;
 singleline_comment|// #define DEBUG
 multiline_comment|/* if BROKEN_LEVEL is defined it limits the DMA mode&n;   at boot time to its value */
 singleline_comment|// #define BROKEN_LEVEL XFER_SW_DMA_0
@@ -2531,19 +2531,26 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pio
+op_eq
+l_int|255
+)paren
 id|pio
 op_assign
-id|ide_get_best_pio_mode
+id|ata_timing_mode
 c_func
 (paren
 id|drive
 comma
-l_int|255
-comma
-id|pio
-comma
-l_int|NULL
+id|XFER_PIO
+op_or
+id|XFER_EPIO
 )paren
+op_minus
+id|XFER_PIO_0
 suffix:semicolon
 r_if
 c_cond

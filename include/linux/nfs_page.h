@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_NFS_PAGE_H
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
 macro_line|#include &lt;linux/nfs_xdr.h&gt;
 multiline_comment|/*&n; * Valid flags for a dirty buffer&n; */

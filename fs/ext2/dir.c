@@ -222,7 +222,13 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-id|sb-&gt;u.ext2_sb.s_es-&gt;s_inodes_count
+id|EXT2_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|s_es-&gt;s_inodes_count
 )paren
 suffix:semicolon
 r_int
