@@ -156,7 +156,7 @@ c_cond
 id|u32
 )paren
 id|addr
-OG
+op_ge
 id|VMALLOC_START
 )paren
 id|__iounmap
@@ -219,7 +219,7 @@ r_if
 c_cond
 (paren
 id|addr
-OG
+op_ge
 id|VMALLOC_START
 )paren
 (brace
@@ -338,7 +338,7 @@ r_if
 c_cond
 (paren
 id|addr
-OG
+op_ge
 id|VMALLOC_START
 )paren
 (brace
@@ -460,7 +460,7 @@ r_if
 c_cond
 (paren
 id|addr
-OG
+op_ge
 id|VMALLOC_START
 )paren
 (brace
@@ -544,7 +544,7 @@ r_if
 c_cond
 (paren
 id|addr
-OG
+op_ge
 id|VMALLOC_START
 )paren
 r_return
@@ -662,7 +662,7 @@ r_if
 c_cond
 (paren
 id|addr
-OG
+op_ge
 id|VMALLOC_START
 )paren
 r_return
@@ -786,7 +786,7 @@ r_if
 c_cond
 (paren
 id|addr
-OG
+op_ge
 id|VMALLOC_START
 )paren
 r_return
