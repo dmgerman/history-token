@@ -10,7 +10,7 @@ macro_line|#include &quot;pciehp.h&quot;
 multiline_comment|/* A few routines that create sysfs entries for the hot plug controller */
 DECL|function|show_ctrl
 r_static
-r_int
+id|ssize_t
 id|show_ctrl
 (paren
 r_struct
@@ -271,7 +271,7 @@ l_int|NULL
 suffix:semicolon
 DECL|function|show_dev
 r_static
-r_int
+id|ssize_t
 id|show_dev
 (paren
 r_struct
