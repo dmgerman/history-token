@@ -230,7 +230,6 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|send_IPI_mask_sequence
-r_inline
 r_void
 id|send_IPI_mask_sequence
 c_func
