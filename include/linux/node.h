@@ -37,8 +37,6 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|to_node
-mdefine_line|#define to_node(_root) container_of(_root, struct node, sysroot)
-DECL|macro|to_root
-mdefine_line|#define to_root(_dev) container_of(_dev, struct sys_root, dev)
+mdefine_line|#define to_node(sys_device) container_of(sys_device, struct node, sysdev)
 macro_line|#endif /* _LINUX_NODE_H_ */
 eof
