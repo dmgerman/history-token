@@ -386,6 +386,10 @@ id|s-&gt;s_xattr
 op_assign
 id|devpts_xattr_handlers
 suffix:semicolon
+id|s-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 id|inode
 op_assign
 id|new_inode

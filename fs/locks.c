@@ -4297,7 +4297,11 @@ id|F_WRLCK
 op_star
 id|time
 op_assign
-id|CURRENT_TIME
+id|current_fs_time
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
 suffix:semicolon
 r_else
 op_star

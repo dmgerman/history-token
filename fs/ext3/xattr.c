@@ -6311,7 +6311,7 @@ l_int|0
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|ext3_mark_inode_dirty
 c_func

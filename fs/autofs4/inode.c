@@ -890,6 +890,10 @@ op_assign
 op_amp
 id|autofs4_sops
 suffix:semicolon
+id|s-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t; * Get the root inode and dentry, but defer checking for errors.&n;&t; */
 id|ino
 op_assign

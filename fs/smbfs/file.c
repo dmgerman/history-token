@@ -240,7 +240,11 @@ id|result
 suffix:semicolon
 id|dentry-&gt;d_inode-&gt;i_atime
 op_assign
-id|CURRENT_TIME
+id|current_fs_time
+c_func
+(paren
+id|dentry-&gt;d_inode-&gt;i_sb
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -552,7 +556,11 @@ id|inode-&gt;i_mtime
 op_assign
 id|inode-&gt;i_atime
 op_assign
-id|CURRENT_TIME
+id|current_fs_time
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
 suffix:semicolon
 id|SMB_I
 c_func

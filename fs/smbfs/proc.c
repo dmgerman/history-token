@@ -8310,6 +8310,11 @@ r_struct
 id|smb_fattr
 op_star
 id|fattr
+comma
+r_struct
+id|super_block
+op_star
+id|sb
 )paren
 (brace
 id|smb_init_dirent
@@ -8331,7 +8336,11 @@ suffix:semicolon
 multiline_comment|/* traditional root inode number */
 id|fattr-&gt;f_mtime
 op_assign
-id|CURRENT_TIME
+id|current_fs_time
+c_func
+(paren
+id|sb
+)paren
 suffix:semicolon
 id|smb_finish_dirent
 c_func

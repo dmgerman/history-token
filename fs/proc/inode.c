@@ -950,6 +950,10 @@ op_assign
 op_amp
 id|proc_sops
 suffix:semicolon
+id|s-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 id|root_inode
 op_assign
 id|proc_get_inode

@@ -7795,7 +7795,7 @@ id|p_s_inode-&gt;i_mtime
 op_assign
 id|p_s_inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 )brace
 id|reiserfs_update_sd
@@ -7912,7 +7912,7 @@ id|p_s_inode-&gt;i_mtime
 op_assign
 id|p_s_inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 )brace
 id|reiserfs_update_sd

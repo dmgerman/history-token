@@ -7764,6 +7764,10 @@ id|sb-&gt;s_magic
 op_assign
 id|UDF_SUPER_MAGIC
 suffix:semicolon
+id|sb-&gt;s_time_gran
+op_assign
+l_int|1000
+suffix:semicolon
 r_if
 c_cond
 (paren

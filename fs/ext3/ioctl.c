@@ -336,7 +336,7 @@ id|inode
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|err
 op_assign
@@ -537,7 +537,7 @@ l_int|0
 (brace
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|inode-&gt;i_generation
 op_assign

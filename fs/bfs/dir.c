@@ -500,7 +500,7 @@ id|inode-&gt;i_atime
 op_assign
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|inode-&gt;i_blocks
 op_assign
@@ -864,7 +864,7 @@ op_increment
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -1009,7 +1009,7 @@ id|dir-&gt;i_ctime
 op_assign
 id|dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -1246,7 +1246,7 @@ id|old_dir-&gt;i_ctime
 op_assign
 id|old_dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -1265,7 +1265,7 @@ op_decrement
 suffix:semicolon
 id|new_inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -1557,12 +1557,12 @@ id|BFS_DIRENT_SIZE
 suffix:semicolon
 id|dir-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 )brace
 id|dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|mark_inode_dirty
 c_func

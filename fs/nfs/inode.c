@@ -1941,6 +1941,10 @@ id|server-&gt;namelen
 op_assign
 id|NFS3_MAXNAMLEN
 suffix:semicolon
+id|sb-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -7640,6 +7644,10 @@ id|ENOMEM
 suffix:semicolon
 )brace
 )brace
+id|sb-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 id|sb-&gt;s_op
 op_assign
 op_amp

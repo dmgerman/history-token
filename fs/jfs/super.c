@@ -2043,6 +2043,10 @@ id|sb-&gt;s_maxbytes
 )paren
 suffix:semicolon
 macro_line|#endif
+id|sb-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

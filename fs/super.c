@@ -269,6 +269,10 @@ op_assign
 op_amp
 id|default_op
 suffix:semicolon
+id|s-&gt;s_time_gran
+op_assign
+l_int|1000000000
+suffix:semicolon
 )brace
 id|out
 suffix:colon

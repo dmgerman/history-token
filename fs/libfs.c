@@ -996,6 +996,10 @@ suffix:colon
 op_amp
 id|default_ops
 suffix:semicolon
+id|s-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 id|root
 op_assign
 id|new_inode
@@ -1793,6 +1797,10 @@ id|s-&gt;s_op
 op_assign
 op_amp
 id|s_ops
+suffix:semicolon
+id|s-&gt;s_time_gran
+op_assign
+l_int|1
 suffix:semicolon
 id|inode
 op_assign

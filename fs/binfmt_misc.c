@@ -2365,7 +2365,11 @@ id|inode-&gt;i_mtime
 op_assign
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|current_fs_time
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
 suffix:semicolon
 )brace
 r_return
