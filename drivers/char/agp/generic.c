@@ -8,7 +8,10 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &quot;agp.h&quot;
 DECL|variable|agp_gatt_table
 id|__u32
@@ -27,6 +30,92 @@ c_func
 id|agp_memory_reserved
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_X86)
+DECL|function|map_page_into_agp
+r_int
+id|map_page_into_agp
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|i
+op_assign
+id|change_page_attr
+c_func
+(paren
+id|page
+comma
+l_int|1
+comma
+id|PAGE_KERNEL_NOCACHE
+)paren
+suffix:semicolon
+id|global_flush_tlb
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|i
+suffix:semicolon
+)brace
+DECL|variable|map_page_into_agp
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|map_page_into_agp
+)paren
+suffix:semicolon
+DECL|function|unmap_page_from_agp
+r_int
+id|unmap_page_from_agp
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|i
+op_assign
+id|change_page_attr
+c_func
+(paren
+id|page
+comma
+l_int|1
+comma
+id|PAGE_KERNEL
+)paren
+suffix:semicolon
+id|global_flush_tlb
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|i
+suffix:semicolon
+)brace
+DECL|variable|unmap_page_from_agp
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|unmap_page_from_agp
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Generic routines for handling agp_memory structures -&n; * They use the basic page allocation routines to do the brunt of the work.&n; */
 DECL|function|agp_free_key
 r_void

@@ -563,11 +563,9 @@ id|page
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -584,6 +582,11 @@ OL
 l_int|0
 )paren
 (brace
+id|global_flush_tlb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|__free_page
 c_func
 (paren
@@ -594,6 +597,11 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|global_flush_tlb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|get_page
 c_func
 (paren
@@ -662,6 +670,11 @@ comma
 l_int|4
 comma
 id|PAGE_KERNEL
+)paren
+suffix:semicolon
+id|global_flush_tlb
+c_func
+(paren
 )paren
 suffix:semicolon
 id|put_page

@@ -227,12 +227,6 @@ id|page_map-&gt;real
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* CACHE_FLUSH(); */
-id|global_cache_flush
-c_func
-(paren
-)paren
-suffix:semicolon
 id|page_map-&gt;remapped
 op_assign
 id|ioremap_nocache
