@@ -1148,7 +1148,7 @@ suffix:semicolon
 r_char
 id|buf
 (braket
-l_int|64
+id|BDEVNAME_SIZE
 )braket
 suffix:semicolon
 r_if
@@ -2310,7 +2310,7 @@ suffix:semicolon
 r_char
 id|buf
 (braket
-l_int|64
+id|BDEVNAME_SIZE
 )braket
 suffix:semicolon
 r_int
