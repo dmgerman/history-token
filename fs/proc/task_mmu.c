@@ -226,9 +226,6 @@ op_assign
 id|mm-&gt;total_vm
 op_minus
 id|mm-&gt;shared_vm
-op_minus
-op_star
-id|text
 suffix:semicolon
 op_star
 id|resident
