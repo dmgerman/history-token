@@ -2814,7 +2814,7 @@ id|LO_FLAGS_READ_ONLY
 suffix:semicolon
 id|lo_blocksize
 op_assign
-id|inode-&gt;i_blocksize
+id|inode-&gt;i_blksize
 suffix:semicolon
 id|lo_flags
 op_or_assign
