@@ -1613,6 +1613,25 @@ r_int
 r_int
 id|val
 suffix:semicolon
+multiline_comment|/* check spdif */
+id|val
+op_assign
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_EXTENDED_STATUS
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|val
+op_amp
+id|AC97_EA_SPCV
+)paren
+(brace
 multiline_comment|/* enable spdif in */
 id|snd_ac97_write_cache
 c_func
@@ -1632,6 +1651,14 @@ op_or
 l_int|0x03
 )paren
 suffix:semicolon
+)brace
+r_else
+id|ac97-&gt;ext_id
+op_and_assign
+op_complement
+id|AC97_EI_SPDIF
+suffix:semicolon
+multiline_comment|/* disable extended-id */
 id|val
 op_assign
 id|snd_ac97_read

@@ -445,6 +445,9 @@ c_cond
 (paren
 id|substream-&gt;number
 op_eq
+(paren
+r_int
+)paren
 id|subdevice
 )paren
 r_break

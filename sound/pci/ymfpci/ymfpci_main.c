@@ -3206,6 +3206,7 @@ id|ENXIO
 )paren
 suffix:semicolon
 r_int
+r_int
 id|nvoice
 suffix:semicolon
 id|ypcm-&gt;period_size
@@ -8780,9 +8781,11 @@ op_star
 id|kctl
 suffix:semicolon
 r_int
-id|err
-comma
+r_int
 id|idx
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|memset
 c_func
@@ -9399,7 +9402,7 @@ c_func
 id|kcontrol
 )paren
 suffix:semicolon
-id|ucontrol-&gt;value.integer.value
+id|ucontrol-&gt;value.enumerated.item
 (braket
 l_int|0
 )braket
@@ -9438,7 +9441,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ucontrol-&gt;value.integer.value
+id|ucontrol-&gt;value.enumerated.item
 (braket
 l_int|0
 )braket
@@ -9449,14 +9452,14 @@ id|chip-&gt;joystick_port
 id|snd_assert
 c_func
 (paren
-id|ucontrol-&gt;value.integer.value
+id|ucontrol-&gt;value.enumerated.item
 (braket
 l_int|0
 )braket
 op_ge
 l_int|0
 op_logical_and
-id|ucontrol-&gt;value.integer.value
+id|ucontrol-&gt;value.enumerated.item
 (braket
 l_int|0
 )braket
@@ -9470,7 +9473,7 @@ id|EINVAL
 suffix:semicolon
 id|chip-&gt;joystick_port
 op_assign
-id|ucontrol-&gt;value.integer.value
+id|ucontrol-&gt;value.enumerated.item
 (braket
 l_int|0
 )braket
@@ -11286,6 +11289,7 @@ op_assign
 id|chip-&gt;card
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 r_if
@@ -11402,6 +11406,7 @@ id|card
 op_assign
 id|chip-&gt;card
 suffix:semicolon
+r_int
 r_int
 id|i
 suffix:semicolon

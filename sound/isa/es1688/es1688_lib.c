@@ -1906,12 +1906,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;trigger: residue = 0x%x&bslash;n&quot;
+l_string|&quot;trigger: pointer = 0x%x&bslash;n&quot;
 comma
-id|get_dma_residue
+id|snd_dma_pointer
 c_func
 (paren
 id|chip-&gt;dma8
+comma
+id|chip-&gt;dma_size
 )paren
 )paren
 suffix:semicolon
@@ -2993,12 +2995,12 @@ l_int|0
 suffix:semicolon
 id|ptr
 op_assign
-id|chip-&gt;dma_size
-op_minus
-id|snd_dma_residue
+id|snd_dma_pointer
 c_func
 (paren
 id|chip-&gt;dma8
+comma
+id|chip-&gt;dma_size
 )paren
 suffix:semicolon
 r_return
@@ -3047,12 +3049,12 @@ l_int|0
 suffix:semicolon
 id|ptr
 op_assign
-id|chip-&gt;dma_size
-op_minus
-id|snd_dma_residue
+id|snd_dma_pointer
 c_func
 (paren
 id|chip-&gt;dma8
+comma
+id|chip-&gt;dma_size
 )paren
 suffix:semicolon
 r_return
@@ -5846,9 +5848,11 @@ op_star
 id|card
 suffix:semicolon
 r_int
-id|err
-comma
+r_int
 id|idx
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 r_int
 r_char

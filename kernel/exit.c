@@ -2961,7 +2961,7 @@ multiline_comment|/* NOTREACHED */
 multiline_comment|/*&n; * this kills every thread in the thread group. Note that any externally&n; * wait4()-ing process will get the correct exit code - even if this&n; * thread is not the thread group leader.&n; */
 DECL|function|sys_exit_group
 id|asmlinkage
-r_int
+r_void
 id|sys_exit_group
 c_func
 (paren

@@ -586,6 +586,8 @@ id|cap
 comma
 id|type
 comma
+id|max_channels
+comma
 id|name
 )paren
 suffix:semicolon

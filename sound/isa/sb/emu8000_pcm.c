@@ -698,6 +698,9 @@ c_cond
 (paren
 id|rec-&gt;period_pos
 op_ge
+(paren
+r_int
+)paren
 id|rec-&gt;period_size
 )paren
 (brace

@@ -2399,6 +2399,9 @@ multiline_comment|/* AutoSync */
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|params_rate
 c_func
 (paren
@@ -2796,6 +2799,9 @@ l_int|0
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|params_rate
 c_func
 (paren
@@ -6844,6 +6850,7 @@ r_int
 id|flags
 suffix:semicolon
 r_int
+r_int
 id|items
 op_assign
 l_int|3
@@ -7038,6 +7045,10 @@ id|change
 op_assign
 id|val
 op_ne
+(paren
+r_int
+r_int
+)paren
 id|snd_rme32_getinputtype
 c_func
 (paren
@@ -7258,6 +7269,10 @@ id|change
 op_assign
 id|val
 op_ne
+(paren
+r_int
+r_int
+)paren
 id|snd_rme32_getclockmode
 c_func
 (paren

@@ -902,6 +902,9 @@ c_cond
 (paren
 id|count
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|patch

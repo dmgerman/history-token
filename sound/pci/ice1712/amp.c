@@ -62,6 +62,9 @@ op_complement
 l_int|0x8000
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* entry point */
 DECL|variable|__devinitdata

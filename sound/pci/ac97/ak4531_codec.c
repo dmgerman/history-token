@@ -2369,8 +2369,10 @@ id|rak4531
 )paren
 (brace
 r_int
+r_int
 id|idx
-comma
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 id|ak4531_t

@@ -580,6 +580,7 @@ id|to
 )paren
 (brace
 r_int
+r_int
 id|i
 suffix:semicolon
 m_assert
@@ -642,6 +643,7 @@ r_int
 id|to
 )paren
 (brace
+r_int
 r_int
 id|i
 suffix:semicolon

@@ -3304,6 +3304,9 @@ op_minus
 id|buffer-&gt;buffer
 )paren
 op_ge
+(paren
+r_int
+)paren
 id|buffer-&gt;size
 )paren
 (brace
@@ -3330,6 +3333,9 @@ op_minus
 id|buffer-&gt;buffer
 )paren
 op_ge
+(paren
+r_int
+)paren
 id|buffer-&gt;size
 )paren
 (brace
@@ -3367,6 +3373,9 @@ op_minus
 id|buffer-&gt;buffer
 )paren
 op_ge
+(paren
+r_int
+)paren
 id|buffer-&gt;size
 )paren
 (brace

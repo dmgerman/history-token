@@ -2081,6 +2081,9 @@ c_cond
 op_minus
 l_int|1
 suffix:colon
+(paren
+r_int
+)paren
 id|pdev-&gt;dma_resource
 (braket
 l_int|1

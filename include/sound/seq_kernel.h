@@ -626,6 +626,9 @@ comma
 r_int
 id|type
 comma
+r_int
+id|midi_channels
+comma
 r_char
 op_star
 id|portname

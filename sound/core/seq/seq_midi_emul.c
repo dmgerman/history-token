@@ -217,7 +217,7 @@ op_star
 id|chset
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Process an event in a driver independent way.  This means dealing&n; * with RPN, NRPN, SysEx etc that are defined for common midi applications&n; * such as GM, GS and XG.&n; * There modes that this module will run in are:&n; *   Generic MIDI - no interpretation at all, it will just save current values&n; *                  of controlers etc.&n; *   GM - You can use all gm_ prefixed elements of chan.  Controls, RPN, NRPN,&n; *        SysEx will be interpreded as defined in General Midi.&n; *   GS - You can use all gs_ prefixed elements of chan. Codes for GS will be&n; *        interpreted.&n; *   XG - You can use all xg_ prefixed elements of chan.  Codes for XG will&n; *        be interpreted.&n; */
+multiline_comment|/*&n; * Process an event in a driver independant way.  This means dealing&n; * with RPN, NRPN, SysEx etc that are defined for common midi applications&n; * such as GM, GS and XG.&n; * There modes that this module will run in are:&n; *   Generic MIDI - no interpretation at all, it will just save current values&n; *                  of controlers etc.&n; *   GM - You can use all gm_ prefixed elements of chan.  Controls, RPN, NRPN,&n; *        SysEx will be interpreded as defined in General Midi.&n; *   GS - You can use all gs_ prefixed elements of chan. Codes for GS will be&n; *        interpreted.&n; *   XG - You can use all xg_ prefixed elements of chan.  Codes for XG will&n; *        be interpreted.&n; */
 r_void
 DECL|function|snd_midi_process_event
 id|snd_midi_process_event
@@ -1040,7 +1040,7 @@ id|chan
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Do all driver independent operations for this controler and pass&n; * events that need to take place immediately to the driver.&n; */
+multiline_comment|/*&n; * Do all driver independant operations for this controler and pass&n; * events that need to take place immediately to the driver.&n; */
 r_static
 r_void
 DECL|function|do_control
@@ -1992,6 +1992,9 @@ c_cond
 (paren
 id|len
 op_ge
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|gm_on_macro
@@ -2369,6 +2372,9 @@ c_cond
 (paren
 id|len
 op_ge
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|xg_on_macro

@@ -3205,6 +3205,7 @@ r_int
 id|status
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 id|spin_lock
@@ -9230,8 +9231,10 @@ id|chip
 )paren
 (brace
 r_int
+r_int
 id|i
-comma
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 r_if
@@ -9393,6 +9396,7 @@ op_star
 id|chip
 )paren
 (brace
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -10860,7 +10864,9 @@ id|chip
 suffix:semicolon
 r_int
 id|err
-comma
+suffix:semicolon
+r_int
+r_int
 id|i
 suffix:semicolon
 r_int
