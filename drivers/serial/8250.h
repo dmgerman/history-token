@@ -156,6 +156,10 @@ macro_line|#if defined(__alpha__) &amp;&amp; !defined(CONFIG_PCI)
 multiline_comment|/*&n; * Digital did something really horribly wrong with the OUT1 and OUT2&n; * lines on at least some ALPHA&squot;s.  The failure mode is that if either&n; * is cleared, the machine locks up with endless interrupts.&n; */
 DECL|macro|ALPHA_KLUDGE_MCR
 mdefine_line|#define ALPHA_KLUDGE_MCR  (UART_MCR_OUT2 | UART_MCR_OUT1)
+macro_line|#elif defined(CONFIG_SBC8560)
+multiline_comment|/*&n; * WindRiver did something similarly broken on their SBC8560 board. The&n; * UART tristates its IRQ output while OUT2 is clear, but they pulled&n; * the interrupt line _up_ instead of down, so if we register the IRQ&n; * while the UART is in that state, we die in an IRQ storm. */
+DECL|macro|ALPHA_KLUDGE_MCR
+mdefine_line|#define ALPHA_KLUDGE_MCR (UART_MCR_OUT2)
 macro_line|#else
 DECL|macro|ALPHA_KLUDGE_MCR
 mdefine_line|#define ALPHA_KLUDGE_MCR 0
