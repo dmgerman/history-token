@@ -608,6 +608,8 @@ DECL|macro|MMCR0_PMC2_ITLB
 mdefine_line|#define MMCR0_PMC2_ITLB&t;&t;0x7
 DECL|macro|MMCR0_PMC2_LOADMISSTIME
 mdefine_line|#define MMCR0_PMC2_LOADMISSTIME&t;0x5
+DECL|macro|MMCR0_PMXE
+mdefine_line|#define MMCR0_PMXE&t;(1 &lt;&lt; 26)
 multiline_comment|/* Short-hand versions for a number of the above SPRNs */
 DECL|macro|CTR
 mdefine_line|#define CTR&t;SPRN_CTR&t;/* Counter Register */
