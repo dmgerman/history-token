@@ -85,7 +85,7 @@ r_else
 r_switch
 c_cond
 (paren
-id|cmd-&gt;data_cmnd
+id|cmd-&gt;cmnd
 (braket
 l_int|0
 )braket
