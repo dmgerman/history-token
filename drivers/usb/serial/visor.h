@@ -6,6 +6,8 @@ DECL|macro|HANDSPRING_VENDOR_ID
 mdefine_line|#define HANDSPRING_VENDOR_ID&t;&t;0x082d
 DECL|macro|HANDSPRING_VISOR_ID
 mdefine_line|#define HANDSPRING_VISOR_ID&t;&t;0x0100
+DECL|macro|HANDSPRING_TREO_ID
+mdefine_line|#define HANDSPRING_TREO_ID&t;&t;0x0200
 DECL|macro|PALM_VENDOR_ID
 mdefine_line|#define PALM_VENDOR_ID&t;&t;&t;0x0830
 DECL|macro|PALM_M500_ID
