@@ -1,4 +1,4 @@
-multiline_comment|/** -*- linux-c -*- ***********************************************************&n; * Linux PPP over X/Ethernet (PPPoX/PPPoE) Sockets&n; *&n; * PPPoX --- Generic PPP encapsulation socket family&n; * PPPoE --- PPP over Ethernet (RFC 2516)&n; *&n; *&n; * Version:&t;0.5.1&n; *&n; * Author:&t;Michal Ostrowski &lt;mostrows@styx.uwaterloo.ca&gt;&n; *&n; * 051000 :&t;Initialization cleanup&n; *&n; * License:&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; */
+multiline_comment|/** -*- linux-c -*- ***********************************************************&n; * Linux PPP over X/Ethernet (PPPoX/PPPoE) Sockets&n; *&n; * PPPoX --- Generic PPP encapsulation socket family&n; * PPPoE --- PPP over Ethernet (RFC 2516)&n; *&n; *&n; * Version:&t;0.5.2&n; *&n; * Author:&t;Michal Ostrowski &lt;mostrows@speakeasy.net&gt;&n; *&n; * 051000 :&t;Initialization cleanup&n; *&n; * License:&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -126,7 +126,11 @@ c_cond
 (paren
 id|sk-&gt;state
 op_amp
+(paren
 id|PPPOX_BOUND
+op_or
+id|PPPOX_ZOMBIE
+)paren
 )paren
 (brace
 id|ppp_unregister_channel
@@ -143,9 +147,8 @@ id|chan
 )paren
 suffix:semicolon
 id|sk-&gt;state
-op_and_assign
-op_complement
-id|PPPOX_BOUND
+op_assign
+id|PPPOX_DEAD
 suffix:semicolon
 )brace
 )brace
