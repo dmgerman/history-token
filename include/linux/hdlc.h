@@ -284,9 +284,9 @@ id|open
 )paren
 (paren
 r_struct
-id|hdlc_device_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 DECL|member|close
@@ -297,9 +297,9 @@ id|close
 )paren
 (paren
 r_struct
-id|hdlc_device_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* if open &amp; DCD */
@@ -311,9 +311,9 @@ id|start
 )paren
 (paren
 r_struct
-id|hdlc_device_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* if open &amp; !DCD */
@@ -325,9 +325,9 @@ id|stop
 )paren
 (paren
 r_struct
-id|hdlc_device_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 DECL|member|detach

@@ -258,7 +258,7 @@ dot
 id|start
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 r_else
@@ -292,7 +292,7 @@ dot
 id|stop
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 r_else
@@ -384,7 +384,7 @@ dot
 id|open
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -419,7 +419,7 @@ dot
 id|start
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 r_else
@@ -529,7 +529,7 @@ dot
 id|stop
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -549,7 +549,7 @@ dot
 id|close
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 )brace
