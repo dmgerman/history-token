@@ -1095,7 +1095,7 @@ l_int|0
 suffix:semicolon
 id|buf-&gt;f_namelen
 op_assign
-l_int|255
+id|CRAMFS_MAXPATHLEN
 suffix:semicolon
 r_return
 l_int|0
