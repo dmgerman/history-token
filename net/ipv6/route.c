@@ -753,14 +753,12 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;pointer to the last default router chosen. BH is disabled locally.&n; */
 DECL|variable|rt6_dflt_pointer
-r_static
 r_struct
 id|rt6_info
 op_star
 id|rt6_dflt_pointer
 suffix:semicolon
 DECL|variable|rt6_dflt_lock
-r_static
 id|spinlock_t
 id|rt6_dflt_lock
 op_assign
@@ -846,7 +844,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sprt-&gt;rt6i_expires
+(paren
+id|sprt-&gt;rt6i_flags
+op_amp
+id|RTF_EXPIRES
+)paren
 op_logical_and
 id|time_after
 c_func
@@ -5156,6 +5158,8 @@ op_or
 id|RTF_DEFAULT
 op_or
 id|RTF_UP
+op_or
+id|RTF_EXPIRES
 suffix:semicolon
 id|rtmsg.rtmsg_ifindex
 op_assign
