@@ -196,13 +196,11 @@ DECL|variable|irq_err_count
 id|atomic_t
 id|irq_err_count
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_IO_APIC
-macro_line|#ifdef APIC_MISMATCH_DEBUG
+macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(APIC_MISMATCH_DEBUG)
 DECL|variable|irq_mis_count
 id|atomic_t
 id|irq_mis_count
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Generic, controller-independent functions:&n; */
 DECL|function|show_interrupts
@@ -616,8 +614,7 @@ id|irq_err_count
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_IO_APIC
-macro_line|#ifdef APIC_MISMATCH_DEBUG
+macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(APIC_MISMATCH_DEBUG)
 id|seq_printf
 c_func
 (paren
@@ -633,7 +630,6 @@ id|irq_mis_count
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 )brace
 r_return
