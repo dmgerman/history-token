@@ -3579,6 +3579,17 @@ DECL|macro|JOURNAL_MAX_TRANS_AGE
 mdefine_line|#define JOURNAL_MAX_TRANS_AGE 30
 DECL|macro|JOURNAL_PER_BALANCE_CNT
 mdefine_line|#define JOURNAL_PER_BALANCE_CNT (3 * (MAX_HEIGHT-2) + 9)
+macro_line|#ifdef CONFIG_QUOTA
+DECL|macro|REISERFS_QUOTA_TRANS_BLOCKS
+mdefine_line|#define REISERFS_QUOTA_TRANS_BLOCKS 2&t;/* We need to update data and inode (atime) */
+DECL|macro|REISERFS_QUOTA_INIT_BLOCKS
+mdefine_line|#define REISERFS_QUOTA_INIT_BLOCKS (DQUOT_MAX_WRITES*(JOURNAL_PER_BALANCE_CNT+2)+1)&t;/* 1 balancing, 1 bitmap, 1 data per write + stat data update */
+macro_line|#else
+DECL|macro|REISERFS_QUOTA_TRANS_BLOCKS
+mdefine_line|#define REISERFS_QUOTA_TRANS_BLOCKS 0
+DECL|macro|REISERFS_QUOTA_INIT_BLOCKS
+mdefine_line|#define REISERFS_QUOTA_INIT_BLOCKS 0
+macro_line|#endif
 multiline_comment|/* both of these can be as low as 1, or as high as you want.  The min is the&n;** number of 4k bitmap nodes preallocated on mount. New nodes are allocated&n;** as needed, and released when transactions are committed.  On release, if &n;** the current number of nodes is &gt; max, the node is freed, otherwise, &n;** it is put on a free list for faster use later.&n;*/
 DECL|macro|REISERFS_MIN_BITMAP_NODES
 mdefine_line|#define REISERFS_MIN_BITMAP_NODES 10 
@@ -4995,6 +5006,19 @@ id|length
 )paren
 suffix:semicolon
 multiline_comment|/* inode.c */
+multiline_comment|/* args for the create parameter of reiserfs_get_block */
+DECL|macro|GET_BLOCK_NO_CREATE
+mdefine_line|#define GET_BLOCK_NO_CREATE 0 /* don&squot;t create new blocks or convert tails */
+DECL|macro|GET_BLOCK_CREATE
+mdefine_line|#define GET_BLOCK_CREATE 1    /* add anything you need to find block */
+DECL|macro|GET_BLOCK_NO_HOLE
+mdefine_line|#define GET_BLOCK_NO_HOLE 2   /* return -ENOENT for file holes */
+DECL|macro|GET_BLOCK_READ_DIRECT
+mdefine_line|#define GET_BLOCK_READ_DIRECT 4  /* read the tail if indirect item not found */
+DECL|macro|GET_BLOCK_NO_ISEM
+mdefine_line|#define GET_BLOCK_NO_ISEM     8 /* i_sem is not held, don&squot;t preallocate */
+DECL|macro|GET_BLOCK_NO_DANGLE
+mdefine_line|#define GET_BLOCK_NO_DANGLE   16 /* don&squot;t leave any transactions running */
 r_int
 id|restart_transaction
 c_func
@@ -5076,6 +5100,26 @@ op_star
 id|inode
 comma
 r_int
+)paren
+suffix:semicolon
+r_int
+id|reiserfs_get_block
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+id|sector_t
+id|block
+comma
+r_struct
+id|buffer_head
+op_star
+id|bh_result
+comma
+r_int
+id|create
 )paren
 suffix:semicolon
 r_struct
