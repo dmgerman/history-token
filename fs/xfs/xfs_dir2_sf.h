@@ -100,7 +100,7 @@ suffix:semicolon
 )brace
 id|xfs_dir2_sf_off_t
 suffix:semicolon
-multiline_comment|/*&n; * The parent directory has a dedicated field, and the self-pointer must&n; * be calculated on the fly.&n; *&n; * Entries are packed toward the top as tightly as possible.  The header&n; * and the elements must be bcopy()&squot;d out into a work area to get correct&n; * alignment for the inode number fields.&n; */
+multiline_comment|/*&n; * The parent directory has a dedicated field, and the self-pointer must&n; * be calculated on the fly.&n; *&n; * Entries are packed toward the top as tightly as possible.  The header&n; * and the elements must be memcpy&squot;d out into a work area to get correct&n; * alignment for the inode number fields.&n; */
 DECL|struct|xfs_dir2_sf_hdr
 r_typedef
 r_struct

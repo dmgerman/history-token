@@ -263,6 +263,26 @@ id|dm_fcntl_vector
 op_star
 )paren
 suffix:semicolon
+DECL|member|vfs_init_vnode
+r_void
+(paren
+op_star
+id|vfs_init_vnode
+)paren
+(paren
+id|bhv_desc_t
+op_star
+comma
+r_struct
+id|vnode
+op_star
+comma
+id|bhv_desc_t
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 DECL|member|vfs_force_shutdown
 r_void
 (paren
@@ -297,6 +317,8 @@ DECL|macro|VFS_SYNC
 mdefine_line|#define VFS_SYNC(vfsp, flag, cr, rv) &bslash;&n;{&t;&bslash;&n;&t;BHV_READ_LOCK(&amp;(vfsp)-&gt;vfs_bh); &bslash;&n;&t;rv = (*(VFS_FOPS(vfsp)-&gt;vfs_sync))((vfsp)-&gt;vfs_fbhv, flag, cr); &bslash;&n;&t;BHV_READ_UNLOCK(&amp;(vfsp)-&gt;vfs_bh); &bslash;&n;}
 DECL|macro|VFS_VGET
 mdefine_line|#define VFS_VGET(vfsp, vpp, fidp, rv) &bslash;&n;{&t;&bslash;&n;&t;BHV_READ_LOCK(&amp;(vfsp)-&gt;vfs_bh); &bslash;&n;&t;rv = (*(VFS_FOPS(vfsp)-&gt;vfs_vget))((vfsp)-&gt;vfs_fbhv, vpp, fidp);  &bslash;&n;&t;BHV_READ_UNLOCK(&amp;(vfsp)-&gt;vfs_bh); &bslash;&n;}
+DECL|macro|VFS_INIT_VNODE
+mdefine_line|#define VFS_INIT_VNODE(vfsp, vp, bhv, unlock) &bslash;&n;{&t;&bslash;&n;&t;BHV_READ_LOCK(&amp;(vfsp)-&gt;vfs_bh); &bslash;&n;&t;(*(VFS_FOPS(vfsp)-&gt;vfs_init_vnode))((vfsp)-&gt;vfs_fbhv, vp, bhv, unlock);&bslash;&n;&t;BHV_READ_UNLOCK(&amp;(vfsp)-&gt;vfs_bh); &bslash;&n;}
 multiline_comment|/* No behavior lock here */
 DECL|macro|VFS_FORCE_SHUTDOWN
 mdefine_line|#define VFS_FORCE_SHUTDOWN(vfsp, flags) &bslash;&n;&t;(*(VFS_FOPS(vfsp)-&gt;vfs_force_shutdown))((vfsp)-&gt;vfs_fbhv, flags, __FILE__, __LINE__);

@@ -830,26 +830,22 @@ macro_line|# define XFS_STATS_DEC(count)
 DECL|macro|XFS_STATS_ADD
 macro_line|# define XFS_STATS_ADD(count, inc)
 macro_line|#endif&t;/* !CONFIG_PROC_FS */
-multiline_comment|/* juggle IRIX device numbers - still used in ondisk structures */
-macro_line|#ifndef __KERNEL__
-DECL|macro|MKDEV
-mdefine_line|#define MKDEV(major, minor)&t;makedev(major, minor)
-macro_line|#endif
-DECL|macro|IRIX_DEV_BITSMAJOR
-mdefine_line|#define IRIX_DEV_BITSMAJOR&t;14
-DECL|macro|IRIX_DEV_BITSMINOR
-mdefine_line|#define IRIX_DEV_BITSMINOR&t;18
-DECL|macro|IRIX_DEV_MAXMAJ
-mdefine_line|#define IRIX_DEV_MAXMAJ&t;&t;0x1ff
-DECL|macro|IRIX_DEV_MAXMIN
-mdefine_line|#define IRIX_DEV_MAXMIN&t;&t;0x3ffff
-DECL|macro|IRIX_DEV_MAJOR
-mdefine_line|#define IRIX_DEV_MAJOR(dev)&t;((int)(((unsigned)(dev)&gt;&gt;IRIX_DEV_BITSMINOR) &bslash;&n;&t;&t;&t;&t;    &amp; IRIX_DEV_MAXMAJ))
-DECL|macro|IRIX_DEV_MINOR
-mdefine_line|#define IRIX_DEV_MINOR(dev)&t;((int)((dev)&amp;IRIX_DEV_MAXMIN))
-DECL|macro|IRIX_MKDEV
-mdefine_line|#define IRIX_MKDEV(major,minor) ((xfs_dev_t)(((major)&lt;&lt;IRIX_DEV_BITSMINOR) &bslash;&n;&t;&t;&t;&t;    | (minor&amp;IRIX_DEV_MAXMIN)))
-DECL|macro|IRIX_DEV_TO_KDEVT
-mdefine_line|#define IRIX_DEV_TO_KDEVT(dev)&t;MKDEV(IRIX_DEV_MAJOR(dev),IRIX_DEV_MINOR(dev))
+multiline_comment|/*&n; * Juggle IRIX device numbers - still used in ondisk structures&n; */
+DECL|macro|XFS_DEV_BITSMAJOR
+mdefine_line|#define XFS_DEV_BITSMAJOR&t;14
+DECL|macro|XFS_DEV_BITSMINOR
+mdefine_line|#define XFS_DEV_BITSMINOR&t;18
+DECL|macro|XFS_DEV_MAXMAJ
+mdefine_line|#define XFS_DEV_MAXMAJ&t;&t;0x1ff
+DECL|macro|XFS_DEV_MAXMIN
+mdefine_line|#define XFS_DEV_MAXMIN&t;&t;0x3ffff
+DECL|macro|XFS_DEV_MAJOR
+mdefine_line|#define XFS_DEV_MAJOR(dev)&t;((int)(((unsigned)(dev)&gt;&gt;XFS_DEV_BITSMINOR) &bslash;&n;&t;&t;&t;&t;    &amp; XFS_DEV_MAXMAJ))
+DECL|macro|XFS_DEV_MINOR
+mdefine_line|#define XFS_DEV_MINOR(dev)&t;((int)((dev)&amp;XFS_DEV_MAXMIN))
+DECL|macro|XFS_MKDEV
+mdefine_line|#define XFS_MKDEV(major,minor) ((xfs_dev_t)(((major)&lt;&lt;XFS_DEV_BITSMINOR) &bslash;&n;&t;&t;&t;&t;    | (minor&amp;XFS_DEV_MAXMIN)))
+DECL|macro|XFS_DEV_TO_KDEVT
+mdefine_line|#define XFS_DEV_TO_KDEVT(dev)&t;mk_kdev(XFS_DEV_MAJOR(dev),XFS_DEV_MINOR(dev))
 macro_line|#endif&t;/* !__XFS_TYPES_H */
 eof

@@ -10,10 +10,6 @@ suffix:semicolon
 multiline_comment|/* set to cause more panics */
 r_extern
 r_int
-id|restricted_chown
-suffix:semicolon
-r_extern
-r_int
 r_int
 id|xfs_physmem
 suffix:semicolon

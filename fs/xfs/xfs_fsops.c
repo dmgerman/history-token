@@ -564,7 +564,7 @@ comma
 id|KM_SLEEP
 )paren
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 op_amp
@@ -572,6 +572,8 @@ id|mp-&gt;m_perag
 (braket
 id|oagcount
 )braket
+comma
+l_int|0
 comma
 (paren
 id|nagcount
@@ -732,10 +734,12 @@ c_func
 id|bp
 )paren
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 id|agf
+comma
+l_int|0
 comma
 id|mp-&gt;m_sb.sb_sectsize
 )paren
@@ -980,10 +984,12 @@ c_func
 id|bp
 )paren
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 id|agi
+comma
+l_int|0
 comma
 id|mp-&gt;m_sb.sb_sectsize
 )paren
@@ -1178,10 +1184,12 @@ c_func
 id|bp
 )paren
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 id|block
+comma
+l_int|0
 comma
 id|bsize
 )paren
@@ -1348,10 +1356,12 @@ c_func
 id|bp
 )paren
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 id|block
+comma
+l_int|0
 comma
 id|bsize
 )paren
@@ -1528,10 +1538,12 @@ c_func
 id|bp
 )paren
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 id|block
+comma
+l_int|0
 comma
 id|bsize
 )paren
@@ -1990,7 +2002,7 @@ id|CE_WARN
 comma
 id|mp
 comma
-l_string|&quot;error %d reading secondary superblock for ag %d&bslash;n&quot;
+l_string|&quot;error %d reading secondary superblock for ag %d&quot;
 comma
 id|error
 comma
@@ -2054,7 +2066,7 @@ id|CE_WARN
 comma
 id|mp
 comma
-l_string|&quot;write error %d updating secondary superblock for ag %d&bslash;n&quot;
+l_string|&quot;write error %d updating secondary superblock for ag %d&quot;
 comma
 id|error
 comma

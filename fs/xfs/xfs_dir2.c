@@ -544,7 +544,7 @@ r_int
 id|error
 suffix:semicolon
 multiline_comment|/* error return value */
-id|bzero
+id|memset
 c_func
 (paren
 (paren
@@ -553,6 +553,8 @@ op_star
 )paren
 op_amp
 id|args
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -3066,12 +3068,12 @@ id|pa-&gt;done
 op_assign
 l_int|1
 suffix:semicolon
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|pa-&gt;name
-comma
 id|idbp-&gt;d_name
+comma
+id|pa-&gt;name
 comma
 id|namelen
 )paren
@@ -3172,12 +3174,12 @@ id|namelen
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|pa-&gt;name
-comma
 id|idbp-&gt;d_name
+comma
+id|pa-&gt;name
 comma
 id|namelen
 )paren
