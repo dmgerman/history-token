@@ -106,7 +106,7 @@ DECL|macro|LM80_REG_RES
 mdefine_line|#define LM80_REG_RES&t;&t;&t;0x06
 multiline_comment|/* Conversions. Rounding and limit checking is only done on the TO_REG&n;   variants. Note that you should be a bit careful with which arguments&n;   these macros are called: arguments may be evaluated more than once.&n;   Fixing this is just not worth it. */
 DECL|macro|IN_TO_REG
-mdefine_line|#define IN_TO_REG(val)&t;&t;(SENSORS_LIMIT((val)/10,0,255))
+mdefine_line|#define IN_TO_REG(val)&t;&t;(SENSORS_LIMIT(((val)+5)/10,0,255))
 DECL|macro|IN_FROM_REG
 mdefine_line|#define IN_FROM_REG(val)&t;((val)*10)
 DECL|function|FAN_TO_REG
