@@ -5532,6 +5532,21 @@ id|put
 op_assign
 id|snd_ac97_alc650_mic_put
 comma
+dot
+id|private_value
+op_assign
+id|AC97_SINGLE_VALUE
+c_func
+(paren
+l_int|0
+comma
+l_int|0
+comma
+l_int|1
+comma
+l_int|0
+)paren
+multiline_comment|/* only mask needed */
 )brace
 comma
 )brace
@@ -6046,6 +6061,21 @@ id|put
 op_assign
 id|snd_ac97_alc655_mic_put
 comma
+dot
+id|private_value
+op_assign
+id|AC97_SINGLE_VALUE
+c_func
+(paren
+l_int|0
+comma
+l_int|0
+comma
+l_int|1
+comma
+l_int|0
+)paren
+multiline_comment|/* only mask needed */
 )brace
 comma
 )brace
