@@ -824,7 +824,7 @@ op_eq
 id|ACL_LINK
 )paren
 id|h-&gt;acl_num
-op_increment
+op_decrement
 suffix:semicolon
 r_else
 id|h-&gt;sco_num
