@@ -1665,6 +1665,15 @@ id|nents
 op_assign
 l_int|0
 suffix:semicolon
+id|sg
+(braket
+l_int|0
+)braket
+dot
+id|dma_length
+op_assign
+l_int|0
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -1672,6 +1681,10 @@ suffix:semicolon
 id|s-&gt;dma_address
 op_assign
 id|addr
+suffix:semicolon
+id|s-&gt;dma_length
+op_assign
+id|s-&gt;length
 suffix:semicolon
 )brace
 id|flush_gart
@@ -1817,10 +1830,14 @@ id|PAGE_SIZE
 op_plus
 id|s-&gt;offset
 suffix:semicolon
+id|sout-&gt;dma_length
+op_assign
+id|s-&gt;length
+suffix:semicolon
 )brace
 r_else
 (brace
-id|sout-&gt;length
+id|sout-&gt;dma_length
 op_add_assign
 id|s-&gt;length
 suffix:semicolon
@@ -1942,6 +1959,15 @@ id|sg
 id|start
 )braket
 suffix:semicolon
+id|sout-&gt;dma_length
+op_assign
+id|sg
+(braket
+id|start
+)braket
+dot
+id|length
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2006,12 +2032,6 @@ op_assign
 l_int|0
 comma
 id|nextneed
-suffix:semicolon
-r_int
-r_int
-id|size
-op_assign
-l_int|0
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -2087,10 +2107,6 @@ id|s-&gt;length
 op_eq
 l_int|0
 )paren
-suffix:semicolon
-id|size
-op_add_assign
-id|s-&gt;length
 suffix:semicolon
 id|nextneed
 op_assign
@@ -2251,7 +2267,7 @@ id|sg
 id|out
 )braket
 dot
-id|length
+id|dma_length
 op_assign
 l_int|0
 suffix:semicolon
@@ -2509,6 +2525,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|s-&gt;dma_length
+op_logical_or
+op_logical_neg
 id|s-&gt;length
 )paren
 r_break
@@ -2520,7 +2539,7 @@ id|dev
 comma
 id|s-&gt;dma_address
 comma
-id|s-&gt;length
+id|s-&gt;dma_length
 comma
 id|dir
 )paren
@@ -3575,7 +3594,7 @@ c_func
 id|pci_iommu_init
 )paren
 suffix:semicolon
-multiline_comment|/* iommu=[size][,noagp][,off][,force][,noforce][,leak][,memaper[=order]][,merge]&n;         [,forcesac][,fullflush][,nomerge]&n;   size  set size of iommu (in bytes) &n;   noagp don&squot;t initialize the AGP driver and use full aperture.&n;   off   don&squot;t use the IOMMU&n;   leak  turn on simple iommu leak tracing (only when CONFIG_IOMMU_LEAK is on)&n;   memaper[=order] allocate an own aperture over RAM with size 32MB^order.  &n;   noforce don&squot;t force IOMMU usage. Default.&n;   force  Force IOMMU.&n;   merge  Do SG merging. Implies force (experimental)  &n;   nomerge Don&squot;t do SG merging.&n;   forcesac For SAC mode for masks &lt;40bits  (experimental)&n;   fullflush Flush IOMMU on each allocation (for testing)&n;*/
+multiline_comment|/* iommu=[size][,noagp][,off][,force][,noforce][,leak][,memaper[=order]][,merge]&n;         [,forcesac][,fullflush][,nomerge]&n;   size  set size of iommu (in bytes) &n;   noagp don&squot;t initialize the AGP driver and use full aperture.&n;   off   don&squot;t use the IOMMU&n;   leak  turn on simple iommu leak tracing (only when CONFIG_IOMMU_LEAK is on)&n;   memaper[=order] allocate an own aperture over RAM with size 32MB^order.  &n;   noforce don&squot;t force IOMMU usage. Default.&n;   force  Force IOMMU.&n;   merge  Do SG merging. Implies force (experimental)  &n;   nomerge Don&squot;t do SG merging.&n;   forcesac For SAC mode for masks &lt;40bits  (experimental)&n;   fullflush Flush IOMMU on each allocation (default) &n;   nofullflush Don&squot;t use IOMMU fullflush&n;*/
 DECL|function|iommu_setup
 id|__init
 r_int
@@ -3840,6 +3859,24 @@ l_int|9
 id|iommu_fullflush
 op_assign
 l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|p
+comma
+l_string|&quot;nofullflush&quot;
+comma
+l_int|11
+)paren
+)paren
+id|iommu_fullflush
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_IOMMU_LEAK
 r_if

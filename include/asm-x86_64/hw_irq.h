@@ -208,12 +208,6 @@ r_extern
 id|atomic_t
 id|irq_mis_count
 suffix:semicolon
-r_extern
-r_char
-id|_stext
-comma
-id|_etext
-suffix:semicolon
 DECL|macro|IO_APIC_IRQ
 mdefine_line|#define IO_APIC_IRQ(x) (((x) &gt;= 16) || ((1&lt;&lt;(x)) &amp; io_apic_irqs))
 DECL|macro|__STR

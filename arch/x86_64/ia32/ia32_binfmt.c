@@ -339,6 +339,9 @@ op_star
 id|t-&gt;thread.rsp0
 )paren
 suffix:semicolon
+op_decrement
+id|pp
+suffix:semicolon
 id|ELF_CORE_COPY_REGS
 c_func
 (paren
@@ -444,6 +447,21 @@ id|tsk-&gt;used_math
 )paren
 r_return
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|regs
+)paren
+id|regs
+op_assign
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+id|tsk-&gt;thread.rsp0
 suffix:semicolon
 op_decrement
 id|regs
@@ -593,7 +611,7 @@ mdefine_line|#define ELF_HWCAP (boot_cpu_data.x86_capability[0])
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM  (&quot;i686&quot;)
 DECL|macro|SET_PERSONALITY
-mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_personality((ibcs2)?PER_SVR4:current-&gt;personality);&t;&bslash;&n;} while (0)
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long new_flags = 0;&t;&t;&t;&t;&bslash;&n;&t;if ((ex).e_ident[EI_CLASS] == ELFCLASS32)&t;&t;&bslash;&n;&t;&t;new_flags = _TIF_IA32;&t;&t;&t;&t;&bslash;&n;&t;if ((current_thread_info()-&gt;flags &amp; _TIF_IA32)&t;&t;&bslash;&n;&t;    != new_flags)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_thread_flag(TIF_ABI_PENDING);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;clear_thread_flag(TIF_ABI_PENDING);&t;&t;&bslash;&n;&t;set_personality((ibcs2)?PER_SVR4:current-&gt;personality);&t;&bslash;&n;} while (0)
 multiline_comment|/* Override some function names */
 DECL|macro|elf_format
 mdefine_line|#define elf_format&t;&t;&t;elf32_format
@@ -753,12 +771,6 @@ suffix:semicolon
 id|me-&gt;thread.es
 op_assign
 id|__USER_DS
-suffix:semicolon
-id|set_thread_flag
-c_func
-(paren
-id|TIF_IA32
-)paren
 suffix:semicolon
 )brace
 DECL|function|setup_arg_pages
@@ -1115,8 +1127,6 @@ comma
 id|prot
 comma
 id|type
-op_or
-id|MAP_32BIT
 comma
 id|eppnt-&gt;p_offset
 op_minus

@@ -610,6 +610,10 @@ id|d.p
 op_assign
 l_int|1
 suffix:semicolon
+id|d.g
+op_assign
+l_int|1
+suffix:semicolon
 id|d.limit1
 op_assign
 (paren

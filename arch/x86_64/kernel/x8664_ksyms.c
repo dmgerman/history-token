@@ -548,8 +548,6 @@ DECL|macro|strchr
 macro_line|#undef strchr&t;
 DECL|macro|strcmp
 macro_line|#undef strcmp 
-DECL|macro|bcopy
-macro_line|#undef bcopy
 DECL|macro|strcpy
 macro_line|#undef strcpy 
 DECL|macro|strcat
@@ -576,24 +574,6 @@ c_func
 r_const
 r_char
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|bcopy
-c_func
-(paren
-r_const
-r_char
-op_star
-id|src
-comma
-r_char
-op_star
-id|dest
-comma
-r_int
-id|count
 )paren
 suffix:semicolon
 r_extern
@@ -807,13 +787,6 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|memscan
-)paren
-suffix:semicolon
-DECL|variable|bcopy
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|bcopy
 )paren
 suffix:semicolon
 DECL|variable|memcpy

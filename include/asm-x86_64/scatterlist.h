@@ -25,6 +25,11 @@ DECL|member|dma_address
 id|dma_addr_t
 id|dma_address
 suffix:semicolon
+DECL|member|dma_length
+r_int
+r_int
+id|dma_length
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|ISA_DMA_THRESHOLD
@@ -33,6 +38,6 @@ multiline_comment|/* These macros should be used after a pci_map_sg call has bee
 DECL|macro|sg_dma_address
 mdefine_line|#define sg_dma_address(sg)     ((sg)-&gt;dma_address)
 DECL|macro|sg_dma_len
-mdefine_line|#define sg_dma_len(sg)         ((sg)-&gt;length)
+mdefine_line|#define sg_dma_len(sg)         ((sg)-&gt;dma_length)
 macro_line|#endif 
 eof

@@ -308,16 +308,31 @@ suffix:semicolon
 multiline_comment|/* POSIX.1b timers */
 r_struct
 (brace
-DECL|member|_timer1
+DECL|member|_tid
 r_int
-r_int
-id|_timer1
+id|_tid
 suffix:semicolon
-DECL|member|_timer2
+multiline_comment|/* timer id */
+DECL|member|_overrun
 r_int
-r_int
-id|_timer2
+id|_overrun
 suffix:semicolon
+multiline_comment|/* overrun count */
+DECL|member|_sigval
+id|sigval_t32
+id|_sigval
+suffix:semicolon
+multiline_comment|/* same as below */
+DECL|member|_sys_private
+r_int
+id|_sys_private
+suffix:semicolon
+multiline_comment|/* not to be passed to user */
+DECL|member|_overrun_incr
+r_int
+id|_overrun_incr
+suffix:semicolon
+multiline_comment|/* amount to add to overrun */
 DECL|member|_timer
 )brace
 id|_timer
@@ -519,6 +534,9 @@ macro_line|#ifdef __KERNEL__
 r_struct
 id|user_desc
 suffix:semicolon
+r_struct
+id|siginfo_t
+suffix:semicolon
 r_int
 id|do_get_thread_area
 c_func
@@ -562,6 +580,34 @@ r_struct
 id|pt_regs
 op_star
 id|childregs
+)paren
+suffix:semicolon
+r_int
+id|ia32_copy_siginfo_from_user
+c_func
+(paren
+id|siginfo_t
+op_star
+id|to
+comma
+id|siginfo_t32
+id|__user
+op_star
+id|from
+)paren
+suffix:semicolon
+r_int
+id|ia32_copy_siginfo_to_user
+c_func
+(paren
+id|siginfo_t32
+id|__user
+op_star
+id|to
+comma
+id|siginfo_t
+op_star
+id|from
 )paren
 suffix:semicolon
 macro_line|#endif
