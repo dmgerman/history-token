@@ -49,7 +49,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1224 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1247 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 DECL|struct|fragment_info
 r_struct
@@ -306,7 +306,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* The max_partial_datagrams parameter is the maximum number of fragmented&n; * datagrams per node that eth1394 will keep in memory.  Providing an upper&n; * bound allows us to limit the amount of memory that partial datagrams&n; * consume in the event that some partial datagrams are never completed.  This&n; * should probably change to a sysctl item or the like if possible.&n; */
+multiline_comment|/* The max_partial_datagrams parameter is the maximum number of fragmented&n; * datagrams per node that eth1394 will keep in memory.  Providing an upper&n; * bound allows us to limit the amount of memory that partial datagrams&n; * consume in the event that some partial datagrams are never completed.&n; */
 DECL|variable|max_partial_datagrams
 r_static
 r_int
@@ -446,7 +446,6 @@ id|p
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|purge_partial_datagram
 c_func
@@ -946,7 +945,6 @@ suffix:semicolon
 )brace
 DECL|function|purge_partial_datagram
 r_static
-r_inline
 r_void
 id|purge_partial_datagram
 c_func
@@ -2429,7 +2427,7 @@ suffix:semicolon
 )brace
 id|ETH1394_PRINT
 (paren
-id|KERN_ERR
+id|KERN_INFO
 comma
 id|dev-&gt;name
 comma
@@ -4978,11 +4976,11 @@ op_eq
 l_int|NULL
 )paren
 (brace
-r_if
-c_cond
+r_while
+c_loop
 (paren
 id|pdg-&gt;sz
-op_eq
+op_ge
 id|max_partial_datagrams
 )paren
 (brace
@@ -7627,7 +7625,7 @@ id|strcpy
 (paren
 id|info-&gt;version
 comma
-l_string|&quot;$Rev: 1224 $&quot;
+l_string|&quot;$Rev: 1247 $&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME XXX provide sane businfo */

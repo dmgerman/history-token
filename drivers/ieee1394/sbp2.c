@@ -24,7 +24,10 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
-macro_line|#include &quot;../scsi/scsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_dbg.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;csr1212.h&quot;
 macro_line|#include &quot;ieee1394.h&quot;
@@ -325,7 +328,8 @@ comma
 id|u32
 id|scsi_status
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -335,17 +339,20 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
 suffix:semicolon
 DECL|variable|scsi_driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|scsi_driver_template
 suffix:semicolon
 DECL|variable|sbp2_speedto_max_payload
+r_static
 r_const
 id|u8
 id|sbp2_speedto_max_payload
@@ -919,6 +926,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This is much like hpsb_node_write(), except it ignores the response&n; * subaction and returns immediately. Can be used from interrupts.&n; */
 DECL|function|sbp2util_node_write_no_wait
+r_static
 r_int
 id|sbp2util_node_write_no_wait
 c_func
@@ -1591,7 +1599,8 @@ id|scsi_id_instance_data
 op_star
 id|scsi_id
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|Current_SCpnt
 comma
@@ -1601,7 +1610,8 @@ op_star
 id|Current_done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -3055,18 +3065,39 @@ id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* Schedule a timeout here. The reason is that we may be so close&n;&t; * to a bus reset, that the device is not available for logins.&n;&t; * This can happen when the bus reset is caused by the host&n;&t; * connected to the sbp2 device being removed. That host would&n;&t; * have a certain amount of time to relogin before the sbp2 device&n;&t; * allows someone else to login instead. One second makes sense. */
-id|set_current_state
+id|msleep_interruptible
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
+l_int|1000
 )paren
 suffix:semicolon
-id|schedule_timeout
+r_if
+c_cond
+(paren
+id|signal_pending
 c_func
 (paren
-id|HZ
+id|current
+)paren
+)paren
+(brace
+id|SBP2_WARN
+c_func
+(paren
+l_string|&quot;aborting sbp2_start_device due to event&quot;
 )paren
 suffix:semicolon
+id|sbp2_remove_device
+c_func
+(paren
+id|scsi_id
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINTR
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Login to the sbp-2 device&n;&t; */
 r_if
 c_cond
@@ -5259,10 +5290,19 @@ id|management_agent_addr
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|kv-&gt;key.type
+op_eq
+id|CSR1212_KV_TYPE_IMMEDIATE
+)paren
+(brace
 id|scsi_id-&gt;sbp2_device_type_and_lun
 op_assign
 id|kv-&gt;value.immediate
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -5552,6 +5592,17 @@ id|scsi_id-&gt;workarounds
 op_assign
 id|workarounds
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ud-&gt;flags
+op_amp
+id|UNIT_DIRECTORY_HAS_LUN
+)paren
+id|scsi_id-&gt;sbp2_device_type_and_lun
+op_assign
+id|ud-&gt;lun
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * This function is called in order to determine the max speed and packet&n; * size we can use in our ORBs. Note, that we (the driver and host) only&n; * initiate the transaction. The SBP-2 device actually transfers the data&n; * (by reading from the DMA area we tell it). This means that the SBP-2&n; * device decides the actual maximum data it can transfer. We just tell it&n; * the speed that it needs to use, and the max_rec the host supports, and&n; * it takes care of the rest.&n; */
@@ -5825,9 +5876,9 @@ r_void
 op_star
 id|scsi_request_buffer
 comma
-r_int
-r_char
-id|scsi_dir
+r_enum
+id|dma_data_direction
+id|dma_dir
 )paren
 (brace
 r_struct
@@ -5867,14 +5918,6 @@ id|command-&gt;scatter_gather_element
 (braket
 l_int|0
 )braket
-suffix:semicolon
-r_int
-id|dma_dir
-op_assign
-id|scsi_to_pci_dma_dir
-(paren
-id|scsi_dir
-)paren
 suffix:semicolon
 id|u32
 id|sg_count
@@ -5931,11 +5974,11 @@ multiline_comment|/*&n;&t; * Get the direction of the transfer. If the direction
 r_switch
 c_cond
 (paren
-id|scsi_dir
+id|dma_dir
 )paren
 (brace
 r_case
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:colon
 id|orb_direction
 op_assign
@@ -5944,7 +5987,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:colon
 id|orb_direction
 op_assign
@@ -5953,7 +5996,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:colon
 id|orb_direction
 op_assign
@@ -5962,7 +6005,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 suffix:colon
 r_default
 suffix:colon
@@ -5974,7 +6017,8 @@ l_string|&quot;Update the SBP2 direction table in sbp2.h if &quot;
 l_string|&quot;necessary for your application&quot;
 )paren
 suffix:semicolon
-id|print_command
+id|__scsi_print_command
+c_func
 (paren
 id|scsi_cmd
 )paren
@@ -6969,7 +7013,8 @@ id|scsi_id_instance_data
 op_star
 id|scsi_id
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -6979,7 +7024,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -7018,9 +7064,10 @@ c_func
 l_string|&quot;[scsi command]&bslash;n   &quot;
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
+c_func
 (paren
-id|cmd
+id|SCpnt
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7806,7 +7853,8 @@ id|scsi_id_instance_data
 op_star
 id|scsi_id
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -8095,7 +8143,8 @@ suffix:semicolon
 id|u32
 id|id
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 op_assign
@@ -8522,8 +8571,10 @@ DECL|function|sbp2scsi_queuecommand
 r_static
 r_int
 id|sbp2scsi_queuecommand
+c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -8533,7 +8584,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -8888,25 +8940,16 @@ c_cond
 id|command-&gt;Current_SCpnt
 )paren
 (brace
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-op_assign
-id|command-&gt;Current_done
-suffix:semicolon
 id|command-&gt;Current_SCpnt-&gt;result
 op_assign
 id|status
 op_lshift
 l_int|16
 suffix:semicolon
-id|done
+id|command
+op_member_access_from_pointer
+id|Current_done
+c_func
 (paren
 id|command-&gt;Current_SCpnt
 )paren
@@ -8931,7 +8974,8 @@ comma
 id|u32
 id|scsi_status
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -8941,7 +8985,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -9050,12 +9095,13 @@ l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Debug stuff&n;&t;&t;&t; */
 macro_line|#if CONFIG_IEEE1394_SBP2_DEBUG &gt;= 1
-id|print_command
+id|scsi_print_command
+c_func
 (paren
-id|SCpnt-&gt;cmnd
+id|SCpnt
 )paren
 suffix:semicolon
-id|print_sense
+id|scsi_print_sense
 c_func
 (paren
 l_string|&quot;bh&quot;
@@ -9081,9 +9127,10 @@ id|DID_NO_CONNECT
 op_lshift
 l_int|16
 suffix:semicolon
-id|print_command
+id|scsi_print_command
+c_func
 (paren
-id|SCpnt-&gt;cmnd
+id|SCpnt
 )paren
 suffix:semicolon
 r_break
@@ -9111,9 +9158,10 @@ id|DID_ERROR
 op_lshift
 l_int|16
 suffix:semicolon
-id|print_command
+id|scsi_print_command
+c_func
 (paren
-id|SCpnt-&gt;cmnd
+id|SCpnt
 )paren
 suffix:semicolon
 r_break
@@ -9276,8 +9324,10 @@ DECL|function|sbp2scsi_abort
 r_static
 r_int
 id|sbp2scsi_abort
+c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -9315,9 +9365,10 @@ c_func
 l_string|&quot;aborting sbp2 command&quot;
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
+c_func
 (paren
-id|SCpnt-&gt;cmnd
+id|SCpnt
 )paren
 suffix:semicolon
 r_if
@@ -9394,25 +9445,16 @@ c_cond
 id|command-&gt;Current_SCpnt
 )paren
 (brace
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-op_assign
-id|command-&gt;Current_done
-suffix:semicolon
 id|command-&gt;Current_SCpnt-&gt;result
 op_assign
 id|DID_ABORT
 op_lshift
 l_int|16
 suffix:semicolon
-id|done
+id|command
+op_member_access_from_pointer
+id|Current_done
+c_func
 (paren
 id|command-&gt;Current_SCpnt
 )paren
@@ -9446,8 +9488,10 @@ DECL|function|sbp2scsi_reset
 r_static
 r_int
 id|sbp2scsi_reset
+c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -9680,7 +9724,8 @@ suffix:semicolon
 multiline_comment|/* SCSI host template */
 DECL|variable|scsi_driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|scsi_driver_template
 op_assign
 (brace

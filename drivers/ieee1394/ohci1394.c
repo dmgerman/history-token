@@ -87,7 +87,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1223 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1250 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 DECL|variable|phys_dma
@@ -1587,9 +1587,20 @@ id|OHCI1394_BusOptions
 suffix:semicolon
 id|buf
 op_or_assign
-l_int|0xE0000000
+l_int|0x60000000
 suffix:semicolon
-multiline_comment|/* Enable IRMC, CMC and ISC */
+multiline_comment|/* Enable CMC and ISC */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hpsb_disable_irm
+)paren
+id|buf
+op_or_assign
+l_int|0x80000000
+suffix:semicolon
+multiline_comment|/* Enable IRMC */
 id|buf
 op_and_assign
 op_complement
@@ -1645,7 +1656,7 @@ comma
 l_int|0xffffffff
 )paren
 suffix:semicolon
-multiline_comment|/* Enable cycle timer and cycle master and set the IRM&n;&t; * contender bit in our self ID packets. */
+multiline_comment|/* Enable cycle timer and cycle master and set the IRM&n;&t; * contender bit in our self ID packets if appropriate. */
 id|reg_write
 c_func
 (paren
@@ -1665,7 +1676,16 @@ id|ohci
 comma
 l_int|4
 comma
-l_int|0xc0
+id|PHY_04_LCTRL
+op_or
+(paren
+id|hpsb_disable_irm
+ques
+c_cond
+l_int|0
+suffix:colon
+id|PHY_04_CONTENDER
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Set up self-id dma buffer */
@@ -1728,27 +1748,6 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ohci-&gt;max_packet_size
-OL
-l_int|512
-)paren
-(brace
-id|HPSB_ERR
-c_func
-(paren
-l_string|&quot;warning: Invalid max packet size of %d, setting to 512&quot;
-comma
-id|ohci-&gt;max_packet_size
-)paren
-suffix:semicolon
-id|ohci-&gt;max_packet_size
-op_assign
-l_int|512
-suffix:semicolon
-)brace
 multiline_comment|/* Don&squot;t accept phy packets into AR request context */
 id|reg_write
 c_func
@@ -10727,6 +10726,12 @@ c_func
 l_int|0x00000001
 )paren
 suffix:semicolon
+multiline_comment|/* To avoid a race, ensure 1394 interface hardware sees the inserted&n;&t; * context program descriptors before it sees the wakeup bit set. */
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* wake up the dma context if necessary */
 r_if
 c_cond
@@ -15503,7 +15508,7 @@ id|pci_dev
 op_star
 id|pdev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
