@@ -716,8 +716,6 @@ id|action-&gt;dev_id
 comma
 id|regs
 )paren
-dot
-id|val
 suffix:semicolon
 id|action
 op_assign

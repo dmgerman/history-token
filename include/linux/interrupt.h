@@ -11,26 +11,17 @@ macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * For 2.4.x compatibility, 2.4.x can use&n; *&n; *&t;typedef void irqreturn_t;&n; *&t;#define IRQ_NONE&n; *&t;#define IRQ_HANDLED&n; *&t;#define IRQ_RETVAL(x)&n; *&n; * To mix old-style and new-style irq handler returns.&n; *&n; * IRQ_NONE means we didn&squot;t handle it.&n; * IRQ_HANDLED means that we did have a valid interrupt and handled it.&n; * IRQ_RETVAL(x) selects on the two depending on x being non-zero (for handled)&n; */
-DECL|struct|irqreturn
-r_typedef
-r_struct
-id|irqreturn
-(brace
-DECL|member|val
-r_int
-r_int
-id|val
-suffix:semicolon
 DECL|typedef|irqreturn_t
-)brace
+r_typedef
+r_int
 id|irqreturn_t
 suffix:semicolon
 DECL|macro|IRQ_NONE
-mdefine_line|#define IRQ_NONE&t;((struct irqreturn) { 0 })
+mdefine_line|#define IRQ_NONE&t;(0)
 DECL|macro|IRQ_HANDLED
-mdefine_line|#define IRQ_HANDLED&t;((struct irqreturn) { 1 })
+mdefine_line|#define IRQ_HANDLED&t;(1)
 DECL|macro|IRQ_RETVAL
-mdefine_line|#define IRQ_RETVAL(x)&t;((struct irqreturn) { (x) != 0 })
+mdefine_line|#define IRQ_RETVAL(x)&t;((x) != 0)
 DECL|struct|irqaction
 r_struct
 id|irqaction
