@@ -3174,11 +3174,7 @@ l_int|1
 suffix:semicolon
 id|q-&gt;queuedata
 op_assign
-id|HWGROUP
-c_func
-(paren
 id|drive
-)paren
 suffix:semicolon
 id|blk_queue_segment_boundary
 c_func
