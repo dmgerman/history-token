@@ -1613,7 +1613,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;usbdevfs: process %d (%s) did not claim interface %u before use&bslash;n&quot;
+l_string|&quot;usbfs: process %d (%s) did not claim interface %u before use&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
@@ -2743,7 +2743,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;usbdevfs: USBDEVFS_CONTROL failed dev %d rqt %u rq %u len %u ret %d&bslash;n&quot;
+l_string|&quot;usbfs: USBDEVFS_CONTROL failed dev %d rqt %u rq %u len %u ret %d&bslash;n&quot;
 comma
 id|dev-&gt;devnum
 comma
@@ -3156,7 +3156,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;usbdevfs: USBDEVFS_BULK failed dev %d ep 0x%x len %u ret %d&bslash;n&quot;
+l_string|&quot;usbfs: USBDEVFS_BULK failed dev %d ep 0x%x len %u ret %d&bslash;n&quot;
 comma
 id|dev-&gt;devnum
 comma
@@ -4928,6 +4928,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|as-&gt;urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 )paren
@@ -4936,7 +4938,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;usbdevfs: usb_submit_urb returned %d&bslash;n&quot;
+l_string|&quot;usbfs: usb_submit_urb returned %d&bslash;n&quot;
 comma
 id|ret
 )paren

@@ -2219,6 +2219,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 (brace
@@ -2772,6 +2774,8 @@ id|se401-&gt;urb
 (braket
 id|i
 )braket
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -7117,6 +7121,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|se401-&gt;inturb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 (brace

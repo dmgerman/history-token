@@ -1021,6 +1021,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|kbd-&gt;led
+comma
+id|GFP_KERNEL
 )paren
 )paren
 id|err
@@ -1089,6 +1091,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|kbd-&gt;led
+comma
+id|GFP_KERNEL
 )paren
 )paren
 id|err
@@ -1139,6 +1143,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|kbd-&gt;irq
+comma
+id|GFP_KERNEL
 )paren
 )paren
 r_return

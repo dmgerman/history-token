@@ -904,6 +904,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|desc-&gt;controlurb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 (brace
@@ -1168,6 +1170,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|hpusbscsi-&gt;dataurb
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -1740,6 +1744,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|u
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -1939,6 +1945,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|u
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if

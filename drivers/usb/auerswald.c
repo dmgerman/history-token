@@ -830,6 +830,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 multiline_comment|/* check for submit errors */
@@ -1105,6 +1107,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 multiline_comment|/* check for submit errors */
@@ -3883,6 +3887,8 @@ op_assign
 id|usb_submit_urb
 (paren
 id|cp-&gt;inturbp
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|intoend
