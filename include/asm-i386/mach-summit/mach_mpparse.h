@@ -128,12 +128,6 @@ l_int|12
 )paren
 )paren
 (brace
-macro_line|#ifndef CONFIG_X86_GENERICARCH
-id|x86_summit
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 id|use_cyclone
 op_assign
 l_int|1
@@ -203,12 +197,6 @@ l_int|3
 )paren
 )paren
 (brace
-macro_line|#ifndef CONFIG_X86_GENERICARCH
-id|x86_summit
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 id|use_cyclone
 op_assign
 l_int|1
