@@ -66,8 +66,9 @@ r_void
 op_star
 id|d
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|xram
 comma
 r_int
@@ -122,8 +123,9 @@ r_void
 id|socal_copy_to_xram
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|xram
 comma
 r_void
