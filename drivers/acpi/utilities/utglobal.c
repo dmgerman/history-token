@@ -1,9 +1,10 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 164 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 165 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
+macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
 id|ACPI_MODULE_NAME
@@ -1051,7 +1052,6 @@ suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_region_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a Space ID into a name string (Debug only)&n; *&n; ****************************************************************************/
 multiline_comment|/* Region type decoding */
 DECL|variable|acpi_gbl_region_types
-r_static
 r_const
 id|NATIVE_CHAR
 op_star
@@ -1065,7 +1065,7 @@ l_string|&quot;System_memory&quot;
 comma
 l_string|&quot;System_iO&quot;
 comma
-l_string|&quot;PCIConfig&quot;
+l_string|&quot;PCI_Config&quot;
 comma
 l_string|&quot;Embedded_control&quot;
 comma
@@ -1073,7 +1073,7 @@ l_string|&quot;SMBus&quot;
 comma
 l_string|&quot;CMOS&quot;
 comma
-l_string|&quot;PCIBar_target&quot;
+l_string|&quot;PCIBARTarget&quot;
 comma
 l_string|&quot;Data_table&quot;
 comma
@@ -1438,99 +1438,6 @@ id|mutex_id
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Various strings for future use */
-macro_line|#if 0
-macro_line|#include &quot;amlcode.h&quot;
-multiline_comment|/* Data used in keeping track of fields */
-DECL|variable|acpi_gbl_FEnames
-r_static
-r_const
-id|NATIVE_CHAR
-op_star
-id|acpi_gbl_FEnames
-(braket
-id|NUM_FIELD_NAMES
-)braket
-op_assign
-(brace
-l_string|&quot;skip&quot;
-comma
-l_string|&quot;?access?&quot;
-)brace
-suffix:semicolon
-multiline_comment|/* FE = Field Element */
-DECL|variable|acpi_gbl_match_ops
-r_static
-r_const
-id|NATIVE_CHAR
-op_star
-id|acpi_gbl_match_ops
-(braket
-id|NUM_MATCH_OPS
-)braket
-op_assign
-(brace
-l_string|&quot;Error&quot;
-comma
-l_string|&quot;MTR&quot;
-comma
-l_string|&quot;MEQ&quot;
-comma
-l_string|&quot;MLE&quot;
-comma
-l_string|&quot;MLT&quot;
-comma
-l_string|&quot;MGE&quot;
-comma
-l_string|&quot;MGT&quot;
-)brace
-suffix:semicolon
-multiline_comment|/* Access type decoding */
-DECL|variable|acpi_gbl_access_types
-r_static
-r_const
-id|NATIVE_CHAR
-op_star
-id|acpi_gbl_access_types
-(braket
-id|NUM_ACCESS_TYPES
-)braket
-op_assign
-(brace
-l_string|&quot;Any_acc&quot;
-comma
-l_string|&quot;Byte_acc&quot;
-comma
-l_string|&quot;Word_acc&quot;
-comma
-l_string|&quot;DWord_acc&quot;
-comma
-l_string|&quot;QWord_acc&quot;
-comma
-l_string|&quot;Buffer_acc&quot;
-comma
-)brace
-suffix:semicolon
-multiline_comment|/* Update rule decoding */
-DECL|variable|acpi_gbl_update_rules
-r_static
-r_const
-id|NATIVE_CHAR
-op_star
-id|acpi_gbl_update_rules
-(braket
-id|NUM_UPDATE_RULES
-)braket
-op_assign
-(brace
-l_string|&quot;Preserve&quot;
-comma
-l_string|&quot;Write_as_ones&quot;
-comma
-l_string|&quot;Write_as_zeros&quot;
-)brace
-suffix:semicolon
-macro_line|#endif /* Future use */
 macro_line|#endif
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_valid_object_type&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      TRUE if valid object type&n; *&n; * DESCRIPTION: Validate an object type&n; *&n; ****************************************************************************/
 id|u8

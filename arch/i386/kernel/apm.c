@@ -5996,11 +5996,14 @@ id|pm_active
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set up a segment that references the real mode segment 0x40&n;&t; * that extends up to the end of page zero (that we have reserved).&n;&t; * This is for buggy BIOS&squot;s that refer to (real mode) segment 0x40&n;&t; * even though they are called in protected mode.&n;&t; */
+multiline_comment|/*&n;&t; * Set up a segment that references the real mode segment 0x40&n;&t; * that extends up to the end of page zero (that we have reserved).&n;&t; * This is for buggy BIOS&squot;s that refer to (real mode) segment 0x40&n;&t; * even though they are called in protected mode.&n;&t; *&n;&t; * NOTE: on SMP we call into the APM BIOS only on CPU#0, so it&squot;s&n;&t; * enough to modify CPU#0&squot;s GDT.&n;&t; */
 id|set_base
 c_func
 (paren
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_40
 op_rshift
@@ -6028,7 +6031,10 @@ r_char
 op_star
 )paren
 op_amp
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_40
 op_rshift
@@ -6055,7 +6061,10 @@ suffix:semicolon
 id|set_base
 c_func
 (paren
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_CS
 op_rshift
@@ -6078,7 +6087,10 @@ suffix:semicolon
 id|set_base
 c_func
 (paren
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_CS_16
 op_rshift
@@ -6101,7 +6113,10 @@ suffix:semicolon
 id|set_base
 c_func
 (paren
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_DS
 op_rshift
@@ -6140,7 +6155,10 @@ r_char
 op_star
 )paren
 op_amp
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_CS
 op_rshift
@@ -6163,7 +6181,10 @@ r_char
 op_star
 )paren
 op_amp
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_CS_16
 op_rshift
@@ -6186,7 +6207,10 @@ r_char
 op_star
 )paren
 op_amp
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_DS
 op_rshift
@@ -6212,7 +6236,10 @@ r_char
 op_star
 )paren
 op_amp
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_CS
 op_rshift
@@ -6236,7 +6263,10 @@ r_char
 op_star
 )paren
 op_amp
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_CS_16
 op_rshift
@@ -6260,7 +6290,10 @@ r_char
 op_star
 )paren
 op_amp
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_DS
 op_rshift

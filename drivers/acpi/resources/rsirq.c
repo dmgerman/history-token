@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsirq - IRQ resource descriptors&n; *              $Revision: 29 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsirq - IRQ resource descriptors&n; *              $Revision: 30 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -159,48 +159,34 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|i
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/* Zero interrupts is invalid! */
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Found Zero interrupt levels in resource list&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|AE_BAD_DATA
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* Zero interrupts is valid */
 id|output_struct-&gt;data.irq.number_of_interrupts
 op_assign
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t; * Calculate the structure size based upon the number of interrupts&n;&t; */
+r_if
+c_cond
+(paren
+id|i
+OG
+l_int|0
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Calculate the structure size based upon the number of interrupts&n;&t;&t; */
 id|struct_size
 op_add_assign
 (paren
 (paren
 id|ACPI_SIZE
 )paren
-id|output_struct-&gt;data.irq.number_of_interrupts
+id|i
 op_minus
 l_int|1
 )paren
 op_star
 l_int|4
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Point to Byte 3 if it is used&n;&t; */
 r_if
 c_cond

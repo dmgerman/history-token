@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acnamesp.h - Namespace subcomponent prototypes and defines&n; *       $Revision: 125 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acnamesp.h - Namespace subcomponent prototypes and defines&n; *       $Revision: 126 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACNAMESP_H__
 DECL|macro|__ACNAMESP_H__
@@ -17,7 +17,7 @@ multiline_comment|/* Definitions of the predefined namespace names  */
 DECL|macro|ACPI_UNKNOWN_NAME
 mdefine_line|#define ACPI_UNKNOWN_NAME           (u32) 0x3F3F3F3F     /* Unknown name is  &quot;????&quot; */
 DECL|macro|ACPI_ROOT_NAME
-mdefine_line|#define ACPI_ROOT_NAME              (u32) 0x2F202020     /* Root name is     &quot;/   &quot; */
+mdefine_line|#define ACPI_ROOT_NAME              (u32) 0x5F5F5F5C     /* Root name is     &quot;&bslash;___&quot; */
 DECL|macro|ACPI_SYS_BUS_NAME
 mdefine_line|#define ACPI_SYS_BUS_NAME           (u32) 0x5F53425F     /* Sys bus name is  &quot;_SB_&quot; */
 DECL|macro|ACPI_NS_ROOT_PATH

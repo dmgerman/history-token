@@ -9055,11 +9055,6 @@ r_int
 r_int
 id|irqs
 suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 id|irqs
 op_assign
 id|probe_irq_on
@@ -9210,11 +9205,6 @@ id|ECONTROL
 (paren
 id|pb
 )paren
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
 )paren
 suffix:semicolon
 id|irqs
