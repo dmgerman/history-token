@@ -72,44 +72,6 @@ DECL|macro|xfs_panic_mask
 mdefine_line|#define xfs_panic_mask&t;&t;xfs_params.panic_mask
 DECL|macro|xfs_error_level
 mdefine_line|#define xfs_error_level&t;&t;xfs_params.error_level
-DECL|struct|xfs_dirent
-r_typedef
-r_struct
-id|xfs_dirent
-(brace
-multiline_comment|/* data from readdir() */
-DECL|member|d_ino
-id|xfs_ino_t
-id|d_ino
-suffix:semicolon
-multiline_comment|/* inode number of entry */
-DECL|member|d_off
-id|xfs_off_t
-id|d_off
-suffix:semicolon
-multiline_comment|/* offset of disk directory entry */
-DECL|member|d_reclen
-r_int
-r_int
-id|d_reclen
-suffix:semicolon
-multiline_comment|/* length of this record */
-DECL|member|d_name
-r_char
-id|d_name
-(braket
-l_int|1
-)braket
-suffix:semicolon
-multiline_comment|/* name of file */
-DECL|typedef|xfs_dirent_t
-)brace
-id|xfs_dirent_t
-suffix:semicolon
-DECL|macro|DIRENTBASESIZE
-mdefine_line|#define DIRENTBASESIZE&t;&t;(((xfs_dirent_t *)0)-&gt;d_name - (char *)0)
-DECL|macro|DIRENTSIZE
-mdefine_line|#define DIRENTSIZE(namelen)&t;&bslash;&n;&t;((DIRENTBASESIZE + (namelen) + &bslash;&n;&t;&t;sizeof(xfs_off_t)) &amp; ~(sizeof(xfs_off_t) - 1))
 DECL|macro|NBPP
 mdefine_line|#define NBPP&t;&t;PAGE_SIZE
 DECL|macro|DPPSHFT
