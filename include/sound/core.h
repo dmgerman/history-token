@@ -898,15 +898,23 @@ DECL|macro|kmalloc
 mdefine_line|#define kmalloc(size, flags) snd_hidden_kmalloc(size, flags)
 DECL|macro|kfree
 mdefine_line|#define kfree(obj) snd_hidden_kfree(obj)
-DECL|macro|kfree_nocheck
-mdefine_line|#define kfree_nocheck(obj) snd_wrapper_kfree(obj)
 DECL|macro|vmalloc
 mdefine_line|#define vmalloc(size) snd_hidden_vmalloc(size)
 DECL|macro|vfree
 mdefine_line|#define vfree(obj) snd_hidden_vfree(obj)
+DECL|macro|kmalloc_nocheck
+mdefine_line|#define kmalloc_nocheck(size, flags) snd_wrapper_kmalloc(size, flags)
+DECL|macro|vmalloc_nocheck
+mdefine_line|#define vmalloc_nocheck(size) snd_wrapper_vmalloc(size)
+DECL|macro|kfree_nocheck
+mdefine_line|#define kfree_nocheck(obj) snd_wrapper_kfree(obj)
 DECL|macro|vfree_nocheck
 mdefine_line|#define vfree_nocheck(obj) snd_wrapper_vfree(obj)
 macro_line|#else
+DECL|macro|kmalloc_nocheck
+mdefine_line|#define kmalloc_nocheck(size, flags) kmalloc(size, flags)
+DECL|macro|vmalloc_nocheck
+mdefine_line|#define vmalloc_nocheck(size) vmalloc(size)
 DECL|macro|kfree_nocheck
 mdefine_line|#define kfree_nocheck(obj) kfree(obj)
 DECL|macro|vfree_nocheck

@@ -320,6 +320,9 @@ c_func
 id|emu8000_t
 op_star
 id|emu
+comma
+r_int
+id|can_schedule
 )paren
 (brace
 r_while
@@ -336,6 +339,12 @@ l_int|0x80000000
 )paren
 op_ne
 l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|can_schedule
 )paren
 (brace
 id|set_current_state
@@ -361,6 +370,7 @@ id|current
 )paren
 r_break
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/*&n; * close all channels&n; */
@@ -1822,6 +1832,8 @@ id|snd_emu8000_write_wait
 c_func
 (paren
 id|emu
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -2015,6 +2027,8 @@ id|snd_emu8000_write_wait
 c_func
 (paren
 id|emu
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -2162,6 +2176,8 @@ id|snd_emu8000_write_wait
 c_func
 (paren
 id|emu
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|EMU8000_SMALW_WRITE
@@ -2308,6 +2324,8 @@ id|snd_emu8000_write_wait
 c_func
 (paren
 id|emu
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|EMU8000_SMALW_WRITE
@@ -2727,6 +2745,8 @@ id|snd_emu8000_write_wait
 c_func
 (paren
 id|rec-&gt;emu
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|EMU8000_SMALW_WRITE

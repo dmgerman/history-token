@@ -41,4 +41,6 @@ DECL|macro|AC97_ID_CS4201
 mdefine_line|#define AC97_ID_CS4201&t;&t;0x43525948
 DECL|macro|AC97_ID_CS4205
 mdefine_line|#define AC97_ID_CS4205&t;&t;0x43525958
+DECL|macro|AC97_ID_ALC650
+mdefine_line|#define AC97_ID_ALC650&t;&t;0x414c4720
 eof
