@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -565,7 +566,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Pid: %d, comm: %.20s %s&bslash;n&quot;
+l_string|&quot;Pid: %d, comm: %.20s %s %s&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
@@ -575,6 +576,8 @@ id|print_tainted
 c_func
 (paren
 )paren
+comma
+id|UTS_RELEASE
 )paren
 suffix:semicolon
 id|printk

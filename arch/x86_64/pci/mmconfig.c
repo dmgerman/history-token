@@ -390,7 +390,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;PCI: Using MMCONFIG at %lx&bslash;n&quot;
+l_string|&quot;PCI: Using MMCONFIG at %x&bslash;n&quot;
 comma
 id|pci_mmcfg_base_addr
 )paren

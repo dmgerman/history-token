@@ -174,7 +174,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Driver for ADT7467 thermostat in iBook G4&quot;
+l_string|&quot;Driver for ADT746x thermostat in iBook G4 and Powerbook G4 Alu&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -770,7 +770,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Apple Thermostat ADT7467&quot;
+l_string|&quot;Apple Thermostat ADT746x&quot;
 comma
 dot
 id|id
@@ -2424,7 +2424,6 @@ id|u32
 op_star
 id|prop
 suffix:semicolon
-multiline_comment|/* Currently, we only deal with the iBook G4, we will support&n;&t; * all &quot;2003&quot; powerbooks later on&n;&t; */
 id|np
 op_assign
 id|of_find_node_by_name

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/gentrap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
@@ -14,38 +15,15 @@ macro_line|#include &lt;asm/sysinfo.h&gt;
 macro_line|#include &lt;asm/hwrpb.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &quot;proto.h&quot;
-multiline_comment|/* data/code implementing a work-around for some SRMs which&n;   mishandle opDEC faults&n;*/
-DECL|variable|opDEC_testing
-r_static
-r_int
-id|opDEC_testing
-op_assign
-l_int|0
-suffix:semicolon
+multiline_comment|/* Work-around for some SRMs which mishandle opDEC faults.  */
 DECL|variable|opDEC_fix
 r_static
 r_int
 id|opDEC_fix
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|opDEC_checked
-r_static
-r_int
-id|opDEC_checked
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|opDEC_test_pc
-r_static
-r_int
-r_int
-id|opDEC_test_pc
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 r_void
+id|__init
 DECL|function|opDEC_check
 id|opDEC_check
 c_func
@@ -53,58 +31,74 @@ c_func
 r_void
 )paren
 (brace
-r_int
-r_int
-id|test_pc
+id|__asm__
+id|__volatile__
+(paren
+multiline_comment|/* Load the address of... */
+l_string|&quot;&t;br&t;$16, 1f&bslash;n&quot;
+multiline_comment|/* A stub instruction fault handler.  Just add 4 to the&n;&t;   pc and continue.  */
+l_string|&quot;&t;ldq&t;$16, 8($sp)&bslash;n&quot;
+l_string|&quot;&t;addq&t;$16, 4, $16&bslash;n&quot;
+l_string|&quot;&t;stq&t;$16, 8($sp)&bslash;n&quot;
+l_string|&quot;&t;call_pal %[rti]&bslash;n&quot;
+multiline_comment|/* Install the instruction fault handler.  */
+l_string|&quot;1:&t;lda&t;$17, 3&bslash;n&quot;
+l_string|&quot;&t;call_pal %[wrent]&bslash;n&quot;
+multiline_comment|/* With that in place, the fault from the round-to-minf fp&n;&t;   insn will arrive either at the &quot;lda 4&quot; insn (bad) or one&n;&t;   past that (good).  This places the correct fixup in %0.  */
+l_string|&quot;&t;lda %[fix], 0&bslash;n&quot;
+l_string|&quot;&t;cvttq/svm $f31,$f31&bslash;n&quot;
+l_string|&quot;&t;lda %[fix], 4&quot;
+suffix:colon
+(braket
+id|fix
+)braket
+l_string|&quot;=r&quot;
+(paren
+id|opDEC_fix
+)paren
+suffix:colon
+(braket
+id|rti
+)braket
+l_string|&quot;n&quot;
+(paren
+id|PAL_rti
+)paren
+comma
+(braket
+id|wrent
+)braket
+l_string|&quot;n&quot;
+(paren
+id|PAL_wrent
+)paren
+suffix:colon
+l_string|&quot;$0&quot;
+comma
+l_string|&quot;$1&quot;
+comma
+l_string|&quot;$16&quot;
+comma
+l_string|&quot;$17&quot;
+comma
+l_string|&quot;$22&quot;
+comma
+l_string|&quot;$23&quot;
+comma
+l_string|&quot;$24&quot;
+comma
+l_string|&quot;$25&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|opDEC_checked
+id|opDEC_fix
 )paren
-r_return
-suffix:semicolon
-id|lock_kernel
+id|printk
 c_func
 (paren
-)paren
-suffix:semicolon
-id|opDEC_testing
-op_assign
-l_int|1
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;       br      %0,1f&bslash;n&quot;
-l_string|&quot;1:     addq    %0,8,%0&bslash;n&quot;
-l_string|&quot;       stq     %0,%1&bslash;n&quot;
-l_string|&quot;       cvttq/svm $f31,$f31&bslash;n&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|test_pc
-)paren
-comma
-l_string|&quot;=m&quot;
-(paren
-id|opDEC_test_pc
-)paren
-suffix:colon
-)paren
-suffix:semicolon
-id|opDEC_testing
-op_assign
-l_int|0
-suffix:semicolon
-id|opDEC_checked
-op_assign
-l_int|1
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
+l_string|&quot;opDEC fixup enabled.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1194,12 +1188,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|opDEC_testing
-op_logical_or
-id|type
-op_ne
-l_int|4
+id|regs-&gt;ps
+op_eq
+l_int|0
 )paren
 (brace
 r_if
@@ -1629,38 +1620,6 @@ r_int
 id|si_code
 suffix:semicolon
 multiline_comment|/* The some versions of SRM do not handle&n;&t;&t;&t;   the opDEC properly - they return the PC of the&n;&t;&t;&t;   opDEC fault, not the instruction after as the&n;&t;&t;&t;   Alpha architecture requires.  Here we fix it up.&n;&t;&t;&t;   We do this by intentionally causing an opDEC&n;&t;&t;&t;   fault during the boot sequence and testing if&n;&t;&t;&t;   we get the correct PC.  If not, we set a flag&n;&t;&t;&t;   to correct it every time through.  */
-r_if
-c_cond
-(paren
-id|opDEC_testing
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|regs-&gt;pc
-op_eq
-id|opDEC_test_pc
-)paren
-(brace
-id|opDEC_fix
-op_assign
-l_int|4
-suffix:semicolon
-id|regs-&gt;pc
-op_add_assign
-l_int|4
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;opDEC fixup enabled.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_return
-suffix:semicolon
-)brace
 id|regs-&gt;pc
 op_add_assign
 id|opDEC_fix
@@ -4309,6 +4268,7 @@ r_return
 suffix:semicolon
 )brace
 r_void
+id|__init
 DECL|function|trap_init
 id|trap_init
 c_func
@@ -4331,6 +4291,22 @@ id|wrkgp
 c_func
 (paren
 id|gptr
+)paren
+suffix:semicolon
+multiline_comment|/* Hack for Multia (UDB) and JENSEN: some of their SRMs have&n;&t;   a bug in the handling of the opDEC fault.  Fix it up if so.  */
+r_if
+c_cond
+(paren
+id|implver
+c_func
+(paren
+)paren
+op_eq
+id|IMPLVER_EV4
+)paren
+id|opDEC_check
+c_func
+(paren
 )paren
 suffix:semicolon
 id|wrent
@@ -4379,22 +4355,6 @@ c_func
 id|entDbg
 comma
 l_int|6
-)paren
-suffix:semicolon
-multiline_comment|/* Hack for Multia (UDB) and JENSEN: some of their SRMs have&n;&t;   a bug in the handling of the opDEC fault.  Fix it up if so.  */
-r_if
-c_cond
-(paren
-id|implver
-c_func
-(paren
-)paren
-op_eq
-id|IMPLVER_EV4
-)paren
-id|opDEC_check
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace

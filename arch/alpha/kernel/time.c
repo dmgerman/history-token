@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/alpha/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995, 1999, 2000  Linus Torvalds&n; *&n; * This file contains the PC-specific time handling details:&n; * reading the RTC at bootup, etc..&n; * 1994-07-02    Alan Modra&n; *&t;fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; * 1995-03-26    Markus Kuhn&n; *      fixed 500 ms bug at call to set_rtc_mmss, fixed DS12887&n; *      precision CMOS clock update&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; * 1997-01-09    Adrian Sun&n; *      use interval timer if CONFIG_RTC=y&n; * 1997-10-29    John Bowman (bowman@math.ualberta.ca)&n; *      fixed tick loss calculation in timer_interrupt&n; *      (round system clock to nearest tick instead of truncating)&n; *      fixed algorithm in time_init for getting time from CMOS clock&n; * 1999-04-16&t;Thorsten Kranzkowski (dl8bcu@gmx.net)&n; *&t;fixed algorithm in do_gettimeofday() for calculating the precise time&n; *&t;from processor cycle counter (now taking lost_ticks into account)&n; * 2000-08-13&t;Jan-Benedict Glaw &lt;jbglaw@lug-owl.de&gt;&n; * &t;Fixed time_init to be aware of epoches != 1900. This prevents&n; * &t;booting up in 2048 for me;) Code is stolen from rtc.c.&n; */
+multiline_comment|/*&n; *  linux/arch/alpha/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995, 1999, 2000  Linus Torvalds&n; *&n; * This file contains the PC-specific time handling details:&n; * reading the RTC at bootup, etc..&n; * 1994-07-02    Alan Modra&n; *&t;fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; * 1995-03-26    Markus Kuhn&n; *      fixed 500 ms bug at call to set_rtc_mmss, fixed DS12887&n; *      precision CMOS clock update&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; * 1997-01-09    Adrian Sun&n; *      use interval timer if CONFIG_RTC=y&n; * 1997-10-29    John Bowman (bowman@math.ualberta.ca)&n; *      fixed tick loss calculation in timer_interrupt&n; *      (round system clock to nearest tick instead of truncating)&n; *      fixed algorithm in time_init for getting time from CMOS clock&n; * 1999-04-16&t;Thorsten Kranzkowski (dl8bcu@gmx.net)&n; *&t;fixed algorithm in do_gettimeofday() for calculating the precise time&n; *&t;from processor cycle counter (now taking lost_ticks into account)&n; * 2000-08-13&t;Jan-Benedict Glaw &lt;jbglaw@lug-owl.de&gt;&n; * &t;Fixed time_init to be aware of epoches != 1900. This prevents&n; * &t;booting up in 2048 for me;) Code is stolen from rtc.c.&n; * 2003-06-03&t;R. Scott Bailey &lt;scott.bailey@eds.com&gt;&n; *&t;Tighten sanity in time_init from 1% (10,000 PPM) to 250 PPM&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1058,7 +1058,7 @@ r_int
 r_int
 id|cycle_freq
 comma
-id|one_percent
+id|tolerance
 suffix:semicolon
 r_int
 id|diff
@@ -1128,12 +1128,12 @@ c_cond
 id|est_cycle_freq
 )paren
 (brace
-multiline_comment|/* If the given value is within 1% of what we calculated, &n;&t;&t;   accept it.  Otherwise, use what we found.  */
-id|one_percent
+multiline_comment|/* If the given value is within 250 PPM of what we calculated,&n;&t;&t;   accept it.  Otherwise, use what we found.  */
+id|tolerance
 op_assign
 id|cycle_freq
 op_div
-l_int|100
+l_int|4000
 suffix:semicolon
 id|diff
 op_assign
@@ -1162,7 +1162,7 @@ r_int
 )paren
 id|diff
 OG
-id|one_percent
+id|tolerance
 )paren
 (brace
 id|cycle_freq
