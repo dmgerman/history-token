@@ -709,10 +709,16 @@ l_int|8
 suffix:semicolon
 DECL|member|busyluns
 r_int
-r_char
+r_int
 id|busyluns
 (braket
-l_int|8
+l_int|64
+op_div
+r_sizeof
+(paren
+r_int
+r_int
+)paren
 )braket
 suffix:semicolon
 multiline_comment|/* array of bits indicating LUNs busy&t;*/

@@ -7080,8 +7080,9 @@ l_int|0x2888
 )paren
 comma
 singleline_comment|// EPSON USB client
+dot
 id|driver_info
-suffix:colon
+op_assign
 (paren
 r_int
 r_int

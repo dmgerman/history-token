@@ -3273,6 +3273,18 @@ id|dbg
 id|DRIVER_INFO
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|usb_disabled
+c_func
+(paren
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 id|dbg
 (paren
 l_string|&quot;block sizes: qh %Zd qtd %Zd itd %Zd sitd %Zd&quot;

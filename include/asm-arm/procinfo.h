@@ -3,7 +3,6 @@ macro_line|#ifndef __ASM_PROCINFO_H
 DECL|macro|__ASM_PROCINFO_H
 mdefine_line|#define __ASM_PROCINFO_H
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;asm/proc-fns.h&gt;
 r_struct
 id|cpu_tlb_fns
 suffix:semicolon

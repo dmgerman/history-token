@@ -10,50 +10,6 @@ mdefine_line|#define ____glue(name,fn)&t;name/**/fn
 macro_line|#endif
 DECL|macro|__glue
 mdefine_line|#define __glue(name,fn)&t;&t;____glue(name,fn)
-multiline_comment|/*&n; *&t;MMU TLB Model&n; *&t;=============&n; *&n; *&t;We have the following to choose from:&n; *&t;  v3    - ARMv3&n; *&t;  v4    - ARMv4 without write buffer&n; *&t;  v4wb  - ARMv4 with write buffer without I TLB flush entry instruction&n; *&t;  v4wbi - ARMv4 with write buffer with I TLB flush entry instruction&n; */
-DECL|macro|_TLB
-macro_line|#undef _TLB
-DECL|macro|MULTI_TLB
-macro_line|#undef MULTI_TLB
-macro_line|#if defined(CONFIG_CPU_ARM610) || defined(CONFIG_CPU_ARM710)
-macro_line|# ifdef _TLB
-DECL|macro|MULTI_TLB
-macro_line|#  define MULTI_TLB 1
-macro_line|# else
-DECL|macro|_TLB
-macro_line|#  define _TLB v3
-macro_line|# endif
-macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_ARM720T)
-macro_line|# ifdef _TLB
-DECL|macro|MULTI_TLB
-macro_line|#  define MULTI_TLB 1
-macro_line|# else
-DECL|macro|_TLB
-macro_line|#  define _TLB v4
-macro_line|# endif
-macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_ARM920T) || defined(CONFIG_CPU_ARM922T) || &bslash;&n;    defined(CONFIG_CPU_ARM926T) || defined(CONFIG_CPU_ARM1020) || &bslash;&n;    defined(CONFIG_CPU_XSCALE)
-macro_line|# ifdef _TLB
-DECL|macro|MULTI_TLB
-macro_line|#  define MULTI_TLB 1
-macro_line|# else
-DECL|macro|_TLB
-macro_line|#  define _TLB v4wbi
-macro_line|# endif
-macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_SA110) || defined(CONFIG_CPU_SA1100)
-macro_line|# ifdef _TLB
-DECL|macro|MULTI_TLB
-macro_line|#  define MULTI_TLB 1
-macro_line|# else
-DECL|macro|_TLB
-macro_line|#  define _TLB v4wb
-macro_line|# endif
-macro_line|#endif
-macro_line|#ifndef _TLB
-macro_line|#error Unknown TLB model
-macro_line|#endif
 multiline_comment|/*&n; *&t;Data Abort Model&n; *&t;================&n; *&n; *&t;We have the following to choose from:&n; *&t;  arm6          - ARM6 style&n; *&t;  arm7&t;&t;- ARM7 style&n; *&t;  v4_early&t;- ARMv4 without Thumb early abort handler&n; *&t;  v4t_late&t;- ARMv4 with Thumb late abort handler&n; *&t;  v4t_early&t;- ARMv4 with Thumb early abort handler&n; *&t;  v5tej_early&t;- ARMv5 with Thumb and Java early abort handler&n; *&t;  xscale&t;- ARMv5 with Thumb with Xscale extensions&n; */
 DECL|macro|CPU_ABORT_HANDLER
 macro_line|#undef CPU_ABORT_HANDLER
@@ -124,59 +80,6 @@ macro_line|# endif
 macro_line|#endif
 macro_line|#ifndef CPU_ABORT_HANDLER
 macro_line|#error Unknown data abort handler type
-macro_line|#endif
-multiline_comment|/*&n; *&t;User Space Model&n; *&t;================&n; *&n; *&t;This section selects the correct set of functions for dealing with&n; *&t;page-based copying and clearing for user space for the particular&n; *&t;processor(s) we&squot;re building for.&n; *&n; *&t;We have the following to choose from:&n; *&t;  v3&t;&t;- ARMv3&n; *&t;  v4wt&t;&t;- ARMv4 with writethrough cache, without minicache&n; *&t;  v4wb&t;&t;- ARMv4 with writeback cache, without minicache&n; *&t;  v4_mc&t;&t;- ARMv4 with minicache&n; *&t;  xscale&t;- Xscale&n; */
-DECL|macro|_USER
-macro_line|#undef _USER
-DECL|macro|MULTI_USER
-macro_line|#undef MULTI_USER
-macro_line|#if defined(CONFIG_CPU_ARM610) || defined(CONFIG_CPU_ARM710)
-macro_line|# ifdef _USER
-DECL|macro|MULTI_USER
-macro_line|#  define MULTI_USER 1
-macro_line|# else
-DECL|macro|_USER
-macro_line|#  define _USER v3
-macro_line|# endif
-macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_ARM720T)
-macro_line|# ifdef _USER
-DECL|macro|MULTI_USER
-macro_line|#  define MULTI_USER 1
-macro_line|# else
-DECL|macro|_USER
-macro_line|#  define _USER v4wt
-macro_line|# endif
-macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_ARM920T) || defined(CONFIG_CPU_ARM922T) || &bslash;&n;    defined(CONFIG_CPU_ARM926T) || defined(CONFIG_CPU_SA110)   || &bslash;&n;    defined(CONFIG_CPU_ARM1020)
-macro_line|# ifdef _USER
-DECL|macro|MULTI_USER
-macro_line|#  define MULTI_USER 1
-macro_line|# else
-DECL|macro|_USER
-macro_line|#  define _USER v4wb
-macro_line|# endif
-macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_SA1100)
-macro_line|# ifdef _USER
-DECL|macro|MULTI_USER
-macro_line|#  define MULTI_USER 1
-macro_line|# else
-DECL|macro|_USER
-macro_line|#  define _USER v4_mc
-macro_line|# endif
-macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_XSCALE)
-macro_line|# ifdef _USER
-DECL|macro|MULTI_USER
-macro_line|#  define MULTI_USER 1
-macro_line|# else
-DECL|macro|_USER
-macro_line|#  define _USER xscale_mc
-macro_line|# endif
-macro_line|#endif
-macro_line|#ifndef _USER
-macro_line|#error Unknown user operations model
 macro_line|#endif
 macro_line|#endif
 eof

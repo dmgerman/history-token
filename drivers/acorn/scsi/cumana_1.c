@@ -52,16 +52,12 @@ DECL|macro|NCR5380_read
 mdefine_line|#define NCR5380_read(reg) cumanascsi_read(_instance, reg)
 DECL|macro|NCR5380_write
 mdefine_line|#define NCR5380_write(reg, value) cumanascsi_write(_instance, reg, value)
-DECL|macro|do_NCR5380_intr
-mdefine_line|#define do_NCR5380_intr do_cumanascsi_intr
+DECL|macro|NCR5380_intr
+mdefine_line|#define NCR5380_intr&t;&t;cumanascsi_intr
 DECL|macro|NCR5380_queue_command
-mdefine_line|#define NCR5380_queue_command cumanascsi_queue_command
-DECL|macro|NCR5380_abort
-mdefine_line|#define NCR5380_abort cumanascsi_abort
-DECL|macro|NCR5380_reset
-mdefine_line|#define NCR5380_reset cumanascsi_reset
+mdefine_line|#define NCR5380_queue_command&t;cumanascsi_queue_command
 DECL|macro|NCR5380_proc_info
-mdefine_line|#define NCR5380_proc_info cumanascsi_proc_info
+mdefine_line|#define NCR5380_proc_info&t;cumanascsi_proc_info
 r_int
 id|NCR5380_proc_info
 c_func
@@ -326,7 +322,7 @@ c_func
 (paren
 id|instance-&gt;irq
 comma
-id|do_cumanascsi_intr
+id|cumanascsi_intr
 comma
 id|SA_INTERRUPT
 comma
@@ -1845,14 +1841,24 @@ op_assign
 id|cumanascsi_queue_command
 comma
 dot
-m_abort
+id|eh_abort_handler
 op_assign
-id|cumanascsi_abort
+id|NCR5380_abort
 comma
 dot
-id|reset
+id|eh_device_reset_handler
 op_assign
-id|cumanascsi_reset
+id|NCR5380_device_reset
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|NCR5380_bus_reset
+comma
+dot
+id|eh_host_reset_handler
+op_assign
+id|NCR5380_host_reset
 comma
 dot
 id|bios_param

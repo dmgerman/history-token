@@ -1782,6 +1782,12 @@ id|zhole_size
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM
+id|mem_map
+op_assign
+id|contig_page_data.node_mem_map
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * finish off the bad pages once&n;&t; * the mem_map is initialised&n;&t; */
 id|memzero
 c_func
@@ -1964,6 +1970,7 @@ c_func
 id|meminfo.end
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 id|max_mapnr
 op_assign
 id|virt_to_page
@@ -1974,6 +1981,7 @@ id|high_memory
 op_minus
 id|mem_map
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * We may have non-contiguous memory.&n;&t; */
 r_if
 c_cond
