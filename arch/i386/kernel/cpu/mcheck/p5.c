@@ -12,6 +12,7 @@ macro_line|#include &quot;mce.h&quot;
 multiline_comment|/* Machine check handler for Pentium class Intel */
 DECL|function|pentium_machine_check
 r_static
+id|asmlinkage
 r_void
 id|pentium_machine_check
 c_func

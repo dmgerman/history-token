@@ -699,6 +699,7 @@ r_int
 id|find_first_zero_bit
 c_func
 (paren
+r_const
 r_int
 r_int
 op_star
@@ -708,6 +709,7 @@ r_int
 id|size
 )paren
 (brace
+r_const
 r_int
 r_int
 op_star
@@ -839,6 +841,7 @@ id|__inline__
 r_int
 id|find_next_zero_bit
 (paren
+r_const
 r_int
 r_int
 op_star
@@ -851,6 +854,7 @@ r_int
 id|offset
 )paren
 (brace
+r_const
 r_int
 r_int
 op_star
@@ -858,6 +862,7 @@ id|addr
 op_assign
 id|vaddr
 suffix:semicolon
+r_const
 r_int
 r_int
 op_star
@@ -1124,6 +1129,7 @@ r_int
 id|sched_find_first_bit
 c_func
 (paren
+r_const
 r_int
 r_int
 op_star

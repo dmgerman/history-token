@@ -67,7 +67,6 @@ op_star
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 r_static
 r_int
 id|sun3scsi_release
@@ -77,10 +76,6 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|sun3scsi_release
-mdefine_line|#define sun3scsi_release NULL
-macro_line|#endif
 macro_line|#ifndef CMD_PER_LUN
 DECL|macro|CMD_PER_LUN
 mdefine_line|#define CMD_PER_LUN 2

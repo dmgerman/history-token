@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * net/core/ethtool.c - Ethtool ioctl handler&n; * Copyright (c) 2003 Matthew Wilcox &lt;matthew@wil.cx&gt;&n; *&n; * This file is where we call all the ethtool_ops commands to get&n; * the information ethtool needs.  We fall back to calling do_ioctl()&n; * for drivers which haven&squot;t been converted to ethtool_ops yet.&n; *&n; * It&squot;s GPL, stupid.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
@@ -3509,4 +3510,53 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
+DECL|variable|ethtool_op_get_link
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ethtool_op_get_link
+)paren
+suffix:semicolon
+DECL|variable|ethtool_op_get_sg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ethtool_op_get_sg
+)paren
+suffix:semicolon
+DECL|variable|ethtool_op_get_tso
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ethtool_op_get_tso
+)paren
+suffix:semicolon
+DECL|variable|ethtool_op_get_tx_csum
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ethtool_op_get_tx_csum
+)paren
+suffix:semicolon
+DECL|variable|ethtool_op_set_sg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ethtool_op_set_sg
+)paren
+suffix:semicolon
+DECL|variable|ethtool_op_set_tso
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ethtool_op_set_tso
+)paren
+suffix:semicolon
+DECL|variable|ethtool_op_set_tx_csum
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ethtool_op_set_tx_csum
+)paren
+suffix:semicolon
 eof

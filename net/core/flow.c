@@ -1,5 +1,6 @@
 multiline_comment|/* flow.c: Generic flow cache.&n; *&n; * Copyright (C) 2003 Alexey N. Kuznetsov (kuznet@ms2.inr.ac.ru)&n; * Copyright (C) 2003 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/jhash.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -1774,6 +1775,20 @@ id|module_init
 c_func
 (paren
 id|flow_cache_init
+)paren
+suffix:semicolon
+DECL|variable|flow_cache_genid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flow_cache_genid
+)paren
+suffix:semicolon
+DECL|variable|flow_cache_lookup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flow_cache_lookup
 )paren
 suffix:semicolon
 eof

@@ -1,14 +1,15 @@
 multiline_comment|/*&n; * net/core/dst.c&t;Protocol independent destination cache.&n; *&n; * Authors:&t;&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; */
 macro_line|#include &lt;linux/bitops.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 multiline_comment|/* Locking strategy:&n; * 1) Garbage collection state of dead destination cache&n; *    entries is protected by dst_lock.&n; * 2) GC is run only from BH context, and is the only remover&n; *    of entries.&n; * 3) Entries are added to the garbage list from both BH&n; *    and non-BH context, so local BH disabling is needed.&n; * 4) All operations modify state, so a spinlock is used.&n; */
 DECL|variable|dst_garbage_list
@@ -971,4 +972,25 @@ id|dst_dev_notifier
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__dst_free
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__dst_free
+)paren
+suffix:semicolon
+DECL|variable|dst_alloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dst_alloc
+)paren
+suffix:semicolon
+DECL|variable|dst_destroy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dst_destroy
+)paren
+suffix:semicolon
 eof

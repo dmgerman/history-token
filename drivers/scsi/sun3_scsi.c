@@ -859,7 +859,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|function|sun3scsi_release
 r_int
 id|sun3scsi_release
@@ -898,7 +897,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#ifdef RESET_BOOT
 multiline_comment|/*&n; * Our &squot;bus reset on boot&squot; function&n; */
 DECL|function|sun3_scsi_reset_boot

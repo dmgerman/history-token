@@ -1,8 +1,9 @@
+macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/datalink.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/in.h&gt;
 DECL|function|pEII_request
 r_static
 r_int
@@ -35,6 +36,7 @@ suffix:semicolon
 id|skb-&gt;protocol
 op_assign
 id|htons
+c_func
 (paren
 id|ETH_P_IPX
 )paren
@@ -44,7 +46,6 @@ c_cond
 (paren
 id|dev-&gt;hard_header
 )paren
-(brace
 id|dev
 op_member_access_from_pointer
 id|hard_header
@@ -63,7 +64,6 @@ comma
 id|skb-&gt;len
 )paren
 suffix:semicolon
-)brace
 r_return
 id|dev_queue_xmit
 c_func
@@ -72,10 +72,10 @@ id|skb
 )paren
 suffix:semicolon
 )brace
+DECL|function|make_EII_client
 r_struct
 id|datalink_proto
 op_star
-DECL|function|make_EII_client
 id|make_EII_client
 c_func
 (paren
@@ -86,14 +86,7 @@ r_struct
 id|datalink_proto
 op_star
 id|proto
-suffix:semicolon
-id|proto
 op_assign
-(paren
-r_struct
-id|datalink_proto
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -110,8 +103,6 @@ r_if
 c_cond
 (paren
 id|proto
-op_ne
-l_int|NULL
 )paren
 (brace
 id|proto-&gt;header_length
@@ -150,4 +141,18 @@ id|dl
 )paren
 suffix:semicolon
 )brace
+DECL|variable|destroy_EII_client
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|destroy_EII_client
+)paren
+suffix:semicolon
+DECL|variable|make_EII_client
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|make_EII_client
+)paren
+suffix:semicolon
 eof

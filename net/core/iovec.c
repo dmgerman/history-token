@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *&t;iovec manipulation routines.&n; *&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Fixes:&n; *&t;&t;Andrew Lunn&t;:&t;Errors in iovec copying.&n; *&t;&t;Pedro Roque&t;:&t;Added memcpy_fromiovecend and&n; *&t;&t;&t;&t;&t;csum_..._fromiovecend.&n; *&t;&t;Andi Kleen&t;:&t;fixed error handling for 2.1&n; *&t;&t;Alexey Kuznetsov:&t;2.1 optimisations&n; *&t;&t;Andi Kleen&t;:&t;Fix csum*fromiovecend for IPv6.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -881,4 +882,39 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+DECL|variable|csum_partial_copy_fromiovecend
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial_copy_fromiovecend
+)paren
+suffix:semicolon
+DECL|variable|memcpy_fromiovec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memcpy_fromiovec
+)paren
+suffix:semicolon
+DECL|variable|memcpy_fromiovecend
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memcpy_fromiovecend
+)paren
+suffix:semicolon
+DECL|variable|memcpy_toiovec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memcpy_toiovec
+)paren
+suffix:semicolon
+DECL|variable|memcpy_tokerneliovec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memcpy_tokerneliovec
+)paren
+suffix:semicolon
 eof

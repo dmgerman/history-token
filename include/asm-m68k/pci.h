@@ -2,6 +2,7 @@ macro_line|#ifndef _ASM_M68K_PCI_H
 DECL|macro|_ASM_M68K_PCI_H
 mdefine_line|#define _ASM_M68K_PCI_H
 multiline_comment|/*&n; * asm-m68k/pci_m68k.h - m68k specific PCI declarations.&n; *&n; * Written by Wout Klaren.&n; */
+macro_line|#include &lt;asm/scatterlist.h&gt;
 r_struct
 id|pci_ops
 suffix:semicolon

@@ -1,4 +1,5 @@
 multiline_comment|/* scm.c - Socket level control messages processing.&n; *&n; * Author:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *              Alignment and value checking mods by Craig Metz&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1258,4 +1259,39 @@ r_return
 id|new_fpl
 suffix:semicolon
 )brace
+DECL|variable|__scm_destroy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__scm_destroy
+)paren
+suffix:semicolon
+DECL|variable|__scm_send
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__scm_send
+)paren
+suffix:semicolon
+DECL|variable|put_cmsg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|put_cmsg
+)paren
+suffix:semicolon
+DECL|variable|scm_detach_fds
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scm_detach_fds
+)paren
+suffix:semicolon
+DECL|variable|scm_fp_dup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scm_fp_dup
+)paren
+suffix:semicolon
 eof
