@@ -279,6 +279,8 @@ suffix:semicolon
 DECL|macro|UART_TYPE_NUM
 mdefine_line|#define UART_TYPE_NUM&t;2
 DECL|variable|Gmoxa_uart_id
+r_static
+r_const
 r_int
 r_int
 id|Gmoxa_uart_id
@@ -334,6 +336,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|Gpci_uart_info
+r_static
+r_const
 r_struct
 id|mxpciuart_info
 id|Gpci_uart_info
@@ -15219,95 +15223,6 @@ id|port
 op_plus
 l_int|4
 )paren
-suffix:semicolon
-)brace
-singleline_comment|// added by James 03-05-2004.
-singleline_comment|// for secure device server:
-singleline_comment|// stat = 1, the port8 DTR is set to ON.
-singleline_comment|// stat = 0, the port8 DTR is set to OFF.
-DECL|function|SDS_PORT8_DTR
-r_void
-id|SDS_PORT8_DTR
-c_func
-(paren
-r_int
-id|stat
-)paren
-(brace
-r_int
-id|_sds_oldmcr
-suffix:semicolon
-id|_sds_oldmcr
-op_assign
-id|inb
-c_func
-(paren
-id|mxvar_table
-(braket
-l_int|7
-)braket
-dot
-id|base
-op_plus
-id|UART_MCR
-)paren
-suffix:semicolon
-singleline_comment|// get old MCR
-r_if
-c_cond
-(paren
-id|stat
-op_eq
-l_int|1
-)paren
-(brace
-id|outb
-c_func
-(paren
-id|_sds_oldmcr
-op_or
-l_int|0x01
-comma
-id|mxvar_table
-(braket
-l_int|7
-)braket
-dot
-id|base
-op_plus
-id|UART_MCR
-)paren
-suffix:semicolon
-singleline_comment|// set DTR ON
-)brace
-r_if
-c_cond
-(paren
-id|stat
-op_eq
-l_int|0
-)paren
-(brace
-id|outb
-c_func
-(paren
-id|_sds_oldmcr
-op_amp
-l_int|0xfe
-comma
-id|mxvar_table
-(braket
-l_int|7
-)braket
-dot
-id|base
-op_plus
-id|UART_MCR
-)paren
-suffix:semicolon
-singleline_comment|// set DTR OFF
-)brace
-r_return
 suffix:semicolon
 )brace
 DECL|variable|mxser_module_init
