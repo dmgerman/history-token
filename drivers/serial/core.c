@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/char/serial_core.c&n; *&n; *  Driver core for serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright 1999 ARM Limited&n; *  Copyright (C) 2000-2001 Deep Blue Solutions Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  $Id: serial_core.c,v 1.89 2002/07/20 18:07:32 rmk Exp $&n; *&n; */
+multiline_comment|/*&n; *  linux/drivers/char/core.c&n; *&n; *  Driver core for serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright 1999 ARM Limited&n; *  Copyright (C) 2000-2001 Deep Blue Solutions Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  $Id: core.c,v 1.91 2002/07/22 15:27:32 rmk Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -147,6 +147,19 @@ id|port
 op_assign
 id|info-&gt;port
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|port-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|port-&gt;ops
 op_member_access_from_pointer
 id|stop_tx
@@ -155,6 +168,15 @@ c_func
 id|port
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|port-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1982,6 +2004,10 @@ id|port
 op_assign
 id|info-&gt;port
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2008,6 +2034,16 @@ c_cond
 (paren
 id|ch
 )paren
+(brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|port-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|port-&gt;ops
 op_member_access_from_pointer
 id|start_tx
@@ -2018,6 +2054,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|port-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
 )brace
 )brace
 DECL|function|uart_throttle
@@ -7264,6 +7310,13 @@ c_cond
 id|running
 )paren
 (brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|port-&gt;lock
+)paren
+suffix:semicolon
 id|ops
 op_member_access_from_pointer
 id|stop_tx
@@ -7272,13 +7325,6 @@ c_func
 id|port
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|port-&gt;lock
 )paren
 suffix:semicolon
 id|ops

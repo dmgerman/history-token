@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/char/serial_21285.c&n; *&n; * Driver for the serial port on the 21285 StrongArm-110 core logic chip.&n; *&n; * Based on drivers/char/serial.c&n; *&n; *  $Id: serial_21285.c,v 1.32 2002/07/21 08:57:55 rmk Exp $&n; */
+multiline_comment|/*&n; * linux/drivers/char/21285.c&n; *&n; * Driver for the serial port on the 21285 StrongArm-110 core logic chip.&n; *&n; * Based on drivers/char/serial.c&n; *&n; *  $Id: 21285.c,v 1.34 2002/07/22 15:27:32 rmk Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -64,16 +64,20 @@ mdefine_line|#define tx_enabled(port)&t;((port)-&gt;unused[0])
 DECL|macro|rx_enabled
 mdefine_line|#define rx_enabled(port)&t;((port)-&gt;unused[1])
 multiline_comment|/*&n; * The documented expression for selecting the divisor is:&n; *  BAUD_BASE / baud - 1&n; * However, typically BAUD_BASE is not divisible by baud, so&n; * we want to select the divisor that gives us the minimum&n; * error.  Therefore, we want:&n; *  int(BAUD_BASE / baud - 0.5) -&gt;&n; *  int(BAUD_BASE / baud - (baud &gt;&gt; 1) / baud) -&gt;&n; *  int((BAUD_BASE - (baud &gt;&gt; 1)) / baud)&n; */
-DECL|function|__serial21285_stop_tx
 r_static
 r_void
-id|__serial21285_stop_tx
+DECL|function|serial21285_stop_tx
+id|serial21285_stop_tx
 c_func
 (paren
 r_struct
 id|uart_port
 op_star
 id|port
+comma
+r_int
+r_int
+id|tty_stop
 )paren
 (brace
 r_if
@@ -104,51 +108,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|serial21285_stop_tx
-id|serial21285_stop_tx
-c_func
-(paren
-r_struct
-id|uart_port
-op_star
-id|port
-comma
-r_int
-r_int
-id|tty_stop
-)paren
-(brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|__serial21285_stop_tx
-c_func
-(paren
-id|port
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-)brace
-r_static
-r_void
 DECL|function|serial21285_start_tx
 id|serial21285_start_tx
 c_func
@@ -163,19 +122,6 @@ r_int
 id|tty_start
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -202,15 +148,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 DECL|function|serial21285_stop_rx
 r_static
@@ -624,10 +561,12 @@ id|port
 )paren
 )paren
 (brace
-id|__serial21285_stop_tx
+id|serial21285_stop_tx
 c_func
 (paren
 id|port
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -717,10 +656,12 @@ c_func
 id|xmit
 )paren
 )paren
-id|__serial21285_stop_tx
+id|serial21285_stop_tx
 c_func
 (paren
 id|port
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -2050,7 +1991,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Serial: 21285 driver $Revision: 1.32 $&bslash;n&quot;
+l_string|&quot;Serial: 21285 driver $Revision: 1.34 $&bslash;n&quot;
 )paren
 suffix:semicolon
 id|serial21285_setup_ports
@@ -2141,7 +2082,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Intel Footbridge (21285) serial driver $Revision: 1.32 $&quot;
+l_string|&quot;Intel Footbridge (21285) serial driver $Revision: 1.34 $&quot;
 )paren
 suffix:semicolon
 eof
