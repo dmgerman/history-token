@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Various kernel-resident INET utility functions; mainly&n; *&t;&t;for format conversion and debugging output.&n; *&n; * Version:&t;$Id: utils.c,v 1.8 2000/10/03 07:29:01 anton Exp $&n; *&n; * Author:&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;verify_area check.&n; *&t;&t;Alan Cox&t;:&t;removed old debugging.&n; *&t;&t;Andi Kleen&t;:&t;add net_ratelimit()  &n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/*&n; *&t;Convert an ASCII string to binary IP. &n; */
@@ -114,4 +115,11 @@ id|l
 )paren
 suffix:semicolon
 )brace
+DECL|variable|in_aton
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|in_aton
+)paren
+suffix:semicolon
 eof

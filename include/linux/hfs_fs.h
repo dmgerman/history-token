@@ -795,6 +795,7 @@ comma
 id|hfs_u32
 comma
 r_char
+id|__user
 op_star
 comma
 id|hfs_u32
@@ -817,6 +818,7 @@ id|hfs_u32
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 id|hfs_u32

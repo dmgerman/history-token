@@ -40,6 +40,7 @@ id|file
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 id|hfs_rwarg_t
@@ -59,6 +60,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 id|hfs_rwarg_t
@@ -2040,6 +2042,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3127,6 +3130,7 @@ id|filp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma

@@ -1076,6 +1076,7 @@ op_assign
 id|ptr
 suffix:semicolon
 r_int
+r_int
 id|end_jiffies
 suffix:semicolon
 r_int

@@ -803,9 +803,37 @@ id|fp
 id|printk
 c_func
 (paren
-l_string|&quot;unexpected interrupt %x&bslash;n&quot;
+l_string|&quot;unexpected interrupt vec=%x, pc=%lx, d0=%lx, d0_orig=%lx, d1=%lx, d2=%lx&bslash;n&quot;
 comma
 id|level
+comma
+id|fp-&gt;pc
+comma
+id|fp-&gt;d0
+comma
+id|fp-&gt;orig_d0
+comma
+id|fp-&gt;d1
+comma
+id|fp-&gt;d2
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;tIIRQ_REG = %x, EIRQ_REG = %x&bslash;n&quot;
+comma
+id|master_inb
+c_func
+(paren
+id|IIRQ_REG
+)paren
+comma
+id|master_inb
+c_func
+(paren
+id|EIRQ_REG
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1473,7 +1501,7 @@ suffix:semicolon
 multiline_comment|/*printk(&quot;reenabling irq %d&bslash;n&quot;,irq); */
 macro_line|#endif
 )brace
-singleline_comment|// used to do &squot;goto repeat;&squot; her, this delayed bh processing too long
+singleline_comment|// used to do &squot;goto repeat;&squot; here, this delayed bh processing too long
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
@@ -1513,6 +1541,7 @@ c_func
 id|IIRQ_REG
 )paren
 suffix:semicolon
+multiline_comment|/* should test whether keyboard irq is really enabled, doing it in defhand */
 r_if
 c_cond
 (paren
@@ -1681,11 +1710,28 @@ op_star
 id|fp
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|irq
+op_ne
+id|Q40_IRQ_KEYBOARD
+)paren
 id|printk
 (paren
-l_string|&quot;Unknown q40 interrupt 0x%02x&bslash;n&quot;
+l_string|&quot;Unknown q40 interrupt %d&bslash;n&quot;
 comma
 id|irq
+)paren
+suffix:semicolon
+r_else
+id|master_outb
+c_func
+(paren
+op_minus
+l_int|1
+comma
+id|KEYBOARD_UNLOCK_REG
 )paren
 suffix:semicolon
 r_return

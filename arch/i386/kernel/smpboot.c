@@ -3209,6 +3209,12 @@ id|bit
 comma
 id|kicked
 suffix:semicolon
+r_int
+r_int
+id|bogosum
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * Setup boot CPU information&n;&t; */
 id|smp_store_cpu_info
 c_func
@@ -3592,29 +3598,6 @@ c_func
 l_string|&quot;Before bogomips.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cpucount
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Error: only one processor found.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-r_int
-r_int
-id|bogosum
-op_assign
-l_int|0
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3686,7 +3669,6 @@ c_func
 l_string|&quot;Before bogocount - setting activated=1.&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3699,7 +3681,7 @@ id|KERN_WARNING
 l_string|&quot;WARNING: SMP operation may be unreliable with B stepping processors.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Don&squot;t taint if we are running SMP kernel on a single non-MP approved Athlon  */
+multiline_comment|/*&n;&t; * Don&squot;t taint if we are running SMP kernel on a single non-MP&n;&t; * approved Athlon&n;&t; */
 r_if
 c_cond
 (paren
