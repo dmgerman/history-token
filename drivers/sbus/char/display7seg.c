@@ -642,6 +642,12 @@ comma
 id|D7S_MINOR
 )paren
 suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|d7s_regs
+)paren
+suffix:semicolon
 r_return
 id|iTmp
 suffix:semicolon
