@@ -2782,6 +2782,7 @@ suffix:semicolon
 DECL|function|smctr_chk_mca
 r_static
 r_int
+id|__init
 id|smctr_chk_mca
 c_func
 (paren
