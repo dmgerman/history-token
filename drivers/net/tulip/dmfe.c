@@ -865,6 +865,18 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+r_static
+r_void
+id|poll_dmfe
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 r_static
 r_void
 id|dmfe_descriptor_init
@@ -1549,6 +1561,13 @@ op_assign
 op_amp
 id|dmfe_set_filter_mode
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+op_amp
+id|poll_dmfe
+suffix:semicolon
+macro_line|#endif
 id|dev-&gt;ethtool_ops
 op_assign
 op_amp
@@ -3079,6 +3098,43 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+multiline_comment|/*&n; * Polling &squot;interrupt&squot; - used by things like netconsole to send skbs&n; * without having to re-enable interrupts. It&squot;s not called while&n; * the interrupt routine is executing.&n; */
+DECL|function|poll_dmfe
+r_static
+r_void
+id|poll_dmfe
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+multiline_comment|/* disable_irq here is not very nice, but with the lockless&n;&t;   interrupt handler we have no other choice. */
+id|disable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|dmfe_interrupt
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; *&t;Free TX resource after TX complete&n; */
 DECL|function|dmfe_free_tx_pkt
 r_static
