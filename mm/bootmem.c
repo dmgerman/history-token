@@ -117,7 +117,7 @@ l_int|7
 op_div
 l_int|8
 suffix:semicolon
-id|pgdat-&gt;node_next
+id|pgdat-&gt;pgdat_next
 op_assign
 id|pgdat_list
 suffix:semicolon
@@ -1578,12 +1578,11 @@ r_void
 op_star
 id|ptr
 suffix:semicolon
-r_while
-c_loop
+id|for_each_pgdat
+c_func
 (paren
 id|pgdat
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -1606,11 +1605,6 @@ id|goal
 r_return
 id|ptr
 suffix:semicolon
-id|pgdat
-op_assign
-id|pgdat-&gt;node_next
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Whoops, we cannot satisfy the allocation request.&n;&t; */
 id|printk
 c_func

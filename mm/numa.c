@@ -413,7 +413,7 @@ id|next
 suffix:semicolon
 id|next
 op_assign
-id|next-&gt;node_next
+id|next-&gt;pgdat_next
 suffix:semicolon
 macro_line|#endif
 id|start
@@ -448,7 +448,7 @@ id|ret
 suffix:semicolon
 id|temp
 op_assign
-id|temp-&gt;node_next
+id|temp-&gt;pgdat_next
 suffix:semicolon
 )brace
 id|temp
@@ -485,7 +485,7 @@ id|ret
 suffix:semicolon
 id|temp
 op_assign
-id|temp-&gt;node_next
+id|temp-&gt;pgdat_next
 suffix:semicolon
 )brace
 r_return

@@ -1704,7 +1704,7 @@ c_loop
 (paren
 id|pgdat
 op_assign
-id|pgdat-&gt;node_next
+id|pgdat-&gt;pgdat_next
 )paren
 )paren
 suffix:semicolon
@@ -1813,7 +1813,7 @@ c_loop
 (paren
 id|pgdat
 op_assign
-id|pgdat-&gt;node_next
+id|pgdat-&gt;pgdat_next
 )paren
 )paren
 suffix:semicolon

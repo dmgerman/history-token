@@ -228,11 +228,11 @@ DECL|member|node_id
 r_int
 id|node_id
 suffix:semicolon
-DECL|member|node_next
+DECL|member|pgdat_next
 r_struct
 id|pglist_data
 op_star
-id|node_next
+id|pgdat_next
 suffix:semicolon
 DECL|typedef|pg_data_t
 )brace
@@ -343,6 +343,9 @@ r_extern
 id|pg_data_t
 id|contig_page_data
 suffix:semicolon
+multiline_comment|/**&n; * for_each_pgdat - helper macro to iterate over all nodes&n; * @pgdat - pointer to a pg_data_t variable&n; *&n; * Meant to help with common loops of the form&n; * pgdat = pgdat_list;&n; * while(pgdat) {&n; * &t;...&n; * &t;pgdat = pgdat-&gt;pgdat_next;&n; * }&n; */
+DECL|macro|for_each_pgdat
+mdefine_line|#define for_each_pgdat(pgdat) &bslash;&n;&t;for (pgdat = pgdat_list; pgdat; pgdat = pgdat-&gt;pgdat_next)
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|NODE_DATA
 mdefine_line|#define NODE_DATA(nid)&t;&t;(&amp;contig_page_data)
