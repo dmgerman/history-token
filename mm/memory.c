@@ -6502,9 +6502,11 @@ id|pmd_t
 op_star
 id|pmd
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|__set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 id|pgd
 op_assign

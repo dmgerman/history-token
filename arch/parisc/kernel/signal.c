@@ -1423,7 +1423,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#if CACHE_FLUSHING_IS_NOT_BROKEN
-id|flush_icache_range
+id|flush_user_icache_range
 c_func
 (paren
 (paren
@@ -1837,7 +1837,7 @@ op_star
 id|ka
 op_assign
 op_amp
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|sig
 op_minus
@@ -2045,6 +2045,8 @@ op_amp
 id|info
 comma
 id|regs
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -2101,7 +2103,7 @@ suffix:colon
 id|ka
 op_assign
 op_amp
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|signr
 op_minus

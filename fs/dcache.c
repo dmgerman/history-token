@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 DECL|macro|DCACHE_PARANOIA
@@ -5253,9 +5254,9 @@ l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
 comma
-l_int|NULL
+id|filp_ctor
 comma
-l_int|NULL
+id|filp_dtor
 )paren
 suffix:semicolon
 r_if
