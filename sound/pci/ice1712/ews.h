@@ -3,7 +3,7 @@ DECL|macro|__SOUND_EWS_H
 mdefine_line|#define __SOUND_EWS_H
 multiline_comment|/*&n; *   ALSA driver for ICEnsemble ICE1712 (Envy24)&n; *&n; *   Lowlevel functions for Terratec EWS88MT/D, EWX24/96, DMX 6Fire&n; *&n; *&t;Copyright (c) 2000 Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *                    2002 Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 DECL|macro|EWS_DEVICE_DESC
-mdefine_line|#define EWS_DEVICE_DESC &bslash;&n;&t;&t;&quot;{TerraTec,EWX 24/96},&quot;&bslash;&n;&t;&t;&quot;{TerraTec,EWS 88MT},&quot;&bslash;&n;&t;&t;&quot;{TerraTec,EWS 88D},&quot;&bslash;&n;&t;&t;&quot;{TerraTec,DMX 6Fire},&quot;
+mdefine_line|#define EWS_DEVICE_DESC &bslash;&n;&t;&t;&quot;{TerraTec,EWX 24/96},&quot;&bslash;&n;&t;&t;&quot;{TerraTec,EWS 88MT},&quot;&bslash;&n;&t;&t;&quot;{TerraTec,EWS 88D},&quot;&bslash;&n;&t;&t;&quot;{TerraTec,DMX 6Fire},&quot;&bslash;&n;&t;&t;&quot;{TerraTec,Phase 88},&quot;
 DECL|macro|ICE1712_SUBDEVICE_EWX2496
 mdefine_line|#define ICE1712_SUBDEVICE_EWX2496&t;0x3b153011
 DECL|macro|ICE1712_SUBDEVICE_EWS88MT
@@ -14,6 +14,8 @@ DECL|macro|ICE1712_SUBDEVICE_EWS88D
 mdefine_line|#define ICE1712_SUBDEVICE_EWS88D&t;0x3b152b11
 DECL|macro|ICE1712_SUBDEVICE_DMX6FIRE
 mdefine_line|#define ICE1712_SUBDEVICE_DMX6FIRE&t;0x3b153811
+DECL|macro|ICE1712_SUBDEVICE_PHASE88
+mdefine_line|#define ICE1712_SUBDEVICE_PHASE88&t;0x3b155111
 multiline_comment|/* entry point */
 r_extern
 r_struct

@@ -23,8 +23,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t ak4531_t
 r_static
 r_void
 id|snd_ak4531_proc_init
@@ -1420,8 +1418,6 @@ r_return
 id|change
 suffix:semicolon
 )brace
-DECL|macro|AK4531_CONTROLS
-mdefine_line|#define AK4531_CONTROLS (sizeof(snd_ak4531_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_ak4531_controls
 r_static
 id|snd_kcontrol_new_t
@@ -2213,7 +2209,7 @@ c_func
 id|ak4531
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|ak4531
@@ -2239,17 +2235,7 @@ id|ak4531_t
 op_star
 id|ak4531
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ak4531_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_ak4531_free
@@ -2426,12 +2412,16 @@ id|EINVAL
 suffix:semicolon
 id|ak4531
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|ak4531_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|ak4531
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -2587,7 +2577,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|AK4531_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_ak4531_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment
@@ -2710,15 +2704,7 @@ id|ak4531_t
 op_star
 id|ak4531
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ak4531_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|snd_iprintf
 c_func

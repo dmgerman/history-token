@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   (Tentative) USB Audio Driver for ALSA&n; *&n; *   Mixer control part&n; *&n; *   Copyright (c) 2002 by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   Many codes borrowed from audio.c by &n; *&t;    Alan Cox (alan@lxorguk.ukuu.org.uk)&n; *&t;    Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; *   (Tentative) USB Audio Driver for ALSA&n; *&n; *   Mixer control part&n; *&n; *   Copyright (c) 2002 by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   Many codes borrowed from audio.c by&n; *&t;    Alan Cox (alan@lxorguk.ukuu.org.uk)&n; *&t;    Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1427,7 +1427,7 @@ id|value
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * parser routines begin here... &n; */
+multiline_comment|/*&n; * parser routines begin here...&n; */
 r_static
 r_int
 id|parse_audio_unit
@@ -2507,7 +2507,7 @@ c_cond
 id|kctl-&gt;private_data
 )paren
 (brace
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 (paren
@@ -2835,17 +2835,7 @@ id|usb_mixer_elem_info_t
 op_star
 id|cval
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|usb_mixer_elem_info_t
-comma
 id|kcontrol-&gt;private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2947,17 +2937,7 @@ id|usb_mixer_elem_info_t
 op_star
 id|cval
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|usb_mixer_elem_info_t
-comma
 id|kcontrol-&gt;private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_int
 id|c
@@ -3185,17 +3165,7 @@ id|usb_mixer_elem_info_t
 op_star
 id|cval
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|usb_mixer_elem_info_t
-comma
 id|kcontrol-&gt;private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_int
 id|c
@@ -3559,12 +3529,16 @@ r_return
 suffix:semicolon
 id|cval
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|usb_mixer_elem_info_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|cval
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -3705,7 +3679,7 @@ id|KERN_ERR
 l_string|&quot;cannot malloc kcontrol&bslash;n&quot;
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|cval
@@ -4473,12 +4447,16 @@ r_return
 suffix:semicolon
 id|cval
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|usb_mixer_elem_info_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|cval
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -4619,7 +4597,7 @@ id|KERN_ERR
 l_string|&quot;cannot malloc kcontrol&bslash;n&quot;
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|cval
@@ -4899,17 +4877,7 @@ id|usb_mixer_elem_info_t
 op_star
 id|cval
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|usb_mixer_elem_info_t
-comma
 id|kcontrol-&gt;private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_int
 id|err
@@ -5003,17 +4971,7 @@ id|usb_mixer_elem_info_t
 op_star
 id|cval
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|usb_mixer_elem_info_t
-comma
 id|kcontrol-&gt;private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_int
 id|val
@@ -5799,12 +5757,16 @@ r_continue
 suffix:semicolon
 id|cval
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|usb_mixer_elem_info_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|cval
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -5920,7 +5882,7 @@ id|KERN_ERR
 l_string|&quot;cannot malloc kcontrol&bslash;n&quot;
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|cval
@@ -6198,17 +6160,7 @@ id|usb_mixer_elem_info_t
 op_star
 id|cval
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|usb_mixer_elem_info_t
-comma
 id|kcontrol-&gt;private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_char
 op_star
@@ -6295,17 +6247,7 @@ id|usb_mixer_elem_info_t
 op_star
 id|cval
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|usb_mixer_elem_info_t
-comma
 id|kcontrol-&gt;private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_int
 id|val
@@ -6395,17 +6337,7 @@ id|usb_mixer_elem_info_t
 op_star
 id|cval
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|usb_mixer_elem_info_t
-comma
 id|kcontrol-&gt;private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_int
 id|val
@@ -6554,20 +6486,13 @@ id|usb_mixer_elem_info_t
 op_star
 id|cval
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|usb_mixer_elem_info_t
-comma
 id|kctl-&gt;private_data
-comma
-)paren
 suffix:semicolon
 id|num_ins
 op_assign
 id|cval-&gt;max
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|cval
@@ -6784,12 +6709,16 @@ l_int|0
 suffix:semicolon
 id|cval
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|usb_mixer_elem_info_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|cval
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -6879,7 +6808,7 @@ id|KERN_ERR
 l_string|&quot;cannot malloc&bslash;n&quot;
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|cval
@@ -6967,7 +6896,7 @@ c_func
 id|namelist
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|cval
@@ -7064,7 +6993,7 @@ id|KERN_ERR
 l_string|&quot;cannot malloc kcontrol&bslash;n&quot;
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|cval

@@ -4,8 +4,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;vxpocket.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t vx_core_t
 DECL|variable|vxp_reg_offset
 r_static
 r_int

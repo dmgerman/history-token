@@ -198,8 +198,6 @@ id|curptr
 comma
 id|size
 )paren
-OL
-l_int|0
 )paren
 r_return
 op_minus
@@ -543,8 +541,6 @@ id|event-&gt;data.ext.ptr
 comma
 id|len
 )paren
-OL
-l_int|0
 )paren
 r_return
 op_minus
@@ -1849,12 +1845,15 @@ suffix:semicolon
 multiline_comment|/* create pool block */
 id|pool
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
-id|pool_t
+op_star
+id|pool
 )paren
 comma
 id|GFP_KERNEL

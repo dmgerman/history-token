@@ -15,8 +15,6 @@ macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#endif
 macro_line|#include &quot;pmac.h&quot;
 macro_line|#include &quot;tumbler_volume.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t pmac_t
 multiline_comment|/* i2c address for tumbler */
 DECL|macro|TAS_I2C_ADDR
 mdefine_line|#define TAS_I2C_ADDR&t;0x34
@@ -3994,16 +3992,7 @@ id|pmac_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|pmac_t
-comma
 id|devid
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_if
 c_cond

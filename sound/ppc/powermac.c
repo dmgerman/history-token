@@ -15,13 +15,7 @@ c_func
 l_string|&quot;PowerMac&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Apple,PowerMac}}&quot;
@@ -50,8 +44,6 @@ op_assign
 id|SNDRV_DEFAULT_STR1
 suffix:semicolon
 multiline_comment|/* ID for this card */
-multiline_comment|/* static int enable = 1; */
-macro_line|#ifdef PMAC_SUPPORT_PCM_BEEP
 DECL|variable|enable_beep
 r_static
 r_int
@@ -59,7 +51,6 @@ id|enable_beep
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif
 id|module_param
 c_func
 (paren
@@ -78,14 +69,6 @@ comma
 l_string|&quot;Index value for &quot;
 id|CHIP_NAME
 l_string|&quot; soundchip.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
 )paren
 suffix:semicolon
 id|module_param
@@ -108,16 +91,6 @@ id|CHIP_NAME
 l_string|&quot; soundchip.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
-multiline_comment|/* module_param(enable, bool, 0444);&n;   MODULE_PARM_DESC(enable, &quot;Enable this soundchip.&quot;);&n;   MODULE_PARM_SYNTAX(enable, SNDRV_ENABLE_DESC); */
-macro_line|#ifdef PMAC_SUPPORT_PCM_BEEP
 id|module_param
 c_func
 (paren
@@ -136,17 +109,6 @@ comma
 l_string|&quot;Enable beep using PCM.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable_beep
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_TRUE_DESC
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * card entry&n; */
 DECL|variable|snd_pmac_card
 r_static
@@ -550,7 +512,6 @@ id|chip-&gt;initialized
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef PMAC_SUPPORT_PCM_BEEP
 r_if
 c_cond
 (paren
@@ -562,7 +523,6 @@ c_func
 id|chip
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -600,7 +560,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * MODULE sutff&n; */
+multiline_comment|/*&n; * MODULE stuff&n; */
 DECL|function|alsa_card_pmac_init
 r_static
 r_int
@@ -628,20 +588,9 @@ c_func
 OL
 l_int|0
 )paren
-(brace
-macro_line|#ifdef MODULE
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;no PMac soundchip found&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|err
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon

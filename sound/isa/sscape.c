@@ -12,8 +12,6 @@ macro_line|#include &lt;sound/cs4231.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/sscape_ioctl.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t cs4231_t
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -138,14 +136,6 @@ comma
 l_string|&quot;Index number for SoundScape soundcard&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -164,14 +154,6 @@ c_func
 id|id
 comma
 l_string|&quot;Description for SoundScape card&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -194,14 +176,6 @@ comma
 l_string|&quot;Port # for SoundScape driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|port
-comma
-id|SNDRV_ENABLED
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -220,14 +194,6 @@ c_func
 id|irq
 comma
 l_string|&quot;IRQ # for SoundScape driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|irq
-comma
-id|SNDRV_IRQ_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -250,14 +216,6 @@ comma
 l_string|&quot;MPU401 IRQ # for SoundScape driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_irq
-comma
-id|SNDRV_IRQ_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -276,14 +234,6 @@ c_func
 id|dma
 comma
 l_string|&quot;DMA # for SoundScape driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma
-comma
-id|SNDRV_DMA8_DESC
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
@@ -586,43 +536,18 @@ c_cond
 id|buf
 )paren
 (brace
-r_struct
-id|snd_dma_device
-id|dev
-suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|dev
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|dev
-)paren
-)paren
-suffix:semicolon
-id|dev.type
-op_assign
-id|SNDRV_DMA_TYPE_DEV
-suffix:semicolon
-id|dev.dev
-op_assign
-id|snd_dma_isa_data
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|snd_dma_alloc_pages_fallback
 c_func
 (paren
-op_amp
-id|dev
+id|SNDRV_DMA_TYPE_DEV
+comma
+id|snd_dma_isa_data
+c_func
+(paren
+)paren
 comma
 id|size
 comma
@@ -670,46 +595,12 @@ id|buf
 op_logical_and
 id|buf-&gt;area
 )paren
-(brace
-r_struct
-id|snd_dma_device
-id|dev
-suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|dev
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|dev
-)paren
-)paren
-suffix:semicolon
-id|dev.type
-op_assign
-id|SNDRV_DMA_TYPE_DEV
-suffix:semicolon
-id|dev.dev
-op_assign
-id|snd_dma_isa_data
-c_func
-(paren
-)paren
-suffix:semicolon
 id|snd_dma_free_pages
 c_func
 (paren
-op_amp
-id|dev
-comma
 id|buf
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * This function writes to the SoundScape&squot;s control registers,&n; * but doesn&squot;t do any locking. It&squot;s up to the caller to do that.&n; * This is why this function is &quot;unsafe&quot; ...&n; */
 DECL|function|sscape_write_unsafe

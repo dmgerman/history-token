@@ -594,12 +594,40 @@ DECL|macro|AC97_RATES_MIC_ADC
 mdefine_line|#define AC97_RATES_MIC_ADC&t;4
 DECL|macro|AC97_RATES_SPDIF
 mdefine_line|#define AC97_RATES_SPDIF&t;5
+multiline_comment|/* shared controllers */
+r_enum
+(brace
+DECL|enumerator|AC97_SHARED_TYPE_NONE
+id|AC97_SHARED_TYPE_NONE
+comma
+DECL|enumerator|AC97_SHARED_TYPE_ICH
+id|AC97_SHARED_TYPE_ICH
+comma
+DECL|enumerator|AC97_SHARED_TYPE_ATIIXP
+id|AC97_SHARED_TYPE_ATIIXP
+comma
+DECL|enumerator|AC97_SHARED_TYPES
+id|AC97_SHARED_TYPES
+)brace
+suffix:semicolon
 multiline_comment|/*&n; *&n; */
 DECL|typedef|ac97_bus_t
 r_typedef
 r_struct
 id|_snd_ac97_bus
 id|ac97_bus_t
+suffix:semicolon
+DECL|typedef|ac97_bus_ops_t
+r_typedef
+r_struct
+id|_snd_ac97_bus_ops
+id|ac97_bus_ops_t
+suffix:semicolon
+DECL|typedef|ac97_template_t
+r_typedef
+r_struct
+id|_snd_ac97_template
+id|ac97_template_t
 suffix:semicolon
 DECL|typedef|ac97_t
 r_typedef
@@ -798,11 +826,10 @@ id|ac97
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|_snd_ac97_bus
+DECL|struct|_snd_ac97_bus_ops
 r_struct
-id|_snd_ac97_bus
+id|_snd_ac97_bus_ops
 (brace
-multiline_comment|/* -- lowlevel (hardware) driver specific -- */
 DECL|member|reset
 r_void
 (paren
@@ -876,6 +903,18 @@ op_star
 id|ac97
 )paren
 suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|_snd_ac97_bus
+r_struct
+id|_snd_ac97_bus
+(brace
+multiline_comment|/* -- lowlevel (hardware) driver specific -- */
+DECL|member|ops
+id|ac97_bus_ops_t
+op_star
+id|ops
+suffix:semicolon
 DECL|member|private_data
 r_void
 op_star
@@ -905,14 +944,14 @@ r_int
 id|num
 suffix:semicolon
 multiline_comment|/* bus number */
-DECL|member|vra
+DECL|member|no_vra
 r_int
 r_int
-id|vra
+id|no_vra
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* bridge supports VRA */
+multiline_comment|/* bridge doesn&squot;t support VRA */
 DECL|member|isdin
 id|isdin
 suffix:colon
@@ -954,6 +993,12 @@ id|ac97_pcm
 op_star
 id|pcms
 suffix:semicolon
+DECL|member|shared_type
+r_int
+r_int
+id|shared_type
+suffix:semicolon
+multiline_comment|/* type of shared controller betwen audio and modem */
 DECL|member|codec
 id|ac97_t
 op_star
@@ -967,6 +1012,69 @@ id|snd_info_entry_t
 op_star
 id|proc
 suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|_snd_ac97_template
+r_struct
+id|_snd_ac97_template
+(brace
+DECL|member|private_data
+r_void
+op_star
+id|private_data
+suffix:semicolon
+DECL|member|private_free
+r_void
+(paren
+op_star
+id|private_free
+)paren
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
+DECL|member|pci
+r_struct
+id|pci_dev
+op_star
+id|pci
+suffix:semicolon
+multiline_comment|/* assigned PCI device - used for quirks */
+DECL|member|num
+r_int
+r_int
+id|num
+suffix:semicolon
+multiline_comment|/* number of codec: 0 = primary, 1 = secondary */
+DECL|member|addr
+r_int
+r_int
+id|addr
+suffix:semicolon
+multiline_comment|/* physical address of codec [0-3] */
+DECL|member|scaps
+r_int
+r_int
+id|scaps
+suffix:semicolon
+multiline_comment|/* driver capabilities */
+DECL|member|limited_regs
+r_int
+r_int
+id|limited_regs
+suffix:semicolon
+multiline_comment|/* allow limited registers only */
+id|DECLARE_BITMAP
+c_func
+(paren
+id|reg_accessed
+comma
+l_int|0x80
+)paren
+suffix:semicolon
+multiline_comment|/* bit flags */
 )brace
 suffix:semicolon
 DECL|struct|_snd_ac97
@@ -1034,6 +1142,12 @@ DECL|member|reg_lock
 id|spinlock_t
 id|reg_lock
 suffix:semicolon
+DECL|member|mutex
+r_struct
+id|semaphore
+id|mutex
+suffix:semicolon
+multiline_comment|/* mutex for AD18xx multi-codecs and paging (2.3) */
 DECL|member|num
 r_int
 r_int
@@ -1170,11 +1284,6 @@ l_int|3
 )braket
 suffix:semicolon
 singleline_comment|// CODEC_CFG bits
-DECL|member|mutex
-r_struct
-id|semaphore
-id|mutex
-suffix:semicolon
 DECL|member|ad18xx
 )brace
 id|ad18xx
@@ -1276,6 +1385,28 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|ac97_can_spdif
+r_static
+r_inline
+r_int
+id|ac97_can_spdif
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+r_return
+(paren
+id|ac97-&gt;ext_id
+op_amp
+id|AC97_EI_SPDIF
+)paren
+op_ne
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* functions */
 r_int
 id|snd_ac97_bus
@@ -1285,9 +1416,16 @@ id|snd_card_t
 op_star
 id|card
 comma
-id|ac97_bus_t
+r_int
+id|num
+comma
+id|ac97_bus_ops_t
 op_star
-id|_bus
+id|ops
+comma
+r_void
+op_star
+id|private_data
 comma
 id|ac97_bus_t
 op_star
@@ -1304,9 +1442,9 @@ id|ac97_bus_t
 op_star
 id|bus
 comma
-id|ac97_t
+id|ac97_template_t
 op_star
-id|_ac97
+r_template
 comma
 id|ac97_t
 op_star

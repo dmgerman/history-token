@@ -590,6 +590,19 @@ op_star
 id|private_data
 )paren
 suffix:semicolon
+multiline_comment|/* interface for OSS emulation */
+r_int
+id|snd_seq_set_queue_tempo
+c_func
+(paren
+r_int
+id|client
+comma
+id|snd_seq_queue_tempo_t
+op_star
+id|tempo
+)paren
+suffix:semicolon
 multiline_comment|/* port callback routines */
 r_void
 id|snd_port_init_callback

@@ -63,10 +63,8 @@ r_struct
 id|sndrv_ctl_event
 id|snd_ctl_event_t
 suffix:semicolon
-DECL|macro|_snd_kcontrol_chip
-mdefine_line|#define _snd_kcontrol_chip(kcontrol) ((kcontrol)-&gt;private_data)
 DECL|macro|snd_kcontrol_chip
-mdefine_line|#define snd_kcontrol_chip(kcontrol) snd_magic_cast1(chip_t, _snd_kcontrol_chip(kcontrol), return -ENXIO)
+mdefine_line|#define snd_kcontrol_chip(kcontrol) ((kcontrol)-&gt;private_data)
 DECL|typedef|snd_kcontrol_info_t
 r_typedef
 r_int

@@ -743,6 +743,12 @@ r_int
 r_int
 id|audio_source_target
 suffix:semicolon
+DECL|member|clock_mode
+r_int
+r_int
+id|clock_mode
+suffix:semicolon
+multiline_comment|/* clock mode (VX_CLOCK_MODE_XXX) */
 DECL|member|clock_source
 r_int
 r_int
@@ -1568,6 +1574,22 @@ id|INTERNAL_QUARTZ
 comma
 DECL|enumerator|UER_SYNC
 id|UER_SYNC
+)brace
+suffix:semicolon
+multiline_comment|/* clock mode */
+r_enum
+(brace
+DECL|enumerator|VX_CLOCK_MODE_AUTO
+id|VX_CLOCK_MODE_AUTO
+comma
+multiline_comment|/* depending on the current audio source */
+DECL|enumerator|VX_CLOCK_MODE_INTERNAL
+id|VX_CLOCK_MODE_INTERNAL
+comma
+multiline_comment|/* fixed to internal quartz */
+DECL|enumerator|VX_CLOCK_MODE_EXTERNAL
+id|VX_CLOCK_MODE_EXTERNAL
+multiline_comment|/* fixed to UER sync */
 )brace
 suffix:semicolon
 multiline_comment|/* SPDIF/UER type */
