@@ -10,7 +10,7 @@ DECL|macro|DISCOVERY_EXPIRE_TIMEOUT
 mdefine_line|#define DISCOVERY_EXPIRE_TIMEOUT (2*sysctl_discovery_timeout*HZ)
 DECL|macro|DISCOVERY_DEFAULT_SLOTS
 mdefine_line|#define DISCOVERY_DEFAULT_SLOTS  0
-multiline_comment|/*&n; *  This type is used by the protocols that transmit 16 bits words in &n; *  little endian format. A little endian machine stores MSB of word in&n; *  byte[1] and LSB in byte[0]. A big endian machine stores MSB in byte[0] &n; *  and LSB in byte[1].&n; */
+multiline_comment|/*&n; *  This type is used by the protocols that transmit 16 bits words in &n; *  little endian format. A little endian machine stores MSB of word in&n; *  byte[1] and LSB in byte[0]. A big endian machine stores MSB in byte[0] &n; *  and LSB in byte[1].&n; *&n; * This structure is used in the code for things that are endian neutral&n; * but that fit in a word so that we can manipulate them efficiently.&n; * By endian neutral, I mean things that are really an array of bytes,&n; * and always used as such, for example the hint bits. Jean II&n; */
 r_typedef
 r_union
 (brace
@@ -29,6 +29,9 @@ DECL|typedef|__u16_host_order
 )brace
 id|__u16_host_order
 suffix:semicolon
+multiline_comment|/* Same purpose, different application */
+DECL|macro|u16ho
+mdefine_line|#define u16ho(array) (* ((__u16 *) array))
 multiline_comment|/* Types of discovery */
 r_typedef
 r_enum
@@ -55,6 +58,14 @@ id|DISCOVERY_MODE
 suffix:semicolon
 DECL|macro|NICKNAME_MAX_LEN
 mdefine_line|#define NICKNAME_MAX_LEN 21
+multiline_comment|/* Basic discovery information about a peer */
+DECL|typedef|discinfo_t
+r_typedef
+r_struct
+id|irda_device_info
+id|discinfo_t
+suffix:semicolon
+multiline_comment|/* linux/irda.h */
 multiline_comment|/*&n; * The DISCOVERY structure is used for both discovery requests and responses&n; */
 DECL|struct|discovery_t
 r_typedef
@@ -66,64 +77,41 @@ id|irda_queue_t
 id|q
 suffix:semicolon
 multiline_comment|/* Must be first! */
-DECL|member|saddr
-id|__u32
-id|saddr
+DECL|member|data
+id|discinfo_t
+id|data
 suffix:semicolon
-multiline_comment|/* Which link the device was discovered */
-DECL|member|daddr
-id|__u32
-id|daddr
-suffix:semicolon
-multiline_comment|/* Remote device address */
-DECL|member|condition
-id|LAP_REASON
-id|condition
-suffix:semicolon
-multiline_comment|/* More info about the discovery */
-DECL|member|hints
-id|__u16_host_order
-id|hints
-suffix:semicolon
-multiline_comment|/* Discovery hint bits */
-DECL|member|charset
-id|__u8
-id|charset
-suffix:semicolon
-multiline_comment|/* Encoding of nickname */
-DECL|member|nickname
-r_char
-id|nickname
-(braket
-l_int|22
-)braket
-suffix:semicolon
-multiline_comment|/* The name of the device (21 bytes + &bslash;0) */
+multiline_comment|/* Basic discovery information */
 DECL|member|name_len
 r_int
 id|name_len
 suffix:semicolon
 multiline_comment|/* Lenght of nickname */
+DECL|member|condition
+id|LAP_REASON
+id|condition
+suffix:semicolon
+multiline_comment|/* More info about the discovery */
 DECL|member|gen_addr_bit
 r_int
 id|gen_addr_bit
 suffix:semicolon
-multiline_comment|/* Need to generate a new device address? */
+multiline_comment|/* Need to generate a new device&n;&t;&t;&t;&t;&t; * address? */
 DECL|member|nslots
 r_int
 id|nslots
 suffix:semicolon
-multiline_comment|/* Number of slots to use when discovering */
+multiline_comment|/* Number of slots to use when&n;&t;&t;&t;&t;&t; * discovering */
 DECL|member|timestamp
 r_int
 r_int
 id|timestamp
 suffix:semicolon
-multiline_comment|/* Time discovered */
-DECL|member|first_timestamp
+multiline_comment|/* Last time discovered */
+DECL|member|firststamp
 r_int
 r_int
-id|first_timestamp
+id|firststamp
 suffix:semicolon
 multiline_comment|/* First time discovered */
 DECL|typedef|discovery_t
@@ -187,6 +175,9 @@ id|pn
 comma
 id|__u16
 id|mask
+comma
+r_int
+id|old_entries
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/shmem_fs.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* This magic number is used in glibc for posix shared memory */
 DECL|macro|TMPFS_MAGIC
@@ -1867,6 +1868,36 @@ OG
 id|info-&gt;next_index
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode-&gt;i_mapping-&gt;nrpages
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Call truncate_inode_pages again: racing shmem_unuse_inode&n;&t;&t; * may have swizzled a page in from swap since vmtruncate or&n;&t;&t; * generic_delete_inode did it, before we lowered next_index.&n;&t;&t; */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|info-&gt;lock
+)paren
+suffix:semicolon
+id|truncate_inode_pages
+c_func
+(paren
+id|inode-&gt;i_mapping
+comma
+id|inode-&gt;i_size
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|info-&gt;lock
+)paren
+suffix:semicolon
+)brace
 id|shmem_recalc_inode
 c_func
 (paren
@@ -3561,10 +3592,6 @@ r_else
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-id|error
-op_assign
 id|move_from_swap_cache
 c_func
 (paren
@@ -3574,7 +3601,8 @@ id|idx
 comma
 id|mapping
 )paren
-)paren
+op_eq
+l_int|0
 )paren
 (brace
 id|shmem_swp_set
@@ -3638,16 +3666,16 @@ c_func
 id|swappage
 )paren
 suffix:semicolon
-r_if
-c_cond
+multiline_comment|/* let kswapd refresh zone for GFP_ATOMICs */
+id|blk_congestion_wait
+c_func
 (paren
-id|error
-op_ne
-op_minus
-id|EEXIST
+id|WRITE
+comma
+id|HZ
+op_div
+l_int|50
 )paren
-r_goto
-id|failed
 suffix:semicolon
 r_goto
 id|repeat
@@ -3907,9 +3935,8 @@ id|error
 op_logical_or
 id|swap.val
 op_logical_or
-(paren
-id|error
-op_assign
+l_int|0
+op_ne
 id|add_to_page_cache_lru
 c_func
 (paren
@@ -3920,7 +3947,6 @@ comma
 id|idx
 comma
 id|GFP_ATOMIC
-)paren
 )paren
 )paren
 (brace
@@ -3951,12 +3977,20 @@ r_if
 c_cond
 (paren
 id|error
-op_ne
-op_minus
-id|EEXIST
 )paren
 r_goto
 id|failed
+suffix:semicolon
+multiline_comment|/* let kswapd refresh zone for GFP_ATOMICs */
+id|blk_congestion_wait
+c_func
+(paren
+id|WRITE
+comma
+id|HZ
+op_div
+l_int|50
+)paren
 suffix:semicolon
 r_goto
 id|repeat

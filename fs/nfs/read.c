@@ -1041,14 +1041,6 @@ op_star
 )paren
 id|task-&gt;tk_calldata
 suffix:semicolon
-r_struct
-id|nfs_fattr
-op_star
-id|fattr
-op_assign
-op_amp
-id|data-&gt;fattr
-suffix:semicolon
 r_int
 r_int
 id|count
