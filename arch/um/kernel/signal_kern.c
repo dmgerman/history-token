@@ -1176,6 +1176,7 @@ suffix:semicolon
 id|copy_sc_from_user
 c_func
 (paren
+op_amp
 id|current-&gt;thread.regs
 comma
 id|sc
@@ -1284,6 +1285,7 @@ suffix:semicolon
 id|copy_sc_from_user
 c_func
 (paren
+op_amp
 id|current-&gt;thread.regs
 comma
 id|sc
