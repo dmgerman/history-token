@@ -590,6 +590,10 @@ id|sdev-&gt;online
 op_assign
 id|TRUE
 suffix:semicolon
+id|sdev-&gt;sdev_state
+op_assign
+id|SDEV_CREATED
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
