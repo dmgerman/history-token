@@ -999,18 +999,8 @@ id|fixup
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Returns 0 if exception not found and fixup.unit otherwise.  */
-r_extern
-r_int
-id|search_exception_table
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* Returns the new pc */
 DECL|macro|fixup_exception
-mdefine_line|#define fixup_exception(map_reg, fixup_unit, pc)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;union exception_fixup __fie_fixup;&t;&t;&t;&bslash;&n;&t;__fie_fixup.unit = fixup_unit;&t;&t;&t;&t;&bslash;&n;&t;if (__fie_fixup.bits.valreg != 31)&t;&t;&t;&bslash;&n;&t;&t;map_reg(__fie_fixup.bits.valreg) = 0;&t;&t;&bslash;&n;&t;if (__fie_fixup.bits.errreg != 31)&t;&t;&t;&bslash;&n;&t;&t;map_reg(__fie_fixup.bits.errreg) = -EFAULT;&t;&bslash;&n;&t;(pc) + __fie_fixup.bits.nextinsn;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define fixup_exception(map_reg, fixup, pc)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((fixup)-&gt;fixup.bits.valreg != 31)&t;&t;&t;&bslash;&n;&t;&t;map_reg((fixup)-&gt;fixup.bits.valreg) = 0;&t;&bslash;&n;&t;if ((fixup)-&gt;fixup.bits.errreg != 31)&t;&t;&t;&bslash;&n;&t;&t;map_reg((fixup)-&gt;fixup.bits.errreg) = -EFAULT;&t;&bslash;&n;&t;(pc) + (fixup)-&gt;fixup.bits.nextinsn;&t;&t;&t;&bslash;&n;})
 macro_line|#endif /* __ALPHA_UACCESS_H */
 eof
