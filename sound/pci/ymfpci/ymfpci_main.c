@@ -11051,10 +11051,6 @@ id|chip-&gt;reg_area_virt
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;reg_area_virt
 )paren
 suffix:semicolon
@@ -11663,10 +11659,6 @@ l_int|0
 suffix:semicolon
 id|chip-&gt;reg_area_virt
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren

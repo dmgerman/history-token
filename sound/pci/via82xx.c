@@ -350,6 +350,8 @@ DECL|macro|VIA_REV_8233A
 mdefine_line|#define VIA_REV_8233A&t;&t;0x40&t;/* 1 rec, 1 multi-pb, spdf */
 DECL|macro|VIA_REV_8235
 mdefine_line|#define VIA_REV_8235&t;&t;0x50&t;/* 2 rec, 4 pb, 1 multi-pb, spdif */
+DECL|macro|VIA_REV_8237
+mdefine_line|#define VIA_REV_8237&t;&t;0x60
 multiline_comment|/*&n; *  Direct registers&n; */
 DECL|macro|VIAREG
 mdefine_line|#define VIAREG(via, x) ((via)-&gt;port + VIA_REG_##x)
@@ -2166,19 +2168,6 @@ r_int
 r_int
 id|i
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* FIXME: does it work on via823x? */
-r_if
-c_cond
-(paren
-id|chip-&gt;chip_type
-op_ne
-id|TYPE_VIA686
-)paren
-r_goto
-id|_skip_sgd
-suffix:semicolon
-macro_line|#endif
 id|status
 op_assign
 id|inl
@@ -2225,7 +2214,6 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-singleline_comment|// _skip_sgd:
 multiline_comment|/* check status for each stream */
 id|spin_lock
 c_func
@@ -6970,6 +6958,34 @@ id|ac97_quirks
 op_assign
 (brace
 (brace
+dot
+id|vendor
+op_assign
+l_int|0x1106
+comma
+dot
+id|device
+op_assign
+l_int|0x4161
+comma
+dot
+id|codec_id
+op_assign
+l_int|0x56494161
+comma
+multiline_comment|/* VT1612A */
+dot
+id|name
+op_assign
+l_string|&quot;Soltek SL-75DRV5&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_NONE
+)brace
+comma
+(brace
 multiline_comment|/* FIXME: which codec? */
 dot
 id|vendor
@@ -7209,6 +7225,10 @@ suffix:semicolon
 id|chip-&gt;ac97_bus-&gt;clock
 op_assign
 id|chip-&gt;ac97_clock
+suffix:semicolon
+id|chip-&gt;ac97_bus-&gt;shared_type
+op_assign
+id|AC97_SHARED_TYPE_VIA
 suffix:semicolon
 id|memset
 c_func
@@ -9631,6 +9651,14 @@ comma
 id|TYPE_VIA8233
 )brace
 comma
+(brace
+id|VIA_REV_8237
+comma
+l_string|&quot;VIA 8237&quot;
+comma
+id|TYPE_VIA8233
+)brace
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * auto detection of DXS channel supports.&n; */
@@ -9887,6 +9915,24 @@ comma
 dot
 id|device
 op_assign
+l_int|0x4552
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_NO_VRA
+)brace
+comma
+multiline_comment|/* QDI Kudoz 7X/600-6AL */
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1106
+comma
+dot
+id|device
+op_assign
 l_int|0xaa01
 comma
 dot
@@ -9946,10 +9992,10 @@ comma
 dot
 id|action
 op_assign
-id|VIA_DXS_NO_VRA
+id|VIA_DXS_ENABLE
 )brace
 comma
-multiline_comment|/* Gigabyte GA-7VAXP (FIXME: or DXS_ENABLE?) */
+multiline_comment|/* Gigabyte GA-7VAXP */
 (brace
 dot
 id|vendor
@@ -10588,6 +10634,23 @@ l_string|&quot;VIA8233A&quot;
 )paren
 suffix:semicolon
 r_else
+r_if
+c_cond
+(paren
+id|revision
+op_ge
+id|VIA_REV_8237
+)paren
+id|strcpy
+c_func
+(paren
+id|card-&gt;driver
+comma
+l_string|&quot;VIA8237&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* no slog assignment */
+r_else
 id|strcpy
 c_func
 (paren
@@ -10854,14 +10917,25 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|card-&gt;longname
 comma
-l_string|&quot;%s at 0x%lx, irq %d&quot;
+r_sizeof
+(paren
+id|card-&gt;longname
+)paren
+comma
+l_string|&quot;%s with %s at %#lx, irq %d&quot;
 comma
 id|card-&gt;shortname
+comma
+id|snd_ac97_get_short_name
+c_func
+(paren
+id|chip-&gt;ac97
+)paren
 comma
 id|chip-&gt;port
 comma

@@ -1653,6 +1653,17 @@ comma
 id|bits
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Comment from kernel oss driver:&n;&t;&t; * FKS: fascinating: 0x72 doesn&squot;t seem to work.&n;&t;&t; */
+id|snd_es18xx_write
+c_func
+(paren
+id|chip
+comma
+l_int|0xA2
+comma
+id|div0
+)paren
+suffix:semicolon
 id|snd_es18xx_mixer_write
 c_func
 (paren

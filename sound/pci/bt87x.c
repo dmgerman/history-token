@@ -316,6 +316,17 @@ DECL|macro|RISC_SYNC_FM1
 mdefine_line|#define RISC_SYNC_FM1&t;0x6
 DECL|macro|RISC_SYNC_VRO
 mdefine_line|#define RISC_SYNC_VRO&t;0xc
+DECL|macro|ANALOG_CLOCK
+mdefine_line|#define ANALOG_CLOCK 1792000
+macro_line|#ifdef CONFIG_SND_BT87X_OVERCLOCK
+DECL|macro|CLOCK_DIV_MIN
+mdefine_line|#define CLOCK_DIV_MIN 1
+macro_line|#else
+DECL|macro|CLOCK_DIV_MIN
+mdefine_line|#define CLOCK_DIV_MIN 4
+macro_line|#endif
+DECL|macro|CLOCK_DIV_MAX
+mdefine_line|#define CLOCK_DIV_MAX 15
 DECL|macro|ERROR_INTERRUPTS
 mdefine_line|#define ERROR_INTERRUPTS (INT_FBUS | INT_FTRGT | INT_PPERR | &bslash;&n;&t;&t;&t;  INT_RIPERR | INT_PABORT | INT_OCERR)
 DECL|macro|MY_INTERRUPTS
@@ -990,9 +1001,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|status
 op_amp
 id|INT_RISCI
+)paren
+op_logical_and
+(paren
+id|chip-&gt;reg_control
+op_amp
+id|CTL_ACAP_EN
+)paren
 )paren
 (brace
 r_int
@@ -1155,12 +1174,16 @@ comma
 dot
 id|rate_min
 op_assign
-l_int|119466
+id|ANALOG_CLOCK
+op_div
+id|CLOCK_DIV_MAX
 comma
 dot
 id|rate_max
 op_assign
-l_int|448000
+id|ANALOG_CLOCK
+op_div
+id|CLOCK_DIV_MIN
 comma
 dot
 id|channels_min
@@ -1368,17 +1391,17 @@ op_assign
 dot
 id|num
 op_assign
-l_int|1792000
+id|ANALOG_CLOCK
 comma
 dot
 id|den_min
 op_assign
-l_int|4
+id|CLOCK_DIV_MIN
 comma
 dot
 id|den_max
 op_assign
-l_int|15
+id|CLOCK_DIV_MAX
 comma
 dot
 id|den_step
@@ -1761,7 +1784,7 @@ suffix:semicolon
 id|decimation
 op_assign
 (paren
-l_int|1792000
+id|ANALOG_CLOCK
 op_plus
 id|runtime-&gt;rate
 op_div

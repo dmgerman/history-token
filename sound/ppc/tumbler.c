@@ -91,6 +91,7 @@ id|addr
 suffix:semicolon
 macro_line|#else
 r_void
+id|__iomem
 op_star
 id|addr
 suffix:semicolon
@@ -441,7 +442,7 @@ id|gp-&gt;addr
 suffix:semicolon
 id|gp-&gt;addr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -4379,10 +4380,6 @@ suffix:semicolon
 macro_line|#else
 id|gp-&gt;addr
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|ioremap
 c_func
 (paren

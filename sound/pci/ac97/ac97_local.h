@@ -232,6 +232,7 @@ id|dst
 )paren
 suffix:semicolon
 multiline_comment|/* ac97_proc.c */
+macro_line|#ifdef CONFIG_PROC_FS
 r_void
 id|snd_ac97_bus_proc_init
 c_func
@@ -268,4 +269,14 @@ op_star
 id|ac97
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|snd_ac97_bus_proc_init
+mdefine_line|#define snd_ac97_bus_proc_init(ac97_bus_t) do { } while (0)
+DECL|macro|snd_ac97_bus_proc_done
+mdefine_line|#define snd_ac97_bus_proc_done(ac97_bus_t) do { } while (0)
+DECL|macro|snd_ac97_proc_init
+mdefine_line|#define snd_ac97_proc_init(ac97_t) do { } while (0)
+DECL|macro|snd_ac97_proc_done
+mdefine_line|#define snd_ac97_proc_done(ac97_t) do { } while (0)
+macro_line|#endif
 eof

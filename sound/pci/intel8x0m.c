@@ -6,13 +6,11 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
-macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 id|MODULE_AUTHOR
 c_func
@@ -41,7 +39,13 @@ l_string|&quot;{Intel,82801BA-ICH2},&quot;
 l_string|&quot;{Intel,82801CA-ICH3},&quot;
 l_string|&quot;{Intel,82801DB-ICH4},&quot;
 l_string|&quot;{Intel,ICH5},&quot;
-l_string|&quot;{Intel,MX440}}&quot;
+l_string|&quot;{Intel,MX440},&quot;
+l_string|&quot;{SiS,7013},&quot;
+l_string|&quot;{NVidia,NForce Modem},&quot;
+l_string|&quot;{NVidia,NForce2 Modem},&quot;
+l_string|&quot;{NVidia,NForce2s Modem},&quot;
+l_string|&quot;{NVidia,NForce3 Modem},&quot;
+l_string|&quot;{AMD,AMD768}}&quot;
 )paren
 suffix:semicolon
 DECL|variable|index
@@ -543,8 +547,9 @@ r_int
 id|addr
 suffix:semicolon
 DECL|member|remap_addr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|remap_addr
 suffix:semicolon
 DECL|member|bm_mmio
@@ -558,8 +563,9 @@ r_int
 id|bmaddr
 suffix:semicolon
 DECL|member|remap_bmaddr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|remap_bmaddr
 suffix:semicolon
 DECL|member|pci
@@ -4890,10 +4896,6 @@ id|chip-&gt;remap_addr
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;remap_addr
 )paren
 suffix:semicolon
@@ -4905,10 +4907,6 @@ id|chip-&gt;remap_bmaddr
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;remap_bmaddr
 )paren
 suffix:semicolon
@@ -5558,10 +5556,6 @@ l_int|2
 suffix:semicolon
 id|chip-&gt;remap_addr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -5581,7 +5575,7 @@ c_cond
 (paren
 id|chip-&gt;remap_addr
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|snd_printk
@@ -5646,10 +5640,6 @@ l_int|3
 suffix:semicolon
 id|chip-&gt;remap_bmaddr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -5669,7 +5659,7 @@ c_cond
 (paren
 id|chip-&gt;remap_bmaddr
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|snd_printk
@@ -6312,27 +6302,6 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|pci_id-&gt;driver_data
-)paren
-(brace
-r_case
-id|DEVICE_NFORCE
-suffix:colon
-id|strcpy
-c_func
-(paren
-id|card-&gt;driver
-comma
-l_string|&quot;NFORCE-MODEM&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
 id|strcpy
 c_func
 (paren
@@ -6341,9 +6310,6 @@ comma
 l_string|&quot;ICH-MODEM&quot;
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|strcpy
 c_func
 (paren
