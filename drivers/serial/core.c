@@ -32,6 +32,13 @@ DECL|macro|HIGH_BITS_OFFSET
 mdefine_line|#define HIGH_BITS_OFFSET&t;((sizeof(long)-sizeof(int))*8)
 DECL|macro|uart_users
 mdefine_line|#define uart_users(state)&t;((state)-&gt;count + ((state)-&gt;info ? (state)-&gt;info-&gt;blocked_open : 0))
+macro_line|#ifdef CONFIG_SERIAL_CORE_CONSOLE
+DECL|macro|uart_console
+mdefine_line|#define uart_console(port)&t;((port)-&gt;cons &amp;&amp; (port)-&gt;cons-&gt;index == (port)-&gt;line)
+macro_line|#else
+DECL|macro|uart_console
+mdefine_line|#define uart_console(port)&t;(0)
+macro_line|#endif
 r_static
 r_void
 id|uart_change_speed
@@ -4752,11 +4759,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|port-&gt;cons
-op_logical_or
-id|port-&gt;cons-&gt;index
-op_ne
-id|port-&gt;line
+id|uart_console
+c_func
+(paren
+id|port
+)paren
 )paren
 (brace
 id|uart_change_pm
@@ -5112,36 +5119,32 @@ id|tty
 op_assign
 id|state-&gt;info-&gt;tty
 suffix:semicolon
-macro_line|#ifdef CONFIG_SERIAL_CORE_CONSOLE
 r_struct
-id|console
+id|uart_port
 op_star
-id|c
+id|port
 op_assign
-id|state-&gt;port-&gt;cons
+id|state-&gt;port
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|c
-op_logical_and
-id|c-&gt;cflag
-op_logical_and
-id|c-&gt;index
-op_eq
-id|state-&gt;port-&gt;line
+id|uart_console
+c_func
+(paren
+id|port
+)paren
 )paren
 (brace
 id|tty-&gt;termios-&gt;c_cflag
 op_assign
-id|c-&gt;cflag
+id|port-&gt;cons-&gt;cflag
 suffix:semicolon
-id|c-&gt;cflag
+id|port-&gt;cons-&gt;cflag
 op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * If the device failed to grab its irq resources,&n;&t; * or some other error occurred, don&squot;t try to talk&n;&t; * to the port hardware.&n;&t; */
 r_if
 c_cond
@@ -5178,7 +5181,7 @@ id|CBAUD
 id|uart_set_mctrl
 c_func
 (paren
-id|state-&gt;port
+id|port
 comma
 id|TIOCM_DTR
 op_or
@@ -7163,11 +7166,11 @@ multiline_comment|/*&n;&t;&t; * Disable the console device before suspending.&n;
 r_if
 c_cond
 (paren
-id|port-&gt;cons
-op_logical_and
-id|port-&gt;cons-&gt;index
-op_eq
-id|port-&gt;line
+id|uart_console
+c_func
+(paren
+id|port
+)paren
 )paren
 id|port-&gt;cons-&gt;flags
 op_and_assign
@@ -7252,11 +7255,11 @@ multiline_comment|/*&n;&t;&t; * Re-enable the console device after suspending.&n
 r_if
 c_cond
 (paren
-id|port-&gt;cons
-op_logical_and
-id|port-&gt;cons-&gt;index
-op_eq
-id|port-&gt;line
+id|uart_console
+c_func
+(paren
+id|port
+)paren
 )paren
 (brace
 id|uart_change_speed
@@ -7598,11 +7601,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|port-&gt;cons
-op_logical_or
-id|port-&gt;cons-&gt;index
-op_ne
-id|port-&gt;line
+id|uart_console
+c_func
+(paren
+id|port
+)paren
 )paren
 id|uart_change_pm
 c_func
