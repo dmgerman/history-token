@@ -426,7 +426,11 @@ c_func
 (paren
 l_string|&quot;South Bridge:                       %s&quot;
 comma
-id|bmide_dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|bmide_dev
+)paren
 )paren
 suffix:semicolon
 id|pci_read_config_byte
@@ -2456,7 +2460,11 @@ c_func
 id|KERN_INFO
 l_string|&quot;AMD_IDE: %s (rev %02x) %s controller on pci%s&bslash;n&quot;
 comma
-id|dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|t
 comma
