@@ -1392,11 +1392,9 @@ r_void
 r_int
 id|controlnum
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
 r_int
 id|err
 suffix:semicolon
-macro_line|#endif
 r_int
 id|card
 suffix:semicolon
@@ -1432,7 +1430,6 @@ id|card
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
 r_if
 c_cond
 (paren
@@ -1450,7 +1447,6 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-macro_line|#endif
 id|devfs_mk_dir
 c_func
 (paren
@@ -1492,13 +1488,11 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_DEBUG_MEMORY
 id|snd_memory_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1510,13 +1504,11 @@ OL
 l_int|0
 )paren
 (brace
-macro_line|#ifdef CONFIG_SND_DEBUG_MEMORY
 id|snd_memory_done
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|unregister_chrdev
 c_func
 (paren
@@ -1536,13 +1528,11 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_OSSEMUL
 id|snd_info_minor_register
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -1670,25 +1660,21 @@ l_int|5
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_OSSEMUL
 id|snd_info_minor_unregister
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|snd_info_done
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_DEBUG_MEMORY
 id|snd_memory_done
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1728,90 +1714,14 @@ c_func
 (paren
 id|alsa_sound_exit
 )paren
-macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd=major,cards_limit[,device_mode] */
-DECL|function|alsa_sound_setup
-r_static
-r_int
-id|__init
-id|alsa_sound_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-(paren
-r_void
-)paren
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|major
-)paren
-op_eq
-l_int|2
-op_logical_and
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|cards_limit
-)paren
-op_eq
-l_int|2
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-(paren
-r_void
-)paren
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|device_mode
-)paren
-op_eq
-l_int|2
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;snd=&quot;
-comma
-id|alsa_sound_setup
-)paren
-suffix:semicolon
-macro_line|#endif /* ifndef MODULE */
 multiline_comment|/* sound.c */
-DECL|variable|snd_major
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_major
 )paren
 suffix:semicolon
-DECL|variable|snd_ecards_limit
+DECL|variable|EXPORT_SYMBOL
 id|EXPORT_SYMBOL
 c_func
 (paren

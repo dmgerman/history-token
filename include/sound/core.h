@@ -1080,7 +1080,7 @@ mdefine_line|#define snd_minor_info_oss_init() /*NOP*/
 DECL|macro|snd_minor_info_oss_done
 mdefine_line|#define snd_minor_info_oss_done() /*NOP*/
 DECL|macro|snd_oss_init_module
-mdefine_line|#define snd_oss_init_module() /*NOP*/
+mdefine_line|#define snd_oss_init_module() 0
 macro_line|#endif
 multiline_comment|/* memory.c */
 macro_line|#ifdef CONFIG_SND_DEBUG_MEMORY
