@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2410.c&n; *&n; * Copyright (c) 2003 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to kernel v2.6&n; *     18-Jan-2003 BJD  Added serial port configuration&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2410.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to kernel v2.6&n; *     18-Jan-2004 BJD  Added serial port configuration&n; *     21-Aug-2004 BJD  Added new struct s3c2410_board handler&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/arch/regs-clock.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
+macro_line|#include &quot;s3c2410.h&quot;
 DECL|variable|s3c2410_clock_tick_rate
 r_int
 id|s3c2410_clock_tick_rate
@@ -87,12 +88,6 @@ comma
 id|IODESC_ENT
 c_func
 (paren
-id|DMA
-)paren
-comma
-id|IODESC_ENT
-c_func
-(paren
 id|CLKPWR
 )paren
 comma
@@ -100,12 +95,6 @@ id|IODESC_ENT
 c_func
 (paren
 id|LCD
-)paren
-comma
-id|IODESC_ENT
-c_func
-(paren
-id|NAND
 )paren
 comma
 id|IODESC_ENT
@@ -123,37 +112,7 @@ comma
 id|IODESC_ENT
 c_func
 (paren
-id|USBDEV
-)paren
-comma
-id|IODESC_ENT
-c_func
-(paren
-id|WATCHDOG
-)paren
-comma
-id|IODESC_ENT
-c_func
-(paren
-id|IIC
-)paren
-comma
-id|IODESC_ENT
-c_func
-(paren
-id|IIS
-)paren
-comma
-id|IODESC_ENT
-c_func
-(paren
 id|GPIO
-)paren
-comma
-id|IODESC_ENT
-c_func
-(paren
-id|RTC
 )paren
 comma
 id|IODESC_ENT
@@ -162,17 +121,6 @@ c_func
 id|ADC
 )paren
 comma
-id|IODESC_ENT
-c_func
-(paren
-id|SPI
-)paren
-comma
-id|IODESC_ENT
-c_func
-(paren
-id|SDI
-)paren
 )brace
 suffix:semicolon
 DECL|variable|s3c_uart0_resource
@@ -591,6 +539,29 @@ id|s3c2410_pclk
 )paren
 suffix:semicolon
 )brace
+DECL|variable|board
+r_static
+r_struct
+id|s3c2410_board
+op_star
+id|board
+suffix:semicolon
+DECL|function|s3c2410_set_board
+r_void
+id|s3c2410_set_board
+c_func
+(paren
+r_struct
+id|s3c2410_board
+op_star
+id|b
+)paren
+(brace
+id|board
+op_assign
+id|b
+suffix:semicolon
+)brace
 DECL|function|s3c2410_init
 r_static
 r_int
@@ -624,6 +595,63 @@ id|uart_devices
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_return
+id|ret
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|board
+op_ne
+l_int|NULL
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|board-&gt;devices
+op_ne
+l_int|NULL
+)paren
+(brace
+id|ret
+op_assign
+id|platform_add_devices
+c_func
+(paren
+id|board-&gt;devices
+comma
+id|board-&gt;devices_count
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;s3c2410: failed to add board devices (%d)&bslash;n&quot;
+comma
+id|ret
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* not adding board devices may not be fatal */
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_return
 id|ret
 suffix:semicolon
