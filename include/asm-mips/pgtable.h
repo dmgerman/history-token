@@ -1427,9 +1427,6 @@ DECL|macro|pte_to_swp_entry
 mdefine_line|#define pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|swp_entry_to_pte
 mdefine_line|#define swp_entry_to_pte(x)&t;((pte_t) { (x).val })
-multiline_comment|/* Needs to be defined here and not in linux/mm.h, as it is arch dependent */
-DECL|macro|PageSkip
-mdefine_line|#define PageSkip(page)&t;&t;(0)
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
 multiline_comment|/* TLB operations. */

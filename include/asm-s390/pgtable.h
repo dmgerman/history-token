@@ -1205,9 +1205,6 @@ mdefine_line|#define pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|swp_entry_to_pte
 mdefine_line|#define swp_entry_to_pte(x)&t;((pte_t) { (x).val })
 macro_line|#endif /* !__ASSEMBLY__ */
-multiline_comment|/* Needs to be defined here and not in linux/mm.h, as it is arch dependent */
-DECL|macro|PageSkip
-mdefine_line|#define PageSkip(page)          (0)
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)   (1)
 multiline_comment|/*&n; * No page table caches to initialise&n; */

@@ -710,9 +710,6 @@ DECL|macro|module_unmap
 mdefine_line|#define module_unmap&t;vfree
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* !__ASSEMBLY__ */
-multiline_comment|/* Needs to be defined here and not in linux/mm.h, as it is arch dependent */
-DECL|macro|PageSkip
-mdefine_line|#define PageSkip(page)&t;&t;(0)
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range remap_page_range
 multiline_comment|/*&n; * No page table caches to initialise&n; */
