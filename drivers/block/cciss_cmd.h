@@ -653,8 +653,6 @@ DECL|macro|CMD_RWREQ
 mdefine_line|#define CMD_RWREQ       0x00
 DECL|macro|CMD_IOCTL_PEND
 mdefine_line|#define CMD_IOCTL_PEND  0x01
-DECL|macro|CMD_IOCTL_DONE
-mdefine_line|#define CMD_IOCTL_DONE  0x02
 DECL|macro|CMD_SCSI
 mdefine_line|#define CMD_SCSI&t;0x03
 DECL|macro|CMD_MSG_DONE
@@ -722,6 +720,12 @@ r_struct
 id|request
 op_star
 id|rq
+suffix:semicolon
+DECL|member|waiting
+r_struct
+id|completion
+op_star
+id|waiting
 suffix:semicolon
 macro_line|#ifdef CONFIG_CISS_SCSI_TAPE
 DECL|member|scsi_cmd

@@ -3907,6 +3907,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|DECLARE_COMPLETION
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 id|cp-&gt;cmd_type
 op_assign
 id|CMD_IOCTL_PEND
@@ -4010,6 +4016,11 @@ id|SCSI_DATA_READ
 )paren
 )paren
 suffix:semicolon
+id|cp-&gt;waiting
+op_assign
+op_amp
+id|wait
+suffix:semicolon
 multiline_comment|/* Put the request on the tail of the request queue */
 id|spin_lock_irqsave
 c_func
@@ -4053,22 +4064,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Wait for the request to complete */
-r_while
-c_loop
-(paren
-id|cp-&gt;cmd_type
-op_ne
-id|CMD_IOCTL_DONE
-)paren
-(brace
-id|schedule_timeout
+id|wait_for_completion
 c_func
 (paren
-l_int|1
+op_amp
+id|wait
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* undo the dma mapping */
 id|cciss_unmap_one
 c_func
@@ -4738,11 +4740,7 @@ l_int|6
 )braket
 op_assign
 (paren
-r_sizeof
-(paren
-op_star
-id|buf
-)paren
+id|bufsize
 op_rshift
 l_int|24
 )paren
@@ -4756,11 +4754,7 @@ l_int|7
 )braket
 op_assign
 (paren
-r_sizeof
-(paren
-op_star
-id|buf
-)paren
+id|bufsize
 op_rshift
 l_int|16
 )paren
@@ -4773,11 +4767,7 @@ l_int|8
 )braket
 op_assign
 (paren
-r_sizeof
-(paren
-op_star
-id|buf
-)paren
+id|bufsize
 op_rshift
 l_int|8
 )paren
@@ -4789,11 +4779,7 @@ id|cdb
 l_int|9
 )braket
 op_assign
-r_sizeof
-(paren
-op_star
-id|buf
-)paren
+id|bufsize
 op_amp
 l_int|0xFF
 suffix:semicolon

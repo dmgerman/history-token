@@ -50,7 +50,7 @@ id|bio
 suffix:semicolon
 DECL|typedef|bio_end_io_t
 r_typedef
-r_int
+r_void
 (paren
 id|bio_end_io_t
 )paren
@@ -58,8 +58,6 @@ id|bio_end_io_t
 r_struct
 id|bio
 op_star
-comma
-r_int
 )paren
 suffix:semicolon
 DECL|typedef|bio_destructor_t
@@ -236,7 +234,7 @@ mdefine_line|#define BIOVEC_SEG_BOUNDARY(q, b1, b2) &bslash;&n;&t;__BIO_SEG_BOUN
 DECL|macro|BIO_SEG_BOUNDARY
 mdefine_line|#define BIO_SEG_BOUNDARY(q, b1, b2) &bslash;&n;&t;BIOVEC_SEG_BOUNDARY((q), __BVEC_END((b1)), __BVEC_START((b2)))
 DECL|macro|bio_io_error
-mdefine_line|#define bio_io_error(bio) bio_endio((bio), 0, bio_sectors((bio)))
+mdefine_line|#define bio_io_error(bio) bio_endio((bio), 0)
 multiline_comment|/*&n; * drivers should not use the __ version unless they _really_ want to&n; * run through the entire bio and not just pending pieces&n; */
 DECL|macro|__bio_for_each_segment
 mdefine_line|#define __bio_for_each_segment(bvl, bio, i, start_idx)&t;&t;&t;&bslash;&n;&t;for (bvl = bio_iovec_idx((bio), (start_idx)), i = (start_idx);&t;&bslash;&n;&t;     i &lt; (bio)-&gt;bi_vcnt;&t;&t;&t;&t;&t;&bslash;&n;&t;     bvl++, i++)
@@ -268,15 +266,13 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|bio_endio
 c_func
 (paren
 r_struct
 id|bio
 op_star
-comma
-r_int
 comma
 r_int
 )paren

@@ -23,9 +23,9 @@ macro_line|#include &lt;linux/genhd.h&gt;
 DECL|macro|CCISS_DRIVER_VERSION
 mdefine_line|#define CCISS_DRIVER_VERSION(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME &quot;Compaq CISS Driver (v 2.4.5)&quot;
+mdefine_line|#define DRIVER_NAME &quot;Compaq CISS Driver (v 2.5.0)&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,4,5)
+mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,5,0)
 multiline_comment|/* Embedded module documentation macros - see modules.h */
 id|MODULE_AUTHOR
 c_func
@@ -36,7 +36,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Driver for Compaq Smart Array Controller 5300&quot;
+l_string|&quot;Driver for Compaq Smart Array Controller 5xxx v. 2.5.0&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -1660,45 +1660,10 @@ r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|suser
-c_func
-(paren
-)paren
-op_logical_and
-id|hba
-(braket
-id|ctlr
-)braket
-op_member_access_from_pointer
-id|sizes
-(braket
-id|minor
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-)braket
-op_eq
-l_int|0
-)paren
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
 multiline_comment|/*&n;&t; * Root is allowed to open raw volume zero even if its not configured&n;&t; * so array config can still work.  I don&squot;t think I really like this,&n;&t; * but I&squot;m already using way to many device nodes to claim another one&n;&t; * for &quot;raw controller&quot;.&n;&t; */
 r_if
 c_cond
 (paren
-id|suser
-c_func
-(paren
-)paren
-op_logical_and
-(paren
 id|hba
 (braket
 id|ctlr
@@ -1715,7 +1680,9 @@ id|inode-&gt;i_rdev
 op_eq
 l_int|0
 )paren
-op_logical_and
+(brace
+r_if
+c_cond
 (paren
 id|minor
 c_func
@@ -1725,11 +1692,25 @@ id|inode-&gt;i_rdev
 op_ne
 l_int|0
 )paren
-)paren
 r_return
 op_minus
 id|ENXIO
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_SYS_ADMIN
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+)brace
 id|hba
 (braket
 id|ctlr
@@ -3187,6 +3168,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|DECLARE_COMPLETION
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3483,6 +3470,11 @@ l_int|0
 suffix:semicolon
 singleline_comment|// we are not chaining
 )brace
+id|c-&gt;waiting
+op_assign
+op_amp
+id|wait
+suffix:semicolon
 multiline_comment|/* Put the request on the tail of the request queue */
 id|spin_lock_irqsave
 c_func
@@ -3526,22 +3518,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Wait for completion */
-r_while
-c_loop
-(paren
-id|c-&gt;cmd_type
-op_ne
-id|CMD_IOCTL_DONE
-)paren
-(brace
-id|schedule_timeout
+id|wait_for_completion
 c_func
 (paren
-l_int|1
+op_amp
+id|wait
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* unlock the buffers from DMA */
 id|temp64.val32.lower
 op_assign
@@ -4633,6 +4616,12 @@ id|return_status
 op_assign
 id|IO_OK
 suffix:semicolon
+id|DECLARE_COMPLETION
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5032,6 +5021,11 @@ l_int|0
 suffix:semicolon
 singleline_comment|// we are not chaining
 )brace
+id|c-&gt;waiting
+op_assign
+op_amp
+id|wait
+suffix:semicolon
 multiline_comment|/* Put the request on the tail of the queue and send it */
 id|spin_lock_irqsave
 c_func
@@ -5075,22 +5069,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* wait for completion */
-r_while
-c_loop
-(paren
-id|c-&gt;cmd_type
-op_ne
-id|CMD_IOCTL_DONE
-)paren
-(brace
-id|schedule_timeout
+id|wait_for_completion
 c_func
 (paren
-l_int|1
+op_amp
+id|wait
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* unlock the buffers from DMA */
 id|pci_unmap_single
 c_func
@@ -5434,6 +5419,9 @@ suffix:semicolon
 r_int
 r_int
 id|total_size
+suffix:semicolon
+id|kdev_t
+id|kdev
 suffix:semicolon
 r_if
 c_cond
@@ -6767,7 +6755,6 @@ id|start
 op_plus
 id|i
 suffix:semicolon
-id|kdev_t
 id|kdev
 op_assign
 id|mk_kdev
@@ -6840,10 +6827,24 @@ op_plus
 l_int|1
 suffix:semicolon
 multiline_comment|/* setup partitions per disk */
+id|kdev
+op_assign
+id|mk_kdev
+c_func
+(paren
+id|MAJOR_NR
+op_plus
+id|ctlr
+comma
+id|logvol
+op_lshift
+id|gdev-&gt;minor_shift
+)paren
+suffix:semicolon
 id|grok_partitions
 c_func
 (paren
-id|dev
+id|kdev
 comma
 id|hba
 (braket
@@ -8145,15 +8146,6 @@ c_loop
 id|bio
 )paren
 (brace
-r_int
-id|nsecs
-op_assign
-id|bio_sectors
-c_func
-(paren
-id|bio
-)paren
-suffix:semicolon
 r_struct
 id|bio
 op_star
@@ -8168,7 +8160,11 @@ suffix:semicolon
 id|blk_finished_io
 c_func
 (paren
-id|nsecs
+id|bio_sectors
+c_func
+(paren
+id|bio
+)paren
 )paren
 suffix:semicolon
 id|bio_endio
@@ -8177,8 +8173,6 @@ c_func
 id|bio
 comma
 id|status
-comma
-id|nsecs
 )paren
 suffix:semicolon
 id|bio
@@ -9437,9 +9431,11 @@ op_eq
 id|CMD_IOCTL_PEND
 )paren
 (brace
-id|c-&gt;cmd_type
-op_assign
-id|CMD_IOCTL_DONE
+id|complete
+c_func
+(paren
+id|c-&gt;waiting
+)paren
 suffix:semicolon
 )brace
 macro_line|#&t;&t;&t;&t;ifdef CONFIG_CISS_SCSI_TAPE
@@ -12429,6 +12425,8 @@ comma
 id|SA_INTERRUPT
 op_or
 id|SA_SHIRQ
+op_or
+id|SA_SAMPLE_RANDOM
 comma
 id|hba
 (braket

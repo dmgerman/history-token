@@ -4296,8 +4296,6 @@ id|bi_end_io
 c_func
 (paren
 id|bio
-comma
-id|nr_sectors
 )paren
 suffix:semicolon
 r_return
@@ -4645,8 +4643,6 @@ id|bi_end_io
 c_func
 (paren
 id|bio
-comma
-id|nr_sectors
 )paren
 suffix:semicolon
 r_break
@@ -4700,7 +4696,7 @@ suffix:semicolon
 multiline_comment|/*&n; * our default bio end_io callback handler for a buffer_head mapping.&n; */
 DECL|function|end_bio_bh_io_sync
 r_static
-r_int
+r_void
 id|end_bio_bh_io_sync
 c_func
 (paren
@@ -4708,9 +4704,6 @@ r_struct
 id|bio
 op_star
 id|bio
-comma
-r_int
-id|nr_sectors
 )paren
 (brace
 r_struct
@@ -4719,18 +4712,6 @@ op_star
 id|bh
 op_assign
 id|bio-&gt;bi_private
-suffix:semicolon
-id|BIO_BUG_ON
-c_func
-(paren
-id|nr_sectors
-op_ne
-(paren
-id|bh-&gt;b_size
-op_rshift
-l_int|9
-)paren
-)paren
 suffix:semicolon
 id|bh
 op_member_access_from_pointer
@@ -4754,9 +4735,6 @@ c_func
 (paren
 id|bio
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * submit_bio: submit a bio to the block device layer for I/O&n; * @rw: whether to %READ or %WRITE, or maybe to %READA (read ahead)&n; * @bio: The &amp;struct bio which describes the I/O&n; *&n; * submit_bio() is very similar in purpose to generic_make_request(), and&n; * uses that function to do most of the work. Both are fairly rough&n; * interfaces, @bio must be presetup and ready for I/O.&n; *&n; */
@@ -5688,26 +5666,12 @@ id|req-&gt;bio
 op_assign
 id|bio-&gt;bi_next
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
 id|bio_endio
 c_func
 (paren
 id|bio
 comma
 id|uptodate
-comma
-id|total_nsect
-)paren
-)paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|total_nsect

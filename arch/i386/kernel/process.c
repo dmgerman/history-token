@@ -53,6 +53,33 @@ DECL|variable|hlt_counter
 r_int
 id|hlt_counter
 suffix:semicolon
+multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; */
+DECL|function|thread_saved_pc
+r_int
+r_int
+id|thread_saved_pc
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+r_return
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|tsk-&gt;thread.esp
+)paren
+(braket
+l_int|3
+)braket
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Powermanagement idle function, if any..&n; */
 DECL|variable|pm_idle
 r_void

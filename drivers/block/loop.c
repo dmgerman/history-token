@@ -1296,15 +1296,13 @@ id|ret
 suffix:semicolon
 )brace
 r_static
-r_int
+r_void
 id|loop_end_io_transfer
 c_func
 (paren
 r_struct
 id|bio
 op_star
-comma
-r_int
 )paren
 suffix:semicolon
 DECL|function|loop_put_buffer
@@ -1507,7 +1505,7 @@ suffix:semicolon
 multiline_comment|/*&n; * if this was a WRITE lo-&gt;transfer stuff has already been done. for READs,&n; * queue it for the loop thread and let it do the transfer out of&n; * bi_end_io context (we don&squot;t want to do decrypt of a page with irqs&n; * disabled)&n; */
 DECL|function|loop_end_io_transfer
 r_static
-r_int
+r_void
 id|loop_end_io_transfer
 c_func
 (paren
@@ -1515,9 +1513,6 @@ r_struct
 id|bio
 op_star
 id|bio
-comma
-r_int
-id|nr_sectors
 )paren
 (brace
 r_struct
@@ -1575,8 +1570,6 @@ c_func
 id|rbh
 comma
 id|uptodate
-comma
-id|nr_sectors
 )paren
 suffix:semicolon
 r_if
@@ -1611,9 +1604,6 @@ id|lo
 comma
 id|bio
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|loop_get_buffer
@@ -2185,12 +2175,6 @@ id|bio
 comma
 op_logical_neg
 id|ret
-comma
-id|bio_sectors
-c_func
-(paren
-id|bio
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2222,12 +2206,6 @@ id|rbh
 comma
 op_logical_neg
 id|ret
-comma
-id|bio_sectors
-c_func
-(paren
-id|rbh
-)paren
 )paren
 suffix:semicolon
 id|loop_put_buffer
