@@ -2,6 +2,7 @@ multiline_comment|/*&n; * i2c-amd756-s4882.c - i2c-amd756 extras for the Tyan S4
 multiline_comment|/*&n; * We select the channels by sending commands to the Philips&n; * PCA9556 chip at I2C address 0x18. The main adapter is used for&n; * the non-multiplexed part of the bus, and 4 virtual adapters&n; * are defined for the multiplexed addresses: 0x50-0x53 (memory&n; * module EEPROM) located on channels 1-4, and 0x4c (LM63)&n; * located on multiplexed channels 0 and 5-7. We define one&n; * virtual adapter per CPU, which corresponds to two multiplexed&n; * channels:&n; *   CPU0: virtual adapter 1, channels 1 and 0&n; *   CPU1: virtual adapter 2, channels 2 and 5&n; *   CPU2: virtual adapter 3, channels 3 and 6&n; *   CPU3: virtual adapter 4, channels 4 and 7&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 r_extern
@@ -569,10 +570,16 @@ r_if
 c_cond
 (paren
 id|error
-op_ne
+op_eq
 op_minus
 id|EINVAL
 )paren
+id|error
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_else
 id|dev_err
 c_func
 (paren
@@ -835,7 +842,7 @@ c_cond
 id|error
 )paren
 (brace
-id|dev_dbg
+id|dev_err
 c_func
 (paren
 op_amp
