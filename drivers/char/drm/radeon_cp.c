@@ -7558,6 +7558,7 @@ id|dev-&gt;agp_buffer_map
 op_ne
 l_int|NULL
 )paren
+(brace
 id|drm_core_ioremapfree
 c_func
 (paren
@@ -7566,6 +7567,11 @@ comma
 id|dev
 )paren
 suffix:semicolon
+id|dev-&gt;agp_buffer_map
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 )brace
 r_else
 macro_line|#endif
@@ -8092,6 +8098,12 @@ id|dev
 suffix:semicolon
 )brace
 multiline_comment|/* Disable *all* interrupts */
+r_if
+c_cond
+(paren
+id|dev_priv-&gt;mmio
+)paren
+multiline_comment|/* remove this after permanent addmaps */
 id|RADEON_WRITE
 c_func
 (paren
