@@ -61,11 +61,6 @@ DECL|macro|E100_DEFAULT_UCODE
 mdefine_line|#define E100_DEFAULT_UCODE        true
 DECL|macro|TX_THRSHLD
 mdefine_line|#define TX_THRSHLD     8
-multiline_comment|/* sleep time is at least 50 ms, in jiffies */
-DECL|macro|SLEEP_TIME
-mdefine_line|#define SLEEP_TIME ((HZ / 20) + 1)
-DECL|macro|CUS_TIMEOUT
-mdefine_line|#define CUS_TIMEOUT 1000
 multiline_comment|/* IFS parameters */
 DECL|macro|MIN_NUMBER_OF_TRANSMITS_100
 mdefine_line|#define MIN_NUMBER_OF_TRANSMITS_100 1000
@@ -2502,6 +2497,10 @@ op_star
 id|bdp
 )paren
 suffix:semicolon
+macro_line|#ifndef yield
+DECL|macro|yield
+mdefine_line|#define yield()&t;&t;&t;&t;&t;&bslash;&n;        do {&t;&t;&t;&t;&t;&bslash;&n;                current-&gt;policy |= SCHED_YIELD;&t;&bslash;&n;                schedule();&t;&t;&t;&bslash;&n;        } while (0)                                     
+macro_line|#endif
 r_extern
 r_void
 id|e100_deisolate_driver

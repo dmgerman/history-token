@@ -299,7 +299,7 @@ op_assign
 l_string|&quot;Copyright (c) 2002 Intel Corporation&quot;
 suffix:semicolon
 DECL|macro|E100_VERSION
-mdefine_line|#define E100_VERSION  &quot;2.0.23-pre2&quot;
+mdefine_line|#define E100_VERSION  &quot;2.0.24-pre1&quot;
 DECL|macro|E100_FULL_DRIVER_NAME
 mdefine_line|#define E100_FULL_DRIVER_NAME &t;&quot;Intel(R) PRO/100 Fast Ethernet Adapter - Loadable driver, ver &quot;
 DECL|variable|e100_version
@@ -9692,7 +9692,7 @@ r_int
 r_char
 id|rc
 op_assign
-l_bool|false
+l_bool|true
 suffix:semicolon
 id|ntcb_hdr
 op_assign
@@ -9855,6 +9855,10 @@ comma
 id|lock_flag
 )paren
 suffix:semicolon
+id|rc
+op_assign
+l_bool|false
+suffix:semicolon
 r_goto
 m_exit
 suffix:semicolon
@@ -9885,26 +9889,15 @@ l_int|50
 op_plus
 l_int|1
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|time_before
-c_func
-(paren
-id|jiffies
-comma
-id|expiration_time
-)paren
-)paren
-(brace
 id|rmb
 c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
+r_while
+c_loop
 (paren
+op_logical_neg
 (paren
 id|ntcb_hdr-&gt;cb_status
 op_amp
@@ -9916,14 +9909,18 @@ id|CB_STATUS_COMPLETE
 )paren
 )paren
 (brace
-id|rc
-op_assign
-l_bool|true
-suffix:semicolon
-r_goto
-m_exit
-suffix:semicolon
-)brace
+r_if
+c_cond
+(paren
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|expiration_time
+)paren
+)paren
+(brace
 id|spin_unlock_bh
 c_func
 (paren
@@ -9933,16 +9930,9 @@ id|bdp-&gt;bd_non_tx_lock
 )paren
 )paren
 suffix:semicolon
-id|set_current_state
+id|yield
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|1
 )paren
 suffix:semicolon
 id|spin_lock_bh
@@ -9955,7 +9945,22 @@ id|bdp-&gt;bd_non_tx_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* didn&squot;t get a C bit assume command failed */
+r_else
+(brace
+id|rc
+op_assign
+l_bool|false
+suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
+id|rmb
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 m_exit
 suffix:colon
 id|e100_free_non_tx_cmd

@@ -7,6 +7,9 @@ macro_line|#undef E100_CONFIG_PROC_FS
 macro_line|#endif
 macro_line|#ifdef E100_CONFIG_PROC_FS
 macro_line|#include &quot;e100.h&quot;
+multiline_comment|/* MDI sleep time is at least 50 ms, in jiffies */
+DECL|macro|MDI_SLEEP_TIME
+mdefine_line|#define MDI_SLEEP_TIME ((HZ / 20) + 1)
 multiline_comment|/***************************************************************************/
 multiline_comment|/*       /proc File System Interaface Support Functions                    */
 multiline_comment|/***************************************************************************/
@@ -714,7 +717,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|SLEEP_TIME
+id|MDI_SLEEP_TIME
 )paren
 suffix:semicolon
 id|spin_lock_bh
