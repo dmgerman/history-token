@@ -19,15 +19,6 @@ id|srb
 )paren
 suffix:semicolon
 r_void
-id|usb_stor_print_Scsi_Cmnd
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-)paren
-suffix:semicolon
-r_void
 id|usb_stor_show_sense
 c_func
 (paren

@@ -39,6 +39,12 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 DECL|struct|edge_firmware_version_info
 r_struct

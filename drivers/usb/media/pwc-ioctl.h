@@ -116,6 +116,88 @@ id|height
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Defines and structures for Motorized Pan &amp; Tilt */
+DECL|macro|PWC_MPT_PAN
+mdefine_line|#define PWC_MPT_PAN&t;&t;0x01
+DECL|macro|PWC_MPT_TILT
+mdefine_line|#define PWC_MPT_TILT&t;&t;0x02
+DECL|macro|PWC_MPT_TIMEOUT
+mdefine_line|#define PWC_MPT_TIMEOUT&t;&t;0x04 /* for status */
+multiline_comment|/* Set angles; when absolute = 1, the angle is absolute and the &n;   driver calculates the relative offset for you. This can only&n;   be used with VIDIOCPWCSANGLE; VIDIOCPWCGANGLE always returns&n;   absolute angles.&n; */
+DECL|struct|pwc_mpt_angles
+r_struct
+id|pwc_mpt_angles
+(brace
+DECL|member|absolute
+r_int
+id|absolute
+suffix:semicolon
+multiline_comment|/* write-only */
+DECL|member|pan
+r_int
+id|pan
+suffix:semicolon
+multiline_comment|/* degrees * 100 */
+DECL|member|tilt
+r_int
+id|tilt
+suffix:semicolon
+multiline_comment|/* degress * 100 */
+DECL|member|zoom
+r_int
+id|zoom
+suffix:semicolon
+multiline_comment|/* N/A, set to -1 */
+)brace
+suffix:semicolon
+multiline_comment|/* Range of angles of the camera, both horizontally and vertically.&n;   The zoom is not used, maybe in the future...&n;&n; */
+DECL|struct|pwc_mpt_range
+r_struct
+id|pwc_mpt_range
+(brace
+DECL|member|pan_min
+DECL|member|pan_max
+r_int
+id|pan_min
+comma
+id|pan_max
+suffix:semicolon
+multiline_comment|/* degrees * 100 */
+DECL|member|tilt_min
+DECL|member|tilt_max
+r_int
+id|tilt_min
+comma
+id|tilt_max
+suffix:semicolon
+DECL|member|zoom_min
+DECL|member|zoom_max
+r_int
+id|zoom_min
+comma
+id|zoom_max
+suffix:semicolon
+multiline_comment|/* -1, -1 */
+)brace
+suffix:semicolon
+DECL|struct|pwc_mpt_status
+r_struct
+id|pwc_mpt_status
+(brace
+DECL|member|status
+r_int
+id|status
+suffix:semicolon
+DECL|member|time_pan
+r_int
+id|time_pan
+suffix:semicolon
+DECL|member|time_tilt
+r_int
+id|time_tilt
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* Restore user settings */
 DECL|macro|VIDIOCPWCRUSER
 mdefine_line|#define VIDIOCPWCRUSER&t;&t;_IO(&squot;v&squot;, 192)
@@ -182,5 +264,16 @@ mdefine_line|#define VIDIOCPWCGDYNNOISE&t;_IOR(&squot;v&squot;, 209, int)
 multiline_comment|/* Real image size as used by the camera; tells you whether or not there&squot;s a gray border around the image */
 DECL|macro|VIDIOCPWCGREALSIZE
 mdefine_line|#define VIDIOCPWCGREALSIZE&t;_IOR(&squot;v&squot;, 210, struct pwc_imagesize)
+multiline_comment|/* Motorized pan &amp; tilt functions */
+DECL|macro|VIDIOCPWCMPTRESET
+mdefine_line|#define VIDIOCPWCMPTRESET&t;_IOW(&squot;v&squot;, 211, int)
+DECL|macro|VIDIOCPWCMPTGRANGE
+mdefine_line|#define VIDIOCPWCMPTGRANGE&t;_IOR(&squot;v&squot;, 211, struct pwc_mpt_range)
+DECL|macro|VIDIOCPWCMPTSANGLE
+mdefine_line|#define VIDIOCPWCMPTSANGLE&t;_IOW(&squot;v&squot;, 212, struct pwc_mpt_angles)
+DECL|macro|VIDIOCPWCMPTGANGLE
+mdefine_line|#define VIDIOCPWCMPTGANGLE&t;_IOR(&squot;v&squot;, 212, struct pwc_mpt_angles)
+DECL|macro|VIDIOCPWCMPTSTATUS
+mdefine_line|#define VIDIOCPWCMPTSTATUS&t;_IOR(&squot;v&squot;, 213, struct pwc_mpt_status)
 macro_line|#endif
 eof

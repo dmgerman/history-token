@@ -1,13 +1,3 @@
-DECL|macro|USB_DT_CS_DEVICE
-mdefine_line|#define USB_DT_CS_DEVICE                0x21
-DECL|macro|USB_DT_CS_CONFIG
-mdefine_line|#define USB_DT_CS_CONFIG                0x22
-DECL|macro|USB_DT_CS_STRING
-mdefine_line|#define USB_DT_CS_STRING                0x23
-DECL|macro|USB_DT_CS_INTERFACE
-mdefine_line|#define USB_DT_CS_INTERFACE             0x24
-DECL|macro|USB_DT_CS_ENDPOINT
-mdefine_line|#define USB_DT_CS_ENDPOINT              0x25
 DECL|macro|CS_AUDIO_UNDEFINED
 mdefine_line|#define CS_AUDIO_UNDEFINED&t;&t;0x20
 DECL|macro|CS_AUDIO_DEVICE
