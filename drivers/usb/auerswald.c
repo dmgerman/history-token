@@ -5505,34 +5505,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* Seek is not supported */
-DECL|function|auerchar_llseek
-r_static
-id|loff_t
-id|auerchar_llseek
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-id|dbg
-(paren
-l_string|&quot;auerchar_seek&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 multiline_comment|/* Read data from the device */
 DECL|function|auerchar_read
 r_static
@@ -6682,7 +6654,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|auerchar_llseek
+id|no_llseek
 comma
 id|read
 suffix:colon
