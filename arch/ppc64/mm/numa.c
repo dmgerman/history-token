@@ -553,6 +553,24 @@ comma
 id|numa_domain
 )paren
 suffix:semicolon
+multiline_comment|/* register the second thread on an SMT machine */
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_SMT
+)paren
+id|map_cpu_to_node
+c_func
+(paren
+id|cpu_nr
+op_xor
+l_int|0x1
+comma
+id|numa_domain
+)paren
+suffix:semicolon
 )brace
 r_for
 c_loop
