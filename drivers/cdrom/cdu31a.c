@@ -23,8 +23,6 @@ macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &quot;cdu31a.h&quot;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR CDU31A_CDROM_MAJOR
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|CDU31A_READAHEAD
 mdefine_line|#define CDU31A_READAHEAD 4&t;/* 128 sector, 64kB, 32 reads read-ahead */
@@ -242,6 +240,12 @@ r_volatile
 r_int
 r_int
 id|sony_cd_fifost_reg
+suffix:semicolon
+DECL|variable|cdu31a_queue
+r_static
+r_struct
+id|request_queue
+id|cdu31a_queue
 suffix:semicolon
 DECL|variable|cdu31a_lock
 r_static
@@ -4947,6 +4951,11 @@ op_star
 id|q
 )paren
 (brace
+r_struct
+id|request
+op_star
+id|req
+suffix:semicolon
 r_int
 id|block
 suffix:semicolon
@@ -5079,8 +5088,6 @@ c_loop
 l_int|1
 )paren
 (brace
-id|cdu31a_request_startover
-suffix:colon
 multiline_comment|/*&n;&t;&t; * The beginning here is stolen from the hard disk driver.  I hope&n;&t;&t; * it&squot;s right.&n;&t;&t; */
 r_if
 c_cond
@@ -5088,7 +5095,7 @@ c_cond
 id|blk_queue_empty
 c_func
 (paren
-id|QUEUE
+id|q
 )paren
 )paren
 r_goto
@@ -5100,20 +5107,26 @@ c_cond
 op_logical_neg
 id|sony_spun_up
 )paren
-(brace
 id|scd_spinup
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
+id|req
+op_assign
+id|elv_next_request
+c_func
+(paren
+id|q
+)paren
+suffix:semicolon
 id|block
 op_assign
-id|CURRENT-&gt;sector
+id|req-&gt;sector
 suffix:semicolon
 id|nblock
 op_assign
-id|CURRENT-&gt;nr_sectors
+id|req-&gt;nr_sectors
 suffix:semicolon
 r_if
 c_cond
@@ -5131,37 +5144,68 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
-id|CURRENT
+id|req
 comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|cdu31a_request_startover
+r_continue
 suffix:semicolon
 )brace
+multiline_comment|/* WTF??? */
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;flags
+op_logical_neg
+(paren
+id|req-&gt;flags
 op_amp
 id|REQ_CMD
 )paren
-(brace
-r_switch
+)paren
+r_continue
+suffix:semicolon
+r_if
 c_cond
 (paren
 id|rq_data_dir
 c_func
 (paren
-id|CURRENT
+id|req
 )paren
+op_eq
+id|WRITE
 )paren
 (brace
-r_case
+id|end_request
+c_func
+(paren
+id|req
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|rq_data_dir
+c_func
+(paren
+id|req
+)paren
+op_ne
 id|READ
-suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * If the block address is invalid or the request goes beyond the end of&n;&t;&t;&t;&t; * the media, return an error.&n;&t;&t;&t;&t; */
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;CDU31A: Unknown cmd&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If the block address is invalid or the request goes beyond the end of&n;&t;&t; * the media, return an error.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5175,6 +5219,7 @@ id|sony_toc.lead_out_start_lba
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;CDU31A: Request past end of media&bslash;n&quot;
 )paren
@@ -5182,13 +5227,12 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
-id|CURRENT
+id|req
 comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|cdu31a_request_startover
+r_continue
 suffix:semicolon
 )brace
 r_if
@@ -5208,6 +5252,7 @@ id|sony_toc.lead_out_start_lba
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;CDU31A: Request past end of media&bslash;n&quot;
 )paren
@@ -5215,13 +5260,12 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
-id|CURRENT
+id|req
 comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|cdu31a_request_startover
+r_continue
 suffix:semicolon
 )brace
 id|num_retries
@@ -5255,16 +5299,15 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
-id|CURRENT
+id|req
 comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|cdu31a_request_startover
+r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* If no data is left to be read from the drive, start the&n;&t;&t;&t;&t;   next request. */
+multiline_comment|/* If no data is left to be read from the drive, start the&n;&t;&t;   next request. */
 r_if
 c_cond
 (paren
@@ -5277,6 +5320,7 @@ r_if
 c_cond
 (paren
 id|start_request
+c_func
 (paren
 id|block
 op_div
@@ -5293,17 +5337,16 @@ l_int|0
 id|end_request
 c_func
 (paren
-id|CURRENT
+id|req
 comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|cdu31a_request_startover
+r_continue
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* If the requested block is not the next one waiting in&n;&t;&t;&t;&t;   the driver, abort the current operation and start a&n;&t;&t;&t;&t;   new one. */
+multiline_comment|/* If the requested block is not the next one waiting in&n;&t;&t;   the driver, abort the current operation and start a&n;&t;&t;   new one. */
 r_else
 r_if
 c_cond
@@ -5315,6 +5358,7 @@ id|sony_next_block
 (brace
 macro_line|#if DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;CDU31A Warning: Read for block %d, expected %d&bslash;n&quot;
 comma
@@ -5345,19 +5389,19 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
-id|CURRENT
+id|req
 comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|cdu31a_request_startover
+r_continue
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
 id|start_request
+c_func
 (paren
 id|block
 op_div
@@ -5372,6 +5416,7 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;CDU31a: start request failed&bslash;n&quot;
 )paren
@@ -5379,20 +5424,19 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
-id|CURRENT
+id|req
 comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|cdu31a_request_startover
+r_continue
 suffix:semicolon
 )brace
 )brace
 id|read_data_block
 c_func
 (paren
-id|CURRENT-&gt;buffer
+id|req-&gt;buffer
 comma
 id|block
 comma
@@ -5411,10 +5455,21 @@ id|res_reg
 (braket
 l_int|0
 )braket
-op_eq
+op_ne
 l_int|0x20
 )paren
 (brace
+id|end_request
+c_func
+(paren
+id|req
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5426,13 +5481,12 @@ id|MAX_CDU31A_RETRIES
 id|end_request
 c_func
 (paren
-id|CURRENT
+id|req
 comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|cdu31a_request_startover
+r_continue
 suffix:semicolon
 )brace
 id|num_retries
@@ -5468,6 +5522,7 @@ suffix:semicolon
 r_else
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;CDU31A: %s error for block %d, nblock %d&bslash;n&quot;
 comma
@@ -5489,43 +5544,6 @@ suffix:semicolon
 r_goto
 id|try_read_again
 suffix:semicolon
-)brace
-r_else
-(brace
-id|end_request
-c_func
-(paren
-id|CURRENT
-comma
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-r_case
-id|WRITE
-suffix:colon
-id|end_request
-c_func
-(paren
-id|CURRENT
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|panic
-c_func
-(paren
-l_string|&quot;CDU31A: Unknown cmd&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 id|end_do_cdu31a_request
 suffix:colon
@@ -13120,11 +13138,8 @@ suffix:semicolon
 id|blk_init_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|cdu31a_queue
 comma
 id|do_cdu31a_request
 comma
@@ -13164,6 +13179,11 @@ id|scd_info
 r_goto
 id|errout0
 suffix:semicolon
+id|disk-&gt;queue
+op_assign
+op_amp
+id|cdu31a_queue
+suffix:semicolon
 id|add_disk
 c_func
 (paren
@@ -13190,11 +13210,8 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|cdu31a_queue
 )paren
 suffix:semicolon
 id|put_disk
@@ -13310,11 +13327,8 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|cdu31a_queue
 )paren
 suffix:semicolon
 r_if
