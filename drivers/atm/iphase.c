@@ -1,8 +1,4 @@
 multiline_comment|/******************************************************************************&n;         iphase.c: Device driver for Interphase ATM PCI adapter cards &n;                    Author: Peter Wang  &lt;pwang@iphase.com&gt;            &n;&t;&t;   Some fixes: Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;                   Interphase Corporation  &lt;www.iphase.com&gt;           &n;                               Version: 1.0                           &n;*******************************************************************************&n;      &n;      This software may be used and distributed according to the terms&n;      of the GNU General Public License (GPL), incorporated herein by reference.&n;      Drivers based on this skeleton fall under the GPL and must retain&n;      the authorship (implicit copyright) notice.&n;&n;      This program is distributed in the hope that it will be useful, but&n;      WITHOUT ANY WARRANTY; without even the implied warranty of&n;      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU&n;      General Public License for more details.&n;      &n;      Modified from an incomplete driver for Interphase 5575 1KVC 1M card which &n;      was originally written by Monalisa Agrawal at UNH. Now this driver &n;      supports a variety of varients of Interphase ATM PCI (i)Chip adapter &n;      card family (See www.iphase.com/products/ClassSheet.cfm?ClassID=ATM) &n;      in terms of PHY type, the size of control memory and the size of &n;      packet memory. The followings are the change log and history:&n;     &n;          Bugfix the Mona&squot;s UBR driver.&n;          Modify the basic memory allocation and dma logic.&n;          Port the driver to the latest kernel from 2.0.46.&n;          Complete the ABR logic of the driver, and added the ABR work-&n;              around for the hardware anormalies.&n;          Add the CBR support.&n;&t;  Add the flow control logic to the driver to allow rate-limit VC.&n;          Add 4K VC support to the board with 512K control memory.&n;          Add the support of all the variants of the Interphase ATM PCI &n;          (i)Chip adapter cards including x575 (155M OC3 and UTP155), x525&n;          (25M UTP25) and x531 (DS3 and E3).&n;          Add SMP support.&n;&n;      Support and updates available at: ftp://ftp.iphase.com/pub/atm&n;&n;*******************************************************************************/
-macro_line|#ifdef IA_MODULE
-DECL|macro|MODULE
-mdefine_line|#define MODULE
-macro_line|#endif
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;  
 macro_line|#include &lt;linux/kernel.h&gt;  
@@ -165,7 +161,6 @@ op_assign
 multiline_comment|/* IF_IADBG_ERR | IF_IADBG_CBR| IF_IADBG_INIT_ADAPTER&n;            |IF_IADBG_ABR | IF_IADBG_EVENT*/
 l_int|0
 suffix:semicolon
-macro_line|#ifdef MODULE
 id|MODULE_PARM
 c_func
 (paren
@@ -206,7 +201,6 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|MODULE_LICENSE
 c_func
 (paren
@@ -5981,7 +5975,6 @@ r_goto
 id|out_free_desc
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20312
 r_if
 c_cond
 (paren
@@ -5997,23 +5990,6 @@ comma
 id|len
 comma
 id|GFP_ATOMIC
-)paren
-)paren
-)paren
-(brace
-macro_line|#else
-r_if
-c_cond
-(paren
-id|atm_charge
-c_func
-(paren
-id|vcc
-comma
-id|atm_pdu2truesize
-c_func
-(paren
-id|len
 )paren
 )paren
 )paren
@@ -6084,7 +6060,6 @@ id|vcc-&gt;rx_quota
 )paren
 suffix:semicolon
 )paren
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6762,7 +6737,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20312
 id|atm_return
 c_func
 (paren
@@ -6775,20 +6749,6 @@ id|len
 )paren
 )paren
 suffix:semicolon
-macro_line|#else
-id|atm_return
-c_func
-(paren
-id|vcc
-comma
-id|atm_pdu2truesize
-c_func
-(paren
-id|len
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_goto
 id|INCR_DLE
 suffix:semicolon
@@ -6876,7 +6836,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20312
 id|atm_return
 c_func
 (paren
@@ -6889,20 +6848,6 @@ id|len
 )paren
 )paren
 suffix:semicolon
-macro_line|#else
-id|atm_return
-c_func
-(paren
-id|vcc
-comma
-id|atm_pdu2truesize
-c_func
-(paren
-id|len
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif 
 r_goto
 id|INCR_DLE
 suffix:semicolon
@@ -11417,7 +11362,6 @@ id|iadev-&gt;close_pending
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20303
 id|init_waitqueue_head
 c_func
 (paren
@@ -11432,16 +11376,6 @@ op_amp
 id|iadev-&gt;timeout_wait
 )paren
 suffix:semicolon
-macro_line|#else
-id|iadev-&gt;close_wait
-op_assign
-l_int|NULL
-suffix:semicolon
-id|iadev-&gt;timeout_wait
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif 
 id|skb_queue_head_init
 c_func
 (paren
@@ -12056,7 +11990,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20312
 DECL|function|ia_init
 r_static
 r_int
@@ -12069,22 +12002,6 @@ id|atm_dev
 op_star
 id|dev
 )paren
-macro_line|#else
-id|__initfunc
-c_func
-(paren
-r_static
-r_int
-id|ia_init
-c_func
-(paren
-r_struct
-id|atm_dev
-op_star
-id|dev
-)paren
-)paren
-macro_line|#endif  
 (brace
 id|IADEV
 op_star
@@ -13050,7 +12967,6 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20312
 DECL|function|ia_start
 r_static
 r_int
@@ -13063,22 +12979,6 @@ id|atm_dev
 op_star
 id|dev
 )paren
-macro_line|#else
-id|__initfunc
-c_func
-(paren
-r_static
-r_int
-id|ia_start
-c_func
-(paren
-r_struct
-id|atm_dev
-op_star
-id|dev
-)paren
-)paren
-macro_line|#endif  
 (brace
 id|IADEV
 op_star
@@ -13540,7 +13440,7 @@ comma
 l_int|0x10
 )paren
 suffix:semicolon
-macro_line|#ifndef MODULE
+macro_line|#if 0
 id|error
 op_assign
 id|dev-&gt;phy
@@ -14403,7 +14303,7 @@ op_amp
 id|vcc-&gt;flags
 )paren
 suffix:semicolon
-macro_line|#ifndef MODULE
+macro_line|#if 0
 (brace
 r_static
 id|u8
@@ -16961,8 +16861,8 @@ id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20312
 DECL|function|ia_detect
+r_static
 r_int
 id|__init
 id|ia_detect
@@ -16970,18 +16870,6 @@ c_func
 (paren
 r_void
 )paren
-macro_line|#else
-id|__initfunc
-c_func
-(paren
-r_int
-id|ia_detect
-c_func
-(paren
-r_void
-)paren
-)paren
-macro_line|#endif 
 (brace
 r_struct
 id|atm_dev
@@ -17371,10 +17259,11 @@ r_return
 id|index
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE  
-DECL|function|init_module
+DECL|function|ia_module_init
+r_static
 r_int
-id|init_module
+id|__init
+id|ia_module_init
 c_func
 (paren
 r_void
@@ -17432,9 +17321,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+DECL|function|ia_module_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|ia_module_exit
 c_func
 (paren
 r_void
@@ -17706,5 +17597,18 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif  
+DECL|variable|ia_module_init
+id|module_init
+c_func
+(paren
+id|ia_module_init
+)paren
+suffix:semicolon
+DECL|variable|ia_module_exit
+id|module_exit
+c_func
+(paren
+id|ia_module_exit
+)paren
+suffix:semicolon
 eof

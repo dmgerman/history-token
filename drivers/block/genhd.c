@@ -949,24 +949,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FC4_SOC
-multiline_comment|/* This has to be done before scsi_dev_init */
-id|soc_probe
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_ATM
-(paren
-r_void
-)paren
-id|atmdev_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|devclass_register
 c_func
 (paren
