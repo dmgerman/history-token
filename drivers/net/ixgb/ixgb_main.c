@@ -1,6 +1,6 @@
-multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2004 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2005 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;ixgb.h&quot;
-multiline_comment|/* Change Log&n; * 1.0.84 10/26/04&n; * - reset buffer_info-&gt;dma in Tx resource cleanup logic&n; * 1.0.83 10/12/04&n; * - sparse cleanup - shemminger@osdl.org&n; * - fix tx resource cleanup logic&n; */
+multiline_comment|/* Change Log&n; * 1.0.88 01/05/05&n; * - include fix to the condition that determines when to quit NAPI - Robert Olsson&n; * - use netif_poll_{disable/enable} to synchronize between NAPI and i/f up/down&n; * 1.0.84 10/26/04&n; * - reset buffer_info-&gt;dma in Tx resource cleanup logic&n; * 1.0.83 10/12/04&n; * - sparse cleanup - shemminger@osdl.org&n; * - fix tx resource cleanup logic&n; */
 DECL|variable|ixgb_driver_name
 r_char
 id|ixgb_driver_name
@@ -30,7 +30,7 @@ id|ixgb_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;1.0.87-k2&quot;
+l_string|&quot;1.0.90-k2&quot;
 id|DRIVERNAPI
 suffix:semicolon
 DECL|variable|ixgb_copyright
@@ -39,7 +39,7 @@ id|ixgb_copyright
 (braket
 )braket
 op_assign
-l_string|&quot;Copyright (c) 1999-2004 Intel Corporation.&quot;
+l_string|&quot;Copyright (c) 1999-2005 Intel Corporation.&quot;
 suffix:semicolon
 multiline_comment|/* ixgb_pci_tbl - PCI Device ID Table&n; *&n; * Wildcard entries (PCI_ANY_ID) should come last&n; * Last entry must be all 0s&n; *&n; * { Vendor ID, Device ID, SubVendor ID, SubDevice ID,&n; *   Class, Class Mask, private data (not used) }&n; */
 DECL|variable|ixgb_pci_tbl
@@ -1225,6 +1225,14 @@ c_func
 id|adapter
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IXGB_NAPI
+id|netif_poll_enable
+c_func
+(paren
+id|netdev
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1295,6 +1303,14 @@ id|adapter-&gt;watchdog_timer
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_IXGB_NAPI
+id|netif_poll_disable
+c_func
+(paren
+id|netdev
+)paren
+suffix:semicolon
+macro_line|#endif
 id|adapter-&gt;link_speed
 op_assign
 l_int|0
@@ -2631,7 +2647,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* don&squot;t set up txdctl, it induces performance problems if&n;&t; * configured incorrectly&n;&t; txdctl  = TXDCTL_PTHRESH_DEFAULT; // prefetch txds below this threshold&n;&t; txdctl |= (TXDCTL_HTHRESH_DEFAULT // only prefetch if there are this many ready&n;&t; &lt;&lt; IXGB_TXDCTL_HTHRESH_SHIFT);&n;&t; IXGB_WRITE_REG (hw, TXDCTL, txdctl);&n;&t; */
+multiline_comment|/* don&squot;t set up txdctl, it induces performance problems if configured&n;&t; * incorrectly */
 multiline_comment|/* Set the Tx Interrupt Delay register */
 id|IXGB_WRITE_REG
 c_func
@@ -3073,7 +3089,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* burst 16 or burst when RXT0*/
+multiline_comment|/* set up pre-fetching of receive buffers so we get some before we&n;&t; * run out (default hardware behavior is to run out before fetching&n;&t; * more).  This sets up to fetch if HTHRESH rx descriptors are avail&n;&t; * and the descriptors in hw cache are below PTHRESH.  This avoids&n;&t; * the hardware behavior of fetching &lt;=512 descriptors in a single&n;&t; * burst that pre-empts all other activity, usually causing fifo&n;&t; * overflows. */
+multiline_comment|/* use WTHRESH to burst write 16 descriptors or burst when RXT0 */
 id|rxdctl
 op_assign
 id|RXDCTL_WTHRESH_DEFAULT
@@ -3912,10 +3929,6 @@ op_assign
 op_amp
 id|adapter-&gt;tx_ring
 suffix:semicolon
-r_int
-r_int
-id|i
-suffix:semicolon
 id|ixgb_check_for_link
 c_func
 (paren
@@ -4078,58 +4091,11 @@ id|adapter-&gt;tx_timeout_task
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Early detection of hung controller */
-id|i
+multiline_comment|/* Force detection of hung controller every watchdog period */
+id|adapter-&gt;detect_tx_hung
 op_assign
-id|txdr-&gt;next_to_clean
+id|TRUE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|txdr-&gt;buffer_info
-(braket
-id|i
-)braket
-dot
-id|dma
-op_logical_and
-id|time_after
-c_func
-(paren
-id|jiffies
-comma
-id|txdr-&gt;buffer_info
-(braket
-id|i
-)braket
-dot
-id|time_stamp
-op_plus
-id|HZ
-)paren
-op_logical_and
-op_logical_neg
-(paren
-id|IXGB_READ_REG
-c_func
-(paren
-op_amp
-id|adapter-&gt;hw
-comma
-id|STATUS
-)paren
-op_amp
-id|IXGB_STATUS_TXOFF
-)paren
-)paren
-(brace
-id|netif_stop_queue
-c_func
-(paren
-id|netdev
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* generate an interrupt to force clean up of any stragglers */
 id|IXGB_WRITE_REG
 c_func
@@ -6592,19 +6558,6 @@ id|work_done
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|netif_carrier_ok
-c_func
-(paren
-id|netdev
-)paren
-)paren
-r_goto
-id|quit_polling
-suffix:semicolon
 id|tx_cleaned
 op_assign
 id|ixgb_clean_tx_irq
@@ -6633,7 +6586,7 @@ id|netdev-&gt;quota
 op_sub_assign
 id|work_done
 suffix:semicolon
-multiline_comment|/* if no Tx cleanup and not enough Rx work done, exit the polling mode */
+multiline_comment|/* if no Tx and not enough Rx work done, exit the polling mode */
 r_if
 c_cond
 (paren
@@ -6643,8 +6596,8 @@ id|tx_cleaned
 op_logical_and
 (paren
 id|work_done
-OL
-id|work_to_do
+op_eq
+l_int|0
 )paren
 )paren
 op_logical_or
@@ -6656,8 +6609,6 @@ id|netdev
 )paren
 )paren
 (brace
-id|quit_polling
-suffix:colon
 id|netif_rx_complete
 c_func
 (paren
@@ -6925,6 +6876,65 @@ op_amp
 id|adapter-&gt;tx_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|adapter-&gt;detect_tx_hung
+)paren
+(brace
+multiline_comment|/* detect a transmit hang in hardware, this serializes the&n;&t;&t; * check with the clearing of time_stamp and movement of i */
+id|adapter-&gt;detect_tx_hung
+op_assign
+id|FALSE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tx_ring-&gt;buffer_info
+(braket
+id|i
+)braket
+dot
+id|dma
+op_logical_and
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|tx_ring-&gt;buffer_info
+(braket
+id|i
+)braket
+dot
+id|time_stamp
+op_plus
+id|HZ
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|IXGB_READ_REG
+c_func
+(paren
+op_amp
+id|adapter-&gt;hw
+comma
+id|STATUS
+)paren
+op_amp
+id|IXGB_STATUS_TXOFF
+)paren
+)paren
+(brace
+id|netif_stop_queue
+c_func
+(paren
+id|netdev
+)paren
+suffix:semicolon
+)brace
+)brace
 r_return
 id|cleaned
 suffix:semicolon
