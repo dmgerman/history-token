@@ -690,7 +690,7 @@ id|list_del
 c_func
 (paren
 op_amp
-id|buddy1-&gt;list
+id|buddy1-&gt;lru
 )paren
 suffix:semicolon
 id|mask
@@ -719,7 +719,7 @@ op_plus
 id|page_idx
 )paren
 op_member_access_from_pointer
-id|list
+id|lru
 comma
 op_amp
 id|area-&gt;free_list
@@ -934,7 +934,7 @@ comma
 r_struct
 id|page
 comma
-id|list
+id|lru
 )paren
 suffix:semicolon
 multiline_comment|/* have to delete it as __free_pages_bulk list manipulates */
@@ -942,7 +942,7 @@ id|list_del
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 )paren
 suffix:semicolon
 id|__free_pages_bulk
@@ -1044,7 +1044,7 @@ id|list_add
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 comma
 op_amp
 id|list
@@ -1159,7 +1159,7 @@ id|list_add
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 comma
 op_amp
 id|area-&gt;free_list
@@ -1441,14 +1441,14 @@ comma
 r_struct
 id|page
 comma
-id|list
+id|lru
 )paren
 suffix:semicolon
 id|list_del
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 )paren
 suffix:semicolon
 id|index
@@ -1597,7 +1597,7 @@ id|list_add_tail
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 comma
 id|list
 )paren
@@ -1793,7 +1793,7 @@ comma
 r_struct
 id|page
 comma
-id|list
+id|lru
 )paren
 )paren
 (brace
@@ -1988,7 +1988,7 @@ id|list_add
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 comma
 op_amp
 id|pcp-&gt;list
@@ -2156,14 +2156,14 @@ comma
 r_struct
 id|page
 comma
-id|list
+id|lru
 )paren
 suffix:semicolon
 id|list_del
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 )paren
 suffix:semicolon
 id|pcp-&gt;count
@@ -5811,7 +5811,7 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 )paren
 suffix:semicolon
 macro_line|#ifdef WANT_PAGE_VIRTUAL
