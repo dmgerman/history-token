@@ -61,12 +61,6 @@ id|dentry
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The VFS will writepage() all dirty pages for us, but we&n;&t; * should send a SMBflush to the server, letting it know that&n;&t; * we want things synchronized with actual storage.&n;&t; *&n;&t; * Note: this function requires all pages to have been written already&n;&t; *       (should be ok with writepage_sync)&n;&t; */
-id|smb_lock_server
-c_func
-(paren
-id|server
-)paren
-suffix:semicolon
 id|result
 op_assign
 id|smb_proc_flush
@@ -81,12 +75,6 @@ id|dentry-&gt;d_inode
 )paren
 op_member_access_from_pointer
 id|fileid
-)paren
-suffix:semicolon
-id|smb_unlock_server
-c_func
-(paren
-id|server
 )paren
 suffix:semicolon
 r_return
@@ -472,7 +460,13 @@ l_string|&quot;file ino=%ld, fileid=%d, count=%d@%Ld, wsize=%d&bslash;n&quot;
 comma
 id|inode-&gt;i_ino
 comma
-id|inode-&gt;u.smbfs_i.fileid
+id|SMB_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|fileid
 comma
 id|count
 comma
