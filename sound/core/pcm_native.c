@@ -7330,7 +7330,7 @@ id|substream
 id|res
 op_assign
 op_minus
-id|EINVAL
+id|EALREADY
 suffix:semicolon
 r_goto
 id|_end
