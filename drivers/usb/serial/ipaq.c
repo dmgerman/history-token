@@ -878,6 +878,10 @@ id|priv-&gt;queue_len
 op_assign
 l_int|0
 suffix:semicolon
+id|priv-&gt;free_len
+op_assign
+l_int|0
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
