@@ -2367,6 +2367,10 @@ comma
 id|LOOP_DOWN_TIME
 )paren
 suffix:semicolon
+id|ha-&gt;device_flags
+op_or_assign
+id|DFLG_NO_CABLE
+suffix:semicolon
 id|qla2x00_mark_all_devices_lost
 c_func
 (paren
