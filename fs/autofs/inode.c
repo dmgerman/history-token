@@ -196,7 +196,11 @@ suffix:semicolon
 op_star
 id|pgrp
 op_assign
-id|current-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 op_star
 id|minproto
@@ -701,7 +705,11 @@ l_int|0
 suffix:semicolon
 id|sbi-&gt;oz_pgrp
 op_assign
-id|current-&gt;pgrp
+id|process_group
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 id|autofs_initialize_hash
 c_func

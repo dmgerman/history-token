@@ -34,7 +34,7 @@ mdefine_line|#define cpus_shift_right(dst, src, n)&t;do { dst = (src) &gt;&gt; (
 DECL|macro|cpus_shift_left
 mdefine_line|#define cpus_shift_left(dst, src, n)&t;do { dst = (src) &lt;&lt; (n); } while (0)
 DECL|macro|any_online_cpu
-mdefine_line|#define any_online_cpu(map)&t;&t;({ (map) ? first_cpu(map) : NR_CPUS; })
+mdefine_line|#define any_online_cpu(map)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;cpumask_t __tmp__;&t;&t;&t;&bslash;&n;&t;cpus_and(__tmp__, map, cpu_online_map);&t;&bslash;&n;&t;__tmp__ ? first_cpu(__tmp__) : NR_CPUS;&t;&bslash;&n;})
 DECL|macro|CPU_MASK_ALL
 mdefine_line|#define CPU_MASK_ALL&t;(~((cpumask_t)0) &gt;&gt; (8*sizeof(cpumask_t) - NR_CPUS))
 DECL|macro|CPU_MASK_NONE

@@ -1,7 +1,6 @@
 macro_line|#ifndef __ARM_MMU_H
 DECL|macro|__ARM_MMU_H
 mdefine_line|#define __ARM_MMU_H
-macro_line|#include &lt;linux/config.h&gt;
 r_typedef
 r_struct
 (brace

@@ -3598,6 +3598,9 @@ id|pos
 op_amp
 op_complement
 (paren
+(paren
+id|loff_t
+)paren
 id|PAGE_CACHE_SIZE
 op_minus
 l_int|1
@@ -3710,6 +3713,9 @@ id|pos
 op_and_assign
 op_complement
 (paren
+(paren
+id|loff_t
+)paren
 id|inode-&gt;i_sb-&gt;s_blocksize
 op_minus
 l_int|1
@@ -3732,6 +3738,9 @@ id|pos
 op_amp
 op_complement
 (paren
+(paren
+id|loff_t
+)paren
 id|inode-&gt;i_sb-&gt;s_blocksize
 op_minus
 l_int|1

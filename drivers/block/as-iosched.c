@@ -4505,6 +4505,11 @@ id|as_add_aliased_request
 c_func
 (paren
 r_struct
+id|as_data
+op_star
+id|ad
+comma
+r_struct
 id|as_rq
 op_star
 id|arq
@@ -4524,6 +4529,15 @@ id|arq-&gt;request-&gt;queuelist
 comma
 op_amp
 id|alias-&gt;request-&gt;queuelist
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Don&squot;t want to have to handle merges.&n;&t; */
+id|as_remove_merge_hints
+c_func
+(paren
+id|ad-&gt;q
+comma
+id|arq
 )paren
 suffix:semicolon
 )brace
@@ -4694,6 +4708,8 @@ r_else
 id|as_add_aliased_request
 c_func
 (paren
+id|ad
+comma
 id|arq
 comma
 id|alias
@@ -5523,14 +5539,25 @@ id|arq
 )paren
 )paren
 )paren
+(brace
+id|list_del_init
+c_func
+(paren
+op_amp
+id|arq-&gt;fifo
+)paren
+suffix:semicolon
 id|as_add_aliased_request
 c_func
 (paren
+id|ad
+comma
 id|arq
 comma
 id|alias
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Note! At this stage of this and the next function, our next&n;&t;&t; * request may not be optimal - eg the request may have &quot;grown&quot;&n;&t;&t; * behind the disk head. We currently don&squot;t bother adjusting.&n;&t;&t; */
 )brace
 id|q-&gt;last_merge
@@ -5657,14 +5684,25 @@ id|arq
 )paren
 )paren
 )paren
+(brace
+id|list_del_init
+c_func
+(paren
+op_amp
+id|arq-&gt;fifo
+)paren
+suffix:semicolon
 id|as_add_aliased_request
 c_func
 (paren
+id|ad
+comma
 id|arq
 comma
 id|alias
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * if anext expires before arq, assign its expire time to arq&n;&t; * and move into anext position (anext will be deleted) in fifo&n;&t; */
 r_if
@@ -7273,7 +7311,7 @@ comma
 dot
 id|elevator_name
 op_assign
-l_string|&quot;anticipatory scheduling&quot;
+l_string|&quot;anticipatory&quot;
 comma
 )brace
 suffix:semicolon

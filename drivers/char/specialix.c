@@ -18,38 +18,7 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-multiline_comment|/* ************************************************************** */
-multiline_comment|/* * This section can be removed when 2.0 becomes outdated....  * */
-multiline_comment|/* ************************************************************** */
-macro_line|#if LINUX_VERSION_CODE &lt; 131328    /* Less than 2.1.0 */
-DECL|macro|TWO_ZERO
-mdefine_line|#define TWO_ZERO
-macro_line|#else
-macro_line|#if LINUX_VERSION_CODE &lt; 131371   /* less than 2.1.43 */
-multiline_comment|/* This has not been extensively tested yet. Sorry. */
-macro_line|#warning &quot;You&squot;re on your own between 2.1.0 and 2.1.43.... &quot;
-macro_line|#warning &quot;Please use a recent kernel.&quot;
-macro_line|#endif
-macro_line|#endif
-macro_line|#ifdef TWO_ZERO
-DECL|macro|Get_user
-mdefine_line|#define Get_user(a,b)         a = get_user(b)
-DECL|macro|copy_from_user
-mdefine_line|#define copy_from_user(a,b,c) memcpy_fromfs(a,b,c)
-DECL|macro|copy_to_user
-mdefine_line|#define copy_to_user(a,b,c)   memcpy_tofs(a,b,c)
-DECL|macro|queue_task
-mdefine_line|#define queue_task            queue_task_irq_off
-macro_line|#else
-DECL|macro|Get_user
-mdefine_line|#define Get_user(a,b)         get_user(a,b)
-macro_line|#endif
-multiline_comment|/* ************************************************************** */
-multiline_comment|/* *                End of compatibility section..              * */
-multiline_comment|/* ************************************************************** */
-macro_line|#ifndef TWO_ZERO
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#endif
 macro_line|#include &quot;specialix_io8.h&quot;
 macro_line|#include &quot;cd1865.h&quot;
 multiline_comment|/* Configurable options: */
@@ -7474,7 +7443,7 @@ id|error
 r_return
 id|error
 suffix:semicolon
-id|Get_user
+id|get_user
 c_func
 (paren
 id|arg
@@ -8515,7 +8484,7 @@ suffix:semicolon
 r_case
 id|TIOCSSOFTCAR
 suffix:colon
-id|Get_user
+id|get_user
 c_func
 (paren
 id|arg

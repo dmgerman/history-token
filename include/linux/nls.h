@@ -16,6 +16,11 @@ r_char
 op_star
 id|charset
 suffix:semicolon
+DECL|member|alias
+r_char
+op_star
+id|alias
+suffix:semicolon
 DECL|member|uni2char
 r_int
 (paren
@@ -195,5 +200,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+DECL|macro|MODULE_ALIAS_NLS
+mdefine_line|#define MODULE_ALIAS_NLS(name)&t;MODULE_ALIAS(&quot;nls_&quot; __stringify(name))
 macro_line|#endif /* _LINUX_NLS_H */
 eof

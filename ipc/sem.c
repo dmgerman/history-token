@@ -4512,9 +4512,17 @@ op_eq
 op_minus
 l_int|1
 )paren
+(brace
+id|sem_unlock
+c_func
+(paren
+id|sma
+)paren
+suffix:semicolon
 r_goto
 id|retry_undos
 suffix:semicolon
+)brace
 id|error
 op_assign
 op_minus

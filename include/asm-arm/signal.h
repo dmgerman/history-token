@@ -120,7 +120,7 @@ multiline_comment|/* These should not be considered constants from userland.  */
 DECL|macro|SIGRTMIN
 mdefine_line|#define SIGRTMIN&t;32
 DECL|macro|SIGRTMAX
-mdefine_line|#define SIGRTMAX&t;(_NSIG-1)
+mdefine_line|#define SIGRTMAX&t;_NSIG
 DECL|macro|SIGSWI
 mdefine_line|#define SIGSWI&t;&t;32
 multiline_comment|/*&n; * SA_FLAGS values:&n; *&n; * SA_NOCLDSTOP&t;&t;flag to turn off SIGCHLD when children stop.&n; * SA_NOCLDWAIT&t;&t;flag on SIGCHLD to inhibit zombies.&n; * SA_SIGINFO&t;&t;deliver the signal with SIGINFO structs&n; * SA_THIRTYTWO&t;&t;delivers the signal in 32-bit mode, even if the task &n; *&t;&t;&t;is running in 26-bit.&n; * SA_ONSTACK&t;&t;allows alternate signal stacks (see sigaltstack(2)).&n; * SA_RESTART&t;&t;flag to get restarting signals (which were the default long ago)&n; * SA_INTERRUPT&t;&t;is a no-op, but left due to historical reasons. Use the&n; * SA_NODEFER&t;&t;prevents the current signal from being masked in the handler.&n; * SA_RESETHAND&t;&t;clears the handler when the signal is delivered.&n; *&n; * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single&n; * Unix names RESETHAND and NODEFER respectively.&n; */

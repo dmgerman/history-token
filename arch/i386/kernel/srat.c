@@ -895,6 +895,24 @@ r_break
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|num_memory_chunks
+op_eq
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;could not finy any ACPI SRAT memory areas.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|out_fail
+suffix:semicolon
+)brace
 multiline_comment|/* Calculate total number of nodes in system from PXM bitmap and create&n;&t; * a set of sequential node IDs starting at zero.  (ACPI doesn&squot;t seem&n;&t; * to specify the range of _PXM values.)&n;&t; */
 id|numnodes
 op_assign
@@ -1228,11 +1246,16 @@ suffix:semicolon
 )brace
 )brace
 r_return
+l_int|1
+suffix:semicolon
+id|out_fail
+suffix:colon
+r_return
 l_int|0
 suffix:semicolon
 )brace
 DECL|function|get_memcfg_from_srat
-r_void
+r_int
 id|__init
 id|get_memcfg_from_srat
 c_func
@@ -1329,7 +1352,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_err
 suffix:semicolon
 )brace
 r_if
@@ -1347,7 +1371,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_err
 suffix:semicolon
 )brace
 id|printk
@@ -1390,7 +1415,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_err
 suffix:semicolon
 )brace
 id|rsdt
@@ -1428,7 +1454,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_err
 suffix:semicolon
 )brace
 id|header
@@ -1461,7 +1488,8 @@ id|KERN_WARNING
 l_string|&quot;ACPI: RSDT signature incorrect&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_err
 suffix:semicolon
 )brace
 multiline_comment|/* &n;&t; * The number of tables is computed by taking the &n;&t; * size of all entries (header size minus total &n;&t; * size of RSDT) divided by the size of each entry&n;&t; * (4-byte table pointers).&n;&t; */
@@ -1478,6 +1506,15 @@ id|acpi_table_header
 )paren
 op_div
 l_int|4
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tables
+)paren
+r_goto
+id|out_err
 suffix:semicolon
 id|memcpy
 c_func
@@ -1513,13 +1550,14 @@ comma
 id|saved_rsdt.header.length
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_err
 suffix:semicolon
 )brace
 id|printk
 c_func
 (paren
-l_string|&quot;Begin table scan....&bslash;n&quot;
+l_string|&quot;Begin SRAT table scan....&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -1614,6 +1652,8 @@ l_int|4
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* we&squot;ve found the srat table. don&squot;t need to look at any more tables */
+r_return
 id|acpi20_parse_srat
 c_func
 (paren
@@ -1625,10 +1665,18 @@ op_star
 id|header
 )paren
 suffix:semicolon
-multiline_comment|/* we&squot;ve found the srat table. don&squot;t need to look at any more tables */
-r_break
-suffix:semicolon
 )brace
+id|out_err
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;failed to get NUMA memory information from SRAT table&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* For each node run the memory list to determine whether there are&n; * any memory holes.  For each hole determine which ZONE they fall&n; * into.&n; *&n; * NOTE#1: this requires knowledge of the zone boundries and so&n; * _cannot_ be performed before those are calculated in setup_memory.&n; * &n; * NOTE#2: we rely on the fact that the memory chunks are ordered by&n; * start pfn number during setup.&n; */
 DECL|function|get_zholes_init
