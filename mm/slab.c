@@ -11123,7 +11123,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot; : tunables &lt;batchcount&gt; &lt;limit&gt; &lt;sharedfactor&gt;&quot;
+l_string|&quot; : tunables &lt;limit&gt; &lt;batchcount&gt; &lt;sharedfactor&gt;&quot;
 )paren
 suffix:semicolon
 id|seq_puts
