@@ -1,12 +1,9 @@
-multiline_comment|/*&n; * sleep.c - ACPI sleep support.&n; * &n; *  Copyright (c) 2000-2002 Patrick Mochel&n; *&n; *  Portions are&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; */
+multiline_comment|/*&n; * sleep.c - ACPI sleep support.&n; * &n; *  Copyright (c) 2000-2003 Patrick Mochel&n; *&n; *  Portions are&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
-macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
-macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 macro_line|#include &quot;sleep.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT&t;&t;ACPI_SYSTEM_COMPONENT
@@ -21,32 +18,6 @@ id|sleep_states
 id|ACPI_S_STATE_COUNT
 )braket
 suffix:semicolon
-r_static
-r_void
-DECL|function|acpi_power_off
-id|acpi_power_off
-(paren
-r_void
-)paren
-(brace
-id|acpi_enter_sleep_state_prep
-c_func
-(paren
-id|ACPI_STATE_S5
-)paren
-suffix:semicolon
-id|ACPI_DISABLE_IRQS
-c_func
-(paren
-)paren
-suffix:semicolon
-id|acpi_enter_sleep_state
-c_func
-(paren
-id|ACPI_STATE_S5
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/**&n; * acpi_system_restore_state - OS-specific restoration of state&n; * @state:&t;sleep state we&squot;re exiting&n; *&n; * Note that if we&squot;re coming back from S4, the memory image should have already&n; * been loaded from the disk and is already in place. (Otherwise how else would we&n; * be here?).&n; */
 id|acpi_status
 DECL|function|acpi_system_restore_state
@@ -526,11 +497,6 @@ c_func
 r_void
 )paren
 (brace
-id|acpi_status
-id|status
-op_assign
-id|AE_OK
-suffix:semicolon
 r_int
 id|i
 op_assign
@@ -576,6 +542,9 @@ id|i
 op_increment
 )paren
 (brace
+id|acpi_status
+id|status
+suffix:semicolon
 id|u8
 id|type_a
 comma
@@ -633,29 +602,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Install the soft-off (S5) handler. */
-r_if
-c_cond
-(paren
-id|sleep_states
-(braket
-id|ACPI_STATE_S5
-)braket
-)paren
-(brace
-id|pm_power_off
-op_assign
-id|acpi_power_off
-suffix:semicolon
-multiline_comment|/* workaround: some systems don&squot;t claim S4 support, but they&n;                   do support S5 (power-down). That is all we need, so&n;&t;&t;   indicate support. */
-id|sleep_states
-(braket
-id|ACPI_STATE_S4
-)braket
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 id|return_VALUE
 c_func
 (paren
