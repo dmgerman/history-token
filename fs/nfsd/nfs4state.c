@@ -9565,7 +9565,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|list_for_each_entry
 c_func
 (paren
@@ -9579,7 +9578,6 @@ id|i
 comma
 id|so_strhash
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -9594,23 +9592,12 @@ id|clid
 )paren
 )paren
 (brace
-r_break
-suffix:semicolon
-)brace
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|local
-)paren
-(brace
 r_struct
 id|nfs4_stateid
 op_star
 id|stp
 suffix:semicolon
-multiline_comment|/* check for any locks held by any stateid associated with the&n;&t;&t; * (lock) stateowner */
+multiline_comment|/* check for any locks held by any stateid&n;&t;&t;&t;&t; * associated with the (lock) stateowner */
 id|status
 op_assign
 id|nfserr_locks_held
@@ -9659,6 +9646,9 @@ c_func
 (paren
 id|local
 )paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|out
