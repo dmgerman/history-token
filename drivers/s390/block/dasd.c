@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.129 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.133 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -6767,7 +6767,50 @@ op_assign
 id|disk-&gt;private_data
 suffix:semicolon
 r_int
+id|old_count
+comma
 id|rc
+suffix:semicolon
+multiline_comment|/*&n;&t; * We use a negative value in open_count to indicate that&n;&t; * the device must not be used.&n;&t; */
+r_do
+(brace
+id|old_count
+op_assign
+id|atomic_read
+c_func
+(paren
+op_amp
+id|device-&gt;open_count
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|old_count
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|atomic_compare_and_swap
+c_func
+(paren
+id|old_count
+comma
+id|old_count
+op_plus
+l_int|1
+comma
+op_amp
+id|device-&gt;open_count
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6779,10 +6822,16 @@ c_func
 id|device-&gt;discipline-&gt;owner
 )paren
 )paren
-r_return
+(brace
+id|rc
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_goto
+id|unlock
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6842,13 +6891,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|device-&gt;open_count
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6858,6 +6900,15 @@ id|module_put
 c_func
 (paren
 id|device-&gt;discipline-&gt;owner
+)paren
+suffix:semicolon
+id|unlock
+suffix:colon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|device-&gt;open_count
 )paren
 suffix:semicolon
 r_return
@@ -7060,7 +7111,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;dasd_generic_probe: could not add driverfs entries&quot;
+l_string|&quot;dasd_generic_probe: could not add sysfs entries &quot;
 l_string|&quot;for %s&bslash;n&quot;
 comma
 id|cdev-&gt;dev.bus_id
@@ -7092,6 +7143,12 @@ id|dasd_device
 op_star
 id|device
 suffix:semicolon
+id|dasd_remove_sysfs_files
+c_func
+(paren
+id|cdev
+)paren
+suffix:semicolon
 id|device
 op_assign
 id|dasd_device_from_cdev
@@ -7111,6 +7168,17 @@ id|device
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * This device is removed unconditionally. Set open_count&n;&t;&t; * to -1 to prevent dasd_open from opening it while it is&n;&t;&t; * no quite down yet.&n;&t;&t; */
+id|atomic_set
+c_func
+(paren
+op_amp
+id|device-&gt;open_count
+comma
+op_minus
+l_int|1
+)paren
+suffix:semicolon
 id|dasd_set_target_state
 c_func
 (paren
@@ -7354,17 +7422,21 @@ c_func
 id|cdev
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * We must make sure that this device is currently not in use&n;&t; * (current open_count == 0 ). We set open_count to -1 to indicate&n;&t; * that from now on set_offline is in progress and the device must&n;&t; * not be used otherwise.&n;&t; */
 r_if
 c_cond
 (paren
-id|atomic_read
+id|atomic_compare_and_swap
 c_func
 (paren
+l_int|0
+comma
+op_minus
+l_int|1
+comma
 op_amp
 id|device-&gt;open_count
 )paren
-OG
-l_int|0
 )paren
 (brace
 id|printk
@@ -7392,15 +7464,19 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|dasd_put_device
+id|dasd_set_target_state
 c_func
 (paren
 id|device
+comma
+id|DASD_STATE_NEW
 )paren
 suffix:semicolon
-id|dasd_generic_remove
+multiline_comment|/* dasd_delete_device destroys the device reference. */
+id|dasd_delete_device
+c_func
 (paren
-id|cdev
+id|device
 )paren
 suffix:semicolon
 r_return

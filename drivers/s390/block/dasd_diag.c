@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.33 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.34 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -620,11 +620,6 @@ comma
 l_string|&quot;caught unsolicited interrupt&quot;
 )paren
 suffix:semicolon
-id|irq_exit
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -689,11 +684,6 @@ op_star
 op_amp
 id|device-&gt;discipline-&gt;name
 )paren
-)paren
-suffix:semicolon
-id|irq_exit
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
