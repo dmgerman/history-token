@@ -375,7 +375,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;serio: kseriod exiting&quot;
+l_string|&quot;serio: kseriod exiting&bslash;n&quot;
 )paren
 suffix:semicolon
 id|unlock_kernel
