@@ -1041,7 +1041,7 @@ l_int|0x20000
 suffix:semicolon
 )brace
 multiline_comment|/* address to map too */
-multiline_comment|/*&n;&t;pci_read_config_dword(agp_bridge.dev, AGP_APBASE, &amp;temp);&n;&t;agp_bridge.gart_bus_addr = (temp &amp; PCI_BASE_ADDRESS_MEM_MASK);&n;&t;printk(KERN_INFO &quot;IGP320 gart_bus_addr: %x&bslash;n&quot;, agp_bridge.gart_bus_addr);&n;        */
+multiline_comment|/*&n;&t;pci_read_config_dword(agp_bridge.dev, AGP_APBASE, &amp;temp);&n;&t;agp_bridge.gart_bus_addr = (temp &amp; PCI_BASE_ADDRESS_MEM_MASK);&n;&t;printk(KERN_INFO PFX &quot;IGP320 gart_bus_addr: %x&bslash;n&quot;, agp_bridge.gart_bus_addr);&n;        */
 id|OUTREG32
 c_func
 (paren
@@ -1089,17 +1089,6 @@ comma
 id|ATI_GART_BASE
 comma
 id|agp_bridge-&gt;gatt_bus_addr
-)paren
-suffix:semicolon
-multiline_comment|/* Flush the tlb */
-id|OUTREG32
-c_func
-(paren
-id|ati_generic_private.registers
-comma
-id|ATI_GART_CACHE_CNTRL
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_return

@@ -602,13 +602,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|INPUT_KEYCODE
-c_func
-(paren
-id|dev
-comma
-id|scancode
-)paren
+id|keycode
 op_eq
 id|oldkey
 )paren

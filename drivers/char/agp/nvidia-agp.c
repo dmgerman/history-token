@@ -918,6 +918,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+id|PFX
 l_string|&quot;TLB flush took more than 3 seconds.&bslash;n&quot;
 )paren
 suffix:semicolon

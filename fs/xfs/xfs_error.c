@@ -958,7 +958,7 @@ DECL|function|xfs_cmn_err
 id|xfs_cmn_err
 c_func
 (paren
-r_uint64
+r_int
 id|panic_tag
 comma
 r_int

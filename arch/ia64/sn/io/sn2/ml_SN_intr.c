@@ -25,6 +25,7 @@ macro_line|#include &lt;asm/sn/sn2/shub_mmr_t.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
+macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
 r_extern
 id|irqpda_t
 op_star

@@ -1012,7 +1012,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_ACPI_NUMA
 DECL|macro|SLIT_DEBUG
-mdefine_line|#define SLIT_DEBUG
+macro_line|#undef SLIT_DEBUG
 DECL|macro|PXM_FLAG_LEN
 mdefine_line|#define PXM_FLAG_LEN ((MAX_PXM_DOMAINS + 1)/32)
 DECL|variable|srat_num_cpus

@@ -2086,14 +2086,6 @@ r_volatile
 r_int
 id|fw_running
 suffix:semicolon
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|24
-)braket
-suffix:semicolon
-multiline_comment|/* The assigned name */
 DECL|member|stats
 r_struct
 id|net_device_stats

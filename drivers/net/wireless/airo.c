@@ -1,6 +1,5 @@
 multiline_comment|/*======================================================================&n;&n;    Aironet driver for 4500 and 4800 series cards&n;&n;    This code is released under both the GPL version 2 and BSD licenses.&n;    Either license may be used.  The respective licenses are found at&n;    the end of this file.&n;&n;    This code was developed by Benjamin Reed &lt;breed@users.sourceforge.net&gt;&n;    including portions of which come from the Aironet PC4500&n;    Developer&squot;s Reference Manual and used with permission.  Copyright&n;    (C) 1999 Benjamin Reed.  All Rights Reserved.  Permission to use&n;    code in the Developer&squot;s manual was granted for this driver by&n;    Aironet.  Major code contributions were received from Javier Achirica&n;    &lt;achirica@users.sourceforge.net&gt; and Jean Tourrilhes &lt;jt@hpl.hp.com&gt;.&n;    Code was also integrated from the Cisco Aironet driver for Linux.&n;&n;======================================================================*/
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -21,7 +20,6 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_PCI
@@ -5306,6 +5304,11 @@ suffix:semicolon
 id|u8
 op_star
 id|cipher
+comma
+id|plain
+(braket
+l_int|16
+)braket
 suffix:semicolon
 r_struct
 id|scatterlist
@@ -5413,6 +5416,15 @@ suffix:semicolon
 id|counter
 op_increment
 suffix:semicolon
+id|memcpy
+(paren
+id|plain
+comma
+id|aes_counter
+comma
+l_int|16
+)paren
+suffix:semicolon
 id|sg
 (braket
 l_int|0
@@ -5423,7 +5435,7 @@ op_assign
 id|virt_to_page
 c_func
 (paren
-id|aes_counter
+id|plain
 )paren
 suffix:semicolon
 id|sg
@@ -5437,7 +5449,7 @@ op_assign
 (paren
 r_int
 )paren
-id|aes_counter
+id|plain
 op_amp
 op_complement
 id|PAGE_MASK
@@ -23862,7 +23874,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|clear_bit
+id|set_bit
 (paren
 id|FLAG_PCI
 comma

@@ -30,6 +30,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/config.h&gt;&t;/* for CONFIG_IP_MULTICAST */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -344,8 +345,6 @@ l_int|2
 r_int
 r_int
 id|irq_mask
-comma
-id|delay
 suffix:semicolon
 id|irq_mask
 op_assign
@@ -385,24 +384,10 @@ comma
 id|AX_CMD
 )paren
 suffix:semicolon
-id|delay
-op_assign
-id|jiffies
-op_plus
-id|HZ
-op_div
-l_int|50
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|time_before
+id|mdelay
 c_func
 (paren
-id|jiffies
-comma
-id|delay
-)paren
+l_int|20
 )paren
 suffix:semicolon
 id|autoirq
