@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;asm/acpi.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1025,8 +1025,6 @@ r_void
 )paren
 (brace
 macro_line|#ifdef&t;CONFIG_ACPI_BOOT
-DECL|macro|ACPI_BLACKLIST_CUTOFF_YEAR
-mdefine_line|#define&t;ACPI_BLACKLIST_CUTOFF_YEAR&t;2001
 r_if
 c_cond
 (paren
@@ -1055,97 +1053,18 @@ r_if
 c_cond
 (paren
 id|s
-)paren
-(brace
-r_int
-id|year
-comma
-id|disable
-op_assign
-l_int|0
-suffix:semicolon
-id|s
-op_increment
-suffix:semicolon
-id|year
-op_assign
-id|simple_strtoul
-c_func
-(paren
-id|s
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|year
-op_ge
-l_int|1000
-)paren
-id|disable
-op_assign
-id|year
-OL
-id|ACPI_BLACKLIST_CUTOFF_YEAR
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|year
-OL
-l_int|1
-op_logical_or
-(paren
-id|year
-OG
-l_int|90
-op_logical_and
-id|year
-op_le
-l_int|99
-)paren
-)paren
-id|disable
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|disable
 op_logical_and
 op_logical_neg
 id|acpi_force
 )paren
-(brace
-id|printk
+id|acpi_bios_year
 c_func
 (paren
-id|KERN_NOTICE
-l_string|&quot;ACPI disabled because your bios is from %s and too old&bslash;n&quot;
-comma
 id|s
+op_plus
+l_int|1
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;You can enable it with acpi=force&bslash;n&quot;
-)paren
-suffix:semicolon
-id|disable_acpi
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 macro_line|#endif
 id|dmi_check_system
