@@ -2619,7 +2619,7 @@ l_int|0
 op_logical_and
 (paren
 id|i
-op_le
+OL
 l_int|10
 )paren
 )paren
@@ -2641,7 +2641,7 @@ l_int|0
 op_logical_and
 (paren
 id|j
-op_le
+OL
 l_int|4
 )paren
 )paren

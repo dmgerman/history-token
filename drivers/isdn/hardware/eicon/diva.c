@@ -2533,6 +2533,7 @@ op_assign
 id|DivaIdiRequest31
 suffix:semicolon
 )brace
+multiline_comment|/* card:  1-based card number */
 DECL|function|diva_xdi_display_adapter_features
 r_void
 id|diva_xdi_display_adapter_features
@@ -2557,7 +2558,7 @@ id|card
 op_minus
 l_int|1
 )paren
-OG
+op_ge
 id|MAX_ADAPTER
 )paren
 op_logical_or

@@ -1744,7 +1744,7 @@ r_if
 c_cond
 (paren
 id|family
-OG
+op_ge
 id|NPROTO
 )paren
 (brace
