@@ -1974,7 +1974,7 @@ id|buf
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// FIXME this &squot;buf&squot; check break some zlps...
+multiline_comment|/* for zero length DATA stages, STATUS is always IN */
 r_if
 c_cond
 (paren

@@ -2442,7 +2442,13 @@ suffix:semicolon
 )brace
 id|info
 op_assign
+(paren
 id|is_out
+op_logical_or
+id|data_len
+op_eq
+l_int|0
+)paren
 ques
 c_cond
 id|TD_CC
