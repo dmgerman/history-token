@@ -6735,32 +6735,9 @@ c_cond
 (paren
 id|res
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|res
-op_eq
-op_minus
-id|EINVAL
-op_logical_and
-op_logical_neg
-id|silent
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;VFS: Can&squot;t find a valid&quot;
-l_string|&quot; VFAT filesystem on dev %s.&bslash;n&quot;
-comma
-id|sb-&gt;s_id
-)paren
-suffix:semicolon
 r_return
 id|res
 suffix:semicolon
-)brace
 id|sbi
 op_assign
 id|MSDOS_SB

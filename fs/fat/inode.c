@@ -3175,9 +3175,6 @@ id|media
 suffix:semicolon
 r_int
 id|error
-op_assign
-op_minus
-id|EIO
 suffix:semicolon
 r_char
 id|buf
@@ -3287,6 +3284,11 @@ op_assign
 op_amp
 id|default_cvf
 suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3326,6 +3328,11 @@ c_func
 op_amp
 id|sbi-&gt;fat_lock
 )paren
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EIO
 suffix:semicolon
 id|sb_min_blocksize
 c_func
@@ -4223,6 +4230,11 @@ r_goto
 id|out_invalid
 suffix:semicolon
 )brace
+id|error
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4276,7 +4288,7 @@ id|cvf_options
 )paren
 )paren
 r_goto
-id|out_invalid
+id|out_fail
 suffix:semicolon
 )brace
 id|cp
@@ -4542,6 +4554,22 @@ id|error
 op_assign
 op_minus
 id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|silent
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;VFS: Can&squot;t find a valid FAT filesystem&quot;
+l_string|&quot; on dev %s.&bslash;n&quot;
+comma
+id|sb-&gt;s_id
+)paren
 suffix:semicolon
 id|out_fail
 suffix:colon
