@@ -713,17 +713,7 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
-id|err
-op_assign
-id|inode_change_ok
-c_func
-(paren
-id|inode
-comma
-id|iap
-)paren
-suffix:semicolon
-multiline_comment|/* could be a &quot;touch&quot; (utimes) request where the user is not the owner but does&n;&t; * have write permission. In this case the user should be allowed to set&n;&t; * both times to the current time.  We could just assume any such SETATTR&n;&t; * is intended to set the times to &quot;now&quot;, but we do a couple of simple tests&n;&t; * to increase our confidence.&n;&t; */
+multiline_comment|/* NFSv2 does not differentiate between &quot;set-[ac]time-to-now&quot;&n;&t; * which only requires access, and &quot;set-[ac]time-to-X&quot; which&n;&t; * requires ownership.&n;&t; * So if it looks like it might be &quot;set both to the same time which&n;&t; * is close to now&quot;, and if inode_change_ok fails, then we&n;&t; * convert to &quot;set to now&quot; instead of &quot;set to explicit time&quot;&n;&t; *&n;&t; * We only call inode_change_ok as the last test as technically&n;&t; * it is not an interface that we should be using.  It is only&n;&t; * valid if the filesystem does not define it&squot;s own i_op-&gt;setattr.&n;&t; */
 DECL|macro|BOTH_TIME_SET
 mdefine_line|#define BOTH_TIME_SET (ATTR_ATIME_SET | ATTR_MTIME_SET)
 DECL|macro|MAX_TOUCH_TIME_ERROR
@@ -731,8 +721,6 @@ mdefine_line|#define&t;MAX_TOUCH_TIME_ERROR (30*60)
 r_if
 c_cond
 (paren
-id|err
-op_logical_and
 (paren
 id|iap-&gt;ia_valid
 op_amp
@@ -746,7 +734,7 @@ op_eq
 id|iap-&gt;ia_atime
 )paren
 (brace
-multiline_comment|/* looks good.  now just make sure time is in the right ballpark.&n;&t;     * solaris, at least, doesn&squot;t seem to care what the time request is&n;&t;     */
+multiline_comment|/* Looks probable.  Now just make sure time is in the right ballpark.&n;&t;     * Solaris, at least, doesn&squot;t seem to care what the time request is.&n;&t;     * We require it be within 30 minutes of now.&n;&t;     */
 id|time_t
 id|delta
 op_assign
@@ -772,6 +760,16 @@ c_cond
 id|delta
 OL
 id|MAX_TOUCH_TIME_ERROR
+op_logical_and
+id|inode_change_ok
+c_func
+(paren
+id|inode
+comma
+id|iap
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* turn off ATTR_[AM]TIME_SET but leave ATTR_[AM]TIME&n;&t;&t; * this will cause notify_change to set these times to &quot;now&quot;&n;&t;&t; */
@@ -780,26 +778,8 @@ op_and_assign
 op_complement
 id|BOTH_TIME_SET
 suffix:semicolon
-id|err
-op_assign
-id|inode_change_ok
-c_func
-(paren
-id|inode
-comma
-id|iap
-)paren
-suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|err
-)paren
-r_goto
-id|out_nfserr
-suffix:semicolon
 multiline_comment|/* The size case is special. It changes the file as well as the attributes.  */
 r_if
 c_cond
