@@ -3159,8 +3159,6 @@ macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &lt;asm/agp_backend.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-DECL|macro|MARVEL_AGP_APER_SIZE
-mdefine_line|#define MARVEL_AGP_APER_SIZE (64 * 1024 * 1024)
 DECL|struct|marvel_agp_aperture
 r_struct
 id|marvel_agp_aperture
@@ -3197,6 +3195,16 @@ id|marvel_agp_aperture
 op_star
 id|aper
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|alpha_agpgart_size
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|aper
 op_assign
 id|kmalloc
@@ -3228,7 +3236,7 @@ id|agp-&gt;hose-&gt;sg_pci
 suffix:semicolon
 id|aper-&gt;pg_count
 op_assign
-id|MARVEL_AGP_APER_SIZE
+id|alpha_agpgart_size
 op_div
 id|PAGE_SIZE
 suffix:semicolon
