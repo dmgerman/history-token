@@ -3229,12 +3229,10 @@ c_func
 suffix:semicolon
 id|err
 op_assign
-id|fat_scan
+id|fat_get_dotdot_entry
 c_func
 (paren
 id|child-&gt;d_inode
-comma
-id|MSDOS_DOTDOT
 comma
 op_amp
 id|bh
