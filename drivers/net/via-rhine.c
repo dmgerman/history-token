@@ -1,11 +1,11 @@
 multiline_comment|/* via-rhine.c: A Linux Ethernet device driver for VIA Rhine family chips. */
-multiline_comment|/*&n;&t;Written 1998-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is designed for the VIA VT86c100A Rhine-II PCI Fast Ethernet&n;&t;controller.  It also works with the older 3043 Rhine-I chip.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;This driver contains some changes from the original Donald Becker&n;&t;version. He may or may not be interested in bug reports on this&n;&t;code. You can find his versions at:&n;&t;http://www.scyld.com/network/via-rhine.html&n;&n;&n;&t;Linux kernel version history:&n;&t;&n;&t;LK1.1.0:&n;&t;- Jeff Garzik: softnet &squot;n stuff&n;&t;&n;&t;LK1.1.1:&n;&t;- Justin Guyett: softnet and locking fixes&n;&t;- Jeff Garzik: use PCI interface&n;&n;&t;LK1.1.2:&n;&t;- Urban Widmark: minor cleanups, merges from Becker 1.03a/1.04 versions&n;&n;&t;LK1.1.3:&n;&t;- Urban Widmark: use PCI DMA interface (with thanks to the eepro100.c&n;&t;&t;&t; code) update &quot;Theory of Operation&quot; with&n;&t;&t;&t; softnet/locking changes&n;&t;- Dave Miller: PCI DMA and endian fixups&n;&t;- Jeff Garzik: MOD_xxx race fixes, updated PCI resource allocation&n;&n;&t;LK1.1.4:&n;&t;- Urban Widmark: fix gcc 2.95.2 problem and&n;&t;                 remove writel&squot;s to fixed address 0x7c&n;&n;&t;LK1.1.5:&n;&t;- Urban Widmark: mdio locking, bounce buffer changes&n;&t;                 merges from Beckers 1.05 version&n;&t;                 added netif_running_on/off support&n;&n;&t;LK1.1.6:&n;&t;- Urban Widmark: merges from Beckers 1.08b version (VT6102 + mdio)&n;&t;                 set netif_running_on/off on startup, del_timer_sync&n;&t;&n;&t;LK1.1.7:&n;&t;- Manfred Spraul: added reset into tx_timeout&n;&n;&t;LK1.1.9:&n;&t;- Urban Widmark: merges from Beckers 1.10 version&n;&t;                 (media selection + eeprom reload)&n;&t;- David Vrabel:  merges from D-Link &quot;1.11&quot; version&n;&t;                 (disable WOL and PME on startup)&n;&n;&t;LK1.1.10:&n;&t;- Manfred Spraul: use &quot;singlecopy&quot; for unaligned buffers&n;&t;                  don&squot;t allocate bounce buffers for !ReqTxAlign cards&n;&n;&t;LK1.1.11:&n;&t;- David Woodhouse: Set dev-&gt;base_addr before the first time we call&n;&t;&t;&t;&t;&t;   wait_for_reset(). It&squot;s a lot happier that way.&n;&t;&t;&t;&t;&t;   Free np-&gt;tx_bufs only if we actually allocated it.&n;&n;&t;LK1.1.12:&n;&t;- Martin Eriksson: Allow Memory-Mapped IO to be enabled.&n;&n;&t;LK1.1.13 (jgarzik):&n;&t;- Add ethtool support&n;&t;- Replace some MII-related magic numbers with constants&n;&t;&n;&t;LK1.1.14 (jgarzik):&n;&t;- Merge new PCI id from &squot;linuxfet&squot; driver.&n;&n;*/
+multiline_comment|/*&n;&t;Written 1998-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is designed for the VIA VT86C100A Rhine-I. &n;&t;It also works with the 6102 Rhine-II, and 6105/6105M Rhine-III.   &n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;This driver contains some changes from the original Donald Becker&n;&t;version. He may or may not be interested in bug reports on this&n;&t;code. You can find his versions at:&n;&t;http://www.scyld.com/network/via-rhine.html&n;&n;&n;&t;Linux kernel version history:&n;&t;&n;&t;LK1.1.0:&n;&t;- Jeff Garzik: softnet &squot;n stuff&n;&t;&n;&t;LK1.1.1:&n;&t;- Justin Guyett: softnet and locking fixes&n;&t;- Jeff Garzik: use PCI interface&n;&n;&t;LK1.1.2:&n;&t;- Urban Widmark: minor cleanups, merges from Becker 1.03a/1.04 versions&n;&n;&t;LK1.1.3:&n;&t;- Urban Widmark: use PCI DMA interface (with thanks to the eepro100.c&n;&t;&t;&t; code) update &quot;Theory of Operation&quot; with&n;&t;&t;&t; softnet/locking changes&n;&t;- Dave Miller: PCI DMA and endian fixups&n;&t;- Jeff Garzik: MOD_xxx race fixes, updated PCI resource allocation&n;&n;&t;LK1.1.4:&n;&t;- Urban Widmark: fix gcc 2.95.2 problem and&n;&t;                 remove writel&squot;s to fixed address 0x7c&n;&n;&t;LK1.1.5:&n;&t;- Urban Widmark: mdio locking, bounce buffer changes&n;&t;                 merges from Beckers 1.05 version&n;&t;                 added netif_running_on/off support&n;&n;&t;LK1.1.6:&n;&t;- Urban Widmark: merges from Beckers 1.08b version (VT6102 + mdio)&n;&t;                 set netif_running_on/off on startup, del_timer_sync&n;&t;&n;&t;LK1.1.7:&n;&t;- Manfred Spraul: added reset into tx_timeout&n;&n;&t;LK1.1.9:&n;&t;- Urban Widmark: merges from Beckers 1.10 version&n;&t;                 (media selection + eeprom reload)&n;&t;- David Vrabel:  merges from D-Link &quot;1.11&quot; version&n;&t;                 (disable WOL and PME on startup)&n;&n;&t;LK1.1.10:&n;&t;- Manfred Spraul: use &quot;singlecopy&quot; for unaligned buffers&n;&t;                  don&squot;t allocate bounce buffers for !ReqTxAlign cards&n;&n;&t;LK1.1.11:&n;&t;- David Woodhouse: Set dev-&gt;base_addr before the first time we call&n;&t;&t;&t;&t;&t;   wait_for_reset(). It&squot;s a lot happier that way.&n;&t;&t;&t;&t;&t;   Free np-&gt;tx_bufs only if we actually allocated it.&n;&n;&t;LK1.1.12:&n;&t;- Martin Eriksson: Allow Memory-Mapped IO to be enabled.&n;&n;&t;LK1.1.13 (jgarzik):&n;&t;- Add ethtool support&n;&t;- Replace some MII-related magic numbers with constants&n;&t;&n;&t;LK1.1.14 (Ivan G.):&n; &t;- fixes comments for Rhine-III&n;&t;- removes W_MAX_TIMEOUT (unused)&n;&t;- adds HasDavicomPhy for Rhine-I (basis: linuxfet driver; my card&n;&t;  is R-I and has Davicom chip, flag is referenced in kernel driver)&n;&t;- sends chip_id as a parameter to wait_for_reset since np is not&n;&t;  initialized on first call&n;&t;- changes mmio &quot;else if (chip_id==VT6102)&quot; to &quot;else&quot; so it will work&n;&t;  for Rhine-III&squot;s (documentation says same bit is correct)&t;&t;&n;&t;- transmit frame queue message is off by one - fixed&n;&t;- adds IntrNormalSummary to &quot;Something Wicked&quot; exclusion list&n;&t;  so normal interrupts will not trigger the message (src: Donald Becker)&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;via-rhine&quot;
 DECL|macro|DRV_VERSION
 mdefine_line|#define DRV_VERSION&t;&quot;1.1.14&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;Feb-12-2002&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;May-3-2002&quot;
 multiline_comment|/* A few user-configurable values.&n;   These may be modified when a driver module is loaded. */
 DECL|variable|debug
 r_static
@@ -122,9 +122,6 @@ DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT  (2*HZ)
 DECL|macro|PKT_BUF_SZ
 mdefine_line|#define PKT_BUF_SZ&t;&t;1536&t;&t;&t;/* Size of each temporary Rx buffer.*/
-multiline_comment|/* max time out delay time */
-DECL|macro|W_MAX_TIMEOUT
-mdefine_line|#define W_MAX_TIMEOUT&t;0x0FFFU
 macro_line|#if !defined(__OPTIMIZE__)  ||  !defined(__KERNEL__)
 macro_line|#warning  You must compile this file with the correct options!
 macro_line|#warning  See the last lines of the source file.
@@ -171,13 +168,12 @@ l_string|&quot;  Written by Donald Becker&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot;  http://www.scyld.com/network/via-rhine.html&bslash;n&quot;
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|shortname
 r_static
 r_char
 id|shortname
 (braket
 )braket
-id|__devinitdata
 op_assign
 id|DRV_NAME
 suffix:semicolon
@@ -386,12 +382,11 @@ comma
 DECL|enumerator|VT6102
 id|VT6102
 comma
-DECL|enumerator|VT3043
-id|VT3043
-comma
 DECL|enumerator|VT6105
 id|VT6105
 comma
+DECL|enumerator|VT6105M
+id|VT6105M
 )brace
 suffix:semicolon
 DECL|struct|via_rhine_chip_info
@@ -477,6 +472,8 @@ comma
 id|CanHaveMII
 op_or
 id|ReqTxAlign
+op_or
+id|HasDavicomPhy
 )brace
 comma
 (brace
@@ -492,19 +489,19 @@ id|HasWOL
 )brace
 comma
 (brace
-l_string|&quot;VIA VT3043 Rhine&quot;
+l_string|&quot;VIA VT6105 Rhine-III&quot;
 comma
 id|RHINE_IOTYPE
 comma
-l_int|128
+l_int|256
 comma
 id|CanHaveMII
 op_or
-id|ReqTxAlign
+id|HasWOL
 )brace
 comma
 (brace
-l_string|&quot;VIA VT6105 Rhine-III&quot;
+l_string|&quot;VIA VT6105M Rhine-III&quot;
 comma
 id|RHINE_IOTYPE
 comma
@@ -530,7 +527,7 @@ op_assign
 (brace
 l_int|0x1106
 comma
-l_int|0x6100
+l_int|0x3043
 comma
 id|PCI_ANY_ID
 comma
@@ -562,22 +559,6 @@ comma
 (brace
 l_int|0x1106
 comma
-l_int|0x3043
-comma
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
-l_int|0
-comma
-l_int|0
-comma
-id|VT3043
-)brace
-comma
-(brace
-l_int|0x1106
-comma
 l_int|0x3106
 comma
 id|PCI_ANY_ID
@@ -589,6 +570,22 @@ comma
 l_int|0
 comma
 id|VT6105
+)brace
+comma
+(brace
+l_int|0x1106
+comma
+l_int|0x3053
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|VT6105M
 )brace
 comma
 (brace
@@ -1515,39 +1512,26 @@ id|net_device
 op_star
 id|dev
 comma
+r_int
+id|chip_id
+comma
 r_char
 op_star
 id|name
 )paren
 (brace
-r_struct
-id|netdev_private
-op_star
-id|np
-op_assign
-id|dev-&gt;priv
-suffix:semicolon
 r_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
 r_int
-id|chip_id
-op_assign
-id|np-&gt;chip_id
-suffix:semicolon
-r_int
 id|i
 suffix:semicolon
-multiline_comment|/* 3043 may need long delay after reset (dlink) */
+multiline_comment|/* VT86C100A may need long delay after reset (dlink) */
 r_if
 c_cond
 (paren
-id|chip_id
-op_eq
-id|VT3043
-op_logical_or
 id|chip_id
 op_eq
 id|VT86C100A
@@ -1654,10 +1638,6 @@ c_cond
 (paren
 id|chip_id
 op_eq
-id|VT3043
-op_logical_or
-id|chip_id
-op_eq
 id|VT86C100A
 )paren
 (brace
@@ -1686,13 +1666,6 @@ id|ConfigA
 suffix:semicolon
 )brace
 r_else
-r_if
-c_cond
-(paren
-id|chip_id
-op_eq
-id|VT6102
-)paren
 (brace
 id|n
 op_assign
@@ -2271,6 +2244,8 @@ id|wait_for_reset
 c_func
 (paren
 id|dev
+comma
+id|chip_id
 comma
 id|shortname
 )paren
@@ -4439,6 +4414,8 @@ c_func
 (paren
 id|dev
 comma
+id|np-&gt;chip_id
+comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
@@ -4947,6 +4924,8 @@ c_func
 (paren
 id|dev
 comma
+id|np-&gt;chip_id
+comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
@@ -5280,6 +5259,8 @@ comma
 id|dev-&gt;name
 comma
 id|np-&gt;cur_tx
+op_minus
+l_int|1
 comma
 id|entry
 )paren
@@ -6643,7 +6624,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|intr_status
 op_amp
 op_complement
@@ -6655,7 +6635,8 @@ op_or
 id|IntrTxAbort
 op_or
 id|IntrTxAborted
-)paren
+op_or
+id|IntrNormalSummary
 )paren
 )paren
 (brace
