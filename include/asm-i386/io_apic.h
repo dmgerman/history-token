@@ -722,6 +722,20 @@ id|active_high_low
 )paren
 suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
+r_extern
+r_int
+(paren
+op_star
+id|ioapic_renumber_irq
+)paren
+(paren
+r_int
+id|ioapic
+comma
+r_int
+id|irq
+)paren
+suffix:semicolon
 macro_line|#else  /* !CONFIG_X86_IO_APIC */
 DECL|macro|io_apic_assign_pci_irqs
 mdefine_line|#define io_apic_assign_pci_irqs 0
