@@ -160,14 +160,19 @@ DECL|macro|EM_CRIS
 mdefine_line|#define EM_CRIS         76      /* Axis Communications 32-bit embedded processor */
 DECL|macro|EM_V850
 mdefine_line|#define EM_V850&t;&t;87&t;/* NEC v850 */
+DECL|macro|EM_M32R
+mdefine_line|#define EM_M32R&t;&t;88&t;/* Renesas M32R */
 DECL|macro|EM_H8_300
-mdefine_line|#define EM_H8_300       46      /* Hitachi H8/300,300H,H8S */
+mdefine_line|#define EM_H8_300       46      /* Renesas H8/300,300H,H8S */
 multiline_comment|/*&n; * This is an interim value that we will use until the committee comes&n; * up with a final number.&n; */
 DECL|macro|EM_ALPHA
 mdefine_line|#define EM_ALPHA&t;0x9026
 multiline_comment|/* Bogus old v850 magic number, used by old tools.  */
 DECL|macro|EM_CYGNUS_V850
 mdefine_line|#define EM_CYGNUS_V850&t;0x9080
+multiline_comment|/* Bogus old m32r magic number, used by old tools.  */
+DECL|macro|EM_CYGNUS_M32R
+mdefine_line|#define EM_CYGNUS_M32R&t;0x9041
 multiline_comment|/*&n; * This is the old interim value for S/390 architecture&n; */
 DECL|macro|EM_S390_OLD
 mdefine_line|#define EM_S390_OLD     0xA390
