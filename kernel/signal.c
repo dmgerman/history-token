@@ -4770,6 +4770,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef HAVE_ARCH_GET_SIGNAL_TO_DELIVER
 r_static
 r_void
 DECL|function|finish_stop
@@ -5147,7 +5148,6 @@ id|stop_count
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef HAVE_ARCH_GET_SIGNAL_TO_DELIVER
 multiline_comment|/*&n; * Do appropriate magic when group_stop_count &gt; 0.&n; * We return nonzero if we stopped, after releasing the siglock.&n; * We return zero if we still hold the siglock and should look&n; * for another signal without checking group_stop_count again.&n; */
 DECL|function|handle_group_stop
 r_static
