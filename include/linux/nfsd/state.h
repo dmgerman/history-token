@@ -182,6 +182,17 @@ DECL|member|intrp_allocated
 r_int
 id|intrp_allocated
 suffix:semicolon
+DECL|member|rp_openfh_len
+r_int
+id|rp_openfh_len
+suffix:semicolon
+DECL|member|rp_openfh
+r_char
+id|rp_openfh
+(braket
+id|NFS4_FHSIZE
+)braket
+suffix:semicolon
 DECL|member|rp_ibuf
 r_char
 id|rp_ibuf

@@ -8843,6 +8843,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* XXX save filehandle here */
 id|ENCODE_SEQID_OP_TAIL
 c_func
 (paren
