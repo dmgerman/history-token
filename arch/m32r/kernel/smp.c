@@ -1109,12 +1109,14 @@ c_func
 id|flush_cpumask
 )paren
 )paren
+(brace
 multiline_comment|/* nothing. lockup detection does not belong here */
 id|mb
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 id|flush_mm
 op_assign
 l_int|NULL

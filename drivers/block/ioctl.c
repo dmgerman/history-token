@@ -1149,6 +1149,7 @@ comma
 id|arg
 )paren
 suffix:semicolon
+multiline_comment|/* -EINVAL to handle old uncorrected drivers */
 r_if
 c_cond
 (paren
@@ -1156,6 +1157,11 @@ id|ret
 op_ne
 op_minus
 id|EINVAL
+op_logical_and
+id|ret
+op_ne
+op_minus
+id|ENOTTY
 )paren
 r_return
 id|ret
