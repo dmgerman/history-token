@@ -2850,6 +2850,20 @@ id|qc-&gt;tf.feature
 op_or_assign
 id|ATAPI_PKT_DMA
 suffix:semicolon
+macro_line|#ifdef ATAPI_ENABLE_DMADIR
+multiline_comment|/* some SATA bridges need us to indicate data xfer direction */
+r_if
+c_cond
+(paren
+id|cmd-&gt;sc_data_direction
+op_ne
+id|SCSI_DATA_WRITE
+)paren
+id|qc-&gt;tf.feature
+op_or_assign
+id|ATAPI_DMADIR
+suffix:semicolon
+macro_line|#endif
 )brace
 r_return
 l_int|0

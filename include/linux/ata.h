@@ -605,6 +605,16 @@ op_lshift
 l_int|0
 )paren
 comma
+DECL|enumerator|ATAPI_DMADIR
+id|ATAPI_DMADIR
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
+comma
+multiline_comment|/* ATAPI data dir:&n;&t;&t;&t;&t;&t;&t;   0=to device, 1=to host */
 multiline_comment|/* cable types */
 DECL|enumerator|ATA_CBL_NONE
 id|ATA_CBL_NONE
