@@ -300,11 +300,6 @@ op_star
 id|fl
 comma
 r_struct
-id|rtable
-op_star
-id|rt
-comma
-r_struct
 id|xfrm_policy
 op_star
 id|policy
