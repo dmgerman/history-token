@@ -520,16 +520,7 @@ op_assign
 id|virt_to_phys
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-r_new
-op_member_access_from_pointer
-id|memory
-(braket
-id|i
-)braket
+id|addr
 )paren
 suffix:semicolon
 r_new
