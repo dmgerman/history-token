@@ -1,3 +1,4 @@
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
@@ -45,6 +46,15 @@ c_func
 id|ip6_route_output
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETFILTER
+DECL|variable|ip6_route_me_harder
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip6_route_me_harder
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|addrconf_lock
 id|EXPORT_SYMBOL
 c_func

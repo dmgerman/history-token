@@ -1,6 +1,4 @@
 multiline_comment|/* Everything about the rules for NAT. */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;

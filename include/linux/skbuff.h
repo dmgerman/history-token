@@ -1973,6 +1973,7 @@ DECL|function|skb_headlen
 r_static
 r_inline
 r_int
+r_int
 id|skb_headlen
 c_func
 (paren
