@@ -1500,6 +1500,16 @@ op_assign
 op_star
 id|zone
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|classzone
+op_eq
+l_int|NULL
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 id|min
 op_assign
 l_int|1UL

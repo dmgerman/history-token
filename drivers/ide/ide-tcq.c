@@ -23,9 +23,6 @@ macro_line|#undef IDE_TCQ_NIEN
 multiline_comment|/*&n; * we are leaving the SERVICE interrupt alone, IBM drives have it&n; * on per default and it can&squot;t be turned off. Doesn&squot;t matter, this&n; * is the sane config.&n; */
 DECL|macro|IDE_TCQ_FIDDLE_SI
 macro_line|#undef IDE_TCQ_FIDDLE_SI
-multiline_comment|/*&n; * wait for data phase before starting DMA or not&n; */
-DECL|macro|IDE_TCQ_WAIT_DATAPHASE
-macro_line|#undef IDE_TCQ_WAIT_DATAPHASE
 id|ide_startstop_t
 id|ide_dmaq_intr
 c_func
@@ -60,6 +57,12 @@ id|clear
 )paren
 (brace
 macro_line|#ifdef IDE_TCQ_NIEN
+r_if
+c_cond
+(paren
+id|IDE_CONTROL_REG
+)paren
+(brace
 r_int
 id|mask
 op_assign
@@ -70,11 +73,6 @@ l_int|0x00
 suffix:colon
 l_int|0x02
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|IDE_CONTROL_REG
-)paren
 id|OUT_BYTE
 c_func
 (paren
@@ -85,6 +83,7 @@ comma
 id|IDE_CONTROL_REG
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * if we encounter _any_ error doing I/O to one of the tags, we must&n; * invalidate the pending queue. clear the software busy queue and requeue&n; * on the request queue for restart. issue a WIN_NOP to clear hardware queue&n; */
@@ -333,10 +332,6 @@ suffix:semicolon
 id|ar-&gt;ar_rq-&gt;special
 op_assign
 id|ar
-suffix:semicolon
-id|ar-&gt;ar_flags
-op_or_assign
-id|ATA_AR_RETURN
 suffix:semicolon
 id|_elv_add_request
 c_func
@@ -695,6 +690,8 @@ id|stat
 suffix:semicolon
 r_int
 id|tag
+comma
+id|ret
 suffix:semicolon
 id|TCQ_PRINTK
 c_func
@@ -883,7 +880,6 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * start dma&n;&t; */
 id|tag
 op_assign
 id|feat
@@ -967,6 +963,8 @@ comma
 id|stat
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|drive-&gt;channel
 op_member_access_from_pointer
 id|dmaproc
@@ -988,6 +986,8 @@ comma
 id|stat
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|drive-&gt;channel
 op_member_access_from_pointer
 id|dmaproc
@@ -1001,7 +1001,13 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * dmaproc set intr handler&n;&t; */
 r_return
+op_logical_neg
+id|ret
+ques
+c_cond
 id|ide_started
+suffix:colon
+id|ide_stopped
 suffix:semicolon
 )brace
 DECL|function|ide_check_service
@@ -1372,12 +1378,8 @@ op_star
 id|drive
 )paren
 (brace
-r_struct
-id|ata_taskfile
-id|args
-suffix:semicolon
 r_int
-id|tcq_supp
+id|tcq_mask
 op_assign
 l_int|1
 op_lshift
@@ -1387,17 +1389,30 @@ l_int|1
 op_lshift
 l_int|14
 suffix:semicolon
-multiline_comment|/*&n;&t; * bit 14 and 1 must be set in word 83 of the device id to indicate&n;&t; * support for dma queued protocol&n;&t; */
+r_int
+id|tcq_bits
+op_assign
+id|tcq_mask
+op_or
+l_int|1
+op_lshift
+l_int|15
+suffix:semicolon
+r_struct
+id|ata_taskfile
+id|args
+suffix:semicolon
+multiline_comment|/*&n;&t; * bit 14 and 1 must be set in word 83 of the device id to indicate&n;&t; * support for dma queued protocol, and bit 15 must be cleared&n;&t; */
 r_if
 c_cond
 (paren
 (paren
 id|drive-&gt;id-&gt;command_set_2
 op_amp
-id|tcq_supp
+id|tcq_bits
 )paren
-op_ne
-id|tcq_supp
+op_xor
+id|tcq_mask
 )paren
 r_return
 op_minus
@@ -1642,6 +1657,16 @@ r_int
 id|on
 )paren
 (brace
+r_int
+id|depth
+op_assign
+id|drive-&gt;using_tcq
+ques
+c_cond
+id|drive-&gt;queue_depth
+suffix:colon
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * disable or adjust queue depth&n;&t; */
 r_if
 c_cond
@@ -1650,6 +1675,11 @@ op_logical_neg
 id|on
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|drive-&gt;using_tcq
+)paren
 id|printk
 c_func
 (paren
@@ -1684,6 +1714,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * possibly expand command list&n;&t; */
 r_if
 c_cond
 (paren
@@ -1696,6 +1727,13 @@ id|drive
 r_return
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|depth
+op_ne
+id|drive-&gt;queue_depth
+)paren
 id|printk
 c_func
 (paren
@@ -1710,6 +1748,7 @@ id|drive-&gt;using_tcq
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/*&n;&t; * clear stats&n;&t; */
 id|drive-&gt;tcq-&gt;max_depth
 op_assign
 l_int|0
@@ -1728,7 +1767,6 @@ op_star
 id|drive
 )paren
 (brace
-macro_line|#ifdef IDE_TCQ_WAIT_DATAPHASE
 id|ide_startstop_t
 id|foo
 suffix:semicolon
@@ -1739,7 +1777,7 @@ id|ide_wait_stat
 c_func
 (paren
 op_amp
-id|startstop
+id|foo
 comma
 id|drive
 comma
@@ -1765,7 +1803,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -2120,6 +2157,12 @@ id|func
 r_return
 id|ide_stopped
 suffix:semicolon
+id|TCQ_PRINTK
+c_func
+(paren
+l_string|&quot;IMMED in queued_start&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * need to arm handler before starting dma engine,&n;&t;&t;&t; * transfer could complete right away&n;&t;&t;&t; */
 id|ide_tcq_set_intr
 c_func
@@ -2163,6 +2206,17 @@ suffix:semicolon
 r_case
 id|ide_dma_queued_on
 suffix:colon
+r_if
+c_cond
+(paren
+id|enable_tcq
+op_logical_and
+op_logical_neg
+id|drive-&gt;using_dma
+)paren
+r_return
+l_int|1
+suffix:semicolon
 r_return
 id|ide_enable_queued
 c_func
