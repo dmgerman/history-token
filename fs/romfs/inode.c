@@ -381,13 +381,7 @@ op_assign
 id|d_alloc_root
 c_func
 (paren
-id|iget
-c_func
-(paren
-id|s
-comma
-id|sz
-)paren
+id|root
 )paren
 suffix:semicolon
 r_if

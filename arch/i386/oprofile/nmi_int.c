@@ -1386,7 +1386,7 @@ id|cpu_type
 id|__u8
 id|cpu_model
 op_assign
-id|current_cpu_data.x86_model
+id|boot_cpu_data.x86_model
 suffix:semicolon
 r_if
 c_cond
@@ -1487,7 +1487,7 @@ id|cpu_type
 id|__u8
 id|cpu_model
 op_assign
-id|current_cpu_data.x86_model
+id|boot_cpu_data.x86_model
 suffix:semicolon
 r_if
 c_cond
@@ -1581,12 +1581,12 @@ id|ops
 id|__u8
 id|vendor
 op_assign
-id|current_cpu_data.x86_vendor
+id|boot_cpu_data.x86_vendor
 suffix:semicolon
 id|__u8
 id|family
 op_assign
-id|current_cpu_data.x86
+id|boot_cpu_data.x86
 suffix:semicolon
 r_char
 op_star

@@ -6204,7 +6204,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Return the current floppy capacity to ide.c.&n; */
+multiline_comment|/*&n; *&t;Return the current floppy capacity.&n; */
 DECL|function|idefloppy_capacity
 r_static
 id|sector_t
@@ -8361,7 +8361,7 @@ c_func
 (paren
 id|disk
 comma
-id|current_capacity
+id|idefloppy_capacity
 c_func
 (paren
 id|drive

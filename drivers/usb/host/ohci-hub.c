@@ -182,7 +182,7 @@ l_string|&quot;suspend root hub&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* First stop any processing */
-id|ohci-&gt;hcd.state
+id|hcd-&gt;state
 op_assign
 id|USB_STATE_QUIESCING
 suffix:semicolon
@@ -331,7 +331,7 @@ multiline_comment|/* maybe resume can wake root hub */
 r_if
 c_cond
 (paren
-id|ohci-&gt;hcd.remote_wakeup
+id|hcd-&gt;remote_wakeup
 )paren
 id|ohci-&gt;hc_control
 op_or_assign
@@ -393,7 +393,7 @@ id|status
 op_eq
 l_int|0
 )paren
-id|ohci-&gt;hcd.state
+id|hcd-&gt;state
 op_assign
 id|HCD_STATE_SUSPENDED
 suffix:semicolon
@@ -757,7 +757,7 @@ id|temp
 suffix:semicolon
 )brace
 multiline_comment|/* Some controllers (lucent) need extra-long delays */
-id|ohci-&gt;hcd.state
+id|hcd-&gt;state
 op_assign
 id|USB_STATE_RESUMING
 suffix:semicolon
@@ -950,7 +950,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ohci-&gt;hcd.can_wakeup
+id|hcd-&gt;can_wakeup
 )paren
 id|temp
 op_or_assign
@@ -1077,21 +1077,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hcd_to_bus
-(paren
-op_amp
-id|ohci-&gt;hcd
-)paren
-op_member_access_from_pointer
-id|bandwidth_isoc_reqs
+id|hcd-&gt;self.bandwidth_isoc_reqs
 op_logical_or
-id|hcd_to_bus
-(paren
-op_amp
-id|ohci-&gt;hcd
-)paren
-op_member_access_from_pointer
-id|bandwidth_int_reqs
+id|hcd-&gt;self.bandwidth_int_reqs
 )paren
 id|enables
 op_or_assign
@@ -1155,7 +1143,7 @@ id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
 )brace
-id|ohci-&gt;hcd.state
+id|hcd-&gt;state
 op_assign
 id|USB_STATE_RUNNING
 suffix:semicolon
@@ -1303,7 +1291,7 @@ op_logical_neg
 id|HCD_IS_RUNNING
 c_func
 (paren
-id|ohci-&gt;hcd.state
+id|hcd-&gt;state
 )paren
 )paren
 (brace
@@ -1514,7 +1502,7 @@ op_amp
 id|RH_PS_PSS
 )paren
 op_logical_and
-id|ohci-&gt;hcd.remote_wakeup
+id|hcd-&gt;remote_wakeup
 )paren
 r_continue
 suffix:semicolon
@@ -1583,11 +1571,10 @@ r_void
 )paren
 id|ohci_hub_suspend
 (paren
-op_amp
-id|ohci-&gt;hcd
+id|hcd
 )paren
 suffix:semicolon
-id|ohci-&gt;hcd.state
+id|hcd-&gt;state
 op_assign
 id|USB_STATE_RUNNING
 suffix:semicolon
@@ -2494,7 +2481,7 @@ macro_line|#ifdef&t;CONFIG_USB_OTG
 r_if
 c_cond
 (paren
-id|ohci-&gt;hcd.self.otg_port
+id|hcd-&gt;self.otg_port
 op_eq
 (paren
 id|wIndex
@@ -2502,7 +2489,7 @@ op_plus
 l_int|1
 )paren
 op_logical_and
-id|ohci-&gt;hcd.self.b_hnp_enable
+id|hcd-&gt;self.b_hnp_enable
 )paren
 id|start_hnp
 c_func

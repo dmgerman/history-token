@@ -82,12 +82,12 @@ c_func
 id|iomem_resource
 )paren
 suffix:semicolon
-DECL|variable|resource_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|resource_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|enumerator|MAX_IORES_LEVEL

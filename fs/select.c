@@ -1007,6 +1007,11 @@ op_increment
 suffix:semicolon
 )brace
 )brace
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond

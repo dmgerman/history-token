@@ -229,6 +229,13 @@ r_struct
 id|ppc64_caches
 id|ppc64_caches
 suffix:semicolon
+DECL|variable|ppc64_caches
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ppc64_caches
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * These are used in binfmt_elf.c to put aux entries on the stack&n; * for each elf executable being started.&n; */
 DECL|variable|dcache_bsize
 r_int
@@ -4972,6 +4979,11 @@ c_func
 r_void
 )paren
 (brace
+id|idle_task_exit
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

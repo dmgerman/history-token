@@ -35,6 +35,17 @@ id|irq_routing_table
 op_star
 id|pirq_table
 suffix:semicolon
+r_static
+r_int
+id|pirq_enable_irq
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Never use: 0, 1, 2 (timer, keyboard, and cascade)&n; * Avoid using: 13, 14 and 15 (FP error and IDE).&n; * Penalize: 3, 4, 6, 7, 12 (known ISA uses: serial, floppy, parallel and mouse)&n; */
 DECL|variable|pcibios_irq_mask
 r_int
@@ -4531,6 +4542,7 @@ id|irq
 suffix:semicolon
 )brace
 DECL|function|pirq_enable_irq
+r_static
 r_int
 id|pirq_enable_irq
 c_func

@@ -7,11 +7,12 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/mmc/host.h&gt;
 macro_line|#include &lt;linux/mmc/protocol.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &quot;wbsd.h&quot;
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME &quot;wbsd&quot;
@@ -21,7 +22,7 @@ macro_line|#ifdef CONFIG_MMC_DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(x...) &bslash;&n;&t;printk(KERN_DEBUG DRIVER_NAME &quot;: &quot; x)
 DECL|macro|DBGF
-mdefine_line|#define DBGF(f, x...) &bslash;&n;&t;printk(KERN_DEBUG DRIVER_NAME &quot; [%s()]: &quot; f, __func__, ##x)
+mdefine_line|#define DBGF(f, x...) &bslash;&n;&t;printk(KERN_DEBUG DRIVER_NAME &quot; [%s()]: &quot; f, __func__ , ##x)
 macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)&t;do { } while (0)

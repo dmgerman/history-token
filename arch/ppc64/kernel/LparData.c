@@ -166,7 +166,7 @@ comma
 suffix:semicolon
 r_extern
 r_void
-id|SystemReset_Iseries
+id|system_reset_iSeries
 c_func
 (paren
 r_void
@@ -174,7 +174,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|MachineCheck_Iseries
+id|machine_check_iSeries
 c_func
 (paren
 r_void
@@ -182,7 +182,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|DataAccess_Iseries
+id|data_access_iSeries
 c_func
 (paren
 r_void
@@ -190,7 +190,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|InstructionAccess_Iseries
+id|instruction_access_iSeries
 c_func
 (paren
 r_void
@@ -198,7 +198,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|HardwareInterrupt_Iseries
+id|hardware_interrupt_iSeries
 c_func
 (paren
 r_void
@@ -206,7 +206,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|Alignment_Iseries
+id|alignment_iSeries
 c_func
 (paren
 r_void
@@ -214,7 +214,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|ProgramCheck_Iseries
+id|program_check_iSeries
 c_func
 (paren
 r_void
@@ -222,7 +222,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|FPUnavailable_Iseries
+id|fp_unavailable_iSeries
 c_func
 (paren
 r_void
@@ -230,7 +230,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|Decrementer_Iseries
+id|decrementer_iSeries
 c_func
 (paren
 r_void
@@ -238,7 +238,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|Trap_0a_Iseries
+id|trap_0a_iSeries
 c_func
 (paren
 r_void
@@ -246,7 +246,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|Trap_0b_Iseries
+id|trap_0b_iSeries
 c_func
 (paren
 r_void
@@ -254,7 +254,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|SystemCall_Iseries
+id|system_call_iSeries
 c_func
 (paren
 r_void
@@ -262,7 +262,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|SingleStep_Iseries
+id|single_step_iSeries
 c_func
 (paren
 r_void
@@ -270,7 +270,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|Trap_0e_Iseries
+id|trap_0e_iSeries
 c_func
 (paren
 r_void
@@ -278,7 +278,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|PerformanceMonitor_Iseries
+id|performance_monitor_iSeries
 c_func
 (paren
 r_void
@@ -286,7 +286,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|DataAccessSLB_Iseries
+id|data_access_slb_iSeries
 c_func
 (paren
 r_void
@@ -294,7 +294,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|InstructionAccessSLB_Iseries
+id|instruction_access_slb_iSeries
 c_func
 (paren
 r_void
@@ -463,91 +463,91 @@ op_assign
 (paren
 id|u64
 )paren
-id|SystemReset_Iseries
+id|system_reset_iSeries
 comma
 multiline_comment|/* 0x100 System Reset */
 (paren
 id|u64
 )paren
-id|MachineCheck_Iseries
+id|machine_check_iSeries
 comma
 multiline_comment|/* 0x200 Machine Check */
 (paren
 id|u64
 )paren
-id|DataAccess_Iseries
+id|data_access_iSeries
 comma
 multiline_comment|/* 0x300 Data Access */
 (paren
 id|u64
 )paren
-id|InstructionAccess_Iseries
+id|instruction_access_iSeries
 comma
 multiline_comment|/* 0x400 Instruction Access */
 (paren
 id|u64
 )paren
-id|HardwareInterrupt_Iseries
+id|hardware_interrupt_iSeries
 comma
 multiline_comment|/* 0x500 External */
 (paren
 id|u64
 )paren
-id|Alignment_Iseries
+id|alignment_iSeries
 comma
 multiline_comment|/* 0x600 Alignment */
 (paren
 id|u64
 )paren
-id|ProgramCheck_Iseries
+id|program_check_iSeries
 comma
 multiline_comment|/* 0x700 Program Check */
 (paren
 id|u64
 )paren
-id|FPUnavailable_Iseries
+id|fp_unavailable_iSeries
 comma
 multiline_comment|/* 0x800 FP Unavailable */
 (paren
 id|u64
 )paren
-id|Decrementer_Iseries
+id|decrementer_iSeries
 comma
 multiline_comment|/* 0x900 Decrementer */
 (paren
 id|u64
 )paren
-id|Trap_0a_Iseries
+id|trap_0a_iSeries
 comma
 multiline_comment|/* 0xa00 Trap 0A */
 (paren
 id|u64
 )paren
-id|Trap_0b_Iseries
+id|trap_0b_iSeries
 comma
 multiline_comment|/* 0xb00 Trap 0B */
 (paren
 id|u64
 )paren
-id|SystemCall_Iseries
+id|system_call_iSeries
 comma
 multiline_comment|/* 0xc00 System Call */
 (paren
 id|u64
 )paren
-id|SingleStep_Iseries
+id|single_step_iSeries
 comma
 multiline_comment|/* 0xd00 Single Step */
 (paren
 id|u64
 )paren
-id|Trap_0e_Iseries
+id|trap_0e_iSeries
 comma
 multiline_comment|/* 0xe00 Trap 0E */
 (paren
 id|u64
 )paren
-id|PerformanceMonitor_Iseries
+id|performance_monitor_iSeries
 comma
 multiline_comment|/* 0xf00 Performance Monitor */
 l_int|0
@@ -562,19 +562,19 @@ multiline_comment|/* int 0x1020 CPU ctls */
 (paren
 id|u64
 )paren
-id|HardwareInterrupt_Iseries
+id|hardware_interrupt_iSeries
 comma
 multiline_comment|/* SC Ret Hdlr */
 (paren
 id|u64
 )paren
-id|DataAccessSLB_Iseries
+id|data_access_slb_iSeries
 comma
 multiline_comment|/* 0x380 D-SLB */
 (paren
 id|u64
 )paren
-id|InstructionAccessSLB_Iseries
+id|instruction_access_slb_iSeries
 multiline_comment|/* 0x480 I-SLB */
 )brace
 )brace

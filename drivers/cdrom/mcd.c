@@ -20,8 +20,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-DECL|macro|mcd_port
-mdefine_line|#define mcd_port mcd&t;&t;/* for compatible parameter passing with &quot;insmod&quot; */
 macro_line|#include &quot;mcd.h&quot;
 multiline_comment|/* I added A flag to drop to 1x speed if too many errors 0 = 1X ; 1 = 2X */
 DECL|variable|mcdDouble
@@ -215,14 +213,6 @@ op_assign
 id|CONFIG_MCD_IRQ
 suffix:semicolon
 multiline_comment|/* must directly follow mcd_port */
-id|MODULE_PARM
-c_func
-(paren
-id|mcd
-comma
-l_string|&quot;1-2i&quot;
-)paren
-suffix:semicolon
 DECL|variable|McdTimeout
 DECL|variable|McdTries
 r_static
@@ -767,7 +757,6 @@ id|gendisk
 op_star
 id|mcd_gendisk
 suffix:semicolon
-macro_line|#ifndef MODULE
 DECL|function|mcd_setup
 r_static
 r_int
@@ -866,7 +855,50 @@ comma
 id|mcd_setup
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* MODULE */
+macro_line|#ifdef MODULE
+DECL|function|param_set_mcd
+r_static
+r_int
+id|__init
+id|param_set_mcd
+c_func
+(paren
+r_const
+r_char
+op_star
+id|val
+comma
+r_struct
+id|kernel_param
+op_star
+id|kp
+)paren
+(brace
+id|mcd_setup
+c_func
+(paren
+id|val
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|module_param_call
+c_func
+(paren
+id|mcd
+comma
+id|param_set_mcd
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|mcd_media_changed
 r_static
 r_int

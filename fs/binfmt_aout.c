@@ -2537,6 +2537,13 @@ OG
 id|len
 )paren
 (brace
+id|down_write
+c_func
+(paren
+op_amp
+id|current-&gt;mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|do_brk
@@ -2549,6 +2556,13 @@ comma
 id|bss
 op_minus
 id|len
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|current-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
 id|retval

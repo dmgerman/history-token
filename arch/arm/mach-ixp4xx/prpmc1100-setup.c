@@ -222,10 +222,14 @@ c_func
 r_void
 )paren
 (brace
+id|ixp4xx_sys_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|platform_add_devices
 c_func
 (paren
-op_amp
 id|prpmc1100_devices
 comma
 id|ARRAY_SIZE

@@ -217,7 +217,7 @@ op_assign
 id|largealloc
 ques
 c_cond
-id|tbl-&gt;it_mapsize
+id|tbl-&gt;it_size
 suffix:colon
 id|tbl-&gt;it_halfpoint
 suffix:semicolon
@@ -326,7 +326,7 @@ op_assign
 id|pass
 ques
 c_cond
-id|tbl-&gt;it_mapsize
+id|tbl-&gt;it_size
 suffix:colon
 id|limit
 suffix:semicolon
@@ -664,7 +664,7 @@ op_plus
 id|npages
 )paren
 OG
-id|tbl-&gt;it_mapsize
+id|tbl-&gt;it_size
 )paren
 op_logical_or
 (paren
@@ -739,12 +739,12 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;&bslash;tmapsize   = 0x%lx&bslash;n&quot;
+l_string|&quot;&bslash;tsize      = 0x%lx&bslash;n&quot;
 comma
 (paren
 id|u64
 )paren
-id|tbl-&gt;it_mapsize
+id|tbl-&gt;it_size
 )paren
 suffix:semicolon
 id|printk
@@ -1615,21 +1615,10 @@ id|welcomed
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* it_size is in pages, it_mapsize in number of entries */
-id|tbl-&gt;it_mapsize
-op_assign
-(paren
-id|tbl-&gt;it_size
-op_lshift
-id|PAGE_SHIFT
-)paren
-op_div
-id|tbl-&gt;it_entrysize
-suffix:semicolon
 multiline_comment|/* Set aside 1/4 of the table for large allocations. */
 id|tbl-&gt;it_halfpoint
 op_assign
-id|tbl-&gt;it_mapsize
+id|tbl-&gt;it_size
 op_star
 l_int|3
 op_div
@@ -1639,7 +1628,7 @@ multiline_comment|/* number of bytes needed for the bitmap */
 id|sz
 op_assign
 (paren
-id|tbl-&gt;it_mapsize
+id|tbl-&gt;it_size
 op_plus
 l_int|7
 )paren
@@ -1787,7 +1776,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* verify that table contains no entries */
-multiline_comment|/* it_mapsize is in entries, and we&squot;re examining 64 at a time */
+multiline_comment|/* it_size is in entries, and we&squot;re examining 64 at a time */
 r_for
 c_loop
 (paren
@@ -1798,7 +1787,7 @@ suffix:semicolon
 id|i
 OL
 (paren
-id|tbl-&gt;it_mapsize
+id|tbl-&gt;it_size
 op_div
 l_int|64
 )paren
@@ -1837,7 +1826,7 @@ multiline_comment|/* calculate bitmap size in bytes */
 id|bitmap_sz
 op_assign
 (paren
-id|tbl-&gt;it_mapsize
+id|tbl-&gt;it_size
 op_plus
 l_int|7
 )paren

@@ -51,22 +51,5 @@ mdefine_line|#define CS46XX_SUSPEND_TBL cs46xx_null
 DECL|macro|CS46XX_RESUME_TBL
 mdefine_line|#define CS46XX_RESUME_TBL cs46xx_null
 macro_line|#endif
-r_int
-id|cs46xx_pm_callback
-c_func
-(paren
-r_struct
-id|pm_dev
-op_star
-id|dev
-comma
-id|pm_request_t
-id|rqst
-comma
-r_void
-op_star
-id|data
-)paren
-suffix:semicolon
 macro_line|#endif
 eof

@@ -63,12 +63,12 @@ id|process_counts
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|__cacheline_aligned
-id|rwlock_t
-id|tasklist_lock
 id|__cacheline_aligned
-op_assign
-id|RW_LOCK_UNLOCKED
+id|DEFINE_RWLOCK
+c_func
+(paren
+id|tasklist_lock
+)paren
 suffix:semicolon
 multiline_comment|/* outer */
 DECL|variable|tasklist_lock
@@ -780,6 +780,10 @@ op_amp
 id|file-&gt;f_mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
+id|tmp-&gt;vm_truncate_count
+op_assign
+id|mpnt-&gt;vm_truncate_count
+suffix:semicolon
 id|flush_dcache_mmap_lock
 c_func
 (paren
@@ -1010,12 +1014,12 @@ mdefine_line|#define mm_alloc_pgd(mm)&t;(0)
 DECL|macro|mm_free_pgd
 mdefine_line|#define mm_free_pgd(mm)
 macro_line|#endif /* CONFIG_MMU */
-DECL|variable|__cacheline_aligned_in_smp
-id|spinlock_t
-id|mmlist_lock
 id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
+id|DEFINE_SPINLOCK
+c_func
+(paren
+id|mmlist_lock
+)paren
 suffix:semicolon
 DECL|macro|allocate_mm
 mdefine_line|#define allocate_mm()&t;(kmem_cache_alloc(mm_cachep, SLAB_KERNEL))

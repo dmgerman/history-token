@@ -17,6 +17,13 @@ r_int
 r_int
 id|lock
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|member|break_lock
+r_int
+r_int
+id|break_lock
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|spinlock_t
 )brace
 id|spinlock_t
@@ -228,6 +235,13 @@ id|write_lock
 suffix:colon
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|member|break_lock
+r_int
+r_int
+id|break_lock
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|rwlock_t
 )brace
 id|rwlock_t
@@ -253,6 +267,8 @@ mdefine_line|#define _raw_write_lock(l)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&
 DECL|macro|_raw_write_trylock
 mdefine_line|#define _raw_write_trylock(rw)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__u64 ia64_val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__u64 ia64_set_val = ia64_dep_mi(-1, 0, 31,1);&t;&t;&t;&bslash;&n;&t;ia64_val = ia64_cmpxchg4_acq((__u32 *)(rw), ia64_set_val, 0);&t;&bslash;&n;&t;(ia64_val == 0);&t;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#endif /* !ASM_SUPPORTED */
+DECL|macro|_raw_read_trylock
+mdefine_line|#define _raw_read_trylock(lock) generic_raw_read_trylock(lock)
 DECL|macro|_raw_write_unlock
 mdefine_line|#define _raw_write_unlock(x)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;smp_mb__before_clear_bit();&t;/* need barrier before releasing lock... */&t;&bslash;&n;&t;clear_bit(31, (x));&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#endif /*  _ASM_IA64_SPINLOCK_H */

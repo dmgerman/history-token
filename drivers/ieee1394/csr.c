@@ -958,9 +958,12 @@ op_plus
 id|CSR_SPEED_MAP_END
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|host-&gt;csr.lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|host-&gt;csr.state
 op_assign

@@ -42,11 +42,13 @@ id|znet_debug
 op_assign
 id|ZNET_DEBUG
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 (paren
 id|znet_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

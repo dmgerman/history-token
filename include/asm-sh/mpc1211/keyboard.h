@@ -143,7 +143,7 @@ multiline_comment|/*&n; * Machine specific bits for the PS/2 driver&n; */
 DECL|macro|AUX_IRQ
 mdefine_line|#define AUX_IRQ 12
 DECL|macro|aux_request_irq
-mdefine_line|#define aux_request_irq(hand, dev_id)&t;&t;&t;&t;&t;&bslash;&n;&t;request_irq(AUX_IRQ, hand, SA_SHIRQ, &quot;PS/2 Mouse&quot;, dev_id)
+mdefine_line|#define aux_request_irq(hand, dev_id)&t;&t;&t;&t;&t;&bslash;&n;&t;request_irq(AUX_IRQ, hand, SA_SHIRQ, &quot;PS2 Mouse&quot;, dev_id)
 DECL|macro|aux_free_irq
 mdefine_line|#define aux_free_irq(dev_id) free_irq(AUX_IRQ, dev_id)
 macro_line|#endif /* __KERNEL__ */

@@ -3580,7 +3580,7 @@ op_assign
 id|TRUE
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG_CONFIG_ERROR
+macro_line|#ifdef DEBUG_CONFIG_ERRORS
 id|printk
 c_func
 (paren
@@ -13218,7 +13218,7 @@ op_le
 l_int|0
 )paren
 (brace
-macro_line|#ifdef DEBUG_CONFIG_ERROR
+macro_line|#ifdef DEBUG_CONFIG_ERRORS
 id|printk
 c_func
 (paren

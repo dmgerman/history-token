@@ -523,12 +523,12 @@ c_func
 id|shmem_swaplist
 )paren
 suffix:semicolon
-DECL|variable|shmem_swaplist_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|shmem_swaplist_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|shmem_free_blocks
 r_static

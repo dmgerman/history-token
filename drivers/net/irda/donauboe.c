@@ -5594,11 +5594,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 (paren
 id|max_baud
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5610,11 +5612,13 @@ l_string|&quot;Maximum baud rate&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef USE_PROBE
-id|MODULE_PARM
+id|module_param
 (paren
 id|do_probe
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

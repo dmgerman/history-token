@@ -2476,7 +2476,7 @@ id|dif
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3227,7 +3227,7 @@ id|sk
 )paren
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3729,7 +3729,7 @@ id|tcp_v4_search_req
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -3864,7 +3864,7 @@ id|req
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3982,7 +3982,7 @@ id|sk
 )paren
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -4142,7 +4142,7 @@ l_int|2
 )paren
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 suffix:semicolon
@@ -5907,7 +5907,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 id|tp
 suffix:semicolon
 r_struct
@@ -6485,7 +6485,7 @@ op_star
 id|newinet
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|newtp
 suffix:semicolon
@@ -6740,7 +6740,7 @@ op_assign
 id|skb-&gt;nh.iph
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -8390,7 +8390,7 @@ id|sk
 )paren
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -8705,7 +8705,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -8822,7 +8822,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -9003,7 +9003,7 @@ id|cur
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 suffix:semicolon
@@ -9438,6 +9438,12 @@ id|tcp_tw_bucket
 op_star
 id|tw
 suffix:semicolon
+multiline_comment|/* We can reschedule _before_ having picked the target: */
+id|cond_resched_softirq
+c_func
+(paren
+)paren
+suffix:semicolon
 id|read_lock
 c_func
 (paren
@@ -9665,6 +9671,12 @@ suffix:semicolon
 id|st-&gt;state
 op_assign
 id|TCP_SEQ_STATE_ESTABLISHED
+suffix:semicolon
+multiline_comment|/* We can reschedule between buckets: */
+id|cond_resched_softirq
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -10150,7 +10162,7 @@ id|v
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -10631,7 +10643,7 @@ r_int
 id|timer_expires
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign

@@ -13,6 +13,7 @@ DECL|macro|MXB_AUDIOS
 mdefine_line|#define MXB_AUDIOS&t;6
 multiline_comment|/* these are the available audio sources, which can switched&n;   to the line- and cd-output individually */
 DECL|variable|mxb_audios
+r_static
 r_struct
 id|v4l2_audio
 id|mxb_audios

@@ -73,7 +73,7 @@ id|ehci_quiesce
 id|ehci
 )paren
 suffix:semicolon
-id|ehci-&gt;hcd.state
+id|hcd-&gt;state
 op_assign
 id|USB_STATE_QUIESCING
 suffix:semicolon
@@ -158,7 +158,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ehci-&gt;hcd.remote_wakeup
+id|hcd-&gt;remote_wakeup
 )paren
 id|t2
 op_or_assign
@@ -218,7 +218,7 @@ id|ehci_halt
 id|ehci
 )paren
 suffix:semicolon
-id|ehci-&gt;hcd.state
+id|hcd-&gt;state
 op_assign
 id|HCD_STATE_SUSPENDED
 suffix:semicolon
@@ -576,7 +576,7 @@ c_func
 l_int|5
 )paren
 suffix:semicolon
-id|ehci-&gt;hcd.state
+id|hcd-&gt;state
 op_assign
 id|USB_STATE_RUNNING
 suffix:semicolon
@@ -787,7 +787,7 @@ op_logical_neg
 id|HCD_IS_RUNNING
 c_func
 (paren
-id|ehci-&gt;hcd.state
+id|hcd-&gt;state
 )paren
 )paren
 r_return
@@ -2079,7 +2079,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ehci-&gt;hcd.remote_wakeup
+id|hcd-&gt;remote_wakeup
 )paren
 id|temp
 op_or_assign

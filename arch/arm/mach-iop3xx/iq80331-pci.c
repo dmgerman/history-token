@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/arm/mach-iop3xx/iq80331-pci.c&n; *&n; * PCI support for the Intel IQ80331 reference board&n; *&n; * Author: Dave Jiang &lt;dave.jiang@intel.com&gt;&n; * Copyright (C) 2003 Intel Corp.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * arch/arm/mach-iop3xx/iq80331-pci.c&n; *&n; * PCI support for the Intel IQ80331 reference board&n; *&n; * Author: Dave Jiang &lt;dave.jiang@intel.com&gt;&n; * Copyright (C) 2003, 2004 Intel Corp.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -174,9 +174,9 @@ l_int|0
 dot
 id|start
 op_assign
-id|IQ80331_PCI_IO_BASE
+id|IOP331_PCI_LOWER_IO_BA
 op_plus
-l_int|0x6e000000
+id|IOP331_PCI_IO_OFFSET
 suffix:semicolon
 id|res
 (braket
@@ -185,13 +185,9 @@ l_int|0
 dot
 id|end
 op_assign
-id|IQ80331_PCI_IO_BASE
+id|IOP331_PCI_UPPER_IO_BA
 op_plus
-id|IQ80331_PCI_IO_SIZE
-op_minus
-l_int|1
-op_plus
-id|IQ80331_PCI_IO_OFFSET
+id|IOP331_PCI_IO_OFFSET
 suffix:semicolon
 id|res
 (braket
@@ -218,7 +214,9 @@ l_int|1
 dot
 id|start
 op_assign
-id|IQ80331_PCI_MEM_BASE
+id|IOP331_PCI_LOWER_MEM_BA
+op_plus
+id|IOP331_PCI_MEM_OFFSET
 suffix:semicolon
 id|res
 (braket
@@ -227,9 +225,9 @@ l_int|1
 dot
 id|end
 op_assign
-id|IQ80331_PCI_MEM_BASE
+id|IOP331_PCI_UPPER_MEM_BA
 op_plus
-id|IQ80331_PCI_MEM_SIZE
+id|IOP331_PCI_MEM_OFFSET
 suffix:semicolon
 id|res
 (braket
@@ -275,17 +273,13 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Since the IQ80331 is a slave card on a PCI backplane,&n;&t; * it uses BAR1 to reserve a portion of PCI memory space for&n;&t; * use with the private devices on the secondary bus&n;&t; * (GigE and PCI-X slot). We read BAR1 and configure&n;&t; * our outbound translation windows to target that&n;&t; * address range and assign all devices in that&n;&t; * address range. W/O this, certain BIOSes will fail&n;&t; * to boot as the IQ80331 claims addresses that are&n;&t; * in use by other devices.&n;&t; *&n;&t; * Note that the same cannot be done  with I/O space,&n;&t; * so hopefully the host will stick to the lower 64K for&n;&t; * PCI I/O and leave us alone.&n;&t; */
 id|sys-&gt;mem_offset
 op_assign
-id|IQ80331_PCI_MEM_BASE
-op_minus
-(paren
-op_star
-id|IOP331_IABAR1
-op_amp
-id|PCI_BASE_ADDRESS_MEM_MASK
-)paren
+id|IOP331_PCI_MEM_OFFSET
+suffix:semicolon
+id|sys-&gt;io_offset
+op_assign
+id|IOP331_PCI_IO_OFFSET
 suffix:semicolon
 id|sys-&gt;resource
 (braket
@@ -316,17 +310,13 @@ l_int|2
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sys-&gt;io_offset
-op_assign
-id|IQ80331_PCI_IO_OFFSET
-suffix:semicolon
 id|iop3xx_pcibios_min_io
 op_assign
-id|IQ80331_PCI_IO_BASE
+id|IOP331_PCI_LOWER_IO_VA
 suffix:semicolon
 id|iop3xx_pcibios_min_mem
 op_assign
-id|IQ80331_PCI_MEM_BASE
+id|IOP331_PCI_LOWER_MEM_VA
 suffix:semicolon
 r_return
 l_int|1

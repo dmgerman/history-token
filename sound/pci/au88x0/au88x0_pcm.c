@@ -698,6 +698,13 @@ id|substream
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;   printk(KERN_INFO &quot;Vortex: periods %d, period_bytes %d, channels = %d&bslash;n&quot;, params_periods(hw_params),&n;&t;   params_period_bytes(hw_params), params_channels(hw_params));&n;&t; */
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|chip-&gt;lock
+)paren
+suffix:semicolon
 singleline_comment|// Make audio routes and config buffer DMA.
 r_if
 c_cond
@@ -874,6 +881,13 @@ id|hw_params
 suffix:semicolon
 )brace
 macro_line|#endif
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|chip-&gt;lock
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -910,6 +924,13 @@ op_star
 )paren
 (paren
 id|substream-&gt;runtime-&gt;private_data
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|chip-&gt;lock
 )paren
 suffix:semicolon
 singleline_comment|// Delete audio routes.
@@ -972,6 +993,13 @@ macro_line|#endif
 id|substream-&gt;runtime-&gt;private_data
 op_assign
 l_int|NULL
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|chip-&gt;lock
+)paren
 suffix:semicolon
 r_return
 id|snd_pcm_lib_free_pages
@@ -1051,6 +1079,13 @@ id|vortex_alsafmt_aspfmt
 c_func
 (paren
 id|runtime-&gt;format
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|chip-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -1150,6 +1185,13 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|chip-&gt;lock
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1194,6 +1236,13 @@ id|dma
 op_assign
 id|stream-&gt;dma
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|chip-&gt;lock
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1220,6 +1269,15 @@ id|substream-&gt;pcm
 op_ne
 id|VORTEX_PCM_WT
 )paren
+(brace
+id|vortex_adbdma_resetup
+c_func
+(paren
+id|chip
+comma
+id|dma
+)paren
+suffix:semicolon
 id|vortex_adbdma_startfifo
 c_func
 (paren
@@ -1228,6 +1286,7 @@ comma
 id|dma
 )paren
 suffix:semicolon
+)brace
 macro_line|#ifndef CHIP_AU8810
 r_else
 (brace
@@ -1379,11 +1438,25 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|chip-&gt;lock
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|chip-&gt;lock
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

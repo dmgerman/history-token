@@ -195,9 +195,9 @@ macro_line|# define save_and_cli(x)&t;local_irq_save(x)
 macro_line|#endif
 multiline_comment|/* SoftIRQ primitives.  */
 DECL|macro|local_bh_disable
-mdefine_line|#define local_bh_disable() &bslash;&n;&t;&t;do { preempt_count() += SOFTIRQ_OFFSET; barrier(); } while (0)
+mdefine_line|#define local_bh_disable() &bslash;&n;&t;&t;do { add_preempt_count(SOFTIRQ_OFFSET); barrier(); } while (0)
 DECL|macro|__local_bh_enable
-mdefine_line|#define __local_bh_enable() &bslash;&n;&t;&t;do { barrier(); preempt_count() -= SOFTIRQ_OFFSET; } while (0)
+mdefine_line|#define __local_bh_enable() &bslash;&n;&t;&t;do { barrier(); sub_preempt_count(SOFTIRQ_OFFSET); } while (0)
 r_extern
 r_void
 id|local_bh_enable

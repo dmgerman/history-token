@@ -30,12 +30,12 @@ id|uidhash_table
 id|UIDHASH_SZ
 )braket
 suffix:semicolon
-DECL|variable|uidhash_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|uidhash_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|root_user
 r_struct

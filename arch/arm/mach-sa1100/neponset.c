@@ -693,9 +693,9 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|neponset_suspend
-mdefine_line|#define&t;neponset_suspend&t;NULL
+mdefine_line|#define neponset_suspend NULL
 DECL|macro|neponset_resume
-mdefine_line|#define&t;neponset_resume&t;NULL
+mdefine_line|#define neponset_resume  NULL
 macro_line|#endif
 DECL|variable|neponset_device_driver
 r_static

@@ -1379,6 +1379,7 @@ macro_line|#endif
 multiline_comment|/* ------------------------------------------------------------------ */
 multiline_comment|/* nr of (saa7134-)pages for the given buffer size */
 DECL|function|saa7134_buffer_pages
+r_static
 r_int
 id|saa7134_buffer_pages
 c_func
@@ -3316,9 +3317,12 @@ op_amp
 id|dev-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|dev-&gt;slock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|saa7134_track_gpio
 c_func

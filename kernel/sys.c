@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/dcookies.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -125,10 +126,11 @@ op_star
 id|reboot_notifier_list
 suffix:semicolon
 DECL|variable|notifier_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|notifier_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/**&n; *&t;notifier_chain_register&t;- Add notifier to a notifier chain&n; *&t;@list: Pointer to root list pointer&n; *&t;@n: New entry in notifier chain&n; *&n; *&t;Adds a notifier to a notifier chain.&n; *&n; *&t;Currently always returns zero.&n; */
 DECL|function|notifier_chain_register
@@ -4129,6 +4131,13 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 id|write_lock_irq
 c_func
 (paren
@@ -4189,6 +4198,13 @@ c_func
 (paren
 op_amp
 id|tasklist_lock
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
 )paren
 suffix:semicolon
 r_return

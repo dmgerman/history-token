@@ -4325,6 +4325,14 @@ id|bss
 OG
 id|len
 )paren
+(brace
+id|down_write
+c_func
+(paren
+op_amp
+id|current-&gt;mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 id|do_brk
 c_func
 (paren
@@ -4335,6 +4343,14 @@ op_minus
 id|len
 )paren
 suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|current-&gt;mm-&gt;mmap_sem
+)paren
+suffix:semicolon
+)brace
 id|error
 op_assign
 l_int|0
@@ -4991,9 +5007,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;pid
-op_eq
-id|p-&gt;tgid
+id|thread_group_leader
+c_func
+(paren
+id|p
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * This is the record for the group leader.  Add in the&n;&t;&t; * cumulative times of previous dead threads.  This total&n;&t;&t; * won&squot;t include the time of each live thread whose state&n;&t;&t; * is included in the core dump.  The final total reported&n;&t;&t; * to our parent process when it calls wait4 will include&n;&t;&t; * those sums as well as the little bit more time it takes&n;&t;&t; * this and each other thread to finish dying after the&n;&t;&t; * core dump synchronization phase.&n;&t;&t; */

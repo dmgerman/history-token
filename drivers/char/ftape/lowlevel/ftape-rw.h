@@ -242,14 +242,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|ftape_read_id
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|ftape_tape_parameters
 c_func

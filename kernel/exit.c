@@ -1184,9 +1184,23 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
+suffix:semicolon
 id|current-&gt;signal-&gt;tty
 op_assign
 l_int|NULL
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|tty_sem
+)paren
 suffix:semicolon
 multiline_comment|/* Block and flush all signals */
 id|sigfillset
@@ -2121,9 +2135,11 @@ id|TASK_TRACED
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * If it was at a trace stop, turn it into&n;&t;&t;&t; * a normal stop since it&squot;s no longer being&n;&t;&t;&t; * traced.&n;&t;&t;&t; */
-id|p-&gt;state
-op_assign
-id|TASK_STOPPED
+id|ptrace_untrace
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 )brace
 )brace

@@ -94,10 +94,6 @@ DECL|macro|EXP_15
 mdefine_line|#define EXP_15&t;&t;2037&t;&t;/* 1/exp(5sec/15min) */
 DECL|macro|CALC_LOAD
 mdefine_line|#define CALC_LOAD(load,exp,n) &bslash;&n;&t;load *= exp; &bslash;&n;&t;load += n*(FIXED_1-exp); &bslash;&n;&t;load &gt;&gt;= FSHIFT;
-DECL|macro|CT_TO_SECS
-mdefine_line|#define CT_TO_SECS(x)&t;((x) / HZ)
-DECL|macro|CT_TO_USECS
-mdefine_line|#define CT_TO_USECS(x)&t;(((x) % HZ) * 1000000/HZ)
 r_extern
 r_int
 r_int
@@ -1458,10 +1454,6 @@ r_int
 r_int
 id|sleep_avg
 suffix:semicolon
-DECL|member|interactive_credit
-r_int
-id|interactive_credit
-suffix:semicolon
 DECL|member|timestamp
 DECL|member|last_ran
 r_int
@@ -2197,6 +2189,28 @@ macro_line|#else
 DECL|macro|sched_exec
 mdefine_line|#define sched_exec()   {}
 macro_line|#endif
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+r_extern
+r_void
+id|idle_task_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|idle_task_exit
+r_static
+r_inline
+r_void
+id|idle_task_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+macro_line|#endif
 r_extern
 r_void
 id|sched_idle_next
@@ -2258,6 +2272,22 @@ c_func
 (paren
 r_int
 id|cpu
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sched_setscheduler
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+r_int
+comma
+r_struct
+id|sched_param
+op_star
 )paren
 suffix:semicolon
 r_void
@@ -3853,44 +3883,47 @@ id|TIF_NEED_RESCHED
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * cond_resched() and cond_resched_lock(): latency reduction via&n; * explicit rescheduling in places that are safe. The return&n; * value indicates whether a reschedule was done in fact.&n; * cond_resched_lock() will drop the spinlock before scheduling,&n; * cond_resched_softirq() will enable bhs before scheduling.&n; */
 r_extern
-r_void
-id|__cond_resched
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|function|cond_resched
-r_static
-r_inline
-r_void
+r_int
 id|cond_resched
 c_func
 (paren
 r_void
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|need_resched
+suffix:semicolon
+r_extern
+r_int
+id|cond_resched_lock
 c_func
 (paren
-)paren
-)paren
-id|__cond_resched
-c_func
-(paren
+id|spinlock_t
+op_star
+id|lock
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * cond_resched_lock() - if a reschedule is pending, drop the given lock,&n; * call schedule, and on return reacquire the lock.&n; *&n; * This works OK both with and without CONFIG_PREEMPT.  We do strange low-level&n; * operations here to prevent schedule() from being called twice (once via&n; * spin_unlock(), once by hand).&n; */
-DECL|function|cond_resched_lock
+r_extern
+r_int
+id|cond_resched_softirq
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Does a critical section need to be broken due to another&n; * task waiting?:&n; */
+macro_line|#if defined(CONFIG_PREEMPT) &amp;&amp; defined(CONFIG_SMP)
+DECL|macro|need_lockbreak
+macro_line|# define need_lockbreak(lock) ((lock)-&gt;break_lock)
+macro_line|#else
+DECL|macro|need_lockbreak
+macro_line|# define need_lockbreak(lock) 0
+macro_line|#endif
+multiline_comment|/*&n; * Does a critical section need to be broken due to another&n; * task waiting or preemption being signalled:&n; */
+DECL|function|lock_need_resched
 r_static
 r_inline
-r_void
-id|cond_resched_lock
+r_int
+id|lock_need_resched
 c_func
 (paren
 id|spinlock_t
@@ -3901,35 +3934,23 @@ id|lock
 r_if
 c_cond
 (paren
+id|need_lockbreak
+c_func
+(paren
+id|lock
+)paren
+op_logical_or
 id|need_resched
 c_func
 (paren
 )paren
 )paren
-(brace
-id|_raw_spin_unlock
-c_func
-(paren
-id|lock
-)paren
+r_return
+l_int|1
 suffix:semicolon
-id|preempt_enable_no_resched
-c_func
-(paren
-)paren
+r_return
+l_int|0
 suffix:semicolon
-id|__cond_resched
-c_func
-(paren
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-id|lock
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   callers must hold sighand-&gt;siglock.  */
 r_extern

@@ -586,16 +586,6 @@ r_struct
 id|acpi_processor_errata
 id|errata
 suffix:semicolon
-r_extern
-r_void
-(paren
-op_star
-id|pm_idle_save
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* in processor_perflib.c */
 macro_line|#ifdef CONFIG_CPU_FREQ
 r_void

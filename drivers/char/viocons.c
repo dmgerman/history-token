@@ -33,19 +33,19 @@ DECL|macro|VIOCONS_KERN_WARN
 mdefine_line|#define VIOCONS_KERN_WARN&t;KERN_WARNING &quot;viocons: &quot;
 DECL|macro|VIOCONS_KERN_INFO
 mdefine_line|#define VIOCONS_KERN_INFO&t;KERN_INFO &quot;viocons: &quot;
-DECL|variable|consolelock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|consolelock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
-DECL|variable|consoleloglock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|consoleloglock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 DECL|variable|vio_sysrq_pressed

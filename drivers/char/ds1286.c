@@ -128,12 +128,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|ds1286_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ds1286_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_int

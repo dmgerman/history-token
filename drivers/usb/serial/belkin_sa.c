@@ -507,7 +507,11 @@ multiline_comment|/* see comments at top of file */
 id|priv-&gt;bad_flow_control
 op_assign
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.bcdDevice
+)paren
 op_le
 l_int|0x0206
 )paren
@@ -522,7 +526,11 @@ c_func
 (paren
 l_string|&quot;bcdDevice: %04x, bfc: %d&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.bcdDevice
+)paren
 comma
 id|priv-&gt;bad_flow_control
 )paren

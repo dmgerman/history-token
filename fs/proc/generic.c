@@ -2111,6 +2111,21 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
+multiline_comment|/* At this point there must not be any &squot;/&squot; characters beyond *fn */
+r_if
+c_cond
+(paren
+id|strchr
+c_func
+(paren
+id|fn
+comma
+l_char|&squot;/&squot;
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
 id|len
 op_assign
 id|strlen

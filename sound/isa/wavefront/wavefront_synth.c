@@ -12,43 +12,49 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/snd_wavefront.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 DECL|variable|wf_raw
+r_static
 r_int
 id|wf_raw
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* we normally check for &quot;raw state&quot; to firmware&n;&t;&t;   loading. if non-zero, then during driver loading, the&n;&t;&t;   state of the board is ignored, and we reset the&n;&t;&t;   board and load the firmware anyway.&n;&t;&t;*/
+multiline_comment|/* we normally check for &quot;raw state&quot; to firmware&n;&t;&t;&t;  loading. if non-zero, then during driver loading, the&n;&t;&t;&t;  state of the board is ignored, and we reset the&n;&t;&t;&t;  board and load the firmware anyway.&n;&t;&t;       */
 DECL|variable|fx_raw
+r_static
 r_int
 id|fx_raw
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* if this is zero, we&squot;ll leave the FX processor in&n;&t;&t;   whatever state it is when the driver is loaded.&n;&t;&t;   The default is to download the microprogram and&n;&t;&t;   associated coefficients to set it up for &quot;default&quot;&n;&t;&t;   operation, whatever that means.&n;&t;&t;*/
+multiline_comment|/* if this is zero, we&squot;ll leave the FX processor in&n;&t;&t;&t;  whatever state it is when the driver is loaded.&n;&t;&t;&t;  The default is to download the microprogram and&n;&t;&t;&t;  associated coefficients to set it up for &quot;default&quot;&n;&t;&t;&t;  operation, whatever that means.&n;&t;&t;       */
 DECL|variable|debug_default
+r_static
 r_int
 id|debug_default
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* you can set this to control debugging&n;&t;&t;&t;      during driver loading. it takes any combination&n;&t;&t;&t;      of the WF_DEBUG_* flags defined in&n;&t;&t;&t;      wavefront.h&n;&t;&t;&t;   */
+multiline_comment|/* you can set this to control debugging&n;&t;&t;&t;&t;  during driver loading. it takes any combination&n;&t;&t;&t;&t;  of the WF_DEBUG_* flags defined in&n;&t;&t;&t;&t;  wavefront.h&n;&t;&t;&t;       */
 multiline_comment|/* XXX this needs to be made firmware and hardware version dependent */
 DECL|variable|ospath
+r_static
 r_char
 op_star
 id|ospath
 op_assign
 l_string|&quot;/etc/sound/wavefront.os&quot;
 suffix:semicolon
-multiline_comment|/* where to find a processed&n;&t;&t;&t;&t;&t;     version of the WaveFront OS&n;&t;&t;&t;&t;&t;  */
+multiline_comment|/* where to find a processed&n;&t;&t;&t;&t;&t;&t;    version of the WaveFront OS&n;&t;&t;&t;&t;&t;&t; */
 DECL|variable|wait_usecs
+r_static
 r_int
 id|wait_usecs
 op_assign
 l_int|150
 suffix:semicolon
-multiline_comment|/* This magic number seems to give pretty optimal&n;&t;&t;&t; throughput based on my limited experimentation.&n;&t;&t;&t; If you want to play around with it and find a better&n;&t;&t;&t; value, be my guest. Remember, the idea is to&n;&t;&t;&t; get a number that causes us to just busy wait&n;&t;&t;&t; for as many WaveFront commands as possible, without&n;&t;&t;&t; coming up with a number so large that we hog the&n;&t;&t;&t; whole CPU.&n;&n;&t;&t;&t; Specifically, with this number, out of about 134,000&n;&t;&t;&t; status waits, only about 250 result in a sleep.&n;&t;&t;      */
+multiline_comment|/* This magic number seems to give pretty optimal&n;&t;&t;&t;&t;throughput based on my limited experimentation.&n;&t;&t;&t;&t;If you want to play around with it and find a better&n;&t;&t;&t;&t;value, be my guest. Remember, the idea is to&n;&t;&t;&t;&t;get a number that causes us to just busy wait&n;&t;&t;&t;&t;for as many WaveFront commands as possible, without&n;&t;&t;&t;&t;coming up with a number so large that we hog the&n;&t;&t;&t;&t;whole CPU.&n;&n;&t;&t;&t;&t;Specifically, with this number, out of about 134,000&n;&t;&t;&t;&t;status waits, only about 250 result in a sleep.&n;&t;&t;&t;    */
 DECL|variable|sleep_interval
+r_static
 r_int
 id|sleep_interval
 op_assign
@@ -56,6 +62,7 @@ l_int|100
 suffix:semicolon
 multiline_comment|/* HZ/sleep_interval seconds per sleep */
 DECL|variable|sleep_tries
+r_static
 r_int
 id|sleep_tries
 op_assign
@@ -63,26 +70,29 @@ l_int|50
 suffix:semicolon
 multiline_comment|/* number of times we&squot;ll try to sleep */
 DECL|variable|reset_time
+r_static
 r_int
 id|reset_time
 op_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* hundreths of a second we wait after a HW&n;&t;&t;&t;      reset for the expected interrupt.&n;&t;&t;&t;   */
+multiline_comment|/* hundreths of a second we wait after a HW&n;&t;&t;&t;&t;     reset for the expected interrupt.&n;&t;&t;&t;&t;  */
 DECL|variable|ramcheck_time
+r_static
 r_int
 id|ramcheck_time
 op_assign
 l_int|20
 suffix:semicolon
-multiline_comment|/* time in seconds to wait while ROM code&n;&t;&t;&t;      checks on-board RAM.&n;&t;&t;&t;   */
+multiline_comment|/* time in seconds to wait while ROM code&n;&t;&t;&t;&t;     checks on-board RAM.&n;&t;&t;&t;&t;  */
 DECL|variable|osrun_time
+r_static
 r_int
 id|osrun_time
 op_assign
 l_int|10
 suffix:semicolon
-multiline_comment|/* time in seconds we wait for the OS to&n;&t;&t;&t;      start running.&n;&t;&t;&t;   */
+multiline_comment|/* time in seconds we wait for the OS to&n;&t;&t;&t;&t;     start running.&n;&t;&t;&t;&t;  */
 id|module_param
 c_func
 (paren
@@ -6322,6 +6332,7 @@ id|dev-&gt;interrupt_sleeper
 suffix:semicolon
 )brace
 multiline_comment|/* STATUS REGISTER &n;&n;0 Host Rx Interrupt Enable (1=Enabled)&n;1 Host Rx Register Full (1=Full)&n;2 Host Rx Interrupt Pending (1=Interrupt)&n;3 Unused&n;4 Host Tx Interrupt (1=Enabled)&n;5 Host Tx Register empty (1=Empty)&n;6 Host Tx Interrupt Pending (1=Interrupt)&n;7 Unused&n;*/
+r_static
 r_int
 id|__init
 DECL|function|snd_wavefront_interrupt_bits
@@ -6805,6 +6816,7 @@ id|section
 id|WF_SECTION_MAX
 )braket
 suffix:semicolon
+r_int
 r_char
 id|section_length
 suffix:semicolon

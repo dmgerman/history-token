@@ -527,12 +527,6 @@ id|bttv_tvcards
 (braket
 )braket
 suffix:semicolon
-r_extern
-r_const
-r_int
-r_int
-id|bttv_num_tvcards
-suffix:semicolon
 multiline_comment|/* identification / initialization of the card */
 r_extern
 r_void
@@ -918,32 +912,6 @@ DECL|macro|gpio_bits
 mdefine_line|#define gpio_bits(mask,bits)   bttv_gpio_bits(&amp;btv-&gt;c, mask, bits)
 multiline_comment|/* ---------------------------------------------------------- */
 multiline_comment|/* i2c                                                        */
-r_extern
-r_void
-id|bttv_bit_setscl
-c_func
-(paren
-r_void
-op_star
-id|data
-comma
-r_int
-id|state
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|bttv_bit_setsda
-c_func
-(paren
-r_void
-op_star
-id|data
-comma
-r_int
-id|state
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|bttv_call_i2c_clients

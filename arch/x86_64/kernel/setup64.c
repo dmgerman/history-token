@@ -264,11 +264,14 @@ id|i
 id|printk
 c_func
 (paren
-l_string|&quot;cpu with no node %d, numnodes %d&bslash;n&quot;
+l_string|&quot;cpu with no node %d, num_online_nodes %d&bslash;n&quot;
 comma
 id|i
 comma
-id|numnodes
+id|num_online_nodes
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|ptr
