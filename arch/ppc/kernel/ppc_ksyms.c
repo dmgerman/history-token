@@ -1298,38 +1298,6 @@ id|kd_mksound
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_NVRAM
-DECL|variable|nvram_read_byte
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|nvram_read_byte
-)paren
-suffix:semicolon
-DECL|variable|nvram_write_byte
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|nvram_write_byte
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PMAC
-DECL|variable|pmac_xpram_read
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pmac_xpram_read
-)paren
-suffix:semicolon
-DECL|variable|pmac_xpram_write
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pmac_xpram_write
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif /* CONFIG_NVRAM */
 DECL|variable|to_tm
 id|EXPORT_SYMBOL
 c_func

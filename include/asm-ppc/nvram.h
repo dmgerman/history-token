@@ -54,7 +54,7 @@ r_int
 id|partition
 )paren
 suffix:semicolon
-multiline_comment|/* Direct access to XPRAM */
+multiline_comment|/* Direct access to XPRAM on PowerMacs */
 r_extern
 id|u8
 id|pmac_xpram_read
@@ -76,12 +76,45 @@ id|u8
 id|data
 )paren
 suffix:semicolon
+multiline_comment|/* Synchronize NVRAM */
+r_extern
+r_void
+id|nvram_sync
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Normal access to NVRAM */
+r_extern
+r_int
+r_char
+id|nvram_read_byte
+c_func
+(paren
+r_int
+id|i
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nvram_write_byte
+c_func
+(paren
+r_int
+r_char
+id|c
+comma
+r_int
+id|i
+)paren
+suffix:semicolon
 multiline_comment|/* Some offsets in XPRAM */
 DECL|macro|PMAC_XPRAM_MACHINE_LOC
 mdefine_line|#define PMAC_XPRAM_MACHINE_LOC&t;0xe4
 DECL|macro|PMAC_XPRAM_SOUND_VOLUME
 mdefine_line|#define PMAC_XPRAM_SOUND_VOLUME&t;0x08
-multiline_comment|/* Machine location structure in XPRAM */
+multiline_comment|/* Machine location structure in PowerMac XPRAM */
 DECL|struct|pmac_machine_location
 r_struct
 id|pmac_machine_location
@@ -106,9 +139,13 @@ suffix:semicolon
 multiline_comment|/* mix of GMT delta and DLS */
 )brace
 suffix:semicolon
-multiline_comment|/* /dev/nvram ioctls */
-DECL|macro|PMAC_NVRAM_GET_OFFSET
-mdefine_line|#define PMAC_NVRAM_GET_OFFSET&t;_IOWR(&squot;p&squot;, 0x40, int) /* Get NVRAM partition offset */
+multiline_comment|/*&n; * /dev/nvram ioctls&n; *&n; * Note that PMAC_NVRAM_GET_OFFSET is still supported, but is&n; * definitely obsolete. Do not use it if you can avoid it&n; */
+DECL|macro|OBSOLETE_PMAC_NVRAM_GET_OFFSET
+mdefine_line|#define OBSOLETE_PMAC_NVRAM_GET_OFFSET &bslash;&n;&t;&t;&t;&t;_IOWR(&squot;p&squot;, 0x40, int)
+DECL|macro|IOC_NVRAM_GET_OFFSET
+mdefine_line|#define IOC_NVRAM_GET_OFFSET&t;_IOWR(&squot;p&squot;, 0x42, int)&t;/* Get NVRAM partition offset */
+DECL|macro|IOC_NVRAM_SYNC
+mdefine_line|#define IOC_NVRAM_SYNC&t;&t;_IO(&squot;p&squot;, 0x43)&t;&t;/* Sync NVRAM image */
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 eof
