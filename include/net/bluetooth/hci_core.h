@@ -2957,11 +2957,16 @@ id|skb
 suffix:semicolon
 multiline_comment|/* HCI info for socket */
 DECL|macro|hci_pi
-mdefine_line|#define hci_pi(sk)&t;((struct hci_pinfo *)sk-&gt;sk_protinfo)
+mdefine_line|#define hci_pi(sk) ((struct hci_pinfo *) sk)
 DECL|struct|hci_pinfo
 r_struct
 id|hci_pinfo
 (brace
+DECL|member|bt
+r_struct
+id|bt_sock
+id|bt
+suffix:semicolon
 DECL|member|hdev
 r_struct
 id|hci_dev

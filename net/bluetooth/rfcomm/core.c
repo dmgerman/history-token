@@ -1625,6 +1625,12 @@ op_amp
 id|d-&gt;tx_queue
 )paren
 suffix:semicolon
+id|rfcomm_session_put
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
 id|rfcomm_dlc_unlink
 c_func
 (paren
@@ -2585,6 +2591,12 @@ r_goto
 id|failed
 suffix:semicolon
 )brace
+id|rfcomm_session_hold
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
 id|s-&gt;initiator
 op_assign
 l_int|1

@@ -2675,6 +2675,7 @@ c_cond
 op_logical_neg
 id|sockaddr_size
 )paren
+r_return
 id|ERR_PTR
 c_func
 (paren

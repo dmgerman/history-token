@@ -2969,7 +2969,7 @@ id|DN_CC
 suffix:semicolon
 id|scp-&gt;segsize_loc
 op_assign
-id|dst_path_metric
+id|dst_metric
 c_func
 (paren
 id|__sk_dst_get
@@ -3695,7 +3695,7 @@ id|DN_CI
 suffix:semicolon
 id|scp-&gt;segsize_loc
 op_assign
-id|dst_path_metric
+id|dst_metric
 c_func
 (paren
 id|sk-&gt;sk_dst_cache

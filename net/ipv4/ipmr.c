@@ -4943,7 +4943,7 @@ id|skb-&gt;len
 op_plus
 id|encap
 OG
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
