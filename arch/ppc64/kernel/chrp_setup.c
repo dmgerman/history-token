@@ -80,6 +80,17 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|pSeries_get_boot_time
+c_func
+(paren
+r_struct
+id|rtc_time
+op_star
+id|rtc_time
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|pSeries_get_rtc_time
 c_func
 (paren
@@ -799,7 +810,7 @@ id|rtas_halt
 suffix:semicolon
 id|ppc_md.get_boot_time
 op_assign
-id|pSeries_get_rtc_time
+id|pSeries_get_boot_time
 suffix:semicolon
 id|ppc_md.get_rtc_time
 op_assign
