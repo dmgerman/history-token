@@ -2326,7 +2326,7 @@ c_func
 id|skb-&gt;truesize
 comma
 op_amp
-id|entry-&gt;shortcut-&gt;tx_inuse
+id|entry-&gt;shortcut-&gt;sk-&gt;wmem_alloc
 )paren
 suffix:semicolon
 id|ATM_SKB
@@ -3112,7 +3112,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|vcc-&gt;recvq
+id|vcc-&gt;sk-&gt;receive_queue
 comma
 id|skb
 )paren
@@ -3933,7 +3933,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|vcc-&gt;recvq
+id|vcc-&gt;sk-&gt;receive_queue
 )paren
 )paren
 )paren
@@ -4022,7 +4022,7 @@ op_plus
 id|ATM_PDU_OVHD
 comma
 op_amp
-id|vcc-&gt;tx_inuse
+id|vcc-&gt;sk-&gt;wmem_alloc
 )paren
 suffix:semicolon
 r_if
@@ -4405,7 +4405,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|mpc-&gt;mpoad_vcc-&gt;recvq
+id|mpc-&gt;mpoad_vcc-&gt;sk-&gt;receive_queue
 comma
 id|skb
 )paren
@@ -5799,7 +5799,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|vcc-&gt;recvq
+id|vcc-&gt;sk-&gt;receive_queue
 comma
 id|skb
 )paren

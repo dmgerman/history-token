@@ -178,7 +178,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|atmarpd-&gt;recvq
+id|atmarpd-&gt;sk-&gt;receive_queue
 comma
 id|skb
 )paren
@@ -2009,7 +2009,7 @@ c_func
 id|skb-&gt;truesize
 comma
 op_amp
-id|vcc-&gt;tx_inuse
+id|vcc-&gt;sk-&gt;wmem_alloc
 )paren
 suffix:semicolon
 id|ATM_SKB
@@ -2318,7 +2318,7 @@ id|skb_migrate
 c_func
 (paren
 op_amp
-id|vcc-&gt;recvq
+id|vcc-&gt;sk-&gt;receive_queue
 comma
 op_amp
 id|copy
@@ -3354,7 +3354,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|vcc-&gt;recvq
+id|vcc-&gt;sk-&gt;receive_queue
 )paren
 )paren
 id|printk
@@ -3369,7 +3369,7 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|vcc-&gt;recvq
+id|vcc-&gt;sk-&gt;receive_queue
 )paren
 suffix:semicolon
 id|DPRINTK
