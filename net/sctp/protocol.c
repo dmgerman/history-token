@@ -760,6 +760,12 @@ id|daddr-&gt;v4.sin_addr.s_addr
 comma
 )brace
 )brace
+comma
+dot
+id|proto
+op_assign
+id|IPPROTO_SCTP
+comma
 )brace
 suffix:semicolon
 r_if
