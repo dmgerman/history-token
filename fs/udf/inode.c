@@ -5547,7 +5547,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|fe-&gt;descTag.tagIdent
+)paren
 op_eq
 id|TID_EXTENDED_FILE_ENTRY
 )paren
@@ -5563,7 +5567,11 @@ r_else
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|fe-&gt;descTag.tagIdent
+)paren
 op_eq
 id|TID_FILE_ENTRY
 )paren
@@ -5579,7 +5587,11 @@ r_else
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|fe-&gt;descTag.tagIdent
+)paren
 op_eq
 id|TID_UNALLOCATED_SPACE_ENTRY
 )paren
@@ -6860,7 +6872,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|fe-&gt;descTag.tagIdent
+)paren
 op_eq
 id|TID_UNALLOCATED_SPACE_ENTRY
 )paren
@@ -9879,6 +9895,9 @@ suffix:semicolon
 )brace
 id|tagIdent
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 (paren
 (paren
 id|tag
@@ -9893,6 +9912,7 @@ id|b_data
 )paren
 op_member_access_from_pointer
 id|tagIdent
+)paren
 suffix:semicolon
 r_if
 c_cond

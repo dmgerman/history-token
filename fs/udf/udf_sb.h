@@ -99,7 +99,7 @@ mdefine_line|#define UDF_SB_LVIDBH(X)&t;&t;&t;&t;( UDF_SB(X)-&gt;s_lvidbh )
 DECL|macro|UDF_SB_LVID
 mdefine_line|#define UDF_SB_LVID(X)&t;&t;&t;&t;&t;( (struct LogicalVolIntegrityDesc *)UDF_SB_LVIDBH(X)-&gt;b_data )
 DECL|macro|UDF_SB_LVIDIU
-mdefine_line|#define UDF_SB_LVIDIU(X)&t;&t;&t;&t;( (struct LogicalVolIntegrityDescImpUse *)&amp;(UDF_SB_LVID(X)-&gt;impUse[UDF_SB_LVID(X)-&gt;numOfPartitions * 2 * sizeof(Uint32)/sizeof(Uint8)]) )
+mdefine_line|#define UDF_SB_LVIDIU(X)&t;&t;&t;&t;( (struct LogicalVolIntegrityDescImpUse *)&amp;(UDF_SB_LVID(X)-&gt;impUse[le32_to_cpu(UDF_SB_LVID(X)-&gt;numOfPartitions) * 2 * sizeof(Uint32)/sizeof(Uint8)]) )
 DECL|macro|UDF_SB_UMASK
 mdefine_line|#define UDF_SB_UMASK(X)&t;&t;&t;&t;&t;( UDF_SB(X)-&gt;s_umask )
 DECL|macro|UDF_SB_GID
