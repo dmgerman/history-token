@@ -2573,6 +2573,16 @@ c_func
 l_string|&quot;Attempted to kill init!&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tsk-&gt;as_io_context
+)paren
+id|exit_as_io_context
+c_func
+(paren
+)paren
+suffix:semicolon
 id|tsk-&gt;flags
 op_or_assign
 id|PF_EXITING

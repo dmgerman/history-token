@@ -3554,6 +3554,10 @@ id|p-&gt;security
 op_assign
 l_int|NULL
 suffix:semicolon
+id|p-&gt;as_io_context
+op_assign
+l_int|NULL
+suffix:semicolon
 id|retval
 op_assign
 op_minus

@@ -1611,6 +1611,10 @@ suffix:semicolon
 r_int
 id|err2
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_SYNCWRITE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1684,6 +1688,11 @@ op_assign
 id|err2
 suffix:semicolon
 )brace
+id|current-&gt;flags
+op_and_assign
+op_complement
+id|PF_SYNCWRITE
+suffix:semicolon
 id|spin_lock
 c_func
 (paren

@@ -564,6 +564,11 @@ r_extern
 id|elevator_t
 id|iosched_deadline
 suffix:semicolon
+multiline_comment|/*&n; * anticipatory I/O scheduler&n; */
+r_extern
+id|elevator_t
+id|iosched_as
+suffix:semicolon
 r_extern
 r_int
 id|elevator_init
