@@ -841,9 +841,9 @@ id|__devinitdata
 op_assign
 (brace
 (brace
-l_int|0x1106
+id|PCI_VENDOR_ID_VIA
 comma
-l_int|0x3119
+id|PCI_DEVICE_ID_VIA_612X
 comma
 id|PCI_ANY_ID
 comma
@@ -857,11 +857,7 @@ comma
 r_int
 r_int
 )paren
-op_amp
 id|chip_info_table
-(braket
-l_int|0
-)braket
 )brace
 comma
 (brace
