@@ -102,12 +102,14 @@ id|file_operations
 id|mpc_file_operations
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|proc_mpc_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|proc_mpc_write
 comma
 )brace

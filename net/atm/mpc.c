@@ -3457,12 +3457,14 @@ id|mpc_ops
 op_assign
 (brace
 multiline_comment|/* only send is required */
+dot
 id|close
-suffix:colon
+op_assign
 id|mpoad_close
 comma
+dot
 id|send
-suffix:colon
+op_assign
 id|msg_from_mpoad
 )brace
 suffix:semicolon

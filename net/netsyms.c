@@ -1376,6 +1376,13 @@ c_func
 id|udp_sendmsg
 )paren
 suffix:semicolon
+DECL|variable|tcp_bind_hash
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_bind_hash
+)paren
+suffix:semicolon
 DECL|variable|tcp_close
 id|EXPORT_SYMBOL
 c_func
