@@ -21,6 +21,7 @@ comma
 r_const
 r_int
 r_int
+id|__user
 op_star
 id|pMem
 )paren
@@ -70,6 +71,7 @@ comma
 r_const
 r_int
 r_int
+id|__user
 op_star
 id|pMem
 )paren
@@ -158,6 +160,7 @@ comma
 r_const
 r_int
 r_int
+id|__user
 op_star
 id|pMem
 )paren
@@ -263,6 +266,7 @@ comma
 r_const
 r_int
 r_int
+id|__user
 op_star
 id|pMem
 )paren
@@ -452,6 +456,7 @@ id|Fn
 comma
 r_int
 r_int
+id|__user
 op_star
 id|pMem
 )paren
@@ -565,6 +570,7 @@ id|Fn
 comma
 r_int
 r_int
+id|__user
 op_star
 id|pMem
 )paren
@@ -700,6 +706,7 @@ id|Fn
 comma
 r_int
 r_int
+id|__user
 op_star
 id|pMem
 )paren
@@ -848,6 +855,7 @@ id|Fn
 comma
 r_int
 r_int
+id|__user
 op_star
 id|pMem
 )paren
@@ -1034,6 +1042,7 @@ id|opcode
 (brace
 r_int
 r_int
+id|__user
 op_star
 id|pBase
 comma
@@ -1042,7 +1051,9 @@ id|pAddress
 comma
 op_star
 id|pFinal
-comma
+suffix:semicolon
+r_int
+r_int
 id|nRc
 op_assign
 l_int|1
@@ -1060,6 +1071,7 @@ op_assign
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|readRegister
@@ -1248,6 +1260,7 @@ id|opcode
 (brace
 r_int
 r_int
+id|__user
 op_star
 id|pBase
 comma
@@ -1256,7 +1269,9 @@ id|pAddress
 comma
 op_star
 id|pFinal
-comma
+suffix:semicolon
+r_int
+r_int
 id|nRc
 op_assign
 l_int|1
@@ -1280,6 +1295,7 @@ op_assign
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|readRegister
@@ -1468,10 +1484,7 @@ id|opcode
 (brace
 r_int
 r_int
-id|i
-comma
-id|Fd
-comma
+id|__user
 op_star
 id|pBase
 comma
@@ -1480,6 +1493,12 @@ id|pAddress
 comma
 op_star
 id|pFinal
+suffix:semicolon
+r_int
+r_int
+id|i
+comma
+id|Fd
 comma
 id|write_back
 op_assign
@@ -1494,6 +1513,7 @@ op_assign
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|readRegister
@@ -1668,10 +1688,7 @@ id|opcode
 (brace
 r_int
 r_int
-id|i
-comma
-id|Fd
-comma
+id|__user
 op_star
 id|pBase
 comma
@@ -1680,6 +1697,12 @@ id|pAddress
 comma
 op_star
 id|pFinal
+suffix:semicolon
+r_int
+r_int
+id|i
+comma
+id|Fd
 comma
 id|write_back
 op_assign
@@ -1694,6 +1717,7 @@ op_assign
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|readRegister
