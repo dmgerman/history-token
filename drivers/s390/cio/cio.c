@@ -97,18 +97,6 @@ comma
 id|cio_setup
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-r_void
-DECL|function|init_irq_proc
-id|init_irq_proc
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* For now, nothing... */
-)brace
-macro_line|#endif
 multiline_comment|/*&n; * Function: cio_debug_init&n; * Initializes three debug logs (under /proc/s390dbf) for common I/O:&n; * - cio_msg logs the messages which are printk&squot;ed when CONFIG_DEBUG_IO is on&n; * - cio_trace logs the calling of different functions&n; * - cio_crw logs the messages which are printk&squot;ed when CONFIG_DEBUG_CRW is on&n; * debug levels depend on CONFIG_DEBUG_IO resp. CONFIG_DEBUG_CRW&n; */
 r_static
 r_int
