@@ -1356,6 +1356,23 @@ id|regs
 id|siginfo_t
 id|info
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
+r_if
+c_cond
+(paren
+id|debugger_fault_handler
+)paren
+(brace
+id|debugger_fault_handler
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
