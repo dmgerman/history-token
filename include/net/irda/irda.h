@@ -62,8 +62,6 @@ DECL|macro|MESSAGE
 mdefine_line|#define MESSAGE(args...) printk(KERN_INFO args)
 DECL|macro|ERROR
 mdefine_line|#define ERROR(args...)   printk(KERN_ERR args)
-DECL|macro|MSECS_TO_JIFFIES
-mdefine_line|#define MSECS_TO_JIFFIES(ms) (((ms)*HZ+999)/1000)
 multiline_comment|/*&n; *  Magic numbers used by Linux-IrDA. Random numbers which must be unique to &n; *  give the best protection&n; */
 DECL|macro|IRTTY_MAGIC
 mdefine_line|#define IRTTY_MAGIC        0x2357

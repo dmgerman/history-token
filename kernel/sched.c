@@ -52,14 +52,6 @@ DECL|macro|NS_TO_JIFFIES
 mdefine_line|#define NS_TO_JIFFIES(TIME)&t;((TIME) / (1000000000 / HZ))
 DECL|macro|JIFFIES_TO_NS
 mdefine_line|#define JIFFIES_TO_NS(TIME)&t;((TIME) * (1000000000 / HZ))
-macro_line|#ifndef JIFFIES_TO_MSEC
-DECL|macro|JIFFIES_TO_MSEC
-macro_line|# define JIFFIES_TO_MSEC(x) ((x) * 1000 / HZ)
-macro_line|#endif
-macro_line|#ifndef MSEC_TO_JIFFIES
-DECL|macro|MSEC_TO_JIFFIES
-macro_line|# define MSEC_TO_JIFFIES(x) ((x) * HZ / 1000)
-macro_line|#endif
 multiline_comment|/*&n; * These are the &squot;tuning knobs&squot; of the scheduler:&n; *&n; * Minimum timeslice is 10 msecs, default timeslice is 100 msecs,&n; * maximum timeslice is 200 msecs. Timeslices get refilled after&n; * they expire.&n; */
 DECL|macro|MIN_TIMESLICE
 mdefine_line|#define MIN_TIMESLICE&t;&t;( 10 * HZ / 1000)
@@ -5882,7 +5874,7 @@ suffix:semicolon
 multiline_comment|/* scale ms to jiffies */
 id|interval
 op_assign
-id|MSEC_TO_JIFFIES
+id|MSECS_TO_JIFFIES
 c_func
 (paren
 id|interval
