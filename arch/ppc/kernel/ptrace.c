@@ -926,6 +926,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -937,6 +942,11 @@ id|giveup_fpu
 c_func
 (paren
 id|child
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tmp
@@ -1103,6 +1113,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1114,6 +1129,11 @@ id|giveup_fpu
 c_func
 (paren
 id|child
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 (paren
@@ -1333,6 +1353,11 @@ r_case
 id|PTRACE_GETVRREGS
 suffix:colon
 multiline_comment|/* Get the child altivec register state. */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1344,6 +1369,11 @@ id|giveup_altivec
 c_func
 (paren
 id|child
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 id|ret
@@ -1368,6 +1398,11 @@ id|PTRACE_SETVRREGS
 suffix:colon
 multiline_comment|/* Set the child altivec register state. */
 multiline_comment|/* this is to clear the MSR_VEC bit to force a reload&n;&t;&t; * of register state from memory */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1379,6 +1414,11 @@ id|giveup_altivec
 c_func
 (paren
 id|child
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 id|ret
