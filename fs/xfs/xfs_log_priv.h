@@ -553,12 +553,10 @@ DECL|typedef|xlog_iclog_fields_t
 )brace
 id|xlog_iclog_fields_t
 suffix:semicolon
-DECL|struct|xlog_in_core2
+DECL|union|xlog_in_core2
 r_typedef
-r_struct
-id|xlog_in_core2
-(brace
 r_union
+id|xlog_in_core2
 (brace
 DECL|member|hic_header
 id|xlog_rec_header_t
@@ -574,10 +572,6 @@ id|hic_sector
 (braket
 id|XLOG_HEADER_SIZE
 )braket
-suffix:semicolon
-DECL|member|ic_h
-)brace
-id|ic_h
 suffix:semicolon
 DECL|typedef|xlog_in_core_2_t
 )brace
@@ -635,7 +629,7 @@ mdefine_line|#define&t;ic_state&t;hic_fields.ic_state
 DECL|macro|ic_datap
 mdefine_line|#define ic_datap&t;hic_fields.ic_datap
 DECL|macro|ic_header
-mdefine_line|#define ic_header&t;hic_data-&gt;ic_h.hic_header
+mdefine_line|#define ic_header&t;hic_data-&gt;hic_header
 multiline_comment|/*&n; * The reservation head lsn is not made up of a cycle number and block number.&n; * Instead, it uses a cycle number and byte number.  Logs don&squot;t expect to&n; * overflow 31 bits worth of byte offset, so using a byte number will mean&n; * that round off problems won&squot;t occur when releasing partial reservations.&n; */
 DECL|struct|log
 r_typedef
