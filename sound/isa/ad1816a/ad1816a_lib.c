@@ -3289,12 +3289,11 @@ c_func
 (paren
 id|pcm
 comma
-id|SNDRV_DMA_TYPE_ISA
+id|SNDRV_DMA_TYPE_DEV
 comma
-id|snd_pcm_dma_flags
+id|snd_dma_isa_data
 c_func
 (paren
-l_int|0
 )paren
 comma
 l_int|64

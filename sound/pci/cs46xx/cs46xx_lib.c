@@ -16,6 +16,19 @@ macro_line|#include &lt;sound/cs46xx.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;cs46xx_lib.h&quot;
 macro_line|#include &quot;dsp_spos.h&quot;
+r_static
+r_void
+id|amp_voyetra
+c_func
+(paren
+id|cs46xx_t
+op_star
+id|chip
+comma
+r_int
+id|change
+)paren
+suffix:semicolon
 DECL|function|snd_cs46xx_codec_read
 r_static
 r_int
@@ -553,6 +566,22 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* HACK: voyetra uses EAPD bit in the reverse way.&n;&t; * we flip the bit to show the mixer status correctly&n;&t; */
+r_if
+c_cond
+(paren
+id|reg
+op_eq
+id|AC97_POWERDOWN
+op_logical_and
+id|chip-&gt;amplifier_ctrl
+op_eq
+id|amp_voyetra
+)paren
+id|val
+op_xor_assign
+l_int|0x8000
+suffix:semicolon
 r_return
 id|val
 suffix:semicolon
@@ -833,6 +862,22 @@ l_int|0
 comma
 r_return
 )paren
+suffix:semicolon
+multiline_comment|/* HACK: voyetra uses EAPD bit in the reverse way.&n;&t; * we flip the bit to show the mixer status correctly&n;&t; */
+r_if
+c_cond
+(paren
+id|reg
+op_eq
+id|AC97_POWERDOWN
+op_logical_and
+id|chip-&gt;amplifier_ctrl
+op_eq
+id|amp_voyetra
+)paren
+id|val
+op_xor_assign
+l_int|0x8000
 suffix:semicolon
 id|chip
 op_member_access_from_pointer
@@ -6982,9 +7027,13 @@ c_func
 (paren
 id|pcm
 comma
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 comma
+id|snd_dma_pci_data
+c_func
+(paren
 id|chip-&gt;pci
+)paren
 comma
 l_int|64
 op_star
@@ -7116,9 +7165,13 @@ c_func
 (paren
 id|pcm
 comma
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 comma
-id|pcm
+id|snd_dma_pci_data
+c_func
+(paren
+id|chip-&gt;pci
+)paren
 comma
 l_int|64
 op_star
@@ -7249,9 +7302,13 @@ c_func
 (paren
 id|pcm
 comma
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 comma
+id|snd_dma_pci_data
+c_func
+(paren
 id|chip-&gt;pci
+)paren
 comma
 l_int|64
 op_star
@@ -7382,9 +7439,13 @@ c_func
 (paren
 id|pcm
 comma
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 comma
+id|snd_dma_pci_data
+c_func
+(paren
 id|chip-&gt;pci
+)paren
 comma
 l_int|64
 op_star
@@ -10923,7 +10984,7 @@ c_func
 (paren
 id|id.name
 comma
-l_string|&quot;External Amplifier Power Down&quot;
+l_string|&quot;External Amplifier&quot;
 )paren
 suffix:semicolon
 id|chip-&gt;eapd_switch
@@ -16325,11 +16386,15 @@ id|chip-&gt;dma_dev
 suffix:semicolon
 id|chip-&gt;dma_dev.type
 op_assign
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 suffix:semicolon
-id|chip-&gt;dma_dev.dev.pci
+id|chip-&gt;dma_dev.dev
 op_assign
+id|snd_dma_pci_data
+c_func
+(paren
 id|pci
+)paren
 suffix:semicolon
 multiline_comment|/* set up amp and clkrun hack */
 id|pci_read_config_word

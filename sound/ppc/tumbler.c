@@ -383,7 +383,7 @@ comma
 multiline_comment|/* normal output, no deemphasis, A input, power-up */
 id|TAS_REG_ACS
 comma
-l_int|0
+l_int|2
 comma
 l_int|0
 comma

@@ -5937,11 +5937,15 @@ id|chunk
 suffix:semicolon
 id|chip-&gt;dma_dev.type
 op_assign
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 suffix:semicolon
-id|chip-&gt;dma_dev.dev.data
+id|chip-&gt;dma_dev.dev
 op_assign
+id|snd_dma_pci_data
+c_func
+(paren
 id|chip-&gt;pci
+)paren
 suffix:semicolon
 id|chip-&gt;dma_dev.id
 op_assign

@@ -1689,15 +1689,27 @@ id|ice-&gt;eeprom.subvendor
 op_eq
 id|VT1724_SUBDEVICE_AUREON51_SKY
 )paren
+(brace
 id|ice-&gt;num_total_dacs
 op_assign
 l_int|6
 suffix:semicolon
+id|ice-&gt;num_total_adcs
+op_assign
+l_int|6
+suffix:semicolon
+)brace
 r_else
+(brace
 id|ice-&gt;num_total_dacs
 op_assign
 l_int|8
 suffix:semicolon
+id|ice-&gt;num_total_adcs
+op_assign
+l_int|8
+suffix:semicolon
+)brace
 multiline_comment|/* to remeber the register values */
 id|ice-&gt;akm
 op_assign

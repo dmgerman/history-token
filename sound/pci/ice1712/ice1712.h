@@ -869,6 +869,12 @@ r_int
 id|num_total_dacs
 suffix:semicolon
 multiline_comment|/* total DACs */
+DECL|member|num_total_adcs
+r_int
+r_int
+id|num_total_adcs
+suffix:semicolon
+multiline_comment|/* total ADCs */
 DECL|member|hoontech_boxbits
 r_int
 r_char

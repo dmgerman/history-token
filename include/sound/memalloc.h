@@ -2,10 +2,6 @@ multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt
 macro_line|#ifndef __SOUND_MEMALLOC_H
 DECL|macro|__SOUND_MEMALLOC_H
 mdefine_line|#define __SOUND_MEMALLOC_H
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#ifdef CONFIG_SBUS
-macro_line|#include &lt;asm/sbus.h&gt;
-macro_line|#endif
 r_struct
 id|device
 suffix:semicolon
@@ -19,13 +15,6 @@ r_int
 id|type
 suffix:semicolon
 multiline_comment|/* SNDRV_MEM_TYPE_XXX */
-r_union
-(brace
-DECL|member|data
-r_void
-op_star
-id|data
-suffix:semicolon
 DECL|member|dev
 r_struct
 id|device
@@ -33,32 +22,6 @@ op_star
 id|dev
 suffix:semicolon
 multiline_comment|/* generic device */
-DECL|member|pci
-r_struct
-id|pci_dev
-op_star
-id|pci
-suffix:semicolon
-multiline_comment|/* PCI device */
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* GFP_XXX for continous and ISA types */
-macro_line|#ifdef CONFIG_SBUS
-DECL|member|sbus
-r_struct
-id|sbus_dev
-op_star
-id|sbus
-suffix:semicolon
-multiline_comment|/* for SBUS type */
-macro_line|#endif
-DECL|member|dev
-)brace
-id|dev
-suffix:semicolon
 DECL|member|id
 r_int
 r_int
@@ -67,23 +30,27 @@ suffix:semicolon
 multiline_comment|/* a unique ID */
 )brace
 suffix:semicolon
+macro_line|#ifndef snd_dma_pci_data
+DECL|macro|snd_dma_pci_data
+mdefine_line|#define snd_dma_pci_data(pci)&t;(&amp;(pci)-&gt;dev)
+DECL|macro|snd_dma_isa_data
+mdefine_line|#define snd_dma_isa_data()&t;NULL
+DECL|macro|snd_dma_sbus_data
+mdefine_line|#define snd_dma_sbus_data(sbus)&t;((struct device *)(sbus))
+DECL|macro|snd_dma_continuous_data
+mdefine_line|#define snd_dma_continuous_data(x)&t;((struct device *)(unsigned long)(x))
+macro_line|#endif
 multiline_comment|/*&n; * buffer types&n; */
 DECL|macro|SNDRV_DMA_TYPE_UNKNOWN
 mdefine_line|#define SNDRV_DMA_TYPE_UNKNOWN&t;&t;0&t;/* not defined */
 DECL|macro|SNDRV_DMA_TYPE_CONTINUOUS
 mdefine_line|#define SNDRV_DMA_TYPE_CONTINUOUS&t;1&t;/* continuous no-DMA memory */
-DECL|macro|SNDRV_DMA_TYPE_ISA
-mdefine_line|#define SNDRV_DMA_TYPE_ISA&t;&t;2&t;/* ISA continuous */
-DECL|macro|SNDRV_DMA_TYPE_PCI
-mdefine_line|#define SNDRV_DMA_TYPE_PCI&t;&t;3&t;/* PCI continuous */
-DECL|macro|SNDRV_DMA_TYPE_PCI_SG
-mdefine_line|#define SNDRV_DMA_TYPE_PCI_SG&t;&t;4&t;/* PCI SG-buffer */
 DECL|macro|SNDRV_DMA_TYPE_DEV
-mdefine_line|#define SNDRV_DMA_TYPE_DEV&t;&t;5&t;/* generic device continuous */
+mdefine_line|#define SNDRV_DMA_TYPE_DEV&t;&t;2&t;/* generic device continuous */
 DECL|macro|SNDRV_DMA_TYPE_DEV_SG
-mdefine_line|#define SNDRV_DMA_TYPE_DEV_SG&t;&t;6&t;/* generic device SG-buffer */
+mdefine_line|#define SNDRV_DMA_TYPE_DEV_SG&t;&t;3&t;/* generic device SG-buffer */
 DECL|macro|SNDRV_DMA_TYPE_SBUS
-mdefine_line|#define SNDRV_DMA_TYPE_SBUS&t;&t;7&t;/* SBUS continuous */
+mdefine_line|#define SNDRV_DMA_TYPE_SBUS&t;&t;4&t;/* SBUS continuous */
 multiline_comment|/*&n; * info for buffer allocation&n; */
 DECL|struct|snd_dma_buffer
 r_struct

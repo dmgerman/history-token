@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Driver for Digigram miXart soundcards&n; *&n; * main f
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
@@ -3873,9 +3874,13 @@ c_func
 (paren
 id|pcm
 comma
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 comma
+id|snd_dma_pci_data
+c_func
+(paren
 id|chip-&gt;mgr-&gt;pci
+)paren
 comma
 l_int|32
 op_star
@@ -6173,11 +6178,15 @@ id|mgr-&gt;dma_dev
 suffix:semicolon
 id|mgr-&gt;dma_dev.type
 op_assign
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 suffix:semicolon
-id|mgr-&gt;dma_dev.dev.pci
+id|mgr-&gt;dma_dev.dev
 op_assign
+id|snd_dma_pci_data
+c_func
+(paren
 id|mgr-&gt;pci
+)paren
 suffix:semicolon
 multiline_comment|/* create array of streaminfo */
 id|size

@@ -3602,6 +3602,13 @@ comma
 id|status
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;device_type
+op_ne
+id|DEVICE_NFORCE
+)paren
 id|status
 op_xor_assign
 id|igetdword
@@ -3623,6 +3630,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|chip-&gt;device_type
+op_ne
+id|DEVICE_NFORCE
+op_logical_and
 id|status
 op_logical_and
 id|err_count
@@ -6853,9 +6864,13 @@ c_func
 (paren
 id|pcm
 comma
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 comma
+id|snd_dma_pci_data
+c_func
+(paren
 id|chip-&gt;pci
+)paren
 comma
 id|rec-&gt;prealloc_size
 comma
@@ -7770,6 +7785,28 @@ op_assign
 dot
 id|vendor
 op_assign
+l_int|0x1014
+comma
+dot
+id|device
+op_assign
+l_int|0x1f00
+comma
+dot
+id|name
+op_assign
+l_string|&quot;MS-9128&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_ALC_JACK
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x1028
 comma
 dot
@@ -8146,6 +8183,7 @@ op_assign
 id|AC97_TUNE_AD_SHARING
 )brace
 comma
+macro_line|#if 0 /* FIXME: this seems wrong on most boards */
 (brace
 dot
 id|vendor
@@ -8173,6 +8211,7 @@ op_assign
 id|AC97_TUNE_HP_ONLY
 )brace
 comma
+macro_line|#endif
 (brace
 )brace
 multiline_comment|/* terminator */
@@ -12608,11 +12647,15 @@ id|chip-&gt;dma_dev
 suffix:semicolon
 id|chip-&gt;dma_dev.type
 op_assign
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 suffix:semicolon
-id|chip-&gt;dma_dev.dev.pci
+id|chip-&gt;dma_dev.dev
 op_assign
+id|snd_dma_pci_data
+c_func
+(paren
 id|pci
+)paren
 suffix:semicolon
 multiline_comment|/* allocate buffer descriptor lists */
 multiline_comment|/* the start of each lists must be aligned to 8 bytes */

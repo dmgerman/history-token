@@ -2969,11 +2969,15 @@ id|emu-&gt;dma_dev
 suffix:semicolon
 id|emu-&gt;dma_dev.type
 op_assign
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 suffix:semicolon
-id|emu-&gt;dma_dev.dev.pci
+id|emu-&gt;dma_dev.dev
 op_assign
+id|snd_dma_pci_data
+c_func
+(paren
 id|pci
+)paren
 suffix:semicolon
 id|emu-&gt;max_cache_pages
 op_assign
