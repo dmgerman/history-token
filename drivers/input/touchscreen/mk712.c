@@ -509,7 +509,7 @@ op_assign
 id|LONG
 c_func
 (paren
-id|BTN_LEFT
+id|BTN_TOUCH
 )paren
 )braket
 op_assign
