@@ -9214,13 +9214,6 @@ id|req-&gt;Attributes
 op_amp
 id|WIN_MAP_BELOW_1MB
 )paren
-op_logical_or
-op_logical_neg
-(paren
-id|s-&gt;features
-op_amp
-id|SS_CAP_PAGE_REGS
-)paren
 comma
 (paren
 op_star
