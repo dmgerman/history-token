@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/irq.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; *&n; *   22-Jul-2004  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *                Fixed compile warnings&n; *&n; *   22-Jul-2004  Roc Wu &lt;cooloney@yahoo.com.cn&gt;&n; *                Fixed s3c_extirq_type&n; *&n; *   21-Jul-2004  Arnaud Patard (Rtp) &lt;arnaud.patard@rtp-net.org&gt;&n; *                Addition of ADC/TC demux&n; */
+multiline_comment|/* linux/arch/arm/mach-s3c2410/irq.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; *&n; *   22-Jul-2004  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *                Fixed compile warnings&n; *&n; *   22-Jul-2004  Roc Wu &lt;cooloney@yahoo.com.cn&gt;&n; *                Fixed s3c_extirq_type&n; *&n; *   21-Jul-2004  Arnaud Patard (Rtp) &lt;arnaud.patard@rtp-net.org&gt;&n; *                Addition of ADC/TC demux&n; *&n; *   04-Oct-2004  Klaus Fetscher &lt;k.fetscher@fetron.de&gt;&n; *&t;&t;  Fix for set_irq_type() on low EINT numbers&n; *&n; *   05-Oct-2004  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&t;&t;  Tidy up KF&squot;s patch and sort out new release&n;*/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -11,9 +11,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/arch/regs-irq.h&gt;
 macro_line|#include &lt;asm/arch/regs-gpio.h&gt;
-macro_line|#if 0
-macro_line|#include &lt;asm/debug-ll.h&gt;
-macro_line|#endif
 DECL|macro|irqdbf
 mdefine_line|#define irqdbf(x...)
 DECL|macro|irqdbf2
@@ -590,7 +587,7 @@ op_logical_and
 (paren
 id|irq
 op_le
-id|IRQ_EINT7
+id|IRQ_EINT3
 )paren
 )paren
 (brace
@@ -618,6 +615,56 @@ op_assign
 id|irq
 op_minus
 id|IRQ_EINT0
+)paren
+op_star
+l_int|4
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|irq
+op_ge
+id|IRQ_EINT4
+)paren
+op_logical_and
+(paren
+id|irq
+op_le
+id|IRQ_EINT7
+)paren
+)paren
+(brace
+id|gpcon_reg
+op_assign
+id|S3C2410_GPFCON
+suffix:semicolon
+id|extint_reg
+op_assign
+id|S3C2410_EXTINT0
+suffix:semicolon
+id|gpcon_offset
+op_assign
+(paren
+id|irq
+op_minus
+(paren
+id|EXTINT_OFF
+)paren
+)paren
+op_star
+l_int|2
+suffix:semicolon
+id|extint_offset
+op_assign
+(paren
+id|irq
+op_minus
+(paren
+id|EXTINT_OFF
+)paren
 )paren
 op_star
 l_int|4
@@ -896,6 +943,34 @@ dot
 id|ack
 op_assign
 id|s3c_irqext_ack
+comma
+dot
+id|type
+op_assign
+id|s3c_irqext_type
+)brace
+suffix:semicolon
+DECL|variable|s3c_irq_eint0t4
+r_static
+r_struct
+id|irqchip
+id|s3c_irq_eint0t4
+op_assign
+(brace
+dot
+id|ack
+op_assign
+id|s3c_irq_ack
+comma
+dot
+id|mask
+op_assign
+id|s3c_irq_mask
+comma
+dot
+id|unmask
+op_assign
+id|s3c_irq_unmask
 comma
 dot
 id|type
@@ -1935,6 +2010,10 @@ r_int
 id|pend
 suffix:semicolon
 r_int
+r_int
+id|last
+suffix:semicolon
+r_int
 id|irqno
 suffix:semicolon
 r_int
@@ -1947,6 +2026,10 @@ l_string|&quot;s3c2410_init_irq: clearing interrupt status flags&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* first, clear all interrupts pending... */
+id|last
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1976,6 +2059,10 @@ c_cond
 id|pend
 op_eq
 l_int|0
+op_logical_or
+id|pend
+op_eq
+id|last
 )paren
 r_break
 suffix:semicolon
@@ -1998,7 +2085,15 @@ r_int
 id|pend
 )paren
 suffix:semicolon
+id|last
+op_assign
+id|pend
+suffix:semicolon
 )brace
+id|last
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2028,6 +2123,10 @@ c_cond
 id|pend
 op_eq
 l_int|0
+op_logical_or
+id|pend
+op_eq
+id|last
 )paren
 r_break
 suffix:semicolon
@@ -2058,7 +2157,15 @@ r_int
 id|pend
 )paren
 suffix:semicolon
+id|last
+op_assign
+id|pend
+suffix:semicolon
 )brace
+id|last
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2088,6 +2195,10 @@ c_cond
 id|pend
 op_eq
 l_int|0
+op_logical_or
+id|pend
+op_eq
+id|last
 )paren
 r_break
 suffix:semicolon
@@ -2110,6 +2221,10 @@ comma
 id|S3C2410_SUBSRCPND
 )paren
 suffix:semicolon
+id|last
+op_assign
+id|pend
+suffix:semicolon
 )brace
 multiline_comment|/* register the main interrupts */
 id|irqdbf
@@ -2123,7 +2238,7 @@ c_loop
 (paren
 id|irqno
 op_assign
-id|IRQ_EINT0
+id|IRQ_BATT_FLT
 suffix:semicolon
 id|irqno
 op_le
@@ -2140,15 +2255,6 @@ c_cond
 id|irqno
 )paren
 (brace
-r_case
-id|IRQ_EINT4t7
-suffix:colon
-r_case
-id|IRQ_EINT8t23
-suffix:colon
-multiline_comment|/* these are already dealt with, so should never&n;&t;&t;&t; * appear */
-r_break
-suffix:semicolon
 multiline_comment|/* deal with the special IRQs (cascaded) */
 r_case
 id|IRQ_UART0
@@ -2257,6 +2363,55 @@ id|s3c_irq_demux_adc
 )paren
 suffix:semicolon
 multiline_comment|/* external interrupts */
+r_for
+c_loop
+(paren
+id|irqno
+op_assign
+id|IRQ_EINT0
+suffix:semicolon
+id|irqno
+op_le
+id|IRQ_EINT3
+suffix:semicolon
+id|irqno
+op_increment
+)paren
+(brace
+id|irqdbf
+c_func
+(paren
+l_string|&quot;registering irq %d (ext int)&bslash;n&quot;
+comma
+id|irqno
+)paren
+suffix:semicolon
+id|set_irq_chip
+c_func
+(paren
+id|irqno
+comma
+op_amp
+id|s3c_irq_eint0t4
+)paren
+suffix:semicolon
+id|set_irq_handler
+c_func
+(paren
+id|irqno
+comma
+id|do_edge_IRQ
+)paren
+suffix:semicolon
+id|set_irq_flags
+c_func
+(paren
+id|irqno
+comma
+id|IRQF_VALID
+)paren
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
