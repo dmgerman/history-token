@@ -11,6 +11,7 @@ mdefine_line|#define JFS_DEBUG
 DECL|macro|jfs_debug
 mdefine_line|#define jfs_debug jbd_debug
 macro_line|#else
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/journal-head.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
