@@ -13156,6 +13156,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|do_blank_screen
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_blank_screen
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Called by timer as well as from vt_console_driver&n; */
 DECL|function|do_unblank_screen
 r_void
@@ -13302,6 +13309,13 @@ id|fg_console
 )paren
 suffix:semicolon
 )brace
+DECL|variable|do_unblank_screen
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_unblank_screen
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This is called by the outside world to cause a forced unblank, mostly for&n; * oopses. Currently, I just call do_unblank_screen(0), but we could eventually&n; * call it with 1 as an argument and so force a mode restore... that may kill&n; * X or at least garbage the screen but would also make the Oops visible...&n; */
 DECL|function|unblank_screen
 r_void
