@@ -5218,9 +5218,17 @@ c_cond
 op_logical_neg
 id|err
 )paren
+(brace
+id|scsi_scan_host
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 multiline_comment|/* fall through on error */
 id|ide_unregister_subdriver
 c_func

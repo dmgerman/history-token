@@ -412,16 +412,6 @@ macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* scsi_scan.c */
 r_extern
 r_void
-id|scsi_scan_host
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|scsi_forget_host
 c_func
 (paren
@@ -530,23 +520,6 @@ c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-multiline_comment|/* definitions for the linker default sections covering the host&n; * class and device attributes */
-r_extern
-r_struct
-id|class_device_attribute
-op_star
-id|scsi_sysfs_shost_attrs
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_struct
-id|device_attribute
-op_star
-id|scsi_sysfs_sdev_attrs
-(braket
-)braket
 suffix:semicolon
 r_extern
 r_struct
