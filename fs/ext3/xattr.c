@@ -109,7 +109,6 @@ id|xattr_handler
 op_star
 id|ext3_xattr_handler_map
 (braket
-id|EXT3_XATTR_INDEX_MAX
 )braket
 op_assign
 (brace
@@ -213,8 +212,12 @@ OG
 l_int|0
 op_logical_and
 id|name_index
-op_le
-id|EXT3_XATTR_INDEX_MAX
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|ext3_xattr_handler_map
+)paren
 )paren
 id|handler
 op_assign
