@@ -194,6 +194,11 @@ mdefine_line|#define TI113X_DMA_1&t;&t;&t;0x0098&t;/* 32 bit */
 multiline_comment|/* ExCA IO offset registers */
 DECL|macro|TI113X_IO_OFFSET
 mdefine_line|#define TI113X_IO_OFFSET(map)&t;&t;(0x36+((map)&lt;&lt;1))
+multiline_comment|/* EnE test register */
+DECL|macro|ENE_TEST_C9
+mdefine_line|#define ENE_TEST_C9&t;&t;&t;0xc9&t;/* 8bit */
+DECL|macro|ENE_TEST_C9_TLTENABLE
+mdefine_line|#define ENE_TEST_C9_TLTENABLE&t;&t;0x02
 macro_line|#ifdef CONFIG_CARDBUS
 multiline_comment|/*&n; * Texas Instruments CardBus controller overrides.&n; */
 DECL|macro|ti_sysctl
@@ -206,6 +211,8 @@ DECL|macro|ti_diag
 mdefine_line|#define ti_diag(socket)&t;&t;((socket)-&gt;private[3])
 DECL|macro|ti_mfunc
 mdefine_line|#define ti_mfunc(socket)&t;((socket)-&gt;private[4])
+DECL|macro|ene_test_c9
+mdefine_line|#define ene_test_c9(socket)&t;((socket)-&gt;private[5])
 multiline_comment|/*&n; * These are the TI specific power management handlers.&n; */
 DECL|function|ti_save_state
 r_static
@@ -289,6 +296,27 @@ comma
 id|TI1250_DIAGNOSTIC
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|socket-&gt;dev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_ENE
+)paren
+id|ene_test_c9
+c_func
+(paren
+id|socket
+)paren
+op_assign
+id|config_readb
+c_func
+(paren
+id|socket
+comma
+id|ENE_TEST_C9
+)paren
+suffix:semicolon
 )brace
 DECL|function|ti_restore_state
 r_static
@@ -366,6 +394,27 @@ comma
 id|TI1250_DIAGNOSTIC
 comma
 id|ti_diag
+c_func
+(paren
+id|socket
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|socket-&gt;dev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_ENE
+)paren
+id|config_writeb
+c_func
+(paren
+id|socket
+comma
+id|ENE_TEST_C9
+comma
+id|ene_test_c9
 c_func
 (paren
 id|socket
@@ -1926,6 +1975,42 @@ comma
 id|TI113X_SYSTEM_CONTROL
 comma
 id|val
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * for EnE bridges only: clear testbit TLTEnable. this makes the&n;&t; * RME Hammerfall DSP sound card working.&n;&t; */
+r_if
+c_cond
+(paren
+id|socket-&gt;dev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_ENE
+)paren
+(brace
+id|u8
+id|test_c9
+op_assign
+id|config_readb
+c_func
+(paren
+id|socket
+comma
+id|ENE_TEST_C9
+)paren
+suffix:semicolon
+id|test_c9
+op_and_assign
+op_complement
+id|ENE_TEST_C9_TLTENABLE
+suffix:semicolon
+id|config_writeb
+c_func
+(paren
+id|socket
+comma
+id|ENE_TEST_C9
+comma
+id|test_c9
 )paren
 suffix:semicolon
 )brace
