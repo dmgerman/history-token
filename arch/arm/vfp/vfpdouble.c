@@ -692,6 +692,9 @@ suffix:semicolon
 )brace
 r_return
 id|exceptions
+op_amp
+op_complement
+id|VFP_NAN_FLAG
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Propagate the NaN, setting exceptions if it is signalling.&n; * &squot;n&squot; is always a NaN.  &squot;m&squot; may be a number, NaN or infinity.&n; */
@@ -820,7 +823,7 @@ ques
 c_cond
 id|FPSCR_IOC
 suffix:colon
-l_int|0x100
+id|VFP_NAN_FLAG
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Extended operations&n; */
