@@ -2226,6 +2226,18 @@ id|irq_desc
 op_plus
 id|irq
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|desc-&gt;handler
+op_eq
+op_amp
+id|no_irq_type
+)paren
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
 multiline_comment|/*&n;&t; * Some drivers like serial.c use request_irq() heavily,&n;&t; * so we have to be careful not to interfere with a&n;&t; * running system.&n;&t; */
 r_if
 c_cond
