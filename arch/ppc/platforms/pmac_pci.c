@@ -2735,12 +2735,6 @@ id|macrisc_pci_ops
 suffix:semicolon
 id|hose-&gt;cfg_addr
 op_assign
-(paren
-r_volatile
-r_int
-r_int
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -2796,12 +2790,6 @@ id|chaos_pci_ops
 suffix:semicolon
 id|hose-&gt;cfg_addr
 op_assign
-(paren
-r_volatile
-r_int
-r_int
-op_star
-)paren
 id|ioremap
 c_func
 (paren

@@ -193,6 +193,7 @@ DECL|member|cfg_addr
 r_volatile
 r_int
 r_int
+id|__iomem
 op_star
 id|cfg_addr
 suffix:semicolon
@@ -385,10 +386,14 @@ id|pci_controller
 op_star
 id|hose
 comma
-id|u32
+r_void
+id|__iomem
+op_star
 id|cfg_addr
 comma
-id|u32
+r_void
+id|__iomem
+op_star
 id|cfg_data
 )paren
 suffix:semicolon
