@@ -691,7 +691,6 @@ suffix:semicolon
 id|irq_enter
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_PPC_ISERIES
@@ -859,7 +858,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 r_if
