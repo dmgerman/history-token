@@ -80,7 +80,7 @@ multiline_comment|/*          - Use linux/spinlock.h instead of asm/spinlock.h f
 multiline_comment|/*            2.3.18 and later                                               */
 multiline_comment|/*          - Sync with other changes from the 2.3 kernels                   */
 multiline_comment|/* 4.00.06  - Fix timeout with initial FFDC command                          */
-multiline_comment|/* 4.00.06a - Port to 2.4 (trivial) -- Christoph Hellwig &lt;hch@caldera.de&gt;    */
+multiline_comment|/* 4.00.06a - Port to 2.4 (trivial) -- Christoph Hellwig &lt;hch@infradead.org&gt; */
 multiline_comment|/* 4.10.00  - Add support for ServeRAID 4M/4L                                */
 multiline_comment|/* 4.10.13  - Fix for dynamic unload and proc file system                    */
 multiline_comment|/* 4.20.03  - Rename version to coincide with new release schedules          */

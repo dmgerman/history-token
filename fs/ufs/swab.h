@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/fs/ufs/swab.h&n; *&n; * Copyright (C) 1997, 1998 Francois-Rene Rideau &lt;fare@tunes.org&gt;&n; * Copyright (C) 1998 Jakub Jelinek &lt;jj@ultra.linux.cz&gt;&n; * Copyright (C) 2001 Christoph Hellwig &lt;hch@caldera.de&gt;&n; */
+multiline_comment|/*&n; *  linux/fs/ufs/swab.h&n; *&n; * Copyright (C) 1997, 1998 Francois-Rene Rideau &lt;fare@tunes.org&gt;&n; * Copyright (C) 1998 Jakub Jelinek &lt;jj@ultra.linux.cz&gt;&n; * Copyright (C) 2001 Christoph Hellwig &lt;hch@infradead.org&gt;&n; */
 macro_line|#ifndef _UFS_SWAB_H
 DECL|macro|_UFS_SWAB_H
 mdefine_line|#define _UFS_SWAB_H
