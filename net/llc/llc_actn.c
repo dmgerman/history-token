@@ -4,7 +4,6 @@ macro_line|#include &lt;net/llc_if.h&gt;
 macro_line|#include &lt;net/llc_main.h&gt;
 macro_line|#include &lt;net/llc_evnt.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;
-macro_line|#include &lt;net/llc_mac.h&gt;
 macro_line|#include &quot;llc_output.h&quot;
 DECL|function|llc_station_ac_start_ack_timer
 r_int

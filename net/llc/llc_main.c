@@ -2,6 +2,7 @@ multiline_comment|/*&n; * llc_main.c - This module contains main functions to ma
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;net/llc.h&gt;
 macro_line|#include &lt;net/llc_sap.h&gt;
 macro_line|#include &lt;net/llc_conn.h&gt;
 macro_line|#include &lt;net/llc_main.h&gt;
@@ -14,7 +15,6 @@ macro_line|#include &lt;net/llc_c_ev.h&gt;
 macro_line|#include &lt;net/llc_c_st.h&gt;
 macro_line|#include &lt;net/llc_s_ev.h&gt;
 macro_line|#include &lt;net/llc_s_st.h&gt;
-macro_line|#include &lt;net/llc_mac.h&gt;
 macro_line|#include &lt;net/llc_proc.h&gt;
 multiline_comment|/* static function prototypes */
 r_static
