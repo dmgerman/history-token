@@ -442,16 +442,6 @@ suffix:semicolon
 suffix:semicolon
 r_extern
 r_int
-id|acpi_processor_get_platform_limit
-(paren
-r_struct
-id|acpi_processor
-op_star
-id|pr
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|acpi_processor_register_performance
 (paren
 r_struct
