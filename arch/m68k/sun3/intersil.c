@@ -60,7 +60,7 @@ op_star
 op_amp
 id|intersil_clock-&gt;counter
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -154,7 +154,7 @@ id|intersil_clock-&gt;cmd_reg
 op_assign
 id|START_VAL
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
