@@ -468,8 +468,332 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/nls.h&gt;
-macro_line|#include &lt;linux/msdos_fs_i.h&gt;
-macro_line|#include &lt;linux/msdos_fs_sb.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+DECL|struct|fat_mount_options
+r_struct
+id|fat_mount_options
+(brace
+DECL|member|fs_uid
+id|uid_t
+id|fs_uid
+suffix:semicolon
+DECL|member|fs_gid
+id|gid_t
+id|fs_gid
+suffix:semicolon
+DECL|member|fs_fmask
+r_int
+r_int
+id|fs_fmask
+suffix:semicolon
+DECL|member|fs_dmask
+r_int
+r_int
+id|fs_dmask
+suffix:semicolon
+DECL|member|codepage
+r_int
+r_int
+id|codepage
+suffix:semicolon
+multiline_comment|/* Codepage for shortname conversions */
+DECL|member|iocharset
+r_char
+op_star
+id|iocharset
+suffix:semicolon
+multiline_comment|/* Charset used for filename input/display */
+DECL|member|shortname
+r_int
+r_int
+id|shortname
+suffix:semicolon
+multiline_comment|/* flags for shortname display/create rule */
+DECL|member|name_check
+r_int
+r_char
+id|name_check
+suffix:semicolon
+multiline_comment|/* r = relaxed, n = normal, s = strict */
+DECL|member|quiet
+r_int
+id|quiet
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* set = fake successful chmods and chowns */
+DECL|member|showexec
+id|showexec
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* set = only set x bit for com/exe/bat */
+DECL|member|sys_immutable
+id|sys_immutable
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* set = system files are immutable */
+DECL|member|dotsOK
+id|dotsOK
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* set = hidden and system files are named &squot;.filename&squot; */
+DECL|member|isvfat
+id|isvfat
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* 0=no vfat long filename support, 1=vfat support */
+DECL|member|utf8
+id|utf8
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Use of UTF8 character set (Default) */
+DECL|member|unicode_xlate
+id|unicode_xlate
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* create escape sequences for unhandled Unicode */
+DECL|member|numtail
+id|numtail
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Does first alias have a numeric &squot;~1&squot; type tail? */
+DECL|member|atari
+id|atari
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Use Atari GEMDOS variation of MS-DOS fs */
+DECL|member|nocase
+id|nocase
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Does this need case conversion? 0=need case conversion*/
+)brace
+suffix:semicolon
+DECL|macro|FAT_HASH_BITS
+mdefine_line|#define FAT_HASH_BITS&t;8
+DECL|macro|FAT_HASH_SIZE
+mdefine_line|#define FAT_HASH_SIZE&t;(1UL &lt;&lt; FAT_HASH_BITS)
+DECL|macro|FAT_HASH_MASK
+mdefine_line|#define FAT_HASH_MASK&t;(FAT_HASH_SIZE-1)
+multiline_comment|/*&n; * MS-DOS file system in-core superblock data&n; */
+DECL|struct|msdos_sb_info
+r_struct
+id|msdos_sb_info
+(brace
+DECL|member|sec_per_clus
+r_int
+r_int
+id|sec_per_clus
+suffix:semicolon
+multiline_comment|/* sectors/cluster */
+DECL|member|cluster_bits
+r_int
+r_int
+id|cluster_bits
+suffix:semicolon
+multiline_comment|/* log2(cluster_size) */
+DECL|member|cluster_size
+r_int
+r_int
+id|cluster_size
+suffix:semicolon
+multiline_comment|/* cluster size */
+DECL|member|fats
+DECL|member|fat_bits
+r_int
+r_char
+id|fats
+comma
+id|fat_bits
+suffix:semicolon
+multiline_comment|/* number of FATs, FAT bits (12 or 16) */
+DECL|member|fat_start
+r_int
+r_int
+id|fat_start
+suffix:semicolon
+DECL|member|fat_length
+r_int
+r_int
+id|fat_length
+suffix:semicolon
+multiline_comment|/* FAT start &amp; length (sec.) */
+DECL|member|dir_start
+r_int
+r_int
+id|dir_start
+suffix:semicolon
+DECL|member|dir_entries
+r_int
+r_int
+id|dir_entries
+suffix:semicolon
+multiline_comment|/* root dir start &amp; entries */
+DECL|member|data_start
+r_int
+r_int
+id|data_start
+suffix:semicolon
+multiline_comment|/* first data sector */
+DECL|member|clusters
+r_int
+r_int
+id|clusters
+suffix:semicolon
+multiline_comment|/* number of clusters */
+DECL|member|root_cluster
+r_int
+r_int
+id|root_cluster
+suffix:semicolon
+multiline_comment|/* first cluster of the root directory */
+DECL|member|fsinfo_sector
+r_int
+r_int
+id|fsinfo_sector
+suffix:semicolon
+multiline_comment|/* sector number of FAT32 fsinfo */
+DECL|member|fat_lock
+r_struct
+id|semaphore
+id|fat_lock
+suffix:semicolon
+DECL|member|prev_free
+r_int
+id|prev_free
+suffix:semicolon
+multiline_comment|/* previously allocated cluster number */
+DECL|member|free_clusters
+r_int
+id|free_clusters
+suffix:semicolon
+multiline_comment|/* -1 if undefined */
+DECL|member|options
+r_struct
+id|fat_mount_options
+id|options
+suffix:semicolon
+DECL|member|nls_disk
+r_struct
+id|nls_table
+op_star
+id|nls_disk
+suffix:semicolon
+multiline_comment|/* Codepage used on disk */
+DECL|member|nls_io
+r_struct
+id|nls_table
+op_star
+id|nls_io
+suffix:semicolon
+multiline_comment|/* Charset used for input and display */
+DECL|member|dir_ops
+r_void
+op_star
+id|dir_ops
+suffix:semicolon
+multiline_comment|/* Opaque; default directory operations */
+DECL|member|dir_per_block
+r_int
+id|dir_per_block
+suffix:semicolon
+multiline_comment|/* dir entries per block */
+DECL|member|dir_per_block_bits
+r_int
+id|dir_per_block_bits
+suffix:semicolon
+multiline_comment|/* log2(dir_per_block) */
+DECL|member|inode_hash_lock
+id|spinlock_t
+id|inode_hash_lock
+suffix:semicolon
+DECL|member|inode_hashtable
+r_struct
+id|hlist_head
+id|inode_hashtable
+(braket
+id|FAT_HASH_SIZE
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|FAT_CACHE_VALID
+mdefine_line|#define FAT_CACHE_VALID&t;0&t;/* special case for valid cache */
+multiline_comment|/*&n; * MS-DOS file system inode data in memory&n; */
+DECL|struct|msdos_inode_info
+r_struct
+id|msdos_inode_info
+(brace
+DECL|member|cache_lru_lock
+id|spinlock_t
+id|cache_lru_lock
+suffix:semicolon
+DECL|member|cache_lru
+r_struct
+id|list_head
+id|cache_lru
+suffix:semicolon
+DECL|member|nr_caches
+r_int
+id|nr_caches
+suffix:semicolon
+multiline_comment|/* for avoiding the race between fat_free() and fat_get_cluster() */
+DECL|member|cache_valid_id
+r_int
+r_int
+id|cache_valid_id
+suffix:semicolon
+DECL|member|mmu_private
+id|loff_t
+id|mmu_private
+suffix:semicolon
+DECL|member|i_start
+r_int
+id|i_start
+suffix:semicolon
+multiline_comment|/* first cluster or 0 */
+DECL|member|i_logstart
+r_int
+id|i_logstart
+suffix:semicolon
+multiline_comment|/* logical first cluster */
+DECL|member|i_attrs
+r_int
+id|i_attrs
+suffix:semicolon
+multiline_comment|/* unused attribute bits */
+DECL|member|i_ctime_ms
+r_int
+id|i_ctime_ms
+suffix:semicolon
+multiline_comment|/* unused change time in milliseconds */
+DECL|member|i_pos
+id|loff_t
+id|i_pos
+suffix:semicolon
+multiline_comment|/* on-disk position of directory entry or 0 */
+DECL|member|i_fat_hash
+r_struct
+id|hlist_node
+id|i_fat_hash
+suffix:semicolon
+multiline_comment|/* hash by i_location */
+DECL|member|vfs_inode
+r_struct
+id|inode
+id|vfs_inode
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|function|MSDOS_SB
 r_static
 r_inline
