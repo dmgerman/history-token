@@ -8,6 +8,8 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/spitfire.h&gt;
 DECL|variable|modvmlist
 r_static
 r_struct
@@ -1463,6 +1465,59 @@ op_star
 id|me
 )paren
 (brace
+multiline_comment|/* Cheetah&squot;s I-cache is fully coherent.  */
+r_if
+c_cond
+(paren
+id|tlb_type
+op_eq
+id|spitfire
+)paren
+(brace
+r_int
+r_int
+id|va
+suffix:semicolon
+id|flushw_all
+c_func
+(paren
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|va
+op_assign
+l_int|0
+suffix:semicolon
+id|va
+OL
+(paren
+id|PAGE_SIZE
+op_lshift
+l_int|1
+)paren
+suffix:semicolon
+id|va
+op_add_assign
+l_int|32
+)paren
+id|spitfire_put_icache_tag
+c_func
+(paren
+id|va
+comma
+l_int|0x0
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;flush %g6&quot;
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

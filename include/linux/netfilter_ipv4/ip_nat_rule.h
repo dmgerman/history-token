@@ -60,6 +60,27 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|alloc_null_binding
+c_func
+(paren
+r_struct
+id|ip_conntrack
+op_star
+id|conntrack
+comma
+r_struct
+id|ip_nat_info
+op_star
+id|info
+comma
+r_int
+r_int
+id|hooknum
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* _IP_NAT_RULE_H */
 eof

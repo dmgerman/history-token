@@ -11,7 +11,7 @@ r_static
 r_int
 id|rto_timer_min
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 DECL|variable|rto_timer_max
 r_static

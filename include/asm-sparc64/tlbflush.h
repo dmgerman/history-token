@@ -172,8 +172,6 @@ r_int
 id|page
 )paren
 suffix:semicolon
-DECL|macro|flush_cache_all
-mdefine_line|#define flush_cache_all()&t;smp_flush_cache_all()
 DECL|macro|flush_tlb_all
 mdefine_line|#define flush_tlb_all()&t;&t;smp_flush_tlb_all()
 DECL|macro|flush_tlb_mm
