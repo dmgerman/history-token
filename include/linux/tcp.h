@@ -607,6 +607,14 @@ DECL|member|tcpi_reordering
 id|__u32
 id|tcpi_reordering
 suffix:semicolon
+DECL|member|tcpi_rcv_rtt
+id|__u32
+id|tcpi_rcv_rtt
+suffix:semicolon
+DECL|member|tcpi_rcv_space
+id|__u32
+id|tcpi_rcv_space
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
