@@ -373,6 +373,8 @@ suffix:semicolon
 id|req-&gt;iomap_base
 op_assign
 id|port
+op_plus
+id|offset
 suffix:semicolon
 id|req-&gt;iomem_base
 op_assign
