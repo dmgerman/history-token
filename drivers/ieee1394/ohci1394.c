@@ -86,7 +86,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1023 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1045 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 DECL|variable|phys_dma
@@ -5957,7 +5957,11 @@ id|recv-&gt;block_dma
 suffix:semicolon
 id|cmd-&gt;control
 op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 id|DMA_CTL_WAIT
+)paren
 suffix:semicolon
 multiline_comment|/* match sync field */
 id|contextMatch
@@ -6855,7 +6859,11 @@ multiline_comment|/* check the DMA descriptor for new writes to xferStatus */
 id|u16
 id|xferstatus
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|im-&gt;status
+)paren
 op_rshift
 l_int|16
 suffix:semicolon
@@ -6863,7 +6871,11 @@ multiline_comment|/* rescount is the number of bytes *remaining to be written* i
 id|u16
 id|rescount
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|im-&gt;status
+)paren
 op_amp
 l_int|0xFFFF
 suffix:semicolon

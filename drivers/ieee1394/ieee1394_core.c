@@ -5347,6 +5347,13 @@ c_func
 id|hpsb_make_writepacket
 )paren
 suffix:semicolon
+DECL|variable|hpsb_make_streampacket
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpsb_make_streampacket
+)paren
+suffix:semicolon
 DECL|variable|hpsb_make_lockpacket
 id|EXPORT_SYMBOL
 c_func
