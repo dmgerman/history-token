@@ -94,6 +94,8 @@ DECL|macro|PT_TRACE_EXIT
 mdefine_line|#define PT_TRACE_EXIT&t;0x00000200
 DECL|macro|PT_TRACE_MASK
 mdefine_line|#define PT_TRACE_MASK&t;0x000003f4
+DECL|macro|PT_SINGLESTEP
+mdefine_line|#define PT_SINGLESTEP&t;0x80000000&t;/* single stepping (used on ARM) */
 macro_line|#include &lt;linux/compiler.h&gt;&t;&t;/* For unlikely.  */
 macro_line|#include &lt;linux/sched.h&gt;&t;&t;/* For struct task_struct.  */
 r_extern
