@@ -313,7 +313,7 @@ macro_line|#endif
 id|die
 c_func
 (paren
-l_string|&quot;Exception in kernel mode&bslash;n&quot;
+l_string|&quot;Exception in kernel mode&quot;
 comma
 id|regs
 comma
