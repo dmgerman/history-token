@@ -87,6 +87,11 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|ia64_iobase
+suffix:semicolon
 DECL|variable|cpucount
 r_int
 id|cpucount
