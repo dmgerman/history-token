@@ -459,6 +459,15 @@ r_struct
 id|fb_image
 id|image
 suffix:semicolon
+id|u16
+id|c
+op_assign
+id|scr_readw
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
 id|image.fg_color
 op_assign
 id|attr_fgcol
@@ -466,8 +475,7 @@ c_func
 (paren
 id|p
 comma
-op_star
-id|s
+id|c
 )paren
 suffix:semicolon
 id|image.bg_color
@@ -477,8 +485,7 @@ c_func
 (paren
 id|p
 comma
-op_star
-id|s
+id|c
 )paren
 suffix:semicolon
 id|image.dx

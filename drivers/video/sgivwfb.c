@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 DECL|macro|INCLUDE_TIMING_TABLE_DATA
 mdefine_line|#define INCLUDE_TIMING_TABLE_DATA
 DECL|macro|DBE_REG_BASE
@@ -235,13 +234,6 @@ op_assign
 id|FB_VMODE_NONINTERLACED
 )brace
 suffix:semicolon
-multiline_comment|/* console related variables */
-DECL|variable|disp
-r_static
-r_struct
-id|display
-id|disp
-suffix:semicolon
 multiline_comment|/*&n; *  Interface used by the world&n; */
 r_int
 id|sgivwfb_init
@@ -343,21 +335,6 @@ dot
 id|owner
 op_assign
 id|THIS_MODULE
-comma
-dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
 comma
 dot
 id|fb_check_var
@@ -864,11 +841,11 @@ id|FB_VMODE_YWRAP
 suffix:semicolon
 id|var-&gt;xoffset
 op_assign
-id|display-&gt;var.xoffset
+id|info-&gt;var.xoffset
 suffix:semicolon
 id|var-&gt;yoffset
 op_assign
-id|display-&gt;var.yoffset
+id|info-&gt;var.yoffset
 suffix:semicolon
 )brace
 multiline_comment|/* XXX FIXME - forcing var&squot;s */
@@ -3216,18 +3193,6 @@ id|sgivwfb_fix.ypanstep
 op_assign
 id|ypan
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|sgivwfb_fix.id
-)paren
-suffix:semicolon
-id|fb_info.changevar
-op_assign
-l_int|NULL
-suffix:semicolon
 id|fb_info.node
 op_assign
 id|NODEV
@@ -3253,24 +3218,6 @@ id|fb_info.par
 op_assign
 op_amp
 id|default_par
-suffix:semicolon
-id|fb_info.disp
-op_assign
-op_amp
-id|disp
-suffix:semicolon
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|fb_info.switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|fb_info.updatevar
-op_assign
-id|gen_update_var
 suffix:semicolon
 id|fb_info.flags
 op_assign
@@ -3308,18 +3255,15 @@ r_goto
 id|fail_ioremap_fbmem
 suffix:semicolon
 )brace
-multiline_comment|/* turn on default video mode */
-id|gen_set_var
+id|fb_alloc_cmap
 c_func
 (paren
 op_amp
-id|fb_info-&gt;var
+id|fb_info.cmap
 comma
-op_minus
-l_int|1
+l_int|256
 comma
-op_amp
-id|fb_info
+l_int|0
 )paren
 suffix:semicolon
 r_if
