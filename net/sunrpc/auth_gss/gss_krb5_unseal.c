@@ -115,8 +115,6 @@ comma
 op_amp
 id|ptr
 comma
-id|toktype
-comma
 id|read_token-&gt;len
 )paren
 )paren

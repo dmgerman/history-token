@@ -2454,6 +2454,9 @@ r_int
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|nfs_access_entry
+suffix:semicolon
 multiline_comment|/*&n; * RPC procedure vector for NFSv2/NFSv3 demuxing&n; */
 DECL|struct|nfs_rpc_ops
 r_struct
@@ -2568,10 +2571,8 @@ id|inode
 op_star
 comma
 r_struct
-id|rpc_cred
+id|nfs_access_entry
 op_star
-comma
-r_int
 )paren
 suffix:semicolon
 DECL|member|readlink

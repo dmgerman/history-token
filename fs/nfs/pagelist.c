@@ -10,13 +10,6 @@ macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_mount.h&gt;
 DECL|macro|NFS_PARANOIA
 mdefine_line|#define NFS_PARANOIA 1
-multiline_comment|/*&n; * Spinlock&n; */
-DECL|variable|nfs_wreq_lock
-id|spinlock_t
-id|nfs_wreq_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|variable|nfs_page_cachep
 r_static
 id|kmem_cache_t
@@ -253,9 +246,14 @@ id|req-&gt;wb_inode
 op_assign
 id|inode
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
 id|req-&gt;wb_count
-op_assign
+comma
 l_int|1
+)paren
 suffix:semicolon
 id|server-&gt;rpc_ops
 op_member_access_from_pointer
@@ -357,36 +355,18 @@ op_star
 id|req
 )paren
 (brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|nfs_wreq_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_decrement
+op_logical_neg
+id|atomic_dec_and_test
+c_func
+(paren
+op_amp
 id|req-&gt;wb_count
 )paren
-(brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|nfs_wreq_lock
 )paren
-suffix:semicolon
 r_return
-suffix:semicolon
-)brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|nfs_wreq_lock
-)paren
 suffix:semicolon
 macro_line|#ifdef NFS_PARANOIA
 id|BUG_ON
@@ -716,7 +696,7 @@ r_return
 id|npages
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * nfs_scan_list - Scan a list for matching requests&n; * @head: One of the NFS inode request lists&n; * @dst: Destination list&n; * @idx_start: lower bound of page-&gt;index to scan&n; * @npages: idx_start + npages sets the upper bound to scan.&n; *&n; * Moves elements from one of the inode request lists.&n; * If the number of requests is set to 0, the entire address_space&n; * starting at index idx_start, is scanned.&n; * The requests are *not* checked to ensure that they form a contiguous set.&n; * You must be holding the nfs_wreq_lock when calling this function&n; */
+multiline_comment|/**&n; * nfs_scan_list - Scan a list for matching requests&n; * @head: One of the NFS inode request lists&n; * @dst: Destination list&n; * @idx_start: lower bound of page-&gt;index to scan&n; * @npages: idx_start + npages sets the upper bound to scan.&n; *&n; * Moves elements from one of the inode request lists.&n; * If the number of requests is set to 0, the entire address_space&n; * starting at index idx_start, is scanned.&n; * The requests are *not* checked to ensure that they form a contiguous set.&n; * You must be holding the inode&squot;s req_lock when calling this function&n; */
 r_int
 DECL|function|nfs_scan_list
 id|nfs_scan_list
