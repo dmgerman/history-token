@@ -1733,6 +1733,15 @@ l_string|&quot;PCI IO Primary&quot;
 suffix:semicolon
 id|res
 (braket
+l_int|0
+)braket
+dot
+id|flags
+op_assign
+id|IORESOURCE_IO
+suffix:semicolon
+id|res
+(braket
 l_int|1
 )braket
 dot
@@ -1759,6 +1768,15 @@ dot
 id|name
 op_assign
 l_string|&quot;PCI Memory Primary&quot;
+suffix:semicolon
+id|res
+(braket
+l_int|1
+)braket
+dot
+id|flags
+op_assign
+id|IORESOURCE_MEM
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1798,6 +1816,15 @@ l_string|&quot;PCI IO Secondary&quot;
 suffix:semicolon
 id|res
 (braket
+l_int|0
+)braket
+dot
+id|flags
+op_assign
+id|IORESOURCE_IO
+suffix:semicolon
+id|res
+(braket
 l_int|1
 )braket
 dot
@@ -1824,6 +1851,15 @@ dot
 id|name
 op_assign
 l_string|&quot;PCI Memory Secondary&quot;
+suffix:semicolon
+id|res
+(braket
+l_int|1
+)braket
+dot
+id|flags
+op_assign
+id|IORESOURCE_MEM
 suffix:semicolon
 r_break
 suffix:semicolon

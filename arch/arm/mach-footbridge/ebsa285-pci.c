@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 DECL|variable|__initdata
 r_static
 r_int
@@ -95,6 +96,7 @@ l_int|3
 suffix:semicolon
 )brace
 DECL|variable|__initdata
+r_static
 r_struct
 id|hw_pci
 id|ebsa285_pci
@@ -130,5 +132,41 @@ suffix:colon
 id|dc21285_postinit
 comma
 )brace
+suffix:semicolon
+DECL|function|ebsa285_init_pci
+r_static
+r_int
+id|__init
+id|ebsa285_init_pci
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|machine_is_ebsa285
+c_func
+(paren
+)paren
+)paren
+id|pci_common_init
+c_func
+(paren
+op_amp
+id|ebsa285_pci
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|ebsa285_init_pci
+id|subsys_initcall
+c_func
+(paren
+id|ebsa285_init_pci
+)paren
 suffix:semicolon
 eof
