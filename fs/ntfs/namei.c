@@ -1353,7 +1353,7 @@ c_func
 (paren
 id|attr-&gt;data.resident.value_length
 )paren
-op_ge
+OG
 (paren
 id|u8
 op_star
