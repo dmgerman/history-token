@@ -1,12 +1,9 @@
 multiline_comment|/*&n; * Copyright (C) 2004 IBM Corporation&n; *&n; * Implements the generic device dma API for ppc64. Handles&n; * the pci and vio busses&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 multiline_comment|/* Include the busses we support */
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#ifdef CONFIG_PPC_PSERIES
 macro_line|#include &lt;asm/vio.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/bug.h&gt;
 DECL|function|dma_supported
@@ -44,7 +41,6 @@ comma
 id|mask
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -66,7 +62,6 @@ comma
 id|mask
 )paren
 suffix:semicolon
-macro_line|#endif
 id|BUG
 c_func
 (paren
@@ -118,7 +113,6 @@ comma
 id|dma_mask
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -140,7 +134,6 @@ comma
 id|dma_mask
 )paren
 suffix:semicolon
-macro_line|#endif
 id|BUG
 c_func
 (paren
@@ -202,7 +195,6 @@ comma
 id|dma_handle
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -226,7 +218,6 @@ comma
 id|dma_handle
 )paren
 suffix:semicolon
-macro_line|#endif
 id|BUG
 c_func
 (paren
@@ -288,7 +279,6 @@ comma
 id|dma_handle
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
 r_else
 r_if
 c_cond
@@ -314,7 +304,6 @@ comma
 id|dma_handle
 )paren
 suffix:semicolon
-macro_line|#endif
 r_else
 id|BUG
 c_func
@@ -379,7 +368,6 @@ r_int
 id|direction
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -405,7 +393,6 @@ comma
 id|direction
 )paren
 suffix:semicolon
-macro_line|#endif
 id|BUG
 c_func
 (paren
@@ -473,7 +460,6 @@ r_int
 id|direction
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
 r_else
 r_if
 c_cond
@@ -499,7 +485,6 @@ comma
 id|direction
 )paren
 suffix:semicolon
-macro_line|#endif
 r_else
 id|BUG
 c_func
@@ -571,7 +556,6 @@ r_int
 id|direction
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -599,7 +583,6 @@ comma
 id|direction
 )paren
 suffix:semicolon
-macro_line|#endif
 id|BUG
 c_func
 (paren
@@ -667,7 +650,6 @@ r_int
 id|direction
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
 r_else
 r_if
 c_cond
@@ -693,7 +675,6 @@ comma
 id|direction
 )paren
 suffix:semicolon
-macro_line|#endif
 r_else
 id|BUG
 c_func
@@ -759,7 +740,6 @@ r_int
 id|direction
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -785,7 +765,6 @@ comma
 id|direction
 )paren
 suffix:semicolon
-macro_line|#endif
 id|BUG
 c_func
 (paren
@@ -852,7 +831,6 @@ r_int
 id|direction
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
 r_else
 r_if
 c_cond
@@ -878,7 +856,6 @@ comma
 id|direction
 )paren
 suffix:semicolon
-macro_line|#endif
 r_else
 id|BUG
 c_func
@@ -941,7 +918,6 @@ r_int
 id|direction
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
 r_else
 r_if
 c_cond
@@ -967,7 +943,6 @@ comma
 id|direction
 )paren
 suffix:semicolon
-macro_line|#endif
 r_else
 id|BUG
 c_func
@@ -1032,7 +1007,6 @@ r_int
 id|direction
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
 r_else
 r_if
 c_cond
@@ -1058,7 +1032,6 @@ comma
 id|direction
 )paren
 suffix:semicolon
-macro_line|#endif
 r_else
 id|BUG
 c_func
