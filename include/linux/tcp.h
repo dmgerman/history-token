@@ -939,18 +939,6 @@ op_star
 id|send_head
 suffix:semicolon
 multiline_comment|/* Front of stuff to transmit&t;&t;&t;*/
-DECL|member|sndmsg_page
-r_struct
-id|page
-op_star
-id|sndmsg_page
-suffix:semicolon
-multiline_comment|/* Cached page for sendmsg&t;&t;&t;*/
-DECL|member|sndmsg_off
-id|u32
-id|sndmsg_off
-suffix:semicolon
-multiline_comment|/* Cached offset for sendmsg&t;&t;&t;*/
 DECL|member|rcv_wnd
 id|__u32
 id|rcv_wnd

@@ -877,6 +877,11 @@ comma
 r_int
 r_int
 id|fraglen
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
 )paren
 (brace
 r_struct
@@ -891,6 +896,11 @@ op_star
 )paren
 id|p
 suffix:semicolon
+id|skb-&gt;ip_summed
+op_assign
+id|CHECKSUM_NONE
+suffix:semicolon
+multiline_comment|/* Is there any good place to set it? */
 r_return
 id|memcpy_fromiovecend
 c_func
@@ -928,6 +938,11 @@ comma
 r_int
 r_int
 id|fraglen
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
 )paren
 (brace
 r_struct
@@ -942,6 +957,11 @@ op_star
 )paren
 id|p
 suffix:semicolon
+id|skb-&gt;ip_summed
+op_assign
+id|CHECKSUM_NONE
+suffix:semicolon
+multiline_comment|/* Is there any good place to set it? */
 r_if
 c_cond
 (paren

@@ -2,6 +2,9 @@ multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol sui
 macro_line|#ifndef _LINUX_UDP_H
 DECL|macro|_LINUX_UDP_H
 mdefine_line|#define _LINUX_UDP_H
+macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;linux/ip.h&gt;
 DECL|struct|udphdr
 r_struct
 id|udphdr
@@ -24,5 +27,83 @@ id|check
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* UDP socket options */
+DECL|macro|UDP_CORK
+mdefine_line|#define UDP_CORK&t;1&t;/* Never send partially complete segments */
+DECL|struct|udp_opt
+r_struct
+id|udp_opt
+(brace
+DECL|member|pending
+r_int
+id|pending
+suffix:semicolon
+multiline_comment|/* Any pending frames ? */
+DECL|member|corkflag
+r_int
+r_int
+id|corkflag
+suffix:semicolon
+multiline_comment|/* Cork is required */
+multiline_comment|/*&n;&t; * Following members retains the infomation to create a UDP header&n;&t; * when the socket is uncorked.&n;&t; */
+DECL|member|saddr
+id|u32
+id|saddr
+suffix:semicolon
+multiline_comment|/* source address */
+DECL|member|daddr
+id|u32
+id|daddr
+suffix:semicolon
+multiline_comment|/* destination address */
+DECL|member|sport
+id|__u16
+id|sport
+suffix:semicolon
+multiline_comment|/* source port */
+DECL|member|dport
+id|__u16
+id|dport
+suffix:semicolon
+multiline_comment|/* destination port */
+DECL|member|len
+id|__u16
+id|len
+suffix:semicolon
+multiline_comment|/* total length of pending frames */
+)brace
+suffix:semicolon
+multiline_comment|/* WARNING: don&squot;t change the layout of the members in udp_sock! */
+DECL|struct|udp_sock
+r_struct
+id|udp_sock
+(brace
+DECL|member|sk
+r_struct
+id|sock
+id|sk
+suffix:semicolon
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+DECL|member|pinet6
+r_struct
+id|ipv6_pinfo
+op_star
+id|pinet6
+suffix:semicolon
+macro_line|#endif
+DECL|member|inet
+r_struct
+id|inet_opt
+id|inet
+suffix:semicolon
+DECL|member|udp
+r_struct
+id|udp_opt
+id|udp
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|udp_sk
+mdefine_line|#define udp_sk(__sk) (&amp;((struct udp_sock *)__sk)-&gt;udp)
 macro_line|#endif&t;/* _LINUX_UDP_H */
 eof
