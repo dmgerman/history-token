@@ -895,7 +895,7 @@ c_func
 id|iter
 )paren
 suffix:semicolon
-multiline_comment|/* We need to iterate through the previous symbols. */
+multiline_comment|/* We need to iterate through the previous symbols: can be slow */
 r_for
 c_loop
 (paren
@@ -907,12 +907,19 @@ suffix:semicolon
 id|iter-&gt;pos
 op_increment
 )paren
+(brace
 id|get_ksymbol_core
 c_func
 (paren
 id|iter
 )paren
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|1
 suffix:semicolon
@@ -1347,7 +1354,6 @@ id|proc_dir_entry
 op_star
 id|entry
 suffix:semicolon
-multiline_comment|/* root-only: could chew up lots of cpu by read, seek back, read... */
 id|entry
 op_assign
 id|create_proc_entry
@@ -1355,7 +1361,7 @@ c_func
 (paren
 l_string|&quot;kallsyms&quot;
 comma
-l_int|0400
+l_int|0444
 comma
 l_int|NULL
 )paren
