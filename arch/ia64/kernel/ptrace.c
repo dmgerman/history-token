@@ -1959,7 +1959,7 @@ id|e
 multiline_comment|/* oops, can&squot;t collect more: finish at least what we collected so far... */
 r_return
 suffix:semicolon
-id|task_lock
+id|get_task_struct
 c_func
 (paren
 id|p
@@ -2012,7 +2012,7 @@ comma
 id|make_writable
 )paren
 suffix:semicolon
-id|task_unlock
+id|put_task_struct
 c_func
 (paren
 id|list-&gt;task

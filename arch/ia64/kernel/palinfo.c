@@ -146,7 +146,6 @@ initialization_block
 suffix:semicolon
 DECL|macro|RSE_HINTS_COUNT
 mdefine_line|#define RSE_HINTS_COUNT (sizeof(rse_hints)/sizeof(const char *))
-multiline_comment|/*&n; * The current revision of the Volume 2 (July 2000) of&n; * IA-64 Architecture Software Developer&squot;s Manual is wrong.&n; * Table 4-10 has invalid information concerning the ma field:&n; * Correct table is:&n; *      bit 0 - 001 - UC&n; *      bit 4 - 100 - UC&n; *      bit 5 - 101 - UCE&n; *      bit 6 - 110 - WC&n; *      bit 7 - 111 - NatPage&n; */
 DECL|variable|mem_attrib
 r_static
 r_const
@@ -1078,6 +1077,11 @@ suffix:semicolon
 id|ia64_ptce_info_t
 id|ptce
 suffix:semicolon
+r_const
+r_char
+op_star
+id|sep
+suffix:semicolon
 r_int
 id|i
 comma
@@ -1176,16 +1180,63 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Supported memory attributes    : %s&bslash;n&quot;
+l_string|&quot;Supported memory attributes    : &quot;
+)paren
+suffix:semicolon
+id|sep
+op_assign
+l_string|&quot;&quot;
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|8
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|attrib
+op_amp
+(paren
+l_int|1
+op_lshift
+id|i
+)paren
+)paren
+(brace
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;%s%s&bslash;n&quot;
+comma
+id|sep
 comma
 id|mem_attrib
 (braket
-id|attrib
-op_amp
-l_int|0x7
+id|i
 )braket
 )paren
 suffix:semicolon
+id|sep
+op_assign
+l_string|&quot;, &quot;
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
