@@ -32,15 +32,10 @@ l_string|&quot;a&quot;
 singleline_comment|// declare section &amp; section attributes
 dot
 id|previous
-macro_line|#if __GNUC__ &gt;= 3
 DECL|macro|EX
 macro_line|# define EX(y,x...)&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_table&quot;, 99f-., y-.;&t;&bslash;&n;  [99:]&t;x
 DECL|macro|EXCLR
 macro_line|# define EXCLR(y,x...)&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_table&quot;, 99f-., y-.+4;&t;&bslash;&n;  [99:]&t;x
-macro_line|#else
-macro_line|# define EX(y,x...)&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_table&quot;, 99f-., y-.;&t;&bslash;&n;  99:&t;x
-macro_line|# define EXCLR(y,x...)&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_table&quot;, 99f-., y-.+4;&t;&bslash;&n;  99:&t;x
-macro_line|#endif
 multiline_comment|/*&n; * For now, we always put in the McKinley E9 workaround.  On CPUs that don&squot;t need it,&n; * we&squot;ll patch out the work-around bundles with NOPs, so their impact is minimal.&n; */
 DECL|macro|DO_MCKINLEY_E9_WORKAROUND
 mdefine_line|#define DO_MCKINLEY_E9_WORKAROUND
