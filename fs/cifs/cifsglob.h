@@ -526,7 +526,7 @@ r_int
 r_int
 id|uid
 suffix:semicolon
-multiline_comment|/* allows you to find which FileInfo structure */
+multiline_comment|/* allows finding which FileInfo structure */
 DECL|member|pid
 id|__u32
 id|pid
@@ -561,6 +561,12 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* file is marked to close */
+DECL|member|emptyDir
+r_int
+id|emptyDir
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|search_resume_name
 r_char
 op_star

@@ -5206,18 +5206,46 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|cifsFile
+op_assign
+(paren
+r_struct
+id|cifsFileInfo
+op_star
+)paren
+id|file-&gt;private_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifsFile-&gt;endOfSearch
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cifsFile-&gt;emptyDir
+)paren
+(brace
 id|cFYI
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;Search rewinding on %s&quot;
-comma
-id|full_path
+l_string|&quot;End of search, empty dir&quot;
 )paren
 )paren
 suffix:semicolon
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+r_else
 id|CIFSFindClose
 c_func
 (paren
@@ -5938,7 +5966,7 @@ id|pfindData-&gt;NextEntryOffset
 )paren
 suffix:semicolon
 multiline_comment|/* BB also should check to make sure that pointer is not beyond the end of the SMB */
-multiline_comment|/* if(pfindData &gt; lastFindData) rc = -EIOl; break; */
+multiline_comment|/* if(pfindData &gt; lastFindData) rc = -EIO; break; */
 )brace
 multiline_comment|/* end for loop */
 r_if
@@ -5957,6 +5985,19 @@ id|cifsFile-&gt;endOfSearch
 op_assign
 id|TRUE
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|findParms.SearchCount
+op_eq
+l_int|2
+)paren
+(brace
+id|cifsFile-&gt;emptyDir
+op_assign
+id|TRUE
+suffix:semicolon
+)brace
 )brace
 )brace
 r_else
