@@ -182,6 +182,13 @@ op_assign
 id|host-&gt;max_host_blocked
 suffix:semicolon
 r_else
+r_if
+c_cond
+(paren
+id|reason
+op_eq
+id|SCSI_MLQUEUE_DEVICE_BUSY
+)paren
 id|device-&gt;device_blocked
 op_assign
 id|device-&gt;max_device_blocked
