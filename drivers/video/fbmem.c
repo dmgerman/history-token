@@ -30,9 +30,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
-macro_line|#include &quot;console/fbcon.h&quot;
-macro_line|#endif
 multiline_comment|/*&n;     *  Frame buffer device initialization and setup routines&n;     */
 r_extern
 r_int
@@ -6028,15 +6025,17 @@ r_struct
 id|fb_fix_screeninfo
 id|fix
 suffix:semicolon
-macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 r_struct
 id|fb_con2fbmap
 id|con2fb
 suffix:semicolon
-macro_line|#endif
 r_struct
 id|fb_cmap_user
 id|cmap
+suffix:semicolon
+r_struct
+id|fb_event
+id|event
 suffix:semicolon
 r_void
 id|__user
@@ -6377,7 +6376,6 @@ suffix:semicolon
 r_return
 id|i
 suffix:semicolon
-macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 r_case
 id|FBIOGET_CON2FBMAP
 suffix:colon
@@ -6415,12 +6413,29 @@ id|EINVAL
 suffix:semicolon
 id|con2fb.framebuffer
 op_assign
-id|con2fb_map
-(braket
-id|con2fb.console
 op_minus
 l_int|1
-)braket
+suffix:semicolon
+id|event.info
+op_assign
+id|info
+suffix:semicolon
+id|event.data
+op_assign
+op_amp
+id|con2fb
+suffix:semicolon
+id|notifier_call_chain
+c_func
+(paren
+op_amp
+id|fb_notifier_list
+comma
+id|FB_EVENT_GET_CONSOLE_MAP
+comma
+op_amp
+id|event
+)paren
 suffix:semicolon
 r_return
 id|copy_to_user
@@ -6534,22 +6549,34 @@ id|con2fb.console
 OL
 id|MAX_NR_CONSOLES
 )paren
+(brace
+id|event.info
+op_assign
+id|info
+suffix:semicolon
+id|event.data
+op_assign
+op_amp
+id|con2fb
+suffix:semicolon
 r_return
-id|set_con2fb_map
+id|notifier_call_chain
 c_func
 (paren
-id|con2fb.console
-op_minus
-l_int|1
+op_amp
+id|fb_notifier_list
 comma
-id|con2fb.framebuffer
+id|FB_EVENT_SET_CONSOLE_MAP
+comma
+op_amp
+id|event
 )paren
 suffix:semicolon
+)brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_FRAMEBUFFER_CONSOLE */
 r_case
 id|FBIOBLANK
 suffix:colon
@@ -7314,6 +7341,10 @@ id|class_device
 op_star
 id|c
 suffix:semicolon
+r_struct
+id|fb_event
+id|event
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7582,6 +7613,22 @@ comma
 l_string|&quot;fb/%d&quot;
 comma
 id|i
+)paren
+suffix:semicolon
+id|event.info
+op_assign
+id|fb_info
+suffix:semicolon
+id|notifier_call_chain
+c_func
+(paren
+op_amp
+id|fb_notifier_list
+comma
+id|FB_EVENT_FB_REGISTERED
+comma
+op_amp
+id|event
 )paren
 suffix:semicolon
 r_return
