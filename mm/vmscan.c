@@ -83,6 +83,20 @@ id|current-&gt;flags
 op_or_assign
 id|PF_RADIX_TREE
 suffix:semicolon
+id|ClearPageUptodate
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+multiline_comment|/* why? */
+id|ClearPageReferenced
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+multiline_comment|/* why? */
 id|ret
 op_assign
 id|add_to_swap_cache
