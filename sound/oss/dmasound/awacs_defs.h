@@ -138,21 +138,25 @@ mdefine_line|#define MASK_GAINRIGHT&t;(0xf)&t;&t;/* Gain Right Mask */
 DECL|macro|MASK_GAINLEFT
 mdefine_line|#define MASK_GAINLEFT&t;(0xf &lt;&lt; 4)&t;/* Gain Left Mask */
 DECL|macro|MASK_GAINLINE
-mdefine_line|#define MASK_GAINLINE&t;(0x1 &lt;&lt; 8)&t;/* Change Gain for Line??? */
+mdefine_line|#define MASK_GAINLINE&t;(0x1 &lt;&lt; 8)&t;/* Disable Mic preamp */
 DECL|macro|MASK_GAINMIC
-mdefine_line|#define MASK_GAINMIC&t;(0x0 &lt;&lt; 8)&t;/* Change Gain for Mic??? */
+mdefine_line|#define MASK_GAINMIC&t;(0x0 &lt;&lt; 8)&t;/* Enable Mic preamp */
 DECL|macro|MASK_MUX_CD
 mdefine_line|#define MASK_MUX_CD&t;(0x1 &lt;&lt; 9)&t;/* Select CD in MUX */
-DECL|macro|MASK_MUX_AUDIN
-mdefine_line|#define MASK_MUX_AUDIN&t;(0x1 &lt;&lt; 10)&t;/* Select Audio In in MUX */
 DECL|macro|MASK_MUX_MIC
-mdefine_line|#define MASK_MUX_MIC&t;(0x1 &lt;&lt; 11)&t;/* Select Mic in MUX */
+mdefine_line|#define MASK_MUX_MIC&t;(0x1 &lt;&lt; 10)&t;/* Select Mic in MUX */
+DECL|macro|MASK_MUX_AUDIN
+mdefine_line|#define MASK_MUX_AUDIN&t;(0x1 &lt;&lt; 11)&t;/* Select Audio In in MUX */
 DECL|macro|MASK_MUX_LINE
 mdefine_line|#define MASK_MUX_LINE&t;MASK_MUX_AUDIN
 DECL|macro|GAINRIGHT
 mdefine_line|#define GAINRIGHT(x)&t;((x) &amp; MASK_GAINRIGHT)
 DECL|macro|GAINLEFT
 mdefine_line|#define GAINLEFT(x)&t;(((x) &lt;&lt; 4) &amp; MASK_GAINLEFT)
+DECL|macro|DEF_CD_GAIN
+mdefine_line|#define DEF_CD_GAIN 0x00bb
+DECL|macro|DEF_MIC_GAIN
+mdefine_line|#define DEF_MIC_GAIN 0x00cc
 multiline_comment|/* Address 1 Bit Masks */
 multiline_comment|/* ------- - --- ----- */
 DECL|macro|MASK_ADDR1RES1
@@ -173,8 +177,12 @@ DECL|macro|MASK_AMUTE
 mdefine_line|#define MASK_AMUTE&t;(0x1 &lt;&lt; 9)&t;/* Output A (Headphone) Mute when 1 */
 DECL|macro|MASK_HDMUTE
 mdefine_line|#define MASK_HDMUTE&t;MASK_AMUTE
-DECL|macro|MASK_PAROUT
-mdefine_line|#define MASK_PAROUT&t;(0x3 &lt;&lt; 10)&t;/* Parallel Out (???) */
+DECL|macro|MASK_PAROUT0
+mdefine_line|#define MASK_PAROUT0&t;(0x1 &lt;&lt; 10)&t;/* Parallel Output 0 */
+DECL|macro|MASK_PAROUT1
+mdefine_line|#define MASK_PAROUT1&t;(0x2 &lt;&lt; 10)&t;/* Parallel Output 1 */
+DECL|macro|MASK_MIC_BOOST
+mdefine_line|#define MASK_MIC_BOOST  (0x4)           /* screamer mic boost */
 DECL|macro|SAMPLERATE_48000
 mdefine_line|#define SAMPLERATE_48000&t;(0x0 &lt;&lt; 3)&t;/* 48 or 44.1 kHz */
 DECL|macro|SAMPLERATE_32000
@@ -283,7 +291,9 @@ DECL|macro|RATE_7350
 mdefine_line|#define RATE_7350&t;(0x7 &lt;&lt; 8)&t;/* 7.35 kHz */
 DECL|macro|RATE_LOW
 mdefine_line|#define RATE_LOW&t;1&t;/* HIGH = 48kHz, etc;  LOW = 44.1kHz, etc. */
+multiline_comment|/*******************/
 multiline_comment|/* Burgundy values */
+multiline_comment|/*******************/
 DECL|macro|MASK_ADDR_BURGUNDY_INPSEL21
 mdefine_line|#define MASK_ADDR_BURGUNDY_INPSEL21 (0x11 &lt;&lt; 12)
 DECL|macro|MASK_ADDR_BURGUNDY_INPSEL3
@@ -370,5 +380,28 @@ DECL|macro|DEF_BURGUNDY_ATTENLINEOUT
 mdefine_line|#define DEF_BURGUNDY_ATTENLINEOUT (0xCC)
 DECL|macro|DEF_BURGUNDY_ATTENHP
 mdefine_line|#define DEF_BURGUNDY_ATTENHP (0xCC)
+multiline_comment|/*********************/
+multiline_comment|/* i2s layout values */
+multiline_comment|/*********************/
+DECL|macro|I2S_REG_INT_CTL
+mdefine_line|#define I2S_REG_INT_CTL&t;&t;&t;0x00
+DECL|macro|I2S_REG_SERIAL_FORMAT
+mdefine_line|#define I2S_REG_SERIAL_FORMAT&t;&t;0x10
+DECL|macro|I2S_REG_CODEC_MSG_OUT
+mdefine_line|#define I2S_REG_CODEC_MSG_OUT&t;&t;0x20
+DECL|macro|I2S_REG_CODEC_MSG_IN
+mdefine_line|#define I2S_REG_CODEC_MSG_IN&t;&t;0x30
+DECL|macro|I2S_REG_FRAME_COUNT
+mdefine_line|#define I2S_REG_FRAME_COUNT&t;&t;0x40
+DECL|macro|I2S_REG_FRAME_MATCH
+mdefine_line|#define I2S_REG_FRAME_MATCH&t;&t;0x50
+DECL|macro|I2S_REG_DATAWORD_SIZES
+mdefine_line|#define I2S_REG_DATAWORD_SIZES&t;&t;0x60
+DECL|macro|I2S_REG_PEAKLEVEL_SEL
+mdefine_line|#define I2S_REG_PEAKLEVEL_SEL&t;&t;0x70
+DECL|macro|I2S_REG_PEAKLEVEL_IN0
+mdefine_line|#define I2S_REG_PEAKLEVEL_IN0&t;&t;0x80
+DECL|macro|I2S_REG_PEAKLEVEL_IN1
+mdefine_line|#define I2S_REG_PEAKLEVEL_IN1&t;&t;0x90
 macro_line|#endif /* _AWACS_DEFS_H_ */
 eof
