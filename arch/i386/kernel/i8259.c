@@ -1077,6 +1077,7 @@ r_void
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/* all the set up before the call gates are initialised */
 id|pre_intr_init_hook
 c_func
 (paren
@@ -1124,6 +1125,12 @@ id|i
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* setup after call gates are initialised (usually add in&n;&t; * the architecture specific gates */
+id|intr_init_hook
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Set the clock to HZ Hz, we already have a valid&n;&t; * vector now:&n;&t; */
 id|outb_p
 c_func
