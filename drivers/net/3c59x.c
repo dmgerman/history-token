@@ -979,6 +979,8 @@ op_or
 id|HAS_NWAY
 op_or
 id|HAS_HWCKSM
+op_or
+id|EXTRA_PREAMBLE
 comma
 l_int|128
 comma
