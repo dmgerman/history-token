@@ -2271,6 +2271,31 @@ comma
 l_int|0
 )paren
 comma
+multiline_comment|/* Reported by Josef Reisinger &lt;josef.reisinger@netcologne.de&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x07c4
+comma
+l_int|0xa002
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Datafab/Unknown&quot;
+comma
+l_string|&quot;MD2/MD3 Disk enclosure&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_DATAFAB
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
