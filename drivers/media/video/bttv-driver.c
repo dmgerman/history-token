@@ -13717,8 +13717,9 @@ id|name
 op_assign
 l_string|&quot;UNSET&quot;
 comma
+dot
 id|type
-suffix:colon
+op_assign
 id|VID_TYPE_CAPTURE
 op_or
 id|VID_TYPE_TUNER
