@@ -2285,7 +2285,7 @@ c_func
 (paren
 id|p-&gt;dz
 comma
-l_int|127
+l_int|7
 )paren
 suffix:semicolon
 id|p-&gt;dz
