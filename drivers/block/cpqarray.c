@@ -6071,7 +6071,6 @@ c_func
 (paren
 id|io
 comma
-op_amp
 id|my_io
 comma
 r_sizeof
