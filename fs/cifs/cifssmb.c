@@ -18627,6 +18627,16 @@ op_plus
 id|offset
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|data_offset
+comma
+l_int|0
+comma
+id|count
+)paren
+suffix:semicolon
 id|pSMB-&gt;DataOffset
 op_assign
 id|cpu_to_le16

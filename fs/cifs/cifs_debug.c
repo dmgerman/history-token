@@ -1871,7 +1871,7 @@ suffix:semicolon
 id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;NewReaddirEnabled&quot;
+l_string|&quot;ReenableOldCifsReaddirCode&quot;
 comma
 id|proc_fs_cifs
 )paren
