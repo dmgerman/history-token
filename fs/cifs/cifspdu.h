@@ -3803,6 +3803,10 @@ DECL|member|TimeToLive
 id|__u16
 id|TimeToLive
 suffix:semicolon
+DECL|member|Proximity
+id|__u16
+id|Proximity
+suffix:semicolon
 DECL|member|DfsPathOffset
 id|__u16
 id|DfsPathOffset
