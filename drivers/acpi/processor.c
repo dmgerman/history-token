@@ -413,8 +413,6 @@ id|pm_idle_save
 (paren
 r_void
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                                Errata Handling&n;   -------------------------------------------------------------------------- */
 r_int

@@ -269,8 +269,6 @@ r_struct
 id|proc_dir_entry
 op_star
 id|acpi_ac_dir
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|acpi_ac_seq_show
 r_int
