@@ -3419,7 +3419,7 @@ comma
 l_int|17
 )brace
 comma
-macro_line|#ifndef CONFIG_SCSI_SATA
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_SATA
 (brace
 id|PCI_VENDOR_ID_INTEL
 comma
@@ -3436,7 +3436,7 @@ comma
 l_int|18
 )brace
 comma
-macro_line|#endif /* !CONFIG_SCSI_SATA */
+macro_line|#endif
 (brace
 id|PCI_VENDOR_ID_INTEL
 comma

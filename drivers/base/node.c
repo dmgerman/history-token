@@ -272,7 +272,7 @@ id|n
 suffix:semicolon
 )brace
 DECL|macro|K
-macro_line|#undef K 
+macro_line|#undef K
 r_static
 id|SYSDEV_ATTR
 c_func

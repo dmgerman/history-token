@@ -362,9 +362,9 @@ op_assign
 id|ata_bmdma_start_pio
 comma
 dot
-id|fill_sg
+id|qc_prep
 op_assign
-id|ata_fill_sg
+id|ata_qc_prep
 comma
 dot
 id|eng_timeout

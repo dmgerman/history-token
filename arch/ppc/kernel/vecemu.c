@@ -1399,8 +1399,8 @@ id|exp
 )paren
 suffix:semicolon
 )brace
-r_int
 DECL|function|emulate_altivec
+r_int
 id|emulate_altivec
 c_func
 (paren

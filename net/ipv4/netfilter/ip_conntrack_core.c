@@ -565,6 +565,8 @@ c_func
 op_amp
 id|exp-&gt;use
 )paren
+op_eq
+l_int|0
 )paren
 suffix:semicolon
 id|IP_NF_ASSERT
@@ -2931,16 +2933,6 @@ id|expected
 )paren
 suffix:semicolon
 multiline_comment|/* Welcome, Mr. Bond.  We&squot;ve been expecting you... */
-id|IP_NF_ASSERT
-c_func
-(paren
-id|master_ct
-c_func
-(paren
-id|conntrack
-)paren
-)paren
-suffix:semicolon
 id|__set_bit
 c_func
 (paren
@@ -4162,7 +4154,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* add to expected list for this connection */
-id|list_add
+id|list_add_tail
 c_func
 (paren
 op_amp
@@ -4417,11 +4409,6 @@ op_ge
 id|related_to-&gt;helper-&gt;max_expected
 )paren
 (brace
-r_struct
-id|list_head
-op_star
-id|cur_item
-suffix:semicolon
 multiline_comment|/* old == NULL */
 r_if
 c_cond
@@ -4530,54 +4517,34 @@ id|tuple.dst.ip
 )paren
 suffix:semicolon
 multiline_comment|/* choose the the oldest expectation to evict */
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|cur_item
+id|old
 comma
 op_amp
 id|related_to-&gt;sibling_list
-)paren
-(brace
-r_struct
-id|ip_conntrack_expect
-op_star
-id|cur
-suffix:semicolon
-id|cur
-op_assign
-id|list_entry
-c_func
-(paren
-id|cur_item
-comma
-r_struct
-id|ip_conntrack_expect
 comma
 id|expected_list
 )paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|cur-&gt;sibling
+id|old-&gt;sibling
 op_eq
 l_int|NULL
 )paren
-(brace
-id|old
-op_assign
-id|cur
-suffix:semicolon
 r_break
 suffix:semicolon
-)brace
-)brace
-multiline_comment|/* (!old) cannot happen, since related_to-&gt;expecting is the&n;&t;&t; * number of unconfirmed expects */
+multiline_comment|/* We cannot fail since related_to-&gt;expecting is the number&n;&t;&t; * of unconfirmed expectations */
 id|IP_NF_ASSERT
 c_func
 (paren
 id|old
+op_logical_and
+id|old-&gt;sibling
+op_eq
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* newnat14 does not reuse the real allocated memory&n;&t;&t; * structures but rather unexpects the old and&n;&t;&t; * allocates a new.  unexpect_related will decrement&n;&t;&t; * related_to-&gt;expecting. &n;&t;&t; */

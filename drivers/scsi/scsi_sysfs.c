@@ -368,7 +368,7 @@ DECL|macro|shost_show_function
 mdefine_line|#define shost_show_function(name, field, format_string)&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_##name (struct class_device *class_dev, char *buf)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct Scsi_Host *shost = class_to_shost(class_dev);&t;&t;&bslash;&n;&t;return snprintf (buf, 20, format_string, shost-&gt;field);&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * shost_rd_attr: macro to create a function and attribute variable for a&n; * read only field.&n; */
 DECL|macro|shost_rd_attr2
-mdefine_line|#define shost_rd_attr2(name, field, format_string)&t;&t;&t;&bslash;&n;&t;shost_show_function(name, field, format_string)&t;&t;&t;&bslash;&n;static CLASS_DEVICE_ATTR(name, S_IRUGO, show_##name, NULL)
+mdefine_line|#define shost_rd_attr2(name, field, format_string)&t;&t;&t;&bslash;&n;&t;shost_show_function(name, field, format_string)&t;&t;&t;&bslash;&n;static CLASS_DEVICE_ATTR(name, S_IRUGO, show_##name, NULL);
 DECL|macro|shost_rd_attr
 mdefine_line|#define shost_rd_attr(field, format_string) &bslash;&n;shost_rd_attr2(field, field, format_string)
 multiline_comment|/*&n; * Create the actual show/store functions and data structures.&n; */
@@ -841,14 +841,14 @@ DECL|macro|sdev_show_function
 mdefine_line|#define sdev_show_function(field, format_string)&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;sdev_show_##field (struct device *dev, char *buf)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev;&t;&t;&t;&t;&t;&bslash;&n;&t;sdev = to_scsi_device(dev);&t;&t;&t;&t;&t;&bslash;&n;&t;return snprintf (buf, 20, format_string, sdev-&gt;field);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;
 multiline_comment|/*&n; * sdev_rd_attr: macro to create a function and attribute variable for a&n; * read only field.&n; */
 DECL|macro|sdev_rd_attr
-mdefine_line|#define sdev_rd_attr(field, format_string)&t;&t;&t;&t;&bslash;&n;&t;sdev_show_function(field, format_string)&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(field, S_IRUGO, sdev_show_##field, NULL)
+mdefine_line|#define sdev_rd_attr(field, format_string)&t;&t;&t;&t;&bslash;&n;&t;sdev_show_function(field, format_string)&t;&t;&t;&bslash;&n;static DEVICE_ATTR(field, S_IRUGO, sdev_show_##field, NULL);
 multiline_comment|/*&n; * sdev_rd_attr: create a function and attribute variable for a&n; * read/write field.&n; */
 DECL|macro|sdev_rw_attr
-mdefine_line|#define sdev_rw_attr(field, format_string)&t;&t;&t;&t;&bslash;&n;&t;sdev_show_function(field, format_string)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;sdev_store_##field (struct device *dev, const char *buf, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev;&t;&t;&t;&t;&t;&bslash;&n;&t;sdev = to_scsi_device(dev);&t;&t;&t;&t;&t;&bslash;&n;&t;snscanf (buf, 20, format_string, &amp;sdev-&gt;field);&t;&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(field, S_IRUGO | S_IWUSR, sdev_show_##field, sdev_store_##field)
+mdefine_line|#define sdev_rw_attr(field, format_string)&t;&t;&t;&t;&bslash;&n;&t;sdev_show_function(field, format_string)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;sdev_store_##field (struct device *dev, const char *buf, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev;&t;&t;&t;&t;&t;&bslash;&n;&t;sdev = to_scsi_device(dev);&t;&t;&t;&t;&t;&bslash;&n;&t;snscanf (buf, 20, format_string, &amp;sdev-&gt;field);&t;&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(field, S_IRUGO | S_IWUSR, sdev_show_##field, sdev_store_##field);
 multiline_comment|/* Currently we don&squot;t export bit fields, but we might in future,&n; * so leave this code in */
 macro_line|#if 0
 multiline_comment|/*&n; * sdev_rd_attr: create a function and attribute variable for a&n; * read/write bit field.&n; */
-mdefine_line|#define sdev_rw_attr_bit(field)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;sdev_show_function(field, &quot;%d&bslash;n&quot;)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;sdev_store_##field (struct device *dev, const char *buf, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev;&t;&t;&t;&t;&t;&bslash;&n;&t;ret = scsi_sdev_check_buf_bit(buf);&t;&t;&t;&t;&bslash;&n;&t;if (ret &gt;= 0)&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;sdev = to_scsi_device(dev);&t;&t;&t;&t;&bslash;&n;&t;&t;sdev-&gt;field = ret;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = count;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(field, S_IRUGO | S_IWUSR, sdev_show_##field, sdev_store_##field)
+mdefine_line|#define sdev_rw_attr_bit(field)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;sdev_show_function(field, &quot;%d&bslash;n&quot;)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;sdev_store_##field (struct device *dev, const char *buf, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev;&t;&t;&t;&t;&t;&bslash;&n;&t;ret = scsi_sdev_check_buf_bit(buf);&t;&t;&t;&t;&bslash;&n;&t;if (ret &gt;= 0)&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;sdev = to_scsi_device(dev);&t;&t;&t;&t;&bslash;&n;&t;&t;sdev-&gt;field = ret;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = count;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(field, S_IRUGO | S_IWUSR, sdev_show_##field, sdev_store_##field);
 multiline_comment|/*&n; * scsi_sdev_check_buf_bit: return 0 if buf is &quot;0&quot;, return 1 if buf is &quot;1&quot;,&n; * else return -EINVAL.&n; */
 r_static
 r_int
@@ -1096,6 +1096,7 @@ id|sdev_show_timeout
 comma
 id|sdev_store_timeout
 )paren
+suffix:semicolon
 r_static
 id|ssize_t
 DECL|function|store_rescan_field
@@ -1137,6 +1138,7 @@ l_int|NULL
 comma
 id|store_rescan_field
 )paren
+suffix:semicolon
 DECL|function|sdev_store_delete
 r_static
 id|ssize_t

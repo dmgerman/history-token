@@ -340,8 +340,8 @@ id|err
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|_exception
+r_void
 id|_exception
 c_func
 (paren
@@ -652,8 +652,8 @@ mdefine_line|#define single_stepping(regs)&t;((regs)-&gt;msr &amp; MSR_SE)
 DECL|macro|clear_single_step
 mdefine_line|#define clear_single_step(regs)&t;((regs)-&gt;msr &amp;= ~MSR_SE)
 macro_line|#endif
-r_void
 DECL|function|MachineCheckException
+r_void
 id|MachineCheckException
 c_func
 (paren
@@ -1271,8 +1271,8 @@ id|SIGBUS
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|SMIException
+r_void
 id|SMIException
 c_func
 (paren
@@ -1303,8 +1303,8 @@ l_string|&quot;System Management Interrupt&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
-r_void
 DECL|function|UnknownException
+r_void
 id|UnknownException
 c_func
 (paren
@@ -1344,8 +1344,8 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|InstructionBreakpoint
+r_void
 id|InstructionBreakpoint
 c_func
 (paren
@@ -1379,8 +1379,8 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|RunModeException
+r_void
 id|RunModeException
 c_func
 (paren
@@ -1408,9 +1408,9 @@ DECL|macro|INST_MFSPR_PVR
 mdefine_line|#define INST_MFSPR_PVR&t;&t;0x7c1f42a6
 DECL|macro|INST_MFSPR_PVR_MASK
 mdefine_line|#define INST_MFSPR_PVR_MASK&t;0xfc1fffff
+DECL|function|emulate_instruction
 r_static
 r_int
-DECL|function|emulate_instruction
 id|emulate_instruction
 c_func
 (paren
@@ -1631,8 +1631,8 @@ id|bugaddr
 )paren
 suffix:semicolon
 )brace
-r_int
 DECL|function|check_bug_trap
+r_int
 id|check_bug_trap
 c_func
 (paren
@@ -1785,8 +1785,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_void
 DECL|function|ProgramCheckException
+r_void
 id|ProgramCheckException
 c_func
 (paren
@@ -2084,8 +2084,8 @@ id|regs-&gt;nip
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|SingleStepException
+r_void
 id|SingleStepException
 c_func
 (paren
@@ -2125,8 +2125,8 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|AlignmentException
+r_void
 id|AlignmentException
 c_func
 (paren
@@ -2221,8 +2221,8 @@ id|regs-&gt;dar
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|StackOverflow
+r_void
 id|StackOverflow
 c_func
 (paren
@@ -2304,8 +2304,8 @@ id|SIGKILL
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|trace_syscall
+r_void
 id|trace_syscall
 c_func
 (paren
@@ -2355,8 +2355,8 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_8xx
-r_void
 DECL|function|SoftwareEmulation
+r_void
 id|SoftwareEmulation
 c_func
 (paren
@@ -2617,8 +2617,8 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_4xx || CONFIG_BOOKE */
 macro_line|#if !defined(CONFIG_TAU_INT)
-r_void
 DECL|function|TAUException
+r_void
 id|TAUException
 c_func
 (paren
@@ -2703,7 +2703,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;AltiVec used in kernel (task=%p, pc=%x)&bslash;n&quot;
+l_string|&quot;AltiVec used in kernel (task=%p, pc=%lx)&bslash;n&quot;
 comma
 id|current
 comma
@@ -2716,8 +2716,8 @@ id|MSR_VEC
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_ALTIVEC
-r_void
 DECL|function|AltivecAssistException
+r_void
 id|AltivecAssistException
 c_func
 (paren
@@ -2881,8 +2881,8 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_FSL_BOOKE */
 macro_line|#ifdef CONFIG_SPE
-r_void
 DECL|function|SPEFloatingPointException
+r_void
 id|SPEFloatingPointException
 c_func
 (paren

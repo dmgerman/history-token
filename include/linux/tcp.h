@@ -847,16 +847,12 @@ DECL|member|unused_pad
 id|__u8
 id|unused_pad
 suffix:semicolon
-DECL|member|queue_shrunk
-id|__u8
-id|queue_shrunk
-suffix:semicolon
-multiline_comment|/* Write queue has been shrunk recently.*/
 DECL|member|defer_accept
 id|__u8
 id|defer_accept
 suffix:semicolon
 multiline_comment|/* User waits for some data after accept() */
+multiline_comment|/* one byte hole, try to pack */
 multiline_comment|/* RTT measurement */
 DECL|member|backoff
 id|__u8
@@ -968,13 +964,6 @@ op_star
 id|af_specific
 suffix:semicolon
 multiline_comment|/* Operations which are AF_INET{4,6} specific&t;*/
-DECL|member|send_head
-r_struct
-id|sk_buff
-op_star
-id|send_head
-suffix:semicolon
-multiline_comment|/* Front of stuff to transmit&t;&t;&t;*/
 DECL|member|rcv_wnd
 id|__u32
 id|rcv_wnd
@@ -1218,11 +1207,6 @@ id|open_request
 op_star
 id|accept_queue_tail
 suffix:semicolon
-DECL|member|write_pending
-r_int
-id|write_pending
-suffix:semicolon
-multiline_comment|/* A write to socket waits to start. */
 DECL|member|keepalive_time
 r_int
 r_int

@@ -21,6 +21,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|epxa10db_init_time
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 id|MACHINE_START
 c_func
 (paren
@@ -51,6 +59,11 @@ id|INITIRQ
 c_func
 (paren
 id|epxa10db_init_irq
+)paren
+id|INITTIME
+c_func
+(paren
+id|epxa10db_init_time
 )paren
 id|MACHINE_END
 eof

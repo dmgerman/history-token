@@ -2899,24 +2899,12 @@ op_amp
 id|fl.fl6_dst
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETFILTER
-id|nf_conntrack_put
+id|nf_reset
 c_func
 (paren
-id|skb-&gt;nfct
+id|skb
 )paren
 suffix:semicolon
-id|skb-&gt;nfct
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#ifdef CONFIG_NETFILTER_DEBUG
-id|skb-&gt;nf_debug
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 id|pkt_len
 op_assign
 id|skb-&gt;len

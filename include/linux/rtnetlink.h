@@ -56,6 +56,12 @@ DECL|macro|RTM_DELTFILTER
 mdefine_line|#define&t;RTM_DELTFILTER&t;(RTM_BASE+29)
 DECL|macro|RTM_GETTFILTER
 mdefine_line|#define&t;RTM_GETTFILTER&t;(RTM_BASE+30)
+DECL|macro|RTM_NEWACTION
+mdefine_line|#define RTM_NEWACTION   (RTM_BASE+32)
+DECL|macro|RTM_DELACTION
+mdefine_line|#define RTM_DELACTION   (RTM_BASE+33)
+DECL|macro|RTM_GETACTION
+mdefine_line|#define RTM_GETACTION   (RTM_BASE+34)
 DECL|macro|RTM_NEWPREFIX
 mdefine_line|#define RTM_NEWPREFIX&t;(RTM_BASE+36)
 DECL|macro|RTM_GETPREFIX
@@ -1212,6 +1218,9 @@ comma
 DECL|enumerator|TCA_RATE
 id|TCA_RATE
 comma
+DECL|enumerator|TCA_FCNT
+id|TCA_FCNT
+comma
 DECL|enumerator|__TCA_MAX
 id|__TCA_MAX
 )brace
@@ -1254,6 +1263,36 @@ DECL|macro|RTMGRP_DECnet_ROUTE
 mdefine_line|#define RTMGRP_DECnet_ROUTE     0x4000
 DECL|macro|RTMGRP_IPV6_PREFIX
 mdefine_line|#define RTMGRP_IPV6_PREFIX&t;0x20000
+multiline_comment|/* TC action piece */
+DECL|struct|tcamsg
+r_struct
+id|tcamsg
+(brace
+DECL|member|tca_family
+r_int
+r_char
+id|tca_family
+suffix:semicolon
+DECL|member|tca__pad1
+r_int
+r_char
+id|tca__pad1
+suffix:semicolon
+DECL|member|tca__pad2
+r_int
+r_int
+id|tca__pad2
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|TA_RTA
+mdefine_line|#define TA_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct tcamsg))))
+DECL|macro|TA_PAYLOAD
+mdefine_line|#define TA_PAYLOAD(n) NLMSG_PAYLOAD(n,sizeof(struct tcamsg))
+DECL|macro|TCA_ACT_TAB
+mdefine_line|#define TCA_ACT_TAB 1 /* attr type must be &gt;=1 */&t;
+DECL|macro|TCAA_MAX
+mdefine_line|#define TCAA_MAX 1
 multiline_comment|/* End of information exported to user level */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;

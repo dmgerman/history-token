@@ -853,6 +853,11 @@ c_func
 (paren
 id|sa1100_init_irq
 )paren
+id|INITTIME
+c_func
+(paren
+id|sa1100_init_time
+)paren
 id|MACHINE_END
 macro_line|#endif /* CONFIG_SA1100_H3100 */
 multiline_comment|/************************* H3600 *************************/
@@ -1226,6 +1231,11 @@ id|INITIRQ
 c_func
 (paren
 id|sa1100_init_irq
+)paren
+id|INITTIME
+c_func
+(paren
+id|sa1100_init_time
 )paren
 id|MACHINE_END
 macro_line|#endif /* CONFIG_SA1100_H3600 */
@@ -2585,6 +2595,11 @@ id|INITIRQ
 c_func
 (paren
 id|h3800_init_irq
+)paren
+id|INITTIME
+c_func
+(paren
+id|sa1100_init_time
 )paren
 id|MACHINE_END
 macro_line|#endif /* CONFIG_SA1100_H3800 */

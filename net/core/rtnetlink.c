@@ -284,6 +284,16 @@ r_struct
 id|tcmsg
 )paren
 )paren
+comma
+id|NLMSG_LENGTH
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|tcamsg
+)paren
+)paren
 )brace
 suffix:semicolon
 DECL|variable|rta_max
@@ -319,6 +329,8 @@ comma
 id|TCA_MAX
 comma
 id|TCA_MAX
+comma
+id|TCAA_MAX
 )brace
 suffix:semicolon
 DECL|function|__rta_fill

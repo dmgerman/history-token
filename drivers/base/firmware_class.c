@@ -165,7 +165,7 @@ id|loading_timeout
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * firmware_timeout_store:&n; * Description:&n; *&t;Sets the number of seconds to wait for the firmware.  Once&n; *&t;this expires an error will be return to the driver and no&n; *&t;firmware will be provided.&n; *&n; *&t;Note: zero means &squot;wait for ever&squot;&n; *  &n; **/
+multiline_comment|/**&n; * firmware_timeout_store:&n; * Description:&n; *&t;Sets the number of seconds to wait for the firmware.  Once&n; *&t;this expires an error will be return to the driver and no&n; *&t;firmware will be provided.&n; *&n; *&t;Note: zero means &squot;wait for ever&squot;&n; *&n; **/
 r_static
 id|ssize_t
 DECL|function|firmware_timeout_store
@@ -443,7 +443,7 @@ id|loading
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * firmware_loading_store: - loading control file&n; * Description:&n; *&t;The relevant values are: &n; *&n; *&t; 1: Start a load, discarding any previous partial load.&n; *&t; 0: Conclude the load and handle the data to the driver code.&n; *&t;-1: Conclude the load with an error and discard any written data.&n; **/
+multiline_comment|/**&n; * firmware_loading_store: - loading control file&n; * Description:&n; *&t;The relevant values are:&n; *&n; *&t; 1: Start a load, discarding any previous partial load.&n; *&t; 0: Conclude the load and handle the data to the driver code.&n; *&t;-1: Conclude the load with an error and discard any written data.&n; **/
 r_static
 id|ssize_t
 DECL|function|firmware_loading_store
@@ -1585,7 +1585,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/** &n; * request_firmware: - request firmware to hotplug and wait for it&n; * Description:&n; *&t;@firmware will be used to return a firmware image by the name&n; *&t;of @name for device @device.&n; *&n; *&t;Should be called from user context where sleeping is allowed.&n; *&n; *&t;@name will be use as $FIRMWARE in the hotplug environment and&n; *&t;should be distinctive enough not to be confused with any other&n; *&t;firmware image for this or any other device.&n; **/
+multiline_comment|/**&n; * request_firmware: - request firmware to hotplug and wait for it&n; * Description:&n; *&t;@firmware will be used to return a firmware image by the name&n; *&t;of @name for device @device.&n; *&n; *&t;Should be called from user context where sleeping is allowed.&n; *&n; *&t;@name will be use as $FIRMWARE in the hotplug environment and&n; *&t;should be distinctive enough not to be confused with any other&n; *&t;firmware image for this or any other device.&n; **/
 r_int
 DECL|function|request_firmware
 id|request_firmware
@@ -1885,7 +1885,7 @@ id|fw
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * register_firmware: - provide a firmware image for later usage&n; * &n; * Description:&n; *&t;Make sure that @data will be available by requesting firmware @name.&n; *&n; *&t;Note: This will not be possible until some kind of persistence&n; *&t;is available.&n; **/
+multiline_comment|/**&n; * register_firmware: - provide a firmware image for later usage&n; *&n; * Description:&n; *&t;Make sure that @data will be available by requesting firmware @name.&n; *&n; *&t;Note: This will not be possible until some kind of persistence&n; *&t;is available.&n; **/
 r_void
 DECL|function|register_firmware
 id|register_firmware

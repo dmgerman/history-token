@@ -24,6 +24,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|clps711x_init_time
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|variable|memmap
 r_struct
 id|meminfo
@@ -224,6 +232,11 @@ id|INITIRQ
 c_func
 (paren
 id|clps711x_init_irq
+)paren
+id|INITTIME
+c_func
+(paren
+id|clps711x_init_time
 )paren
 id|MACHINE_END
 eof
