@@ -125,6 +125,7 @@ op_assign
 op_minus
 id|EOPNOTSUPP
 suffix:semicolon
+macro_line|#ifdef CONFIG_CIFS_XATTR
 r_int
 id|xid
 suffix:semicolon
@@ -147,7 +148,6 @@ r_char
 op_star
 id|full_path
 suffix:semicolon
-macro_line|#ifdef CONFIG_CIFS_XATTR
 r_if
 c_cond
 (paren
