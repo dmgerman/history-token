@@ -355,6 +355,12 @@ DECL|member|cant_use_aperture
 r_int
 id|cant_use_aperture
 suffix:semicolon
+DECL|member|vm_ops
+r_struct
+id|vm_operations_struct
+op_star
+id|vm_ops
+suffix:semicolon
 multiline_comment|/* Links to driver specific functions */
 DECL|member|fetch_size
 r_int

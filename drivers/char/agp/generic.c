@@ -886,6 +886,10 @@ id|info-&gt;cant_use_aperture
 op_assign
 id|agp_bridge.cant_use_aperture
 suffix:semicolon
+id|info-&gt;vm_ops
+op_assign
+id|agp_bridge.vm_ops
+suffix:semicolon
 id|info-&gt;page_mask
 op_assign
 op_complement

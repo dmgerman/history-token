@@ -158,6 +158,9 @@ comma
 DECL|enumerator|HP_ZX1
 id|HP_ZX1
 comma
+DECL|enumerator|ALPHA_CORE_AGP
+id|ALPHA_CORE_AGP
+comma
 )brace
 suffix:semicolon
 DECL|struct|agp_version
@@ -225,6 +228,12 @@ DECL|member|page_mask
 r_int
 r_int
 id|page_mask
+suffix:semicolon
+DECL|member|vm_ops
+r_struct
+id|vm_operations_struct
+op_star
+id|vm_ops
 suffix:semicolon
 DECL|typedef|agp_kern_info
 )brace
