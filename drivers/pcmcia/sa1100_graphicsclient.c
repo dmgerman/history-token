@@ -86,7 +86,7 @@ id|gcplus_pcmcia_init
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
@@ -131,7 +131,7 @@ id|S0_STS_IRQ
 suffix:semicolon
 multiline_comment|/* Register interrupts */
 r_return
-id|sa11xx_request_irqs
+id|soc_pcmcia_request_irqs
 c_func
 (paren
 id|skt
@@ -153,7 +153,7 @@ id|gcplus_pcmcia_hw_shutdown
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
@@ -189,7 +189,7 @@ id|gcplus_pcmcia_socket_state
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 comma
@@ -260,7 +260,7 @@ id|gcplus_pcmcia_configure_socket
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 comma
@@ -407,7 +407,7 @@ id|gcplus_pcmcia_socket_init
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
@@ -420,7 +420,7 @@ id|gcplus_pcmcia_socket_suspend
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
