@@ -1019,14 +1019,17 @@ DECL|member|next_uframe
 r_int
 id|next_uframe
 suffix:semicolon
-multiline_comment|/* the rest is derived from the endpoint descriptor,&n;&t; * trusting urb-&gt;interval == (1 &lt;&lt; (epdesc-&gt;bInterval - 1)),&n;&t; * including the extra info for hw_bufp[0..2]&n;&t; */
+multiline_comment|/* the rest is derived from the endpoint descriptor,&n;&t; * trusting urb-&gt;interval == f(epdesc-&gt;bInterval) and&n;&t; * including the extra info for hw_bufp[0..2]&n;&t; */
 DECL|member|interval
 id|u8
 id|interval
 suffix:semicolon
 DECL|member|usecs
+DECL|member|c_usecs
 id|u8
 id|usecs
+comma
+id|c_usecs
 suffix:semicolon
 DECL|member|maxp
 id|u16
@@ -1191,19 +1194,39 @@ id|u32
 id|hw_uframe
 suffix:semicolon
 multiline_comment|/* see EHCI table 3-10 */
-DECL|member|hw_tx_results1
+DECL|member|hw_results
 id|u32
-id|hw_tx_results1
+id|hw_results
 suffix:semicolon
 multiline_comment|/* see EHCI table 3-11 */
-DECL|member|hw_tx_results2
+DECL|macro|SITD_IOC
+mdefine_line|#define&t;SITD_IOC&t;(1 &lt;&lt; 31)&t;/* interrupt on completion */
+DECL|macro|SITD_PAGE
+mdefine_line|#define&t;SITD_PAGE&t;(1 &lt;&lt; 30)&t;/* buffer 0/1 */
+DECL|macro|SITD_LENGTH
+mdefine_line|#define&t;SITD_LENGTH(x)&t;(0x3ff &amp; ((x)&gt;&gt;16))
+DECL|macro|SITD_STS_ACTIVE
+mdefine_line|#define&t;SITD_STS_ACTIVE&t;(1 &lt;&lt; 7)&t;/* HC may execute this */
+DECL|macro|SITD_STS_ERR
+mdefine_line|#define&t;SITD_STS_ERR&t;(1 &lt;&lt; 6)&t;/* error from TT */
+DECL|macro|SITD_STS_DBE
+mdefine_line|#define&t;SITD_STS_DBE&t;(1 &lt;&lt; 5)&t;/* data buffer error (in HC) */
+DECL|macro|SITD_STS_BABBLE
+mdefine_line|#define&t;SITD_STS_BABBLE&t;(1 &lt;&lt; 4)&t;/* device was babbling */
+DECL|macro|SITD_STS_XACT
+mdefine_line|#define&t;SITD_STS_XACT&t;(1 &lt;&lt; 3)&t;/* illegal IN response */
+DECL|macro|SITD_STS_MMF
+mdefine_line|#define&t;SITD_STS_MMF&t;(1 &lt;&lt; 2)&t;/* incomplete split transaction */
+DECL|macro|SITD_STS_STS
+mdefine_line|#define&t;SITD_STS_STS&t;(1 &lt;&lt; 1)&t;/* split transaction state */
+DECL|macro|SITD_ACTIVE
+mdefine_line|#define SITD_ACTIVE&t;__constant_cpu_to_le32(SITD_STS_ACTIVE)
+DECL|member|hw_buf
 id|u32
-id|hw_tx_results2
-suffix:semicolon
-multiline_comment|/* see EHCI table 3-12 */
-DECL|member|hw_tx_results3
-id|u32
-id|hw_tx_results3
+id|hw_buf
+(braket
+l_int|2
+)braket
 suffix:semicolon
 multiline_comment|/* see EHCI table 3-12 */
 DECL|member|hw_backpointer
@@ -1236,23 +1259,27 @@ id|urb
 op_star
 id|urb
 suffix:semicolon
-DECL|member|buf_dma
-id|dma_addr_t
-id|buf_dma
+DECL|member|stream
+r_struct
+id|ehci_iso_stream
+op_star
+id|stream
 suffix:semicolon
-multiline_comment|/* buffer address */
-DECL|member|usecs
-r_int
-r_int
-id|usecs
+multiline_comment|/* endpoint&squot;s queue */
+DECL|member|sitd_list
+r_struct
+id|list_head
+id|sitd_list
 suffix:semicolon
-multiline_comment|/* start bandwidth */
-DECL|member|c_usecs
+multiline_comment|/* list of stream&squot;s sitds */
+DECL|member|frame
 r_int
-r_int
-id|c_usecs
+id|frame
 suffix:semicolon
-multiline_comment|/* completion bandwidth */
+DECL|member|index
+r_int
+id|index
+suffix:semicolon
 )brace
 id|__attribute__
 (paren
