@@ -1876,15 +1876,12 @@ id|byte
 id|speed
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 r_struct
 id|pci_dev
@@ -2140,15 +2137,12 @@ id|byte
 id|speed
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 r_struct
 id|pci_dev
@@ -2398,13 +2392,7 @@ id|speed
 r_if
 c_cond
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|pci_dev-&gt;device
+id|drive-&gt;channel-&gt;pci_dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_ARTOP_ATP850UF
 )paren
@@ -2463,15 +2451,12 @@ id|id
 op_assign
 id|drive-&gt;id
 suffix:semicolon
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 id|byte
 id|unit
@@ -2791,15 +2776,12 @@ id|id
 op_assign
 id|drive-&gt;id
 suffix:semicolon
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 id|byte
 id|unit
@@ -3163,13 +3145,7 @@ id|ultra
 r_switch
 c_cond
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|pci_dev-&gt;device
+id|drive-&gt;channel-&gt;pci_dev-&gt;device
 )paren
 (brace
 r_case
@@ -3265,13 +3241,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|pci_dev-&gt;device
+id|drive-&gt;channel-&gt;pci_dev-&gt;device
 )paren
 (brace
 r_case
@@ -3345,13 +3315,7 @@ op_amp
 l_int|1
 )paren
 op_logical_and
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|autodma
+id|drive-&gt;channel-&gt;autodma
 )paren
 (brace
 multiline_comment|/* Consult the list of known &quot;bad&quot; drives */
@@ -3565,11 +3529,7 @@ l_int|5
 suffix:semicolon
 )brace
 r_return
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 op_member_access_from_pointer
 id|dmaproc
 c_func
@@ -3618,13 +3578,7 @@ suffix:colon
 r_switch
 c_cond
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|pci_dev-&gt;device
+id|drive-&gt;channel-&gt;pci_dev-&gt;device
 )paren
 (brace
 r_case
@@ -3636,10 +3590,10 @@ suffix:colon
 singleline_comment|//&t;&t;&t;&t;&t;{
 singleline_comment|//&t;&t;&t;&t;&t;&t;int i = 0;
 singleline_comment|//&t;&t;&t;&t;&t;&t;byte reg49h = 0;
-singleline_comment|//&t;&t;&t;&t;&t;&t;pci_read_config_byte(HWIF(drive)-&gt;pci_dev, 0x49, &amp;reg49h);
+singleline_comment|//&t;&t;&t;&t;&t;&t;pci_read_config_byte(drive-&gt;channel-&gt;pci_dev, 0x49, &amp;reg49h);
 singleline_comment|//&t;&t;&t;&t;&t;&t;for (i=0;i&lt;256;i++)
-singleline_comment|//&t;&t;&t;&t;&t;&t;&t;pci_write_config_byte(HWIF(drive)-&gt;pci_dev, 0x49, reg49h|0x10);
-singleline_comment|//&t;&t;&t;&t;&t;&t;pci_write_config_byte(HWIF(drive)-&gt;pci_dev, 0x49, reg49h &amp; ~0x10);
+singleline_comment|//&t;&t;&t;&t;&t;&t;&t;pci_write_config_byte(drive-&gt;channel-&gt;pci_dev, 0x49, reg49h|0x10);
+singleline_comment|//&t;&t;&t;&t;&t;&t;pci_write_config_byte(drive-&gt;channel-&gt;pci_dev, 0x49, reg49h &amp; ~0x10);
 singleline_comment|//&t;&t;&t;&t;&t;}
 singleline_comment|//&t;&t;&t;&t;&t;return 0;
 r_default
@@ -3753,8 +3707,10 @@ r_int
 r_int
 id|__init
 id|ata66_aec62xx
+c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 )paren
@@ -3804,8 +3760,10 @@ DECL|function|ide_init_aec62xx
 r_void
 id|__init
 id|ide_init_aec62xx
+c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 )paren
@@ -3862,8 +3820,10 @@ DECL|function|ide_dmacapable_aec62xx
 r_void
 id|__init
 id|ide_dmacapable_aec62xx
+c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 comma

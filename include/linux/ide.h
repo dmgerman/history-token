@@ -61,7 +61,7 @@ mdefine_line|#define DMA_PIO_RETRY&t;1&t;/* retrying in PIO */
 DECL|macro|HWIF
 mdefine_line|#define HWIF(drive)&t;&t;((drive)-&gt;channel)
 DECL|macro|HWGROUP
-mdefine_line|#define HWGROUP(drive)&t;&t;(HWIF(drive)-&gt;hwgroup)
+mdefine_line|#define HWGROUP(drive)&t;&t;(drive-&gt;channel-&gt;hwgroup)
 multiline_comment|/*&n; * Definitions for accessing IDE controller registers&n; */
 DECL|macro|IDE_NR_PORTS
 mdefine_line|#define IDE_NR_PORTS&t;&t;(10)
@@ -90,25 +90,25 @@ mdefine_line|#define IDE_FEATURE_OFFSET&t;IDE_ERROR_OFFSET
 DECL|macro|IDE_COMMAND_OFFSET
 mdefine_line|#define IDE_COMMAND_OFFSET&t;IDE_STATUS_OFFSET
 DECL|macro|IDE_DATA_REG
-mdefine_line|#define IDE_DATA_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_DATA_OFFSET])
+mdefine_line|#define IDE_DATA_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_DATA_OFFSET])
 DECL|macro|IDE_ERROR_REG
-mdefine_line|#define IDE_ERROR_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_ERROR_OFFSET])
+mdefine_line|#define IDE_ERROR_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_ERROR_OFFSET])
 DECL|macro|IDE_NSECTOR_REG
-mdefine_line|#define IDE_NSECTOR_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_NSECTOR_OFFSET])
+mdefine_line|#define IDE_NSECTOR_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_NSECTOR_OFFSET])
 DECL|macro|IDE_SECTOR_REG
-mdefine_line|#define IDE_SECTOR_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_SECTOR_OFFSET])
+mdefine_line|#define IDE_SECTOR_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_SECTOR_OFFSET])
 DECL|macro|IDE_LCYL_REG
-mdefine_line|#define IDE_LCYL_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_LCYL_OFFSET])
+mdefine_line|#define IDE_LCYL_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_LCYL_OFFSET])
 DECL|macro|IDE_HCYL_REG
-mdefine_line|#define IDE_HCYL_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_HCYL_OFFSET])
+mdefine_line|#define IDE_HCYL_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_HCYL_OFFSET])
 DECL|macro|IDE_SELECT_REG
-mdefine_line|#define IDE_SELECT_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_SELECT_OFFSET])
+mdefine_line|#define IDE_SELECT_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_SELECT_OFFSET])
 DECL|macro|IDE_STATUS_REG
-mdefine_line|#define IDE_STATUS_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_STATUS_OFFSET])
+mdefine_line|#define IDE_STATUS_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_STATUS_OFFSET])
 DECL|macro|IDE_CONTROL_REG
-mdefine_line|#define IDE_CONTROL_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_CONTROL_OFFSET])
+mdefine_line|#define IDE_CONTROL_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_CONTROL_OFFSET])
 DECL|macro|IDE_IRQ_REG
-mdefine_line|#define IDE_IRQ_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_IRQ_OFFSET])
+mdefine_line|#define IDE_IRQ_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_IRQ_OFFSET])
 DECL|macro|IDE_FEATURE_REG
 mdefine_line|#define IDE_FEATURE_REG&t;&t;IDE_ERROR_REG
 DECL|macro|IDE_COMMAND_REG
@@ -178,7 +178,7 @@ DECL|macro|SELECT_MASK
 mdefine_line|#define SELECT_MASK(channel, drive, mask)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (channel-&gt;maskproc)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;channel-&gt;maskproc(drive,mask);&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * Check for an interrupt and acknowledge the interrupt status&n; */
 r_struct
-id|hwif_s
+id|ata_channel
 suffix:semicolon
 DECL|typedef|ide_ack_intr_t
 r_typedef
@@ -188,7 +188,7 @@ id|ide_ack_intr_t
 )paren
 (paren
 r_struct
-id|hwif_s
+id|ata_channel
 op_star
 )paren
 suffix:semicolon
@@ -414,7 +414,7 @@ id|ide_drive_s
 (brace
 DECL|member|channel
 r_struct
-id|hwif_s
+id|ata_channel
 op_star
 id|channel
 suffix:semicolon
@@ -443,28 +443,29 @@ op_star
 id|next
 suffix:semicolon
 multiline_comment|/* circular list of hwgroup drives */
-DECL|member|sleep
+multiline_comment|/* Those are directly injected jiffie values. They should go away and&n;&t; * we should use generic timers instead!!!&n;&t; */
+DECL|member|PADAM_sleep
 r_int
 r_int
-id|sleep
+id|PADAM_sleep
 suffix:semicolon
 multiline_comment|/* sleep until this time */
-DECL|member|service_start
+DECL|member|PADAM_service_start
 r_int
 r_int
-id|service_start
+id|PADAM_service_start
 suffix:semicolon
 multiline_comment|/* time we started last request */
-DECL|member|service_time
+DECL|member|PADAM_service_time
 r_int
 r_int
-id|service_time
+id|PADAM_service_time
 suffix:semicolon
 multiline_comment|/* service time of last request */
-DECL|member|timeout
+DECL|member|PADAM_timeout
 r_int
 r_int
-id|timeout
+id|PADAM_timeout
 suffix:semicolon
 multiline_comment|/* max time to wait for irq */
 DECL|member|special
@@ -1112,14 +1113,13 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|struct|hwif_s
-r_typedef
+DECL|struct|ata_channel
 r_struct
-id|hwif_s
+id|ata_channel
 (brace
 DECL|member|next
 r_struct
-id|hwif_s
+id|ata_channel
 op_star
 id|next
 suffix:semicolon
@@ -1250,7 +1250,7 @@ suffix:semicolon
 multiline_comment|/* dma transfer direction */
 DECL|member|mate
 r_struct
-id|hwif_s
+id|ata_channel
 op_star
 id|mate
 suffix:semicolon
@@ -1413,9 +1413,7 @@ id|device
 id|device
 suffix:semicolon
 multiline_comment|/* global device tree handle */
-DECL|typedef|ide_hwif_t
 )brace
-id|ide_hwif_t
 suffix:semicolon
 multiline_comment|/*&n; * Register new hardware with ide&n; */
 r_extern
@@ -1428,7 +1426,7 @@ op_star
 id|hw
 comma
 r_struct
-id|hwif_s
+id|ata_channel
 op_star
 op_star
 id|hwifp
@@ -1439,7 +1437,8 @@ r_void
 id|ide_unregister
 c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 )paren
@@ -1537,7 +1536,8 @@ id|drive
 suffix:semicolon
 multiline_comment|/* current drive */
 DECL|member|hwif
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 suffix:semicolon
@@ -1816,7 +1816,8 @@ r_void
 id|destroy_proc_ide_drives
 c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 )paren
 suffix:semicolon
@@ -2122,10 +2123,9 @@ id|driver
 suffix:semicolon
 DECL|macro|ata_ops
 mdefine_line|#define ata_ops(drive)&t;&t;((drive)-&gt;driver)
-multiline_comment|/*&n; * ide_hwifs[] is the master data structure used to keep track&n; * of just about everything in ide.c.  Whenever possible, routines&n; * should be using pointers to a drive (ide_drive_t *) or&n; * pointers to a hwif (ide_hwif_t *), rather than indexing this&n; * structure directly (the allocation/layout may change!).&n; *&n; */
 r_extern
 r_struct
-id|hwif_s
+id|ata_channel
 id|ide_hwifs
 (braket
 )braket
@@ -3066,15 +3066,19 @@ r_void
 id|ide_release_dma
 c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_setup_dma
+c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 comma

@@ -31,7 +31,7 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * This routine either enables/disables (according to drive-&gt;present)&n; * the IRQ associated with the port (HWIF(drive)),&n; * and selects either PIO or DMA handshaking for the next I/O operation.&n; */
+multiline_comment|/*&n; * This routine either enables/disables (according to drive-&gt;present)&n; * the IRQ associated with the port (drive-&gt;channel),&n; * and selects either PIO or DMA handshaking for the next I/O operation.&n; */
 DECL|function|ns87415_prepare_drive
 r_static
 r_void
@@ -46,15 +46,12 @@ r_int
 id|use_dma
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 r_int
 r_int
@@ -316,15 +313,12 @@ op_star
 id|drive
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 id|byte
 id|dma_stat
@@ -483,8 +477,10 @@ DECL|function|ide_init_ns87415
 r_void
 id|__init
 id|ide_init_ns87415
+c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 )paren

@@ -21,7 +21,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
 DECL|macro|IS_PDC4030_DRIVE
-mdefine_line|#define IS_PDC4030_DRIVE (HWIF(drive)-&gt;chipset == ide_pdc4030)
+mdefine_line|#define IS_PDC4030_DRIVE (drive-&gt;channel-&gt;chipset == ide_pdc4030)
 macro_line|#else
 DECL|macro|IS_PDC4030_DRIVE
 mdefine_line|#define IS_PDC4030_DRIVE (0)&t;/* auto-NULLs out pdc4030 code */
@@ -5033,15 +5033,12 @@ op_increment
 id|i
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 r_if
 c_cond
@@ -5118,13 +5115,7 @@ suffix:semicolon
 id|drive-&gt;device.parent
 op_assign
 op_amp
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|device
+id|drive-&gt;channel-&gt;device
 suffix:semicolon
 id|drive-&gt;device.driver_data
 op_assign
@@ -5348,11 +5339,7 @@ id|drive-&gt;using_dma
 (paren
 r_void
 )paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 op_member_access_from_pointer
 id|dmaproc
 c_func

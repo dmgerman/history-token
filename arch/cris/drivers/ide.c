@@ -719,7 +719,7 @@ c_func
 l_string|&quot;ide: ETRAX 100LX built-in ATA DMA controller&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* first fill in some stuff in the ide_hwifs fields */
+multiline_comment|/* first initialize the channel interface data */
 r_for
 c_loop
 (paren
@@ -735,7 +735,8 @@ id|h
 op_increment
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
@@ -2617,11 +2618,7 @@ l_int|0
 suffix:semicolon
 id|dma_stat
 op_assign
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 op_member_access_from_pointer
 id|dmaproc
 c_func
@@ -3236,8 +3233,10 @@ multiline_comment|/* Dear maintainer of this architecture please note that it wo
 DECL|function|ide_release_dma
 r_void
 id|ide_release_dma
+c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 )paren

@@ -1556,12 +1556,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-(paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 op_member_access_from_pointer
 id|dmaproc
 c_func
@@ -1569,7 +1564,6 @@ c_func
 id|ide_dma_end
 comma
 id|drive
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2126,11 +2120,7 @@ id|rq-&gt;bio
 id|dma_ok
 op_assign
 op_logical_neg
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 op_member_access_from_pointer
 id|dmaproc
 c_func
@@ -2154,11 +2144,7 @@ suffix:semicolon
 id|SELECT_DRIVE
 c_func
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 comma
 id|drive
 )paren
@@ -2207,6 +2193,7 @@ id|dma_ok
 )paren
 (brace
 id|set_bit
+c_func
 (paren
 id|PC_DMA_IN_PROGRESS
 comma
@@ -2217,12 +2204,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-(paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 op_member_access_from_pointer
 id|dmaproc
 c_func
@@ -2230,7 +2212,6 @@ c_func
 id|ide_dma_begin
 comma
 id|drive
-)paren
 )paren
 suffix:semicolon
 )brace
