@@ -1377,7 +1377,7 @@ id|e-&gt;elevator_former_req_fn
 r_return
 id|e
 op_member_access_from_pointer
-id|elevator_latter_req_fn
+id|elevator_former_req_fn
 c_func
 (paren
 id|q
