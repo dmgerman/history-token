@@ -23022,6 +23022,10 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
+id|sts
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_return
 id|sts

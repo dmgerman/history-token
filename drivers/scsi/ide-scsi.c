@@ -4729,7 +4729,7 @@ id|cmd
 )paren
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|idescsi_eh_abort
