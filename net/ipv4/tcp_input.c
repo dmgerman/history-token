@@ -452,7 +452,7 @@ l_int|3
 op_star
 id|sndmem
 comma
-id|sysctl_tcp_wmem
+id|tcp_prot.sysctl_wmem
 (braket
 l_int|2
 )braket
@@ -582,7 +582,7 @@ id|sk
 )paren
 op_logical_and
 op_logical_neg
-id|tcp_memory_pressure
+id|tcp_prot.memory_pressure
 )paren
 (brace
 r_int
@@ -717,7 +717,7 @@ l_int|4
 op_star
 id|rcvmem
 comma
-id|sysctl_tcp_rmem
+id|tcp_prot.sysctl_rmem
 (braket
 l_int|2
 )braket
@@ -950,7 +950,7 @@ c_cond
 (paren
 id|sk-&gt;sk_rcvbuf
 OL
-id|sysctl_tcp_rmem
+id|tcp_prot.sysctl_rmem
 (braket
 l_int|2
 )braket
@@ -963,16 +963,16 @@ id|SOCK_RCVBUF_LOCK
 )paren
 op_logical_and
 op_logical_neg
-id|tcp_memory_pressure
+id|tcp_prot.memory_pressure
 op_logical_and
 id|atomic_read
 c_func
 (paren
 op_amp
-id|tcp_memory_allocated
+id|tcp_prot.memory_allocated
 )paren
 OL
-id|sysctl_tcp_mem
+id|tcp_prot.sysctl_mem
 (braket
 l_int|0
 )braket
@@ -989,7 +989,7 @@ op_amp
 id|sk-&gt;sk_rmem_alloc
 )paren
 comma
-id|sysctl_tcp_rmem
+id|tcp_prot.sysctl_rmem
 (braket
 l_int|2
 )braket
@@ -1452,7 +1452,7 @@ c_func
 (paren
 id|space
 comma
-id|sysctl_tcp_rmem
+id|tcp_prot.sysctl_rmem
 (braket
 l_int|2
 )braket
@@ -1631,7 +1631,7 @@ c_func
 id|tp
 )paren
 suffix:semicolon
-id|tcp_mem_reclaim
+id|sk_stream_mem_reclaim
 c_func
 (paren
 id|sk
@@ -11085,7 +11085,7 @@ c_func
 id|tp
 )paren
 suffix:semicolon
-id|tcp_mem_reclaim
+id|sk_stream_mem_reclaim
 c_func
 (paren
 id|sk
@@ -12326,7 +12326,7 @@ id|skb-&gt;truesize
 op_le
 id|sk-&gt;sk_forward_alloc
 op_logical_or
-id|tcp_mem_schedule
+id|sk_stream_mem_schedule
 c_func
 (paren
 id|sk
@@ -14410,7 +14410,7 @@ r_else
 r_if
 c_cond
 (paren
-id|tcp_memory_pressure
+id|tcp_prot.memory_pressure
 )paren
 id|tp-&gt;rcv_ssthresh
 op_assign
@@ -14450,7 +14450,7 @@ comma
 id|tp-&gt;rcv_nxt
 )paren
 suffix:semicolon
-id|tcp_mem_reclaim
+id|sk_stream_mem_reclaim
 c_func
 (paren
 id|sk
@@ -14516,7 +14516,7 @@ c_func
 id|tp
 )paren
 suffix:semicolon
-id|tcp_mem_reclaim
+id|sk_stream_mem_reclaim
 c_func
 (paren
 id|sk
@@ -14686,16 +14686,16 @@ id|SOCK_SNDBUF_LOCK
 )paren
 op_logical_and
 op_logical_neg
-id|tcp_memory_pressure
+id|tcp_prot.memory_pressure
 op_logical_and
 id|atomic_read
 c_func
 (paren
 op_amp
-id|tcp_memory_allocated
+id|tcp_prot.memory_allocated
 )paren
 OL
-id|sysctl_tcp_mem
+id|tcp_prot.sysctl_mem
 (braket
 l_int|0
 )braket
@@ -14759,7 +14759,7 @@ c_func
 (paren
 id|sndmem
 comma
-id|sysctl_tcp_wmem
+id|tcp_prot.sysctl_wmem
 (braket
 l_int|2
 )braket

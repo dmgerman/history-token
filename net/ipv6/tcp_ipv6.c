@@ -8921,14 +8921,14 @@ l_int|1
 suffix:semicolon
 id|sk-&gt;sk_sndbuf
 op_assign
-id|sysctl_tcp_wmem
+id|tcp_prot.sysctl_wmem
 (braket
 l_int|1
 )braket
 suffix:semicolon
 id|sk-&gt;sk_rcvbuf
 op_assign
-id|sysctl_tcp_rmem
+id|tcp_prot.sysctl_rmem
 (braket
 l_int|1
 )braket
@@ -8937,7 +8937,7 @@ id|atomic_inc
 c_func
 (paren
 op_amp
-id|tcp_sockets_allocated
+id|tcp_prot.sockets_allocated
 )paren
 suffix:semicolon
 r_return
@@ -9018,7 +9018,7 @@ id|atomic_dec
 c_func
 (paren
 op_amp
-id|tcp_sockets_allocated
+id|tcp_prot.sockets_allocated
 )paren
 suffix:semicolon
 r_return
