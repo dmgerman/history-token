@@ -35,9 +35,9 @@ DECL|macro|KBD98_IRQ
 mdefine_line|#define KBD98_IRQ&t;1
 multiline_comment|/*&n; * Register numbers.&n; */
 DECL|macro|KBD98_COMMAND_REG
-mdefine_line|#define KBD98_COMMAND_REG&t;0x43&t;
+mdefine_line|#define KBD98_COMMAND_REG&t;0x43
 DECL|macro|KBD98_STATUS_REG
-mdefine_line|#define KBD98_STATUS_REG&t;0x43&t;
+mdefine_line|#define KBD98_STATUS_REG&t;0x43
 DECL|macro|KBD98_DATA_REG
 mdefine_line|#define KBD98_DATA_REG&t;&t;0x41
 DECL|variable|kbd98io_lock

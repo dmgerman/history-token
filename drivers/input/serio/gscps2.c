@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/input/serio/gscps2.c&n; *&n; * Copyright (c) 2004 Helge Deller &lt;deller@gmx.de&gt;&n; * Copyright (c) 2002 Laurent Canet &lt;canetl@esiee.fr&gt;&n; * Copyright (c) 2002 Thibaut Varene &lt;varenet@esiee.fr&gt;&n; *&n; * Pieces of code based on linux-2.4&squot;s hp_mouse.c &amp; hp_keyb.c&n; * &t;Copyright (c) 1999 Alex deVries &lt;adevries@thepuffingroup.com&gt;&n; *&t;Copyright (c) 1999-2000 Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *&t;Copyright (c) 2000 Xavier Debacker &lt;debackex@esiee.fr&gt;&n; *&t;Copyright (c) 2000-2001 Thomas Marteau &lt;marteaut@esiee.fr&gt;&n; *&n; * HP GSC PS/2 port driver, found in PA/RISC Workstations&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; * &n; * TODO:&n; * - Dino testing (did HP ever shipped a machine on which this port&n; *                 was usable/enabled ?)&n; */
+multiline_comment|/*&n; * drivers/input/serio/gscps2.c&n; *&n; * Copyright (c) 2004 Helge Deller &lt;deller@gmx.de&gt;&n; * Copyright (c) 2002 Laurent Canet &lt;canetl@esiee.fr&gt;&n; * Copyright (c) 2002 Thibaut Varene &lt;varenet@esiee.fr&gt;&n; *&n; * Pieces of code based on linux-2.4&squot;s hp_mouse.c &amp; hp_keyb.c&n; * &t;Copyright (c) 1999 Alex deVries &lt;adevries@thepuffingroup.com&gt;&n; *&t;Copyright (c) 1999-2000 Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *&t;Copyright (c) 2000 Xavier Debacker &lt;debackex@esiee.fr&gt;&n; *&t;Copyright (c) 2000-2001 Thomas Marteau &lt;marteaut@esiee.fr&gt;&n; *&n; * HP GSC PS/2 port driver, found in PA/RISC Workstations&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * TODO:&n; * - Dino testing (did HP ever shipped a machine on which this port&n; *                 was usable/enabled ?)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -40,7 +40,7 @@ id|gscps2_device_tbl
 suffix:semicolon
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;gscps2.c: &quot;
-multiline_comment|/* &n; * Driver constants&n; */
+multiline_comment|/*&n; * Driver constants&n; */
 multiline_comment|/* various constants */
 DECL|macro|ENABLE
 mdefine_line|#define ENABLE&t;&t;&t;1
@@ -569,7 +569,7 @@ c_func
 id|ps2port_list
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * gscps2_interrupt() - Interruption service routine&n; *&n; * This function reads received PS/2 bytes and processes them on &n; * all interfaces.&n; * The problematic part here is, that the keyboard and mouse PS/2 port&n; * share the same interrupt and it&squot;s not possible to send data if any&n; * one of them holds input data. To solve this problem we try to receive&n; * the data as fast as possible and handle the reporting to the upper layer&n; * later.&n; */
+multiline_comment|/**&n; * gscps2_interrupt() - Interruption service routine&n; *&n; * This function reads received PS/2 bytes and processes them on&n; * all interfaces.&n; * The problematic part here is, that the keyboard and mouse PS/2 port&n; * share the same interrupt and it&squot;s not possible to send data if any&n; * one of them holds input data. To solve this problem we try to receive&n; * the data as fast as possible and handle the reporting to the upper layer&n; * later.&n; */
 DECL|function|gscps2_interrupt
 r_static
 id|irqreturn_t
