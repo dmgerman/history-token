@@ -8852,7 +8852,7 @@ r_if
 c_cond
 (paren
 id|delta
-op_ge
+OG
 id|TX_RING_SIZE
 )paren
 (brace
