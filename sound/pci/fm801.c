@@ -460,9 +460,11 @@ id|PCI_ANY_ID
 comma
 id|PCI_ANY_ID
 comma
-l_int|0
+id|PCI_CLASS_MULTIMEDIA_AUDIO
+op_lshift
+l_int|8
 comma
-l_int|0
+l_int|0xffff00
 comma
 l_int|0
 comma

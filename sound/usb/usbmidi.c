@@ -541,6 +541,7 @@ l_int|0x0f
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Processes the data read from the device.&n; */
+macro_line|#ifndef OLD_USB
 DECL|function|snd_usbmidi_in_urb_complete
 r_static
 r_void
@@ -557,6 +558,18 @@ id|pt_regs
 op_star
 id|regs
 )paren
+macro_line|#else
+r_static
+r_void
+id|snd_usbmidi_in_urb_complete
+c_func
+(paren
+r_struct
+id|urb
+op_star
+id|urb
+)paren
+macro_line|#endif
 (brace
 id|snd_usb_midi_in_endpoint_t
 op_star
@@ -674,6 +687,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Converts the data read from a Midiman device to standard USB MIDI packets.&n; */
+macro_line|#ifndef OLD_USB
 DECL|function|snd_usbmidi_in_midiman_complete
 r_static
 r_void
@@ -690,6 +704,18 @@ id|pt_regs
 op_star
 id|regs
 )paren
+macro_line|#else
+r_static
+r_void
+id|snd_usbmidi_in_midiman_complete
+c_func
+(paren
+r_struct
+id|urb
+op_star
+id|urb
+)paren
+macro_line|#endif
 (brace
 r_if
 c_cond
@@ -849,6 +875,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#ifndef OLD_USB
 id|snd_usbmidi_in_urb_complete
 c_func
 (paren
@@ -857,7 +884,16 @@ comma
 id|regs
 )paren
 suffix:semicolon
+macro_line|#else
+id|snd_usbmidi_in_urb_complete
+c_func
+(paren
+id|urb
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
+macro_line|#ifndef OLD_USB
 DECL|function|snd_usbmidi_out_urb_complete
 r_static
 r_void
@@ -874,6 +910,18 @@ id|pt_regs
 op_star
 id|regs
 )paren
+macro_line|#else
+r_static
+r_void
+id|snd_usbmidi_out_urb_complete
+c_func
+(paren
+r_struct
+id|urb
+op_star
+id|urb
+)paren
+macro_line|#endif
 (brace
 id|snd_usb_midi_out_endpoint_t
 op_star
@@ -2032,6 +2080,14 @@ c_cond
 (paren
 id|up
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|port-&gt;ep-&gt;umidi-&gt;chip-&gt;shutdown
+)paren
+multiline_comment|/* to be sure... */
 id|tasklet_hi_schedule
 c_func
 (paren
@@ -2039,6 +2095,7 @@ op_amp
 id|port-&gt;ep-&gt;tasklet
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|snd_usbmidi_input_open
 r_static
@@ -2154,6 +2211,13 @@ c_cond
 id|ep-&gt;urb-&gt;transfer_buffer
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ep-&gt;umidi-&gt;chip-&gt;shutdown
+)paren
+multiline_comment|/* to be sure */
 id|usb_unlink_urb
 c_func
 (paren
@@ -2656,6 +2720,9 @@ id|buffer
 comma
 id|length
 comma
+(paren
+id|usb_complete_t
+)paren
 id|snd_usbmidi_in_urb_complete
 comma
 id|ep
@@ -2677,6 +2744,9 @@ id|buffer
 comma
 id|length
 comma
+(paren
+id|usb_complete_t
+)paren
 id|snd_usbmidi_in_urb_complete
 comma
 id|ep
@@ -2775,6 +2845,13 @@ c_cond
 id|ep-&gt;urb-&gt;transfer_buffer
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ep-&gt;umidi-&gt;chip-&gt;shutdown
+)paren
+multiline_comment|/* to be sure */
 id|usb_unlink_urb
 c_func
 (paren
@@ -2961,6 +3038,9 @@ id|buffer
 comma
 id|ep-&gt;max_transfer
 comma
+(paren
+id|usb_complete_t
+)paren
 id|snd_usbmidi_out_urb_complete
 comma
 id|ep
@@ -4526,6 +4606,9 @@ l_int|0
 dot
 id|in-&gt;urb-&gt;complete
 op_assign
+(paren
+id|usb_complete_t
+)paren
 id|snd_usbmidi_in_midiman_complete
 suffix:semicolon
 r_if

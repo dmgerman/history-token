@@ -2183,6 +2183,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * complete callback from data urb&n; */
+macro_line|#ifndef OLD_USB
 DECL|function|snd_complete_urb
 r_static
 r_void
@@ -2199,6 +2200,18 @@ id|pt_regs
 op_star
 id|regs
 )paren
+macro_line|#else
+r_static
+r_void
+id|snd_complete_urb
+c_func
+(paren
+r_struct
+id|urb
+op_star
+id|urb
+)paren
+macro_line|#endif
 (brace
 id|snd_urb_ctx_t
 op_star
@@ -2329,6 +2342,7 @@ id|subs-&gt;active_mask
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * complete callback from sync urb&n; */
+macro_line|#ifndef OLD_USB
 DECL|function|snd_complete_sync_urb
 r_static
 r_void
@@ -2345,6 +2359,18 @@ id|pt_regs
 op_star
 id|regs
 )paren
+macro_line|#else
+r_static
+r_void
+id|snd_complete_sync_urb
+c_func
+(paren
+r_struct
+id|urb
+op_star
+id|urb
+)paren
+macro_line|#endif
 (brace
 id|snd_urb_ctx_t
 op_star
@@ -2497,6 +2523,15 @@ id|alive
 suffix:semicolon
 id|subs-&gt;running
 op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|subs-&gt;stream-&gt;chip-&gt;shutdown
+)paren
+multiline_comment|/* to be sure... */
+r_return
 l_int|0
 suffix:semicolon
 macro_line|#ifndef SND_USB_ASYNC_UNLINK
@@ -3922,6 +3957,9 @@ id|u
 suffix:semicolon
 id|u-&gt;urb-&gt;complete
 op_assign
+(paren
+id|usb_complete_t
+)paren
 id|snd_complete_urb
 suffix:semicolon
 )brace
@@ -4037,6 +4075,9 @@ id|u
 suffix:semicolon
 id|u-&gt;urb-&gt;complete
 op_assign
+(paren
+id|usb_complete_t
+)paren
 id|snd_complete_sync_urb
 suffix:semicolon
 )brace
@@ -10984,17 +11025,6 @@ id|list_head
 op_star
 id|p
 suffix:semicolon
-id|snd_usb_stream_t
-op_star
-id|as
-suffix:semicolon
-id|snd_usb_substream_t
-op_star
-id|subs
-suffix:semicolon
-r_int
-id|idx
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11046,12 +11076,14 @@ id|chip-&gt;num_interfaces
 op_le
 l_int|0
 )paren
+(brace
 id|snd_card_disconnect
 c_func
 (paren
 id|card
 )paren
 suffix:semicolon
+multiline_comment|/* release the pcm resources */
 id|list_for_each
 c_func
 (paren
@@ -11061,6 +11093,13 @@ op_amp
 id|chip-&gt;pcm_list
 )paren
 (brace
+id|snd_usb_stream_t
+op_star
+id|as
+suffix:semicolon
+r_int
+id|idx
+suffix:semicolon
 id|as
 op_assign
 id|list_entry
@@ -11088,6 +11127,10 @@ id|idx
 op_increment
 )paren
 (brace
+id|snd_usb_substream_t
+op_star
+id|subs
+suffix:semicolon
 id|subs
 op_assign
 op_amp
@@ -11110,40 +11153,8 @@ c_func
 id|subs
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|subs-&gt;interface
-op_ge
-l_int|0
-)paren
-(brace
-id|usb_set_interface
-c_func
-(paren
-id|subs-&gt;dev
-comma
-id|subs-&gt;interface
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|subs-&gt;interface
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 )brace
 )brace
-)brace
-r_if
-c_cond
-(paren
-id|chip-&gt;num_interfaces
-op_le
-l_int|0
-)paren
-(brace
 id|up
 c_func
 (paren

@@ -9060,28 +9060,21 @@ r_return
 id|change
 suffix:semicolon
 )brace
-DECL|variable|__devinit
+DECL|variable|__devinitdata
 r_static
 id|snd_kcontrol_new_t
 id|snd_ali5451_mixer_spdif
 (braket
 )braket
-id|__devinit
+id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* spdif aplayback switch */
+multiline_comment|/* FIXME: &quot;IEC958 Playback Switch&quot; may conflict with one on ac97_codec */
 id|ALI5451_SPDIF
 c_func
 (paren
-id|SNDRV_CTL_NAME_IEC958
-c_func
-(paren
-l_string|&quot;&quot;
-comma
-id|PLAYBACK
-comma
-id|SWITCH
-)paren
+l_string|&quot;IEC958 Output switch&quot;
 comma
 l_int|0
 comma
@@ -9248,7 +9241,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-l_int|3
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_ali5451_mixer_spdif
+)paren
 suffix:semicolon
 id|idx
 op_increment
@@ -10067,6 +10064,20 @@ op_amp
 id|temp
 )paren
 suffix:semicolon
+id|temp
+op_or_assign
+l_int|0x80
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|pci_dev
+comma
+l_int|0x59
+comma
+id|temp
+)paren
+suffix:semicolon
 id|pci_dev
 op_assign
 id|codec-&gt;pci_m7101
@@ -10084,9 +10095,7 @@ id|temp
 suffix:semicolon
 id|temp
 op_or_assign
-l_int|1
-op_lshift
-l_int|6
+l_int|0x20
 suffix:semicolon
 id|pci_write_config_byte
 c_func

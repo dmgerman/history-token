@@ -1032,7 +1032,7 @@ id|snd_printdd
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;cannot get ctl value: req = 0x%x, idx = 0x%x, val = 0x%x, type = %d&bslash;n&quot;
+l_string|&quot;cannot get ctl value: req = 0x%x, wValue = 0x%x, wIndex = 0x%x, type = %d&bslash;n&quot;
 comma
 id|request
 comma
@@ -1258,6 +1258,37 @@ l_int|0
 )paren
 r_return
 l_int|0
+suffix:semicolon
+id|snd_printdd
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;cannot set ctl value: req = 0x%x, wValue = 0x%x, wIndex = 0x%x, type = %d, data = 0x%x/0x%x&bslash;n&quot;
+comma
+id|request
+comma
+id|validx
+comma
+id|cval-&gt;ctrlif
+op_or
+(paren
+id|cval-&gt;id
+op_lshift
+l_int|8
+)paren
+comma
+id|cval-&gt;val_type
+comma
+id|buf
+(braket
+l_int|0
+)braket
+comma
+id|buf
+(braket
+l_int|1
+)braket
+)paren
 suffix:semicolon
 r_return
 op_minus
@@ -2440,15 +2471,20 @@ c_func
 id|usb_mixer_elem_info_t
 op_star
 id|cval
+comma
+r_int
+id|default_min
 )paren
 (brace
 multiline_comment|/* for failsafe */
 id|cval-&gt;min
 op_assign
-l_int|0
+id|default_min
 suffix:semicolon
 id|cval-&gt;max
 op_assign
+id|cval-&gt;min
+op_plus
 l_int|1
 suffix:semicolon
 id|cval-&gt;res
@@ -2805,6 +2841,8 @@ id|get_min_max
 c_func
 (paren
 id|cval
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|uinfo-&gt;value.integer.min
@@ -3568,6 +3606,8 @@ id|get_min_max
 c_func
 (paren
 id|cval
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|kctl
@@ -4483,6 +4523,8 @@ id|get_min_max
 c_func
 (paren
 id|cval
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|kctl
@@ -5055,6 +5097,10 @@ DECL|member|val_type
 r_int
 id|val_type
 suffix:semicolon
+DECL|member|min_value
+r_int
+id|min_value
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|procunit_info
@@ -5101,6 +5147,8 @@ comma
 l_string|&quot;Mode Select&quot;
 comma
 id|USB_MIXER_U8
+comma
+l_int|1
 )brace
 comma
 (brace
@@ -5131,6 +5179,8 @@ comma
 l_string|&quot;Mode Select&quot;
 comma
 id|USB_MIXER_U8
+comma
+l_int|1
 )brace
 comma
 (brace
@@ -5734,6 +5784,8 @@ id|get_min_max
 c_func
 (paren
 id|cval
+comma
+id|valinfo-&gt;min_value
 )paren
 suffix:semicolon
 id|kctl
