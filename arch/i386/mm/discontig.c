@@ -1189,6 +1189,11 @@ l_int|0
 suffix:semicolon
 r_int
 r_int
+op_star
+id|zholes_size
+suffix:semicolon
+r_int
+r_int
 id|max_dma
 suffix:semicolon
 r_int
@@ -1296,6 +1301,14 @@ suffix:semicolon
 macro_line|#endif
 )brace
 )brace
+id|zholes_size
+op_assign
+id|get_zholes_size
+c_func
+(paren
+id|nid
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We let the lmem_map for node 0 be allocated from the&n;&t;&t; * normal bootmem allocator, but other nodes come from the&n;&t;&t; * remapped KVA area - mbligh&n;&t;&t; */
 r_if
 c_cond
@@ -1322,7 +1335,7 @@ id|zones_size
 comma
 id|start
 comma
-l_int|0
+id|zholes_size
 )paren
 suffix:semicolon
 r_else
@@ -1343,7 +1356,7 @@ id|zones_size
 comma
 id|start
 comma
-l_int|0
+id|zholes_size
 )paren
 suffix:semicolon
 )brace
