@@ -485,7 +485,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 op_ne
@@ -598,7 +598,7 @@ id|rv
 id|sock_release
 c_func
 (paren
-id|dnrmg-&gt;socket
+id|dnrmg-&gt;sk_socket
 )paren
 suffix:semicolon
 )brace
@@ -626,7 +626,7 @@ suffix:semicolon
 id|sock_release
 c_func
 (paren
-id|dnrmg-&gt;socket
+id|dnrmg-&gt;sk_socket
 )paren
 suffix:semicolon
 )brace

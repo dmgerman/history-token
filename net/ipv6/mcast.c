@@ -11052,11 +11052,11 @@ id|sk
 op_assign
 id|igmp6_socket-&gt;sk
 suffix:semicolon
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 op_assign
 id|GFP_ATOMIC
 suffix:semicolon
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|unhash
 c_func

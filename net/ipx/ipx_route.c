@@ -1105,7 +1105,7 @@ multiline_comment|/* Apply checksum. Not allowed on 802.3 links. */
 r_if
 c_cond
 (paren
-id|sk-&gt;no_check
+id|sk-&gt;sk_no_check
 op_logical_or
 id|intrfc-&gt;if_dlink_type
 op_eq

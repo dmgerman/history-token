@@ -682,7 +682,7 @@ c_func
 id|dst
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize sk-&gt;rcv_saddr, if the transport is the&n;&t;&t; * association&squot;s active path for getsockname().&n;&t;&t; */
+multiline_comment|/* Initialize sk-&gt;sk_rcv_saddr, if the transport is the&n;&t;&t; * association&squot;s active path for getsockname().&n;&t;&t; */
 r_if
 c_cond
 (paren

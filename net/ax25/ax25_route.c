@@ -1940,7 +1940,7 @@ id|ax25-&gt;sk
 op_ne
 l_int|NULL
 )paren
-id|ax25-&gt;sk-&gt;zapped
+id|ax25-&gt;sk-&gt;sk_zapped
 op_assign
 l_int|0
 suffix:semicolon

@@ -217,7 +217,7 @@ multiline_comment|/* used for saving header of last pdu&n;&t;&t;&t;&t;&t;      r
 )brace
 suffix:semicolon
 DECL|macro|llc_sk
-mdefine_line|#define llc_sk(__sk) ((struct llc_opt *)(__sk)-&gt;protinfo)
+mdefine_line|#define llc_sk(__sk) ((struct llc_opt *)(__sk)-&gt;sk_protinfo)
 r_extern
 r_struct
 id|sock

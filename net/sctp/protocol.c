@@ -916,7 +916,7 @@ op_member_access_from_pointer
 id|rcv_saddr
 suffix:semicolon
 )brace
-multiline_comment|/* Initialize sk-&gt;rcv_saddr from sctp_addr. */
+multiline_comment|/* Initialize sk-&gt;sk_rcv_saddr from sctp_addr. */
 DECL|function|sctp_v4_to_sk_saddr
 r_static
 r_void
@@ -945,7 +945,7 @@ op_assign
 id|addr-&gt;v4.sin_addr.s_addr
 suffix:semicolon
 )brace
-multiline_comment|/* Initialize sk-&gt;daddr from sctp_addr. */
+multiline_comment|/* Initialize sk-&gt;sk_daddr from sctp_addr. */
 DECL|function|sctp_v4_to_sk_daddr
 r_static
 r_void
@@ -1806,7 +1806,7 @@ r_struct
 id|sctp_sock
 )paren
 comma
-id|sk-&gt;slab
+id|sk-&gt;sk_slab
 )paren
 suffix:semicolon
 r_if
@@ -1834,45 +1834,45 @@ comma
 id|THIS_MODULE
 )paren
 suffix:semicolon
-id|newsk-&gt;type
+id|newsk-&gt;sk_type
 op_assign
 id|SOCK_STREAM
 suffix:semicolon
-id|newsk-&gt;prot
+id|newsk-&gt;sk_prot
 op_assign
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 suffix:semicolon
-id|newsk-&gt;no_check
+id|newsk-&gt;sk_no_check
 op_assign
-id|sk-&gt;no_check
+id|sk-&gt;sk_no_check
 suffix:semicolon
-id|newsk-&gt;reuse
+id|newsk-&gt;sk_reuse
 op_assign
-id|sk-&gt;reuse
+id|sk-&gt;sk_reuse
 suffix:semicolon
-id|newsk-&gt;shutdown
+id|newsk-&gt;sk_shutdown
 op_assign
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 suffix:semicolon
-id|newsk-&gt;destruct
+id|newsk-&gt;sk_destruct
 op_assign
 id|inet_sock_destruct
 suffix:semicolon
-id|newsk-&gt;zapped
+id|newsk-&gt;sk_zapped
 op_assign
 l_int|0
 suffix:semicolon
-id|newsk-&gt;family
+id|newsk-&gt;sk_family
 op_assign
 id|PF_INET
 suffix:semicolon
-id|newsk-&gt;protocol
+id|newsk-&gt;sk_protocol
 op_assign
 id|IPPROTO_SCTP
 suffix:semicolon
-id|newsk-&gt;backlog_rcv
+id|newsk-&gt;sk_backlog_rcv
 op_assign
-id|sk-&gt;prot-&gt;backlog_rcv
+id|sk-&gt;sk_prot-&gt;backlog_rcv
 suffix:semicolon
 id|newinet
 op_assign
@@ -1948,9 +1948,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
-id|newsk-&gt;prot
+id|newsk-&gt;sk_prot
 op_member_access_from_pointer
 id|init
 c_func
@@ -2104,7 +2102,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-id|sctp_ctl_socket-&gt;sk-&gt;allocation
+id|sctp_ctl_socket-&gt;sk-&gt;sk_allocation
 op_assign
 id|GFP_ATOMIC
 suffix:semicolon
