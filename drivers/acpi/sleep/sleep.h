@@ -1,0 +1,15 @@
+r_extern
+id|u8
+id|sleep_states
+(braket
+)braket
+suffix:semicolon
+r_extern
+id|acpi_status
+id|acpi_suspend
+(paren
+id|u32
+id|state
+)paren
+suffix:semicolon
+eof

@@ -3,8 +3,8 @@ multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  
 macro_line|#ifndef __ACXFACE_H__
 DECL|macro|__ACXFACE_H__
 mdefine_line|#define __ACXFACE_H__
-macro_line|#include &quot;actypes.h&quot;
-macro_line|#include &quot;actbl.h&quot;
+macro_line|#include &lt;acpi/actypes.h&gt;
+macro_line|#include &lt;acpi/actbl.h&gt;
 multiline_comment|/*&n; * Global interfaces&n; */
 id|acpi_status
 id|acpi_initialize_subsystem
