@@ -1,4 +1,6 @@
 multiline_comment|/*&n; *  Generic BitBLT function for frame buffer with packed pixels of any depth.&n; *&n; *      Copyright (C)  June 1999 James Simmons&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; *&n; * NOTES:&n; *&n; *    This function copys a image from system memory to video memory. The&n; *  image can be a bitmap where each 0 represents the background color and&n; *  each 1 represents the foreground color. Great for font handling. It can&n; *  also be a color image. This is determined by image_depth. The color image&n; *  must be laid out exactly in the same format as the framebuffer. Yes I know&n; *  their are cards with hardware that coverts images of various depths to the&n; *  framebuffer depth. But not every card has this. All images must be rounded&n; *  up to the nearest byte. For example a bitmap 12 bits wide must be two &n; *  bytes width. &n; *&n; *  FIXME&n; *  The code for 24 bit is horrible. It copies byte by byte size instead of&n; *  longs like the other sizes. Needs to be optimized.&n; *  &n; *  Tony: &n; *  Incorporate mask tables similar to fbcon-cfb*.c in 2.4 API.  This speeds &n; *  up the code significantly.&n; *  &n; *  Code for depths not multiples of BITS_PER_LONG is still kludgy, which is&n; *  still processed a bit at a time.   &n; *&n; *  Also need to add code to deal with cards endians that are different than&n; *  the native cpu endians. I also need to deal with MSB position in the word.&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
@@ -1551,4 +1553,29 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+DECL|variable|cfb_imageblit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cfb_imageblit
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;James Simmons &lt;jsimmons@users.sf.net&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Generic software accelerated imaging drawing&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

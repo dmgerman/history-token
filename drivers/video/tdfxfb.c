@@ -6606,22 +6606,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|noaccel
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|noaccel
-comma
-l_string|&quot;Disable hardware acceleration (1 = disabled), enabled by default.&quot;
-)paren
-suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|variable|tdfxfb_init
 id|module_init

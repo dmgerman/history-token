@@ -1,4 +1,6 @@
 multiline_comment|/*&n; *  Generic function for frame buffer with packed pixels of any depth.&n; *&n; *      Copyright (C)  June 1999 James Simmons&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; *&n; * NOTES:&n; * &n; *  This is for cfb packed pixels. Iplan and such are incorporated in the &n; *  drivers that need them.&n; * &n; *  FIXME&n; *  The code for 24 bit is horrible. It copies byte by byte size instead of &n; *  longs like the other sizes. Needs to be optimized. &n; *&n; *  Also need to add code to deal with cards endians that are different than &n; *  the native cpu endians. I also need to deal with MSB position in the word.&n; *  &n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
@@ -2891,4 +2893,29 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|variable|cfb_copyarea
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cfb_copyarea
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;James Simmons &lt;jsimmons@users.sf.net&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Generic software accelerated copyarea&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

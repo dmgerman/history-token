@@ -1,4 +1,6 @@
 multiline_comment|/*&n; *  Generic fillrect for frame buffers with packed pixels of any depth. &n; *&n; *      Copyright (C)  2000 James Simmons (jsimmons@linux-fbdev.org) &n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; *&n; * NOTES:&n; *&n; *  The code for depths like 24 that don&squot;t have integer number of pixels per &n; *  long is broken and needs to be fixed. For now I turned these types of &n; *  mode off.&n; *&n; *  Also need to add code to deal with cards endians that are different than&n; *  the native cpu endians. I also need to deal with MSB position in the word.&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
@@ -970,4 +972,29 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|variable|cfb_fillrect
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cfb_fillrect
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;James Simmons &lt;jsimmons@users.sf.net&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Generic software accelerated fill rectangle&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof
