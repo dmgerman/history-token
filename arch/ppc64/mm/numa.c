@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#if 1
 DECL|macro|dbg
 mdefine_line|#define dbg(args...) udbg_printf(args)
@@ -266,6 +267,30 @@ id|max_domain
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|strstr
+c_func
+(paren
+id|saved_command_line
+comma
+l_string|&quot;numa=off&quot;
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;NUMA disabled by user&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|cpu
 op_assign
 id|of_find_node_by_type

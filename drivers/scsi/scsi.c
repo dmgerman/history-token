@@ -15,6 +15,8 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;scsi_priv.h&quot;
@@ -3242,6 +3244,118 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+DECL|function|scsi_cpu_notify
+r_static
+r_int
+id|scsi_cpu_notify
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|self
+comma
+r_int
+r_int
+id|action
+comma
+r_void
+op_star
+id|hcpu
+)paren
+(brace
+r_int
+id|cpu
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|hcpu
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|action
+)paren
+(brace
+r_case
+id|CPU_DEAD
+suffix:colon
+multiline_comment|/* Drain scsi_done_q. */
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|list_splice_init
+c_func
+(paren
+op_amp
+id|per_cpu
+c_func
+(paren
+id|scsi_done_q
+comma
+id|cpu
+)paren
+comma
+op_amp
+id|__get_cpu_var
+c_func
+(paren
+id|scsi_done_q
+)paren
+)paren
+suffix:semicolon
+id|raise_softirq_irqoff
+c_func
+(paren
+id|SCSI_SOFTIRQ
+)paren
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+r_return
+id|NOTIFY_OK
+suffix:semicolon
+)brace
+DECL|variable|scsi_cpu_nb
+r_static
+r_struct
+id|notifier_block
+id|__devinitdata
+id|scsi_cpu_nb
+op_assign
+(brace
+dot
+id|notifier_call
+op_assign
+id|scsi_cpu_notify
+comma
+)brace
+suffix:semicolon
+DECL|macro|register_scsi_cpu
+mdefine_line|#define register_scsi_cpu() register_cpu_notifier(&amp;scsi_cpu_nb)
+DECL|macro|unregister_scsi_cpu
+mdefine_line|#define unregister_scsi_cpu() unregister_cpu_notifier(&amp;scsi_cpu_nb)
+macro_line|#else
+DECL|macro|register_scsi_cpu
+mdefine_line|#define register_scsi_cpu()
+DECL|macro|unregister_scsi_cpu
+mdefine_line|#define unregister_scsi_cpu()
+macro_line|#endif /* CONFIG_HOTPLUG_CPU */
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -3422,6 +3536,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|register_scsi_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3523,6 +3642,11 @@ c_func
 )paren
 suffix:semicolon
 id|scsi_exit_queue
+c_func
+(paren
+)paren
+suffix:semicolon
+id|unregister_scsi_cpu
 c_func
 (paren
 )paren

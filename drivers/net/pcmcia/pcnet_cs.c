@@ -3765,6 +3765,12 @@ op_and_assign
 op_complement
 id|DEV_CONFIG_PENDING
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+id|ei_poll
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

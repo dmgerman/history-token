@@ -1,11 +1,9 @@
 multiline_comment|/*&n; *  linux/fs/hpfs/super.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  mounting, unmounting, error handling&n; */
-macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/parser.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/vfs.h&gt;
+macro_line|#include &lt;linux/statfs.h&gt;
 multiline_comment|/* Mark the filesystem dirty, so that chkdsk checks it when os/2 booted */
 DECL|function|mark_dirty
 r_static
@@ -543,6 +541,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hpfs_put_super
+r_static
 r_void
 id|hpfs_put_super
 c_func
@@ -803,6 +802,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|function|hpfs_statfs
+r_static
 r_int
 id|hpfs_statfs
 c_func
@@ -934,7 +934,7 @@ c_func
 (paren
 id|hpfs_inode_cachep
 comma
-id|SLAB_KERNEL
+id|SLAB_NOFS
 )paren
 suffix:semicolon
 r_if
@@ -1034,6 +1034,13 @@ op_amp
 id|ei-&gt;i_sem
 )paren
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|ei-&gt;i_parent
+)paren
+suffix:semicolon
 id|inode_init_once
 c_func
 (paren
@@ -1117,51 +1124,6 @@ l_string|&quot;hpfs_inode_cache: not all structures were freed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Super operations */
-DECL|variable|hpfs_sops
-r_static
-r_struct
-id|super_operations
-id|hpfs_sops
-op_assign
-(brace
-dot
-id|alloc_inode
-op_assign
-id|hpfs_alloc_inode
-comma
-dot
-id|destroy_inode
-op_assign
-id|hpfs_destroy_inode
-comma
-dot
-id|read_inode
-op_assign
-id|hpfs_read_inode
-comma
-dot
-id|delete_inode
-op_assign
-id|hpfs_delete_inode
-comma
-dot
-id|put_super
-op_assign
-id|hpfs_put_super
-comma
-dot
-id|statfs
-op_assign
-id|hpfs_statfs
-comma
-dot
-id|remount_fs
-op_assign
-id|hpfs_remount_fs
-comma
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * A tiny parser for option strings, stolen from dosfs.&n; * Stolen again from read-only hpfs.&n; * And updated for table-driven option parsing.&n; */
 r_enum
 (brace
@@ -1874,6 +1836,7 @@ l_string|&quot;&bslash;n&bslash;&n;HPFS filesystem options:&bslash;n&bslash;&n; 
 suffix:semicolon
 )brace
 DECL|function|hpfs_remount_fs
+r_static
 r_int
 id|hpfs_remount_fs
 c_func
@@ -2138,6 +2101,46 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Super operations */
+DECL|variable|hpfs_sops
+r_static
+r_struct
+id|super_operations
+id|hpfs_sops
+op_assign
+(brace
+dot
+id|alloc_inode
+op_assign
+id|hpfs_alloc_inode
+comma
+dot
+id|destroy_inode
+op_assign
+id|hpfs_destroy_inode
+comma
+dot
+id|delete_inode
+op_assign
+id|hpfs_delete_inode
+comma
+dot
+id|put_super
+op_assign
+id|hpfs_put_super
+comma
+dot
+id|statfs
+op_assign
+id|hpfs_statfs
+comma
+dot
+id|remount_fs
+op_assign
+id|hpfs_remount_fs
+comma
+)brace
+suffix:semicolon
 DECL|function|hpfs_fill_super
 r_static
 r_int
@@ -2284,22 +2287,11 @@ id|sbi-&gt;sb_cp_table
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sbi-&gt;sb_rd_inode
-op_assign
-l_int|0
-suffix:semicolon
 id|init_MUTEX
 c_func
 (paren
 op_amp
 id|sbi-&gt;hpfs_creation_de
-)paren
-suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|sbi-&gt;sb_iget_q
 )paren
 suffix:semicolon
 id|uid
@@ -3037,17 +3029,9 @@ c_func
 id|bh0
 )paren
 suffix:semicolon
-id|hpfs_lock_iget
-c_func
-(paren
-id|s
-comma
-l_int|1
-)paren
-suffix:semicolon
 id|root
 op_assign
-id|iget
+id|iget_locked
 c_func
 (paren
 id|s
@@ -3055,10 +3039,31 @@ comma
 id|sbi-&gt;sb_root
 )paren
 suffix:semicolon
-id|hpfs_unlock_iget
+r_if
+c_cond
+(paren
+op_logical_neg
+id|root
+)paren
+r_goto
+id|bail0
+suffix:semicolon
+id|hpfs_init_inode
 c_func
 (paren
-id|s
+id|root
+)paren
+suffix:semicolon
+id|hpfs_read_inode
+c_func
+(paren
+id|root
+)paren
+suffix:semicolon
+id|unlock_new_inode
+c_func
+(paren
+id|root
 )paren
 suffix:semicolon
 id|s-&gt;s_root

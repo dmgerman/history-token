@@ -438,10 +438,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) (((a) &lt; (b)) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/* 4K page size but our output routines use some slack for overruns */
 DECL|macro|PROC_BLOCK_SIZE
 mdefine_line|#define PROC_BLOCK_SIZE (3*1024)

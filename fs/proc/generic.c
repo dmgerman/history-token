@@ -135,10 +135,6 @@ id|proc_file_write
 comma
 )brace
 suffix:semicolon
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) (((a) &lt; (b)) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/* buffer size is one page but our output routines use some slack for overruns */
 DECL|macro|PROC_BLOCK_SIZE
 mdefine_line|#define PROC_BLOCK_SIZE&t;(PAGE_SIZE - 1024)
@@ -246,9 +242,11 @@ id|eof
 (brace
 id|count
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+id|ssize_t
+comma
 id|PROC_BLOCK_SIZE
 comma
 id|nbytes

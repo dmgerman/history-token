@@ -1019,5 +1019,20 @@ multiline_comment|/* VC state (ATM_VS_*; for output only) */
 suffix:semicolon
 DECL|macro|TCA_ATM_MAX
 mdefine_line|#define TCA_ATM_MAX&t;TCA_ATM_STATE
+multiline_comment|/* Delay section */
+DECL|struct|tc_dly_qopt
+r_struct
+id|tc_dly_qopt
+(brace
+DECL|member|latency
+id|__u32
+id|latency
+suffix:semicolon
+DECL|member|limit
+id|__u32
+id|limit
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#endif
 eof

@@ -781,9 +781,6 @@ macro_line|#else /* !DEBUG_ZLIB */
 DECL|macro|send_bits
 mdefine_line|#define send_bits(s, value, length) &bslash;&n;{ int len = length;&bslash;&n;  if (s-&gt;bi_valid &gt; (int)Buf_size - len) {&bslash;&n;    int val = value;&bslash;&n;    s-&gt;bi_buf |= (val &lt;&lt; s-&gt;bi_valid);&bslash;&n;    put_short(s, s-&gt;bi_buf);&bslash;&n;    s-&gt;bi_buf = (ush)val &gt;&gt; (Buf_size - s-&gt;bi_valid);&bslash;&n;    s-&gt;bi_valid += len - Buf_size;&bslash;&n;  } else {&bslash;&n;    s-&gt;bi_buf |= (value) &lt;&lt; s-&gt;bi_valid;&bslash;&n;    s-&gt;bi_valid += len;&bslash;&n;  }&bslash;&n;}
 macro_line|#endif /* DEBUG_ZLIB */
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b) (a &gt;= b ? a : b)
-multiline_comment|/* the arguments must not have side effects */
 multiline_comment|/* ===========================================================================&n; * Initialize the various &squot;constant&squot; tables. In a multi-threaded environment,&n; * this function may be called by two threads concurrently, but this is&n; * harmless since both invocations do exactly the same thing.&n; */
 DECL|function|tr_static_init
 r_static
@@ -2562,7 +2559,7 @@ op_assign
 id|uch
 )paren
 (paren
-id|MAX
+id|max
 c_func
 (paren
 id|s-&gt;depth

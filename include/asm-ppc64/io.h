@@ -24,9 +24,6 @@ DECL|macro|SIO_CONFIG_RD
 mdefine_line|#define SIO_CONFIG_RD&t;0x399
 DECL|macro|SLOW_DOWN_IO
 mdefine_line|#define SLOW_DOWN_IO
-multiline_comment|/* Define this if you want to see virt_to_* messages */
-DECL|macro|__IO_DEBUG
-macro_line|#undef __IO_DEBUG
 r_extern
 r_int
 r_int
@@ -373,7 +370,6 @@ mdefine_line|#define outsl_ns(port, buf, nl)&t;_outsl_ns((u32 *)((port)+pci_io_b
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT ~(0UL)
 macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n; * Map in an area of physical address space, for accessing&n; * I/O devices etc.&n; */
 r_extern
 r_int
 id|__ioremap_explicit
@@ -415,6 +411,7 @@ r_int
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/**&n; * ioremap     -   map bus memory into CPU space&n; * @address:   bus address of the memory&n; * @size:      size of the resource to map&n; *&n; * ioremap performs a platform specific sequence of operations to&n; * make bus memory CPU accessible via the readb/readw/readl/writeb/&n; * writew/writel functions and the other mmio helpers. The returned&n; * address is not guaranteed to be usable directly as a virtual&n; * address.&n; */
 r_extern
 r_void
 op_star
@@ -467,7 +464,7 @@ r_int
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv, for&n; * addresses in the area where the kernel has the RAM mapped.&n; */
+multiline_comment|/**&n; *&t;virt_to_phys&t;-&t;map virtual addresses to physical&n; *&t;@address: address to remap&n; *&n; *&t;The returned physical address is the physical (CPU) mapping for&n; *&t;the memory address given. It is only valid to use this function on&n; *&t;addresses directly mapped or allocated via kmalloc.&n; *&n; *&t;This function does not give bus mappings for DMA transfers. In&n; *&t;almost all conceivable cases a device driver should not be using&n; *&t;this function&n; */
 DECL|function|virt_to_phys
 r_static
 r_inline
@@ -482,30 +479,6 @@ op_star
 id|address
 )paren
 (brace
-macro_line|#ifdef __IO_DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;virt_to_phys: 0x%08lx -&gt; 0x%08lx&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|address
-comma
-id|__pa
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|address
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|__pa
 c_func
@@ -518,6 +491,7 @@ id|address
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;phys_to_virt&t;-&t;map physical address to virtual&n; *&t;@address: address to remap&n; *&n; *&t;The returned virtual address is a current CPU mapping for&n; *&t;the memory address given. It is only valid to use this function on&n; *&t;addresses that have a kernel mapping&n; *&n; *&t;This function does not handle bus mappings for DMA transfers. In&n; *&t;almost all conceivable cases a device driver should not be using&n; *&t;this function&n; */
 DECL|function|phys_to_virt
 r_static
 r_inline
@@ -531,22 +505,6 @@ r_int
 id|address
 )paren
 (brace
-macro_line|#ifdef __IO_DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;phys_to_virt: 0x%08lx -&gt; 0x%08lx&bslash;n&quot;
-comma
-id|address
-comma
-id|__va
-c_func
-(paren
-id|address
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 r_void
@@ -1187,6 +1145,7 @@ macro_line|#ifndef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/eeh.h&gt;
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
+multiline_comment|/**&n; *&t;check_signature&t;&t;-&t;find BIOS signatures&n; *&t;@io_addr: mmio address to check&n; *&t;@signature:  signature block&n; *&t;@length: length of signature&n; *&n; *&t;Perform a signature comparison with the mmio address io_addr. This&n; *&t;address should have been obtained by ioremap.&n; *&t;Returns 1 on a match.&n; */
 DECL|function|check_signature
 r_static
 r_inline

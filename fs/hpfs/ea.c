@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *  linux/fs/hpfs/ea.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  handling extended attributes&n; */
-macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 multiline_comment|/* Remove external extended attributes. ano specifies whether a is a &n;   direct sector where eas starts or an anode */
 DECL|function|hpfs_ea_ext_remove
@@ -327,7 +325,7 @@ id|size
 op_plus
 l_int|1
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -989,7 +987,7 @@ id|ea-&gt;valuelen
 op_plus
 l_int|1
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -1227,7 +1225,7 @@ id|ea-&gt;valuelen
 op_plus
 l_int|1
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren

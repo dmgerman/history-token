@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;asm/edd.h&gt;
+macro_line|#include &lt;linux/edd.h&gt;
 multiline_comment|/* FIXME - this really belongs in include/scsi/scsi.h */
 macro_line|#include &lt;../drivers/scsi/scsi.h&gt;
 macro_line|#include &lt;../drivers/scsi/hosts.h&gt;
@@ -3013,7 +3013,7 @@ id|sd
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * edd_match_scsidev()&n; * @edev - EDD device is a known SCSI device&n; * @sd - scsi_device with host who&squot;s parent is a PCI controller&n; * &n; * returns 1 if a match is found, 0 if not.&n; */
+multiline_comment|/**&n; * edd_match_scsidev()&n; * @edev - EDD device is a known SCSI device&n; * @sd - scsi_device with host who&squot;s parent is a PCI controller&n; *&n; * returns 1 if a match is found, 0 if not.&n; */
 DECL|function|edd_match_scsidev
 r_static
 r_int
@@ -3105,7 +3105,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * edd_find_matching_device()&n; * @edev - edd_device to match&n; *&n; * Search the SCSI devices for a drive that matches the EDD &n; * device descriptor we have. If we find a match, return it,&n; * otherwise, return NULL.&n; */
+multiline_comment|/**&n; * edd_find_matching_device()&n; * @edev - edd_device to match&n; *&n; * Search the SCSI devices for a drive that matches the EDD&n; * device descriptor we have. If we find a match, return it,&n; * otherwise, return NULL.&n; */
 r_static
 r_struct
 id|scsi_device

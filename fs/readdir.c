@@ -108,10 +108,10 @@ comma
 id|filler
 )paren
 suffix:semicolon
-id|update_atime
+id|file_accessed
 c_func
 (paren
-id|inode
+id|file
 )paren
 suffix:semicolon
 )brace

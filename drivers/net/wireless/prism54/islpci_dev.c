@@ -1842,6 +1842,10 @@ id|KERN_ERR
 l_string|&quot;Error allocating skb.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|skb
+op_assign
+l_int|NULL
+suffix:semicolon
 r_goto
 id|out_free
 suffix:semicolon
@@ -2341,7 +2345,11 @@ macro_line|#endif
 multiline_comment|/* allocate a private device structure to the network device  */
 id|priv
 op_assign
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:semicolon
 id|priv-&gt;ndev
 op_assign
