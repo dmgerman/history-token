@@ -50,6 +50,7 @@ id|MAX_NR_CONSOLES
 )braket
 suffix:semicolon
 DECL|variable|con2fb_map
+r_int
 r_char
 id|con2fb_map
 (braket
