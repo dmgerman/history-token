@@ -2002,6 +2002,16 @@ op_plus
 id|MMC_RESTO
 )paren
 suffix:semicolon
+id|writel
+c_func
+(paren
+id|host-&gt;imask
+comma
+id|host-&gt;base
+op_plus
+id|MMC_I_MASK
+)paren
+suffix:semicolon
 id|pxa_gpio_mode
 c_func
 (paren
