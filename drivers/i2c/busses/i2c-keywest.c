@@ -49,6 +49,11 @@ l_string|&quot;state_dead&quot;
 )brace
 suffix:semicolon
 macro_line|#endif /* DEBUG */
+DECL|variable|probe
+r_static
+r_int
+id|probe
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -76,11 +81,6 @@ r_bool
 comma
 l_int|0
 )paren
-suffix:semicolon
-DECL|variable|probe
-r_static
-r_int
-id|probe
 suffix:semicolon
 macro_line|#ifdef POLLED_MODE
 multiline_comment|/* Don&squot;t schedule, the g5 fan controller is too&n; * timing sensitive&n; */
