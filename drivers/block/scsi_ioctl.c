@@ -1514,6 +1514,8 @@ comma
 id|q-&gt;bounce_gfp
 op_or
 id|GFP_USER
+op_or
+id|__GFP_NOWARN
 )paren
 suffix:semicolon
 r_if
