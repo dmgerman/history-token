@@ -320,6 +320,7 @@ r_int
 id|pci_iorange
 suffix:semicolon
 id|u16
+id|__iomem
 op_star
 id|pci_ioaddr
 op_assign
@@ -498,9 +499,7 @@ c_func
 op_amp
 id|priv-&gt;hw
 comma
-id|dev-&gt;base_addr
-comma
-id|HERMES_MEM
+id|pci_ioaddr
 comma
 id|HERMES_32BIT_REGSPACING
 )paren
@@ -735,11 +734,6 @@ id|priv-&gt;hw.iobase
 id|iounmap
 c_func
 (paren
-(paren
-r_int
-r_char
-op_star
-)paren
 id|priv-&gt;hw.iobase
 )paren
 suffix:semicolon

@@ -40,6 +40,7 @@ id|mdev
 suffix:semicolon
 DECL|member|vaddr
 r_void
+id|__iomem
 op_star
 id|vaddr
 suffix:semicolon
@@ -868,12 +869,7 @@ c_func
 (paren
 id|hw
 comma
-(paren
-id|ulong
-)paren
 id|card-&gt;vaddr
-comma
-id|HERMES_MEM
 comma
 id|HERMES_16BIT_REGSPACING
 )paren
