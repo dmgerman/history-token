@@ -41,6 +41,11 @@ l_int|10
 suffix:semicolon
 DECL|macro|BLK_DEFAULT_TIMEOUT
 mdefine_line|#define BLK_DEFAULT_TIMEOUT&t;(60 * HZ)
+multiline_comment|/* defined in ../scsi/scsi.h  ... should it be included? */
+macro_line|#ifndef SCSI_SENSE_BUFFERSIZE
+DECL|macro|SCSI_SENSE_BUFFERSIZE
+mdefine_line|#define SCSI_SENSE_BUFFERSIZE 64
+macro_line|#endif
 DECL|function|blk_do_rq
 r_int
 id|blk_do_rq
@@ -384,8 +389,6 @@ comma
 id|start_time
 suffix:semicolon
 r_int
-id|err
-comma
 id|reading
 comma
 id|writing
@@ -409,7 +412,7 @@ suffix:semicolon
 r_char
 id|sense
 (braket
-l_int|24
+id|SCSI_SENSE_BUFFERSIZE
 )braket
 suffix:semicolon
 r_void
@@ -985,9 +988,7 @@ id|start_time
 op_assign
 id|jiffies
 suffix:semicolon
-multiline_comment|/*&n;&t; * return -EIO if we didn&squot;t transfer all data, caller can look at&n;&t; * residual count to find out how much did succeed&n;&t; */
-id|err
-op_assign
+multiline_comment|/* ignore return value. All information is passed back to caller&n;&t; * (if he doesn&squot;t check that is his problem).&n;&t; * N.B. a non-zero SCSI status is _not_ necessarily an error.&n;&t; */
 id|blk_do_rq
 c_func
 (paren
@@ -997,18 +998,6 @@ id|bdev
 comma
 id|rq
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rq-&gt;data_len
-OG
-l_int|0
-)paren
-id|err
-op_assign
-op_minus
-id|EIO
 suffix:semicolon
 r_if
 c_cond
@@ -1031,9 +1020,49 @@ id|bio
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* write to all output members */
 id|hdr.status
 op_assign
 id|rq-&gt;errors
+suffix:semicolon
+id|hdr.masked_status
+op_assign
+(paren
+id|hdr.status
+op_rshift
+l_int|1
+)paren
+op_amp
+l_int|0x1f
+suffix:semicolon
+id|hdr.msg_status
+op_assign
+l_int|0
+suffix:semicolon
+id|hdr.host_status
+op_assign
+l_int|0
+suffix:semicolon
+id|hdr.driver_status
+op_assign
+l_int|0
+suffix:semicolon
+id|hdr.info
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hdr.masked_status
+op_logical_or
+id|hdr.host_status
+op_logical_or
+id|hdr.driver_status
+)paren
+id|hdr.info
+op_or_assign
+id|SG_INFO_CHECK
 suffix:semicolon
 id|hdr.resid
 op_assign
@@ -1053,6 +1082,10 @@ op_div
 id|HZ
 )paren
 suffix:semicolon
+id|hdr.sb_len_wr
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1061,6 +1094,20 @@ op_logical_and
 id|hdr.sbp
 )paren
 (brace
+r_int
+id|len
+op_assign
+(paren
+id|hdr.mx_sb_len
+OL
+id|rq-&gt;sense_len
+)paren
+ques
+c_cond
+id|hdr.mx_sb_len
+suffix:colon
+id|rq-&gt;sense_len
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1072,12 +1119,12 @@ id|hdr.sbp
 comma
 id|rq-&gt;sense
 comma
-id|rq-&gt;sense_len
+id|len
 )paren
 )paren
 id|hdr.sb_len_wr
 op_assign
-id|rq-&gt;sense_len
+id|len
 suffix:semicolon
 )brace
 id|blk_put_request
@@ -1129,8 +1176,9 @@ id|buffer
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* may not have succeeded, but output values written to control&n;&t; * structure (struct sg_io_hdr).  */
 r_return
-id|err
+l_int|0
 suffix:semicolon
 )brace
 DECL|macro|FORMAT_UNIT_TIMEOUT
