@@ -708,6 +708,12 @@ id|err
 r_goto
 id|error_return
 suffix:semicolon
+id|jbd_lock_bh_state
+c_func
+(paren
+id|bitmap_bh
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -725,6 +731,12 @@ op_increment
 (brace
 multiline_comment|/*&n;&t;&t; * An HJ special.  This is expensive...&n;&t;&t; */
 macro_line|#ifdef CONFIG_JBD_DEBUG
+id|jbd_unlock_bh_state
+c_func
+(paren
+id|bitmap_bh
+)paren
+suffix:semicolon
 (brace
 r_struct
 id|buffer_head
@@ -795,6 +807,12 @@ id|debug_bh
 suffix:semicolon
 )brace
 )brace
+id|jbd_lock_bh_state
+c_func
+(paren
+id|bitmap_bh
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* @@@ This prevents newly-allocated data from being&n;&t;&t; * freed and then reallocated within the same&n;&t;&t; * transaction. &n;&t;&t; * &n;&t;&t; * Ideally we would want to allow that to happen, but to&n;&t;&t; * do so requires making journal_forget() capable of&n;&t;&t; * revoking the queued write of a data block, which&n;&t;&t; * implies blocking on the journal lock.  *forget()&n;&t;&t; * cannot block due to truncate races.&n;&t;&t; *&n;&t;&t; * Eventually we can fix this by making journal_forget()&n;&t;&t; * return a status indicating whether or not it was able&n;&t;&t; * to revoke the buffer.  On successful revoke, it is&n;&t;&t; * safe not to set the allocation bit in the committed&n;&t;&t; * bitmap, because we know that there is no outstanding&n;&t;&t; * activity on the buffer any more and so it is safe to&n;&t;&t; * reallocate it.  &n;&t;&t; */
 id|BUFFER_TRACE
@@ -906,6 +924,12 @@ op_increment
 suffix:semicolon
 )brace
 )brace
+id|jbd_unlock_bh_state
+c_func
+(paren
+id|bitmap_bh
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1061,6 +1085,7 @@ suffix:semicolon
 multiline_comment|/* For ext3 allocations, we must not reuse any blocks which are&n; * allocated in the bitmap buffer&squot;s &quot;last committed data&quot; copy.  This&n; * prevents deletes from freeing up the page for reuse until we have&n; * committed the delete transaction.&n; *&n; * If we didn&squot;t do this, then deleting something and reallocating it as&n; * data would allow the old block to be overwritten before the&n; * transaction committed (because we force data to disk before commit).&n; * This would lead to corruption if we crashed between overwriting the&n; * data and committing the delete. &n; *&n; * @@@ We may want to make this allocation behaviour conditional on&n; * data-writes at some point, and disable it for metadata allocations or&n; * sync-data inodes.&n; */
 DECL|function|ext3_test_allocatable
 r_static
+r_inline
 r_int
 id|ext3_test_allocatable
 c_func
@@ -1072,6 +1097,9 @@ r_struct
 id|buffer_head
 op_star
 id|bh
+comma
+r_int
+id|have_access
 )paren
 (brace
 r_if
@@ -1091,6 +1119,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|have_access
+op_logical_or
 op_logical_neg
 id|buffer_jbd
 c_func
@@ -1144,6 +1175,9 @@ id|bh
 comma
 r_int
 id|maxblocks
+comma
+r_int
+id|have_access
 )paren
 (brace
 r_int
@@ -1204,6 +1238,8 @@ c_func
 id|here
 comma
 id|bh
+comma
+id|have_access
 )paren
 )paren
 r_return
@@ -1296,6 +1332,8 @@ c_func
 id|next
 comma
 id|bh
+comma
+id|have_access
 )paren
 )paren
 r_return
@@ -1346,25 +1384,18 @@ c_func
 id|next
 comma
 id|bh
+comma
+id|have_access
 )paren
 )paren
 r_return
 id|next
 suffix:semicolon
-id|J_ASSERT_BH
-c_func
+r_if
+c_cond
 (paren
-id|bh
-comma
-id|bh2jh
-c_func
-(paren
-id|bh
+id|have_access
 )paren
-op_member_access_from_pointer
-id|b_committed_data
-)paren
-suffix:semicolon
 id|here
 op_assign
 id|ext3_find_next_zero_bit
@@ -1542,6 +1573,8 @@ c_func
 id|goal
 comma
 id|bitmap_bh
+comma
+l_int|0
 )paren
 )paren
 r_goto
@@ -1563,6 +1596,8 @@ c_func
 (paren
 id|sb
 )paren
+comma
+id|have_access
 )paren
 suffix:semicolon
 r_if
@@ -1594,6 +1629,8 @@ op_minus
 l_int|1
 comma
 id|bitmap_bh
+comma
+id|have_access
 )paren
 suffix:semicolon
 id|i
@@ -1646,6 +1683,12 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
+id|jbd_lock_bh_state
+c_func
+(paren
+id|bitmap_bh
+)paren
+suffix:semicolon
 id|have_access
 op_assign
 l_int|1
@@ -1706,6 +1749,12 @@ comma
 l_string|&quot;journal_dirty_metadata for bitmap block&quot;
 )paren
 suffix:semicolon
+id|jbd_unlock_bh_state
+c_func
+(paren
+id|bitmap_bh
+)paren
+suffix:semicolon
 id|fatal
 op_assign
 id|ext3_journal_dirty_metadata
@@ -1748,6 +1797,12 @@ c_func
 id|bitmap_bh
 comma
 l_string|&quot;journal_release_buffer&quot;
+)paren
+suffix:semicolon
+id|jbd_unlock_bh_state
+c_func
+(paren
+id|bitmap_bh
 )paren
 suffix:semicolon
 id|ext3_journal_release_buffer
@@ -2497,7 +2552,12 @@ id|debug_bh
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+id|jbd_lock_bh_state
+c_func
+(paren
+id|bitmap_bh
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -2527,12 +2587,10 @@ id|bitmap_bh
 op_member_access_from_pointer
 id|b_committed_data
 )paren
-id|J_ASSERT_BH
-c_func
+(brace
+r_if
+c_cond
 (paren
-id|bitmap_bh
-comma
-op_logical_neg
 id|ext3_test_bit
 c_func
 (paren
@@ -2547,7 +2605,18 @@ op_member_access_from_pointer
 id|b_committed_data
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: block was unexpectedly set in &quot;
+l_string|&quot;b_committed_data&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
+)brace
+)brace
 id|ext3_debug
 c_func
 (paren
@@ -2568,6 +2637,13 @@ id|group_no
 )paren
 )paren
 suffix:semicolon
+id|jbd_unlock_bh_state
+c_func
+(paren
+id|bitmap_bh
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* ret_block was blockgroup-relative.  Now it becomes fs-relative */
 id|ret_block
 op_assign

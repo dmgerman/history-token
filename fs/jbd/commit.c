@@ -2173,6 +2173,16 @@ id|journal-&gt;j_running_transaction
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If there is undo-protected committed data against&n;&t;&t; * this buffer, then we can remove it now.  If it is a&n;&t;&t; * buffer needing such protection, the old frozen_data&n;&t;&t; * field now points to a committed version of the&n;&t;&t; * buffer, so rotate that field to the new committed&n;&t;&t; * data.&n;&t;&t; *&n;&t;&t; * Otherwise, we can just throw away the frozen data now.&n;&t;&t; */
+id|jbd_lock_bh_state
+c_func
+(paren
+id|jh2bh
+c_func
+(paren
+id|jh
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2223,6 +2233,16 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|jbd_unlock_bh_state
+c_func
+(paren
+id|jh2bh
+c_func
+(paren
+id|jh
+)paren
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
