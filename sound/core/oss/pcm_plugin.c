@@ -1881,8 +1881,6 @@ l_int|NULL
 suffix:semicolon
 r_int
 id|err
-comma
-id|first
 suffix:semicolon
 r_int
 id|stream
@@ -2144,12 +2142,6 @@ r_else
 id|tmpformat.format
 op_assign
 id|SNDRV_PCM_FORMAT_S16
-suffix:semicolon
-id|first
-op_assign
-id|plugin
-op_eq
-l_int|NULL
 suffix:semicolon
 r_switch
 c_cond
