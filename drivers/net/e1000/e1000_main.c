@@ -591,7 +591,6 @@ id|adapter
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|e1000_irq_enable
 c_func
@@ -8758,7 +8757,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_irq_enable - Enable default interrupt generation settings&n; * @adapter: board private structure&n; **/
 r_static
-r_inline
 r_void
 DECL|function|e1000_irq_enable
 id|e1000_irq_enable
