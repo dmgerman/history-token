@@ -3214,7 +3214,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: svcauth_gss: argv-&gt;iov_len = %d&bslash;n&quot;
+l_string|&quot;RPC: svcauth_gss: argv-&gt;iov_len = %zd&bslash;n&quot;
 comma
 id|argv-&gt;iov_len
 )paren
