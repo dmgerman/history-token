@@ -1645,17 +1645,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|mid_entry-&gt;mid
-op_eq
-id|smb_buffer-&gt;Mid
-)paren
-op_logical_and
-(paren
 id|mid_entry-&gt;midState
 op_eq
 id|MID_REQUEST_SUBMITTED
-)paren
 )paren
 (brace
 id|cFYI
