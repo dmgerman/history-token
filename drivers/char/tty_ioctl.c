@@ -578,6 +578,16 @@ id|tty-&gt;link-&gt;read_wait
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n;&t; * Fixme! We should really try to protect the driver and ldisc&n;&t; * termios usage too. But they need to be able to sleep, so&n;&t; * the global termios spinlock is not the right thing.&n;&t; */
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|tty_termios_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -632,15 +642,6 @@ id|ld
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|tty_termios_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 DECL|function|set_termios
 r_static
