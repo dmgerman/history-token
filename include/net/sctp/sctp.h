@@ -53,12 +53,7 @@ DECL|macro|SCTP_STATIC
 mdefine_line|#define SCTP_STATIC static
 macro_line|#endif
 multiline_comment|/*&n; * Function declarations.&n; */
-multiline_comment|/*&n; * sctp_protocol.c&n; */
-r_extern
-r_struct
-id|sctp_protocol
-id|sctp_proto
-suffix:semicolon
+multiline_comment|/*&n; * sctp/protocol.c&n; */
 r_extern
 r_struct
 id|sock
@@ -74,10 +69,6 @@ r_int
 id|sctp_copy_local_addr_list
 c_func
 (paren
-r_struct
-id|sctp_protocol
-op_star
-comma
 r_struct
 id|sctp_bind_addr
 op_star
@@ -1295,24 +1286,6 @@ id|sk
 )paren
 suffix:semicolon
 multiline_comment|/* Static inline functions. */
-multiline_comment|/* Return the SCTP protocol structure. */
-DECL|function|sctp_get_protocol
-r_static
-r_inline
-r_struct
-id|sctp_protocol
-op_star
-id|sctp_get_protocol
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-op_amp
-id|sctp_proto
-suffix:semicolon
-)brace
 multiline_comment|/* Convert from an IP version number to an Address Family symbol.  */
 DECL|function|ipver2af
 r_static
@@ -1408,22 +1381,12 @@ id|__u16
 id|lport
 )paren
 (brace
-r_struct
-id|sctp_protocol
-op_star
-id|sctp_proto
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 (paren
 id|lport
 op_amp
 (paren
-id|sctp_proto-&gt;port_hashsize
+id|sctp_port_hashsize
 op_minus
 l_int|1
 )paren
@@ -1442,22 +1405,12 @@ id|__u16
 id|lport
 )paren
 (brace
-r_struct
-id|sctp_protocol
-op_star
-id|sctp_proto
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 (paren
 id|lport
 op_amp
 (paren
-id|sctp_proto-&gt;ep_hashsize
+id|sctp_ep_hashsize
 op_minus
 l_int|1
 )paren
@@ -1479,16 +1432,6 @@ id|__u16
 id|rport
 )paren
 (brace
-r_struct
-id|sctp_protocol
-op_star
-id|sctp_proto
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
-)paren
-suffix:semicolon
 r_int
 id|h
 op_assign
@@ -1511,7 +1454,7 @@ r_return
 id|h
 op_amp
 (paren
-id|sctp_proto-&gt;assoc_hashsize
+id|sctp_assoc_hashsize
 op_minus
 l_int|1
 )paren
@@ -1536,16 +1479,6 @@ id|__u32
 id|vtag
 )paren
 (brace
-r_struct
-id|sctp_protocol
-op_star
-id|sctp_proto
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
-)paren
-suffix:semicolon
 r_int
 id|h
 op_assign
@@ -1566,7 +1499,7 @@ r_return
 id|h
 op_amp
 (paren
-id|sctp_proto-&gt;assoc_hashsize
+id|sctp_assoc_hashsize
 op_minus
 l_int|1
 )paren

@@ -6456,11 +6456,6 @@ op_star
 id|ep
 suffix:semicolon
 r_struct
-id|sctp_protocol
-op_star
-id|proto
-suffix:semicolon
-r_struct
 id|sctp_opt
 op_star
 id|sp
@@ -6471,13 +6466,6 @@ c_func
 l_string|&quot;sctp_init_sock(sk: %p)&bslash;n&quot;
 comma
 id|sk
-)paren
-suffix:semicolon
-id|proto
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
 )paren
 suffix:semicolon
 id|sp
@@ -6544,34 +6532,34 @@ suffix:semicolon
 multiline_comment|/* Initialize default setup parameters. These parameters&n;&t; * can be modified with the SCTP_INITMSG socket option or&n;&t; * overridden by the SCTP_INIT CMSG.&n;&t; */
 id|sp-&gt;initmsg.sinit_num_ostreams
 op_assign
-id|proto-&gt;max_outstreams
+id|sctp_max_outstreams
 suffix:semicolon
 id|sp-&gt;initmsg.sinit_max_instreams
 op_assign
-id|proto-&gt;max_instreams
+id|sctp_max_instreams
 suffix:semicolon
 id|sp-&gt;initmsg.sinit_max_attempts
 op_assign
-id|proto-&gt;max_retrans_init
+id|sctp_max_retrans_init
 suffix:semicolon
 id|sp-&gt;initmsg.sinit_max_init_timeo
 op_assign
-id|proto-&gt;rto_max
+id|sctp_rto_max
 op_div
 id|HZ
 suffix:semicolon
 multiline_comment|/* Initialize default RTO related parameters.  These parameters can&n;&t; * be modified for with the SCTP_RTOINFO socket option.&n;&t; * FIXME: These are not used yet.&n;&t; */
 id|sp-&gt;rtoinfo.srto_initial
 op_assign
-id|proto-&gt;rto_initial
+id|sctp_rto_initial
 suffix:semicolon
 id|sp-&gt;rtoinfo.srto_max
 op_assign
-id|proto-&gt;rto_max
+id|sctp_rto_max
 suffix:semicolon
 id|sp-&gt;rtoinfo.srto_min
 op_assign
-id|proto-&gt;rto_min
+id|sctp_rto_min
 suffix:semicolon
 multiline_comment|/* Initialize default event subscriptions.&n;&t; * the struct sock is initialized to zero, so only&n;&t; * enable the events needed.  By default, UDP-style&n;&t; * sockets enable io and association change notifications.&n;&t; */
 r_if
@@ -6598,13 +6586,13 @@ suffix:semicolon
 multiline_comment|/* Default Peer Address Parameters.  These defaults can&n;&t; * be modified via SCTP_SET_PEER_ADDR_PARAMS&n;&t; */
 id|sp-&gt;paddrparam.spp_hbinterval
 op_assign
-id|proto-&gt;hb_interval
+id|sctp_hb_interval
 op_div
 id|HZ
 suffix:semicolon
 id|sp-&gt;paddrparam.spp_pathmaxrxt
 op_assign
-id|proto-&gt;max_retrans_path
+id|sctp_max_retrans_path
 suffix:semicolon
 multiline_comment|/* If enabled no SCTP message fragmentation will be performed.&n;&t; * Configure through SCTP_DISABLE_FRAGMENTS socket option.&n;&t; */
 id|sp-&gt;disable_fragments
@@ -10010,16 +9998,6 @@ op_star
 id|pp
 suffix:semicolon
 multiline_comment|/* hash list port iterator */
-r_struct
-id|sctp_protocol
-op_star
-id|sctp
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
-)paren
-suffix:semicolon
 r_int
 r_int
 id|snum
@@ -10061,7 +10039,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* Search for an available port.&n;&t;&t; *&n;&t;&t; * &squot;sctp-&gt;port_rover&squot; was the last port assigned, so&n;&t;&t; * we start to search from &squot;sctp-&gt;port_rover +&n;&t;&t; * 1&squot;. What we do is first check if port &squot;rover&squot; is&n;&t;&t; * already in the hash table; if not, we use that; if&n;&t;&t; * it is, we try next.&n;&t;&t; */
+multiline_comment|/* Search for an available port.&n;&t;&t; *&n;&t;&t; * &squot;sctp_port_rover&squot; was the last port assigned, so&n;&t;&t; * we start to search from &squot;sctp_port_rover +&n;&t;&t; * 1&squot;. What we do is first check if port &squot;rover&squot; is&n;&t;&t; * already in the hash table; if not, we use that; if&n;&t;&t; * it is, we try next.&n;&t;&t; */
 r_int
 id|low
 op_assign
@@ -10099,12 +10077,12 @@ id|sctp_spin_lock
 c_func
 (paren
 op_amp
-id|sctp-&gt;port_alloc_lock
+id|sctp_port_alloc_lock
 )paren
 suffix:semicolon
 id|rover
 op_assign
-id|sctp-&gt;port_rover
+id|sctp_port_rover
 suffix:semicolon
 r_do
 (brace
@@ -10141,7 +10119,7 @@ suffix:semicolon
 id|head
 op_assign
 op_amp
-id|sctp-&gt;port_hashtable
+id|sctp_port_hashtable
 (braket
 id|index
 )braket
@@ -10197,7 +10175,7 @@ OG
 l_int|0
 )paren
 suffix:semicolon
-id|sctp-&gt;port_rover
+id|sctp_port_rover
 op_assign
 id|rover
 suffix:semicolon
@@ -10205,7 +10183,7 @@ id|sctp_spin_unlock
 c_func
 (paren
 op_amp
-id|sctp-&gt;port_alloc_lock
+id|sctp_port_alloc_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Exhausted local port range during search? */
@@ -10239,7 +10217,7 @@ multiline_comment|/* We are given an specific port number; we verify&n;&t;&t; * 
 id|head
 op_assign
 op_amp
-id|sctp-&gt;port_hashtable
+id|sctp_port_hashtable
 (braket
 id|sctp_phashfn
 c_func
@@ -11401,22 +11379,12 @@ id|sk
 )paren
 (brace
 r_struct
-id|sctp_protocol
-op_star
-id|sctp_proto
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
-)paren
-suffix:semicolon
-r_struct
 id|sctp_bind_hashbucket
 op_star
 id|head
 op_assign
 op_amp
-id|sctp_proto-&gt;port_hashtable
+id|sctp_port_hashtable
 (braket
 id|sctp_phashfn
 c_func

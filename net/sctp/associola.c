@@ -158,16 +158,6 @@ id|sctp_opt
 op_star
 id|sp
 suffix:semicolon
-r_struct
-id|sctp_protocol
-op_star
-id|proto
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
-)paren
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -280,14 +270,14 @@ suffix:semicolon
 multiline_comment|/* Set things that have constant value.  */
 id|asoc-&gt;cookie_life.tv_sec
 op_assign
-id|sctp_proto.valid_cookie_life
+id|sctp_valid_cookie_life
 op_div
 id|HZ
 suffix:semicolon
 id|asoc-&gt;cookie_life.tv_usec
 op_assign
 (paren
-id|sctp_proto.valid_cookie_life
+id|sctp_valid_cookie_life
 op_mod
 id|HZ
 )paren
@@ -307,19 +297,19 @@ suffix:semicolon
 multiline_comment|/* Initialize the default association max_retrans and RTO values.  */
 id|asoc-&gt;max_retrans
 op_assign
-id|proto-&gt;max_retrans_association
+id|sctp_max_retrans_association
 suffix:semicolon
 id|asoc-&gt;rto_initial
 op_assign
-id|proto-&gt;rto_initial
+id|sctp_rto_initial
 suffix:semicolon
 id|asoc-&gt;rto_max
 op_assign
-id|proto-&gt;rto_max
+id|sctp_rto_max
 suffix:semicolon
 id|asoc-&gt;rto_min
 op_assign
-id|proto-&gt;rto_min
+id|sctp_rto_min
 suffix:semicolon
 id|asoc-&gt;overall_error_threshold
 op_assign
@@ -332,7 +322,7 @@ suffix:semicolon
 multiline_comment|/* Initialize the maximum mumber of new data packets that can be sent&n;&t; * in a burst.&n;&t; */
 id|asoc-&gt;max_burst
 op_assign
-id|proto-&gt;max_burst
+id|sctp_max_burst
 suffix:semicolon
 multiline_comment|/* Copy things from the endpoint.  */
 r_for

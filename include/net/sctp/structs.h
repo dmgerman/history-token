@@ -35,7 +35,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* Forward declarations for data structures. */
 r_struct
-id|sctp_protocol
+id|sctp_globals
 suffix:semicolon
 r_struct
 id|sctp_endpoint
@@ -156,10 +156,11 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* The SCTP protocol structure. */
-DECL|struct|sctp_protocol
+multiline_comment|/* The SCTP globals structure. */
+DECL|struct|sctp_globals
+r_extern
 r_struct
-id|sctp_protocol
+id|sctp_globals
 (brace
 multiline_comment|/* RFC2960 Section 14. Suggested SCTP Protocol Parameter Values&n;&t; *&n;&t; * The following protocol parameters are RECOMMENDED:&n;&t; *&n;&t; * RTO.Initial              - 3  seconds&n;&t; * RTO.Min                  - 1  second&n;&t; * RTO.Max                 -  60 seconds&n;&t; * RTO.Alpha                - 1/8  (3 when converted to right shifts.)&n;&t; * RTO.Beta                 - 1/4  (2 when converted to right shifts.)&n;&t; */
 DECL|member|rto_initial
@@ -285,7 +286,58 @@ id|spinlock_t
 id|local_addr_lock
 suffix:semicolon
 )brace
+id|sctp_globals
 suffix:semicolon
+DECL|macro|sctp_rto_initial
+mdefine_line|#define sctp_rto_initial&t;&t;(sctp_globals.rto_initial)
+DECL|macro|sctp_rto_min
+mdefine_line|#define sctp_rto_min&t;&t;&t;(sctp_globals.rto_min)
+DECL|macro|sctp_rto_max
+mdefine_line|#define sctp_rto_max&t;&t;&t;(sctp_globals.rto_max)
+DECL|macro|sctp_rto_alpha
+mdefine_line|#define sctp_rto_alpha&t;&t;&t;(sctp_globals.rto_alpha)
+DECL|macro|sctp_rto_beta
+mdefine_line|#define sctp_rto_beta&t;&t;&t;(sctp_globals.rto_beta)
+DECL|macro|sctp_max_burst
+mdefine_line|#define sctp_max_burst&t;&t;&t;(sctp_globals.max_burst)
+DECL|macro|sctp_valid_cookie_life
+mdefine_line|#define sctp_valid_cookie_life&t;&t;(sctp_globals.valid_cookie_life)
+DECL|macro|sctp_cookie_preserve_enable
+mdefine_line|#define sctp_cookie_preserve_enable&t;(sctp_globals.cookie_preserve_enable)
+DECL|macro|sctp_max_retrans_association
+mdefine_line|#define sctp_max_retrans_association&t;(sctp_globals.max_retrans_association)
+DECL|macro|sctp_max_retrans_path
+mdefine_line|#define sctp_max_retrans_path&t;&t;(sctp_globals.max_retrans_path)
+DECL|macro|sctp_max_retrans_init
+mdefine_line|#define sctp_max_retrans_init&t;&t;(sctp_globals.max_retrans_init)
+DECL|macro|sctp_hb_interval
+mdefine_line|#define sctp_hb_interval&t;&t;(sctp_globals.hb_interval)
+DECL|macro|sctp_max_instreams
+mdefine_line|#define sctp_max_instreams&t;&t;(sctp_globals.max_instreams)
+DECL|macro|sctp_max_outstreams
+mdefine_line|#define sctp_max_outstreams&t;&t;(sctp_globals.max_outstreams)
+DECL|macro|sctp_address_families
+mdefine_line|#define sctp_address_families&t;&t;(sctp_globals.address_families)
+DECL|macro|sctp_ep_hashsize
+mdefine_line|#define sctp_ep_hashsize&t;&t;(sctp_globals.ep_hashsize)
+DECL|macro|sctp_ep_hashbucket
+mdefine_line|#define sctp_ep_hashbucket&t;&t;(sctp_globals.ep_hashbucket)
+DECL|macro|sctp_assoc_hashsize
+mdefine_line|#define sctp_assoc_hashsize&t;&t;(sctp_globals.assoc_hashsize)
+DECL|macro|sctp_assoc_hashbucket
+mdefine_line|#define sctp_assoc_hashbucket&t;&t;(sctp_globals.assoc_hashbucket)
+DECL|macro|sctp_port_hashsize
+mdefine_line|#define sctp_port_hashsize&t;&t;(sctp_globals.port_hashsize)
+DECL|macro|sctp_port_rover
+mdefine_line|#define sctp_port_rover&t;&t;&t;(sctp_globals.port_rover)
+DECL|macro|sctp_port_alloc_lock
+mdefine_line|#define sctp_port_alloc_lock&t;&t;(sctp_globals.port_alloc_lock)
+DECL|macro|sctp_port_hashtable
+mdefine_line|#define sctp_port_hashtable&t;&t;(sctp_globals.port_hashtable)
+DECL|macro|sctp_local_addr_list
+mdefine_line|#define sctp_local_addr_list&t;&t;(sctp_globals.local_addr_list)
+DECL|macro|sctp_local_addr_lock
+mdefine_line|#define sctp_local_addr_lock&t;&t;(sctp_globals.local_addr_lock)
 multiline_comment|/*&n; * Pointers to address related SCTP functions.&n; * (i.e. things that depend on the address family.)&n; */
 DECL|struct|sctp_af
 r_struct

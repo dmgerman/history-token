@@ -1762,7 +1762,7 @@ suffix:semicolon
 id|head
 op_assign
 op_amp
-id|sctp_proto.ep_hashbucket
+id|sctp_ep_hashbucket
 (braket
 id|epb-&gt;hashent
 )braket
@@ -1883,7 +1883,7 @@ suffix:semicolon
 id|head
 op_assign
 op_amp
-id|sctp_proto.ep_hashbucket
+id|sctp_ep_hashbucket
 (braket
 id|epb-&gt;hashent
 )braket
@@ -2001,7 +2001,7 @@ suffix:semicolon
 id|head
 op_assign
 op_amp
-id|sctp_proto.ep_hashbucket
+id|sctp_ep_hashbucket
 (braket
 id|hash
 )braket
@@ -2171,7 +2171,7 @@ suffix:semicolon
 id|head
 op_assign
 op_amp
-id|sctp_proto.assoc_hashbucket
+id|sctp_assoc_hashbucket
 (braket
 id|epb-&gt;hashent
 )braket
@@ -2294,7 +2294,7 @@ suffix:semicolon
 id|head
 op_assign
 op_amp
-id|sctp_proto.assoc_hashbucket
+id|sctp_assoc_hashbucket
 (braket
 id|epb-&gt;hashent
 )braket
@@ -2403,7 +2403,7 @@ suffix:semicolon
 id|head
 op_assign
 op_amp
-id|sctp_proto.assoc_hashbucket
+id|sctp_assoc_hashbucket
 (braket
 id|hash
 )braket

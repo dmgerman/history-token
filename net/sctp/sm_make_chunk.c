@@ -6004,7 +6004,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sctp_proto.cookie_preserve_enable
+id|sctp_cookie_preserve_enable
 )paren
 r_break
 suffix:semicolon
