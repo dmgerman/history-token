@@ -3,6 +3,7 @@ macro_line|#ifndef ASM_MSI_H
 DECL|macro|ASM_MSI_H
 mdefine_line|#define ASM_MSI_H
 macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/mach_apic.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 DECL|macro|LAST_DEVICE_VECTOR
 mdefine_line|#define LAST_DEVICE_VECTOR&t;&t;232

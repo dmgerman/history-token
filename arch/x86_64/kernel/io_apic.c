@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
+macro_line|#include &lt;asm/mach_apic.h&gt;
 DECL|macro|__apicdebuginit
 mdefine_line|#define __apicdebuginit  __init
 DECL|variable|sis_apic_bug
@@ -2740,11 +2741,11 @@ id|entry
 suffix:semicolon
 id|entry.delivery_mode
 op_assign
-id|dest_LowestPrio
+id|INT_DELIVERY_MODE
 suffix:semicolon
 id|entry.dest_mode
 op_assign
-id|INT_DELIVERY_MODE
+id|INT_DEST_MODE
 suffix:semicolon
 id|entry.mask
 op_assign
@@ -3105,7 +3106,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * We use logical delivery to get the timer IRQ&n;&t; * to the first CPU.&n;&t; */
 id|entry.dest_mode
 op_assign
-id|INT_DELIVERY_MODE
+id|INT_DEST_MODE
 suffix:semicolon
 id|entry.mask
 op_assign
@@ -3122,7 +3123,7 @@ id|TARGET_CPUS
 suffix:semicolon
 id|entry.delivery_mode
 op_assign
-id|dest_LowestPrio
+id|INT_DELIVERY_MODE
 suffix:semicolon
 id|entry.polarity
 op_assign
@@ -4968,11 +4969,6 @@ r_union
 id|IO_APIC_reg_00
 id|reg_00
 suffix:semicolon
-id|physid_mask_t
-id|phys_id_present_map
-op_assign
-id|phys_cpu_present_map
-suffix:semicolon
 r_int
 id|apic
 suffix:semicolon
@@ -5093,110 +5089,6 @@ op_assign
 id|reg_00.bits.ID
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Sanity check, is the ID really free? Every APIC in a&n;&t;&t; * system must have a unique ID or we get lots of nice&n;&t;&t; * &squot;stuck on smp_invalidate_needed IPI wait&squot; messages.&n;&t; &t; */
-r_if
-c_cond
-(paren
-id|physid_isset
-c_func
-(paren
-id|mp_ioapics
-(braket
-id|apic
-)braket
-dot
-id|mpc_apicid
-comma
-id|phys_id_present_map
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;BIOS bug, IO-APIC#%d ID %d is already used!...&bslash;n&quot;
-comma
-id|apic
-comma
-id|mp_ioapics
-(braket
-id|apic
-)braket
-dot
-id|mpc_apicid
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|0xf
-suffix:semicolon
-id|i
-op_increment
-)paren
-r_if
-c_cond
-(paren
-op_logical_neg
-id|physid_isset
-c_func
-(paren
-id|i
-comma
-id|phys_id_present_map
-)paren
-)paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|i
-op_ge
-l_int|0xf
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Max APIC ID exceeded!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;... fixing up to %d. (tell your hw vendor)&bslash;n&quot;
-comma
-id|i
-)paren
-suffix:semicolon
-id|physid_set
-c_func
-(paren
-id|i
-comma
-id|phys_id_present_map
-)paren
-suffix:semicolon
-id|mp_ioapics
-(braket
-id|apic
-)braket
-dot
-id|mpc_apicid
-op_assign
-id|i
-suffix:semicolon
-)brace
-r_else
-(brace
 id|printk
 c_func
 (paren
@@ -5211,20 +5103,6 @@ dot
 id|mpc_apicid
 )paren
 suffix:semicolon
-id|physid_set
-c_func
-(paren
-id|mp_ioapics
-(braket
-id|apic
-)braket
-dot
-id|mpc_apicid
-comma
-id|phys_id_present_map
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * We need to adjust the IRQ routing table&n;&t;&t; * if the ID changed.&n;&t;&t; */
 r_if
 c_cond
@@ -5640,12 +5518,14 @@ c_func
 id|mask
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Only the first 8 bits are valid.&n;&t; */
+multiline_comment|/*&n;&t; * Only the high 8 bits are valid.&n;&t; */
 id|dest
 op_assign
+id|SET_APIC_LOGICAL_ID
+c_func
+(paren
 id|dest
-op_lshift
-l_int|24
+)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -7796,7 +7676,7 @@ suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                          ACPI-based IOAPIC Configuration&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_BOOT
 DECL|macro|IO_APIC_MAX_ID
-mdefine_line|#define IO_APIC_MAX_ID&t;&t;15
+mdefine_line|#define IO_APIC_MAX_ID&t;&t;0xFE
 DECL|function|io_apic_get_unique_id
 r_int
 id|__init
@@ -8236,11 +8116,11 @@ id|entry
 suffix:semicolon
 id|entry.delivery_mode
 op_assign
-id|dest_LowestPrio
+id|INT_DELIVERY_MODE
 suffix:semicolon
 id|entry.dest_mode
 op_assign
-id|INT_DELIVERY_MODE
+id|INT_DEST_MODE
 suffix:semicolon
 id|entry.dest.logical.logical_dest
 op_assign
@@ -8421,47 +8301,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
-macro_line|#ifndef CONFIG_SMP
-DECL|function|send_IPI_self
-r_void
-id|send_IPI_self
-c_func
-(paren
-r_int
-id|vector
-)paren
-(brace
-r_int
-r_int
-id|cfg
-suffix:semicolon
-multiline_comment|/*&n;        * Wait for idle.&n;        */
-id|apic_wait_icr_idle
-c_func
-(paren
-)paren
-suffix:semicolon
-id|cfg
-op_assign
-id|APIC_DM_FIXED
-op_or
-id|APIC_DEST_SELF
-op_or
-id|vector
-op_or
-id|APIC_DEST_LOGICAL
-suffix:semicolon
-multiline_comment|/*&n;&t; * Send the IPI. The write to APIC_ICR fires this off.&n;&t; */
-id|apic_write_around
-c_func
-(paren
-id|APIC_ICR
-comma
-id|cfg
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n; * This function currently is only a helper for the i386 smp boot process where&n; * we need to reprogram the ioredtbls to cater for the cpus which have come online&n; * so mask in all cases should simply be TARGET_CPUS&n; */
 DECL|function|setup_ioapic_dest
 r_void
