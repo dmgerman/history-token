@@ -18,7 +18,7 @@ mdefine_line|#define SISUSB_VERSION&t;&t;0
 DECL|macro|SISUSB_REVISION
 mdefine_line|#define SISUSB_REVISION &t;0
 DECL|macro|SISUSB_PATCHLEVEL
-mdefine_line|#define SISUSB_PATCHLEVEL&t;6
+mdefine_line|#define SISUSB_PATCHLEVEL&t;7
 multiline_comment|/* USB related */
 DECL|macro|SISUSB_MINOR
 mdefine_line|#define SISUSB_MINOR&t;64&t;&t;/* FIXME */
@@ -32,7 +32,7 @@ mdefine_line|#define NUMOBUFS 8&t;&t;&t;/* max number of output buffers/output U
 multiline_comment|/* About endianness:&n; *&n; * 1) I/O ports, PCI config registers. The read/write()&n; *    calls emulate inX/outX. Hence, the data is&n; *    expected/delivered in machine endiannes by this&n; *    driver.&n; * 2) Video memory. The data is copied 1:1. There is&n; *    no swapping. Ever. This means for userland that&n; *    the data has to be prepared properly. (Hint:&n; *    think graphics data format, command queue,&n; *    hardware cursor.)&n; * 3) MMIO. Data is copied 1:1. MMIO must be swapped&n; *    properly by userland.&n; *&n; */
 macro_line|#ifdef __BIG_ENDIAN
 DECL|macro|SISUSB_CORRECT_ENDIANNESS_PACKET
-mdefine_line|#define SISUSB_CORRECT_ENDIANNESS_PACKET(p) &t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;p-&gt;header  = cpu_to_le16(p-&gt;header);&t;&bslash;&n;&t;&t;p-&gt;address = cpu_to_le32(p-&gt;address);&t;&bslash;&n;&t;&t;p-&gt;address = cpu_to_le32(p-&gt;data);&t;&bslash;&n;&t;} while(0)
+mdefine_line|#define SISUSB_CORRECT_ENDIANNESS_PACKET(p) &t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;p-&gt;header  = cpu_to_le16(p-&gt;header);&t;&bslash;&n;&t;&t;p-&gt;address = cpu_to_le32(p-&gt;address);&t;&bslash;&n;&t;&t;p-&gt;data    = cpu_to_le32(p-&gt;data);&t;&bslash;&n;&t;} while(0)
 macro_line|#else
 DECL|macro|SISUSB_CORRECT_ENDIANNESS_PACKET
 mdefine_line|#define SISUSB_CORRECT_ENDIANNESS_PACKET(p)

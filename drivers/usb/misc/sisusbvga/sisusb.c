@@ -14611,6 +14611,10 @@ id|x.sisusb_minor
 op_assign
 id|sisusb-&gt;minor
 suffix:semicolon
+id|x.sisusb_fbdevactive
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
