@@ -3204,7 +3204,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|i
-OL
+op_le
 id|ECARD_RES_IOCSYNC
 op_minus
 id|ECARD_RES_IOCSLOW
