@@ -133,9 +133,14 @@ id|noautodma
 )paren
 suffix:semicolon
 DECL|variable|ide_probe
-id|ide_module_t
+r_int
+(paren
 op_star
 id|ide_probe
+)paren
+(paren
+r_void
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * This is declared extern in ide.h, for access by other IDE modules:&n; */
 DECL|variable|ide_hwifs
@@ -1426,8 +1431,6 @@ r_else
 r_void
 )paren
 id|ide_probe
-op_member_access_from_pointer
-id|init
 c_func
 (paren
 )paren
