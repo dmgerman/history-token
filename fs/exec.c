@@ -4661,7 +4661,7 @@ id|file
 r_return
 id|retval
 suffix:semicolon
-id|sched_balance_exec
+id|sched_exec
 c_func
 (paren
 )paren
