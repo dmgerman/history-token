@@ -16,39 +16,6 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;hcd.h&quot;
 multiline_comment|/* PCI-based HCs are normal, but custom bus glue should be ok */
 multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|function|hcd_pci_release
-r_static
-r_void
-id|hcd_pci_release
-c_func
-(paren
-r_struct
-id|usb_bus
-op_star
-id|bus
-)paren
-(brace
-r_struct
-id|usb_hcd
-op_star
-id|hcd
-op_assign
-id|bus-&gt;hcpriv
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hcd
-)paren
-id|hcd-&gt;driver
-op_member_access_from_pointer
-id|hcd_free
-c_func
-(paren
-id|hcd
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* configure so an HC device and id are always provided */
 multiline_comment|/* always called with process context; sleeping is OK */
 multiline_comment|/**&n; * usb_hcd_pci_probe - initialize PCI-based HCDs&n; * @dev: USB Host Controller being probed&n; * @id: pci hotplug id connecting controller to HCD framework&n; * Context: !in_interrupt()&n; *&n; * Allocates basic PCI resources for this USB host controller, and&n; * then invokes the start() method for the HCD associated with it&n; * through the hotplug entry&squot;s driver_data.&n; *&n; * Store this function in the HCD&squot;s struct pci_driver as probe().&n; */
@@ -556,7 +523,7 @@ l_int|0
 (brace
 id|clean_3
 suffix:colon
-id|driver-&gt;hcd_free
+id|kfree
 (paren
 id|hcd
 )paren
@@ -705,6 +672,11 @@ op_assign
 op_amp
 id|usb_hcd_operations
 suffix:semicolon
+id|hcd-&gt;self.release
+op_assign
+op_amp
+id|usb_hcd_release
+suffix:semicolon
 id|hcd-&gt;self.hcpriv
 op_assign
 (paren
@@ -712,11 +684,6 @@ r_void
 op_star
 )paren
 id|hcd
-suffix:semicolon
-id|hcd-&gt;self.release
-op_assign
-op_amp
-id|hcd_pci_release
 suffix:semicolon
 id|init_timer
 (paren

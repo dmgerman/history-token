@@ -538,19 +538,6 @@ id|hcd_alloc
 r_void
 )paren
 suffix:semicolon
-DECL|member|hcd_free
-r_void
-(paren
-op_star
-id|hcd_free
-)paren
-(paren
-r_struct
-id|usb_hcd
-op_star
-id|hcd
-)paren
-suffix:semicolon
 multiline_comment|/* manage i/o requests, device state */
 DECL|member|urb_enqueue
 r_int
@@ -1166,6 +1153,15 @@ id|hcd-&gt;self.controller
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|usb_hcd_release
+(paren
+r_struct
+id|usb_bus
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|usb_set_device_state
