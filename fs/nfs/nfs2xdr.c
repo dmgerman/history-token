@@ -136,21 +136,6 @@ op_star
 id|fhandle
 )paren
 (brace
-multiline_comment|/* Zero handle first to allow comparisons */
-id|memset
-c_func
-(paren
-id|fhandle
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|fhandle
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* NFSv2 handles have a fixed length */
 id|fhandle-&gt;size
 op_assign
