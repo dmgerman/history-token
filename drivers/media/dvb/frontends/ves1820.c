@@ -91,8 +91,9 @@ l_int|4
 comma
 multiline_comment|/* SACLK/4 */
 macro_line|#if 0
+dot
 id|frequency_tolerance
-suffix:colon
+op_assign
 ques
 c_cond
 ques
@@ -100,8 +101,9 @@ c_cond
 ques
 c_cond
 comma
+dot
 id|symbol_rate_tolerance
-suffix:colon
+op_assign
 ques
 c_cond
 ques
@@ -111,8 +113,9 @@ c_cond
 comma
 multiline_comment|/* ppm */
 multiline_comment|/* == 8% (spec p. 5) */
+dot
 id|notifier_delay
-suffix:colon
+op_assign
 ques
 c_cond
 comma

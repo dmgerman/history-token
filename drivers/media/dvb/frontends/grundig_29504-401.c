@@ -21,28 +21,33 @@ id|dvb_frontend_info
 id|grundig_29504_401_info
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Grundig 29504-401&quot;
 comma
+dot
 id|type
-suffix:colon
+op_assign
 id|FE_OFDM
 comma
-multiline_comment|/*&t;frequency_min: ???,*/
-multiline_comment|/*&t;frequency_max: ???,*/
+multiline_comment|/*&t;.frequency_min = ???,*/
+multiline_comment|/*&t;.frequency_max = ???,*/
+dot
 id|frequency_stepsize
-suffix:colon
+op_assign
 l_int|166666
 comma
-multiline_comment|/*      frequency_tolerance: ???,*/
-multiline_comment|/*      symbol_rate_tolerance: ???,*/
+multiline_comment|/*      .frequency_tolerance = ???,*/
+multiline_comment|/*      .symbol_rate_tolerance = ???,*/
+dot
 id|notifier_delay
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|caps
-suffix:colon
+op_assign
 id|FE_CAN_FEC_1_2
 op_or
 id|FE_CAN_FEC_2_3

@@ -4885,8 +4885,8 @@ id|readpage
 op_assign
 id|affs_readpage_ofs
 comma
-singleline_comment|//writepage: affs_writepage_ofs,
-singleline_comment|//sync_page: affs_sync_page_ofs,
+singleline_comment|//.writepage = affs_writepage_ofs,
+singleline_comment|//.sync_page = affs_sync_page_ofs,
 dot
 id|prepare_write
 op_assign

@@ -37,12 +37,14 @@ id|nand_oobinfo
 id|jffs2_oobinfo
 op_assign
 (brace
+dot
 id|useecc
-suffix:colon
+op_assign
 l_int|1
 comma
+dot
 id|eccpos
-suffix:colon
+op_assign
 (brace
 id|JFFS2_OOB_ECCPOS0
 comma

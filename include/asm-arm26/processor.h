@@ -210,7 +210,7 @@ suffix:semicolon
 DECL|macro|EXTRA_THREAD_STRUCT
 mdefine_line|#define EXTRA_THREAD_STRUCT                     &bslash;&n;        uaccess_t       *uaccess;         /* User access functions*/
 DECL|macro|EXTRA_THREAD_STRUCT_INIT
-mdefine_line|#define EXTRA_THREAD_STRUCT_INIT                &bslash;&n;        uaccess:        &amp;uaccess_kernel,
+mdefine_line|#define EXTRA_THREAD_STRUCT_INIT                &bslash;&n;        .uaccess        = &amp;uaccess_kernel,
 singleline_comment|// FIXME?!!
 DECL|macro|start_thread
 mdefine_line|#define start_thread(regs,pc,sp)                                        &bslash;&n;({                                                                      &bslash;&n;        unsigned long *stack = (unsigned long *)sp;                     &bslash;&n;        set_fs(USER_DS);                                                &bslash;&n;        memzero(regs-&gt;uregs, sizeof (regs-&gt;uregs));                     &bslash;&n;        regs-&gt;ARM_pc = pc | ~0xfc000003;        /* pc */                &bslash;&n;        regs-&gt;ARM_sp = sp;              /* sp */                        &bslash;&n;        regs-&gt;ARM_r2 = stack[2];        /* r2 (envp) */                 &bslash;&n;        regs-&gt;ARM_r1 = stack[1];        /* r1 (argv) */                 &bslash;&n;        regs-&gt;ARM_r0 = stack[0];        /* r0 (argc) */                 &bslash;&n;})
