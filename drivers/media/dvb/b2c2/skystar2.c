@@ -9839,6 +9839,8 @@ op_amp
 id|dvb_adapter
 comma
 id|skystar2_pci_driver.name
+comma
+id|THIS_MODULE
 )paren
 suffix:semicolon
 r_if
@@ -10300,6 +10302,14 @@ comma
 )brace
 comma
 )brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|skystar2_pci_tbl
+)paren
 suffix:semicolon
 DECL|variable|skystar2_pci_driver
 r_static

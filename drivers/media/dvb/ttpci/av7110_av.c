@@ -5049,7 +5049,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x000e
+id|VIDEO_CMD_STOP
 comma
 id|av7110-&gt;videostate.video_blank
 ques
@@ -5089,7 +5089,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x000d
+id|VIDEO_CMD_PLAY
 comma
 l_int|0
 )paren
@@ -5142,7 +5142,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x000d
+id|VIDEO_CMD_PLAY
 comma
 l_int|0
 )paren
@@ -5156,7 +5156,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x000d
+id|VIDEO_CMD_PLAY
 comma
 l_int|0
 )paren
@@ -5200,7 +5200,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x0102
+id|VIDEO_CMD_FREEZE
 comma
 l_int|1
 )paren
@@ -5238,7 +5238,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x000d
+id|VIDEO_CMD_PLAY
 comma
 l_int|0
 )paren
@@ -5549,7 +5549,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x16
+id|VIDEO_CMD_FFWD
 comma
 id|arg
 )paren
@@ -5596,7 +5596,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x22
+id|VIDEO_CMD_SLOW
 comma
 id|arg
 )paren
@@ -5609,7 +5609,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x0d
+id|VIDEO_CMD_PLAY
 comma
 l_int|0
 )paren
@@ -5619,7 +5619,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x0e
+id|VIDEO_CMD_STOP
 comma
 l_int|0
 )paren
@@ -5629,7 +5629,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x22
+id|VIDEO_CMD_SLOW
 comma
 id|arg
 )paren
@@ -5761,7 +5761,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x22
+id|VIDEO_CMD_SLOW
 comma
 id|arg
 )paren
@@ -5779,7 +5779,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x000e
+id|VIDEO_CMD_STOP
 comma
 l_int|1
 )paren
@@ -5933,7 +5933,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|1
+id|AUDIO_CMD_MUTE
 )paren
 suffix:semicolon
 id|av7110-&gt;audiostate.play_state
@@ -5965,7 +5965,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|2
+id|AUDIO_CMD_UNMUTE
 )paren
 suffix:semicolon
 id|av7110-&gt;audiostate.play_state
@@ -5982,7 +5982,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|1
+id|AUDIO_CMD_MUTE
 )paren
 suffix:semicolon
 id|av7110-&gt;audiostate.play_state
@@ -6011,7 +6011,9 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x12
+id|AUDIO_CMD_MUTE
+op_or
+id|AUDIO_CMD_PCM16
 )paren
 suffix:semicolon
 )brace
@@ -6041,9 +6043,9 @@ comma
 id|arg
 ques
 c_cond
-l_int|1
+id|AUDIO_CMD_MUTE
 suffix:colon
-l_int|2
+id|AUDIO_CMD_UNMUTE
 )paren
 suffix:semicolon
 id|av7110-&gt;audiostate.mute_state
@@ -6074,9 +6076,9 @@ comma
 id|arg
 ques
 c_cond
-l_int|0x0f
+id|AUDIO_CMD_SYNC_ON
 suffix:colon
-l_int|0x0e
+id|AUDIO_CMD_SYNC_OFF
 )paren
 suffix:semicolon
 r_break
@@ -6115,7 +6117,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x80
+id|AUDIO_CMD_STEREO
 )paren
 suffix:semicolon
 r_break
@@ -6128,7 +6130,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x100
+id|AUDIO_CMD_MONO_L
 )paren
 suffix:semicolon
 r_break
@@ -6141,7 +6143,7 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x200
+id|AUDIO_CMD_MONO_R
 )paren
 suffix:semicolon
 r_break

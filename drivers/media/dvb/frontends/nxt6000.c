@@ -3267,11 +3267,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|FE_RESET
-suffix:colon
-r_break
-suffix:semicolon
-r_case
 id|FE_SET_FRONTEND
 suffix:colon
 (brace

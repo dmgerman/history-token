@@ -184,10 +184,7 @@ op_or
 id|FE_CAN_FEC_AUTO
 op_or
 id|FE_CAN_INVERSION_AUTO
-op_or
-id|FE_CAN_CLEAN_SETUP
-op_or
-id|FE_CAN_RECOVER
+comma
 )brace
 suffix:semicolon
 DECL|variable|ves1820_inittab

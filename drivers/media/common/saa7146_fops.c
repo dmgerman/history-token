@@ -39,32 +39,30 @@ id|fh-&gt;resources
 op_amp
 id|bit
 )paren
-multiline_comment|/* have it already allocated */
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* is it free? */
+(brace
 id|DEB_D
 c_func
 (paren
 (paren
-l_string|&quot;getting lock...&bslash;n&quot;
+l_string|&quot;already allocated! want: 0x%02x, cur:0x%02x&bslash;n&quot;
+comma
+id|bit
+comma
+id|vv-&gt;resources
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* have it already allocated */
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* is it free? */
 id|down
 c_func
 (paren
 op_amp
 id|dev-&gt;lock
-)paren
-suffix:semicolon
-id|DEB_D
-c_func
-(paren
-(paren
-l_string|&quot;got lock&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -112,9 +110,11 @@ id|DEB_D
 c_func
 (paren
 (paren
-l_string|&quot;res: get %d&bslash;n&quot;
+l_string|&quot;res: get 0x%02x, cur:0x%02x&bslash;n&quot;
 comma
 id|bit
+comma
+id|vv-&gt;resources
 )paren
 )paren
 suffix:semicolon
@@ -227,27 +227,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|DEB_D
-c_func
-(paren
-(paren
-l_string|&quot;getting lock...&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 id|down
 c_func
 (paren
 op_amp
 id|dev-&gt;lock
-)paren
-suffix:semicolon
-id|DEB_D
-c_func
-(paren
-(paren
-l_string|&quot;got lock&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|fh-&gt;resources
@@ -264,9 +248,11 @@ id|DEB_D
 c_func
 (paren
 (paren
-l_string|&quot;res: put %d&bslash;n&quot;
+l_string|&quot;res: put 0x%02x, cur:0x%02x&bslash;n&quot;
 comma
 id|bits
+comma
+id|vv-&gt;resources
 )paren
 )paren
 suffix:semicolon

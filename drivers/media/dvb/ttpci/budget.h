@@ -113,6 +113,14 @@ r_struct
 id|semaphore
 id|pid_mutex
 suffix:semicolon
+DECL|member|ci_present
+r_int
+id|ci_present
+suffix:semicolon
+DECL|member|video_port
+r_int
+id|video_port
+suffix:semicolon
 DECL|member|tsf
 id|u8
 id|tsf
@@ -124,6 +132,10 @@ suffix:semicolon
 DECL|member|feeding
 r_int
 id|feeding
+suffix:semicolon
+DECL|member|feedlock
+id|spinlock_t
+id|feedlock
 suffix:semicolon
 DECL|member|dvb_adapter
 r_struct
@@ -156,6 +168,12 @@ DECL|macro|BUDGET_KNC1
 mdefine_line|#define BUDGET_KNC1&t;&t;   2
 DECL|macro|BUDGET_PATCH
 mdefine_line|#define BUDGET_PATCH&t;&t;   3
+DECL|macro|BUDGET_FS_ACTIVY
+mdefine_line|#define BUDGET_FS_ACTIVY&t;   4
+DECL|macro|BUDGET_VIDEO_PORTA
+mdefine_line|#define BUDGET_VIDEO_PORTA         0
+DECL|macro|BUDGET_VIDEO_PORTB
+mdefine_line|#define BUDGET_VIDEO_PORTB         1
 r_extern
 r_int
 id|ttpci_budget_init
@@ -198,6 +216,20 @@ comma
 id|u32
 op_star
 id|isr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ttpci_budget_set_video_port
+c_func
+(paren
+r_struct
+id|saa7146_dev
+op_star
+id|dev
+comma
+r_int
+id|video_port
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -374,13 +374,6 @@ id|MASK_03
 )paren
 )paren
 suffix:semicolon
-singleline_comment|//FIXME: are those mdelays really necessary?
-id|mdelay
-c_func
-(paren
-l_int|800
-)paren
-suffix:semicolon
 id|saa7146_setgpio
 c_func
 (paren
@@ -391,12 +384,13 @@ comma
 id|SAA7146_GPIO_OUTHI
 )paren
 suffix:semicolon
-id|mdelay
+id|dvb_delay
 c_func
 (paren
-l_int|800
+l_int|30
 )paren
 suffix:semicolon
+multiline_comment|/* the firmware needs some time to initialize */
 id|ARM_ResetMailBox
 c_func
 (paren
@@ -507,7 +501,7 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|500
+l_int|5
 )paren
 suffix:semicolon
 )brace
@@ -928,7 +922,6 @@ l_int|0xf0
 comma
 l_int|0x0e
 comma
-multiline_comment|/* 0x0000 */
 l_int|0xe2
 comma
 l_int|0x5e
@@ -1047,7 +1040,7 @@ l_int|0x9f
 comma
 l_int|0xd0
 comma
-l_int|0x5c
+l_int|0x7c
 comma
 l_int|0xe5
 comma
@@ -1055,9 +1048,8 @@ l_int|0x9f
 comma
 l_int|0x40
 comma
-l_int|0x54
+l_int|0x74
 comma
-multiline_comment|/* 0x0040 */
 l_int|0xe3
 comma
 l_int|0xa0
@@ -1081,6 +1073,70 @@ comma
 l_int|0x00
 comma
 l_int|0x04
+comma
+l_int|0xe5
+comma
+l_int|0x9f
+comma
+l_int|0x10
+comma
+l_int|0x70
+comma
+l_int|0xe5
+comma
+l_int|0x9f
+comma
+l_int|0x20
+comma
+l_int|0x70
+comma
+l_int|0xe5
+comma
+l_int|0x9f
+comma
+l_int|0x30
+comma
+l_int|0x64
+comma
+l_int|0xe8
+comma
+l_int|0xb1
+comma
+l_int|0x1f
+comma
+l_int|0xe0
+comma
+l_int|0xe8
+comma
+l_int|0xa3
+comma
+l_int|0x1f
+comma
+l_int|0xe0
+comma
+l_int|0xe1
+comma
+l_int|0x51
+comma
+l_int|0x00
+comma
+l_int|0x02
+comma
+l_int|0xda
+comma
+l_int|0xff
+comma
+l_int|0xff
+comma
+l_int|0xfb
+comma
+l_int|0xe5
+comma
+l_int|0x9f
+comma
+l_int|0xf0
+comma
+l_int|0x50
 comma
 l_int|0xe1
 comma
@@ -1186,7 +1242,6 @@ l_int|0x1f
 comma
 l_int|0xe0
 comma
-multiline_comment|/* 0x0080 */
 l_int|0xe8
 comma
 l_int|0xb1
@@ -1251,6 +1306,29 @@ l_int|0x04
 comma
 l_int|0x00
 comma
+l_int|0x9e
+comma
+l_int|0x00
+comma
+l_int|0x08
+comma
+l_int|0x00
+comma
+l_int|0x2c
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x74
+comma
+l_int|0x2c
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0xc0
 )brace
 suffix:semicolon
 DECL|function|av7110_bootarm
@@ -1405,7 +1483,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;dvb: debi test in av7110_bootarm() failed: &quot;
-l_string|&quot;%08x != %08x (check your BIOS notplug settings)&bslash;n&quot;
+l_string|&quot;%08x != %08x (check your BIOS hotplug settings)&bslash;n&quot;
 comma
 id|ret
 comma
@@ -1541,17 +1619,10 @@ comma
 id|SAA7146_GPIO_OUTHI
 )paren
 suffix:semicolon
-singleline_comment|//FIXME: necessary?
-id|set_current_state
+id|mdelay
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
+l_int|1
 )paren
 suffix:semicolon
 id|DEB_D
@@ -1656,13 +1727,13 @@ comma
 id|SAA7146_GPIO_OUTHI
 )paren
 suffix:semicolon
-singleline_comment|//FIXME: necessary?
-id|mdelay
+id|dvb_delay
 c_func
 (paren
-l_int|800
+l_int|30
 )paren
 suffix:semicolon
+multiline_comment|/* the firmware needs some time to initialize */
 singleline_comment|//ARM_ClearIrq(av7110);
 id|ARM_ResetMailBox
 c_func

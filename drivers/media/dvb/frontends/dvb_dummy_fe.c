@@ -187,8 +187,6 @@ op_or
 id|FE_CAN_FEC_AUTO
 op_or
 id|FE_CAN_INVERSION_AUTO
-op_or
-id|FE_CAN_CLEAN_SETUP
 )brace
 suffix:semicolon
 DECL|variable|dvb_t_dummyfe_info
@@ -505,12 +503,6 @@ l_int|0
 suffix:semicolon
 r_case
 id|FE_INIT
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-r_case
-id|FE_RESET
 suffix:colon
 r_return
 l_int|0

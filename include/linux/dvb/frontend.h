@@ -135,20 +135,23 @@ id|FE_CAN_HIERARCHY_AUTO
 op_assign
 l_int|0x100000
 comma
-DECL|enumerator|FE_CAN_RECOVER
-id|FE_CAN_RECOVER
+DECL|enumerator|FE_NEEDS_BENDING
+id|FE_NEEDS_BENDING
 op_assign
 l_int|0x20000000
 comma
-DECL|enumerator|FE_CAN_CLEAN_SETUP
-id|FE_CAN_CLEAN_SETUP
+singleline_comment|// frontend requires frequency bending
+DECL|enumerator|FE_CAN_RECOVER
+id|FE_CAN_RECOVER
 op_assign
 l_int|0x40000000
 comma
+singleline_comment|// frontend can recover from a cable unplug automatically
 DECL|enumerator|FE_CAN_MUTE_TS
 id|FE_CAN_MUTE_TS
 op_assign
 l_int|0x80000000
+singleline_comment|// frontend can stop spurious TS data output
 DECL|typedef|fe_caps_t
 )brace
 id|fe_caps_t
