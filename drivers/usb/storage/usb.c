@@ -1937,7 +1937,7 @@ l_string|&quot;SCM/ATAPI&quot;
 suffix:semicolon
 id|us-&gt;transport
 op_assign
-id|usbat_hp8200e_transport
+id|usbat_transport
 suffix:semicolon
 id|us-&gt;transport_reset
 op_assign

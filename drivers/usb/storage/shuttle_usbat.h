@@ -1,7 +1,12 @@
-multiline_comment|/* Driver for SCM Microsystems USB-ATAPI cable&n; * Header File&n; *&n; * $Id: shuttle_usbat.h,v 1.5 2000/09/17 14:44:52 groovyjava Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000 Robert Baruch (autophile@dol.net)&n; *&n; * See scm.c for more explanation&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* Driver for SCM Microsystems USB-ATAPI cable&n; * Header File&n; *&n; * $Id: shuttle_usbat.h,v 1.5 2000/09/17 14:44:52 groovyjava Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000 Robert Baruch (autophile@dol.net)&n; *   (c) 2004, 2005 Daniel Drake &lt;dsd@gentoo.org&gt;&n; *&n; * See shuttle_usbat.c for more explanation&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#ifndef _USB_SHUTTLE_USBAT_H
 DECL|macro|_USB_SHUTTLE_USBAT_H
 mdefine_line|#define _USB_SHUTTLE_USBAT_H
+multiline_comment|/* Supported device types */
+DECL|macro|USBAT_DEV_HP8200
+mdefine_line|#define USBAT_DEV_HP8200&t;0x01
+DECL|macro|USBAT_DEV_FLASH
+mdefine_line|#define USBAT_DEV_FLASH&t;&t;0x02
 DECL|macro|USBAT_EPP_PORT
 mdefine_line|#define USBAT_EPP_PORT&t;&t;0x10
 DECL|macro|USBAT_EPP_REGISTER
@@ -44,6 +49,16 @@ singleline_comment|// full compare
 DECL|macro|USBAT_QUAL_ALQ
 mdefine_line|#define USBAT_QUAL_ALQ&t;0x10 
 singleline_comment|// auto load subcount
+multiline_comment|/* USBAT Flash Media status types */
+DECL|macro|USBAT_FLASH_MEDIA_NONE
+mdefine_line|#define USBAT_FLASH_MEDIA_NONE&t;0
+DECL|macro|USBAT_FLASH_MEDIA_CF
+mdefine_line|#define USBAT_FLASH_MEDIA_CF&t;1
+multiline_comment|/* USBAT Flash Media change types */
+DECL|macro|USBAT_FLASH_MEDIA_SAME
+mdefine_line|#define USBAT_FLASH_MEDIA_SAME&t;0
+DECL|macro|USBAT_FLASH_MEDIA_CHANGED
+mdefine_line|#define USBAT_FLASH_MEDIA_CHANGED&t;1
 multiline_comment|/* USBAT ATA registers */
 DECL|macro|USBAT_ATA_DATA
 mdefine_line|#define USBAT_ATA_DATA      0x10  
@@ -133,8 +148,7 @@ DECL|macro|USBAT_FEAT_ET1
 mdefine_line|#define USBAT_FEAT_ET1&t;0x02
 DECL|macro|USBAT_FEAT_ET2
 mdefine_line|#define USBAT_FEAT_ET2&t;0x01
-multiline_comment|/* HP 8200e stuff */
-r_extern
+multiline_comment|/* Transport functions */
 r_int
 id|usbat_hp8200e_transport
 c_func
@@ -150,9 +164,40 @@ op_star
 id|us
 )paren
 suffix:semicolon
+r_int
+id|usbat_flash_transport
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+id|srb
+comma
+r_struct
+id|us_data
+op_star
+id|us
+)paren
+suffix:semicolon
 r_extern
 r_int
-id|init_usbat_hp8200e
+id|usbat_transport
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+id|srb
+comma
+r_struct
+id|us_data
+op_star
+id|us
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|init_usbat
 c_func
 (paren
 r_struct
@@ -160,6 +205,46 @@ id|us_data
 op_star
 id|us
 )paren
+suffix:semicolon
+DECL|struct|usbat_info
+r_struct
+id|usbat_info
+(brace
+DECL|member|devicetype
+r_int
+id|devicetype
+suffix:semicolon
+multiline_comment|/* Used for Flash readers only */
+DECL|member|sectors
+r_int
+r_int
+id|sectors
+suffix:semicolon
+singleline_comment|// total sector count
+DECL|member|ssize
+r_int
+r_int
+id|ssize
+suffix:semicolon
+singleline_comment|// sector size in bytes
+DECL|member|sense_key
+r_int
+r_char
+id|sense_key
+suffix:semicolon
+DECL|member|sense_asc
+r_int
+r_int
+id|sense_asc
+suffix:semicolon
+singleline_comment|// additional sense code
+DECL|member|sense_ascq
+r_int
+r_int
+id|sense_ascq
+suffix:semicolon
+singleline_comment|// additional sense code qualifier
+)brace
 suffix:semicolon
 macro_line|#endif
 eof

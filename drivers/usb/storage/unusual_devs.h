@@ -70,7 +70,7 @@ id|US_SC_8070
 comma
 id|US_PR_SCM_ATAPI
 comma
-id|init_usbat_hp8200e
+id|init_usbat
 comma
 l_int|0
 )paren
@@ -94,7 +94,7 @@ id|US_SC_8070
 comma
 id|US_PR_SCM_ATAPI
 comma
-id|init_usbat_hp8200e
+id|init_usbat
 comma
 l_int|0
 )paren
@@ -792,7 +792,7 @@ id|US_SC_SCSI
 comma
 id|US_PR_SCM_ATAPI
 comma
-id|init_usbat_hp8200e
+id|init_usbat
 comma
 id|US_FL_SINGLE_LUN
 )paren
@@ -1914,6 +1914,32 @@ comma
 id|US_FL_IGNORE_SER
 )paren
 comma
+macro_line|#ifdef CONFIG_USB_STORAGE_USBAT
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0781
+comma
+l_int|0x0005
+comma
+l_int|0x0005
+comma
+l_int|0x0005
+comma
+l_string|&quot;Sandisk&quot;
+comma
+l_string|&quot;ImageMate SDDR-05b&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_SCM_ATAPI
+comma
+id|init_usbat
+comma
+id|US_FL_SINGLE_LUN
+)paren
+comma
+macro_line|#endif
 id|UNUSUAL_DEV
 c_func
 (paren
