@@ -3704,7 +3704,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xffffffffffffffffULL
+id|DMA_64BIT_MASK
 )paren
 )paren
 (brace
@@ -3715,7 +3715,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xffffffffffffffffULL
+id|DMA_64BIT_MASK
 )paren
 suffix:semicolon
 r_if
@@ -3731,7 +3731,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xffffffffULL
+id|DMA_32BIT_MASK
 )paren
 suffix:semicolon
 r_if
@@ -3773,7 +3773,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xffffffffULL
+id|DMA_32BIT_MASK
 )paren
 suffix:semicolon
 r_if
@@ -3807,7 +3807,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xffffffffULL
+id|DMA_32BIT_MASK
 )paren
 suffix:semicolon
 r_if
