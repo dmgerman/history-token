@@ -363,7 +363,7 @@ DECL|macro|irqs_disabled
 mdefine_line|#define irqs_disabled()&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&t;&bslash;&n;&t;!(flags &amp; MSR_EE);&t;&t;&t;&bslash;&n;})
 DECL|function|__is_processor
 r_static
-id|__inline__
+r_inline
 r_int
 id|__is_processor
 c_func
@@ -378,7 +378,7 @@ r_int
 id|pvr
 suffix:semicolon
 id|asm
-r_volatile
+c_func
 (paren
 l_string|&quot;mfspr %0, 0x11F&quot;
 suffix:colon
@@ -396,6 +396,38 @@ id|pvr
 )paren
 op_eq
 id|pv
+suffix:semicolon
+)brace
+DECL|function|processor_type
+r_static
+r_inline
+r_int
+id|processor_type
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|pvr
+suffix:semicolon
+id|asm
+(paren
+l_string|&quot;mfspr %0, 0x11F&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|pvr
+)paren
+)paren
+suffix:semicolon
+r_return
+id|PVR_VER
+c_func
+(paren
+id|pvr
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Atomic exchange&n; *&n; * Changes the memory location &squot;*ptr&squot; to be val and returns&n; * the previous value stored there.&n; *&n; * Inline asm pulled from arch/ppc/kernel/misc.S so ppc64&n; * is more like most of the other architectures.&n; */

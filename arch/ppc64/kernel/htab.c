@@ -1281,10 +1281,14 @@ multiline_comment|/* Primary is full, try the secondary */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|slot
 op_eq
 op_minus
 l_int|1
+)paren
 )paren
 (brace
 id|pte_val
@@ -1548,6 +1552,7 @@ id|ea
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#if 0
 r_case
 id|EEH_REGION_ID
 suffix:colon
@@ -1556,6 +1561,7 @@ r_case
 id|KERNEL_REGION_ID
 suffix:colon
 multiline_comment|/*&n;&t;&t; * Should never get here - entire 0xC0... region is bolted.&n;&t;&t; * Send the problem up to do_page_fault &n;&t;&t; */
+macro_line|#endif
 r_default
 suffix:colon
 multiline_comment|/* Not a valid range&n;&t;&t; * Send the problem up to do_page_fault &n;&t;&t; */
