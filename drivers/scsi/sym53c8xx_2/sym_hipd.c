@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Device driver for the SYMBIOS/LSILOGIC 53C8XX and 53C1010 family &n; * of PCI-SCSI IO processors.&n; *&n; * Copyright (C) 1999-2001  Gerard Roudier &lt;groudier@free.fr&gt;&n; *&n; * This driver is derived from the Linux sym53c8xx driver.&n; * Copyright (C) 1998-2000  Gerard Roudier&n; *&n; * The sym53c8xx driver is derived from the ncr53c8xx driver that had been &n; * a port of the FreeBSD ncr driver to Linux-1.2.13.&n; *&n; * The original ncr driver has been written for 386bsd and FreeBSD by&n; *         Wolfgang Stanglmeier        &lt;wolf@cologne.de&gt;&n; *         Stefan Esser                &lt;se@mi.Uni-Koeln.de&gt;&n; * Copyright (C) 1994  Wolfgang Stanglmeier&n; *&n; * Other major contributions:&n; *&n; * NVRAM detection and reading.&n; * Copyright (C) 1997 Richard Waltham &lt;dormouse@farsrobt.demon.co.uk&gt;&n; *&n; *-----------------------------------------------------------------------------&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions and the following disclaimer.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Where this Software is combined with software released under the terms of &n; * the GNU Public License (&quot;GPL&quot;) and the terms of the GPL would require the &n; * combined work to also be released under the terms of the GPL, the terms&n; * and conditions of this License will apply in addition to those of the&n; * GPL with the exception of any terms or conditions of this License that&n; * conflict with, or are expressly prohibited by, the GPL.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHORS AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
+multiline_comment|/*&n; * Device driver for the SYMBIOS/LSILOGIC 53C8XX and 53C1010 family &n; * of PCI-SCSI IO processors.&n; *&n; * Copyright (C) 1999-2001  Gerard Roudier &lt;groudier@free.fr&gt;&n; * Copyright (c) 2003-2004  Matthew Wilcox &lt;matthew@wil.cx&gt;&n; *&n; * This driver is derived from the Linux sym53c8xx driver.&n; * Copyright (C) 1998-2000  Gerard Roudier&n; *&n; * The sym53c8xx driver is derived from the ncr53c8xx driver that had been &n; * a port of the FreeBSD ncr driver to Linux-1.2.13.&n; *&n; * The original ncr driver has been written for 386bsd and FreeBSD by&n; *         Wolfgang Stanglmeier        &lt;wolf@cologne.de&gt;&n; *         Stefan Esser                &lt;se@mi.Uni-Koeln.de&gt;&n; * Copyright (C) 1994  Wolfgang Stanglmeier&n; *&n; * Other major contributions:&n; *&n; * NVRAM detection and reading.&n; * Copyright (C) 1997 Richard Waltham &lt;dormouse@farsrobt.demon.co.uk&gt;&n; *&n; *-----------------------------------------------------------------------------&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;sym_glue.h&quot;
 macro_line|#include &quot;sym_nvram.h&quot;
 macro_line|#if 0
@@ -1073,7 +1073,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* MDELAY(100); */
 r_return
 id|retv
 suffix:semicolon
@@ -7562,7 +7561,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|MDELAY
+id|mdelay
 c_func
 (paren
 l_int|100
@@ -19049,12 +19048,6 @@ comma
 id|cp-&gt;lun
 )paren
 suffix:semicolon
-id|MDELAY
-c_func
-(paren
-l_int|100
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *  Get target and lun pointers.&n;&t; */
 id|tp
@@ -19656,7 +19649,6 @@ id|ccb
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Soft-attach the controller.&n; */
-macro_line|#ifdef SYM_OPT_NVRAM_PRE_READ
 DECL|function|sym_hcb_attach
 r_int
 id|sym_hcb_attach
@@ -19675,33 +19667,7 @@ id|sym_nvram
 op_star
 id|nvram
 )paren
-macro_line|#else
-r_int
-id|sym_hcb_attach
-c_func
-(paren
-id|hcb_p
-id|np
-comma
-r_struct
-id|sym_fw
-op_star
-id|fw
-)paren
-macro_line|#endif
 (brace
-macro_line|#ifndef SYM_OPT_NVRAM_PRE_READ
-r_struct
-id|sym_nvram
-id|nvram_buf
-comma
-op_star
-id|nvram
-op_assign
-op_amp
-id|nvram_buf
-suffix:semicolon
-macro_line|#endif
 r_int
 id|i
 suffix:semicolon
@@ -19742,20 +19708,6 @@ id|sym_chip_reset
 id|np
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Try to read the user set-up.&n;&t; */
-macro_line|#ifndef SYM_OPT_NVRAM_PRE_READ
-(paren
-r_void
-)paren
-id|sym_read_nvram
-c_func
-(paren
-id|np
-comma
-id|nvram
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; *  Prepare controller and devices settings, according &n;&t; *  to chip features, user set-up and driver set-up.&n;&t; */
 (paren
 r_void
