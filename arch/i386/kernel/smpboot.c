@@ -1,6 +1,7 @@
-multiline_comment|/*&n; *&t;x86 SMP booting functions&n; *&n; *&t;(c) 1995 Alan Cox, Building #3 &lt;alan@redhat.com&gt;&n; *&t;(c) 1998, 1999, 2000 Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; *&t;Much of the core SMP work is based on previous work by Thomas Radke, to&n; *&t;whom a great many thanks are extended.&n; *&n; *&t;Thanks to Intel for making available several different Pentium,&n; *&t;Pentium Pro and Pentium-II/Xeon MP machines.&n; *&t;Original development of Linux SMP code supported by Caldera.&n; *&n; *&t;This code is released under the GNU General Public License version 2 or&n; *&t;later.&n; *&n; *&t;Fixes&n; *&t;&t;Felix Koop&t;:&t;NR_CPUS used properly&n; *&t;&t;Jose Renau&t;:&t;Handle single CPU case.&n; *&t;&t;Alan Cox&t;:&t;By repeated request 8) - Total BogoMIP report.&n; *&t;&t;Greg Wright&t;:&t;Fix for kernel stacks panic.&n; *&t;&t;Erich Boleyn&t;:&t;MP v1.4 and additional changes.&n; *&t;Matthias Sattler&t;:&t;Changes for 2.1 kernel map.&n; *&t;Michel Lespinasse&t;:&t;Changes for 2.1 kernel map.&n; *&t;Michael Chastain&t;:&t;Change trampoline.S to gnu as.&n; *&t;&t;Alan Cox&t;:&t;Dumb bug: &squot;B&squot; step PPro&squot;s are fine&n; *&t;&t;Ingo Molnar&t;:&t;Added APIC timers, based on code&n; *&t;&t;&t;&t;&t;from Jose Renau&n; *&t;&t;Ingo Molnar&t;:&t;various cleanups and rewrites&n; *&t;&t;Tigran Aivazian&t;:&t;fixed &quot;0.00 in /proc/uptime on SMP&quot; bug.&n; *&t;Maciej W. Rozycki&t;:&t;Bits for genuine 82489DX APICs&n; *&t;&t;Martin J. Bligh&t;: &t;Added support for multi-quad systems&n; */
+multiline_comment|/*&n; *&t;x86 SMP booting functions&n; *&n; *&t;(c) 1995 Alan Cox, Building #3 &lt;alan@redhat.com&gt;&n; *&t;(c) 1998, 1999, 2000 Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; *&t;Much of the core SMP work is based on previous work by Thomas Radke, to&n; *&t;whom a great many thanks are extended.&n; *&n; *&t;Thanks to Intel for making available several different Pentium,&n; *&t;Pentium Pro and Pentium-II/Xeon MP machines.&n; *&t;Original development of Linux SMP code supported by Caldera.&n; *&n; *&t;This code is released under the GNU General Public License version 2 or&n; *&t;later.&n; *&n; *&t;Fixes&n; *&t;&t;Felix Koop&t;:&t;NR_CPUS used properly&n; *&t;&t;Jose Renau&t;:&t;Handle single CPU case.&n; *&t;&t;Alan Cox&t;:&t;By repeated request 8) - Total BogoMIP report.&n; *&t;&t;Greg Wright&t;:&t;Fix for kernel stacks panic.&n; *&t;&t;Erich Boleyn&t;:&t;MP v1.4 and additional changes.&n; *&t;Matthias Sattler&t;:&t;Changes for 2.1 kernel map.&n; *&t;Michel Lespinasse&t;:&t;Changes for 2.1 kernel map.&n; *&t;Michael Chastain&t;:&t;Change trampoline.S to gnu as.&n; *&t;&t;Alan Cox&t;:&t;Dumb bug: &squot;B&squot; step PPro&squot;s are fine&n; *&t;&t;Ingo Molnar&t;:&t;Added APIC timers, based on code&n; *&t;&t;&t;&t;&t;from Jose Renau&n; *&t;&t;Ingo Molnar&t;:&t;various cleanups and rewrites&n; *&t;&t;Tigran Aivazian&t;:&t;fixed &quot;0.00 in /proc/uptime on SMP&quot; bug.&n; *&t;Maciej W. Rozycki&t;:&t;Bits for genuine 82489DX APICs&n; *&t;&t;Martin J. Bligh&t;: &t;Added support for multi-quad systems&n; *&t;&t;Dave Jones&t;:&t;Report invalid combinations of Athlon CPUs.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -317,6 +318,129 @@ id|smp_b_stepping
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/*&n;&t; * Certain Athlons might work (for various values of &squot;work&squot;) in SMP&n;&t; * but they are not certified as MP capable.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|c-&gt;x86_vendor
+op_eq
+id|X86_VENDOR_AMD
+)paren
+op_logical_and
+(paren
+id|c-&gt;x86
+op_eq
+l_int|6
+)paren
+)paren
+(brace
+multiline_comment|/* Athlon 660/661 is valid. */
+r_if
+c_cond
+(paren
+(paren
+id|c-&gt;x86_model
+op_eq
+l_int|6
+)paren
+op_logical_and
+(paren
+(paren
+id|c-&gt;x86_mask
+op_eq
+l_int|0
+)paren
+op_logical_or
+(paren
+id|c-&gt;x86_mask
+op_eq
+l_int|1
+)paren
+)paren
+)paren
+r_goto
+id|valid_k7
+suffix:semicolon
+multiline_comment|/* Duron 670 is valid */
+r_if
+c_cond
+(paren
+(paren
+id|c-&gt;x86_model
+op_eq
+l_int|7
+)paren
+op_logical_and
+(paren
+id|c-&gt;x86_mask
+op_eq
+l_int|0
+)paren
+)paren
+r_goto
+id|valid_k7
+suffix:semicolon
+multiline_comment|/* Athlon 662, Duron 671, and Athlon &gt;model 7 have capability bit */
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|c-&gt;x86_model
+op_eq
+l_int|6
+)paren
+op_logical_and
+(paren
+id|c-&gt;x86_mask
+op_ge
+l_int|2
+)paren
+)paren
+op_logical_or
+(paren
+(paren
+id|c-&gt;x86_model
+op_eq
+l_int|7
+)paren
+op_logical_and
+(paren
+id|c-&gt;x86_mask
+op_ge
+l_int|1
+)paren
+)paren
+op_logical_or
+(paren
+id|c-&gt;x86_model
+OG
+l_int|7
+)paren
+)paren
+r_if
+c_cond
+(paren
+id|cpu_has_mp
+)paren
+r_goto
+id|valid_k7
+suffix:semicolon
+multiline_comment|/* If we get here, it&squot;s not a certified SMP capable AMD system. */
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;WARNING: This combination of AMD processors is not suitable for SMP.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|tainted
+op_or_assign
+id|TAINT_UNSAFE_SMP
+suffix:semicolon
+)brace
+id|valid_k7
+suffix:colon
 )brace
 multiline_comment|/*&n; * Architecture specific routine called by the kernel just before init is&n; * fired off. This allows the BP to have everything in order [we hope].&n; * At the end of this all the APs will hit the system scheduling and off&n; * we go. Each AP will load the system gdt&squot;s and jump through the kernel&n; * init into idle(). At this point the scheduler will one day take over&n; * and give them jobs to do. smp_callin is a standard routine&n; * we use to track CPUs as they power up.&n; */
 DECL|variable|smp_commenced

@@ -71,6 +71,8 @@ multiline_comment|/* AMD-defined CPU features, CPUID level 0x80000001, word 1 */
 multiline_comment|/* Don&squot;t duplicate feature flags which are redundant with Intel! */
 DECL|macro|X86_FEATURE_SYSCALL
 mdefine_line|#define X86_FEATURE_SYSCALL&t;(1*32+11) /* SYSCALL/SYSRET */
+DECL|macro|X86_FEATURE_MP
+mdefine_line|#define X86_FEATURE_MP&t;&t;(1*32+19) /* MP Capable. */
 DECL|macro|X86_FEATURE_MMXEXT
 mdefine_line|#define X86_FEATURE_MMXEXT&t;(1*32+22) /* AMD MMX extensions */
 DECL|macro|X86_FEATURE_LM

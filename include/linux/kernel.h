@@ -507,6 +507,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|macro|TAINT_PROPRIETORY_MODULE
+mdefine_line|#define TAINT_PROPRIETORY_MODULE&t;(1&lt;&lt;0)
+DECL|macro|TAINT_FORCED_MODULE
+mdefine_line|#define TAINT_FORCED_MODULE&t;&t;(1&lt;&lt;1)
+DECL|macro|TAINT_UNSAFE_SMP
+mdefine_line|#define TAINT_UNSAFE_SMP&t;&t;(1&lt;&lt;2)
 macro_line|#if DEBUG
 DECL|macro|pr_debug
 mdefine_line|#define pr_debug(fmt,arg...) &bslash;&n;&t;printk(KERN_DEBUG fmt,##arg)
