@@ -361,13 +361,6 @@ c_cond
 (paren
 op_logical_neg
 id|mq-&gt;req
-op_logical_and
-op_logical_neg
-id|blk_queue_plugged
-c_func
-(paren
-id|q
-)paren
 )paren
 id|wake_up
 c_func
@@ -409,6 +402,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|card-&gt;host-&gt;dev-&gt;dma_mask
+op_logical_and
+op_star
 id|card-&gt;host-&gt;dev-&gt;dma_mask
 )paren
 id|limit
