@@ -133,7 +133,11 @@ op_minus
 id|count
 )paren
 op_star
-id|tick
+(paren
+id|tick_nsec
+op_div
+l_int|1000
+)paren
 suffix:semicolon
 id|count
 op_assign
@@ -730,7 +734,11 @@ id|CSR_TIMER1_VALUE
 suffix:semicolon
 r_return
 (paren
-id|tick
+(paren
+id|tick_nsec
+op_div
+l_int|1000
+)paren
 op_star
 id|value
 )paren
