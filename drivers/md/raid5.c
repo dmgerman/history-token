@@ -4805,7 +4805,7 @@ id|sh-&gt;pd_idx
 )paren
 )paren
 (brace
-multiline_comment|/* any written block on an uptodate or failed drive can be returned */
+multiline_comment|/* any written block on an uptodate or failed drive can be returned.&n;&t;     * Note that if we &squot;wrote&squot; to a failed drive, it will be UPTODATE, but &n;&t;     * never LOCKED, so we don&squot;t need to test &squot;failed&squot; directly.&n;&t;     */
 r_for
 c_loop
 (paren
@@ -4843,22 +4843,6 @@ op_logical_neg
 id|test_bit
 c_func
 (paren
-id|R5_Insync
-comma
-op_amp
-id|sh-&gt;dev
-(braket
-id|sh-&gt;pd_idx
-)braket
-dot
-id|flags
-)paren
-op_logical_and
-(paren
-op_logical_neg
-id|test_bit
-c_func
-(paren
 id|R5_LOCKED
 comma
 op_amp
@@ -4874,9 +4858,8 @@ op_amp
 id|dev-&gt;flags
 )paren
 )paren
-)paren
 (brace
-multiline_comment|/* maybe we can return some write requests */
+multiline_comment|/* We can return any write requests */
 r_struct
 id|bio
 op_star
