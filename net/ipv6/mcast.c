@@ -4888,6 +4888,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+multiline_comment|/* compute payload length excluding extension headers */
 id|len
 op_assign
 id|ntohs
@@ -4895,6 +4896,26 @@ c_func
 (paren
 id|skb-&gt;nh.ipv6h-&gt;payload_len
 )paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|ipv6hdr
+)paren
+suffix:semicolon
+id|len
+op_sub_assign
+(paren
+r_char
+op_star
+)paren
+id|skb-&gt;h.raw
+op_minus
+(paren
+r_char
+op_star
+)paren
+id|skb-&gt;nh.ipv6h
 suffix:semicolon
 multiline_comment|/* Drop queries with not link local source */
 r_if
