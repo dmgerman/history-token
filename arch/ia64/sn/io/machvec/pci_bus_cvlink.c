@@ -110,7 +110,7 @@ mdefine_line|#define IS_OPUS(nasid) (cbrick_type_get_nasid(nasid) == MODULE_OPUS
 DECL|macro|IS_ALTIX
 mdefine_line|#define IS_ALTIX(nasid) (cbrick_type_get_nasid(nasid) == MODULE_CBRICK)
 multiline_comment|/*&n; * pci_bus_cvlink_init() - To be called once during initialization before &n; *&t;SGI IO Infrastructure init is called.&n; */
-r_void
+r_int
 DECL|function|pci_bus_cvlink_init
 id|pci_bus_cvlink_init
 c_func
@@ -119,7 +119,7 @@ r_void
 )paren
 (brace
 r_extern
-r_void
+r_int
 id|ioconfig_bus_init
 c_func
 (paren
@@ -176,6 +176,7 @@ id|num_bridges
 op_assign
 l_int|0
 suffix:semicolon
+r_return
 id|ioconfig_bus_init
 c_func
 (paren
