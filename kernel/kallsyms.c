@@ -6,6 +6,14 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#ifdef CONFIG_KALLSYMS_ALL
+DECL|macro|all_var
+mdefine_line|#define all_var 1
+macro_line|#else
+DECL|macro|all_var
+mdefine_line|#define all_var 0
+macro_line|#endif
 multiline_comment|/* These will be re-linked against their real values during the second link stage */
 r_extern
 r_int
@@ -104,6 +112,10 @@ comma
 id|_einittext
 (braket
 )braket
+comma
+id|_end
+(braket
+)braket
 suffix:semicolon
 DECL|function|is_kernel_inittext
 r_static
@@ -178,7 +190,11 @@ r_return
 l_int|1
 suffix:semicolon
 r_return
-l_int|0
+id|in_gate_area_no_task
+c_func
+(paren
+id|addr
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* expand a compressed symbol data into the resulting uncompressed string,&n;   given the offset to where the symbol is in the compressed stream */
@@ -557,6 +573,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|all_var
+op_logical_or
 id|is_kernel_text
 c_func
 (paren
@@ -730,6 +748,15 @@ suffix:semicolon
 r_else
 id|symbol_end
 op_assign
+id|all_var
+ques
+c_cond
+(paren
+r_int
+r_int
+)paren
+id|_end
+suffix:colon
 (paren
 r_int
 r_int
