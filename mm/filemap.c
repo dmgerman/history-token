@@ -22,7 +22,7 @@ multiline_comment|/*&n; * Shared mappings implemented 30.11.1994. It&squot;s not
 multiline_comment|/*&n; * Lock ordering:&n; *&n; *  pagemap_lru_lock&n; *  -&gt;i_shared_lock&t;&t;(vmtruncate)&n; *    -&gt;private_lock&t;&t;(__free_pte-&gt;__set_page_dirty_buffers)&n; *      -&gt;swap_list_lock&n; *        -&gt;swap_device_lock&t;(exclusive_swap_page, others)&n; *          -&gt;mapping-&gt;page_lock&n; *      -&gt;inode_lock&t;&t;(__mark_inode_dirty)&n; *        -&gt;sb_lock&t;&t;(fs/fs-writeback.c)&n; */
 DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
-id|pagemap_lru_lock
+id|_pagemap_lru_lock
 id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED

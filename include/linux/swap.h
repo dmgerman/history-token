@@ -815,7 +815,7 @@ r_int
 suffix:semicolon
 r_extern
 id|spinlock_t
-id|pagemap_lru_lock
+id|_pagemap_lru_lock
 suffix:semicolon
 r_extern
 r_void
