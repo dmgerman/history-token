@@ -408,6 +408,13 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|map-&gt;type
+op_eq
+id|_DRM_REGISTERS
+)paren
 id|map-&gt;handle
 op_assign
 id|DRM

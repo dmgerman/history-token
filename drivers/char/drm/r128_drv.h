@@ -233,11 +233,6 @@ id|drm_local_map_t
 op_star
 id|sarea
 suffix:semicolon
-DECL|member|fb
-id|drm_local_map_t
-op_star
-id|fb
-suffix:semicolon
 DECL|member|mmio
 id|drm_local_map_t
 op_star
