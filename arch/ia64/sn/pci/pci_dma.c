@@ -1647,4 +1647,11 @@ c_func
 id|sn_pci_dma_supported
 )paren
 suffix:semicolon
+DECL|variable|sn_dma_mapping_error
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sn_dma_mapping_error
+)paren
+suffix:semicolon
 eof
