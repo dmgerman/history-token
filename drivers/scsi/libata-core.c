@@ -117,17 +117,6 @@ op_star
 id|ap
 )paren
 suffix:semicolon
-r_static
-r_int
-id|ata_qc_issue_prot
-c_func
-(paren
-r_struct
-id|ata_queued_cmd
-op_star
-id|qc
-)paren
-suffix:semicolon
 DECL|variable|ata_unique_id
 r_static
 r_int
@@ -8078,7 +8067,9 @@ op_or_assign
 id|ATA_QCFLAG_ACTIVE
 suffix:semicolon
 r_return
-id|ata_qc_issue_prot
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|qc_issue
 c_func
 (paren
 id|qc
@@ -8093,7 +8084,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;ata_qc_issue_prot - issue taskfile to device in proto-dependent manner&n; *&t;@qc: command to issue to device&n; *&n; *&t;Using various libata functions and hooks, this function&n; *&t;starts an ATA command.  ATA commands are grouped into&n; *&t;classes called &quot;protocols&quot;, and issuing each type of protocol&n; *&t;is slightly different.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; *&n; *&t;RETURNS:&n; *&t;Zero on success, negative on error.&n; */
 DECL|function|ata_qc_issue_prot
-r_static
 r_int
 id|ata_qc_issue_prot
 c_func
@@ -11670,6 +11660,13 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|ata_qc_complete
+)paren
+suffix:semicolon
+DECL|variable|ata_qc_issue_prot
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ata_qc_issue_prot
 )paren
 suffix:semicolon
 DECL|variable|ata_eng_timeout

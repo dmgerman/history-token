@@ -412,6 +412,11 @@ op_assign
 id|ata_qc_prep
 comma
 dot
+id|qc_issue
+op_assign
+id|ata_qc_issue_prot
+comma
+dot
 id|eng_timeout
 op_assign
 id|ata_eng_timeout
