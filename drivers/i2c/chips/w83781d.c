@@ -997,7 +997,7 @@ l_int|8
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_in
-mdefine_line|#define device_create_file_in(client, offset) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_input##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_min##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_max##offset);
+mdefine_line|#define device_create_file_in(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_input##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_min##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_max##offset); &bslash;&n;} while (0);
 DECL|macro|show_fan_reg
 mdefine_line|#define show_fan_reg(reg) &bslash;&n;static ssize_t show_##reg (struct device *dev, char *buf, int nr) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct w83781d_data *data = i2c_get_clientdata(client); &bslash;&n;&t; &bslash;&n;&t;w83781d_update_client(client); &bslash;&n;&t; &bslash;&n;&t;return sprintf(buf,&quot;%ld&bslash;n&quot;, &bslash;&n;&t;&t;FAN_FROM_REG(data-&gt;reg[nr-1], (long)DIV_FROM_REG(data-&gt;fan_div[nr-1]))); &bslash;&n;}
 DECL|variable|fan
