@@ -3582,7 +3582,14 @@ r_break
 suffix:semicolon
 )brace
 id|fack_count
-op_increment
+op_add_assign
+id|TCP_SKB_CB
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|tso_factor
 suffix:semicolon
 id|in_sack
 op_assign
