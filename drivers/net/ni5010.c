@@ -1,10 +1,10 @@
-multiline_comment|/*&t;ni5010.c: A network driver for the MiCom-Interlan NI5010 ethercard.&n; *&n; *&t;Copyright 1996,1997 Jan-Pascal van Best and Andreas Mohr.&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU Public License, incorporated herein by reference.&n; *&n; * &t;The authors may be reached as:&n; *&t;&t;jvbest@wi.leidenuniv.nl&t;&t;a.mohr@mailto.de&n; * &t;or by snail mail as&n; * &t;&t;Jan-Pascal van Best&t;&t;Andreas Mohr&n; *&t;&t;Klikspaanweg 58-4&t;&t;Stauferstr. 6&n; *&t;&t;2324 LZ  Leiden&t;&t;&t;D-71272 Renningen&n; *&t;&t;The Netherlands&t;&t;&t;Germany&n; *&n; *&t;Sources:&n; * &t; &t;Donald Becker&squot;s &quot;skeleton.c&quot;&n; *  &t;&t;Crynwr ni5010 packet driver&n; *&n; *&t;Changes:&n; *&t;&t;v0.0: First test version&n; *&t;&t;v0.1: First working version&n; *&t;&t;v0.2:&n; *&t;&t;v0.3-&gt;v0.90: Now demand setting io and irq when loading as module&n; *&t;970430&t;v0.91: modified for Linux 2.1.14&n; *&t;&t;v0.92: Implemented Andreas&squot; (better) NI5010 probe&n; *&t;970503&t;v0.93: Fixed auto-irq failure on warm reboot (JB)&n; *&t;970623&t;v1.00: First kernel version (AM)&n; *&t;970814&t;v1.01: Added detection of onboard receive buffer size (AM)&n; *&t;Bugs:&n; *&t;&t;- None known...&n; *&t;&t;- Note that you have to patch ifconfig for the new /proc/net/dev&n; *&t;&t;format. It gives incorrect stats otherwise.&n; *&n; *&t;To do:&n; *&t;&t;Fix all bugs :-)&n; *&t;&t;Move some stuff to chipset_init()&n; *&t;&t;Handle xmt errors other than collisions&n; *&t;&t;Complete merge with Andreas&squot; driver&n; *&t;&t;Implement ring buffers (Is this useful? You can&squot;t squeeze&n; *&t;&t;&t;too many packet in a 2k buffer!)&n; *&t;&t;Implement DMA (Again, is this useful? Some docs says DMA is&n; *&t;&t;&t;slower than programmed I/O)&n; *&n; *&t;Compile with:&n; *&t;&t;gcc -O2 -fomit-frame-pointer -m486 -D__KERNEL__ &bslash;&n; *&t;&t;&t;-DMODULE -c ni5010.c &n; *&n; *&t;Insert with e.g.:&n; *&t;&t;insmod ni5010.o io=0x300 irq=5 &t;&n; */
+multiline_comment|/*&t;ni5010.c: A network driver for the MiCom-Interlan NI5010 ethercard.&n; *&n; *&t;Copyright 1996,1997 Jan-Pascal van Best and Andreas Mohr.&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU General Public License, incorporated herein by reference.&n; *&n; * &t;The authors may be reached as:&n; *&t;&t;jvbest@wi.leidenuniv.nl&t;&t;a.mohr@mailto.de&n; * &t;or by snail mail as&n; * &t;&t;Jan-Pascal van Best&t;&t;Andreas Mohr&n; *&t;&t;Klikspaanweg 58-4&t;&t;Stauferstr. 6&n; *&t;&t;2324 LZ  Leiden&t;&t;&t;D-71272 Renningen&n; *&t;&t;The Netherlands&t;&t;&t;Germany&n; *&n; *&t;Sources:&n; * &t; &t;Donald Becker&squot;s &quot;skeleton.c&quot;&n; *  &t;&t;Crynwr ni5010 packet driver&n; *&n; *&t;Changes:&n; *&t;&t;v0.0: First test version&n; *&t;&t;v0.1: First working version&n; *&t;&t;v0.2:&n; *&t;&t;v0.3-&gt;v0.90: Now demand setting io and irq when loading as module&n; *&t;970430&t;v0.91: modified for Linux 2.1.14&n; *&t;&t;v0.92: Implemented Andreas&squot; (better) NI5010 probe&n; *&t;970503&t;v0.93: Fixed auto-irq failure on warm reboot (JB)&n; *&t;970623&t;v1.00: First kernel version (AM)&n; *&t;970814&t;v1.01: Added detection of onboard receive buffer size (AM)&n; *&t;Bugs:&n; *&t;&t;- None known...&n; *&t;&t;- Note that you have to patch ifconfig for the new /proc/net/dev&n; *&t;&t;format. It gives incorrect stats otherwise.&n; *&n; *&t;To do:&n; *&t;&t;Fix all bugs :-)&n; *&t;&t;Move some stuff to chipset_init()&n; *&t;&t;Handle xmt errors other than collisions&n; *&t;&t;Complete merge with Andreas&squot; driver&n; *&t;&t;Implement ring buffers (Is this useful? You can&squot;t squeeze&n; *&t;&t;&t;too many packet in a 2k buffer!)&n; *&t;&t;Implement DMA (Again, is this useful? Some docs says DMA is&n; *&t;&t;&t;slower than programmed I/O)&n; *&n; *&t;Compile with:&n; *&t;&t;gcc -O2 -fomit-frame-pointer -m486 -D__KERNEL__ &bslash;&n; *&t;&t;&t;-DMODULE -c ni5010.c &n; *&n; *&t;Insert with e.g.:&n; *&t;&t;insmod ni5010.o io=0x300 irq=5 &t;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -299,7 +299,7 @@ id|len
 suffix:semicolon
 r_static
 r_void
-id|show_registers
+id|ni5010_show_registers
 c_func
 (paren
 r_struct
@@ -1729,7 +1729,7 @@ c_cond
 (paren
 id|NI5010_DEBUG
 )paren
-id|show_registers
+id|ni5010_show_registers
 c_func
 (paren
 id|dev
@@ -2554,6 +2554,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
@@ -2874,7 +2878,7 @@ c_cond
 (paren
 id|NI5010_DEBUG
 )paren
-id|show_registers
+id|ni5010_show_registers
 c_func
 (paren
 id|dev
@@ -3089,7 +3093,7 @@ c_cond
 (paren
 id|NI5010_DEBUG
 )paren
-id|show_registers
+id|ni5010_show_registers
 c_func
 (paren
 id|dev
@@ -3253,7 +3257,7 @@ c_cond
 (paren
 id|NI5010_DEBUG
 )paren
-id|show_registers
+id|ni5010_show_registers
 c_func
 (paren
 id|dev
@@ -3288,10 +3292,10 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
-DECL|function|show_registers
+DECL|function|ni5010_show_registers
 r_static
 r_void
-id|show_registers
+id|ni5010_show_registers
 c_func
 (paren
 r_struct

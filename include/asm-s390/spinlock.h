@@ -21,7 +21,7 @@ mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { 0 }
 DECL|macro|spin_lock_init
 mdefine_line|#define spin_lock_init(lp) do { (lp)-&gt;lock = 0; } while(0)
 DECL|macro|spin_unlock_wait
-mdefine_line|#define spin_unlock_wait(lp)&t;do { barrier(); } while((volatile spinlock_t *)(lp)-&gt;lock)
+mdefine_line|#define spin_unlock_wait(lp)&t;do { barrier(); } while(((volatile spinlock_t *)(lp))-&gt;lock)
 DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(x) ((x)-&gt;lock != 0)
 DECL|function|spin_lock
@@ -40,10 +40,11 @@ id|__asm__
 id|__volatile
 c_func
 (paren
-l_string|&quot;    lhi   1,-1&bslash;n&quot;
-l_string|&quot;0:  slr   0,0&bslash;n&quot;
+l_string|&quot;    bras  1,1f&bslash;n&quot;
+l_string|&quot;0:  diag  0,0,68&bslash;n&quot;
+l_string|&quot;1:  slr   0,0&bslash;n&quot;
 l_string|&quot;    cs    0,1,%1&bslash;n&quot;
-l_string|&quot;    jl    0b&quot;
+l_string|&quot;    jl    0b&bslash;n&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -58,6 +59,8 @@ suffix:colon
 l_string|&quot;0&quot;
 comma
 l_string|&quot;1&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
@@ -82,8 +85,8 @@ id|__volatile
 c_func
 (paren
 l_string|&quot;    slr   %1,%1&bslash;n&quot;
-l_string|&quot;    lhi   0,-1&bslash;n&quot;
-l_string|&quot;0:  cs    %1,0,%0&quot;
+l_string|&quot;    basr  1,0&bslash;n&quot;
+l_string|&quot;0:  cs    %1,1,%0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -100,7 +103,9 @@ l_string|&quot;0&quot;
 id|lp-&gt;lock
 )paren
 suffix:colon
-l_string|&quot;0&quot;
+l_string|&quot;1&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
@@ -133,6 +138,10 @@ l_string|&quot;a&quot;
 (paren
 id|lp
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
@@ -159,12 +168,12 @@ suffix:semicolon
 DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0, 0 }
 DECL|macro|read_lock
-mdefine_line|#define read_lock(rw)   &bslash;&n;        asm volatile(&quot;   l     2,%0&bslash;n&quot;   &bslash;&n;                     &quot;0: sll   2,1&bslash;n&quot;    &bslash;&n;                     &quot;   srl   2,1&bslash;n&quot;     /* clear high (=write) bit */ &bslash;&n;                     &quot;   lr    3,2&bslash;n&quot;    &bslash;&n;                     &quot;   ahi   3,1&bslash;n&quot;     /* one more reader */ &bslash;&n;                     &quot;   cs    2,3,%0&bslash;n&quot;  /* try to write new value */ &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : : &quot;2&quot;, &quot;3&quot; );
+mdefine_line|#define read_lock(rw)   &bslash;&n;        asm volatile(&quot;   l     2,%0&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: la    2,0(2)&bslash;n&quot;  /* clear high (=write) bit */ &bslash;&n;                     &quot;   la    3,1(2)&bslash;n&quot;  /* one more reader */ &bslash;&n;                     &quot;   cs    2,3,%0&bslash;n&quot;  /* try to write new value */ &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; );
 DECL|macro|read_unlock
-mdefine_line|#define read_unlock(rw) &bslash;&n;        asm volatile(&quot;   l     2,%0&bslash;n&quot;   &bslash;&n;                     &quot;0: lr    3,2&bslash;n&quot;    &bslash;&n;                     &quot;   ahi   3,-1&bslash;n&quot;    /* one less reader */ &bslash;&n;                     &quot;   cs    2,3,%0&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : : &quot;2&quot;, &quot;3&quot; );
+mdefine_line|#define read_unlock(rw) &bslash;&n;        asm volatile(&quot;   l     2,%0&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: lr    3,2&bslash;n&quot;    &bslash;&n;                     &quot;   ahi   3,-1&bslash;n&quot;    /* one less reader */ &bslash;&n;                     &quot;   cs    2,3,%0&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; );
 DECL|macro|write_lock
-mdefine_line|#define write_lock(rw) &bslash;&n;        asm volatile(&quot;   lhi   3,1&bslash;n&quot;    &bslash;&n;                     &quot;   sll   3,31&bslash;n&quot;    /* new lock value = 0x80000000 */ &bslash;&n;                     &quot;0: slr   2,2&bslash;n&quot;     /* old lock value must be 0 */ &bslash;&n;                     &quot;   cs    2,3,%0&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : : &quot;2&quot;, &quot;3&quot; );
+mdefine_line|#define write_lock(rw) &bslash;&n;        asm volatile(&quot;   lhi   3,1&bslash;n&quot;    &bslash;&n;                     &quot;   sll   3,31&bslash;n&quot;    /* new lock value = 0x80000000 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: slr   2,2&bslash;n&quot;     /* old lock value must be 0 */ &bslash;&n;                     &quot;   cs    2,3,%0&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; );
 DECL|macro|write_unlock
-mdefine_line|#define write_unlock(rw) &bslash;&n;        asm volatile(&quot;   slr   3,3&bslash;n&quot;     /* new lock value = 0 */ &bslash;&n;                     &quot;0: lhi   2,1&bslash;n&quot;    &bslash;&n;                     &quot;   sll   2,31&bslash;n&quot;    /* old lock value must be 0x80000000 */ &bslash;&n;                     &quot;   cs    2,3,%0&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : : &quot;2&quot;, &quot;3&quot; );
+mdefine_line|#define write_unlock(rw) &bslash;&n;        asm volatile(&quot;   slr   3,3&bslash;n&quot;     /* new lock value = 0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: lhi   2,1&bslash;n&quot;    &bslash;&n;                     &quot;   sll   2,31&bslash;n&quot;    /* old lock value must be 0x80000000 */ &bslash;&n;                     &quot;   cs    2,3,%0&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; );
 macro_line|#endif /* __ASM_SPINLOCK_H */
 eof

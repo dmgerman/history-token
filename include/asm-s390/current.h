@@ -29,7 +29,7 @@ c_func
 l_string|&quot;lhi   %0,-8192&bslash;n&bslash;t&quot;
 l_string|&quot;nr    %0,15&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|current
 )paren

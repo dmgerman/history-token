@@ -1258,6 +1258,10 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* pass the packet to upper layers */
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
 suffix:semicolon

@@ -1,0 +1,91 @@
+multiline_comment|/*&n; *  arch/s390/kernel/s390fpu.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *&n; *  s390fpu.h functions for saving &amp; restoring the fpu state.&n; *&n; *  I couldn&squot;t inline these as linux/sched.h included half the world&n; *  &amp; was required to at the task structure.&n; *  &amp; the functions were too complex to make macros from.&n; *  ( &amp; as usual I didn&squot;t feel like debugging inline code ).&n; */
+macro_line|#include &lt;linux/sched.h&gt;
+DECL|function|save_fp_regs
+r_void
+id|save_fp_regs
+c_func
+(paren
+id|s390_fp_regs
+op_star
+id|fpregs
+)paren
+(brace
+multiline_comment|/*&n; * I don&squot;t think we can use STE here as this would load&n; * fp registers 0 &amp; 2 into memory locations 0 &amp; 1 etc. &n; */
+id|asm
+r_volatile
+(paren
+l_string|&quot;STFPC 0(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   0,8(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   1,16(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   2,24(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   3,32(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   4,40(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   5,48(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   6,56(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   7,64(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   8,72(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   9,80(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   10,88(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   11,96(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   12,104(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   13,112(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   14,120(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;STD   15,128(%0)&bslash;n&bslash;t&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|fpregs
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|restore_fp_regs
+r_void
+id|restore_fp_regs
+c_func
+(paren
+id|s390_fp_regs
+op_star
+id|fpregs
+)paren
+(brace
+multiline_comment|/* If we don&squot;t mask with the FPC_VALID_MASK here&n;&t; * we&squot;ve got a very quick shutdown -h now command&n;         * via a kernel specification exception.&n;&t; */
+id|fpregs-&gt;fpc
+op_and_assign
+id|FPC_VALID_MASK
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;LFPC 0(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   0,8(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   1,16(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   2,24(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   3,32(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   4,40(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   5,48(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   6,56(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   7,64(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   8,72(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   9,80(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   10,88(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   11,96(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   12,104(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   13,112(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   14,120(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LD   15,128(%0)&bslash;n&bslash;t&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|fpregs
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+eof

@@ -29265,7 +29265,7 @@ l_int|32
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * need to ensure that the xtalk adress in ioe&n;     * maps to PCI error address read from bridge.&n;     * How to convert PCI address back to Xtalk address ?&n;     * (better idea: convert XTalk address to PCI address&n;     * and then do the compare!)&n;     */
+multiline_comment|/*&n;     * need to ensure that the xtalk address in ioe&n;     * maps to PCI error address read from bridge.&n;     * How to convert PCI address back to Xtalk address ?&n;     * (better idea: convert XTalk address to PCI address&n;     * and then do the compare!)&n;     */
 id|retval
 op_assign
 id|pciio_error_handler
@@ -30935,7 +30935,7 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#ifdef LITTLE_ENDIAN
-multiline_comment|/*&n; * on sn-ia we need to twiddle the the addresses going out&n; * the pci bus because we use the unswizzled synergy space&n; * (the alternative is to use the swizzled synergy space&n; * and byte swap the data)&n; */
+multiline_comment|/*&n; * on sn-ia we need to twiddle the addresses going out&n; * the pci bus because we use the unswizzled synergy space&n; * (the alternative is to use the swizzled synergy space&n; * and byte swap the data)&n; */
 DECL|macro|CB
 mdefine_line|#define&t;CB(b,r)&t;(((volatile uint8_t *) b)[((r)^4)])
 DECL|macro|CS

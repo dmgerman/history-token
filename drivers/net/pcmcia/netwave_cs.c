@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -4479,7 +4479,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* netwave_start_xmit */
-multiline_comment|/*&n; * Function netwave_interrupt (irq, dev_id, regs)&n; *&n; *    This function is the interrupt handler for the Netwave card. This&n; *    routine will be called whenever: &n; *&t;  1. A packet is received.&n; *&t;  2. A packet has successfully been transfered and the unit is&n; *&t;     ready to transmit another packet.&n; *&t;  3. A command has completed execution.&n; */
+multiline_comment|/*&n; * Function netwave_interrupt (irq, dev_id, regs)&n; *&n; *    This function is the interrupt handler for the Netwave card. This&n; *    routine will be called whenever: &n; *&t;  1. A packet is received.&n; *&t;  2. A packet has successfully been transferred and the unit is&n; *&t;     ready to transmit another packet.&n; *&t;  3. A command has completed execution.&n; */
 DECL|function|netwave_interrupt
 r_static
 r_void
@@ -4957,7 +4957,7 @@ id|dev-&gt;trans_start
 op_assign
 id|jiffies
 suffix:semicolon
-id|netif_start_queue
+id|netif_wake_queue
 c_func
 (paren
 id|dev

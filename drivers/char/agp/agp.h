@@ -427,6 +427,28 @@ id|agp_memory
 op_star
 )paren
 suffix:semicolon
+DECL|member|agp_alloc_page
+r_int
+r_int
+(paren
+op_star
+id|agp_alloc_page
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|member|agp_destroy_page
+r_void
+(paren
+op_star
+id|agp_destroy_page
+)paren
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|OUTREG32
@@ -547,6 +569,30 @@ macro_line|#ifndef PCI_DEVICE_ID_AL_M1541_0
 DECL|macro|PCI_DEVICE_ID_AL_M1541_0
 mdefine_line|#define PCI_DEVICE_ID_AL_M1541_0&t;0x1541
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_AL_M1621_0
+DECL|macro|PCI_DEVICE_ID_AL_M1621_0
+mdefine_line|#define PCI_DEVICE_ID_AL_M1621_0&t;0x1621
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_AL_M1631_0
+DECL|macro|PCI_DEVICE_ID_AL_M1631_0
+mdefine_line|#define PCI_DEVICE_ID_AL_M1631_0&t;0x1631
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_AL_M1632_0
+DECL|macro|PCI_DEVICE_ID_AL_M1632_0
+mdefine_line|#define PCI_DEVICE_ID_AL_M1632_0&t;0x1632
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_AL_M1641_0
+DECL|macro|PCI_DEVICE_ID_AL_M1641_0
+mdefine_line|#define PCI_DEVICE_ID_AL_M1641_0&t;0x1641
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_AL_M1647_0
+DECL|macro|PCI_DEVICE_ID_AL_M1647_0
+mdefine_line|#define PCI_DEVICE_ID_AL_M1647_0&t;0x1647
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_AL_M1651_0
+DECL|macro|PCI_DEVICE_ID_AL_M1651_0
+mdefine_line|#define PCI_DEVICE_ID_AL_M1651_0&t;0x1651
+macro_line|#endif
 multiline_comment|/* intel register */
 DECL|macro|INTEL_APBASE
 mdefine_line|#define INTEL_APBASE    0x10
@@ -651,5 +697,13 @@ DECL|macro|ALI_ATTBASE
 mdefine_line|#define ALI_ATTBASE&t;0xbc
 DECL|macro|ALI_TLBCTRL
 mdefine_line|#define ALI_TLBCTRL&t;0xc0
+DECL|macro|ALI_TAGCTRL
+mdefine_line|#define ALI_TAGCTRL&t;0xc4
+DECL|macro|ALI_CACHE_FLUSH_CTRL
+mdefine_line|#define ALI_CACHE_FLUSH_CTRL&t;0xD0
+DECL|macro|ALI_CACHE_FLUSH_ADDR_MASK
+mdefine_line|#define ALI_CACHE_FLUSH_ADDR_MASK&t;0xFFFFF000
+DECL|macro|ALI_CACHE_FLUSH_EN
+mdefine_line|#define ALI_CACHE_FLUSH_EN&t;0x100
 macro_line|#endif&t;&t;&t;&t;/* _AGP_BACKEND_PRIV_H */
 eof

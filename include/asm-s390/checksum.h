@@ -421,24 +421,21 @@ id|sum
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;    sll   %3,16&bslash;n&quot;
-l_string|&quot;    or    %3,%4&bslash;n&quot;
-multiline_comment|/* newproto=proto&lt;&lt;16 in hiword, len in lowword */
-l_string|&quot;    alr   %1,%2&bslash;n&quot;
-multiline_comment|/* saddr+=daddr */
+l_string|&quot;    alr   %0,%1&bslash;n&quot;
+multiline_comment|/* sum += saddr */
 l_string|&quot;    brc   12,0f&bslash;n&quot;
-l_string|&quot;    ahi   %1,1&bslash;n&quot;
+l_string|&quot;    ahi   %0,1&bslash;n&quot;
 multiline_comment|/* add carry */
-l_string|&quot;0:  alr   %1,%3&bslash;n&quot;
-multiline_comment|/* add saddr+=newproto */
+l_string|&quot;0:  alr   %0,%2&bslash;n&quot;
+multiline_comment|/* sum += daddr */
 l_string|&quot;    brc   12,1f&bslash;n&quot;
-l_string|&quot;    ahi   %1,1&bslash;n&quot;
-multiline_comment|/* add carry again */
-l_string|&quot;1:  alr   %0,%1&bslash;n&quot;
-multiline_comment|/* sum+=saddr */
+l_string|&quot;    ahi   %0,1&bslash;n&quot;
+multiline_comment|/* add carry */
+l_string|&quot;1:  alr   %0,%3&bslash;n&quot;
+multiline_comment|/* sum += (len&lt;&lt;16) + (proto&lt;&lt;8) */
 l_string|&quot;    brc   12,2f&bslash;n&quot;
 l_string|&quot;    ahi   %0,1&bslash;n&quot;
-multiline_comment|/* add carry again */
+multiline_comment|/* add carry */
 l_string|&quot;2:&quot;
 suffix:colon
 l_string|&quot;+&amp;d&quot;
@@ -458,12 +455,21 @@ id|daddr
 comma
 l_string|&quot;d&quot;
 (paren
-id|proto
-)paren
-comma
-l_string|&quot;d&quot;
 (paren
+(paren
+r_int
+r_int
+)paren
 id|len
+op_lshift
+l_int|16
+)paren
+op_plus
+(paren
+r_int
+r_int
+)paren
+id|proto
 )paren
 suffix:colon
 l_string|&quot;cc&quot;

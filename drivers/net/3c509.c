@@ -1,5 +1,5 @@
 multiline_comment|/* 3c509.c: A 3c509 EtherLink3 ethernet driver for linux. */
-multiline_comment|/*&n;&t;Written 1993-1998 by Donald Becker.&n;&n;&t;Copyright 1994-1998 by Donald Becker.&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&t; This software may be used and&n;&t;distributed according to the terms of the GNU Public License,&n;&t;incorporated herein by reference.&n;&n;&t;This driver is for the 3Com EtherLinkIII series.&n;&n;&t;The author may be reached as becker@cesdis.gsfc.nasa.gov or&n;&t;C/O Center of Excellence in Space Data and Information Sciences&n;&t;&t;Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;Known limitations:&n;&t;Because of the way 3c509 ISA detection works it&squot;s difficult to predict&n;&t;a priori which of several ISA-mode cards will be detected first.&n;&n;&t;This driver does not use predictive interrupt mode, resulting in higher&n;&t;packet latency but lower overhead.  If interrupts are disabled for an&n;&t;unusually long time it could also result in missed packets, but in&n;&t;practice this rarely happens.&n;&n;&n;&t;FIXES:&n;&t;&t;Alan Cox:       Removed the &squot;Unexpected interrupt&squot; bug.&n;&t;&t;Michael Meskes:&t;Upgraded to Donald Becker&squot;s version 1.07.&n;&t;&t;Alan Cox:&t;Increased the eeprom delay. Regardless of &n;&t;&t;&t;&t;what the docs say some people definitely&n;&t;&t;&t;&t;get problems with lower (but in card spec)&n;&t;&t;&t;&t;delays&n;&t;&t;v1.10 4/21/97 Fixed module code so that multiple cards may be detected,&n;&t;&t;&t;&t;other cleanups.  -djb&n;&t;&t;Andrea Arcangeli:&t;Upgraded to Donald Becker&squot;s version 1.12.&n;&t;&t;Rick Payne:&t;Fixed SMP race condition&n;&t;&t;v1.13 9/8/97 Made &squot;max_interrupt_work&squot; an insmod-settable variable -djb&n;&t;&t;v1.14 10/15/97 Avoided waiting..discard message for fast machines -djb&n;&t;&t;v1.15 1/31/98 Faster recovery for Tx errors. -djb&n;&t;&t;v1.16 2/3/98 Different ID port handling to avoid sound cards. -djb&n;*/
+multiline_comment|/*&n;&t;Written 1993-1998 by Donald Becker.&n;&n;&t;Copyright 1994-1998 by Donald Becker.&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&t; This software may be used and&n;&t;distributed according to the terms of the GNU General Public License,&n;&t;incorporated herein by reference.&n;&n;&t;This driver is for the 3Com EtherLinkIII series.&n;&n;&t;The author may be reached as becker@cesdis.gsfc.nasa.gov or&n;&t;C/O Center of Excellence in Space Data and Information Sciences&n;&t;&t;Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;Known limitations:&n;&t;Because of the way 3c509 ISA detection works it&squot;s difficult to predict&n;&t;a priori which of several ISA-mode cards will be detected first.&n;&n;&t;This driver does not use predictive interrupt mode, resulting in higher&n;&t;packet latency but lower overhead.  If interrupts are disabled for an&n;&t;unusually long time it could also result in missed packets, but in&n;&t;practice this rarely happens.&n;&n;&n;&t;FIXES:&n;&t;&t;Alan Cox:       Removed the &squot;Unexpected interrupt&squot; bug.&n;&t;&t;Michael Meskes:&t;Upgraded to Donald Becker&squot;s version 1.07.&n;&t;&t;Alan Cox:&t;Increased the eeprom delay. Regardless of &n;&t;&t;&t;&t;what the docs say some people definitely&n;&t;&t;&t;&t;get problems with lower (but in card spec)&n;&t;&t;&t;&t;delays&n;&t;&t;v1.10 4/21/97 Fixed module code so that multiple cards may be detected,&n;&t;&t;&t;&t;other cleanups.  -djb&n;&t;&t;Andrea Arcangeli:&t;Upgraded to Donald Becker&squot;s version 1.12.&n;&t;&t;Rick Payne:&t;Fixed SMP race condition&n;&t;&t;v1.13 9/8/97 Made &squot;max_interrupt_work&squot; an insmod-settable variable -djb&n;&t;&t;v1.14 10/15/97 Avoided waiting..discard message for fast machines -djb&n;&t;&t;v1.15 1/31/98 Faster recovery for Tx errors. -djb&n;&t;&t;v1.16 2/3/98 Different ID port handling to avoid sound cards. -djb&n;*/
 DECL|variable|version
 r_static
 r_char
@@ -29,7 +29,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -4448,6 +4448,10 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  arch/s390/kernel/cpcmd.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com),&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;asm/string.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
 DECL|function|cpcmd
 r_void
@@ -74,10 +74,10 @@ l_int|0
 id|asm
 r_volatile
 (paren
-l_string|&quot;LRA   2,0(0,%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA   2,0(%0)&bslash;n&bslash;t&quot;
 l_string|&quot;LR    4,%1&bslash;n&bslash;t&quot;
 l_string|&quot;O     4,%4&bslash;n&bslash;t&quot;
-l_string|&quot;LRA   3,0(0,%2)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA   3,0(%2)&bslash;n&bslash;t&quot;
 l_string|&quot;LR    5,%3&bslash;n&bslash;t&quot;
 l_string|&quot;.long 0x83240008 # Diagnose 83&bslash;n&bslash;t&quot;
 suffix:colon
@@ -131,7 +131,7 @@ r_else
 id|asm
 r_volatile
 (paren
-l_string|&quot;LRA   2,0(0,%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA   2,0(%0)&bslash;n&bslash;t&quot;
 l_string|&quot;LR    3,%1&bslash;n&bslash;t&quot;
 l_string|&quot;.long 0x83230008 # Diagnose 83&bslash;n&bslash;t&quot;
 suffix:colon

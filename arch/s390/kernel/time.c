@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  arch/s390/kernel/time.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Hartmut Penner (hp@de.ibm.com),&n; *               Martin Schwidefsky (schwidefsky@de.ibm.com),&n; *               Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *&n; *  Derived from &quot;arch/i386/kernel/time.c&quot;&n; *    Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -14,15 +13,10 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
-macro_line|#include &lt;linux/mc146818rtc.h&gt;
+macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-r_extern
-r_volatile
-r_int
-r_int
-id|lost_ticks
-suffix:semicolon
 multiline_comment|/* change this if you have some constant time drift */
 DECL|macro|USECS_PER_JIFFY
 mdefine_line|#define USECS_PER_JIFFY ((signed long)1000000/HZ)
@@ -41,6 +35,11 @@ suffix:semicolon
 r_extern
 id|rwlock_t
 id|xtime_lock
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|wall_jiffies
 suffix:semicolon
 DECL|function|tod_to_timeval
 r_void
@@ -188,12 +187,6 @@ op_star
 id|tv
 )paren
 (brace
-r_extern
-r_volatile
-r_int
-r_int
-id|lost_ticks
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -203,6 +196,14 @@ r_int
 id|usec
 comma
 id|sec
+suffix:semicolon
+r_int
+r_int
+id|lost_ticks
+op_assign
+id|jiffies
+op_minus
+id|wall_jiffies
 suffix:semicolon
 id|read_lock_irqsave
 c_func
@@ -364,7 +365,7 @@ id|pt_regs
 op_star
 id|regs
 comma
-r_int
+id|__u16
 id|error_code
 )paren
 (brace
@@ -655,6 +656,26 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* request the 0x1004 external interrupt */
+r_if
+c_cond
+(paren
+id|register_external_interrupt
+c_func
+(paren
+l_int|0x1004
+comma
+id|do_timer_interrupt
+)paren
+op_ne
+l_int|0
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Couldn&squot;t request external interrupts 0x1004&quot;
+)paren
+suffix:semicolon
 id|init_100hz_timer
 c_func
 (paren

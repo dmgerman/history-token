@@ -1,10 +1,10 @@
-multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for the 3com 3c589 card.&n;    &n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    3c589_cs.c 1.154 2000/09/30 17:39:04&n;&n;    The network driver code is based on Donald Becker&squot;s 3c589 code:&n;    &n;    Written 1994 by Donald Becker.&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU Public License,&n;    incorporated herein by reference.&n;    Donald Becker may be reached at becker@cesdis1.gsfc.nasa.gov&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for the 3com 3c589 card.&n;    &n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    3c589_cs.c 1.154 2000/09/30 17:39:04&n;&n;    The network driver code is based on Donald Becker&squot;s 3c589 code:&n;    &n;    Written 1994 by Donald Becker.&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;    Donald Becker may be reached at becker@cesdis1.gsfc.nasa.gov&n;&n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -991,6 +991,7 @@ op_assign
 op_amp
 id|el3_close
 suffix:semicolon
+macro_line|#ifdef HAVE_TX_TIMEOUT
 id|dev-&gt;tx_timeout
 op_assign
 id|el3_tx_timeout
@@ -999,6 +1000,7 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Register with Card Services */
 id|link-&gt;next
 op_assign
@@ -3247,7 +3249,7 @@ op_plus
 id|EL3_CMD
 )paren
 suffix:semicolon
-id|netif_start_queue
+id|netif_wake_queue
 c_func
 (paren
 id|dev

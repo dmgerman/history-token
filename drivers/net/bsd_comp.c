@@ -3,7 +3,7 @@ multiline_comment|/* Because this code is derived from the 4.3BSD compress sourc
 multiline_comment|/*&n; * This version is for use with contiguous buffers on Linux-derived systems.&n; *&n; *  ==FILEVERSION 20000226==&n; *&n; *  NOTE TO MAINTAINERS:&n; *     If you modify this file at all, please set the number above to the&n; *     date of the modification as YYMMDD (year month day).&n; *     bsd_comp.c is shipped with a PPP distribution as well as with&n; *     the kernel; if everyone increases the FILEVERSION number above,&n; *     then scripts can do the right thing when deciding whether to&n; *     install a new bsd_comp.c file. Don&squot;t change the format of that&n; *     line otherwise, so the installation script can recognize it.&n; *&n; * From: bsd_comp.c,v 1.3 1994/12/08 01:59:58 paulus Exp&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/ppp_defs.h&gt;
 DECL|macro|PACKETPTR

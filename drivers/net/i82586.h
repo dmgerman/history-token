@@ -977,5 +977,5 @@ multiline_comment|/* Written by 82586&t;*/
 suffix:semicolon
 DECL|macro|fdoff
 mdefine_line|#define&t;fdoff(p,f) &t;toff(fd_t, p, f)
-multiline_comment|/*&n; * This software may only be used and distributed&n; * according to the terms of the GNU Public License.&n; *&n; * For more details, see wavelan.c.&n; */
+multiline_comment|/*&n; * This software may only be used and distributed&n; * according to the terms of the GNU General Public License.&n; *&n; * For more details, see wavelan.c.&n; */
 eof

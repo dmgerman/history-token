@@ -7187,6 +7187,7 @@ macro_line|#endif
 r_case
 id|clear
 suffix:colon
+suffix:semicolon
 multiline_comment|/* do nothing - already freed */
 )brace
 id|lynx-&gt;state

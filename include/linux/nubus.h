@@ -1012,5 +1012,5 @@ l_int|24
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif LINUX_NUBUS_H
+macro_line|#endif /* LINUX_NUBUS_H */
 eof

@@ -3034,6 +3034,7 @@ id|ap
 suffix:semicolon
 )brace
 )brace
+r_static
 r_void
 id|__exit
 DECL|function|ppp_sync_cleanup

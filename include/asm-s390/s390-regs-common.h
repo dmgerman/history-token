@@ -5,8 +5,10 @@ mdefine_line|#define _S390_REGS_COMMON_H
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#endif
+macro_line|#if defined(WANT_S390_TGT_DEFS) || defined(__KERNEL__)
 DECL|macro|REGISTER_SIZE
 mdefine_line|#define REGISTER_SIZE 4
+macro_line|#endif
 DECL|macro|NUM_GPRS
 mdefine_line|#define NUM_GPRS      16
 DECL|macro|GPR_SIZE
@@ -59,11 +61,6 @@ l_int|8
 )paren
 )paren
 )paren
-suffix:semicolon
-DECL|typedef|gpr_t
-r_typedef
-id|__u32
-id|gpr_t
 suffix:semicolon
 multiline_comment|/* 2 __u32&squot;s are used for floats instead to compile  with a __STRICT_ANSI__ defined */
 r_typedef
@@ -123,6 +120,16 @@ DECL|typedef|s390_fp_regs
 )brace
 id|s390_fp_regs
 suffix:semicolon
+DECL|macro|FPC_EXCEPTION_MASK
+mdefine_line|#define FPC_EXCEPTION_MASK      0xF8000000
+DECL|macro|FPC_FLAGS_MASK
+mdefine_line|#define FPC_FLAGS_MASK          0x00F80000
+DECL|macro|FPC_DXC_MASK
+mdefine_line|#define FPC_DXC_MASK            0x0000FF00
+DECL|macro|FPC_RM_MASK
+mdefine_line|#define FPC_RM_MASK             0x00000003
+DECL|macro|FPC_VALID_MASK
+mdefine_line|#define FPC_VALID_MASK         ((FPC_EXCEPTION_MASK|FPC_FLAGS_MASK| &bslash;&n;                                 FPC_DXC_MASK|FPC_RM_MASK))
 multiline_comment|/*&n;  gdb structures &amp; the kernel have this much always in common&n; */
 DECL|macro|S390_REGS_COMMON
 mdefine_line|#define S390_REGS_COMMON       &bslash;&n;psw_t psw;                     &bslash;&n;__u32 gprs[NUM_GPRS];          &bslash;&n;__u32  acrs[NUM_ACRS];         &bslash;&n;
@@ -143,8 +150,10 @@ DECL|macro|S390_SYSCALL_OPCODE
 mdefine_line|#define S390_SYSCALL_OPCODE ((__u16)0x0a00)
 DECL|macro|S390_SYSCALL_SIZE
 mdefine_line|#define S390_SYSCALL_SIZE   2
+macro_line|#if defined(WANT_S390_TGT_DEFS) || defined(__KERNEL__)
 DECL|macro|ADDR_BITS_REMOVE
 mdefine_line|#define ADDR_BITS_REMOVE(addr) ((addr)&amp;0x7fffffff)
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 eof

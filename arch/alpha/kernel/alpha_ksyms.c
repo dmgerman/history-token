@@ -840,6 +840,13 @@ c_func
 id|down_interruptible
 )paren
 suffix:semicolon
+DECL|variable|down_trylock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|down_trylock
+)paren
+suffix:semicolon
 DECL|variable|up
 id|EXPORT_SYMBOL
 c_func

@@ -1039,5 +1039,5 @@ DECL|typedef|mm_t
 id|mm_t
 suffix:semicolon
 macro_line|#endif /* _WAVELAN_H */
-multiline_comment|/*&n; * This software may only be used and distributed&n; * according to the terms of the GNU Public License.&n; *&n; * For more details, see wavelan.c.&n; */
+multiline_comment|/*&n; * This software may only be used and distributed&n; * according to the terms of the GNU General Public License.&n; *&n; * For more details, see wavelan.c.&n; */
 eof

@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -741,6 +741,10 @@ id|TUN_NOCHECKSUM
 id|skb-&gt;ip_summed
 op_assign
 id|CHECKSUM_UNNECESSARY
+suffix:semicolon
+id|skb-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 id|netif_rx
 c_func

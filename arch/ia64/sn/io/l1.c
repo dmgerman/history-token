@@ -4530,7 +4530,7 @@ id|REG_ISR
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* uart interrupts were blocked at bedrock when the the interrupt&n;     * was initially answered; reenable them now&n;     */
+multiline_comment|/* uart interrupts were blocked at bedrock when the interrupt&n;     * was initially answered; reenable them now&n;     */
 id|intr_unblock_bit
 c_func
 (paren
@@ -9393,7 +9393,7 @@ r_return
 id|c
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * _elscuart_flush flushes queued output to the the L1.&n; * This routine blocks until the queue is flushed.&n; */
+multiline_comment|/*&n; * _elscuart_flush flushes queued output to the L1.&n; * This routine blocks until the queue is flushed.&n; */
 r_int
 DECL|function|_elscuart_flush
 id|_elscuart_flush

@@ -24,7 +24,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -5202,6 +5202,7 @@ suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * hp100_build_rx_pdl allocates an skb_buff of maximum size plus two bytes &n; * for possible odd word alignment rounding up to next dword and set PDL&n; * address for fragment#2 &n; * Returns: 0 if unable to allocate skb_buff&n; *          1 if successful&n; */
 DECL|function|hp100_build_rx_pdl
+r_static
 r_int
 id|hp100_build_rx_pdl
 c_func
@@ -7800,12 +7801,16 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
 id|lp-&gt;stats.rx_bytes
 op_add_assign
-id|skb-&gt;len
+id|pkt_len
 suffix:semicolon
 macro_line|#ifdef HP100_DEBUG_RX
 id|printk
@@ -8248,12 +8253,16 @@ id|ptr-&gt;skb
 )paren
 suffix:semicolon
 multiline_comment|/* Up and away... */
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
 id|lp-&gt;stats.rx_bytes
 op_add_assign
-id|ptr-&gt;skb-&gt;len
+id|pkt_len
 suffix:semicolon
 )brace
 r_switch

@@ -478,6 +478,7 @@ id|tsk
 id|show_trace
 c_func
 (paren
+op_amp
 id|tsk-&gt;thread.esp
 )paren
 suffix:semicolon

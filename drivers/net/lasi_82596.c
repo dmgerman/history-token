@@ -1,15 +1,6 @@
 multiline_comment|/* lasi_82596.c -- driver for the intel 82596 ethernet controller, as&n;   munged into HPPA boxen .&n;&n;   This driver is based upon 82596.c, original credits are below...&n;   but there were too many hoops which HP wants jumped through to&n;   keep this code in there in a sane manner.&n;&n;   3 primary sources of the mess -- &n;   1) hppa needs *lots* of cacheline flushing to keep this kind of&n;   MMIO running.&n;&n;   2) The 82596 needs to see all of its pointers as their physical&n;   address.  Thus virt_to_bus/bus_to_virt are *everywhere*.&n;&n;   3) The implementation HP is using seems to be significantly pickier &n;   about when and how the command and RX units are started.  some&n;   command ordering was changed.&n;&n;   Examination of the mach driver leads one to believe that there&n;   might be a saner way to pull this off...  anyone who feels like a&n;   full rewrite can be my guest.&n;&n;   Split 02/13/2000 Sam Creasey (sammy@oh.verio.com)&n;   &n;   02/01/2000  Initial modifications for parisc by Helge Deller (deller@gmx.de)&n;   03/02/2000  changes for better/correct(?) cache-flushing (deller)&n;*/
 multiline_comment|/* 82596.c: A generic 82596 ethernet driver for linux. */
-multiline_comment|/*&n;   Based on Apricot.c&n;   Written 1994 by Mark Evans.&n;   This driver is for the Apricot 82596 bus-master interface&n;&n;   Modularised 12/94 Mark Evans&n;&n;&n;   Modified to support the 82596 ethernet chips on 680x0 VME boards.&n;   by Richard Hirst &lt;richard@sleepie.demon.co.uk&gt;&n;   Renamed to be 82596.c&n;&n;   980825:  Changed to receive directly in to sk_buffs which are&n;   allocated at open() time.  Eliminates copy on incoming frames&n;   (small ones are still copied).  Shared data now held in a&n;   non-cached page, so we can run on 68060 in copyback mode.&n;&n;   TBD:&n;   * look at deferring rx frames rather than discarding (as per tulip)&n;   * handle tx ring full as per tulip&n;   * performace test to tune rx_copybreak&n;&n;   Most of my modifications relate to the braindead big-endian&n;   implementation by Intel.  When the i596 is operating in&n;   &squot;big-endian&squot; mode, it thinks a 32 bit value of 0x12345678&n;   should be stored as 0x56781234.  This is a real pain, when&n;   you have linked lists which are shared by the 680x0 and the&n;   i596.&n;&n;   Driver skeleton&n;   Written 1993 by Donald Becker.&n;   Copyright 1993 United States Government as represented by the Director,&n;   National Security Agency. This software may only be used and distributed&n;   according to the terms of the GNU Public License as modified by SRC,&n;   incorporated herein by reference.&n;&n;   The author may be reached as becker@super.org or&n;   C/O Supercomputing Research Ctr., 17100 Science Dr., Bowie MD 20715&n;&n; */
-DECL|variable|version
-r_static
-r_const
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;82596.c $Revision: 1.14 $&bslash;n&quot;
-suffix:semicolon
+multiline_comment|/*&n;   Based on Apricot.c&n;   Written 1994 by Mark Evans.&n;   This driver is for the Apricot 82596 bus-master interface&n;&n;   Modularised 12/94 Mark Evans&n;&n;&n;   Modified to support the 82596 ethernet chips on 680x0 VME boards.&n;   by Richard Hirst &lt;richard@sleepie.demon.co.uk&gt;&n;   Renamed to be 82596.c&n;&n;   980825:  Changed to receive directly in to sk_buffs which are&n;   allocated at open() time.  Eliminates copy on incoming frames&n;   (small ones are still copied).  Shared data now held in a&n;   non-cached page, so we can run on 68060 in copyback mode.&n;&n;   TBD:&n;   * look at deferring rx frames rather than discarding (as per tulip)&n;   * handle tx ring full as per tulip&n;   * performace test to tune rx_copybreak&n;&n;   Most of my modifications relate to the braindead big-endian&n;   implementation by Intel.  When the i596 is operating in&n;   &squot;big-endian&squot; mode, it thinks a 32 bit value of 0x12345678&n;   should be stored as 0x56781234.  This is a real pain, when&n;   you have linked lists which are shared by the 680x0 and the&n;   i596.&n;&n;   Driver skeleton&n;   Written 1993 by Donald Becker.&n;   Copyright 1993 United States Government as represented by the Director,&n;   National Security Agency. This software may only be used and distributed&n;   according to the terms of the GNU General Public License as modified by SRC,&n;   incorporated herein by reference.&n;&n;   The author may be reached as becker@super.org or&n;   C/O Supercomputing Research Ctr., 17100 Science Dr., Bowie MD 20715&n;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -17,7 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -33,6 +24,16 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/gsc.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
+DECL|variable|__initdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;82596.c $Revision: 1.14 $&bslash;n&quot;
+suffix:semicolon
 multiline_comment|/* DEBUG flags&n; */
 DECL|macro|DEB_INIT
 mdefine_line|#define DEB_INIT&t;0x0001
@@ -976,6 +977,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|init_setup
+r_static
 r_char
 id|init_setup
 (braket
@@ -3421,6 +3423,10 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment

@@ -869,6 +869,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is a bit of an artificial separation as there are PCI drivers&n; * that also probe for EISA cards (in the PCI group) and there are ISA&n; * drivers that probe for EISA cards (in the ISA group).  These are the&n; * EISA only driver probes, and also the legacy PCI probes&n; */
 DECL|variable|__initdata
+r_static
 r_struct
 id|devprobe
 id|eisa_probes
@@ -934,6 +935,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|devprobe
 id|mca_probes
@@ -992,6 +994,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * ISA probes that touch addresses &lt; 0x400 (including those that also&n; * look for EISA/PCI/MCA cards in addition to ISA cards).&n; */
 DECL|variable|__initdata
+r_static
 r_struct
 id|devprobe
 id|isa_probes
@@ -1274,6 +1277,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|devprobe
 id|parport_probes
@@ -1307,6 +1311,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|devprobe
 id|m68k_probes
@@ -1412,6 +1417,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|devprobe
 id|sgi_probes
@@ -1437,6 +1443,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|devprobe
 id|mips_probes

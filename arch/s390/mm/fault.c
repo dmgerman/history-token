@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  arch/s390/mm/fault.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Hartmut Penner (hp@de.ibm.com)&n; *&n; *  Derived from &quot;arch/i386/mm/fault.c&quot;&n; *    Copyright (C) 1995  Linus Torvalds&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -14,6 +15,12 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
+macro_line|#ifdef CONFIG_SYSCTL
+r_extern
+r_int
+id|sysctl_userprocess_debug
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_void
 id|die
@@ -81,6 +88,16 @@ r_int
 r_int
 id|psw_addr
 suffix:semicolon
+r_int
+id|si_code
+op_assign
+id|SEGV_MAPERR
+suffix:semicolon
+r_int
+id|kernel_address
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;         *  get psw mask of Program old psw to find out,&n;         *  if user or kernel mode&n;         */
 id|psw_mask
 op_assign
@@ -97,24 +114,6 @@ id|S390_lowcore.trans_exc_code
 op_amp
 l_int|0x7ffff000
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|in_irq
-c_func
-(paren
-)paren
-)paren
-id|die
-c_func
-(paren
-l_string|&quot;page fault from irq handler&quot;
-comma
-id|regs
-comma
-id|error_code
-)paren
-suffix:semicolon
 id|tsk
 op_assign
 id|current
@@ -123,6 +122,130 @@ id|mm
 op_assign
 id|tsk-&gt;mm
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+op_logical_or
+op_logical_neg
+id|mm
+)paren
+r_goto
+id|no_context
+suffix:semicolon
+multiline_comment|/*&n;&t; * Check which address space the address belongs to&n;&t; */
+r_switch
+c_cond
+(paren
+id|S390_lowcore.trans_exc_code
+op_amp
+l_int|3
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* Primary Segment Table Descriptor */
+id|kernel_address
+op_assign
+l_int|1
+suffix:semicolon
+r_goto
+id|no_context
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+multiline_comment|/* STD determined via access register */
+r_if
+c_cond
+(paren
+id|S390_lowcore.exc_access_id
+op_eq
+l_int|0
+)paren
+(brace
+id|kernel_address
+op_assign
+l_int|1
+suffix:semicolon
+r_goto
+id|no_context
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|regs
+op_logical_and
+id|S390_lowcore.exc_access_id
+OL
+id|NUM_ACRS
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|regs-&gt;acrs
+(braket
+id|S390_lowcore.exc_access_id
+)braket
+op_eq
+l_int|0
+)paren
+(brace
+id|kernel_address
+op_assign
+l_int|1
+suffix:semicolon
+r_goto
+id|no_context
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|regs-&gt;acrs
+(braket
+id|S390_lowcore.exc_access_id
+)braket
+op_eq
+l_int|1
+)paren
+(brace
+multiline_comment|/* user space address */
+r_break
+suffix:semicolon
+)brace
+)brace
+id|die
+c_func
+(paren
+l_string|&quot;page fault via unknown access register&quot;
+comma
+id|regs
+comma
+id|error_code
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+multiline_comment|/* Secondary Segment Table Descriptor */
+r_case
+l_int|3
+suffix:colon
+multiline_comment|/* Home Segment Table Descriptor */
+multiline_comment|/* user space address */
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * When we get here, the fault happened in the current&n;&t; * task&squot;s user address space, so we search the VMAs&n;&t; */
 id|down
 c_func
 (paren
@@ -146,19 +269,9 @@ c_cond
 op_logical_neg
 id|vma
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;no vma for address %lX&bslash;n&quot;
-comma
-id|address
-)paren
-suffix:semicolon
 r_goto
 id|bad_area
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -179,31 +292,9 @@ op_amp
 id|VM_GROWSDOWN
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;VM_GROWSDOWN not set, but address %lX &bslash;n&quot;
-comma
-id|address
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;not in vma %p (start %lX end %lX)&bslash;n&quot;
-comma
-id|vma
-comma
-id|vma-&gt;vm_start
-comma
-id|vma-&gt;vm_end
-)paren
-suffix:semicolon
 r_goto
 id|bad_area
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -215,37 +306,19 @@ comma
 id|address
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;expand of vma failed address %lX&bslash;n&quot;
-comma
-id|address
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;vma %p (start %lX end %lX)&bslash;n&quot;
-comma
-id|vma
-comma
-id|vma-&gt;vm_start
-comma
-id|vma-&gt;vm_end
-)paren
-suffix:semicolon
 r_goto
 id|bad_area
 suffix:semicolon
-)brace
 multiline_comment|/*&n; * Ok, we have a good vm_area for this memory access, so&n; * we can handle it..&n; */
 id|good_area
 suffix:colon
 id|write
 op_assign
 l_int|0
+suffix:semicolon
+id|si_code
+op_assign
+id|SEGV_ACCERR
 suffix:semicolon
 r_switch
 c_cond
@@ -289,33 +362,9 @@ id|VM_WRITE
 )paren
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;flags %X of vma for address %lX wrong &bslash;n&quot;
-comma
-id|vma-&gt;vm_flags
-comma
-id|address
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;vma %p (start %lX end %lX)&bslash;n&quot;
-comma
-id|vma
-comma
-id|vma-&gt;vm_start
-comma
-id|vma-&gt;vm_end
-)paren
-suffix:semicolon
 r_goto
 id|bad_area
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_default
@@ -334,10 +383,14 @@ r_goto
 id|bad_area
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * If for any reason at all we couldn&squot;t handle the fault,&n;&t; * make sure we exit gracefully rather than endlessly redo&n;&t; * the fault.&n;&t; */
+r_switch
+c_cond
+(paren
 id|handle_mm_fault
 c_func
 (paren
-id|tsk
+id|mm
 comma
 id|vma
 comma
@@ -345,7 +398,36 @@ id|address
 comma
 id|write
 )paren
+)paren
+(brace
+r_case
+l_int|1
+suffix:colon
+id|tsk-&gt;min_flt
+op_increment
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|tsk-&gt;maj_flt
+op_increment
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0
+suffix:colon
+r_goto
+id|do_sigbus
+suffix:semicolon
+r_default
+suffix:colon
+r_goto
+id|out_of_memory
+suffix:semicolon
+)brace
 id|up
 c_func
 (paren
@@ -374,18 +456,20 @@ op_amp
 id|PSW_PROBLEM_STATE
 )paren
 (brace
+r_struct
+id|siginfo
+id|si
+suffix:semicolon
 id|tsk-&gt;thread.prot_addr
 op_assign
 id|address
 suffix:semicolon
-id|tsk-&gt;thread.error_code
+id|tsk-&gt;thread.trap_no
 op_assign
 id|error_code
 suffix:semicolon
-id|tsk-&gt;thread.trap_no
-op_assign
-l_int|14
-suffix:semicolon
+macro_line|#ifndef CONFIG_SYSCTL
+macro_line|#ifdef CONFIG_PROCESS_DEBUG
 id|printk
 c_func
 (paren
@@ -402,15 +486,67 @@ comma
 id|address
 )paren
 suffix:semicolon
-id|show_crashed_task_info
+id|show_regs
 c_func
 (paren
+id|regs
 )paren
 suffix:semicolon
-id|force_sig
+macro_line|#endif
+macro_line|#else
+r_if
+c_cond
+(paren
+id|sysctl_userprocess_debug
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;User process fault: interruption code 0x%lX&bslash;n&quot;
+comma
+id|error_code
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;failing address: %lX&bslash;n&quot;
+comma
+id|address
+)paren
+suffix:semicolon
+id|show_regs
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+id|si.si_signo
+op_assign
+id|SIGSEGV
+suffix:semicolon
+id|si.si_code
+op_assign
+id|si_code
+suffix:semicolon
+id|si.si_addr
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|address
+suffix:semicolon
+id|force_sig_info
 c_func
 (paren
 id|SIGSEGV
+comma
+op_amp
+id|si
 comma
 id|tsk
 )paren
@@ -418,6 +554,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|no_context
+suffix:colon
 multiline_comment|/* Are we prepared to handle this kernel fault?  */
 r_if
 c_cond
@@ -442,19 +580,20 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Oops. The kernel tried to access some bad page. We&squot;ll have to&n; * terminate things with extreme prejudice.&n; *&n; * First we check if it was the bootup rw-test, though..&n; */
+multiline_comment|/*&n; * Oops. The kernel tried to access some bad page. We&squot;ll have to&n; * terminate things with extreme prejudice.&n; */
 r_if
 c_cond
 (paren
-id|address
-OL
-id|PAGE_SIZE
+id|kernel_address
 )paren
 id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;Unable to handle kernel NULL pointer dereference&quot;
+l_string|&quot;Unable to handle kernel pointer dereference&quot;
+l_string|&quot; at virtual kernel address %08lx&bslash;n&quot;
+comma
+id|address
 )paren
 suffix:semicolon
 r_else
@@ -463,22 +602,12 @@ c_func
 (paren
 id|KERN_ALERT
 l_string|&quot;Unable to handle kernel paging request&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot; at virtual address %08lx&bslash;n&quot;
+l_string|&quot; at virtual user address %08lx&bslash;n&quot;
 comma
 id|address
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * need to define, which information is useful here&n; */
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|die
 c_func
 (paren
@@ -495,11 +624,79 @@ c_func
 id|SIGKILL
 )paren
 suffix:semicolon
-id|unlock_kernel
+multiline_comment|/*&n; * We ran out of memory, or some other thing happened to us that made&n; * us unable to handle the page fault gracefully.&n;*/
+id|out_of_memory
+suffix:colon
+id|up
 c_func
 (paren
+op_amp
+id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;VM: killing process %s&bslash;n&quot;
+comma
+id|tsk-&gt;comm
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|psw_mask
+op_amp
+id|PSW_PROBLEM_STATE
+)paren
+id|do_exit
+c_func
+(paren
+id|SIGKILL
+)paren
+suffix:semicolon
+r_goto
+id|no_context
+suffix:semicolon
+id|do_sigbus
+suffix:colon
+id|up
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Send a sigbus, regardless of whether we were in kernel&n;&t; * or user mode.&n;&t; */
+id|tsk-&gt;thread.prot_addr
+op_assign
+id|address
+suffix:semicolon
+id|tsk-&gt;thread.trap_no
+op_assign
+id|error_code
+suffix:semicolon
+id|force_sig
+c_func
+(paren
+id|SIGBUS
+comma
+id|tsk
+)paren
+suffix:semicolon
+multiline_comment|/* Kernel mode? Handle exceptions or die */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|psw_mask
+op_amp
+id|PSW_PROBLEM_STATE
+)paren
+)paren
+r_goto
+id|no_context
+suffix:semicolon
 )brace
-multiline_comment|/*&n;                {&n;&t;&t;  char c;&n;                  int i,j;&n;&t;&t;  char *addr;&n;&t;&t;  addr = ((char*) psw_addr)-0x20;&n;&t;&t;  for (i=0;i&lt;16;i++) {&n;&t;&t;    if (i == 2)&n;&t;&t;      printk(&quot;&bslash;n&quot;);&n;&t;&t;    printk (&quot;%08X:    &quot;,(unsigned long) addr);&n;&t;&t;    for (j=0;j&lt;4;j++) {&n;&t;&t;      printk(&quot;%08X &quot;,*(unsigned long*)addr);&n;&t;&t;      addr += 4;&n;&t;&t;    }&n;&t;&t;    addr -=0x10;&n;&t;&t;    printk(&quot; | &quot;);&n;&t;&t;    for (j=0;j&lt;16;j++) {&n;&t;&t;      printk(&quot;%c&quot;,(c=*addr++) &lt; 0x20 ? &squot;.&squot; : c );&n;&t;&t;    }&n;&n;&t;&t;    printk(&quot;&bslash;n&quot;);&n;&t;&t;  }&n;                  printk(&quot;&bslash;n&quot;);&n;                }&n;&n;*/
 eof

@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -1855,6 +1855,7 @@ c_cond
 op_logical_neg
 id|dev-&gt;priv
 )paren
+(brace
 id|dev-&gt;priv
 op_assign
 id|kmalloc
@@ -1869,6 +1870,16 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;priv
+)paren
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|lp
 op_assign
 (paren
@@ -3628,6 +3639,10 @@ id|TMD1_STP
 )paren
 suffix:semicolon
 macro_line|#endif
+id|lp-&gt;stats.tx_bytes
+op_add_assign
+id|skb-&gt;len
+suffix:semicolon
 id|dev_kfree_skb
 c_func
 (paren
@@ -3636,10 +3651,6 @@ id|skb
 suffix:semicolon
 id|lp-&gt;cur_tx
 op_increment
-suffix:semicolon
-id|lp-&gt;stats.tx_bytes
-op_add_assign
-id|skb-&gt;len
 suffix:semicolon
 r_while
 c_loop
@@ -4941,12 +4952,16 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
 id|lp-&gt;stats.rx_bytes
 op_add_assign
-id|skb-&gt;len
+id|pkt_len
 suffix:semicolon
 )brace
 )brace

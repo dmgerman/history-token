@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    This file contains the firmware of Seven of Diamonds from OSITECH.&n;    (Special thanks to Kevin MacPherson of OSITECH)&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU Public License, incorporated herein by reference.&n;*/
+multiline_comment|/*&n;    This file contains the firmware of Seven of Diamonds from OSITECH.&n;    (Special thanks to Kevin MacPherson of OSITECH)&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License, incorporated herein by reference.&n;*/
 DECL|variable|__Xilinx7OD
 r_static
 r_const

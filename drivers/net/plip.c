@@ -2675,6 +2675,10 @@ c_func
 id|rcv-&gt;skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|nl-&gt;enet_stats.rx_bytes
 op_add_assign
 id|rcv-&gt;length.h
@@ -3894,10 +3898,6 @@ suffix:colon
 r_case
 id|PLIP_CN_SEND
 suffix:colon
-id|dev-&gt;last_rx
-op_assign
-id|jiffies
-suffix:semicolon
 id|rcv-&gt;state
 op_assign
 id|PLIP_PK_TRIGGER

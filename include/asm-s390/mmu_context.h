@@ -79,7 +79,11 @@ op_amp
 id|PAGE_MASK
 )paren
 op_or
+(paren
 id|_SEGMENT_TABLE
+op_or
+id|USER_STD_MASK
+)paren
 suffix:semicolon
 multiline_comment|/* Load page tables */
 id|asm

@@ -860,7 +860,7 @@ id|busv
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;     * get the name of this xbow vertex and keep the info.&n;     * This is needed during errors and interupts, but as&n;     * long as we have it, we can use it elsewhere.&n;     */
+multiline_comment|/*&n;     * get the name of this xbow vertex and keep the info.&n;     * This is needed during errors and interrupts, but as&n;     * long as we have it, we can use it elsewhere.&n;     */
 id|s
 op_assign
 id|dev_to_name

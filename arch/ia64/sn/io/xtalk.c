@@ -2823,7 +2823,7 @@ id|widget_info-&gt;w_einfo
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;     * get the name of this xwidget vertex and keep the info.&n;     * This is needed during errors and interupts, but as&n;     * long as we have it, we can use it elsewhere.&n;     */
+multiline_comment|/*&n;     * get the name of this xwidget vertex and keep the info.&n;     * This is needed during errors and interrupts, but as&n;     * long as we have it, we can use it elsewhere.&n;     */
 id|s
 op_assign
 id|dev_to_name

@@ -243,13 +243,6 @@ id|on
 suffix:semicolon
 r_extern
 r_int
-id|sx_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|vme_scc_init
 (paren
 r_void

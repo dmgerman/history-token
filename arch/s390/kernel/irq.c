@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/tasks.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -782,6 +782,7 @@ id|global_bh_count
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* this works even though global_irq_lock not&n;                           a long, but is arch-specific --RR */
 r_if
 c_cond
 (paren
@@ -875,6 +876,7 @@ r_int
 id|cpu
 )paren
 (brace
+multiline_comment|/* this works even though global_irq_lock not a long, but is&n;&t;   arch-specific --RR */
 r_if
 c_cond
 (paren

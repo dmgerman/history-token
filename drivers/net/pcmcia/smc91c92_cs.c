@@ -1,9 +1,9 @@
-multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for SMC91c92-based cards.&n;&n;    This driver supports Megahertz PCMCIA ethernet cards; and&n;    Megahertz, Motorola, Ositech, and Psion Dacom ethernet/modem&n;    multifunction cards.&n;&n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    smc91c92_cs.c 1.104 2000/08/31 21:25:13&n;    &n;    This driver contains code written by Donald Becker&n;    (becker@cesdis.gsfc.nasa.gov), Rowan Hughes (x-csrdh@jcu.edu.au),&n;    David Hinds (dahinds@users.sourceforge.net), and Erik Stahlman&n;    (erik@vt.edu).  Donald wrote the SMC 91c92 code using parts of&n;    Erik&squot;s SMC 91c94 driver.  Rowan wrote a similar driver, and I&squot;ve&n;    incorporated some parts of his driver here.  I (Dave) wrote most&n;    of the PCMCIA glue code, and the Ositech support code.  Kelly&n;    Stephens (kstephen@holli.com) added support for the Motorola&n;    Mariner, with help from Allen Brost. &n;&n;    This software may be used and distributed according to the terms of&n;    the GNU Public License, incorporated herein by reference.&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for SMC91c92-based cards.&n;&n;    This driver supports Megahertz PCMCIA ethernet cards; and&n;    Megahertz, Motorola, Ositech, and Psion Dacom ethernet/modem&n;    multifunction cards.&n;&n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    smc91c92_cs.c 1.104 2000/08/31 21:25:13&n;    &n;    This driver contains code written by Donald Becker&n;    (becker@cesdis.gsfc.nasa.gov), Rowan Hughes (x-csrdh@jcu.edu.au),&n;    David Hinds (dahinds@users.sourceforge.net), and Erik Stahlman&n;    (erik@vt.edu).  Donald wrote the SMC 91c92 code using parts of&n;    Erik&squot;s SMC 91c94 driver.  Rowan wrote a similar driver, and I&squot;ve&n;    incorporated some parts of his driver here.  I (Dave) wrote most&n;    of the PCMCIA glue code, and the Ositech support code.  Kelly&n;    Stephens (kstephen@holli.com) added support for the Motorola&n;    Mariner, with help from Allen Brost. &n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License, incorporated herein by reference.&n;&n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -1008,6 +1008,7 @@ op_assign
 op_amp
 id|smc91c92_close
 suffix:semicolon
+macro_line|#ifdef HAVE_TX_TIMEOUT
 id|dev-&gt;tx_timeout
 op_assign
 id|smc_tx_timeout
@@ -1016,6 +1017,7 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
 suffix:semicolon
+macro_line|#endif
 id|dev-&gt;priv
 op_assign
 id|link-&gt;priv
@@ -5697,7 +5699,7 @@ id|smc-&gt;saved_skb
 op_assign
 l_int|NULL
 suffix:semicolon
-id|netif_start_queue
+id|netif_wake_queue
 c_func
 (paren
 id|dev

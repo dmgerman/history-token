@@ -1,5 +1,5 @@
 multiline_comment|/* 3c507.c: An EtherLink16 device driver for Linux. */
-multiline_comment|/*&n;&t;Written 1993,1994 by Donald Becker.&n;&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU Public License, incorporated herein by reference.&n;&n;&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n;&t;Center of Excellence in Space Data and Information Sciences&n;&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;Thanks go to jennings@Montrouge.SMR.slb.com ( Patrick Jennings)&n;&t;and jrs@world.std.com (Rick Sladkey) for testing and bugfixes.&n;&t;Mark Salazar &lt;leslie@access.digex.net&gt; made the changes for cards with&n;&t;only 16K packet buffers.&n;&n;&t;Things remaining to do:&n;&t;Verify that the tx and rx buffers don&squot;t have fencepost errors.&n;&t;Move the theory of operation and memory map documentation.&n;&t;The statistics need to be updated correctly.&n;*/
+multiline_comment|/*&n;&t;Written 1993,1994 by Donald Becker.&n;&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n;&t;Center of Excellence in Space Data and Information Sciences&n;&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;Thanks go to jennings@Montrouge.SMR.slb.com ( Patrick Jennings)&n;&t;and jrs@world.std.com (Rick Sladkey) for testing and bugfixes.&n;&t;Mark Salazar &lt;leslie@access.digex.net&gt; made the changes for cards with&n;&t;only 16K packet buffers.&n;&n;&t;Things remaining to do:&n;&t;Verify that the tx and rx buffers don&squot;t have fencepost errors.&n;&t;Move the theory of operation and memory map documentation.&n;&t;The statistics need to be updated correctly.&n;*/
 DECL|variable|version
 r_static
 r_const
@@ -29,7 +29,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/* use 0 for production, 1 for verification, 2..7 for debug */
 macro_line|#ifndef NET_DEBUG
@@ -3276,8 +3276,16 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
+suffix:semicolon
+id|lp-&gt;stats.rx_bytes
+op_add_assign
+id|pkt_len
 suffix:semicolon
 )brace
 multiline_comment|/* Clear the status word and set End-of-List on the rx frame. */

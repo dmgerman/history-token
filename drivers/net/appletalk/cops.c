@@ -1,4 +1,4 @@
-multiline_comment|/*      cops.c: LocalTalk driver for Linux.&n; *&n; *&t;Authors:&n; *      - Jay Schulist &lt;jschlst@turbolinux.com&gt;&n; *&n; *&t;With more than a little help from;&n; *&t;- Alan Cox &lt;Alan.Cox@linux.org&gt; &n; *&n; *      Derived from:&n; *      - skeleton.c: A network driver outline for linux.&n; *        Written 1993-94 by Donald Becker.&n; *&t;- ltpc.c: A driver for the LocalTalk PC card.&n; *&t;  Written by Bradford W. Johnson.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *      This software may be used and distributed according to the terms&n; *      of the GNU Public License, incorporated herein by reference.&n; *&n; *&t;Changes:&n; *&t;19970608&t;Alan Cox&t;Allowed dual card type support&n; *&t;&t;&t;&t;&t;Can set board type in insmod&n; *&t;&t;&t;&t;&t;Hooks for cops_setup routine&n; *&t;&t;&t;&t;&t;(not yet implemented).&n; *&t;19971101&t;Jay Schulist&t;Fixes for multiple lt* devices.&n; *&t;19980607&t;Steven Hirsch&t;Fixed the badly broken support&n; *&t;&t;&t;&t;&t;for Tangent type cards. Only&n; *                                      tested on Daystar LT200. Some&n; *                                      cleanup of formatting and program&n; *                                      logic.  Added emacs &squot;local-vars&squot;&n; *                                      setup for Jay&squot;s brace style.&n; *&t;20000211&t;Alan Cox&t;Cleaned up for softnet&n; */
+multiline_comment|/*      cops.c: LocalTalk driver for Linux.&n; *&n; *&t;Authors:&n; *      - Jay Schulist &lt;jschlst@turbolinux.com&gt;&n; *&n; *&t;With more than a little help from;&n; *&t;- Alan Cox &lt;Alan.Cox@linux.org&gt; &n; *&n; *      Derived from:&n; *      - skeleton.c: A network driver outline for linux.&n; *        Written 1993-94 by Donald Becker.&n; *&t;- ltpc.c: A driver for the LocalTalk PC card.&n; *&t;  Written by Bradford W. Johnson.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *      This software may be used and distributed according to the terms&n; *      of the GNU General Public License, incorporated herein by reference.&n; *&n; *&t;Changes:&n; *&t;19970608&t;Alan Cox&t;Allowed dual card type support&n; *&t;&t;&t;&t;&t;Can set board type in insmod&n; *&t;&t;&t;&t;&t;Hooks for cops_setup routine&n; *&t;&t;&t;&t;&t;(not yet implemented).&n; *&t;19971101&t;Jay Schulist&t;Fixes for multiple lt* devices.&n; *&t;19980607&t;Steven Hirsch&t;Fixed the badly broken support&n; *&t;&t;&t;&t;&t;for Tangent type cards. Only&n; *                                      tested on Daystar LT200. Some&n; *                                      cleanup of formatting and program&n; *                                      logic.  Added emacs &squot;local-vars&squot;&n; *                                      setup for Jay&squot;s brace style.&n; *&t;20000211&t;Alan Cox&t;Cleaned up for softnet&n; */
 DECL|variable|version
 r_static
 r_const
@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -3032,7 +3032,9 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-r_return
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 )brace
 DECL|function|cops_timeout

@@ -1245,6 +1245,15 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bus
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 id|memset
 c_func
 (paren

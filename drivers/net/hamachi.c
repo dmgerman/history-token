@@ -1,5 +1,5 @@
 multiline_comment|/* hamachi.c: A Packet Engines GNIC-II Gigabit Ethernet driver for Linux. */
-multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&t;Updates 2000 by Keith Underwood.&n;&n;&t;This software may be used and distributed according to the terms of &n;&t;the GNU Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;This driver is for the Packet Engines GNIC-II PCI Gigabit Ethernet&n;&t;adapter.&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/hamachi.html&n;&t;or&n;&t;http://www.parl.clemson.edu/~keithu/hamachi.html&n;&n;&t;For best viewing, set your tabs to 3.&n;&n;*/
+multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&t;Updates 2000 by Keith Underwood.&n;&n;&t;This software may be used and distributed according to the terms of &n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;This driver is for the Packet Engines GNIC-II PCI Gigabit Ethernet&n;&t;adapter.&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/hamachi.html&n;&t;or&n;&t;http://www.parl.clemson.edu/~keithu/hamachi.html&n;&n;&t;For best viewing, set your tabs to 3.&n;&n;*/
 DECL|variable|version
 r_static
 r_const
@@ -273,7 +273,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

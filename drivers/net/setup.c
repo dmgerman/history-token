@@ -182,6 +182,7 @@ multiline_comment|/* non-zero if autoprobe has failed */
 )brace
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|net_probe
 id|pci_probes

@@ -22,6 +22,8 @@ id|handle
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|dmi_printk
+mdefine_line|#define dmi_printk(x)
 DECL|function|dmi_string
 r_static
 r_char
@@ -376,8 +378,9 @@ id|buf
 l_int|8
 )braket
 suffix:semicolon
-id|printk
+id|dmi_printk
 c_func
+(paren
 (paren
 id|KERN_INFO
 l_string|&quot;DMI %d.%d present.&bslash;n&quot;
@@ -396,9 +399,11 @@ l_int|14
 op_amp
 l_int|0x0F
 )paren
+)paren
 suffix:semicolon
-id|printk
+id|dmi_printk
 c_func
+(paren
 (paren
 id|KERN_INFO
 l_string|&quot;%d structures occupying %d bytes.&bslash;n&quot;
@@ -427,9 +432,11 @@ id|buf
 l_int|6
 )braket
 )paren
+)paren
 suffix:semicolon
-id|printk
+id|dmi_printk
 c_func
+(paren
 (paren
 id|KERN_INFO
 l_string|&quot;DMI table at 0x%08X.&bslash;n&quot;
@@ -459,6 +466,7 @@ id|buf
 (braket
 l_int|8
 )braket
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -552,16 +560,19 @@ op_ne
 l_char|&squot; &squot;
 )paren
 (brace
-id|printk
+id|dmi_printk
 c_func
+(paren
 (paren
 l_string|&quot;BIOS Vendor: %s&bslash;n&quot;
 comma
 id|p
 )paren
+)paren
 suffix:semicolon
-id|printk
+id|dmi_printk
 c_func
+(paren
 (paren
 l_string|&quot;BIOS Version: %s&bslash;n&quot;
 comma
@@ -576,9 +587,11 @@ l_int|5
 )braket
 )paren
 )paren
+)paren
 suffix:semicolon
-id|printk
+id|dmi_printk
 c_func
+(paren
 (paren
 l_string|&quot;BIOS Release: %s&bslash;n&quot;
 comma
@@ -591,6 +604,7 @@ id|data
 (braket
 l_int|8
 )braket
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -704,16 +718,19 @@ op_ne
 l_char|&squot; &squot;
 )paren
 (brace
-id|printk
+id|dmi_printk
 c_func
+(paren
 (paren
 l_string|&quot;System Vendor: %s.&bslash;n&quot;
 comma
 id|p
 )paren
+)paren
 suffix:semicolon
-id|printk
+id|dmi_printk
 c_func
+(paren
 (paren
 l_string|&quot;Product Name: %s.&bslash;n&quot;
 comma
@@ -728,9 +745,11 @@ l_int|5
 )braket
 )paren
 )paren
+)paren
 suffix:semicolon
-id|printk
+id|dmi_printk
 c_func
+(paren
 (paren
 l_string|&quot;Version %s.&bslash;n&quot;
 comma
@@ -745,9 +764,11 @@ l_int|6
 )braket
 )paren
 )paren
+)paren
 suffix:semicolon
-id|printk
+id|dmi_printk
 c_func
+(paren
 (paren
 l_string|&quot;Serial Number %s.&bslash;n&quot;
 comma
@@ -760,6 +781,7 @@ id|data
 (braket
 l_int|7
 )braket
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -794,16 +816,19 @@ op_ne
 l_char|&squot; &squot;
 )paren
 (brace
-id|printk
+id|dmi_printk
 c_func
+(paren
 (paren
 l_string|&quot;Board Vendor: %s.&bslash;n&quot;
 comma
 id|p
 )paren
+)paren
 suffix:semicolon
-id|printk
+id|dmi_printk
 c_func
+(paren
 (paren
 l_string|&quot;Board Name: %s.&bslash;n&quot;
 comma
@@ -818,9 +843,11 @@ l_int|5
 )braket
 )paren
 )paren
+)paren
 suffix:semicolon
-id|printk
+id|dmi_printk
 c_func
+(paren
 (paren
 l_string|&quot;Board Version: %s.&bslash;n&quot;
 comma
@@ -833,6 +860,7 @@ id|data
 (braket
 l_int|6
 )braket
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -867,12 +895,14 @@ op_ne
 l_char|&squot; &squot;
 )paren
 (brace
-id|printk
+id|dmi_printk
 c_func
+(paren
 (paren
 l_string|&quot;Asset Tag: %s.&bslash;n&quot;
 comma
 id|p
+)paren
 )paren
 suffix:semicolon
 )brace

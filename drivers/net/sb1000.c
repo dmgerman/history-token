@@ -18,7 +18,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
@@ -86,11 +86,6 @@ id|rx_dlen
 (braket
 id|NPIDS
 )braket
-suffix:semicolon
-DECL|member|rx_bytes
-r_int
-r_int
-id|rx_bytes
 suffix:semicolon
 DECL|member|rx_frames
 r_int
@@ -5543,16 +5538,16 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|stats-&gt;rx_bytes
 op_add_assign
 id|dlen
 suffix:semicolon
 id|stats-&gt;rx_packets
 op_increment
-suffix:semicolon
-id|lp-&gt;rx_bytes
-op_add_assign
-id|dlen
 suffix:semicolon
 id|lp-&gt;rx_skb
 (braket
@@ -6024,10 +6019,6 @@ l_int|3
 op_assign
 l_int|0
 suffix:semicolon
-id|lp-&gt;rx_bytes
-op_assign
-l_int|0
-suffix:semicolon
 id|lp-&gt;rx_frames
 op_assign
 l_int|0
@@ -6371,7 +6362,7 @@ id|stats
 l_int|0
 )braket
 op_assign
-id|lp-&gt;rx_bytes
+id|lp-&gt;stats.rx_bytes
 suffix:semicolon
 id|stats
 (braket

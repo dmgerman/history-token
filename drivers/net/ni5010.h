@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Racal-Interlan ni5010 Ethernet definitions&n; *&n; * This is an extension to the Linux operating system, and is covered by the&n; * same Gnu Public License that covers that work.&n; *&n; * copyrights (c) 1996 by Jan-Pascal van Best (jvbest@wi.leidenuniv.nl)&n; *&n; * I have done a look in the following sources:&n; *   crynwr-packet-driver by Russ Nelson&n; */
+multiline_comment|/*&n; * Racal-Interlan ni5010 Ethernet definitions&n; *&n; * This is an extension to the Linux operating system, and is covered by the&n; * same GNU General Public License that covers that work.&n; *&n; * copyrights (c) 1996 by Jan-Pascal van Best (jvbest@wi.leidenuniv.nl)&n; *&n; * I have done a look in the following sources:&n; *   crynwr-packet-driver by Russ Nelson&n; */
 DECL|macro|NI5010_BUFSIZE
 mdefine_line|#define NI5010_BUFSIZE&t;2048&t;/* number of bytes in a buffer */
 DECL|macro|NI5010_MAGICVAL0

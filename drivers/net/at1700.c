@@ -1,13 +1,4 @@
-multiline_comment|/* at1700.c: A network device driver for  the Allied Telesis AT1700.&n;&n;&t;Written 1993-98 by Donald Becker.&n;&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU Public License, incorporated herein by reference.&n;&n;&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n;&t;Center of Excellence in Space Data and Information Sciences&n;&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;This is a device driver for the Allied Telesis AT1700, and&n;        Fujitsu FMV-181/182/181A/182A/183/184/183A/184A, which are&n;&t;straight-forward Fujitsu MB86965 implementations.&n;&n;&t;Modification for Fujitsu FMV-18X cards is done by Yutaka Tamiya&n;&t;(tamy@flab.fujitsu.co.jp). &n;&n;  Sources:&n;    The Fujitsu MB86965 datasheet.&n;&n;&t;After the initial version of this driver was written Gerry Sawkins of&n;&t;ATI provided their EEPROM configuration code header file.&n;    Thanks to NIIBE Yutaka &lt;gniibe@mri.co.jp&gt; for bug fixes.&n;&n;    MCA bus (AT1720) support by Rene Schmit &lt;rene@bss.lu&gt;&n;&n;  Bugs:&n;&t;The MB86965 has a design flaw that makes all probes unreliable.  Not&n;&t;only is it difficult to detect, it also moves around in I/O space in&n;&t;response to inb()s from other device probes!&n;*/
-DECL|variable|version
-r_static
-r_const
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;at1700.c:v1.15 4/7/98  Donald Becker (becker@cesdis.gsfc.nasa.gov)&bslash;n&quot;
-suffix:semicolon
+multiline_comment|/* at1700.c: A network device driver for  the Allied Telesis AT1700.&n;&n;&t;Written 1993-98 by Donald Becker.&n;&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n;&t;Center of Excellence in Space Data and Information Sciences&n;&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;This is a device driver for the Allied Telesis AT1700, and&n;        Fujitsu FMV-181/182/181A/182A/183/184/183A/184A, which are&n;&t;straight-forward Fujitsu MB86965 implementations.&n;&n;&t;Modification for Fujitsu FMV-18X cards is done by Yutaka Tamiya&n;&t;(tamy@flab.fujitsu.co.jp). &n;&n;  Sources:&n;    The Fujitsu MB86965 datasheet.&n;&n;&t;After the initial version of this driver was written Gerry Sawkins of&n;&t;ATI provided their EEPROM configuration code header file.&n;    Thanks to NIIBE Yutaka &lt;gniibe@mri.co.jp&gt; for bug fixes.&n;&n;    MCA bus (AT1720) support by Rene Schmit &lt;rene@bss.lu&gt;&n;&n;  Bugs:&n;&t;The MB86965 has a design flaw that makes all probes unreliable.  Not&n;&t;only is it difficult to detect, it also moves around in I/O space in&n;&t;response to inb()s from other device probes!&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -18,7 +9,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -30,6 +21,16 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/mca.h&gt;
+DECL|variable|__initdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;at1700.c:v1.15 4/7/98  Donald Becker (becker@cesdis.gsfc.nasa.gov)&bslash;n&quot;
+suffix:semicolon
 multiline_comment|/* Tunable parameters. */
 multiline_comment|/* When to switch from the 64-entry multicast filter to Rx-all-multicast. */
 DECL|macro|MC_FILTERBREAK
@@ -481,6 +482,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* rEnE : maybe there are others I don&squot;t know off... */
 DECL|variable|at1720_mca_adapters
+r_static
 r_struct
 id|at1720_mca_adapters_struct
 id|at1720_mca_adapters
@@ -622,6 +624,7 @@ multiline_comment|/* The Fujitsu datasheet suggests that the NIC be probed for b
 DECL|function|at1700_probe1
 r_static
 r_int
+id|__init
 id|at1700_probe1
 c_func
 (paren
@@ -3264,8 +3267,16 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
+suffix:semicolon
+id|lp-&gt;stats.rx_bytes
+op_add_assign
+id|pkt_len
 suffix:semicolon
 )brace
 r_if

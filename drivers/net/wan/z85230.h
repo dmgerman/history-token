@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;Description of Z8530 Z85C30 and Z85230 communication
 macro_line|#ifndef _Z8530_H
 DECL|macro|_Z8530_H
 mdefine_line|#define _Z8530_H
+macro_line|#include &lt;linux/tty.h&gt;
 multiline_comment|/* Conversion routines to/from brg time constants from/to bits&n; * per second.&n; */
 DECL|macro|BRG_TO_BPS
 mdefine_line|#define BRG_TO_BPS(brg, freq) ((freq) / 2 / ((brg) + 2))

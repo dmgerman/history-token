@@ -1,5 +1,5 @@
 multiline_comment|/* sun3lance.c: Ethernet driver for SUN3 Lance chip */
-multiline_comment|/*&n;&n;  Sun3 Lance ethernet driver, by Sam Creasey (sammy@users.qual.net).  &n;  This driver is a part of the linux kernel, and is thus distributed&n;  under the GNU Public License.&n;  &n;  The values used in LANCE_OBIO and LANCE_IRQ seem to be empirically&n;  true for the correct IRQ and address of the lance registers.  They&n;  have not been widely tested, however.  What we probably need is a&n;  &quot;proper&quot; way to search for a device in the sun3&squot;s prom, but, alas,&n;  linux has no such thing.  &n;&n;  This driver is largely based on atarilance.c, by Roman Hodek.  Other&n;  sources of inspiration were the NetBSD sun3 am7990 driver, and the&n;  linux sparc lance driver (sunlance.c).  &n;&n;  There are more assumptions made throughout this driver, it almost&n;  certainly still needs work, but it does work at least for RARP/BOOTP and&n;  mounting the root NFS filesystem.&n;  &n;*/
+multiline_comment|/*&n;&n;  Sun3 Lance ethernet driver, by Sam Creasey (sammy@users.qual.net).  &n;  This driver is a part of the linux kernel, and is thus distributed&n;  under the GNU General Public License.&n;  &n;  The values used in LANCE_OBIO and LANCE_IRQ seem to be empirically&n;  true for the correct IRQ and address of the lance registers.  They&n;  have not been widely tested, however.  What we probably need is a&n;  &quot;proper&quot; way to search for a device in the sun3&squot;s prom, but, alas,&n;  linux has no such thing.  &n;&n;  This driver is largely based on atarilance.c, by Roman Hodek.  Other&n;  sources of inspiration were the NetBSD sun3 am7990 driver, and the&n;  linux sparc lance driver (sunlance.c).  &n;&n;  There are more assumptions made throughout this driver, it almost&n;  certainly still needs work, but it does work at least for RARP/BOOTP and&n;  mounting the root NFS filesystem.&n;  &n;*/
 DECL|variable|version
 r_static
 r_char
@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -3329,12 +3329,16 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
 id|lp-&gt;stats.rx_bytes
 op_add_assign
-id|skb-&gt;len
+id|pkt_len
 suffix:semicolon
 )brace
 )brace

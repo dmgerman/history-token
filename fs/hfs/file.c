@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/fs/hfs/file.c&n; *&n; * Copyright (C) 1995, 1996  Paul H. Hargrove&n; * This file may be distributed under the terms of the GNU Public License.&n; *&n; * This file contains the file-related functions which are independent of&n; * which scheme is being used to represent forks.&n; *&n; * Based on the minix file system code, (C) 1991, 1992 by Linus Torvalds&n; *&n; * &quot;XXX&quot; in a comment is a note to myself to consider changing something.&n; *&n; * In function preconditions the term &quot;valid&quot; applied to a pointer to&n; * a structure means that the pointer is non-NULL and the structure it&n; * points to has all fields initialized to consistent values.&n; */
+multiline_comment|/*&n; * linux/fs/hfs/file.c&n; *&n; * Copyright (C) 1995, 1996  Paul H. Hargrove&n; * This file may be distributed under the terms of the GNU General Public License.&n; *&n; * This file contains the file-related functions which are independent of&n; * which scheme is being used to represent forks.&n; *&n; * Based on the minix file system code, (C) 1991, 1992 by Linus Torvalds&n; *&n; * &quot;XXX&quot; in a comment is a note to myself to consider changing something.&n; *&n; * In function preconditions the term &quot;valid&quot; applied to a pointer to&n; * a structure means that the pointer is non-NULL and the structure it&n; * points to has all fields initialized to consistent values.&n; */
 macro_line|#include &quot;hfs.h&quot;
 macro_line|#include &lt;linux/hfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/hfs_fs_i.h&gt;
@@ -345,7 +345,7 @@ op_minus
 id|ENOSPC
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * hfs_file_read()&n; *&n; * This is the read field in the inode_operations structure for&n; * &quot;regular&quot; (non-header) files.  The purpose is to transfer up to&n; * &squot;count&squot; bytes from the file corresponding to &squot;inode&squot;, beginning at&n; * &squot;filp-&gt;offset&squot; bytes into the file.&t;The data is transfered to&n; * user-space at the address &squot;buf&squot;.  Returns the number of bytes&n; * successfully transfered.  This function checks the arguments, does&n; * some setup and then calls hfs_do_read() to do the actual transfer.  */
+multiline_comment|/*&n; * hfs_file_read()&n; *&n; * This is the read field in the inode_operations structure for&n; * &quot;regular&quot; (non-header) files.  The purpose is to transfer up to&n; * &squot;count&squot; bytes from the file corresponding to &squot;inode&squot;, beginning at&n; * &squot;filp-&gt;offset&squot; bytes into the file.&t;The data is transferred to&n; * user-space at the address &squot;buf&squot;.  Returns the number of bytes&n; * successfully transferred.  This function checks the arguments, does&n; * some setup and then calls hfs_do_read() to do the actual transfer.  */
 DECL|function|hfs_file_read
 r_static
 id|hfs_rwret_t
@@ -888,7 +888,7 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/*================ Global functions ================*/
-multiline_comment|/*&n; * hfs_do_read()&n; *&n; * This function transfers actual data from disk to user-space memory,&n; * returning the number of bytes successfully transfered.  &squot;fork&squot; tells&n; * which file on the disk to read from.  &squot;pos&squot; gives the offset into&n; * the Linux file at which to begin the transfer.  Note that this will&n; * differ from &squot;filp-&gt;offset&squot; in the case of an AppleDouble header file&n; * due to the block of metadata at the beginning of the file, which has&n; * no corresponding place in the HFS file.  &squot;count&squot; tells how many&n; * bytes to transfer.  &squot;buf&squot; gives an address in user-space to transfer&n; * the data to.&n; * &n; * This is based on Linus&squot;s minix_file_read().&n; * It has been changed to take into account that HFS files have no holes.&n; */
+multiline_comment|/*&n; * hfs_do_read()&n; *&n; * This function transfers actual data from disk to user-space memory,&n; * returning the number of bytes successfully transferred.  &squot;fork&squot; tells&n; * which file on the disk to read from.  &squot;pos&squot; gives the offset into&n; * the Linux file at which to begin the transfer.  Note that this will&n; * differ from &squot;filp-&gt;offset&squot; in the case of an AppleDouble header file&n; * due to the block of metadata at the beginning of the file, which has&n; * no corresponding place in the HFS file.  &squot;count&squot; tells how many&n; * bytes to transfer.  &squot;buf&squot; gives an address in user-space to transfer&n; * the data to.&n; * &n; * This is based on Linus&squot;s minix_file_read().&n; * It has been changed to take into account that HFS files have no holes.&n; */
 DECL|function|hfs_do_read
 id|hfs_s32
 id|hfs_do_read
@@ -1524,7 +1524,7 @@ r_return
 id|read
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * hfs_do_write()&n; *&n; * This function transfers actual data from user-space memory to disk,&n; * returning the number of bytes successfully transfered.  &squot;fork&squot; tells&n; * which file on the disk to write to.  &squot;pos&squot; gives the offset into&n; * the Linux file at which to begin the transfer.  Note that this will&n; * differ from &squot;filp-&gt;offset&squot; in the case of an AppleDouble header file&n; * due to the block of metadata at the beginning of the file, which has&n; * no corresponding place in the HFS file.  &squot;count&squot; tells how many&n; * bytes to transfer.  &squot;buf&squot; gives an address in user-space to transfer&n; * the data from.&n; * &n; * This is just a minor edit of Linus&squot;s minix_file_write().&n; */
+multiline_comment|/*&n; * hfs_do_write()&n; *&n; * This function transfers actual data from user-space memory to disk,&n; * returning the number of bytes successfully transferred.  &squot;fork&squot; tells&n; * which file on the disk to write to.  &squot;pos&squot; gives the offset into&n; * the Linux file at which to begin the transfer.  Note that this will&n; * differ from &squot;filp-&gt;offset&squot; in the case of an AppleDouble header file&n; * due to the block of metadata at the beginning of the file, which has&n; * no corresponding place in the HFS file.  &squot;count&squot; tells how many&n; * bytes to transfer.  &squot;buf&squot; gives an address in user-space to transfer&n; * the data from.&n; * &n; * This is just a minor edit of Linus&squot;s minix_file_write().&n; */
 DECL|function|hfs_do_write
 id|hfs_s32
 id|hfs_do_write

@@ -869,7 +869,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* set MAC adress of the interface. called from the core after a&n; * SIOCSIFADDR ioctl, and from the bootup above.&n; */
+multiline_comment|/* set MAC address of the interface. called from the core after a&n; * SIOCSIFADDR ioctl, and from the bootup above.&n; */
 r_static
 r_int
 DECL|function|e100_set_mac_address
@@ -907,7 +907,7 @@ comma
 id|dev-&gt;addr_len
 )paren
 suffix:semicolon
-multiline_comment|/* Write it to the hardware.&n;&t; * Note the way the adress is wrapped:&n;&t; * *R_NETWORK_SA_0 = a0_0 | (a0_1 &lt;&lt; 8) | (a0_2 &lt;&lt; 16) | (a0_3 &lt;&lt; 24);&n;&t; * *R_NETWORK_SA_1 = a0_4 | (a0_5 &lt;&lt; 8);&n;&t; */
+multiline_comment|/* Write it to the hardware.&n;&t; * Note the way the address is wrapped:&n;&t; * *R_NETWORK_SA_0 = a0_0 | (a0_1 &lt;&lt; 8) | (a0_2 &lt;&lt; 16) | (a0_3 &lt;&lt; 24);&n;&t; * *R_NETWORK_SA_1 = a0_4 | (a0_5 &lt;&lt; 8);&n;&t; */
 op_star
 id|R_NETWORK_SA_0
 op_assign
@@ -3131,7 +3131,7 @@ op_assign
 l_int|0xf
 suffix:semicolon
 multiline_comment|/* clear dma0 and 1 eop and descr irq masks */
-multiline_comment|/* Stop the reciever and the transmitter */
+multiline_comment|/* Stop the receiver and the transmitter */
 id|RESET_DMA
 c_func
 (paren

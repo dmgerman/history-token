@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * linux/fs/hfs/hfs.h&n; *&n; * Copyright (C) 1995-1997  Paul H. Hargrove&n; * This file may be distributed under the terms of the GNU Public License.&n; *&n; * &quot;XXX&quot; in a comment is a note to myself to consider changing something.&n; */
+multiline_comment|/* &n; * linux/fs/hfs/hfs.h&n; *&n; * Copyright (C) 1995-1997  Paul H. Hargrove&n; * This file may be distributed under the terms of the GNU General Public License.&n; *&n; * &quot;XXX&quot; in a comment is a note to myself to consider changing something.&n; */
 macro_line|#ifndef _HFS_H
 DECL|macro|_HFS_H
 mdefine_line|#define _HFS_H

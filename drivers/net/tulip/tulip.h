@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&t;drivers/net/tulip/tulip.h&n;&n;&t;Copyright 2000  The Linux Kernel Team&n;&t;Written/copyright 1994-1999 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU Public License, incorporated herein by reference.&n;&n;*/
+multiline_comment|/*&n;&t;drivers/net/tulip/tulip.h&n;&n;&t;Copyright 2000  The Linux Kernel Team&n;&t;Written/copyright 1994-1999 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;*/
 macro_line|#ifndef __NET_TULIP_H__
 DECL|macro|__NET_TULIP_H__
 mdefine_line|#define __NET_TULIP_H__

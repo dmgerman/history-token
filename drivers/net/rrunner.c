@@ -4196,12 +4196,16 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* send it up */
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|rrpriv-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
 id|rrpriv-&gt;stats.rx_bytes
 op_add_assign
-id|skb-&gt;len
+id|pkt_len
 suffix:semicolon
 )brace
 id|defer

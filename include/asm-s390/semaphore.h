@@ -36,7 +36,7 @@ mdefine_line|#define DECLARE_MUTEX(name) __DECLARE_SEMAPHORE_GENERIC(name,1)
 DECL|macro|DECLARE_MUTEX_LOCKED
 mdefine_line|#define DECLARE_MUTEX_LOCKED(name) __DECLARE_SEMAPHORE_GENERIC(name,0)
 DECL|function|sema_init
-r_extern
+r_static
 r_inline
 r_void
 id|sema_init
@@ -192,7 +192,7 @@ id|sem
 )paren
 suffix:semicolon
 DECL|function|down
-r_extern
+r_static
 r_inline
 r_void
 id|down
@@ -224,7 +224,7 @@ id|sem
 suffix:semicolon
 )brace
 DECL|function|down_interruptible
-r_extern
+r_static
 r_inline
 r_int
 id|down_interruptible
@@ -266,7 +266,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|down_trylock
-r_extern
+r_static
 r_inline
 r_int
 id|down_trylock
@@ -308,7 +308,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|up
-r_extern
+r_static
 r_inline
 r_void
 id|up
@@ -385,7 +385,7 @@ mdefine_line|#define DECLARE_RWSEM_READ_LOCKED(name) __DECLARE_RWSEM_GENERIC(nam
 DECL|macro|DECLARE_RWSEM_WRITE_LOCKED
 mdefine_line|#define DECLARE_RWSEM_WRITE_LOCKED(name) __DECLARE_RWSEM_GENERIC(name,0)
 DECL|function|init_rwsem
-r_extern
+r_static
 r_inline
 r_void
 id|init_rwsem
@@ -466,7 +466,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|function|down_read
-r_extern
+r_static
 r_inline
 r_void
 id|down_read
@@ -507,7 +507,7 @@ id|sem
 suffix:semicolon
 )brace
 DECL|function|down_write
-r_extern
+r_static
 r_inline
 r_void
 id|down_write
@@ -551,7 +551,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* When a reader does a release, the only significant&n; * case is when there was a writer waiting, and we&squot;ve&n; * bumped the count to 0: we must wake the writer up.&n; */
 DECL|function|up_read
-r_extern
+r_static
 r_inline
 r_void
 id|up_read
@@ -593,7 +593,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* releasing the writer is easy -- just release it and&n; * wake up any sleepers.&n; */
 DECL|function|up_write
-r_extern
+r_static
 r_inline
 r_void
 id|up_write

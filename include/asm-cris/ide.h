@@ -358,7 +358,7 @@ DECL|macro|ide_release_lock
 mdefine_line|#define ide_release_lock(lock)&t;&t;do {} while (0)
 DECL|macro|ide_get_lock
 mdefine_line|#define ide_get_lock(lock, hdlr, data)&t;do {} while (0)
-multiline_comment|/* the drive adressing is done through a controller register on the Etrax CPU */
+multiline_comment|/* the drive addressing is done through a controller register on the Etrax CPU */
 r_void
 id|OUT_BYTE
 c_func

@@ -81,7 +81,7 @@ singleline_comment|//#define SERIAL_DEBUG_THROTTLE
 singleline_comment|//#define SERIAL_DEBUG_IO  /* Debug for Extra control and status pins */
 DECL|macro|SERIAL_DEBUG_LINE
 mdefine_line|#define SERIAL_DEBUG_LINE 0 /* What serport we want to debug */
-multiline_comment|/* Enable this to use serial interrupts to handle when you&n;   expect the first recieved event on the serial port to&n;   be an error, break or similar. Used to be able to flash IRMA&n;   from eLinux */
+multiline_comment|/* Enable this to use serial interrupts to handle when you&n;   expect the first received event on the serial port to&n;   be an error, break or similar. Used to be able to flash IRMA&n;   from eLinux */
 singleline_comment|//#define SERIAL_HANDLE_EARLY_ERRORS
 macro_line|#ifndef CONFIG_ETRAX100_SERIAL_RX_TIMEOUT_TICKS
 multiline_comment|/* Default number of timer ticks before flushing rx fifo &n; * When using &quot;little data, low latency applications: use 0&n; * When using &quot;much data applications (PPP)&quot; use ~5&n; */

@@ -4239,6 +4239,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|ppp_async_cleanup
+r_static
 r_void
 id|__exit
 id|ppp_async_cleanup

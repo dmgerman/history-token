@@ -7,6 +7,20 @@ macro_line|#include &lt;types.h&gt;
 macro_line|#endif
 r_extern
 id|__u8
+id|_ascebc_500
+(braket
+)braket
+suffix:semicolon
+multiline_comment|/* ASCII -&gt; EBCDIC 500 conversion table */
+r_extern
+id|__u8
+id|_ebcasc_500
+(braket
+)braket
+suffix:semicolon
+multiline_comment|/* EBCDIC 500 -&gt; ASCII conversion table */
+r_extern
+id|__u8
 id|_ascebc
 (braket
 )braket
@@ -128,6 +142,10 @@ DECL|macro|ASCEBC
 mdefine_line|#define ASCEBC(addr,nr) codepage_convert(_ascebc, addr, nr)
 DECL|macro|EBCASC
 mdefine_line|#define EBCASC(addr,nr) codepage_convert(_ebcasc, addr, nr)
+DECL|macro|ASCEBC_500
+mdefine_line|#define ASCEBC_500(addr,nr) codepage_convert(_ascebc_500, addr, nr)
+DECL|macro|EBCASC_500
+mdefine_line|#define EBCASC_500(addr,nr) codepage_convert(_ebcasc_500, addr, nr)
 DECL|macro|EBC_TOLOWER
 mdefine_line|#define EBC_TOLOWER(addr,nr) codepage_convert(_ebc_tolower, addr, nr)
 DECL|macro|EBC_TOUPPER

@@ -1,5 +1,5 @@
 multiline_comment|/* daynaport.c: A Macintosh 8390 based ethernet driver for linux. */
-multiline_comment|/*&n;&t;Derived from code:&n;&t;&n;&t;Written 1993-94 by Donald Becker.&n;&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU Public License, incorporated herein by reference.&n;&n;&t;    TODO:&n;&n;&t;    The block output routines may be wrong for non Dayna&n;&t;    cards&n;&n;&t;&t;Fix this driver so that it will attempt to use the info&n;&t;&t;(i.e. iobase, iosize) given to it by the new and improved&n;&t;&t;NuBus code.&n;&n;&t;&t;Despite its misleading filename, this driver is not Dayna-specific&n;&t;&t;anymore. */
+multiline_comment|/*&n;&t;Derived from code:&n;&t;&n;&t;Written 1993-94 by Donald Becker.&n;&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;    TODO:&n;&n;&t;    The block output routines may be wrong for non Dayna&n;&t;    cards&n;&n;&t;&t;Fix this driver so that it will attempt to use the info&n;&t;&t;(i.e. iobase, iosize) given to it by the new and improved&n;&t;&t;NuBus code.&n;&n;&t;&t;Despite its misleading filename, this driver is not Dayna-specific&n;&t;&t;anymore. */
 multiline_comment|/* Cabletron E6100 card support added by Tony Mantler (eek@escape.ca) April 1999 */
 DECL|variable|version
 r_static
@@ -30,6 +30,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &quot;8390.h&quot;
+r_static
 r_int
 id|ns8390_probe1
 c_func
@@ -536,6 +537,7 @@ id|NS8390_CABLETRON
 )brace
 suffix:semicolon
 DECL|function|ns8390_ident
+r_static
 r_int
 id|__init
 id|ns8390_ident
@@ -649,6 +651,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Memory probe for 8390 cards&n; */
 DECL|function|apple_8390_mem_probe
+r_static
 r_int
 id|__init
 id|apple_8390_mem_probe
@@ -1897,6 +1900,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|mac8390_ethernet_addr
+r_static
 r_int
 id|__init
 id|mac8390_ethernet_addr
@@ -1981,6 +1985,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ns8390_probe1
+r_static
 r_int
 id|__init
 id|ns8390_probe1

@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
@@ -25,11 +25,6 @@ id|PX_MAX_PROTO
 op_plus
 l_int|1
 )braket
-op_assign
-(brace
-l_int|NULL
-comma
-)brace
 suffix:semicolon
 DECL|function|register_pppox_proto
 r_int
@@ -171,6 +166,7 @@ id|pppox_unbind_sock
 )paren
 suffix:semicolon
 DECL|function|pppox_ioctl
+r_static
 r_int
 id|pppox_ioctl
 c_func
@@ -336,6 +332,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|pppox_create
+r_static
 r_int
 id|pppox_create
 c_func
@@ -414,6 +411,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|variable|pppox_proto_family
+r_static
 r_struct
 id|net_proto_family
 id|pppox_proto_family
@@ -425,6 +423,7 @@ id|pppox_create
 )brace
 suffix:semicolon
 DECL|function|pppox_init
+r_static
 r_int
 id|__init
 id|pppox_init
@@ -468,6 +467,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|pppox_exit
+r_static
 r_void
 id|__exit
 id|pppox_exit

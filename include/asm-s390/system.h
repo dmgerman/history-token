@@ -3,6 +3,7 @@ macro_line|#ifndef __ASM_SYSTEM_H
 DECL|macro|__ASM_SYSTEM_H
 mdefine_line|#define __ASM_SYSTEM_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/lowcore.h&gt;
 macro_line|#endif
@@ -53,7 +54,7 @@ r_volatile
 l_string|&quot;   lhi   1,3&bslash;n&quot;
 l_string|&quot;   nr    1,%0&bslash;n&quot;
 multiline_comment|/* isolate last 2 bits */
-l_string|&quot;   xr    1,%0&bslash;n&quot;
+l_string|&quot;   xr    %0,1&bslash;n&quot;
 multiline_comment|/* align ptr */
 l_string|&quot;   bras  2,0f&bslash;n&quot;
 l_string|&quot;   icm   1,8,%1&bslash;n&quot;
@@ -71,13 +72,13 @@ l_string|&quot;   stcm  0,1,%1&bslash;n&quot;
 l_string|&quot;0: sll   1,3&bslash;n&quot;
 l_string|&quot;   la    2,0(1,2)&bslash;n&quot;
 multiline_comment|/* r2 points to an icm */
-l_string|&quot;   l     0,%1&bslash;n&quot;
+l_string|&quot;   l     0,0(%0)&bslash;n&quot;
 multiline_comment|/* get fullword */
 l_string|&quot;1: lr    1,0&bslash;n&quot;
 multiline_comment|/* cs loop */
 l_string|&quot;   ex    0,0(2)&bslash;n&quot;
 multiline_comment|/* insert x */
-l_string|&quot;   cs    0,1,%1&bslash;n&quot;
+l_string|&quot;   cs    0,1,0(%0)&bslash;n&quot;
 l_string|&quot;   jl    1b&bslash;n&quot;
 l_string|&quot;   ex    0,4(2)&quot;
 multiline_comment|/* store *ptr to x */
@@ -86,11 +87,12 @@ l_string|&quot;+a&amp;&quot;
 (paren
 id|ptr
 )paren
-suffix:colon
-l_string|&quot;m&quot;
+comma
+l_string|&quot;+m&quot;
 (paren
 id|x
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;memory&quot;
 comma
@@ -130,7 +132,7 @@ r_volatile
 l_string|&quot;   lhi   1,2&bslash;n&quot;
 l_string|&quot;   nr    1,%0&bslash;n&quot;
 multiline_comment|/* isolate bit 2^1 */
-l_string|&quot;   xr    1,%0&bslash;n&quot;
+l_string|&quot;   xr    %0,1&bslash;n&quot;
 multiline_comment|/* align ptr */
 l_string|&quot;   bras  2,0f&bslash;n&quot;
 l_string|&quot;   icm   1,12,%1&bslash;n&quot;
@@ -142,13 +144,13 @@ l_string|&quot;   stcm  0,3,%1&bslash;n&quot;
 l_string|&quot;0: sll   1,2&bslash;n&quot;
 l_string|&quot;   la    2,0(1,2)&bslash;n&quot;
 multiline_comment|/* r2 points to an icm */
-l_string|&quot;   l     0,%1&bslash;n&quot;
+l_string|&quot;   l     0,0(%0)&bslash;n&quot;
 multiline_comment|/* get fullword */
 l_string|&quot;1: lr    1,0&bslash;n&quot;
 multiline_comment|/* cs loop */
 l_string|&quot;   ex    0,0(2)&bslash;n&quot;
 multiline_comment|/* insert x */
-l_string|&quot;   cs    0,1,%1&bslash;n&quot;
+l_string|&quot;   cs    0,1,0(%0)&bslash;n&quot;
 l_string|&quot;   jl    1b&bslash;n&quot;
 l_string|&quot;   ex    0,4(2)&quot;
 multiline_comment|/* store *ptr to x */
@@ -157,11 +159,12 @@ l_string|&quot;+a&amp;&quot;
 (paren
 id|ptr
 )paren
-suffix:colon
-l_string|&quot;m&quot;
+comma
+l_string|&quot;+m&quot;
 (paren
 id|x
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;memory&quot;
 comma
@@ -244,6 +247,16 @@ DECL|macro|rmb
 mdefine_line|#define rmb()   eieio()
 DECL|macro|wmb
 mdefine_line|#define wmb()   eieio()
+DECL|macro|smp_mb
+mdefine_line|#define smp_mb()       mb()
+DECL|macro|smp_rmb
+mdefine_line|#define smp_rmb()      rmb()
+DECL|macro|smp_wmb
+mdefine_line|#define smp_wmb()      wmb()
+DECL|macro|smp_mb__before_clear_bit
+mdefine_line|#define smp_mb__before_clear_bit()     smp_mb()
+DECL|macro|smp_mb__after_clear_bit
+mdefine_line|#define smp_mb__after_clear_bit()      smp_mb()
 DECL|macro|set_mb
 mdefine_line|#define set_mb(var, value)      do { var = value; mb(); } while (0)
 DECL|macro|set_wmb
@@ -257,6 +270,12 @@ DECL|macro|__save_flags
 mdefine_line|#define __save_flags(x) &bslash;&n;        __asm__ __volatile__(&quot;stosm %0,0&quot; : &quot;=m&quot; (x) : : &quot;memory&quot;)
 DECL|macro|__restore_flags
 mdefine_line|#define __restore_flags(x) &bslash;&n;        __asm__ __volatile__(&quot;ssm   %0&quot; : : &quot;m&quot; (x) : &quot;memory&quot;)
+DECL|macro|__load_psw
+mdefine_line|#define __load_psw(psw) &bslash;&n;&t;__asm__ __volatile__(&quot;lpsw %0&quot; : : &quot;m&quot; (psw));
+DECL|macro|__ctl_load
+mdefine_line|#define __ctl_load(array, low, high) ({ &bslash;&n;&t;__asm__ __volatile__ ( &bslash;&n;&t;&t;&quot;   la    1,%0&bslash;n&quot; &bslash;&n;&t;&t;&quot;   bras  2,0f&bslash;n&quot; &bslash;&n;                &quot;   lctl  0,0,0(1)&bslash;n&quot; &bslash;&n;&t;&t;&quot;0: ex    %1,0(2)&quot; &bslash;&n;&t;&t;: : &quot;m&quot; (array), &quot;a&quot; (((low)&lt;&lt;4)+(high)) : &quot;1&quot;, &quot;2&quot; ); &bslash;&n;&t;})
+DECL|macro|__ctl_store
+mdefine_line|#define __ctl_store(array, low, high) ({ &bslash;&n;&t;__asm__ __volatile__ ( &bslash;&n;&t;&t;&quot;   la    1,%0&bslash;n&quot; &bslash;&n;&t;&t;&quot;   bras  2,0f&bslash;n&quot; &bslash;&n;&t;&t;&quot;   stctl 0,0,0(1)&bslash;n&quot; &bslash;&n;&t;&t;&quot;0: ex    %1,0(2)&quot; &bslash;&n;&t;&t;: &quot;=m&quot; (array) : &quot;a&quot; (((low)&lt;&lt;4)+(high)): &quot;1&quot;, &quot;2&quot; ); &bslash;&n;&t;})
 DECL|macro|__ctl_set_bit
 mdefine_line|#define __ctl_set_bit(cr, bit) ({ &bslash;&n;        __u8 dummy[16]; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;    la    1,%0&bslash;n&quot;       /* align to 8 byte */ &bslash;&n;                &quot;    ahi   1,7&bslash;n&quot; &bslash;&n;                &quot;    srl   1,3&bslash;n&quot; &bslash;&n;                &quot;    sll   1,3&bslash;n&quot; &bslash;&n;                &quot;    bras  2,0f&bslash;n&quot;       /* skip indirect insns */ &bslash;&n;                &quot;    stctl 0,0,0(1)&bslash;n&quot; &bslash;&n;                &quot;    lctl  0,0,0(1)&bslash;n&quot; &bslash;&n;                &quot;0:  ex    %1,0(2)&bslash;n&quot;    /* execute stctl */ &bslash;&n;                &quot;    l     0,0(1)&bslash;n&quot; &bslash;&n;                &quot;    or    0,%2&bslash;n&quot;       /* set the bit */ &bslash;&n;                &quot;    st    0,0(1)&bslash;n&quot; &bslash;&n;                &quot;1:  ex    %1,4(2)&quot;      /* execute lctl */ &bslash;&n;                : &quot;=m&quot; (dummy) : &quot;a&quot; (cr*17), &quot;a&quot; (1&lt;&lt;(bit)) &bslash;&n;                : &quot;0&quot;, &quot;1&quot;, &quot;2&quot;); &bslash;&n;        })
 DECL|macro|__ctl_clear_bit
@@ -408,14 +427,6 @@ c_func
 id|s390_fp_regs
 op_star
 id|fpregs
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|show_crashed_task_info
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -2353,19 +2353,22 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;dev_alloc_skb - allocate an skbuff for sending&n; *&t;@length: length to allocate&n; *&n; *&t;Allocate a new &amp;sk_buff and assign it a usage count of one. The&n; *&t;buffer has unspecified headroom built in. Users should allocate&n; *&t;the headroom they think they need without accounting for the&n; *&t;built in space. The built in space is used for optimisations.&n; *&n; *&t;%NULL is returned in there is no free memory. Although this function&n; *&t;allocates memory it can be called from an interrupt.&n; */
-DECL|function|dev_alloc_skb
+multiline_comment|/**&n; *&t;__dev_alloc_skb - allocate an skbuff for sending&n; *&t;@length: length to allocate&n; *&t;@gfp_mask: get_free_pages mask, passed to alloc_skb&n; *&n; *&t;Allocate a new &amp;sk_buff and assign it a usage count of one. The&n; *&t;buffer has unspecified headroom built in. Users should allocate&n; *&t;the headroom they think they need without accounting for the&n; *&t;built in space. The built in space is used for optimisations.&n; *&n; *&t;%NULL is returned in there is no free memory.&n; */
+DECL|function|__dev_alloc_skb
 r_static
 r_inline
 r_struct
 id|sk_buff
 op_star
-id|dev_alloc_skb
+id|__dev_alloc_skb
 c_func
 (paren
 r_int
 r_int
 id|length
+comma
+r_int
+id|gfp_mask
 )paren
 (brace
 r_struct
@@ -2382,7 +2385,7 @@ id|length
 op_plus
 l_int|16
 comma
-id|GFP_ATOMIC
+id|gfp_mask
 )paren
 suffix:semicolon
 r_if
@@ -2400,6 +2403,31 @@ l_int|16
 suffix:semicolon
 r_return
 id|skb
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;dev_alloc_skb - allocate an skbuff for sending&n; *&t;@length: length to allocate&n; *&n; *&t;Allocate a new &amp;sk_buff and assign it a usage count of one. The&n; *&t;buffer has unspecified headroom built in. Users should allocate&n; *&t;the headroom they think they need without accounting for the&n; *&t;built in space. The built in space is used for optimisations.&n; *&n; *&t;%NULL is returned in there is no free memory. Although this function&n; *&t;allocates memory it can be called from an interrupt.&n; */
+DECL|function|dev_alloc_skb
+r_static
+r_inline
+r_struct
+id|sk_buff
+op_star
+id|dev_alloc_skb
+c_func
+(paren
+r_int
+r_int
+id|length
+)paren
+(brace
+r_return
+id|__dev_alloc_skb
+c_func
+(paren
+id|length
+comma
+id|GFP_ATOMIC
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;skb_cow - copy a buffer if need be&n; *&t;@skb: buffer to copy&n; *&t;@headroom: needed headroom&n; *&n; *&t;If the buffer passed lacks sufficient headroom or is a clone then&n; *&t;it is copied and the additional headroom made available. If there&n; *&t;is no free memory %NULL is returned. The new buffer is returned if&n; *&t;a copy was made (and the old one dropped a reference). The existing&n; *&t;buffer is returned otherwise.&n; *&n; *&t;This function primarily exists to avoid making two copies when making&n; *&t;a writable copy of a buffer and then growing the headroom.&n; */

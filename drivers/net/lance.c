@@ -1,5 +1,5 @@
 multiline_comment|/* lance.c: An AMD LANCE/PCnet ethernet driver for Linux. */
-multiline_comment|/*&n;&t;Written/copyright 1993-1998 by Donald Becker.&n;&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU Public License, incorporated herein by reference.&n;&n;&t;This driver is for the Allied Telesis AT1500 and HP J2405A, and should work&n;&t;with most other LANCE-based bus-master (NE2100/NE2500) ethercards.&n;&n;&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n;&t;Center of Excellence in Space Data and Information Sciences&n;&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;Andrey V. Savochkin:&n;&t;- alignment problem with 1.3.* kernel and some minor changes.&n;&t;Thomas Bogendoerfer (tsbogend@bigbug.franken.de):&n;&t;- added support for Linux/Alpha, but removed most of it, because&n;        it worked only for the PCI chip. &n;      - added hook for the 32bit lance driver&n;      - added PCnetPCI II (79C970A) to chip table&n;&t;Paul Gortmaker (gpg109@rsphy1.anu.edu.au):&n;&t;- hopefully fix above so Linux/Alpha can use ISA cards too.&n;    8/20/96 Fixed 7990 autoIRQ failure and reversed unneeded alignment -djb&n;    v1.12 10/27/97 Module support -djb&n;    v1.14  2/3/98 Module support modified, made PCI support optional -djb&n;    v1.15 5/27/99 Fixed bug in the cleanup_module(). dev-&gt;priv was freed&n;                  before unregister_netdev() which caused NULL pointer&n;                  reference later in the chain (in rtnetlink_fill_ifinfo())&n;                  -- Mika Kuoppala &lt;miku@iki.fi&gt;&n;    &n;    Forward ported v1.14 to 2.1.129, merged the PCI and misc changes from&n;    the 2.1 version of the old driver - Alan Cox&n;*/
+multiline_comment|/*&n;&t;Written/copyright 1993-1998 by Donald Becker.&n;&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver is for the Allied Telesis AT1500 and HP J2405A, and should work&n;&t;with most other LANCE-based bus-master (NE2100/NE2500) ethercards.&n;&n;&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n;&t;Center of Excellence in Space Data and Information Sciences&n;&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;Andrey V. Savochkin:&n;&t;- alignment problem with 1.3.* kernel and some minor changes.&n;&t;Thomas Bogendoerfer (tsbogend@bigbug.franken.de):&n;&t;- added support for Linux/Alpha, but removed most of it, because&n;        it worked only for the PCI chip. &n;      - added hook for the 32bit lance driver&n;      - added PCnetPCI II (79C970A) to chip table&n;&t;Paul Gortmaker (gpg109@rsphy1.anu.edu.au):&n;&t;- hopefully fix above so Linux/Alpha can use ISA cards too.&n;    8/20/96 Fixed 7990 autoIRQ failure and reversed unneeded alignment -djb&n;    v1.12 10/27/97 Module support -djb&n;    v1.14  2/3/98 Module support modified, made PCI support optional -djb&n;    v1.15 5/27/99 Fixed bug in the cleanup_module(). dev-&gt;priv was freed&n;                  before unregister_netdev() which caused NULL pointer&n;                  reference later in the chain (in rtnetlink_fill_ifinfo())&n;                  -- Mika Kuoppala &lt;miku@iki.fi&gt;&n;    &n;    Forward ported v1.14 to 2.1.129, merged the PCI and misc changes from&n;    the 2.1 version of the old driver - Alan Cox&n;*/
 DECL|variable|version
 r_static
 r_const
@@ -16,7 +16,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -3834,7 +3834,7 @@ id|dev-&gt;trans_start
 op_assign
 id|jiffies
 suffix:semicolon
-id|netif_start_queue
+id|netif_wake_queue
 (paren
 id|dev
 )paren
@@ -3993,6 +3993,10 @@ id|misc
 op_assign
 l_int|0x0000
 suffix:semicolon
+id|lp-&gt;stats.tx_bytes
+op_add_assign
+id|skb-&gt;len
+suffix:semicolon
 multiline_comment|/* If any part of this buffer is &gt;16M we must copy it to a low-memory&n;&t;   buffer. */
 r_if
 c_cond
@@ -4116,10 +4120,6 @@ suffix:semicolon
 )brace
 id|lp-&gt;cur_tx
 op_increment
-suffix:semicolon
-id|lp-&gt;stats.tx_bytes
-op_add_assign
-id|skb-&gt;len
 suffix:semicolon
 multiline_comment|/* Trigger an immediate send poll. */
 id|outw
@@ -5054,10 +5054,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|lp-&gt;stats.rx_bytes
-op_add_assign
-id|skb-&gt;len
-suffix:semicolon
 id|skb-&gt;protocol
 op_assign
 id|eth_type_trans
@@ -5068,14 +5064,22 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|lp-&gt;stats.rx_packets
-op_increment
-suffix:semicolon
 id|netif_rx
 c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
+id|lp-&gt;stats.rx_packets
+op_increment
+suffix:semicolon
+id|lp-&gt;stats.rx_bytes
+op_add_assign
+id|pkt_len
 suffix:semicolon
 )brace
 )brace

@@ -1,5 +1,5 @@
 multiline_comment|/* atarilance.c: Ethernet driver for VME Lance cards on the Atari */
-multiline_comment|/*&n;&t;Written 1995/96 by Roman Hodek (Roman.Hodek@informatik.uni-erlangen.de)&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU Public License, incorporated herein by reference.&n;&n;&t;This drivers was written with the following sources of reference:&n;&t; - The driver for the Riebl Lance card by the TU Vienna.&n;&t; - The modified TUW driver for PAM&squot;s VME cards&n;&t; - The PC-Linux driver for Lance cards (but this is for bus master&n;       cards, not the shared memory ones)&n;&t; - The Amiga Ariadne driver&n;&n;&t;v1.0: (in 1.2.13pl4/0.9.13)&n;&t;      Initial version&n;&t;v1.1: (in 1.2.13pl5)&n;&t;      more comments&n;&t;&t;  deleted some debugging stuff&n;&t;&t;  optimized register access (keep AREG pointing to CSR0)&n;&t;&t;  following AMD, CSR0_STRT should be set only after IDON is detected&n;&t;&t;  use memcpy() for data transfers, that also employs long word moves&n;&t;&t;  better probe procedure for 24-bit systems&n;          non-VME-RieblCards need extra delays in memcpy&n;&t;&t;  must also do write test, since 0xfxe00000 may hit ROM&n;&t;&t;  use 8/32 tx/rx buffers, which should give better NFS performance;&n;&t;&t;    this is made possible by shifting the last packet buffer after the&n;&t;&t;    RieblCard reserved area&n;    v1.2: (in 1.2.13pl8)&n;&t;      again fixed probing for the Falcon; 0xfe01000 hits phys. 0x00010000&n;&t;&t;  and thus RAM, in case of no Lance found all memory contents have to&n;&t;&t;  be restored!&n;&t;&t;  Now possible to compile as module.&n;&t;v1.3: 03/30/96 Jes Sorensen, Roman (in 1.3)&n;&t;      Several little 1.3 adaptions&n;&t;&t;  When the lance is stopped it jumps back into little-endian&n;&t;&t;  mode. It is therefore necessary to put it back where it&n;&t;&t;  belongs, in big endian mode, in order to make things work.&n;&t;&t;  This might be the reason why multicast-mode didn&squot;t work&n;&t;&t;  before, but I&squot;m not able to test it as I only got an Amiga&n;&t;&t;  (we had similar problems with the A2065 driver).&n;&n;*/
+multiline_comment|/*&n;&t;Written 1995/96 by Roman Hodek (Roman.Hodek@informatik.uni-erlangen.de)&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;This drivers was written with the following sources of reference:&n;&t; - The driver for the Riebl Lance card by the TU Vienna.&n;&t; - The modified TUW driver for PAM&squot;s VME cards&n;&t; - The PC-Linux driver for Lance cards (but this is for bus master&n;       cards, not the shared memory ones)&n;&t; - The Amiga Ariadne driver&n;&n;&t;v1.0: (in 1.2.13pl4/0.9.13)&n;&t;      Initial version&n;&t;v1.1: (in 1.2.13pl5)&n;&t;      more comments&n;&t;&t;  deleted some debugging stuff&n;&t;&t;  optimized register access (keep AREG pointing to CSR0)&n;&t;&t;  following AMD, CSR0_STRT should be set only after IDON is detected&n;&t;&t;  use memcpy() for data transfers, that also employs long word moves&n;&t;&t;  better probe procedure for 24-bit systems&n;          non-VME-RieblCards need extra delays in memcpy&n;&t;&t;  must also do write test, since 0xfxe00000 may hit ROM&n;&t;&t;  use 8/32 tx/rx buffers, which should give better NFS performance;&n;&t;&t;    this is made possible by shifting the last packet buffer after the&n;&t;&t;    RieblCard reserved area&n;    v1.2: (in 1.2.13pl8)&n;&t;      again fixed probing for the Falcon; 0xfe01000 hits phys. 0x00010000&n;&t;&t;  and thus RAM, in case of no Lance found all memory contents have to&n;&t;&t;  be restored!&n;&t;&t;  Now possible to compile as module.&n;&t;v1.3: 03/30/96 Jes Sorensen, Roman (in 1.3)&n;&t;      Several little 1.3 adaptions&n;&t;&t;  When the lance is stopped it jumps back into little-endian&n;&t;&t;  mode. It is therefore necessary to put it back where it&n;&t;&t;  belongs, in big endian mode, in order to make things work.&n;&t;&t;  This might be the reason why multicast-mode didn&squot;t work&n;&t;&t;  before, but I&squot;m not able to test it as I only got an Amiga&n;&t;&t;  (we had similar problems with the A2065 driver).&n;&n;*/
 DECL|variable|version
 r_static
 r_char
@@ -16,7 +16,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
@@ -1498,6 +1498,7 @@ c_cond
 op_logical_neg
 id|dev-&gt;priv
 )paren
+(brace
 id|dev-&gt;priv
 op_assign
 id|kmalloc
@@ -1512,6 +1513,16 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;priv
+)paren
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|lp
 op_assign
 (paren
@@ -2738,7 +2749,7 @@ id|dev-&gt;trans_start
 op_assign
 id|jiffies
 suffix:semicolon
-id|netif_start_queue
+id|netif_wake_queue
 (paren
 id|dev
 )paren
@@ -3059,6 +3070,10 @@ id|TMD1_ENP
 op_or
 id|TMD1_STP
 suffix:semicolon
+id|lp-&gt;stats.tx_bytes
+op_add_assign
+id|skb-&gt;len
+suffix:semicolon
 id|dev_kfree_skb
 c_func
 (paren
@@ -3067,10 +3082,6 @@ id|skb
 suffix:semicolon
 id|lp-&gt;cur_tx
 op_increment
-suffix:semicolon
-id|lp-&gt;stats.tx_bytes
-op_add_assign
-id|skb-&gt;len
 suffix:semicolon
 r_while
 c_loop
@@ -4162,12 +4173,16 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
 id|lp-&gt;stats.rx_bytes
 op_add_assign
-id|skb-&gt;len
+id|pkt_len
 suffix:semicolon
 )brace
 )brace

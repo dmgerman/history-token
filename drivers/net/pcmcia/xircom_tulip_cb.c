@@ -1,5 +1,5 @@
 multiline_comment|/* tulip.c: A DEC 21040-family ethernet driver for Linux. */
-multiline_comment|/*&n;&t;Written/copyright 1994-1999 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU Public License, incorporated herein by reference.&n;&n;&t;This driver is for the Digital &quot;Tulip&quot; Ethernet adapter interface.&n;&t;It should work with most DEC 21*4*-based chips/ethercards, as well as&n;&t;with work-alike chips from Lite-On (PNIC) and Macronix (MXIC) and ASIX.&n;&n;&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n;&t;Center of Excellence in Space Data and Information Sciences&n;&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;Support and updates available at&n;&t;http://cesdis.gsfc.nasa.gov/linux/drivers/tulip.html&n;*/
+multiline_comment|/*&n;&t;Written/copyright 1994-1999 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver is for the Digital &quot;Tulip&quot; Ethernet adapter interface.&n;&t;It should work with most DEC 21*4*-based chips/ethercards, as well as&n;&t;with work-alike chips from Lite-On (PNIC) and Macronix (MXIC) and ASIX.&n;&n;&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n;&t;Center of Excellence in Space Data and Information Sciences&n;&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;Support and updates available at&n;&t;http://cesdis.gsfc.nasa.gov/linux/drivers/tulip.html&n;*/
 DECL|macro|SMP_CHECK
 mdefine_line|#define SMP_CHECK
 DECL|macro|CARDBUS
@@ -195,7 +195,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;

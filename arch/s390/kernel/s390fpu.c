@@ -216,6 +216,11 @@ id|has_ieee
 op_assign
 id|MACHINE_HAS_IEEE
 suffix:semicolon
+multiline_comment|/* If we don&squot;t mask with the FPC_VALID_MASK here&n;&t; * we&squot;ve got a very quick shutdown -h now command&n;         * via a kernel specification exception.&n;&t; */
+id|fpregs-&gt;fpc
+op_and_assign
+id|FPC_VALID_MASK
+suffix:semicolon
 id|asm
 r_volatile
 (paren

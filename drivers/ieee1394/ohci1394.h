@@ -509,8 +509,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|cross_bound
-r_inline
 r_static
+r_inline
 r_int
 id|cross_bound
 c_func
@@ -572,8 +572,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Register read and write helper functions.&n; */
 DECL|function|reg_write
-r_inline
 r_static
+r_inline
 r_void
 id|reg_write
 c_func
@@ -603,8 +603,8 @@ id|offset
 suffix:semicolon
 )brace
 DECL|function|reg_read
-r_inline
 r_static
+r_inline
 id|u32
 id|reg_read
 c_func

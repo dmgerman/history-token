@@ -1,5 +1,5 @@
-multiline_comment|/* cs89x0.c: A Crystal Semiconductor CS89[02]0 driver for linux. */
-multiline_comment|/*&n;&t;Written 1996 by Russell Nelson, with reference to skeleton.c&n;&t;written 1993-1994 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU Public License, incorporated herein by reference.&n;&n;&t;The author may be reached at nelson@crynwr.com, Crynwr&n;&t;Software, 11 Grant St., Potsdam, NY 13676&n;&n;  Changelog:&n;&n;  Mike Cruse        : mcruse@cti-ltd.com&n;                    : Changes for Linux 2.0 compatibility. &n;                    : Added dev_id parameter in net_interrupt(),&n;                    : request_irq() and free_irq(). Just NULL for now.&n;&n;  Mike Cruse        : Added MOD_INC_USE_COUNT and MOD_DEC_USE_COUNT macros&n;                    : in net_open() and net_close() so kerneld would know&n;                    : that the module is in use and wouldn&squot;t eject the &n;                    : driver prematurely.&n;&n;  Mike Cruse        : Rewrote init_module() and cleanup_module using 8390.c&n;                    : as an example. Disabled autoprobing in init_module(),&n;                    : not a good thing to do to other devices while Linux&n;                    : is running from all accounts.&n;                    &n;  Alan Cox          : Removed 1.2 support, added 2.1 extra counters.&n;&n;  David Huggins-Daines &lt;dhd@debian.org&gt;&n;  &n;  Split this off into mac89x0.c, and gutted it of all parts which are&n;  not relevant to the existing CS8900 cards on the Macintosh&n;  (i.e. basically the Daynaport CS and LC cards).  To be precise:&n;&n;    * Removed all the media-detection stuff, because these cards are&n;    TP-only.&n;&n;    * Lobotomized the ISA interrupt bogosity, because these cards use&n;    a hardwired NuBus interrupt and a magic ISAIRQ value in the card.&n;&n;    * Basically eliminated everything not relevant to getting the&n;    cards minimally functioning on the Macintosh.&n;&n;  I might add that these cards are badly designed even from the Mac&n;  standpoint, in that Dayna, in their infinite wisdom, used NuBus slot&n;  I/O space and NuBus interrupts for these cards, but neglected to&n;  provide anything even remotely resembling a NuBus ROM.  Therefore we&n;  have to probe for them in a brain-damaged ISA-like fashion.&n;*/
+multiline_comment|/* mac89x0.c: A Crystal Semiconductor CS89[02]0 driver for linux. */
+multiline_comment|/*&n;&t;Written 1996 by Russell Nelson, with reference to skeleton.c&n;&t;written 1993-1994 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;The author may be reached at nelson@crynwr.com, Crynwr&n;&t;Software, 11 Grant St., Potsdam, NY 13676&n;&n;  Changelog:&n;&n;  Mike Cruse        : mcruse@cti-ltd.com&n;                    : Changes for Linux 2.0 compatibility. &n;                    : Added dev_id parameter in net_interrupt(),&n;                    : request_irq() and free_irq(). Just NULL for now.&n;&n;  Mike Cruse        : Added MOD_INC_USE_COUNT and MOD_DEC_USE_COUNT macros&n;                    : in net_open() and net_close() so kerneld would know&n;                    : that the module is in use and wouldn&squot;t eject the &n;                    : driver prematurely.&n;&n;  Mike Cruse        : Rewrote init_module() and cleanup_module using 8390.c&n;                    : as an example. Disabled autoprobing in init_module(),&n;                    : not a good thing to do to other devices while Linux&n;                    : is running from all accounts.&n;                    &n;  Alan Cox          : Removed 1.2 support, added 2.1 extra counters.&n;&n;  David Huggins-Daines &lt;dhd@debian.org&gt;&n;  &n;  Split this off into mac89x0.c, and gutted it of all parts which are&n;  not relevant to the existing CS8900 cards on the Macintosh&n;  (i.e. basically the Daynaport CS and LC cards).  To be precise:&n;&n;    * Removed all the media-detection stuff, because these cards are&n;    TP-only.&n;&n;    * Lobotomized the ISA interrupt bogosity, because these cards use&n;    a hardwired NuBus interrupt and a magic ISAIRQ value in the card.&n;&n;    * Basically eliminated everything not relevant to getting the&n;    cards minimally functioning on the Macintosh.&n;&n;  I might add that these cards are badly designed even from the Mac&n;  standpoint, in that Dayna, in their infinite wisdom, used NuBus slot&n;  I/O space and NuBus interrupts for these cards, but neglected to&n;  provide anything even remotely resembling a NuBus ROM.  Therefore we&n;  have to probe for them in a brain-damaged ISA-like fashion.&n;*/
 DECL|variable|version
 r_static
 r_char
@@ -28,7 +28,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/nubus.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -2169,14 +2169,16 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
 id|lp-&gt;stats.rx_bytes
 op_add_assign
-id|skb-&gt;len
-suffix:semicolon
-r_return
+id|length
 suffix:semicolon
 )brace
 multiline_comment|/* The inverse routine to net_open(). */

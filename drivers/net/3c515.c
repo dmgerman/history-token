@@ -1,5 +1,5 @@
 multiline_comment|/* 3c515.c: A 3Com ISA EtherLink XL &quot;Corkscrew&quot; ethernet driver for linux. */
-multiline_comment|/*&n;&t;Written 1997-1998 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU Public License, incorporated herein by reference.&n;&n;&t;This driver is for the 3Com ISA EtherLink XL &quot;Corkscrew&quot; 3c515 ethercard.&n;&n;&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n;&t;Center of Excellence in Space Data and Information Sciences&n;&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;2/2/00- Added support for kernel-level ISAPnP &n;&t;&t;by Stephen Frost &lt;sfrost@snowman.net&gt; and Alessandro Zummo&n;&t;Cleaned up for 2.3.x/softnet by Jeff Garzik and Alan Cox.&n;*/
+multiline_comment|/*&n;&t;Written 1997-1998 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver is for the 3Com ISA EtherLink XL &quot;Corkscrew&quot; 3c515 ethercard.&n;&n;&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n;&t;Center of Excellence in Space Data and Information Sciences&n;&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;2/2/00- Added support for kernel-level ISAPnP &n;&t;&t;by Stephen Frost &lt;sfrost@snowman.net&gt; and Alessandro Zummo&n;&t;Cleaned up for 2.3.x/softnet by Jeff Garzik and Alan Cox.&n;*/
 DECL|variable|version
 r_static
 r_char
@@ -61,7 +61,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -2710,6 +2710,15 @@ id|corkscrew_private
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;priv
+)paren
+r_return
+l_int|NULL
 suffix:semicolon
 id|memset
 c_func
@@ -5543,6 +5552,10 @@ op_plus
 id|TX_FIFO
 )paren
 suffix:semicolon
+id|vp-&gt;stats.tx_bytes
+op_add_assign
+id|skb-&gt;len
+suffix:semicolon
 macro_line|#ifdef VORTEX_BUS_MASTER
 r_if
 c_cond
@@ -5893,10 +5906,6 @@ suffix:semicolon
 multiline_comment|/* Pop the status stack. */
 )brace
 )brace
-id|vp-&gt;stats.tx_bytes
-op_add_assign
-id|skb-&gt;len
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6997,7 +7006,7 @@ op_increment
 suffix:semicolon
 id|vp-&gt;stats.rx_bytes
 op_add_assign
-id|skb-&gt;len
+id|pkt_len
 suffix:semicolon
 multiline_comment|/* Wait a limited time to go to next packet. */
 r_for

@@ -65,10 +65,10 @@ DECL|member|cpu_nr
 id|__u16
 id|cpu_nr
 suffix:semicolon
-DECL|member|loops_per_sec
+DECL|member|loops_per_jiffy
 r_int
 r_int
-id|loops_per_sec
+id|loops_per_jiffy
 suffix:semicolon
 DECL|member|pgd_quick
 r_int
@@ -191,6 +191,11 @@ id|per_struct
 id|per_info
 suffix:semicolon
 multiline_comment|/* Must be aligned on an 4 byte boundary*/
+DECL|member|ieee_instruction_pointer
+id|addr_t
+id|ieee_instruction_pointer
+suffix:semicolon
+multiline_comment|/* Used to give failing instruction back to user for ieee exceptions */
 )brace
 suffix:semicolon
 DECL|typedef|thread_struct
@@ -200,12 +205,12 @@ id|thread_struct
 id|thread_struct
 suffix:semicolon
 DECL|macro|INIT_MMAP
-mdefine_line|#define INIT_MMAP &bslash;&n;{ &amp;init_mm, 0, 0, NULL, PAGE_SHARED, &bslash;&n;VM_READ | VM_WRITE | VM_EXEC, 1, NULL, &amp;init_mm.mmap }
+mdefine_line|#define INIT_MMAP &bslash;&n;{ &amp;init_mm, 0, 0, NULL, PAGE_SHARED, &bslash;&n;VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL }
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD { (struct pt_regs *) 0,                       &bslash;&n;                    { 0,{{0},{0},{0},{0},{0},{0},{0},{0},{0},{0}, &bslash;&n;&t;&t;&t;    {0},{0},{0},{0},{0},{0}}},            &bslash;&n;                     0, 0,                                        &bslash;&n;                    sizeof(init_stack) + (__u32) &amp;init_stack,     &bslash;&n;              (__pa((__u32) &amp;swapper_pg_dir[0]) + _SEGMENT_TABLE),&bslash;&n;                     0,0,0,                                       &bslash;&n;                     (mm_segment_t) { 0,1},                       &bslash;&n;                     (per_struct) {{{{0,}}},0,0,0,0,{{0,}}}       &bslash;&n;}
 multiline_comment|/* need to define ... */
 DECL|macro|start_thread
-mdefine_line|#define start_thread(regs, new_psw, new_stackp) do {            &bslash;&n;        unsigned long *u_stack = new_stackp;                    &bslash;&n;        regs-&gt;psw.mask  = _USER_PSW_MASK;                       &bslash;&n;        regs-&gt;psw.addr  = new_psw | 0x80000000 ;                &bslash;&n;        get_user(regs-&gt;gprs[2],u_stack);                        &bslash;&n;        get_user(regs-&gt;gprs[3],u_stack+1);                      &bslash;&n;        get_user(regs-&gt;gprs[4],u_stack+2);                      &bslash;&n;        regs-&gt;gprs[15]  = new_stackp ;                          &bslash;&n;} while (0)
+mdefine_line|#define start_thread(regs, new_psw, new_stackp) do {            &bslash;&n;        regs-&gt;psw.mask  = _USER_PSW_MASK;                       &bslash;&n;        regs-&gt;psw.addr  = new_psw | 0x80000000;                 &bslash;&n;        regs-&gt;gprs[15]  = new_stackp ;                          &bslash;&n;} while (0)
 multiline_comment|/* Forward declaration, a strange C thing */
 r_struct
 id|mm_struct
@@ -349,6 +354,12 @@ id|psw_t
 )paren
 )braket
 suffix:semicolon
+r_char
+id|ctl_buf
+(braket
+l_int|4
+)braket
+suffix:semicolon
 id|psw_t
 op_star
 id|dw_psw
@@ -389,16 +400,48 @@ id|dw_psw-&gt;addr
 op_assign
 id|code
 suffix:semicolon
-multiline_comment|/* load disabled wait psw, the processor is dead afterwards */
+multiline_comment|/* &n;         * Store status and then load disabled wait psw,&n;         * the processor is dead afterwards&n;         */
 id|asm
 r_volatile
 (paren
-l_string|&quot;lpsw 0(%0)&quot;
+l_string|&quot;    stctl 0,0,0(%1)&bslash;n&quot;
+l_string|&quot;    ni    0(%1),0xef&bslash;n&quot;
+multiline_comment|/* switch off protection */
+l_string|&quot;    lctl  0,0,0(%1)&bslash;n&quot;
+l_string|&quot;    stpt  0xd8&bslash;n&quot;
+multiline_comment|/* store timer */
+l_string|&quot;    stckc 0xe0&bslash;n&quot;
+multiline_comment|/* store clock comparator */
+l_string|&quot;    stpx  0x108&bslash;n&quot;
+multiline_comment|/* store prefix register */
+l_string|&quot;    stam  0,15,0x120&bslash;n&quot;
+multiline_comment|/* store access registers */
+l_string|&quot;    std   0,0x160&bslash;n&quot;
+multiline_comment|/* store f0 */
+l_string|&quot;    std   2,0x168&bslash;n&quot;
+multiline_comment|/* store f2 */
+l_string|&quot;    std   4,0x170&bslash;n&quot;
+multiline_comment|/* store f4 */
+l_string|&quot;    std   6,0x178&bslash;n&quot;
+multiline_comment|/* store f6 */
+l_string|&quot;    stm   0,15,0x180&bslash;n&quot;
+multiline_comment|/* store general registers */
+l_string|&quot;    stctl 0,15,0x1c0&bslash;n&quot;
+multiline_comment|/* store control registers */
+l_string|&quot;    oi    0(%1),0x10&bslash;n&quot;
+multiline_comment|/* fake protection bit */
+l_string|&quot;    lpsw 0(%0)&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;a&quot;
 (paren
 id|dw_psw
+)paren
+comma
+l_string|&quot;a&quot;
+(paren
+op_amp
+id|ctl_buf
 )paren
 )paren
 suffix:semicolon

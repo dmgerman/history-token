@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Intel i82586 Ethernet definitions&n; *&n; * This is an extension to the Linux operating system, and is covered by the&n; * same Gnu Public License that covers that work.&n; *&n; * copyrights (c) 1994 by Michael Hipp (hippm@informatik.uni-tuebingen.de)&n; *&n; * I have done a look in the following sources:&n; *   crynwr-packet-driver by Russ Nelson&n; *   Garret A. Wollman&squot;s i82586-driver for BSD&n; */
+multiline_comment|/*&n; * Intel i82586 Ethernet definitions&n; *&n; * This is an extension to the Linux operating system, and is covered by the&n; * same GNU General Public License that covers that work.&n; *&n; * copyrights (c) 1994 by Michael Hipp (hippm@informatik.uni-tuebingen.de)&n; *&n; * I have done a look in the following sources:&n; *   crynwr-packet-driver by Russ Nelson&n; *   Garret A. Wollman&squot;s i82586-driver for BSD&n; */
 DECL|macro|NI52_RESET
 mdefine_line|#define NI52_RESET     0  /* writing to this address, resets the i82586 */
 DECL|macro|NI52_ATTENTION

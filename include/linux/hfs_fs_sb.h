@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * linux/include/linux/hfs_fs_sb.h&n; *&n; * Copyright (C) 1995-1997  Paul H. Hargrove&n; * This file may be distributed under the terms of the GNU Public License.&n; *&n; * This file defines the type (struct hfs_sb_info) which contains the&n; * HFS-specific information in the in-core superblock.&n; */
+multiline_comment|/* &n; * linux/include/linux/hfs_fs_sb.h&n; *&n; * Copyright (C) 1995-1997  Paul H. Hargrove&n; * This file may be distributed under the terms of the GNU General Public License.&n; *&n; * This file defines the type (struct hfs_sb_info) which contains the&n; * HFS-specific information in the in-core superblock.&n; */
 macro_line|#ifndef _LINUX_HFS_FS_SB_H
 DECL|macro|_LINUX_HFS_FS_SB_H
 mdefine_line|#define _LINUX_HFS_FS_SB_H

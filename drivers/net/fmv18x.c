@@ -1,4 +1,4 @@
-multiline_comment|/* fmv18x.c: A network device driver for the Fujitsu FMV-181/182/183/184.&n;&n;&t;Original: at1700.c (1993-94 by Donald Becker).&n;&t;&t;Copyright 1993 United States Government as represented by the&n;&t;&t;Director, National Security Agency.&n;&t;&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n;&t;&t;Center of Excellence in Space Data and Information Sciences&n;&t;&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;Modified by Yutaka TAMIYA (tamy@flab.fujitsu.co.jp)&n;&t;&t;Copyright 1994 Fujitsu Laboratories Ltd.&n;&t;Special thanks to:&n;&t;&t;Masayoshi UTAKA (utaka@ace.yk.fujitsu.co.jp)&n;&t;&t;&t;for testing this driver.&n;&t;&t;H. NEGISHI (agy, negishi@sun45.psd.cs.fujitsu.co.jp)&n;&t;&t;&t;for suggestion of some program modification.&n;&t;&t;Masahiro SEKIGUCHI &lt;seki@sysrap.cs.fujitsu.co.jp&gt;&n;&t;&t;&t;for suggestion of some program modification.&n;&t;&t;Kazutoshi MORIOKA (morioka@aurora.oaks.cs.fujitsu.co.jp)&n;&t;&t;&t;for testing this driver.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU Public License, incorporated herein by reference.&n;&n;&t;This is a device driver for the Fujitsu FMV-181/182/183/184, which&n;&t;is a straight-forward Fujitsu MB86965 implementation.&n;&n;  Sources:&n;    at1700.c&n;    The Fujitsu MB86965 datasheet.&n;    The Fujitsu FMV-181/182 user&squot;s guide&n;*/
+multiline_comment|/* fmv18x.c: A network device driver for the Fujitsu FMV-181/182/183/184.&n;&n;&t;Original: at1700.c (1993-94 by Donald Becker).&n;&t;&t;Copyright 1993 United States Government as represented by the&n;&t;&t;Director, National Security Agency.&n;&t;&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n;&t;&t;Center of Excellence in Space Data and Information Sciences&n;&t;&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;Modified by Yutaka TAMIYA (tamy@flab.fujitsu.co.jp)&n;&t;&t;Copyright 1994 Fujitsu Laboratories Ltd.&n;&t;Special thanks to:&n;&t;&t;Masayoshi UTAKA (utaka@ace.yk.fujitsu.co.jp)&n;&t;&t;&t;for testing this driver.&n;&t;&t;H. NEGISHI (agy, negishi@sun45.psd.cs.fujitsu.co.jp)&n;&t;&t;&t;for suggestion of some program modification.&n;&t;&t;Masahiro SEKIGUCHI &lt;seki@sysrap.cs.fujitsu.co.jp&gt;&n;&t;&t;&t;for suggestion of some program modification.&n;&t;&t;Kazutoshi MORIOKA (morioka@aurora.oaks.cs.fujitsu.co.jp)&n;&t;&t;&t;for testing this driver.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;This is a device driver for the Fujitsu FMV-181/182/183/184, which&n;&t;is a straight-forward Fujitsu MB86965 implementation.&n;&n;  Sources:&n;    at1700.c&n;    The Fujitsu MB86965 datasheet.&n;    The Fujitsu FMV-181/182 user&squot;s guide&n;*/
 DECL|variable|version
 r_static
 r_const
@@ -17,7 +17,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -2387,8 +2387,16 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
+suffix:semicolon
+id|lp-&gt;stats.rx_bytes
+op_add_assign
+id|pkt_len
 suffix:semicolon
 )brace
 r_if

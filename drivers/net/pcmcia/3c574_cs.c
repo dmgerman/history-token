@@ -1,4 +1,4 @@
-multiline_comment|/* 3c574.c: A PCMCIA ethernet driver for the 3com 3c574 &quot;RoadRunner&quot;.&n;&n;&t;Written 1993-1998 by&n;&t;Donald Becker, becker@cesdis.gsfc.nasa.gov, (driver core) and&n;&t;David Hinds, dahinds@users.sourceforge.net (from his PC card code).&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU Public License, incorporated herein by reference.&n;&n;&t;This driver derives from Donald Becker&squot;s 3c509 core, which has the&n;&t;following copyright:&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;*/
+multiline_comment|/* 3c574.c: A PCMCIA ethernet driver for the 3com 3c574 &quot;RoadRunner&quot;.&n;&n;&t;Written 1993-1998 by&n;&t;Donald Becker, becker@cesdis.gsfc.nasa.gov, (driver core) and&n;&t;David Hinds, dahinds@users.sourceforge.net (from his PC card code).&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver derives from Donald Becker&squot;s 3c509 core, which has the&n;&t;following copyright:&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;*/
 multiline_comment|/* Driver author info must always be in the binary.  Version too.. */
 DECL|variable|tc574_version
 r_static
@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -1337,6 +1337,7 @@ op_assign
 op_amp
 id|el3_close
 suffix:semicolon
+macro_line|#ifdef HAVE_TX_TIMEOUT
 id|dev-&gt;tx_timeout
 op_assign
 id|el3_tx_timeout
@@ -1345,6 +1346,7 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Register with Card Services */
 id|link-&gt;next
 op_assign
@@ -4143,7 +4145,7 @@ op_plus
 id|EL3_CMD
 )paren
 suffix:semicolon
-id|netif_start_queue
+id|netif_wake_queue
 c_func
 (paren
 id|dev

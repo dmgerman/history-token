@@ -981,7 +981,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* defined(i386) || defined(__alpha__) */
 macro_line|#endif /* defined(REAL_DMA)  */
-macro_line|#endif __KERNEL_
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* ndef ASM */
 macro_line|#endif /* NCR5380_H */
 eof

@@ -52,8 +52,6 @@ comma
 r_int
 comma
 r_int
-comma
-r_int
 )paren
 suffix:semicolon
 DECL|typedef|elevator_merge_cleanup_fn
@@ -146,8 +144,6 @@ comma
 r_int
 comma
 r_int
-comma
-r_int
 )paren
 suffix:semicolon
 r_void
@@ -196,8 +192,6 @@ comma
 r_struct
 id|buffer_head
 op_star
-comma
-r_int
 comma
 r_int
 comma

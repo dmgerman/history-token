@@ -2998,7 +2998,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* Aquire the smp_call_function_data mutex.  */
+multiline_comment|/* Acquire the smp_call_function_data mutex.  */
 r_if
 c_cond
 (paren

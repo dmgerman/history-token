@@ -42,14 +42,16 @@ DECL|macro|__LC_SUBCHANNEL_NR
 mdefine_line|#define __LC_SUBCHANNEL_NR              0x0BA
 DECL|macro|__LC_IO_INT_PARM
 mdefine_line|#define __LC_IO_INT_PARM                0x0BC
+DECL|macro|__LC_IO_INT_WORD
+mdefine_line|#define __LC_IO_INT_WORD                0x0C0
 DECL|macro|__LC_MCCK_CODE
 mdefine_line|#define __LC_MCCK_CODE                  0x0E8
 DECL|macro|__LC_AREGS_SAVE_AREA
-mdefine_line|#define __LC_AREGS_SAVE_AREA            0x200
+mdefine_line|#define __LC_AREGS_SAVE_AREA            0x120
 DECL|macro|__LC_CREGS_SAVE_AREA
-mdefine_line|#define __LC_CREGS_SAVE_AREA            0x240
+mdefine_line|#define __LC_CREGS_SAVE_AREA            0x1C0
 DECL|macro|__LC_RETURN_PSW
-mdefine_line|#define __LC_RETURN_PSW                 0x280
+mdefine_line|#define __LC_RETURN_PSW                 0x200
 DECL|macro|__LC_SYNC_IO_WORD
 mdefine_line|#define __LC_SYNC_IO_WORD               0x400
 DECL|macro|__LC_SAVE_AREA
@@ -66,6 +68,8 @@ DECL|macro|__LC_CPUADDR
 mdefine_line|#define __LC_CPUADDR                    0xC68
 DECL|macro|__LC_IPLDEV
 mdefine_line|#define __LC_IPLDEV                     0xC7C
+DECL|macro|__LC_PANIC_MAGIC
+mdefine_line|#define __LC_PANIC_MAGIC                0xE00
 multiline_comment|/* interrupt handler start with all io, external and mcck interrupt disabled */
 DECL|macro|_RESTART_PSW_MASK
 mdefine_line|#define _RESTART_PSW_MASK    0x00080000
@@ -76,7 +80,7 @@ mdefine_line|#define _PGM_PSW_MASK        0x04080000
 DECL|macro|_SVC_PSW_MASK
 mdefine_line|#define _SVC_PSW_MASK        0x04080000
 DECL|macro|_MCCK_PSW_MASK
-mdefine_line|#define _MCCK_PSW_MASK       0x040A0000
+mdefine_line|#define _MCCK_PSW_MASK       0x04080000
 DECL|macro|_IO_PSW_MASK
 mdefine_line|#define _IO_PSW_MASK         0x04080000
 DECL|macro|_USER_PSW_MASK
@@ -289,16 +293,21 @@ id|__u32
 id|io_int_parm
 suffix:semicolon
 multiline_comment|/* 0x0bc */
+DECL|member|io_int_word
+id|__u32
+id|io_int_word
+suffix:semicolon
+multiline_comment|/* 0x0c0 */
 DECL|member|pad3
 id|__u8
 id|pad3
 (braket
 l_int|0xD8
 op_minus
-l_int|0xC0
+l_int|0xC4
 )braket
 suffix:semicolon
-multiline_comment|/* 0x0c0 */
+multiline_comment|/* 0x0c4 */
 DECL|member|cpu_timer_save_area
 id|__u32
 id|cpu_timer_save_area
@@ -365,12 +374,20 @@ DECL|member|pad6
 id|__u8
 id|pad6
 (braket
-l_int|0x160
+l_int|0x120
 op_minus
 l_int|0x110
 )braket
 suffix:semicolon
 multiline_comment|/* 0x110 */
+DECL|member|access_regs_save_area
+id|__u32
+id|access_regs_save_area
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 0x120 */
 DECL|member|floating_pt_save_area
 id|__u32
 id|floating_pt_save_area
@@ -387,24 +404,6 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* 0x180 */
-DECL|member|pad7
-id|__u8
-id|pad7
-(braket
-l_int|0x200
-op_minus
-l_int|0x1c0
-)braket
-suffix:semicolon
-multiline_comment|/* 0x1c0 */
-DECL|member|access_regs_save_area
-id|__u32
-id|access_regs_save_area
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* 0x200 */
 DECL|member|cregs_save_area
 id|__u32
 id|cregs_save_area
@@ -417,17 +416,17 @@ DECL|member|return_psw
 id|psw_t
 id|return_psw
 suffix:semicolon
-multiline_comment|/* 0x280 */
+multiline_comment|/* 0x200 */
 DECL|member|pad8
 id|__u8
 id|pad8
 (braket
 l_int|0x400
 op_minus
-l_int|0x288
+l_int|0x208
 )braket
 suffix:semicolon
-multiline_comment|/* 0x288 */
+multiline_comment|/* 0x208 */
 DECL|member|sync_io_word
 id|__u32
 id|sync_io_word
@@ -532,17 +531,34 @@ id|atomic_t
 id|ext_call_count
 suffix:semicolon
 multiline_comment|/* 0xc90 */
-multiline_comment|/* Align SMP info to the top 1k of prefix area */
 DECL|member|pad11
 id|__u8
 id|pad11
 (braket
-l_int|0x1000
+l_int|0xe00
 op_minus
 l_int|0xc94
 )braket
 suffix:semicolon
 multiline_comment|/* 0xc94 */
+multiline_comment|/* 0xe00 is used as indicator for dump tools */
+multiline_comment|/* whether the kernel died with panic() or not */
+DECL|member|panic_magic
+id|__u32
+id|panic_magic
+suffix:semicolon
+multiline_comment|/* 0xe00 */
+multiline_comment|/* Align to the top 1k of prefix area */
+DECL|member|pad12
+id|__u8
+id|pad12
+(braket
+l_int|0x1000
+op_minus
+l_int|0xe04
+)braket
+suffix:semicolon
+multiline_comment|/* 0xe04 */
 )brace
 id|__attribute__
 c_func
@@ -601,5 +617,7 @@ DECL|macro|safe_get_cpu_lowcore
 mdefine_line|#define safe_get_cpu_lowcore(cpu) &bslash;&n;        ((cpu)==smp_processor_id() ? S390_lowcore:(*lowcore_ptr[(cpu)]))
 macro_line|#endif
 macro_line|#endif /* __ASSEMBLY__ */
+DECL|macro|__PANIC_MAGIC
+mdefine_line|#define __PANIC_MAGIC           0xDEADC0DE
 macro_line|#endif
 eof

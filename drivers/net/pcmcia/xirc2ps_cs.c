@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -2257,6 +2257,7 @@ op_assign
 op_amp
 id|do_stop
 suffix:semicolon
+macro_line|#ifdef HAVE_TX_TIMEOUT
 id|dev-&gt;tx_timeout
 op_assign
 id|do_tx_timeout
@@ -2265,6 +2266,7 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Register with Card Services */
 id|link-&gt;next
 op_assign
@@ -6303,7 +6305,7 @@ id|dev-&gt;trans_start
 op_assign
 id|jiffies
 suffix:semicolon
-id|netif_start_queue
+id|netif_wake_queue
 c_func
 (paren
 id|dev

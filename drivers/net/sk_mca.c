@@ -1,10 +1,10 @@
-multiline_comment|/* &n;net-3-driver for the SKNET MCA-based cards&n;&n;This is an extension to the Linux operating system, and is covered by the&n;same Gnu Public License that covers that work.&n;&n;Copyright 1999 by Alfred Arnold (alfred@ccac.rwth-aachen.de, aarnold@elsa.de)&n;&n;This driver is based both on the 3C523 driver and the SK_G16 driver.&n;&n;paper sources:&n;  &squot;PC Hardware: Aufbau, Funktionsweise, Programmierung&squot; by &n;  Hans-Peter Messmer for the basic Microchannel stuff&n;  &n;  &squot;Linux Geraetetreiber&squot; by Allesandro Rubini, Kalle Dalheimer&n;  for help on Ethernet driver programming&n;&n;  &squot;Ethernet/IEEE 802.3 Family 1992 World Network Data Book/Handbook&squot; by AMD&n;  for documentation on the AM7990 LANCE&n;&n;  &squot;SKNET Personal Technisches Manual&squot;, Version 1.2 by Schneider&amp;Koch&n;  for documentation on the Junior board&n;&n;  &squot;SK-NET MC2+ Technical Manual&quot;, Version 1.1 by Schneider&amp;Koch for&n;  documentation on the MC2 bord&n;  &n;  A big thank you to the S&amp;K support for providing me so quickly with&n;  documentation!&n;&n;  Also see http://www.syskonnect.com/&n;&n;  Missing things:&n;&n;  -&gt; set debug level via ioctl instead of compile-time switches&n;  -&gt; I didn&squot;t follow the development of the 2.1.x kernels, so my&n;     assumptions about which things changed with which kernel version &n;     are probably nonsense&n;&n;History:&n;  May 16th, 1999&n;  &t;startup&n;  May 22st, 1999&n;&t;added private structure, methods&n;        begun building data structures in RAM&n;  May 23nd, 1999&n;&t;can receive frames, send frames&n;  May 24th, 1999&n;        modularized intialization of LANCE&n;        loadable as module&n;&t;still Tx problem :-(&n;  May 26th, 1999&n;  &t;MC2 works&n;  &t;support for multiple devices&n;  &t;display media type for MC2+&n;  May 28th, 1999&n;&t;fixed problem in GetLANCE leaving interrupts turned off&n;        increase TX queue to 4 packets to improve send performance&n;  May 29th, 1999&n;&t;a few corrections in statistics, caught rcvr overruns &n;        reinitialization of LANCE/board in critical situations&n;        MCA info implemented&n;&t;implemented LANCE multicast filter&n;  Jun 6th, 1999&n;&t;additions for Linux 2.2&n;  Dec 25th, 1999&n;  &t;unfortunately there seem to be newer MC2+ boards that react&n;  &t;on IRQ 3/5/9/10 instead of 3/5/10/11, so we have to autoprobe&n;  &t;in questionable cases...&n;  Dec 28th, 1999&n;&t;integrated patches from David Weinehall &amp; Bill Wendling for 2.3&n;&t;kernels (isa_...functions).  Things are defined in a way that&n;        it still works with 2.0.x 8-)&n;  Dec 30th, 1999&n;&t;added handling of the remaining interrupt conditions.  That&n;        should cure the spurious hangs.&n;  Jan 30th, 2000&n;&t;newer kernels automatically probe more than one board, so the&n;&t;&squot;startslot&squot; as a variable is also needed here&n;  June 1st, 2000&n;&t;added changes for recent 2.3 kernels&n;&n; *************************************************************************/
+multiline_comment|/* &n;net-3-driver for the SKNET MCA-based cards&n;&n;This is an extension to the Linux operating system, and is covered by the&n;same GNU General Public License that covers that work.&n;&n;Copyright 1999 by Alfred Arnold (alfred@ccac.rwth-aachen.de, aarnold@elsa.de)&n;&n;This driver is based both on the 3C523 driver and the SK_G16 driver.&n;&n;paper sources:&n;  &squot;PC Hardware: Aufbau, Funktionsweise, Programmierung&squot; by &n;  Hans-Peter Messmer for the basic Microchannel stuff&n;  &n;  &squot;Linux Geraetetreiber&squot; by Allesandro Rubini, Kalle Dalheimer&n;  for help on Ethernet driver programming&n;&n;  &squot;Ethernet/IEEE 802.3 Family 1992 World Network Data Book/Handbook&squot; by AMD&n;  for documentation on the AM7990 LANCE&n;&n;  &squot;SKNET Personal Technisches Manual&squot;, Version 1.2 by Schneider&amp;Koch&n;  for documentation on the Junior board&n;&n;  &squot;SK-NET MC2+ Technical Manual&quot;, Version 1.1 by Schneider&amp;Koch for&n;  documentation on the MC2 bord&n;  &n;  A big thank you to the S&amp;K support for providing me so quickly with&n;  documentation!&n;&n;  Also see http://www.syskonnect.com/&n;&n;  Missing things:&n;&n;  -&gt; set debug level via ioctl instead of compile-time switches&n;  -&gt; I didn&squot;t follow the development of the 2.1.x kernels, so my&n;     assumptions about which things changed with which kernel version &n;     are probably nonsense&n;&n;History:&n;  May 16th, 1999&n;  &t;startup&n;  May 22st, 1999&n;&t;added private structure, methods&n;        begun building data structures in RAM&n;  May 23nd, 1999&n;&t;can receive frames, send frames&n;  May 24th, 1999&n;        modularized intialization of LANCE&n;        loadable as module&n;&t;still Tx problem :-(&n;  May 26th, 1999&n;  &t;MC2 works&n;  &t;support for multiple devices&n;  &t;display media type for MC2+&n;  May 28th, 1999&n;&t;fixed problem in GetLANCE leaving interrupts turned off&n;        increase TX queue to 4 packets to improve send performance&n;  May 29th, 1999&n;&t;a few corrections in statistics, caught rcvr overruns &n;        reinitialization of LANCE/board in critical situations&n;        MCA info implemented&n;&t;implemented LANCE multicast filter&n;  Jun 6th, 1999&n;&t;additions for Linux 2.2&n;  Dec 25th, 1999&n;  &t;unfortunately there seem to be newer MC2+ boards that react&n;  &t;on IRQ 3/5/9/10 instead of 3/5/10/11, so we have to autoprobe&n;  &t;in questionable cases...&n;  Dec 28th, 1999&n;&t;integrated patches from David Weinehall &amp; Bill Wendling for 2.3&n;&t;kernels (isa_...functions).  Things are defined in a way that&n;        it still works with 2.0.x 8-)&n;  Dec 30th, 1999&n;&t;added handling of the remaining interrupt conditions.  That&n;        should cure the spurious hangs.&n;  Jan 30th, 2000&n;&t;newer kernels automatically probe more than one board, so the&n;&t;&squot;startslot&squot; as a variable is also needed here&n;  June 1st, 2000&n;&t;added changes for recent 2.3 kernels&n;&n; *************************************************************************/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -2145,6 +2145,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* give descriptor back to LANCE */
@@ -4058,6 +4062,16 @@ id|skmca_priv
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|priv
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|priv-&gt;slot
 op_assign

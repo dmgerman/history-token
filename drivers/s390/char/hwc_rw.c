@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/char/hwc_rw.c&n; *     driver: reading from and writing to system console on S/390 via HWC&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;peschke@fh-brandenburg.de&gt;&n; *&n; *&n; *&n; *&n; *&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; *  drivers/s390/char/hwc_rw.c&n; *     driver: reading from and writing to system console on S/390 via HWC&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;peschke@fh-brandenburg.de&gt;&n; *&n; * &n; *&n; * &n; * &n; * &n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -13,6 +12,7 @@ macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b) ((a&lt;b) ? a : b)
@@ -163,17 +163,24 @@ id|PAGE_SIZE
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* pedantic: long because we use set_bit on it --RR */
 DECL|typedef|kmem_pages_t
 r_typedef
-id|u32
+r_int
 id|kmem_pages_t
 suffix:semicolon
 DECL|macro|MAX_KMEM_PAGES
 mdefine_line|#define MAX_KMEM_PAGES (sizeof(kmem_pages_t) &lt;&lt; 3)
 DECL|macro|HWC_TIMER_RUNS
 mdefine_line|#define HWC_TIMER_RUNS&t;1
-DECL|macro|FLUSH_HWCBS
-mdefine_line|#define FLUSH_HWCBS&t;2
+DECL|macro|HWC_FLUSH
+mdefine_line|#define HWC_FLUSH&t;2
+DECL|macro|HWC_INIT
+mdefine_line|#define HWC_INIT&t;4
+DECL|macro|HWC_BROKEN
+mdefine_line|#define HWC_BROKEN&t;8
+DECL|macro|HWC_INTERRUPT
+mdefine_line|#define HWC_INTERRUPT&t;16
 r_static
 r_struct
 (brace
@@ -300,6 +307,11 @@ r_int
 r_char
 id|flags
 suffix:semicolon
+DECL|member|calls
+id|hwc_high_level_calls_t
+op_star
+id|calls
+suffix:semicolon
 DECL|member|lock
 id|spinlock_t
 id|lock
@@ -323,8 +335,6 @@ comma
 l_int|0
 comma
 l_int|80
-comma
-id|CODE_ASCII
 comma
 l_int|1
 comma
@@ -376,7 +386,54 @@ comma
 l_int|0
 comma
 l_int|0
+comma
+l_int|NULL
 )brace
+suffix:semicolon
+DECL|variable|cr0
+r_static
+r_int
+r_int
+id|cr0
+id|__attribute__
+(paren
+(paren
+id|aligned
+(paren
+l_int|8
+)paren
+)paren
+)paren
+suffix:semicolon
+DECL|variable|cr0_save
+r_static
+r_int
+r_int
+id|cr0_save
+id|__attribute__
+(paren
+(paren
+id|aligned
+(paren
+l_int|8
+)paren
+)paren
+)paren
+suffix:semicolon
+DECL|variable|psw_mask
+r_static
+r_int
+r_char
+id|psw_mask
+id|__attribute__
+(paren
+(paren
+id|aligned
+(paren
+l_int|8
+)paren
+)paren
+)paren
 suffix:semicolon
 DECL|macro|DELAYED_WRITE
 mdefine_line|#define DELAYED_WRITE 0
@@ -399,9 +456,6 @@ r_int
 comma
 r_int
 r_char
-comma
-r_int
-r_char
 )paren
 suffix:semicolon
 r_static
@@ -413,7 +467,6 @@ id|internal_print
 r_char
 id|write_time
 comma
-r_const
 r_char
 op_star
 id|fmt
@@ -467,8 +520,6 @@ comma
 id|buf
 comma
 id|i
-comma
-id|CODE_ASCII
 comma
 id|write_time
 )paren
@@ -541,8 +592,6 @@ comma
 id|buf
 comma
 id|i
-comma
-id|CODE_ASCII
 comma
 id|IMMEDIATE_WRITE
 )paren
@@ -746,8 +795,8 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;L 1, 0(0,%0) &bslash;n&bslash;t&quot;
-l_string|&quot;LRA 2, 0(0,%1) &bslash;n&bslash;t&quot;
+l_string|&quot;L 1, 0(%0) &bslash;n&bslash;t&quot;
+l_string|&quot;LRA 2, 0(%1) &bslash;n&bslash;t&quot;
 l_string|&quot;.long 0xB2200012 &bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
@@ -802,7 +851,7 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;L %0,128(0,0)&bslash;n&bslash;t&quot;
+l_string|&quot;L %0,128&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -951,7 +1000,7 @@ macro_line|#ifdef DUMP_HWC_WRITE_LIST_ERROR
 id|__asm__
 (paren
 l_string|&quot;LHI 1,0xe30&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 2,0(0,%0) &bslash;n&bslash;t&quot;
+l_string|&quot;LRA 2,0(%0) &bslash;n&bslash;t&quot;
 l_string|&quot;J .+0 &bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
@@ -1067,7 +1116,7 @@ op_ge
 id|hwc_data.kmem_start
 op_logical_and
 id|page
-OL
+op_le
 id|hwc_data.kmem_end
 )paren
 (brace
@@ -1152,8 +1201,8 @@ macro_line|#ifdef DUMP_HWC_WRITE_LIST_ERROR
 id|__asm__
 (paren
 l_string|&quot;LHI 1,0xe31&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 2,0(0,%0)&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 3,0(0,%1)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 2,0(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 3,0(%1)&bslash;n&bslash;t&quot;
 l_string|&quot;J .+0 &bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
@@ -1399,6 +1448,8 @@ op_star
 id|__get_free_page
 (paren
 id|GFP_ATOMIC
+op_or
+id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -1563,23 +1614,11 @@ op_ge
 id|hwc_data.kmem_start
 op_logical_and
 id|page
-OL
+op_le
 id|hwc_data.kmem_end
 )paren
 (brace
-id|memset
-(paren
-(paren
-r_void
-op_star
-)paren
-id|page
-comma
-l_int|0
-comma
-id|PAGE_SIZE
-)paren
-suffix:semicolon
+multiline_comment|/*memset((void *) page, 0, PAGE_SIZE); */
 id|page_nr
 op_assign
 (paren
@@ -1899,8 +1938,8 @@ id|HWC_COMMAND_INITIATED
 id|__asm__
 (paren
 l_string|&quot;LHI 1,0xe20&bslash;n&bslash;t&quot;
-l_string|&quot;L 2,0(0,%0)&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 3,0(0,%1)&bslash;n&bslash;t&quot;
+l_string|&quot;L 2,0(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 3,0(%1)&bslash;n&bslash;t&quot;
 l_string|&quot;J .+0 &bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
@@ -1994,7 +2033,7 @@ suffix:semicolon
 id|hwc_data.flags
 op_and_assign
 op_complement
-id|FLUSH_HWCBS
+id|HWC_FLUSH
 suffix:semicolon
 )brace
 r_static
@@ -2012,6 +2051,7 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
+macro_line|#ifdef DUMP_HWC_WRITE_ERROR
 r_int
 r_char
 op_star
@@ -2030,10 +2070,27 @@ id|param
 op_ne
 id|hwc_data.current_hwcb
 )paren
+(brace
+id|internal_print
+(paren
+id|DELAYED_WRITE
+comma
+id|HWC_RW_PRINT_HEADER
+l_string|&quot;write_event_mask_2 : &quot;
+l_string|&quot;HWCB address does not fit &quot;
+l_string|&quot;(expected: 0x%x, got: 0x%x).&bslash;n&quot;
+comma
+id|hwc_data.current_hwcb
+comma
+id|param
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
+macro_line|#endif
 id|hwcb
 op_assign
 (paren
@@ -2042,8 +2099,7 @@ op_star
 )paren
 id|OUT_HWCB
 suffix:semicolon
-macro_line|#ifdef DUMP_HWC_WRITE_ERROR
-macro_line|#if 0
+macro_line|#ifdef DUMP_HWC_WRITE_LIST_ERROR
 r_if
 c_cond
 (paren
@@ -2056,15 +2112,16 @@ op_star
 id|hwcb
 )paren
 op_ne
-id|param
+id|hwc_data.current_hwcb
 )paren
+(brace
 id|__asm__
 (paren
 l_string|&quot;LHI 1,0xe22&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 2,0(0,%0)&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 3,0(0,%1)&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 4,0(0,%2)&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 5,0(0,%3)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 2,0(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 3,0(%1)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 4,0(%2)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 5,0(%3)&bslash;n&bslash;t&quot;
 l_string|&quot;J .+0 &bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
@@ -2085,7 +2142,7 @@ id|BUF_HWCB
 comma
 l_string|&quot;a&quot;
 (paren
-id|param
+id|hwcb
 )paren
 suffix:colon
 l_string|&quot;1&quot;
@@ -2099,7 +2156,9 @@ comma
 l_string|&quot;5&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
+macro_line|#ifdef DUMP_HWC_WRITE_ERROR
 r_if
 c_cond
 (paren
@@ -2107,52 +2166,15 @@ id|hwcb-&gt;response_code
 op_ne
 l_int|0x0020
 )paren
-macro_line|#if 0
-id|internal_print
-(paren
-id|DELAYED_WRITE
-comma
-id|HWC_RW_PRINT_HEADER
-l_string|&quot;&bslash;n************************ error in write_event_data_2()&bslash;n&quot;
-l_string|&quot;OUT_HWCB:                    0x%x&bslash;n&quot;
-l_string|&quot;BUF_HWCB:                    0x%x&bslash;n&quot;
-l_string|&quot;response_code:               0x%x&bslash;n&quot;
-l_string|&quot;hwc_data.hwcb_count:        %d&bslash;n&quot;
-l_string|&quot;hwc_data.kmem_pages:        0x%x&bslash;n&quot;
-l_string|&quot;hwc_data.ioctls.kmem_hwcb:   %d&bslash;n&quot;
-l_string|&quot;hwc_data.ioctls.max_hwcb:    %d&bslash;n&quot;
-l_string|&quot;hwc_data.kmem_start:        0x%x&bslash;n&quot;
-l_string|&quot;hwc_data.kmem_end:          0x%x&bslash;n&quot;
-l_string|&quot;*****************************************************&bslash;n&quot;
-comma
-id|OUT_HWCB
-comma
-id|BUF_HWCB
-comma
-id|hwcb-&gt;response_code
-comma
-id|hwc_data.hwcb_count
-comma
-id|hwc_data.kmem_pages
-comma
-id|hwc_data.ioctls.kmem_hwcb
-comma
-id|hwc_data.ioctls.max_hwcb
-comma
-id|hwc_data.kmem_start
-comma
-id|hwc_data.kmem_end
-)paren
-suffix:semicolon
-macro_line|#endif
+(brace
 id|__asm__
 (paren
 l_string|&quot;LHI 1,0xe21&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 2,0(0,%0)&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 3,0(0,%1)&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 4,0(0,%2)&bslash;n&bslash;t&quot;
-l_string|&quot;LH 5,0(0,%3)&bslash;n&bslash;t&quot;
-l_string|&quot;SRL 5,8(0)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 2,0(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 3,0(%1)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 4,0(%2)&bslash;n&bslash;t&quot;
+l_string|&quot;LH 5,0(%3)&bslash;n&bslash;t&quot;
+l_string|&quot;SRL 5,8&bslash;n&bslash;t&quot;
 l_string|&quot;J .+0 &bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
@@ -2190,6 +2212,7 @@ comma
 l_string|&quot;5&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 r_if
 c_cond
@@ -2209,11 +2232,28 @@ id|release_write_hwcb
 suffix:semicolon
 )brace
 r_else
+(brace
+id|internal_print
+(paren
+id|DELAYED_WRITE
+comma
+id|HWC_RW_PRINT_HEADER
+l_string|&quot;write_event_data_2 : &quot;
+l_string|&quot;failed operation &quot;
+l_string|&quot;(response code: 0x%x &quot;
+l_string|&quot;HWCB address: 0x%x).&bslash;n&quot;
+comma
+id|hwcb-&gt;response_code
+comma
+id|hwcb
+)paren
+suffix:semicolon
 id|retval
 op_assign
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 id|hwc_data.current_servc
 op_assign
 l_int|0
@@ -2227,7 +2267,7 @@ c_cond
 (paren
 id|hwc_data.flags
 op_amp
-id|FLUSH_HWCBS
+id|HWC_FLUSH
 )paren
 id|flush_hwcbs
 (paren
@@ -2294,10 +2334,10 @@ id|count
 id|__asm__
 (paren
 l_string|&quot;LHI 1,0xe32&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 2,0(0,%0)&bslash;n&bslash;t&quot;
-l_string|&quot;L 3,0(0,%1)&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 4,0(0,%2)&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 5,0(0,%3)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 2,0(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;L 3,0(%1)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 4,0(%2)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 5,0(%3)&bslash;n&bslash;t&quot;
 l_string|&quot;J .+0 &bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
@@ -2527,10 +2567,6 @@ id|count
 comma
 r_int
 r_char
-id|code
-comma
-r_int
-r_char
 id|write_time
 )paren
 (brace
@@ -2556,8 +2592,6 @@ suffix:semicolon
 r_int
 r_char
 id|ch
-comma
-id|orig_ch
 suffix:semicolon
 r_int
 r_int
@@ -2637,7 +2671,7 @@ id|from_user
 )paren
 id|get_user
 (paren
-id|orig_ch
+id|ch
 comma
 id|msg
 op_plus
@@ -2645,31 +2679,12 @@ id|i_msg
 )paren
 suffix:semicolon
 r_else
-id|orig_ch
+id|ch
 op_assign
 id|msg
 (braket
 id|i_msg
 )braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|code
-op_eq
-id|CODE_EBCDIC
-)paren
-id|ch
-op_assign
-id|_ebcasc
-(braket
-id|orig_ch
-)braket
-suffix:semicolon
-r_else
-id|ch
-op_assign
-id|orig_ch
 suffix:semicolon
 id|processed_characters
 op_increment
@@ -2919,18 +2934,19 @@ op_increment
 )braket
 op_assign
 (paren
-id|code
-op_eq
-id|CODE_ASCII
+id|MACHINE_IS_VM
 )paren
 ques
 c_cond
 id|_ascebc
 (braket
-id|orig_ch
+id|ch
 )braket
 suffix:colon
-id|orig_ch
+id|_ascebc_500
+(braket
+id|ch
+)braket
 suffix:semicolon
 )brace
 r_if
@@ -3133,11 +3149,14 @@ id|do_hwc_write
 (paren
 id|from_user
 comma
+(paren
+r_int
+r_char
+op_star
+)paren
 id|msg
 comma
 id|count
-comma
-id|hwc_data.ioctls.code
 comma
 id|IMMEDIATE_WRITE
 )paren
@@ -3433,7 +3452,7 @@ suffix:semicolon
 r_else
 id|hwc_data.flags
 op_or_assign
-id|FLUSH_HWCBS
+id|HWC_FLUSH
 suffix:semicolon
 )brace
 r_if
@@ -4054,27 +4073,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hwc_data.ioctls.echo
-)paren
-id|do_hwc_write
-(paren
-l_int|0
-comma
-id|start
-comma
-id|count
-comma
-id|CODE_EBCDIC
-comma
-id|IMMEDIATE_WRITE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwc_data.ioctls.code
-op_eq
-id|CODE_ASCII
+id|MACHINE_IS_VM
 )paren
 id|EBCASC
 (paren
@@ -4083,7 +4082,49 @@ comma
 id|count
 )paren
 suffix:semicolon
-id|store_hwc_input
+r_else
+id|EBCASC_500
+(paren
+id|start
+comma
+id|count
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hwc_data.ioctls.echo
+)paren
+(brace
+id|do_hwc_write
+(paren
+l_int|0
+comma
+id|start
+comma
+id|count
+comma
+id|IMMEDIATE_WRITE
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|hwc_data.calls
+op_ne
+l_int|NULL
+)paren
+r_if
+c_cond
+(paren
+id|hwc_data.calls-&gt;move_input
+op_ne
+l_int|NULL
+)paren
+(paren
+id|hwc_data.calls-&gt;move_input
+)paren
 (paren
 id|start
 comma
@@ -4982,8 +5023,8 @@ id|HWC_NOT_OPERATIONAL
 id|__asm__
 (paren
 l_string|&quot;LHI 1,0xe40&bslash;n&bslash;t&quot;
-l_string|&quot;L 2,0(0,%0)&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 3,0(0,%1)&bslash;n&bslash;t&quot;
+l_string|&quot;L 2,0(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 3,0(%1)&bslash;n&bslash;t&quot;
 l_string|&quot;J .+0 &bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
@@ -5100,8 +5141,8 @@ l_int|0x62F0
 id|__asm__
 (paren
 l_string|&quot;LHI 1,0xe41&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 2,0(0,%0)&bslash;n&bslash;t&quot;
-l_string|&quot;L 3,0(0,%1)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 2,0(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;L 3,0(%1)&bslash;n&bslash;t&quot;
 l_string|&quot;J .+0&bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
@@ -5191,6 +5232,18 @@ suffix:colon
 r_case
 l_int|0x62F0
 suffix:colon
+id|internal_print
+(paren
+id|IMMEDIATE_WRITE
+comma
+id|HWC_RW_PRINT_HEADER
+l_string|&quot;unconditional read: &quot;
+l_string|&quot;got interrupt and tried to read input, &quot;
+l_string|&quot;but nothing found (response code=0x%x).&bslash;n&quot;
+comma
+id|hwcb-&gt;response_code
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5330,19 +5383,6 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
-id|memcpy
-(paren
-id|hwc_data.page
-comma
-op_amp
-id|init_hwcb_template
-comma
-r_sizeof
-(paren
-id|init_hwcb_t
-)paren
-)paren
-suffix:semicolon
 id|condition_code
 op_assign
 id|service_call
@@ -5357,14 +5397,14 @@ r_if
 c_cond
 (paren
 id|condition_code
-op_ne
-id|HWC_COMMAND_INITIATED
+op_eq
+id|HWC_NOT_OPERATIONAL
 )paren
 id|__asm__
 (paren
 l_string|&quot;LHI 1,0xe10&bslash;n&bslash;t&quot;
-l_string|&quot;L 2,0(0,%0)&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 3,0(0,%1)&bslash;n&bslash;t&quot;
+l_string|&quot;L 2,0(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 3,0(%1)&bslash;n&bslash;t&quot;
 l_string|&quot;J .+0&bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
@@ -5484,10 +5524,20 @@ id|hwcb-&gt;hwc_send_mask
 op_amp
 id|ET_OpCmd_Mask
 )paren
+(brace
+id|internal_print
+(paren
+id|DELAYED_WRITE
+comma
+id|HWC_RW_PRINT_HEADER
+l_string|&quot;capable of receipt of commands&bslash;n&quot;
+)paren
+suffix:semicolon
 id|hwc_data.read_nonprio
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5495,10 +5545,20 @@ id|hwcb-&gt;hwc_send_mask
 op_amp
 id|ET_PMsgCmd_Mask
 )paren
+(brace
+id|internal_print
+(paren
+id|DELAYED_WRITE
+comma
+id|HWC_RW_PRINT_HEADER
+l_string|&quot;capable of receipt of priority commands&bslash;n&quot;
+)paren
+suffix:semicolon
 id|hwc_data.read_nonprio
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5529,8 +5589,8 @@ macro_line|#ifdef DUMP_HWC_INIT_ERROR
 id|__asm__
 (paren
 l_string|&quot;LHI 1,0xe11&bslash;n&bslash;t&quot;
-l_string|&quot;LRA 2,0(0,%0)&bslash;n&bslash;t&quot;
-l_string|&quot;L 3,0(0,%1)&bslash;n&bslash;t&quot;
+l_string|&quot;LRA 2,0(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;L 3,0(%1)&bslash;n&bslash;t&quot;
 l_string|&quot;J .+0&bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
@@ -5559,6 +5619,7 @@ id|retval
 op_assign
 op_minus
 id|EIO
+suffix:semicolon
 macro_line|#endif
 id|hwc_data.current_servc
 op_assign
@@ -5655,44 +5716,6 @@ id|tmp.columns
 op_assign
 id|ioctls-&gt;columns
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|ioctls-&gt;code
-)paren
-(brace
-r_case
-id|CODE_EBCDIC
-suffix:colon
-r_case
-id|CODE_ASCII
-suffix:colon
-id|tmp.code
-op_assign
-id|ioctls-&gt;code
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-(brace
-)brace
-r_if
-c_cond
-(paren
-id|correct
-)paren
-id|tmp.code
-op_assign
-id|CODE_ASCII
-suffix:semicolon
-r_else
-id|retval
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 id|tmp.final_nl
 op_assign
 id|ioctls-&gt;final_nl
@@ -5830,6 +5853,181 @@ id|retval
 suffix:semicolon
 )brace
 r_int
+DECL|function|do_hwc_init
+id|do_hwc_init
+(paren
+r_void
+)paren
+(brace
+r_int
+id|retval
+suffix:semicolon
+id|memcpy
+(paren
+id|hwc_data.page
+comma
+op_amp
+id|init_hwcb_template
+comma
+r_sizeof
+(paren
+id|init_hwcb_t
+)paren
+)paren
+suffix:semicolon
+r_do
+(brace
+id|retval
+op_assign
+id|write_event_mask_1
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_eq
+op_minus
+id|EBUSY
+)paren
+(brace
+id|hwc_data.flags
+op_or_assign
+id|HWC_INIT
+suffix:semicolon
+id|__ctl_store
+(paren
+id|cr0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|cr0_save
+op_assign
+id|cr0
+suffix:semicolon
+id|cr0
+op_or_assign
+l_int|0x00000200
+suffix:semicolon
+id|cr0
+op_and_assign
+l_int|0xFFFFF3AC
+suffix:semicolon
+id|__ctl_load
+(paren
+id|cr0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;STOSM %0,0x01&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|psw_mask
+)paren
+op_scope_resolution
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+(paren
+id|hwc_data.flags
+op_amp
+id|HWC_INTERRUPT
+)paren
+)paren
+id|barrier
+(paren
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;STNSM %0,0xFE&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|psw_mask
+)paren
+op_scope_resolution
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+id|__ctl_load
+(paren
+id|cr0_save
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|hwc_data.flags
+op_and_assign
+op_complement
+id|HWC_INIT
+suffix:semicolon
+)brace
+)brace
+r_while
+c_loop
+(paren
+id|retval
+op_eq
+op_minus
+id|EBUSY
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_eq
+op_minus
+id|EIO
+)paren
+(brace
+id|hwc_data.flags
+op_or_assign
+id|HWC_BROKEN
+suffix:semicolon
+id|printk
+(paren
+id|HWC_RW_PRINT_HEADER
+l_string|&quot;HWC not operational&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_return
+id|retval
+suffix:semicolon
+)brace
+r_void
+id|do_hwc_interrupt
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+id|__u16
+id|code
+)paren
+suffix:semicolon
+r_int
 DECL|function|hwc_init
 id|hwc_init
 (paren
@@ -5848,37 +6046,28 @@ r_int
 id|i
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_3215
 r_if
 c_cond
 (paren
-id|MACHINE_IS_VM
+id|register_external_interrupt
+(paren
+l_int|0x2401
+comma
+id|do_hwc_interrupt
 )paren
-r_return
+op_ne
 l_int|0
+)paren
+id|panic
+(paren
+l_string|&quot;Couldn&squot;t request external interrupts 0x2401&quot;
+)paren
 suffix:semicolon
-macro_line|#endif
 id|spin_lock_init
 (paren
 op_amp
 id|hwc_data.lock
 )paren
-suffix:semicolon
-id|retval
-op_assign
-id|write_event_mask_1
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-OL
-l_int|0
-)paren
-r_return
-id|retval
 suffix:semicolon
 macro_line|#ifdef USE_VM_DETECTION
 r_if
@@ -5941,7 +6130,7 @@ op_assign
 r_int
 r_int
 )paren
-id|alloc_bootmem_pages
+id|alloc_bootmem_low_pages
 (paren
 id|hwc_data.ioctls.kmem_hwcb
 op_star
@@ -5957,6 +6146,12 @@ op_star
 id|PAGE_SIZE
 op_minus
 l_int|1
+suffix:semicolon
+id|retval
+op_assign
+id|do_hwc_init
+(paren
+)paren
 suffix:semicolon
 id|ctl_set_bit
 (paren
@@ -6025,15 +6220,151 @@ suffix:semicolon
 )brace
 macro_line|#endif
 r_return
-id|retval
+multiline_comment|/*retval */
+l_int|0
+suffix:semicolon
+)brace
+r_int
+r_int
+DECL|function|hwc_register_calls
+id|hwc_register_calls
+(paren
+id|hwc_high_level_calls_t
+op_star
+id|calls
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|calls
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hwc_data.calls
+op_ne
+l_int|NULL
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+id|hwc_data.calls
+op_assign
+id|calls
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_int
+r_int
+DECL|function|hwc_unregister_calls
+id|hwc_unregister_calls
+(paren
+id|hwc_high_level_calls_t
+op_star
+id|calls
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|hwc_data.calls
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|calls
+op_ne
+id|hwc_data.calls
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|hwc_data.calls
+op_assign
+l_int|NULL
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_void
 DECL|function|do_hwc_interrupt
 id|do_hwc_interrupt
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+id|__u16
+id|code
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|hwc_data.flags
+op_amp
+id|HWC_INIT
+)paren
+(brace
+id|hwc_data.flags
+op_or_assign
+id|HWC_INTERRUPT
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|hwc_data.flags
+op_amp
+id|HWC_BROKEN
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|do_hwc_init
+(paren
+)paren
+)paren
+(brace
+id|hwc_data.flags
+op_and_assign
+op_complement
+id|HWC_BROKEN
+suffix:semicolon
+id|internal_print
+(paren
+id|DELAYED_WRITE
+comma
+id|HWC_RW_PRINT_HEADER
+l_string|&quot;delayed HWC setup after&quot;
+l_string|&quot; temporary breakdown&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
 (brace
 id|spin_lock
 (paren
@@ -6094,7 +6425,23 @@ id|write_event_data_1
 )paren
 suffix:semicolon
 )brace
-id|wake_up_hwc_tty
+r_if
+c_cond
+(paren
+id|hwc_data.calls
+op_ne
+l_int|NULL
+)paren
+r_if
+c_cond
+(paren
+id|hwc_data.calls-&gt;wake_up
+op_ne
+l_int|NULL
+)paren
+(paren
+id|hwc_data.calls-&gt;wake_up
+)paren
 (paren
 )paren
 suffix:semicolon
@@ -6102,6 +6449,101 @@ id|spin_unlock
 (paren
 op_amp
 id|hwc_data.lock
+)paren
+suffix:semicolon
+)brace
+)brace
+r_void
+DECL|function|hwc_unblank
+id|hwc_unblank
+(paren
+r_void
+)paren
+(brace
+id|spin_lock
+(paren
+op_amp
+id|hwc_data.lock
+)paren
+suffix:semicolon
+id|spin_unlock
+(paren
+op_amp
+id|hwc_data.lock
+)paren
+suffix:semicolon
+id|__ctl_store
+(paren
+id|cr0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|cr0_save
+op_assign
+id|cr0
+suffix:semicolon
+id|cr0
+op_or_assign
+l_int|0x00000200
+suffix:semicolon
+id|cr0
+op_and_assign
+l_int|0xFFFFF3AC
+suffix:semicolon
+id|__ctl_load
+(paren
+id|cr0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;STOSM %0,0x01&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|psw_mask
+)paren
+op_scope_resolution
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|ALL_HWCB_CHAR
+)paren
+id|barrier
+(paren
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;STNSM %0,0xFE&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|psw_mask
+)paren
+op_scope_resolution
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+id|__ctl_load
+(paren
+id|cr0_save
+comma
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -6206,28 +6648,6 @@ id|tmp.columns
 comma
 (paren
 id|ioctl_cols_t
-op_star
-)paren
-id|arg
-)paren
-)paren
-r_goto
-id|fault
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|TIOCHWCSCODE
-suffix:colon
-r_if
-c_cond
-(paren
-id|get_user
-(paren
-id|tmp.code
-comma
-(paren
-id|ioctl_code_t
 op_star
 )paren
 id|arg
@@ -6430,28 +6850,6 @@ id|tmp.columns
 comma
 (paren
 id|ioctl_cols_t
-op_star
-)paren
-id|arg
-)paren
-)paren
-r_goto
-id|fault
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|TIOCHWCGCODE
-suffix:colon
-r_if
-c_cond
-(paren
-id|put_user
-(paren
-id|tmp.code
-comma
-(paren
-id|ioctl_code_t
 op_star
 )paren
 id|arg

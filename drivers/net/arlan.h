@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (C) 1997 Cullen Jennings&n; *  Copyright (C) 1998 Elmer.Joandi@ut.ee, +37-255-13500&t;&n; *  Gnu Public License applies&n; */
+multiline_comment|/*&n; *  Copyright (C) 1997 Cullen Jennings&n; *  Copyright (C) 1998 Elmer.Joandi@ut.ee, +37-255-13500&t;&n; *  GNU General Public License applies&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/if_arp.h&gt;&t;/* For ARPHRD_ETHER */
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

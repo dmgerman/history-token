@@ -161,7 +161,7 @@ mdefine_line|#define __pa(x)                 ((unsigned long)(x) &amp; 0x7ffffff
 DECL|macro|__va
 mdefine_line|#define __va(x)                 ((void *)((unsigned long)(x) | 0x80000000))
 macro_line|#endif
-multiline_comment|/* to index into the page map. our pages all start at physical addr PAGE_OFFSET so&n; * we can let the map start there. notice that we subtract PAGE_OFFSET because&n; * we start our mem_map there - in other ports they map mem_map physically and&n; * use __pa instead. in our system both the physical and virtual adress of DRAM&n; * is too high to let mem_map start at 0, so we do it this way instead (similar&n; * to arm and m68k I think)&n; */
+multiline_comment|/* to index into the page map. our pages all start at physical addr PAGE_OFFSET so&n; * we can let the map start there. notice that we subtract PAGE_OFFSET because&n; * we start our mem_map there - in other ports they map mem_map physically and&n; * use __pa instead. in our system both the physical and virtual address of DRAM&n; * is too high to let mem_map start at 0, so we do it this way instead (similar&n; * to arm and m68k I think)&n; */
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)    (mem_map + (((unsigned long)kaddr - PAGE_OFFSET) &gt;&gt; PAGE_SHIFT))
 DECL|macro|VALID_PAGE

@@ -1,5 +1,5 @@
 multiline_comment|/* seeq8005.c: A network driver for linux. */
-multiline_comment|/*&n;&t;Based on skeleton.c,&n;&t;Written 1993-94 by Donald Becker.&n;&t;See the skeleton.c file for further copyright information.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU Public License, incorporated herein by reference.&n;&n;&t;The author may be reached as hamish@zot.apana.org.au&n;&n;&t;This file is a network device driver for the SEEQ 8005 chipset and&n;&t;the Linux operating system.&n;&n;*/
+multiline_comment|/*&n;&t;Based on skeleton.c,&n;&t;Written 1993-94 by Donald Becker.&n;&t;See the skeleton.c file for further copyright information.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;The author may be reached as hamish@zot.apana.org.au&n;&n;&t;This file is a network device driver for the SEEQ 8005 chipset and&n;&t;the Linux operating system.&n;&n;*/
 DECL|variable|version
 r_static
 r_const
@@ -19,7 +19,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -2484,6 +2484,10 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment

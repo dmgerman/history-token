@@ -190,14 +190,11 @@ macro_line|#endif
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#if defined(MODVERSIONS)
-macro_line|#include &lt;linux/modversions.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1381,6 +1378,7 @@ multiline_comment|/* Link partner caps. */
 suffix:semicolon
 multiline_comment|/* The parameters for a CmdConfigure operation.&n;   There are so many options that it would be difficult to document each bit.&n;   We mostly use the default or recommended settings. */
 DECL|variable|i82557_config_cmd
+r_static
 r_const
 r_char
 id|i82557_config_cmd
@@ -1438,6 +1436,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|i82558_config_cmd
+r_static
 r_const
 r_char
 id|i82558_config_cmd

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (C) 1997 Cullen Jennings&n; *  Copyright (C) 1998 Elmer Joandiu, elmer@ylenurme.ee&n; *  Gnu Public License applies&n; * This module provides support for the Arlan 655 card made by Aironet&n; */
+multiline_comment|/*&n; *  Copyright (C) 1997 Cullen Jennings&n; *  Copyright (C) 1998 Elmer Joandiu, elmer@ylenurme.ee&n; *  GNU General Public License applies&n; * This module provides support for the Arlan 655 card made by Aironet&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;arlan.h&quot;
 DECL|variable|arlan_version
@@ -170,6 +170,7 @@ r_int
 id|arlan_EEPROM_bad
 suffix:semicolon
 DECL|variable|arlan_entry_and_exit_debug
+r_static
 r_int
 id|arlan_entry_and_exit_debug
 suffix:semicolon
@@ -439,6 +440,7 @@ id|MAX_ARLANS
 )braket
 suffix:semicolon
 DECL|variable|arlans_found
+r_static
 r_int
 id|arlans_found
 suffix:semicolon
@@ -5430,6 +5432,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|arlan_probe_everywhere
+r_static
 r_int
 id|__init
 id|arlan_probe_everywhere
@@ -5626,6 +5629,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|arlan_find_devices
+r_static
 r_int
 id|__init
 id|arlan_find_devices
@@ -6240,6 +6244,7 @@ id|dev
 suffix:semicolon
 )brace
 DECL|function|arlan_probe_here
+r_static
 r_int
 id|__init
 id|arlan_probe_here
@@ -8546,8 +8551,16 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|priv-&gt;stats.rx_packets
 op_increment
+suffix:semicolon
+id|priv-&gt;stats.rx_bytes
+op_add_assign
+id|pkt_len
 suffix:semicolon
 )brace
 r_break

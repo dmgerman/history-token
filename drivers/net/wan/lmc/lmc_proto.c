@@ -1,4 +1,4 @@
-multiline_comment|/*&n;  * Copyright (c) 1997-2000 LAN Media Corporation (LMC)&n;  * All rights reserved.  www.lanmedia.com&n;  *&n;  * This code is written by:&n;  * Andrew Stanley-Jones (asj@cban.com)&n;  * Rob Braun (bbraun@vix.com),&n;  * Michael Graff (explorer@vix.com) and&n;  * Matt Thomas (matt@3am-software.com).&n;  *&n;  * With Help By:&n;  * David Boggs&n;  * Ron Crane&n;  * Allan Cox&n;  *&n;  * This software may be used and distributed according to the terms&n;  * of the GNU Public License version 2, incorporated herein by reference.&n;  *&n;  * Driver for the LanMedia LMC5200, LMC5245, LMC1000, LMC1200 cards.&n;  */
+multiline_comment|/*&n;  * Copyright (c) 1997-2000 LAN Media Corporation (LMC)&n;  * All rights reserved.  www.lanmedia.com&n;  *&n;  * This code is written by:&n;  * Andrew Stanley-Jones (asj@cban.com)&n;  * Rob Braun (bbraun@vix.com),&n;  * Michael Graff (explorer@vix.com) and&n;  * Matt Thomas (matt@3am-software.com).&n;  *&n;  * With Help By:&n;  * David Boggs&n;  * Ron Crane&n;  * Allan Cox&n;  *&n;  * This software may be used and distributed according to the terms&n;  * of the GNU General Public License version 2, incorporated herein by reference.&n;  *&n;  * Driver for the LanMedia LMC5200, LMC5245, LMC1000, LMC1200 cards.&n;  */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;

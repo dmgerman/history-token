@@ -278,6 +278,14 @@ id|inode
 op_assign
 l_int|0
 suffix:semicolon
+id|NFS_FLAGS
+c_func
+(paren
+id|inode
+)paren
+op_assign
+l_int|0
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren

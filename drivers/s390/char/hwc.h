@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/char/hwc.h&n; *&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;peschke@fh-brandenburg.de&gt;&n; *&n; *&n; *&n; */
+multiline_comment|/*&n; *  drivers/s390/char/hwc.h&n; * &n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;peschke@fh-brandenburg.de&gt;&n; *&n; * &n; * &n; */
 macro_line|#ifndef __HWC_H__
 DECL|macro|__HWC_H__
 mdefine_line|#define __HWC_H__

@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
@@ -38,7 +38,7 @@ macro_line|#include &quot;lmc_ioctl.h&quot;
 macro_line|#include &quot;lmc_debug.h&quot;
 DECL|macro|CONFIG_LMC_IGNORE_HARDWARE_HANDSHAKE
 mdefine_line|#define CONFIG_LMC_IGNORE_HARDWARE_HANDSHAKE 1
-multiline_comment|/*&n;  * Copyright (c) 1997-2000 LAN Media Corporation (LMC)&n;  * All rights reserved.  www.lanmedia.com&n;  *&n;  * This code is written by:&n;  * Andrew Stanley-Jones (asj@cban.com)&n;  * Rob Braun (bbraun@vix.com),&n;  * Michael Graff (explorer@vix.com) and&n;  * Matt Thomas (matt@3am-software.com).&n;  *&n;  * This software may be used and distributed according to the terms&n;  * of the GNU Public License version 2, incorporated herein by reference.&n;  */
+multiline_comment|/*&n;  * Copyright (c) 1997-2000 LAN Media Corporation (LMC)&n;  * All rights reserved.  www.lanmedia.com&n;  *&n;  * This code is written by:&n;  * Andrew Stanley-Jones (asj@cban.com)&n;  * Rob Braun (bbraun@vix.com),&n;  * Michael Graff (explorer@vix.com) and&n;  * Matt Thomas (matt@3am-software.com).&n;  *&n;  * This software may be used and distributed according to the terms&n;  * of the GNU General Public License version 2, incorporated herein by reference.&n;  */
 multiline_comment|/*&n; * For lack of a better place, put the SSI cable stuff here.&n; */
 DECL|variable|lmc_t1_cables
 r_char

@@ -23,7 +23,7 @@ macro_line|#error This driver requires PCI support.
 macro_line|#endif
 multiline_comment|/* version number of this driver */
 DECL|macro|RIVAFB_VERSION
-mdefine_line|#define RIVAFB_VERSION &quot;0.9.2&quot;
+mdefine_line|#define RIVAFB_VERSION &quot;0.9.2a&quot;
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * various helpful macros and constants&n; *&n; * ------------------------------------------------------------------------- */
 DECL|macro|RIVAFBDEBUG
 macro_line|#undef RIVAFBDEBUG
@@ -558,21 +558,21 @@ id|rivafb_pci_tbl
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * framebuffer related structures&n; *&n; * ------------------------------------------------------------------------- */
 macro_line|#ifdef FBCON_HAS_CFB8
-DECL|variable|fbcon_riva8
+r_extern
 r_struct
 id|display_switch
 id|fbcon_riva8
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef FBCON_HAS_CFB16
-DECL|variable|fbcon_riva16
+r_extern
 r_struct
 id|display_switch
 id|fbcon_riva16
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef FBCON_HAS_CFB32
-DECL|variable|fbcon_riva32
+r_extern
 r_struct
 id|display_switch
 id|fbcon_riva32
@@ -4619,53 +4619,7 @@ op_eq
 l_int|5
 )paren
 (brace
-macro_line|#ifdef CONFIG_PREP&t;/* gggbbbbb 0rrrrrgg */
-id|rivainfo-&gt;con_cmap.cfb16
-(braket
-id|regno
-)braket
-op_assign
-(paren
-(paren
-id|red
-op_amp
-l_int|0xf800
-)paren
-op_rshift
-l_int|9
-)paren
-op_or
-(paren
-(paren
-id|green
-op_amp
-l_int|0xf800
-)paren
-op_rshift
-l_int|14
-)paren
-op_or
-(paren
-(paren
-id|green
-op_amp
-l_int|0xf800
-)paren
-op_lshift
-l_int|2
-)paren
-op_or
-(paren
-(paren
-id|blue
-op_amp
-l_int|0xf800
-)paren
-op_rshift
-l_int|3
-)paren
-suffix:semicolon
-macro_line|#else&t;&t;&t;/* 0rrrrrgg gggbbbbb */
+multiline_comment|/* 0rrrrrgg gggbbbbb */
 id|rivainfo-&gt;con_cmap.cfb16
 (braket
 id|regno
@@ -4701,57 +4655,10 @@ op_rshift
 l_int|11
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
-macro_line|#ifdef CONFIG_PREP&t;/* gggbbbbb rrrrrggg */
-id|rivainfo-&gt;con_cmap.cfb16
-(braket
-id|regno
-)braket
-op_assign
-(paren
-(paren
-id|red
-op_amp
-l_int|0xf800
-)paren
-op_rshift
-l_int|8
-)paren
-op_or
-(paren
-(paren
-id|green
-op_amp
-l_int|0xfc00
-)paren
-op_rshift
-l_int|13
-)paren
-op_or
-(paren
-(paren
-id|green
-op_amp
-l_int|0xfc00
-)paren
-op_lshift
-l_int|3
-)paren
-op_or
-(paren
-(paren
-id|blue
-op_amp
-l_int|0xf800
-)paren
-op_rshift
-l_int|3
-)paren
-suffix:semicolon
-macro_line|#else&t;&t;&t;/* rrrrrggg gggbbbbb */
+multiline_comment|/* rrrrrggg gggbbbbb */
 id|rivainfo-&gt;con_cmap.cfb16
 (braket
 id|regno
@@ -4787,7 +4694,6 @@ op_rshift
 l_int|11
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_break
 suffix:semicolon
@@ -4803,41 +4709,6 @@ OL
 l_int|16
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREP
-id|rivainfo-&gt;con_cmap.cfb32
-(braket
-id|regno
-)braket
-op_assign
-(paren
-(paren
-id|red
-op_amp
-l_int|0xff00
-)paren
-)paren
-op_or
-(paren
-(paren
-id|green
-op_amp
-l_int|0xff00
-)paren
-op_lshift
-l_int|8
-)paren
-op_or
-(paren
-(paren
-id|blue
-op_amp
-l_int|0xff00
-)paren
-op_lshift
-l_int|16
-)paren
-suffix:semicolon
-macro_line|#else
 id|rivainfo-&gt;con_cmap.cfb32
 (braket
 id|regno
@@ -4871,7 +4742,6 @@ op_rshift
 l_int|8
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 macro_line|#endif /* FBCON_HAS_CFB32 */
@@ -5531,21 +5401,7 @@ op_eq
 l_int|5
 )paren
 (brace
-macro_line|#ifdef CONFIG_PREP&t;&t;&t;/* gggbbbbb 0rrrrrgg */
-id|v.red.offset
-op_assign
-l_int|2
-suffix:semicolon
-id|v.green.offset
-op_assign
-op_minus
-l_int|3
-suffix:semicolon
-id|v.blue.offset
-op_assign
-l_int|8
-suffix:semicolon
-macro_line|#else&t;&t;&t;&t;&t;/* 0rrrrrgg gggbbbbb */
+multiline_comment|/* 0rrrrrgg gggbbbbb */
 id|v.red.offset
 op_assign
 l_int|10
@@ -5558,7 +5414,6 @@ id|v.blue.offset
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 id|v.red.length
 op_assign
 l_int|5
@@ -5574,21 +5429,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef CONFIG_PREP&t;&t;&t;/* gggbbbbb rrrrrggg */
-id|v.red.offset
-op_assign
-l_int|3
-suffix:semicolon
-id|v.green.offset
-op_assign
-op_minus
-l_int|3
-suffix:semicolon
-id|v.blue.offset
-op_assign
-l_int|8
-suffix:semicolon
-macro_line|#else&t;&t;&t;&t;&t;/* rrrrrggg gggbbbbb */
+multiline_comment|/* rrrrrggg gggbbbbb */
 id|v.red.offset
 op_assign
 l_int|11
@@ -5601,7 +5442,6 @@ id|v.blue.offset
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 id|v.red.length
 op_assign
 l_int|5
@@ -5638,20 +5478,6 @@ id|den
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREP
-id|v.red.offset
-op_assign
-l_int|8
-suffix:semicolon
-id|v.green.offset
-op_assign
-l_int|16
-suffix:semicolon
-id|v.blue.offset
-op_assign
-l_int|24
-suffix:semicolon
-macro_line|#else
 id|v.red.offset
 op_assign
 l_int|16
@@ -5664,7 +5490,6 @@ id|v.blue.offset
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 id|v.red.length
 op_assign
 l_int|8

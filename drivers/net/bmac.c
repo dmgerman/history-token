@@ -222,6 +222,7 @@ suffix:semicolon
 DECL|macro|N_REG_ENTRIES
 mdefine_line|#define N_REG_ENTRIES 31
 DECL|variable|reg_entries
+r_static
 id|bmac_reg_entry_t
 id|reg_entries
 (braket
@@ -417,14 +418,14 @@ id|RXCV
 )brace
 suffix:semicolon
 DECL|variable|bmac_devs
+r_static
 r_struct
 id|net_device
 op_star
 id|bmac_devs
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_PBOOK
+r_static
 r_int
 id|bmac_sleep_notify
 c_func
@@ -742,7 +743,7 @@ mdefine_line|#define&t;DBDMA_SET(x)&t;( ((x) | (x) &lt;&lt; 16) )
 DECL|macro|DBDMA_CLEAR
 mdefine_line|#define&t;DBDMA_CLEAR(x)&t;( (x) &lt;&lt; 16)
 r_static
-id|__inline__
+r_inline
 r_void
 DECL|function|dbdma_st32
 id|dbdma_st32
@@ -782,7 +783,7 @@ r_return
 suffix:semicolon
 )brace
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 DECL|function|dbdma_ld32
@@ -820,6 +821,7 @@ r_return
 id|swap
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|dbdma_stop
 id|dbdma_stop
@@ -1093,7 +1095,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-id|__inline__
+r_inline
 DECL|function|bmwrite
 r_void
 id|bmwrite
@@ -1128,7 +1130,7 @@ id|data
 suffix:semicolon
 )brace
 r_static
-id|__inline__
+r_inline
 DECL|function|bmread
 r_volatile
 r_int
@@ -2494,6 +2496,7 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PMAC_PBOOK
+r_static
 r_int
 DECL|function|bmac_sleep_notify
 id|bmac_sleep_notify
@@ -3503,8 +3506,6 @@ DECL|variable|rxintcount
 r_static
 r_int
 id|rxintcount
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|bmac_rxdma_intr
 r_static
@@ -3890,8 +3891,6 @@ DECL|variable|txintcount
 r_static
 r_int
 id|txintcount
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|bmac_txdma_intr
 r_static
@@ -5811,8 +5810,6 @@ DECL|variable|miscintcount
 r_static
 r_int
 id|miscintcount
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|bmac_misc_intr
 r_static

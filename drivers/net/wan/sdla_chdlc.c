@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/kernel.h&gt;&t;/* printk(), and other useful stuff
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */
 macro_line|#include &lt;linux/string.h&gt;&t;/* inline memset(), etc. */
-macro_line|#include &lt;linux/malloc.h&gt;&t;/* kmalloc(), kfree() */
+macro_line|#include &lt;linux/slab.h&gt;&t;/* kmalloc(), kfree() */
 macro_line|#include &lt;linux/wanrouter.h&gt;&t;/* WAN router definitions */
 macro_line|#include &lt;linux/wanpipe.h&gt;&t;/* WANPIPE common user API definitions */
 macro_line|#include &lt;linux/if_arp.h&gt;&t;/* ARPHRD_* defines */
@@ -2944,7 +2944,7 @@ id|card-&gt;devname
 )paren
 suffix:semicolon
 multiline_comment|/* unbusy the interface */
-id|netif_start_queue
+id|netif_wake_queue
 (paren
 id|dev
 )paren

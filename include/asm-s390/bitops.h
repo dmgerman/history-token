@@ -29,246 +29,10 @@ id|_zb_findmap
 (braket
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * Function prototypes to keep gcc -Wall happy&n; */
-r_extern
-r_void
-id|__set_bit
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__constant_set_bit
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|__test_bit
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|__constant_test_bit
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__clear_bit
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__constant_clear_bit
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__change_bit
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__constant_change_bit
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|test_and_set_bit
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|test_and_clear_bit
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|test_and_change_bit
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|test_and_set_bit_simple
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|test_and_clear_bit_simple
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|test_and_change_bit_simple
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|find_first_zero_bit
-c_func
-(paren
-r_void
-op_star
-id|addr
-comma
-r_int
-id|size
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|find_next_zero_bit
-(paren
-r_void
-op_star
-id|addr
-comma
-r_int
-id|size
-comma
-r_int
-id|offset
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|ffz
-c_func
-(paren
-r_int
-r_int
-id|word
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * SMP save set_bit routine based on compare and swap (CS)&n; */
 DECL|function|set_bit_cs
-r_extern
+r_static
 id|__inline__
 r_void
 id|set_bit_cs
@@ -303,9 +67,9 @@ l_string|&quot;   nr    1,%0&bslash;n&quot;
 multiline_comment|/* make shift value */
 l_string|&quot;   xr    %0,1&bslash;n&quot;
 l_string|&quot;   srl   %0,3&bslash;n&quot;
+l_string|&quot;   lhi   2,1&bslash;n&quot;
 l_string|&quot;   la    %1,0(%0,%1)&bslash;n&quot;
 multiline_comment|/* calc. address for CS */
-l_string|&quot;   lhi   2,1&bslash;n&quot;
 l_string|&quot;   sll   2,0(1)&bslash;n&quot;
 multiline_comment|/* make OR mask */
 l_string|&quot;   l     %0,0(%1)&bslash;n&quot;
@@ -339,7 +103,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * SMP save clear_bit routine based on compare and swap (CS)&n; */
 DECL|function|clear_bit_cs
-r_extern
+r_static
 id|__inline__
 r_void
 id|clear_bit_cs
@@ -382,9 +146,9 @@ l_string|&quot;   nr    1,%0&bslash;n&quot;
 multiline_comment|/* make shift value */
 l_string|&quot;   xr    %0,1&bslash;n&quot;
 l_string|&quot;   srl   %0,3&bslash;n&quot;
+l_string|&quot;   lhi   2,1&bslash;n&quot;
 l_string|&quot;   la    %1,0(%0,%1)&bslash;n&quot;
 multiline_comment|/* calc. address for CS */
-l_string|&quot;   lhi   2,1&bslash;n&quot;
 l_string|&quot;   sll   2,0(1)&bslash;n&quot;
 l_string|&quot;   x     2,%2&bslash;n&quot;
 multiline_comment|/* make AND mask */
@@ -423,7 +187,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * SMP save change_bit routine based on compare and swap (CS)&n; */
 DECL|function|change_bit_cs
-r_extern
+r_static
 id|__inline__
 r_void
 id|change_bit_cs
@@ -458,9 +222,9 @@ l_string|&quot;   nr    1,%0&bslash;n&quot;
 multiline_comment|/* make shift value */
 l_string|&quot;   xr    %0,1&bslash;n&quot;
 l_string|&quot;   srl   %0,3&bslash;n&quot;
+l_string|&quot;   lhi   2,1&bslash;n&quot;
 l_string|&quot;   la    %1,0(%0,%1)&bslash;n&quot;
 multiline_comment|/* calc. address for CS */
-l_string|&quot;   lhi   2,1&bslash;n&quot;
 l_string|&quot;   sll   2,0(1)&bslash;n&quot;
 multiline_comment|/* make XR mask */
 l_string|&quot;   l     %0,0(%1)&bslash;n&quot;
@@ -494,7 +258,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * SMP save test_and_set_bit routine based on compare and swap (CS)&n; */
 DECL|function|test_and_set_bit_cs
-r_extern
+r_static
 id|__inline__
 r_int
 id|test_and_set_bit_cs
@@ -570,7 +334,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * SMP save test_and_clear_bit routine based on compare and swap (CS)&n; */
 DECL|function|test_and_clear_bit_cs
-r_extern
+r_static
 id|__inline__
 r_int
 id|test_and_clear_bit_cs
@@ -660,7 +424,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * SMP save test_and_change_bit routine based on compare and swap (CS) &n; */
 DECL|function|test_and_change_bit_cs
-r_extern
+r_static
 id|__inline__
 r_int
 id|test_and_change_bit_cs
@@ -737,7 +501,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 multiline_comment|/*&n; * fast, non-SMP set_bit routine&n; */
 DECL|function|__set_bit
-r_extern
+r_static
 id|__inline__
 r_void
 id|__set_bit
@@ -792,7 +556,7 @@ l_string|&quot;2&quot;
 )paren
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|__constant_set_bit
@@ -1158,7 +922,7 @@ suffix:semicolon
 DECL|macro|set_bit_simple
 mdefine_line|#define set_bit_simple(nr,addr) &bslash;&n;(__builtin_constant_p((nr)) ? &bslash;&n; __constant_set_bit((nr),(addr)) : &bslash;&n; __set_bit((nr),(addr)) )
 multiline_comment|/*&n; * fast, non-SMP clear_bit routine&n; */
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|__clear_bit
@@ -1214,7 +978,7 @@ l_string|&quot;2&quot;
 )paren
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|__constant_clear_bit
@@ -1579,7 +1343,7 @@ DECL|macro|clear_bit_simple
 mdefine_line|#define clear_bit_simple(nr,addr) &bslash;&n;(__builtin_constant_p((nr)) ? &bslash;&n; __constant_clear_bit((nr),(addr)) : &bslash;&n; __clear_bit((nr),(addr)) )
 multiline_comment|/* &n; * fast, non-SMP change_bit routine &n; */
 DECL|function|__change_bit
-r_extern
+r_static
 id|__inline__
 r_void
 id|__change_bit
@@ -1634,7 +1398,7 @@ l_string|&quot;2&quot;
 )paren
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|__constant_change_bit
@@ -1991,7 +1755,7 @@ DECL|macro|change_bit_simple
 mdefine_line|#define change_bit_simple(nr,addr) &bslash;&n;(__builtin_constant_p((nr)) ? &bslash;&n; __constant_change_bit((nr),(addr)) : &bslash;&n; __change_bit((nr),(addr)) )
 multiline_comment|/*&n; * fast, non-SMP test_and_set_bit routine&n; */
 DECL|function|test_and_set_bit_simple
-r_extern
+r_static
 id|__inline__
 r_int
 id|test_and_set_bit_simple
@@ -2073,7 +1837,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * fast, non-SMP test_and_clear_bit routine&n; */
 DECL|function|test_and_clear_bit_simple
-r_extern
+r_static
 id|__inline__
 r_int
 id|test_and_clear_bit_simple
@@ -2155,7 +1919,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * fast, non-SMP test_and_change_bit routine&n; */
 DECL|function|test_and_change_bit_simple
-r_extern
+r_static
 id|__inline__
 r_int
 id|test_and_change_bit_simple
@@ -2264,7 +2028,7 @@ mdefine_line|#define test_and_change_bit test_and_change_bit_simple
 macro_line|#endif
 multiline_comment|/*&n; * This routine doesn&squot;t need to be atomic.&n; */
 DECL|function|__test_bit
-r_extern
+r_static
 id|__inline__
 r_int
 id|__test_bit
@@ -2334,7 +2098,7 @@ id|oldbit
 suffix:semicolon
 )brace
 DECL|function|__constant_test_bit
-r_extern
+r_static
 id|__inline__
 r_int
 id|__constant_test_bit
@@ -2387,7 +2151,7 @@ DECL|macro|test_bit
 mdefine_line|#define test_bit(nr,addr) &bslash;&n;(__builtin_constant_p((nr)) ? &bslash;&n; __constant_test_bit((nr),(addr)) : &bslash;&n; __test_bit((nr),(addr)) )
 multiline_comment|/*&n; * Find-bit routines..&n; */
 DECL|function|find_first_zero_bit
-r_extern
+r_static
 id|__inline__
 r_int
 id|find_first_zero_bit
@@ -2435,7 +2199,7 @@ l_string|&quot;   brct 1,0b&bslash;n&quot;
 l_string|&quot;   lr   2,%1&bslash;n&quot;
 l_string|&quot;   j    4f&bslash;n&quot;
 l_string|&quot;1: l    1,0(2,%2)&bslash;n&quot;
-l_string|&quot;   sll  2,3(0)&bslash;n&quot;
+l_string|&quot;   sll  2,3&bslash;n&quot;
 l_string|&quot;   tml  1,0xFFFF&bslash;n&quot;
 l_string|&quot;   jno  2f&bslash;n&quot;
 l_string|&quot;   ahi  2,16&bslash;n&quot;
@@ -2499,7 +2263,7 @@ id|size
 suffix:semicolon
 )brace
 DECL|function|find_next_zero_bit
-r_extern
+r_static
 id|__inline__
 r_int
 id|find_next_zero_bit
@@ -2676,7 +2440,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * ffz = Find First Zero in word. Undefined if no zero exists,&n; * so code should check against ~0UL first..&n; */
 DECL|function|ffz
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -2775,24 +2539,24 @@ c_func
 (paren
 l_string|&quot;    lr   %%r1,%1&bslash;n&quot;
 l_string|&quot;    sr   %0,%0&bslash;n&quot;
-l_string|&quot;    tmh  %%r1,0xFFFF&bslash;n&quot;
-l_string|&quot;    jz   0f&bslash;n&quot;
+l_string|&quot;    tml  %%r1,0xFFFF&bslash;n&quot;
+l_string|&quot;    jnz  0f&bslash;n&quot;
 l_string|&quot;    ahi  %0,16&bslash;n&quot;
 l_string|&quot;    srl  %%r1,16&bslash;n&quot;
-l_string|&quot;0:  tml  %%r1,0xFF00&bslash;n&quot;
-l_string|&quot;    jz   1f&bslash;n&quot;
+l_string|&quot;0:  tml  %%r1,0x00FF&bslash;n&quot;
+l_string|&quot;    jnz  1f&bslash;n&quot;
 l_string|&quot;    ahi  %0,8&bslash;n&quot;
 l_string|&quot;    srl  %%r1,8&bslash;n&quot;
-l_string|&quot;1:  tml  %%r1,0x00F0&bslash;n&quot;
-l_string|&quot;    jz   2f&bslash;n&quot;
+l_string|&quot;1:  tml  %%r1,0x000F&bslash;n&quot;
+l_string|&quot;    jnz  2f&bslash;n&quot;
 l_string|&quot;    ahi  %0,4&bslash;n&quot;
 l_string|&quot;    srl  %%r1,4&bslash;n&quot;
-l_string|&quot;2:  tml  %%r1,0x000C&bslash;n&quot;
-l_string|&quot;    jz   3f&bslash;n&quot;
+l_string|&quot;2:  tml  %%r1,0x0003&bslash;n&quot;
+l_string|&quot;    jnz  3f&bslash;n&quot;
 l_string|&quot;    ahi  %0,2&bslash;n&quot;
 l_string|&quot;    srl  %%r1,2&bslash;n&quot;
-l_string|&quot;3:  tml  %%r1,0x0002&bslash;n&quot;
-l_string|&quot;    jz   4f&bslash;n&quot;
+l_string|&quot;3:  tml  %%r1,0x0001&bslash;n&quot;
+l_string|&quot;    jnz  4f&bslash;n&quot;
 l_string|&quot;    ahi  %0,1&bslash;n&quot;
 l_string|&quot;4:&quot;
 suffix:colon
@@ -2833,7 +2597,7 @@ mdefine_line|#define ext2_clear_bit(nr, addr)     test_and_clear_bit((nr)^24, ad
 DECL|macro|ext2_test_bit
 mdefine_line|#define ext2_test_bit(nr, addr)      test_bit((nr)^24, addr)
 DECL|function|ext2_find_first_zero_bit
-r_extern
+r_static
 id|__inline__
 r_int
 id|ext2_find_first_zero_bit
@@ -2847,13 +2611,6 @@ r_int
 id|size
 )paren
 (brace
-r_static
-r_const
-r_int
-id|mask
-op_assign
-l_int|0xffL
-suffix:semicolon
 r_int
 id|res
 suffix:semicolon
@@ -2881,7 +2638,8 @@ l_string|&quot;   brct 1,0b&bslash;n&quot;
 l_string|&quot;   lr   2,%1&bslash;n&quot;
 l_string|&quot;   j    4f&bslash;n&quot;
 l_string|&quot;1: l    1,0(2,%2)&bslash;n&quot;
-l_string|&quot;   sll  2,3(0)&bslash;n&quot;
+l_string|&quot;   sll  2,3&bslash;n&quot;
+l_string|&quot;   lhi  0,0xff&bslash;n&quot;
 l_string|&quot;   ahi  2,24&bslash;n&quot;
 l_string|&quot;   tmh  1,0xFFFF&bslash;n&quot;
 l_string|&quot;   jo   2f&bslash;n&quot;
@@ -2891,9 +2649,8 @@ l_string|&quot;2: tml  1,0xFF00&bslash;n&quot;
 l_string|&quot;   jo   3f&bslash;n&quot;
 l_string|&quot;   ahi  2,-8&bslash;n&quot;
 l_string|&quot;   srl  1,8&bslash;n&quot;
-l_string|&quot;3: n    1,%3&bslash;n&quot;
-l_string|&quot;   ic   1,0(1,%4)&bslash;n&quot;
-l_string|&quot;   n    1,%3&bslash;n&quot;
+l_string|&quot;3: nr   1,0&bslash;n&quot;
+l_string|&quot;   ic   1,0(1,%3)&bslash;n&quot;
 l_string|&quot;   ar   2,1&bslash;n&quot;
 l_string|&quot;4: lr   %0,2&quot;
 suffix:colon
@@ -2910,11 +2667,6 @@ comma
 l_string|&quot;a&quot;
 (paren
 id|vaddr
-)paren
-comma
-l_string|&quot;m&quot;
-(paren
-id|mask
 )paren
 comma
 l_string|&quot;a&quot;
@@ -2945,7 +2697,7 @@ suffix:colon
 id|size
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_int
 DECL|function|ext2_find_next_zero_bit
@@ -2963,87 +2715,6 @@ r_int
 id|offset
 )paren
 (brace
-r_static
-r_const
-r_int
-id|mask
-op_assign
-l_int|0xffL
-suffix:semicolon
-r_static
-r_int
-r_int
-id|orword
-(braket
-l_int|32
-)braket
-op_assign
-(brace
-l_int|0x00000000
-comma
-l_int|0x01000000
-comma
-l_int|0x03000000
-comma
-l_int|0x07000000
-comma
-l_int|0x0f000000
-comma
-l_int|0x1f000000
-comma
-l_int|0x3f000000
-comma
-l_int|0x7f000000
-comma
-l_int|0xff000000
-comma
-l_int|0xff010000
-comma
-l_int|0xff030000
-comma
-l_int|0xff070000
-comma
-l_int|0xff0f0000
-comma
-l_int|0xff1f0000
-comma
-l_int|0xff3f0000
-comma
-l_int|0xff7f0000
-comma
-l_int|0xffff0000
-comma
-l_int|0xffff0100
-comma
-l_int|0xffff0300
-comma
-l_int|0xffff0700
-comma
-l_int|0xffff0f00
-comma
-l_int|0xffff1f00
-comma
-l_int|0xffff3f00
-comma
-l_int|0xffff7f00
-comma
-l_int|0xffffff00
-comma
-l_int|0xffffff01
-comma
-l_int|0xffffff03
-comma
-l_int|0xffffff07
-comma
-l_int|0xffffff0f
-comma
-l_int|0xffffff1f
-comma
-l_int|0xffffff3f
-comma
-l_int|0xffffff7f
-)brace
-suffix:semicolon
 r_int
 r_int
 op_star
@@ -3093,48 +2764,60 @@ c_cond
 id|bit
 )paren
 (brace
+id|__asm__
+c_func
+(paren
+l_string|&quot;   ic   %0,0(%1)&bslash;n&quot;
+l_string|&quot;   icm  %0,2,1(%1)&bslash;n&quot;
+l_string|&quot;   icm  %0,4,2(%1)&bslash;n&quot;
+l_string|&quot;   icm  %0,8,3(%1)&quot;
+suffix:colon
+l_string|&quot;=&amp;a&quot;
+(paren
 id|word
-op_assign
-op_star
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
 id|p
-op_or
-id|orword
-(braket
+)paren
+)paren
+suffix:semicolon
+id|word
+op_rshift_assign
 id|bit
-)braket
+suffix:semicolon
+id|res
+op_assign
+id|bit
 suffix:semicolon
 multiline_comment|/* Look for zero in first longword */
 id|__asm__
 c_func
 (paren
-l_string|&quot;   lhi  %0,24&bslash;n&quot;
-l_string|&quot;   tmh  %1,0xFFFF&bslash;n&quot;
-l_string|&quot;   jo   0f&bslash;n&quot;
-l_string|&quot;   ahi  %0,-16&bslash;n&quot;
+l_string|&quot;   lhi  0,0xff&bslash;n&quot;
+l_string|&quot;   tml  %1,0xffff&bslash;n&quot;
+l_string|&quot;   jno   0f&bslash;n&quot;
+l_string|&quot;   ahi  %0,16&bslash;n&quot;
 l_string|&quot;   srl  %1,16&bslash;n&quot;
-l_string|&quot;0: tml  %1,0xFF00&bslash;n&quot;
-l_string|&quot;   jo   1f&bslash;n&quot;
-l_string|&quot;   ahi  %0,-8&bslash;n&quot;
+l_string|&quot;0: tml  %1,0x00ff&bslash;n&quot;
+l_string|&quot;   jno  1f&bslash;n&quot;
+l_string|&quot;   ahi  %0,8&bslash;n&quot;
 l_string|&quot;   srl  %1,8&bslash;n&quot;
-l_string|&quot;1: n    %1,%2&bslash;n&quot;
-l_string|&quot;   ic   %1,0(%1,%3)&bslash;n&quot;
+l_string|&quot;1: nr   %1,0&bslash;n&quot;
+l_string|&quot;   ic   %1,0(%1,%2)&bslash;n&quot;
 l_string|&quot;   alr  %0,%1&quot;
 suffix:colon
-l_string|&quot;=&amp;d&quot;
+l_string|&quot;+&amp;d&quot;
 (paren
 id|res
 )paren
 comma
-l_string|&quot;+&amp;d&quot;
+l_string|&quot;+&amp;a&quot;
 (paren
 id|word
 )paren
 suffix:colon
-l_string|&quot;m&quot;
-(paren
-id|mask
-)paren
-comma
 l_string|&quot;a&quot;
 (paren
 op_amp
@@ -3142,6 +2825,8 @@ id|_zb_findmap
 )paren
 suffix:colon
 l_string|&quot;cc&quot;
+comma
+l_string|&quot;0&quot;
 )paren
 suffix:semicolon
 r_if

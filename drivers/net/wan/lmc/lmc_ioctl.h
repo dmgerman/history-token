@@ -2,7 +2,7 @@ macro_line|#ifndef _LMC_IOCTL_H_
 DECL|macro|_LMC_IOCTL_H_
 mdefine_line|#define _LMC_IOCTL_H_
 multiline_comment|/*&t;$Id: lmc_ioctl.h,v 1.15 2000/04/06 12:16:43 asj Exp $&t;*/
-multiline_comment|/*&n;  * Copyright (c) 1997-2000 LAN Media Corporation (LMC)&n;  * All rights reserved.  www.lanmedia.com&n;  *&n;  * This code is written by:&n;  * Andrew Stanley-Jones (asj@cban.com)&n;  * Rob Braun (bbraun@vix.com),&n;  * Michael Graff (explorer@vix.com) and&n;  * Matt Thomas (matt@3am-software.com).&n;  *&n;  * This software may be used and distributed according to the terms&n;  * of the GNU Public License version 2, incorporated herein by reference.&n;  */
+multiline_comment|/*&n;  * Copyright (c) 1997-2000 LAN Media Corporation (LMC)&n;  * All rights reserved.  www.lanmedia.com&n;  *&n;  * This code is written by:&n;  * Andrew Stanley-Jones (asj@cban.com)&n;  * Rob Braun (bbraun@vix.com),&n;  * Michael Graff (explorer@vix.com) and&n;  * Matt Thomas (matt@3am-software.com).&n;  *&n;  * This software may be used and distributed according to the terms&n;  * of the GNU General Public License version 2, incorporated herein by reference.&n;  */
 DECL|macro|LMCIOCGINFO
 mdefine_line|#define LMCIOCGINFO             SIOCDEVPRIVATE+3 /* get current state */
 DECL|macro|LMCIOCSINFO

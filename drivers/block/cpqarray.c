@@ -20,9 +20,9 @@ macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|SMART2_DRIVER_VERSION
 mdefine_line|#define SMART2_DRIVER_VERSION(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME &quot;Compaq SMART2 Driver (v 2.4.1)&quot;
+mdefine_line|#define DRIVER_NAME &quot;Compaq SMART2 Driver (v 2.4.2)&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION SMART2_DRIVER_VERSION(2,4,1)
+mdefine_line|#define DRIVER_VERSION SMART2_DRIVER_VERSION(2,4,2)
 multiline_comment|/* Embedded module documentation macros - see modules.h */
 multiline_comment|/* Original author Chris Frantz - Compaq Computer Corporation */
 id|MODULE_AUTHOR
@@ -7820,7 +7820,7 @@ id|nr_real
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Tell the array controller not to give us any interupts while&n;&t; * we check the new geometry.  Then turn interrupts back on when&n;&t; * we&squot;re done.&n;&t; */
+multiline_comment|/*&n;&t; * Tell the array controller not to give us any interrupts while&n;&t; * we check the new geometry.  Then turn interrupts back on when&n;&t; * we&squot;re done.&n;&t; */
 id|hba
 (braket
 id|ctlr

@@ -766,7 +766,10 @@ op_star
 op_amp
 id|rp-&gt;c_addr
 comma
-id|rqstp-&gt;rq_addrlen
+r_sizeof
+(paren
+id|rp-&gt;c_addr
+)paren
 )paren
 op_eq
 l_int|0

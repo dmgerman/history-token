@@ -2402,8 +2402,6 @@ comma
 id|rw
 comma
 id|max_sectors
-comma
-id|max_segments
 )paren
 suffix:semicolon
 r_switch

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    Written 1994 by David C. Davies.&n;&n;    Copyright 1994 David C. Davies. This software may be used and distributed&n;    according to the terms of the GNU Public License, incorporated herein by&n;    reference.&n;*/
+multiline_comment|/*&n;    Written 1994 by David C. Davies.&n;&n;    Copyright 1994 David C. Davies. This software may be used and distributed&n;    according to the terms of the GNU General Public License, incorporated herein by&n;    reference.&n;*/
 multiline_comment|/*&n;** I/O addresses. Note that the 2k buffer option is not supported in&n;** this driver.&n;*/
 DECL|macro|DEPCA_NICSR
 mdefine_line|#define DEPCA_NICSR ioaddr+0x00   /* Network interface CSR */

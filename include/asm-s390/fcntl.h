@@ -61,6 +61,12 @@ DECL|macro|F_SETSIG
 mdefine_line|#define F_SETSIG&t;10&t;/*  for sockets. */
 DECL|macro|F_GETSIG
 mdefine_line|#define F_GETSIG&t;11&t;/*  for sockets. */
+DECL|macro|F_GETLK64
+mdefine_line|#define F_GETLK64&t;12&t;/*  using &squot;struct flock64&squot; */
+DECL|macro|F_SETLK64
+mdefine_line|#define F_SETLK64&t;13
+DECL|macro|F_SETLKW64
+mdefine_line|#define F_SETLKW64&t;14
 multiline_comment|/* for F_[GET|SET]FL */
 DECL|macro|FD_CLOEXEC
 mdefine_line|#define FD_CLOEXEC&t;1&t;/* actually anything with low bit set goes */
@@ -114,6 +120,32 @@ id|l_start
 suffix:semicolon
 DECL|member|l_len
 id|off_t
+id|l_len
+suffix:semicolon
+DECL|member|l_pid
+id|pid_t
+id|l_pid
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|flock64
+r_struct
+id|flock64
+(brace
+DECL|member|l_type
+r_int
+id|l_type
+suffix:semicolon
+DECL|member|l_whence
+r_int
+id|l_whence
+suffix:semicolon
+DECL|member|l_start
+id|loff_t
+id|l_start
+suffix:semicolon
+DECL|member|l_len
+id|loff_t
 id|l_len
 suffix:semicolon
 DECL|member|l_pid

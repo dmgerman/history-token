@@ -1698,6 +1698,10 @@ comma
 id|RX_OFFSET
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|ip-&gt;stats.rx_packets
 op_increment
 suffix:semicolon

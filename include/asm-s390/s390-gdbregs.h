@@ -1,9 +1,12 @@
 multiline_comment|/*&n; *  include/asm-s390/s390-gdbregs.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *&n; *  used both by the linux kernel for remote debugging &amp; gdb &n; */
-multiline_comment|/* Say how long (ordinary) registers are.  This is a piece of bogosity&n;   used in push_word and a few other places; REGISTER_RAW_SIZE is the&n;   real way to know how big a register is.  */
 macro_line|#ifndef _S390_GDBREGS_H
 DECL|macro|_S390_GDBREGS_H
 mdefine_line|#define _S390_GDBREGS_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/s390-regs-common.h&gt;
+macro_line|#else
+macro_line|#include &lt;s390/s390-regs-common.h&gt;
+macro_line|#endif
 DECL|macro|S390_MAX_INSTR_SIZE
 mdefine_line|#define S390_MAX_INSTR_SIZE 6
 DECL|macro|NUM_REGS

@@ -88,19 +88,16 @@ c_func
 l_string|&quot;st  %1,%0&bslash;n&bslash;t&quot;
 l_string|&quot;bcr 15,0&quot;
 suffix:colon
-suffix:colon
-l_string|&quot;m&quot;
+l_string|&quot;=m&quot;
 (paren
 op_star
 id|v
 )paren
-comma
+suffix:colon
 l_string|&quot;d&quot;
 (paren
 id|i
 )paren
-suffix:colon
-l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
@@ -123,10 +120,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;   la    2,%0&bslash;n&quot;
 l_string|&quot;   l     0,%0&bslash;n&quot;
 l_string|&quot;0: lr    1,0&bslash;n&quot;
 l_string|&quot;   ar    1,%1&bslash;n&quot;
-l_string|&quot;   cs    0,1,%0&bslash;n&quot;
+l_string|&quot;   cs    0,1,0(2)&bslash;n&quot;
 l_string|&quot;   jl    0b&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -143,6 +141,10 @@ suffix:colon
 l_string|&quot;0&quot;
 comma
 l_string|&quot;1&quot;
+comma
+l_string|&quot;2&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
@@ -167,10 +169,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;   la    1,%0&bslash;n&quot;
 l_string|&quot;   l     0,%0&bslash;n&quot;
 l_string|&quot;0: lr    %1,0&bslash;n&quot;
 l_string|&quot;   ar    %1,%2&bslash;n&quot;
-l_string|&quot;   cs    0,%1,%0&bslash;n&quot;
+l_string|&quot;   cs    0,%1,0(1)&bslash;n&quot;
 l_string|&quot;   jl    0b&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -190,6 +193,8 @@ id|i
 )paren
 suffix:colon
 l_string|&quot;0&quot;
+comma
+l_string|&quot;1&quot;
 comma
 l_string|&quot;cc&quot;
 )paren
@@ -220,10 +225,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;   la    1,%0&bslash;n&quot;
 l_string|&quot;   l     0,%0&bslash;n&quot;
 l_string|&quot;0: lr    %1,0&bslash;n&quot;
 l_string|&quot;   ar    %1,%2&bslash;n&quot;
-l_string|&quot;   cs    0,%1,%0&bslash;n&quot;
+l_string|&quot;   cs    0,%1,0(1)&bslash;n&quot;
 l_string|&quot;   jl    0b&bslash;n&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -243,6 +249,8 @@ id|i
 )paren
 suffix:colon
 l_string|&quot;0&quot;
+comma
+l_string|&quot;1&quot;
 comma
 l_string|&quot;cc&quot;
 )paren
@@ -272,10 +280,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;   la    2,%0&bslash;n&quot;
 l_string|&quot;   l     0,%0&bslash;n&quot;
 l_string|&quot;0: lr    1,0&bslash;n&quot;
 l_string|&quot;   sr    1,%1&bslash;n&quot;
-l_string|&quot;   cs    0,1,%0&bslash;n&quot;
+l_string|&quot;   cs    0,1,0(2)&bslash;n&quot;
 l_string|&quot;   jl    0b&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -292,6 +301,10 @@ suffix:colon
 l_string|&quot;0&quot;
 comma
 l_string|&quot;1&quot;
+comma
+l_string|&quot;2&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
@@ -312,10 +325,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;   la    2,%0&bslash;n&quot;
 l_string|&quot;   l     0,%0&bslash;n&quot;
 l_string|&quot;0: lr    1,0&bslash;n&quot;
 l_string|&quot;   ahi   1,1&bslash;n&quot;
-l_string|&quot;   cs    0,1,%0&bslash;n&quot;
+l_string|&quot;   cs    0,1,0(2)&bslash;n&quot;
 l_string|&quot;   jl    0b&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -328,6 +342,10 @@ suffix:colon
 l_string|&quot;0&quot;
 comma
 l_string|&quot;1&quot;
+comma
+l_string|&quot;2&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
@@ -351,10 +369,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;   la    1,%0&bslash;n&quot;
 l_string|&quot;   l     0,%0&bslash;n&quot;
 l_string|&quot;0: lr    %1,0&bslash;n&quot;
 l_string|&quot;   ahi   %1,1&bslash;n&quot;
-l_string|&quot;   cs    0,%1,%0&bslash;n&quot;
+l_string|&quot;   cs    0,%1,0(1)&bslash;n&quot;
 l_string|&quot;   jl    0b&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -370,6 +389,10 @@ id|i
 suffix:colon
 suffix:colon
 l_string|&quot;0&quot;
+comma
+l_string|&quot;1&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
@@ -396,10 +419,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;   la    1,%0&bslash;n&quot;
 l_string|&quot;   l     0,%0&bslash;n&quot;
 l_string|&quot;0: lr    %1,0&bslash;n&quot;
 l_string|&quot;   ahi   %1,1&bslash;n&quot;
-l_string|&quot;   cs    0,%1,%0&bslash;n&quot;
+l_string|&quot;   cs    0,%1,0(1)&bslash;n&quot;
 l_string|&quot;   jl    0b&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -415,6 +439,10 @@ id|i
 suffix:colon
 suffix:colon
 l_string|&quot;0&quot;
+comma
+l_string|&quot;1&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
@@ -440,10 +468,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;   la    2,%0&bslash;n&quot;
 l_string|&quot;   l     0,%0&bslash;n&quot;
 l_string|&quot;0: lr    1,0&bslash;n&quot;
 l_string|&quot;   ahi   1,-1&bslash;n&quot;
-l_string|&quot;   cs    0,1,%0&bslash;n&quot;
+l_string|&quot;   cs    0,1,0(2)&bslash;n&quot;
 l_string|&quot;   jl    0b&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -456,6 +485,10 @@ suffix:colon
 l_string|&quot;0&quot;
 comma
 l_string|&quot;1&quot;
+comma
+l_string|&quot;2&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
@@ -479,10 +512,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;   la    1,%0&bslash;n&quot;
 l_string|&quot;   l     0,%0&bslash;n&quot;
 l_string|&quot;0: lr    %1,0&bslash;n&quot;
 l_string|&quot;   ahi   %1,-1&bslash;n&quot;
-l_string|&quot;   cs    0,%1,%0&bslash;n&quot;
+l_string|&quot;   cs    0,%1,0(1)&bslash;n&quot;
 l_string|&quot;   jl    0b&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -498,6 +532,10 @@ id|i
 suffix:colon
 suffix:colon
 l_string|&quot;0&quot;
+comma
+l_string|&quot;1&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
@@ -524,10 +562,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;   la    1,%0&bslash;n&quot;
 l_string|&quot;   l     0,%0&bslash;n&quot;
 l_string|&quot;0: lr    %1,0&bslash;n&quot;
 l_string|&quot;   ahi   %1,-1&bslash;n&quot;
-l_string|&quot;   cs    0,%1,%0&bslash;n&quot;
+l_string|&quot;   cs    0,%1,0(1)&bslash;n&quot;
 l_string|&quot;   jl    0b&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -543,6 +582,10 @@ id|i
 suffix:colon
 suffix:colon
 l_string|&quot;0&quot;
+comma
+l_string|&quot;1&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
@@ -571,10 +614,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;   la    2,%0&bslash;n&quot;
 l_string|&quot;   l     0,%0&bslash;n&quot;
 l_string|&quot;0: lr    1,0&bslash;n&quot;
 l_string|&quot;   nr    1,%1&bslash;n&quot;
-l_string|&quot;   cs    0,1,%0&bslash;n&quot;
+l_string|&quot;   cs    0,1,0(2)&bslash;n&quot;
 l_string|&quot;   jl    0b&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -594,6 +638,10 @@ suffix:colon
 l_string|&quot;0&quot;
 comma
 l_string|&quot;1&quot;
+comma
+l_string|&quot;2&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
@@ -617,10 +665,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;   la    2,%0&bslash;n&quot;
 l_string|&quot;   l     0,%0&bslash;n&quot;
 l_string|&quot;0: lr    1,0&bslash;n&quot;
 l_string|&quot;   or    1,%1&bslash;n&quot;
-l_string|&quot;   cs    0,1,%0&bslash;n&quot;
+l_string|&quot;   cs    0,1,0(2)&bslash;n&quot;
 l_string|&quot;   jl    0b&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -637,6 +686,10 @@ suffix:colon
 l_string|&quot;0&quot;
 comma
 l_string|&quot;1&quot;
+comma
+l_string|&quot;2&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
@@ -666,7 +719,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;  cs   %2,%3,%1&bslash;n&quot;
+l_string|&quot;  la   1,%1&bslash;n&quot;
+l_string|&quot;  lr   0,%2&bslash;n&quot;
+l_string|&quot;  cs   0,%3,0(1)&bslash;n&quot;
 l_string|&quot;  ipm  %0&bslash;n&quot;
 l_string|&quot;  srl  %0,28&bslash;n&quot;
 l_string|&quot;0:&quot;
@@ -692,7 +747,9 @@ l_string|&quot;d&quot;
 id|new_val
 )paren
 suffix:colon
-l_string|&quot;memory&quot;
+l_string|&quot;0&quot;
+comma
+l_string|&quot;1&quot;
 comma
 l_string|&quot;cc&quot;
 )paren
@@ -724,8 +781,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;   la  2,%0&bslash;n&quot;
 l_string|&quot;0: lr  1,%1&bslash;n&quot;
-l_string|&quot;   cs  1,%2,%0&bslash;n&quot;
+l_string|&quot;   cs  1,%2,0(2)&bslash;n&quot;
 l_string|&quot;   jl  0b&bslash;n&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -744,13 +802,15 @@ l_string|&quot;d&quot;
 id|new_val
 )paren
 suffix:colon
-l_string|&quot;memory&quot;
-comma
 l_string|&quot;cc&quot;
 comma
 l_string|&quot;1&quot;
+comma
+l_string|&quot;2&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|macro|atomic_compare_and_swap_debug
+mdefine_line|#define atomic_compare_and_swap_debug(where,from,to) &bslash;&n;if (atomic_compare_and_swap ((from), (to), (where))) {&bslash;&n;&t;printk (KERN_WARNING&quot;%s/%d atomic counter:%s couldn&squot;t be changed from %d(%s) to %d(%s), was %d&bslash;n&quot;,&bslash;&n;&t;&t;__FILE__,__LINE__,#where,(from),#from,(to),#to,atomic_read (where));&bslash;&n;        atomic_set(where,(to));&bslash;&n;}
 macro_line|#endif                                 /* __ARCH_S390_ATOMIC __            */
 eof

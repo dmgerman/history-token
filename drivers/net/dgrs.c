@@ -1634,8 +1634,16 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|devN-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 op_increment
 id|privN-&gt;stats.rx_packets
+suffix:semicolon
+id|privN-&gt;stats.rx_bytes
+op_add_assign
+id|len
 suffix:semicolon
 id|out
 suffix:colon

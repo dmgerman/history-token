@@ -1236,6 +1236,25 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * ISA space is mapped to some machine-specific location on Alpha.&n; * Call into the existing hooks to get the address translated.&n; */
+DECL|macro|isa_readb
+mdefine_line|#define isa_readb(a)&t;&t;&t;readb(__ioremap(a))
+DECL|macro|isa_readw
+mdefine_line|#define isa_readw(a)&t;&t;&t;readw(__ioremap(a))
+DECL|macro|isa_readl
+mdefine_line|#define isa_readl(a)&t;&t;&t;readl(__ioremap(a))
+DECL|macro|isa_writeb
+mdefine_line|#define isa_writeb(b,a)&t;&t;&t;writeb((b),__ioremap(a))
+DECL|macro|isa_writew
+mdefine_line|#define isa_writew(w,a)&t;&t;&t;writew((w),__ioremap(a))
+DECL|macro|isa_writel
+mdefine_line|#define isa_writel(l,a)&t;&t;&t;writel((l),__ioremap(a))
+DECL|macro|isa_memset_io
+mdefine_line|#define isa_memset_io(a,b,c)&t;&t;memset_io(__ioremap(a),(b),(c))
+DECL|macro|isa_memcpy_fromio
+mdefine_line|#define isa_memcpy_fromio(a,b,c)&t;memcpy_fromio((a),__ioremap(b),(c))
+DECL|macro|isa_memcpy_toio
+mdefine_line|#define isa_memcpy_toio(a,b,c)&t;&t;memcpy_toio(__ioremap(a),(b),(c))
 multiline_comment|/*&n; * The Alpha Jensen hardware for some rather strange reason puts&n; * the RTC clock at 0x170 instead of 0x70. Probably due to some&n; * misguided idea about using 0x70 for NMI stuff.&n; *&n; * These defines will override the defaults when doing RTC queries&n; */
 macro_line|#ifdef CONFIG_ALPHA_GENERIC
 DECL|macro|RTC_PORT

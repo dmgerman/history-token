@@ -309,7 +309,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|free_dma
-r_int
+r_void
 id|free_dma
 c_func
 (paren
@@ -318,10 +318,6 @@ r_int
 id|dmanr
 )paren
 (brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 )brace
 DECL|function|get_dma_list
 r_int

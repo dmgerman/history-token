@@ -33,6 +33,7 @@ mdefine_line|#define SARLUSA(var) {&bslash;&n;&t;u_short tmpVar;&bslash;&n;&t;me
 DECL|macro|SARLUIA
 mdefine_line|#define SARLUIA(var) {&bslash;&n;&t;u_int tmpVar;&bslash;&n;&t;memcpy(&amp;tmpVar, (int* )priva-&gt;conf-&gt;var,4); &bslash;&n;&t;pos += sprintf(arlan_drive_info+pos, &quot;%s&bslash;t=&bslash;t0x%x&bslash;n&quot;,#var, tmpVar);&bslash;&n;}
 DECL|function|arlan_diagnostic_info_string
+r_static
 r_const
 r_char
 op_star
@@ -3709,6 +3710,7 @@ id|lenp
 suffix:semicolon
 )brace
 DECL|function|arlan_sysctl_reset
+r_static
 r_int
 id|arlan_sysctl_reset
 c_func

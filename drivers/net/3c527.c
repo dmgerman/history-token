@@ -1,4 +1,4 @@
-multiline_comment|/* 3c527.c: 3Com Etherlink/MC32 driver for Linux&n; *&n; *&t;(c) Copyright 1998 Red Hat Software Inc&n; *&t;Written by Alan Cox.&n; *&t;Further debugging by Carl Drougge.&n; *&n; *&t;Based on skeleton.c written 1993-94 by Donald Becker and ne2.c&n; *&t;(for the MCA stuff) written by Wim Dumon.&n; *&n; *&t;Thanks to 3Com for making this possible by providing me with the&n; *&t;documentation.&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* 3c527.c: 3Com Etherlink/MC32 driver for Linux&n; *&n; *&t;(c) Copyright 1998 Red Hat Software Inc&n; *&t;Written by Alan Cox.&n; *&t;Further debugging by Carl Drougge.&n; *&n; *&t;Based on skeleton.c written 1993-94 by Donald Becker and ne2.c&n; *&t;(for the MCA stuff) written by Wim Dumon.&n; *&n; *&t;Thanks to 3Com for making this possible by providing me with the&n; *&t;documentation.&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|variable|version
 r_static
 r_const
@@ -19,7 +19,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -3422,18 +3422,22 @@ id|skb-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
-id|lp-&gt;net_stats.rx_packets
-op_increment
-suffix:semicolon
-id|lp-&gt;net_stats.rx_bytes
-op_add_assign
-id|skb-&gt;len
-suffix:semicolon
 id|netif_rx
 c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
+id|lp-&gt;net_stats.rx_packets
+op_increment
+suffix:semicolon
+id|lp-&gt;net_stats.rx_bytes
+op_add_assign
+id|length
 suffix:semicolon
 )brace
 r_else

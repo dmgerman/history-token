@@ -23,7 +23,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -6563,6 +6563,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|bp-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|HWM_RX_CHECK
 c_func
 (paren
@@ -7334,6 +7338,10 @@ id|smc-&gt;os
 op_member_access_from_pointer
 id|dev
 )paren
+suffix:semicolon
+id|skb-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 id|netif_rx
 c_func

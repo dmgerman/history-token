@@ -114,6 +114,7 @@ DECL|typedef|channel_type_t
 id|channel_type_t
 suffix:semicolon
 multiline_comment|/* &n; *   Structures needed in the initial phase &n; *&n; */
+multiline_comment|/* long req&squot;d by set_bit --RR */
 DECL|variable|channel_tab_initialized
 r_static
 r_int
@@ -1238,7 +1239,7 @@ suffix:semicolon
 r_int
 id|irq
 suffix:semicolon
-id|dev_info_t
+id|s390_dev_info_t
 id|temp
 suffix:semicolon
 r_for

@@ -399,7 +399,7 @@ multiline_comment|/* user-visible error numbers are in the range -1 - -122: see 
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res)                          &bslash;&n;do {                                                         &bslash;&n;        if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;                errno = -(res);                              &bslash;&n;                res = -1;                                    &bslash;&n;        }                                                    &bslash;&n;        return (type) (res);                                 &bslash;&n;} while (0)
 DECL|macro|_svc_clobber
-mdefine_line|#define _svc_clobber &quot;cc&quot;, &quot;memory&quot;
+mdefine_line|#define _svc_clobber &quot;2&quot;, &quot;cc&quot;, &quot;memory&quot;
 DECL|macro|_syscall0
 mdefine_line|#define _syscall0(type,name)                                 &bslash;&n;type name(void) {                                            &bslash;&n;        long __res;                                          &bslash;&n;        __asm__ __volatile__ (                               &bslash;&n;                &quot;    svc %b1&bslash;n&quot;                              &bslash;&n;                &quot;    lr  %0,2&quot;                               &bslash;&n;                : &quot;=d&quot; (__res)                               &bslash;&n;                : &quot;i&quot; (__NR_##name)                          &bslash;&n;                : _svc_clobber );                            &bslash;&n;        __syscall_return(type,__res);                        &bslash;&n;}
 DECL|macro|_syscall1
@@ -642,23 +642,6 @@ op_star
 comma
 id|statbuf
 )paren
-r_extern
-r_int
-id|sys_wait4
-c_func
-(paren
-r_int
-comma
-r_int
-op_star
-comma
-r_int
-comma
-r_struct
-id|rusage
-op_star
-)paren
-suffix:semicolon
 DECL|function|waitpid
 r_static
 r_inline

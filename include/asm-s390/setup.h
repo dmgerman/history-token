@@ -48,6 +48,8 @@ DECL|macro|MACHINE_HAS_IEEE
 mdefine_line|#define MACHINE_HAS_IEEE (MACHINE_FLAGS &amp; 2)
 DECL|macro|MACHINE_IS_P390
 mdefine_line|#define MACHINE_IS_P390  (MACHINE_FLAGS &amp; 4)
+DECL|macro|MACHINE_HAS_CSP
+mdefine_line|#define MACHINE_HAS_CSP  (MACHINE_FLAGS &amp; 8)
 DECL|macro|RAMDISK_ORIGIN
 mdefine_line|#define RAMDISK_ORIGIN            0x800000
 DECL|macro|RAMDISK_BLKSIZE

@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/lowcore.h&gt;
-macro_line|#include &lt;linux/tasks.h&gt;    
+macro_line|#include &lt;linux/threads.h&gt;  
 singleline_comment|// FOR NR_CPUS definition only.
 macro_line|#include &lt;linux/kernel.h&gt;   
 singleline_comment|// FOR FASTCALL definition
@@ -17,11 +17,6 @@ mdefine_line|#define NO_PROC_ID&t;&t;0xFF&t;&t;/* No processor magic marker */
 multiline_comment|/*&n; *&t;This magic constant controls our willingness to transfer&n; *&t;a process across CPUs. Such a transfer incurs misses on the L1&n; *&t;cache, and on a P6 or P5 with multiple L2 caches L2 hits. My&n; *&t;gut feeling is this will vary by board in value. For a board&n; *&t;with separate L2 cache it probably depends also on the RSS, and&n; *&t;for a board with shared L2 cache it ought to decay fast as other&n; *&t;processes are run.&n; */
 DECL|macro|PROC_CHANGE_PENALTY
 mdefine_line|#define PROC_CHANGE_PENALTY&t;20&t;&t;/* Schedule penalty */
-r_extern
-r_int
-r_int
-id|ipi_count
-suffix:semicolon
 r_extern
 r_void
 id|count_cpus
@@ -124,22 +119,56 @@ DECL|typedef|sigp_info
 id|sigp_info
 suffix:semicolon
 id|sigp_ccode
-id|smp_ext_call_sync
+id|smp_ext_call
 c_func
 (paren
 r_int
 id|cpu
 comma
-id|ec_cmd_sig
-id|cmd
+r_void
+(paren
+op_star
+id|callback
+)paren
+(paren
+r_void
+op_star
+id|info
+)paren
 comma
 r_void
 op_star
-id|parms
+id|info
+comma
+r_int
+id|wait
+)paren
+suffix:semicolon
+r_void
+id|smp_ext_call_others
+c_func
+(paren
+r_void
+(paren
+op_star
+id|callback
+)paren
+(paren
+r_void
+op_star
+id|info
+)paren
+comma
+r_void
+op_star
+id|info
+comma
+r_int
+id|wait
 )paren
 suffix:semicolon
 id|sigp_ccode
-id|smp_ext_call_async
+id|smp_ext_bitcall
 c_func
 (paren
 r_int
@@ -150,19 +179,7 @@ id|sig
 )paren
 suffix:semicolon
 r_void
-id|smp_ext_call_sync_others
-c_func
-(paren
-id|ec_cmd_sig
-id|cmd
-comma
-r_void
-op_star
-id|parms
-)paren
-suffix:semicolon
-r_void
-id|smp_ext_call_async_others
+id|smp_ext_bitcall_others
 c_func
 (paren
 id|ec_bit_sig

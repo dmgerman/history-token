@@ -10226,6 +10226,7 @@ id|ap-&gt;stats
 suffix:semicolon
 )brace
 DECL|function|ace_copy
+r_static
 r_void
 id|__init
 id|ace_copy
@@ -10398,6 +10399,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|ace_clear
+r_static
 r_void
 id|__init
 id|ace_clear

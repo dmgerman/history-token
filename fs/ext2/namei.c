@@ -1045,6 +1045,12 @@ op_eq
 l_int|0
 )paren
 (brace
+id|brelse
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOENT

@@ -1,4 +1,4 @@
-multiline_comment|/* am7990 (lance) definitions&n; * &n; * This is an extension to the Linux operating system, and is covered by&n; * same Gnu Public License that covers that work.&n; * &n; * Michael Hipp&n; * email: mhipp@student.uni-tuebingen.de&n; *&n; * sources: (mail me or ask archie if you need them) &n; *    crynwr-packet-driver&n; */
+multiline_comment|/* am7990 (lance) definitions&n; * &n; * This is an extension to the Linux operating system, and is covered by&n; * same GNU General Public License that covers that work.&n; * &n; * Michael Hipp&n; * email: mhipp@student.uni-tuebingen.de&n; *&n; * sources: (mail me or ask archie if you need them) &n; *    crynwr-packet-driver&n; */
 multiline_comment|/*&n; * &t;Control and Status Register 0 (CSR0) bit definitions&n; * (R=Readable) (W=Writeable) (S=Set on write) (C-Clear on write)&n; *&n; */
 DECL|macro|CSR0_ERR
 mdefine_line|#define CSR0_ERR&t;0x8000&t;/* Error summary (R) */

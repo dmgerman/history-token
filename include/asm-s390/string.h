@@ -64,8 +64,70 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|function|memchr
 r_extern
+r_void
+op_star
+id|memcpy
+c_func
+(paren
+r_void
+op_star
+comma
+r_const
+r_void
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+op_star
+id|memmove
+c_func
+(paren
+r_void
+op_star
+comma
+r_const
+r_void
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_char
+op_star
+id|strncpy
+c_func
+(paren
+r_char
+op_star
+comma
+r_const
+r_char
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|strcmp
+c_func
+(paren
+r_const
+r_char
+op_star
+comma
+r_const
+r_char
+op_star
+)paren
+suffix:semicolon
+DECL|function|memchr
+r_static
 r_inline
 r_void
 op_star
@@ -92,14 +154,15 @@ id|__asm__
 id|__volatile__
 (paren
 l_string|&quot;   lr    0,%2&bslash;n&quot;
+l_string|&quot;   lr    1,%1&bslash;n&quot;
 l_string|&quot;   la    %0,0(%3,%1)&bslash;n&quot;
-l_string|&quot;0: srst  %0,%1&bslash;n&quot;
+l_string|&quot;0: srst  %0,1&bslash;n&quot;
 l_string|&quot;   jo    0b&bslash;n&quot;
 l_string|&quot;   brc   13,1f&bslash;n&quot;
 l_string|&quot;   slr   %0,%0&bslash;n&quot;
 l_string|&quot;1:&quot;
 suffix:colon
-l_string|&quot;=a&quot;
+l_string|&quot;=&amp;a&quot;
 (paren
 id|ptr
 )paren
@@ -122,6 +185,8 @@ suffix:colon
 l_string|&quot;cc&quot;
 comma
 l_string|&quot;0&quot;
+comma
+l_string|&quot;1&quot;
 )paren
 suffix:semicolon
 r_return
@@ -129,7 +194,7 @@ id|ptr
 suffix:semicolon
 )brace
 DECL|function|strcpy
-r_extern
+r_static
 id|__inline__
 r_char
 op_star
@@ -182,7 +247,7 @@ id|tmp
 suffix:semicolon
 )brace
 DECL|function|strlen
-r_extern
+r_static
 id|__inline__
 r_int
 id|strlen
@@ -227,7 +292,7 @@ id|len
 suffix:semicolon
 )brace
 DECL|function|strcat
-r_extern
+r_static
 id|__inline__
 r_char
 op_star
@@ -283,6 +348,15 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
+r_extern
+r_void
+op_star
+id|alloca
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __S390_STRING_H_ */
 eof

@@ -32,7 +32,7 @@ id|real_address
 suffix:semicolon
 id|__asm__
 (paren
-l_string|&quot;   lra    %0,0(0,%1)&bslash;n&quot;
+l_string|&quot;   lra    %0,0(%1)&bslash;n&quot;
 l_string|&quot;   jz     0f&bslash;n&quot;
 l_string|&quot;   sr     %0,%0&bslash;n&quot;
 l_string|&quot;0:&quot;

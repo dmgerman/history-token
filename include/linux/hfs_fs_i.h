@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * linux/include/linux/hfs_fs_i.h&n; *&n; * Copyright (C) 1995, 1996  Paul H. Hargrove&n; * This file may be distributed under the terms of the GNU Public License.&n; *&n; * This file defines the type (struct hfs_inode_info) and the two&n; * subordinate types hfs_extent and hfs_file.&n; */
+multiline_comment|/* &n; * linux/include/linux/hfs_fs_i.h&n; *&n; * Copyright (C) 1995, 1996  Paul H. Hargrove&n; * This file may be distributed under the terms of the GNU General Public License.&n; *&n; * This file defines the type (struct hfs_inode_info) and the two&n; * subordinate types hfs_extent and hfs_file.&n; */
 macro_line|#ifndef _LINUX_HFS_FS_I_H
 DECL|macro|_LINUX_HFS_FS_I_H
 mdefine_line|#define _LINUX_HFS_FS_I_H

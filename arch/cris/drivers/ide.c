@@ -1825,7 +1825,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* Etrax will set busy = 1 until the multi pio transfer has finished&n;&t; * and tr_rdy = 1 after each succesful word transfer. &n;&t; * When the last byte has been transfered Etrax will first set tr_tdy = 1 &n;&t; * and then busy = 0 (not in the same cycle). If we read busy before it&n;&t; * has been set to 0 we will think that we should transfer more bytes &n;&t; * and then tr_rdy would be 0 forever. This is solved by checking busy&n;&t; * in the inner loop.&n;&t; */
+multiline_comment|/* Etrax will set busy = 1 until the multi pio transfer has finished&n;&t; * and tr_rdy = 1 after each succesful word transfer. &n;&t; * When the last byte has been transferred Etrax will first set tr_tdy = 1 &n;&t; * and then busy = 0 (not in the same cycle). If we read busy before it&n;&t; * has been set to 0 we will think that we should transfer more bytes &n;&t; * and then tr_rdy would be 0 forever. This is solved by checking busy&n;&t; * in the inner loop.&n;&t; */
 r_do
 (brace
 op_star

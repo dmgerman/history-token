@@ -15,9 +15,6 @@ r_typedef
 id|s390_regs
 id|elf_gregset_t
 suffix:semicolon
-multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
-DECL|macro|elf_check_arch
-mdefine_line|#define elf_check_arch(x) ((x)-&gt;e_machine == EM_S390) 
 multiline_comment|/*&n; * These are used to set parameters in the core dumps.&n; */
 DECL|macro|ELF_CLASS
 mdefine_line|#define ELF_CLASS&t;ELFCLASS32
@@ -25,6 +22,9 @@ DECL|macro|ELF_DATA
 mdefine_line|#define ELF_DATA&t;ELFDATA2MSB
 DECL|macro|ELF_ARCH
 mdefine_line|#define ELF_ARCH&t;EM_S390
+multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
+DECL|macro|elf_check_arch
+mdefine_line|#define elf_check_arch(x) &bslash;&n;&t;((x)-&gt;e_machine == ELF_ARCH &amp;&amp; (x)-&gt;e_ident[EI_CLASS] == ELF_CLASS) 
 multiline_comment|/* For SVR4/S390 the function pointer to be registered with `atexit` is&n;   passed in R14. */
 DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(_r) &bslash;&n;&t;_r-&gt;gprs[14] = 0
@@ -47,7 +47,7 @@ DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM (NULL)
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
-mdefine_line|#define SET_PERSONALITY(ex, ibcs2) &bslash;&n;&t;current-&gt;personality = (ibcs2 ? PER_SVR4 : PER_LINUX)
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality((ibcs2)?PER_SVR4:PER_LINUX)
 macro_line|#endif
 macro_line|#endif
 eof

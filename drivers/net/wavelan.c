@@ -10214,12 +10214,16 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Keep statistics up to date */
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
 id|lp-&gt;stats.rx_bytes
 op_add_assign
-id|skb-&gt;len
+id|sksize
 suffix:semicolon
 macro_line|#ifdef DEBUG_RX_TRACE
 id|printk

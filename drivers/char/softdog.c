@@ -21,7 +21,6 @@ op_assign
 id|TIMER_MARGIN
 suffix:semicolon
 multiline_comment|/* in seconds */
-macro_line|#ifdef MODULE
 id|MODULE_PARM
 c_func
 (paren
@@ -30,7 +29,6 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; *&t;Our timer&n; */
 r_static
 r_void
@@ -301,11 +299,10 @@ id|watchdog_info
 id|ident
 op_assign
 (brace
-l_int|0
-comma
-l_int|0
-comma
+id|identity
+suffix:colon
 l_string|&quot;Software Watchdog&quot;
+comma
 )brace
 suffix:semicolon
 r_switch
@@ -432,13 +429,32 @@ id|miscdevice
 id|softdog_miscdev
 op_assign
 (brace
+id|minor
+suffix:colon
 id|WATCHDOG_MINOR
 comma
+id|name
+suffix:colon
 l_string|&quot;watchdog&quot;
 comma
+id|fops
+suffix:colon
 op_amp
 id|softdog_fops
+comma
 )brace
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;Software Watchdog Timer: 0.05, timer margin: %d sec&bslash;n&quot;
 suffix:semicolon
 DECL|function|watchdog_init
 r_static
@@ -473,7 +489,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Software Watchdog Timer: 0.05, timer margin: %d sec&bslash;n&quot;
+id|banner
 comma
 id|soft_margin
 )paren

@@ -4148,6 +4148,10 @@ id|skb
 )paren
 suffix:semicolon
 )brace
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|streamer_priv-&gt;streamer_stats.rx_packets
 op_increment
 suffix:semicolon

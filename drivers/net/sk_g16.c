@@ -1,4 +1,4 @@
-multiline_comment|/*-&n; * Copyright (C) 1994 by PJD Weichmann &amp; SWS Bern, Switzerland&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU Public License, incorporated herein by reference.&n; *&n; * Module         : sk_g16.c&n; *&n; * Version        : $Revision: 1.1 $&n; *&n; * Author         : Patrick J.D. Weichmann&n; *&n; * Date Created   : 94/05/26&n; * Last Updated   : $Date: 1994/06/30 16:25:15 $&n; *&n; * Description    : Schneider &amp; Koch G16 Ethernet Device Driver for&n; *                  Linux Kernel &gt;= 1.1.22&n; * Update History :&n; *                  Paul Gortmaker, 03/97: Fix for v2.1.x to use read{b,w}&n; *                  write{b,w} and memcpy -&gt; memcpy_{to,from}io&n; *&n; *&t;&t;    Jeff Garzik, 06/2000, Modularize&n; *&n;-*/
+multiline_comment|/*-&n; * Copyright (C) 1994 by PJD Weichmann &amp; SWS Bern, Switzerland&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Module         : sk_g16.c&n; *&n; * Version        : $Revision: 1.1 $&n; *&n; * Author         : Patrick J.D. Weichmann&n; *&n; * Date Created   : 94/05/26&n; * Last Updated   : $Date: 1994/06/30 16:25:15 $&n; *&n; * Description    : Schneider &amp; Koch G16 Ethernet Device Driver for&n; *                  Linux Kernel &gt;= 1.1.22&n; * Update History :&n; *                  Paul Gortmaker, 03/97: Fix for v2.1.x to use read{b,w}&n; *                  write{b,w} and memcpy -&gt; memcpy_{to,from}io&n; *&n; *&t;&t;    Jeff Garzik, 06/2000, Modularize&n; *&n;-*/
 DECL|variable|rcsid
 r_static
 r_const
@@ -16,7 +16,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt; 
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -2993,7 +2993,7 @@ id|MODE_NORMAL
 )paren
 suffix:semicolon
 multiline_comment|/* Reinit LANCE */
-id|netif_start_queue
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -3917,6 +3917,10 @@ id|RX_OWN
 comma
 id|rmdp-&gt;u.s.status
 )paren
+suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 id|p-&gt;stats.rx_packets
 op_increment

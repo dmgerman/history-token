@@ -1706,8 +1706,6 @@ r_struct
 id|mm_struct
 op_star
 id|active_mm
-op_assign
-id|current-&gt;active_mm
 suffix:semicolon
 r_if
 c_cond
@@ -1765,6 +1763,10 @@ c_func
 (paren
 id|current
 )paren
+suffix:semicolon
+id|active_mm
+op_assign
+id|current-&gt;active_mm
 suffix:semicolon
 id|current-&gt;mm
 op_assign

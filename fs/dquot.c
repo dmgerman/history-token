@@ -6993,6 +6993,7 @@ id|type
 op_eq
 id|GRPQUOTA
 op_logical_and
+op_logical_neg
 id|in_egroup_p
 c_func
 (paren

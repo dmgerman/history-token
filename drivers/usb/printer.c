@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * printer.c  Version 0.6&n; *&n; * Copyright (c) 1999 Michael Gee&t;&lt;michael@linuxspecific.com&gt;&n; * Copyright (c) 1999 Pavel Machek&t;&lt;pavel@suse.cz&gt;&n; * Copyright (c) 2000 Randy Dunlap&t;&lt;randy.dunlap@intel.com&gt;&n; * Copyright (c) 2000 Vojtech Pavlik&t;&lt;vojtech@suse.cz&gt;&n; *&n; * USB Printer Device Class driver for USB printers and printer cables&n; *&n; * Sponsored by SuSE&n; *&n; * ChangeLog:&n; *&t;v0.1 - thorough cleaning, URBification, almost a rewrite&n; *&t;v0.2 - some more cleanups&n; *&t;v0.3 - cleaner again, waitqueue fixes&n; *&t;v0.4 - fixes in unidirectional mode&n; *&t;v0.5 - add DEVICE_ID string support&n; *&t;v0.6 - never time out&n; */
+multiline_comment|/*&n; * printer.c  Version 0.6&n; *&n; * Copyright (c) 1999 Michael Gee&t;&lt;michael@linuxspecific.com&gt;&n; * Copyright (c) 1999 Pavel Machek&t;&lt;pavel@suse.cz&gt;&n; * Copyright (c) 2000 Randy Dunlap&t;&lt;randy.dunlap@intel.com&gt;&n; * Copyright (c) 2000 Vojtech Pavlik&t;&lt;vojtech@suse.cz&gt;&n; *&n; * USB Printer Device Class driver for USB printers and printer cables&n; *&n; * Sponsored by SuSE&n; *&n; * ChangeLog:&n; *&t;v0.1 - thorough cleaning, URBification, almost a rewrite&n; *&t;v0.2 - some more cleanups&n; *&t;v0.3 - cleaner again, waitqueue fixes&n; *&t;v0.4 - fixes in unidirectional mode&n; *&t;v0.5 - add DEVICE_ID string support&n; *&t;v0.6 - never time out&n; *&t;v0.? - fixed bulk-IN read and poll (David Paschal, paschal@rcsis.com)&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -805,6 +805,7 @@ suffix:semicolon
 r_return
 (paren
 (paren
+op_logical_neg
 id|usblp-&gt;bidir
 op_logical_or
 id|usblp-&gt;readurb.status
@@ -1529,6 +1530,10 @@ suffix:semicolon
 id|usblp-&gt;readurb.dev
 op_assign
 id|usblp-&gt;dev
+suffix:semicolon
+id|usblp-&gt;readcount
+op_assign
+l_int|0
 suffix:semicolon
 id|usb_submit_urb
 c_func

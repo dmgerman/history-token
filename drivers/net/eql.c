@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Equalizer Load-balancer for serial network interfaces.&n; *&n; * (c) Copyright 1995 Simon &quot;Guru Aleph-Null&quot; Janes&n; * NCM: Network and Communications Management, Inc.&n; *&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU Public License, incorporated herein by reference.&n; * &n; * The author may be reached as simon@ncm.com, or C/O&n; *    NCM&n; *    Attn: Simon Janes&n; *    6803 Whittier Ave&n; *    McLean VA 22101&n; *    Phone: 1-703-847-0040 ext 103&n; */
+multiline_comment|/*&n; * Equalizer Load-balancer for serial network interfaces.&n; *&n; * (c) Copyright 1995 Simon &quot;Guru Aleph-Null&quot; Janes&n; * NCM: Network and Communications Management, Inc.&n; *&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU General Public License, incorporated herein by reference.&n; * &n; * The author may be reached as simon@ncm.com, or C/O&n; *    NCM&n; *    Attn: Simon Janes&n; *    6803 Whittier Ave&n; *    McLean VA 22101&n; *    Phone: 1-703-847-0040 ext 103&n; */
 DECL|variable|version
 r_static
 r_const

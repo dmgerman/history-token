@@ -136,11 +136,9 @@ op_assign
 id|CHECKSUM_UNNECESSARY
 suffix:semicolon
 macro_line|#endif
-id|netif_rx
-c_func
-(paren
-id|skb
-)paren
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 id|stats-&gt;rx_bytes
 op_add_assign
@@ -155,6 +153,12 @@ op_increment
 suffix:semicolon
 id|stats-&gt;tx_packets
 op_increment
+suffix:semicolon
+id|netif_rx
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 r_return
 l_int|0

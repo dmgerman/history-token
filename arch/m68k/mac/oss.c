@@ -382,7 +382,7 @@ r_else
 multiline_comment|/* FIXME: error check here? */
 )brace
 )brace
-multiline_comment|/*&n; * Nubus IRQ handler, OSS style&n; *&n; * Unlike the VIA/RBV this is on its own autovector interupt level.&n; */
+multiline_comment|/*&n; * Nubus IRQ handler, OSS style&n; *&n; * Unlike the VIA/RBV this is on its own autovector interrupt level.&n; */
 DECL|function|oss_nubus_irq
 r_void
 id|oss_nubus_irq

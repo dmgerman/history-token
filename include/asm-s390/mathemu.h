@@ -29,7 +29,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|math_emu_ldr
 c_func
 (paren
@@ -38,7 +38,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|math_emu_ler
 c_func
 (paren
@@ -47,7 +47,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|math_emu_std
 c_func
 (paren
@@ -60,7 +60,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|math_emu_ld
 c_func
 (paren
@@ -73,7 +73,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|math_emu_ste
 c_func
 (paren
@@ -86,7 +86,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|math_emu_le
 c_func
 (paren

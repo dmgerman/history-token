@@ -1,4 +1,4 @@
-multiline_comment|/* isa-skeleton.c: A network driver outline for linux.&n; *&n; *&t;Written 1993-94 by Donald Becker.&n; *&n; *&t;Copyright 1993 United States Government as represented by the&n; *&t;Director, National Security Agency.&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU Public License, incorporated herein by reference.&n; *&n; *&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n; *&t;Center of Excellence in Space Data and Information Sciences&n; *&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n; *&n; *&t;This file is an outline for writing a network device driver for the&n; *&t;the Linux operating system.&n; *&n; *&t;To write (or understand) a driver, have a look at the &quot;loopback.c&quot; file to&n; *&t;get a feel of what is going on, and then use the code below as a skeleton&n; *&t;for the new driver.&n; *&n; */
+multiline_comment|/* isa-skeleton.c: A network driver outline for linux.&n; *&n; *&t;Written 1993-94 by Donald Becker.&n; *&n; *&t;Copyright 1993 United States Government as represented by the&n; *&t;Director, National Security Agency.&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU General Public License, incorporated herein by reference.&n; *&n; *&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n; *&t;Center of Excellence in Space Data and Information Sciences&n; *&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n; *&n; *&t;This file is an outline for writing a network device driver for the&n; *&t;the Linux operating system.&n; *&n; *&t;To write (or understand) a driver, have a look at the &quot;loopback.c&quot; file to&n; *&t;get a feel of what is going on, and then use the code below as a skeleton&n; *&t;for the new driver.&n; *&n; */
 DECL|variable|version
 r_static
 r_const
@@ -18,7 +18,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -1749,8 +1749,16 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
+suffix:semicolon
+id|lp-&gt;stats.rx_bytes
+op_add_assign
+id|pkt_len
 suffix:semicolon
 )brace
 )brace
