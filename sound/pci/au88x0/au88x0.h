@@ -609,6 +609,19 @@ r_int
 id|adbdma
 )paren
 suffix:semicolon
+r_static
+r_void
+id|vortex_adbdma_resetup
+c_func
+(paren
+id|vortex_t
+op_star
+id|vortex
+comma
+r_int
+id|adbdma
+)paren
+suffix:semicolon
 macro_line|#ifndef CHIP_AU8810
 r_static
 r_void
