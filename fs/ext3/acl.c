@@ -1978,11 +1978,9 @@ c_cond
 (paren
 id|list
 op_logical_and
-(paren
 id|size
 op_le
 id|list_len
-)paren
 )paren
 id|memcpy
 c_func
@@ -2054,11 +2052,9 @@ c_cond
 (paren
 id|list
 op_logical_and
-(paren
 id|size
 op_le
 id|list_len
-)paren
 )paren
 id|memcpy
 c_func

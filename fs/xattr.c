@@ -1707,11 +1707,11 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|strcmp_prefix
 r_static
 r_const
 r_char
 op_star
+DECL|function|strcmp_prefix
 id|strcmp_prefix
 c_func
 (paren

@@ -76,11 +76,9 @@ c_cond
 (paren
 id|list
 op_logical_and
-(paren
 id|total_len
 op_le
 id|list_size
-)paren
 )paren
 (brace
 id|memcpy
