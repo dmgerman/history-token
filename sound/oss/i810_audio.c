@@ -79,6 +79,10 @@ macro_line|#ifndef PCI_DEVICE_ID_AMD_8111_AC97
 DECL|macro|PCI_DEVICE_ID_AMD_8111_AC97
 mdefine_line|#define PCI_DEVICE_ID_AMD_8111_AC97&t;0x746d
 macro_line|#endif
+DECL|macro|MODULOP2
+mdefine_line|#define MODULOP2(a, b) ((a) &amp; ((b) - 1))
+DECL|macro|MASKP2
+mdefine_line|#define MASKP2(a, b) ((a) &amp; ~((b) - 1))
 DECL|variable|ftsodell
 r_static
 r_int
@@ -185,7 +189,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * we have 3 separate dma engines.  pcm in, pcm out, and mic.&n; * each dma engine has controlling registers.  These goofy&n; * names are from the datasheet, but make it easy to write&n; * code while leafing through it.&n; *&n; * ICH4 has 6 dma engines, pcm in, pcm out, mic, pcm in 2, &n; * mic in 2, s/pdif.   Of special interest is the fact that&n; * the upper 3 DMA engines on the ICH4 *must* be accessed&n; * via mmio access instead of pio access.&n; */
 DECL|macro|ENUM_ENGINE
-mdefine_line|#define ENUM_ENGINE(PRE,DIG) &t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;enum {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;PRE##_BDBAR =&t;0x##DIG##0,&t;&t;/* Buffer Descriptor list Base Address */&t;&bslash;&n;&t;PRE##_CIV =&t;0x##DIG##4,&t;&t;/* Current Index Value */&t;&t;&t;&bslash;&n;&t;PRE##_LVI =&t;0x##DIG##5,&t;&t;/* Last Valid Index */&t;&t;&t;&t;&bslash;&n;&t;PRE##_SR =&t;0x##DIG##6,&t;&t;/* Status Register */&t;&t;&t;&t;&bslash;&n;&t;PRE##_PICB =&t;0x##DIG##8,&t;&t;/* Position In Current Buffer */&t;&t;&bslash;&n;&t;PRE##_PIV =&t;0x##DIG##a,&t;&t;/* Prefetched Index Value */&t;&t;&t;&bslash;&n;&t;PRE##_CR =&t;0x##DIG##b&t;&t;/* Control Register */&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define ENUM_ENGINE(PRE,DIG) &t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;enum {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;PRE##_BASE =&t;0x##DIG##0,&t;&t;/* Base Address */&t;&t;&t;&t;&bslash;&n;&t;PRE##_BDBAR =&t;0x##DIG##0,&t;&t;/* Buffer Descriptor list Base Address */&t;&bslash;&n;&t;PRE##_CIV =&t;0x##DIG##4,&t;&t;/* Current Index Value */&t;&t;&t;&bslash;&n;&t;PRE##_LVI =&t;0x##DIG##5,&t;&t;/* Last Valid Index */&t;&t;&t;&t;&bslash;&n;&t;PRE##_SR =&t;0x##DIG##6,&t;&t;/* Status Register */&t;&t;&t;&t;&bslash;&n;&t;PRE##_PICB =&t;0x##DIG##8,&t;&t;/* Position In Current Buffer */&t;&t;&bslash;&n;&t;PRE##_PIV =&t;0x##DIG##a,&t;&t;/* Prefetched Index Value */&t;&t;&t;&bslash;&n;&t;PRE##_CR =&t;0x##DIG##b&t;&t;/* Control Register */&t;&t;&t;&t;&bslash;&n;}
 id|ENUM_ENGINE
 c_func
 (paren
@@ -1235,9 +1239,13 @@ suffix:semicolon
 multiline_comment|/* extract register offset from codec struct */
 DECL|macro|IO_REG_OFF
 mdefine_line|#define IO_REG_OFF(codec) (((struct i810_card *) codec-&gt;private_data)-&gt;ac97_id_map[codec-&gt;id])
+DECL|macro|GET_CIV
+mdefine_line|#define GET_CIV(port) MODULOP2(inb((port) + OFF_CIV), SG_LEN)
+DECL|macro|GET_LVI
+mdefine_line|#define GET_LVI(port) MODULOP2(inb((port) + OFF_LVI), SG_LEN)
 multiline_comment|/* set LVI from CIV */
 DECL|macro|CIV_TO_LVI
-mdefine_line|#define CIV_TO_LVI(port, off) outb((inb(port+OFF_CIV)+off) &amp; 31, port+OFF_LVI)
+mdefine_line|#define CIV_TO_LVI(port, off) &bslash;&n;&t;outb(MODULOP2(GET_CIV((port)) + (off), SG_LEN), (port) + OFF_LVI)
 DECL|variable|devs
 r_static
 r_struct
@@ -2442,15 +2450,11 @@ r_do
 (brace
 id|civ
 op_assign
-id|inb
+id|GET_CIV
 c_func
 (paren
 id|port
-op_plus
-id|OFF_CIV
 )paren
-op_amp
-l_int|31
 suffix:semicolon
 id|offset
 op_assign
@@ -2483,16 +2487,10 @@ c_loop
 (paren
 id|civ
 op_ne
-(paren
-id|inb
+id|GET_CIV
 c_func
 (paren
 id|port
-op_plus
-id|OFF_CIV
-)paren
-op_amp
-l_int|31
 )paren
 op_logical_or
 id|offset
@@ -4258,28 +4256,20 @@ multiline_comment|/* last valid sg entry */
 r_if
 c_cond
 (paren
-(paren
-id|inb
+id|GET_CIV
 c_func
 (paren
 id|state-&gt;card-&gt;iobase
 op_plus
-id|PI_CIV
-)paren
-op_amp
-l_int|31
+id|PI_BASE
 )paren
 op_ne
-(paren
-id|inb
+id|GET_LVI
 c_func
 (paren
 id|state-&gt;card-&gt;iobase
 op_plus
-id|PI_LVI
-)paren
-op_amp
-l_int|31
+id|PI_BASE
 )paren
 )paren
 (brace
@@ -4383,28 +4373,20 @@ multiline_comment|/* last valid sg entry */
 r_if
 c_cond
 (paren
-(paren
-id|inb
+id|GET_CIV
 c_func
 (paren
 id|state-&gt;card-&gt;iobase
 op_plus
-id|PO_CIV
-)paren
-op_amp
-l_int|31
+id|PO_BASE
 )paren
 op_ne
-(paren
-id|inb
+id|GET_LVI
 c_func
 (paren
 id|state-&gt;card-&gt;iobase
 op_plus
-id|PO_LVI
-)paren
-op_amp
-l_int|31
+id|PO_BASE
 )paren
 )paren
 (brace
@@ -4421,25 +4403,21 @@ c_func
 l_string|&quot;i810_audio: CIV %d, LVI %d, hwptr %x, &quot;
 l_string|&quot;count %d&bslash;n&quot;
 comma
-id|inb
+id|GET_CIV
 c_func
 (paren
 id|state-&gt;card-&gt;iobase
 op_plus
-id|PO_CIV
+id|PO_BASE
 )paren
-op_amp
-l_int|31
 comma
-id|inb
+id|GET_LVI
 c_func
 (paren
 id|state-&gt;card-&gt;iobase
 op_plus
-id|PO_LVI
+id|PO_BASE
 )paren
-op_amp
-l_int|31
 comma
 id|dmabuf-&gt;hwptr
 comma
@@ -13250,7 +13228,8 @@ id|card-&gt;iobase
 op_plus
 id|dmabuf-&gt;write_channel-&gt;port
 comma
-l_int|31
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 id|local_irq_save
