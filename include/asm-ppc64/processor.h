@@ -1162,7 +1162,7 @@ mdefine_line|#define KSTK_EIP(tsk)  ((tsk)-&gt;thread.regs? (tsk)-&gt;thread.reg
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)  ((tsk)-&gt;thread.regs? (tsk)-&gt;thread.regs-&gt;gpr[1]: 0)
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()     do { } while (0)
+mdefine_line|#define cpu_relax()     barrier()
 multiline_comment|/*&n; * Prefetch macros.&n; */
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH

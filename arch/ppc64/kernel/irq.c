@@ -505,6 +505,20 @@ r_int
 id|irq
 )paren
 (brace
+multiline_comment|/* is there anything to synchronize with? */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|action
+)paren
+r_return
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -517,18 +531,11 @@ id|status
 op_amp
 id|IRQ_INPROGRESS
 )paren
-(brace
-id|barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 id|cpu_relax
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif /* CONFIG_SMP */
 multiline_comment|/* XXX Make this into free_irq() - Anton */
@@ -2154,14 +2161,6 @@ id|regs
 )paren
 (brace
 r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-r_int
 id|irq
 comma
 id|first
@@ -2310,20 +2309,6 @@ id|regs
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|softirq_pending
-c_func
-(paren
-id|cpu
-)paren
-)paren
-id|do_softirq
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
