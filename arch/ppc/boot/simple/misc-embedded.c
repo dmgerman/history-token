@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Originally adapted by Gary Thomas.  Much additional wo
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/ibm4xx.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;

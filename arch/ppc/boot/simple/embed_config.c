@@ -2062,6 +2062,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* WILLOW */
+macro_line|#ifdef CONFIG_XILINX_ML300
 r_void
 DECL|function|embed_config
 id|embed_config
@@ -2161,6 +2162,7 @@ op_assign
 id|XPAR_PLB_CLOCK_FREQ_HZ
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_XILINX_ML300 */
 macro_line|#ifdef CONFIG_IBM_OPENBIOS
 multiline_comment|/* This could possibly work for all treeboot roms.&n;*/
 macro_line|#if defined(CONFIG_ASH) || defined(CONFIG_BEECH)
@@ -2585,6 +2587,10 @@ multiline_comment|/* wait for the reset */
 id|out_be32
 c_func
 (paren
+(paren
+r_int
+op_star
+)paren
 id|EMAC0_BASE
 comma
 l_int|0x20000000
