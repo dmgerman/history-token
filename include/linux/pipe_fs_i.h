@@ -49,6 +49,12 @@ id|bufs
 id|PIPE_BUFFERS
 )braket
 suffix:semicolon
+DECL|member|tmp_page
+r_struct
+id|page
+op_star
+id|tmp_page
+suffix:semicolon
 DECL|member|start
 r_int
 r_int
