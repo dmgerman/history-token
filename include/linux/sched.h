@@ -1651,6 +1651,21 @@ id|tsk
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|FASTCALL
+c_func
+(paren
+id|wake_up_process_kick
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|FASTCALL
 c_func
@@ -2481,16 +2496,6 @@ macro_line|#else
 DECL|macro|wait_task_inactive
 mdefine_line|#define wait_task_inactive(p)&t;do { } while (0)
 macro_line|#endif
-r_extern
-r_void
-id|kick_if_running
-c_func
-(paren
-id|task_t
-op_star
-id|p
-)paren
-suffix:semicolon
 DECL|macro|remove_parent
 mdefine_line|#define remove_parent(p)&t;list_del_init(&amp;(p)-&gt;sibling)
 DECL|macro|add_parent
