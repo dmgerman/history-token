@@ -258,10 +258,10 @@ id|kernel_symbol
 op_star
 id|syms
 suffix:semicolon
-DECL|member|num_ksyms
+DECL|member|num_syms
 r_int
 r_int
-id|num_ksyms
+id|num_syms
 suffix:semicolon
 DECL|member|crcs
 r_const
@@ -393,10 +393,10 @@ id|Elf_Sym
 op_star
 id|symtab
 suffix:semicolon
-DECL|member|num_syms
+DECL|member|num_symtab
 r_int
 r_int
-id|num_syms
+id|num_symtab
 suffix:semicolon
 DECL|member|strtab
 r_char

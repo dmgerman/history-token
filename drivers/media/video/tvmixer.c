@@ -409,7 +409,7 @@ c_func
 (paren
 id|info.name
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 comma
 r_sizeof
 (paren
@@ -480,7 +480,7 @@ c_func
 (paren
 id|info.name
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 comma
 r_sizeof
 (paren
@@ -1261,7 +1261,7 @@ c_func
 (paren
 l_string|&quot;tvmixer: adapter %s&bslash;n&quot;
 comma
-id|adap-&gt;name
+id|adap-&gt;dev.name
 )paren
 suffix:semicolon
 r_for
@@ -1360,7 +1360,7 @@ c_func
 (paren
 l_string|&quot;tvmixer: %s is not a tv card&bslash;n&quot;
 comma
-id|client-&gt;adapter-&gt;name
+id|client-&gt;adapter-&gt;dev.name
 )paren
 suffix:semicolon
 r_return
@@ -1373,7 +1373,7 @@ c_func
 (paren
 l_string|&quot;tvmixer: debug: %s&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 )paren
 suffix:semicolon
 multiline_comment|/* unregister ?? */
@@ -1441,7 +1441,7 @@ c_func
 (paren
 l_string|&quot;tvmixer: %s unregistered (#1)&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 )paren
 suffix:semicolon
 r_return
@@ -1568,7 +1568,7 @@ c_func
 (paren
 l_string|&quot;tvmixer: %s: VIDIOCGAUDIO failed&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 )paren
 suffix:semicolon
 r_return
@@ -1598,7 +1598,7 @@ c_func
 (paren
 l_string|&quot;tvmixer: %s: has no volume control&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 )paren
 suffix:semicolon
 r_return
@@ -1670,9 +1670,9 @@ c_func
 (paren
 l_string|&quot;tvmixer: %s (%s) registered with minor %d&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 comma
-id|client-&gt;adapter-&gt;name
+id|client-&gt;adapter-&gt;dev.name
 comma
 id|minor
 )paren
@@ -1798,7 +1798,7 @@ id|devices
 id|i
 )braket
 dot
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 )brace
