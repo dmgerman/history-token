@@ -36,16 +36,6 @@ macro_line|#ifdef CONFIG_NET_RADIO
 macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* Note : will define WIRELESS_EXT */
 macro_line|#include &lt;net/iw_handler.h&gt;
 macro_line|#endif&t;/* CONFIG_NET_RADIO */
-macro_line|#ifdef CONFIG_PLIP
-r_extern
-r_int
-id|plip_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &lt;asm/current.h&gt;
 multiline_comment|/* This define, if set, will randomly drop a packet when congestion&n; * is more than moderate.  It helps fairness in the multi-interface&n; * case when one of them is a hog, but it kills performance for the&n; * single interface case so it is off now by default.&n; */
 DECL|macro|RAND_LIE
