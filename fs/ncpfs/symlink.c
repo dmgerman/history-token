@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/ncpfs/symlink.c&n; *&n; *  Code for allowing symbolic links on NCPFS (i.e. NetWare)&n; *  Symbolic links are not supported on native NetWare, so we use an&n; *  infrequently-used flag (Sh) and store a two-word magic header in&n; *  the file to make sure we don&squot;t accidentally use a non-link file&n; *  as a link.&n; *&n; *  When using the NFS namespace, we set the mode to indicate a symlink and&n; *  don&squot;t bother with the magic numbers.&n; *&n; *  from linux/fs/ext2/symlink.c&n; *&n; *  Copyright (C) 1998-99, Frank A. Vorstenbosch&n; *&n; *  ncpfs symlink handling code&n; *  NLS support (c) 1999 Petr Vandrovec&n; *  Modified 2000 Ben Harris, University of Cambridge for NFS NS meta-info&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_NCPFS_EXTRAS) || defined(CONFIG_NCPFS_NFS_NS)
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -399,7 +398,6 @@ comma
 id|symname
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NCPFS_NFS_NS
 r_if
 c_cond
 (paren
@@ -426,7 +424,6 @@ op_assign
 l_int|0
 suffix:semicolon
 r_else
-macro_line|#endif
 macro_line|#ifdef CONFIG_NCPFS_EXTRAS
 r_if
 c_cond
@@ -725,6 +722,5 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* ----- EOF ----- */
 eof
