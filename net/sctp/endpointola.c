@@ -442,6 +442,10 @@ comma
 r_return
 )paren
 suffix:semicolon
+id|ep-&gt;base.sk-&gt;state
+op_assign
+id|SCTP_SS_CLOSED
+suffix:semicolon
 multiline_comment|/* Unlink this endpoint, so we can&squot;t find it again! */
 id|sctp_unhash_endpoint
 c_func
