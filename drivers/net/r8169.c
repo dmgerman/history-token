@@ -113,8 +113,6 @@ suffix:semicolon
 multiline_comment|/* MAC address length*/
 DECL|macro|MAC_ADDR_LEN
 mdefine_line|#define MAC_ADDR_LEN&t;6
-DECL|macro|TX_FIFO_THRESH
-mdefine_line|#define TX_FIFO_THRESH 256&t;/* In bytes */
 DECL|macro|RX_FIFO_THRESH
 mdefine_line|#define RX_FIFO_THRESH&t;7&t;/* 7 means NO threshold, Rx buffer level before first PCI xfer.  */
 DECL|macro|RX_DMA_BURST
