@@ -49,6 +49,8 @@ DECL|macro|HOSTNO
 mdefine_line|#define&t;HOSTNO&t;&t;instance-&gt;host_no
 DECL|macro|H_NO
 mdefine_line|#define&t;H_NO(cmd)&t;(cmd)-&gt;host-&gt;host_no
+DECL|macro|SGADDR
+mdefine_line|#define SGADDR(buffer) (void *)(((unsigned long)page_address((buffer)-&gt;page)) + &bslash;&n;&t;&t;&t;(buffer)-&gt;offset)
 macro_line|#ifdef SUPPORT_TAGS
 multiline_comment|/*&n; * Functions for handling tagged queuing&n; * =====================================&n; *&n; * ++roman (01/96): Now I&squot;ve implemented SCSI-2 tagged queuing. Some notes:&n; *&n; * Using consecutive numbers for the tags is no good idea in my eyes. There&n; * could be wrong re-usings if the counter (8 bit!) wraps and some early&n; * command has been preempted for a long time. My solution: a bitfield for&n; * remembering used tags.&n; *&n; * There&squot;s also the problem that each target has a certain queue size, but we&n; * cannot know it in advance :-( We just see a QUEUE_FULL status being&n; * returned. So, in this case, the driver internal queue size assumption is&n; * reduced to the number of active tags if QUEUE_FULL is returned by the&n; * target. The command is returned to the mid-level, but with status changed&n; * to BUSY, since --as I&squot;ve seen-- the mid-level can&squot;t handle QUEUE_FULL&n; * correctly.&n; *&n; * We&squot;re also not allowed running tagged commands as long as an untagged&n; * command is active. And REQUEST SENSE commands after a contingent allegiance&n; * condition _must_ be untagged. To keep track whether an untagged command has&n; * been issued, the host-&gt;busy array is still employed, as it is without&n; * support for tagged queuing.&n; *&n; * One could suspect that there are possible race conditions between&n; * is_lun_busy(), cmd_get_tag() and cmd_free_tag(). But I think this isn&squot;t the&n; * case: is_lun_busy() and cmd_get_tag() are both called from NCR5380_main(),&n; * which already guaranteed to be running at most once. It is also the only&n; * place where tags/LUNs are allocated. So no other allocation can slip&n; * between that pair, there could only happen a reselection, which can free a&n; * tag, but that doesn&squot;t hurt. Only the sequence in cmd_free_tag() becomes&n; * important: the tag bit must be cleared before &squot;nr_allocated&squot; is decreased.&n; */
 multiline_comment|/* -1 for TAG_NONE is not possible with unsigned char cmd-&gt;tag */
@@ -685,12 +687,17 @@ op_logical_and
 id|virt_to_phys
 c_func
 (paren
+id|SGADDR
+c_func
+(paren
+op_amp
+(paren
 id|cmd-&gt;SCp.buffer
 (braket
 l_int|1
 )braket
-dot
-id|address
+)paren
+)paren
 )paren
 op_eq
 id|endaddr
@@ -702,12 +709,17 @@ c_func
 (paren
 l_string|&quot;VTOP(%p) == %08lx -&gt; merging&bslash;n&quot;
 comma
+id|SGADDR
+c_func
+(paren
+op_amp
+(paren
 id|cmd-&gt;SCp.buffer
 (braket
 l_int|1
 )braket
-dot
-id|address
+)paren
+)paren
 comma
 id|endaddr
 )paren
@@ -795,19 +807,18 @@ op_assign
 r_char
 op_star
 )paren
-id|cmd-&gt;SCp.buffer-&gt;address
+id|SGADDR
+c_func
+(paren
+id|cmd-&gt;SCp.buffer
+)paren
 suffix:semicolon
 id|cmd-&gt;SCp.this_residual
 op_assign
 id|cmd-&gt;SCp.buffer-&gt;length
 suffix:semicolon
 multiline_comment|/* ++roman: Try to merge some scatter-buffers if they are at&n;&t; * contiguous physical addresses.&n;&t; */
-id|merge_contiguous_buffers
-c_func
-(paren
-id|cmd
-)paren
-suffix:semicolon
+singleline_comment|//&t;merge_contiguous_buffers( cmd );
 )brace
 r_else
 (brace
@@ -3464,7 +3475,11 @@ c_cond
 id|sun3scsi_dma_finish
 c_func
 (paren
-id|hostdata-&gt;connected-&gt;request-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|hostdata-&gt;connected-&gt;request
+)paren
 )paren
 )paren
 )paren
@@ -6078,7 +6093,11 @@ id|cmd-&gt;SCp.buffer-&gt;length
 suffix:semicolon
 id|d
 op_assign
-id|cmd-&gt;SCp.buffer-&gt;address
+id|SGADDR
+c_func
+(paren
+id|cmd-&gt;SCp.buffer
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -6113,17 +6132,9 @@ id|cmd
 r_if
 c_cond
 (paren
-(paren
-id|cmd-&gt;request-&gt;cmd
-op_eq
-l_int|0
-)paren
-op_logical_or
-(paren
-id|cmd-&gt;request-&gt;cmd
-op_eq
-l_int|1
-)paren
+id|cmd-&gt;request-&gt;flags
+op_amp
+id|REQ_CMD
 )paren
 (brace
 id|sun3scsi_dma_setup
@@ -6133,7 +6144,11 @@ id|d
 comma
 id|count
 comma
-id|cmd-&gt;request-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|cmd-&gt;request
+)paren
 )paren
 suffix:semicolon
 id|sun3_dma_setup_done
@@ -6280,7 +6295,11 @@ id|cmd-&gt;SCp.buffer-&gt;length
 suffix:semicolon
 id|cmd-&gt;SCp.ptr
 op_assign
-id|cmd-&gt;SCp.buffer-&gt;address
+id|SGADDR
+c_func
+(paren
+id|cmd-&gt;SCp.buffer
+)paren
 suffix:semicolon
 multiline_comment|/* ++roman: Try to merge some scatter-buffers if&n;&t;&t;     * they are at contiguous physical addresses.&n;&t;&t;     */
 singleline_comment|//&t;&t;    merge_contiguous_buffers( cmd );
@@ -8183,7 +8202,11 @@ id|tmp-&gt;SCp.buffer-&gt;length
 suffix:semicolon
 id|d
 op_assign
-id|tmp-&gt;SCp.buffer-&gt;address
+id|SGADDR
+c_func
+(paren
+id|tmp-&gt;SCp.buffer
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -8197,7 +8220,7 @@ op_assign
 id|tmp-&gt;SCp.ptr
 suffix:semicolon
 )brace
-macro_line|#ifdef REAL_DMA&t;&t;
+macro_line|#ifdef REAL_DMA
 multiline_comment|/* setup this command for dma if not already */
 r_if
 c_cond
@@ -8222,7 +8245,11 @@ id|d
 comma
 id|count
 comma
-id|tmp-&gt;request-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|tmp-&gt;request
+)paren
 )paren
 suffix:semicolon
 id|sun3_dma_setup_done

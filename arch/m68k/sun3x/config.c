@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/sun3xprom.h&gt;
 macro_line|#include &lt;asm/sun3ints.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
+macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &quot;time.h&quot;
 DECL|variable|clock_va
 r_volatile
@@ -23,6 +24,16 @@ r_char
 op_star
 id|sun3_intreg
 suffix:semicolon
+r_extern
+r_void
+id|sun3_get_model
+c_func
+(paren
+r_char
+op_star
+id|model
+)paren
+suffix:semicolon
 DECL|function|sun3_leds
 r_void
 id|sun3_leds
@@ -34,25 +45,38 @@ id|i
 )paren
 (brace
 )brace
-multiline_comment|/* should probably detect types of these eventually. */
-DECL|function|sun3x_get_model
+DECL|function|sun3x_get_hardware_list
 r_static
-r_void
-id|sun3x_get_model
+r_int
+id|sun3x_get_hardware_list
 c_func
 (paren
 r_char
 op_star
-id|model
+id|buffer
 )paren
 (brace
+r_int
+id|len
+op_assign
+l_int|0
+suffix:semicolon
+id|len
+op_add_assign
 id|sprintf
 c_func
 (paren
-id|model
+id|buffer
+op_plus
+id|len
 comma
-l_string|&quot;Sun3x&quot;
+l_string|&quot;PROM Revision:&bslash;t%s&bslash;n&quot;
+comma
+id|romvec-&gt;pv_monid
 )paren
+suffix:semicolon
+r_return
+id|len
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Setup the sun3x configuration info&n; */
