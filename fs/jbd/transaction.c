@@ -1538,13 +1538,6 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_list_lock
-)paren
-suffix:semicolon
 multiline_comment|/* We now hold the buffer lock so it is safe to query the buffer&n;&t; * state.  Is the buffer dirty? &n;&t; * &n;&t; * If so, there are two possibilities.  The buffer may be&n;&t; * non-journaled, and undergoing a quite legitimate writeback.&n;&t; * Otherwise, it is journaled, and we don&squot;t expect dirty buffers&n;&t; * in that state (the buffers should be marked JBD_Dirty&n;&t; * instead.)  So either the IO is being done under our own&n;&t; * control and this is a bug, or it&squot;s a third party IO such as&n;&t; * dump(8) (which may leave the buffer scheduled for read ---&n;&t; * ie. locked but not dirty) or tune2fs (which may actually have&n;&t; * the buffer dirtied, ugh.)  */
 r_if
 c_cond
@@ -1556,7 +1549,7 @@ id|bh
 )paren
 )paren
 (brace
-multiline_comment|/* First question: is this buffer already part of the&n;&t;&t; * current transaction or the existing committing&n;&t;&t; * transaction? */
+multiline_comment|/*&n;&t;&t; * First question: is this buffer already part of the current&n;&t;&t; * transaction or the existing committing transaction?&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1629,13 +1622,6 @@ id|handle
 )paren
 )paren
 (brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_list_lock
-)paren
-suffix:semicolon
 id|jbd_unlock_bh_state
 c_func
 (paren
@@ -1643,14 +1629,14 @@ id|bh
 )paren
 suffix:semicolon
 r_goto
-id|out_unlocked
+id|out
 suffix:semicolon
 )brace
 id|error
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* The buffer is already part of this transaction if&n;&t; * b_transaction or b_next_transaction points to it. */
+multiline_comment|/*&n;&t; * The buffer is already part of this transaction if b_transaction or&n;&t; * b_next_transaction points to it&n;&t; */
 r_if
 c_cond
 (paren
@@ -1663,9 +1649,9 @@ op_eq
 id|transaction
 )paren
 r_goto
-id|done_locked
+id|done
 suffix:semicolon
-multiline_comment|/* If there is already a copy-out version of this buffer, then&n;&t; * we don&squot;t need to make another one. */
+multiline_comment|/*&n;&t; * If there is already a copy-out version of this buffer, then we don&squot;t&n;&t; * need to make another one&n;&t; */
 r_if
 c_cond
 (paren
@@ -1719,7 +1705,7 @@ id|credits
 op_increment
 suffix:semicolon
 r_goto
-id|done_locked
+id|done
 suffix:semicolon
 )brace
 multiline_comment|/* Is there data here we need to preserve? */
@@ -1780,13 +1766,6 @@ c_func
 id|jh
 comma
 l_string|&quot;on shadow: sleep&quot;
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|jbd_unlock_bh_state
@@ -1859,13 +1838,6 @@ comma
 l_string|&quot;allocate memory for buffer&quot;
 )paren
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_list_lock
-)paren
-suffix:semicolon
 id|jbd_unlock_bh_state
 c_func
 (paren
@@ -1923,15 +1895,8 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_list_lock
-)paren
-suffix:semicolon
 r_goto
-id|done_locked
+id|done
 suffix:semicolon
 )brace
 r_goto
@@ -1978,7 +1943,7 @@ id|credits
 )paren
 op_increment
 suffix:semicolon
-multiline_comment|/* Finally, if the buffer is not journaled right now, we need to&n;&t; * make sure it doesn&squot;t get written to disk before the caller&n;&t; * actually commits the new data. */
+multiline_comment|/*&n;&t; * Finally, if the buffer is not journaled right now, we need to make&n;&t; * sure it doesn&squot;t get written to disk before the caller actually&n;&t; * commits the new data&n;&t; */
 r_if
 c_cond
 (paren
@@ -2015,6 +1980,13 @@ comma
 l_string|&quot;file as BJ_Reserved&quot;
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_list_lock
+)paren
+suffix:semicolon
 id|__journal_file_buffer
 c_func
 (paren
@@ -2025,9 +1997,6 @@ comma
 id|BJ_Reserved
 )paren
 suffix:semicolon
-)brace
-id|done_locked
-suffix:colon
 id|spin_unlock
 c_func
 (paren
@@ -2035,6 +2004,9 @@ op_amp
 id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
+)brace
+id|done
+suffix:colon
 r_if
 c_cond
 (paren
@@ -2143,7 +2115,7 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-multiline_comment|/* If we are about to journal a buffer, then any revoke pending&n;           on it is no longer valid. */
+multiline_comment|/*&n;&t; * If we are about to journal a buffer, then any revoke pending on it is&n;&t; * no longer valid&n;&t; */
 id|journal_cancel_revoke
 c_func
 (paren
@@ -2152,7 +2124,7 @@ comma
 id|jh
 )paren
 suffix:semicolon
-id|out_unlocked
+id|out
 suffix:colon
 r_if
 c_cond
