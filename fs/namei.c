@@ -3597,6 +3597,7 @@ r_void
 id|set_fs_altroot
 c_func
 (paren
+r_void
 )paren
 (brace
 r_char
