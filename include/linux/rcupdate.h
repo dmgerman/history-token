@@ -172,6 +172,13 @@ id|rcu_head
 op_star
 id|curlist
 suffix:semicolon
+DECL|member|curtail
+r_struct
+id|rcu_head
+op_star
+op_star
+id|curtail
+suffix:semicolon
 )brace
 suffix:semicolon
 id|DECLARE_PER_CPU
@@ -204,6 +211,8 @@ DECL|macro|RCU_curlist
 mdefine_line|#define RCU_curlist(cpu) &t;(per_cpu(rcu_data, (cpu)).curlist)
 DECL|macro|RCU_nxttail
 mdefine_line|#define RCU_nxttail(cpu) &t;(per_cpu(rcu_data, (cpu)).nxttail)
+DECL|macro|RCU_curtail
+mdefine_line|#define RCU_curtail(cpu) &t;(per_cpu(rcu_data, (cpu)).curtail)
 DECL|function|rcu_pending
 r_static
 r_inline
