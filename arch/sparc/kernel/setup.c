@@ -818,14 +818,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|sun_serial_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 r_int
 id|root_flags
