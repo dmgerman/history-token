@@ -5285,11 +5285,9 @@ comma
 id|bio
 )paren
 suffix:semicolon
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 id|wait_event
@@ -5701,11 +5699,9 @@ c_func
 id|lmStat.submitted
 )paren
 suffix:semicolon
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 id|jFYI

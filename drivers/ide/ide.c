@@ -3556,7 +3556,7 @@ multiline_comment|/* we purposely leave hwgroup busy while sleeping */
 )brace
 r_else
 (brace
-multiline_comment|/* Ugly, but how can we sleep for the lock otherwise? perhaps&n;&t;&t; * from tq_disk? */
+multiline_comment|/* Ugly, but how can we sleep for the lock otherwise? */
 id|ide_release_lock
 c_func
 (paren

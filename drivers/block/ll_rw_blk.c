@@ -2574,7 +2574,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * clear stop flag and run queue&n; */
+multiline_comment|/**&n; * blk_start_queue - restart a previously stopped queue&n; * @q:    The &amp;request_queue_t in question&n; *&n; * Description:&n; *   blk_start_queue() will clear the stop flag on the queue, and call&n; *   the request_fn for the queue if it was in a stopped state when&n; *   entered. Also see blk_stop_queue()&n; **/
 DECL|function|blk_start_queue
 r_void
 id|blk_start_queue
@@ -2638,7 +2638,7 @@ id|flags
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * set stop bit, queue won&squot;t be run until blk_start_queue() is called&n; */
+multiline_comment|/**&n; * blk_stop_queue - stop a queue&n; * @q:    The &amp;request_queue_t in question&n; *&n; * Description:&n; *   The Linux block layer assumes that a block driver will consume all&n; *   entries on the request queue when the request_fn strategy is called.&n; *   Often this will not happen, because of hardware limitations (queue&n; *   depth settings). If a device driver gets a &squot;queue full&squot; response,&n; *   or if it simply chooses not to queue more I/O at one point, it can&n; *   call this function to prevent the request_fn from being called until&n; *   the driver has signalled it&squot;s ready to go again. This happens by calling&n; *   blk_start_queue() to restart queue operations.&n; **/
 DECL|function|blk_stop_queue
 r_void
 id|blk_stop_queue
@@ -2659,7 +2659,7 @@ id|q-&gt;queue_flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * the equivalent of the previous tq_disk run&n; */
+multiline_comment|/**&n; * blk_run_queues - fire all plugged queues&n; *&n; * Description:&n; *   Start I/O on all plugged queues known to the block layer. Queues that&n; *   are currently stopped are ignored. This is equivalent to the older&n; *   tq_disk task queue run.&n; **/
 DECL|function|blk_run_queues
 r_void
 id|blk_run_queues

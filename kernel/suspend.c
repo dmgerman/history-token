@@ -739,13 +739,12 @@ c_loop
 l_int|1
 )paren
 (brace
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
+macro_line|#error this is broken, FIXME
 r_if
 c_cond
 (paren
