@@ -1860,8 +1860,8 @@ op_amp
 id|zone-&gt;refill_counter
 )paren
 suffix:semicolon
-r_if
-c_cond
+r_while
+c_loop
 (paren
 id|atomic_read
 c_func
@@ -2004,6 +2004,10 @@ c_loop
 id|zone
 op_ge
 id|first_classzone
+op_logical_and
+id|nr_pages
+OG
+l_int|0
 )paren
 (brace
 r_if

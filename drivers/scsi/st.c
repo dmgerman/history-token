@@ -573,7 +573,7 @@ op_star
 suffix:semicolon
 r_static
 r_int
-id|update_partition
+id|switch_partition
 c_func
 (paren
 id|Scsi_Tape
@@ -4955,7 +4955,7 @@ op_logical_and
 (paren
 id|result2
 op_assign
-id|update_partition
+id|switch_partition
 c_func
 (paren
 id|STp
@@ -4972,7 +4972,7 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: update_partition at close failed.&bslash;n&quot;
+l_string|&quot;st%d: switch_partition at close failed.&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -5813,7 +5813,7 @@ op_logical_and
 (paren
 id|retval
 op_assign
-id|update_partition
+id|switch_partition
 c_func
 (paren
 id|STp
@@ -15146,10 +15146,10 @@ id|partition
 suffix:semicolon
 )brace
 multiline_comment|/* Change the partition if necessary */
-DECL|function|update_partition
+DECL|function|switch_partition
 r_static
 r_int
-id|update_partition
+id|switch_partition
 c_func
 (paren
 id|Scsi_Tape
@@ -16797,7 +16797,7 @@ op_logical_and
 (paren
 id|i
 op_assign
-id|update_partition
+id|switch_partition
 c_func
 (paren
 id|STp
@@ -16905,7 +16905,7 @@ op_logical_and
 (paren
 id|i
 op_assign
-id|update_partition
+id|switch_partition
 c_func
 (paren
 id|STp

@@ -90,9 +90,13 @@ mdefine_line|#define hardirq_endlock()&t;do { } while (0)
 DECL|macro|irq_enter
 mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
 macro_line|#if CONFIG_PREEMPT
+DECL|macro|in_atomic
+macro_line|# define in_atomic()&t;(preempt_count() != kernel_locked())
 DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET (HARDIRQ_OFFSET-1)
 macro_line|#else
+DECL|macro|in_atomic
+macro_line|# define in_atomic()&t;(preempt_count() != 0)
 DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET HARDIRQ_OFFSET
 macro_line|#endif
