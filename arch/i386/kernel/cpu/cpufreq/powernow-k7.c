@@ -1116,13 +1116,13 @@ multiline_comment|/* Going up, so change VID first */
 id|change_VID
 c_func
 (paren
-id|fid
+id|vid
 )paren
 suffix:semicolon
 id|change_FID
 c_func
 (paren
-id|vid
+id|fid
 )paren
 suffix:semicolon
 )brace
