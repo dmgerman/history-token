@@ -8885,7 +8885,7 @@ c_func
 id|usb_exit
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * USB may be built into the kernel or be built as modules.&n; * If the USB core [and maybe a host controller driver] is built&n; * into the kernel, and other device drivers are built as modules,&n; * then these symbols need to be exported for the modules to use.&n; */
+multiline_comment|/*&n; * USB may be built into the kernel or be built as modules.&n; * These symbols are exported for device (or host controller)&n; * driver modules to use.&n; */
 DECL|variable|usb_ifnum_to_ifpos
 id|EXPORT_SYMBOL
 c_func
@@ -8956,6 +8956,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|usb_free_dev
+)paren
+suffix:semicolon
+DECL|variable|usb_hub_tt_clear_buffer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usb_hub_tt_clear_buffer
 )paren
 suffix:semicolon
 DECL|variable|usb_find_interface_driver_for_ifnum
@@ -9148,13 +9155,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|usb_set_interface
-)paren
-suffix:semicolon
-DECL|variable|usb_make_path
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|usb_make_path
 )paren
 suffix:semicolon
 DECL|variable|usb_devfs_handle
