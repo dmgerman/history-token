@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
+macro_line|#include &lt;linux/vermagic.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -3171,6 +3172,16 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_OBSOLETE_MODPARM */
+DECL|variable|vermagic
+r_static
+r_const
+r_char
+id|vermagic
+(braket
+)braket
+op_assign
+id|VERMAGIC_STRING
+suffix:semicolon
 macro_line|#ifdef CONFIG_MODVERSIONS
 DECL|function|check_version
 r_static
@@ -4907,13 +4918,6 @@ id|TAINT_PROPRIETARY_MODULE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* From init/vermagic.o */
-r_extern
-r_char
-id|vermagic
-(braket
-)braket
-suffix:semicolon
 multiline_comment|/* Allocate and load the module: note that size of section 0 is always&n;   zero, and we rely on this for optional sections. */
 DECL|function|load_module
 r_static

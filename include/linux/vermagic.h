@@ -19,40 +19,6 @@ macro_line|#ifndef MODULE_ARCH_VERMAGIC
 DECL|macro|MODULE_ARCH_VERMAGIC
 mdefine_line|#define MODULE_ARCH_VERMAGIC &quot;&quot;
 macro_line|#endif
-DECL|variable|vermagic
-r_const
-r_char
-id|vermagic
-(braket
-)braket
-id|__attribute__
-c_func
-(paren
-(paren
-id|section
-c_func
-(paren
-l_string|&quot;__vermagic&quot;
-)paren
-)paren
-)paren
-op_assign
-id|UTS_RELEASE
-l_string|&quot; &quot;
-id|MODULE_VERMAGIC_SMP
-id|MODULE_VERMAGIC_PREEMPT
-id|MODULE_ARCH_VERMAGIC
-l_string|&quot;gcc-&quot;
-id|__stringify
-c_func
-(paren
-id|__GNUC__
-)paren
-l_string|&quot;.&quot;
-id|__stringify
-c_func
-(paren
-id|__GNUC_MINOR__
-)paren
-suffix:semicolon
+DECL|macro|VERMAGIC_STRING
+mdefine_line|#define VERMAGIC_STRING &t;&t;&t;&t;&t;&t;&bslash;&n;&t;UTS_RELEASE &quot; &quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;MODULE_VERMAGIC_SMP MODULE_VERMAGIC_PREEMPT &t;&t;&t;&bslash;&n;&t;MODULE_ARCH_VERMAGIC &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;gcc-&quot; __stringify(__GNUC__) &quot;.&quot; __stringify(__GNUC_MINOR__)
 eof
