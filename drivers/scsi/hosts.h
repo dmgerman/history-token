@@ -919,14 +919,6 @@ op_assign
 op_amp
 id|pdev-&gt;dev
 suffix:semicolon
-multiline_comment|/* register parent with driverfs */
-id|device_register
-c_func
-(paren
-op_amp
-id|shost-&gt;host_driverfs_dev
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Prototypes for functions/data in scsi_scan.c&n; */
 r_extern
