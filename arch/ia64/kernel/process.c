@@ -886,6 +886,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_else
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_HOTPLUG_CPU
 multiline_comment|/* We don&squot;t actually take CPU down, just spin without interrupts. */
