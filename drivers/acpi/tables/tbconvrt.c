@@ -1008,11 +1008,12 @@ suffix:semicolon
 multiline_comment|/* Free the original table */
 id|table_desc
 op_assign
-op_amp
-id|acpi_gbl_acpi_tables
+id|acpi_gbl_table_lists
 (braket
 id|ACPI_TABLE_FADT
 )braket
+dot
+id|next
 suffix:semicolon
 id|acpi_tb_delete_single_table
 (paren
