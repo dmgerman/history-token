@@ -21,7 +21,7 @@ r_struct
 id|xfs_bmbt_irec
 suffix:semicolon
 r_struct
-id|page_buf_s
+id|xfs_buf
 suffix:semicolon
 r_struct
 id|xfs_iomap
@@ -165,7 +165,7 @@ id|xfs_mount
 op_star
 comma
 r_struct
-id|page_buf_s
+id|xfs_buf
 op_star
 )paren
 suffix:semicolon
@@ -175,7 +175,7 @@ id|xfs_bdstrat_cb
 c_func
 (paren
 r_struct
-id|page_buf_s
+id|xfs_buf
 op_star
 )paren
 suffix:semicolon

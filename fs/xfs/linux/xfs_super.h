@@ -116,7 +116,7 @@ r_struct
 id|xfs_mount
 suffix:semicolon
 r_struct
-id|pb_target
+id|xfs_buftarg
 suffix:semicolon
 r_struct
 id|block_device
@@ -198,7 +198,7 @@ op_star
 suffix:semicolon
 r_extern
 r_struct
-id|pb_target
+id|xfs_buftarg
 op_star
 id|xfs_alloc_buftarg
 c_func
@@ -214,7 +214,7 @@ id|xfs_relse_buftarg
 c_func
 (paren
 r_struct
-id|pb_target
+id|xfs_buftarg
 op_star
 )paren
 suffix:semicolon
@@ -224,7 +224,7 @@ id|xfs_free_buftarg
 c_func
 (paren
 r_struct
-id|pb_target
+id|xfs_buftarg
 op_star
 )paren
 suffix:semicolon
@@ -234,7 +234,7 @@ id|xfs_flush_buftarg
 c_func
 (paren
 r_struct
-id|pb_target
+id|xfs_buftarg
 op_star
 )paren
 suffix:semicolon
@@ -244,7 +244,7 @@ id|xfs_readonly_buftarg
 c_func
 (paren
 r_struct
-id|pb_target
+id|xfs_buftarg
 op_star
 )paren
 suffix:semicolon
@@ -254,7 +254,7 @@ id|xfs_setsize_buftarg
 c_func
 (paren
 r_struct
-id|pb_target
+id|xfs_buftarg
 op_star
 comma
 r_int
@@ -271,7 +271,7 @@ id|xfs_getsize_buftarg
 c_func
 (paren
 r_struct
-id|pb_target
+id|xfs_buftarg
 op_star
 )paren
 suffix:semicolon
