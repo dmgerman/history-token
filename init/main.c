@@ -172,6 +172,13 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n; * Are we up and running (ie do we have all the infrastructure&n; * set up)&n; */
+DECL|variable|system_running
+r_int
+id|system_running
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n; * Boot command-line arguments&n; */
 DECL|macro|MAX_INIT_ARGS
 mdefine_line|#define MAX_INIT_ARGS 8
@@ -1833,6 +1840,10 @@ id|unlock_kernel
 c_func
 (paren
 )paren
+suffix:semicolon
+id|system_running
+op_assign
+l_int|1
 suffix:semicolon
 id|kstat.pgfree
 op_assign
