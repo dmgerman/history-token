@@ -1006,15 +1006,6 @@ op_star
 id|driver
 )paren
 suffix:semicolon
-r_int
-id|acpi_bus_scan
-(paren
-r_struct
-id|acpi_device
-op_star
-id|device
-)paren
-suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_BUS*/
 macro_line|#endif /*__ACPI_BUS_H__*/
 eof

@@ -480,12 +480,5 @@ c_func
 id|acpi_bus_unregister_driver
 )paren
 suffix:semicolon
-DECL|variable|acpi_bus_scan
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|acpi_bus_scan
-)paren
-suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_BUS*/
 eof
