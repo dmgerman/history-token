@@ -1258,9 +1258,9 @@ l_string|&quot;Lexar&quot;
 comma
 l_string|&quot;USB CF Reader&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
