@@ -47,6 +47,8 @@ DECL|macro|RAW_LINES
 mdefine_line|#define RAW_LINES            640
 DECL|macro|RAW_BPL
 mdefine_line|#define RAW_BPL             1024
+DECL|macro|UNSET
+mdefine_line|#define UNSET (-1U)
 multiline_comment|/* ---------------------------------------------------------- */
 DECL|struct|bttv_tvnorm
 r_struct
@@ -1065,15 +1067,6 @@ r_int
 id|i2c_state
 comma
 id|i2c_rc
-suffix:semicolon
-DECL|member|i2c_clients
-r_struct
-id|i2c_client
-op_star
-id|i2c_clients
-(braket
-id|I2C_CLIENTS_MAX
-)braket
 suffix:semicolon
 multiline_comment|/* video4linux (1) */
 DECL|member|video_dev
