@@ -39,7 +39,7 @@ op_assign
 l_int|50
 suffix:semicolon
 DECL|macro|IBMVSCSI_VERSION
-mdefine_line|#define IBMVSCSI_VERSION &quot;1.5.2&quot;
+mdefine_line|#define IBMVSCSI_VERSION &quot;1.5.3&quot;
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -4804,7 +4804,7 @@ op_amp
 id|hostdata-&gt;request_limit
 )paren
 OL
-l_int|0
+l_int|2
 suffix:semicolon
 )paren
 (brace
