@@ -817,6 +817,7 @@ c_func
 id|task
 )paren
 suffix:semicolon
+macro_line|# ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -830,6 +831,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|# endif
 macro_line|#endif
 r_if
 c_cond
@@ -900,6 +902,7 @@ c_func
 id|task
 )paren
 suffix:semicolon
+macro_line|# ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -913,6 +916,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|# endif
 macro_line|#endif
 r_if
 c_cond
