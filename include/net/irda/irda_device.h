@@ -536,30 +536,40 @@ op_star
 id|data
 suffix:semicolon
 multiline_comment|/* start of data in buffer */
-DECL|member|tail
-id|__u8
-op_star
-id|tail
-suffix:semicolon
-multiline_comment|/* end of data in buffer */
 DECL|member|len
 r_int
 id|len
 suffix:semicolon
-multiline_comment|/* length of data */
+multiline_comment|/* current length of data */
 DECL|member|truesize
 r_int
 id|truesize
 suffix:semicolon
-multiline_comment|/* total size of buffer */
+multiline_comment|/* total allocated size of buffer */
 DECL|member|fcs
 id|__u16
 id|fcs
 suffix:semicolon
+DECL|member|skb
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+multiline_comment|/* ZeroCopy Rx in async_unwrap_char() */
 DECL|typedef|iobuff_t
 )brace
 id|iobuff_t
 suffix:semicolon
+multiline_comment|/* Maximum SIR frame (skb) that we expect to receive *unwrapped*.&n; * Max LAP MTU (I field) is 2048 bytes max (IrLAP 1.1, chapt 6.6.5, p40).&n; * Max LAP header is 2 bytes (for now).&n; * Max CRC is 2 bytes at SIR, 4 bytes at FIR. &n; * Need 1 byte for skb_reserve() to align IP header for IrLAN.&n; * Add a few extra bytes just to be safe (buffer is power of two anyway)&n; * Jean II */
+DECL|macro|IRDA_SKB_MAX_MTU
+mdefine_line|#define IRDA_SKB_MAX_MTU&t;2064
+multiline_comment|/* Maximum SIR frame that we expect to send, wrapped (i.e. with XBOFS&n; * and escaped characters on top of above). */
+DECL|macro|IRDA_SIR_MAX_FRAME
+mdefine_line|#define IRDA_SIR_MAX_FRAME&t;4269
+multiline_comment|/* The SIR unwrapper async_unwrap_char() will use a Rx-copy-break mechanism&n; * when using the optional ZeroCopy Rx, where only small frames are memcpy&n; * to a smaller skb to save memory. This is the thresold under which copy&n; * will happen (and over which it won&squot;t happen).&n; * Some FIR drivers may use this #define as well...&n; * This is the same value as various Ethernet drivers. - Jean II */
+DECL|macro|IRDA_RX_COPY_THRESHOLD
+mdefine_line|#define IRDA_RX_COPY_THRESHOLD  256
 multiline_comment|/* Function prototypes */
 r_int
 id|irda_device_init
