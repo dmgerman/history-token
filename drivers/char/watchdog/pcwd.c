@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -19,7 +20,7 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|WD_VER
-mdefine_line|#define WD_VER                  &quot;1.15 (03/27/2004)&quot;
+mdefine_line|#define WD_VER                  &quot;1.16 (03/27/2004)&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&t;&quot;pcwd: &quot;
 multiline_comment|/*&n; * It should be noted that PCWD_REVISION_B was removed because A and B&n; * are essentially the same types of card, with the exception that B&n; * has temperature reporting.  Since I didn&squot;t receive a Rev.B card,&n; * the Rev.B card is not supported.  (It&squot;s a good thing too, as they&n; * are no longer in production.)&n; */
@@ -68,6 +69,9 @@ DECL|macro|CMD_ISA_DELAY_TIME_4SECS
 mdefine_line|#define CMD_ISA_DELAY_TIME_4SECS        0x0B
 DECL|macro|CMD_ISA_DELAY_TIME_8SECS
 mdefine_line|#define CMD_ISA_DELAY_TIME_8SECS        0x0C
+multiline_comment|/*&n; * We are using an kernel timer to do the pinging of the watchdog&n; * every ~500ms. We try to set the internal heartbeat of the&n; * watchdog to 2 ms.&n; */
+DECL|macro|WDT_INTERVAL
+mdefine_line|#define WDT_INTERVAL (HZ/2+1)
 multiline_comment|/* We can only use 1 card due to the /dev/watchdog restriction */
 DECL|variable|cards_found
 r_static
@@ -75,17 +79,6 @@ r_int
 id|cards_found
 suffix:semicolon
 multiline_comment|/* internal variables */
-DECL|variable|current_readport
-DECL|variable|revision
-DECL|variable|temp_panic
-r_static
-r_int
-id|current_readport
-comma
-id|revision
-comma
-id|temp_panic
-suffix:semicolon
 DECL|variable|open_allowed
 r_static
 id|atomic_t
@@ -102,6 +95,29 @@ r_static
 r_char
 id|expect_close
 suffix:semicolon
+DECL|variable|timer
+r_static
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
+DECL|variable|next_heartbeat
+r_static
+r_int
+r_int
+id|next_heartbeat
+suffix:semicolon
+DECL|variable|temp_panic
+r_static
+r_int
+id|temp_panic
+suffix:semicolon
+DECL|variable|revision
+r_static
+r_int
+id|revision
+suffix:semicolon
+multiline_comment|/* The card&squot;s revision */
 DECL|variable|supports_temp
 r_static
 r_int
@@ -120,17 +136,51 @@ r_int
 id|initial_status
 suffix:semicolon
 multiline_comment|/* The card&squot;s boot status */
+DECL|variable|current_readport
+r_static
+r_int
+id|current_readport
+suffix:semicolon
+multiline_comment|/* The cards I/O address */
 DECL|variable|io_lock
 r_static
 id|spinlock_t
 id|io_lock
 suffix:semicolon
+multiline_comment|/* module parameters */
+DECL|macro|WATCHDOG_HEARTBEAT
+mdefine_line|#define WATCHDOG_HEARTBEAT 60&t;&t;/* 60 sec default heartbeat */
 DECL|variable|heartbeat
 r_static
 r_int
 id|heartbeat
+op_assign
+id|WATCHDOG_HEARTBEAT
 suffix:semicolon
-multiline_comment|/* module parameters */
+id|module_param
+c_func
+(paren
+id|heartbeat
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|heartbeat
+comma
+l_string|&quot;Watchdog heartbeat in seconds. (2&lt;=heartbeat&lt;=7200, default=&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|WATCHDOG_HEARTBEAT
+)paren
+l_string|&quot;)&quot;
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
 DECL|variable|nowayout
 r_static
@@ -441,6 +491,121 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|pcwd_timer_ping
+r_static
+r_void
+id|pcwd_timer_ping
+c_func
+(paren
+r_int
+r_int
+id|data
+)paren
+(brace
+r_int
+id|wdrst_stat
+suffix:semicolon
+multiline_comment|/* If we got a heartbeat pulse within the WDT_INTERVAL&n;&t; * we agree to ping the WDT */
+r_if
+c_cond
+(paren
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|next_heartbeat
+)paren
+)paren
+(brace
+multiline_comment|/* Ping the watchdog */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|io_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|revision
+op_eq
+id|PCWD_REVISION_A
+)paren
+(brace
+multiline_comment|/*  Rev A cards are reset by setting the WD_WDRST bit in register 1 */
+id|wdrst_stat
+op_assign
+id|inb_p
+c_func
+(paren
+id|current_readport
+)paren
+suffix:semicolon
+id|wdrst_stat
+op_and_assign
+l_int|0x0F
+suffix:semicolon
+id|wdrst_stat
+op_or_assign
+id|WD_WDRST
+suffix:semicolon
+id|outb_p
+c_func
+(paren
+id|wdrst_stat
+comma
+id|current_readport
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Re-trigger watchdog by writing to port 0 */
+id|outb_p
+c_func
+(paren
+l_int|0x00
+comma
+id|current_readport
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Re-set the timer interval */
+id|mod_timer
+c_func
+(paren
+op_amp
+id|timer
+comma
+id|jiffies
+op_plus
+id|WDT_INTERVAL
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|io_lock
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PFX
+l_string|&quot;Heartbeat lost! Will not ping the watchdog&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+)brace
 DECL|function|pcwd_start
 r_static
 r_int
@@ -453,7 +618,29 @@ r_void
 r_int
 id|stat_reg
 suffix:semicolon
-multiline_comment|/*  Enable the port  */
+id|next_heartbeat
+op_assign
+id|jiffies
+op_plus
+(paren
+id|heartbeat
+op_star
+id|HZ
+)paren
+suffix:semicolon
+multiline_comment|/* Start the timer */
+id|mod_timer
+c_func
+(paren
+op_amp
+id|timer
+comma
+id|jiffies
+op_plus
+id|WDT_INTERVAL
+)paren
+suffix:semicolon
+multiline_comment|/* Enable the port */
 r_if
 c_cond
 (paren
@@ -477,6 +664,12 @@ comma
 id|current_readport
 op_plus
 l_int|3
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+id|ISA_COMMAND_TIMEOUT
 )paren
 suffix:semicolon
 id|stat_reg
@@ -534,6 +727,14 @@ r_void
 r_int
 id|stat_reg
 suffix:semicolon
+multiline_comment|/* Stop the timer */
+id|del_timer
+c_func
+(paren
+op_amp
+id|timer
+)paren
+suffix:semicolon
 multiline_comment|/*  Disable the board  */
 r_if
 c_cond
@@ -560,6 +761,12 @@ op_plus
 l_int|3
 )paren
 suffix:semicolon
+id|udelay
+c_func
+(paren
+id|ISA_COMMAND_TIMEOUT
+)paren
+suffix:semicolon
 id|outb_p
 c_func
 (paren
@@ -568,6 +775,12 @@ comma
 id|current_readport
 op_plus
 l_int|3
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+id|ISA_COMMAND_TIMEOUT
 )paren
 suffix:semicolon
 id|stat_reg
@@ -617,59 +830,63 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|pcwd_send_heartbeat
+DECL|function|pcwd_keepalive
 r_static
 r_void
-id|pcwd_send_heartbeat
+id|pcwd_keepalive
 c_func
 (paren
 r_void
 )paren
 (brace
-r_int
-id|wdrst_stat
-suffix:semicolon
-id|wdrst_stat
+multiline_comment|/* user land ping */
+id|next_heartbeat
 op_assign
-id|inb_p
-c_func
+id|jiffies
+op_plus
 (paren
-id|current_readport
+id|heartbeat
+op_star
+id|HZ
 )paren
 suffix:semicolon
-id|wdrst_stat
-op_and_assign
-l_int|0x0F
-suffix:semicolon
-id|wdrst_stat
-op_or_assign
-id|WD_WDRST
-suffix:semicolon
+)brace
+DECL|function|pcwd_set_heartbeat
+r_static
+r_int
+id|pcwd_set_heartbeat
+c_func
+(paren
+r_int
+id|t
+)paren
+(brace
 r_if
 c_cond
 (paren
-id|revision
-op_eq
-id|PCWD_REVISION_A
-)paren
-id|outb_p
-c_func
 (paren
-id|wdrst_stat
-comma
-id|current_readport
-op_plus
-l_int|1
+id|t
+OL
+l_int|2
 )paren
+op_logical_or
+(paren
+id|t
+OG
+l_int|7200
+)paren
+)paren
+multiline_comment|/* arbitrary upper limit */
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
-r_else
-id|outb_p
-c_func
-(paren
-id|wdrst_stat
-comma
-id|current_readport
-)paren
+id|heartbeat
+op_assign
+id|t
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|pcwd_get_status
@@ -997,6 +1214,9 @@ suffix:semicolon
 r_int
 id|temperature
 suffix:semicolon
+r_int
+id|new_heartbeat
+suffix:semicolon
 r_static
 r_struct
 id|watchdog_info
@@ -1011,6 +1231,8 @@ op_or
 id|WDIOF_CARDRESET
 op_or
 id|WDIOF_KEEPALIVEPING
+op_or
+id|WDIOF_SETTIMEOUT
 op_or
 id|WDIOF_MAGICCLOSE
 comma
@@ -1229,7 +1451,7 @@ suffix:semicolon
 r_case
 id|WDIOC_KEEPALIVE
 suffix:colon
-id|pcwd_send_heartbeat
+id|pcwd_keepalive
 c_func
 (paren
 )paren
@@ -1237,6 +1459,47 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+r_case
+id|WDIOC_SETTIMEOUT
+suffix:colon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|new_heartbeat
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pcwd_set_heartbeat
+c_func
+(paren
+id|new_heartbeat
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|pcwd_keepalive
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Fall */
 r_case
 id|WDIOC_GETTIMEOUT
 suffix:colon
@@ -1364,7 +1627,7 @@ l_int|42
 suffix:semicolon
 )brace
 )brace
-id|pcwd_send_heartbeat
+id|pcwd_keepalive
 c_func
 (paren
 )paren
@@ -1432,6 +1695,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|pcwd_keepalive
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1484,7 +1752,7 @@ id|PFX
 l_string|&quot;Unexpected close, not stopping watchdog!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|pcwd_send_heartbeat
+id|pcwd_keepalive
 c_func
 (paren
 )paren
@@ -2216,10 +2484,6 @@ id|initial_status
 op_assign
 l_int|0x0000
 suffix:semicolon
-id|heartbeat
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* get the boot_status */
 id|pcwd_get_status
 c_func
@@ -2233,6 +2497,21 @@ id|pcwd_clear_status
 c_func
 (paren
 )paren
+suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|timer
+)paren
+suffix:semicolon
+id|timer.function
+op_assign
+id|pcwd_timer_ping
+suffix:semicolon
+id|timer.data
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*  Disable the board  */
 id|pcwd_stop
@@ -2305,87 +2584,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|option_switches
-op_amp
-l_int|0x07
-)paren
-(brace
-r_case
-l_int|0
-suffix:colon
-id|heartbeat
-op_assign
-l_int|20
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|1
-suffix:colon
-id|heartbeat
-op_assign
-l_int|40
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|2
-suffix:colon
-id|heartbeat
-op_assign
-l_int|60
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|3
-suffix:colon
-id|heartbeat
-op_assign
-l_int|300
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|4
-suffix:colon
-id|heartbeat
-op_assign
-l_int|600
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|5
-suffix:colon
-id|heartbeat
-op_assign
-l_int|1800
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|6
-suffix:colon
-id|heartbeat
-op_assign
-l_int|3600
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|7
-suffix:colon
-id|heartbeat
-op_assign
-l_int|7200
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -2422,6 +2620,28 @@ l_string|&quot;OFF&quot;
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Reprogram internal heartbeat to 2 seconds */
+r_if
+c_cond
+(paren
+id|set_command_mode
+c_func
+(paren
+)paren
+)paren
+(brace
+id|send_isa_command
+c_func
+(paren
+id|CMD_ISA_DELAY_TIME_2SECS
+)paren
+suffix:semicolon
+id|unset_command_mode
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -2528,6 +2748,34 @@ id|PFX
 l_string|&quot;No previous trip detected - Cold boot or reset&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Check that the heartbeat value is within it&squot;s range ; if not reset to the default */
+r_if
+c_cond
+(paren
+id|pcwd_set_heartbeat
+c_func
+(paren
+id|heartbeat
+)paren
+)paren
+(brace
+id|pcwd_set_heartbeat
+c_func
+(paren
+id|WATCHDOG_HEARTBEAT
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;heartbeat value must be 2&lt;=heartbeat&lt;=7200, using %d&bslash;n&quot;
+comma
+id|WATCHDOG_HEARTBEAT
+)paren
+suffix:semicolon
+)brace
 id|ret
 op_assign
 id|register_reboot_notifier
