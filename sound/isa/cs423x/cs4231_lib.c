@@ -33,7 +33,6 @@ suffix:semicolon
 DECL|macro|chip_t
 mdefine_line|#define chip_t cs4231_t
 macro_line|#if 0
-DECL|macro|SNDRV_DEBUG_MCE
 mdefine_line|#define SNDRV_DEBUG_MCE
 macro_line|#endif
 multiline_comment|/*&n; *  Some variables&n; */
@@ -5800,6 +5799,7 @@ c_func
 id|chip-&gt;playback_substream
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5864,6 +5864,7 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef LEGACY_SUPPORT
+DECL|function|snd_cs4231_playback_pointer
 r_static
 id|snd_pcm_uframes_t
 id|snd_cs4231_playback_pointer
