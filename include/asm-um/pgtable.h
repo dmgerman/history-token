@@ -5,6 +5,7 @@ mdefine_line|#define __UM_PGTABLE_H
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;asm/processor.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
+macro_line|#include &quot;asm/fixmap.h&quot;
 r_extern
 id|pgd_t
 id|swapper_pg_dir
