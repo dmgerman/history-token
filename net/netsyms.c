@@ -2138,6 +2138,13 @@ c_func
 id|tcp_sendpage
 )paren
 suffix:semicolon
+DECL|variable|sysctl_tcp_low_latency
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysctl_tcp_low_latency
+)paren
+suffix:semicolon
 DECL|variable|tcp_write_xmit
 id|EXPORT_SYMBOL
 c_func
