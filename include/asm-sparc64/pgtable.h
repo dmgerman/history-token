@@ -369,6 +369,8 @@ id|pte_t
 suffix:semicolon
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma, pg)&t;do { } while(0)
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
 multiline_comment|/* Make a non-present pseudo-TTE. */
 DECL|function|mk_pte_io
 r_extern

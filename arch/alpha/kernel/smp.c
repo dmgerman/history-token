@@ -4026,8 +4026,8 @@ id|mm
 suffix:semicolon
 )brace
 r_void
-DECL|function|flush_icache_page
-id|flush_icache_page
+DECL|function|flush_icache_user_range
+id|flush_icache_user_range
 c_func
 (paren
 r_struct
@@ -4039,6 +4039,13 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_int
+r_int
+id|addr
+comma
+r_int
+id|len
 )paren
 (brace
 r_struct

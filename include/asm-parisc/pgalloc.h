@@ -392,6 +392,8 @@ DECL|macro|flush_page_to_ram
 mdefine_line|#define flush_page_to_ram(page)&t;&bslash;&n;        __flush_page_to_ram((unsigned long)page_address(page))
 DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start, end) &bslash;&n;        __flush_icache_range(start, end - start)
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma, page, addr, len) &bslash;&n;&t;flush_icache_page((vma), (page))
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma, page) &bslash;&n;&t;__flush_icache_range(page_address(page), PAGE_SIZE)
 DECL|macro|flush_dcache_page

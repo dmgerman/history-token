@@ -608,12 +608,16 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|flush_icache_page
+id|flush_icache_user_range
 c_func
 (paren
 id|vma
 comma
 id|page
+comma
+id|addr
+comma
+id|bytes
 )paren
 suffix:semicolon
 )brace

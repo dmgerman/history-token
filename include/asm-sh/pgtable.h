@@ -41,6 +41,8 @@ DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start, end)&t;&t;do { } while (0)
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,pg)&t;&t;do { } while (0)
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
 DECL|macro|flush_cache_sigtramp
 mdefine_line|#define flush_cache_sigtramp(vaddr)&t;&t;do { } while (0)
 DECL|macro|p3_cache_init
@@ -142,6 +144,8 @@ DECL|macro|flush_page_to_ram
 mdefine_line|#define flush_page_to_ram(page)&t;&t;&t;do { } while (0)
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,pg)&t;&t;do { } while (0)
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
 multiline_comment|/* Initialization of P3 area for copy_user_page */
 r_extern
 r_void

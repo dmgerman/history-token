@@ -1289,6 +1289,8 @@ id|pg_iobits
 suffix:semicolon
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma, pg)      do { } while(0)
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
 multiline_comment|/* Certain architectures need to do special things when pte&squot;s&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 id|BTFIXUPDEF_CALL
 c_func

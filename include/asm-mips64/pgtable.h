@@ -89,6 +89,8 @@ DECL|macro|flush_page_to_ram
 mdefine_line|#define flush_page_to_ram(page)&t;&t;_flush_page_to_ram(page)
 DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start, end)&t;_flush_cache_l1()
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma, page, addr, len)&t;&bslash;&n;&t;&t;&t;&t;&t;flush_icache_page((vma), (page))
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma, page)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long addr;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;addr = (unsigned long) page_address(page);&t;&t;&t;&bslash;&n;&t;_flush_cache_page(vma, addr);&t;&t;&t;&t;&t;&bslash;&n;} while (0)                                                              
 macro_line|#else /* !CONFIG_CPU_R10000 */
@@ -112,6 +114,8 @@ DECL|macro|flush_page_to_ram
 mdefine_line|#define flush_page_to_ram(page)&t;&t;do { } while(0)
 DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start, end)&t;_flush_cache_l1()
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma, page, addr, len)&t;&bslash;&n;&t;&t;&t;&t;&t;flush_icache_page((vma), (page))
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma, page)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((vma)-&gt;vm_flags &amp; VM_EXEC)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;andes_flush_icache_page(page_address(page));&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* !CONFIG_CPU_R10000 */

@@ -159,6 +159,8 @@ DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start, end)&t;_flush_icache_range(start,end)
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma, page) &t;_flush_icache_page(vma, page)
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma, page, addr, len)&t;&bslash;&n;&t;&t;&t;&t;&t;_flush_icache_page((vma), (page))
 multiline_comment|/*&n; * - add_wired_entry() add a fixed TLB entry, and move wired register&n; */
 r_extern
 r_void
