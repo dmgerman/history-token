@@ -1089,9 +1089,10 @@ l_int|5
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
-DECL|function|piix_dmaproc
+DECL|function|piix_udma_setup
+r_static
 r_int
-id|piix_dmaproc
+id|piix_udma_setup
 c_func
 (paren
 r_struct
@@ -1777,9 +1778,9 @@ id|hwif-&gt;highmem
 op_assign
 l_int|1
 suffix:semicolon
-id|hwif-&gt;XXX_udma
+id|hwif-&gt;udma_setup
 op_assign
-id|piix_dmaproc
+id|piix_udma_setup
 suffix:semicolon
 macro_line|# ifdef CONFIG_IDEDMA_AUTO
 r_if

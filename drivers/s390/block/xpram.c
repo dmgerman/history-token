@@ -19,23 +19,12 @@ op_assign
 id|UTS_RELEASE
 suffix:semicolon
 macro_line|#endif
-macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,98))
-DECL|macro|XPRAM_VERSION
-macro_line|#  define XPRAM_VERSION 24
-macro_line|#else
-DECL|macro|XPRAM_VERSION
-macro_line|#  define XPRAM_VERSION 22
-macro_line|#endif 
-macro_line|#if (XPRAM_VERSION == 24)
-macro_line|#  include &lt;linux/config.h&gt;
-macro_line|#  include &lt;linux/init.h&gt;
-macro_line|#endif /* V24 */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt; /* printk() */
 macro_line|#include &lt;linux/slab.h&gt; /* kmalloc() */
-macro_line|#if (XPRAM_VERSION == 24)
-macro_line|#  include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#endif /* V24 */
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;     /* everything... */
 macro_line|#include &lt;linux/errno.h&gt;  /* error codes */
 macro_line|#include &lt;linux/timer.h&gt;
@@ -45,7 +34,6 @@ macro_line|#include &lt;linux/fcntl.h&gt;  /* O_ACCMODE */
 macro_line|#include &lt;linux/hdreg.h&gt;  /* HDIO_GETGEO */
 macro_line|#include &lt;asm/system.h&gt;   /* cli(), *_flags */
 macro_line|#include &lt;asm/uaccess.h&gt;  /* put_user */
-macro_line|#if (XPRAM_VERSION == 24)
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR xpram_major /* force definitions on in blk.h */
 DECL|variable|xpram_major
@@ -77,7 +65,6 @@ comma
 id|xpram_setup
 )paren
 suffix:semicolon
-macro_line|#endif /* V24 */
 multiline_comment|/*&n;   define the debug levels:&n;   - 0 No debugging output to console or syslog&n;   - 1 Log internal errors to syslog, ignore check conditions &n;   - 2 Log internal errors and check conditions to syslog&n;   - 3 Log internal errors to console, log check conditions to syslog&n;   - 4 Log internal errors and check conditions to console&n;   - 5 panic on internal errors, log check conditions to console&n;   - 6 panic on both, internal errors and check conditions&n; */
 DECL|macro|XPRAM_DEBUG
 mdefine_line|#define XPRAM_DEBUG 4
@@ -105,29 +92,7 @@ DECL|macro|PRINT_ERR
 mdefine_line|#define PRINT_ERR(x...) printk ( KERN_DEBUG PRINTK_HEADER &quot;error:&quot; x )
 DECL|macro|PRINT_FATAL
 mdefine_line|#define PRINT_FATAL(x...) printk ( KERN_DEBUG PRINTK_HEADER &quot;panic:&quot; x )
-macro_line|#endif&t;
-macro_line|#if (XPRAM_VERSION == 22)
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR xpram_major /* force definitions on in blk.h */
-DECL|variable|xpram_major
-r_int
-id|xpram_major
-suffix:semicolon
-multiline_comment|/* must be declared before including blk.h */
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) MINOR(device)   /* xpram has no partition bits */
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;xpram&quot;               /* name for messaging */
-DECL|macro|DEVICE_INTR
-mdefine_line|#define DEVICE_INTR xpram_intrptr         /* pointer to the bottom half */
-DECL|macro|DEVICE_NO_RANDOM
-mdefine_line|#define DEVICE_NO_RANDOM                  /* no entropy to contribute */
-DECL|macro|DEVICE_OFF
-mdefine_line|#define DEVICE_OFF(d) /* do-nothing */
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST *xpram_dummy_device_request  /* dummy function variable &n;&t;&t;&t;&t;&t;&t;     * to prevent warnings &n;&t;&t;&t;&t;&t;&t;     */#include &lt;linux/blk.h&gt;
-macro_line|#include &quot;xpram.h&quot;        /* local definitions */
-macro_line|#endif /* V22 */
+macro_line|#endif
 multiline_comment|/*&n; * Non-prefixed symbols are static. They are meant to be assigned at&n; * load time. Prefixed symbols are not static, so they can be used in&n; * debugging. They are hidden anyways by register_symtab() unless&n; * XPRAM_DEBUG is defined.&n; */
 DECL|variable|major
 r_static
@@ -1800,17 +1765,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-macro_line|#if (XPRAM_VERSION == 22)
-id|RO_IOCTLS
-c_func
-(paren
-id|inode-&gt;i_rdev
-comma
-id|arg
-)paren
-suffix:semicolon
-multiline_comment|/* the default RO operations &n;                                                * BLKROSET&n;&t;&t;&t;&t;&t;&t;* BLKROGET&n;                                                */
-macro_line|#endif /* V22 */
 r_case
 id|HDIO_GETGEO
 suffix:colon
@@ -1891,50 +1845,6 @@ suffix:semicolon
 multiline_comment|/* unknown command */
 )brace
 multiline_comment|/*&n; * The file operations&n; */
-macro_line|#if (XPRAM_VERSION == 22)
-DECL|variable|xpram_fops
-r_struct
-id|file_operations
-id|xpram_fops
-op_assign
-(brace
-l_int|NULL
-comma
-multiline_comment|/* lseek: default */
-id|block_read
-comma
-id|block_write
-comma
-l_int|NULL
-comma
-multiline_comment|/* xpram_readdir */
-l_int|NULL
-comma
-multiline_comment|/* xpram_select */
-id|xpram_ioctl
-comma
-l_int|NULL
-comma
-multiline_comment|/* xpram_mmap */
-id|xpram_open
-comma
-l_int|NULL
-comma
-multiline_comment|/* flush */
-id|xpram_release
-comma
-id|block_fsync
-comma
-l_int|NULL
-comma
-multiline_comment|/* xpram_fasync */
-l_int|NULL
-comma
-l_int|NULL
-)brace
-suffix:semicolon
-macro_line|#endif /* V22 */
-macro_line|#if (XPRAM_VERSION == 24)
 DECL|variable|xpram_devops
 r_struct
 id|block_device_operations
@@ -1959,7 +1869,6 @@ id|xpram_release
 comma
 )brace
 suffix:semicolon
-macro_line|#endif /* V24 */
 multiline_comment|/*&n; * Block-driver specific functions&n; */
 DECL|function|xpram_request
 r_void
@@ -2000,16 +1909,12 @@ r_int
 id|fault
 suffix:semicolon
 multiline_comment|/* faulty access to expanded memory */
-macro_line|#if ( XPRAM_VERSION == 24 )&t;
 r_struct
 id|request
 op_star
 id|current_req
 suffix:semicolon
 multiline_comment|/* working request */
-macro_line|#else 
-macro_line|#       define current_req CURRENT
-macro_line|#endif /* V24 */
 r_while
 c_loop
 (paren
@@ -2035,12 +1940,10 @@ id|fault
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if ( XPRAM_VERSION == 24 )
 id|current_req
 op_assign
 id|CURRENT
 suffix:semicolon
-macro_line|#endif /* V24 */
 id|dev_no
 op_assign
 id|DEVICE_NR
@@ -2454,20 +2357,7 @@ multiline_comment|/* success */
 )brace
 multiline_comment|/*&n; *    Kernel interfaces&n; */
 multiline_comment|/*&n; * Parses the kernel parameters given in the kernel parameter line.&n; * The expected format is &n; *           &lt;number_of_partitions&gt;[&quot;,&quot;&lt;partition_size&gt;]*&n; * where &n; *           devices is a positive integer that initializes xpram_devs&n; *           each size is a non-negative integer possibly followed by a&n; *           magnitude (k,K,m,M,g,G), the list of sizes initialises &n; *           xpram_sizes&n; *&n; * Arguments&n; *           str: substring of kernel parameter line that contains xprams&n; *                kernel parameters. &n; *           ints: not used -- not in Version &gt; 2.3 any more&n; *&n; * Result    0 on success, -EINVAl else -- only for Version &gt; 2.3&n; *&n; * Side effects&n; *           the global variabls devs is set to the value of &n; *           &lt;number_of_partitions&gt; and sizes[i] is set to the i-th&n; *           partition size (if provided). A parsing error of a value&n; *           results in this value being set to -EINVAL.&n; */
-macro_line|#if (XPRAM_VERSION == 22)
 DECL|function|xpram_setup
-r_void
-id|xpram_setup
-(paren
-r_char
-op_star
-id|str
-comma
-r_int
-op_star
-id|ints
-)paren
-macro_line|#else 
 r_int
 id|xpram_setup
 (paren
@@ -2475,7 +2365,6 @@ r_char
 op_star
 id|str
 )paren
-macro_line|#endif /* V22 */
 (brace
 id|devs
 op_assign
@@ -2517,14 +2406,11 @@ c_func
 l_string|&quot;error while reading xpram parameters.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if (XPRAM_VERSION == 24)
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-macro_line|#endif /* V24 */
 )brace
-macro_line|#if (XPRAM_VERSION == 24)
 r_else
 r_return
 l_int|0
@@ -2534,10 +2420,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-macro_line|#elif (XPRAM_VERSION == 22)
-r_return
-suffix:semicolon
-macro_line|#endif /* V24/V22 */
 )brace
 multiline_comment|/*&n; * initialize xpram device driver&n; *&n; * Result: 0 ok&n; *         negative number: negative error code&n; */
 DECL|function|xpram_init
@@ -2573,7 +2455,6 @@ r_int
 id|mem_auto
 suffix:semicolon
 multiline_comment|/* automatically determined device size          */
-macro_line|#if (XPRAM_VERSION == 24)
 r_int
 id|minor_length
 suffix:semicolon
@@ -2587,7 +2468,6 @@ op_star
 id|q
 suffix:semicolon
 multiline_comment|/* request queue */
-macro_line|#endif /* V24 */
 multiline_comment|/*&n;&t;&t;&t;&t; * Copy the (static) cfg variables to public prefixed ones to allow&n;&t;&t;&t;&t; * snoozing with a debugger.&n;&t;&t;&t;&t; */
 id|xpram_blksize
 op_assign
@@ -2847,21 +2727,6 @@ id|xpram_hardsect
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Register your major, and accept a dynamic number&n;&t; */
-macro_line|#if (XPRAM_VERSION == 22)
-id|result
-op_assign
-id|register_blkdev
-c_func
-(paren
-id|xpram_major
-comma
-l_string|&quot;xpram&quot;
-comma
-op_amp
-id|xpram_fops
-)paren
-suffix:semicolon
-macro_line|#elif (XPRAM_VERSION == 24)
 id|result
 op_assign
 id|devfs_register_blkdev
@@ -2875,7 +2740,6 @@ op_amp
 id|xpram_devops
 )paren
 suffix:semicolon
-macro_line|#endif /* V22/V24 */
 r_if
 c_cond
 (paren
@@ -2902,7 +2766,6 @@ r_return
 id|result
 suffix:semicolon
 )brace
-macro_line|#if (XPRAM_VERSION == 24)
 id|xpram_devfs_handle
 op_assign
 id|devfs_mk_dir
@@ -2940,7 +2803,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif /* V22/V24 */
 r_if
 c_cond
 (paren
@@ -2964,7 +2826,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 multiline_comment|/* for the possible errors */
-multiline_comment|/* &n;&t; * measure expanded memory&n;&t; */
+multiline_comment|/*&n;&t; * measure expanded memory&n;&t; */
 id|xpram_mem_avail
 op_assign
 id|xpram_size
@@ -3009,20 +2871,10 @@ id|xpram_mem_avail
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Assign the other needed values: request, size, blksize,&n;&t; * hardsect. All the minor devices feature the same value.&n;&t; * Note that `xpram&squot; defines all of them to allow testing non-default&n;&t; * values. A real device could well avoid setting values in global&n;&t; * arrays if it uses the default values.&n;&t; */
-macro_line|#if (XPRAM_VERSION == 22)
-id|blk_dev
-(braket
-id|major
-)braket
-dot
-id|request_fn
-op_assign
-id|xpram_request
-suffix:semicolon
-macro_line|#elif (XPRAM_VERSION == 24)
 id|q
 op_assign
 id|BLK_DEFAULT_QUEUE
+c_func
 (paren
 id|major
 )paren
@@ -3042,7 +2894,6 @@ comma
 id|xpram_hardsect
 )paren
 suffix:semicolon
-macro_line|#endif /* V22/V24 */
 multiline_comment|/* we want to have XPRAM_UNUSED blocks security buffer between devices */
 id|mem_usable
 op_assign
@@ -3318,7 +3169,6 @@ id|Xpram_Dev
 )paren
 )paren
 suffix:semicolon
-macro_line|#if (XPRAM_VERSION == 24)
 id|minor_length
 op_assign
 l_int|1
@@ -3327,7 +3177,6 @@ id|minor_thresh
 op_assign
 l_int|10
 suffix:semicolon
-macro_line|#endif /* V24 */
 r_for
 c_loop
 (paren
@@ -3373,7 +3222,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if (XPRAM_VERSION == 24)
 r_if
 c_cond
 (paren
@@ -3587,14 +3435,12 @@ id|fail_devfs_register
 suffix:semicolon
 )brace
 macro_line|#endif  /* WHY? */
-macro_line|#endif /* V24 */
 )brace
 r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* succeed */
 multiline_comment|/* clean up memory in case of failures */
-macro_line|#if (XPRAM_VERSION == 24)
 id|fail_devfs_register
 suffix:colon
 r_for
@@ -3640,7 +3486,6 @@ c_func
 id|xpram_devices
 )paren
 suffix:semicolon
-macro_line|#endif /* V24 */
 id|kfree
 (paren
 id|xpram_offsets
@@ -3650,17 +3495,6 @@ id|fail_malloc_devices
 suffix:colon
 id|fail_malloc
 suffix:colon
-macro_line|#if (XPRAM_VERSION == 22)
-id|blk_dev
-(braket
-id|major
-)braket
-dot
-id|request_fn
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif /* V22 */
 multiline_comment|/* ???&t;unregister_chrdev(major, &quot;xpram&quot;); */
 id|unregister_blkdev
 c_func
@@ -3739,17 +3573,6 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* first of all, reset all the data structures */
-macro_line|#if (XPRAM_VERSION == 22)
-id|blk_dev
-(braket
-id|major
-)braket
-dot
-id|request_fn
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif /* V22 */
 id|kfree
 c_func
 (paren
@@ -3763,16 +3586,6 @@ id|major
 )paren
 suffix:semicolon
 multiline_comment|/* finally, the usual cleanup */
-macro_line|#if (XPRAM_VERSION == 22)
-id|unregister_blkdev
-c_func
-(paren
-id|major
-comma
-l_string|&quot;xpram&quot;
-)paren
-suffix:semicolon
-macro_line|#elif (XPRAM_VERSION == 24)
 id|devfs_unregister
 c_func
 (paren
@@ -3797,7 +3610,6 @@ id|KERN_WARNING
 l_string|&quot;xpram: cannot unregister blkdev&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* V22/V24 */
 id|kfree
 c_func
 (paren

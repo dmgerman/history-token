@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* for block_sync_page()/block_flushpage() */
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* block_sync_page()/try_to_free_buffers() */
 macro_line|#include &lt;asm/pgtable.h&gt;
 multiline_comment|/*&n; * We may have stale swap cache pages in memory: notice&n; * them here and get rid of the unnecessary final write.&n; */
 DECL|function|swap_writepage
@@ -111,6 +111,10 @@ comma
 id|sync_page
 suffix:colon
 id|block_sync_page
+comma
+id|set_page_dirty
+suffix:colon
+id|__set_page_dirty_nobuffers
 comma
 )brace
 suffix:semicolon
@@ -488,8 +492,9 @@ id|page
 id|swp_entry_t
 id|entry
 suffix:semicolon
-r_if
-c_cond
+multiline_comment|/*&n;&t; * I/O should have completed and nobody can have a ref against the&n;&t; * page&squot;s buffers&n;&t; */
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|PageLocked
@@ -498,17 +503,36 @@ c_func
 id|page
 )paren
 )paren
-id|BUG
+suffix:semicolon
+id|BUG_ON
 c_func
 (paren
-)paren
-suffix:semicolon
-id|block_flushpage
+id|PageWriteback
 c_func
 (paren
 id|page
-comma
-l_int|0
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|page_has_buffers
+c_func
+(paren
+id|page
+)paren
+op_logical_and
+op_logical_neg
+id|try_to_free_buffers
+c_func
+(paren
+id|page
+)paren
+)paren
+id|BUG
+c_func
+(paren
 )paren
 suffix:semicolon
 id|entry.val
@@ -789,11 +813,39 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-r_if
-c_cond
+multiline_comment|/*&n;&t; * Drop the buffers now, before taking the page_lock.  Because&n;&t; * mapping-&gt;private_lock nests outside mapping-&gt;page_lock.&n;&t; * This &quot;must&quot; succeed.  The page is locked and all I/O has completed&n;&t; * and nobody else has a ref against its buffers.&n;&t; */
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|PageLocked
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|PageWriteback
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|page_has_buffers
+c_func
+(paren
+id|page
+)paren
+op_logical_and
+op_logical_neg
+id|try_to_free_buffers
 c_func
 (paren
 id|page
@@ -842,14 +894,6 @@ id|err
 id|swp_entry_t
 id|entry
 suffix:semicolon
-id|block_flushpage
-c_func
-(paren
-id|page
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|entry.val
 op_assign
 id|page-&gt;index
@@ -858,12 +902,6 @@ id|__delete_from_swap_cache
 c_func
 (paren
 id|page
-)paren
-suffix:semicolon
-id|swap_free
-c_func
-(paren
-id|entry
 )paren
 suffix:semicolon
 op_star
@@ -930,6 +968,30 @@ comma
 op_amp
 id|mapping-&gt;dirty_pages
 )paren
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|mapping-&gt;page_lock
+)paren
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|swapper_space.page_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Do this outside -&gt;page_lock */
+id|swap_free
+c_func
+(paren
+id|entry
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 id|write_unlock

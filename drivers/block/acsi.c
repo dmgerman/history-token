@@ -4040,11 +4040,9 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|SET_INTR
-c_func
-(paren
+id|DEVICE_INTR
+op_assign
 id|write_intr
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4125,11 +4123,9 @@ comma
 id|nsect
 )paren
 suffix:semicolon
-id|SET_INTR
-c_func
-(paren
+id|DEVICE_INTR
+op_assign
 id|read_intr
-)paren
 suffix:semicolon
 r_if
 c_cond

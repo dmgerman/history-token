@@ -280,8 +280,6 @@ id|nr
 suffix:semicolon
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
-DECL|macro|DEVICE_INTR
-mdefine_line|#define DEVICE_INTR do_floppy
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) ( (minor(device) &amp; 3) | ((minor(device) &amp; 0x80 ) &gt;&gt; 5 ))
 macro_line|#elif (MAJOR_NR == HD_MAJOR)
@@ -307,16 +305,16 @@ macro_line|#elif (MAJOR_NR == SCSI_TAPE_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;scsitape&quot;
 DECL|macro|DEVICE_INTR
-mdefine_line|#define DEVICE_INTR do_st  
+mdefine_line|#define DEVICE_INTR do_st
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device) &amp; 0x7f)
 macro_line|#elif (MAJOR_NR == OSST_MAJOR)
 DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;onstream&quot; 
+mdefine_line|#define DEVICE_NAME &quot;onstream&quot;
 DECL|macro|DEVICE_INTR
 mdefine_line|#define DEVICE_INTR do_osst
 DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device) &amp; 0x7f) 
+mdefine_line|#define DEVICE_NR(device) (minor(device) &amp; 0x7f)
 macro_line|#elif (MAJOR_NR == SCSI_CDROM_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;CD-ROM&quot;
@@ -347,33 +345,16 @@ mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 4)
 macro_line|#elif (MAJOR_NR == MITSUMI_CDROM_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;Mitsumi CD-ROM&quot;
-multiline_comment|/* #define DEVICE_INTR do_mcd */
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == MITSUMI_X_CDROM_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;Mitsumi CD-ROM&quot;
-multiline_comment|/* #define DEVICE_INTR do_mcdx */
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == MATSUSHITA_CDROM_MAJOR)
 DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;Matsushita CD-ROM controller #1&quot;
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device))
-macro_line|#elif (MAJOR_NR == MATSUSHITA_CDROM2_MAJOR)
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;Matsushita CD-ROM controller #2&quot;
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device))
-macro_line|#elif (MAJOR_NR == MATSUSHITA_CDROM3_MAJOR)
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;Matsushita CD-ROM controller #3&quot;
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device))
-macro_line|#elif (MAJOR_NR == MATSUSHITA_CDROM4_MAJOR)
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;Matsushita CD-ROM controller #4&quot;
+mdefine_line|#define DEVICE_NAME &quot;Matsushita CD-ROM controller&quot;
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == AZTECH_CDROM_MAJOR)
@@ -453,13 +434,13 @@ mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 4)
 macro_line|#endif /* MAJOR_NR == whatever */
 macro_line|#if (MAJOR_NR != SCSI_TAPE_MAJOR) &amp;&amp; (MAJOR_NR != OSST_MAJOR)
 macro_line|#if !defined(IDE_DRIVER)
-macro_line|#ifndef CURRENT
-DECL|macro|CURRENT
-macro_line|# define CURRENT elv_next_request(&amp;blk_dev[MAJOR_NR].request_queue)
-macro_line|#endif
 macro_line|#ifndef QUEUE
 DECL|macro|QUEUE
 macro_line|# define QUEUE (&amp;blk_dev[MAJOR_NR].request_queue)
+macro_line|#endif
+macro_line|#ifndef CURRENT
+DECL|macro|CURRENT
+macro_line|# define CURRENT elv_next_request(QUEUE)
 macro_line|#endif
 macro_line|#ifndef DEVICE_NAME
 DECL|macro|DEVICE_NAME
@@ -479,12 +460,8 @@ r_void
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
-DECL|macro|SET_INTR
-mdefine_line|#define SET_INTR(x) (DEVICE_INTR = (x))
-macro_line|# ifdef DEVICE_INTR
 DECL|macro|CLEAR_INTR
-macro_line|#  define CLEAR_INTR SET_INTR(NULL)
+macro_line|#  define CLEAR_INTR DEVICE_INTR = NULL
 macro_line|# else
 DECL|macro|CLEAR_INTR
 macro_line|#  define CLEAR_INTR

@@ -640,10 +640,20 @@ id|depth
 OG
 id|queue_nr_requests
 )paren
+(brace
 id|depth
 op_assign
 id|queue_nr_requests
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;blk_queue_init_tags: adjusted depth to %d&bslash;n&quot;
+comma
+id|depth
+)paren
+suffix:semicolon
+)brace
 id|tags
 op_assign
 id|kmalloc
@@ -793,7 +803,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|set_bit
+id|__set_bit
 c_func
 (paren
 id|i
@@ -1129,16 +1139,21 @@ r_struct
 id|list_head
 op_star
 id|tmp
+comma
+op_star
+id|n
 suffix:semicolon
 r_struct
 id|request
 op_star
 id|rq
 suffix:semicolon
-id|list_for_each
+id|list_for_each_safe
 c_func
 (paren
 id|tmp
+comma
+id|n
 comma
 op_amp
 id|bqt-&gt;busy_list
@@ -1152,6 +1167,35 @@ c_func
 id|tmp
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rq-&gt;tag
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;bad tag found on list&bslash;n&quot;
+)paren
+suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|rq-&gt;queuelist
+)paren
+suffix:semicolon
+id|rq-&gt;flags
+op_and_assign
+op_complement
+id|REQ_QUEUED
+suffix:semicolon
+)brace
+r_else
 id|blk_queue_end_tag
 c_func
 (paren
@@ -1201,8 +1245,6 @@ comma
 l_string|&quot;REQ_DONTPREP&quot;
 comma
 l_string|&quot;REQ_QUEUED&quot;
-comma
-l_string|&quot;REQ_DRIVE_CMD&quot;
 comma
 l_string|&quot;REQ_DRIVE_ACB&quot;
 comma
@@ -2576,7 +2618,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * clear stop flag and run queue&n; */
+multiline_comment|/**&n; * blk_start_queue - restart a previously stopped queue&n; * @q:    The &amp;request_queue_t in question&n; *&n; * Description:&n; *   blk_start_queue() will clear the stop flag on the queue, and call&n; *   the request_fn for the queue if it was in a stopped state when&n; *   entered. Also see blk_stop_queue()&n; **/
 DECL|function|blk_start_queue
 r_void
 id|blk_start_queue
@@ -2640,7 +2682,7 @@ id|flags
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * set stop bit, queue won&squot;t be run until blk_start_queue() is called&n; */
+multiline_comment|/**&n; * blk_stop_queue - stop a queue&n; * @q:    The &amp;request_queue_t in question&n; *&n; * Description:&n; *   The Linux block layer assumes that a block driver will consume all&n; *   entries on the request queue when the request_fn strategy is called.&n; *   Often this will not happen, because of hardware limitations (queue&n; *   depth settings). If a device driver gets a &squot;queue full&squot; response,&n; *   or if it simply chooses not to queue more I/O at one point, it can&n; *   call this function to prevent the request_fn from being called until&n; *   the driver has signalled it&squot;s ready to go again. This happens by calling&n; *   blk_start_queue() to restart queue operations.&n; **/
 DECL|function|blk_stop_queue
 r_void
 id|blk_stop_queue
@@ -2661,7 +2703,7 @@ id|q-&gt;queue_flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * the equivalent of the previous tq_disk run&n; */
+multiline_comment|/**&n; * blk_run_queues - fire all plugged queues&n; *&n; * Description:&n; *   Start I/O on all plugged queues known to the block layer. Queues that&n; *   are currently stopped are ignored. This is equivalent to the older&n; *   tq_disk task queue run.&n; **/
 DECL|function|blk_run_queues
 r_void
 id|blk_run_queues

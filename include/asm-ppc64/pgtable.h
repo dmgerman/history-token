@@ -999,16 +999,16 @@ id|pte_t
 )paren
 suffix:semicolon
 multiline_comment|/* Encode and de-code a swap entry */
-DECL|macro|SWP_TYPE
-mdefine_line|#define SWP_TYPE(entry)&t;&t;&t;(((entry).val &gt;&gt; 1) &amp; 0x3f)
-DECL|macro|SWP_OFFSET
-mdefine_line|#define SWP_OFFSET(entry)&t;&t;((entry).val &gt;&gt; 8)
-DECL|macro|SWP_ENTRY
-mdefine_line|#define SWP_ENTRY(type, offset)&t;&t;((swp_entry_t) { ((type) &lt;&lt; 1) | ((offset) &lt;&lt; 8) })
-DECL|macro|pte_to_swp_entry
-mdefine_line|#define pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) &gt;&gt; PTE_SHIFT })
-DECL|macro|swp_entry_to_pte
-mdefine_line|#define swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val &lt;&lt; PTE_SHIFT })
+DECL|macro|__swp_type
+mdefine_line|#define __swp_type(entry)&t;&t;(((entry).val &gt;&gt; 1) &amp; 0x3f)
+DECL|macro|__swp_offset
+mdefine_line|#define __swp_offset(entry)&t;&t;((entry).val &gt;&gt; 8)
+DECL|macro|__swp_entry
+mdefine_line|#define __swp_entry(type, offset)&t;((swp_entry_t) { ((type) &lt;&lt; 1) | ((offset) &lt;&lt; 8) })
+DECL|macro|__pte_to_swp_entry
+mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) &gt;&gt; PTE_SHIFT })
+DECL|macro|__swp_entry_to_pte
+mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val &lt;&lt; PTE_SHIFT })
 multiline_comment|/*&n; * kern_addr_valid is intended to indicate whether an address is a valid&n; * kernel address.  Most 32-bit archs define it as always true (like this)&n; * but most 64-bit archs actually perform a test.  What should we do here?&n; * The only use is in fs/ncpfs/dir.c&n; */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)

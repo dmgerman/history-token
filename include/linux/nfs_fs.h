@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/sunrpc/debug.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
@@ -168,6 +169,10 @@ r_struct
 id|rpc_cred
 op_star
 id|mm_cred
+suffix:semicolon
+DECL|member|nfs_i_wait
+id|wait_queue_head_t
+id|nfs_i_wait
 suffix:semicolon
 DECL|member|vfs_inode
 r_struct

@@ -631,7 +631,7 @@ id|PAGE_SIZE
 suffix:colon
 id|start_mem
 suffix:semicolon
-multiline_comment|/* decrement by one page, rest of kernel assumes that first swap page&n;&t;&t; * is always reserved and maybe doesn&squot;t handle SWP_ENTRY == 0&n;&t;&t; * correctly */
+multiline_comment|/* decrement by one page, rest of kernel assumes that first swap page&n;&t;&t; * is always reserved and maybe doesn&squot;t handle swp_entry == 0&n;&t;&t; * correctly */
 id|swap_start
 op_sub_assign
 id|PAGE_SIZE
@@ -2421,7 +2421,7 @@ id|i
 (brace
 id|entry
 op_assign
-id|SWP_ENTRY
+id|swp_entry
 c_func
 (paren
 id|stram_swap_type

@@ -927,7 +927,7 @@ id|to
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ext3_block_to_path - parse the block number into array of offsets&n; *&t;@inode: inode in question (we are only interested in its superblock)&n; *&t;@i_block: block number to be parsed&n; *&t;@offsets: array to store the offsets in&n; *&n; *&t;To store the locations of file&squot;s data ext3 uses a data structure common&n; *&t;for UNIX filesystems - tree of pointers anchored in the inode, with&n; *&t;data blocks at leaves and indirect blocks in intermediate nodes.&n; *&t;This function translates the block number into path in that tree -&n; *&t;return value is the path length and @offsets[n] is the offset of&n; *&t;pointer to (n+1)th node in the nth one. If @block is out of range&n; *&t;(negative or too large) warning is printed and zero returned.&n; *&n; *&t;Note: function doesn&squot;t find node addresses, so no IO is needed. All&n; *&t;we need to know is the capacity of indirect blocks (taken from the&n; *&t;inode-&gt;i_sb).&n; */
+multiline_comment|/**&n; *&t;ext3_block_to_path - parse the block number into array of offsets&n; *&t;@inode: inode in question (we are only interested in its superblock)&n; *&t;@i_block: block number to be parsed&n; *&t;@offsets: array to store the offsets in&n; *      @boundary: set this non-zero if the referred-to block is likely to be&n; *             followed (on disk) by an indirect block.&n; *&n; *&t;To store the locations of file&squot;s data ext3 uses a data structure common&n; *&t;for UNIX filesystems - tree of pointers anchored in the inode, with&n; *&t;data blocks at leaves and indirect blocks in intermediate nodes.&n; *&t;This function translates the block number into path in that tree -&n; *&t;return value is the path length and @offsets[n] is the offset of&n; *&t;pointer to (n+1)th node in the nth one. If @block is out of range&n; *&t;(negative or too large) warning is printed and zero returned.&n; *&n; *&t;Note: function doesn&squot;t find node addresses, so no IO is needed. All&n; *&t;we need to know is the capacity of indirect blocks (taken from the&n; *&t;inode-&gt;i_sb).&n; */
 multiline_comment|/*&n; * Portability note: the last comparison (check that we fit into triple&n; * indirect block) is spelled differently, because otherwise on an&n; * architecture with 32-bit longs and 8Kb pages we might get into trouble&n; * if our filesystem had 8Kb blocks. We might use long long, but that would&n; * kill us on x86. Oh, well, at least the sign propagation does not matter -&n; * i_block would have to be negative in the very beginning, so we would not&n; * get there at all.&n; */
 DECL|function|ext3_block_to_path
 r_static
@@ -948,6 +948,10 @@ id|offsets
 (braket
 l_int|4
 )braket
+comma
+r_int
+op_star
+id|boundary
 )paren
 (brace
 r_int
@@ -995,6 +999,11 @@ id|n
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|final
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1030,6 +1039,10 @@ op_increment
 op_assign
 id|i_block
 suffix:semicolon
+id|final
+op_assign
+id|direct_blocks
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -1059,6 +1072,10 @@ op_increment
 )braket
 op_assign
 id|i_block
+suffix:semicolon
+id|final
+op_assign
+id|ptrs
 suffix:semicolon
 )brace
 r_else
@@ -1105,6 +1122,10 @@ id|ptrs
 op_minus
 l_int|1
 )paren
+suffix:semicolon
+id|final
+op_assign
+id|ptrs
 suffix:semicolon
 )brace
 r_else
@@ -1182,6 +1203,10 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+id|final
+op_assign
+id|ptrs
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -1195,6 +1220,30 @@ l_string|&quot;block &gt; big&quot;
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|boundary
+)paren
+op_star
+id|boundary
+op_assign
+(paren
+id|i_block
+op_amp
+(paren
+id|ptrs
+op_minus
+l_int|1
+)paren
+)paren
+op_eq
+(paren
+id|final
+op_minus
+l_int|1
+)paren
+suffix:semicolon
 r_return
 id|n
 suffix:semicolon
@@ -2417,6 +2466,11 @@ r_int
 id|left
 suffix:semicolon
 r_int
+id|boundary
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|depth
 op_assign
 id|ext3_block_to_path
@@ -2427,6 +2481,9 @@ comma
 id|iblock
 comma
 id|offsets
+comma
+op_amp
+id|boundary
 )paren
 suffix:semicolon
 r_struct
@@ -2524,6 +2581,17 @@ l_int|1
 dot
 id|key
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|boundary
+)paren
+id|set_buffer_boundary
+c_func
+(paren
+id|bh_result
 )paren
 suffix:semicolon
 multiline_comment|/* Clean up and exit */
@@ -3846,7 +3914,7 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We need to pick up the new inode size which generic_commit_write gave us&n; * `file&squot; can be NULL - eg, when called from block_symlink().&n; *&n; * ext3 never places buffers on inode-&gt;i_mapping-&gt;private_list.  metadata&n; * buffers are managed internally.&n; */
+multiline_comment|/*&n; * We need to pick up the new inode size which generic_commit_write gave us&n; * `file&squot; can be NULL - eg, when called from page_symlink().&n; *&n; * ext3 never places buffers on inode-&gt;i_mapping-&gt;private_list.  metadata&n; * buffers are managed internally.&n; */
 DECL|function|ext3_commit_write
 r_static
 r_int
@@ -4671,10 +4739,10 @@ id|ext3_get_block
 )paren
 suffix:semicolon
 )brace
-DECL|function|ext3_flushpage
+DECL|function|ext3_invalidatepage
 r_static
 r_int
-id|ext3_flushpage
+id|ext3_invalidatepage
 c_func
 (paren
 r_struct
@@ -4698,7 +4766,7 @@ id|page-&gt;mapping-&gt;host
 )paren
 suffix:semicolon
 r_return
-id|journal_flushpage
+id|journal_invalidatepage
 c_func
 (paren
 id|journal
@@ -4786,9 +4854,123 @@ suffix:colon
 id|ext3_bmap
 comma
 multiline_comment|/* BKL held */
-id|flushpage
+id|invalidatepage
 suffix:colon
-id|ext3_flushpage
+id|ext3_invalidatepage
+comma
+multiline_comment|/* BKL not held.  Don&squot;t need */
+id|releasepage
+suffix:colon
+id|ext3_releasepage
+comma
+multiline_comment|/* BKL not held.  Don&squot;t need */
+)brace
+suffix:semicolon
+multiline_comment|/* For writeback mode, we can use mpage_writepages() */
+r_static
+r_int
+DECL|function|ext3_writepages
+id|ext3_writepages
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_int
+op_star
+id|nr_to_write
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+r_int
+id|err
+suffix:semicolon
+id|ret
+op_assign
+id|write_mapping_buffers
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|mpage_writepages
+c_func
+(paren
+id|mapping
+comma
+id|nr_to_write
+comma
+id|ext3_get_block
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+)paren
+id|ret
+op_assign
+id|err
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|variable|ext3_writeback_aops
+r_struct
+id|address_space_operations
+id|ext3_writeback_aops
+op_assign
+(brace
+id|readpage
+suffix:colon
+id|ext3_readpage
+comma
+multiline_comment|/* BKL not held.  Don&squot;t need */
+id|readpages
+suffix:colon
+id|ext3_readpages
+comma
+multiline_comment|/* BKL not held.  Don&squot;t need */
+id|writepage
+suffix:colon
+id|ext3_writepage
+comma
+multiline_comment|/* BKL not held.  We take it */
+id|writepages
+suffix:colon
+id|ext3_writepages
+comma
+multiline_comment|/* BKL not held.  Don&squot;t need */
+id|sync_page
+suffix:colon
+id|block_sync_page
+comma
+id|prepare_write
+suffix:colon
+id|ext3_prepare_write
+comma
+multiline_comment|/* BKL not held.  We take it */
+id|commit_write
+suffix:colon
+id|ext3_commit_write
+comma
+multiline_comment|/* BKL not held.  We take it */
+id|bmap
+suffix:colon
+id|ext3_bmap
+comma
+multiline_comment|/* BKL held */
+id|invalidatepage
+suffix:colon
+id|ext3_invalidatepage
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
 id|releasepage
@@ -6441,6 +6623,8 @@ comma
 id|last_block
 comma
 id|offsets
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -7626,6 +7810,21 @@ op_assign
 op_amp
 id|ext3_file_operations
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ext3_should_writeback_data
+c_func
+(paren
+id|inode
+)paren
+)paren
+id|inode-&gt;i_mapping-&gt;a_ops
+op_assign
+op_amp
+id|ext3_writeback_aops
+suffix:semicolon
+r_else
 id|inode-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp
@@ -7683,6 +7882,21 @@ op_assign
 op_amp
 id|page_symlink_inode_operations
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ext3_should_writeback_data
+c_func
+(paren
+id|inode
+)paren
+)paren
+id|inode-&gt;i_mapping-&gt;a_ops
+op_assign
+op_amp
+id|ext3_writeback_aops
+suffix:semicolon
+r_else
 id|inode-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp

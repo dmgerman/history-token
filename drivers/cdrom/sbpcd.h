@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * sbpcd.h   Specify interface address and interface type here.&n; */
 multiline_comment|/*&n; * Attention! This file contains user-serviceable parts!&n; * I recommend to make use of it...&n; * If you feel helpless, look into linux/Documentation/cdrom/sbpcd&n; * (good idea anyway, at least before mailing me).&n; *&n; * The definitions for the first controller can get overridden by&n; * the kernel command line (&quot;lilo boot option&quot;).&n; * Examples:&n; *                                 sbpcd=0x300,LaserMate&n; *                             or&n; *                                 sbpcd=0x230,SoundBlaster&n; *                             or&n; *                                 sbpcd=0x338,SoundScape&n; *                             or&n; *                                 sbpcd=0x2C0,Teac16bit&n; *&n; * If sbpcd gets used as a module, you can load it with&n; *     insmod sbpcd.o sbpcd=0x300,0&n; * or&n; *     insmod sbpcd.o sbpcd=0x230,1&n; * or&n; *     insmod sbpcd.o sbpcd=0x338,2&n; * or&n; *     insmod sbpcd.o sbpcd=0x2C0,3&n; * respective to override the configured address and type.&n; */
 multiline_comment|/*&n; * define your CDROM port base address as CDROM_PORT&n; * and specify the type of your interface card as SBPRO.&n; *&n; * address:&n; * ========&n; * SBPRO type addresses typically are 0x0230 (=0x220+0x10), 0x0250, ...&n; * LASERMATE type (CI-101P, WDH-7001C) addresses typically are 0x0300, ...&n; * SOUNDSCAPE addresses are from the LASERMATE type and range. You have to&n; * specify the REAL address here, not the configuration port address. Look&n; * at the CDROM driver&squot;s invoking line within your DOS CONFIG.SYS, or let&n; * sbpcd auto-probe, if you are not firm with the address.&n; * There are some soundcards on the market with 0x0630, 0x0650, ...; their&n; * type is not obvious (both types are possible).&n; *&n; * example: if your SBPRO audio address is 0x220, specify 0x230 and SBPRO 1.&n; *          if your soundcard has its CDROM port above 0x300, specify&n; *          that address and try SBPRO 0 first.&n; *          if your SoundScape configuration port is at 0x330, specify&n; *          0x338 and SBPRO 2.&n; *&n; * interface type:&n; * ===============&n; * set SBPRO to 1 for &quot;true&quot; SoundBlaster card&n; * set SBPRO to 0 for &quot;compatible&quot; soundcards and&n; *                for &quot;poor&quot; (no sound) interface cards.&n; * set SBPRO to 2 for Ensonic SoundScape or SPEA Media FX cards&n; * set SBPRO to 3 for Teac 16bit interface cards&n; *&n; * Almost all &quot;compatible&quot; sound boards need to set SBPRO to 0.&n; * If SBPRO is set wrong, the drives will get found - but any&n; * data access will give errors (audio access will work).&n; * The &quot;OmniCD&quot; no-sound interface card from CreativeLabs and most Teac&n; * interface cards need SBPRO 1.&n; *&n; * sound base:&n; * ===========&n; * The SOUND_BASE definition tells if we should try to turn the CD sound&n; * channels on. It will only be of use regarding soundcards with a SbPro&n; * compatible mixer.&n; *&n; * Example: #define SOUND_BASE 0x220 enables the sound card&squot;s CD channels&n; *          #define SOUND_BASE 0     leaves the soundcard untouched&n; */
-macro_line|#if !(SBPCD_ISSUE-1)     /* first (or if you have only one) interface board: */
 DECL|macro|CDROM_PORT
 mdefine_line|#define CDROM_PORT 0x340 /* &lt;-----------&lt;&lt; port address                      */
 DECL|macro|SBPRO
@@ -10,37 +9,6 @@ DECL|macro|MAX_DRIVES
 mdefine_line|#define MAX_DRIVES 4     /* set to 1 if the card does not use &quot;drive select&quot; */
 DECL|macro|SOUND_BASE
 mdefine_line|#define SOUND_BASE 0x220 /* &lt;-----------&lt;&lt; sound address of this card or 0   */
-macro_line|#endif
-macro_line|#if !(SBPCD_ISSUE-2)     /* ==================== second interface board: === */
-DECL|macro|CDROM_PORT
-mdefine_line|#define CDROM_PORT 0x344 /* &lt;-----------&lt;&lt; port address                      */
-DECL|macro|SBPRO
-mdefine_line|#define SBPRO      0     /* &lt;-----------&lt;&lt; interface type                    */
-DECL|macro|MAX_DRIVES
-mdefine_line|#define MAX_DRIVES 4     /* set to 1 if the card does not use &quot;drive select&quot; */
-DECL|macro|SOUND_BASE
-mdefine_line|#define SOUND_BASE 0x000 /* &lt;-----------&lt;&lt; sound address of this card or 0   */
-macro_line|#endif
-macro_line|#if !(SBPCD_ISSUE-3)     /* ===================== third interface board: === */
-DECL|macro|CDROM_PORT
-mdefine_line|#define CDROM_PORT 0x630 /* &lt;-----------&lt;&lt; port address                      */
-DECL|macro|SBPRO
-mdefine_line|#define SBPRO      1     /* &lt;-----------&lt;&lt; interface type                    */
-DECL|macro|MAX_DRIVES
-mdefine_line|#define MAX_DRIVES 4     /* set to 1 if the card does not use &quot;drive select&quot; */
-DECL|macro|SOUND_BASE
-mdefine_line|#define SOUND_BASE 0x240 /* &lt;-----------&lt;&lt; sound address of this card or 0   */
-macro_line|#endif
-macro_line|#if !(SBPCD_ISSUE-4)     /* ==================== fourth interface board: === */
-DECL|macro|CDROM_PORT
-mdefine_line|#define CDROM_PORT 0x634 /* &lt;-----------&lt;&lt; port address                      */
-DECL|macro|SBPRO
-mdefine_line|#define SBPRO      0     /* &lt;-----------&lt;&lt; interface type                    */
-DECL|macro|MAX_DRIVES
-mdefine_line|#define MAX_DRIVES 4     /* set to 1 if the card does not use &quot;drive select&quot; */
-DECL|macro|SOUND_BASE
-mdefine_line|#define SOUND_BASE 0x000 /* &lt;-----------&lt;&lt; sound address of this card or 0   */
-macro_line|#endif
 multiline_comment|/*&n; * some more or less user dependent definitions - service them!&n; */
 multiline_comment|/* Set this to 0 once you have configured your interface definitions right. */
 DECL|macro|DISTRIBUTION

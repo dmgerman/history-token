@@ -1849,11 +1849,9 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Its going to generate another interrupt */
-id|SET_INTR
-c_func
-(paren
+id|DEVICE_INTR
+op_assign
 id|mfm_rw_intr
-)paren
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1873,11 +1871,9 @@ c_func
 l_string|&quot;setting up for rw...&bslash;n&quot;
 )paren
 suffix:semicolon
-id|SET_INTR
-c_func
-(paren
+id|DEVICE_INTR
+op_assign
 id|mfm_rw_intr
-)paren
 suffix:semicolon
 id|issue_command
 c_func
@@ -2007,11 +2003,9 @@ op_amp
 id|STAT_CED
 )paren
 (brace
-id|SET_INTR
-c_func
-(paren
+id|DEVICE_INTR
+op_assign
 id|mfm_recal_intr
-)paren
 suffix:semicolon
 id|issue_command
 c_func
@@ -2148,11 +2142,9 @@ op_amp
 id|STAT_CED
 )paren
 (brace
-id|SET_INTR
-c_func
-(paren
+id|DEVICE_INTR
+op_assign
 id|mfm_seek_intr
-)paren
 suffix:semicolon
 id|issue_command
 c_func
@@ -2491,11 +2483,9 @@ OL
 l_int|0
 )paren
 (brace
-id|SET_INTR
-c_func
-(paren
+id|DEVICE_INTR
+op_assign
 id|mfm_recal_intr
-)paren
 suffix:semicolon
 id|DBG
 c_func
@@ -2578,11 +2568,9 @@ l_int|3
 op_assign
 id|raw_cmd.cylinder
 suffix:semicolon
-id|SET_INTR
-c_func
-(paren
+id|DEVICE_INTR
+op_assign
 id|mfm_seek_intr
-)paren
 suffix:semicolon
 id|issue_command
 c_func
@@ -3415,7 +3403,9 @@ c_func
 l_string|&quot;mfm_request: Exiting due to empty queue (pre)&bslash;n&quot;
 )paren
 suffix:semicolon
-id|CLEAR_INTR
+id|DEVICE_INTR
+op_assign
+l_int|NULL
 suffix:semicolon
 id|Busy
 op_assign
@@ -3729,7 +3719,9 @@ r_void
 op_assign
 id|DEVICE_INTR
 suffix:semicolon
-id|CLEAR_INTR
+id|DEVICE_INTR
+op_assign
+l_int|NULL
 suffix:semicolon
 id|DBG
 c_func

@@ -1563,7 +1563,7 @@ l_int|1
 suffix:semicolon
 id|ret
 op_assign
-id|block_symlink
+id|page_symlink
 c_func
 (paren
 id|dentry-&gt;d_inode

@@ -2623,14 +2623,12 @@ id|drive-&gt;name
 suffix:semicolon
 )brace
 r_return
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
 comma
-l_string|&quot;dma_intr&quot;
-comma
-id|drive-&gt;status
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
