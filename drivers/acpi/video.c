@@ -7196,7 +7196,8 @@ op_logical_or
 op_logical_neg
 id|device-&gt;video
 )paren
-r_return
+id|return_VALUE
+c_func
 (paren
 op_minus
 id|ENOENT
