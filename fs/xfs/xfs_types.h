@@ -162,7 +162,6 @@ suffix:semicolon
 macro_line|#else
 macro_line|#error BITS_PER_LONG must be 32 or 64
 macro_line|#endif
-macro_line|#endif&t;/* __KERNEL__ */
 multiline_comment|/*&n; * Some types are conditional depending on the target system.&n; * XFS_BIG_BLKNOS needs block layer disk addresses to be 64 bits.&n; * XFS_BIG_INUMS needs the VFS inode number to be 64 bits, as well&n; * as requiring XFS_BIG_BLKNOS to be set.&n; */
 macro_line|#if defined(CONFIG_LBD) || (BITS_PER_LONG == 64)
 DECL|macro|XFS_BIG_BLKNOS
@@ -180,6 +179,7 @@ macro_line|# define XFS_BIG_BLKNOS&t;0
 DECL|macro|XFS_BIG_INUMS
 macro_line|# define XFS_BIG_INUMS&t;0
 macro_line|#endif
+macro_line|#endif&t;/* __KERNEL__ */
 DECL|typedef|xfs_agblock_t
 r_typedef
 id|__uint32_t
@@ -480,5 +480,5 @@ DECL|typedef|xfs_btnum_t
 )brace
 id|xfs_btnum_t
 suffix:semicolon
-macro_line|#endif&t;/* !__XFS_TYPES_H */
+macro_line|#endif&t;/* __XFS_TYPES_H__ */
 eof

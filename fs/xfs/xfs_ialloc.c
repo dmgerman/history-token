@@ -4955,7 +4955,7 @@ id|agino
 )paren
 )paren
 (brace
-macro_line|#if 0
+macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren

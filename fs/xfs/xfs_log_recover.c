@@ -7209,7 +7209,7 @@ c_func
 (paren
 id|CE_ALERT
 comma
-l_string|&quot;%s : ondisk-dquot 0x%x, ID mismatch: &quot;
+l_string|&quot;%s : ondisk-dquot 0x%p, ID mismatch: &quot;
 l_string|&quot;0x%x expected, found id 0x%x&quot;
 comma
 id|str
@@ -7299,7 +7299,7 @@ c_func
 (paren
 id|CE_ALERT
 comma
-l_string|&quot;%s : Dquot ID 0x%x (0x%x) &quot;
+l_string|&quot;%s : Dquot ID 0x%x (0x%p) &quot;
 l_string|&quot;BLK TIMER NOT STARTED&quot;
 comma
 id|str
@@ -7384,7 +7384,7 @@ c_func
 (paren
 id|CE_ALERT
 comma
-l_string|&quot;%s : Dquot ID 0x%x (0x%x) &quot;
+l_string|&quot;%s : Dquot ID 0x%x (0x%p) &quot;
 l_string|&quot;INODE TIMER NOT STARTED&quot;
 comma
 id|str

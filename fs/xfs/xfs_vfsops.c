@@ -673,7 +673,7 @@ op_ne
 id|XFSMNT_NOALIGN
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * At this point the superblock has not been read&n;&t;&t; * in, therefore we do not know the block size.&n;&t;&t; * Before, the mount call ends we will convert&n;&t;&t; * these to FSBs.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * At this point the superblock has not been read&n;&t;&t; * in, therefore we do not know the block size.&n;&t;&t; * Before the mount call ends we will convert&n;&t;&t; * these to FSBs.&n;&t;&t; */
 id|mp-&gt;m_dalign
 op_assign
 id|ap-&gt;sunit
