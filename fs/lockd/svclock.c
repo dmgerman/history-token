@@ -1123,9 +1123,19 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;lockd: nlmsvc_lock(%04x/%ld, ty=%d, pi=%d, %Ld-%Ld, bl=%d)&bslash;n&quot;
+l_string|&quot;lockd: nlmsvc_lock(%02x:%02x/%ld, ty=%d, pi=%d, %Ld-%Ld, bl=%d)&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_dev
+)paren
 comma
 id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_ino
 comma
@@ -1432,9 +1442,19 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;lockd: nlmsvc_testlock(%04x/%ld, ty=%d, %Ld-%Ld)&bslash;n&quot;
+l_string|&quot;lockd: nlmsvc_testlock(%02x:%02x/%ld, ty=%d, %Ld-%Ld)&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_dev
+)paren
 comma
 id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_ino
 comma
@@ -1539,9 +1559,19 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;lockd: nlmsvc_unlock(%04x/%ld, pi=%d, %Ld-%Ld)&bslash;n&quot;
+l_string|&quot;lockd: nlmsvc_unlock(%02x:%02x/%ld, pi=%d, %Ld-%Ld)&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_dev
+)paren
 comma
 id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_ino
 comma
@@ -1625,9 +1655,19 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;lockd: nlmsvc_cancel(%04x/%ld, pi=%d, %Ld-%Ld)&bslash;n&quot;
+l_string|&quot;lockd: nlmsvc_cancel(%02x:%02x/%ld, pi=%d, %Ld-%Ld)&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_dev
+)paren
 comma
 id|file-&gt;f_file.f_dentry-&gt;d_inode-&gt;i_ino
 comma

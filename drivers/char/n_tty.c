@@ -17,10 +17,10 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-DECL|macro|CONSOLE_DEV
-mdefine_line|#define CONSOLE_DEV MKDEV(TTY_MAJOR,0)
-DECL|macro|SYSCONS_DEV
-mdefine_line|#define SYSCONS_DEV  MKDEV(TTYAUX_MAJOR,1)
+DECL|macro|IS_CONSOLE_DEV
+mdefine_line|#define IS_CONSOLE_DEV(dev)&t;(kdev_val(dev) == __mkdev(TTY_MAJOR,0))
+DECL|macro|IS_SYSCONS_DEV
+mdefine_line|#define IS_SYSCONS_DEV(dev)&t;(kdev_val(dev) == __mkdev(TTYAUX_MAJOR,1))
 macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
@@ -4734,13 +4734,19 @@ multiline_comment|/* don&squot;t stop on /dev/console */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|IS_CONSOLE_DEV
+c_func
+(paren
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
-op_ne
-id|CONSOLE_DEV
+)paren
 op_logical_and
+op_logical_neg
+id|IS_SYSCONS_DEV
+c_func
+(paren
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
-op_ne
-id|SYSCONS_DEV
+)paren
 op_logical_and
 id|current-&gt;tty
 op_eq
@@ -5585,13 +5591,19 @@ c_func
 id|tty
 )paren
 op_logical_and
+op_logical_neg
+id|IS_CONSOLE_DEV
+c_func
+(paren
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
-op_ne
-id|CONSOLE_DEV
+)paren
 op_logical_and
+op_logical_neg
+id|IS_SYSCONS_DEV
+c_func
+(paren
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
-op_ne
-id|SYSCONS_DEV
+)paren
 )paren
 (brace
 id|retval

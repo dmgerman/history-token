@@ -329,21 +329,6 @@ multiline_comment|/* -----------------------------------------------------------
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-multiline_comment|/*&n; * inode number macros&n; */
-DECL|macro|ITYPE
-mdefine_line|#define ITYPE(x)   ((x)&amp;(0xf&lt;&lt;28))
-DECL|macro|ISPECIAL
-mdefine_line|#define ISPECIAL   (0&lt;&lt;28)
-DECL|macro|IBUS
-mdefine_line|#define IBUS       (1&lt;&lt;28)
-DECL|macro|IDEVICE
-mdefine_line|#define IDEVICE    (2&lt;&lt;28)
-DECL|macro|IBUSNR
-mdefine_line|#define IBUSNR(x)  (((x)&gt;&gt;8)&amp;0xff)
-DECL|macro|IDEVNR
-mdefine_line|#define IDEVNR(x)  ((x)&amp;0xff)
-DECL|macro|IROOT
-mdefine_line|#define IROOT      1
 DECL|struct|dev_state
 r_struct
 id|dev_state

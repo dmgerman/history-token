@@ -975,10 +975,6 @@ id|minor_shift
 suffix:colon
 id|PD_BITS
 comma
-id|max_p
-suffix:colon
-id|PD_PARTNS
-comma
 id|part
 suffix:colon
 id|pd_hd

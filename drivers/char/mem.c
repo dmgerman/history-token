@@ -2227,7 +2227,7 @@ id|filp
 r_switch
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

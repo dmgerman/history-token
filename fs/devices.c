@@ -26,7 +26,7 @@ suffix:semicolon
 DECL|macro|isa_tty_dev
 mdefine_line|#define isa_tty_dev(ma)&t;(ma == TTY_MAJOR || ma == TTYAUX_MAJOR)
 DECL|macro|need_serial
-mdefine_line|#define need_serial(ma,mi) (get_tty_driver(MKDEV(ma,mi)) == NULL)
+mdefine_line|#define need_serial(ma,mi) (get_tty_driver(mk_kdev(ma,mi)) == NULL)
 macro_line|#endif
 DECL|struct|device_struct
 r_struct
@@ -662,13 +662,13 @@ op_assign
 id|get_chrfops
 c_func
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|inode-&gt;i_rdev
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -761,13 +761,13 @@ id|buffer
 comma
 l_string|&quot;%02x:%02x&quot;
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -803,7 +803,7 @@ id|name
 op_assign
 id|chrdevs
 (braket
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -831,13 +831,13 @@ l_string|&quot;%s(%d,%d)&quot;
 comma
 id|name
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev

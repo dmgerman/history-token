@@ -220,7 +220,7 @@ id|dev
 r_if
 c_cond
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -236,7 +236,7 @@ suffix:semicolon
 r_return
 id|mddev_map
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -912,7 +912,7 @@ id|mddev
 )paren
 (brace
 r_return
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MD_MAJOR

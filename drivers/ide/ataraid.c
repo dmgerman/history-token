@@ -1239,10 +1239,6 @@ id|ataraid_gendisk.minor_shift
 op_assign
 l_int|4
 suffix:semicolon
-id|ataraid_gendisk.max_p
-op_assign
-l_int|15
-suffix:semicolon
 id|ataraid_gendisk.sizes
 op_assign
 op_amp

@@ -123,7 +123,9 @@ r_int
 id|read
 suffix:semicolon
 DECL|member|urb
-id|purb_t
+r_struct
+id|urb
+op_star
 id|urb
 suffix:semicolon
 )brace

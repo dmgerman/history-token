@@ -52,25 +52,26 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Scheduling quanta.&n; *&n; * NOTE! The unix &quot;nice&quot; value influences how long a process&n; * gets. The nice value ranges from -20 to +19, where a -20&n; * is a &quot;high-priority&quot; task, and a &quot;+10&quot; is a low-priority&n; * task.&n; *&n; * We want the time-slice to be around 50ms or so, so this&n; * calculation depends on the value of HZ.&n; */
-macro_line|#if HZ &lt; 200
-DECL|macro|TICK_SCALE
-mdefine_line|#define TICK_SCALE(x)&t;((x) &gt;&gt; 2)
-macro_line|#elif HZ &lt; 400
-DECL|macro|TICK_SCALE
-mdefine_line|#define TICK_SCALE(x)&t;((x) &gt;&gt; 1)
-macro_line|#elif HZ &lt; 800
-DECL|macro|TICK_SCALE
-mdefine_line|#define TICK_SCALE(x)&t;(x)
-macro_line|#elif HZ &lt; 1600
-DECL|macro|TICK_SCALE
-mdefine_line|#define TICK_SCALE(x)&t;((x) &lt;&lt; 1)
-macro_line|#else
-DECL|macro|TICK_SCALE
-mdefine_line|#define TICK_SCALE(x)&t;((x) &lt;&lt; 2)
-macro_line|#endif
+multiline_comment|/*&n; * Scheduling quanta.&n; *&n; * NOTE! The unix &quot;nice&quot; value influences how long a process&n; * gets. The nice value ranges from -20 to +19, where a -20&n; * is a &quot;high-priority&quot; task, and a &quot;+10&quot; is a low-priority&n; * task. The default time slice for zero-nice tasks will be 43ms.&n; */
+DECL|macro|NICE_RANGE
+mdefine_line|#define NICE_RANGE&t;40
+DECL|macro|MIN_NICE_TSLICE
+mdefine_line|#define MIN_NICE_TSLICE&t;10000
+DECL|macro|MAX_NICE_TSLICE
+mdefine_line|#define MAX_NICE_TSLICE&t;80000
 DECL|macro|TASK_TIMESLICE
-mdefine_line|#define TASK_TIMESLICE(p)&t;(TICK_SCALE(20-(p)-&gt;nice)+1)
+mdefine_line|#define TASK_TIMESLICE(p)&t;((int) ts_table[19 - (p)-&gt;nice])
+DECL|variable|ts_table
+r_static
+r_int
+r_char
+id|ts_table
+(braket
+id|NICE_RANGE
+)braket
+suffix:semicolon
+DECL|macro|MM_AFFINITY_BONUS
+mdefine_line|#define MM_AFFINITY_BONUS&t;1
 multiline_comment|/*&n; *&t;Init task must be ok at boot for the ix86 as we will check its signals&n; *&t;via the SMP irq return path.&n; */
 DECL|variable|init_tasks
 r_struct
@@ -294,7 +295,7 @@ id|p-&gt;mm
 )paren
 id|weight
 op_add_assign
-l_int|1
+id|MM_AFFINITY_BONUS
 suffix:semicolon
 id|weight
 op_add_assign
@@ -4283,6 +4284,60 @@ id|init_timervecs
 r_void
 )paren
 suffix:semicolon
+DECL|function|fill_tslice_map
+r_static
+r_void
+id|fill_tslice_map
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NICE_RANGE
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|ts_table
+(braket
+id|i
+)braket
+op_assign
+(paren
+(paren
+id|MIN_NICE_TSLICE
+op_plus
+(paren
+(paren
+id|MAX_NICE_TSLICE
+op_minus
+id|MIN_NICE_TSLICE
+)paren
+op_div
+id|NICE_RANGE
+)paren
+op_star
+id|i
+)paren
+op_star
+id|HZ
+)paren
+op_div
+l_int|1000000
+suffix:semicolon
+)brace
 DECL|function|sched_init
 r_void
 id|__init
@@ -4331,6 +4386,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|fill_tslice_map
+c_func
+(paren
+)paren
+suffix:semicolon
 id|init_timervecs
 c_func
 (paren

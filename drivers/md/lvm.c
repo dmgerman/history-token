@@ -819,10 +819,6 @@ id|minor_shift
 suffix:colon
 l_int|0
 comma
-id|max_p
-suffix:colon
-l_int|1
-comma
 id|part
 suffix:colon
 id|lvm_hd_struct

@@ -10497,7 +10497,7 @@ id|c
 )paren
 (brace
 r_return
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|TTY_MAJOR
@@ -11051,7 +11051,7 @@ r_return
 suffix:semicolon
 id|console_num
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -11115,7 +11115,7 @@ r_return
 suffix:semicolon
 id|console_num
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -11238,7 +11238,7 @@ id|i
 suffix:semicolon
 id|currcons
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -11351,7 +11351,8 @@ r_return
 suffix:semicolon
 id|vcs_make_devfs
 (paren
-id|MINOR
+id|minor
+c_func
 (paren
 id|tty-&gt;device
 )paren

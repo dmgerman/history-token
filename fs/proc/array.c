@@ -2314,7 +2314,7 @@ l_int|0
 suffix:semicolon
 id|dev
 op_assign
-l_int|0
+id|NODEV
 suffix:semicolon
 id|ino
 op_assign

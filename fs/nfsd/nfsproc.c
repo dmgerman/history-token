@@ -693,7 +693,7 @@ suffix:semicolon
 id|dev_t
 id|rdev
 op_assign
-id|NODEV
+l_int|0
 suffix:semicolon
 id|dprintk
 c_func
@@ -947,7 +947,11 @@ suffix:colon
 multiline_comment|/* reserve rdev for later checking */
 id|attr-&gt;ia_size
 op_assign
+id|kdev_t_to_nr
+c_func
+(paren
 id|inode-&gt;i_rdev
+)paren
 suffix:semicolon
 id|attr-&gt;ia_valid
 op_or_assign
@@ -1151,7 +1155,11 @@ op_logical_or
 (paren
 id|is_borc
 op_logical_and
+id|kdev_t_to_nr
+c_func
+(paren
 id|inode-&gt;i_rdev
+)paren
 op_ne
 id|rdev
 )paren

@@ -6954,7 +6954,7 @@ id|PARTN_BITS
 suffix:semicolon
 id|dev
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|HWIF
@@ -9007,7 +9007,8 @@ id|PARTN_BITS
 suffix:semicolon
 id|devinfo-&gt;dev
 op_assign
-id|MKDEV
+id|mk_kdev
+c_func
 (paren
 id|HWIF
 c_func
@@ -10235,7 +10236,7 @@ multiline_comment|/*&n;&t; * default to read-only always and fix latter at the b
 id|set_device_ro
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|HWIF
@@ -10255,7 +10256,7 @@ suffix:semicolon
 id|set_blocksize
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|HWIF
@@ -10932,7 +10933,7 @@ id|dvd_ram
 id|set_device_ro
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|HWIF
@@ -11159,7 +11160,7 @@ r_return
 id|cdrom_media_changed
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 (paren
 id|HWIF
 (paren
@@ -11287,7 +11288,7 @@ suffix:semicolon
 id|set_blocksize
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|HWIF

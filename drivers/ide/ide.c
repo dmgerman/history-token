@@ -1663,7 +1663,7 @@ id|nr_secs
 id|add_blkdev_randomness
 c_func
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|rq-&gt;rq_dev
@@ -1949,7 +1949,7 @@ c_func
 (paren
 id|gd
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|hwif-&gt;major
@@ -5015,7 +5015,7 @@ r_int
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|rq-&gt;rq_dev
@@ -6147,7 +6147,7 @@ op_star
 )paren
 id|blk_dev
 (braket
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -7194,7 +7194,7 @@ id|i_rdev
 r_int
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|i_rdev
@@ -7412,7 +7412,7 @@ id|RQ_ACTIVE
 suffix:semicolon
 id|rq-&gt;rq_dev
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|major
@@ -7592,7 +7592,7 @@ suffix:semicolon
 id|kdev_t
 id|dev
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|g-&gt;major
@@ -7866,7 +7866,7 @@ r_void
 id|ide_revalidate_disk
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|hwif-&gt;major
@@ -8859,7 +8859,7 @@ l_int|0
 id|kdev_t
 id|devp
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|hwif-&gt;major
@@ -11585,26 +11585,13 @@ id|ide_settings_t
 op_star
 id|setting
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|inode
-op_logical_or
-op_logical_neg
-(paren
 id|dev
 op_assign
 id|inode-&gt;i_rdev
-)paren
-)paren
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -11612,7 +11599,7 @@ id|dev
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -11700,7 +11687,7 @@ r_if
 c_cond
 (paren
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -11853,7 +11840,7 @@ r_int
 )paren
 id|drive-&gt;part
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -11989,7 +11976,7 @@ r_int
 )paren
 id|drive-&gt;part
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -12125,7 +12112,7 @@ r_int
 )paren
 id|drive-&gt;part
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -12187,7 +12174,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

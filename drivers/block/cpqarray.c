@@ -2588,15 +2588,6 @@ id|ida_gendisk
 id|i
 )braket
 dot
-id|max_p
-op_assign
-l_int|16
-suffix:semicolon
-id|ida_gendisk
-(braket
-id|i
-)braket
-dot
 id|part
 op_assign
 id|ida

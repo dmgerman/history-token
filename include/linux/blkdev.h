@@ -1279,7 +1279,7 @@ suffix:semicolon
 r_int
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -1297,7 +1297,7 @@ id|major
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev

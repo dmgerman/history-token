@@ -1,6 +1,8 @@
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
@@ -8,6 +10,7 @@ macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/fd.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/nfs_mount.h&gt;
@@ -1931,20 +1934,24 @@ c_func
 (paren
 l_int|NULL
 comma
+id|kdev_none
+c_func
+(paren
 id|dev
+)paren
 ques
 c_cond
-l_int|NULL
-suffix:colon
 id|devfs_name
+suffix:colon
+l_int|NULL
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -3759,7 +3766,7 @@ macro_line|#ifdef CONFIG_BLK_DEV_FD
 r_if
 c_cond
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|ROOT_DEV
@@ -3789,7 +3796,7 @@ l_int|1
 (brace
 id|ROOT_DEV
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|RAMDISK_MAJOR
@@ -4308,7 +4315,7 @@ r_void
 r_int
 id|is_floppy
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|ROOT_DEV
@@ -4410,14 +4417,18 @@ c_func
 (paren
 )paren
 op_logical_and
+id|kdev_same
+c_func
+(paren
 id|ROOT_DEV
-op_ne
-id|MKDEV
+comma
+id|mk_kdev
 c_func
 (paren
 id|RAMDISK_MAJOR
 comma
 l_int|0
+)paren
 )paren
 )paren
 (brace
@@ -4447,7 +4458,7 @@ l_int|0
 )paren
 id|ROOT_DEV
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|RAMDISK_MAJOR

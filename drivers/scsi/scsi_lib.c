@@ -734,7 +734,7 @@ suffix:semicolon
 id|add_blkdev_randomness
 c_func
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|req-&gt;rq_dev
@@ -1710,7 +1710,7 @@ suffix:semicolon
 r_int
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev

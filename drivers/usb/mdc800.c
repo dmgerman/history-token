@@ -84,7 +84,9 @@ l_int|4
 )braket
 suffix:semicolon
 DECL|member|irq_urb
-id|purb_t
+r_struct
+id|urb
+op_star
 id|irq_urb
 suffix:semicolon
 DECL|member|irq_wait
@@ -119,7 +121,9 @@ l_int|8
 suffix:semicolon
 singleline_comment|// last Bytes send after busy
 DECL|member|write_urb
-id|purb_t
+r_struct
+id|urb
+op_star
 id|write_urb
 suffix:semicolon
 DECL|member|write_urb_buffer
@@ -136,7 +140,9 @@ r_int
 id|written
 suffix:semicolon
 DECL|member|download_urb
-id|purb_t
+r_struct
+id|urb
+op_star
 id|download_urb
 suffix:semicolon
 DECL|member|download_urb_buffer

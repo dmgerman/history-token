@@ -232,11 +232,6 @@ r_int
 id|minor_shift
 suffix:semicolon
 multiline_comment|/* number of times minor is shifted to&n;&t;&t;&t;&t;&t;   get real minor */
-DECL|member|max_p
-r_int
-id|max_p
-suffix:semicolon
-multiline_comment|/* maximum partitions per device */
 DECL|member|part
 r_struct
 id|hd_struct
@@ -255,12 +250,6 @@ r_int
 id|nr_real
 suffix:semicolon
 multiline_comment|/* number of real devices */
-DECL|member|real_devices
-r_void
-op_star
-id|real_devices
-suffix:semicolon
-multiline_comment|/* internal use */
 DECL|member|next
 r_struct
 id|gendisk
@@ -940,7 +929,7 @@ id|g
 ques
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev

@@ -133,7 +133,7 @@ id|bdev
 op_assign
 id|blk_dev
 op_plus
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -158,7 +158,7 @@ r_return
 op_amp
 id|blk_dev
 (braket
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -570,11 +570,21 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: dev %x: &quot;
+l_string|&quot;%s: dev %02x:%02x: &quot;
 comma
 id|msg
 comma
+id|major
+c_func
+(paren
 id|rq-&gt;rq_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|rq-&gt;rq_dev
+)paren
 )paren
 suffix:semicolon
 id|bit
@@ -2940,7 +2950,7 @@ id|major
 suffix:semicolon
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -2948,7 +2958,7 @@ id|dev
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -3009,7 +3019,7 @@ id|major
 suffix:semicolon
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -3017,7 +3027,7 @@ id|dev
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -3103,7 +3113,7 @@ r_int
 r_int
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|rq-&gt;rq_dev
@@ -3460,9 +3470,14 @@ c_func
 id|next
 )paren
 op_logical_or
+op_logical_neg
+id|kdev_same
+c_func
+(paren
 id|req-&gt;rq_dev
-op_ne
+comma
 id|next-&gt;rq_dev
+)paren
 op_logical_or
 id|req-&gt;nr_sectors
 op_plus
@@ -4333,7 +4348,7 @@ id|dev0
 suffix:semicolon
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|bio-&gt;bi_dev
@@ -4355,7 +4370,7 @@ id|bio-&gt;bi_dev
 (brace
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|bio-&gt;bi_dev
@@ -4381,7 +4396,7 @@ multiline_comment|/* whole disk device */
 multiline_comment|/* that is, minor0 = (minor &amp; ~((1&lt;&lt;g-&gt;minor_shift)-1)); */
 id|dev0
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|major
@@ -4392,9 +4407,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|kdev_same
+c_func
+(paren
 id|dev0
-op_ne
+comma
 id|bio-&gt;bi_dev
+)paren
 )paren
 (brace
 id|bio-&gt;bi_dev
@@ -4429,7 +4449,7 @@ id|bio
 r_int
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|bio-&gt;bi_dev
@@ -4438,7 +4458,7 @@ suffix:semicolon
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|bio-&gt;bi_dev
@@ -5013,7 +5033,7 @@ r_return
 suffix:semicolon
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|bhs

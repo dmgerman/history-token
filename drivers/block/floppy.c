@@ -282,7 +282,7 @@ id|x
 (brace
 r_return
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|x
@@ -307,7 +307,7 @@ id|x
 (brace
 r_return
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|x
@@ -318,7 +318,7 @@ l_int|0x03
 op_or
 (paren
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|x
@@ -12224,7 +12224,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -14100,7 +14100,7 @@ id|fd_ref
 id|check_disk_change
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|FLOPPY_MAJOR
@@ -15888,7 +15888,7 @@ id|UDRS-&gt;fd_ref
 op_logical_and
 id|old_dev
 op_ne
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -16152,7 +16152,7 @@ suffix:semicolon
 )brace
 id|UDRS-&gt;fd_device
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -16168,7 +16168,7 @@ l_int|1
 op_logical_and
 id|old_dev
 op_ne
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -16190,7 +16190,7 @@ suffix:semicolon
 id|invalidate_buffers
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|FLOPPY_MAJOR
@@ -16342,7 +16342,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -16663,7 +16663,7 @@ id|size
 op_assign
 id|floppy_blocksizes
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -18854,7 +18854,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR

@@ -589,7 +589,6 @@ macro_line|#include &lt;linux/bfs_fs_i.h&gt;
 macro_line|#include &lt;linux/udf_fs_i.h&gt;
 macro_line|#include &lt;linux/ncp_fs_i.h&gt;
 macro_line|#include &lt;linux/proc_fs_i.h&gt;
-macro_line|#include &lt;linux/usbdev_fs_i.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_i.h&gt;
 macro_line|#include &lt;linux/cramfs_fs_sb.h&gt;
 multiline_comment|/*&n; * Attribute flags.  These should be or-ed together to figure out what&n; * has been changed!&n; */
@@ -1337,11 +1336,6 @@ DECL|member|socket_i
 r_struct
 id|socket
 id|socket_i
-suffix:semicolon
-DECL|member|usbdev_i
-r_struct
-id|usbdev_inode_info
-id|usbdev_i
 suffix:semicolon
 DECL|member|jffs2_i
 r_struct
@@ -2104,7 +2098,6 @@ macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/bfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/udf_fs_sb.h&gt;
 macro_line|#include &lt;linux/ncp_fs_sb.h&gt;
-macro_line|#include &lt;linux/usbdev_fs_sb.h&gt;
 macro_line|#include &lt;linux/cramfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_sb.h&gt;
 r_extern
@@ -2353,11 +2346,6 @@ DECL|member|ncpfs_sb
 r_struct
 id|ncp_sb_info
 id|ncpfs_sb
-suffix:semicolon
-DECL|member|usbdevfs_sb
-r_struct
-id|usbdev_sb_info
-id|usbdevfs_sb
 suffix:semicolon
 DECL|member|jffs2_sb
 r_struct

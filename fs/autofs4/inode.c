@@ -1325,7 +1325,7 @@ l_int|0
 suffix:semicolon
 id|inode-&gt;i_rdev
 op_assign
-l_int|0
+id|NODEV
 suffix:semicolon
 id|inode-&gt;i_atime
 op_assign

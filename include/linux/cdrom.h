@@ -1940,12 +1940,14 @@ id|vname
 comma
 id|DEVFS_FL_DEFAULT
 comma
-id|MAJOR
+id|major
+c_func
 (paren
 id|cdi-&gt;dev
 )paren
 comma
-id|MINOR
+id|minor
+c_func
 (paren
 id|cdi-&gt;dev
 )paren

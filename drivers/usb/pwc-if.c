@@ -2296,7 +2296,9 @@ r_void
 id|pwc_isoc_handler
 c_func
 (paren
-id|purb_t
+r_struct
+id|urb
+op_star
 id|urb
 )paren
 (brace
@@ -2943,7 +2945,9 @@ id|usb_device
 op_star
 id|udev
 suffix:semicolon
-id|purb_t
+r_struct
+id|urb
+op_star
 id|urb
 suffix:semicolon
 r_int

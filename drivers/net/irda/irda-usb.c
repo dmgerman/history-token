@@ -219,8 +219,10 @@ r_void
 id|speed_bulk_callback
 c_func
 (paren
-id|purb_t
-id|purb
+r_struct
+id|urb
+op_star
+id|urb
 )paren
 suffix:semicolon
 r_static
@@ -228,8 +230,10 @@ r_void
 id|write_bulk_callback
 c_func
 (paren
-id|purb_t
-id|purb
+r_struct
+id|urb
+op_star
+id|urb
 )paren
 suffix:semicolon
 r_static
@@ -237,8 +241,10 @@ r_void
 id|irda_usb_receive
 c_func
 (paren
-id|purb_t
-id|purb
+r_struct
+id|urb
+op_star
+id|urb
 )paren
 suffix:semicolon
 r_static
@@ -673,8 +679,10 @@ id|__u8
 op_star
 id|frame
 suffix:semicolon
-id|purb_t
-id|purb
+r_struct
+id|urb
+op_star
+id|urb
 suffix:semicolon
 r_int
 id|ret
@@ -693,7 +701,7 @@ id|self-&gt;new_xbofs
 )paren
 suffix:semicolon
 multiline_comment|/* Grab the speed URB */
-id|purb
+id|urb
 op_assign
 op_amp
 id|self-&gt;speed_urb
@@ -701,7 +709,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|purb-&gt;status
+id|urb-&gt;status
 op_ne
 l_int|0
 )paren
@@ -745,7 +753,7 @@ multiline_comment|/* Submit the 0 length IrDA frame to trigger new speed setting
 id|FILL_BULK_URB
 c_func
 (paren
-id|purb
+id|urb
 comma
 id|self-&gt;usbdev
 comma
@@ -766,17 +774,17 @@ comma
 id|self
 )paren
 suffix:semicolon
-id|purb-&gt;transfer_buffer_length
+id|urb-&gt;transfer_buffer_length
 op_assign
 id|USB_IRDA_HEADER
 suffix:semicolon
-id|purb-&gt;transfer_flags
+id|urb-&gt;transfer_flags
 op_assign
 id|USB_QUEUE_BULK
 op_or
 id|USB_ASYNC_UNLINK
 suffix:semicolon
-id|purb-&gt;timeout
+id|urb-&gt;timeout
 op_assign
 id|MSECS_TO_JIFFIES
 c_func
@@ -793,7 +801,7 @@ op_assign
 id|usb_submit_urb
 c_func
 (paren
-id|purb
+id|urb
 )paren
 )paren
 )paren
@@ -824,8 +832,10 @@ r_void
 id|speed_bulk_callback
 c_func
 (paren
-id|purb_t
-id|purb
+r_struct
+id|urb
+op_star
+id|urb
 )paren
 (brace
 r_struct
@@ -833,7 +843,7 @@ id|irda_usb_cb
 op_star
 id|self
 op_assign
-id|purb-&gt;context
+id|urb-&gt;context
 suffix:semicolon
 id|IRDA_DEBUG
 c_func
@@ -867,7 +877,7 @@ multiline_comment|/* Check for timeout and other USB nasties */
 r_if
 c_cond
 (paren
-id|purb-&gt;status
+id|urb-&gt;status
 op_ne
 l_int|0
 )paren
@@ -881,9 +891,9 @@ comma
 id|__FUNCTION__
 l_string|&quot;(), URB complete status %d, transfer_flags 0x%04X&bslash;n&quot;
 comma
-id|purb-&gt;status
+id|urb-&gt;status
 comma
-id|purb-&gt;transfer_flags
+id|urb-&gt;transfer_flags
 )paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t do anything here, that might confuse the USB layer.&n;&t;&t; * Instead, we will wait for irda_usb_net_timeout(), the&n;&t;&t; * network layer watchdog, to fix the situation.&n;&t;&t; * Jean II */
@@ -892,7 +902,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* urb is now available */
-id|purb-&gt;status
+id|urb-&gt;status
 op_assign
 l_int|0
 suffix:semicolon
@@ -900,7 +910,7 @@ multiline_comment|/* If it was the speed URB, allow the stack to send more packe
 r_if
 c_cond
 (paren
-id|purb
+id|urb
 op_eq
 op_amp
 id|self-&gt;speed_urb
@@ -940,8 +950,10 @@ id|self
 op_assign
 id|netdev-&gt;priv
 suffix:semicolon
-id|purb_t
-id|purb
+r_struct
+id|urb
+op_star
+id|urb
 op_assign
 op_amp
 id|self-&gt;tx_urb
@@ -1092,7 +1104,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|purb-&gt;status
+id|urb-&gt;status
 op_ne
 l_int|0
 )paren
@@ -1180,7 +1192,7 @@ suffix:semicolon
 id|FILL_BULK_URB
 c_func
 (paren
-id|purb
+id|urb
 comma
 id|self-&gt;usbdev
 comma
@@ -1201,24 +1213,24 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|purb-&gt;transfer_buffer_length
+id|urb-&gt;transfer_buffer_length
 op_assign
 id|skb-&gt;len
 suffix:semicolon
 multiline_comment|/* Note : unlink *must* be Asynchronous because of the code in &n;&t; * irda_usb_net_timeout() -&gt; call in irq - Jean II */
-id|purb-&gt;transfer_flags
+id|urb-&gt;transfer_flags
 op_assign
 id|USB_QUEUE_BULK
 op_or
 id|USB_ASYNC_UNLINK
 suffix:semicolon
 multiline_comment|/* This flag (USB_ZERO_PACKET) indicates that what we send is not&n;&t; * a continuous stream of data but separate packets.&n;&t; * In this case, the USB layer will insert an empty USB frame (TD)&n;&t; * after each of our packets that is exact multiple of the frame size.&n;&t; * This is how the dongle will detect the end of packet - Jean II */
-id|purb-&gt;transfer_flags
+id|urb-&gt;transfer_flags
 op_or_assign
 id|USB_ZERO_PACKET
 suffix:semicolon
 multiline_comment|/* Timeout need to be shorter than NET watchdog timer */
-id|purb-&gt;timeout
+id|urb-&gt;timeout
 op_assign
 id|MSECS_TO_JIFFIES
 c_func
@@ -1332,7 +1344,7 @@ op_assign
 id|usb_submit_urb
 c_func
 (paren
-id|purb
+id|urb
 )paren
 )paren
 )paren
@@ -1386,8 +1398,10 @@ r_void
 id|write_bulk_callback
 c_func
 (paren
-id|purb_t
-id|purb
+r_struct
+id|urb
+op_star
+id|urb
 )paren
 (brace
 r_struct
@@ -1395,7 +1409,7 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-id|purb-&gt;context
+id|urb-&gt;context
 suffix:semicolon
 r_struct
 id|irda_usb_cb
@@ -1448,7 +1462,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|purb-&gt;context
+id|urb-&gt;context
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1456,7 +1470,7 @@ multiline_comment|/* Check for timeout and other USB nasties */
 r_if
 c_cond
 (paren
-id|purb-&gt;status
+id|urb-&gt;status
 op_ne
 l_int|0
 )paren
@@ -1470,9 +1484,9 @@ comma
 id|__FUNCTION__
 l_string|&quot;(), URB complete status %d, transfer_flags 0x%04X&bslash;n&quot;
 comma
-id|purb-&gt;status
+id|urb-&gt;status
 comma
-id|purb-&gt;transfer_flags
+id|urb-&gt;transfer_flags
 )paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t do anything here, that might confuse the USB layer,&n;&t;&t; * and we could go in recursion and blow the kernel stack...&n;&t;&t; * Instead, we will wait for irda_usb_net_timeout(), the&n;&t;&t; * network layer watchdog, to fix the situation.&n;&t;&t; * Jean II */
@@ -1481,7 +1495,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* urb is now available */
-id|purb-&gt;status
+id|urb-&gt;status
 op_assign
 l_int|0
 suffix:semicolon
@@ -1579,8 +1593,10 @@ id|self
 op_assign
 id|netdev-&gt;priv
 suffix:semicolon
-id|purb_t
-id|purb
+r_struct
+id|urb
+op_star
+id|urb
 suffix:semicolon
 r_int
 id|done
@@ -1628,7 +1644,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Check speed URB */
-id|purb
+id|urb
 op_assign
 op_amp
 (paren
@@ -1638,7 +1654,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|purb-&gt;status
+id|urb-&gt;status
 op_ne
 l_int|0
 )paren
@@ -1652,15 +1668,15 @@ l_string|&quot;%s: Speed change timed out, urb-&gt;status=%d, urb-&gt;transfer_f
 comma
 id|netdev-&gt;name
 comma
-id|purb-&gt;status
+id|urb-&gt;status
 comma
-id|purb-&gt;transfer_flags
+id|urb-&gt;transfer_flags
 )paren
 suffix:semicolon
 r_switch
 c_cond
 (paren
-id|purb-&gt;status
+id|urb-&gt;status
 )paren
 (brace
 r_case
@@ -1670,7 +1686,7 @@ suffix:colon
 id|usb_unlink_urb
 c_func
 (paren
-id|purb
+id|urb
 )paren
 suffix:semicolon
 multiline_comment|/* Note : above will  *NOT* call netif_wake_queue()&n;&t;&t;&t; * in completion handler, we will come back here.&n;&t;&t;&t; * Jean II */
@@ -1703,7 +1719,7 @@ multiline_comment|/* -2 (urb unlinked by us)  */
 r_default
 suffix:colon
 multiline_comment|/* ??? - Play safe */
-id|purb-&gt;status
+id|urb-&gt;status
 op_assign
 l_int|0
 suffix:semicolon
@@ -1722,7 +1738,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Check Tx URB */
-id|purb
+id|urb
 op_assign
 op_amp
 (paren
@@ -1732,7 +1748,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|purb-&gt;status
+id|urb-&gt;status
 op_ne
 l_int|0
 )paren
@@ -1742,7 +1758,7 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-id|purb-&gt;context
+id|urb-&gt;context
 suffix:semicolon
 id|IRDA_DEBUG
 c_func
@@ -1753,9 +1769,9 @@ l_string|&quot;%s: Tx timed out, urb-&gt;status=%d, urb-&gt;transfer_flags=0x%04
 comma
 id|netdev-&gt;name
 comma
-id|purb-&gt;status
+id|urb-&gt;status
 comma
-id|purb-&gt;transfer_flags
+id|urb-&gt;transfer_flags
 )paren
 suffix:semicolon
 multiline_comment|/* Increase error count */
@@ -1802,7 +1818,7 @@ macro_line|#endif /* IU_BUG_KICK_TIMEOUT */
 r_switch
 c_cond
 (paren
-id|purb-&gt;status
+id|urb-&gt;status
 )paren
 (brace
 r_case
@@ -1812,10 +1828,10 @@ suffix:colon
 id|usb_unlink_urb
 c_func
 (paren
-id|purb
+id|urb
 )paren
 suffix:semicolon
-multiline_comment|/* Note : above will  *NOT* call netif_wake_queue()&n;&t;&t;&t; * in completion handler, because purb-&gt;status will&n;&t;&t;&t; * be -ENOENT. We will fix that at the next watchdog,&n;&t;&t;&t; * leaving more time to USB to recover...&n;&t;&t;&t; * Also, we are in interrupt, so we need to have&n;&t;&t;&t; * USB_ASYNC_UNLINK to work properly...&n;&t;&t;&t; * Jean II */
+multiline_comment|/* Note : above will  *NOT* call netif_wake_queue()&n;&t;&t;&t; * in completion handler, because urb-&gt;status will&n;&t;&t;&t; * be -ENOENT. We will fix that at the next watchdog,&n;&t;&t;&t; * leaving more time to USB to recover...&n;&t;&t;&t; * Also, we are in interrupt, so we need to have&n;&t;&t;&t; * USB_ASYNC_UNLINK to work properly...&n;&t;&t;&t; * Jean II */
 id|done
 op_assign
 l_int|1
@@ -1861,12 +1877,12 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|purb-&gt;context
+id|urb-&gt;context
 op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|purb-&gt;status
+id|urb-&gt;status
 op_assign
 l_int|0
 suffix:semicolon
@@ -1909,8 +1925,10 @@ id|sk_buff
 op_star
 id|skb
 comma
-id|purb_t
-id|purb
+r_struct
+id|urb
+op_star
+id|urb
 )paren
 (brace
 r_struct
@@ -1935,14 +1953,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|purb
+id|urb
 )paren
 (brace
 id|WARNING
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;(), Bug : purb == NULL&bslash;n&quot;
+l_string|&quot;(), Bug : urb == NULL&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2026,7 +2044,7 @@ multiline_comment|/* Reinitialize URB */
 id|FILL_BULK_URB
 c_func
 (paren
-id|purb
+id|urb
 comma
 id|self-&gt;usbdev
 comma
@@ -2047,16 +2065,16 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|purb-&gt;transfer_flags
+id|urb-&gt;transfer_flags
 op_assign
 id|USB_QUEUE_BULK
 suffix:semicolon
 multiline_comment|/* Note : unlink *must* be synchronous because of the code in &n;&t; * irda_usb_net_close() -&gt; free the skb - Jean II */
-id|purb-&gt;status
+id|urb-&gt;status
 op_assign
 l_int|0
 suffix:semicolon
-id|purb-&gt;next
+id|urb-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2066,7 +2084,7 @@ op_assign
 id|usb_submit_urb
 c_func
 (paren
-id|purb
+id|urb
 )paren
 suffix:semicolon
 r_if
@@ -2088,15 +2106,17 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Function irda_usb_receive(purb)&n; *&n; *     Called by the USB subsystem when a frame has been received&n; *&n; */
+multiline_comment|/*&n; * Function irda_usb_receive(urb)&n; *&n; *     Called by the USB subsystem when a frame has been received&n; *&n; */
 DECL|function|irda_usb_receive
 r_static
 r_void
 id|irda_usb_receive
 c_func
 (paren
-id|purb_t
-id|purb
+r_struct
+id|urb
+op_star
+id|urb
 )paren
 (brace
 r_struct
@@ -2109,7 +2129,7 @@ r_struct
 id|sk_buff
 op_star
 )paren
-id|purb-&gt;context
+id|urb-&gt;context
 suffix:semicolon
 r_struct
 id|irda_usb_cb
@@ -2134,7 +2154,7 @@ comma
 id|__FUNCTION__
 l_string|&quot;(), len=%d&bslash;n&quot;
 comma
-id|purb-&gt;actual_length
+id|urb-&gt;actual_length
 )paren
 suffix:semicolon
 multiline_comment|/* Find ourselves */
@@ -2210,7 +2230,7 @@ multiline_comment|/* Check the status */
 r_if
 c_cond
 (paren
-id|purb-&gt;status
+id|urb-&gt;status
 op_ne
 l_int|0
 )paren
@@ -2218,7 +2238,7 @@ l_int|0
 r_switch
 c_cond
 (paren
-id|purb-&gt;status
+id|urb-&gt;status
 )paren
 (brace
 r_case
@@ -2246,7 +2266,7 @@ comma
 id|__FUNCTION__
 l_string|&quot;(), Connection Reset (-104), transfer_flags 0x%04X &bslash;n&quot;
 comma
-id|purb-&gt;transfer_flags
+id|urb-&gt;transfer_flags
 )paren
 suffix:semicolon
 multiline_comment|/* uhci_cleanup_unlink() is going to kill the Rx&n;&t;&t;&t; * URB just after we return. No problem, at this&n;&t;&t;&t; * point the URB will be idle ;-) - Jean II */
@@ -2262,9 +2282,9 @@ comma
 id|__FUNCTION__
 l_string|&quot;(), RX status %d,transfer_flags 0x%04X &bslash;n&quot;
 comma
-id|purb-&gt;status
+id|urb-&gt;status
 comma
-id|purb-&gt;transfer_flags
+id|urb-&gt;transfer_flags
 )paren
 suffix:semicolon
 r_break
@@ -2278,7 +2298,7 @@ multiline_comment|/* Check for empty frames */
 r_if
 c_cond
 (paren
-id|purb-&gt;actual_length
+id|urb-&gt;actual_length
 op_le
 id|USB_IRDA_HEADER
 )paren
@@ -2308,7 +2328,7 @@ c_func
 (paren
 id|skb
 comma
-id|purb-&gt;actual_length
+id|urb-&gt;actual_length
 )paren
 suffix:semicolon
 id|skb_pull
@@ -2434,7 +2454,7 @@ r_new
 suffix:semicolon
 id|done
 suffix:colon
-multiline_comment|/* Note : at this point, the URB we&squot;ve just received (purb)&n;&t; * is still referenced by the USB layer. For example, if we&n;&t; * have received a -ECONNRESET, uhci_cleanup_unlink() will&n;&t; * continue to process it (in fact, cleaning it up).&n;&t; * If we were to submit this URB, disaster would ensue.&n;&t; * Therefore, we submit our idle URB, and put this URB in our&n;&t; * idle slot....&n;&t; * Jean II */
+multiline_comment|/* Note : at this point, the URB we&squot;ve just received (urb)&n;&t; * is still referenced by the USB layer. For example, if we&n;&t; * have received a -ECONNRESET, uhci_cleanup_unlink() will&n;&t; * continue to process it (in fact, cleaning it up).&n;&t; * If we were to submit this URB, disaster would ensue.&n;&t; * Therefore, we submit our idle URB, and put this URB in our&n;&t; * idle slot....&n;&t; * Jean II */
 multiline_comment|/* Note : with this scheme, we could submit the idle URB before&n;&t; * processing the Rx URB. Another time... Jean II */
 multiline_comment|/* Submit the idle URB to replace the URB we&squot;ve just received */
 id|irda_usb_submit
@@ -2450,9 +2470,9 @@ suffix:semicolon
 multiline_comment|/* Recycle Rx URB : Now, the idle URB is the present one */
 id|self-&gt;idle_rx_urb
 op_assign
-id|purb
+id|urb
 suffix:semicolon
-id|purb-&gt;context
+id|urb-&gt;context
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2823,8 +2843,10 @@ id|i
 op_increment
 )paren
 (brace
-id|purb_t
-id|purb
+r_struct
+id|urb
+op_star
+id|urb
 op_assign
 op_amp
 (paren
@@ -2844,13 +2866,13 @@ r_struct
 id|sk_buff
 op_star
 )paren
-id|purb-&gt;context
+id|urb-&gt;context
 suffix:semicolon
 multiline_comment|/* Cancel the receive command */
 id|usb_unlink_urb
 c_func
 (paren
-id|purb
+id|urb
 )paren
 suffix:semicolon
 multiline_comment|/* The skb is ours, free it */
@@ -2866,7 +2888,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|purb-&gt;context
+id|urb-&gt;context
 op_assign
 l_int|NULL
 suffix:semicolon

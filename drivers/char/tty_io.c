@@ -33,14 +33,14 @@ macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
-DECL|macro|CONSOLE_DEV
-mdefine_line|#define CONSOLE_DEV MKDEV(TTY_MAJOR,0)
-DECL|macro|TTY_DEV
-mdefine_line|#define TTY_DEV MKDEV(TTYAUX_MAJOR,0)
-DECL|macro|SYSCONS_DEV
-mdefine_line|#define SYSCONS_DEV MKDEV(TTYAUX_MAJOR,1)
-DECL|macro|PTMX_DEV
-mdefine_line|#define PTMX_DEV MKDEV(TTYAUX_MAJOR,2)
+DECL|macro|IS_CONSOLE_DEV
+mdefine_line|#define IS_CONSOLE_DEV(dev)&t;(kdev_val(dev) == __mkdev(TTY_MAJOR,0))
+DECL|macro|IS_TTY_DEV
+mdefine_line|#define IS_TTY_DEV(dev)&t;&t;(kdev_val(dev) == __mkdev(TTYAUX_MAJOR,0))
+DECL|macro|IS_SYSCONS_DEV
+mdefine_line|#define IS_SYSCONS_DEV(dev)&t;(kdev_val(dev) == __mkdev(TTYAUX_MAJOR,1))
+DECL|macro|IS_PTMX_DEV
+mdefine_line|#define IS_PTMX_DEV(dev)&t;(kdev_val(dev) == __mkdev(TTYAUX_MAJOR,2))
 DECL|macro|TTY_DEBUG_HANGUP
 macro_line|#undef TTY_DEBUG_HANGUP
 DECL|macro|TTY_PARANOIA_CHECK
@@ -487,7 +487,7 @@ id|tty
 )paren
 ques
 c_cond
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -530,7 +530,7 @@ id|buf
 suffix:semicolon
 )brace
 DECL|macro|TTY_NUMBER
-mdefine_line|#define TTY_NUMBER(tty) (MINOR((tty)-&gt;device) - (tty)-&gt;driver.minor_start + &bslash;&n;&t;&t;&t; (tty)-&gt;driver.name_base)
+mdefine_line|#define TTY_NUMBER(tty) (minor((tty)-&gt;device) - (tty)-&gt;driver.minor_start + &bslash;&n;&t;&t;&t; (tty)-&gt;driver.name_base)
 DECL|function|tty_name
 r_char
 op_star
@@ -1194,7 +1194,7 @@ id|p
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|device
@@ -1202,7 +1202,7 @@ id|device
 suffix:semicolon
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|device
@@ -1689,13 +1689,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|IS_CONSOLE_DEV
+c_func
+(paren
 id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
-op_eq
-id|CONSOLE_DEV
+)paren
 op_logical_or
+id|IS_SYSCONS_DEV
+c_func
+(paren
 id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
-op_eq
-id|SYSCONS_DEV
+)paren
 )paren
 (brace
 id|cons_filp
@@ -2598,10 +2602,11 @@ macro_line|#if 0
 r_if
 c_cond
 (paren
+op_logical_neg
+id|IS_CONSOLE_DEV
+c_func
 (paren
 id|inode-&gt;i_rdev
-op_ne
-id|CONSOLE_DEV
 )paren
 op_logical_and
 multiline_comment|/* don&squot;t stop on /dev/console */
@@ -3025,14 +3030,16 @@ id|file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
 id|is_console
 op_assign
+id|IS_SYSCONS_DEV
+c_func
 (paren
 id|inode-&gt;i_rdev
-op_eq
-id|SYSCONS_DEV
+)paren
 op_logical_or
+id|IS_CONSOLE_DEV
+c_func
+(paren
 id|inode-&gt;i_rdev
-op_eq
-id|CONSOLE_DEV
 )paren
 suffix:semicolon
 r_if
@@ -3353,7 +3360,7 @@ id|ENODEV
 suffix:semicolon
 id|idx
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|device
@@ -3575,10 +3582,7 @@ id|o_tty
 suffix:semicolon
 id|o_tty-&gt;device
 op_assign
-(paren
-id|kdev_t
-)paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|driver-&gt;other-&gt;major
@@ -4304,7 +4308,7 @@ l_int|0
 suffix:semicolon
 id|idx
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -5107,9 +5111,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|IS_TTY_DEV
+c_func
+(paren
 id|device
-op_eq
-id|TTY_DEV
+)paren
 )paren
 (brace
 r_if
@@ -5137,9 +5143,11 @@ macro_line|#ifdef CONFIG_VT
 r_if
 c_cond
 (paren
+id|IS_CONSOLE_DEV
+c_func
+(paren
 id|device
-op_eq
-id|CONSOLE_DEV
+)paren
 )paren
 (brace
 r_extern
@@ -5148,7 +5156,7 @@ id|fg_console
 suffix:semicolon
 id|device
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|TTY_MAJOR
@@ -5167,9 +5175,11 @@ macro_line|#endif
 r_if
 c_cond
 (paren
+id|IS_SYSCONS_DEV
+c_func
+(paren
 id|device
-op_eq
-id|SYSCONS_DEV
+)paren
 )paren
 (brace
 r_struct
@@ -5226,9 +5236,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|IS_PTMX_DEV
+c_func
+(paren
 id|device
-op_eq
-id|PTMX_DEV
+)paren
 )paren
 (brace
 macro_line|#ifdef CONFIG_UNIX98_PTYS
@@ -5291,7 +5303,7 @@ op_increment
 (brace
 id|device
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|driver-&gt;major
@@ -5346,7 +5358,7 @@ id|driver-&gt;other-&gt;name_base
 op_plus
 id|minor
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|driver-&gt;other-&gt;major
@@ -6232,13 +6244,17 @@ id|real_tty
 r_if
 c_cond
 (paren
+id|IS_SYSCONS_DEV
+c_func
+(paren
 id|inode-&gt;i_rdev
-op_eq
-id|SYSCONS_DEV
+)paren
 op_logical_or
+id|IS_CONSOLE_DEV
+c_func
+(paren
 id|inode-&gt;i_rdev
-op_eq
-id|CONSOLE_DEV
+)paren
 )paren
 (brace
 r_if
@@ -8448,7 +8464,8 @@ suffix:semicolon
 id|kdev_t
 id|device
 op_assign
-id|MKDEV
+id|mk_kdev
+c_func
 (paren
 id|driver-&gt;major
 comma
@@ -9517,19 +9534,11 @@ l_int|5
 suffix:semicolon
 id|dev_ptmx_driver.major
 op_assign
-id|MAJOR
-c_func
-(paren
-id|PTMX_DEV
-)paren
+id|TTYAUX_MAJOR
 suffix:semicolon
 id|dev_ptmx_driver.minor_start
 op_assign
-id|MINOR
-c_func
-(paren
-id|PTMX_DEV
-)paren
+l_int|2
 suffix:semicolon
 id|dev_ptmx_driver.type
 op_assign

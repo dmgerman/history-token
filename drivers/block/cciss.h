@@ -8,7 +8,7 @@ mdefine_line|#define NWD&t;&t;16
 DECL|macro|NWD_SHIFT
 mdefine_line|#define NWD_SHIFT&t;4
 DECL|macro|MAX_PART
-mdefine_line|#define MAX_PART&t;16
+mdefine_line|#define MAX_PART&t;(1 &lt;&lt; NWD_SHIFT)
 DECL|macro|IO_OK
 mdefine_line|#define IO_OK&t;&t;0
 DECL|macro|IO_ERROR

@@ -466,7 +466,7 @@ c_func
 (paren
 id|clp
 comma
-l_int|0
+id|NODEV
 comma
 l_int|0
 comma
@@ -586,7 +586,7 @@ c_func
 (paren
 id|clp
 comma
-l_int|0
+id|NODEV
 comma
 l_int|0
 comma

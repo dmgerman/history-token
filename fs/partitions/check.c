@@ -943,7 +943,7 @@ id|first_sector
 op_assign
 id|hd-&gt;part
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -967,7 +967,7 @@ l_int|1
 (brace
 id|hd-&gt;part
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -990,7 +990,7 @@ id|de
 op_assign
 id|hd-&gt;de_arr
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -1041,7 +1041,7 @@ c_func
 (paren
 id|hd
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -1070,7 +1070,7 @@ id|loff_t
 )paren
 id|hd-&gt;part
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -1656,6 +1656,8 @@ id|unregister
 macro_line|#ifdef CONFIG_DEVFS_FS
 r_int
 id|part
+comma
+id|max_p
 suffix:semicolon
 r_if
 c_cond
@@ -1670,6 +1672,14 @@ comma
 id|minor
 )paren
 suffix:semicolon
+id|max_p
+op_assign
+(paren
+l_int|1
+op_lshift
+id|dev-&gt;minor_shift
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1679,7 +1689,7 @@ l_int|1
 suffix:semicolon
 id|part
 OL
-id|dev-&gt;max_p
+id|max_p
 suffix:semicolon
 id|part
 op_increment
@@ -1872,7 +1882,7 @@ id|g-&gt;minor_shift
 suffix:semicolon
 id|first_minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -1895,7 +1905,7 @@ c_func
 (paren
 l_string|&quot;grok_partitions: bad device 0x%02x:%02x&bslash;n&quot;
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -2010,7 +2020,7 @@ c_func
 (paren
 id|g
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|g-&gt;major
@@ -2267,7 +2277,7 @@ id|g-&gt;minor_shift
 suffix:semicolon
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -2275,7 +2285,7 @@ id|dev
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -2331,7 +2341,7 @@ id|p
 suffix:semicolon
 id|devp
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|major

@@ -3723,23 +3723,11 @@ op_assign
 id|PARTN_BITS
 suffix:semicolon
 multiline_comment|/* num bits for partitions */
-id|gd-&gt;max_p
-op_assign
-l_int|1
-op_lshift
-id|PARTN_BITS
-suffix:semicolon
-multiline_comment|/* 1 + max partitions / drive */
 id|gd-&gt;nr_real
 op_assign
 id|units
 suffix:semicolon
 multiline_comment|/* current num real drives */
-id|gd-&gt;real_devices
-op_assign
-id|hwif
-suffix:semicolon
-multiline_comment|/* ptr to internal data */
 id|gd-&gt;next
 op_assign
 l_int|NULL

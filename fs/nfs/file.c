@@ -191,9 +191,19 @@ c_func
 (paren
 id|VFS
 comma
-l_string|&quot;nfs: flush(%x/%ld)&bslash;n&quot;
+l_string|&quot;nfs: flush(%02x:%02x/%ld)&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|inode-&gt;i_dev
+)paren
 comma
 id|inode-&gt;i_ino
 )paren
@@ -465,9 +475,19 @@ c_func
 (paren
 id|VFS
 comma
-l_string|&quot;nfs: fsync(%x/%ld)&bslash;n&quot;
+l_string|&quot;nfs: fsync(%02x:%02x/%ld)&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|inode-&gt;i_dev
+)paren
 comma
 id|inode-&gt;i_ino
 )paren
@@ -919,9 +939,19 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS: nfs_lock(f=%4x/%ld, t=%x, fl=%x, r=%Ld:%Ld)&bslash;n&quot;
+l_string|&quot;NFS: nfs_lock(f=%02x:%02x/%ld, t=%x, fl=%x, r=%Ld:%Ld)&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|inode-&gt;i_dev
+)paren
 comma
 id|inode-&gt;i_ino
 comma

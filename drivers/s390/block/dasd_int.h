@@ -136,7 +136,7 @@ mdefine_line|#define list_empty(x) (0)
 DECL|macro|INIT_BLK_DEV
 mdefine_line|#define INIT_BLK_DEV(d_major,d_request_fn,d_queue_fn,d_current) &bslash;&n;do { &bslash;&n;        blk_dev[d_major].request_fn = d_request_fn; &bslash;&n;        blk_dev[d_major].queue = d_queue_fn; &bslash;&n;        blk_dev[d_major].current_request = d_current; &bslash;&n;} while(0)
 DECL|macro|INIT_GENDISK
-mdefine_line|#define INIT_GENDISK(D_MAJOR,D_NAME,D_PARTN_BITS,D_PER_MAJOR) &bslash;&n;&t;major:D_MAJOR, &bslash;&n;&t;major_name:D_NAME, &bslash;&n;&t;minor_shift:D_PARTN_BITS, &bslash;&n;&t;max_p:1 &lt;&lt; D_PARTN_BITS, &bslash;&n;&t;max_nr:D_PER_MAJOR, &bslash;&n;&t;nr_real:D_PER_MAJOR,
+mdefine_line|#define INIT_GENDISK(D_MAJOR,D_NAME,D_PARTN_BITS,D_PER_MAJOR) &bslash;&n;&t;major:D_MAJOR, &bslash;&n;&t;major_name:D_NAME, &bslash;&n;&t;minor_shift:D_PARTN_BITS, &bslash;&n;&t;max_nr:D_PER_MAJOR, &bslash;&n;&t;nr_real:D_PER_MAJOR,
 r_static
 r_inline
 r_struct
@@ -187,7 +187,7 @@ macro_line|#else
 DECL|macro|INIT_BLK_DEV
 mdefine_line|#define INIT_BLK_DEV(d_major,d_request_fn,d_queue_fn,d_current) &bslash;&n;do { &bslash;&n;        blk_dev[d_major].queue = d_queue_fn; &bslash;&n;} while(0)
 DECL|macro|INIT_GENDISK
-mdefine_line|#define INIT_GENDISK(D_MAJOR,D_NAME,D_PARTN_BITS,D_PER_MAJOR) &bslash;&n;&t;major:D_MAJOR, &bslash;&n;&t;major_name:D_NAME, &bslash;&n;&t;minor_shift:D_PARTN_BITS, &bslash;&n;&t;max_p:1 &lt;&lt; D_PARTN_BITS, &bslash;&n;&t;nr_real:D_PER_MAJOR, &bslash;&n;        fops:&amp;dasd_device_operations, 
+mdefine_line|#define INIT_GENDISK(D_MAJOR,D_NAME,D_PARTN_BITS,D_PER_MAJOR) &bslash;&n;&t;major:D_MAJOR, &bslash;&n;&t;major_name:D_NAME, &bslash;&n;&t;minor_shift:D_PARTN_BITS, &bslash;&n;&t;nr_real:D_PER_MAJOR, &bslash;&n;        fops:&amp;dasd_device_operations, 
 r_static
 r_inline
 r_struct

@@ -6578,12 +6578,6 @@ id|minor_shift
 suffix:colon
 l_int|4
 comma
-id|max_p
-suffix:colon
-l_int|1
-op_lshift
-l_int|4
-comma
 id|part
 suffix:colon
 id|i2ob

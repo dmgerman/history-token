@@ -789,7 +789,11 @@ c_func
 (paren
 id|u32
 )paren
+id|kdev_t_to_nr
+c_func
+(paren
 id|inode-&gt;i_rdev
+)paren
 )paren
 suffix:semicolon
 r_else
@@ -826,7 +830,11 @@ c_func
 (paren
 id|u32
 )paren
+id|kdev_t_to_nr
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
 )paren
 suffix:semicolon
 op_star

@@ -82,30 +82,7 @@ id|minor_shift
 suffix:colon
 id|NFTL_PARTN_BITS
 comma
-multiline_comment|/* Bits to shift to get real from partition */
-id|max_p
-suffix:colon
-(paren
-l_int|1
-op_lshift
-id|NFTL_PARTN_BITS
-)paren
-op_minus
-l_int|1
-comma
-multiline_comment|/* Number of partitions per real */
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20328
-id|max_nr
-suffix:colon
-id|MAX_NFTLS
-comma
-multiline_comment|/* maximum number of real */
-id|init
-suffix:colon
-id|dummy_init
-comma
-multiline_comment|/* init function */
-macro_line|#endif
+multiline_comment|/* # of partition bits */
 id|part
 suffix:colon
 id|part_table

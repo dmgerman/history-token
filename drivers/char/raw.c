@@ -291,7 +291,7 @@ id|sector_bits
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -522,7 +522,7 @@ id|bdev
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -717,11 +717,11 @@ c_cond
 (paren
 id|rq.block_major
 op_eq
-id|NODEV
+l_int|0
 op_logical_and
 id|rq.block_minor
 op_ne
-id|NODEV
+l_int|0
 )paren
 op_logical_or
 id|rq.block_major
@@ -818,7 +818,7 @@ c_func
 id|kdev_t_to_nr
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|rq.block_major
@@ -876,7 +876,7 @@ id|bdev-&gt;bd_dev
 suffix:semicolon
 id|rq.block_major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -884,7 +884,7 @@ id|dev
 suffix:semicolon
 id|rq.block_minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -1093,7 +1093,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * First, a few checks on device size limits &n;&t; */
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
@@ -1187,7 +1187,7 @@ c_cond
 (paren
 id|blk_size
 (braket
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -1203,14 +1203,14 @@ id|loff_t
 )paren
 id|blk_size
 (braket
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
 )paren
 )braket
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -1232,13 +1232,13 @@ id|dprintk
 (paren
 l_string|&quot;rw_raw_dev: dev %d:%d (+%d)&bslash;n&quot;
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev

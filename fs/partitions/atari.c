@@ -112,7 +112,11 @@ id|m_lim
 op_assign
 id|minor
 op_plus
-id|hd-&gt;max_p
+(paren
+l_int|1
+op_lshift
+id|hd-&gt;minor_shift
+)paren
 suffix:semicolon
 id|Sector
 id|sect

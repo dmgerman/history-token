@@ -42,7 +42,7 @@ suffix:semicolon
 id|kdev_t
 id|dev
 op_assign
-l_int|0
+id|NODEV
 suffix:semicolon
 r_int
 id|block_size
@@ -94,7 +94,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|kdev_none
+c_func
+(paren
 id|dev
+)paren
 )paren
 (brace
 id|zones

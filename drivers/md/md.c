@@ -244,10 +244,6 @@ id|minor_shift
 suffix:colon
 l_int|0
 comma
-id|max_p
-suffix:colon
-l_int|1
-comma
 id|part
 suffix:colon
 id|md_hd_struct
@@ -259,10 +255,6 @@ comma
 id|nr_real
 suffix:colon
 id|MAX_MD_DEVS
-comma
-id|real_devices
-suffix:colon
-l_int|NULL
 comma
 id|next
 suffix:colon

@@ -306,7 +306,7 @@ l_int|0
 suffix:semicolon
 id|inode-&gt;i_rdev
 op_assign
-l_int|0
+id|NODEV
 suffix:semicolon
 multiline_comment|/* We can&squot;t support UPDATE_ATIME(), since the server will reset it */
 id|inode-&gt;i_flags
@@ -423,9 +423,19 @@ id|inode
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS: delete_inode(%x/%ld)&bslash;n&quot;
+l_string|&quot;NFS: delete_inode(%x:%x/%ld)&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|inode-&gt;i_dev
+)paren
 comma
 id|inode-&gt;i_ino
 )paren
@@ -3274,9 +3284,19 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS: __nfs_fhget(%x/%Ld ct=%d)&bslash;n&quot;
+l_string|&quot;NFS: __nfs_fhget(%x:%x/%Ld ct=%d)&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|inode-&gt;i_dev
+)paren
 comma
 (paren
 r_int
@@ -3894,9 +3914,19 @@ c_func
 (paren
 id|PAGECACHE
 comma
-l_string|&quot;NFS: revalidating (%x/%Ld)&bslash;n&quot;
+l_string|&quot;NFS: revalidating (%x:%x/%Ld)&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|inode-&gt;i_dev
+)paren
 comma
 (paren
 r_int
@@ -4052,9 +4082,19 @@ c_func
 (paren
 id|PAGECACHE
 comma
-l_string|&quot;nfs_revalidate_inode: (%x/%Ld) getattr failed, error=%d&bslash;n&quot;
+l_string|&quot;nfs_revalidate_inode: (%x:%x/%Ld) getattr failed, error=%d&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|inode-&gt;i_dev
+)paren
 comma
 (paren
 r_int
@@ -4126,9 +4166,19 @@ c_func
 (paren
 id|PAGECACHE
 comma
-l_string|&quot;nfs_revalidate_inode: (%x/%Ld) refresh failed, error=%d&bslash;n&quot;
+l_string|&quot;nfs_revalidate_inode: (%x:%x/%Ld) refresh failed, error=%d&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|inode-&gt;i_dev
+)paren
 comma
 (paren
 r_int
@@ -4152,9 +4202,19 @@ c_func
 (paren
 id|PAGECACHE
 comma
-l_string|&quot;NFS: (%x/%Ld) revalidation complete&bslash;n&quot;
+l_string|&quot;NFS: (%x:%x/%Ld) revalidation complete&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|inode-&gt;i_dev
+)paren
 comma
 (paren
 r_int
@@ -4344,9 +4404,19 @@ c_func
 (paren
 id|VFS
 comma
-l_string|&quot;NFS: refresh_inode(%x/%ld ct=%d info=0x%x)&bslash;n&quot;
+l_string|&quot;NFS: refresh_inode(%x:%x/%ld ct=%d info=0x%x)&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|inode-&gt;i_dev
+)paren
 comma
 id|inode-&gt;i_ino
 comma
@@ -4702,7 +4772,7 @@ suffix:semicolon
 )brace
 id|inode-&gt;i_rdev
 op_assign
-l_int|0
+id|NODEV
 suffix:semicolon
 r_if
 c_cond

@@ -366,7 +366,7 @@ r_int
 r_int
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|tty-&gt;device
@@ -385,7 +385,7 @@ id|UNIX98_NR_MAJORS
 id|devpts_pty_kill
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -404,7 +404,8 @@ id|tty_unregister_devfs
 op_amp
 id|tty-&gt;link-&gt;driver
 comma
-id|MINOR
+id|minor
+c_func
 (paren
 id|tty-&gt;device
 )paren
@@ -887,7 +888,7 @@ r_int
 r_int
 id|result
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -1233,7 +1234,7 @@ id|out
 suffix:semicolon
 id|line
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -1366,7 +1367,7 @@ id|DEVFS_FL_WAIT
 comma
 id|tty-&gt;link-&gt;driver.minor_start
 op_plus
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

@@ -2260,7 +2260,7 @@ id|file
 id|socket_t
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -2426,7 +2426,7 @@ id|file
 id|socket_t
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -2607,7 +2607,7 @@ id|ppos
 id|socket_t
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
@@ -2770,7 +2770,7 @@ id|ppos
 id|socket_t
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
@@ -2939,7 +2939,7 @@ id|wait
 id|socket_t
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
@@ -3063,7 +3063,7 @@ id|arg
 id|socket_t
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

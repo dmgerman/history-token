@@ -1439,7 +1439,12 @@ multiline_comment|/*&n;&t; * Search the super_blocks array for the device(s) to 
 r_if
 c_cond
 (paren
+op_logical_neg
+id|kdev_none
+c_func
+(paren
 id|dev
+)paren
 )paren
 (brace
 r_if
@@ -2958,7 +2963,7 @@ l_int|NULL
 suffix:semicolon
 id|inode-&gt;i_dev
 op_assign
-l_int|0
+id|NODEV
 suffix:semicolon
 id|inode-&gt;i_blkbits
 op_assign

@@ -1679,9 +1679,19 @@ multiline_comment|/* It&squot;s a directory, or we are required to confirm the f
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfs_fh: need to look harder for %d/%d&bslash;n&quot;
+l_string|&quot;nfs_fh: need to look harder for %02x:%02x/%d&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|sb-&gt;s_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|sb-&gt;s_dev
+)paren
 comma
 id|datap
 (braket
@@ -2287,7 +2297,7 @@ op_increment
 suffix:semicolon
 id|xdev
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|nfsdev
@@ -3193,9 +3203,19 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd: fh_compose(exp %x/%ld %s/%s, ino=%ld)&bslash;n&quot;
+l_string|&quot;nfsd: fh_compose(exp %02x:%02x/%ld %s/%s, ino=%ld)&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|exp-&gt;ex_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|exp-&gt;ex_dev
+)paren
 comma
 (paren
 r_int
@@ -3305,7 +3325,7 @@ id|htonl
 c_func
 (paren
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|exp-&gt;ex_dev
@@ -3314,7 +3334,7 @@ op_lshift
 l_int|16
 )paren
 op_or
-id|MINOR
+id|minor
 c_func
 (paren
 id|exp-&gt;ex_dev
@@ -3387,7 +3407,7 @@ id|htonl
 c_func
 (paren
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|exp-&gt;ex_dev
@@ -3396,7 +3416,7 @@ op_lshift
 l_int|16
 )paren
 op_or
-id|MINOR
+id|minor
 c_func
 (paren
 id|exp-&gt;ex_dev

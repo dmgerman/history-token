@@ -153,7 +153,7 @@ DECL|macro|CLIENT_HASH
 mdefine_line|#define CLIENT_HASH(a) &bslash;&n;&t;&t;((((a)&gt;&gt;24) ^ ((a)&gt;&gt;16) ^ ((a)&gt;&gt;8) ^(a)) &amp; CLIENT_HASHMASK)
 multiline_comment|/* XXX: is this adequate for 32bit kdev_t ? */
 DECL|macro|EXPORT_HASH
-mdefine_line|#define EXPORT_HASH(dev)&t;((dev) &amp; (NFSCLNT_EXPMAX - 1))
+mdefine_line|#define EXPORT_HASH(dev)&t;(minor(dev) &amp; (NFSCLNT_EXPMAX - 1))
 DECL|struct|svc_clnthash
 r_struct
 id|svc_clnthash
@@ -257,9 +257,14 @@ c_loop
 (paren
 id|exp
 op_logical_and
+op_logical_neg
+id|kdev_same
+c_func
+(paren
 id|exp-&gt;ex_dev
-op_ne
+comma
 id|dev
+)paren
 )paren
 id|exp
 op_assign
@@ -325,9 +330,13 @@ id|exp-&gt;ex_ino
 op_eq
 id|ino
 op_logical_and
+id|kdev_same
+c_func
+(paren
 id|exp-&gt;ex_dev
-op_eq
+comma
 id|dev
+)paren
 )paren
 r_goto
 id|out
@@ -753,9 +762,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|kdev_same
+c_func
+(paren
 id|inode-&gt;i_dev
-op_ne
+comma
 id|dev
+)paren
 op_logical_or
 id|inode-&gt;i_ino
 op_ne
@@ -766,11 +780,31 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;exp_export: i_dev = %x, dev = %x&bslash;n&quot;
+l_string|&quot;exp_export: i_dev = %02x:%02x, dev = %02x:%02x&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
 comma
+id|minor
+c_func
+(paren
+id|inode-&gt;i_dev
+)paren
+comma
+id|major
+c_func
+(paren
 id|dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* I&squot;m just being paranoid... */
@@ -1190,9 +1224,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|kdev_same
+c_func
+(paren
 id|unexp-&gt;ex_dev
-op_ne
+comma
 id|inode-&gt;i_dev
+)paren
 op_logical_or
 id|unexp-&gt;ex_ino
 op_ne
@@ -1387,6 +1426,15 @@ c_cond
 id|clp
 )paren
 (brace
+id|kdev_t
+id|ex_dev
+op_assign
+id|to_kdev_t
+c_func
+(paren
+id|nxp-&gt;ex_dev
+)paren
+suffix:semicolon
 id|expp
 op_assign
 id|clp-&gt;cl_export
@@ -1394,7 +1442,7 @@ op_plus
 id|EXPORT_HASH
 c_func
 (paren
-id|nxp-&gt;ex_dev
+id|ex_dev
 )paren
 suffix:semicolon
 r_while
@@ -1413,9 +1461,13 @@ l_int|NULL
 r_if
 c_cond
 (paren
+id|kdev_same
+c_func
+(paren
 id|exp-&gt;ex_dev
-op_eq
-id|nxp-&gt;ex_dev
+comma
+id|ex_dev
+)paren
 )paren
 (brace
 r_if
@@ -1574,7 +1626,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd: exp_rootfh(%s [%p] %s:%x/%ld)&bslash;n&quot;
+l_string|&quot;nfsd: exp_rootfh(%s [%p] %s:%02x:%02x/%ld)&bslash;n&quot;
 comma
 id|path
 comma
@@ -1582,7 +1634,17 @@ id|nd.dentry
 comma
 id|clp-&gt;cl_ident
 comma
+id|major
+c_func
+(paren
 id|dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|dev
+)paren
 comma
 (paren
 r_int
@@ -1608,11 +1670,21 @@ r_else
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd: exp_rootfh(%s:%x/%ld)&bslash;n&quot;
+l_string|&quot;nfsd: exp_rootfh(%s:%02x:%02x/%ld)&bslash;n&quot;
 comma
 id|clp-&gt;cl_ident
 comma
+id|major
+c_func
+(paren
 id|dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|dev
+)paren
 comma
 (paren
 r_int
@@ -1697,9 +1769,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|kdev_same
+c_func
+(paren
 id|inode-&gt;i_dev
-op_ne
+comma
 id|dev
+)paren
 op_logical_or
 id|inode-&gt;i_ino
 op_ne
@@ -1715,17 +1792,37 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;exp_rootfh: arg[dev(%x):ino(%ld)]&quot;
-l_string|&quot; inode[dev(%x):ino(%ld)]&bslash;n&quot;
+l_string|&quot;exp_rootfh: arg[dev(%02x:%02x):ino(%ld)]&quot;
+l_string|&quot; inode[dev(%02x:%02x):ino(%ld)]&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|dev
+)paren
 comma
 (paren
 r_int
 )paren
 id|ino
 comma
+id|major
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|inode-&gt;i_dev
+)paren
 comma
 (paren
 r_int

@@ -139,8 +139,10 @@ r_static
 r_void
 id|dump_urb
 (paren
-id|purb_t
-id|purb
+r_struct
+id|urb
+op_star
+id|urb
 )paren
 (brace
 id|dbg
@@ -148,7 +150,7 @@ c_func
 (paren
 l_string|&quot;urb                   :%p&quot;
 comma
-id|purb
+id|urb
 )paren
 suffix:semicolon
 id|dbg
@@ -156,7 +158,7 @@ c_func
 (paren
 l_string|&quot;next                  :%p&quot;
 comma
-id|purb-&gt;next
+id|urb-&gt;next
 )paren
 suffix:semicolon
 id|dbg
@@ -164,7 +166,7 @@ c_func
 (paren
 l_string|&quot;dev                   :%p&quot;
 comma
-id|purb-&gt;dev
+id|urb-&gt;dev
 )paren
 suffix:semicolon
 id|dbg
@@ -172,7 +174,7 @@ c_func
 (paren
 l_string|&quot;pipe                  :%08X&quot;
 comma
-id|purb-&gt;pipe
+id|urb-&gt;pipe
 )paren
 suffix:semicolon
 id|dbg
@@ -180,7 +182,7 @@ c_func
 (paren
 l_string|&quot;status                :%d&quot;
 comma
-id|purb-&gt;status
+id|urb-&gt;status
 )paren
 suffix:semicolon
 id|dbg
@@ -188,7 +190,7 @@ c_func
 (paren
 l_string|&quot;transfer_flags        :%08X&quot;
 comma
-id|purb-&gt;transfer_flags
+id|urb-&gt;transfer_flags
 )paren
 suffix:semicolon
 id|dbg
@@ -196,7 +198,7 @@ c_func
 (paren
 l_string|&quot;transfer_buffer       :%p&quot;
 comma
-id|purb-&gt;transfer_buffer
+id|urb-&gt;transfer_buffer
 )paren
 suffix:semicolon
 id|dbg
@@ -204,7 +206,7 @@ c_func
 (paren
 l_string|&quot;transfer_buffer_length:%d&quot;
 comma
-id|purb-&gt;transfer_buffer_length
+id|urb-&gt;transfer_buffer_length
 )paren
 suffix:semicolon
 id|dbg
@@ -212,7 +214,7 @@ c_func
 (paren
 l_string|&quot;actual_length         :%d&quot;
 comma
-id|purb-&gt;actual_length
+id|urb-&gt;actual_length
 )paren
 suffix:semicolon
 id|dbg
@@ -220,7 +222,7 @@ c_func
 (paren
 l_string|&quot;setup_packet          :%p&quot;
 comma
-id|purb-&gt;setup_packet
+id|urb-&gt;setup_packet
 )paren
 suffix:semicolon
 id|dbg
@@ -228,7 +230,7 @@ c_func
 (paren
 l_string|&quot;start_frame           :%d&quot;
 comma
-id|purb-&gt;start_frame
+id|urb-&gt;start_frame
 )paren
 suffix:semicolon
 id|dbg
@@ -236,7 +238,7 @@ c_func
 (paren
 l_string|&quot;number_of_packets     :%d&quot;
 comma
-id|purb-&gt;number_of_packets
+id|urb-&gt;number_of_packets
 )paren
 suffix:semicolon
 id|dbg
@@ -244,7 +246,7 @@ c_func
 (paren
 l_string|&quot;interval              :%d&quot;
 comma
-id|purb-&gt;interval
+id|urb-&gt;interval
 )paren
 suffix:semicolon
 id|dbg
@@ -252,7 +254,7 @@ c_func
 (paren
 l_string|&quot;error_count           :%d&quot;
 comma
-id|purb-&gt;error_count
+id|urb-&gt;error_count
 )paren
 suffix:semicolon
 id|dbg
@@ -260,7 +262,7 @@ c_func
 (paren
 l_string|&quot;context               :%p&quot;
 comma
-id|purb-&gt;context
+id|urb-&gt;context
 )paren
 suffix:semicolon
 id|dbg
@@ -268,7 +270,7 @@ c_func
 (paren
 l_string|&quot;complete              :%p&quot;
 comma
-id|purb-&gt;complete
+id|urb-&gt;complete
 )paren
 suffix:semicolon
 )brace
@@ -533,7 +535,9 @@ r_static
 r_void
 id|dabusb_iso_complete
 (paren
-id|purb_t
+r_struct
+id|urb
+op_star
 id|purb
 )paren
 (brace
@@ -2087,7 +2091,9 @@ suffix:semicolon
 id|pbuff_t
 id|b
 suffix:semicolon
-id|purb_t
+r_struct
+id|urb
+op_star
 id|purb
 op_assign
 l_int|NULL

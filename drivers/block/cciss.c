@@ -9620,15 +9620,6 @@ id|hba
 id|i
 )braket
 op_member_access_from_pointer
-id|gendisk.max_p
-op_assign
-id|MAX_PART
-suffix:semicolon
-id|hba
-(braket
-id|i
-)braket
-op_member_access_from_pointer
 id|gendisk.part
 op_assign
 id|hba

@@ -206,6 +206,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|usbfs_update_special
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -540,6 +545,11 @@ id|up
 (paren
 op_amp
 id|usb_bus_list_lock
+)paren
+suffix:semicolon
+id|usbfs_update_special
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1339,13 +1349,6 @@ op_amp
 id|bus-&gt;bus_list
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|bus-&gt;inodes
-)paren
-suffix:semicolon
 id|atomic_set
 c_func
 (paren
@@ -1470,7 +1473,7 @@ op_amp
 id|usb_bus_list_lock
 )paren
 suffix:semicolon
-id|usbdevfs_add_bus
+id|usbfs_add_bus
 c_func
 (paren
 id|bus
@@ -1525,7 +1528,7 @@ op_amp
 id|usb_bus_list_lock
 )paren
 suffix:semicolon
-id|usbdevfs_remove_bus
+id|usbfs_remove_bus
 c_func
 (paren
 id|bus
@@ -2691,7 +2694,7 @@ l_int|0
 dot
 id|act_altsetting
 suffix:semicolon
-multiline_comment|/* a simple/common case: one config, one interface, one driver&n;&t;&t; * with current altsetting being a reasonable setting.&n;&t;&t; * everything needs a smart agent and usbdevfs; or can rely on&n;&t;&t; * device-specific binding policies.&n;&t;&t; */
+multiline_comment|/* a simple/common case: one config, one interface, one driver&n;&t;&t; * with current altsetting being a reasonable setting.&n;&t;&t; * everything needs a smart agent and usbfs; or can rely on&n;&t;&t; * device-specific binding policies.&n;&t;&t; */
 id|envp
 (braket
 id|i
@@ -3013,6 +3016,19 @@ c_func
 id|bus
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|parent
+)paren
+id|dev-&gt;devpath
+(braket
+l_int|0
+)braket
+op_assign
+l_char|&squot;/&squot;
+suffix:semicolon
 id|dev-&gt;bus
 op_assign
 id|bus
@@ -3028,13 +3044,6 @@ op_amp
 id|dev-&gt;refcnt
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|dev-&gt;inodes
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD
@@ -6141,7 +6150,7 @@ op_amp
 id|dev-&gt;bus-&gt;devmap.devicemap
 )paren
 suffix:semicolon
-id|usbdevfs_remove_device
+id|usbfs_remove_device
 c_func
 (paren
 id|dev
@@ -8519,7 +8528,7 @@ id|dev-&gt;descriptor.iSerialNumber
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* now that the basic setup is over, add a /proc/bus/usb entry */
-id|usbdevfs_add_device
+id|usbfs_add_device
 c_func
 (paren
 id|dev
@@ -8564,7 +8573,7 @@ id|file
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -8823,7 +8832,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|usbdevfs_init
+id|usbfs_init
 c_func
 (paren
 )paren
@@ -8853,7 +8862,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|usbdevfs_cleanup
+id|usbfs_cleanup
 c_func
 (paren
 )paren

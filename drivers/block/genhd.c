@@ -211,7 +211,7 @@ suffix:semicolon
 r_int
 id|maj
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -295,7 +295,7 @@ id|gp
 r_return
 id|gp-&gt;part
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -346,7 +346,7 @@ id|gp
 r_return
 id|gp-&gt;part
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev

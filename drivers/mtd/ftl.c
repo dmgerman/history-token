@@ -15,32 +15,11 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x20100)
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#endif
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x20303)
 macro_line|#include &lt;linux/blkpg.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/mtd/ftl.h&gt;
-multiline_comment|/*====================================================================*/
-multiline_comment|/* Stuff which really ought to be in compatmac.h */
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x20328)
-DECL|macro|register_disk
-mdefine_line|#define register_disk(dev, drive, minors, ops, size) &bslash;&n;    do { (dev)-&gt;part[(drive)*(minors)].nr_sects = size; &bslash;&n;        if (size == 0) (dev)-&gt;part[(drive)*(minors)].start_sect = -1; &bslash;&n;        resetup_one_dev(dev, drive); } while (0);
-macro_line|#endif
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x20320)
-DECL|macro|BLK_DEFAULT_QUEUE
-mdefine_line|#define BLK_DEFAULT_QUEUE(n)    blk_dev[n].request_fn
-DECL|macro|blk_init_queue
-mdefine_line|#define blk_init_queue(q, req)  q = (req)
-DECL|macro|blk_cleanup_queue
-mdefine_line|#define blk_cleanup_queue(q)    q = NULL
-DECL|macro|request_arg_t
-mdefine_line|#define request_arg_t           void
-macro_line|#else
 DECL|macro|request_arg_t
 mdefine_line|#define request_arg_t           request_queue_t *q
-macro_line|#endif
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
 DECL|variable|shuffle_freq
@@ -353,18 +332,6 @@ id|minor_shift
 suffix:colon
 id|PART_BITS
 comma
-id|max_p
-suffix:colon
-id|MAX_PART
-comma
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x20328)
-id|max_nr
-suffix:colon
-id|MAX_DEV
-op_star
-id|MAX_PART
-comma
-macro_line|#endif
 id|part
 suffix:colon
 id|ftl_hd
@@ -450,40 +417,6 @@ op_star
 id|done
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20326
-DECL|variable|ftl_blk_fops
-r_static
-r_struct
-id|file_operations
-id|ftl_blk_fops
-op_assign
-(brace
-id|open
-suffix:colon
-id|ftl_open
-comma
-id|release
-suffix:colon
-id|ftl_close
-comma
-id|ioctl
-suffix:colon
-id|ftl_ioctl
-comma
-id|read
-suffix:colon
-id|block_read
-comma
-id|write
-suffix:colon
-id|block_write
-comma
-id|fsync
-suffix:colon
-id|block_fsync
-)brace
-suffix:semicolon
-macro_line|#else
 DECL|variable|ftl_blk_fops
 r_static
 r_struct
@@ -509,7 +442,6 @@ id|ftl_ioctl
 comma
 )brace
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*======================================================================&n;&n;    Scan_header() checks to see if a memory region contains an FTL&n;    partition.  build_maps() reads all the erase unit headers, builds&n;    the erase unit map, and then builds the virtual page map.&n;    &n;======================================================================*/
 DECL|function|scan_header
 r_static
@@ -5028,49 +4960,6 @@ id|minor
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x20303)
-r_case
-id|BLKFLSBUF
-suffix:colon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
-r_if
-c_cond
-(paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EACCES
-suffix:semicolon
-macro_line|#endif
-id|fsync_dev
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-suffix:semicolon
-id|invalidate_buffers
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-id|RO_IOCTLS
-c_func
-(paren
-id|inode-&gt;i_rdev
-comma
-id|arg
-)paren
-suffix:semicolon
-macro_line|#else
 r_case
 id|BLKROSET
 suffix:colon
@@ -5094,7 +4983,6 @@ id|arg
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 r_default
 suffix:colon
 id|ret

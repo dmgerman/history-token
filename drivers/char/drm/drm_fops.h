@@ -27,10 +27,10 @@ op_star
 id|dev
 )paren
 (brace
-id|kdev_t
+r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

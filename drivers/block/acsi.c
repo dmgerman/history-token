@@ -5463,12 +5463,6 @@ id|minor_shift
 suffix:colon
 l_int|4
 comma
-id|max_p
-suffix:colon
-l_int|1
-op_lshift
-l_int|4
-comma
 id|part
 suffix:colon
 id|acsi_part
@@ -5476,14 +5470,6 @@ comma
 id|sizes
 suffix:colon
 id|acsi_sizes
-comma
-id|real_devices
-suffix:colon
-(paren
-r_void
-op_star
-)paren
-id|acsi_info
 comma
 id|fops
 suffix:colon

@@ -2532,9 +2532,19 @@ c_func
 (paren
 id|VFS
 comma
-l_string|&quot;NFS: create(%x/%ld, %s&bslash;n&quot;
+l_string|&quot;NFS: create(%x:%x/%ld, %s&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|dir-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|dir-&gt;i_dev
+)paren
 comma
 id|dir-&gt;i_ino
 comma
@@ -2671,9 +2681,19 @@ c_func
 (paren
 id|VFS
 comma
-l_string|&quot;NFS: mknod(%x/%ld, %s&bslash;n&quot;
+l_string|&quot;NFS: mknod(%x:%x/%ld, %s&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|dir-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|dir-&gt;i_dev
+)paren
 comma
 id|dir-&gt;i_ino
 comma
@@ -2806,9 +2826,19 @@ c_func
 (paren
 id|VFS
 comma
-l_string|&quot;NFS: mkdir(%x/%ld, %s&bslash;n&quot;
+l_string|&quot;NFS: mkdir(%x:%x/%ld, %s&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|dir-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|dir-&gt;i_dev
+)paren
 comma
 id|dir-&gt;i_ino
 comma
@@ -2934,9 +2964,19 @@ c_func
 (paren
 id|VFS
 comma
-l_string|&quot;NFS: rmdir(%x/%ld, %s&bslash;n&quot;
+l_string|&quot;NFS: rmdir(%x:%x/%ld, %s&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|dir-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|dir-&gt;i_dev
+)paren
 comma
 id|dir-&gt;i_ino
 comma
@@ -3544,9 +3584,19 @@ c_func
 (paren
 id|VFS
 comma
-l_string|&quot;NFS: unlink(%x/%ld, %s)&bslash;n&quot;
+l_string|&quot;NFS: unlink(%x:%x/%ld, %s)&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|dir-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|dir-&gt;i_dev
+)paren
 comma
 id|dir-&gt;i_ino
 comma
@@ -3651,9 +3701,19 @@ c_func
 (paren
 id|VFS
 comma
-l_string|&quot;NFS: symlink(%x/%ld, %s, %s)&bslash;n&quot;
+l_string|&quot;NFS: symlink(%x:%x/%ld, %s, %s)&bslash;n&quot;
 comma
+id|major
+c_func
+(paren
 id|dir-&gt;i_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|dir-&gt;i_dev
+)paren
 comma
 id|dir-&gt;i_ino
 comma

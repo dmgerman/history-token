@@ -96,7 +96,7 @@ mdefine_line|#define N_SD_MAJORS&t;8
 DECL|macro|SD_MAJOR_MASK
 mdefine_line|#define SD_MAJOR_MASK&t;(N_SD_MAJORS - 1)
 DECL|macro|SD_PARTITION
-mdefine_line|#define SD_PARTITION(i)&t;&t;(((MAJOR(i) &amp; SD_MAJOR_MASK) &lt;&lt; 8) | (MINOR(i) &amp; 255))
+mdefine_line|#define SD_PARTITION(i)&t;&t;(((major(i) &amp; SD_MAJOR_MASK) &lt;&lt; 8) | (minor(i) &amp; 255))
 macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
 eof

@@ -139,7 +139,9 @@ id|pdabusb_t
 id|s
 suffix:semicolon
 DECL|member|purb
-id|purb_t
+r_struct
+id|urb
+op_star
 id|purb
 suffix:semicolon
 DECL|member|buff_list

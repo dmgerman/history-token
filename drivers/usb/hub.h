@@ -1,12 +1,22 @@
 macro_line|#ifndef __LINUX_HUB_H
 DECL|macro|__LINUX_HUB_H
 mdefine_line|#define __LINUX_HUB_H
+multiline_comment|/*&n; * Hub protocol and driver data structures.&n; *&n; * Some of these are known to the &quot;virtual root hub&quot; code&n; * in host controller drivers.&n; */
 macro_line|#include &lt;linux/list.h&gt;
 multiline_comment|/*&n; * Hub request types&n; */
 DECL|macro|USB_RT_HUB
 mdefine_line|#define USB_RT_HUB&t;(USB_TYPE_CLASS | USB_RECIP_DEVICE)
 DECL|macro|USB_RT_PORT
 mdefine_line|#define USB_RT_PORT&t;(USB_TYPE_CLASS | USB_RECIP_OTHER)
+multiline_comment|/*&n; * Hub class requests&n; * See USB 2.0 spec Table 11-16&n; */
+DECL|macro|HUB_CLEAR_TT_BUFFER
+mdefine_line|#define HUB_CLEAR_TT_BUFFER&t;8
+DECL|macro|HUB_RESET_TT
+mdefine_line|#define HUB_RESET_TT&t;&t;9
+DECL|macro|HUB_GET_TT_STATE
+mdefine_line|#define HUB_GET_TT_STATE&t;10
+DECL|macro|HUB_STOP_TT
+mdefine_line|#define HUB_STOP_TT&t;&t;11
 multiline_comment|/*&n; * Hub Class feature numbers&n; * See USB 2.0 spec Table 11-17&n; */
 DECL|macro|C_HUB_LOCAL_POWER
 mdefine_line|#define C_HUB_LOCAL_POWER&t;0
@@ -75,7 +85,7 @@ DECL|macro|USB_PORT_STAT_OVERCURRENT
 mdefine_line|#define USB_PORT_STAT_OVERCURRENT&t;0x0008
 DECL|macro|USB_PORT_STAT_RESET
 mdefine_line|#define USB_PORT_STAT_RESET&t;&t;0x0010
-multiline_comment|/* bits 5 for 7 are reserved */
+multiline_comment|/* bits 5 to 7 are reserved */
 DECL|macro|USB_PORT_STAT_POWER
 mdefine_line|#define USB_PORT_STAT_POWER&t;&t;0x0100
 DECL|macro|USB_PORT_STAT_LOW_SPEED
@@ -219,13 +229,15 @@ id|usb_device
 op_star
 id|dev
 suffix:semicolon
+multiline_comment|/* the &quot;real&quot; device */
 DECL|member|urb
 r_struct
 id|urb
 op_star
 id|urb
 suffix:semicolon
-multiline_comment|/* Interrupt polling pipe */
+multiline_comment|/* for interrupt polling pipe */
+multiline_comment|/* buffer for urb ... 1 bit each for hub and children, rounded up */
 DECL|member|buffer
 r_char
 id|buffer
@@ -241,37 +253,46 @@ op_div
 l_int|8
 )braket
 suffix:semicolon
-multiline_comment|/* add 1 bit for hub status change */
-multiline_comment|/* and add 7 bits to round up to byte boundary */
 DECL|member|error
 r_int
 id|error
 suffix:semicolon
+multiline_comment|/* last reported error */
 DECL|member|nerrors
 r_int
 id|nerrors
 suffix:semicolon
+multiline_comment|/* track consecutive errors */
 DECL|member|hub_list
 r_struct
 id|list_head
 id|hub_list
 suffix:semicolon
+multiline_comment|/* all hubs */
 DECL|member|event_list
 r_struct
 id|list_head
 id|event_list
 suffix:semicolon
+multiline_comment|/* hubs w/data or errs ready */
 DECL|member|descriptor
 r_struct
 id|usb_hub_descriptor
 op_star
 id|descriptor
 suffix:semicolon
+multiline_comment|/* class descriptor */
 DECL|member|khubd_sem
 r_struct
 id|semaphore
 id|khubd_sem
 suffix:semicolon
+DECL|member|tt
+r_struct
+id|usb_tt
+id|tt
+suffix:semicolon
+multiline_comment|/* Transaction Translator */
 )brace
 suffix:semicolon
 macro_line|#endif /* __LINUX_HUB_H */

@@ -34,7 +34,7 @@ mdefine_line|#define SD_MAJOR_NUMBER(i)&t;SD_MAJOR((i) &gt;&gt; 8)
 DECL|macro|SD_MINOR_NUMBER
 mdefine_line|#define SD_MINOR_NUMBER(i)&t;((i) &amp; 255)
 DECL|macro|MKDEV_SD_PARTITION
-mdefine_line|#define MKDEV_SD_PARTITION(i)&t;MKDEV(SD_MAJOR_NUMBER(i), (i) &amp; 255)
+mdefine_line|#define MKDEV_SD_PARTITION(i)&t;mk_kdev(SD_MAJOR_NUMBER(i), (i) &amp; 255)
 DECL|macro|MKDEV_SD
 mdefine_line|#define MKDEV_SD(index)&t;&t;MKDEV_SD_PARTITION((index) &lt;&lt; 4)
 DECL|macro|N_USED_SD_MAJORS
@@ -2273,12 +2273,6 @@ l_string|&quot;sd&quot;
 comma
 id|minor_shift
 suffix:colon
-l_int|4
-comma
-id|max_p
-suffix:colon
-l_int|1
-op_lshift
 l_int|4
 comma
 id|fops
@@ -4592,10 +4586,16 @@ op_assign
 id|blk_get_queue
 c_func
 (paren
+id|mk_kdev
+c_func
+(paren
 id|SD_MAJOR
 c_func
 (paren
 id|i
+)paren
+comma
+l_int|0
 )paren
 )paren
 suffix:semicolon
@@ -4769,17 +4769,6 @@ id|sd_gendisks
 id|i
 )braket
 dot
-id|max_p
-op_assign
-l_int|1
-op_lshift
-l_int|4
-suffix:semicolon
-id|sd_gendisks
-(braket
-id|i
-)braket
-dot
 id|part
 op_assign
 id|sd
@@ -4817,25 +4806,6 @@ dot
 id|nr_real
 op_assign
 l_int|0
-suffix:semicolon
-id|sd_gendisks
-(braket
-id|i
-)braket
-dot
-id|real_devices
-op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-id|rscsi_disks
-op_plus
-id|i
-op_star
-id|SCSI_DISKS_PER_MAJOR
-)paren
 suffix:semicolon
 )brace
 r_return
@@ -5589,7 +5559,9 @@ id|SDp
 (brace
 id|max_p
 op_assign
-id|sd_gendisk.max_p
+l_int|1
+op_lshift
+id|sd_gendisk.minor_shift
 suffix:semicolon
 id|start
 op_assign
