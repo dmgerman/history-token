@@ -1233,13 +1233,6 @@ macro_line|#ifdef CONFIG_PCI
 DECL|macro|pci_for_each_dev
 mdefine_line|#define pci_for_each_dev(dev) &bslash;&n;&t;for(dev = pci_dev_g(pci_devices.next); dev != pci_dev_g(&amp;pci_devices); dev = pci_dev_g(dev-&gt;global_list.next))
 r_void
-id|pcibios_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
 id|pcibios_fixup_bus
 c_func
 (paren
