@@ -38,11 +38,11 @@ multiline_comment|/*&n; * Your basic SMP spinlocks, allowing only a single CPU a
 r_typedef
 r_struct
 (brace
-DECL|member|lock
+DECL|member|slock
 r_volatile
 r_int
 r_int
-id|lock
+id|slock
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|member|magic
@@ -76,7 +76,7 @@ DECL|macro|spin_lock_init
 mdefine_line|#define spin_lock_init(x)&t;do { *(x) = SPIN_LOCK_UNLOCKED; } while(0)
 multiline_comment|/*&n; * Simple spin lock operations.  There are two variants, one clears IRQ&squot;s&n; * on the local processor, one does not.&n; *&n; * We make no fairness assumptions. They have a cost.&n; */
 DECL|macro|spin_is_locked
-mdefine_line|#define spin_is_locked(x)&t;(*(volatile signed char *)(&amp;(x)-&gt;lock) &lt;= 0)
+mdefine_line|#define spin_is_locked(x)&t;(*(volatile signed char *)(&amp;(x)-&gt;slock) &lt;= 0)
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(x)&t;do { barrier(); } while(spin_is_locked(x))
 DECL|macro|spin_lock_string
@@ -86,7 +86,7 @@ mdefine_line|#define spin_lock_string_flags &bslash;&n;&t;&quot;&bslash;n1:&bsla
 multiline_comment|/*&n; * This works. Despite all the confusion.&n; * (except on PPro SMP or if we are using OOSTORE)&n; * (PPro errata 66, 92)&n; */
 macro_line|#if !defined(CONFIG_X86_OOSTORE) &amp;&amp; !defined(CONFIG_X86_PPRO_FENCE)
 DECL|macro|spin_unlock_string
-mdefine_line|#define spin_unlock_string &bslash;&n;&t;&quot;movb $1,%0&quot; &bslash;&n;&t;&t;:&quot;=m&quot; (lock-&gt;lock) : : &quot;memory&quot;
+mdefine_line|#define spin_unlock_string &bslash;&n;&t;&quot;movb $1,%0&quot; &bslash;&n;&t;&t;:&quot;=m&quot; (lock-&gt;slock) : : &quot;memory&quot;
 DECL|function|_raw_spin_unlock
 r_static
 r_inline
@@ -130,7 +130,7 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|spin_unlock_string
-mdefine_line|#define spin_unlock_string &bslash;&n;&t;&quot;xchgb %b0, %1&quot; &bslash;&n;&t;&t;:&quot;=q&quot; (oldval), &quot;=m&quot; (lock-&gt;lock) &bslash;&n;&t;&t;:&quot;0&quot; (oldval) : &quot;memory&quot;
+mdefine_line|#define spin_unlock_string &bslash;&n;&t;&quot;xchgb %b0, %1&quot; &bslash;&n;&t;&t;:&quot;=q&quot; (oldval), &quot;=m&quot; (lock-&gt;slock) &bslash;&n;&t;&t;:&quot;0&quot; (oldval) : &quot;memory&quot;
 DECL|function|_raw_spin_unlock
 r_static
 r_inline
@@ -206,7 +206,7 @@ id|oldval
 comma
 l_string|&quot;=m&quot;
 (paren
-id|lock-&gt;lock
+id|lock-&gt;slock
 )paren
 suffix:colon
 l_string|&quot;0&quot;
@@ -275,7 +275,7 @@ id|spin_lock_string
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
-id|lock-&gt;lock
+id|lock-&gt;slock
 )paren
 suffix:colon
 suffix:colon
@@ -338,7 +338,7 @@ id|spin_lock_string_flags
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
-id|lock-&gt;lock
+id|lock-&gt;slock
 )paren
 suffix:colon
 l_string|&quot;r&quot;
