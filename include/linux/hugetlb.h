@@ -357,8 +357,67 @@ DECL|member|mode
 id|umode_t
 id|mode
 suffix:semicolon
+DECL|member|nr_blocks
+r_int
+id|nr_blocks
+suffix:semicolon
+DECL|member|nr_inodes
+r_int
+id|nr_inodes
+suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|hugetlbfs_sb_info
+r_struct
+id|hugetlbfs_sb_info
+(brace
+DECL|member|max_blocks
+r_int
+id|max_blocks
+suffix:semicolon
+multiline_comment|/* blocks allowed */
+DECL|member|free_blocks
+r_int
+id|free_blocks
+suffix:semicolon
+multiline_comment|/* blocks free */
+DECL|member|max_inodes
+r_int
+id|max_inodes
+suffix:semicolon
+multiline_comment|/* inodes allowed */
+DECL|member|free_inodes
+r_int
+id|free_inodes
+suffix:semicolon
+multiline_comment|/* inodes free */
+DECL|member|stat_lock
+id|spinlock_t
+id|stat_lock
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|function|HUGETLBFS_SB
+r_static
+r_inline
+r_struct
+id|hugetlbfs_sb_info
+op_star
+id|HUGETLBFS_SB
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;s_fs_info
+suffix:semicolon
+)brace
+DECL|macro|PSEUDO_DIRENT_SIZE
+mdefine_line|#define PSEUDO_DIRENT_SIZE&t;20
 r_extern
 r_struct
 id|file_operations
