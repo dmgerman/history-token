@@ -14,6 +14,12 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;&t;/* for max_pfn/max_low_pfn */
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+multiline_comment|/*&n; * Disk stats &n; */
+DECL|variable|dkstat
+r_struct
+id|disk_stat
+id|dkstat
+suffix:semicolon
 multiline_comment|/*&n; * For the allocated request tables&n; */
 DECL|variable|request_cachep
 r_static
@@ -4671,7 +4677,7 @@ id|DK_MAX_MAJOR
 )paren
 r_return
 suffix:semicolon
-id|kstat.dk_drive
+id|dkstat.drive
 (braket
 id|major
 )braket
@@ -4689,7 +4695,7 @@ op_eq
 id|READ
 )paren
 (brace
-id|kstat.dk_drive_rio
+id|dkstat.drive_rio
 (braket
 id|major
 )braket
@@ -4699,7 +4705,7 @@ id|index
 op_add_assign
 id|new_io
 suffix:semicolon
-id|kstat.dk_drive_rblk
+id|dkstat.drive_rblk
 (braket
 id|major
 )braket
@@ -4719,7 +4725,7 @@ op_eq
 id|WRITE
 )paren
 (brace
-id|kstat.dk_drive_wio
+id|dkstat.drive_wio
 (braket
 id|major
 )braket
@@ -4729,7 +4735,7 @@ id|index
 op_add_assign
 id|new_io
 suffix:semicolon
-id|kstat.dk_drive_wblk
+id|dkstat.drive_wblk
 (braket
 id|major
 )braket
