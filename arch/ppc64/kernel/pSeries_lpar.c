@@ -1173,11 +1173,7 @@ op_assign
 id|plpar_ipi
 c_func
 (paren
-id|get_hard_smp_processor_id
-c_func
-(paren
 id|n_cpu
-)paren
 comma
 id|value
 )paren

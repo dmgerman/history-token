@@ -464,24 +464,6 @@ suffix:semicolon
 id|udbg_puts
 c_func
 (paren
-l_string|&quot;naca-&gt;processorCount       = 0x&quot;
-)paren
-suffix:semicolon
-id|udbg_puthex
-c_func
-(paren
-id|naca-&gt;processorCount
-)paren
-suffix:semicolon
-id|udbg_putc
-c_func
-(paren
-l_char|&squot;&bslash;n&squot;
-)paren
-suffix:semicolon
-id|udbg_puts
-c_func
-(paren
 l_string|&quot;naca-&gt;physicalMemorySize   = 0x&quot;
 )paren
 suffix:semicolon
