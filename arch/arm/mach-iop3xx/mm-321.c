@@ -20,9 +20,9 @@ op_assign
 multiline_comment|/* virtual     physical      length      type */
 multiline_comment|/* mem mapped registers */
 (brace
-l_int|0xfff00000
+id|IOP321_VIRT_MEM_BASE
 comma
-l_int|0xffffe000
+id|IOP321_PHY_MEM_BASE
 comma
 l_int|0x00002000
 comma
@@ -80,7 +80,7 @@ multiline_comment|/* on-board devices */
 (brace
 l_int|0xfe800000
 comma
-l_int|0xfe800000
+id|IQ80321_UART1
 comma
 l_int|0x00100000
 comma
