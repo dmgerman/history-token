@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &quot;fdomain.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1041,7 +1042,6 @@ suffix:semicolon
 )brace
 DECL|function|fdomain_setup
 r_int
-id|__init
 id|fdomain_setup
 c_func
 (paren
