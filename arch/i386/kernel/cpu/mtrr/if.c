@@ -1,6 +1,5 @@
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
@@ -1779,11 +1778,6 @@ op_star
 id|proc_root_mtrr
 suffix:semicolon
 macro_line|#  endif&t;&t;&t;/*  CONFIG_PROC_FS  */
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
 DECL|function|attrib_to_str
 r_char
 op_star
@@ -1980,14 +1974,6 @@ id|i
 suffix:semicolon
 )brace
 )brace
-id|devfs_set_file_size
-c_func
-(paren
-id|devfs_handle
-comma
-id|len
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2034,35 +2020,6 @@ op_amp
 id|mtrr_fops
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#ifdef USERSPACE_INTERFACE
-id|devfs_handle
-op_assign
-id|devfs_register
-c_func
-(paren
-l_int|NULL
-comma
-l_string|&quot;cpu/mtrr&quot;
-comma
-id|DEVFS_FL_DEFAULT
-comma
-l_int|0
-comma
-l_int|0
-comma
-id|S_IFREG
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUSR
-comma
-op_amp
-id|mtrr_fops
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 macro_line|#endif
 r_return
 l_int|0
