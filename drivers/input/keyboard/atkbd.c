@@ -1661,6 +1661,8 @@ DECL|macro|ATKBD_CMD_ENABLE
 mdefine_line|#define ATKBD_CMD_ENABLE&t;0x00f4
 DECL|macro|ATKBD_CMD_RESET_DIS
 mdefine_line|#define ATKBD_CMD_RESET_DIS&t;0x00f5
+DECL|macro|ATKBD_CMD_SETALL_MBR
+mdefine_line|#define ATKBD_CMD_SETALL_MBR&t;0x00fa
 DECL|macro|ATKBD_CMD_RESET_BAT
 mdefine_line|#define ATKBD_CMD_RESET_BAT&t;0x02ff
 DECL|macro|ATKBD_CMD_RESEND
@@ -3513,6 +3515,16 @@ r_return
 l_int|2
 suffix:semicolon
 )brace
+id|atkbd_command
+c_func
+(paren
+id|atkbd
+comma
+id|param
+comma
+id|ATKBD_CMD_SETALL_MBR
+)paren
+suffix:semicolon
 r_return
 l_int|3
 suffix:semicolon
