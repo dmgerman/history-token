@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This code largely moved from arch/i386/kernel/time.c.&
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 r_extern
@@ -845,12 +846,13 @@ id|CPUFREQ_TRANSITION_NOTIFIER
 suffix:semicolon
 macro_line|#endif
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 )brace
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/************************************************************/
@@ -861,17 +863,21 @@ id|timer_opts
 id|timer_tsc
 op_assign
 (brace
+dot
 id|init
-suffix:colon
+op_assign
 id|init_tsc
 comma
+dot
 id|mark_offset
-suffix:colon
+op_assign
 id|mark_offset_tsc
 comma
+dot
 id|get_offset
-suffix:colon
+op_assign
 id|get_offset_tsc
+comma
 )brace
 suffix:semicolon
 eof

@@ -1,20 +1,19 @@
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 multiline_comment|/* list of externed timers */
-macro_line|#ifndef CONFIG_X86_TSC
 r_extern
 r_struct
 id|timer_opts
 id|timer_pit
 suffix:semicolon
-macro_line|#endif
 r_extern
 r_struct
 id|timer_opts
 id|timer_tsc
 suffix:semicolon
-multiline_comment|/* list of timers, ordered by preference */
+multiline_comment|/* list of timers, ordered by preference, NULL terminated */
 DECL|variable|timers
+r_static
 r_struct
 id|timer_opts
 op_star
@@ -25,15 +24,16 @@ op_assign
 (brace
 op_amp
 id|timer_tsc
-macro_line|#ifndef CONFIG_X86_TSC
 comma
+macro_line|#ifndef CONFIG_X86_TSC
 op_amp
 id|timer_pit
+comma
 macro_line|#endif
+l_int|NULL
+comma
 )brace
 suffix:semicolon
-DECL|macro|NR_TIMERS
-mdefine_line|#define NR_TIMERS (sizeof(timers)/sizeof(timers[0]))
 multiline_comment|/* iterates through the list of timers, returning the first &n; * one that initializes successfully.&n; */
 DECL|function|select_timer
 r_struct
@@ -47,21 +47,28 @@ r_void
 (brace
 r_int
 id|i
-suffix:semicolon
-multiline_comment|/* find most preferred working timer */
-r_for
-c_loop
-(paren
-id|i
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* find most preferred working timer */
+r_while
+c_loop
+(paren
+id|timers
+(braket
 id|i
-OL
-id|NR_TIMERS
-suffix:semicolon
+)braket
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|timers
+(braket
 id|i
-op_increment
+)braket
+op_member_access_from_pointer
+id|init
 )paren
 r_if
 c_cond
@@ -75,13 +82,17 @@ id|init
 c_func
 (paren
 )paren
+op_eq
+l_int|0
 )paren
-(brace
 r_return
 id|timers
 (braket
 id|i
 )braket
+suffix:semicolon
+op_increment
+id|i
 suffix:semicolon
 )brace
 id|panic
@@ -91,7 +102,7 @@ l_string|&quot;select_timer: Cannot find a suitable timer&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 eof
