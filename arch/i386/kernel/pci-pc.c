@@ -5207,6 +5207,7 @@ id|suba
 comma
 id|subb
 suffix:semicolon
+macro_line|#ifdef CONFIG_MULTIQUAD
 r_int
 id|quad
 op_assign
@@ -5216,6 +5217,7 @@ c_func
 id|d-&gt;bus-&gt;number
 )paren
 suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren

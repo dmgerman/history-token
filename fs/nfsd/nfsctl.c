@@ -420,7 +420,7 @@ suffix:semicolon
 )brace
 DECL|function|TA_open
 r_static
-id|ssize_t
+r_int
 id|TA_open
 c_func
 (paren
@@ -445,7 +445,7 @@ suffix:semicolon
 )brace
 DECL|function|TA_release
 r_static
-id|ssize_t
+r_int
 id|TA_release
 c_func
 (paren

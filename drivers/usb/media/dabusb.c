@@ -3432,6 +3432,10 @@ id|minor
 suffix:colon
 id|DABUSB_MINOR
 comma
+id|num_minors
+suffix:colon
+id|NRDABUSB
+comma
 id|id_table
 suffix:colon
 id|dabusb_ids

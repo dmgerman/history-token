@@ -2651,6 +2651,10 @@ c_func
 id|clone_flags
 )paren
 suffix:semicolon
+id|p-&gt;proc_dentry
+op_assign
+l_int|NULL
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren

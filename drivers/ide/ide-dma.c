@@ -2220,9 +2220,18 @@ c_cond
 op_logical_neg
 id|ar
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;DMA without ATA request&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

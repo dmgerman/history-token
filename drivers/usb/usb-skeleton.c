@@ -441,6 +441,10 @@ id|minor
 suffix:colon
 id|USB_SKEL_MINOR_BASE
 comma
+id|num_minors
+suffix:colon
+id|MAX_DEVICES
+comma
 id|id_table
 suffix:colon
 id|skel_table

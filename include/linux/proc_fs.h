@@ -1088,12 +1088,6 @@ DECL|member|op
 )brace
 id|op
 suffix:semicolon
-DECL|member|file
-r_struct
-id|file
-op_star
-id|file
-suffix:semicolon
 DECL|member|pde
 r_struct
 id|proc_dir_entry

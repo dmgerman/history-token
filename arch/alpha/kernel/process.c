@@ -80,6 +80,20 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|default_idle
+r_void
+id|default_idle
+c_func
+(paren
+r_void
+)paren
+(brace
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_void
 DECL|function|cpu_idle
 id|cpu_idle
@@ -94,6 +108,17 @@ c_loop
 l_int|1
 )paren
 (brace
+r_void
+(paren
+op_star
+id|idle
+)paren
+(paren
+r_void
+)paren
+op_assign
+id|default_idle
+suffix:semicolon
 multiline_comment|/* FIXME -- EV6 and LCA45 know how to power down&n;&t;&t;   the CPU.  */
 r_while
 c_loop
@@ -104,7 +129,7 @@ c_func
 (paren
 )paren
 )paren
-id|barrier
+id|idle
 c_func
 (paren
 )paren
