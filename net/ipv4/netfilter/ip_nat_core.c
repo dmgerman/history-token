@@ -3803,6 +3803,32 @@ id|dir
 r_continue
 suffix:semicolon
 multiline_comment|/* Mapping the inner packet is just like a normal packet, except&n;&t;&t; * it was never src/dst reversed, so where we would normally&n;&t;&t; * apply a dst manip, we apply a src, and vice versa. */
+multiline_comment|/* Only true for forwarded packets, locally generated packets&n;&t;&t; * never hit PRE_ROUTING, we need to apply their PRE_ROUTING&n;&t;&t; * manips in LOCAL_OUT. */
+r_if
+c_cond
+(paren
+id|hooknum
+op_eq
+id|NF_IP_LOCAL_OUT
+op_logical_and
+id|info-&gt;manips
+(braket
+id|i
+)braket
+dot
+id|hooknum
+op_eq
+id|NF_IP_PRE_ROUTING
+)paren
+id|hooknum
+op_assign
+id|info-&gt;manips
+(braket
+id|i
+)braket
+dot
+id|hooknum
+suffix:semicolon
 r_if
 c_cond
 (paren
