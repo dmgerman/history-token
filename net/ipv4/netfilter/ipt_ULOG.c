@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * netfilter module for userspace packet logging daemons&n; *&n; * (C) 2000-2002 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; *&n; * 2000/09/22 ulog-cprange feature added&n; * 2001/01/04 in-kernel queue as proposed by Sebastian Zander &n; * &t;&t;&t;&t;&t;&t;&lt;zander@fokus.gmd.de&gt;&n; * 2001/01/30 per-rule nlgroup conflicts with global queue. &n; *            nlgroup now global (sysctl)&n; * 2001/04/19 ulog-queue reworked, now fixed buffer size specified at&n; * &t;      module loadtime -HW&n; *&n; * Released under the terms of the GPL&n; *&n; * This module accepts two parameters: &n; * &n; * nlbufsiz:&n; *   The parameter specifies how big the buffer for each netlink multicast&n; * group is. e.g. If you say nlbufsiz=8192, up to eight kb of packets will&n; * get accumulated in the kernel until they are sent to userspace. It is&n; * NOT possible to allocate more than 128kB, and it is strongly discouraged,&n; * because atomically allocating 128kB inside the network rx softirq is not&n; * reliable. Please also keep in mind that this buffer size is allocated for&n; * each nlgroup you are using, so the total kernel memory usage increases&n; * by that factor.&n; *&n; * flushtimeout:&n; *   Specify, after how many clock ticks (intel: 100 per second) the queue&n; * should be flushed even if it is not full yet.&n; *&n; * ipt_ULOG.c,v 1.18 2002/04/16 07:33:00 laforge Exp&n; */
+multiline_comment|/*&n; * netfilter module for userspace packet logging daemons&n; *&n; * (C) 2000-2002 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; *&n; * 2000/09/22 ulog-cprange feature added&n; * 2001/01/04 in-kernel queue as proposed by Sebastian Zander &n; * &t;&t;&t;&t;&t;&t;&lt;zander@fokus.gmd.de&gt;&n; * 2001/01/30 per-rule nlgroup conflicts with global queue. &n; *            nlgroup now global (sysctl)&n; * 2001/04/19 ulog-queue reworked, now fixed buffer size specified at&n; * &t;      module loadtime -HW&n; * 2002/07/07 remove broken nflog_rcv() function -HW&n; * 2002/08/29 fix shifted/unshifted nlgroup bug -HW&n; *&n; * Released under the terms of the GPL&n; *&n; * This module accepts two parameters: &n; * &n; * nlbufsiz:&n; *   The parameter specifies how big the buffer for each netlink multicast&n; * group is. e.g. If you say nlbufsiz=8192, up to eight kb of packets will&n; * get accumulated in the kernel until they are sent to userspace. It is&n; * NOT possible to allocate more than 128kB, and it is strongly discouraged,&n; * because atomically allocating 128kB inside the network rx softirq is not&n; * reliable. Please also keep in mind that this buffer size is allocated for&n; * each nlgroup you are using, so the total kernel memory usage increases&n; * by that factor.&n; *&n; * flushtimeout:&n; *   Specify, after how many clock ticks (intel: 100 per second) the queue&n; * should be flushed even if it is not full yet.&n; *&n; * ipt_ULOG.c,v 1.21 2002/08/29 10:54:34 laforge Exp&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -15,10 +15,23 @@ macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_ULOG.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Harald Welte &lt;laforge@gnumonks.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;IP tables userspace logging module&quot;
 )paren
 suffix:semicolon
 DECL|macro|ULOG_NL_EVENT
@@ -33,18 +46,6 @@ mdefine_line|#define DEBUGP(format, args...)
 macro_line|#endif
 DECL|macro|PRINTR
 mdefine_line|#define PRINTR(format, args...) do { if (net_ratelimit()) printk(format, ## args); } while (0)
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Harald Welte &lt;laforge@gnumonks.org&gt;&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;IP tables userspace logging module&quot;
-)paren
-suffix:semicolon
 DECL|variable|nlbufsiz
 r_static
 r_int
@@ -169,7 +170,7 @@ c_func
 (paren
 r_int
 r_int
-id|nlgroup
+id|nlgroupnum
 )paren
 (brace
 id|ulog_buff_t
@@ -179,7 +180,7 @@ op_assign
 op_amp
 id|ulog_buffers
 (braket
-id|nlgroup
+id|nlgroupnum
 )braket
 suffix:semicolon
 r_if
@@ -227,7 +228,11 @@ id|ub-&gt;skb
 dot
 id|dst_groups
 op_assign
-id|nlgroup
+(paren
+l_int|1
+op_lshift
+id|nlgroupnum
+)paren
 suffix:semicolon
 id|DEBUGP
 c_func
@@ -248,7 +253,11 @@ id|ub-&gt;skb
 comma
 l_int|0
 comma
-id|nlgroup
+(paren
+l_int|1
+op_lshift
+id|nlgroupnum
+)paren
 comma
 id|GFP_ATOMIC
 )paren
@@ -303,28 +312,6 @@ c_func
 (paren
 op_amp
 id|ulog_lock
-)paren
-suffix:semicolon
-)brace
-DECL|function|nflog_rcv
-r_static
-r_void
-id|nflog_rcv
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-comma
-r_int
-id|len
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;ipt_ULOG:nflog_rcv() did receive netlink message ?!?&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -470,6 +457,19 @@ op_star
 )paren
 id|targinfo
 suffix:semicolon
+multiline_comment|/* ffs == find first bit set, necessary because userspace&n;&t; * is already shifting groupnumber, but we need unshifted.&n;&t; * ffs() returns [1..32], we need [0..31] */
+r_int
+r_int
+id|groupnum
+op_assign
+id|ffs
+c_func
+(paren
+id|loginfo-&gt;nl_group
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 multiline_comment|/* calculate the size of the skb needed */
 r_if
 c_cond
@@ -528,7 +528,7 @@ op_assign
 op_amp
 id|ulog_buffers
 (braket
-id|loginfo-&gt;nl_group
+id|groupnum
 )braket
 suffix:semicolon
 id|LOCK_BH
@@ -584,7 +584,7 @@ multiline_comment|/* either the queue len is too high or we don&squot;t have &n;
 id|ulog_send
 c_func
 (paren
-id|loginfo-&gt;nl_group
+id|groupnum
 )paren
 suffix:semicolon
 r_if
@@ -1208,7 +1208,7 @@ c_func
 (paren
 id|NETLINK_NFLOG
 comma
-id|nflog_rcv
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

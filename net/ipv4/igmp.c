@@ -1771,7 +1771,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;A socket has left a multicast group on device dev&n; */
 DECL|function|ip_mc_dec_group
-r_int
+r_void
 id|ip_mc_dec_group
 c_func
 (paren
@@ -1784,12 +1784,6 @@ id|u32
 id|addr
 )paren
 (brace
-r_int
-id|err
-op_assign
-op_minus
-id|ESRCH
-suffix:semicolon
 r_struct
 id|ip_mc_list
 op_star
@@ -1889,21 +1883,12 @@ id|i
 )paren
 suffix:semicolon
 r_return
-l_int|0
 suffix:semicolon
 )brace
-id|err
-op_assign
-l_int|0
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
 )brace
-r_return
-op_minus
-id|ESRCH
-suffix:semicolon
 )brace
 multiline_comment|/* Device going down */
 DECL|function|ip_mc_down
