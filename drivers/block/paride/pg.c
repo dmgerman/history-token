@@ -336,7 +336,7 @@ l_string|&quot;1-6i&quot;
 suffix:semicolon
 macro_line|#include &quot;paride.h&quot;
 DECL|macro|PG_SPIN_DEL
-mdefine_line|#define PG_SPIN_DEL     50              /* spin delay in micro-seconds  */
+mdefine_line|#define PG_SPIN_DEL     50&t;/* spin delay in micro-seconds  */
 DECL|macro|PG_SPIN
 mdefine_line|#define PG_SPIN         200
 DECL|macro|PG_TMO
@@ -380,6 +380,7 @@ suffix:semicolon
 r_static
 r_int
 id|pg_release
+c_func
 (paren
 r_struct
 id|inode
@@ -448,6 +449,7 @@ suffix:semicolon
 r_static
 r_int
 id|pg_identify
+c_func
 (paren
 r_int
 id|unit
@@ -1604,7 +1606,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|flg
 op_and_assign
 (paren
@@ -1624,7 +1625,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1777,7 +1777,6 @@ op_ne
 id|l
 )paren
 )paren
-(brace
 id|l
 op_assign
 id|targ
@@ -1793,7 +1792,6 @@ op_plus
 id|offs
 )braket
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1990,6 +1988,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * returns  0, with id set if drive is detected&n; *&t;   -1, if drive detection failed&n; */
 DECL|function|pg_probe
 r_static
 r_int
@@ -1999,7 +1998,6 @@ c_func
 r_int
 id|unit
 )paren
-multiline_comment|/*&t;returns  0, with id set if drive is detected&n;&t;&t;-1, if drive detection failed&n;*/
 (brace
 r_if
 c_cond
@@ -2205,7 +2203,6 @@ r_if
 c_cond
 (paren
 id|pi_init
-c_func
 (paren
 id|PI
 comma
@@ -2300,6 +2297,7 @@ DECL|function|pg_open
 r_static
 r_int
 id|pg_open
+c_func
 (paren
 r_struct
 id|inode
@@ -2434,6 +2432,7 @@ DECL|function|pg_release
 r_static
 r_int
 id|pg_release
+c_func
 (paren
 r_struct
 id|inode
@@ -3075,6 +3074,7 @@ l_int|1
 suffix:semicolon
 )brace
 id|devfs_mk_dir
+c_func
 (paren
 l_string|&quot;pg&quot;
 )paren
@@ -3167,6 +3167,7 @@ id|unit
 )paren
 suffix:semicolon
 id|devfs_remove
+c_func
 (paren
 l_string|&quot;pg&quot;
 )paren
