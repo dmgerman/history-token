@@ -23,8 +23,9 @@ mdefine_line|#define DECLARE_DYN_IN(sz,fnsuffix,instr)&t;&t;&t;&t;&bslash;&n;sta
 DECL|function|__ioaddr
 r_static
 r_inline
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|__ioaddr
 (paren
 r_int
@@ -32,40 +33,25 @@ r_int
 id|port
 )paren
 (brace
-r_if
-c_cond
+r_return
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 (paren
 id|__PORT_PCIO
 c_func
 (paren
 id|port
 )paren
-)paren
-r_return
-(paren
-r_int
-r_int
-)paren
-(paren
+ques
+c_cond
 id|PCIO_BASE
 op_plus
-(paren
 id|port
-)paren
-)paren
-suffix:semicolon
-r_else
-r_return
-(paren
-r_int
-r_int
-)paren
-(paren
-l_int|0
-op_plus
-(paren
+suffix:colon
 id|port
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -116,7 +102,7 @@ mdefine_line|#define __outlc(value,port)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;
 DECL|macro|__inlc
 mdefine_line|#define __inlc(port)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long result;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__PORT_PCIO((port)))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;ldr&t;%0, [%1, %2]&t;@ inlc&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (result) : &quot;r&quot; (PCIO_BASE), &quot;Jr&quot; ((port)));&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;ldr&t;%0, [%1, #0]&t;@ inlc&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (result) : &quot;r&quot; ((port)));&t;&t;&bslash;&n;&t;result;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__ioaddrc
-mdefine_line|#define __ioaddrc(port)&t;(__PORT_PCIO((port)) ? PCIO_BASE + ((port)) : ((port)))
+mdefine_line|#define __ioaddrc(port)&t;((void __iomem *)(__PORT_PCIO(port) ? PCIO_BASE + (port) : (port)))
 DECL|macro|inb
 mdefine_line|#define inb(p)&t;&t;(__builtin_constant_p((p)) ? __inbc(p)&t;   : __inb(p))
 DECL|macro|inw
