@@ -2,43 +2,6 @@ multiline_comment|/*&n;    i2c-sensor.h - Part of the i2c package&n;    was orig
 macro_line|#ifndef _LINUX_I2C_SENSOR_H
 DECL|macro|_LINUX_I2C_SENSOR_H
 mdefine_line|#define _LINUX_I2C_SENSOR_H
-macro_line|#include &lt;linux/sysctl.h&gt;
-multiline_comment|/* The type of callback functions used in sensors_{proc,sysctl}_real */
-DECL|typedef|i2c_real_callback
-r_typedef
-r_void
-(paren
-op_star
-id|i2c_real_callback
-)paren
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-comma
-r_int
-id|operation
-comma
-r_int
-id|ctl_name
-comma
-r_int
-op_star
-id|nrels_mag
-comma
-r_int
-op_star
-id|results
-)paren
-suffix:semicolon
-multiline_comment|/* Values for the operation field in the above function type */
-DECL|macro|SENSORS_PROC_REAL_INFO
-mdefine_line|#define SENSORS_PROC_REAL_INFO 1
-DECL|macro|SENSORS_PROC_REAL_READ
-mdefine_line|#define SENSORS_PROC_REAL_READ 2
-DECL|macro|SENSORS_PROC_REAL_WRITE
-mdefine_line|#define SENSORS_PROC_REAL_WRITE 3
 multiline_comment|/* A structure containing detect information.&n;   Force variables overrule all other variables; they force a detection on&n;   that place. If a specific chip is given, the module blindly assumes this&n;   chip type is present; if a general force (kind == 0) is given, the module&n;   will still try to figure out what type of chip is present. This is useful&n;   if for some reasons the detect for SMBus or ISA address space filled&n;   fails.&n;   probe: insmod parameter. Initialize this list with SENSORS_I2C_END values.&n;     A list of pairs. The first value is a bus number (SENSORS_ISA_BUS for&n;     the ISA bus, -1 for any I2C bus), the second is the address. &n;   kind: The kind of chip. 0 equals any chip.&n;*/
 DECL|struct|i2c_force_data
 r_struct
@@ -252,37 +215,5 @@ r_return
 id|value
 suffix:semicolon
 )brace
-multiline_comment|/* The maximum length of the prefix */
-DECL|macro|SENSORS_PREFIX_MAX
-mdefine_line|#define SENSORS_PREFIX_MAX 20
-multiline_comment|/* Sysctl IDs */
-macro_line|#ifdef DEV_HWMON
-DECL|macro|DEV_SENSORS
-mdefine_line|#define DEV_SENSORS DEV_HWMON
-macro_line|#else&t;&t;&t;&t;/* ndef DEV_HWMOM */
-DECL|macro|DEV_SENSORS
-mdefine_line|#define DEV_SENSORS 2&t;&t;/* The id of the lm_sensors directory within the&n;&t;&t;&t;&t;   dev table */
-macro_line|#endif&t;&t;&t;&t;/* def DEV_HWMON */
-DECL|macro|SENSORS_CHIPS
-mdefine_line|#define SENSORS_CHIPS 1
-DECL|struct|i2c_chips_data
-r_struct
-id|i2c_chips_data
-(brace
-DECL|member|sysctl_id
-r_int
-id|sysctl_id
-suffix:semicolon
-DECL|member|name
-r_char
-id|name
-(braket
-id|SENSORS_PREFIX_MAX
-op_plus
-l_int|13
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* def _LINUX_I2C_SENSOR_H */
 eof
