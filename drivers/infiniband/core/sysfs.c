@@ -1492,7 +1492,9 @@ id|IB_MAD_IGNORE_MKEY
 comma
 id|p-&gt;port_num
 comma
-l_int|0xffff
+l_int|NULL
+comma
+l_int|NULL
 comma
 id|in_mad
 comma

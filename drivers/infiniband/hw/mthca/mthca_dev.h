@@ -1564,8 +1564,15 @@ comma
 id|u8
 id|port_num
 comma
-id|u16
-id|slid
+r_struct
+id|ib_wc
+op_star
+id|in_wc
+comma
+r_struct
+id|ib_grh
+op_star
+id|in_grh
 comma
 r_struct
 id|ib_mad
