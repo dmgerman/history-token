@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    A driver for PCMCIA serial devices&n;&n;    serial_cs.c 1.123 2000/08/24 18:46:38&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in which&n;    case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    A driver for PCMCIA serial devices&n;&n;    serial_cs.c 1.134 2002/05/04 05:48:53&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in which&n;    case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -45,7 +44,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;serial_cs.c 1.123 2000/08/24 18:46:38 (David Hinds)&quot;
+l_string|&quot;serial_cs.c 1.134 2002/05/04 05:48:53 (David Hinds)&quot;
 suffix:semicolon
 macro_line|#else
 DECL|macro|DEBUG
@@ -82,6 +81,12 @@ id|do_sound
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* Skip strict UART tests? */
+DECL|variable|buggy_uart
+r_static
+r_int
+id|buggy_uart
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -102,6 +107,14 @@ id|MODULE_PARM
 c_func
 (paren
 id|do_sound
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|buggy_uart
 comma
 l_string|&quot;i&quot;
 )paren
@@ -196,7 +209,6 @@ suffix:semicolon
 DECL|macro|MULTI_COUNT
 mdefine_line|#define MULTI_COUNT (sizeof(multi_id)/sizeof(struct multi_id))
 DECL|struct|serial_info
-r_typedef
 r_struct
 id|serial_info
 (brace
@@ -234,14 +246,7 @@ id|line
 l_int|4
 )braket
 suffix:semicolon
-DECL|member|remove
-r_struct
-id|work_struct
-id|remove
-suffix:semicolon
-DECL|typedef|serial_info_t
 )brace
-id|serial_info_t
 suffix:semicolon
 r_static
 r_void
@@ -302,17 +307,16 @@ id|dev_list
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*======================================================================&n;&n;    After a card is removed, do_serial_release() will unregister&n;    the serial device(s), and release the PCMCIA configuration.&n;    &n;======================================================================*/
-multiline_comment|/*&n; * This always runs in process context.&n; */
-DECL|function|do_serial_release
+multiline_comment|/*======================================================================&n;&n;    After a card is removed, serial_remove() will unregister&n;    the serial device(s), and release the PCMCIA configuration.&n;    &n;======================================================================*/
+DECL|function|serial_remove
 r_static
 r_void
-id|do_serial_release
+id|serial_remove
 c_func
 (paren
-r_void
+id|dev_link_t
 op_star
-id|arg
+id|link
 )paren
 (brace
 r_struct
@@ -320,10 +324,17 @@ id|serial_info
 op_star
 id|info
 op_assign
-id|arg
+id|link-&gt;priv
 suffix:semicolon
 r_int
 id|i
+comma
+id|ret
+suffix:semicolon
+id|link-&gt;state
+op_and_assign
+op_complement
+id|DEV_PRESENT
 suffix:semicolon
 id|DEBUG
 c_func
@@ -332,8 +343,7 @@ l_int|0
 comma
 l_string|&quot;serial_release(0x%p)&bslash;n&quot;
 comma
-op_amp
-id|info-&gt;link
+id|link
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Recheck to see if the device is still configured.&n;&t; */
@@ -417,46 +427,6 @@ id|DEV_CONFIG
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This may be called from IRQ context.&n; */
-DECL|function|serial_remove
-r_static
-r_void
-id|serial_remove
-c_func
-(paren
-id|dev_link_t
-op_star
-id|link
-)paren
-(brace
-r_struct
-id|serial_info
-op_star
-id|info
-op_assign
-id|link-&gt;priv
-suffix:semicolon
-id|link-&gt;state
-op_and_assign
-op_complement
-id|DEV_PRESENT
-suffix:semicolon
-multiline_comment|/*&n;&t; * FIXME: Since the card has probably been removed,&n;&t; * we should call into the serial layer and hang up&n;&t; * the ports on the card immediately.&n;&t; */
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_CONFIG
-)paren
-id|schedule_work
-c_func
-(paren
-op_amp
-id|info-&gt;remove
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*======================================================================&n;&n;    serial_attach() creates an &quot;instance&quot; of the driver, allocating&n;    local data structures for one device.  The device is registered&n;    with Card Services.&n;&n;======================================================================*/
 DECL|function|serial_attach
 r_static
@@ -468,7 +438,8 @@ c_func
 r_void
 )paren
 (brace
-id|serial_info_t
+r_struct
+id|serial_info
 op_star
 id|info
 suffix:semicolon
@@ -539,17 +510,6 @@ id|link-&gt;priv
 op_assign
 id|info
 suffix:semicolon
-id|INIT_WORK
-c_func
-(paren
-op_amp
-id|info-&gt;remove
-comma
-id|do_serial_release
-comma
-id|info
-)paren
-suffix:semicolon
 id|link-&gt;io.Attributes1
 op_assign
 id|IO_DATA_PATH_WIDTH_8
@@ -610,10 +570,6 @@ suffix:semicolon
 id|link-&gt;conf.Attributes
 op_assign
 id|CONF_ENABLE_IRQ
-suffix:semicolon
-id|link-&gt;conf.Vcc
-op_assign
-l_int|50
 suffix:semicolon
 r_if
 c_cond
@@ -739,7 +695,8 @@ op_star
 id|link
 )paren
 (brace
-id|serial_info_t
+r_struct
+id|serial_info
 op_star
 id|info
 op_assign
@@ -812,10 +769,10 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ensure that the ports have been released.&n;&t; */
-id|do_serial_release
+id|serial_remove
 c_func
 (paren
-id|info
+id|link
 )paren
 suffix:semicolon
 r_if
@@ -872,7 +829,8 @@ r_int
 id|setup_serial
 c_func
 (paren
-id|serial_info_t
+r_struct
+id|serial_info
 op_star
 id|info
 comma
@@ -918,6 +876,15 @@ id|UPF_SKIP_TEST
 op_or
 id|UPF_SHARE_IRQ
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|buggy_uart
+)paren
+id|serial.flags
+op_or_assign
+id|UPF_BUGGY_UART
+suffix:semicolon
 id|line
 op_assign
 id|register_serial
@@ -952,7 +919,7 @@ id|serial.irq
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 )brace
 id|info-&gt;line
@@ -1149,7 +1116,8 @@ id|handle
 op_assign
 id|link-&gt;handle
 suffix:semicolon
-id|serial_info_t
+r_struct
+id|serial_info
 op_star
 id|info
 op_assign
@@ -1767,7 +1735,8 @@ id|handle
 op_assign
 id|link-&gt;handle
 suffix:semicolon
-id|serial_info_t
+r_struct
+id|serial_info
 op_star
 id|info
 op_assign
@@ -1792,12 +1761,55 @@ op_assign
 op_amp
 id|parse.cftable_entry
 suffix:semicolon
+id|config_info_t
+id|config
+suffix:semicolon
 r_int
 id|i
 comma
 id|base2
 op_assign
 l_int|0
+suffix:semicolon
+id|i
+op_assign
+id|CardServices
+c_func
+(paren
+id|GetConfigurationInfo
+comma
+id|handle
+comma
+op_amp
+id|config
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+op_ne
+id|CS_SUCCESS
+)paren
+(brace
+id|cs_error
+c_func
+(paren
+id|handle
+comma
+id|GetConfiguration
+comma
+id|i
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|link-&gt;conf.Vcc
+op_assign
+id|config.Vcc
 suffix:semicolon
 id|tuple.TupleData
 op_assign
@@ -2195,6 +2207,75 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* The Oxford Semiconductor OXCF950 cards are in fact single-port:&n;&t;   8 registers are for the UART, the others are extra registers */
+r_if
+c_cond
+(paren
+id|info-&gt;manfid
+op_eq
+id|MANFID_OXSEMI
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cf-&gt;index
+op_eq
+l_int|1
+op_logical_or
+id|cf-&gt;index
+op_eq
+l_int|3
+)paren
+(brace
+id|setup_serial
+c_func
+(paren
+id|info
+comma
+id|base2
+comma
+id|link-&gt;irq.AssignedIRQ
+)paren
+suffix:semicolon
+id|outb
+c_func
+(paren
+l_int|12
+comma
+id|link-&gt;io.BasePort1
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|setup_serial
+c_func
+(paren
+id|info
+comma
+id|link-&gt;io.BasePort1
+comma
+id|link-&gt;irq.AssignedIRQ
+)paren
+suffix:semicolon
+id|outb
+c_func
+(paren
+l_int|12
+comma
+id|base2
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|setup_serial
 c_func
 (paren
@@ -2270,7 +2351,8 @@ id|handle
 op_assign
 id|link-&gt;handle
 suffix:semicolon
-id|serial_info_t
+r_struct
+id|serial_info
 op_star
 id|info
 op_assign
@@ -2761,11 +2843,16 @@ id|last_ret
 suffix:semicolon
 id|failed
 suffix:colon
-id|do_serial_release
+id|serial_remove
 c_func
 (paren
-id|info
+id|link
 )paren
+suffix:semicolon
+id|link-&gt;state
+op_and_assign
+op_complement
+id|DEV_CONFIG_PENDING
 suffix:semicolon
 )brace
 multiline_comment|/*======================================================================&n;&n;    The card status event handler.  Mostly, this schedules other&n;    stuff to run after an event is received.  A CARD_REMOVAL event&n;    also sets some flags to discourage the serial drivers from&n;    talking to the ports.&n;    &n;======================================================================*/
@@ -2792,7 +2879,8 @@ id|link
 op_assign
 id|args-&gt;client_data
 suffix:semicolon
-id|serial_info_t
+r_struct
+id|serial_info
 op_star
 id|info
 op_assign
