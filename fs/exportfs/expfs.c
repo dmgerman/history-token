@@ -10,7 +10,7 @@ suffix:semicolon
 DECL|macro|CALL
 mdefine_line|#define&t;CALL(ops,fun) ((ops-&gt;fun)?(ops-&gt;fun):export_op_default.fun)
 DECL|macro|dprintk
-mdefine_line|#define dprintk(x, ...) do{}while(0)
+mdefine_line|#define dprintk(x, a...) do{}while(0)
 r_struct
 id|dentry
 op_star
