@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: capi.c,v 1.1.2.3 2004/01/16 21:09:26 keil Exp $&n; *&n; * CAPI 2.0 Interface for Linux&n; *&n; * Copyright 1996 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: capi.c,v 1.1.2.4 2004/03/29 10:38:02 armin Exp $&n; *&n; * CAPI 2.0 Interface for Linux&n; *&n; * Copyright 1996 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -39,7 +39,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.1.2.3 $&quot;
+l_string|&quot;$Revision: 1.1.2.4 $&quot;
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
@@ -621,11 +621,6 @@ comma
 op_star
 id|p
 suffix:semicolon
-r_struct
-id|list_head
-op_star
-id|l
-suffix:semicolon
 r_int
 r_int
 id|minor
@@ -717,6 +712,7 @@ op_amp
 id|mp-&gt;outqueue
 )paren
 suffix:semicolon
+multiline_comment|/* Allocate the least unused minor number.&n;&t; */
 id|write_lock_irqsave
 c_func
 (paren
@@ -736,7 +732,6 @@ op_amp
 id|capiminor_list
 )paren
 )paren
-(brace
 id|list_add
 c_func
 (paren
@@ -747,40 +742,19 @@ op_amp
 id|capiminor_list
 )paren
 suffix:semicolon
-id|write_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|capiminor_list_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-)brace
 r_else
 (brace
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|l
+id|p
 comma
 op_amp
 id|capiminor_list
-)paren
-(brace
-id|p
-op_assign
-id|list_entry
-c_func
-(paren
-id|l
-comma
-r_struct
-id|capiminor
 comma
 id|list
 )paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -788,27 +762,34 @@ id|p-&gt;minor
 OG
 id|minor
 )paren
+r_break
+suffix:semicolon
+id|minor
+op_increment
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|minor
+OL
+id|capi_ttyminors
+)paren
 (brace
 id|mp-&gt;minor
 op_assign
 id|minor
 suffix:semicolon
-id|list_add_tail
+id|list_add
 c_func
 (paren
 op_amp
 id|mp-&gt;list
 comma
-op_amp
-id|p-&gt;list
+id|p-&gt;list.prev
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
-id|minor
-op_increment
-suffix:semicolon
 )brace
 id|write_unlock_irqrestore
 c_func
@@ -822,12 +803,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|l
-op_eq
-op_amp
-id|capiminor_list
+op_logical_neg
+(paren
+id|minor
+OL
+id|capi_ttyminors
+)paren
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;capi: out of minors&bslash;n&quot;
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -835,9 +825,8 @@ id|mp
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+l_int|0
 suffix:semicolon
-)brace
 )brace
 r_return
 id|mp
