@@ -686,6 +686,12 @@ c_func
 id|sb
 )paren
 suffix:semicolon
+id|unlock_super
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -699,12 +705,6 @@ c_func
 id|sb
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|unlock_super
-c_func
-(paren
-id|sb
 )paren
 suffix:semicolon
 id|sync_blockdev
