@@ -16053,6 +16053,7 @@ l_int|2
 r_if
 c_cond
 (paren
+op_logical_neg
 id|driver-&gt;supports_dma
 op_logical_and
 id|HWIF
@@ -16065,8 +16066,6 @@ id|dmaproc
 op_ne
 l_int|NULL
 )paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * Force DMAing for the beginning of the check.&n;&t;&t;&t; * Some chipsets appear to do interesting things,&n;&t;&t;&t; * if not checked and cleared.&n;&t;&t;&t; *   PARANOIA!!!&n;&t;&t;&t; */
 (paren
 r_void
 )paren
@@ -16086,26 +16085,6 @@ id|drive
 )paren
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
-(paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|dmaproc
-c_func
-(paren
-id|ide_dma_check
-comma
-id|drive
-)paren
-)paren
-suffix:semicolon
-)brace
 id|drive-&gt;dsc_overlap
 op_assign
 (paren
