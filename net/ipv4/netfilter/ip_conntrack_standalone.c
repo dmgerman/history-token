@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 DECL|macro|ASSERT_READ_LOCK
 mdefine_line|#define ASSERT_READ_LOCK(x) MUST_BE_READ_LOCKED(&amp;ip_conntrack_lock)
@@ -1561,16 +1560,9 @@ id|ip_conntrack_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Somebody could be still looking at the proto in bh. */
-id|br_write_lock_bh
+id|synchronize_net
 c_func
 (paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
-id|br_write_unlock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 multiline_comment|/* Remove all contrack entries for this protocol */
