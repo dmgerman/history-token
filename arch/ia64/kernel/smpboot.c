@@ -1062,7 +1062,7 @@ id|fork_by_hand
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t; * don&squot;t care about the eip and regs settings since&n;&t; * we&squot;ll never reschedule the forked task.&n;&t; */
+multiline_comment|/*&n;&t; * don&squot;t care about the eip and regs settings since we&squot;ll never reschedule the&n;&t; * forked task.&n;&t; */
 r_return
 id|do_fork
 c_func
@@ -1100,7 +1100,7 @@ suffix:semicolon
 r_int
 id|timeout
 suffix:semicolon
-multiline_comment|/*&n;&t; * We can&squot;t use kernel_thread since we must avoid to&n;&t; * reschedule the child.&n;&t; */
+multiline_comment|/*&n;&t; * We can&squot;t use kernel_thread since we must avoid to reschedule the child.&n;&t; */
 id|idle
 op_assign
 id|fork_by_hand
@@ -1329,7 +1329,6 @@ r_void
 id|__init
 DECL|function|smp_build_cpu_map
 id|smp_build_cpu_map
-c_func
 (paren
 r_void
 )paren
@@ -1556,7 +1555,6 @@ suffix:semicolon
 r_void
 DECL|function|smp_cpus_done
 id|smp_cpus_done
-c_func
 (paren
 r_int
 r_int
