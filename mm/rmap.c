@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * mm/rmap.c - physical to virtual reverse mappings&n; *&n; * Copyright 2001, Rik van Riel &lt;riel@conectiva.com.br&gt;&n; * Released under the General Public License (GPL).&n; *&n; * Simple, low overhead reverse mapping scheme.&n; * Please try to keep this thing as modular as possible.&n; *&n; * Provides methods for unmapping each kind of mapped page:&n; * the anon methods track anonymous pages, and&n; * the file methods track pages belonging to an inode.&n; *&n; * Original design by Rik van Riel &lt;riel@conectiva.com.br&gt; 2001&n; * File methods by Dave McCracken &lt;dmccr@us.ibm.com&gt; 2003, 2004&n; * Anonymous methods by Andrea Arcangeli &lt;andrea@suse.de&gt; 2004&n; * Contributions by Hugh Dickins &lt;hugh@veritas.com&gt; 2003, 2004&n; */
-multiline_comment|/*&n; * Locking: see &quot;Lock ordering&quot; summary in filemap.c.&n; * In swapout, page_map_lock is held on entry to page_referenced and&n; * try_to_unmap, so they trylock for i_mmap_lock and page_table_lock.&n; */
+multiline_comment|/*&n; * Lock ordering in mm:&n; *&n; * inode-&gt;i_sem&t;(while writing or truncating, not reading or faulting)&n; *   inode-&gt;i_alloc_sem&n; *&n; * When a page fault occurs in writing from user to file, down_read&n; * of mmap_sem nests within i_sem; in sys_msync, i_sem nests within&n; * down_read of mmap_sem; i_sem and down_write of mmap_sem are never&n; * taken together; in truncation, i_sem is taken outermost.&n; *&n; * mm-&gt;mmap_sem&n; *   page-&gt;flags PG_locked (lock_page)&n; *     mapping-&gt;i_mmap_lock&n; *       anon_vma-&gt;lock&n; *         mm-&gt;page_table_lock&n; *           zone-&gt;lru_lock (in mark_page_accessed)&n; *           swap_list_lock (in swap_free etc&squot;s swap_info_get)&n; *             swap_device_lock (in swap_duplicate, swap_info_get)&n; *             mapping-&gt;private_lock (in __set_page_dirty_buffers)&n; *             inode_lock (in set_page_dirty&squot;s __mark_inode_dirty)&n; *               sb_lock (within inode_lock in fs/fs-writeback.c)&n; *               mapping-&gt;tree_lock (widely used, in set_page_dirty,&n; *                         in arch-dependent flush_dcache_mmap_lock,&n; *                         within inode_lock in __sync_single_inode)&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -141,8 +141,9 @@ r_struct
 id|anon_vma
 op_star
 id|allocated
-op_assign
-l_int|NULL
+comma
+op_star
+id|locked
 suffix:semicolon
 id|anon_vma
 op_assign
@@ -155,9 +156,26 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|anon_vma
 )paren
+(brace
+id|allocated
+op_assign
+l_int|NULL
+suffix:semicolon
+id|locked
+op_assign
+id|anon_vma
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|locked-&gt;lock
+)paren
+suffix:semicolon
+)brace
+r_else
 (brace
 id|anon_vma
 op_assign
@@ -184,6 +202,10 @@ id|allocated
 op_assign
 id|anon_vma
 suffix:semicolon
+id|locked
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 multiline_comment|/* page_table_lock to protect against threads */
 id|spin_lock
@@ -204,19 +226,6 @@ id|vma-&gt;anon_vma
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|allocated
-)paren
-id|spin_lock
-c_func
-(paren
-op_amp
-id|anon_vma-&gt;lock
-)paren
-suffix:semicolon
 id|vma-&gt;anon_vma
 op_assign
 id|anon_vma
@@ -231,19 +240,6 @@ op_amp
 id|anon_vma-&gt;head
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|allocated
-)paren
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|anon_vma-&gt;lock
-)paren
-suffix:semicolon
 id|allocated
 op_assign
 l_int|NULL
@@ -254,6 +250,18 @@ c_func
 (paren
 op_amp
 id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|locked
+)paren
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|locked-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -872,19 +880,12 @@ id|EFAULT
 r_goto
 id|out
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|spin_trylock
+id|spin_lock
 c_func
 (paren
 op_amp
 id|mm-&gt;page_table_lock
 )paren
-)paren
-r_goto
-id|out
 suffix:semicolon
 id|pgd
 op_assign
@@ -1138,7 +1139,7 @@ r_return
 id|referenced
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * page_referenced_file - referenced check for object-based rmap&n; * @page: the page we&squot;re checking references on.&n; *&n; * For an object-based mapped page, find all the places it is mapped and&n; * check/clear the referenced flag.  This is done by following the page-&gt;mapping&n; * pointer, then walking the chain of vmas it holds.  It returns the number&n; * of references it found.&n; *&n; * This function is only called from page_referenced for object-based pages.&n; *&n; * The spinlock address_space-&gt;i_mmap_lock is tried.  If it can&squot;t be gotten,&n; * assume a reference count of 0, so try_to_unmap will then have a go.&n; */
+multiline_comment|/**&n; * page_referenced_file - referenced check for object-based rmap&n; * @page: the page we&squot;re checking references on.&n; *&n; * For an object-based mapped page, find all the places it is mapped and&n; * check/clear the referenced flag.  This is done by following the page-&gt;mapping&n; * pointer, then walking the chain of vmas it holds.  It returns the number&n; * of references it found.&n; *&n; * This function is only called from page_referenced for object-based pages.&n; */
 DECL|function|page_referenced_file
 r_static
 r_int
@@ -1210,19 +1211,12 @@ id|page
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|spin_trylock
+id|spin_lock
 c_func
 (paren
 op_amp
 id|mapping-&gt;i_mmap_lock
 )paren
-)paren
-r_return
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * i_mmap_lock does not stabilize mapcount at all, but mapcount&n;&t; * is more likely to be accurate if we note it after spinning.&n;&t; */
 id|mapcount
@@ -1759,19 +1753,12 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/*&n;&t; * We need the page_table_lock to protect us from page faults,&n;&t; * munmap, fork, etc...&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|spin_trylock
+id|spin_lock
 c_func
 (paren
 op_amp
 id|mm-&gt;page_table_lock
 )paren
-)paren
-r_goto
-id|out
 suffix:semicolon
 id|pgd
 op_assign
@@ -2076,7 +2063,7 @@ DECL|macro|CLUSTER_MASK
 mdefine_line|#define CLUSTER_MASK&t;(~(CLUSTER_SIZE - 1))
 DECL|function|try_to_unmap_cluster
 r_static
-r_int
+r_void
 id|try_to_unmap_cluster
 c_func
 (paren
@@ -2135,19 +2122,12 @@ r_int
 id|pfn
 suffix:semicolon
 multiline_comment|/*&n;&t; * We need the page_table_lock to protect us from page faults,&n;&t; * munmap, fork, etc...&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|spin_trylock
+id|spin_lock
 c_func
 (paren
 op_amp
 id|mm-&gt;page_table_lock
 )paren
-)paren
-r_return
-id|SWAP_FAIL
 suffix:semicolon
 id|address
 op_assign
@@ -2438,9 +2418,6 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
-r_return
-id|SWAP_AGAIN
-suffix:semicolon
 )brace
 DECL|function|try_to_unmap_anon
 r_static
@@ -2535,7 +2512,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * try_to_unmap_file - unmap file page using the object-based rmap method&n; * @page: the page to unmap&n; *&n; * Find all the mappings of a page using the mapping pointer and the vma chains&n; * contained in the address_space struct it points to.&n; *&n; * This function is only called from try_to_unmap for object-based pages.&n; *&n; * The spinlock address_space-&gt;i_mmap_lock is tried.  If it can&squot;t be gotten,&n; * return a temporary error.&n; */
+multiline_comment|/**&n; * try_to_unmap_file - unmap file page using the object-based rmap method&n; * @page: the page to unmap&n; *&n; * Find all the mappings of a page using the mapping pointer and the vma chains&n; * contained in the address_space struct it points to.&n; *&n; * This function is only called from try_to_unmap for object-based pages.&n; */
 DECL|function|try_to_unmap_file
 r_static
 r_int
@@ -2600,19 +2577,12 @@ r_int
 r_int
 id|mapcount
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|spin_trylock
+id|spin_lock
 c_func
 (paren
 op_amp
 id|mapping-&gt;i_mmap_lock
 )paren
-)paren
-r_return
-id|ret
 suffix:semicolon
 id|vma_prio_tree_foreach
 c_func
@@ -2739,10 +2709,16 @@ id|max_nl_size
 op_eq
 l_int|0
 )paren
+(brace
 multiline_comment|/* any nonlinears locked or reserved */
+id|ret
+op_assign
+id|SWAP_FAIL
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * We don&squot;t try to search for this page in the nonlinear vmas,&n;&t; * and page_referenced wouldn&squot;t have found it anyway.  Instead&n;&t; * just walk the nonlinear vmas trying to age and unmap some.&n;&t; * The mapcount of the page we came in with is irrelevant,&n;&t; * but even so use it as a guide to how hard we should try?&n;&t; */
 id|mapcount
 op_assign
@@ -2841,8 +2817,6 @@ op_minus
 id|vma-&gt;vm_start
 )paren
 (brace
-id|ret
-op_assign
 id|try_to_unmap_cluster
 c_func
 (paren
@@ -2853,15 +2827,6 @@ id|mapcount
 comma
 id|vma
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_eq
-id|SWAP_FAIL
-)paren
-r_break
 suffix:semicolon
 id|cursor
 op_add_assign
@@ -2889,13 +2854,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|ret
-op_ne
-id|SWAP_FAIL
-)paren
 id|vma-&gt;vm_private_data
 op_assign
 (paren
@@ -2903,10 +2861,6 @@ r_void
 op_star
 )paren
 id|max_nl_cursor
-suffix:semicolon
-id|ret
-op_assign
-id|SWAP_AGAIN
 suffix:semicolon
 )brace
 id|cond_resched_lock
