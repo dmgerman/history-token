@@ -186,27 +186,21 @@ r_int
 id|lower
 )paren
 (brace
-id|mtspr
+id|mttbl
 c_func
 (paren
-id|SPRN_TBWL
-comma
 l_int|0
 )paren
 suffix:semicolon
-id|mtspr
+id|mttbu
 c_func
 (paren
-id|SPRN_TBWU
-comma
 id|upper
 )paren
 suffix:semicolon
-id|mtspr
+id|mttbl
 c_func
 (paren
-id|SPRN_TBWL
-comma
 id|lower
 )paren
 suffix:semicolon
@@ -603,6 +597,7 @@ suffix:semicolon
 DECL|function|smp_iSeries_setup_cpu
 r_static
 r_void
+id|__devinit
 id|smp_iSeries_setup_cpu
 c_func
 (paren
@@ -614,6 +609,7 @@ id|nr
 multiline_comment|/* This is called very early. */
 DECL|function|smp_init_iSeries
 r_void
+id|__init
 id|smp_init_iSeries
 c_func
 (paren
@@ -758,6 +754,7 @@ suffix:semicolon
 DECL|function|smp_chrp_probe
 r_static
 r_int
+id|__init
 id|smp_chrp_probe
 c_func
 (paren
@@ -864,6 +861,7 @@ suffix:semicolon
 DECL|function|smp_space_timers
 r_static
 r_void
+id|__init
 id|smp_space_timers
 c_func
 (paren
@@ -1091,6 +1089,7 @@ suffix:semicolon
 DECL|function|smp_xics_probe
 r_static
 r_int
+id|__init
 id|smp_xics_probe
 c_func
 (paren
@@ -1258,10 +1257,12 @@ id|set_tb
 c_func
 (paren
 id|timebase
-comma
-id|timebase
 op_rshift
 l_int|32
+comma
+id|timebase
+op_amp
+l_int|0xffffffff
 )paren
 suffix:semicolon
 id|timebase
@@ -2245,6 +2246,7 @@ suffix:semicolon
 )brace
 DECL|function|__cpu_up
 r_int
+id|__devinit
 id|__cpu_up
 c_func
 (paren
@@ -2522,7 +2524,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* XXX required? */
 id|local_irq_enable
 c_func
 (paren
@@ -2552,6 +2553,7 @@ suffix:semicolon
 )brace
 DECL|function|smp_cpus_done
 r_void
+id|__init
 id|smp_cpus_done
 c_func
 (paren
