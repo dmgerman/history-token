@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *                   Abramo Bagnara &lt;abramo@alsa-project.org&gt;&n; *                   Cirrus Logic, Inc.&n; *  Routines for control of Cirrus Logic CS461x chips&n; *&n; *  KNOWN BUGS:&n; *    - Sometimes the SPDIF input DSP tasks get&squot;s unsynchronized&n; *      and the SPDIF get somewhat &quot;distorcionated&quot;. To get around&n; *      this problem when it happens, mute and unmute the SPDIF input &n; *      mixer controll.&n; *    - On the Hercules Game Theater XP the amplifier are sometimes turned&n; *      off on inadecuate moments which causes distorcions on sound.&n; *&n; *  TODO:&n; *    - Secondary CODEC on some soundcards&n; *    - SPDIF input support for other sample rates then 48khz&n; *    - Independent PCM channels for rear output&n; *&n; *  NOTE: with CONFIG_SND_CS46XX_NEW_DSP unset uses old DSP image (which&n; *        is default configuration), no SPDIF, no secondary codec, no&n; *        multi channel PCM.  But known to work.&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *                   Abramo Bagnara &lt;abramo@alsa-project.org&gt;&n; *                   Cirrus Logic, Inc.&n; *  Routines for control of Cirrus Logic CS461x chips&n; *&n; *  KNOWN BUGS:&n; *    - Sometimes the SPDIF input DSP tasks get&squot;s unsynchronized&n; *      and the SPDIF get somewhat &quot;distorcionated&quot;, or/and left right channel&n; *      are swapped. To get around this problem when it happens, mute and unmute &n; *      the SPDIF input mixer controll.&n; *    - On the Hercules Game Theater XP the amplifier are sometimes turned&n; *      off on inadecuate moments which causes distorcions on sound.&n; *&n; *  TODO:&n; *    - Secondary CODEC on some soundcards&n; *    - SPDIF input support for other sample rates then 48khz&n; *    - Independent PCM channels for rear output&n; *    - Posibility to mix the SPDIF output with analog sources.&n; *&n; *  NOTE: with CONFIG_SND_CS46XX_NEW_DSP unset uses old DSP image (which&n; *        is default configuration), no SPDIF, no secondary codec, no&n; *        multi channel PCM.  But known to work.&n; *&n; *  FINALLY: A credit to the developers Tom and Jordan &n; *           at Cirrus for have helping me out with the DSP, however we&n; *           still dont have sufficient documentation and technical&n; *           references to be able to implement all fancy feutures&n; *           supported by the cs46xx DPS&squot;s. &n; *           Benny &lt;benny@hostmobility.com&gt;&n; *                &n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -3156,6 +3156,16 @@ op_minus
 id|ENXIO
 )paren
 suffix:semicolon
+id|snd_assert
+c_func
+(paren
+id|runtime-&gt;dma_area
+comma
+r_return
+op_minus
+id|EINVAL
+)paren
+suffix:semicolon
 id|hwoffb
 op_assign
 id|hwoff
@@ -3437,6 +3447,23 @@ c_func
 id|substream
 comma
 l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* raise playback volume */
+id|snd_cs46xx_poke
+c_func
+(paren
+id|chip
+comma
+(paren
+id|cpcm-&gt;pcm_channel-&gt;pcm_reader_scb-&gt;address
+op_plus
+l_int|0xE
+)paren
+op_lshift
+l_int|2
+comma
+l_int|0x80008000
 )paren
 suffix:semicolon
 macro_line|#else
@@ -4032,6 +4059,8 @@ comma
 id|runtime-&gt;rate
 comma
 id|cpcm
+comma
+id|cpcm-&gt;hw_addr
 )paren
 )paren
 op_eq
@@ -4214,23 +4243,6 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
-multiline_comment|/* playback address */
-id|snd_cs46xx_poke
-c_func
-(paren
-id|chip
-comma
-(paren
-id|cpcm-&gt;pcm_channel-&gt;pcm_reader_scb-&gt;address
-op_plus
-l_int|2
-)paren
-op_lshift
-l_int|2
-comma
-id|cpcm-&gt;hw_addr
-)paren
-suffix:semicolon
 id|tmp
 op_assign
 id|snd_cs46xx_peek
@@ -5495,6 +5507,8 @@ comma
 id|runtime-&gt;rate
 comma
 id|cpcm
+comma
+id|cpcm-&gt;hw_addr
 )paren
 suffix:semicolon
 r_if
@@ -6508,7 +6522,7 @@ comma
 id|val
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SND_CS46XX_NEW_DSP
+macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 multiline_comment|/* NOTE: this updates the current left and right volume&n;&t;&t;   that should be automatically updated by the DSP and&n;&t;&t;   not touched by the host. But for some strange reason&n;&t;&t;   the DSP only updates the right channel volume, so with&n;&t;&t;   this dirty hack we force updating the right and left&n;&t;&t;   channel volume. &n;&t;&t;*/
 id|snd_cs46xx_poke
 c_func
@@ -6522,6 +6536,27 @@ comma
 id|val
 )paren
 suffix:semicolon
+multiline_comment|/* shadow the SPDIF input volume */
+r_if
+c_cond
+(paren
+id|reg
+op_eq
+(paren
+id|ASYNCRX_SCB_ADDR
+op_plus
+l_int|0xE
+)paren
+op_lshift
+l_int|2
+)paren
+(brace
+multiline_comment|/* FIXME: I known this is uggly ...&n;&t;&t;&t;   any other suggestion ? &n;&t;&t;&t;*/
+id|chip-&gt;dsp_spos_instance-&gt;spdif_input_volume
+op_assign
+id|val
+suffix:semicolon
+)brace
 macro_line|#endif
 )brace
 r_return
@@ -6726,12 +6761,15 @@ op_logical_and
 op_logical_neg
 id|change
 )paren
+(brace
 id|cs46xx_dsp_enable_spdif_in
 c_func
 (paren
 id|chip
 )paren
 suffix:semicolon
+multiline_comment|/* restore volume */
+)brace
 r_else
 r_if
 c_cond
@@ -11799,30 +11837,31 @@ l_int|0x80008000
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
-multiline_comment|/* mute spdif out */
-id|cs46xx_dsp_disable_spdif_out
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
-multiline_comment|/* mute spdif in */
+multiline_comment|/* time countdown enable */
 id|cs46xx_poke_via_dsp
 (paren
 id|chip
 comma
 id|SP_ASER_COUNTDOWN
 comma
-l_int|0x00000000
+l_int|0x80000000
 )paren
 suffix:semicolon
+multiline_comment|/* SPDIF input MASTER ENABLE */
 id|cs46xx_poke_via_dsp
 (paren
 id|chip
 comma
 id|SP_SPDIN_CONTROL
 comma
-l_int|0x000003ff
+l_int|0x800003ff
+)paren
+suffix:semicolon
+multiline_comment|/* mute spdif out */
+id|cs46xx_dsp_disable_spdif_out
+c_func
+(paren
+id|chip
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -12466,6 +12505,17 @@ l_string|&quot;initializing Hercules mixer&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
+multiline_comment|/* turnon Amplifier and leave it on */
+id|chip
+op_member_access_from_pointer
+id|amplifier_ctrl
+c_func
+(paren
+id|chip
+comma
+l_int|1
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren

@@ -158,10 +158,10 @@ multiline_comment|/* 0x03 */
 l_string|&quot;Audigy CD Right&quot;
 comma
 multiline_comment|/* 0x04 */
-l_int|NULL
+l_string|&quot;Optical IEC958 Left&quot;
 comma
 multiline_comment|/* 0x05 */
-l_int|NULL
+l_string|&quot;Optical IEC958 Right&quot;
 comma
 multiline_comment|/* 0x06 */
 l_int|NULL
@@ -176,10 +176,10 @@ multiline_comment|/* 0x09 */
 l_string|&quot;Line/Mic 2 Right&quot;
 comma
 multiline_comment|/* 0x0a */
-l_int|NULL
+l_string|&quot;SPDIF Left&quot;
 comma
 multiline_comment|/* 0x0b */
-l_int|NULL
+l_string|&quot;SPDIF Right&quot;
 comma
 multiline_comment|/* 0x0c */
 l_string|&quot;Aux2 Left&quot;
@@ -8093,6 +8093,98 @@ id|gpr
 op_add_assign
 l_int|2
 suffix:semicolon
+multiline_comment|/* Optical SPDIF Playback Volume */
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|playback
+comma
+id|gpr
+comma
+id|A_EXTIN_OPT_SPDIF_L
+)paren
+suffix:semicolon
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|playback
+op_plus
+l_int|1
+comma
+id|gpr
+op_plus
+l_int|1
+comma
+id|A_EXTIN_OPT_SPDIF_R
+)paren
+suffix:semicolon
+id|snd_emu10k1_init_stereo_control
+c_func
+(paren
+op_amp
+id|controls
+(braket
+id|nctl
+op_increment
+)braket
+comma
+l_string|&quot;Optical IEC958 Playback Volume&quot;
+comma
+id|gpr
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|gpr
+op_add_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* Optical SPDIF Capture Volume */
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|capture
+comma
+id|gpr
+comma
+id|A_EXTIN_OPT_SPDIF_L
+)paren
+suffix:semicolon
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|capture
+op_plus
+l_int|1
+comma
+id|gpr
+op_plus
+l_int|1
+comma
+id|A_EXTIN_OPT_SPDIF_R
+)paren
+suffix:semicolon
+id|snd_emu10k1_init_stereo_control
+c_func
+(paren
+op_amp
+id|controls
+(braket
+id|nctl
+op_increment
+)braket
+comma
+l_string|&quot;Optical IEC958 Capture Volume&quot;
+comma
+id|gpr
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|gpr
+op_add_assign
+l_int|2
+suffix:semicolon
 multiline_comment|/* Line2 Playback Volume */
 id|A_ADD_VOLUME_IN
 c_func
@@ -8175,6 +8267,98 @@ op_increment
 )braket
 comma
 l_string|&quot;Line2 Capture Volume&quot;
+comma
+id|gpr
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|gpr
+op_add_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* RCA SPDIF Playback Volume */
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|playback
+comma
+id|gpr
+comma
+id|A_EXTIN_RCA_SPDIF_L
+)paren
+suffix:semicolon
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|playback
+op_plus
+l_int|1
+comma
+id|gpr
+op_plus
+l_int|1
+comma
+id|A_EXTIN_RCA_SPDIF_R
+)paren
+suffix:semicolon
+id|snd_emu10k1_init_stereo_control
+c_func
+(paren
+op_amp
+id|controls
+(braket
+id|nctl
+op_increment
+)braket
+comma
+l_string|&quot;RCA SPDIF Playback Volume&quot;
+comma
+id|gpr
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|gpr
+op_add_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* RCA SPDIF Capture Volume */
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|capture
+comma
+id|gpr
+comma
+id|A_EXTIN_RCA_SPDIF_L
+)paren
+suffix:semicolon
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|capture
+op_plus
+l_int|1
+comma
+id|gpr
+op_plus
+l_int|1
+comma
+id|A_EXTIN_RCA_SPDIF_R
+)paren
+suffix:semicolon
+id|snd_emu10k1_init_stereo_control
+c_func
+(paren
+op_amp
+id|controls
+(braket
+id|nctl
+op_increment
+)braket
+comma
+l_string|&quot;RCA SPDIF Capture Volume&quot;
 comma
 id|gpr
 comma

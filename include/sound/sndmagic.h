@@ -277,6 +277,18 @@ DECL|macro|uda1341_t_magic
 mdefine_line|#define uda1341_t_magic                         0xa15a3c00
 DECL|macro|l3_client_t_magic
 mdefine_line|#define l3_client_t_magic                       0xa15a3d00
+DECL|macro|snd_usb_audio_t_magic
+mdefine_line|#define snd_usb_audio_t_magic&t;&t;&t;0xa15a3e01
+DECL|macro|usb_mixer_elem_info_t_magic
+mdefine_line|#define usb_mixer_elem_info_t_magic&t;&t;0xa15a3e02
+DECL|macro|snd_usb_stream_t_magic
+mdefine_line|#define snd_usb_stream_t_magic&t;&t;&t;0xa15a3e03
+DECL|macro|usbmidi_t_magic
+mdefine_line|#define usbmidi_t_magic&t;&t;&t;&t;0xa15a3f01
+DECL|macro|usbmidi_out_endpoint_t_magic
+mdefine_line|#define usbmidi_out_endpoint_t_magic&t;&t;0xa15a3f02
+DECL|macro|usbmidi_in_endpoint_t_magic
+mdefine_line|#define usbmidi_in_endpoint_t_magic&t;&t;0xa15a3f03
 macro_line|#else
 DECL|macro|snd_magic_kcalloc
 mdefine_line|#define snd_magic_kcalloc(type, extra, flags) (type *) snd_kcalloc(sizeof(type) + extra, flags)

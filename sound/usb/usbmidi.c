@@ -681,7 +681,8 @@ op_star
 id|umidi
 suffix:semicolon
 DECL|member|urb
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -764,7 +765,8 @@ op_star
 id|ep
 suffix:semicolon
 DECL|member|urb
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -822,7 +824,8 @@ r_int
 id|snd_usbmidi_submit_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -1115,7 +1118,8 @@ r_void
 id|snd_usbmidi_in_urb_complete
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -1242,7 +1246,8 @@ r_void
 id|snd_usbmidi_out_urb_complete
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren

@@ -3104,10 +3104,18 @@ DECL|macro|A_EXTIN_SPDIF_CD_L
 mdefine_line|#define A_EXTIN_SPDIF_CD_L&t;0x02&t;/* digital CD left */
 DECL|macro|A_EXTIN_SPDIF_CD_R
 mdefine_line|#define A_EXTIN_SPDIF_CD_R&t;0x03&t;/* digital CD left */
+DECL|macro|A_EXTIN_OPT_SPDIF_L
+mdefine_line|#define A_EXTIN_OPT_SPDIF_L     0x04    /* audigy drive Optical SPDIF - left */
+DECL|macro|A_EXTIN_OPT_SPDIF_R
+mdefine_line|#define A_EXTIN_OPT_SPDIF_R     0x05    /*                              right */ 
 DECL|macro|A_EXTIN_LINE2_L
 mdefine_line|#define A_EXTIN_LINE2_L&t;&t;0x08&t;/* audigy drive line2/mic2 - left */
 DECL|macro|A_EXTIN_LINE2_R
 mdefine_line|#define A_EXTIN_LINE2_R&t;&t;0x09&t;/*                           right */
+DECL|macro|A_EXTIN_RCA_SPDIF_L
+mdefine_line|#define A_EXTIN_RCA_SPDIF_L     0x0a    /* audigy drive RCA SPDIF - left */
+DECL|macro|A_EXTIN_RCA_SPDIF_R
+mdefine_line|#define A_EXTIN_RCA_SPDIF_R     0x0b    /*                          right */
 DECL|macro|A_EXTIN_AUX2_L
 mdefine_line|#define A_EXTIN_AUX2_L&t;&t;0x0c&t;/* audigy drive aux2 - left */
 DECL|macro|A_EXTIN_AUX2_R

@@ -474,6 +474,10 @@ DECL|member|spdif_status_in
 r_int
 id|spdif_status_in
 suffix:semicolon
+DECL|member|spdif_input_volume
+id|u32
+id|spdif_input_volume
+suffix:semicolon
 multiline_comment|/* SPDIF input sample rate converter */
 DECL|member|spdif_in_src
 id|dsp_scb_descriptor_t

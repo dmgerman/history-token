@@ -2,6 +2,7 @@ multiline_comment|/*&n; * PMac Burgundy lowlevel functions&n; *&n; * Copyright (
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 macro_line|#include &quot;burgundy.h&quot;
@@ -949,20 +950,9 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|macro|BURGUNDY_VOLUME
-mdefine_line|#define BURGUNDY_VOLUME(xname, xindex, addr, shift) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex,&bslash;&n;  .info = snd_pmac_burgundy_info_volume,&bslash; .get = snd_pmac_burgundy_get_volume,&bslash;&n;  .put = snd_pmac_burgundy_put_volume,&bslash; .private_value = ((ADDR2BASE(addr) &amp;
-l_int|0xff
-)paren
-op_or
-(paren
-(paren
-id|shift
-)paren
-op_lshift
-l_int|8
-)paren
-)paren
-)brace
+mdefine_line|#define BURGUNDY_VOLUME(xname, xindex, addr, shift) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex,&bslash;&n;  .info = snd_pmac_burgundy_info_volume,&bslash;&n;  .get = snd_pmac_burgundy_get_volume,&bslash;&n;  .put = snd_pmac_burgundy_put_volume,&bslash;&n;  .private_value = ((ADDR2BASE(addr) &amp; 0xff) | ((shift) &lt;&lt; 8)) }
 multiline_comment|/* lineout/speaker */
+DECL|function|snd_pmac_burgundy_info_switch_out
 r_static
 r_int
 id|snd_pmac_burgundy_info_switch_out
@@ -1010,6 +1000,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_pmac_burgundy_get_switch_out
 r_static
 r_int
 id|snd_pmac_burgundy_get_switch_out
@@ -1115,6 +1106,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_pmac_burgundy_put_switch_out
 r_static
 r_int
 id|snd_pmac_burgundy_put_switch_out
@@ -1236,8 +1228,10 @@ op_ne
 id|oval
 suffix:semicolon
 )brace
+DECL|macro|BURGUNDY_OUTPUT_SWITCH
 mdefine_line|#define BURGUNDY_OUTPUT_SWITCH(xname, xindex, lmask, rmask, stereo) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex,&bslash;&n;  .info = snd_pmac_burgundy_info_switch_out,&bslash;&n;  .get = snd_pmac_burgundy_get_switch_out,&bslash;&n;  .put = snd_pmac_burgundy_put_switch_out,&bslash;&n;  .private_value = ((lmask) | ((rmask) &lt;&lt; 8) | ((stereo) &lt;&lt; 24)) }
 multiline_comment|/* line/speaker output volume */
+DECL|function|snd_pmac_burgundy_info_volume_out
 r_static
 r_int
 id|snd_pmac_burgundy_info_volume_out
@@ -1285,6 +1279,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_pmac_burgundy_get_volume_out
 r_static
 r_int
 id|snd_pmac_burgundy_get_volume_out
@@ -1379,6 +1374,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_pmac_burgundy_put_volume_out
 r_static
 r_int
 id|snd_pmac_burgundy_put_volume_out
@@ -1498,7 +1494,9 @@ op_ne
 id|oval
 suffix:semicolon
 )brace
+DECL|macro|BURGUNDY_OUTPUT_VOLUME
 mdefine_line|#define BURGUNDY_OUTPUT_VOLUME(xname, xindex, addr, stereo) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex,&bslash;&n;  .info = snd_pmac_burgundy_info_volume_out,&bslash;&n;  .get = snd_pmac_burgundy_get_volume_out,&bslash;&n;  .put = snd_pmac_burgundy_put_volume_out,&bslash;&n;  .private_value = (ADDR2BASE(addr) | ((stereo) &lt;&lt; 24)) }
+DECL|variable|__initdata
 r_static
 id|snd_kcontrol_new_t
 id|snd_pmac_burgundy_mixers
@@ -1582,6 +1580,7 @@ l_int|1
 comma
 )brace
 suffix:semicolon
+DECL|variable|__initdata
 r_static
 id|snd_kcontrol_new_t
 id|snd_pmac_burgundy_master_sw
@@ -1601,6 +1600,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+DECL|variable|__initdata
 r_static
 id|snd_kcontrol_new_t
 id|snd_pmac_burgundy_speaker_sw
@@ -1620,9 +1620,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+DECL|macro|num_controls
 mdefine_line|#define num_controls(ary) (sizeof(ary) / sizeof(snd_kcontrol_new_t))
 macro_line|#ifdef PMAC_SUPPORT_AUTOMUTE
 multiline_comment|/*&n; * auto-mute stuffs&n; */
+DECL|function|snd_pmac_burgundy_detect_headphone
 r_static
 r_int
 id|snd_pmac_burgundy_detect_headphone
@@ -1651,6 +1653,7 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_pmac_burgundy_update_automute
 r_static
 r_void
 id|snd_pmac_burgundy_update_automute
@@ -1783,6 +1786,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* PMAC_SUPPORT_AUTOMUTE */
 multiline_comment|/*&n; * initialize burgundy&n; */
+DECL|function|snd_pmac_burgundy_init
 r_int
 id|__init
 id|snd_pmac_burgundy_init

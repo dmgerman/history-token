@@ -4,6 +4,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 macro_line|#include &lt;sound/pcm_params.h&gt;
@@ -833,9 +834,14 @@ id|RUN
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* continuous DMA memory type doesn&squot;t provide the physical address,&n;&t; * so we need to resolve the address here...&n;&t; */
 id|offset
 op_assign
-id|runtime-&gt;dma_addr
+id|virt_to_bus
+c_func
+(paren
+id|runtime-&gt;dma_area
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -2717,14 +2723,12 @@ op_star
 id|pcm
 )paren
 (brace
-macro_line|#if 0
 id|snd_pcm_lib_preallocate_free_for_all
 c_func
 (paren
 id|pcm
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|snd_pmac_pcm_new
 r_int
@@ -2868,7 +2872,6 @@ id|chip-&gt;capture.cur_freqs
 op_assign
 id|chip-&gt;freqs_ok
 suffix:semicolon
-macro_line|#if 0
 multiline_comment|/* preallocate 64k buffer */
 id|snd_pcm_lib_preallocate_pages_for_all
 c_func
@@ -2886,7 +2889,6 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

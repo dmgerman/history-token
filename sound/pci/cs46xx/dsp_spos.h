@@ -101,9 +101,6 @@ DECL|macro|MIX_SAMPLE_BUF1
 mdefine_line|#define MIX_SAMPLE_BUF1          0x1400
 DECL|macro|MIX_SAMPLE_BUF2
 mdefine_line|#define MIX_SAMPLE_BUF2          0x3000
-singleline_comment|// #define SPDIFI_IP_OUTPUT_BUFFER1 0x2800
-singleline_comment|// #define SRC_OUTPUT_BUF2          0x1280
-singleline_comment|// #define SRC_DELAY_BUF2           0x1288
 multiline_comment|/* Task stack address */
 DECL|macro|HFG_STACK
 mdefine_line|#define HFG_STACK                0x066A
@@ -156,6 +153,8 @@ DECL|macro|OUTPUTSNOOPII_SCB_ADDR
 mdefine_line|#define OUTPUTSNOOPII_SCB_ADDR   0x150
 DECL|macro|PCMSERIALIN_PCM_SCB_ADDR
 mdefine_line|#define PCMSERIALIN_PCM_SCB_ADDR 0x160
+DECL|macro|RECORD_MIXER_SCB_ADDR
+mdefine_line|#define RECORD_MIXER_SCB_ADDR    0x170
 multiline_comment|/* hyperforground SCB&squot;s*/
 DECL|macro|HFG_TREE_SCB
 mdefine_line|#define HFG_TREE_SCB             0xBA0
