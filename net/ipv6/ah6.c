@@ -1476,6 +1476,11 @@ id|err_handler
 op_assign
 id|ah6_err
 comma
+dot
+id|no_policy
+op_assign
+l_int|1
+comma
 )brace
 suffix:semicolon
 DECL|function|ah6_init

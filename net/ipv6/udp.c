@@ -4587,6 +4587,11 @@ id|err_handler
 op_assign
 id|udpv6_err
 comma
+dot
+id|no_policy
+op_assign
+l_int|1
+comma
 )brace
 suffix:semicolon
 DECL|macro|LINE_LEN

@@ -2502,6 +2502,11 @@ id|err_handler
 op_assign
 id|esp6_err
 comma
+dot
+id|no_policy
+op_assign
+l_int|1
+comma
 )brace
 suffix:semicolon
 DECL|function|esp6_init
