@@ -1126,7 +1126,7 @@ l_int|100
 suffix:semicolon
 id|freqs.cpu
 op_assign
-id|CPUFREQ_ALL_CPUS
+l_int|0
 suffix:semicolon
 multiline_comment|/* longhaul.c is UP only driver */
 id|cpufreq_notify_transition

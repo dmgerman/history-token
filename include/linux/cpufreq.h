@@ -203,10 +203,6 @@ id|val
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*********************************************************************&n; *                      DYNAMIC CPUFREQ INTERFACE                    *&n; *********************************************************************/
-macro_line|#ifdef CONFIG_CPU_FREQ_DYNAMIC
-multiline_comment|/* TBD */
-macro_line|#endif /* CONFIG_CPU_FREQ_DYNAMIC */
 multiline_comment|/*********************************************************************&n; *                      CPUFREQ DRIVER INTERFACE                     *&n; *********************************************************************/
 DECL|typedef|cpufreq_policy_t
 r_typedef
@@ -241,9 +237,6 @@ id|cpufreq_policy
 op_star
 id|policy
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_DYNAMIC
-multiline_comment|/* TBD */
-macro_line|#endif
 multiline_comment|/* 2.4. compatible API */
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 DECL|member|cpu_cur_freq

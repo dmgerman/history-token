@@ -208,7 +208,7 @@ id|best_i
 suffix:semicolon
 id|freqs.cpu
 op_assign
-id|CPUFREQ_ALL_CPUS
+l_int|0
 suffix:semicolon
 multiline_comment|/* powernow-k6.c is UP only driver */
 id|cpufreq_notify_transition
