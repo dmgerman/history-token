@@ -423,12 +423,6 @@ r_int
 id|nerrors
 suffix:semicolon
 multiline_comment|/* track consecutive errors */
-DECL|member|hub_list
-r_struct
-id|list_head
-id|hub_list
-suffix:semicolon
-multiline_comment|/* all hubs */
 DECL|member|event_list
 r_struct
 id|list_head

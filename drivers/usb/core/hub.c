@@ -1,5 +1,12 @@
 multiline_comment|/*&n; * USB hub driver.&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999 Johannes Erdfelt&n; * (C) Copyright 1999 Gregory P. Smith&n; * (C) Copyright 2001 Brad Hards (bhards@bigpond.net.au)&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_USB_DEBUG
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG
+macro_line|#else
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
+macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -10,13 +17,6 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
-macro_line|#ifdef CONFIG_USB_DEBUG
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
-macro_line|#else
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/usbdevice_fs.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
@@ -42,14 +42,6 @@ id|hub_event_list
 )paren
 suffix:semicolon
 multiline_comment|/* List of hubs needing servicing */
-r_static
-id|LIST_HEAD
-c_func
-(paren
-id|hub_list
-)paren
-suffix:semicolon
-multiline_comment|/* List of all hubs (for cleanup) */
 r_static
 id|DECLARE_WAIT_QUEUE_HEAD
 c_func
@@ -1068,7 +1060,7 @@ id|hub-&gt;intf-&gt;dev
 comma
 l_string|&quot;resubmit --&gt; %d&bslash;n&quot;
 comma
-id|urb-&gt;status
+id|status
 )paren
 suffix:semicolon
 r_if
@@ -2754,13 +2746,6 @@ op_amp
 id|hub-&gt;event_list
 )paren
 suffix:semicolon
-id|list_del_init
-c_func
-(paren
-op_amp
-id|hub-&gt;hub_list
-)paren
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2959,10 +2944,6 @@ id|device
 op_star
 id|hub_dev
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|desc
 op_assign
 id|intf-&gt;cur_altsetting
@@ -3020,11 +3001,9 @@ id|desc-&gt;desc.bNumEndpoints
 op_ne
 l_int|1
 )paren
-(brace
 r_goto
 id|descriptor_error
 suffix:semicolon
-)brace
 id|endpoint
 op_assign
 op_amp
@@ -3046,11 +3025,9 @@ op_amp
 id|USB_DIR_IN
 )paren
 )paren
-(brace
 r_goto
 id|descriptor_error
 suffix:semicolon
-)brace
 multiline_comment|/* If it&squot;s not an interrupt endpoint, we&squot;d better punt! */
 r_if
 c_cond
@@ -3063,15 +3040,9 @@ id|USB_ENDPOINT_XFERTYPE_MASK
 op_ne
 id|USB_ENDPOINT_XFER_INT
 )paren
-(brace
 r_goto
 id|descriptor_error
 suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 multiline_comment|/* We found a hub */
 id|dev_info
 (paren
@@ -3154,42 +3125,6 @@ comma
 id|led_work
 comma
 id|hub
-)paren
-suffix:semicolon
-multiline_comment|/* Record the new hub&squot;s existence */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|hub_event_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|hub-&gt;hub_list
-)paren
-suffix:semicolon
-id|list_add
-c_func
-(paren
-op_amp
-id|hub-&gt;hub_list
-comma
-op_amp
-id|hub_list
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|hub_event_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|usb_set_intfdata
@@ -6587,7 +6522,6 @@ id|hub_id_table
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * This should be a separate module.&n; */
 DECL|function|usb_hub_init
 r_int
 id|usb_hub_init
