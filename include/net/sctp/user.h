@@ -151,6 +151,18 @@ comma
 multiline_comment|/* Get/set nodelay option. */
 DECL|macro|SCTP_NODELAY
 mdefine_line|#define SCTP_NODELAY&t;SCTP_NODELAY
+DECL|enumerator|SCTP_I_WANT_MAPPED_V4_ADDR
+id|SCTP_I_WANT_MAPPED_V4_ADDR
+comma
+multiline_comment|/* Turn on/off mapped v4 addresses  */
+DECL|macro|SCTP_I_WANT_MAPPED_V4_ADDR
+mdefine_line|#define SCTP_I_WANT_MAPPED_V4_ADDR SCTP_I_WANT_MAPPED_V4_ADDR
+DECL|enumerator|SCTP_MAXSEG
+id|SCTP_MAXSEG
+comma
+multiline_comment|/* Get/set maximum fragment. */
+DECL|macro|SCTP_MAXSEG
+mdefine_line|#define SCTP_MAXSEG &t;SCTP_MAXSEG
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * 5.2 SCTP msg_control Structures&n; *&n; * A key element of all SCTP-specific socket extensions is the use of&n; * ancillary data to specify and access SCTP-specific data via the&n; * struct msghdr&squot;s msg_control member used in sendmsg() and recvmsg().&n; * Fine-grained control over initialization and sending parameters are&n; * handled with ancillary data.&n; *&n; * Each ancillary data item is preceeded by a struct cmsghdr (see&n; * Section 5.1), which defines the function and purpose of the data&n; * contained in in the cmsg_data[] member.&n; */

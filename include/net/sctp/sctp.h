@@ -85,7 +85,7 @@ comma
 id|sctp_scope_t
 comma
 r_int
-id|priority
+id|gfp
 comma
 r_int
 id|flags
@@ -115,7 +115,6 @@ id|sa_family_t
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * sctp/socket.c&n; */
-r_extern
 r_int
 id|sctp_backlog_rcv
 c_func
@@ -131,7 +130,6 @@ op_star
 id|skb
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|sctp_inet_listen
 c_func
@@ -145,7 +143,6 @@ r_int
 id|backlog
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_write_space
 c_func
@@ -156,7 +153,6 @@ op_star
 id|sk
 )paren
 suffix:semicolon
-r_extern
 r_int
 r_int
 id|sctp_poll
@@ -178,12 +174,12 @@ id|wait
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * sctp/primitive.c&n; */
-r_extern
 r_int
 id|sctp_primitive_ASSOCIATE
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_void
@@ -191,12 +187,12 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|sctp_primitive_SHUTDOWN
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_void
@@ -204,12 +200,12 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|sctp_primitive_ABORT
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_void
@@ -217,12 +213,12 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|sctp_primitive_SEND
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_void
@@ -230,12 +226,12 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|sctp_primitive_REQUESTHEARTBEAT
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_void
@@ -244,7 +240,6 @@ id|arg
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * sctp/crc32c.c&n; */
-r_extern
 id|__u32
 id|sctp_start_cksum
 c_func
@@ -257,7 +252,6 @@ id|__u16
 id|count
 )paren
 suffix:semicolon
-r_extern
 id|__u32
 id|sctp_update_cksum
 c_func
@@ -273,7 +267,6 @@ id|__u32
 id|cksum
 )paren
 suffix:semicolon
-r_extern
 id|__u32
 id|sctp_end_cksum
 c_func
@@ -282,8 +275,24 @@ id|__u32
 id|cksum
 )paren
 suffix:semicolon
+id|__u32
+id|sctp_update_copy_cksum
+c_func
+(paren
+id|__u8
+op_star
+comma
+id|__u8
+op_star
+comma
+id|__u16
+id|count
+comma
+id|__u32
+id|cksum
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * sctp/input.c&n; */
-r_extern
 r_int
 id|sctp_rcv
 c_func
@@ -294,7 +303,6 @@ op_star
 id|skb
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_v4_err
 c_func
@@ -308,80 +316,80 @@ id|u32
 id|info
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_hash_established
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|__sctp_hash_established
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_unhash_established
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|__sctp_unhash_established
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_hash_endpoint
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|__sctp_hash_endpoint
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_unhash_endpoint
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|__sctp_unhash_endpoint
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
-r_extern
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|__sctp_lookup_association
 c_func
@@ -402,7 +410,6 @@ op_star
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_struct
 id|sock
 op_star
@@ -436,7 +443,6 @@ op_star
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_err_finish
 c_func
@@ -454,7 +460,6 @@ id|sctp_association
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_icmp_frag_needed
 c_func
@@ -474,35 +479,6 @@ id|t
 comma
 id|__u32
 id|pmtu
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * sctp/hashdriver.c&n; */
-r_extern
-r_void
-id|sctp_hash_digest
-c_func
-(paren
-r_const
-r_char
-op_star
-id|secret
-comma
-r_const
-r_int
-id|secret_len
-comma
-r_const
-r_char
-op_star
-id|text
-comma
-r_const
-r_int
-id|text_len
-comma
-id|__u8
-op_star
-id|digest
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  Section:  Macros, externs, and inlines&n; */
@@ -681,6 +657,10 @@ r_extern
 id|atomic_t
 id|sctp_dbg_objcnt_ssnmap
 suffix:semicolon
+r_extern
+id|atomic_t
+id|sctp_dbg_objcnt_datamsg
+suffix:semicolon
 multiline_comment|/* Macros to atomically increment/decrement objcnt counters.  */
 DECL|macro|SCTP_DBG_OBJCNT_INC
 mdefine_line|#define SCTP_DBG_OBJCNT_INC(name) &bslash;&n;atomic_inc(&amp;sctp_dbg_objcnt_## name)
@@ -691,7 +671,6 @@ mdefine_line|#define SCTP_DBG_OBJCNT(name) &bslash;&n;atomic_t sctp_dbg_objcnt_#
 multiline_comment|/* Macro to help create new entries in in the global array of&n; * objcnt counters.&n; */
 DECL|macro|SCTP_DBG_OBJCNT_ENTRY
 mdefine_line|#define SCTP_DBG_OBJCNT_ENTRY(name) &bslash;&n;{.label= #name, .counter= &amp;sctp_dbg_objcnt_## name}
-r_extern
 r_void
 id|sctp_dbg_objcnt_init
 c_func
@@ -699,7 +678,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_dbg_objcnt_exit
 c_func
@@ -740,7 +718,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SCTP_DBG_OBJCOUNT */
 macro_line|#if defined CONFIG_SYSCTL
-r_extern
 r_void
 id|sctp_sysctl_register
 c_func
@@ -748,7 +725,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_sysctl_unregister
 c_func
@@ -788,7 +764,6 @@ multiline_comment|/* Size of Supported Address Parameter for &squot;x&squot; add
 DECL|macro|SCTP_SAT_LEN
 mdefine_line|#define SCTP_SAT_LEN(x) (sizeof(struct sctp_paramhdr) + (x) * sizeof(__u16))
 macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
-r_extern
 r_int
 id|sctp_v6_init
 c_func
@@ -796,7 +771,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_v6_exit
 c_func
@@ -804,7 +778,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_v6_err
 c_func
@@ -861,6 +834,22 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif /* #if defined(CONFIG_IPV6) */
+multiline_comment|/* Some wrappers, in case crypto not available. */
+macro_line|#if defined (CONFIG_CRYPTO_HMAC)
+DECL|macro|sctp_crypto_alloc_tfm
+mdefine_line|#define sctp_crypto_alloc_tfm crypto_alloc_tfm
+DECL|macro|sctp_crypto_free_tfm
+mdefine_line|#define sctp_crypto_free_tfm crypto_free_tfm
+DECL|macro|sctp_crypto_hmac
+mdefine_line|#define sctp_crypto_hmac crypto_hmac
+macro_line|#else
+DECL|macro|sctp_crypto_alloc_tfm
+mdefine_line|#define sctp_crypto_alloc_tfm(x...) NULL
+DECL|macro|sctp_crypto_free_tfm
+mdefine_line|#define sctp_crypto_free_tfm(x...)
+DECL|macro|sctp_crypto_hmac
+mdefine_line|#define sctp_crypto_hmac(x...)
+macro_line|#endif
 multiline_comment|/* Map an association to an assoc_id. */
 DECL|function|sctp_assoc2id
 r_static
@@ -870,7 +859,8 @@ id|sctp_assoc2id
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -883,7 +873,8 @@ id|asoc
 suffix:semicolon
 )brace
 multiline_comment|/* Look up the association by its id.  */
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|sctp_id2assoc
 c_func
@@ -1146,11 +1137,22 @@ r_int
 id|sctp_frag_point
 c_func
 (paren
+r_const
+r_struct
+id|sctp_opt
+op_star
+id|sp
+comma
 r_int
 id|pmtu
 )paren
 (brace
+r_int
+id|frag
+op_assign
 id|pmtu
+suffix:semicolon
+id|frag
 op_sub_assign
 id|SCTP_IP_OVERHEAD
 op_plus
@@ -1160,7 +1162,7 @@ r_struct
 id|sctp_data_chunk
 )paren
 suffix:semicolon
-id|pmtu
+id|frag
 op_sub_assign
 r_sizeof
 (paren
@@ -1168,8 +1170,25 @@ r_struct
 id|sctp_sack_chunk
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sp-&gt;user_frag
+)paren
+id|frag
+op_assign
+id|min_t
+c_func
+(paren
+r_int
+comma
+id|frag
+comma
+id|sp-&gt;user_frag
+)paren
+suffix:semicolon
 r_return
-id|pmtu
+id|frag
 suffix:semicolon
 )brace
 multiline_comment|/* Walk through a list of TLV parameters.  Don&squot;t trust the&n; * individual parameter lengths and instead depend on&n; * the chunk length to indicate when to stop.  Make sure&n; * there is room for a param header too.&n; */
@@ -1257,7 +1276,6 @@ id|proc_dir_entry
 op_star
 id|proc_net_sctp
 suffix:semicolon
-r_extern
 r_void
 id|sctp_put_port
 c_func
@@ -1613,5 +1631,89 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_IPV6 */
 DECL|macro|sctp_sk
 mdefine_line|#define sctp_sk(__sk) (&amp;((struct sctp_sock *)__sk)-&gt;sctp)
+multiline_comment|/* Is a socket of this style? */
+DECL|macro|sctp_style
+mdefine_line|#define sctp_style(sk, style) __sctp_style((sk), (SCTP_SOCKET_##style))
+DECL|function|__sctp_style
+r_int
+r_static
+r_inline
+id|__sctp_style
+c_func
+(paren
+r_const
+r_struct
+id|sock
+op_star
+id|sk
+comma
+id|sctp_socket_type_t
+id|style
+)paren
+(brace
+r_return
+id|sctp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|type
+op_eq
+id|style
+suffix:semicolon
+)brace
+multiline_comment|/* Is the association in this state? */
+DECL|macro|sctp_state
+mdefine_line|#define sctp_state(asoc, state) __sctp_state((asoc), (SCTP_STATE_##state))
+DECL|function|__sctp_state
+r_int
+r_static
+r_inline
+id|__sctp_state
+c_func
+(paren
+r_const
+r_struct
+id|sctp_association
+op_star
+id|asoc
+comma
+id|sctp_state_t
+id|state
+)paren
+(brace
+r_return
+id|asoc-&gt;state
+op_eq
+id|state
+suffix:semicolon
+)brace
+multiline_comment|/* Is the socket in this state? */
+DECL|macro|sctp_sstate
+mdefine_line|#define sctp_sstate(sk, state) __sctp_sstate((sk), (SCTP_SS_##state))
+DECL|function|__sctp_sstate
+r_int
+r_static
+r_inline
+id|__sctp_sstate
+c_func
+(paren
+r_const
+r_struct
+id|sock
+op_star
+id|sk
+comma
+id|sctp_sock_state_t
+id|state
+)paren
+(brace
+r_return
+id|sk-&gt;state
+op_eq
+id|state
+suffix:semicolon
+)brace
 macro_line|#endif /* __net_sctp_h__ */
 eof
