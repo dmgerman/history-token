@@ -5703,9 +5703,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
 id|error
 op_assign
 id|inode_setattr
@@ -5715,12 +5712,15 @@ id|inode
 comma
 id|attr
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

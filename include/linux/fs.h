@@ -596,6 +596,10 @@ DECL|macro|ATTR_FORCE
 mdefine_line|#define ATTR_FORCE&t;512&t;/* Not a change, but a change it */
 DECL|macro|ATTR_ATTR_FLAG
 mdefine_line|#define ATTR_ATTR_FLAG&t;1024
+DECL|macro|ATTR_KILL_SUID
+mdefine_line|#define ATTR_KILL_SUID&t;2048
+DECL|macro|ATTR_KILL_SGID
+mdefine_line|#define ATTR_KILL_SGID&t;4096
 multiline_comment|/*&n; * This is the Inode Attributes structure, used for notify_change().  It&n; * uses the above definitions as flags, to know which values have changed.&n; * Also, in this manner, a Filesystem can look at only the values it cares&n; * about.  Basically, these are the attributes that the VFS layer can&n; * request to change from the FS layer.&n; *&n; * Derek Atkins &lt;warlord@MIT.EDU&gt; 94-10-20&n; */
 DECL|struct|iattr
 r_struct
@@ -6242,9 +6246,8 @@ id|remove_suid
 c_func
 (paren
 r_struct
-id|inode
+id|dentry
 op_star
-id|inode
 )paren
 suffix:semicolon
 r_extern
