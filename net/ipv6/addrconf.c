@@ -14509,11 +14509,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|ifp-&gt;idev-&gt;dead
+op_eq
+l_int|0
 )paren
-r_goto
-id|out
-suffix:semicolon
+)paren
 id|__ipv6_ifa_notify
 c_func
 (paren
@@ -14522,8 +14525,6 @@ comma
 id|ifp
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 id|read_unlock_bh
 c_func
 (paren
