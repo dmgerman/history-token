@@ -1,3 +1,6 @@
+macro_line|#ifndef _LINUX_PERCPU_COUNTER_H
+DECL|macro|_LINUX_PERCPU_COUNTER_H
+mdefine_line|#define _LINUX_PERCPU_COUNTER_H
 multiline_comment|/*&n; * A simple &quot;approximate counter&quot; for use in ext2 and ext3 superblocks.&n; *&n; * WARNING: these things are HUGE.  4 kbytes per counter on 32-way P4.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -307,4 +310,5 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* _LINUX_PERCPU_COUNTER_H */
 eof
