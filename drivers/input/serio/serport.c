@@ -185,13 +185,6 @@ id|name
 l_int|64
 )braket
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
 id|serport
 op_assign
 id|kmalloc
@@ -205,16 +198,21 @@ id|serport
 comma
 id|GFP_KERNEL
 )paren
-)paren
-)paren
-(brace
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|serport
+)paren
+)paren
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -336,8 +334,6 @@ c_func
 (paren
 id|serport
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * serport_ldisc_receive() is called by the low level tty driver when characters&n; * are ready for us. We forward the characters, one by one to the &squot;interrupt&squot;&n; * routine.&n; *&n; * FIXME: We should get pt_regs from the tty layer and forward them to&n; *&t;  serio_interrupt here.&n; */
@@ -645,6 +641,11 @@ id|serport_ldisc
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|name
 op_assign
 l_string|&quot;input&quot;
@@ -687,6 +688,7 @@ id|serport_ldisc_write_wakeup
 suffix:semicolon
 multiline_comment|/*&n; * The functions for insering/removing us as a module.&n; */
 DECL|function|serport_init
+r_static
 r_int
 id|__init
 id|serport_init
@@ -725,6 +727,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|serport_exit
+r_static
 r_void
 id|__exit
 id|serport_exit
