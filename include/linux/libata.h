@@ -741,6 +741,18 @@ id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
+DECL|member|tf
+r_struct
+id|ata_taskfile
+id|tf
+suffix:semicolon
+DECL|member|cdb
+id|u8
+id|cdb
+(braket
+id|ATAPI_CDB_LEN
+)braket
+suffix:semicolon
 DECL|member|flags
 r_int
 r_int
@@ -780,11 +792,6 @@ DECL|member|cursg_ofs
 r_int
 r_int
 id|cursg_ofs
-suffix:semicolon
-DECL|member|tf
-r_struct
-id|ata_taskfile
-id|tf
 suffix:semicolon
 DECL|member|sgent
 r_struct
@@ -1005,6 +1012,11 @@ r_int
 id|cbl
 suffix:semicolon
 multiline_comment|/* cable type; ATA_CBL_xxx */
+DECL|member|cdb_len
+r_int
+r_int
+id|cdb_len
+suffix:semicolon
 DECL|member|device
 r_struct
 id|ata_device

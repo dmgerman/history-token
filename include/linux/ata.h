@@ -681,6 +681,11 @@ l_int|2
 )paren
 comma
 multiline_comment|/* ATAPI data dir:&n;&t;&t;&t;&t;&t;&t;   0=to device, 1=to host */
+DECL|enumerator|ATAPI_CDB_LEN
+id|ATAPI_CDB_LEN
+op_assign
+l_int|16
+comma
 multiline_comment|/* cable types */
 DECL|enumerator|ATA_CBL_NONE
 id|ATA_CBL_NONE
@@ -804,7 +809,11 @@ multiline_comment|/* DMA */
 DECL|enumerator|ATA_PROT_ATAPI
 id|ATA_PROT_ATAPI
 comma
-multiline_comment|/* packet command */
+multiline_comment|/* packet command, PIO data xfer*/
+DECL|enumerator|ATA_PROT_ATAPI_NODATA
+id|ATA_PROT_ATAPI_NODATA
+comma
+multiline_comment|/* packet command, no data */
 DECL|enumerator|ATA_PROT_ATAPI_DMA
 id|ATA_PROT_ATAPI_DMA
 comma
@@ -928,6 +937,54 @@ DECL|macro|ata_id_u32
 mdefine_line|#define ata_id_u32(dev,n)&t;&bslash;&n;&t;(((u32) (dev)-&gt;id[(n) + 1] &lt;&lt; 16) | ((u32) (dev)-&gt;id[(n)]))
 DECL|macro|ata_id_u64
 mdefine_line|#define ata_id_u64(dev,n)&t;&bslash;&n;&t;( ((u64) dev-&gt;id[(n) + 3] &lt;&lt; 48) |&t;&bslash;&n;&t;  ((u64) dev-&gt;id[(n) + 2] &lt;&lt; 32) |&t;&bslash;&n;&t;  ((u64) dev-&gt;id[(n) + 1] &lt;&lt; 16) |&t;&bslash;&n;&t;  ((u64) dev-&gt;id[(n) + 0]) )
+DECL|function|atapi_cdb_len
+r_static
+r_inline
+r_int
+id|atapi_cdb_len
+c_func
+(paren
+id|u16
+op_star
+id|dev_id
+)paren
+(brace
+id|u16
+id|tmp
+op_assign
+id|dev_id
+(braket
+l_int|0
+)braket
+op_amp
+l_int|0x3
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|tmp
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+r_return
+l_int|12
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+r_return
+l_int|16
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+)brace
 DECL|function|is_atapi_taskfile
 r_static
 r_inline
@@ -946,6 +1003,12 @@ r_return
 id|tf-&gt;protocol
 op_eq
 id|ATA_PROT_ATAPI
+)paren
+op_logical_or
+(paren
+id|tf-&gt;protocol
+op_eq
+id|ATA_PROT_ATAPI_NODATA
 )paren
 op_logical_or
 (paren

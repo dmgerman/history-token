@@ -3237,6 +3237,26 @@ op_amp
 id|ATA_DFLAG_PIO
 )paren
 suffix:semicolon
+r_int
+id|nodata
+op_assign
+(paren
+id|cmd-&gt;sc_data_direction
+op_eq
+id|SCSI_DATA_NONE
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|qc-&gt;cdb
+comma
+id|scsicmd
+comma
+id|qc-&gt;ap-&gt;cdb_len
+)paren
+suffix:semicolon
 id|qc-&gt;complete_fn
 op_assign
 id|atapi_qc_complete
@@ -3270,26 +3290,25 @@ id|qc-&gt;tf.command
 op_assign
 id|ATA_CMD_PACKET
 suffix:semicolon
-multiline_comment|/* no data - interrupt-driven */
-r_if
-c_cond
-(paren
-id|cmd-&gt;sc_data_direction
-op_eq
-id|SCSI_DATA_NONE
-)paren
-id|qc-&gt;tf.protocol
-op_assign
-id|ATA_PROT_ATAPI
-suffix:semicolon
-multiline_comment|/* PIO data xfer */
-r_else
+multiline_comment|/* no data, or PIO data xfer */
 r_if
 c_cond
 (paren
 id|using_pio
+op_logical_or
+id|nodata
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|nodata
+)paren
+id|qc-&gt;tf.protocol
+op_assign
+id|ATA_PROT_ATAPI_NODATA
+suffix:semicolon
+r_else
 id|qc-&gt;tf.protocol
 op_assign
 id|ATA_PROT_ATAPI
@@ -3314,8 +3333,8 @@ l_int|1024
 op_rshift
 l_int|8
 suffix:semicolon
-multiline_comment|/* DMA data xfer */
 )brace
+multiline_comment|/* DMA data xfer */
 r_else
 (brace
 id|qc-&gt;tf.protocol
