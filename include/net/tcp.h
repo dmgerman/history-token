@@ -1081,8 +1081,8 @@ macro_line|#else
 DECL|macro|TCP_TW_RECYCLE_TICK
 macro_line|# define TCP_TW_RECYCLE_TICK (12+2-TCP_TW_RECYCLE_SLOTS_LOG)
 macro_line|#endif
-DECL|macro|BICTCP_1_OVER_BETA
-mdefine_line|#define BICTCP_1_OVER_BETA&t;8&t;/*&n;&t;&t;&t;&t;&t; * Fast recovery&n;&t;&t;&t;&t;&t; * multiplicative decrease factor&n;&t;&t;&t;&t;&t; */
+DECL|macro|BICTCP_BETA_SCALE
+mdefine_line|#define BICTCP_BETA_SCALE    1024&t;/* Scale factor beta calculation&n;&t;&t;&t;&t;&t; * max_cwnd = snd_cwnd * beta&n;&t;&t;&t;&t;&t; */
 DECL|macro|BICTCP_MAX_INCREMENT
 mdefine_line|#define BICTCP_MAX_INCREMENT 32&t;&t;/*&n;&t;&t;&t;&t;&t; * Limit on the amount of&n;&t;&t;&t;&t;&t; * increment allowed during&n;&t;&t;&t;&t;&t; * binary search.&n;&t;&t;&t;&t;&t; */
 DECL|macro|BICTCP_FUNC_OF_MIN_INCR
@@ -1318,6 +1318,10 @@ suffix:semicolon
 r_extern
 r_int
 id|sysctl_tcp_bic_low_window
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_tcp_bic_beta
 suffix:semicolon
 r_extern
 r_int
@@ -4046,18 +4050,16 @@ op_assign
 id|tp-&gt;snd_cwnd
 op_star
 (paren
-l_int|2
-op_star
-id|BICTCP_1_OVER_BETA
-op_minus
-l_int|1
+id|BICTCP_BETA_SCALE
+op_plus
+id|sysctl_tcp_bic_beta
 )paren
 )paren
 op_div
 (paren
-id|BICTCP_1_OVER_BETA
-op_div
 l_int|2
+op_star
+id|BICTCP_BETA_SCALE
 )paren
 suffix:semicolon
 r_else
@@ -4076,13 +4078,13 @@ r_return
 id|max
 c_func
 (paren
-id|tp-&gt;snd_cwnd
-op_minus
 (paren
 id|tp-&gt;snd_cwnd
-op_div
-id|BICTCP_1_OVER_BETA
+op_star
+id|sysctl_tcp_bic_beta
 )paren
+op_div
+id|BICTCP_BETA_SCALE
 comma
 l_int|2U
 )paren
