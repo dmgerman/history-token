@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_LIST_H
 DECL|macro|_LINUX_LIST_H
 mdefine_line|#define _LINUX_LIST_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/prefetch.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;asm/system.h&gt;

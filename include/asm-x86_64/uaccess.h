@@ -36,7 +36,7 @@ DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size) (__range_not_ok(addr,size) == 0)
 DECL|function|verify_area
 r_extern
-id|__force_inline
+r_inline
 r_int
 id|verify_area
 c_func
@@ -274,7 +274,7 @@ id|len
 suffix:semicolon
 DECL|function|__copy_from_user
 r_static
-id|__force_inline
+r_inline
 r_int
 id|__copy_from_user
 c_func
@@ -625,7 +625,7 @@ suffix:semicolon
 )brace
 DECL|function|__copy_to_user
 r_static
-id|__force_inline
+r_inline
 r_int
 id|__copy_to_user
 c_func

@@ -5,7 +5,7 @@ multiline_comment|/* &t;&t;&t;&t;&t;&t;&t;&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*   Copyright (C) 1995-1999 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
-multiline_comment|/* $Id: i2c-id.h,v 1.63 2003/01/21 08:08:16 kmalkki Exp $ */
+multiline_comment|/* $Id: i2c-id.h,v 1.68 2003/02/25 02:55:18 mds Exp $ */
 macro_line|#ifndef LINUX_I2C_ID_H
 DECL|macro|LINUX_I2C_ID_H
 mdefine_line|#define LINUX_I2C_ID_H
@@ -206,6 +206,8 @@ DECL|macro|I2C_DRIVERID_FS451
 mdefine_line|#define I2C_DRIVERID_FS451 1037
 DECL|macro|I2C_DRIVERID_W83627HF
 mdefine_line|#define I2C_DRIVERID_W83627HF 1038
+DECL|macro|I2C_DRIVERID_LM85
+mdefine_line|#define I2C_DRIVERID_LM85 1039
 multiline_comment|/*&n; * ---- Adapter types ----------------------------------------------------&n; *&n; * First, we distinguish between several algorithms to access the hardware&n; * interface types, as a PCF 8584 needs other care than a bit adapter.&n; */
 DECL|macro|I2C_ALGO_NONE
 mdefine_line|#define I2C_ALGO_NONE&t;0x000000
@@ -233,6 +235,8 @@ DECL|macro|I2C_ALGO_IPMI
 mdefine_line|#define I2C_ALGO_IPMI &t;0x0b0000&t;/* IPMI dummy adapter */
 DECL|macro|I2C_ALGO_IPMB
 mdefine_line|#define I2C_ALGO_IPMB &t;0x0c0000&t;/* IPMB adapter */
+DECL|macro|I2C_ALGO_MPC107
+mdefine_line|#define I2C_ALGO_MPC107 0x0d0000
 DECL|macro|I2C_ALGO_EC
 mdefine_line|#define I2C_ALGO_EC     0x100000        /* ACPI embedded controller     */
 DECL|macro|I2C_ALGO_MPC8XX
@@ -291,6 +295,10 @@ DECL|macro|I2C_HW_B_TSUNA
 mdefine_line|#define I2C_HW_B_TSUNA  0x12&t;/* DEC Tsunami chipset&t;&t;&t;*/
 DECL|macro|I2C_HW_B_FRODO
 mdefine_line|#define I2C_HW_B_FRODO  0x13    /* 2d3D, Inc. SA-1110 Development Board */
+DECL|macro|I2C_HW_B_OMAHA
+mdefine_line|#define I2C_HW_B_OMAHA  0x14    /* Omaha I2C interface (ARM)&t;&t;*/
+DECL|macro|I2C_HW_B_GUIDE
+mdefine_line|#define I2C_HW_B_GUIDE  0x15    /* Guide bit-basher&t;&t;&t;*/
 multiline_comment|/* --- PCF 8584 based algorithms&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_P_LP
 mdefine_line|#define I2C_HW_P_LP&t;0x00&t;/* Parallel port interface&t;&t;*/
@@ -338,6 +346,8 @@ DECL|macro|I2C_HW_SMBUS_AMD8111
 mdefine_line|#define I2C_HW_SMBUS_AMD8111&t;0x0a
 DECL|macro|I2C_HW_SMBUS_SCX200
 mdefine_line|#define I2C_HW_SMBUS_SCX200&t;0x0b
+DECL|macro|I2C_HW_SMBUS_NFORCE2
+mdefine_line|#define I2C_HW_SMBUS_NFORCE2&t;0x0c
 multiline_comment|/* --- ISA pseudo-adapter&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_ISA
 mdefine_line|#define I2C_HW_ISA 0x00
@@ -347,5 +357,8 @@ mdefine_line|#define I2C_HW_IPMI 0x00
 multiline_comment|/* --- IPMB adapter&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_IPMB
 mdefine_line|#define I2C_HW_IPMB 0x00
+multiline_comment|/* --- MCP107 adapter */
+DECL|macro|I2C_HW_MPC107
+mdefine_line|#define I2C_HW_MPC107 0x00
 macro_line|#endif /* LINUX_I2C_ID_H */
 eof

@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;bttvp.h&quot;
-macro_line|#include &quot;tuner.h&quot;
 macro_line|#include &quot;bt832.h&quot;
 multiline_comment|/* fwd decl */
 r_static

@@ -130,8 +130,6 @@ op_star
 id|handler
 )paren
 (paren
-r_void
-op_star
 )paren
 comma
 r_void
@@ -415,8 +413,6 @@ op_star
 id|handler
 )paren
 (paren
-r_void
-op_star
 )paren
 comma
 r_void

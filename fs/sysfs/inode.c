@@ -411,20 +411,6 @@ id|dir-&gt;d_inode
 )paren
 )paren
 (brace
-id|simple_unlink
-c_func
-(paren
-id|dir-&gt;d_inode
-comma
-id|victim
-)paren
-suffix:semicolon
-id|d_delete
-c_func
-(paren
-id|victim
-)paren
-suffix:semicolon
 id|pr_debug
 c_func
 (paren
@@ -440,15 +426,16 @@ id|victim-&gt;d_count
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Drop reference from initial sysfs_get_dentry().&n;&t;&t;&t; */
-id|dput
+id|simple_unlink
 c_func
 (paren
+id|dir-&gt;d_inode
+comma
 id|victim
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n;&t;&t; * Drop the reference acquired from sysfs_get_dentry() above.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Drop reference from sysfs_get_dentry() above.&n;&t;&t; */
 id|dput
 c_func
 (paren

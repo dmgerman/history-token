@@ -439,7 +439,7 @@ id|mach_reset
 op_assign
 id|BSP_reset
 suffix:semicolon
-id|config_M68VZ328_irq
+id|config_M68328_irq
 c_func
 (paren
 )paren

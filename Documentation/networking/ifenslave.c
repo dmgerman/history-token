@@ -2497,7 +2497,7 @@ r_static
 r_int
 id|mif_flags
 suffix:semicolon
-multiline_comment|/* Get the inteface configuration from the kernel. */
+multiline_comment|/* Get the interface configuration from the kernel. */
 DECL|function|if_getconfig
 r_static
 r_int

@@ -560,7 +560,7 @@ id|mach_gettod
 op_assign
 id|dragen2_gettod
 suffix:semicolon
-id|config_M68VZ328_irq
+id|config_M68328_irq
 c_func
 (paren
 )paren
