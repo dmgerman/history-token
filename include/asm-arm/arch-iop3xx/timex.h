@@ -11,6 +11,6 @@ DECL|macro|CLOCK_TICK_RATE
 mdefine_line|#define CLOCK_TICK_RATE&t;733000000
 macro_line|#endif
 macro_line|#else
-macro_line|#error &quot;No IOP310 timex information for this architecture&quot;
+macro_line|#error &quot;No IOP3xx timex information for this architecture&quot;
 macro_line|#endif
 eof

@@ -37,7 +37,7 @@ mdefine_line|#define __virt_to_bus(x)&t;(((__virt_to_phys(x)) &amp; ~(*IOP310_SI
 DECL|macro|__bus_to_virt
 mdefine_line|#define __bus_to_virt(x)    (__phys_to_virt(((x) &amp; ~(*IOP310_SIALR)) | ( *IOP310_SIATVR)))
 multiline_comment|/* boot mem allocate global pointer for MU circular queues QBAR */
-macro_line|#ifdef CONFIG_IOP310_MU
+macro_line|#ifdef CONFIG_IOP3XX_MU
 r_extern
 r_void
 op_star
