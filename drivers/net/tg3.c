@@ -13075,6 +13075,9 @@ id|tp
 id|u32
 id|val
 suffix:semicolon
+id|u32
+id|flags_save
+suffix:semicolon
 multiline_comment|/* Force NVRAM to settle.&n;&t; * This deals with a chip bug which can result in EEPROM&n;&t; * corruption.&n;&t; */
 r_if
 c_cond
@@ -13131,6 +13134,17 @@ l_int|10
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n;&t; * We must avoid the readl() that normally takes place.&n;&t; * It locks machines, causes machine checks, and other&n;&t; * fun things.  So, temporarily disable the 5701&n;&t; * hardware workaround, while we do the reset.&n;&t; */
+id|flags_save
+op_assign
+id|tp-&gt;tg3_flags
+suffix:semicolon
+id|tp-&gt;tg3_flags
+op_and_assign
+op_complement
+id|TG3_FLAG_5701_REG_WRITE_BUG
+suffix:semicolon
+multiline_comment|/* do the reset */
 id|tw32
 c_func
 (paren
@@ -13138,6 +13152,11 @@ id|GRC_MISC_CFG
 comma
 id|GRC_MISC_CFG_CORECLK_RESET
 )paren
+suffix:semicolon
+multiline_comment|/* restore 5701 hardware bug workaround flag */
+id|tp-&gt;tg3_flags
+op_assign
+id|flags_save
 suffix:semicolon
 multiline_comment|/* Flush PCI posted writes.  The normal MMIO registers&n;&t; * are inaccessible at this time so this is the only&n;&t; * way to make this reliably.  I tried to use indirect&n;&t; * register read/write but this upset some 5701 variants.&n;&t; */
 id|pci_read_config_dword
