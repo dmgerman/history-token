@@ -2006,7 +2006,8 @@ c_func
 (paren
 id|current
 comma
-l_int|19
+op_minus
+l_int|15
 )paren
 suffix:semicolon
 id|current-&gt;flags
