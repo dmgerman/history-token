@@ -852,9 +852,11 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;IRDA class descriptor not found, device not bound&quot;
+id|serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;IRDA class descriptor not found, device not bound&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1138,9 +1140,11 @@ op_logical_neg
 id|buffer
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - out of memory.&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - out of memory.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1179,9 +1183,11 @@ op_logical_neg
 id|buffer
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - out of memory.&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - out of memory.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1248,10 +1254,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting read urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1389,9 +1397,11 @@ op_logical_neg
 id|port-&gt;tty
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - no tty???&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - no tty???&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1535,10 +1545,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting write urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting write urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1866,10 +1878,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2214,10 +2228,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting write urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting write urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

@@ -16,7 +16,7 @@ mdefine_line|#define USB_SERIAL_PORT_MAGIC&t;0x7301&t;/* magic number for usb_se
 multiline_comment|/* parity check flag */
 DECL|macro|RELEVANT_IFLAG
 mdefine_line|#define RELEVANT_IFLAG(iflag)&t;(iflag &amp; (IGNBRK|BRKINT|IGNPAR|PARMRK|INPCK))
-multiline_comment|/**&n; * usb_serial_port: structure for the specific ports of a device.&n; * @magic: magic number for internal validity of this pointer.&n; * @serial: pointer back to the struct usb_serial owner of this port.&n; * @tty: pointer to the coresponding tty for this port.&n; * @number: the number of the port (the minor number).&n; * @interrupt_in_buffer: pointer to the interrupt in buffer for this port.&n; * @interrupt_in_urb: pointer to the interrupt in struct urb for this port.&n; * @interrupt_in_endpointAddress: endpoint address for the interrupt in pipe&n; *&t;for this port.&n; * @bulk_in_buffer: pointer to the bulk in buffer for this port.&n; * @read_urb: pointer to the bulk in struct urb for this port.&n; * @bulk_in_endpointAddress: endpoint address for the bulk in pipe for this&n; *&t;port.&n; * @bulk_out_buffer: pointer to the bulk out buffer for this port.&n; * @bulk_out_size: the size of the bulk_out_buffer, in bytes.&n; * @write_urb: pointer to the bulk out struct urb for this port.&n; * @bulk_out_endpointAddress: endpoint address for the bulk out pipe for this&n; *&t;port.&n; * @write_wait: a wait_queue_head_t used by the port.&n; * @work: work queue entry for the line discipline waking up.&n; * @open_count: number of times this port has been opened.&n; * @sem: struct semaphore used to lock this structure.&n; * @private: place to put any driver specific information that is needed.  The&n; *&t;usb-serial driver is required to manage this data, the usb-serial core&n; *&t;will not touch this.&n; *&n; * This structure is used by the usb-serial core and drivers for the specific&n; * ports of a device.&n; */
+multiline_comment|/**&n; * usb_serial_port: structure for the specific ports of a device.&n; * @magic: magic number for internal validity of this pointer.&n; * @serial: pointer back to the struct usb_serial owner of this port.&n; * @tty: pointer to the coresponding tty for this port.&n; * @number: the number of the port (the minor number).&n; * @interrupt_in_buffer: pointer to the interrupt in buffer for this port.&n; * @interrupt_in_urb: pointer to the interrupt in struct urb for this port.&n; * @interrupt_in_endpointAddress: endpoint address for the interrupt in pipe&n; *&t;for this port.&n; * @bulk_in_buffer: pointer to the bulk in buffer for this port.&n; * @read_urb: pointer to the bulk in struct urb for this port.&n; * @bulk_in_endpointAddress: endpoint address for the bulk in pipe for this&n; *&t;port.&n; * @bulk_out_buffer: pointer to the bulk out buffer for this port.&n; * @bulk_out_size: the size of the bulk_out_buffer, in bytes.&n; * @write_urb: pointer to the bulk out struct urb for this port.&n; * @bulk_out_endpointAddress: endpoint address for the bulk out pipe for this&n; *&t;port.&n; * @write_wait: a wait_queue_head_t used by the port.&n; * @work: work queue entry for the line discipline waking up.&n; * @open_count: number of times this port has been opened.&n; * @sem: struct semaphore used to lock this structure.&n; *&n; * This structure is used by the usb-serial core and drivers for the specific&n; * ports of a device.&n; */
 DECL|struct|usb_serial_port
 r_struct
 id|usb_serial_port
@@ -112,11 +112,6 @@ r_struct
 id|semaphore
 id|sem
 suffix:semicolon
-DECL|member|private
-r_void
-op_star
-r_private
-suffix:semicolon
 DECL|member|dev
 r_struct
 id|device
@@ -126,7 +121,56 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|to_usb_serial_port
 mdefine_line|#define to_usb_serial_port(d) container_of(d, struct usb_serial_port, dev)
-multiline_comment|/**&n; * usb_serial - structure used by the usb-serial core for a device&n; * @magic: magic number for internal validity of this pointer.&n; * @dev: pointer to the struct usb_device for this device&n; * @type: pointer to the struct usb_serial_device_type for this device&n; * @interface: pointer to the struct usb_interface for this device&n; * @minor: the starting minor number for this device&n; * @num_ports: the number of ports this device has&n; * @num_interrupt_in: number of interrupt in endpoints we have&n; * @num_bulk_in: number of bulk in endpoints we have&n; * @num_bulk_out: number of bulk out endpoints we have&n; * @vendor: vendor id of this device&n; * @product: product id of this device&n; * @port: array of struct usb_serial_port structures for the different ports.&n; * @private: place to put any driver specific information that is needed.  The&n; *&t;usb-serial driver is required to manage this data, the usb-serial core&n; *&t;will not touch this.&n; */
+multiline_comment|/* get and set the port private data pointer helper functions */
+DECL|function|usb_get_serial_port_data
+r_static
+r_inline
+r_void
+op_star
+id|usb_get_serial_port_data
+(paren
+r_struct
+id|usb_serial_port
+op_star
+id|port
+)paren
+(brace
+r_return
+id|dev_get_drvdata
+c_func
+(paren
+op_amp
+id|port-&gt;dev
+)paren
+suffix:semicolon
+)brace
+DECL|function|usb_set_serial_port_data
+r_static
+r_inline
+r_void
+id|usb_set_serial_port_data
+(paren
+r_struct
+id|usb_serial_port
+op_star
+id|port
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+id|dev_set_drvdata
+c_func
+(paren
+op_amp
+id|port-&gt;dev
+comma
+id|data
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_serial - structure used by the usb-serial core for a device&n; * @magic: magic number for internal validity of this pointer.&n; * @dev: pointer to the struct usb_device for this device&n; * @type: pointer to the struct usb_serial_device_type for this device&n; * @interface: pointer to the struct usb_interface for this device&n; * @minor: the starting minor number for this device&n; * @num_ports: the number of ports this device has&n; * @num_interrupt_in: number of interrupt in endpoints we have&n; * @num_bulk_in: number of bulk in endpoints we have&n; * @num_bulk_out: number of bulk out endpoints we have&n; * @vendor: vendor id of this device&n; * @product: product id of this device&n; * @port: array of struct usb_serial_port structures for the different ports.&n; * @private: place to put any driver specific information that is needed.  The&n; *&t;usb-serial driver is required to manage this data, the usb-serial core&n; *&t;will not touch this.  Use usb_get_serial_data() and&n; *&t;usb_set_serial_data() to access this.&n; */
 DECL|struct|usb_serial
 r_struct
 id|usb_serial
@@ -200,6 +244,49 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|NUM_DONT_CARE
 mdefine_line|#define NUM_DONT_CARE&t;(-1)
+multiline_comment|/* get and set the serial private data pointer helper functions */
+DECL|function|usb_get_serial_data
+r_static
+r_inline
+r_void
+op_star
+id|usb_get_serial_data
+(paren
+r_struct
+id|usb_serial
+op_star
+id|serial
+)paren
+(brace
+r_return
+id|serial
+op_member_access_from_pointer
+r_private
+suffix:semicolon
+)brace
+DECL|function|usb_set_serial_data
+r_static
+r_inline
+r_void
+id|usb_set_serial_data
+(paren
+r_struct
+id|usb_serial
+op_star
+id|serial
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+id|serial
+op_member_access_from_pointer
+r_private
+op_assign
+id|data
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * usb_serial_device_type - a structure that defines a usb serial device&n; * @owner: pointer to the module that owns this device.&n; * @name: pointer to a string that describes this device.  This string used&n; *&t;in the syslog messages when a device is inserted or removed.&n; * @short_name: a pointer to a string that describes this device in&n; *&t;KOBJ_NAME_LEN characters or less.  This is used for the sysfs interface&n; *&t;to describe the driver.&n; * @id_table: pointer to a list of usb_device_id structures that define all&n; *&t;of the devices this structure can support.&n; * @num_interrupt_in: the number of interrupt in endpoints this device will&n; *&t;have.&n; * @num_bulk_in: the number of bulk in endpoints this device will have.&n; * @num_bulk_out: the number of bulk out endpoints this device will have.&n; * @num_ports: the number of different ports this device will have.&n; * @calc_num_ports: pointer to a function to determine how many ports this&n; *&t;device has dynamically.  It will be called after the probe()&n; *&t;callback is called, but before attach()&n; * @probe: pointer to the driver&squot;s probe function.&n; *&t;This will be called when the device is inserted into the system,&n; *&t;but before the device has been fully initialized by the usb_serial&n; *&t;subsystem.  Use this function to download any firmware to the device,&n; *&t;or any other early initialization that might be needed.&n; *&t;Return 0 to continue on with the initialization sequence.  Anything &n; *&t;else will abort it.&n; * @attach: pointer to the driver&squot;s attach function.&n; *&t;This will be called when the struct usb_serial structure is fully set&n; *&t;set up.  Do any local initialization of the device, or any private&n; *&t;memory structure allocation at this point in time.&n; * @shutdown: pointer to the driver&squot;s shutdown function.  This will be&n; *&t;called when the device is removed from the system.&n; *&n; * This structure is defines a USB Serial device.  It provides all of&n; * the information that the USB serial core code needs.  If the function&n; * pointers are defined, then the USB serial core code will call them when&n; * the corresponding tty port functions are called.  If they are not&n; * called, the generic serial function will be used instead.&n; */
 DECL|struct|usb_serial_device_type
 r_struct
