@@ -1073,16 +1073,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|dprintk
-c_func
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;maxmult: %d &bslash;n&quot;
-comma
-id|maxmult
-)paren
-suffix:semicolon
 id|fsb
 op_assign
 id|eblcr_fsb_table_v2
