@@ -21,7 +21,7 @@ DECL|macro|PPC_FEATURE_UNIFIED_CACHE
 mdefine_line|#define PPC_FEATURE_UNIFIED_CACHE&t;0x01000000
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/* This structure can grow, it&squot;s real size is used by head.S code&n; * via the mkdefs mecanism.&n; */
+multiline_comment|/* This structure can grow, it&squot;s real size is used by head.S code&n; * via the mkdefs mechanism.&n; */
 r_struct
 id|cpu_spec
 suffix:semicolon
