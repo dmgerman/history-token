@@ -3006,8 +3006,6 @@ id|isdn_slot_free
 c_func
 (paren
 id|slot
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|isdn_slot_set_m_idx
