@@ -2644,25 +2644,6 @@ suffix:semicolon
 id|u8
 id|tmpbyte
 suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|north
-op_assign
-id|pci_find_slot
-c_func
-(paren
-l_int|0
-comma
-id|PCI_DEVFN
-c_func
-(paren
-l_int|0
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
 id|pci_read_config_byte
 c_func
 (paren
@@ -2788,15 +2769,12 @@ op_or
 l_int|0x08
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We should only tune the 1533 enable if we are using an ALi&n;&t; * North bridge. We might have no north found on some zany&n;&t; * box without a device at 0:0.0. The ALi bridge will be at&n;&t; * 0:0.0 so if we didn&squot;t find one we know what is cooking.&n;&t; */
+multiline_comment|/*&n;&t; * We should only tune the 1533 enable if we are using an ALi&n;&t; * south bridge.&n;&t; */
 r_if
 c_cond
 (paren
-id|north
-op_logical_and
-id|north-&gt;vendor
-op_ne
-id|PCI_VENDOR_ID_AL
+op_logical_neg
+id|isa_dev
 )paren
 (brace
 id|local_irq_restore
