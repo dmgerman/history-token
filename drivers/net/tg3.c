@@ -66,9 +66,7 @@ multiline_comment|/* hardware minimum and maximum for a single frame&squot;s dat
 DECL|macro|TG3_MIN_MTU
 mdefine_line|#define TG3_MIN_MTU&t;&t;&t;60
 DECL|macro|TG3_MAX_MTU
-mdefine_line|#define TG3_MAX_MTU&t;&t;&t;9000
-DECL|macro|TG3_MAX_MTU_5705
-mdefine_line|#define TG3_MAX_MTU_5705&t;&t;1500
+mdefine_line|#define TG3_MAX_MTU(tp)&t;&bslash;&n;&t;(GET_ASIC_REV(tp-&gt;pci_chip_rev_id) != ASIC_REV_5705 ? 9000 : 1500)
 multiline_comment|/* These numbers seem to be hard coded in the NIC firmware somehow.&n; * You can&squot;t change the ring sizes, but you can change where you place&n; * them in the NIC onboard memory.&n; */
 DECL|macro|TG3_RX_RING_SIZE
 mdefine_line|#define TG3_RX_RING_SIZE&t;&t;512
@@ -11744,25 +11742,10 @@ c_cond
 id|new_mtu
 template_param
 id|TG3_MAX_MTU
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|GET_ASIC_REV
 c_func
 (paren
-id|tp-&gt;pci_chip_rev_id
+id|tp
 )paren
-op_eq
-id|ASIC_REV_5705
-op_logical_and
-id|new_mtu
-OG
-id|TG3_MAX_MTU_5705
 )paren
 r_return
 op_minus
@@ -20464,6 +20447,18 @@ id|tp
 )paren
 suffix:semicolon
 multiline_comment|/* Clear statistics/status block in chip, and status block in ram. */
+r_if
+c_cond
+(paren
+id|GET_ASIC_REV
+c_func
+(paren
+id|tp-&gt;pci_chip_rev_id
+)paren
+op_ne
+id|ASIC_REV_5705
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -20501,6 +20496,7 @@ c_func
 l_int|40
 )paren
 suffix:semicolon
+)brace
 )brace
 id|memset
 c_func
