@@ -10,6 +10,8 @@ DECL|macro|ID_AHA_284xB
 mdefine_line|#define ID_AHA_284xB&t;0x04907756 /* BIOS enabled */
 DECL|macro|ID_AHA_284x
 mdefine_line|#define ID_AHA_284x&t;0x04907757 /* BIOS disabled*/
+DECL|macro|ID_AIC_7782
+mdefine_line|#define ID_AIC_7782&t;0x04907782
 r_static
 r_void
 id|aha2840_load_seeprom
@@ -72,6 +74,17 @@ comma
 l_int|0xFFFFFFFF
 comma
 l_string|&quot;Adaptec aic7770 SCSI adapter&quot;
+comma
+id|ahc_aic7770_EISA_setup
+)brace
+comma
+(brace
+multiline_comment|/* (Olivetti 2 channel EISA) */
+id|ID_AIC_7782
+comma
+l_int|0xFFFFFFFF
+comma
+l_string|&quot;Adaptec aic7782 SCSI adapter&quot;
 comma
 id|ahc_aic7770_EISA_setup
 )brace
