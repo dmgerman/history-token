@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/pplus_setup.c&n; *&n; * Board setup routines for MCG PowerPlus&n; *&n; * Author: Randy Vinson &lt;rvinson@mvista.com&gt;&n; *&n; * Derived from original PowerPlus PReP work by&n; * Cort Dougan, Johnnie Peters, Matt Porter, and&n; * Troy Benjegerdes.&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * You should have received a copy of the  GNU General Public License along&n; * with this program; if not, write  to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/pplus_setup.c&n; *&n; * Board setup routines for MCG PowerPlus&n; *&n; * Author: Randy Vinson &lt;rvinson@mvista.com&gt;&n; *&n; * Derived from original PowerPlus PReP work by&n; * Cort Dougan, Johnnie Peters, Matt Porter, and&n; * Troy Benjegerdes.&n; *&n; * Copyright 2001-2002 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * You should have received a copy of the  GNU General Public License along&n; * with this program; if not, write  to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -54,6 +54,12 @@ id|TODC_ALLOC
 c_func
 (paren
 )paren
+suffix:semicolon
+r_extern
+r_char
+id|saved_command_line
+(braket
+)braket
 suffix:semicolon
 r_extern
 r_void
@@ -253,7 +259,15 @@ macro_line|#endif
 id|printk
 c_func
 (paren
-l_string|&quot;PowerPlus port (C) 2001 MontaVista Software, Inc. (source@mvista.com)&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Motorola PowerPlus Platform&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Port by MontaVista Software, Inc. (source@mvista.com)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -293,6 +307,65 @@ op_assign
 op_amp
 id|dummy_con
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PPCBUG_NVRAM
+multiline_comment|/* Read in NVRAM data */
+id|init_prep_nvram
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* if no bootargs, look in NVRAM */
+r_if
+c_cond
+(paren
+id|cmd_line
+(braket
+l_int|0
+)braket
+op_eq
+l_char|&squot;&bslash;0&squot;
+)paren
+(brace
+r_char
+op_star
+id|bootargs
+suffix:semicolon
+id|bootargs
+op_assign
+id|prep_nvram_get_var
+c_func
+(paren
+l_string|&quot;bootargs&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bootargs
+op_ne
+l_int|NULL
+)paren
+(brace
+id|strcpy
+c_func
+(paren
+id|cmd_line
+comma
+id|bootargs
+)paren
+suffix:semicolon
+multiline_comment|/* again.. */
+id|strcpy
+c_func
+(paren
+id|saved_command_line
+comma
+id|cmd_line
+)paren
+suffix:semicolon
+)brace
+)brace
 macro_line|#endif
 r_if
 c_cond

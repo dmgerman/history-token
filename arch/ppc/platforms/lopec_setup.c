@@ -17,6 +17,13 @@ macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mpc10x.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
+macro_line|#include &lt;asm/prep_nvram.h&gt;
+r_extern
+r_char
+id|saved_command_line
+(braket
+)braket
+suffix:semicolon
 r_extern
 r_void
 id|lopec_find_bridges
@@ -1158,6 +1165,65 @@ op_assign
 op_amp
 id|dummy_con
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PPCBUG_NVRAM
+multiline_comment|/* Read in NVRAM data */
+id|init_prep_nvram
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* if no bootargs, look in NVRAM */
+r_if
+c_cond
+(paren
+id|cmd_line
+(braket
+l_int|0
+)braket
+op_eq
+l_char|&squot;&bslash;0&squot;
+)paren
+(brace
+r_char
+op_star
+id|bootargs
+suffix:semicolon
+id|bootargs
+op_assign
+id|prep_nvram_get_var
+c_func
+(paren
+l_string|&quot;bootargs&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bootargs
+op_ne
+l_int|NULL
+)paren
+(brace
+id|strcpy
+c_func
+(paren
+id|cmd_line
+comma
+id|bootargs
+)paren
+suffix:semicolon
+multiline_comment|/* again.. */
+id|strcpy
+c_func
+(paren
+id|saved_command_line
+comma
+id|cmd_line
+)paren
+suffix:semicolon
+)brace
+)brace
 macro_line|#endif
 )brace
 r_void
