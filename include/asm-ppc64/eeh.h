@@ -19,16 +19,15 @@ DECL|macro|EEH_STATE_OVERRIDE
 mdefine_line|#define EEH_STATE_OVERRIDE 1   /* IOA does not require eeh traps */
 DECL|macro|EEH_STATE_FAILURE
 mdefine_line|#define EEH_STATE_FAILURE  16  /* */
-multiline_comment|/* This is for profiling only and should be removed */
-r_extern
-r_int
-r_int
-id|eeh_total_mmio_reads
-suffix:semicolon
+multiline_comment|/* This is for profiling only */
 r_extern
 r_int
 r_int
 id|eeh_total_mmio_ffs
+suffix:semicolon
+r_extern
+r_int
+id|eeh_implemented
 suffix:semicolon
 r_void
 id|eeh_init
@@ -37,6 +36,20 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|function|is_eeh_implemented
+r_static
+r_inline
+r_int
+id|is_eeh_implemented
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|eeh_implemented
+suffix:semicolon
+)brace
 r_int
 id|eeh_get_state
 c_func
@@ -151,7 +164,7 @@ multiline_comment|/* EEH_POSSIBLE_ERROR() -- test for possible MMIO failure.&n; 
 multiline_comment|/* #define EEH_POSSIBLE_ERROR(addr, vaddr, val) ((vaddr) != (addr) &amp;&amp; ~(val) == 0 &amp;&amp; !IS_EEH_TOKEN_DISABLED(addr)) */
 multiline_comment|/* This version is rearranged to collect some profiling data */
 DECL|macro|EEH_POSSIBLE_ERROR
-mdefine_line|#define EEH_POSSIBLE_ERROR(addr, vaddr, val) (++eeh_total_mmio_reads, (~(val) == 0 &amp;&amp; (++eeh_total_mmio_ffs, (vaddr) != (addr) &amp;&amp; !IS_EEH_TOKEN_DISABLED(addr))))
+mdefine_line|#define EEH_POSSIBLE_ERROR(addr, vaddr, val) (~(val) == 0 &amp;&amp; (++eeh_total_mmio_ffs, (vaddr) != (addr) &amp;&amp; !IS_EEH_TOKEN_DISABLED(addr)))
 multiline_comment|/* &n; * MMIO read/write operations with EEH support.&n; *&n; * addr: 64b token of the form 0xA0PPBBDDyyyyyyyy&n; *       0xA0     : Unmapped MMIO region&n; *       PP       : PHB index (starting at zero)&n; *&t; BB&t;  : PCI Bus number under given PHB&n; *&t; DD&t;  : PCI devfn under given bus&n; *       yyyyyyyy : Virtual address offset&n; * &n; * An actual virtual address is produced from this token&n; * by masking into the form:&n; *   0xE0000000yyyyyyyy&n; */
 DECL|function|eeh_readb
 r_static

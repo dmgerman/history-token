@@ -17,9 +17,7 @@ macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pci_dma.h&gt;
-macro_line|#ifdef CONFIG_PPC_EEH
 macro_line|#include &lt;asm/eeh.h&gt;
-macro_line|#endif
 macro_line|#include &quot;xics.h&quot;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &quot;pci.h&quot;
@@ -735,13 +733,11 @@ c_func
 l_string|&quot;ibm,write-pci-config&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_EEH
 id|eeh_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1313,7 +1309,15 @@ id|res-&gt;flags
 op_assign
 id|IORESOURCE_IO
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_EEH
+r_if
+c_cond
+(paren
+id|is_eeh_implemented
+c_func
+(paren
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -1371,7 +1375,9 @@ comma
 l_int|0xffffffff
 )paren
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
+(brace
 id|phb-&gt;io_base_virt
 op_assign
 id|ioremap
@@ -1443,7 +1449,7 @@ id|range.size
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#endif
+)brace
 id|res-&gt;parent
 op_assign
 l_int|NULL
@@ -1574,7 +1580,15 @@ id|res-&gt;flags
 op_assign
 id|IORESOURCE_MEM
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_EEH
+r_if
+c_cond
+(paren
+id|is_eeh_implemented
+c_func
+(paren
+)paren
+)paren
+(brace
 id|res-&gt;start
 op_assign
 id|eeh_token
@@ -1603,7 +1617,9 @@ comma
 l_int|0xffffffff
 )paren
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
+(brace
 id|res-&gt;start
 op_assign
 id|range.parent_addr
@@ -1616,7 +1632,7 @@ id|range.size
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#endif
+)brace
 id|res-&gt;parent
 op_assign
 l_int|NULL
@@ -2375,15 +2391,6 @@ c_cond
 id|buid_vals
 op_eq
 l_int|NULL
-op_logical_or
-id|len
-OL
-l_int|2
-op_star
-r_sizeof
-(paren
-r_int
-)paren
 )paren
 (brace
 id|phb-&gt;buid
@@ -2393,7 +2400,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Big bus system.  These systems start new bus numbers under&n;&t;&t; * each phb.  Until pci domains are standard, we depend on a&n;&t;&t; * patch which makes bus numbers ints and we shift the phb&n;&t;&t; * number into the upper bits.&n;&t;&t; */
 r_struct
 id|pci_bus
 id|check
@@ -2447,6 +2453,31 @@ l_string|&quot;number, primary, secondary and subordinate are ints.&bslash;n&quo
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|2
+op_star
+r_sizeof
+(paren
+r_int
+)paren
+)paren
+id|phb-&gt;buid
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|buid_vals
+(braket
+l_int|0
+)braket
+suffix:semicolon
+singleline_comment|// Support for new OF that only has 1 integer for buid.
+r_else
 id|phb-&gt;buid
 op_assign
 (paren
@@ -2538,7 +2569,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_EEH
 r_struct
 id|device_node
 op_star
@@ -2659,6 +2689,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|is_eeh_implemented
+c_func
+(paren
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|is_eeh_configured
 c_func
 (paren
@@ -2669,16 +2708,6 @@ id|dev
 id|eeh_disable_bit
 op_assign
 l_int|0
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;PCI: eeh configured for %s %s&bslash;n&quot;
-comma
-id|dev-&gt;slot_name
-comma
-id|dev-&gt;name
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2697,7 +2726,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;PCI: failed to enable eeh for %s %s&bslash;n&quot;
+l_string|&quot;PCI: failed to enable EEH for %s %s&bslash;n&quot;
 comma
 id|dev-&gt;slot_name
 comma
@@ -2728,7 +2757,7 @@ op_assign
 id|EEH_TOKEN_DISABLED
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
 id|PPCDBG
 c_func
 (paren
@@ -2890,7 +2919,15 @@ op_amp
 id|IORESOURCE_IO
 )paren
 (brace
-macro_line|#ifdef CONFIG_PPC_EEH
+r_if
+c_cond
+(paren
+id|is_eeh_implemented
+c_func
+(paren
+)paren
+)paren
+(brace
 r_int
 r_int
 id|busno
@@ -2994,7 +3031,9 @@ id|start
 op_plus
 id|size
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
+(brace
 r_int
 r_int
 id|offset
@@ -3023,7 +3062,7 @@ id|end
 op_add_assign
 id|offset
 suffix:semicolon
-macro_line|#endif
+)brace
 id|PPCDBG
 c_func
 (paren
@@ -3087,7 +3126,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef CONFIG_PPC_EEH
+r_if
+c_cond
+(paren
+id|is_eeh_implemented
+c_func
+(paren
+)paren
+)paren
+(brace
 r_int
 r_int
 id|busno
@@ -3191,7 +3238,9 @@ id|start
 op_plus
 id|size
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
+(brace
 id|dev-&gt;resource
 (braket
 id|i
@@ -3210,7 +3259,7 @@ id|end
 op_add_assign
 id|phb-&gt;pci_mem_offset
 suffix:semicolon
-macro_line|#endif
+)brace
 )brace
 id|PPCDBG
 c_func

@@ -21,9 +21,7 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pci_dma.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#ifdef CONFIG_PPC_EEH
 macro_line|#include &lt;asm/eeh.h&gt;
-macro_line|#endif
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/* pci_io_base -- the base address from which io bars are offsets.&n; * This is the lowest I/O base address (so bar values are always positive),&n; * and it *must* be the start of ISA space if an ISA bus exists because&n; * ISA drivers use hard coded offsets.  If no ISA bus exists a dummy&n; * page is mapped and isa_io_limit prevents access to it.&n; */
 DECL|variable|isa_io_base
@@ -1959,10 +1957,6 @@ op_star
 id|res
 suffix:semicolon
 r_int
-r_int
-id|io_offset
-suffix:semicolon
-r_int
 id|i
 suffix:semicolon
 macro_line|#ifndef CONFIG_PPC_ISERIES
@@ -2122,7 +2116,15 @@ multiline_comment|/* Transparent resource -- don&squot;t try to &quot;fix&quot; 
 r_continue
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PPC_EEH
+r_if
+c_cond
+(paren
+id|is_eeh_implemented
+c_func
+(paren
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -2164,7 +2166,9 @@ l_int|0xffffffff
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
+)brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -2221,7 +2225,7 @@ id|phb-&gt;pci_mem_offset
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+)brace
 )brace
 )brace
 macro_line|#endif&t;

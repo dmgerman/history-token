@@ -83,7 +83,6 @@ mdefine_line|#define outl(data,addr)&t;&t;writel(data,((unsigned long)(addr)))
 macro_line|#else
 DECL|macro|IS_MAPPED_VADDR
 mdefine_line|#define IS_MAPPED_VADDR(port)&t;((unsigned long)(port) &gt;&gt; 60UL)
-macro_line|#ifdef CONFIG_PPC_EEH
 DECL|macro|readb
 mdefine_line|#define readb(addr)&t;&t;eeh_readb((void*)(addr))  
 DECL|macro|readw
@@ -102,26 +101,6 @@ DECL|macro|memcpy_fromio
 mdefine_line|#define memcpy_fromio(a,b,c)&t;eeh_memcpy_fromio((a),(void *)(b),(c))
 DECL|macro|memcpy_toio
 mdefine_line|#define memcpy_toio(a,b,c)&t;eeh_memcpy_toio((void *)(a),(b),(c))
-macro_line|#else
-DECL|macro|readb
-mdefine_line|#define readb(addr)&t;&t;in_8((volatile u8 *)(addr))
-DECL|macro|writeb
-mdefine_line|#define writeb(b,addr)&t;&t;out_8((volatile u8 *)(addr), (b))
-DECL|macro|readw
-mdefine_line|#define readw(addr)&t;&t;in_le16((volatile u16 *)(addr))
-DECL|macro|readl
-mdefine_line|#define readl(addr)&t;&t;in_le32((volatile u32 *)(addr))
-DECL|macro|writew
-mdefine_line|#define writew(b,addr)&t;&t;out_le16((volatile u16 *)(addr),(b))
-DECL|macro|writel
-mdefine_line|#define writel(b,addr)&t;&t;out_le32((volatile u32 *)(addr),(b))
-DECL|macro|memset_io
-mdefine_line|#define memset_io(a,b,c)&t;memset((void *)(a),(b),(c))
-DECL|macro|memcpy_fromio
-mdefine_line|#define memcpy_fromio(a,b,c)&t;memcpy((a),(void *)(b),(c))
-DECL|macro|memcpy_toio
-mdefine_line|#define memcpy_toio(a,b,c)&t;memcpy((void *)(a),(b),(c))
-macro_line|#endif
 DECL|macro|inb
 mdefine_line|#define inb(port)&t;&t;_inb((unsigned long)port)
 DECL|macro|outb
@@ -928,10 +907,8 @@ id|val
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PPC_EEH
-macro_line|#include &lt;asm/eeh.h&gt;
-macro_line|#endif
 macro_line|#ifndef CONFIG_PPC_ISERIES 
+macro_line|#include &lt;asm/eeh.h&gt;
 DECL|function|_inb
 r_static
 r_inline

@@ -858,7 +858,7 @@ id|iSeries_Write_Byte
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PPC_ISERIES */
-macro_line|#ifdef CONFIG_PPC_EEH
+macro_line|#ifndef CONFIG_PPC_ISERIES
 DECL|variable|eeh_check_failure
 id|EXPORT_SYMBOL
 c_func
@@ -873,14 +873,7 @@ c_func
 id|eeh_total_mmio_ffs
 )paren
 suffix:semicolon
-DECL|variable|eeh_total_mmio_reads
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|eeh_total_mmio_reads
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PPC_EEH */
+macro_line|#endif /* CONFIG_PPC_ISERIES */
 macro_line|#endif /* CONFIG_PCI */
 DECL|variable|iSeries_veth_dev
 id|EXPORT_SYMBOL
@@ -1098,22 +1091,6 @@ c_func
 id|get_property
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NVRAM
-DECL|variable|nvram_read_byte
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|nvram_read_byte
-)paren
-suffix:semicolon
-DECL|variable|nvram_write_byte
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|nvram_write_byte
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_NVRAM */
 DECL|variable|__ashrdi3
 id|EXPORT_SYMBOL_NOVERS
 c_func

@@ -515,7 +515,6 @@ op_star
 id|addr
 suffix:semicolon
 macro_line|#else
-macro_line|#ifdef CONFIG_PPC_EEH
 r_if
 c_cond
 (paren
@@ -553,7 +552,6 @@ id|addr
 suffix:semicolon
 multiline_comment|/* already mapped address or EEH token. */
 )brace
-macro_line|#endif
 r_return
 id|__ioremap
 c_func
