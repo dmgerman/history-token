@@ -1751,7 +1751,7 @@ l_int|16
 )braket
 suffix:semicolon
 DECL|member|bssid
-r_char
+id|u8
 id|bssid
 (braket
 l_int|4
@@ -25758,8 +25758,7 @@ l_int|5
 )braket
 )paren
 op_ne
-op_minus
-l_int|1
+l_int|0xff
 op_logical_and
 (paren
 id|status_rid.bssid
