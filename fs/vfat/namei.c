@@ -247,7 +247,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|dentry-&gt;d_lock
 )paren
 suffix:semicolon
 r_if
@@ -265,7 +265,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|dentry-&gt;d_lock
 )paren
 suffix:semicolon
 )brace
