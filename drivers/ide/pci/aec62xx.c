@@ -126,7 +126,8 @@ id|aec_devs
 id|i
 )braket
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|iobase
 op_assign
 id|pci_resource_start
@@ -3535,7 +3536,8 @@ op_star
 id|d
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|bar4reg
 op_assign
 id|pci_resource_start
