@@ -3007,13 +3007,11 @@ c_func
 (paren
 )paren
 )paren
-(brace
 id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 id|__set_current_state
 c_func
 (paren
