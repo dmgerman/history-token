@@ -9992,7 +9992,7 @@ op_assign
 id|SNDRV_DEFAULT_PTR
 suffix:semicolon
 DECL|macro|ISAPNP_ES18XX
-mdefine_line|#define ISAPNP_ES18XX(_va, _vb, _vc, _device, _audio, _control) &bslash;&n;        { &bslash;&n;                ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;                devs : { ISAPNP_DEVICE_ID(_va, _vb, _vc, _audio), &bslash;&n;                         ISAPNP_DEVICE_ID(_va, _vb, _vc, _control) } &bslash;&n;        }
+mdefine_line|#define ISAPNP_ES18XX(_va, _vb, _vc, _device, _audio, _control) &bslash;&n;        { &bslash;&n;                ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;                .devs = { ISAPNP_DEVICE_ID(_va, _vb, _vc, _audio), &bslash;&n;                          ISAPNP_DEVICE_ID(_va, _vb, _vc, _control) } &bslash;&n;        }
 DECL|variable|__devinitdata
 r_static
 r_struct

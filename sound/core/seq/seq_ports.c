@@ -1442,6 +1442,10 @@ id|port-&gt;midi_channels
 op_assign
 id|info-&gt;midi_channels
 suffix:semicolon
+id|port-&gt;midi_voices
+op_assign
+id|info-&gt;midi_voices
+suffix:semicolon
 id|port-&gt;synth_voices
 op_assign
 id|info-&gt;synth_voices
@@ -1505,6 +1509,10 @@ multiline_comment|/* information about supported channels/voices */
 id|info-&gt;midi_channels
 op_assign
 id|port-&gt;midi_channels
+suffix:semicolon
+id|info-&gt;midi_voices
+op_assign
+id|port-&gt;midi_voices
 suffix:semicolon
 id|info-&gt;synth_voices
 op_assign
@@ -2605,6 +2613,9 @@ comma
 r_int
 id|midi_channels
 comma
+r_int
+id|midi_voices
+comma
 r_char
 op_star
 id|portname
@@ -2677,6 +2688,10 @@ suffix:semicolon
 id|portinfo.midi_channels
 op_assign
 id|midi_channels
+suffix:semicolon
+id|portinfo.midi_voices
+op_assign
+id|midi_voices
 suffix:semicolon
 multiline_comment|/* Create it */
 id|ret

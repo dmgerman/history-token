@@ -302,9 +302,14 @@ id|runtime-&gt;avail
 op_ge
 id|runtime-&gt;avail_min
 op_logical_and
+(paren
+op_logical_neg
+id|substream-&gt;append
+op_logical_or
 id|runtime-&gt;avail
 op_ge
 id|count
+)paren
 suffix:semicolon
 )brace
 DECL|function|snd_rawmidi_init

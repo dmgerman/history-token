@@ -828,9 +828,9 @@ op_assign
 id|SNDRV_DEFAULT_PTR
 suffix:semicolon
 DECL|macro|ISAPNP_SB16
-mdefine_line|#define ISAPNP_SB16(_va, _vb, _vc, _device, _audio) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;devs : { ISAPNP_DEVICE_ID(_va, _vb, _vc, _audio), } &bslash;&n;&t;}
+mdefine_line|#define ISAPNP_SB16(_va, _vb, _vc, _device, _audio) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;.devs = { ISAPNP_DEVICE_ID(_va, _vb, _vc, _audio), } &bslash;&n;&t;}
 DECL|macro|ISAPNP_SBAWE
-mdefine_line|#define ISAPNP_SBAWE(_va, _vb, _vc, _device, _audio, _awe) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;devs : { ISAPNP_DEVICE_ID(_va, _vb, _vc, _audio), &bslash;&n;&t;&t;&t; ISAPNP_DEVICE_ID(_va, _vb, _vc, _awe), } &bslash;&n;&t;}
+mdefine_line|#define ISAPNP_SBAWE(_va, _vb, _vc, _device, _audio, _awe) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;.devs = { ISAPNP_DEVICE_ID(_va, _vb, _vc, _audio), &bslash;&n;&t;&t;&t; ISAPNP_DEVICE_ID(_va, _vb, _vc, _awe), } &bslash;&n;&t;}
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -3720,7 +3720,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;In case, if you have non-AWE card, try snd-card-sb16 module&bslash;n&quot;
+l_string|&quot;In case, if you have non-AWE card, try snd-sb16 module&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#else
@@ -3728,7 +3728,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;In case, if you have AWE card, try snd-card-sbawe module&bslash;n&quot;
+l_string|&quot;In case, if you have AWE card, try snd-sbawe module&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -60,6 +60,14 @@ mdefine_line|#define USE_CHANNELS_MAX&t;26
 mdefine_line|#define USE_PERIODS_MIN&t;&t;2
 mdefine_line|#define USE_PERIODS_MAX&t;&t;2
 macro_line|#endif
+macro_line|#if 0 /* ICE1712 emulation */
+mdefine_line|#define MAX_BUFFER_SIZE&t;&t;(256 * 1024)
+mdefine_line|#define USE_FORMATS&t;&t;SNDRV_PCM_FMTBIT_S32_LE
+mdefine_line|#define USE_CHANNELS_MIN&t;12
+mdefine_line|#define USE_CHANNELS_MAX&t;12
+mdefine_line|#define USE_PERIODS_MIN&t;&t;1
+mdefine_line|#define USE_PERIODS_MAX&t;&t;1024
+macro_line|#endif
 macro_line|#if 0 /* UDA1341 emulation */
 mdefine_line|#define MAX_BUFFER_SIZE&t;&t;(16380)
 mdefine_line|#define USE_FORMATS&t;&t;SNDRV_PCM_FMTBIT_S16_LE

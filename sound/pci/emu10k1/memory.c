@@ -3,7 +3,6 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu10k1.h&gt;
-macro_line|#include &lt;sound/pcm_sgbuf.h&gt;
 multiline_comment|/* page arguments of these two macros are Emu page (4096 bytes), not like&n; * aligned pages in others&n; */
 DECL|macro|__set_ptb_entry
 mdefine_line|#define __set_ptb_entry(emu,page,addr) &bslash;&n;&t;((emu)-&gt;ptb_pages[page] = cpu_to_le32(((addr) &lt;&lt; 1) | (page)))
@@ -827,6 +826,10 @@ r_int
 id|is_valid_page
 c_func
 (paren
+id|emu10k1_t
+op_star
+id|emu
+comma
 id|dma_addr_t
 id|addr
 )paren
@@ -837,13 +840,15 @@ c_cond
 id|addr
 op_amp
 op_complement
-l_int|0x7fffffffUL
+id|emu-&gt;dma_mask
 )paren
 (brace
 id|snd_printk
 c_func
 (paren
-l_string|&quot;max memory size is 2GB (addr = 0x%lx)!!&bslash;n&quot;
+l_string|&quot;max memory size is 0x%lx (addr = 0x%lx)!!&bslash;n&quot;
+comma
+id|emu-&gt;dma_mask
 comma
 (paren
 r_int
@@ -1089,25 +1094,18 @@ op_star
 id|substream
 )paren
 (brace
+id|snd_pcm_runtime_t
+op_star
+id|runtime
+op_assign
+id|substream-&gt;runtime
+suffix:semicolon
 r_struct
 id|snd_sg_buf
 op_star
 id|sgbuf
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_pcm_sgbuf_t
-comma
-id|_snd_pcm_substream_sgbuf
-c_func
-(paren
-id|substream
-)paren
-comma
-r_return
-l_int|NULL
-)paren
+id|runtime-&gt;dma_private
 suffix:semicolon
 id|snd_util_memhdr_t
 op_star
@@ -1136,11 +1134,22 @@ suffix:semicolon
 id|snd_assert
 c_func
 (paren
-id|sgbuf-&gt;size
+id|substream-&gt;dma_device.type
+op_eq
+id|SNDRV_DMA_TYPE_PCI_SG
+comma
+r_return
+l_int|NULL
+)paren
+suffix:semicolon
+id|snd_assert
+c_func
+(paren
+id|runtime-&gt;dma_bytes
 OG
 l_int|0
 op_logical_and
-id|sgbuf-&gt;size
+id|runtime-&gt;dma_bytes
 OL
 id|MAXPAGES
 op_star
@@ -1177,7 +1186,7 @@ c_func
 (paren
 id|emu
 comma
-id|sgbuf-&gt;size
+id|runtime-&gt;dma_bytes
 )paren
 suffix:semicolon
 r_if
@@ -1275,6 +1284,8 @@ op_logical_neg
 id|is_valid_page
 c_func
 (paren
+id|emu
+comma
 id|addr
 )paren
 )paren
@@ -1861,6 +1872,8 @@ op_logical_neg
 id|is_valid_page
 c_func
 (paren
+id|emu
+comma
 id|addr
 )paren
 )paren

@@ -3067,7 +3067,7 @@ c_func
 id|alsa_card_mtpav_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-mtpav=snd_enable,index,id,&n;&t;&t;&t;port,irq,hwports */
+multiline_comment|/* format is: snd-mtpav=enable,index,id,&n;&t;&t;&t;port,irq,hwports */
 DECL|function|alsa_card_mtpav_setup
 r_static
 r_int

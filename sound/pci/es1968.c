@@ -1191,19 +1191,15 @@ id|clock
 suffix:semicolon
 multiline_comment|/* clock */
 multiline_comment|/* buffer */
-DECL|member|dma_buf
-r_void
-op_star
-id|dma_buf
+DECL|member|dma_dev
+r_struct
+id|snd_dma_device
+id|dma_dev
 suffix:semicolon
-DECL|member|dma_buf_addr
-id|dma_addr_t
-id|dma_buf_addr
-suffix:semicolon
-DECL|member|dma_buf_size
-r_int
-r_int
-id|dma_buf_size
+DECL|member|dma
+r_struct
+id|snd_dma_buffer
+id|dma
 suffix:semicolon
 multiline_comment|/* Resources... */
 DECL|member|irq
@@ -3925,7 +3921,7 @@ id|es-&gt;memory-&gt;addr
 suffix:semicolon
 id|pa
 op_sub_assign
-id|chip-&gt;dma_buf_addr
+id|chip-&gt;dma.addr
 suffix:semicolon
 id|pa
 op_rshift_assign
@@ -4548,7 +4544,7 @@ suffix:semicolon
 multiline_comment|/* Offset to PCMBAR */
 id|pa
 op_sub_assign
-id|chip-&gt;dma_buf_addr
+id|chip-&gt;dma.addr
 suffix:semicolon
 id|pa
 op_rshift_assign
@@ -5902,20 +5898,15 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|chip-&gt;dma_buf
+id|chip-&gt;dma.area
 )paren
 r_return
 suffix:semicolon
-id|snd_free_pci_pages
+id|snd_dma_free_reserved
 c_func
 (paren
-id|chip-&gt;pci
-comma
-id|chip-&gt;dma_buf_size
-comma
-id|chip-&gt;dma_buf
-comma
-id|chip-&gt;dma_buf_addr
+op_amp
+id|chip-&gt;dma_dev
 )paren
 suffix:semicolon
 r_while
@@ -5975,7 +5966,33 @@ id|esm_memory_t
 op_star
 id|chunk
 suffix:semicolon
-id|chip-&gt;dma_buf
+id|snd_dma_device_pci
+c_func
+(paren
+op_amp
+id|chip-&gt;dma_dev
+comma
+id|chip-&gt;pci
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|snd_dma_get_reserved
+c_func
+(paren
+op_amp
+id|chip-&gt;dma_dev
+comma
+op_amp
+id|chip-&gt;dma
+)paren
+)paren
+(brace
+id|chip-&gt;dma.area
 op_assign
 id|snd_malloc_pci_pages_fallback
 c_func
@@ -5985,17 +6002,16 @@ comma
 id|chip-&gt;total_bufsize
 comma
 op_amp
-id|chip-&gt;dma_buf_addr
+id|chip-&gt;dma.addr
 comma
 op_amp
-id|chip-&gt;dma_buf_size
+id|chip-&gt;dma.bytes
 )paren
 suffix:semicolon
-singleline_comment|//snd_printd(&quot;es1968: allocated buffer size %ld at %p&bslash;n&quot;, chip-&gt;dma_buf_size, chip-&gt;dma_buf);
 r_if
 c_cond
 (paren
-id|chip-&gt;dma_buf
+id|chip-&gt;dma.area
 op_eq
 l_int|NULL
 )paren
@@ -6017,9 +6033,9 @@ r_if
 c_cond
 (paren
 (paren
-id|chip-&gt;dma_buf_addr
+id|chip-&gt;dma.addr
 op_plus
-id|chip-&gt;dma_buf_size
+id|chip-&gt;dma.bytes
 op_minus
 l_int|1
 )paren
@@ -6036,10 +6052,14 @@ l_int|1
 )paren
 )paren
 (brace
-id|snd_es1968_free_dmabuf
+id|snd_dma_free_pages
 c_func
 (paren
-id|chip
+op_amp
+id|chip-&gt;dma_dev
+comma
+op_amp
+id|chip-&gt;dma
 )paren
 suffix:semicolon
 id|snd_printk
@@ -6051,6 +6071,17 @@ suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+)brace
+id|snd_dma_set_reserved
+c_func
+(paren
+op_amp
+id|chip-&gt;dma_dev
+comma
+op_amp
+id|chip-&gt;dma
+)paren
 suffix:semicolon
 )brace
 id|INIT_LIST_HEAD
@@ -6097,7 +6128,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|chip-&gt;dma_buf
+id|chip-&gt;dma.area
 comma
 l_int|0
 comma
@@ -6106,19 +6137,19 @@ l_int|512
 suffix:semicolon
 id|chunk-&gt;buf
 op_assign
-id|chip-&gt;dma_buf
+id|chip-&gt;dma.area
 op_plus
 l_int|512
 suffix:semicolon
 id|chunk-&gt;addr
 op_assign
-id|chip-&gt;dma_buf_addr
+id|chip-&gt;dma.addr
 op_plus
 l_int|512
 suffix:semicolon
 id|chunk-&gt;size
 op_assign
-id|chip-&gt;dma_buf_size
+id|chip-&gt;dma.bytes
 op_minus
 l_int|512
 suffix:semicolon
@@ -7446,7 +7477,7 @@ r_int
 (paren
 id|memory-&gt;addr
 op_minus
-id|chip-&gt;dma_buf_addr
+id|chip-&gt;dma.addr
 )paren
 op_rshift
 l_int|1
@@ -8023,7 +8054,7 @@ id|chip
 comma
 l_int|0x01FC
 comma
-id|chip-&gt;dma_buf_addr
+id|chip-&gt;dma.addr
 op_rshift
 l_int|12
 )paren
@@ -8035,7 +8066,7 @@ id|chip
 comma
 l_int|0x01FD
 comma
-id|chip-&gt;dma_buf_addr
+id|chip-&gt;dma.addr
 op_rshift
 l_int|12
 )paren
@@ -8047,7 +8078,7 @@ id|chip
 comma
 l_int|0x01FE
 comma
-id|chip-&gt;dma_buf_addr
+id|chip-&gt;dma.addr
 op_rshift
 l_int|12
 )paren
@@ -8059,7 +8090,7 @@ id|chip
 comma
 l_int|0x01FF
 comma
-id|chip-&gt;dma_buf_addr
+id|chip-&gt;dma.addr
 op_rshift
 l_int|12
 )paren
@@ -10197,7 +10228,7 @@ op_plus
 l_int|0x1f
 )paren
 suffix:semicolon
-multiline_comment|/* it appears some maestros (dell 7500) only work if these are set,&n;&t;   regardless of whether we use the assp or not. */
+multiline_comment|/* it appears some maestros (dell 7500) only work if these are set,&n;&t;   regardless of wether we use the assp or not. */
 id|outb
 c_func
 (paren
@@ -10733,7 +10764,7 @@ multiline_comment|/* need to restore the base pointers.. */
 r_if
 c_cond
 (paren
-id|chip-&gt;dma_buf_addr
+id|chip-&gt;dma.addr
 )paren
 (brace
 multiline_comment|/* set PCMBAR */
@@ -10744,7 +10775,7 @@ id|chip
 comma
 l_int|0x01FC
 comma
-id|chip-&gt;dma_buf_addr
+id|chip-&gt;dma.addr
 op_rshift
 l_int|12
 )paren
@@ -11544,6 +11575,8 @@ r_if
 c_cond
 (paren
 id|do_pm
+OG
+l_int|1
 )paren
 (brace
 multiline_comment|/* disable power-management if not maestro2e or&n;&t;&t; * if not on the whitelist&n;&t;&t; */
