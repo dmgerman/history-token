@@ -1488,6 +1488,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_ACPI_SLEEP
 DECL|function|reset_videomode_after_s3
 r_static
 id|__init
@@ -1539,6 +1540,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Some Bioses enable the PS/2 mouse (touchpad) at resume, even if it was&n; * disabled before the suspend. Linux used to get terribly confused by that.&n; */
 DECL|function|broken_ps2_resume
 r_static
