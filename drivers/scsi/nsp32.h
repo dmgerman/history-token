@@ -106,14 +106,8 @@ id|u16
 id|u16_le
 suffix:semicolon
 multiline_comment|/*&n; * MACRO&n; */
-DECL|macro|NUMBER
-mdefine_line|#define NUMBER(arr) ((int) (sizeof(arr) / sizeof(arr[0])))
 DECL|macro|BIT
 mdefine_line|#define BIT(x)      (1UL &lt;&lt; (x))
-macro_line|#ifndef MIN
-DECL|macro|MIN
-macro_line|# define MIN(a,b)   ((a) &gt; (b) ? (b) : (a))
-macro_line|#endif
 multiline_comment|/*&n; * BASIC Definitions&n; */
 macro_line|#ifndef TRUE
 DECL|macro|TRUE
