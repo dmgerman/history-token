@@ -2099,32 +2099,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t; * find original bio if it was bounced&n;&t; */
-r_if
-c_cond
-(paren
-id|bio-&gt;bi_private
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * someone stole our bio, must not happen&n;&t;&t; */
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|bio_flagged
-c_func
-(paren
-id|bio
-comma
-id|BIO_BOUNCED
-)paren
-)paren
-suffix:semicolon
-id|bio
-op_assign
-id|bio-&gt;bi_private
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * make sure we dirty pages we wrote to&n;&t; */
 id|__bio_for_each_segment
 c_func

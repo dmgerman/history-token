@@ -6,7 +6,7 @@ multiline_comment|/* We don&squot;t trust the value of&n;   sb-&gt;sv_sbd2-&gt;s
 DECL|function|get_chunk
 r_static
 r_inline
-id|u32
+id|sysv_zone_t
 op_star
 id|get_chunk
 c_func
@@ -43,7 +43,7 @@ id|FSTYPE_SYSV4
 )paren
 r_return
 (paren
-id|u32
+id|sysv_zone_t
 op_star
 )paren
 (paren
@@ -55,7 +55,7 @@ suffix:semicolon
 r_else
 r_return
 (paren
-id|u32
+id|sysv_zone_t
 op_star
 )paren
 (paren
@@ -76,7 +76,7 @@ id|super_block
 op_star
 id|sb
 comma
-id|u32
+id|sysv_zone_t
 id|nr
 )paren
 (brace
@@ -96,7 +96,7 @@ id|buffer_head
 op_star
 id|bh
 suffix:semicolon
-id|u32
+id|sysv_zone_t
 op_star
 id|blocks
 op_assign
@@ -248,7 +248,7 @@ id|sb-&gt;s_blocksize
 suffix:semicolon
 op_star
 (paren
-id|u16
+id|__fs16
 op_star
 )paren
 id|bh-&gt;b_data
@@ -348,7 +348,7 @@ id|sb
 suffix:semicolon
 )brace
 DECL|function|sysv_new_block
-id|u32
+id|sysv_zone_t
 id|sysv_new_block
 c_func
 (paren
@@ -373,7 +373,7 @@ r_int
 r_int
 id|block
 suffix:semicolon
-id|u32
+id|sysv_zone_t
 id|nr
 suffix:semicolon
 r_struct
@@ -540,7 +540,7 @@ id|sbi
 comma
 op_star
 (paren
-id|u16
+id|__fs16
 op_star
 )paren
 id|bh-&gt;b_data
@@ -684,7 +684,7 @@ id|bh
 op_assign
 l_int|NULL
 suffix:semicolon
-id|u32
+id|sysv_zone_t
 op_star
 id|blocks
 suffix:semicolon
@@ -756,6 +756,9 @@ c_loop
 l_int|1
 )paren
 (brace
+id|sysv_zone_t
+id|zone
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -766,7 +769,7 @@ id|sbi-&gt;s_flc_size
 r_goto
 id|E2big
 suffix:semicolon
-id|block
+id|zone
 op_assign
 l_int|0
 suffix:semicolon
@@ -776,7 +779,7 @@ c_loop
 id|n
 op_logical_and
 (paren
-id|block
+id|zone
 op_assign
 id|blocks
 (braket
@@ -793,7 +796,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|block
+id|zone
 op_eq
 l_int|0
 )paren
@@ -806,7 +809,7 @@ c_func
 (paren
 id|sbi
 comma
-id|block
+id|zone
 )paren
 suffix:semicolon
 r_if
@@ -866,7 +869,7 @@ id|sbi
 comma
 op_star
 (paren
-id|u16
+id|__fs16
 op_star
 )paren
 id|bh-&gt;b_data

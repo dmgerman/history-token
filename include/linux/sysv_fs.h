@@ -13,16 +13,28 @@ id|scream
 op_logical_neg
 op_lshift
 macro_line|#endif
+macro_line|#ifndef __KERNEL__
+DECL|typedef|__fs16
+r_typedef
+id|u16
+id|__fs16
+suffix:semicolon
+DECL|typedef|__fs16
+r_typedef
+id|u32
+id|__fs16
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* inode numbers are 16 bit */
 DECL|typedef|sysv_ino_t
 r_typedef
-id|u16
+id|__fs16
 id|sysv_ino_t
 suffix:semicolon
 multiline_comment|/* Block numbers are 24 bit, sometimes stored in 32 bit.&n;   On Coherent FS, they are always stored in PDP-11 manner: the least&n;   significant 16 bits come last. */
 DECL|typedef|sysv_zone_t
 r_typedef
-id|u32
+id|__fs32
 id|sysv_zone_t
 suffix:semicolon
 multiline_comment|/* 0 is non-existent */
@@ -40,24 +52,24 @@ r_struct
 id|xenix_super_block
 (brace
 DECL|member|s_isize
-id|u16
+id|__fs16
 id|s_isize
 suffix:semicolon
 multiline_comment|/* index of first data zone */
 DECL|member|__packed2__
-id|u32
+id|__fs32
 id|s_fsize
 id|__packed2__
 suffix:semicolon
 multiline_comment|/* total number of zones of this fs */
 multiline_comment|/* the start of the free block list: */
 DECL|member|s_nfree
-id|u16
+id|__fs16
 id|s_nfree
 suffix:semicolon
 multiline_comment|/* number of free blocks in s_free, &lt;= XENIX_NICFREE */
 DECL|member|s_free
-id|u32
+id|sysv_zone_t
 id|s_free
 (braket
 id|XENIX_NICFREE
@@ -66,7 +78,7 @@ suffix:semicolon
 multiline_comment|/* first free block list chunk */
 multiline_comment|/* the cache of free inodes: */
 DECL|member|s_ninode
-id|u16
+id|__fs16
 id|s_ninode
 suffix:semicolon
 multiline_comment|/* number of free inodes in s_inode, &lt;= XENIX_NICINOD */
@@ -100,24 +112,24 @@ id|s_ronly
 suffix:semicolon
 multiline_comment|/* flag whether fs is mounted read-only */
 DECL|member|__packed2__
-id|u32
+id|__fs32
 id|s_time
 id|__packed2__
 suffix:semicolon
 multiline_comment|/* time of last super block update */
 DECL|member|__packed2__
-id|u32
+id|__fs32
 id|s_tfree
 id|__packed2__
 suffix:semicolon
 multiline_comment|/* total number of free zones */
 DECL|member|s_tinode
-id|u16
+id|__fs16
 id|s_tinode
 suffix:semicolon
 multiline_comment|/* total number of free inodes */
 DECL|member|s_dinfo
-id|s16
+id|__fs16
 id|s_dinfo
 (braket
 l_int|4
@@ -158,7 +170,7 @@ id|s_magic
 suffix:semicolon
 multiline_comment|/* version of file system */
 DECL|member|s_type
-id|s32
+id|__fs32
 id|s_type
 suffix:semicolon
 multiline_comment|/* type of file system: 1 for 512 byte blocks&n;&t;&t;&t;&t;&t;&t;&t;&t;2 for 1024 byte blocks&n;&t;&t;&t;&t;&t;&t;&t;&t;3 for 2048 byte blocks */
@@ -175,7 +187,7 @@ r_struct
 id|sysv4_super_block
 (brace
 DECL|member|s_isize
-id|u16
+id|__fs16
 id|s_isize
 suffix:semicolon
 multiline_comment|/* index of first data zone */
@@ -184,13 +196,13 @@ id|u16
 id|s_pad0
 suffix:semicolon
 DECL|member|s_fsize
-id|u32
+id|__fs32
 id|s_fsize
 suffix:semicolon
 multiline_comment|/* total number of zones of this fs */
 multiline_comment|/* the start of the free block list: */
 DECL|member|s_nfree
-id|u16
+id|__fs16
 id|s_nfree
 suffix:semicolon
 multiline_comment|/* number of free blocks in s_free, &lt;= SYSV_NICFREE */
@@ -199,7 +211,7 @@ id|u16
 id|s_pad1
 suffix:semicolon
 DECL|member|s_free
-id|u32
+id|sysv_zone_t
 id|s_free
 (braket
 id|SYSV_NICFREE
@@ -208,7 +220,7 @@ suffix:semicolon
 multiline_comment|/* first free block list chunk */
 multiline_comment|/* the cache of free inodes: */
 DECL|member|s_ninode
-id|u16
+id|__fs16
 id|s_ninode
 suffix:semicolon
 multiline_comment|/* number of free inodes in s_inode, &lt;= SYSV_NICINOD */
@@ -246,12 +258,12 @@ id|s_ronly
 suffix:semicolon
 multiline_comment|/* flag whether fs is mounted read-only */
 DECL|member|s_time
-id|u32
+id|__fs32
 id|s_time
 suffix:semicolon
 multiline_comment|/* time of last super block update */
 DECL|member|s_dinfo
-id|s16
+id|__fs16
 id|s_dinfo
 (braket
 l_int|4
@@ -259,12 +271,12 @@ l_int|4
 suffix:semicolon
 multiline_comment|/* device information ?? */
 DECL|member|s_tfree
-id|u32
+id|__fs32
 id|s_tfree
 suffix:semicolon
 multiline_comment|/* total number of free zones */
 DECL|member|s_tinode
-id|u16
+id|__fs16
 id|s_tinode
 suffix:semicolon
 multiline_comment|/* total number of free inodes */
@@ -296,7 +308,7 @@ l_int|12
 )braket
 suffix:semicolon
 DECL|member|s_state
-id|s32
+id|__fs32
 id|s_state
 suffix:semicolon
 multiline_comment|/* file system state: 0x7c269d38-s_time means clean */
@@ -306,7 +318,7 @@ id|s_magic
 suffix:semicolon
 multiline_comment|/* version of file system */
 DECL|member|s_type
-id|s32
+id|__fs32
 id|s_type
 suffix:semicolon
 multiline_comment|/* type of file system: 1 for 512 byte blocks&n;&t;&t;&t;&t;&t;&t;&t;&t;2 for 1024 byte blocks */
@@ -318,24 +330,24 @@ r_struct
 id|sysv2_super_block
 (brace
 DECL|member|s_isize
-id|u16
+id|__fs16
 id|s_isize
 suffix:semicolon
 multiline_comment|/* index of first data zone */
 DECL|member|__packed2__
-id|u32
+id|__fs32
 id|s_fsize
 id|__packed2__
 suffix:semicolon
 multiline_comment|/* total number of zones of this fs */
 multiline_comment|/* the start of the free block list: */
 DECL|member|s_nfree
-id|u16
+id|__fs16
 id|s_nfree
 suffix:semicolon
 multiline_comment|/* number of free blocks in s_free, &lt;= SYSV_NICFREE */
 DECL|member|s_free
-id|u32
+id|sysv_zone_t
 id|s_free
 (braket
 id|SYSV_NICFREE
@@ -344,7 +356,7 @@ suffix:semicolon
 multiline_comment|/* first free block list chunk */
 multiline_comment|/* the cache of free inodes: */
 DECL|member|s_ninode
-id|u16
+id|__fs16
 id|s_ninode
 suffix:semicolon
 multiline_comment|/* number of free inodes in s_inode, &lt;= SYSV_NICINOD */
@@ -378,13 +390,13 @@ id|s_ronly
 suffix:semicolon
 multiline_comment|/* flag whether fs is mounted read-only */
 DECL|member|__packed2__
-id|u32
+id|__fs32
 id|s_time
 id|__packed2__
 suffix:semicolon
 multiline_comment|/* time of last super block update */
 DECL|member|s_dinfo
-id|s16
+id|__fs16
 id|s_dinfo
 (braket
 l_int|4
@@ -392,13 +404,13 @@ l_int|4
 suffix:semicolon
 multiline_comment|/* device information ?? */
 DECL|member|__packed2__
-id|u32
+id|__fs32
 id|s_tfree
 id|__packed2__
 suffix:semicolon
 multiline_comment|/* total number of free zones */
 DECL|member|s_tinode
-id|u16
+id|__fs16
 id|s_tinode
 suffix:semicolon
 multiline_comment|/* total number of free inodes */
@@ -426,7 +438,7 @@ l_int|14
 )braket
 suffix:semicolon
 DECL|member|s_state
-id|s32
+id|__fs32
 id|s_state
 suffix:semicolon
 multiline_comment|/* file system state: 0xcb096f43 means clean */
@@ -436,7 +448,7 @@ id|s_magic
 suffix:semicolon
 multiline_comment|/* version of file system */
 DECL|member|s_type
-id|s32
+id|__fs32
 id|s_type
 suffix:semicolon
 multiline_comment|/* type of file system: 1 for 512 byte blocks&n;&t;&t;&t;&t;&t;&t;&t;&t;2 for 1024 byte blocks */
@@ -452,24 +464,24 @@ r_struct
 id|v7_super_block
 (brace
 DECL|member|s_isize
-id|u16
+id|__fs16
 id|s_isize
 suffix:semicolon
 multiline_comment|/* index of first data zone */
 DECL|member|__packed2__
-id|u32
+id|__fs32
 id|s_fsize
 id|__packed2__
 suffix:semicolon
 multiline_comment|/* total number of zones of this fs */
 multiline_comment|/* the start of the free block list: */
 DECL|member|s_nfree
-id|u16
+id|__fs16
 id|s_nfree
 suffix:semicolon
 multiline_comment|/* number of free blocks in s_free, &lt;= V7_NICFREE */
 DECL|member|s_free
-id|u32
+id|sysv_zone_t
 id|s_free
 (braket
 id|V7_NICFREE
@@ -478,7 +490,7 @@ suffix:semicolon
 multiline_comment|/* first free block list chunk */
 multiline_comment|/* the cache of free inodes: */
 DECL|member|s_ninode
-id|u16
+id|__fs16
 id|s_ninode
 suffix:semicolon
 multiline_comment|/* number of free inodes in s_inode, &lt;= V7_NICINOD */
@@ -512,30 +524,30 @@ id|s_ronly
 suffix:semicolon
 multiline_comment|/* flag whether fs is mounted read-only */
 DECL|member|__packed2__
-id|u32
+id|__fs32
 id|s_time
 id|__packed2__
 suffix:semicolon
 multiline_comment|/* time of last super block update */
 multiline_comment|/* the following fields are not maintained by V7: */
 DECL|member|__packed2__
-id|u32
+id|__fs32
 id|s_tfree
 id|__packed2__
 suffix:semicolon
 multiline_comment|/* total number of free zones */
 DECL|member|s_tinode
-id|u16
+id|__fs16
 id|s_tinode
 suffix:semicolon
 multiline_comment|/* total number of free inodes */
 DECL|member|s_m
-id|u16
+id|__fs16
 id|s_m
 suffix:semicolon
 multiline_comment|/* interleave factor */
 DECL|member|s_n
-id|u16
+id|__fs16
 id|s_n
 suffix:semicolon
 multiline_comment|/* interleave factor */
@@ -567,24 +579,24 @@ r_struct
 id|coh_super_block
 (brace
 DECL|member|s_isize
-id|u16
+id|__fs16
 id|s_isize
 suffix:semicolon
 multiline_comment|/* index of first data zone */
 DECL|member|__packed2__
-id|u32
+id|__fs32
 id|s_fsize
 id|__packed2__
 suffix:semicolon
 multiline_comment|/* total number of zones of this fs */
 multiline_comment|/* the start of the free block list: */
 DECL|member|s_nfree
-id|u16
+id|__fs16
 id|s_nfree
 suffix:semicolon
 multiline_comment|/* number of free blocks in s_free, &lt;= COH_NICFREE */
 DECL|member|__packed2__
-id|u32
+id|sysv_zone_t
 id|s_free
 (braket
 id|COH_NICFREE
@@ -594,7 +606,7 @@ suffix:semicolon
 multiline_comment|/* first free block list chunk */
 multiline_comment|/* the cache of free inodes: */
 DECL|member|s_ninode
-id|u16
+id|__fs16
 id|s_ninode
 suffix:semicolon
 multiline_comment|/* number of free inodes in s_inode, &lt;= COH_NICINOD */
@@ -628,29 +640,29 @@ id|s_ronly
 suffix:semicolon
 multiline_comment|/* flag whether fs is mounted read-only */
 DECL|member|__packed2__
-id|u32
+id|__fs32
 id|s_time
 id|__packed2__
 suffix:semicolon
 multiline_comment|/* time of last super block update */
 DECL|member|__packed2__
-id|u32
+id|__fs32
 id|s_tfree
 id|__packed2__
 suffix:semicolon
 multiline_comment|/* total number of free zones */
 DECL|member|s_tinode
-id|u16
+id|__fs16
 id|s_tinode
 suffix:semicolon
 multiline_comment|/* total number of free inodes */
 DECL|member|s_interleave_m
-id|u16
+id|__fs16
 id|s_interleave_m
 suffix:semicolon
 multiline_comment|/* interleave factor */
 DECL|member|s_interleave_n
-id|u16
+id|__fs16
 id|s_interleave_n
 suffix:semicolon
 DECL|member|s_fname
@@ -670,7 +682,7 @@ l_int|6
 suffix:semicolon
 multiline_comment|/* file system pack name */
 DECL|member|s_unique
-id|u32
+id|__fs32
 id|s_unique
 suffix:semicolon
 multiline_comment|/* zero, not used */
@@ -682,23 +694,23 @@ r_struct
 id|sysv_inode
 (brace
 DECL|member|i_mode
-id|u16
+id|__fs16
 id|i_mode
 suffix:semicolon
 DECL|member|i_nlink
-id|u16
+id|__fs16
 id|i_nlink
 suffix:semicolon
 DECL|member|i_uid
-id|u16
+id|__fs16
 id|i_uid
 suffix:semicolon
 DECL|member|i_gid
-id|u16
+id|__fs16
 id|i_gid
 suffix:semicolon
 DECL|member|i_size
-id|u32
+id|__fs32
 id|i_size
 suffix:semicolon
 DECL|member|i_data
@@ -723,17 +735,17 @@ id|u8
 id|i_gen
 suffix:semicolon
 DECL|member|i_atime
-id|u32
+id|__fs32
 id|i_atime
 suffix:semicolon
 multiline_comment|/* time of last access */
 DECL|member|i_mtime
-id|u32
+id|__fs32
 id|i_mtime
 suffix:semicolon
 multiline_comment|/* time of last modification */
 DECL|member|i_ctime
-id|u32
+id|__fs32
 id|i_ctime
 suffix:semicolon
 multiline_comment|/* time of creation */

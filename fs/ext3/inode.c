@@ -868,12 +868,12 @@ r_typedef
 r_struct
 (brace
 DECL|member|p
-id|u32
+id|__le32
 op_star
 id|p
 suffix:semicolon
 DECL|member|key
-id|u32
+id|__le32
 id|key
 suffix:semicolon
 DECL|member|bh
@@ -902,7 +902,7 @@ id|buffer_head
 op_star
 id|bh
 comma
-id|u32
+id|__le32
 op_star
 id|v
 )paren
@@ -1418,7 +1418,7 @@ comma
 id|bh
 comma
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -1502,7 +1502,7 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|u32
+id|__le32
 op_star
 id|start
 op_assign
@@ -1510,14 +1510,14 @@ id|ind-&gt;bh
 ques
 c_cond
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|ind-&gt;bh-&gt;b_data
 suffix:colon
 id|ei-&gt;i_data
 suffix:semicolon
-id|u32
+id|__le32
 op_star
 id|p
 suffix:semicolon
@@ -1969,7 +1969,7 @@ dot
 id|p
 op_assign
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -6663,11 +6663,11 @@ r_int
 id|all_zeroes
 c_func
 (paren
-id|u32
+id|__le32
 op_star
 id|p
 comma
-id|u32
+id|__le32
 op_star
 id|q
 )paren
@@ -6721,7 +6721,7 @@ id|chain
 l_int|4
 )braket
 comma
-id|u32
+id|__le32
 op_star
 id|top
 )paren
@@ -6828,7 +6828,7 @@ id|all_zeroes
 c_func
 (paren
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|p-&gt;bh-&gt;b_data
@@ -6932,16 +6932,16 @@ r_int
 r_int
 id|count
 comma
-id|u32
+id|__le32
 op_star
 id|first
 comma
-id|u32
+id|__le32
 op_star
 id|last
 )paren
 (brace
-id|u32
+id|__le32
 op_star
 id|p
 suffix:semicolon
@@ -7122,11 +7122,11 @@ id|buffer_head
 op_star
 id|this_bh
 comma
-id|u32
+id|__le32
 op_star
 id|first
 comma
-id|u32
+id|__le32
 op_star
 id|last
 )paren
@@ -7145,7 +7145,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Number of blocks in the run */
-id|u32
+id|__le32
 op_star
 id|block_to_free_p
 op_assign
@@ -7157,7 +7157,7 @@ r_int
 id|nr
 suffix:semicolon
 multiline_comment|/* Current block # */
-id|u32
+id|__le32
 op_star
 id|p
 suffix:semicolon
@@ -7371,11 +7371,11 @@ id|buffer_head
 op_star
 id|parent_bh
 comma
-id|u32
+id|__le32
 op_star
 id|first
 comma
-id|u32
+id|__le32
 op_star
 id|last
 comma
@@ -7387,7 +7387,7 @@ r_int
 r_int
 id|nr
 suffix:semicolon
-id|u32
+id|__le32
 op_star
 id|p
 suffix:semicolon
@@ -7509,13 +7509,13 @@ comma
 id|bh
 comma
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|bh-&gt;b_data
 comma
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -7700,7 +7700,7 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|u32
+id|__le32
 op_star
 id|i_data
 op_assign
@@ -7738,7 +7738,7 @@ id|Indirect
 op_star
 id|partial
 suffix:semicolon
-r_int
+id|__le32
 id|nr
 op_assign
 l_int|0
@@ -8168,7 +8168,7 @@ op_plus
 l_int|1
 comma
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|partial-&gt;bh-&gt;b_data

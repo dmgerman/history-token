@@ -1852,10 +1852,10 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|u32
+id|__be32
 id|addr
 suffix:semicolon
-id|u16
+id|__be16
 id|port
 suffix:semicolon
 id|LIST_HEAD
@@ -2498,7 +2498,7 @@ id|iov
 l_int|2
 )braket
 suffix:semicolon
-r_uint32
+id|__be32
 id|_error
 suffix:semicolon
 r_int
@@ -2708,13 +2708,13 @@ id|ahdr.type
 comma
 id|len
 comma
-id|htonl
+id|ntohl
 c_func
 (paren
 id|sin.sin_addr.s_addr
 )paren
 comma
-id|htons
+id|ntohs
 c_func
 (paren
 id|sin.sin_port
@@ -2795,7 +2795,7 @@ r_struct
 id|msghdr
 id|msg
 suffix:semicolon
-r_uint16
+id|__be16
 id|port
 suffix:semicolon
 r_int

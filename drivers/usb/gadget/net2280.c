@@ -792,6 +792,7 @@ r_int
 id|handshake
 (paren
 id|u32
+id|__iomem
 op_star
 id|ptr
 comma
@@ -882,6 +883,7 @@ id|ep_reset
 (paren
 r_struct
 id|net2280_regs
+id|__iomem
 op_star
 id|regs
 comma
@@ -1788,6 +1790,7 @@ id|req
 (brace
 r_struct
 id|net2280_ep_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -1991,9 +1994,11 @@ id|ep
 )paren
 (brace
 id|u32
+id|__iomem
 op_star
 id|statp
-comma
+suffix:semicolon
+id|u32
 id|tmp
 suffix:semicolon
 id|ASSERT_OUT_NAKING
@@ -2111,6 +2116,7 @@ id|req
 (brace
 r_struct
 id|net2280_ep_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -2716,6 +2722,7 @@ id|spin_stop_dma
 (paren
 r_struct
 id|net2280_dma_regs
+id|__iomem
 op_star
 id|dma
 )paren
@@ -2745,6 +2752,7 @@ id|stop_dma
 (paren
 r_struct
 id|net2280_dma_regs
+id|__iomem
 op_star
 id|dma
 )paren
@@ -2793,6 +2801,7 @@ id|td_dma
 (brace
 r_struct
 id|net2280_dma_regs
+id|__iomem
 op_star
 id|dma
 op_assign
@@ -2899,6 +2908,7 @@ id|tmp
 suffix:semicolon
 r_struct
 id|net2280_dma_regs
+id|__iomem
 op_star
 id|dma
 op_assign
@@ -10775,6 +10785,7 @@ op_increment
 (brace
 r_struct
 id|net2280_dma_regs
+id|__iomem
 op_star
 id|dma
 suffix:semicolon
@@ -11397,6 +11408,7 @@ comma
 id|len
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|base
 op_assign
@@ -11636,6 +11648,7 @@ op_assign
 (paren
 r_struct
 id|net2280_regs
+id|__iomem
 op_star
 )paren
 id|base
@@ -11645,6 +11658,7 @@ op_assign
 (paren
 r_struct
 id|net2280_usb_regs
+id|__iomem
 op_star
 )paren
 (paren
@@ -11658,6 +11672,7 @@ op_assign
 (paren
 r_struct
 id|net2280_pci_regs
+id|__iomem
 op_star
 )paren
 (paren
@@ -11671,6 +11686,7 @@ op_assign
 (paren
 r_struct
 id|net2280_dma_regs
+id|__iomem
 op_star
 )paren
 (paren
@@ -11684,6 +11700,7 @@ op_assign
 (paren
 r_struct
 id|net2280_dep_regs
+id|__iomem
 op_star
 )paren
 (paren
@@ -11697,6 +11714,7 @@ op_assign
 (paren
 r_struct
 id|net2280_ep_regs
+id|__iomem
 op_star
 )paren
 (paren

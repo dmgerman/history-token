@@ -1366,7 +1366,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|u32
+id|__be32
 op_star
 id|bp
 suffix:semicolon
@@ -2010,7 +2010,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|u32
+id|__be32
 op_star
 id|bp
 suffix:semicolon
@@ -2762,7 +2762,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|u32
+id|__be32
 op_star
 id|bp
 suffix:semicolon

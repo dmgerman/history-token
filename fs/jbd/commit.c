@@ -1371,7 +1371,7 @@ l_int|0
 suffix:semicolon
 id|header-&gt;h_magic
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|JFS_MAGIC_NUMBER
@@ -1379,7 +1379,7 @@ id|JFS_MAGIC_NUMBER
 suffix:semicolon
 id|header-&gt;h_blocktype
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|JFS_DESCRIPTOR_BLOCK
@@ -1387,7 +1387,7 @@ id|JFS_DESCRIPTOR_BLOCK
 suffix:semicolon
 id|header-&gt;h_sequence
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|commit_transaction-&gt;t_tid
@@ -1606,7 +1606,7 @@ id|tagp
 suffix:semicolon
 id|tag-&gt;t_blocknr
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|jh2bh
@@ -1620,7 +1620,7 @@ id|b_blocknr
 suffix:semicolon
 id|tag-&gt;t_flags
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|tag_flag
@@ -1707,7 +1707,7 @@ suffix:semicolon
 multiline_comment|/* Write an end-of-descriptor marker before&n;                           submitting the IOs.  &quot;tag&quot; still points to&n;                           the last tag we set up. */
 id|tag-&gt;t_flags
 op_or_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|JFS_FLAG_LAST_TAG
@@ -2208,7 +2208,7 @@ id|b_data
 suffix:semicolon
 id|tmp-&gt;h_magic
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|JFS_MAGIC_NUMBER
@@ -2216,7 +2216,7 @@ id|JFS_MAGIC_NUMBER
 suffix:semicolon
 id|tmp-&gt;h_blocktype
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|JFS_COMMIT_BLOCK
@@ -2224,7 +2224,7 @@ id|JFS_COMMIT_BLOCK
 suffix:semicolon
 id|tmp-&gt;h_sequence
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|commit_transaction-&gt;t_tid

@@ -646,7 +646,7 @@ op_logical_neg
 (paren
 id|tag-&gt;t_flags
 op_amp
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|JFS_FLAG_SAME_UUID
@@ -662,7 +662,7 @@ c_cond
 (paren
 id|tag-&gt;t_flags
 op_amp
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|JFS_FLAG_LAST_TAG
@@ -733,7 +733,7 @@ l_int|1
 comma
 l_string|&quot;No recovery required, last transaction %d&bslash;n&quot;
 comma
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_sequence
@@ -742,7 +742,7 @@ id|sb-&gt;s_sequence
 suffix:semicolon
 id|journal-&gt;j_transaction_sequence
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_sequence
@@ -935,7 +935,7 @@ id|dropped
 op_assign
 id|info.end_transaction
 op_minus
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_sequence
@@ -1063,7 +1063,7 @@ id|journal-&gt;j_superblock
 suffix:semicolon
 id|next_commit_ID
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_sequence
@@ -1071,7 +1071,7 @@ id|sb-&gt;s_sequence
 suffix:semicolon
 id|next_log_block
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_start
@@ -1222,7 +1222,7 @@ c_cond
 (paren
 id|tmp-&gt;h_magic
 op_ne
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|JFS_MAGIC_NUMBER
@@ -1240,7 +1240,7 @@ suffix:semicolon
 )brace
 id|blocktype
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|tmp-&gt;h_blocktype
@@ -1248,7 +1248,7 @@ id|tmp-&gt;h_blocktype
 suffix:semicolon
 id|sequence
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|tmp-&gt;h_sequence
@@ -1372,7 +1372,7 @@ id|tagp
 suffix:semicolon
 id|flags
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|tag-&gt;t_flags
@@ -1443,7 +1443,7 @@ l_int|NULL
 suffix:semicolon
 id|blocknr
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|tag-&gt;t_blocknr
@@ -1553,14 +1553,13 @@ id|JFS_FLAG_ESCAPE
 op_star
 (paren
 (paren
-r_int
-r_int
+id|__be32
 op_star
 )paren
 id|bh-&gt;b_data
 )paren
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|JFS_MAGIC_NUMBER
@@ -1853,7 +1852,7 @@ id|journal_revoke_header_t
 suffix:semicolon
 id|max
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|header-&gt;r_count
@@ -1876,14 +1875,13 @@ id|err
 suffix:semicolon
 id|blocknr
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 op_star
 (paren
 (paren
-r_int
-r_int
+id|__be32
 op_star
 )paren
 (paren

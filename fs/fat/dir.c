@@ -4233,7 +4233,7 @@ id|msdos_dir_entry
 op_star
 id|de
 suffix:semicolon
-id|__u16
+id|__le16
 id|date
 comma
 id|time

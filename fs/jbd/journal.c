@@ -1051,8 +1051,7 @@ c_cond
 op_star
 (paren
 (paren
-r_int
-r_int
+id|__be32
 op_star
 )paren
 (paren
@@ -1062,7 +1061,7 @@ id|new_offset
 )paren
 )paren
 op_eq
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|JFS_MAGIC_NUMBER
@@ -2684,7 +2683,7 @@ id|last
 suffix:semicolon
 id|first
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_first
@@ -2692,7 +2691,7 @@ id|sb-&gt;s_first
 suffix:semicolon
 id|last
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_maxlen
@@ -2973,7 +2972,7 @@ id|journal-&gt;j_superblock
 suffix:semicolon
 id|sb-&gt;s_header.h_magic
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|JFS_MAGIC_NUMBER
@@ -2981,7 +2980,7 @@ id|JFS_MAGIC_NUMBER
 suffix:semicolon
 id|sb-&gt;s_header.h_blocktype
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|JFS_SUPERBLOCK_V2
@@ -2989,7 +2988,7 @@ id|JFS_SUPERBLOCK_V2
 suffix:semicolon
 id|sb-&gt;s_blocksize
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|journal-&gt;j_blocksize
@@ -2997,7 +2996,7 @@ id|journal-&gt;j_blocksize
 suffix:semicolon
 id|sb-&gt;s_maxlen
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|journal-&gt;j_maxlen
@@ -3005,7 +3004,7 @@ id|journal-&gt;j_maxlen
 suffix:semicolon
 id|sb-&gt;s_first
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 l_int|1
@@ -3114,7 +3113,7 @@ id|journal-&gt;j_errno
 suffix:semicolon
 id|sb-&gt;s_sequence
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|journal-&gt;j_tail_sequence
@@ -3122,7 +3121,7 @@ id|journal-&gt;j_tail_sequence
 suffix:semicolon
 id|sb-&gt;s_start
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|journal-&gt;j_tail
@@ -3130,7 +3129,7 @@ id|journal-&gt;j_tail
 suffix:semicolon
 id|sb-&gt;s_errno
 op_assign
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|journal-&gt;j_errno
@@ -3316,7 +3315,7 @@ c_cond
 (paren
 id|sb-&gt;s_header.h_magic
 op_ne
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|JFS_MAGIC_NUMBER
@@ -3324,7 +3323,7 @@ id|JFS_MAGIC_NUMBER
 op_logical_or
 id|sb-&gt;s_blocksize
 op_ne
-id|htonl
+id|cpu_to_be32
 c_func
 (paren
 id|journal-&gt;j_blocksize
@@ -3345,7 +3344,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_header.h_blocktype
@@ -3386,7 +3385,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_maxlen
@@ -3396,7 +3395,7 @@ id|journal-&gt;j_maxlen
 )paren
 id|journal-&gt;j_maxlen
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_maxlen
@@ -3406,7 +3405,7 @@ r_else
 r_if
 c_cond
 (paren
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_maxlen
@@ -3481,7 +3480,7 @@ id|journal-&gt;j_superblock
 suffix:semicolon
 id|journal-&gt;j_tail_sequence
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_sequence
@@ -3489,7 +3488,7 @@ id|sb-&gt;s_sequence
 suffix:semicolon
 id|journal-&gt;j_tail
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_start
@@ -3497,7 +3496,7 @@ id|sb-&gt;s_start
 suffix:semicolon
 id|journal-&gt;j_first
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_first
@@ -3505,7 +3504,7 @@ id|sb-&gt;s_first
 suffix:semicolon
 id|journal-&gt;j_last
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_maxlen
@@ -3513,7 +3512,7 @@ id|sb-&gt;s_maxlen
 suffix:semicolon
 id|journal-&gt;j_errno
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_errno
@@ -4162,7 +4161,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_header.h_blocktype
@@ -4253,7 +4252,7 @@ id|sb
 suffix:semicolon
 id|blocksize
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|sb-&gt;s_blocksize
