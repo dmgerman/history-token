@@ -1109,19 +1109,46 @@ id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
 r_int
-id|possible_inq_resp_len
+id|first_inquiry_len
+comma
+id|try_inquiry_len
+comma
+id|next_inquiry_len
 suffix:semicolon
 r_int
-id|count
+id|response_len
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+id|pass
+comma
+id|count
 suffix:semicolon
 op_star
 id|bflags
 op_assign
 l_int|0
 suffix:semicolon
-id|repeat_inquiry
+multiline_comment|/* Perform up to 3 passes.  The first pass uses a conservative&n;&t; * transfer length of 36 unless sdev-&gt;inquiry_len specifies a&n;&t; * different value. */
+id|first_inquiry_len
+op_assign
+id|sdev-&gt;inquiry_len
+ques
+c_cond
+id|sdev-&gt;inquiry_len
+suffix:colon
+l_int|36
+suffix:semicolon
+id|try_inquiry_len
+op_assign
+id|first_inquiry_len
+suffix:semicolon
+id|pass
+op_assign
+l_int|1
+suffix:semicolon
+id|next_pass
 suffix:colon
 id|SCSI_LOG_SCAN_BUS
 c_func
@@ -1132,8 +1159,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi scan: INQUIRY to host %d&quot;
-l_string|&quot; channel %d id %d lun %d&bslash;n&quot;
+l_string|&quot;scsi scan: INQUIRY pass %d &quot;
+l_string|&quot;to host %d channel %d id %d lun %d, length %d&bslash;n&quot;
+comma
+id|pass
 comma
 id|sdev-&gt;host-&gt;host_no
 comma
@@ -1142,9 +1171,27 @@ comma
 id|sdev-&gt;id
 comma
 id|sdev-&gt;lun
+comma
+id|try_inquiry_len
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Each pass gets up to three chances to ignore Unit Attention */
+r_for
+c_loop
+(paren
+id|count
+op_assign
+l_int|0
+suffix:semicolon
+id|count
+OL
+l_int|3
+suffix:semicolon
+op_increment
+id|count
+)paren
+(brace
 id|memset
 c_func
 (paren
@@ -1167,9 +1214,12 @@ id|scsi_cmd
 l_int|4
 )braket
 op_assign
-l_int|36
+(paren
+r_int
+r_char
+)paren
+id|try_inquiry_len
 suffix:semicolon
-multiline_comment|/* issue conservative alloc_length */
 id|sreq-&gt;sr_cmd_len
 op_assign
 l_int|0
@@ -1185,7 +1235,7 @@ id|inq_result
 comma
 l_int|0
 comma
-l_int|36
+id|try_inquiry_len
 )paren
 suffix:semicolon
 id|scsi_wait_req
@@ -1205,7 +1255,7 @@ op_star
 )paren
 id|inq_result
 comma
-l_int|36
+id|try_inquiry_len
 comma
 id|HZ
 op_div
@@ -1227,8 +1277,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi scan: 1st INQUIRY %s with&quot;
-l_string|&quot; code 0x%x&bslash;n&quot;
+l_string|&quot;scsi scan: INQUIRY %s &quot;
+l_string|&quot;with code 0x%x&bslash;n&quot;
 comma
 id|sreq-&gt;sr_result
 ques
@@ -1241,15 +1291,15 @@ id|sreq-&gt;sr_result
 )paren
 )paren
 suffix:semicolon
-op_increment
-id|count
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|sreq-&gt;sr_result
 )paren
 (brace
+multiline_comment|/* not-ready to ready transition or power-on - good */
+multiline_comment|/* dpg: bogus? INQUIRY never returns UNIT_ATTENTION */
+multiline_comment|/* Supposedly, but many buggy devices do so anyway. */
 r_if
 c_cond
 (paren
@@ -1262,8 +1312,6 @@ id|sreq-&gt;sr_result
 op_amp
 id|DRIVER_SENSE
 )paren
-op_ne
-l_int|0
 op_logical_and
 (paren
 id|sreq-&gt;sr_sense_buffer
@@ -1299,29 +1347,49 @@ l_int|13
 op_eq
 l_int|0
 )paren
-(brace
-multiline_comment|/* not-ready to ready transition or power-on - good */
-multiline_comment|/* dpg: bogus? INQUIRY never returns UNIT_ATTENTION */
-multiline_comment|/* Supposedly, but many buggy devices do so anyway */
+r_continue
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
-id|count
-OL
-l_int|3
+id|sreq-&gt;sr_result
+op_eq
+l_int|0
 )paren
-r_goto
-id|repeat_inquiry
+(brace
+id|response_len
+op_assign
+(paren
+r_int
+r_char
+)paren
+id|inq_result
+(braket
+l_int|4
+)braket
+op_plus
+l_int|5
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t; * assume no peripheral if any other sort of error&n;&t;&t; */
-r_return
+r_if
+c_cond
+(paren
+id|response_len
+OG
+l_int|255
+)paren
+id|response_len
+op_assign
+id|first_inquiry_len
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Get any flags for this device.&n;&t; *&n;&t; * XXX add a bflags to Scsi_Device, and replace the corresponding&n;&t; * bit fields in Scsi_Device, so bflags need not be passed as an&n;&t; * argument.&n;&t; */
+multiline_comment|/* sanity */
+multiline_comment|/*&n;&t;&t; * Get any flags for this device.&n;&t;&t; *&n;&t;&t; * XXX add a bflags to Scsi_Device, and replace the&n;&t;&t; * corresponding bit fields in Scsi_Device, so bflags&n;&t;&t; * need not be passed as an argument.&n;&t;&t; */
 op_star
 id|bflags
-op_or_assign
+op_assign
 id|scsi_get_device_flags
 c_func
 (paren
@@ -1340,19 +1408,15 @@ l_int|16
 )braket
 )paren
 suffix:semicolon
-id|possible_inq_resp_len
-op_assign
+multiline_comment|/* When the first pass succeeds we gain information about&n;&t;&t; * what larger transfer lengths might work. */
+r_if
+c_cond
 (paren
-r_int
-r_char
+id|pass
+op_eq
+l_int|1
 )paren
-id|inq_result
-(braket
-l_int|4
-)braket
-op_plus
-l_int|5
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -1361,7 +1425,7 @@ op_amp
 op_star
 id|bflags
 )paren
-id|possible_inq_resp_len
+id|next_inquiry_len
 op_assign
 l_int|36
 suffix:semicolon
@@ -1374,7 +1438,7 @@ op_amp
 op_star
 id|bflags
 )paren
-id|possible_inq_resp_len
+id|next_inquiry_len
 op_assign
 l_int|58
 suffix:semicolon
@@ -1382,200 +1446,90 @@ r_else
 r_if
 c_cond
 (paren
-id|possible_inq_resp_len
-OG
-l_int|255
+id|sdev-&gt;inquiry_len
 )paren
-id|possible_inq_resp_len
+id|next_inquiry_len
 op_assign
-l_int|36
+id|sdev-&gt;inquiry_len
 suffix:semicolon
-multiline_comment|/* sanity */
+r_else
+id|next_inquiry_len
+op_assign
+id|response_len
+suffix:semicolon
+multiline_comment|/* If more data is available perform the second pass */
 r_if
 c_cond
 (paren
-id|possible_inq_resp_len
+id|next_inquiry_len
 OG
-l_int|36
+id|try_inquiry_len
 )paren
 (brace
-multiline_comment|/* do additional INQUIRY */
-id|memset
-c_func
-(paren
-id|scsi_cmd
-comma
-l_int|0
-comma
-l_int|6
-)paren
-suffix:semicolon
-id|scsi_cmd
-(braket
-l_int|0
-)braket
+id|try_inquiry_len
 op_assign
-id|INQUIRY
+id|next_inquiry_len
 suffix:semicolon
-id|scsi_cmd
-(braket
-l_int|4
-)braket
+id|pass
 op_assign
-(paren
-r_int
-r_char
-)paren
-id|possible_inq_resp_len
-suffix:semicolon
-id|sreq-&gt;sr_cmd_len
-op_assign
-l_int|0
-suffix:semicolon
-id|sreq-&gt;sr_data_direction
-op_assign
-id|DMA_FROM_DEVICE
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * re-zero inq_result just to be safe.&n;&t;&t; */
-id|memset
-c_func
-(paren
-id|inq_result
-comma
-l_int|0
-comma
-id|possible_inq_resp_len
-)paren
-suffix:semicolon
-id|scsi_wait_req
-c_func
-(paren
-id|sreq
-comma
-(paren
-r_void
-op_star
-)paren
-id|scsi_cmd
-comma
-(paren
-r_void
-op_star
-)paren
-id|inq_result
-comma
-id|possible_inq_resp_len
-comma
-(paren
-l_int|1
-op_plus
-id|scsi_inq_timeout
-)paren
-op_star
-(paren
-id|HZ
-op_div
 l_int|2
-)paren
-comma
-l_int|3
-)paren
-suffix:semicolon
-id|SCSI_LOG_SCAN_BUS
-c_func
-(paren
-l_int|3
-comma
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;scsi scan: 2nd INQUIRY&quot;
-l_string|&quot; %s with code 0x%x&bslash;n&quot;
-comma
-id|sreq-&gt;sr_result
-ques
-c_cond
-l_string|&quot;failed&quot;
-suffix:colon
-l_string|&quot;successful&quot;
-comma
-id|sreq-&gt;sr_result
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sreq-&gt;sr_result
-)paren
-(brace
-multiline_comment|/* if the longer inquiry has failed, flag the device&n;&t;&t;&t; * as only accepting 36 byte inquiries and retry the&n;&t;&t;&t; * 36 byte inquiry */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;scsi scan: %d byte inquiry failed&quot;
-l_string|&quot; with code %d.  Consider BLIST_INQUIRY_36 for&quot;
-l_string|&quot; this device&bslash;n&quot;
-comma
-id|possible_inq_resp_len
-comma
-id|sreq-&gt;sr_result
-)paren
-suffix:semicolon
-op_star
-id|bflags
-op_assign
-id|BLIST_INQUIRY_36
 suffix:semicolon
 r_goto
-id|repeat_inquiry
+id|next_pass
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * The INQUIRY can change, this means the length can change.&n;&t;&t; */
-id|possible_inq_resp_len
-op_assign
-(paren
-r_int
-r_char
-)paren
-id|inq_result
-(braket
-l_int|4
-)braket
-op_plus
-l_int|5
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|BLIST_INQUIRY_58
-op_amp
-op_star
-id|bflags
-)paren
-id|possible_inq_resp_len
-op_assign
-l_int|58
-suffix:semicolon
+)brace
+)brace
 r_else
 r_if
 c_cond
 (paren
-id|possible_inq_resp_len
-OG
-l_int|255
+id|pass
+op_eq
+l_int|2
 )paren
-id|possible_inq_resp_len
-op_assign
-l_int|36
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;scsi scan: %d byte inquiry failed.  &quot;
+l_string|&quot;Consider BLIST_INQUIRY_36 for this device&bslash;n&quot;
+comma
+id|try_inquiry_len
+)paren
 suffix:semicolon
-multiline_comment|/* sanity */
+multiline_comment|/* If this pass failed, the third pass goes back and transfers&n;&t;&t; * the same amount as we successfully got in the first pass. */
+id|try_inquiry_len
+op_assign
+id|first_inquiry_len
+suffix:semicolon
+id|pass
+op_assign
+l_int|3
+suffix:semicolon
+r_goto
+id|next_pass
+suffix:semicolon
 )brace
+multiline_comment|/* If the last transfer attempt got an error, assume the&n;&t; * peripheral doesn&squot;t exist or is dead. */
+r_if
+c_cond
+(paren
+id|sreq-&gt;sr_result
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* Don&squot;t report any more data than the device says is valid */
 id|sdev-&gt;inquiry_len
 op_assign
-id|possible_inq_resp_len
+id|min
+c_func
+(paren
+id|try_inquiry_len
+comma
+id|response_len
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * XXX Abort if the response length is less than 36? If less than&n;&t; * 32, the lookup of the device flags (above) could be invalid,&n;&t; * and it would be possible to take an incorrect action - we do&n;&t; * not want to hang because of a short INQUIRY. On the flip side,&n;&t; * if the device is spun down or becoming ready (and so it gives a&n;&t; * short INQUIRY), an abort here prevents any further use of the&n;&t; * device, including spin up.&n;&t; *&n;&t; * Related to the above issue:&n;&t; *&n;&t; * XXX Devices (disk or all?) should be sent a TEST UNIT READY,&n;&t; * and if not ready, sent a START_STOP to start (maybe spin up) and&n;&t; * then send the INQUIRY again, since the INQUIRY can change after&n;&t; * a device is initialized.&n;&t; *&n;&t; * Ideally, start a device if explicitly asked to do so.  This&n;&t; * assumes that a device is spun up on power on, spun down on&n;&t; * request, and then spun up on request.&n;&t; */
 multiline_comment|/*&n;&t; * The scanning code needs to know the scsi_level, even if no&n;&t; * device is attached at LUN 0 (SCSI_SCAN_TARGET_PRESENT) so&n;&t; * non-zero LUNs can be scanned.&n;&t; */
