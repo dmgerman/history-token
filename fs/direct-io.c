@@ -2319,6 +2319,17 @@ comma
 id|count
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode-&gt;i_mapping-&gt;nrpages
+)paren
+id|invalidate_inode_pages2
+c_func
+(paren
+id|inode-&gt;i_mapping
+)paren
+suffix:semicolon
 id|out
 suffix:colon
 r_return

@@ -1883,6 +1883,13 @@ c_func
 id|wipe_partitions
 )paren
 suffix:semicolon
+DECL|variable|generic_file_direct_IO
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_direct_IO
+)paren
+suffix:semicolon
 multiline_comment|/* tty routines */
 DECL|variable|tty_hangup
 id|EXPORT_SYMBOL

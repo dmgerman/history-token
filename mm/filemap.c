@@ -8059,17 +8059,6 @@ id|ppos
 op_assign
 id|end
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|mapping-&gt;nrpages
-)paren
-id|invalidate_inode_pages2
-c_func
-(paren
-id|mapping
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Sync the fs metadata but not the minor inode changes and&n;&t;&t; * of course not the data as we did direct DMA for the IO.&n;&t;&t; */
 r_if
