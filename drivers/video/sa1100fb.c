@@ -3775,6 +3775,12 @@ op_or_assign
 id|SHANNON_GPIO_DISP_EN
 suffix:semicolon
 )brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|add_wait_queue
 c_func
 (paren
@@ -3783,12 +3789,6 @@ id|fbi-&gt;ctrlr_wait
 comma
 op_amp
 id|wait
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
 id|LCSR
