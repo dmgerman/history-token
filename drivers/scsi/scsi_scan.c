@@ -5,9 +5,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#ifdef CONFIG_KMOD
-macro_line|#include &lt;linux/kmod.h&gt;
-macro_line|#endif
+macro_line|#include &quot;scsi_priv.h&quot;
+macro_line|#include &quot;scsi_logging.h&quot;
 multiline_comment|/*&n; * Flags for SCSI devices that need special treatment&n; */
 DECL|macro|BLIST_NOLUN
 mdefine_line|#define BLIST_NOLUN     &t;0x001&t;/* Only scan LUN 0 */

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &quot;scsi_priv.h&quot;
 multiline_comment|/*&n; * shost_show_function: macro to create an attr function that can be used to&n; * show a non-bit field.&n; */
 DECL|macro|shost_show_function
 mdefine_line|#define shost_show_function(field, format_string)&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_##field (struct device *dev, char *buf)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct Scsi_Host *shost = to_scsi_host(dev);&t;&t;&t;&bslash;&n;&t;return snprintf (buf, 20, format_string, shost-&gt;field);&t;&bslash;&n;}

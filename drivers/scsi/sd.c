@@ -20,6 +20,7 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
+macro_line|#include &quot;scsi_logging.h&quot;
 multiline_comment|/*&n; * Remaining dev_t-handling stuff&n; */
 DECL|macro|SD_MAJORS
 mdefine_line|#define SD_MAJORS&t;16

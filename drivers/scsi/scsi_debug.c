@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#ifndef LINUX_VERSION_CODE
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#endif
+macro_line|#include &quot;scsi_logging.h&quot;
 macro_line|#include &quot;scsi_debug.h&quot;
 DECL|variable|scsi_debug_version_str
 r_static

@@ -17,6 +17,8 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &quot;scsi_priv.h&quot;
+macro_line|#include &quot;scsi_logging.h&quot;
 multiline_comment|/*&n; * Definitions and constants.&n; */
 DECL|macro|MIN_RESET_DELAY
 mdefine_line|#define MIN_RESET_DELAY (2*HZ)
