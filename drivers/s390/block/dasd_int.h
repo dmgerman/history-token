@@ -1620,15 +1620,6 @@ id|dasd_device
 op_star
 )paren
 suffix:semicolon
-id|kdev_t
-id|dasd_get_kdev
-c_func
-(paren
-r_struct
-id|dasd_device
-op_star
-)paren
-suffix:semicolon
 r_struct
 id|dasd_device
 op_star
