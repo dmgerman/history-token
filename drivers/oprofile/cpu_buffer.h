@@ -85,6 +85,10 @@ DECL|member|last_is_kernel
 r_int
 id|last_is_kernel
 suffix:semicolon
+DECL|member|tracing
+r_int
+id|tracing
+suffix:semicolon
 DECL|member|buffer
 r_struct
 id|op_sample
@@ -100,6 +104,11 @@ DECL|member|sample_lost_overflow
 r_int
 r_int
 id|sample_lost_overflow
+suffix:semicolon
+DECL|member|backtrace_aborted
+r_int
+r_int
+id|backtrace_aborted
 suffix:semicolon
 DECL|member|cpu
 r_int
@@ -131,5 +140,10 @@ op_star
 id|cpu_buf
 )paren
 suffix:semicolon
+multiline_comment|/* transient events for the CPU buffer -&gt; event buffer */
+DECL|macro|CPU_IS_KERNEL
+mdefine_line|#define CPU_IS_KERNEL 1
+DECL|macro|CPU_TRACE_BEGIN
+mdefine_line|#define CPU_TRACE_BEGIN 2
 macro_line|#endif /* OPROFILE_CPU_BUFFER_H */
 eof
