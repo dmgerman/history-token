@@ -3287,6 +3287,14 @@ comma
 id|req
 )paren
 suffix:semicolon
+id|elv_completed_request
+c_func
+(paren
+id|q
+comma
+id|req
+)paren
+suffix:semicolon
 id|__elv_add_request
 c_func
 (paren
