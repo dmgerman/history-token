@@ -81,6 +81,25 @@ DECL|member|devices
 id|list_t
 id|devices
 suffix:semicolon
+DECL|member|drivers
+id|list_t
+id|drivers
+suffix:semicolon
+DECL|member|dir
+r_struct
+id|driver_dir_entry
+id|dir
+suffix:semicolon
+DECL|member|device_dir
+r_struct
+id|driver_dir_entry
+id|device_dir
+suffix:semicolon
+DECL|member|driver_dir
+r_struct
+id|driver_dir_entry
+id|driver_dir
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -272,6 +291,13 @@ id|atomic_t
 id|refcount
 suffix:semicolon
 multiline_comment|/* refcount to make sure the device&n;&t;&t;&t;&t;&t; * persists for the right amount of time */
+DECL|member|bus
+r_struct
+id|bus_type
+op_star
+id|bus
+suffix:semicolon
+multiline_comment|/* type of bus device is on */
 DECL|member|dir
 r_struct
 id|driver_dir_entry

@@ -2,6 +2,8 @@ multiline_comment|/*&n; * bus.c - bus driver management&n; * &n; * Copyright (c)
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &quot;base.h&quot;
 r_static
 id|LIST_HEAD
 c_func
@@ -358,19 +360,6 @@ op_amp
 id|bus-&gt;dir
 )paren
 suffix:semicolon
-multiline_comment|/* tell the driver it can go away now */
-r_if
-c_cond
-(paren
-id|bus-&gt;release
-)paren
-id|bus
-op_member_access_from_pointer
-id|release
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|bus_init
 r_static
@@ -399,13 +388,6 @@ id|subsys_initcall
 c_func
 (paren
 id|bus_init
-)paren
-suffix:semicolon
-DECL|variable|bus_for_each_dev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|bus_for_each_dev
 )paren
 suffix:semicolon
 DECL|variable|bus_add_device
