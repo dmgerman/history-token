@@ -450,7 +450,7 @@ suffix:semicolon
 id|udbg_printf
 c_func
 (paren
-l_string|&quot;EPOW &lt;0x%lx 0x%lx&gt;&bslash;n&quot;
+l_string|&quot;EPOW &lt;0x%lx 0x%x&gt;&bslash;n&quot;
 comma
 op_star
 (paren
@@ -470,7 +470,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;EPOW &lt;0x%lx 0x%lx&gt;&bslash;n&quot;
+l_string|&quot;EPOW &lt;0x%lx 0x%x&gt;&bslash;n&quot;
 comma
 op_star
 (paren
@@ -650,7 +650,7 @@ id|fatal
 id|udbg_printf
 c_func
 (paren
-l_string|&quot;HW Error &lt;0x%lx 0x%lx&gt;&bslash;n&quot;
+l_string|&quot;HW Error &lt;0x%lx 0x%x&gt;&bslash;n&quot;
 comma
 op_star
 (paren
@@ -670,7 +670,7 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
-l_string|&quot;Error: Fatal hardware error &lt;0x%lx 0x%lx&gt;&bslash;n&quot;
+l_string|&quot;Error: Fatal hardware error &lt;0x%lx 0x%x&gt;&bslash;n&quot;
 comma
 op_star
 (paren
@@ -702,7 +702,7 @@ r_else
 id|udbg_printf
 c_func
 (paren
-l_string|&quot;Recoverable HW Error &lt;0x%lx 0x%lx&gt;&bslash;n&quot;
+l_string|&quot;Recoverable HW Error &lt;0x%lx 0x%x&gt;&bslash;n&quot;
 comma
 op_star
 (paren
@@ -722,7 +722,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Warning: Recoverable hardware error &lt;0x%lx 0x%lx&gt;&bslash;n&quot;
+l_string|&quot;Warning: Recoverable hardware error &lt;0x%lx 0x%x&gt;&bslash;n&quot;
 comma
 op_star
 (paren

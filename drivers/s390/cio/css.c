@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.77 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.80 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &quot;css.h&quot;
 macro_line|#include &quot;cio.h&quot;
 macro_line|#include &quot;cio_debug.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
+macro_line|#include &quot;chsc.h&quot;
 DECL|variable|highest_subchannel
 r_int
 r_int
@@ -23,6 +24,17 @@ suffix:semicolon
 DECL|variable|css_init_done
 r_int
 id|css_init_done
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|global_pgid
+r_struct
+id|pgid
+id|global_pgid
+suffix:semicolon
+DECL|variable|css_characteristics_avail
+r_int
+id|css_characteristics_avail
 op_assign
 l_int|0
 suffix:semicolon
@@ -805,6 +817,32 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|disc
+op_logical_and
+(paren
+id|event
+op_eq
+id|CIO_NO_PATH
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Uargh, hack again. Because we don&squot;t get a machine&n;&t;&t;&t; * check on configure on, our path bookkeeping can&n;&t;&t;&t; * be out of date here (it&squot;s fine while we only do&n;&t;&t;&t; * logical varying or get chsc machine checks). We&n;&t;&t;&t; * need to force reprobing or we might miss devices&n;&t;&t;&t; * coming operational again. It won&squot;t do harm in real&n;&t;&t;&t; * no path situations.&n;&t;&t;&t; */
+id|device_trigger_reprobe
+c_func
+(paren
+id|sch
+)paren
+suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|sch-&gt;driver
 op_logical_and
 id|sch-&gt;driver-&gt;notify
@@ -1319,7 +1357,85 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * some of the initialization has already been done from init_IRQ(),&n; * here we do the rest now that the driver core is running.&n; * The struct subchannel&squot;s are created during probing (except for the&n; * static console subchannel).&n; */
+r_static
+r_void
+id|__init
+DECL|function|css_generate_pgid
+id|css_generate_pgid
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Let&squot;s build our path group ID here. */
+r_if
+c_cond
+(paren
+id|css_characteristics_avail
+op_logical_and
+id|css_general_characteristics.mcss
+)paren
+id|global_pgid.cpu_addr
+op_assign
+l_int|0x8000
+suffix:semicolon
+r_else
+(brace
+macro_line|#ifdef CONFIG_SMP
+id|global_pgid.cpu_addr
+op_assign
+id|hard_smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#else
+id|global_pgid.cpu_addr
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+)brace
+id|global_pgid.cpu_id
+op_assign
+(paren
+(paren
+id|cpuid_t
+op_star
+)paren
+id|__LC_CPUID
+)paren
+op_member_access_from_pointer
+id|ident
+suffix:semicolon
+id|global_pgid.cpu_model
+op_assign
+(paren
+(paren
+id|cpuid_t
+op_star
+)paren
+id|__LC_CPUID
+)paren
+op_member_access_from_pointer
+id|machine
+suffix:semicolon
+id|global_pgid.tod_high
+op_assign
+(paren
+id|__u32
+)paren
+(paren
+id|get_clock
+c_func
+(paren
+)paren
+op_rshift
+l_int|32
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Now that the driver core is running, we can setup our channel subsystem.&n; * The struct subchannel&squot;s are created during probing (except for the&n; * static console subchannel).&n; */
 r_static
 r_int
 id|__init
@@ -1333,6 +1449,25 @@ r_int
 id|ret
 comma
 id|irq
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chsc_determine_css_characteristics
+c_func
+(paren
+)paren
+op_eq
+l_int|0
+)paren
+id|css_characteristics_avail
+op_assign
+l_int|1
+suffix:semicolon
+id|css_generate_pgid
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1973,6 +2108,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|s390_root_dev_unregister
+)paren
+suffix:semicolon
+DECL|variable|css_characteristics_avail
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|css_characteristics_avail
 )paren
 suffix:semicolon
 eof

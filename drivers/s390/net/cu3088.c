@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: cu3088.c,v 1.33 2003/10/14 12:10:19 cohuck Exp $&n; *&n; * CTC / LCS ccw_device driver&n; *&n; * Copyright (C) 2002 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Arnd Bergmann &lt;arndb@de.ibm.com&gt;&n; *            Cornelia Huck &lt;cohuck@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * $Id: cu3088.c,v 1.34 2004/06/15 13:16:27 pavlic Exp $&n; *&n; * CTC / LCS ccw_device driver&n; *&n; * Copyright (C) 2002 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Arnd Bergmann &lt;arndb@de.ibm.com&gt;&n; *            Cornelia Huck &lt;cohuck@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 "&f;"
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -25,7 +25,7 @@ l_string|&quot;FICON channel&quot;
 comma
 l_string|&quot;P390 LCS card&quot;
 comma
-l_string|&quot;OSA2 card&quot;
+l_string|&quot;OSA LCS card&quot;
 comma
 l_string|&quot;unknown channel type&quot;
 comma

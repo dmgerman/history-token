@@ -156,7 +156,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|xLpPaca.xIntDword.xFields.xDecrInt
+id|lppaca.xIntDword.xFields.xDecrInt
 op_assign
 l_int|1
 suffix:semicolon
@@ -238,7 +238,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lpaca-&gt;xLpPaca.xSharedProc
+id|lpaca-&gt;lppaca.xSharedProc
 )paren
 (brace
 r_if
@@ -247,7 +247,7 @@ c_cond
 id|ItLpQueue_isLpIntPending
 c_func
 (paren
-id|lpaca-&gt;lpQueuePtr
+id|lpaca-&gt;lpqueue_ptr
 )paren
 )paren
 id|process_iSeries_events
@@ -314,7 +314,7 @@ c_cond
 id|ItLpQueue_isLpIntPending
 c_func
 (paren
-id|lpaca-&gt;lpQueuePtr
+id|lpaca-&gt;lpqueue_ptr
 )paren
 )paren
 id|process_iSeries_events
@@ -540,7 +540,7 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Indicate to the HV that we are idle.  Now would be&n;&t;&t; * a good time to find other work to dispatch. */
-id|lpaca-&gt;xLpPaca.xIdle
+id|lpaca-&gt;lppaca.xIdle
 op_assign
 l_int|1
 suffix:semicolon
@@ -632,7 +632,7 @@ op_logical_and
 (paren
 op_logical_neg
 (paren
-id|ppaca-&gt;xLpPaca.xIdle
+id|ppaca-&gt;lppaca.xIdle
 )paren
 )paren
 )paren
@@ -674,19 +674,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|lpaca-&gt;yielded
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* SMT dynamic mode.  Cede will result &n;&t;&t;&t;&t;&t; * in this thread going dormant, if the&n;&t;&t;&t;&t;&t; * partner thread is still doing work.&n;&t;&t;&t;&t;&t; * Thread wakes up if partner goes idle,&n;&t;&t;&t;&t;&t; * an interrupt is presented, or a prod&n;&t;&t;&t;&t;&t; * occurs.  Returning from the cede&n;&t;&t;&t;&t;&t; * enables external interrupts.&n;&t;&t;&t;&t;&t; */
 id|cede_processor
 c_func
 (paren
 )paren
-suffix:semicolon
-id|lpaca-&gt;yielded
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 r_else
@@ -713,7 +705,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|lpaca-&gt;xLpPaca.xIdle
+id|lpaca-&gt;lppaca.xIdle
 op_assign
 l_int|0
 suffix:semicolon
@@ -794,7 +786,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Indicate to the HV that we are idle.  Now would be&n;&t;&t; * a good time to find other work to dispatch. */
-id|lpaca-&gt;xLpPaca.xIdle
+id|lpaca-&gt;lppaca.xIdle
 op_assign
 l_int|1
 suffix:semicolon
@@ -813,19 +805,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|lpaca-&gt;yielded
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* &n;&t;&t;&t; * Yield the processor to the hypervisor.  We return if&n;&t;&t;&t; * an external interrupt occurs (which are driven prior&n;&t;&t;&t; * to returning here) or if a prod occurs from another &n;&t;&t;&t; * processor.  When returning here, external interrupts &n;&t;&t;&t; * are enabled.&n;&t;&t;&t; */
 id|cede_processor
 c_func
 (paren
 )paren
-suffix:semicolon
-id|lpaca-&gt;yielded
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 id|HMT_medium
@@ -833,7 +817,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|lpaca-&gt;xLpPaca.xIdle
+id|lpaca-&gt;lppaca.xIdle
 op_assign
 l_int|0
 suffix:semicolon
@@ -949,7 +933,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|xLpPaca.xSharedProc
+id|lppaca.xSharedProc
 )paren
 (brace
 id|printk

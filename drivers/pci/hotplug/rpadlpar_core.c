@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &quot;../pci.h&quot;
 macro_line|#include &quot;rpaphp.h&quot;
 macro_line|#include &quot;rpadlpar.h&quot;

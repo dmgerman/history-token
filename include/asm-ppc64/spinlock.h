@@ -3,6 +3,7 @@ DECL|macro|__ASM_SPINLOCK_H
 mdefine_line|#define __ASM_SPINLOCK_H
 multiline_comment|/*&n; * Simple spin lock operations.  &n; *&n; * Copyright (C) 2001-2004 Paul Mackerras &lt;paulus@au.ibm.com&gt;, IBM&n; * Copyright (C) 2001 Anton Blanchard &lt;anton@au.ibm.com&gt;, IBM&n; *&n; * Type of int is used as a full 64b word is not necessary.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
 r_typedef
 r_struct
 (brace
@@ -120,7 +121,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&t;lwarx&t;&t;%0,0,%2&t;&t;# spin_trylock&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;&t;2f&bslash;n&bslash;&n;&t;lwz&t;&t;%1,24(13)&bslash;n&bslash;&n;&t;stwcx.&t;&t;%1,0,%2&bslash;n&bslash;&n;&t;bne-&t;&t;1b&bslash;n&bslash;&n;&t;isync&bslash;n&bslash;&n;2:&quot;
+l_string|&quot;1:&t;lwarx&t;&t;%0,0,%2&t;&t;# spin_trylock&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;&t;2f&bslash;n&bslash;&n;&t;lwz&t;&t;%1,%3(13)&bslash;n&bslash;&n;&t;stwcx.&t;&t;%1,0,%2&bslash;n&bslash;&n;&t;bne-&t;&t;1b&bslash;n&bslash;&n;&t;isync&bslash;n&bslash;&n;2:&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -136,6 +137,17 @@ l_string|&quot;r&quot;
 (paren
 op_amp
 id|lock-&gt;lock
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+m_offsetof
+(paren
+r_struct
+id|paca_struct
+comma
+id|lock_token
+)paren
 )paren
 suffix:colon
 l_string|&quot;cr0&quot;
@@ -173,7 +185,7 @@ l_string|&quot;b&t;&t;2f&t;&t;# spin_lock&bslash;n&bslash;&n;1:&quot;
 id|HMT_LOW
 l_string|&quot;&t;lwzx&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;bne+&t;&t;1b&bslash;n&quot;
 id|HMT_MEDIUM
-l_string|&quot;2:&t;lwarx&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;&t;1b&bslash;n&bslash;&n;&t;lwz&t;&t;%0,24(13)&bslash;n&bslash;&n;&t;stwcx.&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;&t;2b&bslash;n&bslash;&n;&t;isync&quot;
+l_string|&quot;2:&t;lwarx&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;&t;1b&bslash;n&bslash;&n;&t;lwz&t;&t;%0,%2(13)&bslash;n&bslash;&n;&t;stwcx.&t;&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;&t;2b&bslash;n&bslash;&n;&t;isync&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -184,6 +196,17 @@ l_string|&quot;r&quot;
 (paren
 op_amp
 id|lock-&gt;lock
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+m_offsetof
+(paren
+r_struct
+id|paca_struct
+comma
+id|lock_token
+)paren
 )paren
 suffix:colon
 l_string|&quot;cr0&quot;
@@ -225,7 +248,7 @@ l_string|&quot;b&t;&t;3f&t;&t;# spin_lock&bslash;n&bslash;&n;1:&t;mfmsr&t;&t;%1&
 id|HMT_LOW
 l_string|&quot;&t;lwzx&t;&t;%0,0,%2&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;bne+&t;&t;2b&bslash;n&quot;
 id|HMT_MEDIUM
-l_string|&quot;&t;mtmsrd&t;&t;%1,1&bslash;n&bslash;&n;3:&t;lwarx&t;&t;%0,0,%2&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;&t;1b&bslash;n&bslash;&n;&t;lwz&t;&t;%1,24(13)&bslash;n&bslash;&n;&t;stwcx.&t;&t;%1,0,%2&bslash;n&bslash;&n;&t;bne-&t;&t;3b&bslash;n&bslash;&n;&t;isync&quot;
+l_string|&quot;&t;mtmsrd&t;&t;%1,1&bslash;n&bslash;&n;3:&t;lwarx&t;&t;%0,0,%2&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;&t;1b&bslash;n&bslash;&n;&t;lwz&t;&t;%1,%4(13)&bslash;n&bslash;&n;&t;stwcx.&t;&t;%1,0,%2&bslash;n&bslash;&n;&t;bne-&t;&t;3b&bslash;n&bslash;&n;&t;isync&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -246,6 +269,17 @@ comma
 l_string|&quot;r&quot;
 (paren
 id|flags
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+m_offsetof
+(paren
+r_struct
+id|paca_struct
+comma
+id|lock_token
+)paren
 )paren
 suffix:colon
 l_string|&quot;cr0&quot;

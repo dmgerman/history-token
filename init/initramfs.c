@@ -870,9 +870,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|remains
 op_sub_assign
 id|n
+)paren
+op_ne
+l_int|0
 )paren
 r_return
 l_int|1

@@ -2,7 +2,7 @@ macro_line|#ifndef _CIO_QDIO_H
 DECL|macro|_CIO_QDIO_H
 mdefine_line|#define _CIO_QDIO_H
 DECL|macro|VERSION_CIO_QDIO_H
-mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.23 $&quot;
+mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.24 $&quot;
 singleline_comment|//#define QDIO_DBF_LIKE_HELL
 macro_line|#ifdef QDIO_DBF_LIKE_HELL
 DECL|macro|QDIO_VERBOSE_LEVEL
@@ -903,6 +903,13 @@ r_volatile
 r_struct
 id|slsb
 id|slsb
+suffix:semicolon
+DECL|member|unused
+r_char
+id|unused
+(braket
+id|QDIO_MAX_BUFFERS_PER_Q
+)braket
 suffix:semicolon
 DECL|member|dev_st_chg_ind
 id|__u32

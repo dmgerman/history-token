@@ -1,6 +1,23 @@
 macro_line|#ifndef _linux_POSIX_TIMERS_H
 DECL|macro|_linux_POSIX_TIMERS_H
 mdefine_line|#define _linux_POSIX_TIMERS_H
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
+DECL|struct|k_clock_abs
+r_struct
+id|k_clock_abs
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|k_clock
 r_struct
 id|k_clock
@@ -10,6 +27,12 @@ r_int
 id|res
 suffix:semicolon
 multiline_comment|/* in nano seconds */
+DECL|member|abs_struct
+r_struct
+id|k_clock_abs
+op_star
+id|abs_struct
+suffix:semicolon
 DECL|member|clock_set
 r_int
 (paren
@@ -132,6 +155,6 @@ mdefine_line|#define posix_get_now(now) (now)-&gt;jiffies = jiffies;
 DECL|macro|posix_time_before
 mdefine_line|#define posix_time_before(timer, now) &bslash;&n;                      time_before((timer)-&gt;expires, (now)-&gt;jiffies)
 DECL|macro|posix_bump_timer
-mdefine_line|#define posix_bump_timer(timr) do { &bslash;&n;                        (timr)-&gt;it_timer.expires += (timr)-&gt;it_incr; &bslash;&n;                        (timr)-&gt;it_overrun++;               &bslash;&n;                       }while (0)
+mdefine_line|#define posix_bump_timer(timr, now)&t;&t;&t;&t;&t;&bslash;&n;         do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;              long delta, orun;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      delta = now.jiffies - (timr)-&gt;it_timer.expires;&t;&t;&bslash;&n;              if (delta &gt;= 0) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;           orun = 1 + (delta / (timr)-&gt;it_incr);&t;&t;&bslash;&n;&t;          (timr)-&gt;it_timer.expires += orun * (timr)-&gt;it_incr;&t;&bslash;&n;                  (timr)-&gt;it_overrun += orun;&t;&t;&t;&t;&bslash;&n;              }&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;            }while (0)
 macro_line|#endif
 eof

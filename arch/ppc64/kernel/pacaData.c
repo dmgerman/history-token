@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
+macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 DECL|variable|naca
@@ -21,9 +22,25 @@ id|systemcfg
 op_star
 id|systemcfg
 suffix:semicolon
+multiline_comment|/* This symbol is provided by the linker - let it fill in the paca&n; * field correctly */
+r_extern
+r_int
+r_int
+id|__toc_start
+suffix:semicolon
+multiline_comment|/* Stack space used when we detect a bad kernel stack pointer, and&n; * early in SMP boots before relocation is enabled.&n; */
+DECL|variable|emergency_stack
+r_char
+id|emergency_stack
+(braket
+id|PAGE_SIZE
+op_star
+id|NR_CPUS
+)braket
+suffix:semicolon
 multiline_comment|/* The Paca is an array with one entry per processor.  Each contains an &n; * ItLpPaca, which contains the information shared between the &n; * hypervisor and Linux.  Each also contains an ItLpRegSave area which&n; * is used by the hypervisor to save registers.&n; * On systems with hardware multi-threading, there are two threads&n; * per processor.  The Paca array must contain an entry for each thread.&n; * The VPD Areas will give a max logical processors = 2 * max physical&n; * processors.  The processor VPD array needs one entry per physical&n; * processor (not thread).&n; */
 DECL|macro|PACAINITDATA
-mdefine_line|#define PACAINITDATA(number,start,lpq,asrr,asrv)&t;&t;&t;    &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.xLpPacaPtr = &amp;paca[number].xLpPaca,&t;&t;&t;&t;    &bslash;&n;&t;.xLpRegSavePtr = &amp;paca[number].xRegSav,&t;&t;&t;&t;    &bslash;&n;&t;.lock_token = 0x8000,&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.xPacaIndex = (number),&t;&t;/* Paca Index */&t;&t;    &bslash;&n;&t;.default_decr = 0x00ff0000,&t;/* Initial Decr */&t;&t;    &bslash;&n;&t;.xStab_data = {&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.real = (asrr),&t;&t;/* Real pointer to segment table */ &bslash;&n;&t;&t;.virt = (asrv),&t;&t;/* Virt pointer to segment table */ &bslash;&n;&t;&t;.next_round_robin = 1,&t;&t;&t;&t;&t;    &bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.lpQueuePtr = (lpq),&t;&t;/* &amp;xItLpQueue, */&t;&t;    &bslash;&n;&t;/* .xRtas = {&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.lock = SPIN_LOCK_UNLOCKED&t;&t;&t;&t;    &bslash;&n;&t;}, */&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.xProcStart = (start),&t;&t;/* Processor start */&t;&t;    &bslash;&n;&t;.xLpPaca = {&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDesc = 0xd397d781,&t;/* &quot;LpPa&quot; */&t;&t;&t;    &bslash;&n;&t;&t;.xSize = sizeof(struct ItLpPaca),&t;&t;&t;    &bslash;&n;&t;&t;.xFPRegsInUse = 1,&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDynProcStatus = 2,&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDecrVal = 0x00ff0000,&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xEndOfQuantum = 0xfffffffffffffffful,&t;&t;&t;    &bslash;&n;&t;&t;.xSLBCount = 64,&t;&t;&t;&t;&t;    &bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.xRegSav = {&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDesc = 0xd397d9e2,&t;/* &quot;LpRS&quot; */&t;&t;&t;    &bslash;&n;&t;&t;.xSize = sizeof(struct ItLpRegSave)&t;&t;&t;    &bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;}
+mdefine_line|#define PACAINITDATA(number,start,lpq,asrr,asrv)&t;&t;&t;    &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.lppaca_ptr = &amp;paca[number].lppaca,&t;&t;&t;&t;    &bslash;&n;&t;.reg_save_ptr = &amp;paca[number].reg_save,&t;&t;&t;&t;    &bslash;&n;&t;.lock_token = 0x8000,&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.paca_index = (number),&t;&t;/* Paca Index */&t;&t;    &bslash;&n;&t;.lpqueue_ptr = (lpq),&t;&t;/* &amp;xItLpQueue, */&t;&t;    &bslash;&n;&t;.default_decr = 0x00ff0000,&t;/* Initial Decr */&t;&t;    &bslash;&n;&t;.kernel_toc = (unsigned long)(&amp;__toc_start) + 0x8000UL,&t;&t;    &bslash;&n;&t;.stab_real = (asrr), &t;&t;/* Real pointer to segment table */ &bslash;&n;&t;.stab_addr = (asrv),&t;&t;/* Virt pointer to segment table */ &bslash;&n;&t;.emergency_sp = &amp;emergency_stack[((number)+1) * PAGE_SIZE],&t;    &bslash;&n;&t;.cpu_start = (start),&t;&t;/* Processor start */&t;&t;    &bslash;&n;&t;.stab_next_rr = 1,&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.lppaca = {&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDesc = 0xd397d781,&t;/* &quot;LpPa&quot; */&t;&t;&t;    &bslash;&n;&t;&t;.xSize = sizeof(struct ItLpPaca),&t;&t;&t;    &bslash;&n;&t;&t;.xFPRegsInUse = 1,&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDynProcStatus = 2,&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDecrVal = 0x00ff0000,&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xEndOfQuantum = 0xfffffffffffffffful,&t;&t;&t;    &bslash;&n;&t;&t;.xSLBCount = 64,&t;&t;&t;&t;&t;    &bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.reg_save = {&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDesc = 0xd397d9e2,&t;/* &quot;LpRS&quot; */&t;&t;&t;    &bslash;&n;&t;&t;.xSize = sizeof(struct ItLpRegSave)&t;&t;&t;    &bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;}
 DECL|variable|__page_aligned
 r_struct
 id|paca_struct

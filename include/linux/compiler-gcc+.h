@@ -15,4 +15,6 @@ DECL|macro|__attribute_pure__
 mdefine_line|#define __attribute_pure__&t;__attribute__((pure))
 DECL|macro|__attribute_const__
 mdefine_line|#define __attribute_const__&t;__attribute__((__const__))
+DECL|macro|__must_check
+mdefine_line|#define __must_check &t;&t;__attribute__((warn_unused_result))
 eof

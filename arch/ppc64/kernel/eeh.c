@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -1207,7 +1208,6 @@ op_star
 id|dn
 suffix:semicolon
 r_int
-r_int
 id|ret
 suffix:semicolon
 r_int
@@ -1424,7 +1424,6 @@ op_ge
 l_int|2
 )paren
 (brace
-r_int
 r_int
 id|slot_err_ret
 suffix:semicolon

@@ -6110,7 +6110,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;mode 0x%x, size 0x%x,&bslash;n phys %08x, skbuff-addr %08lx, truesize 0x%x&bslash;n&quot;
+l_string|&quot;mode 0x%x, size 0x%x,&bslash;n phys %08Lx, skbuff-addr %08lx, truesize 0x%x&bslash;n&quot;
 comma
 id|rrpriv-&gt;tx_ring
 (braket
@@ -6126,6 +6126,11 @@ id|cons
 dot
 id|size
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|rrpriv-&gt;tx_ring
 (braket
 id|cons
@@ -6235,7 +6240,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;mode 0x%x, size 0x%x, phys-addr %08x&bslash;n&quot;
+l_string|&quot;mode 0x%x, size 0x%x, phys-addr %08Lx&bslash;n&quot;
 comma
 id|rrpriv-&gt;tx_ring
 (braket
@@ -6251,6 +6256,11 @@ id|i
 dot
 id|size
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|rrpriv-&gt;tx_ring
 (braket
 id|i

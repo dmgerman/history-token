@@ -3226,7 +3226,7 @@ c_func
 (paren
 l_int|3
 comma
-id|addr
+id|p-&gt;screen_base
 op_plus
 l_int|0x400784
 )paren

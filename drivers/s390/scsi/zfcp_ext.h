@@ -4,7 +4,7 @@ DECL|macro|ZFCP_EXT_H
 mdefine_line|#define ZFCP_EXT_H
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_EXT_REVISION
-mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.50 $&quot;
+mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.51 $&quot;
 macro_line|#include &quot;zfcp_def.h&quot;
 r_extern
 r_struct
@@ -819,6 +819,17 @@ id|scsi_cmnd
 op_star
 id|scsi_cmnd
 )paren
+suffix:semicolon
+r_extern
+r_struct
+id|scsi_transport_template
+op_star
+id|zfcp_transport_template
+suffix:semicolon
+r_extern
+r_struct
+id|fc_function_template
+id|zfcp_transport_functions
 suffix:semicolon
 multiline_comment|/******************************** ERP ****************************************/
 r_extern

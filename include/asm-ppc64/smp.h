@@ -35,9 +35,9 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id() (get_paca()-&gt;xPacaIndex)
+mdefine_line|#define smp_processor_id() (get_paca()-&gt;paca_index)
 DECL|macro|hard_smp_processor_id
-mdefine_line|#define hard_smp_processor_id() (get_paca()-&gt;xHwProcNum)
+mdefine_line|#define hard_smp_processor_id() (get_paca()-&gt;hw_cpu_id)
 multiline_comment|/*&n; * Retrieve the state of a CPU:&n; * online:          CPU is in a normal run state&n; * possible:        CPU is a candidate to be made online&n; * available:       CPU is candidate for the &squot;possible&squot; pool&n; *                  Used to get SMT threads started at boot time.&n; * present_at_boot: CPU was available at boot time.  Used in DLPAR&n; *                  code to handle special cases for processor start up.&n; */
 r_extern
 id|cpumask_t
@@ -125,9 +125,9 @@ id|noreturn
 suffix:semicolon
 macro_line|#endif /* !(CONFIG_SMP) */
 DECL|macro|get_hard_smp_processor_id
-mdefine_line|#define get_hard_smp_processor_id(CPU) (paca[(CPU)].xHwProcNum)
+mdefine_line|#define get_hard_smp_processor_id(CPU) (paca[(CPU)].hw_cpu_id)
 DECL|macro|set_hard_smp_processor_id
-mdefine_line|#define set_hard_smp_processor_id(CPU, VAL) &bslash;&n;&t;do { (paca[(CPU)].xHwProcNum = VAL); } while (0)
+mdefine_line|#define set_hard_smp_processor_id(CPU, VAL) &bslash;&n;&t;do { (paca[(CPU)].hw_proc_num = (VAL)); } while (0)
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* !(_PPC64_SMP_H) */
 macro_line|#endif /* __KERNEL__ */

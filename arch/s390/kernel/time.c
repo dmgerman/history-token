@@ -1773,7 +1773,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Stop the HZ tick on the current CPU.&n; * Only cpu_idle may call this function.&n; */
 DECL|function|stop_hz_timer
-r_int
+r_void
 id|stop_hz_timer
 c_func
 (paren
@@ -1791,7 +1791,6 @@ op_ne
 l_int|0
 )paren
 r_return
-l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Leave the clock comparator set up for the next timer&n;&t; * tick if either rcu or a softirq is pending.&n;&t; */
 r_if
@@ -1812,7 +1811,6 @@ c_func
 )paren
 )paren
 r_return
-l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * This cpu is going really idle. Set up the clock comparator&n;&t; * for the next event.&n;&t; */
 id|cpu_set
@@ -1861,9 +1859,6 @@ l_string|&quot;m&quot;
 id|timer
 )paren
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -1930,16 +1925,10 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_NO_IDLE_HZ
-r_if
-c_cond
-(paren
 id|stop_hz_timer
 c_func
 (paren
 )paren
-)paren
-r_return
-l_int|1
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* enable monitor call class 0 */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/s390/cio/cmf.c ($Revision: 1.13 $)&n; *&n; * Linux on zSeries Channel Measurement Facility support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author: Arnd Bergmann &lt;arndb@de.ibm.com&gt;&n; *&n; * original idea from Natarajan Krishnaswami &lt;nkrishna@us.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * linux/drivers/s390/cio/cmf.c ($Revision: 1.15 $)&n; *&n; * Linux on zSeries Channel Measurement Facility support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author: Arnd Bergmann &lt;arndb@de.ibm.com&gt;&n; *&n; * original idea from Natarajan Krishnaswami &lt;nkrishna@us.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -12,6 +12,7 @@ macro_line|#include &quot;cio.h&quot;
 macro_line|#include &quot;css.h&quot;
 macro_line|#include &quot;device.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
+macro_line|#include &quot;chsc.h&quot;
 multiline_comment|/* parameter to enable cmf during boot, possible uses are:&n; *  &quot;s390cmf&quot; -- enable cmf and allocate 2 MB of ram so measuring can be&n; *               used on any subchannel&n; *  &quot;s390cmf=&lt;num&gt;&quot; -- enable cmf and allocate enough memory to measure&n; *                     &lt;num&gt; subchannel, where &lt;num&gt; is an integer&n; *                     between 1 and 65535, default is 1024&n; */
 DECL|macro|ARGSTRING
 mdefine_line|#define ARGSTRING &quot;s390cmf&quot;
@@ -3788,7 +3789,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|MACHINE_NEW_STIDP
+id|css_characteristics_avail
+op_logical_or
+op_logical_neg
+id|css_general_characteristics.ext_mb
 )paren
 (brace
 id|format

@@ -1870,7 +1870,7 @@ op_and_assign
 op_complement
 (paren
 (paren
-l_int|1
+l_int|1UL
 op_lshift
 id|shift
 )paren
@@ -1880,7 +1880,7 @@ l_int|1
 suffix:semicolon
 id|index
 op_add_assign
-l_int|1
+l_int|1UL
 op_lshift
 id|shift
 suffix:semicolon
@@ -2257,7 +2257,7 @@ op_and_assign
 op_complement
 (paren
 (paren
-l_int|1
+l_int|1UL
 op_lshift
 id|shift
 )paren
@@ -2267,7 +2267,7 @@ l_int|1
 suffix:semicolon
 id|index
 op_add_assign
-l_int|1
+l_int|1UL
 op_lshift
 id|shift
 suffix:semicolon

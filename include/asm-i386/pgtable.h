@@ -107,14 +107,11 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * The Linux x86 paging architecture is &squot;compile-time dual-mode&squot;, it&n; * implements both the traditional 2-level x86 page tables and the&n; * newer 3-level PAE-mode page tables.&n; */
-macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef CONFIG_X86_PAE
-macro_line|# include &lt;asm/pgtable-3level.h&gt;
+macro_line|# include &lt;asm/pgtable-3level-defs.h&gt;
 macro_line|#else
-macro_line|# include &lt;asm/pgtable-2level.h&gt;
-macro_line|#endif
+macro_line|# include &lt;asm/pgtable-2level-defs.h&gt;
 macro_line|#endif
 DECL|macro|PMD_SIZE
 mdefine_line|#define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
@@ -138,7 +135,6 @@ DECL|macro|BOOT_USER_PGD_PTRS
 mdefine_line|#define BOOT_USER_PGD_PTRS (__PAGE_OFFSET &gt;&gt; TWOLEVEL_PGDIR_SHIFT)
 DECL|macro|BOOT_KERNEL_PGD_PTRS
 mdefine_line|#define BOOT_KERNEL_PGD_PTRS (1024-BOOT_USER_PGD_PTRS)
-macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Just any arbitrary offset to the start of the vmalloc VM area: the&n; * current 8MB value just means that there will be a 8MB &quot;hole&quot; after the&n; * physical memory until the kernel virtual memory starts.  That means that&n; * any out-of-bounds memory accesses will hopefully be caught.&n; * The vmalloc() routines leaves a hole of 4kB between each vmalloced&n; * area for the same reason. ;)&n; */
 DECL|macro|VMALLOC_OFFSET
 mdefine_line|#define VMALLOC_OFFSET&t;(8*1024*1024)
@@ -352,27 +348,6 @@ r_static
 r_inline
 r_int
 id|pte_read
-c_func
-(paren
-id|pte_t
-id|pte
-)paren
-(brace
-r_return
-(paren
-id|pte
-)paren
-dot
-id|pte_low
-op_amp
-id|_PAGE_USER
-suffix:semicolon
-)brace
-DECL|function|pte_exec
-r_static
-r_inline
-r_int
-id|pte_exec
 c_func
 (paren
 id|pte_t
@@ -709,6 +684,11 @@ r_return
 id|pte
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_X86_PAE
+macro_line|# include &lt;asm/pgtable-3level.h&gt;
+macro_line|#else
+macro_line|# include &lt;asm/pgtable-2level.h&gt;
+macro_line|#endif
 DECL|function|ptep_test_and_clear_dirty
 r_static
 r_inline

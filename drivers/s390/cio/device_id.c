@@ -1225,7 +1225,7 @@ op_star
 )paren
 id|__LC_IRB
 suffix:semicolon
-multiline_comment|/*&n;&t; * Unsolicited interrupts may pertain to an earlier status pending or&n;&t; * busy condition on the subchannel. Retry sense id.&n;&t; */
+multiline_comment|/* Retry sense id for cc=1. */
 r_if
 c_cond
 (paren
@@ -1236,6 +1236,14 @@ id|SCSW_STCTL_STATUS_PEND
 op_or
 id|SCSW_STCTL_ALERT_STATUS
 )paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|irb-&gt;scsw.cc
+op_eq
+l_int|1
 )paren
 (brace
 id|ret
@@ -1264,6 +1272,7 @@ comma
 id|ret
 )paren
 suffix:semicolon
+)brace
 r_return
 suffix:semicolon
 )brace

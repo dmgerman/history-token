@@ -431,7 +431,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;scanlog: unknown error from rtas: %ld&bslash;n&quot;
+l_string|&quot;scanlog: unknown error from rtas: %d&bslash;n&quot;
 comma
 id|status
 )paren

@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#else
 macro_line|#include &lt;sys/types.h&gt;
 macro_line|#endif
-macro_line|#ifdef __arm__
+macro_line|#if defined(__arm__) || defined(__mips__)
 DECL|typedef|ioaddr_t
 r_typedef
 id|u_int

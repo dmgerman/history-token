@@ -46,13 +46,10 @@ r_return
 id|cpumask_of_cpu
 c_func
 (paren
-id|bios_cpu_apicid
-(braket
 id|smp_processor_id
 c_func
 (paren
 )paren
-)braket
 )paren
 suffix:semicolon
 macro_line|#endif

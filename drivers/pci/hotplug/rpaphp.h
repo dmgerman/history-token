@@ -86,6 +86,11 @@ DECL|struct|slot
 r_struct
 id|slot
 (brace
+DECL|member|rpaphp_slot_list
+r_struct
+id|list_head
+id|rpaphp_slot_list
+suffix:semicolon
 DECL|member|state
 r_int
 id|state
@@ -116,6 +121,11 @@ DECL|member|removable
 id|u8
 id|removable
 suffix:semicolon
+DECL|member|dev_type
+id|u8
+id|dev_type
+suffix:semicolon
+multiline_comment|/* VIO or PCI */
 DECL|member|dn
 r_struct
 id|device_node
@@ -150,21 +160,11 @@ DECL|member|dev
 )brace
 id|dev
 suffix:semicolon
-DECL|member|dev_type
-id|u8
-id|dev_type
-suffix:semicolon
-multiline_comment|/* VIO or PCI */
 DECL|member|hotplug_slot
 r_struct
 id|hotplug_slot
 op_star
 id|hotplug_slot
-suffix:semicolon
-DECL|member|rpaphp_slot_list
-r_struct
-id|list_head
-id|rpaphp_slot_list
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -5583,7 +5583,7 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 r_goto
-id|__end
+id|out
 suffix:semicolon
 )brace
 id|init_waitqueue_entry
@@ -5766,6 +5766,8 @@ op_amp
 id|ctl-&gt;read_lock
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|result
 OG

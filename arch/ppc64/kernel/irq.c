@@ -84,15 +84,11 @@ suffix:semicolon
 DECL|variable|ppc_spurious_interrupts
 r_int
 id|ppc_spurious_interrupts
-op_assign
-l_int|0
 suffix:semicolon
-DECL|variable|lpEvent_count
+DECL|variable|lpevent_count
 r_int
 r_int
-id|lpEvent_count
-op_assign
-l_int|0
+id|lpevent_count
 suffix:semicolon
 r_int
 DECL|function|setup_irq
@@ -2258,10 +2254,10 @@ macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
-id|lpaca-&gt;xLpPaca.xIntDword.xFields.xIpiCnt
+id|lpaca-&gt;lppaca.xIntDword.xFields.xIpiCnt
 )paren
 (brace
-id|lpaca-&gt;xLpPaca.xIntDword.xFields.xIpiCnt
+id|lpaca-&gt;lppaca.xIntDword.xFields.xIpiCnt
 op_assign
 l_int|0
 suffix:semicolon
@@ -2275,7 +2271,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 id|lpq
 op_assign
-id|lpaca-&gt;lpQueuePtr
+id|lpaca-&gt;lpqueue_ptr
 suffix:semicolon
 r_if
 c_cond
@@ -2288,7 +2284,7 @@ c_func
 id|lpq
 )paren
 )paren
-id|lpEvent_count
+id|lpevent_count
 op_add_assign
 id|ItLpQueue_process
 c_func
@@ -2306,10 +2302,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lpaca-&gt;xLpPaca.xIntDword.xFields.xDecrInt
+id|lpaca-&gt;lppaca.xIntDword.xFields.xDecrInt
 )paren
 (brace
-id|lpaca-&gt;xLpPaca.xIntDword.xFields.xDecrInt
+id|lpaca-&gt;lppaca.xIntDword.xFields.xDecrInt
 op_assign
 l_int|0
 suffix:semicolon

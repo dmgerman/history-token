@@ -189,7 +189,7 @@ id|paca
 id|i
 )braket
 dot
-id|lpEvent_count
+id|lpevent_count
 )paren
 suffix:semicolon
 r_return

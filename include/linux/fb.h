@@ -1574,6 +1574,8 @@ DECL|macro|FBINFO_HWACCEL_YWRAP
 mdefine_line|#define FBINFO_HWACCEL_YWRAP&t;&t;0x4000 /* optional */
 DECL|macro|FBINFO_MISC_MODECHANGEUSER
 mdefine_line|#define FBINFO_MISC_MODECHANGEUSER     0x10000 /* mode change request&n;&t;&t;&t;&t;&t;&t;  from userspace */
+DECL|macro|FBINFO_MISC_MODESWITCH
+mdefine_line|#define FBINFO_MISC_MODESWITCH         0x20000 /* mode switch */
 DECL|struct|fb_info
 r_struct
 id|fb_info

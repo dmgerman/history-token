@@ -28,4 +28,8 @@ macro_line|#if __GNUC_MINOR__ &gt;= 1
 DECL|macro|noinline
 mdefine_line|#define  noinline __attribute__((noinline))
 macro_line|#endif
+macro_line|#if __GNUC_MINOR__ &gt;= 4
+DECL|macro|__must_check
+mdefine_line|#define __must_check __attribute__((warn_unused_result))
+macro_line|#endif
 eof

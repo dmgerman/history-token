@@ -40,6 +40,10 @@ r_int
 r_int
 id|__supported_pte_mask
 suffix:semicolon
+r_extern
+r_int
+id|nx_enabled
+suffix:semicolon
 DECL|member|pte_low
 DECL|member|pte_high
 DECL|typedef|pte_t
@@ -99,6 +103,8 @@ mdefine_line|#define pte_val(x)&t;((x).pte_low | ((unsigned long long)(x).pte_hi
 DECL|macro|HPAGE_SHIFT
 mdefine_line|#define HPAGE_SHIFT&t;21
 macro_line|#else
+DECL|macro|nx_enabled
+mdefine_line|#define nx_enabled 0
 DECL|member|pte_low
 DECL|typedef|pte_t
 r_typedef

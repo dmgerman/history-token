@@ -1696,7 +1696,6 @@ r_return
 id|child
 suffix:semicolon
 )brace
-r_static
 r_int
 r_int
 id|__devinit
@@ -3071,7 +3070,6 @@ id|nr
 suffix:semicolon
 )brace
 DECL|function|pci_scan_child_bus
-r_static
 r_int
 r_int
 id|__devinit
@@ -3571,6 +3569,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pci_scan_single_device
+)paren
+suffix:semicolon
+DECL|variable|pci_scan_child_bus
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|pci_scan_child_bus
 )paren
 suffix:semicolon
 macro_line|#endif

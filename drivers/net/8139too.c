@@ -2912,7 +2912,8 @@ r_int
 r_int
 id|i
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|pio_start
 comma
 id|pio_end

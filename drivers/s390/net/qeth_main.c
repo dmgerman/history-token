@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_main.c ($Revision: 1.121 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  Utz Bacher (utz.bacher@de.ibm.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; *    $Revision: 1.121 $&t; $Date: 2004/06/11 16:32:15 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_main.c ($Revision: 1.125 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  Utz Bacher (utz.bacher@de.ibm.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; *    $Revision: 1.125 $&t; $Date: 2004/06/29 17:28:24 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/***&n; * eye catcher; just for debugging purposes&n; */
 r_void
 r_volatile
@@ -48,7 +48,7 @@ macro_line|#include &quot;qeth.h&quot;
 macro_line|#include &quot;qeth_mpc.h&quot;
 macro_line|#include &quot;qeth_fs.h&quot;
 DECL|macro|VERSION_QETH_C
-mdefine_line|#define VERSION_QETH_C &quot;$Revision: 1.121 $&quot;
+mdefine_line|#define VERSION_QETH_C &quot;$Revision: 1.125 $&quot;
 DECL|variable|version
 r_static
 r_const
@@ -3793,7 +3793,8 @@ op_star
 suffix:semicolon
 macro_line|#endif
 r_static
-r_void
+r_inline
+r_int
 DECL|function|qeth_set_thread_start_bit
 id|qeth_set_thread_start_bit
 c_func
@@ -3821,6 +3822,37 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|card-&gt;thread_allowed_mask
+op_amp
+id|thread
+)paren
+op_logical_or
+(paren
+id|card-&gt;thread_start_mask
+op_amp
+id|thread
+)paren
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|card-&gt;thread_mask_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+)brace
 id|card-&gt;thread_start_mask
 op_or_assign
 id|thread
@@ -3833,6 +3865,9 @@ id|card-&gt;thread_mask_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_static
@@ -4455,6 +4490,9 @@ comma
 l_string|&quot;startrec&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|qeth_set_thread_start_bit
 c_func
 (paren
@@ -4462,7 +4500,9 @@ id|card
 comma
 id|QETH_RECOVER_THREAD
 )paren
-suffix:semicolon
+op_eq
+l_int|0
+)paren
 id|schedule_work
 c_func
 (paren
@@ -7736,6 +7776,10 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|qeth_set_thread_start_bit
 c_func
 (paren
@@ -7743,7 +7787,11 @@ id|card
 comma
 id|QETH_SET_IP_THREAD
 )paren
-suffix:semicolon
+op_eq
+l_int|0
+)paren
+op_logical_or
+(paren
 id|qeth_set_thread_start_bit
 c_func
 (paren
@@ -7751,7 +7799,10 @@ id|card
 comma
 id|QETH_SET_MC_THREAD
 )paren
-suffix:semicolon
+op_eq
+l_int|0
+)paren
+)paren
 id|schedule_work
 c_func
 (paren
@@ -23658,6 +23709,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|qeth_set_thread_start_bit
 c_func
 (paren
@@ -23665,8 +23720,11 @@ id|card
 comma
 id|QETH_SET_IP_THREAD
 )paren
-suffix:semicolon
-multiline_comment|/* delete mc addresses for this vlan dev */
+op_eq
+l_int|0
+)paren
+op_logical_or
+(paren
 id|qeth_set_thread_start_bit
 c_func
 (paren
@@ -23674,7 +23732,10 @@ id|card
 comma
 id|QETH_SET_MC_THREAD
 )paren
-suffix:semicolon
+op_eq
+l_int|0
+)paren
+)paren
 id|schedule_work
 c_func
 (paren
@@ -24839,6 +24900,9 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|qeth_set_thread_start_bit
 c_func
 (paren
@@ -24846,7 +24910,9 @@ id|card
 comma
 id|QETH_SET_MC_THREAD
 )paren
-suffix:semicolon
+op_eq
+l_int|0
+)paren
 id|schedule_work
 c_func
 (paren
@@ -31655,6 +31721,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|qeth_set_thread_start_bit
 c_func
 (paren
@@ -31662,7 +31731,9 @@ id|card
 comma
 id|QETH_SET_MC_THREAD
 )paren
-suffix:semicolon
+op_eq
+l_int|0
+)paren
 id|schedule_work
 c_func
 (paren
@@ -33682,6 +33753,9 @@ c_func
 id|ipaddr
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|qeth_set_thread_start_bit
 c_func
 (paren
@@ -33689,7 +33763,9 @@ id|card
 comma
 id|QETH_SET_IP_THREAD
 )paren
-suffix:semicolon
+op_eq
+l_int|0
+)paren
 id|schedule_work
 c_func
 (paren
@@ -33837,6 +33913,9 @@ c_func
 id|ipaddr
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|qeth_set_thread_start_bit
 c_func
 (paren
@@ -33844,7 +33923,9 @@ id|card
 comma
 id|QETH_SET_IP_THREAD
 )paren
-suffix:semicolon
+op_eq
+l_int|0
+)paren
 id|schedule_work
 c_func
 (paren
@@ -34073,6 +34154,9 @@ c_func
 id|ipaddr
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|qeth_set_thread_start_bit
 c_func
 (paren
@@ -34080,7 +34164,9 @@ id|card
 comma
 id|QETH_SET_IP_THREAD
 )paren
-suffix:semicolon
+op_eq
+l_int|0
+)paren
 id|schedule_work
 c_func
 (paren
@@ -34228,6 +34314,9 @@ c_func
 id|ipaddr
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|qeth_set_thread_start_bit
 c_func
 (paren
@@ -34235,7 +34324,9 @@ id|card
 comma
 id|QETH_SET_IP_THREAD
 )paren
-suffix:semicolon
+op_eq
+l_int|0
+)paren
 id|schedule_work
 c_func
 (paren
@@ -34416,6 +34507,9 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|qeth_set_thread_start_bit
 c_func
 (paren
@@ -34423,7 +34517,9 @@ id|card
 comma
 id|QETH_SET_IP_THREAD
 )paren
-suffix:semicolon
+op_eq
+l_int|0
+)paren
 id|schedule_work
 c_func
 (paren
@@ -34649,6 +34745,9 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|qeth_set_thread_start_bit
 c_func
 (paren
@@ -34656,7 +34755,9 @@ id|card
 comma
 id|QETH_SET_IP_THREAD
 )paren
-suffix:semicolon
+op_eq
+l_int|0
+)paren
 id|schedule_work
 c_func
 (paren

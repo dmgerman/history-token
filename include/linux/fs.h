@@ -7970,6 +7970,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|__must_check
 id|inode_setattr
 c_func
 (paren

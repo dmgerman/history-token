@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCall.h&gt;
 macro_line|#ifndef CONFIG_SPINLINE
@@ -69,7 +70,7 @@ id|holder_cpu
 suffix:semicolon
 id|yield_count
 op_assign
-id|holder_paca-&gt;xLpPaca.xYieldCount
+id|holder_paca-&gt;lppaca.xYieldCount
 suffix:semicolon
 r_if
 c_cond
@@ -161,7 +162,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;&t;lwz&t;&t;%1,24(13)&t;&t;# __spin_trylock&bslash;n&bslash;&n;1:&t;lwarx&t;&t;%0,0,%2&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;&t;2f&bslash;n&bslash;&n;&t;stwcx.&t;&t;%1,0,%2&bslash;n&bslash;&n;&t;bne-&t;&t;1b&bslash;n&bslash;&n;&t;isync&bslash;n&bslash;&n;2:&quot;
+l_string|&quot;&t;lwz&t;&t;%1,%3(13)&t;&t;# __spin_trylock&bslash;n&bslash;&n;1:&t;lwarx&t;&t;%0,0,%2&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;&t;2f&bslash;n&bslash;&n;&t;stwcx.&t;&t;%1,0,%2&bslash;n&bslash;&n;&t;bne-&t;&t;1b&bslash;n&bslash;&n;&t;isync&bslash;n&bslash;&n;2:&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -177,6 +178,17 @@ l_string|&quot;r&quot;
 (paren
 op_amp
 id|lock-&gt;lock
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+m_offsetof
+(paren
+r_struct
+id|paca_struct
+comma
+id|lock_token
+)paren
 )paren
 suffix:colon
 l_string|&quot;cr0&quot;
@@ -480,7 +492,7 @@ id|holder_cpu
 suffix:semicolon
 id|yield_count
 op_assign
-id|holder_paca-&gt;xLpPaca.xYieldCount
+id|holder_paca-&gt;lppaca.xYieldCount
 suffix:semicolon
 r_if
 c_cond
@@ -757,7 +769,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;&t;lwz&t;&t;%1,24(13)&t;&t;# write_trylock&bslash;n&bslash;&n;1:&t;lwarx&t;&t;%0,0,%2&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;&t;2f&bslash;n&bslash;&n;&t;stwcx.&t;&t;%1,0,%2&bslash;n&bslash;&n;&t;bne-&t;&t;1b&bslash;n&bslash;&n;&t;isync&bslash;n&bslash;&n;2:&quot;
+l_string|&quot;&t;lwz&t;&t;%1,%3(13)&t;# write_trylock&bslash;n&bslash;&n;1:&t;lwarx&t;&t;%0,0,%2&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;&t;2f&bslash;n&bslash;&n;&t;stwcx.&t;&t;%1,0,%2&bslash;n&bslash;&n;&t;bne-&t;&t;1b&bslash;n&bslash;&n;&t;isync&bslash;n&bslash;&n;2:&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -773,6 +785,17 @@ l_string|&quot;r&quot;
 (paren
 op_amp
 id|rw-&gt;lock
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+m_offsetof
+(paren
+r_struct
+id|paca_struct
+comma
+id|lock_token
+)paren
 )paren
 suffix:colon
 l_string|&quot;cr0&quot;

@@ -826,6 +826,18 @@ op_star
 id|sigq
 suffix:semicolon
 multiline_comment|/* signal queue entry. */
+DECL|member|abs_timer_entry
+r_struct
+id|list_head
+id|abs_timer_entry
+suffix:semicolon
+multiline_comment|/* clock abs_timer_list */
+DECL|member|wall_to_prev
+r_struct
+id|timespec
+id|wall_to_prev
+suffix:semicolon
+multiline_comment|/* wall_to_monotonic used when set */
 )brace
 suffix:semicolon
 r_struct

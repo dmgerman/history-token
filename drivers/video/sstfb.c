@@ -1427,7 +1427,7 @@ r_if
 c_cond
 (paren
 (paren
-id|ABS
+id|abs
 c_func
 (paren
 id|fout
@@ -1455,7 +1455,7 @@ id|m
 suffix:semicolon
 id|best_err
 op_assign
-id|ABS
+id|abs
 c_func
 (paren
 id|fout

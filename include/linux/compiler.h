@@ -68,6 +68,10 @@ macro_line|#ifndef __deprecated
 DECL|macro|__deprecated
 macro_line|# define __deprecated&t;&t;/* unimplemented */
 macro_line|#endif
+macro_line|#ifndef __must_check
+DECL|macro|__must_check
+mdefine_line|#define __must_check
+macro_line|#endif
 multiline_comment|/*&n; * Allow us to avoid &squot;defined but not used&squot; warnings on functions and data,&n; * as well as force them to be emitted to the assembly file.&n; *&n; * As of gcc 3.3, static functions that are not marked with attribute((used))&n; * may be elided from the assembly file.  As of gcc 3.3, static data not so&n; * marked will not be elided, but this may change in a future gcc version.&n; *&n; * In prior versions of gcc, such functions and data would be emitted, but&n; * would be warned about except with attribute((unused)).&n; */
 macro_line|#ifndef __attribute_used__
 DECL|macro|__attribute_used__

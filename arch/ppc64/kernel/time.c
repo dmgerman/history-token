@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
+macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallXm.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -154,7 +155,7 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|lpEvent_count
+id|lpevent_count
 suffix:semicolon
 r_extern
 r_int
@@ -733,7 +734,7 @@ id|regs
 )paren
 suffix:semicolon
 macro_line|#endif
-id|lpaca-&gt;xLpPaca.xIntDword.xFields.xDecrInt
+id|lpaca-&gt;lppaca.xIntDword.xFields.xDecrInt
 op_assign
 l_int|0
 suffix:semicolon
@@ -855,7 +856,7 @@ id|ItLpQueue
 op_star
 id|lpq
 op_assign
-id|lpaca-&gt;lpQueuePtr
+id|lpaca-&gt;lpqueue_ptr
 suffix:semicolon
 r_if
 c_cond
@@ -868,7 +869,7 @@ c_func
 id|lpq
 )paren
 )paren
-id|lpEvent_count
+id|lpevent_count
 op_add_assign
 id|ItLpQueue_process
 c_func

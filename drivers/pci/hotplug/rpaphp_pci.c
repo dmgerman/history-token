@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * PCI Hot Plug Controller Driver for RPA-compliant PPC64 platform.&n; * Copyright (C) 2003 Linda Xie &lt;lxie@us.ibm.com&gt;&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;lxie@us.ibm.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
+macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &quot;../pci.h&quot;&t;&t;/* for pci_add_new_bus */
 macro_line|#include &quot;rpaphp.h&quot;
 DECL|function|rpaphp_find_pci_dev
@@ -1599,13 +1600,13 @@ c_cond
 id|func-&gt;pci_dev
 )paren
 (brace
-id|rpaphp_eeh_remove_bus_device
+id|pci_remove_bus_device
 c_func
 (paren
 id|func-&gt;pci_dev
 )paren
 suffix:semicolon
-id|pci_remove_bus_device
+id|rpaphp_eeh_remove_bus_device
 c_func
 (paren
 id|func-&gt;pci_dev
@@ -2221,6 +2222,37 @@ comma
 id|rpaphp_slot_list
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|slot-&gt;bridge
+op_eq
+l_int|NULL
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|slot-&gt;dev_type
+op_eq
+id|PCI_DEV
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;PCI slot missing bridge %s %s &bslash;n&quot;
+comma
+id|slot-&gt;name
+comma
+id|slot-&gt;location
+)paren
+suffix:semicolon
+)brace
+r_continue
+suffix:semicolon
+)brace
 id|bus
 op_assign
 id|slot-&gt;bridge-&gt;subordinate
@@ -2231,10 +2263,11 @@ c_cond
 op_logical_neg
 id|bus
 )paren
-r_return
-l_int|NULL
+(brace
+r_continue
 suffix:semicolon
-multiline_comment|/* shouldn&squot;t be here */
+multiline_comment|/* should never happen? */
+)brace
 r_for
 c_loop
 (paren

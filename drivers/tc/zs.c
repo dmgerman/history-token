@@ -26,7 +26,7 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/wbflush.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#ifdef CONFIG_DECSTATION
+macro_line|#ifdef CONFIG_MACH_DECSTATION
 macro_line|#include &lt;asm/dec/interrupts.h&gt;
 macro_line|#include &lt;asm/dec/machtype.h&gt;
 macro_line|#include &lt;asm/dec/tc.h&gt;
@@ -100,7 +100,7 @@ id|zs_parms
 op_star
 id|zs_parms
 suffix:semicolon
-macro_line|#ifdef CONFIG_DECSTATION
+macro_line|#ifdef CONFIG_MACH_DECSTATION
 DECL|variable|ds_parms
 r_static
 r_struct
@@ -168,7 +168,7 @@ l_int|14745000
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DECSTATION
+macro_line|#ifdef CONFIG_MACH_DECSTATION
 DECL|macro|DS_BUS_PRESENT
 mdefine_line|#define DS_BUS_PRESENT (IOASIC)
 macro_line|#else
@@ -6909,7 +6909,7 @@ c_cond
 id|mips_machtype
 )paren
 (brace
-macro_line|#ifdef CONFIG_DECSTATION
+macro_line|#ifdef CONFIG_MACH_DECSTATION
 r_case
 id|MACH_DS5000_2X0
 suffix:colon

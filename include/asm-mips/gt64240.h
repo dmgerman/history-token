@@ -3,7 +3,7 @@ macro_line|#ifndef __ASM_MIPS_MV64240_H
 DECL|macro|__ASM_MIPS_MV64240_H
 mdefine_line|#define __ASM_MIPS_MV64240_H
 macro_line|#include &lt;asm/addrspace.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/marvell.h&gt;
 multiline_comment|/*&n; * CPU Control Registers&n; */
 DECL|macro|CPU_CONFIGURATION
 mdefine_line|#define CPU_CONFIGURATION&t;&t;&t;&t;&t;0x000
@@ -1836,39 +1836,5 @@ DECL|macro|MPSC1_CAUSE
 mdefine_line|#define MPSC1_CAUSE&t;&t;&t;&t;&t;&t;0xb80c
 DECL|macro|MPSC1_MASK
 mdefine_line|#define MPSC1_MASK&t;&t;&t;&t;&t;&t;0xb88c
-r_extern
-r_int
-r_int
-id|gt64240_base
-suffix:semicolon
-DECL|macro|GT64240_BASE
-mdefine_line|#define GT64240_BASE&t;   (gt64240_base)
-multiline_comment|/*&n; * Because of an error/peculiarity in the Galileo chip, we need to swap the&n; * bytes when running bigendian.&n; */
-DECL|macro|__GT_READ
-mdefine_line|#define __GT_READ(ofs)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(*(volatile u32 *)(GT64240_BASE+(ofs)))
-DECL|macro|__GT_WRITE
-mdefine_line|#define __GT_WRITE(ofs, data)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do { *(volatile u32 *)(GT64240_BASE+(ofs)) = (data); } while (0)
-DECL|macro|GT_READ
-mdefine_line|#define GT_READ(ofs)&t;&t;le32_to_cpu(__GT_READ(ofs))
-DECL|macro|GT_WRITE
-mdefine_line|#define GT_WRITE(ofs, data)&t;__GT_WRITE(ofs, cpu_to_le32(data))
-DECL|macro|GT_READ_16
-mdefine_line|#define GT_READ_16(ofs, data)&t;&t;&t;&t;&t;&t;&bslash;&n;        le16_to_cpu(*(volatile u16 *)(GT64240_BASE+(ofs)))
-DECL|macro|GT_WRITE_16
-mdefine_line|#define GT_WRITE_16(ofs, data)  &bslash;&n;        *(volatile u16 *)(GT64240_BASE+(ofs)) = cpu_to_le16(data)
-DECL|macro|GT_READ_8
-mdefine_line|#define GT_READ_8(ofs, data)&t;&t;&t;&t;&t;&t;&bslash;&n;        *(data) = *(volatile u8 *)(GT64240_BASE+(ofs))
-DECL|macro|GT_WRITE_8
-mdefine_line|#define GT_WRITE_8(ofs, data)&t;&t;&t;&t;&t;&t;&bslash;&n;        *(volatile u8 *)(GT64240_BASE+(ofs)) = data
-r_extern
-r_struct
-id|pci_ops
-id|gt_bus0_pci_ops
-suffix:semicolon
-r_extern
-r_struct
-id|pci_ops
-id|gt_bus1_pci_ops
-suffix:semicolon
 macro_line|#endif&t;/* __ASM_MIPS_MV64240_H */
 eof

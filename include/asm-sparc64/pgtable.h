@@ -75,56 +75,64 @@ mdefine_line|#define pgd_ERROR(e)&t;__builtin_trap()
 macro_line|#endif /* !(__ASSEMBLY__) */
 multiline_comment|/* Spitfire/Cheetah TTE bits. */
 DECL|macro|_PAGE_VALID
-mdefine_line|#define _PAGE_VALID&t;_AC(0x8000000000000000,UL) /* Valid TTE               */
+mdefine_line|#define _PAGE_VALID&t;_AC(0x8000000000000000,UL) /* Valid TTE              */
 DECL|macro|_PAGE_R
-mdefine_line|#define _PAGE_R&t;&t;_AC(0x8000000000000000,UL) /* Keep ref bit up to date */
+mdefine_line|#define _PAGE_R&t;&t;_AC(0x8000000000000000,UL) /* Keep ref bit up to date*/
 DECL|macro|_PAGE_SZ4MB
-mdefine_line|#define _PAGE_SZ4MB&t;_AC(0x6000000000000000,UL) /* 4MB Page                */
+mdefine_line|#define _PAGE_SZ4MB&t;_AC(0x6000000000000000,UL) /* 4MB Page               */
 DECL|macro|_PAGE_SZ512K
-mdefine_line|#define _PAGE_SZ512K&t;_AC(0x4000000000000000,UL) /* 512K Page               */
+mdefine_line|#define _PAGE_SZ512K&t;_AC(0x4000000000000000,UL) /* 512K Page              */
 DECL|macro|_PAGE_SZ64K
-mdefine_line|#define _PAGE_SZ64K&t;_AC(0x2000000000000000,UL) /* 64K Page                */
+mdefine_line|#define _PAGE_SZ64K&t;_AC(0x2000000000000000,UL) /* 64K Page               */
 DECL|macro|_PAGE_SZ8K
-mdefine_line|#define _PAGE_SZ8K&t;_AC(0x0000000000000000,UL) /* 8K Page                 */
+mdefine_line|#define _PAGE_SZ8K&t;_AC(0x0000000000000000,UL) /* 8K Page                */
 DECL|macro|_PAGE_NFO
-mdefine_line|#define _PAGE_NFO&t;_AC(0x1000000000000000,UL) /* No Fault Only           */
+mdefine_line|#define _PAGE_NFO&t;_AC(0x1000000000000000,UL) /* No Fault Only          */
 DECL|macro|_PAGE_IE
-mdefine_line|#define _PAGE_IE&t;_AC(0x0800000000000000,UL) /* Invert Endianness       */
+mdefine_line|#define _PAGE_IE&t;_AC(0x0800000000000000,UL) /* Invert Endianness      */
+DECL|macro|_PAGE_SOFT2
+mdefine_line|#define _PAGE_SOFT2&t;_AC(0x07FC000000000000,UL) /* Software bits, set 2   */
+DECL|macro|_PAGE_RES1
+mdefine_line|#define _PAGE_RES1&t;_AC(0x0003000000000000,UL) /* Reserved               */
 DECL|macro|_PAGE_SN
-mdefine_line|#define _PAGE_SN&t;_AC(0x0000800000000000,UL) /* (Cheetah) Snoop         */
+mdefine_line|#define _PAGE_SN&t;_AC(0x0000800000000000,UL) /* (Cheetah) Snoop        */
+DECL|macro|_PAGE_RES2
+mdefine_line|#define _PAGE_RES2&t;_AC(0x0000780000000000,UL) /* Reserved               */
 DECL|macro|_PAGE_PADDR_SF
-mdefine_line|#define _PAGE_PADDR_SF&t;_AC(0x000001FFFFFFE000,UL) /* (Spitfire) paddr [40:13]*/
+mdefine_line|#define _PAGE_PADDR_SF&t;_AC(0x000001FFFFFFE000,UL) /* (Spitfire) paddr[40:13]*/
 DECL|macro|_PAGE_PADDR
-mdefine_line|#define _PAGE_PADDR&t;_AC(0x000007FFFFFFE000,UL) /* (Cheetah) paddr [42:13] */
+mdefine_line|#define _PAGE_PADDR&t;_AC(0x000007FFFFFFE000,UL) /* (Cheetah) paddr[42:13] */
 DECL|macro|_PAGE_SOFT
-mdefine_line|#define _PAGE_SOFT&t;_AC(0x0000000000001F80,UL) /* Software bits           */
+mdefine_line|#define _PAGE_SOFT&t;_AC(0x0000000000001F80,UL) /* Software bits          */
 DECL|macro|_PAGE_L
-mdefine_line|#define _PAGE_L&t;&t;_AC(0x0000000000000040,UL) /* Locked TTE              */
+mdefine_line|#define _PAGE_L&t;&t;_AC(0x0000000000000040,UL) /* Locked TTE             */
 DECL|macro|_PAGE_CP
-mdefine_line|#define _PAGE_CP&t;_AC(0x0000000000000020,UL) /* Cacheable in P-Cache    */
+mdefine_line|#define _PAGE_CP&t;_AC(0x0000000000000020,UL) /* Cacheable in P-Cache   */
 DECL|macro|_PAGE_CV
-mdefine_line|#define _PAGE_CV&t;_AC(0x0000000000000010,UL) /* Cacheable in V-Cache    */
+mdefine_line|#define _PAGE_CV&t;_AC(0x0000000000000010,UL) /* Cacheable in V-Cache   */
 DECL|macro|_PAGE_E
-mdefine_line|#define _PAGE_E&t;&t;_AC(0x0000000000000008,UL) /* side-Effect             */
+mdefine_line|#define _PAGE_E&t;&t;_AC(0x0000000000000008,UL) /* side-Effect            */
 DECL|macro|_PAGE_P
-mdefine_line|#define _PAGE_P&t;&t;_AC(0x0000000000000004,UL) /* Privileged Page         */
+mdefine_line|#define _PAGE_P&t;&t;_AC(0x0000000000000004,UL) /* Privileged Page        */
 DECL|macro|_PAGE_W
-mdefine_line|#define _PAGE_W&t;&t;_AC(0x0000000000000002,UL) /* Writable                */
+mdefine_line|#define _PAGE_W&t;&t;_AC(0x0000000000000002,UL) /* Writable               */
 DECL|macro|_PAGE_G
-mdefine_line|#define _PAGE_G&t;&t;_AC(0x0000000000000001,UL) /* Global                  */
-multiline_comment|/* Here are the SpitFire software bits we use in the TTE&squot;s. */
-DECL|macro|_PAGE_FILE
-mdefine_line|#define _PAGE_FILE&t;_AC(0x0000000000001000,UL)&t;/* Pagecache page     */
+mdefine_line|#define _PAGE_G&t;&t;_AC(0x0000000000000001,UL) /* Global                 */
+multiline_comment|/* Here are the SpitFire software bits we use in the TTE&squot;s.&n; *&n; * WARNING: If you are going to try and start using some&n; *          of the soft2 bits, you will need to make&n; *          modifications to the swap entry implementation.&n; *&t;    For example, one thing that could happen is that&n; *          swp_entry_to_pte() would BUG_ON() if you tried&n; *          to use one of the soft2 bits for _PAGE_FILE.&n; *&n; * Like other architectures, I have aliased _PAGE_FILE with&n; * _PAGE_MODIFIED.  This works because _PAGE_FILE is never&n; * interpreted that way unless _PAGE_PRESENT is clear.&n; */
+DECL|macro|_PAGE_EXEC
+mdefine_line|#define _PAGE_EXEC&t;_AC(0x0000000000001000,UL)&t;/* Executable SW bit */
 DECL|macro|_PAGE_MODIFIED
-mdefine_line|#define _PAGE_MODIFIED&t;_AC(0x0000000000000800,UL)&t;/* Modified (dirty)   */
+mdefine_line|#define _PAGE_MODIFIED&t;_AC(0x0000000000000800,UL)&t;/* Modified (dirty)  */
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE&t;_AC(0x0000000000000800,UL)&t;/* Pagecache page    */
 DECL|macro|_PAGE_ACCESSED
-mdefine_line|#define _PAGE_ACCESSED&t;_AC(0x0000000000000400,UL)&t;/* Accessed (ref&squot;d)   */
+mdefine_line|#define _PAGE_ACCESSED&t;_AC(0x0000000000000400,UL)&t;/* Accessed (ref&squot;d)  */
 DECL|macro|_PAGE_READ
-mdefine_line|#define _PAGE_READ&t;_AC(0x0000000000000200,UL)&t;/* Readable SW Bit    */
+mdefine_line|#define _PAGE_READ&t;_AC(0x0000000000000200,UL)&t;/* Readable SW Bit   */
 DECL|macro|_PAGE_WRITE
-mdefine_line|#define _PAGE_WRITE&t;_AC(0x0000000000000100,UL)&t;/* Writable SW Bit    */
+mdefine_line|#define _PAGE_WRITE&t;_AC(0x0000000000000100,UL)&t;/* Writable SW Bit   */
 DECL|macro|_PAGE_PRESENT
-mdefine_line|#define _PAGE_PRESENT&t;_AC(0x0000000000000080,UL)&t;/* Present            */
+mdefine_line|#define _PAGE_PRESENT&t;_AC(0x0000000000000080,UL)&t;/* Present           */
 macro_line|#if PAGE_SHIFT == 13
 DECL|macro|_PAGE_SZBITS
 mdefine_line|#define _PAGE_SZBITS&t;_PAGE_SZ8K
@@ -162,13 +170,19 @@ DECL|macro|PAGE_NONE
 mdefine_line|#define PAGE_NONE&t;__pgprot (_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_CACHE)
 multiline_comment|/* Don&squot;t set the TTE _PAGE_W bit here, else the dirty bit never gets set. */
 DECL|macro|PAGE_SHARED
-mdefine_line|#define PAGE_SHARED&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS | _PAGE_WRITE)
+mdefine_line|#define PAGE_SHARED&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS | _PAGE_WRITE | _PAGE_EXEC)
 DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS)
+mdefine_line|#define PAGE_COPY&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS | _PAGE_EXEC)
 DECL|macro|PAGE_READONLY
-mdefine_line|#define PAGE_READONLY&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS)
+mdefine_line|#define PAGE_READONLY&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS | _PAGE_EXEC)
 DECL|macro|PAGE_KERNEL
-mdefine_line|#define PAGE_KERNEL&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __PRIV_BITS | __ACCESS_BITS | __DIRTY_BITS)
+mdefine_line|#define PAGE_KERNEL&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;  __PRIV_BITS | &bslash;&n;&t;&t;&t;&t;  __ACCESS_BITS | __DIRTY_BITS | _PAGE_EXEC)
+DECL|macro|PAGE_SHARED_NOEXEC
+mdefine_line|#define PAGE_SHARED_NOEXEC&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | &bslash;&n;&t;&t;&t;&t;&t;  _PAGE_CACHE | &bslash;&n;&t;&t;&t;&t;&t;  __ACCESS_BITS | _PAGE_WRITE)
+DECL|macro|PAGE_COPY_NOEXEC
+mdefine_line|#define PAGE_COPY_NOEXEC&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | &bslash;&n;&t;&t;&t;&t;&t;  _PAGE_CACHE | __ACCESS_BITS)
+DECL|macro|PAGE_READONLY_NOEXEC
+mdefine_line|#define PAGE_READONLY_NOEXEC&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | &bslash;&n;&t;&t;&t;&t;&t;  _PAGE_CACHE | __ACCESS_BITS)
 DECL|macro|_PFN_MASK
 mdefine_line|#define _PFN_MASK&t;_PAGE_PADDR
 DECL|macro|pg_iobits
@@ -176,11 +190,11 @@ mdefine_line|#define pg_iobits (_PAGE_VALID | _PAGE_PRESENT | __DIRTY_BITS | &bs
 DECL|macro|__P000
 mdefine_line|#define __P000&t;PAGE_NONE
 DECL|macro|__P001
-mdefine_line|#define __P001&t;PAGE_READONLY
+mdefine_line|#define __P001&t;PAGE_READONLY_NOEXEC
 DECL|macro|__P010
-mdefine_line|#define __P010&t;PAGE_COPY
+mdefine_line|#define __P010&t;PAGE_COPY_NOEXEC
 DECL|macro|__P011
-mdefine_line|#define __P011&t;PAGE_COPY
+mdefine_line|#define __P011&t;PAGE_COPY_NOEXEC
 DECL|macro|__P100
 mdefine_line|#define __P100&t;PAGE_READONLY
 DECL|macro|__P101
@@ -192,11 +206,11 @@ mdefine_line|#define __P111&t;PAGE_COPY
 DECL|macro|__S000
 mdefine_line|#define __S000&t;PAGE_NONE
 DECL|macro|__S001
-mdefine_line|#define __S001&t;PAGE_READONLY
+mdefine_line|#define __S001&t;PAGE_READONLY_NOEXEC
 DECL|macro|__S010
-mdefine_line|#define __S010&t;PAGE_SHARED
+mdefine_line|#define __S010&t;PAGE_SHARED_NOEXEC
 DECL|macro|__S011
-mdefine_line|#define __S011&t;PAGE_SHARED
+mdefine_line|#define __S011&t;PAGE_SHARED_NOEXEC
 DECL|macro|__S100
 mdefine_line|#define __S100&t;PAGE_READONLY
 DECL|macro|__S101

@@ -843,7 +843,7 @@ id|handle
 )paren
 )paren
 r_goto
-id|error_out
+id|out
 suffix:semicolon
 id|result
 op_assign
@@ -991,6 +991,8 @@ op_amp
 id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|result
 suffix:semicolon
