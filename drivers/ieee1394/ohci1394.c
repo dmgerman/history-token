@@ -9939,7 +9939,6 @@ op_complement
 id|OHCI1394_busReset
 suffix:semicolon
 )brace
-multiline_comment|/* XXX: We need a way to also queue the OHCI1394_reqTxComplete,&n;&t; * but for right now we simply run it upon reception, to make sure&n;&t; * we get sent acks before response packets. This sucks mainly&n;&t; * because it halts the interrupt handler.  */
 r_if
 c_cond
 (paren
@@ -9997,13 +9996,11 @@ l_string|&quot;reqTxComplete&quot;
 )paren
 suffix:semicolon
 r_else
-id|dma_trm_tasklet
+id|tasklet_schedule
+c_func
 (paren
-(paren
-r_int
-r_int
-)paren
-id|d
+op_amp
+id|d-&gt;task
 )paren
 suffix:semicolon
 id|event
