@@ -384,16 +384,6 @@ DECL|macro|SRB_ERR_DEVICE
 mdefine_line|#define SRB_ERR_DEVICE&t;3&t;&t;/* Request failed -- &quot;device error&quot; */
 DECL|macro|SRB_ERR_OTHER
 mdefine_line|#define SRB_ERR_OTHER&t;4
-multiline_comment|/* Segment/entries counts */
-DECL|member|req_cnt
-r_uint16
-id|req_cnt
-suffix:semicolon
-multiline_comment|/* !0 indicates counts determined */
-DECL|member|tot_dsds
-r_uint16
-id|tot_dsds
-suffix:semicolon
 multiline_comment|/* SRB magic number */
 DECL|member|magic
 r_uint16

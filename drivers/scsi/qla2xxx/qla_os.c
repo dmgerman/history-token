@@ -13324,7 +13324,6 @@ c_cond
 (paren
 id|sp
 )paren
-(brace
 id|atomic_set
 c_func
 (paren
@@ -13334,11 +13333,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|sp-&gt;req_cnt
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 r_return
 (paren
 id|sp
