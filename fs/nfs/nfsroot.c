@@ -752,6 +752,7 @@ op_star
 id|name
 )paren
 (brace
+r_static
 r_char
 id|buf
 (braket
