@@ -272,6 +272,7 @@ macro_line|#else
 DECL|function|isapnp_proc_init
 r_static
 r_inline
+r_int
 id|isapnp_proc_init
 c_func
 (paren
@@ -285,6 +286,7 @@ suffix:semicolon
 DECL|function|isapnp_proc_done
 r_static
 r_inline
+r_int
 id|isapnp_proc_done
 c_func
 (paren

@@ -5165,6 +5165,13 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Inititialization.&n; */
+DECL|variable|isapnp_protocol
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|isapnp_protocol
+)paren
+suffix:semicolon
 DECL|variable|isapnp_present
 id|EXPORT_SYMBOL
 c_func

@@ -1484,32 +1484,33 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* we link this module statically with the card modules&n; * due to the pcmcia symbol problems...&n; */
-macro_line|#if 0
 multiline_comment|/*&n; * exported stuffs&n; */
+DECL|variable|snd_vxpocket_ops
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_vxpocket_ops
 )paren
 suffix:semicolon
+DECL|variable|snd_vxpocket_attach
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_vxpocket_attach
 )paren
 suffix:semicolon
+DECL|variable|snd_vxpocket_detach
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_vxpocket_detach
 )paren
 suffix:semicolon
+DECL|variable|snd_vxpocket_detach_all
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_vxpocket_detach_all
 )paren
 suffix:semicolon
-macro_line|#endif
 eof
