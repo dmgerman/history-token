@@ -2049,7 +2049,7 @@ op_assign
 dot
 id|readlink
 op_assign
-id|cifs_readlink
+id|generic_readlink
 comma
 dot
 id|follow_link

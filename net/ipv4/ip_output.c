@@ -31,6 +31,7 @@ macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/raw.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/inetpeer.h&gt;
+macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/igmp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 macro_line|#include &lt;linux/netfilter_bridge.h&gt;
@@ -3565,7 +3566,9 @@ c_cond
 id|fraggap
 )paren
 (brace
-id|skb_copy_bits
+id|skb-&gt;csum
+op_assign
+id|skb_copy_and_csum_bits
 c_func
 (paren
 id|skb_prev
@@ -3577,6 +3580,20 @@ op_plus
 id|transhdrlen
 comma
 id|fraggap
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|skb_prev-&gt;csum
+op_assign
+id|csum_block_sub
+c_func
+(paren
+id|skb_prev-&gt;csum
+comma
+id|skb-&gt;csum
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|data
@@ -3620,7 +3637,7 @@ id|offset
 comma
 id|copy
 comma
-l_int|0
+id|fraggap
 comma
 id|skb
 )paren
@@ -4524,7 +4541,9 @@ c_cond
 id|fraggap
 )paren
 (brace
-id|skb_copy_bits
+id|skb-&gt;csum
+op_assign
+id|skb_copy_and_csum_bits
 c_func
 (paren
 id|skb_prev
@@ -4534,6 +4553,20 @@ comma
 id|data
 comma
 id|fraggap
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|skb_prev-&gt;csum
+op_assign
+id|csum_block_sub
+c_func
+(paren
+id|skb_prev-&gt;csum
+comma
+id|skb-&gt;csum
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|skb_trim

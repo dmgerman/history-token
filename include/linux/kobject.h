@@ -2,7 +2,7 @@ multiline_comment|/*&n; * kobject.h - generic kernel object infrastructure.&n; *
 macro_line|#ifndef _KOBJECT_H_
 DECL|macro|_KOBJECT_H_
 mdefine_line|#define _KOBJECT_H_
-macro_line|#if __KERNEL__
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sysfs.h&gt;
