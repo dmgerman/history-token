@@ -20,7 +20,6 @@ multiline_comment|/* Set the copy breakpoint for the copy-only-tiny-frames schem
 macro_line|#ifndef __arm__
 DECL|variable|rx_copybreak
 r_static
-r_const
 r_int
 id|rx_copybreak
 op_assign
@@ -30,7 +29,6 @@ macro_line|#else
 multiline_comment|/* ARM systems perform better by disregarding the bus-master&n;   transfer capability of these cards. -- rmk */
 DECL|variable|rx_copybreak
 r_static
-r_const
 r_int
 id|rx_copybreak
 op_assign
