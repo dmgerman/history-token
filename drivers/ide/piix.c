@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: piix.c,v 1.2 2002/03/13 22:50:43 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2002 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Andrzej Krzysztofowicz&n; *      Andre Hedrick&n; *&n; *  Thanks to Daniela Egbert for advice on PIIX bugs.&n; */
+multiline_comment|/*&n; * $Id: piix.c,v 1.3 2002/03/29 16:06:06 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2002 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Andrzej Krzysztofowicz&n; *      Andre Hedrick&n; *&n; *  Thanks to Daniela Egbert for advice on PIIX bugs.&n; */
 multiline_comment|/*&n; * Intel PIIX/ICH and Efar Victory66 IDE driver for Linux.&n; *&n; * UDMA66 and higher modes are autoenabled only in case the BIOS has detected a&n; * 80 wire cable. To ignore the BIOS data and assume the cable is present, use&n; * &squot;ide0=ata66&squot; or &squot;ide1=ata66&squot; on the kernel command line.&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -364,7 +364,7 @@ suffix:semicolon
 id|piix_print
 c_func
 (paren
-l_string|&quot;Driver Version:                     1.2&quot;
+l_string|&quot;Driver Version:                     1.3&quot;
 )paren
 suffix:semicolon
 id|piix_print
@@ -1995,9 +1995,16 @@ id|piix_clock
 suffix:semicolon
 id|UT
 op_assign
+id|umul
+ques
+c_cond
+(paren
 id|T
 op_div
 id|umul
+)paren
+suffix:colon
+l_int|0
 suffix:semicolon
 id|ata_timing_compute
 c_func

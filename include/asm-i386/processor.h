@@ -62,7 +62,8 @@ id|cpuid_level
 suffix:semicolon
 multiline_comment|/* Maximum supported CPUID level, -1=no CPUID */
 DECL|member|x86_capability
-id|__u32
+r_int
+r_int
 id|x86_capability
 (braket
 id|NCAPINTS

@@ -325,6 +325,10 @@ DECL|macro|USBDEVFS_RESET
 mdefine_line|#define USBDEVFS_RESET             _IO(&squot;U&squot;, 20)
 DECL|macro|USBDEVFS_CLEAR_HALT
 mdefine_line|#define USBDEVFS_CLEAR_HALT        _IOR(&squot;U&squot;, 21, unsigned int)
+DECL|macro|USBDEVFS_DISCONNECT
+mdefine_line|#define USBDEVFS_DISCONNECT        _IO(&squot;U&squot;, 22)
+DECL|macro|USBDEVFS_CONNECT
+mdefine_line|#define USBDEVFS_CONNECT           _IO(&squot;U&squot;, 23)
 multiline_comment|/* --------------------------------------------------------------------- */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/list.h&gt;

@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/usbdevice_fs.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &quot;hcd.h&quot;
 macro_line|#include &quot;hub.h&quot;
 multiline_comment|/* Wakes up khubd */
 DECL|variable|hub_event_lock

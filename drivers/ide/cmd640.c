@@ -2442,6 +2442,7 @@ DECL|function|ide_probe_for_cmd640x
 r_int
 id|__init
 id|ide_probe_for_cmd640x
+c_func
 (paren
 r_void
 )paren
@@ -2801,17 +2802,9 @@ id|cmd_hwif1-&gt;chipset
 op_assign
 id|ide_cmd640
 suffix:semicolon
-id|cmd_hwif0-&gt;mate
-op_assign
-id|cmd_hwif1
-suffix:semicolon
-id|cmd_hwif1-&gt;mate
-op_assign
-id|cmd_hwif0
-suffix:semicolon
 id|cmd_hwif1-&gt;unit
 op_assign
-l_int|1
+id|ATA_SECONDARY
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_CMD640_ENHANCED
 id|cmd_hwif1-&gt;tuneproc
@@ -2888,7 +2881,7 @@ id|second_port_toggled
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t; &t;&t; * Reset timing to the slowest speed and turn off prefetch.&n;&t;&t;&t; * This way, the drive identify code has a better chance.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Reset timing to the slowest speed and turn off prefetch.&n;&t;&t;&t; * This way, the drive identify code has a better chance.&n;&t;&t;&t; */
 id|setup_counts
 (braket
 id|index

@@ -1505,8 +1505,6 @@ r_else
 (brace
 r_int
 id|i
-comma
-id|j
 suffix:semicolon
 multiline_comment|/* secondary enabled */
 id|printk
@@ -1545,6 +1543,9 @@ id|i
 op_increment
 )paren
 (brace
+r_int
+id|j
+suffix:semicolon
 id|ide_hwifs
 (braket
 id|i
@@ -1553,21 +1554,6 @@ dot
 id|chipset
 op_assign
 id|ide_qd65xx
-suffix:semicolon
-id|ide_hwifs
-(braket
-id|i
-)braket
-dot
-id|mate
-op_assign
-op_amp
-id|ide_hwifs
-(braket
-id|i
-op_xor
-l_int|1
-)braket
 suffix:semicolon
 id|ide_hwifs
 (braket
