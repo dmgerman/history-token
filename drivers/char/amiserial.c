@@ -1429,7 +1429,7 @@ suffix:semicolon
 )brace
 DECL|function|ser_vbl_int
 r_static
-r_void
+id|irqreturn_t
 id|ser_vbl_int
 c_func
 (paren
@@ -1470,10 +1470,13 @@ id|info
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|ser_rx_int
 r_static
-r_void
+id|irqreturn_t
 id|ser_rx_int
 c_func
 (paren
@@ -1517,6 +1520,7 @@ op_logical_neg
 id|info-&gt;tty
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|receive_chars
 c_func
@@ -1536,10 +1540,13 @@ l_string|&quot;end.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|ser_tx_int
 r_static
-r_void
+id|irqreturn_t
 id|ser_tx_int
 c_func
 (paren
@@ -1591,6 +1598,7 @@ op_logical_neg
 id|info-&gt;tty
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|transmit_chars
 c_func
@@ -1611,6 +1619,9 @@ l_string|&quot;end.&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * -------------------------------------------------------------------&n; * Here ends the serial interrupt routines.&n; * -------------------------------------------------------------------&n; */
 multiline_comment|/*&n; * This routine is used to handle the &quot;bottom half&quot; processing for the&n; * serial driver, known also the &quot;software interrupt&quot; processing.&n; * This processing is done at the kernel interrupt level, after the&n; * rs_interrupt() has returned, BUT WITH INTERRUPTS TURNED ON.  This&n; * is where time-consuming activities which can not be done in the&n; * interrupt driver proper are done; the interrupt driver schedules&n; * them using rs_sched_event(), and they get done here.&n; */
