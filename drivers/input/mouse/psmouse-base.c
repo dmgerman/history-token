@@ -1486,6 +1486,11 @@ op_star
 id|psmouse
 )paren
 (brace
+r_int
+id|synaptics_hardware
+op_assign
+l_int|0
+suffix:semicolon
 id|psmouse-&gt;vendor
 op_assign
 l_string|&quot;Generic&quot;
@@ -1513,6 +1518,10 @@ id|psmouse
 )paren
 )paren
 (brace
+id|synaptics_hardware
+op_assign
+l_int|1
+suffix:semicolon
 id|psmouse-&gt;vendor
 op_assign
 l_string|&quot;Synaptics&quot;
@@ -1527,7 +1536,11 @@ c_cond
 id|psmouse_max_proto
 OG
 id|PSMOUSE_IMEX
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|synaptics_init
 c_func
 (paren
@@ -1539,10 +1552,12 @@ l_int|0
 r_return
 id|PSMOUSE_SYNAPTICS
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Synaptics hardware (according to Peter Berg Larsen) can get&n;&t;&t; * confused by protocol probes below so we have to stop here&n;&t;&t; */
-r_return
-id|PSMOUSE_PS2
+multiline_comment|/*&n; * Some Synaptics touchpads can emulate extended protocols (like IMPS/2).&n; * Unfortunately Logitech/Genius probes confuse some firmware versions so&n; * we&squot;ll have to skip them.&n; */
+id|psmouse_max_proto
+op_assign
+id|PSMOUSE_IMEX
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -1689,6 +1704,24 @@ id|PSMOUSE_IMPS
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Okay, all failed, we have a standard mouse here. The number of the buttons&n; * is still a question, though. We assume 3.&n; */
+r_if
+c_cond
+(paren
+id|synaptics_hardware
+)paren
+(brace
+multiline_comment|/*&n; * We detected Synaptics hardware but it did not respond to IMPS/2 probes.&n; * We need to reset the touchpad because if there is a track point on the&n; * pass through port it could get disabled while probing for protocol&n; * extensions.&n; */
+id|psmouse_command
+c_func
+(paren
+id|psmouse
+comma
+l_int|NULL
+comma
+id|PSMOUSE_CMD_RESET_DIS
+)paren
+suffix:semicolon
+)brace
 r_return
 id|PSMOUSE_PS2
 suffix:semicolon
