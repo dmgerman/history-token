@@ -2701,7 +2701,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|megaraid_isr_memmapped
 c_func
 (paren
@@ -2716,7 +2716,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|megaraid_isr_iomapped
 c_func
 (paren

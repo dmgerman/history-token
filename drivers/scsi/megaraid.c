@@ -5554,7 +5554,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * megaraid_isr_iomapped()&n; * @irq - irq&n; * @devp - pointer to our soft state&n; * @regs - unused&n; *&n; * Interrupt service routine for io-mapped controllers.&n; * Find out if our device is interrupting. If yes, acknowledge the interrupt&n; * and service the completed commands.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|megaraid_isr_iomapped
 id|megaraid_isr_iomapped
 c_func
@@ -5597,6 +5597,11 @@ suffix:semicolon
 id|u8
 id|byte
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * loop till F/W has more commands for us to complete.&n;&t; */
 id|spin_lock_irqsave
 c_func
@@ -5631,16 +5636,8 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * No more pending commands&n;&t;&t;&t; */
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|adapter-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|out_unlock
 suffix:semicolon
 )brace
 id|set_irq_state
@@ -5730,6 +5727,10 @@ c_func
 id|adapter
 )paren
 suffix:semicolon
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Loop through any pending requests */
 r_if
 c_cond
@@ -5760,6 +5761,8 @@ l_int|1
 (brace
 suffix:semicolon
 )brace
+id|out_unlock
+suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5770,11 +5773,16 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * megaraid_isr_memmapped()&n; * @irq - irq&n; * @devp - pointer to our soft state&n; * @regs - unused&n; *&n; * Interrupt service routine for memory-mapped controllers.&n; * Find out if our device is interrupting. If yes, acknowledge the interrupt&n; * and service the completed commands.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|megaraid_isr_memmapped
 id|megaraid_isr_memmapped
 c_func
@@ -5819,6 +5827,11 @@ id|completed
 id|MAX_FIRMWARE_STATUS
 )braket
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * loop till F/W has more commands for us to complete.&n;&t; */
 id|spin_lock_irqsave
 c_func
@@ -5849,16 +5862,8 @@ l_int|0x10001234
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * No more pending commands&n;&t;&t;&t; */
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|adapter-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|out_unlock
 suffix:semicolon
 )brace
 id|WROUTDOOR
@@ -5932,6 +5937,10 @@ comma
 l_int|0x2
 )paren
 suffix:semicolon
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -5998,6 +6007,8 @@ l_int|1
 (brace
 suffix:semicolon
 )brace
+id|out_unlock
+suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -6008,6 +6019,11 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * mega_cmd_done()&n; * @adapter - pointer to our soft state&n; * @completed - array of ids of completed commands&n; * @nstatus - number of completed commands&n; * @status - status of the last command completed&n; *&n; * Complete the comamnds and call the scsi mid-layer callback hooks.&n; */
