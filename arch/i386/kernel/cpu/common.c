@@ -191,6 +191,32 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|tsc_disable
+mdefine_line|#define tsc_disable 0
+DECL|function|tsc_setup
+r_static
+r_int
+id|__init
+id|tsc_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;notsc: Kernel compiled with CONFIG_X86_TSC, cannot disable TSC.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
 id|__setup
 c_func
 (paren
@@ -199,7 +225,6 @@ comma
 id|tsc_setup
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|get_model_name
 r_int
 id|__init
@@ -1279,7 +1304,6 @@ l_int|3
 suffix:semicolon
 multiline_comment|/*&n;&t; * The vendor-specific functions might have changed features.  Now&n;&t; * we do &quot;generic changes.&quot;&n;&t; */
 multiline_comment|/* TSC disabled? */
-macro_line|#ifndef CONFIG_X86_TSC
 r_if
 c_cond
 (paren
@@ -1293,7 +1317,6 @@ comma
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* FXSR disabled? */
 r_if
 c_cond
@@ -1866,7 +1889,6 @@ op_or
 id|X86_CR4_DE
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_X86_TSC
 r_if
 c_cond
 (paren
@@ -1898,7 +1920,6 @@ id|X86_CR4_TSD
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * Initialize the per-CPU GDT with the boot GDT,&n;&t; * and set up the GDT descriptor:&n;&t; */
 r_if
 c_cond
