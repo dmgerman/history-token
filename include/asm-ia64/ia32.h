@@ -14,6 +14,13 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|ia32_boot_gdt_init
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|ia32_gdt_init
 (paren
 r_void
@@ -45,6 +52,21 @@ comma
 r_int
 r_int
 id|isr
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ia32_clone_tls
+(paren
+r_struct
+id|task_struct
+op_star
+id|child
+comma
+r_struct
+id|pt_regs
+op_star
+id|childregs
 )paren
 suffix:semicolon
 macro_line|#endif /* !CONFIG_IA32_SUPPORT */

@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#ifdef CONFIG_IA32_SUPPORT
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * 32 bit structures for IA32 support.&n; */
 DECL|macro|IA32_PAGE_SHIFT
 mdefine_line|#define IA32_PAGE_SHIFT&t;&t;12&t;/* 4KB pages */
@@ -963,20 +964,25 @@ DECL|macro|__USER_CS
 mdefine_line|#define __USER_CS      0x23
 DECL|macro|__USER_DS
 mdefine_line|#define __USER_DS      0x2B
-DECL|macro|FIRST_TSS_ENTRY
-mdefine_line|#define FIRST_TSS_ENTRY 6
-DECL|macro|FIRST_LDT_ENTRY
-mdefine_line|#define FIRST_LDT_ENTRY (FIRST_TSS_ENTRY+1)
-DECL|macro|_TSS
-mdefine_line|#define _TSS(n) ((((unsigned long) n)&lt;&lt;4)+(FIRST_TSS_ENTRY&lt;&lt;3))
-DECL|macro|_LDT
-mdefine_line|#define _LDT(n) ((((unsigned long) n)&lt;&lt;4)+(FIRST_LDT_ENTRY&lt;&lt;3))
+multiline_comment|/*&n; * The per-cpu GDT has 32 entries: see &lt;asm-i386/segment.h&gt;&n; */
+DECL|macro|GDT_ENTRIES
+mdefine_line|#define GDT_ENTRIES 32
+DECL|macro|GDT_SIZE
+mdefine_line|#define GDT_SIZE&t;(GDT_ENTRIES * 8)
+DECL|macro|TSS_ENTRY
+mdefine_line|#define TSS_ENTRY 14
+DECL|macro|LDT_ENTRY
+mdefine_line|#define LDT_ENTRY&t;(TSS_ENTRY + 1)
 DECL|macro|IA32_SEGSEL_RPL
 mdefine_line|#define IA32_SEGSEL_RPL&t;&t;(0x3 &lt;&lt; 0)
 DECL|macro|IA32_SEGSEL_TI
 mdefine_line|#define IA32_SEGSEL_TI&t;&t;(0x1 &lt;&lt; 2)
 DECL|macro|IA32_SEGSEL_INDEX_SHIFT
 mdefine_line|#define IA32_SEGSEL_INDEX_SHIFT&t;3
+DECL|macro|_TSS
+mdefine_line|#define _TSS&t;&t;&t;((unsigned long) TSS_ENTRY &lt;&lt; IA32_SEGSEL_INDEX_SHIFT)
+DECL|macro|_LDT
+mdefine_line|#define _LDT&t;&t;&t;((unsigned long) LDT_ENTRY &lt;&lt; IA32_SEGSEL_INDEX_SHIFT)
 DECL|macro|IA32_SEG_BASE
 mdefine_line|#define IA32_SEG_BASE&t;&t;16
 DECL|macro|IA32_SEG_TYPE
@@ -1048,9 +1054,86 @@ DECL|macro|IA32_LDT_ENTRIES
 mdefine_line|#define IA32_LDT_ENTRIES&t;8192&t;&t;/* Maximum number of LDT entries supported. */
 DECL|macro|IA32_LDT_ENTRY_SIZE
 mdefine_line|#define IA32_LDT_ENTRY_SIZE&t;8&t;&t;/* The size of each LDT entry. */
-DECL|struct|ia32_modify_ldt_ldt_s
+DECL|macro|LDT_entry_a
+mdefine_line|#define LDT_entry_a(info) &bslash;&n;&t;((((info)-&gt;base_addr &amp; 0x0000ffff) &lt;&lt; 16) | ((info)-&gt;limit &amp; 0x0ffff))
+DECL|macro|LDT_entry_b
+mdefine_line|#define LDT_entry_b(info)&t;&t;&t;&t;&bslash;&n;&t;(((info)-&gt;base_addr &amp; 0xff000000) |&t;&t;&bslash;&n;&t;(((info)-&gt;base_addr &amp; 0x00ff0000) &gt;&gt; 16) |&t;&bslash;&n;&t;((info)-&gt;limit &amp; 0xf0000) |&t;&t;&t;&bslash;&n;&t;(((info)-&gt;read_exec_only ^ 1) &lt;&lt; 9) |&t;&t;&bslash;&n;&t;((info)-&gt;contents &lt;&lt; 10) |&t;&t;&t;&bslash;&n;&t;(((info)-&gt;seg_not_present ^ 1) &lt;&lt; 15) |&t;&t;&bslash;&n;&t;((info)-&gt;seg_32bit &lt;&lt; 22) |&t;&t;&t;&bslash;&n;&t;((info)-&gt;limit_in_pages &lt;&lt; 23) |&t;&t;&bslash;&n;&t;((info)-&gt;useable &lt;&lt; 20) |&t;&t;&t;&bslash;&n;&t;0x7100)
+DECL|macro|LDT_empty
+mdefine_line|#define LDT_empty(info) (&t;&t;&t;&bslash;&n;&t;(info)-&gt;base_addr&t;== 0&t;&amp;&amp;&t;&bslash;&n;&t;(info)-&gt;limit&t;&t;== 0&t;&amp;&amp;&t;&bslash;&n;&t;(info)-&gt;contents&t;== 0&t;&amp;&amp;&t;&bslash;&n;&t;(info)-&gt;read_exec_only&t;== 1&t;&amp;&amp;&t;&bslash;&n;&t;(info)-&gt;seg_32bit&t;== 0&t;&amp;&amp;&t;&bslash;&n;&t;(info)-&gt;limit_in_pages&t;== 0&t;&amp;&amp;&t;&bslash;&n;&t;(info)-&gt;seg_not_present&t;== 1&t;&amp;&amp;&t;&bslash;&n;&t;(info)-&gt;useable&t;&t;== 0&t;)
+r_static
+r_inline
+r_void
+DECL|function|load_TLS
+id|load_TLS
+(paren
 r_struct
-id|ia32_modify_ldt_ldt_s
+id|thread_struct
+op_star
+id|t
+comma
+r_int
+r_int
+id|cpu
+)paren
+(brace
+r_extern
+r_struct
+id|desc_struct
+op_star
+id|cpu_gdt_table
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+id|cpu_gdt_table
+(braket
+id|cpu
+)braket
+(braket
+id|GDT_ENTRY_TLS_MIN
+op_plus
+l_int|0
+)braket
+op_assign
+id|t-&gt;tls_array
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|cpu_gdt_table
+(braket
+id|cpu
+)braket
+(braket
+id|GDT_ENTRY_TLS_MIN
+op_plus
+l_int|1
+)braket
+op_assign
+id|t-&gt;tls_array
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|cpu_gdt_table
+(braket
+id|cpu
+)braket
+(braket
+id|GDT_ENTRY_TLS_MIN
+op_plus
+l_int|2
+)braket
+op_assign
+id|t-&gt;tls_array
+(braket
+l_int|2
+)braket
+suffix:semicolon
+)brace
+DECL|struct|ia32_user_desc
+r_struct
+id|ia32_user_desc
 (brace
 DECL|member|entry_number
 r_int

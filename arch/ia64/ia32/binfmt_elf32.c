@@ -96,6 +96,8 @@ r_int
 id|no_share
 )paren
 (brace
+DECL|macro|NUM_SHARED_PAGES
+macro_line|#&t;define NUM_SHARED_PAGES&t;(PAGE_SIZE &gt; IA32_PAGE_SIZE ? 1 : 2)
 r_struct
 id|page
 op_star
@@ -103,6 +105,13 @@ id|pg
 op_assign
 id|ia32_shared_page
 (braket
+id|NUM_SHARED__PAGES
+op_star
+id|smp_processor_id
+c_func
+(paren
+)paren
+op_plus
 (paren
 id|address
 op_minus
