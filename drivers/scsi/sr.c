@@ -1,4 +1,6 @@
-multiline_comment|/*&n; *  sr.c Copyright (C) 1992 David Giller&n; *           Copyright (C) 1993, 1994, 1995, 1999 Eric Youngdale&n; *&n; *  adapted from:&n; *      sd.c Copyright (C) 1992 Drew Eckhardt&n; *      Linux scsi disk driver by&n; *              Drew Eckhardt &lt;drew@colorado.edu&gt;&n; *&n; *      Modified by Eric Youngdale ericy@andante.org to&n; *      add scatter-gather, multiple outstanding request, and other&n; *      enhancements.&n; *&n; *          Modified by Eric Youngdale eric@andante.org to support loadable&n; *          low-level scsi drivers.&n; *&n; *       Modified by Thomas Quinot thomas@melchior.cuivre.fdn.fr to&n; *       provide auto-eject.&n; *&n; *          Modified by Gerd Knorr &lt;kraxel@cs.tu-berlin.de&gt; to support the&n; *          generic cdrom interface&n; *&n; *       Modified by Jens Axboe &lt;axboe@suse.de&gt; - Uniform sr_packet()&n; *       interface, capabilities probe additions, ioctl cleanups, etc.&n; *&n; *       Modified by Richard Gooch &lt;rgooch@atnf.csiro.au&gt; to support devfs&n; *&n; *       Modified by Jens Axboe &lt;axboe@suse.de&gt; - support DVD-RAM&n; *&t; transparently and loose the GHOST hack&n; *&n; *&t; Modified by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&t; check resource allocation in sr_init and some cleanups&n; *&n; */
+multiline_comment|/*&n; *  sr.c Copyright (C) 1992 David Giller&n; *           Copyright (C) 1993, 1994, 1995, 1999 Eric Youngdale&n; *&n; *  adapted from:&n; *      sd.c Copyright (C) 1992 Drew Eckhardt&n; *      Linux scsi disk driver by&n; *              Drew Eckhardt &lt;drew@colorado.edu&gt;&n; *&n; *&t;Modified by Eric Youngdale ericy@andante.org to&n; *&t;add scatter-gather, multiple outstanding request, and other&n; *&t;enhancements.&n; *&n; *      Modified by Eric Youngdale eric@andante.org to support loadable&n; *      low-level scsi drivers.&n; *&n; *      Modified by Thomas Quinot thomas@melchior.cuivre.fdn.fr to&n; *      provide auto-eject.&n; *&n; *      Modified by Gerd Knorr &lt;kraxel@cs.tu-berlin.de&gt; to support the&n; *      generic cdrom interface&n; *&n; *      Modified by Jens Axboe &lt;axboe@suse.de&gt; - Uniform sr_packet()&n; *      interface, capabilities probe additions, ioctl cleanups, etc.&n; *&n; *&t;Modified by Richard Gooch &lt;rgooch@atnf.csiro.au&gt; to support devfs&n; *&n; *&t;Modified by Jens Axboe &lt;axboe@suse.de&gt; - support DVD-RAM&n; *&t;transparently and loose the GHOST hack&n; *&n; *&t;Modified by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&t;check resource allocation in sr_init and some cleanups&n; */
+DECL|macro|MAJOR_NR
+mdefine_line|#define MAJOR_NR SCSI_CDROM_MAJOR
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -10,18 +12,12 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR SCSI_CDROM_MAJOR
-DECL|macro|LOCAL_END_REQUEST
-mdefine_line|#define LOCAL_END_REQUEST
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sr.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;&t;/* For the door lock/unlock commands */
+macro_line|#include &quot;sr.h&quot;
 id|MODULE_PARM
 c_func
 (paren
@@ -35,6 +31,8 @@ DECL|macro|MAX_RETRIES
 mdefine_line|#define MAX_RETRIES&t;3
 DECL|macro|SR_TIMEOUT
 mdefine_line|#define SR_TIMEOUT&t;(30 * HZ)
+DECL|macro|SR_CAPABILITIES
+mdefine_line|#define SR_CAPABILITIES &bslash;&n;&t;(CDC_CLOSE_TRAY|CDC_OPEN_TRAY|CDC_LOCK|CDC_SELECT_SPEED| &bslash;&n;&t; CDC_SELECT_DISC|CDC_MULTI_SESSION|CDC_MCN|CDC_MEDIA_CHANGED| &bslash;&n;&t; CDC_PLAY_AUDIO|CDC_RESET|CDC_IOCTLS|CDC_DRIVE_STATUS| &bslash;&n;&t; CDC_CD_R|CDC_CD_RW|CDC_DVD|CDC_DVD_R|CDC_GENERIC_PACKET)
 r_static
 r_int
 id|sr_init
@@ -48,7 +46,8 @@ r_int
 id|sr_attach
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
@@ -57,7 +56,8 @@ r_int
 id|sr_detect
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
@@ -66,7 +66,8 @@ r_void
 id|sr_detach
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
@@ -75,7 +76,8 @@ r_int
 id|sr_init_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -144,7 +146,8 @@ id|sr_init_command
 suffix:semicolon
 DECL|variable|scsi_CDs
 r_static
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 id|scsi_CDs
 suffix:semicolon
@@ -165,7 +168,8 @@ r_void
 id|get_sectorsize
 c_func
 (paren
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 )paren
 suffix:semicolon
@@ -174,7 +178,8 @@ r_void
 id|get_capabilities
 c_func
 (paren
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 )paren
 suffix:semicolon
@@ -183,7 +188,8 @@ r_int
 id|sr_init_one
 c_func
 (paren
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 comma
 r_int
@@ -227,7 +233,8 @@ op_star
 id|cdi
 )paren
 (brace
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 id|cd
 op_assign
@@ -281,94 +288,74 @@ id|cdrom_device_ops
 id|sr_dops
 op_assign
 (brace
+dot
 id|open
-suffix:colon
+op_assign
 id|sr_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|sr_release
 comma
+dot
 id|drive_status
-suffix:colon
+op_assign
 id|sr_drive_status
 comma
+dot
 id|media_changed
-suffix:colon
+op_assign
 id|sr_media_change
 comma
+dot
 id|tray_move
-suffix:colon
+op_assign
 id|sr_tray_move
 comma
+dot
 id|lock_door
-suffix:colon
+op_assign
 id|sr_lock_door
 comma
+dot
 id|select_speed
-suffix:colon
+op_assign
 id|sr_select_speed
 comma
+dot
 id|get_last_session
-suffix:colon
+op_assign
 id|sr_get_last_session
 comma
+dot
 id|get_mcn
-suffix:colon
+op_assign
 id|sr_get_mcn
 comma
+dot
 id|reset
-suffix:colon
+op_assign
 id|sr_reset
 comma
+dot
 id|audio_ioctl
-suffix:colon
+op_assign
 id|sr_audio_ioctl
 comma
+dot
 id|dev_ioctl
-suffix:colon
+op_assign
 id|sr_dev_ioctl
 comma
+dot
 id|capability
-suffix:colon
-id|CDC_CLOSE_TRAY
-op_or
-id|CDC_OPEN_TRAY
-op_or
-id|CDC_LOCK
-op_or
-id|CDC_SELECT_SPEED
-op_or
-id|CDC_SELECT_DISC
-op_or
-id|CDC_MULTI_SESSION
-op_or
-id|CDC_MCN
-op_or
-id|CDC_MEDIA_CHANGED
-op_or
-id|CDC_PLAY_AUDIO
-op_or
-id|CDC_RESET
-op_or
-id|CDC_IOCTLS
-op_or
-id|CDC_DRIVE_STATUS
-op_or
-id|CDC_CD_R
-op_or
-id|CDC_CD_RW
-op_or
-id|CDC_DVD
-op_or
-id|CDC_DVD_R
-op_or
-id|CDC_DVD_RAM
-op_or
-id|CDC_GENERIC_PACKET
+op_assign
+id|SR_CAPABILITIES
 comma
+dot
 id|generic_packet
-suffix:colon
+op_assign
 id|sr_packet
 comma
 )brace
@@ -388,7 +375,8 @@ r_int
 id|slot
 )paren
 (brace
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 id|cd
 op_assign
@@ -476,14 +464,15 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * rw_intr is the interrupt routine for the device driver.  It will be notified on the&n; * end of a SCSI read / write, and will take on of several actions based on success or failure.&n; */
+multiline_comment|/*&n; * rw_intr is the interrupt routine for the device driver.&n; *&n; * It will be notified on the end of a SCSI read / write, and will take on&n; * of several actions based on success or failure.&n; */
 DECL|function|rw_intr
 r_static
 r_void
 id|rw_intr
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -519,7 +508,8 @@ id|block_sectors
 op_assign
 l_int|0
 suffix:semicolon
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 id|cd
 op_assign
@@ -537,7 +527,7 @@ id|SCpnt-&gt;request-&gt;bh-&gt;b_data
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t;   Handle MEDIUM ERRORs or VOLUME OVERFLOWs that indicate partial success.&n;&t;   Since this is a relatively rare error condition, no care is taken to&n;&t;   avoid unnecessary additional work such as memcpy&squot;s that could be avoided.&n;&t; */
+multiline_comment|/*&n;&t; * Handle MEDIUM ERRORs or VOLUME OVERFLOWs that indicate partial&n;&t; * success.  Since this is a relatively rare error condition, no&n;&t; * care is taken to avoid unnecessary additional work such as&n;&t; * memcpy&squot;s that could be avoided.&n;&t; */
 r_if
 c_cond
 (paren
@@ -731,7 +721,8 @@ r_int
 id|sr_init_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -749,7 +740,8 @@ id|timeout
 op_assign
 id|SR_TIMEOUT
 suffix:semicolon
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 id|cd
 op_assign
@@ -1409,7 +1401,8 @@ op_star
 id|file
 )paren
 (brace
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 id|cd
 op_assign
@@ -1445,7 +1438,8 @@ op_star
 id|file
 )paren
 (brace
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 id|cd
 op_assign
@@ -1486,7 +1480,8 @@ r_int
 id|arg
 )paren
 (brace
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 id|cd
 op_assign
@@ -1519,7 +1514,8 @@ op_star
 id|disk
 )paren
 (brace
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 id|cd
 op_assign
@@ -1582,7 +1578,8 @@ r_int
 id|purpose
 )paren
 (brace
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 id|cd
 op_assign
@@ -1663,7 +1660,8 @@ r_int
 id|sr_detect
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 )paren
@@ -1695,12 +1693,14 @@ r_int
 id|sr_attach
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 )paren
 (brace
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 id|cpnt
 suffix:semicolon
@@ -1851,7 +1851,8 @@ r_void
 id|get_sectorsize
 c_func
 (paren
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 id|cd
 )paren
@@ -1878,7 +1879,8 @@ suffix:semicolon
 r_int
 id|sector_size
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 op_assign
@@ -1951,11 +1953,11 @@ comma
 l_int|9
 )paren
 suffix:semicolon
+multiline_comment|/* Mark as really busy */
 id|SRpnt-&gt;sr_request-&gt;rq_status
 op_assign
 id|RQ_SCSI_BUSY
 suffix:semicolon
-multiline_comment|/* Mark as really busy */
 id|SRpnt-&gt;sr_cmd_len
 op_assign
 l_int|0
@@ -2265,7 +2267,8 @@ r_void
 id|get_capabilities
 c_func
 (paren
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 id|cd
 )paren
@@ -2958,7 +2961,8 @@ id|sr_template.dev_max
 op_star
 r_sizeof
 (paren
-id|Scsi_CD
+r_struct
+id|scsi_cd
 )paren
 comma
 id|GFP_ATOMIC
@@ -2984,7 +2988,8 @@ id|sr_template.dev_max
 op_star
 r_sizeof
 (paren
-id|Scsi_CD
+r_struct
+id|scsi_cd
 )paren
 )paren
 suffix:semicolon
@@ -3043,7 +3048,8 @@ r_int
 id|sr_init_one
 c_func
 (paren
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 id|cd
 comma
@@ -3237,12 +3243,14 @@ r_void
 id|sr_detach
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDp
 )paren
 (brace
-id|Scsi_CD
+r_struct
+id|scsi_cd
 op_star
 id|cpnt
 suffix:semicolon
