@@ -565,6 +565,8 @@ c_func
 op_amp
 id|exp-&gt;use
 )paren
+op_eq
+l_int|0
 )paren
 suffix:semicolon
 id|IP_NF_ASSERT
@@ -2931,16 +2933,6 @@ id|expected
 )paren
 suffix:semicolon
 multiline_comment|/* Welcome, Mr. Bond.  We&squot;ve been expecting you... */
-id|IP_NF_ASSERT
-c_func
-(paren
-id|master_ct
-c_func
-(paren
-id|conntrack
-)paren
-)paren
-suffix:semicolon
 id|__set_bit
 c_func
 (paren
