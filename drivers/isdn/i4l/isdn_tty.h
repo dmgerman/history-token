@@ -272,6 +272,7 @@ id|isdn_modem
 DECL|member|tty_modem
 r_struct
 id|tty_driver
+op_star
 id|tty_modem
 suffix:semicolon
 multiline_comment|/* tty-device             */
