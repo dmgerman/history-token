@@ -63,6 +63,9 @@ DECL|function|pfs168_pcmcia_configure_socket
 id|pfs168_pcmcia_configure_socket
 c_func
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure
@@ -87,7 +90,7 @@ multiline_comment|/* PFS168 uses the Texas Instruments TPS2211 for PCMCIA (socke
 r_switch
 c_cond
 (paren
-id|conf-&gt;sock
+id|sock
 )paren
 (brace
 r_case
@@ -308,6 +311,8 @@ op_assign
 id|sa1111_pcmcia_configure_socket
 c_func
 (paren
+id|sock
+comma
 id|conf
 )paren
 suffix:semicolon

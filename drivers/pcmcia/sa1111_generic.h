@@ -41,6 +41,9 @@ r_int
 id|sa1111_pcmcia_configure_socket
 c_func
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure

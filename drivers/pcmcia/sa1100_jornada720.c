@@ -98,6 +98,9 @@ DECL|function|jornada720_pcmcia_configure_socket
 id|jornada720_pcmcia_configure_socket
 c_func
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure
@@ -121,7 +124,7 @@ l_string|&quot;%s(): config socket %d vcc %d vpp %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|conf-&gt;sock
+id|sock
 comma
 id|conf-&gt;vcc
 comma
@@ -131,7 +134,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|conf-&gt;sock
+id|sock
 )paren
 (brace
 r_case

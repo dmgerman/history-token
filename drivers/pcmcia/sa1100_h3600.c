@@ -496,6 +496,9 @@ DECL|function|h3600_pcmcia_configure_socket
 id|h3600_pcmcia_configure_socket
 c_func
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure
@@ -506,7 +509,7 @@ id|conf
 r_if
 c_cond
 (paren
-id|conf-&gt;sock
+id|sock
 OG
 l_int|1
 )paren

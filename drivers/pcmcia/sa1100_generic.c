@@ -274,10 +274,6 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|conf.sock
-op_assign
-id|skt-&gt;nr
-suffix:semicolon
 id|conf.vcc
 op_assign
 id|state-&gt;Vcc
@@ -332,6 +328,8 @@ op_member_access_from_pointer
 id|configure_socket
 c_func
 (paren
+id|skt-&gt;nr
+comma
 op_amp
 id|conf
 )paren

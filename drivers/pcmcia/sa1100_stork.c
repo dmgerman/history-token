@@ -578,6 +578,9 @@ r_int
 id|stork_pcmcia_configure_socket
 c_func
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure
@@ -585,11 +588,6 @@ op_star
 id|configure
 )paren
 (brace
-r_int
-id|card
-op_assign
-id|configure-&gt;sock
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -606,7 +604,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|card
+id|sock
 OG
 l_int|1
 )paren
@@ -620,7 +618,7 @@ c_func
 id|__FUNCTION__
 l_string|&quot;: socket=%d vcc=%d vpp=%d reset=%d&bslash;n&quot;
 comma
-id|card
+id|sock
 comma
 id|configure-&gt;vcc
 comma
@@ -638,7 +636,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|card
+id|sock
 op_eq
 l_int|0
 )paren

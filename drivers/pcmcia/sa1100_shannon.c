@@ -522,6 +522,9 @@ r_int
 id|shannon_pcmcia_configure_socket
 c_func
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure

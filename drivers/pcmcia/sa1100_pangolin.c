@@ -7,6 +7,13 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;sa1100_generic.h&quot;
+macro_line|#ifndef CONFIG_SA1100_PANGOLIN_PCMCIA_IDE
+DECL|macro|PANGOLIN_SOCK
+mdefine_line|#define PANGOLIN_SOCK&t;1
+macro_line|#else
+DECL|macro|PANGOLIN_SOCK
+mdefine_line|#define PANGOLIN_SOCK&t;0
+macro_line|#endif
 DECL|function|pangolin_pcmcia_init
 r_static
 r_int
@@ -428,6 +435,9 @@ r_int
 id|pangolin_pcmcia_configure_socket
 c_func
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure
@@ -444,7 +454,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|configure-&gt;sock
+id|sock
 OG
 l_int|1
 )paren
@@ -458,7 +468,7 @@ macro_line|#ifndef CONFIG_SA1100_PANGOLIN_PCMCIA_IDE
 r_if
 c_cond
 (paren
-id|configure-&gt;sock
+id|sock
 op_eq
 l_int|0
 )paren
@@ -564,7 +574,7 @@ multiline_comment|/* reset &amp; unreset request */
 r_if
 c_cond
 (paren
-id|configure-&gt;sock
+id|sock
 op_eq
 l_int|0
 )paren

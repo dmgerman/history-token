@@ -51,6 +51,9 @@ r_int
 id|system3_pcmcia_configure_socket
 c_func
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure
@@ -58,21 +61,11 @@ op_star
 id|conf
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|conf
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
 multiline_comment|/* only CF ATM */
 r_if
 c_cond
 (paren
-id|conf-&gt;sock
+id|sock
 op_eq
 l_int|0
 )paren
@@ -84,6 +77,8 @@ r_return
 id|sa1111_pcmcia_configure_socket
 c_func
 (paren
+id|sock
+comma
 id|conf
 )paren
 suffix:semicolon

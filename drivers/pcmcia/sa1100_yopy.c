@@ -492,6 +492,9 @@ r_int
 id|yopy_pcmcia_configure_socket
 c_func
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure
@@ -502,7 +505,7 @@ id|configure
 r_if
 c_cond
 (paren
-id|configure-&gt;sock
+id|sock
 op_ne
 l_int|0
 )paren

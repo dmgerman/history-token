@@ -84,6 +84,9 @@ DECL|function|xp860_pcmcia_configure_socket
 id|xp860_pcmcia_configure_socket
 c_func
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure
@@ -110,7 +113,7 @@ multiline_comment|/* Neponset uses the Maxim MAX1600, with the following connect
 r_switch
 c_cond
 (paren
-id|conf-&gt;sock
+id|sock
 )paren
 (brace
 r_case
@@ -313,6 +316,8 @@ op_assign
 id|sa1111_pcmcia_configure_socket
 c_func
 (paren
+id|sock
+comma
 id|conf
 )paren
 suffix:semicolon

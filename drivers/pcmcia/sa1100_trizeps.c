@@ -430,6 +430,9 @@ r_int
 id|trizeps_pcmcia_configure_socket
 c_func
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure
@@ -444,7 +447,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|configure-&gt;sock
+id|sock
 OG
 l_int|1
 )paren

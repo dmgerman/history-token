@@ -94,13 +94,8 @@ DECL|struct|pcmcia_configure
 r_struct
 id|pcmcia_configure
 (brace
-DECL|member|sock
-r_int
-id|sock
-suffix:colon
-l_int|8
-comma
 DECL|member|vcc
+r_int
 id|vcc
 suffix:colon
 l_int|8
@@ -205,6 +200,9 @@ op_star
 id|configure_socket
 )paren
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure
