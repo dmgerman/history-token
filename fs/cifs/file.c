@@ -1632,12 +1632,6 @@ suffix:semicolon
 r_char
 op_star
 id|write_data
-op_assign
-id|kmap
-c_func
-(paren
-id|page
-)paren
 suffix:semicolon
 r_int
 id|rc
@@ -1706,7 +1700,7 @@ id|pTcon
 op_assign
 id|cifs_sb-&gt;tcon
 suffix:semicolon
-multiline_comment|/* figure out which file struct to use &n;&t;if (file-&gt;private_data == NULL) {&n;&t;   FreeXid(xid);&n;&t;   return -EBADF;&n;&t;}     &n;&t; */
+multiline_comment|/* figure out which file struct to use &n;&t;if (file-&gt;private_data == NULL) {&n;&t;&t;kunmap(page);&n;&t;&t;FreeXid(xid);&n;&t;&t;return -EBADF;&n;&t;}     &n;&t; */
 r_if
 c_cond
 (paren
@@ -1752,6 +1746,14 @@ id|loff_t
 id|from
 suffix:semicolon
 id|write_data
+op_assign
+id|kmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|write_data
 op_add_assign
 id|from
 suffix:semicolon
@@ -1777,6 +1779,12 @@ id|mapping-&gt;host-&gt;i_size
 )paren
 )paren
 (brace
+id|kunmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|FreeXid
 c_func
 (paren
@@ -1950,6 +1958,12 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|kunmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|FreeXid
 c_func
 (paren
