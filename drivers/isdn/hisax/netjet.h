@@ -81,6 +81,11 @@ DECL|macro|HDLC_FULL
 mdefine_line|#define HDLC_FULL 6
 DECL|macro|HDLC_FLAG_VALUE
 mdefine_line|#define HDLC_FLAG_VALUE&t;0x7e
+r_extern
+r_struct
+id|dc_hw_ops
+id|netjet_dc_ops
+suffix:semicolon
 id|u_char
 id|NETjet_ReadIC
 c_func

@@ -151,9 +151,9 @@ id|addr
 )paren
 (brace
 r_return
-id|cs
+id|cs-&gt;dc_hw_ops
 op_member_access_from_pointer
-id|readisac
+id|read_reg
 c_func
 (paren
 id|cs
@@ -181,9 +181,9 @@ id|u8
 id|val
 )paren
 (brace
-id|cs
+id|cs-&gt;dc_hw_ops
 op_member_access_from_pointer
-id|writeisac
+id|write_reg
 c_func
 (paren
 id|cs
@@ -215,9 +215,9 @@ id|len
 )paren
 (brace
 r_return
-id|cs
+id|cs-&gt;dc_hw_ops
 op_member_access_from_pointer
-id|readisacfifo
+id|read_fifo
 c_func
 (paren
 id|cs
@@ -249,9 +249,9 @@ id|len
 )paren
 (brace
 r_return
-id|cs
+id|cs-&gt;dc_hw_ops
 op_member_access_from_pointer
-id|writeisacfifo
+id|write_fifo
 c_func
 (paren
 id|cs

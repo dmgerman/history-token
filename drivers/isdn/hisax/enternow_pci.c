@@ -20,6 +20,7 @@ l_string|&quot;$Revision: 1.1.2.1 $&quot;
 suffix:semicolon
 multiline_comment|/* *************************** I/O-Interface functions ************************************* */
 multiline_comment|/* cs-&gt;readisac, macro rByteAMD */
+r_static
 id|BYTE
 DECL|function|ReadByteAmd7930
 id|ReadByteAmd7930
@@ -86,6 +87,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* cs-&gt;writeisac, macro wByteAMD */
+r_static
 r_void
 DECL|function|WriteByteAmd7930
 id|WriteByteAmd7930
@@ -154,6 +156,25 @@ id|value
 suffix:semicolon
 )brace
 )brace
+DECL|variable|enternow_ops
+r_static
+r_struct
+id|dc_hw_ops
+id|enternow_ops
+op_assign
+(brace
+dot
+id|read_reg
+op_assign
+id|ReadByteAmd7930
+comma
+dot
+id|write_reg
+op_assign
+id|WriteByteAmd7930
+comma
+)brace
+suffix:semicolon
 r_void
 DECL|function|enpci_setIrqMask
 id|enpci_setIrqMask
@@ -1297,17 +1318,10 @@ id|cs-&gt;hw.njet.last_is0
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* macro rByteAMD */
-id|cs-&gt;readisac
+id|cs-&gt;dc_hw_ops
 op_assign
 op_amp
-id|ReadByteAmd7930
-suffix:semicolon
-multiline_comment|/* macro wByteAMD */
-id|cs-&gt;writeisac
-op_assign
-op_amp
-id|WriteByteAmd7930
+id|enternow_ops
 suffix:semicolon
 id|cs-&gt;dc.amd7930.setIrqMask
 op_assign

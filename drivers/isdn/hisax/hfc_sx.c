@@ -6598,22 +6598,6 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* no valid card type */
-id|cs-&gt;readisac
-op_assign
-l_int|NULL
-suffix:semicolon
-id|cs-&gt;writeisac
-op_assign
-l_int|NULL
-suffix:semicolon
-id|cs-&gt;readisacfifo
-op_assign
-l_int|NULL
-suffix:semicolon
-id|cs-&gt;writeisacfifo
-op_assign
-l_int|NULL
-suffix:semicolon
 id|cs-&gt;irq_func
 op_assign
 op_amp
