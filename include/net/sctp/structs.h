@@ -2870,6 +2870,11 @@ DECL|member|ctsn_ack_point
 id|__u32
 id|ctsn_ack_point
 suffix:semicolon
+multiline_comment|/* Highest TSN that is acknowledged by incoming SACKs. */
+DECL|member|highest_sacked
+id|__u32
+id|highest_sacked
+suffix:semicolon
 multiline_comment|/* The number of unacknowledged data chunks.  Reported through&n;&t; * the SCTP_STATUS sockopt.&n;&t; */
 DECL|member|unack_data
 id|__u16
