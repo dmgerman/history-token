@@ -3125,9 +3125,6 @@ r_int
 id|c_cflag
 suffix:semicolon
 r_int
-id|result
-suffix:semicolon
-r_int
 id|bps
 suffix:semicolon
 r_int
@@ -3351,73 +3348,22 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|result
-op_assign
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;write_urb
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
-)paren
-id|dbg
+id|usb_kill_urb
 c_func
-(paren
-l_string|&quot;%s - usb_unlink_urb (write_urb)&quot;
-l_string|&quot; failed with reason: %d&quot;
-comma
-id|__FUNCTION__
-comma
-id|result
-)paren
-suffix:semicolon
-id|result
-op_assign
-id|usb_unlink_urb
 (paren
 id|port-&gt;read_urb
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
-)paren
-id|dbg
+id|usb_kill_urb
 c_func
-(paren
-l_string|&quot;%s - usb_unlink_urb (read_urb) &quot;
-l_string|&quot;failed with reason: %d&quot;
-comma
-id|__FUNCTION__
-comma
-id|result
-)paren
-suffix:semicolon
-id|result
-op_assign
-id|usb_unlink_urb
 (paren
 id|port-&gt;interrupt_in_urb
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
-)paren
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - usb_unlink_urb (interrupt_in_urb)&quot;
-l_string|&quot; failed with reason: %d&quot;
-comma
-id|__FUNCTION__
-comma
-id|result
 )paren
 suffix:semicolon
 r_if
