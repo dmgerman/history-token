@@ -21,7 +21,6 @@ macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#ifdef CONFIG_INET
 macro_line|#include &lt;net/inet_common.h&gt;
-macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#if defined(CONFIG_INET_AH) || defined(CONFIG_INET_AH_MODULE) || defined(CONFIG_INET6_AH) || defined(CONFIG_INET6_AH_MODULE)
 macro_line|#include &lt;net/ah.h&gt;
 macro_line|#endif
@@ -113,13 +112,6 @@ id|destroy_EII_client
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_INET
-DECL|variable|in_aton
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|in_aton
-)paren
-suffix:semicolon
 DECL|variable|ip_defrag
 id|EXPORT_SYMBOL
 c_func
