@@ -4131,7 +4131,7 @@ id|crc
 suffix:semicolon
 multiline_comment|/* initialized in makecrc() so it&squot;ll reside in bss */
 DECL|macro|CRC_VALUE
-mdefine_line|#define CRC_VALUE (crc ^ 0xffffffffL)
+mdefine_line|#define CRC_VALUE (crc ^ 0xffffffffUL)
 multiline_comment|/*&n; * Code to compute the CRC-32 table. Borrowed from &n; * gzip-1.0.3/makecrc.c.&n; */
 r_static
 r_void
@@ -4328,7 +4328,7 @@ op_assign
 (paren
 id|ulg
 )paren
-l_int|0xffffffffL
+l_int|0xffffffffUL
 suffix:semicolon
 multiline_comment|/* shift register contents */
 )brace
