@@ -9034,6 +9034,12 @@ id|dev-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
+id|netdev_unregister_sysfs
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|netdev_wait_allrefs
 c_func
 (paren
@@ -9288,12 +9294,6 @@ id|dev-&gt;master
 )paren
 suffix:semicolon
 id|free_divert_blk
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|netdev_unregister_sysfs
 c_func
 (paren
 id|dev
