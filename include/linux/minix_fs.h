@@ -565,8 +565,7 @@ id|sb
 )paren
 (brace
 r_return
-op_amp
-id|sb-&gt;u.minix_sb
+id|sb-&gt;u.generic_sbp
 suffix:semicolon
 )brace
 DECL|function|minix_i
