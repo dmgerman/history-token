@@ -98,6 +98,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|old_belkin_init
+r_static
 r_int
 id|__init
 id|old_belkin_init
@@ -116,6 +117,7 @@ id|old_belkin
 suffix:semicolon
 )brace
 DECL|function|old_belkin_cleanup
+r_static
 r_void
 id|__exit
 id|old_belkin_cleanup

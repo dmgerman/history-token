@@ -127,6 +127,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|tekram_sir_init
+r_static
 r_int
 id|__init
 id|tekram_sir_init
@@ -168,6 +169,7 @@ id|tekram
 suffix:semicolon
 )brace
 DECL|function|tekram_sir_cleanup
+r_static
 r_void
 id|__exit
 id|tekram_sir_cleanup

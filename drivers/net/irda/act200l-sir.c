@@ -168,6 +168,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|act200l_init
+r_static
 r_int
 id|__init
 id|act200l_init
@@ -186,6 +187,7 @@ id|act200l
 suffix:semicolon
 )brace
 DECL|function|act200l_cleanup
+r_static
 r_void
 id|__exit
 id|act200l_cleanup
