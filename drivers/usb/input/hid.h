@@ -572,7 +572,7 @@ suffix:semicolon
 DECL|macro|HID_REPORT_TYPES
 mdefine_line|#define HID_REPORT_TYPES 3
 DECL|macro|HID_BUFFER_SIZE
-mdefine_line|#define HID_BUFFER_SIZE&t;&t;32
+mdefine_line|#define HID_BUFFER_SIZE&t;&t;64&t;&t;/* use 64 for compatibility with all possible packetlen */
 DECL|macro|HID_CONTROL_FIFO_SIZE
 mdefine_line|#define HID_CONTROL_FIFO_SIZE&t;256&t;&t;/* to init devices with &gt;100 reports */
 DECL|macro|HID_OUTPUT_FIFO_SIZE
