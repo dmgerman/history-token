@@ -69,7 +69,6 @@ l_int|1
 )braket
 suffix:semicolon
 DECL|variable|ibmphp_pci_root_ops
-r_static
 r_struct
 id|pci_ops
 op_star
