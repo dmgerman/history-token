@@ -347,7 +347,7 @@ c_cond
 (paren
 id|dev-&gt;bus-&gt;number
 op_eq
-l_int|0x00
+l_int|0
 op_logical_and
 id|PCI_SLOT
 c_func
@@ -355,7 +355,30 @@ c_func
 id|dev-&gt;devfn
 )paren
 op_eq
-l_int|0x01
+l_int|0
+)paren
+(brace
+multiline_comment|/* IXP2400. */
+id|irq
+op_assign
+id|IRQ_IXP2000_PCIA
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|dev-&gt;bus-&gt;number
+op_eq
+l_int|0
+op_logical_and
+id|PCI_SLOT
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+op_eq
+l_int|1
 )paren
 (brace
 multiline_comment|/* 21555 non-transparent bridge.  */
@@ -370,7 +393,7 @@ c_cond
 (paren
 id|dev-&gt;bus-&gt;number
 op_eq
-l_int|0x01
+l_int|0
 op_logical_and
 id|PCI_SLOT
 c_func
@@ -378,7 +401,31 @@ c_func
 id|dev-&gt;devfn
 )paren
 op_eq
-l_int|0x00
+l_int|4
+)paren
+(brace
+multiline_comment|/* PCI2050B transparent bridge.  */
+id|irq
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|dev-&gt;bus-&gt;number
+op_eq
+l_int|1
+op_logical_and
+id|PCI_SLOT
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+op_eq
+l_int|0
 )paren
 (brace
 multiline_comment|/* 82559 ethernet.  */
@@ -388,26 +435,36 @@ id|IRQ_IXP2000_PCIA
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|dev-&gt;bus-&gt;number
+op_eq
+l_int|1
+op_logical_and
+id|PCI_SLOT
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+op_eq
+l_int|1
+)paren
+(brace
+multiline_comment|/* SPI-3 option board.  */
+id|irq
+op_assign
+id|IRQ_IXP2000_PCIB
+suffix:semicolon
+)brace
+r_else
 (brace
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;enp2611_pci_map_irq for unknown device&bslash;n&quot;
-)paren
-suffix:semicolon
-id|irq
-op_assign
-id|IRQ_IXP2000_PCI
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Assigned IRQ %d to PCI:%d:%d:%d&bslash;n&quot;
-comma
-id|irq
+id|KERN_ERR
+l_string|&quot;enp2611_pci_map_irq() called for unknown &quot;
+l_string|&quot;device PCI:%d:%d:%d&bslash;n&quot;
 comma
 id|dev-&gt;bus-&gt;number
 comma
@@ -424,6 +481,12 @@ id|dev-&gt;devfn
 )paren
 )paren
 suffix:semicolon
+id|irq
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_return
 id|irq
 suffix:semicolon
@@ -471,6 +534,14 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|machine_is_enp2611
+c_func
+(paren
+)paren
+)paren
 id|pci_common_init
 c_func
 (paren
