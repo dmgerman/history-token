@@ -1214,11 +1214,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_int
-id|handled
-op_assign
-l_int|0
-suffix:semicolon
 id|ops
 op_member_access_from_pointer
 id|qirr_info
@@ -1240,10 +1235,6 @@ dot
 id|value
 )paren
 (brace
-id|handled
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1378,11 +1369,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 r_return
-id|IRQ_RETVAL
-c_func
-(paren
-id|handled
-)paren
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|xics_cause_IPI
