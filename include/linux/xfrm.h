@@ -262,34 +262,79 @@ multiline_comment|/* Use once */
 )brace
 suffix:semicolon
 multiline_comment|/* Netlink configuration messages.  */
-DECL|macro|XFRM_MSG_BASE
-mdefine_line|#define XFRM_MSG_BASE&t;&t;0x10
+r_enum
+(brace
+DECL|enumerator|XFRM_MSG_BASE
+id|XFRM_MSG_BASE
+op_assign
+l_int|0x10
+comma
+DECL|enumerator|XFRM_MSG_NEWSA
+id|XFRM_MSG_NEWSA
+op_assign
+l_int|0x10
+comma
 DECL|macro|XFRM_MSG_NEWSA
-mdefine_line|#define XFRM_MSG_NEWSA&t;&t;(XFRM_MSG_BASE + 0)
+mdefine_line|#define XFRM_MSG_NEWSA XFRM_MSG_NEWSA
+DECL|enumerator|XFRM_MSG_DELSA
+id|XFRM_MSG_DELSA
+comma
 DECL|macro|XFRM_MSG_DELSA
-mdefine_line|#define XFRM_MSG_DELSA&t;&t;(XFRM_MSG_BASE + 1)
+mdefine_line|#define XFRM_MSG_DELSA XFRM_MSG_DELSA
+DECL|enumerator|XFRM_MSG_GETSA
+id|XFRM_MSG_GETSA
+comma
 DECL|macro|XFRM_MSG_GETSA
-mdefine_line|#define XFRM_MSG_GETSA&t;&t;(XFRM_MSG_BASE + 2)
+mdefine_line|#define XFRM_MSG_GETSA XFRM_MSG_GETSA
+DECL|enumerator|XFRM_MSG_NEWPOLICY
+id|XFRM_MSG_NEWPOLICY
+comma
 DECL|macro|XFRM_MSG_NEWPOLICY
-mdefine_line|#define XFRM_MSG_NEWPOLICY&t;(XFRM_MSG_BASE + 3)
+mdefine_line|#define XFRM_MSG_NEWPOLICY XFRM_MSG_NEWPOLICY
+DECL|enumerator|XFRM_MSG_DELPOLICY
+id|XFRM_MSG_DELPOLICY
+comma
 DECL|macro|XFRM_MSG_DELPOLICY
-mdefine_line|#define XFRM_MSG_DELPOLICY&t;(XFRM_MSG_BASE + 4)
+mdefine_line|#define XFRM_MSG_DELPOLICY XFRM_MSG_DELPOLICY
+DECL|enumerator|XFRM_MSG_GETPOLICY
+id|XFRM_MSG_GETPOLICY
+comma
 DECL|macro|XFRM_MSG_GETPOLICY
-mdefine_line|#define XFRM_MSG_GETPOLICY&t;(XFRM_MSG_BASE + 5)
+mdefine_line|#define XFRM_MSG_GETPOLICY XFRM_MSG_GETPOLICY
+DECL|enumerator|XFRM_MSG_ALLOCSPI
+id|XFRM_MSG_ALLOCSPI
+comma
 DECL|macro|XFRM_MSG_ALLOCSPI
-mdefine_line|#define XFRM_MSG_ALLOCSPI&t;(XFRM_MSG_BASE + 6)
+mdefine_line|#define XFRM_MSG_ALLOCSPI XFRM_MSG_ALLOCSPI
+DECL|enumerator|XFRM_MSG_ACQUIRE
+id|XFRM_MSG_ACQUIRE
+comma
 DECL|macro|XFRM_MSG_ACQUIRE
-mdefine_line|#define XFRM_MSG_ACQUIRE&t;(XFRM_MSG_BASE + 7)
+mdefine_line|#define XFRM_MSG_ACQUIRE XFRM_MSG_ACQUIRE
+DECL|enumerator|XFRM_MSG_EXPIRE
+id|XFRM_MSG_EXPIRE
+comma
 DECL|macro|XFRM_MSG_EXPIRE
-mdefine_line|#define XFRM_MSG_EXPIRE&t;&t;(XFRM_MSG_BASE + 8)
+mdefine_line|#define XFRM_MSG_EXPIRE XFRM_MSG_EXPIRE
+DECL|enumerator|XFRM_MSG_UPDPOLICY
+id|XFRM_MSG_UPDPOLICY
+comma
 DECL|macro|XFRM_MSG_UPDPOLICY
-mdefine_line|#define XFRM_MSG_UPDPOLICY&t;(XFRM_MSG_BASE + 9)
+mdefine_line|#define XFRM_MSG_UPDPOLICY XFRM_MSG_UPDPOLICY
+DECL|enumerator|XFRM_MSG_UPDSA
+id|XFRM_MSG_UPDSA
+comma
 DECL|macro|XFRM_MSG_UPDSA
-mdefine_line|#define XFRM_MSG_UPDSA&t;&t;(XFRM_MSG_BASE + 10)
+mdefine_line|#define XFRM_MSG_UPDSA XFRM_MSG_UPDSA
+DECL|enumerator|XFRM_MSG_POLEXPIRE
+id|XFRM_MSG_POLEXPIRE
+comma
 DECL|macro|XFRM_MSG_POLEXPIRE
-mdefine_line|#define XFRM_MSG_POLEXPIRE&t;(XFRM_MSG_BASE + 11)
-DECL|macro|XFRM_MSG_MAX
-mdefine_line|#define XFRM_MSG_MAX&t;&t;(XFRM_MSG_POLEXPIRE+1)
+mdefine_line|#define XFRM_MSG_POLEXPIRE XFRM_MSG_POLEXPIRE
+DECL|enumerator|XFRM_MSG_MAX
+id|XFRM_MSG_MAX
+)brace
+suffix:semicolon
 DECL|struct|xfrm_user_tmpl
 r_struct
 id|xfrm_user_tmpl
