@@ -2953,7 +2953,7 @@ id|q
 )paren
 r_return
 suffix:semicolon
-id|wq_read_lock_irqsave
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
@@ -2972,7 +2972,7 @@ comma
 id|nr_exclusive
 )paren
 suffix:semicolon
-id|wq_read_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -3139,9 +3139,9 @@ suffix:semicolon
 DECL|macro|SLEEP_ON_VAR
 mdefine_line|#define&t;SLEEP_ON_VAR&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&bslash;&n;&t;wait_queue_t wait;&t;&t;&t;&bslash;&n;&t;init_waitqueue_entry(&amp;wait, current);
 DECL|macro|SLEEP_ON_HEAD
-mdefine_line|#define&t;SLEEP_ON_HEAD&t;&t;&t;&t;&t;&bslash;&n;&t;wq_write_lock_irqsave(&amp;q-&gt;lock,flags);&t;&t;&bslash;&n;&t;__add_wait_queue(q, &amp;wait);&t;&t;&t;&bslash;&n;&t;wq_write_unlock(&amp;q-&gt;lock);
+mdefine_line|#define&t;SLEEP_ON_HEAD&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irqsave(&amp;q-&gt;lock,flags);&t;&t;&bslash;&n;&t;__add_wait_queue(q, &amp;wait);&t;&t;&t;&bslash;&n;&t;spin_unlock(&amp;q-&gt;lock);
 DECL|macro|SLEEP_ON_TAIL
-mdefine_line|#define&t;SLEEP_ON_TAIL&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wq_write_lock_irq(&amp;q-&gt;lock);&t;&t;&t;&t;&bslash;&n;&t;__remove_wait_queue(q, &amp;wait);&t;&t;&t;&t;&bslash;&n;&t;wq_write_unlock_irqrestore(&amp;q-&gt;lock,flags);
+mdefine_line|#define&t;SLEEP_ON_TAIL&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irq(&amp;q-&gt;lock);&t;&t;&t;&t;&bslash;&n;&t;__remove_wait_queue(q, &amp;wait);&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;q-&gt;lock, flags);
 DECL|function|interruptible_sleep_on
 r_void
 id|interruptible_sleep_on
