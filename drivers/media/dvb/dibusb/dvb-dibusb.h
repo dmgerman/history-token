@@ -203,7 +203,7 @@ comma
 dot
 id|demod_addr
 op_assign
-l_int|0x10
+l_int|0x18
 comma
 dot
 id|fw_filenames
@@ -358,6 +358,10 @@ DECL|macro|USB_VID_AVERMEDIA
 mdefine_line|#define USB_VID_AVERMEDIA&t;&t;&t;&t;&t;0x14aa
 DECL|macro|USB_VID_COMPRO
 mdefine_line|#define USB_VID_COMPRO&t;&t;&t;&t;&t;&t;0x185b
+DECL|macro|USB_VID_COMPRO_UNK
+mdefine_line|#define USB_VID_COMPRO_UNK&t;&t;&t;&t;&t;0x145f
+DECL|macro|USB_VID_CYPRESS
+mdefine_line|#define USB_VID_CYPRESS&t;&t;&t;&t;&t;&t;0x04b4
 DECL|macro|USB_VID_DIBCOM
 mdefine_line|#define USB_VID_DIBCOM&t;&t;&t;&t;&t;&t;0x10b8
 DECL|macro|USB_VID_EMPIA
@@ -381,6 +385,10 @@ DECL|macro|USB_PID_COMPRO_DVBU2000_COLD
 mdefine_line|#define USB_PID_COMPRO_DVBU2000_COLD&t;&t;0xd000
 DECL|macro|USB_PID_COMPRO_DVBU2000_WARM
 mdefine_line|#define USB_PID_COMPRO_DVBU2000_WARM&t;&t;0xd001
+DECL|macro|USB_PID_COMPRO_DVBU2000_UNK_COLD
+mdefine_line|#define USB_PID_COMPRO_DVBU2000_UNK_COLD&t;0x010c
+DECL|macro|USB_PID_COMPRO_DVBU2000_UNK_WARM
+mdefine_line|#define USB_PID_COMPRO_DVBU2000_UNK_WARM&t;0x010d
 DECL|macro|USB_PID_DIBCOM_MOD3000_COLD
 mdefine_line|#define USB_PID_DIBCOM_MOD3000_COLD&t;&t;&t;0x0bb8
 DECL|macro|USB_PID_DIBCOM_MOD3000_WARM
@@ -411,6 +419,12 @@ DECL|macro|USB_PID_ULTIMA_TVBOX_AN2235_WARM
 mdefine_line|#define USB_PID_ULTIMA_TVBOX_AN2235_WARM&t;0x8108
 DECL|macro|USB_PID_ULTIMA_TVBOX_ANCHOR_COLD
 mdefine_line|#define USB_PID_ULTIMA_TVBOX_ANCHOR_COLD&t;0x2235
+DECL|macro|USB_PID_ULTIMA_TVBOX_USB2_COLD
+mdefine_line|#define USB_PID_ULTIMA_TVBOX_USB2_COLD&t;&t;0x8109
+DECL|macro|USB_PID_ULTIMA_TVBOX_USB2_FX_COLD
+mdefine_line|#define USB_PID_ULTIMA_TVBOX_USB2_FX_COLD&t;0x8613
+DECL|macro|USB_PID_ULTIMA_TVBOX_USB2_FX_WARM
+mdefine_line|#define USB_PID_ULTIMA_TVBOX_USB2_FX_WARM&t;0x1002
 DECL|macro|USB_PID_UNK_HYPER_PALTEK_COLD
 mdefine_line|#define USB_PID_UNK_HYPER_PALTEK_COLD&t;&t;0x005e
 DECL|macro|USB_PID_UNK_HYPER_PALTEK_WARM
@@ -420,7 +434,7 @@ mdefine_line|#define USB_PID_YAKUMO_DTT200U_COLD&t;&t;&t;0x0201
 DECL|macro|USB_PID_YAKUMO_DTT200U_WARM
 mdefine_line|#define USB_PID_YAKUMO_DTT200U_WARM&t;&t;&t;0x0301
 DECL|macro|DIBUSB_SUPPORTED_DEVICES
-mdefine_line|#define DIBUSB_SUPPORTED_DEVICES&t;12
+mdefine_line|#define DIBUSB_SUPPORTED_DEVICES&t;15
 multiline_comment|/* USB Driver stuff */
 DECL|variable|dibusb_devices
 r_static
@@ -599,6 +613,62 @@ comma
 dot
 id|name
 op_assign
+l_string|&quot;Artec T1 USB2.0 TVBOX (please report the warm ID)&quot;
+comma
+dot
+id|cold_product_id
+op_assign
+id|USB_PID_ULTIMA_TVBOX_USB2_COLD
+comma
+dot
+id|warm_product_id
+op_assign
+l_int|0
+comma
+multiline_comment|/* don&squot;t know, it is most likely that the device will get another USB ID in warm state */
+dot
+id|parm
+op_assign
+op_amp
+id|dibusb_dev_parm
+(braket
+l_int|1
+)braket
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Artec T1 USB2.0 TVBOX with FX2 IDs (misdesigned, please report the warm ID)&quot;
+comma
+dot
+id|cold_product_id
+op_assign
+id|USB_PID_ULTIMA_TVBOX_USB2_FX_COLD
+comma
+dot
+id|warm_product_id
+op_assign
+id|USB_PID_ULTIMA_TVBOX_USB2_FX_WARM
+comma
+multiline_comment|/* undefined, it could be that the device will get another USB ID in warm state */
+dot
+id|parm
+op_assign
+op_amp
+id|dibusb_dev_parm
+(braket
+l_int|1
+)braket
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
 l_string|&quot;Compro Videomate DVB-U2000 - DVB-T USB1.1&quot;
 comma
 dot
@@ -610,6 +680,33 @@ dot
 id|warm_product_id
 op_assign
 id|USB_PID_COMPRO_DVBU2000_WARM
+comma
+dot
+id|parm
+op_assign
+op_amp
+id|dibusb_dev_parm
+(braket
+l_int|0
+)braket
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Compro Videomate DVB-U2000 - DVB-T USB1.1 (really ?? please report the name!)&quot;
+comma
+dot
+id|cold_product_id
+op_assign
+id|USB_PID_COMPRO_DVBU2000_UNK_COLD
+comma
+dot
+id|warm_product_id
+op_assign
+id|USB_PID_COMPRO_DVBU2000_UNK_WARM
 comma
 dot
 id|parm
@@ -1029,9 +1126,29 @@ id|USB_PID_YAKUMO_DTT200U_WARM
 )paren
 )brace
 comma
-multiline_comment|/*&n; * activate the following define when you have the device and want to compile&n; * build from build-2.6 in dvb-kernel&n; */
-singleline_comment|// #define CONFIG_DVB_DIBUSB_MISDESIGNED_AN2235
-macro_line|#ifdef CONFIG_DVB_DIBUSB_MISDESIGNED_AN2235
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|USB_PID_COMPRO_DVBU2000_UNK_COLD
+comma
+id|USB_VID_COMPRO_UNK
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|USB_VID_ULTIMA_ELECTRONIC
+comma
+id|USB_PID_ULTIMA_TVBOX_USB2_COLD
+)paren
+)brace
+comma
+multiline_comment|/*&n; * activate the following define when you have one of the devices and want to&n; * build it from build-2.6 in dvb-kernel&n; */
+singleline_comment|// #define CONFIG_DVB_DIBUSB_MISDESIGNED_DEVICES
+macro_line|#ifdef CONFIG_DVB_DIBUSB_MISDESIGNED_DEVICES
 (brace
 id|USB_DEVICE
 c_func
@@ -1039,6 +1156,26 @@ c_func
 id|USB_VID_ANCHOR
 comma
 id|USB_PID_ULTIMA_TVBOX_ANCHOR_COLD
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|USB_VID_CYPRESS
+comma
+id|USB_PID_ULTIMA_TVBOX_USB2_FX_COLD
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|USB_VID_ANCHOR
+comma
+id|USB_PID_ULTIMA_TVBOX_USB2_FX_WARM
 )paren
 )brace
 comma
@@ -1077,6 +1214,10 @@ suffix:semicolon
 DECL|member|feedcount
 r_int
 id|feedcount
+suffix:semicolon
+DECL|member|pid_parse
+r_int
+id|pid_parse
 suffix:semicolon
 DECL|member|xfer_ops
 r_struct

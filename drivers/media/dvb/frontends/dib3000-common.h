@@ -2,6 +2,8 @@ multiline_comment|/*&n; * .h-files for the common use of the frontend drivers ma
 macro_line|#ifndef DIB3000_COMMON_H
 DECL|macro|DIB3000_COMMON_H
 mdefine_line|#define DIB3000_COMMON_H
+macro_line|#include &quot;dvb_frontend.h&quot;
+macro_line|#include &quot;dib3000.h&quot;
 multiline_comment|/* info and err, taken from usb.h, if there is anything available like by default,&n; * please change !&n; */
 DECL|macro|err
 mdefine_line|#define err(format, arg...) printk(KERN_ERR &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
@@ -24,6 +26,170 @@ id|active
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* frontend state */
+DECL|struct|dib3000_state
+r_struct
+id|dib3000_state
+(brace
+DECL|member|i2c
+r_struct
+id|i2c_adapter
+op_star
+id|i2c
+suffix:semicolon
+DECL|member|ops
+r_struct
+id|dvb_frontend_ops
+id|ops
+suffix:semicolon
+multiline_comment|/* configuration settings */
+DECL|member|config
+r_struct
+id|dib3000_config
+id|config
+suffix:semicolon
+DECL|member|pid_list_lock
+id|spinlock_t
+id|pid_list_lock
+suffix:semicolon
+DECL|member|pid_list
+r_struct
+id|dib3000_pid
+op_star
+id|pid_list
+suffix:semicolon
+DECL|member|feedcount
+r_int
+id|feedcount
+suffix:semicolon
+DECL|member|frontend
+r_struct
+id|dvb_frontend
+id|frontend
+suffix:semicolon
+DECL|member|timing_offset
+r_int
+id|timing_offset
+suffix:semicolon
+DECL|member|timing_offset_comp_done
+r_int
+id|timing_offset_comp_done
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* commonly used methods by the dib3000mb/mc/p frontend */
+r_extern
+r_int
+id|dib3000_read_reg
+c_func
+(paren
+r_struct
+id|dib3000_state
+op_star
+id|state
+comma
+id|u16
+id|reg
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dib3000_write_reg
+c_func
+(paren
+r_struct
+id|dib3000_state
+op_star
+id|state
+comma
+id|u16
+id|reg
+comma
+id|u16
+id|val
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dib3000_init_pid_list
+c_func
+(paren
+r_struct
+id|dib3000_state
+op_star
+id|state
+comma
+r_int
+id|num
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dib3000_dealloc_pid_list
+c_func
+(paren
+r_struct
+id|dib3000_state
+op_star
+id|state
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dib3000_get_pid_index
+c_func
+(paren
+r_struct
+id|dib3000_pid
+id|pid_list
+(braket
+)braket
+comma
+r_int
+id|num_pids
+comma
+r_int
+id|pid
+comma
+id|spinlock_t
+op_star
+id|pid_list_lock
+comma
+r_int
+id|onoff
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dib3000_search_status
+c_func
+(paren
+id|u16
+id|irq
+comma
+id|u16
+id|lock
+)paren
+suffix:semicolon
+multiline_comment|/* handy shortcuts */
+DECL|macro|rd
+mdefine_line|#define rd(reg) dib3000_read_reg(state,reg)
+DECL|macro|wr
+mdefine_line|#define wr(reg,val) if (dib3000_write_reg(state,reg,val)) &bslash;&n;&t;{ err(&quot;while sending 0x%04x to 0x%04x.&quot;,val,reg); return -EREMOTEIO; }
+DECL|macro|wr_foreach
+mdefine_line|#define wr_foreach(a,v) { int i; &bslash;&n;&t;if (sizeof(a) != sizeof(v)) &bslash;&n;&t;&t;err(&quot;sizeof: %d %d is different&quot;,sizeof(a),sizeof(v));&bslash;&n;&t;for (i=0; i &lt; sizeof(a)/sizeof(u16); i++) &bslash;&n;&t;&t;wr(a[i],v[i]); &bslash;&n;&t;}
+DECL|macro|set_or
+mdefine_line|#define set_or(reg,val) wr(reg,rd(reg) | val)
+DECL|macro|set_and
+mdefine_line|#define set_and(reg,val) wr(reg,rd(reg) &amp; val)
+multiline_comment|/* debug */
+macro_line|#ifdef CONFIG_DVB_DIBCOM_DEBUG
+DECL|macro|dprintk
+mdefine_line|#define dprintk(level,args...) &bslash;&n;    do { if ((debug &amp; level)) { printk(args); } } while (0)
+macro_line|#else
+DECL|macro|dprintk
+mdefine_line|#define dprintk(args...) do { } while (0)
+macro_line|#endif
 multiline_comment|/* mask for enabling a specific pid for the pid_filter */
 DECL|macro|DIB3000_ACTIVATE_PID_FILTERING
 mdefine_line|#define DIB3000_ACTIVATE_PID_FILTERING&t;(0x2000)
@@ -81,8 +247,7 @@ mdefine_line|#define DIB3000_TUNER_WRITE_ENABLE(a)&t;(0xffff &amp; (a &lt;&lt; 7
 DECL|macro|DIB3000_TUNER_WRITE_DISABLE
 mdefine_line|#define DIB3000_TUNER_WRITE_DISABLE(a)&t;(0xffff &amp; ((a &lt;&lt; 7) | (1 &lt;&lt; 7)))
 multiline_comment|/* for auto search */
-DECL|variable|dib3000_seq
-r_static
+r_extern
 id|u16
 id|dib3000_seq
 (braket
@@ -94,45 +259,6 @@ l_int|2
 (braket
 l_int|2
 )braket
-op_assign
-multiline_comment|/* fft,gua,   inv   */
-(brace
-multiline_comment|/* fft */
-(brace
-multiline_comment|/* gua */
-(brace
-l_int|0
-comma
-l_int|1
-)brace
-comma
-multiline_comment|/*  0   0   { 0,1 } */
-(brace
-l_int|3
-comma
-l_int|9
-)brace
-comma
-multiline_comment|/*  0   1   { 0,1 } */
-)brace
-comma
-(brace
-(brace
-l_int|2
-comma
-l_int|5
-)brace
-comma
-multiline_comment|/*  1   0   { 0,1 } */
-(brace
-l_int|6
-comma
-l_int|11
-)brace
-comma
-multiline_comment|/*  1   1   { 0,1 } */
-)brace
-)brace
 suffix:semicolon
 DECL|macro|DIB3000_REG_MANUFACTOR_ID
 mdefine_line|#define DIB3000_REG_MANUFACTOR_ID&t;&t;(  1025)
