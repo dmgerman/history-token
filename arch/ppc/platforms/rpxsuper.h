@@ -86,8 +86,8 @@ id|bd_t
 id|m8xx_board_info
 suffix:semicolon
 multiline_comment|/* Memory map is configured by the PROM startup.&n; * We just map a few things we need.  The CSR is actually 4 byte-wide&n; * registers that can be accessed as 8-, 16-, or 32-bit values.&n; */
-DECL|macro|IMAP_ADDR
-mdefine_line|#define IMAP_ADDR&t;&t;((uint)0xf0000000)
+DECL|macro|CPM_MAP_ADDR
+mdefine_line|#define CPM_MAP_ADDR&t;&t;((uint)0xf0000000)
 DECL|macro|RPX_CSR_ADDR
 mdefine_line|#define RPX_CSR_ADDR&t;&t;((uint)0xfa000000)
 DECL|macro|RPX_CSR_SIZE

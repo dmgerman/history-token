@@ -4,8 +4,8 @@ DECL|macro|__TQM8260_PLATFORM
 mdefine_line|#define __TQM8260_PLATFORM
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ppcboot.h&gt;
-DECL|macro|IMAP_ADDR
-mdefine_line|#define IMAP_ADDR&t;&t;((uint)0xFFF00000)
+DECL|macro|CPM_MAP_ADDR
+mdefine_line|#define CPM_MAP_ADDR&t;&t;((uint)0xFFF00000)
 DECL|macro|PHY_INTERRUPT
 mdefine_line|#define PHY_INTERRUPT&t;&t;25
 DECL|macro|BOOTROM_RESTART_ADDR
