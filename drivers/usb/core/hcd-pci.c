@@ -1129,6 +1129,10 @@ comma
 id|state
 )paren
 suffix:semicolon
+id|dev-&gt;dev.power.power_state
+op_assign
+id|state
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1258,6 +1262,10 @@ id|dev
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|dev-&gt;dev.power.power_state
+op_assign
+l_int|0
 suffix:semicolon
 id|retval
 op_assign
