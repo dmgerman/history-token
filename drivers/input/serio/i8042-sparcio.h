@@ -27,6 +27,8 @@ DECL|macro|I8042_KBD_PHYS_DESC
 mdefine_line|#define I8042_KBD_PHYS_DESC &quot;sparcps2/serio0&quot;
 DECL|macro|I8042_AUX_PHYS_DESC
 mdefine_line|#define I8042_AUX_PHYS_DESC &quot;sparcps2/serio1&quot;
+DECL|macro|I8042_MUX_PHYS_DESC
+mdefine_line|#define I8042_MUX_PHYS_DESC &quot;sparcps2/serio%d&quot;
 DECL|variable|kbd_iobase
 r_static
 r_int
@@ -179,7 +181,8 @@ l_string|&quot;i8042: Cannot get name property of root OBP node.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 r_if
@@ -228,7 +231,8 @@ op_logical_neg
 id|kbd_iobase
 )paren
 r_return
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 r_else
@@ -280,7 +284,8 @@ suffix:semicolon
 )brace
 )brace
 r_return
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 id|edev_found
 suffix:colon
@@ -392,12 +397,17 @@ l_string|&quot;mouse nodes.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 )brace
-r_return
+id|i8042_reset
+op_assign
 l_int|1
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|i8042_platform_exit

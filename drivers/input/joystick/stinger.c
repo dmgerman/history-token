@@ -678,6 +678,13 @@ comma
 id|serio-&gt;phys
 )paren
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|stinger-&gt;dev
+)paren
+suffix:semicolon
 id|stinger-&gt;dev.name
 op_assign
 id|stinger_name

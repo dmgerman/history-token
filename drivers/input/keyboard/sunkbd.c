@@ -1094,6 +1094,13 @@ id|sunkbd
 )paren
 )paren
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|sunkbd-&gt;dev
+)paren
+suffix:semicolon
 id|sunkbd-&gt;dev.evbit
 (braket
 l_int|0

@@ -37,12 +37,6 @@ id|pci_dev
 op_star
 id|dev
 suffix:semicolon
-DECL|member|next
-r_struct
-id|emu
-op_star
-id|next
-suffix:semicolon
 DECL|member|gameport
 r_struct
 id|gameport

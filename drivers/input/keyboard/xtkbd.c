@@ -514,6 +514,13 @@ id|xtkbd-&gt;serio
 op_assign
 id|serio
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|xtkbd-&gt;dev
+)paren
+suffix:semicolon
 id|xtkbd-&gt;dev.keycode
 op_assign
 id|xtkbd-&gt;keycode

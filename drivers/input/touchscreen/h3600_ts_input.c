@@ -1108,6 +1108,13 @@ id|h3600_dev
 )paren
 )paren
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|ts-&gt;dev
+)paren
+suffix:semicolon
 multiline_comment|/* Device specific stuff */
 id|set_GPIO_IRQ_edge
 c_func

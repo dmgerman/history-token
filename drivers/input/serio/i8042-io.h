@@ -7,6 +7,8 @@ DECL|macro|I8042_KBD_PHYS_DESC
 mdefine_line|#define I8042_KBD_PHYS_DESC &quot;isa0060/serio0&quot;
 DECL|macro|I8042_AUX_PHYS_DESC
 mdefine_line|#define I8042_AUX_PHYS_DESC &quot;isa0060/serio1&quot;
+DECL|macro|I8042_MUX_PHYS_DESC
+mdefine_line|#define I8042_MUX_PHYS_DESC &quot;isa0060/serio%d&quot;
 multiline_comment|/*&n; * IRQs.&n; */
 macro_line|#ifdef __alpha__
 DECL|macro|I8042_KBD_IRQ
@@ -133,11 +135,18 @@ l_string|&quot;i8042&quot;
 )paren
 )paren
 r_return
-l_int|0
+op_minus
+l_int|1
+suffix:semicolon
+macro_line|#endif
+macro_line|#if !defined(__i386__) &amp;&amp; !defined(__x86_64__)
+id|i8042_reset
+op_assign
+l_int|1
 suffix:semicolon
 macro_line|#endif
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|i8042_platform_exit
