@@ -30,7 +30,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/* Header files&t;&t;&t;&t;&t;&t;&t;&t;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
