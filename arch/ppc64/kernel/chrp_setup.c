@@ -61,13 +61,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_void
-id|chrp_request_regions
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|openpic_init_IRQ
@@ -397,9 +390,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_PPC_ISERIES
 multiline_comment|/* Find and initialize PCI host bridges */
 multiline_comment|/* iSeries needs to be done much later. */
-macro_line|#ifndef CONFIG_PPC_ISERIES
+id|eeh_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|find_and_init_phbs
 c_func
 (paren
@@ -518,12 +516,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t; * It is sensitive, when this is called (not too earlu)&n;&t; * -- tibit&n;&t; */
-id|chrp_request_regions
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Manually leave the kernel version on the panel. */
 id|ppc_md
 dot
