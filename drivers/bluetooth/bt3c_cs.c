@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -151,8 +150,9 @@ r_void
 id|bt3c_release
 c_func
 (paren
-id|u_long
-id|arg
+id|dev_link_t
+op_star
+id|link
 )paren
 suffix:semicolon
 r_int
@@ -1999,25 +1999,6 @@ id|link-&gt;priv
 op_assign
 id|info
 suffix:semicolon
-id|init_timer
-c_func
-(paren
-op_amp
-id|link-&gt;release
-)paren
-suffix:semicolon
-id|link-&gt;release.function
-op_assign
-op_amp
-id|bt3c_release
-suffix:semicolon
-id|link-&gt;release.data
-op_assign
-(paren
-id|u_long
-)paren
-id|link
-suffix:semicolon
 id|link-&gt;io.Attributes1
 op_assign
 id|IO_DATA_PATH_WIDTH_8
@@ -2256,13 +2237,6 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|link-&gt;release
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2273,9 +2247,6 @@ id|DEV_CONFIG
 id|bt3c_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|link
 )paren
 suffix:semicolon
@@ -3050,9 +3021,6 @@ suffix:colon
 id|bt3c_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|link
 )paren
 suffix:semicolon
@@ -3062,20 +3030,11 @@ r_void
 id|bt3c_release
 c_func
 (paren
-id|u_long
-id|arg
-)paren
-(brace
 id|dev_link_t
 op_star
 id|link
-op_assign
-(paren
-id|dev_link_t
-op_star
 )paren
-id|arg
-suffix:semicolon
+(brace
 id|bt3c_info_t
 op_star
 id|info
@@ -3191,17 +3150,10 @@ c_func
 id|info
 )paren
 suffix:semicolon
-id|mod_timer
+id|bt3c_release
 c_func
 (paren
-op_amp
-id|link-&gt;release
-comma
-id|jiffies
-op_plus
-id|HZ
-op_div
-l_int|20
+id|link
 )paren
 suffix:semicolon
 )brace

@@ -3560,11 +3560,11 @@ suffix:colon
 id|isapnp_parse_name
 c_func
 (paren
-id|dev-&gt;dev.name
+id|dev-&gt;name
 comma
 r_sizeof
 (paren
-id|dev-&gt;dev.name
+id|dev-&gt;name
 )paren
 comma
 op_amp
@@ -3839,11 +3839,11 @@ suffix:colon
 id|isapnp_parse_name
 c_func
 (paren
-id|card-&gt;dev.name
+id|card-&gt;name
 comma
 r_sizeof
 (paren
-id|card-&gt;dev.name
+id|card-&gt;name
 )paren
 comma
 op_amp
@@ -5747,13 +5747,13 @@ c_func
 id|KERN_INFO
 l_string|&quot;isapnp: Card &squot;%s&squot;&bslash;n&quot;
 comma
-id|card-&gt;dev.name
+id|card-&gt;name
 (braket
 l_int|0
 )braket
 ques
 c_cond
-id|card-&gt;dev.name
+id|card-&gt;name
 suffix:colon
 l_string|&quot;Unknown&quot;
 )paren
@@ -5781,13 +5781,13 @@ c_func
 id|KERN_INFO
 l_string|&quot;isapnp:   Device &squot;%s&squot;&bslash;n&quot;
 comma
-id|dev-&gt;dev.name
+id|dev-&gt;name
 (braket
 l_int|0
 )braket
 ques
 c_cond
-id|dev-&gt;dev.name
+id|dev-&gt;name
 suffix:colon
 l_string|&quot;Unknown&quot;
 )paren

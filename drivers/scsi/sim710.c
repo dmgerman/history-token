@@ -342,7 +342,7 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;sim710: %s&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|dev-&gt;bus_id
 )paren
 suffix:semicolon
 id|printk
@@ -926,17 +926,12 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|strlcpy
+id|mca_device_set_name
 c_func
 (paren
-id|dev-&gt;name
+id|mca_dev
 comma
 id|name
-comma
-r_sizeof
-(paren
-id|dev-&gt;name
-)paren
 )paren
 suffix:semicolon
 id|mca_device_set_claim
@@ -1237,7 +1232,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;sim710.c, EISA card %s has incorrect scsi_id, setting to 7&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|dev-&gt;bus_id
 )paren
 suffix:semicolon
 id|scsi_id

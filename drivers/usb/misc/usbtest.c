@@ -966,15 +966,10 @@ id|i
 dot
 id|offset
 op_assign
+id|offset_in_page
 (paren
-(paren
-r_int
-)paren
 id|buf
 )paren
-op_amp
-op_complement
-id|PAGE_MASK
 suffix:semicolon
 id|sg
 (braket

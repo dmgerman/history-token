@@ -510,19 +510,6 @@ op_assign
 op_amp
 id|macio_bus_type
 suffix:semicolon
-multiline_comment|/* XXX Make something better here ? */
-id|snprintf
-c_func
-(paren
-id|dev-&gt;ofdev.dev.name
-comma
-id|DEVICE_NAME_SIZE
-comma
-l_string|&quot;MacIO device %s&quot;
-comma
-id|np-&gt;name
-)paren
-suffix:semicolon
 multiline_comment|/* MacIO itself has a different reg, we use it&squot;s PCI base */
 r_if
 c_cond

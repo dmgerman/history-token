@@ -1783,7 +1783,6 @@ suffix:semicolon
 )brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|msg-&gt;port
@@ -2420,7 +2419,6 @@ suffix:semicolon
 )brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|msg-&gt;port
@@ -2653,7 +2651,6 @@ id|i
 (brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -2844,7 +2841,6 @@ suffix:semicolon
 )brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|msg-&gt;portNumber
@@ -4803,7 +4799,6 @@ op_increment
 (brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -7743,7 +7738,6 @@ op_increment
 (brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -7935,7 +7929,6 @@ id|i
 (brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -8036,7 +8029,6 @@ id|i
 (brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -8149,7 +8141,6 @@ op_increment
 (brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|i

@@ -710,6 +710,13 @@ r_extern
 r_int
 id|boot_cpuid
 suffix:semicolon
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
+r_extern
+r_int
+r_int
+id|alpha_verbose_mcheck
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* srmcons.c */
 macro_line|#if defined(CONFIG_ALPHA_GENERIC) || defined(CONFIG_ALPHA_SRM)
 r_extern
@@ -1125,8 +1132,6 @@ mdefine_line|#define mcheck_taken(cpu)&t;((void)(cpu), __mcheck_info.taken)
 DECL|macro|mcheck_extra
 mdefine_line|#define mcheck_extra(cpu)&t;((void)(cpu), __mcheck_info.extra)
 macro_line|#endif
-DECL|macro|DEBUG_MCHECK
-mdefine_line|#define DEBUG_MCHECK 0          /* 0 = minimal, 1 = debug, 2 = debug+dump.  */
 r_extern
 r_void
 id|process_mcheck_info

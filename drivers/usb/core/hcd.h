@@ -130,11 +130,6 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* for PM state save */
-DECL|member|resume_count
-id|atomic_t
-id|resume_count
-suffix:semicolon
-multiline_comment|/* multiple resumes issue */
 macro_line|#endif
 DECL|macro|HCD_BUFFER_POOLS
 mdefine_line|#define HCD_BUFFER_POOLS&t;4
@@ -728,8 +723,6 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM
-singleline_comment|// FIXME:  see Documentation/power/pci.txt (2.4.6 and later?)
-singleline_comment|// extern int usb_hcd_pci_save_state (struct pci_dev *dev, u32 state);
 r_extern
 r_int
 id|usb_hcd_pci_suspend
@@ -753,7 +746,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-singleline_comment|// extern int usb_hcd_pci_enable_wake (struct pci_dev *dev, u32 state, int flg);
 macro_line|#endif /* CONFIG_PM */
 macro_line|#endif /* CONFIG_PCI */
 multiline_comment|/* pci-ish (pdev null is ok) buffer alloc/mapping support */

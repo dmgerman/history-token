@@ -3553,7 +3553,7 @@ id|serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|bulk_out_endpointAddress
 )paren
 comma
@@ -6344,7 +6344,6 @@ l_int|1
 suffix:semicolon
 id|port
 op_assign
-op_amp
 id|edge_serial-&gt;serial-&gt;port
 (braket
 id|port_number
@@ -7403,7 +7402,7 @@ id|edge_serial-&gt;serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|interrupt_in_urb
 suffix:semicolon
 r_if
@@ -7760,7 +7759,7 @@ id|serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|interrupt_in_urb
 )paren
 suffix:semicolon
@@ -10373,7 +10372,6 @@ id|edgeport_port
 suffix:semicolon
 id|edge_port-&gt;port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -10386,7 +10384,6 @@ suffix:semicolon
 id|usb_set_serial_port_data
 c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -10441,7 +10438,6 @@ id|kfree
 id|usb_get_serial_port_data
 c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -10452,7 +10448,6 @@ suffix:semicolon
 id|usb_set_serial_port_data
 c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i

@@ -8328,11 +8328,6 @@ op_assign
 id|CAST5_MAX_KEY_SIZE
 comma
 dot
-id|cia_ivsize
-op_assign
-id|CAST5_BLOCK_SIZE
-comma
-dot
 id|cia_setkey
 op_assign
 id|cast5_setkey

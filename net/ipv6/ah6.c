@@ -2106,6 +2106,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|ahp
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|ahp-&gt;work_icv
 )paren
 (brace

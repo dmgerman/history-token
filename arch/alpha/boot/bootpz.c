@@ -14,10 +14,13 @@ multiline_comment|/* FIXME FIXME FIXME */
 DECL|macro|MALLOC_AREA_SIZE
 mdefine_line|#define MALLOC_AREA_SIZE 0x200000 /* 2MB for now */
 multiline_comment|/* FIXME FIXME FIXME */
+multiline_comment|/*&n;  WARNING NOTE&n;&n;  It is very possible that turning on additional messages may cause&n;  kernel image corruption due to stack usage to do the printing.&n;&n;*/
 DECL|macro|DEBUG_CHECK_RANGE
 macro_line|#undef DEBUG_CHECK_RANGE
 DECL|macro|DEBUG_ADDRESSES
-mdefine_line|#define DEBUG_ADDRESSES
+macro_line|#undef DEBUG_ADDRESSES
+DECL|macro|DEBUG_LAST_STEPS
+macro_line|#undef DEBUG_LAST_STEPS
 DECL|macro|DEBUG_SP
 mdefine_line|#define DEBUG_SP(x) &bslash;&n;    {register long sp asm(&quot;30&quot;); srm_printk(&quot;%s (sp=%lx)&bslash;n&quot;, x, sp);}
 r_extern
@@ -953,6 +956,14 @@ id|KERNEL_SIZE
 suffix:semicolon
 )brace
 multiline_comment|/* Clear the zero page, then move the argument list in. */
+macro_line|#ifdef DEBUG_LAST_STEPS
+id|srm_printk
+c_func
+(paren
+l_string|&quot;Preparing ZERO_PGE...&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|memset
 c_func
 (paren
@@ -980,6 +991,14 @@ id|envval
 )paren
 suffix:semicolon
 macro_line|#ifdef INITRD_IMAGE_SIZE
+macro_line|#ifdef DEBUG_LAST_STEPS
+id|srm_printk
+c_func
+(paren
+l_string|&quot;Preparing INITRD info...&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Finally, set the INITRD paramenters for the kernel. */
 (paren
 (paren
@@ -1016,6 +1035,14 @@ op_assign
 id|INITRD_IMAGE_SIZE
 suffix:semicolon
 macro_line|#endif /* INITRD_IMAGE_SIZE */
+macro_line|#ifdef DEBUG_LAST_STEPS
+id|srm_printk
+c_func
+(paren
+l_string|&quot;Doing &squot;runkernel()&squot;...&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|runkernel
 c_func
 (paren

@@ -1308,11 +1308,11 @@ suffix:semicolon
 multiline_comment|/* Must be null with new api, otherwise get called twice */
 id|xl_priv-&gt;xl_card_name
 op_assign
+id|pci_name
+c_func
 (paren
-r_char
-op_star
+id|pdev
 )paren
-id|pdev-&gt;dev.name
 suffix:semicolon
 id|xl_priv-&gt;xl_mmio
 op_assign

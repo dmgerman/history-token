@@ -38,17 +38,6 @@ id|id
 op_assign
 l_int|0
 comma
-dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Virtual EISA Bridge&quot;
-comma
-)brace
-comma
 )brace
 suffix:semicolon
 DECL|variable|eisa_bus_root

@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/termios.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irqueue.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 multiline_comment|/* Used by ioctl */
 DECL|struct|irtty_info
@@ -35,11 +34,6 @@ DECL|struct|irtty_cb
 r_struct
 id|irtty_cb
 (brace
-DECL|member|q
-id|irda_queue_t
-id|q
-suffix:semicolon
-multiline_comment|/* Must be first */
 DECL|member|magic
 id|magic_t
 id|magic

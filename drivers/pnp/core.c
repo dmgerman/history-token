@@ -210,16 +210,6 @@ comma
 id|nodenum
 )paren
 suffix:semicolon
-id|strlcpy
-c_func
-(paren
-id|protocol-&gt;dev.name
-comma
-id|protocol-&gt;name
-comma
-id|DEVICE_NAME_SIZE
-)paren
-suffix:semicolon
 r_return
 id|device_register
 c_func

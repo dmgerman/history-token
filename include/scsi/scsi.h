@@ -2,7 +2,9 @@ macro_line|#ifndef _LINUX_SCSI_H
 DECL|macro|_LINUX_SCSI_H
 mdefine_line|#define _LINUX_SCSI_H
 multiline_comment|/*&n; * This header file contains public constants and structures used by&n; * the scsi code for linux.&n; */
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n;    $Header: /usr/src/linux/include/linux/RCS/scsi.h,v 1.3 1993/09/24 12:20:33 drew Exp $&n;&n;    For documentation on the OPCODES, MESSAGES, and SENSE values,&n;    please consult the SCSI standard.&n;&n;*/
+macro_line|#include &lt;linux/types.h&gt; 
 multiline_comment|/*&n; * SCSI command lengths&n; */
 r_extern
 r_const
@@ -313,58 +315,58 @@ r_struct
 id|ccs_modesel_head
 (brace
 DECL|member|_r1
-id|u_char
+id|u8
 id|_r1
 suffix:semicolon
 multiline_comment|/* reserved */
 DECL|member|medium
-id|u_char
+id|u8
 id|medium
 suffix:semicolon
 multiline_comment|/* device-specific medium type */
 DECL|member|_r2
-id|u_char
+id|u8
 id|_r2
 suffix:semicolon
 multiline_comment|/* reserved */
 DECL|member|block_desc_length
-id|u_char
+id|u8
 id|block_desc_length
 suffix:semicolon
 multiline_comment|/* block descriptor length */
 DECL|member|density
-id|u_char
+id|u8
 id|density
 suffix:semicolon
 multiline_comment|/* device-specific density code */
 DECL|member|number_blocks_hi
-id|u_char
+id|u8
 id|number_blocks_hi
 suffix:semicolon
 multiline_comment|/* number of blocks in this block desc */
 DECL|member|number_blocks_med
-id|u_char
+id|u8
 id|number_blocks_med
 suffix:semicolon
 DECL|member|number_blocks_lo
-id|u_char
+id|u8
 id|number_blocks_lo
 suffix:semicolon
 DECL|member|_r3
-id|u_char
+id|u8
 id|_r3
 suffix:semicolon
 DECL|member|block_length_hi
-id|u_char
+id|u8
 id|block_length_hi
 suffix:semicolon
 multiline_comment|/* block length for blocks in this desc */
 DECL|member|block_length_med
-id|u_char
+id|u8
 id|block_length_med
 suffix:semicolon
 DECL|member|block_length_lo
-id|u_char
+id|u8
 id|block_length_lo
 suffix:semicolon
 )brace

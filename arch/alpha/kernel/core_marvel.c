@@ -1795,11 +1795,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hose-&gt;bus
-op_eq
-id|pbus
+op_logical_neg
+id|pbus-&gt;parent
 )paren
 (brace
+multiline_comment|/* No parent means peer PCI bus. */
 multiline_comment|/* Don&squot;t support idsel &gt; 20 on primary bus.  */
 r_if
 c_cond

@@ -2581,14 +2581,28 @@ dot
 id|desc
 suffix:semicolon
 )brace
-id|usb_set_configuration
+multiline_comment|/* FIXME don&squot;t scan every config. it&squot;s either correct&n;&t;&t;&t; * when we probe(), or some other task must fix this.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|dev-&gt;actconfig
+op_ne
+id|cfacm
+)paren
+(brace
+id|err
 c_func
 (paren
-id|dev
+l_string|&quot;need inactive config #%d&quot;
 comma
 id|cfacm-&gt;desc.bConfigurationValue
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren

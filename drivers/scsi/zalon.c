@@ -507,19 +507,6 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
-id|strlcpy
-c_func
-(paren
-id|dev-&gt;dev.name
-comma
-l_string|&quot;zalon7xx&quot;
-comma
-r_sizeof
-(paren
-id|dev-&gt;dev.name
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -532,7 +519,7 @@ id|ncr53c8xx_intr
 comma
 id|SA_SHIRQ
 comma
-id|dev-&gt;dev.name
+id|dev-&gt;dev.bus_id
 comma
 id|host
 )paren
@@ -544,7 +531,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: irq problem with %d, detaching&bslash;n &quot;
 comma
-id|dev-&gt;dev.name
+id|dev-&gt;dev.bus_id
 comma
 id|irq
 )paren

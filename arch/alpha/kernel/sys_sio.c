@@ -22,6 +22,27 @@ macro_line|#include &quot;proto.h&quot;
 macro_line|#include &quot;irq_impl.h&quot;
 macro_line|#include &quot;pci_impl.h&quot;
 macro_line|#include &quot;machvec_impl.h&quot;
+macro_line|#if defined(ALPHA_RESTORE_SRM_SETUP)
+multiline_comment|/* Save LCA configuration data as the console had it set up.  */
+r_struct
+(brace
+DECL|member|orig_route_tab
+r_int
+r_int
+id|orig_route_tab
+suffix:semicolon
+multiline_comment|/* for SAVE/RESTORE */
+)brace
+id|saved_config
+id|__attribute
+c_func
+(paren
+(paren
+id|common
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_static
 r_void
 id|__init
@@ -93,6 +114,41 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#if defined(ALPHA_RESTORE_SRM_SETUP)
+multiline_comment|/* First, read and save the original setting. */
+id|pci_bus_read_config_dword
+c_func
+(paren
+id|pci_isa_hose-&gt;bus
+comma
+id|PCI_DEVFN
+c_func
+(paren
+l_int|7
+comma
+l_int|0
+)paren
+comma
+l_int|0x60
+comma
+op_amp
+id|saved_config.orig_route_tab
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s: PIRQ original 0x%x new 0x%x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|saved_config.orig_route_tab
+comma
+id|alpha_mv.sys.sio.route_tab
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Now override with desired setting. */
 id|pci_bus_write_config_dword
 c_func
 (paren
@@ -963,6 +1019,37 @@ l_int|0x3cf
 suffix:semicolon
 multiline_comment|/* (re)lock PR0-4 */
 )brace
+r_void
+DECL|function|sio_kill_arch
+id|sio_kill_arch
+c_func
+(paren
+r_int
+id|mode
+)paren
+(brace
+macro_line|#if defined(ALPHA_RESTORE_SRM_SETUP)
+multiline_comment|/* Since we cannot read the PCI DMA Window CSRs, we&n;&t; * cannot restore them here.&n;&t; *&n;&t; * However, we CAN read the PIRQ route register, so restore it&n;&t; * now...&n;&t; */
+id|pci_bus_write_config_dword
+c_func
+(paren
+id|pci_isa_hose-&gt;bus
+comma
+id|PCI_DEVFN
+c_func
+(paren
+l_int|7
+comma
+l_int|0
+)paren
+comma
+l_int|0x60
+comma
+id|saved_config.orig_route_tab
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 multiline_comment|/*&n; * The System Vectors&n; */
 macro_line|#if defined(CONFIG_ALPHA_GENERIC) || defined(CONFIG_ALPHA_BOOK1)
 DECL|variable|__initmv
@@ -1038,7 +1125,7 @@ comma
 dot
 id|kill_arch
 op_assign
-l_int|NULL
+id|sio_kill_arch
 comma
 dot
 id|pci_map_irq
@@ -1145,6 +1232,11 @@ op_assign
 id|noname_init_pci
 comma
 dot
+id|kill_arch
+op_assign
+id|sio_kill_arch
+comma
+dot
 id|pci_map_irq
 op_assign
 id|noname_map_irq
@@ -1246,6 +1338,11 @@ dot
 id|init_pci
 op_assign
 id|noname_init_pci
+comma
+dot
+id|kill_arch
+op_assign
+id|sio_kill_arch
 comma
 dot
 id|pci_map_irq
@@ -1350,6 +1447,11 @@ dot
 id|init_pci
 op_assign
 id|noname_init_pci
+comma
+dot
+id|kill_arch
+op_assign
+id|sio_kill_arch
 comma
 dot
 id|pci_map_irq
@@ -1457,6 +1559,11 @@ dot
 id|init_pci
 op_assign
 id|noname_init_pci
+comma
+dot
+id|kill_arch
+op_assign
+id|sio_kill_arch
 comma
 dot
 id|pci_map_irq

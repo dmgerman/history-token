@@ -1406,6 +1406,8 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* claim data interface and set it up ... with side effects.&n;&t; * network traffic can&squot;t flow until an altsetting is enabled.&n;&t; */
+id|status
+op_assign
 id|usb_driver_claim_interface
 (paren
 op_amp
@@ -1415,6 +1417,16 @@ id|info-&gt;data
 comma
 id|dev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+OL
+l_int|0
+)paren
+r_return
+id|status
 suffix:semicolon
 id|status
 op_assign
@@ -2632,6 +2644,15 @@ suffix:semicolon
 id|skb
 op_assign
 id|skb2
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|skb
+)paren
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 singleline_comment|// attach the packet count to the header
@@ -7863,7 +7884,6 @@ id|trailer
 )paren
 suffix:semicolon
 )brace
-r_else
 macro_line|#endif&t;/* CONFIG_USB_NET1080 */
 id|usb_fill_bulk_urb
 (paren

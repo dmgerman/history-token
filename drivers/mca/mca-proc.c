@@ -78,7 +78,7 @@ comma
 id|mca_dev
 ques
 c_cond
-id|mca_dev-&gt;dev.name
+id|mca_dev-&gt;name
 suffix:colon
 l_string|&quot;&quot;
 )paren
@@ -466,7 +466,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mca_dev-&gt;dev.name
+id|mca_dev-&gt;name
 (braket
 l_int|0
 )braket
@@ -484,7 +484,7 @@ id|len
 comma
 l_string|&quot;Adapter Name: %s&bslash;n&quot;
 comma
-id|mca_dev-&gt;dev.name
+id|mca_dev-&gt;name
 )paren
 suffix:semicolon
 )brace

@@ -5029,15 +5029,10 @@ id|i
 dot
 id|offset
 op_assign
+id|offset_in_page
+c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|vaddr
-op_amp
-op_complement
-id|PAGE_MASK
 )paren
 suffix:semicolon
 macro_line|#else

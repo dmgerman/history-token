@@ -1520,9 +1520,14 @@ c_func
 (paren
 id|mchk_header
 comma
-l_int|1
+id|alpha_verbose_mcheck
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|alpha_verbose_mcheck
+)paren
 id|dik_show_regs
 c_func
 (paren

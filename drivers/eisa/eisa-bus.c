@@ -30,6 +30,7 @@ id|DEVICE_NAME_SIZE
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_EISA_NAMES
 DECL|variable|eisa_table
 r_static
 r_struct
@@ -40,13 +41,12 @@ id|eisa_table
 )braket
 op_assign
 (brace
-macro_line|#ifdef CONFIG_EISA_NAMES
 macro_line|#include &quot;devlist.h&quot;
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|EISA_INFOS
 mdefine_line|#define EISA_INFOS (sizeof (eisa_table) / (sizeof (struct eisa_device_info)))
+macro_line|#endif
 DECL|macro|EISA_MAX_FORCED_DEV
 mdefine_line|#define EISA_MAX_FORCED_DEV 16
 DECL|macro|EISA_FORCED_OFFSET
@@ -181,6 +181,7 @@ op_star
 id|edev
 )paren
 (brace
+macro_line|#ifdef CONFIG_EISA_NAMES
 r_int
 id|i
 suffix:semicolon
@@ -218,7 +219,7 @@ id|id.sig
 (brace
 id|strlcpy
 (paren
-id|edev-&gt;dev.name
+id|edev-&gt;pretty_name
 comma
 id|eisa_table
 (braket
@@ -237,13 +238,14 @@ suffix:semicolon
 multiline_comment|/* No name was found */
 id|sprintf
 (paren
-id|edev-&gt;dev.name
+id|edev-&gt;pretty_name
 comma
 l_string|&quot;EISA device %.7s&quot;
 comma
 id|edev-&gt;id.sig
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|decode_eisa_sig
 r_static
@@ -744,9 +746,6 @@ r_int
 r_int
 id|sig_addr
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|sig_addr
 op_assign
 id|SLOT_ADDRESS
@@ -849,6 +848,11 @@ comma
 id|slot
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_EISA_NAMES
+(brace
+r_int
+id|i
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -870,8 +874,10 @@ id|i
 dot
 id|name
 op_assign
-id|edev-&gt;dev.name
+id|edev-&gt;pretty_name
 suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1267,11 +1273,9 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;EISA: Probing bus %d at %s&bslash;n&quot;
+l_string|&quot;EISA: Probing bus %d&bslash;n&quot;
 comma
 id|root-&gt;bus_nr
-comma
-id|root-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* First try to get hold of slot 0. If there is no device&n;&t; * here, simply fail, unless root-&gt;force_probe is set. */

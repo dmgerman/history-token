@@ -8071,11 +8071,6 @@ op_assign
 id|TF_MAX_KEY_SIZE
 comma
 dot
-id|cia_ivsize
-op_assign
-id|TF_BLOCK_SIZE
-comma
-dot
 id|cia_setkey
 op_assign
 id|twofish_setkey

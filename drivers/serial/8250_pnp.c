@@ -1175,7 +1175,11 @@ op_logical_neg
 id|check_name
 c_func
 (paren
-id|dev-&gt;dev.name
+id|pnp_dev_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 op_logical_or
 (paren
@@ -1184,7 +1188,7 @@ op_logical_and
 id|check_name
 c_func
 (paren
-id|dev-&gt;card-&gt;dev.name
+id|dev-&gt;card-&gt;name
 )paren
 )paren
 )paren

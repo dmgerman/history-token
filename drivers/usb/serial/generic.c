@@ -1184,8 +1184,8 @@ id|i
 )paren
 (brace
 id|generic_cleanup
+c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i

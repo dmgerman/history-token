@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/trdevice.h&gt;
 macro_line|#include &lt;linux/fcdevice.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
@@ -2933,6 +2934,35 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|linkwatch_fire_event
+)paren
+suffix:semicolon
+multiline_comment|/* ethtool.c */
+DECL|variable|ethtool_op_get_link
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ethtool_op_get_link
+)paren
+suffix:semicolon
+DECL|variable|ethtool_op_get_tx_csum
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ethtool_op_get_tx_csum
+)paren
+suffix:semicolon
+DECL|variable|ethtool_op_get_sg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ethtool_op_get_sg
+)paren
+suffix:semicolon
+DECL|variable|ethtool_op_set_sg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ethtool_op_set_sg
 )paren
 suffix:semicolon
 macro_line|#endif  /* CONFIG_NET */

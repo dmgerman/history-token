@@ -4950,7 +4950,11 @@ c_func
 (paren
 l_string|&quot;eata_pio: find_PCI, HBA at %s&bslash;n&quot;
 comma
-id|dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -4994,7 +4998,11 @@ c_func
 (paren
 l_string|&quot;eata_pio: invalid base address of device %s&bslash;n&quot;
 comma
-id|dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_continue

@@ -2105,7 +2105,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_MCHECK &gt; 0
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
 r_struct
 id|el_common
 op_star
@@ -2118,7 +2118,7 @@ op_star
 )paren
 id|la_ptr
 suffix:semicolon
-macro_line|#endif /* DEBUG_MCHECK */
+macro_line|#endif
 multiline_comment|/* Clear the error before any reporting.  */
 id|mb
 c_func
@@ -2169,7 +2169,15 @@ id|t2_mcheck_any_expected
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * FUNKY: Received mcheck on a CPU and not&n;&t;&t; * expecting it, but another CPU is expecting one.&n;&t;&t; *&n;&t;&t; * Just dismiss it for now on this CPU...&n;&t;&t; */
-macro_line|#if DEBUG_MCHECK &gt; 0
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
+r_if
+c_cond
+(paren
+id|alpha_verbose_mcheck
+OG
+l_int|1
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -2188,7 +2196,8 @@ r_int
 id|mchk_header-&gt;code
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG_MCHECK */
+)brace
+macro_line|#endif
 r_return
 suffix:semicolon
 )brace
@@ -2218,7 +2227,15 @@ id|cpu
 )paren
 )paren
 (brace
-macro_line|#if DEBUG_MCHECK &gt; 0
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
+r_if
+c_cond
+(paren
+id|alpha_verbose_mcheck
+OG
+l_int|1
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -2236,7 +2253,8 @@ r_int
 id|mchk_header-&gt;code
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG_MCHECK */
+)brace
+macro_line|#endif
 id|t2_mcheck_last_taken
 op_assign
 l_int|0
@@ -2262,7 +2280,15 @@ c_func
 suffix:semicolon
 )brace
 )brace
-macro_line|#if DEBUG_MCHECK &gt; 0
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
+r_if
+c_cond
+(paren
+id|alpha_verbose_mcheck
+OG
+l_int|1
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -2295,7 +2321,8 @@ r_int
 id|mchk_header-&gt;code
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG_MCHECK */
+)brace
+macro_line|#endif
 id|process_mcheck_info
 c_func
 (paren

@@ -835,6 +835,15 @@ comma
 id|l
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure the bridge COMMAND register has the appropriate&n;&t;   bits set, just in case...&n;&t;*/
+id|pcibios_enable_device
+c_func
+(paren
+id|bridge
+comma
+l_int|0xfff
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Check whether the bridge supports optional I/O and&n;   prefetchable memory ranges. If not, the respective&n;   base/limit registers must be read-only and read as 0. */
 r_static
