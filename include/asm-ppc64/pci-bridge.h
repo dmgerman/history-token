@@ -24,41 +24,6 @@ op_star
 id|node
 )paren
 suffix:semicolon
-DECL|enum|phb_types
-r_enum
-id|phb_types
-(brace
-DECL|enumerator|phb_type_unknown
-id|phb_type_unknown
-op_assign
-l_int|0x0
-comma
-DECL|enumerator|phb_type_hypervisor
-id|phb_type_hypervisor
-op_assign
-l_int|0x1
-comma
-DECL|enumerator|phb_type_python
-id|phb_type_python
-op_assign
-l_int|0x10
-comma
-DECL|enumerator|phb_type_speedwagon
-id|phb_type_speedwagon
-op_assign
-l_int|0x11
-comma
-DECL|enumerator|phb_type_winnipeg
-id|phb_type_winnipeg
-op_assign
-l_int|0x12
-comma
-DECL|enumerator|phb_type_apple
-id|phb_type_apple
-op_assign
-l_int|0xff
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * Structure of a PCI controller (host bridge)&n; */
 DECL|struct|pci_controller
 r_struct
@@ -72,12 +37,6 @@ l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* Eye catcher      */
-DECL|member|type
-r_enum
-id|phb_types
-id|type
-suffix:semicolon
-multiline_comment|/* Type of hardware */
 DECL|member|bus
 r_struct
 id|pci_bus
@@ -312,9 +271,6 @@ op_star
 id|phb
 )paren
 suffix:semicolon
-multiline_comment|/* Use this macro after the PCI bus walk for max performance when it&n; * is known that sysdata is correct.&n; */
-DECL|macro|PCI_GET_DN
-mdefine_line|#define PCI_GET_DN(dev) ((struct device_node *)((dev)-&gt;sysdata))
 r_extern
 r_void
 id|phbs_remap_io

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ixp4xx.c,v 1.6 2004/09/17 00:25:06 gleixner Exp $&n; *&n; * drivers/mtd/maps/ixp4xx.c&n; *&n; * MTD Map file for IXP4XX based systems. Please do not make per-board&n; * changes in here. If your board needs special setup, do it in your&n; * platform level code in arch/arm/mach-ixp4xx/board-setup.c&n; *&n; * Original Author: Intel Corporation&n; * Maintainer: Deepak Saxena &lt;dsaxena@mvista.com&gt;&n; *&n; * Copyright (C) 2002 Intel Corporation&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; */
+multiline_comment|/*&n; * $Id: ixp4xx.c,v 1.7 2004/11/04 13:24:15 gleixner Exp $&n; *&n; * drivers/mtd/maps/ixp4xx.c&n; *&n; * MTD Map file for IXP4XX based systems. Please do not make per-board&n; * changes in here. If your board needs special setup, do it in your&n; * platform level code in arch/arm/mach-ixp4xx/board-setup.c&n; *&n; * Original Author: Intel Corporation&n; * Maintainer: Deepak Saxena &lt;dsaxena@mvista.com&gt;&n; *&n; * Copyright (C) 2002 Intel Corporation&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -707,11 +707,6 @@ suffix:semicolon
 )brace
 id|info-&gt;map.map_priv_1
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren

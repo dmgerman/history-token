@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ebony.c,v 1.12 2004/09/16 23:27:13 gleixner Exp $&n; * &n; * Mapping for Ebony user flash&n; *&n; * Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; *&n; * Copyright 2002-2004 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * $Id: ebony.c,v 1.13 2004/11/04 13:24:14 gleixner Exp $&n; * &n; * Mapping for Ebony user flash&n; *&n; * Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; *&n; * Copyright 2002-2004 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -295,11 +295,6 @@ id|small_flash_base
 suffix:semicolon
 id|ebony_small_map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap64
 c_func
 (paren

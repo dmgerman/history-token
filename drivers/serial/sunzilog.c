@@ -3892,6 +3892,16 @@ id|port
 )paren
 )paren
 suffix:semicolon
+id|uart_update_timeout
+c_func
+(paren
+id|port
+comma
+id|termios-&gt;c_cflag
+comma
+id|baud
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren

@@ -1760,7 +1760,7 @@ suffix:semicolon
 id|pci_dev_put
 c_func
 (paren
-id|dev
+id|pdev
 )paren
 suffix:semicolon
 )brace

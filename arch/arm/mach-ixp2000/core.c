@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/arm/mach-ixp2000/common.c&n; *&n; * Common routines used by all IXP2400/2800 based platforms.&n; *&n; * Author: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; *&n; * Copyright 2004 (C) MontaVista Software, Inc. &n; *&n; * Based on work Copyright (C) 2002-2003 Intel Corporation&n; * &n; * This file is licensed under  the terms of the GNU General Public &n; * License version 2. This program is licensed &quot;as is&quot; without any &n; * warranty of any kind, whether express or implied.&n; */
+multiline_comment|/*&n; * arch/arm/mach-ixp2000/common.c&n; *&n; * Common routines used by all IXP2400/2800 based platforms.&n; *&n; * Author: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; *&n; * Copyright 2004 (C) MontaVista Software, Inc. &n; *&n; * Based on work Copyright (C) 2002-2003 Intel Corporation&n; * &n; * This file is licensed under the terms of the GNU General Public&n; * License version 2. This program is licensed &quot;as is&quot; without any &n; * warranty of any kind, whether express or implied.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

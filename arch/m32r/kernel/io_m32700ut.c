@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m32r/kernel/io_mappi.c&n; *&n; *  Typical I/O routines for M32700UT board.&n; *&n; *  Copyright (c) 2001, 2002  Hiroyuki Kondo, Hirokazu Takata,&n; *                            Hitoshi Yamamoto, Takeo Takahashi&n; *&n; *  This file is subject to the terms and conditions of the GNU General&n; *  Public License.  See the file &quot;COPYING&quot; in the main directory of this&n; *  archive for more details.&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/m32r/kernel/io_m32700ut.c&n; *&n; *  Typical I/O routines for M32700UT board.&n; *&n; *  Copyright (c) 2001, 2002  Hiroyuki Kondo, Hirokazu Takata,&n; *                            Hitoshi Yamamoto, Takeo Takahashi&n; *&n; *  This file is subject to the terms and conditions of the GNU General&n; *  Public License.  See the file &quot;COPYING&quot; in the main directory of this&n; *  archive for more details.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/m32r.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -94,9 +94,9 @@ r_int
 suffix:semicolon
 macro_line|#endif /* CONFIG_PCMCIA &amp;&amp; CONFIG_M32R_CFC */
 DECL|macro|PORT2ADDR
-mdefine_line|#define PORT2ADDR(port)  _port2addr(port)
+mdefine_line|#define PORT2ADDR(port)&t;     _port2addr(port)
 DECL|macro|PORT2ADDR_USB
-mdefine_line|#define PORT2ADDR_USB(port) _port2addr_usb(port)
+mdefine_line|#define PORT2ADDR_USB(port)  _port2addr_usb(port)
 DECL|function|_port2addr
 r_static
 id|__inline__

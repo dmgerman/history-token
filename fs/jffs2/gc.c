@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: gc.c,v 1.137 2004/07/20 13:44:55 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: gc.c,v 1.140 2004/11/13 10:59:22 dedekind Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -2969,6 +2969,12 @@ id|nraw
 )paren
 suffix:semicolon
 )brace
+id|jffs2_free_raw_node_ref
+c_func
+(paren
+id|nraw
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2996,7 +3002,14 @@ comma
 id|nraw
 )paren
 suffix:semicolon
-multiline_comment|/* Link into per-inode list. This is safe because of the ic&n;&t;   state being INO_STATE_GC. Note that if we&squot;re doing this&n;&t;   for an inode which is in-code, the &squot;nraw&squot; pointer is then&n;&t;   going to be fetched from ic-&gt;nodes by our caller. */
+multiline_comment|/* Link into per-inode list. This is safe because of the ic&n;&t;   state being INO_STATE_GC. Note that if we&squot;re doing this&n;&t;   for an inode which is in-core, the &squot;nraw&squot; pointer is then&n;&t;   going to be fetched from ic-&gt;nodes by our caller. */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|c-&gt;erase_completion_lock
+)paren
+suffix:semicolon
 id|nraw-&gt;next_in_ino
 op_assign
 id|ic-&gt;nodes
@@ -3004,6 +3017,13 @@ suffix:semicolon
 id|ic-&gt;nodes
 op_assign
 id|nraw
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|c-&gt;erase_completion_lock
+)paren
 suffix:semicolon
 id|jffs2_mark_node_obsolete
 c_func
@@ -4273,7 +4293,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;jffs2_g_c_deletion_dirent(): Short read (%zd not %zd) reading header from obsolete node at %08x&bslash;n&quot;
+l_string|&quot;jffs2_g_c_deletion_dirent(): Short read (%zd not %u) reading header from obsolete node at %08x&bslash;n&quot;
 comma
 id|retlen
 comma

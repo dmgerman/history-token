@@ -1701,6 +1701,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/**&n; *&t;i2o_scsi_notify_controller_add - Retrieve notifications of added&n; *&t;&t;&t;&t;&t; controllers&n; *&t;@c: the controller which was added&n; *&n; *&t;If a I2O controller is added, we catch the notification to add a&n; *&t;corresponding Scsi_Host.&n; */
 DECL|function|i2o_scsi_notify_controller_add
+r_static
 r_void
 id|i2o_scsi_notify_controller_add
 c_func
@@ -1799,6 +1800,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/**&n; *&t;i2o_scsi_notify_controller_remove - Retrieve notifications of removed&n; *&t;&t;&t;&t;&t;    controllers&n; *&t;@c: the controller which was removed&n; *&n; *&t;If a I2O controller is removed, we catch the notification to remove the&n; *&t;corresponding Scsi_Host.&n; */
 DECL|function|i2o_scsi_notify_controller_remove
+r_static
 r_void
 id|i2o_scsi_notify_controller_remove
 c_func
@@ -2522,6 +2524,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/**&n; *&t;i2o_scsi_abort - abort a running command&n; *&t;@SCpnt: command to abort&n; *&n; *&t;Ask the I2O controller to abort a command. This is an asynchrnous&n; *&t;process and our callback handler will see the command complete with an&n; *&t;aborted message if it succeeds.&n; *&n; *&t;Returns 0 if the command is successfully aborted or negative error code&n; *&t;on failure.&n; */
 DECL|function|i2o_scsi_abort
+r_static
 r_int
 id|i2o_scsi_abort
 c_func

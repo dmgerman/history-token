@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common code to handle map devices which are simple RAM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_ram.c,v 1.20 2004/08/09 13:19:43 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Common code to handle map devices which are simple RAM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_ram.c,v 1.21 2004/11/16 18:29:00 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -575,6 +575,7 @@ id|mtd
 multiline_comment|/* Nothing to see here */
 )brace
 DECL|function|map_ram_init
+r_static
 r_int
 id|__init
 id|map_ram_init

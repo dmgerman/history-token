@@ -169,7 +169,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;S32410 Timer Tick&quot;
+l_string|&quot;S3C2410 Timer Tick&quot;
 comma
 dot
 id|flags

@@ -113,17 +113,17 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|macro|readb
-mdefine_line|#define readb(addr) &bslash;&n;    ({ unsigned char __v = (*(volatile unsigned char *) ((addr) &amp; 0x00ffffff)); __v; })
+mdefine_line|#define readb(addr) &bslash;&n;    ({ unsigned char __v = &bslash;&n;     *(volatile unsigned char *)((unsigned long)(addr) &amp; 0x00ffffff); &bslash;&n;     __v; })
 DECL|macro|readw
-mdefine_line|#define readw(addr) &bslash;&n;    ({ unsigned short __v = (*(volatile unsigned short *) ((addr) &amp; 0x00ffffff)); __v; })
+mdefine_line|#define readw(addr) &bslash;&n;    ({ unsigned short __v = &bslash;&n;     *(volatile unsigned short *)((unsigned long)(addr) &amp; 0x00ffffff); &bslash;&n;     __v; })
 DECL|macro|readl
-mdefine_line|#define readl(addr) &bslash;&n;    ({ unsigned int __v = (*(volatile unsigned int *) ((addr) &amp; 0x00ffffff)); __v; })
+mdefine_line|#define readl(addr) &bslash;&n;    ({ unsigned long __v = &bslash;&n;     *(volatile unsigned long *)((unsigned long)(addr) &amp; 0x00ffffff); &bslash;&n;     __v; })
 DECL|macro|writeb
-mdefine_line|#define writeb(b,addr) (void)((*(volatile unsigned char *) ((addr) &amp; 0x00ffffff)) = (b))
+mdefine_line|#define writeb(b,addr) (void)((*(volatile unsigned char *) &bslash;&n;                             ((unsigned long)(addr) &amp; 0x00ffffff)) = (b))
 DECL|macro|writew
-mdefine_line|#define writew(b,addr) (void)((*(volatile unsigned short *) ((addr) &amp; 0x00ffffff)) = (b))
+mdefine_line|#define writew(b,addr) (void)((*(volatile unsigned short *) &bslash;&n;                             ((unsigned long)(addr) &amp; 0x00ffffff)) = (b))
 DECL|macro|writel
-mdefine_line|#define writel(b,addr) (void)((*(volatile unsigned int *) ((addr) &amp; 0x00ffffff)) = (b))
+mdefine_line|#define writel(b,addr) (void)((*(volatile unsigned long *) &bslash;&n;                             ((unsigned long)(addr) &amp; 0x00ffffff)) = (b))
 DECL|macro|readb_relaxed
 mdefine_line|#define readb_relaxed(addr) readb(addr)
 DECL|macro|readw_relaxed

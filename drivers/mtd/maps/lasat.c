@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash device on Lasat 100 and 200 boards&n; *&n; * (C) 2002 Brian Murphy &lt;brian@murphy.dk&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License version&n; * 2 as published by the Free Software Foundation.&n; *&n; * $Id: lasat.c,v 1.8 2004/09/16 23:27:13 gleixner Exp $&n; *&n; */
+multiline_comment|/*&n; * Flash device on Lasat 100 and 200 boards&n; *&n; * (C) 2002 Brian Murphy &lt;brian@murphy.dk&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License version&n; * 2 as published by the Free Software Foundation.&n; *&n; * $Id: lasat.c,v 1.9 2004/11/04 13:24:15 gleixner Exp $&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -147,11 +147,6 @@ id|LASAT_MTD_BOOTLOADER
 suffix:semicolon
 id|lasat_map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap_nocache
 c_func
 (paren

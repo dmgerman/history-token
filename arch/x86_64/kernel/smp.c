@@ -885,7 +885,7 @@ id|data.started
 op_ne
 id|cpus
 )paren
-id|barrier
+id|cpu_relax
 c_func
 (paren
 )paren
@@ -902,7 +902,7 @@ id|data.finished
 op_ne
 id|cpus
 )paren
-id|barrier
+id|cpu_relax
 c_func
 (paren
 )paren

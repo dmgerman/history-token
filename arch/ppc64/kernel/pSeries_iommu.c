@@ -1163,14 +1163,25 @@ c_func
 id|ln
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bus-&gt;self
+)paren
 id|busdn
 op_assign
-id|PCI_GET_DN
+id|pci_device_to_OF_node
 c_func
 (paren
-id|bus
+id|bus-&gt;self
 )paren
 suffix:semicolon
+r_else
+id|busdn
+op_assign
+id|bus-&gt;sysdata
+suffix:semicolon
+multiline_comment|/* must be a phb */
 id|dma_window
 op_assign
 (paren
@@ -1741,7 +1752,7 @@ id|mydn
 op_assign
 id|dn
 op_assign
-id|PCI_GET_DN
+id|pci_device_to_OF_node
 c_func
 (paren
 id|dev

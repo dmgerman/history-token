@@ -87,7 +87,7 @@ id|pskb
 comma
 r_int
 r_int
-id|hdroff
+id|iphdroff
 comma
 r_const
 r_struct

@@ -5446,8 +5446,8 @@ id|q-&gt;queue_flags
 )paren
 )paren
 )paren
-r_return
-l_int|NULL
+r_goto
+id|out
 suffix:semicolon
 id|spin_lock_irq
 c_func

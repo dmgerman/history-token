@@ -1872,7 +1872,6 @@ suffix:semicolon
 DECL|function|quirk_via_irqpic
 r_static
 r_void
-id|__devinit
 id|quirk_via_irqpic
 c_func
 (paren

@@ -1,7 +1,7 @@
 multiline_comment|/* Linux driver for NAND Flash Translation Layer      */
 multiline_comment|/* (c) 1999 Machine Vision Holdings, Inc.             */
 multiline_comment|/* Author: David Woodhouse &lt;dwmw2@infradead.org&gt;      */
-multiline_comment|/* $Id: nftlcore.c,v 1.96 2004/06/28 13:52:55 dbrown Exp $ */
+multiline_comment|/* $Id: nftlcore.c,v 1.97 2004/11/16 18:28:59 dwmw2 Exp $ */
 multiline_comment|/*&n;  The contents of this file are distributed under the GNU General&n;  Public License version 2. The author places no additional&n;  restrictions of any kind on it.&n; */
 DECL|macro|PRERELEASE
 mdefine_line|#define PRERELEASE
@@ -1614,6 +1614,7 @@ id|targetEUN
 suffix:semicolon
 )brace
 DECL|function|NFTL_makefreeblock
+r_static
 id|u16
 id|NFTL_makefreeblock
 c_func
@@ -2782,6 +2783,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * Module stuff&n; *&n; ****************************************************************************/
 DECL|variable|nftl_tr
+r_static
 r_struct
 id|mtd_blktrans_ops
 id|nftl_tr
@@ -2843,6 +2845,7 @@ id|nftlmountrev
 )braket
 suffix:semicolon
 DECL|function|init_nftl
+r_static
 r_int
 id|__init
 id|init_nftl
@@ -2855,7 +2858,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;NFTL driver: nftlcore.c $Revision: 1.96 $, nftlmount.c %s&bslash;n&quot;
+l_string|&quot;NFTL driver: nftlcore.c $Revision: 1.97 $, nftlmount.c %s&bslash;n&quot;
 comma
 id|nftlmountrev
 )paren

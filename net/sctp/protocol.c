@@ -2175,7 +2175,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Event handler for inet address addition/deletion events.&n; * Basically, whenever there is an event, we re-build our local address list.&n; */
 DECL|function|sctp_inetaddr_event
-r_static
 r_int
 id|sctp_inetaddr_event
 c_func
@@ -2958,6 +2957,7 @@ comma
 suffix:semicolon
 multiline_comment|/* Notifier for inetaddr addition/deletion events.  */
 DECL|variable|sctp_inetaddr_notifier
+r_static
 r_struct
 id|notifier_block
 id|sctp_inetaddr_notifier

@@ -17,7 +17,7 @@ multiline_comment|/*&n; * PCI Config registers&n; */
 DECL|macro|IXP4XX_PCI_CFG_BASE_PHYS
 mdefine_line|#define IXP4XX_PCI_CFG_BASE_PHYS&t;(0xC0000000)
 DECL|macro|IXP4XX_PCI_CFG_BASE_VIRT
-mdefine_line|#define&t;IXP4XX_PCI_CFG_BASE_VIRT&t;(0xFFBFD000)
+mdefine_line|#define&t;IXP4XX_PCI_CFG_BASE_VIRT&t;(0xFFBFE000)
 DECL|macro|IXP4XX_PCI_CFG_REGION_SIZE
 mdefine_line|#define IXP4XX_PCI_CFG_REGION_SIZE&t;(0x00001000)
 multiline_comment|/*&n; * Peripheral space&n; */

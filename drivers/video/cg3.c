@@ -632,7 +632,7 @@ suffix:colon
 multiline_comment|/* Unblanking */
 id|val
 op_assign
-id|sbus_readl
+id|sbus_readb
 c_func
 (paren
 op_amp
@@ -643,7 +643,7 @@ id|val
 op_or_assign
 id|CG3_CR_ENABLE_VIDEO
 suffix:semicolon
-id|sbus_writel
+id|sbus_writeb
 c_func
 (paren
 id|val
@@ -677,7 +677,7 @@ suffix:colon
 multiline_comment|/* Poweroff */
 id|val
 op_assign
-id|sbus_readl
+id|sbus_readb
 c_func
 (paren
 op_amp
@@ -688,7 +688,7 @@ id|val
 op_or_assign
 id|CG3_CR_ENABLE_VIDEO
 suffix:semicolon
-id|sbus_writel
+id|sbus_writeb
 c_func
 (paren
 id|val

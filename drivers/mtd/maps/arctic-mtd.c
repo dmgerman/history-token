@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: arctic-mtd.c,v 1.12 2004/09/16 23:27:12 gleixner Exp $&n; * &n; * drivers/mtd/maps/arctic-mtd.c MTD mappings and partition tables for &n; *                              IBM 405LP Arctic boards.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Copyright (C) 2002, International Business Machines Corporation&n; * All Rights Reserved.&n; *&n; * Bishop Brock&n; * IBM Research, Austin Center for Low-Power Computing&n; * bcbrock@us.ibm.com&n; * March 2002&n; *&n; * modified for Arctic by,&n; * David Gibson&n; * IBM OzLabs, Canberra, Australia&n; * &lt;arctic@gibson.dropbear.id.au&gt;&n; */
+multiline_comment|/*&n; * $Id: arctic-mtd.c,v 1.13 2004/11/04 13:24:14 gleixner Exp $&n; * &n; * drivers/mtd/maps/arctic-mtd.c MTD mappings and partition tables for &n; *                              IBM 405LP Arctic boards.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Copyright (C) 2002, International Business Machines Corporation&n; * All Rights Reserved.&n; *&n; * Bishop Brock&n; * IBM Research, Austin Center for Low-Power Computing&n; * bcbrock@us.ibm.com&n; * March 2002&n; *&n; * modified for Arctic by,&n; * David Gibson&n; * IBM OzLabs, Canberra, Australia&n; * &lt;arctic@gibson.dropbear.id.au&gt;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -179,11 +179,6 @@ id|PADDR
 suffix:semicolon
 id|arctic_mtd_map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren

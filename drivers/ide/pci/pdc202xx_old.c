@@ -2609,6 +2609,7 @@ l_string|&quot;Primary&quot;
 suffix:semicolon
 )brace
 DECL|function|pdc202xx_reset
+r_static
 r_void
 id|pdc202xx_reset
 (paren

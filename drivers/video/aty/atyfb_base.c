@@ -3031,7 +3031,7 @@ c_func
 l_string|&quot;setting up CRTC&bslash;n&quot;
 )paren
 suffix:semicolon
-id|PRINTKI
+id|DPRINTK
 c_func
 (paren
 l_string|&quot;set primary CRT to %ix%i %c%c composite %c&bslash;n&quot;
@@ -3278,7 +3278,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|PRINTKI
+id|DPRINTK
 c_func
 (paren
 l_string|&quot;set secondary CRT to %ix%i %c%c&bslash;n&quot;
@@ -9109,9 +9109,9 @@ multiline_comment|/* To stop the swapper from even considering these pages. */
 id|vma-&gt;vm_flags
 op_or_assign
 (paren
-id|VM_SHM
+id|VM_IO
 op_or
-id|VM_LOCKED
+id|VM_RESERVED
 )paren
 suffix:semicolon
 r_if
@@ -9372,10 +9372,6 @@ id|map_size
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-id|vma-&gt;vm_flags
-op_or_assign
-id|VM_IO
 suffix:semicolon
 r_if
 c_cond

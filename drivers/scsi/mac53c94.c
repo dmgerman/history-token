@@ -49,6 +49,7 @@ id|fsc_state
 DECL|member|regs
 r_struct
 id|mac53c94_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -59,6 +60,7 @@ suffix:semicolon
 DECL|member|dma
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|dma
 suffix:semicolon
@@ -398,6 +400,7 @@ id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_struct
 id|mac53c94_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -405,17 +408,15 @@ id|state-&gt;regs
 suffix:semicolon
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|dma
 op_assign
 id|state-&gt;dma
 suffix:semicolon
-id|st_le32
+id|writel
 c_func
 (paren
-op_amp
-id|dma-&gt;control
-comma
 (paren
 id|RUN
 op_or
@@ -427,6 +428,9 @@ id|WAKE
 )paren
 op_lshift
 l_int|16
+comma
+op_amp
+id|dma-&gt;control
 )paren
 suffix:semicolon
 id|writeb
@@ -494,6 +498,7 @@ id|state
 (brace
 r_struct
 id|mac53c94_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -501,6 +506,7 @@ id|state-&gt;regs
 suffix:semicolon
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|dma
 op_assign
@@ -632,6 +638,7 @@ id|cmd
 suffix:semicolon
 r_struct
 id|mac53c94_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -933,6 +940,7 @@ id|dev_id
 suffix:semicolon
 r_struct
 id|mac53c94_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -940,6 +948,7 @@ id|state-&gt;regs
 suffix:semicolon
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|dma
 op_assign
@@ -2396,6 +2405,7 @@ op_assign
 (paren
 r_struct
 id|mac53c94_regs
+id|__iomem
 op_star
 )paren
 id|ioremap
@@ -2427,6 +2437,7 @@ op_assign
 (paren
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 )paren
 id|ioremap

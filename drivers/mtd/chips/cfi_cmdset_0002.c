@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common Flash Interface support:&n; *   AMD &amp; Fujitsu Standard Vendor Command Set (ID 0x0002)&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; * Copyright (C) 2004 Arcom Control Systems Ltd &lt;linux@arcom.com&gt;&n; *&n; * 2_by_8 routines added by Simon Munton&n; *&n; * 4_by_16 work by Carolyn J. Smith&n; *&n; * Occasionally maintained by Thayne Harbaugh tharbaugh at lnxi dot com&n; *&n; * This code is GPL&n; *&n; * $Id: cfi_cmdset_0002.c,v 1.110 2004/09/24 04:26:04 eric Exp $&n; *&n; */
+multiline_comment|/*&n; * Common Flash Interface support:&n; *   AMD &amp; Fujitsu Standard Vendor Command Set (ID 0x0002)&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; * Copyright (C) 2004 Arcom Control Systems Ltd &lt;linux@arcom.com&gt;&n; *&n; * 2_by_8 routines added by Simon Munton&n; *&n; * 4_by_16 work by Carolyn J. Smith&n; *&n; * Occasionally maintained by Thayne Harbaugh tharbaugh at lnxi dot com&n; *&n; * This code is GPL&n; *&n; * $Id: cfi_cmdset_0002.c,v 1.111 2004/11/16 18:29:00 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -7015,6 +7015,7 @@ op_assign
 l_string|&quot;cfi_cmdset_0002&quot;
 suffix:semicolon
 DECL|function|cfi_amdstd_init
+r_static
 r_int
 id|__init
 id|cfi_amdstd_init

@@ -35,6 +35,13 @@ id|nlmsvc_binding
 op_star
 id|nlmsvc_ops
 suffix:semicolon
+DECL|variable|nlmsvc_ops
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|nlmsvc_ops
+)paren
+suffix:semicolon
 r_static
 id|DECLARE_MUTEX
 c_func
@@ -786,6 +793,13 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|variable|lockd_up
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|lockd_up
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Decrement the user count and bring down lockd if we&squot;re the last.&n; */
 r_void
 DECL|function|lockd_down
@@ -935,6 +949,13 @@ id|nlmsvc_sema
 )paren
 suffix:semicolon
 )brace
+DECL|variable|lockd_down
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|lockd_down
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Sysctl parameters (same as module parameters, different interface).&n; */
 multiline_comment|/* Something that isn&squot;t CTL_ANY, CTL_NONE or a value that may clash. */
 DECL|macro|CTL_UNNUMBERED

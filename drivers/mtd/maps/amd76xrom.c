@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * amd76xrom.c&n; *&n; * Normal mappings of chips in physical memory&n; * $Id: amd76xrom.c,v 1.17 2004/09/18 01:59:56 eric Exp $&n; */
+multiline_comment|/*&n; * amd76xrom.c&n; *&n; * Normal mappings of chips in physical memory&n; * $Id: amd76xrom.c,v 1.18 2004/11/16 18:29:02 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1144,6 +1144,7 @@ comma
 suffix:semicolon
 macro_line|#endif
 DECL|function|init_amd76xrom
+r_static
 r_int
 id|__init
 id|init_amd76xrom

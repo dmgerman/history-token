@@ -7397,7 +7397,7 @@ l_string|&quot;ide=nodma&quot;
 id|printk
 c_func
 (paren
-l_string|&quot;IDE: Prevented DMA&bslash;n&quot;
+l_string|&quot; : Prevented DMA&bslash;n&quot;
 )paren
 suffix:semicolon
 id|noautodma

@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2440.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2440 Mobile CPU support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;24-Aug-2004 BJD  Start of s3c2440 support&n; *&t;12-Oct-2004 BJD&t; Moved clock info out to clock.c&n; *&t;01-Nov-2004 BJD  Fixed clock build code&n; *&t;09-Nov-2004 BJD  Added sysdev for power management&n; *&t;04-Nov-2004 BJD  New serial registration&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2440.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2440 Mobile CPU support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;24-Aug-2004 BJD  Start of s3c2440 support&n; *&t;12-Oct-2004 BJD&t; Moved clock info out to clock.c&n; *&t;01-Nov-2004 BJD  Fixed clock build code&n; *&t;09-Nov-2004 BJD  Added sysdev for power management&n; *&t;04-Nov-2004 BJD  New serial registration&n; *&t;15-Nov-2004 BJD  Rename the i2c device for the s3c2440&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -878,6 +878,11 @@ c_func
 op_amp
 id|s3c2440_clk_cam
 )paren
+suffix:semicolon
+multiline_comment|/* rename any peripherals used differing from the s3c2410 */
+id|s3c_device_i2c.name
+op_assign
+l_string|&quot;s3c2440-i2c&quot;
 suffix:semicolon
 )brace
 DECL|function|s3c2440_init
