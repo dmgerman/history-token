@@ -2155,6 +2155,7 @@ id|len
 suffix:semicolon
 )brace
 DECL|variable|llc_packet_type
+r_static
 r_struct
 id|packet_type
 id|llc_packet_type

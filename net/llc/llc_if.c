@@ -235,9 +235,6 @@ c_func
 id|sap
 comma
 id|skb
-comma
-op_amp
-id|llc_packet_type
 )paren
 suffix:semicolon
 )brace
@@ -322,9 +319,6 @@ c_func
 id|sap
 comma
 id|skb
-comma
-op_amp
-id|llc_packet_type
 )paren
 suffix:semicolon
 )brace
@@ -409,9 +403,6 @@ c_func
 id|sap
 comma
 id|skb
-comma
-op_amp
-id|llc_packet_type
 )paren
 suffix:semicolon
 )brace

@@ -201,7 +201,7 @@ id|sap-&gt;sk_list.lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_sap_state_process - sends event to SAP state machine&n; *&t;@sap: sap to use&n; *&t;@skb: pointer to occurred event&n; *&t;@pt: packet type, for datalink protos&n; *&n; *&t;After executing actions of the event, upper layer will be indicated&n; *&t;if needed(on receiving an UI frame). sk can be null for the&n; *&t;datalink_proto case.&n; */
+multiline_comment|/**&n; *&t;llc_sap_state_process - sends event to SAP state machine&n; *&t;@sap: sap to use&n; *&t;@skb: pointer to occurred event&n; *&n; *&t;After executing actions of the event, upper layer will be indicated&n; *&t;if needed(on receiving an UI frame). sk can be null for the&n; *&t;datalink_proto case.&n; */
 DECL|function|llc_sap_state_process
 r_void
 id|llc_sap_state_process
@@ -216,11 +216,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_struct
-id|packet_type
-op_star
-id|pt
 )paren
 (brace
 r_struct
@@ -264,25 +259,6 @@ id|LLC_IND
 r_if
 c_cond
 (paren
-id|sap-&gt;rcv_func
-)paren
-id|sap
-op_member_access_from_pointer
-id|rcv_func
-c_func
-(paren
-id|skb
-comma
-id|skb-&gt;dev
-comma
-id|pt
-)paren
-suffix:semicolon
-r_else
-(brace
-r_if
-c_cond
-(paren
 id|skb-&gt;sk-&gt;state
 op_eq
 id|TCP_LISTEN
@@ -321,7 +297,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 id|kfree_skb
