@@ -168,6 +168,11 @@ comma
 r_int
 r_int
 id|vaddr
+comma
+r_struct
+id|page
+op_star
+id|pg
 )paren
 suffix:semicolon
 r_extern
@@ -186,6 +191,11 @@ comma
 r_int
 r_int
 id|vaddr
+comma
+r_struct
+id|page
+op_star
+id|p
 )paren
 suffix:semicolon
 macro_line|#ifdef STRICT_MM_TYPECHECKS
