@@ -25,14 +25,6 @@ macro_line|#else
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)
 macro_line|#endif
-DECL|variable|ip_conntrack_module
-r_struct
-id|module
-op_star
-id|ip_conntrack_module
-op_assign
-id|THIS_MODULE
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
@@ -1483,8 +1475,6 @@ comma
 id|proto
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|out
 suffix:colon
 id|WRITE_UNLOCK
@@ -1556,8 +1546,6 @@ op_amp
 id|proto-&gt;proto
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|init
 r_static
@@ -1608,6 +1596,16 @@ c_func
 id|fini
 )paren
 suffix:semicolon
+multiline_comment|/* Some modules need us, but don&squot;t depend directly on any symbol.&n;   They should call this. */
+DECL|function|need_ip_conntrack
+r_void
+id|need_ip_conntrack
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 DECL|variable|ip_conntrack_protocol_register
 id|EXPORT_SYMBOL
 c_func
@@ -1650,11 +1648,11 @@ c_func
 id|ip_conntrack_get
 )paren
 suffix:semicolon
-DECL|variable|ip_conntrack_module
+DECL|variable|need_ip_conntrack
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|ip_conntrack_module
+id|need_ip_conntrack
 )paren
 suffix:semicolon
 DECL|variable|ip_conntrack_helper_register

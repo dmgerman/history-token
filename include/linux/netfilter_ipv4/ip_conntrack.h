@@ -474,11 +474,14 @@ op_star
 id|exp
 )paren
 suffix:semicolon
+multiline_comment|/* call to create an explicit dependency on ip_conntrack. */
 r_extern
-r_struct
-id|module
-op_star
-id|ip_conntrack_module
+r_void
+id|need_ip_conntrack
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 r_extern
 r_int

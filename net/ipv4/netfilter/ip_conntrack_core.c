@@ -5020,8 +5020,6 @@ op_star
 id|me
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|WRITE_LOCK
 c_func
 (paren
@@ -5177,8 +5175,6 @@ c_func
 (paren
 id|BR_NETPROTO_LOCK
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/* Refresh conntrack for this many jiffies. */
