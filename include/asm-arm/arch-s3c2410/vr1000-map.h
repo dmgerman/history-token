@@ -1,4 +1,4 @@
-multiline_comment|/* linux/include/asm-arm/arch-s3c2410/vr1000-map.h&n; *&n; * (c) 2003,2004 Simtec Electronics&n; *  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Machine VR1000 - Memory map definitions&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  06-Jan-2003 BJD  Linux 2.6.0 version, split specifics from arch/map.h&n; *  12-Mar-2004 BJD  Fixed header include protection&n; *  19-Mar-2004 BJD  Copied to VR1000 machine headers.&n;*/
+multiline_comment|/* linux/include/asm-arm/arch-s3c2410/vr1000-map.h&n; *&n; * (c) 2003-2005 Simtec Electronics&n; *  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Machine VR1000 - Memory map definitions&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  06-Jan-2003 BJD  Linux 2.6.0 version, split specifics from arch/map.h&n; *  12-Mar-2004 BJD  Fixed header include protection&n; *  19-Mar-2004 BJD  Copied to VR1000 machine headers.&n; *  19-Jan-2005 BJD  Updated map definitions&n;*/
 multiline_comment|/* needs arch/map.h including with this */
 multiline_comment|/* ok, we&squot;ve used up to 0x13000000, now we need to find space for the&n; * peripherals that live in the nGCS[x] areas, which are quite numerous&n; * in their space. We also have the board&squot;s CPLD to find register space&n; * for.&n; */
 macro_line|#ifndef __ASM_ARCH_VR1000MAP_H
@@ -71,6 +71,11 @@ DECL|macro|VR1000_PA_DM9000
 mdefine_line|#define VR1000_PA_DM9000&t;   (0x05000000)
 DECL|macro|VR1000_PA_SERIAL
 mdefine_line|#define VR1000_PA_SERIAL&t;   (0x11800000)
+DECL|macro|VR1000_VA_SERIAL
+mdefine_line|#define VR1000_VA_SERIAL&t;   (VR1000_IOADDR(0x00700000))
+multiline_comment|/* VR1000 ram is in CS1, with A26..A24 = 2_101 */
+DECL|macro|VR1000_PA_SRAM
+mdefine_line|#define VR1000_PA_SRAM&t;&t;   (S3C2410_CS1 | 0x05000000)
 multiline_comment|/* some configurations for the peripherals */
 DECL|macro|VR1000_DM9000_CS
 mdefine_line|#define VR1000_DM9000_CS&t; VR1000_VAM_CS4
