@@ -817,6 +817,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|count
+)paren
+r_return
+id|count
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|port-&gt;write_urb-&gt;status
 op_eq
 op_minus
