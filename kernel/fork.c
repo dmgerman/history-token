@@ -3063,7 +3063,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This creates a new process as a copy of the old one,&n; * but does not actually start it yet.&n; *&n; * It copies the registers, and all the appropriate&n; * parts of the process environment (as per the clone&n; * flags). The actual kick-off is left to the caller.&n; */
 DECL|function|copy_process
-r_static
 r_struct
 id|task_struct
 op_star
@@ -4361,9 +4360,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Ok, this is the main fork-routine.&n; *&n; * It copies the process, and if successful kick-starts&n; * it and waits for it to finish using the VM if required.&n; */
 DECL|function|do_fork
-r_struct
-id|task_struct
-op_star
+r_int
 id|do_fork
 c_func
 (paren
@@ -4404,6 +4401,9 @@ r_int
 id|trace
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+id|pid
 suffix:semicolon
 r_if
 c_cond
@@ -4449,6 +4449,24 @@ id|parent_tidptr
 comma
 id|child_tidptr
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Do this prior waking up the new thread - the thread pointer&n;&t; * might get invalid after that point, if the thread exits quickly.&n;&t; */
+id|pid
+op_assign
+id|IS_ERR
+c_func
+(paren
+id|p
+)paren
+ques
+c_cond
+id|PTR_ERR
+c_func
+(paren
+id|p
+)paren
+suffix:colon
+id|p-&gt;pid
 suffix:semicolon
 r_if
 c_cond
@@ -4534,11 +4552,7 @@ id|trace
 (brace
 id|current-&gt;ptrace_message
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|p-&gt;pid
+id|pid
 suffix:semicolon
 id|ptrace_notify
 (paren
@@ -4598,7 +4612,7 @@ c_func
 suffix:semicolon
 )brace
 r_return
-id|p
+id|pid
 suffix:semicolon
 )brace
 multiline_comment|/* SLAB cache for signal_struct structures (tsk-&gt;signal) */
