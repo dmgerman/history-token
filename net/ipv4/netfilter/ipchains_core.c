@@ -1732,7 +1732,7 @@ comma
 op_complement
 l_int|0
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 )brace
