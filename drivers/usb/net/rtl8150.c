@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Version Information */
@@ -252,7 +251,6 @@ r_struct
 id|rtl8150
 id|rtl8150_t
 suffix:semicolon
-multiline_comment|/* the global usb devfs handle */
 DECL|variable|multicast_filter_limit
 r_int
 r_int
