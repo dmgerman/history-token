@@ -2444,6 +2444,9 @@ r_void
 id|__iomem
 op_star
 )paren
+(paren
+r_int
+)paren
 id|msi_mask_bits_reg
 c_func
 (paren

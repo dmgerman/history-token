@@ -1,9 +1,8 @@
-multiline_comment|/*&n; * SMP Support&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2001-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * SMP Support&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * (c) Copyright 2001-2003, 2005 Hewlett-Packard Development Company, L.P.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Bjorn Helgaas &lt;bjorn.helgaas@hp.com&gt;&n; */
 macro_line|#ifndef _ASM_IA64_SMP_H
 DECL|macro|_ASM_IA64_SMP_H
 mdefine_line|#define _ASM_IA64_SMP_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -13,6 +12,71 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
+r_static
+r_inline
+r_int
+r_int
+DECL|function|ia64_get_lid
+id|ia64_get_lid
+(paren
+r_void
+)paren
+(brace
+r_union
+(brace
+r_struct
+(brace
+r_int
+r_int
+id|reserved
+suffix:colon
+l_int|16
+suffix:semicolon
+r_int
+r_int
+id|eid
+suffix:colon
+l_int|8
+suffix:semicolon
+r_int
+r_int
+id|id
+suffix:colon
+l_int|8
+suffix:semicolon
+r_int
+r_int
+id|ignored
+suffix:colon
+l_int|32
+suffix:semicolon
+)brace
+id|f
+suffix:semicolon
+r_int
+r_int
+id|bits
+suffix:semicolon
+)brace
+id|lid
+suffix:semicolon
+id|lid.bits
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_CR_LID
+)paren
+suffix:semicolon
+r_return
+id|lid.f.id
+op_lshift
+l_int|8
+op_or
+id|lid.f.eid
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_SMP
 DECL|macro|XTP_OFFSET
 mdefine_line|#define XTP_OFFSET&t;&t;0x1e0008
 DECL|macro|SMP_IRQ_REDIRECTION
@@ -205,70 +269,8 @@ id|XTP_OFFSET
 suffix:semicolon
 multiline_comment|/* Set XTP to max */
 )brace
-r_static
-r_inline
-r_int
-r_int
-DECL|function|hard_smp_processor_id
-id|hard_smp_processor_id
-(paren
-r_void
-)paren
-(brace
-r_union
-(brace
-r_struct
-(brace
-r_int
-r_int
-id|reserved
-suffix:colon
-l_int|16
-suffix:semicolon
-r_int
-r_int
-id|eid
-suffix:colon
-l_int|8
-suffix:semicolon
-r_int
-r_int
-id|id
-suffix:colon
-l_int|8
-suffix:semicolon
-r_int
-r_int
-id|ignored
-suffix:colon
-l_int|32
-suffix:semicolon
-)brace
-id|f
-suffix:semicolon
-r_int
-r_int
-id|bits
-suffix:semicolon
-)brace
-id|lid
-suffix:semicolon
-id|lid.bits
-op_assign
-id|ia64_getreg
-c_func
-(paren
-id|_IA64_REG_CR_LID
-)paren
-suffix:semicolon
-r_return
-id|lid.f.id
-op_lshift
-l_int|8
-op_or
-id|lid.f.eid
-suffix:semicolon
-)brace
+DECL|macro|hard_smp_processor_id
+mdefine_line|#define hard_smp_processor_id()&t;&t;ia64_get_lid()
 multiline_comment|/* Upping and downing of CPUs */
 r_extern
 r_int
@@ -390,7 +392,9 @@ r_void
 suffix:semicolon
 macro_line|#else
 DECL|macro|cpu_logical_id
-mdefine_line|#define cpu_logical_id(cpuid)&t;&t;0
+mdefine_line|#define cpu_logical_id(i)&t;&t;0
+DECL|macro|cpu_physical_id
+mdefine_line|#define cpu_physical_id(i)&t;&t;ia64_get_lid()
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* _ASM_IA64_SMP_H */
 eof

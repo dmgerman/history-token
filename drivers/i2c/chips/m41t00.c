@@ -821,10 +821,6 @@ comma
 id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
-id|client-&gt;id
-op_assign
-id|m41t00_driver.id
-suffix:semicolon
 id|client-&gt;flags
 op_assign
 id|I2C_DF_NOTIFY

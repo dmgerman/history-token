@@ -372,6 +372,7 @@ id|ACPI_NUM_OSI_STRINGS
 )braket
 op_assign
 (brace
+multiline_comment|/* Operating System Vendor Strings */
 l_string|&quot;Linux&quot;
 comma
 l_string|&quot;Windows 2000&quot;
@@ -389,6 +390,9 @@ comma
 l_string|&quot;Windows 2001 SP3&quot;
 comma
 l_string|&quot;Windows 2001 SP4&quot;
+comma
+multiline_comment|/* Feature Group Strings */
+l_string|&quot;Extended Address Space Descriptor&quot;
 )brace
 suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * Namespace globals&n; *&n; ******************************************************************************/
@@ -931,6 +935,15 @@ comma
 id|ACPI_BITMASK_WAKE_STATUS
 )brace
 comma
+multiline_comment|/* ACPI_BITREG_PCIEXP_WAKE_STATUS   */
+(brace
+id|ACPI_REGISTER_PM1_STATUS
+comma
+id|ACPI_BITPOSITION_PCIEXP_WAKE_STATUS
+comma
+id|ACPI_BITMASK_PCIEXP_WAKE_STATUS
+)brace
+comma
 multiline_comment|/* ACPI_BITREG_TIMER_ENABLE         */
 (brace
 id|ACPI_REGISTER_PM1_ENABLE
@@ -983,6 +996,15 @@ comma
 l_int|0
 comma
 l_int|0
+)brace
+comma
+multiline_comment|/* ACPI_BITREG_PCIEXP_WAKE_DISABLE  */
+(brace
+id|ACPI_REGISTER_PM1_ENABLE
+comma
+id|ACPI_BITPOSITION_PCIEXP_WAKE_DISABLE
+comma
+id|ACPI_BITMASK_PCIEXP_WAKE_DISABLE
 )brace
 comma
 multiline_comment|/* ACPI_BITREG_SCI_ENABLE           */

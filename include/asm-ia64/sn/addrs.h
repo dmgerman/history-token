@@ -4,15 +4,16 @@ DECL|macro|_ASM_IA64_SN_ADDRS_H
 mdefine_line|#define _ASM_IA64_SN_ADDRS_H
 macro_line|#include &lt;asm/percpu.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
+macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
 multiline_comment|/*&n; *  Memory/SHUB Address Format:&n; *  +-+---------+--+--------------+&n; *  |0|  NASID  |AS| NodeOffset   |&n; *  +-+---------+--+--------------+&n; *&n; *  NASID: (low NASID bit is 0) Memory and SHUB MMRs&n; *   AS: 2-bit Address Space Identifier. Used only if low NASID bit is 0&n; *     00: Local Resources and MMR space&n; *           Top bit of NodeOffset&n; *               0: Local resources space&n; *                  node id:&n; *                        0: IA64/NT compatibility space&n; *                        2: Local MMR Space&n; *                        4: Local memory, regardless of local node id&n; *               1: Global MMR space&n; *     01: GET space.&n; *     10: AMO space.&n; *     11: Cacheable memory space.&n; *&n; *   NodeOffset: byte offset&n; *&n; *&n; *  TIO address format:&n; *  +-+----------+--+--------------+&n; *  |0|  NASID   |AS| Nodeoffset   |&n; *  +-+----------+--+--------------+&n; *&n; *  NASID: (low NASID bit is 1) TIO&n; *   AS: 2-bit Chiplet Identifier&n; *     00: TIO LB (Indicates TIO MMR access.)&n; *     01: TIO ICE (indicates coretalk space access.)&n; * &n; *   NodeOffset: top bit must be set.&n; *&n; *&n; * Note that in both of the above address formats, the low&n; * NASID bit indicates if the reference is to the SHUB or TIO MMRs.&n; */
 multiline_comment|/*&n; * Define basic shift &amp; mask constants for manipulating NASIDs and AS values.&n; */
 DECL|macro|NASID_BITMASK
-mdefine_line|#define NASID_BITMASK&t;&t;(pda-&gt;nasid_bitmask)
+mdefine_line|#define NASID_BITMASK&t;&t;(sn_hub_info-&gt;nasid_bitmask)
 DECL|macro|NASID_SHIFT
-mdefine_line|#define NASID_SHIFT&t;&t;(pda-&gt;nasid_shift)
+mdefine_line|#define NASID_SHIFT&t;&t;(sn_hub_info-&gt;nasid_shift)
 DECL|macro|AS_SHIFT
-mdefine_line|#define AS_SHIFT&t;&t;(pda-&gt;as_shift)
+mdefine_line|#define AS_SHIFT&t;&t;(sn_hub_info-&gt;as_shift)
 DECL|macro|AS_BITMASK
 mdefine_line|#define AS_BITMASK&t;&t;0x3UL
 DECL|macro|NASID_MASK

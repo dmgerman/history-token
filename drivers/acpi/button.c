@@ -991,6 +991,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                                Driver Interface&n;   -------------------------------------------------------------------------- */
+r_static
 r_void
 DECL|function|acpi_button_notify
 id|acpi_button_notify
@@ -1077,6 +1078,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+r_static
 id|acpi_status
 DECL|function|acpi_button_notify_fixed
 id|acpi_button_notify_fixed

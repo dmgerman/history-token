@@ -2216,6 +2216,12 @@ c_cond
 id|op-&gt;common.value.arg
 )paren
 (brace
+multiline_comment|/* Since we have a real Return(), delete any implicit return */
+id|acpi_ds_clear_implicit_return
+(paren
+id|walk_state
+)paren
+suffix:semicolon
 multiline_comment|/* Return statement has an immediate operand */
 id|status
 op_assign
@@ -2294,6 +2300,12 @@ l_int|0
 )paren
 )paren
 (brace
+multiline_comment|/* Since we have a real Return(), delete any implicit return */
+id|acpi_ds_clear_implicit_return
+(paren
+id|walk_state
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * The return value has come from a previous calculation.&n;&t;&t;&t; *&n;&t;&t;&t; * If value being returned is a Reference (such as&n;&t;&t;&t; * an arg or local), resolve it now because it may&n;&t;&t;&t; * cease to exist at the end of the method.&n;&t;&t;&t; *&n;&t;&t;&t; * Allow references created by the Index operator to return unchanged.&n;&t;&t;&t; */
 r_if
 c_cond

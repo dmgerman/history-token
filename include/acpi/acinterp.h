@@ -1338,9 +1338,6 @@ multiline_comment|/*&n; * excopy - object copy&n; */
 id|acpi_status
 id|acpi_ex_store_buffer_to_buffer
 (paren
-id|acpi_object_type
-id|original_src_type
-comma
 r_union
 id|acpi_operand_object
 op_star

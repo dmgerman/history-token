@@ -849,14 +849,6 @@ l_int|3
 )braket
 suffix:semicolon
 multiline_comment|/* Register value */
-DECL|member|pwmenable
-id|u8
-id|pwmenable
-(braket
-l_int|3
-)braket
-suffix:semicolon
-multiline_comment|/* bool */
 DECL|member|sens
 id|u16
 id|sens
@@ -5211,27 +5203,6 @@ l_int|2
 r_break
 suffix:semicolon
 )brace
-id|data-&gt;pwmenable
-(braket
-l_int|0
-)braket
-op_assign
-l_int|1
-suffix:semicolon
-id|data-&gt;pwmenable
-(braket
-l_int|1
-)braket
-op_assign
-l_int|1
-suffix:semicolon
-id|data-&gt;pwmenable
-(braket
-l_int|2
-)braket
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren

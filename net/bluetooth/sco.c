@@ -1434,7 +1434,7 @@ suffix:semicolon
 id|sock_set_flag
 c_func
 (paren
-id|sk
+id|parent
 comma
 id|SOCK_ZAPPED
 )paren

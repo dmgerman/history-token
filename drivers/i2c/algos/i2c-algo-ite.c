@@ -3215,28 +3215,32 @@ id|i2c_algorithm
 id|iic_algo
 op_assign
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;ITE IIC algorithm&quot;
 comma
+dot
+id|id
+op_assign
 id|I2C_ALGO_IIC
 comma
+dot
+id|master_xfer
+op_assign
 id|iic_xfer
 comma
-multiline_comment|/* master_xfer&t;*/
-l_int|NULL
-comma
-multiline_comment|/* smbus_xfer&t;*/
-l_int|NULL
-comma
-multiline_comment|/* slave_xmit&t;&t;*/
-l_int|NULL
-comma
-multiline_comment|/* slave_recv&t;&t;*/
+dot
+id|algo_control
+op_assign
 id|algo_control
 comma
-multiline_comment|/* ioctl&t;&t;*/
+multiline_comment|/* ioctl */
+dot
+id|functionality
+op_assign
 id|iic_func
 comma
-multiline_comment|/* functionality&t;*/
 )brace
 suffix:semicolon
 multiline_comment|/* &n; * registering functions to load algorithms at runtime &n; */
