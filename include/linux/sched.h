@@ -726,6 +726,13 @@ id|atomic_t
 id|sigpending
 suffix:semicolon
 multiline_comment|/* How many pending signals does this user have? */
+multiline_comment|/* protected by mq_lock&t;*/
+DECL|member|mq_bytes
+r_int
+r_int
+id|mq_bytes
+suffix:semicolon
+multiline_comment|/* How many bytes can be allocated to mqueue? */
 multiline_comment|/* Hash table maintenance information */
 DECL|member|uidhash_list
 r_struct
