@@ -1655,6 +1655,10 @@ id|bucket
 )paren
 suffix:semicolon
 )brace
+id|error
+op_assign
+l_int|0
+suffix:semicolon
 id|out
 suffix:colon
 id|spin_unlock
