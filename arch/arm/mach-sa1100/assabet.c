@@ -386,20 +386,6 @@ op_assign
 id|scr
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|convert_to_tag_list
-c_func
-(paren
-r_struct
-id|param_struct
-op_star
-id|params
-comma
-r_int
-id|mem_init
-)paren
-suffix:semicolon
 r_static
 r_void
 id|__init
@@ -413,9 +399,9 @@ op_star
 id|desc
 comma
 r_struct
-id|param_struct
+id|tag
 op_star
-id|params
+id|tags
 comma
 r_char
 op_star
@@ -433,12 +419,7 @@ id|tag
 op_star
 id|t
 op_assign
-(paren
-r_struct
-id|tag
-op_star
-)paren
-id|params
+id|tags
 suffix:semicolon
 multiline_comment|/* This must be done before any call to machine_has_neponset() */
 id|map_sa1100_gpio_regs
@@ -463,22 +444,6 @@ id|printk
 c_func
 (paren
 l_string|&quot;Neponset expansion board detected&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Apparantly bootldr uses a param_struct.  Groan.&n;&t; */
-r_if
-c_cond
-(paren
-id|t-&gt;hdr.tag
-op_ne
-id|ATAG_CORE
-)paren
-id|convert_to_tag_list
-c_func
-(paren
-id|params
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_if
