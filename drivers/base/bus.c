@@ -498,7 +498,7 @@ c_cond
 id|dev-&gt;bus
 )paren
 (brace
-id|driverfs_remove_file
+id|device_remove_symlink
 c_func
 (paren
 op_amp
