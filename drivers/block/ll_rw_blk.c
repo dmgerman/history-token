@@ -4514,10 +4514,7 @@ id|q
 comma
 id|rw
 comma
-id|GFP_ATOMIC
-op_amp
-op_complement
-id|__GFP_HIGH
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if
