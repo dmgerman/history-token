@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 94 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 95 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -1177,6 +1177,11 @@ id|dest_desc-&gt;buffer.node
 op_assign
 l_int|NULL
 suffix:semicolon
+id|dest_desc-&gt;common.flags
+op_assign
+id|source_desc-&gt;common.flags
+suffix:semicolon
+multiline_comment|/* Fall through to common string/buffer case */
 r_case
 id|ACPI_TYPE_STRING
 suffix:colon
@@ -1385,6 +1390,10 @@ id|target_object-&gt;package.count
 op_assign
 id|source_object-&gt;package.count
 suffix:semicolon
+id|target_object-&gt;common.flags
+op_assign
+id|source_object-&gt;common.flags
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Pass the new package object back to the package walk routine&n;&t;&t; */
 id|state-&gt;pkg.this_target_obj
 op_assign
@@ -1444,6 +1453,10 @@ id|dest_obj-&gt;common.type
 op_assign
 id|source_obj-&gt;common.type
 suffix:semicolon
+id|dest_obj-&gt;common.flags
+op_assign
+id|source_obj-&gt;common.flags
+suffix:semicolon
 id|dest_obj-&gt;package.count
 op_assign
 id|source_obj-&gt;package.count
@@ -1486,11 +1499,6 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Init */
-id|dest_obj-&gt;package.next_element
-op_assign
-id|dest_obj-&gt;package.elements
-suffix:semicolon
 multiline_comment|/*&n;&t; * Copy the package element-by-element by walking the package &quot;tree&quot;.&n;&t; * This handles nested packages of arbitrary depth.&n;&t; */
 id|status
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acstruct.h - Internal structs&n; *       $Revision: 16 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acstruct.h - Internal structs&n; *       $Revision: 17 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACSTRUCT_H__
 DECL|macro|__ACSTRUCT_H__
@@ -280,6 +280,14 @@ DECL|member|field_count
 id|u16
 id|field_count
 suffix:semicolon
+DECL|member|buffer_count
+id|u16
+id|buffer_count
+suffix:semicolon
+DECL|member|package_count
+id|u16
+id|package_count
+suffix:semicolon
 DECL|member|op_region_init
 id|u16
 id|op_region_init
@@ -287,6 +295,14 @@ suffix:semicolon
 DECL|member|field_init
 id|u16
 id|field_init
+suffix:semicolon
+DECL|member|buffer_init
+id|u16
+id|buffer_init
+suffix:semicolon
+DECL|member|package_init
+id|u16
+id|package_init
 suffix:semicolon
 DECL|member|object_count
 id|u16

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsdump - table dumping routines for debug&n; *              $Revision: 127 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsdump - table dumping routines for debug&n; *              $Revision: 129 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -27,7 +27,7 @@ id|pathname
 (brace
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Acpi_ns_print_pathname&quot;
+l_string|&quot;Ns_print_pathname&quot;
 )paren
 suffix:semicolon
 r_if
@@ -511,7 +511,7 @@ c_cond
 op_logical_neg
 id|acpi_ut_valid_acpi_name
 (paren
-id|this_node-&gt;name
+id|this_node-&gt;name.integer
 )paren
 )paren
 (brace
@@ -665,6 +665,14 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_PACKAGE
 suffix:colon
+r_if
+c_cond
+(paren
+id|obj_desc-&gt;common.flags
+op_amp
+id|AOPOBJ_DATA_VALID
+)paren
+(brace
 id|acpi_os_printf
 (paren
 l_string|&quot; Elements %.2X&bslash;n&quot;
@@ -672,11 +680,28 @@ comma
 id|obj_desc-&gt;package.count
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot; [Length not yet evaluated]&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
+r_if
+c_cond
+(paren
+id|obj_desc-&gt;common.flags
+op_amp
+id|AOPOBJ_DATA_VALID
+)paren
+(brace
 id|acpi_os_printf
 (paren
 l_string|&quot; Len %.2X&quot;
@@ -736,6 +761,15 @@ id|acpi_os_printf
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot; [Length not yet evaluated]&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -758,11 +792,25 @@ l_int|0
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot; = &bslash;&quot;%.32s&bslash;&quot;...&quot;
+l_string|&quot; = &bslash;&quot;%.32s&bslash;&quot;&quot;
 comma
 id|obj_desc-&gt;string.pointer
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|obj_desc-&gt;string.length
+OG
+l_int|32
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;...&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 id|acpi_os_printf
 (paren
@@ -814,7 +862,7 @@ r_else
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot; [Address/Length not evaluated]&bslash;n&quot;
+l_string|&quot; [Address/Length not yet evaluated]&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

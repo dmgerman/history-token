@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utdelete - object deletion and reference count utilities&n; *              $Revision: 87 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utdelete - object deletion and reference count utilities&n; *              $Revision: 88 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -65,7 +65,7 @@ suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;**** String %p, ptr %p&bslash;n&quot;
 comma
@@ -100,7 +100,7 @@ suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;**** Buffer %p, ptr %p&bslash;n&quot;
 comma
@@ -123,7 +123,7 @@ suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot; **** Package of count %X&bslash;n&quot;
 comma
@@ -145,7 +145,7 @@ suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;***** Mutex %p, Semaphore %p&bslash;n&quot;
 comma
@@ -173,7 +173,7 @@ suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;***** Event %p, Semaphore %p&bslash;n&quot;
 comma
@@ -200,7 +200,7 @@ suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;***** Method %p&bslash;n&quot;
 comma
@@ -233,7 +233,7 @@ suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;***** Region %p&bslash;n&quot;
 comma
@@ -293,7 +293,7 @@ suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;***** Buffer Field %p&bslash;n&quot;
 comma
@@ -337,7 +337,7 @@ id|obj_pointer
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;Deleting Object Subptr %p&bslash;n&quot;
 comma
@@ -355,7 +355,7 @@ multiline_comment|/* Now the object can be safely deleted */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;Deleting Object %p [%s]&bslash;n&quot;
 comma
@@ -494,7 +494,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;Obj %p Refs=%X, [Incremented]&bslash;n&quot;
 comma
@@ -520,7 +520,7 @@ l_int|1
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;Obj %p Refs=%X, can&squot;t decrement! (Set to 0)&bslash;n&quot;
 comma
@@ -543,7 +543,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;Obj %p Refs=%X, [Decremented]&bslash;n&quot;
 comma
@@ -565,7 +565,7 @@ id|ACPI_TYPE_METHOD
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;Method Obj %p Refs=%X, [Decremented]&bslash;n&quot;
 comma
@@ -602,7 +602,7 @@ suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;Obj %p Refs=%X, Force delete! (Set to 0)&bslash;n&quot;
 comma
@@ -742,7 +742,7 @@ id|ACPI_DESC_TYPE_NAMED
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;Object %p is NS handle&bslash;n&quot;
 comma
@@ -1234,7 +1234,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ALLOCATIONS
 comma
 l_string|&quot;Obj %p Refs=%X&bslash;n&quot;
 comma

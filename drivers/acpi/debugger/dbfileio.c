@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbfileio - Debugger file I/O commands.  These can&squot;t usually&n; *              be used when running the debugger in Ring 0 (Kernel mode)&n; *              $Revision: 59 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbfileio - Debugger file I/O commands.  These can&squot;t usually&n; *              be used when running the debugger in Ring 0 (Kernel mode)&n; *              $Revision: 60 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
@@ -670,26 +670,25 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_load_acpi_table&n; *&n; * PARAMETERS:  Filname         - File where table is located&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load an ACPI table from a file&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_APPLICATION
 id|acpi_status
-DECL|function|acpi_db_load_acpi_table
-id|acpi_db_load_acpi_table
+DECL|function|acpi_db_get_acpi_table
+id|acpi_db_get_acpi_table
 (paren
 id|NATIVE_CHAR
 op_star
 id|filename
 )paren
 (brace
-macro_line|#ifdef ACPI_APPLICATION
 id|FILE
 op_star
 id|fp
 suffix:semicolon
-id|acpi_status
-id|status
-suffix:semicolon
 id|u32
 id|table_length
+suffix:semicolon
+id|acpi_status
+id|status
 suffix:semicolon
 multiline_comment|/* Open the file */
 id|fp
@@ -762,6 +761,49 @@ id|acpi_os_printf
 l_string|&quot;Couldn&squot;t get table from the file&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_load_acpi_table&n; *&n; * PARAMETERS:  Filname         - File where table is located&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load an ACPI table from a file&n; *&n; ******************************************************************************/
+id|acpi_status
+DECL|function|acpi_db_load_acpi_table
+id|acpi_db_load_acpi_table
+(paren
+id|NATIVE_CHAR
+op_star
+id|filename
+)paren
+(brace
+macro_line|#ifdef ACPI_APPLICATION
+id|acpi_status
+id|status
+suffix:semicolon
+id|status
+op_assign
+id|acpi_db_get_acpi_table
+(paren
+id|filename
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
 r_return
 (paren
 id|status

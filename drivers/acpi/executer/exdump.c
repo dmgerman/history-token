@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exdump - Interpreter debug output routines&n; *              $Revision: 145 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exdump - Interpreter debug output routines&n; *              $Revision: 147 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -299,7 +299,7 @@ c_cond
 op_logical_neg
 (paren
 (paren
-id|ACPI_LV_INFO
+id|ACPI_LV_EXEC
 op_amp
 id|acpi_dbg_level
 )paren
@@ -326,13 +326,9 @@ id|obj_desc
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * This usually indicates that something serious is wrong --&n;&t;&t; * since most (if not all)&n;&t;&t; * code that dumps the stack expects something to be there!&n;&t;&t; */
-id|ACPI_DEBUG_PRINT
+id|acpi_os_printf
 (paren
-(paren
-id|ACPI_DB_INFO
-comma
 l_string|&quot;Null stack entry ptr&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -355,7 +351,7 @@ id|ACPI_DESC_TYPE_NAMED
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_EXEC
 comma
 l_string|&quot;%p NS Node: &quot;
 comma
@@ -367,7 +363,7 @@ id|ACPI_DUMP_ENTRY
 (paren
 id|obj_desc
 comma
-id|ACPI_LV_INFO
+id|ACPI_LV_EXEC
 )paren
 suffix:semicolon
 r_return
@@ -390,7 +386,7 @@ id|ACPI_DESC_TYPE_INTERNAL
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_EXEC
 comma
 l_string|&quot;%p is not a local object&bslash;n&quot;
 comma
@@ -418,7 +414,7 @@ multiline_comment|/*  Obj_desc is a valid object */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_EXEC
 comma
 l_string|&quot;%p &quot;
 comma
@@ -1018,7 +1014,7 @@ id|obj_desc-&gt;buffer_field.buffer_obj
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_EXEC
 comma
 l_string|&quot;*NULL* &bslash;n&quot;
 )paren
@@ -1217,7 +1213,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_EXEC
 comma
 l_string|&quot;************* Operand Stack Contents (Opcode [%s], %d Operands)&bslash;n&quot;
 comma
@@ -1287,7 +1283,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_EXEC
 comma
 l_string|&quot;************* Stack dump from %s(%d), %s&bslash;n&quot;
 comma
@@ -1726,13 +1722,6 @@ id|acpi_ex_out_pointer
 l_string|&quot;Elements&quot;
 comma
 id|obj_desc-&gt;package.elements
-)paren
-suffix:semicolon
-id|acpi_ex_out_pointer
-(paren
-l_string|&quot;Next_element&quot;
-comma
-id|obj_desc-&gt;package.next_element
 )paren
 suffix:semicolon
 multiline_comment|/* Dump the package contents */
