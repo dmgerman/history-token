@@ -535,15 +535,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|dp-&gt;dl_recall_cnt
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|list_add
 c_func
 (paren

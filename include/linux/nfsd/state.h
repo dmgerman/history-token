@@ -140,11 +140,6 @@ id|list_head
 id|dl_recall_lru
 suffix:semicolon
 multiline_comment|/* delegation recalled */
-DECL|member|dl_recall_cnt
-id|atomic_t
-id|dl_recall_cnt
-suffix:semicolon
-multiline_comment|/* resend cb_recall only once */
 DECL|member|dl_count
 id|atomic_t
 id|dl_count
