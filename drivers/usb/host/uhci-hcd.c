@@ -10269,6 +10269,10 @@ id|uhci
 )paren
 )paren
 suffix:semicolon
+id|uhci-&gt;hcd.product_desc
+op_assign
+l_string|&quot;UHCI Host Controller&quot;
+suffix:semicolon
 r_return
 op_amp
 id|uhci-&gt;hcd

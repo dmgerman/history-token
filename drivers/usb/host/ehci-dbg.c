@@ -2949,11 +2949,15 @@ id|next
 comma
 id|size
 comma
-l_string|&quot;%s&bslash;nEHCI %x.%02x, hcd state %d (driver &quot;
+l_string|&quot;PCI device %s&bslash;nEHCI %x.%02x, hcd state %d (driver &quot;
 id|DRIVER_VERSION
 l_string|&quot;)&bslash;n&quot;
 comma
-id|hcd-&gt;pdev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|hcd-&gt;pdev
+)paren
 comma
 id|i
 op_rshift

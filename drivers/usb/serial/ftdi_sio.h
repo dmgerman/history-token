@@ -156,6 +156,11 @@ multiline_comment|/* USB-UIRT - An infrared receiver and transmitter using the 8
 multiline_comment|/* http://home.earthlink.net/~jrhees/USBUIRT/index.htm */
 DECL|macro|FTDI_USB_UIRT_PID
 mdefine_line|#define FTDI_USB_UIRT_PID&t;0xF850&t;/* Product Id */
+multiline_comment|/*&n; * Definitions for ID TECH (www.idt-net.com) devices&n; */
+DECL|macro|IDTECH_VID
+mdefine_line|#define IDTECH_VID&t;&t;0x0ACD&t;/* ID TECH Vendor ID */
+DECL|macro|IDTECH_IDT1221U_PID
+mdefine_line|#define IDTECH_IDT1221U_PID&t;0x0300&t;/* IDT1221U USB to RS-232 adapter */
 multiline_comment|/* Commands */
 DECL|macro|FTDI_SIO_RESET
 mdefine_line|#define FTDI_SIO_RESET &t;&t;0 /* Reset the port */

@@ -10296,13 +10296,6 @@ id|pdev
 )paren
 )paren
 suffix:semicolon
-id|strcpy
-(paren
-id|dev-&gt;gadget.dev.name
-comma
-id|pdev-&gt;dev.name
-)paren
-suffix:semicolon
 id|dev-&gt;gadget.dev.parent
 op_assign
 op_amp
