@@ -1619,12 +1619,6 @@ l_string|&quot;shutdown_socket&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Blank out the socket state */
-id|s-&gt;state
-op_and_assign
-id|SOCKET_PRESENT
-op_or
-id|SOCKET_INUSE
-suffix:semicolon
 id|s-&gt;socket
 op_assign
 id|dead_socket
@@ -2037,6 +2031,12 @@ c_func
 id|skt
 )paren
 suffix:semicolon
+id|skt-&gt;state
+op_and_assign
+id|SOCKET_INUSE
+op_or
+id|SOCKET_PRESENT
+suffix:semicolon
 id|set_current_state
 c_func
 (paren
@@ -2055,8 +2055,7 @@ id|shutdown_delay
 suffix:semicolon
 id|skt-&gt;state
 op_and_assign
-op_complement
-id|SOCKET_PRESENT
+id|SOCKET_INUSE
 suffix:semicolon
 id|shutdown_socket
 c_func
