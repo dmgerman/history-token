@@ -64,14 +64,12 @@ op_star
 )paren
 suffix:semicolon
 r_int
-id|wd33c93_reset
+id|wd33c93_host_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
-comma
-r_int
-r_int
+id|SCpnt
 )paren
 suffix:semicolon
 macro_line|#endif /* !(_SGIWD93_H) */
