@@ -513,13 +513,13 @@ id|ippp_ccp_reset_states
 id|state
 suffix:semicolon
 multiline_comment|/* State of this transaction */
-DECL|member|is
+DECL|member|icr
 r_struct
-id|ipppd
+id|ippp_ccp_reset
 op_star
-id|is
+id|icr
 suffix:semicolon
-multiline_comment|/* Backlink to device stuff */
+multiline_comment|/* Backlink */
 DECL|member|id
 r_int
 r_char
@@ -585,6 +585,54 @@ r_char
 id|lastid
 suffix:semicolon
 multiline_comment|/* Last id allocated by the engine */
+DECL|member|xmit_reset
+r_void
+(paren
+op_star
+id|xmit_reset
+)paren
+(paren
+r_void
+op_star
+id|priv
+comma
+r_int
+id|proto
+comma
+r_int
+r_char
+id|code
+comma
+r_int
+r_char
+id|id
+comma
+r_int
+r_char
+op_star
+id|data
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+DECL|member|kick_up
+r_void
+(paren
+op_star
+id|kick_up
+)paren
+(paren
+r_void
+op_star
+id|priv
+)paren
+suffix:semicolon
+DECL|member|priv
+r_void
+op_star
+id|priv
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */

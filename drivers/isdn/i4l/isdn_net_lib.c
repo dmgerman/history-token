@@ -8543,6 +8543,7 @@ op_star
 id|idev
 )paren
 (brace
+singleline_comment|// FIXME check we&squot;re connected
 id|isdn_net_local
 op_star
 id|mlp
