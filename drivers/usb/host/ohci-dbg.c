@@ -282,7 +282,6 @@ id|mask
 (brace
 id|dev_dbg
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s: 0x%08x%s%s%s%s%s%s%s%s%s&bslash;n&quot;
@@ -417,7 +416,6 @@ id|value
 )paren
 id|dev_dbg
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s %08x&bslash;n&quot;
@@ -514,7 +512,6 @@ l_int|0xff
 suffix:semicolon
 id|dev_dbg
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;OHCI %d.%d, %s legacy support registers&bslash;n&quot;
@@ -555,7 +552,6 @@ id|regs-&gt;control
 suffix:semicolon
 id|dev_dbg
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;control: 0x%08x%s%s%s HCFS=%s%s%s%s%s CBSR=%d&bslash;n&quot;
@@ -661,7 +657,6 @@ id|regs-&gt;cmdstatus
 suffix:semicolon
 id|dev_dbg
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;cmdstatus: 0x%08x SOC=%d%s%s%s%s&bslash;n&quot;
@@ -885,7 +880,6 @@ id|verbose
 (brace
 id|dev_dbg
 (paren
-op_star
 id|controller-&gt;hcd.controller
 comma
 l_string|&quot;roothub.a: %08x POTPGT=%d%s%s%s%s%s NDP=%d&bslash;n&quot;
@@ -971,7 +965,6 @@ id|controller
 suffix:semicolon
 id|dev_dbg
 (paren
-op_star
 id|controller-&gt;hcd.controller
 comma
 l_string|&quot;roothub.b: %08x PPCM=%04x DR=%04x&bslash;n&quot;
@@ -1002,7 +995,6 @@ id|controller
 suffix:semicolon
 id|dev_dbg
 (paren
-op_star
 id|controller-&gt;hcd.controller
 comma
 l_string|&quot;roothub.status: %08x%s%s%s%s%s%s&bslash;n&quot;
@@ -1130,7 +1122,6 @@ id|verbose
 (brace
 id|dev_dbg
 (paren
-op_star
 id|controller-&gt;hcd.controller
 comma
 l_string|&quot;OHCI controller state&bslash;n&quot;
@@ -1149,7 +1140,6 @@ id|controller-&gt;hcca
 )paren
 id|dev_dbg
 (paren
-op_star
 id|controller-&gt;hcd.controller
 comma
 l_string|&quot;hcca frame #%04x&bslash;n&quot;
@@ -1831,6 +1821,8 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|macro|DRIVERFS_DEBUG_FILES
+mdefine_line|#define DRIVERFS_DEBUG_FILES &t;&t;/* only on 2.5 versions */
 macro_line|#else
 DECL|function|ohci_dump
 r_static
@@ -1850,6 +1842,7 @@ id|verbose
 )brace
 macro_line|#endif /* DEBUG */
 multiline_comment|/*-------------------------------------------------------------------------*/
+macro_line|#ifdef DRIVERFS_DEBUG_FILES
 r_static
 id|ssize_t
 DECL|function|show_list
@@ -2015,9 +2008,9 @@ id|ED_C
 )paren
 ques
 c_cond
-l_string|&quot;data1&quot;
+id|data1
 suffix:colon
-l_string|&quot;data0&quot;
+id|data0
 )paren
 suffix:semicolon
 id|size
@@ -2811,7 +2804,6 @@ suffix:semicolon
 singleline_comment|// registers
 id|dev_dbg
 (paren
-op_star
 id|bus-&gt;hcd.controller
 comma
 l_string|&quot;created debug files&bslash;n&quot;
@@ -2847,5 +2839,33 @@ id|dev_attr_periodic
 )paren
 suffix:semicolon
 )brace
+macro_line|#else /* empty stubs for creating those files */
+DECL|function|create_debug_files
+r_static
+r_inline
+r_void
+id|create_debug_files
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|bus
+)paren
+(brace
+)brace
+DECL|function|remove_debug_files
+r_static
+r_inline
+r_void
+id|remove_debug_files
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|bus
+)paren
+(brace
+)brace
+macro_line|#endif /* DRIVERFS_DEBUG_FILES */
 multiline_comment|/*-------------------------------------------------------------------------*/
 eof

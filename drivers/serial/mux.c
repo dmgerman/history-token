@@ -611,11 +611,11 @@ id|port
 )paren
 (brace
 )brace
-multiline_comment|/**&n; * mux_change_speed - Chane port parameters.&n; * @port: Ptr to the uart_port.&n; * @cflag: character flags.&n; * @iflag: interrupt flags.&n; * @quot: &n; *&n; * The Serial Mux does not support this function.&n; */
+multiline_comment|/**&n; * mux_set_termios - Chane port parameters.&n; * @port: Ptr to the uart_port.&n; * @termios: new termios settings.&n; * @old: old termios settings.&n; *&n; * The Serial Mux does not support this function.&n; */
 r_static
 r_void
-DECL|function|mux_change_speed
-id|mux_change_speed
+DECL|function|mux_set_termios
+id|mux_set_termios
 c_func
 (paren
 r_struct
@@ -623,17 +623,15 @@ id|uart_port
 op_star
 id|port
 comma
-r_int
-r_int
-id|cflag
+r_struct
+id|termios
+op_star
+id|termios
 comma
-r_int
-r_int
-id|iflag
-comma
-r_int
-r_int
-id|quot
+r_struct
+id|termios
+op_star
+id|old
 )paren
 (brace
 )brace
@@ -879,9 +877,9 @@ op_assign
 id|mux_shutdown
 comma
 dot
-id|change_speed
+id|set_termios
 op_assign
-id|mux_change_speed
+id|mux_set_termios
 comma
 dot
 id|type

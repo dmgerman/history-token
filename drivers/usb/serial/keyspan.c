@@ -4227,6 +4227,7 @@ l_int|NULL
 id|dev_err
 c_func
 (paren
+op_amp
 id|serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;Required keyspan firmware image (%s) unavailable.&bslash;n&quot;
@@ -4297,6 +4298,7 @@ l_int|0
 id|dev_err
 c_func
 (paren
+op_amp
 id|serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;ezusb_writememory failed for Keyspan&quot;
@@ -7668,6 +7670,7 @@ l_int|NULL
 id|dev_err
 c_func
 (paren
+op_amp
 id|serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - unknown product id %x&bslash;n&quot;

@@ -1,5 +1,5 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utmisc - common utility procedures&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
@@ -396,6 +396,7 @@ id|acpi_ut_display_init_pathname
 id|u8
 id|type
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|obj_handle
@@ -408,6 +409,7 @@ id|path
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 suffix:semicolon
@@ -1866,6 +1868,7 @@ id|acpi_status
 DECL|function|acpi_ut_create_update_state_and_push
 id|acpi_ut_create_update_state_and_push
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -1873,12 +1876,14 @@ comma
 id|u16
 id|action
 comma
+r_union
 id|acpi_generic_state
 op_star
 op_star
 id|state_list
 )paren
 (brace
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -1952,12 +1957,14 @@ comma
 id|u16
 id|index
 comma
+r_union
 id|acpi_generic_state
 op_star
 op_star
 id|state_list
 )paren
 (brace
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -2008,11 +2015,13 @@ r_void
 DECL|function|acpi_ut_push_generic_state
 id|acpi_ut_push_generic_state
 (paren
+r_union
 id|acpi_generic_state
 op_star
 op_star
 id|list_head
 comma
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -2038,17 +2047,20 @@ id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_pop_generic_state&n; *&n; * PARAMETERS:  list_head           - Head of the state stack&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop a state object from a state stack&n; *&n; ******************************************************************************/
+r_union
 id|acpi_generic_state
 op_star
 DECL|function|acpi_ut_pop_generic_state
 id|acpi_ut_pop_generic_state
 (paren
+r_union
 id|acpi_generic_state
 op_star
 op_star
 id|list_head
 )paren
 (brace
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -2084,6 +2096,7 @@ id|state
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_create_generic_state&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a generic state object.  Attempt to obtain one from&n; *              the global state cache;  If none available, create a new one.&n; *&n; ******************************************************************************/
+r_union
 id|acpi_generic_state
 op_star
 DECL|function|acpi_ut_create_generic_state
@@ -2092,6 +2105,7 @@ id|acpi_ut_create_generic_state
 r_void
 )paren
 (brace
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -2126,6 +2140,7 @@ id|state
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_create_thread_state&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Thread State&n; *&n; * DESCRIPTION: Create a &quot;Thread State&quot; - a flavor of the generic state used&n; *              to track per-thread info during method execution&n; *&n; ******************************************************************************/
+r_struct
 id|acpi_thread_state
 op_star
 DECL|function|acpi_ut_create_thread_state
@@ -2134,6 +2149,7 @@ id|acpi_ut_create_thread_state
 r_void
 )paren
 (brace
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -2177,6 +2193,7 @@ suffix:semicolon
 id|return_PTR
 (paren
 (paren
+r_struct
 id|acpi_thread_state
 op_star
 )paren
@@ -2185,11 +2202,13 @@ id|state
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_create_update_state&n; *&n; * PARAMETERS:  Object              - Initial Object to be installed in the&n; *                                    state&n; *              Action              - Update action to be performed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create an &quot;Update State&quot; - a flavor of the generic state used&n; *              to update reference counts and delete complex objects such&n; *              as packages.&n; *&n; ******************************************************************************/
+r_union
 id|acpi_generic_state
 op_star
 DECL|function|acpi_ut_create_update_state
 id|acpi_ut_create_update_state
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -2198,6 +2217,7 @@ id|u16
 id|action
 )paren
 (brace
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -2249,6 +2269,7 @@ id|state
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_create_pkg_state&n; *&n; * PARAMETERS:  Object              - Initial Object to be installed in the&n; *                                    state&n; *              Action              - Update action to be performed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a &quot;Package State&quot;&n; *&n; ******************************************************************************/
+r_union
 id|acpi_generic_state
 op_star
 DECL|function|acpi_ut_create_pkg_state
@@ -2266,6 +2287,7 @@ id|u16
 id|index
 )paren
 (brace
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -2305,6 +2327,7 @@ suffix:semicolon
 id|state-&gt;pkg.source_object
 op_assign
 (paren
+r_union
 id|acpi_operand_object
 op_star
 )paren
@@ -2329,6 +2352,7 @@ id|state
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_create_control_state&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a &quot;Control State&quot; - a flavor of the generic state used&n; *              to support nested IF/WHILE constructs in the AML.&n; *&n; ******************************************************************************/
+r_union
 id|acpi_generic_state
 op_star
 DECL|function|acpi_ut_create_control_state
@@ -2337,6 +2361,7 @@ id|acpi_ut_create_control_state
 r_void
 )paren
 (brace
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -2386,6 +2411,7 @@ r_void
 DECL|function|acpi_ut_delete_generic_state
 id|acpi_ut_delete_generic_state
 (paren
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -2432,6 +2458,7 @@ id|acpi_status
 DECL|function|acpi_ut_walk_package_tree
 id|acpi_ut_walk_package_tree
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|source_object
@@ -2453,12 +2480,14 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_union
 id|acpi_generic_state
 op_star
 id|state_list
 op_assign
 l_int|NULL
 suffix:semicolon
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -2466,6 +2495,7 @@ suffix:semicolon
 id|u32
 id|this_index
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|this_source_obj
@@ -2513,6 +2543,7 @@ suffix:semicolon
 id|this_source_obj
 op_assign
 (paren
+r_union
 id|acpi_operand_object
 op_star
 )paren
@@ -2768,6 +2799,7 @@ op_star
 DECL|function|acpi_ut_get_resource_end_tag
 id|acpi_ut_get_resource_end_tag
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc

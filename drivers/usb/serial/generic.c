@@ -332,6 +332,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;
@@ -639,6 +640,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed submitting write urb, error %d&bslash;n&quot;
@@ -1028,6 +1030,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;

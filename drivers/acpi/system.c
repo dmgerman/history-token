@@ -218,6 +218,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|dsdt
 op_assign
@@ -410,6 +411,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|fadt
 op_assign

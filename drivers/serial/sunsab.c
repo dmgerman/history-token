@@ -2661,6 +2661,8 @@ op_amp
 id|up-&gt;regs-&gt;rw.mode
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * XXX FIXME&n;&t; *&n;&t; * If the chip is powered down here the system hangs/crashes during&n;&t; * reboot or shutdown.  This needs to be investigated further,&n;&t; * similar behaviour occurs in 2.4 when the driver is configured&n;&t; * as a module only.  One hint may be that data is sometimes&n;&t; * transmitted at 9600 baud during shutdown (regardless of the&n;&t; * speed the chip was configured for when the port was open).&n;&t; */
+macro_line|#if 0
 multiline_comment|/* Power Down */
 id|tmp
 op_assign
@@ -2685,6 +2687,7 @@ op_amp
 id|up-&gt;regs-&gt;rw.ccr0
 )paren
 suffix:semicolon
+macro_line|#endif
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3380,10 +3383,10 @@ id|up-&gt;regs-&gt;rw.mode
 suffix:semicolon
 )brace
 multiline_comment|/* port-&gt;lock is not held.  */
-DECL|function|sunsab_change_speed
+DECL|function|sunsab_set_termios
 r_static
 r_void
-id|sunsab_change_speed
+id|sunsab_set_termios
 c_func
 (paren
 r_struct
@@ -3391,17 +3394,15 @@ id|uart_port
 op_star
 id|port
 comma
-r_int
-r_int
-id|cflag
+r_struct
+id|termios
+op_star
+id|termios
 comma
-r_int
-r_int
-id|iflag
-comma
-r_int
-r_int
-id|quot
+r_struct
+id|termios
+op_star
+id|old
 )paren
 (brace
 r_struct
@@ -3422,6 +3423,14 @@ id|flags
 suffix:semicolon
 r_int
 id|baud
+op_assign
+id|uart_get_baud_rate
+c_func
+(paren
+id|port
+comma
+id|termios
+)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -3432,27 +3441,14 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Undo what generic UART core did.  */
-id|baud
-op_assign
-(paren
-id|SAB_BASE_BAUD
-op_div
-(paren
-id|quot
-op_star
-l_int|16
-)paren
-)paren
-suffix:semicolon
 id|sunsab_convert_to_sab
 c_func
 (paren
 id|up
 comma
-id|cflag
+id|termios-&gt;c_cflag
 comma
-id|iflag
+id|termios-&gt;c_iflag
 comma
 id|baud
 )paren
@@ -3646,9 +3642,9 @@ op_assign
 id|sunsab_shutdown
 comma
 dot
-id|change_speed
+id|set_termios
 op_assign
-id|sunsab_change_speed
+id|sunsab_set_termios
 comma
 dot
 id|type

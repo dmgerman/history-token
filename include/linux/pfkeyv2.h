@@ -739,24 +739,40 @@ DECL|macro|SADB_SATYPE_MAX
 mdefine_line|#define SADB_SATYPE_MAX&t;&t;9
 multiline_comment|/* Authentication algorithms */
 DECL|macro|SADB_AALG_NONE
-mdefine_line|#define SADB_AALG_NONE&t;&t;0
+mdefine_line|#define SADB_AALG_NONE&t;&t;&t;0
 DECL|macro|SADB_AALG_MD5HMAC
-mdefine_line|#define SADB_AALG_MD5HMAC&t;2
+mdefine_line|#define SADB_AALG_MD5HMAC&t;&t;2
 DECL|macro|SADB_AALG_SHA1HMAC
-mdefine_line|#define SADB_AALG_SHA1HMAC&t;3
+mdefine_line|#define SADB_AALG_SHA1HMAC&t;&t;3
+DECL|macro|SADB_X_AALG_SHA2_256HMAC
+mdefine_line|#define SADB_X_AALG_SHA2_256HMAC&t;5
+DECL|macro|SADB_X_AALG_SHA2_384HMAC
+mdefine_line|#define SADB_X_AALG_SHA2_384HMAC&t;6
+DECL|macro|SADB_X_AALG_SHA2_512HMAC
+mdefine_line|#define SADB_X_AALG_SHA2_512HMAC&t;7
+DECL|macro|SADB_X_AALG_RIPEMD160HMAC
+mdefine_line|#define SADB_X_AALG_RIPEMD160HMAC&t;8
+DECL|macro|SADB_X_AALG_NULL
+mdefine_line|#define SADB_X_AALG_NULL&t;&t;251&t;/* kame */
 DECL|macro|SADB_AALG_MAX
-mdefine_line|#define SADB_AALG_MAX&t;&t;3
+mdefine_line|#define SADB_AALG_MAX&t;&t;&t;251
 multiline_comment|/* Encryption algorithms */
 DECL|macro|SADB_EALG_NONE
-mdefine_line|#define SADB_EALG_NONE&t;&t;0
+mdefine_line|#define SADB_EALG_NONE&t;&t;&t;0
 DECL|macro|SADB_EALG_DESCBC
-mdefine_line|#define SADB_EALG_DESCBC&t;1
+mdefine_line|#define SADB_EALG_DESCBC&t;&t;1
 DECL|macro|SADB_EALG_3DESCBC
-mdefine_line|#define SADB_EALG_3DESCBC&t;2
+mdefine_line|#define SADB_EALG_3DESCBC&t;&t;2
+DECL|macro|SADB_X_EALG_CASTCBC
+mdefine_line|#define SADB_X_EALG_CASTCBC&t;&t;6
+DECL|macro|SADB_X_EALG_BLOWFISHCBC
+mdefine_line|#define SADB_X_EALG_BLOWFISHCBC&t;&t;7
 DECL|macro|SADB_EALG_NULL
-mdefine_line|#define SADB_EALG_NULL&t;&t;11
+mdefine_line|#define SADB_EALG_NULL&t;&t;&t;11
+DECL|macro|SADB_X_EALG_AESCBC
+mdefine_line|#define SADB_X_EALG_AESCBC&t;&t;12
 DECL|macro|SADB_EALG_MAX
-mdefine_line|#define SADB_EALG_MAX&t;&t;11
+mdefine_line|#define SADB_EALG_MAX&t;&t;&t;12
 multiline_comment|/* Extension Header values */
 DECL|macro|SADB_EXT_RESERVED
 mdefine_line|#define SADB_EXT_RESERVED&t;&t;0

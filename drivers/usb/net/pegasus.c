@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;pegasus.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.5.8 (2002/12/13)&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.5.9 (2002/12/31)&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Petko Manolov &lt;petkan@users.sourceforge.net&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -4279,6 +4279,18 @@ c_func
 (paren
 op_amp
 id|pegasus-&gt;sem
+)paren
+suffix:semicolon
+id|set_registers
+c_func
+(paren
+id|pegasus
+comma
+id|EthID
+comma
+l_int|6
+comma
+id|net-&gt;dev_addr
 )paren
 suffix:semicolon
 id|usb_fill_bulk_urb

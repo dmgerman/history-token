@@ -1,5 +1,5 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsxfeval - Public interfaces to the ACPI subsystem&n; *                         ACPI Object evaluation interfaces&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
@@ -19,10 +19,12 @@ comma
 id|acpi_string
 id|pathname
 comma
+r_struct
 id|acpi_object_list
 op_star
 id|external_params
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|return_buffer
@@ -145,6 +147,7 @@ c_cond
 (paren
 (paren
 (paren
+r_union
 id|acpi_object
 op_star
 )paren
@@ -174,6 +177,7 @@ id|acpi_ut_get_type_name
 (paren
 (paren
 (paren
+r_union
 id|acpi_object
 op_star
 )paren
@@ -228,10 +232,12 @@ comma
 id|acpi_string
 id|pathname
 comma
+r_struct
 id|acpi_object_list
 op_star
 id|external_params
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|return_buffer
@@ -240,6 +246,7 @@ id|return_buffer
 id|acpi_status
 id|status
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -247,6 +254,7 @@ id|internal_params
 op_assign
 l_int|NULL
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|internal_return_obj
@@ -798,6 +806,7 @@ id|return_value
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -805,12 +814,15 @@ suffix:semicolon
 id|u32
 id|flags
 suffix:semicolon
+r_struct
 id|acpi_device_id
 id|hid
 suffix:semicolon
+r_struct
 id|acpi_device_id
 id|cid
 suffix:semicolon
+r_struct
 id|acpi_get_devices_info
 op_star
 id|info
@@ -1105,6 +1117,7 @@ id|return_value
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_get_devices_info
 id|info
 suffix:semicolon
@@ -1213,6 +1226,7 @@ op_star
 id|data
 )paren
 (brace
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -1324,6 +1338,7 @@ id|acpi_object_handler
 id|handler
 )paren
 (brace
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -1435,6 +1450,7 @@ op_star
 id|data
 )paren
 (brace
+r_struct
 id|acpi_namespace_node
 op_star
 id|node

@@ -183,7 +183,6 @@ id|driver-&gt;owner
 id|dev_err
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;module get failed, exiting&bslash;n&quot;
@@ -235,8 +234,8 @@ suffix:semicolon
 id|dev_info
 c_func
 (paren
-op_star
-id|dev
+op_amp
+id|port-&gt;serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s converter now attached to ttyUSB%d (or usb/tts/%d for devfs)&bslash;n&quot;
 comma
@@ -326,7 +325,6 @@ id|driver-&gt;owner
 id|dev_err
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;module get failed, exiting&bslash;n&quot;
@@ -372,7 +370,6 @@ suffix:semicolon
 id|dev_info
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s converter now disconnected from ttyUSB%d&bslash;n&quot;

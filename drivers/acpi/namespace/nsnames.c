@@ -1,5 +1,5 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsnames - Name manipulation and search&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -14,6 +14,7 @@ r_void
 DECL|function|acpi_ns_build_external_path
 id|acpi_ns_build_external_path
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -29,6 +30,7 @@ id|name_buffer
 id|acpi_size
 id|index
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|parent_node
@@ -186,6 +188,7 @@ op_star
 DECL|function|acpi_ns_get_external_pathname
 id|acpi_ns_get_external_pathname
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -263,6 +266,7 @@ id|acpi_size
 DECL|function|acpi_ns_get_pathname_length
 id|acpi_ns_get_pathname_length
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -271,6 +275,7 @@ id|node
 id|acpi_size
 id|size
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|next_node
@@ -328,6 +333,7 @@ id|acpi_ns_handle_to_pathname
 id|acpi_handle
 id|target_handle
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|buffer
@@ -336,6 +342,7 @@ id|buffer
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node

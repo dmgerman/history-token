@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconfig - Namespace reconfiguration (Load/Unload opcodes)&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -17,14 +17,17 @@ id|acpi_status
 DECL|function|acpi_ex_add_table
 id|acpi_ex_add_table
 (paren
+r_struct
 id|acpi_table_header
 op_star
 id|table
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|parent_node
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -34,9 +37,11 @@ id|ddb_handle
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_table_desc
 id|table_info
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -173,10 +178,12 @@ id|acpi_status
 DECL|function|acpi_ex_load_table_op
 id|acpi_ex_load_table_op
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -186,6 +193,7 @@ id|return_desc
 id|acpi_status
 id|status
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -197,24 +205,29 @@ id|walk_state-&gt;operands
 l_int|0
 )braket
 suffix:semicolon
+r_struct
 id|acpi_table_header
 op_star
 id|table
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|parent_node
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|start_node
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|parameter_node
 op_assign
 l_int|NULL
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|ddb_handle
@@ -539,6 +552,7 @@ l_int|5
 comma
 id|ACPI_CAST_PTR
 (paren
+r_union
 id|acpi_operand_object
 comma
 id|parameter_node
@@ -577,14 +591,17 @@ id|acpi_status
 DECL|function|acpi_ex_load_op
 id|acpi_ex_load_op
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|target
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -593,16 +610,19 @@ id|walk_state
 id|acpi_status
 id|status
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|ddb_handle
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|buffer_desc
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
 id|acpi_table_header
 op_star
 id|table_ptr
@@ -613,6 +633,7 @@ id|u8
 op_star
 id|table_data_ptr
 suffix:semicolon
+r_struct
 id|acpi_table_header
 id|table_header
 suffix:semicolon
@@ -669,6 +690,7 @@ id|i
 OL
 r_sizeof
 (paren
+r_struct
 id|acpi_table_header
 )paren
 suffix:semicolon
@@ -750,6 +772,7 @@ id|table_header
 comma
 r_sizeof
 (paren
+r_struct
 id|acpi_table_header
 )paren
 )paren
@@ -764,6 +787,7 @@ id|table_ptr
 comma
 r_sizeof
 (paren
+r_struct
 id|acpi_table_header
 )paren
 )paren
@@ -884,6 +908,7 @@ id|table_ptr
 op_assign
 id|ACPI_CAST_PTR
 (paren
+r_struct
 id|acpi_table_header
 comma
 id|buffer_desc-&gt;buffer.pointer
@@ -1061,6 +1086,7 @@ id|acpi_status
 DECL|function|acpi_ex_unload_table
 id|acpi_ex_unload_table
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|ddb_handle
@@ -1071,12 +1097,14 @@ id|status
 op_assign
 id|AE_NOT_IMPLEMENTED
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|table_desc
 op_assign
 id|ddb_handle
 suffix:semicolon
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -1124,6 +1152,7 @@ multiline_comment|/* Get the actual table descriptor from the ddb_handle */
 id|table_info
 op_assign
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 )paren

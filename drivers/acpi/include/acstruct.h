@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: acstruct.h - Internal structs&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACSTRUCT_H__
 DECL|macro|__ACSTRUCT_H__
 mdefine_line|#define __ACSTRUCT_H__
@@ -20,7 +20,6 @@ mdefine_line|#define ACPI_WALK_CONST_REQUIRED    3
 DECL|macro|ACPI_WALK_CONST_OPTIONAL
 mdefine_line|#define ACPI_WALK_CONST_OPTIONAL    4
 DECL|struct|acpi_walk_state
-r_typedef
 r_struct
 id|acpi_walk_state
 (brace
@@ -114,7 +113,7 @@ id|aml_last_while
 suffix:semicolon
 DECL|member|arguments
 r_struct
-id|acpi_node
+id|acpi_namespace_node
 id|arguments
 (braket
 id|ACPI_METHOD_NUM_ARGS
@@ -123,12 +122,13 @@ suffix:semicolon
 multiline_comment|/* Control method arguments */
 DECL|member|caller_return_desc
 r_union
-id|acpi_operand_obj
+id|acpi_operand_object
 op_star
 op_star
 id|caller_return_desc
 suffix:semicolon
 DECL|member|control_state
+r_union
 id|acpi_generic_state
 op_star
 id|control_state
@@ -136,7 +136,7 @@ suffix:semicolon
 multiline_comment|/* List of control states (nested IFs) */
 DECL|member|local_variables
 r_struct
-id|acpi_node
+id|acpi_namespace_node
 id|local_variables
 (braket
 id|ACPI_METHOD_NUM_LOCALS
@@ -145,12 +145,13 @@ suffix:semicolon
 multiline_comment|/* Control method locals */
 DECL|member|method_call_node
 r_struct
-id|acpi_node
+id|acpi_namespace_node
 op_star
 id|method_call_node
 suffix:semicolon
 multiline_comment|/* Called method Node*/
 DECL|member|method_call_op
+r_union
 id|acpi_parse_object
 op_star
 id|method_call_op
@@ -158,19 +159,20 @@ suffix:semicolon
 multiline_comment|/* method_call Op if running a method */
 DECL|member|method_desc
 r_union
-id|acpi_operand_obj
+id|acpi_operand_object
 op_star
 id|method_desc
 suffix:semicolon
 multiline_comment|/* Method descriptor if running a method */
 DECL|member|method_node
 r_struct
-id|acpi_node
+id|acpi_namespace_node
 op_star
 id|method_node
 suffix:semicolon
 multiline_comment|/* Method Node if running a method */
 DECL|member|op
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -178,7 +180,7 @@ suffix:semicolon
 multiline_comment|/* Current parser op */
 DECL|member|operands
 r_union
-id|acpi_operand_obj
+id|acpi_operand_object
 op_star
 id|operands
 (braket
@@ -190,12 +192,14 @@ suffix:semicolon
 multiline_comment|/* Operands passed to the interpreter (+1 for NULL terminator) */
 DECL|member|op_info
 r_const
+r_struct
 id|acpi_opcode_info
 op_star
 id|op_info
 suffix:semicolon
 multiline_comment|/* Info on current opcode */
 DECL|member|origin
+r_union
 id|acpi_parse_object
 op_star
 id|origin
@@ -203,23 +207,25 @@ suffix:semicolon
 multiline_comment|/* Start of walk [Obsolete] */
 DECL|member|params
 r_union
-id|acpi_operand_obj
+id|acpi_operand_object
 op_star
 op_star
 id|params
 suffix:semicolon
 DECL|member|parser_state
+r_struct
 id|acpi_parse_state
 id|parser_state
 suffix:semicolon
 multiline_comment|/* Current state of parser */
 DECL|member|result_obj
 r_union
-id|acpi_operand_obj
+id|acpi_operand_object
 op_star
 id|result_obj
 suffix:semicolon
 DECL|member|results
+r_union
 id|acpi_generic_state
 op_star
 id|results
@@ -227,24 +233,27 @@ suffix:semicolon
 multiline_comment|/* Stack of accumulated results */
 DECL|member|return_desc
 r_union
-id|acpi_operand_obj
+id|acpi_operand_object
 op_star
 id|return_desc
 suffix:semicolon
 multiline_comment|/* Return object, if any */
 DECL|member|scope_info
+r_union
 id|acpi_generic_state
 op_star
 id|scope_info
 suffix:semicolon
 multiline_comment|/* Stack of nested scopes */
 DECL|member|prev_op
+r_union
 id|acpi_parse_object
 op_star
 id|prev_op
 suffix:semicolon
 multiline_comment|/* Last op that was processed */
 DECL|member|next_op
+r_union
 id|acpi_parse_object
 op_star
 id|next_op
@@ -259,6 +268,7 @@ id|acpi_parse_upwards
 id|ascending_callback
 suffix:semicolon
 DECL|member|thread
+r_struct
 id|acpi_thread_state
 op_star
 id|thread
@@ -270,13 +280,10 @@ op_star
 id|next
 suffix:semicolon
 multiline_comment|/* Next walk_state in list */
-DECL|typedef|acpi_walk_state
 )brace
-id|acpi_walk_state
 suffix:semicolon
 multiline_comment|/* Info used by acpi_ps_init_objects */
 DECL|struct|acpi_init_walk_info
-r_typedef
 r_struct
 id|acpi_init_walk_info
 (brace
@@ -325,17 +332,15 @@ id|u16
 id|object_count
 suffix:semicolon
 DECL|member|table_desc
+r_struct
 id|acpi_table_desc
 op_star
 id|table_desc
 suffix:semicolon
-DECL|typedef|acpi_init_walk_info
 )brace
-id|acpi_init_walk_info
 suffix:semicolon
 multiline_comment|/* Info used by acpi_ns_initialize_devices */
 DECL|struct|acpi_device_walk_info
-r_typedef
 r_struct
 id|acpi_device_walk_info
 (brace
@@ -352,17 +357,15 @@ id|u16
 id|num_INI
 suffix:semicolon
 DECL|member|table_desc
+r_struct
 id|acpi_table_desc
 op_star
 id|table_desc
 suffix:semicolon
-DECL|typedef|acpi_device_walk_info
 )brace
-id|acpi_device_walk_info
 suffix:semicolon
 multiline_comment|/* TBD: [Restructure] Merge with struct above */
 DECL|struct|acpi_walk_info
-r_typedef
 r_struct
 id|acpi_walk_info
 (brace
@@ -378,9 +381,7 @@ DECL|member|display_type
 id|u8
 id|display_type
 suffix:semicolon
-DECL|typedef|acpi_walk_info
 )brace
-id|acpi_walk_info
 suffix:semicolon
 multiline_comment|/* Display Types */
 DECL|macro|ACPI_DISPLAY_SUMMARY
@@ -388,7 +389,6 @@ mdefine_line|#define ACPI_DISPLAY_SUMMARY    0
 DECL|macro|ACPI_DISPLAY_OBJECTS
 mdefine_line|#define ACPI_DISPLAY_OBJECTS    1
 DECL|struct|acpi_get_devices_info
-r_typedef
 r_struct
 id|acpi_get_devices_info
 (brace
@@ -406,16 +406,14 @@ r_char
 op_star
 id|hid
 suffix:semicolon
-DECL|typedef|acpi_get_devices_info
 )brace
-id|acpi_get_devices_info
 suffix:semicolon
 DECL|union|acpi_aml_operands
-r_typedef
 r_union
 id|acpi_aml_operands
 (brace
 DECL|member|operands
+r_union
 id|acpi_operand_object
 op_star
 id|operands
@@ -426,16 +424,19 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|type
+r_struct
 id|acpi_object_integer
 op_star
 id|type
 suffix:semicolon
 DECL|member|code
+r_struct
 id|acpi_object_integer
 op_star
 id|code
 suffix:semicolon
 DECL|member|argument
+r_struct
 id|acpi_object_integer
 op_star
 id|argument
@@ -447,16 +448,19 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|source
+r_union
 id|acpi_operand_object
 op_star
 id|source
 suffix:semicolon
 DECL|member|index
+r_struct
 id|acpi_object_integer
 op_star
 id|index
 suffix:semicolon
 DECL|member|target
+r_union
 id|acpi_operand_object
 op_star
 id|target
@@ -468,21 +472,25 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|source
+r_union
 id|acpi_operand_object
 op_star
 id|source
 suffix:semicolon
 DECL|member|index
+r_struct
 id|acpi_object_integer
 op_star
 id|index
 suffix:semicolon
 DECL|member|length
+r_struct
 id|acpi_object_integer
 op_star
 id|length
 suffix:semicolon
 DECL|member|target
+r_union
 id|acpi_operand_object
 op_star
 id|target
@@ -491,9 +499,7 @@ DECL|member|mid
 )brace
 id|mid
 suffix:semicolon
-DECL|typedef|acpi_aml_operands
 )brace
-id|acpi_aml_operands
 suffix:semicolon
 macro_line|#endif
 eof
