@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;ibmphp.h&quot;
 multiline_comment|/*&n; * POST builds data blocks(in this data block definition, a char-1&n; * byte, short(or word)-2 byte, long(dword)-4 byte) in the Extended&n; * BIOS Data Area which describe the configuration of the hot-plug&n; * controllers and resources used by the PCI Hot-Plug devices.&n; *&n; * This file walks EBDA, maps data block from physical addr,&n; * reconstruct linked lists about all system resource(MEM, PFM, IO)&n; * already assigned by POST, as well as linked lists about hot plug&n; * controllers (ctlr#, slot#, bus&amp;slot features...)&n; */
 multiline_comment|/* Global lists */
@@ -142,6 +143,7 @@ r_static
 r_struct
 id|ebda_hpc_list
 op_star
+id|__init
 id|alloc_ebda_hpc_list
 (paren
 r_void
@@ -404,6 +406,7 @@ r_static
 r_struct
 id|ebda_rsrc_list
 op_star
+id|__init
 id|alloc_ebda_rsrc_list
 (paren
 r_void
@@ -510,6 +513,7 @@ suffix:semicolon
 DECL|function|print_bus_info
 r_static
 r_void
+id|__init
 id|print_bus_info
 (paren
 r_void
@@ -706,6 +710,7 @@ suffix:semicolon
 DECL|function|print_ebda_hpc
 r_static
 r_void
+id|__init
 id|print_ebda_hpc
 (paren
 r_void
@@ -962,6 +967,7 @@ suffix:semicolon
 )brace
 DECL|function|ibmphp_access_ebda
 r_int
+id|__init
 id|ibmphp_access_ebda
 (paren
 r_void
@@ -1679,6 +1685,7 @@ multiline_comment|/*&n; * map info (ctlr-id, slot count, slot#.. bus count, bus#
 DECL|function|ebda_rsrc_controller
 r_static
 r_int
+id|__init
 id|ebda_rsrc_controller
 (paren
 r_void
@@ -3160,6 +3167,7 @@ multiline_comment|/* &n; * map info (bus, devfun, start addr, end addr..) of i/o
 DECL|function|ebda_rsrc_rsrc
 r_static
 r_int
+id|__init
 id|ebda_rsrc_rsrc
 (paren
 r_void
@@ -3479,6 +3487,7 @@ multiline_comment|/*&n; * map info of scalability details and rio details from p
 DECL|function|ebda_rio_table
 r_static
 r_int
+id|__init
 id|ebda_rio_table
 c_func
 (paren

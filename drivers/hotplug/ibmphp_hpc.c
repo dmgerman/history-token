@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;ibmphp.h&quot;
 DECL|variable|to_debug
 r_static
@@ -278,6 +279,7 @@ singleline_comment|//-----------------------------------------------------------
 multiline_comment|/*----------------------------------------------------------------------&n;* Name:    ibmphp_hpc_initvars&n;*&n;* Action:  initialize semaphores and variables&n;*---------------------------------------------------------------------*/
 DECL|function|ibmphp_hpc_initvars
 r_void
+id|__init
 id|ibmphp_hpc_initvars
 (paren
 r_void
@@ -3762,6 +3764,7 @@ suffix:semicolon
 multiline_comment|/*----------------------------------------------------------------------&n;* Name:    ibmphp_hpc_start_poll_thread&n;*&n;* Action:  start polling thread&n;*---------------------------------------------------------------------*/
 DECL|function|ibmphp_hpc_start_poll_thread
 r_int
+id|__init
 id|ibmphp_hpc_start_poll_thread
 (paren
 r_void
@@ -3774,7 +3777,9 @@ l_int|0
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;ibmphp_hpc_start_poll_thread - Entry&bslash;n&quot;
+l_string|&quot;%s - Entry&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|tid_poll
@@ -3798,7 +3803,9 @@ l_int|0
 (brace
 id|err
 (paren
-l_string|&quot;ibmphp_hpc_start_poll_thread - Error, thread not started&bslash;n&quot;
+l_string|&quot;%s - Error, thread not started&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|rc
@@ -3809,7 +3816,9 @@ suffix:semicolon
 )brace
 id|debug
 (paren
-l_string|&quot;ibmphp_hpc_start_poll_thread - Exit tid_poll[%d] rc[%d]&bslash;n&quot;
+l_string|&quot;%s - Exit tid_poll[%d] rc[%d]&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|tid_poll
 comma
@@ -3823,6 +3832,7 @@ suffix:semicolon
 multiline_comment|/*----------------------------------------------------------------------&n;* Name:    ibmphp_hpc_stop_poll_thread&n;*&n;* Action:  stop polling thread and cleanup&n;*---------------------------------------------------------------------*/
 DECL|function|ibmphp_hpc_stop_poll_thread
 r_void
+id|__exit
 id|ibmphp_hpc_stop_poll_thread
 (paren
 r_void
@@ -3830,7 +3840,9 @@ r_void
 (brace
 id|debug
 (paren
-l_string|&quot;ibmphp_hpc_stop_poll_thread - Entry&bslash;n&quot;
+l_string|&quot;%s - Entry&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|ibmphp_shutdown
@@ -3865,7 +3877,9 @@ id|sem_exit
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;ibmphp_hpc_stop_poll_thread - Exit&bslash;n&quot;
+l_string|&quot;%s - Exit&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace

@@ -258,6 +258,7 @@ suffix:semicolon
 DECL|function|get_max_slots
 r_static
 r_int
+id|__init
 id|get_max_slots
 (paren
 r_void
@@ -1757,6 +1758,7 @@ multiline_comment|/*************************************************************
 DECL|function|init_ops
 r_static
 r_int
+id|__init
 id|init_ops
 (paren
 r_void
