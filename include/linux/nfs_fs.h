@@ -599,7 +599,7 @@ c_func
 r_int
 comma
 r_struct
-id|file
+id|kiocb
 op_star
 comma
 r_const
