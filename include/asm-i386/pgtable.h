@@ -858,8 +858,10 @@ macro_line|#endif
 multiline_comment|/*&n; * The i386 doesn&squot;t have any external MMU info: the kernel page&n; * tables contain all the necessary information.&n; *&n; * Also, we only update the dirty/accessed state if we set&n; * the dirty bit by hand in the kernel, since the hardware&n; * will do the accessed bit for us, and we don&squot;t want to&n; * race with other CPU&squot;s that might be updating the dirty&n; * bit at the same time.&n; */
 DECL|macro|update_mmu_cache
 mdefine_line|#define update_mmu_cache(vma,address,pte) do { } while (0)
-DECL|macro|ptep_update_dirty_accessed
-mdefine_line|#define ptep_update_dirty_accessed(__ptep, __entry, __dirty)&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (__dirty) set_pte(__ptep, __entry);&t;&t;&bslash;&n;&t;} while (0)
+DECL|macro|__HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
+mdefine_line|#define  __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
+DECL|macro|ptep_set_access_flags
+mdefine_line|#define ptep_set_access_flags(__vma, __address, __ptep, __entry, __dirty) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;if (__dirty) {&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;&t;(__ptep)-&gt;pte_low = (__entry).pte_low;&t;  &t;  &bslash;&n;&t;&t;&t;flush_tlb_page(__vma, __address);&t;&t;  &bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;} while (0)
 multiline_comment|/* Encode and de-code a swap entry */
 DECL|macro|__swp_type
 mdefine_line|#define __swp_type(x)&t;&t;&t;(((x).val &gt;&gt; 1) &amp; 0x1f)
