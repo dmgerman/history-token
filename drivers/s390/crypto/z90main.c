@@ -11,6 +11,7 @@ singleline_comment|// for tasklets
 macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/kobject_uevent.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/version.h&gt;

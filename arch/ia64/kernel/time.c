@@ -57,6 +57,23 @@ r_static
 r_struct
 id|time_interpolator
 id|itc_interpolator
+op_assign
+(brace
+dot
+id|shift
+op_assign
+l_int|16
+comma
+dot
+id|mask
+op_assign
+l_int|0xffffffffffffffffLL
+comma
+dot
+id|source
+op_assign
+id|TIME_SOURCE_CPU
+)brace
 suffix:semicolon
 r_static
 id|irqreturn_t
@@ -741,17 +758,9 @@ id|itc_interpolator.frequency
 op_assign
 id|local_cpu_data-&gt;itc_freq
 suffix:semicolon
-id|itc_interpolator.shift
-op_assign
-l_int|16
-suffix:semicolon
 id|itc_interpolator.drift
 op_assign
 id|itc_drift
-suffix:semicolon
-id|itc_interpolator.source
-op_assign
-id|TIME_SOURCE_CPU
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* On IA64 in an SMP configuration ITCs are never accurately synchronized.&n;&t;&t; * Jitter compensation requires a cmpxchg which may limit&n;&t;&t; * the scalability of the syscalls for retrieving time.&n;&t;&t; * The ITC synchronization is usually successful to within a few&n;&t;&t; * ITC ticks but this is not a sure thing. If you need to improve&n;&t;&t; * timer performance in SMP situations then boot the kernel with the&n;&t;&t; * &quot;nojitter&quot; option. However, doing so may result in time fluctuating (maybe&n;&t;&t; * even going backward) if the ITC offsets between the individual CPUs&n;&t;&t; * are too large.&n;&t;&t; */
@@ -766,10 +775,6 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
-id|itc_interpolator.addr
-op_assign
-l_int|NULL
-suffix:semicolon
 id|register_time_interpolator
 c_func
 (paren

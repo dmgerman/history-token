@@ -1638,37 +1638,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|regs-&gt;isr
-op_ne
-id|regs-&gt;sr
-(braket
-l_int|7
-)braket
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;isr verification failed (isr: &quot;
-id|RFMT
-l_string|&quot;, sr7: &quot;
-id|RFMT
-l_string|&quot;&bslash;n&quot;
-comma
-id|regs-&gt;isr
-comma
-id|regs-&gt;sr
-(braket
-l_int|7
-)braket
-)paren
-suffix:semicolon
-multiline_comment|/* don&squot;t kill him though, since he has appropriate access to the page, or we&n;&t;&t; * would never have gotten here.&n;&t;&t; */
-)brace
 multiline_comment|/* TODO: make this cleaner... */
 r_switch
 c_cond
