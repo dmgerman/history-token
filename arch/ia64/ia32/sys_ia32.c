@@ -3378,13 +3378,13 @@ id|getdents32_callback
 (brace
 DECL|member|current_dir
 r_struct
-id|linux32_dirent
+id|compat_dirent
 op_star
 id|current_dir
 suffix:semicolon
 DECL|member|previous
 r_struct
-id|linux32_dirent
+id|compat_dirent
 op_star
 id|previous
 suffix:semicolon
@@ -3443,7 +3443,7 @@ id|d_type
 )paren
 (brace
 r_struct
-id|linux32_dirent
+id|compat_dirent
 op_star
 id|dirent
 suffix:semicolon
@@ -3611,7 +3611,7 @@ r_int
 id|fd
 comma
 r_struct
-id|linux32_dirent
+id|compat_dirent
 op_star
 id|dirent
 comma
@@ -3626,7 +3626,7 @@ op_star
 id|file
 suffix:semicolon
 r_struct
-id|linux32_dirent
+id|compat_dirent
 op_star
 id|lastdirent
 suffix:semicolon

@@ -7,8 +7,6 @@ multiline_comment|/* Standard COM flags */
 DECL|macro|STD_COM_FLAGS
 mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)
 macro_line|#ifdef CONFIG_ARCH_ADI_EVB
-DECL|macro|RS_TABLE_SIZE
-mdefine_line|#define RS_TABLE_SIZE 1
 multiline_comment|/*&n; * One serial port, int goes to FIQ, so we run in polled mode&n; */
 DECL|macro|STD_SERIAL_PORT_DEFNS
 mdefine_line|#define STD_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;       /* UART CLK      PORT        IRQ        FLAGS        */&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0xff400000, 0,  STD_COM_FLAGS }  /* ttyS0 */

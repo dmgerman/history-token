@@ -30,7 +30,7 @@ id|version
 (braket
 )braket
 op_assign
-l_string|&quot;$Id: dscc4.c,v 1.159 2002/04/10 22:05:17 romieu Exp $ for Linux&bslash;n&quot;
+l_string|&quot;$Id: dscc4.c,v 1.173 2003/09/20 23:55:34 romieu Exp $ for Linux&bslash;n&quot;
 suffix:semicolon
 DECL|variable|debug
 r_static
@@ -2066,7 +2066,7 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-macro_line|#if 0
+macro_line|#if 0 /* dscc4_{rx/tx}_reset are both unreliable - more tweak needed */
 r_static
 r_void
 id|dscc4_rx_reset
@@ -3580,8 +3580,11 @@ id|root
 suffix:semicolon
 r_int
 id|i
+comma
+id|ret
 op_assign
-l_int|0
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|root
 op_assign
@@ -3809,14 +3812,20 @@ id|hdlc-&gt;attach
 op_assign
 id|dscc4_hdlc_attach
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|register_hdlc_device
 c_func
 (paren
 id|hdlc
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
 )paren
 (brace
 id|printk
@@ -3848,14 +3857,20 @@ id|dpriv-&gt;encoding
 op_assign
 id|ENCODING_NRZ
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|dscc4_init_ring
 c_func
 (paren
 id|d
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
 )paren
 (brace
 id|unregister_hdlc_device
@@ -3869,9 +3884,8 @@ id|err_unregister
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|dscc4_set_quartz
 c_func
 (paren
@@ -3879,6 +3893,11 @@ id|root
 comma
 id|quartz
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 OL
 l_int|0
 )paren
@@ -3905,7 +3924,7 @@ id|ppriv
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 id|err_unregister
 suffix:colon
@@ -3956,8 +3975,7 @@ suffix:semicolon
 id|err_out
 suffix:colon
 r_return
-op_minus
-l_int|1
+id|ret
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -4654,12 +4672,6 @@ comma
 id|CCR0
 )paren
 suffix:semicolon
-id|dscc4_release_ring
-c_func
-(paren
-id|dpriv
-)paren
-suffix:semicolon
 id|err_out
 suffix:colon
 id|hdlc_close
@@ -4984,12 +4996,6 @@ id|hdlc_close
 c_func
 (paren
 id|hdlc
-)paren
-suffix:semicolon
-id|dscc4_release_ring
-c_func
-(paren
-id|dpriv
 )paren
 suffix:semicolon
 r_return

@@ -8,9 +8,6 @@ DECL|macro|SPIOCSTYPE
 mdefine_line|#define SPIOCSTYPE&t;_IOW(&squot;q&squot;, 0x01, unsigned long)
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/list.h&gt;
-r_struct
-id|serio
-suffix:semicolon
 DECL|struct|serio
 r_struct
 id|serio

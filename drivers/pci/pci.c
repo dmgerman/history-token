@@ -317,7 +317,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_bus_find_capability - query for devices&squot; capabilities &n; * @dev: PCI device to query&n; * @cap: capability code&n; *&n; * Like pci_find_capability() but works for pci devices that do not have a&n; * pci_dev structure set up yet. &n; * Returns the address of the requested capability structure within the&n; * device&squot;s PCI configuration space or 0 in case the device does not&n; * support it.&n; */
+multiline_comment|/**&n; * pci_bus_find_capability - query for devices&squot; capabilities &n; * @bus:   the PCI bus to query&n; * @devfn: PCI device to query&n; * @cap:   capability code&n; *&n; * Like pci_find_capability() but works for pci devices that do not have a&n; * pci_dev structure set up yet. &n; *&n; * Returns the address of the requested capability structure within the&n; * device&squot;s PCI configuration space or 0 in case the device does not&n; * support it.&n; */
 DECL|function|pci_bus_find_capability
 r_int
 id|pci_bus_find_capability

@@ -2,8 +2,6 @@ macro_line|#include &lt;asm/ec3104.h&gt;
 multiline_comment|/* Naturally we don&squot;t know the exact value but 115200 baud has a divisor&n; * of 9 and 19200 baud has a divisor of 52, so this seems like a good&n; * guess.  */
 DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD (16800000 / 16)
-DECL|macro|RS_TABLE_SIZE
-mdefine_line|#define RS_TABLE_SIZE  3
 DECL|macro|STD_COM_FLAGS
 mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)
 multiline_comment|/* there is a fourth serial port with the expected values as well, but&n; * it&squot;s got the keyboard controller behind it so we can&squot;t really use it&n; * (without moving the keyboard driver to userspace, which doesn&squot;t sound&n; * like a very good idea) */

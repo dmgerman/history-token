@@ -8,8 +8,6 @@ DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD (1843200 / 16)
 DECL|macro|STD_COM_FLAGS
 mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)
-DECL|macro|RS_TABLE_SIZE
-mdefine_line|#define RS_TABLE_SIZE   16
 macro_line|#if defined(CONFIG_ARCH_A5K)
 multiline_comment|/* UART CLK        PORT  IRQ     FLAGS        */
 DECL|macro|STD_SERIAL_PORT_DEFNS

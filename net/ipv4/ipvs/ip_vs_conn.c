@@ -2473,7 +2473,7 @@ c_cond
 (paren
 id|l
 )paren
-id|ct_read_unlock
+id|ct_read_unlock_bh
 c_func
 (paren
 id|l

@@ -60,14 +60,14 @@ DECL|variable|discontig_page_data
 id|pg_data_t
 id|discontig_page_data
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 DECL|variable|discontig_node_bdata
 id|bootmem_data_t
 id|discontig_node_bdata
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 macro_line|#endif

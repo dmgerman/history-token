@@ -10,8 +10,6 @@ DECL|macro|_SER_IRQ0
 mdefine_line|#define _SER_IRQ0&t;IRQ_ISA_UART
 DECL|macro|_SER_IRQ1
 mdefine_line|#define _SER_IRQ1&t;IRQ_ISA_UART2
-DECL|macro|RS_TABLE_SIZE
-mdefine_line|#define RS_TABLE_SIZE&t;16
 DECL|macro|STD_COM_FLAGS
 mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)
 multiline_comment|/* UART CLK        PORT  IRQ     FLAGS        */

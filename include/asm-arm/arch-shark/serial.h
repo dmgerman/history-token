@@ -7,8 +7,6 @@ DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD (1843200 / 16)
 DECL|macro|STD_COM_FLAGS
 mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)
-DECL|macro|RS_TABLE_SIZE
-mdefine_line|#define RS_TABLE_SIZE 2
 multiline_comment|/* UART CLK        PORT  IRQ     FLAGS        */
 DECL|macro|STD_SERIAL_PORT_DEFNS
 mdefine_line|#define STD_SERIAL_PORT_DEFNS &bslash;&n;&t;{ 0, BASE_BAUD, 0x3F8,  4, STD_COM_FLAGS },&t;/* ttyS0 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x2F8,  3, STD_COM_FLAGS },&t;/* ttyS1 */
