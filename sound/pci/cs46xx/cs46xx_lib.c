@@ -9986,7 +9986,7 @@ id|chip
 comma
 id|AC97_MASTER
 comma
-id|CS46XX_PRIMARY_CODEC_INDEX
+id|codec
 )paren
 op_eq
 l_int|0x8000
