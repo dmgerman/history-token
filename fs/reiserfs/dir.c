@@ -785,6 +785,12 @@ op_amp
 id|path_to_entry
 )paren
 suffix:semicolon
+id|UPDATE_ATIME
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
