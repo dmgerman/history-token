@@ -1601,7 +1601,7 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|40
+l_int|80
 )paren
 suffix:semicolon
 )brace
@@ -1755,7 +1755,7 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|40
+l_int|80
 )paren
 suffix:semicolon
 )brace
@@ -1817,7 +1817,7 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|40
+l_int|80
 )paren
 suffix:semicolon
 )brace
@@ -1965,7 +1965,7 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|40
+l_int|80
 )paren
 suffix:semicolon
 )brace
@@ -5857,7 +5857,7 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|40
+l_int|80
 )paren
 suffix:semicolon
 id|tg3_writephy
@@ -6868,7 +6868,7 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|40
+l_int|80
 )paren
 suffix:semicolon
 )brace
@@ -26751,7 +26751,7 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|40
+l_int|80
 )paren
 suffix:semicolon
 id|tw32
@@ -36609,7 +36609,7 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|40
+l_int|80
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize data/descriptor byte/word swapping. */
