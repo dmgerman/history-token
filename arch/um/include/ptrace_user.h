@@ -90,6 +90,10 @@ macro_line|#ifndef PTRACE_SYSEMU
 DECL|macro|PTRACE_SYSEMU
 mdefine_line|#define PTRACE_SYSEMU 31
 macro_line|#endif
+macro_line|#ifndef PTRACE_SYSEMU_SINGLESTEP
+DECL|macro|PTRACE_SYSEMU_SINGLESTEP
+mdefine_line|#define PTRACE_SYSEMU_SINGLESTEP 32
+macro_line|#endif
 r_void
 id|set_using_sysemu
 c_func
