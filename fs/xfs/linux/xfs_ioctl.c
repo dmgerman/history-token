@@ -2626,7 +2626,7 @@ r_struct
 id|dioattr
 id|da
 suffix:semicolon
-id|pb_target_t
+id|xfs_buftarg_t
 op_star
 id|target
 op_assign

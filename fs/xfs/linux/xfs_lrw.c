@@ -1185,7 +1185,7 @@ op_amp
 id|IO_ISDIRECT
 )paren
 (brace
-id|pb_target_t
+id|xfs_buftarg_t
 op_star
 id|target
 op_assign
@@ -2769,7 +2769,7 @@ op_amp
 id|IO_ISDIRECT
 )paren
 (brace
-id|pb_target_t
+id|xfs_buftarg_t
 op_star
 id|target
 op_assign

@@ -13,14 +13,8 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 multiline_comment|/*&n; *&t;Base types&n; */
-multiline_comment|/* daddr must be signed since -1 is used for bmaps that are not yet allocated */
-DECL|typedef|page_buf_daddr_t
-r_typedef
-id|loff_t
-id|page_buf_daddr_t
-suffix:semicolon
-DECL|macro|PAGE_BUF_DADDR_NULL
-mdefine_line|#define PAGE_BUF_DADDR_NULL ((page_buf_daddr_t) (-1LL))
+DECL|macro|XFS_BUF_DADDR_NULL
+mdefine_line|#define XFS_BUF_DADDR_NULL ((xfs_daddr_t) (-1LL))
 DECL|macro|page_buf_ctob
 mdefine_line|#define page_buf_ctob(pp)&t;((pp) * PAGE_CACHE_SIZE)
 DECL|macro|page_buf_btoc
@@ -293,10 +287,10 @@ DECL|macro|PBF_NOT_DONE
 mdefine_line|#define PBF_NOT_DONE(pb) (((pb)-&gt;pb_flags &amp; (PBF_PARTIAL|PBF_NONE)) != 0)
 DECL|macro|PBF_DONE
 mdefine_line|#define PBF_DONE(pb) (((pb)-&gt;pb_flags &amp; (PBF_PARTIAL|PBF_NONE)) == 0)
-DECL|struct|pb_target
+DECL|struct|xfs_buftarg
 r_typedef
 r_struct
-id|pb_target
+id|xfs_buftarg
 (brace
 DECL|member|pbr_dev
 id|dev_t
@@ -328,13 +322,13 @@ DECL|member|pbr_smask
 r_int
 id|pbr_smask
 suffix:semicolon
-DECL|typedef|pb_target_t
+DECL|typedef|xfs_buftarg_t
 )brace
-id|pb_target_t
+id|xfs_buftarg_t
 suffix:semicolon
-multiline_comment|/*&n; *&t;page_buf_t:  Buffer structure for page cache-based buffers&n; *&n; * This buffer structure is used by the page cache buffer management routines&n; * to refer to an assembly of pages forming a logical buffer.  The actual&n; * I/O is performed with buffer_head or bio structures, as required by drivers,&n; * for drivers which do not understand this structure.  The buffer structure is&n; * used on temporary basis only, and discarded when released.&n; *&n; * The real data storage is recorded in the page cache.  Metadata is&n; * hashed to the inode for the block device on which the file system resides.&n; * File data is hashed to the inode for the file.  Pages which are only&n; * partially filled with data have bits set in their block_map entry&n; * to indicate which disk blocks in the page are not valid.&n; */
+multiline_comment|/*&n; *&t;xfs_buf_t:  Buffer structure for page cache-based buffers&n; *&n; * This buffer structure is used by the page cache buffer management routines&n; * to refer to an assembly of pages forming a logical buffer.  The actual&n; * I/O is performed with buffer_head or bio structures, as required by drivers,&n; * for drivers which do not understand this structure.  The buffer structure is&n; * used on temporary basis only, and discarded when released.&n; *&n; * The real data storage is recorded in the page cache.  Metadata is&n; * hashed to the inode for the block device on which the file system resides.&n; * File data is hashed to the inode for the file.  Pages which are only&n; * partially filled with data have bits set in their block_map entry&n; * to indicate which disk blocks in the page are not valid.&n; */
 r_struct
-id|page_buf_s
+id|xfs_buf
 suffix:semicolon
 DECL|typedef|page_buf_iodone_t
 r_typedef
@@ -345,7 +339,7 @@ id|page_buf_iodone_t
 )paren
 (paren
 r_struct
-id|page_buf_s
+id|xfs_buf
 op_star
 )paren
 suffix:semicolon
@@ -359,7 +353,7 @@ id|page_buf_relse_t
 )paren
 (paren
 r_struct
-id|page_buf_s
+id|xfs_buf
 op_star
 )paren
 suffix:semicolon
@@ -373,16 +367,16 @@ id|page_buf_bdstrat_t
 )paren
 (paren
 r_struct
-id|page_buf_s
+id|xfs_buf
 op_star
 )paren
 suffix:semicolon
 DECL|macro|PB_PAGES
 mdefine_line|#define PB_PAGES&t;4
-DECL|struct|page_buf_s
+DECL|struct|xfs_buf
 r_typedef
 r_struct
-id|page_buf_s
+id|xfs_buf
 (brace
 DECL|member|pb_sema
 r_struct
@@ -422,8 +416,7 @@ id|list_head
 id|pb_hash_list
 suffix:semicolon
 DECL|member|pb_target
-r_struct
-id|pb_target
+id|xfs_buftarg_t
 op_star
 id|pb_target
 suffix:semicolon
@@ -434,7 +427,7 @@ id|pb_hold
 suffix:semicolon
 multiline_comment|/* reference count */
 DECL|member|pb_bn
-id|page_buf_daddr_t
+id|xfs_daddr_t
 id|pb_bn
 suffix:semicolon
 multiline_comment|/* block number for I/O */
@@ -559,21 +552,20 @@ r_int
 id|pb_last_holder
 suffix:semicolon
 macro_line|#endif
-DECL|typedef|page_buf_t
+DECL|typedef|xfs_buf_t
 )brace
-id|page_buf_t
+id|xfs_buf_t
 suffix:semicolon
 multiline_comment|/* Finding and Reading Buffers */
 r_extern
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pagebuf_find
 c_func
 (paren
 multiline_comment|/* find buffer for block if&t;*/
 multiline_comment|/* the block is in memory&t;*/
-r_struct
-id|pb_target
+id|xfs_buftarg_t
 op_star
 comma
 multiline_comment|/* inode for block&t;&t;*/
@@ -588,14 +580,13 @@ id|page_buf_flags_t
 suffix:semicolon
 multiline_comment|/* PBF_LOCK&t;&t;&t;*/
 r_extern
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pagebuf_get
 c_func
 (paren
 multiline_comment|/* allocate a buffer&t;&t;*/
-r_struct
-id|pb_target
+id|xfs_buftarg_t
 op_star
 comma
 multiline_comment|/* inode for buffer&t;&t;*/
@@ -611,13 +602,12 @@ suffix:semicolon
 multiline_comment|/* PBF_LOCK, PBF_READ,&t;&t;*/
 multiline_comment|/* PBF_ASYNC&t;&t;&t;*/
 r_extern
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pagebuf_lookup
 c_func
 (paren
-r_struct
-id|pb_target
+id|xfs_buftarg_t
 op_star
 comma
 id|loff_t
@@ -632,7 +622,7 @@ suffix:semicolon
 multiline_comment|/* PBF_READ, PBF_WRITE,&t;&t;*/
 multiline_comment|/* PBF_FORCEIO, &t;&t;*/
 r_extern
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pagebuf_get_empty
 c_func
@@ -642,14 +632,13 @@ multiline_comment|/*  no memory or disk address&t;*/
 r_int
 id|len
 comma
-r_struct
-id|pb_target
+id|xfs_buftarg_t
 op_star
 )paren
 suffix:semicolon
 multiline_comment|/* mount point &quot;fake&quot; inode&t;*/
 r_extern
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pagebuf_get_no_daddr
 c_func
@@ -659,8 +648,7 @@ multiline_comment|/* without disk address&t;&t;*/
 r_int
 id|len
 comma
-r_struct
-id|pb_target
+id|xfs_buftarg_t
 op_star
 )paren
 suffix:semicolon
@@ -670,7 +658,7 @@ r_int
 id|pagebuf_associate_memory
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 comma
 r_void
@@ -685,7 +673,7 @@ id|pagebuf_hold
 c_func
 (paren
 multiline_comment|/* increment reference count&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 suffix:semicolon
@@ -696,8 +684,7 @@ id|pagebuf_readahead
 c_func
 (paren
 multiline_comment|/* read ahead into cache&t;*/
-r_struct
-id|pb_target
+id|xfs_buftarg_t
 op_star
 comma
 multiline_comment|/* target for buffer (or NULL)&t;*/
@@ -718,7 +705,7 @@ id|pagebuf_free
 c_func
 (paren
 multiline_comment|/* deallocate a buffer&t;&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 suffix:semicolon
@@ -729,7 +716,7 @@ id|pagebuf_rele
 c_func
 (paren
 multiline_comment|/* release hold on a buffer&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 suffix:semicolon
@@ -742,7 +729,7 @@ c_func
 (paren
 multiline_comment|/* lock buffer, if not locked&t;*/
 multiline_comment|/* (returns -EBUSY if locked)&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 suffix:semicolon
@@ -753,7 +740,7 @@ id|pagebuf_lock_value
 c_func
 (paren
 multiline_comment|/* return count on lock&t;&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 suffix:semicolon
@@ -764,7 +751,7 @@ id|pagebuf_lock
 c_func
 (paren
 multiline_comment|/* lock buffer                  */
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 suffix:semicolon
@@ -775,7 +762,7 @@ id|pagebuf_unlock
 c_func
 (paren
 multiline_comment|/* unlock buffer&t;&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 suffix:semicolon
@@ -787,7 +774,7 @@ id|pagebuf_iodone
 c_func
 (paren
 multiline_comment|/* mark buffer I/O complete&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 comma
 multiline_comment|/* buffer to mark&t;&t;*/
@@ -804,7 +791,7 @@ id|pagebuf_ioerror
 c_func
 (paren
 multiline_comment|/* mark buffer in error&t;(or not) */
-id|page_buf_t
+id|xfs_buf_t
 op_star
 comma
 multiline_comment|/* buffer to mark&t;&t;*/
@@ -819,7 +806,7 @@ id|pagebuf_iostart
 c_func
 (paren
 multiline_comment|/* start I/O on a buffer&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 comma
 multiline_comment|/* buffer to start&t;&t;*/
@@ -835,7 +822,7 @@ id|pagebuf_iorequest
 c_func
 (paren
 multiline_comment|/* start real I/O&t;&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 suffix:semicolon
@@ -846,7 +833,7 @@ id|pagebuf_iowait
 c_func
 (paren
 multiline_comment|/* wait for buffer I/O done&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 suffix:semicolon
@@ -857,7 +844,7 @@ id|pagebuf_iomove
 c_func
 (paren
 multiline_comment|/* move data in/out of pagebuf&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 comma
 multiline_comment|/* buffer to manipulate&t;&t;*/
@@ -881,7 +868,7 @@ r_int
 id|pagebuf_iostrategy
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -912,7 +899,7 @@ r_int
 id|pagebuf_geterror
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -933,7 +920,7 @@ id|pagebuf_offset
 c_func
 (paren
 multiline_comment|/* pointer at offset in buffer&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 comma
 multiline_comment|/* buffer to offset into&t;*/
@@ -948,7 +935,7 @@ id|pagebuf_pin
 c_func
 (paren
 multiline_comment|/* pin buffer in memory&t;&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 suffix:semicolon
@@ -959,7 +946,7 @@ id|pagebuf_unpin
 c_func
 (paren
 multiline_comment|/* unpin buffered data&t;&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 suffix:semicolon
@@ -970,7 +957,7 @@ id|pagebuf_ispin
 c_func
 (paren
 multiline_comment|/* check if buffer is pinned&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 suffix:semicolon
@@ -983,7 +970,7 @@ r_void
 id|pagebuf_delwri_flush
 c_func
 (paren
-id|pb_target_t
+id|xfs_buftarg_t
 op_star
 comma
 r_int
@@ -998,7 +985,7 @@ r_void
 id|pagebuf_delwri_dequeue
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 suffix:semicolon
@@ -1030,7 +1017,7 @@ r_void
 id|pagebuf_trace
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 comma
 multiline_comment|/* buffer being traced&t;&t;*/
@@ -1097,7 +1084,7 @@ r_void
 id|xfs_buf_undelay
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -1204,22 +1191,6 @@ DECL|macro|XFS_BUF_UNUNINITIAL
 mdefine_line|#define XFS_BUF_UNUNINITIAL(x)&t; (0)
 DECL|macro|XFS_BUF_BP_ISMAPPED
 mdefine_line|#define XFS_BUF_BP_ISMAPPED(bp)&t; 1
-DECL|typedef|xfs_buf_t
-r_typedef
-r_struct
-id|page_buf_s
-id|xfs_buf_t
-suffix:semicolon
-DECL|macro|xfs_buf
-mdefine_line|#define xfs_buf page_buf_s
-DECL|typedef|xfs_buftarg_t
-r_typedef
-r_struct
-id|pb_target
-id|xfs_buftarg_t
-suffix:semicolon
-DECL|macro|xfs_buftarg
-mdefine_line|#define xfs_buftarg pb_target
 DECL|macro|XFS_BUF_DATAIO
 mdefine_line|#define XFS_BUF_DATAIO(x)&t;((x)-&gt;pb_flags |= PBF_FS_DATAIOD)
 DECL|macro|XFS_BUF_UNDATAIO
@@ -1259,7 +1230,7 @@ id|xfs_caddr_t
 id|xfs_buf_offset
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|bp
 comma
@@ -1301,7 +1272,7 @@ mdefine_line|#define XFS_BUF_SET_PTR(bp, val, count)&t;&t;&bslash;&n;&t;&t;&t;&t
 DECL|macro|XFS_BUF_ADDR
 mdefine_line|#define XFS_BUF_ADDR(bp)&t;((bp)-&gt;pb_bn)
 DECL|macro|XFS_BUF_SET_ADDR
-mdefine_line|#define XFS_BUF_SET_ADDR(bp, blk)&t;&t;&bslash;&n;&t;&t;&t;((bp)-&gt;pb_bn = (page_buf_daddr_t)(blk))
+mdefine_line|#define XFS_BUF_SET_ADDR(bp, blk)&t;&t;&bslash;&n;&t;&t;&t;((bp)-&gt;pb_bn = (blk))
 DECL|macro|XFS_BUF_OFFSET
 mdefine_line|#define XFS_BUF_OFFSET(bp)&t;((bp)-&gt;pb_file_offset)
 DECL|macro|XFS_BUF_SET_OFFSET
@@ -1364,7 +1335,7 @@ r_void
 op_star
 id|mp
 comma
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|bp
 )paren
@@ -1404,7 +1375,7 @@ r_void
 id|xfs_buf_relse
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|bp
 )paren
@@ -1449,7 +1420,7 @@ r_int
 id|XFS_bwrite
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -1530,7 +1501,7 @@ r_void
 op_star
 id|mp
 comma
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|bp
 )paren

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-multiline_comment|/*&n; *&t;page_buf.c&n; *&n; *&t;The page_buf module provides an abstract buffer cache model on top of&n; *&t;the Linux page cache.  Cached metadata blocks for a file system are&n; *&t;hashed to the inode for the block device.  The page_buf module&n; *&t;assembles buffer (page_buf_t) objects on demand to aggregate such&n; *&t;cached pages for I/O.&n; *&n; *&n; *      Written by Steve Lord, Jim Mostek, Russell Cattelan&n; *&t;&t;    and Rajagopal Ananthanarayanan (&quot;ananth&quot;) at SGI.&n; *&n; */
+multiline_comment|/*&n; *&t;page_buf.c&n; *&n; *&t;The page_buf module provides an abstract buffer cache model on top of&n; *&t;the Linux page cache.  Cached metadata blocks for a file system are&n; *&t;hashed to the inode for the block device.  The page_buf module&n; *&t;assembles buffer (xfs_buf_t) objects on demand to aggregate such&n; *&t;cached pages for I/O.&n; *&n; *&n; *      Written by Steve Lord, Jim Mostek, Russell Cattelan&n; *&t;&t;    and Rajagopal Ananthanarayanan (&quot;ananth&quot;) at SGI.&n; *&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -38,7 +38,7 @@ r_void
 id|pagebuf_delwri_queue
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 comma
 r_int
@@ -65,7 +65,7 @@ DECL|function|pagebuf_trace
 id|pagebuf_trace
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 comma
@@ -341,7 +341,7 @@ op_star
 id|pagebuf_mapout_locked
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 suffix:semicolon
@@ -546,11 +546,11 @@ DECL|function|_pagebuf_initialize
 id|_pagebuf_initialize
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 comma
-id|pb_target_t
+id|xfs_buftarg_t
 op_star
 id|target
 comma
@@ -587,7 +587,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|page_buf_t
+id|xfs_buf_t
 )paren
 )paren
 suffix:semicolon
@@ -658,7 +658,7 @@ id|PBF_NONE
 suffix:semicolon
 id|pb-&gt;pb_bn
 op_assign
-id|PAGE_BUF_DADDR_NULL
+id|XFS_BUF_DADDR_NULL
 suffix:semicolon
 id|atomic_set
 c_func
@@ -700,7 +700,7 @@ DECL|function|_pagebuf_get_pages
 id|_pagebuf_get_pages
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 comma
@@ -810,7 +810,7 @@ DECL|function|_pagebuf_freepages
 id|_pagebuf_freepages
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -871,7 +871,7 @@ DECL|function|pagebuf_free
 id|pagebuf_free
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -1014,7 +1014,7 @@ DECL|function|_pagebuf_lookup_pages
 id|_pagebuf_lookup_pages
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 comma
@@ -1713,14 +1713,14 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Finding and Reading Buffers&n; */
 multiline_comment|/*&n; *&t;_pagebuf_find&n; *&n; *&t;Looks up, and creates if absent, a lockable buffer for&n; *&t;a given range of an inode.  The buffer is returned&n; *&t;locked.&t; If other overlapping buffers exist, they are&n; *&t;released before the new buffer is created and locked,&n; *&t;which may imply that this call will block until those buffers&n; *&t;are unlocked.  No I/O is implied by this call.&n; */
 id|STATIC
-id|page_buf_t
+id|xfs_buf_t
 op_star
 DECL|function|_pagebuf_find
 id|_pagebuf_find
 c_func
 (paren
 multiline_comment|/* find buffer for block&t;*/
-id|pb_target_t
+id|xfs_buftarg_t
 op_star
 id|target
 comma
@@ -1737,7 +1737,7 @@ id|page_buf_flags_t
 id|flags
 comma
 multiline_comment|/* PBF_TRYLOCK&t;&t;&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|new_pb
 )paren
@@ -1761,7 +1761,7 @@ id|list_head
 op_star
 id|p
 suffix:semicolon
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 suffix:semicolon
@@ -1850,7 +1850,7 @@ c_func
 (paren
 id|p
 comma
-id|page_buf_t
+id|xfs_buf_t
 comma
 id|pb_hash_list
 )paren
@@ -2089,7 +2089,7 @@ id|pb
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;pagebuf_find&n; *&n; *&t;pagebuf_find returns a buffer matching the specified range of&n; *&t;data for the specified target, if any of the relevant blocks&n; *&t;are in memory.  The buffer may have unallocated holes, if&n; *&t;some, but not all, of the blocks are in memory.  Even where&n; *&t;pages are present in the buffer, not all of every page may be&n; *&t;valid.&n; */
-id|page_buf_t
+id|xfs_buf_t
 op_star
 DECL|function|pagebuf_find
 id|pagebuf_find
@@ -2097,7 +2097,7 @@ c_func
 (paren
 multiline_comment|/* find buffer for block&t;*/
 multiline_comment|/* if the block is in memory&t;*/
-id|pb_target_t
+id|xfs_buftarg_t
 op_star
 id|target
 comma
@@ -2132,14 +2132,14 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;pagebuf_get&n; *&n; *&t;pagebuf_get assembles a buffer covering the specified range.&n; *&t;Some or all of the blocks in the range may be valid.  Storage&n; *&t;in memory for all portions of the buffer will be allocated,&n; *&t;although backing storage may not be.  If PBF_READ is set in&n; *&t;flags, pagebuf_iostart is called also.&n; */
-id|page_buf_t
+id|xfs_buf_t
 op_star
 DECL|function|pagebuf_get
 id|pagebuf_get
 c_func
 (paren
 multiline_comment|/* allocate a buffer&t;&t;*/
-id|pb_target_t
+id|xfs_buftarg_t
 op_star
 id|target
 comma
@@ -2157,7 +2157,7 @@ id|flags
 )paren
 multiline_comment|/* PBF_TRYLOCK&t;&t;&t;*/
 (brace
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 comma
@@ -2434,14 +2434,13 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Create a skeletal pagebuf (no pages associated with it).&n; */
-id|page_buf_t
+id|xfs_buf_t
 op_star
 DECL|function|pagebuf_lookup
 id|pagebuf_lookup
 c_func
 (paren
-r_struct
-id|pb_target
+id|xfs_buftarg_t
 op_star
 id|target
 comma
@@ -2455,7 +2454,7 @@ id|page_buf_flags_t
 id|flags
 )paren
 (brace
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 suffix:semicolon
@@ -2498,7 +2497,7 @@ DECL|function|pagebuf_readahead
 id|pagebuf_readahead
 c_func
 (paren
-id|pb_target_t
+id|xfs_buftarg_t
 op_star
 id|target
 comma
@@ -2568,7 +2567,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-id|page_buf_t
+id|xfs_buf_t
 op_star
 DECL|function|pagebuf_get_empty
 id|pagebuf_get_empty
@@ -2577,12 +2576,12 @@ c_func
 r_int
 id|len
 comma
-id|pb_target_t
+id|xfs_buftarg_t
 op_star
 id|target
 )paren
 (brace
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 suffix:semicolon
@@ -2679,7 +2678,7 @@ DECL|function|pagebuf_associate_memory
 id|pagebuf_associate_memory
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 comma
@@ -3123,7 +3122,7 @@ DECL|function|pagebuf_hold
 id|pagebuf_hold
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -3152,7 +3151,7 @@ DECL|function|pagebuf_rele
 id|pagebuf_rele
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -3332,7 +3331,7 @@ c_func
 (paren
 multiline_comment|/* lock buffer, if not locked&t;*/
 multiline_comment|/* returns -EBUSY if locked)&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -3393,7 +3392,7 @@ DECL|function|pagebuf_lock_value
 id|pagebuf_lock_value
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -3413,7 +3412,7 @@ DECL|function|pagebuf_lock
 id|pagebuf_lock
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -3478,7 +3477,7 @@ id|pagebuf_unlock
 c_func
 (paren
 multiline_comment|/* unlock buffer&t;&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -3515,7 +3514,7 @@ DECL|function|pagebuf_pin
 id|pagebuf_pin
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -3547,7 +3546,7 @@ DECL|function|pagebuf_unpin
 id|pagebuf_unpin
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -3590,7 +3589,7 @@ DECL|function|pagebuf_ispin
 id|pagebuf_ispin
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -3612,7 +3611,7 @@ DECL|function|_pagebuf_wait_unpin
 id|_pagebuf_wait_unpin
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -3722,12 +3721,12 @@ op_star
 id|v
 )paren
 (brace
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 op_assign
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 id|v
@@ -3784,7 +3783,7 @@ DECL|function|pagebuf_iodone
 id|pagebuf_iodone
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 comma
@@ -3906,7 +3905,7 @@ id|pagebuf_ioerror
 c_func
 (paren
 multiline_comment|/* mark/clear buffer error flag */
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 comma
@@ -3943,7 +3942,7 @@ id|pagebuf_iostart
 c_func
 (paren
 multiline_comment|/* start I/O on a buffer&t;  */
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 comma
@@ -4055,7 +4054,7 @@ c_func
 (paren
 id|pb-&gt;pb_bn
 op_eq
-id|PAGE_BUF_DADDR_NULL
+id|XFS_BUF_DADDR_NULL
 )paren
 suffix:semicolon
 multiline_comment|/* For writes allow an alternate strategy routine to precede&n;&t; * the actual I/O request (which may not be issued at all in&n;&t; * a shutdown situation, for example).&n;&t; */
@@ -4114,7 +4113,7 @@ DECL|function|_pagebuf_iolocked
 id|_pagebuf_iolocked
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -4152,7 +4151,7 @@ DECL|function|_pagebuf_iodone
 id|_pagebuf_iodone
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 comma
@@ -4212,12 +4211,12 @@ r_int
 id|error
 )paren
 (brace
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 op_assign
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 id|bio-&gt;bi_private
@@ -4450,7 +4449,7 @@ DECL|function|_pagebuf_ioapply
 id|_pagebuf_ioapply
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -4902,7 +4901,7 @@ id|pagebuf_iorequest
 c_func
 (paren
 multiline_comment|/* start real I/O&t;&t;*/
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -4999,7 +4998,7 @@ DECL|function|pagebuf_iowait
 id|pagebuf_iowait
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -5061,7 +5060,7 @@ DECL|function|pagebuf_mapout_locked
 id|pagebuf_mapout_locked
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -5117,7 +5116,7 @@ DECL|function|pagebuf_offset
 id|pagebuf_offset
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 comma
@@ -5170,7 +5169,7 @@ DECL|function|pagebuf_iomove
 id|pagebuf_iomove
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 comma
@@ -5370,7 +5369,7 @@ DECL|function|pagebuf_delwri_queue
 id|pagebuf_delwri_queue
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 comma
@@ -5473,7 +5472,7 @@ DECL|function|pagebuf_delwri_dequeue
 id|pagebuf_delwri_dequeue
 c_func
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 )paren
@@ -5595,7 +5594,7 @@ op_star
 id|data
 )paren
 (brace
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 suffix:semicolon
@@ -5693,7 +5692,7 @@ c_func
 (paren
 id|curr
 comma
-id|page_buf_t
+id|xfs_buf_t
 comma
 id|pb_list
 )paren
@@ -5810,7 +5809,7 @@ c_func
 (paren
 id|tmp.next
 comma
-id|page_buf_t
+id|xfs_buf_t
 comma
 id|pb_list
 )paren
@@ -5873,7 +5872,7 @@ DECL|function|pagebuf_delwri_flush
 id|pagebuf_delwri_flush
 c_func
 (paren
-id|pb_target_t
+id|xfs_buftarg_t
 op_star
 id|target
 comma
@@ -5885,7 +5884,7 @@ op_star
 id|pinptr
 )paren
 (brace
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 suffix:semicolon
@@ -5948,7 +5947,7 @@ c_func
 (paren
 id|curr
 comma
-id|page_buf_t
+id|xfs_buf_t
 comma
 id|pb_list
 )paren
@@ -6059,7 +6058,7 @@ c_func
 (paren
 id|curr
 comma
-id|page_buf_t
+id|xfs_buf_t
 comma
 id|pb_list
 )paren
@@ -6115,7 +6114,7 @@ c_func
 (paren
 id|tmp.next
 comma
-id|page_buf_t
+id|xfs_buf_t
 comma
 id|pb_list
 )paren
@@ -6328,11 +6327,11 @@ op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;page_buf_t&quot;
+l_string|&quot;xfs_buf_t&quot;
 comma
 r_sizeof
 (paren
-id|page_buf_t
+id|xfs_buf_t
 )paren
 comma
 l_int|0
