@@ -6,7 +6,6 @@ DECL|macro|SAA7146_VERSION_CODE
 mdefine_line|#define SAA7146_VERSION_CODE 0x000101
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#ifndef O_NONCAP  
 DECL|macro|O_NONCAP

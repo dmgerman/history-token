@@ -2,8 +2,11 @@ multiline_comment|/*&n;    i2c-dev.c - i2c-bus driver, char device interface  &n
 multiline_comment|/* Note that this is a complete rewrite of Simon Vogl&squot;s i2c-dev module.&n;   But I have used so much of his original code and ideas that it seems&n;   only fair to recognize him as co-author -- Frodo */
 multiline_comment|/* The I2C_RDWR ioctl code is written by Kolja Waschk &lt;waschk@telos.de&gt; */
 multiline_comment|/* The devfs code is contributed by Philipp Matthias Hahn &n;   &lt;pmhahn@titan.lahn.de&gt; */
-multiline_comment|/* If you want debugging uncomment: */
-multiline_comment|/* #define DEBUG 1 */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_CORE
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -503,7 +506,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;i2c-dev.o: i2c-%d reading %d bytes.&bslash;n&quot;
+l_string|&quot;i2c-dev: i2c-%d reading %d bytes.&bslash;n&quot;
 comma
 id|iminor
 c_func
@@ -663,7 +666,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;i2c-dev.o: i2c-%d writing %d bytes.&bslash;n&quot;
+l_string|&quot;i2c-dev: i2c-%d writing %d bytes.&bslash;n&quot;
 comma
 id|iminor
 c_func
