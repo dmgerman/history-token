@@ -660,7 +660,7 @@ suffix:semicolon
 )brace
 DECL|function|__detach_pid
 r_static
-r_inline
+id|fastcall
 r_int
 id|__detach_pid
 c_func
@@ -684,6 +684,8 @@ id|pid_next
 suffix:semicolon
 r_int
 id|nr
+op_assign
+l_int|0
 suffix:semicolon
 id|pid
 op_assign
@@ -715,7 +717,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|list_empty
 c_func
 (paren
@@ -723,6 +724,11 @@ op_amp
 id|pid-&gt;pid_list
 )paren
 )paren
+id|nr
+op_assign
+id|pid-&gt;nr
+suffix:semicolon
+r_else
 (brace
 id|pid_next
 op_assign
@@ -766,10 +772,6 @@ c_func
 op_amp
 id|pid-&gt;pid_list
 )paren
-suffix:semicolon
-id|nr
-op_assign
-id|pid-&gt;nr
 suffix:semicolon
 id|pid-&gt;nr
 op_assign
