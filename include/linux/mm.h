@@ -43,6 +43,15 @@ r_extern
 r_int
 id|page_cluster
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
+r_extern
+r_int
+id|sysctl_legacy_va_layout
+suffix:semicolon
+macro_line|#else
+DECL|macro|sysctl_legacy_va_layout
+mdefine_line|#define sysctl_legacy_va_layout 0
+macro_line|#endif
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;

@@ -80,6 +80,8 @@ multiline_comment|/*&n;&t; * Fall back to the standard layout if the personality
 r_if
 c_cond
 (paren
+id|sysctl_legacy_va_layout
+op_logical_or
 (paren
 id|current-&gt;personality
 op_amp
