@@ -1001,17 +1001,6 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|prom_print
-c_func
-(paren
-r_const
-r_char
-op_star
-id|msg
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|relocate_nodes
 c_func
 (paren
