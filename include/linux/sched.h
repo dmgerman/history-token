@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
+macro_line|#include &lt;asm/cputime.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -324,11 +325,7 @@ r_void
 id|scheduler_tick
 c_func
 (paren
-r_int
-id|user_tick
-comma
-r_int
-id|system
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -839,8 +836,7 @@ DECL|member|utime
 DECL|member|stime
 DECL|member|cutime
 DECL|member|cstime
-r_int
-r_int
+id|cputime_t
 id|utime
 comma
 id|stime
@@ -1631,26 +1627,26 @@ r_int
 id|rt_priority
 suffix:semicolon
 DECL|member|it_real_value
-DECL|member|it_prof_value
-DECL|member|it_virt_value
+DECL|member|it_real_incr
 r_int
 r_int
 id|it_real_value
 comma
-id|it_prof_value
-comma
-id|it_virt_value
-suffix:semicolon
-DECL|member|it_real_incr
-DECL|member|it_prof_incr
-DECL|member|it_virt_incr
-r_int
-r_int
 id|it_real_incr
-comma
-id|it_prof_incr
+suffix:semicolon
+DECL|member|it_virt_value
+DECL|member|it_virt_incr
+id|cputime_t
+id|it_virt_value
 comma
 id|it_virt_incr
+suffix:semicolon
+DECL|member|it_prof_value
+DECL|member|it_prof_incr
+id|cputime_t
+id|it_prof_value
+comma
+id|it_prof_incr
 suffix:semicolon
 DECL|member|real_timer
 r_struct
@@ -1659,8 +1655,7 @@ id|real_timer
 suffix:semicolon
 DECL|member|utime
 DECL|member|stime
-r_int
-r_int
+id|cputime_t
 id|utime
 comma
 id|stime
