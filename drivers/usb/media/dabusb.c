@@ -45,7 +45,8 @@ id|buffers
 op_assign
 l_int|256
 suffix:semicolon
-r_extern
+DECL|variable|dabusb_driver
+r_static
 r_struct
 id|usb_driver
 id|dabusb_driver
