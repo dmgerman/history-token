@@ -302,8 +302,9 @@ id|name
 id|printk
 (paren
 id|KERN_CRIT
+l_string|&quot;%s: trying to free channel %d which is already freed&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: trying to free channel %d which is already freed&bslash;n&quot;
 comma
 id|dma_ch
 )paren

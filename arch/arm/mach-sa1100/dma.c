@@ -385,8 +385,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: unable to request IRQ %d for %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;unable to request IRQ %d for %s&bslash;n&quot;
 comma
 id|IRQ_DMA0
 op_plus
@@ -504,8 +505,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: bad DMA identifier&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: bad DMA identifier&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -527,8 +529,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: Trying to free free DMA&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;Trying to free free DMA&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -590,6 +593,7 @@ id|size
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|u_long
@@ -597,6 +601,26 @@ id|status
 suffix:semicolon
 r_int
 id|ret
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dma_ptr
+op_amp
+l_int|3
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;DMA: unaligned start address (0x%08lx)&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|dma_ptr
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -917,8 +941,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: bad DMA identifier&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: bad DMA identifier&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
