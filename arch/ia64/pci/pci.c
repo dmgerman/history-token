@@ -1576,7 +1576,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#warning pcibios_update_resource() is now a generic implementation - please check
 r_void
 id|__devinit
 DECL|function|pcibios_update_irq
