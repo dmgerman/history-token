@@ -308,10 +308,27 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|4
+l_int|3
 )paren
 comma
 multiline_comment|/* have s/g table? */
+DECL|enumerator|ATA_QCFLAG_SINGLE
+id|ATA_QCFLAG_SINGLE
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|4
+)paren
+comma
+multiline_comment|/* no s/g, just a single buffer */
+DECL|enumerator|ATA_QCFLAG_DMAMAP
+id|ATA_QCFLAG_DMAMAP
+op_assign
+id|ATA_QCFLAG_SG
+op_or
+id|ATA_QCFLAG_SINGLE
+comma
 multiline_comment|/* various lengths of time */
 DECL|enumerator|ATA_TMOUT_EDD
 id|ATA_TMOUT_EDD
@@ -750,6 +767,10 @@ DECL|member|n_elem
 r_int
 r_int
 id|n_elem
+suffix:semicolon
+DECL|member|pci_dma_dir
+r_int
+id|pci_dma_dir
 suffix:semicolon
 DECL|member|nsect
 r_int

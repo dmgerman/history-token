@@ -1151,6 +1151,7 @@ id|qc
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* data is present; dma-map it */
 r_if
 c_cond
 (paren
@@ -1190,11 +1191,28 @@ r_goto
 id|err_out
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|cmd-&gt;use_sg
+)paren
 id|qc-&gt;flags
 op_or_assign
 id|ATA_QCFLAG_SG
 suffix:semicolon
-multiline_comment|/* data is present; dma-map it */
+r_else
+id|qc-&gt;flags
+op_or_assign
+id|ATA_QCFLAG_SINGLE
+suffix:semicolon
+id|qc-&gt;pci_dma_dir
+op_assign
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|cmd-&gt;sc_data_direction
+)paren
+suffix:semicolon
 )brace
 id|qc-&gt;complete_fn
 op_assign

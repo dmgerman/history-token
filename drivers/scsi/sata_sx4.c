@@ -2187,7 +2187,7 @@ op_logical_neg
 (paren
 id|qc-&gt;flags
 op_amp
-id|ATA_QCFLAG_SG
+id|ATA_QCFLAG_DMAMAP
 )paren
 )paren
 r_return
