@@ -12,9 +12,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
@@ -27,6 +24,9 @@ macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
 macro_line|#include &lt;pcmcia/bus_ops.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;orinoco.h&quot;
 multiline_comment|/********************************************************************/
 multiline_comment|/* Module stuff&t;&t;&t;&t;&t;&t;&t;    */

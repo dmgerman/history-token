@@ -1,16 +1,12 @@
 multiline_comment|/*======================================================================&n;&n;    A PCMCIA token-ring driver for IBM-based cards&n;&n;    This driver supports the IBM PCMCIA Token-Ring Card.&n;    Written by Steve Kipisz, kipisz@vnet.ibm.com or&n;                             bungy@ibm.net&n;&n;    Written 1995,1996.&n;&n;    This code is based on pcnet_cs.c from David Hinds.&n;    &n;    V2.2.0 February 1999 - Mike Phillips phillim@amtrak.com&n;&n;    Linux V2.2.x presented significant changes to the underlying&n;    ibmtr.c code.  Mainly the code became a lot more organized and&n;    modular.&n;&n;    This caused the old PCMCIA Token Ring driver to give up and go &n;    home early. Instead of just patching the old code to make it &n;    work, the PCMCIA code has been streamlined, updated and possibly&n;    improved.&n;&n;    This code now only contains code required for the Card Services.&n;    All we do here is set the card up enough so that the real ibmtr.c&n;    driver can find it and work with it properly.&n;&n;    i.e. We set up the io port, irq, mmio memory and shared ram&n;    memory.  This enables ibmtr_probe in ibmtr.c to find the card and&n;    configure it as though it was a normal ISA and/or PnP card.&n;&n;    CHANGES&n;&n;    v2.2.5 April 1999 Mike Phillips (phillim@amtrak.com)&n;    Obscure bug fix, required changed to ibmtr.c not ibmtr_cs.c&n;    &n;    v2.2.7 May 1999 Mike Phillips (phillim@amtrak.com)&n;    Updated to version 2.2.7 to match the first version of the kernel&n;    that the modification to ibmtr.c were incorporated into.&n;    &n;    v2.2.17 July 2000 Burt Silverman (burts@us.ibm.com)&n;    Address translation feature of PCMCIA controller is usable so&n;    memory windows can be placed in High memory (meaning above&n;    0xFFFFF.)&n;&n;======================================================================*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/trdevice.h&gt;
 macro_line|#include &lt;linux/ibmtr.h&gt;
@@ -19,6 +15,9 @@ macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|PCMCIA
 mdefine_line|#define PCMCIA
 macro_line|#include &quot;../tokenring/ibmtr.c&quot;

@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * xircom_cb: A driver for the (tulip-like) Xircom Cardbus ethernet cards &n; *&n; * This software is (C) by the respective authors, and licensed under the GPL&n; * License.&n; *&n; * Written by Arjan van de Ven for Red Hat, Inc.&n; * Based on work by Jeff Garzik, Doug Ledford and Donald Becker &n; *&n; *  &t;This software may be used and distributed according to the terms&n; *      of the GNU General Public License, incorporated herein by reference.&n; *&n; *&n; * &t;$Id: xircom_cb.c,v 1.33 2001/03/19 14:02:07 arjanv Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;

@@ -12,22 +12,21 @@ suffix:semicolon
 multiline_comment|/*&n; * The Schneider &amp; Koch (SK) G16 Network device driver is based&n; * on the &squot;ni6510&squot; driver from Michael Hipp which can be found at&n; * ftp://sunsite.unc.edu/pub/Linux/system/Network/drivers/nidrivers.tar.gz&n; * &n; * Sources: 1) ni6510.c by M. Hipp&n; *          2) depca.c  by D.C. Davies&n; *          3) skeleton.c by D. Becker&n; *          4) Am7990 Local Area Network Controller for Ethernet (LANCE),&n; *             AMD, Pub. #05698, June 1989&n; *&n; * Many Thanks for helping me to get things working to: &n; *                 &n; *                 A. Cox (A.Cox@swansea.ac.uk)&n; *                 M. Hipp (mhipp@student.uni-tuebingen.de)&n; *                 R. Bolz (Schneider &amp; Koch, Germany)&n; *&n; * To Do: &n; *        - Support of SK_G8 and other SK Network Cards.&n; *        - Autoset memory mapped RAM. Check for free memory and then&n; *          configure RAM correctly. &n; *        - SK_close should really set card in to initial state.&n; *        - Test if IRQ 3 is not switched off. Use autoirq() functionality.&n; *          (as in /drivers/net/skeleton.c)&n; *        - Implement Multicast addressing. At minimum something like&n; *          in depca.c. &n; *        - Redo the statistics part.&n; *        - Try to find out if the board is in 8 Bit or 16 Bit slot.&n; *          If in 8 Bit mode don&squot;t use IRQ 11.&n; *        - (Try to make it slightly faster.) &n; *&t;  - Power management support&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt; 
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt; 
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt; 
 macro_line|#include &quot;sk_g16.h&quot;
 multiline_comment|/* &n; * Schneider &amp; Koch Card Definitions &n; * =================================&n; */
 DECL|macro|SK_NAME

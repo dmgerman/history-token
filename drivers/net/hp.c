@@ -12,7 +12,6 @@ l_string|&quot;hp.c:v1.10 9/23/94 Donald Becker (becker@cesdis.gsfc.nasa.gov)&bs
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
