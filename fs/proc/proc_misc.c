@@ -68,15 +68,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|get_blkdev_list
-c_func
-(paren
-r_char
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|get_filesystem_list
 c_func
 (paren
