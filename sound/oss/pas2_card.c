@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * sound/pas2_card.c&n; *&n; * Detection routine for the Pro Audio Spectrum cards.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
