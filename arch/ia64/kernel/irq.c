@@ -364,6 +364,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * This is updated when the user sets irq affinity via /proc&n; */
 DECL|variable|pending_irq_cpumask
+r_static
 id|cpumask_t
 id|__cacheline_aligned
 id|pending_irq_cpumask
@@ -384,28 +385,6 @@ id|NR_IRQS
 )paren
 )braket
 suffix:semicolon
-DECL|variable|irq_affinity
-r_static
-id|cpumask_t
-id|irq_affinity
-(braket
-id|NR_IRQS
-)braket
-op_assign
-(brace
-(braket
-l_int|0
-dot
-dot
-dot
-id|NR_IRQS
-op_minus
-l_int|1
-)braket
-op_assign
-id|CPU_MASK_ALL
-)brace
-suffix:semicolon
 DECL|variable|irq_redir
 r_static
 r_char
@@ -415,6 +394,28 @@ id|NR_IRQS
 )braket
 suffix:semicolon
 singleline_comment|// = { [0 ... NR_IRQS-1] = 1 };
+multiline_comment|/*&n; * Arch specific routine for deferred write to iosapic rte to reprogram&n; * intr destination.&n; */
+DECL|function|proc_set_irq_affinity
+r_void
+id|proc_set_irq_affinity
+c_func
+(paren
+r_int
+r_int
+id|irq
+comma
+id|cpumask_t
+id|mask_val
+)paren
+(brace
+id|pending_irq_cpumask
+(braket
+id|irq
+)braket
+op_assign
+id|mask_val
+suffix:semicolon
+)brace
 DECL|function|set_irq_affinity_info
 r_void
 id|set_irq_affinity_info
