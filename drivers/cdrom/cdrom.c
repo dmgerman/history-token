@@ -45,6 +45,7 @@ macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* used to tell the module to turn on full debugging messages */
 DECL|variable|debug
@@ -9751,6 +9752,14 @@ r_struct
 id|cdrom_generic_command
 comma
 id|cgc
+)paren
+suffix:semicolon
+id|cgc.timeout
+op_assign
+id|clock_t_to_jiffies
+c_func
+(paren
+id|cgc.timeout
 )paren
 suffix:semicolon
 r_return
