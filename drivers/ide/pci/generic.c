@@ -206,6 +206,12 @@ suffix:semicolon
 id|u16
 id|command
 suffix:semicolon
+r_int
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -230,8 +236,8 @@ l_int|1
 )paren
 )paren
 )paren
-r_return
-l_int|1
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/* UM8886A/BF pair */
 r_if
@@ -258,8 +264,8 @@ l_int|1
 )paren
 )paren
 )paren
-r_return
-l_int|1
+r_goto
+id|out
 suffix:semicolon
 id|pci_read_config_word
 c_func
@@ -292,10 +298,14 @@ comma
 id|d-&gt;name
 )paren
 suffix:semicolon
-r_return
-l_int|1
+r_goto
+id|out
 suffix:semicolon
 )brace
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 id|ide_setup_pci_device
 c_func
 (paren
@@ -304,8 +314,10 @@ comma
 id|d
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|variable|generic_pci_tbl
