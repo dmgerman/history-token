@@ -1975,6 +1975,9 @@ id|err
 r_return
 id|err
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -1992,6 +1995,10 @@ r_sizeof
 id|ifr
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
