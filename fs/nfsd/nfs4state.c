@@ -155,6 +155,7 @@ id|client_sema
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * nfs4_unlock_state(); called in encode&n; */
 r_void
 DECL|function|nfs4_unlock_state
 id|nfs4_unlock_state
@@ -4282,7 +4283,7 @@ id|FMODE_READ
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * nfsd4_process_open1()&n; * &t;lookup stateowner.&n; * &t;&t;found:&n; * &t;&t;&t;check confirmed &n; * &t;&t;&t;&t;confirmed:&n; * &t;&t;&t;&t;&t;check seqid&n; * &t;&t;&t;&t;not confirmed:&n; * &t;&t;&t;&t;&t;delete owner&n; * &t;&t;&t;&t;&t;create new owner&n; * &t;&t;notfound:&n; * &t;&t;&t;verify clientid&n; * &t;&t;&t;create new owner&n; */
+multiline_comment|/*&n; * nfsd4_process_open1()&n; * &t;lookup stateowner.&n; * &t;&t;found:&n; * &t;&t;&t;check confirmed &n; * &t;&t;&t;&t;confirmed:&n; * &t;&t;&t;&t;&t;check seqid&n; * &t;&t;&t;&t;not confirmed:&n; * &t;&t;&t;&t;&t;delete owner&n; * &t;&t;&t;&t;&t;create new owner&n; * &t;&t;notfound:&n; * &t;&t;&t;verify clientid&n; * &t;&t;&t;create new owner&n; *&n; * called with nfs4_lock_state() held.&n; */
 r_int
 DECL|function|nfsd4_process_open1
 id|nfsd4_process_open1
@@ -4355,11 +4356,6 @@ id|open-&gt;op_clientid
 )paren
 r_goto
 id|out
-suffix:semicolon
-id|nfs4_lock_state
-c_func
-(paren
-)paren
 suffix:semicolon
 id|strhashval
 op_assign
@@ -4543,15 +4539,11 @@ id|sop-&gt;so_client
 suffix:semicolon
 id|out
 suffix:colon
-id|nfs4_unlock_state
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * called with nfs4_lock_state() held.&n; */
 r_int
 DECL|function|nfsd4_process_open2
 id|nfsd4_process_open2
@@ -4651,11 +4643,6 @@ id|open-&gt;op_share_deny
 )paren
 r_goto
 id|out
-suffix:semicolon
-id|nfs4_lock_state
-c_func
-(paren
-)paren
 suffix:semicolon
 id|fi_hashval
 op_assign
@@ -5068,11 +5055,6 @@ id|open-&gt;op_stateowner-&gt;so_confirmed
 id|open-&gt;op_rflags
 op_or_assign
 id|NFS4_OPEN_RESULT_CONFIRM
-suffix:semicolon
-id|nfs4_unlock_state
-c_func
-(paren
-)paren
 suffix:semicolon
 r_return
 id|status
@@ -6333,6 +6315,11 @@ comma
 id|seqid
 )paren
 suffix:semicolon
+op_star
+id|sopp
+op_assign
+l_int|NULL
+suffix:semicolon
 id|status
 op_assign
 id|nfserr_bad_seqid
@@ -6342,6 +6329,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * nfs4_unlock_state(); called in encode&n; */
 r_int
 DECL|function|nfsd4_open_confirm
 id|nfsd4_open_confirm
@@ -6508,11 +6496,6 @@ id|nfs_ok
 suffix:semicolon
 id|out
 suffix:colon
-id|nfs4_unlock_state
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon
@@ -6628,6 +6611,7 @@ id|bmap
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * nfs4_unlock_state(); called in encode&n; */
 r_int
 DECL|function|nfsd4_open_downgrade
 id|nfsd4_open_downgrade
@@ -6673,6 +6657,10 @@ id|current_fh-&gt;fh_dentry-&gt;d_name.len
 comma
 id|current_fh-&gt;fh_dentry-&gt;d_name.name
 )paren
+suffix:semicolon
+id|od-&gt;od_stateowner
+op_assign
+l_int|NULL
 suffix:semicolon
 id|status
 op_assign
@@ -6863,15 +6851,11 @@ id|nfs_ok
 suffix:semicolon
 id|out
 suffix:colon
-id|nfs4_unlock_state
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * nfs4_unlock_state() called after encode&n; */
 r_int
 DECL|function|nfsd4_close
 id|nfsd4_close
@@ -6913,6 +6897,10 @@ id|current_fh-&gt;fh_dentry-&gt;d_name.len
 comma
 id|current_fh-&gt;fh_dentry-&gt;d_name.name
 )paren
+suffix:semicolon
+id|close-&gt;cl_stateowner
+op_assign
+l_int|NULL
 suffix:semicolon
 id|nfs4_lock_state
 c_func
@@ -6996,11 +6984,6 @@ id|OPEN_STATE
 suffix:semicolon
 id|out
 suffix:colon
-id|nfs4_unlock_state
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon
@@ -7948,7 +7931,7 @@ id|length
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  LOCK operation &n; */
+multiline_comment|/*&n; *  LOCK operation &n; *&n; * nfs4_unlock_state(); called in encode&n; */
 r_int
 DECL|function|nfsd4_lock
 id|nfsd4_lock
@@ -8618,11 +8601,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|nfs4_unlock_state
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon
@@ -9074,6 +9052,10 @@ id|locku-&gt;lu_length
 r_return
 id|nfserr_inval
 suffix:semicolon
+id|locku-&gt;lu_stateowner
+op_assign
+l_int|NULL
+suffix:semicolon
 id|nfs4_lock_state
 c_func
 (paren
@@ -9265,11 +9247,6 @@ id|stateid_t
 suffix:semicolon
 id|out
 suffix:colon
-id|nfs4_unlock_state
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon

@@ -269,6 +269,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * nfs4_unlock_state() called in encode&n; */
 r_static
 r_inline
 r_int
@@ -298,7 +299,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFSD: nfsd4_open filename %.*s&bslash;n&quot;
+l_string|&quot;NFSD: nfsd4_open filename %.*s op_stateowner %p&bslash;n&quot;
 comma
 (paren
 r_int
@@ -306,6 +307,8 @@ r_int
 id|open-&gt;op_fname.len
 comma
 id|open-&gt;op_fname.data
+comma
+id|open-&gt;op_stateowner
 )paren
 suffix:semicolon
 multiline_comment|/* This check required by spec. */
@@ -320,6 +323,15 @@ id|NFS4_OPEN_CLAIM_NULL
 )paren
 r_return
 id|nfserr_inval
+suffix:semicolon
+id|open-&gt;op_stateowner
+op_assign
+l_int|NULL
+suffix:semicolon
+id|nfs4_lock_state
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* check seqid for replay. set nfs4_owner */
 id|status
@@ -3167,6 +3179,11 @@ op_amp
 id|op-&gt;u.close
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|op-&gt;u.close.cl_stateowner
+)paren
 id|op-&gt;replay
 op_assign
 op_amp
@@ -3287,6 +3304,11 @@ op_amp
 id|op-&gt;u.lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|op-&gt;u.lock.lk_stateowner
+)paren
 id|op-&gt;replay
 op_assign
 op_amp
@@ -3330,6 +3352,11 @@ op_amp
 id|op-&gt;u.locku
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|op-&gt;u.locku.lu_stateowner
+)paren
 id|op-&gt;replay
 op_assign
 op_amp
@@ -3419,6 +3446,11 @@ op_amp
 id|op-&gt;u.open
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|op-&gt;u.open.op_stateowner
+)paren
 id|op-&gt;replay
 op_assign
 op_amp
@@ -3443,6 +3475,11 @@ op_amp
 id|op-&gt;u.open_confirm
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|op-&gt;u.open_confirm.oc_stateowner
+)paren
 id|op-&gt;replay
 op_assign
 op_amp
@@ -3467,6 +3504,11 @@ op_amp
 id|op-&gt;u.open_downgrade
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|op-&gt;u.open_downgrade.od_stateowner
+)paren
 id|op-&gt;replay
 op_assign
 op_amp
