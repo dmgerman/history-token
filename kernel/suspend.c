@@ -2835,13 +2835,6 @@ id|root_swap
 op_assign
 l_int|0xFFFF
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|suspend_pagedir_lock
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -2873,13 +2866,6 @@ comma
 id|nr_needed_pages
 op_minus
 id|i.freeswap
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|suspend_pagedir_lock
 )paren
 suffix:semicolon
 r_return
@@ -2925,13 +2911,6 @@ c_func
 l_string|&quot;Really should not happen&quot;
 )paren
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|suspend_pagedir_lock
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -2967,20 +2946,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * End of critical section. From now on, we can write to memory,&n;&t; * but we should not touch disk. This specially means we must _not_&n;&t; * touch swap space! Except we must write out our image of course.&n;&t; *&n;&t; * Following line enforces not writing to disk until we choose.&n;&t; */
+multiline_comment|/*&n;&t; * End of critical section. From now on, we can write to memory,&n;&t; * but we should not touch disk. This specially means we must _not_&n;&t; * touch swap space! Except we must write out our image of course.&n;&t; */
 id|printk
 c_func
 (paren
 l_string|&quot;critical section/: done (%d pages copied)&bslash;n&quot;
 comma
 id|nr_copy_pages
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|suspend_pagedir_lock
 )paren
 suffix:semicolon
 r_return
@@ -3264,6 +3236,7 @@ suffix:semicolon
 multiline_comment|/* Hmm, is this the problem? */
 macro_line|#endif
 )brace
+multiline_comment|/* do_magic() is implemented in arch/?/kernel/suspend_asm.S, and basically does:&n;&n;&t;if (!resume) {&n;&t;&t;do_magic_suspend_1();&n;&t;&t;save_processor_state();&n;&t;&t;SAVE_REGISTERS&n;&t;&t;do_magic_suspend_2();&n;&t;&t;return;&n;&t;}&n;&t;GO_TO_SWAPPER_PAGE_TABLES&n;&t;do_magic_resume_1();&n;&t;COPY_PAGES_BACK&n;&t;RESTORE_REGISTERS&n;&t;restore_processor_state();&n;&t;do_magic_resume_2();&n;&n; */
 DECL|function|do_magic_suspend_1
 r_void
 id|do_magic_suspend_1
@@ -3307,22 +3280,50 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|is_problem
+suffix:semicolon
 id|read_swapfiles
 c_func
 (paren
+)paren
+suffix:semicolon
+id|is_problem
+op_assign
+id|suspend_prepare_image
+c_func
+(paren
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|suspend_pagedir_lock
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|suspend_prepare_image
+id|is_problem
+)paren
+(brace
+id|kernel_fpu_end
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* save_processor_state() does kernel_fpu_begin, and we need to revert it in order to pass in_atomic() checks */
+id|BUG_ON
+c_func
+(paren
+id|in_atomic
 c_func
 (paren
 )paren
 )paren
-(brace
-multiline_comment|/* suspend_save_image realeses suspend_pagedir_lock */
+suffix:semicolon
 id|suspend_save_image
 c_func
 (paren
@@ -5322,11 +5323,9 @@ comma
 l_int|0
 )paren
 )paren
-(brace
 r_goto
 id|read_failure
 suffix:semicolon
-)brace
 id|do_magic
 c_func
 (paren
