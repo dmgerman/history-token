@@ -4889,6 +4889,8 @@ op_member_access_from_pointer
 id|OUTBSYNC
 c_func
 (paren
+id|drive
+comma
 id|cmd
 comma
 id|IDE_COMMAND_REG
