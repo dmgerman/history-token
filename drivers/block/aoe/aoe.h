@@ -652,17 +652,6 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|aoechr_hdump
-c_func
-(paren
-r_char
-op_star
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-r_void
 id|aoecmd_work
 c_func
 (paren
