@@ -202,6 +202,11 @@ r_int
 id|blocked_open
 suffix:semicolon
 multiline_comment|/* # of blocked opens */
+multiline_comment|/* Protect concurent access to :&n;&t; *&t;o self-&gt;open_count&n;&t; *&t;o self-&gt;ctrl_skb&n;&t; *&t;o self-&gt;tx_skb&n;&t; * Maybe other things may gain to be protected as well...&n;&t; * Jean II */
+DECL|member|spinlock
+id|spinlock_t
+id|spinlock
+suffix:semicolon
 )brace
 suffix:semicolon
 r_void

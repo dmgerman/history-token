@@ -452,7 +452,7 @@ r_struct
 id|ircomm_cb
 op_star
 )paren
-id|hashbin_find
+id|hashbin_lock_find
 c_func
 (paren
 id|ircomm
