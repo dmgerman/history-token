@@ -5,10 +5,10 @@ mdefine_line|#define LOCKD_XDR_H
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
+DECL|macro|NLM_MAXCOOKIELEN
+mdefine_line|#define NLM_MAXCOOKIELEN    &t;32
 DECL|macro|NLM_MAXSTRLEN
 mdefine_line|#define NLM_MAXSTRLEN&t;&t;1024
-DECL|macro|QUADLEN
-mdefine_line|#define QUADLEN(len)&t;&t;(((len) + 3) &gt;&gt; 2)
 DECL|macro|nlm_granted
 mdefine_line|#define&t;nlm_granted&t;&t;__constant_htonl(NLM_LCK_GRANTED)
 DECL|macro|nlm_lck_denied
@@ -51,7 +51,7 @@ id|fl
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;NLM cookies. Technically they can be 1K, Nobody uses over 8 bytes&n; *&t;however.&n; */
+multiline_comment|/*&n; *&t;NLM cookies. Technically they can be 1K, but Linux only uses 8 bytes.&n; *&t;FreeBSD uses 16, Apple Mac OS X 10.3 uses 20. Therefore we set it to&n; *&t;32 bytes.&n; */
 DECL|struct|nlm_cookie
 r_struct
 id|nlm_cookie
@@ -61,7 +61,7 @@ r_int
 r_char
 id|data
 (braket
-l_int|8
+id|NLM_MAXCOOKIELEN
 )braket
 suffix:semicolon
 DECL|member|len

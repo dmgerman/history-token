@@ -139,7 +139,7 @@ c_cond
 (paren
 id|len
 op_le
-l_int|8
+id|NLM_MAXCOOKIELEN
 )paren
 (brace
 id|c-&gt;len
@@ -158,13 +158,11 @@ id|len
 suffix:semicolon
 id|p
 op_add_assign
+id|XDR_QUADLEN
+c_func
 (paren
 id|len
-op_plus
-l_int|3
 )paren
-op_rshift
-l_int|2
 suffix:semicolon
 )brace
 r_else
@@ -173,9 +171,11 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;lockd: bad cookie size %d (only cookies under 8 bytes are supported.)&bslash;n&quot;
+l_string|&quot;lockd: bad cookie size %d (only cookies under %d bytes are supported.)&bslash;n&quot;
 comma
 id|len
+comma
+id|NLM_MAXCOOKIELEN
 )paren
 suffix:semicolon
 r_return
@@ -225,13 +225,11 @@ id|c-&gt;len
 suffix:semicolon
 id|p
 op_add_assign
+id|XDR_QUADLEN
+c_func
 (paren
 id|c-&gt;len
-op_plus
-l_int|3
 )paren
-op_rshift
-l_int|2
 suffix:semicolon
 r_return
 id|p
@@ -2810,7 +2808,7 @@ multiline_comment|/*&n; * Buffer requirements for NLM&n; */
 DECL|macro|NLM4_void_sz
 mdefine_line|#define NLM4_void_sz&t;&t;0
 DECL|macro|NLM4_cookie_sz
-mdefine_line|#define NLM4_cookie_sz&t;&t;3&t;/* 1 len , 2 data */
+mdefine_line|#define NLM4_cookie_sz&t;&t;1+XDR_QUADLEN(NLM_MAXCOOKIELEN)
 DECL|macro|NLM4_caller_sz
 mdefine_line|#define NLM4_caller_sz&t;&t;1+XDR_QUADLEN(NLM_MAXSTRLEN)
 DECL|macro|NLM4_netobj_sz
