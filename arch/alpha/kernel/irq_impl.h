@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *&t;linux/arch/alpha/kernel/irq_impl.h&n; *&n; *&t;Copyright (C) 1995 Linus Torvalds&n; *&t;Copyright (C) 1998, 2000 Richard Henderson&n; *&n; * This file contains declarations and inline functions for interfacing&n; * with the IRQ handling routines in irq.c.&n; */
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 DECL|macro|RTC_IRQ
 mdefine_line|#define RTC_IRQ    8
 r_extern
