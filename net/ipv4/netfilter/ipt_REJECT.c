@@ -481,26 +481,16 @@ op_amp
 id|rt-&gt;u.dst
 suffix:semicolon
 multiline_comment|/* This packet will not be the same as the other: clear nf fields */
-id|nf_conntrack_put
+id|nf_reset
 c_func
 (paren
-id|nskb-&gt;nfct
+id|nskb
 )paren
-suffix:semicolon
-id|nskb-&gt;nfct
-op_assign
-l_int|NULL
 suffix:semicolon
 id|nskb-&gt;nfcache
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETFILTER_DEBUG
-id|nskb-&gt;nf_debug
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 id|nskb-&gt;nfmark
 op_assign
 l_int|0

@@ -3572,6 +3572,36 @@ id|nfct-&gt;master-&gt;use
 )paren
 suffix:semicolon
 )brace
+DECL|function|nf_reset
+r_static
+r_inline
+r_void
+id|nf_reset
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+id|nf_conntrack_put
+c_func
+(paren
+id|skb-&gt;nfct
+)paren
+suffix:semicolon
+id|skb-&gt;nfct
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#ifdef CONFIG_NETFILTER_DEBUG
+id|skb-&gt;nf_debug
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+)brace
 macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 DECL|function|nf_bridge_put
 r_static
@@ -3631,8 +3661,23 @@ id|nf_bridge-&gt;use
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#endif
+macro_line|#endif /* CONFIG_BRIDGE_NETFILTER */
+macro_line|#else /* CONFIG_NETFILTER */
+DECL|function|nf_reset
+r_static
+r_inline
+r_void
+id|nf_reset
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+)brace
+macro_line|#endif /* CONFIG_NETFILTER */
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* _LINUX_SKBUFF_H */
 eof
