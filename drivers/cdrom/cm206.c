@@ -18,8 +18,6 @@ multiline_comment|/* #include &lt;linux/ucdrom.h&gt; */
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR CM206_CDROM_MAJOR
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -385,6 +383,12 @@ op_star
 id|cd
 suffix:semicolon
 multiline_comment|/* the main memory structure */
+DECL|variable|cm206_queue
+r_static
+r_struct
+id|request_queue
+id|cm206_queue
+suffix:semicolon
 DECL|variable|cm206_lock
 r_static
 id|spinlock_t
@@ -3000,6 +3004,11 @@ comma
 op_star
 id|dest
 suffix:semicolon
+r_struct
+id|request
+op_star
+id|req
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -3013,15 +3022,23 @@ c_cond
 id|blk_queue_empty
 c_func
 (paren
-id|QUEUE
+id|q
 )paren
 )paren
 r_return
 suffix:semicolon
+id|req
+op_assign
+id|elv_next_request
+c_func
+(paren
+id|q
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|req-&gt;cmd
 op_ne
 id|READ
 )paren
@@ -3032,14 +3049,14 @@ c_func
 (paren
 l_string|&quot;Non-read command %d on cdrom&bslash;n&quot;
 comma
-id|CURRENT-&gt;cmd
+id|req-&gt;cmd
 )paren
 )paren
 suffix:semicolon
 id|end_request
 c_func
 (paren
-id|CURRENT
+id|req
 comma
 l_int|0
 )paren
@@ -3066,7 +3083,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|CURRENT-&gt;nr_sectors
+id|req-&gt;nr_sectors
 suffix:semicolon
 id|i
 op_increment
@@ -3080,7 +3097,7 @@ suffix:semicolon
 id|cd_sec_no
 op_assign
 (paren
-id|CURRENT-&gt;sector
+id|req-&gt;sector
 op_plus
 id|i
 )paren
@@ -3091,7 +3108,7 @@ multiline_comment|/* 4 times 512 bytes */
 id|quarter
 op_assign
 (paren
-id|CURRENT-&gt;sector
+id|req-&gt;sector
 op_plus
 id|i
 )paren
@@ -3100,7 +3117,7 @@ id|BLOCKS_ISO
 suffix:semicolon
 id|dest
 op_assign
-id|CURRENT-&gt;buffer
+id|req-&gt;buffer
 op_plus
 id|i
 op_star
@@ -3237,7 +3254,7 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
-id|CURRENT
+id|req
 comma
 op_logical_neg
 id|error
@@ -6396,20 +6413,11 @@ r_goto
 id|out_cdrom
 suffix:semicolon
 )brace
-id|add_disk
-c_func
-(paren
-id|disk
-)paren
-suffix:semicolon
 id|blk_init_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|cm206_queue
 comma
 id|do_cm206_request
 comma
@@ -6420,13 +6428,21 @@ suffix:semicolon
 id|blk_queue_hardsect_size
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|cm206_queue
 comma
 l_int|2048
+)paren
+suffix:semicolon
+id|disk-&gt;queue
+op_assign
+op_amp
+id|cm206_queue
+suffix:semicolon
+id|add_disk
+c_func
+(paren
+id|disk
 )paren
 suffix:semicolon
 id|memset
@@ -6731,11 +6747,8 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|cm206_queue
 )paren
 suffix:semicolon
 id|free_irq
