@@ -62,15 +62,6 @@ id|swapper_space.clean_pages
 )paren
 comma
 dot
-id|dirty_pages
-op_assign
-id|LIST_HEAD_INIT
-c_func
-(paren
-id|swapper_space.dirty_pages
-)paren
-comma
-dot
 id|io_pages
 op_assign
 id|LIST_HEAD_INIT
@@ -775,7 +766,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* shift page from clean_pages to dirty_pages list */
 id|BUG_ON
 c_func
 (paren
@@ -957,7 +947,6 @@ c_func
 id|entry
 )paren
 suffix:semicolon
-multiline_comment|/* shift page from clean_pages to dirty_pages list */
 id|__clear_page_dirty
 c_func
 (paren

@@ -766,12 +766,6 @@ id|list_head
 id|clean_pages
 suffix:semicolon
 multiline_comment|/* list of clean pages */
-DECL|member|dirty_pages
-r_struct
-id|list_head
-id|dirty_pages
-suffix:semicolon
-multiline_comment|/* list of dirty pages */
 DECL|member|locked_pages
 r_struct
 id|list_head
@@ -941,6 +935,19 @@ DECL|macro|PAGECACHE_TAG_DIRTY
 mdefine_line|#define PAGECACHE_TAG_DIRTY&t;0
 DECL|macro|PAGECACHE_TAG_WRITEBACK
 mdefine_line|#define PAGECACHE_TAG_WRITEBACK&t;1
+r_int
+id|mapping_tagged
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_int
+id|tag
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Use sequence counter to get consistent i_size on 32-bit processors.&n; */
 macro_line|#if BITS_PER_LONG==32 &amp;&amp; defined(CONFIG_SMP)
 macro_line|#include &lt;linux/seqlock.h&gt;

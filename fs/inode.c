@@ -471,13 +471,6 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|inode-&gt;i_data.dirty_pages
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
 id|inode-&gt;i_data.locked_pages
 )paren
 suffix:semicolon

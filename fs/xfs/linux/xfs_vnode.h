@@ -1794,7 +1794,7 @@ mdefine_line|#define VN_MAPPED(vp)&t;&bslash;&n;&t;(!list_empty(&amp;(LINVFS_GET
 DECL|macro|VN_CACHED
 mdefine_line|#define VN_CACHED(vp)&t;(LINVFS_GET_IP(vp)-&gt;i_mapping-&gt;nrpages)
 DECL|macro|VN_DIRTY
-mdefine_line|#define VN_DIRTY(vp)&t;(!list_empty(&amp;(LINVFS_GET_IP(vp)-&gt;i_mapping-&gt;dirty_pages)))
+mdefine_line|#define VN_DIRTY(vp)&t;mapping_tagged(LINVFS_GET_IP(vp)-&gt;i_mapping, &bslash;&n;&t;&t;&t;&t;&t;PAGECACHE_TAG_DIRTY)
 DECL|macro|VMODIFY
 mdefine_line|#define VMODIFY(vp)&t;VN_FLAGSET(vp, VMODIFIED)
 DECL|macro|VUNMODIFY

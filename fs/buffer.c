@@ -2631,7 +2631,7 @@ c_func
 id|mark_buffer_dirty_inode
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Add a page to the dirty page list.&n; *&n; * It is a sad fact of life that this function is called from several places&n; * deeply under spinlocking.  It may not sleep.&n; *&n; * If the page has buffers, the uptodate buffers are set dirty, to preserve&n; * dirty-state coherency between the page and the buffers.  It the page does&n; * not have buffers then when they are later attached they will all be set&n; * dirty.&n; *&n; * The buffers are dirtied before the page is dirtied.  There&squot;s a small race&n; * window in which a writepage caller may see the page cleanness but not the&n; * buffer dirtiness.  That&squot;s fine.  If this code were to set the page dirty&n; * before the buffers, a concurrent writepage caller could clear the page dirty&n; * bit, see a bunch of clean buffers and we&squot;d end up with dirty buffers/clean&n; * page on the dirty page list.&n; *&n; * There is also a small window where the page is dirty, and not on dirty_pages.&n; * Also a possibility that by the time the page is added to dirty_pages, it has&n; * been set clean.  The page lists are somewhat approximate in this regard.&n; * It&squot;s better to have clean pages accidentally attached to dirty_pages than to&n; * leave dirty pages attached to clean_pages.&n; *&n; * We use private_lock to lock against try_to_free_buffers while using the&n; * page&squot;s buffer list.  Also use this to protect against clean buffers being&n; * added to the page after it was set dirty.&n; *&n; * FIXME: may need to call -&gt;reservepage here as well.  That&squot;s rather up to the&n; * address_space though.&n; *&n; * For now, we treat swapper_space specially.  It doesn&squot;t use the normal&n; * block a_ops.&n; */
+multiline_comment|/*&n; * Add a page to the dirty page list.&n; *&n; * It is a sad fact of life that this function is called from several places&n; * deeply under spinlocking.  It may not sleep.&n; *&n; * If the page has buffers, the uptodate buffers are set dirty, to preserve&n; * dirty-state coherency between the page and the buffers.  It the page does&n; * not have buffers then when they are later attached they will all be set&n; * dirty.&n; *&n; * The buffers are dirtied before the page is dirtied.  There&squot;s a small race&n; * window in which a writepage caller may see the page cleanness but not the&n; * buffer dirtiness.  That&squot;s fine.  If this code were to set the page dirty&n; * before the buffers, a concurrent writepage caller could clear the page dirty&n; * bit, see a bunch of clean buffers and we&squot;d end up with dirty buffers/clean&n; * page on the dirty page list.&n; *&n; * We use private_lock to lock against try_to_free_buffers while using the&n; * page&squot;s buffer list.  Also use this to protect against clean buffers being&n; * added to the page after it was set dirty.&n; *&n; * FIXME: may need to call -&gt;reservepage here as well.  That&squot;s rather up to the&n; * address_space though.&n; *&n; * For now, we treat swapper_space specially.  It doesn&squot;t use the normal&n; * block a_ops.&n; */
 DECL|function|__set_page_dirty_buffers
 r_int
 id|__set_page_dirty_buffers
@@ -2788,23 +2788,6 @@ id|inc_page_state
 c_func
 (paren
 id|nr_dirty
-)paren
-suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|page-&gt;list
-)paren
-suffix:semicolon
-id|list_add
-c_func
-(paren
-op_amp
-id|page-&gt;list
-comma
-op_amp
-id|mapping-&gt;dirty_pages
 )paren
 suffix:semicolon
 id|radix_tree_tag_set
@@ -4072,8 +4055,8 @@ c_func
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * The relationship between dirty buffers and dirty pages:&n; *&n; * Whenever a page has any dirty buffers, the page&squot;s dirty bit is set, and&n; * the page appears on its address_space.dirty_pages list.&n; *&n; * At all times, the dirtiness of the buffers represents the dirtiness of&n; * subsections of the page.  If the page has buffers, the page dirty bit is&n; * merely a hint about the true dirty state.&n; *&n; * When a page is set dirty in its entirety, all its buffers are marked dirty&n; * (if the page has buffers).&n; *&n; * When a buffer is marked dirty, its page is dirtied, but the page&squot;s other&n; * buffers are not.&n; *&n; * Also.  When blockdev buffers are explicitly read with bread(), they&n; * individually become uptodate.  But their backing page remains not&n; * uptodate - even if all of its buffers are uptodate.  A subsequent&n; * block_read_full_page() against that page will discover all the uptodate&n; * buffers, will set the page uptodate and will perform no I/O.&n; */
-multiline_comment|/**&n; * mark_buffer_dirty - mark a buffer_head as needing writeout&n; *&n; * mark_buffer_dirty() will set the dirty bit against the buffer,&n; * then set its backing page dirty, then attach the page to its&n; * address_space&squot;s dirty_pages list and then attach the address_space&squot;s&n; * inode to its superblock&squot;s dirty inode list.&n; *&n; * mark_buffer_dirty() is atomic.  It takes bh-&gt;b_page-&gt;mapping-&gt;private_lock,&n; * mapping-&gt;tree_lock and the global inode_lock.&n; */
+multiline_comment|/*&n; * The relationship between dirty buffers and dirty pages:&n; *&n; * Whenever a page has any dirty buffers, the page&squot;s dirty bit is set, and&n; * the page is tagged dirty in its radix tree.&n; *&n; * At all times, the dirtiness of the buffers represents the dirtiness of&n; * subsections of the page.  If the page has buffers, the page dirty bit is&n; * merely a hint about the true dirty state.&n; *&n; * When a page is set dirty in its entirety, all its buffers are marked dirty&n; * (if the page has buffers).&n; *&n; * When a buffer is marked dirty, its page is dirtied, but the page&squot;s other&n; * buffers are not.&n; *&n; * Also.  When blockdev buffers are explicitly read with bread(), they&n; * individually become uptodate.  But their backing page remains not&n; * uptodate - even if all of its buffers are uptodate.  A subsequent&n; * block_read_full_page() against that page will discover all the uptodate&n; * buffers, will set the page uptodate and will perform no I/O.&n; */
+multiline_comment|/**&n; * mark_buffer_dirty - mark a buffer_head as needing writeout&n; *&n; * mark_buffer_dirty() will set the dirty bit against the buffer, then set its&n; * backing page dirty, then tag the page as dirty in its address_space&squot;s radix&n; * tree and then attach the address_space&squot;s inode to its superblock&squot;s dirty&n; * inode list.&n; *&n; * mark_buffer_dirty() is atomic.  It takes bh-&gt;b_page-&gt;mapping-&gt;private_lock,&n; * mapping-&gt;tree_lock and the global inode_lock.&n; */
 DECL|function|mark_buffer_dirty
 r_void
 id|fastcall
