@@ -4350,9 +4350,9 @@ l_int|0
 suffix:semicolon
 )brace
 r_extern
-id|kdev_t
+id|dev_t
 id|__init
-id|name_to_kdev_t
+id|name_to_dev_t
 c_func
 (paren
 r_const
@@ -4884,10 +4884,14 @@ id|error
 suffix:semicolon
 id|resume_device
 op_assign
-id|name_to_kdev_t
+id|to_kdev_t
+c_func
+(paren
+id|name_to_dev_t
 c_func
 (paren
 id|specialfile
+)paren
 )paren
 suffix:semicolon
 id|scratch_page
