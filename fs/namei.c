@@ -4845,6 +4845,32 @@ op_minus
 id|EPERM
 suffix:semicolon
 )brace
+multiline_comment|/* O_NOATIME can only be set by the owner or superuser */
+r_if
+c_cond
+(paren
+id|flag
+op_amp
+id|O_NOATIME
+)paren
+r_if
+c_cond
+(paren
+id|current-&gt;fsuid
+op_ne
+id|inode-&gt;i_uid
+op_logical_and
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_FOWNER
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
 multiline_comment|/*&n;&t; * Ensure there are no outstanding leases on the file.&n;&t; */
 id|error
 op_assign

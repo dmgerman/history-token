@@ -40,7 +40,6 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-op_star
 id|memcpy_toshmem
 c_func
 (paren
@@ -58,7 +57,6 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-op_star
 id|memcpy_fromshmem
 c_func
 (paren

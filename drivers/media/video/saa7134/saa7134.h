@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * v4l2 device driver for philips saa7134 based TV cards&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|SAA7134_VERSION_CODE
-mdefine_line|#define SAA7134_VERSION_CODE KERNEL_VERSION(0,2,11)
+mdefine_line|#define SAA7134_VERSION_CODE KERNEL_VERSION(0,2,12)
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
@@ -351,6 +351,14 @@ DECL|macro|SAA7134_BOARD_AVACSSMARTTV
 mdefine_line|#define SAA7134_BOARD_AVACSSMARTTV     32
 DECL|macro|SAA7134_BOARD_AVERMEDIA_DVD_EZMAKER
 mdefine_line|#define SAA7134_BOARD_AVERMEDIA_DVD_EZMAKER 33
+DECL|macro|SAA7134_BOARD_NOVAC_PRIMETV7133
+mdefine_line|#define SAA7134_BOARD_NOVAC_PRIMETV7133 34
+DECL|macro|SAA7134_BOARD_AVERMEDIA_305
+mdefine_line|#define SAA7134_BOARD_AVERMEDIA_305    35
+DECL|macro|SAA7133_BOARD_UPMOST_PURPLE_TV
+mdefine_line|#define SAA7133_BOARD_UPMOST_PURPLE_TV 36
+DECL|macro|SAA7134_BOARD_ITEMS_MTV005
+mdefine_line|#define SAA7134_BOARD_ITEMS_MTV005     37
 DECL|macro|SAA7134_INPUT_MAX
 mdefine_line|#define SAA7134_INPUT_MAX 8
 DECL|struct|saa7134_input

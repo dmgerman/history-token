@@ -96,6 +96,11 @@ id|buffer_head
 op_star
 id|bh
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 op_star
 id|bhp
 op_assign
@@ -160,6 +165,11 @@ op_star
 id|bh
 suffix:semicolon
 multiline_comment|/*return hpfs_map_sector(s, secno, bhp, 0);*/
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -252,6 +262,11 @@ suffix:semicolon
 r_char
 op_star
 id|data
+suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -533,6 +548,11 @@ op_star
 id|qbh
 )paren
 (brace
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

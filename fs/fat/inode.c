@@ -11,6 +11,27 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/parser.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
+macro_line|#ifndef CONFIG_FAT_DEFAULT_IOCHARSET
+multiline_comment|/* if user don&squot;t select VFAT, this is undefined. */
+DECL|macro|CONFIG_FAT_DEFAULT_IOCHARSET
+mdefine_line|#define CONFIG_FAT_DEFAULT_IOCHARSET&t;&quot;&quot;
+macro_line|#endif
+DECL|variable|fat_default_codepage
+r_static
+r_int
+id|fat_default_codepage
+op_assign
+id|CONFIG_FAT_DEFAULT_CODEPAGE
+suffix:semicolon
+DECL|variable|fat_default_iocharset
+r_static
+r_char
+id|fat_default_iocharset
+(braket
+)braket
+op_assign
+id|CONFIG_FAT_DEFAULT_IOCHARSET
+suffix:semicolon
 multiline_comment|/*&n; * New FAT inode stuff. We do the following:&n; *&t;a) i_ino is constant and has nothing with on-disk location.&n; *&t;b) FAT manages its own cache of directory entries.&n; *&t;c) *This* cache is indexed by on-disk location.&n; *&t;d) inode has an associated directory entry, all right, but&n; *&t;&t;it may be unhashed.&n; *&t;e) currently entries are stored within struct inode. That should&n; *&t;&t;change.&n; *&t;f) we deal with races in the following way:&n; *&t;&t;1. readdir() and lookup() do FAT-dir-cache lookup.&n; *&t;&t;2. rename() unhashes the F-d-c entry and rehashes it in&n; *&t;&t;&t;a new place.&n; *&t;&t;3. unlink() and rmdir() unhash F-d-c entry.&n; *&t;&t;4. fat_write_inode() checks whether the thing is unhashed.&n; *&t;&t;&t;If it is we silently return. If it isn&squot;t we do bread(),&n; *&t;&t;&t;check if the location is still valid and retry if it&n; *&t;&t;&t;isn&squot;t. Otherwise we do changes.&n; *&t;&t;5. Spinlock is used to protect hash/unhash/location check/lookup&n; *&t;&t;6. fat_clear_inode() unhashes the F-d-c entry.&n; *&t;&t;7. lookup() and readdir() do igrab() if they find a F-d-c entry&n; *&t;&t;&t;and consider negative result as cache miss.&n; */
 DECL|macro|FAT_HASH_BITS
 mdefine_line|#define FAT_HASH_BITS&t;8
@@ -683,7 +704,7 @@ l_int|NULL
 suffix:semicolon
 id|sbi-&gt;options.codepage
 op_assign
-l_int|0
+id|fat_default_codepage
 suffix:semicolon
 )brace
 r_if
@@ -703,11 +724,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Note: the iocharset option might have been specified&n;&t; * without enabling nls_io, so check for it here.&n;&t; */
 r_if
 c_cond
 (paren
 id|sbi-&gt;options.iocharset
+op_ne
+id|fat_default_iocharset
 )paren
 (brace
 id|kfree
@@ -718,7 +740,7 @@ id|sbi-&gt;options.iocharset
 suffix:semicolon
 id|sbi-&gt;options.iocharset
 op_assign
-l_int|NULL
+id|fat_default_iocharset
 suffix:semicolon
 )brace
 id|sb-&gt;s_fs_info
@@ -831,6 +853,10 @@ r_if
 c_cond
 (paren
 id|sbi-&gt;nls_disk
+op_logical_and
+id|opts-&gt;codepage
+op_ne
+id|fat_default_codepage
 )paren
 id|seq_printf
 c_func
@@ -856,9 +882,9 @@ op_logical_and
 id|strcmp
 c_func
 (paren
-id|sbi-&gt;nls_io-&gt;charset
+id|opts-&gt;iocharset
 comma
-id|CONFIG_NLS_DEFAULT
+id|fat_default_iocharset
 )paren
 )paren
 id|seq_printf
@@ -1601,6 +1627,10 @@ suffix:semicolon
 r_int
 id|option
 suffix:semicolon
+r_char
+op_star
+id|iocharset
+suffix:semicolon
 id|opts-&gt;isvfat
 op_assign
 id|is_vfat
@@ -1621,11 +1651,11 @@ id|current-&gt;fs-&gt;umask
 suffix:semicolon
 id|opts-&gt;codepage
 op_assign
-l_int|0
+id|fat_default_codepage
 suffix:semicolon
 id|opts-&gt;iocharset
 op_assign
-l_int|NULL
+id|fat_default_iocharset
 suffix:semicolon
 r_if
 c_cond
@@ -1683,7 +1713,7 @@ op_logical_neg
 id|options
 )paren
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 r_while
 c_loop
@@ -2055,13 +2085,20 @@ multiline_comment|/* vfat specific */
 r_case
 id|Opt_charset
 suffix:colon
+r_if
+c_cond
+(paren
+id|opts-&gt;iocharset
+op_ne
+id|fat_default_iocharset
+)paren
 id|kfree
 c_func
 (paren
 id|opts-&gt;iocharset
 )paren
 suffix:semicolon
-id|opts-&gt;iocharset
+id|iocharset
 op_assign
 id|match_strdup
 c_func
@@ -2077,10 +2114,15 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|opts-&gt;iocharset
+id|iocharset
 )paren
 r_return
-l_int|0
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|opts-&gt;iocharset
+op_assign
+id|iocharset
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2220,9 +2262,37 @@ id|p
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* UTF8 doesn&squot;t provide FAT semantics */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|opts-&gt;iocharset
+comma
+l_string|&quot;utf8&quot;
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;FAT: utf8 is not a valid IO charset&quot;
+l_string|&quot; for FAT filesystems&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2234,7 +2304,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|fat_calc_dir_size
@@ -3667,8 +3737,6 @@ suffix:semicolon
 r_int
 id|debug
 comma
-id|cp
-comma
 id|first
 suffix:semicolon
 r_int
@@ -3750,13 +3818,6 @@ id|fs_dir_inode_ops
 suffix:semicolon
 id|error
 op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
 id|parse_options
 c_func
 (paren
@@ -3770,6 +3831,11 @@ comma
 op_amp
 id|sbi-&gt;options
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 r_goto
 id|out_fail
@@ -4821,15 +4887,6 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-id|cp
-op_assign
-id|sbi-&gt;options.codepage
-ques
-c_cond
-id|sbi-&gt;options.codepage
-suffix:colon
-l_int|437
-suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -4837,7 +4894,7 @@ id|buf
 comma
 l_string|&quot;cp%d&quot;
 comma
-id|cp
+id|sbi-&gt;options.codepage
 )paren
 suffix:semicolon
 id|sbi-&gt;nls_disk
@@ -4855,15 +4912,6 @@ op_logical_neg
 id|sbi-&gt;nls_disk
 )paren
 (brace
-multiline_comment|/* Fail only if explicit charset specified */
-r_if
-c_cond
-(paren
-id|sbi-&gt;options.codepage
-op_ne
-l_int|0
-)paren
-(brace
 id|printk
 c_func
 (paren
@@ -4877,32 +4925,11 @@ r_goto
 id|out_fail
 suffix:semicolon
 )brace
-id|sbi-&gt;options.codepage
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* already 0?? */
-id|sbi-&gt;nls_disk
-op_assign
-id|load_nls_default
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* FIXME: utf8 is using iocharset for upper/lower conversion */
 r_if
 c_cond
 (paren
 id|sbi-&gt;options.isvfat
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|sbi-&gt;options.iocharset
-op_ne
-l_int|NULL
 )paren
 (brace
 id|sbi-&gt;nls_io
@@ -4933,15 +4960,6 @@ r_goto
 id|out_fail
 suffix:semicolon
 )brace
-)brace
-r_else
-id|sbi-&gt;nls_io
-op_assign
-id|load_nls_default
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 id|error
 op_assign
@@ -5093,6 +5111,8 @@ r_if
 c_cond
 (paren
 id|sbi-&gt;options.iocharset
+op_ne
+id|fat_default_iocharset
 )paren
 id|kfree
 c_func

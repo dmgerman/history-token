@@ -63,6 +63,9 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * eeh_add_device_early&n; * eeh_add_device_late&n; *&n; * Perform eeh initialization for devices added after boot.&n; * Call eeh_add_device_early before doing any i/o to the&n; * device (including config space i/o).  Call eeh_add_device_late&n; * to finish the eeh setup for this device.&n; */
+r_struct
+id|device_node
+suffix:semicolon
 r_void
 id|eeh_add_device_early
 c_func

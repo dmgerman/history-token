@@ -12,9 +12,9 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/compat.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;&t;/* needed for access to Scsi_Host struct */
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;

@@ -2356,12 +2356,6 @@ comma
 l_string|&quot;macsonic debug level (1-4)&quot;
 )paren
 suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 r_int
 DECL|function|init_module
 id|init_module

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Simple NUMA memory policy for the Linux kernel.&n; *&n; * Copyright 2003,2004 Andi Kleen, SuSE Labs.&n; * Subject to the GNU Public License, version 2.&n; *&n; * NUMA policy allows the user to give hints in which node(s) memory should&n; * be allocated.&n; *&n; * Support four policies per VMA and per process:&n; *&n; * The VMA policy has priority over the process policy for a page fault.&n; *&n; * interleave     Allocate memory interleaved over a set of nodes,&n; *                with normal fallback if it fails.&n; *                For VMA based allocations this interleaves based on the&n; *                offset into the backing object or offset into the mapping&n; *                for anonymous memory. For process policy an process counter&n; *                is used.&n; * bind           Only allocate memory on a specific set of nodes,&n; *                no fallback.&n; * preferred       Try a specific node first before normal fallback.&n; *                As a special case node -1 here means do the allocation&n; *                on the local CPU. This is normally identical to default,&n; *                but useful to set in a VMA when you have a non default&n; *                process policy.&n; * default        Allocate on the local node first, or when on a VMA&n; *                use the process policy. This is what Linux always did&n; *&t;&t;&t;&t;   in a NUMA aware kernel and still does by, ahem, default.&n; *&n; * The process policy is applied for most non interrupt memory allocations&n; * in that process&squot; context. Interrupts ignore the policies and always&n; * try to allocate on the local CPU. The VMA policy is only applied for memory&n; * allocations for a VMA in the VM.&n; *&n; * Currently there are a few corner cases in swapping where the policy&n; * is not applied, but the majority should be handled. When process policy&n; * is used it is not remembered over swap outs/swap ins.&n; *&n; * Only the highest zone in the zone hierarchy gets policied. Allocations&n; * requesting a lower zone just use default policy. This implies that&n; * on systems with highmem kernel lowmem allocation don&squot;t get policied.&n; * Same with GFP_DMA allocations.&n; *&n; * For shmfs/tmpfs/hugetlbfs shared memory the policy is shared between&n; * all users and remembered even when nobody has memory mapped.&n; */
+multiline_comment|/*&n; * Simple NUMA memory policy for the Linux kernel.&n; *&n; * Copyright 2003,2004 Andi Kleen, SuSE Labs.&n; * Subject to the GNU Public License, version 2.&n; *&n; * NUMA policy allows the user to give hints in which node(s) memory should&n; * be allocated.&n; *&n; * Support four policies per VMA and per process:&n; *&n; * The VMA policy has priority over the process policy for a page fault.&n; *&n; * interleave     Allocate memory interleaved over a set of nodes,&n; *                with normal fallback if it fails.&n; *                For VMA based allocations this interleaves based on the&n; *                offset into the backing object or offset into the mapping&n; *                for anonymous memory. For process policy an process counter&n; *                is used.&n; * bind           Only allocate memory on a specific set of nodes,&n; *                no fallback.&n; * preferred       Try a specific node first before normal fallback.&n; *                As a special case node -1 here means do the allocation&n; *                on the local CPU. This is normally identical to default,&n; *                but useful to set in a VMA when you have a non default&n; *                process policy.&n; * default        Allocate on the local node first, or when on a VMA&n; *                use the process policy. This is what Linux always did&n; *&t;&t;  in a NUMA aware kernel and still does by, ahem, default.&n; *&n; * The process policy is applied for most non interrupt memory allocations&n; * in that process&squot; context. Interrupts ignore the policies and always&n; * try to allocate on the local CPU. The VMA policy is only applied for memory&n; * allocations for a VMA in the VM.&n; *&n; * Currently there are a few corner cases in swapping where the policy&n; * is not applied, but the majority should be handled. When process policy&n; * is used it is not remembered over swap outs/swap ins.&n; *&n; * Only the highest zone in the zone hierarchy gets policied. Allocations&n; * requesting a lower zone just use default policy. This implies that&n; * on systems with highmem kernel lowmem allocation don&squot;t get policied.&n; * Same with GFP_DMA allocations.&n; *&n; * For shmfs/tmpfs/hugetlbfs shared memory the policy is shared between&n; * all users and remembered even when nobody has memory mapped.&n; */
 multiline_comment|/* Notebook:&n;   fix mmap readahead to honour policy and enable policy for any page cache&n;   object&n;   statistics for bigpages&n;   global policy for page cache? currently it uses process policy. Requires&n;   first item above.&n;   handle mremap for shared memory (currently ignored for the policy)&n;   grows down?&n;   make bind policy root only? It can trigger oom much faster and the&n;   kernel is not always grateful with that.&n;   could replace all the switch()es with a mempolicy_ops structure.&n;*/
 macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -266,6 +266,27 @@ suffix:semicolon
 op_decrement
 id|maxnode
 suffix:semicolon
+id|bitmap_zero
+c_func
+(paren
+id|nodes
+comma
+id|MAX_NUMNODES
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|maxnode
+op_eq
+l_int|0
+op_logical_or
+op_logical_neg
+id|nmask
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|nlongs
 op_assign
 id|BITS_TO_LONGS
@@ -309,8 +330,6 @@ multiline_comment|/* When the user specified more nodes than supported just chec
 r_if
 c_cond
 (paren
-id|nmask
-op_logical_and
 id|nlongs
 OG
 id|BITS_TO_LONGS
@@ -407,19 +426,9 @@ op_complement
 l_int|0UL
 suffix:semicolon
 )brace
-id|bitmap_zero
-c_func
-(paren
-id|nodes
-comma
-id|MAX_NUMNODES
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|nmask
-op_logical_and
 id|copy_from_user
 c_func
 (paren
@@ -3008,6 +3017,9 @@ r_int
 id|gfp
 comma
 r_int
+id|order
+comma
+r_int
 id|nid
 )paren
 (brace
@@ -3057,7 +3069,7 @@ c_func
 (paren
 id|gfp
 comma
-l_int|0
+id|order
 comma
 id|zl
 )paren
@@ -3225,6 +3237,8 @@ c_func
 (paren
 id|gfp
 comma
+l_int|0
+comma
 id|nid
 )paren
 suffix:semicolon
@@ -3247,7 +3261,7 @@ id|pol
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * &t;alloc_pages_current - Allocate pages.&n; *&n; *&t;@gfp:&n; *&t;&t;&t;%GFP_USER   user allocation,&n; *      &t;%GFP_KERNEL kernel allocation,&n; *      &t;%GFP_HIGHMEM highmem allocation,&n; *      &t;%GFP_FS     don&squot;t call back into a file system.&n; *      &t;%GFP_ATOMIC don&squot;t sleep.&n; *&t;@order: Power of two of allocation size in pages. 0 is a single page.&n; *&n; *&t;Allocate a page from the kernel page pool.  When not in&n; *&t;interrupt context and apply the current process NUMA policy.&n; *&t;Returns NULL when no page can be allocated.&n; */
+multiline_comment|/**&n; * &t;alloc_pages_current - Allocate pages.&n; *&n; *&t;@gfp:&n; *&t;&t;%GFP_USER   user allocation,&n; *      &t;%GFP_KERNEL kernel allocation,&n; *      &t;%GFP_HIGHMEM highmem allocation,&n; *      &t;%GFP_FS     don&squot;t call back into a file system.&n; *      &t;%GFP_ATOMIC don&squot;t sleep.&n; *&t;@order: Power of two of allocation size in pages. 0 is a single page.&n; *&n; *&t;Allocate a page from the kernel page pool.  When not in&n; *&t;interrupt context and apply the current process NUMA policy.&n; *&t;Returns NULL when no page can be allocated.&n; */
 DECL|function|alloc_pages_current
 r_struct
 id|page
@@ -3291,16 +3305,14 @@ c_cond
 id|pol-&gt;policy
 op_eq
 id|MPOL_INTERLEAVE
-op_logical_and
-id|order
-op_eq
-l_int|0
 )paren
 r_return
 id|alloc_page_interleave
 c_func
 (paren
 id|gfp
+comma
+id|order
 comma
 id|interleave_nodes
 c_func
@@ -4906,7 +4918,6 @@ suffix:semicolon
 multiline_comment|/* Reset policy of current process to default.&n; * Assumes fs == KERNEL_DS */
 DECL|function|numa_default_policy
 r_void
-id|__init
 id|numa_default_policy
 c_func
 (paren

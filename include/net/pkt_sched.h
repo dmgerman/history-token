@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pkt_sched.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;net/pkt_cls.h&gt;
 macro_line|#ifdef CONFIG_X86_TSC
 macro_line|#include &lt;asm/msr.h&gt;
@@ -535,6 +536,11 @@ DECL|member|stats
 r_struct
 id|tc_stats
 id|stats
+suffix:semicolon
+DECL|member|q_rcu
+r_struct
+id|rcu_head
+id|q_rcu
 suffix:semicolon
 DECL|member|reshape_fail
 r_int

@@ -669,6 +669,82 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sn_set_error_handling_features - Tell the SN prom how to handle certain&n; * error types.&n; */
+r_static
+r_void
+id|__init
+DECL|function|sn_set_error_handling_features
+id|sn_set_error_handling_features
+c_func
+(paren
+r_void
+)paren
+(brace
+id|u64
+id|ret
+suffix:semicolon
+id|u64
+id|sn_ehf_bits
+(braket
+l_int|7
+)braket
+suffix:semicolon
+multiline_comment|/* see ia64_sn_set_error_handling_features */
+id|memset
+c_func
+(paren
+id|sn_ehf_bits
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|sn_ehf_bits
+)paren
+)paren
+suffix:semicolon
+DECL|macro|EHF
+mdefine_line|#define EHF(x) __set_bit(SN_SAL_EHF_ ## x, sn_ehf_bits)
+id|EHF
+c_func
+(paren
+id|MCA_SLV_TO_OS_INIT_SLV
+)paren
+suffix:semicolon
+id|EHF
+c_func
+(paren
+id|NO_RZ_TLBC
+)paren
+suffix:semicolon
+singleline_comment|// Uncomment once Jesse&squot;s code goes in - EHF(NO_RZ_IO_READ); 
+DECL|macro|EHF
+macro_line|#undef&t;EHF
+id|ret
+op_assign
+id|ia64_sn_set_error_handling_features
+c_func
+(paren
+id|sn_ehf_bits
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: failed, return code %ld&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|ret
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * sn_setup - SN platform setup routine&n; * @cmdline_p: kernel command line&n; *&n; * Handles platform setup for SN machines.  This includes determining&n; * the RTC frequency (via a SAL call), initializing secondary CPUs, and&n; * setting up per-node data areas.  The console is also initialized here.&n; */
 r_void
 id|__init
@@ -1019,6 +1095,12 @@ id|master_node_bedrock_address
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Tell the prom how to handle certain error types */
+id|sn_set_error_handling_features
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * we set the default root device to /dev/hda&n;&t; * to make simulation easy&n;&t; */
 id|ROOT_DEV
 op_assign

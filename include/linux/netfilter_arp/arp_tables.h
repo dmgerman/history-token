@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#endif
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/netfilter_arp.h&gt;
 DECL|macro|ARPT_FUNCTION_MAXNAMELEN
 mdefine_line|#define ARPT_FUNCTION_MAXNAMELEN 30

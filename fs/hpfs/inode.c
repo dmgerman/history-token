@@ -834,27 +834,7 @@ c_func
 id|i
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|fnode-&gt;acl_size_l
-op_logical_or
-id|fnode-&gt;acl_size_s
-)paren
-(brace
-multiline_comment|/* Some unknown structures like ACL may be in fnode,&n;&t;&t;   we&squot;d better not overwrite them */
-id|hpfs_error
-c_func
-(paren
-id|i-&gt;i_sb
-comma
-l_string|&quot;fnode %08x has some unknown HPFS386 stuctures&quot;
-comma
-id|i-&gt;i_ino
-)paren
-suffix:semicolon
-)brace
-r_else
+multiline_comment|/*if (fnode-&gt;acl_size_l || fnode-&gt;acl_size_s) {&n;&t;&t;   Some unknown structures like ACL may be in fnode,&n;&t;&t;   we&squot;d better not overwrite them&n;&t;&t;hpfs_error(i-&gt;i_sb, &quot;fnode %08x has some unknown HPFS386 stuctures&quot;, i-&gt;i_ino);&n;&t;} else*/
 r_if
 c_cond
 (paren
@@ -1437,6 +1417,8 @@ id|i-&gt;i_sb
 )paren
 op_member_access_from_pointer
 id|sb_root
+op_logical_and
+id|i-&gt;i_nlink
 )paren
 (brace
 r_if
@@ -1488,6 +1470,13 @@ id|i-&gt;i_mode
 (brace
 id|fnode-&gt;file_size
 op_assign
+id|i-&gt;i_size
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|de
+)paren
 id|de-&gt;file_size
 op_assign
 id|i-&gt;i_size
@@ -1506,6 +1495,13 @@ id|i-&gt;i_mode
 (brace
 id|fnode-&gt;file_size
 op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|de
+)paren
 id|de-&gt;file_size
 op_assign
 l_int|0

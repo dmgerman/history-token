@@ -1704,7 +1704,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|fnode-&gt;ea_size_s
+id|fnode-&gt;ea_offs
 )paren
 (brace
 multiline_comment|/*if (fnode-&gt;ea_size_s) {&n;&t;&t;&t;hpfs_error(s, &quot;fnode %08x: ea_size_s == %03x, ea_offs == 0&quot;,&n;&t;&t;&t;&t;inode-&gt;i_ino, fnode-&gt;ea_size_s);&n;&t;&t;&t;return;&n;&t;&t;}*/
@@ -1750,6 +1750,8 @@ id|fnode-&gt;ea_size_l
 op_logical_and
 id|fnode-&gt;ea_offs
 op_plus
+id|fnode-&gt;acl_size_s
+op_plus
 id|fnode-&gt;ea_size_s
 op_plus
 id|strlen
@@ -1765,7 +1767,6 @@ op_le
 l_int|0x200
 )paren
 (brace
-multiline_comment|/* I&squot;m not sure ... maybe we overwrite ACL here. I have no info&n;&t;&t;   on it right now :-( */
 id|ea
 op_assign
 id|fnode_end_ea

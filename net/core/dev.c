@@ -34,6 +34,7 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/netpoll.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#ifdef CONFIG_NET_RADIO
 macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* Note : will define WIRELESS_EXT */
 macro_line|#include &lt;net/iw_handler.h&gt;
@@ -3735,6 +3736,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|HARD_TX_LOCK_BH
+mdefine_line|#define HARD_TX_LOCK_BH(dev, cpu) {&t;&t;&t;&bslash;&n;&t;if ((dev-&gt;features &amp; NETIF_F_LLTX) == 0) {&t;&bslash;&n;&t;&t;spin_lock_bh(&amp;dev-&gt;xmit_lock);&t;&t;&bslash;&n;&t;&t;dev-&gt;xmit_lock_owner = cpu;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;}
+DECL|macro|HARD_TX_UNLOCK_BH
+mdefine_line|#define HARD_TX_UNLOCK_BH(dev) {&t;&t;&t;&bslash;&n;&t;if ((dev-&gt;features &amp; NETIF_F_LLTX) == 0) {&t;&bslash;&n;&t;&t;dev-&gt;xmit_lock_owner = -1;&t;&t;&bslash;&n;&t;&t;spin_unlock_bh(&amp;dev-&gt;xmit_lock);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/**&n; *&t;dev_queue_xmit - transmit a buffer&n; *&t;@skb: buffer to transmit&n; *&n; *&t;Queue a buffer for transmission to a network device. The caller must&n; *&t;have set the device and priority and built the buffer before calling&n; *&t;this function. The function can be called from an interrupt.&n; *&n; *&t;A negative errno code is returned on a failure. A success does not&n; *&t;guarantee the frame will be transmitted as it may be dropped due&n; *&t;to congestion or traffic shaping.&n; */
 DECL|function|dev_queue_xmit
 r_int
@@ -3887,6 +3892,27 @@ l_int|0
 r_goto
 id|out_kfree_skb
 suffix:semicolon
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Updates of qdisc are serialized by queue_lock. &n;&t; * The struct Qdisc which is pointed to by qdisc is now a &n;&t; * rcu structure - it may be accessed without acquiring &n;&t; * a lock (but the structure may be stale.) The freeing of the&n;&t; * qdisc will be deferred until it&squot;s known that there are no &n;&t; * more references to it.&n;&t; * &n;&t; * If the qdisc has an enqueue function, we still need to &n;&t; * hold the queue_lock before calling it, since queue_lock&n;&t; * also serializes access to the device queue.&n;&t; */
+id|q
+op_assign
+id|dev-&gt;qdisc
+suffix:semicolon
+id|smp_read_barrier_depends
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|q-&gt;enqueue
+)paren
+(brace
 multiline_comment|/* Grab device queue */
 id|spin_lock_bh
 c_func
@@ -3895,16 +3921,6 @@ op_amp
 id|dev-&gt;queue_lock
 )paren
 suffix:semicolon
-id|q
-op_assign
-id|dev-&gt;qdisc
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|q-&gt;enqueue
-)paren
-(brace
 id|rc
 op_assign
 id|q
@@ -3930,6 +3946,11 @@ op_amp
 id|dev-&gt;queue_lock
 )paren
 suffix:semicolon
+id|rcu_read_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|rc
 op_assign
 id|rc
@@ -3945,6 +3966,11 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|rcu_read_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* The device has no queue. Common case for software devices:&n;&t;   loopback, all the sorts of tunnels...&n;&n;&t;   Really, it is unlikely that xmit_lock protection is necessary here.&n;&t;   (f.e. loopback and IP tunnels are clean ignoring statistics&n;&t;   counters.)&n;&t;   However, it is possible, that they rely on protection&n;&t;   made by us here.&n;&n;&t;   Check this and shot the lock. It is not prone from deadlocks.&n;&t;   Either shot noqueue qdisc, it is even simpler 8)&n;&t; */
 r_if
 c_cond
@@ -3954,6 +3980,11 @@ op_amp
 id|IFF_UP
 )paren
 (brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_int
 id|cpu
 op_assign
@@ -3970,29 +4001,13 @@ op_ne
 id|cpu
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * The spin_lock effectivly does a preempt lock, but &n;&t;&t;&t; * we are about to drop that...&n;&t;&t;&t; */
-id|preempt_disable
+id|HARD_TX_LOCK_BH
 c_func
 (paren
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|dev-&gt;queue_lock
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|dev-&gt;xmit_lock
-)paren
-suffix:semicolon
-id|dev-&gt;xmit_lock_owner
-op_assign
+id|dev
+comma
 id|cpu
+)paren
 suffix:semicolon
 id|preempt_enable
 c_func
@@ -4042,16 +4057,10 @@ id|dev
 )paren
 )paren
 (brace
-id|dev-&gt;xmit_lock_owner
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|spin_unlock_bh
+id|HARD_TX_UNLOCK_BH
 c_func
 (paren
-op_amp
-id|dev-&gt;xmit_lock
+id|dev
 )paren
 suffix:semicolon
 r_goto
@@ -4059,16 +4068,10 @@ id|out
 suffix:semicolon
 )brace
 )brace
-id|dev-&gt;xmit_lock_owner
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|spin_unlock_bh
+id|HARD_TX_UNLOCK_BH
 c_func
 (paren
-op_amp
-id|dev-&gt;xmit_lock
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -4095,6 +4098,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Recursion is detected! It is possible,&n;&t;&t;&t; * unfortunately */
 r_if
 c_cond
@@ -4116,13 +4124,6 @@ id|dev-&gt;name
 suffix:semicolon
 )brace
 )brace
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-id|dev-&gt;queue_lock
-)paren
-suffix:semicolon
 id|out_enetdown
 suffix:colon
 id|rc

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#endif
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 DECL|macro|IPT_FUNCTION_MAXNAMELEN
 mdefine_line|#define IPT_FUNCTION_MAXNAMELEN 30
@@ -670,6 +671,7 @@ multiline_comment|/* fn returns 0 to continue iteration */
 DECL|macro|IPT_ENTRY_ITERATE
 mdefine_line|#define IPT_ENTRY_ITERATE(entries, size, fn, args...)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int __i;&t;&t;&t;&t;&t;&bslash;&n;&t;int __ret = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct ipt_entry *__entry;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (__i = 0; __i &lt; (size); __i += __entry-&gt;next_offset) { &bslash;&n;&t;&t;__entry = (void *)(entries) + __i;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__ret = fn(__entry , ## args);&t;&t;&t;&bslash;&n;&t;&t;if (__ret != 0)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; *&t;Main firewall chains definitions and global var&squot;s definitions.&n; */
+macro_line|#ifdef __KERNEL__
 r_static
 id|DECLARE_MUTEX
 c_func
@@ -677,7 +679,6 @@ c_func
 id|ipt_mutex
 )paren
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/init.h&gt;
 r_extern
 r_void

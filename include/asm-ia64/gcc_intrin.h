@@ -195,9 +195,9 @@ mdefine_line|#define ia64_rum(mask)&t;asm volatile (&quot;rum %0&quot;:: &quot;i
 DECL|macro|ia64_ptce
 mdefine_line|#define ia64_ptce(addr)&t;asm volatile (&quot;ptc.e %0&quot; :: &quot;r&quot;(addr))
 DECL|macro|ia64_ptcga
-mdefine_line|#define ia64_ptcga(addr, size)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&quot;ptc.ga %0,%1&quot; :: &quot;r&quot;(addr), &quot;r&quot;(size) : &quot;memory&quot;)
+mdefine_line|#define ia64_ptcga(addr, size)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&quot;ptc.ga %0,%1&quot; :: &quot;r&quot;(addr), &quot;r&quot;(size) : &quot;memory&quot;);&t;&bslash;&n;&t;ia64_dv_serialize_data();&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|ia64_ptcl
-mdefine_line|#define ia64_ptcl(addr, size)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&quot;ptc.l %0,%1&quot; :: &quot;r&quot;(addr), &quot;r&quot;(size) : &quot;memory&quot;)
+mdefine_line|#define ia64_ptcl(addr, size)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&quot;ptc.l %0,%1&quot; :: &quot;r&quot;(addr), &quot;r&quot;(size) : &quot;memory&quot;);&t;&bslash;&n;&t;ia64_dv_serialize_data();&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|ia64_ptri
 mdefine_line|#define ia64_ptri(addr, size)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&quot;ptr.i %0,%1&quot; :: &quot;r&quot;(addr), &quot;r&quot;(size) : &quot;memory&quot;)
 DECL|macro|ia64_ptrd
@@ -220,6 +220,6 @@ mdefine_line|#define ia64_lfetch_fault(lfhint, y)&t;&t;&t;&t;&t;&bslash;&n;({&t;
 DECL|macro|ia64_lfetch_fault_excl
 mdefine_line|#define ia64_lfetch_fault_excl(lfhint, y)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        switch (lfhint) {&t;&t;&t;&t;&t;&t;&bslash;&n;        case ia64_lfhint_none:&t;&t;&t;&t;&t;&t;&bslash;&n;                asm volatile (&quot;lfetch.fault.excl [%0]&quot; :: &quot;r&quot;(y));&t;&bslash;&n;                break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        case ia64_lfhint_nt1:&t;&t;&t;&t;&t;&t;&bslash;&n;                asm volatile (&quot;lfetch.fault.excl.nt1 [%0]&quot; :: &quot;r&quot;(y));&t;&bslash;&n;                break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        case ia64_lfhint_nt2:&t;&t;&t;&t;&t;&t;&bslash;&n;                asm volatile (&quot;lfetch.fault.excl.nt2 [%0]&quot; :: &quot;r&quot;(y));&t;&bslash;&n;                break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        case ia64_lfhint_nta:&t;&t;&t;&t;&t;&t;&bslash;&n;                asm volatile (&quot;lfetch.fault.excl.nta [%0]&quot; :: &quot;r&quot;(y));&t;&bslash;&n;                break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        }&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|ia64_intrin_local_irq_restore
-mdefine_line|#define ia64_intrin_local_irq_restore(x)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&quot;     cmp.ne p6,p7=%0,r0;;&quot;&t;&t;&bslash;&n;&t;&t;      &quot;(p6) ssm psr.i;&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;      &quot;(p7) rsm psr.i;;&quot;&t;&t;&t;&bslash;&n;&t;&t;      &quot;(p6) srlz.d&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;      :: &quot;r&quot;((x)) : &quot;p6&quot;, &quot;p7&quot;, &quot;memory&quot;);&t;&bslash;&n;} while (0)
+mdefine_line|#define ia64_intrin_local_irq_restore(x)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&quot;;;   cmp.ne p6,p7=%0,r0;;&quot;&t;&t;&bslash;&n;&t;&t;      &quot;(p6) ssm psr.i;&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;      &quot;(p7) rsm psr.i;;&quot;&t;&t;&t;&bslash;&n;&t;&t;      &quot;(p6) srlz.d&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;      :: &quot;r&quot;((x)) : &quot;p6&quot;, &quot;p7&quot;, &quot;memory&quot;);&t;&bslash;&n;} while (0)
 macro_line|#endif /* _ASM_IA64_GCC_INTRIN_H */
 eof
