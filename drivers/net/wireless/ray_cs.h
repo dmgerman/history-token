@@ -102,19 +102,22 @@ id|rmem_handle
 suffix:semicolon
 multiline_comment|/* handle to window for rx buffer on card */
 DECL|member|sram
-id|UCHAR
+r_void
+id|__iomem
 op_star
 id|sram
 suffix:semicolon
 multiline_comment|/* pointer to beginning of shared RAM     */
 DECL|member|amem
-id|UCHAR
+r_void
+id|__iomem
 op_star
 id|amem
 suffix:semicolon
 multiline_comment|/* pointer to attribute mem window        */
 DECL|member|rmem
-id|UCHAR
+r_void
+id|__iomem
 op_star
 id|rmem
 suffix:semicolon
