@@ -1884,6 +1884,10 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|child-&gt;exit_code
+op_assign
+id|data
+suffix:semicolon
 id|clear_tsk_thread_flag
 c_func
 (paren
@@ -1897,10 +1901,6 @@ c_func
 (paren
 id|child
 )paren
-suffix:semicolon
-id|child-&gt;exit_code
-op_assign
-id|data
 suffix:semicolon
 multiline_comment|/* give it a chance to run. */
 id|ret
