@@ -122,7 +122,7 @@ id|DECLARE_SNMP_STAT
 c_func
 (paren
 r_struct
-id|ipv6_mib
+id|ipstats_mib
 comma
 id|ipv6_statistics
 )paren

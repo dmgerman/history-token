@@ -401,7 +401,7 @@ id|dst-&gt;error
 id|IP6_INC_STATS
 c_func
 (paren
-id|Ip6OutNoRoutes
+id|OutNoRoutes
 )paren
 suffix:semicolon
 )brace
