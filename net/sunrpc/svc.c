@@ -1312,27 +1312,6 @@ op_assign
 id|serv-&gt;sv_program
 suffix:semicolon
 multiline_comment|/*&n;&t; * Decode auth data, and add verifier to reply buffer.&n;&t; * We do this before anything else in order to get a decent&n;&t; * auth verifier.&n;&t; */
-r_if
-c_cond
-(paren
-id|progp-&gt;pg_authenticate_obsolete
-op_ne
-l_int|NULL
-)paren
-id|auth_res
-op_assign
-id|progp
-op_member_access_from_pointer
-id|pg_authenticate_obsolete
-c_func
-(paren
-id|rqstp
-comma
-op_amp
-id|auth_stat
-)paren
-suffix:semicolon
-r_else
 id|auth_res
 op_assign
 id|svc_authenticate
