@@ -33,7 +33,7 @@ r_struct
 id|bulk_cb_wrap
 (brace
 DECL|member|Signature
-id|u32
+id|__le32
 id|Signature
 suffix:semicolon
 multiline_comment|/* contains &squot;USBC&squot; */
@@ -43,7 +43,7 @@ id|Tag
 suffix:semicolon
 multiline_comment|/* unique per command id */
 DECL|member|DataTransferLength
-id|u32
+id|__le32
 id|DataTransferLength
 suffix:semicolon
 multiline_comment|/* size of data */
@@ -86,7 +86,7 @@ r_struct
 id|bulk_cs_wrap
 (brace
 DECL|member|Signature
-id|u32
+id|__le32
 id|Signature
 suffix:semicolon
 multiline_comment|/* should = &squot;USBS&squot; */
@@ -96,7 +96,7 @@ id|Tag
 suffix:semicolon
 multiline_comment|/* same as original command */
 DECL|member|Residue
-id|u32
+id|__le32
 id|Residue
 suffix:semicolon
 multiline_comment|/* amount not transferred */
@@ -6388,7 +6388,7 @@ c_func
 (paren
 op_star
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|p
@@ -6403,7 +6403,7 @@ c_func
 (paren
 op_star
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 (paren
