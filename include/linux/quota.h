@@ -171,6 +171,9 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/dqblk_xfs.h&gt;
 macro_line|#include &lt;linux/dqblk_v1.h&gt;
 macro_line|#include &lt;linux/dqblk_v2.h&gt;
+multiline_comment|/* Maximal numbers of writes for quota operation (insert/delete/update)&n; * (over all formats) - info block, 4 pointer blocks, data block */
+DECL|macro|DQUOT_MAX_WRITES
+mdefine_line|#define DQUOT_MAX_WRITES&t;6
 multiline_comment|/*&n; * Data for one user/group kept in memory&n; */
 DECL|struct|mem_dqblk
 r_struct
@@ -265,6 +268,9 @@ id|u
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|super_block
+suffix:semicolon
 DECL|macro|DQF_MASK
 mdefine_line|#define DQF_MASK 0xffff&t;&t;/* Mask for format specific flags */
 DECL|macro|DQF_INFO_DIRTY_B
@@ -275,29 +281,20 @@ DECL|macro|DQF_INFO_DIRTY
 mdefine_line|#define DQF_INFO_DIRTY (1 &lt;&lt; DQF_INFO_DIRTY_B)&t;/* Is info dirty? */
 DECL|macro|DQF_ANY_DQUOT_DIRTY
 mdefine_line|#define DQF_ANY_DQUOT_DIRTY (1 &lt;&lt; DQF_ANY_DQUOT_DIRTY_B) /* Is any dquot dirty? */
-DECL|function|mark_info_dirty
 r_extern
-r_inline
 r_void
 id|mark_info_dirty
 c_func
 (paren
 r_struct
-id|mem_dqinfo
+id|super_block
 op_star
-id|info
-)paren
-(brace
-id|set_bit
-c_func
-(paren
-id|DQF_INFO_DIRTY_B
+id|sb
 comma
-op_amp
-id|info-&gt;dqi_flags
+r_int
+id|type
 )paren
 suffix:semicolon
-)brace
 DECL|macro|info_dirty
 mdefine_line|#define info_dirty(info) test_bit(DQF_INFO_DIRTY_B, &amp;(info)-&gt;dqi_flags)
 DECL|macro|info_any_dquot_dirty
@@ -306,6 +303,8 @@ DECL|macro|info_any_dirty
 mdefine_line|#define info_any_dirty(info) (info_dirty(info) || info_any_dquot_dirty(info))
 DECL|macro|sb_dqopt
 mdefine_line|#define sb_dqopt(sb) (&amp;(sb)-&gt;s_dquot)
+DECL|macro|sb_dqinfo
+mdefine_line|#define sb_dqinfo(sb, type) (sb_dqopt(sb)-&gt;info+(type))
 DECL|struct|dqstats
 r_struct
 id|dqstats
@@ -352,21 +351,19 @@ suffix:semicolon
 DECL|macro|NR_DQHASH
 mdefine_line|#define NR_DQHASH 43            /* Just an arbitrary number */
 DECL|macro|DQ_MOD_B
-mdefine_line|#define DQ_MOD_B&t;0
+mdefine_line|#define DQ_MOD_B&t;0&t;/* dquot modified since read */
 DECL|macro|DQ_BLKS_B
-mdefine_line|#define DQ_BLKS_B&t;1
+mdefine_line|#define DQ_BLKS_B&t;1&t;/* uid/gid has been warned about blk limit */
 DECL|macro|DQ_INODES_B
-mdefine_line|#define DQ_INODES_B&t;2
+mdefine_line|#define DQ_INODES_B&t;2&t;/* uid/gid has been warned about inode limit */
 DECL|macro|DQ_FAKE_B
-mdefine_line|#define DQ_FAKE_B&t;3
-DECL|macro|DQ_MOD
-mdefine_line|#define DQ_MOD        (1 &lt;&lt; DQ_MOD_B)&t;/* dquot modified since read */
-DECL|macro|DQ_BLKS
-mdefine_line|#define DQ_BLKS       (1 &lt;&lt; DQ_BLKS_B)&t;/* uid/gid has been warned about blk limit */
-DECL|macro|DQ_INODES
-mdefine_line|#define DQ_INODES     (1 &lt;&lt; DQ_INODES_B)&t;/* uid/gid has been warned about inode limit */
-DECL|macro|DQ_FAKE
-mdefine_line|#define DQ_FAKE       (1 &lt;&lt; DQ_FAKE_B)&t;/* no limits only usage */
+mdefine_line|#define DQ_FAKE_B&t;3&t;/* no limits only usage */
+DECL|macro|DQ_READ_B
+mdefine_line|#define DQ_READ_B&t;4&t;/* dquot was read into memory */
+DECL|macro|DQ_ACTIVE_B
+mdefine_line|#define DQ_ACTIVE_B&t;5&t;/* dquot is active (dquot_release not called) */
+DECL|macro|DQ_WAITFREE_B
+mdefine_line|#define DQ_WAITFREE_B&t;6&t;/* dquot being waited (by invalidate_dquots) */
 DECL|struct|dquot
 r_struct
 id|dquot
@@ -400,7 +397,11 @@ id|atomic_t
 id|dq_count
 suffix:semicolon
 multiline_comment|/* Use count */
-multiline_comment|/* fields after this point are cleared when invalidating */
+DECL|member|dq_wait_unused
+id|wait_queue_head_t
+id|dq_wait_unused
+suffix:semicolon
+multiline_comment|/* Wait queue for dquot to become unused */
 DECL|member|dq_sb
 r_struct
 id|super_block
@@ -544,7 +545,21 @@ op_star
 id|dquot
 )paren
 suffix:semicolon
-multiline_comment|/* Write (or delete) structure for one user */
+multiline_comment|/* Write structure for one user */
+DECL|member|release_dqblk
+r_int
+(paren
+op_star
+id|release_dqblk
+)paren
+(paren
+r_struct
+id|dquot
+op_star
+id|dquot
+)paren
+suffix:semicolon
+multiline_comment|/* Called when last reference to dquot is being dropped */
 )brace
 suffix:semicolon
 multiline_comment|/* Operations working with dquots */
@@ -553,7 +568,7 @@ r_struct
 id|dquot_operations
 (brace
 DECL|member|initialize
-r_void
+r_int
 (paren
 op_star
 id|initialize
@@ -567,7 +582,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|member|drop
-r_void
+r_int
 (paren
 op_star
 id|drop
@@ -611,7 +626,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|member|free_space
-r_void
+r_int
 (paren
 op_star
 id|free_space
@@ -625,7 +640,7 @@ id|qsize_t
 )paren
 suffix:semicolon
 DECL|member|free_inode
-r_void
+r_int
 (paren
 op_star
 id|free_inode
@@ -668,6 +683,35 @@ id|dquot
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* Ordinary dquot write */
+DECL|member|mark_dirty
+r_int
+(paren
+op_star
+id|mark_dirty
+)paren
+(paren
+r_struct
+id|dquot
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Dquot is marked dirty */
+DECL|member|write_info
+r_int
+(paren
+op_star
+id|write_info
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+multiline_comment|/* Write of quota &quot;superblock&quot; */
 )brace
 suffix:semicolon
 multiline_comment|/* Operations handling requests from userspace */
@@ -968,8 +1012,16 @@ multiline_comment|/* Operations for each type */
 )brace
 suffix:semicolon
 multiline_comment|/* Inline would be better but we need to dereference super_block which is not defined yet */
-DECL|macro|mark_dquot_dirty
-mdefine_line|#define mark_dquot_dirty(dquot) do {&bslash;&n;&t;set_bit(DQF_ANY_DQUOT_DIRTY_B, &amp;(sb_dqopt((dquot)-&gt;dq_sb)-&gt;info[(dquot)-&gt;dq_type].dqi_flags));&bslash;&n;&t;set_bit(DQ_MOD_B, &amp;(dquot)-&gt;dq_flags);&bslash;&n;} while (0)
+r_int
+id|mark_dquot_dirty
+c_func
+(paren
+r_struct
+id|dquot
+op_star
+id|dquot
+)paren
+suffix:semicolon
 DECL|macro|dquot_dirty
 mdefine_line|#define dquot_dirty(dquot) test_bit(DQ_MOD_B, &amp;(dquot)-&gt;dq_flags)
 DECL|macro|sb_has_quota_enabled
@@ -994,16 +1046,6 @@ r_struct
 id|quota_format_type
 op_star
 id|fmt
-)paren
-suffix:semicolon
-r_void
-id|init_dquot_operations
-c_func
-(paren
-r_struct
-id|dquot_operations
-op_star
-id|fsdqops
 )paren
 suffix:semicolon
 DECL|struct|quota_module_name
