@@ -1293,6 +1293,27 @@ id|dst_entry
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETPOLL_RX
+DECL|member|netpoll_rx
+r_int
+id|netpoll_rx
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+DECL|member|poll_controller
+r_void
+(paren
+op_star
+id|poll_controller
+)paren
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* bridge stuff */
 DECL|member|br_port
 r_struct
@@ -1886,6 +1907,16 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETPOLL_TRAP
+r_extern
+r_int
+id|netpoll_trap
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|gifconf_func_t
 r_typedef
 r_int
@@ -2141,6 +2172,18 @@ op_star
 id|dev
 )paren
 (brace
+macro_line|#ifdef CONFIG_NETPOLL_TRAP
+r_if
+c_cond
+(paren
+id|netpoll_trap
+c_func
+(paren
+)paren
+)paren
+r_return
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2173,6 +2216,18 @@ op_star
 id|dev
 )paren
 (brace
+macro_line|#ifdef CONFIG_NETPOLL_TRAP
+r_if
+c_cond
+(paren
+id|netpoll_trap
+c_func
+(paren
+)paren
+)paren
+r_return
+suffix:semicolon
+macro_line|#endif
 id|set_bit
 c_func
 (paren
