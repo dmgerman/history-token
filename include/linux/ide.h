@@ -190,13 +190,8 @@ mdefine_line|#define IDE_LARGE_SEEK(b1,b2,t)&t;(((b1) &gt; (b2) + (t)) || ((b2) 
 multiline_comment|/*&n; * Timeouts for various operations:&n; */
 DECL|macro|WAIT_DRQ
 mdefine_line|#define WAIT_DRQ&t;(HZ/10)&t;&t;/* 100msec - spec allows up to 20ms */
-macro_line|#if defined(CONFIG_APM) || defined(CONFIG_APM_MODULE)
 DECL|macro|WAIT_READY
 mdefine_line|#define WAIT_READY&t;(5*HZ)&t;&t;/* 5sec - some laptops are very slow */
-macro_line|#else
-DECL|macro|WAIT_READY
-mdefine_line|#define WAIT_READY&t;(HZ/10)&t;&t;/* 100msec - should be instantaneous */
-macro_line|#endif /* CONFIG_APM || CONFIG_APM_MODULE */
 DECL|macro|WAIT_PIDENTIFY
 mdefine_line|#define WAIT_PIDENTIFY&t;(10*HZ)&t;/* 10sec  - should be less than 3ms (?), if all ATAPI CD is closed at boot */
 DECL|macro|WAIT_WORSTCASE
