@@ -1206,11 +1206,20 @@ id|shost_tp
 suffix:semicolon
 id|shost-&gt;host_blocked
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|shost-&gt;host_self_blocked
 op_assign
 id|FALSE
+suffix:semicolon
+id|shost-&gt;max_host_blocked
+op_assign
+id|shost_tp-&gt;max_host_blocked
+ques
+c_cond
+id|shost_tp-&gt;max_host_blocked
+suffix:colon
+id|SCSI_DEFAULT_HOST_BLOCKED
 suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
