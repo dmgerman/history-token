@@ -15,6 +15,14 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/regs306x.h&gt;
 DECL|macro|CMFA
 mdefine_line|#define CMFA 6
+DECL|macro|CMIEA
+mdefine_line|#define CMIEA 0x40
+DECL|macro|CCLR_CMA
+mdefine_line|#define CCLR_CMA 0x08
+DECL|macro|CLK_DIV8192
+mdefine_line|#define CLK_DIV8192 0x03
+DECL|macro|H8300_TIMER_FREQ
+mdefine_line|#define H8300_TIMER_FREQ CONFIG_CPU_CLOCK*1000/8192 /* Timer input freq. */
 DECL|function|platform_timer_setup
 r_void
 id|__init
@@ -38,14 +46,18 @@ op_star
 )paren
 )paren
 (brace
+multiline_comment|/* setup 8bit timer ch2 */
 id|ctrl_outb
 c_func
 (paren
-id|H8300_TIMER_COUNT_DATA
+id|H8300_TIMER_FREQ
+op_div
+id|HZ
 comma
 id|TCORA2
 )paren
 suffix:semicolon
+multiline_comment|/* set interval */
 id|ctrl_outb
 c_func
 (paren
@@ -54,6 +66,7 @@ comma
 id|_8TCSR2
 )paren
 suffix:semicolon
+multiline_comment|/* no output */
 id|request_irq
 c_func
 (paren
@@ -71,15 +84,16 @@ suffix:semicolon
 id|ctrl_outb
 c_func
 (paren
-l_int|0x40
+id|CMIEA
 op_or
-l_int|0x08
+id|CCLR_CMA
 op_or
-l_int|0x03
+id|CLK_DIV8192
 comma
 id|_8TCR2
 )paren
 suffix:semicolon
+multiline_comment|/* start count */
 )brace
 DECL|function|platform_timer_eoi
 r_void

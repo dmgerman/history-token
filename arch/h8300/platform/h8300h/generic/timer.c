@@ -11,45 +11,18 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
-r_extern
-r_int
-id|request_irq_boot
-c_func
-(paren
-r_int
-r_int
-comma
-id|irqreturn_t
-(paren
-op_star
-id|handler
-)paren
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-comma
-r_int
-r_int
-comma
-r_const
-r_char
-op_star
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
 macro_line|#if defined(CONFIG_H83007) || defined(CONFIG_H83068)
 macro_line|#include &lt;asm/regs306x.h&gt;
 DECL|macro|CMFA
 mdefine_line|#define CMFA 6
+DECL|macro|CMIEA
+mdefine_line|#define CMIEA 0x40
+DECL|macro|CCLR_CMA
+mdefine_line|#define CCLR_CMA 0x08
+DECL|macro|CLK_DIV8192
+mdefine_line|#define CLK_DIV8192 0x03
+DECL|macro|H8300_TIMER_FREQ
+mdefine_line|#define H8300_TIMER_FREQ CONFIG_CPU_CLOCK*1000/8192 /* Timer input freq. */
 DECL|function|platform_timer_setup
 r_int
 id|platform_timer_setup
@@ -72,14 +45,18 @@ op_star
 )paren
 )paren
 (brace
+multiline_comment|/* setup 8bit timer ch2 */
 id|ctrl_outb
 c_func
 (paren
-id|H8300_TIMER_COUNT_DATA
+id|H8300_TIMER_FREQ
+op_div
+id|HZ
 comma
 id|TCORA2
 )paren
 suffix:semicolon
+multiline_comment|/* set interval */
 id|ctrl_outb
 c_func
 (paren
@@ -88,6 +65,7 @@ comma
 id|_8TCSR2
 )paren
 suffix:semicolon
+multiline_comment|/* no output */
 id|request_irq
 c_func
 (paren
@@ -105,18 +83,16 @@ suffix:semicolon
 id|ctrl_outb
 c_func
 (paren
-l_int|0x40
+id|CMIEA
 op_or
-l_int|0x08
+id|CCLR_CMA
 op_or
-l_int|0x03
+id|CLK_DIV8192
 comma
 id|_8TCR2
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
+multiline_comment|/* start count */
 )brace
 DECL|function|platform_timer_eoi
 r_void
@@ -144,7 +120,7 @@ id|CMFA
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if defined(H8_3002) || defined(CONFIG_H83048)
+macro_line|#if defined(CONFIG_H83002) || defined(CONFIG_H83048)
 multiline_comment|/* FIXME! */
 DECL|macro|TSTR
 mdefine_line|#define TSTR 0x00ffff60
@@ -158,6 +134,7 @@ DECL|macro|TOER
 mdefine_line|#define TOER 0x00ffff90
 DECL|macro|TOCR
 mdefine_line|#define TOCR 0x00ffff91
+multiline_comment|/* ITU0 */
 DECL|macro|TCR
 mdefine_line|#define TCR  0x00ffff64
 DECL|macro|TIOR
@@ -172,6 +149,12 @@ DECL|macro|GRA
 mdefine_line|#define GRA  0x00ffff6a
 DECL|macro|GRB
 mdefine_line|#define GRB  0x00ffff6c
+DECL|macro|CCLR_CMGRA
+mdefine_line|#define CCLR_CMGRA 0x20
+DECL|macro|CLK_DIV8
+mdefine_line|#define CLK_DIV8 0x03
+DECL|macro|H8300_TIMER_FREQ
+mdefine_line|#define H8300_TIMER_FREQ CONFIG_CPU_CLOCK*1000/8 /* Timer input freq. */
 DECL|function|platform_timer_setup
 r_int
 id|platform_timer_setup
@@ -202,8 +185,11 @@ op_star
 )paren
 id|GRA
 op_assign
-id|H8300_TIMER_COUNT_DATA
+id|H8300_TIMER_FREQ
+op_div
+id|HZ
 suffix:semicolon
+multiline_comment|/* set interval */
 op_star
 (paren
 r_int
@@ -214,23 +200,30 @@ id|TCNT
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* clear counter */
 id|ctrl_outb
 c_func
 (paren
-l_int|0x23
+l_int|0x80
+op_or
+id|CCLR_CMGRA
+op_or
+id|CLK_DIV8
 comma
 id|TCR
 )paren
 suffix:semicolon
+multiline_comment|/* set ITU0 clock */
 id|ctrl_outb
 c_func
 (paren
-l_int|0x00
+l_int|0x88
 comma
 id|TIOR
 )paren
 suffix:semicolon
-id|request_timer_irq
+multiline_comment|/* no output */
+id|request_irq
 c_func
 (paren
 l_int|26
@@ -247,21 +240,16 @@ suffix:semicolon
 id|ctrl_outb
 c_func
 (paren
-id|inb
-c_func
-(paren
-id|TIER
-)paren
-op_or
-l_int|0x01
+l_int|0xf9
 comma
 id|TIER
 )paren
 suffix:semicolon
+multiline_comment|/* compare match GRA interrupt */
 id|ctrl_outb
 c_func
 (paren
-id|inb
+id|ctrl_inb
 c_func
 (paren
 id|TSNC
@@ -273,10 +261,11 @@ comma
 id|TSNC
 )paren
 suffix:semicolon
+multiline_comment|/* ITU0 async */
 id|ctrl_outb
 c_func
 (paren
-id|inb
+id|ctrl_inb
 c_func
 (paren
 id|TMDR
@@ -288,10 +277,11 @@ comma
 id|TMDR
 )paren
 suffix:semicolon
+multiline_comment|/* ITU0 normal mode */
 id|ctrl_outb
 c_func
 (paren
-id|inb
+id|ctrl_inb
 c_func
 (paren
 id|TSTR
@@ -302,6 +292,7 @@ comma
 id|TSTR
 )paren
 suffix:semicolon
+multiline_comment|/* ITU0 Start */
 r_return
 l_int|0
 suffix:semicolon
@@ -317,7 +308,7 @@ r_void
 id|ctrl_outb
 c_func
 (paren
-id|inb
+id|ctrl_inb
 c_func
 (paren
 id|TSR

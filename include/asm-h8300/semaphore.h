@@ -260,7 +260,7 @@ c_func
 (paren
 l_string|&quot;stc ccr,r3l&bslash;n&bslash;t&quot;
 l_string|&quot;orc #0x80,ccr&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l %0, er1&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %2, er1&bslash;n&bslash;t&quot;
 l_string|&quot;dec.l #1,er1&bslash;n&bslash;t&quot;
 l_string|&quot;mov.l er1,%0&bslash;n&bslash;t&quot;
 l_string|&quot;bpl 1f&bslash;n&bslash;t&quot;
@@ -272,7 +272,7 @@ l_string|&quot;1:&bslash;n&bslash;t&quot;
 l_string|&quot;ldc r3l,ccr&bslash;n&quot;
 l_string|&quot;2:&quot;
 suffix:colon
-l_string|&quot;+m&quot;
+l_string|&quot;=m&quot;
 (paren
 op_star
 id|count
@@ -281,6 +281,12 @@ suffix:colon
 l_string|&quot;g&quot;
 (paren
 id|sem
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+id|count
 )paren
 suffix:colon
 l_string|&quot;cc&quot;
@@ -342,7 +348,7 @@ c_func
 (paren
 l_string|&quot;stc ccr,r1l&bslash;n&bslash;t&quot;
 l_string|&quot;orc #0x80,ccr&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l %1, er2&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %3, er2&bslash;n&bslash;t&quot;
 l_string|&quot;dec.l #1,er2&bslash;n&bslash;t&quot;
 l_string|&quot;mov.l er2,%1&bslash;n&bslash;t&quot;
 l_string|&quot;bpl 1f&bslash;n&bslash;t&quot;
@@ -360,7 +366,7 @@ l_string|&quot;=r&quot;
 id|count
 )paren
 comma
-l_string|&quot;+m&quot;
+l_string|&quot;=m&quot;
 (paren
 op_star
 id|count
@@ -369,6 +375,12 @@ suffix:colon
 l_string|&quot;g&quot;
 (paren
 id|sem
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+id|count
 )paren
 suffix:colon
 l_string|&quot;cc&quot;
@@ -431,7 +443,7 @@ c_func
 (paren
 l_string|&quot;stc ccr,r3l&bslash;n&bslash;t&quot;
 l_string|&quot;orc #0x80,ccr&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l %0,er2&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %3,er2&bslash;n&bslash;t&quot;
 l_string|&quot;dec.l #1,er2&bslash;n&bslash;t&quot;
 l_string|&quot;mov.l er2,%0&bslash;n&bslash;t&quot;
 l_string|&quot;bpl 1f&bslash;n&bslash;t&quot;
@@ -452,7 +464,7 @@ l_string|&quot;ldc r3l,ccr&bslash;n&bslash;t&quot;
 l_string|&quot;sub.l %1,%1&bslash;n&quot;
 l_string|&quot;2:&quot;
 suffix:colon
-l_string|&quot;+m&quot;
+l_string|&quot;=m&quot;
 (paren
 op_star
 id|count
@@ -466,6 +478,12 @@ suffix:colon
 l_string|&quot;g&quot;
 (paren
 id|sem
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+id|count
 )paren
 suffix:colon
 l_string|&quot;cc&quot;
@@ -529,7 +547,7 @@ c_func
 (paren
 l_string|&quot;stc ccr,r3l&bslash;n&bslash;t&quot;
 l_string|&quot;orc #0x80,ccr&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l %0,er1&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %2,er1&bslash;n&bslash;t&quot;
 l_string|&quot;inc.l #1,er1&bslash;n&bslash;t&quot;
 l_string|&quot;mov.l er1,%0&bslash;n&bslash;t&quot;
 l_string|&quot;ldc r3l,ccr&bslash;n&bslash;t&quot;
@@ -540,7 +558,7 @@ l_string|&quot;mov.l %1,er0&bslash;n&bslash;t&quot;
 l_string|&quot;jsr @___up&bslash;n&quot;
 l_string|&quot;1:&quot;
 suffix:colon
-l_string|&quot;+m&quot;
+l_string|&quot;=m&quot;
 (paren
 op_star
 id|count
@@ -549,6 +567,12 @@ suffix:colon
 l_string|&quot;g&quot;
 (paren
 id|sem
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+id|count
 )paren
 suffix:colon
 l_string|&quot;cc&quot;

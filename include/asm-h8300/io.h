@@ -177,6 +177,7 @@ r_int
 r_int
 id|addr
 comma
+r_const
 r_void
 op_star
 id|buf
@@ -283,6 +284,7 @@ r_int
 r_int
 id|addr
 comma
+r_const
 r_void
 op_star
 id|buf
@@ -342,6 +344,7 @@ r_int
 r_int
 id|addr
 comma
+r_const
 r_void
 op_star
 id|buf
@@ -413,7 +416,13 @@ r_volatile
 r_int
 r_char
 op_star
-id|ap
+id|ap_b
+suffix:semicolon
+r_volatile
+r_int
+r_int
+op_star
+id|ap_w
 suffix:semicolon
 r_int
 r_char
@@ -437,23 +446,40 @@ id|addr
 )paren
 )paren
 (brace
-id|ap
+id|ap_w
 op_assign
 (paren
 r_volatile
 r_int
-r_char
+r_int
 op_star
 )paren
 (paren
 id|addr
-op_xor
+op_amp
+op_complement
 l_int|1
 )paren
 suffix:semicolon
+r_while
+c_loop
+(paren
+id|len
+op_decrement
+)paren
+op_star
+id|bp
+op_increment
+op_assign
+op_star
+id|ap_w
+op_amp
+l_int|0xff
+suffix:semicolon
 )brace
 r_else
-id|ap
+(brace
+id|ap_b
 op_assign
 (paren
 r_volatile
@@ -474,8 +500,9 @@ id|bp
 op_increment
 op_assign
 op_star
-id|ap
+id|ap_b
 suffix:semicolon
+)brace
 )brace
 DECL|function|io_insw
 r_static
@@ -603,13 +630,13 @@ mdefine_line|#define memcpy_fromio(a,b,c)&t;memcpy((a),(void *)(b),(c))
 DECL|macro|memcpy_toio
 mdefine_line|#define memcpy_toio(a,b,c)&t;memcpy((void *)(a),(b),(c))
 DECL|macro|inb
-mdefine_line|#define inb(addr)    ((h8300_buswidth(addr))?readb((addr) ^ 1) &amp; 0xff:readb(addr))
+mdefine_line|#define inb(addr)    ((h8300_buswidth(addr))?readw((addr) &amp; ~1) &amp; 0xff:readb(addr))
 DECL|macro|inw
 mdefine_line|#define inw(addr)    _swapw(readw(addr))
 DECL|macro|inl
 mdefine_line|#define inl(addr)    _swapl(readl(addr))
 DECL|macro|outb
-mdefine_line|#define outb(x,addr) ((void)((h8300_buswidth(addr) &amp;&amp; ((addr) &amp; 1))?writew(x,addr):writeb(x,addr)))
+mdefine_line|#define outb(x,addr) ((void)((h8300_buswidth(addr) &amp;&amp; ((addr) &amp; 1))?writew(x,(addr) &amp; ~1):writeb(x,addr)))
 DECL|macro|outw
 mdefine_line|#define outw(x,addr) ((void) writew(_swapw(x),addr))
 DECL|macro|outl

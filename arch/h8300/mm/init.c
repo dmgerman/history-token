@@ -483,6 +483,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Mem_init: start=%lx, end=%lx&bslash;n&quot;
 comma
 id|start_mem
@@ -577,6 +578,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Memory available: %luk/%luk RAM, %luk/%luk ROM (%dk kernel code, %dk data)&bslash;n&quot;
 comma
 id|tmp
@@ -785,6 +787,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Freeing unused kernel memory: %ldk freed (0x%x - 0x%x)&bslash;n&quot;
 comma
 (paren
