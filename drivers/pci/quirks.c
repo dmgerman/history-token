@@ -649,7 +649,11 @@ id|nr
 suffix:semicolon
 id|res-&gt;name
 op_assign
-id|dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|res-&gt;start
 op_assign
