@@ -17283,6 +17283,12 @@ suffix:semicolon
 multiline_comment|/* caller ensures that ea_value_len is less than 64K but&n;&t;we need to ensure that it fits within the smb */
 multiline_comment|/*BB add length check that it would fit in negotiated SMB buffer size BB */
 multiline_comment|/* if(ea_value_len &gt; buffer_size - 512 (enough for header)) */
+r_if
+c_cond
+(paren
+id|ea_value_len
+)paren
+(brace
 id|memcpy
 c_func
 (paren
@@ -17302,6 +17308,7 @@ comma
 id|ea_value_len
 )paren
 suffix:semicolon
+)brace
 id|pSMB-&gt;TotalDataCount
 op_assign
 id|pSMB-&gt;DataCount
