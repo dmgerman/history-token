@@ -1805,7 +1805,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-macro_line|#include &quot;perfmon_hpsim.h&quot;
 macro_line|#include &quot;perfmon_itanium.h&quot;
 macro_line|#include &quot;perfmon_mckinley.h&quot;
 macro_line|#include &quot;perfmon_generic.h&quot;
