@@ -3653,11 +3653,10 @@ id|inet-&gt;cork.fragsize
 op_assign
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
-op_amp
-id|rt-&gt;u.dst
+id|rt-&gt;u.dst.path
 )paren
 suffix:semicolon
 r_if
