@@ -4196,6 +4196,7 @@ id|ioc
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * Make sure the process is able to allocate at least 1 request&n;&t; * even if the batch times out, otherwise we could theoretically&n;&t; * lose wakeups.&n;&t; */
 r_return
 id|ioc-&gt;nr_batch_requests
 op_eq
@@ -4218,7 +4219,7 @@ id|BLK_BATCH_TIME
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ioc_set_batching sets ioc to be a new &quot;batcher&quot; if it is not one&n; */
+multiline_comment|/*&n; * ioc_set_batching sets ioc to be a new &quot;batcher&quot; if it is not one. This&n; * will cause the process to be a &quot;batcher&quot; on all queues in the system. This&n; * is the behaviour we want though - once it gets a wakeup it should be given&n; * a nice run.&n; */
 DECL|function|ioc_set_batching
 r_void
 id|ioc_set_batching
@@ -4436,6 +4437,7 @@ op_ge
 id|q-&gt;nr_requests
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * The queue will fill after this allocation, so set it as&n;&t;&t; * full, and mark this process as &quot;batching&quot;. This process&n;&t;&t; * will be allowed to complete a batch of requests, others&n;&t;&t; * will be blocked.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4493,6 +4495,7 @@ id|rw
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * The queue is full and the allocating process is not a&n;&t;&t; * &quot;batcher&quot;, and not exempted by the IO scheduler&n;&t;&t; */
 id|spin_unlock_irq
 c_func
 (paren
@@ -4554,6 +4557,7 @@ op_logical_neg
 id|rq
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Allocation failed presumably due to memory. Undo anything&n;&t;&t; * we might have messed up.&n;&t;&t; *&n;&t;&t; * Allocating task should really be put onto the front of the&n;&t;&t; * wait queue, but this is pretty rare.&n;&t;&t; */
 id|spin_lock_irq
 c_func
 (paren
@@ -4748,6 +4752,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * After sleeping, we become a &quot;batching&quot; process and&n;&t;&t;&t; * will be able to allocate at least one request, and&n;&t;&t;&t; * up to a big batch of them for a small period time.&n;&t;&t;&t; * See ioc_batching, ioc_set_batching&n;&t;&t;&t; */
 id|ioc
 op_assign
 id|get_io_context
