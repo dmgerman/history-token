@@ -5411,10 +5411,6 @@ id|ret
 )paren
 r_continue
 suffix:semicolon
-id|flag
-op_assign
-l_int|1
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -5424,6 +5420,10 @@ id|p-&gt;state
 r_case
 id|TASK_TRACED
 suffix:colon
+id|flag
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5440,6 +5440,10 @@ multiline_comment|/*FALLTHROUGH*/
 r_case
 id|TASK_STOPPED
 suffix:colon
+id|flag
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5589,6 +5593,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|flag
+op_assign
+l_int|1
+suffix:semicolon
 id|check_continued
 suffix:colon
 r_if
