@@ -2740,7 +2740,36 @@ c_func
 id|victim
 )paren
 suffix:semicolon
+id|pr_debug
+c_func
+(paren
+l_string|&quot;sysfs: Removing %s (%d)&bslash;n&quot;
+comma
+id|victim-&gt;d_name.name
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|victim-&gt;d_count
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/**&n;&t;&t;&t; * Drop reference from initial get_dentry().&n;&t;&t;&t; */
+id|dput
+c_func
+(paren
+id|victim
+)paren
+suffix:semicolon
 )brace
+multiline_comment|/**&n;&t;&t; * Drop the reference acquired from get_dentry() above.&n;&t;&t; */
+id|dput
+c_func
+(paren
+id|victim
+)paren
+suffix:semicolon
 )brace
 id|up
 c_func
@@ -2826,7 +2855,11 @@ id|dentry
 op_star
 id|dentry
 op_assign
+id|dget
+c_func
+(paren
 id|kobj-&gt;dentry
+)paren
 suffix:semicolon
 r_struct
 id|dentry
@@ -2840,6 +2873,14 @@ op_logical_neg
 id|dentry
 )paren
 r_return
+suffix:semicolon
+id|pr_debug
+c_func
+(paren
+l_string|&quot;sysfs %s: removing dir&bslash;n&quot;
+comma
+id|dentry-&gt;d_name.name
+)paren
 suffix:semicolon
 id|parent
 op_assign
@@ -2879,6 +2920,9 @@ id|dentry
 op_star
 id|d
 op_assign
+id|dget
+c_func
+(paren
 id|list_entry
 c_func
 (paren
@@ -2889,14 +2933,30 @@ id|dentry
 comma
 id|d_child
 )paren
+)paren
 suffix:semicolon
-multiline_comment|/* make sure dentry is still there */
+multiline_comment|/** &n;&t;&t; * Make sure dentry is still there &n;&t;&t; */
+id|pr_debug
+c_func
+(paren
+l_string|&quot; o %s: &quot;
+comma
+id|d-&gt;d_name.name
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|d-&gt;d_inode
 )paren
 (brace
+id|pr_debug
+c_func
+(paren
+l_string|&quot;removing&quot;
+)paren
+suffix:semicolon
+multiline_comment|/**&n;&t;&t;&t; * Unlink and unhash.&n;&t;&t;&t; */
 id|simple_unlink
 c_func
 (paren
@@ -2908,10 +2968,37 @@ suffix:semicolon
 id|d_delete
 c_func
 (paren
-id|dentry
+id|d
+)paren
+suffix:semicolon
+multiline_comment|/**&n;&t;&t;&t; * Drop reference from initial get_dentry().&n;&t;&t;&t; */
+id|dput
+c_func
+(paren
+id|d
 )paren
 suffix:semicolon
 )brace
+id|pr_debug
+c_func
+(paren
+l_string|&quot; done (%d)&bslash;n&quot;
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|d-&gt;d_count
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/**&n;&t;&t; * drop reference from dget() above.&n;&t;&t; */
+id|dput
+c_func
+(paren
+id|d
+)paren
+suffix:semicolon
 )brace
 id|up
 c_func
@@ -2935,6 +3022,35 @@ id|dentry
 )paren
 suffix:semicolon
 id|d_delete
+c_func
+(paren
+id|dentry
+)paren
+suffix:semicolon
+id|pr_debug
+c_func
+(paren
+l_string|&quot; o %s removing done (%d)&bslash;n&quot;
+comma
+id|dentry-&gt;d_name.name
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_count
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/**&n;&t; * Drop reference from initial get_dentry().&n;&t; */
+id|dput
+c_func
+(paren
+id|dentry
+)paren
+suffix:semicolon
+multiline_comment|/**&n;&t; * Drop reference from dget() on entrance.&n;&t; */
+id|dput
 c_func
 (paren
 id|dentry
