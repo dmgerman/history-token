@@ -169,7 +169,7 @@ r_return
 id|urb
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_free_urb - frees the memory used by a urb when all users of it are finished&n; * @urb: pointer to the urb to free&n; *&n; * Must be called when a user of a urb is finished with it.  When the last user&n; * of the urb calls this function, the memory of the urb is freed.&n; *&n; * Note: The transfer buffer associated with the urb is not freed, that must be&n; * done elsewhere.&n; */
+multiline_comment|/**&n; * usb_free_urb - frees the memory used by a urb when all users of it are finished&n; * @urb: pointer to the urb to free, may be NULL&n; *&n; * Must be called when a user of a urb is finished with it.  When the last user&n; * of the urb calls this function, the memory of the urb is freed.&n; *&n; * Note: The transfer buffer associated with the urb is not freed, that must be&n; * done elsewhere.&n; */
 DECL|function|usb_free_urb
 r_void
 id|usb_free_urb
@@ -194,7 +194,7 @@ id|urb-&gt;kref
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_get_urb - increments the reference count of the urb&n; * @urb: pointer to the urb to modify&n; *&n; * This must be  called whenever a urb is transferred from a device driver to a&n; * host controller driver.  This allows proper reference counting to happen&n; * for urbs.&n; *&n; * A pointer to the urb with the incremented reference counter is returned.&n; */
+multiline_comment|/**&n; * usb_get_urb - increments the reference count of the urb&n; * @urb: pointer to the urb to modify, may be NULL&n; *&n; * This must be  called whenever a urb is transferred from a device driver to a&n; * host controller driver.  This allows proper reference counting to happen&n; * for urbs.&n; *&n; * A pointer to the urb with the incremented reference counter is returned.&n; */
 DECL|function|usb_get_urb
 r_struct
 id|urb
@@ -843,7 +843,7 @@ id|mem_flags
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------*/
-multiline_comment|/**&n; * usb_unlink_urb - abort/cancel a transfer request for an endpoint&n; * @urb: pointer to urb describing a previously submitted request&n; *&n; * This routine cancels an in-progress request.  URBs complete only&n; * once per submission, and may be canceled only once per submission.&n; * Successful cancelation means the requests&squot;s completion handler will&n; * be called with a status code indicating that the request has been&n; * canceled (rather than any other code) and will quickly be removed&n; * from host controller data structures.&n; *&n; * In the past, clearing the URB_ASYNC_UNLINK transfer flag for the&n; * URB indicated that the request was synchronous.  This usage is now&n; * deprecated; if the flag is clear the call will be forwarded to&n; * usb_kill_urb() and the return value will be 0.  In the future, drivers&n; * should call usb_kill_urb() directly for synchronous unlinking.&n; *&n; * When the URB_ASYNC_UNLINK transfer flag for the URB is set, this&n; * request is asynchronous.  Success is indicated by returning -EINPROGRESS,&n; * at which time the URB will normally have been unlinked but not yet&n; * given back to the device driver.  When it is called, the completion&n; * function will see urb-&gt;status == -ECONNRESET.  Failure is indicated&n; * by any other return value.  Unlinking will fail when the URB is not&n; * currently &quot;linked&quot; (i.e., it was never submitted, or it was unlinked&n; * before, or the hardware is already finished with it), even if the&n; * completion handler has not yet run.&n; *&n; * Unlinking and Endpoint Queues:&n; *&n; * Host Controller Drivers (HCDs) place all the URBs for a particular&n; * endpoint in a queue.  Normally the queue advances as the controller&n; * hardware processes each request.  But when an URB terminates with any&n; * fault (such as an error, or being unlinked) its queue stops, at least&n; * until that URB&squot;s completion routine returns.  It is guaranteed that&n; * the queue will not restart until all its unlinked URBs have been fully&n; * retired, with their completion routines run, even if that&squot;s not until&n; * some time after the original completion handler returns.&n; *&n; * This means that USB device drivers can safely build deep queues for&n; * large or complex transfers, and clean them up reliably after any sort&n; * of aborted transfer by unlinking all pending URBs at the first fault.&n; *&n; * Note that an URB terminating early because a short packet was received&n; * will count as an error if and only if the URB_SHORT_NOT_OK flag is set.&n; * Also, that all unlinks performed in any URB completion handler must&n; * be asynchronous.&n; *&n; * Queues for isochronous endpoints are treated differently, because they&n; * advance at fixed rates.  Such queues do not stop when an URB is unlinked.&n; * An unlinked URB may leave a gap in the stream of packets.  It is undefined&n; * whether such gaps can be filled in.&n; *&n; * When a control URB terminates with an error, it is likely that the&n; * status stage of the transfer will not take place, even if it is merely&n; * a soft error resulting from a short-packet with URB_SHORT_NOT_OK set.&n; */
+multiline_comment|/**&n; * usb_unlink_urb - abort/cancel a transfer request for an endpoint&n; * @urb: pointer to urb describing a previously submitted request,&n; *&t;may be NULL&n; *&n; * This routine cancels an in-progress request.  URBs complete only&n; * once per submission, and may be canceled only once per submission.&n; * Successful cancelation means the requests&squot;s completion handler will&n; * be called with a status code indicating that the request has been&n; * canceled (rather than any other code) and will quickly be removed&n; * from host controller data structures.&n; *&n; * In the past, clearing the URB_ASYNC_UNLINK transfer flag for the&n; * URB indicated that the request was synchronous.  This usage is now&n; * deprecated; if the flag is clear the call will be forwarded to&n; * usb_kill_urb() and the return value will be 0.  In the future, drivers&n; * should call usb_kill_urb() directly for synchronous unlinking.&n; *&n; * When the URB_ASYNC_UNLINK transfer flag for the URB is set, this&n; * request is asynchronous.  Success is indicated by returning -EINPROGRESS,&n; * at which time the URB will normally have been unlinked but not yet&n; * given back to the device driver.  When it is called, the completion&n; * function will see urb-&gt;status == -ECONNRESET.  Failure is indicated&n; * by any other return value.  Unlinking will fail when the URB is not&n; * currently &quot;linked&quot; (i.e., it was never submitted, or it was unlinked&n; * before, or the hardware is already finished with it), even if the&n; * completion handler has not yet run.&n; *&n; * Unlinking and Endpoint Queues:&n; *&n; * Host Controller Drivers (HCDs) place all the URBs for a particular&n; * endpoint in a queue.  Normally the queue advances as the controller&n; * hardware processes each request.  But when an URB terminates with any&n; * fault (such as an error, or being unlinked) its queue stops, at least&n; * until that URB&squot;s completion routine returns.  It is guaranteed that&n; * the queue will not restart until all its unlinked URBs have been fully&n; * retired, with their completion routines run, even if that&squot;s not until&n; * some time after the original completion handler returns.&n; *&n; * This means that USB device drivers can safely build deep queues for&n; * large or complex transfers, and clean them up reliably after any sort&n; * of aborted transfer by unlinking all pending URBs at the first fault.&n; *&n; * Note that an URB terminating early because a short packet was received&n; * will count as an error if and only if the URB_SHORT_NOT_OK flag is set.&n; * Also, that all unlinks performed in any URB completion handler must&n; * be asynchronous.&n; *&n; * Queues for isochronous endpoints are treated differently, because they&n; * advance at fixed rates.  Such queues do not stop when an URB is unlinked.&n; * An unlinked URB may leave a gap in the stream of packets.  It is undefined&n; * whether such gaps can be filled in.&n; *&n; * When a control URB terminates with an error, it is likely that the&n; * status stage of the transfer will not take place, even if it is merely&n; * a soft error resulting from a short-packet with URB_SHORT_NOT_OK set.&n; */
 DECL|function|usb_unlink_urb
 r_int
 id|usb_unlink_urb
@@ -855,6 +855,16 @@ op_star
 id|urb
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|urb
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -905,7 +915,7 @@ id|ECONNRESET
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_kill_urb - cancel a transfer request and wait for it to finish&n; * @urb: pointer to URB describing a previously submitted request&n; *&n; * This routine cancels an in-progress request.  It is guaranteed that&n; * upon return all completion handlers will have finished and the URB&n; * will be totally idle and available for reuse.  These features make&n; * this an ideal way to stop I/O in a disconnect() callback or close()&n; * function.  If the request has not already finished or been unlinked&n; * the completion handler will see urb-&gt;status == -ENOENT.&n; *&n; * While the routine is running, attempts to resubmit the URB will fail&n; * with error -EPERM.  Thus even if the URB&squot;s completion handler always&n; * tries to resubmit, it will not succeed and the URB will become idle.&n; *&n; * This routine may not be used in an interrupt context (such as a bottom&n; * half or a completion handler), or when holding a spinlock, or in other&n; * situations where the caller can&squot;t schedule().&n; */
+multiline_comment|/**&n; * usb_kill_urb - cancel a transfer request and wait for it to finish&n; * @urb: pointer to URB describing a previously submitted request,&n; *&t;may be NULL&n; *&n; * This routine cancels an in-progress request.  It is guaranteed that&n; * upon return all completion handlers will have finished and the URB&n; * will be totally idle and available for reuse.  These features make&n; * this an ideal way to stop I/O in a disconnect() callback or close()&n; * function.  If the request has not already finished or been unlinked&n; * the completion handler will see urb-&gt;status == -ENOENT.&n; *&n; * While the routine is running, attempts to resubmit the URB will fail&n; * with error -EPERM.  Thus even if the URB&squot;s completion handler always&n; * tries to resubmit, it will not succeed and the URB will become idle.&n; *&n; * This routine may not be used in an interrupt context (such as a bottom&n; * half or a completion handler), or when holding a spinlock, or in other&n; * situations where the caller can&squot;t schedule().&n; */
 DECL|function|usb_kill_urb
 r_void
 id|usb_kill_urb
@@ -922,6 +932,8 @@ c_cond
 (paren
 op_logical_neg
 (paren
+id|urb
+op_logical_and
 id|urb-&gt;dev
 op_logical_and
 id|urb-&gt;dev-&gt;bus
