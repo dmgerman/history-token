@@ -2735,17 +2735,12 @@ id|fore200e_bus_t
 suffix:semicolon
 macro_line|#if defined(CONFIG_ATM_FORE200E_SBA)
 macro_line|#  if defined(CONFIG_ATM_FORE200E_PCA)
-macro_line|#    if (PCI_DMA_BIDIRECTIONAL == SBUS_DMA_BIDIRECTIONAL) &amp;&amp; &bslash;&n;        (PCI_DMA_TODEVICE      == SBUS_DMA_TODEVICE)      &amp;&amp; &bslash;&n;        (PCI_DMA_FROMDEVICE    == SBUS_DMA_FROMDEVICE)
 DECL|macro|FORE200E_DMA_BIDIRECTIONAL
-macro_line|#      define FORE200E_DMA_BIDIRECTIONAL PCI_DMA_BIDIRECTIONAL
+macro_line|#    define FORE200E_DMA_BIDIRECTIONAL PCI_DMA_BIDIRECTIONAL
 DECL|macro|FORE200E_DMA_TODEVICE
-macro_line|#      define FORE200E_DMA_TODEVICE      PCI_DMA_TODEVICE
+macro_line|#    define FORE200E_DMA_TODEVICE      PCI_DMA_TODEVICE
 DECL|macro|FORE200E_DMA_FROMDEVICE
-macro_line|#      define FORE200E_DMA_FROMDEVICE    PCI_DMA_FROMDEVICE
-macro_line|#    else
-multiline_comment|/* in that case, we&squot;ll need to add an extra indirection, e.g.&n;&t;  fore200e-&gt;bus-&gt;dma_direction[ fore200e_dma_direction ] */
-macro_line|#      error PCI and SBUS DMA direction flags have different values!
-macro_line|#    endif
+macro_line|#    define FORE200E_DMA_FROMDEVICE    PCI_DMA_FROMDEVICE
 macro_line|#  else
 DECL|macro|FORE200E_DMA_BIDIRECTIONAL
 macro_line|#    define FORE200E_DMA_BIDIRECTIONAL SBUS_DMA_BIDIRECTIONAL

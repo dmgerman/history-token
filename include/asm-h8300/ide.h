@@ -7,12 +7,6 @@ mdefine_line|#define _H8300_IDE_H
 multiline_comment|/****************************************************************************/
 macro_line|#ifdef __KERNEL__
 multiline_comment|/****************************************************************************/
-DECL|macro|ide_default_irq
-mdefine_line|#define ide_default_irq(base)&t;&t;(0)
-DECL|macro|ide_default_io_base
-mdefine_line|#define ide_default_io_base(index)&t;(0)
-DECL|macro|ide_init_default_irq
-mdefine_line|#define ide_init_default_irq(base)&t;(0)
 DECL|macro|MAX_HWIFS
 mdefine_line|#define MAX_HWIFS&t;1
 macro_line|#include &lt;asm-generic/ide_iops.h&gt;

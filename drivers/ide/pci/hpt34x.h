@@ -48,16 +48,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_TTI
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_TTI_HPT343
-comma
-dot
 id|name
 op_assign
 l_string|&quot;HPT34X&quot;

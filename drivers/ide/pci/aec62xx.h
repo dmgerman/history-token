@@ -390,16 +390,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_ARTOP
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_ARTOP_ATP850UF
-comma
-dot
 id|name
 op_assign
 l_string|&quot;AEC6210&quot;
@@ -465,16 +455,6 @@ comma
 (brace
 multiline_comment|/* 1 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_ARTOP
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_ARTOP_ATP860
-comma
-dot
 id|name
 op_assign
 l_string|&quot;AEC6260&quot;
@@ -518,16 +498,6 @@ comma
 comma
 (brace
 multiline_comment|/* 2 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_ARTOP
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_ARTOP_ATP860R
-comma
 dot
 id|name
 op_assign
@@ -594,16 +564,6 @@ comma
 (brace
 multiline_comment|/* 3 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_ARTOP
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_ARTOP_ATP865
-comma
-dot
 id|name
 op_assign
 l_string|&quot;AEC6X80&quot;
@@ -647,16 +607,6 @@ comma
 comma
 (brace
 multiline_comment|/* 4 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_ARTOP
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_ARTOP_ATP865R
-comma
 dot
 id|name
 op_assign

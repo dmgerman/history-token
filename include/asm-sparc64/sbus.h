@@ -2,6 +2,7 @@ multiline_comment|/* $Id: sbus.h,v 1.14 2000/02/18 13:50:55 davem Exp $&n; * sbu
 macro_line|#ifndef _SPARC64_SBUS_H
 DECL|macro|_SPARC64_SBUS_H
 mdefine_line|#define _SPARC64_SBUS_H
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
@@ -314,13 +315,13 @@ id|dma_addr_t
 )paren
 suffix:semicolon
 DECL|macro|SBUS_DMA_BIDIRECTIONAL
-mdefine_line|#define SBUS_DMA_BIDIRECTIONAL&t;0
+mdefine_line|#define SBUS_DMA_BIDIRECTIONAL&t;DMA_BIDIRECTIONAL
 DECL|macro|SBUS_DMA_TODEVICE
-mdefine_line|#define SBUS_DMA_TODEVICE&t;1
+mdefine_line|#define SBUS_DMA_TODEVICE&t;DMA_TO_DEVICE
 DECL|macro|SBUS_DMA_FROMDEVICE
-mdefine_line|#define SBUS_DMA_FROMDEVICE&t;2
+mdefine_line|#define SBUS_DMA_FROMDEVICE&t;DMA_FROM_DEVICE
 DECL|macro|SBUS_DMA_NONE
-mdefine_line|#define&t;SBUS_DMA_NONE&t;&t;3
+mdefine_line|#define&t;SBUS_DMA_NONE&t;&t;DMA_NONE
 multiline_comment|/* All the rest use streaming mode mappings. */
 r_extern
 id|dma_addr_t

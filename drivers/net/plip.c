@@ -4773,6 +4773,17 @@ op_star
 op_amp
 id|rq-&gt;ifr_data
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd
+op_ne
+id|SIOCDEVPLIP
+)paren
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
 r_switch
 c_cond
 (paren

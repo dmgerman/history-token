@@ -33,7 +33,7 @@ mdefine_line|#define THREAD_usp 4 /* offsetof(struct thread_struct, usp) */
 DECL|macro|THREAD_dccr
 mdefine_line|#define THREAD_dccr 8 /* offsetof(struct thread_struct, dccr) */
 DECL|macro|TASK_pid
-mdefine_line|#define TASK_pid 121 /* offsetof(struct task_struct, pid) */
+mdefine_line|#define TASK_pid 133 /* offsetof(struct task_struct, pid) */
 DECL|macro|LCLONE_VM
 mdefine_line|#define LCLONE_VM 256 /* CLONE_VM */
 DECL|macro|LCLONE_UNTRACED

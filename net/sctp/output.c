@@ -1469,7 +1469,7 @@ suffix:semicolon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpOutNoRoutes
+id|OutNoRoutes
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: Returning the &squot;err&squot; will effect all the associations&n;&t; * associated with a socket, although only one of the paths of the&n;&t; * association is unreachable.&n;&t; * The real failure of a transport or association can be passed on&n;&t; * to the user via notifications. So setting this error may not be&n;&t; * required.&n;&t; */

@@ -1627,6 +1627,7 @@ id|asm_do_IRQ
 c_func
 (paren
 r_int
+r_int
 id|irq
 comma
 r_struct

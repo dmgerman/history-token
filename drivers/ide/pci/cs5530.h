@@ -42,16 +42,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_CYRIX
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_CYRIX_5530_IDE
-comma
-dot
 id|name
 op_assign
 l_string|&quot;CS5530&quot;
@@ -80,6 +70,11 @@ dot
 id|bootable
 op_assign
 id|ON_BOARD
+comma
+dot
+id|flags
+op_assign
+id|IDEPCI_FLAG_FORCE_MASTER
 comma
 )brace
 )brace

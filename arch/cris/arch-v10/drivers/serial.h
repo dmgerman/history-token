@@ -95,20 +95,6 @@ op_star
 id|ostatusadr
 suffix:semicolon
 multiline_comment|/* adr to R_DMA_CHx_STATUS */
-DECL|member|ohwswadr
-r_volatile
-id|u32
-op_star
-id|ohwswadr
-suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_HWSW */
-DECL|member|odescradr
-r_volatile
-id|u32
-op_star
-id|odescradr
-suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_DESCR */
 multiline_comment|/* Input registers */
 DECL|member|iclrintradr
 r_volatile
@@ -131,21 +117,6 @@ op_star
 id|icmdadr
 suffix:semicolon
 multiline_comment|/* adr to R_DMA_CHx_CMD */
-DECL|member|istatusadr
-r_const
-r_volatile
-id|u8
-op_star
-id|istatusadr
-suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_STATUS */
-DECL|member|ihwswadr
-r_volatile
-id|u32
-op_star
-id|ihwswadr
-suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_HWSW */
 DECL|member|idescradr
 r_volatile
 id|u32
@@ -178,18 +149,46 @@ r_int
 id|enabled
 suffix:semicolon
 multiline_comment|/* Set to 1 if the port is enabled in HW config */
-multiline_comment|/* end of fields defined in rs_table[] in .c-file */
-DECL|member|uses_dma
-r_int
-id|uses_dma
+DECL|member|dma_out_enabled
+id|u8
+id|dma_out_enabled
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* Set to 1 if DMA should be used */
+DECL|member|dma_in_enabled
+id|u8
+id|dma_in_enabled
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Set to 1 if DMA should be used */
+multiline_comment|/* end of fields defined in rs_table[] in .c-file */
+DECL|member|uses_dma_in
+id|u8
+id|uses_dma_in
+suffix:semicolon
+multiline_comment|/* Set to 1 if DMA is used */
+DECL|member|uses_dma_out
+id|u8
+id|uses_dma_out
+suffix:semicolon
+multiline_comment|/* Set to 1 if DMA is used */
 DECL|member|forced_eop
-r_int
-r_char
+id|u8
 id|forced_eop
 suffix:semicolon
 multiline_comment|/* a fifo eop has been forced */
+DECL|member|baud_base
+r_int
+id|baud_base
+suffix:semicolon
+multiline_comment|/* For special baudrates */
+DECL|member|custom_divisor
+r_int
+id|custom_divisor
+suffix:semicolon
+multiline_comment|/* For special baudrates */
 DECL|member|tr_descr
 r_struct
 id|etrax_dma_descr
@@ -313,6 +312,16 @@ id|async_icount
 id|icount
 suffix:semicolon
 multiline_comment|/* error-statistics etc.*/
+DECL|member|normal_termios
+r_struct
+id|termios
+id|normal_termios
+suffix:semicolon
+DECL|member|callout_termios
+r_struct
+id|termios
+id|callout_termios
+suffix:semicolon
 macro_line|#ifdef DECLARE_WAITQUEUE
 DECL|member|open_wait
 id|wait_queue_head_t
@@ -342,6 +351,12 @@ r_int
 id|char_time_usec
 suffix:semicolon
 multiline_comment|/* The time for 1 char, in usecs */
+DECL|member|flush_time_usec
+r_int
+r_int
+id|flush_time_usec
+suffix:semicolon
+multiline_comment|/* How often we should flush */
 DECL|member|last_tx_active_usec
 r_int
 r_int

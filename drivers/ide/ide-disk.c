@@ -9134,6 +9134,17 @@ comma
 id|gendev
 )paren
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_ALPHA
+multiline_comment|/* On Alpha, halt(8) doesn&squot;t actually turn the machine off,&n;&t;   it puts you into the sort of firmware monitor. Typically,&n;&t;   it&squot;s used to boot another kernel image, so it&squot;s not much&n;&t;   different from reboot(8). Therefore, we don&squot;t need to&n;&t;   spin down the disk in this case, especially since Alpha&n;&t;   firmware doesn&squot;t handle disks in standby mode properly.&n;&t;   On the other hand, it&squot;s reasonably safe to turn the power&n;&t;   off when the shutdown process reaches the firmware prompt,&n;&t;   as the firmware initialization takes rather long time -&n;&t;   at least 10 seconds, which should be sufficient for&n;&t;   the disk to expire its write cache. */
+r_if
+c_cond
+(paren
+id|system_state
+op_ne
+id|SYSTEM_POWER_OFF
+)paren
+(brace
+macro_line|#else
 r_if
 c_cond
 (paren
@@ -9142,6 +9153,7 @@ op_eq
 id|SYSTEM_RESTART
 )paren
 (brace
+macro_line|#endif
 id|ide_cacheflush_p
 c_func
 (paren

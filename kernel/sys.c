@@ -748,6 +748,11 @@ c_func
 (paren
 id|sys_set_mempolicy
 )paren
+id|cond_syscall
+c_func
+(paren
+id|compat_get_mempolicy
+)paren
 multiline_comment|/* arch-specific weak syscall entries */
 id|cond_syscall
 c_func

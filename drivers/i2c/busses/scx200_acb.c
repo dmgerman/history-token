@@ -40,6 +40,8 @@ id|MAX_DEVICES
 )braket
 op_assign
 (brace
+l_int|0x820
+comma
 l_int|0x840
 )brace
 suffix:semicolon
@@ -1939,6 +1941,18 @@ c_func
 id|PCI_VENDOR_ID_NS
 comma
 id|PCI_DEVICE_ID_NS_SCx200_BRIDGE
+comma
+l_int|NULL
+)paren
+op_eq
+l_int|NULL
+op_logical_and
+id|pci_find_device
+c_func
+(paren
+id|PCI_VENDOR_ID_NS
+comma
+id|PCI_DEVICE_ID_NS_SC1100_BRIDGE
 comma
 l_int|NULL
 )paren

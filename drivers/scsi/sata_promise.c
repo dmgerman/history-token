@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;linux/libata.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;sata_promise.h&quot;
@@ -2071,8 +2071,8 @@ r_if
 c_cond
 (paren
 id|tf-&gt;protocol
-op_eq
-id|ATA_PROT_PIO
+op_ne
+id|ATA_PROT_DMA
 )paren
 id|ata_tf_load_mmio
 c_func
@@ -2104,8 +2104,8 @@ r_if
 c_cond
 (paren
 id|tf-&gt;protocol
-op_eq
-id|ATA_PROT_PIO
+op_ne
+id|ATA_PROT_DMA
 )paren
 id|ata_exec_command_mmio
 c_func

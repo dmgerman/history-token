@@ -64,11 +64,20 @@ r_int
 id|gpio_mode
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * return current lclk frequency in units of 10kHz&n; */
+multiline_comment|/*&n; * return current memory and LCD clock frequency in units of 10kHz&n; */
 r_extern
 r_int
 r_int
-id|get_lclk_frequency_10khz
+id|get_memclk_frequency_10khz
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|get_lcdclk_frequency_10khz
 c_func
 (paren
 r_void

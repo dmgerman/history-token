@@ -19,13 +19,6 @@ DECL|macro|__ide_mm_outsw
 mdefine_line|#define __ide_mm_outsw(port,addr,len)   writesw(port,addr,len)
 DECL|macro|__ide_mm_outsl
 mdefine_line|#define __ide_mm_outsl(port,addr,len)   writesl(port,addr,len)
-DECL|macro|ide_init_default_irq
-mdefine_line|#define ide_init_default_irq(base)&t;(0)
-multiline_comment|/*&n; * We always use the new IDE port registering,&n; * so these are fixed here.&n; */
-DECL|macro|ide_default_io_base
-mdefine_line|#define ide_default_io_base(i)&t;&t;(0)
-DECL|macro|ide_default_irq
-mdefine_line|#define ide_default_irq(b)&t;&t;(0)
 DECL|macro|IDE_ARCH_OBSOLETE_INIT
 mdefine_line|#define IDE_ARCH_OBSOLETE_INIT
 DECL|macro|ide_default_io_ctl

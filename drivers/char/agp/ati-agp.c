@@ -595,6 +595,10 @@ id|kfree
 id|tables
 )paren
 suffix:semicolon
+id|tables
+op_assign
+l_int|NULL
+suffix:semicolon
 id|retval
 op_assign
 op_minus

@@ -2,11 +2,14 @@ multiline_comment|/*&n; * CRIS pgtable.h - macros and functions to manipulate pa
 macro_line|#ifndef _CRIS_PGTABLE_H
 DECL|macro|_CRIS_PGTABLE_H
 mdefine_line|#define _CRIS_PGTABLE_H
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/arch/pgtable.h&gt;
 multiline_comment|/*&n; * The Linux memory management assumes a three-level page table setup. On&n; * CRIS, we use that, but &quot;fold&quot; the mid level into the top-level page&n; * table. Since the MMU TLB is software loaded through an interrupt, it&n; * supports any page table structure, so we could have used a three-level&n; * setup, but for the amounts of memory we normally use, a two-level is&n; * probably more efficient.&n; *&n; * This file contains the functions and defines necessary to modify and use&n; * the CRIS page table tree.&n; */
+macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
 id|paging_init
@@ -15,6 +18,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Certain architectures need to do special things when pte&squot;s&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval) ((*(pteptr)) = (pteval))
@@ -50,6 +54,7 @@ mdefine_line|#define USER_PTRS_PER_PGD       (TASK_SIZE/PGDIR_SIZE)
 DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR       0
 multiline_comment|/* zero page used for uninitialized stuff */
+macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_int
 r_int
@@ -57,6 +62,7 @@ id|empty_zero_page
 suffix:semicolon
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
+macro_line|#endif
 multiline_comment|/* number of bits that fit into a memory pointer */
 DECL|macro|BITS_PER_PTR
 mdefine_line|#define BITS_PER_PTR&t;&t;&t;(8*sizeof(unsigned long))
@@ -88,6 +94,7 @@ DECL|macro|pmd_present
 mdefine_line|#define pmd_present(x)&t;(pmd_val(x) &amp; _PAGE_PRESENT)
 DECL|macro|pmd_clear
 mdefine_line|#define pmd_clear(xp)&t;do { pmd_val(*(xp)) = 0; } while (0)
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * The &quot;pgd_xxx()&quot; functions here are trivial for a folded two-level&n; * setup: the pgd is never bad, and a pmd always exists (as it&squot;s folded&n; * into the pgd entry)&n; */
 DECL|function|pgd_none
 r_extern
@@ -956,5 +963,6 @@ DECL|macro|pte_to_pgoff
 mdefine_line|#define pte_to_pgoff(x)&t;(pte_val(x) &gt;&gt; 6)
 DECL|macro|pgoff_to_pte
 mdefine_line|#define pgoff_to_pte(x)&t;__pte(((x) &lt;&lt; 6) | _PAGE_FILE)
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _CRIS_PGTABLE_H */
 eof

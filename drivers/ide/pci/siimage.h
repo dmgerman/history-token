@@ -1,12 +1,9 @@
 macro_line|#ifndef SIIMAGE_H
 DECL|macro|SIIMAGE_H
 mdefine_line|#define SIIMAGE_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|macro|DISPLAY_SIIMAGE_TIMINGS
-mdefine_line|#define DISPLAY_SIIMAGE_TIMINGS
 DECL|macro|SIIMAGE_VIRTUAL_DMAPIO
 macro_line|#undef SIIMAGE_VIRTUAL_DMAPIO
 DECL|macro|SIIMAGE_BUFFERED_TASKFILE
@@ -67,16 +64,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_CMD
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_SII_680
-comma
-dot
 id|name
 op_assign
 l_string|&quot;SiI680&quot;
@@ -116,16 +103,6 @@ comma
 (brace
 multiline_comment|/* 1 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_CMD
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_SII_3112
-comma
-dot
 id|name
 op_assign
 l_string|&quot;SiI3112 Serial ATA&quot;
@@ -164,16 +141,6 @@ comma
 comma
 (brace
 multiline_comment|/* 2 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_CMD
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_SII_1210SA
-comma
 dot
 id|name
 op_assign

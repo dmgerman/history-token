@@ -414,6 +414,7 @@ id|timer
 suffix:semicolon
 DECL|member|last_poll
 r_int
+r_int
 id|last_poll
 suffix:semicolon
 DECL|member|reliable
@@ -468,11 +469,16 @@ id|timer
 suffix:semicolon
 DECL|member|last_poll
 r_int
+r_int
 id|last_poll
 suffix:semicolon
 DECL|member|up
 r_int
 id|up
+suffix:semicolon
+DECL|member|request_sent
+r_int
+id|request_sent
 suffix:semicolon
 DECL|member|txseq
 id|u32

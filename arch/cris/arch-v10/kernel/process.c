@@ -1,9 +1,10 @@
-multiline_comment|/* $Id: process.c,v 1.3 2003/07/04 08:27:41 starvik Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000-2002  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *             Mikael Starvik (starvik@axis.com)&n; *&n; * This file handles the architecture-dependent parts of process handling..&n; */
+multiline_comment|/* $Id: process.c,v 1.6 2004/05/11 12:28:25 starvik Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000-2002  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *             Mikael Starvik (starvik@axis.com)&n; *&n; * This file handles the architecture-dependent parts of process handling..&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;asm/arch/svinto.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#ifdef CONFIG_ETRAX_GPIO
 r_void
@@ -836,4 +837,95 @@ DECL|macro|last_sched
 macro_line|#undef last_sched
 DECL|macro|first_sched
 macro_line|#undef first_sched
+DECL|function|show_regs
+r_void
+id|show_regs
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_int
+r_int
+id|usp
+op_assign
+id|rdusp
+c_func
+(paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;IRP: %08lx SRP: %08lx DCCR: %08lx USP: %08lx MOF: %08lx&bslash;n&quot;
+comma
+id|regs-&gt;irp
+comma
+id|regs-&gt;srp
+comma
+id|regs-&gt;dccr
+comma
+id|usp
+comma
+id|regs-&gt;mof
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot; r0: %08lx  r1: %08lx   r2: %08lx  r3: %08lx&bslash;n&quot;
+comma
+id|regs-&gt;r0
+comma
+id|regs-&gt;r1
+comma
+id|regs-&gt;r2
+comma
+id|regs-&gt;r3
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot; r4: %08lx  r5: %08lx   r6: %08lx  r7: %08lx&bslash;n&quot;
+comma
+id|regs-&gt;r4
+comma
+id|regs-&gt;r5
+comma
+id|regs-&gt;r6
+comma
+id|regs-&gt;r7
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot; r8: %08lx  r9: %08lx  r10: %08lx r11: %08lx&bslash;n&quot;
+comma
+id|regs-&gt;r8
+comma
+id|regs-&gt;r9
+comma
+id|regs-&gt;r10
+comma
+id|regs-&gt;r11
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;r12: %08lx r13: %08lx oR10: %08lx&bslash;n&quot;
+comma
+id|regs-&gt;r12
+comma
+id|regs-&gt;r13
+comma
+id|regs-&gt;orig_r10
+)paren
+suffix:semicolon
+)brace
 eof

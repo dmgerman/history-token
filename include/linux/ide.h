@@ -501,8 +501,16 @@ id|ctl_addr
 suffix:semicolon
 )brace
 macro_line|#include &lt;asm/ide.h&gt;
-multiline_comment|/*&n; * ide_init_hwif_ports() is OBSOLETE and will be removed in 2.7 series.&n; * New ports shouldn&squot;t define IDE_ARCH_OBSOLETE_INIT in &lt;asm/ide.h&gt;.&n; *&n; * m68k, m68knommu (broken) and i386-pc9800 (broken)&n; * still have their own versions.&n; */
-macro_line|#ifndef CONFIG_M68K
+multiline_comment|/* needed on alpha, x86/x86_64, ia64, mips, ppc32 and sh */
+macro_line|#ifndef IDE_ARCH_OBSOLETE_DEFAULTS
+DECL|macro|ide_default_io_base
+macro_line|# define ide_default_io_base(index)&t;(0)
+DECL|macro|ide_default_irq
+macro_line|# define ide_default_irq(base)&t;&t;(0)
+DECL|macro|ide_init_default_irq
+macro_line|# define ide_init_default_irq(base)&t;(0)
+macro_line|#endif
+multiline_comment|/*&n; * ide_init_hwif_ports() is OBSOLETE and will be removed in 2.7 series.&n; * New ports shouldn&squot;t define IDE_ARCH_OBSOLETE_INIT in &lt;asm/ide.h&gt;.&n; */
 macro_line|#ifdef IDE_ARCH_OBSOLETE_INIT
 DECL|function|ide_init_hwif_ports
 r_static
@@ -599,10 +607,48 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#else
-DECL|macro|ide_init_hwif_ports
-macro_line|# define ide_init_hwif_ports(hw, io, ctl, irq)&t;do {} while (0)
+DECL|function|ide_init_hwif_ports
+r_static
+r_inline
+r_void
+id|ide_init_hwif_ports
+c_func
+(paren
+id|hw_regs_t
+op_star
+id|hw
+comma
+r_int
+r_int
+id|io_addr
+comma
+r_int
+r_int
+id|ctl_addr
+comma
+r_int
+op_star
+id|irq
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|io_addr
+op_logical_or
+id|ctl_addr
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: must not be called&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* IDE_ARCH_OBSOLETE_INIT */
-macro_line|#endif /* !M68K */
 multiline_comment|/* Currently only m68k, apus and m8xx need it */
 macro_line|#ifndef IDE_ARCH_ACK_INTR
 DECL|macro|ide_ack_intr
@@ -5421,19 +5467,43 @@ DECL|typedef|ide_pci_enablebit_t
 )brace
 id|ide_pci_enablebit_t
 suffix:semicolon
+r_enum
+(brace
+multiline_comment|/* Uses ISA control ports not PCI ones. */
+DECL|enumerator|IDEPCI_FLAG_ISA_PORTS
+id|IDEPCI_FLAG_ISA_PORTS
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+comma
+DECL|enumerator|IDEPCI_FLAG_FORCE_MASTER
+id|IDEPCI_FLAG_FORCE_MASTER
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|1
+)paren
+comma
+DECL|enumerator|IDEPCI_FLAG_FORCE_PDC
+id|IDEPCI_FLAG_FORCE_PDC
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
+comma
+)brace
+suffix:semicolon
 DECL|struct|ide_pci_device_s
 r_typedef
 r_struct
 id|ide_pci_device_s
 (brace
-DECL|member|vendor
-id|u16
-id|vendor
-suffix:semicolon
-DECL|member|device
-id|u16
-id|device
-suffix:semicolon
 DECL|member|name
 r_char
 op_star
@@ -5557,11 +5627,10 @@ id|ide_pci_device_s
 op_star
 id|next
 suffix:semicolon
-DECL|member|isa_ports
+DECL|member|flags
 id|u8
-id|isa_ports
+id|flags
 suffix:semicolon
-multiline_comment|/* Uses ISA control ports not PCI ones */
 DECL|typedef|ide_pci_device_t
 )brace
 id|ide_pci_device_t

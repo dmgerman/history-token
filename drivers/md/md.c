@@ -6711,7 +6711,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_WARNING
 l_string|&quot;md: personality %d is not loaded!&bslash;n&quot;
 comma
 id|pnum

@@ -499,8 +499,6 @@ id|has_dumped
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * create_aout32_tables() parses the env- and arg-strings in new user&n; * memory and creates the pointer tables from them, and puts their&n; * addresses on the &quot;stack&quot;, returning the new stack pointer value.&n; */
-DECL|macro|A
-mdefine_line|#define A(__x) ((unsigned long)(__x))
 DECL|function|create_aout32_tables
 r_static
 id|u32
@@ -666,8 +664,10 @@ c_func
 (paren
 id|u32
 )paren
-id|A
-c_func
+(paren
+r_int
+r_int
+)paren
 (paren
 id|p
 )paren
@@ -733,8 +733,10 @@ c_func
 (paren
 id|u32
 )paren
-id|A
-c_func
+(paren
+r_int
+r_int
+)paren
 (paren
 id|p
 )paren

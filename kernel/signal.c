@@ -7843,7 +7843,7 @@ id|pid
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *  sys_tkill - send signal to one specific thread&n; *  @tgid: the thread group ID of the thread&n; *  @pid: the PID of the thread&n; *  @sig: signal to be sent&n; *&n; *  This syscall also checks the tgid and returns -ESRCH even if the PID&n; *  exists but it&squot;s not belonging to the target process anymore. This&n; *  method solves the problem of threads exiting and PIDs getting reused.&n; */
+multiline_comment|/**&n; *  sys_tgkill - send signal to one specific thread&n; *  @tgid: the thread group ID of the thread&n; *  @pid: the PID of the thread&n; *  @sig: signal to be sent&n; *&n; *  This syscall also checks the tgid and returns -ESRCH even if the PID&n; *  exists but it&squot;s not belonging to the target process anymore. This&n; *  method solves the problem of threads exiting and PIDs getting reused.&n; */
 DECL|function|sys_tgkill
 id|asmlinkage
 r_int

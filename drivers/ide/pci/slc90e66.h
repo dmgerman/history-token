@@ -44,16 +44,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_EFAR
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_EFAR_SLC90E66_1
-comma
-dot
 id|name
 op_assign
 l_string|&quot;SLC90E66&quot;

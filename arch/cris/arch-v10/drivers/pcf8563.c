@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * PCF8563 RTC&n; *&n; * From Phillips&squot; datasheet:&n; *&n; * The PCF8563 is a CMOS real-time clock/calendar optimized for low power&n; * consumption. A programmable clock output, interupt output and voltage&n; * low detector are also provided. All address and data are transferred&n; * serially via two-line bidirectional I2C-bus. Maximum bus speed is&n; * 400 kbits/s. The built-in word address register is incremented&n; * automatically after each written or read bute.&n; *&n; * Copyright (c) 2002, Axis Communications AB&n; * All rights reserved.&n; *&n; * Author: Tobias Anderberg &lt;tobiasa@axis.com&gt;.&n; *&n; * $Id: pcf8563.c,v 1.1 2002/12/12 08:27:26 starvik Exp $&n; */
+multiline_comment|/*&n; * PCF8563 RTC&n; *&n; * From Phillips&squot; datasheet:&n; *&n; * The PCF8563 is a CMOS real-time clock/calendar optimized for low power&n; * consumption. A programmable clock output, interupt output and voltage&n; * low detector are also provided. All address and data are transferred&n; * serially via two-line bidirectional I2C-bus. Maximum bus speed is&n; * 400 kbits/s. The built-in word address register is incremented&n; * automatically after each written or read bute.&n; *&n; * Copyright (c) 2002, Axis Communications AB&n; * All rights reserved.&n; *&n; * Author: Tobias Anderberg &lt;tobiasa@axis.com&gt;.&n; *&n; * $Id: pcf8563.c,v 1.4 2004/05/28 09:26:59 starvik Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -22,7 +23,7 @@ mdefine_line|#define DEVICE_NAME &quot;rtc&quot;&t;&t;/* Name which is registere
 DECL|macro|PCF8563_NAME
 mdefine_line|#define PCF8563_NAME &quot;PCF8563&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;$Revision: 1.1 $&quot;
+mdefine_line|#define DRIVER_VERSION &quot;$Revision: 1.4 $&quot;
 multiline_comment|/* I2C bus slave registers. */
 DECL|macro|RTC_I2C_READ
 mdefine_line|#define RTC_I2C_READ&t;&t;0xa3
@@ -195,11 +196,30 @@ r_char
 id|val
 )paren
 (brace
-id|i2c_writereg
+macro_line|#ifdef CONFIG_ETRAX_RTC_READONLY
+r_if
+c_cond
+(paren
+id|reg
+op_eq
+id|RTC_CONTROL1
+op_logical_or
+(paren
+id|reg
+op_ge
+id|RTC_SECONDS
+op_logical_and
+id|reg
+op_le
+id|RTC_YEAR
+)paren
+)paren
+r_return
+suffix:semicolon
+macro_line|#endif
+id|rtc_write
 c_func
 (paren
-id|RTC_I2C_WRITE
-comma
 id|reg
 comma
 id|val
@@ -370,6 +390,11 @@ r_int
 r_char
 id|ret
 suffix:semicolon
+id|i2c_init
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * First of all we need to reset the chip. This is done by&n;&t; * clearing control1, control2 and clk freq, clear the &n;&t; * Voltage Low bit, and resetting all alarms.&n;&t; */
 r_if
 c_cond
@@ -512,50 +537,6 @@ l_int|0
 )paren
 r_goto
 id|err
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|register_chrdev
-c_func
-(paren
-id|PCF8563_MAJOR
-comma
-id|DEVICE_NAME
-comma
-op_amp
-id|pcf8563_fops
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: Unable to get major numer %d for RTC device.&bslash;n&quot;
-comma
-id|PCF8563_NAME
-comma
-id|PCF8563_MAJOR
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s Real-Time Clock Driver, %s&bslash;n&quot;
-comma
-id|PCF8563_NAME
-comma
-id|DRIVER_VERSION
-)paren
 suffix:semicolon
 multiline_comment|/* Check for low voltage, and warn about it.. */
 r_if
@@ -747,15 +728,17 @@ r_case
 id|RTC_SET_TIME
 suffix:colon
 (brace
+macro_line|#ifdef CONFIG_ETRAX_RTC_READONLY
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+macro_line|#else
 r_int
 id|leap
 suffix:semicolon
 r_int
 id|century
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_struct
 id|rtc_time
@@ -1010,9 +993,103 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#endif /* !CONFIG_ETRAX_RTC_READONLY */
 )brace
-r_break
+r_case
+id|RTC_VLOW_RD
+suffix:colon
+(brace
+r_int
+id|vl_bit
+op_assign
+l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rtc_read
+c_func
+(paren
+id|RTC_SECONDS
+)paren
+op_amp
+l_int|0x80
+)paren
+(brace
+id|vl_bit
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: RTC Voltage Low - reliable &quot;
+l_string|&quot;date/time information is no longer guaranteed!&bslash;n&quot;
+comma
+id|PCF8563_NAME
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+(paren
+r_int
+op_star
+)paren
+id|arg
+comma
+op_amp
+id|vl_bit
+comma
+r_sizeof
+(paren
+r_int
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_case
+id|RTC_VLOW_SET
+suffix:colon
+(brace
+multiline_comment|/* Clear the VL bit in the seconds register */
+r_int
+id|ret
+op_assign
+id|rtc_read
+c_func
+(paren
+id|RTC_SECONDS
+)paren
+suffix:semicolon
+id|rtc_write
+c_func
+(paren
+id|RTC_SECONDS
+comma
+(paren
+id|ret
+op_amp
+l_int|0x7F
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_default
 suffix:colon
 r_return
@@ -1024,11 +1101,74 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|pcf8563_init
+r_static
+r_int
+id|__init
+DECL|function|pcf8563_register
+id|pcf8563_register
+c_func
+(paren
+r_void
+)paren
+(brace
+id|pcf8563_init
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|register_chrdev
+c_func
+(paren
+id|PCF8563_MAJOR
+comma
+id|DEVICE_NAME
+comma
+op_amp
+id|pcf8563_fops
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: Unable to get major numer %d for RTC device.&bslash;n&quot;
+comma
+id|PCF8563_NAME
+comma
+id|PCF8563_MAJOR
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s Real-Time Clock Driver, %s&bslash;n&quot;
+comma
+id|PCF8563_NAME
+comma
+id|DRIVER_VERSION
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|pcf8563_register
 id|module_init
 c_func
 (paren
-id|pcf8563_init
+id|pcf8563_register
 )paren
 suffix:semicolon
 DECL|variable|pcf8563_exit

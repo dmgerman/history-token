@@ -5,6 +5,10 @@ mdefine_line|#define _ASM_ARCH_IRQ_H
 macro_line|#include &lt;asm/arch/sv_addr_ag.h&gt;
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS 32
+multiline_comment|/* The first vector number used for IRQs in v10 is really 0x20 */
+multiline_comment|/* but all the code and constants are offseted to make 0 the first */
+DECL|macro|FIRST_IRQ
+mdefine_line|#define FIRST_IRQ 0
 DECL|macro|SOME_IRQ_NBR
 mdefine_line|#define SOME_IRQ_NBR        IO_BITNR(R_VECT_MASK_RD, some)   /* 0 ? */
 DECL|macro|NMI_IRQ_NBR

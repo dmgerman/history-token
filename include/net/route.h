@@ -45,6 +45,12 @@ DECL|member|u
 )brace
 id|u
 suffix:semicolon
+DECL|member|idev
+r_struct
+id|in_device
+op_star
+id|idev
+suffix:semicolon
 DECL|member|rt_flags
 r_int
 id|rt_flags

@@ -2880,11 +2880,6 @@ id|hwif-&gt;drives
 id|unit
 )braket
 suffix:semicolon
-r_int
-id|enable_dma
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2913,19 +2908,6 @@ comma
 l_int|255
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDEDMA_ONLYDISK
-r_if
-c_cond
-(paren
-id|drive-&gt;media
-op_ne
-id|ide_disk
-)paren
-id|enable_dma
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;&t;&t; * MAJOR HACK BARF :-/&n;&t;&t;&t; *&n;&t;&t;&t; * FIXME: chipsets own this cruft!&n;&t;&t;&t; */
 multiline_comment|/*&n;&t;&t;&t; * Move here to prevent module loading clashing.&n;&t;&t;&t; */
 singleline_comment|//&t;&t;drive-&gt;autodma = hwif-&gt;autodma;
@@ -2960,11 +2942,15 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IDEDMA_ONLYDISK
 r_if
 c_cond
 (paren
-id|enable_dma
+id|drive-&gt;media
+op_eq
+id|ide_disk
 )paren
+macro_line|#endif
 id|hwif
 op_member_access_from_pointer
 id|ide_dma_check

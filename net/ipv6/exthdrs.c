@@ -482,7 +482,7 @@ l_int|3
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|Ip6InHdrErrors
+id|InHdrErrors
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -541,7 +541,7 @@ suffix:semicolon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|Ip6InHdrErrors
+id|InHdrErrors
 )paren
 suffix:semicolon
 r_return
@@ -797,7 +797,7 @@ l_int|3
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|Ip6InHdrErrors
+id|InHdrErrors
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -838,7 +838,7 @@ id|PACKET_HOST
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|Ip6InAddrErrors
+id|InAddrErrors
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -911,7 +911,7 @@ id|IPV6_SRCRT_TYPE_0
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|Ip6InHdrErrors
+id|InHdrErrors
 )paren
 suffix:semicolon
 id|icmpv6_param_prob
@@ -945,7 +945,7 @@ l_int|0x01
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|Ip6InHdrErrors
+id|InHdrErrors
 )paren
 suffix:semicolon
 id|icmpv6_param_prob
@@ -986,7 +986,7 @@ id|n
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|Ip6InHdrErrors
+id|InHdrErrors
 )paren
 suffix:semicolon
 id|icmpv6_param_prob
@@ -1051,7 +1051,7 @@ l_int|NULL
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|Ip6OutDiscards
+id|OutDiscards
 )paren
 suffix:semicolon
 r_return
@@ -1135,7 +1135,7 @@ id|addr
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|Ip6InAddrErrors
+id|InAddrErrors
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -1232,7 +1232,7 @@ l_int|1
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|Ip6InHdrErrors
+id|InHdrErrors
 )paren
 suffix:semicolon
 id|icmpv6_send
@@ -1681,7 +1681,7 @@ suffix:semicolon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|Ip6InHdrErrors
+id|InHdrErrors
 )paren
 suffix:semicolon
 r_goto
@@ -1718,7 +1718,7 @@ id|IPV6_MAXPLEN
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|Ip6InHdrErrors
+id|InHdrErrors
 )paren
 suffix:semicolon
 id|icmpv6_param_prob
@@ -1746,7 +1746,7 @@ id|skb-&gt;nh.ipv6h-&gt;payload_len
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|Ip6InHdrErrors
+id|InHdrErrors
 )paren
 suffix:semicolon
 id|icmpv6_param_prob
@@ -1780,7 +1780,7 @@ id|ipv6hdr
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|Ip6InTruncatedPkts
+id|InTruncatedPkts
 )paren
 suffix:semicolon
 r_goto

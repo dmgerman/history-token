@@ -25,16 +25,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_NS
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_NS_87415
-comma
-dot
 id|name
 op_assign
 l_string|&quot;NS87415&quot;

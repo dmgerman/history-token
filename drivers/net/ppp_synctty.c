@@ -834,7 +834,7 @@ id|syncppp
 op_star
 id|ap
 suffix:semicolon
-id|write_lock
+id|write_lock_irq
 c_func
 (paren
 op_amp
@@ -849,7 +849,7 @@ id|tty-&gt;disc_data
 op_assign
 l_int|0
 suffix:semicolon
-id|write_unlock
+id|write_unlock_irq
 c_func
 (paren
 op_amp

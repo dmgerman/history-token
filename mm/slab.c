@@ -862,7 +862,6 @@ id|malloc_sizes
 suffix:semicolon
 multiline_comment|/* Must match cache_sizes above. Out of line to keep cache footprint low. */
 DECL|struct|cache_names
-r_static
 r_struct
 id|cache_names
 (brace
@@ -876,8 +875,13 @@ r_char
 op_star
 id|name_dma
 suffix:semicolon
-DECL|variable|cache_names
 )brace
+suffix:semicolon
+DECL|variable|cache_names
+r_static
+r_struct
+id|cache_names
+id|__initdata
 id|cache_names
 (braket
 )braket

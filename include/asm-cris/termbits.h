@@ -274,7 +274,7 @@ multiline_comment|/* etrax 200 supports this as well */
 DECL|macro|B12500000
 mdefine_line|#define  B12500000 0010010
 DECL|macro|CIBAUD
-mdefine_line|#define CIBAUD&t;  002003600000&t;/* input baud rate */
+mdefine_line|#define CIBAUD&t;  002003600000&t;/* input baud rate (used in v32) */
 multiline_comment|/* The values for CIBAUD bits are the same as the values for CBAUD and CBAUDEX&n; * shifted left IBSHIFT bits.&n; */
 DECL|macro|IBSHIFT
 mdefine_line|#define IBSHIFT   16

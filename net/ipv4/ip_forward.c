@@ -51,7 +51,7 @@ suffix:semicolon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpForwDatagrams
+id|OutForwDatagrams
 )paren
 suffix:semicolon
 r_if

@@ -62,9 +62,18 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * eeh_add_device - perform EEH initialization for the indicated pci device&n; * @dev: pci device for which to set up EEH&n; *&n; * This routine can be used to perform EEH initialization for PCI&n; * devices that were added after system boot (e.g. hotplug, dlpar).&n; * Whether this actually enables EEH or not for this device depends&n; * on the type of the device, on earlier boot command-line&n; * arguments &amp; etc.&n; */
+multiline_comment|/**&n; * eeh_add_device_early&n; * eeh_add_device_late&n; *&n; * Perform eeh initialization for devices added after boot.&n; * Call eeh_add_device_early before doing any i/o to the&n; * device (including config space i/o).  Call eeh_add_device_late&n; * to finish the eeh setup for this device.&n; */
 r_void
-id|eeh_add_device
+id|eeh_add_device_early
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+)paren
+suffix:semicolon
+r_void
+id|eeh_add_device_late
 c_func
 (paren
 r_struct
