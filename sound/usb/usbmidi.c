@@ -3250,14 +3250,6 @@ id|ep-&gt;in-&gt;urb
 )paren
 suffix:semicolon
 )brace
-id|usb_driver_release_interface
-c_func
-(paren
-id|driver
-comma
-id|umidi-&gt;iface
-)paren
-suffix:semicolon
 )brace
 DECL|function|snd_usbmidi_rawmidi_free
 r_static
