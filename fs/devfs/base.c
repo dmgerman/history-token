@@ -7163,13 +7163,6 @@ id|fs_info
 )paren
 suffix:semicolon
 multiline_comment|/*  If I&squot;m not devfsd, must wait  */
-id|down
-(paren
-op_amp
-id|dir-&gt;i_sem
-)paren
-suffix:semicolon
-multiline_comment|/*  Grab it again because them&squot;s the rules  */
 id|de
 op_assign
 id|lookup_info-&gt;de
@@ -7316,6 +7309,13 @@ op_amp
 id|parent-&gt;u.dir.lock
 )paren
 suffix:semicolon
+id|down
+(paren
+op_amp
+id|dir-&gt;i_sem
+)paren
+suffix:semicolon
+multiline_comment|/*  Grab it again because them&squot;s the rules  */
 id|devfs_put
 (paren
 id|de
