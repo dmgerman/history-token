@@ -2361,8 +2361,7 @@ id|header_buf
 suffix:semicolon
 )brace
 r_extern
-r_int
-r_int
+r_char
 id|__initramfs_start
 comma
 id|__initramfs_end
@@ -2379,10 +2378,6 @@ r_void
 id|unpack_to_rootfs
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|__initramfs_start
 comma
