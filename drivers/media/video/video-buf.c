@@ -5160,7 +5160,8 @@ r_int
 id|vaddr
 comma
 r_int
-id|write_access
+op_star
+id|type
 )paren
 (brace
 r_struct
@@ -5222,6 +5223,16 @@ id|vaddr
 comma
 id|page
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|type
+)paren
+op_star
+id|type
+op_assign
+id|VM_FAULT_MINOR
 suffix:semicolon
 r_return
 id|page

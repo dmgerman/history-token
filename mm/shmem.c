@@ -93,6 +93,10 @@ comma
 r_enum
 id|sgp_type
 id|sgp
+comma
+r_int
+op_star
+id|type
 )paren
 suffix:semicolon
 DECL|function|shmem_dir_alloc
@@ -2073,6 +2077,8 @@ op_amp
 id|page
 comma
 id|SGP_READ
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -3155,6 +3161,10 @@ comma
 r_enum
 id|sgp_type
 id|sgp
+comma
+r_int
+op_star
+id|type
 )paren
 (brace
 r_struct
@@ -3202,6 +3212,10 @@ id|swap
 suffix:semicolon
 r_int
 id|error
+comma
+id|majmin
+op_assign
+id|VM_FAULT_MINOR
 suffix:semicolon
 r_if
 c_cond
@@ -3354,6 +3368,26 @@ c_func
 op_amp
 id|info-&gt;lock
 )paren
+suffix:semicolon
+multiline_comment|/* here we actually do the io */
+r_if
+c_cond
+(paren
+id|majmin
+op_eq
+id|VM_FAULT_MINOR
+op_logical_and
+id|type
+)paren
+id|inc_page_state
+c_func
+(paren
+id|pgmajfault
+)paren
+suffix:semicolon
+id|majmin
+op_assign
+id|VM_FAULT_MAJOR
 suffix:semicolon
 id|swapin_readahead
 c_func
@@ -4165,6 +4199,16 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|type
+)paren
+op_star
+id|type
+op_assign
+id|majmin
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4213,7 +4257,8 @@ r_int
 id|address
 comma
 r_int
-id|unused
+op_star
+id|type
 )paren
 (brace
 r_struct
@@ -4270,6 +4315,8 @@ op_amp
 id|page
 comma
 id|SGP_CACHE
+comma
+id|type
 )paren
 suffix:semicolon
 r_if
@@ -4431,6 +4478,8 @@ op_amp
 id|page
 comma
 id|sgp
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -5122,6 +5171,8 @@ op_amp
 id|page
 comma
 id|SGP_WRITE
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -5383,6 +5434,8 @@ op_amp
 id|page
 comma
 id|SGP_WRITE
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -5782,6 +5835,8 @@ op_amp
 id|page
 comma
 id|SGP_READ
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -6922,6 +6977,8 @@ op_amp
 id|page
 comma
 id|SGP_WRITE
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -7179,6 +7236,8 @@ op_amp
 id|page
 comma
 id|SGP_READ
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -7267,6 +7326,8 @@ op_amp
 id|page
 comma
 id|SGP_READ
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

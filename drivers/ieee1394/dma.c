@@ -788,7 +788,8 @@ r_int
 id|address
 comma
 r_int
-id|write_access
+op_star
+id|type
 )paren
 (brace
 r_int
@@ -858,6 +859,16 @@ id|dma-&gt;n_pages
 )paren
 r_goto
 id|out
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|type
+)paren
+op_star
+id|type
+op_assign
+id|VM_FAULT_MINOR
 suffix:semicolon
 id|offset
 op_assign

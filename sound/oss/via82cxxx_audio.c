@@ -6861,7 +6861,8 @@ r_int
 id|address
 comma
 r_int
-id|write_access
+op_star
+id|type
 )paren
 (brace
 r_struct
@@ -6895,7 +6896,7 @@ id|wr
 suffix:semicolon
 id|DPRINTK
 (paren
-l_string|&quot;ENTER, start %lXh, ofs %lXh, pgoff %ld, addr %lXh, wr %d&bslash;n&quot;
+l_string|&quot;ENTER, start %lXh, ofs %lXh, pgoff %ld, addr %lXh&bslash;n&quot;
 comma
 id|vma-&gt;vm_start
 comma
@@ -6912,8 +6913,6 @@ op_rshift
 id|PAGE_SHIFT
 comma
 id|address
-comma
-id|write_access
 )paren
 suffix:semicolon
 r_if
@@ -7089,6 +7088,16 @@ id|get_page
 (paren
 id|dmapage
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|type
+)paren
+op_star
+id|type
+op_assign
+id|VM_FAULT_MINOR
 suffix:semicolon
 r_return
 id|dmapage

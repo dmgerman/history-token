@@ -249,7 +249,8 @@ r_int
 id|address
 comma
 r_int
-id|unused
+op_star
+id|type
 )paren
 suffix:semicolon
 DECL|member|populate
@@ -823,7 +824,8 @@ r_int
 id|address
 comma
 r_int
-id|unused
+op_star
+id|type
 )paren
 suffix:semicolon
 r_struct
@@ -1944,7 +1946,6 @@ id|loff_t
 )paren
 suffix:semicolon
 multiline_comment|/* generic vm_area_ops exported for stackable file systems */
-r_extern
 r_struct
 id|page
 op_star
@@ -1959,6 +1960,7 @@ r_int
 r_int
 comma
 r_int
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* mm/page-writeback.c */
