@@ -26,6 +26,7 @@ DECL|macro|US_SC_MAX
 mdefine_line|#define US_SC_MAX&t;US_SC_ISD200
 DECL|macro|US_SC_DEVICE
 mdefine_line|#define US_SC_DEVICE&t;0xff&t;&t;/* Use device&squot;s value */
+multiline_comment|/* Protocol handling routines */
 r_extern
 r_void
 id|usb_stor_ATAPI_command
@@ -76,6 +77,52 @@ comma
 r_struct
 id|us_data
 op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Scsi_Cmnd transfer buffer access utilities */
+DECL|enum|xfer_buf_dir
+DECL|enumerator|TO_XFER_BUF
+DECL|enumerator|FROM_XFER_BUF
+r_enum
+id|xfer_buf_dir
+(brace
+id|TO_XFER_BUF
+comma
+id|FROM_XFER_BUF
+)brace
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|usb_stor_access_xfer_buf
+c_func
+(paren
+r_int
+r_char
+op_star
+id|buffer
+comma
+r_int
+r_int
+id|buflen
+comma
+id|Scsi_Cmnd
+op_star
+id|srb
+comma
+r_int
+r_int
+op_star
+id|index
+comma
+r_int
+r_int
+op_star
+id|offset
+comma
+r_enum
+id|xfer_buf_dir
+id|dir
 )paren
 suffix:semicolon
 macro_line|#endif
