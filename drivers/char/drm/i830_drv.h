@@ -22,6 +22,7 @@ id|currently_mapped
 suffix:semicolon
 DECL|member|virtual
 r_void
+id|__user
 op_star
 r_virtual
 suffix:semicolon

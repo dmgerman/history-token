@@ -648,6 +648,7 @@ suffix:semicolon
 multiline_comment|/* nr bytes in use */
 DECL|member|address
 r_void
+id|__user
 op_star
 id|address
 suffix:semicolon
@@ -663,6 +664,7 @@ id|drm_i830_dma
 (brace
 DECL|member|virtual
 r_void
+id|__user
 op_star
 r_virtual
 suffix:semicolon
@@ -690,6 +692,7 @@ id|drm_i830_irq_emit
 (brace
 DECL|member|irq_seq
 r_int
+id|__user
 op_star
 id|irq_seq
 suffix:semicolon
@@ -724,6 +727,7 @@ id|param
 suffix:semicolon
 DECL|member|value
 r_int
+id|__user
 op_star
 id|value
 suffix:semicolon

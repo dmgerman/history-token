@@ -7,6 +7,7 @@ macro_line|#include &quot;i830_drv.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* For task queue support */
 macro_line|#include &lt;linux/pagemap.h&gt;&t;/* For FASTCALL on unlock_page() */
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|I830_BUF_FREE
 mdefine_line|#define I830_BUF_FREE&t;&t;2
 DECL|macro|I830_BUF_CLIENT
@@ -555,6 +556,7 @@ r_virtual
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|do_mmap
@@ -1943,6 +1945,7 @@ id|cmd
 comma
 r_int
 r_int
+id|__user
 id|arg
 )paren
 (brace
@@ -1980,8 +1983,9 @@ op_amp
 id|init
 comma
 (paren
-id|drm_i830_init_t
+r_void
 op_star
+id|__user
 )paren
 id|arg
 comma
@@ -5373,11 +5377,9 @@ id|buf_priv
 op_member_access_from_pointer
 r_virtual
 suffix:semicolon
-id|vp
-(braket
-l_int|0
-)braket
-op_assign
+id|put_user
+c_func
+(paren
 (paren
 id|GFX_OP_PRIMITIVE
 op_or
@@ -5393,6 +5395,13 @@ op_minus
 l_int|2
 )paren
 )paren
+comma
+op_amp
+id|vp
+(braket
+l_int|0
+)braket
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5400,14 +5409,19 @@ c_cond
 id|dev_priv-&gt;use_mi_batchbuffer_start
 )paren
 (brace
+id|put_user
+c_func
+(paren
+id|MI_BATCH_BUFFER_END
+comma
+op_amp
 id|vp
 (braket
 id|used
 op_div
 l_int|4
 )braket
-op_assign
-id|MI_BATCH_BUFFER_END
+)paren
 suffix:semicolon
 id|used
 op_add_assign
@@ -5422,14 +5436,19 @@ op_amp
 l_int|4
 )paren
 (brace
+id|put_user
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|vp
 (braket
 id|used
 op_div
 l_int|4
 )braket
-op_assign
-l_int|0
+)paren
 suffix:semicolon
 id|used
 op_add_assign
@@ -6110,6 +6129,7 @@ id|cmd
 comma
 r_int
 r_int
+id|__user
 id|arg
 )paren
 (brace
@@ -6178,6 +6198,7 @@ id|cmd
 comma
 r_int
 r_int
+id|__user
 id|arg
 )paren
 (brace
@@ -6239,6 +6260,7 @@ id|vertex
 comma
 (paren
 id|drm_i830_vertex_t
+id|__user
 op_star
 )paren
 id|arg
@@ -6356,6 +6378,7 @@ id|cmd
 comma
 r_int
 r_int
+id|__user
 id|arg
 )paren
 (brace
@@ -6385,6 +6408,7 @@ id|clear
 comma
 (paren
 id|drm_i830_clear_t
+id|__user
 op_star
 )paren
 id|arg
@@ -6473,6 +6497,7 @@ id|cmd
 comma
 r_int
 r_int
+id|__user
 id|arg
 )paren
 (brace
@@ -6631,6 +6656,7 @@ id|cmd
 comma
 r_int
 r_int
+id|__user
 id|arg
 )paren
 (brace
@@ -6725,6 +6751,7 @@ id|cmd
 comma
 r_int
 r_int
+id|__user
 id|arg
 )paren
 (brace
@@ -6801,6 +6828,7 @@ id|cmd
 comma
 r_int
 r_int
+id|__user
 id|arg
 )paren
 (brace
@@ -6867,6 +6895,7 @@ id|d
 comma
 (paren
 id|drm_i830_dma_t
+id|__user
 op_star
 )paren
 id|arg
@@ -6940,6 +6969,7 @@ c_func
 (paren
 (paren
 id|drm_dma_t
+id|__user
 op_star
 )paren
 id|arg
@@ -6992,6 +7022,7 @@ id|cmd
 comma
 r_int
 r_int
+id|__user
 id|arg
 )paren
 (brace
@@ -7049,6 +7080,7 @@ id|cmd
 comma
 r_int
 r_int
+id|__user
 id|arg
 )paren
 (brace
@@ -7107,6 +7139,7 @@ id|param
 comma
 (paren
 id|drm_i830_getparam_t
+id|__user
 op_star
 )paren
 id|arg
@@ -7202,6 +7235,7 @@ id|cmd
 comma
 r_int
 r_int
+id|__user
 id|arg
 )paren
 (brace
@@ -7257,6 +7291,7 @@ id|param
 comma
 (paren
 id|drm_i830_setparam_t
+id|__user
 op_star
 )paren
 id|arg
