@@ -49,9 +49,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.11&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.12&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;October 20, 2004&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;October 28, 2004&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -1680,6 +1680,54 @@ c_func
 id|MAILBOX_INTERRUPT_0
 op_plus
 id|TG3_64BIT_REG_LOW
+)paren
+suffix:semicolon
+id|tg3_cond_int
+c_func
+(paren
+id|tp
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* tg3_restart_ints&n; *  similar to tg3_enable_ints, but it can return without flushing the&n; *  PIO write which reenables interrupts&n; */
+DECL|function|tg3_restart_ints
+r_static
+r_void
+id|tg3_restart_ints
+c_func
+(paren
+r_struct
+id|tg3
+op_star
+id|tp
+)paren
+(brace
+id|tw32
+c_func
+(paren
+id|TG3PCI_MISC_HOST_CTRL
+comma
+(paren
+id|tp-&gt;misc_host_ctrl
+op_amp
+op_complement
+id|MISC_HOST_CTRL_MASK_PCI_INT
+)paren
+)paren
+suffix:semicolon
+id|tw32_mailbox
+c_func
+(paren
+id|MAILBOX_INTERRUPT_0
+op_plus
+id|TG3_64BIT_REG_LOW
+comma
+l_int|0x00000000
+)paren
+suffix:semicolon
+id|mmiowb
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tg3_cond_int
@@ -11850,6 +11898,11 @@ id|sw_idx
 )paren
 suffix:semicolon
 )brace
+id|mmiowb
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|received
 suffix:semicolon
@@ -12084,7 +12137,7 @@ c_func
 id|netdev
 )paren
 suffix:semicolon
-id|tg3_enable_ints
+id|tg3_restart_ints
 c_func
 (paren
 id|tp
@@ -13910,6 +13963,11 @@ id|dev
 suffix:semicolon
 id|out_unlock
 suffix:colon
+id|mmiowb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren

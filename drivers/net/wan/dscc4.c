@@ -1673,10 +1673,6 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|skb-&gt;mac.raw
-op_assign
-id|skb-&gt;data
-suffix:semicolon
 id|rx_fd-&gt;data
 op_assign
 id|pci_map_single
