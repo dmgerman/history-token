@@ -932,8 +932,6 @@ id|n
 suffix:semicolon
 )brace
 )brace
-DECL|macro|hlist_del_rcu_init
-mdefine_line|#define hlist_del_rcu_init hlist_del_init
 DECL|function|hlist_add_head
 r_static
 r_inline

@@ -1577,11 +1577,6 @@ id|mcelog.next
 op_assign
 l_int|0
 suffix:semicolon
-id|smp_wmb
-c_func
-(paren
-)paren
-suffix:semicolon
 id|synchronize_kernel
 c_func
 (paren
