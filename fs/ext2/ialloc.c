@@ -1633,6 +1633,10 @@ id|ei-&gt;i_dir_start_lookup
 op_assign
 l_int|0
 suffix:semicolon
+id|ei-&gt;i_state
+op_assign
+id|EXT2_STATE_NEW
+suffix:semicolon
 r_if
 c_cond
 (paren

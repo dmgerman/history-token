@@ -28,6 +28,10 @@ DECL|member|i_frag_size
 id|__u8
 id|i_frag_size
 suffix:semicolon
+DECL|member|i_state
+id|__u16
+id|i_state
+suffix:semicolon
 DECL|member|i_file_acl
 id|__u32
 id|i_file_acl
@@ -75,6 +79,9 @@ id|vfs_inode
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Inode dynamic state flags&n; */
+DECL|macro|EXT2_STATE_NEW
+mdefine_line|#define EXT2_STATE_NEW&t;&t;&t;0x00000001 /* inode is newly created */
 multiline_comment|/*&n; * Function prototypes&n; */
 multiline_comment|/*&n; * Ok, these declarations are also in &lt;linux/kernel.h&gt; but none of the&n; * ext2 source programs needs to include it so they are duplicated here.&n; */
 DECL|function|EXT2_I
