@@ -186,18 +186,31 @@ comma
 l_string|&quot;Pretend that controller can only read data from keyboard&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef __i386__
-r_extern
-r_int
-r_int
-id|i8042_dmi_noloop
-suffix:semicolon
-macro_line|#endif
 DECL|variable|i8042_noloop
 r_static
 r_int
 r_int
 id|i8042_noloop
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|noloop
+comma
+id|i8042_noloop
+comma
+r_bool
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dumbkbd
+comma
+l_string|&quot;Disable the AUX Loopback command while probing for the AUX port&quot;
+)paren
 suffix:semicolon
 id|__obsolete_setup
 c_func
@@ -3417,26 +3430,6 @@ id|i8042_kbd_port.write
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef __i386__
-r_if
-c_cond
-(paren
-id|i8042_dmi_noloop
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;i8042.c: AUX LoopBack command disabled by DMI.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|i8042_noloop
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
