@@ -3497,11 +3497,10 @@ id|acpi_serialize_setup
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Wake and Run-Time GPES are expected to be separate.&n; * We disable wake-GPEs at run-time to prevent spurious&n; * interrupts.&n; *&n; * However, if a system exists that shares Wake and&n; * Run-time events on the same GPE this flag is available&n; * to tell Linux to keep the wake-time GPEs enabled at run-time.&n; */
-r_static
 r_int
 id|__init
-DECL|function|acpi_leave_gpes_disabled_setup
-id|acpi_leave_gpes_disabled_setup
+DECL|function|acpi_wake_gpes_always_on_setup
+id|acpi_wake_gpes_always_on_setup
 c_func
 (paren
 r_char
@@ -3514,12 +3513,12 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;leave wake GPEs disabled&bslash;n&quot;
+l_string|&quot;wake GPEs not disabled&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpi_gbl_leave_wake_gpes_disabled
 op_assign
-id|TRUE
+id|FALSE
 suffix:semicolon
 r_return
 l_int|1
@@ -3528,9 +3527,9 @@ suffix:semicolon
 id|__setup
 c_func
 (paren
-l_string|&quot;acpi_leave_gpes_disabled&quot;
+l_string|&quot;acpi_wake_gpes_always_on&quot;
 comma
-id|acpi_leave_gpes_disabled_setup
+id|acpi_wake_gpes_always_on_setup
 )paren
 suffix:semicolon
 eof

@@ -1846,6 +1846,10 @@ id|acpi_gbl_all_methods_serialized
 op_assign
 id|FALSE
 suffix:semicolon
+id|acpi_gbl_leave_wake_gpes_disabled
+op_assign
+id|TRUE
+suffix:semicolon
 multiline_comment|/* Memory allocation and cache lists */
 id|ACPI_MEMSET
 (paren
