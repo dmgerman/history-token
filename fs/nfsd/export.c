@@ -1463,6 +1463,11 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1470,9 +1475,8 @@ id|len
 op_le
 l_int|0
 )paren
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out
 suffix:semicolon
 id|err
 op_assign
