@@ -1409,11 +1409,11 @@ id|substream
 )paren
 suffix:semicolon
 r_int
-r_int
+r_char
 id|what
 suffix:semicolon
 r_int
-r_int
+r_char
 id|old
 suffix:semicolon
 r_struct
@@ -1514,7 +1514,7 @@ id|ice-&gt;reg_lock
 suffix:semicolon
 id|old
 op_assign
-id|inl
+id|inb
 c_func
 (paren
 id|ICEMT1724
@@ -1543,7 +1543,7 @@ op_and_assign
 op_complement
 id|what
 suffix:semicolon
-id|outl
+id|outb
 c_func
 (paren
 id|old
@@ -1693,7 +1693,7 @@ id|ice-&gt;reg_lock
 suffix:semicolon
 id|old
 op_assign
-id|inl
+id|inb
 c_func
 (paren
 id|ICEMT1724
@@ -1722,7 +1722,7 @@ op_and_assign
 op_complement
 id|what
 suffix:semicolon
-id|outl
+id|outb
 c_func
 (paren
 id|old
