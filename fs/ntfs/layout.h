@@ -127,8 +127,9 @@ id|unused
 l_int|4
 )braket
 suffix:semicolon
-multiline_comment|/* zero */
+multiline_comment|/* zero, NTFS diskedit.exe states that&n;&t;&t;&t;&t;&t;   this is actually:&n;&t;&t;&t;&t;&t;&t;__u8 physical_drive;&t;// 0x80&n;&t;&t;&t;&t;&t;&t;__u8 current_head;&t;// zero&n;&t;&t;&t;&t;&t;&t;__u8 extended_boot_signature;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;// 0x80&n;&t;&t;&t;&t;&t;&t;__u8 unused;&t;&t;// zero&n;&t;&t;&t;&t;&t; */
 DECL|member|number_of_sectors
+multiline_comment|/*0x28*/
 id|s64
 id|number_of_sectors
 suffix:semicolon
@@ -180,6 +181,7 @@ id|checksum
 suffix:semicolon
 multiline_comment|/* Boot sector checksum. */
 DECL|member|bootstrap
+multiline_comment|/*0x54*/
 id|u8
 id|bootstrap
 (braket
@@ -192,6 +194,7 @@ id|u16
 id|end_of_sector_marker
 suffix:semicolon
 multiline_comment|/* End of bootsector magic. Always is&n;&t;&t;&t;&t;&t;   0xaa55 in little endian. */
+multiline_comment|/* sizeof() = 512 (0x200) bytes */
 DECL|typedef|NTFS_BOOT_SECTOR
 )brace
 id|__attribute__
@@ -334,7 +337,7 @@ id|FILE_MFTMirr
 op_assign
 l_int|1
 comma
-multiline_comment|/* Mft mirror (copy of first four mft records)&n;&t;&t;&t;&t;   in data attribute. */
+multiline_comment|/* Mft mirror: copy of first four mft records&n;&t;&t;&t;&t;   in data attribute. If cluster size &gt; 4kiB,&n;&t;&t;&t;&t;   copy of first N mft records, with&n;&t;&t;&t;&t;&t;N = cluster_size / mft_record_size. */
 DECL|enumerator|FILE_LogFile
 id|FILE_LogFile
 op_assign

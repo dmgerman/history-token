@@ -2109,7 +2109,6 @@ id|length
 )paren
 )paren
 suffix:semicolon
-singleline_comment|//srl[send-1].vcn));
 multiline_comment|/* Or we&squot;ll lose an end marker */
 r_if
 c_cond
@@ -2302,6 +2301,13 @@ r_if
 c_cond
 (paren
 id|marker
+op_logical_and
+op_logical_neg
+id|IS_ERR
+c_func
+(paren
+id|nrl
+)paren
 )paren
 (brace
 r_for
@@ -2316,7 +2322,7 @@ id|nrl
 id|ds
 )braket
 dot
-id|lcn
+id|length
 suffix:semicolon
 id|ds
 op_increment
@@ -2325,6 +2331,7 @@ suffix:semicolon
 id|nrl
 op_assign
 id|ntfs_rl_insert
+c_func
 (paren
 id|nrl
 comma
@@ -2339,8 +2346,6 @@ comma
 l_int|1
 comma
 id|ds
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -6324,7 +6329,7 @@ id|mrec
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+id|ctx
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * put_attr_search_ctx - release an attribute search context&n; * @ctx:&t;attribute search context to free&n; *&n; * Release the attribute search context @ctx, unmapping an associated extent&n; * mft record if present.&n; */

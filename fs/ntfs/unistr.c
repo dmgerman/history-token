@@ -1162,6 +1162,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ns
+op_logical_and
 op_logical_neg
 id|ns_len
 )paren
@@ -1186,7 +1188,7 @@ id|ns_len
 op_assign
 id|ins_len
 op_star
-l_int|3
+id|NLS_MAX_CHARSET_SIZE
 suffix:semicolon
 id|ns
 op_assign
@@ -1301,7 +1303,7 @@ r_char
 op_star
 id|tc
 suffix:semicolon
-multiline_comment|/* Grow by 64 bytes. (Chosen at random.) */
+multiline_comment|/* Grow in multiples of 64 bytes. */
 id|tc
 op_assign
 (paren
@@ -1312,9 +1314,14 @@ op_star
 id|kmalloc
 c_func
 (paren
+(paren
 id|ns_len
 op_plus
 l_int|64
+)paren
+op_amp
+op_complement
+l_int|63
 comma
 id|GFP_NOFS
 )paren
@@ -1336,8 +1343,15 @@ id|ns_len
 )paren
 suffix:semicolon
 id|ns_len
-op_add_assign
+op_assign
+(paren
+id|ns_len
+op_plus
 l_int|64
+)paren
+op_amp
+op_complement
+l_int|63
 suffix:semicolon
 id|kfree
 c_func
@@ -1380,7 +1394,7 @@ multiline_comment|/* else (!ins) */
 id|ntfs_error
 c_func
 (paren
-l_int|NULL
+id|vol-&gt;sb
 comma
 l_string|&quot;Received NULL pointer.&quot;
 )paren

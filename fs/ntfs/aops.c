@@ -7,6 +7,10 @@ macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 DECL|macro|MAX_BUF_PER_PAGE
 mdefine_line|#define MAX_BUF_PER_PAGE (PAGE_CACHE_SIZE / 512)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,8)
+DECL|macro|page_buffers
+mdefine_line|#define page_buffers(page)&t;(page)-&gt;buffers
+macro_line|#endif
 multiline_comment|/*&n; * Async io completion handler for accessing files. Adapted from&n; * end_buffer_read_mst_async().&n; */
 DECL|function|end_buffer_read_file_async
 r_static
@@ -407,7 +411,11 @@ id|bh
 op_assign
 id|head
 op_assign
-id|page-&gt;buffers
+id|page_buffers
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1676,7 +1684,11 @@ id|bh
 op_assign
 id|head
 op_assign
-id|page-&gt;buffers
+id|page_buffers
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2674,7 +2686,11 @@ id|bh
 op_assign
 id|head
 op_assign
-id|page-&gt;buffers
+id|page_buffers
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 r_if
 c_cond
