@@ -878,7 +878,15 @@ op_ne
 id|MSTRPAGE_VALUE
 )paren
 (brace
-id|BUG
+id|ERROR
+c_func
+(paren
+l_string|&quot;%s: pci busaddr inconsistency!&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|dump_stack
 c_func
 (paren
 )paren
@@ -893,7 +901,11 @@ suffix:semicolon
 multiline_comment|/* clear highbyte to make sure we won&squot;t write&n;&t;&t;&t;&t;  * to status - just in case MSTRPAGE_VALUE!=0&n;&t;&t;&t;&t;  */
 id|rd-&gt;hw-&gt;rd_addr
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|a
+)paren
 suffix:semicolon
 id|wmb
 c_func
@@ -928,7 +940,11 @@ id|c
 (brace
 id|rd-&gt;hw-&gt;rd_count
 op_assign
+id|cpu_to_le16
+c_func
+(paren
 id|c
+)paren
 suffix:semicolon
 )brace
 DECL|function|rd_get_status
@@ -966,8 +982,15 @@ id|a
 suffix:semicolon
 id|a
 op_assign
+id|le32_to_cpu
+c_func
 (paren
 id|rd-&gt;hw-&gt;rd_addr
+)paren
+suffix:semicolon
+r_return
+(paren
+id|a
 op_amp
 id|DMA_MASK_MSTRPAGE
 )paren
@@ -977,9 +1000,6 @@ id|MSTRPAGE_VALUE
 op_lshift
 l_int|24
 )paren
-suffix:semicolon
-r_return
-id|a
 suffix:semicolon
 )brace
 DECL|function|rd_get_count
@@ -996,7 +1016,11 @@ id|rd
 )paren
 (brace
 r_return
+id|le16_to_cpu
+c_func
+(paren
 id|rd-&gt;hw-&gt;rd_count
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************/

@@ -35,6 +35,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
@@ -3221,8 +3222,52 @@ c_cond
 id|rd-&gt;buf
 op_eq
 l_int|NULL
+op_logical_or
+op_logical_neg
+(paren
+id|busaddr
+op_assign
+id|pci_map_single
+c_func
+(paren
+id|pdev
+comma
+id|rd-&gt;buf
+comma
+id|len
+comma
+id|dir
+)paren
+)paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|rd-&gt;buf
+)paren
+(brace
+id|ERROR
+c_func
+(paren
+l_string|&quot;%s: failed to create PCI-MAP for %p&quot;
+comma
+id|__FUNCTION__
+comma
+id|rd-&gt;buf
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|rd-&gt;buf
+)paren
+suffix:semicolon
+id|rd-&gt;buf
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -3298,43 +3343,6 @@ id|r
 suffix:semicolon
 r_return
 l_int|NULL
-suffix:semicolon
-)brace
-id|busaddr
-op_assign
-id|pci_map_single
-c_func
-(paren
-id|pdev
-comma
-id|rd-&gt;buf
-comma
-id|len
-comma
-id|dir
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|busaddr
-)paren
-(brace
-id|ERROR
-c_func
-(paren
-l_string|&quot;%s: failed to create PCI-MAP for %p&quot;
-comma
-id|__FUNCTION__
-comma
-id|rd-&gt;buf
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 id|rd_set_addr_status
@@ -4083,9 +4091,18 @@ id|rd
 )paren
 )paren
 (brace
-id|BUG
+id|WARNING
 c_func
 (paren
+l_string|&quot;%s: driver bug: rx descr race with hw&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|vlsi_ring_debug
+c_func
+(paren
+id|r
 )paren
 suffix:semicolon
 r_break
@@ -5554,7 +5571,7 @@ r_goto
 id|drop
 suffix:semicolon
 )brace
-multiline_comment|/* sanity checks - should never happen!&n;&t; * simply BUGging the violation and dropping the packet&n;&t; */
+multiline_comment|/* sanity checks - simply drop the packet */
 id|rd
 op_assign
 id|ring_last
@@ -5570,10 +5587,12 @@ op_logical_neg
 id|rd
 )paren
 (brace
-multiline_comment|/* ring full - queue should have been stopped! */
-id|BUG
+id|ERROR
 c_func
 (paren
+l_string|&quot;%s - ring full but queue wasn&squot;t stopped&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_goto
@@ -5590,10 +5609,12 @@ id|rd
 )paren
 )paren
 (brace
-multiline_comment|/* entry still owned by hw! */
-id|BUG
+id|ERROR
 c_func
 (paren
+l_string|&quot;%s - entry still owned by hw!&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_goto
@@ -5607,10 +5628,12 @@ op_logical_neg
 id|rd-&gt;buf
 )paren
 (brace
-multiline_comment|/* no memory for this tx entry - weird! */
-id|BUG
+id|ERROR
 c_func
 (paren
+l_string|&quot;%s - tx ring entry without pci buffer&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_goto
@@ -5623,10 +5646,12 @@ c_cond
 id|rd-&gt;skb
 )paren
 (brace
-multiline_comment|/* hm, associated old skb still there */
-id|BUG
+id|ERROR
 c_func
 (paren
+l_string|&quot;%s - ring entry with old skb still attached&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_goto
