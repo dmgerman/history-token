@@ -3019,6 +3019,21 @@ id|quad
 r_return
 l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|CONFIG_ROM_BUS_INFO_LENGTH
+c_func
+(paren
+id|quad
+)paren
+op_eq
+l_int|1
+)paren
+multiline_comment|/* minimal config rom */
+r_return
+l_int|NULL
+suffix:semicolon
 id|address
 op_add_assign
 l_int|4
@@ -5953,6 +5968,41 @@ r_if
 c_cond
 (paren
 id|header_size
+op_eq
+l_int|1
+)paren
+(brace
+id|HPSB_INFO
+c_func
+(paren
+l_string|&quot;Node &quot;
+id|NODE_BUS_FMT
+l_string|&quot; has a minimal ROM.  &quot;
+l_string|&quot;Vendor is %08x&quot;
+comma
+id|NODE_BUS_ARGS
+c_func
+(paren
+id|nodeid
+)paren
+comma
+id|buffer
+(braket
+l_int|0
+)braket
+op_amp
+l_int|0x00ffffff
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|header_size
 OL
 l_int|4
 )paren
@@ -7681,6 +7731,14 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|host_info_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7741,14 +7799,6 @@ c_func
 l_string|&quot;NodeMgr: host %s does not exist, cannot remove&quot;
 comma
 id|host-&gt;driver-&gt;name
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|host_info_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return

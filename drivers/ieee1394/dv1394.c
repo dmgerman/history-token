@@ -32,6 +32,7 @@ macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;ieee1394_types.h&quot;
+macro_line|#include &quot;ieee1394_hotplug.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
 macro_line|#include &quot;highlevel.h&quot;&t;
@@ -48,7 +49,7 @@ mdefine_line|#define vmalloc_32(x) vmalloc(x)
 macro_line|#endif
 multiline_comment|/* DEBUG LEVELS:&n;   0 - no debugging messages&n;   1 - some debugging messages, but none during DMA frame transmission&n;   2 - lots of messages, including during DMA frame transmission&n;       (will cause undeflows if your machine is too slow!)&n;*/
 DECL|macro|DV1394_DEBUG_LEVEL
-mdefine_line|#define DV1394_DEBUG_LEVEL 1
+mdefine_line|#define DV1394_DEBUG_LEVEL 0
 multiline_comment|/* for debugging use ONLY: allow more than one open() of the device */
 multiline_comment|/* #define DV1394_ALLOW_MORE_THAN_ONE_OPEN 1 */
 macro_line|#if DV1394_DEBUG_LEVEL &gt;= 2
@@ -9834,6 +9835,88 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_DEVFS_FS */
+multiline_comment|/*** HOTPLUG STUFF **********************************************************/
+multiline_comment|/*&n; * Export information about protocols/devices supported by this driver.&n; */
+DECL|variable|dv1394_id_table
+r_static
+r_struct
+id|ieee1394_device_id
+id|dv1394_id_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|match_flags
+op_assign
+id|IEEE1394_MATCH_SPECIFIER_ID
+op_or
+id|IEEE1394_MATCH_VERSION
+comma
+dot
+id|specifier_id
+op_assign
+id|AVC_UNIT_SPEC_ID_ENTRY
+op_amp
+l_int|0xffffff
+comma
+dot
+id|version
+op_assign
+id|AVC_SW_VERSION_ENTRY
+op_amp
+l_int|0xffffff
+)brace
+comma
+(brace
+)brace
+)brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|ieee1394
+comma
+id|dv1394_id_table
+)paren
+suffix:semicolon
+DECL|variable|dv1394_driver
+r_static
+r_struct
+id|hpsb_protocol_driver
+id|dv1394_driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;DV/1394 Driver&quot;
+comma
+dot
+id|id_table
+op_assign
+id|dv1394_id_table
+comma
+dot
+id|driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;dv1394&quot;
+comma
+dot
+id|bus
+op_assign
+op_amp
+id|ieee1394_bus_type
+comma
+)brace
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*** IEEE1394 HPSB CALLBACKS ***********************************************/
 DECL|function|dv1394_init
 r_static
@@ -11702,6 +11785,13 @@ l_string|&quot;dv1394: Error unregistering ioctl32 translations&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+id|hpsb_unregister_protocol
+c_func
+(paren
+op_amp
+id|dv1394_driver
+)paren
+suffix:semicolon
 id|hpsb_unregister_highlevel
 (paren
 id|hl_handle
@@ -11882,6 +11972,13 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|hpsb_register_protocol
+c_func
+(paren
+op_amp
+id|dv1394_driver
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_COMPAT
 multiline_comment|/* First compatible ones */
 id|ret
