@@ -72,6 +72,10 @@ DECL|macro|L2CAP_LM_ENCRYPT
 mdefine_line|#define L2CAP_LM_ENCRYPT&t;0x0004
 DECL|macro|L2CAP_LM_TRUSTED
 mdefine_line|#define L2CAP_LM_TRUSTED&t;0x0008
+DECL|macro|L2CAP_LM_RELIABLE
+mdefine_line|#define L2CAP_LM_RELIABLE&t;0x0010
+DECL|macro|L2CAP_LM_SECURE
+mdefine_line|#define L2CAP_LM_SECURE&t;&t;0x0020
 DECL|macro|L2CAP_QOS
 mdefine_line|#define L2CAP_QOS&t;0x04
 DECL|struct|l2cap_qos
