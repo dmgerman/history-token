@@ -1214,6 +1214,7 @@ multiline_comment|/* virtual 86 mode info */
 DECL|member|vm86_info
 r_struct
 id|vm86_struct
+id|__user
 op_star
 id|vm86_info
 suffix:semicolon
