@@ -29,7 +29,7 @@ DECL|macro|ACPI_COMMON_BUFFER_INFO
 mdefine_line|#define ACPI_COMMON_BUFFER_INFO &bslash;&n;&t;u32                                     length;
 multiline_comment|/*&n; * Common fields for objects that support ASL notifications&n; */
 DECL|macro|ACPI_COMMON_NOTIFY_INFO
-mdefine_line|#define ACPI_COMMON_NOTIFY_INFO &bslash;&n;&t;union acpi_operand_object               *sys_handler;        /* Handler for system notifies */&bslash;&n;&t;union acpi_operand_object               *drv_handler;        /* Handler for driver notifies */&bslash;&n;&t;union acpi_operand_object               *addr_handler;       /* Handler for Address space */
+mdefine_line|#define ACPI_COMMON_NOTIFY_INFO &bslash;&n;&t;union acpi_operand_object               *system_notify;     /* Handler for system notifies */&bslash;&n;&t;union acpi_operand_object               *device_notify;     /* Handler for driver notifies */&bslash;&n;&t;union acpi_operand_object               *address_space;     /* Handler for Address space */
 multiline_comment|/******************************************************************************&n; *&n; * Basic data types&n; *&n; *****************************************************************************/
 DECL|struct|acpi_object_common
 r_struct
@@ -242,13 +242,13 @@ DECL|member|space_id
 id|u8
 id|space_id
 suffix:semicolon
-DECL|member|addr_handler
+DECL|member|address_space
 r_union
 id|acpi_operand_object
 op_star
-id|addr_handler
+id|address_space
 suffix:semicolon
-multiline_comment|/* Handler for system notifies */
+multiline_comment|/* Handler for region access */
 DECL|member|node
 r_struct
 id|acpi_namespace_node
@@ -721,15 +721,15 @@ r_struct
 id|acpi_object_index_field
 id|index_field
 suffix:semicolon
-DECL|member|notify_handler
+DECL|member|notify
 r_struct
 id|acpi_object_notify_handler
-id|notify_handler
+id|notify
 suffix:semicolon
-DECL|member|addr_handler
+DECL|member|address_space
 r_struct
 id|acpi_object_addr_handler
-id|addr_handler
+id|address_space
 suffix:semicolon
 DECL|member|reference
 r_struct

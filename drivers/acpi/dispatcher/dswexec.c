@@ -7,6 +7,7 @@ macro_line|#include &lt;acpi/acdispat.h&gt;
 macro_line|#include &lt;acpi/acinterp.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
 macro_line|#include &lt;acpi/acdebug.h&gt;
+macro_line|#include &lt;acpi/acdisasm.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|ACPI_MODULE_NAME
@@ -1501,6 +1502,28 @@ id|walk_state-&gt;num_operands
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef ACPI_DISASSEMBLER
+multiline_comment|/* On error, display method locals/args */
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|acpi_dm_dump_method_info
+(paren
+id|status
+comma
+id|walk_state
+comma
+id|op
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 id|return_ACPI_STATUS
 (paren
 id|status

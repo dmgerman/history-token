@@ -296,11 +296,23 @@ id|status
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|msg
+)paren
+(brace
 id|acpi_os_printf
 (paren
-l_string|&quot;%s [%s] (Node %p)&quot;
+l_string|&quot;%s &quot;
 comma
 id|msg
+)paren
+suffix:semicolon
+)brace
+id|acpi_os_printf
+(paren
+l_string|&quot;[%s] (Node %p)&quot;
 comma
 (paren
 r_char
@@ -1744,32 +1756,23 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-r_struct
-id|acpi_namespace_node
-op_star
-id|this_node
-suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ns_terminate&quot;
 )paren
 suffix:semicolon
-id|this_node
-op_assign
-id|acpi_gbl_root_node
-suffix:semicolon
-multiline_comment|/*&n;&t; * 1) Free the entire namespace -- all objects, tables, and stacks&n;&t; *&n;&t; * Delete all objects linked to the root&n;&t; * (additional table descriptors)&n;&t; */
+multiline_comment|/*&n;&t; * 1) Free the entire namespace -- all nodes and objects&n;&t; *&n;&t; * Delete all object descriptors attached to namepsace nodes&n;&t; */
 id|acpi_ns_delete_namespace_subtree
 (paren
-id|this_node
+id|acpi_gbl_root_node
 )paren
 suffix:semicolon
-multiline_comment|/* Detach any object(s) attached to the root */
+multiline_comment|/* Detach any objects attached to the root */
 id|obj_desc
 op_assign
 id|acpi_ns_get_attached_object
 (paren
-id|this_node
+id|acpi_gbl_root_node
 )paren
 suffix:semicolon
 r_if
@@ -1780,20 +1783,10 @@ id|obj_desc
 (brace
 id|acpi_ns_detach_object
 (paren
-id|this_node
-)paren
-suffix:semicolon
-id|acpi_ut_remove_reference
-(paren
-id|obj_desc
+id|acpi_gbl_root_node
 )paren
 suffix:semicolon
 )brace
-id|acpi_ns_delete_children
-(paren
-id|this_node
-)paren
-suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -1804,7 +1797,7 @@ l_string|&quot;Namespace freed&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * 2) Now we can delete the ACPI tables&n;&t; */
-id|acpi_tb_delete_acpi_tables
+id|acpi_tb_delete_all_tables
 (paren
 )paren
 suffix:semicolon
