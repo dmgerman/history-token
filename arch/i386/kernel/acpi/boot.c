@@ -1955,12 +1955,6 @@ r_return
 id|count
 suffix:semicolon
 )brace
-multiline_comment|/* Build a default routing table for legacy (ISA) interrupts. */
-id|mp_config_acpi_legacy_irqs
-c_func
-(paren
-)paren
-suffix:semicolon
 id|count
 op_assign
 id|acpi_table_parse_madt
@@ -2009,6 +2003,12 @@ comma
 l_int|0
 comma
 l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Fill in identity legacy mapings where no override */
+id|mp_config_acpi_legacy_irqs
+c_func
+(paren
 )paren
 suffix:semicolon
 id|count
