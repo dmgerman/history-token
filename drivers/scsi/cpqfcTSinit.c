@@ -2192,7 +2192,8 @@ id|vendor_cmd-&gt;len
 )paren
 )paren
 (brace
-r_return
+id|result
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
