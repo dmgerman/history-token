@@ -2406,11 +2406,7 @@ multiline_comment|/* Welcome, Mr. Bond.  We&squot;ve been expecting you... */
 id|IP_NF_ASSERT
 c_func
 (paren
-id|master_ct
-c_func
-(paren
-id|conntrack
-)paren
+id|expected-&gt;expectant
 )paren
 suffix:semicolon
 id|__set_bit
