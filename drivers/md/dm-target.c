@@ -31,12 +31,12 @@ c_func
 id|_targets
 )paren
 suffix:semicolon
-DECL|variable|_lock
 r_static
-id|rwlock_t
+id|DECLARE_RWSEM
+c_func
+(paren
 id|_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|DM_MOD_NAME_SIZE
 mdefine_line|#define DM_MOD_NAME_SIZE 32
@@ -126,7 +126,7 @@ id|tt_internal
 op_star
 id|ti
 suffix:semicolon
-id|read_lock
+id|down_read
 c_func
 (paren
 op_amp
@@ -172,7 +172,7 @@ id|ti-&gt;use
 op_increment
 suffix:semicolon
 )brace
-id|read_unlock
+id|up_read
 c_func
 (paren
 op_amp
@@ -317,7 +317,7 @@ op_star
 )paren
 id|t
 suffix:semicolon
-id|read_lock
+id|down_read
 c_func
 (paren
 op_amp
@@ -350,7 +350,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|read_unlock
+id|up_read
 c_func
 (paren
 op_amp
@@ -458,7 +458,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|write_lock
+id|down_write
 c_func
 (paren
 op_amp
@@ -490,7 +490,7 @@ op_amp
 id|_targets
 )paren
 suffix:semicolon
-id|write_unlock
+id|up_write
 c_func
 (paren
 op_amp
@@ -517,7 +517,7 @@ id|tt_internal
 op_star
 id|ti
 suffix:semicolon
-id|write_lock
+id|down_write
 c_func
 (paren
 op_amp
@@ -539,7 +539,7 @@ id|t-&gt;name
 )paren
 )paren
 (brace
-id|write_unlock
+id|up_write
 c_func
 (paren
 op_amp
@@ -557,7 +557,7 @@ c_cond
 id|ti-&gt;use
 )paren
 (brace
-id|write_unlock
+id|up_write
 c_func
 (paren
 op_amp
@@ -582,7 +582,7 @@ c_func
 id|ti
 )paren
 suffix:semicolon
-id|write_unlock
+id|up_write
 c_func
 (paren
 op_amp
