@@ -208,7 +208,6 @@ l_string|&quot;ERROR unknown Diagnostic info reply code &quot;
 suffix:semicolon
 )brace
 )brace
-suffix:semicolon
 DECL|function|arlan_hardware_type_string
 r_static
 r_const

@@ -715,7 +715,6 @@ id|timev.tv_usec
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 macro_line|#ifdef ARLAN_ENTRY_EXIT_DEBUGGING
 DECL|macro|ARLAN_DEBUG_ENTRY
 mdefine_line|#define ARLAN_DEBUG_ENTRY(name) &bslash;&n;&t;{&bslash;&n;&t;struct timeval timev;&bslash;&n;&t;do_gettimeofday(&amp;timev);&bslash;&n;&t;&t;if (arlan_entry_debug || arlan_entry_and_exit_debug)&bslash;&n;&t;&t;&t;printk(&quot;---&gt;&gt;&gt;&quot; name &quot; %ld &quot; &quot;&bslash;n&quot;,((long int) timev.tv_sec * 1000000 + timev.tv_usec));&bslash;&n;&t;}
@@ -829,7 +828,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-suffix:semicolon
 DECL|function|arlan_command
 r_int
 id|arlan_command
@@ -1460,7 +1458,6 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 id|netif_stop_queue
 (paren
 id|dev
@@ -1905,7 +1902,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -2390,7 +2386,6 @@ r_return
 l_int|2
 suffix:semicolon
 )brace
-suffix:semicolon
 DECL|function|arlan_command_process
 r_static
 r_inline
@@ -2892,7 +2887,6 @@ op_assign
 id|jiffies
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -5306,7 +5300,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-suffix:semicolon
 id|memcpy_fromio
 c_func
 (paren
@@ -6765,7 +6758,6 @@ l_string|&quot;arlan_queue_retransmit&quot;
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 DECL|function|RetryOrFail
 r_static
 r_inline
