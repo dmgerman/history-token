@@ -1603,6 +1603,15 @@ mdefine_line|#define sched_balance_exec()   {}
 DECL|macro|node_nr_running_init
 mdefine_line|#define node_nr_running_init() {}
 macro_line|#endif
+multiline_comment|/* Move tasks off this (offline) CPU onto another. */
+r_extern
+r_void
+id|migrate_all_tasks
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|set_user_nice
