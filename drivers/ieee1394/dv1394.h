@@ -20,43 +20,7 @@ mdefine_line|#define DV1394_NTSC_FRAME_SIZE (480 * DV1394_NTSC_PACKETS_PER_FRAME
 DECL|macro|DV1394_PAL_FRAME_SIZE
 mdefine_line|#define DV1394_PAL_FRAME_SIZE  (480 * DV1394_PAL_PACKETS_PER_FRAME)
 multiline_comment|/* ioctl() commands */
-r_enum
-(brace
-multiline_comment|/* I don&squot;t like using 0 as a valid ioctl() */
-DECL|enumerator|DV1394_INVALID
-id|DV1394_INVALID
-op_assign
-l_int|0
-comma
-multiline_comment|/* get the driver ready to transmit video.&n;&t;   pass a struct dv1394_init* as the parameter (see below),&n;&t;   or NULL to get default parameters */
-DECL|enumerator|DV1394_INIT
-id|DV1394_INIT
-comma
-multiline_comment|/* stop transmitting video and free the ringbuffer */
-DECL|enumerator|DV1394_SHUTDOWN
-id|DV1394_SHUTDOWN
-comma
-multiline_comment|/* submit N new frames to be transmitted, where&n;&t;   the index of the first new frame is first_clear_buffer,&n;&t;   and the index of the last new frame is&n;&t;   (first_clear_buffer + N) % n_frames */
-DECL|enumerator|DV1394_SUBMIT_FRAMES
-id|DV1394_SUBMIT_FRAMES
-comma
-multiline_comment|/* block until N buffers are clear (pass N as the parameter)&n;&t;   Because we re-transmit the last frame on underrun, there&n;&t;   will at most be n_frames - 1 clear frames at any time */
-DECL|enumerator|DV1394_WAIT_FRAMES
-id|DV1394_WAIT_FRAMES
-comma
-multiline_comment|/* capture new frames that have been received, where&n;&t;   the index of the first new frame is first_clear_buffer,&n;&t;   and the index of the last new frame is&n;&t;   (first_clear_buffer + N) % n_frames */
-DECL|enumerator|DV1394_RECEIVE_FRAMES
-id|DV1394_RECEIVE_FRAMES
-comma
-DECL|enumerator|DV1394_START_RECEIVE
-id|DV1394_START_RECEIVE
-comma
-multiline_comment|/* pass a struct dv1394_status* as the parameter (see below) */
-DECL|enumerator|DV1394_GET_STATUS
-id|DV1394_GET_STATUS
-comma
-)brace
-suffix:semicolon
+macro_line|#include &quot;ieee1394-ioctl.h&quot;
 DECL|enum|pal_or_ntsc
 r_enum
 id|pal_or_ntsc

@@ -159,7 +159,7 @@ mdefine_line|#define IW_PRIV_TYPE_FLOAT&t;0x5000&t;/* struct iw_freq */
 DECL|macro|IW_PRIV_TYPE_ADDR
 mdefine_line|#define IW_PRIV_TYPE_ADDR&t;0x6000&t;/* struct sockaddr */
 DECL|macro|IW_PRIV_SIZE_FIXED
-mdefine_line|#define IW_PRIV_SIZE_FIXED&t;0x0800&t;/* Variable or fixed nuber of args */
+mdefine_line|#define IW_PRIV_SIZE_FIXED&t;0x0800&t;/* Variable or fixed number of args */
 DECL|macro|IW_PRIV_SIZE_MASK
 mdefine_line|#define IW_PRIV_SIZE_MASK&t;0x07FF&t;/* Max number of those args */
 multiline_comment|/*&n; * Note : if the number of args is fixed and the size &lt; 16 octets,&n; * instead of passing a pointer we will put args in the iwreq struct...&n; */

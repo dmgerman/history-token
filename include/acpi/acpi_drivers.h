@@ -3,7 +3,7 @@ macro_line|#ifndef __ACPI_DRIVERS_H__
 DECL|macro|__ACPI_DRIVERS_H__
 mdefine_line|#define __ACPI_DRIVERS_H__
 macro_line|#include &lt;linux/acpi.h&gt;
-macro_line|#include &quot;acpi_bus.h&quot;
+macro_line|#include &lt;acpi/acpi_bus.h&gt;
 DECL|macro|ACPI_MAX_STRING
 mdefine_line|#define ACPI_MAX_STRING&t;&t;&t;80
 DECL|macro|ACPI_BUS_COMPONENT

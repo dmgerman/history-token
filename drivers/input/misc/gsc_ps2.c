@@ -1595,7 +1595,10 @@ r_void
 id|gscps2_kbd_docode
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -1754,6 +1757,12 @@ comma
 id|hpkeyb.released
 )paren
 suffix:semicolon
+id|input_regs
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
 id|input_report_key
 c_func
 (paren
@@ -1805,7 +1814,10 @@ r_void
 id|gscps2_mouse_docode
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -1850,7 +1862,7 @@ id|hpmouse.last
 op_plus
 id|HZ
 op_div
-l_int|20
+l_int|2
 )paren
 )paren
 (brace
@@ -1937,6 +1949,12 @@ id|DPRINTK
 c_func
 (paren
 l_string|&quot;Mouse: position overflow&bslash;n&quot;
+)paren
+suffix:semicolon
+id|input_regs
+c_func
+(paren
+id|regs
 )paren
 suffix:semicolon
 id|input_report_key
@@ -2114,6 +2132,7 @@ id|GSC_STAT_RBNE
 id|gscps2_mouse_docode
 c_func
 (paren
+id|reg
 )paren
 suffix:semicolon
 multiline_comment|/* process keyboard scancode */
@@ -2131,6 +2150,7 @@ id|GSC_STAT_RBNE
 id|gscps2_kbd_docode
 c_func
 (paren
+id|reg
 )paren
 suffix:semicolon
 )brace

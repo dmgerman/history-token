@@ -13,6 +13,8 @@ DECL|macro|KG_ALTGR
 mdefine_line|#define KG_ALTGR&t;1
 DECL|macro|KG_SHIFTL
 mdefine_line|#define KG_SHIFTL&t;4
+DECL|macro|KG_KANASHIFT
+mdefine_line|#define KG_KANASHIFT&t;4
 DECL|macro|KG_SHIFTR
 mdefine_line|#define KG_SHIFTR&t;5
 DECL|macro|KG_CTRLL

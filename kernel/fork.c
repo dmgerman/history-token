@@ -1680,7 +1680,7 @@ OG
 l_int|1
 )paren
 (brace
-r_int
+id|u32
 op_star
 id|tidptr
 op_assign
@@ -1702,10 +1702,6 @@ suffix:semicolon
 id|sys_futex
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|tidptr
 comma
 id|FUTEX_WAKE

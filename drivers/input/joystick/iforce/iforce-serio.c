@@ -252,6 +252,11 @@ comma
 r_int
 r_int
 id|flags
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -397,6 +402,8 @@ op_or
 id|iforce-&gt;idx
 comma
 id|iforce-&gt;data
+comma
+id|regs
 )paren
 suffix:semicolon
 id|iforce-&gt;pkt

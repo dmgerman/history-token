@@ -219,6 +219,10 @@ DECL|member|cmdPtr
 r_int
 id|cmdPtr
 suffix:semicolon
+DECL|member|ctxtMatch
+r_int
+id|ctxtMatch
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* DMA transmit context */
@@ -339,12 +343,15 @@ id|context
 suffix:semicolon
 DECL|enumerator|OHCI_ISO_TRANSMIT
 DECL|enumerator|OHCI_ISO_RECEIVE
-DECL|member|type
 r_enum
 (brace
 id|OHCI_ISO_TRANSMIT
 comma
 id|OHCI_ISO_RECEIVE
+comma
+DECL|enumerator|OHCI_ISO_MULTICHANNEL_RECEIVE
+DECL|member|type
+id|OHCI_ISO_MULTICHANNEL_RECEIVE
 )brace
 id|type
 suffix:semicolon
@@ -453,20 +460,6 @@ id|dma_trm_ctx
 id|at_req_context
 suffix:semicolon
 multiline_comment|/* iso receive */
-DECL|member|ir_context
-r_struct
-id|dma_rcv_ctx
-id|ir_context
-suffix:semicolon
-DECL|member|ir_tasklet
-r_struct
-id|ohci1394_iso_tasklet
-id|ir_tasklet
-suffix:semicolon
-DECL|member|IR_channel_lock
-id|spinlock_t
-id|IR_channel_lock
-suffix:semicolon
 DECL|member|nb_iso_rcv_ctx
 r_int
 id|nb_iso_rcv_ctx
@@ -477,17 +470,33 @@ r_int
 id|ir_ctx_usage
 suffix:semicolon
 multiline_comment|/* use test_and_set_bit() for atomicity */
-multiline_comment|/* iso transmit */
-DECL|member|it_context
-r_struct
-id|dma_trm_ctx
-id|it_context
+DECL|member|ir_multichannel_used
+r_int
+r_int
+id|ir_multichannel_used
 suffix:semicolon
-DECL|member|it_tasklet
+multiline_comment|/* ditto */
+DECL|member|IR_channel_lock
+id|spinlock_t
+id|IR_channel_lock
+suffix:semicolon
+multiline_comment|/* iso receive (legacy API) */
+DECL|member|ir_legacy_channels
+id|u64
+id|ir_legacy_channels
+suffix:semicolon
+multiline_comment|/* note: this differs from ISO_channel_usage;&n;&t;&t;&t;&t;   it only accounts for channels listened to&n;&t;&t;&t;&t;   by the legacy API, so that we can know when&n;&t;&t;&t;&t;   it is safe to free the legacy API context */
+DECL|member|ir_legacy_context
+r_struct
+id|dma_rcv_ctx
+id|ir_legacy_context
+suffix:semicolon
+DECL|member|ir_legacy_tasklet
 r_struct
 id|ohci1394_iso_tasklet
-id|it_tasklet
+id|ir_legacy_tasklet
 suffix:semicolon
+multiline_comment|/* iso transmit */
 DECL|member|nb_iso_xmit_ctx
 r_int
 id|nb_iso_xmit_ctx
@@ -498,6 +507,17 @@ r_int
 id|it_ctx_usage
 suffix:semicolon
 multiline_comment|/* use test_and_set_bit() for atomicity */
+multiline_comment|/* iso transmit (legacy API) */
+DECL|member|it_legacy_context
+r_struct
+id|dma_trm_ctx
+id|it_legacy_context
+suffix:semicolon
+DECL|member|it_legacy_tasklet
+r_struct
+id|ohci1394_iso_tasklet
+id|it_legacy_tasklet
+suffix:semicolon
 DECL|member|ISO_channel_usage
 id|u64
 id|ISO_channel_usage
@@ -913,8 +933,8 @@ mdefine_line|#define DMA_CTL_WAIT                     0x00030000
 multiline_comment|/* OHCI evt_* error types, table 3-2 of the OHCI 1.1 spec. */
 DECL|macro|EVT_NO_STATUS
 mdefine_line|#define EVT_NO_STATUS&t;&t;0x0&t;/* No event status */
-DECL|macro|EVT_RESERVED
-mdefine_line|#define EVT_RESERVED&t;&t;0x1&t;/* Reserved, not used !!! */
+DECL|macro|EVT_RESERVED_A
+mdefine_line|#define EVT_RESERVED_A&t;&t;0x1&t;/* Reserved, not used !!! */
 DECL|macro|EVT_LONG_PACKET
 mdefine_line|#define EVT_LONG_PACKET&t;&t;0x2&t;/* The revc data was longer than the buf */
 DECL|macro|EVT_MISSING_ACK
@@ -931,6 +951,18 @@ DECL|macro|EVT_DATA_WRITE
 mdefine_line|#define EVT_DATA_WRITE&t;&t;0x8&t;/* An error occured while host controller was&n;&t;&t;&t;&t;&t;   attempting to write either during the data stage&n;&t;&t;&t;&t;&t;   of descriptor processing, or when processing a single&n;&t;&t;&t;&t;&t;   16-bit host memory write */
 DECL|macro|EVT_BUS_RESET
 mdefine_line|#define EVT_BUS_RESET&t;&t;0x9&t;/* Identifies a PHY packet in the recv buffer as&n;&t;&t;&t;&t;&t;   being a synthesized bus reset packet */
+DECL|macro|EVT_TIMEOUT
+mdefine_line|#define EVT_TIMEOUT&t;&t;0xa&t;/* Indicates that the asynchronous transmit response&n;&t;&t;&t;&t;&t;   packet expired and was not transmitted, or that an&n;&t;&t;&t;&t;&t;   IT DMA context experienced a skip processing overflow */
+DECL|macro|EVT_TCODE_ERR
+mdefine_line|#define EVT_TCODE_ERR&t;&t;0xb&t;/* A bad tCode is associated with this packet.&n;&t;&t;&t;&t;&t;   The packet was flushed */
+DECL|macro|EVT_RESERVED_B
+mdefine_line|#define EVT_RESERVED_B&t;&t;0xc&t;/* Reserved, not used !!! */
+DECL|macro|EVT_RESERVED_C
+mdefine_line|#define EVT_RESERVED_C&t;&t;0xd&t;/* Reserved, not used !!! */
+DECL|macro|EVT_UNKNOWN
+mdefine_line|#define EVT_UNKNOWN&t;&t;0xe&t;/* An error condition has occurred that cannot be&n;&t;&t;&t;&t;&t;   represented by any other event codes defined herein. */
+DECL|macro|EVT_FLUSHED
+mdefine_line|#define EVT_FLUSHED&t;&t;0xf&t;/* Send by the link side of output FIFO when asynchronous&n;&t;&t;&t;&t;&t;   packets are being flushed due to a bus reset. */
 DECL|macro|OHCI1394_TCODE_PHY
 mdefine_line|#define OHCI1394_TCODE_PHY               0xE
 r_void
@@ -990,7 +1022,8 @@ op_star
 id|tasklet
 )paren
 suffix:semicolon
-r_void
+multiline_comment|/* returns zero if successful, one if DMA context is locked up */
+r_int
 id|ohci1394_stop_context
 (paren
 r_struct

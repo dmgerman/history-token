@@ -3256,6 +3256,11 @@ id|usage
 comma
 id|__s32
 id|value
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|hid_dump_input
@@ -3283,6 +3288,8 @@ comma
 id|usage
 comma
 id|value
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -3302,6 +3309,8 @@ comma
 id|usage
 comma
 id|value
+comma
+id|regs
 )paren
 suffix:semicolon
 )brace
@@ -3325,6 +3334,11 @@ comma
 id|__u8
 op_star
 id|data
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -3543,6 +3557,8 @@ id|value
 (braket
 id|n
 )braket
+comma
+id|regs
 )paren
 suffix:semicolon
 r_continue
@@ -3609,6 +3625,8 @@ id|min
 )braket
 comma
 l_int|0
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -3672,6 +3690,8 @@ id|min
 )braket
 comma
 l_int|1
+comma
+id|regs
 )paren
 suffix:semicolon
 )brace
@@ -3704,6 +3724,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -3958,6 +3983,8 @@ id|n
 )braket
 comma
 id|data
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -4023,6 +4050,8 @@ c_func
 id|HID_INPUT_REPORT
 comma
 id|urb
+comma
+id|regs
 )paren
 suffix:semicolon
 r_break
@@ -5204,6 +5233,8 @@ dot
 id|report-&gt;type
 comma
 id|urb
+comma
+id|regs
 )paren
 suffix:semicolon
 id|hid-&gt;ctrltail
@@ -6101,6 +6132,10 @@ DECL|macro|USB_VENDOR_ID_ONTRAK
 mdefine_line|#define USB_VENDOR_ID_ONTRAK&t;&t;0x0a07
 DECL|macro|USB_DEVICE_ID_ONTRAK_ADU100
 mdefine_line|#define USB_DEVICE_ID_ONTRAK_ADU100&t;0x0064
+DECL|macro|USB_VENDOR_ID_TANGTOP
+mdefine_line|#define USB_VENDOR_ID_TANGTOP          0x0d3d
+DECL|macro|USB_DEVICE_ID_TANGTOP_USBPS2
+mdefine_line|#define USB_DEVICE_ID_TANGTOP_USBPS2   0x0001
 DECL|struct|hid_blacklist
 r_struct
 id|hid_blacklist
@@ -6452,6 +6487,14 @@ op_plus
 l_int|500
 comma
 id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_TANGTOP
+comma
+id|USB_DEVICE_ID_TANGTOP_USBPS2
+comma
+id|HID_QUIRK_NOGET
 )brace
 comma
 (brace
@@ -7532,6 +7575,15 @@ l_int|0
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hid-&gt;urbctrl
+)paren
+r_goto
+id|fail
 suffix:semicolon
 id|usb_fill_control_urb
 c_func

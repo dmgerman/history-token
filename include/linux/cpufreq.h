@@ -608,6 +608,26 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* the proc_intf.c needs this */
+r_int
+id|cpufreq_parse_governor
+(paren
+r_char
+op_star
+id|str_governor
+comma
+r_int
+r_int
+op_star
+id|policy
+comma
+r_struct
+id|cpufreq_governor
+op_star
+op_star
+id|governor
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 multiline_comment|/*********************************************************************&n; *                        CPUFREQ 2.4. INTERFACE                     *&n; *********************************************************************/
 r_int
@@ -868,6 +888,7 @@ suffix:semicolon
 multiline_comment|/* kHz - doesn&squot;t need to be in ascending&n;&t;&t;&t;&t;    * order */
 )brace
 suffix:semicolon
+macro_line|#if defined(CONFIG_CPU_FREQ_TABLE) || defined(CONFIG_CPU_FREQ_TABLE_MODULE)
 r_int
 id|cpufreq_frequency_table_cpuinfo
 c_func
@@ -946,5 +967,6 @@ op_star
 id|index
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_CPU_FREQ_TABLE */
 macro_line|#endif /* _LINUX_CPUFREQ_H */
 eof

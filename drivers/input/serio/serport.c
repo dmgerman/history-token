@@ -340,7 +340,7 @@ suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * serport_ldisc_receive() is called by the low level tty driver when characters&n; * are ready for us. We forward the characters, one by one to the &squot;interrupt&squot;&n; * routine.&n; */
+multiline_comment|/*&n; * serport_ldisc_receive() is called by the low level tty driver when characters&n; * are ready for us. We forward the characters, one by one to the &squot;interrupt&squot;&n; * routine.&n; *&n; * FIXME: We should get pt_regs from the tty layer and forward them to&n; *&t;  serio_interrupt here.&n; */
 DECL|function|serport_ldisc_receive
 r_static
 r_void
@@ -407,6 +407,8 @@ id|i
 )braket
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

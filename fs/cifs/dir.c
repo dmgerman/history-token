@@ -117,19 +117,6 @@ op_add_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* allow for trailing null */
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;Final namelength (in build_path): %d &quot;
-comma
-id|namelen
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB remove */
 id|full_path
 op_assign
 id|kmalloc
@@ -210,7 +197,7 @@ suffix:semicolon
 id|cFYI
 c_func
 (paren
-l_int|1
+l_int|0
 comma
 (paren
 l_string|&quot; name: %s &quot;
@@ -221,7 +208,6 @@ id|namelen
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB remove */
 )brace
 id|temp
 op_assign
@@ -241,7 +227,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nWe did not end path lookup where we expected namelen is %d&quot;
+l_string|&quot;We did not end path lookup where we expected namelen is %d&quot;
 comma
 id|namelen
 )paren
@@ -427,7 +413,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nWe did not end path lookup where we expected namelen is %d&quot;
+l_string|&quot;We did not end path lookup where we expected namelen is %d&quot;
 comma
 id|namelen
 )paren
@@ -469,9 +455,8 @@ suffix:semicolon
 r_int
 id|oplock
 op_assign
-id|FALSE
+id|REQ_OPLOCK
 suffix:semicolon
-multiline_comment|/* no need to oplock when we are not going to read from the file */
 id|__u16
 id|fileHandle
 suffix:semicolon
@@ -565,7 +550,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;ncifs_create returned 0x%x &quot;
+l_string|&quot;cifs_create returned 0x%x &quot;
 comma
 id|rc
 )paren
@@ -622,7 +607,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nCreate worked but get_inode_info failed with rc = %d &quot;
+l_string|&quot;Create worked but get_inode_info failed with rc = %d&quot;
 comma
 id|rc
 )paren
@@ -646,6 +631,8 @@ id|newinode
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* BB check oplock state before deciding to call following */
+multiline_comment|/*        if(*oplock)&n;            save off handle in inode and dontdoclose */
 id|CIFSSMBClose
 c_func
 (paren
@@ -819,7 +806,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; Full path: %s inode = 0x%p&bslash;n&quot;
+l_string|&quot; Full path: %s inode = 0x%p&quot;
 comma
 id|full_path
 comma
@@ -929,7 +916,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Error 0x%x or (%d decimal) on cifs_get_inode_info in lookup&bslash;n&quot;
+l_string|&quot;Error 0x%x or (%d decimal) on cifs_get_inode_info in lookup&quot;
 comma
 id|rc
 comma
@@ -1038,7 +1025,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; inode = 0x%p and full path is %s&bslash;n&quot;
+l_string|&quot; inode = 0x%p and full path is %s&quot;
 comma
 id|inode
 comma
@@ -1119,7 +1106,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;In cifs_d_revalidate with no inode but name = %s and dentry 0x%p&bslash;n&quot;
+l_string|&quot;In cifs_d_revalidate with no inode but name = %s and dentry 0x%p&quot;
 comma
 id|direntry-&gt;d_name.name
 comma
@@ -1133,7 +1120,7 @@ r_return
 id|isValid
 suffix:semicolon
 )brace
-multiline_comment|/* static int cifs_d_delete(struct dentry *direntry)&n;{&n;&t;int rc = 0;&n;&n;&t;cFYI(1, (&quot;In cifs d_delete, name = %s&bslash;n&quot;, direntry-&gt;d_name.name));&n;&n;&t;return rc;&n;}     */
+multiline_comment|/* static int cifs_d_delete(struct dentry *direntry)&n;{&n;&t;int rc = 0;&n;&n;&t;cFYI(1, (&quot;In cifs d_delete, name = %s&quot;, direntry-&gt;d_name.name));&n;&n;&t;return rc;&n;}     */
 DECL|variable|cifs_dentry_ops
 r_struct
 id|dentry_operations

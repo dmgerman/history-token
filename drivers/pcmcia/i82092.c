@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/ss.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -94,6 +95,18 @@ c_func
 (paren
 id|i82092aa_pci_remove
 )paren
+comma
+dot
+id|driver
+op_assign
+(brace
+dot
+id|devclass
+op_assign
+op_amp
+id|pcmcia_socket_class
+comma
+)brace
 comma
 )brace
 suffix:semicolon
@@ -267,6 +280,11 @@ r_int
 id|i
 comma
 id|ret
+suffix:semicolon
+r_struct
+id|pcmcia_socket_class_data
+op_star
+id|cls_d
 suffix:semicolon
 id|enter
 c_func
@@ -576,36 +594,65 @@ r_goto
 id|err_out_free_res
 suffix:semicolon
 )brace
+id|cls_d
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+id|cls_d
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|ret
-op_assign
-id|register_ss_entry
-c_func
-(paren
-id|socket_count
-comma
-op_amp
-id|i82092aa_operations
-)paren
-op_ne
-l_int|0
-)paren
+op_logical_neg
+id|cls_d
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i82092aa: register_ss_entry() failed&bslash;n&quot;
+l_string|&quot;i82092aa: kmalloc failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
 id|err_out_free_irq
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+id|cls_d
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|cls_d
+)paren
+)paren
+suffix:semicolon
+id|cls_d-&gt;nsock
+op_assign
+id|socket_count
+suffix:semicolon
+id|cls_d-&gt;ops
+op_assign
+op_amp
+id|i82092aa_operations
+suffix:semicolon
+id|dev-&gt;dev.class_data
+op_assign
+id|cls_d
+suffix:semicolon
 id|leave
 c_func
 (paren
@@ -678,6 +725,17 @@ c_func
 id|dev-&gt;irq
 comma
 id|i82092aa_interrupt
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;dev.class_data
+)paren
+id|kfree
+c_func
+(paren
+id|dev-&gt;dev.class_data
 )paren
 suffix:semicolon
 id|leave
@@ -4121,13 +4179,6 @@ c_func
 (paren
 op_amp
 id|i82092aa_pci_drv
-)paren
-suffix:semicolon
-id|unregister_ss_entry
-c_func
-(paren
-op_amp
-id|i82092aa_operations
 )paren
 suffix:semicolon
 r_if

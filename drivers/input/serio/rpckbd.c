@@ -28,12 +28,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|pt_regs
-op_star
-id|kbd_pt_regs
-suffix:semicolon
 DECL|function|rpckbd_write
 r_static
 r_int
@@ -115,10 +109,6 @@ r_int
 r_int
 id|byte
 suffix:semicolon
-id|kbd_pt_regs
-op_assign
-id|regs
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -151,6 +141,8 @@ comma
 id|byte
 comma
 l_int|0
+comma
+id|regs
 )paren
 suffix:semicolon
 )brace

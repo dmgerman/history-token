@@ -800,8 +800,9 @@ id|watchdog_info
 id|ident
 op_assign
 (brace
+dot
 id|identity
-suffix:colon
+op_assign
 l_string|&quot;Winbond 83977&quot;
 )brace
 suffix:semicolon

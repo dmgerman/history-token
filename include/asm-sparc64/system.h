@@ -171,12 +171,6 @@ l_int|1
 suffix:semicolon
 )brace
 r_extern
-r_struct
-id|pt_regs
-op_star
-id|kbd_pt_regs
-suffix:semicolon
-r_extern
 r_void
 id|synchronize_user_stack
 c_func

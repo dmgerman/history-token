@@ -199,6 +199,16 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|input_regs
+c_func
+(paren
+id|amijoy_dev
+op_plus
+id|i
+comma
+id|fp
+)paren
+suffix:semicolon
 id|input_report_key
 c_func
 (paren

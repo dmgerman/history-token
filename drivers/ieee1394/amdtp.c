@@ -2006,6 +2006,16 @@ comma
 id|SLAB_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|b
+op_eq
+l_int|NULL
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 id|b-&gt;head
 op_assign
 l_int|0

@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;acconfig.h&gt;
+macro_line|#include &lt;acpi/acconfig.h&gt;
 DECL|macro|OLD_ACPI_INTERFACE
 mdefine_line|#define OLD_ACPI_INTERFACE (ACPI_CA_VERSION &lt; 0x20020000)
 macro_line|#if OLD_ACPI_INTERFACE
@@ -24,7 +24,7 @@ suffix:semicolon
 DECL|macro|acpi_root_dir
 mdefine_line|#define acpi_root_dir bm_proc_root
 macro_line|#else
-macro_line|#include &quot;acpi_drivers.h&quot;
+macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 macro_line|#endif
 id|MODULE_AUTHOR
 c_func

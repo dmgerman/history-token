@@ -13,12 +13,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
-r_extern
-r_struct
-id|pt_regs
-op_star
-id|kbd_pt_regs
-suffix:semicolon
 DECL|struct|ps2if
 r_struct
 id|ps2if
@@ -102,10 +96,6 @@ comma
 id|flag
 comma
 id|status
-suffix:semicolon
-id|kbd_pt_regs
-op_assign
-id|regs
 suffix:semicolon
 id|status
 op_assign
@@ -202,6 +192,8 @@ comma
 id|scancode
 comma
 id|flag
+comma
+id|regs
 )paren
 suffix:semicolon
 id|status

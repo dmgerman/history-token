@@ -1019,6 +1019,8 @@ comma
 id|ch
 comma
 l_int|0
+comma
+id|regs
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1079,6 +1081,8 @@ comma
 id|ch
 comma
 l_int|0
+comma
+id|regs
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4192,7 +4196,7 @@ macro_line|#ifdef CONFIG_DEVFS_FS
 dot
 id|dev_name
 op_assign
-l_string|&quot;ttyS%d&quot;
+l_string|&quot;tts/%d&quot;
 comma
 macro_line|#else
 dot
@@ -6355,8 +6359,6 @@ suffix:semicolon
 id|channel
 OL
 id|NUM_CHANNELS
-op_minus
-l_int|1
 suffix:semicolon
 id|channel
 op_increment

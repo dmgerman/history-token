@@ -2062,6 +2062,7 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* IPIs are marked SA_INTERRUPT as they must run with irqs disabled */
 id|request_irq
 c_func
 (paren
@@ -2069,7 +2070,7 @@ id|openpic_vec_ipi
 comma
 id|openpic_ipi_action
 comma
-l_int|0
+id|SA_INTERRUPT
 comma
 l_string|&quot;IPI0 (call function)&quot;
 comma
@@ -2085,7 +2086,7 @@ l_int|1
 comma
 id|openpic_ipi_action
 comma
-l_int|0
+id|SA_INTERRUPT
 comma
 l_string|&quot;IPI1 (reschedule)&quot;
 comma
@@ -2101,7 +2102,7 @@ l_int|2
 comma
 id|openpic_ipi_action
 comma
-l_int|0
+id|SA_INTERRUPT
 comma
 l_string|&quot;IPI2 (invalidate tlb)&quot;
 comma
@@ -2117,7 +2118,7 @@ l_int|3
 comma
 id|openpic_ipi_action
 comma
-l_int|0
+id|SA_INTERRUPT
 comma
 l_string|&quot;IPI3 (xmon break)&quot;
 comma
@@ -2806,7 +2807,7 @@ r_int
 id|irq_nr
 )paren
 (brace
-multiline_comment|/* IPIs are marked IRQ_PER_CPU. This has the side effect of&n;&t; * preventing the IRQ_PENDING/IRQ_INPROGRESS logic from&n;&t; * applying to them. We EOI them late to avoid re-entering.&n;&t; * however, I&squot;m wondering if we could simply let them have the&n;&t; * SA_INTERRUPT flag and let them execute with all interrupts OFF.&n;&t; * This would have the side effect of either running cross-CPU&n;&t; * functions with interrupts off, or we can re-enable them explicitely&n;&t; * with a local_irq_enable() in smp_call_function_interrupt(), since&n;&t; * smp_call_function() is protected by a spinlock.&n;&t; * Or maybe we shouldn&squot;t set the IRQ_PER_CPU flag on cross-CPU&n;&t; * function calls IPI at all but that would make a special case.&n;&t; */
+multiline_comment|/*&n;&t; * IPIs are marked IRQ_PER_CPU. This has the side effect of&n;&t; * preventing the IRQ_PENDING/IRQ_INPROGRESS logic from&n;&t; * applying to them. We EOI them late to avoid re-entering.&n;&t; * We mark IPI&squot;s with SA_INTERRUPT as they must run with&n;&t; * irqs disabled.&n;&t; */
 id|openpic_eoi
 c_func
 (paren

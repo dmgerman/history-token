@@ -1454,6 +1454,12 @@ comma
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
+r_case
+l_int|9
+suffix:colon
+multiline_comment|/* Nehemiah */
+r_default
+suffix:colon
 id|get_model_name
 c_func
 (paren
@@ -1517,6 +1523,32 @@ l_int|8
 id|size
 op_rshift_assign
 l_int|8
+suffix:semicolon
+multiline_comment|/* VIA also screwed up Nehemiah stepping 1, and made&n;&t;   it return &squot;65KB&squot; instead of &squot;64KB&squot; */
+r_if
+c_cond
+(paren
+(paren
+id|c-&gt;x86
+op_eq
+l_int|6
+)paren
+op_logical_and
+(paren
+id|c-&gt;x86_model
+op_eq
+l_int|9
+)paren
+op_logical_and
+(paren
+id|c-&gt;x86_mask
+op_eq
+l_int|1
+)paren
+)paren
+id|size
+op_sub_assign
+l_int|1
 suffix:semicolon
 r_return
 id|size

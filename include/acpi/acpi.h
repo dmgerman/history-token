@@ -4,20 +4,20 @@ macro_line|#ifndef __ACPI_H__
 DECL|macro|__ACPI_H__
 mdefine_line|#define __ACPI_H__
 multiline_comment|/*&n; * Common includes for all ACPI driver files&n; * We put them here because we don&squot;t want to duplicate them&n; * in the rest of the source code again and again.&n; */
-macro_line|#include &quot;acconfig.h&quot;           /* Configuration constants */
-macro_line|#include &quot;platform/acenv.h&quot;     /* Target environment specific items */
-macro_line|#include &quot;actypes.h&quot;            /* Fundamental common data types */
-macro_line|#include &quot;acexcep.h&quot;            /* ACPI exception codes */
-macro_line|#include &quot;acmacros.h&quot;           /* C macros */
-macro_line|#include &quot;actbl.h&quot;              /* ACPI table definitions */
-macro_line|#include &quot;aclocal.h&quot;            /* Internal data types */
-macro_line|#include &quot;acoutput.h&quot;           /* Error output and Debug macros */
-macro_line|#include &quot;acpiosxf.h&quot;           /* Interfaces to the ACPI-to-OS layer*/
-macro_line|#include &quot;acpixf.h&quot;             /* ACPI core subsystem external interfaces */
-macro_line|#include &quot;acobject.h&quot;           /* ACPI internal object */
-macro_line|#include &quot;acstruct.h&quot;           /* Common structures */
-macro_line|#include &quot;acglobal.h&quot;           /* All global variables */
-macro_line|#include &quot;achware.h&quot;            /* Hardware defines and interfaces */
-macro_line|#include &quot;acutils.h&quot;            /* Utility interfaces */
+macro_line|#include &lt;acpi/acconfig.h&gt;           /* Configuration constants */
+macro_line|#include &lt;acpi/platform/acenv.h&gt;     /* Target environment specific items */
+macro_line|#include &lt;acpi/actypes.h&gt;            /* Fundamental common data types */
+macro_line|#include &lt;acpi/acexcep.h&gt;            /* ACPI exception codes */
+macro_line|#include &lt;acpi/acmacros.h&gt;           /* C macros */
+macro_line|#include &lt;acpi/actbl.h&gt;              /* ACPI table definitions */
+macro_line|#include &lt;acpi/aclocal.h&gt;            /* Internal data types */
+macro_line|#include &lt;acpi/acoutput.h&gt;           /* Error output and Debug macros */
+macro_line|#include &lt;acpi/acpiosxf.h&gt;           /* Interfaces to the ACPI-to-OS layer*/
+macro_line|#include &lt;acpi/acpixf.h&gt;             /* ACPI core subsystem external interfaces */
+macro_line|#include &lt;acpi/acobject.h&gt;           /* ACPI internal object */
+macro_line|#include &lt;acpi/acstruct.h&gt;           /* Common structures */
+macro_line|#include &lt;acpi/acglobal.h&gt;           /* All global variables */
+macro_line|#include &lt;acpi/achware.h&gt;            /* Hardware defines and interfaces */
+macro_line|#include &lt;acpi/acutils.h&gt;            /* Utility interfaces */
 macro_line|#endif /* __ACPI_H__ */
 eof

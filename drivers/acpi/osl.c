@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;acpi_bus.h&quot;
+macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#ifdef CONFIG_ACPI_EFI
 macro_line|#include &lt;linux/efi.h&gt;
 id|u64
@@ -325,7 +325,7 @@ id|efi.acpi20
 id|addr-&gt;pointer.physical
 op_assign
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|virt_to_phys
 c_func
@@ -342,7 +342,7 @@ id|efi.acpi
 id|addr-&gt;pointer.physical
 op_assign
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|virt_to_phys
 c_func

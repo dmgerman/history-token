@@ -15,7 +15,7 @@ mdefine_line|#define MAX_SERVER_SIZE 15
 DECL|macro|MAX_SHARE_SIZE
 mdefine_line|#define MAX_SHARE_SIZE  64&t;/* used to be 20 - this should still be enough */
 DECL|macro|MAX_USERNAME_SIZE
-mdefine_line|#define MAX_USERNAME_SIZE 32&t;/* 22 is to allow for 15 char names + null&n;&t;&t;&t;&t;   termination then *2 for unicode versions */
+mdefine_line|#define MAX_USERNAME_SIZE 32&t;/* 32 is to allow for 15 char names + null&n;&t;&t;&t;&t;   termination then *2 for unicode versions */
 DECL|macro|MAX_PASSWORD_SIZE
 mdefine_line|#define MAX_PASSWORD_SIZE 16
 multiline_comment|/*&n; * MAX_REQ is the maximum number of requests that WE will send&n; * on one NetBIOS handle concurently.&n; */
@@ -201,96 +201,6 @@ id|server_GUID
 l_int|16
 )braket
 suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * The following is our shortcut to user information.  We surface the uid,&n; * and name. We always get the password on the fly in case it&n; * has changed. We also hang a list of sessions owned by this user off here. &n; */
-DECL|struct|cifsUidInfo
-r_struct
-id|cifsUidInfo
-(brace
-DECL|member|next1
-r_struct
-id|cifsUidInfo
-op_star
-id|next1
-suffix:semicolon
-multiline_comment|/* BB replace with list and atomicize */
-DECL|member|ses
-r_struct
-id|cifsSesInfo
-op_star
-id|ses
-suffix:semicolon
-multiline_comment|/* list of sessions */
-multiline_comment|/* BB replace with list and atomicize */
-DECL|member|sesSR
-r_struct
-id|srSesInfo
-op_star
-id|sesSR
-suffix:semicolon
-multiline_comment|/* Save/Restore session list */
-DECL|member|linux_uid
-id|uid_t
-id|linux_uid
-suffix:semicolon
-DECL|member|user
-r_char
-id|user
-(braket
-id|MAX_USERNAME_SIZE
-op_plus
-l_int|1
-)braket
-suffix:semicolon
-multiline_comment|/* ascii name of user */
-multiline_comment|/* BB eventually need ptr into PAM or WinBind info */
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * Session structure.  One of these for each uid session with a particular host&n; */
-DECL|struct|cifsSesInfo
-r_struct
-id|cifsSesInfo
-(brace
-DECL|member|cifsSessionList
-r_struct
-id|list_head
-id|cifsSessionList
-suffix:semicolon
-DECL|member|sesSem
-r_struct
-id|semaphore
-id|sesSem
-suffix:semicolon
-DECL|member|uidInfo
-r_struct
-id|cifsUidInfo
-op_star
-id|uidInfo
-suffix:semicolon
-multiline_comment|/* pointer to user info */
-DECL|member|server
-r_struct
-id|TCP_Server_Info
-op_star
-id|server
-suffix:semicolon
-multiline_comment|/* pointer to server info */
-DECL|member|inUse
-id|atomic_t
-id|inUse
-suffix:semicolon
-multiline_comment|/* # of CURRENT users of this ses */
-DECL|member|status
-r_enum
-id|statusEnum
-id|status
-suffix:semicolon
-DECL|member|dialectIndex
-r_int
-id|dialectIndex
-suffix:semicolon
-multiline_comment|/* the negotiated dialect index */
 DECL|member|secMode
 r_char
 id|secMode
@@ -332,19 +242,101 @@ l_int|4
 suffix:semicolon
 multiline_comment|/* unique token id for this session */
 multiline_comment|/* (returned on Negotiate */
+DECL|member|capabilities
+r_int
+id|capabilities
+suffix:semicolon
+multiline_comment|/* allow selective disabling of caps by smb sess */
+DECL|member|timeZone
+id|__u16
+id|timeZone
+suffix:semicolon
+DECL|member|cryptKey
+r_char
+id|cryptKey
+(braket
+id|CIFS_CRYPTO_KEY_SIZE
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * The following is our shortcut to user information.  We surface the uid,&n; * and name. We always get the password on the fly in case it&n; * has changed. We also hang a list of sessions owned by this user off here. &n; */
+DECL|struct|cifsUidInfo
+r_struct
+id|cifsUidInfo
+(brace
+DECL|member|userList
+r_struct
+id|list_head
+id|userList
+suffix:semicolon
+DECL|member|sessionList
+r_struct
+id|list_head
+id|sessionList
+suffix:semicolon
+multiline_comment|/* SMB sessions for this user */
+DECL|member|linux_uid
+id|uid_t
+id|linux_uid
+suffix:semicolon
+DECL|member|user
+r_char
+id|user
+(braket
+id|MAX_USERNAME_SIZE
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* ascii name of user */
+multiline_comment|/* BB may need ptr or callback for PAM or WinBind info */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Session structure.  One of these for each uid session with a particular host&n; */
+DECL|struct|cifsSesInfo
+r_struct
+id|cifsSesInfo
+(brace
+DECL|member|cifsSessionList
+r_struct
+id|list_head
+id|cifsSessionList
+suffix:semicolon
+DECL|member|sesSem
+r_struct
+id|semaphore
+id|sesSem
+suffix:semicolon
+DECL|member|uidInfo
+r_struct
+id|cifsUidInfo
+op_star
+id|uidInfo
+suffix:semicolon
+multiline_comment|/* pointer to user info */
+DECL|member|server
+r_struct
+id|TCP_Server_Info
+op_star
+id|server
+suffix:semicolon
+multiline_comment|/* pointer to server info */
+DECL|member|inUse
+id|atomic_t
+id|inUse
+suffix:semicolon
+multiline_comment|/* # of CURRENT users of this ses */
+DECL|member|status
+r_enum
+id|statusEnum
+id|status
+suffix:semicolon
 DECL|member|ipc_tid
 id|__u16
 id|ipc_tid
 suffix:semicolon
 multiline_comment|/* special tid for connection to IPC share */
-DECL|member|capabilities
-r_int
-id|capabilities
-suffix:semicolon
-DECL|member|timeZone
-id|__u16
-id|timeZone
-suffix:semicolon
 DECL|member|serverOS
 r_char
 op_star
@@ -368,6 +360,10 @@ r_int
 id|Suid
 suffix:semicolon
 multiline_comment|/* needed for user level security */
+DECL|member|capabilities
+r_int
+id|capabilities
+suffix:semicolon
 DECL|member|serverName
 r_char
 id|serverName
@@ -387,7 +383,22 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* BB remove and replace with list of cifsUidInfo structures */
+DECL|member|domainName
+r_char
+id|domainName
+(braket
+id|MAX_USERNAME_SIZE
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+DECL|member|password_with_pad
+r_char
+id|password_with_pad
+(braket
+id|CIFS_ENCPWD_SIZE
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * there is one of these for each connection to a resource on a particular&n; * session &n; */
@@ -443,6 +454,11 @@ id|__u16
 id|Flags
 suffix:semicolon
 multiline_comment|/* optional support bits */
+DECL|member|tidStatus
+r_enum
+id|statusEnum
+id|tidStatus
+suffix:semicolon
 DECL|member|useCount
 id|atomic_t
 id|useCount
@@ -568,25 +584,32 @@ DECL|member|cifsAttrs
 id|__u32
 id|cifsAttrs
 suffix:semicolon
-multiline_comment|/* e.g. DOS archive bit, sparse, compressed, system etc. */
+multiline_comment|/* e.g. DOS archive bit, sparse, compressed, system */
 DECL|member|inUse
 id|atomic_t
 id|inUse
 suffix:semicolon
-multiline_comment|/* num concurrent users (local openers cifs) of file */
+multiline_comment|/* num concurrent users (local openers cifs) of file*/
 DECL|member|time
 r_int
 r_int
 id|time
 suffix:semicolon
 multiline_comment|/* jiffies of last update/check of inode */
-DECL|member|clientCanCache
+DECL|member|clientCanCacheRead
 r_int
-id|clientCanCache
+id|clientCanCacheRead
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* oplocked.  We need to extend cases beyond this i.e. what&n;&t;&t;&t;   if file read-only or if file locked? or if file on r/o vol? */
+multiline_comment|/* read oplock */
+DECL|member|clientCanCacheAll
+r_int
+id|clientCanCacheAll
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* read and writebehind oplock */
 DECL|member|vfs_inode
 r_struct
 id|inode

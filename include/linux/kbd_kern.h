@@ -90,7 +90,7 @@ r_int
 r_char
 id|ledflagstate
 suffix:colon
-l_int|3
+l_int|4
 suffix:semicolon
 multiline_comment|/* flags, not lights */
 DECL|member|default_ledflagstate
@@ -98,7 +98,7 @@ r_int
 r_char
 id|default_ledflagstate
 suffix:colon
-l_int|3
+l_int|4
 suffix:semicolon
 DECL|macro|VC_SCROLLOCK
 mdefine_line|#define VC_SCROLLOCK&t;0&t;/* scroll-lock mode */
@@ -106,6 +106,8 @@ DECL|macro|VC_NUMLOCK
 mdefine_line|#define VC_NUMLOCK&t;1&t;/* numeric lock mode */
 DECL|macro|VC_CAPSLOCK
 mdefine_line|#define VC_CAPSLOCK&t;2&t;/* capslock mode */
+DECL|macro|VC_KANALOCK
+mdefine_line|#define VC_KANALOCK&t;3&t;/* kanalock mode */
 DECL|member|kbdmode
 r_int
 r_char

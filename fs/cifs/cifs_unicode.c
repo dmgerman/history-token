@@ -185,20 +185,6 @@ id|outlen
 op_assign
 l_int|0
 suffix:semicolon
-id|cEVENT
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;cifs_strfromUCS returning %d - &squot;%s&squot;&bslash;n&quot;
-comma
-id|outlen
-comma
-id|to
-)paren
-)paren
-suffix:semicolon
 r_return
 id|outlen
 suffix:semicolon
@@ -233,18 +219,6 @@ id|charlen
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-id|cEVENT
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;cifs_strtoUCS - &squot;%s&squot;&bslash;n&quot;
-comma
-id|from
-)paren
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -303,7 +277,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;cifs_strtoUCS: char2uni returned %d.&bslash;n&quot;
+l_string|&quot;cifs_strtoUCS: char2uni returned %d&quot;
 comma
 id|charlen
 )paren
@@ -341,18 +315,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|cEVENT
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot; returning %d&bslash;n&quot;
-comma
-id|i
-)paren
-)paren
-suffix:semicolon
 id|to
 (braket
 id|i

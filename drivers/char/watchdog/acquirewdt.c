@@ -678,6 +678,7 @@ r_void
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;WDT driver for Acquire single board computer initialising.&bslash;n&quot;
 )paren
 suffix:semicolon

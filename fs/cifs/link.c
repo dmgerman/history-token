@@ -272,7 +272,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nFull path: %s inode = 0x%p&bslash;n&quot;
+l_string|&quot;Full path: %s inode = 0x%p&quot;
 comma
 id|full_path
 comma
@@ -466,7 +466,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nFull path: %s &quot;
+l_string|&quot;Full path: %s &quot;
 comma
 id|full_path
 )paren
@@ -478,7 +478,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; symname is %s&bslash;n&quot;
+l_string|&quot;symname is %s&quot;
 comma
 id|symname
 )paren
@@ -565,7 +565,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nCreate symlink worked but get_inode_info failed with rc = %d &quot;
+l_string|&quot;Create symlink worked but get_inode_info failed with rc = %d &quot;
 comma
 id|rc
 )paren
@@ -707,7 +707,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nFull path: %s inode = 0x%p pBuffer = 0x%p buflen = %d&bslash;n&quot;
+l_string|&quot;Full path: %s inode = 0x%p pBuffer = 0x%p buflen = %d&quot;
 comma
 id|full_path
 comma

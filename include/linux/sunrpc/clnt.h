@@ -237,6 +237,12 @@ op_star
 id|stats
 suffix:semicolon
 multiline_comment|/* statistics */
+DECL|member|pipe_dir_name
+r_char
+op_star
+id|pipe_dir_name
+suffix:semicolon
+multiline_comment|/* path to rpc_pipefs dir */
 )brace
 suffix:semicolon
 DECL|struct|rpc_version

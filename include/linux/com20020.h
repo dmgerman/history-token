@@ -37,7 +37,7 @@ id|dev
 suffix:semicolon
 multiline_comment|/* The number of low I/O ports used by the card. */
 DECL|macro|ARCNET_TOTAL_SIZE
-mdefine_line|#define ARCNET_TOTAL_SIZE 9
+mdefine_line|#define ARCNET_TOTAL_SIZE 8
 multiline_comment|/* various register addresses */
 DECL|macro|_INTMASK
 mdefine_line|#define _INTMASK  (ioaddr+0)&t;/* writable */
@@ -73,6 +73,10 @@ mdefine_line|#define TXENcfg&t;&t;0x20&t;/* enable TX */
 multiline_comment|/* in SETUP register */
 DECL|macro|PROMISCset
 mdefine_line|#define PROMISCset&t;0x10&t;/* enable RCV_ALL */
+DECL|macro|P1MODE
+mdefine_line|#define P1MODE&t;&t;0x80    /* enable P1-MODE for Backplane */
+DECL|macro|SLOWARB
+mdefine_line|#define SLOWARB&t;&t;0x01    /* enable Slow Arbitration for &gt;=5Mbps */
 multiline_comment|/* COM2002x */
 DECL|macro|SUB_TENTATIVE
 mdefine_line|#define SUB_TENTATIVE&t;0&t;/* tentative node ID */

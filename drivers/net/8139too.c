@@ -6387,7 +6387,7 @@ suffix:semicolon
 id|allow_signal
 c_func
 (paren
-id|SIGKILL
+id|SIGTERM
 )paren
 suffix:semicolon
 r_while

@@ -6347,7 +6347,7 @@ c_func
 (paren
 id|self
 comma
-id|CMD_FRAME
+id|RSP_FRAME
 )paren
 suffix:semicolon
 id|irlap_start_wd_timer
@@ -7002,7 +7002,7 @@ c_func
 (paren
 id|self
 comma
-id|CMD_FRAME
+id|RSP_FRAME
 )paren
 suffix:semicolon
 )brace
@@ -7012,7 +7012,7 @@ c_func
 (paren
 id|self
 comma
-id|CMD_FRAME
+id|RSP_FRAME
 )paren
 suffix:semicolon
 id|irlap_start_wd_timer
@@ -7056,7 +7056,7 @@ c_func
 (paren
 id|self
 comma
-id|CMD_FRAME
+id|RSP_FRAME
 )paren
 suffix:semicolon
 )brace
@@ -7066,7 +7066,7 @@ c_func
 (paren
 id|self
 comma
-id|CMD_FRAME
+id|RSP_FRAME
 )paren
 suffix:semicolon
 id|irlap_start_wd_timer

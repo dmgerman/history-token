@@ -11,6 +11,13 @@ r_struct
 id|timer_opts
 id|timer_tsc
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_SUMMIT
+r_extern
+r_struct
+id|timer_opts
+id|timer_cyclone
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* list of timers, ordered by preference, NULL terminated */
 DECL|variable|timers
 r_static
@@ -22,6 +29,11 @@ id|timers
 )braket
 op_assign
 (brace
+macro_line|#ifdef CONFIG_X86_SUMMIT
+op_amp
+id|timer_cyclone
+comma
+macro_line|#endif
 op_amp
 id|timer_tsc
 comma

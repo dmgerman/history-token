@@ -86,7 +86,7 @@ multiline_comment|/* internal cifs vfs structures */
 multiline_comment|/*****************************************************************&n; * All constants go here&n; *****************************************************************&n; */
 multiline_comment|/*&n; * Starting value for maximum SMB size negotiation&n; */
 DECL|macro|CIFS_MAX_MSGSIZE
-mdefine_line|#define CIFS_MAX_MSGSIZE (4*1024)
+mdefine_line|#define CIFS_MAX_MSGSIZE (4*4096)
 multiline_comment|/*&n; * Size of encrypted user password in bytes&n; */
 DECL|macro|CIFS_ENCPWD_SIZE
 mdefine_line|#define CIFS_ENCPWD_SIZE (16)

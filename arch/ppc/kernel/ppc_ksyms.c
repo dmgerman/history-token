@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -189,13 +190,6 @@ c_func
 (paren
 r_int
 )paren
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|__res
-(braket
-)braket
 suffix:semicolon
 r_extern
 r_int
@@ -771,6 +765,13 @@ c_func
 id|consistent_sync
 )paren
 suffix:semicolon
+DECL|variable|flush_dcache_all
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_dcache_all
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|variable|open
 id|EXPORT_SYMBOL
@@ -1221,6 +1222,13 @@ c_func
 id|to_tm
 )paren
 suffix:semicolon
+DECL|variable|pm_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pm_power_off
+)paren
+suffix:semicolon
 DECL|variable|__ashrdi3
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -1592,13 +1600,6 @@ id|debugger_fault_handler
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef  CONFIG_8xx
-DECL|variable|__res
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__res
-)paren
-suffix:semicolon
 DECL|variable|cpm_install_handler
 id|EXPORT_SYMBOL
 c_func
@@ -1614,6 +1615,15 @@ id|cpm_free_handler
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_8xx */
+macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_4xx)
+DECL|variable|__res
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__res
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_8260)
 DECL|variable|request_8xxirq
 id|EXPORT_SYMBOL

@@ -1742,10 +1742,6 @@ op_star
 id|regs
 )paren
 (brace
-id|kbd_pt_regs
-op_assign
-id|regs
-suffix:semicolon
 r_if
 c_cond
 (paren

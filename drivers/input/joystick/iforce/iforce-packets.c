@@ -661,6 +661,11 @@ r_int
 r_char
 op_star
 id|data
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -782,6 +787,14 @@ r_case
 l_int|0x03
 suffix:colon
 multiline_comment|/* wheel position data */
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1207,6 +1220,14 @@ r_case
 l_int|0x02
 suffix:colon
 multiline_comment|/* status report */
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
+suffix:semicolon
 id|input_report_key
 c_func
 (paren

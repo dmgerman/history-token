@@ -1,11 +1,12 @@
 multiline_comment|/* starfire.c: Linux device driver for the Adaptec Starfire network adapter. */
-multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&n;&t;Current maintainer is Ion Badulescu &lt;ionut@cs.columbia.edu&gt;. Please&n;&t;send all bug reports to me, and not to Donald Becker, as this code&n;&t;has been modified quite a bit from Donald&squot;s original version.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/starfire.html&n;&n;&t;-----------------------------------------------------------&n;&n;&t;Linux kernel-specific changes:&n;&n;&t;LK1.1.1 (jgarzik):&n;&t;- Use PCI driver interface&n;&t;- Fix MOD_xxx races&n;&t;- softnet fixups&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;- Merge Becker version 0.15&n;&n;&t;LK1.1.3 (Andrew Morton)&n;&t;- Timer cleanups&n;&n;&t;LK1.1.4 (jgarzik):&n;&t;- Merge Becker version 1.03&n;&n;&t;LK1.2.1 (Ion Badulescu &lt;ionut@cs.columbia.edu&gt;)&n;&t;- Support hardware Rx/Tx checksumming&n;&t;- Use the GFP firmware taken from Adaptec&squot;s Netware driver&n;&n;&t;LK1.2.2 (Ion Badulescu)&n;&t;- Backported to 2.2.x&n;&n;&t;LK1.2.3 (Ion Badulescu)&n;&t;- Fix the flaky mdio interface&n;&t;- More compat clean-ups&n;&n;&t;LK1.2.4 (Ion Badulescu)&n;&t;- More 2.2.x initialization fixes&n;&n;&t;LK1.2.5 (Ion Badulescu)&n;&t;- Several fixes from Manfred Spraul&n;&n;&t;LK1.2.6 (Ion Badulescu)&n;&t;- Fixed ifup/ifdown/ifup problem in 2.4.x&n;&n;&t;LK1.2.7 (Ion Badulescu)&n;&t;- Removed unused code&n;&t;- Made more functions static and __init&n;&n;&t;LK1.2.8 (Ion Badulescu)&n;&t;- Quell bogus error messages, inform about the Tx threshold&n;&t;- Removed #ifdef CONFIG_PCI, this driver is PCI only&n;&n;&t;LK1.2.9 (Ion Badulescu)&n;&t;- Merged Jeff Garzik&squot;s changes from 2.4.4-pre5&n;&t;- Added 2.2.x compatibility stuff required by the above changes&n;&n;&t;LK1.2.9a (Ion Badulescu)&n;&t;- More updates from Jeff Garzik&n;&n;&t;LK1.3.0 (Ion Badulescu)&n;&t;- Merged zerocopy support&n;&n;&t;LK1.3.1 (Ion Badulescu)&n;&t;- Added ethtool support&n;&t;- Added GPIO (media change) interrupt support&n;&n;&t;LK1.3.2 (Ion Badulescu)&n;&t;- Fixed 2.2.x compatibility issues introduced in 1.3.1&n;&t;- Fixed ethtool ioctl returning uninitialized memory&n;&n;&t;LK1.3.3 (Ion Badulescu)&n;&t;- Initialize the TxMode register properly&n;&t;- Don&squot;t dereference dev-&gt;priv after freeing it&n;&n;&t;LK1.3.4 (Ion Badulescu)&n;&t;- Fixed initialization timing problems&n;&t;- Fixed interrupt mask definitions&n;&n;&t;LK1.3.5 (jgarzik)&n;&t;- ethtool NWAY_RST, GLINK, [GS]MSGLVL support&n;&n;&t;LK1.3.6:&n;&t;- Sparc64 support and fixes (Ion Badulescu)&n;&t;- Better stats and error handling (Ion Badulescu)&n;&t;- Use new pci_set_mwi() PCI API function (jgarzik)&n;&n;TODO:&n;&t;- implement tx_timeout() properly&n;&t;- VLAN support&n;*/
+multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&n;&t;Current maintainer is Ion Badulescu &lt;ionut@cs.columbia.edu&gt;. Please&n;&t;send all bug reports to me, and not to Donald Becker, as this code&n;&t;has been heavily modified from Donald&squot;s original version.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The information below comes from Donald Becker&squot;s original driver:&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/starfire.html&n;&n;&t;-----------------------------------------------------------&n;&n;&t;Linux kernel-specific changes:&n;&n;&t;LK1.1.1 (jgarzik):&n;&t;- Use PCI driver interface&n;&t;- Fix MOD_xxx races&n;&t;- softnet fixups&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;- Merge Becker version 0.15&n;&n;&t;LK1.1.3 (Andrew Morton)&n;&t;- Timer cleanups&n;&n;&t;LK1.1.4 (jgarzik):&n;&t;- Merge Becker version 1.03&n;&n;&t;LK1.2.1 (Ion Badulescu &lt;ionut@cs.columbia.edu&gt;)&n;&t;- Support hardware Rx/Tx checksumming&n;&t;- Use the GFP firmware taken from Adaptec&squot;s Netware driver&n;&n;&t;LK1.2.2 (Ion Badulescu)&n;&t;- Backported to 2.2.x&n;&n;&t;LK1.2.3 (Ion Badulescu)&n;&t;- Fix the flaky mdio interface&n;&t;- More compat clean-ups&n;&n;&t;LK1.2.4 (Ion Badulescu)&n;&t;- More 2.2.x initialization fixes&n;&n;&t;LK1.2.5 (Ion Badulescu)&n;&t;- Several fixes from Manfred Spraul&n;&n;&t;LK1.2.6 (Ion Badulescu)&n;&t;- Fixed ifup/ifdown/ifup problem in 2.4.x&n;&n;&t;LK1.2.7 (Ion Badulescu)&n;&t;- Removed unused code&n;&t;- Made more functions static and __init&n;&n;&t;LK1.2.8 (Ion Badulescu)&n;&t;- Quell bogus error messages, inform about the Tx threshold&n;&t;- Removed #ifdef CONFIG_PCI, this driver is PCI only&n;&n;&t;LK1.2.9 (Ion Badulescu)&n;&t;- Merged Jeff Garzik&squot;s changes from 2.4.4-pre5&n;&t;- Added 2.2.x compatibility stuff required by the above changes&n;&n;&t;LK1.2.9a (Ion Badulescu)&n;&t;- More updates from Jeff Garzik&n;&n;&t;LK1.3.0 (Ion Badulescu)&n;&t;- Merged zerocopy support&n;&n;&t;LK1.3.1 (Ion Badulescu)&n;&t;- Added ethtool support&n;&t;- Added GPIO (media change) interrupt support&n;&n;&t;LK1.3.2 (Ion Badulescu)&n;&t;- Fixed 2.2.x compatibility issues introduced in 1.3.1&n;&t;- Fixed ethtool ioctl returning uninitialized memory&n;&n;&t;LK1.3.3 (Ion Badulescu)&n;&t;- Initialize the TxMode register properly&n;&t;- Don&squot;t dereference dev-&gt;priv after freeing it&n;&n;&t;LK1.3.4 (Ion Badulescu)&n;&t;- Fixed initialization timing problems&n;&t;- Fixed interrupt mask definitions&n;&n;&t;LK1.3.5 (jgarzik)&n;&t;- ethtool NWAY_RST, GLINK, [GS]MSGLVL support&n;&n;&t;LK1.3.6:&n;&t;- Sparc64 support and fixes (Ion Badulescu)&n;&t;- Better stats and error handling (Ion Badulescu)&n;&t;- Use new pci_set_mwi() PCI API function (jgarzik)&n;&n;&t;LK1.3.7 (Ion Badulescu)&n;&t;- minimal implementation of tx_timeout()&n;&t;- correctly shutdown the Rx/Tx engines in netdev_close()&n;&t;- added calls to netif_carrier_on/off&n;&t;(patch from Stefan Rompf &lt;srompf@isg.de&gt;)&n;&t;- VLAN support&n;&n;&t;LK1.3.8 (Ion Badulescu)&n;&t;- adjust DMA burst size on sparc64&n;&t;- 64-bit support&n;&t;- reworked zerocopy support for 64-bit buffers&n;&t;- working and usable interrupt mitigation/latency&n;&t;- reduced Tx interrupt frequency for lower interrupt overhead&n;&n;&t;LK1.3.9 (Ion Badulescu)&n;&t;- bugfix for mcast filter&n;&t;- enable the right kind of Tx interrupts (TxDMADone, not TxDone)&n;&n;&t;LK1.4.0 (Ion Badulescu)&n;&t;- NAPI support&n;&n;&t;LK1.4.1 (Ion Badulescu)&n;&t;- flush PCI posting buffers after disabling Rx interrupts&n;&t;- put the chip to a D3 slumber on driver unload&n;&t;- added config option to enable/disable NAPI&n;&n;TODO:&t;bugfixes (no bugs known as of right now)&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;starfire&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.03+LK1.3.6&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.03+LK1.4.1&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;March 7, 2002&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;February 10, 2002&quot;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -14,11 +15,10 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-multiline_comment|/*&n; * Adaptec&squot;s license for their Novell drivers (which is where I got the&n; * firmware files) does not allow one to redistribute them. Thus, we can&squot;t&n; * include the firmware with this driver.&n; *&n; * However, an end-user is allowed to download and use it, after&n; * converting it to C header files using starfire_firmware.pl.&n; * Once that&squot;s done, the #undef below must be changed into a #define&n; * for this driver to really use the firmware. Note that Rx/Tx&n; * hardware TCP checksumming is not possible without the firmware.&n; *&n; * If Adaptec could allow redistribution of the firmware (even in binary&n; * format), life would become a lot easier. Unfortunately, I&squot;ve lost my&n; * Adaptec contacts, so progress on this front is rather unlikely to&n; * occur. If anybody from Adaptec reads this and can help with this matter,&n; * please let me know...&n; */
+multiline_comment|/*&n; * Adaptec&squot;s license for their drivers (which is where I got the&n; * firmware files) does not allow one to redistribute them. Thus, we can&squot;t&n; * include the firmware with this driver.&n; *&n; * However, should a legal-to-distribute firmware become available,&n; * the driver developer would need only to obtain the firmware in the&n; * form of a C header file.&n; * Once that&squot;s done, the #undef below must be changed into a #define&n; * for this driver to really use the firmware. Note that Rx/Tx&n; * hardware TCP checksumming is not possible without the firmware.&n; *&n; * WANTED: legal firmware to include with this GPL&squot;d driver.&n; */
 DECL|macro|HAS_FIRMWARE
 macro_line|#undef HAS_FIRMWARE
 multiline_comment|/*&n; * The current frame processor firmware fails to checksum a fragment&n; * of length 1. If and when this is fixed, the #define below can be removed.&n; */
@@ -32,12 +32,25 @@ macro_line|#endif
 macro_line|#ifdef HAS_FIRMWARE
 macro_line|#include &quot;starfire_firmware.h&quot;
 macro_line|#endif /* HAS_FIRMWARE */
+macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
+DECL|macro|VLAN_SUPPORT
+mdefine_line|#define VLAN_SUPPORT
+macro_line|#endif
+macro_line|#ifndef CONFIG_ADAPTEC_STARFIRE_NAPI
+DECL|macro|HAVE_NETDEV_POLL
+macro_line|#undef HAVE_NETDEV_POLL
+macro_line|#endif
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 multiline_comment|/* Used for tuning interrupt latency vs. overhead. */
-DECL|variable|interrupt_mitigation
+DECL|variable|intr_latency
 r_static
 r_int
-id|interrupt_mitigation
+id|intr_latency
+suffix:semicolon
+DECL|variable|small_frames
+r_static
+r_int
+id|small_frames
 suffix:semicolon
 DECL|variable|debug
 r_static
@@ -67,9 +80,27 @@ id|multicast_filter_limit
 op_assign
 l_int|512
 suffix:semicolon
+multiline_comment|/* Whether to do TCP/UDP checksums in hardware */
+macro_line|#ifdef HAS_FIRMWARE
+DECL|variable|enable_hw_cksum
+r_static
+r_int
+id|enable_hw_cksum
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|enable_hw_cksum
+r_static
+r_int
+id|enable_hw_cksum
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 DECL|macro|PKT_BUF_SZ
 mdefine_line|#define PKT_BUF_SZ&t;1536&t;&t;/* Size of each temporary Rx buffer.*/
-multiline_comment|/*&n; * Set the copy breakpoint for the copy-only-tiny-frames scheme.&n; * Setting to &gt; 1518 effectively disables this feature.&n; *&n; * NOTE:&n; * The ia64 doesn&squot;t allow for unaligned loads even of integers being&n; * misaligned on a 2 byte boundary. Thus always force copying of&n; * packets as the starfire doesn&squot;t allow for misaligned DMAs ;-(&n; * 23/10/2000 - Jes&n; *&n; * The Alpha and the Sparc don&squot;t allow unaligned loads, either. -Ion&n; */
+multiline_comment|/*&n; * Set the copy breakpoint for the copy-only-tiny-frames scheme.&n; * Setting to &gt; 1518 effectively disables this feature.&n; *&n; * NOTE:&n; * The ia64 doesn&squot;t allow for unaligned loads even of integers being&n; * misaligned on a 2 byte boundary. Thus always force copying of&n; * packets as the starfire doesn&squot;t allow for misaligned DMAs ;-(&n; * 23/10/2000 - Jes&n; *&n; * The Alpha and the Sparc don&squot;t like unaligned loads, either. On Sparc64,&n; * at least, having unaligned frames leads to a rather serious performance&n; * penalty. -Ion&n; */
 macro_line|#if defined(__ia64__) || defined(__alpha__) || defined(__sparc__)
 DECL|variable|rx_copybreak
 r_static
@@ -86,7 +117,15 @@ id|rx_copybreak
 multiline_comment|/* = 0 */
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Used to pass the media type, etc.&n;   Both &squot;options[]&squot; and &squot;full_duplex[]&squot; exist for driver interoperability.&n;   The media type is usually passed in &squot;options[]&squot;.&n;*/
+multiline_comment|/* PCI DMA burst size -- on sparc64 we want to force it to 64 bytes, on the others the default of 128 is fine. */
+macro_line|#ifdef __sparc__
+DECL|macro|DMA_BURST_SIZE
+mdefine_line|#define DMA_BURST_SIZE 64
+macro_line|#else
+DECL|macro|DMA_BURST_SIZE
+mdefine_line|#define DMA_BURST_SIZE 128
+macro_line|#endif
+multiline_comment|/* Used to pass the media type, etc.&n;   Both &squot;options[]&squot; and &squot;full_duplex[]&squot; exist for driver interoperability.&n;   The media type is usually passed in &squot;options[]&squot;.&n;   These variables are deprecated, use ethtool instead. -Ion&n;*/
 DECL|macro|MAX_UNITS
 mdefine_line|#define MAX_UNITS 8&t;&t;/* More are supported, limit only on options */
 DECL|variable|options
@@ -116,7 +155,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Operational parameters that are set at compile time. */
-multiline_comment|/* The &quot;native&quot; ring sizes are either 256 or 2048.&n;   However in some modes a descriptor may be marked to wrap the ring earlier.&n;   The driver allocates a single page for each descriptor ring, constraining&n;   the maximum size in an architecture-dependent way.&n;*/
+multiline_comment|/* The &quot;native&quot; ring sizes are either 256 or 2048.&n;   However in some modes a descriptor may be marked to wrap the ring earlier.&n;*/
 DECL|macro|RX_RING_SIZE
 mdefine_line|#define RX_RING_SIZE&t;256
 DECL|macro|TX_RING_SIZE
@@ -124,34 +163,74 @@ mdefine_line|#define TX_RING_SIZE&t;32
 multiline_comment|/* The completion queues are fixed at 1024 entries i.e. 4K or 8KB. */
 DECL|macro|DONE_Q_SIZE
 mdefine_line|#define DONE_Q_SIZE&t;1024
+multiline_comment|/* All queues must be aligned on a 256-byte boundary */
+DECL|macro|QUEUE_ALIGN
+mdefine_line|#define QUEUE_ALIGN&t;256
+macro_line|#if RX_RING_SIZE &gt; 256
+DECL|macro|RX_Q_ENTRIES
+mdefine_line|#define RX_Q_ENTRIES Rx2048QEntries
+macro_line|#else
+DECL|macro|RX_Q_ENTRIES
+mdefine_line|#define RX_Q_ENTRIES Rx256QEntries
+macro_line|#endif
 multiline_comment|/* Operational parameters that usually are not changed. */
 multiline_comment|/* Time in jiffies before concluding the transmitter is hung. */
 DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT&t;(2 * HZ)
-macro_line|#ifdef ZEROCOPY
-macro_line|#if MAX_SKB_FRAGS &lt;= 6
-DECL|macro|MAX_STARFIRE_FRAGS
-mdefine_line|#define MAX_STARFIRE_FRAGS 6
-macro_line|#else  /* MAX_STARFIRE_FRAGS &gt; 6 */
-macro_line|#warning This driver will not work with more than 6 skb fragments.
-macro_line|#warning Turning off zerocopy support.
-DECL|macro|ZEROCOPY
-macro_line|#undef ZEROCOPY
-macro_line|#endif /* MAX_STARFIRE_FRAGS &gt; 6 */
-macro_line|#endif /* ZEROCOPY */
-macro_line|#ifdef ZEROCOPY
+multiline_comment|/*&n; * This SUCKS.&n; * We need a much better method to determine if dma_addr_t is 64-bit.&n; */
+macro_line|#if (defined(__i386__) &amp;&amp; defined(CONFIG_HIGHMEM) &amp;&amp; (LINUX_VERSION_CODE &gt; 0x20500 || defined(CONFIG_HIGHMEM64G))) || defined(__x86_64__) || defined (__ia64__) || defined(__mips64__) || (defined(__mips__) &amp;&amp; defined(CONFIG_HIGHMEM) &amp;&amp; defined(CONFIG_64BIT_PHYS_ADDR))
+multiline_comment|/* 64-bit dma_addr_t */
+DECL|macro|ADDR_64BITS
+mdefine_line|#define ADDR_64BITS&t;/* This chip uses 64 bit addresses. */
+DECL|macro|cpu_to_dma
+mdefine_line|#define cpu_to_dma(x) cpu_to_le64(x)
+DECL|macro|dma_to_cpu
+mdefine_line|#define dma_to_cpu(x) le64_to_cpu(x)
+DECL|macro|RX_DESC_Q_ADDR_SIZE
+mdefine_line|#define RX_DESC_Q_ADDR_SIZE RxDescQAddr64bit
+DECL|macro|TX_DESC_Q_ADDR_SIZE
+mdefine_line|#define TX_DESC_Q_ADDR_SIZE TxDescQAddr64bit
+DECL|macro|RX_COMPL_Q_ADDR_SIZE
+mdefine_line|#define RX_COMPL_Q_ADDR_SIZE RxComplQAddr64bit
+DECL|macro|TX_COMPL_Q_ADDR_SIZE
+mdefine_line|#define TX_COMPL_Q_ADDR_SIZE TxComplQAddr64bit
+DECL|macro|RX_DESC_ADDR_SIZE
+mdefine_line|#define RX_DESC_ADDR_SIZE RxDescAddr64bit
+macro_line|#else  /* 32-bit dma_addr_t */
+DECL|macro|cpu_to_dma
+mdefine_line|#define cpu_to_dma(x) cpu_to_le32(x)
+DECL|macro|dma_to_cpu
+mdefine_line|#define dma_to_cpu(x) le32_to_cpu(x)
+DECL|macro|RX_DESC_Q_ADDR_SIZE
+mdefine_line|#define RX_DESC_Q_ADDR_SIZE RxDescQAddr32bit
+DECL|macro|TX_DESC_Q_ADDR_SIZE
+mdefine_line|#define TX_DESC_Q_ADDR_SIZE TxDescQAddr32bit
+DECL|macro|RX_COMPL_Q_ADDR_SIZE
+mdefine_line|#define RX_COMPL_Q_ADDR_SIZE RxComplQAddr32bit
+DECL|macro|TX_COMPL_Q_ADDR_SIZE
+mdefine_line|#define TX_COMPL_Q_ADDR_SIZE TxComplQAddr32bit
+DECL|macro|RX_DESC_ADDR_SIZE
+mdefine_line|#define RX_DESC_ADDR_SIZE RxDescAddr32bit
+macro_line|#endif
+macro_line|#ifdef MAX_SKB_FRAGS
 DECL|macro|skb_first_frag_len
 mdefine_line|#define skb_first_frag_len(skb)&t;skb_headlen(skb)
-macro_line|#else  /* not ZEROCOPY */
+DECL|macro|skb_num_frags
+mdefine_line|#define skb_num_frags(skb) (skb_shinfo(skb)-&gt;nr_frags + 1)
+macro_line|#else  /* not MAX_SKB_FRAGS */
 DECL|macro|skb_first_frag_len
 mdefine_line|#define skb_first_frag_len(skb)&t;(skb-&gt;len)
-macro_line|#endif /* not ZEROCOPY */
+DECL|macro|skb_num_frags
+mdefine_line|#define skb_num_frags(skb) 1
+macro_line|#endif /* not MAX_SKB_FRAGS */
 multiline_comment|/* 2.2.x compatibility code */
 macro_line|#if LINUX_VERSION_CODE &lt; 0x20300
 macro_line|#include &quot;starfire-kcomp22.h&quot;
 macro_line|#else  /* LINUX_VERSION_CODE &gt; 0x20300 */
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
+macro_line|#include &lt;linux/if_vlan.h&gt;
 DECL|macro|COMPAT_MOD_INC_USE_COUNT
 mdefine_line|#define COMPAT_MOD_INC_USE_COUNT
 DECL|macro|COMPAT_MOD_DEC_USE_COUNT
@@ -167,6 +246,40 @@ mdefine_line|#define netif_stop_if(dev)
 DECL|macro|PCI_SLOT_NAME
 mdefine_line|#define PCI_SLOT_NAME(pci_dev)&t;(pci_dev)-&gt;slot_name
 macro_line|#endif /* LINUX_VERSION_CODE &gt; 0x20300 */
+macro_line|#ifdef HAVE_NETDEV_POLL
+DECL|macro|init_poll
+mdefine_line|#define init_poll(dev) &bslash;&n;&t;dev-&gt;poll = &amp;netdev_poll; &bslash;&n;&t;dev-&gt;weight = max_interrupt_work;
+DECL|macro|netdev_rx
+mdefine_line|#define netdev_rx(dev, ioaddr) &bslash;&n;do { &bslash;&n;&t;u32 intr_enable; &bslash;&n;&t;if (netif_rx_schedule_prep(dev)) { &bslash;&n;&t;&t;__netif_rx_schedule(dev); &bslash;&n;&t;&t;intr_enable = readl(ioaddr + IntrEnable); &bslash;&n;&t;&t;intr_enable &amp;= ~(IntrRxDone | IntrRxEmpty); &bslash;&n;&t;&t;writel(intr_enable, ioaddr + IntrEnable); &bslash;&n;&t;&t;readl(ioaddr + IntrEnable); /* flush PCI posting buffers */ &bslash;&n;&t;} else { &bslash;&n;&t;&t;/* Paranoia check */ &bslash;&n;&t;&t;intr_enable = readl(ioaddr + IntrEnable); &bslash;&n;&t;&t;if (intr_enable &amp; (IntrRxDone | IntrRxEmpty)) { &bslash;&n;&t;&t;&t;printk(&quot;%s: interrupt while in polling mode!&bslash;n&quot;, dev-&gt;name); &bslash;&n;&t;&t;&t;intr_enable &amp;= ~(IntrRxDone | IntrRxEmpty); &bslash;&n;&t;&t;&t;writel(intr_enable, ioaddr + IntrEnable); &bslash;&n;&t;&t;} &bslash;&n;&t;} &bslash;&n;} while (0)
+DECL|macro|netdev_receive_skb
+mdefine_line|#define netdev_receive_skb(skb) netif_receive_skb(skb)
+DECL|macro|vlan_netdev_receive_skb
+mdefine_line|#define vlan_netdev_receive_skb(skb, vlgrp, vlid) vlan_hwaccel_receive_skb(skb, vlgrp, vlid)
+r_static
+r_int
+id|netdev_poll
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+op_star
+id|budget
+)paren
+suffix:semicolon
+macro_line|#else  /* not HAVE_NETDEV_POLL */
+DECL|macro|init_poll
+mdefine_line|#define init_poll(dev)
+DECL|macro|netdev_receive_skb
+mdefine_line|#define netdev_receive_skb(skb) netif_rx(skb)
+DECL|macro|vlan_netdev_receive_skb
+mdefine_line|#define vlan_netdev_receive_skb(skb, vlgrp, vlid) vlan_hwaccel_rx(skb, vlgrp, vlid)
+DECL|macro|netdev_rx
+mdefine_line|#define netdev_rx(dev, ioaddr) &bslash;&n;do { &bslash;&n;&t;int quota = np-&gt;dirty_rx + RX_RING_SIZE - np-&gt;cur_rx; &bslash;&n;&t;__netdev_rx(dev, &amp;quota);&bslash;&n;} while (0)
+macro_line|#endif /* not HAVE_NETDEV_POLL */
 multiline_comment|/* end of compatibility code */
 multiline_comment|/* These identify the driver base version and may not be removed. */
 DECL|variable|__devinitdata
@@ -239,7 +352,15 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|interrupt_mitigation
+id|intr_latency
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|small_frames
 comma
 l_string|&quot;i&quot;
 )paren
@@ -269,6 +390,14 @@ c_func
 (paren
 id|MAX_UNITS
 )paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|enable_hw_cksum
+comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
@@ -277,7 +406,7 @@ c_func
 (paren
 id|max_interrupt_work
 comma
-l_string|&quot;Starfire maximum events handled per interrupt&quot;
+l_string|&quot;Maximum events handled per interrupt&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -285,7 +414,7 @@ c_func
 (paren
 id|mtu
 comma
-l_string|&quot;Starfire MTU (all boards)&quot;
+l_string|&quot;MTU (all boards)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -293,7 +422,7 @@ c_func
 (paren
 id|debug
 comma
-l_string|&quot;Starfire debug level (0-6)&quot;
+l_string|&quot;Debug level (0-6)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -301,7 +430,23 @@ c_func
 (paren
 id|rx_copybreak
 comma
-l_string|&quot;Starfire copy breakpoint for copy-only-tiny-frames&quot;
+l_string|&quot;Copy breakpoint for copy-only-tiny-frames&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|intr_latency
+comma
+l_string|&quot;Maximum interrupt latency, in microseconds&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|small_frames
+comma
+l_string|&quot;Maximum size of receive frames that bypass interrupt latency (0,64,128,256,512)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -309,7 +454,7 @@ c_func
 (paren
 id|options
 comma
-l_string|&quot;Starfire: Bits 0-3: media type, bit 17: full duplex&quot;
+l_string|&quot;Deprecated: Bits 0-3: media type, bit 17: full duplex&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -317,10 +462,18 @@ c_func
 (paren
 id|full_duplex
 comma
-l_string|&quot;Starfire full duplex setting(s) (1)&quot;
+l_string|&quot;Deprecated: Forced full-duplex setting (0/1)&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This driver is for the Adaptec 6915 &quot;Starfire&quot; 64 bit PCI Ethernet adapter.&n;&n;II. Board-specific settings&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;The Starfire hardware uses multiple fixed-size descriptor queues/rings.  The&n;ring sizes are set fixed by the hardware, but may optionally be wrapped&n;earlier by the END bit in the descriptor.&n;This driver uses that hardware queue size for the Rx ring, where a large&n;number of entries has no ill effect beyond increases the potential backlog.&n;The Tx ring is wrapped with the END bit, since a large hardware Tx queue&n;disables the queue layer priority ordering and we have no mechanism to&n;utilize the hardware two-level priority queue.  When modifying the&n;RX/TX_RING_SIZE pay close attention to page sizes and the ring-empty warning&n;levels.&n;&n;IIIb/c. Transmit/Receive Structure&n;&n;See the Adaptec manual for the many possible structures, and options for&n;each structure.  There are far too many to document here.&n;&n;For transmit this driver uses type 0/1 transmit descriptors (depending&n;on the presence of the zerocopy infrastructure), and relies on automatic&n;minimum-length padding.  It does not use the completion queue&n;consumer index, but instead checks for non-zero status entries.&n;&n;For receive this driver uses type 0 receive descriptors.  The driver&n;allocates full frame size skbuffs for the Rx ring buffers, so all frames&n;should fit in a single descriptor.  The driver does not use the completion&n;queue consumer index, but instead checks for non-zero status entries.&n;&n;When an incoming frame is less than RX_COPYBREAK bytes long, a fresh skbuff&n;is allocated and the frame is copied to the new skbuff.  When the incoming&n;frame is larger, the skbuff is passed directly up the protocol stack.&n;Buffers consumed this way are replaced by newly allocated skbuffs in a later&n;phase of receive.&n;&n;A notable aspect of operation is that unaligned buffers are not permitted by&n;the Starfire hardware.  Thus the IP header at offset 14 in an ethernet frame&n;isn&squot;t longword aligned, which may cause problems on some machine&n;e.g. Alphas and IA64. For these architectures, the driver is forced to copy&n;the frame into a new skbuff unconditionally. Copied frames are put into the&n;skbuff at an offset of &quot;+2&quot;, thus 16-byte aligning the IP header.&n;&n;IIId. Synchronization&n;&n;The driver runs as two independent, single-threaded flows of control.  One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;tbusy flag.  The other thread is the interrupt handler, which is single&n;threaded by the hardware and interrupt handling software.&n;&n;The send packet thread has partial control over the Tx ring and &squot;dev-&gt;tbusy&squot;&n;flag.  It sets the tbusy flag whenever it&squot;s queuing a Tx packet. If the next&n;queue slot is empty, it clears the tbusy flag when finished otherwise it sets&n;the &squot;lp-&gt;tx_full&squot; flag.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring.  After reaping the stats, it marks the Tx queue entry as&n;empty by incrementing the dirty_tx mark. Iff the &squot;lp-&gt;tx_full&squot; flag is set, it&n;clears both the tx_full and tbusy flags.&n;&n;IV. Notes&n;&n;IVb. References&n;&n;The Adaptec Starfire manuals, available only from Adaptec.&n;http://www.scyld.com/expert/100mbps.html&n;http://www.scyld.com/expert/NWay.html&n;&n;IVc. Errata&n;&n;*/
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|enable_hw_cksum
+comma
+l_string|&quot;Enable/disable hardware cksum support (0/1)&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This driver is for the Adaptec 6915 &quot;Starfire&quot; 64 bit PCI Ethernet adapter.&n;&n;II. Board-specific settings&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;The Starfire hardware uses multiple fixed-size descriptor queues/rings.  The&n;ring sizes are set fixed by the hardware, but may optionally be wrapped&n;earlier by the END bit in the descriptor.&n;This driver uses that hardware queue size for the Rx ring, where a large&n;number of entries has no ill effect beyond increases the potential backlog.&n;The Tx ring is wrapped with the END bit, since a large hardware Tx queue&n;disables the queue layer priority ordering and we have no mechanism to&n;utilize the hardware two-level priority queue.  When modifying the&n;RX/TX_RING_SIZE pay close attention to page sizes and the ring-empty warning&n;levels.&n;&n;IIIb/c. Transmit/Receive Structure&n;&n;See the Adaptec manual for the many possible structures, and options for&n;each structure.  There are far too many to document all of them here.&n;&n;For transmit this driver uses type 0/1 transmit descriptors (depending&n;on the 32/64 bitness of the architecture), and relies on automatic&n;minimum-length padding.  It does not use the completion queue&n;consumer index, but instead checks for non-zero status entries.&n;&n;For receive this driver uses type 0/1/2/3 receive descriptors.  The driver&n;allocates full frame size skbuffs for the Rx ring buffers, so all frames&n;should fit in a single descriptor.  The driver does not use the completion&n;queue consumer index, but instead checks for non-zero status entries.&n;&n;When an incoming frame is less than RX_COPYBREAK bytes long, a fresh skbuff&n;is allocated and the frame is copied to the new skbuff.  When the incoming&n;frame is larger, the skbuff is passed directly up the protocol stack.&n;Buffers consumed this way are replaced by newly allocated skbuffs in a later&n;phase of receive.&n;&n;A notable aspect of operation is that unaligned buffers are not permitted by&n;the Starfire hardware.  Thus the IP header at offset 14 in an ethernet frame&n;isn&squot;t longword aligned, which may cause problems on some machine&n;e.g. Alphas and IA64. For these architectures, the driver is forced to copy&n;the frame into a new skbuff unconditionally. Copied frames are put into the&n;skbuff at an offset of &quot;+2&quot;, thus 16-byte aligning the IP header.&n;&n;IIId. Synchronization&n;&n;The driver runs as two independent, single-threaded flows of control.  One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;tbusy flag.  The other thread is the interrupt handler, which is single&n;threaded by the hardware and interrupt handling software.&n;&n;The send packet thread has partial control over the Tx ring and the netif_queue&n;status. If the number of free Tx slots in the ring falls below a certain number&n;(currently hardcoded to 4), it signals the upper layer to stop the queue.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring.  After reaping the stats, it marks the Tx queue entry as&n;empty by incrementing the dirty_tx mark. Iff the netif_queue is stopped and the&n;number of free Tx slow is above the threshold, it signals the upper layer to&n;restart the queue.&n;&n;IV. Notes&n;&n;IVb. References&n;&n;The Adaptec Starfire manuals, available only from Adaptec.&n;http://www.scyld.com/expert/100mbps.html&n;http://www.scyld.com/expert/NWay.html&n;&n;IVc. Errata&n;&n;- StopOnPerr is broken, don&squot;t enable&n;- Hardware ethernet padding exposes random data, perform software padding&n;  instead (unverified -- works correctly for all the hardware I have)&n;&n;*/
 "&f;"
 DECL|enum|chip_capability_flags
 DECL|enumerator|CanHaveMII
@@ -333,13 +486,6 @@ l_int|1
 comma
 )brace
 suffix:semicolon
-DECL|macro|PCI_IOTYPE
-mdefine_line|#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_MEM | PCI_ADDR0)
-macro_line|#if 0
-mdefine_line|#define ADDR_64BITS 1&t;&t;&t;/* This chip uses 64 bit addresses. */
-macro_line|#endif
-DECL|macro|HAS_IP_COPYSUM
-mdefine_line|#define HAS_IP_COPYSUM 1
 DECL|enum|chipset
 r_enum
 id|chipset
@@ -459,13 +605,13 @@ op_assign
 l_int|0x50088
 comma
 DECL|enumerator|MIICtrl
-DECL|enumerator|StationAddr
+DECL|enumerator|TxStationAddr
 DECL|enumerator|EEPROMCtrl
 id|MIICtrl
 op_assign
 l_int|0x52000
 comma
-id|StationAddr
+id|TxStationAddr
 op_assign
 l_int|0x50120
 comma
@@ -576,12 +722,17 @@ op_assign
 l_int|0x500F4
 comma
 DECL|enumerator|TxMode
-DECL|enumerator|PerfFilterTable
-DECL|enumerator|HashTable
+DECL|enumerator|VlanType
 id|TxMode
 op_assign
 l_int|0x55000
 comma
+id|VlanType
+op_assign
+l_int|0x55064
+comma
+DECL|enumerator|PerfFilterTable
+DECL|enumerator|HashTable
 id|PerfFilterTable
 op_assign
 l_int|0x56000
@@ -602,7 +753,7 @@ l_int|0x5a000
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Bits in the interrupt status/mask registers. */
+multiline_comment|/*&n; * Bits in the interrupt status/mask registers.&n; * Warning: setting Intr[Ab]NormalSummary in the IntrEnable register&n; * enables all the interrupt sources that are or&squot;ed into those status bits.&n; */
 DECL|enum|intr_status_bits
 r_enum
 id|intr_status_bits
@@ -795,14 +946,81 @@ op_assign
 l_int|0x01
 comma
 DECL|enumerator|AcceptMulticast
-DECL|enumerator|AcceptMyPhys
+DECL|enumerator|PerfectFilter
+DECL|enumerator|HashFilter
 id|AcceptMulticast
 op_assign
 l_int|0x10
 comma
-id|AcceptMyPhys
+id|PerfectFilter
 op_assign
-l_int|0xE040
+l_int|0x40
+comma
+id|HashFilter
+op_assign
+l_int|0x30
+comma
+DECL|enumerator|PerfectFilterVlan
+DECL|enumerator|MinVLANPrio
+DECL|enumerator|VlanMode
+id|PerfectFilterVlan
+op_assign
+l_int|0x80
+comma
+id|MinVLANPrio
+op_assign
+l_int|0xE000
+comma
+id|VlanMode
+op_assign
+l_int|0x0200
+comma
+DECL|enumerator|WakeupOnGFP
+id|WakeupOnGFP
+op_assign
+l_int|0x0800
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* Bits in the TxMode register */
+DECL|enum|tx_mode_bits
+r_enum
+id|tx_mode_bits
+(brace
+DECL|enumerator|MiiSoftReset
+DECL|enumerator|MIILoopback
+id|MiiSoftReset
+op_assign
+l_int|0x8000
+comma
+id|MIILoopback
+op_assign
+l_int|0x4000
+comma
+DECL|enumerator|TxFlowEnable
+DECL|enumerator|RxFlowEnable
+id|TxFlowEnable
+op_assign
+l_int|0x0800
+comma
+id|RxFlowEnable
+op_assign
+l_int|0x0400
+comma
+DECL|enumerator|PadEnable
+DECL|enumerator|FullDuplex
+DECL|enumerator|HugeFrame
+id|PadEnable
+op_assign
+l_int|0x04
+comma
+id|FullDuplex
+op_assign
+l_int|0x02
+comma
+id|HugeFrame
+op_assign
+l_int|0x01
 comma
 )brace
 suffix:semicolon
@@ -862,14 +1080,19 @@ op_assign
 l_int|0x04
 comma
 DECL|enumerator|TxNoDMACompletion
-DECL|enumerator|TxDescQ64bit
 id|TxNoDMACompletion
 op_assign
 l_int|0x08
 comma
-id|TxDescQ64bit
+DECL|enumerator|TxDescQAddr64bit
+DECL|enumerator|TxDescQAddr32bit
+id|TxDescQAddr64bit
 op_assign
 l_int|0x80
+comma
+id|TxDescQAddr32bit
+op_assign
+l_int|0
 comma
 DECL|enumerator|TxHiPriFIFOThreshShift
 DECL|enumerator|TxPadLenShift
@@ -904,29 +1127,44 @@ op_assign
 l_int|0
 comma
 DECL|enumerator|RxPrefetchMode
-DECL|enumerator|Rx2048QEntries
+DECL|enumerator|RxVariableQ
 id|RxPrefetchMode
 op_assign
 l_int|0x8000
 comma
-id|Rx2048QEntries
-op_assign
-l_int|0x4000
-comma
-DECL|enumerator|RxVariableQ
-DECL|enumerator|RxDesc64bit
 id|RxVariableQ
 op_assign
 l_int|0x2000
 comma
-id|RxDesc64bit
+DECL|enumerator|Rx2048QEntries
+DECL|enumerator|Rx256QEntries
+id|Rx2048QEntries
+op_assign
+l_int|0x4000
+comma
+id|Rx256QEntries
+op_assign
+l_int|0
+comma
+DECL|enumerator|RxDescAddr64bit
+DECL|enumerator|RxDescAddr32bit
+id|RxDescAddr64bit
 op_assign
 l_int|0x1000
 comma
+id|RxDescAddr32bit
+op_assign
+l_int|0
+comma
 DECL|enumerator|RxDescQAddr64bit
+DECL|enumerator|RxDescQAddr32bit
 id|RxDescQAddr64bit
 op_assign
 l_int|0x0100
+comma
+id|RxDescQAddr32bit
+op_assign
+l_int|0
 comma
 DECL|enumerator|RxDescSpace4
 DECL|enumerator|RxDescSpace8
@@ -965,18 +1203,130 @@ l_int|0x80
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* Bits in the RxDMACtrl register. */
+DECL|enum|rx_dmactrl_bits
+r_enum
+id|rx_dmactrl_bits
+(brace
+DECL|enumerator|RxReportBadFrames
+DECL|enumerator|RxDMAShortFrames
+id|RxReportBadFrames
+op_assign
+l_int|0x80000000
+comma
+id|RxDMAShortFrames
+op_assign
+l_int|0x40000000
+comma
+DECL|enumerator|RxDMABadFrames
+DECL|enumerator|RxDMACrcErrorFrames
+id|RxDMABadFrames
+op_assign
+l_int|0x20000000
+comma
+id|RxDMACrcErrorFrames
+op_assign
+l_int|0x10000000
+comma
+DECL|enumerator|RxDMAControlFrame
+DECL|enumerator|RxDMAPauseFrame
+id|RxDMAControlFrame
+op_assign
+l_int|0x08000000
+comma
+id|RxDMAPauseFrame
+op_assign
+l_int|0x04000000
+comma
+DECL|enumerator|RxChecksumIgnore
+DECL|enumerator|RxChecksumRejectTCPUDP
+id|RxChecksumIgnore
+op_assign
+l_int|0
+comma
+id|RxChecksumRejectTCPUDP
+op_assign
+l_int|0x02000000
+comma
+DECL|enumerator|RxChecksumRejectTCPOnly
+id|RxChecksumRejectTCPOnly
+op_assign
+l_int|0x01000000
+comma
+DECL|enumerator|RxCompletionQ2Enable
+id|RxCompletionQ2Enable
+op_assign
+l_int|0x800000
+comma
+DECL|enumerator|RxDMAQ2Disable
+DECL|enumerator|RxDMAQ2FPOnly
+id|RxDMAQ2Disable
+op_assign
+l_int|0
+comma
+id|RxDMAQ2FPOnly
+op_assign
+l_int|0x100000
+comma
+DECL|enumerator|RxDMAQ2SmallPkt
+DECL|enumerator|RxDMAQ2HighPrio
+id|RxDMAQ2SmallPkt
+op_assign
+l_int|0x200000
+comma
+id|RxDMAQ2HighPrio
+op_assign
+l_int|0x300000
+comma
+DECL|enumerator|RxDMAQ2NonIP
+id|RxDMAQ2NonIP
+op_assign
+l_int|0x400000
+comma
+DECL|enumerator|RxUseBackupQueue
+DECL|enumerator|RxDMACRC
+id|RxUseBackupQueue
+op_assign
+l_int|0x080000
+comma
+id|RxDMACRC
+op_assign
+l_int|0x040000
+comma
+DECL|enumerator|RxEarlyIntThreshShift
+DECL|enumerator|RxHighPrioThreshShift
+id|RxEarlyIntThreshShift
+op_assign
+l_int|12
+comma
+id|RxHighPrioThreshShift
+op_assign
+l_int|8
+comma
+DECL|enumerator|RxBurstSizeShift
+id|RxBurstSizeShift
+op_assign
+l_int|0
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* Bits in the RxCompletionAddr register */
 DECL|enum|rx_compl_bits
 r_enum
 id|rx_compl_bits
 (brace
 DECL|enumerator|RxComplQAddr64bit
-DECL|enumerator|TxComplProducerWrEn
+DECL|enumerator|RxComplQAddr32bit
 id|RxComplQAddr64bit
 op_assign
 l_int|0x80
 comma
-id|TxComplProducerWrEn
+id|RxComplQAddr32bit
+op_assign
+l_int|0
+comma
+DECL|enumerator|RxComplProducerWrEn
+id|RxComplProducerWrEn
 op_assign
 l_int|0x40
 comma
@@ -1007,16 +1357,126 @@ l_int|0
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* Bits in the TxCompletionAddr register */
+DECL|enum|tx_compl_bits
+r_enum
+id|tx_compl_bits
+(brace
+DECL|enumerator|TxComplQAddr64bit
+DECL|enumerator|TxComplQAddr32bit
+id|TxComplQAddr64bit
+op_assign
+l_int|0x80
+comma
+id|TxComplQAddr32bit
+op_assign
+l_int|0
+comma
+DECL|enumerator|TxComplProducerWrEn
+id|TxComplProducerWrEn
+op_assign
+l_int|0x40
+comma
+DECL|enumerator|TxComplIntrStatus
+id|TxComplIntrStatus
+op_assign
+l_int|0x20
+comma
+DECL|enumerator|CommonQueueMode
+id|CommonQueueMode
+op_assign
+l_int|0x10
+comma
+DECL|enumerator|TxComplThreshShift
+id|TxComplThreshShift
+op_assign
+l_int|0
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* Bits in the GenCtrl register */
+DECL|enum|gen_ctrl_bits
+r_enum
+id|gen_ctrl_bits
+(brace
+DECL|enumerator|RxEnable
+DECL|enumerator|TxEnable
+id|RxEnable
+op_assign
+l_int|0x05
+comma
+id|TxEnable
+op_assign
+l_int|0x0a
+comma
+DECL|enumerator|RxGFPEnable
+DECL|enumerator|TxGFPEnable
+id|RxGFPEnable
+op_assign
+l_int|0x10
+comma
+id|TxGFPEnable
+op_assign
+l_int|0x20
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* Bits in the IntrTimerCtrl register */
+DECL|enum|intr_ctrl_bits
+r_enum
+id|intr_ctrl_bits
+(brace
+DECL|enumerator|Timer10X
+DECL|enumerator|EnableIntrMasking
+DECL|enumerator|SmallFrameBypass
+id|Timer10X
+op_assign
+l_int|0x800
+comma
+id|EnableIntrMasking
+op_assign
+l_int|0x60
+comma
+id|SmallFrameBypass
+op_assign
+l_int|0x100
+comma
+DECL|enumerator|SmallFrame64
+DECL|enumerator|SmallFrame128
+DECL|enumerator|SmallFrame256
+DECL|enumerator|SmallFrame512
+id|SmallFrame64
+op_assign
+l_int|0
+comma
+id|SmallFrame128
+op_assign
+l_int|0x200
+comma
+id|SmallFrame256
+op_assign
+l_int|0x400
+comma
+id|SmallFrame512
+op_assign
+l_int|0x600
+comma
+DECL|enumerator|IntrLatencyMask
+id|IntrLatencyMask
+op_assign
+l_int|0x1f
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* The Rx and Tx buffer descriptors. */
 DECL|struct|starfire_rx_desc
 r_struct
 id|starfire_rx_desc
 (brace
 DECL|member|rxaddr
-id|u32
+id|dma_addr_t
 id|rxaddr
 suffix:semicolon
-multiline_comment|/* Optionally 64 bits. */
 )brace
 suffix:semicolon
 DECL|enum|rx_desc_bits
@@ -1035,30 +1495,72 @@ l_int|2
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Completion queue entry.&n;   You must update the page allocation, init_ring and the shift count in rx()&n;   if using a larger format. */
-macro_line|#ifdef HAS_FIRMWARE
-DECL|macro|csum_rx_status
-mdefine_line|#define csum_rx_status
-macro_line|#endif /* HAS_FIRMWARE */
-DECL|struct|rx_done_desc
+multiline_comment|/* Completion queue entry. */
+DECL|struct|short_rx_done_desc
 r_struct
-id|rx_done_desc
+id|short_rx_done_desc
 (brace
 DECL|member|status
 id|u32
 id|status
 suffix:semicolon
 multiline_comment|/* Low 16 bits is length. */
-macro_line|#ifdef csum_rx_status
-DECL|member|status2
+)brace
+suffix:semicolon
+DECL|struct|basic_rx_done_desc
+r_struct
+id|basic_rx_done_desc
+(brace
+DECL|member|status
 id|u32
+id|status
+suffix:semicolon
+multiline_comment|/* Low 16 bits is length. */
+DECL|member|vlanid
+id|u16
+id|vlanid
+suffix:semicolon
+DECL|member|status2
+id|u16
 id|status2
 suffix:semicolon
-multiline_comment|/* Low 16 bits is csum */
-macro_line|#endif /* csum_rx_status */
-macro_line|#ifdef full_rx_status
-DECL|member|status2
+)brace
+suffix:semicolon
+DECL|struct|csum_rx_done_desc
+r_struct
+id|csum_rx_done_desc
+(brace
+DECL|member|status
 id|u32
+id|status
+suffix:semicolon
+multiline_comment|/* Low 16 bits is length. */
+DECL|member|csum
+id|u16
+id|csum
+suffix:semicolon
+multiline_comment|/* Partial checksum */
+DECL|member|status2
+id|u16
+id|status2
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|full_rx_done_desc
+r_struct
+id|full_rx_done_desc
+(brace
+DECL|member|status
+id|u32
+id|status
+suffix:semicolon
+multiline_comment|/* Low 16 bits is length. */
+DECL|member|status3
+id|u16
+id|status3
+suffix:semicolon
+DECL|member|status2
+id|u16
 id|status2
 suffix:semicolon
 DECL|member|vlanid
@@ -1074,9 +1576,50 @@ DECL|member|timestamp
 id|u32
 id|timestamp
 suffix:semicolon
-macro_line|#endif /* full_rx_status */
 )brace
 suffix:semicolon
+multiline_comment|/* XXX: this is ugly and I&squot;m not sure it&squot;s worth the trouble -Ion */
+macro_line|#ifdef HAS_FIRMWARE
+macro_line|#ifdef VLAN_SUPPORT
+DECL|typedef|rx_done_desc
+r_typedef
+r_struct
+id|full_rx_done_desc
+id|rx_done_desc
+suffix:semicolon
+DECL|macro|RxComplType
+mdefine_line|#define RxComplType RxComplType3
+macro_line|#else  /* not VLAN_SUPPORT */
+DECL|typedef|rx_done_desc
+r_typedef
+r_struct
+id|csum_rx_done_desc
+id|rx_done_desc
+suffix:semicolon
+DECL|macro|RxComplType
+mdefine_line|#define RxComplType RxComplType2
+macro_line|#endif /* not VLAN_SUPPORT */
+macro_line|#else  /* not HAS_FIRMWARE */
+macro_line|#ifdef VLAN_SUPPORT
+DECL|typedef|rx_done_desc
+r_typedef
+r_struct
+id|basic_rx_done_desc
+id|rx_done_desc
+suffix:semicolon
+DECL|macro|RxComplType
+mdefine_line|#define RxComplType RxComplType1
+macro_line|#else  /* not VLAN_SUPPORT */
+DECL|typedef|rx_done_desc
+r_typedef
+r_struct
+id|short_rx_done_desc
+id|rx_done_desc
+suffix:semicolon
+DECL|macro|RxComplType
+mdefine_line|#define RxComplType RxComplType0
+macro_line|#endif /* not VLAN_SUPPORT */
+macro_line|#endif /* not HAS_FIRMWARE */
 DECL|enum|rx_done_bits
 r_enum
 id|rx_done_bits
@@ -1098,70 +1641,63 @@ l_int|0x08000000
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef ZEROCOPY
-multiline_comment|/* Type 0 Tx descriptor. */
-multiline_comment|/* If more fragments are needed, don&squot;t forget to change the&n;   descriptor spacing as well! */
-DECL|struct|starfire_tx_desc
-r_struct
-id|starfire_tx_desc
-(brace
-DECL|member|status
-id|u32
-id|status
-suffix:semicolon
-DECL|member|nbufs
-id|u32
-id|nbufs
-suffix:semicolon
-DECL|member|first_addr
-id|u32
-id|first_addr
-suffix:semicolon
-DECL|member|first_len
-id|u16
-id|first_len
-suffix:semicolon
-DECL|member|total_len
-id|u16
-id|total_len
-suffix:semicolon
-r_struct
-(brace
-DECL|member|addr
-id|u32
-id|addr
-suffix:semicolon
-DECL|member|len
-id|u32
-id|len
-suffix:semicolon
-DECL|member|frag
-)brace
-id|frag
-(braket
-id|MAX_STARFIRE_FRAGS
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#else  /* not ZEROCOPY */
 multiline_comment|/* Type 1 Tx descriptor. */
-DECL|struct|starfire_tx_desc
+DECL|struct|starfire_tx_desc_1
 r_struct
-id|starfire_tx_desc
+id|starfire_tx_desc_1
 (brace
 DECL|member|status
 id|u32
 id|status
 suffix:semicolon
 multiline_comment|/* Upper bits are status, lower 16 length. */
-DECL|member|first_addr
+DECL|member|addr
 id|u32
-id|first_addr
+id|addr
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif /* not ZEROCOPY */
+multiline_comment|/* Type 2 Tx descriptor. */
+DECL|struct|starfire_tx_desc_2
+r_struct
+id|starfire_tx_desc_2
+(brace
+DECL|member|status
+id|u32
+id|status
+suffix:semicolon
+multiline_comment|/* Upper bits are status, lower 16 length. */
+DECL|member|reserved
+id|u32
+id|reserved
+suffix:semicolon
+DECL|member|addr
+id|u64
+id|addr
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#ifdef ADDR_64BITS
+DECL|typedef|starfire_tx_desc
+r_typedef
+r_struct
+id|starfire_tx_desc_2
+id|starfire_tx_desc
+suffix:semicolon
+DECL|macro|TX_DESC_TYPE
+mdefine_line|#define TX_DESC_TYPE TxDescType2
+macro_line|#else  /* not ADDR_64BITS */
+DECL|typedef|starfire_tx_desc
+r_typedef
+r_struct
+id|starfire_tx_desc_1
+id|starfire_tx_desc
+suffix:semicolon
+DECL|macro|TX_DESC_TYPE
+mdefine_line|#define TX_DESC_TYPE TxDescType1
+macro_line|#endif /* not ADDR_64BITS */
+DECL|macro|TX_DESC_SPACING
+mdefine_line|#define TX_DESC_SPACING TxDescSpaceUnlim
 DECL|enum|tx_desc_bits
 r_enum
 id|tx_desc_bits
@@ -1193,9 +1729,9 @@ l_int|0x02000000
 comma
 )brace
 suffix:semicolon
-DECL|struct|tx_done_report
+DECL|struct|tx_done_desc
 r_struct
-id|tx_done_report
+id|tx_done_desc
 (brace
 DECL|member|status
 id|u32
@@ -1236,19 +1772,15 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-DECL|member|first_mapping
+DECL|member|mapping
 id|dma_addr_t
-id|first_mapping
+id|mapping
 suffix:semicolon
-macro_line|#ifdef ZEROCOPY
-DECL|member|frag_mapping
-id|dma_addr_t
-id|frag_mapping
-(braket
-id|MAX_STARFIRE_FRAGS
-)braket
+DECL|member|used_slots
+r_int
+r_int
+id|used_slots
 suffix:semicolon
-macro_line|#endif /* ZEROCOPY */
 )brace
 suffix:semicolon
 DECL|macro|PHY_CNT
@@ -1265,7 +1797,6 @@ op_star
 id|rx_ring
 suffix:semicolon
 DECL|member|tx_ring
-r_struct
 id|starfire_tx_desc
 op_star
 id|tx_ring
@@ -1297,7 +1828,6 @@ id|TX_RING_SIZE
 suffix:semicolon
 multiline_comment|/* Pointers to completion queues (full pages). */
 DECL|member|rx_done_q
-r_struct
 id|rx_done_desc
 op_star
 id|rx_done_q
@@ -1313,7 +1843,7 @@ id|rx_done
 suffix:semicolon
 DECL|member|tx_done_q
 r_struct
-id|tx_done_report
+id|tx_done_desc
 op_star
 id|tx_done_q
 suffix:semicolon
@@ -1337,6 +1867,27 @@ id|pci_dev
 op_star
 id|pci_dev
 suffix:semicolon
+macro_line|#ifdef VLAN_SUPPORT
+DECL|member|vlgrp
+r_struct
+id|vlan_group
+op_star
+id|vlgrp
+suffix:semicolon
+macro_line|#endif
+DECL|member|queue_mem
+r_void
+op_star
+id|queue_mem
+suffix:semicolon
+DECL|member|queue_mem_dma
+id|dma_addr_t
+id|queue_mem_dma
+suffix:semicolon
+DECL|member|queue_mem_size
+r_int
+id|queue_mem_size
+suffix:semicolon
 multiline_comment|/* Frequently used values: keep some adjacent for cache effect. */
 DECL|member|lock
 id|spinlock_t
@@ -1353,11 +1904,14 @@ suffix:semicolon
 multiline_comment|/* Producer/consumer ring indices */
 DECL|member|cur_tx
 DECL|member|dirty_tx
+DECL|member|reap_tx
 r_int
 r_int
 id|cur_tx
 comma
 id|dirty_tx
+comma
+id|reap_tx
 suffix:semicolon
 DECL|member|rx_buf_sz
 r_int
@@ -1365,29 +1919,19 @@ r_int
 id|rx_buf_sz
 suffix:semicolon
 multiline_comment|/* Based on MTU+slack. */
-DECL|member|tx_full
-r_int
-r_int
-id|tx_full
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* The Tx queue is full. */
 multiline_comment|/* These values keep track of the transceiver/media in use. */
 DECL|member|speed100
+r_int
 id|speed100
-suffix:colon
-l_int|1
 suffix:semicolon
 multiline_comment|/* Set if speed == 100MBit. */
-DECL|member|intr_mitigation
-r_int
-r_int
-id|intr_mitigation
-suffix:semicolon
 DECL|member|tx_mode
 id|u32
 id|tx_mode
+suffix:semicolon
+DECL|member|intr_timer_ctrl
+id|u32
+id|intr_timer_ctrl
 suffix:semicolon
 DECL|member|tx_threshold
 id|u8
@@ -1547,7 +2091,22 @@ id|intr_status
 suffix:semicolon
 r_static
 r_int
-id|netdev_rx
+id|__netdev_rx
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+op_star
+id|quota
+)paren
+suffix:semicolon
+r_static
+r_void
+id|refill_rx_ring
 c_func
 (paren
 r_struct
@@ -1635,6 +2194,208 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef VLAN_SUPPORT
+DECL|function|netdev_vlan_rx_register
+r_static
+r_void
+id|netdev_vlan_rx_register
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|vlan_group
+op_star
+id|grp
+)paren
+(brace
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|2
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s: Setting vlgrp to %p&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|grp
+)paren
+suffix:semicolon
+id|np-&gt;vlgrp
+op_assign
+id|grp
+suffix:semicolon
+id|set_rx_mode
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+)paren
+suffix:semicolon
+)brace
+DECL|function|netdev_vlan_rx_add_vid
+r_static
+r_void
+id|netdev_vlan_rx_add_vid
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|vid
+)paren
+(brace
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|1
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s: Adding vlanid %d to vlan filter&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|vid
+)paren
+suffix:semicolon
+id|set_rx_mode
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+)paren
+suffix:semicolon
+)brace
+DECL|function|netdev_vlan_rx_kill_vid
+r_static
+r_void
+id|netdev_vlan_rx_kill_vid
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|vid
+)paren
+(brace
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|1
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s: removing vlanid %d from vlan filter&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|vid
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|np-&gt;vlgrp
+)paren
+id|np-&gt;vlgrp-&gt;vlan_devices
+(braket
+id|vid
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+id|set_rx_mode
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* VLAN_SUPPORT */
 DECL|function|starfire_init_one
 r_static
 r_int
@@ -1693,14 +2454,6 @@ suffix:semicolon
 r_int
 id|boguscnt
 suffix:semicolon
-macro_line|#ifndef HAVE_PCI_SET_MWI
-id|u16
-id|cmd
-suffix:semicolon
-id|u8
-id|cache
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* when built into the kernel, we only print version if device is found */
 macro_line|#ifndef MODULE
 r_static
@@ -1780,6 +2533,7 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 id|DRV_NAME
@@ -1813,6 +2567,7 @@ id|dev
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 id|DRV_NAME
@@ -1848,6 +2603,7 @@ id|dev-&gt;name
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 id|DRV_NAME
@@ -1883,10 +2639,11 @@ id|ioaddr
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 id|DRV_NAME
-l_string|&quot; %d: cannot remap 0x%x @ 0x%lx, aborting&bslash;n&quot;
+l_string|&quot; %d: cannot remap %#x @ %#lx, aborting&bslash;n&quot;
 comma
 id|card_idx
 comma
@@ -1906,103 +2663,57 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#ifdef HAVE_PCI_SET_MWI
+multiline_comment|/* enable MWI -- it vastly improves Rx performance on sparc64 */
 id|pci_set_mwi
 c_func
 (paren
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* enable MWI -- it vastly improves Rx performance on sparc64 */
-id|pci_read_config_word
-c_func
-(paren
-id|pdev
-comma
-id|PCI_COMMAND
-comma
-op_amp
-id|cmd
-)paren
-suffix:semicolon
-id|cmd
-op_or_assign
-id|PCI_COMMAND_INVALIDATE
-suffix:semicolon
-id|pci_write_config_word
-c_func
-(paren
-id|pdev
-comma
-id|PCI_COMMAND
-comma
-id|cmd
-)paren
-suffix:semicolon
-multiline_comment|/* set PCI cache size */
-id|pci_read_config_byte
-c_func
-(paren
-id|pdev
-comma
-id|PCI_CACHE_LINE_SIZE
-comma
-op_amp
-id|cache
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|cache
-op_lshift
-l_int|2
-)paren
-op_ne
-id|SMP_CACHE_BYTES
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;  PCI cache line size set incorrectly &quot;
-l_string|&quot;(%i bytes) by BIOS/FW, correcting to %i&bslash;n&quot;
-comma
-(paren
-id|cache
-op_lshift
-l_int|2
-)paren
-comma
-id|SMP_CACHE_BYTES
-)paren
-suffix:semicolon
-id|pci_write_config_byte
-c_func
-(paren
-id|pdev
-comma
-id|PCI_CACHE_LINE_SIZE
-comma
-id|SMP_CACHE_BYTES
-op_rshift
-l_int|2
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#ifdef ZEROCOPY
-multiline_comment|/* Starfire can do SG and TCP/UDP checksumming */
+macro_line|#ifdef MAX_SKB_FRAGS
 id|dev-&gt;features
 op_or_assign
 id|NETIF_F_SG
-op_or
+suffix:semicolon
+macro_line|#endif /* MAX_SKB_FRAGS */
+macro_line|#ifdef ZEROCOPY
+multiline_comment|/* Starfire can do TCP/UDP checksumming */
+r_if
+c_cond
+(paren
+id|enable_hw_cksum
+)paren
+id|dev-&gt;features
+op_or_assign
 id|NETIF_F_IP_CSUM
 suffix:semicolon
 macro_line|#endif /* ZEROCOPY */
+macro_line|#ifdef VLAN_SUPPORT
+id|dev-&gt;features
+op_or_assign
+id|NETIF_F_HW_VLAN_RX
+op_or
+id|NETIF_F_HW_VLAN_FILTER
+suffix:semicolon
+id|dev-&gt;vlan_rx_register
+op_assign
+id|netdev_vlan_rx_register
+suffix:semicolon
+id|dev-&gt;vlan_rx_add_vid
+op_assign
+id|netdev_vlan_rx_add_vid
+suffix:semicolon
+id|dev-&gt;vlan_rx_kill_vid
+op_assign
+id|netdev_vlan_rx_kill_vid
+suffix:semicolon
+macro_line|#endif /* VLAN_RX_KILL_VID */
+macro_line|#ifdef ADDR_64BITS
+id|dev-&gt;features
+op_or_assign
+id|NETIF_F_HIGHDMA
+suffix:semicolon
+macro_line|#endif /* ADDR_64BITS */
 multiline_comment|/* Serial EEPROM reads are hidden by the hardware. */
 r_for
 c_loop
@@ -2093,7 +2804,7 @@ multiline_comment|/* Issue soft reset */
 id|writel
 c_func
 (paren
-l_int|0x8000
+id|MiiSoftReset
 comma
 id|ioaddr
 op_plus
@@ -2301,17 +3012,118 @@ id|np-&gt;mii_if.full_duplex
 )paren
 id|np-&gt;mii_if.force_media
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 r_else
 id|np-&gt;mii_if.force_media
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|np-&gt;speed100
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* timer resolution is 128 * 0.8us */
+id|np-&gt;intr_timer_ctrl
+op_assign
+(paren
+(paren
+(paren
+id|intr_latency
+op_star
+l_int|10
+)paren
+op_div
+l_int|1024
+)paren
+op_amp
+id|IntrLatencyMask
+)paren
+op_or
+id|Timer10X
+op_or
+id|EnableIntrMasking
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|small_frames
+OG
+l_int|0
+)paren
+(brace
+id|np-&gt;intr_timer_ctrl
+op_or_assign
+id|SmallFrameBypass
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|small_frames
+)paren
+(brace
+r_case
+l_int|1
+dot
+dot
+dot
+l_int|64
+suffix:colon
+id|np-&gt;intr_timer_ctrl
+op_or_assign
+id|SmallFrame64
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|65
+dot
+dot
+dot
+l_int|128
+suffix:colon
+id|np-&gt;intr_timer_ctrl
+op_or_assign
+id|SmallFrame128
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|129
+dot
+dot
+dot
+l_int|256
+suffix:colon
+id|np-&gt;intr_timer_ctrl
+op_or_assign
+id|SmallFrame256
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|np-&gt;intr_timer_ctrl
+op_or_assign
+id|SmallFrame512
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|small_frames
+OG
+l_int|512
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Adjusting small_frames down to 512&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* The chip-specific entries in the device structure. */
 id|dev-&gt;open
 op_assign
@@ -2331,6 +3143,12 @@ comma
 id|tx_timeout
 comma
 id|TX_TIMEOUT
+)paren
+suffix:semicolon
+id|init_poll
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 id|dev-&gt;stop
@@ -2362,18 +3180,14 @@ id|dev-&gt;mtu
 op_assign
 id|mtu
 suffix:semicolon
-id|i
-op_assign
+r_if
+c_cond
+(paren
 id|register_netdev
 c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|i
 )paren
 r_goto
 id|err_out_cleardev
@@ -2382,7 +3196,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: %s at 0x%lx, &quot;
+l_string|&quot;%s: %s at %#lx, &quot;
 comma
 id|dev-&gt;name
 comma
@@ -2586,7 +3400,7 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: MII PHY found at address %d, status &quot;
-l_string|&quot;0x%4.4x advertising %4.4x.&bslash;n&quot;
+l_string|&quot;%#4.4x advertising %#4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2636,27 +3450,22 @@ id|np-&gt;mii_if
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef ZEROCOPY
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: scatter-gather and hardware TCP cksumming enabled.&bslash;n&quot;
+l_string|&quot;%s: scatter-gather and hardware TCP cksumming %s.&bslash;n&quot;
 comma
 id|dev-&gt;name
-)paren
-suffix:semicolon
-macro_line|#else  /* not ZEROCOPY */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: scatter-gather and hardware TCP cksumming disabled.&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|enable_hw_cksum
+ques
+c_cond
+l_string|&quot;enabled&quot;
+suffix:colon
+l_string|&quot;disabled&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* not ZEROCOPY */
 r_return
 l_int|0
 suffix:semicolon
@@ -2689,12 +3498,6 @@ id|pdev
 suffix:semicolon
 id|err_out_free_netdev
 suffix:colon
-id|unregister_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -2887,6 +3690,15 @@ id|i
 comma
 id|retval
 suffix:semicolon
+r_int
+id|tx_done_q_size
+comma
+id|rx_done_q_size
+comma
+id|tx_ring_size
+comma
+id|rx_ring_size
+suffix:semicolon
 multiline_comment|/* Do we ever need to reset the chip??? */
 id|COMPAT_MOD_INC_USE_COUNT
 suffix:semicolon
@@ -2958,187 +3770,120 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-multiline_comment|/* Allocate the various queues, failing gracefully. */
+multiline_comment|/* Allocate the various queues. */
 r_if
 c_cond
 (paren
-id|np-&gt;tx_done_q
-op_eq
-l_int|0
-)paren
-id|np-&gt;tx_done_q
-op_assign
-id|pci_alloc_consistent
-c_func
-(paren
-id|np-&gt;pci_dev
-comma
-id|PAGE_SIZE
-comma
-op_amp
-id|np-&gt;tx_done_q_dma
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|np-&gt;rx_done_q
-op_eq
-l_int|0
-)paren
-id|np-&gt;rx_done_q
-op_assign
-id|pci_alloc_consistent
-c_func
-(paren
-id|np-&gt;pci_dev
-comma
-r_sizeof
-(paren
-r_struct
-id|rx_done_desc
-)paren
-op_star
-id|DONE_Q_SIZE
-comma
-op_amp
-id|np-&gt;rx_done_q_dma
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|np-&gt;tx_ring
-op_eq
-l_int|0
-)paren
-id|np-&gt;tx_ring
-op_assign
-id|pci_alloc_consistent
-c_func
-(paren
-id|np-&gt;pci_dev
-comma
-id|PAGE_SIZE
-comma
-op_amp
-id|np-&gt;tx_ring_dma
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|np-&gt;rx_ring
-op_eq
-l_int|0
-)paren
-id|np-&gt;rx_ring
-op_assign
-id|pci_alloc_consistent
-c_func
-(paren
-id|np-&gt;pci_dev
-comma
-id|PAGE_SIZE
-comma
-op_amp
-id|np-&gt;rx_ring_dma
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|np-&gt;tx_done_q
-op_eq
-l_int|0
-op_logical_or
-id|np-&gt;rx_done_q
-op_eq
-l_int|0
-op_logical_or
-id|np-&gt;rx_ring
-op_eq
-l_int|0
-op_logical_or
-id|np-&gt;tx_ring
+id|np-&gt;queue_mem
 op_eq
 l_int|0
 )paren
 (brace
-r_if
-c_cond
+id|tx_done_q_size
+op_assign
 (paren
-id|np-&gt;tx_done_q
-)paren
-id|pci_free_consistent
-c_func
 (paren
-id|np-&gt;pci_dev
-comma
-id|PAGE_SIZE
-comma
-id|np-&gt;tx_done_q
-comma
-id|np-&gt;tx_done_q_dma
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|np-&gt;rx_done_q
-)paren
-id|pci_free_consistent
-c_func
-(paren
-id|np-&gt;pci_dev
-comma
 r_sizeof
 (paren
 r_struct
+id|tx_done_desc
+)paren
+op_star
+id|DONE_Q_SIZE
+op_plus
+id|QUEUE_ALIGN
+op_minus
+l_int|1
+)paren
+op_div
+id|QUEUE_ALIGN
+)paren
+op_star
+id|QUEUE_ALIGN
+suffix:semicolon
+id|rx_done_q_size
+op_assign
+(paren
+(paren
+r_sizeof
+(paren
 id|rx_done_desc
 )paren
 op_star
 id|DONE_Q_SIZE
+op_plus
+id|QUEUE_ALIGN
+op_minus
+l_int|1
+)paren
+op_div
+id|QUEUE_ALIGN
+)paren
+op_star
+id|QUEUE_ALIGN
+suffix:semicolon
+id|tx_ring_size
+op_assign
+(paren
+(paren
+r_sizeof
+(paren
+id|starfire_tx_desc
+)paren
+op_star
+id|TX_RING_SIZE
+op_plus
+id|QUEUE_ALIGN
+op_minus
+l_int|1
+)paren
+op_div
+id|QUEUE_ALIGN
+)paren
+op_star
+id|QUEUE_ALIGN
+suffix:semicolon
+id|rx_ring_size
+op_assign
+r_sizeof
+(paren
+r_struct
+id|starfire_rx_desc
+)paren
+op_star
+id|RX_RING_SIZE
+suffix:semicolon
+id|np-&gt;queue_mem_size
+op_assign
+id|tx_done_q_size
+op_plus
+id|rx_done_q_size
+op_plus
+id|tx_ring_size
+op_plus
+id|rx_ring_size
+suffix:semicolon
+id|np-&gt;queue_mem
+op_assign
+id|pci_alloc_consistent
+c_func
+(paren
+id|np-&gt;pci_dev
 comma
-id|np-&gt;rx_done_q
+id|np-&gt;queue_mem_size
 comma
-id|np-&gt;rx_done_q_dma
+op_amp
+id|np-&gt;queue_mem_dma
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;tx_ring
+id|np-&gt;queue_mem
+op_eq
+l_int|0
 )paren
-id|pci_free_consistent
-c_func
-(paren
-id|np-&gt;pci_dev
-comma
-id|PAGE_SIZE
-comma
-id|np-&gt;tx_ring
-comma
-id|np-&gt;tx_ring_dma
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|np-&gt;rx_ring
-)paren
-id|pci_free_consistent
-c_func
-(paren
-id|np-&gt;pci_dev
-comma
-id|PAGE_SIZE
-comma
-id|np-&gt;rx_ring
-comma
-id|np-&gt;rx_ring_dma
-)paren
-suffix:semicolon
+(brace
 id|COMPAT_MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
@@ -3146,6 +3891,64 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|np-&gt;tx_done_q
+op_assign
+id|np-&gt;queue_mem
+suffix:semicolon
+id|np-&gt;tx_done_q_dma
+op_assign
+id|np-&gt;queue_mem_dma
+suffix:semicolon
+id|np-&gt;rx_done_q
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|np-&gt;tx_done_q
+op_plus
+id|tx_done_q_size
+suffix:semicolon
+id|np-&gt;rx_done_q_dma
+op_assign
+id|np-&gt;tx_done_q_dma
+op_plus
+id|tx_done_q_size
+suffix:semicolon
+id|np-&gt;tx_ring
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|np-&gt;rx_done_q
+op_plus
+id|rx_done_q_size
+suffix:semicolon
+id|np-&gt;tx_ring_dma
+op_assign
+id|np-&gt;rx_done_q_dma
+op_plus
+id|rx_done_q_size
+suffix:semicolon
+id|np-&gt;rx_ring
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|np-&gt;tx_ring
+op_plus
+id|tx_ring_size
+suffix:semicolon
+id|np-&gt;rx_ring_dma
+op_assign
+id|np-&gt;tx_ring_dma
+op_plus
+id|tx_ring_size
+suffix:semicolon
+)brace
+multiline_comment|/* Start with no carrier, it gets adjusted later */
 id|netif_carrier_off
 c_func
 (paren
@@ -3178,6 +3981,12 @@ id|RxPrefetchMode
 op_or
 id|RxVariableQ
 op_or
+id|RX_Q_ENTRIES
+op_or
+id|RX_DESC_Q_ADDR_SIZE
+op_or
+id|RX_DESC_ADDR_SIZE
+op_or
 id|RxDescSpace4
 comma
 id|ioaddr
@@ -3185,8 +3994,40 @@ op_plus
 id|RxDescQCtrl
 )paren
 suffix:semicolon
-macro_line|#ifdef ZEROCOPY
-multiline_comment|/* Set Tx descriptor to type 0 and spacing to 64 bytes. */
+multiline_comment|/* Set up the Rx DMA controller. */
+id|writel
+c_func
+(paren
+id|RxChecksumIgnore
+op_or
+(paren
+l_int|0
+op_lshift
+id|RxEarlyIntThreshShift
+)paren
+op_or
+(paren
+l_int|6
+op_lshift
+id|RxHighPrioThreshShift
+)paren
+op_or
+(paren
+(paren
+id|DMA_BURST_SIZE
+op_div
+l_int|32
+)paren
+op_lshift
+id|RxBurstSizeShift
+)paren
+comma
+id|ioaddr
+op_plus
+id|RxDMACtrl
+)paren
+suffix:semicolon
+multiline_comment|/* Set Tx descriptor */
 id|writel
 c_func
 (paren
@@ -3203,59 +4044,31 @@ id|TxPadLenShift
 )paren
 op_or
 (paren
-l_int|4
+(paren
+id|DMA_BURST_SIZE
+op_div
+l_int|32
+)paren
 op_lshift
 id|TxDMABurstSizeShift
 )paren
 op_or
-id|TxDescSpace64
+id|TX_DESC_Q_ADDR_SIZE
 op_or
-id|TxDescType0
+id|TX_DESC_SPACING
+op_or
+id|TX_DESC_TYPE
 comma
 id|ioaddr
 op_plus
 id|TxDescCtrl
 )paren
 suffix:semicolon
-macro_line|#else  /* not ZEROCOPY */
-multiline_comment|/* Set Tx descriptor to type 1 and padding to 0 bytes. */
+macro_line|#if defined(ADDR_64BITS)
 id|writel
 c_func
 (paren
-(paren
-l_int|2
-op_lshift
-id|TxHiPriFIFOThreshShift
-)paren
-op_or
-(paren
-l_int|0
-op_lshift
-id|TxPadLenShift
-)paren
-op_or
-(paren
-l_int|4
-op_lshift
-id|TxDMABurstSizeShift
-)paren
-op_or
-id|TxDescSpaceUnlim
-op_or
-id|TxDescType1
-comma
-id|ioaddr
-op_plus
-id|TxDescCtrl
-)paren
-suffix:semicolon
-macro_line|#endif /* not ZEROCOPY */
-macro_line|#if defined(ADDR_64BITS) &amp;&amp; defined(__alpha__)
-multiline_comment|/* XXX We really need a 64-bit PCI dma interfaces too... -DaveM */
-id|writel
-c_func
-(paren
-id|np-&gt;rx_ring_dma
+id|np-&gt;queue_mem_dma
 op_rshift
 l_int|32
 comma
@@ -3267,13 +4080,25 @@ suffix:semicolon
 id|writel
 c_func
 (paren
-id|np-&gt;tx_ring_dma
+id|np-&gt;queue_mem_dma
 op_rshift
 l_int|32
 comma
 id|ioaddr
 op_plus
 id|TxRingHiAddr
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|np-&gt;queue_mem_dma
+op_rshift
+l_int|32
+comma
+id|ioaddr
+op_plus
+id|CompletionHiAddr
 )paren
 suffix:semicolon
 macro_line|#else
@@ -3338,13 +4163,12 @@ op_plus
 id|TxCompletionAddr
 )paren
 suffix:semicolon
-macro_line|#ifdef full_rx_status
 id|writel
 c_func
 (paren
 id|np-&gt;rx_done_q_dma
 op_or
-id|RxComplType3
+id|RxComplType
 op_or
 (paren
 l_int|0
@@ -3357,47 +4181,6 @@ op_plus
 id|RxCompletionAddr
 )paren
 suffix:semicolon
-macro_line|#else  /* not full_rx_status */
-macro_line|#ifdef csum_rx_status
-id|writel
-c_func
-(paren
-id|np-&gt;rx_done_q_dma
-op_or
-id|RxComplType2
-op_or
-(paren
-l_int|0
-op_lshift
-id|RxComplThreshShift
-)paren
-comma
-id|ioaddr
-op_plus
-id|RxCompletionAddr
-)paren
-suffix:semicolon
-macro_line|#else  /* not csum_rx_status */
-id|writel
-c_func
-(paren
-id|np-&gt;rx_done_q_dma
-op_or
-id|RxComplType0
-op_or
-(paren
-l_int|0
-op_lshift
-id|RxComplThreshShift
-)paren
-comma
-id|ioaddr
-op_plus
-id|RxCompletionAddr
-)paren
-suffix:semicolon
-macro_line|#endif /* not csum_rx_status */
-macro_line|#endif /* not full_rx_status */
 r_if
 c_cond
 (paren
@@ -3414,7 +4197,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* Fill both the unused Tx SA register and the Rx perfect filter. */
+multiline_comment|/* Fill both the Tx SA register and the Rx perfect filter. */
 r_for
 c_loop
 (paren
@@ -3439,11 +4222,46 @@ id|i
 comma
 id|ioaddr
 op_plus
-id|StationAddr
+id|TxStationAddr
 op_plus
 l_int|5
 op_minus
 id|i
+)paren
+suffix:semicolon
+multiline_comment|/* The first entry is special because it bypasses the VLAN filter.&n;&t;   Don&squot;t use it. */
+id|writew
+c_func
+(paren
+l_int|0
+comma
+id|ioaddr
+op_plus
+id|PerfFilterTable
+)paren
+suffix:semicolon
+id|writew
+c_func
+(paren
+l_int|0
+comma
+id|ioaddr
+op_plus
+id|PerfFilterTable
+op_plus
+l_int|4
+)paren
+suffix:semicolon
+id|writew
+c_func
+(paren
+l_int|0
+comma
+id|ioaddr
+op_plus
+id|PerfFilterTable
+op_plus
+l_int|8
 )paren
 suffix:semicolon
 r_for
@@ -3451,7 +4269,7 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|i
 OL
@@ -3544,13 +4362,17 @@ multiline_comment|/* Initialize other registers. */
 multiline_comment|/* Configure the PCI bus bursts and FIFO thresholds. */
 id|np-&gt;tx_mode
 op_assign
-l_int|0x0C04
+id|TxFlowEnable
+op_or
+id|RxFlowEnable
+op_or
+id|PadEnable
 suffix:semicolon
 multiline_comment|/* modified when link is up. */
 id|writel
 c_func
 (paren
-l_int|0x8000
+id|MiiSoftReset
 op_or
 id|np-&gt;tx_mode
 comma
@@ -3589,18 +4411,10 @@ op_plus
 id|TxThreshold
 )paren
 suffix:semicolon
-id|interrupt_mitigation
-op_and_assign
-l_int|0x1f
-suffix:semicolon
-id|np-&gt;intr_mitigation
-op_assign
-id|interrupt_mitigation
-suffix:semicolon
 id|writel
 c_func
 (paren
-id|np-&gt;intr_mitigation
+id|np-&gt;intr_timer_ctrl
 comma
 id|ioaddr
 op_plus
@@ -3673,7 +4487,7 @@ op_plus
 id|GPIOCtrl
 )paren
 suffix:semicolon
-multiline_comment|/* Set the interrupt mask and enable PCI interrupts. */
+multiline_comment|/* Set the interrupt mask */
 id|writel
 c_func
 (paren
@@ -3683,15 +4497,11 @@ id|IntrRxEmpty
 op_or
 id|IntrDMAErr
 op_or
-id|IntrTxDone
+id|IntrTxDMADone
 op_or
 id|IntrStatsMax
 op_or
 id|IntrLinkChange
-op_or
-id|IntrNormalSummary
-op_or
-id|IntrAbnormalSummary
 op_or
 id|IntrRxGFPDead
 op_or
@@ -3704,6 +4514,7 @@ op_plus
 id|IntrEnable
 )paren
 suffix:semicolon
+multiline_comment|/* Enable PCI interrupts. */
 id|writel
 c_func
 (paren
@@ -3722,6 +4533,19 @@ op_plus
 id|PCIDeviceConfig
 )paren
 suffix:semicolon
+macro_line|#ifdef VLAN_SUPPORT
+multiline_comment|/* Set VLAN type to 802.1q */
+id|writel
+c_func
+(paren
+id|ETH_P_8021Q
+comma
+id|ioaddr
+op_plus
+id|VlanType
+)paren
+suffix:semicolon
+macro_line|#endif /* VLAN_SUPPORT */
 macro_line|#ifdef HAS_FIRMWARE
 multiline_comment|/* Load Rx/Tx firmware into the frame processors */
 r_for
@@ -3790,36 +4614,49 @@ op_star
 l_int|4
 )paren
 suffix:semicolon
+macro_line|#endif /* HAS_FIRMWARE */
+r_if
+c_cond
+(paren
+id|enable_hw_cksum
+)paren
 multiline_comment|/* Enable the Rx and Tx units, and the Rx/Tx frame processors. */
 id|writel
 c_func
 (paren
-l_int|0x003F
+id|TxEnable
+op_or
+id|TxGFPEnable
+op_or
+id|RxEnable
+op_or
+id|RxGFPEnable
 comma
 id|ioaddr
 op_plus
 id|GenCtrl
 )paren
 suffix:semicolon
-macro_line|#else  /* not HAS_FIRMWARE */
+r_else
 multiline_comment|/* Enable the Rx and Tx units only. */
 id|writel
 c_func
 (paren
-l_int|0x000F
+id|TxEnable
+op_or
+id|RxEnable
 comma
 id|ioaddr
 op_plus
 id|GenCtrl
 )paren
 suffix:semicolon
-macro_line|#endif /* not HAS_FIRMWARE */
 r_if
 c_cond
 (paren
 id|debug
 OG
-l_int|2
+l_int|1
 )paren
 id|printk
 c_func
@@ -3855,6 +4692,11 @@ id|dev-&gt;priv
 suffix:semicolon
 id|u16
 id|reg0
+suffix:semicolon
+r_int
+id|silly_count
+op_assign
+l_int|1000
 suffix:semicolon
 id|mdio_write
 c_func
@@ -3895,6 +4737,9 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+op_decrement
+id|silly_count
+op_logical_and
 id|mdio_read
 c_func
 (paren
@@ -3910,7 +4755,26 @@ id|MII_BMCR
 op_amp
 id|BMCR_RESET
 )paren
+multiline_comment|/* do nothing */
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|silly_count
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: MII reset failed!&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|reg0
 op_assign
 id|mdio_read
@@ -4033,12 +4897,15 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+r_int
+id|old_debug
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Transmit timed out, status %8.8x,&quot;
-l_string|&quot; resetting...&bslash;n&quot;
+l_string|&quot;%s: Transmit timed out, status %#8.8x, &quot;
+l_string|&quot;resetting...&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -4054,106 +4921,32 @@ id|IntrStatus
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef __alpha__
-(brace
-r_int
-id|i
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;  Rx ring %p: &quot;
-comma
-id|np-&gt;rx_ring
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|RX_RING_SIZE
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; %8.8x&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|le32_to_cpu
-c_func
-(paren
-id|np-&gt;rx_ring
-(braket
-id|i
-)braket
-dot
-id|rxaddr
-)paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-id|KERN_DEBUG
-l_string|&quot;  Tx ring %p: &quot;
-comma
-id|np-&gt;tx_ring
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|TX_RING_SIZE
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; %4.4x&quot;
-comma
-id|le32_to_cpu
-c_func
-(paren
-id|np-&gt;tx_ring
-(braket
-id|i
-)braket
-dot
-id|status
-)paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Perhaps we should reinitialize the hardware here. */
-multiline_comment|/* Stop and restart the chip&squot;s Tx processes . */
+multiline_comment|/*&n;&t; * Stop and restart the interface.&n;&t; * Cheat and increase the debug level temporarily.&n;&t; */
+id|old_debug
+op_assign
+id|debug
+suffix:semicolon
+id|debug
+op_assign
+l_int|2
+suffix:semicolon
+id|netdev_close
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|netdev_open
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|debug
+op_assign
+id|old_debug
+suffix:semicolon
 multiline_comment|/* Trigger an immediate transmit demand. */
 id|dev-&gt;trans_start
 op_assign
@@ -4192,21 +4985,19 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|np-&gt;tx_full
-op_assign
-l_int|0
-suffix:semicolon
 id|np-&gt;cur_rx
 op_assign
 id|np-&gt;cur_tx
+op_assign
+id|np-&gt;reap_tx
 op_assign
 l_int|0
 suffix:semicolon
 id|np-&gt;dirty_rx
 op_assign
-id|np-&gt;rx_done
-op_assign
 id|np-&gt;dirty_tx
+op_assign
+id|np-&gt;rx_done
 op_assign
 id|np-&gt;tx_done
 op_assign
@@ -4304,7 +5095,7 @@ id|i
 dot
 id|rxaddr
 op_assign
-id|cpu_to_le32
+id|cpu_to_dma
 c_func
 (paren
 id|np-&gt;rx_info
@@ -4386,14 +5177,14 @@ suffix:semicolon
 multiline_comment|/* Mark the last entry as wrapping the ring. */
 id|np-&gt;rx_ring
 (braket
-id|i
+id|RX_RING_SIZE
 op_minus
 l_int|1
 )braket
 dot
 id|rxaddr
 op_or_assign
-id|cpu_to_le32
+id|cpu_to_dma
 c_func
 (paren
 id|RxDescEndRing
@@ -4448,68 +5239,26 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
-id|np-&gt;tx_info
-(braket
-id|i
-)braket
-dot
-id|skb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|np-&gt;tx_info
-(braket
-id|i
-)braket
-dot
-id|first_mapping
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#ifdef ZEROCOPY
-(brace
-r_int
-id|j
-suffix:semicolon
-r_for
-c_loop
+id|memset
+c_func
 (paren
-id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-id|MAX_STARFIRE_FRAGS
-suffix:semicolon
-id|j
-op_increment
-)paren
+op_amp
 id|np-&gt;tx_info
 (braket
 id|i
 )braket
-dot
-id|frag_mapping
-(braket
-id|j
-)braket
-op_assign
+comma
 l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif /* ZEROCOPY */
-id|np-&gt;tx_ring
+comma
+r_sizeof
+(paren
+id|np-&gt;tx_info
 (braket
 id|i
 )braket
-dot
-id|status
-op_assign
-l_int|0
+)paren
+)paren
 suffix:semicolon
-)brace
 r_return
 suffix:semicolon
 )brace
@@ -4541,11 +5290,12 @@ r_int
 r_int
 id|entry
 suffix:semicolon
-macro_line|#ifdef ZEROCOPY
+id|u32
+id|status
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#endif
 id|kick_tx_timer
 c_func
 (paren
@@ -4556,15 +5306,38 @@ comma
 id|TX_TIMEOUT
 )paren
 suffix:semicolon
-multiline_comment|/* Caution: the write order is important here, set the field&n;&t;   with the &quot;ownership&quot; bits last. */
-multiline_comment|/* Calculate the next Tx descriptor entry. */
-id|entry
-op_assign
+multiline_comment|/*&n;&t; * be cautious here, wrapping the queue has weird semantics&n;&t; * and we may not have enough slots even when it seems we do.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
 id|np-&gt;cur_tx
-op_mod
+op_minus
+id|np-&gt;dirty_tx
+)paren
+op_plus
+id|skb_num_frags
+c_func
+(paren
+id|skb
+)paren
+op_star
+l_int|2
+OG
 id|TX_RING_SIZE
+)paren
+(brace
+id|netif_stop_queue
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
-macro_line|#if defined(ZEROCOPY) &amp;&amp; defined(HAS_FIRMWARE) &amp;&amp; defined(HAS_BROKEN_FIRMWARE)
+r_return
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#if defined(ZEROCOPY) &amp;&amp; defined(HAS_BROKEN_FIRMWARE)
 (brace
 r_int
 id|has_bad_length
@@ -4647,7 +5420,49 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* ZEROCOPY &amp;&amp; HAS_FIRMWARE &amp;&amp; HAS_BROKEN_FIRMWARE */
+macro_line|#endif /* ZEROCOPY &amp;&amp; HAS_BROKEN_FIRMWARE */
+id|entry
+op_assign
+id|np-&gt;cur_tx
+op_mod
+id|TX_RING_SIZE
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|skb_num_frags
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_int
+id|wrap_ring
+op_assign
+l_int|0
+suffix:semicolon
+id|status
+op_assign
+id|TxDescID
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+op_eq
+l_int|0
+)paren
+(brace
 id|np-&gt;tx_info
 (braket
 id|entry
@@ -4657,12 +5472,88 @@ id|skb
 op_assign
 id|skb
 suffix:semicolon
+id|status
+op_or_assign
+id|TxCRCEn
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|entry
+op_ge
+id|TX_RING_SIZE
+op_minus
+id|skb_num_frags
+c_func
+(paren
+id|skb
+)paren
+)paren
+(brace
+id|status
+op_or_assign
+id|TxRingWrap
+suffix:semicolon
+id|wrap_ring
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|np-&gt;reap_tx
+)paren
+(brace
+id|status
+op_or_assign
+id|TxDescIntr
+suffix:semicolon
+id|np-&gt;reap_tx
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|skb-&gt;ip_summed
+op_eq
+id|CHECKSUM_HW
+)paren
+(brace
+id|status
+op_or_assign
+id|TxCalTCP
+suffix:semicolon
+id|np-&gt;stats.tx_compressed
+op_increment
+suffix:semicolon
+)brace
+id|status
+op_or_assign
+id|skb_first_frag_len
+c_func
+(paren
+id|skb
+)paren
+op_or
+(paren
+id|skb_num_frags
+c_func
+(paren
+id|skb
+)paren
+op_lshift
+l_int|16
+)paren
+suffix:semicolon
 id|np-&gt;tx_info
 (braket
 id|entry
 )braket
 dot
-id|first_mapping
+id|mapping
 op_assign
 id|pci_map_single
 c_func
@@ -4680,283 +5571,10 @@ comma
 id|PCI_DMA_TODEVICE
 )paren
 suffix:semicolon
-id|np-&gt;tx_ring
-(braket
-id|entry
-)braket
-dot
-id|first_addr
-op_assign
-id|cpu_to_le32
-c_func
-(paren
-id|np-&gt;tx_info
-(braket
-id|entry
-)braket
-dot
-id|first_mapping
-)paren
-suffix:semicolon
-macro_line|#ifdef ZEROCOPY
-id|np-&gt;tx_ring
-(braket
-id|entry
-)braket
-dot
-id|first_len
-op_assign
-id|cpu_to_le16
-c_func
-(paren
-id|skb_first_frag_len
-c_func
-(paren
-id|skb
-)paren
-)paren
-suffix:semicolon
-id|np-&gt;tx_ring
-(braket
-id|entry
-)braket
-dot
-id|total_len
-op_assign
-id|cpu_to_le16
-c_func
-(paren
-id|skb-&gt;len
-)paren
-suffix:semicolon
-multiline_comment|/* Add &quot;| TxDescIntr&quot; to generate Tx-done interrupts. */
-id|np-&gt;tx_ring
-(braket
-id|entry
-)braket
-dot
-id|status
-op_assign
-id|cpu_to_le32
-c_func
-(paren
-id|TxDescID
-op_or
-id|TxCRCEn
-)paren
-suffix:semicolon
-id|np-&gt;tx_ring
-(braket
-id|entry
-)braket
-dot
-id|nbufs
-op_assign
-id|cpu_to_le32
-c_func
-(paren
-id|skb_shinfo
-c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
-id|nr_frags
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#else  /* not ZEROCOPY */
-multiline_comment|/* Add &quot;| TxDescIntr&quot; to generate Tx-done interrupts. */
-id|np-&gt;tx_ring
-(braket
-id|entry
-)braket
-dot
-id|status
-op_assign
-id|cpu_to_le32
-c_func
-(paren
-id|skb-&gt;len
-op_or
-id|TxDescID
-op_or
-id|TxCRCEn
-op_or
-l_int|1
-op_lshift
-l_int|16
-)paren
-suffix:semicolon
-macro_line|#endif /* not ZEROCOPY */
-r_if
-c_cond
-(paren
-id|entry
-op_ge
-id|TX_RING_SIZE
-op_minus
-l_int|1
-)paren
-multiline_comment|/* Wrap ring */
-id|np-&gt;tx_ring
-(braket
-id|entry
-)braket
-dot
-id|status
-op_or_assign
-id|cpu_to_le32
-c_func
-(paren
-id|TxRingWrap
-op_or
-id|TxDescIntr
-)paren
-suffix:semicolon
-macro_line|#ifdef ZEROCOPY
-r_if
-c_cond
-(paren
-id|skb-&gt;ip_summed
-op_eq
-id|CHECKSUM_HW
-)paren
-(brace
-id|np-&gt;tx_ring
-(braket
-id|entry
-)braket
-dot
-id|status
-op_or_assign
-id|cpu_to_le32
-c_func
-(paren
-id|TxCalTCP
-)paren
-suffix:semicolon
-id|np-&gt;stats.tx_compressed
-op_increment
-suffix:semicolon
 )brace
-macro_line|#endif /* ZEROCOPY */
-r_if
-c_cond
-(paren
-id|debug
-OG
-l_int|5
-)paren
+r_else
 (brace
-macro_line|#ifdef ZEROCOPY
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: Tx #%d slot %d status %8.8x nbufs %d len %4.4x/%4.4x.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|np-&gt;cur_tx
-comma
-id|entry
-comma
-id|le32_to_cpu
-c_func
-(paren
-id|np-&gt;tx_ring
-(braket
-id|entry
-)braket
-dot
-id|status
-)paren
-comma
-id|le32_to_cpu
-c_func
-(paren
-id|np-&gt;tx_ring
-(braket
-id|entry
-)braket
-dot
-id|nbufs
-)paren
-comma
-id|le32_to_cpu
-c_func
-(paren
-id|np-&gt;tx_ring
-(braket
-id|entry
-)braket
-dot
-id|first_len
-)paren
-comma
-id|le32_to_cpu
-c_func
-(paren
-id|np-&gt;tx_ring
-(braket
-id|entry
-)braket
-dot
-id|total_len
-)paren
-)paren
-suffix:semicolon
-macro_line|#else  /* not ZEROCOPY */
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: Tx #%d slot %d status %8.8x.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|np-&gt;cur_tx
-comma
-id|entry
-comma
-id|le32_to_cpu
-c_func
-(paren
-id|np-&gt;tx_ring
-(braket
-id|entry
-)braket
-dot
-id|status
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif /* not ZEROCOPY */
-)brace
-macro_line|#ifdef ZEROCOPY
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|skb_shinfo
-c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
-id|nr_frags
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
+macro_line|#ifdef MAX_SKB_FRAGS
 id|skb_frag_t
 op_star
 id|this_frag
@@ -4971,18 +5589,20 @@ op_member_access_from_pointer
 id|frags
 (braket
 id|i
+op_minus
+l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* we already have the proper value in entry */
+id|status
+op_or_assign
+id|this_frag-&gt;size
+suffix:semicolon
 id|np-&gt;tx_info
 (braket
 id|entry
 )braket
 dot
-id|frag_mapping
-(braket
-id|i
-)braket
+id|mapping
 op_assign
 id|pci_map_single
 c_func
@@ -5002,19 +5622,16 @@ comma
 id|PCI_DMA_TODEVICE
 )paren
 suffix:semicolon
+macro_line|#endif /* MAX_SKB_FRAGS */
+)brace
 id|np-&gt;tx_ring
 (braket
 id|entry
 )braket
 dot
-id|frag
-(braket
-id|i
-)braket
-dot
 id|addr
 op_assign
-id|cpu_to_le32
+id|cpu_to_dma
 c_func
 (paren
 id|np-&gt;tx_info
@@ -5022,10 +5639,7 @@ id|np-&gt;tx_info
 id|entry
 )braket
 dot
-id|frag_mapping
-(braket
-id|i
-)braket
+id|mapping
 )paren
 suffix:semicolon
 id|np-&gt;tx_ring
@@ -5033,17 +5647,12 @@ id|np-&gt;tx_ring
 id|entry
 )braket
 dot
-id|frag
-(braket
-id|i
-)braket
-dot
-id|len
+id|status
 op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|this_frag-&gt;size
+id|status
 )paren
 suffix:semicolon
 r_if
@@ -5051,64 +5660,101 @@ c_cond
 (paren
 id|debug
 OG
-l_int|5
+l_int|3
 )paren
-(brace
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Tx #%d frag %d len %4.4x.&bslash;n&quot;
+l_string|&quot;%s: Tx #%d/#%d slot %d status %#8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|np-&gt;cur_tx
 comma
-id|i
+id|np-&gt;dirty_tx
 comma
-id|le32_to_cpu
-c_func
-(paren
-id|np-&gt;tx_ring
-(braket
 id|entry
-)braket
-dot
-id|frag
-(braket
-id|i
-)braket
-dot
-id|len
+comma
+id|status
 )paren
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif /* ZEROCOPY */
-id|np-&gt;cur_tx
-op_increment
 suffix:semicolon
 r_if
 c_cond
 (paren
+id|wrap_ring
+)paren
+(brace
+id|np-&gt;tx_info
+(braket
 id|entry
-op_ge
+)braket
+dot
+id|used_slots
+op_assign
 id|TX_RING_SIZE
 op_minus
-l_int|1
-)paren
-multiline_comment|/* Wrap ring */
+id|entry
+suffix:semicolon
+id|np-&gt;cur_tx
+op_add_assign
+id|np-&gt;tx_info
+(braket
+id|entry
+)braket
+dot
+id|used_slots
+suffix:semicolon
 id|entry
 op_assign
-op_minus
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|np-&gt;tx_info
+(braket
+id|entry
+)braket
+dot
+id|used_slots
+op_assign
 l_int|1
+suffix:semicolon
+id|np-&gt;cur_tx
+op_add_assign
+id|np-&gt;tx_info
+(braket
+id|entry
+)braket
+dot
+id|used_slots
 suffix:semicolon
 id|entry
 op_increment
 suffix:semicolon
+)brace
+multiline_comment|/* scavenge the tx descriptors twice per TX_RING_SIZE */
+r_if
+c_cond
+(paren
+id|np-&gt;cur_tx
+op_mod
+(paren
+id|TX_RING_SIZE
+op_div
+l_int|2
+)paren
+op_eq
+l_int|0
+)paren
+id|np-&gt;reap_tx
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* Non-x86: explicitly flush descriptor cache lines here. */
-multiline_comment|/* Ensure everything is written back above before the transmit is&n;&t;   initiated. - Jes */
+multiline_comment|/* Ensure all descriptors are written back before the transmit is&n;&t;   initiated. - Jes */
 id|wmb
 c_func
 (paren
@@ -5123,7 +5769,6 @@ op_star
 (paren
 r_sizeof
 (paren
-r_struct
 id|starfire_tx_desc
 )paren
 op_div
@@ -5135,29 +5780,26 @@ op_plus
 id|TxProducerIdx
 )paren
 suffix:semicolon
+multiline_comment|/* 4 is arbitrary, but should be ok */
 r_if
 c_cond
+(paren
 (paren
 id|np-&gt;cur_tx
 op_minus
 id|np-&gt;dirty_tx
-op_ge
-id|TX_RING_SIZE
-op_minus
-l_int|1
 )paren
-(brace
-id|np-&gt;tx_full
-op_assign
-l_int|1
-suffix:semicolon
+op_plus
+l_int|4
+OG
+id|TX_RING_SIZE
+)paren
 id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-)brace
 id|dev-&gt;trans_start
 op_assign
 id|jiffies
@@ -5191,11 +5833,6 @@ id|net_device
 op_star
 id|dev
 op_assign
-(paren
-r_struct
-id|net_device
-op_star
-)paren
 id|dev_instance
 suffix:semicolon
 r_struct
@@ -5217,27 +5854,6 @@ suffix:semicolon
 r_int
 id|tx_status
 suffix:semicolon
-macro_line|#ifndef final_version&t;&t;&t;/* Can never occur. */
-r_if
-c_cond
-(paren
-id|dev
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-(paren
-id|KERN_ERR
-l_string|&quot;Netdev interrupt handler(): IRQ %d for unknown device.&bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -5270,7 +5886,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Interrupt status %4.4x.&bslash;n&quot;
+l_string|&quot;%s: Interrupt status %#8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -5283,6 +5899,14 @@ c_cond
 id|intr_status
 op_eq
 l_int|0
+op_logical_or
+id|intr_status
+op_eq
+(paren
+id|u32
+)paren
+op_minus
+l_int|1
 )paren
 r_break
 suffix:semicolon
@@ -5291,12 +5915,18 @@ c_cond
 (paren
 id|intr_status
 op_amp
+(paren
 id|IntrRxDone
+op_or
+id|IntrRxEmpty
+)paren
 )paren
 id|netdev_rx
 c_func
 (paren
 id|dev
+comma
+id|ioaddr
 )paren
 suffix:semicolon
 multiline_comment|/* Scavenge the skbuff list based on the Tx-done queue.&n;&t;&t;   There are redundant checks here that may be cleaned up&n;&t;&t;   after the driver has proven to be reliable. */
@@ -5315,7 +5945,7 @@ c_cond
 (paren
 id|debug
 OG
-l_int|4
+l_int|3
 )paren
 id|printk
 c_func
@@ -5328,74 +5958,6 @@ comma
 id|consumer
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|np-&gt;tx_done
-op_ge
-l_int|250
-op_logical_or
-id|np-&gt;tx_done
-op_eq
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: Tx completion entry %d is %8.8x, %d is %8.8x.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|np-&gt;tx_done
-comma
-id|le32_to_cpu
-c_func
-(paren
-id|np-&gt;tx_done_q
-(braket
-id|np-&gt;tx_done
-)braket
-dot
-id|status
-)paren
-comma
-(paren
-id|np-&gt;tx_done
-op_plus
-l_int|1
-)paren
-op_amp
-(paren
-id|DONE_Q_SIZE
-op_minus
-l_int|1
-)paren
-comma
-id|le32_to_cpu
-c_func
-(paren
-id|np-&gt;tx_done_q
-(braket
-(paren
-id|np-&gt;tx_done
-op_plus
-l_int|1
-)paren
-op_amp
-(paren
-id|DONE_Q_SIZE
-op_minus
-l_int|1
-)paren
-)braket
-dot
-id|status
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_while
 c_loop
 (paren
@@ -5422,15 +5984,17 @@ c_cond
 (paren
 id|debug
 OG
-l_int|4
+l_int|3
 )paren
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Tx completion entry %d is %8.8x.&bslash;n&quot;
+l_string|&quot;%s: Tx completion #%d entry %d is %#8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
+comma
+id|np-&gt;dirty_tx
 comma
 id|np-&gt;tx_done
 comma
@@ -5466,30 +6030,23 @@ op_eq
 l_int|0x80000000
 )paren
 (brace
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-macro_line|#ifdef ZEROCOPY
-r_int
-id|i
-suffix:semicolon
-macro_line|#endif /* ZEROCOPY */
 id|u16
 id|entry
 op_assign
+(paren
 id|tx_status
-suffix:semicolon
-multiline_comment|/* Implicit truncate */
-id|entry
-op_div_assign
+op_amp
+l_int|0x7fff
+)paren
+op_div
 r_sizeof
 (paren
-r_struct
 id|starfire_tx_desc
 )paren
 suffix:semicolon
+r_struct
+id|sk_buff
+op_star
 id|skb
 op_assign
 id|np-&gt;tx_info
@@ -5518,7 +6075,7 @@ id|np-&gt;tx_info
 id|entry
 )braket
 dot
-id|first_mapping
+id|mapping
 comma
 id|skb_first_frag_len
 c_func
@@ -5534,11 +6091,39 @@ id|np-&gt;tx_info
 id|entry
 )braket
 dot
-id|first_mapping
+id|mapping
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef ZEROCOPY
+id|np-&gt;dirty_tx
+op_add_assign
+id|np-&gt;tx_info
+(braket
+id|entry
+)braket
+dot
+id|used_slots
+suffix:semicolon
+id|entry
+op_assign
+(paren
+id|entry
+op_plus
+id|np-&gt;tx_info
+(braket
+id|entry
+)braket
+dot
+id|used_slots
+)paren
+op_mod
+id|TX_RING_SIZE
+suffix:semicolon
+macro_line|#ifdef MAX_SKB_FRAGS
+(brace
+r_int
+id|i
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5570,10 +6155,7 @@ id|np-&gt;tx_info
 id|entry
 )braket
 dot
-id|frag_mapping
-(braket
-id|i
-)braket
+id|mapping
 comma
 id|skb_shinfo
 c_func
@@ -5591,29 +6173,20 @@ comma
 id|PCI_DMA_TODEVICE
 )paren
 suffix:semicolon
-id|np-&gt;tx_info
-(braket
+id|np-&gt;dirty_tx
+op_increment
+suffix:semicolon
 id|entry
-)braket
-dot
-id|frag_mapping
-(braket
-id|i
-)braket
-op_assign
-l_int|0
+op_increment
 suffix:semicolon
 )brace
-macro_line|#endif /* ZEROCOPY */
-multiline_comment|/* Scavenge the descriptor. */
+)brace
+macro_line|#endif /* MAX_SKB_FRAGS */
 id|dev_kfree_skb_irq
 c_func
 (paren
 id|skb
 )paren
-suffix:semicolon
-id|np-&gt;dirty_tx
-op_increment
 suffix:semicolon
 )brace
 id|np-&gt;tx_done_q
@@ -5632,12 +6205,8 @@ id|np-&gt;tx_done
 op_plus
 l_int|1
 )paren
-op_amp
-(paren
+op_mod
 id|DONE_Q_SIZE
-op_minus
-l_int|1
-)paren
 suffix:semicolon
 )brace
 id|writew
@@ -5655,22 +6224,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;tx_full
+id|netif_queue_stopped
+c_func
+(paren
+id|dev
+)paren
 op_logical_and
+(paren
 id|np-&gt;cur_tx
 op_minus
 id|np-&gt;dirty_tx
+op_plus
+l_int|4
 OL
 id|TX_RING_SIZE
-op_minus
-l_int|4
+)paren
 )paren
 (brace
 multiline_comment|/* The ring is no longer full, wake the queue. */
-id|np-&gt;tx_full
-op_assign
-l_int|0
-suffix:semicolon
 id|netif_wake_queue
 c_func
 (paren
@@ -5686,14 +6257,12 @@ id|intr_status
 op_amp
 id|IntrStatsMax
 )paren
-(brace
 id|get_stats
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Media change interrupt. */
 r_if
 c_cond
@@ -5733,12 +6302,19 @@ OL
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|1
+)paren
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;%s: Too much work at interrupt, &quot;
-l_string|&quot;status=0x%4.4x.&bslash;n&quot;
+l_string|&quot;status=%#8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -5766,7 +6342,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: exiting interrupt, status=%#4.4x.&bslash;n&quot;
+l_string|&quot;%s: exiting interrupt, status=%#8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -5782,63 +6358,22 @@ id|IntrStatus
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef final_version
-multiline_comment|/* Code that should never be run!  Remove after testing.. */
-(brace
+)brace
+multiline_comment|/* This routine is logically part of the interrupt/poll handler, but separated&n;   for clarity, code sharing between NAPI/non-NAPI, and better register allocation. */
+DECL|function|__netdev_rx
 r_static
 r_int
-id|stopit
-op_assign
-l_int|10
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|netif_running
-c_func
-(paren
-id|dev
-)paren
-op_logical_and
-op_decrement
-id|stopit
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: Emergency stop, looping startup interrupt.&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|free_irq
-c_func
-(paren
-id|irq
-comma
-id|dev
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
-)brace
-multiline_comment|/* This routine is logically part of the interrupt handler, but separated&n;   for clarity and better register allocation. */
-DECL|function|netdev_rx
-r_static
-r_int
-id|netdev_rx
+id|__netdev_rx
 c_func
 (paren
 r_struct
 id|net_device
 op_star
 id|dev
+comma
+r_int
+op_star
+id|quota
 )paren
 (brace
 r_struct
@@ -5848,43 +6383,14 @@ id|np
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-r_int
-id|boguscnt
-op_assign
-id|np-&gt;dirty_rx
-op_plus
-id|RX_RING_SIZE
-op_minus
-id|np-&gt;cur_rx
-suffix:semicolon
 id|u32
 id|desc_status
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|np-&gt;rx_done_q
-op_eq
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s:  rx_done_q is NULL!  rx_done is %d. %p.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|np-&gt;rx_done
-comma
-id|np-&gt;tx_done_q
-)paren
-suffix:semicolon
-r_return
+r_int
+id|retcode
+op_assign
 l_int|0
 suffix:semicolon
-)brace
 multiline_comment|/* If EOP is set on the next entry, it&squot;s a new packet. Send it up. */
 r_while
 c_loop
@@ -5918,6 +6424,16 @@ suffix:semicolon
 r_int
 id|entry
 suffix:semicolon
+id|rx_done_desc
+op_star
+id|desc
+op_assign
+op_amp
+id|np-&gt;rx_done_q
+(braket
+id|np-&gt;rx_done
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5929,22 +6445,12 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;  netdev_rx() status of %d was %8.8x.&bslash;n&quot;
+l_string|&quot;  netdev_rx() status of %d was %#8.8x.&bslash;n&quot;
 comma
 id|np-&gt;rx_done
 comma
 id|desc_status
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_decrement
-id|boguscnt
-OL
-l_int|0
-)paren
-r_break
 suffix:semicolon
 r_if
 c_cond
@@ -5969,7 +6475,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;  netdev_rx() Rx error was %8.8x.&bslash;n&quot;
+l_string|&quot;  netdev_rx() Rx error was %#8.8x.&bslash;n&quot;
 comma
 id|desc_status
 )paren
@@ -5991,6 +6497,30 @@ r_goto
 id|next_rx
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_star
+id|quota
+op_le
+l_int|0
+)paren
+(brace
+multiline_comment|/* out of rx quota */
+id|retcode
+op_assign
+l_int|1
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+(paren
+op_star
+id|quota
+)paren
+op_decrement
+suffix:semicolon
 id|pkt_len
 op_assign
 id|desc_status
@@ -6006,7 +6536,6 @@ l_int|16
 op_amp
 l_int|0x7ff
 suffix:semicolon
-macro_line|#ifndef final_version
 r_if
 c_cond
 (paren
@@ -6018,14 +6547,14 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;  netdev_rx() normal Rx pkt length %d, bogus_cnt %d.&bslash;n&quot;
+l_string|&quot;  netdev_rx() normal Rx pkt length %d, quota %d.&bslash;n&quot;
 comma
 id|pkt_len
 comma
-id|boguscnt
+op_star
+id|quota
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Check if the packet is long enough to accept without copying&n;&t;&t;   to a minimally-sized skbuff. */
 r_if
 c_cond
@@ -6079,7 +6608,6 @@ comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-macro_line|#if HAS_IP_COPYSUM&t;&t;&t;/* Call copy + cksum if available. */
 id|eth_copy_and_sum
 c_func
 (paren
@@ -6105,29 +6633,6 @@ comma
 id|pkt_len
 )paren
 suffix:semicolon
-macro_line|#else
-id|memcpy
-c_func
-(paren
-id|skb_put
-c_func
-(paren
-id|skb
-comma
-id|pkt_len
-)paren
-comma
-id|np-&gt;rx_info
-(braket
-id|entry
-)braket
-dot
-id|skb-&gt;tail
-comma
-id|pkt_len
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -6198,8 +6703,7 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;  Rx data %2.2x:%2.2x:%2.2x:%2.2x:%2.2x:&quot;
-l_string|&quot;%2.2x %2.2x:%2.2x:%2.2x:%2.2x:%2.2x:%2.2x %2.2x%2.2x &quot;
-l_string|&quot;%d.%d.%d.%d.&bslash;n&quot;
+l_string|&quot;%2.2x %2.2x:%2.2x:%2.2x:%2.2x:%2.2x:%2.2x %2.2x%2.2x.&bslash;n&quot;
 comma
 id|skb-&gt;data
 (braket
@@ -6270,26 +6774,6 @@ id|skb-&gt;data
 (braket
 l_int|13
 )braket
-comma
-id|skb-&gt;data
-(braket
-l_int|14
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|15
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|16
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|17
-)braket
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -6303,22 +6787,41 @@ comma
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if defined(full_rx_status) || defined(csum_rx_status)
+macro_line|#if defined(HAS_FIRMWARE) || defined(VLAN_SUPPORT)
 r_if
 c_cond
 (paren
-id|le32_to_cpu
+id|debug
+OG
+l_int|4
+)paren
+id|printk
 c_func
 (paren
-id|np-&gt;rx_done_q
-(braket
+id|KERN_DEBUG
+l_string|&quot;  netdev_rx() status2 of %d was %#4.4x.&bslash;n&quot;
+comma
 id|np-&gt;rx_done
-)braket
-dot
-id|status2
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|desc-&gt;status2
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef HAS_FIRMWARE
+r_if
+c_cond
+(paren
+id|le16_to_cpu
+c_func
+(paren
+id|desc-&gt;status2
 )paren
 op_amp
-l_int|0x01000000
+l_int|0x0100
 )paren
 (brace
 id|skb-&gt;ip_summed
@@ -6329,23 +6832,18 @@ id|np-&gt;stats.rx_compressed
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * This feature doesn&squot;t seem to be working, at least&n;&t;&t; * with the two firmware versions I have. If the GFP sees&n;&t;&t; * a fragment, it either ignores it completely, or reports&n;&t;&t; * &quot;bad checksum&quot; on it.&n;&t;&t; *&n;&t;&t; * Maybe I missed something -- corrections are welcome.&n;&t;&t; * Until then, the printk stays. :-) -Ion&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This feature doesn&squot;t seem to be working, at least&n;&t;&t; * with the two firmware versions I have. If the GFP sees&n;&t;&t; * an IP fragment, it either ignores it completely, or reports&n;&t;&t; * &quot;bad checksum&quot; on it.&n;&t;&t; *&n;&t;&t; * Maybe I missed something -- corrections are welcome.&n;&t;&t; * Until then, the printk stays. :-) -Ion&n;&t;&t; */
 r_else
 r_if
 c_cond
 (paren
-id|le32_to_cpu
+id|le16_to_cpu
 c_func
 (paren
-id|np-&gt;rx_done_q
-(braket
-id|np-&gt;rx_done
-)braket
-dot
-id|status2
+id|desc-&gt;status2
 )paren
 op_amp
-l_int|0x00400000
+l_int|0x0040
 )paren
 (brace
 id|skb-&gt;ip_summed
@@ -6354,38 +6852,85 @@ id|CHECKSUM_HW
 suffix:semicolon
 id|skb-&gt;csum
 op_assign
-id|le32_to_cpu
+id|le16_to_cpu
 c_func
 (paren
-id|np-&gt;rx_done_q
-(braket
-id|np-&gt;rx_done
-)braket
-dot
-id|status2
+id|desc-&gt;csum
 )paren
-op_amp
-l_int|0xffff
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: checksum_hw, status2 = %x&bslash;n&quot;
+l_string|&quot;%s: checksum_hw, status2 = %#x&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|np-&gt;rx_done_q
-(braket
-id|np-&gt;rx_done
-)braket
-dot
-id|status2
+id|le16_to_cpu
+c_func
+(paren
+id|desc-&gt;status2
+)paren
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-id|netif_rx
+macro_line|#endif /* HAS_FIRMWARE */
+macro_line|#ifdef VLAN_SUPPORT
+r_if
+c_cond
+(paren
+id|np-&gt;vlgrp
+op_logical_and
+id|le16_to_cpu
+c_func
+(paren
+id|desc-&gt;status2
+)paren
+op_amp
+l_int|0x0200
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|4
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;  netdev_rx() vlanid = %d&bslash;n&quot;
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|desc-&gt;vlanid
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* vlan_netdev_receive_skb() expects a packet with the VLAN tag stripped out */
+id|vlan_netdev_receive_skb
+c_func
+(paren
+id|skb
+comma
+id|np-&gt;vlgrp
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|desc-&gt;vlanid
+)paren
+op_amp
+id|VLAN_VID_MASK
+)paren
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif /* VLAN_SUPPORT */
+id|netdev_receive_skb
 c_func
 (paren
 id|skb
@@ -6403,12 +6948,7 @@ suffix:colon
 id|np-&gt;cur_rx
 op_increment
 suffix:semicolon
-id|np-&gt;rx_done_q
-(braket
-id|np-&gt;rx_done
-)braket
-dot
-id|status
+id|desc-&gt;status
 op_assign
 l_int|0
 suffix:semicolon
@@ -6419,12 +6959,8 @@ id|np-&gt;rx_done
 op_plus
 l_int|1
 )paren
-op_amp
-(paren
+op_mod
 id|DONE_Q_SIZE
-op_minus
-l_int|1
-)paren
 suffix:semicolon
 )brace
 id|writew
@@ -6436,6 +6972,227 @@ id|dev-&gt;base_addr
 op_plus
 id|CompletionQConsumerIdx
 )paren
+suffix:semicolon
+id|out
+suffix:colon
+id|refill_rx_ring
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|5
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;  exiting netdev_rx(): %d, status of %d was %#8.8x.&bslash;n&quot;
+comma
+id|retcode
+comma
+id|np-&gt;rx_done
+comma
+id|desc_status
+)paren
+suffix:semicolon
+r_return
+id|retcode
+suffix:semicolon
+)brace
+macro_line|#ifdef HAVE_NETDEV_POLL
+DECL|function|netdev_poll
+r_static
+r_int
+id|netdev_poll
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+op_star
+id|budget
+)paren
+(brace
+id|u32
+id|intr_status
+suffix:semicolon
+r_int
+id|ioaddr
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+r_int
+id|retcode
+op_assign
+l_int|0
+comma
+id|quota
+op_assign
+id|dev-&gt;quota
+suffix:semicolon
+r_do
+(brace
+id|writel
+c_func
+(paren
+id|IntrRxDone
+op_or
+id|IntrRxEmpty
+comma
+id|ioaddr
+op_plus
+id|IntrClear
+)paren
+suffix:semicolon
+id|retcode
+op_assign
+id|__netdev_rx
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|quota
+)paren
+suffix:semicolon
+op_star
+id|budget
+op_sub_assign
+(paren
+id|dev-&gt;quota
+op_minus
+id|quota
+)paren
+suffix:semicolon
+id|dev-&gt;quota
+op_assign
+id|quota
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retcode
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|intr_status
+op_assign
+id|readl
+c_func
+(paren
+id|ioaddr
+op_plus
+id|IntrStatus
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|intr_status
+op_amp
+(paren
+id|IntrRxDone
+op_or
+id|IntrRxEmpty
+)paren
+)paren
+suffix:semicolon
+id|netif_rx_complete
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|intr_status
+op_assign
+id|readl
+c_func
+(paren
+id|ioaddr
+op_plus
+id|IntrEnable
+)paren
+suffix:semicolon
+id|intr_status
+op_or_assign
+id|IntrRxDone
+op_or
+id|IntrRxEmpty
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|intr_status
+comma
+id|ioaddr
+op_plus
+id|IntrEnable
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|5
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;  exiting netdev_poll(): %d.&bslash;n&quot;
+comma
+id|retcode
+)paren
+suffix:semicolon
+multiline_comment|/* Restart Rx engine if stopped. */
+r_return
+id|retcode
+suffix:semicolon
+)brace
+macro_line|#endif /* HAVE_NETDEV_POLL */
+DECL|function|refill_rx_ring
+r_static
+r_void
+id|refill_rx_ring
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+r_int
+id|entry
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* Refill the Rx ring buffers. */
 r_for
@@ -6452,12 +7209,6 @@ id|np-&gt;dirty_rx
 op_increment
 )paren
 (brace
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-r_int
 id|entry
 op_assign
 id|np-&gt;dirty_rx
@@ -6535,7 +7286,7 @@ id|entry
 dot
 id|rxaddr
 op_assign
-id|cpu_to_le32
+id|cpu_to_dma
 c_func
 (paren
 id|np-&gt;rx_info
@@ -6565,13 +7316,20 @@ id|entry
 dot
 id|rxaddr
 op_or_assign
-id|cpu_to_le32
+id|cpu_to_dma
 c_func
 (paren
 id|RxDescEndRing
 )paren
 suffix:semicolon
-multiline_comment|/* We could defer this until later... */
+)brace
+r_if
+c_cond
+(paren
+id|entry
+op_ge
+l_int|0
+)paren
 id|writew
 c_func
 (paren
@@ -6581,29 +7339,6 @@ id|dev-&gt;base_addr
 op_plus
 id|RxDescQIdx
 )paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|debug
-OG
-l_int|5
-)paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;  exiting netdev_rx() status of %d was %8.8x.&bslash;n&quot;
-comma
-id|np-&gt;rx_done
-comma
-id|desc_status
-)paren
-suffix:semicolon
-multiline_comment|/* Restart Rx engine if stopped. */
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|netdev_media_change
@@ -6641,6 +7376,9 @@ id|reg5
 suffix:semicolon
 id|u32
 id|new_tx_mode
+suffix:semicolon
+id|u32
+id|new_intr_timer_ctrl
 suffix:semicolon
 multiline_comment|/* reset status first */
 id|mdio_read
@@ -6894,7 +7632,7 @@ op_assign
 id|np-&gt;tx_mode
 op_amp
 op_complement
-l_int|0x2
+id|FullDuplex
 suffix:semicolon
 multiline_comment|/* duplex setting */
 r_if
@@ -6904,7 +7642,7 @@ id|np-&gt;mii_if.full_duplex
 )paren
 id|new_tx_mode
 op_or_assign
-l_int|2
+id|FullDuplex
 suffix:semicolon
 r_if
 c_cond
@@ -6923,7 +7661,7 @@ c_func
 (paren
 id|np-&gt;tx_mode
 op_or
-l_int|0x8000
+id|MiiSoftReset
 comma
 id|ioaddr
 op_plus
@@ -6944,6 +7682,45 @@ comma
 id|ioaddr
 op_plus
 id|TxMode
+)paren
+suffix:semicolon
+)brace
+id|new_intr_timer_ctrl
+op_assign
+id|np-&gt;intr_timer_ctrl
+op_amp
+op_complement
+id|Timer10X
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|np-&gt;speed100
+)paren
+id|new_intr_timer_ctrl
+op_or_assign
+id|Timer10X
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|np-&gt;intr_timer_ctrl
+op_ne
+id|new_intr_timer_ctrl
+)paren
+(brace
+id|np-&gt;intr_timer_ctrl
+op_assign
+id|new_intr_timer_ctrl
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|new_intr_timer_ctrl
+comma
+id|ioaddr
+op_plus
+id|IntrTimerCtrl
 )paren
 suffix:semicolon
 )brace
@@ -6998,6 +7775,16 @@ op_amp
 id|IntrTxDataLow
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|np-&gt;tx_threshold
+op_le
+id|PKT_BUF_SZ
+op_div
+l_int|16
+)paren
+(brace
 id|writel
 c_func
 (paren
@@ -7013,13 +7800,24 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: Increasing Tx FIFO threshold to %d bytes&bslash;n&quot;
+l_string|&quot;%s: PCI bus congestion, increasing Tx FIFO threshold to %d bytes&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|np-&gt;tx_threshold
 op_star
 l_int|16
+)paren
+suffix:semicolon
+)brace
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: PCI Tx underflow -- adapter is probably malfunctioning&bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -7089,7 +7887,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Something Wicked happened! %4.4x.&bslash;n&quot;
+l_string|&quot;%s: Something Wicked happened! %#8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -7286,6 +8084,8 @@ id|dev-&gt;base_addr
 suffix:semicolon
 id|u32
 id|rx_mode
+op_assign
+id|MinVLANPrio
 suffix:semicolon
 r_struct
 id|dev_mc_list
@@ -7295,6 +8095,131 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef VLAN_SUPPORT
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|rx_mode
+op_or_assign
+id|VlanMode
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|np-&gt;vlgrp
+)paren
+(brace
+r_int
+id|vlan_count
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|filter_addr
+op_assign
+id|ioaddr
+op_plus
+id|HashTable
+op_plus
+l_int|8
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|VLAN_VID_MASK
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|np-&gt;vlgrp-&gt;vlan_devices
+(braket
+id|i
+)braket
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|vlan_count
+op_ge
+l_int|32
+)paren
+r_break
+suffix:semicolon
+id|writew
+c_func
+(paren
+id|cpu_to_be16
+c_func
+(paren
+id|i
+)paren
+comma
+id|filter_addr
+)paren
+suffix:semicolon
+id|filter_addr
+op_add_assign
+l_int|16
+suffix:semicolon
+id|vlan_count
+op_increment
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+id|VLAN_VID_MASK
+)paren
+(brace
+id|rx_mode
+op_or_assign
+id|PerfectFilterVlan
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|vlan_count
+OL
+l_int|32
+)paren
+(brace
+id|writew
+c_func
+(paren
+l_int|0
+comma
+id|filter_addr
+)paren
+suffix:semicolon
+id|filter_addr
+op_add_assign
+l_int|16
+suffix:semicolon
+id|vlan_count
+op_increment
+suffix:semicolon
+)brace
+)brace
+)brace
+macro_line|#endif /* VLAN_SUPPORT */
 r_if
 c_cond
 (paren
@@ -7305,14 +8230,8 @@ id|IFF_PROMISC
 (brace
 multiline_comment|/* Set promiscuous. */
 id|rx_mode
-op_assign
-id|AcceptBroadcast
-op_or
-id|AcceptAllMulticast
-op_or
+op_or_assign
 id|AcceptAll
-op_or
-id|AcceptMyPhys
 suffix:semicolon
 )brace
 r_else
@@ -7334,12 +8253,12 @@ id|IFF_ALLMULTI
 (brace
 multiline_comment|/* Too many to match, or accept all multicasts. */
 id|rx_mode
-op_assign
+op_or_assign
 id|AcceptBroadcast
 op_or
 id|AcceptAllMulticast
 op_or
-id|AcceptMyPhys
+id|PerfectFilter
 suffix:semicolon
 )brace
 r_else
@@ -7348,10 +8267,10 @@ c_cond
 (paren
 id|dev-&gt;mc_count
 op_le
-l_int|15
+l_int|14
 )paren
 (brace
-multiline_comment|/* Use the 16 element perfect filter, skip first entry. */
+multiline_comment|/* Use the 16 element perfect filter, skip first two entries. */
 r_int
 id|filter_addr
 op_assign
@@ -7359,16 +8278,20 @@ id|ioaddr
 op_plus
 id|PerfFilterTable
 op_plus
-l_int|1
+l_int|2
 op_star
 l_int|16
+suffix:semicolon
+id|u16
+op_star
+id|eaddrs
 suffix:semicolon
 r_for
 c_loop
 (paren
 id|i
 op_assign
-l_int|1
+l_int|2
 comma
 id|mclist
 op_assign
@@ -7377,8 +8300,10 @@ suffix:semicolon
 id|mclist
 op_logical_and
 id|i
-op_le
+OL
 id|dev-&gt;mc_count
+op_plus
+l_int|2
 suffix:semicolon
 id|i
 op_increment
@@ -7388,8 +8313,6 @@ op_assign
 id|mclist-&gt;next
 )paren
 (brace
-id|u16
-op_star
 id|eaddrs
 op_assign
 (paren
@@ -7456,6 +8379,14 @@ op_add_assign
 l_int|8
 suffix:semicolon
 )brace
+id|eaddrs
+op_assign
+(paren
+id|u16
+op_star
+)paren
+id|dev-&gt;dev_addr
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -7468,7 +8399,14 @@ l_int|16
 id|writew
 c_func
 (paren
-l_int|0xffff
+id|cpu_to_be16
+c_func
+(paren
+id|eaddrs
+(braket
+l_int|0
+)braket
+)paren
 comma
 id|filter_addr
 )paren
@@ -7480,7 +8418,14 @@ suffix:semicolon
 id|writew
 c_func
 (paren
-l_int|0xffff
+id|cpu_to_be16
+c_func
+(paren
+id|eaddrs
+(braket
+l_int|1
+)braket
+)paren
 comma
 id|filter_addr
 )paren
@@ -7492,7 +8437,14 @@ suffix:semicolon
 id|writew
 c_func
 (paren
-l_int|0xffff
+id|cpu_to_be16
+c_func
+(paren
+id|eaddrs
+(braket
+l_int|2
+)braket
+)paren
 comma
 id|filter_addr
 )paren
@@ -7503,10 +8455,10 @@ l_int|8
 suffix:semicolon
 )brace
 id|rx_mode
-op_assign
+op_or_assign
 id|AcceptBroadcast
 op_or
-id|AcceptMyPhys
+id|PerfectFilter
 suffix:semicolon
 )brace
 r_else
@@ -7514,6 +8466,10 @@ r_else
 multiline_comment|/* Must use a multicast hash table. */
 r_int
 id|filter_addr
+suffix:semicolon
+id|u16
+op_star
+id|eaddrs
 suffix:semicolon
 id|u16
 id|mc_filter
@@ -7623,23 +8579,31 @@ l_int|31
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Clear the perfect filter list, skip first entry. */
+multiline_comment|/* Clear the perfect filter list, skip first two entries. */
 id|filter_addr
 op_assign
 id|ioaddr
 op_plus
 id|PerfFilterTable
 op_plus
-l_int|1
+l_int|2
 op_star
 l_int|16
+suffix:semicolon
+id|eaddrs
+op_assign
+(paren
+id|u16
+op_star
+)paren
+id|dev-&gt;dev_addr
 suffix:semicolon
 r_for
 c_loop
 (paren
 id|i
 op_assign
-l_int|1
+l_int|2
 suffix:semicolon
 id|i
 OL
@@ -7652,7 +8616,14 @@ op_increment
 id|writew
 c_func
 (paren
-l_int|0xffff
+id|cpu_to_be16
+c_func
+(paren
+id|eaddrs
+(braket
+l_int|0
+)braket
+)paren
 comma
 id|filter_addr
 )paren
@@ -7664,7 +8635,14 @@ suffix:semicolon
 id|writew
 c_func
 (paren
-l_int|0xffff
+id|cpu_to_be16
+c_func
+(paren
+id|eaddrs
+(braket
+l_int|1
+)braket
+)paren
 comma
 id|filter_addr
 )paren
@@ -7676,7 +8654,14 @@ suffix:semicolon
 id|writew
 c_func
 (paren
-l_int|0xffff
+id|cpu_to_be16
+c_func
+(paren
+id|eaddrs
+(braket
+l_int|2
+)braket
+)paren
 comma
 id|filter_addr
 )paren
@@ -7722,12 +8707,12 @@ id|filter_addr
 )paren
 suffix:semicolon
 id|rx_mode
-op_assign
+op_or_assign
 id|AcceptBroadcast
 op_or
-id|AcceptMulticast
+id|PerfectFilter
 op_or
-id|AcceptMyPhys
+id|HashFilter
 suffix:semicolon
 )brace
 id|writel
@@ -7998,6 +8983,12 @@ c_func
 (paren
 op_amp
 id|np-&gt;lock
+)paren
+suffix:semicolon
+id|check_duplex
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -8342,7 +9333,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Shutting down ethercard, Intr status %4.4x.&bslash;n&quot;
+l_string|&quot;%s: Shutting down ethercard, Intr status %#8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -8362,7 +9353,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Queue pointers were Tx %d / %d,  Rx %d / %d.&bslash;n&quot;
+l_string|&quot;%s: Queue pointers were Tx %d / %d, Rx %d / %d.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -8388,24 +9379,41 @@ id|IntrEnable
 )paren
 suffix:semicolon
 multiline_comment|/* Stop the chip&squot;s Tx and Rx processes. */
-macro_line|#ifdef __i386__
+id|writel
+c_func
+(paren
+l_int|0
+comma
+id|ioaddr
+op_plus
+id|GenCtrl
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
+id|ioaddr
+op_plus
+id|GenCtrl
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|debug
 OG
-l_int|2
+l_int|5
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n&quot;
 id|KERN_DEBUG
-l_string|&quot;  Tx ring at %9.9Lx:&bslash;n&quot;
+l_string|&quot;  Tx ring at %#llx:&bslash;n&quot;
 comma
 (paren
-id|u64
+r_int
+r_int
 )paren
 id|np-&gt;tx_ring_dma
 )paren
@@ -8429,7 +9437,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot; #%d desc. %8.8x %8.8x -&gt; %8.8x.&bslash;n&quot;
+l_string|&quot; #%d desc. %#8.8x %#llx -&gt; %#8.8x.&bslash;n&quot;
 comma
 id|i
 comma
@@ -8444,7 +9452,11 @@ dot
 id|status
 )paren
 comma
-id|le32_to_cpu
+(paren
+r_int
+r_int
+)paren
+id|dma_to_cpu
 c_func
 (paren
 id|np-&gt;tx_ring
@@ -8452,7 +9464,7 @@ id|np-&gt;tx_ring
 id|i
 )braket
 dot
-id|first_addr
+id|addr
 )paren
 comma
 id|le32_to_cpu
@@ -8471,10 +9483,11 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;  Rx ring at %9.9Lx -&gt; %p:&bslash;n&quot;
+l_string|&quot;  Rx ring at %#llx -&gt; %p:&bslash;n&quot;
 comma
 (paren
-id|u64
+r_int
+r_int
 )paren
 id|np-&gt;rx_ring_dma
 comma
@@ -8506,11 +9519,15 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot; #%d desc. %8.8x -&gt; %8.8x&bslash;n&quot;
+l_string|&quot; #%d desc. %#llx -&gt; %#8.8x&bslash;n&quot;
 comma
 id|i
 comma
-id|le32_to_cpu
+(paren
+r_int
+r_int
+)paren
+id|dma_to_cpu
 c_func
 (paren
 id|np-&gt;rx_ring
@@ -8535,7 +9552,6 @@ id|status
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* __i386__ debugging only */
 id|free_irq
 c_func
 (paren
@@ -8567,7 +9583,7 @@ id|i
 dot
 id|rxaddr
 op_assign
-id|cpu_to_le32
+id|cpu_to_dma
 c_func
 (paren
 l_int|0xBADF00D0
@@ -8662,11 +9678,6 @@ id|i
 dot
 id|skb
 suffix:semicolon
-macro_line|#ifdef ZEROCOPY
-r_int
-id|j
-suffix:semicolon
-macro_line|#endif /* ZEROCOPY */
 r_if
 c_cond
 (paren
@@ -8686,7 +9697,7 @@ id|np-&gt;tx_info
 id|i
 )braket
 dot
-id|first_mapping
+id|mapping
 comma
 id|skb_first_frag_len
 c_func
@@ -8702,7 +9713,7 @@ id|np-&gt;tx_info
 id|i
 )braket
 dot
-id|first_mapping
+id|mapping
 op_assign
 l_int|0
 suffix:semicolon
@@ -8721,83 +9732,6 @@ id|skb
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef ZEROCOPY
-r_for
-c_loop
-(paren
-id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-id|MAX_STARFIRE_FRAGS
-suffix:semicolon
-id|j
-op_increment
-)paren
-r_if
-c_cond
-(paren
-id|np-&gt;tx_info
-(braket
-id|i
-)braket
-dot
-id|frag_mapping
-(braket
-id|j
-)braket
-)paren
-(brace
-id|pci_unmap_single
-c_func
-(paren
-id|np-&gt;pci_dev
-comma
-id|np-&gt;tx_info
-(braket
-id|i
-)braket
-dot
-id|frag_mapping
-(braket
-id|j
-)braket
-comma
-id|skb_shinfo
-c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
-id|frags
-(braket
-id|j
-)braket
-dot
-id|size
-comma
-id|PCI_DMA_TODEVICE
-)paren
-suffix:semicolon
-id|np-&gt;tx_info
-(braket
-id|i
-)braket
-dot
-id|frag_mapping
-(braket
-id|j
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_else
-r_break
-suffix:semicolon
-macro_line|#endif /* ZEROCOPY */
 )brace
 id|COMPAT_MOD_DEC_USE_COUNT
 suffix:semicolon
@@ -8851,81 +9785,40 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;tx_done_q
+id|np-&gt;queue_mem
 )paren
 id|pci_free_consistent
 c_func
 (paren
 id|pdev
 comma
-id|PAGE_SIZE
+id|np-&gt;queue_mem_size
 comma
-id|np-&gt;tx_done_q
+id|np-&gt;queue_mem
 comma
-id|np-&gt;tx_done_q_dma
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|np-&gt;rx_done_q
-)paren
-id|pci_free_consistent
-c_func
-(paren
-id|pdev
-comma
-r_sizeof
-(paren
-r_struct
-id|rx_done_desc
-)paren
-op_star
-id|DONE_Q_SIZE
-comma
-id|np-&gt;rx_done_q
-comma
-id|np-&gt;rx_done_q_dma
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|np-&gt;tx_ring
-)paren
-id|pci_free_consistent
-c_func
-(paren
-id|pdev
-comma
-id|PAGE_SIZE
-comma
-id|np-&gt;tx_ring
-comma
-id|np-&gt;tx_ring_dma
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|np-&gt;rx_ring
-)paren
-id|pci_free_consistent
-c_func
-(paren
-id|pdev
-comma
-id|PAGE_SIZE
-comma
-id|np-&gt;rx_ring
-comma
-id|np-&gt;rx_ring_dma
+id|np-&gt;queue_mem_dma
 )paren
 suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* XXX: add wakeup code -- requires firmware for MagicPacket */
+id|pci_set_power_state
+c_func
+(paren
+id|pdev
+comma
+l_int|3
+)paren
+suffix:semicolon
+multiline_comment|/* go to sleep in D3 mode */
+id|pci_disable_device
+c_func
+(paren
+id|pdev
 )paren
 suffix:semicolon
 id|iounmap
@@ -9011,6 +9904,41 @@ id|version
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifndef ADDR_64BITS
+multiline_comment|/* we can do this test only at run-time... sigh */
+r_if
+c_cond
+(paren
+r_sizeof
+(paren
+id|dma_addr_t
+)paren
+op_eq
+r_sizeof
+(paren
+id|u64
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;This driver has not been ported to this 64-bit architecture yet&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+macro_line|#endif /* not ADDR_64BITS */
+macro_line|#ifndef HAS_FIRMWARE
+multiline_comment|/* unconditionally disable hw cksums if firmware is not present */
+id|enable_hw_cksum
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif /* not HAS_FIRMWARE */
 r_return
 id|pci_module_init
 (paren
@@ -9049,5 +9977,5 @@ c_func
 id|starfire_cleanup
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;gcc -DMODULE -Wall -Wstrict-prototypes -O2 -c starfire.c&quot;&n; *  simple-compile-command: &quot;gcc -DMODULE -O2 -c starfire.c&quot;&n; *  c-basic-offset: 8&n; *  tab-width: 8&n; * End:&n; */
+multiline_comment|/*&n; * Local variables:&n; *  c-basic-offset: 8&n; *  tab-width: 8&n; * End:&n; */
 eof

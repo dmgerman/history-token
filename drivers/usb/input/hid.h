@@ -239,7 +239,7 @@ mdefine_line|#define HID_QUIRK_NOGET&t;&t;0x08
 DECL|macro|HID_QUIRK_HIDDEV
 mdefine_line|#define HID_QUIRK_HIDDEV&t;0x10
 DECL|macro|HID_QUIRK_BADPAD
-mdefine_line|#define HID_QUIRK_BADPAD        0x12
+mdefine_line|#define HID_QUIRK_BADPAD        0x20
 multiline_comment|/*&n; * This is the global enviroment of the parser. This information is&n; * persistent for main-items. The global enviroment can be saved and&n; * restored with PUSH/POP statements.&n; */
 DECL|struct|hid_global
 r_struct
@@ -1035,6 +1035,11 @@ id|hid_usage
 op_star
 comma
 id|__s32
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_extern
@@ -1100,6 +1105,11 @@ id|usage
 comma
 id|__s32
 id|value
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/boot/common/mpc10x_common.c&n; * &n; * A routine to find out how much memory the machine has.&n; *&n; * Based on:&n; * arch/ppc/kernel/mpc10x_common.c&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2001-2002 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/boot/common/mpc10x_common.c&n; * &n; * A routine to find out how much memory the machine has.&n; *&n; * Based on:&n; * arch/ppc/kernel/mpc10x_common.c&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2001-2002 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
