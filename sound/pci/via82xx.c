@@ -9617,6 +9617,24 @@ multiline_comment|/* MSI KT6 Delta-SR */
 dot
 id|vendor
 op_assign
+l_int|0x1584
+comma
+dot
+id|device
+op_assign
+l_int|0x8120
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* Gericom/Targa/Vobis/Uniwill laptop */
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x1631
 comma
 dot
