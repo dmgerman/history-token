@@ -687,6 +687,10 @@ c_func
 id|SIGKILL
 )paren
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_MEMALLOC
+suffix:semicolon
 id|server-&gt;tsk
 op_assign
 id|current
@@ -4736,6 +4740,8 @@ l_string|&quot;Socket created&quot;
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&t;&t;(*csocket)-&gt;sk-&gt;allocation = GFP_NOFS; */
+multiline_comment|/* BB is there equivalent in 2.6 */
 )brace
 )brace
 id|psin_server-&gt;sin_family
