@@ -1,6 +1,10 @@
 multiline_comment|/*&n; *  m32r_sio.c&n; *&n; *  Driver for M32R serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *  Based on drivers/serial/8250.c.&n; *&n; *  Copyright (C) 2001  Russell King.&n; *  Copyright (C) 2004  Hirokazu Takata &lt;takata at linux-m32r.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
 multiline_comment|/*&n; * A note about mapbase / membase&n; *&n; *  mapbase is the physical address of the IO port.  Currently, we don&squot;t&n; *  support this very well, and it may well be dropped from this driver&n; *  in future.  As such, mapbase should be NULL.&n; *&n; *  membase is an &squot;ioremapped&squot; cookie.  This is compatible with the old&n; *  serial.c driver, and is currently the preferred form.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#if defined(CONFIG_SERIAL_M32R_SIO_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
+DECL|macro|SUPPORT_SYSRQ
+mdefine_line|#define SUPPORT_SYSRQ
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -13,14 +17,10 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/m32r.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#if defined(CONFIG_SERIAL_M32R_SIO_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
-DECL|macro|SUPPORT_SYSRQ
-mdefine_line|#define SUPPORT_SYSRQ
-macro_line|#endif
-DECL|macro|PORT_SIO
-mdefine_line|#define PORT_SIO&t;1
-DECL|macro|PORT_MAX_SIO
-mdefine_line|#define PORT_MAX_SIO&t;1
+DECL|macro|PORT_M32R_BASE
+mdefine_line|#define PORT_M32R_BASE&t;PORT_M32R_SIO
+DECL|macro|PORT_INDEX
+mdefine_line|#define PORT_INDEX(x)&t;(x - PORT_M32R_BASE + 1)
 DECL|macro|BAUD_RATE
 mdefine_line|#define BAUD_RATE&t;115200
 macro_line|#include &lt;linux/serial_core.h&gt;
@@ -52,86 +52,25 @@ mdefine_line|#define PASS_LIMIT&t;256
 multiline_comment|/*&n; * We default to IRQ0 for the &quot;no irq&quot; hack.   Some&n; * machine types want others as well - they&squot;re free&n; * to redefine this in their header file.&n; */
 DECL|macro|is_real_interrupt
 mdefine_line|#define is_real_interrupt(irq)&t;((irq) != 0)
-multiline_comment|/*&n; * This converts from our new CONFIG_ symbols to the symbols&n; * that asm/serial.h expects.  You _NEED_ to comment out the&n; * linux/config.h include contained inside asm/serial.h for&n; * this to work.&n; */
-DECL|macro|CONFIG_SERIAL_MANY_PORTS
-macro_line|#undef CONFIG_SERIAL_MANY_PORTS
-DECL|macro|CONFIG_SERIAL_DETECT_IRQ
-macro_line|#undef CONFIG_SERIAL_DETECT_IRQ
-DECL|macro|CONFIG_SERIAL_MULTIPORT
-macro_line|#undef CONFIG_SERIAL_MULTIPORT
-DECL|macro|CONFIG_HUB6
-macro_line|#undef CONFIG_HUB6
-macro_line|#ifdef CONFIG_SERIAL_M32R_SIO_DETECT_IRQ
-DECL|macro|CONFIG_SERIAL_DETECT_IRQ
-mdefine_line|#define CONFIG_SERIAL_DETECT_IRQ 1
-macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_M32R_SIO_MULTIPORT
-DECL|macro|CONFIG_SERIAL_MULTIPORT
-mdefine_line|#define CONFIG_SERIAL_MULTIPORT 1
-macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_M32R_SIO_MANY_PORTS
-DECL|macro|CONFIG_SERIAL_MANY_PORTS
-mdefine_line|#define CONFIG_SERIAL_MANY_PORTS 1
-macro_line|#endif
-multiline_comment|/*&n; * HUB6 is always on.  This will be removed once the header&n; * files have been cleaned.&n; */
-DECL|macro|CONFIG_HUB6
-mdefine_line|#define CONFIG_HUB6 1
 macro_line|#include &lt;asm/serial.h&gt;
-macro_line|#ifdef CONFIG_SERIAL_M32R_PLDSIO
-DECL|variable|old_serial_port
-r_static
-r_struct
-id|old_serial_port
-id|old_serial_port
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_int|0
-comma
-id|BASE_BAUD
-comma
-(paren
-(paren
-r_int
-r_int
-)paren
-id|PLD_ESIO0CR
-)paren
-comma
-id|PLD_IRQ_SIO0_RCV
-comma
-id|STD_COM_FLAGS
-)brace
-comma
-)brace
-suffix:semicolon
-macro_line|#else
-DECL|variable|old_serial_port
-r_static
-r_struct
-id|old_serial_port
-id|old_serial_port
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_int|0
-comma
-id|BASE_BAUD
-comma
-id|M32R_SIO_OFFSET
-comma
-id|M32R_IRQ_SIO0_R
-comma
-id|STD_COM_FLAGS
-)brace
-comma
-)brace
-suffix:semicolon
+multiline_comment|/*&n; * SERIAL_PORT_DFNS tells us about built-in ports that have no&n; * standard enumeration mechanism.   Platforms that can find all&n; * serial ports via mechanisms like ACPI or PCI need not supply it.&n; */
+macro_line|#ifndef SERIAL_PORT_DFNS
+DECL|macro|SERIAL_PORT_DFNS
+mdefine_line|#define SERIAL_PORT_DFNS
 macro_line|#endif
+DECL|variable|old_serial_port
+r_static
+r_struct
+id|old_serial_port
+id|old_serial_port
+(braket
+)braket
+op_assign
+(brace
+id|SERIAL_PORT_DFNS
+multiline_comment|/* defined in asm/serial.h */
+)brace
+suffix:semicolon
 DECL|macro|UART_NR
 mdefine_line|#define UART_NR&t;ARRAY_SIZE(old_serial_port)
 DECL|struct|uart_sio_port
@@ -249,27 +188,57 @@ r_struct
 id|serial_uart_config
 id|uart_config
 (braket
-id|PORT_MAX_SIO
-op_plus
-l_int|1
 )braket
 op_assign
 (brace
+(braket
+id|PORT_UNKNOWN
+)braket
+op_assign
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;unknown&quot;
 comma
+dot
+id|dfl_xmit_fifo_size
+op_assign
 l_int|1
 comma
+dot
+id|flags
+op_assign
 l_int|0
+comma
 )brace
 comma
+(braket
+id|PORT_INDEX
+c_func
+(paren
+id|PORT_M32R_SIO
+)paren
+)braket
+op_assign
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;M32RSIO&quot;
 comma
+dot
+id|dfl_xmit_fifo_size
+op_assign
 l_int|1
 comma
+dot
+id|flags
+op_assign
 l_int|0
+comma
 )brace
+comma
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_SERIAL_M32R_PLDSIO
@@ -1749,7 +1718,6 @@ comma
 id|regs
 )paren
 suffix:semicolon
-singleline_comment|// check_modem_status(up);
 r_if
 c_cond
 (paren
@@ -3197,7 +3165,7 @@ id|up-&gt;port.iotype
 )paren
 (brace
 r_case
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 suffix:colon
 r_if
 c_cond
@@ -3223,12 +3191,6 @@ macro_line|#else
 id|start
 op_assign
 id|up-&gt;port.mapbase
-suffix:semicolon
-id|start
-op_add_assign
-id|UART_RSA_BASE
-op_lshift
-id|up-&gt;port.regshift
 suffix:semicolon
 op_star
 id|res
@@ -3260,10 +3222,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SERIAL_IO_HUB6
-suffix:colon
-r_case
-id|SERIAL_IO_PORT
+id|UPIO_PORT
 suffix:colon
 op_star
 id|res
@@ -3276,158 +3235,6 @@ comma
 id|size
 comma
 l_string|&quot;serial&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-op_star
-id|res
-)paren
-id|ret
-op_assign
-op_minus
-id|EBUSY
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_return
-id|ret
-suffix:semicolon
-)brace
-r_static
-r_int
-DECL|function|m32r_sio_request_rsa_resource
-id|m32r_sio_request_rsa_resource
-c_func
-(paren
-r_struct
-id|uart_sio_port
-op_star
-id|up
-comma
-r_struct
-id|resource
-op_star
-op_star
-id|res
-)paren
-(brace
-r_int
-r_int
-id|size
-op_assign
-l_int|8
-op_lshift
-id|up-&gt;port.regshift
-suffix:semicolon
-r_int
-r_int
-id|start
-suffix:semicolon
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|up-&gt;port.iotype
-)paren
-(brace
-r_case
-id|SERIAL_IO_MEM
-suffix:colon
-r_if
-c_cond
-(paren
-id|up-&gt;port.mapbase
-)paren
-(brace
-id|start
-op_assign
-id|up-&gt;port.mapbase
-suffix:semicolon
-id|start
-op_add_assign
-id|UART_RSA_BASE
-op_lshift
-id|up-&gt;port.regshift
-suffix:semicolon
-macro_line|#ifdef CONFIG_SERIAL_M32R_PLDSIO
-op_star
-id|res
-op_assign
-id|request_mem_region
-c_func
-(paren
-id|start
-comma
-id|size
-comma
-l_string|&quot;serial-rsa&quot;
-)paren
-suffix:semicolon
-macro_line|#else
-op_star
-id|res
-op_assign
-id|request_mem_region
-c_func
-(paren
-id|up-&gt;port.mapbase
-comma
-id|size
-comma
-l_string|&quot;serial-rsa&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-op_logical_neg
-op_star
-id|res
-)paren
-id|ret
-op_assign
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-r_case
-id|SERIAL_IO_HUB6
-suffix:colon
-r_case
-id|SERIAL_IO_PORT
-suffix:colon
-id|start
-op_assign
-id|up-&gt;port.iobase
-suffix:semicolon
-id|start
-op_add_assign
-id|UART_RSA_BASE
-op_lshift
-id|up-&gt;port.regshift
-suffix:semicolon
-op_star
-id|res
-op_assign
-id|request_region
-c_func
-(paren
-id|up-&gt;port.iobase
-comma
-id|size
-comma
-l_string|&quot;serial-rsa&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3485,25 +3292,6 @@ id|size
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|up-&gt;port.type
-op_eq
-id|PORT_RSA
-)paren
-(brace
-id|offset
-op_assign
-id|UART_RSA_BASE
-op_lshift
-id|up-&gt;port.regshift
-suffix:semicolon
-id|size
-op_assign
-l_int|8
-suffix:semicolon
-)brace
 id|size
 op_lshift_assign
 id|up-&gt;port.regshift
@@ -3515,7 +3303,7 @@ id|up-&gt;port.iotype
 )paren
 (brace
 r_case
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 suffix:colon
 r_if
 c_cond
@@ -3567,10 +3355,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SERIAL_IO_HUB6
-suffix:colon
-r_case
-id|SERIAL_IO_PORT
+id|UPIO_PORT
 suffix:colon
 id|start
 op_assign
@@ -3641,47 +3426,12 @@ op_star
 id|res
 op_assign
 l_int|NULL
-comma
-op_star
-id|res_rsa
-op_assign
-l_int|NULL
 suffix:semicolon
 r_int
 id|ret
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|up-&gt;port.type
-op_eq
-id|PORT_RSA
-)paren
-(brace
-id|ret
-op_assign
-id|m32r_sio_request_rsa_resource
-c_func
-(paren
-id|up
-comma
-op_amp
-id|res_rsa
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-r_return
-id|ret
-suffix:semicolon
-)brace
 id|ret
 op_assign
 id|m32r_sio_request_std_resource
@@ -3748,17 +3498,6 @@ l_int|0
 r_if
 c_cond
 (paren
-id|res_rsa
-)paren
-id|release_resource
-c_func
-(paren
-id|res_rsa
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|res
 )paren
 id|release_resource
@@ -3810,7 +3549,13 @@ id|flags
 suffix:semicolon
 id|up-&gt;port.type
 op_assign
-id|PORT_SIO
+(paren
+id|PORT_M32R_SIO
+op_minus
+id|PORT_M32R_BASE
+op_plus
+l_int|1
+)paren
 suffix:semicolon
 id|up-&gt;port.fifosize
 op_assign
@@ -3864,16 +3609,16 @@ OL
 l_int|9600
 op_logical_or
 id|ser-&gt;type
-template_param
-id|PORT_MAX_SIO
+OL
+id|PORT_UNKNOWN
 op_logical_or
 id|ser-&gt;type
-op_eq
-id|PORT_CIRRUS
-op_logical_or
-id|ser-&gt;type
-op_eq
-id|PORT_STARTECH
+op_ge
+id|ARRAY_SIZE
+c_func
+(paren
+id|uart_config
+)paren
 )paren
 r_return
 op_minus
@@ -4132,15 +3877,6 @@ id|i
 )braket
 dot
 id|flags
-suffix:semicolon
-id|up-&gt;port.hub6
-op_assign
-id|old_serial_port
-(braket
-id|i
-)braket
-dot
-id|hub6
 suffix:semicolon
 id|up-&gt;port.membase
 op_assign
@@ -4883,7 +4619,7 @@ id|port
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;register_serial - configure a 16x50 serial port at runtime&n; *&t;@req: request structure&n; *&n; *&t;Configure the serial port specified by the request. If the&n; *&t;port exists and is in use an error is returned. If the port&n; *&t;is not currently in the table it is added.&n; *&n; *&t;The port is then probed and if necessary the IRQ is autodetected&n; *&t;If this fails an error is returned.&n; *&n; *&t;On success the port is ready to use and the line number is returned.&n; */
+multiline_comment|/**&n; *&t;register_m32r_sio - configure a 16x50 serial port at runtime&n; *&t;@req: request structure&n; *&n; *&t;Configure the serial port specified by the request. If the&n; *&t;port exists and is in use an error is returned. If the port&n; *&t;is not currently in the table it is added.&n; *&n; *&t;The port is then probed and if necessary the IRQ is autodetected&n; *&t;If this fails an error is returned.&n; *&n; *&t;On success the port is ready to use and the line number is returned.&n; */
 DECL|function|register_m32r_sio
 r_int
 id|register_m32r_sio
@@ -4906,10 +4642,10 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|function|early_m32r_sio_setup
+DECL|function|early_serial_setup
 r_int
 id|__init
-id|early_m32r_sio_setup
+id|early_serial_setup
 c_func
 (paren
 r_struct
@@ -4947,7 +4683,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;unregister_serial - remove a 16x50 serial port at runtime&n; *&t;@line: serial line number&n; *&n; *&t;Remove one serial port.  This may be called from interrupt&n; *&t;context.&n; */
+multiline_comment|/**&n; *&t;unregister_m32r_sio - remove a 16x50 serial port at runtime&n; *&t;@line: serial line number&n; *&n; *&t;Remove one serial port.  This may be called from interrupt&n; *&t;context.&n; */
 DECL|function|unregister_m32r_sio
 r_void
 id|unregister_m32r_sio
@@ -4966,71 +4702,6 @@ comma
 id|line
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * This is for ISAPNP only.&n; */
-DECL|function|m32r_sio_get_irq_map
-r_void
-id|m32r_sio_get_irq_map
-c_func
-(paren
-r_int
-r_int
-op_star
-id|map
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|UART_NR
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|m32r_sio_ports
-(braket
-id|i
-)braket
-dot
-id|port.type
-op_ne
-id|PORT_UNKNOWN
-op_logical_and
-id|m32r_sio_ports
-(braket
-id|i
-)braket
-dot
-id|port.irq
-OL
-l_int|16
-)paren
-op_star
-id|map
-op_or_assign
-l_int|1
-op_lshift
-id|m32r_sio_ports
-(braket
-id|i
-)braket
-dot
-id|port.irq
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/**&n; *&t;m32r_sio_suspend_port - suspend one serial port&n; *&t;@line: serial line number&n; *&n; *&t;Suspend one serial port.&n; */
 DECL|function|m32r_sio_suspend_port
@@ -5243,13 +4914,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|unregister_m32r_sio
-)paren
-suffix:semicolon
-DECL|variable|m32r_sio_get_irq_map
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|m32r_sio_get_irq_map
 )paren
 suffix:semicolon
 DECL|variable|m32r_sio_suspend_port

@@ -25,6 +25,12 @@ id|secno
 id|anode_secno
 suffix:semicolon
 multiline_comment|/* sector number of an anode */
+DECL|typedef|time32_t
+r_typedef
+id|u32
+id|time32_t
+suffix:semicolon
+multiline_comment|/* 32-bit time_t type */
 multiline_comment|/* sector 0 */
 multiline_comment|/* The boot block is very like a FAT boot block, except that the&n;   29h signature byte is 28h instead, and the ID string is &quot;HPFS&quot;. */
 DECL|macro|BB_MAGIC
@@ -253,14 +259,14 @@ id|zero3
 suffix:semicolon
 multiline_comment|/* 0 */
 DECL|member|last_chkdsk
-id|time_t
+id|time32_t
 id|last_chkdsk
 suffix:semicolon
 multiline_comment|/* date last checked, 0 if never */
 multiline_comment|/*unsigned zero4;*/
 multiline_comment|/* 0 */
 DECL|member|last_optimize
-id|time_t
+id|time32_t
 id|last_optimize
 suffix:semicolon
 multiline_comment|/* date last optimized, 0 if never */
@@ -849,7 +855,7 @@ id|fnode
 suffix:semicolon
 multiline_comment|/* fnode giving allocation info */
 DECL|member|write_date
-id|time_t
+id|time32_t
 id|write_date
 suffix:semicolon
 multiline_comment|/* mtime */
@@ -859,12 +865,12 @@ id|file_size
 suffix:semicolon
 multiline_comment|/* file length, bytes */
 DECL|member|read_date
-id|time_t
+id|time32_t
 id|read_date
 suffix:semicolon
 multiline_comment|/* atime */
 DECL|member|creation_date
-id|time_t
+id|time32_t
 id|creation_date
 suffix:semicolon
 multiline_comment|/* ctime */

@@ -250,7 +250,7 @@ id|offset
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_code_verify_area
+id|FPU_code_access_ok
 c_func
 (paren
 l_int|1
@@ -381,7 +381,7 @@ id|displacement
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_code_verify_area
+id|FPU_code_access_ok
 c_func
 (paren
 l_int|1
@@ -437,7 +437,7 @@ id|displacement
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_code_verify_area
+id|FPU_code_access_ok
 c_func
 (paren
 l_int|4
@@ -1037,7 +1037,7 @@ l_int|5
 multiline_comment|/* Special case: disp32 */
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_code_verify_area
+id|FPU_code_access_ok
 c_func
 (paren
 l_int|4
@@ -1109,7 +1109,7 @@ suffix:colon
 multiline_comment|/* 8 bit signed displacement */
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_code_verify_area
+id|FPU_code_access_ok
 c_func
 (paren
 l_int|1
@@ -1148,7 +1148,7 @@ suffix:colon
 multiline_comment|/* 32 bit displacement */
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_code_verify_area
+id|FPU_code_access_ok
 c_func
 (paren
 l_int|4
@@ -1374,7 +1374,7 @@ l_int|6
 multiline_comment|/* Special case: disp16 */
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_code_verify_area
+id|FPU_code_access_ok
 c_func
 (paren
 l_int|2
@@ -1418,7 +1418,7 @@ suffix:colon
 multiline_comment|/* 8 bit signed displacement */
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_code_verify_area
+id|FPU_code_access_ok
 c_func
 (paren
 l_int|1
@@ -1457,7 +1457,7 @@ suffix:colon
 multiline_comment|/* 16 bit displacement */
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_code_verify_area
+id|FPU_code_access_ok
 c_func
 (paren
 l_int|2

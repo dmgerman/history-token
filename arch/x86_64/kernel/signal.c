@@ -691,11 +691,9 @@ op_amp
 id|eax
 )paren
 )paren
-(brace
 r_goto
 id|badframe
 suffix:semicolon
-)brace
 macro_line|#ifdef DEBUG_SIG
 id|printk
 c_func
@@ -1281,11 +1279,9 @@ id|_fpstate
 )paren
 )paren
 )paren
-(brace
 r_goto
 id|give_sigsegv
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1304,7 +1300,6 @@ l_int|1
 suffix:semicolon
 )brace
 r_else
-(brace
 id|frame
 op_assign
 id|get_stack
@@ -1323,7 +1318,6 @@ id|rt_sigframe
 op_minus
 l_int|8
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1342,11 +1336,9 @@ id|frame
 )paren
 )paren
 )paren
-(brace
 r_goto
 id|give_sigsegv
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1371,11 +1363,9 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 r_goto
 id|give_sigsegv
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Create the ucontext.  */
 id|err
@@ -1510,7 +1500,6 @@ l_int|1
 suffix:semicolon
 )brace
 r_else
-(brace
 id|err
 op_or_assign
 id|__copy_to_user
@@ -1528,7 +1517,6 @@ id|set
 )paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Set up to return from userspace.  If provided, use a stub&n;&t;   already in userspace.  */
 multiline_comment|/* x86-64 should always use SA_RESTORER. */
 r_if
@@ -1563,11 +1551,9 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 r_goto
 id|give_sigsegv
 suffix:semicolon
-)brace
 macro_line|#ifdef DEBUG_SIG
 id|printk
 c_func
@@ -1864,6 +1850,8 @@ id|regs-&gt;rip
 op_sub_assign
 l_int|2
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_IA32_EMULATION
@@ -2020,11 +2008,9 @@ l_int|3
 op_ne
 l_int|3
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

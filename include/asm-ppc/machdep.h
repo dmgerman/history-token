@@ -5,6 +5,7 @@ mdefine_line|#define _PPC_MACHDEP_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifdef CONFIG_APUS
 macro_line|#include &lt;asm-m68k/machdep.h&gt;
 macro_line|#endif
@@ -19,6 +20,9 @@ id|pci_dev
 suffix:semicolon
 r_struct
 id|seq_file
+suffix:semicolon
+r_struct
+id|file
 suffix:semicolon
 multiline_comment|/* We export this macro for external modules like Alsa to know if&n; * ppc_md.feature_call is implemented or not&n; */
 DECL|macro|CONFIG_PPC_HAS_FEATURE_CALLS
@@ -463,6 +467,31 @@ id|pcibios_after_init
 )paren
 (paren
 r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Get access protection for /dev/mem */
+DECL|member|phys_mem_access_prot
+id|pgprot_t
+(paren
+op_star
+id|phys_mem_access_prot
+)paren
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+r_int
+id|size
+comma
+id|pgprot_t
+id|vma_prot
 )paren
 suffix:semicolon
 multiline_comment|/* this is for modules, since _machine can be a define -- Cort */

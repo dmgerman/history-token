@@ -1643,8 +1643,13 @@ op_star
 id|page
 )paren
 (brace
-id|vma-&gt;vm_mm-&gt;rss
-op_increment
+id|inc_mm_counter
+c_func
+(paren
+id|vma-&gt;vm_mm
+comma
+id|rss
+)paren
 suffix:semicolon
 id|get_page
 c_func

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pbm.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;
 macro_line|#include &lt;asm/isa.h&gt;
@@ -3083,37 +3084,8 @@ id|pci_mmap_state
 id|mmap_state
 )paren
 (brace
-multiline_comment|/* Our io_remap_page_range takes care of this, do nothing. */
+multiline_comment|/* Our io_remap_page_range/io_remap_pfn_range takes care of this,&n;&t;   do nothing. */
 )brace
-r_extern
-r_int
-id|io_remap_page_range
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|from
-comma
-r_int
-r_int
-id|offset
-comma
-r_int
-r_int
-id|size
-comma
-id|pgprot_t
-id|prot
-comma
-r_int
-id|space
-)paren
-suffix:semicolon
 multiline_comment|/* Perform the actual remap of the pages for a PCI device mapping, as appropriate&n; * for this architecture.  The region in the process to map is described by vm_start&n; * and vm_end members of VMA, the base physical address is found in vm_pgoff.&n; * The pci device structure is provided so that architectures may make mapping&n; * decisions on a per-device or per-bus basis.&n; *&n; * Returns a negative error code on failure, zero on success.&n; */
 DECL|function|pci_mmap_page_range
 r_int
@@ -3185,35 +3157,20 @@ id|mmap_state
 suffix:semicolon
 id|ret
 op_assign
-id|io_remap_page_range
+id|io_remap_pfn_range
 c_func
 (paren
 id|vma
 comma
 id|vma-&gt;vm_start
 comma
-(paren
 id|vma-&gt;vm_pgoff
-op_lshift
-id|PAGE_SHIFT
-op_or
-(paren
-id|write_combine
-ques
-c_cond
-l_int|0x1UL
-suffix:colon
-l_int|0x0UL
-)paren
-)paren
 comma
 id|vma-&gt;vm_end
 op_minus
 id|vma-&gt;vm_start
 comma
 id|vma-&gt;vm_page_prot
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if

@@ -48,6 +48,14 @@ r_void
 suffix:semicolon
 macro_line|#endif
 r_extern
+r_void
+id|i8254_timer_resume
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|using_apic_timer
 suffix:semicolon
@@ -1910,21 +1918,10 @@ c_func
 id|year
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This will work up to Dec 31, 2069.&n; */
-r_if
-c_cond
-(paren
-(paren
+multiline_comment|/*&n; * x86-64 systems only exists since 2002.&n; * This will work up to Dec 31, 2100&n; */
 id|year
 op_add_assign
-l_int|1900
-)paren
-OL
-l_int|1970
-)paren
-id|year
-op_add_assign
-l_int|100
+l_int|2000
 suffix:semicolon
 r_return
 id|mktime
@@ -3641,6 +3638,12 @@ c_cond
 id|vxtime.hpet_address
 )paren
 id|hpet_reenable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+id|i8254_timer_resume
 c_func
 (paren
 )paren

@@ -418,6 +418,26 @@ c_func
 l_string|&quot;&bslash;nEnabling ES7000 specific features...&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Determine the generation of the ES7000 currently running.&n;&t;&t; *&n;&t;&t; * es7000_plat = 0 if the machine is NOT a Unisys ES7000 box&n;&t;&t; * es7000_plat = 1 if the machine is a 5xx ES7000 box&n;&t;&t; * es7000_plat = 2 if the machine is a x86_64 ES7000 box&n;&t;&t; *&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|boot_cpu_data.x86
+op_le
+l_int|15
+op_logical_and
+id|boot_cpu_data.x86_model
+op_le
+l_int|2
+)paren
+)paren
+id|es7000_plat
+op_assign
+l_int|2
+suffix:semicolon
+r_else
 id|es7000_plat
 op_assign
 l_int|1

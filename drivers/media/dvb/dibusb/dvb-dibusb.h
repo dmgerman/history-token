@@ -31,7 +31,7 @@ multiline_comment|/* Version information */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;0.3&quot;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC &quot;Driver for DiBcom based USB Budget DVB-T device&quot;
+mdefine_line|#define DRIVER_DESC &quot;DiBcom based USB Budget DVB-T device&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Patrick Boettcher, patrick.boettcher@desy.de&quot;
 DECL|macro|deb_info
@@ -48,11 +48,17 @@ DECL|macro|deb_rc
 mdefine_line|#define deb_rc(args...)   dprintk(0x20,args)
 multiline_comment|/* generic log methods - taken from usb.h */
 DECL|macro|err
-mdefine_line|#define err(format, arg...) printk(KERN_ERR &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
+macro_line|#undef err
+DECL|macro|err
+mdefine_line|#define err(format, arg...)  printk(KERN_ERR     &quot;dvb-dibusb: &quot; format &quot;&bslash;n&quot; , ## arg)
 DECL|macro|info
-mdefine_line|#define info(format, arg...) printk(KERN_INFO &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
+macro_line|#undef info
+DECL|macro|info
+mdefine_line|#define info(format, arg...) printk(KERN_INFO    &quot;dvb-dibusb: &quot; format &quot;&bslash;n&quot; , ## arg)
 DECL|macro|warn
-mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
+macro_line|#undef warn
+DECL|macro|warn
+mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;dvb-dibusb: &quot; format &quot;&bslash;n&quot; , ## arg)
 DECL|struct|dibusb_usb_controller
 r_struct
 id|dibusb_usb_controller
@@ -87,6 +93,15 @@ id|DIBUSB2_0
 comma
 DECL|enumerator|UMT2_0
 id|UMT2_0
+comma
+DECL|enumerator|DIBUSB2_0B
+id|DIBUSB2_0B
+comma
+DECL|enumerator|NOVAT_USB2
+id|NOVAT_USB2
+comma
+DECL|enumerator|DTT200U
+id|DTT200U
 comma
 DECL|typedef|dibusb_class_t
 )brace
@@ -127,6 +142,9 @@ comma
 DECL|enumerator|DIBUSB_MT352
 id|DIBUSB_MT352
 comma
+DECL|enumerator|DTT200U_FE
+id|DTT200U_FE
+comma
 DECL|typedef|dibusb_demodulator_t
 )brace
 id|dibusb_demodulator_t
@@ -141,8 +159,9 @@ l_int|0
 comma
 DECL|enumerator|DIBUSB_RC_NEC_PROTOCOL
 id|DIBUSB_RC_NEC_PROTOCOL
-op_assign
-l_int|1
+comma
+DECL|enumerator|DIBUSB_RC_HAUPPAUGE_PROTO
+id|DIBUSB_RC_HAUPPAUGE_PROTO
 comma
 DECL|typedef|dibusb_remote_t
 )brace
@@ -345,16 +364,16 @@ DECL|macro|DIBUSB_STATE_URB_LIST
 mdefine_line|#define DIBUSB_STATE_URB_LIST   0x001
 DECL|macro|DIBUSB_STATE_URB_BUF
 mdefine_line|#define DIBUSB_STATE_URB_BUF    0x002
-DECL|macro|DIBUSB_STATE_URB_SUBMIT
-mdefine_line|#define DIBUSB_STATE_URB_SUBMIT 0x004
+DECL|macro|DIBUSB_STATE_URB_INIT
+mdefine_line|#define DIBUSB_STATE_URB_INIT&t;0x004
 DECL|macro|DIBUSB_STATE_DVB
 mdefine_line|#define DIBUSB_STATE_DVB        0x008
 DECL|macro|DIBUSB_STATE_I2C
 mdefine_line|#define DIBUSB_STATE_I2C        0x010
 DECL|macro|DIBUSB_STATE_REMOTE
 mdefine_line|#define DIBUSB_STATE_REMOTE&t;&t;0x020
-DECL|macro|DIBUSB_STATE_PIDLIST
-mdefine_line|#define DIBUSB_STATE_PIDLIST    0x040
+DECL|macro|DIBUSB_STATE_URB_SUBMIT
+mdefine_line|#define DIBUSB_STATE_URB_SUBMIT 0x040
 DECL|member|init_state
 r_int
 id|init_state
@@ -406,17 +425,6 @@ DECL|member|i2c_sem
 r_struct
 id|semaphore
 id|i2c_sem
-suffix:semicolon
-multiline_comment|/* pid filtering */
-DECL|member|pid_list_lock
-id|spinlock_t
-id|pid_list_lock
-suffix:semicolon
-DECL|member|pid_list
-r_struct
-id|dibusb_pid
-op_star
-id|pid_list
 suffix:semicolon
 multiline_comment|/* dvb */
 DECL|member|adapter
@@ -481,10 +489,24 @@ r_struct
 id|work_struct
 id|rc_query_work
 suffix:semicolon
-DECL|member|rc_input_event
+DECL|member|last_event
 r_int
-id|rc_input_event
+id|last_event
 suffix:semicolon
+DECL|member|last_state
+r_int
+id|last_state
+suffix:semicolon
+multiline_comment|/* for Hauppauge RC protocol */
+DECL|member|repeat_key_count
+r_int
+id|repeat_key_count
+suffix:semicolon
+DECL|member|rc_key_repeat_count
+r_int
+id|rc_key_repeat_count
+suffix:semicolon
+multiline_comment|/* module parameter */
 multiline_comment|/* module parameters */
 DECL|member|pid_parse
 r_int
@@ -535,33 +557,6 @@ id|dib
 )paren
 suffix:semicolon
 multiline_comment|/* dvb-dibusb-fe-i2c.c */
-r_int
-id|dibusb_i2c_msg
-c_func
-(paren
-r_struct
-id|usb_dibusb
-op_star
-id|dib
-comma
-id|u8
-id|addr
-comma
-id|u8
-op_star
-id|wbuf
-comma
-id|u16
-id|wlen
-comma
-id|u8
-op_star
-id|rbuf
-comma
-id|u16
-id|rlen
-)paren
-suffix:semicolon
 r_int
 id|dibusb_fe_init
 c_func
@@ -664,6 +659,23 @@ id|rlen
 )paren
 suffix:semicolon
 r_int
+id|dibusb_write_usb
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+comma
+id|u8
+op_star
+id|buf
+comma
+id|u16
+id|len
+)paren
+suffix:semicolon
+r_int
 id|dibusb_hw_wakeup
 c_func
 (paren
@@ -721,43 +733,20 @@ id|usb_dibusb
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* dvb-dibusb-pid.c */
-r_int
-id|dibusb_pid_list_init
+multiline_comment|/* dvb-fe-dtt200u.c */
+r_struct
+id|dvb_frontend
+op_star
+id|dtt200u_fe_attach
 c_func
 (paren
 r_struct
 id|usb_dibusb
 op_star
-id|dib
-)paren
-suffix:semicolon
-r_void
-id|dibusb_pid_list_exit
-c_func
-(paren
-r_struct
-id|usb_dibusb
-op_star
-id|dib
-)paren
-suffix:semicolon
-r_int
-id|dibusb_ctrl_pid
-c_func
-(paren
-r_struct
-id|usb_dibusb
-op_star
-id|dib
 comma
 r_struct
-id|dvb_demux_feed
+id|dib_fe_xfer_ops
 op_star
-id|dvbdmxfeed
-comma
-r_int
-id|onoff
 )paren
 suffix:semicolon
 multiline_comment|/* i2c and transfer stuff */
@@ -784,6 +773,11 @@ DECL|macro|DIBUSB_RC_NEC_KEY_PRESSED
 mdefine_line|#define DIBUSB_RC_NEC_KEY_PRESSED&t;&t;0x01
 DECL|macro|DIBUSB_RC_NEC_KEY_REPEATED
 mdefine_line|#define DIBUSB_RC_NEC_KEY_REPEATED&t;&t;0x02
+multiline_comment|/* additional status values for Hauppauge Remote Control Protocol */
+DECL|macro|DIBUSB_RC_HAUPPAUGE_KEY_PRESSED
+mdefine_line|#define DIBUSB_RC_HAUPPAUGE_KEY_PRESSED&t;0x01
+DECL|macro|DIBUSB_RC_HAUPPAUGE_KEY_EMPTY
+mdefine_line|#define DIBUSB_RC_HAUPPAUGE_KEY_EMPTY&t;0x03
 multiline_comment|/* streaming mode:&n; * bulk write: 0x05 mode_byte&n; *&n; * mode_byte is mostly 0x00&n; */
 DECL|macro|DIBUSB_REQ_SET_STREAMING_MODE
 mdefine_line|#define DIBUSB_REQ_SET_STREAMING_MODE&t;0x05

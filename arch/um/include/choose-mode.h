@@ -15,6 +15,38 @@ mdefine_line|#define CHOOSE_MODE(tt, skas) (tt)
 macro_line|#endif
 DECL|macro|CHOOSE_MODE_PROC
 mdefine_line|#define CHOOSE_MODE_PROC(tt, skas, args...) &bslash;&n;&t;CHOOSE_MODE(tt(args), skas(args))
+r_extern
+r_int
+id|mode_tt
+suffix:semicolon
+DECL|function|__choose_mode
+r_static
+r_inline
+r_void
+op_star
+id|__choose_mode
+c_func
+(paren
+r_void
+op_star
+id|tt
+comma
+r_void
+op_star
+id|skas
+)paren
+(brace
+r_return
+id|mode_tt
+ques
+c_cond
+id|tt
+suffix:colon
+id|skas
+suffix:semicolon
+)brace
+DECL|macro|__CHOOSE_MODE
+mdefine_line|#define __CHOOSE_MODE(tt, skas) (*( (typeof(tt) *) __choose_mode(&amp;(tt), &amp;(skas))))
 macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

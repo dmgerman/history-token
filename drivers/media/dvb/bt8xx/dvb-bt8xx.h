@@ -11,6 +11,7 @@ macro_line|#include &quot;sp887x.h&quot;
 macro_line|#include &quot;dst.h&quot;
 macro_line|#include &quot;nxt6000.h&quot;
 macro_line|#include &quot;cx24110.h&quot;
+macro_line|#include &quot;or51211.h&quot;
 DECL|struct|dvb_bt8xx_card
 r_struct
 id|dvb_bt8xx_card

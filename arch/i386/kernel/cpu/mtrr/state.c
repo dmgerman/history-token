@@ -151,7 +151,7 @@ c_func
 )paren
 )paren
 multiline_comment|/*  Disable MTRRs, and set the default type to uncached  */
-id|wrmsr
+id|mtrr_wrmsr
 c_func
 (paren
 id|MTRRdefType_MSR
@@ -232,7 +232,7 @@ c_func
 )paren
 )paren
 multiline_comment|/* Intel (P6) standard MTRRs */
-id|wrmsr
+id|mtrr_wrmsr
 c_func
 (paren
 id|MTRRdefType_MSR

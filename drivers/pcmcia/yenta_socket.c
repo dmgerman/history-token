@@ -3015,15 +3015,6 @@ comma
 id|socket
 )paren
 suffix:semicolon
-id|yenta_set_socket
-c_func
-(paren
-id|sock
-comma
-op_amp
-id|dead_socket
-)paren
-suffix:semicolon
 multiline_comment|/* Disable CSC interrupts */
 id|cb_writel
 c_func

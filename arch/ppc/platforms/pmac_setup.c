@@ -2674,6 +2674,10 @@ id|ppc_md.pcibios_after_init
 op_assign
 id|pmac_pcibios_after_init
 suffix:semicolon
+id|ppc_md.phys_mem_access_prot
+op_assign
+id|pci_phys_mem_access_prot
+suffix:semicolon
 id|ppc_md.restart
 op_assign
 id|pmac_restart

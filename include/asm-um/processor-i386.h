@@ -31,6 +31,31 @@ suffix:semicolon
 DECL|macro|INIT_ARCH_THREAD
 mdefine_line|#define INIT_ARCH_THREAD { .debugregs  &t;&t;= { [ 0 ... 7 ] = 0 }, &bslash;&n;                           .debugregs_seq&t;= 0 }
 macro_line|#include &quot;asm/arch/user.h&quot;
+multiline_comment|/* REP NOP (PAUSE) is a good thing to insert into busy-wait loops. */
+DECL|function|rep_nop
+r_static
+r_inline
+r_void
+id|rep_nop
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rep;nop&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|macro|cpu_relax
+mdefine_line|#define cpu_relax()&t;rep_nop()
 multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;). Stolen&n; * from asm-i386/processor.h&n; */
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() &bslash;&n;&t;({ void *pc; __asm__(&quot;movl $1f,%0&bslash;n1:&quot;:&quot;=g&quot; (pc)); pc; })

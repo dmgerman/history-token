@@ -1220,7 +1220,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|on_sig_stack
+id|sas_ss_flags
 c_func
 (paren
 id|sp

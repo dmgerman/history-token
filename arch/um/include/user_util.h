@@ -387,10 +387,6 @@ c_func
 (paren
 r_char
 op_star
-id|cmd_line
-comma
-r_char
-op_star
 id|arg
 )paren
 suffix:semicolon

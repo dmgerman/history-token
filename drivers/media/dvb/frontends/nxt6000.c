@@ -2317,11 +2317,6 @@ id|state-&gt;frontend
 suffix:semicolon
 id|error
 suffix:colon
-r_if
-c_cond
-(paren
-id|state
-)paren
 id|kfree
 c_func
 (paren

@@ -3717,7 +3717,7 @@ id|pol
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * &t;alloc_pages_current - Allocate pages.&n; *&n; *&t;@gfp:&n; *&t;&t;%GFP_USER   user allocation,&n; *      &t;%GFP_KERNEL kernel allocation,&n; *      &t;%GFP_HIGHMEM highmem allocation,&n; *      &t;%GFP_FS     don&squot;t call back into a file system.&n; *      &t;%GFP_ATOMIC don&squot;t sleep.&n; *&t;@order: Power of two of allocation size in pages. 0 is a single page.&n; *&n; *&t;Allocate a page from the kernel page pool.  When not in&n; *&t;interrupt context and apply the current process NUMA policy.&n; *&t;Returns NULL when no page can be allocated.&n; */
+multiline_comment|/**&n; * &t;alloc_pages_current - Allocate pages.&n; *&n; *&t;@gfp:&n; *&t;&t;%GFP_USER   user allocation,&n; *      &t;%GFP_KERNEL kernel allocation,&n; *      &t;%GFP_HIGHMEM highmem allocation,&n; *      &t;%GFP_FS     don&squot;t call back into a file system.&n; *      &t;%GFP_ATOMIC don&squot;t sleep.&n; *&t;@order: Power of two of allocation size in pages. 0 is a single page.&n; *&n; *&t;Allocate a page from the kernel page pool.  When not in&n; *&t;interrupt context and apply the current process NUMA policy.&n; *&t;Returns NULL when no page can be allocated.&n; *&n; *&t;Don&squot;t call cpuset_update_current_mems_allowed() unless&n; *&t;1) it&squot;s ok to take cpuset_sem (can WAIT), and&n; *&t;2) allocating for current task (not interrupt).&n; */
 DECL|function|alloc_pages_current
 r_struct
 id|page
@@ -3744,6 +3744,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|gfp
+op_amp
+id|__GFP_WAIT
+)paren
+op_logical_and
 op_logical_neg
 id|in_interrupt
 c_func

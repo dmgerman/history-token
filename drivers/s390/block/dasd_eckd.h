@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.9 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.10 $&n; */
 macro_line|#ifndef DASD_ECKD_H
 DECL|macro|DASD_ECKD_H
 mdefine_line|#define DASD_ECKD_H
@@ -1638,6 +1638,24 @@ id|__attribute__
 id|packed
 )paren
 )paren
+suffix:semicolon
+DECL|struct|dasd_eckd_path
+r_struct
+id|dasd_eckd_path
+(brace
+DECL|member|opm
+id|__u8
+id|opm
+suffix:semicolon
+DECL|member|ppm
+id|__u8
+id|ppm
+suffix:semicolon
+DECL|member|npm
+id|__u8
+id|npm
+suffix:semicolon
+)brace
 suffix:semicolon
 multiline_comment|/*&n; * Perform Subsystem Function - Prepare for Read Subsystem Data&t; &n; */
 DECL|struct|dasd_psf_prssd_data

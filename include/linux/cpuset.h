@@ -179,7 +179,6 @@ id|p
 DECL|function|cpuset_cpus_allowed
 r_static
 r_inline
-r_const
 id|cpumask_t
 id|cpuset_cpus_allowed
 c_func

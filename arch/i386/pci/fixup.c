@@ -1361,7 +1361,7 @@ comma
 id|pcie_rootport_aspm_quirk
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Fixup to mark boot BIOS video selected by BIOS before it changes&n; *&n; * From information provided by &quot;Jon Smirl&quot; &lt;jonsmirl@yahoo.com&gt;&n; *&n; * The standard boot ROM sequence for an x86 machine uses the BIOS&n; * to select an initial video card for boot display. This boot video &n; * card will have it&squot;s BIOS copied to C0000 in system RAM. &n; * IORESOURCE_ROM_SHADOW is used to associate the boot video&n; * card with this copy. On laptops this copy has to be used since&n; * the main ROM may be compressed or combined with another image.&n; * See pci_map_rom() for use of this flag. IORESOURCE_ROM_SHADOW&n; * is marked here since the boot video device will be the only enabled&n; * video device at this point.&n; *&n; */
+multiline_comment|/*&n; * Fixup to mark boot BIOS video selected by BIOS before it changes&n; *&n; * From information provided by &quot;Jon Smirl&quot; &lt;jonsmirl@gmail.com&gt;&n; *&n; * The standard boot ROM sequence for an x86 machine uses the BIOS&n; * to select an initial video card for boot display. This boot video &n; * card will have it&squot;s BIOS copied to C0000 in system RAM. &n; * IORESOURCE_ROM_SHADOW is used to associate the boot video&n; * card with this copy. On laptops this copy has to be used since&n; * the main ROM may be compressed or combined with another image.&n; * See pci_map_rom() for use of this flag. IORESOURCE_ROM_SHADOW&n; * is marked here since the boot video device will be the only enabled&n; * video device at this point.&n; */
 DECL|function|pci_fixup_video
 r_static
 r_void
@@ -1386,7 +1386,7 @@ op_star
 id|bus
 suffix:semicolon
 id|u16
-id|l
+id|config
 suffix:semicolon
 r_if
 c_cond
@@ -1432,7 +1432,7 @@ comma
 id|PCI_BRIDGE_CONTROL
 comma
 op_amp
-id|l
+id|config
 )paren
 suffix:semicolon
 r_if
@@ -1440,7 +1440,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|l
+id|config
 op_amp
 id|PCI_BRIDGE_CTL_VGA
 )paren
@@ -1453,6 +1453,29 @@ op_assign
 id|bus-&gt;parent
 suffix:semicolon
 )brace
+id|pci_read_config_word
+c_func
+(paren
+id|pdev
+comma
+id|PCI_COMMAND
+comma
+op_amp
+id|config
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|config
+op_amp
+(paren
+id|PCI_COMMAND_IO
+op_or
+id|PCI_COMMAND_MEMORY
+)paren
+)paren
+(brace
 id|pdev-&gt;resource
 (braket
 id|PCI_ROM_RESOURCE
@@ -1462,6 +1485,20 @@ id|flags
 op_or_assign
 id|IORESOURCE_ROM_SHADOW
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Boot video device is %s&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 id|DECLARE_PCI_FIXUP_HEADER
 c_func

@@ -191,7 +191,7 @@ id|stnr
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -251,7 +251,7 @@ id|l64
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -577,7 +577,7 @@ id|negative
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -851,7 +851,7 @@ l_int|0
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -962,7 +962,7 @@ id|negative
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -1069,7 +1069,7 @@ id|negative
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -1196,7 +1196,7 @@ id|sign
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -1368,7 +1368,7 @@ id|TAG_Empty
 (brace
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -1467,7 +1467,7 @@ multiline_comment|/* The masked response */
 multiline_comment|/* Put out the QNaN indefinite */
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -2337,7 +2337,7 @@ multiline_comment|/* The masked response */
 multiline_comment|/* Put out the QNaN indefinite */
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -2406,7 +2406,7 @@ l_int|0x80000000
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -3194,7 +3194,7 @@ multiline_comment|/* The masked response */
 multiline_comment|/* Put out the QNaN indefinite */
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -3260,7 +3260,7 @@ l_int|0x80000000
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -3530,7 +3530,7 @@ suffix:semicolon
 )brace
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -3757,7 +3757,7 @@ suffix:semicolon
 )brace
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -3984,7 +3984,7 @@ suffix:semicolon
 )brace
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -4201,7 +4201,7 @@ id|CW_Invalid
 multiline_comment|/* Produce the QNaN &quot;indefinite&quot; */
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -4295,7 +4295,7 @@ suffix:semicolon
 )brace
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -4686,7 +4686,7 @@ id|OP_SIZE_PREFIX
 (brace
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -4858,7 +4858,7 @@ r_else
 (brace
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -5293,7 +5293,7 @@ suffix:semicolon
 multiline_comment|/* Copy all registers in stack order. */
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -5432,7 +5432,7 @@ id|OP_SIZE_PREFIX
 (brace
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -5658,7 +5658,7 @@ r_else
 (brace
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -5789,7 +5789,7 @@ id|data_address
 suffix:semicolon
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
-id|FPU_verify_area
+id|FPU_access_ok
 c_func
 (paren
 id|VERIFY_WRITE

@@ -714,6 +714,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|samsung_tdtc9251dh0_pll_set
+r_static
 r_int
 id|samsung_tdtc9251dh0_pll_set
 c_func

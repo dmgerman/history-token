@@ -1649,11 +1649,6 @@ id|lp-&gt;list
 )paren
 comma
 dot
-id|lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-comma
-dot
 id|dev
 op_assign
 id|dev
@@ -1745,6 +1740,13 @@ c_func
 (paren
 op_amp
 id|lp-&gt;tl
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
 )paren
 suffix:semicolon
 id|lp-&gt;tl.function

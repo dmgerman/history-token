@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 multiline_comment|/* &n; * The timezone where the local system is located.  Used as a default by some&n; * programs who obtain this value by using gettimeofday.&n; */
@@ -593,6 +594,24 @@ id|timeval
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* we call this to notify the arch when the clock is being&n; * controlled.  If no such arch routine, do nothing.&n; */
+DECL|function|notify_arch_cmos_timer
+r_void
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+id|notify_arch_cmos_timer
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* adjtimex mainly allows reading (and writing, if superuser) of&n; * kernel time-keeping variables. used by xntpd.&n; */
 DECL|function|do_adjtimex
 r_int
@@ -1421,6 +1440,11 @@ op_amp
 id|txc-&gt;time
 )paren
 suffix:semicolon
+id|notify_arch_cmos_timer
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|result
 suffix:semicolon
@@ -1756,6 +1780,13 @@ op_assign
 id|nsec
 suffix:semicolon
 )brace
+DECL|variable|getnstimeofday
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|getnstimeofday
+)paren
+suffix:semicolon
 DECL|function|do_settimeofday
 r_int
 id|do_settimeofday

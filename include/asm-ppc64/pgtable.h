@@ -1422,6 +1422,33 @@ mdefine_line|#define  ptep_set_access_flags(__vma, __address, __ptep, __entry, _
 multiline_comment|/*&n; * Macro to mark a page protection value as &quot;uncacheable&quot;.&n; */
 DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;(__pgprot(pgprot_val(prot) | _PAGE_NO_CACHE | _PAGE_GUARDED))
+r_struct
+id|file
+suffix:semicolon
+r_extern
+id|pgprot_t
+id|phys_mem_access_prot
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|size
+comma
+id|pgprot_t
+id|vma_prot
+)paren
+suffix:semicolon
+DECL|macro|__HAVE_PHYS_MEM_ACCESS_PROT
+mdefine_line|#define __HAVE_PHYS_MEM_ACCESS_PROT
 DECL|macro|__HAVE_ARCH_PTE_SAME
 mdefine_line|#define __HAVE_ARCH_PTE_SAME
 DECL|macro|pte_same
@@ -1532,6 +1559,14 @@ DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range(vma, vaddr, paddr, size, prot)&t;&t;&bslash;&n;&t;&t;remap_pfn_range(vma, vaddr, (paddr) &gt;&gt; PAGE_SHIFT, size, prot)
+DECL|macro|io_remap_pfn_range
+mdefine_line|#define io_remap_pfn_range(vma, vaddr, pfn, size, prot)&t;&t;&bslash;&n;&t;&t;remap_pfn_range(vma, vaddr, pfn, size, prot)
+DECL|macro|MK_IOSPACE_PFN
+mdefine_line|#define MK_IOSPACE_PFN(space, pfn)&t;(pfn)
+DECL|macro|GET_IOSPACE
+mdefine_line|#define GET_IOSPACE(pfn)&t;&t;0
+DECL|macro|GET_PFN
+mdefine_line|#define GET_PFN(pfn)&t;&t;&t;(pfn)
 r_void
 id|pgtable_cache_init
 c_func

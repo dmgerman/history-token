@@ -25,6 +25,13 @@ id|sysctl_vfs_cache_pressure
 op_assign
 l_int|100
 suffix:semicolon
+DECL|variable|sysctl_vfs_cache_pressure
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|sysctl_vfs_cache_pressure
+)paren
+suffix:semicolon
 id|__cacheline_aligned_in_smp
 id|DEFINE_SPINLOCK
 c_func

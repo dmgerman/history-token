@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/qdio.h&gt;
 macro_line|#include &quot;cio.h&quot;
 macro_line|#include &quot;cio_debug.h&quot;
 macro_line|#include &quot;css.h&quot;
+macro_line|#include &quot;chsc.h&quot;
 macro_line|#include &quot;device.h&quot;
 macro_line|#include &quot;qdio.h&quot;
 r_int
@@ -1299,6 +1300,9 @@ id|ccw
 comma
 r_int
 id|magic
+comma
+id|__u8
+id|lpm
 )paren
 (brace
 r_int
@@ -1327,7 +1331,7 @@ id|sch
 comma
 id|ccw
 comma
-l_int|0
+id|lpm
 )paren
 suffix:semicolon
 r_if
@@ -1768,6 +1772,8 @@ comma
 id|rdc_ccw
 comma
 l_int|0x00D9C4C3
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Restore interrupt handler. */
@@ -1797,10 +1803,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Read Configuration data&n; */
+multiline_comment|/*&n; *  Read Configuration data using path mask&n; */
 r_int
-DECL|function|read_conf_data
-id|read_conf_data
+DECL|function|read_conf_data_lpm
+id|read_conf_data_lpm
 (paren
 r_struct
 id|ccw_device
@@ -1815,6 +1821,9 @@ comma
 r_int
 op_star
 id|length
+comma
+id|__u8
+id|lpm
 )paren
 (brace
 r_void
@@ -2103,6 +2112,8 @@ comma
 id|rcd_ccw
 comma
 l_int|0x00D9C3C4
+comma
+id|lpm
 )paren
 suffix:semicolon
 multiline_comment|/* Restore interrupt handler. */
@@ -2161,6 +2172,39 @@ id|rcd_ccw
 suffix:semicolon
 r_return
 id|ret
+suffix:semicolon
+)brace
+multiline_comment|/*&n; *  Read Configuration data&n; */
+r_int
+DECL|function|read_conf_data
+id|read_conf_data
+(paren
+r_struct
+id|ccw_device
+op_star
+id|cdev
+comma
+r_void
+op_star
+op_star
+id|buffer
+comma
+r_int
+op_star
+id|length
+)paren
+(brace
+r_return
+id|read_conf_data_lpm
+(paren
+id|cdev
+comma
+id|buffer
+comma
+id|length
+comma
+l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Try to break the lock on a boxed device.&n; */
@@ -2625,6 +2669,44 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_void
+op_star
+DECL|function|ccw_device_get_chp_desc
+id|ccw_device_get_chp_desc
+c_func
+(paren
+r_struct
+id|ccw_device
+op_star
+id|cdev
+comma
+r_int
+id|chp_no
+)paren
+(brace
+r_struct
+id|subchannel
+op_star
+id|sch
+suffix:semicolon
+id|sch
+op_assign
+id|to_subchannel
+c_func
+(paren
+id|cdev-&gt;dev.parent
+)paren
+suffix:semicolon
+r_return
+id|chsc_get_chp_desc
+c_func
+(paren
+id|sch
+comma
+id|chp_no
+)paren
+suffix:semicolon
+)brace
 singleline_comment|// FIXME: these have to go:
 r_int
 DECL|function|_ccw_device_get_subchannel_number
@@ -2766,6 +2848,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|_ccw_device_get_device_number
+)paren
+suffix:semicolon
+DECL|variable|ccw_device_get_chp_desc
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ccw_device_get_chp_desc
+)paren
+suffix:semicolon
+DECL|variable|read_conf_data_lpm
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|read_conf_data_lpm
 )paren
 suffix:semicolon
 eof

@@ -2074,7 +2074,7 @@ id|super_block
 op_star
 id|s
 comma
-id|time_t
+id|time32_t
 id|t
 )paren
 (brace
@@ -2102,7 +2102,7 @@ suffix:semicolon
 DECL|function|gmt_to_local
 r_static
 r_inline
-id|time_t
+id|time32_t
 id|gmt_to_local
 c_func
 (paren

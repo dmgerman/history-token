@@ -121,7 +121,7 @@ l_int|0
 id|err
 c_func
 (paren
-l_string|&quot;did not find a valid firmware file. (%s) &quot;
+l_string|&quot;did not find the firmware file. (%s) &quot;
 l_string|&quot;Please see linux/Documentation/dvb/ for more details on firmware-problems.&quot;
 comma
 id|dibdev-&gt;dev_cl-&gt;firmware
@@ -131,6 +131,14 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+id|info
+c_func
+(paren
+l_string|&quot;downloading firmware from file &squot;%s&squot;.&quot;
+comma
+id|dibdev-&gt;dev_cl-&gt;firmware
+)paren
+suffix:semicolon
 id|p
 op_assign
 id|kmalloc

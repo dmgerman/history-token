@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 multiline_comment|/* Allocate the top level pgd (page directory)&n; *&n; * Here (for 64 bit kernels) we implement a Hybrid L2/L3 scheme: we&n; * allocate the first pmd adjacent to the pgd.  This means that we can&n; * subtract a constant offset to get to it.  The pmd and pgd sizes are&n; * arranged so that a single pmd covers 4GB (giving a full LP64&n; * process access to 8TB) so our lookups are effectively L2 for the&n; * first 4GB of the kernel (i.e. for all ILP32 processes and all the&n; * kernel for machines with under 4GB of memory) */
 DECL|function|pgd_alloc

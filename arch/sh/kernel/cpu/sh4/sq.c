@@ -1097,7 +1097,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|io_remap_page_range
+id|io_remap_pfn_range
 c_func
 (paren
 id|vma
@@ -1105,6 +1105,8 @@ comma
 id|map-&gt;sq_addr
 comma
 id|map-&gt;addr
+op_rshift
+id|PAGE_SHIFT
 comma
 id|size
 comma

@@ -31267,12 +31267,6 @@ id|off3max
 op_assign
 l_int|0
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|lcp
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -31291,6 +31285,12 @@ id|lcp-&gt;filter
 )paren
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|lcp
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

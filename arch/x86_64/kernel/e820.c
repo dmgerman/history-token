@@ -2158,7 +2158,6 @@ op_star
 id|from
 )paren
 (brace
-multiline_comment|/*&n;&t; * mem=XXX[kKmM] limits kernel memory to XXX+1MB&n;&t; *&n;&t; * It would be more logical to count from 0 instead of from&n;&t; * HIGH_MEMORY, but we keep that for now for i386 compatibility. &n;&t; *&t;&n;&t; * No support for custom mapping like i386.  The reason is&n;&t; * that we need to read the e820 map anyways to handle the&n;&t; * ACPI mappings in the direct map.  Also on x86-64 there&n;&t; * should be always a good e820 map. This is only an upper&n;&t; * limit, you cannot force usage of memory not in e820.&n;&t; *&n;&t; * -AK&n;&t;&t;&t; */
 id|end_user_pfn
 op_assign
 id|memparse
@@ -2168,8 +2167,6 @@ id|p
 comma
 id|from
 )paren
-op_plus
-id|HIGH_MEMORY
 suffix:semicolon
 id|end_user_pfn
 op_rshift_assign

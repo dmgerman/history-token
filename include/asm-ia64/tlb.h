@@ -385,7 +385,13 @@ r_int
 r_int
 id|rss
 op_assign
-id|mm-&gt;rss
+id|get_mm_counter
+c_func
+(paren
+id|mm
+comma
+id|rss
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -398,11 +404,16 @@ id|freed
 op_assign
 id|rss
 suffix:semicolon
-id|mm-&gt;rss
-op_assign
+id|add_mm_counter
+c_func
+(paren
+id|mm
+comma
 id|rss
+comma
 op_minus
 id|freed
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Note: tlb-&gt;nr may be 0 at this point, so we can&squot;t rely on tlb-&gt;start_addr and&n;&t; * tlb-&gt;end_addr.&n;&t; */
 id|ia64_tlb_flush_mmu

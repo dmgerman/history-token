@@ -3195,9 +3195,15 @@ id|current-&gt;mm
 )paren
 suffix:semicolon
 multiline_comment|/* Do this so that we can load the interpreter, if need be.  We will&n;&t;   change some of these later */
-id|current-&gt;mm-&gt;rss
-op_assign
+id|set_mm_counter
+c_func
+(paren
+id|current-&gt;mm
+comma
+id|rss
+comma
 l_int|0
+)paren
 suffix:semicolon
 id|current-&gt;mm-&gt;free_area_cache
 op_assign

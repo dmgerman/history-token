@@ -1166,7 +1166,7 @@ DECL|macro|DIB3000MC_FIFO_THRESHOLD_DEFAULT
 mdefine_line|#define DIB3000MC_FIFO_THRESHOLD_DEFAULT&t;(  1792)
 DECL|macro|DIB3000MC_FIFO_THRESHOLD_SLAVE
 mdefine_line|#define DIB3000MC_FIFO_THRESHOLD_SLAVE&t;(   512)
-multiline_comment|/*&n; * pidfilter&n; * it is not a hardware pidfilter but a filter which drops all pids&n; * except the ones set. When connected to USB1.1 bandwidth this is important.&n; * DiB3000-MC/P can filter up to 32 PIDs&n; */
+multiline_comment|/*&n; * pidfilter&n; * it is not a hardware pidfilter but a filter which drops all pids&n; * except the ones set. When connected to USB1.1 bandwidth this is important.&n; * DiB3000P/M-C can filter up to 32 PIDs&n; */
 DECL|macro|DIB3000MC_REG_FIRST_PID
 mdefine_line|#define DIB3000MC_REG_FIRST_PID&t;&t;&t;(   212)
 DECL|macro|DIB3000MC_NUM_PIDS

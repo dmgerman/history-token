@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/mach_apic.h&gt;
+macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 multiline_comment|/*&n; *&t;Smarter SMP flushing macros. &n; *&t;&t;c/o Linus Torvalds.&n; *&n; *&t;These mean you can really definitely utterly forget about&n; *&t;writing to user space from interrupts. (Its not allowed anyway).&n; *&n; *&t;Optimizations Manfred Spraul &lt;manfred@colorfullife.com&gt;&n; */
 DECL|variable|flush_cpumask
@@ -41,7 +42,7 @@ id|tlbstate_lock
 )paren
 suffix:semicolon
 DECL|macro|FLUSH_ALL
-mdefine_line|#define FLUSH_ALL&t;0xffffffff
+mdefine_line|#define FLUSH_ALL&t;-1ULL
 multiline_comment|/*&n; * We cannot call mmdrop() because we are in interrupt context, &n; * instead update mm-&gt;cpu_vm_mask.&n; */
 DECL|function|leave_mm
 r_static
@@ -85,9 +86,10 @@ op_member_access_from_pointer
 id|cpu_vm_mask
 )paren
 suffix:semicolon
-id|__flush_tlb
+id|load_cr3
 c_func
 (paren
+id|swapper_pg_dir
 )paren
 suffix:semicolon
 )brace

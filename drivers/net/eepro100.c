@@ -408,7 +408,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|txdmaccount
+id|txdmacount
 comma
 l_string|&quot;Tx DMA burst length; 128 - disable (0-128)&quot;
 )paren
@@ -416,7 +416,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|rxdmaccount
+id|rxdmacount
 comma
 l_string|&quot;Rx DMA burst length; 128 - disable (0-128)&quot;
 )paren

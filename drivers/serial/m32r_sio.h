@@ -123,11 +123,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-DECL|member|hub6
-r_int
-r_char
-id|hub6
-suffix:semicolon
 DECL|member|io_type
 r_int
 r_char

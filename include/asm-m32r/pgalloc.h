@@ -5,7 +5,6 @@ multiline_comment|/* $Id$ */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
 DECL|macro|pmd_populate_kernel
 mdefine_line|#define pmd_populate_kernel(mm, pmd, pte)&t;&bslash;&n;&t;set_pmd(pmd, __pmd(_PAGE_TABLE + __pa(pte)))
 DECL|function|pmd_populate

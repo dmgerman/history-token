@@ -1900,6 +1900,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* log10-1 table at .5 increments from 1 to 100.5 */
 DECL|variable|i100x20log10
+r_static
 r_int
 r_int
 id|i100x20log10
@@ -2310,6 +2311,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|denom
+r_static
 r_int
 r_int
 id|denom
@@ -2337,6 +2339,7 @@ l_int|100000000
 )brace
 suffix:semicolon
 DECL|function|i20Log10
+r_static
 r_int
 r_int
 id|i20Log10

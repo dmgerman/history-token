@@ -863,18 +863,21 @@ id|timing-&gt;hscale
 op_amp
 l_int|0xff
 suffix:semicolon
+multiline_comment|/* 0x15 in array is address 0x19 */
 id|init
 (braket
-l_int|0x19
+l_int|0x15
 op_star
 l_int|2
 op_minus
 l_int|1
 )braket
 op_assign
+(paren
 id|decoder-&gt;norm
 op_eq
 l_int|0
+)paren
 ques
 c_cond
 l_int|115

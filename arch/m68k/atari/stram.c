@@ -1809,8 +1809,13 @@ c_func
 id|page
 )paren
 suffix:semicolon
-op_increment
-id|vma-&gt;vm_mm-&gt;rss
+id|inc_mm_counter
+c_func
+(paren
+id|vma-&gt;vm_mm
+comma
+id|rss
+)paren
 suffix:semicolon
 )brace
 DECL|function|unswap_pmd

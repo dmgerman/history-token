@@ -149,9 +149,18 @@ id|PMSG_SUSPEND
 )paren
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Some devices failed to suspend&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|Finish
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -224,9 +233,18 @@ id|PMSG_SUSPEND
 )paren
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Some devices failed to power down&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|Done
 suffix:semicolon
+)brace
 id|error
 op_assign
 id|pm_ops

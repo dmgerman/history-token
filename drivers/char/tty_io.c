@@ -10457,6 +10457,10 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|tty-&gt;overrun_time
+op_assign
+id|jiffies
+suffix:semicolon
 id|tty-&gt;flip.char_buf_ptr
 op_assign
 id|tty-&gt;flip.char_buf

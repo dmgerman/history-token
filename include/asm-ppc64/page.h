@@ -50,7 +50,7 @@ mdefine_line|#define ARCH_HAS_HUGEPAGE_ONLY_RANGE
 DECL|macro|ARCH_HAS_PREPARE_HUGEPAGE_RANGE
 mdefine_line|#define ARCH_HAS_PREPARE_HUGEPAGE_RANGE
 DECL|macro|touches_hugepage_low_range
-mdefine_line|#define touches_hugepage_low_range(addr, len) &bslash;&n;&t;(LOW_ESID_MASK((addr), (len)) &amp; current-&gt;mm-&gt;context.htlb_segs)
+mdefine_line|#define touches_hugepage_low_range(mm, addr, len) &bslash;&n;&t;(LOW_ESID_MASK((addr), (len)) &amp; mm-&gt;context.htlb_segs)
 DECL|macro|touches_hugepage_high_range
 mdefine_line|#define touches_hugepage_high_range(addr, len) &bslash;&n;&t;(((addr) &gt; (TASK_HPAGE_BASE-(len))) &amp;&amp; ((addr) &lt; TASK_HPAGE_END))
 DECL|macro|__within_hugepage_low_range
@@ -60,7 +60,7 @@ mdefine_line|#define within_hugepage_low_range(addr, len) &bslash;&n;&t;__within
 DECL|macro|within_hugepage_high_range
 mdefine_line|#define within_hugepage_high_range(addr, len) (((addr) &gt;= TASK_HPAGE_BASE) &bslash;&n;&t;  &amp;&amp; ((addr)+(len) &lt;= TASK_HPAGE_END) &amp;&amp; ((addr)+(len) &gt;= (addr)))
 DECL|macro|is_hugepage_only_range
-mdefine_line|#define is_hugepage_only_range(addr, len) &bslash;&n;&t;(touches_hugepage_high_range((addr), (len)) || &bslash;&n;&t;  touches_hugepage_low_range((addr), (len)))
+mdefine_line|#define is_hugepage_only_range(mm, addr, len) &bslash;&n;&t;(touches_hugepage_high_range((addr), (len)) || &bslash;&n;&t;  touches_hugepage_low_range((mm), (addr), (len)))
 DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 DECL|macro|in_hugepage_area

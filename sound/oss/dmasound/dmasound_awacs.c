@@ -13928,7 +13928,8 @@ id|io
 )paren
 suffix:semicolon
 multiline_comment|/* figure out if the h/w can do it */
-multiline_comment|/* get default volume from nvram&n;&t; * vol = (~nvram_read_byte(0x1308) &amp; 7) &lt;&lt; 1;&n;&t;*/
+macro_line|#ifdef CONFIG_NVRAM
+multiline_comment|/* get default volume from nvram */
 id|vol
 op_assign
 (paren
@@ -13945,6 +13946,12 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#else
+id|vol
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* set up tracking values */
 id|spk_vol
 op_assign

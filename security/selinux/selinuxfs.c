@@ -111,6 +111,7 @@ id|val
 suffix:semicolon
 multiline_comment|/* Check whether a task is allowed to use a security operation. */
 DECL|function|task_has_security
+r_static
 r_int
 id|task_has_security
 c_func
