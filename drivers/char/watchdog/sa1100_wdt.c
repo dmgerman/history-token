@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Watchdog driver for the SA11x0&n; *&n; *      (c) Copyright 2000 Oleg Drokin &lt;green@crimea.edu&gt;&n; *          Based on SoftDog driver by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Neither Oleg Drokin nor iXcelerator.com admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;(c) Copyright 2000           Oleg Drokin &lt;green@crimea.edu&gt;&n; *&n; *      27/11/2000 Initial release&n; */
+multiline_comment|/*&n; *&t;Watchdog driver for the SA11x0/PXA2xx&n; *&n; *      (c) Copyright 2000 Oleg Drokin &lt;green@crimea.edu&gt;&n; *          Based on SoftDog driver by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Neither Oleg Drokin nor iXcelerator.com admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;(c) Copyright 2000           Oleg Drokin &lt;green@crimea.edu&gt;&n; *&n; *      27/11/2000 Initial release&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -574,7 +574,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;SA1100 watchdog&quot;
+l_string|&quot;SA1100/PXA2xx watchdog&quot;
 comma
 dot
 id|fops
@@ -645,7 +645,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;SA1100 Watchdog Timer: timer margin %d sec&bslash;n&quot;
+l_string|&quot;SA1100/PXA2xx Watchdog Timer: timer margin %d sec&bslash;n&quot;
 comma
 id|margin
 )paren
@@ -695,7 +695,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;SA1100 Watchdog&quot;
+l_string|&quot;SA1100/PXA2xx Watchdog&quot;
 )paren
 suffix:semicolon
 id|module_param
