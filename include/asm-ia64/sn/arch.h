@@ -25,8 +25,6 @@ r_typedef
 id|u64
 id|nic_t
 suffix:semicolon
-DECL|macro|CNODE_TO_CPU_BASE
-mdefine_line|#define CNODE_TO_CPU_BASE(_cnode)&t;(sn_get_node_first_cpu(_cnode))
 DECL|macro|NASID_TO_COMPACT_NODEID
 mdefine_line|#define NASID_TO_COMPACT_NODEID(nasid)  (nasid_to_cnodeid(nasid))
 DECL|macro|COMPACT_TO_NASID_NODEID
@@ -51,6 +49,7 @@ c_func
 id|cnodeid_t
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|sn_flush_all_caches
 c_func
