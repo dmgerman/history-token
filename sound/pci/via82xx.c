@@ -6336,6 +6336,7 @@ id|port
 op_assign
 id|chip-&gt;port
 op_plus
+(paren
 id|kcontrol-&gt;id.index
 ques
 c_cond
@@ -6346,6 +6347,7 @@ l_int|0x10
 )paren
 suffix:colon
 id|VIA_REG_CAPTURE_CHANNEL
+)paren
 suffix:semicolon
 id|ucontrol-&gt;value.enumerated.item
 (braket
@@ -6400,6 +6402,7 @@ id|port
 op_assign
 id|chip-&gt;port
 op_plus
+(paren
 id|kcontrol-&gt;id.index
 ques
 c_cond
@@ -6410,6 +6413,7 @@ l_int|0x10
 )paren
 suffix:colon
 id|VIA_REG_CAPTURE_CHANNEL
+)paren
 suffix:semicolon
 r_int
 r_int
