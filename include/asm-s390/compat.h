@@ -3,6 +3,7 @@ DECL|macro|_ASM_S390X_COMPAT_H
 mdefine_line|#define _ASM_S390X_COMPAT_H
 multiline_comment|/*&n; * Architecture specific compatibility types&n; */
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 DECL|macro|COMPAT_USER_HZ
 mdefine_line|#define COMPAT_USER_HZ&t;100
 DECL|typedef|compat_size_t
@@ -385,6 +386,55 @@ r_int
 id|uptr
 op_amp
 l_int|0x7fffffffUL
+)paren
+suffix:semicolon
+)brace
+DECL|function|compat_alloc_user_space
+r_static
+r_inline
+r_void
+op_star
+id|compat_alloc_user_space
+c_func
+(paren
+r_int
+id|len
+)paren
+(brace
+r_int
+r_int
+id|stack
+suffix:semicolon
+id|stack
+op_assign
+id|KSTK_ESP
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_thread_flag
+c_func
+(paren
+id|TIF_31BIT
+)paren
+)paren
+id|stack
+op_and_assign
+l_int|0x7fffffffUL
+suffix:semicolon
+r_return
+(paren
+r_void
+op_star
+)paren
+(paren
+id|stack
+op_minus
+id|len
 )paren
 suffix:semicolon
 )brace
