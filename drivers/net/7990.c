@@ -1,7 +1,6 @@
 multiline_comment|/* &n; * 7990.c -- LANCE ethernet IC generic routines. &n; * This is an attempt to separate out the bits of various ethernet&n; * drivers that are common because they all use the AMD 7990 LANCE &n; * (Local Area Network Controller for Ethernet) chip.&n; *&n; * Copyright (C) 05/1998 Peter Maydell &lt;pmaydell@chiark.greenend.org.uk&gt;&n; *&n; * Most of this stuff was obtained by looking at other LANCE drivers,&n; * in particular a2065.[ch]. The AMD C-LANCE datasheet was also helpful.&n; * NB: this was made easy by the fact that Jes Sorensen had cleaned up&n; * most of a2025 and sunlance with the aim of merging them, so the &n; * common code was pretty obvious.&n; */
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/dio.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -17,6 +16,7 @@ macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 multiline_comment|/* Used for the temporal inet entries and routing */
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
@@ -24,17 +24,189 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#ifdef CONFIG_HP300
+macro_line|#include &lt;asm/blinken.h&gt;
+macro_line|#endif
 macro_line|#include &quot;7990.h&quot;
+DECL|macro|WRITERAP
+mdefine_line|#define WRITERAP(lp,x) out_be16(lp-&gt;base + LANCE_RAP, (x))
+DECL|macro|WRITERDP
+mdefine_line|#define WRITERDP(lp,x) out_be16(lp-&gt;base + LANCE_RDP, (x))
+DECL|macro|READRDP
+mdefine_line|#define READRDP(lp) in_be16(lp-&gt;base + LANCE_RDP)
+macro_line|#if defined(CONFIG_HPLANCE) || defined(CONFIG_HPLANCE_MODULE)
+macro_line|#include &quot;hplance.h&quot;
+DECL|macro|WRITERAP
+macro_line|#undef WRITERAP
+DECL|macro|WRITERDP
+macro_line|#undef WRITERDP
+DECL|macro|READRDP
+macro_line|#undef READRDP
+macro_line|#if defined(CONFIG_MVME147_NET) || defined(CONFIG_MVME147_NET_MODULE)
 multiline_comment|/* Lossage Factor Nine, Mr Sulu. */
 DECL|macro|WRITERAP
-mdefine_line|#define WRITERAP(x) (lp-&gt;writerap(lp,x))
+mdefine_line|#define WRITERAP(lp,x) (lp-&gt;writerap(lp,x))
 DECL|macro|WRITERDP
-mdefine_line|#define WRITERDP(x) (lp-&gt;writerdp(lp,x))
+mdefine_line|#define WRITERDP(lp,x) (lp-&gt;writerdp(lp,x))
 DECL|macro|READRDP
-mdefine_line|#define READRDP() (lp-&gt;readrdp(lp))
-multiline_comment|/* These used to be ll-&gt;rap = x, ll-&gt;rdp = x, and (ll-&gt;rdp). Sigh. &n; * If you want to switch them back then &n; * #define DECLARE_LL volatile struct lance_regs *ll = lp-&gt;ll&n; */
-DECL|macro|DECLARE_LL
-mdefine_line|#define DECLARE_LL /* nothing to declare */
+mdefine_line|#define READRDP(lp) (lp-&gt;readrdp(lp))
+macro_line|#else
+multiline_comment|/* These inlines can be used if only CONFIG_HPLANCE is defined */
+DECL|function|WRITERAP
+r_static
+r_inline
+r_void
+id|WRITERAP
+c_func
+(paren
+r_struct
+id|lance_private
+op_star
+id|lp
+comma
+id|__u16
+id|value
+)paren
+(brace
+r_do
+(brace
+id|out_be16
+c_func
+(paren
+id|lp-&gt;base
+op_plus
+id|HPLANCE_REGOFF
+op_plus
+id|LANCE_RAP
+comma
+id|value
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|in_8
+c_func
+(paren
+id|lp-&gt;base
+op_plus
+id|HPLANCE_STATUS
+)paren
+op_amp
+id|LE_ACK
+)paren
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|WRITERDP
+r_static
+r_inline
+r_void
+id|WRITERDP
+c_func
+(paren
+r_struct
+id|lance_private
+op_star
+id|lp
+comma
+id|__u16
+id|value
+)paren
+(brace
+r_do
+(brace
+id|out_be16
+c_func
+(paren
+id|lp-&gt;base
+op_plus
+id|HPLANCE_REGOFF
+op_plus
+id|LANCE_RDP
+comma
+id|value
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|in_8
+c_func
+(paren
+id|lp-&gt;base
+op_plus
+id|HPLANCE_STATUS
+)paren
+op_amp
+id|LE_ACK
+)paren
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|READRDP
+r_static
+r_inline
+id|__u16
+id|READRDP
+c_func
+(paren
+r_struct
+id|lance_private
+op_star
+id|lp
+)paren
+(brace
+id|__u16
+id|value
+suffix:semicolon
+r_do
+(brace
+id|value
+op_assign
+id|in_be16
+c_func
+(paren
+id|lp-&gt;base
+op_plus
+id|HPLANCE_REGOFF
+op_plus
+id|LANCE_RDP
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|in_8
+c_func
+(paren
+id|lp-&gt;base
+op_plus
+id|HPLANCE_STATUS
+)paren
+op_amp
+id|LE_ACK
+)paren
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+r_return
+id|value
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#endif /* CONFIG_HPLANCE || CONFIG_HPLANCE_MODULE */
 multiline_comment|/* debugging output macros, various flavours */
 multiline_comment|/* #define TEST_HITS */
 macro_line|#ifdef UNDEF
@@ -67,8 +239,6 @@ suffix:semicolon
 r_int
 id|leptr
 suffix:semicolon
-id|DECLARE_LL
-suffix:semicolon
 id|leptr
 op_assign
 id|LANCE_ADDR
@@ -79,6 +249,8 @@ suffix:semicolon
 id|WRITERAP
 c_func
 (paren
+id|lp
+comma
 id|LE_CSR1
 )paren
 suffix:semicolon
@@ -86,6 +258,8 @@ multiline_comment|/* load address of init block */
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|leptr
 op_amp
 l_int|0xFFFF
@@ -94,12 +268,16 @@ suffix:semicolon
 id|WRITERAP
 c_func
 (paren
+id|lp
+comma
 id|LE_CSR2
 )paren
 suffix:semicolon
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|leptr
 op_rshift
 l_int|16
@@ -108,12 +286,16 @@ suffix:semicolon
 id|WRITERAP
 c_func
 (paren
+id|lp
+comma
 id|LE_CSR3
 )paren
 suffix:semicolon
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|lp-&gt;busmaster_regval
 )paren
 suffix:semicolon
@@ -122,6 +304,8 @@ multiline_comment|/* Point back to csr0 */
 id|WRITERAP
 c_func
 (paren
+id|lp
+comma
 id|LE_CSR0
 )paren
 suffix:semicolon
@@ -622,17 +806,19 @@ id|lp
 r_int
 id|i
 suffix:semicolon
-id|DECLARE_LL
-suffix:semicolon
 id|WRITERAP
 c_func
 (paren
+id|lp
+comma
 id|LE_CSR0
 )paren
 suffix:semicolon
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|LE_C0_INIT
 )paren
 suffix:semicolon
@@ -656,6 +842,7 @@ op_logical_neg
 id|READRDP
 c_func
 (paren
+id|lp
 )paren
 op_amp
 (paren
@@ -686,6 +873,7 @@ op_logical_or
 id|READRDP
 c_func
 (paren
+id|lp
 )paren
 op_amp
 id|LE_C0_ERR
@@ -701,6 +889,7 @@ comma
 id|READRDP
 c_func
 (paren
+id|lp
 )paren
 )paren
 suffix:semicolon
@@ -713,12 +902,16 @@ multiline_comment|/* Clear IDON by writing a &quot;1&quot;, enable interrupts an
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|LE_C0_IDON
 )paren
 suffix:semicolon
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|LE_C0_INEA
 op_or
 id|LE_C0_STRT
@@ -753,18 +946,20 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-id|DECLARE_LL
-suffix:semicolon
 multiline_comment|/* Stop the lance */
 id|WRITERAP
 c_func
 (paren
+id|lp
+comma
 id|LE_CSR0
 )paren
 suffix:semicolon
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|LE_C0_STOP
 )paren
 suffix:semicolon
@@ -861,8 +1056,6 @@ r_int
 id|i
 suffix:semicolon
 macro_line|#endif
-id|DECLARE_LL
-suffix:semicolon
 macro_line|#ifdef TEST_HITS
 id|printk
 (paren
@@ -937,9 +1130,21 @@ l_string|&quot;]&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_HP300
+id|blinken_leds
+c_func
+(paren
+l_int|0x40
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif    
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|LE_C0_RINT
 op_or
 id|LE_C0_INEA
@@ -1262,12 +1467,22 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-id|DECLARE_LL
+macro_line|#ifdef CONFIG_HP300
+id|blinken_leds
+c_func
+(paren
+l_int|0x80
+comma
+l_int|0
+)paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* csr0 is 2f3 */
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|LE_C0_TINT
 op_or
 id|LE_C0_INEA
@@ -1389,12 +1604,16 @@ multiline_comment|/* Stop the lance */
 id|WRITERAP
 c_func
 (paren
+id|lp
+comma
 id|LE_CSR0
 )paren
 suffix:semicolon
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|LE_C0_STOP
 )paren
 suffix:semicolon
@@ -1446,12 +1665,16 @@ multiline_comment|/* Stop the lance */
 id|WRITERAP
 c_func
 (paren
+id|lp
+comma
 id|LE_CSR0
 )paren
 suffix:semicolon
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|LE_C0_STOP
 )paren
 suffix:semicolon
@@ -1541,6 +1764,8 @@ suffix:semicolon
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|LE_C0_TINT
 op_or
 id|LE_C0_INEA
@@ -1594,8 +1819,6 @@ suffix:semicolon
 r_int
 id|csr0
 suffix:semicolon
-id|DECLARE_LL
-suffix:semicolon
 id|spin_lock
 (paren
 op_amp
@@ -1605,6 +1828,8 @@ suffix:semicolon
 id|WRITERAP
 c_func
 (paren
+id|lp
+comma
 id|LE_CSR0
 )paren
 suffix:semicolon
@@ -1614,6 +1839,7 @@ op_assign
 id|READRDP
 c_func
 (paren
+id|lp
 )paren
 suffix:semicolon
 id|PRINT_RINGS
@@ -1633,7 +1859,7 @@ id|LE_C0_INTR
 )paren
 (brace
 multiline_comment|/* Check if any interrupt has */
-id|spin_lock
+id|spin_unlock
 (paren
 op_amp
 id|lp-&gt;devlock
@@ -1648,6 +1874,8 @@ multiline_comment|/* Acknowledge all the interrupt sources ASAP */
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|csr0
 op_amp
 op_complement
@@ -1678,6 +1906,8 @@ multiline_comment|/* Clear the error condition */
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|LE_C0_BABL
 op_or
 id|LE_C0_ERR
@@ -1757,6 +1987,8 @@ multiline_comment|/* Restart the chip. */
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|LE_C0_STRT
 )paren
 suffix:semicolon
@@ -1792,12 +2024,16 @@ suffix:semicolon
 id|WRITERAP
 c_func
 (paren
+id|lp
+comma
 id|LE_CSR0
 )paren
 suffix:semicolon
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|LE_C0_BABL
 op_or
 id|LE_C0_CERR
@@ -1844,8 +2080,6 @@ id|dev
 suffix:semicolon
 r_int
 id|res
-suffix:semicolon
-id|DECLARE_LL
 suffix:semicolon
 multiline_comment|/* Install the Interrupt handler. Or we could shunt this out to specific drivers? */
 r_if
@@ -1914,8 +2148,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|DECLARE_LL
-suffix:semicolon
 id|netif_stop_queue
 (paren
 id|dev
@@ -1925,12 +2157,16 @@ multiline_comment|/* Stop the LANCE */
 id|WRITERAP
 c_func
 (paren
+id|lp
+comma
 id|LE_CSR0
 )paren
 suffix:semicolon
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|LE_C0_STOP
 )paren
 suffix:semicolon
@@ -2027,8 +2263,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|DECLARE_LL
 suffix:semicolon
 r_if
 c_cond
@@ -2220,6 +2454,8 @@ multiline_comment|/* Kick the lance: transmit now */
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|LE_C0_INEA
 op_or
 id|LE_C0_TDMD
@@ -2503,8 +2739,6 @@ suffix:semicolon
 r_int
 id|stopped
 suffix:semicolon
-id|DECLARE_LL
-suffix:semicolon
 id|stopped
 op_assign
 id|netif_queue_stopped
@@ -2539,12 +2773,16 @@ suffix:semicolon
 id|WRITERAP
 c_func
 (paren
+id|lp
+comma
 id|LE_CSR0
 )paren
 suffix:semicolon
 id|WRITERDP
 c_func
 (paren
+id|lp
+comma
 id|LE_C0_STOP
 )paren
 suffix:semicolon
@@ -2601,6 +2839,69 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+DECL|function|lance_poll
+r_void
+id|lance_poll
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|lance_private
+op_star
+id|lp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|spin_lock
+(paren
+op_amp
+id|lp-&gt;devlock
+)paren
+suffix:semicolon
+id|WRITERAP
+c_func
+(paren
+id|lp
+comma
+id|LE_CSR0
+)paren
+suffix:semicolon
+id|WRITERDP
+c_func
+(paren
+id|lp
+comma
+id|LE_C0_STRT
+)paren
+suffix:semicolon
+id|spin_unlock
+(paren
+op_amp
+id|lp-&gt;devlock
+)paren
+suffix:semicolon
+id|lance_interrupt
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 id|MODULE_LICENSE
 c_func
 (paren
