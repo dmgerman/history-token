@@ -1175,9 +1175,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_UNINTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -3488,9 +3490,11 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_UNINTERRUPTIBLE
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3538,9 +3542,11 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Buffer Utility Routines&n; */
