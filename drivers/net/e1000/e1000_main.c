@@ -2328,12 +2328,6 @@ id|adapter-&gt;hw.hw_addr
 suffix:semicolon
 id|err_ioremap
 suffix:colon
-id|pci_release_regions
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -2342,6 +2336,12 @@ id|netdev
 suffix:semicolon
 id|err_alloc_etherdev
 suffix:colon
+id|pci_release_regions
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
