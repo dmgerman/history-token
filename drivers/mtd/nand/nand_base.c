@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand.c&n; *&n; *  Overview:&n; *   This is the generic MTD driver for NAND flash devices. It should be&n; *   capable of working with almost all NAND chips currently available.&n; *   Basic support for AG-AND chips is provided.&n; *   &n; *&t;Additional technical information is available on&n; *&t;http://www.linux-mtd.infradead.org/tech/nand.html&n; *&t;&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; * &t;&t;  2002 Thomas Gleixner (tglx@linutronix.de)&n; *&n; *  02-08-2004  tglx: support for strange chips, which cannot auto increment &n; *&t;&t;pages on read / read_oob&n; *&n; *  03-17-2004  tglx: Check ready before auto increment check. Simon Bayes&n; *&t;&t;pointed this out, as he marked an auto increment capable chip&n; *&t;&t;as NOAUTOINCR in the board driver.&n; *&t;&t;Make reads over block boundaries work too&n; *&n; *  04-14-2004&t;tglx: first working version for 2k page size chips&n; *  &n; *  05-19-2004  tglx: Basic support for Renesas AG-AND chips&n; *&n; * Credits:&n; *&t;David Woodhouse for adding multichip support  &n; *&t;&n; *&t;Aleph One Ltd. and Toby Churchill Ltd. for supporting the&n; *&t;rework for 2K page size chips&n; *&n; * TODO:&n; *&t;Enable cached programming for 2k page size chips&n; *&t;Check, if mtd-&gt;ecctype should be set to MTD_ECC_HW&n; *&t;if we have HW ecc support.&n; *&t;The AG-AND chips have nice features for speed improvement,&n; *&t;which are not supported yet. Read / program 4 pages in one go.&n; *&n; * $Id: nand_base.c,v 1.113 2004/07/14 16:31:31 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand.c&n; *&n; *  Overview:&n; *   This is the generic MTD driver for NAND flash devices. It should be&n; *   capable of working with almost all NAND chips currently available.&n; *   Basic support for AG-AND chips is provided.&n; *   &n; *&t;Additional technical information is available on&n; *&t;http://www.linux-mtd.infradead.org/tech/nand.html&n; *&t;&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; * &t;&t;  2002 Thomas Gleixner (tglx@linutronix.de)&n; *&n; *  02-08-2004  tglx: support for strange chips, which cannot auto increment &n; *&t;&t;pages on read / read_oob&n; *&n; *  03-17-2004  tglx: Check ready before auto increment check. Simon Bayes&n; *&t;&t;pointed this out, as he marked an auto increment capable chip&n; *&t;&t;as NOAUTOINCR in the board driver.&n; *&t;&t;Make reads over block boundaries work too&n; *&n; *  04-14-2004&t;tglx: first working version for 2k page size chips&n; *  &n; *  05-19-2004  tglx: Basic support for Renesas AG-AND chips&n; *&n; * Credits:&n; *&t;David Woodhouse for adding multichip support  &n; *&t;&n; *&t;Aleph One Ltd. and Toby Churchill Ltd. for supporting the&n; *&t;rework for 2K page size chips&n; *&n; * TODO:&n; *&t;Enable cached programming for 2k page size chips&n; *&t;Check, if mtd-&gt;ecctype should be set to MTD_ECC_HW&n; *&t;if we have HW ecc support.&n; *&t;The AG-AND chips have nice features for speed improvement,&n; *&t;which are not supported yet. Read / program 4 pages in one go.&n; *&n; * $Id: nand_base.c,v 1.115 2004/08/09 13:19:45 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#if defined(CONFIG_MTD_PARTITIONS) || defined(CONFIG_MTD_PARTITIONS_MODULE)
+macro_line|#ifdef CONFIG_MTD_PARTITIONS
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#endif
 multiline_comment|/* Define default oob placement schemes for large and small page devices */
@@ -5239,7 +5239,7 @@ c_func
 id|mtd
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Return success, if no ECC failures, else -EIO&n;&t; * fs driver will take care of that, because&n;&t; * retlen == desired len and result == -EIO&n;&t; */
+multiline_comment|/*&n;&t; * Return success, if no ECC failures, else -EBADMSG&n;&t; * fs driver will take care of that, because&n;&t; * retlen == desired len and result == -EBADMSG&n;&t; */
 op_star
 id|retlen
 op_assign
@@ -5250,7 +5250,7 @@ id|ecc_failed
 ques
 c_cond
 op_minus
-id|EIO
+id|EBADMSG
 suffix:colon
 l_int|0
 suffix:semicolon
@@ -8580,10 +8580,9 @@ c_cond
 (paren
 op_logical_neg
 id|ret
-op_logical_and
-id|instr-&gt;callback
 )paren
-id|instr-&gt;callback
+id|mtd_erase_callback
+c_func
 (paren
 id|instr
 )paren
@@ -10283,15 +10282,15 @@ id|this
 op_assign
 id|mtd-&gt;priv
 suffix:semicolon
-macro_line|#if defined(CONFIG_MTD_PARTITIONS) || defined(CONFIG_MTD_PARTITIONS_MODULE)
-multiline_comment|/* Unregister partitions */
+macro_line|#ifdef CONFIG_MTD_PARTITIONS
+multiline_comment|/* Deregister partitions */
 id|del_mtd_partitions
 (paren
 id|mtd
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Unregister the device */
+multiline_comment|/* Deregister the device */
 id|del_mtd_device
 (paren
 id|mtd

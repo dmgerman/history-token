@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common Flash Interface support:&n; *   AMD &amp; Fujitsu Standard Vendor Command Set (ID 0x0002)&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; * Copyright (C) 2004 Arcom Control Systems Ltd &lt;linux@arcom.com&gt;&n; *&n; * 2_by_8 routines added by Simon Munton&n; *&n; * 4_by_16 work by Carolyn J. Smith&n; *&n; * Occasionally maintained by Thayne Harbaugh tharbaugh at lnxi dot com&n; *&n; * This code is GPL&n; *&n; * $Id: cfi_cmdset_0002.c,v 1.103 2004/07/14 16:24:03 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * Common Flash Interface support:&n; *   AMD &amp; Fujitsu Standard Vendor Command Set (ID 0x0002)&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; * Copyright (C) 2004 Arcom Control Systems Ltd &lt;linux@arcom.com&gt;&n; *&n; * 2_by_8 routines added by Simon Munton&n; *&n; * 4_by_16 work by Carolyn J. Smith&n; *&n; * Occasionally maintained by Thayne Harbaugh tharbaugh at lnxi dot com&n; *&n; * This code is GPL&n; *&n; * $Id: cfi_cmdset_0002.c,v 1.106 2004/08/09 14:02:32 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -6542,14 +6542,7 @@ id|instr-&gt;state
 op_assign
 id|MTD_ERASE_DONE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|instr-&gt;callback
-)paren
-id|instr
-op_member_access_from_pointer
-id|callback
+id|mtd_erase_callback
 c_func
 (paren
 id|instr
@@ -6643,14 +6636,7 @@ id|instr-&gt;state
 op_assign
 id|MTD_ERASE_DONE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|instr-&gt;callback
-)paren
-id|instr
-op_member_access_from_pointer
-id|callback
+id|mtd_erase_callback
 c_func
 (paren
 id|instr
