@@ -18,11 +18,11 @@ macro_line|# define __kernel_extwl(val, shift)&t;__builtin_alpha_extwl(val, shif
 DECL|macro|__kernel_cmpbge
 macro_line|# define __kernel_cmpbge(a, b)&t;&t;__builtin_alpha_cmpbge(a, b)
 DECL|macro|__kernel_cttz
-macro_line|# define __kernel_cttz(x)&t;&t;__builtin_ctz(x)
+macro_line|# define __kernel_cttz(x)&t;&t;__builtin_ctzl(x)
 DECL|macro|__kernel_ctlz
-macro_line|# define __kernel_ctlz(x)&t;&t;__builtin_clz(x)
+macro_line|# define __kernel_ctlz(x)&t;&t;__builtin_clzl(x)
 DECL|macro|__kernel_ctpop
-macro_line|# define __kernel_ctpop(x)&t;&t;__builtin_popcount(x)
+macro_line|# define __kernel_ctpop(x)&t;&t;__builtin_popcountl(x)
 macro_line|#else
 DECL|macro|__kernel_insbl
 macro_line|# define __kernel_insbl(val, shift)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;insbl %2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(shift), &quot;r&quot;(val));&t;&bslash;&n;     __kir; })
