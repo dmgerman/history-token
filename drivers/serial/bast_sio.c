@@ -1,3 +1,4 @@
+multiline_comment|/* linux/drivers/serial/bast_sio.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;23-Sep-2004  BJD  Added copyright header&n; *&t;23-Sep-2004  BJD  Added serial port remove code&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -33,18 +34,6 @@ r_struct
 id|serial_struct
 id|serial_req
 suffix:semicolon
-macro_line|#if 0
-id|printk
-c_func
-(paren
-l_string|&quot;BAST: SuperIO serial (%08lx,%d)&bslash;n&quot;
-comma
-id|port
-comma
-id|irq
-)paren
-suffix:semicolon
-macro_line|#endif
 id|serial_req.flags
 op_assign
 id|UPF_AUTOPROBE
@@ -92,6 +81,22 @@ suffix:semicolon
 )brace
 DECL|macro|SERIAL_BASE
 mdefine_line|#define SERIAL_BASE (S3C2410_CS2 + BAST_PA_SUPERIO)
+DECL|variable|port
+r_static
+r_int
+id|port
+(braket
+l_int|2
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+)brace
+suffix:semicolon
 DECL|function|serial_bast_init
 r_static
 r_int
@@ -111,6 +116,11 @@ c_func
 )paren
 )paren
 (brace
+id|port
+(braket
+l_int|0
+)braket
+op_assign
 id|serial_bast_register
 c_func
 (paren
@@ -121,6 +131,11 @@ comma
 id|IRQ_PCSERIAL1
 )paren
 suffix:semicolon
+id|port
+(braket
+l_int|1
+)braket
+op_assign
 id|serial_bast_register
 c_func
 (paren
@@ -146,7 +161,46 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* todo -&gt; remove both our ports */
+r_if
+c_cond
+(paren
+id|port
+(braket
+l_int|0
+)braket
+op_ne
+op_minus
+l_int|1
+)paren
+id|unregister_serial
+c_func
+(paren
+id|port
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|port
+(braket
+l_int|1
+)braket
+op_ne
+op_minus
+l_int|1
+)paren
+id|unregister_serial
+c_func
+(paren
+id|port
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
 )brace
 DECL|variable|serial_bast_init
 id|module_init
