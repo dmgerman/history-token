@@ -91,26 +91,26 @@ mdefine_line|#define __setup(str, fn)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;stati
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * Mark functions and data as being only used at initialization&n; * or exit time.&n; */
 DECL|macro|__init
-mdefine_line|#define __init&t;&t;__attribute__ ((__section__ (&quot;.text.init&quot;)))
+mdefine_line|#define __init&t;&t;__attribute__ ((__section__ (&quot;.init.text&quot;)))
 DECL|macro|__exit
-mdefine_line|#define __exit&t;&t;__attribute__ ((unused, __section__(&quot;.text.exit&quot;)))
+mdefine_line|#define __exit&t;&t;__attribute__ ((unused, __section__(&quot;.exit.text&quot;)))
 DECL|macro|__initdata
-mdefine_line|#define __initdata&t;__attribute__ ((__section__ (&quot;.data.init&quot;)))
+mdefine_line|#define __initdata&t;__attribute__ ((__section__ (&quot;.init.data&quot;)))
 DECL|macro|__exitdata
-mdefine_line|#define __exitdata&t;__attribute__ ((unused, __section__ (&quot;.data.exit&quot;)))
+mdefine_line|#define __exitdata&t;__attribute__ ((unused, __section__ (&quot;.exit.data&quot;)))
 DECL|macro|__initsetup
-mdefine_line|#define __initsetup&t;__attribute__ ((unused,__section__ (&quot;.setup.init&quot;)))
+mdefine_line|#define __initsetup&t;__attribute__ ((unused,__section__ (&quot;.init.setup&quot;)))
 DECL|macro|__init_call
 mdefine_line|#define __init_call(level)  __attribute__ ((unused,__section__ (&quot;.initcall&quot; level &quot;.init&quot;)))
 DECL|macro|__exit_call
 mdefine_line|#define __exit_call&t;__attribute__ ((unused,__section__ (&quot;.exitcall.exit&quot;)))
 multiline_comment|/* For assembly routines */
 DECL|macro|__INIT
-mdefine_line|#define __INIT&t;&t;.section&t;&quot;.text.init&quot;,&quot;ax&quot;
+mdefine_line|#define __INIT&t;&t;.section&t;&quot;.init.text&quot;,&quot;ax&quot;
 DECL|macro|__FINIT
 mdefine_line|#define __FINIT&t;&t;.previous
 DECL|macro|__INITDATA
-mdefine_line|#define __INITDATA&t;.section&t;&quot;.data.init&quot;,&quot;aw&quot;
+mdefine_line|#define __INITDATA&t;.section&t;&quot;.init.data&quot;,&quot;aw&quot;
 multiline_comment|/**&n; * module_init() - driver initialization entry point&n; * @x: function to be run at kernel boot time or module insertion&n; * &n; * module_init() will add the driver initialization routine in&n; * the &quot;__initcall.int&quot; code segment if the driver is checked as&n; * &quot;y&quot; or static, or else it will wrap the driver initialization&n; * routine with init_module() which is used by insmod and&n; * modprobe when the driver is used as a module.&n; */
 DECL|macro|module_init
 mdefine_line|#define module_init(x)&t;__initcall(x);
