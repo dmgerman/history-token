@@ -1528,7 +1528,6 @@ comma
 id|minor
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_AGP3
 r_if
 c_cond
 (paren
@@ -1588,7 +1587,6 @@ l_string|&quot;not in AGP 3.0 mode, falling back to 2.x&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 multiline_comment|/* AGP v&lt;3 */
 id|pci_read_config_dword
 c_func

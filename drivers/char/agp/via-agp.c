@@ -396,7 +396,6 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_AGP3
 DECL|function|via_fetch_size_agp3
 r_static
 r_int
@@ -1084,32 +1083,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|via_generic_agp3_setup
-r_static
-r_int
-id|__init
-id|via_generic_agp3_setup
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-(brace
-id|printk
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;Bridge in AGP3 mode, but CONFIG_AGP3=n&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-macro_line|#endif&t;/* CONFIG_AGP3 */
 DECL|function|via_generic_setup
 r_static
 r_int
@@ -1122,7 +1095,6 @@ op_star
 id|pdev
 )paren
 (brace
-macro_line|#ifdef CONFIG_AGP3
 multiline_comment|/* Garg, there are KT400s with KT266 IDs. */
 r_if
 c_cond
@@ -1188,7 +1160,6 @@ suffix:semicolon
 multiline_comment|/* Its in 2.0 mode, drop through. */
 )brace
 )brace
-macro_line|#endif
 id|agp_bridge-&gt;masks
 op_assign
 id|via_generic_masks
