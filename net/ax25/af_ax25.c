@@ -7991,9 +7991,21 @@ id|ETH_P_AX25
 )paren
 comma
 dot
+id|dev
+l_int|NULL
+comma
+multiline_comment|/* All devices */
+dot
 id|func
 id|ax25_kiss_rcv
 comma
+dot
+id|data
+(paren
+r_void
+op_star
+)paren
+l_int|1
 )brace
 suffix:semicolon
 DECL|variable|ax25_dev_notifier
