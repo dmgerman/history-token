@@ -3178,6 +3178,7 @@ id|size
 suffix:semicolon
 )brace
 DECL|variable|rates
+r_static
 r_int
 r_int
 id|rates
@@ -3240,6 +3241,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|bits
+r_static
 r_int
 r_char
 id|bits
