@@ -604,7 +604,7 @@ id|nr
 suffix:semicolon
 id|res-&gt;name
 op_assign
-id|dev-&gt;name
+id|dev-&gt;dev.name
 suffix:semicolon
 id|res-&gt;start
 op_assign

@@ -2428,7 +2428,7 @@ id|m
 comma
 l_string|&quot;: %s (rev %d).&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 comma
 id|class_rev
 op_amp

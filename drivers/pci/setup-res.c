@@ -97,7 +97,7 @@ l_string|&quot;region %d of device %s [%lx:%lx]&bslash;n&quot;
 comma
 id|resource
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 comma
 id|res-&gt;start
 comma
@@ -117,7 +117,7 @@ l_string|&quot;of device %s&bslash;n&quot;
 comma
 id|resource
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 )brace
@@ -564,7 +564,7 @@ id|r-&gt;start
 comma
 id|r-&gt;end
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 r_continue

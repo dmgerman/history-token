@@ -925,14 +925,6 @@ suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|dev-&gt;dev.name
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
 id|dev-&gt;dev.bus_id
 comma
 id|dev-&gt;slot_name

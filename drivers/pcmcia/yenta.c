@@ -3406,7 +3406,7 @@ id|yenta_interrupt
 comma
 id|SA_SHIRQ
 comma
-id|socket-&gt;dev-&gt;name
+id|socket-&gt;dev-&gt;dev.name
 comma
 id|socket
 )paren
