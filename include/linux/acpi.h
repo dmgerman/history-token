@@ -1177,9 +1177,7 @@ suffix:semicolon
 r_int
 id|acpi_boot_init
 (paren
-r_char
-op_star
-id|cmdline
+r_void
 )paren
 suffix:semicolon
 r_int
@@ -1191,9 +1189,7 @@ suffix:semicolon
 r_int
 id|acpi_table_init
 (paren
-r_char
-op_star
-id|cmdline
+r_void
 )paren
 suffix:semicolon
 r_int

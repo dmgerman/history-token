@@ -3769,8 +3769,6 @@ id|acpi_disabled
 id|acpi_boot_init
 c_func
 (paren
-op_star
-id|cmdline_p
 )paren
 suffix:semicolon
 macro_line|#endif
