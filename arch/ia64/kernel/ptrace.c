@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Kernel support for the ptrace() and syscall tracing interfaces.&n; *&n; * Copyright (C) 1999-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Derived from the x86 and Alpha versions.  Most of the code in here&n; * could actually be factored into a common set of routines.&n; */
+multiline_comment|/*&n; * Kernel support for the ptrace() and syscall tracing interfaces.&n; *&n; * Copyright (C) 1999-2005 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Derived from the x86 and Alpha versions.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -21,10 +21,12 @@ macro_line|#include &lt;asm/perfmon.h&gt;
 macro_line|#endif
 macro_line|#include &quot;entry.h&quot;
 multiline_comment|/*&n; * Bits in the PSR that we allow ptrace() to change:&n; *&t;be, up, ac, mfl, mfh (the user mask; five bits total)&n; *&t;db (debug breakpoint fault; one bit)&n; *&t;id (instruction debug fault disable; one bit)&n; *&t;dd (data debug fault disable; one bit)&n; *&t;ri (restart instruction; two bits)&n; *&t;is (instruction set; one bit)&n; */
-DECL|macro|IPSR_WRITE_MASK
-mdefine_line|#define IPSR_WRITE_MASK &bslash;&n;&t;(IA64_PSR_UM | IA64_PSR_DB | IA64_PSR_IS | IA64_PSR_ID | IA64_PSR_DD | IA64_PSR_RI)
-DECL|macro|IPSR_READ_MASK
-mdefine_line|#define IPSR_READ_MASK&t;IPSR_WRITE_MASK
+DECL|macro|IPSR_MASK
+mdefine_line|#define IPSR_MASK (IA64_PSR_UM | IA64_PSR_DB | IA64_PSR_IS&t;&bslash;&n;&t;&t;   | IA64_PSR_ID | IA64_PSR_DD | IA64_PSR_RI)
+DECL|macro|MASK
+mdefine_line|#define MASK(nbits)&t;((1UL &lt;&lt; (nbits)) - 1)&t;/* mask with NBITS bits set */
+DECL|macro|PFM_MASK
+mdefine_line|#define PFM_MASK&t;MASK(38)
 DECL|macro|PTRACE_DEBUG
 mdefine_line|#define PTRACE_DEBUG&t;0
 macro_line|#if PTRACE_DEBUG
@@ -75,12 +77,12 @@ id|scratch_unat
 )paren
 (brace
 DECL|macro|GET_BITS
-macro_line|#&t;define GET_BITS(first, last, unat)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long bit = ia64_unat_pos(&amp;pt-&gt;r##first);&t;&t;&t;&bslash;&n;&t;&t;unsigned long mask = ((1UL &lt;&lt; (last - first + 1)) - 1) &lt;&lt; first;&t;&bslash;&n;&t;&t;unsigned long dist;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (bit &lt; first)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dist = 64 + bit - first;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dist = bit - first;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_rotr(unat, dist) &amp; mask;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+macro_line|#&t;define GET_BITS(first, last, unat)&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long bit = ia64_unat_pos(&amp;pt-&gt;r##first);&t;&bslash;&n;&t;&t;unsigned long nbits = (last - first + 1);&t;&t;&bslash;&n;&t;&t;unsigned long mask = MASK(nbits) &lt;&lt; first;&t;&t;&bslash;&n;&t;&t;unsigned long dist;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (bit &lt; first)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dist = 64 + bit - first;&t;&t;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dist = bit - first;&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_rotr(unat, dist) &amp; mask;&t;&t;&t;&t;&bslash;&n;&t;})
 r_int
 r_int
 id|val
 suffix:semicolon
-multiline_comment|/*&n;&t; * Registers that are stored consecutively in struct pt_regs can be handled in&n;&t; * parallel.  If the register order in struct_pt_regs changes, this code MUST be&n;&t; * updated.&n;&t; */
+multiline_comment|/*&n;&t; * Registers that are stored consecutively in struct pt_regs&n;&t; * can be handled in parallel.  If the register order in&n;&t; * struct_pt_regs changes, this code MUST be updated.&n;&t; */
 id|val
 op_assign
 id|GET_BITS
@@ -188,12 +190,12 @@ id|nat
 )paren
 (brace
 DECL|macro|PUT_BITS
-macro_line|#&t;define PUT_BITS(first, last, nat)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long bit = ia64_unat_pos(&amp;pt-&gt;r##first);&t;&t;&t;&bslash;&n;&t;&t;unsigned long mask = ((1UL &lt;&lt; (last - first + 1)) - 1) &lt;&lt; first;&t;&bslash;&n;&t;&t;long dist;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (bit &lt; first)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dist = 64 + bit - first;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dist = bit - first;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_rotl(nat &amp; mask, dist);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+macro_line|#&t;define PUT_BITS(first, last, nat)&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long bit = ia64_unat_pos(&amp;pt-&gt;r##first);&t;&bslash;&n;&t;&t;unsigned long nbits = (last - first + 1);&t;&t;&bslash;&n;&t;&t;unsigned long mask = MASK(nbits) &lt;&lt; first;&t;&t;&bslash;&n;&t;&t;long dist;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (bit &lt; first)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dist = 64 + bit - first;&t;&t;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dist = bit - first;&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_rotl(nat &amp; mask, dist);&t;&t;&t;&t;&bslash;&n;&t;})
 r_int
 r_int
 id|scratch_unat
 suffix:semicolon
-multiline_comment|/*&n;&t; * Registers that are stored consecutively in struct pt_regs can be handled in&n;&t; * parallel.  If the register order in struct_pt_regs changes, this code MUST be&n;&t; * updated.&n;&t; */
+multiline_comment|/*&n;&t; * Registers that are stored consecutively in struct pt_regs&n;&t; * can be handled in parallel.  If the register order in&n;&t; * struct_pt_regs changes, this code MUST be updated.&n;&t; */
 id|scratch_unat
 op_assign
 id|PUT_BITS
@@ -490,7 +492,7 @@ op_assign
 id|ri
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This routine is used to read an rnat bits that are stored on the kernel backing store.&n; * Since, in general, the alignment of the user and kernel are different, this is not&n; * completely trivial.  In essence, we need to construct the user RNAT based on up to two&n; * kernel RNAT values and/or the RNAT value saved in the child&squot;s pt_regs.&n; *&n; * user rbs&n; *&n; * +--------+ &lt;-- lowest address&n; * | slot62 |&n; * +--------+&n; * |  rnat  | 0x....1f8&n; * +--------+&n; * | slot00 | &bslash;&n; * +--------+ |&n; * | slot01 | &gt; child_regs-&gt;ar_rnat&n; * +--------+ |&n; * | slot02 | /&t;&t;&t;&t;kernel rbs&n; * +--------+&t;&t;&t;&t;+--------+&n; *&t;    &lt;- child_regs-&gt;ar_bspstore&t;| slot61 | &lt;-- krbs&n; * +- - - - +&t;&t;&t;&t;+--------+&n; *&t;&t;&t;&t;&t;| slot62 |&n; * +- - - - +&t;&t;&t;&t;+--------+&n; *&t;&t;&t;&t;&t;|  rnat&t; |&n; * +- - - - +&t;&t;&t;&t;+--------+&n; *   vrnat&t;&t;&t;&t;| slot00 |&n; * +- - - - +&t;&t;&t;&t;+--------+&n; *&t;&t;&t;&t;&t;=&t; =&n; *&t;&t;&t;&t;&t;+--------+&n; *&t;&t;&t;&t;&t;| slot00 | &bslash;&n; *&t;&t;&t;&t;&t;+--------+ |&n; *&t;&t;&t;&t;&t;| slot01 | &gt; child_stack-&gt;ar_rnat&n; *&t;&t;&t;&t;&t;+--------+ |&n; *&t;&t;&t;&t;&t;| slot02 | /&n; *&t;&t;&t;&t;&t;+--------+&n; *&t;&t;&t;&t;&t;&t;  &lt;--- child_stack-&gt;ar_bspstore&n; *&n; * The way to think of this code is as follows: bit 0 in the user rnat corresponds to some&n; * bit N (0 &lt;= N &lt;= 62) in one of the kernel rnat value.  The kernel rnat value holding&n; * this bit is stored in variable rnat0.  rnat1 is loaded with the kernel rnat value that&n; * form the upper bits of the user rnat value.&n; *&n; * Boundary cases:&n; *&n; * o when reading the rnat &quot;below&quot; the first rnat slot on the kernel backing store,&n; *   rnat0/rnat1 are set to 0 and the low order bits are merged in from pt-&gt;ar_rnat.&n; *&n; * o when reading the rnat &quot;above&quot; the last rnat slot on the kernel backing store,&n; *   rnat0/rnat1 gets its value from sw-&gt;ar_rnat.&n; */
+multiline_comment|/*&n; * This routine is used to read an rnat bits that are stored on the&n; * kernel backing store.  Since, in general, the alignment of the user&n; * and kernel are different, this is not completely trivial.  In&n; * essence, we need to construct the user RNAT based on up to two&n; * kernel RNAT values and/or the RNAT value saved in the child&squot;s&n; * pt_regs.&n; *&n; * user rbs&n; *&n; * +--------+ &lt;-- lowest address&n; * | slot62 |&n; * +--------+&n; * |  rnat  | 0x....1f8&n; * +--------+&n; * | slot00 | &bslash;&n; * +--------+ |&n; * | slot01 | &gt; child_regs-&gt;ar_rnat&n; * +--------+ |&n; * | slot02 | /&t;&t;&t;&t;kernel rbs&n; * +--------+&t;&t;&t;&t;+--------+&n; *&t;    &lt;- child_regs-&gt;ar_bspstore&t;| slot61 | &lt;-- krbs&n; * +- - - - +&t;&t;&t;&t;+--------+&n; *&t;&t;&t;&t;&t;| slot62 |&n; * +- - - - +&t;&t;&t;&t;+--------+&n; *&t;&t;&t;&t;&t;|  rnat&t; |&n; * +- - - - +&t;&t;&t;&t;+--------+&n; *   vrnat&t;&t;&t;&t;| slot00 |&n; * +- - - - +&t;&t;&t;&t;+--------+&n; *&t;&t;&t;&t;&t;=&t; =&n; *&t;&t;&t;&t;&t;+--------+&n; *&t;&t;&t;&t;&t;| slot00 | &bslash;&n; *&t;&t;&t;&t;&t;+--------+ |&n; *&t;&t;&t;&t;&t;| slot01 | &gt; child_stack-&gt;ar_rnat&n; *&t;&t;&t;&t;&t;+--------+ |&n; *&t;&t;&t;&t;&t;| slot02 | /&n; *&t;&t;&t;&t;&t;+--------+&n; *&t;&t;&t;&t;&t;&t;  &lt;--- child_stack-&gt;ar_bspstore&n; *&n; * The way to think of this code is as follows: bit 0 in the user rnat&n; * corresponds to some bit N (0 &lt;= N &lt;= 62) in one of the kernel rnat&n; * value.  The kernel rnat value holding this bit is stored in&n; * variable rnat0.  rnat1 is loaded with the kernel rnat value that&n; * form the upper bits of the user rnat value.&n; *&n; * Boundary cases:&n; *&n; * o when reading the rnat &quot;below&quot; the first rnat slot on the kernel&n; *   backing store, rnat0/rnat1 are set to 0 and the low order bits are&n; *   merged in from pt-&gt;ar_rnat.&n; *&n; * o when reading the rnat &quot;above&quot; the last rnat slot on the kernel&n; *   backing store, rnat0/rnat1 gets its value from sw-&gt;ar_rnat.&n; */
 r_static
 r_int
 r_int
@@ -539,7 +541,9 @@ l_int|0
 comma
 op_star
 id|slot0_kaddr
-comma
+suffix:semicolon
+r_int
+r_int
 id|umask
 op_assign
 l_int|0
@@ -626,15 +630,13 @@ l_int|63
 suffix:semicolon
 id|mask
 op_assign
+id|MASK
+c_func
 (paren
-l_int|1UL
-op_lshift
 id|nbits
 )paren
-op_minus
-l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * First, figure out which bit number slot 0 in user-land maps to in the kernel&n;&t; * rnat.  Do this by figuring out how many register slots we&squot;re beyond the user&squot;s&n;&t; * backingstore and then computing the equivalent address in kernel space.&n;&t; */
+multiline_comment|/*&n;&t; * First, figure out which bit number slot 0 in user-land maps&n;&t; * to in the kernel rnat.  Do this by figuring out how many&n;&t; * register slots we&squot;re beyond the user&squot;s backingstore and&n;&t; * then computing the equivalent address in kernel space.&n;&t; */
 id|num_regs
 op_assign
 id|ia64_rse_num_regs
@@ -692,18 +694,14 @@ id|urnat_addr
 multiline_comment|/* some bits need to be merged in from pt-&gt;ar_rnat */
 id|umask
 op_assign
+id|MASK
+c_func
 (paren
-(paren
-l_int|1UL
-op_lshift
 id|ia64_rse_slot_num
 c_func
 (paren
 id|ubspstore
 )paren
-)paren
-op_minus
-l_int|1
 )paren
 op_amp
 id|mask
@@ -1015,15 +1013,13 @@ suffix:semicolon
 )brace
 id|mask
 op_assign
+id|MASK
+c_func
 (paren
-l_int|1UL
-op_lshift
 id|nbits
 )paren
-op_minus
-l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * First, figure out which bit number slot 0 in user-land maps to in the kernel&n;&t; * rnat.  Do this by figuring out how many register slots we&squot;re beyond the user&squot;s&n;&t; * backingstore and then computing the equivalent address in kernel space.&n;&t; */
+multiline_comment|/*&n;&t; * First, figure out which bit number slot 0 in user-land maps&n;&t; * to in the kernel rnat.  Do this by figuring out how many&n;&t; * register slots we&squot;re beyond the user&squot;s backingstore and&n;&t; * then computing the equivalent address in kernel space.&n;&t; */
 id|num_regs
 op_assign
 id|ia64_rse_num_regs
@@ -1081,18 +1077,14 @@ id|urnat_addr
 multiline_comment|/* some bits need to be place in pt-&gt;ar_rnat: */
 id|umask
 op_assign
+id|MASK
+c_func
 (paren
-(paren
-l_int|1UL
-op_lshift
 id|ia64_rse_slot_num
 c_func
 (paren
 id|ubspstore
 )paren
-)paren
-op_minus
-l_int|1
 )paren
 op_amp
 id|mask
@@ -1281,6 +1273,22 @@ r_int
 id|urbs_end
 )paren
 (brace
+r_int
+r_int
+op_star
+id|rnat_addr
+op_assign
+id|ia64_rse_rnat_addr
+c_func
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|urbs_end
+)paren
+suffix:semicolon
 r_return
 (paren
 id|addr
@@ -1293,20 +1301,11 @@ op_le
 r_int
 r_int
 )paren
-id|ia64_rse_rnat_addr
-c_func
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-id|urbs_end
-)paren
+id|rnat_addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Read a word from the user-level backing store of task CHILD.  ADDR is the user-level&n; * address to read the word from, VAL a pointer to the return value, and USER_BSP gives&n; * the end of the user-level backing store (i.e., it&squot;s the address that would be in ar.bsp&n; * after the user executed a &quot;cover&quot; instruction).&n; *&n; * This routine takes care of accessing the kernel register backing store for those&n; * registers that got spilled there.  It also takes care of calculating the appropriate&n; * RNaT collection words.&n; */
+multiline_comment|/*&n; * Read a word from the user-level backing store of task CHILD.  ADDR&n; * is the user-level address to read the word from, VAL a pointer to&n; * the return value, and USER_BSP gives the end of the user-level&n; * backing store (i.e., it&squot;s the address that would be in ar.bsp after&n; * the user executed a &quot;cover&quot; instruction).&n; *&n; * This routine takes care of accessing the kernel register backing&n; * store for those registers that got spilled there.  It also takes&n; * care of calculating the appropriate RNaT collection words.&n; */
 r_int
 DECL|function|ia64_peek
 id|ia64_peek
@@ -1433,7 +1432,7 @@ id|urbs_end
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Attempt to read the RBS in an area that&squot;s actually on the kernel RBS =&gt;&n;&t;&t; * read the corresponding bits in the kernel RBS.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Attempt to read the RBS in an area that&squot;s actually&n;&t;&t; * on the kernel RBS =&gt; read the corresponding bits in&n;&t;&t; * the kernel RBS.&n;&t;&t; */
 id|rnat_addr
 op_assign
 id|ia64_rse_rnat_addr
@@ -1496,7 +1495,7 @@ op_ne
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * It is implementation dependent whether the data portion of a&n;&t;&t;&t; * NaT value gets saved on a st8.spill or RSE spill (e.g., see&n;&t;&t;&t; * EAS 2.6, 4.4.4.6 Register Spill and Fill).  To get consistent&n;&t;&t;&t; * behavior across all possible IA-64 implementations, we return&n;&t;&t;&t; * zero in this case.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * It is implementation dependent whether the&n;&t;&t;&t; * data portion of a NaT value gets saved on a&n;&t;&t;&t; * st8.spill or RSE spill (e.g., see EAS 2.6,&n;&t;&t;&t; * 4.4.4.6 Register Spill and Fill).  To get&n;&t;&t;&t; * consistent behavior across all possible&n;&t;&t;&t; * IA-64 implementations, we return zero in&n;&t;&t;&t; * this case.&n;&t;&t;&t; */
 op_star
 id|val
 op_assign
@@ -1514,7 +1513,7 @@ OL
 id|urbs_end
 )paren
 (brace
-multiline_comment|/* the desired word is on the kernel RBS and is not a NaT */
+multiline_comment|/*&n;&t;&t;&t; * The desired word is on the kernel RBS and&n;&t;&t;&t; * is not a NaT.&n;&t;&t;&t; */
 id|regnum
 op_assign
 id|ia64_rse_num_regs
@@ -1623,7 +1622,9 @@ id|regnum
 comma
 op_star
 id|laddr
-comma
+suffix:semicolon
+r_int
+r_int
 op_star
 id|urbs_end
 op_assign
@@ -1699,7 +1700,7 @@ id|urbs_end
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Attempt to write the RBS in an area that&squot;s actually on the kernel RBS&n;&t;&t; * =&gt; write the corresponding bits in the kernel RBS.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Attempt to write the RBS in an area that&squot;s actually&n;&t;&t; * on the kernel RBS =&gt; write the corresponding bits&n;&t;&t; * in the kernel RBS.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1786,17 +1787,15 @@ r_sizeof
 id|val
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EIO
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Calculate the address of the end of the user-level register backing store.  This is the&n; * address that would have been stored in ar.bsp if the user had executed a &quot;cover&quot;&n; * instruction right before entering the kernel.  If CFMP is not NULL, it is used to&n; * return the &quot;current frame mask&quot; that was active at the time the kernel was entered.&n; */
+multiline_comment|/*&n; * Calculate the address of the end of the user-level register backing&n; * store.  This is the address that would have been stored in ar.bsp&n; * if the user had executed a &quot;cover&quot; instruction right before&n; * entering the kernel.  If CFMP is not NULL, it is used to return the&n; * &quot;current frame mask&quot; that was active at the time the kernel was&n; * entered.&n; */
 r_int
 r_int
 DECL|function|ia64_get_user_rbs_end
@@ -1923,7 +1922,7 @@ id|ndirty
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Synchronize (i.e, write) the RSE backing store living in kernel space to the VM of the&n; * CHILD task.  SW and PT are the pointers to the switch_stack and pt_regs structures,&n; * respectively.  USER_RBS_END is the user-level address at which the backing store ends.&n; */
+multiline_comment|/*&n; * Synchronize (i.e, write) the RSE backing store living in kernel&n; * space to the VM of the CHILD task.  SW and PT are the pointers to&n; * the switch_stack and pt_regs structures, respectively.&n; * USER_RBS_END is the user-level address at which the backing store&n; * ends.&n; */
 r_int
 DECL|function|ia64_sync_user_rbs
 id|ia64_sync_user_rbs
@@ -2073,7 +2072,7 @@ l_int|0
 OL
 l_int|0
 )paren
-multiline_comment|/*&n;&t;&t; * If the thread is not in an attachable state, we&squot;ll ignore it.&n;&t;&t; * The net effect is that if ADDR happens to overlap with the&n;&t;&t; * portion of the thread&squot;s register backing store that is&n;&t;&t; * currently residing on the thread&squot;s kernel stack, then ptrace()&n;&t;&t; * may end up accessing a stale value.  But if the thread isn&squot;t&n;&t;&t; * stopped, that&squot;s a problem anyhow, so we&squot;re doing as well as we&n;&t;&t; * can...&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If the thread is not in an attachable state, we&squot;ll&n;&t;&t; * ignore it.  The net effect is that if ADDR happens&n;&t;&t; * to overlap with the portion of the thread&squot;s&n;&t;&t; * register backing store that is currently residing&n;&t;&t; * on the thread&squot;s kernel stack, then ptrace() may end&n;&t;&t; * up accessing a stale value.  But if the thread&n;&t;&t; * isn&squot;t stopped, that&squot;s a problem anyhow, so we&squot;re&n;&t;&t; * doing as well as we can...&n;&t;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -2119,7 +2118,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* looks like we&squot;ve got a winner */
 )brace
-multiline_comment|/*&n; * GDB apparently wants to be able to read the register-backing store of any thread when&n; * attached to a given process.  If we are peeking or poking an address that happens to&n; * reside in the kernel-backing store of another thread, we need to attach to that thread,&n; * because otherwise we end up accessing stale data.&n; *&n; * task_list_lock must be read-locked before calling this routine!&n; */
+multiline_comment|/*&n; * GDB apparently wants to be able to read the register-backing store&n; * of any thread when attached to a given process.  If we are peeking&n; * or poking an address that happens to reside in the kernel-backing&n; * store of another thread, we need to attach to that thread, because&n; * otherwise we end up accessing stale data.&n; *&n; * task_list_lock must be read-locked before calling this routine!&n; */
 r_static
 r_struct
 id|task_struct
@@ -2170,6 +2169,7 @@ id|child
 r_return
 id|child
 suffix:semicolon
+multiline_comment|/* -1 because of our get_task_mm(): */
 id|mm_users
 op_assign
 id|atomic_read
@@ -2181,7 +2181,6 @@ id|mm-&gt;mm_users
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* -1 because of our get_task_mm()... */
 r_if
 c_cond
 (paren
@@ -2675,6 +2674,239 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|access_nat_bits
+id|access_nat_bits
+(paren
+r_struct
+id|task_struct
+op_star
+id|child
+comma
+r_struct
+id|pt_regs
+op_star
+id|pt
+comma
+r_struct
+id|unw_frame_info
+op_star
+id|info
+comma
+r_int
+r_int
+op_star
+id|data
+comma
+r_int
+id|write_access
+)paren
+(brace
+r_int
+r_int
+id|regnum
+comma
+id|nat_bits
+comma
+id|scratch_unat
+comma
+id|dummy
+op_assign
+l_int|0
+suffix:semicolon
+r_char
+id|nat
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|write_access
+)paren
+(brace
+id|nat_bits
+op_assign
+op_star
+id|data
+suffix:semicolon
+id|scratch_unat
+op_assign
+id|ia64_put_scratch_nat_bits
+c_func
+(paren
+id|pt
+comma
+id|nat_bits
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unw_set_ar
+c_func
+(paren
+id|info
+comma
+id|UNW_AR_UNAT
+comma
+id|scratch_unat
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;ptrace: failed to set ar.unat&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_for
+c_loop
+(paren
+id|regnum
+op_assign
+l_int|4
+suffix:semicolon
+id|regnum
+op_le
+l_int|7
+suffix:semicolon
+op_increment
+id|regnum
+)paren
+(brace
+id|unw_get_gr
+c_func
+(paren
+id|info
+comma
+id|regnum
+comma
+op_amp
+id|dummy
+comma
+op_amp
+id|nat
+)paren
+suffix:semicolon
+id|unw_set_gr
+c_func
+(paren
+id|info
+comma
+id|regnum
+comma
+id|dummy
+comma
+(paren
+id|nat_bits
+op_rshift
+id|regnum
+)paren
+op_amp
+l_int|1
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|unw_get_ar
+c_func
+(paren
+id|info
+comma
+id|UNW_AR_UNAT
+comma
+op_amp
+id|scratch_unat
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;ptrace: failed to read ar.unat&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|nat_bits
+op_assign
+id|ia64_get_scratch_nat_bits
+c_func
+(paren
+id|pt
+comma
+id|scratch_unat
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|regnum
+op_assign
+l_int|4
+suffix:semicolon
+id|regnum
+op_le
+l_int|7
+suffix:semicolon
+op_increment
+id|regnum
+)paren
+(brace
+id|unw_get_gr
+c_func
+(paren
+id|info
+comma
+id|regnum
+comma
+op_amp
+id|dummy
+comma
+op_amp
+id|nat
+)paren
+suffix:semicolon
+id|nat_bits
+op_or_assign
+(paren
+id|nat
+op_ne
+l_int|0
+)paren
+op_lshift
+id|regnum
+suffix:semicolon
+)brace
+op_star
+id|data
+op_assign
+id|nat_bits
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_static
+r_int
 DECL|function|access_uarea
 id|access_uarea
 (paren
@@ -2719,6 +2951,8 @@ id|pt_regs
 op_star
 id|pt
 suffix:semicolon
+DECL|macro|pt_reg_addr
+macro_line|#&t;define pt_reg_addr(pt, reg)&t;((void *)&t;&t;&t;    &bslash;&n;&t;&t;&t;&t;&t; ((unsigned long) (pt)&t;&t;    &bslash;&n;&t;&t;&t;&t;&t;  + offsetof(struct pt_regs, reg)))
 id|pt
 op_assign
 id|ia64_task_regs
@@ -2835,25 +3069,15 @@ l_int|16
 multiline_comment|/* scratch registers untouched by kernel (saved in pt_regs) */
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|f10
 )paren
 op_plus
+(paren
 id|addr
 op_minus
 id|PT_F10
@@ -2875,7 +3099,7 @@ op_plus
 l_int|16
 )paren
 (brace
-multiline_comment|/* scratch registers untouched by kernel (saved in switch_stack) */
+multiline_comment|/*&n;&t;&t; * Scratch registers untouched by kernel (saved in&n;&t;&t; * switch_stack).&n;&t;&t; */
 id|ptr
 op_assign
 (paren
@@ -2911,16 +3135,6 @@ l_int|8
 )paren
 (brace
 multiline_comment|/* preserved state: */
-r_int
-r_int
-id|nat_bits
-comma
-id|scratch_unat
-comma
-id|dummy
-op_assign
-l_int|0
-suffix:semicolon
 r_struct
 id|unw_frame_info
 id|info
@@ -2967,196 +3181,21 @@ id|addr
 r_case
 id|PT_NAT_BITS
 suffix:colon
-r_if
-c_cond
+r_return
+id|access_nat_bits
+c_func
 (paren
+id|child
+comma
+id|pt
+comma
+op_amp
+id|info
+comma
+id|data
+comma
 id|write_access
 )paren
-(brace
-id|nat_bits
-op_assign
-op_star
-id|data
-suffix:semicolon
-id|scratch_unat
-op_assign
-id|ia64_put_scratch_nat_bits
-c_func
-(paren
-id|pt
-comma
-id|nat_bits
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|unw_set_ar
-c_func
-(paren
-op_amp
-id|info
-comma
-id|UNW_AR_UNAT
-comma
-id|scratch_unat
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|dprintk
-c_func
-(paren
-l_string|&quot;ptrace: failed to set ar.unat&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|regnum
-op_assign
-l_int|4
-suffix:semicolon
-id|regnum
-op_le
-l_int|7
-suffix:semicolon
-op_increment
-id|regnum
-)paren
-(brace
-id|unw_get_gr
-c_func
-(paren
-op_amp
-id|info
-comma
-id|regnum
-comma
-op_amp
-id|dummy
-comma
-op_amp
-id|nat
-)paren
-suffix:semicolon
-id|unw_set_gr
-c_func
-(paren
-op_amp
-id|info
-comma
-id|regnum
-comma
-id|dummy
-comma
-(paren
-id|nat_bits
-op_rshift
-id|regnum
-)paren
-op_amp
-l_int|1
-)paren
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|unw_get_ar
-c_func
-(paren
-op_amp
-id|info
-comma
-id|UNW_AR_UNAT
-comma
-op_amp
-id|scratch_unat
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|dprintk
-c_func
-(paren
-l_string|&quot;ptrace: failed to read ar.unat&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-id|nat_bits
-op_assign
-id|ia64_get_scratch_nat_bits
-c_func
-(paren
-id|pt
-comma
-id|scratch_unat
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|regnum
-op_assign
-l_int|4
-suffix:semicolon
-id|regnum
-op_le
-l_int|7
-suffix:semicolon
-op_increment
-id|regnum
-)paren
-(brace
-id|unw_get_gr
-c_func
-(paren
-op_amp
-id|info
-comma
-id|regnum
-comma
-op_amp
-id|dummy
-comma
-op_amp
-id|nat
-)paren
-suffix:semicolon
-id|nat_bits
-op_or_assign
-(paren
-id|nat
-op_ne
-l_int|0
-)paren
-op_lshift
-id|regnum
-suffix:semicolon
-)brace
-op_star
-id|data
-op_assign
-id|nat_bits
-suffix:semicolon
-)brace
-r_return
-l_int|0
 suffix:semicolon
 r_case
 id|PT_R4
@@ -3409,7 +3448,8 @@ r_else
 id|dprintk
 c_func
 (paren
-l_string|&quot;ptrace: rejecting access to register address 0x%lx&bslash;n&quot;
+l_string|&quot;ptrace: rejecting access to register &quot;
+l_string|&quot;address 0x%lx&bslash;n&quot;
 comma
 id|addr
 )paren
@@ -3442,7 +3482,7 @@ id|addr
 r_case
 id|PT_AR_BSP
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * By convention, we use PT_AR_BSP to refer to the end of the user-level&n;&t;&t;&t; * backing store.  Use ia64_rse_skip_regs(PT_AR_BSP, -CFM.sof) to get&n;&t;&t;&t; * the real value of ar.bsp at the time the kernel was entered.&n;&t;&t;&t; *&n;&t;&t;&t; * Furthermore, when changing the contents of PT_AR_BSP (or&n;&t;&t;&t; * PT_CFM) we MUST copy any users-level stacked registers that are&n;&t;&t;&t; * stored on the kernel stack back to user-space because&n;&t;&t;&t; * otherwise, we might end up clobbering kernel stacked registers.&n;&t;&t;&t; * Also, if this happens while the task is blocked in a system&n;&t;&t;&t; * call, which convert the state such that the non-system-call&n;&t;&t;&t; * exit path is used.  This ensures that the proper state will be&n;&t;&t;&t; * picked up when resuming execution.  However, it *also* means&n;&t;&t;&t; * that once we write PT_AR_BSP/PT_CFM, it won&squot;t be possible to&n;&t;&t;&t; * modify the syscall arguments of the pending system call any&n;&t;&t;&t; * longer.  This shouldn&squot;t be an issue because modifying&n;&t;&t;&t; * PT_AR_BSP/PT_CFM generally implies that we&squot;re either abandoning&n;&t;&t;&t; * the pending system call or that we defer it&squot;s re-execution&n;&t;&t;&t; * (e.g., due to GDB doing an inferior function call).&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * By convention, we use PT_AR_BSP to refer to&n;&t;&t;&t; * the end of the user-level backing store.&n;&t;&t;&t; * Use ia64_rse_skip_regs(PT_AR_BSP, -CFM.sof)&n;&t;&t;&t; * to get the real value of ar.bsp at the time&n;&t;&t;&t; * the kernel was entered.&n;&t;&t;&t; *&n;&t;&t;&t; * Furthermore, when changing the contents of&n;&t;&t;&t; * PT_AR_BSP (or PT_CFM) we MUST copy any&n;&t;&t;&t; * users-level stacked registers that are&n;&t;&t;&t; * stored on the kernel stack back to&n;&t;&t;&t; * user-space because otherwise, we might end&n;&t;&t;&t; * up clobbering kernel stacked registers.&n;&t;&t;&t; * Also, if this happens while the task is&n;&t;&t;&t; * blocked in a system call, which convert the&n;&t;&t;&t; * state such that the non-system-call exit&n;&t;&t;&t; * path is used.  This ensures that the proper&n;&t;&t;&t; * state will be picked up when resuming&n;&t;&t;&t; * execution.  However, it *also* means that&n;&t;&t;&t; * once we write PT_AR_BSP/PT_CFM, it won&squot;t be&n;&t;&t;&t; * possible to modify the syscall arguments of&n;&t;&t;&t; * the pending system call any longer.  This&n;&t;&t;&t; * shouldn&squot;t be an issue because modifying&n;&t;&t;&t; * PT_AR_BSP/PT_CFM generally implies that&n;&t;&t;&t; * we&squot;re either abandoning the pending system&n;&t;&t;&t; * call or that we defer it&squot;s re-execution&n;&t;&t;&t; * (e.g., due to GDB doing an inferior&n;&t;&t;&t; * function call).&n;&t;&t;&t; */
 id|urbs_end
 op_assign
 id|ia64_get_user_rbs_end
@@ -3511,7 +3551,7 @@ comma
 id|cfm
 )paren
 suffix:semicolon
-multiline_comment|/* simulate user-level write of ar.bsp: */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Simulate user-level write&n;&t;&t;&t;&t;&t; * of ar.bsp:&n;&t;&t;&t;&t;&t; */
 id|pt-&gt;loadrs
 op_assign
 l_int|0
@@ -3565,7 +3605,7 @@ op_star
 id|data
 )paren
 op_amp
-l_int|0x3fffffffffUL
+id|PFM_MASK
 )paren
 op_ne
 l_int|0
@@ -3618,14 +3658,14 @@ op_assign
 id|pt-&gt;cr_ifs
 op_amp
 op_complement
-l_int|0x3fffffffffUL
+id|PFM_MASK
 )paren
 op_or
 (paren
 op_star
 id|data
 op_amp
-l_int|0x3fffffffffUL
+id|PFM_MASK
 )paren
 )paren
 suffix:semicolon
@@ -3655,14 +3695,14 @@ op_assign
 op_star
 id|data
 op_amp
-id|IPSR_WRITE_MASK
+id|IPSR_MASK
 )paren
 op_or
 (paren
 id|pt-&gt;cr_ipsr
 op_amp
 op_complement
-id|IPSR_WRITE_MASK
+id|IPSR_MASK
 )paren
 )paren
 suffix:semicolon
@@ -3673,7 +3713,7 @@ op_assign
 (paren
 id|pt-&gt;cr_ipsr
 op_amp
-id|IPSR_READ_MASK
+id|IPSR_MASK
 )paren
 suffix:semicolon
 r_return
@@ -3751,24 +3791,12 @@ id|PT_R1
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|r1
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -3781,25 +3809,15 @@ id|PT_R3
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|r2
 )paren
 op_plus
+(paren
 id|addr
 op_minus
 id|PT_R2
@@ -3821,25 +3839,15 @@ id|PT_R11
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|r8
 )paren
 op_plus
+(paren
 id|addr
 op_minus
 id|PT_R8
@@ -3855,25 +3863,15 @@ id|PT_R13
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|r12
 )paren
 op_plus
+(paren
 id|addr
 op_minus
 id|PT_R12
@@ -3886,24 +3884,12 @@ id|PT_R14
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|r14
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -3913,24 +3899,12 @@ id|PT_R15
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|r15
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -3985,25 +3959,15 @@ id|PT_R31
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|r16
 )paren
 op_plus
+(paren
 id|addr
 op_minus
 id|PT_R16
@@ -4016,24 +3980,12 @@ id|PT_B0
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|b0
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -4043,24 +3995,12 @@ id|PT_B6
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|b6
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -4070,24 +4010,12 @@ id|PT_B7
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|b7
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -4126,25 +4054,15 @@ l_int|8
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|f6
 )paren
 op_plus
+(paren
 id|addr
 op_minus
 id|PT_F6
@@ -4157,24 +4075,12 @@ id|PT_AR_BSPSTORE
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|ar_bspstore
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -4184,24 +4090,12 @@ id|PT_AR_RSC
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|ar_rsc
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -4211,24 +4105,12 @@ id|PT_AR_UNAT
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|ar_unat
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -4238,24 +4120,12 @@ id|PT_AR_PFS
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|ar_pfs
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -4265,24 +4135,12 @@ id|PT_AR_CCV
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|ar_ccv
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -4292,24 +4150,12 @@ id|PT_AR_FPSR
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|ar_fpsr
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -4319,24 +4165,12 @@ id|PT_CR_IIP
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|cr_iip
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -4346,24 +4180,12 @@ id|PT_PR
 suffix:colon
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|pr
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -4375,7 +4197,8 @@ multiline_comment|/* disallow accessing anything else... */
 id|dprintk
 c_func
 (paren
-l_string|&quot;ptrace: rejecting access to register address 0x%lx&bslash;n&quot;
+l_string|&quot;ptrace: rejecting access to register &quot;
+l_string|&quot;address 0x%lx&bslash;n&quot;
 comma
 id|addr
 )paren
@@ -4397,25 +4220,15 @@ id|PT_AR_SSD
 (brace
 id|ptr
 op_assign
+id|pt_reg_addr
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
 id|pt
-op_plus
-m_offsetof
-(paren
-r_struct
-id|pt_regs
 comma
 id|ar_csd
 )paren
 op_plus
+(paren
 id|addr
 op_minus
 id|PT_AR_CSD
@@ -4484,7 +4297,8 @@ l_int|8
 id|dprintk
 c_func
 (paren
-l_string|&quot;ptrace: rejecting access to register address 0x%lx&bslash;n&quot;
+l_string|&quot;ptrace: rejecting access to register &quot;
+l_string|&quot;address 0x%lx&bslash;n&quot;
 comma
 id|addr
 )paren
@@ -4495,7 +4309,7 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PERFMON
-multiline_comment|/*&n;&t;&t; * Check if debug registers are used by perfmon. This test must be done&n;&t;&t; * once we know that we can do the operation, i.e. the arguments are all&n;&t;&t; * valid, but before we start modifying the state.&n;&t;&t; *&n;&t;&t; * Perfmon needs to keep a count of how many processes are trying to&n;&t;&t; * modify the debug registers for system wide monitoring sessions.&n;&t;&t; *&n;&t;&t; * We also include read access here, because they may cause the&n;&t;&t; * PMU-installed debug register state (dbr[], ibr[]) to be reset. The two&n;&t;&t; * arrays are also used by perfmon, but we do not use&n;&t;&t; * IA64_THREAD_DBG_VALID. The registers are restored by the PMU context&n;&t;&t; * switch code.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Check if debug registers are used by perfmon. This&n;&t;&t; * test must be done once we know that we can do the&n;&t;&t; * operation, i.e. the arguments are all valid, but&n;&t;&t; * before we start modifying the state.&n;&t;&t; *&n;&t;&t; * Perfmon needs to keep a count of how many processes&n;&t;&t; * are trying to modify the debug registers for system&n;&t;&t; * wide monitoring sessions.&n;&t;&t; *&n;&t;&t; * We also include read access here, because they may&n;&t;&t; * cause the PMU-installed debug register state&n;&t;&t; * (dbr[], ibr[]) to be reset. The two arrays are also&n;&t;&t; * used by perfmon, but we do not use&n;&t;&t; * IA64_THREAD_DBG_VALID. The registers are restored&n;&t;&t; * by the PMU context switch code.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4561,7 +4375,7 @@ c_cond
 (paren
 id|write_access
 )paren
-multiline_comment|/* don&squot;t let the user set kernel-level breakpoints... */
+multiline_comment|/* don&squot;t let the user set kernel-level breakpoints: */
 op_star
 id|ptr
 op_assign
@@ -6041,6 +5855,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* NaT bit will be set via PT_NAT_BITS: */
 r_if
 c_cond
 (paren
@@ -6059,7 +5874,6 @@ l_int|0
 OL
 l_int|0
 )paren
-multiline_comment|/* NaT bit will be set via PT_NAT_BITS */
 r_return
 op_minus
 id|EIO
@@ -6985,11 +6799,11 @@ id|ret
 op_assign
 id|data
 suffix:semicolon
+multiline_comment|/* ensure &quot;ret&quot; is not mistaken as an error code: */
 id|regs-&gt;r8
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* ensure &quot;ret&quot; is not mistaken as an error code */
 )brace
 r_goto
 id|out_tsk
@@ -7068,11 +6882,11 @@ id|ret
 op_assign
 id|data
 suffix:semicolon
+multiline_comment|/* ensure &quot;ret&quot; is not mistaken as an error code */
 id|regs-&gt;r8
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* ensure &quot;ret&quot; is not mistaken as an error code */
 r_goto
 id|out_tsk
 suffix:semicolon
@@ -7208,7 +7022,7 @@ id|child-&gt;exit_code
 op_assign
 id|data
 suffix:semicolon
-multiline_comment|/* make sure the single step/taken-branch trap bits are not set: */
+multiline_comment|/*&n;&t;&t; * Make sure the single step/taken-branch trap bits&n;&t;&t; * are not set:&n;&t;&t; */
 id|ia64_psr
 c_func
 (paren
@@ -7261,7 +7075,7 @@ id|child-&gt;exit_code
 op_assign
 id|SIGKILL
 suffix:semicolon
-multiline_comment|/* make sure the single step/take-branch tra bits are not set: */
+multiline_comment|/*&n;&t;&t; * Make sure the single step/take-branch trap bits are&n;&t;&t; * not set:&n;&t;&t; */
 id|ia64_psr
 c_func
 (paren
@@ -7506,7 +7320,7 @@ id|PT_PTRACED
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/*&n;&t; * The 0x80 provides a way for the tracing parent to distinguish between a syscall&n;&t; * stop and SIGTRAP delivery.&n;&t; */
+multiline_comment|/*&n;&t; * The 0x80 provides a way for the tracing parent to&n;&t; * distinguish between a syscall stop and SIGTRAP delivery.&n;&t; */
 id|ptrace_notify
 c_func
 (paren
@@ -7526,7 +7340,7 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This isn&squot;t the same as continuing with a signal, but it will do for normal use.&n;&t; * strace only continues with a signal if the stopping signal is not SIGTRAP.&n;&t; * -brl&n;&t; */
+multiline_comment|/*&n;&t; * This isn&squot;t the same as continuing with a signal, but it&n;&t; * will do for normal use.  strace only continues with a&n;&t; * signal if the stopping signal is not SIGTRAP.  -brl&n;&t; */
 r_if
 c_cond
 (paren
