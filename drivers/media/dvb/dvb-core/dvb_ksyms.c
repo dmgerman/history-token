@@ -87,11 +87,11 @@ c_func
 id|dvb_register_frontend
 )paren
 suffix:semicolon
-DECL|variable|dvb_unregister_frontend_new
+DECL|variable|dvb_unregister_frontend
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|dvb_unregister_frontend_new
+id|dvb_unregister_frontend
 )paren
 suffix:semicolon
 DECL|variable|dvb_add_frontend_ioctls

@@ -7744,7 +7744,7 @@ op_star
 id|dec
 )paren
 (brace
-id|dvb_unregister_frontend_new
+id|dvb_unregister_frontend
 c_func
 (paren
 id|dec-&gt;frontend_ioctl

@@ -2800,6 +2800,31 @@ op_assign
 id|INVERSION_AUTO
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|fe-&gt;info-&gt;type
+op_eq
+id|FE_OFDM
+)paren
+(brace
+multiline_comment|/* without hierachical coding code_rate_LP is irrelevant,&n;&t;&t;&t; * so we tolerate the otherwise invalid FEC_NONE setting */
+r_if
+c_cond
+(paren
+id|fe-&gt;parameters.u.ofdm.hierarchy_information
+op_eq
+id|HIERARCHY_NONE
+op_logical_and
+id|fe-&gt;parameters.u.ofdm.code_rate_LP
+op_eq
+id|FEC_NONE
+)paren
+id|fe-&gt;parameters.u.ofdm.code_rate_LP
+op_assign
+id|FEC_AUTO
+suffix:semicolon
+)brace
 multiline_comment|/* get frontend-specific tuning settings */
 r_if
 c_cond
@@ -4459,9 +4484,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|dvb_unregister_frontend_new
+DECL|function|dvb_unregister_frontend
 r_int
-id|dvb_unregister_frontend_new
+id|dvb_unregister_frontend
 (paren
 r_int
 (paren

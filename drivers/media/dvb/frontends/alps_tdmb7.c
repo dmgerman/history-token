@@ -2318,7 +2318,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dvb_unregister_frontend_new
+id|dvb_unregister_frontend
 (paren
 id|tdmb7_ioctl
 comma

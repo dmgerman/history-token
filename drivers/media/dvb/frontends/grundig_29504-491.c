@@ -2204,7 +2204,7 @@ c_func
 id|client
 )paren
 suffix:semicolon
-id|dvb_unregister_frontend_new
+id|dvb_unregister_frontend
 (paren
 id|tda8083_ioctl
 comma

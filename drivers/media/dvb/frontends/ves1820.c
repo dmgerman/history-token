@@ -3262,7 +3262,7 @@ c_func
 id|client
 )paren
 suffix:semicolon
-id|dvb_unregister_frontend_new
+id|dvb_unregister_frontend
 c_func
 (paren
 id|ves1820_ioctl

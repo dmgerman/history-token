@@ -20,6 +20,10 @@ DECL|macro|I2C_DRIVERID_DVBFE_AT76C651
 mdefine_line|#define I2C_DRIVERID_DVBFE_AT76C651&t;I2C_DRIVERID_EXP2
 DECL|macro|I2C_DRIVERID_DVBFE_CX24110
 mdefine_line|#define I2C_DRIVERID_DVBFE_CX24110&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_CX22702
+mdefine_line|#define I2C_DRIVERID_DVBFE_CX22702&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_DIB3000MB
+mdefine_line|#define I2C_DRIVERID_DVBFE_DIB3000MB&t;I2C_DRIVERID_EXP2
 DECL|macro|I2C_DRIVERID_DVBFE_DST
 mdefine_line|#define I2C_DRIVERID_DVBFE_DST&t;&t;I2C_DRIVERID_EXP2
 DECL|macro|I2C_DRIVERID_DVBFE_DUMMY
@@ -233,7 +237,7 @@ id|module
 suffix:semicolon
 r_extern
 r_int
-id|dvb_unregister_frontend_new
+id|dvb_unregister_frontend
 (paren
 r_int
 (paren
