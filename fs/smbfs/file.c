@@ -419,9 +419,7 @@ id|server
 )paren
 suffix:semicolon
 r_int
-id|result
-comma
-id|written
+id|ret
 op_assign
 l_int|0
 suffix:semicolon
@@ -462,6 +460,9 @@ id|wsize
 suffix:semicolon
 r_do
 (brace
+r_int
+id|write_ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -473,7 +474,7 @@ id|wsize
 op_assign
 id|count
 suffix:semicolon
-id|result
+id|write_ret
 op_assign
 id|server-&gt;ops
 op_member_access_from_pointer
@@ -492,7 +493,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|result
+id|write_ret
 OL
 l_int|0
 )paren
@@ -500,12 +501,16 @@ l_int|0
 id|PARANOIA
 c_func
 (paren
-l_string|&quot;failed write, wsize=%d, result=%d&bslash;n&quot;
+l_string|&quot;failed write, wsize=%d, write_ret=%d&bslash;n&quot;
 comma
 id|wsize
 comma
-id|result
+id|write_ret
 )paren
+suffix:semicolon
+id|ret
+op_assign
+id|write_ret
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -515,18 +520,18 @@ macro_line|#ifdef SMBFS_PARANOIA
 r_if
 c_cond
 (paren
-id|result
+id|write_ret
 OL
 id|wsize
 )paren
 id|PARANOIA
 c_func
 (paren
-l_string|&quot;short write, wsize=%d, result=%d&bslash;n&quot;
+l_string|&quot;short write, wsize=%d, write_ret=%d&bslash;n&quot;
 comma
 id|wsize
 comma
-id|result
+id|write_ret
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -535,10 +540,6 @@ op_add_assign
 id|wsize
 suffix:semicolon
 id|offset
-op_add_assign
-id|wsize
-suffix:semicolon
-id|written
 op_add_assign
 id|wsize
 suffix:semicolon
@@ -588,12 +589,7 @@ id|page
 )paren
 suffix:semicolon
 r_return
-id|written
-ques
-c_cond
-id|written
-suffix:colon
-id|result
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Write a page to the server. This will be used for NFS swapping only&n; * (for now), and we currently do this synchronously only.&n; *&n; * We are called with the page locked and we unlock it when done.&n; */
