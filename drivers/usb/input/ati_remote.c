@@ -890,7 +890,7 @@ l_int|0x03
 comma
 id|EV_KEY
 comma
-id|KEY_PROG1
+id|KEY_TV
 comma
 l_int|1
 )brace
@@ -905,7 +905,7 @@ l_int|0x04
 comma
 id|EV_KEY
 comma
-id|KEY_PROG2
+id|KEY_DVD
 comma
 l_int|1
 )brace
@@ -1055,7 +1055,7 @@ l_int|0x1e
 comma
 id|EV_KEY
 comma
-id|KEY_ENTER
+id|KEY_OK
 comma
 l_int|1
 )brace
@@ -1109,9 +1109,9 @@ multiline_comment|/* MUTE  */
 (brace
 id|KIND_FILTERED
 comma
-l_int|0xd1
+l_int|0xd0
 comma
-l_int|0x0c
+l_int|0x0b
 comma
 id|EV_KEY
 comma
@@ -1124,9 +1124,9 @@ multiline_comment|/* CH + */
 (brace
 id|KIND_FILTERED
 comma
-l_int|0xd0
+l_int|0xd1
 comma
-l_int|0x0b
+l_int|0x0c
 comma
 id|EV_KEY
 comma
@@ -1160,7 +1160,7 @@ l_int|0x25
 comma
 id|EV_KEY
 comma
-id|KEY_PLAYCD
+id|KEY_PLAY
 comma
 l_int|1
 )brace
