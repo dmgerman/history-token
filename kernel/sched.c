@@ -460,18 +460,20 @@ multiline_comment|/*&n; * sched-domains (multiprocessor balancing) declarations:
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|SCHED_LOAD_SCALE
 mdefine_line|#define SCHED_LOAD_SCALE&t;128UL&t;/* increase resolution of load */
+DECL|macro|SD_LOAD_BALANCE
+mdefine_line|#define SD_LOAD_BALANCE&t;&t;1&t;/* Do load balancing on this domain. */
 DECL|macro|SD_BALANCE_NEWIDLE
-mdefine_line|#define SD_BALANCE_NEWIDLE&t;1&t;/* Balance when about to become idle */
+mdefine_line|#define SD_BALANCE_NEWIDLE&t;2&t;/* Balance when about to become idle */
 DECL|macro|SD_BALANCE_EXEC
-mdefine_line|#define SD_BALANCE_EXEC&t;&t;2&t;/* Balance on exec */
+mdefine_line|#define SD_BALANCE_EXEC&t;&t;4&t;/* Balance on exec */
 DECL|macro|SD_WAKE_IDLE
-mdefine_line|#define SD_WAKE_IDLE&t;&t;4&t;/* Wake to idle CPU on task wakeup */
+mdefine_line|#define SD_WAKE_IDLE&t;&t;8&t;/* Wake to idle CPU on task wakeup */
 DECL|macro|SD_WAKE_AFFINE
-mdefine_line|#define SD_WAKE_AFFINE&t;&t;8&t;/* Wake task to waking CPU */
+mdefine_line|#define SD_WAKE_AFFINE&t;&t;16&t;/* Wake task to waking CPU */
 DECL|macro|SD_WAKE_BALANCE
-mdefine_line|#define SD_WAKE_BALANCE&t;&t;16&t;/* Perform balancing at task wakeup */
+mdefine_line|#define SD_WAKE_BALANCE&t;&t;32&t;/* Perform balancing at task wakeup */
 DECL|macro|SD_SHARE_CPUPOWER
-mdefine_line|#define SD_SHARE_CPUPOWER&t;32&t;/* Domain members share cpu power */
+mdefine_line|#define SD_SHARE_CPUPOWER&t;64&t;/* Domain members share cpu power */
 DECL|struct|sched_group
 r_struct
 id|sched_group
@@ -7024,6 +7026,20 @@ id|sd
 (brace
 r_int
 r_int
+id|interval
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sd-&gt;flags
+op_amp
+id|SD_LOAD_BALANCE
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|interval
 op_assign
 id|sd-&gt;balance_interval
@@ -14647,39 +14663,15 @@ id|cpu
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* Groups for isolated scheduling domains */
-DECL|variable|sched_group_isolated
-r_static
-r_struct
-id|sched_group
-id|sched_group_isolated
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 multiline_comment|/* cpus with isolated domains */
 DECL|variable|cpu_isolated_map
+r_static
 id|cpumask_t
 id|__devinitdata
 id|cpu_isolated_map
 op_assign
 id|CPU_MASK_NONE
 suffix:semicolon
-DECL|function|cpu_to_isolated_group
-r_static
-r_int
-id|__devinit
-id|cpu_to_isolated_group
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-r_return
-id|cpu
-suffix:semicolon
-)brace
 multiline_comment|/* Setup the mask of cpus configured for isolated domains */
 DECL|function|isolated_cpu_setup
 r_static
@@ -14946,19 +14938,6 @@ suffix:semicolon
 id|cpumask_t
 id|cpu_default_map
 suffix:semicolon
-id|cpumask_t
-id|cpu_isolated_online_map
-suffix:semicolon
-id|cpus_and
-c_func
-(paren
-id|cpu_isolated_online_map
-comma
-id|cpu_isolated_map
-comma
-id|cpu_online_map
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Setup mask for cpus without special case scheduling requirements.&n;&t; * For now this just excludes isolated cpus, but could be used to&n;&t; * exclude other special cases in the future.&n;&t; */
 id|cpus_complement
 c_func
@@ -14978,11 +14957,13 @@ comma
 id|cpu_online_map
 )paren
 suffix:semicolon
-multiline_comment|/* Set up domains */
-id|for_each_online_cpu
+multiline_comment|/*&n;&t; * Set up domains. Isolated domains just stay on the dummy domain.&n;&t; */
+id|for_each_cpu_mask
 c_func
 (paren
 id|i
+comma
+id|cpu_default_map
 )paren
 (brace
 r_int
@@ -15021,96 +15002,6 @@ comma
 id|cpu_default_map
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Set up isolated domains.&n;&t;&t; * Unlike those of other cpus, the domains and groups are&n;&t;&t; * single level, and span a single cpu.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|cpu_isset
-c_func
-(paren
-id|i
-comma
-id|cpu_isolated_online_map
-)paren
-)paren
-(brace
-macro_line|#ifdef CONFIG_SCHED_SMT
-id|sd
-op_assign
-op_amp
-id|per_cpu
-c_func
-(paren
-id|cpu_domains
-comma
-id|i
-)paren
-suffix:semicolon
-macro_line|#else
-id|sd
-op_assign
-op_amp
-id|per_cpu
-c_func
-(paren
-id|phys_domains
-comma
-id|i
-)paren
-suffix:semicolon
-macro_line|#endif
-id|group
-op_assign
-id|cpu_to_isolated_group
-c_func
-(paren
-id|i
-)paren
-suffix:semicolon
-op_star
-id|sd
-op_assign
-id|SD_CPU_INIT
-suffix:semicolon
-id|cpu_set
-c_func
-(paren
-id|i
-comma
-id|sd-&gt;span
-)paren
-suffix:semicolon
-id|sd-&gt;balance_interval
-op_assign
-id|INT_MAX
-suffix:semicolon
-multiline_comment|/* Don&squot;t balance */
-id|sd-&gt;flags
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Avoid WAKE_ */
-id|sd-&gt;groups
-op_assign
-op_amp
-id|sched_group_isolated
-(braket
-id|group
-)braket
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Setting up cpu %d isolated.&bslash;n&quot;
-comma
-id|i
-)paren
-suffix:semicolon
-multiline_comment|/* Single level, so continue with next cpu */
-r_continue
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_NUMA
 id|sd
 op_assign
@@ -15320,36 +15211,6 @@ id|cpu_to_cpu_group
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* Set up isolated groups */
-id|for_each_cpu_mask
-c_func
-(paren
-id|i
-comma
-id|cpu_isolated_online_map
-)paren
-(brace
-id|cpumask_t
-id|mask
-op_assign
-id|cpumask_of_cpu
-c_func
-(paren
-id|i
-)paren
-suffix:semicolon
-id|init_sched_build_groups
-c_func
-(paren
-id|sched_group_isolated
-comma
-id|mask
-comma
-op_amp
-id|cpu_to_isolated_group
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Set up physical groups */
 r_for
 c_loop
@@ -15967,20 +15828,12 @@ DECL|macro|sched_domain_debug
 mdefine_line|#define sched_domain_debug() {}
 macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* Initial dummy domain for early boot and for hotplug cpu */
+multiline_comment|/*&n; * Initial dummy domain for early boot and for hotplug cpu. Being static,&n; * it is initialized to zero, so all balancing flags are cleared which is&n; * what we want.&n; */
 DECL|variable|sched_domain_dummy
 r_static
-id|__devinitdata
 r_struct
 id|sched_domain
 id|sched_domain_dummy
-suffix:semicolon
-DECL|variable|sched_group_dummy
-r_static
-id|__devinitdata
-r_struct
-id|sched_group
-id|sched_group_dummy
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_HOTPLUG_CPU
@@ -16194,74 +16047,6 @@ id|j
 comma
 id|k
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* Set up an initial dummy domain for early boot */
-id|memset
-c_func
-(paren
-op_amp
-id|sched_domain_dummy
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|sched_domain
-)paren
-)paren
-suffix:semicolon
-id|sched_domain_dummy.span
-op_assign
-id|CPU_MASK_ALL
-suffix:semicolon
-id|sched_domain_dummy.groups
-op_assign
-op_amp
-id|sched_group_dummy
-suffix:semicolon
-id|sched_domain_dummy.last_balance
-op_assign
-id|jiffies
-suffix:semicolon
-id|sched_domain_dummy.balance_interval
-op_assign
-id|INT_MAX
-suffix:semicolon
-multiline_comment|/* Don&squot;t balance */
-id|sched_domain_dummy.busy_factor
-op_assign
-l_int|1
-suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|sched_group_dummy
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|sched_group
-)paren
-)paren
-suffix:semicolon
-id|sched_group_dummy.cpumask
-op_assign
-id|CPU_MASK_ALL
-suffix:semicolon
-id|sched_group_dummy.next
-op_assign
-op_amp
-id|sched_group_dummy
-suffix:semicolon
-id|sched_group_dummy.cpu_power
-op_assign
-id|SCHED_LOAD_SCALE
-suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
