@@ -6361,17 +6361,13 @@ id|buf_f
 id|uint
 id|type
 suffix:semicolon
-multiline_comment|/*&n;&t; * Non-root filesystems are required to send in quota flags&n;&t; * at mount time.&n;&t; */
+multiline_comment|/*&n;&t; * Filesystems are required to send in quota flags at mount time.&n;&t; */
 r_if
 c_cond
 (paren
 id|mp-&gt;m_qflags
 op_eq
 l_int|0
-op_logical_and
-id|mp-&gt;m_dev
-op_ne
-id|rootdev
 )paren
 (brace
 r_return
@@ -8204,25 +8200,19 @@ id|mp
 op_assign
 id|log-&gt;l_mp
 suffix:semicolon
-multiline_comment|/*&n;&t; * Non-root filesystems are required to send in quota flags&n;&t; * at mount time.&n;&t; */
+multiline_comment|/*&n;&t; * Filesystems are required to send in quota flags at mount time.&n;&t; */
 r_if
 c_cond
 (paren
 id|mp-&gt;m_qflags
 op_eq
 l_int|0
-op_logical_and
-id|mp-&gt;m_dev
-op_ne
-id|rootdev
 )paren
-(brace
 r_return
 (paren
 l_int|0
 )paren
 suffix:semicolon
-)brace
 id|recddq
 op_assign
 (paren
@@ -8277,7 +8267,7 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * At this point we know that if we are recovering a root filesystem&n;&t; * then quota was _not_ turned off. Since there is no other flag&n;&t; * indicate to us otherwise, this must mean that quota&squot;s on,&n;&t; * and the dquot needs to be replayed. Remember that we may not have&n;&t; * fully recovered the superblock yet, so we can&squot;t do the usual trick&n;&t; * of looking at the SB quota bits.&n;&t; *&n;&t; * The other possibility, of course, is that the quota subsystem was&n;&t; * removed since the last mount - ENOSYS.&n;&t; */
+multiline_comment|/*&n;&t; * At this point we know that quota was _not_ turned off.&n;&t; * Since the mount flags are not indicating to us otherwise, this&n;&t; * must mean that quota is on, and the dquot needs to be replayed.&n;&t; * Remember that we may not have fully recovered the superblock yet,&n;&t; * so we can&squot;t do the usual trick of looking at the SB quota bits.&n;&t; *&n;&t; * The other possibility, of course, is that the quota subsystem was&n;&t; * removed since the last mount - ENOSYS.&n;&t; */
 id|dq_f
 op_assign
 (paren

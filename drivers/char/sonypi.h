@@ -6,7 +6,7 @@ macro_line|#ifdef __KERNEL__
 DECL|macro|SONYPI_DRIVER_MAJORVERSION
 mdefine_line|#define SONYPI_DRIVER_MAJORVERSION&t; 1
 DECL|macro|SONYPI_DRIVER_MINORVERSION
-mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;15
+mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;16
 DECL|macro|SONYPI_DEVICE_MODEL_TYPE1
 mdefine_line|#define SONYPI_DEVICE_MODEL_TYPE1&t;1
 DECL|macro|SONYPI_DEVICE_MODEL_TYPE2
@@ -333,6 +333,8 @@ DECL|macro|SONYPI_THUMBPHRASE_MASK
 mdefine_line|#define SONYPI_THUMBPHRASE_MASK&t;&t;&t;0x00000200
 DECL|macro|SONYPI_MEYE_MASK
 mdefine_line|#define SONYPI_MEYE_MASK&t;&t;&t;0x00000400
+DECL|macro|SONYPI_MEMORYSTICK_MASK
+mdefine_line|#define SONYPI_MEMORYSTICK_MASK&t;&t;&t;0x00000800
 DECL|struct|sonypi_event
 r_struct
 id|sonypi_event
@@ -788,7 +790,7 @@ id|sonypi_zoomev
 op_assign
 (brace
 (brace
-l_int|0x3a
+l_int|0x39
 comma
 id|SONYPI_EVENT_ZOOM_PRESSED
 )brace
@@ -843,6 +845,35 @@ comma
 l_int|0x01
 comma
 id|SONYPI_EVENT_MEYE_OPPOSITE
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0
+)brace
+)brace
+suffix:semicolon
+multiline_comment|/* The set of possible memorystick events */
+DECL|variable|sonypi_memorystickev
+r_static
+r_struct
+id|sonypi_event
+id|sonypi_memorystickev
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|0x53
+comma
+id|SONYPI_EVENT_MEMORYSTICK_INSERT
+)brace
+comma
+(brace
+l_int|0x54
+comma
+id|SONYPI_EVENT_MEMORYSTICK_EJECT
 )brace
 comma
 (brace
@@ -1050,6 +1081,16 @@ comma
 id|SONYPI_THUMBPHRASE_MASK
 comma
 id|sonypi_thumbphraseev
+)brace
+comma
+(brace
+id|SONYPI_DEVICE_MODEL_TYPE2
+comma
+l_int|0x08
+comma
+id|SONYPI_MEMORYSTICK_MASK
+comma
+id|sonypi_memorystickev
 )brace
 comma
 (brace
