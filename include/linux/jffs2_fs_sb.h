@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.16 2001/09/18 20:15:18 dwmw2 Exp $ */
+multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.16.2.1 2002/02/23 14:13:34 dwmw2 Exp $ */
 macro_line|#ifndef _JFFS2_FS_SB
 DECL|macro|_JFFS2_FS_SB
 mdefine_line|#define _JFFS2_FS_SB
@@ -11,6 +11,8 @@ DECL|macro|INOCACHE_HASHSIZE
 mdefine_line|#define INOCACHE_HASHSIZE 1
 DECL|macro|JFFS2_SB_FLAG_RO
 mdefine_line|#define JFFS2_SB_FLAG_RO 1
+DECL|macro|JFFS2_SB_FLAG_MOUNTING
+mdefine_line|#define JFFS2_SB_FLAG_MOUNTING 2
 multiline_comment|/* A struct for the overall file system control.  Pointers to&n;   jffs2_sb_info structs are named `c&squot; in the source code.  &n;   Nee jffs_control&n;*/
 DECL|struct|jffs2_sb_info
 r_struct

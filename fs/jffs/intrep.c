@@ -11063,8 +11063,6 @@ r_void
 r_static
 r_int
 id|printout
-op_assign
-l_int|0
 suffix:semicolon
 id|printk
 c_func
