@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/dirent.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
@@ -1612,6 +1613,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_DEVFS_FS
+multiline_comment|/*&n; * If the dir will fit in *buf, return its length.  If it won&squot;t fit, return&n; * zero.  Return -ve on error.&n; */
 DECL|function|do_read_dir
 r_static
 r_int
@@ -1657,20 +1659,12 @@ c_loop
 id|bytes
 op_assign
 l_int|0
-comma
-id|p
-op_assign
-id|buf
 suffix:semicolon
 id|bytes
 OL
 id|len
 suffix:semicolon
 id|bytes
-op_add_assign
-id|n
-comma
-id|p
 op_add_assign
 id|n
 )paren
@@ -1683,6 +1677,8 @@ c_func
 id|fd
 comma
 id|p
+op_plus
+id|bytes
 comma
 id|len
 op_minus
@@ -1697,8 +1693,7 @@ OL
 l_int|0
 )paren
 r_return
-op_minus
-l_int|1
+id|n
 suffix:semicolon
 r_if
 c_cond
@@ -1715,6 +1710,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Try to read all of a directory.  Returns the contents at *p, which&n; * is kmalloced memory.  Returns the number of bytes read at *len.  Returns&n; * NULL on error.&n; */
 DECL|function|read_dir
 r_static
 r_void
@@ -1773,11 +1769,11 @@ op_lshift
 l_int|9
 suffix:semicolon
 id|size
-OL
+op_le
 (paren
 l_int|1
 op_lshift
-l_int|18
+id|MAX_ORDER
 )paren
 suffix:semicolon
 id|size
@@ -1853,6 +1849,17 @@ r_if
 c_cond
 (paren
 id|n
+op_eq
+op_minus
+id|EINVAL
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* Try a larger buffer */
+r_if
+c_cond
+(paren
+id|n
 OL
 l_int|0
 )paren
@@ -1870,37 +1877,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|struct|linux_dirent64
-r_struct
-id|linux_dirent64
-(brace
-DECL|member|d_ino
-id|u64
-id|d_ino
-suffix:semicolon
-DECL|member|d_off
-id|s64
-id|d_off
-suffix:semicolon
-DECL|member|d_reclen
-r_int
-r_int
-id|d_reclen
-suffix:semicolon
-DECL|member|d_type
-r_int
-r_char
-id|d_type
-suffix:semicolon
-DECL|member|d_name
-r_char
-id|d_name
-(braket
-l_int|0
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|function|find_in_devfs
 r_static
 r_int

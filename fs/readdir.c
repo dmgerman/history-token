@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/dirent.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|vfs_readdir
@@ -817,38 +818,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * And even better one including d_type field and 64bit d_ino and d_off.&n; */
-DECL|struct|linux_dirent64
-r_struct
-id|linux_dirent64
-(brace
-DECL|member|d_ino
-id|u64
-id|d_ino
-suffix:semicolon
-DECL|member|d_off
-id|s64
-id|d_off
-suffix:semicolon
-DECL|member|d_reclen
-r_int
-r_int
-id|d_reclen
-suffix:semicolon
-DECL|member|d_type
-r_int
-r_char
-id|d_type
-suffix:semicolon
-DECL|member|d_name
-r_char
-id|d_name
-(braket
-l_int|0
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|macro|ROUND_UP64
 mdefine_line|#define ROUND_UP64(x) (((x)+sizeof(u64)-1) &amp; ~(sizeof(u64)-1))
 DECL|struct|getdents_callback64
