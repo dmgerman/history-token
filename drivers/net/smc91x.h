@@ -215,6 +215,12 @@ DECL|macro|SMC_insw
 mdefine_line|#define SMC_insw(a, r, p, l)&t;insw((a) + (r) - 0xa0000000, p, l)
 DECL|macro|SMC_outsw
 mdefine_line|#define SMC_outsw(a, r, p, l)&t;outsw((a) + (r) - 0xa0000000, p, l)
+DECL|macro|set_irq_type
+mdefine_line|#define set_irq_type(irq, type)&t;do {} while(0)
+DECL|macro|RPC_LSA_DEFAULT
+mdefine_line|#define RPC_LSA_DEFAULT&t;&t;RPC_LED_TX_RX
+DECL|macro|RPC_LSB_DEFAULT
+mdefine_line|#define RPC_LSB_DEFAULT&t;&t;RPC_LED_100_10
 macro_line|#else
 DECL|macro|SMC_CAN_USE_8BIT
 mdefine_line|#define SMC_CAN_USE_8BIT&t;1
@@ -247,8 +253,9 @@ mdefine_line|#define RPC_LSB_DEFAULT&t;&t;RPC_LED_TX_RX
 macro_line|#endif
 macro_line|#ifdef SMC_USE_PXA_DMA
 multiline_comment|/*&n; * Let&squot;s use the DMA engine on the XScale PXA2xx for RX packets. This is&n; * always happening in irq context so no need to worry about races.  TX is&n; * different and probably not worth it for that reason, and not as critical&n; * as RX which can overrun memory and lose packets.&n; */
-macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#ifdef SMC_insl
 DECL|macro|SMC_insl
 macro_line|#undef SMC_insl
@@ -333,7 +340,6 @@ op_star
 )paren
 id|buf
 )paren
-op_increment
 op_assign
 id|SMC_inl
 c_func
@@ -342,6 +348,10 @@ id|ioaddr
 comma
 id|reg
 )paren
+suffix:semicolon
+id|buf
+op_add_assign
+l_int|4
 suffix:semicolon
 id|len
 op_decrement
@@ -362,7 +372,7 @@ id|buf
 comma
 id|len
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|DCSR
@@ -434,6 +444,10 @@ id|dma
 op_amp
 id|DCSR_STOPSTATE
 )paren
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 id|DCSR
@@ -542,7 +556,6 @@ op_star
 )paren
 id|buf
 )paren
-op_increment
 op_assign
 id|SMC_inw
 c_func
@@ -551,6 +564,10 @@ id|ioaddr
 comma
 id|reg
 )paren
+suffix:semicolon
+id|buf
+op_add_assign
+l_int|2
 suffix:semicolon
 id|len
 op_decrement
@@ -644,6 +661,10 @@ op_amp
 id|DCSR_STOPSTATE
 )paren
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|DCSR
 c_func
@@ -662,7 +683,7 @@ id|dmabuf
 comma
 id|len
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 )brace
@@ -1420,10 +1441,8 @@ mdefine_line|#define SMC_GET_MAC_ADDR(addr)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&
 macro_line|#endif
 DECL|macro|SMC_SET_MAC_ADDR
 mdefine_line|#define SMC_SET_MAC_ADDR(addr)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;SMC_outw( addr[0]|(addr[1] &lt;&lt; 8), ioaddr, ADDR0_REG );&t;&bslash;&n;&t;&t;SMC_outw( addr[2]|(addr[3] &lt;&lt; 8), ioaddr, ADDR1_REG );&t;&bslash;&n;&t;&t;SMC_outw( addr[4]|(addr[5] &lt;&lt; 8), ioaddr, ADDR2_REG );&t;&bslash;&n;&t;} while (0)
-DECL|macro|SMC_CLEAR_MCAST
-mdefine_line|#define SMC_CLEAR_MCAST()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;SMC_outw( 0, ioaddr, MCAST_REG1 );&t;&t;&t;&bslash;&n;&t;&t;SMC_outw( 0, ioaddr, MCAST_REG2 );&t;&t;&t;&bslash;&n;&t;&t;SMC_outw( 0, ioaddr, MCAST_REG3 );&t;&t;&t;&bslash;&n;&t;&t;SMC_outw( 0, ioaddr, MCAST_REG4 );&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|SMC_SET_MCAST
-mdefine_line|#define SMC_SET_MCAST(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned char *mt = (x);&t;&t;&t;&t;&bslash;&n;&t;&t;SMC_outw( mt[0] | (mt[1] &lt;&lt; 8), ioaddr, MCAST_REG1 );&t;&bslash;&n;&t;&t;SMC_outw( mt[2] | (mt[3] &lt;&lt; 8), ioaddr, MCAST_REG2 );&t;&bslash;&n;&t;&t;SMC_outw( mt[4] | (mt[5] &lt;&lt; 8), ioaddr, MCAST_REG3 );&t;&bslash;&n;&t;&t;SMC_outw( mt[6] | (mt[7] &lt;&lt; 8), ioaddr, MCAST_REG4 );&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define SMC_SET_MCAST(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;const unsigned char *mt = (x);&t;&t;&t;&t;&bslash;&n;&t;&t;SMC_outw( mt[0] | (mt[1] &lt;&lt; 8), ioaddr, MCAST_REG1 );&t;&bslash;&n;&t;&t;SMC_outw( mt[2] | (mt[3] &lt;&lt; 8), ioaddr, MCAST_REG2 );&t;&bslash;&n;&t;&t;SMC_outw( mt[4] | (mt[5] &lt;&lt; 8), ioaddr, MCAST_REG3 );&t;&bslash;&n;&t;&t;SMC_outw( mt[6] | (mt[7] &lt;&lt; 8), ioaddr, MCAST_REG4 );&t;&bslash;&n;&t;} while (0)
 macro_line|#if SMC_CAN_USE_32BIT
 multiline_comment|/*&n; * Some setups just can&squot;t write 8 or 16 bits reliably when not aligned&n; * to a 32 bit boundary.  I tell you that exists!&n; * We re-do the ones here that can be easily worked around if they can have&n; * their low parts written to 0 without adverse effects.&n; */
 DECL|macro|SMC_SELECT_BANK
