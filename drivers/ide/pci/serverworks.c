@@ -2730,6 +2730,15 @@ id|u8
 id|pio
 )paren
 (brace
+multiline_comment|/* Tune to desired value or to &quot;best&quot;. We must not adjust&n;&t;   &quot;best&quot; when we adjust from pio numbers to rate values! */
+r_if
+c_cond
+(paren
+id|pio
+op_ne
+l_int|255
+)paren
+(brace
 (paren
 r_void
 )paren
@@ -2743,6 +2752,19 @@ id|XFER_PIO_0
 op_plus
 id|pio
 )paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(paren
+r_void
+)paren
+id|svwks_tune_chipset
+c_func
+(paren
+id|drive
+comma
+l_int|255
 )paren
 suffix:semicolon
 )brace

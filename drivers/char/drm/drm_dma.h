@@ -1994,7 +1994,7 @@ id|buf-&gt;waiting
 id|DRM_ERROR
 c_func
 (paren
-l_string|&quot;Free buffer %d in use by %x (w%d, p%d)&bslash;n&quot;
+l_string|&quot;Free buffer %d in use: filp %p (w%d, p%d)&bslash;n&quot;
 comma
 id|buf-&gt;idx
 comma
@@ -2795,20 +2795,15 @@ id|irqflags
 )paren
 suffix:semicolon
 multiline_comment|/* Check if this task has already scheduled the same signal&n;&t;&t; * for the same vblank sequence number; nothing to be done in&n;&t;&t; * that case&n;&t;&t; */
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-(paren
-(paren
-r_struct
-id|list_head
-op_star
-)paren
 id|vbl_sig
-)paren
 comma
 op_amp
 id|dev-&gt;vbl_sigs.head
+comma
+id|head
 )paren
 (brace
 r_if
@@ -3032,6 +3027,9 @@ id|dev
 r_struct
 id|list_head
 op_star
+id|list
+comma
+op_star
 id|tmp
 suffix:semicolon
 id|drm_vbl_sig_t
@@ -3065,14 +3063,7 @@ suffix:semicolon
 id|list_for_each_safe
 c_func
 (paren
-(paren
-(paren
-r_struct
-id|list_head
-op_star
-)paren
-id|vbl_sig
-)paren
+id|list
 comma
 id|tmp
 comma
@@ -3080,6 +3071,18 @@ op_amp
 id|dev-&gt;vbl_sigs.head
 )paren
 (brace
+id|vbl_sig
+op_assign
+id|list_entry
+c_func
+(paren
+id|list
+comma
+id|drm_vbl_sig_t
+comma
+id|head
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3114,12 +3117,7 @@ suffix:semicolon
 id|list_del
 c_func
 (paren
-(paren
-r_struct
-id|list_head
-op_star
-)paren
-id|vbl_sig
+id|list
 )paren
 suffix:semicolon
 id|DRM_FREE

@@ -252,7 +252,7 @@ DECL|macro|si_fd
 mdefine_line|#define si_fd&t;&t;_sifields._sigpoll._fd
 macro_line|#ifdef __KERNEL__
 DECL|macro|__SI_MASK
-mdefine_line|#define __SI_MASK&t;0xffff0000
+mdefine_line|#define __SI_MASK&t;0xffff0000u
 DECL|macro|__SI_KILL
 mdefine_line|#define __SI_KILL&t;(0 &lt;&lt; 16)
 DECL|macro|__SI_TIMER
@@ -563,6 +563,7 @@ c_func
 (paren
 r_struct
 id|siginfo
+id|__user
 op_star
 id|to
 comma

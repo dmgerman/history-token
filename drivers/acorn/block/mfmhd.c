@@ -2686,7 +2686,8 @@ multiline_comment|/* Turns Drive LEDs off - may slow it down? */
 r_if
 c_cond
 (paren
-id|blk_queue_empty
+op_logical_neg
+id|elv_next_request
 c_func
 (paren
 id|QUEUE
@@ -3326,17 +3327,14 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;mfm_request: before blk_queue_empty&bslash;n&quot;
+l_string|&quot;mfm_request: before !CURRENT&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|blk_queue_empty
-c_func
-(paren
-id|QUEUE
-)paren
+op_logical_neg
+id|CURRENT
 )paren
 (brace
 id|printk

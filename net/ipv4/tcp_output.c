@@ -1328,9 +1328,11 @@ suffix:semicolon
 r_int
 id|pos
 op_assign
-id|skb-&gt;len
-op_minus
-id|skb-&gt;data_len
+id|skb_headlen
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 r_if
 c_cond

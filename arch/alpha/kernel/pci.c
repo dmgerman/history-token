@@ -805,7 +805,7 @@ op_star
 id|bus
 )paren
 (brace
-multiline_comment|/* Propogate hose info into the subordinate devices.  */
+multiline_comment|/* Propagate hose info into the subordinate devices.  */
 r_struct
 id|pci_controller
 op_star

@@ -4835,8 +4835,7 @@ c_func
 id|queue
 )paren
 op_logical_and
-op_logical_neg
-id|blk_queue_empty
+id|elv_next_request
 c_func
 (paren
 id|queue

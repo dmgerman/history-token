@@ -2,6 +2,7 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef KERNEL_IRDA_H
 DECL|macro|KERNEL_IRDA_H
 mdefine_line|#define KERNEL_IRDA_H
+macro_line|#include &lt;linux/socket.h&gt; /* only for sa_family_t */
 multiline_comment|/* Hint bit positions for first hint byte */
 DECL|macro|HINT_PNP
 mdefine_line|#define HINT_PNP         0x01

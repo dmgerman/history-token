@@ -6,43 +6,6 @@ macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
-r_extern
-r_int
-id|xfs_change_file_space
-c_func
-(paren
-id|bhv_desc_t
-op_star
-comma
-r_int
-comma
-id|xfs_flock64_t
-op_star
-comma
-id|xfs_off_t
-comma
-id|cred_t
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xfs_set_dmattrs
-c_func
-(paren
-id|bhv_desc_t
-op_star
-comma
-id|u_int
-comma
-id|u_int16_t
-comma
-id|cred_t
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * xfs_find_handle maps from userspace xfs_fsop_handlereq structure to&n; * a file or fs handle.&n; *&n; * XFS_IOC_PATH_TO_FSHANDLE&n; *    returns fs handle for a mount point or path within that mount point&n; * XFS_IOC_FD_TO_HANDLE&n; *    returns full handle for a FD opened in user space&n; * XFS_IOC_PATH_TO_HANDLE&n; *    returns full handle for a path&n; */
 id|STATIC
 r_int

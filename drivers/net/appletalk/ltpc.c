@@ -36,6 +36,7 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -55,6 +56,20 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* our stuff */
 macro_line|#include &quot;ltpc.h&quot;
+DECL|variable|txqueue_lock
+r_static
+id|spinlock_t
+id|txqueue_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|variable|mbox_lock
+r_static
+id|spinlock_t
+id|mbox_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/* function prototypes */
 r_static
 r_int
@@ -232,15 +247,13 @@ id|qel-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|txqueue_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -265,9 +278,12 @@ id|xmQtl
 op_assign
 id|qel
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|txqueue_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -315,15 +331,13 @@ id|qel
 op_assign
 l_int|NULL
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|txqueue_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -353,9 +367,12 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|txqueue_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -377,6 +394,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;ltpc: dequeued command &quot;
 )paren
 suffix:semicolon
@@ -577,15 +595,13 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|mbox_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_for
@@ -619,9 +635,12 @@ id|i
 op_assign
 l_int|1
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|mbox_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -629,9 +648,12 @@ r_return
 id|i
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|mbox_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1338,15 +1360,13 @@ id|base
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|txqueue_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -1355,9 +1375,12 @@ c_cond
 id|QInIdle
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|txqueue_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1368,9 +1391,12 @@ id|QInIdle
 op_assign
 l_int|1
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|txqueue_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3581,6 +3607,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
+r_int
 id|timeout
 suffix:semicolon
 r_int
@@ -4007,14 +4034,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|timeout
-suffix:semicolon
-r_int
 id|autoirq
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_int
 r_int
@@ -4025,16 +4045,14 @@ id|portfound
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|timeout
+suffix:semicolon
 id|SET_MODULE_OWNER
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* probe for the I/O port address */
@@ -4201,18 +4219,14 @@ id|portfound
 (brace
 multiline_comment|/* give up in despair */
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;LocalTalk card not found; 220 = %02x, 240 = %02x.&bslash;n&quot;
 comma
 id|x
 comma
 id|y
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -4232,8 +4246,6 @@ l_int|2
 r_int
 r_int
 id|irq_mask
-comma
-id|delay
 suffix:semicolon
 id|irq_mask
 op_assign
@@ -4268,24 +4280,10 @@ op_plus
 l_int|6
 )paren
 suffix:semicolon
-id|delay
-op_assign
-id|jiffies
-op_plus
-id|HZ
-op_div
-l_int|50
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|time_before
+id|mdelay
 c_func
 (paren
-id|jiffies
-comma
-id|delay
-)paren
+l_int|2
 )paren
 suffix:semicolon
 id|autoirq
@@ -4307,6 +4305,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ltpc: probe at %#x failed to detect IRQ line.&bslash;n&quot;
 comma
 id|io
@@ -4358,13 +4357,8 @@ id|ltdmabuf
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ltpc: mem alloc failed&bslash;n&quot;
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -4410,31 +4404,22 @@ op_plus
 l_int|3
 )paren
 suffix:semicolon
-id|timeout
-op_assign
-id|jiffies
-op_plus
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 l_int|2
 op_star
 id|HZ
 op_div
 l_int|100
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|time_before
-c_func
-(paren
-id|jiffies
-comma
-id|timeout
 )paren
-)paren
-(brace
 suffix:semicolon
-)brace
-multiline_comment|/* hold it in reset for a coupla jiffies */
 id|inb_p
 c_func
 (paren
@@ -4494,30 +4479,18 @@ l_int|6
 )paren
 suffix:semicolon
 multiline_comment|/* tri-state interrupt line */
-id|timeout
-op_assign
-id|jiffies
-op_plus
-l_int|100
-op_star
-id|HZ
-op_div
-l_int|100
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|time_before
+id|set_current_state
 c_func
 (paren
-id|jiffies
-comma
-id|timeout
+id|TASK_UNINTERRUPTIBLE
 )paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
 )paren
-(brace
-multiline_comment|/* wait for the card to complete initialization */
-)brace
+suffix:semicolon
 multiline_comment|/* now, figure out which dma channel we&squot;re using, unless it&squot;s&n;&t;   already been specified */
 multiline_comment|/* well, 0 is a legal DMA channel, but the LTPC card doesn&squot;t&n;&t;   use it... */
 r_if
@@ -4547,13 +4520,8 @@ multiline_comment|/* no dma channel */
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;No DMA channel found on ltpc card.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -4572,6 +4540,7 @@ id|irq
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Apple/Farallon LocalTalk-PC card at %03x, IR%d, DMA%d.&bslash;n&quot;
 comma
 id|io
@@ -4586,6 +4555,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Apple/Farallon LocalTalk-PC card at %03x, DMA%d.  Using polled mode.&bslash;n&quot;
 comma
 id|io
@@ -4744,6 +4714,11 @@ l_int|6
 r_break
 suffix:semicolon
 )brace
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -4760,16 +4735,12 @@ l_string|&quot;setting up timer and irq&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* grab it and don&squot;t let go :-) */
 r_if
 c_cond
 (paren
 id|irq
-)paren
-(brace
-multiline_comment|/* grab it and don&squot;t let go :-) */
-(paren
-r_void
-)paren
+op_logical_and
 id|request_irq
 c_func
 (paren
@@ -4784,7 +4755,10 @@ l_string|&quot;ltpc&quot;
 comma
 id|dev
 )paren
-suffix:semicolon
+op_ge
+l_int|0
+)paren
+(brace
 (paren
 r_void
 )paren
@@ -4812,6 +4786,20 @@ multiline_comment|/* and reset irq line */
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|irq
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ltpc: IRQ already in use, using polled mode.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* polled mode -- 20 times per second */
 multiline_comment|/* this is really, really slow... should it poll more often? */
 id|init_timer
@@ -4844,12 +4832,6 @@ c_func
 (paren
 op_amp
 id|ltpc_timer
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 )brace

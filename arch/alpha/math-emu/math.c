@@ -1242,7 +1242,7 @@ suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
-multiline_comment|/*&n;&t; * Take the appropriate action for each possible&n;&t; * floating-point result:&n;&t; *&n;&t; *&t;- Set the appropriate bits in the FPCR&n;&t; *&t;- If the specified exception is enabled in the FPCR,&n;&t; *&t;  return.  The caller (entArith) will dispatch&n;&t; *&t;  the appropriate signal to the translated program.&n;&t; *&n;&t; * In addition, properly track the exception state in software&n;&t; * as described in the Alpha Architectre Handbook section 4.7.7.3.&n;&t; */
+multiline_comment|/*&n;&t; * Take the appropriate action for each possible&n;&t; * floating-point result:&n;&t; *&n;&t; *&t;- Set the appropriate bits in the FPCR&n;&t; *&t;- If the specified exception is enabled in the FPCR,&n;&t; *&t;  return.  The caller (entArith) will dispatch&n;&t; *&t;  the appropriate signal to the translated program.&n;&t; *&n;&t; * In addition, properly track the exception state in software&n;&t; * as described in the Alpha Architecture Handbook section 4.7.7.3.&n;&t; */
 id|done
 suffix:colon
 r_if

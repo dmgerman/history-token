@@ -5,8 +5,7 @@ mdefine_line|#define _SPARC_PGTABLE_H
 multiline_comment|/*  asm-sparc/pgtable.h:  Defines and functions used to work&n; *                        with Sparc page tables.&n; *&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-multiline_comment|/* #include &lt;asm/asi.h&gt; */
-multiline_comment|/* doesn&squot;t seem like being used XXX */
+macro_line|#include &lt;asm/types.h&gt;
 macro_line|#ifdef CONFIG_SUN4
 macro_line|#include &lt;asm/pgtsun4.h&gt;
 macro_line|#else
@@ -879,6 +878,53 @@ id|pte_youngi
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * The following only work if pte_present() is not true.&n; */
+id|BTFIXUPDEF_HALF
+c_func
+(paren
+id|pte_filei
+)paren
+r_extern
+r_int
+id|pte_file
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+id|__attribute__
+c_func
+(paren
+(paren
+r_const
+)paren
+)paren
+suffix:semicolon
+DECL|function|pte_file
+r_extern
+id|__inline__
+r_int
+id|pte_file
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|BTFIXUP_HALF
+c_func
+(paren
+id|pte_filei
+)paren
+suffix:semicolon
+)brace
 id|BTFIXUPDEF_HALF
 c_func
 (paren
@@ -1323,6 +1369,45 @@ DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|__swp_entry_to_pte
 mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
+multiline_comment|/* file-offset-in-pte helpers */
+id|BTFIXUPDEF_CALL
+c_func
+(paren
+r_int
+r_int
+comma
+id|pte_to_pgoff
+comma
+id|pte_t
+id|pte
+)paren
+suffix:semicolon
+id|BTFIXUPDEF_CALL
+c_func
+(paren
+id|pte_t
+comma
+id|pgoff_to_pte
+comma
+r_int
+r_int
+id|pgoff
+)paren
+suffix:semicolon
+DECL|variable|pte_file_max_bits
+id|BTFIXUPDEF_SIMM13
+c_func
+(paren
+id|pte_file_max_bits
+)paren
+suffix:semicolon
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(pte) BTFIXUP_CALL(pte_to_pgoff)(pte)
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(off) BTFIXUP_CALL(pgoff_to_pte)(off)
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS BTFIXUP_SIMM13(pte_file_max_bits)
+multiline_comment|/*&n; */
 DECL|struct|ctx_list
 r_struct
 id|ctx_list

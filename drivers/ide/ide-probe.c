@@ -3637,14 +3637,6 @@ op_assign
 l_int|256
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Our default set up assumes the normal IDE case,&n;&t; *&t;that is 64K segmenting, standard PRD setup&n;&t; *&t;and LBA28. Some drivers then impose their own&n;&t; *&t;limits and LBA48 we could raise it but as yet&n;&t; *&t;do not.&n;&t; */
-id|q-&gt;queuedata
-op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
 id|blk_init_queue
 c_func
 (paren
@@ -3654,6 +3646,14 @@ id|do_ide_request
 comma
 op_amp
 id|ide_lock
+)paren
+suffix:semicolon
+id|q-&gt;queuedata
+op_assign
+id|HWGROUP
+c_func
+(paren
+id|drive
 )paren
 suffix:semicolon
 id|drive-&gt;queue_setup

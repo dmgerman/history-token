@@ -729,7 +729,7 @@ mdefine_line|#define SETFEATURES_DIS_RETRY&t;0x33&t;/* Disable Retry */
 DECL|macro|SETFEATURES_EN_AAM
 mdefine_line|#define SETFEATURES_EN_AAM&t;0x42&t;/* Enable Automatic Acoustic Management */
 DECL|macro|SETFEATURES_RW_LONG
-mdefine_line|#define SETFEATURES_RW_LONG&t;0x44&t;/* Set Lenght of VS bytes */
+mdefine_line|#define SETFEATURES_RW_LONG&t;0x44&t;/* Set Length of VS bytes */
 DECL|macro|SETFEATURES_SET_CACHE
 mdefine_line|#define SETFEATURES_SET_CACHE&t;0x54&t;/* Set Cache segments to SC Reg. Val */
 DECL|macro|SETFEATURES_DIS_RLA

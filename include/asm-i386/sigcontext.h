@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASMi386_SIGCONTEXT_H
 DECL|macro|_ASMi386_SIGCONTEXT_H
 mdefine_line|#define _ASMi386_SIGCONTEXT_H
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/*&n; * As documented in the iBCS2 standard..&n; *&n; * The first part of &quot;struct _fpstate&quot; is just the normal i387&n; * hardware setup, the extra &quot;status&quot; word is used to save the&n; * coprocessor status word before entering the handler.&n; *&n; * Pentium III FXSR, SSE support&n; *&t;Gareth Hughes &lt;gareth@valinux.com&gt;, May 2000&n; *&n; * The FPU state data structure has had to grow to accommodate the&n; * extended FPU state required by the Streaming SIMD Extensions.&n; * There is no documented standard to accomplish this at the moment.&n; */
 DECL|struct|_fpreg
 r_struct
@@ -290,6 +291,7 @@ suffix:semicolon
 DECL|member|fpstate
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|fpstate
 suffix:semicolon

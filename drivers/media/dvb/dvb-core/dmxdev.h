@@ -159,6 +159,11 @@ DECL|member|buffer
 id|dmxdev_buffer_t
 id|buffer
 suffix:semicolon
+DECL|member|mutex
+r_struct
+id|semaphore
+id|mutex
+suffix:semicolon
 singleline_comment|// only for sections
 DECL|member|timer
 r_struct

@@ -1,7 +1,7 @@
 multiline_comment|/* &n; * ca.h&n; *&n; * Copyright (C) 2000 Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *                  &amp; Marcus Metzler &lt;marcus@convergence.de&gt;&n;                      for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Lesser Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
-macro_line|#ifndef _CA_H_
-DECL|macro|_CA_H_
-mdefine_line|#define _CA_H_
+macro_line|#ifndef _DVBCA_H_
+DECL|macro|_DVBCA_H_
+mdefine_line|#define _DVBCA_H_
 multiline_comment|/* slot interface types and info */
 DECL|struct|ca_slot_info
 r_typedef
@@ -24,6 +24,8 @@ DECL|macro|CA_CI_LINK
 mdefine_line|#define CA_CI_LINK       2     /* CI link layer level interface */
 DECL|macro|CA_CI_PHYS
 mdefine_line|#define CA_CI_PHYS       4     /* CI physical layer level interface */
+DECL|macro|CA_DESCR
+mdefine_line|#define CA_DESCR         8     /* built-in descrambler */
 DECL|macro|CA_SC
 mdefine_line|#define CA_SC          128     /* simple smart card interface */
 DECL|member|flags
@@ -148,6 +150,7 @@ r_int
 r_int
 id|parity
 suffix:semicolon
+multiline_comment|/* 0 == even, 1 == odd */
 DECL|member|cw
 r_int
 r_char
@@ -159,6 +162,25 @@ suffix:semicolon
 DECL|typedef|ca_descr_t
 )brace
 id|ca_descr_t
+suffix:semicolon
+DECL|struct|ca_pid
+r_typedef
+r_struct
+id|ca_pid
+(brace
+DECL|member|pid
+r_int
+r_int
+id|pid
+suffix:semicolon
+DECL|member|index
+r_int
+id|index
+suffix:semicolon
+multiline_comment|/* -1 == disable*/
+DECL|typedef|ca_pid_t
+)brace
+id|ca_pid_t
 suffix:semicolon
 DECL|macro|CA_RESET
 mdefine_line|#define CA_RESET          _IO(&squot;o&squot;, 128)
@@ -174,5 +196,7 @@ DECL|macro|CA_SEND_MSG
 mdefine_line|#define CA_SEND_MSG       _IOW(&squot;o&squot;, 133, ca_msg_t)
 DECL|macro|CA_SET_DESCR
 mdefine_line|#define CA_SET_DESCR      _IOW(&squot;o&squot;, 134, ca_descr_t)
+DECL|macro|CA_SET_PID
+mdefine_line|#define CA_SET_PID        _IOW(&squot;o&squot;, 135, ca_pid_t)
 macro_line|#endif
 eof

@@ -1321,6 +1321,8 @@ op_star
 id|__get_free_pages
 c_func
 (paren
+id|GFP_KERNEL
+op_or
 id|GFP_DMA
 comma
 id|N_RX_PAGES
@@ -1335,6 +1337,8 @@ op_star
 id|__get_free_pages
 c_func
 (paren
+id|GFP_KERNEL
+op_or
 id|GFP_DMA
 comma
 l_int|0

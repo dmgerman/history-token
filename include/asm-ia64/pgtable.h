@@ -71,6 +71,9 @@ DECL|macro|_PAGE_ED
 mdefine_line|#define _PAGE_ED&t;&t;(__IA64_UL(1) &lt;&lt; 52)&t;/* exception deferral */
 DECL|macro|_PAGE_PROTNONE
 mdefine_line|#define _PAGE_PROTNONE&t;&t;(__IA64_UL(1) &lt;&lt; 63)
+multiline_comment|/* Valid only for a PTE with the present bit cleared: */
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE&t;&t;(1 &lt;&lt; 1)&t;&t;/* see swap &amp; file pte remarks below */
 DECL|macro|_PFN_MASK
 mdefine_line|#define _PFN_MASK&t;&t;_PAGE_PPN_MASK
 DECL|macro|_PAGE_CHG_MASK
@@ -290,6 +293,8 @@ DECL|macro|pte_dirty
 mdefine_line|#define pte_dirty(pte)&t;&t;((pte_val(pte) &amp; _PAGE_D) != 0)
 DECL|macro|pte_young
 mdefine_line|#define pte_young(pte)&t;&t;((pte_val(pte) &amp; _PAGE_A) != 0)
+DECL|macro|pte_file
+mdefine_line|#define pte_file(pte)&t;&t;((pte_val(pte) &amp; _PAGE_FILE) != 0)
 multiline_comment|/*&n; * Note: we convert AR_RWX to AR_RX and AR_RW to AR_R by clearing the 2nd bit in the&n; * access rights:&n; */
 DECL|macro|pte_wrprotect
 mdefine_line|#define pte_wrprotect(pte)&t;(__pte(pte_val(pte) &amp; ~_PAGE_AR_RW))
@@ -750,16 +755,23 @@ id|paging_init
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Note: The macros below rely on the fact that MAX_SWAPFILES_SHIFT &lt;= number of&n; *&t; bits in the swap-type field of the swap pte.  It would be nice to&n; *&t; enforce that, but we can&squot;t easily include &lt;linux/swap.h&gt; here.&n; *&t; (Of course, better still would be to define MAX_SWAPFILES_SHIFT here...).&n; *&n; * Format of swap pte:&n; *&t;bit   0   : present bit (must be zero)&n; *&t;bit   1   : _PAGE_FILE (must be zero)&n; *&t;bits  2- 8: swap-type&n; *&t;bits  9-62: swap offset&n; *&t;bit  63   : _PAGE_PROTNONE bit&n; *&n; * Format of file pte:&n; *&t;bit   0   : present bit (must be zero)&n; *&t;bit   1   : _PAGE_FILE (must be one)&n; *&t;bits  2-62: file_offset/PAGE_SIZE&n; *&t;bit  63   : _PAGE_PROTNONE bit&n; */
 DECL|macro|__swp_type
-mdefine_line|#define __swp_type(entry)&t;&t;(((entry).val &gt;&gt; 1) &amp; 0xff)
+mdefine_line|#define __swp_type(entry)&t;&t;(((entry).val &gt;&gt; 2) &amp; 0x7f)
 DECL|macro|__swp_offset
 mdefine_line|#define __swp_offset(entry)&t;&t;(((entry).val &lt;&lt; 1) &gt;&gt; 10)
 DECL|macro|__swp_entry
-mdefine_line|#define __swp_entry(type,offset)&t;((swp_entry_t) { ((type) &lt;&lt; 1) | ((long) (offset) &lt;&lt; 9) })
+mdefine_line|#define __swp_entry(type,offset)&t;((swp_entry_t) { ((type) &lt;&lt; 2) | ((long) (offset) &lt;&lt; 9) })
 DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|__swp_entry_to_pte
 mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS&t;&t;61
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(pte)&t;&t;((pte_val(pte) &lt;&lt; 1) &gt;&gt; 3)
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(off)&t;&t;((pte_t) { ((off) &lt;&lt; 2) | _PAGE_FILE })
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range remap_page_range&t;/* XXX is this right? */
 multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */

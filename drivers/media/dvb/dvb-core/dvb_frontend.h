@@ -82,6 +82,21 @@ op_star
 id|arg
 )paren
 suffix:semicolon
+DECL|member|notifier_callback
+r_void
+(paren
+op_star
+id|notifier_callback
+)paren
+(paren
+id|fe_status_t
+id|s
+comma
+r_void
+op_star
+id|data
+)paren
+suffix:semicolon
 DECL|member|i2c
 r_struct
 id|dvb_i2c_bus
@@ -92,6 +107,12 @@ DECL|member|before_after_data
 r_void
 op_star
 id|before_after_data
+suffix:semicolon
+multiline_comment|/*  can be used by hardware module... */
+DECL|member|notifier_data
+r_void
+op_star
+id|notifier_data
 suffix:semicolon
 multiline_comment|/*  can be used by hardware module... */
 DECL|member|data

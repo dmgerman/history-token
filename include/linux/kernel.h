@@ -539,6 +539,10 @@ suffix:semicolon
 multiline_comment|/* If set, an oops, panic(), BUG() or die() is in progress */
 r_extern
 r_int
+id|panic_on_oops
+suffix:semicolon
+r_extern
+r_int
 id|tainted
 suffix:semicolon
 r_extern

@@ -1239,6 +1239,11 @@ op_star
 id|fs
 )paren
 (brace
+r_struct
+id|request
+op_star
+id|req
+suffix:semicolon
 r_int
 r_int
 id|x
@@ -1270,22 +1275,11 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-op_logical_neg
-id|blk_queue_empty
-c_func
-(paren
-op_amp
-id|swim3_queue
-)paren
-op_logical_and
 id|fs-&gt;state
 op_eq
 id|idle
-)paren
-(brace
-r_struct
-id|request
-op_star
+op_logical_and
+(paren
 id|req
 op_assign
 id|elv_next_request
@@ -1294,7 +1288,9 @@ c_func
 op_amp
 id|swim3_queue
 )paren
-suffix:semicolon
+)paren
+)paren
+(brace
 macro_line|#if 0
 id|printk
 c_func

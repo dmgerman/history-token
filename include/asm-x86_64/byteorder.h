@@ -67,7 +67,7 @@ r_return
 id|x
 suffix:semicolon
 )brace
-multiline_comment|/* Do not define swab16.  Gcc is smart enought to recognize &quot;C&quot; version and&n;   convert it into rotation or exhange.  */
+multiline_comment|/* Do not define swab16.  Gcc is smart enough to recognize &quot;C&quot; version and&n;   convert it into rotation or exhange.  */
 DECL|macro|__arch__swab32
 mdefine_line|#define __arch__swab32(x) ___arch__swab32(x)
 DECL|macro|__arch__swab64

@@ -953,7 +953,7 @@ id|mapping-&gt;backing_dev_info
 r_goto
 id|keep_locked
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1010,7 +1010,7 @@ op_amp
 id|mapping-&gt;locked_pages
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1077,7 +1077,7 @@ r_goto
 id|keep
 suffix:semicolon
 )brace
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1139,7 +1139,7 @@ r_goto
 id|keep_locked
 suffix:semicolon
 multiline_comment|/* truncate got there first */
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1165,7 +1165,7 @@ id|page
 )paren
 )paren
 (brace
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1203,7 +1203,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1234,7 +1234,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp

@@ -112,11 +112,13 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|path
 comma
 r_struct
 id|statfs
+id|__user
 op_star
 id|buf
 )paren
@@ -211,6 +213,7 @@ id|fd
 comma
 r_struct
 id|statfs
+id|__user
 op_star
 id|buf
 )paren
@@ -379,6 +382,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|path
 comma
@@ -631,6 +635,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|path
 comma
@@ -885,6 +890,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|path
 comma
@@ -939,11 +945,13 @@ id|sys_utime
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|filename
 comma
 r_struct
 id|utimbuf
+id|__user
 op_star
 id|times
 )paren
@@ -1145,11 +1153,13 @@ id|do_utimes
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|filename
 comma
 r_struct
 id|timeval
+id|__user
 op_star
 id|times
 )paren
@@ -1346,11 +1356,13 @@ id|sys_utimes
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|filename
 comma
 r_struct
 id|timeval
+id|__user
 op_star
 id|utimes
 )paren
@@ -1409,6 +1421,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|filename
 comma
@@ -1574,6 +1587,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|filename
 )paren
@@ -1785,6 +1799,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|filename
 )paren
@@ -2078,6 +2093,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|filename
 comma
@@ -2438,6 +2454,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|filename
 comma
@@ -2505,6 +2522,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|filename
 comma
@@ -3365,6 +3383,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|filename
 comma
@@ -3514,6 +3533,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|pathname
 comma

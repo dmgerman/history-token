@@ -4,6 +4,8 @@ DECL|macro|_LINUX_IF_H
 mdefine_line|#define _LINUX_IF_H
 macro_line|#include &lt;linux/types.h&gt;&t;&t;/* for &quot;__kernel_caddr_t&quot; et al&t;*/
 macro_line|#include &lt;linux/socket.h&gt;&t;&t;/* for &quot;struct sockaddr&quot; et al&t;*/
+DECL|macro|IFNAMSIZ
+mdefine_line|#define&t;IFNAMSIZ&t;16
 macro_line|#include &lt;linux/hdlc/ioctl.h&gt;
 multiline_comment|/* Standard interface flags (netdevice-&gt;flags). */
 DECL|macro|IFF_UP
@@ -75,6 +77,16 @@ DECL|macro|IF_PROTO_FR_DEL_PVC
 mdefine_line|#define IF_PROTO_FR_DEL_PVC 0x2005&t;/*    Delete FR PVC&t;&t;*/
 DECL|macro|IF_PROTO_X25
 mdefine_line|#define IF_PROTO_X25&t;0x2006&t;&t;/* X.25&t;&t;&t;&t;*/
+DECL|macro|IF_PROTO_HDLC_ETH
+mdefine_line|#define IF_PROTO_HDLC_ETH 0x2007&t;/* raw HDLC, Ethernet emulation&t;*/
+DECL|macro|IF_PROTO_FR_ADD_ETH_PVC
+mdefine_line|#define IF_PROTO_FR_ADD_ETH_PVC 0x2008&t;/*  Create FR Ethernet-bridged PVC */
+DECL|macro|IF_PROTO_FR_DEL_ETH_PVC
+mdefine_line|#define IF_PROTO_FR_DEL_ETH_PVC 0x2009&t;/*  Delete FR Ethernet-bridged PVC */
+DECL|macro|IF_PROTO_FR_PVC
+mdefine_line|#define IF_PROTO_FR_PVC&t;0x200A&t;&t;/* for reading PVC status&t;*/
+DECL|macro|IF_PROTO_FR_ETH_PVC
+mdefine_line|#define IF_PROTO_FR_ETH_PVC 0x200B
 multiline_comment|/*&n; *&t;Device mapping structure. I&squot;d just gone off and designed a &n; *&t;beautiful scheme using only loadable modules with arguments&n; *&t;for driver options and along come the PCMCIA people 8)&n; *&n; *&t;Ah well. The get() side of this is good for WDSETUP, and it&squot;ll&n; *&t;be handy for debugging things. The set side is fine for now and&n; *&t;being very small might be worth keeping for clean configuration.&n; */
 DECL|struct|ifmap
 r_struct
@@ -152,6 +164,11 @@ id|fr_proto_pvc
 op_star
 id|fr_pvc
 suffix:semicolon
+DECL|member|fr_pvc_info
+id|fr_proto_pvc_info
+op_star
+id|fr_pvc_info
+suffix:semicolon
 multiline_comment|/* interface settings */
 DECL|member|sync
 id|sync_serial_settings
@@ -176,8 +193,6 @@ id|ifreq
 (brace
 DECL|macro|IFHWADDRLEN
 mdefine_line|#define IFHWADDRLEN&t;6
-DECL|macro|IFNAMSIZ
-mdefine_line|#define&t;IFNAMSIZ&t;16
 r_union
 (brace
 DECL|member|ifrn_name

@@ -717,6 +717,12 @@ id|timer_list
 id|tx_wdog
 suffix:semicolon
 multiline_comment|/* tx watchdogs */
+multiline_comment|/* Channel lock */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/* Channel guard lock */
 )brace
 suffix:semicolon
 macro_line|#endif /* defined(__KERNEL__) */

@@ -2394,10 +2394,12 @@ id|dev
 )paren
 id|skb-&gt;protocol
 op_assign
-id|htons
+id|hdlc_type_trans
 c_func
 (paren
-id|ETH_P_HDLC
+id|skb
+comma
+id|dev
 )paren
 suffix:semicolon
 id|skb-&gt;dev-&gt;last_rx

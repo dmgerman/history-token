@@ -2300,13 +2300,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-op_logical_neg
-id|blk_queue_empty
-c_func
-(paren
-op_amp
-id|swim_queue
-)paren
+id|CURRENT
 op_logical_and
 id|fs-&gt;state
 op_eq

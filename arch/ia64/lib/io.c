@@ -280,18 +280,72 @@ id|port
 )paren
 suffix:semicolon
 )brace
-r_void
-DECL|function|ia64_mmiob
-id|ia64_mmiob
+r_int
+r_char
+DECL|function|ia64_readb
+id|ia64_readb
 (paren
 r_void
+op_star
+id|addr
 )paren
 (brace
-id|__ia64_mmiob
-c_func
+r_return
+id|__ia64_readb
 (paren
+id|addr
 )paren
 suffix:semicolon
+)brace
+r_int
+r_int
+DECL|function|ia64_readw
+id|ia64_readw
+(paren
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_return
+id|__ia64_readw
+(paren
+id|addr
+)paren
+suffix:semicolon
+)brace
+r_int
+r_int
+DECL|function|ia64_readl
+id|ia64_readl
+(paren
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_return
+id|__ia64_readl
+(paren
+id|addr
+)paren
+suffix:semicolon
+)brace
+r_int
+r_int
+DECL|function|ia64_readq
+id|ia64_readq
+(paren
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_return
+id|__ia64_readq
+(paren
+id|addr
+)paren
 )brace
 multiline_comment|/* define aliases: */
 id|asm
@@ -336,12 +390,27 @@ l_string|&quot;__ia64_outl = ia64_outl&quot;
 suffix:semicolon
 id|asm
 (paren
-l_string|&quot;.global __ia64_mmiob&quot;
+l_string|&quot;.global __ia64_readb, __ia64_readw, __ia64_readl, __ia64_readq&quot;
 )paren
 suffix:semicolon
 id|asm
 (paren
-l_string|&quot;__ia64_mmiob = ia64_mmiob&quot;
+l_string|&quot;__ia64_readb = ia64_readb&quot;
+)paren
+suffix:semicolon
+id|asm
+(paren
+l_string|&quot;__ia64_readw = ia64_readw&quot;
+)paren
+suffix:semicolon
+id|asm
+(paren
+l_string|&quot;__ia64_readl = ia64_readl&quot;
+)paren
+suffix:semicolon
+id|asm
+(paren
+l_string|&quot;__ia64_readq = ia64_readq&quot;
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_IA64_GENERIC */

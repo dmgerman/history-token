@@ -1,14 +1,16 @@
 multiline_comment|/*&n; * frontend.h&n; *&n; * Copyright (C) 2000 Marcus Metzler &lt;marcus@convergence.de&gt;&n; *                    Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *                    Holger Waechtler &lt;holger@convergence.de&gt;&n; *                    Andre Draszik &lt;ad@convergence.de&gt;&n; *                    for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
-macro_line|#ifndef _FRONTEND_H_
-DECL|macro|_FRONTEND_H_
-mdefine_line|#define _FRONTEND_H_
+macro_line|#ifndef _DVBFRONTEND_H_
+DECL|macro|_DVBFRONTEND_H_
+mdefine_line|#define _DVBFRONTEND_H_
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#else
 macro_line|#include &lt;stdint.h&gt;
 macro_line|#endif
+DECL|enum|fe_type
 r_typedef
 r_enum
+id|fe_type
 (brace
 DECL|enumerator|FE_QPSK
 id|FE_QPSK
@@ -22,8 +24,10 @@ DECL|typedef|fe_type_t
 )brace
 id|fe_type_t
 suffix:semicolon
+DECL|enum|fe_caps
 r_typedef
 r_enum
+id|fe_caps
 (brace
 DECL|enumerator|FE_IS_STUPID
 id|FE_IS_STUPID
@@ -135,6 +139,16 @@ id|FE_CAN_HIERARCHY_AUTO
 op_assign
 l_int|0x100000
 comma
+DECL|enumerator|FE_CAN_RECOVER
+id|FE_CAN_RECOVER
+op_assign
+l_int|0x20000000
+comma
+DECL|enumerator|FE_CAN_CLEAN_SETUP
+id|FE_CAN_CLEAN_SETUP
+op_assign
+l_int|0x40000000
+comma
 DECL|enumerator|FE_CAN_MUTE_TS
 id|FE_CAN_MUTE_TS
 op_assign
@@ -243,8 +257,10 @@ multiline_comment|/*  return from ioctl after timeout ms with */
 )brace
 suffix:semicolon
 multiline_comment|/*  errorcode when no message was received  */
+DECL|enum|fe_sec_voltage
 r_typedef
 r_enum
+id|fe_sec_voltage
 (brace
 DECL|enumerator|SEC_VOLTAGE_13
 id|SEC_VOLTAGE_13
@@ -255,8 +271,10 @@ DECL|typedef|fe_sec_voltage_t
 )brace
 id|fe_sec_voltage_t
 suffix:semicolon
+DECL|enum|fe_sec_tone_mode
 r_typedef
 r_enum
+id|fe_sec_tone_mode
 (brace
 DECL|enumerator|SEC_TONE_ON
 id|SEC_TONE_ON
@@ -267,8 +285,10 @@ DECL|typedef|fe_sec_tone_mode_t
 )brace
 id|fe_sec_tone_mode_t
 suffix:semicolon
+DECL|enum|fe_sec_mini_cmd
 r_typedef
 r_enum
+id|fe_sec_mini_cmd
 (brace
 DECL|enumerator|SEC_MINI_A
 id|SEC_MINI_A
@@ -279,8 +299,10 @@ DECL|typedef|fe_sec_mini_cmd_t
 )brace
 id|fe_sec_mini_cmd_t
 suffix:semicolon
+DECL|enum|fe_status
 r_typedef
 r_enum
+id|fe_status
 (brace
 DECL|enumerator|FE_HAS_SIGNAL
 id|FE_HAS_SIGNAL
@@ -327,10 +349,12 @@ DECL|typedef|fe_status_t
 )brace
 id|fe_status_t
 suffix:semicolon
-multiline_comment|/*  application is recommned to reset */
+multiline_comment|/*  application is recommended to reset */
 multiline_comment|/*  DiSEqC, tone and parameters */
+DECL|enum|fe_spectral_inversion
 r_typedef
 r_enum
+id|fe_spectral_inversion
 (brace
 DECL|enumerator|INVERSION_OFF
 id|INVERSION_OFF
@@ -344,8 +368,10 @@ DECL|typedef|fe_spectral_inversion_t
 )brace
 id|fe_spectral_inversion_t
 suffix:semicolon
+DECL|enum|fe_code_rate
 r_typedef
 r_enum
+id|fe_code_rate
 (brace
 DECL|enumerator|FEC_NONE
 id|FEC_NONE
@@ -382,8 +408,10 @@ DECL|typedef|fe_code_rate_t
 )brace
 id|fe_code_rate_t
 suffix:semicolon
+DECL|enum|fe_modulation
 r_typedef
 r_enum
+id|fe_modulation
 (brace
 DECL|enumerator|QPSK
 id|QPSK
@@ -409,8 +437,10 @@ DECL|typedef|fe_modulation_t
 )brace
 id|fe_modulation_t
 suffix:semicolon
+DECL|enum|fe_transmit_mode
 r_typedef
 r_enum
+id|fe_transmit_mode
 (brace
 DECL|enumerator|TRANSMISSION_MODE_2K
 id|TRANSMISSION_MODE_2K
@@ -424,8 +454,10 @@ DECL|typedef|fe_transmit_mode_t
 )brace
 id|fe_transmit_mode_t
 suffix:semicolon
+DECL|enum|fe_bandwidth
 r_typedef
 r_enum
+id|fe_bandwidth
 (brace
 DECL|enumerator|BANDWIDTH_8_MHZ
 id|BANDWIDTH_8_MHZ
@@ -442,8 +474,10 @@ DECL|typedef|fe_bandwidth_t
 )brace
 id|fe_bandwidth_t
 suffix:semicolon
+DECL|enum|fe_guard_interval
 r_typedef
 r_enum
+id|fe_guard_interval
 (brace
 DECL|enumerator|GUARD_INTERVAL_1_32
 id|GUARD_INTERVAL_1_32
@@ -463,8 +497,10 @@ DECL|typedef|fe_guard_interval_t
 )brace
 id|fe_guard_interval_t
 suffix:semicolon
+DECL|enum|fe_hierarchy
 r_typedef
 r_enum
+id|fe_hierarchy
 (brace
 DECL|enumerator|HIERARCHY_NONE
 id|HIERARCHY_NONE
@@ -642,5 +678,5 @@ DECL|macro|FE_GET_FRONTEND
 mdefine_line|#define FE_GET_FRONTEND            _IOR(&squot;o&squot;, 77, struct dvb_frontend_parameters)
 DECL|macro|FE_GET_EVENT
 mdefine_line|#define FE_GET_EVENT               _IOR(&squot;o&squot;, 78, struct dvb_frontend_event)
-macro_line|#endif /*_FRONTEND_H_*/
+macro_line|#endif /*_DVBFRONTEND_H_*/
 eof

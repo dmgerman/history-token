@@ -129,7 +129,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -142,7 +142,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -238,7 +238,7 @@ id|mapping-&gt;backing_dev_info-&gt;memory_backed
 r_return
 l_int|0
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -255,7 +255,7 @@ op_amp
 id|mapping-&gt;io_pages
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -346,7 +346,7 @@ id|progress
 op_assign
 l_int|0
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -449,7 +449,7 @@ c_func
 )paren
 )paren
 (brace
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -479,7 +479,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -512,7 +512,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -520,7 +520,7 @@ id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
 )brace
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -580,7 +580,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -633,7 +633,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1114,7 +1114,7 @@ op_star
 id|page
 suffix:semicolon
 multiline_comment|/*&n;&t; * We scan the hash list read-only. Addition to and removal from&n;&t; * the hash-list needs a held write-lock.&n;&t; */
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1143,7 +1143,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1177,7 +1177,7 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1210,7 +1210,7 @@ id|page
 op_assign
 l_int|NULL
 suffix:semicolon
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1244,7 +1244,7 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1286,7 +1286,7 @@ id|page
 )paren
 )paren
 (brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1299,7 +1299,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1337,7 +1337,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1519,7 +1519,7 @@ r_int
 r_int
 id|ret
 suffix:semicolon
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1569,7 +1569,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp

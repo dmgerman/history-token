@@ -1275,7 +1275,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1315,7 +1315,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1385,7 +1385,7 @@ op_amp
 id|mapping-&gt;clean_pages
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1559,7 +1559,7 @@ id|page
 )paren
 )paren
 (brace
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1603,7 +1603,7 @@ id|mapping-&gt;dirty_pages
 )paren
 suffix:semicolon
 )brace
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1673,7 +1673,7 @@ c_cond
 id|mapping
 )paren
 (brace
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1725,7 +1725,7 @@ id|mapping-&gt;dirty_pages
 )paren
 suffix:semicolon
 )brace
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp

@@ -823,12 +823,6 @@ c_cond
 (paren
 id|sdev-&gt;single_lun
 op_logical_and
-id|blk_queue_empty
-c_func
-(paren
-id|q
-)paren
-op_logical_and
 id|sdev-&gt;device_busy
 op_eq
 l_int|0
@@ -853,6 +847,12 @@ op_ge
 id|shost-&gt;can_queue
 )paren
 )paren
+op_logical_and
+id|elv_queue_empty
+c_func
+(paren
+id|q
+)paren
 )paren
 (brace
 id|list_for_each_entry
@@ -873,7 +873,7 @@ op_logical_neg
 id|sdev2-&gt;device_blocked
 op_logical_and
 op_logical_neg
-id|blk_queue_empty
+id|elv_queue_empty
 c_func
 (paren
 id|sdev2-&gt;request_queue

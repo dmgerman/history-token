@@ -165,6 +165,8 @@ r_return
 r_new
 suffix:semicolon
 )brace
+DECL|macro|atomic_add_return
+mdefine_line|#define atomic_add_return(i,v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((__builtin_constant_p(i) &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;  (   (i ==  1) || (i ==  4) || (i ==  8) || (i ==  16)&t;&t;&bslash;&n;&t;   || (i == -1) || (i == -4) || (i == -8) || (i == -16)))&t;&bslash;&n;&t; ? ia64_fetch_and_add(i, &amp;(v)-&gt;counter)&t;&t;&t;&t;&bslash;&n;&t; : ia64_atomic_add(i, v))
 multiline_comment|/*&n; * Atomically add I to V and return TRUE if the resulting value is&n; * negative.&n; */
 r_static
 id|__inline__
@@ -181,7 +183,7 @@ id|v
 )paren
 (brace
 r_return
-id|ia64_atomic_add
+id|atomic_add_return
 c_func
 (paren
 id|i
@@ -192,8 +194,6 @@ OL
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|atomic_add_return
-mdefine_line|#define atomic_add_return(i,v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((__builtin_constant_p(i) &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;  (   (i ==  1) || (i ==  4) || (i ==  8) || (i ==  16)&t;&t;&bslash;&n;&t;   || (i == -1) || (i == -4) || (i == -8) || (i == -16)))&t;&bslash;&n;&t; ? ia64_fetch_and_add(i, &amp;(v)-&gt;counter)&t;&t;&t;&t;&bslash;&n;&t; : ia64_atomic_add(i, v))
 DECL|macro|atomic_sub_return
 mdefine_line|#define atomic_sub_return(i,v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((__builtin_constant_p(i) &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;  (   (i ==  1) || (i ==  4) || (i ==  8) || (i ==  16)&t;&t;&bslash;&n;&t;   || (i == -1) || (i == -4) || (i == -8) || (i == -16)))&t;&bslash;&n;&t; ? ia64_fetch_and_add(-(i), &amp;(v)-&gt;counter)&t;&t;&t;&bslash;&n;&t; : ia64_atomic_sub(i, v))
 DECL|macro|atomic_dec_return

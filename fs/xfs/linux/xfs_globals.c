@@ -26,13 +26,6 @@ comma
 l_int|3
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Used to serialize atomicIncWithWrap.&n; */
-DECL|variable|xfs_atomic_spin
-id|spinlock_t
-id|xfs_atomic_spin
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/*&n; * Global system credential structure.&n; */
 DECL|variable|sys_cred_val
 DECL|variable|sys_cred

@@ -6,6 +6,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#else
 macro_line|#include &lt;stdint.h&gt;
+macro_line|#include &lt;time.h&gt;
 macro_line|#endif
 r_typedef
 r_enum

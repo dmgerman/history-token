@@ -4169,6 +4169,14 @@ id|udp_mib
 suffix:semicolon
 )brace
 )brace
+(paren
+r_void
+)paren
+id|tcp_mib_init
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

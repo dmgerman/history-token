@@ -2384,7 +2384,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -2519,7 +2519,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -2664,7 +2664,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -2673,7 +2673,7 @@ id|mapping-&gt;page_lock
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Leave any remaining dirty pages on -&gt;io_pages&n;&t; */
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp

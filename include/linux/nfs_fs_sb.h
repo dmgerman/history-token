@@ -149,6 +149,11 @@ r_int
 id|last_renewal
 suffix:semicolon
 multiline_comment|/* in jiffies */
+DECL|member|idmap
+r_void
+op_star
+id|idmap
+suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon

@@ -15,7 +15,9 @@ multiline_comment|/* SAL spec _requires_ eight args for each call. */
 DECL|macro|__SAL_CALL
 mdefine_line|#define __SAL_CALL(result,a0,a1,a2,a3,a4,a5,a6,a7)&t;&bslash;&n;&t;result = (*ia64_sal)(a0,a1,a2,a3,a4,a5,a6,a7)
 DECL|macro|SAL_CALL
-macro_line|# define SAL_CALL(result,args...) do {&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&t;&bslash;&n;&t;struct ia64_fpreg fr[6];                        &bslash;&n;&t;ia64_save_scratch_fpregs(fr);                   &bslash;&n;&t;spin_lock_irqsave(&amp;sal_lock, flags);&t;&t;&bslash;&n;&t;__SAL_CALL(result,args);&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;sal_lock, flags);&t;&bslash;&n;&t;ia64_load_scratch_fpregs(fr);                   &bslash;&n;} while (0)
+macro_line|# define SAL_CALL(result,args...) do {&t;&t;&t;&t;&bslash;&n;&t;unsigned long __ia64_sc_flags;&t;&t;&t;&t;&bslash;&n;&t;struct ia64_fpreg __ia64_sc_fr[6];&t;&t;&t;&bslash;&n;&t;ia64_save_scratch_fpregs(__ia64_sc_fr);&t;&t;&t;&bslash;&n;&t;spin_lock_irqsave(&amp;sal_lock, __ia64_sc_flags);&t;&t;&bslash;&n;&t;__SAL_CALL(result, args);&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;sal_lock, __ia64_sc_flags);&t;&bslash;&n;&t;ia64_load_scratch_fpregs(__ia64_sc_fr);&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|SAL_CALL_NOLOCK
+macro_line|# define SAL_CALL_NOLOCK(result,args...) do {&t;&t;&bslash;&n;&t;unsigned long __ia64_scn_flags;&t;&t;&t;&bslash;&n;&t;struct ia64_fpreg __ia64_scn_fr[6];&t;&t;&bslash;&n;&t;ia64_save_scratch_fpregs(__ia64_scn_fr);&t;&bslash;&n;&t;local_irq_save(__ia64_scn_flags);&t;&t;&bslash;&n;&t;__SAL_CALL(result, args);&t;&t;&t;&bslash;&n;&t;local_irq_restore(__ia64_scn_flags);&t;&t;&bslash;&n;&t;ia64_load_scratch_fpregs(__ia64_scn_fr);&t;&bslash;&n;} while (0)
 DECL|macro|SAL_SET_VECTORS
 mdefine_line|#define SAL_SET_VECTORS&t;&t;&t;0x01000000
 DECL|macro|SAL_GET_STATE_INFO
@@ -2272,7 +2274,7 @@ r_return
 id|isrv.v0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Causes the processor to go into a spin loop within SAL where SAL awaits a wakeup from&n; * the monarch processor.&n; */
+multiline_comment|/*&n; * Causes the processor to go into a spin loop within SAL where SAL awaits a wakeup from&n; * the monarch processor.  Must not lock, because it will not return on any cpu until the&n; * monarch processor sends a wake up.&n; */
 r_static
 r_inline
 id|s64
@@ -2286,7 +2288,7 @@ r_struct
 id|ia64_sal_retval
 id|isrv
 suffix:semicolon
-id|SAL_CALL
+id|SAL_CALL_NOLOCK
 c_func
 (paren
 id|isrv

@@ -50,10 +50,29 @@ id|AUDIO_MONO_LEFT
 comma
 DECL|enumerator|AUDIO_MONO_RIGHT
 id|AUDIO_MONO_RIGHT
-comma
 DECL|typedef|audio_channel_select_t
 )brace
 id|audio_channel_select_t
+suffix:semicolon
+DECL|struct|audio_mixer
+r_typedef
+r_struct
+id|audio_mixer
+(brace
+DECL|member|volume_left
+r_int
+r_int
+id|volume_left
+suffix:semicolon
+DECL|member|volume_right
+r_int
+r_int
+id|volume_right
+suffix:semicolon
+singleline_comment|// what else do we need? bass, pass-through, ...
+DECL|typedef|audio_mixer_t
+)brace
+id|audio_mixer_t
 suffix:semicolon
 DECL|struct|audio_status
 r_typedef
@@ -90,31 +109,16 @@ r_int
 id|bypass_mode
 suffix:semicolon
 multiline_comment|/* pass on audio data to */
+DECL|member|mixer_state
+id|audio_mixer_t
+id|mixer_state
+suffix:semicolon
+multiline_comment|/* current mixer state */
 DECL|typedef|audio_status_t
 )brace
 id|audio_status_t
 suffix:semicolon
 multiline_comment|/* separate decoder hardware */
-DECL|struct|audio_mixer
-r_typedef
-r_struct
-id|audio_mixer
-(brace
-DECL|member|volume_left
-r_int
-r_int
-id|volume_left
-suffix:semicolon
-DECL|member|volume_right
-r_int
-r_int
-id|volume_right
-suffix:semicolon
-singleline_comment|// what else do we need? bass, pass-through, ...
-DECL|typedef|audio_mixer_t
-)brace
-id|audio_mixer_t
-suffix:semicolon
 r_typedef
 DECL|struct|audio_karaoke
 r_struct

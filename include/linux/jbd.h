@@ -340,7 +340,7 @@ DECL|macro|J_EXPECT_JH
 mdefine_line|#define J_EXPECT_JH(jh, expr, why...)&t;J_ASSERT_JH(jh, expr)
 macro_line|#else
 DECL|macro|__journal_expect
-mdefine_line|#define __journal_expect(expr, why...)&t;&t;&t;&t;&t;     &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;if (!(expr)) {&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;&t;printk(KERN_ERR &quot;EXT3-fs unexpected failure: %s;&bslash;n&quot;, # expr); &bslash;&n;&t;&t;&t;printk(KERN_ERR ## why);&t;&t;&t;     &bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;} while (0)
+mdefine_line|#define __journal_expect(expr, why...)&t;&t;&t;&t;&t;     &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;if (!(expr)) {&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;&t;printk(KERN_ERR&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;&t;&t;&quot;EXT3-fs unexpected failure: %s;&bslash;n&quot;,# expr); &bslash;&n;&t;&t;&t;printk(KERN_ERR why);&t;&t;&t;&t;     &bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;} while (0)
 DECL|macro|J_EXPECT
 mdefine_line|#define J_EXPECT(expr, why...)&t;&t;__journal_expect(expr, ## why)
 DECL|macro|J_EXPECT_BH

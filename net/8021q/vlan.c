@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/p8022.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &quot;vlan.h&quot;
@@ -163,10 +162,6 @@ l_int|1
 )paren
 comma
 multiline_comment|/* Set here &squot;(void *)1&squot; when this code can SHARE SKBs */
-dot
-id|next
-op_assign
-l_int|NULL
 )brace
 suffix:semicolon
 multiline_comment|/* End of global variables definitions. */
@@ -692,12 +687,6 @@ id|vlan_id
 )paren
 suffix:semicolon
 )brace
-id|br_write_lock
-c_func
-(paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
 id|grp-&gt;vlan_devices
 (braket
 id|vlan_id
@@ -705,10 +694,9 @@ id|vlan_id
 op_assign
 l_int|NULL
 suffix:semicolon
-id|br_write_unlock
+id|synchronize_net
 c_func
 (paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 multiline_comment|/* Caller unregisters (and if necessary, puts)&n;&t;&t;&t; * VLAN device, but we get rid of the reference to&n;&t;&t;&t; * real_dev here.&n;&t;&t;&t; */
@@ -804,7 +792,11 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -1384,6 +1376,10 @@ id|new_dev-&gt;destructor
 op_assign
 id|vlan_dev_destruct
 suffix:semicolon
+id|new_dev-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 multiline_comment|/* new_dev-&gt;ifindex = 0;  it will be set when added to&n;&t; * the global list.&n;&t; * iflink is set as well.&n;&t; */
 id|new_dev-&gt;get_stats
 op_assign
@@ -1778,9 +1774,19 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* NOTE:  We have a reference to the real device,&n;&t; * so hold on to the reference.&n;&t; */
-id|MOD_INC_USE_COUNT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
+)paren
+r_goto
+id|out_module_dying
 suffix:semicolon
-multiline_comment|/* Add was a success!! */
 macro_line|#ifdef VLAN_DEBUG
 id|printk
 c_func
@@ -1792,6 +1798,19 @@ suffix:semicolon
 macro_line|#endif
 r_return
 id|new_dev
+suffix:semicolon
+id|out_module_dying
+suffix:colon
+id|rtnl_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|unregister_netdevice
+c_func
+(paren
+id|new_dev
+)paren
 suffix:semicolon
 id|out_free_newdev_priv
 suffix:colon
