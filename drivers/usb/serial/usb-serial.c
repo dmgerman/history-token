@@ -461,20 +461,6 @@ c_func
 id|tty-&gt;index
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|serial_paranoia_check
-(paren
-id|serial
-comma
-id|__FUNCTION__
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 multiline_comment|/* set up our port structure making the tty driver remember our port object, and us it */
 id|portNumber
 op_assign

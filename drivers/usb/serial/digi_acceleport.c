@@ -4648,20 +4648,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* further sanity checks */
-r_if
-c_cond
-(paren
-id|serial_paranoia_check
-c_func
-(paren
-id|serial
-comma
-id|__FUNCTION__
-)paren
-)paren
-r_return
-suffix:semicolon
 multiline_comment|/* try to send any buffered data on this port, if it is open */
 id|spin_lock
 c_func
@@ -6371,14 +6357,6 @@ c_cond
 id|port-&gt;serial
 op_eq
 l_int|NULL
-op_logical_or
-id|serial_paranoia_check
-c_func
-(paren
-id|port-&gt;serial
-comma
-id|__FUNCTION__
-)paren
 op_logical_or
 (paren
 id|serial_priv

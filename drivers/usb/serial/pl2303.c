@@ -3913,20 +3913,6 @@ id|urb-&gt;status
 )paren
 (brace
 multiline_comment|/* error in the urb, so we have to resubmit it */
-r_if
-c_cond
-(paren
-id|serial_paranoia_check
-(paren
-id|port-&gt;serial
-comma
-id|__FUNCTION__
-)paren
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
 id|dbg
 c_func
 (paren
