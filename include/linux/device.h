@@ -88,6 +88,12 @@ r_struct
 id|kset
 id|devices
 suffix:semicolon
+DECL|member|bus_attrs
+r_struct
+id|bus_attribute
+op_star
+id|bus_attrs
+suffix:semicolon
 DECL|member|match
 r_int
 (paren
