@@ -2896,7 +2896,7 @@ id|mp-&gt;tty
 id|tty_wakeup
 c_func
 (paren
-id|tty
+id|mp-&gt;tty
 )paren
 suffix:semicolon
 (paren
