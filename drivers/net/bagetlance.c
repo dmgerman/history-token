@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; * bagetlance.c: Ethernet driver for VME Lance cards on Baget/MIPS&n; *      This code stealed and adopted from linux/drivers/net/atarilance.c&n; *      See that for author info&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
+multiline_comment|/*&n; * bagetlance.c: Ethernet driver for VME Lance cards on Baget/MIPS&n; *      This code stealed and adopted from linux/drivers/net/atarilance.c&n; *      See that for author info&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
 multiline_comment|/* &n; * Driver code for Baget/Lance taken from atarilance.c, which also&n; * works well in case of Besta. Most significant changes made here&n; * related with 16BIT-only access to A24 space.&n; */
 DECL|variable|version
 r_static
