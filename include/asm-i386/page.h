@@ -246,6 +246,8 @@ DECL|macro|__pa
 mdefine_line|#define __pa(x)&t;&t;&t;((unsigned long)(x)-PAGE_OFFSET)
 DECL|macro|__va
 mdefine_line|#define __va(x)&t;&t;&t;((void *)((unsigned long)(x)+PAGE_OFFSET))
+DECL|macro|pfn_to_kaddr
+mdefine_line|#define pfn_to_kaddr(pfn)      __va((pfn) &lt;&lt; PAGE_SHIFT)
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + (pfn))

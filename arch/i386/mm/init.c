@@ -962,6 +962,20 @@ id|__PAGE_KERNEL
 op_assign
 id|_PAGE_KERNEL
 suffix:semicolon
+macro_line|#ifndef CONFIG_DISCONTIGMEM
+DECL|macro|remap_numa_kva
+mdefine_line|#define remap_numa_kva() do {} while (0)
+macro_line|#else
+r_extern
+r_void
+id|__init
+id|remap_numa_kva
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|pagetable_init
 r_static
 r_void
@@ -1057,6 +1071,11 @@ id|kernel_physical_mapping_init
 c_func
 (paren
 id|pgd_base
+)paren
+suffix:semicolon
+id|remap_numa_kva
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fixed mappings, only the page table structure has to be&n;&t; * created - mappings will be set by set_fixmap():&n;&t; */
@@ -1628,6 +1647,22 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HIGHMEM
+id|high_memory
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|__va
+c_func
+(paren
+id|highstart_pfn
+op_star
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+macro_line|#else
 id|high_memory
 op_assign
 (paren
@@ -1642,6 +1677,7 @@ op_star
 id|PAGE_SIZE
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* clear the zero-page */
 id|memset
 c_func
