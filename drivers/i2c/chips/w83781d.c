@@ -1163,7 +1163,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in0_ref
+id|cpu0_vid
 comma
 id|S_IRUGO
 comma
@@ -1173,7 +1173,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_vid
-mdefine_line|#define device_create_file_vid(client) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in0_ref);
+mdefine_line|#define device_create_file_vid(client) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_cpu0_vid);
 r_static
 id|ssize_t
 DECL|function|show_vrm_reg

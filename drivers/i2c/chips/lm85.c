@@ -1465,7 +1465,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in0_ref
+id|cpu0_vid
 comma
 id|S_IRUGO
 comma
@@ -3697,7 +3697,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in0_ref
+id|dev_attr_cpu0_vid
 )paren
 suffix:semicolon
 id|device_create_file
