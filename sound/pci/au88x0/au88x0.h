@@ -84,7 +84,7 @@ DECL|macro|VORTEX_IS_QUAD
 mdefine_line|#define VORTEX_IS_QUAD(x) ((x-&gt;codec == NULL) ?  0 : (x-&gt;codec-&gt;ext_id|0x80))
 multiline_comment|/* Check if chip has bug. */
 DECL|macro|IS_BAD_CHIP
-mdefine_line|#define IS_BAD_CHIP(x) (&bslash;&n;&t;(x-&gt;rev &lt; 3 &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_VORTEX) || &bslash;&n;&t;(x-&gt;rev &lt; 0xfe &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_VORTEX2) || &bslash;&n;&t;(x-&gt;rev &lt; 0xfe &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_ADVANTAGE))
+mdefine_line|#define IS_BAD_CHIP(x) (&bslash;&n;&t;(x-&gt;rev &lt; 3 &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_VORTEX_1) || &bslash;&n;&t;(x-&gt;rev &lt; 0xfe &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_VORTEX_2) || &bslash;&n;&t;(x-&gt;rev &lt; 0xfe &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_ADVANTAGE))
 multiline_comment|/* PCM devices */
 DECL|macro|VORTEX_PCM_ADB
 mdefine_line|#define VORTEX_PCM_ADB&t;&t;0

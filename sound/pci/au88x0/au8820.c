@@ -12,7 +12,7 @@ op_assign
 (brace
 id|PCI_VENDOR_ID_AUREAL
 comma
-id|PCI_DEVICE_ID_AUREAL_VORTEX
+id|PCI_DEVICE_ID_AUREAL_VORTEX_1
 comma
 id|PCI_ANY_ID
 comma
