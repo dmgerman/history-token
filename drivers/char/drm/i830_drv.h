@@ -326,6 +326,10 @@ r_void
 id|i830_reclaim_buffers
 c_func
 (paren
+id|drm_device_t
+op_star
+id|dev
+comma
 r_struct
 id|file
 op_star

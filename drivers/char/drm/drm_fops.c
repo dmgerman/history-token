@@ -895,6 +895,8 @@ op_member_access_from_pointer
 id|reclaim_buffers
 c_func
 (paren
+id|dev
+comma
 id|filp
 )paren
 suffix:semicolon

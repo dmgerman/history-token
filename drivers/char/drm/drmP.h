@@ -1583,6 +1583,11 @@ id|reclaim_buffers
 )paren
 (paren
 r_struct
+id|drm_device
+op_star
+id|dev
+comma
+r_struct
 id|file
 op_star
 id|filp
@@ -3706,6 +3711,10 @@ r_void
 id|drm_core_reclaim_buffers
 c_func
 (paren
+id|drm_device_t
+op_star
+id|dev
+comma
 r_struct
 id|file
 op_star
