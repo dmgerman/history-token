@@ -9486,7 +9486,7 @@ id|WRITEMEM
 c_func
 (paren
 op_amp
-id|ld-&gt;ld_sop-&gt;so_client-&gt;cl_clientid
+id|ld-&gt;ld_clientid
 comma
 l_int|8
 )paren
@@ -9503,6 +9503,15 @@ c_func
 id|ld-&gt;ld_sop-&gt;so_owner.data
 comma
 id|ld-&gt;ld_sop-&gt;so_owner.len
+)paren
+suffix:semicolon
+id|kref_put
+c_func
+(paren
+op_amp
+id|ld-&gt;ld_sop-&gt;so_ref
+comma
+id|nfs4_free_stateowner
 )paren
 suffix:semicolon
 )brace

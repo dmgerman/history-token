@@ -274,6 +274,10 @@ DECL|struct|nfsd4_lock_denied
 r_struct
 id|nfsd4_lock_denied
 (brace
+DECL|member|ld_clientid
+id|clientid_t
+id|ld_clientid
+suffix:semicolon
 DECL|member|ld_sop
 r_struct
 id|nfs4_stateowner
