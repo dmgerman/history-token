@@ -42,11 +42,11 @@ macro_line|# define EX(y,x...)&t;&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_ta
 macro_line|# define EXCLR(y,x...)&t;&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_table&quot;, @gprel(99f), @gprel(y)+4;&t;&bslash;&n;  99:&t;x
 macro_line|#endif
 macro_line|#ifdef CONFIG_MCKINLEY
-multiline_comment|/* workaround for Itanium 2 Errata 7: */
-DECL|macro|MCKINLEY_E7_WORKAROUND
-macro_line|# define MCKINLEY_E7_WORKAROUND&t;&t;&t;&bslash;&n;&t;br.call.sptk.many b7=1f;;&t;&t;&bslash;&n;1:
+multiline_comment|/* workaround for Itanium 2 Errata 9: */
+DECL|macro|MCKINLEY_E9_WORKAROUND
+macro_line|# define MCKINLEY_E9_WORKAROUND&t;&t;&t;&bslash;&n;&t;br.call.sptk.many b7=1f;;&t;&t;&bslash;&n;1:
 macro_line|#else
-macro_line|# define MCKINLEY_E7_WORKAROUND
+macro_line|# define MCKINLEY_E9_WORKAROUND
 macro_line|#endif
 macro_line|#endif /* _ASM_IA64_ASMMACRO_H */
 eof
