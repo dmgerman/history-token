@@ -1695,6 +1695,8 @@ c_cond
 id|end
 OL
 id|start
+op_logical_or
+id|flags
 )paren
 r_return
 suffix:semicolon
@@ -1740,7 +1742,7 @@ id|end
 op_assign
 id|vma-&gt;vm_end
 suffix:semicolon
-id|flush_cache_range
+id|flush_cache_user_range
 c_func
 (paren
 id|vma
