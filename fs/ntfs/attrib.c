@@ -4964,7 +4964,6 @@ c_func
 l_string|&quot;Entering.&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
@@ -4989,7 +4988,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5154,11 +5152,11 @@ c_cond
 id|al
 op_plus
 id|block_size
-OG
+op_ge
 id|al_end
 )paren
 r_goto
-id|do_partial
+id|do_final
 suffix:semicolon
 id|memcpy
 c_func
@@ -5231,7 +5229,7 @@ suffix:semicolon
 r_return
 id|err
 suffix:semicolon
-id|do_partial
+id|do_final
 suffix:colon
 r_if
 c_cond
