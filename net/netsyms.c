@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/fcdevice.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
-macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
@@ -37,7 +36,6 @@ macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
 macro_line|#include &lt;net/atmclip.h&gt;
 macro_line|#endif
 macro_line|#include &lt;net/ip.h&gt;
-macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
@@ -456,13 +454,6 @@ c_func
 id|ip_finish_output
 )paren
 suffix:semicolon
-DECL|variable|ip_cmsg_recv
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_cmsg_recv
-)paren
-suffix:semicolon
 DECL|variable|inet_addr_type
 id|EXPORT_SYMBOL
 c_func
@@ -730,11 +721,11 @@ c_func
 id|tcp_cwnd_application_limited
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
 r_extern
 r_int
 id|sysctl_tcp_tw_recycle
 suffix:semicolon
-macro_line|#ifdef CONFIG_SYSCTL
 DECL|variable|sysctl_tcp_tw_recycle
 id|EXPORT_SYMBOL
 c_func
@@ -751,22 +742,6 @@ id|ip_generic_getfrag
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_IP_SCTP_MODULE
-DECL|variable|ip_setsockopt
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_setsockopt
-)paren
-suffix:semicolon
-DECL|variable|ip_getsockopt
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_getsockopt
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_IP_SCTP_MODULE */
 multiline_comment|/* Used by at least ipip.c.  */
 DECL|variable|ipv4_config
 id|EXPORT_SYMBOL
