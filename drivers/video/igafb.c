@@ -2399,7 +2399,7 @@ c_func
 (paren
 l_string|&quot;fb%d: %s frame buffer device at 0x%08lx [%dMB VRAM]&bslash;n&quot;
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|info-&gt;fb_info.node
