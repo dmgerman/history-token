@@ -3081,12 +3081,7 @@ id|i
 dot
 id|bytesize
 op_assign
-(paren
-(paren
-id|u64
-)paren
-l_int|0x7ffffc00
-)paren
+l_int|0x7ffffc00ULL
 op_lshift
 l_int|10
 suffix:semicolon
@@ -3141,9 +3136,12 @@ c_func
 (paren
 id|disk
 comma
-l_int|0x3ffffe
+l_int|0x7ffffc00ULL
+op_lshift
+l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* 2 TB */
 id|add_disk
 c_func
 (paren
