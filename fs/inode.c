@@ -69,7 +69,7 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * iprune_sem provides exclusion between the kswapd or try_to_free_pages&n; * icache shrinking path, and the umount path.  Without this exclusion,&n; * by the time prune_icache calls iput for the inode whose pages it has&n; * been invalidating, or by the time it calls clear_inode &amp; destroy_inode&n; * from its final dispose_list, the struct super_block they refer to&n; * (for inode-&gt;i_sb-&gt;s_op) may already have been freed and reused.&n; */
-r_static
+DECL|variable|iprune_sem
 id|DECLARE_MUTEX
 c_func
 (paren
