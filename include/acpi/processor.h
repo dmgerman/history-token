@@ -246,12 +246,6 @@ id|freq_table
 id|ACPI_PROCESSOR_MAX_PERFORMANCE
 )braket
 suffix:semicolon
-DECL|member|pr
-r_struct
-id|acpi_processor
-op_star
-id|pr
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Throttling Control */
