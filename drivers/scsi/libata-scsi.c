@@ -5,8 +5,67 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;linux/libata.h&gt;
 macro_line|#include &quot;libata.h&quot;
+multiline_comment|/**&n; *&t;ata_std_bios_param - generic bios head/sector/cylinder calculator&n; *&t;    used by sd. Most BIOSes nowadays expect a XXX/255/16  (CHS) &n; *&t;    mapping. Some situations may arise where the disk is not &n; *&t;    bootable if this is not used.&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&n; */
+DECL|function|ata_std_bios_param
+r_int
+id|ata_std_bios_param
+c_func
+(paren
+id|Disk
+op_star
+id|disk
+comma
+multiline_comment|/* SCSI disk */
+id|kdev_t
+id|dev
+comma
+multiline_comment|/* Device major, minor */
+r_int
+op_star
+id|ip
+multiline_comment|/* Heads, sectors, cylinders in that order */
+)paren
+(brace
+id|ip
+(braket
+l_int|0
+)braket
+op_assign
+l_int|255
+suffix:semicolon
+id|ip
+(braket
+l_int|1
+)braket
+op_assign
+l_int|63
+suffix:semicolon
+id|ip
+(braket
+l_int|2
+)braket
+op_assign
+id|disk-&gt;capacity
+op_div
+(paren
+id|ip
+(braket
+l_int|0
+)braket
+op_star
+id|ip
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|ata_scsi_qc_new
 r_struct
 id|ata_queued_cmd
