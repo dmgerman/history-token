@@ -722,6 +722,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ipip_err
+r_static
 r_void
 id|ipip_err
 c_func

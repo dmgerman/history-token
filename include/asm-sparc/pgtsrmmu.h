@@ -72,10 +72,8 @@ DECL|macro|SRMMU_PRIV_RDONLY
 mdefine_line|#define SRMMU_PRIV_RDONLY  0x18
 DECL|macro|SRMMU_FILE
 mdefine_line|#define SRMMU_FILE         0x40&t;/* Implemented in software */
-DECL|macro|SRMMU_PTE_FILE_MAX_BITS
-mdefine_line|#define SRMMU_PTE_FILE_MAX_BITS&t;24
 DECL|macro|SRMMU_PTE_FILE_SHIFT
-mdefine_line|#define SRMMU_PTE_FILE_SHIFT     8
+mdefine_line|#define SRMMU_PTE_FILE_SHIFT     8&t;/* == 32-PTE_FILE_MAX_BITS */
 DECL|macro|SRMMU_CHG_MASK
 mdefine_line|#define SRMMU_CHG_MASK    (0xffffff00 | SRMMU_REF | SRMMU_DIRTY)
 multiline_comment|/* Some day I will implement true fine grained access bits for&n; * user pages because the SRMMU gives us the capabilities to&n; * enforce all the protection levels that vma&squot;s can have.&n; * XXX But for now...&n; */

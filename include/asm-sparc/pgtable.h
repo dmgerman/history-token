@@ -925,6 +925,7 @@ id|pte_filei
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; */
 id|BTFIXUPDEF_HALF
 c_func
 (paren
@@ -1394,19 +1395,13 @@ r_int
 id|pgoff
 )paren
 suffix:semicolon
-DECL|variable|pte_file_max_bits
-id|BTFIXUPDEF_SIMM13
-c_func
-(paren
-id|pte_file_max_bits
-)paren
-suffix:semicolon
 DECL|macro|pte_to_pgoff
 mdefine_line|#define pte_to_pgoff(pte) BTFIXUP_CALL(pte_to_pgoff)(pte)
 DECL|macro|pgoff_to_pte
 mdefine_line|#define pgoff_to_pte(off) BTFIXUP_CALL(pgoff_to_pte)(off)
+multiline_comment|/*&n; * This is made a constant because mm/fremap.c required a constant.&n; * Note that layout of these bits is different between sun4c.c and srmmu.c.&n; */
 DECL|macro|PTE_FILE_MAX_BITS
-mdefine_line|#define PTE_FILE_MAX_BITS BTFIXUP_SIMM13(pte_file_max_bits)
+mdefine_line|#define PTE_FILE_MAX_BITS 24
 multiline_comment|/*&n; */
 DECL|struct|ctx_list
 r_struct

@@ -7757,7 +7757,7 @@ op_amp
 (paren
 l_int|1UL
 op_lshift
-id|SUN4C_PTE_FILE_MAX_BITS
+id|PTE_FILE_MAX_BITS
 )paren
 op_minus
 l_int|1
@@ -9514,14 +9514,6 @@ op_or
 id|_SUN4C_PAGE_IO
 op_or
 id|_SUN4C_PAGE_NOCACHE
-suffix:semicolon
-id|BTFIXUPSET_SIMM13
-c_func
-(paren
-id|pte_file_max_bits
-comma
-id|SUN4C_PTE_FILE_MAX_BITS
-)paren
 suffix:semicolon
 multiline_comment|/* Functions */
 id|BTFIXUPSET_CALL

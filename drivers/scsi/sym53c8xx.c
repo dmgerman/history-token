@@ -41175,8 +41175,8 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef __powerpc__
-multiline_comment|/*&n;&t;**&t;Fix-up for power/pc.&n;&t;**&t;Should not be performed by the driver.&n;&t;*/
+macro_line|#if defined(__powerpc__) || defined(__hppa__)
+multiline_comment|/*&n;&t;**&t;Fix-up for power/pc and hppa.&n;&t;**&t;Should not be performed by the driver.&n;&t;*/
 r_if
 c_cond
 (paren

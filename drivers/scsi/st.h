@@ -369,10 +369,6 @@ DECL|member|tape_type
 r_int
 id|tape_type
 suffix:semicolon
-DECL|member|write_threshold
-r_int
-id|write_threshold
-suffix:semicolon
 DECL|member|timeout
 r_int
 id|timeout
