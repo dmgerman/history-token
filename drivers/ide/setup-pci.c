@@ -1558,24 +1558,11 @@ id|PCI_COMMAND_MASTER
 )paren
 (brace
 multiline_comment|/*&n; &t;&t;&t; * Set up BM-DMA capability&n;&t;&t;&t; * (PnP BIOS should have done this)&n; &t;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|d-&gt;flags
-op_amp
-id|IDEPCI_FLAG_FORCE_MASTER
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * default DMA off if we had to&n;&t;&t;&t;&t; * configure it here&n;&t;&t;&t;&t; */
+multiline_comment|/* default DMA off if we had to configure it here */
 id|hwif-&gt;autodma
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 id|pci_set_master
 c_func
 (paren
