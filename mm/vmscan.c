@@ -2861,8 +2861,8 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the main entry point to direct page reclaim.&n; *&n; * If a full scan of the inactive list fails to free enough memory then we&n; * are &quot;out of memory&quot; and something needs to be killed.&n; *&n; * If the caller is !__GFP_FS then the probability of a failure is reasonably&n; * high - the zone may be full of dirty or under-writeback pages, which this&n; * caller can&squot;t do much about.  So for !__GFP_FS callers, we just perform a&n; * small LRU walk and if that didn&squot;t work out, fail the allocation back to the&n; * caller.  GFP_NOFS allocators need to know how to deal with it.  Kicking&n; * bdflush, waiting and retrying will work.&n; *&n; * This is a fairly lame algorithm - it can result in excessive CPU burning and&n; * excessive rotation of the inactive list, which is _supposed_ to be an LRU,&n; * yes?&n; */
-r_int
 DECL|function|try_to_free_pages
+r_int
 id|try_to_free_pages
 c_func
 (paren
@@ -3004,9 +3004,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|gfp_mask
 op_amp
 id|__GFP_FS
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|gfp_mask
+op_amp
+id|__GFP_NORETRY
+)paren
 )paren
 id|out_of_memory
 c_func
