@@ -137,19 +137,11 @@ id|FB_VISUAL_PSEUDOCOLOR
 comma
 id|xpanstep
 suffix:colon
-l_int|1
+l_int|8
 comma
 id|ypanstep
 suffix:colon
 l_int|1
-comma
-id|ywrapstep
-suffix:colon
-l_int|1
-comma
-id|accel
-suffix:colon
-id|FB_ACCEL_NONE
 comma
 )brace
 suffix:semicolon
@@ -198,7 +190,7 @@ comma
 r_struct
 id|fb_info
 op_star
-id|fb
+id|info
 )paren
 suffix:semicolon
 r_static
@@ -217,7 +209,7 @@ comma
 r_struct
 id|fb_info
 op_star
-id|fb
+id|info
 )paren
 suffix:semicolon
 r_static
@@ -236,7 +228,7 @@ comma
 r_struct
 id|fb_info
 op_star
-id|fb
+id|info
 )paren
 suffix:semicolon
 r_static
@@ -262,7 +254,7 @@ comma
 r_struct
 id|fb_info
 op_star
-id|fb
+id|info
 )paren
 suffix:semicolon
 r_static
@@ -281,7 +273,7 @@ comma
 r_struct
 id|fb_info
 op_star
-id|fb
+id|info
 )paren
 suffix:semicolon
 r_static
@@ -295,7 +287,7 @@ comma
 r_struct
 id|fb_info
 op_star
-id|fb
+id|info
 )paren
 suffix:semicolon
 r_static
@@ -377,7 +369,7 @@ comma
 r_struct
 id|fb_info
 op_star
-id|fb
+id|info
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     *  Internal routines&n;     */
@@ -387,7 +379,7 @@ id|aty_init
 c_func
 (paren
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -420,9 +412,9 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|info
+id|par
 comma
 r_const
 r_struct
@@ -438,7 +430,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -476,14 +468,13 @@ r_void
 id|atyfb_set_par
 c_func
 (paren
-r_const
 r_struct
 id|atyfb_par
 op_star
 id|par
 comma
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -506,7 +497,7 @@ id|par
 comma
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -529,7 +520,7 @@ id|par
 comma
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -546,7 +537,7 @@ id|par
 comma
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -569,7 +560,7 @@ id|par
 comma
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -585,15 +576,9 @@ op_star
 id|disp
 comma
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
-comma
-r_int
-id|bpp
-comma
-r_int
-id|accel
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC
@@ -604,7 +589,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -1182,7 +1167,7 @@ comma
 id|M64F_GX
 )brace
 comma
-macro_line|#endif /* CONFIG_FB_ATY_GX */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_FB_ATY_GX */
 macro_line|#ifdef CONFIG_FB_ATY_CT
 multiline_comment|/* Mach64 CT */
 (brace
@@ -1942,7 +1927,7 @@ op_or
 id|M64F_MOBIL_BUS
 )brace
 comma
-macro_line|#endif /* CONFIG_FB_ATY_CT */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_FB_ATY_CT */
 )brace
 suffix:semicolon
 DECL|variable|__initdata
@@ -2062,7 +2047,7 @@ comma
 id|ram_resv
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_FB_ATY_GX */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_FB_ATY_GX */
 macro_line|#ifdef CONFIG_FB_ATY_CT
 DECL|variable|__initdata
 r_static
@@ -2092,7 +2077,7 @@ comma
 id|ram_resv
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_FB_ATY_CT */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_FB_ATY_CT */
 macro_line|#if defined(CONFIG_PPC)
 multiline_comment|/*&n;     *  Apple monitor sense&n;     */
 DECL|function|read_aty_sense
@@ -2104,7 +2089,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -2358,7 +2343,7 @@ r_return
 id|sense
 suffix:semicolon
 )brace
-macro_line|#endif /* defined(CONFIG_PPC) */
+macro_line|#endif&t;&t;&t;&t;/* defined(CONFIG_PPC) */
 macro_line|#if defined(CONFIG_PMAC_PBOOK) || defined(CONFIG_PMAC_BACKLIGHT)
 DECL|function|aty_st_lcd
 r_static
@@ -2374,7 +2359,7 @@ id|val
 comma
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -2434,7 +2419,7 @@ id|index
 comma
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -2482,7 +2467,7 @@ id|info
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PMAC_PBOOK || CONFIG_PMAC_BACKLIGHT */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_PMAC_PBOOK || CONFIG_PMAC_BACKLIGHT */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*&n;     *  CRTC programming&n;     */
 DECL|function|aty_set_crtc
@@ -2493,9 +2478,9 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|info
+id|par
 comma
 r_const
 r_struct
@@ -2511,7 +2496,7 @@ id|CRTC_H_TOTAL_DISP
 comma
 id|crtc-&gt;h_tot_disp
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -2521,7 +2506,7 @@ id|CRTC_H_SYNC_STRT_WID
 comma
 id|crtc-&gt;h_sync_strt_wid
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -2531,7 +2516,7 @@ id|CRTC_V_TOTAL_DISP
 comma
 id|crtc-&gt;v_tot_disp
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -2541,7 +2526,7 @@ id|CRTC_V_SYNC_STRT_WID
 comma
 id|crtc-&gt;v_sync_strt_wid
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -2551,7 +2536,7 @@ id|CRTC_VLINE_CRNT_VLINE
 comma
 l_int|0
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -2561,7 +2546,7 @@ id|CRTC_OFF_PITCH
 comma
 id|crtc-&gt;off_pitch
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -2571,7 +2556,7 @@ id|CRTC_GEN_CNTL
 comma
 id|crtc-&gt;gen_cntl
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 )brace
@@ -2583,7 +2568,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -2599,6 +2584,18 @@ op_star
 id|crtc
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 id|u32
 id|xres
 comma
@@ -3151,7 +3148,7 @@ id|bpp
 op_div
 l_int|8
 OG
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 )paren
 id|FAIL
 c_func
@@ -3320,7 +3317,7 @@ c_func
 (paren
 id|CRTC_GEN_CNTL
 comma
-id|info
+id|par
 )paren
 op_amp
 l_int|0x000e0000
@@ -3967,14 +3964,13 @@ r_void
 id|atyfb_set_par
 c_func
 (paren
-r_const
 r_struct
 id|atyfb_par
 op_star
 id|par
 comma
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -3993,20 +3989,15 @@ op_assign
 id|par-&gt;accel_flags
 suffix:semicolon
 multiline_comment|/* hack */
-id|info-&gt;current_par
-op_assign
-op_star
-id|par
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;blitter_may_be_busy
+id|par-&gt;blitter_may_be_busy
 )paren
 id|wait_for_idle
 c_func
 (paren
-id|info
+id|par
 )paren
 suffix:semicolon
 id|tmp
@@ -4018,13 +4009,13 @@ id|CRTC_GEN_CNTL
 op_plus
 l_int|3
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_set_crtc
 c_func
 (paren
-id|info
+id|par
 comma
 op_amp
 id|par-&gt;crtc
@@ -4035,11 +4026,11 @@ c_func
 (paren
 id|CLOCK_CNTL
 op_plus
-id|info-&gt;clk_wr_offset
+id|par-&gt;clk_wr_offset
 comma
 l_int|0
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* better call aty_StrobeClock ?? */
@@ -4048,14 +4039,14 @@ c_func
 (paren
 id|CLOCK_CNTL
 op_plus
-id|info-&gt;clk_wr_offset
+id|par-&gt;clk_wr_offset
 comma
 id|CLOCK_STROBE
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
-id|info-&gt;dac_ops
+id|par-&gt;dac_ops
 op_member_access_from_pointer
 id|set_dac
 c_func
@@ -4070,7 +4061,7 @@ comma
 id|accelmode
 )paren
 suffix:semicolon
-id|info-&gt;pll_ops
+id|par-&gt;pll_ops
 op_member_access_from_pointer
 id|set_pll
 c_func
@@ -4100,7 +4091,7 @@ c_func
 (paren
 id|MEM_CNTL
 comma
-id|info
+id|par
 )paren
 op_amp
 l_int|0xf0ffffff
@@ -4146,7 +4137,7 @@ id|MEM_CNTL
 comma
 id|i
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 )brace
@@ -4159,7 +4150,7 @@ c_func
 (paren
 id|MEM_CNTL
 comma
-id|info
+id|par
 )paren
 op_amp
 l_int|0xf00fffff
@@ -4176,7 +4167,7 @@ id|MAGIC_POSTDIV
 )paren
 id|i
 op_or_assign
-id|info-&gt;mem_refresh_rate
+id|par-&gt;mem_refresh_rate
 op_lshift
 l_int|20
 suffix:semicolon
@@ -4234,7 +4225,7 @@ id|DAC_CNTL
 comma
 l_int|0x87010184
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -4244,7 +4235,7 @@ id|BUS_CNTL
 comma
 l_int|0x680000f9
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 )brace
@@ -4266,7 +4257,7 @@ id|DAC_CNTL
 comma
 l_int|0x87010184
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -4276,7 +4267,7 @@ id|BUS_CNTL
 comma
 l_int|0x680000f9
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 )brace
@@ -4298,7 +4289,7 @@ id|DAC_CNTL
 comma
 l_int|0x80010102
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -4308,7 +4299,7 @@ id|BUS_CNTL
 comma
 l_int|0x7b33a040
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 )brace
@@ -4322,7 +4313,7 @@ id|DAC_CNTL
 comma
 l_int|0x86010102
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -4332,7 +4323,7 @@ id|BUS_CNTL
 comma
 l_int|0x7b23a040
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -4345,12 +4336,12 @@ c_func
 (paren
 id|EXT_MEM_CNTL
 comma
-id|info
+id|par
 )paren
 op_or
 l_int|0x5000001
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 )brace
@@ -4361,7 +4352,7 @@ id|MEM_CNTL
 comma
 id|i
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 )brace
@@ -4372,7 +4363,7 @@ id|DAC_MASK
 comma
 l_int|0xff
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize the graphics engine */
@@ -4395,7 +4386,7 @@ macro_line|#ifdef CONFIG_BOOTX_TEXT
 id|btext_update_display
 c_func
 (paren
-id|info-&gt;fb_info.fix.smem_start
+id|info-&gt;fix.smem_start
 comma
 (paren
 (paren
@@ -4434,7 +4425,7 @@ op_div
 l_int|8
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BOOTX_TEXT */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_BOOTX_TEXT */
 )brace
 DECL|function|atyfb_decode_var
 r_static
@@ -4455,7 +4446,7 @@ id|par
 comma
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -4484,7 +4475,7 @@ op_logical_or
 (paren
 id|err
 op_assign
-id|info-&gt;pll_ops
+id|par-&gt;pll_ops
 op_member_access_from_pointer
 id|var_to_pll
 c_func
@@ -4519,7 +4510,7 @@ id|par-&gt;accel_flags
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if 0 /* fbmon is not done. uncomment for 2.5.x -brad */
+macro_line|#if 0&t;&t;&t;&t;/* fbmon is not done. uncomment for 2.5.x -brad */
 r_if
 c_cond
 (paren
@@ -4564,7 +4555,7 @@ id|par
 comma
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -4607,7 +4598,7 @@ id|err
 suffix:semicolon
 id|var-&gt;pixclock
 op_assign
-id|info-&gt;pll_ops
+id|par-&gt;pll_ops
 op_member_access_from_pointer
 id|pll_to_var
 c_func
@@ -4649,7 +4640,7 @@ id|par
 comma
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -4703,7 +4694,7 @@ id|CRTC_OFF_PITCH
 comma
 id|par-&gt;crtc.off_pitch
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 )brace
@@ -4725,16 +4716,16 @@ id|user
 (brace
 macro_line|#ifdef __sparc__
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|fb
+id|par
 op_assign
 (paren
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
 )paren
-id|info
+id|info-&gt;par
 suffix:semicolon
 r_if
 c_cond
@@ -4742,14 +4733,14 @@ c_cond
 id|user
 )paren
 (brace
-id|fb-&gt;open
+id|par-&gt;open
 op_increment
 suffix:semicolon
-id|fb-&gt;mmaped
+id|par-&gt;mmaped
 op_assign
 l_int|0
 suffix:semicolon
-id|fb-&gt;vtconsole
+id|par-&gt;vtconsole
 op_assign
 op_minus
 l_int|1
@@ -4757,13 +4748,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|fb-&gt;consolecnt
+id|par-&gt;consolecnt
 op_increment
 suffix:semicolon
 )brace
 macro_line|#endif
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|variable|default_var
@@ -4869,16 +4862,16 @@ id|user
 (brace
 macro_line|#ifdef __sparc__
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|fb
+id|par
 op_assign
 (paren
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
 )paren
-id|info
+id|info-&gt;par
 suffix:semicolon
 r_if
 c_cond
@@ -4886,7 +4879,7 @@ c_cond
 id|user
 )paren
 (brace
-id|fb-&gt;open
+id|par-&gt;open
 op_decrement
 suffix:semicolon
 id|mdelay
@@ -4898,43 +4891,43 @@ suffix:semicolon
 id|wait_for_idle
 c_func
 (paren
-id|fb
+id|par
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|fb-&gt;open
+id|par-&gt;open
 )paren
 (brace
 r_int
 id|was_mmaped
 op_assign
-id|fb-&gt;mmaped
+id|par-&gt;mmaped
 suffix:semicolon
-id|fb-&gt;mmaped
+id|par-&gt;mmaped
 op_assign
 l_int|0
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|fb-&gt;vtconsole
+id|par-&gt;vtconsole
 op_ne
 op_minus
 l_int|1
 )paren
 id|vt_cons
 (braket
-id|fb-&gt;vtconsole
+id|par-&gt;vtconsole
 )braket
 op_member_access_from_pointer
 id|vc_mode
 op_assign
 id|KD_TEXT
 suffix:semicolon
-id|fb-&gt;vtconsole
+id|par-&gt;vtconsole
 op_assign
 op_minus
 l_int|1
@@ -4949,7 +4942,7 @@ r_struct
 id|fb_var_screeninfo
 id|var
 suffix:semicolon
-multiline_comment|/* Now reset the default display config, we have no&n;&t;&t;&t; * idea what the program(s) which mmap&squot;d the chip did&n;&t;&t;&t; * to the configuration, nor whether it restored it&n;&t;&t;&t; * correctly.&n;&t;&t;&t; */
+multiline_comment|/* Now reset the default display config, we have no&n;&t;&t;&t;&t; * idea what the program(s) which mmap&squot;d the chip did&n;&t;&t;&t;&t; * to the configuration, nor whether it restored it&n;&t;&t;&t;&t; * correctly.&n;&t;&t;&t;&t; */
 id|var
 op_assign
 id|default_var
@@ -4981,7 +4974,7 @@ id|u32
 id|vram
 op_assign
 (paren
-id|fb-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_minus
 (paren
 id|PAGE_SIZE
@@ -5025,8 +5018,7 @@ comma
 op_minus
 l_int|1
 comma
-op_amp
-id|fb-&gt;fb_info
+id|info
 )paren
 suffix:semicolon
 )brace
@@ -5034,13 +5026,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|fb-&gt;consolecnt
+id|par-&gt;consolecnt
 op_decrement
 suffix:semicolon
 )brace
 macro_line|#endif
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|encode_fix
@@ -5062,7 +5056,7 @@ id|par
 comma
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -5091,31 +5085,31 @@ id|atyfb_name
 suffix:semicolon
 id|fix-&gt;smem_start
 op_assign
-id|info-&gt;fb_info.fix.smem_start
+id|info-&gt;fix.smem_start
 suffix:semicolon
 id|fix-&gt;smem_len
 op_assign
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 suffix:semicolon
 id|fix-&gt;mmio_start
 op_assign
-id|info-&gt;fb_info.fix.mmio_start
+id|info-&gt;fix.mmio_start
 suffix:semicolon
 id|fix-&gt;mmio_len
 op_assign
-id|info-&gt;fb_info.fix.mmio_len
+id|info-&gt;fix.mmio_len
 suffix:semicolon
 id|fix-&gt;accel
 op_assign
-id|info-&gt;fb_info.fix.accel
+id|info-&gt;fix.accel
 suffix:semicolon
 id|fix-&gt;type
 op_assign
-id|FB_TYPE_PACKED_PIXELS
+id|info-&gt;fix.type
 suffix:semicolon
 id|fix-&gt;type_aux
 op_assign
-l_int|0
+id|info-&gt;fix.type_aux
 suffix:semicolon
 id|fix-&gt;line_length
 op_assign
@@ -5138,15 +5132,15 @@ id|FB_VISUAL_DIRECTCOLOR
 suffix:semicolon
 id|fix-&gt;ywrapstep
 op_assign
-l_int|0
+id|info-&gt;fix.ywrapstep
 suffix:semicolon
 id|fix-&gt;xpanstep
 op_assign
-l_int|8
+id|info-&gt;fix.xpanstep
 suffix:semicolon
 id|fix-&gt;ypanstep
 op_assign
-l_int|1
+id|info-&gt;fix.ypanstep
 suffix:semicolon
 r_return
 l_int|0
@@ -5170,39 +5164,21 @@ comma
 r_struct
 id|fb_info
 op_star
-id|fb
+id|info
 )paren
 (brace
-r_const
-r_struct
-id|fb_info_aty
-op_star
-id|info
-op_assign
-(paren
-r_struct
-id|fb_info_aty
-op_star
-)paren
-id|fb
-suffix:semicolon
 r_struct
 id|atyfb_par
-id|par
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|con
-op_eq
-op_minus
-l_int|1
-)paren
+op_star
 id|par
 op_assign
-id|info-&gt;default_par
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
 suffix:semicolon
-r_else
 id|atyfb_decode_var
 c_func
 (paren
@@ -5214,7 +5190,6 @@ id|con
 dot
 id|var
 comma
-op_amp
 id|par
 comma
 id|info
@@ -5225,7 +5200,6 @@ c_func
 (paren
 id|fix
 comma
-op_amp
 id|par
 comma
 id|info
@@ -5253,21 +5227,20 @@ comma
 r_struct
 id|fb_info
 op_star
-id|fb
+id|info
 )paren
 (brace
-r_const
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|info
+id|par
 op_assign
 (paren
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
 )paren
-id|fb
+id|info-&gt;par
 suffix:semicolon
 r_if
 c_cond
@@ -5282,8 +5255,7 @@ c_func
 (paren
 id|var
 comma
-op_amp
-id|info-&gt;default_par
+id|par
 comma
 id|info
 )paren
@@ -5315,119 +5287,69 @@ op_star
 id|disp
 comma
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
-comma
-r_int
-id|bpp
-comma
-r_int
-id|accel
 )paren
 (brace
 r_switch
 c_cond
 (paren
-id|bpp
+id|info-&gt;var.bits_per_pixel
 )paren
 (brace
-macro_line|#ifdef FBCON_HAS_CFB8
 r_case
 l_int|8
 suffix:colon
-id|info-&gt;dispsw
-op_assign
-id|accel
-ques
-c_cond
-id|fbcon_aty8
-suffix:colon
-id|fbcon_cfb8
-suffix:semicolon
 id|disp-&gt;dispsw
 op_assign
 op_amp
-id|info-&gt;dispsw
+id|fbcon_aty8
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef FBCON_HAS_CFB16
 r_case
 l_int|16
 suffix:colon
-id|info-&gt;dispsw
-op_assign
-id|accel
-ques
-c_cond
-id|fbcon_aty16
-suffix:colon
-id|fbcon_cfb16
-suffix:semicolon
 id|disp-&gt;dispsw
 op_assign
 op_amp
-id|info-&gt;dispsw
+id|fbcon_aty16
 suffix:semicolon
 id|disp-&gt;dispsw_data
 op_assign
-id|info-&gt;fb_info.pseudo_palette
+id|info-&gt;pseudo_palette
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef FBCON_HAS_CFB24
 r_case
 l_int|24
 suffix:colon
-id|info-&gt;dispsw
-op_assign
-id|accel
-ques
-c_cond
-id|fbcon_aty24
-suffix:colon
-id|fbcon_cfb24
-suffix:semicolon
 id|disp-&gt;dispsw
 op_assign
 op_amp
-id|info-&gt;dispsw
+id|fbcon_aty24
 suffix:semicolon
 id|disp-&gt;dispsw_data
 op_assign
-id|info-&gt;fb_info.pseudo_palette
+id|info-&gt;pseudo_palette
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef FBCON_HAS_CFB32
 r_case
 l_int|32
 suffix:colon
-id|info-&gt;dispsw
-op_assign
-id|accel
-ques
-c_cond
-id|fbcon_aty32
-suffix:colon
-id|fbcon_cfb32
-suffix:semicolon
 id|disp-&gt;dispsw
 op_assign
 op_amp
-id|info-&gt;dispsw
+id|fbcon_aty32
 suffix:semicolon
 id|disp-&gt;dispsw_data
 op_assign
-id|info-&gt;fb_info.pseudo_palette
+id|info-&gt;pseudo_palette
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 r_default
 suffix:colon
 id|disp-&gt;dispsw
@@ -5437,22 +5359,8 @@ id|fbcon_dummy
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_FB_ATY_CT
-r_if
-c_cond
-(paren
-id|info-&gt;cursor
-)paren
-(brace
-id|info-&gt;dispsw.cursor
-op_assign
-id|atyfb_cursor
-suffix:semicolon
-id|info-&gt;dispsw.set_font
-op_assign
-id|atyfb_set_font
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_FB_ATY_CT */
+multiline_comment|/*&n;&t;if (info-&gt;cursor) {&n;&t;&t;&amp;disp-&gt;dispsw.cursor = atyfb_cursor;&n;&t;&t;&amp;disp-&gt;dispsw.set_font = atyfb_set_font;&n;&t;}&n;*/
+macro_line|#endif&t;&t;&t;/* CONFIG_FB_ATY_CT */
 )brace
 multiline_comment|/*&n;     *  Set the User Defined Part of the Display&n;     */
 DECL|function|atyfb_set_var
@@ -5472,24 +5380,20 @@ comma
 r_struct
 id|fb_info
 op_star
-id|fb
+id|info
 )paren
 (brace
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|info
+id|par
 op_assign
 (paren
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
 )paren
-id|fb
-suffix:semicolon
-r_struct
-id|atyfb_par
-id|par
+id|info-&gt;par
 suffix:semicolon
 r_struct
 id|display
@@ -5536,7 +5440,7 @@ suffix:semicolon
 r_else
 id|display
 op_assign
-id|fb-&gt;disp
+id|info-&gt;disp
 suffix:semicolon
 multiline_comment|/* used during initialization */
 r_if
@@ -5550,7 +5454,6 @@ c_func
 (paren
 id|var
 comma
-op_amp
 id|par
 comma
 id|info
@@ -5565,14 +5468,8 @@ c_func
 (paren
 id|var
 comma
-op_amp
 id|par
 comma
-(paren
-r_struct
-id|fb_info_aty
-op_star
-)paren
 id|info
 )paren
 suffix:semicolon
@@ -5661,7 +5558,6 @@ c_func
 op_amp
 id|fix
 comma
-op_amp
 id|par
 comma
 id|info
@@ -5707,7 +5603,7 @@ id|accel
 id|display-&gt;scrollmode
 op_assign
 (paren
-id|info-&gt;bus_type
+id|par-&gt;bus_type
 op_eq
 id|PCI
 )paren
@@ -5725,11 +5621,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;fb_info.changevar
+id|info-&gt;changevar
 )paren
 (paren
 op_star
-id|info-&gt;fb_info.changevar
+id|info-&gt;changevar
 )paren
 (paren
 id|con
@@ -5740,9 +5636,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|info-&gt;fb_info.display_fg
+id|info-&gt;display_fg
 op_logical_or
-id|info-&gt;fb_info.display_fg-&gt;vc_num
+id|info-&gt;display_fg-&gt;vc_num
 op_eq
 id|con
 )paren
@@ -5750,7 +5646,6 @@ id|con
 id|atyfb_set_par
 c_func
 (paren
-op_amp
 id|par
 comma
 id|info
@@ -5762,10 +5657,6 @@ c_func
 id|display
 comma
 id|info
-comma
-id|par.crtc.bpp
-comma
-id|accel
 )paren
 suffix:semicolon
 )brace
@@ -5803,8 +5694,7 @@ c_func
 (paren
 id|con
 comma
-op_amp
-id|info-&gt;fb_info
+id|info
 )paren
 suffix:semicolon
 )brace
@@ -5831,20 +5721,20 @@ comma
 r_struct
 id|fb_info
 op_star
-id|fb
+id|info
 )paren
 (brace
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|info
+id|par
 op_assign
 (paren
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
 )paren
-id|fb
+id|info-&gt;par
 suffix:semicolon
 id|u32
 id|xres
@@ -5854,14 +5744,6 @@ comma
 id|xoffset
 comma
 id|yoffset
-suffix:semicolon
-r_struct
-id|atyfb_par
-op_star
-id|par
-op_assign
-op_amp
-id|info-&gt;current_par
 suffix:semicolon
 id|xres
 op_assign
@@ -6044,23 +5926,23 @@ comma
 r_struct
 id|fb_info
 op_star
-id|info2
+id|info
 )paren
 (brace
 macro_line|#if defined(__sparc__) || (defined(DEBUG) &amp;&amp; defined(CONFIG_FB_ATY_CT))
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|info
+id|par
 op_assign
 (paren
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
 )paren
-id|info2
+id|info-&gt;par
 suffix:semicolon
-macro_line|#endif /* __sparc__ || DEBUG */
+macro_line|#endif&t;&t;&t;&t;/* __sparc__ || DEBUG */
 macro_line|#ifdef __sparc__
 r_struct
 id|fbtype
@@ -6108,15 +5990,15 @@ id|FBTYPE_PCI_GENERIC
 suffix:semicolon
 id|fbtyp.fb_width
 op_assign
-id|info-&gt;current_par.crtc.vxres
+id|par-&gt;crtc.vxres
 suffix:semicolon
 id|fbtyp.fb_height
 op_assign
-id|info-&gt;current_par.crtc.vyres
+id|par-&gt;crtc.vyres
 suffix:semicolon
 id|fbtyp.fb_depth
 op_assign
-id|info-&gt;current_par.crtc.bpp
+id|par-&gt;crtc.bpp
 suffix:semicolon
 id|fbtyp.fb_cmsize
 op_assign
@@ -6124,13 +6006,12 @@ id|disp-&gt;cmap.len
 suffix:semicolon
 id|fbtyp.fb_size
 op_assign
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 (paren
 r_struct
@@ -6154,7 +6035,7 @@ id|EFAULT
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* __sparc__ */
+macro_line|#endif&t;&t;&t;&t;/* __sparc__ */
 macro_line|#if defined(DEBUG) &amp;&amp; defined(CONFIG_FB_ATY_CT)
 r_case
 id|ATYIO_CLKR
@@ -6178,8 +6059,7 @@ id|aty_pll
 op_star
 id|pll
 op_assign
-op_amp
-id|info-&gt;current_par.pll
+id|par-&gt;pll
 suffix:semicolon
 id|u32
 id|dsp_config
@@ -6193,7 +6073,7 @@ id|pll-&gt;ct.dsp_on_off
 suffix:semicolon
 id|clk.ref_clk_per
 op_assign
-id|info-&gt;ref_clk_per
+id|par-&gt;ref_clk_per
 suffix:semicolon
 id|clk.pll_ref_div
 op_assign
@@ -6261,7 +6141,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 (paren
 r_struct
@@ -6313,14 +6192,12 @@ id|aty_pll
 op_star
 id|pll
 op_assign
-op_amp
-id|info-&gt;current_par.pll
+id|par-&gt;pll
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|clk
@@ -6342,7 +6219,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|info-&gt;ref_clk_per
+id|par-&gt;ref_clk_per
 op_assign
 id|clk.ref_clk_per
 suffix:semicolon
@@ -6369,14 +6246,18 @@ suffix:semicolon
 id|pll-&gt;ct.dsp_config
 op_assign
 (paren
-id|clk.dsp_xclks_per_row
+id|clk
+dot
+id|dsp_xclks_per_row
 op_amp
 l_int|0x3fff
 )paren
 op_or
 (paren
 (paren
-id|clk.dsp_loop_latency
+id|clk
+dot
+id|dsp_loop_latency
 op_amp
 l_int|0xf
 )paren
@@ -6397,14 +6278,18 @@ suffix:semicolon
 id|pll-&gt;ct.dsp_on_off
 op_assign
 (paren
-id|clk.dsp_on
+id|clk
+dot
+id|dsp_on
 op_amp
 l_int|0x7ff
 )paren
 op_or
 (paren
 (paren
-id|clk.dsp_off
+id|clk
+dot
+id|dsp_off
 op_amp
 l_int|0x7ff
 )paren
@@ -6446,7 +6331,7 @@ c_cond
 id|get_user
 c_func
 (paren
-id|info-&gt;features
+id|par-&gt;features
 comma
 (paren
 id|u32
@@ -6470,7 +6355,7 @@ c_cond
 id|put_user
 c_func
 (paren
-id|info-&gt;features
+id|par-&gt;features
 comma
 (paren
 id|u32
@@ -6485,7 +6370,7 @@ id|EFAULT
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* DEBUG &amp;&amp; CONFIG_FB_ATY_CT */
+macro_line|#endif&t;&t;&t;&t;/* DEBUG &amp;&amp; CONFIG_FB_ATY_CT */
 r_default
 suffix:colon
 r_return
@@ -6513,26 +6398,26 @@ id|start
 )paren
 (brace
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|fb
+id|par
 op_assign
 (paren
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
 )paren
-id|info
+id|info-&gt;par
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|fb-&gt;blitter_may_be_busy
+id|par-&gt;blitter_may_be_busy
 )paren
 id|wait_for_idle
 c_func
 (paren
-id|fb
+id|par
 )paren
 suffix:semicolon
 r_return
@@ -6563,16 +6448,16 @@ id|vma
 )paren
 (brace
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|fb
+id|par
 op_assign
 (paren
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
 )paren
-id|info
+id|info-&gt;par
 suffix:semicolon
 r_int
 r_int
@@ -6601,7 +6486,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|fb-&gt;mmap_map
+id|par-&gt;mmap_map
 )paren
 r_return
 op_minus
@@ -6657,7 +6542,7 @@ op_logical_and
 (paren
 id|size
 op_eq
-id|fb-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 )paren
 )paren
 op_logical_or
@@ -6665,7 +6550,7 @@ op_logical_or
 (paren
 id|off
 op_eq
-id|fb-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 )paren
 op_logical_and
 (paren
@@ -6711,7 +6596,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|fb-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 id|i
 )braket
@@ -6726,7 +6611,7 @@ r_int
 r_int
 id|start
 op_assign
-id|fb-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 id|i
 )braket
@@ -6739,7 +6624,7 @@ id|end
 op_assign
 id|start
 op_plus
-id|fb-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 id|i
 )braket
@@ -6774,7 +6659,7 @@ r_continue
 suffix:semicolon
 id|map_size
 op_assign
-id|fb-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 id|i
 )braket
@@ -6789,7 +6674,7 @@ id|start
 suffix:semicolon
 id|map_offset
 op_assign
-id|fb-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 id|i
 )braket
@@ -6842,7 +6727,7 @@ id|vma-&gt;vm_page_prot
 op_and_assign
 op_complement
 (paren
-id|fb-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 id|i
 )braket
@@ -6856,7 +6741,7 @@ c_func
 id|vma-&gt;vm_page_prot
 )paren
 op_or_assign
-id|fb-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 id|i
 )braket
@@ -6909,7 +6794,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|fb-&gt;mmaped
+id|par-&gt;mmaped
 )paren
 (brace
 r_int
@@ -6926,14 +6811,14 @@ id|lastconsole
 op_assign
 id|info-&gt;display_fg-&gt;vc_num
 suffix:semicolon
-id|fb-&gt;mmaped
+id|par-&gt;mmaped
 op_assign
 l_int|1
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|fb-&gt;consolecnt
+id|par-&gt;consolecnt
 op_logical_and
 id|fb_display
 (braket
@@ -6945,7 +6830,7 @@ op_eq
 id|info
 )paren
 (brace
-id|fb-&gt;vtconsole
+id|par-&gt;vtconsole
 op_assign
 id|lastconsole
 suffix:semicolon
@@ -7014,24 +6899,12 @@ c_func
 r_struct
 id|fb_info
 op_star
-id|fb
+id|info
 comma
 r_int
 id|enter
 )paren
 (brace
-r_struct
-id|fb_info_aty
-op_star
-id|info
-op_assign
-(paren
-r_struct
-id|fb_info_aty
-op_star
-)paren
-id|fb
-suffix:semicolon
 r_int
 id|i
 comma
@@ -7103,7 +6976,7 @@ c_func
 id|i
 comma
 op_amp
-id|info-&gt;aty_cmap_regs-&gt;rindex
+id|par-&gt;aty_cmap_regs-&gt;rindex
 )paren
 suffix:semicolon
 id|atyfb_save.r
@@ -7118,7 +6991,7 @@ id|readb
 c_func
 (paren
 op_amp
-id|info-&gt;aty_cmap_regs-&gt;lut
+id|par-&gt;aty_cmap_regs-&gt;lut
 )paren
 suffix:semicolon
 id|atyfb_save.g
@@ -7133,7 +7006,7 @@ id|readb
 c_func
 (paren
 op_amp
-id|info-&gt;aty_cmap_regs-&gt;lut
+id|par-&gt;aty_cmap_regs-&gt;lut
 )paren
 suffix:semicolon
 id|atyfb_save.b
@@ -7148,7 +7021,7 @@ id|readb
 c_func
 (paren
 op_amp
-id|info-&gt;aty_cmap_regs-&gt;lut
+id|par-&gt;aty_cmap_regs-&gt;lut
 )paren
 suffix:semicolon
 id|writeb
@@ -7157,7 +7030,7 @@ c_func
 id|i
 comma
 op_amp
-id|info-&gt;aty_cmap_regs-&gt;windex
+id|par-&gt;aty_cmap_regs-&gt;windex
 )paren
 suffix:semicolon
 id|writeb
@@ -7174,7 +7047,7 @@ id|i
 )braket
 comma
 op_amp
-id|info-&gt;aty_cmap_regs-&gt;lut
+id|par-&gt;aty_cmap_regs-&gt;lut
 )paren
 suffix:semicolon
 id|writeb
@@ -7191,7 +7064,7 @@ id|i
 )braket
 comma
 op_amp
-id|info-&gt;aty_cmap_regs-&gt;lut
+id|par-&gt;aty_cmap_regs-&gt;lut
 )paren
 suffix:semicolon
 id|writeb
@@ -7208,7 +7081,7 @@ id|i
 )braket
 comma
 op_amp
-id|info-&gt;aty_cmap_regs-&gt;lut
+id|par-&gt;aty_cmap_regs-&gt;lut
 )paren
 suffix:semicolon
 )brace
@@ -7224,7 +7097,7 @@ id|enter
 )paren
 (brace
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 suffix:semicolon
@@ -7291,17 +7164,16 @@ id|enter
 suffix:semicolon
 id|info
 op_assign
-(paren
-r_struct
-id|fb_info_aty
-op_star
-)paren
 id|d-&gt;fb_info
 suffix:semicolon
 id|par
 op_assign
-op_amp
-id|info-&gt;current_par
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
 suffix:semicolon
 r_if
 c_cond
@@ -7346,12 +7218,12 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* __sparc__ */
+macro_line|#endif&t;&t;&t;&t;/* __sparc__ */
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 DECL|variable|first_display
 r_static
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|first_display
 op_assign
@@ -7368,7 +7240,7 @@ r_int
 id|sleep
 comma
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -7716,7 +7588,7 @@ r_int
 id|sleep
 comma
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -8058,7 +7930,7 @@ r_int
 id|sleep
 comma
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 )paren
@@ -8105,9 +7977,21 @@ id|when
 )paren
 (brace
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
+suffix:semicolon
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;fb.par
 suffix:semicolon
 r_int
 id|result
@@ -8147,11 +8031,6 @@ id|fix
 comma
 id|fg_console
 comma
-(paren
-r_struct
-id|fb_info
-op_star
-)paren
 id|info
 )paren
 suffix:semicolon
@@ -8175,7 +8054,7 @@ id|when
 r_case
 id|PBOOK_SLEEP_REQUEST
 suffix:colon
-id|info-&gt;save_framebuffer
+id|par-&gt;save_framebuffer
 op_assign
 id|vmalloc
 c_func
@@ -8186,7 +8065,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;save_framebuffer
+id|par-&gt;save_framebuffer
 op_eq
 l_int|NULL
 )paren
@@ -8201,16 +8080,16 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|info-&gt;save_framebuffer
+id|par-&gt;save_framebuffer
 )paren
 (brace
 id|vfree
 c_func
 (paren
-id|info-&gt;save_framebuffer
+id|par-&gt;save_framebuffer
 )paren
 suffix:semicolon
-id|info-&gt;save_framebuffer
+id|par-&gt;save_framebuffer
 op_assign
 l_int|0
 suffix:semicolon
@@ -8223,19 +8102,19 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|info-&gt;blitter_may_be_busy
+id|par-&gt;blitter_may_be_busy
 )paren
 id|wait_for_idle
 c_func
 (paren
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Stop accel engine (stop bus mastering) */
 r_if
 c_cond
 (paren
-id|info-&gt;current_par.accel_flags
+id|par-&gt;accel_flags
 op_amp
 id|FB_ACCELF_TEXT
 )paren
@@ -8249,18 +8128,18 @@ multiline_comment|/* Backup fb content */
 r_if
 c_cond
 (paren
-id|info-&gt;save_framebuffer
+id|par-&gt;save_framebuffer
 )paren
 id|memcpy_fromio
 c_func
 (paren
-id|info-&gt;save_framebuffer
+id|par-&gt;save_framebuffer
 comma
 (paren
 r_void
 op_star
 )paren
-id|info-&gt;fb_info.screen_base
+id|info-&gt;screen_base
 comma
 id|nb
 )paren
@@ -8273,11 +8152,6 @@ id|VESA_POWERDOWN
 op_plus
 l_int|1
 comma
-(paren
-r_struct
-id|fb_info
-op_star
-)paren
 id|info
 )paren
 suffix:semicolon
@@ -8312,7 +8186,7 @@ multiline_comment|/* Restore fb content */
 r_if
 c_cond
 (paren
-id|info-&gt;save_framebuffer
+id|par-&gt;save_framebuffer
 )paren
 (brace
 id|memcpy_toio
@@ -8322,9 +8196,9 @@ c_func
 r_void
 op_star
 )paren
-id|info-&gt;fb_info.screen_base
+id|info-&gt;screen_base
 comma
-id|info-&gt;save_framebuffer
+id|par-&gt;save_framebuffer
 comma
 id|nb
 )paren
@@ -8332,10 +8206,10 @@ suffix:semicolon
 id|vfree
 c_func
 (paren
-id|info-&gt;save_framebuffer
+id|par-&gt;save_framebuffer
 )paren
 suffix:semicolon
-id|info-&gt;save_framebuffer
+id|par-&gt;save_framebuffer
 op_assign
 l_int|0
 suffix:semicolon
@@ -8344,8 +8218,7 @@ multiline_comment|/* Restore display */
 id|atyfb_set_par
 c_func
 (paren
-op_amp
-id|info-&gt;current_par
+id|par-&gt;par
 comma
 id|info
 )paren
@@ -8355,11 +8228,6 @@ c_func
 (paren
 l_int|0
 comma
-(paren
-r_struct
-id|fb_info
-op_star
-)paren
 id|info
 )paren
 suffix:semicolon
@@ -8384,7 +8252,7 @@ id|SLEEP_LEVEL_VIDEO
 comma
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_PBOOK */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_PMAC_PBOOK */
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 multiline_comment|/*&n;     *   LCD backlight control&n;     */
 DECL|variable|backlight_conv
@@ -8428,9 +8296,9 @@ comma
 l_int|0xff
 )brace
 suffix:semicolon
+DECL|function|aty_set_backlight_enable
 r_static
 r_int
-DECL|function|aty_set_backlight_enable
 id|aty_set_backlight_enable
 c_func
 (paren
@@ -8446,13 +8314,13 @@ id|data
 )paren
 (brace
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 op_assign
 (paren
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 )paren
 id|data
@@ -8537,9 +8405,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|aty_set_backlight_level
 r_static
 r_int
-DECL|function|aty_set_backlight_level
 id|aty_set_backlight_level
 c_func
 (paren
@@ -8575,12 +8443,12 @@ comma
 id|aty_set_backlight_level
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_PMAC_BACKLIGHT */
 multiline_comment|/*&n;     *  Initialisation&n;     */
 DECL|variable|fb_list
 r_static
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|fb_list
 op_assign
@@ -8594,7 +8462,7 @@ id|aty_init
 c_func
 (paren
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -8604,25 +8472,17 @@ op_star
 id|name
 )paren
 (brace
-id|u32
-id|chip_id
-comma
-id|i
-suffix:semicolon
 r_struct
-id|fb_var_screeninfo
-id|var
-suffix:semicolon
-r_struct
-id|display
+id|atyfb_par
 op_star
-id|disp
-suffix:semicolon
-id|u16
-id|type
-suffix:semicolon
-id|u8
-id|rev
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
 suffix:semicolon
 r_const
 r_char
@@ -8648,6 +8508,26 @@ id|mclk
 comma
 id|gtb_memsize
 suffix:semicolon
+r_struct
+id|fb_var_screeninfo
+id|var
+suffix:semicolon
+r_struct
+id|display
+op_star
+id|disp
+suffix:semicolon
+id|u32
+id|chip_id
+comma
+id|i
+suffix:semicolon
+id|u16
+id|type
+suffix:semicolon
+id|u8
+id|rev
+suffix:semicolon
 macro_line|#if defined(CONFIG_PPC)
 r_int
 id|sense
@@ -8656,7 +8536,7 @@ macro_line|#endif
 id|u8
 id|pll_ref_div
 suffix:semicolon
-id|info-&gt;aty_cmap_regs
+id|par-&gt;aty_cmap_regs
 op_assign
 (paren
 r_struct
@@ -8664,7 +8544,7 @@ id|aty_cmap_regs
 op_star
 )paren
 (paren
-id|info-&gt;ati_regbase
+id|par-&gt;ati_regbase
 op_plus
 l_int|0xc0
 )paren
@@ -8676,7 +8556,7 @@ c_func
 (paren
 id|CONFIG_CHIP_ID
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|type
@@ -8778,7 +8658,7 @@ id|j
 dot
 id|mclk
 suffix:semicolon
-id|info-&gt;features
+id|par-&gt;features
 op_assign
 id|aty_chips
 (braket
@@ -8850,7 +8730,7 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|info-&gt;bus_type
+id|par-&gt;bus_type
 op_assign
 (paren
 id|stat0
@@ -8860,7 +8740,7 @@ l_int|0
 op_amp
 l_int|0x07
 suffix:semicolon
-id|info-&gt;ram_type
+id|par-&gt;ram_type
 op_assign
 (paren
 id|stat0
@@ -8874,7 +8754,7 @@ id|ramname
 op_assign
 id|aty_gx_ram
 (braket
-id|info-&gt;ram_type
+id|par-&gt;ram_type
 )braket
 suffix:semicolon
 multiline_comment|/* FIXME: clockchip/RAMDAC probing? */
@@ -8886,7 +8766,7 @@ c_func
 (paren
 id|DAC_CNTL
 comma
-id|info
+id|par
 )paren
 op_rshift
 l_int|16
@@ -8931,7 +8811,7 @@ id|SCRATCH_REG1
 op_plus
 l_int|1
 comma
-id|info
+id|par
 )paren
 op_amp
 l_int|0xF0
@@ -8962,7 +8842,7 @@ id|dac_subtype
 r_case
 id|DAC_IBMRGB514
 suffix:colon
-id|info-&gt;dac_ops
+id|par-&gt;dac_ops
 op_assign
 op_amp
 id|aty_dac_ibm514
@@ -8975,7 +8855,7 @@ suffix:colon
 r_case
 id|DAC_ATI68860_C
 suffix:colon
-id|info-&gt;dac_ops
+id|par-&gt;dac_ops
 op_assign
 op_amp
 id|aty_dac_ati68860b
@@ -8988,7 +8868,7 @@ suffix:colon
 r_case
 id|DAC_ATT21C498
 suffix:colon
-id|info-&gt;dac_ops
+id|par-&gt;dac_ops
 op_assign
 op_amp
 id|aty_dac_att21c498
@@ -8998,12 +8878,11 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
-c_func
 (paren
 l_string|&quot; atyfb_set_par: DAC type not implemented yet!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|info-&gt;dac_ops
+id|par-&gt;dac_ops
 op_assign
 op_amp
 id|aty_dac_unsupported
@@ -9020,7 +8899,7 @@ id|clk_type
 r_case
 id|CLK_ATI18818_1
 suffix:colon
-id|info-&gt;pll_ops
+id|par-&gt;pll_ops
 op_assign
 op_amp
 id|aty_pll_ati18818_1
@@ -9030,7 +8909,7 @@ suffix:semicolon
 r_case
 id|CLK_STG1703
 suffix:colon
-id|info-&gt;pll_ops
+id|par-&gt;pll_ops
 op_assign
 op_amp
 id|aty_pll_stg1703
@@ -9040,7 +8919,7 @@ suffix:semicolon
 r_case
 id|CLK_CH8398
 suffix:colon
-id|info-&gt;pll_ops
+id|par-&gt;pll_ops
 op_assign
 op_amp
 id|aty_pll_ch8398
@@ -9050,7 +8929,7 @@ suffix:semicolon
 r_case
 id|CLK_ATT20C408
 suffix:colon
-id|info-&gt;pll_ops
+id|par-&gt;pll_ops
 op_assign
 op_amp
 id|aty_pll_att20c408
@@ -9060,7 +8939,7 @@ suffix:semicolon
 r_case
 id|CLK_IBMRGB514
 suffix:colon
-id|info-&gt;pll_ops
+id|par-&gt;pll_ops
 op_assign
 op_amp
 id|aty_pll_ibm514
@@ -9070,12 +8949,11 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
-c_func
 (paren
 l_string|&quot; atyfb_set_par: CLK type not implemented yet!&quot;
 )paren
 suffix:semicolon
-id|info-&gt;pll_ops
+id|par-&gt;pll_ops
 op_assign
 op_amp
 id|aty_pll_unsupported
@@ -9084,7 +8962,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_FB_ATY_GX */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_FB_ATY_GX */
 macro_line|#ifdef CONFIG_FB_ATY_CT
 r_if
 c_cond
@@ -9096,11 +8974,11 @@ id|INTEGRATED
 )paren
 )paren
 (brace
-id|info-&gt;bus_type
+id|par-&gt;bus_type
 op_assign
 id|PCI
 suffix:semicolon
-id|info-&gt;ram_type
+id|par-&gt;ram_type
 op_assign
 (paren
 id|aty_ld_le32
@@ -9108,7 +8986,7 @@ c_func
 (paren
 id|CONFIG_STAT0
 comma
-id|info
+id|par
 )paren
 op_amp
 l_int|0x07
@@ -9118,15 +8996,15 @@ id|ramname
 op_assign
 id|aty_ct_ram
 (braket
-id|info-&gt;ram_type
+id|par-&gt;ram_type
 )braket
 suffix:semicolon
-id|info-&gt;dac_ops
+id|par-&gt;dac_ops
 op_assign
 op_amp
 id|aty_dac_ct
 suffix:semicolon
-id|info-&gt;pll_ops
+id|par-&gt;pll_ops
 op_assign
 op_amp
 id|aty_pll_ct
@@ -9139,7 +9017,7 @@ id|mclk
 op_eq
 l_int|67
 op_logical_and
-id|info-&gt;ram_type
+id|par-&gt;ram_type
 OL
 id|SDRAM
 )paren
@@ -9148,8 +9026,8 @@ op_assign
 l_int|63
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_FB_ATY_CT */
-id|info-&gt;ref_clk_per
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_FB_ATY_CT */
+id|par-&gt;ref_clk_per
 op_assign
 l_int|1000000000000ULL
 op_div
@@ -9176,7 +9054,7 @@ c_func
 (paren
 id|PLL_REF_DIV
 comma
-id|info
+id|par
 )paren
 )paren
 )paren
@@ -9238,7 +9116,7 @@ OL
 id|diff1
 )paren
 (brace
-id|info-&gt;ref_clk_per
+id|par-&gt;ref_clk_per
 op_assign
 l_int|1000000000000ULL
 op_div
@@ -9257,7 +9135,7 @@ c_func
 (paren
 id|MEM_CNTL
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|gtb_memsize
@@ -9285,7 +9163,7 @@ multiline_comment|/* 0xF used instead of MEM_SIZE_ALIAS */
 r_case
 id|MEM_SIZE_512K
 suffix:colon
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_assign
 l_int|0x80000
 suffix:semicolon
@@ -9294,7 +9172,7 @@ suffix:semicolon
 r_case
 id|MEM_SIZE_1M
 suffix:colon
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_assign
 l_int|0x100000
 suffix:semicolon
@@ -9303,7 +9181,7 @@ suffix:semicolon
 r_case
 id|MEM_SIZE_2M_GTB
 suffix:colon
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_assign
 l_int|0x200000
 suffix:semicolon
@@ -9312,7 +9190,7 @@ suffix:semicolon
 r_case
 id|MEM_SIZE_4M_GTB
 suffix:colon
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_assign
 l_int|0x400000
 suffix:semicolon
@@ -9321,7 +9199,7 @@ suffix:semicolon
 r_case
 id|MEM_SIZE_6M_GTB
 suffix:colon
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_assign
 l_int|0x600000
 suffix:semicolon
@@ -9330,7 +9208,7 @@ suffix:semicolon
 r_case
 id|MEM_SIZE_8M_GTB
 suffix:colon
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_assign
 l_int|0x800000
 suffix:semicolon
@@ -9338,7 +9216,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_assign
 l_int|0x80000
 suffix:semicolon
@@ -9355,7 +9233,7 @@ id|MEM_SIZE_ALIAS
 r_case
 id|MEM_SIZE_512K
 suffix:colon
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_assign
 l_int|0x80000
 suffix:semicolon
@@ -9364,7 +9242,7 @@ suffix:semicolon
 r_case
 id|MEM_SIZE_1M
 suffix:colon
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_assign
 l_int|0x100000
 suffix:semicolon
@@ -9373,7 +9251,7 @@ suffix:semicolon
 r_case
 id|MEM_SIZE_2M
 suffix:colon
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_assign
 l_int|0x200000
 suffix:semicolon
@@ -9382,7 +9260,7 @@ suffix:semicolon
 r_case
 id|MEM_SIZE_4M
 suffix:colon
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_assign
 l_int|0x400000
 suffix:semicolon
@@ -9391,7 +9269,7 @@ suffix:semicolon
 r_case
 id|MEM_SIZE_6M
 suffix:colon
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_assign
 l_int|0x600000
 suffix:semicolon
@@ -9400,7 +9278,7 @@ suffix:semicolon
 r_case
 id|MEM_SIZE_8M
 suffix:colon
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_assign
 l_int|0x800000
 suffix:semicolon
@@ -9408,7 +9286,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_assign
 l_int|0x80000
 suffix:semicolon
@@ -9431,12 +9309,12 @@ c_func
 (paren
 id|CONFIG_STAT1
 comma
-id|info
+id|par
 )paren
 op_amp
 l_int|0x40000000
 )paren
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_add_assign
 l_int|0x400000
 suffix:semicolon
@@ -9447,7 +9325,7 @@ c_cond
 id|default_vram
 )paren
 (brace
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_assign
 id|default_vram
 op_star
@@ -9470,7 +9348,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_le
 l_int|0x80000
 )paren
@@ -9482,7 +9360,7 @@ r_else
 r_if
 c_cond
 (paren
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_le
 l_int|0x100000
 )paren
@@ -9494,7 +9372,7 @@ r_else
 r_if
 c_cond
 (paren
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_le
 l_int|0x200000
 )paren
@@ -9511,7 +9389,7 @@ r_else
 r_if
 c_cond
 (paren
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_le
 l_int|0x400000
 )paren
@@ -9528,7 +9406,7 @@ r_else
 r_if
 c_cond
 (paren
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_le
 l_int|0x600000
 )paren
@@ -9558,11 +9436,11 @@ id|MEM_CNTL
 comma
 id|i
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Reg Block 0 (CT-compatible block) is at mmio_start &n;     *  Reg Block 1 (multimedia extensions) is at mmio_start - 0x400&n;     */
+multiline_comment|/*&n;&t; *  Reg Block 0 (CT-compatible block) is at mmio_start &n;&t; *  Reg Block 1 (multimedia extensions) is at mmio_start - 0x400&n;&t; */
 r_if
 c_cond
 (paren
@@ -9573,11 +9451,11 @@ id|GX
 )paren
 )paren
 (brace
-id|info-&gt;fb_info.fix.mmio_len
+id|info-&gt;fix.mmio_len
 op_assign
 l_int|0x400
 suffix:semicolon
-id|info-&gt;fb_info.fix.accel
+id|info-&gt;fix.accel
 op_assign
 id|FB_ACCEL_ATI_MACH64GX
 suffix:semicolon
@@ -9593,11 +9471,11 @@ id|CT
 )paren
 )paren
 (brace
-id|info-&gt;fb_info.fix.mmio_len
+id|info-&gt;fix.mmio_len
 op_assign
 l_int|0x400
 suffix:semicolon
-id|info-&gt;fb_info.fix.accel
+id|info-&gt;fix.accel
 op_assign
 id|FB_ACCEL_ATI_MACH64CT
 suffix:semicolon
@@ -9613,33 +9491,33 @@ id|VT
 )paren
 )paren
 (brace
-id|info-&gt;fb_info.fix.mmio_start
+id|info-&gt;fix.mmio_start
 op_assign
 op_minus
 l_int|0x400
 suffix:semicolon
-id|info-&gt;fb_info.fix.mmio_len
+id|info-&gt;fix.mmio_len
 op_assign
 l_int|0x800
 suffix:semicolon
-id|info-&gt;fb_info.fix.accel
+id|info-&gt;fix.accel
 op_assign
 id|FB_ACCEL_ATI_MACH64VT
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* if (M64_HAS(GT)) */
 (brace
-id|info-&gt;fb_info.fix.mmio_start
+multiline_comment|/* if (M64_HAS(GT)) */
+id|info-&gt;fix.mmio_start
 op_assign
 op_minus
 l_int|0x400
 suffix:semicolon
-id|info-&gt;fb_info.fix.mmio_len
+id|info-&gt;fix.mmio_len
 op_assign
 l_int|0x800
 suffix:semicolon
-id|info-&gt;fb_info.fix.accel
+id|info-&gt;fix.accel
 op_assign
 id|FB_ACCEL_ATI_MACH64GT
 suffix:semicolon
@@ -9667,7 +9545,7 @@ c_func
 (paren
 l_string|&quot;%d%c %s, %s MHz XTAL, %d MHz PLL, %d Mhz MCLK&bslash;n&quot;
 comma
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_eq
 l_int|0x80000
 ques
@@ -9675,12 +9553,12 @@ c_cond
 l_int|512
 suffix:colon
 (paren
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_rshift
 l_int|20
 )paren
 comma
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_eq
 l_int|0x80000
 ques
@@ -9705,7 +9583,7 @@ id|mclk
 OL
 l_int|44
 )paren
-id|info-&gt;mem_refresh_rate
+id|par-&gt;mem_refresh_rate
 op_assign
 l_int|0
 suffix:semicolon
@@ -9718,7 +9596,7 @@ id|mclk
 OL
 l_int|50
 )paren
-id|info-&gt;mem_refresh_rate
+id|par-&gt;mem_refresh_rate
 op_assign
 l_int|1
 suffix:semicolon
@@ -9731,7 +9609,7 @@ id|mclk
 OL
 l_int|55
 )paren
-id|info-&gt;mem_refresh_rate
+id|par-&gt;mem_refresh_rate
 op_assign
 l_int|2
 suffix:semicolon
@@ -9744,7 +9622,7 @@ id|mclk
 OL
 l_int|66
 )paren
-id|info-&gt;mem_refresh_rate
+id|par-&gt;mem_refresh_rate
 op_assign
 l_int|3
 suffix:semicolon
@@ -9757,7 +9635,7 @@ id|mclk
 OL
 l_int|75
 )paren
-id|info-&gt;mem_refresh_rate
+id|par-&gt;mem_refresh_rate
 op_assign
 l_int|4
 suffix:semicolon
@@ -9770,7 +9648,7 @@ id|mclk
 OL
 l_int|80
 )paren
-id|info-&gt;mem_refresh_rate
+id|par-&gt;mem_refresh_rate
 op_assign
 l_int|5
 suffix:semicolon
@@ -9783,24 +9661,24 @@ id|mclk
 OL
 l_int|100
 )paren
-id|info-&gt;mem_refresh_rate
+id|par-&gt;mem_refresh_rate
 op_assign
 l_int|6
 suffix:semicolon
 multiline_comment|/* 110 = 80 Mhz - 100 Mhz */
 r_else
-id|info-&gt;mem_refresh_rate
+id|par-&gt;mem_refresh_rate
 op_assign
 l_int|7
 suffix:semicolon
 multiline_comment|/* 111 = 100 Mhz and above */
-id|info-&gt;pll_per
+id|par-&gt;pll_per
 op_assign
 l_int|1000000
 op_div
 id|pll
 suffix:semicolon
-id|info-&gt;mclk_per
+id|par-&gt;mclk_per
 op_assign
 l_int|1000000
 op_div
@@ -9821,7 +9699,6 @@ r_int
 id|i
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;BUS_CNTL DAC_CNTL MEM_CNTL EXT_MEM_CNTL CRTC_GEN_CNTL &quot;
 l_string|&quot;DSP_CONFIG DSP_ON_OFF&bslash;n&quot;
@@ -9833,7 +9710,7 @@ c_func
 (paren
 id|BUS_CNTL
 comma
-id|info
+id|par
 )paren
 comma
 id|aty_ld_le32
@@ -9841,7 +9718,7 @@ c_func
 (paren
 id|DAC_CNTL
 comma
-id|info
+id|par
 )paren
 comma
 id|aty_ld_le32
@@ -9849,7 +9726,7 @@ c_func
 (paren
 id|MEM_CNTL
 comma
-id|info
+id|par
 )paren
 comma
 id|aty_ld_le32
@@ -9857,7 +9734,7 @@ c_func
 (paren
 id|EXT_MEM_CNTL
 comma
-id|info
+id|par
 )paren
 comma
 id|aty_ld_le32
@@ -9865,7 +9742,7 @@ c_func
 (paren
 id|CRTC_GEN_CNTL
 comma
-id|info
+id|par
 )paren
 comma
 id|aty_ld_le32
@@ -9873,7 +9750,7 @@ c_func
 (paren
 id|DSP_CONFIG
 comma
-id|info
+id|par
 )paren
 comma
 id|aty_ld_le32
@@ -9881,7 +9758,7 @@ c_func
 (paren
 id|DSP_ON_OFF
 comma
-id|info
+id|par
 )paren
 )paren
 suffix:semicolon
@@ -9909,7 +9786,7 @@ c_func
 (paren
 id|i
 comma
-id|info
+id|par
 )paren
 )paren
 suffix:semicolon
@@ -9921,25 +9798,25 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n;     *  Last page of 8 MB (4 MB on ISA) aperture is MMIO&n;     *  FIXME: we should use the auxiliary aperture instead so we can access&n;     *  the full 8 MB of video RAM on 8 MB boards&n;     */
+multiline_comment|/*&n;&t; *  Last page of 8 MB (4 MB on ISA) aperture is MMIO&n;&t; *  FIXME: we should use the auxiliary aperture instead so we can access&n;&t; *  the full 8 MB of video RAM on 8 MB boards&n;&t; */
 r_if
 c_cond
 (paren
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_eq
 l_int|0x800000
 op_logical_or
 (paren
-id|info-&gt;bus_type
+id|par-&gt;bus_type
 op_eq
 id|ISA
 op_logical_and
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_eq
 l_int|0x400000
 )paren
 )paren
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_sub_assign
 id|GUI_RESERVE
 suffix:semicolon
@@ -9951,43 +9828,43 @@ c_func
 r_void
 op_star
 )paren
-id|info-&gt;fb_info.screen_base
+id|info-&gt;screen_base
 comma
 l_int|0
 comma
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 )paren
 suffix:semicolon
 id|disp
 op_assign
-id|info-&gt;fb_info.disp
+id|info-&gt;disp
 suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|info-&gt;fb_info.modename
+id|info-&gt;modename
 comma
 id|atyfb_name
 )paren
 suffix:semicolon
-id|info-&gt;fb_info.node
+id|info-&gt;node
 op_assign
 id|NODEV
 suffix:semicolon
-id|info-&gt;fb_info.fbops
+id|info-&gt;fbops
 op_assign
 op_amp
 id|atyfb_ops
 suffix:semicolon
-id|info-&gt;fb_info.disp
+id|info-&gt;disp
 op_assign
 id|disp
 suffix:semicolon
-id|info-&gt;fb_info.pseudo_palette
+id|info-&gt;pseudo_palette
 op_assign
 id|pseudo_palette
 suffix:semicolon
-id|info-&gt;fb_info.currcon
+id|info-&gt;currcon
 op_assign
 op_minus
 l_int|1
@@ -9995,25 +9872,25 @@ suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|info-&gt;fb_info.fontname
+id|info-&gt;fontname
 comma
 id|fontname
 )paren
 suffix:semicolon
-id|info-&gt;fb_info.changevar
+id|info-&gt;changevar
 op_assign
 l_int|NULL
 suffix:semicolon
-id|info-&gt;fb_info.switch_con
+id|info-&gt;switch_con
 op_assign
 id|gen_switch
 suffix:semicolon
-id|info-&gt;fb_info.updatevar
+id|info-&gt;updatevar
 op_assign
 op_amp
 id|atyfbcon_updatevar
 suffix:semicolon
-id|info-&gt;fb_info.flags
+id|info-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
@@ -10045,7 +9922,7 @@ c_func
 (paren
 id|POWER_MANAGEMENT
 comma
-id|info
+id|par
 )paren
 op_or
 (paren
@@ -10054,7 +9931,7 @@ op_or
 id|TRISTATE_MEM_EN
 )paren
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 )brace
@@ -10078,13 +9955,13 @@ comma
 l_string|&quot;ati&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_PMAC_BACKLIGHT */
 macro_line|#ifdef MODULE
 id|var
 op_assign
 id|default_var
 suffix:semicolon
-macro_line|#else /* !MODULE */
+macro_line|#else&t;&t;&t;&t;/* !MODULE */
 id|memset
 c_func
 (paren
@@ -10108,7 +9985,7 @@ op_eq
 id|_MACH_Pmac
 )paren
 (brace
-multiline_comment|/*&n;&t;     *  FIXME: The NVRAM stuff should be put in a Mac-specific file, as it&n;&t;     *         applies to all Mac video cards&n;&t;     */
+multiline_comment|/*&n;&t;&t; *  FIXME: The NVRAM stuff should be put in a Mac-specific file, as it&n;&t;&t; *         applies to all Mac video cards&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10120,13 +9997,11 @@ c_cond
 (paren
 op_logical_neg
 id|mac_find_mode
-c_func
 (paren
 op_amp
 id|var
 comma
-op_amp
-id|info-&gt;fb_info
+id|info
 comma
 id|mode_option
 comma
@@ -10215,7 +10090,6 @@ r_if
 c_cond
 (paren
 id|machine_is_compatible
-c_func
 (paren
 l_string|&quot;PowerBook2,1&quot;
 )paren
@@ -10301,7 +10175,6 @@ r_if
 c_cond
 (paren
 id|mac_vmode_to_var
-c_func
 (paren
 id|default_vmode
 comma
@@ -10323,13 +10196,11 @@ c_cond
 (paren
 op_logical_neg
 id|fb_find_mode
-c_func
 (paren
 op_amp
 id|var
 comma
-op_amp
-id|info-&gt;fb_info
+id|info
 comma
 id|mode_option
 comma
@@ -10346,7 +10217,7 @@ id|var
 op_assign
 id|default_var
 suffix:semicolon
-macro_line|#else /* !CONFIG_PPC */
+macro_line|#else&t;&t;&t;&t;/* !CONFIG_PPC */
 macro_line|#ifdef __sparc__
 r_if
 c_cond
@@ -10359,13 +10230,11 @@ c_cond
 (paren
 op_logical_neg
 id|fb_find_mode
-c_func
 (paren
 op_amp
 id|var
 comma
-op_amp
-id|info-&gt;fb_info
+id|info
 comma
 id|mode_option
 comma
@@ -10394,13 +10263,11 @@ c_cond
 (paren
 op_logical_neg
 id|fb_find_mode
-c_func
 (paren
 op_amp
 id|var
 comma
-op_amp
-id|info-&gt;fb_info
+id|info
 comma
 id|mode_option
 comma
@@ -10417,9 +10284,9 @@ id|var
 op_assign
 id|default_var
 suffix:semicolon
-macro_line|#endif /* !__sparc__ */
-macro_line|#endif /* !CONFIG_PPC */
-macro_line|#endif /* !MODULE */
+macro_line|#endif&t;&t;&t;&t;/* !__sparc__ */
+macro_line|#endif&t;&t;&t;&t;/* !CONFIG_PPC */
+macro_line|#endif&t;&t;&t;&t;/* !MODULE */
 r_if
 c_cond
 (paren
@@ -10447,7 +10314,7 @@ id|u32
 id|vram
 op_assign
 (paren
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 op_minus
 (paren
 id|PAGE_SIZE
@@ -10491,8 +10358,7 @@ c_func
 op_amp
 id|var
 comma
-op_amp
-id|info-&gt;default_par
+id|par
 comma
 id|info
 )paren
@@ -10512,8 +10378,7 @@ macro_line|#ifdef __sparc__
 id|atyfb_save_palette
 c_func
 (paren
-op_amp
-id|info-&gt;fb_info
+id|info
 comma
 l_int|0
 )paren
@@ -10532,7 +10397,7 @@ id|INTEGRATED
 )paren
 )paren
 (brace
-id|info-&gt;cursor
+id|par-&gt;cursor
 op_assign
 id|aty_init_cursor
 c_func
@@ -10543,21 +10408,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;cursor
+id|par-&gt;cursor
 )paren
 (brace
-id|info-&gt;dispsw.cursor
-op_assign
-id|atyfb_cursor
-suffix:semicolon
-id|info-&gt;dispsw.set_font
-op_assign
-id|atyfb_set_font
-suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;disp-&gt;dispsw.cursor = atyfb_cursor;&n;&t;&t;&t;disp-&gt;dispsw.set_font = atyfb_set_font;&n;&t;&t;&t;*/
 )brace
 )brace
-macro_line|#endif /* CONFIG_FB_ATY_CT */
-id|info-&gt;fb_info.var
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_FB_ATY_CT */
+id|info-&gt;var
 op_assign
 id|var
 suffix:semicolon
@@ -10565,7 +10423,7 @@ id|fb_alloc_cmap
 c_func
 (paren
 op_amp
-id|info-&gt;fb_info.cmap
+id|info-&gt;cmap
 comma
 l_int|256
 comma
@@ -10581,8 +10439,7 @@ comma
 op_minus
 l_int|1
 comma
-op_amp
-id|info-&gt;fb_info
+id|info
 )paren
 suffix:semicolon
 r_if
@@ -10591,18 +10448,13 @@ c_cond
 id|register_framebuffer
 c_func
 (paren
-op_amp
-id|info-&gt;fb_info
+id|info
 )paren
 OL
 l_int|0
 )paren
 r_return
 l_int|0
-suffix:semicolon
-id|info-&gt;next
-op_assign
-id|fb_list
 suffix:semicolon
 id|fb_list
 op_assign
@@ -10616,7 +10468,7 @@ comma
 id|GET_FB_IDX
 c_func
 (paren
-id|info-&gt;fb_info.node
+id|info-&gt;node
 )paren
 comma
 id|atyfb_name
@@ -10646,7 +10498,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 suffix:semicolon
@@ -10722,6 +10574,11 @@ id|u16
 id|tmp
 suffix:semicolon
 macro_line|#endif
+r_struct
+id|atyfb_par
+op_star
+id|default_par
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -10815,7 +10672,7 @@ c_func
 r_sizeof
 (paren
 r_struct
-id|fb_info_aty
+id|fb_info
 )paren
 op_plus
 r_sizeof
@@ -10835,9 +10692,8 @@ id|info
 )paren
 (brace
 id|printk
-c_func
 (paren
-l_string|&quot;atyfb_init: can&squot;t alloc fb_info_aty&bslash;n&quot;
+l_string|&quot;atyfb_init: can&squot;t alloc fb_info&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -10855,7 +10711,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|fb_info_aty
+id|fb_info
 )paren
 op_plus
 r_sizeof
@@ -10865,7 +10721,58 @@ id|display
 )paren
 )paren
 suffix:semicolon
-id|info-&gt;fb_info.disp
+id|default_par
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|atyfb_par
+)paren
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|default_par
+)paren
+(brace
+id|printk
+(paren
+l_string|&quot;atyfb_init: can&squot;t alloc atyfb_par&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENXIO
+suffix:semicolon
+)brace
+id|memset
+c_func
+(paren
+id|default_par
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|atyfb_par
+)paren
+)paren
+suffix:semicolon
+id|info-&gt;disp
 op_assign
 (paren
 r_struct
@@ -10877,6 +10784,10 @@ id|info
 op_plus
 l_int|1
 )paren
+suffix:semicolon
+id|info-&gt;par
+op_assign
+id|default_par
 suffix:semicolon
 id|rp
 op_assign
@@ -10930,7 +10841,6 @@ c_cond
 (paren
 op_logical_neg
 id|request_mem_region
-c_func
 (paren
 id|res_start
 comma
@@ -10942,21 +10852,21 @@ l_string|&quot;atyfb&quot;
 r_continue
 suffix:semicolon
 macro_line|#ifdef __sparc__
-multiline_comment|/*&n;&t;     * Map memory-mapped registers.&n;&t;     */
-id|info-&gt;ati_regbase
+multiline_comment|/*&n;&t;&t;&t; * Map memory-mapped registers.&n;&t;&t;&t; */
+id|par-&gt;ati_regbase
 op_assign
 id|addr
 op_plus
 l_int|0x7ffc00UL
 suffix:semicolon
-id|info-&gt;fb_info.fix.mmio_start
+id|info-&gt;fix.mmio_start
 op_assign
 id|addr
 op_plus
 l_int|0x7ffc00UL
 suffix:semicolon
-multiline_comment|/*&n;&t;     * Map in big-endian aperture.&n;&t;     */
-id|info-&gt;fb_info.screen_base
+multiline_comment|/*&n;&t;&t;&t; * Map in big-endian aperture.&n;&t;&t;&t; */
+id|info-&gt;screen_base
 op_assign
 (paren
 r_int
@@ -10966,13 +10876,13 @@ id|addr
 op_plus
 l_int|0x800000UL
 suffix:semicolon
-id|info-&gt;fb_info.fix.smem_start
+id|info-&gt;fix.smem_start
 op_assign
 id|addr
 op_plus
 l_int|0x800000UL
 suffix:semicolon
-multiline_comment|/*&n;&t;     * Figure mmap addresses from PCI config space.&n;&t;     * Split Framebuffer in big- and little-endian halfs.&n;&t;     */
+multiline_comment|/*&n;&t;&t;&t; * Figure mmap addresses from PCI config space.&n;&t;&t;&t; * Split Framebuffer in big- and little-endian halfs.&n;&t;&t;&t; */
 r_for
 c_loop
 (paren
@@ -11002,7 +10912,7 @@ id|i
 op_plus
 l_int|4
 suffix:semicolon
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 op_assign
 id|kmalloc
 c_func
@@ -11012,7 +10922,7 @@ op_star
 r_sizeof
 (paren
 op_star
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 )paren
 comma
 id|GFP_ATOMIC
@@ -11022,11 +10932,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;atyfb_init: can&squot;t alloc mmap_map&bslash;n&quot;
 )paren
@@ -11053,7 +10962,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 comma
 l_int|0
 comma
@@ -11062,7 +10971,7 @@ op_star
 r_sizeof
 (paren
 op_star
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 )paren
 )paren
 suffix:semicolon
@@ -11166,7 +11075,7 @@ op_and_assign
 op_complement
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Map the framebuffer a second time, this time without&n;&t;&t; * the braindead _PAGE_IE setting. This is used by the&n;&t;&t; * fixed Xserver, but we need to maintain the old mapping&n;&t;&t; * to stay compatible with older ones...&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Map the framebuffer a second time, this time without&n;&t;&t;&t;&t; * the braindead _PAGE_IE setting. This is used by the&n;&t;&t;&t;&t; * fixed Xserver, but we need to maintain the old mapping&n;&t;&t;&t;&t; * to stay compatible with older ones...&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -11175,7 +11084,7 @@ op_eq
 id|addr
 )paren
 (brace
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 (braket
 id|j
 )braket
@@ -11190,7 +11099,7 @@ l_int|0x10000000
 op_amp
 id|PAGE_MASK
 suffix:semicolon
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 (braket
 id|j
 )braket
@@ -11201,7 +11110,7 @@ id|base
 op_amp
 id|PAGE_MASK
 suffix:semicolon
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 (braket
 id|j
 )braket
@@ -11217,7 +11126,7 @@ id|PAGE_MASK
 op_amp
 id|PAGE_MASK
 suffix:semicolon
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 (braket
 id|j
 )braket
@@ -11226,7 +11135,7 @@ id|prot_mask
 op_assign
 id|_PAGE_CACHE
 suffix:semicolon
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 (braket
 id|j
 )braket
@@ -11239,7 +11148,7 @@ id|j
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Here comes the old framebuffer mapping with _PAGE_IE&n;&t;&t; * set for the big endian half of the framebuffer...&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Here comes the old framebuffer mapping with _PAGE_IE&n;&t;&t;&t;&t; * set for the big endian half of the framebuffer...&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -11248,7 +11157,7 @@ op_eq
 id|addr
 )paren
 (brace
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 (braket
 id|j
 )braket
@@ -11263,7 +11172,7 @@ l_int|0x800000
 op_amp
 id|PAGE_MASK
 suffix:semicolon
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 (braket
 id|j
 )braket
@@ -11278,7 +11187,7 @@ l_int|0x800000
 op_amp
 id|PAGE_MASK
 suffix:semicolon
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 (braket
 id|j
 )braket
@@ -11287,7 +11196,7 @@ id|size
 op_assign
 l_int|0x800000
 suffix:semicolon
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 (braket
 id|j
 )braket
@@ -11296,7 +11205,7 @@ id|prot_mask
 op_assign
 id|_PAGE_CACHE
 suffix:semicolon
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 (braket
 id|j
 )braket
@@ -11315,7 +11224,7 @@ id|j
 op_increment
 suffix:semicolon
 )brace
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 (braket
 id|j
 )braket
@@ -11326,7 +11235,7 @@ id|pbase
 op_amp
 id|PAGE_MASK
 suffix:semicolon
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 (braket
 id|j
 )braket
@@ -11337,7 +11246,7 @@ id|base
 op_amp
 id|PAGE_MASK
 suffix:semicolon
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 (braket
 id|j
 )braket
@@ -11353,7 +11262,7 @@ id|PAGE_MASK
 op_amp
 id|PAGE_MASK
 suffix:semicolon
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 (braket
 id|j
 )braket
@@ -11362,7 +11271,7 @@ id|prot_mask
 op_assign
 id|_PAGE_CACHE
 suffix:semicolon
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 (braket
 id|j
 )braket
@@ -11383,7 +11292,7 @@ op_ne
 id|XL_CHIP_ID
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;     * Fix PROMs idea of MEM_CNTL settings...&n;&t;&t;     */
+multiline_comment|/*&n;&t;&t;&t;&t; * Fix PROMs idea of MEM_CNTL settings...&n;&t;&t;&t;&t; */
 id|mem
 op_assign
 id|aty_ld_le32
@@ -11519,7 +11428,6 @@ c_cond
 (paren
 (paren
 id|aty_ld_le32
-c_func
 (paren
 id|CONFIG_STAT0
 comma
@@ -11558,7 +11466,7 @@ id|info
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;     * If this is the console device, we will set default video&n;&t;     * settings to what the PROM left us with.&n;&t;     */
+multiline_comment|/*&n;&t;&t;&t; * If this is the console device, we will set default video&n;&t;&t;&t; * settings to what the PROM left us with.&n;&t;&t;&t; */
 id|node
 op_assign
 id|prom_getchild
@@ -11805,7 +11713,7 @@ id|var-&gt;vsync_len
 op_plus
 id|var-&gt;upper_margin
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Read the PLL to figure actual Refresh Rate.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Read the PLL to figure actual Refresh Rate.&n;&t;&t;&t;&t; */
 id|clock_cntl
 op_assign
 id|aty_ld_8
@@ -11844,7 +11752,7 @@ comma
 id|info
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * PLL Reference Divider M:&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * PLL Reference Divider M:&n;&t;&t;&t;&t; */
 id|M
 op_assign
 id|pll_regs
@@ -11852,7 +11760,7 @@ id|pll_regs
 l_int|2
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * PLL Feedback Divider N (Dependant on CLOCK_CNTL):&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * PLL Feedback Divider N (Dependant on CLOCK_CNTL):&n;&t;&t;&t;&t; */
 id|N
 op_assign
 id|pll_regs
@@ -11866,7 +11774,7 @@ l_int|3
 )paren
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * PLL Post Divider P (Dependant on CLOCK_CNTL):&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * PLL Post Divider P (Dependant on CLOCK_CNTL):&n;&t;&t;&t;&t; */
 id|P
 op_assign
 l_int|1
@@ -11888,14 +11796,14 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * PLL Divider Q:&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * PLL Divider Q:&n;&t;&t;&t;&t; */
 id|Q
 op_assign
 id|N
 op_div
 id|P
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Target Frequency:&n;&t;&t; *&n;&t;&t; *      T * M&n;&t;&t; * Q = -------&n;&t;&t; *      2 * R&n;&t;&t; *&n;&t;&t; * where R is XTALIN (= 14318 or 29498 kHz).&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Target Frequency:&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; *      T * M&n;&t;&t;&t;&t; * Q = -------&n;&t;&t;&t;&t; *      2 * R&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * where R is XTALIN (= 14318 or 29498 kHz).&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -11929,14 +11837,14 @@ op_div
 id|T
 suffix:semicolon
 )brace
-macro_line|#else /* __sparc__ */
-id|info-&gt;fb_info.fix.mmio_start
+macro_line|#else&t;&t;&t;&t;/* __sparc__ */
+id|info-&gt;fix.mmio_start
 op_assign
 l_int|0x7ff000
 op_plus
 id|addr
 suffix:semicolon
-id|info-&gt;ati_regbase
+id|default_par-&gt;ati_regbase
 op_assign
 (paren
 r_int
@@ -11945,7 +11853,7 @@ r_int
 id|ioremap
 c_func
 (paren
-id|info-&gt;fb_info.fix.mmio_start
+id|info-&gt;fix.mmio_start
 comma
 l_int|0x1000
 )paren
@@ -11954,9 +11862,15 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|info-&gt;ati_regbase
+id|default_par-&gt;ati_regbase
 )paren
 (brace
+id|kfree
+c_func
+(paren
+id|default_par
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -11976,15 +11890,15 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|info-&gt;fb_info.fix.mmio_start
+id|info-&gt;fix.mmio_start
 op_add_assign
 l_int|0xc00
 suffix:semicolon
-id|info-&gt;ati_regbase
+id|default_par-&gt;ati_regbase
 op_add_assign
 l_int|0xc00
 suffix:semicolon
-multiline_comment|/*&n;&t;     * Enable memory-space accesses using config-space&n;&t;     * command register.&n;&t;     */
+multiline_comment|/*&n;&t;&t;&t; * Enable memory-space accesses using config-space&n;&t;&t;&t; * command register.&n;&t;&t;&t; */
 id|pci_read_config_word
 c_func
 (paren
@@ -12030,11 +11944,11 @@ l_int|0x800000
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Map in frame buffer */
-id|info-&gt;fb_info.fix.smem_start
+id|info-&gt;fix.smem_start
 op_assign
 id|addr
 suffix:semicolon
-id|info-&gt;fb_info.screen_base
+id|info-&gt;screen_base
 op_assign
 (paren
 r_char
@@ -12052,7 +11966,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|info-&gt;fb_info.screen_base
+id|info-&gt;screen_base
 )paren
 (brace
 id|kfree
@@ -12074,7 +11988,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-macro_line|#endif /* __sparc__ */
+macro_line|#endif&t;&t;&t;&t;/* __sparc__ */
 r_if
 c_cond
 (paren
@@ -12088,17 +12002,19 @@ l_string|&quot;PCI&quot;
 )paren
 )paren
 (brace
+macro_line|#ifdef __sparc__&t;
 r_if
 c_cond
 (paren
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 )paren
 id|kfree
 c_func
 (paren
-id|info-&gt;mmap_map
+id|default_par-&gt;mmap_map
 )paren
 suffix:semicolon
+macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -12129,8 +12045,8 @@ id|prom_palette
 op_assign
 id|atyfb_palette
 suffix:semicolon
-multiline_comment|/*&n;&t;     * Add /dev/fb mmap values.&n;&t;     */
-id|info-&gt;mmap_map
+multiline_comment|/*&n;&t;&t;&t; * Add /dev/fb mmap values.&n;&t;&t;&t; */
+id|par-&gt;mmap_map
 (braket
 l_int|0
 )braket
@@ -12139,27 +12055,27 @@ id|voff
 op_assign
 l_int|0x8000000000000000UL
 suffix:semicolon
-id|info-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 l_int|0
 )braket
 dot
 id|poff
 op_assign
-id|info-&gt;fb_info.screen_base
+id|info-&gt;screen_base
 op_amp
 id|PAGE_MASK
 suffix:semicolon
-id|info-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 l_int|0
 )braket
 dot
 id|size
 op_assign
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 suffix:semicolon
-id|info-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 l_int|0
 )braket
@@ -12168,7 +12084,7 @@ id|prot_mask
 op_assign
 id|_PAGE_CACHE
 suffix:semicolon
-id|info-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 l_int|0
 )braket
@@ -12177,34 +12093,34 @@ id|prot_flag
 op_assign
 id|_PAGE_E
 suffix:semicolon
-id|info-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 l_int|1
 )braket
 dot
 id|voff
 op_assign
-id|info-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 l_int|0
 )braket
 dot
 id|voff
 op_plus
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 suffix:semicolon
-id|info-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 l_int|1
 )braket
 dot
 id|poff
 op_assign
-id|info-&gt;ati_regbase
+id|par-&gt;ati_regbase
 op_amp
 id|PAGE_MASK
 suffix:semicolon
-id|info-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 l_int|1
 )braket
@@ -12213,7 +12129,7 @@ id|size
 op_assign
 id|PAGE_SIZE
 suffix:semicolon
-id|info-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 l_int|1
 )braket
@@ -12222,7 +12138,7 @@ id|prot_mask
 op_assign
 id|_PAGE_CACHE
 suffix:semicolon
-id|info-&gt;mmap_map
+id|par-&gt;mmap_map
 (braket
 l_int|1
 )braket
@@ -12231,7 +12147,7 @@ id|prot_flag
 op_assign
 id|_PAGE_E
 suffix:semicolon
-macro_line|#endif /* __sparc__ */
+macro_line|#endif&t;&t;&t;&t;/* __sparc__ */
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 r_if
 c_cond
@@ -12241,16 +12157,12 @@ op_eq
 l_int|NULL
 )paren
 id|pmu_register_sleep_notifier
-c_func
 (paren
 op_amp
 id|aty_sleep_notifier
 )paren
 suffix:semicolon
-id|info-&gt;next
-op_assign
-id|first_display
-suffix:semicolon
+multiline_comment|/* FIXME info-&gt;next = first_display; */
 id|first_display
 op_assign
 id|info
@@ -12266,7 +12178,7 @@ r_int
 id|m64_num
 suffix:semicolon
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 suffix:semicolon
@@ -12308,7 +12220,6 @@ id|m64_num
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot; phys_*[%d] parameters not set =&gt; returning early. &bslash;n&quot;
 comma
@@ -12326,7 +12237,7 @@ c_func
 r_sizeof
 (paren
 r_struct
-id|fb_info_aty
+id|fb_info
 )paren
 comma
 id|GFP_ATOMIC
@@ -12342,7 +12253,7 @@ id|info
 id|printk
 c_func
 (paren
-l_string|&quot;atyfb_init: can&squot;t alloc fb_info_aty&bslash;n&quot;
+l_string|&quot;atyfb_init: can&squot;t alloc fb_info&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -12360,12 +12271,12 @@ comma
 r_sizeof
 (paren
 r_struct
-id|fb_info_aty
+id|fb_info
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Map the video memory (physical address given) to somewhere in the&n;&t; *  kernel address space.&n;&t; */
-id|info-&gt;fb_info.screen_base
+multiline_comment|/*&n;&t;&t; *  Map the video memory (physical address given) to somewhere in the&n;&t;&t; *  kernel address space.&n;&t;&t; */
+id|info-&gt;screen_base
 op_assign
 id|ioremap
 c_func
@@ -12381,12 +12292,12 @@ id|m64_num
 )braket
 )paren
 suffix:semicolon
-id|info-&gt;fb_info.fix.smem_start
+id|info-&gt;fix.smem_start
 op_assign
-id|info-&gt;fb_info.screen_base
+id|info-&gt;screen_base
 suffix:semicolon
 multiline_comment|/* Fake! */
-id|info-&gt;ati_regbase
+id|par-&gt;ati_regbase
 op_assign
 id|ioremap
 c_func
@@ -12401,9 +12312,9 @@ l_int|0x10000
 op_plus
 l_int|0xFC00ul
 suffix:semicolon
-id|info-&gt;fb_info.fix.mmio_start
+id|info-&gt;fix.mmio_start
 op_assign
-id|info-&gt;ati_regbase
+id|par-&gt;ati_regbase
 suffix:semicolon
 multiline_comment|/* Fake! */
 id|aty_st_le32
@@ -12437,7 +12348,7 @@ l_int|0x003F
 r_case
 l_int|0x12
 suffix:colon
-id|info-&gt;clk_wr_offset
+id|par-&gt;clk_wr_offset
 op_assign
 l_int|3
 suffix:semicolon
@@ -12447,7 +12358,7 @@ suffix:semicolon
 r_case
 l_int|0x34
 suffix:colon
-id|info-&gt;clk_wr_offset
+id|par-&gt;clk_wr_offset
 op_assign
 l_int|2
 suffix:semicolon
@@ -12457,7 +12368,7 @@ suffix:semicolon
 r_case
 l_int|0x16
 suffix:colon
-id|info-&gt;clk_wr_offset
+id|par-&gt;clk_wr_offset
 op_assign
 l_int|1
 suffix:semicolon
@@ -12467,7 +12378,7 @@ suffix:semicolon
 r_case
 l_int|0x38
 suffix:colon
-id|info-&gt;clk_wr_offset
+id|par-&gt;clk_wr_offset
 op_assign
 l_int|0
 suffix:semicolon
@@ -12501,7 +12412,7 @@ id|ENXIO
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_ATARI */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_ATARI */
 r_return
 l_int|0
 suffix:semicolon
@@ -12896,7 +12807,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_ATARI
-multiline_comment|/*&n;&t; * Why do we need this silly Mach64 argument?&n;&t; * We are already here because of mach64= so its redundant.&n;&t; */
+multiline_comment|/*&n;&t;&t; * Why do we need this silly Mach64 argument?&n;&t;&t; * We are already here because of mach64= so its redundant.&n;&t;&t; */
 r_else
 r_if
 c_cond
@@ -12974,7 +12885,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* !MODULE */
+macro_line|#endif&t;&t;&t;&t;/* !MODULE */
 macro_line|#ifdef CONFIG_ATARI
 DECL|function|store_video_par
 r_static
@@ -13170,8 +13081,8 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ATARI */
-multiline_comment|/*&n;#ifdef CONFIG_FB_ATY_CT&n;   * Erase HW Cursor *&n;    if (info-&gt;cursor &amp;&amp; (fb-&gt;currcon &gt;= 0))&n;&t;atyfb_cursor(&amp;fb_display[fb-&gt;currcon], CM_ERASE,&n;&t;&t;     info-&gt;cursor-&gt;pos.x, info-&gt;cursor-&gt;pos.y);&n;#endif * CONFIG_FB_ATY_CT *&n;&n;#ifdef CONFIG_FB_ATY_CT&n;    * Install hw cursor *&n;    if (info-&gt;cursor) {&n;&t;aty_set_cursor_color(info);&n;&t;aty_set_cursor_shape(info);&n;    }&n;#endif * CONFIG_FB_ATY_CT */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_ATARI */
+multiline_comment|/*&n;#ifdef CONFIG_FB_ATY_CT&n;   * Erase HW Cursor *&n;    if (par-&gt;cursor &amp;&amp; (info-&gt;currcon &gt;= 0))&n;&t;atyfb_cursor(&amp;fb_display[par-&gt;currcon], CM_ERASE,&n;&t;&t;     par-&gt;cursor-&gt;pos.x, par-&gt;cursor-&gt;pos.y);&n;#endif * CONFIG_FB_ATY_CT *&n;&n;#ifdef CONFIG_FB_ATY_CT&n;    * Install hw cursor *&n;    if (par-&gt;cursor) {&n;&t;aty_set_cursor_color(info);&n;&t;aty_set_cursor_shape(info);&n;    }&n;#endif * CONFIG_FB_ATY_CT */
 multiline_comment|/*&n;     *  Blank the display.&n;     */
 DECL|function|atyfb_blank
 r_static
@@ -13185,20 +13096,20 @@ comma
 r_struct
 id|fb_info
 op_star
-id|fb
+id|info
 )paren
 (brace
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|info
+id|par
 op_assign
 (paren
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
 )paren
-id|fb
+id|info-&gt;par
 suffix:semicolon
 id|u8
 id|gen_cntl
@@ -13221,7 +13132,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_PMAC_BACKLIGHT */
 id|gen_cntl
 op_assign
 id|aty_ld_8
@@ -13229,7 +13140,7 @@ c_func
 (paren
 id|CRTC_GEN_CNTL
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 r_if
@@ -13299,7 +13210,7 @@ id|CRTC_GEN_CNTL
 comma
 id|gen_cntl
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
@@ -13321,7 +13232,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_PMAC_BACKLIGHT */
 r_return
 l_int|0
 suffix:semicolon
@@ -13351,20 +13262,20 @@ comma
 r_struct
 id|fb_info
 op_star
-id|fb
+id|info
 )paren
 (brace
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|info
+id|par
 op_assign
 (paren
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
 )paren
-id|fb
+id|info-&gt;par
 suffix:semicolon
 r_int
 id|i
@@ -13400,7 +13311,7 @@ c_func
 (paren
 id|DAC_CNTL
 comma
-id|info
+id|par
 )paren
 op_amp
 l_int|0xfc
@@ -13418,7 +13329,7 @@ id|i
 op_or_assign
 l_int|0x2
 suffix:semicolon
-multiline_comment|/*DAC_CNTL|0x2 turns off the extra brightness for gt*/
+multiline_comment|/*DAC_CNTL|0x2 turns off the extra brightness for gt */
 id|aty_st_8
 c_func
 (paren
@@ -13426,7 +13337,7 @@ id|DAC_CNTL
 comma
 id|i
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -13436,7 +13347,7 @@ id|DAC_MASK
 comma
 l_int|0xff
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|scale
@@ -13448,7 +13359,7 @@ c_func
 id|INTEGRATED
 )paren
 op_logical_and
-id|info-&gt;current_par.crtc.bpp
+id|par-&gt;crtc.bpp
 op_eq
 l_int|16
 )paren
@@ -13466,7 +13377,7 @@ op_lshift
 id|scale
 comma
 op_amp
-id|info-&gt;aty_cmap_regs-&gt;windex
+id|par-&gt;aty_cmap_regs-&gt;windex
 )paren
 suffix:semicolon
 id|writeb
@@ -13475,7 +13386,7 @@ c_func
 id|red
 comma
 op_amp
-id|info-&gt;aty_cmap_regs-&gt;lut
+id|par-&gt;aty_cmap_regs-&gt;lut
 )paren
 suffix:semicolon
 id|writeb
@@ -13484,7 +13395,7 @@ c_func
 id|green
 comma
 op_amp
-id|info-&gt;aty_cmap_regs-&gt;lut
+id|par-&gt;aty_cmap_regs-&gt;lut
 )paren
 suffix:semicolon
 id|writeb
@@ -13493,7 +13404,7 @@ c_func
 id|blue
 comma
 op_amp
-id|info-&gt;aty_cmap_regs-&gt;lut
+id|par-&gt;aty_cmap_regs-&gt;lut
 )paren
 suffix:semicolon
 r_if
@@ -13506,10 +13417,9 @@ l_int|16
 r_switch
 c_cond
 (paren
-id|info-&gt;current_par.crtc.bpp
+id|par-&gt;crtc.bpp
 )paren
 (brace
-macro_line|#ifdef FBCON_HAS_CFB16
 r_case
 l_int|16
 suffix:colon
@@ -13519,7 +13429,7 @@ id|u16
 op_star
 )paren
 (paren
-id|info-&gt;fb_info.pseudo_palette
+id|info-&gt;pseudo_palette
 )paren
 )paren
 (braket
@@ -13542,8 +13452,6 @@ id|regno
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef FBCON_HAS_CFB24
 r_case
 l_int|24
 suffix:colon
@@ -13553,7 +13461,7 @@ id|u32
 op_star
 )paren
 (paren
-id|info-&gt;fb_info.pseudo_palette
+id|info-&gt;pseudo_palette
 )paren
 )paren
 (braket
@@ -13576,8 +13484,6 @@ id|regno
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef FBCON_HAS_CFB32
 r_case
 l_int|32
 suffix:colon
@@ -13597,7 +13503,7 @@ id|u32
 op_star
 )paren
 (paren
-id|info-&gt;fb_info.pseudo_palette
+id|info-&gt;pseudo_palette
 )paren
 )paren
 (braket
@@ -13614,7 +13520,6 @@ id|i
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 l_int|0
@@ -13633,28 +13538,20 @@ comma
 r_struct
 id|fb_info
 op_star
-id|fb
+id|info
 )paren
 (brace
-r_struct
-id|fb_info_aty
-op_star
-id|info
-op_assign
-(paren
-r_struct
-id|fb_info_aty
-op_star
-)paren
-id|fb
-suffix:semicolon
 r_struct
 id|atyfb_par
 op_star
 id|par
 op_assign
-op_amp
-id|info-&gt;current_par
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
 suffix:semicolon
 r_struct
 id|display
@@ -13746,15 +13643,28 @@ id|sy
 )paren
 )paren
 (brace
-id|u32
-id|xres
-comma
-id|xoffset
+r_struct
+id|fb_fillrect
+id|area
 suffix:semicolon
-id|u32
-id|bgx
+id|area.dx
+op_assign
+id|fb_display
+(braket
+id|con
+)braket
+dot
+id|var.xoffset
 suffix:semicolon
-id|xres
+id|area.dy
+op_assign
+id|sy
+suffix:semicolon
+id|area.height
+op_assign
+id|height
+suffix:semicolon
+id|area.width
 op_assign
 (paren
 (paren
@@ -13772,16 +13682,7 @@ l_int|1
 op_star
 l_int|8
 suffix:semicolon
-id|xoffset
-op_assign
-id|fb_display
-(braket
-id|con
-)braket
-dot
-id|var.xoffset
-suffix:semicolon
-id|bgx
+id|area.color
 op_assign
 id|attr_bgcol_ec
 c_func
@@ -13791,21 +13692,9 @@ comma
 id|conp
 )paren
 suffix:semicolon
-id|bgx
-op_or_assign
-(paren
-id|bgx
-op_lshift
-l_int|8
-)paren
-suffix:semicolon
-id|bgx
-op_or_assign
-(paren
-id|bgx
-op_lshift
-l_int|16
-)paren
+id|area.rop
+op_assign
+id|ROP_COPY
 suffix:semicolon
 r_if
 c_cond
@@ -13822,7 +13711,7 @@ c_func
 (paren
 l_int|1
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -13836,24 +13725,17 @@ id|height
 op_minus
 l_int|1
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 )brace
-id|aty_rectfill
+id|atyfb_fillrect
 c_func
 (paren
-id|xoffset
-comma
-id|sy
-comma
-id|xres
-comma
-id|height
-comma
-id|bgx
-comma
 id|info
+comma
+op_amp
+id|area
 )paren
 suffix:semicolon
 )brace
@@ -13861,7 +13743,7 @@ macro_line|#ifdef CONFIG_FB_ATY_CT
 r_if
 c_cond
 (paren
-id|info-&gt;cursor
+id|par-&gt;cursor
 op_logical_and
 (paren
 id|yoffset
@@ -13878,21 +13760,20 @@ id|p
 comma
 id|CM_ERASE
 comma
-id|info-&gt;cursor-&gt;pos.x
+id|par-&gt;cursor-&gt;pos.x
 comma
-id|info-&gt;cursor-&gt;pos.y
+id|par-&gt;cursor-&gt;pos.y
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_FB_ATY_CT */
-id|info-&gt;current_par.crtc.yoffset
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_FB_ATY_CT */
+id|par-&gt;crtc.yoffset
 op_assign
 id|yoffset
 suffix:semicolon
 id|set_off_pitch
 c_func
 (paren
-op_amp
-id|info-&gt;current_par
+id|par
 comma
 id|info
 )paren
@@ -13934,35 +13815,36 @@ c_func
 r_void
 )paren
 (brace
-r_while
-c_loop
-(paren
-id|fb_list
-)paren
-(brace
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 op_assign
 id|fb_list
 suffix:semicolon
-id|fb_list
+r_struct
+id|atyfb_par
+op_star
+id|par
 op_assign
-id|info-&gt;next
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
 suffix:semicolon
 id|unregister_framebuffer
 c_func
 (paren
-op_amp
-id|info-&gt;fb_info
+id|info
 )paren
 suffix:semicolon
 macro_line|#ifndef __sparc__
 r_if
 c_cond
 (paren
-id|info-&gt;ati_regbase
+id|par-&gt;ati_regbase
 )paren
 id|iounmap
 c_func
@@ -13971,13 +13853,13 @@ c_func
 r_void
 op_star
 )paren
-id|info-&gt;ati_regbase
+id|par-&gt;ati_regbase
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;fb_info.screen_base
+id|info-&gt;screen_base
 )paren
 id|iounmap
 c_func
@@ -13986,7 +13868,7 @@ c_func
 r_void
 op_star
 )paren
-id|info-&gt;fb_info.screen_base
+id|info-&gt;screen_base
 )paren
 suffix:semicolon
 macro_line|#ifdef __BIG_ENDIAN
@@ -14033,12 +13915,12 @@ macro_line|#ifdef __sparc__
 r_if
 c_cond
 (paren
-id|info-&gt;mmap_map
+id|par-&gt;mmap_map
 )paren
 id|kfree
 c_func
 (paren
-id|info-&gt;mmap_map
+id|par-&gt;mmap_map
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -14048,7 +13930,6 @@ c_func
 id|info
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif
 id|MODULE_LICENSE

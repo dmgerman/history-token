@@ -20,9 +20,9 @@ id|val
 comma
 r_const
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|info
+id|par
 )paren
 suffix:semicolon
 r_static
@@ -32,7 +32,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -52,7 +52,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -72,7 +72,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -95,7 +95,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -120,9 +120,9 @@ id|val
 comma
 r_const
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|info
+id|par
 )paren
 (brace
 multiline_comment|/* write addr byte */
@@ -141,7 +141,7 @@ l_int|2
 op_or
 id|PLL_WR_EN
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* write the register value */
@@ -154,7 +154,7 @@ l_int|2
 comma
 id|val
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -173,7 +173,7 @@ op_amp
 op_complement
 id|PLL_WR_EN
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 )brace
@@ -187,7 +187,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -200,6 +200,18 @@ op_star
 id|pll
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 id|u32
 id|dsp_xclks_per_row
 comma
@@ -350,7 +362,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;fb_info.fix.smem_len
+id|info-&gt;fix.smem_len
 OG
 l_int|1
 op_star
@@ -362,7 +374,7 @@ l_int|1024
 r_if
 c_cond
 (paren
-id|info-&gt;ram_type
+id|par-&gt;ram_type
 op_ge
 id|SDRAM
 )paren
@@ -395,7 +407,7 @@ r_else
 r_if
 c_cond
 (paren
-id|info-&gt;ram_type
+id|par-&gt;ram_type
 op_ge
 id|SDRAM
 )paren
@@ -544,7 +556,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -557,6 +569,18 @@ op_star
 id|pll
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 id|u32
 id|q
 comma
@@ -570,24 +594,24 @@ suffix:semicolon
 multiline_comment|/* x is a workaround for sparc64-linux-gcc */
 id|pll-&gt;pll_ref_div
 op_assign
-id|info-&gt;pll_per
+id|par-&gt;pll_per
 op_star
 l_int|2
 op_star
 l_int|255
 op_div
-id|info-&gt;ref_clk_per
+id|par-&gt;ref_clk_per
 suffix:semicolon
 multiline_comment|/* FIXME: use the VTB/GTB /3 post divider if it&squot;s better suited */
 id|q
 op_assign
-id|info-&gt;ref_clk_per
+id|par-&gt;ref_clk_per
 op_star
 id|pll-&gt;pll_ref_div
 op_star
 l_int|4
 op_div
-id|info-&gt;mclk_per
+id|par-&gt;mclk_per
 suffix:semicolon
 multiline_comment|/* actually 8*q */
 r_if
@@ -663,7 +687,7 @@ suffix:semicolon
 multiline_comment|/* FIXME: use the VTB/GTB /{3,6,12} post dividers if they&squot;re better suited */
 id|q
 op_assign
-id|info-&gt;ref_clk_per
+id|par-&gt;ref_clk_per
 op_star
 id|pll-&gt;pll_ref_div
 op_star
@@ -753,7 +777,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -763,6 +787,18 @@ op_star
 id|pll
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 id|u8
 id|mpostdiv
 op_assign
@@ -783,7 +819,7 @@ id|SDRAM_MAGIC_PLL
 )paren
 op_logical_and
 (paren
-id|info-&gt;ram_type
+id|par-&gt;ram_type
 op_ge
 id|SDRAM
 )paren
@@ -957,7 +993,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -973,6 +1009,18 @@ op_star
 id|pll
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -1045,7 +1093,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -1056,10 +1104,22 @@ op_star
 id|pll
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 id|u32
 id|ref_clk_per
 op_assign
-id|info-&gt;ref_clk_per
+id|par-&gt;ref_clk_per
 suffix:semicolon
 id|u8
 id|pll_ref_div
@@ -1095,7 +1155,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -1106,6 +1166,18 @@ op_star
 id|pll
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 id|aty_st_pll
 c_func
 (paren
@@ -1113,7 +1185,7 @@ id|PLL_REF_DIV
 comma
 id|pll-&gt;ct.pll_ref_div
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_pll
@@ -1123,7 +1195,7 @@ id|PLL_GEN_CNTL
 comma
 id|pll-&gt;ct.pll_gen_cntl
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_pll
@@ -1133,7 +1205,7 @@ id|MCLK_FB_DIV
 comma
 id|pll-&gt;ct.mclk_fb_div
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_pll
@@ -1143,7 +1215,7 @@ id|PLL_VCLK_CNTL
 comma
 id|pll-&gt;ct.pll_vclk_cntl
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_pll
@@ -1153,7 +1225,7 @@ id|VCLK_POST_DIV
 comma
 id|pll-&gt;ct.vclk_post_div
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_pll
@@ -1163,7 +1235,7 @@ id|VCLK0_FB_DIV
 comma
 id|pll-&gt;ct.vclk_fb_div
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_pll
@@ -1173,7 +1245,7 @@ id|PLL_EXT_CNTL
 comma
 id|pll-&gt;ct.pll_ext_cntl
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 r_if
@@ -1202,14 +1274,14 @@ id|DLL_CNTL
 comma
 l_int|0x80
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 r_else
 r_if
 c_cond
 (paren
-id|info-&gt;ram_type
+id|par-&gt;ram_type
 op_ge
 id|SDRAM
 )paren
@@ -1220,7 +1292,7 @@ id|DLL_CNTL
 comma
 l_int|0xa6
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 r_else
@@ -1231,7 +1303,7 @@ id|DLL_CNTL
 comma
 l_int|0xa0
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_pll
@@ -1241,7 +1313,7 @@ id|VFC_CNTL
 comma
 l_int|0x1b
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -1251,7 +1323,7 @@ id|DSP_CONFIG
 comma
 id|pll-&gt;ct.dsp_config
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -1261,7 +1333,7 @@ id|DSP_ON_OFF
 comma
 id|pll-&gt;ct.dsp_on_off
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 )brace
