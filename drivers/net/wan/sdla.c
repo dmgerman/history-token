@@ -7531,6 +7531,12 @@ id|dev-&gt;mtu
 op_assign
 id|SDLA_MAX_MTU
 suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|flp-&gt;activate
 op_assign
 id|sdla_activate
