@@ -1438,21 +1438,20 @@ id|ps
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* this waits till synchronous requests complete */
-id|down_write
-(paren
-op_amp
-id|ps-&gt;devsem
-)paren
-suffix:semicolon
+multiline_comment|/* NOTE:  this relies on usbcore having canceled and completed&n;&t; * all pending I/O requests; 2.6 does that.&n;&t; */
 multiline_comment|/* prevent new I/O requests */
 id|ps-&gt;dev
 op_assign
 l_int|0
 suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|intf-&gt;cur_altsetting-&gt;desc.bInterfaceNumber
+comma
+op_amp
 id|ps-&gt;ifclaimed
-op_assign
-l_int|0
+)paren
 suffix:semicolon
 id|usb_set_intfdata
 (paren
@@ -1465,12 +1464,6 @@ multiline_comment|/* force async requests to complete */
 id|destroy_all_async
 (paren
 id|ps
-)paren
-suffix:semicolon
-id|up_write
-(paren
-op_amp
-id|ps-&gt;devsem
 )paren
 suffix:semicolon
 )brace
