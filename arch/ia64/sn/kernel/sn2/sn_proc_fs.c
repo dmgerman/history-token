@@ -316,12 +316,12 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// Disable forced interrupts, but leave the code in, just in case.
+multiline_comment|/*&n; * Enable forced interrupt by default.&n; * When set, the sn interrupt handler writes the force interrupt register on&n; * the bridge chip.  The hardware will then send an interrupt message if the&n; * interrupt line is active.  This mimics a level sensitive interrupt.&n; */
 DECL|variable|sn_force_interrupt_flag
 r_int
 id|sn_force_interrupt_flag
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 r_static
 r_int
