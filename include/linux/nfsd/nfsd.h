@@ -16,6 +16,8 @@ macro_line|#include &lt;linux/nfsd/interface.h&gt;
 multiline_comment|/*&n; * nfsd version&n; */
 DECL|macro|NFSD_VERSION
 mdefine_line|#define NFSD_VERSION&t;&t;&quot;0.5&quot;
+DECL|macro|NFSD_SUPPORTED_MINOR_VERSION
+mdefine_line|#define NFSD_SUPPORTED_MINOR_VERSION&t;0
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Special flags for nfsd_permission. These must be different from MAY_READ,&n; * MAY_WRITE, and MAY_EXEC.&n; */
 DECL|macro|MAY_NOP
@@ -160,6 +162,15 @@ id|nfsd_procedures3
 )braket
 suffix:semicolon
 macro_line|#endif /* CONFIG_NFSD_V3 */
+macro_line|#ifdef CONFIG_NFSD_V4
+r_extern
+r_struct
+id|svc_procedure
+id|nfsd_procedures4
+(braket
+)braket
+suffix:semicolon
+macro_line|#endif /* CONFIG_NFSD_V4 */
 r_extern
 r_struct
 id|svc_program
@@ -803,6 +814,28 @@ r_struct
 id|timeval
 id|nfssvc_boot
 suffix:semicolon
+macro_line|#ifdef CONFIG_NFSD_V4
+multiline_comment|/* before processing a COMPOUND operation, we have to check that there&n; * is enough space in the buffer for XDR encode to succeed.  otherwise,&n; * we might process an operation with side effects, and be unable to&n; * tell the client that the operation succeeded.&n; *&n; * COMPOUND_SLACK_SPACE - this is the minimum amount of buffer space&n; * needed to encode an &quot;ordinary&quot; _successful_ operation.  (GETATTR,&n; * READ, READDIR, and READLINK have their own buffer checks.)  if we&n; * fall below this level, we fail the next operation with NFS4ERR_RESOURCE.&n; *&n; * COMPOUND_ERR_SLACK_SPACE - this is the minimum amount of buffer space&n; * needed to encode an operation which has failed with NFS4ERR_RESOURCE.&n; * care is taken to ensure that we never fall below this level for any&n; * reason.&n; */
+DECL|macro|COMPOUND_SLACK_SPACE
+mdefine_line|#define&t;COMPOUND_SLACK_SPACE&t;&t;140    /* OP_GETFH */
+DECL|macro|COMPOUND_ERR_SLACK_SPACE
+mdefine_line|#define COMPOUND_ERR_SLACK_SPACE&t;12     /* OP_SETATTR */
+DECL|macro|NFSD_LEASE_TIME
+mdefine_line|#define NFSD_LEASE_TIME&t;&t;&t;60  /* seconds */
+multiline_comment|/*&n; * The following attributes are currently not supported by the NFSv4 server:&n; *    ACL           (will be supported in a forthcoming patch)&n; *    ARCHIVE       (deprecated anyway)&n; *    FS_LOCATIONS  (will be supported eventually)&n; *    HIDDEN        (unlikely to be supported any time soon)&n; *    MIMETYPE      (unlikely to be supported any time soon)&n; *    QUOTA_*       (will be supported in a forthcoming patch)&n; *    SYSTEM        (unlikely to be supported any time soon)&n; *    TIME_BACKUP   (unlikely to be supported any time soon)&n; *    TIME_CREATE   (unlikely to be supported any time soon)&n; */
+DECL|macro|NFSD_SUPPORTED_ATTRS_WORD0
+mdefine_line|#define NFSD_SUPPORTED_ATTRS_WORD0                                                          &bslash;&n;(FATTR4_WORD0_SUPPORTED_ATTRS   | FATTR4_WORD0_TYPE         | FATTR4_WORD0_FH_EXPIRE_TYPE   &bslash;&n; | FATTR4_WORD0_CHANGE          | FATTR4_WORD0_SIZE         | FATTR4_WORD0_LINK_SUPPORT     &bslash;&n; | FATTR4_WORD0_SYMLINK_SUPPORT | FATTR4_WORD0_NAMED_ATTR   | FATTR4_WORD0_FSID             &bslash;&n; | FATTR4_WORD0_UNIQUE_HANDLES  | FATTR4_WORD0_LEASE_TIME   | FATTR4_WORD0_RDATTR_ERROR     &bslash;&n; | FATTR4_WORD0_ACLSUPPORT      | FATTR4_WORD0_CANSETTIME   | FATTR4_WORD0_CASE_INSENSITIVE &bslash;&n; | FATTR4_WORD0_CASE_PRESERVING | FATTR4_WORD0_CHOWN_RESTRICTED                             &bslash;&n; | FATTR4_WORD0_FILEHANDLE      | FATTR4_WORD0_FILEID       | FATTR4_WORD0_FILES_AVAIL      &bslash;&n; | FATTR4_WORD0_FILES_FREE      | FATTR4_WORD0_FILES_TOTAL  | FATTR4_WORD0_HOMOGENEOUS      &bslash;&n; | FATTR4_WORD0_MAXFILESIZE     | FATTR4_WORD0_MAXLINK      | FATTR4_WORD0_MAXNAME          &bslash;&n; | FATTR4_WORD0_MAXREAD         | FATTR4_WORD0_MAXWRITE)
+DECL|macro|NFSD_SUPPORTED_ATTRS_WORD1
+mdefine_line|#define NFSD_SUPPORTED_ATTRS_WORD1                                                          &bslash;&n;(FATTR4_WORD1_MODE              | FATTR4_WORD1_NO_TRUNC     | FATTR4_WORD1_NUMLINKS         &bslash;&n; | FATTR4_WORD1_OWNER&t;        | FATTR4_WORD1_OWNER_GROUP  | FATTR4_WORD1_RAWDEV           &bslash;&n; | FATTR4_WORD1_SPACE_AVAIL     | FATTR4_WORD1_SPACE_FREE   | FATTR4_WORD1_SPACE_TOTAL      &bslash;&n; | FATTR4_WORD1_SPACE_USED      | FATTR4_WORD1_TIME_ACCESS  | FATTR4_WORD1_TIME_ACCESS_SET  &bslash;&n; | FATTR4_WORD1_TIME_CREATE     | FATTR4_WORD1_TIME_DELTA   | FATTR4_WORD1_TIME_METADATA    &bslash;&n; | FATTR4_WORD1_TIME_MODIFY     | FATTR4_WORD1_TIME_MODIFY_SET)
+multiline_comment|/* These will return ERR_INVAL if specified in GETATTR or READDIR. */
+DECL|macro|NFSD_WRITEONLY_ATTRS_WORD1
+mdefine_line|#define NFSD_WRITEONLY_ATTRS_WORD1&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;(FATTR4_WORD1_TIME_ACCESS_SET   | FATTR4_WORD1_TIME_MODIFY_SET)
+multiline_comment|/* These are the only attrs allowed in CREATE/OPEN/SETATTR. */
+DECL|macro|NFSD_WRITEABLE_ATTRS_WORD0
+mdefine_line|#define NFSD_WRITEABLE_ATTRS_WORD0                            FATTR4_WORD0_SIZE
+DECL|macro|NFSD_WRITEABLE_ATTRS_WORD1
+mdefine_line|#define NFSD_WRITEABLE_ATTRS_WORD1                                                          &bslash;&n;(FATTR4_WORD1_MODE              | FATTR4_WORD1_OWNER         | FATTR4_WORD1_OWNER_GROUP     &bslash;&n; | FATTR4_WORD1_TIME_ACCESS_SET | FATTR4_WORD1_TIME_METADATA | FATTR4_WORD1_TIME_MODIFY_SET)
+macro_line|#endif /* CONFIG_NFSD_V4 */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* LINUX_NFSD_NFSD_H */
 eof

@@ -47,6 +47,8 @@ DECL|macro|NFS3_ACCESS_DELETE
 mdefine_line|#define NFS3_ACCESS_DELETE&t;0x0010
 DECL|macro|NFS3_ACCESS_EXECUTE
 mdefine_line|#define NFS3_ACCESS_EXECUTE&t;0x0020
+DECL|macro|NFS3_ACCESS_FULL
+mdefine_line|#define NFS3_ACCESS_FULL&t;0x003f
 multiline_comment|/* Flags for create mode */
 DECL|enum|nfs3_createmode
 r_enum

@@ -1264,6 +1264,36 @@ id|nfsd_dispatch
 )brace
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_NFSD_V4
+DECL|variable|nfsd_version4
+r_static
+r_struct
+id|svc_version
+id|nfsd_version4
+op_assign
+(brace
+dot
+id|vs_vers
+op_assign
+l_int|4
+comma
+dot
+id|vs_nproc
+op_assign
+l_int|2
+comma
+dot
+id|vs_proc
+op_assign
+id|nfsd_procedures4
+comma
+dot
+id|vs_dispatch
+op_assign
+id|nfsd_dispatch
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|variable|nfsd_version
 r_static
 r_struct
@@ -1281,13 +1311,29 @@ op_assign
 op_amp
 id|nfsd_version2
 comma
-macro_line|#ifdef CONFIG_NFSD_V3
+macro_line|#if defined(CONFIG_NFSD_V3)
 (braket
 l_int|3
 )braket
 op_assign
 op_amp
 id|nfsd_version3
+comma
+macro_line|#elif defined(CONFIG_NFSD_V4)
+(braket
+l_int|3
+)braket
+op_assign
+l_int|NULL
+comma
+macro_line|#endif
+macro_line|#if defined(CONFIG_NFSD_V4)
+(braket
+l_int|4
+)braket
+op_assign
+op_amp
+id|nfsd_version4
 comma
 macro_line|#endif
 )brace
