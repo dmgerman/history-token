@@ -2337,7 +2337,7 @@ id|rq2-&gt;lock
 )paren
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_NUMA
+macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/*&n; * If dest_cpu is allowed for this process, migrate the task to it.&n; * This is accomplished by forcing the cpu_allowed mask to only&n; * allow dest_cpu, which will force the cpu onto dest_cpu.  Then&n; * the cpu_allowed mask is restored.&n; */
 DECL|function|sched_migrate_task
 r_static
@@ -3554,7 +3554,7 @@ DECL|macro|IDLE_NODE_REBALANCE_TICK
 mdefine_line|#define IDLE_NODE_REBALANCE_TICK (IDLE_REBALANCE_TICK * 5)
 DECL|macro|BUSY_NODE_REBALANCE_TICK
 mdefine_line|#define BUSY_NODE_REBALANCE_TICK (BUSY_REBALANCE_TICK * 100)
-macro_line|#if CONFIG_NUMA
+macro_line|#ifdef CONFIG_NUMA
 DECL|function|balance_node
 r_static
 r_void
@@ -3654,7 +3654,7 @@ r_int
 id|idle
 )paren
 (brace
-macro_line|#if CONFIG_NUMA
+macro_line|#ifdef CONFIG_NUMA
 r_int
 id|this_cpu
 op_assign
@@ -3677,7 +3677,7 @@ c_cond
 id|idle
 )paren
 (brace
-macro_line|#if CONFIG_NUMA
+macro_line|#ifdef CONFIG_NUMA
 r_if
 c_cond
 (paren
@@ -3742,7 +3742,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_NUMA
+macro_line|#ifdef CONFIG_NUMA
 r_if
 c_cond
 (paren
@@ -7873,7 +7873,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Set the preempt count _outside_ the spinlocks! */
-macro_line|#if CONFIG_PREEMPT
+macro_line|#ifdef CONFIG_PREEMPT
 id|idle-&gt;thread_info-&gt;preempt_count
 op_assign
 (paren
