@@ -6,12 +6,14 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
+macro_line|#include &lt;asm/proc_fs.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt; /* for ppc_md */
 macro_line|#include &lt;asm/time.h&gt;
 multiline_comment|/* Token for Sensors */
@@ -748,26 +750,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|proc_rtas
+id|proc_ppc64.rtas
 op_eq
 l_int|NULL
 )paren
 (brace
-id|proc_rtas
-op_assign
-id|proc_mkdir
+id|proc_ppc64_init
 c_func
 (paren
-l_string|&quot;rtas&quot;
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-id|proc_rtas
+id|proc_ppc64.rtas
 op_eq
 l_int|NULL
 )paren
@@ -794,7 +791,7 @@ id|S_IRUGO
 op_or
 id|S_IWUSR
 comma
-id|proc_rtas
+id|proc_ppc64.rtas
 )paren
 suffix:semicolon
 r_if
@@ -818,7 +815,7 @@ id|S_IRUGO
 op_or
 id|S_IWUSR
 comma
-id|proc_rtas
+id|proc_ppc64.rtas
 )paren
 suffix:semicolon
 r_if
@@ -842,7 +839,7 @@ id|S_IWUSR
 op_or
 id|S_IRUGO
 comma
-id|proc_rtas
+id|proc_ppc64.rtas
 )paren
 suffix:semicolon
 r_if
@@ -862,7 +859,7 @@ l_string|&quot;sensors&quot;
 comma
 id|S_IRUGO
 comma
-id|proc_rtas
+id|proc_ppc64.rtas
 comma
 id|ppc_rtas_sensor_read
 comma
@@ -880,7 +877,7 @@ id|S_IWUSR
 op_or
 id|S_IRUGO
 comma
-id|proc_rtas
+id|proc_ppc64.rtas
 )paren
 suffix:semicolon
 r_if
@@ -904,7 +901,7 @@ id|S_IWUSR
 op_or
 id|S_IRUGO
 comma
-id|proc_rtas
+id|proc_ppc64.rtas
 )paren
 suffix:semicolon
 r_if
@@ -926,7 +923,7 @@ l_string|&quot;rmo_buffer&quot;
 comma
 id|S_IRUSR
 comma
-id|proc_rtas
+id|proc_ppc64.rtas
 )paren
 suffix:semicolon
 r_if

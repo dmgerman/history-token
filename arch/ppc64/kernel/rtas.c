@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/proc_fs.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
@@ -56,12 +57,13 @@ id|rtas_data_buf_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|variable|rtas_data_buf
+DECL|variable|__page_aligned
 r_char
 id|rtas_data_buf
 (braket
 id|RTAS_DATA_BUF_SIZE
 )braket
+id|__page_aligned
 suffix:semicolon
 r_void
 DECL|function|phys_call_rtas
@@ -2006,13 +2008,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|proc_ppc64
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|proc_ppc64
-)paren
-suffix:semicolon
 DECL|variable|rtas_firmware_flash_list
 id|EXPORT_SYMBOL
 c_func

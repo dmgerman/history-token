@@ -11,6 +11,15 @@ mdefine_line|#define RTAS_INSTANTIATE_MAX (1UL&lt;&lt;30) /* Don&squot;t instant
 multiline_comment|/* Buffer size for ppc_rtas system call. */
 DECL|macro|RTAS_RMOBUF_MAX
 mdefine_line|#define RTAS_RMOBUF_MAX (64 * 1024)
+multiline_comment|/* RTAS return codes */
+DECL|macro|RTAS_BUSY
+mdefine_line|#define RTAS_BUSY&t;&t;-2&t;/* RTAS Return Status - Busy */
+DECL|macro|RTAS_EXTENDED_DELAY_MIN
+mdefine_line|#define RTAS_EXTENDED_DELAY_MIN 9900
+DECL|macro|RTAS_EXTENDED_DELAY_MAX
+mdefine_line|#define RTAS_EXTENDED_DELAY_MAX 9905
+DECL|macro|RTAS_UNKNOWN_OP
+mdefine_line|#define RTAS_UNKNOWN_OP&t;&t;-1099&t;/* Return Status - Unknown RTAS Token */
 multiline_comment|/*&n; * In general to call RTAS use rtas_token(&quot;string&quot;) to lookup&n; * an RTAS token for the given string (e.g. &quot;event-scan&quot;).&n; * To actually perform the call use&n; *    ret = rtas_call(token, n_in, n_out, ...)&n; * Where n_in is the number of input parameters and&n; *       n_out is the number of output parameters&n; *&n; * If the &quot;string&quot; is invalid on this system, RTAS_UNKOWN_SERVICE&n; * will be returned as a token.  rtas_call() does look for this&n; * token and error out gracefully so rtas_call(rtas_token(&quot;str&quot;), ...)&n; * may be safely used for one-shot calls to RTAS.&n; *&n; */
 DECL|typedef|rtas_arg_t
 r_typedef
@@ -537,13 +546,55 @@ op_le
 l_int|9909
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|pSeries_log_error
+c_func
+(paren
+r_char
+op_star
+id|buf
+comma
+r_int
+r_int
+id|err_type
+comma
+r_int
+id|fatal
+)paren
+suffix:semicolon
+multiline_comment|/* Error types logged.  */
+DECL|macro|ERR_FLAG_ALREADY_LOGGED
+mdefine_line|#define ERR_FLAG_ALREADY_LOGGED&t;0x0
+DECL|macro|ERR_FLAG_BOOT
+mdefine_line|#define ERR_FLAG_BOOT&t;&t;0x1 &t;/* log was pulled from NVRAM on boot */
+DECL|macro|ERR_TYPE_RTAS_LOG
+mdefine_line|#define ERR_TYPE_RTAS_LOG&t;0x2&t;/* from rtas event-scan */
+DECL|macro|ERR_TYPE_KERNEL_PANIC
+mdefine_line|#define ERR_TYPE_KERNEL_PANIC&t;0x4&t;/* from panic() */
+multiline_comment|/* All the types and not flags */
+DECL|macro|ERR_TYPE_MASK
+mdefine_line|#define ERR_TYPE_MASK&t;(ERR_TYPE_RTAS_LOG | ERR_TYPE_KERNEL_PANIC)
+DECL|macro|RTAS_ERR
+mdefine_line|#define RTAS_ERR KERN_ERR &quot;RTAS: &quot;
+DECL|macro|RTAS_ERROR_LOG_MAX
+mdefine_line|#define RTAS_ERROR_LOG_MAX 2048
+multiline_comment|/* Event Scan Parameters */
+DECL|macro|EVENT_SCAN_ALL_EVENTS
+mdefine_line|#define EVENT_SCAN_ALL_EVENTS&t;0xf0000000
+DECL|macro|SURVEILLANCE_TOKEN
+mdefine_line|#define SURVEILLANCE_TOKEN&t;9000
+DECL|macro|SURVEILLANCE_TIMEOUT
+mdefine_line|#define SURVEILLANCE_TIMEOUT&t;1
+DECL|macro|SURVEILLANCE_SCANRATE
+mdefine_line|#define SURVEILLANCE_SCANRATE&t;1
+DECL|macro|LOG_NUMBER
+mdefine_line|#define LOG_NUMBER&t;&t;64&t;&t;/* must be a power of two */
+DECL|macro|LOG_NUMBER_MASK
+mdefine_line|#define LOG_NUMBER_MASK&t;&t;(LOG_NUMBER-1)
 multiline_comment|/* Some RTAS ops require a data buffer and that buffer must be &lt; 4G.&n; * Rather than having a memory allocator, just use this buffer&n; * (get the lock first), make the RTAS call.  Copy the data instead&n; * of holding the buffer for long.&n; */
 DECL|macro|RTAS_DATA_BUF_SIZE
-mdefine_line|#define RTAS_DATA_BUF_SIZE 1024
-DECL|macro|RTAS_UNKNOWN_OP
-mdefine_line|#define RTAS_UNKNOWN_OP&t;-1099&t;/* Return Status - Unknown RTAS Token */
-DECL|macro|RTAS_BUSY
-mdefine_line|#define RTAS_BUSY&t;-2&t;/* RTAS Return Status - Busy */
+mdefine_line|#define RTAS_DATA_BUF_SIZE 4096
 r_extern
 id|spinlock_t
 id|rtas_data_buf_lock

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
+macro_line|#include &lt;asm/proc_fs.h&gt;
 DECL|macro|MODULE_VERSION
 mdefine_line|#define MODULE_VERSION &quot;1.0&quot;
 DECL|macro|MODULE_NAME
@@ -40,12 +41,6 @@ op_star
 id|proc_ppc64_scan_log_dump
 suffix:semicolon
 multiline_comment|/* The proc file */
-r_extern
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_rtas
-suffix:semicolon
 DECL|function|scanlog_read
 r_static
 id|ssize_t
@@ -883,24 +878,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|proc_rtas
+id|proc_ppc64.rtas
 op_eq
 l_int|NULL
 )paren
-id|proc_rtas
-op_assign
-id|proc_mkdir
+(brace
+id|proc_ppc64_init
 c_func
 (paren
-l_string|&quot;rtas&quot;
-comma
-l_int|0
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
-id|proc_rtas
+id|proc_ppc64.rtas
 op_eq
 l_int|NULL
 )paren
@@ -926,7 +918,7 @@ l_string|&quot;scan-log-dump&quot;
 comma
 id|S_IRUSR
 comma
-id|proc_rtas
+id|proc_ppc64.rtas
 )paren
 suffix:semicolon
 r_if

@@ -39,6 +39,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &quot;i8259.h&quot;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &lt;asm/xics.h&gt;
@@ -869,6 +870,14 @@ suffix:semicolon
 id|ppc_md.progress
 op_assign
 id|chrp_progress
+suffix:semicolon
+id|ppc_md.nvram_read
+op_assign
+id|pSeries_nvram_read
+suffix:semicolon
+id|ppc_md.nvram_write
+op_assign
+id|pSeries_nvram_write
 suffix:semicolon
 multiline_comment|/* Build up the firmware_features bitmask field&n;         * using contents of device-tree/ibm,hypertas-functions.&n;         * Ultimately this functionality may be moved into prom.c prom_init().&n;         */
 id|dn
