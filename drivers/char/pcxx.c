@@ -170,7 +170,6 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-macro_line|# if (LINUX_VERSION_CODE &gt; 0x020111)
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -245,7 +244,6 @@ comma
 l_string|&quot;1-4i&quot;
 )paren
 suffix:semicolon
-macro_line|# endif
 macro_line|#endif MODULE
 DECL|variable|numcards
 r_static
