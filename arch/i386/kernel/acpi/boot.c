@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
@@ -1314,6 +1315,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|edge_level
+op_eq
+id|ACPI_LEVEL_SENSITIVE
+)paren
+(brace
+r_if
+c_cond
+(paren
 (paren
 id|gsi
 OL
@@ -1358,6 +1367,7 @@ id|gsi
 suffix:semicolon
 )brace
 )brace
+)brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_IO_APIC
 r_if
@@ -1393,6 +1403,13 @@ r_return
 id|irq
 suffix:semicolon
 )brace
+DECL|variable|acpi_register_gsi
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_register_gsi
+)paren
+suffix:semicolon
 r_static
 r_int
 r_int
