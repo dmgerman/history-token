@@ -44,6 +44,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* used to tell the module to turn on full debugging messages */
 DECL|variable|debug
@@ -5983,6 +5984,30 @@ op_assign
 id|cdi-&gt;ops
 suffix:semicolon
 r_int
+id|ret
+suffix:semicolon
+multiline_comment|/* Try the generic SCSI command ioctl&squot;s first.. */
+id|ret
+op_assign
+id|scsi_cmd_ioctl
+c_func
+(paren
+id|ip-&gt;i_bdev
+comma
+id|cmd
+comma
+id|arg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+op_minus
+id|ENOTTY
+)paren
+r_return
 id|ret
 suffix:semicolon
 multiline_comment|/* the first few commands do not deal with audio drive_info, but&n;&t;   only with routines in cdrom device operations. */
