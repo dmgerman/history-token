@@ -346,10 +346,13 @@ dot
 suffix:semicolon
 r_static
 r_void
-id|prom_exit
+id|prom_panic
 c_func
 (paren
-r_void
+r_const
+r_char
+op_star
+id|reason
 )paren
 suffix:semicolon
 r_static
@@ -790,10 +793,14 @@ suffix:semicolon
 r_static
 r_void
 id|__init
-DECL|function|prom_exit
-id|prom_exit
+DECL|function|prom_panic
+id|prom_panic
 c_func
 (paren
+r_const
+r_char
+op_star
+id|reason
 )paren
 (brace
 r_int
@@ -805,6 +812,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|prom_print
+c_func
+(paren
+id|reason
+)paren
+suffix:semicolon
+multiline_comment|/* ToDo: should put up an SRC here */
 id|call_prom
 c_func
 (paren
@@ -4077,7 +4091,7 @@ op_logical_neg
 id|base
 )paren
 (brace
-id|prom_print
+id|prom_panic
 c_func
 (paren
 id|RELOC
@@ -4085,11 +4099,6 @@ c_func
 (paren
 l_string|&quot;ERROR, cannot find space for TCE table.&bslash;n&quot;
 )paren
-)paren
-suffix:semicolon
-id|prom_exit
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -6640,11 +6649,17 @@ id|_prom-&gt;chosen
 op_le
 l_int|0
 )paren
-id|prom_exit
+id|prom_panic
 c_func
 (paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;cannot find chosen&quot;
+)paren
 )paren
 suffix:semicolon
+multiline_comment|/* msg won&squot;t be printed :( */
 r_if
 c_cond
 (paren
@@ -6683,9 +6698,14 @@ id|getprop_rval
 op_le
 l_int|0
 )paren
-id|prom_exit
+id|prom_panic
 c_func
 (paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;cannot find stdout&quot;
+)paren
 )paren
 suffix:semicolon
 id|_prom-&gt;stdout
@@ -6894,9 +6914,14 @@ id|getprop_rval
 op_le
 l_int|0
 )paren
-id|prom_exit
+id|prom_panic
 c_func
 (paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;cannot find boot cpu&quot;
+)paren
 )paren
 suffix:semicolon
 id|prom_cpu
@@ -8447,7 +8472,7 @@ id|phandle
 l_int|0
 )paren
 (brace
-id|prom_print
+id|prom_panic
 c_func
 (paren
 id|RELOC
@@ -8455,11 +8480,6 @@ c_func
 (paren
 l_string|&quot;couldn&squot;t get device tree root&bslash;n&quot;
 )paren
-)paren
-suffix:semicolon
-id|prom_exit
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -14481,33 +14501,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-r_void
-id|__init
-DECL|function|abort
-m_abort
-(paren
-)paren
-(brace
-macro_line|#ifdef CONFIG_XMON
-id|xmon
-c_func
-(paren
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#endif
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-id|prom_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Verify bi_recs are good */
 r_static
 r_struct

@@ -946,13 +946,6 @@ id|np
 suffix:semicolon
 multiline_comment|/* Other Prototypes */
 r_extern
-r_void
-m_abort
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 r_int
 id|prom_init
