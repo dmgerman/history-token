@@ -262,10 +262,6 @@ DECL|member|io_ticks
 r_int
 id|io_ticks
 suffix:semicolon
-DECL|member|in_flight
-r_int
-id|in_flight
-suffix:semicolon
 DECL|member|time_in_queue
 r_int
 id|time_in_queue
@@ -376,6 +372,10 @@ r_int
 id|stamp
 comma
 id|stamp_idle
+suffix:semicolon
+DECL|member|in_flight
+r_int
+id|in_flight
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_SMP
 DECL|member|dkstats
