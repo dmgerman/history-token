@@ -539,7 +539,7 @@ id|ep
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_ep_autoconfig - choose an endpoint matching the descriptor&n; * @gadget: The device to which the endpoint must belong.&n; * @desc: Endpoint descriptor, with endpoint direction and transfer mode&n; *&t;initialized.  For periodic transfers, the maximum packet&n; *&t;size must also be initialized.  This is modified on success.&n; *&n; * By choosing an endpoint to use with the specified descriptor, this&n; * routine simplifies writing gadget drivers that work with multiple&n; * USB device controllers.  The endpoint would be passed later to&n; * usb_ep_enable(), along with some descriptor.&n; *&n; * That second descriptor won&squot;t always be the same as the first one.&n; * For example, isochronous endpoints can be autoconfigured for high&n; * bandwidth, and then used in several lower bandwidth altsettings.&n; * Also, high and full speed descriptors will be different.&n; *&n; * Be sure to examine and test the results of autoconfiguration on your&n; * hardware.  This code may not make the best choices about how to use the&n; * USB controller, and it can&squot;t know all the restrictions that may apply.&n; * Some combinations of driver and hardware won&squot;t be able to autoconfigure.&n; *&n; * On success, this returns an un-claimed usb_ep, and modifies the endpoint&n; * descriptor bEndpointAddress.  For bulk endpoints, the wMaxPacket value&n; * is initialized as if the endpoint were used at full speed.  To prevent&n; * the endpoint from being returned by a later autoconfig call, claim it&n; * by assigning ep-&gt;driver_data to some non-null value.&n; *&n; * On failure, this returns a null endpoint descriptor.&n; */
@@ -845,7 +845,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Fail */
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_ep_autoconfig_reset - reset endpoint autoconfig state&n; * @gadget: device for which autoconfig state will be reset&n; *&n; * Use this for devices where one configuration may need to assign&n; * endpoint resources very differently from the next one.  It clears&n; * state such as ep-&gt;driver_data and the record of assigned endpoints&n; * used by usb_ep_autoconfig().&n; */
@@ -877,7 +877,7 @@ id|ep_list
 (brace
 id|ep-&gt;driver_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifdef&t;MANY_ENDPOINTS

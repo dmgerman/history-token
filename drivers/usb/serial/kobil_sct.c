@@ -1480,7 +1480,7 @@ id|port-&gt;write_urb
 suffix:semicolon
 id|port-&gt;write_urb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if

@@ -1827,7 +1827,7 @@ id|srb-&gt;bufflen
 (brace
 id|desc-&gt;context.data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|desc-&gt;context.data_length
 op_assign

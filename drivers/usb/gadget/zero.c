@@ -607,7 +607,7 @@ op_star
 op_amp
 id|fs_source_desc
 comma
-l_int|0
+l_int|NULL
 comma
 )brace
 suffix:semicolon
@@ -646,7 +646,7 @@ op_star
 op_amp
 id|fs_source_desc
 comma
-l_int|0
+l_int|NULL
 comma
 )brace
 suffix:semicolon
@@ -789,7 +789,7 @@ op_star
 op_amp
 id|hs_sink_desc
 comma
-l_int|0
+l_int|NULL
 comma
 )brace
 suffix:semicolon
@@ -828,7 +828,7 @@ op_star
 op_amp
 id|hs_sink_desc
 comma
-l_int|0
+l_int|NULL
 comma
 )brace
 suffix:semicolon
@@ -1157,7 +1157,7 @@ id|req
 suffix:semicolon
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -1646,7 +1646,7 @@ op_logical_neg
 id|req
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|memset
 (paren
@@ -1726,7 +1726,7 @@ id|req
 suffix:semicolon
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -2481,7 +2481,7 @@ id|dev-&gt;in_ep
 suffix:semicolon
 id|dev-&gt;in_ep
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -2497,7 +2497,7 @@ id|dev-&gt;out_ep
 suffix:semicolon
 id|dev-&gt;out_ep
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|dev-&gt;config
@@ -3547,7 +3547,7 @@ id|set_gadget_data
 (paren
 id|gadget
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

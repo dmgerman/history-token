@@ -1232,7 +1232,7 @@ id|controller
 comma
 l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1261,7 +1261,7 @@ l_int|1
 comma
 l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -2939,7 +2939,7 @@ l_int|0
 suffix:semicolon
 id|ed
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

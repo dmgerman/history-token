@@ -1623,7 +1623,7 @@ op_star
 op_amp
 id|fs_sink_desc
 comma
-l_int|0
+l_int|NULL
 comma
 macro_line|#endif /* DEV_CONFIG_CDC */
 )brace
@@ -1684,7 +1684,7 @@ id|fs_eth_function
 l_int|3
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#else
 id|fs_eth_function
@@ -1692,7 +1692,7 @@ id|fs_eth_function
 l_int|0
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -1782,7 +1782,7 @@ op_star
 op_amp
 id|fs_sink_desc
 comma
-l_int|0
+l_int|NULL
 comma
 )brace
 suffix:semicolon
@@ -2020,7 +2020,7 @@ op_star
 op_amp
 id|hs_sink_desc
 comma
-l_int|0
+l_int|NULL
 comma
 macro_line|#endif /* DEV_CONFIG_CDC */
 )brace
@@ -2081,7 +2081,7 @@ id|hs_eth_function
 l_int|3
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#else
 id|hs_eth_function
@@ -2089,7 +2089,7 @@ id|hs_eth_function
 l_int|0
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -2179,7 +2179,7 @@ op_star
 op_amp
 id|hs_sink_desc
 comma
-l_int|0
+l_int|NULL
 comma
 )brace
 suffix:semicolon
@@ -3101,11 +3101,11 @@ suffix:semicolon
 macro_line|#endif
 id|dev-&gt;status_ep
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;status
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#if defined(DEV_CONFIG_SUBSET) || defined(CONFIG_USB_ETH_RNDIS)
 r_if
@@ -3147,19 +3147,19 @@ suffix:semicolon
 macro_line|#endif
 id|dev-&gt;in_ep
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;in
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;out_ep
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;out
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -3332,7 +3332,7 @@ suffix:semicolon
 )brace
 id|dev-&gt;in_ep
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -3388,7 +3388,7 @@ suffix:semicolon
 )brace
 id|dev-&gt;out_ep
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -3404,7 +3404,7 @@ id|dev-&gt;status_ep
 suffix:semicolon
 id|dev-&gt;status_ep
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|dev-&gt;config
@@ -5956,7 +5956,7 @@ id|skb
 suffix:semicolon
 id|skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -6075,7 +6075,7 @@ id|dev-&gt;rx_reqs
 suffix:semicolon
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -6697,7 +6697,7 @@ id|usb_request
 op_star
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -7633,7 +7633,7 @@ id|dev-&gt;req
 suffix:semicolon
 id|dev-&gt;req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|unregister_netdev
@@ -7656,7 +7656,7 @@ id|set_gadget_data
 (paren
 id|gadget
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
