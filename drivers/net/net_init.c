@@ -421,7 +421,6 @@ suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
-l_int|NULL
 )paren
 suffix:semicolon
 id|err
@@ -1430,7 +1429,6 @@ suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
-l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;If the name is a format string the caller wants us to&n;&t; *&t;do a name allocation&n;&t; */
@@ -1537,16 +1535,9 @@ op_star
 id|dev
 )paren
 (brace
-r_struct
-id|net_device
-op_star
-id|list
-suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
-op_amp
-id|list
 )paren
 suffix:semicolon
 id|unregister_netdevice

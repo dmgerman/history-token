@@ -454,16 +454,9 @@ op_star
 id|hdlc
 )paren
 (brace
-r_struct
-id|net_device
-op_star
-id|unregister_list
-suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
-op_amp
-id|unregister_list
 )paren
 suffix:semicolon
 id|hdlc_proto_detach

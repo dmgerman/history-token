@@ -2257,14 +2257,10 @@ suffix:semicolon
 multiline_comment|/* Called by rtnetlink.c:rtnl_unlock() */
 r_extern
 r_void
-id|netdev_wait_and_finish_unregister
+id|netdev_run_todo
 c_func
 (paren
-r_struct
-id|net_device
-op_star
-op_star
-id|list
+r_void
 )paren
 suffix:semicolon
 DECL|function|dev_put

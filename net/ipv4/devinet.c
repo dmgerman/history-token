@@ -2178,9 +2178,6 @@ r_struct
 id|net_device
 op_star
 id|dev
-comma
-op_star
-id|unregister_list
 suffix:semicolon
 r_char
 op_star
@@ -2411,8 +2408,6 @@ suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
-op_amp
-id|unregister_list
 )paren
 suffix:semicolon
 id|ret

@@ -6454,7 +6454,6 @@ r_break
 suffix:semicolon
 id|rtnl_lock
 (paren
-l_int|NULL
 )paren
 suffix:semicolon
 id|rtl8139_thread_iter

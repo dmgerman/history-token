@@ -1156,15 +1156,10 @@ id|dev
 comma
 op_star
 id|nxt
-comma
-op_star
-id|unregister_list
 suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
-op_amp
-id|unregister_list
 )paren
 suffix:semicolon
 r_for
