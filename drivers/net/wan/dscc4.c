@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/net/wan/dscc4/dscc4_main.c: a DSCC4 HDLC driver for Linux&n; *&n; * This software may be used and distributed according to the terms of the &n; * GNU General Public License. &n; *&n; * The author may be reached as romieu@cogenit.fr.&n; * Specific bug reports/asian food will be welcome.&n; *&n; * Special thanks to the nice people at CS-Telecom for the hardware and the&n; * access to the test/measure tools.&n; *&n; *&n; *                             Theory of Operation&n; *&n; * I. Board Compatibility&n; *&n; * This device driver is designed for the Siemens PEB20534 4 ports serial&n; * controller as found on Etinc PCISYNC cards. The documentation for the &n; * chipset is available at http://www.infineon.com:&n; * - Data Sheet &quot;DSCC4, DMA Supported Serial Communication Controller with&n; * 4 Channels, PEB 20534 Version 2.1, PEF 20534 Version 2.1&quot;;&n; * - Application Hint &quot;Management of DSCC4 on-chip FIFO resources&quot;.&n; * Jens David has built an adapter based on the same chipset. Take a look&n; * at http://www.afthd.tu-darmstadt.de/~dg1kjd/pciscc4 for a specific&n; * driver.&n; * Sample code (2 revisions) is available at Infineon.&n; *&n; * II. Board-specific settings&n; *&n; * Pcisync can transmit some clock signal to the outside world on the&n; * *first two* ports provided you put a quartz and a line driver on it and&n; * remove the jumpers. The operation is described on Etinc web site. If you&n; * go DCE on these ports, don&squot;t forget to use an adequate cable.&n; *&n; * Sharing of the PCI interrupt line for this board is possible.&n; *&n; * III. Driver operation&n; *&n; * The rx/tx operations are based on a linked list of descriptor. I haven&squot;t&n; * tried the start/stop descriptor method as this one looks like the cheapest&n; * in terms of PCI manipulation.&n; *&n; * Tx direction&n; * Once the data section of the current descriptor processed, the next linked&n; * descriptor is loaded if the HOLD bit isn&squot;t set in the current descriptor.&n; * If HOLD is met, the transmission is stopped until the host unsets it and&n; * signals the change via TxPOLL.&n; * When the tx ring is full, the xmit routine issues a call to netdev_stop.&n; * The device is supposed to be enabled again during an ALLS irq (we could&n; * use HI but as it&squot;s easy to loose events, it&squot;s fscked).&n; *&n; * Rx direction&n; * The received frames aren&squot;t supposed to span over multiple receiving areas.&n; * I may implement it some day but it isn&squot;t the highest ranked item.&n; *&n; * IV. Notes&n; * The chipset is buggy. Typically, under some specific load patterns (I&n; * wouldn&squot;t call them &quot;high&quot;), the irq queues and the descriptors look like&n; * some event has been lost. Even assuming some fancy PCI feature, it won&squot;t &n; * explain the reproductible missing &quot;C&quot; bit in the descriptors. Faking an &n; * irq in the periodic timer isn&squot;t really elegant but at least it seems &n; * reliable.&n; * The current error (XDU, RFO) recovery code is untested.&n; * So far, RDO takes his RX channel down and the right sequence to enable it&n; * again is still a mistery. If RDO happens, plan a reboot. More details&n; * in the code (NB: as this happens, TX still works).&n; * Don&squot;t mess the cables during operation, especially on DTE ports. I don&squot;t&n; * suggest it for DCE either but at least one can get some messages instead&n; * of a complete instant freeze.&n; * Tests are done on Rev. 20 of the silicium. The RDO handling changes with&n; * the documentation/chipset releases. An on-line errata would be welcome.&n; *&n; * TODO:&n; * - test X25.&n; * - use polling at high irq/s,&n; * - performance analysis,&n; * - endianness.&n; *&n; * 2001/12/10&t;Daniela Squassoni  &lt;daniela@cyclades.com&gt;&n; * - Contribution to support the new generic HDLC layer.&n; *&n; * 2002/01&t;Ueimor&n; * - old style interface removal&n; * - dscc4_release_ring fix (related to DMA mapping)&n; * - hard_start_xmit fix (hint: TxSizeMax)&n; * - misc crapectomy.&n; */
+multiline_comment|/*&n; * drivers/net/wan/dscc4/dscc4.c: a DSCC4 HDLC driver for Linux&n; *&n; * This software may be used and distributed according to the terms of the &n; * GNU General Public License. &n; *&n; * The author may be reached as romieu@cogenit.fr.&n; * Specific bug reports/asian food will be welcome.&n; *&n; * Special thanks to the nice people at CS-Telecom for the hardware and the&n; * access to the test/measure tools.&n; *&n; *&n; *                             Theory of Operation&n; *&n; * I. Board Compatibility&n; *&n; * This device driver is designed for the Siemens PEB20534 4 ports serial&n; * controller as found on Etinc PCISYNC cards. The documentation for the &n; * chipset is available at http://www.infineon.com:&n; * - Data Sheet &quot;DSCC4, DMA Supported Serial Communication Controller with&n; * 4 Channels, PEB 20534 Version 2.1, PEF 20534 Version 2.1&quot;;&n; * - Application Hint &quot;Management of DSCC4 on-chip FIFO resources&quot;.&n; * - Errata sheet DS5 (courtesy of Michael Skerritt).&n; * Jens David has built an adapter based on the same chipset. Take a look&n; * at http://www.afthd.tu-darmstadt.de/~dg1kjd/pciscc4 for a specific&n; * driver.&n; * Sample code (2 revisions) is available at Infineon.&n; *&n; * II. Board-specific settings&n; *&n; * Pcisync can transmit some clock signal to the outside world on the&n; * *first two* ports provided you put a quartz and a line driver on it and&n; * remove the jumpers. The operation is described on Etinc web site. If you&n; * go DCE on these ports, don&squot;t forget to use an adequate cable.&n; *&n; * Sharing of the PCI interrupt line for this board is possible.&n; *&n; * III. Driver operation&n; *&n; * The rx/tx operations are based on a linked list of descriptors. The driver&n; * doesn&squot;t use HOLD mode any more. HOLD mode is definitely buggy and the more &n; * I tried to fix it, the more it started to look like (convoluted) software &n; * mutation of LxDA method. Errata sheet DS5 suggests to use LxDA: consider&n; * this a rfc2119 MUST.&n; *&n; * Tx direction&n; * When the tx ring is full, the xmit routine issues a call to netdev_stop.&n; * The device is supposed to be enabled again during an ALLS irq (we could&n; * use HI but as it&squot;s easy to loose events, it&squot;s fscked).&n; *&n; * Rx direction&n; * The received frames aren&squot;t supposed to span over multiple receiving areas.&n; * I may implement it some day but it isn&squot;t the highest ranked item.&n; *&n; * IV. Notes&n; * The current error (XDU, RFO) recovery code is untested.&n; * So far, RDO takes his RX channel down and the right sequence to enable it&n; * again is still a mistery. If RDO happens, plan a reboot. More details&n; * in the code (NB: as this happens, TX still works).&n; * Don&squot;t mess the cables during operation, especially on DTE ports. I don&squot;t&n; * suggest it for DCE either but at least one can get some messages instead&n; * of a complete instant freeze.&n; * Tests are done on Rev. 20 of the silicium. The RDO handling changes with&n; * the documentation/chipset releases.&n; *&n; * TODO:&n; * - test X25.&n; * - use polling at high irq/s,&n; * - performance analysis,&n; * - endianness.&n; *&n; * 2001/12/10&t;Daniela Squassoni  &lt;daniela@cyclades.com&gt;&n; * - Contribution to support the new generic HDLC layer.&n; *&n; * 2002/01&t;Ueimor&n; * - old style interface removal&n; * - dscc4_release_ring fix (related to DMA mapping)&n; * - hard_start_xmit fix (hint: TxSizeMax)&n; * - misc crapectomy.&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -31,7 +31,7 @@ id|version
 (braket
 )braket
 op_assign
-l_string|&quot;$Id: dscc4.c,v 1.158 2002/01/30 00:40:37 romieu Exp $&bslash;n&quot;
+l_string|&quot;$Id: dscc4.c,v 1.159 2002/04/10 22:05:17 romieu Exp $ for Linux&bslash;n&quot;
 suffix:semicolon
 DECL|variable|debug
 r_static
@@ -141,7 +141,7 @@ DECL|member|jiffies
 id|u32
 id|jiffies
 suffix:semicolon
-multiline_comment|/* more hack to come :o) */
+multiline_comment|/* Allows sizeof(TxFD) == sizeof(RxFD) + extra hack */
 )brace
 suffix:semicolon
 DECL|struct|RxFD
@@ -170,36 +170,41 @@ id|end
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
-DECL|macro|DEBUG_PARANOIA
-mdefine_line|#define DEBUG_PARANOIA
+DECL|macro|CONFIG_DSCC4_DEBUG
+mdefine_line|#define CONFIG_DSCC4_DEBUG
+DECL|macro|DUMMY_SKB_SIZE
+mdefine_line|#define DUMMY_SKB_SIZE&t;&t;64
+multiline_comment|/*&n; * FIXME: TX_HIGH very different from TX_RING_SIZE doesn&squot;t make much sense&n; * for LxDA mode.&n; */
+DECL|macro|TX_LOW
+mdefine_line|#define TX_LOW&t;&t;&t;8
+DECL|macro|TX_HIGH
+mdefine_line|#define TX_HIGH&t;&t;&t;16
 DECL|macro|TX_RING_SIZE
 mdefine_line|#define TX_RING_SIZE    32
 DECL|macro|RX_RING_SIZE
 mdefine_line|#define RX_RING_SIZE    32
 DECL|macro|IRQ_RING_SIZE
-mdefine_line|#define IRQ_RING_SIZE   64 /* Keep it A multiple of 32 */
+mdefine_line|#define IRQ_RING_SIZE&t;&t;64&t;&t;/* Keep it a multiple of 32 */
 DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT      (HZ/10)
 DECL|macro|DSCC4_HZ_MAX
 mdefine_line|#define DSCC4_HZ_MAX&t;33000000
 DECL|macro|BRR_DIVIDER_MAX
-mdefine_line|#define BRR_DIVIDER_MAX 64*0x00008000
+mdefine_line|#define BRR_DIVIDER_MAX&t;&t;64*0x00004000&t;/* Cf errata DS5 p.10 */
 DECL|macro|dev_per_card
 mdefine_line|#define dev_per_card&t;4
+DECL|macro|SCC_REGISTERS_MAX
+mdefine_line|#define SCC_REGISTERS_MAX&t;23&t;&t;/* Cf errata DS5 p.4 */
 DECL|macro|SOURCE_ID
-mdefine_line|#define SOURCE_ID(flags) (((flags) &gt;&gt; 28 ) &amp; 0x03)
+mdefine_line|#define SOURCE_ID(flags)&t;(((flags) &gt;&gt; 28) &amp; 0x03)
 DECL|macro|TO_SIZE
 mdefine_line|#define TO_SIZE(state) (((state) &gt;&gt; 16) &amp; 0x1fff)
 DECL|macro|TO_STATE
 mdefine_line|#define TO_STATE(len) cpu_to_le32(((len) &amp; TxSizeMax) &lt;&lt; 16)
 DECL|macro|RX_MAX
-mdefine_line|#define RX_MAX(len) ((((len) &gt;&gt; 5) + 1)&lt;&lt; 5)
+mdefine_line|#define RX_MAX(len)&t;&t;((((len) &gt;&gt; 5) + 1) &lt;&lt; 5)
 DECL|macro|SCC_REG_START
-mdefine_line|#define SCC_REG_START(id) SCC_START+(id)*SCC_OFFSET
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
+mdefine_line|#define SCC_REG_START(dpriv)&t;(SCC_START+(dpriv-&gt;dev_id)*SCC_OFFSET)
 DECL|struct|dscc4_pci_priv
 r_struct
 id|dscc4_pci_priv
@@ -283,37 +288,41 @@ id|u32
 op_star
 id|iqtx
 suffix:semicolon
-DECL|member|rx_current
-id|u32
-id|rx_current
-suffix:semicolon
+multiline_comment|/* FIXME: check all the volatile are required */
 DECL|member|tx_current
+r_volatile
 id|u32
 id|tx_current
 suffix:semicolon
-DECL|member|iqrx_current
+DECL|member|rx_current
 id|u32
-id|iqrx_current
+id|rx_current
 suffix:semicolon
 DECL|member|iqtx_current
 id|u32
 id|iqtx_current
 suffix:semicolon
+DECL|member|iqrx_current
+id|u32
+id|iqrx_current
+suffix:semicolon
 DECL|member|tx_dirty
+r_volatile
 id|u32
 id|tx_dirty
 suffix:semicolon
-DECL|member|bad_tx_frame
-r_int
-id|bad_tx_frame
+DECL|member|ltda
+r_volatile
+id|u32
+id|ltda
 suffix:semicolon
-DECL|member|bad_rx_frame
-r_int
-id|bad_rx_frame
+DECL|member|rx_dirty
+id|u32
+id|rx_dirty
 suffix:semicolon
-DECL|member|rx_needs_refill
-r_int
-id|rx_needs_refill
+DECL|member|lrda
+id|u32
+id|lrda
 suffix:semicolon
 DECL|member|tx_fd_dma
 id|dma_addr_t
@@ -331,6 +340,15 @@ DECL|member|iqrx_dma
 id|dma_addr_t
 id|iqrx_dma
 suffix:semicolon
+DECL|member|scc_regs
+r_volatile
+id|u32
+id|scc_regs
+(braket
+id|SCC_REGISTERS_MAX
+)braket
+suffix:semicolon
+multiline_comment|/* Cf errata DS5 p.4 */
 DECL|member|timer
 r_struct
 id|timer_list
@@ -359,18 +377,6 @@ DECL|member|timer_help
 id|u32
 id|timer_help
 suffix:semicolon
-DECL|member|hi_expected
-id|u32
-id|hi_expected
-suffix:semicolon
-DECL|member|hdlc
-id|hdlc_device
-id|hdlc
-suffix:semicolon
-DECL|member|settings
-id|sync_serial_settings
-id|settings
-suffix:semicolon
 DECL|member|encoding
 r_int
 r_int
@@ -381,9 +387,17 @@ r_int
 r_int
 id|parity
 suffix:semicolon
-DECL|member|pad
+DECL|member|hdlc
+id|hdlc_device
+id|hdlc
+suffix:semicolon
+DECL|member|settings
+id|sync_serial_settings
+id|settings
+suffix:semicolon
+DECL|member|__pad
 id|u32
-id|pad
+id|__pad
 id|__attribute__
 (paren
 (paren
@@ -427,6 +441,14 @@ DECL|macro|CH0BRDA
 mdefine_line|#define CH0BRDA 0x54
 DECL|macro|CH0BTDA
 mdefine_line|#define CH0BTDA 0x58
+DECL|macro|CH0FRDA
+mdefine_line|#define CH0FRDA 0x98
+DECL|macro|CH0FTDA
+mdefine_line|#define CH0FTDA 0xb0
+DECL|macro|CH0LRDA
+mdefine_line|#define CH0LRDA 0xc8
+DECL|macro|CH0LTDA
+mdefine_line|#define CH0LTDA 0xe0
 multiline_comment|/* SCC registers definitions */
 DECL|macro|SCC_START
 mdefine_line|#define SCC_START&t;0x0100
@@ -483,6 +505,8 @@ DECL|macro|Ccr0ClockMask
 mdefine_line|#define Ccr0ClockMask&t;0x0000003f
 DECL|macro|Ccr1LoopMask
 mdefine_line|#define Ccr1LoopMask&t;0x00000200
+DECL|macro|IsrMask
+mdefine_line|#define IsrMask&t;&t;0x000fffff
 DECL|macro|BrrExpMask
 mdefine_line|#define BrrExpMask&t;0x00000f00
 DECL|macro|BrrMultMask
@@ -493,6 +517,8 @@ DECL|macro|Hold
 mdefine_line|#define Hold&t;&t;0x40000000
 DECL|macro|SccBusy
 mdefine_line|#define SccBusy&t;&t;0x10000000
+DECL|macro|PowerUp
+mdefine_line|#define PowerUp&t;&t;0x80000000
 DECL|macro|FrameOk
 mdefine_line|#define FrameOk&t;&t;(FrameVfr | FrameCrc)
 DECL|macro|FrameVfr
@@ -1250,9 +1276,6 @@ dot
 id|state1
 op_or_assign
 id|Hold
-suffix:semicolon
-id|priv-&gt;rx_needs_refill
-op_increment
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -2677,7 +2700,7 @@ op_plus
 id|SCC_REG_START
 c_func
 (paren
-id|dev_id
+id|dpriv
 )paren
 suffix:semicolon
 id|writel
@@ -3041,7 +3064,7 @@ c_func
 (paren
 id|ioaddr
 comma
-id|i
+id|dpriv
 )paren
 suffix:semicolon
 id|dpriv-&gt;parity
@@ -3600,7 +3623,7 @@ op_plus
 id|SCC_REG_START
 c_func
 (paren
-id|dpriv-&gt;dev_id
+id|dpriv
 )paren
 suffix:semicolon
 multiline_comment|/* IDT+IDR during XPR */
@@ -3941,18 +3964,12 @@ l_int|16
 OL
 id|dpriv-&gt;tx_current
 )paren
-(brace
 id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-id|dpriv-&gt;hi_expected
-op_assign
-l_int|2
-suffix:semicolon
-)brace
 id|tx_fd
 op_assign
 id|dpriv-&gt;tx_fd
@@ -4063,7 +4080,7 @@ op_plus
 id|SCC_REG_START
 c_func
 (paren
-id|dev_id
+id|dpriv
 )paren
 op_plus
 id|CCR2
@@ -4393,7 +4410,7 @@ op_plus
 id|SCC_REG_START
 c_func
 (paren
-id|dpriv-&gt;dev_id
+id|dpriv
 )paren
 )paren
 suffix:semicolon
@@ -4756,7 +4773,7 @@ op_plus
 id|SCC_REG_START
 c_func
 (paren
-id|dpriv-&gt;dev_id
+id|dpriv
 )paren
 suffix:semicolon
 id|state
@@ -4967,7 +4984,7 @@ op_plus
 id|SCC_REG_START
 c_func
 (paren
-id|dpriv-&gt;dev_id
+id|dpriv
 )paren
 suffix:semicolon
 id|dscc4_patch_register
@@ -5040,7 +5057,7 @@ op_plus
 id|SCC_REG_START
 c_func
 (paren
-id|dpriv-&gt;dev_id
+id|dpriv
 )paren
 suffix:semicolon
 id|state
@@ -5192,7 +5209,7 @@ op_plus
 id|SCC_REG_START
 c_func
 (paren
-id|dpriv-&gt;dev_id
+id|dpriv
 )paren
 suffix:semicolon
 id|dscc4_patch_register
@@ -5842,7 +5859,7 @@ op_plus
 id|SCC_REG_START
 c_func
 (paren
-id|dpriv-&gt;dev_id
+id|dpriv
 )paren
 op_plus
 id|ISR
@@ -6098,7 +6115,7 @@ op_plus
 id|SCC_REG_START
 c_func
 (paren
-id|dpriv-&gt;dev_id
+id|dpriv
 )paren
 suffix:semicolon
 id|scc_addr
@@ -6506,12 +6523,7 @@ op_plus
 id|cur
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Presume we&squot;re not facing a DMAC receiver reset. &n;&t;&t;&t; * As We use the rx size-filtering feature of the &n;&t;&t;&t; * DSCC4, the beginning of a new frame is waiting in &n;&t;&t;&t; * the rx fifo. I bet a Receive Data Overflow will &n;&t;&t;&t; * happen most of time but let&squot;s try and avoid it.&n;&t;&t;&t; * Btw (as for RDO) if one experiences ERR whereas&n;&t;&t;&t; * the system looks rather idle, there may be a &n;&t;&t;&t; * problem with latency. In this case, increasing&n;&t;&t;&t; * RX_RING_SIZE may help.&n;&t;&t;&t; */
-r_while
-c_loop
-(paren
-id|dpriv-&gt;rx_needs_refill
-)paren
-(brace
+singleline_comment|//while (dpriv-&gt;rx_needs_refill) {
 r_while
 c_loop
 (paren
@@ -6546,9 +6558,7 @@ op_assign
 id|dpriv-&gt;rx_fd
 suffix:semicolon
 )brace
-id|dpriv-&gt;rx_needs_refill
-op_decrement
-suffix:semicolon
+singleline_comment|//dpriv-&gt;rx_needs_refill--;
 id|try_get_rx_skb
 c_func
 (paren
@@ -6581,7 +6591,7 @@ id|rx_fd-&gt;end
 op_assign
 l_int|0xbabeface
 suffix:semicolon
-)brace
+singleline_comment|//}
 r_goto
 r_try
 suffix:semicolon
@@ -6811,7 +6821,7 @@ op_plus
 id|SCC_REG_START
 c_func
 (paren
-id|dpriv-&gt;dev_id
+id|dpriv
 )paren
 suffix:semicolon
 id|writel
