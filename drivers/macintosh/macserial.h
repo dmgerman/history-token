@@ -2,6 +2,7 @@ multiline_comment|/*&n; * macserial.h: Definitions for the Macintosh Z8530 seria
 macro_line|#ifndef _MACSERIAL_H
 DECL|macro|_MACSERIAL_H
 mdefine_line|#define _MACSERIAL_H
+macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|macro|NUM_ZSREGS
 mdefine_line|#define NUM_ZSREGS    16
 DECL|struct|serial_struct
@@ -232,6 +233,10 @@ r_struct
 id|device_node
 op_star
 id|dev_node
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
 DECL|member|soft_carrier
 r_char
