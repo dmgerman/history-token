@@ -9837,6 +9837,8 @@ id|prev_jiffy
 op_plus
 id|HZ
 )paren
+op_logical_and
+id|prev_jiffy
 )paren
 r_return
 suffix:semicolon

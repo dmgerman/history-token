@@ -1965,6 +1965,8 @@ c_cond
 id|frag-&gt;sk
 op_eq
 l_int|NULL
+op_logical_and
+id|skb-&gt;sk
 )paren
 r_goto
 id|slow_path

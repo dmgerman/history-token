@@ -1630,6 +1630,9 @@ r_if
 c_cond
 (paren
 id|current_is_kswapd
+c_func
+(paren
+)paren
 )paren
 id|mod_page_state
 c_func

@@ -372,6 +372,11 @@ comma
 id|mask
 )paren
 suffix:semicolon
+id|rtnl_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -386,6 +391,11 @@ OL
 l_int|0
 )paren
 (brace
+id|rtnl_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -401,6 +411,11 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|rtnl_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|netdev_boot_setup_check
 c_func

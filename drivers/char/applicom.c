@@ -865,6 +865,12 @@ dot
 id|start
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -934,6 +940,12 @@ c_func
 id|RamIO
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -970,6 +982,12 @@ id|iounmap
 c_func
 (paren
 id|RamIO
+)paren
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 id|apbs
@@ -1058,34 +1076,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Now try the specified ISA cards */
-macro_line|#warning &quot;LEAK&quot;
-id|RamIO
-op_assign
-id|ioremap
-c_func
-(paren
-id|mem
-comma
-id|LEN_RAM_IO
-op_star
-id|MAX_ISA_BOARD
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|RamIO
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;ac.o: Failed to ioremap ISA memory space at 0x%lx&bslash;n&quot;
-comma
-id|mem
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1257,6 +1247,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_else
 id|apbs
 (braket
 id|boardno
