@@ -1372,13 +1372,6 @@ suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_PCI*/
 macro_line|#ifdef CONFIG_ACPI
 r_int
-id|acpi_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
 id|acpi_blacklisted
 c_func
 (paren

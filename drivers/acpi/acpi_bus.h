@@ -11,6 +11,10 @@ macro_line|#endif
 macro_line|#include &quot;include/acpi.h&quot;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
+r_extern
+r_int
+id|acpi_disabled
+suffix:semicolon
 multiline_comment|/* TBD: Make dynamic */
 DECL|macro|ACPI_MAX_HANDLES
 mdefine_line|#define ACPI_MAX_HANDLES&t;10
@@ -1009,18 +1013,6 @@ r_struct
 id|acpi_device
 op_star
 id|device
-)paren
-suffix:semicolon
-r_int
-id|acpi_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|acpi_exit
-(paren
-r_void
 )paren
 suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_BUS*/
