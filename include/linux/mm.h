@@ -328,12 +328,6 @@ id|atomic_t
 id|count
 suffix:semicolon
 multiline_comment|/* Usage count, see below. */
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-multiline_comment|/* -&gt;mapping has some page lists. */
 DECL|member|mapping
 r_struct
 id|address_space
