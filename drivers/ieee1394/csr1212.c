@@ -5712,6 +5712,16 @@ id|kvi-&gt;data
 id|i
 )braket
 suffix:semicolon
+multiline_comment|/* Some devices put null entries in their unit&n;&t;&t;&t; * directories.  If we come across such and entry,&n;&t;&t;&t; * then skip it. */
+r_if
+c_cond
+(paren
+id|ki
+op_eq
+l_int|0x0
+)paren
+r_continue
+suffix:semicolon
 id|ret
 op_assign
 id|csr1212_parse_dir_entry
