@@ -583,12 +583,6 @@ op_star
 id|driver
 suffix:semicolon
 multiline_comment|/* which driver has allocated this device */
-DECL|member|driver_data
-r_void
-op_star
-id|driver_data
-suffix:semicolon
-multiline_comment|/* data private to the driver */
 DECL|member|dma_mask
 id|u64
 id|dma_mask
@@ -2990,7 +2984,7 @@ id|pdev
 )paren
 (brace
 r_return
-id|pdev-&gt;driver_data
+id|pdev-&gt;dev.driver_data
 suffix:semicolon
 )brace
 DECL|function|pci_set_drvdata
@@ -3009,7 +3003,7 @@ op_star
 id|data
 )paren
 (brace
-id|pdev-&gt;driver_data
+id|pdev-&gt;dev.driver_data
 op_assign
 id|data
 suffix:semicolon
