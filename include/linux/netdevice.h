@@ -650,12 +650,12 @@ r_int
 id|priv_flags
 suffix:semicolon
 multiline_comment|/* Like &squot;flags&squot; but invisible to userspace. */
-DECL|member|unused_alignment_fixer
+DECL|member|padded
 r_int
 r_int
-id|unused_alignment_fixer
+id|padded
 suffix:semicolon
-multiline_comment|/* Because we need priv_flags,&n;                                                         * and we want to be 32-bit aligned.&n;                                                         */
+multiline_comment|/* How much padding added by alloc_netdev() */
 DECL|member|mtu
 r_int
 id|mtu
@@ -1350,11 +1350,6 @@ DECL|member|class_dev
 r_struct
 id|class_device
 id|class_dev
-suffix:semicolon
-multiline_comment|/* how much padding had been added by alloc_netdev() */
-DECL|member|padded
-r_int
-id|padded
 suffix:semicolon
 )brace
 suffix:semicolon
