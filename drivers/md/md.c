@@ -14339,7 +14339,10 @@ r_if
 c_cond
 (paren
 id|j
+OG
+l_int|2
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -14353,6 +14356,11 @@ id|mddev
 )paren
 )paren
 suffix:semicolon
+id|mddev-&gt;curr_resync
+op_assign
+id|j
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
@@ -14725,7 +14733,7 @@ OG
 l_int|2
 op_logical_and
 id|mddev-&gt;curr_resync
-OG
+op_ge
 id|mddev-&gt;recovery_cp
 )paren
 (brace
