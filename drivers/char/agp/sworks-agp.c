@@ -2084,8 +2084,8 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;agpgart: Detected a Serverworks &quot;
-l_string|&quot;Chipset, but could not find the secondary device.&bslash;n&quot;
+l_string|&quot;Detected a Serverworks chipset &quot;
+l_string|&quot;but could not find the secondary device.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
