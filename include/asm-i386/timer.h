@@ -51,5 +51,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* Modifiers for buggy PIT handling */
+r_extern
+r_int
+id|pit_latch_buggy
+suffix:semicolon
 macro_line|#endif
 eof
