@@ -379,7 +379,6 @@ r_void
 )paren
 suffix:semicolon
 r_void
-id|__exit
 id|hiddev_exit
 c_func
 (paren
