@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Extensible Firmware Interface&n; *&n; * Based on Extensible Firmware Interface Specification version 0.9 April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999-2003 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * All EFI Runtime Services are not implemented yet as EFI only&n; * supports physical mode addressing on SoftSDV. This is to be fixed&n; * in a future version.  --drummond 1999-07-20&n; *&n; * Implemented EFI runtime services and virtual mode calls.  --davidm&n; *&n; * Goutham Rao: &lt;goutham.rao@intel.com&gt;&n; *&t;Skip non-WB memory and ignore empty memory ranges.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -30,6 +31,13 @@ r_struct
 id|efi
 id|efi
 suffix:semicolon
+DECL|variable|efi
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|efi
+)paren
+suffix:semicolon
 DECL|variable|runtime
 r_static
 id|efi_runtime_services_t
@@ -43,6 +51,13 @@ r_struct
 id|proc_dir_entry
 op_star
 id|efi_dir
+suffix:semicolon
+DECL|variable|efi_dir
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|efi_dir
+)paren
 suffix:semicolon
 macro_line|#endif
 DECL|variable|mem_limit

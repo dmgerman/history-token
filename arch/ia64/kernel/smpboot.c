@@ -2,6 +2,7 @@ multiline_comment|/*&n; * SMP boot-related support&n; *&n; * Copyright (C) 1998-
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -106,9 +107,23 @@ DECL|variable|cpu_online_map
 id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
+DECL|variable|cpu_online_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_online_map
+)paren
+suffix:semicolon
 DECL|variable|phys_cpu_present_map
 id|cpumask_t
 id|phys_cpu_present_map
+suffix:semicolon
+DECL|variable|phys_cpu_present_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|phys_cpu_present_map
+)paren
 suffix:semicolon
 multiline_comment|/* which logical CPU number maps to which CPU (physical APIC ID) */
 DECL|variable|ia64_cpu_to_sapicid
@@ -118,6 +133,13 @@ id|ia64_cpu_to_sapicid
 (braket
 id|NR_CPUS
 )braket
+suffix:semicolon
+DECL|variable|ia64_cpu_to_sapicid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_cpu_to_sapicid
+)paren
 suffix:semicolon
 DECL|variable|cpu_callin_map
 r_static
@@ -1510,6 +1532,13 @@ id|cpu_to_node_map
 id|NR_CPUS
 )braket
 id|__cacheline_aligned
+suffix:semicolon
+DECL|variable|cpu_to_node_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_to_node_map
+)paren
 suffix:semicolon
 multiline_comment|/* which logical CPUs are on which nodes */
 DECL|variable|__cacheline_aligned
