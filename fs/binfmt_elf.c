@@ -4749,7 +4749,7 @@ op_star
 id|vma
 )paren
 (brace
-multiline_comment|/* Do not dump I/O mapped devices, shared memory, or special mappings */
+multiline_comment|/* Do not dump I/O mapped devices or special mappings */
 r_if
 c_cond
 (paren
@@ -4758,12 +4758,23 @@ op_amp
 (paren
 id|VM_IO
 op_or
-id|VM_SHARED
-op_or
 id|VM_RESERVED
 )paren
 )paren
 r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* Dump shared memory only if mapped from an anonymous file.  */
+r_if
+c_cond
+(paren
+id|vma-&gt;vm_flags
+op_amp
+id|VM_SHARED
+)paren
+r_return
+id|vma-&gt;vm_file-&gt;f_dentry-&gt;d_inode-&gt;i_nlink
+op_eq
 l_int|0
 suffix:semicolon
 multiline_comment|/* If it hasn&squot;t been written to, don&squot;t write it out */
