@@ -2564,7 +2564,7 @@ op_amp
 id|regs-&gt;CAMADDR
 )paren
 suffix:semicolon
-multiline_comment|/* Select CAM mask */
+multiline_comment|/* Select mar */
 id|BYTE_REG_BITS_SET
 c_func
 (paren
@@ -2746,7 +2746,7 @@ op_amp
 id|regs-&gt;CAMADDR
 )paren
 suffix:semicolon
-multiline_comment|/* Select CAM mask */
+multiline_comment|/* Select mar */
 id|BYTE_REG_BITS_SET
 c_func
 (paren
@@ -2934,7 +2934,7 @@ op_amp
 id|regs-&gt;CAMADDR
 )paren
 suffix:semicolon
-multiline_comment|/* Select CAM mask */
+multiline_comment|/* Select mar */
 id|BYTE_REG_BITS_SET
 c_func
 (paren

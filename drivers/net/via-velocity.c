@@ -1598,7 +1598,7 @@ id|regs
 op_assign
 id|vptr-&gt;mac_regs
 suffix:semicolon
-multiline_comment|/* T urn on MCFG_PQEN, turn off MCFG_RTGOPT */
+multiline_comment|/* Turn on MCFG_PQEN, turn off MCFG_RTGOPT */
 id|WORD_REG_BITS_SET
 c_func
 (paren
@@ -2125,7 +2125,7 @@ op_amp
 id|regs-&gt;WOLCFGSet
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *&t;Bback off algorithm use original IEEE standard&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *&t;Back off algorithm use original IEEE standard&n;&t;&t; */
 id|BYTE_REG_BITS_SET
 c_func
 (paren
@@ -4046,7 +4046,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;velocity_free_rd_ring&t;-&t;set up receive ring&n; *&t;@vptr: velocity to clean up&n; *&n; *&t;Free the receive buffers for each ring slot and any&n; *&t;attached socket buffers that need to go away.&n; */
+multiline_comment|/**&n; *&t;velocity_free_rd_ring&t;-&t;free receive ring&n; *&t;@vptr: velocity to clean up&n; *&n; *&t;Free the receive buffers for each ring slot and any&n; *&t;attached socket buffers that need to go away.&n; */
 DECL|function|velocity_free_rd_ring
 r_static
 r_void
