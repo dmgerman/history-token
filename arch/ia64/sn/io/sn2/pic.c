@@ -42,12 +42,6 @@ id|count
 suffix:semicolon
 DECL|macro|PCI_BUS_NO_1
 mdefine_line|#define PCI_BUS_NO_1 1
-DECL|variable|pic_devflag
-r_int
-id|pic_devflag
-op_assign
-id|D_MP
-suffix:semicolon
 r_extern
 r_int
 id|pcibr_attach2

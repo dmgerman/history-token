@@ -7,7 +7,6 @@ macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;&t;&t;/* for copy_??_user */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#ifdef CONFIG_HWGFS_FS
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/sn/hwgfs.h&gt;
 DECL|typedef|vertex_hdl_t
@@ -15,13 +14,6 @@ r_typedef
 id|hwgfs_handle_t
 id|vertex_hdl_t
 suffix:semicolon
-macro_line|#else
-DECL|typedef|vertex_hdl_t
-r_typedef
-id|devfs_handle_t
-id|vertex_hdl_t
-suffix:semicolon
-macro_line|#endif
 DECL|typedef|__psint_t
 r_typedef
 r_int64
@@ -40,10 +32,6 @@ id|B_TRUE
 )brace
 id|boolean_t
 suffix:semicolon
-DECL|macro|ctob
-mdefine_line|#define ctob(x)&t;&t;&t;((uint64_t)(x)*NBPC)
-DECL|macro|btoc
-mdefine_line|#define btoc(x)&t;&t;&t;(((uint64_t)(x)+(NBPC-1))/NBPC)
 multiline_comment|/*&n;** Possible return values from graph routines.&n;*/
 DECL|enum|graph_error_e
 r_typedef
@@ -102,24 +90,10 @@ DECL|macro|NBPP
 mdefine_line|#define NBPP PAGE_SIZE
 DECL|macro|_PAGESZ
 mdefine_line|#define _PAGESZ PAGE_SIZE
-macro_line|#ifndef D_MP
-DECL|macro|D_MP
-mdefine_line|#define D_MP 1
-macro_line|#endif
 macro_line|#ifndef MAXDEVNAME
 DECL|macro|MAXDEVNAME
 mdefine_line|#define MAXDEVNAME 256
 macro_line|#endif
-macro_line|#ifndef NBPC
-DECL|macro|NBPC
-mdefine_line|#define NBPC 0
-macro_line|#endif
-DECL|typedef|mrlock_t
-r_typedef
-r_uint64
-id|mrlock_t
-suffix:semicolon
-multiline_comment|/* needed by devsupport.c */
 DECL|macro|HUB_PIO_CONVEYOR
 mdefine_line|#define HUB_PIO_CONVEYOR 0x1
 DECL|macro|CNODEID_NONE
@@ -132,12 +106,6 @@ DECL|macro|COPYIN
 mdefine_line|#define COPYIN(a, b, c)&t;&t;copy_from_user(b,a,c)
 DECL|macro|COPYOUT
 mdefine_line|#define COPYOUT(a, b, c)&t;copy_to_user(b,a,c)
-DECL|macro|kvtophys
-mdefine_line|#define kvtophys(x)&t;&t;(alenaddr_t) (x)
-DECL|macro|POFFMASK
-mdefine_line|#define POFFMASK&t;&t;(NBPP - 1)
-DECL|macro|poff
-mdefine_line|#define poff(X)&t;&t;&t;((__psunsigned_t)(X) &amp; POFFMASK)
 DECL|macro|BZERO
 mdefine_line|#define BZERO(a,b)&t;&t;memset(a, 0, b)
 DECL|macro|kern_malloc
@@ -288,22 +256,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/******************************************&n; * Definitions that do not exist in linux *&n; ******************************************/
-DECL|typedef|cred_t
-r_typedef
-r_int
-id|cred_t
-suffix:semicolon
-multiline_comment|/* This is for compilation reasons */
-DECL|struct|cred
-DECL|member|x
-r_struct
-id|cred
-(brace
-r_int
-id|x
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|macro|DELAY
 mdefine_line|#define DELAY(a)
 multiline_comment|/************************************************&n; * Routines redefined to use linux equivalents. *&n; ************************************************/

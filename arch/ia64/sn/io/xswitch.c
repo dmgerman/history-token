@@ -15,12 +15,6 @@ DECL|macro|NEW
 mdefine_line|#define&t;NEW(ptr)&t;(ptr = kmalloc(sizeof (*(ptr)), GFP_KERNEL))
 DECL|macro|DEL
 mdefine_line|#define&t;DEL(ptr)&t;(kfree(ptr))
-DECL|variable|xswitch_devflag
-r_int
-id|xswitch_devflag
-op_assign
-id|D_MP
-suffix:semicolon
 multiline_comment|/*&n; * This file provides generic support for Crosstalk&n; * Switches, in a way that insulates crosstalk providers&n; * from specifics about the switch chips being used.&n; */
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 DECL|macro|DEV_FUNC

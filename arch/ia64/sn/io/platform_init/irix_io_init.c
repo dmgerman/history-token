@@ -7,7 +7,6 @@ macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
-macro_line|#include &lt;asm/sn/pci/pciba.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/sn/simulator.h&gt;
 r_extern
