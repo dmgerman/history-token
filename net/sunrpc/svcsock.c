@@ -2205,6 +2205,11 @@ id|skb
 )paren
 (brace
 multiline_comment|/* we have to copy */
+id|local_bh_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2218,6 +2223,11 @@ id|skb
 )paren
 )paren
 (brace
+id|local_bh_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* checksum error */
 id|skb_free_datagram
 c_func
@@ -2237,6 +2247,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|local_bh_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|skb_free_datagram
 c_func
 (paren
