@@ -432,20 +432,10 @@ id|byte
 )paren
 suffix:semicolon
 multiline_comment|/* Wait at least 10ms: fake wait_until_sent - 10 bits at 9600 baud*/
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|msecs_to_jiffies
+id|msleep
 c_func
 (paren
 l_int|15
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* old ma600 uses 15ms */
@@ -528,20 +518,10 @@ id|TRUE
 )paren
 suffix:semicolon
 multiline_comment|/* Wait at least 10ms */
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|msecs_to_jiffies
+id|msleep
 c_func
 (paren
 l_int|10
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* dongle is now switched to the new speed */
@@ -587,20 +567,10 @@ comma
 id|TRUE
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|msecs_to_jiffies
+id|msleep
 c_func
 (paren
 l_int|10
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Go back to normal mode */
@@ -614,20 +584,10 @@ comma
 id|TRUE
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|msecs_to_jiffies
+id|msleep
 c_func
 (paren
 l_int|10
-)paren
 )paren
 suffix:semicolon
 id|dev-&gt;speed
