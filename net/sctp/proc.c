@@ -757,7 +757,7 @@ id|sk
 op_member_access_from_pointer
 id|type
 comma
-id|sk-&gt;state
+id|sk-&gt;sk_state
 comma
 id|hash
 comma
@@ -1040,7 +1040,7 @@ id|sk
 op_member_access_from_pointer
 id|type
 comma
-id|sk-&gt;state
+id|sk-&gt;sk_state
 comma
 id|assoc-&gt;state
 comma
