@@ -501,6 +501,12 @@ suffix:semicolon
 r_case
 id|ask_all
 suffix:colon
+id|fflush
+c_func
+(paren
+id|stdout
+)paren
+suffix:semicolon
 id|fgets
 c_func
 (paren
@@ -1844,7 +1850,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|strncmp
+id|strncasecmp
 c_func
 (paren
 id|line

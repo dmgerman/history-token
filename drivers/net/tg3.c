@@ -11525,7 +11525,7 @@ comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-id|dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|rxp-&gt;skb
@@ -11589,7 +11589,7 @@ comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-id|dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|rxp-&gt;skb
@@ -11653,7 +11653,7 @@ comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-id|dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|rxp-&gt;skb

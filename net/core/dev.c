@@ -122,11 +122,15 @@ r_struct
 id|timer_list
 id|samp_timer
 op_assign
-(brace
-id|function
-suffix:colon
+id|TIMER_INITIALIZER
+c_func
+(paren
 id|sample_queue
-)brace
+comma
+l_int|0
+comma
+l_int|0
+)paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_HOTPLUG

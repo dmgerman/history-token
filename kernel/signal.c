@@ -47,8 +47,15 @@ macro_line|#else
 DECL|macro|M_SIGEMT
 mdefine_line|#define M_SIGEMT&t;0
 macro_line|#endif
+macro_line|#if SIGRTMIN &gt; BITS_PER_LONG
+DECL|macro|M
+mdefine_line|#define M(sig) (1ULL &lt;&lt; (sig))
+macro_line|#else
 DECL|macro|M
 mdefine_line|#define M(sig) (1UL &lt;&lt; (sig))
+macro_line|#endif
+DECL|macro|T
+mdefine_line|#define T(sig, mask) (M(sig) &amp; mask)
 DECL|macro|SIG_USER_SPECIFIC_MASK
 mdefine_line|#define SIG_USER_SPECIFIC_MASK (&bslash;&n;&t;M(SIGILL)    |  M(SIGTRAP)   |  M(SIGABRT)   |  M(SIGBUS)    | &bslash;&n;&t;M(SIGFPE)    |  M(SIGSEGV)   |  M(SIGPIPE)   |  M(SIGXFSZ)   | &bslash;&n;&t;M(SIGPROF)   |  M(SIGSYS)    |  M_SIGSTKFLT  |  M(SIGCONT)   | &bslash;&n;        M_SIGEMT )
 DECL|macro|SIG_USER_LOAD_BALANCE_MASK
@@ -61,8 +68,6 @@ DECL|macro|SIG_KERNEL_ONLY_MASK
 mdefine_line|#define SIG_KERNEL_ONLY_MASK (&bslash;&n;&t;M(SIGKILL)   |  M(SIGSTOP)                                   )
 DECL|macro|SIG_KERNEL_COREDUMP_MASK
 mdefine_line|#define SIG_KERNEL_COREDUMP_MASK (&bslash;&n;        M(SIGQUIT)   |  M(SIGILL)    |  M(SIGTRAP)   |  M(SIGABRT)   | &bslash;&n;        M(SIGFPE)    |  M(SIGSEGV)   |  M(SIGBUS)    |  M(SIGSYS)    | &bslash;&n;        M(SIGXCPU)   |  M(SIGXFSZ)   |  M_SIGEMT                     )
-DECL|macro|T
-mdefine_line|#define T(sig, mask) &bslash;&n;&t;((1UL &lt;&lt; (sig)) &amp; mask)
 DECL|macro|sig_user_specific
 mdefine_line|#define sig_user_specific(sig) &bslash;&n;&t;&t;(((sig) &lt; SIGRTMIN)  &amp;&amp; T(sig, SIG_USER_SPECIFIC_MASK))
 DECL|macro|sig_user_load_balance

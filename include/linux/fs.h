@@ -3420,12 +3420,12 @@ r_struct
 id|file
 op_star
 comma
+r_const
 r_struct
 id|iovec
 op_star
 comma
 r_int
-comma
 r_int
 comma
 id|loff_t
@@ -3447,7 +3447,6 @@ id|iovec
 op_star
 comma
 r_int
-comma
 r_int
 comma
 id|loff_t

@@ -112,7 +112,7 @@ id|NR_KEYS
 )braket
 suffix:semicolon
 DECL|macro|DEFAULT_KEYB_OPS
-mdefine_line|#define DEFAULT_KEYB_OPS &bslash;&n;&t;setkeycode:&t;def_setkeycode,&t;&bslash;&n;&t;getkeycode:&t;def_getkeycode, &bslash;&n;&t;translate:&t;def_translate, &bslash;&n;&t;unexpected_up:&t;def_unexpected_up, &bslash;&n;&t;leds:&t;&t;def_leds, &bslash;&n;&t;init_hw:&t;def_init_hw, &bslash;&n;&t;sysrq_key:&t;0xff, &bslash;&n;&t;sysrq_xlate:&t;def_sysrq_xlate,
+mdefine_line|#define DEFAULT_KEYB_OPS &bslash;&n;&t;.setkeycode&t;= def_setkeycode,&t;&bslash;&n;&t;.getkeycode&t;= def_getkeycode, &bslash;&n;&t;.translate&t;= def_translate, &bslash;&n;&t;.unexpected_up&t;= def_unexpected_up, &bslash;&n;&t;.leds&t;&t;= def_leds, &bslash;&n;&t;.init_hw&t;= def_init_hw, &bslash;&n;&t;.sysrq_key&t;= 0xff, &bslash;&n;&t;.sysrq_xlate&t;= def_sysrq_xlate,
 DECL|variable|def_kbd_ops
 r_static
 r_struct

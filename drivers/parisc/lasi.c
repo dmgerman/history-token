@@ -365,7 +365,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* switch() */
 id|register_led_driver
 c_func
 (paren
@@ -698,16 +697,19 @@ id|parisc_driver
 id|lasi_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Lasi&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|lasi_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|lasi_init_chip
 comma
 )brace

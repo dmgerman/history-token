@@ -6,28 +6,28 @@ mdefine_line|#define __ASM_IBM4XX_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_40x
 macro_line|#if defined(CONFIG_ASH)
-macro_line|#include &lt;platforms/ash.h&gt;
+macro_line|#include &lt;platforms/4xx/ash.h&gt;
 macro_line|#endif
 macro_line|#if defined (CONFIG_CEDER)
-macro_line|#include &lt;platforms/ceder.h&gt;
+macro_line|#include &lt;platforms/4xx/ceder.h&gt;
 macro_line|#endif
 macro_line|#if defined(CONFIG_CPCI405)
-macro_line|#include &lt;platforms/cpci405.h&gt;
+macro_line|#include &lt;platforms/4xx/cpci405.h&gt;
 macro_line|#endif
 macro_line|#if defined(CONFIG_EP405)
-macro_line|#include &lt;platforms/ep405.h&gt;
+macro_line|#include &lt;platforms/4xx/ep405.h&gt;
 macro_line|#endif
 macro_line|#if defined(CONFIG_OAK)
-macro_line|#include &lt;platforms/oak.h&gt;
+macro_line|#include &lt;platforms/4xx/oak.h&gt;
 macro_line|#endif
 macro_line|#if defined(CONFIG_REDWOOD_4)
-macro_line|#include &lt;platforms/redwood.h&gt;
+macro_line|#include &lt;platforms/4xx/redwood.h&gt;
 macro_line|#endif
 macro_line|#if defined(CONFIG_REDWOOD_5)
-macro_line|#include &lt;platforms/redwood5.h&gt;
+macro_line|#include &lt;platforms/4xx/redwood5.h&gt;
 macro_line|#endif
 macro_line|#if defined(CONFIG_WALNUT)
-macro_line|#include &lt;platforms/walnut.h&gt;
+macro_line|#include &lt;platforms/4xx/walnut.h&gt;
 macro_line|#endif
 macro_line|#ifndef PPC4xx_MACHINE_NAME
 DECL|macro|PPC4xx_MACHINE_NAME

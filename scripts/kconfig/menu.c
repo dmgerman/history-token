@@ -1456,7 +1456,7 @@ id|name
 )paren
 id|name
 op_assign
-l_string|&quot;..config.cmd&quot;
+l_string|&quot;.config.cmd&quot;
 suffix:semicolon
 id|out
 op_assign

@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;platforms/ibm405gp.h&gt;
+macro_line|#include &lt;platforms/4xx/ibm405gp.h&gt;
 DECL|variable|PCIL_ADDR
 r_const
 r_struct

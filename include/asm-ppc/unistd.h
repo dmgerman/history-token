@@ -470,6 +470,16 @@ DECL|macro|__NR_free_hugepages
 mdefine_line|#define __NR_free_hugepages&t;233
 DECL|macro|__NR_exit_group
 mdefine_line|#define __NR_exit_group&t;&t;234
+DECL|macro|__NR_lookup_dcookie
+mdefine_line|#define __NR_lookup_dcookie&t;235
+DECL|macro|__NR_sys_epoll_create
+mdefine_line|#define __NR_sys_epoll_create&t;236
+DECL|macro|__NR_sys_epoll_ctl
+mdefine_line|#define __NR_sys_epoll_ctl&t;237
+DECL|macro|__NR_sys_epoll_wait
+mdefine_line|#define __NR_sys_epoll_wait&t;238
+DECL|macro|__NR_remap_file_pages
+mdefine_line|#define __NR_remap_file_pages&t;239
 DECL|macro|__NR
 mdefine_line|#define __NR(n)&t;#n
 DECL|macro|__syscall_return

@@ -73,12 +73,14 @@ id|resource
 id|data_resource
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Kernel data&quot;
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|IORESOURCE_BUSY
 op_or
 id|IORESOURCE_MEM
@@ -92,12 +94,14 @@ id|resource
 id|code_resource
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Kernel code&quot;
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|IORESOURCE_BUSY
 op_or
 id|IORESOURCE_MEM
@@ -111,20 +115,24 @@ id|resource
 id|pdcdata_resource
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;PDC data (Page Zero)&quot;
 comma
+dot
 id|start
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|end
-suffix:colon
+op_assign
 l_int|0x9ff
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|IORESOURCE_BUSY
 op_or
 id|IORESOURCE_MEM
