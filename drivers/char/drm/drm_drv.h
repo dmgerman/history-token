@@ -2395,7 +2395,7 @@ suffix:semicolon
 multiline_comment|/* SHM removed */
 id|dev-&gt;lock.filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|wake_up_interruptible
 c_func

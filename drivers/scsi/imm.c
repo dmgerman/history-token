@@ -3199,7 +3199,7 @@ id|flags
 suffix:semicolon
 id|dev-&gt;cur_cmd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|cmd
 op_member_access_from_pointer

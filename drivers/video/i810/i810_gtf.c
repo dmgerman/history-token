@@ -1825,7 +1825,7 @@ id|wm_info
 op_star
 id|wmark
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|u32
 id|i

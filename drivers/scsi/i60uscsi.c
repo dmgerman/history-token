@@ -2906,7 +2906,7 @@ l_int|0
 suffix:semicolon
 id|pVirEscb-&gt;SCB_Srb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pVirEscb-&gt;SCB_Srb
 op_assign

@@ -6894,7 +6894,7 @@ l_string|&quot;fb&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|fbmem_read_proc
 comma

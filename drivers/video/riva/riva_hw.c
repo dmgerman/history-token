@@ -6599,7 +6599,7 @@ id|FIFO
 suffix:semicolon
 id|chip-&gt;Tri03
 op_assign
-l_int|0L
+l_int|NULL
 suffix:semicolon
 id|chip-&gt;Tri05
 op_assign
@@ -6644,7 +6644,7 @@ id|FIFO
 suffix:semicolon
 id|chip-&gt;Tri03
 op_assign
-l_int|0L
+l_int|NULL
 suffix:semicolon
 id|chip-&gt;Tri05
 op_assign
@@ -6813,7 +6813,7 @@ id|PGRAPH
 suffix:semicolon
 id|chip-&gt;Tri03
 op_assign
-l_int|0L
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -6840,7 +6840,7 @@ id|PGRAPH
 suffix:semicolon
 id|chip-&gt;Tri03
 op_assign
-l_int|0L
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -7089,7 +7089,7 @@ id|PGRAPH
 suffix:semicolon
 id|chip-&gt;Tri03
 op_assign
-l_int|0L
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -7116,7 +7116,7 @@ id|PGRAPH
 suffix:semicolon
 id|chip-&gt;Tri03
 op_assign
-l_int|0L
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -7366,7 +7366,7 @@ id|PGRAPH
 suffix:semicolon
 id|chip-&gt;Tri03
 op_assign
-l_int|0L
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -7393,7 +7393,7 @@ id|PGRAPH
 suffix:semicolon
 id|chip-&gt;Tri03
 op_assign
-l_int|0L
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon

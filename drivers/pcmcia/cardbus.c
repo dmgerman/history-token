@@ -256,7 +256,7 @@ l_int|NULL
 suffix:semicolon
 id|s-&gt;cb_cis_res
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
