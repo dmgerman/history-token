@@ -3357,7 +3357,7 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
-id|memcpy
+id|strncpy
 c_func
 (paren
 id|buf
