@@ -78,7 +78,7 @@ DECL|macro|EHCI_ASYNC_JIFFIES
 mdefine_line|#define EHCI_ASYNC_JIFFIES&t;(HZ/20)&t;&t;/* async idle timeout */
 DECL|macro|EHCI_SHRINK_JIFFIES
 mdefine_line|#define EHCI_SHRINK_JIFFIES&t;(HZ/200)&t;/* async qh unlink delay */
-multiline_comment|/* Initial IRQ latency:  lower than default */
+multiline_comment|/* Initial IRQ latency:  faster than hw default */
 DECL|variable|log2_irq_thresh
 r_static
 r_int
@@ -101,6 +101,30 @@ id|MODULE_PARM_DESC
 id|log2_irq_thresh
 comma
 l_string|&quot;log2 IRQ latency, 1-64 microframes&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* initial park setting:  slower than hw default */
+DECL|variable|park
+r_static
+r_int
+id|park
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
+(paren
+id|park
+comma
+id|uint
+comma
+id|S_IRUGO
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|park
+comma
+l_string|&quot;park setting; 1-3 back-to-back async packets&quot;
 )paren
 suffix:semicolon
 DECL|macro|INTR_MASK
@@ -1519,16 +1543,6 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/* clear interrupt enables, set irq latency */
-id|temp
-op_assign
-id|readl
-(paren
-op_amp
-id|ehci-&gt;regs-&gt;command
-)paren
-op_amp
-l_int|0x0fff
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1541,7 +1555,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|temp
-op_or_assign
+op_assign
 l_int|1
 op_lshift
 (paren
@@ -1550,7 +1564,56 @@ op_plus
 id|log2_irq_thresh
 )paren
 suffix:semicolon
-singleline_comment|// if hc can park (ehci &gt;= 0.96), default is 3 packets per async QH 
+r_if
+c_cond
+(paren
+id|HCC_CANPARK
+c_func
+(paren
+id|hcc_params
+)paren
+)paren
+(brace
+multiline_comment|/* HW default park == 3, on hardware that supports it (like&n;&t;&t; * NVidia and ALI silicon), maximizes throughput on the async&n;&t;&t; * schedule by avoiding QH fetches between transfers.&n;&t;&t; *&n;&t;&t; * With fast usb storage devices and NForce2, &quot;park&quot; seems to&n;&t;&t; * make problems:  throughput reduction (!), data errors...&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|park
+)paren
+(brace
+id|park
+op_assign
+id|min
+(paren
+id|park
+comma
+(paren
+r_int
+)paren
+l_int|3
+)paren
+suffix:semicolon
+id|temp
+op_or_assign
+id|CMD_PARK
+suffix:semicolon
+id|temp
+op_or_assign
+id|park
+op_lshift
+l_int|8
+suffix:semicolon
+)brace
+id|ehci_info
+(paren
+id|ehci
+comma
+l_string|&quot;park %d&bslash;n&quot;
+comma
+id|park
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1619,17 +1682,6 @@ id|BUG
 suffix:semicolon
 )brace
 )brace
-id|temp
-op_and_assign
-op_complement
-(paren
-id|CMD_IAAD
-op_or
-id|CMD_ASE
-op_or
-id|CMD_PSE
-)paren
-comma
 singleline_comment|// Philips, Intel, and maybe others need CMD_RUN before the
 singleline_comment|// root hub will detect new devices (why?); NEC doesn&squot;t
 id|temp
