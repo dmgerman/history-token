@@ -48,7 +48,7 @@ macro_line|# define __chk_user_ptr(x) (void)0
 DECL|macro|__chk_io_ptr
 macro_line|# define __chk_io_ptr(x) (void)0
 DECL|macro|__builtin_warning
-mdefine_line|#define __builtin_warning(x, ...) (1)
+macro_line|# define __builtin_warning(x, y...) (1)
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
