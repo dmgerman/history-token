@@ -6,9 +6,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
-r_struct
-id|free_pte_ctx
-suffix:semicolon
 r_static
 r_inline
 r_void
@@ -16,7 +13,7 @@ id|tlb_flush
 c_func
 (paren
 r_struct
-id|free_pte_ctx
+id|mmu_gather
 op_star
 id|tlb
 )paren
@@ -241,7 +238,7 @@ id|tlb_flush
 c_func
 (paren
 r_struct
-id|free_pte_ctx
+id|mmu_gather
 op_star
 id|tlb
 )paren
