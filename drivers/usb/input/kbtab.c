@@ -4,6 +4,8 @@ macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;asm/unaligned.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/*&n; * Version Information&n; * v0.0.1 - Original, extremely basic version, 2.4.xx only&n; * v0.0.2 - Updated, works with 2.5.62 and 2.4.20;&n; *           - added pressure-threshold modules param code from&n; *              Alex Perry &lt;alex.perry@ieee.org&gt;&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v0.0.2&quot;
@@ -221,35 +223,43 @@ suffix:semicolon
 )brace
 id|kbtab-&gt;x
 op_assign
+id|le16_to_cpu
+c_func
 (paren
-id|data
-(braket
-l_int|2
-)braket
-op_lshift
-l_int|8
+id|get_unaligned
+c_func
+(paren
+(paren
+id|u16
+op_star
 )paren
-op_plus
+op_amp
 id|data
 (braket
 l_int|1
 )braket
+)paren
+)paren
 suffix:semicolon
 id|kbtab-&gt;y
 op_assign
+id|le16_to_cpu
+c_func
 (paren
-id|data
-(braket
-l_int|4
-)braket
-op_lshift
-l_int|8
+id|get_unaligned
+c_func
+(paren
+(paren
+id|u16
+op_star
 )paren
-op_plus
+op_amp
 id|data
 (braket
 l_int|3
 )braket
+)paren
+)paren
 suffix:semicolon
 id|kbtab-&gt;pressure
 op_assign
@@ -461,10 +471,15 @@ comma
 id|GFP_KERNEL
 )paren
 )paren
+(brace
+id|kbtab-&gt;open
+op_decrement
+suffix:semicolon
 r_return
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -596,7 +611,7 @@ id|dev
 comma
 l_int|8
 comma
-id|SLAB_ATOMIC
+id|GFP_KERNEL
 comma
 op_amp
 id|kbtab-&gt;data_dma
