@@ -48,14 +48,20 @@ r_int
 id|m68k_pgtable_cachemode
 suffix:semicolon
 multiline_comment|/* This is the cache mode for normal pages, for supervisor access on&n; * processors &gt;= &squot;040. It is used in pte_mkcache(), and the variable is&n; * defined and initialized in head.S */
-macro_line|#if defined(CONFIG_060_WRITETHROUGH)
+macro_line|#if defined(CPU_M68060_ONLY) &amp;&amp; defined(CONFIG_060_WRITETHROUGH)
+DECL|macro|m68k_supervisor_cachemode
+mdefine_line|#define m68k_supervisor_cachemode _PAGE_CACHE040W
+macro_line|#elif defined(CPU_M68040_OR_M68060_ONLY)
+DECL|macro|m68k_supervisor_cachemode
+mdefine_line|#define m68k_supervisor_cachemode _PAGE_CACHE040
+macro_line|#elif defined(CPU_M68020_OR_M68030_ONLY)
+DECL|macro|m68k_supervisor_cachemode
+mdefine_line|#define m68k_supervisor_cachemode 0
+macro_line|#else
 r_extern
 r_int
 id|m68k_supervisor_cachemode
 suffix:semicolon
-macro_line|#else
-DECL|macro|m68k_supervisor_cachemode
-mdefine_line|#define m68k_supervisor_cachemode _PAGE_CACHE040
 macro_line|#endif
 macro_line|#if defined(CPU_M68040_OR_M68060_ONLY)
 DECL|macro|mm_cachebits
