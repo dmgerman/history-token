@@ -88,10 +88,6 @@ mdefine_line|#define E100_MAX_SCB_WAIT&t;100&t;/* Max udelays in wait_scb */
 DECL|macro|E100_MAX_CU_IDLE_WAIT
 mdefine_line|#define E100_MAX_CU_IDLE_WAIT&t;50&t;/* Max udelays in wait_cus_idle */
 multiline_comment|/* HWI feature related constant */
-DECL|macro|HWI_MAX_LOOP
-mdefine_line|#define HWI_MAX_LOOP                    100
-DECL|macro|MAX_SAME_RESULTS
-mdefine_line|#define MAX_SAME_RESULTS&t;&t;3
 DECL|macro|HWI_REGISTER_GRANULARITY
 mdefine_line|#define HWI_REGISTER_GRANULARITY        80&t;/* register granularity = 80 Cm */
 DECL|macro|HWI_NEAR_END_BOUNDARY
@@ -2372,13 +2368,6 @@ l_int|16
 )braket
 suffix:semicolon
 macro_line|#endif
-DECL|member|ifname
-r_char
-id|ifname
-(braket
-id|IFNAMSIZ
-)braket
-suffix:semicolon
 macro_line|#ifdef E100_CU_DEBUG&t;
 DECL|member|last_cmd
 id|u8

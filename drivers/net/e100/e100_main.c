@@ -1,6 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;*******************************************************************************/
 multiline_comment|/**********************************************************************&n;*                                                                     *&n;* INTEL CORPORATION                                                   *&n;*                                                                     *&n;* This software is supplied under the terms of the license included   *&n;* above.  All use of this driver must be in accordance with the terms *&n;* of that license.                                                    *&n;*                                                                     *&n;* Module Name:  e100_main.c                                           *&n;*                                                                     *&n;* Abstract:     Functions for the driver entry points like load,      *&n;*               unload, open and close. All board specific calls made *&n;*               by the network interface section of the driver.       *&n;*                                                                     *&n;* Environment:  This file is intended to be specific to the Linux     *&n;*               operating system.                                     *&n;*                                                                     *&n;**********************************************************************/
-multiline_comment|/* Change Log&n; * &n; * 2.2.21&t;02/11/03&n; * o Removed marketing brand strings. Instead, Using generic string &n; *   &quot;Intel(R) PRO/100 Network Connection&quot; for all adapters.&n; * o Implemented ethtool -S option&n; * o Strip /proc/net/PRO_LAN_Adapters files for kernel driver&n; * o Bug fix: Read wrong byte in EEPROM when offset is odd number&n; * o Bug fix: PHY loopback test fails on ICH devices&n; * o Bug fix: System panic on e100_close when repeating Hot Remove and &n; *   Add in a team&n; * o Bug fix: Linux Bonding driver claims adapter&squot;s link loss because of&n; *   not updating last_rx field&n; * o Bug fix: e100 does not check validity of MAC address&n; * o New feature: added ICH5 support&n; * &n; * 2.1.27&t;11/20/02&n; *   o Bug fix: Device command timeout due to SMBus processing during init&n; *   o Bug fix: Not setting/clearing I (Interrupt) bit in tcb correctly&n; *   o Bug fix: Not using EEPROM WoL setting as default in ethtool&n; *   o Bug fix: Not able to set autoneg on using ethtool when interface down&n; *   o Bug fix: Not able to change speed/duplex using ethtool/mii&n; *     when interface up&n; *   o Bug fix: Ethtool shows autoneg on when forced to 100/Full&n; *   o Bug fix: Compiler error when CONFIG_PROC_FS not defined&n; *   o Bug fix: 2.5.44 e100 doesn&squot;t load with preemptive kernel enabled&n; *     (sleep while holding spinlock)&n; *   o Bug fix: 2.1.24-k1 doesn&squot;t display complete statistics&n; *   o Bug fix: System panic due to NULL watchdog timer dereference during&n; *     ifconfig down, rmmod and insmod&n; *&n; * 2.1.24       10/7/02&n; */
+multiline_comment|/* Change Log&n; * &n; * 2.3.13       05/08/03&n; * o Feature remove: /proc/net/PRO_LAN_Adapters support gone completely&n; * o Feature remove: IDIAG support (use ethtool -t instead)&n; * o Cleanup: fixed spelling mistakes found by community&n; * o Feature add: ethtool cable diag test&n; * o Feature add: ethtool parameter support (ring size, xsum, flow ctrl)&n; * o Cleanup: move e100_asf_enable under CONFIG_PM to avoid warning&n; *   [Stephen Rothwell (sfr@canb.auug.org.au)]&n; * o Bug fix: don&squot;t call any netif_carrier_* until netdev registered.&n; *   [Andrew Morton (akpm@digeo.com)]&n; * o Cleanup: replace (skb-&gt;len - skb-&gt;data_len) with skb_headlen(skb)&n; *   [jmorris@intercode.com.au]&n; * o Bug fix: cleanup of Tx skbs after running ethtool diags&n; * o Bug fix: incorrect reporting of ethtool diag overall results&n; * o Bug fix: must hold xmit_lock before stopping queue in ethtool&n; *   operations that require reset h/w and driver structures.&n; * o Bug fix: statistic command failure would stop statistic collection.&n; * &n; * 2.2.21&t;02/11/03&n; * o Removed marketing brand strings. Instead, Using generic string &n; *   &quot;Intel(R) PRO/100 Network Connection&quot; for all adapters.&n; * o Implemented ethtool -S option&n; * o Strip /proc/net/PRO_LAN_Adapters files for kernel driver&n; * o Bug fix: Read wrong byte in EEPROM when offset is odd number&n; * o Bug fix: PHY loopback test fails on ICH devices&n; * o Bug fix: System panic on e100_close when repeating Hot Remove and &n; *   Add in a team&n; * o Bug fix: Linux Bonding driver claims adapter&squot;s link loss because of&n; *   not updating last_rx field&n; * o Bug fix: e100 does not check validity of MAC address&n; * o New feature: added ICH5 support&n; * &n; * 2.1.27&t;11/20/02&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
@@ -400,6 +400,22 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_static
+r_inline
+r_void
+id|e100_tx_skb_free
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+comma
+id|tcb_t
+op_star
+id|tcb
+)paren
+suffix:semicolon
 multiline_comment|/* Global Data structures and variables */
 DECL|variable|__devinitdata
 r_char
@@ -416,7 +432,7 @@ id|e100_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;2.2.21-k1&quot;
+l_string|&quot;2.3.13-k1&quot;
 suffix:semicolon
 DECL|variable|e100_full_driver_name
 r_const
@@ -707,15 +723,6 @@ id|net_device
 op_star
 )paren
 suffix:semicolon
-r_void
-id|e100_set_speed_duplex
-c_func
-(paren
-r_struct
-id|e100_private
-op_star
-)paren
-suffix:semicolon
 r_static
 id|u8
 id|e100_pci_setup
@@ -911,17 +918,6 @@ r_static
 r_int
 r_char
 id|e100_load_microcode
-c_func
-(paren
-r_struct
-id|e100_private
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-r_char
-id|e100_hw_init
 c_func
 (paren
 r_struct
@@ -5403,18 +5399,9 @@ c_func
 id|bdp
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;e100: hw init failed&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_bool|false
 suffix:semicolon
-)brace
 multiline_comment|/* Interrupts are enabled after device reset */
 id|e100_disable_clear_intr
 c_func
@@ -5675,7 +5662,6 @@ suffix:semicolon
 multiline_comment|/**&n; * e100_hw_init - initialized tthe hardware&n; * @bdp: atapter&squot;s private data struct&n; *&n; * This routine performs a reset on the adapter, and configures the adapter.&n; * This includes configuring the 82557 LAN controller, validating and setting&n; * the node address, detecting and configuring the Phy chip on the adapter,&n; * and initializing all of the on chip counters.&n; *&n; * Returns:&n; *      true - If the adapter was initialized&n; *      false - If the adapter failed initialization&n; */
 r_int
 r_char
-id|__devinit
 DECL|function|e100_hw_init
 id|e100_hw_init
 c_func
@@ -5696,8 +5682,8 @@ c_func
 id|bdp
 )paren
 )paren
-r_return
-l_bool|false
+r_goto
+id|err
 suffix:semicolon
 id|e100_sw_reset
 c_func
@@ -5738,8 +5724,8 @@ comma
 l_int|0
 )paren
 )paren
-r_return
-l_bool|false
+r_goto
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -5757,8 +5743,8 @@ comma
 l_int|0
 )paren
 )paren
-r_return
-l_bool|false
+r_goto
+id|err
 suffix:semicolon
 multiline_comment|/* Load interrupt microcode  */
 r_if
@@ -5776,12 +5762,6 @@ op_or_assign
 id|DF_UCODE_LOADED
 suffix:semicolon
 )brace
-id|e100_config_init
-c_func
-(paren
-id|bdp
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5792,11 +5772,9 @@ c_func
 id|bdp
 )paren
 )paren
-(brace
-r_return
-l_bool|false
+r_goto
+id|err
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5809,8 +5787,8 @@ comma
 id|bdp-&gt;device-&gt;dev_addr
 )paren
 )paren
-r_return
-l_bool|false
+r_goto
+id|err
 suffix:semicolon
 multiline_comment|/* Clear the internal counters */
 r_if
@@ -5823,8 +5801,8 @@ c_func
 id|bdp
 )paren
 )paren
-r_return
-l_bool|false
+r_goto
+id|err
 suffix:semicolon
 multiline_comment|/* Change for 82558 enhancement */
 multiline_comment|/* If 82558/9 and if the user has enabled flow control, set up the&n;&t; * Flow Control Reg. in the CSR */
@@ -5865,6 +5843,18 @@ suffix:semicolon
 )brace
 r_return
 l_bool|true
+suffix:semicolon
+id|err
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;e100: hw init failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_bool|false
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e100_setup_tcb_pool - setup TCB circular list&n; * @head: Pointer to head of the allocated TCBs&n; * @qlen: Number of elements in the queue&n; * @bdp: atapter&squot;s private data struct&n; * &n; * This routine arranges the contigiously allocated TCB&squot;s in a circular list.&n; * Also does the one time initialization of the TCBs.&n; */
@@ -11502,78 +11492,6 @@ c_func
 id|bdp
 comma
 id|PORT_SELECTIVE_RESET
-)paren
-suffix:semicolon
-)brace
-r_void
-DECL|function|e100_set_speed_duplex
-id|e100_set_speed_duplex
-c_func
-(paren
-r_struct
-id|e100_private
-op_star
-id|bdp
-)paren
-(brace
-r_int
-id|carrier_ok
-suffix:semicolon
-multiline_comment|/* Device may lose link with some siwtches when */
-multiline_comment|/* changing speed/duplex to non-autoneg. e100   */
-multiline_comment|/* needs to remember carrier state in order to  */
-multiline_comment|/* start watchdog timer for recovering link     */
-r_if
-c_cond
-(paren
-(paren
-id|carrier_ok
-op_assign
-id|netif_carrier_ok
-c_func
-(paren
-id|bdp-&gt;device
-)paren
-)paren
-)paren
-id|e100_isolate_driver
-c_func
-(paren
-id|bdp
-)paren
-suffix:semicolon
-id|e100_phy_set_speed_duplex
-c_func
-(paren
-id|bdp
-comma
-l_bool|true
-)paren
-suffix:semicolon
-id|e100_config_fc
-c_func
-(paren
-id|bdp
-)paren
-suffix:semicolon
-multiline_comment|/* re-config flow-control if necessary */
-id|e100_config
-c_func
-(paren
-id|bdp
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|carrier_ok
-)paren
-id|e100_deisolate_driver
-c_func
-(paren
-id|bdp
-comma
-l_bool|false
 )paren
 suffix:semicolon
 )brace
