@@ -61,16 +61,16 @@ op_eq
 l_int|0
 )paren
 (brace
+id|button_pressed
+op_assign
+l_int|1
+suffix:semicolon
 id|wake_up
 c_func
 (paren
 op_amp
 id|powerd_wait
 )paren
-suffix:semicolon
-id|button_pressed
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* FIXME: Check registers for status... */
@@ -297,6 +297,10 @@ id|wait
 )paren
 suffix:semicolon
 multiline_comment|/* Ok, down we go... */
+id|button_pressed
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -328,10 +332,6 @@ comma
 op_amp
 id|wait
 )paren
-suffix:semicolon
-id|button_pressed
-op_assign
-l_int|0
 suffix:semicolon
 r_goto
 id|again
