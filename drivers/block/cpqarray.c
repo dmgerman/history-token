@@ -928,7 +928,7 @@ comma
 r_int
 r_int
 )paren
-id|h-&gt;ioaddr
+id|h-&gt;io_mem_addr
 comma
 (paren
 r_int
@@ -3042,7 +3042,7 @@ id|c-&gt;intr
 op_assign
 id|irq
 suffix:semicolon
-id|c-&gt;ioaddr
+id|c-&gt;io_mem_addr
 op_assign
 id|addr
 (braket
@@ -3605,7 +3605,7 @@ id|hba
 id|nr_ctlr
 )braket
 op_member_access_from_pointer
-id|ioaddr
+id|io_mem_addr
 op_assign
 id|eisa
 (braket
