@@ -497,6 +497,34 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|hub_event_lock
+)paren
+suffix:semicolon
+id|hub-&gt;urb_active
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hub-&gt;urb_complete
+)paren
+(brace
+multiline_comment|/* disconnect or rmmod */
+id|complete
+c_func
+(paren
+id|hub-&gt;urb_complete
+)paren
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -518,7 +546,8 @@ op_minus
 id|ESHUTDOWN
 suffix:colon
 multiline_comment|/* hardware going away */
-r_return
+r_goto
+id|done
 suffix:semicolon
 r_default
 suffix:colon
@@ -567,13 +596,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Something happened, let khubd figure it out */
-id|spin_lock
-c_func
-(paren
-op_amp
-id|hub_event_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -603,13 +625,6 @@ id|khubd_wait
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|hub_event_lock
-)paren
-suffix:semicolon
 id|resubmit
 suffix:colon
 r_if
@@ -642,6 +657,26 @@ comma
 l_string|&quot;resubmit --&gt; %d&bslash;n&quot;
 comma
 id|urb-&gt;status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+op_eq
+l_int|0
+)paren
+id|hub-&gt;urb_active
+op_assign
+l_int|1
+suffix:semicolon
+id|done
+suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|hub_event_lock
 )paren
 suffix:semicolon
 )brace
@@ -2015,6 +2050,10 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
+id|hub-&gt;urb_active
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Wake up khubd */
 id|wake_up
 c_func
@@ -2073,6 +2112,12 @@ id|usb_get_intfdata
 id|intf
 )paren
 suffix:semicolon
+id|DECLARE_COMPLETION
+c_func
+(paren
+id|urb_complete
+)paren
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -2100,6 +2145,11 @@ id|hub_event_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+id|hub-&gt;urb_complete
+op_assign
+op_amp
+id|urb_complete
 suffix:semicolon
 multiline_comment|/* Delete it and then reset it */
 id|list_del_init
@@ -2160,6 +2210,18 @@ id|usb_unlink_urb
 c_func
 (paren
 id|hub-&gt;urb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hub-&gt;urb_active
+)paren
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|urb_complete
 )paren
 suffix:semicolon
 id|usb_free_urb
