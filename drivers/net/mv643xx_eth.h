@@ -1113,7 +1113,7 @@ id|p_addr
 suffix:semicolon
 multiline_comment|/* PHY and MIB routines */
 r_static
-r_int
+r_void
 id|ethernet_phy_reset
 c_func
 (paren
@@ -1123,7 +1123,7 @@ id|eth_port_num
 )paren
 suffix:semicolon
 r_static
-r_int
+r_void
 id|eth_port_write_smi_reg
 c_func
 (paren
@@ -1141,7 +1141,7 @@ id|value
 )paren
 suffix:semicolon
 r_static
-r_int
+r_void
 id|eth_port_read_smi_reg
 c_func
 (paren

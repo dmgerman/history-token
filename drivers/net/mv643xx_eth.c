@@ -1,13 +1,15 @@
-multiline_comment|/*&n; * drivers/net/mv64340_eth.c - Driver for MV64340X ethernet ports&n; * Copyright (C) 2002 Matthew Dharm &lt;mdharm@momenco.com&gt;&n; *&n; * Based on the 64360 driver from:&n; * Copyright (C) 2002 rabeeh@galileo.co.il&n; *&n; * Copyright (C) 2003 PMC-Sierra, Inc.,&n; *&t;written by Manish Lachwani (lachwani@pmc-sierra.com)&n; *&n; * Copyright (C) 2003 Ralf Baechle &lt;ralf@linux-mips.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+multiline_comment|/*&n; * drivers/net/mv64340_eth.c - Driver for MV64340X ethernet ports&n; * Copyright (C) 2002 Matthew Dharm &lt;mdharm@momenco.com&gt;&n; *&n; * Based on the 64360 driver from:&n; * Copyright (C) 2002 rabeeh@galileo.co.il&n; *&n; * Copyright (C) 2003 PMC-Sierra, Inc.,&n; *&t;written by Manish Lachwani (lachwani@pmc-sierra.com)&n; *&n; * Copyright (C) 2003 Ralf Baechle &lt;ralf@linux-mips.org&gt;&n; *&n; * Copyright (C) 2004-2005 MontaVista Software, Inc.&n; *                    Dale Farnsworth &lt;dale@farnsworth.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &quot;mv643xx_eth.h&quot;
 multiline_comment|/*&n; * The first part is the high level driver of the gigE ethernet ports. &n; */
 multiline_comment|/* Definition for configuring driver */
@@ -32,6 +34,10 @@ mdefine_line|#define INT_CAUSE_CHECK_BITS&t;&t;INT_CAUSE_UNMASK_ALL
 DECL|macro|INT_CAUSE_CHECK_BITS_EXT
 mdefine_line|#define INT_CAUSE_CHECK_BITS_EXT&t;INT_CAUSE_UNMASK_ALL_EXT
 macro_line|#endif
+DECL|macro|PHY_WAIT_ITERATIONS
+mdefine_line|#define PHY_WAIT_ITERATIONS&t;1000&t;/* 1000 iterations * 10uS = 10mS max */
+DECL|macro|PHY_WAIT_MICRO_SECONDS
+mdefine_line|#define PHY_WAIT_MICRO_SECONDS&t;10
 multiline_comment|/* Static function declarations */
 r_static
 r_int
@@ -116,6 +122,14 @@ DECL|variable|mv64340_sram_base
 r_int
 r_int
 id|mv64340_sram_base
+suffix:semicolon
+multiline_comment|/* used to protect MV64340_ETH_SMI_REG, which is shared across ports */
+DECL|variable|mv64340_eth_phy_lock
+r_static
+id|spinlock_t
+id|mv64340_eth_phy_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * Changes MTU (maximum transfer unit) of the gigabit ethenret port&n; *&n; * Input : pointer to ethernet interface network device structure&n; *         new mtu size &n; * Output : 0 upon success, -EINVAL upon failure&n; */
 DECL|function|mv64340_eth_change_mtu
@@ -2241,6 +2255,9 @@ r_int
 r_int
 id|size
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/* Stop RX Queues */
 id|MV_WRITE
 c_func
@@ -2630,7 +2647,22 @@ l_int|0xfff1ffff
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Check Link status on phy */
+multiline_comment|/* wait up to 1 second for link to come up */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|10
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 id|eth_port_read_smi_reg
 c_func
 (paren
@@ -2645,20 +2677,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
 id|phy_reg_data
 op_amp
 l_int|0x20
 )paren
-)paren
-id|netif_stop_queue
+r_break
+suffix:semicolon
+id|msleep
 c_func
 (paren
-id|dev
+l_int|100
 )paren
 suffix:semicolon
-r_else
+multiline_comment|/* sleep 1/10 second */
+)brace
 id|netif_start_queue
 c_func
 (paren
@@ -4631,10 +4663,6 @@ multiline_comment|/* defines */
 multiline_comment|/* SDMA command macros */
 DECL|macro|ETH_ENABLE_TX_QUEUE
 mdefine_line|#define ETH_ENABLE_TX_QUEUE(eth_port) &bslash;&n;&t;MV_WRITE(MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG(eth_port), 1)
-DECL|macro|LINK_UP_TIMEOUT
-mdefine_line|#define LINK_UP_TIMEOUT&t;&t;100000
-DECL|macro|PHY_BUSY_TIMEOUT
-mdefine_line|#define PHY_BUSY_TIMEOUT&t;10000000
 multiline_comment|/* locals */
 multiline_comment|/* PHY routines */
 r_static
@@ -5403,10 +5431,10 @@ l_int|0x1f
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ethernet_phy_reset - Reset Ethernet port PHY.&n; *&n; * DESCRIPTION:&n; *       This routine utilize the SMI interface to reset the ethernet port PHY.&n; *       The routine waits until the link is up again or link up is timeout.&n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       The ethernet port PHY renew its link.&n; *&n; * RETURN:&n; *       None.&n; *&n; */
+multiline_comment|/*&n; * ethernet_phy_reset - Reset Ethernet port PHY.&n; *&n; * DESCRIPTION:&n; *       This routine utilizes the SMI interface to reset the ethernet port PHY.&n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       The PHY is reset.&n; *&n; * RETURN:&n; *       None.&n; *&n; */
 DECL|function|ethernet_phy_reset
 r_static
-r_int
+r_void
 id|ethernet_phy_reset
 c_func
 (paren
@@ -5415,12 +5443,6 @@ r_int
 id|eth_port_num
 )paren
 (brace
-r_int
-r_int
-id|time_out
-op_assign
-l_int|50
-suffix:semicolon
 r_int
 r_int
 id|phy_reg_data
@@ -5452,46 +5474,6 @@ comma
 id|phy_reg_data
 )paren
 suffix:semicolon
-multiline_comment|/* Poll on the PHY LINK */
-r_do
-(brace
-id|eth_port_read_smi_reg
-c_func
-(paren
-id|eth_port_num
-comma
-l_int|1
-comma
-op_amp
-id|phy_reg_data
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|time_out
-op_decrement
-op_eq
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|phy_reg_data
-op_amp
-l_int|0x20
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * eth_port_reset - Reset Ethernet port&n; *&n; * DESCRIPTION:&n; * &t;This routine resets the chip by aborting any SDMA engine activity and&n; *      clearing the MIB counters. The Receiver and the Transmit unit are in &n; *      idle state after this command is performed and the port is disabled.&n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       Channel activity is halted.&n; *&n; * RETURN:&n; *       None.&n; *&n; */
 DECL|function|eth_port_reset
@@ -5502,7 +5484,7 @@ c_func
 (paren
 r_int
 r_int
-id|eth_port_num
+id|port_num
 )paren
 (brace
 r_int
@@ -5518,7 +5500,7 @@ c_func
 id|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
 c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 )paren
 suffix:semicolon
@@ -5535,8 +5517,9 @@ id|MV_WRITE
 c_func
 (paren
 id|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
+c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 comma
 (paren
@@ -5547,26 +5530,26 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for all Tx activity to terminate. */
-r_do
-(brace
 multiline_comment|/* Check port cause register that all Tx queues are stopped */
-id|reg_data
-op_assign
-id|MV_READ
-(paren
-id|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
-(paren
-id|eth_port_num
-)paren
-)paren
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
-id|reg_data
+id|MV_READ
+c_func
+(paren
+id|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
+c_func
+(paren
+id|port_num
+)paren
+)paren
 op_amp
 l_int|0xFF
+)paren
+id|udelay
+c_func
+(paren
+l_int|10
 )paren
 suffix:semicolon
 )brace
@@ -5577,8 +5560,9 @@ id|MV_READ
 c_func
 (paren
 id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
+c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 )paren
 suffix:semicolon
@@ -5595,8 +5579,9 @@ id|MV_WRITE
 c_func
 (paren
 id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
+c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 comma
 (paren
@@ -5607,26 +5592,26 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for all Rx activity to terminate. */
-r_do
-(brace
 multiline_comment|/* Check port cause register that all Rx queues are stopped */
-id|reg_data
-op_assign
-id|MV_READ
-(paren
-id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
-(paren
-id|eth_port_num
-)paren
-)paren
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
-id|reg_data
+id|MV_READ
+c_func
+(paren
+id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
+c_func
+(paren
+id|port_num
+)paren
+)paren
 op_amp
 l_int|0xFF
+)paren
+id|udelay
+c_func
+(paren
+l_int|10
 )paren
 suffix:semicolon
 )brace
@@ -5634,7 +5619,7 @@ multiline_comment|/* Clear all MIB counters */
 id|eth_clear_mib_counters
 c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the Enable bit in the Configuration Register */
@@ -5644,8 +5629,9 @@ id|MV_READ
 c_func
 (paren
 id|MV64340_ETH_PORT_SERIAL_CONTROL_REG
+c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 )paren
 suffix:semicolon
@@ -5660,13 +5646,11 @@ c_func
 id|MV64340_ETH_PORT_SERIAL_CONTROL_REG
 c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 comma
 id|reg_data
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ethernet_set_config_reg - Set specified bits in configuration register.&n; *&n; * DESCRIPTION:&n; *       This function sets specified bits in the given ethernet &n; *       configuration register. &n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *      unsigned int    value   32 bit value.&n; *&n; * OUTPUT:&n; *      The set bits in the value parameter are set in the configuration &n; *      register.&n; *&n; * RETURN:&n; *      None.&n; *&n; */
@@ -5750,16 +5734,16 @@ r_return
 id|eth_config_reg
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_read_smi_reg - Read PHY registers&n; *&n; * DESCRIPTION:&n; *       This routine utilize the SMI interface to interact with the PHY in &n; *       order to perform PHY register read.&n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *       unsigned int   phy_reg   PHY register address offset.&n; *       unsigned int   *value   Register value buffer.&n; *&n; * OUTPUT:&n; *       Write the value of a specified PHY register into given buffer.&n; *&n; * RETURN:&n; *       false if the PHY is busy or read data is not in valid state.&n; *       true otherwise.&n; *&n; */
+multiline_comment|/*&n; * eth_port_read_smi_reg - Read PHY registers&n; *&n; * DESCRIPTION:&n; *       This routine utilize the SMI interface to interact with the PHY in &n; *       order to perform PHY register read.&n; *&n; * INPUT:&n; *       unsigned int   port_num  Ethernet Port number.&n; *       unsigned int   phy_reg   PHY register address offset.&n; *       unsigned int   *value   Register value buffer.&n; *&n; * OUTPUT:&n; *       Write the value of a specified PHY register into given buffer.&n; *&n; * RETURN:&n; *       false if the PHY is busy or read data is not in valid state.&n; *       true otherwise.&n; *&n; */
 DECL|function|eth_port_read_smi_reg
 r_static
-r_int
+r_void
 id|eth_port_read_smi_reg
 c_func
 (paren
 r_int
 r_int
-id|eth_port_num
+id|port_num
 comma
 r_int
 r_int
@@ -5777,51 +5761,73 @@ op_assign
 id|ethernet_phy_get
 c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 suffix:semicolon
 r_int
 r_int
-id|time_out
-op_assign
-id|PHY_BUSY_TIMEOUT
+id|flags
 suffix:semicolon
 r_int
-r_int
-id|reg_value
+id|i
 suffix:semicolon
-multiline_comment|/* first check that it is not busy */
-r_do
-(brace
-id|reg_value
+multiline_comment|/* the SMI register is a shared resource */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|mv64340_eth_phy_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* wait for the SMI register to become available */
+r_for
+c_loop
+(paren
+id|i
 op_assign
+l_int|0
+suffix:semicolon
 id|MV_READ
 c_func
 (paren
 id|MV64340_ETH_SMI_REG
 )paren
+op_amp
+id|ETH_SMI_BUSY
 suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 r_if
 c_cond
 (paren
-id|time_out
-op_decrement
+id|i
 op_eq
-l_int|0
+id|PHY_WAIT_ITERATIONS
 )paren
-r_return
-l_int|0
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;mv64340 PHY busy timeout, port %d&bslash;n&quot;
+comma
+id|port_num
+)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
-r_while
-c_loop
+id|udelay
+c_func
 (paren
-id|reg_value
-op_amp
-id|ETH_SMI_BUSY
+id|PHY_WAIT_MICRO_SECONDS
 )paren
 suffix:semicolon
-multiline_comment|/* not busy */
+)brace
 id|MV_WRITE
 c_func
 (paren
@@ -5842,80 +5848,83 @@ op_or
 id|ETH_SMI_OPCODE_READ
 )paren
 suffix:semicolon
-id|time_out
+multiline_comment|/* now wait for the data to be valid */
+r_for
+c_loop
+(paren
+id|i
 op_assign
-id|PHY_BUSY_TIMEOUT
+l_int|0
 suffix:semicolon
-multiline_comment|/* initialize the time out var again */
-r_do
-(brace
-id|reg_value
-op_assign
+op_logical_neg
+(paren
 id|MV_READ
 c_func
 (paren
 id|MV64340_ETH_SMI_REG
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|time_out
-op_decrement
-op_eq
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|reg_value
 op_amp
 id|ETH_SMI_READ_VALID
 )paren
 suffix:semicolon
-multiline_comment|/* Wait for the data to update in the SMI register */
-r_for
-c_loop
-(paren
-id|time_out
-op_assign
-l_int|0
-suffix:semicolon
-id|time_out
-OL
-id|PHY_BUSY_TIMEOUT
-suffix:semicolon
-id|time_out
+id|i
 op_increment
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+id|PHY_WAIT_ITERATIONS
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;mv64340 PHY read timeout, port %d&bslash;n&quot;
+comma
+id|port_num
+)paren
 suffix:semicolon
-id|reg_value
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|udelay
+c_func
+(paren
+id|PHY_WAIT_MICRO_SECONDS
+)paren
+suffix:semicolon
+)brace
+op_star
+id|value
 op_assign
 id|MV_READ
 c_func
 (paren
 id|MV64340_ETH_SMI_REG
 )paren
-suffix:semicolon
-op_star
-id|value
-op_assign
-id|reg_value
 op_amp
 l_int|0xffff
 suffix:semicolon
-r_return
-l_int|1
+id|out
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|mv64340_eth_phy_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * eth_port_write_smi_reg - Write to PHY registers&n; *&n; * DESCRIPTION:&n; *       This routine utilize the SMI interface to interact with the PHY in &n; *       order to perform writes to PHY registers.&n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *      unsigned int   phy_reg   PHY register address offset.&n; *      unsigned int    value   Register value.&n; *&n; * OUTPUT:&n; *      Write the given value to the specified PHY register.&n; *&n; * RETURN:&n; *      false if the PHY is busy.&n; *      true otherwise.&n; *&n; */
 DECL|function|eth_port_write_smi_reg
 r_static
-r_int
+r_void
 id|eth_port_write_smi_reg
 c_func
 (paren
@@ -5933,17 +5942,14 @@ id|value
 )paren
 (brace
 r_int
-r_int
-id|time_out
-op_assign
-id|PHY_BUSY_TIMEOUT
-suffix:semicolon
-r_int
-r_int
-id|reg_value
-suffix:semicolon
-r_int
 id|phy_addr
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|phy_addr
 op_assign
@@ -5953,38 +5959,63 @@ c_func
 id|eth_port_num
 )paren
 suffix:semicolon
-multiline_comment|/* first check that it is not busy */
-r_do
-(brace
-id|reg_value
+multiline_comment|/* the SMI register is a shared resource */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|mv64340_eth_phy_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* wait for the SMI register to become available */
+r_for
+c_loop
+(paren
+id|i
 op_assign
+l_int|0
+suffix:semicolon
 id|MV_READ
 c_func
 (paren
 id|MV64340_ETH_SMI_REG
 )paren
+op_amp
+id|ETH_SMI_BUSY
 suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 r_if
 c_cond
 (paren
-id|time_out
-op_decrement
+id|i
 op_eq
-l_int|0
+id|PHY_WAIT_ITERATIONS
 )paren
-r_return
-l_int|0
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;mv64340 PHY busy timeout, port %d&bslash;n&quot;
+comma
+id|eth_port_num
+)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
-r_while
-c_loop
+id|udelay
+c_func
 (paren
-id|reg_value
-op_amp
-id|ETH_SMI_BUSY
+id|PHY_WAIT_MICRO_SECONDS
 )paren
 suffix:semicolon
-multiline_comment|/* not busy */
+)brace
 id|MV_WRITE
 c_func
 (paren
@@ -6011,8 +6042,16 @@ l_int|0xffff
 )paren
 )paren
 suffix:semicolon
-r_return
-l_int|1
+id|out
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|mv64340_eth_phy_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * eth_port_send - Send an Ethernet packet&n; *&n; * DESCRIPTION:&n; *&t;This routine send a given packet described by p_pktinfo parameter. It &n; *      supports transmitting of a packet spaned over multiple buffers. The &n; *      routine updates &squot;curr&squot; and &squot;first&squot; indexes according to the packet &n; *      segment passed to the routine. In case the packet segment is first, &n; *      the &squot;first&squot; index is update. In any case, the &squot;curr&squot; index is updated. &n; *      If the routine get into Tx resource error it assigns &squot;curr&squot; index as &n; *      &squot;first&squot;. This way the function can abort Tx process of multiple &n; *      descriptors per packet.&n; *&n; * INPUT:&n; *&t;struct mv64340_private   *mp   Ethernet Port Control srtuct. &n; *&t;struct pkt_info        *p_pkt_info       User packet buffer.&n; *&n; * OUTPUT:&n; *&t;Tx ring &squot;curr&squot; and &squot;first&squot; indexes are updated. &n; *&n; * RETURN:&n; *      ETH_QUEUE_FULL in case of Tx resource error.&n; *&t;ETH_ERROR in case the routine can not access Tx desc ring.&n; *&t;ETH_QUEUE_LAST_RESOURCE if the routine uses the last Tx resource.&n; *      ETH_OK otherwise.&n; *&n; */
