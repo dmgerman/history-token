@@ -213,38 +213,6 @@ id|amount
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|llc_prim_data
-r_struct
-id|llc_prim_data
-(brace
-DECL|member|sk
-r_struct
-id|sock
-op_star
-id|sk
-suffix:semicolon
-DECL|member|link
-id|u16
-id|link
-suffix:semicolon
-DECL|member|pri
-id|u8
-id|pri
-suffix:semicolon
-DECL|member|skb
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-multiline_comment|/* pointer to frame */
-DECL|member|status
-id|u8
-id|status
-suffix:semicolon
-multiline_comment|/* reason */
-)brace
-suffix:semicolon
 multiline_comment|/* Sending data in conection-less mode */
 DECL|struct|llc_prim_unit_data
 r_struct
@@ -355,12 +323,6 @@ r_struct
 id|llc_prim_flow_ctrl
 id|fc
 suffix:semicolon
-DECL|member|data
-r_struct
-id|llc_prim_data
-id|data
-suffix:semicolon
-multiline_comment|/* data */
 DECL|member|udata
 r_struct
 id|llc_prim_unit_data

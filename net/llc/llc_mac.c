@@ -432,6 +432,10 @@ id|sk
 )paren
 suffix:semicolon
 )brace
+id|skb-&gt;sk
+op_assign
+id|sk
+suffix:semicolon
 id|bh_lock_sock
 c_func
 (paren
