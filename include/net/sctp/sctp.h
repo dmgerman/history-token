@@ -1087,6 +1087,17 @@ suffix:semicolon
 id|__s32
 id|ret
 suffix:semicolon
+multiline_comment|/* Avoid divide by zero. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rto
+)paren
+id|rto
+op_assign
+l_int|1
+suffix:semicolon
 id|sctp_rand
 op_add_assign
 id|jiffies
