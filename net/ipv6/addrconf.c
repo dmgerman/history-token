@@ -290,6 +290,23 @@ comma
 multiline_comment|/* rtr solicit delay&t;*/
 )brace
 suffix:semicolon
+multiline_comment|/* IPv6 Wildcard Address and Loopback Address defined by RFC2553 */
+DECL|variable|in6addr_any
+r_const
+r_struct
+id|in6_addr
+id|in6addr_any
+op_assign
+id|IN6ADDR_ANY_INIT
+suffix:semicolon
+DECL|variable|in6addr_loopback
+r_const
+r_struct
+id|in6_addr
+id|in6addr_loopback
+op_assign
+id|IN6ADDR_LOOPBACK_INIT
+suffix:semicolon
 DECL|function|ipv6_addr_type
 r_int
 id|ipv6_addr_type

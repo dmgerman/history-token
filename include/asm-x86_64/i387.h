@@ -62,12 +62,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|test_thread_flag
-c_func
-(paren
-id|TIF_USEDFPU
-)paren
+id|me-&gt;thread_info-&gt;flags
+op_amp
+id|_TIF_USEDFPU
 )paren
 r_return
 l_int|0
@@ -80,9 +77,9 @@ multiline_comment|/*&n; * FPU lazy state save handling...&n; */
 DECL|macro|kernel_fpu_end
 mdefine_line|#define kernel_fpu_end() stts()
 DECL|macro|unlazy_fpu
-mdefine_line|#define unlazy_fpu(tsk) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;flags &amp; TIF_USEDFPU) &bslash;&n;&t;&t;save_init_fpu(tsk); &bslash;&n;} while (0)
+mdefine_line|#define unlazy_fpu(tsk) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;flags &amp; _TIF_USEDFPU) &bslash;&n;&t;&t;save_init_fpu(tsk); &bslash;&n;} while (0)
 DECL|macro|clear_fpu
-mdefine_line|#define clear_fpu(tsk) do { &bslash;&n;&t;if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) {&t;&t;&bslash;&n;&t;&t;asm volatile(&quot;fwait&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;clear_tsk_thread_flag(tsk,TIF_USEDFPU); &t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define clear_fpu(tsk) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;flags &amp; _TIF_USEDFPU) {&t;&t;&bslash;&n;&t;&t;asm volatile(&quot;fwait&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;(tsk)-&gt;thread_info-&gt;flags &amp;= ~_TIF_USEDFPU;&t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|load_mxcsr
 mdefine_line|#define load_mxcsr(val) do { &bslash;&n;&t;&t;unsigned long __mxcsr = ((unsigned long)(val) &amp; 0xffbf); &bslash;&n;&t;&t;asm volatile(&quot;ldmxcsr %0&quot; : : &quot;m&quot; (__mxcsr)); &bslash;&n;} while (0)
 multiline_comment|/*&n; * ptrace request handers...&n; */

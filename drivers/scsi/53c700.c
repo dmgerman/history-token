@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -878,6 +879,10 @@ suffix:semicolon
 id|host-&gt;base
 op_assign
 id|hostdata-&gt;base
+suffix:semicolon
+id|hostdata-&gt;eh_complete
+op_assign
+l_int|NULL
 suffix:semicolon
 id|host-&gt;hostdata
 (braket
@@ -6806,6 +6811,22 @@ id|hostdata-&gt;cmd
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* signal back if this was an eh induced reset */
+r_if
+c_cond
+(paren
+id|hostdata-&gt;eh_complete
+op_ne
+l_int|NULL
+)paren
+(brace
+id|complete
+c_func
+(paren
+id|hostdata-&gt;eh_complete
+)paren
+suffix:semicolon
+)brace
 r_goto
 id|out_unlock
 suffix:semicolon
@@ -8910,6 +8931,27 @@ op_star
 id|SCp
 )paren
 (brace
+id|DECLARE_COMPLETION
+c_func
+(paren
+id|complete
+)paren
+suffix:semicolon
+r_struct
+id|NCR_700_Host_Parameters
+op_star
+id|hostdata
+op_assign
+(paren
+r_struct
+id|NCR_700_Host_Parameters
+op_star
+)paren
+id|SCp-&gt;device-&gt;host-&gt;hostdata
+(braket
+l_int|0
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -8931,11 +8973,69 @@ c_func
 id|SCp-&gt;cmnd
 )paren
 suffix:semicolon
+multiline_comment|/* In theory, eh_complete should always be null because the&n;&t; * eh is single threaded, but just in case we&squot;re handling a&n;&t; * reset via sg or something */
+r_while
+c_loop
+(paren
+id|hostdata-&gt;eh_complete
+op_ne
+l_int|NULL
+)paren
+(brace
+id|spin_unlock_irq
+c_func
+(paren
+id|SCp-&gt;device-&gt;host-&gt;host_lock
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+op_div
+l_int|10
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|SCp-&gt;device-&gt;host-&gt;host_lock
+)paren
+suffix:semicolon
+)brace
+id|hostdata-&gt;eh_complete
+op_assign
+op_amp
+id|complete
+suffix:semicolon
 id|NCR_700_internal_bus_reset
 c_func
 (paren
 id|SCp-&gt;device-&gt;host
 )paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+id|SCp-&gt;device-&gt;host-&gt;host_lock
+)paren
+suffix:semicolon
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|complete
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|SCp-&gt;device-&gt;host-&gt;host_lock
+)paren
+suffix:semicolon
+id|hostdata-&gt;eh_complete
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 id|SUCCESS

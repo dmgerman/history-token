@@ -25,8 +25,6 @@ r_int
 r_int
 id|wall_jiffies
 suffix:semicolon
-DECL|macro|USEC_PER_SEC
-mdefine_line|#define USEC_PER_SEC (1000000)
 r_void
 DECL|function|check_bugs
 id|check_bugs

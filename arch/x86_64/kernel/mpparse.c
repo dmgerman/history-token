@@ -265,6 +265,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Processor #%d %d:%d APIC version %d&bslash;n&quot;
 comma
 id|m-&gt;mpc_apicid
@@ -286,74 +287,6 @@ op_rshift
 l_int|4
 comma
 id|m-&gt;mpc_apicver
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|m-&gt;mpc_featureflag
-op_amp
-(paren
-l_int|1
-op_lshift
-l_int|0
-)paren
-)paren
-id|Dprintk
-c_func
-(paren
-l_string|&quot;    Floating point unit present.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|m-&gt;mpc_featureflag
-op_amp
-(paren
-l_int|1
-op_lshift
-l_int|7
-)paren
-)paren
-id|Dprintk
-c_func
-(paren
-l_string|&quot;    Machine Exception supported.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|m-&gt;mpc_featureflag
-op_amp
-(paren
-l_int|1
-op_lshift
-l_int|8
-)paren
-)paren
-id|Dprintk
-c_func
-(paren
-l_string|&quot;    64 bit compare &amp; exchange supported.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|m-&gt;mpc_featureflag
-op_amp
-(paren
-l_int|1
-op_lshift
-l_int|9
-)paren
-)paren
-id|Dprintk
-c_func
-(paren
-l_string|&quot;    Internal APIC present.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -389,6 +322,7 @@ id|MAX_APICS
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Processor #%d INVALID. (Max ID: %d).&bslash;n&quot;
 comma
 id|m-&gt;mpc_apicid
@@ -421,6 +355,7 @@ l_int|0x0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;BIOS bug, APIC version is 0 for CPU#%d! fixing up to 0x10. (tell your hw vendor)&bslash;n&quot;
 comma
 id|m-&gt;mpc_apicid
@@ -598,15 +533,10 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Unknown bustype %s&bslash;n&quot;
 comma
 id|str
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;cannot handle bus - mail to linux-smp@vger.kernel.org&quot;
 )paren
 suffix:semicolon
 )brace
@@ -658,6 +588,7 @@ id|MAX_IO_APICS
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Max # of I/O APICs (%d) exceeded (found %d).&bslash;n&quot;
 comma
 id|MAX_IO_APICS
@@ -1028,6 +959,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;OEM ID: %s &quot;
 comma
 id|str
@@ -1053,6 +985,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Product ID: %s &quot;
 comma
 id|str
@@ -1061,6 +994,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;APIC at: 0x%X&bslash;n&quot;
 comma
 id|mpc-&gt;mpc_lapic
@@ -1428,6 +1362,7 @@ l_int|5
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;ISA/PCI bus type with no IRQ information... falling back to ELCR&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1461,6 +1396,7 @@ l_int|13
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ELCR contains invalid data... not using ELCR&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1469,6 +1405,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Using ELCR to identify PCI interrupts&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1753,6 +1690,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;???&bslash;nUnknown standard configuration %d&bslash;n&quot;
 comma
 id|mpc_default_type
@@ -2027,6 +1965,7 @@ l_int|7
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;    IMCR and PIC compatibility mode.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2040,6 +1979,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;    Virtual Wire compatibility mode.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2060,6 +2000,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Default MP configuration #%d&bslash;n&quot;
 comma
 id|mpf-&gt;mpf_feature1
@@ -2135,6 +2076,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;BIOS bug, no explicit IRQ entries, using default mptable. (tell your hw vendor)&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2180,6 +2122,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Processors: %d&bslash;n&quot;
 comma
 id|num_processors
@@ -2202,6 +2145,14 @@ r_int
 id|length
 )paren
 (brace
+r_extern
+r_void
+id|__bad_mpf_size
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_int
 r_int
 op_star
@@ -2239,10 +2190,9 @@ id|mpf
 op_ne
 l_int|16
 )paren
-id|printk
+id|__bad_mpf_size
 c_func
 (paren
-l_string|&quot;Error: MPF size&bslash;n&quot;
 )paren
 suffix:semicolon
 r_while
@@ -2314,6 +2264,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;found SMP MP-table at %08lx&bslash;n&quot;
 comma
 id|virt_to_phys
@@ -2438,18 +2389,6 @@ c_func
 id|address
 comma
 l_int|0x1000
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|smp_found_config
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;WARNING: MP table in the EBDA can be UNSAFE, contact linux-smp@vger.kernel.org if you experience SMP problems!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2946,6 +2885,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;IOAPIC[%d]: apic_id %d, version %d, address 0x%x, &quot;
 l_string|&quot;IRQ %d-%d&bslash;n&quot;
 comma

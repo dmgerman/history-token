@@ -54,11 +54,6 @@ r_int
 r_int
 id|rdi
 suffix:semicolon
-DECL|member|rax
-r_int
-r_int
-id|rax
-suffix:semicolon
 DECL|member|r15
 r_int
 r_int
@@ -104,12 +99,12 @@ suffix:semicolon
 multiline_comment|/* frame pointer must be last for get_wchan */
 multiline_comment|/* It would be more efficient to let the compiler clobber most of these registers.&n;   Clobbering all is not possible because that lets reload freak out. Even just &n;   clobbering six generates wrong code with gcc 3.1 for me so do it this way for now.&n;   rbp needs to be always explicitely saved because gcc cannot clobber the&n;   frame pointer and the scheduler is compiled with frame pointers. -AK */
 DECL|macro|SAVE_CONTEXT
-mdefine_line|#define SAVE_CONTEXT &bslash;&n;&t;__PUSH(r8) __PUSH(r9) __PUSH(r10) __PUSH(r11) __PUSH(r12) __PUSH(r13) &bslash;&n;&t;__PUSH(r14) __PUSH(r15) __PUSH(rax) &bslash;&n;&t;__PUSH(rdi) __PUSH(rsi) &bslash;&n;&t;__PUSH(rdx) __PUSH(rcx) &bslash;&n;&t;__PUSH(rbx) __PUSH(rbp) 
+mdefine_line|#define SAVE_CONTEXT &bslash;&n;&t;__PUSH(r8) __PUSH(r9) __PUSH(r10) __PUSH(r11) __PUSH(r12) __PUSH(r13) &bslash;&n;&t;__PUSH(r14) __PUSH(r15) &bslash;&n;&t;__PUSH(rdi) __PUSH(rsi) &bslash;&n;&t;__PUSH(rdx) __PUSH(rcx) &bslash;&n;&t;__PUSH(rbx) __PUSH(rbp) 
 DECL|macro|RESTORE_CONTEXT
-mdefine_line|#define RESTORE_CONTEXT &bslash;&n;&t;__POP(rbp) __POP(rbx) &bslash;&n;&t;__POP(rcx) __POP(rdx) &bslash;&n;&t;__POP(rsi) __POP(rdi) &bslash;&n;&t;__POP(rax) __POP(r15) __POP(r14) __POP(r13) __POP(r12) __POP(r11) __POP(r10) &bslash;&n;&t;__POP(r9) __POP(r8)
+mdefine_line|#define RESTORE_CONTEXT &bslash;&n;&t;__POP(rbp) __POP(rbx) &bslash;&n;&t;__POP(rcx) __POP(rdx) &bslash;&n;&t;__POP(rsi) __POP(rdi) &bslash;&n;&t;__POP(r15) __POP(r14) __POP(r13) __POP(r12) __POP(r11) __POP(r10) &bslash;&n;&t;__POP(r9) __POP(r8)
 multiline_comment|/* RED-PEN: pipeline stall on ret because it is not predicted */
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next,last) &bslash;&n;&t;asm volatile(SAVE_CONTEXT&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq %%rsp,%[prevrsp]&bslash;n&bslash;t&quot;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq %[nextrsp],%%rsp&bslash;n&bslash;t&quot;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq $thread_return,%[prevrip]&bslash;n&bslash;t&quot;&t;&t;&t;   &bslash;&n;&t;&t;     &quot;pushq %[nextrip]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;jmp __switch_to&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;     &quot;.globl thread_return&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;thread_return:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     RESTORE_CONTEXT&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     :[prevrsp] &quot;=m&quot; (prev-&gt;thread.rsp), &t;&t;&t;    &bslash;&n;&t;&t;      [prevrip] &quot;=m&quot; (prev-&gt;thread.rip)&t;&t;&t;    &t;    &bslash;&n;&t;&t;     :[nextrsp] &quot;m&quot; (next-&gt;thread.rsp), &t;&t;&t;    &bslash;&n;&t;&t;      [nextrip]&quot;m&quot; (next-&gt;thread.rip),&t;&t;&t;&t;    &bslash;&n;&t;&t;      [next] &quot;S&quot; (next), [prev] &quot;D&quot; (prev)  &t;&t;&t;    &bslash;&n;&t;             :&quot;memory&quot;)
+mdefine_line|#define switch_to(prev,next,last) &bslash;&n;&t;asm volatile(SAVE_CONTEXT&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq %%rsp,%[prevrsp]&bslash;n&bslash;t&quot;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq %[nextrsp],%%rsp&bslash;n&bslash;t&quot;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq $thread_return,%[prevrip]&bslash;n&bslash;t&quot;&t;&t;&t;   &bslash;&n;&t;&t;     &quot;pushq %[nextrip]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;jmp __switch_to&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;     &quot;.globl thread_return&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;thread_return:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     RESTORE_CONTEXT&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     :[prevrsp] &quot;=m&quot; (prev-&gt;thread.rsp), &t;&t;&t;    &bslash;&n;&t;&t;      [prevrip] &quot;=m&quot; (prev-&gt;thread.rip),&t;&t;    &t;    &bslash;&n;&t;&t;      &quot;=a&quot; (last)&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     :[nextrsp] &quot;m&quot; (next-&gt;thread.rsp), &t;&t;&t;    &bslash;&n;&t;&t;      [nextrip] &quot;m&quot; (next-&gt;thread.rip),&t;&t;&t;&t;    &bslash;&n;&t;&t;      [next] &quot;S&quot; (next), [prev] &quot;D&quot; (prev)  &t;&t;&t;    &bslash;&n;&t;             :&quot;memory&quot;)
 r_extern
 r_void
 id|load_gs_index

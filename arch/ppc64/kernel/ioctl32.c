@@ -76,6 +76,7 @@ macro_line|#include &lt;linux/atm_suni.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/hci.h&gt;
+macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/usbdevice_fs.h&gt;
 macro_line|#include &lt;linux/nbd.h&gt;
@@ -21121,6 +21122,19 @@ id|arg
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Bluetooth ioctls */
+DECL|macro|HCIUARTSETPROTO
+mdefine_line|#define HCIUARTSETPROTO&t;_IOW(&squot;U&squot;, 200, int)
+DECL|macro|HCIUARTGETPROTO
+mdefine_line|#define HCIUARTGETPROTO&t;_IOR(&squot;U&squot;, 201, int)
+DECL|macro|BNEPCONNADD
+mdefine_line|#define BNEPCONNADD     _IOW(&squot;B&squot;, 200, int)
+DECL|macro|BNEPCONNDEL
+mdefine_line|#define BNEPCONNDEL     _IOW(&squot;B&squot;, 201, int)
+DECL|macro|BNEPGETCONNLIST
+mdefine_line|#define BNEPGETCONNLIST&t;_IOR(&squot;B&squot;, 210, int)
+DECL|macro|BNEPGETCONNINFO
+mdefine_line|#define BNEPGETCONNINFO&t;_IOR(&squot;B&squot;, 211, int)
 DECL|struct|ioctl_trans
 r_struct
 id|ioctl_trans
@@ -24622,6 +24636,72 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|HCIINQUIRY
+)paren
+comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCIUARTSETPROTO
+)paren
+comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HCIUARTGETPROTO
+)paren
+comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RFCOMMCREATEDEV
+)paren
+comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RFCOMMRELEASEDEV
+)paren
+comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RFCOMMGETDEVLIST
+)paren
+comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RFCOMMGETDEVINFO
+)paren
+comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RFCOMMSTEALDLC
+)paren
+comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BNEPCONNADD
+)paren
+comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BNEPCONNDEL
+)paren
+comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BNEPGETCONNLIST
+)paren
+comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BNEPGETCONNINFO
 )paren
 comma
 id|COMPATIBLE_IOCTL
