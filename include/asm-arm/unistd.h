@@ -465,7 +465,7 @@ mdefine_line|#define __NR_lremovexattr&t;&t;(__NR_SYSCALL_BASE+236)
 DECL|macro|__NR_fremovexattr
 mdefine_line|#define __NR_fremovexattr&t;&t;(__NR_SYSCALL_BASE+237)
 DECL|macro|__NR_tkill
-mdefine_line|#define __NR_tkill&t;&t;&t;(__NR_SYSCALL_BASE+238
+mdefine_line|#define __NR_tkill&t;&t;&t;(__NR_SYSCALL_BASE+238)
 multiline_comment|/*&n; * The following SWIs are ARM private.&n; */
 DECL|macro|__ARM_NR_BASE
 mdefine_line|#define __ARM_NR_BASE&t;&t;&t;(__NR_SYSCALL_BASE+0x0f0000)
