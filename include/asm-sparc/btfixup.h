@@ -41,7 +41,29 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
+DECL|macro|BTFIXUP_SIMM13
+mdefine_line|#define BTFIXUP_SIMM13(__name) ___illegal_use_of_BTFIXUP_SIMM13_in_module()
+DECL|macro|BTFIXUP_HALF
+mdefine_line|#define BTFIXUP_HALF(__name) ___illegal_use_of_BTFIXUP_HALF_in_module()
+DECL|macro|BTFIXUP_SETHI
+mdefine_line|#define BTFIXUP_SETHI(__name) ___illegal_use_of_BTFIXUP_SETHI_in_module()
+DECL|macro|BTFIXUP_INT
+mdefine_line|#define BTFIXUP_INT(__name) ___illegal_use_of_BTFIXUP_INT_in_module()
+DECL|macro|BTFIXUP_BLACKBOX
+mdefine_line|#define BTFIXUP_BLACKBOX(__name) ___illegal_use_of_BTFIXUP_BLACKBOX_in_module
+macro_line|#else
+DECL|macro|BTFIXUP_SIMM13
+mdefine_line|#define BTFIXUP_SIMM13(__name) ___sf_##__name()
+DECL|macro|BTFIXUP_HALF
+mdefine_line|#define BTFIXUP_HALF(__name) ___af_##__name()
+DECL|macro|BTFIXUP_SETHI
+mdefine_line|#define BTFIXUP_SETHI(__name) ___hf_##__name()
+DECL|macro|BTFIXUP_INT
+mdefine_line|#define BTFIXUP_INT(__name) ((unsigned int)&amp;___i_##__name)
+multiline_comment|/* This must be written in assembly and present in a sethi */
+DECL|macro|BTFIXUP_BLACKBOX
+mdefine_line|#define BTFIXUP_BLACKBOX(__name) ___b_##__name
+macro_line|#endif /* MODULE */
 multiline_comment|/* Fixup call xx */
 DECL|macro|BTFIXUPDEF_CALL
 mdefine_line|#define BTFIXUPDEF_CALL(__type, __name, __args...) &t;&t;&t;&t;&t;&bslash;&n;&t;extern __type ___f_##__name(__args);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern unsigned ___fs_##__name[3];
@@ -51,60 +73,24 @@ DECL|macro|BTFIXUP_CALL
 mdefine_line|#define BTFIXUP_CALL(__name) ___f_##__name
 DECL|macro|BTFIXUPDEF_BLACKBOX
 mdefine_line|#define BTFIXUPDEF_BLACKBOX(__name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern unsigned ___bs_##__name[2];
-macro_line|#ifdef MODULE
-DECL|macro|BTFIXUP_BLACKBOX
-mdefine_line|#define BTFIXUP_BLACKBOX(__name) ___illegal_use_of_BTFIXUP_BLACKBOX_in_module
-macro_line|#else
-multiline_comment|/* This must be written in assembly and present in a sethi */
-DECL|macro|BTFIXUP_BLACKBOX
-mdefine_line|#define BTFIXUP_BLACKBOX(__name) ___b_##__name
-macro_line|#endif
 multiline_comment|/* Put bottom 13bits into some register variable */
 DECL|macro|BTFIXUPDEF_SIMM13
 mdefine_line|#define BTFIXUPDEF_SIMM13(__name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern unsigned int ___sf_##__name(void) __attribute__((const));&t;&t;&bslash;&n;&t;extern unsigned ___ss_##__name[2];&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern __inline__ unsigned int ___sf_##__name(void) {&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ (&quot;or %%g0, ___s_&quot; #__name &quot;, %0&quot; : &quot;=r&quot;(ret));&t;&t;&t;&bslash;&n;&t;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 DECL|macro|BTFIXUPDEF_SIMM13_INIT
 mdefine_line|#define BTFIXUPDEF_SIMM13_INIT(__name,__val)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern unsigned int ___sf_##__name(void) __attribute__((const));&t;&t;&bslash;&n;&t;extern unsigned ___ss_##__name[2];&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern __inline__ unsigned int ___sf_##__name(void) {&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ (&quot;or %%g0, ___s_&quot; #__name &quot;__btset_&quot; #__val &quot;, %0&quot; : &quot;=r&quot;(ret));&bslash;&n;&t;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
-macro_line|#ifdef MODULE
-DECL|macro|BTFIXUP_SIMM13
-mdefine_line|#define BTFIXUP_SIMM13(__name) ___illegal_use_of_BTFIXUP_SIMM13_in_module()
-macro_line|#else
-DECL|macro|BTFIXUP_SIMM13
-mdefine_line|#define BTFIXUP_SIMM13(__name) ___sf_##__name()
-macro_line|#endif
 multiline_comment|/* Put either bottom 13 bits, or upper 22 bits into some register variable&n; * (depending on the value, this will lead into sethi FIX, reg; or&n; * mov FIX, reg; )&n; */
 DECL|macro|BTFIXUPDEF_HALF
 mdefine_line|#define BTFIXUPDEF_HALF(__name)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern unsigned int ___af_##__name(void) __attribute__((const));&t;&t;&bslash;&n;&t;extern unsigned ___as_##__name[2];&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern __inline__ unsigned int ___af_##__name(void) {&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ (&quot;or %%g0, ___a_&quot; #__name &quot;, %0&quot; : &quot;=r&quot;(ret));&t;&t;&t;&bslash;&n;&t;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 DECL|macro|BTFIXUPDEF_HALF_INIT
 mdefine_line|#define BTFIXUPDEF_HALF_INIT(__name,__val)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern unsigned int ___af_##__name(void) __attribute__((const));&t;&t;&bslash;&n;&t;extern unsigned ___as_##__name[2];&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern __inline__ unsigned int ___af_##__name(void) {&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ (&quot;or %%g0, ___a_&quot; #__name &quot;__btset_&quot; #__val &quot;, %0&quot; : &quot;=r&quot;(ret));&bslash;&n;&t;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
-macro_line|#ifdef MODULE
-DECL|macro|BTFIXUP_HALF
-mdefine_line|#define BTFIXUP_HALF(__name) ___illegal_use_of_BTFIXUP_HALF_in_module()
-macro_line|#else
-DECL|macro|BTFIXUP_HALF
-mdefine_line|#define BTFIXUP_HALF(__name) ___af_##__name()
-macro_line|#endif
 multiline_comment|/* Put upper 22 bits into some register variable */
 DECL|macro|BTFIXUPDEF_SETHI
 mdefine_line|#define BTFIXUPDEF_SETHI(__name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern unsigned int ___hf_##__name(void) __attribute__((const));&t;&t;&bslash;&n;&t;extern unsigned ___hs_##__name[2];&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern __inline__ unsigned int ___hf_##__name(void) {&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ (&quot;sethi %%hi(___h_&quot; #__name &quot;), %0&quot; : &quot;=r&quot;(ret));&t;&t;&bslash;&n;&t;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 DECL|macro|BTFIXUPDEF_SETHI_INIT
 mdefine_line|#define BTFIXUPDEF_SETHI_INIT(__name,__val)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern unsigned int ___hf_##__name(void) __attribute__((const));&t;&t;&bslash;&n;&t;extern unsigned ___hs_##__name[2];&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern __inline__ unsigned int ___hf_##__name(void) {&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ (&quot;sethi %%hi(___h_&quot; #__name &quot;__btset_&quot; #__val &quot;), %0&quot; : &t;&bslash;&n;&t;&t;&t; &quot;=r&quot;(ret));&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
-macro_line|#ifdef MODULE
-DECL|macro|BTFIXUP_SETHI
-mdefine_line|#define BTFIXUP_SETHI(__name) ___illegal_use_of_BTFIXUP_SETHI_in_module()
-macro_line|#else
-DECL|macro|BTFIXUP_SETHI
-mdefine_line|#define BTFIXUP_SETHI(__name) ___hf_##__name()
-macro_line|#endif
 multiline_comment|/* Put a full 32bit integer into some register variable */
 DECL|macro|BTFIXUPDEF_INT
 mdefine_line|#define BTFIXUPDEF_INT(__name)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern unsigned char ___i_##__name;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern unsigned ___is_##__name[2];
-macro_line|#ifdef MODULE
-DECL|macro|BTFIXUP_INT
-mdefine_line|#define BTFIXUP_INT(__name) ___illegal_use_of_BTFIXUP_INT_in_module()
-macro_line|#else
-DECL|macro|BTFIXUP_INT
-mdefine_line|#define BTFIXUP_INT(__name) ((unsigned int)&amp;___i_##__name)
-macro_line|#endif
 DECL|macro|BTFIXUPCALL_NORM
 mdefine_line|#define BTFIXUPCALL_NORM&t;0x00000000&t;&t;&t;/* Always call */
 DECL|macro|BTFIXUPCALL_NOP
