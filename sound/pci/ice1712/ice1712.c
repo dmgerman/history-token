@@ -1878,7 +1878,7 @@ suffix:semicolon
 multiline_comment|/*&n; *  Interrupt handler&n; */
 DECL|function|snd_ice1712_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_ice1712_interrupt
 c_func
 (paren
@@ -2373,6 +2373,9 @@ id|IRQSTAT
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *  PCM part - misc&n; */
 DECL|function|snd_ice1712_hw_params

@@ -553,7 +553,7 @@ macro_line|#endif
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|snd_es1938_interrupt
 c_func
 (paren
@@ -7386,7 +7386,7 @@ suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------&n; * Interrupt handler&n; * -------------------------------------------------------------------- */
 DECL|function|snd_es1938_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_es1938_interrupt
 c_func
 (paren
@@ -7753,6 +7753,9 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|macro|ES1938_DMA_SIZE
 mdefine_line|#define ES1938_DMA_SIZE 64

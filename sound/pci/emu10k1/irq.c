@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu10k1.h&gt;
 DECL|function|snd_emu10k1_interrupt
-r_void
+id|irqreturn_t
 id|snd_emu10k1_interrupt
 c_func
 (paren
@@ -785,5 +785,8 @@ id|IPR
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 eof

@@ -1104,7 +1104,7 @@ macro_line|#endif
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|snd_cs4281_interrupt
 c_func
 (paren
@@ -7751,7 +7751,7 @@ suffix:semicolon
 multiline_comment|/*&n; *  Interrupt handler&n; */
 DECL|function|snd_cs4281_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_cs4281_interrupt
 c_func
 (paren
@@ -7802,6 +7802,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|status
 op_assign
@@ -7836,6 +7837,7 @@ id|BA0_HICR_EOI
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -8178,6 +8180,9 @@ id|BA0_HICR
 comma
 id|BA0_HICR_EOI
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|snd_cs4281_probe

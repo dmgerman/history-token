@@ -4014,7 +4014,7 @@ suffix:semicolon
 )brace
 DECL|function|snd_korg1212_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_korg1212_interrupt
 c_func
 (paren
@@ -4057,6 +4057,7 @@ id|korg1212-&gt;irq
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|doorbellValue
@@ -4074,6 +4075,7 @@ op_logical_neg
 id|doorbellValue
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock
 c_func
@@ -4337,6 +4339,9 @@ c_func
 op_amp
 id|korg1212-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|snd_korg1212_downloadDSPCode

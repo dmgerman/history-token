@@ -1341,7 +1341,7 @@ macro_line|#endif
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|snd_es1968_interrupt
 c_func
 (paren
@@ -8537,7 +8537,7 @@ suffix:semicolon
 multiline_comment|/*&n; * interrupt handler&n; */
 DECL|function|snd_es1968_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_es1968_interrupt
 c_func
 (paren
@@ -8588,6 +8588,7 @@ l_int|0x1A
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|outw
 c_func
@@ -8722,6 +8723,9 @@ id|chip-&gt;substream_lock
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Mixer stuff&n; */
 r_static
