@@ -86,6 +86,9 @@ DECL|macro|FAT_VALID_MEDIA
 mdefine_line|#define FAT_VALID_MEDIA(x)&t;((0xF8 &lt;= (x) &amp;&amp; (x) &lt;= 0xFF) || (x) == 0xF0)
 DECL|macro|FAT_FIRST_ENT
 mdefine_line|#define FAT_FIRST_ENT(s, x)&t;((MSDOS_SB(s)-&gt;fat_bits == 32 ? 0x0FFFFF00 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? 0xFF00 : 0xF00) | (x))
+multiline_comment|/* start of data cluster&squot;s entry (number of reserved clusters) */
+DECL|macro|FAT_START_ENT
+mdefine_line|#define FAT_START_ENT&t;2
 multiline_comment|/* maximum number of clusters */
 DECL|macro|MAX_FAT12
 mdefine_line|#define MAX_FAT12&t;0xFF4
@@ -643,12 +646,12 @@ r_int
 id|data_start
 suffix:semicolon
 multiline_comment|/* first data sector */
-DECL|member|clusters
+DECL|member|max_cluster
 r_int
 r_int
-id|clusters
+id|max_cluster
 suffix:semicolon
-multiline_comment|/* number of clusters */
+multiline_comment|/* maximum cluster number */
 DECL|member|root_cluster
 r_int
 r_int
@@ -838,6 +841,37 @@ id|msdos_inode_info
 comma
 id|vfs_inode
 )paren
+suffix:semicolon
+)brace
+DECL|function|fat_clus_to_blknr
+r_static
+r_inline
+id|sector_t
+id|fat_clus_to_blknr
+c_func
+(paren
+r_struct
+id|msdos_sb_info
+op_star
+id|sbi
+comma
+r_int
+id|clus
+)paren
+(brace
+r_return
+(paren
+(paren
+id|sector_t
+)paren
+id|clus
+op_minus
+id|FAT_START_ENT
+)paren
+op_star
+id|sbi-&gt;sec_per_clus
+op_plus
+id|sbi-&gt;data_start
 suffix:semicolon
 )brace
 DECL|function|fat16_towchar
