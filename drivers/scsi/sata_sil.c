@@ -301,6 +301,8 @@ multiline_comment|/* terminate list */
 suffix:semicolon
 multiline_comment|/* TODO firmware versions should be added - eric */
 DECL|struct|sil_drivelist
+r_static
+r_const
 r_struct
 id|sil_drivelist
 (brace
