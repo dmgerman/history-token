@@ -19,6 +19,9 @@ macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for fsync_bdev() */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#ifdef CONFIG_VOYAGER
+macro_line|#include &lt;asm/voyager.h&gt;
+macro_line|#endif
 r_extern
 r_void
 id|reset_vc
@@ -1146,6 +1149,29 @@ l_string|&quot;Terminate All Tasks&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_VOYAGER
+DECL|variable|sysrq_voyager_dump_op
+r_static
+r_struct
+id|sysrq_key_op
+id|sysrq_voyager_dump_op
+op_assign
+(brace
+id|handler
+suffix:colon
+id|voyager_dump
+comma
+id|help_msg
+suffix:colon
+l_string|&quot;voyager&quot;
+comma
+id|action_msg
+suffix:colon
+l_string|&quot;Dump Voyager Status&bslash;n&quot;
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|function|sysrq_handle_kill
 r_static
 r_void
@@ -1268,9 +1294,16 @@ multiline_comment|/* b */
 op_amp
 id|sysrq_reboot_op
 comma
+macro_line|#ifdef CONFIG_VOYAGER
+multiline_comment|/* c */
+op_amp
+id|sysrq_voyager_dump_op
+comma
+macro_line|#else
 multiline_comment|/* c */
 l_int|NULL
 comma
+macro_line|#endif
 multiline_comment|/* d */
 l_int|NULL
 comma
