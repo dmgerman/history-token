@@ -1051,6 +1051,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+multiline_comment|/* We must remove ourselves from the hashbin *first*. This ensure&n;&t; * that no more LSAPs will be open on this link and no discovery&n;&t; * will be triggered anymore. Jean II */
 id|link
 op_assign
 id|hashbin_remove
@@ -1080,6 +1081,25 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* Kill all the LSAPs on this link. Jean II */
+id|link-&gt;reason
+op_assign
+id|LAP_DISC_INDICATION
+suffix:semicolon
+id|link-&gt;daddr
+op_assign
+id|DEV_ADDR_ANY
+suffix:semicolon
+id|irlmp_do_lap_event
+c_func
+(paren
+id|link
+comma
+id|LM_LAP_DISCONNECT_INDICATION
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 multiline_comment|/* Remove all discoveries discovered at this link */
 id|irlmp_expire_discoveries
 c_func
@@ -1091,6 +1111,7 @@ comma
 id|TRUE
 )paren
 suffix:semicolon
+multiline_comment|/* Final cleanup */
 id|del_timer
 c_func
 (paren

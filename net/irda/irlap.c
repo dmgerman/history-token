@@ -719,14 +719,8 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|irlap_disconnect_indication
-c_func
-(paren
-id|self
-comma
-id|LAP_DISC_INDICATION
-)paren
-suffix:semicolon
+multiline_comment|/* We used to send a LAP_DISC_INDICATION here, but this was&n;&t; * racy. This has been move within irlmp_unregister_link()&n;&t; * itself. Jean II */
+multiline_comment|/* Kill the LAP and all LSAPs on top of it */
 id|irlmp_unregister_link
 c_func
 (paren
