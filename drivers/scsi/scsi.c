@@ -198,17 +198,31 @@ r_int
 r_int
 id|serial_number
 suffix:semicolon
-DECL|variable|scsi_bh_queue_head
-r_static
+DECL|struct|softscsi_data
+r_struct
+id|softscsi_data
+(brace
+DECL|member|head
 id|Scsi_Cmnd
 op_star
-id|scsi_bh_queue_head
+id|head
 suffix:semicolon
-DECL|variable|scsi_bh_queue_tail
-r_static
+DECL|member|tail
 id|Scsi_Cmnd
 op_star
-id|scsi_bh_queue_tail
+id|tail
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|variable|__cacheline_aligned
+r_static
+r_struct
+id|softscsi_data
+id|softscsi_data
+(braket
+id|NR_CPUS
+)braket
+id|__cacheline_aligned
 suffix:semicolon
 multiline_comment|/*&n; * Note - the initial logging level can be set here to log events at boot time.&n; * After the system is up, you may enable logging via the /proc interface.&n; */
 DECL|variable|scsi_logging_level
@@ -517,14 +531,6 @@ DECL|variable|device_request_lock
 r_static
 id|spinlock_t
 id|device_request_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-multiline_comment|/*&n; * Used to protect insertion into and removal from the queue of&n; * commands to be processed by the bottom half handler.&n; */
-DECL|variable|scsi_bhqueue_lock
-r_static
-id|spinlock_t
-id|scsi_bhqueue_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
@@ -2816,26 +2822,7 @@ l_string|&quot;Leaving scsi_do_cmd()&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-r_void
-id|scsi_tasklet_func
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_static
-id|DECLARE_TASKLET
-c_func
-(paren
-id|scsi_tasklet
-comma
-id|scsi_tasklet_func
-comma
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * This function is the mid-level interrupt routine, which decides how&n; *  to handle error conditions.  Each invocation of this function must&n; *  do one and *only* one of the following:&n; *&n; *      1) Insert command in BH queue.&n; *      2) Activate error handler for host.&n; *&n; * FIXME(eric) - I am concerned about stack overflow (still).  An&n; * interrupt could come while we are processing the bottom queue,&n; * which would cause another command to be stuffed onto the bottom&n; * queue, and it would in turn be processed as that interrupt handler&n; * is returning.  Given a sufficiently steady rate of returning&n; * commands, this could cause the stack to overflow.  I am not sure&n; * what is the most appropriate solution here - we should probably&n; * keep a depth count, and not process any commands while we still&n; * have a bottom handler active higher in the stack.&n; *&n; * There is currently code in the bottom half handler to monitor&n; * recursion in the bottom handler and report if it ever happens.  If&n; * this becomes a problem, it won&squot;t be hard to engineer something to&n; * deal with it so that only the outer layer ever does any real&n; * processing.  &n; */
+multiline_comment|/**&n; * scsi_done - Mark this command as done&n; * @SCpnt: The SCSI Command which we think we&squot;ve completed.&n; *&n; * This function is the mid-level interrupt routine, which decides how&n; * to handle error conditions.  Each invocation of this function must&n; * do one and *only* one of the following:&n; *&n; *      1) Insert command in BH queue.&n; *      2) Activate error handler for host.&n; *&n; * There is no longer a problem with stack overflow.  Interrupts queue&n; * Scsi_Cmnd on a per-CPU queue and the softirq handler removes them&n; * from the queue one at a time.&n; *&n; * This function is sometimes called from interrupt context, but sometimes&n; * from task context.&n; */
 DECL|function|scsi_done
 r_void
 id|scsi_done
@@ -2851,7 +2838,14 @@ r_int
 id|flags
 suffix:semicolon
 r_int
+id|cpu
+comma
 id|tstatus
+suffix:semicolon
+r_struct
+id|softscsi_data
+op_star
+id|queue
 suffix:semicolon
 multiline_comment|/*&n;&t; * We don&squot;t have to worry about this one timing out any more.&n;&t; */
 id|tstatus
@@ -2908,15 +2902,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|scsi_bhqueue_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|SCpnt-&gt;serial_number_at_timeout
 op_assign
 l_int|0
@@ -2933,123 +2918,132 @@ id|SCpnt-&gt;bh_next
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * Next, put this command in the BH queue.&n;&t; * &n;&t; * We need a spinlock here, or compare and exchange if we can reorder incoming&n;&t; * Scsi_Cmnds, as it happens pretty often scsi_done is called multiple times&n;&t; * before bh is serviced. -jj&n;&t; *&n;&t; * We already have the io_request_lock here, since we are called from the&n;&t; * interrupt handler or the error handler. (DB)&n;&t; *&n;&t; * This may be true at the moment, but I would like to wean all of the low&n;&t; * level drivers away from using io_request_lock.   Technically they should&n;&t; * all use their own locking.  I am adding a small spinlock to protect&n;&t; * this datastructure to make it safe for that day.  (ERY)&n;&t; */
+multiline_comment|/*&n;&t; * Next, put this command in the softirq queue.&n;&t; *&n;&t; * This is a per-CPU queue, so we just disable local interrupts&n;&t; * and need no spinlock.&n;&t; */
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+id|queue
+op_assign
+op_amp
+id|softscsi_data
+(braket
+id|cpu
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|scsi_bh_queue_head
+id|queue-&gt;head
 )paren
 (brace
-id|scsi_bh_queue_head
+id|queue-&gt;head
 op_assign
 id|SCpnt
 suffix:semicolon
-id|scsi_bh_queue_tail
+id|queue-&gt;tail
 op_assign
 id|SCpnt
 suffix:semicolon
 )brace
 r_else
 (brace
-id|scsi_bh_queue_tail-&gt;bh_next
+id|queue-&gt;tail-&gt;bh_next
 op_assign
 id|SCpnt
 suffix:semicolon
-id|scsi_bh_queue_tail
+id|queue-&gt;tail
 op_assign
 id|SCpnt
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|cpu_raise_softirq
 c_func
 (paren
-op_amp
-id|scsi_bhqueue_lock
+id|cpu
 comma
+id|SCSI_SOFTIRQ
+)paren
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Mark the bottom half handler to be run.&n;&t; */
-id|tasklet_hi_schedule
-c_func
-(paren
-op_amp
-id|scsi_tasklet
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/*&n; * Procedure:   scsi_bottom_half_handler&n; *&n; * Purpose:     Called after we have finished processing interrupts, it&n; *              performs post-interrupt handling for commands that may&n; *              have completed.&n; *&n; * Notes:       This is called with all interrupts enabled.  This should reduce&n; *              interrupt latency, stack depth, and reentrancy of the low-level&n; *              drivers.&n; *&n; * The io_request_lock is required in all the routine. There was a subtle&n; * race condition when scsi_done is called after a command has already&n; * timed out but before the time out is processed by the error handler.&n; * (DB)&n; *&n; * I believe I have corrected this.  We simply monitor the return status of&n; * del_timer() - if this comes back as 0, it means that the timer has fired&n; * and that a timeout is in progress.   I have modified scsi_done() such&n; * that in this instance the command is never inserted in the bottom&n; * half queue.  Thus the only time we hold the lock here is when&n; * we wish to atomically remove the contents of the queue.&n; */
-DECL|function|scsi_tasklet_func
+multiline_comment|/**&n; * scsi_softirq - Perform post-interrupt handling for completed commands&n; *&n; * This is called with all interrupts enabled.  This should reduce&n; * interrupt latency, stack depth, and reentrancy of the low-level&n; * drivers.&n; */
+DECL|function|scsi_softirq
+r_static
 r_void
-id|scsi_tasklet_func
+id|scsi_softirq
 c_func
 (paren
-r_int
-r_int
-id|ignore
+r_struct
+id|softirq_action
+op_star
+id|h
 )paren
 (brace
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-suffix:semicolon
-id|Scsi_Cmnd
-op_star
-id|SCnext
-suffix:semicolon
 r_int
-r_int
-id|flags
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+r_struct
+id|softscsi_data
+op_star
+id|queue
+op_assign
+op_amp
+id|softscsi_data
+(braket
+id|cpu
+)braket
 suffix:semicolon
 r_while
 c_loop
 (paren
-l_int|1
-op_eq
-l_int|1
+id|queue-&gt;head
 )paren
 (brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|scsi_bhqueue_lock
-comma
-id|flags
-)paren
-suffix:semicolon
+id|Scsi_Cmnd
+op_star
 id|SCpnt
-op_assign
-id|scsi_bh_queue_head
-suffix:semicolon
-id|scsi_bh_queue_head
-op_assign
-l_int|NULL
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|scsi_bhqueue_lock
 comma
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|SCpnt
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
+op_star
 id|SCnext
+suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|SCpnt
 op_assign
-id|SCpnt-&gt;bh_next
+id|queue-&gt;head
+suffix:semicolon
+id|queue-&gt;head
+op_assign
+l_int|NULL
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -3109,7 +3103,7 @@ suffix:semicolon
 r_case
 id|NEEDS_RETRY
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * We only come in here if we want to retry a command.  The&n;&t;&t;&t;&t; * test to see whether the command should be retried should be&n;&t;&t;&t;&t; * keeping track of the number of tries, so we don&squot;t end up looping,&n;&t;&t;&t;&t; * of course.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * We only come in here if we want to retry a&n;&t;&t;&t;&t; * command.  The test to see whether the&n;&t;&t;&t;&t; * command should be retried should be keeping&n;&t;&t;&t;&t; * track of the number of tries, so we don&squot;t&n;&t;&t;&t;&t; * end up looping, of course.&n;&t;&t;&t;&t; */
 id|SCSI_LOG_MLCOMPLETE
 c_func
 (paren
@@ -3139,7 +3133,7 @@ suffix:semicolon
 r_case
 id|ADD_TO_MLQUEUE
 suffix:colon
-multiline_comment|/* &n;&t;&t;&t;&t; * This typically happens for a QUEUE_FULL message -&n;&t;&t;&t;&t; * typically only when the queue depth is only&n;&t;&t;&t;&t; * approximate for a given device.  Adding a command&n;&t;&t;&t;&t; * to the queue for the device will prevent further commands&n;&t;&t;&t;&t; * from being sent to the device, so we shouldn&squot;t end up&n;&t;&t;&t;&t; * with tons of things being sent down that shouldn&squot;t be.&n;&t;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t;&t; * This typically happens for a QUEUE_FULL&n;&t;&t;&t;&t; * message - typically only when the queue&n;&t;&t;&t;&t; * depth is only approximate for a given&n;&t;&t;&t;&t; * device.  Adding a command to the queue for&n;&t;&t;&t;&t; * the device will prevent further commands&n;&t;&t;&t;&t; * from being sent to the device, so we&n;&t;&t;&t;&t; * shouldn&squot;t end up with tons of things being&n;&t;&t;&t;&t; * sent down that shouldn&squot;t be.&n;&t;&t;&t;&t; */
 id|SCSI_LOG_MLCOMPLETE
 c_func
 (paren
@@ -3166,7 +3160,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * Here we have a fatal error of some sort.  Turn it over to&n;&t;&t;&t;&t; * the error handler.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Here we have a fatal error of some sort.&n;&t;&t;&t;&t; * Turn it over to the error handler.&n;&t;&t;&t;&t; */
 id|SCSI_LOG_MLCOMPLETE
 c_func
 (paren
@@ -3249,7 +3243,7 @@ id|SCpnt-&gt;host-&gt;in_recovery
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * If the host is having troubles, then look to see if this was the last&n;&t;&t;&t;&t;&t; * command that might have failed.  If so, wake up the error handler.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * If the host is having troubles, then&n;&t;&t;&t;&t;&t; * look to see if this was the last&n;&t;&t;&t;&t;&t; * command that might have failed.  If&n;&t;&t;&t;&t;&t; * so, wake up the error handler.&n;&t;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3287,7 +3281,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * We only get here if the error recovery thread has died.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * We only get here if the error&n;&t;&t;&t;&t;&t; * recovery thread has died.&n;&t;&t;&t;&t;&t; */
 id|scsi_finish_command
 c_func
 (paren
@@ -3296,10 +3290,11 @@ id|SCpnt
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* switch */
 )brace
 multiline_comment|/* for(; SCpnt...) */
 )brace
-multiline_comment|/* while(1==1) */
+multiline_comment|/* while(queue-&gt;head) */
 )brace
 multiline_comment|/*&n; * Function:    scsi_retry_command&n; *&n; * Purpose:     Send a command back to the low level to be retried.&n; *&n; * Notes:       This command is always executed in the context of the&n; *              bottom half handler, or the error handler thread. Low&n; *              level drivers should not become re-entrant as a result of&n; *              this.&n; */
 DECL|function|scsi_retry_command
@@ -8040,6 +8035,17 @@ id|scsi_host_no_init
 id|scsihosts
 )paren
 suffix:semicolon
+multiline_comment|/* Where we handle work queued by scsi_done */
+id|open_softirq
+c_func
+(paren
+id|SCSI_SOFTIRQ
+comma
+id|scsi_softirq
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -8065,13 +8071,6 @@ l_int|NULL
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-id|tasklet_kill
-c_func
-(paren
-op_amp
-id|scsi_tasklet
-)paren
 suffix:semicolon
 id|devfs_unregister
 (paren
