@@ -3917,7 +3917,7 @@ c_func
 id|dart_tablebase
 )paren
 op_assign
-id|absolute_to_virt
+id|abs_to_virt
 c_func
 (paren
 id|lmb_alloc_base
