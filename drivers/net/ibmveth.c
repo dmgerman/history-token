@@ -57,14 +57,14 @@ mdefine_line|#define DEBUG 1
 DECL|macro|ibmveth_printk
 mdefine_line|#define ibmveth_printk(fmt, args...) &bslash;&n;  printk(KERN_INFO &quot;%s: &quot; fmt, __FILE__, ## args)
 DECL|macro|ibmveth_error_printk
-mdefine_line|#define ibmveth_error_printk(fmt, args...) &bslash;&n;  printk(KERN_ERR &quot;(%s:%3.3d ua:%lx) ERROR: &quot; fmt, __FILE__, __LINE__ , adapter-&gt;vdev-&gt;unit_address, ## args)
+mdefine_line|#define ibmveth_error_printk(fmt, args...) &bslash;&n;  printk(KERN_ERR &quot;(%s:%3.3d ua:%x) ERROR: &quot; fmt, __FILE__, __LINE__ , adapter-&gt;vdev-&gt;unit_address, ## args)
 macro_line|#ifdef DEBUG
 DECL|macro|ibmveth_debug_printk_no_adapter
 mdefine_line|#define ibmveth_debug_printk_no_adapter(fmt, args...) &bslash;&n;  printk(KERN_DEBUG &quot;(%s:%3.3d): &quot; fmt, __FILE__, __LINE__ , ## args)
 DECL|macro|ibmveth_debug_printk
-mdefine_line|#define ibmveth_debug_printk(fmt, args...) &bslash;&n;  printk(KERN_DEBUG &quot;(%s:%3.3d ua:%lx): &quot; fmt, __FILE__, __LINE__ , adapter-&gt;vdev-&gt;unit_address, ## args)
+mdefine_line|#define ibmveth_debug_printk(fmt, args...) &bslash;&n;  printk(KERN_DEBUG &quot;(%s:%3.3d ua:%x): &quot; fmt, __FILE__, __LINE__ , adapter-&gt;vdev-&gt;unit_address, ## args)
 DECL|macro|ibmveth_assert
-mdefine_line|#define ibmveth_assert(expr) &bslash;&n;  if(!(expr)) {                                   &bslash;&n;    printk(KERN_DEBUG &quot;assertion failed (%s:%3.3d ua:%lx): %s&bslash;n&quot;, __FILE__, __LINE__, adapter-&gt;vdev-&gt;unit_address, #expr); &bslash;&n;    BUG(); &bslash;&n;  }
+mdefine_line|#define ibmveth_assert(expr) &bslash;&n;  if(!(expr)) {                                   &bslash;&n;    printk(KERN_DEBUG &quot;assertion failed (%s:%3.3d ua:%x): %s&bslash;n&quot;, __FILE__, __LINE__, adapter-&gt;vdev-&gt;unit_address, #expr); &bslash;&n;    BUG(); &bslash;&n;  }
 macro_line|#else
 DECL|macro|ibmveth_debug_printk_no_adapter
 mdefine_line|#define ibmveth_debug_printk_no_adapter(fmt, args...)
@@ -4061,7 +4061,7 @@ suffix:semicolon
 id|ibmveth_debug_printk_no_adapter
 c_func
 (paren
-l_string|&quot;entering ibmveth_probe for UA 0x%lx&bslash;n&quot;
+l_string|&quot;entering ibmveth_probe for UA 0x%x&bslash;n&quot;
 comma
 id|dev-&gt;unit_address
 )paren
@@ -4711,7 +4711,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;Unit Address:    0x%lx&bslash;n&quot;
+l_string|&quot;Unit Address:    0x%x&bslash;n&quot;
 comma
 id|adapter-&gt;vdev-&gt;unit_address
 )paren
