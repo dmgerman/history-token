@@ -523,7 +523,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PARPORT_1284
 multiline_comment|/* Find FIFO lossage; FIFO is reset */
-DECL|function|get_fifo_residue
+macro_line|#if 0
 r_static
 r_int
 id|get_fifo_residue
@@ -688,6 +688,7 @@ r_return
 id|residue
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0 */
 macro_line|#endif /* IEEE 1284 support */
 macro_line|#endif /* FIFO support */
 multiline_comment|/*&n; * Clear TIMEOUT BIT in EPP MODE&n; *&n; * This is also used in SPP detection.&n; */
@@ -823,6 +824,7 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|parport_pc_init_state
+r_static
 r_void
 id|parport_pc_init_state
 c_func
@@ -863,6 +865,7 @@ suffix:semicolon
 multiline_comment|/* NetMos chip can cause problems 0x24;&n;&t;&t;&t;     * D.Gruszka VScom */
 )brace
 DECL|function|parport_pc_save_state
+r_static
 r_void
 id|parport_pc_save_state
 c_func
@@ -907,6 +910,7 @@ id|p
 suffix:semicolon
 )brace
 DECL|function|parport_pc_restore_state
+r_static
 r_void
 id|parport_pc_restore_state
 c_func
@@ -3093,6 +3097,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Parallel Port FIFO mode (ECP chipsets) */
 DECL|function|parport_pc_compat_write_block_pio
+r_static
 r_int
 id|parport_pc_compat_write_block_pio
 (paren
@@ -3388,6 +3393,7 @@ suffix:semicolon
 multiline_comment|/* ECP */
 macro_line|#ifdef CONFIG_PARPORT_1284
 DECL|function|parport_pc_ecp_write_block_pio
+r_static
 r_int
 id|parport_pc_ecp_write_block_pio
 (paren
@@ -3824,7 +3830,8 @@ r_return
 id|written
 suffix:semicolon
 )brace
-DECL|function|parport_pc_ecp_read_block_pio
+macro_line|#if 0
+r_static
 r_int
 id|parport_pc_ecp_read_block_pio
 (paren
@@ -4600,11 +4607,13 @@ op_minus
 id|left
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0  */
 macro_line|#endif /* IEEE 1284 support */
 macro_line|#endif /* Allowed to use FIFO/DMA */
 multiline_comment|/*&n; *&t;******************************************&n; *&t;INITIALISATION AND MODULE STUFF BELOW HERE&n; *&t;******************************************&n; */
 multiline_comment|/* GCC is not inlining extern inline function later overwriten to non-inline,&n;   so we use outlined_ variants here.  */
 DECL|variable|parport_pc_ops
+r_static
 r_struct
 id|parport_operations
 id|parport_pc_ops

@@ -6,9 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -21,13 +19,10 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -43,11 +38,6 @@ macro_line|#endif
 DECL|variable|smp_threads_ready
 r_int
 id|smp_threads_ready
-suffix:semicolon
-DECL|variable|cache_decay_ticks
-r_int
-r_int
-id|cache_decay_ticks
 suffix:semicolon
 DECL|variable|cpu_possible_map
 id|cpumask_t
@@ -119,16 +109,6 @@ id|stab_array
 (braket
 )braket
 suffix:semicolon
-r_extern
-r_int
-id|cpu_idle
-c_func
-(paren
-r_void
-op_star
-id|unused
-)paren
-suffix:semicolon
 r_void
 id|smp_call_function_interrupt
 c_func
@@ -141,15 +121,6 @@ r_int
 id|smt_enabled_at_boot
 op_assign
 l_int|1
-suffix:semicolon
-multiline_comment|/* Low level assembly function used to backup CPU 0 state */
-r_extern
-r_void
-id|__save_cpu_setup
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 DECL|function|smp_mpic_message_pass
@@ -422,28 +393,6 @@ id|next_jiffy_update_tb
 suffix:semicolon
 )brace
 )brace
-)brace
-DECL|function|smp_local_timer_interrupt
-r_void
-id|smp_local_timer_interrupt
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-id|update_process_times
-c_func
-(paren
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|smp_message_recv
 r_void
@@ -1700,19 +1649,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|smp_ops-&gt;late_setup_cpu
-)paren
-id|smp_ops
-op_member_access_from_pointer
-id|late_setup_cpu
-c_func
-(paren
-id|cpu
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1740,12 +1676,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
 id|cpu_idle
 c_func
 (paren
-l_int|NULL
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|setup_profiling_timer
@@ -1820,4 +1757,56 @@ op_assign
 id|cpu_possible_map
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+DECL|function|__cpu_disable
+r_int
+id|__cpu_disable
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|smp_ops-&gt;cpu_disable
+)paren
+r_return
+id|smp_ops
+op_member_access_from_pointer
+id|cpu_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+DECL|function|__cpu_die
+r_void
+id|__cpu_die
+c_func
+(paren
+r_int
+r_int
+id|cpu
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|smp_ops-&gt;cpu_die
+)paren
+id|smp_ops
+op_member_access_from_pointer
+id|cpu_die
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 eof

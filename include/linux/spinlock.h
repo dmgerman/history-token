@@ -35,6 +35,16 @@ id|lock
 suffix:semicolon
 r_int
 id|__lockfunc
+id|_read_trylock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|lock
+)paren
+suffix:semicolon
+r_int
+id|__lockfunc
 id|_write_trylock
 c_func
 (paren
@@ -453,6 +463,16 @@ id|lock
 )paren
 suffix:semicolon
 r_int
+id|__lockfunc
+id|generic_raw_read_trylock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|lock
+)paren
+suffix:semicolon
+r_int
 id|in_lock_functions
 c_func
 (paren
@@ -607,10 +627,14 @@ DECL|macro|_raw_write_lock
 mdefine_line|#define _raw_write_lock(lock)&t;do { (void)(lock); } while(0)
 DECL|macro|_raw_write_unlock
 mdefine_line|#define _raw_write_unlock(lock)&t;do { (void)(lock); } while(0)
+DECL|macro|_raw_read_trylock
+mdefine_line|#define _raw_read_trylock(lock) ({ (void)(lock); (1); })
 DECL|macro|_raw_write_trylock
 mdefine_line|#define _raw_write_trylock(lock) ({ (void)(lock); (1); })
 DECL|macro|_spin_trylock
 mdefine_line|#define _spin_trylock(lock)&t;({preempt_disable(); _raw_spin_trylock(lock) ? &bslash;&n;&t;&t;&t;&t;1 : ({preempt_enable(); 0;});})
+DECL|macro|_read_trylock
+mdefine_line|#define _read_trylock(lock)&t;({preempt_disable();_raw_read_trylock(lock) ? &bslash;&n;&t;&t;&t;&t;1 : ({preempt_enable(); 0;});})
 DECL|macro|_write_trylock
 mdefine_line|#define _write_trylock(lock)&t;({preempt_disable(); _raw_write_trylock(lock) ? &bslash;&n;&t;&t;&t;&t;1 : ({preempt_enable(); 0;});})
 DECL|macro|_spin_trylock_bh
@@ -667,21 +691,16 @@ macro_line|#endif /* !SMP */
 multiline_comment|/*&n; * Define the various spin_lock and rw_lock methods.  Note we define these&n; * regardless of whether CONFIG_SMP or CONFIG_PREEMPT are set. The various&n; * methods are defined as nops in the case they are not required.&n; */
 DECL|macro|spin_trylock
 mdefine_line|#define spin_trylock(lock)&t;__cond_lock(_spin_trylock(lock))
+DECL|macro|read_trylock
+mdefine_line|#define read_trylock(lock)&t;__cond_lock(_read_trylock(lock))
 DECL|macro|write_trylock
 mdefine_line|#define write_trylock(lock)&t;__cond_lock(_write_trylock(lock))
-multiline_comment|/* Where&squot;s read_trylock? */
 DECL|macro|spin_lock
 mdefine_line|#define spin_lock(lock)&t;&t;_spin_lock(lock)
 DECL|macro|write_lock
 mdefine_line|#define write_lock(lock)&t;_write_lock(lock)
 DECL|macro|read_lock
 mdefine_line|#define read_lock(lock)&t;&t;_read_lock(lock)
-DECL|macro|spin_unlock
-mdefine_line|#define spin_unlock(lock)&t;_spin_unlock(lock)
-DECL|macro|write_unlock
-mdefine_line|#define write_unlock(lock)&t;_write_unlock(lock)
-DECL|macro|read_unlock
-mdefine_line|#define read_unlock(lock)&t;_read_unlock(lock)
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|spin_lock_irqsave
 mdefine_line|#define spin_lock_irqsave(lock, flags)&t;flags = _spin_lock_irqsave(lock)
@@ -709,6 +728,12 @@ DECL|macro|write_lock_irq
 mdefine_line|#define write_lock_irq(lock)&t;&t;_write_lock_irq(lock)
 DECL|macro|write_lock_bh
 mdefine_line|#define write_lock_bh(lock)&t;&t;_write_lock_bh(lock)
+DECL|macro|spin_unlock
+mdefine_line|#define spin_unlock(lock)&t;_spin_unlock(lock)
+DECL|macro|write_unlock
+mdefine_line|#define write_unlock(lock)&t;_write_unlock(lock)
+DECL|macro|read_unlock
+mdefine_line|#define read_unlock(lock)&t;_read_unlock(lock)
 DECL|macro|spin_unlock_irqrestore
 mdefine_line|#define spin_unlock_irqrestore(lock, flags)&t;_spin_unlock_irqrestore(lock, flags)
 DECL|macro|spin_unlock_irq
@@ -729,6 +754,10 @@ DECL|macro|write_unlock_bh
 mdefine_line|#define write_unlock_bh(lock)&t;&t;&t;_write_unlock_bh(lock)
 DECL|macro|spin_trylock_bh
 mdefine_line|#define spin_trylock_bh(lock)&t;&t;&t;__cond_lock(_spin_trylock_bh(lock))
+DECL|macro|spin_trylock_irq
+mdefine_line|#define spin_trylock_irq(lock) &bslash;&n;({ &bslash;&n;&t;local_irq_disable(); &bslash;&n;&t;_spin_trylock(lock) ? &bslash;&n;&t;1 : ({local_irq_enable(); 0; }); &bslash;&n;})
+DECL|macro|spin_trylock_irqsave
+mdefine_line|#define spin_trylock_irqsave(lock, flags) &bslash;&n;({ &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;_spin_trylock(lock) ? &bslash;&n;&t;1 : ({local_irq_restore(flags); 0;}); &bslash;&n;})
 macro_line|#ifdef CONFIG_LOCKMETER
 r_extern
 r_void
@@ -788,6 +817,15 @@ suffix:semicolon
 r_extern
 r_void
 id|_metered_write_unlock
+(paren
+id|rwlock_t
+op_star
+id|lock
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|_metered_read_trylock
 (paren
 id|rwlock_t
 op_star
@@ -872,11 +910,23 @@ comma
 id|addr
 )paren
 )paren
+(brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|cpu_relax
 c_func
 (paren
 )paren
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 id|__acquire
@@ -1038,5 +1088,9 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|macro|DEFINE_SPINLOCK
+mdefine_line|#define DEFINE_SPINLOCK(x) spinlock_t x = SPIN_LOCK_UNLOCKED
+DECL|macro|DEFINE_RWLOCK
+mdefine_line|#define DEFINE_RWLOCK(x) rwlock_t x = RW_LOCK_UNLOCKED
 macro_line|#endif /* __LINUX_SPINLOCK_H */
 eof

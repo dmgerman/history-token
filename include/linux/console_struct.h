@@ -1,4 +1,7 @@
 multiline_comment|/*&n; * console_struct.h&n; *&n; * Data structure describing single virtual console except for data&n; * used by vt.c.&n; *&n; * Fields marked with [#] must be set by the low-level driver.&n; * Fields marked with [!] can be changed by the low-level driver&n; * to achieve effects such as fast scrolling by changing the origin.&n; */
+r_struct
+id|vt_struct
+suffix:semicolon
 DECL|macro|NPAR
 mdefine_line|#define NPAR 16
 DECL|struct|vc_data
@@ -474,6 +477,12 @@ op_star
 id|vc_uni_pagedir_loc
 suffix:semicolon
 multiline_comment|/* [!] Location of uni_pagedir variable for this console */
+DECL|member|vc_vt
+r_struct
+id|vt_struct
+op_star
+id|vc_vt
+suffix:semicolon
 multiline_comment|/* additional information is in vt_kern.h */
 )brace
 suffix:semicolon

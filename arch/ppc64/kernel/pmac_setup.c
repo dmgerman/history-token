@@ -442,12 +442,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Setup the PCI DMA to &quot;direct&quot; by default. May be overriden&n;&t; * by iommu later on&n;&t; */
-id|pci_dma_init_direct
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Lookup PCI hosts */
 id|pmac_pci_init
 c_func
@@ -983,9 +977,14 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_BOOTX_TEXT */
 )brace
 multiline_comment|/* Setup interrupt mapping options */
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_assign
 id|IC_OPEN_PIC
+suffix:semicolon
+id|iommu_init_early_u3
+c_func
+(paren
+)paren
 suffix:semicolon
 id|DBG
 c_func

@@ -293,6 +293,10 @@ macro_line|# elif defined (CONFIG_IA64_HP_ZX1)
 r_return
 l_string|&quot;hpzx1&quot;
 suffix:semicolon
+macro_line|# elif defined (CONFIG_IA64_HP_ZX1_SWIOTLB)
+r_return
+l_string|&quot;hpzx1_swiotlb&quot;
+suffix:semicolon
 macro_line|# elif defined (CONFIG_IA64_SGI_SN2)
 r_return
 l_string|&quot;sn2&quot;
@@ -1463,12 +1467,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * MCD - This can probably be dropped now.  No need for pxm ID to node ID&n;&t; * mapping with sparse node numbering iff MAX_PXM_DOMAINS &lt;= MAX_NUMNODES.&n;&t; */
 multiline_comment|/* calculate total number of nodes in system from PXM bitmap */
-id|numnodes
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* init total nodes in system */
 id|memset
 c_func
 (paren
@@ -1495,6 +1495,12 @@ r_sizeof
 (paren
 id|nid_to_pxm_map
 )paren
+)paren
+suffix:semicolon
+id|nodes_clear
+c_func
+(paren
+id|node_online_map
 )paren
 suffix:semicolon
 r_for
@@ -1522,26 +1528,33 @@ id|i
 )paren
 )paren
 (brace
+r_int
+id|nid
+op_assign
+id|num_online_nodes
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pxm_to_nid_map
 (braket
 id|i
 )braket
 op_assign
-id|numnodes
+id|nid
+suffix:semicolon
+id|nid_to_pxm_map
+(braket
+id|nid
+)braket
+op_assign
+id|i
 suffix:semicolon
 id|node_set_online
 c_func
 (paren
-id|numnodes
+id|nid
 )paren
-suffix:semicolon
-id|nid_to_pxm_map
-(braket
-id|numnodes
-op_increment
-)braket
-op_assign
-id|i
 suffix:semicolon
 )brace
 )brace
@@ -1578,19 +1591,10 @@ id|nid
 )braket
 suffix:semicolon
 multiline_comment|/* assign memory bank numbers for each chunk on each node */
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|numnodes
-suffix:semicolon
-id|i
-op_increment
 )paren
 (brace
 r_int
@@ -1675,7 +1679,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;Number of logical nodes in system = %d&bslash;n&quot;
 comma
-id|numnodes
+id|num_online_nodes
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|printk
@@ -1803,34 +1810,16 @@ c_func
 l_string|&quot;ACPI 2.0 SLIT locality table:&bslash;n&quot;
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|numnodes
-suffix:semicolon
-id|i
-op_increment
 )paren
 (brace
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-id|numnodes
-suffix:semicolon
-id|j
-op_increment
 )paren
 id|printk
 c_func
@@ -1924,6 +1913,30 @@ c_func
 id|acpi_register_gsi
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_DEALLOCATE_IRQ
+r_void
+DECL|function|acpi_unregister_gsi
+id|acpi_unregister_gsi
+(paren
+id|u32
+id|gsi
+)paren
+(brace
+id|iosapic_unregister_intr
+c_func
+(paren
+id|gsi
+)paren
+suffix:semicolon
+)brace
+DECL|variable|acpi_unregister_gsi
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_unregister_gsi
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ACPI_DEALLOCATE_IRQ */
 r_static
 r_int
 id|__init

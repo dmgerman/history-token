@@ -533,7 +533,11 @@ l_int|0
 suffix:semicolon
 id|priv-&gt;device_type
 op_assign
-id|serial-&gt;product
+id|le16_to_cpu
+c_func
+(paren
+id|serial-&gt;dev-&gt;descriptor.idProduct
+)paren
 suffix:semicolon
 id|priv-&gt;line_state
 op_assign

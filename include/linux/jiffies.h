@@ -55,15 +55,20 @@ multiline_comment|/* TICK_USEC_TO_NSEC is the time between ticks in nsec assumin
 multiline_comment|/* a value TUSEC for TICK_USEC (can be set bij adjtimex)&t;&t;*/
 DECL|macro|TICK_USEC_TO_NSEC
 mdefine_line|#define TICK_USEC_TO_NSEC(TUSEC) (SH_DIV (TUSEC * USER_HZ * 1000, ACTHZ, 8))
+multiline_comment|/* some arch&squot;s have a small-data section that can be accessed register-relative&n; * but that can only take up to, say, 4-byte variables. jiffies being part of&n; * an 8-byte variable may not be correctly accessed unless we force the issue&n; */
+DECL|macro|__jiffy_data
+mdefine_line|#define __jiffy_data  __attribute__((section(&quot;.data&quot;)))
 multiline_comment|/*&n; * The 64-bit value is not volatile - you MUST NOT read it&n; * without sampling the sequence number in xtime_lock.&n; * get_jiffies_64() will do this for you as appropriate.&n; */
 r_extern
 id|u64
+id|__jiffy_data
 id|jiffies_64
 suffix:semicolon
 r_extern
 r_int
 r_int
 r_volatile
+id|__jiffy_data
 id|jiffies
 suffix:semicolon
 macro_line|#if (BITS_PER_LONG &lt; 64)

@@ -1809,6 +1809,10 @@ op_assign
 op_amp
 id|usbfs_ops
 suffix:semicolon
+id|sb-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 id|inode
 op_assign
 id|usbfs_get_inode
@@ -2862,11 +2866,8 @@ suffix:semicolon
 id|i_size
 op_add_assign
 id|le16_to_cpu
+c_func
 (paren
-(paren
-id|__force
-id|__le16
-)paren
 id|config-&gt;wTotalLength
 )paren
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: redboot.c,v 1.15 2004/08/10 07:55:16 dwmw2 Exp $&n; *&n; * Parse RedBoot-style Flash Image System (FIS) tables and&n; * produce a Linux partition array to match.&n; */
+multiline_comment|/*&n; * $Id: redboot.c,v 1.17 2004/11/22 11:33:56 ijc Exp $&n; *&n; * Parse RedBoot-style Flash Image System (FIS) tables and&n; * produce a Linux partition array to match.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -100,6 +100,23 @@ id|next
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|variable|directory
+r_static
+r_int
+id|directory
+op_assign
+id|CONFIG_MTD_REDBOOT_DIRECTORY_BLOCK
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|directory
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
 DECL|function|redboot_checksum
 r_static
 r_inline
@@ -191,6 +208,13 @@ id|nulllen
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|numslots
+suffix:semicolon
+r_int
+r_int
+id|offset
+suffix:semicolon
 macro_line|#ifdef CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED
 r_static
 r_char
@@ -219,7 +243,39 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-multiline_comment|/* Read the start of the last erase block */
+r_if
+c_cond
+(paren
+id|directory
+OL
+l_int|0
+)paren
+id|offset
+op_assign
+id|master-&gt;size
+op_plus
+id|directory
+op_star
+id|master-&gt;erasesize
+suffix:semicolon
+r_else
+id|offset
+op_assign
+id|directory
+op_star
+id|master-&gt;erasesize
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Searching for RedBoot partition table in %s at offset 0x%lx&bslash;n&quot;
+comma
+id|master-&gt;name
+comma
+id|offset
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|master
@@ -229,9 +285,7 @@ c_func
 (paren
 id|master
 comma
-id|master-&gt;size
-op_minus
-id|master-&gt;erasesize
+id|offset
 comma
 id|master-&gt;erasesize
 comma
@@ -270,7 +324,18 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* RedBoot image could appear in any of the first three slots */
+id|numslots
+op_assign
+(paren
+id|master-&gt;erasesize
+op_div
+r_sizeof
+(paren
+r_struct
+id|fis_image_desc
+)paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -280,12 +345,35 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|3
+id|numslots
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|buf
+(braket
+id|i
+)braket
+dot
+id|name
+(braket
+l_int|0
+)braket
+op_eq
+l_int|0xff
+)paren
+(brace
+id|i
+op_assign
+id|numslots
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -300,9 +388,9 @@ id|i
 dot
 id|name
 comma
-l_string|&quot;RedBoot&quot;
+l_string|&quot;FIS directory&quot;
 comma
-l_int|8
+l_int|14
 )paren
 )paren
 r_break
@@ -313,7 +401,7 @@ c_cond
 (paren
 id|i
 op_eq
-l_int|3
+id|numslots
 )paren
 (brace
 multiline_comment|/* Didn&squot;t find it */
@@ -343,13 +431,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|master-&gt;erasesize
-op_div
-r_sizeof
-(paren
-r_struct
-id|fis_image_desc
-)paren
+id|numslots
 suffix:semicolon
 id|i
 op_increment

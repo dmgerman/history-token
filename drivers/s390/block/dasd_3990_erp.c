@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.34 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.36 $&n; */
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
@@ -22,7 +22,7 @@ r_int
 r_char
 id|modifier
 suffix:semicolon
-multiline_comment|/* Subcommand modifier&t;&t;       */
+multiline_comment|/* Subcommand modifier */
 DECL|member|res
 r_int
 r_int
@@ -908,7 +908,7 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_action_1 */
-multiline_comment|/*&n; * DASD_3990_ERP_ACTION_4 &n; *&n; * DESCRIPTION&n; *   Setup ERP to do the ERP action 4 (see Reference manual).&n; *   Set the current request to PENDING to block the CQR queue for that device&n; *   until the state change interrupt appears.&n; *   Use a timer (20 seconds) to retry the cqr if the interrupt is still missing.&n; *&n; *  PARAMETER&n; *   sense&t;&t;sense data of the actual error&n; *   erp&t;&t;pointer to the current ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;pointer to the ERP&n; *&n; */
+multiline_comment|/*&n; * DASD_3990_ERP_ACTION_4 &n; *&n; * DESCRIPTION&n; *   Setup ERP to do the ERP action 4 (see Reference manual).&n; *   Set the current request to PENDING to block the CQR queue for that device&n; *   until the state change interrupt appears.&n; *   Use a timer (20 seconds) to retry the cqr if the interrupt is still&n; *   missing.&n; *&n; *  PARAMETER&n; *   sense&t;&t;sense data of the actual error&n; *   erp&t;&t;pointer to the current ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;pointer to the ERP&n; *&n; */
 r_static
 r_struct
 id|dasd_ccw_req
@@ -952,10 +952,9 @@ id|KERN_INFO
 comma
 id|device
 comma
-l_string|&quot;dasd_3990_erp_action_4: first time retry&quot;
 l_string|&quot;%s&quot;
 comma
-l_string|&quot; &quot;
+l_string|&quot;dasd_3990_erp_action_4: first time retry&quot;
 )paren
 suffix:semicolon
 id|erp-&gt;retries
@@ -6388,8 +6387,8 @@ suffix:semicolon
 multiline_comment|/* not possible to handle this situation in Linux */
 id|panic
 (paren
-l_string|&quot;Invalid data - No way to inform appliction about &quot;
-l_string|&quot;the possibly incorret data&quot;
+l_string|&quot;Invalid data - No way to inform application &quot;
+l_string|&quot;about the possibly incorrect data&quot;
 )paren
 suffix:semicolon
 r_break
@@ -6538,7 +6537,6 @@ r_return
 id|erp_new
 suffix:semicolon
 )brace
-multiline_comment|/* END dasd_3990_erp_inspect */
 multiline_comment|/*&n; * DASD_3990_ERP_ADD_ERP&n; * &n; * DESCRIPTION&n; *   This funtion adds an additional request block (ERP) to the head of&n; *   the given cqr (or erp).&n; *   This erp is initialized as an default erp (retry TIC)&n; *&n; * PARAMETER&n; *   cqr&t;&t;head of the current ERP-chain (or single cqr if &n; *&t;&t;&t;first error)&n; * RETURN VALUES&n; *   erp&t;&t;pointer to new ERP-chain head&n; */
 r_static
 r_struct
@@ -7205,7 +7203,8 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* no retry left and no additional special handling necessary */
+multiline_comment|/* No retry left and no additional special handling */
+multiline_comment|/*necessary */
 id|DEV_MESSAGE
 c_func
 (paren

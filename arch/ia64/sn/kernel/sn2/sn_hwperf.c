@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/topology.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -2479,11 +2480,6 @@ suffix:semicolon
 )brace
 id|error
 suffix:colon
-r_if
-c_cond
-(paren
-id|p
-)paren
 id|vfree
 c_func
 (paren
@@ -2933,13 +2929,6 @@ id|seq
 op_assign
 id|file-&gt;private_data
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|seq
-op_member_access_from_pointer
-r_private
-)paren
 id|vfree
 c_func
 (paren

@@ -853,6 +853,25 @@ op_star
 id|out
 )paren
 suffix:semicolon
+r_struct
+id|gstr
+suffix:semicolon
+multiline_comment|/* forward */
+r_void
+id|expr_gstr_print
+c_func
+(paren
+r_struct
+id|expr
+op_star
+id|e
+comma
+r_struct
+id|gstr
+op_star
+id|gs
+)paren
+suffix:semicolon
 DECL|function|expr_is_yes
 r_static
 r_inline

@@ -774,7 +774,11 @@ c_func
 id|inode
 )paren
 op_assign
-id|CURRENT_TIME
+id|current_fs_time
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
 suffix:semicolon
 id|insert_inode_hash
 c_func

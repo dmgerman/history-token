@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallPci.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallSm.h&gt;
@@ -22,10 +21,6 @@ macro_line|#include &lt;asm/iSeries/iSeries_irq.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
 macro_line|#include &lt;asm/iSeries/mf.h&gt;
 macro_line|#include &quot;pci.h&quot;
-r_extern
-r_int
-id|panic_timeout
-suffix:semicolon
 r_extern
 r_int
 r_int

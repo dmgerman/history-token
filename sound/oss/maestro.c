@@ -106,37 +106,45 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef M_DEBUG
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0644
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|dsps_order
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|use_pm
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|clocking
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
@@ -251,6 +259,7 @@ DECL|macro|ACPI_NONE
 mdefine_line|#define ACPI_NONE&t;(ACPI__10)
 multiline_comment|/* these masks indicate which units we care about at&n;&t;which states */
 DECL|variable|acpi_state_mask
+r_static
 id|u16
 id|acpi_state_mask
 (braket
@@ -1189,6 +1198,7 @@ DECL|macro|supported_mixer
 mdefine_line|#define supported_mixer(CARD,FOO) ( CARD-&gt;mix.supported_mixers &amp; (1&lt;&lt;FOO) )
 multiline_comment|/* this table has default mixer values for all OSS mixers.&n;&t;be sure to fill it in if you add oss mixers&n;&t;to anyone&squot;s supported mixer defines */
 DECL|variable|mixer_defaults
+r_static
 r_int
 r_int
 id|mixer_defaults
@@ -16121,6 +16131,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* this guy tries to find the pci power management&n; * register bank.  this should really be in core&n; * code somewhere.  1 on success. */
+r_static
 r_int
 DECL|function|parse_power
 id|parse_power
@@ -17451,6 +17462,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|init_maestro
+r_static
 r_int
 id|__init
 id|init_maestro
@@ -17597,6 +17609,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|cleanup_maestro
+r_static
 r_void
 id|cleanup_maestro
 c_func

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/byteorder/generic.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -30,11 +31,6 @@ id|zoran_formats
 )braket
 suffix:semicolon
 r_extern
-r_const
-r_int
-id|zoran_num_formats
-suffix:semicolon
-r_extern
 r_int
 op_star
 id|zr_debug
@@ -49,12 +45,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* 1 will use digital path in capture&n;&t;&t;&t;&t; * mode instead of analog. It can be&n;&t;&t;&t;&t; * used for picture adjustments using&n;&t;&t;&t;&t; * tool like xawtv while watching image&n;&t;&t;&t;&t; * on TV monitor connected to the output.&n;&t;&t;&t;&t; * However, due to absence of 75 Ohm&n;&t;&t;&t;&t; * load on Bt819 input, there will be&n;&t;&t;&t;&t; * some image imperfections */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|lml33dpath
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -63,6 +61,16 @@ c_func
 id|lml33dpath
 comma
 l_string|&quot;Use digital path capture mode (on LML33 cards)&quot;
+)paren
+suffix:semicolon
+r_static
+r_void
+id|zr36057_init_vfe
+(paren
+r_struct
+id|zoran
+op_star
+id|zr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * General Purpose I/O and Guest bus access&n; */
@@ -3019,7 +3027,11 @@ id|zr-&gt;stat_com
 id|i
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* mark as unavailable to zr36057 */
 )brace
@@ -4072,6 +4084,15 @@ id|mode
 r_case
 id|BUZ_MODE_MOTION_COMPRESS
 suffix:colon
+(brace
+r_struct
+id|jpeg_app_marker
+id|app
+suffix:semicolon
+r_struct
+id|jpeg_com_marker
+id|com
+suffix:semicolon
 multiline_comment|/* In motion compress mode, the decoder output must be enabled, and&n;&t;&t; * the video bus direction set to input.&n;&t;&t; */
 id|set_videobus_dir
 c_func
@@ -4110,6 +4131,77 @@ c_func
 id|zr
 comma
 l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* set JPEG app/com marker */
+id|app.appn
+op_assign
+id|zr-&gt;jpg_settings.jpg_comp.APPn
+suffix:semicolon
+id|app.len
+op_assign
+id|zr-&gt;jpg_settings.jpg_comp.APP_len
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|app.data
+comma
+id|zr-&gt;jpg_settings.jpg_comp.APP_data
+comma
+l_int|60
+)paren
+suffix:semicolon
+id|zr-&gt;codec
+op_member_access_from_pointer
+id|control
+c_func
+(paren
+id|zr-&gt;codec
+comma
+id|CODEC_S_JPEG_APP_DATA
+comma
+r_sizeof
+(paren
+r_struct
+id|jpeg_app_marker
+)paren
+comma
+op_amp
+id|app
+)paren
+suffix:semicolon
+id|com.len
+op_assign
+id|zr-&gt;jpg_settings.jpg_comp.COM_len
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|com.data
+comma
+id|zr-&gt;jpg_settings.jpg_comp.COM_data
+comma
+l_int|60
+)paren
+suffix:semicolon
+id|zr-&gt;codec
+op_member_access_from_pointer
+id|control
+c_func
+(paren
+id|zr-&gt;codec
+comma
+id|CODEC_S_JPEG_COM_DATA
+comma
+r_sizeof
+(paren
+r_struct
+id|jpeg_com_marker
+)paren
+comma
+op_amp
+id|com
 )paren
 suffix:semicolon
 multiline_comment|/* Setup the JPEG codec */
@@ -4247,6 +4339,7 @@ id|zr
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 r_case
 id|BUZ_MODE_MOTION_DECOMPRESS
 suffix:colon
@@ -4640,7 +4733,11 @@ id|zr-&gt;stat_com
 id|i
 )braket
 op_amp
+id|cpu_to_le32
+c_func
+(paren
 l_int|1
+)paren
 )paren
 )paren
 r_break
@@ -4650,12 +4747,16 @@ id|zr-&gt;stat_com
 id|i
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|zr-&gt;jpg_buffers.buffer
 (braket
 id|frame
 )braket
 dot
 id|frag_tab_bus
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -4685,7 +4786,11 @@ id|zr-&gt;stat_com
 id|i
 )braket
 op_amp
+id|cpu_to_le32
+c_func
+(paren
 l_int|1
+)paren
 )paren
 )paren
 r_break
@@ -4695,12 +4800,16 @@ id|zr-&gt;stat_com
 id|i
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|zr-&gt;jpg_buffers.buffer
 (braket
 id|frame
 )braket
 dot
 id|frag_tab_bus
+)paren
 suffix:semicolon
 id|zr-&gt;stat_com
 (braket
@@ -4709,12 +4818,16 @@ op_plus
 l_int|1
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|zr-&gt;jpg_buffers.buffer
 (braket
 id|frame
 )braket
 dot
 id|frag_tab_bus
+)paren
 suffix:semicolon
 )brace
 id|zr-&gt;jpg_buffers.buffer
@@ -4833,10 +4946,14 @@ l_int|1
 suffix:semicolon
 id|stat_com
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|zr-&gt;stat_com
 (braket
 id|i
 )braket
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5224,10 +5341,14 @@ op_increment
 r_if
 c_cond
 (paren
+id|le32_to_cpu
+c_func
+(paren
 id|zr-&gt;stat_com
 (braket
 id|j
 )braket
+)paren
 op_eq
 id|zr-&gt;jpg_buffers
 dot
@@ -5311,7 +5432,11 @@ id|zr-&gt;stat_com
 id|i
 )braket
 op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|1
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5327,7 +5452,11 @@ op_plus
 l_int|1
 )braket
 op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* Refill */
 id|zoran_reap_stat_com
@@ -5399,6 +5528,7 @@ id|bus_addr
 id|BUZ_NUM_STAT_COM
 )braket
 suffix:semicolon
+multiline_comment|/* Here we are copying the stat_com array, which&n;&t;&t;&t;&t; * is already in little endian format, so&n;&t;&t;&t;&t; * no endian conversions here&n;&t;&t;&t;&t; */
 id|memcpy
 c_func
 (paren
@@ -6211,10 +6341,14 @@ op_increment
 r_if
 c_cond
 (paren
+id|le32_to_cpu
+c_func
+(paren
 id|zr-&gt;stat_com
 (braket
 id|i
 )braket
+)paren
 op_amp
 l_int|1
 )paren
@@ -6334,10 +6468,14 @@ c_func
 (paren
 l_string|&quot; %08x&quot;
 comma
+id|le32_to_cpu
+c_func
+(paren
 id|zr-&gt;stat_com
 (braket
 id|i
 )braket
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -6808,6 +6946,7 @@ id|ZR36057_GPPGCR1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * initialize video front end&n; */
+r_static
 r_void
 DECL|function|zr36057_init_vfe
 id|zr36057_init_vfe

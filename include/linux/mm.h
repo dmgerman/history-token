@@ -138,7 +138,7 @@ id|vm_set
 suffix:semicolon
 DECL|member|prio_tree_node
 r_struct
-id|prio_tree_node
+id|raw_prio_tree_node
 id|prio_tree_node
 suffix:semicolon
 DECL|member|shared
@@ -186,6 +186,19 @@ op_star
 id|vm_private_data
 suffix:semicolon
 multiline_comment|/* was vm_pte (shared mem) */
+DECL|member|vm_truncate_count
+r_int
+r_int
+id|vm_truncate_count
+suffix:semicolon
+multiline_comment|/* truncate_count or restart_addr */
+macro_line|#ifndef CONFIG_MMU
+DECL|member|vm_usage
+id|atomic_t
+id|vm_usage
+suffix:semicolon
+multiline_comment|/* refcount (VMAs shared if !MMU) */
+macro_line|#endif
 macro_line|#ifdef CONFIG_NUMA
 DECL|member|vm_policy
 r_struct
@@ -197,6 +210,49 @@ multiline_comment|/* NUMA policy for the VMA */
 macro_line|#endif
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * This struct defines the per-mm list of VMAs for uClinux. If CONFIG_MMU is&n; * disabled, then there&squot;s a single shared list of VMAs maintained by the&n; * system, and mm&squot;s subscribe to these individually&n; */
+DECL|struct|vm_list_struct
+r_struct
+id|vm_list_struct
+(brace
+DECL|member|next
+r_struct
+id|vm_list_struct
+op_star
+id|next
+suffix:semicolon
+DECL|member|vma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#ifndef CONFIG_MMU
+r_extern
+r_struct
+id|rb_root
+id|nommu_vma_tree
+suffix:semicolon
+r_extern
+r_struct
+id|rw_semaphore
+id|nommu_vma_sem
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|kobjsize
+c_func
+(paren
+r_const
+r_void
+op_star
+id|objp
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * vm_flags..&n; */
 DECL|macro|VM_READ
 mdefine_line|#define VM_READ&t;&t;0x00000001&t;/* currently active flags */
@@ -445,7 +501,7 @@ r_int
 r_int
 r_private
 suffix:semicolon
-multiline_comment|/* Mapping-private opaque data:&n;&t;&t;&t;&t;&t; * usually used for buffer_heads&n;&t;&t;&t;&t;&t; * if PagePrivate set; used for&n;&t;&t;&t;&t;&t; * swp_entry_t if PageSwapCache&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Mapping-private opaque data:&n;&t;&t;&t;&t;&t; * usually used for buffer_heads&n;&t;&t;&t;&t;&t; * if PagePrivate set; used for&n;&t;&t;&t;&t;&t; * swp_entry_t if PageSwapCache&n;&t;&t;&t;&t;&t; * When page is free, this indicates&n;&t;&t;&t;&t;&t; * order in the buddy system.&n;&t;&t;&t;&t;&t; */
 DECL|member|mapping
 r_struct
 id|address_space
@@ -1337,11 +1393,24 @@ id|pgoff_t
 id|last_index
 suffix:semicolon
 multiline_comment|/* Highest page-&gt;index to unmap */
-DECL|member|atomic
-r_int
-id|atomic
+DECL|member|i_mmap_lock
+id|spinlock_t
+op_star
+id|i_mmap_lock
 suffix:semicolon
-multiline_comment|/* May not schedule() */
+multiline_comment|/* For unmap_mapping_range: */
+DECL|member|break_addr
+r_int
+r_int
+id|break_addr
+suffix:semicolon
+multiline_comment|/* Where unmap_vmas stopped */
+DECL|member|truncate_count
+r_int
+r_int
+id|truncate_count
+suffix:semicolon
+multiline_comment|/* Compare vm_truncate_count */
 )brace
 suffix:semicolon
 r_void
@@ -1870,6 +1939,33 @@ op_star
 id|page
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|do_mremap
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|old_len
+comma
+r_int
+r_int
+id|new_len
+comma
+r_int
+r_int
+id|flags
+comma
+r_int
+r_int
+id|new_addr
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Prototype to add a shrinker callback for ageable caches.&n; * &n; * These functions are passed a count `nr_to_scan&squot; and a gfpmask.  They should&n; * scan `nr_to_scan&squot; objects, attempting to free them.&n; *&n; * The callback must the number of objects which remain in the cache.&n; *&n; * The callback will be passes nr_to_scan == 0 when the VM is querying the&n; * cache size, so a fastpath for that case is appropriate.&n; */
 DECL|typedef|shrinker_t
 r_typedef
@@ -1918,6 +2014,7 @@ id|shrinker
 suffix:semicolon
 multiline_comment|/*&n; * On a two-level or three-level page table, this ends up being trivial. Thus&n; * the inlining and the symmetry break with pte_alloc_map() that does all&n; * of this out-of-line.&n; */
 multiline_comment|/*&n; * The following ifdef needed to get the 4level-fixup.h header to work.&n; * Remove it when 4level-fixup.h has been removed.&n; */
+macro_line|#ifdef CONFIG_MMU
 macro_line|#ifndef __ARCH_HAS_4LEVEL_HACK 
 DECL|function|pud_alloc
 r_static
@@ -2026,6 +2123,7 @@ id|address
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#endif /* CONFIG_MMU */
 r_extern
 r_void
 id|free_area_init
@@ -2215,6 +2313,18 @@ id|list
 suffix:semicolon
 )brace
 multiline_comment|/* mmap.c */
+r_extern
+r_int
+id|__vm_enough_memory
+c_func
+(paren
+r_int
+id|pages
+comma
+r_int
+id|cap_sys_admin
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|vma_adjust
@@ -2929,6 +3039,21 @@ r_int
 id|write
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|check_user_page_readable
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|address
+)paren
+suffix:semicolon
 r_int
 id|remap_pfn_range
 c_func
@@ -2949,54 +3074,6 @@ comma
 id|pgprot_t
 )paren
 suffix:semicolon
-r_static
-r_inline
-id|__deprecated
-multiline_comment|/* since 25 Sept 2004 -- wli */
-DECL|function|remap_page_range
-r_int
-id|remap_page_range
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|uvaddr
-comma
-r_int
-r_int
-id|paddr
-comma
-r_int
-r_int
-id|size
-comma
-id|pgprot_t
-id|prot
-)paren
-(brace
-r_return
-id|remap_pfn_range
-c_func
-(paren
-id|vma
-comma
-id|uvaddr
-comma
-id|paddr
-op_rshift
-id|PAGE_SHIFT
-comma
-id|size
-comma
-id|prot
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_PROC_FS
 r_void
 id|__vm_stat_account
@@ -3105,6 +3182,15 @@ id|vma
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* update per process rss and vm hiwater data */
+r_extern
+r_void
+id|update_mem_hiwater
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifndef CONFIG_DEBUG_PAGEALLOC
 r_static
 r_inline

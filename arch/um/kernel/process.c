@@ -9,14 +9,10 @@ macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;setjmp.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
 macro_line|#include &lt;sys/ptrace.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/user.h&gt;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;user.h&quot;
@@ -24,6 +20,7 @@ macro_line|#include &quot;process.h&quot;
 macro_line|#include &quot;signal_kern.h&quot;
 macro_line|#include &quot;signal_user.h&quot;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
+macro_line|#include &quot;sysdep/ptrace_user.h&quot;
 macro_line|#include &quot;sysdep/sigcontext.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;ptrace_user.h&quot;
@@ -36,6 +33,7 @@ macro_line|#include &quot;mode.h&quot;
 macro_line|#ifdef UML_CONFIG_MODE_SKAS
 macro_line|#include &quot;skas.h&quot;
 macro_line|#include &quot;skas_ptrace.h&quot;
+macro_line|#include &quot;registers.h&quot;
 macro_line|#endif
 DECL|function|init_new_thread_stack
 r_void
@@ -1783,11 +1781,9 @@ c_func
 id|status
 )paren
 op_ne
-(paren
 id|SIGTRAP
 op_plus
 l_int|0x80
-)paren
 )paren
 )paren
 (brace
@@ -2007,15 +2003,17 @@ id|SIGIO
 suffix:semicolon
 )brace
 )brace
-DECL|function|can_do_skas
+macro_line|#ifdef UML_CONFIG_MODE_SKAS
+DECL|function|check_skas3_ptrace_support
+r_static
+r_inline
 r_int
-id|can_do_skas
+id|check_skas3_ptrace_support
 c_func
 (paren
 r_void
 )paren
 (brace
-macro_line|#ifdef UML_CONFIG_MODE_SKAS
 r_struct
 id|ptrace_faultinfo
 id|fi
@@ -2087,26 +2085,28 @@ l_string|&quot;not found&bslash;n&quot;
 suffix:semicolon
 )brace
 r_else
-id|printf
+(brace
+id|perror
 c_func
 (paren
-l_string|&quot;No (unexpected errno - %d)&bslash;n&quot;
-comma
-id|errno
+l_string|&quot;not found&quot;
 )paren
 suffix:semicolon
+)brace
 id|ret
 op_assign
 l_int|0
 suffix:semicolon
 )brace
 r_else
+(brace
 id|printf
 c_func
 (paren
 l_string|&quot;found&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 id|init_registers
 c_func
 (paren
@@ -2124,6 +2124,23 @@ l_int|1
 comma
 l_int|1
 )paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|function|can_do_skas
+r_int
+id|can_do_skas
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|ret
+op_assign
+l_int|1
 suffix:semicolon
 id|printf
 c_func
@@ -2155,22 +2172,45 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
 )brace
 r_else
+(brace
 id|printf
 c_func
 (paren
 l_string|&quot;found&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
+id|ret
+op_assign
+id|check_skas3_ptrace_support
+c_func
+(paren
+)paren
+suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|ret
 suffix:semicolon
+)brace
 macro_line|#else
+DECL|function|can_do_skas
+r_int
+id|can_do_skas
+c_func
+(paren
+r_void
+)paren
+(brace
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

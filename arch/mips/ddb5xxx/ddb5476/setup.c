@@ -424,10 +424,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_int
-id|panic_timeout
-suffix:semicolon
 id|set_io_port_base
 c_func
 (paren

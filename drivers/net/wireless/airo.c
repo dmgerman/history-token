@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -715,52 +714,72 @@ c_func
 l_string|&quot;Aironet 4500, 4800 and Cisco 340/350&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|io
 comma
-l_string|&quot;1-4i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|irq
 comma
-l_string|&quot;1-4i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|basic_rate
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|rates
 comma
-l_string|&quot;1-8i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|ssids
 comma
-l_string|&quot;1-3s&quot;
+id|charp
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|auto_wep
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -771,12 +790,14 @@ comma
 l_string|&quot;If non-zero, the driver will keep looping through &bslash;&n;the authentication options until an association is made.  The value of &bslash;&n;auto_wep is number of the wep keys to check.  A value of 2 will try using &bslash;&n;the key at index 0 and index 1.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|aux_bap
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -787,12 +808,14 @@ comma
 l_string|&quot;If non-zero, the driver will switch into a mode &bslash;&n;than seems to work better for older cards with some older buses.  Before &bslash;&n;switching it checks that the switch is needed.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|maxencrypt
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -803,12 +826,14 @@ comma
 l_string|&quot;The maximum speed that the card can do &bslash;&n;encryption.  Units are in 512kbs.  Zero (default) means there is no limit. &bslash;&n;Older cards used to be limited to 2mbs (4).&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|adhoc
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -819,12 +844,14 @@ comma
 l_string|&quot;If non-zero, the card will start in adhoc mode.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|probe
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -835,12 +862,14 @@ comma
 l_string|&quot;If zero, the driver won&squot;t start the card.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|proc_uid
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -851,12 +880,14 @@ comma
 l_string|&quot;The uid that the /proc files will belong to.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|proc_gid
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -867,12 +898,14 @@ comma
 l_string|&quot;The gid that the /proc files will belong to.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|airo_perm
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -883,12 +916,14 @@ comma
 l_string|&quot;The permission bits of /proc/[driver/]aironet.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|proc_perm
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -12344,6 +12379,11 @@ r_struct
 id|pci_dev
 op_star
 id|pci
+comma
+r_struct
+id|device
+op_star
+id|dmdev
 )paren
 (brace
 r_struct
@@ -12640,23 +12680,14 @@ id|dev-&gt;base_addr
 op_assign
 id|port
 suffix:semicolon
-multiline_comment|/* what is with PCMCIA ??? */
-r_if
-c_cond
-(paren
-id|pci
-)paren
-(brace
 id|SET_NETDEV_DEV
 c_func
 (paren
 id|dev
 comma
-op_amp
-id|pci-&gt;dev
+id|dmdev
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -13155,6 +13186,11 @@ id|port
 comma
 r_int
 id|is_pcmcia
+comma
+r_struct
+id|device
+op_star
+id|dmdev
 )paren
 (brace
 r_return
@@ -13167,6 +13203,8 @@ comma
 id|is_pcmcia
 comma
 l_int|NULL
+comma
+id|dmdev
 )paren
 suffix:semicolon
 )brace
@@ -13585,14 +13623,7 @@ id|current
 )paren
 suffix:semicolon
 multiline_comment|/* make swsusp happy with our thread */
-r_if
-c_cond
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-id|refrigerator
+id|try_to_freeze
 c_func
 (paren
 id|PF_FREEZE
@@ -28418,6 +28449,9 @@ comma
 l_int|0
 comma
 id|pdev
+comma
+op_amp
+id|pdev-&gt;dev
 )paren
 suffix:semicolon
 r_else
@@ -28438,6 +28472,9 @@ comma
 l_int|0
 comma
 id|pdev
+comma
+op_amp
+id|pdev-&gt;dev
 )paren
 suffix:semicolon
 r_if
@@ -29047,6 +29084,8 @@ id|i
 )braket
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 )paren
 id|have_isa_dev

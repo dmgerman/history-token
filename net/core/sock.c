@@ -2730,6 +2730,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Generic send/receive buffer handlers&n; */
 DECL|function|sock_alloc_send_pskb
+r_static
 r_struct
 id|sk_buff
 op_star
@@ -3290,6 +3291,12 @@ c_func
 id|sk
 comma
 id|skb
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * We are in process context here with softirqs&n;&t;&t;&t; * disabled, use cond_resched_softirq() to preempt.&n;&t;&t;&t; * This is safe to do because we&squot;ve taken the backlog&n;&t;&t;&t; * queue private:&n;&t;&t;&t; */
+id|cond_resched_softirq
+c_func
+(paren
 )paren
 suffix:semicolon
 id|skb
@@ -3874,6 +3881,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Default Socket Callbacks&n; */
 DECL|function|sock_def_wakeup
+r_static
 r_void
 id|sock_def_wakeup
 c_func
@@ -3917,6 +3925,7 @@ id|sk-&gt;sk_callback_lock
 suffix:semicolon
 )brace
 DECL|function|sock_def_error_report
+r_static
 r_void
 id|sock_def_error_report
 c_func
@@ -3970,6 +3979,7 @@ id|sk-&gt;sk_callback_lock
 suffix:semicolon
 )brace
 DECL|function|sock_def_readable
+r_static
 r_void
 id|sock_def_readable
 c_func
@@ -4026,6 +4036,7 @@ id|sk-&gt;sk_callback_lock
 suffix:semicolon
 )brace
 DECL|function|sock_def_write_space
+r_static
 r_void
 id|sock_def_write_space
 c_func
@@ -4108,6 +4119,7 @@ id|sk-&gt;sk_callback_lock
 suffix:semicolon
 )brace
 DECL|function|sock_def_destruct
+r_static
 r_void
 id|sock_def_destruct
 c_func
@@ -5135,13 +5147,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sk_send_sigurg
-)paren
-suffix:semicolon
-DECL|variable|sock_alloc_send_pskb
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sock_alloc_send_pskb
 )paren
 suffix:semicolon
 DECL|variable|sock_alloc_send_skb

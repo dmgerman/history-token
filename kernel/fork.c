@@ -28,27 +28,30 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
+macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-multiline_comment|/* The idle threads do not count..&n; * Protected by write_lock_irq(&amp;tasklist_lock)&n; */
-DECL|variable|nr_threads
-r_int
-id|nr_threads
-suffix:semicolon
-DECL|variable|max_threads
-r_int
-id|max_threads
-suffix:semicolon
+multiline_comment|/*&n; * Protected counters by write_lock_irq(&amp;tasklist_lock)&n; */
 DECL|variable|total_forks
 r_int
 r_int
 id|total_forks
 suffix:semicolon
 multiline_comment|/* Handle normal Linux uptimes. */
+DECL|variable|nr_threads
+r_int
+id|nr_threads
+suffix:semicolon
+multiline_comment|/* The idle threads do not count.. */
+DECL|variable|max_threads
+r_int
+id|max_threads
+suffix:semicolon
+multiline_comment|/* tunable limit on nr_threads */
 id|DEFINE_PER_CPU
 c_func
 (paren
@@ -60,12 +63,12 @@ id|process_counts
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|__cacheline_aligned
-id|rwlock_t
-id|tasklist_lock
 id|__cacheline_aligned
-op_assign
-id|RW_LOCK_UNLOCKED
+id|DEFINE_RWLOCK
+c_func
+(paren
+id|tasklist_lock
+)paren
 suffix:semicolon
 multiline_comment|/* outer */
 DECL|variable|tasklist_lock
@@ -777,6 +780,10 @@ op_amp
 id|file-&gt;f_mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
+id|tmp-&gt;vm_truncate_count
+op_assign
+id|mpnt-&gt;vm_truncate_count
+suffix:semicolon
 id|flush_dcache_mmap_lock
 c_func
 (paren
@@ -1007,12 +1014,12 @@ mdefine_line|#define mm_alloc_pgd(mm)&t;(0)
 DECL|macro|mm_free_pgd
 mdefine_line|#define mm_free_pgd(mm)
 macro_line|#endif /* CONFIG_MMU */
-DECL|variable|__cacheline_aligned_in_smp
-id|spinlock_t
-id|mmlist_lock
 id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
+id|DEFINE_SPINLOCK
+c_func
+(paren
+id|mmlist_lock
+)paren
 suffix:semicolon
 DECL|macro|allocate_mm
 mdefine_line|#define allocate_mm()&t;(kmem_cache_alloc(mm_cachep, SLAB_KERNEL))
@@ -1678,6 +1685,14 @@ id|retval
 )paren
 r_goto
 id|free_pt
+suffix:semicolon
+id|mm-&gt;hiwater_rss
+op_assign
+id|mm-&gt;rss
+suffix:semicolon
+id|mm-&gt;hiwater_vm
+op_assign
+id|mm-&gt;total_vm
 suffix:semicolon
 id|good_mm
 suffix:colon
@@ -2825,7 +2840,14 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|sig-&gt;group_exit
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|sig-&gt;wait_chldexit
+)paren
+suffix:semicolon
+id|sig-&gt;flags
 op_assign
 l_int|0
 suffix:semicolon
@@ -2838,10 +2860,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|sig-&gt;group_stop_count
-op_assign
-l_int|0
-suffix:semicolon
-id|sig-&gt;stop_state
 op_assign
 l_int|0
 suffix:semicolon
@@ -2896,7 +2914,7 @@ id|sig-&gt;cutime
 op_assign
 id|sig-&gt;cstime
 op_assign
-l_int|0
+id|cputime_zero
 suffix:semicolon
 id|sig-&gt;nvcsw
 op_assign
@@ -3348,13 +3366,6 @@ op_amp
 id|p-&gt;sibling
 )paren
 suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|p-&gt;wait_chldexit
-)paren
-suffix:semicolon
 id|p-&gt;vfork_done
 op_assign
 l_int|NULL
@@ -3390,19 +3401,27 @@ id|p-&gt;pending
 suffix:semicolon
 id|p-&gt;it_real_value
 op_assign
-id|p-&gt;it_virt_value
-op_assign
-id|p-&gt;it_prof_value
-op_assign
 l_int|0
 suffix:semicolon
 id|p-&gt;it_real_incr
 op_assign
+l_int|0
+suffix:semicolon
+id|p-&gt;it_virt_value
+op_assign
+id|cputime_zero
+suffix:semicolon
 id|p-&gt;it_virt_incr
 op_assign
+id|cputime_zero
+suffix:semicolon
+id|p-&gt;it_prof_value
+op_assign
+id|cputime_zero
+suffix:semicolon
 id|p-&gt;it_prof_incr
 op_assign
-l_int|0
+id|cputime_zero
 suffix:semicolon
 id|init_timer
 c_func
@@ -3421,9 +3440,37 @@ id|p
 suffix:semicolon
 id|p-&gt;utime
 op_assign
+id|cputime_zero
+suffix:semicolon
 id|p-&gt;stime
 op_assign
+id|cputime_zero
+suffix:semicolon
+id|p-&gt;rchar
+op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* I/O counter: bytes read */
+id|p-&gt;wchar
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* I/O counter: bytes written */
+id|p-&gt;syscr
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* I/O counter: read syscalls */
+id|p-&gt;syscw
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* I/O counter: write syscalls */
+id|acct_clear_integrals
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 id|p-&gt;lock_depth
 op_assign
@@ -3900,7 +3947,9 @@ multiline_comment|/*&n;&t;&t; * Important: if an exit-all has been started then&
 r_if
 c_cond
 (paren
-id|current-&gt;signal-&gt;group_exit
+id|current-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
 )paren
 (brace
 id|spin_unlock
@@ -4052,6 +4101,9 @@ op_increment
 suffix:semicolon
 )brace
 id|nr_threads
+op_increment
+suffix:semicolon
+id|total_forks
 op_increment
 suffix:semicolon
 id|write_unlock_irq
@@ -4631,9 +4683,6 @@ r_else
 id|p-&gt;state
 op_assign
 id|TASK_STOPPED
-suffix:semicolon
-op_increment
-id|total_forks
 suffix:semicolon
 r_if
 c_cond

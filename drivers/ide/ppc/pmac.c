@@ -26,7 +26,7 @@ macro_line|#include &lt;asm/mediabay.h&gt;
 macro_line|#endif
 macro_line|#include &quot;ide-timing.h&quot;
 DECL|macro|IDE_PMAC_DEBUG
-mdefine_line|#define IDE_PMAC_DEBUG
+macro_line|#undef IDE_PMAC_DEBUG
 DECL|macro|DMA_WAIT_TIMEOUT
 mdefine_line|#define DMA_WAIT_TIMEOUT&t;50
 DECL|struct|pmac_ide_hwif

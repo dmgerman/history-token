@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -300,38 +301,6 @@ op_star
 id|next
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|vma-&gt;anon_vma
-)paren
-(brace
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|next-&gt;anon_vma
-)paren
-suffix:semicolon
-id|vma-&gt;anon_vma
-op_assign
-id|next-&gt;anon_vma
-suffix:semicolon
-id|list_add
-c_func
-(paren
-op_amp
-id|vma-&gt;anon_vma_node
-comma
-op_amp
-id|next-&gt;anon_vma_node
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* if they&squot;re both non-null they must be the same */
 id|BUG_ON
 c_func
 (paren
@@ -340,7 +309,6 @@ op_ne
 id|next-&gt;anon_vma
 )paren
 suffix:semicolon
-)brace
 id|list_del
 c_func
 (paren
@@ -2245,6 +2213,11 @@ suffix:semicolon
 id|mm-&gt;rss
 op_decrement
 suffix:semicolon
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
 id|page_remove_rmap
 c_func
 (paren
@@ -2643,6 +2616,11 @@ id|page_cache_release
 c_func
 (paren
 id|page
+)paren
+suffix:semicolon
+id|acct_update_integrals
+c_func
+(paren
 )paren
 suffix:semicolon
 id|mm-&gt;rss

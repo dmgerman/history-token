@@ -60,12 +60,12 @@ r_struct
 id|rpc_program
 id|pmap_program
 suffix:semicolon
-DECL|variable|pmap_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pmap_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Obtain the port for a given RPC service on a given host. This one can&n; * be called for an ongoing RPC request.&n; */
 r_void

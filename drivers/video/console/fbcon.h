@@ -294,6 +294,10 @@ DECL|member|cursor_reset
 r_int
 id|cursor_reset
 suffix:semicolon
+DECL|member|blank_state
+r_int
+id|blank_state
+suffix:semicolon
 DECL|member|cursor_data
 r_char
 op_star
@@ -389,6 +393,12 @@ id|fbcon_ops
 op_star
 id|ops
 )paren
+suffix:semicolon
+r_extern
+r_const
+r_struct
+id|consw
+id|fb_con
 suffix:semicolon
 macro_line|#endif /* _VIDEO_FBCON_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Copyright (c) 2001 Maciej W. Rozycki&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;$Id: ms02-nv.c,v 1.7 2004/07/29 14:16:45 macro Exp $&n; */
+multiline_comment|/*&n; *&t;Copyright (c) 2001 Maciej W. Rozycki&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;$Id: ms02-nv.c,v 1.8 2005/01/05 18:05:12 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -159,11 +159,6 @@ id|ms02nv_private
 op_star
 id|mp
 op_assign
-(paren
-r_struct
-id|ms02nv_private
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_if
@@ -232,11 +227,6 @@ id|ms02nv_private
 op_star
 id|mp
 op_assign
-(paren
-r_struct
-id|ms02nv_private
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_if
@@ -1118,11 +1108,6 @@ id|ms02nv_private
 op_star
 id|mp
 op_assign
-(paren
-r_struct
-id|ms02nv_private
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 id|root_ms02nv_mtd

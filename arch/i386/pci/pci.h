@@ -221,16 +221,6 @@ r_extern
 id|spinlock_t
 id|pci_config_lock
 suffix:semicolon
-r_int
-id|pirq_enable_irq
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-suffix:semicolon
 r_extern
 r_int
 (paren

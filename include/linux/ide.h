@@ -1814,11 +1814,6 @@ id|u8
 id|quirk_list
 suffix:semicolon
 multiline_comment|/* considered quirky, set for a specific host */
-DECL|member|suspend_reset
-id|u8
-id|suspend_reset
-suffix:semicolon
-multiline_comment|/* drive suspend mode flag, soft-reset recovers */
 DECL|member|init_speed
 id|u8
 id|init_speed
@@ -3573,23 +3568,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|member|sense
-id|u8
-(paren
-op_star
-id|sense
-)paren
-(paren
-id|ide_drive_t
-op_star
-comma
-r_const
-r_char
-op_star
-comma
-id|u8
-)paren
-suffix:semicolon
 DECL|member|error
 id|ide_startstop_t
 (paren
@@ -3600,9 +3578,12 @@ id|error
 id|ide_drive_t
 op_star
 comma
-r_const
-r_char
+r_struct
+id|request
 op_star
+id|rq
+comma
+id|u8
 comma
 id|u8
 )paren
@@ -3617,9 +3598,10 @@ m_abort
 id|ide_drive_t
 op_star
 comma
-r_const
-r_char
+r_struct
+id|request
 op_star
+id|rq
 )paren
 suffix:semicolon
 DECL|member|ioctl
@@ -3865,21 +3847,20 @@ id|ide_expiry_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Error reporting, in human readable form (luxurious, but a memory hog).&n; *&n; * (drive, msg, status)&n; */
-id|byte
-id|ide_dump_status
+id|ide_startstop_t
+id|__ide_error
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
-r_const
-r_char
+r_struct
+id|request
 op_star
-id|msg
 comma
-id|byte
-id|stat
+id|u8
+comma
+id|u8
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * ide_error() takes action based on the error returned by the controller.&n; * The caller should return immediately after invoking this.&n; *&n; * (drive, msg, status)&n; */
@@ -3897,6 +3878,18 @@ id|msg
 comma
 id|byte
 id|stat
+)paren
+suffix:semicolon
+id|ide_startstop_t
+id|__ide_abort
+c_func
+(paren
+id|ide_drive_t
+op_star
+comma
+r_struct
+id|request
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Abort a running command on the controller triggering the abort&n; * from a host side, non error situation&n; * (drive, msg)&n; */
@@ -3957,16 +3950,6 @@ id|u8
 comma
 r_int
 r_int
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Return the current idea about the total capacity of this drive.&n; */
-r_extern
-id|sector_t
-id|current_capacity
-(paren
-id|ide_drive_t
-op_star
-id|drive
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Start a reset operation for an IDE interface.&n; * The caller should return immediately after invoking this.&n; */
@@ -4057,15 +4040,6 @@ comma
 id|u8
 comma
 id|u8
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|try_to_flush_leftover_data
-c_func
-(paren
-id|ide_drive_t
-op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Issue ATA command and wait for completion.&n; * Use for implementing commands in kernel&n; *&n; *  (ide_drive_t *drive, u8 cmd, u8 nsect, u8 feature, u8 sectors, u8 *buf)&n; */
@@ -5123,6 +5097,14 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
+id|ide_startstop_t
+id|ide_dma_intr
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
 r_extern
 r_int
@@ -5153,15 +5135,6 @@ suffix:semicolon
 r_extern
 r_void
 id|ide_destroy_dmatable
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|ide_startstop_t
-id|ide_dma_intr
 c_func
 (paren
 id|ide_drive_t
@@ -5527,22 +5500,18 @@ id|u8
 id|rate
 )paren
 suffix:semicolon
-r_extern
-id|byte
-id|ide_dump_atapi_status
+id|u8
+id|ide_dump_status
 c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 r_const
 r_char
 op_star
-id|msg
 comma
-id|byte
-id|stat
+id|u8
 )paren
 suffix:semicolon
 DECL|struct|ide_pio_timings_s

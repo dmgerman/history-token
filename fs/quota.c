@@ -578,6 +578,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|quota_sync_sb
+r_static
 r_void
 id|quota_sync_sb
 c_func

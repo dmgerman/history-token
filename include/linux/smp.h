@@ -3,6 +3,14 @@ DECL|macro|__LINUX_SMP_H
 mdefine_line|#define __LINUX_SMP_H
 multiline_comment|/*&n; *&t;Generic SMP support&n; *&t;&t;Alan Cox. &lt;alan@redhat.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
+r_extern
+r_void
+id|cpu_idle
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;linux/preempt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -186,8 +194,10 @@ r_void
 suffix:semicolon
 macro_line|#else /* !SMP */
 multiline_comment|/*&n; *&t;These macros fold the SMP functionality into a single CPU system&n; */
+macro_line|#if !defined(__smp_processor_id) || !defined(CONFIG_PREEMPT)
 DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id()&t;&t;&t;0
+macro_line|# define smp_processor_id()&t;&t;&t;0
+macro_line|#endif
 DECL|macro|hard_smp_processor_id
 mdefine_line|#define hard_smp_processor_id()&t;&t;&t;0
 DECL|macro|smp_threads_ready
@@ -213,6 +223,28 @@ mdefine_line|#define num_booting_cpus()&t;&t;&t;1
 DECL|macro|smp_prepare_boot_cpu
 mdefine_line|#define smp_prepare_boot_cpu()&t;&t;&t;do {} while (0)
 macro_line|#endif /* !SMP */
+multiline_comment|/*&n; * DEBUG_PREEMPT support: check whether smp_processor_id() is being&n; * used in a preemption-safe way.&n; *&n; * An architecture has to enable this debugging code explicitly.&n; * It can do so by renaming the smp_processor_id() macro to&n; * __smp_processor_id().  This should only be done after some minimal&n; * testing, because usually there are a number of false positives&n; * that an architecture will trigger.&n; *&n; * To fix a false positive (i.e. smp_processor_id() use that the&n; * debugging code reports but which use for some reason is legal),&n; * change the smp_processor_id() reference to _smp_processor_id(),&n; * which is the nondebug variant.  NOTE: don&squot;t use this to hack around&n; * real bugs.&n; */
+macro_line|#ifdef __smp_processor_id
+macro_line|# if defined(CONFIG_PREEMPT) &amp;&amp; defined(CONFIG_DEBUG_PREEMPT)
+r_extern
+r_int
+r_int
+id|smp_processor_id
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|# else
+DECL|macro|smp_processor_id
+macro_line|#  define smp_processor_id() __smp_processor_id()
+macro_line|# endif
+DECL|macro|_smp_processor_id
+macro_line|# define _smp_processor_id() __smp_processor_id()
+macro_line|#else
+DECL|macro|_smp_processor_id
+macro_line|# define _smp_processor_id() smp_processor_id()
+macro_line|#endif
 DECL|macro|get_cpu
 mdefine_line|#define get_cpu()&t;&t;({ preempt_disable(); smp_processor_id(); })
 DECL|macro|put_cpu

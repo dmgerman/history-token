@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-bast.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB power control&n; *     20-Aug-2004 BJD  Added s3c2410_board struct&n; *     18-Aug-2004 BJD  Added platform devices from default set&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n; *     05-Oct-2004 BJD  Power management code&n; *     04-Nov-2004 BJD  Updated serial port clocks&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-bast.c&n; *&n; * Copyright (c) 2003-2005 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB power control&n; *     20-Aug-2004 BJD  Added s3c2410_board struct&n; *     18-Aug-2004 BJD  Added platform devices from default set&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n; *     05-Oct-2004 BJD  Power management code&n; *     04-Nov-2004 BJD  Updated serial port clocks&n; *     04-Jan-2006 BJD  New uart init call&n; *     10-Jan-2005 BJD  Removed include of s3c2410.h&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -19,7 +19,6 @@ singleline_comment|//#include &lt;asm/debug-ll.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &lt;asm/arch/regs-gpio.h&gt;
 macro_line|#include &lt;asm/arch/regs-mem.h&gt;
-macro_line|#include &quot;s3c2410.h&quot;
 macro_line|#include &quot;clock.h&quot;
 macro_line|#include &quot;devs.h&quot;
 macro_line|#include &quot;cpu.h&quot;
@@ -1349,7 +1348,13 @@ id|bast_iodesc
 )paren
 )paren
 suffix:semicolon
-id|s3c2410_init_uarts
+id|s3c24xx_init_clocks
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|s3c24xx_init_uarts
 c_func
 (paren
 id|bast_uartcfgs
@@ -1383,7 +1388,7 @@ c_func
 r_void
 )paren
 (brace
-id|s3c2410_init_irq
+id|s3c24xx_init_irq
 c_func
 (paren
 )paren
@@ -1519,7 +1524,7 @@ dot
 id|timer
 op_assign
 op_amp
-id|s3c2410_timer
+id|s3c24xx_timer
 comma
 id|MACHINE_END
 eof

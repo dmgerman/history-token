@@ -5,6 +5,7 @@ mdefine_line|#define _PARISC_HARDIRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 r_typedef
 r_struct
 (brace
@@ -14,22 +15,6 @@ r_int
 id|__softirq_pending
 suffix:semicolon
 multiline_comment|/* set_bit is used on this */
-DECL|member|__syscall_count
-r_int
-r_int
-id|__syscall_count
-suffix:semicolon
-DECL|member|__ksoftirqd_task
-r_struct
-id|task_struct
-op_star
-id|__ksoftirqd_task
-suffix:semicolon
-DECL|member|idle_timestamp
-r_int
-r_int
-id|idle_timestamp
-suffix:semicolon
 DECL|typedef|irq_cpustat_t
 )brace
 id|____cacheline_aligned
@@ -38,13 +23,18 @@ suffix:semicolon
 macro_line|#include &lt;linux/irq_cpustat.h&gt;&t;/* Standard mappings for irq_cpustat_t above */
 DECL|macro|HARDIRQ_BITS
 mdefine_line|#define HARDIRQ_BITS&t;16
-multiline_comment|/*&n; * The hardirq mask has to be large enough to have space for potentially all IRQ sources&n; * in the system nesting on a single CPU:&n; */
+multiline_comment|/*&n; * The hardirq mask has to be large enough to have space for potentially all&n; * IRQ sources in the system nesting on a single CPU:&n; */
 macro_line|#if (1 &lt;&lt; HARDIRQ_BITS) &lt; NR_IRQS
 macro_line|# error HARDIRQ_BITS is too low!
 macro_line|#endif
-DECL|macro|irq_enter
-mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
-DECL|macro|irq_exit
-mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id()))&t;&bslash;&n;&t;&t;&t;do_softirq();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_enable_no_resched();&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+r_void
+id|ack_bad_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
 macro_line|#endif /* _PARISC_HARDIRQ_H */
 eof

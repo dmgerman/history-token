@@ -1,6 +1,7 @@
-multiline_comment|/*&n; * Permedia2 framebuffer driver.&n; *&n; * 2.5/2.6 driver:&n; * Copyright (c) 2003 Jim Hague (jim.hague@acm.org)&n; *&n; * based on 2.4 driver:&n; * Copyright (c) 1998-2000 Ilario Nardinocchi (nardinoc@CS.UniBO.IT)&n; * Copyright (c) 1999 Jakub Jelinek (jakub@redhat.com)&n; *&n; * and additional input from James Simmon&squot;s port of Hannu Mallat&squot;s tdfx&n; * driver.&n; *&n; * $Id$&n; *&n; * I have a Creative Graphics Blaster Exxtreme card - pm2fb on x86.&n; * I have no access to other pm2fb implementations, and cannot test&n; * on them. Therefore for now I am omitting Sparc and CVision code.&n; *&n; * Multiple boards support has been on the TODO list for ages.&n; * Don&squot;t expect this to change.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License. See the file COPYING in the main directory of this archive for&n; * more details.&n; *&n; * &n; */
+multiline_comment|/*&n; * Permedia2 framebuffer driver.&n; *&n; * 2.5/2.6 driver:&n; * Copyright (c) 2003 Jim Hague (jim.hague@acm.org)&n; *&n; * based on 2.4 driver:&n; * Copyright (c) 1998-2000 Ilario Nardinocchi (nardinoc@CS.UniBO.IT)&n; * Copyright (c) 1999 Jakub Jelinek (jakub@redhat.com)&n; *&n; * and additional input from James Simmon&squot;s port of Hannu Mallat&squot;s tdfx&n; * driver.&n; *&n; * I have a Creative Graphics Blaster Exxtreme card - pm2fb on x86.  I&n; * have no access to other pm2fb implementations. Sparc (and thus&n; * hopefully other big-endian) devices now work, thanks to a lot of&n; * testing work by Ron Murray. I have no access to CVision hardware,&n; * and therefore for now I am omitting the CVision code.&n; *&n; * Multiple boards support has been on the TODO list for ages.&n; * Don&squot;t expect this to change.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License. See the file COPYING in the main directory of this archive for&n; * more details.&n; *&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -16,10 +17,6 @@ macro_line|#include &lt;video/cvisionppc.h&gt;
 macro_line|#if !defined(__LITTLE_ENDIAN) &amp;&amp; !defined(__BIG_ENDIAN)
 macro_line|#error&t;&quot;The endianness of the target host has not been defined.&quot;
 macro_line|#endif
-macro_line|#if defined(__BIG_ENDIAN) &amp;&amp; !defined(__sparc__)
-DECL|macro|PM2FB_BE_APERTURE
-mdefine_line|#define PM2FB_BE_APERTURE
-macro_line|#endif
 macro_line|#if !defined(CONFIG_PCI)
 macro_line|#error &quot;Only generic PCI cards supported.&quot;
 macro_line|#endif
@@ -32,9 +29,6 @@ macro_line|#else
 DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(a,b...)
 macro_line|#endif
-multiline_comment|/*&n; * The 2.4 driver calls reset_card() at init time, where it also sets the&n; * initial mode. I don&squot;t think the driver should touch the chip until&n; * the console sets a video mode. So I was calling this at the start&n; * of setting a mode. However, certainly on 1280x1024 depth 16 on my&n; * PCI Graphics Blaster Exxtreme this causes the display to smear&n; * slightly.  I don&squot;t know why. Guesses to jim.hague@acm.org.&n; */
-DECL|macro|RESET_CARD_ON_MODE_SET
-macro_line|#undef RESET_CARD_ON_MODE_SET
 multiline_comment|/*&n; * Driver data &n; */
 DECL|variable|__initdata
 r_static
@@ -103,6 +97,21 @@ id|u32
 id|video
 suffix:semicolon
 multiline_comment|/* video flags before blanking */
+DECL|member|mem_config
+id|u32
+id|mem_config
+suffix:semicolon
+multiline_comment|/* MemConfig reg at probe */
+DECL|member|mem_control
+id|u32
+id|mem_control
+suffix:semicolon
+multiline_comment|/* MemControl reg at probe */
+DECL|member|boot_address
+id|u32
+id|boot_address
+suffix:semicolon
+multiline_comment|/* BootAddress reg at probe */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Here we define the default structs fb_fix_screeninfo and fb_var_screeninfo&n; * if we don&squot;t use modedb.&n; */
@@ -151,7 +160,7 @@ id|FB_ACCEL_NONE
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Default video mode. In case the modedb doesn&squot;t work, or we&squot;re&n; * a module (in which case modedb doesn&squot;t really work).&n; */
+multiline_comment|/*&n; * Default video mode. In case the modedb doesn&squot;t work.&n; */
 DECL|variable|__initdata
 r_static
 r_struct
@@ -556,49 +565,6 @@ comma
 id|index
 comma
 id|v
-)paren
-suffix:semicolon
-)brace
-DECL|function|pm2v_RDAC_RD
-r_inline
-r_static
-id|u32
-id|pm2v_RDAC_RD
-c_func
-(paren
-r_struct
-id|pm2fb_par
-op_star
-id|p
-comma
-id|s32
-id|idx
-)paren
-(brace
-id|pm2_WR
-c_func
-(paren
-id|p
-comma
-id|PM2VR_RD_INDEX_LOW
-comma
-id|idx
-op_amp
-l_int|0xff
-)paren
-suffix:semicolon
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|pm2_RD
-c_func
-(paren
-id|p
-comma
-id|PM2VR_RD_INDEXED_DATA
 )paren
 suffix:semicolon
 )brace
@@ -1753,7 +1719,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef RESET_CARD_ON_MODE_SET
 DECL|function|reset_card
 r_static
 r_void
@@ -1840,8 +1805,51 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Restore stashed memory config information from probe */
+id|WAIT_FIFO
+c_func
+(paren
+id|p
+comma
+l_int|3
+)paren
+suffix:semicolon
+id|pm2_WR
+c_func
+(paren
+id|p
+comma
+id|PM2R_MEM_CONTROL
+comma
+id|p-&gt;mem_control
+)paren
+suffix:semicolon
+id|pm2_WR
+c_func
+(paren
+id|p
+comma
+id|PM2R_BOOT_ADDRESS
+comma
+id|p-&gt;boot_address
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|pm2_WR
+c_func
+(paren
+id|p
+comma
+id|PM2R_MEM_CONFIG
+comma
+id|p-&gt;mem_config
+)paren
+suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|reset_config
 r_static
 r_void
@@ -2362,6 +2370,7 @@ id|u32
 id|depth
 )paren
 (brace
+multiline_comment|/*&n;&t; * The hardware is little-endian. When used in big-endian&n;&t; * hosts, the on-chip aperture settings are used where&n;&t; * possible to translate from host to card byte order.&n;&t; */
 id|WAIT_FIFO
 c_func
 (paren
@@ -2378,17 +2387,7 @@ id|p
 comma
 id|PM2R_APERTURE_ONE
 comma
-l_int|0
-)paren
-suffix:semicolon
-id|pm2_WR
-c_func
-(paren
-id|p
-comma
-id|PM2R_APERTURE_TWO
-comma
-l_int|0
+id|PM2F_APERTURE_STANDARD
 )paren
 suffix:semicolon
 macro_line|#else
@@ -2399,11 +2398,14 @@ id|depth
 )paren
 (brace
 r_case
-l_int|8
-suffix:colon
-r_case
 l_int|24
 suffix:colon
+multiline_comment|/* RGB-&gt;BGR */
+multiline_comment|/*&n;&t;&t; * We can&squot;t use the aperture to translate host to&n;&t;&t; * card byte order here, so we switch to BGR mode&n;&t;&t; * in pm2fb_set_par().&n;&t;&t; */
+r_case
+l_int|8
+suffix:colon
+multiline_comment|/* B-&gt;B */
 id|pm2_WR
 c_func
 (paren
@@ -2411,17 +2413,7 @@ id|p
 comma
 id|PM2R_APERTURE_ONE
 comma
-l_int|0
-)paren
-suffix:semicolon
-id|pm2_WR
-c_func
-(paren
-id|p
-comma
-id|PM2R_APERTURE_TWO
-comma
-l_int|1
+id|PM2F_APERTURE_STANDARD
 )paren
 suffix:semicolon
 r_break
@@ -2429,6 +2421,7 @@ suffix:semicolon
 r_case
 l_int|16
 suffix:colon
+multiline_comment|/* HL-&gt;LH */
 id|pm2_WR
 c_func
 (paren
@@ -2436,17 +2429,7 @@ id|p
 comma
 id|PM2R_APERTURE_ONE
 comma
-l_int|2
-)paren
-suffix:semicolon
-id|pm2_WR
-c_func
-(paren
-id|p
-comma
-id|PM2R_APERTURE_TWO
-comma
-l_int|1
+id|PM2F_APERTURE_HALFWORDSWAP
 )paren
 suffix:semicolon
 r_break
@@ -2454,6 +2437,7 @@ suffix:semicolon
 r_case
 l_int|32
 suffix:colon
+multiline_comment|/* RGBA-&gt;ABGR */
 id|pm2_WR
 c_func
 (paren
@@ -2461,9 +2445,14 @@ id|p
 comma
 id|PM2R_APERTURE_ONE
 comma
-l_int|1
+id|PM2F_APERTURE_BYTESWAP
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+macro_line|#endif
+singleline_comment|// We don&squot;t use aperture two, so this may be superflous
 id|pm2_WR
 c_func
 (paren
@@ -2471,13 +2460,9 @@ id|p
 comma
 id|PM2R_APERTURE_TWO
 comma
-l_int|1
+id|PM2F_APERTURE_STANDARD
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 DECL|function|set_color
 r_static
@@ -2568,6 +2553,152 @@ comma
 id|PM2R_RD_PALETTE_DATA
 comma
 id|b
+)paren
+suffix:semicolon
+)brace
+DECL|function|set_memclock
+r_static
+r_void
+id|set_memclock
+c_func
+(paren
+r_struct
+id|pm2fb_par
+op_star
+id|par
+comma
+id|u32
+id|clk
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_int
+r_char
+id|m
+comma
+id|n
+comma
+id|p
+suffix:semicolon
+id|pm2_mnp
+c_func
+(paren
+id|clk
+comma
+op_amp
+id|m
+comma
+op_amp
+id|n
+comma
+op_amp
+id|p
+)paren
+suffix:semicolon
+id|WAIT_FIFO
+c_func
+(paren
+id|par
+comma
+l_int|10
+)paren
+suffix:semicolon
+id|pm2_RDAC_WR
+c_func
+(paren
+id|par
+comma
+id|PM2I_RD_MEMORY_CLOCK_3
+comma
+l_int|6
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|pm2_RDAC_WR
+c_func
+(paren
+id|par
+comma
+id|PM2I_RD_MEMORY_CLOCK_1
+comma
+id|m
+)paren
+suffix:semicolon
+id|pm2_RDAC_WR
+c_func
+(paren
+id|par
+comma
+id|PM2I_RD_MEMORY_CLOCK_2
+comma
+id|n
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|pm2_RDAC_WR
+c_func
+(paren
+id|par
+comma
+id|PM2I_RD_MEMORY_CLOCK_3
+comma
+l_int|8
+op_or
+id|p
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|pm2_RDAC_RD
+c_func
+(paren
+id|par
+comma
+id|PM2I_RD_MEMORY_CLOCK_STATUS
+)paren
+suffix:semicolon
+id|rmb
+c_func
+(paren
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|256
+suffix:semicolon
+id|i
+op_logical_and
+op_logical_neg
+(paren
+id|pm2_RD
+c_func
+(paren
+id|par
+comma
+id|PM2R_RD_INDEXED_DATA
+)paren
+op_amp
+id|PM2F_PLL_LOCKED
+)paren
+suffix:semicolon
+id|i
+op_decrement
 )paren
 suffix:semicolon
 )brace
@@ -3304,8 +3435,16 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|24
+l_int|32
 suffix:colon
+id|var-&gt;transp.offset
+op_assign
+l_int|24
+suffix:semicolon
+id|var-&gt;transp.length
+op_assign
+l_int|8
+suffix:semicolon
 id|var-&gt;red.offset
 op_assign
 l_int|16
@@ -3326,20 +3465,33 @@ id|var-&gt;blue.length
 op_assign
 l_int|8
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
-l_int|32
+l_int|24
 suffix:colon
+macro_line|#ifdef __BIG_ENDIAN
+id|var-&gt;red.offset
+op_assign
+l_int|0
+suffix:semicolon
+id|var-&gt;blue.offset
+op_assign
+l_int|16
+suffix:semicolon
+macro_line|#else
 id|var-&gt;red.offset
 op_assign
 l_int|16
 suffix:semicolon
-id|var-&gt;green.offset
-op_assign
-l_int|8
-suffix:semicolon
 id|var-&gt;blue.offset
 op_assign
 l_int|0
+suffix:semicolon
+macro_line|#endif
+id|var-&gt;green.offset
+op_assign
+l_int|8
 suffix:semicolon
 id|var-&gt;red.length
 op_assign
@@ -3448,6 +3600,8 @@ id|u32
 id|clrmode
 op_assign
 id|PM2F_RD_COLOR_MODE_RGB
+op_or
+id|PM2F_RD_GUI_ACTIVE
 suffix:semicolon
 id|u32
 id|txtmap
@@ -3470,14 +3624,12 @@ suffix:semicolon
 r_int
 id|data64
 suffix:semicolon
-macro_line|#ifdef RESET_CARD_ON_MODE_SET
 id|reset_card
 c_func
 (paren
 id|par
 )paren
 suffix:semicolon
-macro_line|#endif
 id|reset_config
 c_func
 (paren
@@ -3488,6 +3640,19 @@ id|clear_palette
 c_func
 (paren
 id|par
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|par-&gt;memclock
+)paren
+id|set_memclock
+c_func
+(paren
+id|par
+comma
+id|par-&gt;memclock
 )paren
 suffix:semicolon
 id|width
@@ -3970,7 +4135,7 @@ id|clrmode
 op_or_assign
 id|PM2F_RD_TRUECOLOR
 op_or
-l_int|0x06
+id|PM2F_RD_PIXELFORMAT_RGB565
 suffix:semicolon
 id|txtmap
 op_assign
@@ -4003,7 +4168,7 @@ id|clrmode
 op_or_assign
 id|PM2F_RD_TRUECOLOR
 op_or
-l_int|0x08
+id|PM2F_RD_PIXELFORMAT_RGBA8888
 suffix:semicolon
 id|txtmap
 op_assign
@@ -4036,15 +4201,8 @@ id|clrmode
 op_or_assign
 id|PM2F_RD_TRUECOLOR
 op_or
-l_int|0x09
+id|PM2F_RD_PIXELFORMAT_RGB888
 suffix:semicolon
-macro_line|#ifndef PM2FB_BE_APERTURE
-id|clrmode
-op_and_assign
-op_complement
-id|PM2F_RD_COLOR_MODE_RGB
-suffix:semicolon
-macro_line|#endif
 id|txtmap
 op_assign
 id|PM2F_TEXTEL_SIZE_24
@@ -4307,10 +4465,6 @@ id|par
 comma
 id|PM2I_RD_COLOR_MODE
 comma
-id|PM2F_RD_COLOR_MODE_RGB
-op_or
-id|PM2F_RD_GUI_ACTIVE
-op_or
 id|clrmode
 )paren
 suffix:semicolon
@@ -5009,9 +5163,6 @@ id|size
 comma
 id|err
 suffix:semicolon
-id|u32
-id|pci_mem_config
-suffix:semicolon
 r_int
 id|err_retval
 op_assign
@@ -5162,12 +5313,27 @@ id|pm2fb_fix.mmio_len
 op_assign
 id|PM2_REGS_SIZE
 suffix:semicolon
-macro_line|#ifdef PM2FB_BE_APERTURE
+macro_line|#if defined(__BIG_ENDIAN)
+multiline_comment|/*&n;&t; * PM2 has a 64k register file, mapped twice in 128k. Lower&n;&t; * map is little-endian, upper map is big-endian.&n;&t; */
 id|pm2fb_fix.mmio_start
 op_add_assign
 id|PM2_REGS_SIZE
 suffix:semicolon
+id|DPRINTK
+c_func
+(paren
+l_string|&quot;Adjusting register base for big-endian.&bslash;n&quot;
+)paren
+suffix:semicolon
 macro_line|#endif
+id|DPRINTK
+c_func
+(paren
+l_string|&quot;Register base at 0x%lx&bslash;n&quot;
+comma
+id|pm2fb_fix.mmio_start
+)paren
+suffix:semicolon
 multiline_comment|/* Registers - request region and map it. */
 r_if
 c_cond
@@ -5233,21 +5399,54 @@ r_goto
 id|err_exit_neither
 suffix:semicolon
 )brace
-multiline_comment|/* Now work out how big lfb is going to be. */
-id|pci_mem_config
+multiline_comment|/* Stash away memory register info for use when we reset the board */
+id|default_par-&gt;mem_control
 op_assign
-id|RD32
+id|pm2_RD
 c_func
 (paren
-id|default_par-&gt;v_regs
+id|default_par
+comma
+id|PM2R_MEM_CONTROL
+)paren
+suffix:semicolon
+id|default_par-&gt;boot_address
+op_assign
+id|pm2_RD
+c_func
+(paren
+id|default_par
+comma
+id|PM2R_BOOT_ADDRESS
+)paren
+suffix:semicolon
+id|default_par-&gt;mem_config
+op_assign
+id|pm2_RD
+c_func
+(paren
+id|default_par
 comma
 id|PM2R_MEM_CONFIG
 )paren
 suffix:semicolon
+id|DPRINTK
+c_func
+(paren
+l_string|&quot;MemControl 0x%x BootAddress 0x%x MemConfig 0x%x&bslash;n&quot;
+comma
+id|default_par-&gt;mem_control
+comma
+id|default_par-&gt;boot_address
+comma
+id|default_par-&gt;mem_config
+)paren
+suffix:semicolon
+multiline_comment|/* Now work out how big lfb is going to be. */
 r_switch
 c_cond
 (paren
-id|pci_mem_config
+id|default_par-&gt;mem_config
 op_amp
 id|PM2F_MEM_CONFIG_RAM_MASK
 )paren
@@ -5399,7 +5598,6 @@ id|FBINFO_DEFAULT
 op_or
 id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
-macro_line|#ifndef MODULE
 r_if
 c_cond
 (paren
@@ -5441,7 +5639,6 @@ id|err
 op_eq
 l_int|4
 )paren
-macro_line|#endif
 id|info-&gt;var
 op_assign
 id|pm2fb_var
@@ -5817,6 +6014,7 @@ id|pm2fb_driver
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef MODULE
 multiline_comment|/*&n; *  Cleanup&n; */
 DECL|function|pm2fb_exit
 r_static
@@ -5836,7 +6034,9 @@ id|pm2fb_driver
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; *  Setup&n; */
+macro_line|#ifndef MODULE
 multiline_comment|/**&n; * Parse user speficied options.&n; *&n; * This is, comma-separated options following `video=pm2fb:&squot;.&n; */
 DECL|function|pm2fb_setup
 r_int
@@ -5943,6 +6143,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* ------------------------------------------------------------------------- */
 DECL|variable|pm2fb_init
@@ -5952,6 +6153,7 @@ c_func
 id|pm2fb_init
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|pm2fb_exit
 id|module_exit
 c_func
@@ -5959,28 +6161,58 @@ c_func
 id|pm2fb_exit
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mode
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mode
+comma
+l_string|&quot;Preferred video mode e.g. &squot;648x480-8@60&squot;&quot;
+)paren
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|lowhsync
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|lowhsync
+comma
+l_string|&quot;Force horizontal sync low regardless of mode&quot;
+)paren
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|lowvsync
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|lowvsync
+comma
+l_string|&quot;Force vertical sync low regardless of mode&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -6001,4 +6233,5 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 eof

@@ -2314,9 +2314,12 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|ec-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|strcpy
 c_func
@@ -3449,9 +3452,12 @@ id|ec_ecdt-&gt;gpe_bit
 op_assign
 id|ecdt_ptr-&gt;gpe_bit
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|ec_ecdt-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* use the GL just to be safe */
 id|ec_ecdt-&gt;global_lock

@@ -701,14 +701,12 @@ l_int|1
 op_lshift
 id|op
 suffix:semicolon
-id|__raw_writel
-c_func
-(paren
-id|IRQ_OFFSET
+id|gsc_writel
 c_func
 (paren
 id|IPI_IRQ
-)paren
+op_minus
+id|CPU_IRQ_BASE
 comma
 id|cpu_data
 (braket
@@ -1389,15 +1387,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_void
-id|cpu_idle
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* arch/parisc/kernel/process.c */
 r_int
 id|slave_id
 op_assign
@@ -1573,14 +1562,12 @@ id|hpa
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;** This gets PDC to release the CPU from a very tight loop.&n;&t;**&n;&t;** From the PA-RISC 2.0 Firmware Architecture Reference Specification:&n;&t;** &quot;The MEM_RENDEZ vector specifies the location of OS_RENDEZ which &n;&t;** is executed after receiving the rendezvous signal (an interrupt to &n;&t;** EIR{0}). MEM_RENDEZ is valid only when it is nonzero and the &n;&t;** contents of memory are valid.&quot;&n;&t;*/
-id|__raw_writel
-c_func
-(paren
-id|IRQ_OFFSET
+id|gsc_writel
 c_func
 (paren
 id|TIMER_IRQ
-)paren
+op_minus
+id|CPU_IRQ_BASE
 comma
 id|cpu_data
 (braket

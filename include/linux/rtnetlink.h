@@ -1479,6 +1479,25 @@ mdefine_line|#define TCAA_MAX 1
 multiline_comment|/* End of information exported to user level */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+r_extern
+r_int
+id|rtattr_strlcpy
+c_func
+(paren
+r_char
+op_star
+id|dest
+comma
+r_const
+r_struct
+id|rtattr
+op_star
+id|rta
+comma
+r_int
+id|size
+)paren
+suffix:semicolon
 DECL|function|rtattr_strcmp
 r_static
 id|__inline__
@@ -1553,6 +1572,8 @@ r_int
 id|len
 )paren
 suffix:semicolon
+DECL|macro|rtattr_parse_nested
+mdefine_line|#define rtattr_parse_nested(tb, max, rta) &bslash;&n;&t;rtattr_parse((tb), (max), RTA_DATA((rta)), RTA_PAYLOAD((rta)))
 r_extern
 r_struct
 id|sock
@@ -1610,22 +1631,6 @@ id|rtnetlink_links
 (braket
 id|NPROTO
 )braket
-suffix:semicolon
-r_extern
-r_int
-id|rtnetlink_dump_ifinfo
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-r_struct
-id|netlink_callback
-op_star
-id|cb
-)paren
 suffix:semicolon
 r_extern
 r_int
@@ -1785,6 +1790,14 @@ mdefine_line|#define rtnl_shunlock()&t;do { up(&amp;rtnl_sem); &bslash;&n;&t;&t;
 r_extern
 r_void
 id|rtnl_lock
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|rtnl_lock_interruptible
 c_func
 (paren
 r_void

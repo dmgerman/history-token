@@ -165,7 +165,7 @@ id|rc
 id|pr_debug
 c_func
 (paren
-l_string|&quot;claim of device %d succeded&bslash;n&quot;
+l_string|&quot;i2o: claim of device %d succeded&bslash;n&quot;
 comma
 id|dev-&gt;lct_data.tid
 )paren
@@ -174,7 +174,7 @@ r_else
 id|pr_debug
 c_func
 (paren
-l_string|&quot;claim of device %d failed %d&bslash;n&quot;
+l_string|&quot;i2o: claim of device %d failed %d&bslash;n&quot;
 comma
 id|dev-&gt;lct_data.tid
 comma
@@ -272,7 +272,7 @@ id|rc
 id|pr_debug
 c_func
 (paren
-l_string|&quot;claim release of device %d succeded&bslash;n&quot;
+l_string|&quot;i2o: claim release of device %d succeded&bslash;n&quot;
 comma
 id|dev-&gt;lct_data.tid
 )paren
@@ -281,7 +281,7 @@ r_else
 id|pr_debug
 c_func
 (paren
-l_string|&quot;claim release of device %d failed %d&bslash;n&quot;
+l_string|&quot;i2o: claim release of device %d failed %d&bslash;n&quot;
 comma
 id|dev-&gt;lct_data.tid
 comma
@@ -327,7 +327,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;Release I2O device %s&bslash;n&quot;
+l_string|&quot;i2o: device %s released&bslash;n&quot;
 comma
 id|dev-&gt;bus_id
 )paren
@@ -688,7 +688,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;I2O device %s added&bslash;n&quot;
+l_string|&quot;i2o: device %s added&bslash;n&quot;
 comma
 id|dev-&gt;device.bus_id
 )paren
@@ -883,7 +883,9 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;LCT has %d entries (LCT size: %d)&bslash;n&quot;
+l_string|&quot;%s: LCT has %d entries (LCT size: %d)&bslash;n&quot;
+comma
+id|c-&gt;name
 comma
 id|max
 comma

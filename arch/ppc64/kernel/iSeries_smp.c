@@ -23,7 +23,6 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCall.h&gt;
@@ -260,7 +259,7 @@ id|paca
 id|i
 )braket
 dot
-id|lppaca.xDynProcStatus
+id|lppaca.dyn_proc_status
 OL
 l_int|2
 )paren
@@ -341,7 +340,7 @@ id|paca
 id|i
 )braket
 dot
-id|lppaca.xDynProcStatus
+id|lppaca.dyn_proc_status
 OL
 l_int|2
 )paren
@@ -387,7 +386,7 @@ id|paca
 id|nr
 )braket
 dot
-id|lppaca.xDynProcStatus
+id|lppaca.dyn_proc_status
 op_ge
 l_int|2
 )paren

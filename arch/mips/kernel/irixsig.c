@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DEBUG_SIG
@@ -999,21 +998,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-(brace
-id|refrigerator
+id|try_to_freeze
 c_func
 (paren
 l_int|0
 )paren
-suffix:semicolon
+)paren
 r_goto
 id|no_signal
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2981,7 +2974,7 @@ id|add_wait_queue
 c_func
 (paren
 op_amp
-id|current-&gt;wait_chldexit
+id|current-&gt;signal-&gt;wait_chldexit
 comma
 op_amp
 id|wait
@@ -3511,7 +3504,7 @@ id|remove_wait_queue
 c_func
 (paren
 op_amp
-id|current-&gt;wait_chldexit
+id|current-&gt;signal-&gt;wait_chldexit
 comma
 op_amp
 id|wait

@@ -14292,12 +14292,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mem
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14308,12 +14310,14 @@ comma
 l_string|&quot;Size of available memory in MB, KB or B (2,4,8,12,16MB, default=autodetect)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|disabled
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14324,12 +14328,14 @@ comma
 l_string|&quot;Disabled (0 or 1=disabled) (default=0)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|noaccel
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14340,12 +14346,14 @@ comma
 l_string|&quot;Do not use accelerating engine (0 or 1=disabled) (default=0)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nopan
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14356,12 +14364,14 @@ comma
 l_string|&quot;Disable pan on startup (0 or 1=disabled) (default=0)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|no_pci_retry
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14372,12 +14382,14 @@ comma
 l_string|&quot;PCI retries enabled (0 or 1=disabled) (default=0)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|novga
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14388,12 +14400,14 @@ comma
 l_string|&quot;VGA I/O (0x3C0-0x3DF) disabled (0 or 1=disabled) (default=0)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nobios
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14404,12 +14418,14 @@ comma
 l_string|&quot;Disables ROM BIOS (0 or 1=disabled) (default=do not change BIOS state)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|noinit
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14420,12 +14436,14 @@ comma
 l_string|&quot;Disables W/SG/SD-RAM and bus interface initialization (0 or 1=do not initialize) (default=0)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|memtype
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14436,12 +14454,15 @@ comma
 l_string|&quot;Memory type for G200/G400 (see Documentation/fb/matroxfb.txt for explanation) (default=3 for G200, 0 for G400)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+macro_line|#ifdef CONFIG_MTRR
+id|module_param
 c_func
 (paren
 id|mtrr
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14452,12 +14473,15 @@ comma
 l_string|&quot;This speeds up video memory accesses (0=disabled or 1) (default=1)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+macro_line|#endif
+id|module_param
 c_func
 (paren
 id|sgram
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14468,12 +14492,14 @@ comma
 l_string|&quot;Indicates that G100/G200/G400 has SGRAM memory (0=SDRAM, 1=SGRAM) (default=0)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|inv24
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14484,12 +14510,14 @@ comma
 l_string|&quot;Inverts clock polarity for 24bpp and loop frequency &gt; 100MHz (default=do not invert polarity)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|inverse
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14501,12 +14529,14 @@ l_string|&quot;Inverse (0 or 1) (default=0)&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_FB_MATROX_MULTIHEAD
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|dev
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14518,12 +14548,14 @@ l_string|&quot;Multihead support, attach to device ID (0..N) (default=all workin
 )paren
 suffix:semicolon
 macro_line|#else
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|dev
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14535,12 +14567,14 @@ l_string|&quot;Multihead support, attach to device ID (0..N) (default=first work
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vesa
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14551,12 +14585,14 @@ comma
 l_string|&quot;Startup videomode (0x000-0x1FF) (default=0x101)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|xres
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14567,12 +14603,14 @@ comma
 l_string|&quot;Horizontal resolution (px), overrides xres from vesa (default=vesa)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|yres
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14583,12 +14621,14 @@ comma
 l_string|&quot;Vertical resolution (scans), overrides yres from vesa (default=vesa)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|upper
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14599,12 +14639,14 @@ comma
 l_string|&quot;Upper blank space (scans), overrides upper from vesa (default=vesa)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|lower
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14615,12 +14657,14 @@ comma
 l_string|&quot;Lower blank space (scans), overrides lower from vesa (default=vesa)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vslen
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14631,12 +14675,14 @@ comma
 l_string|&quot;Vertical sync length (scans), overrides lower from vesa (default=vesa)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|left
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14647,12 +14693,14 @@ comma
 l_string|&quot;Left blank space (px), overrides left from vesa (default=vesa)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|right
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14663,12 +14711,14 @@ comma
 l_string|&quot;Right blank space (px), overrides right from vesa (default=vesa)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|hslen
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14679,12 +14729,14 @@ comma
 l_string|&quot;Horizontal sync length (px), overrides hslen from vesa (default=vesa)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pixclock
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14695,12 +14747,14 @@ comma
 l_string|&quot;Pixelclock (ns), overrides pixclock from vesa (default=vesa)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|sync
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14711,12 +14765,14 @@ comma
 l_string|&quot;Sync polarity, overrides sync from vesa (default=vesa)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|depth
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14727,12 +14783,14 @@ comma
 l_string|&quot;Color depth (0=text,8,15,16,24,32) (default=vesa)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|maxclk
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14743,12 +14801,14 @@ comma
 l_string|&quot;Startup maximal clock, 0-999MHz, 1000-999999kHz, 1000000-INF Hz&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|fh
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14759,12 +14819,14 @@ comma
 l_string|&quot;Startup horizontal frequency, 0-999kHz, 1000-INF Hz&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|fv
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14776,12 +14838,14 @@ l_string|&quot;Startup vertical frequency, 0-INF Hz&bslash;n&quot;
 l_string|&quot;You should specify &bslash;&quot;fv:max_monitor_vsync,fh:max_monitor_hsync,maxclk:max_monitor_dotclock&bslash;&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|grayscale
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14792,12 +14856,14 @@ comma
 l_string|&quot;Sets display into grayscale. Works perfectly with paletized videomode (4, 8bpp), some limitations apply to 16, 24 and 32bpp videomodes (default=nograyscale)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|cross4MB
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14808,12 +14874,14 @@ comma
 l_string|&quot;Specifies that 4MB boundary can be in middle of line. (default=autodetected)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|dfp
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14824,12 +14892,14 @@ comma
 l_string|&quot;Specifies whether to use digital flat panel interface of G200/G400 (0 or 1) (default=0)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|dfp_type
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14840,12 +14910,19 @@ comma
 l_string|&quot;Specifies DFP interface type (0 to 255) (default=read from hardware)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_string
 c_func
 (paren
 id|outputs
 comma
-l_string|&quot;c8&quot;
+id|outputs
+comma
+r_sizeof
+(paren
+id|outputs
+)paren
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14857,12 +14934,14 @@ l_string|&quot;Specifies which CRTC is mapped to which output (string of up to t
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_PMAC
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vmode
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14873,12 +14952,14 @@ comma
 l_string|&quot;Specify the vmode mode number that should be used (640x480 default)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|cmode
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

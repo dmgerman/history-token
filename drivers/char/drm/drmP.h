@@ -4169,11 +4169,6 @@ id|proc_dir_entry
 op_star
 id|drm_proc_root
 suffix:semicolon
-r_extern
-r_struct
-id|file_operations
-id|drm_stub_fops
-suffix:semicolon
 multiline_comment|/* Proc support (drm_proc.h) */
 r_extern
 r_int

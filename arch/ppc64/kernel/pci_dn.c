@@ -1,19 +1,11 @@
 multiline_comment|/*&n; * pci_dn.c&n; *&n; * Copyright (C) 2001 Todd Inglett, IBM Corporation&n; *&n; * PCI manipulation via device_nodes.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *    &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
-macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &lt;asm/ppcdebug.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
-macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/*&n; * Traverse_func that inits the PCI fields of the device node.&n; * NOTE: this *must* be done before read/write config to the device.&n; */
 DECL|function|update_dn_pci_info
@@ -534,70 +526,6 @@ id|pci_devs_phb_init_dynamic
 c_func
 (paren
 id|phb
-)paren
-suffix:semicolon
-)brace
-DECL|function|pci_fixup_bus_sysdata_list
-r_static
-r_void
-id|__init
-id|pci_fixup_bus_sysdata_list
-c_func
-(paren
-r_struct
-id|list_head
-op_star
-id|bus_list
-)paren
-(brace
-r_struct
-id|pci_bus
-op_star
-id|bus
-suffix:semicolon
-id|list_for_each_entry
-c_func
-(paren
-id|bus
-comma
-id|bus_list
-comma
-id|node
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|bus-&gt;self
-)paren
-id|bus-&gt;sysdata
-op_assign
-id|bus-&gt;self-&gt;sysdata
-suffix:semicolon
-id|pci_fixup_bus_sysdata_list
-c_func
-(paren
-op_amp
-id|bus-&gt;children
-)paren
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/*&n; * Fixup the bus-&gt;sysdata ptrs to point to the bus&squot; device_node.&n; * This is done late in pcibios_init().  We do this mostly for&n; * sanity, but pci_dma.c uses these at DMA time so they must be&n; * correct.&n; * To do this we recurse down the bus hierarchy.  Note that PHB&squot;s&n; * have bus-&gt;self == NULL, but fortunately bus-&gt;sysdata is already&n; * correct in this case.&n; */
-DECL|function|pci_fix_bus_sysdata
-r_void
-id|__init
-id|pci_fix_bus_sysdata
-c_func
-(paren
-r_void
-)paren
-(brace
-id|pci_fixup_bus_sysdata_list
-c_func
-(paren
-op_amp
-id|pci_root_buses
 )paren
 suffix:semicolon
 )brace

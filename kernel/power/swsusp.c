@@ -29,11 +29,13 @@ macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;power.h&quot;
 multiline_comment|/* References to section boundaries */
 r_extern
-r_char
+r_const
+r_void
 id|__nosave_begin
 comma
 id|__nosave_end
@@ -1357,12 +1359,11 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|highmem_copy
+r_static
 r_struct
 id|highmem_page
 op_star
 id|highmem_copy
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|save_highmem_zone
 r_static
@@ -2640,9 +2641,10 @@ c_func
 )paren
 )paren
 (brace
-id|pr_debug
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;suspend: Allocating pagedir failed.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2663,9 +2665,10 @@ c_func
 )paren
 )paren
 (brace
-id|pr_debug
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;suspend: Allocating image pages failed.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2691,6 +2694,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|suspend_prepare_image
+r_static
 r_int
 id|suspend_prepare_image
 c_func
@@ -2924,6 +2928,30 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* At this point, device_suspend() has been called, but *not*&n;&t; * device_power_down(). We *must* device_power_down() now.&n;&t; * Otherwise, drivers for some devices (e.g. interrupt controllers)&n;&t; * become desynchronized with the actual state of the hardware&n;&t; * at resume time, and evil weirdness ensues.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|error
+op_assign
+id|device_power_down
+c_func
+(paren
+id|PMSG_FREEZE
+)paren
+)paren
+)paren
+(brace
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|error
+suffix:semicolon
+)brace
 id|save_processor_state
 c_func
 (paren
@@ -2943,6 +2971,11 @@ c_func
 )paren
 suffix:semicolon
 id|restore_highmem
+c_func
+(paren
+)paren
+suffix:semicolon
+id|device_power_up
 c_func
 (paren
 )paren
@@ -3005,6 +3038,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|device_power_down
+c_func
+(paren
+id|PMSG_FREEZE
+)paren
+suffix:semicolon
 multiline_comment|/* We&squot;ll ignore saved state, but this gets preempt count (etc) right */
 id|save_processor_state
 c_func
@@ -3032,6 +3071,11 @@ c_func
 )paren
 suffix:semicolon
 id|restore_highmem
+c_func
+(paren
+)paren
+suffix:semicolon
+id|device_power_up
 c_func
 (paren
 )paren
@@ -3690,6 +3734,7 @@ id|error
 suffix:semicolon
 )brace
 DECL|function|bio_read_page
+r_static
 r_int
 id|bio_read_page
 c_func
@@ -3715,6 +3760,7 @@ id|page
 suffix:semicolon
 )brace
 DECL|function|bio_write_page
+r_static
 r_int
 id|bio_write_page
 c_func
@@ -4269,7 +4315,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;pmdisk: Reading pagedir (%d Pages)&bslash;n&quot;
+l_string|&quot;swsusp: Reading pagedir (%d Pages)&bslash;n&quot;
 comma
 id|n
 )paren

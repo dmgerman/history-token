@@ -301,11 +301,34 @@ r_int
 id|exitcode
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|acct_update_integrals
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|acct_clear_integrals
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+suffix:semicolon
 macro_line|#else
 DECL|macro|acct_auto_close
 mdefine_line|#define acct_auto_close(x)&t;do { } while (0)
 DECL|macro|acct_process
 mdefine_line|#define acct_process(x)&t;&t;do { } while (0)
+DECL|macro|acct_update_integrals
+mdefine_line|#define acct_update_integrals()&t;&t;do { } while (0)
+DECL|macro|acct_clear_integrals
+mdefine_line|#define acct_clear_integrals(task)&t;do { } while (0)
 macro_line|#endif
 multiline_comment|/*&n; * ACCT_VERSION numbers as yet defined:&n; * 0: old format (until 2.6.7) with 16 bit uid/gid&n; * 1: extended variant (binary compatible on M68K)&n; * 2: extended variant (binary compatible on everything except M68K)&n; * 3: new binary incompatible format (64 bytes)&n; * 4: new binary incompatible format (128 bytes)&n; * 5: new binary incompatible format (128 bytes, second half)&n; *&n; */
 macro_line|#ifdef CONFIG_BSD_PROCESS_ACCT_V3

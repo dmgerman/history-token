@@ -82,14 +82,6 @@ id|p
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|inet6_dev_count
-r_int
-id|inet6_dev_count
-suffix:semicolon
-DECL|variable|inet6_ifa_count
-r_int
-id|inet6_ifa_count
-suffix:semicolon
 macro_line|#ifdef CONFIG_IPV6_PRIVACY
 r_static
 r_int
@@ -144,12 +136,12 @@ id|crypto_tfm
 op_star
 id|md5_tfm
 suffix:semicolon
-DECL|variable|md5_tfm_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|md5_tfm_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#endif
 r_static
@@ -174,19 +166,20 @@ id|inet6_addr_lst
 id|IN6_ADDR_HSIZE
 )braket
 suffix:semicolon
-DECL|variable|addrconf_hash_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|addrconf_hash_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Protects inet6 devices */
 DECL|variable|addrconf_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|addrconf_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_void
@@ -213,12 +206,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-DECL|variable|addrconf_verify_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|addrconf_verify_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_void
@@ -559,7 +552,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* IPv6 Wildcard Address and Loopback Address defined by RFC2553 */
-DECL|variable|in6addr_any
+macro_line|#if 0
 r_const
 r_struct
 id|in6_addr
@@ -567,6 +560,7 @@ id|in6addr_any
 op_assign
 id|IN6ADDR_ANY_INIT
 suffix:semicolon
+macro_line|#endif
 DECL|variable|in6addr_loopback
 r_const
 r_struct
@@ -1131,9 +1125,6 @@ c_func
 id|idev
 )paren
 suffix:semicolon
-id|inet6_dev_count
-op_decrement
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1272,9 +1263,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|inet6_dev_count
-op_increment
-suffix:semicolon
 multiline_comment|/* We refer to the device */
 id|dev_hold
 c_func
@@ -1881,9 +1869,6 @@ op_amp
 id|ifp-&gt;rt-&gt;u.dst
 )paren
 suffix:semicolon
-id|inet6_ifa_count
-op_decrement
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -2138,9 +2123,6 @@ op_assign
 id|ifa-&gt;tstamp
 op_assign
 id|jiffies
-suffix:semicolon
-id|inet6_ifa_count
-op_increment
 suffix:semicolon
 id|ifa-&gt;idev
 op_assign

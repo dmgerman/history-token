@@ -62,13 +62,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 r_else
 (brace
+macro_line|#ifdef CONFIG_SMP
 id|set_thread_flag
 c_func
 (paren
 id|TIF_POLLING_NRFLAG
+)paren
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 r_while
@@ -91,8 +96,14 @@ c_func
 id|TIF_POLLING_NRFLAG
 )paren
 suffix:semicolon
-)brace
+macro_line|#else
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#endif
+)brace
 )brace
 r_if
 c_cond
@@ -110,7 +121,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The body of the idle task.&n; */
 DECL|function|cpu_idle
-r_int
+r_void
 id|cpu_idle
 c_func
 (paren
@@ -142,9 +153,6 @@ id|default_idle
 c_func
 (paren
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_SYSCTL) &amp;&amp; defined(CONFIG_6xx)

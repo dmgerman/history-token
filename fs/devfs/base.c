@@ -8405,6 +8405,10 @@ op_assign
 op_amp
 id|devfs_sops
 suffix:semicolon
+id|sb-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren

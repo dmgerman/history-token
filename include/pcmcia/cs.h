@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * cs.h 1.71 2000/08/29 00:54:20&n; *&n; * The contents of this file are subject to the Mozilla Public License&n; * Version 1.1 (the &quot;License&quot;); you may not use this file except in&n; * compliance with the License. You may obtain a copy of the License&n; * at http://www.mozilla.org/MPL/&n; *&n; * Software distributed under the License is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See&n; * the License for the specific language governing rights and&n; * limitations under the License. &n; *&n; * The initial developer of the original code is David A. Hinds&n; * &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n; * are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in which&n; * case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use&n; * your version of this file under the MPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the MPL or the GPL.&n; */
+multiline_comment|/*&n; * cs.h&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * The initial developer of the original code is David A. Hinds&n; * &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n; * are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n; *&n; * (C) 1999             David A. Hinds&n; */
 macro_line|#ifndef _LINUX_CS_H
 DECL|macro|_LINUX_CS_H
 mdefine_line|#define _LINUX_CS_H
@@ -357,6 +357,7 @@ DECL|member|Attributes
 id|u_int
 id|Attributes
 suffix:semicolon
+multiline_comment|/* UNUSED */
 DECL|member|EventMask
 id|u_int
 id|EventMask
@@ -568,6 +569,7 @@ id|IRQInfo1
 comma
 id|IRQInfo2
 suffix:semicolon
+multiline_comment|/* IRQInfo2 is ignored */
 DECL|member|Handler
 r_void
 op_star
@@ -763,7 +765,7 @@ DECL|macro|WIN_BAR_MASK
 mdefine_line|#define WIN_BAR_MASK&t;&t;0xe000
 DECL|macro|WIN_BAR_SHIFT
 mdefine_line|#define WIN_BAR_SHIFT&t;&t;13
-multiline_comment|/* Attributes for RegisterClient */
+multiline_comment|/* Attributes for RegisterClient -- UNUSED -- */
 DECL|macro|INFO_MASTER_CLIENT
 mdefine_line|#define INFO_MASTER_CLIENT&t;0x01
 DECL|macro|INFO_IO_CLIENT
@@ -816,62 +818,9 @@ DECL|typedef|error_info_t
 )brace
 id|error_info_t
 suffix:semicolon
-multiline_comment|/* Special stuff for binding drivers to sockets */
-DECL|struct|bind_req_t
-r_typedef
-r_struct
-id|bind_req_t
-(brace
-DECL|member|Socket
-r_struct
-id|pcmcia_socket
-op_star
-id|Socket
-suffix:semicolon
-DECL|member|Function
-id|u_char
-id|Function
-suffix:semicolon
-DECL|member|dev_info
-id|dev_info_t
-op_star
-id|dev_info
-suffix:semicolon
-DECL|typedef|bind_req_t
-)brace
-id|bind_req_t
-suffix:semicolon
 multiline_comment|/* Flag to bind to all functions */
 DECL|macro|BIND_FN_ALL
 mdefine_line|#define BIND_FN_ALL&t;0xff
-DECL|struct|mtd_bind_t
-r_typedef
-r_struct
-id|mtd_bind_t
-(brace
-DECL|member|Socket
-r_struct
-id|pcmcia_socket
-op_star
-id|Socket
-suffix:semicolon
-DECL|member|Attributes
-id|u_int
-id|Attributes
-suffix:semicolon
-DECL|member|CardOffset
-id|u_int
-id|CardOffset
-suffix:semicolon
-DECL|member|dev_info
-id|dev_info_t
-op_star
-id|dev_info
-suffix:semicolon
-DECL|typedef|mtd_bind_t
-)brace
-id|mtd_bind_t
-suffix:semicolon
 multiline_comment|/* Events */
 DECL|macro|CS_EVENT_PRI_LOW
 mdefine_line|#define CS_EVENT_PRI_LOW&t;&t;0
@@ -1192,6 +1141,9 @@ comma
 id|GetMemPage
 )brace
 suffix:semicolon
+r_struct
+id|pcmcia_socket
+suffix:semicolon
 r_int
 id|pcmcia_access_configuration_register
 c_func
@@ -1477,58 +1429,28 @@ op_star
 id|err
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCMCIA_OBSOLETE
-r_int
-id|pcmcia_get_first_client
+r_struct
+id|pcmcia_socket
+op_star
+id|pcmcia_get_socket
 c_func
 (paren
-id|client_handle_t
+r_struct
+id|pcmcia_socket
 op_star
-id|handle
-comma
-id|client_req_t
-op_star
-id|req
+id|skt
 )paren
 suffix:semicolon
-r_int
-id|pcmcia_get_next_client
+r_void
+id|pcmcia_put_socket
 c_func
 (paren
-id|client_handle_t
+r_struct
+id|pcmcia_socket
 op_star
-id|handle
-comma
-id|client_req_t
-op_star
-id|req
+id|skt
 )paren
 suffix:semicolon
-r_int
-id|pcmcia_modify_window
-c_func
-(paren
-id|window_handle_t
-id|win
-comma
-id|modwin_t
-op_star
-id|req
-)paren
-suffix:semicolon
-r_int
-id|pcmcia_set_event_mask
-c_func
-(paren
-id|client_handle_t
-id|handle
-comma
-id|eventmask_t
-op_star
-id|mask
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_CS_H */
 eof

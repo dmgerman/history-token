@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * arch/arch/mach-ixp4xx/coyote-pci.c&n; *&n; * PCI setup routines for ADI Engineering Coyote platform&n; *&n; * Copyright (C) 2002 Jungo Software Technologies.&n; * Copyright (C) 2003 MontaVista Softwrae, Inc.&n; *&n; * Maintainer: Deepak Saxena &lt;dsaxena@mvista.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;

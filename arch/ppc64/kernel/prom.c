@@ -28,7 +28,6 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
@@ -2822,7 +2821,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_eq
 id|IC_INVALID
 )paren
@@ -4423,7 +4422,7 @@ id|systemcfg-&gt;platform
 op_eq
 id|PLATFORM_PSERIES_LPAR
 op_logical_and
-id|naca-&gt;pftSize
+id|ppc64_pft_size
 op_eq
 l_int|0
 )paren
@@ -4457,7 +4456,7 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* pft_size[0] is the NUMA CEC cookie */
-id|naca-&gt;pftSize
+id|ppc64_pft_size
 op_assign
 id|pft_size
 (braket
@@ -5281,7 +5280,7 @@ op_assign
 id|params
 suffix:semicolon
 multiline_comment|/* By default, hash size is not set */
-id|naca-&gt;pftSize
+id|ppc64_pft_size
 op_assign
 l_int|0
 suffix:semicolon
@@ -5373,7 +5372,7 @@ multiline_comment|/* If hash size wasn&squot;t obtained above, we calculate it n
 r_if
 c_cond
 (paren
-id|naca-&gt;pftSize
+id|ppc64_pft_size
 op_eq
 l_int|0
 )paren
@@ -5419,7 +5418,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|naca-&gt;pftSize
+id|ppc64_pft_size
 op_assign
 id|__ilog2
 c_func
@@ -5438,7 +5437,7 @@ comma
 (paren
 r_int
 )paren
-id|naca-&gt;pftSize
+id|ppc64_pft_size
 )paren
 suffix:semicolon
 id|DBG
@@ -8215,49 +8214,6 @@ op_amp
 l_int|0xff
 suffix:semicolon
 )brace
-multiline_comment|/* fixing up iommu_table */
-macro_line|#ifdef CONFIG_PPC_PSERIES
-r_if
-c_cond
-(paren
-id|strcmp
-c_func
-(paren
-id|node-&gt;name
-comma
-l_string|&quot;pci&quot;
-)paren
-op_eq
-l_int|0
-op_logical_and
-id|get_property
-c_func
-(paren
-id|node
-comma
-l_string|&quot;ibm,dma-window&quot;
-comma
-l_int|NULL
-)paren
-)paren
-(brace
-id|node-&gt;bussubno
-op_assign
-id|node-&gt;busno
-suffix:semicolon
-id|iommu_devnode_init_pSeries
-c_func
-(paren
-id|node
-)paren
-suffix:semicolon
-)brace
-r_else
-id|node-&gt;iommu_table
-op_assign
-id|parent-&gt;iommu_table
-suffix:semicolon
-macro_line|#endif /* CONFIG_PPC_PSERIES */
 id|out
 suffix:colon
 id|of_node_put

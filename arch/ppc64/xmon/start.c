@@ -81,7 +81,7 @@ c_func
 r_void
 )paren
 (brace
-id|__sysrq_put_key_op
+id|register_sysrq_key
 c_func
 (paren
 l_char|&squot;x&squot;

@@ -167,6 +167,7 @@ op_minus
 id|errno
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * UML SIGWINCH handling&n; *&n; * The point of this is to handle SIGWINCH on consoles which have host ttys and&n; * relay them inside UML to whatever might be running on the console and cares&n; * about the window size (since SIGWINCH notifies about terminal size changes).&n; *&n; * So, we have a separate thread for each host tty attached to a UML device&n; * (side-issue - I&squot;m annoyed that one thread can&squot;t have multiple controlling&n; * ttys for purposed of handling SIGWINCH, but I imagine there are other reasons&n; * that doesn&squot;t make any sense).&n; *&n; * SIGWINCH can&squot;t be received synchronously, so you have to set up to receive it&n; * as a signal.  That being the case, if you are going to wait for it, it is&n; * convenient to sit in a pause() and wait for the signal to bounce you out of&n; * it (see below for how we make sure to exit only on SIGWINCH).&n; */
 DECL|function|winch_handler
 r_static
 r_void
@@ -284,6 +285,7 @@ id|count
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* We are not using SIG_IGN on purpose, so don&squot;t fix it as I thought to&n;&t; * do! If using SIG_IGN, the pause() call below would not stop on&n;&t; * SIGWINCH. */
 id|signal
 c_func
 (paren
@@ -308,6 +310,7 @@ comma
 id|SIGWINCH
 )paren
 suffix:semicolon
+multiline_comment|/* Block anything else than SIGWINCH. */
 r_if
 c_cond
 (paren
@@ -400,6 +403,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* These are synchronization calls between various UML threads on the&n;&t; * host - since they are not different kernel threads, we cannot use&n;&t; * kernel semaphores. We don&squot;t use SysV semaphores because they are&n;&t; * persistant. */
 id|count
 op_assign
 id|os_read_file
@@ -444,6 +448,7 @@ c_loop
 l_int|1
 )paren
 (brace
+multiline_comment|/* This will be interrupted by SIGWINCH only, since other signals&n;&t;&t; * are blocked.*/
 id|pause
 c_func
 (paren

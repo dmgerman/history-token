@@ -59,8 +59,8 @@ l_string|&quot;Maximum substreams with preallocated DMA memory.&quot;
 )paren
 suffix:semicolon
 DECL|variable|snd_minimum_buffer
-r_const
 r_static
+r_const
 r_int
 id|snd_minimum_buffer
 op_assign

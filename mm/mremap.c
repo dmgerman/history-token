@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
@@ -434,6 +435,11 @@ r_int
 r_int
 id|old_addr
 comma
+r_struct
+id|vm_area_struct
+op_star
+id|new_vma
+comma
 r_int
 r_int
 id|new_addr
@@ -482,6 +488,19 @@ c_func
 op_amp
 id|mapping-&gt;i_mmap_lock
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_vma-&gt;vm_truncate_count
+op_logical_and
+id|new_vma-&gt;vm_truncate_count
+op_ne
+id|vma-&gt;vm_truncate_count
+)paren
+id|new_vma-&gt;vm_truncate_count
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 id|spin_lock
@@ -703,11 +722,16 @@ id|vma
 comma
 r_int
 r_int
-id|new_addr
+id|old_addr
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|new_vma
 comma
 r_int
 r_int
-id|old_addr
+id|new_addr
 comma
 r_int
 r_int
@@ -758,6 +782,8 @@ comma
 id|old_addr
 op_plus
 id|offset
+comma
+id|new_vma
 comma
 id|new_addr
 op_plus
@@ -904,9 +930,11 @@ c_func
 (paren
 id|vma
 comma
-id|new_addr
-comma
 id|old_addr
+comma
+id|new_vma
+comma
+id|new_addr
 comma
 id|old_len
 )paren
@@ -925,9 +953,11 @@ c_func
 (paren
 id|new_vma
 comma
-id|old_addr
-comma
 id|new_addr
+comma
+id|vma
+comma
+id|old_addr
 comma
 id|moved_len
 )paren
@@ -1095,6 +1125,16 @@ id|new_len
 )paren
 suffix:semicolon
 )brace
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_mem_hiwater
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|new_addr
 suffix:semicolon
@@ -1705,6 +1745,16 @@ id|new_len
 )paren
 suffix:semicolon
 )brace
+id|acct_update_integrals
+c_func
+(paren
+)paren
+suffix:semicolon
+id|update_mem_hiwater
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|addr

@@ -193,8 +193,6 @@ id|flags
 suffix:semicolon
 id|u32
 id|headptr
-comma
-id|i
 suffix:semicolon
 id|u32
 id|size
@@ -202,6 +200,12 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+macro_line|#ifndef __BIG_ENDIAN
+r_int
+r_int
+id|i
+suffix:semicolon
+macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren

@@ -3557,6 +3557,11 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* avoid deadlock in printk, but it makes recovery dodgy */
+id|console_loglevel
+op_assign
+l_int|15
+suffix:semicolon
+multiline_comment|/* make sure printks make it to console */
 id|printk
 c_func
 (paren

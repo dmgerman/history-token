@@ -9402,6 +9402,10 @@ id|sb-&gt;s_maxbytes
 op_assign
 id|MAX_LFS_FILESIZE
 suffix:semicolon
+id|sb-&gt;s_time_gran
+op_assign
+l_int|100
+suffix:semicolon
 multiline_comment|/*&n;&t; * Now load the metadata required for the page cache and our address&n;&t; * space operations to function. We do this by setting up a specialised&n;&t; * read_inode method and then just calling the normal iget() to obtain&n;&t; * the inode for $MFT which is sufficient to allow our normal inode&n;&t; * operations and associated address space operations to function.&n;&t; */
 id|sb-&gt;s_op
 op_assign

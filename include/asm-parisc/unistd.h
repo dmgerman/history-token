@@ -1486,7 +1486,7 @@ mdefine_line|#define K_CALL_CLOB_REGS &quot;%r1&quot;, &quot;%r2&quot;, K_USING_
 DECL|macro|K_INLINE_SYSCALL
 macro_line|#undef K_INLINE_SYSCALL
 DECL|macro|K_INLINE_SYSCALL
-mdefine_line|#define K_INLINE_SYSCALL(name, nr, args...)&t;({&t;&t;&t;&bslash;&n;&t;long __sys_res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;register unsigned long __res asm(&quot;r28&quot;);&t;&t;&bslash;&n;&t;&t;K_LOAD_ARGS_##nr(args)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/* FIXME: HACK stw/ldw r19 around syscall */&t;&t;&bslash;&n;&t;&t;asm volatile(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;K_STW_ASM_PIC&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;&t;ble  0x100(%%sr2, %%r0)&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;&t;ldi %1, %%r20&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;K_LDW_ASM_PIC&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;i&quot; (SYS_ify(name)) K_ASM_ARGS_##nr   &t;&bslash;&n;&t;&t;&t;: &quot;memory&quot;, K_CALL_CLOB_REGS K_CLOB_ARGS_##nr&t;&bslash;&n;&t;&t;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__sys_res = (long)__res;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( (unsigned long)__sys_res &gt;= (unsigned long)-4095 ){&t;&bslash;&n;&t;&t;errno = -__sys_res);&t;&t;        &t;&t;&bslash;&n;&t;&t;__sys_res = -1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__sys_res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define K_INLINE_SYSCALL(name, nr, args...)&t;({&t;&t;&t;&bslash;&n;&t;long __sys_res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;register unsigned long __res asm(&quot;r28&quot;);&t;&t;&bslash;&n;&t;&t;K_LOAD_ARGS_##nr(args)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/* FIXME: HACK stw/ldw r19 around syscall */&t;&t;&bslash;&n;&t;&t;asm volatile(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;K_STW_ASM_PIC&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;&t;ble  0x100(%%sr2, %%r0)&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;&t;ldi %1, %%r20&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;K_LDW_ASM_PIC&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;i&quot; (SYS_ify(name)) K_ASM_ARGS_##nr   &t;&bslash;&n;&t;&t;&t;: &quot;memory&quot;, K_CALL_CLOB_REGS K_CLOB_ARGS_##nr&t;&bslash;&n;&t;&t;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__sys_res = (long)__res;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( (unsigned long)__sys_res &gt;= (unsigned long)-4095 ){&t;&bslash;&n;&t;&t;errno = -__sys_res;&t;&t;        &t;&t;&bslash;&n;&t;&t;__sys_res = -1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__sys_res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|K_LOAD_ARGS_0
 mdefine_line|#define K_LOAD_ARGS_0()
 DECL|macro|K_LOAD_ARGS_1
@@ -1561,6 +1561,8 @@ DECL|macro|__ARCH_WANT_SYS_SIGNAL
 mdefine_line|#define __ARCH_WANT_SYS_SIGNAL
 DECL|macro|__ARCH_WANT_SYS_TIME
 mdefine_line|#define __ARCH_WANT_SYS_TIME
+DECL|macro|__ARCH_WANT_COMPAT_SYS_TIME
+mdefine_line|#define __ARCH_WANT_COMPAT_SYS_TIME
 DECL|macro|__ARCH_WANT_SYS_UTIME
 mdefine_line|#define __ARCH_WANT_SYS_UTIME
 DECL|macro|__ARCH_WANT_SYS_WAITPID

@@ -114,10 +114,11 @@ id|ipx_interfaces
 )paren
 suffix:semicolon
 DECL|variable|ipx_interfaces_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ipx_interfaces_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|ipx_primary_net
 r_struct

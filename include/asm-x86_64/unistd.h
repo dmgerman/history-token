@@ -1214,6 +1214,7 @@ id|__NR_mknod
 comma
 id|sys_mknod
 )paren
+multiline_comment|/* Only needed for a.out */
 DECL|macro|__NR_uselib
 mdefine_line|#define __NR_uselib                            134
 id|__SYSCALL
@@ -1221,7 +1222,7 @@ c_func
 (paren
 id|__NR_uselib
 comma
-id|sys_uselib
+id|sys_ni_syscall
 )paren
 DECL|macro|__NR_personality
 mdefine_line|#define __NR_personality                       135
@@ -2251,8 +2252,35 @@ id|__NR_waitid
 comma
 id|sys_waitid
 )paren
+DECL|macro|__NR_add_key
+mdefine_line|#define __NR_add_key&t;&t;248
+id|__SYSCALL
+c_func
+(paren
+id|__NR_add_key
+comma
+id|sys_add_key
+)paren
+DECL|macro|__NR_request_key
+mdefine_line|#define __NR_request_key&t;249
+id|__SYSCALL
+c_func
+(paren
+id|__NR_request_key
+comma
+id|sys_request_key
+)paren
+DECL|macro|__NR_keyctl
+mdefine_line|#define __NR_keyctl&t;&t;250
+id|__SYSCALL
+c_func
+(paren
+id|__NR_keyctl
+comma
+id|sys_keyctl
+)paren
 DECL|macro|__NR_syscall_max
-mdefine_line|#define __NR_syscall_max __NR_waitid
+mdefine_line|#define __NR_syscall_max __NR_keyctl
 macro_line|#ifndef __NO_STUBS
 multiline_comment|/* user-visible error numbers are in the range -1 - -4095 */
 DECL|macro|__syscall_clobber
@@ -2274,8 +2302,6 @@ DECL|macro|__ARCH_WANT_SYS_SGETMASK
 mdefine_line|#define __ARCH_WANT_SYS_SGETMASK
 DECL|macro|__ARCH_WANT_SYS_SIGNAL
 mdefine_line|#define __ARCH_WANT_SYS_SIGNAL
-DECL|macro|__ARCH_WANT_SYS_TIME
-mdefine_line|#define __ARCH_WANT_SYS_TIME
 DECL|macro|__ARCH_WANT_SYS_UTIME
 mdefine_line|#define __ARCH_WANT_SYS_UTIME
 DECL|macro|__ARCH_WANT_SYS_WAITPID
@@ -2300,6 +2326,8 @@ DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
 mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
 DECL|macro|__ARCH_WANT_SYS_RT_SIGACTION
 mdefine_line|#define __ARCH_WANT_SYS_RT_SIGACTION
+DECL|macro|__ARCH_WANT_COMPAT_SYS_TIME
+mdefine_line|#define __ARCH_WANT_COMPAT_SYS_TIME
 macro_line|#endif
 macro_line|#ifndef __KERNEL_SYSCALLS__
 DECL|macro|__syscall
@@ -2454,15 +2482,18 @@ r_int
 id|execve
 c_func
 (paren
+r_const
 r_char
 op_star
 comma
 r_char
 op_star
+r_const
 op_star
 comma
 r_char
 op_star
+r_const
 op_star
 )paren
 suffix:semicolon

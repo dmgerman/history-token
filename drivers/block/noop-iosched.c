@@ -1,17 +1,12 @@
 multiline_comment|/*&n; * elevator noop&n; */
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/elevator.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * See if we can find a request that this buffer can be coalesced with.&n; */
 DECL|function|elevator_noop_merge
+r_static
 r_int
 id|elevator_noop_merge
 c_func
@@ -164,6 +159,7 @@ id|ELEVATOR_NO_MERGE
 suffix:semicolon
 )brace
 DECL|function|elevator_noop_merge_requests
+r_static
 r_void
 id|elevator_noop_merge_requests
 c_func
@@ -192,6 +188,7 @@ id|next-&gt;queuelist
 suffix:semicolon
 )brace
 DECL|function|elevator_noop_add_request
+r_static
 r_void
 id|elevator_noop_add_request
 c_func
@@ -209,13 +206,6 @@ r_int
 id|where
 )paren
 (brace
-r_struct
-id|list_head
-op_star
-id|insert
-op_assign
-id|q-&gt;queue_head.prev
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -223,11 +213,17 @@ id|where
 op_eq
 id|ELEVATOR_INSERT_FRONT
 )paren
-id|insert
-op_assign
+id|list_add
+c_func
+(paren
+op_amp
+id|rq-&gt;queuelist
+comma
 op_amp
 id|q-&gt;queue_head
+)paren
 suffix:semicolon
+r_else
 id|list_add_tail
 c_func
 (paren
@@ -263,6 +259,7 @@ id|rq
 suffix:semicolon
 )brace
 DECL|function|elevator_noop_next_request
+r_static
 r_struct
 id|request
 op_star
@@ -342,7 +339,9 @@ comma
 )brace
 suffix:semicolon
 DECL|function|noop_init
+r_static
 r_int
+id|__init
 id|noop_init
 c_func
 (paren
@@ -359,7 +358,9 @@ id|elevator_noop
 suffix:semicolon
 )brace
 DECL|function|noop_exit
+r_static
 r_void
+id|__exit
 id|noop_exit
 c_func
 (paren

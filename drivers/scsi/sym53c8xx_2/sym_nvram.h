@@ -405,6 +405,18 @@ r_struct
 id|Tekram_target
 id|Tekram_target
 suffix:semicolon
+macro_line|#ifndef CONFIG_PARISC
+DECL|struct|pdc_initiator
+DECL|member|dummy
+r_struct
+id|pdc_initiator
+(brace
+r_int
+id|dummy
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; *  Union of supported NVRAM formats.&n; */
 DECL|struct|sym_nvram
 r_struct
@@ -418,6 +430,8 @@ DECL|macro|SYM_SYMBIOS_NVRAM
 mdefine_line|#define&t;SYM_SYMBIOS_NVRAM&t;(1)
 DECL|macro|SYM_TEKRAM_NVRAM
 mdefine_line|#define&t;SYM_TEKRAM_NVRAM&t;(2)
+DECL|macro|SYM_PARISC_PDC
+mdefine_line|#define SYM_PARISC_PDC&t;&t;(3)
 macro_line|#if SYM_CONF_NVRAM_SUPPORT
 r_union
 (brace
@@ -428,6 +442,11 @@ suffix:semicolon
 DECL|member|Tekram
 id|Tekram_nvram
 id|Tekram
+suffix:semicolon
+DECL|member|parisc
+r_struct
+id|pdc_initiator
+id|parisc
 suffix:semicolon
 DECL|member|data
 )brace

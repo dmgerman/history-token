@@ -130,6 +130,10 @@ r_void
 id|generic_find_legacy_serial_ports
 c_func
 (paren
+id|u64
+op_star
+id|physport
+comma
 r_int
 r_int
 op_star
@@ -230,12 +234,6 @@ op_amp
 id|maple_smp_ops
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Setup the PCI DMA to &quot;direct&quot; by default. May be overriden&n;&t; * by iommu later on&n;&t; */
-id|pci_dma_init_direct
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Lookup PCI hosts */
 id|maple_pci_init
 c_func
@@ -265,6 +263,9 @@ r_int
 r_int
 id|default_speed
 suffix:semicolon
+id|u64
+id|physport
+suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -282,24 +283,27 @@ id|generic_find_legacy_serial_ports
 c_func
 (paren
 op_amp
+id|physport
+comma
+op_amp
 id|default_speed
 )paren
 suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;naca-&gt;serialPortAddr: %lx&bslash;n&quot;
+l_string|&quot;phys port addr: %lx&bslash;n&quot;
 comma
 (paren
 r_int
 )paren
-id|naca-&gt;serialPortAddr
+id|physport
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;serialPortAddr
+id|physport
 )paren
 (brace
 r_void
@@ -316,7 +320,7 @@ op_star
 id|__ioremap
 c_func
 (paren
-id|naca-&gt;serialPortAddr
+id|physport
 comma
 l_int|16
 comma
@@ -351,9 +355,14 @@ l_string|&quot;Hello World !&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* Setup interrupt mapping options */
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_assign
 id|IC_OPEN_PIC
+suffix:semicolon
+id|iommu_init_early_u3
+c_func
+(paren
+)paren
 suffix:semicolon
 id|DBG
 c_func

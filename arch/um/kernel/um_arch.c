@@ -13,6 +13,7 @@ macro_line|#include &quot;linux/utsname.h&quot;
 macro_line|#include &quot;linux/sysrq.h&quot;
 macro_line|#include &quot;linux/seq_file.h&quot;
 macro_line|#include &quot;linux/delay.h&quot;
+macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
 macro_line|#include &quot;asm/pgtable.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
@@ -603,6 +604,9 @@ m_exit
 l_int|0
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 id|__uml_setup
 c_func
@@ -717,6 +721,7 @@ l_string|&quot;    This tells an SMP kernel how many virtual processors to start
 suffix:semicolon
 macro_line|#endif
 DECL|variable|force_tt
+r_static
 r_int
 id|force_tt
 op_assign
@@ -894,6 +899,9 @@ m_exit
 (paren
 l_int|0
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 id|__uml_setup
@@ -1194,6 +1202,27 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_MODE_TT
+r_if
+c_cond
+(paren
+id|mode_tt
+)paren
+(brace
+multiline_comment|/*Since CONFIG_MODE_TT is #undef&squot;ed, force_tt cannot be 1. So,&n;&t;&t; * can_do_skas() returned 0, and the message is correct. */
+id|printf
+c_func
+(paren
+l_string|&quot;Support for TT mode is disabled, and no SKAS support is present on the host.&bslash;n&quot;
+)paren
+suffix:semicolon
+m_exit
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 id|uml_start
 op_assign
 id|CHOOSE_MODE_PROC

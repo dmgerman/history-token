@@ -1970,6 +1970,7 @@ id|server
 suffix:semicolon
 )brace
 DECL|function|smb_fill_super
+r_static
 r_int
 id|smb_fill_super
 c_func
@@ -2079,6 +2080,10 @@ id|sb-&gt;s_op
 op_assign
 op_amp
 id|smb_sops
+suffix:semicolon
+id|sb-&gt;s_time_gran
+op_assign
+l_int|100
 suffix:semicolon
 id|server
 op_assign
@@ -2487,6 +2492,8 @@ id|server
 comma
 op_amp
 id|root
+comma
+id|sb
 )paren
 suffix:semicolon
 id|root_inode

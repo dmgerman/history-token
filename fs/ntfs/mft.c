@@ -10210,9 +10210,10 @@ id|vi-&gt;i_mtime
 op_assign
 id|vi-&gt;i_ctime
 op_assign
-id|current_kernel_time
+id|current_fs_time
 c_func
 (paren
+id|vi-&gt;i_sb
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Set the file size to 0, the ntfs inode sizes are set to 0 by&n;&t;&t; * the call to ntfs_init_big_inode() below.&n;&t;&t; */

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -974,7 +975,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Create a SECTION PGD between VIRT and PHYS in domain&n; * DOMAIN with protection PROT&n; */
+multiline_comment|/*&n; * Create a SECTION PGD between VIRT and PHYS in domain&n; * DOMAIN with protection PROT.  This operates on half-&n; * pgdir entry increments.&n; */
 r_static
 r_inline
 r_void
@@ -2150,6 +2151,7 @@ op_sub_assign
 id|PAGE_SIZE
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * A section mapping covers half a &quot;pgdir&quot; entry.&n;&t; */
 r_while
 c_loop
 (paren
@@ -2337,6 +2339,30 @@ id|__pmd
 c_func
 (paren
 id|pmdval
+)paren
+)paren
+suffix:semicolon
+id|set_pmd
+c_func
+(paren
+id|pmd
+op_plus
+l_int|1
+comma
+id|__pmd
+c_func
+(paren
+id|pmdval
+op_plus
+(paren
+l_int|1
+op_lshift
+(paren
+id|PGDIR_SHIFT
+op_minus
+l_int|1
+)paren
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -2994,19 +3020,10 @@ id|mi
 r_int
 id|node
 suffix:semicolon
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|node
-op_assign
-l_int|0
-suffix:semicolon
-id|node
-OL
-id|numnodes
-suffix:semicolon
-id|node
-op_increment
 )paren
 id|free_unused_memmap_node
 c_func

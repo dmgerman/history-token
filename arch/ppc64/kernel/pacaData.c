@@ -2,24 +2,25 @@ multiline_comment|/*&n; * c 2001 PPC 64 Team, IBM Corp&n; *&n; *      This progr
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
+macro_line|#include &lt;asm/lppaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
-DECL|variable|naca
-r_struct
-id|naca_struct
-op_star
-id|naca
-suffix:semicolon
 DECL|variable|systemcfg
 r_struct
 id|systemcfg
 op_star
 id|systemcfg
+suffix:semicolon
+DECL|variable|systemcfg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|systemcfg
+)paren
 suffix:semicolon
 multiline_comment|/* This symbol is provided by the linker - let it fill in the paca&n; * field correctly */
 r_extern
@@ -27,7 +28,7 @@ r_int
 r_int
 id|__toc_start
 suffix:semicolon
-multiline_comment|/* The Paca is an array with one entry per processor.  Each contains an &n; * ItLpPaca, which contains the information shared between the &n; * hypervisor and Linux.  Each also contains an ItLpRegSave area which&n; * is used by the hypervisor to save registers.&n; * On systems with hardware multi-threading, there are two threads&n; * per processor.  The Paca array must contain an entry for each thread.&n; * The VPD Areas will give a max logical processors = 2 * max physical&n; * processors.  The processor VPD array needs one entry per physical&n; * processor (not thread).&n; */
+multiline_comment|/* The Paca is an array with one entry per processor.  Each contains an &n; * lppaca, which contains the information shared between the&n; * hypervisor and Linux.  Each also contains an ItLpRegSave area which&n; * is used by the hypervisor to save registers.&n; * On systems with hardware multi-threading, there are two threads&n; * per processor.  The Paca array must contain an entry for each thread.&n; * The VPD Areas will give a max logical processors = 2 * max physical&n; * processors.  The processor VPD array needs one entry per physical&n; * processor (not thread).&n; */
 macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|macro|EXTRA_INITS
 mdefine_line|#define EXTRA_INITS(number, lpq)&t;&t;&t;&t;&t;    &bslash;&n;&t;.lppaca_ptr = &amp;paca[number].lppaca,&t;&t;&t;&t;    &bslash;&n;&t;.lpqueue_ptr = (lpq),&t;&t;/* &amp;xItLpQueue, */&t;&t;    &bslash;&n;&t;.reg_save_ptr = &amp;paca[number].reg_save,&t;&t;&t;&t;    &bslash;&n;&t;.reg_save = {&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDesc = 0xd397d9e2,&t;/* &quot;LpRS&quot; */&t;&t;&t;    &bslash;&n;&t;&t;.xSize = sizeof(struct ItLpRegSave)&t;&t;&t;    &bslash;&n;&t;},
@@ -36,7 +37,7 @@ DECL|macro|EXTRA_INITS
 mdefine_line|#define EXTRA_INITS(number, lpq)
 macro_line|#endif
 DECL|macro|PACAINITDATA
-mdefine_line|#define PACAINITDATA(number,start,lpq,asrr,asrv)&t;&t;&t;    &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.lock_token = 0x8000,&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.paca_index = (number),&t;&t;/* Paca Index */&t;&t;    &bslash;&n;&t;.default_decr = 0x00ff0000,&t;/* Initial Decr */&t;&t;    &bslash;&n;&t;.kernel_toc = (unsigned long)(&amp;__toc_start) + 0x8000UL,&t;&t;    &bslash;&n;&t;.stab_real = (asrr), &t;&t;/* Real pointer to segment table */ &bslash;&n;&t;.stab_addr = (asrv),&t;&t;/* Virt pointer to segment table */ &bslash;&n;&t;.cpu_start = (start),&t;&t;/* Processor start */&t;&t;    &bslash;&n;&t;.hw_cpu_id = 0xffff,&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.lppaca = {&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDesc = 0xd397d781,&t;/* &quot;LpPa&quot; */&t;&t;&t;    &bslash;&n;&t;&t;.xSize = sizeof(struct ItLpPaca),&t;&t;&t;    &bslash;&n;&t;&t;.xFPRegsInUse = 1,&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDynProcStatus = 2,&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xDecrVal = 0x00ff0000,&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.xEndOfQuantum = 0xfffffffffffffffful,&t;&t;&t;    &bslash;&n;&t;&t;.xSLBCount = 64,&t;&t;&t;&t;&t;    &bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;EXTRA_INITS((number), (lpq))&t;&t;&t;&t;&t;    &bslash;&n;}
+mdefine_line|#define PACAINITDATA(number,start,lpq,asrr,asrv)&t;&t;&t;    &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.lock_token = 0x8000,&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.paca_index = (number),&t;&t;/* Paca Index */&t;&t;    &bslash;&n;&t;.default_decr = 0x00ff0000,&t;/* Initial Decr */&t;&t;    &bslash;&n;&t;.kernel_toc = (unsigned long)(&amp;__toc_start) + 0x8000UL,&t;&t;    &bslash;&n;&t;.stab_real = (asrr), &t;&t;/* Real pointer to segment table */ &bslash;&n;&t;.stab_addr = (asrv),&t;&t;/* Virt pointer to segment table */ &bslash;&n;&t;.cpu_start = (start),&t;&t;/* Processor start */&t;&t;    &bslash;&n;&t;.hw_cpu_id = 0xffff,&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;.lppaca = {&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.desc = 0xd397d781,&t;/* &quot;LpPa&quot; */&t;&t;&t;    &bslash;&n;&t;&t;.size = sizeof(struct lppaca),&t;&t;&t;&t;    &bslash;&n;&t;&t;.dyn_proc_status = 2,&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.decr_val = 0x00ff0000,&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.fpregs_in_use = 1,&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;.end_of_quantum = 0xfffffffffffffffful,&t;&t;&t;    &bslash;&n;&t;&t;.slb_count = 64,&t;&t;&t;&t;&t;    &bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;EXTRA_INITS((number), (lpq))&t;&t;&t;&t;&t;    &bslash;&n;}
 DECL|variable|paca
 r_struct
 id|paca_struct
@@ -77,6 +78,7 @@ id|STAB0_VIRT_ADDR
 )paren
 comma
 macro_line|#endif
+macro_line|#if NR_CPUS &gt; 1
 id|PACAINITDATA
 c_func
 (paren
@@ -119,6 +121,7 @@ comma
 l_int|0
 )paren
 comma
+macro_line|#if NR_CPUS &gt; 4
 id|PACAINITDATA
 c_func
 (paren
@@ -175,6 +178,7 @@ comma
 l_int|0
 )paren
 comma
+macro_line|#if NR_CPUS &gt; 8
 id|PACAINITDATA
 c_func
 (paren
@@ -1857,6 +1861,9 @@ comma
 l_int|0
 )paren
 comma
+macro_line|#endif
+macro_line|#endif
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 )brace

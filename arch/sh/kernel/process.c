@@ -138,8 +138,6 @@ id|cpu_idle
 c_func
 (paren
 r_void
-op_star
-id|unused
 )paren
 (brace
 id|default_idle

@@ -2756,6 +2756,9 @@ comma
 macro_line|#ifdef USE_MMIO
 id|memaddr
 macro_line|#else
+(paren
+r_int
+)paren
 id|ioaddr
 macro_line|#endif
 )paren
@@ -8544,7 +8547,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 r_if

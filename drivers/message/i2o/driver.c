@@ -175,7 +175,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;Register driver %s&bslash;n&quot;
+l_string|&quot;i2o: Register driver %s&bslash;n&quot;
 comma
 id|drv-&gt;name
 )paren
@@ -219,7 +219,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;Event queue initialized for driver %s&bslash;n&quot;
+l_string|&quot;i2o: Event queue initialized for driver %s&bslash;n&quot;
 comma
 id|drv-&gt;name
 )paren
@@ -316,7 +316,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;driver %s gets context id %d&bslash;n&quot;
+l_string|&quot;i2o: driver %s gets context id %d&bslash;n&quot;
 comma
 id|drv-&gt;name
 comma
@@ -415,7 +415,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;unregister driver %s&bslash;n&quot;
+l_string|&quot;i2o: unregister driver %s&bslash;n&quot;
 comma
 id|drv-&gt;name
 )paren
@@ -514,7 +514,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;event queue removed for %s&bslash;n&quot;
+l_string|&quot;i2o: event queue removed for %s&bslash;n&quot;
 comma
 id|drv-&gt;name
 )paren
@@ -606,8 +606,10 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i2o: Spurious reply to unknown &quot;
+l_string|&quot;%s: Spurious reply to unknown &quot;
 l_string|&quot;driver %d&bslash;n&quot;
+comma
+id|c-&gt;name
 comma
 id|context
 )paren
@@ -872,8 +874,10 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i2o: Spurious reply to unknown driver &quot;
+l_string|&quot;%s: Spurious reply to unknown driver &quot;
 l_string|&quot;%d&bslash;n&quot;
+comma
+id|c-&gt;name
 comma
 id|readl
 c_func
@@ -1193,7 +1197,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;i2o: max_drivers=%d&bslash;n&quot;
+l_string|&quot;i2o: max drivers = %d&bslash;n&quot;
 comma
 id|i2o_max_drivers
 )paren

@@ -177,13 +177,13 @@ mdefine_line|#define TCP_REMNANT (TCP_FLAG_FIN|TCP_FLAG_URG|TCP_FLAG_SYN|TCP_FLA
 multiline_comment|/* Adapt the MSS value used to make delayed ack decision to the &n; * real world.&n; */
 DECL|function|tcp_measure_rcv_mss
 r_static
-id|__inline__
+r_inline
 r_void
 id|tcp_measure_rcv_mss
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -310,7 +310,7 @@ id|tcp_incr_quickack
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -361,7 +361,7 @@ id|tcp_enter_quickack_mode
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -390,7 +390,7 @@ id|tcp_in_quickack_mode
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -465,9 +465,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* 2. Tuning advertised window (window_clamp, rcv_ssthresh)&n; *&n; * All tcp_full_space() is split to two parts: &quot;network&quot; buffer, allocated&n; * forward and advertised in receiver window (tp-&gt;rcv_wnd) and&n; * &quot;application buffer&quot;, required to isolate scheduling/application&n; * latencies from network.&n; * window_clamp is maximal advertised window. It can be less than&n; * tcp_full_space(), in this case tcp_full_space() - window_clamp&n; * is reserved for &quot;application&quot; buffer. The less window_clamp is&n; * the smoother our behaviour from viewpoint of network, but the lower&n; * throughput and the higher sensitivity of the connection to losses. 8)&n; *&n; * rcv_ssthresh is more strict window_clamp used at &quot;slow start&quot;&n; * phase to predict further behaviour of this connection.&n; * It is used for two goals:&n; * - to enforce header prediction at sender, even when application&n; *   requires some significant &quot;application buffer&quot;. It is check #1.&n; * - to prevent pruning of receive queue because of misprediction&n; *   of receiver window. Check #2.&n; *&n; * The scheme does not work when sender sends good segments opening&n; * window and then starts to feed us spagetti. But it should work&n; * in common situations. Otherwise, we have to rely on queue collapsing.&n; */
 multiline_comment|/* Slow part of check#2. */
+DECL|function|__tcp_grow_window
 r_static
 r_int
-DECL|function|__tcp_grow_window
 id|__tcp_grow_window
 c_func
 (paren
@@ -477,7 +477,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -543,10 +543,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
-id|__inline__
-r_void
 DECL|function|tcp_grow_window
+r_static
+r_inline
+r_void
 id|tcp_grow_window
 c_func
 (paren
@@ -556,7 +556,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -662,7 +662,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -742,7 +742,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -895,7 +895,7 @@ id|init_bictcp
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -930,7 +930,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -1125,7 +1125,7 @@ id|tcp_rcv_rtt_update
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -1231,7 +1231,7 @@ id|tcp_rcv_rtt_measure
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -1292,7 +1292,7 @@ id|tcp_rcv_rtt_measure_ts
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -1353,7 +1353,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -1555,7 +1555,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -1736,7 +1736,7 @@ id|tcp_ca_init
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -1792,7 +1792,7 @@ id|vegas_rtt_calc
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -1843,7 +1843,7 @@ id|tcp_rtt_estimator
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -2074,13 +2074,13 @@ suffix:semicolon
 multiline_comment|/* Calculate rto without backoff.  This is the second half of Van Jacobson&squot;s&n; * routine referred to above.&n; */
 DECL|function|tcp_set_rto
 r_static
-id|__inline__
+r_inline
 r_void
 id|tcp_set_rto
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -2101,13 +2101,13 @@ multiline_comment|/* 2. Fixups made earlier cannot be right.&n;&t; *    If we do
 multiline_comment|/* NOTE: clamping at TCP_RTO_MIN is not required, current algo&n; * guarantees that rto is higher.&n; */
 DECL|function|tcp_bound_rto
 r_static
-id|__inline__
+r_inline
 r_void
 id|tcp_bound_rto
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -2137,7 +2137,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -2651,7 +2651,7 @@ id|tcp_init_cwnd
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -2738,7 +2738,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3052,7 +3052,7 @@ id|tcp_update_reordering
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -3198,7 +3198,7 @@ id|prior_snd_una
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -4372,7 +4372,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -4510,7 +4510,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -4742,7 +4742,7 @@ id|tcp_clear_retrans
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -4817,7 +4817,7 @@ id|how
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -5075,7 +5075,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -5171,7 +5171,7 @@ id|tcp_fackets_out
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -5209,7 +5209,7 @@ id|tcp_skb_timedout
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -5248,7 +5248,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -5277,9 +5277,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* Linux NewReno/SACK/FACK/ECN state machine.&n; * --------------------------------------&n; *&n; * &quot;Open&quot;&t;Normal state, no dubious events, fast path.&n; * &quot;Disorder&quot;   In all the respects it is &quot;Open&quot;,&n; *&t;&t;but requires a bit more attention. It is entered when&n; *&t;&t;we see some SACKs or dupacks. It is split of &quot;Open&quot;&n; *&t;&t;mainly to move some processing from fast path to slow one.&n; * &quot;CWR&quot;&t;CWND was reduced due to some Congestion Notification event.&n; *&t;&t;It can be ECN, ICMP source quench, local device congestion.&n; * &quot;Recovery&quot;&t;CWND was reduced, we are fast-retransmitting.&n; * &quot;Loss&quot;&t;CWND was reduced due to RTO timeout or SACK reneging.&n; *&n; * tcp_fastretrans_alert() is entered:&n; * - each incoming ACK, if state is not &quot;Open&quot;&n; * - when arrived ACK is unusual, namely:&n; *&t;* SACK&n; *&t;* Duplicate ACK.&n; *&t;* ECN ECE.&n; *&n; * Counting packets in flight is pretty simple.&n; *&n; *&t;in_flight = packets_out - left_out + retrans_out&n; *&n; *&t;packets_out is SND.NXT-SND.UNA counted in packets.&n; *&n; *&t;retrans_out is number of retransmitted segments.&n; *&n; *&t;left_out is number of segments left network, but not ACKed yet.&n; *&n; *&t;&t;left_out = sacked_out + lost_out&n; *&n; *     sacked_out: Packets, which arrived to receiver out of order&n; *&t;&t;   and hence not ACKed. With SACKs this number is simply&n; *&t;&t;   amount of SACKed data. Even without SACKs&n; *&t;&t;   it is easy to give pretty reliable estimate of this number,&n; *&t;&t;   counting duplicate ACKs.&n; *&n; *       lost_out: Packets lost by network. TCP has no explicit&n; *&t;&t;   &quot;loss notification&quot; feedback from network (for now).&n; *&t;&t;   It means that this number can be only _guessed_.&n; *&t;&t;   Actually, it is the heuristics to predict lossage that&n; *&t;&t;   distinguishes different algorithms.&n; *&n; *&t;F.e. after RTO, when all the queue is considered as lost,&n; *&t;lost_out = packets_out and in_flight = retrans_out.&n; *&n; *&t;&t;Essentially, we have now two algorithms counting&n; *&t;&t;lost packets.&n; *&n; *&t;&t;FACK: It is the simplest heuristics. As soon as we decided&n; *&t;&t;that something is lost, we decide that _all_ not SACKed&n; *&t;&t;packets until the most forward SACK are lost. I.e.&n; *&t;&t;lost_out = fackets_out - sacked_out and left_out = fackets_out.&n; *&t;&t;It is absolutely correct estimate, if network does not reorder&n; *&t;&t;packets. And it loses any connection to reality when reordering&n; *&t;&t;takes place. We use FACK by default until reordering&n; *&t;&t;is suspected on the path to this destination.&n; *&n; *&t;&t;NewReno: when Recovery is entered, we assume that one segment&n; *&t;&t;is lost (classic Reno). While we are in Recovery and&n; *&t;&t;a partial ACK arrives, we assume that one more packet&n; *&t;&t;is lost (NewReno). This heuristics are the same in NewReno&n; *&t;&t;and SACK.&n; *&n; *  Imagine, that&squot;s all! Forget about all this shamanism about CWND inflation&n; *  deflation etc. CWND is real congestion window, never inflated, changes&n; *  only according to classic VJ rules.&n; *&n; * Really tricky (and requiring careful tuning) part of algorithm&n; * is hidden in functions tcp_time_to_recover() and tcp_xmit_retransmit_queue().&n; * The first determines the moment _when_ we should reduce CWND and,&n; * hence, slow down forward transmission. In fact, it determines the moment&n; * when we decide that hole is caused by loss, rather than by a reorder.&n; *&n; * tcp_xmit_retransmit_queue() decides, _what_ we should retransmit to fill&n; * holes, caused by lost packets.&n; *&n; * And the most logically complicated part of algorithm is undo&n; * heuristics. We detect false retransmits due to both too early&n; * fast retransmit (reordering) and underestimated RTO, analyzing&n; * timestamps and D-SACKs. When we detect that some segments were&n; * retransmitted by mistake and CWND reduction was wrong, we undo&n; * window reduction and abort recovery phase. This logic is hidden&n; * inside several functions named tcp_try_undo_&lt;something&gt;.&n; */
 multiline_comment|/* This function decides, when we should leave Disordered state&n; * and enter Recovery phase, reducing congestion window.&n; *&n; * Main question: may we further continue forward transmission&n; * with the same cwnd?&n; */
+DECL|function|tcp_time_to_recover
 r_static
 r_int
-DECL|function|tcp_time_to_recover
 id|tcp_time_to_recover
 c_func
 (paren
@@ -5289,7 +5289,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -5404,7 +5404,7 @@ id|tcp_check_reno_reordering
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -5512,7 +5512,7 @@ id|tcp_add_reno_sack
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -5554,7 +5554,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -5630,7 +5630,7 @@ id|tcp_reset_reno_sack
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -5660,9 +5660,9 @@ id|tp-&gt;lost_out
 suffix:semicolon
 )brace
 multiline_comment|/* Mark head of queue up as lost. */
+DECL|function|tcp_mark_head_lost
 r_static
 r_void
-DECL|function|tcp_mark_head_lost
 id|tcp_mark_head_lost
 c_func
 (paren
@@ -5672,7 +5672,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -5803,7 +5803,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -5952,13 +5952,13 @@ suffix:semicolon
 multiline_comment|/* CWND moderation, preventing bursts due to too big ACKs&n; * in dubious situations.&n; */
 DECL|function|tcp_moderate_cwnd
 r_static
-id|__inline__
+r_inline
 r_void
 id|tcp_moderate_cwnd
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -5996,7 +5996,7 @@ id|tcp_cwnd_down
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -6079,13 +6079,13 @@ suffix:semicolon
 multiline_comment|/* Nothing was retransmitted or returned timestamp is less&n; * than timestamp of the first retransmission.&n; */
 DECL|function|tcp_packet_delayed
 r_static
-id|__inline__
+r_inline
 r_int
 id|tcp_packet_delayed
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -6126,7 +6126,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -6200,7 +6200,7 @@ id|tcp_undo_cwr
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -6280,7 +6280,7 @@ id|tcp_may_undo
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -6313,7 +6313,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -6429,7 +6429,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -6486,7 +6486,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -6603,7 +6603,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -6726,13 +6726,13 @@ suffix:semicolon
 )brace
 DECL|function|tcp_complete_cwr
 r_static
-id|__inline__
+r_inline
 r_void
 id|tcp_complete_cwr
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -6778,7 +6778,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -6926,7 +6926,7 @@ id|flag
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -7638,7 +7638,7 @@ id|tcp_ack_saw_tstamp
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -7688,7 +7688,7 @@ id|tcp_ack_no_tstamp
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -7734,15 +7734,15 @@ id|tp
 )paren
 suffix:semicolon
 )brace
-r_static
-id|__inline__
-r_void
 DECL|function|tcp_ack_update_rtt
+r_static
+r_inline
+r_void
 id|tcp_ack_update_rtt
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -7797,7 +7797,7 @@ id|bictcp_cwnd
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -7992,13 +7992,13 @@ suffix:semicolon
 multiline_comment|/* This is Jacobson&squot;s slow start and congestion avoidance. &n; * SIGCOMM &squot;88, p. 328.&n; */
 DECL|function|reno_cong_avoid
 r_static
-id|__inline__
+r_inline
 r_void
 id|reno_cong_avoid
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -8071,7 +8071,7 @@ id|vegas_cong_avoid
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -8372,7 +8372,7 @@ id|tcp_cong_avoid
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -8413,7 +8413,7 @@ suffix:semicolon
 multiline_comment|/* Restart timer after forward progress on connection.&n; * RFC2988 recommends to restart timer to now+rto.&n; */
 DECL|function|tcp_ack_packets_out
 r_static
-id|__inline__
+r_inline
 r_void
 id|tcp_ack_packets_out
 c_func
@@ -8424,7 +8424,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -8490,7 +8490,7 @@ id|seq_rtt
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -8814,7 +8814,7 @@ id|seq_rtt_p
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -9339,7 +9339,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -9409,13 +9409,13 @@ suffix:semicolon
 )brace
 DECL|function|tcp_ack_is_dubious
 r_static
-id|__inline__
+r_inline
 r_int
 id|tcp_ack_is_dubious
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -9446,13 +9446,13 @@ suffix:semicolon
 )brace
 DECL|function|tcp_may_raise_cwnd
 r_static
-id|__inline__
+r_inline
 r_int
 id|tcp_may_raise_cwnd
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -9491,15 +9491,15 @@ id|TCPF_CA_CWR
 suffix:semicolon
 )brace
 multiline_comment|/* Check that window update is acceptable.&n; * The function assumes that snd_una&lt;=ack&lt;=snd_next.&n; */
-r_static
-id|__inline__
-r_int
 DECL|function|tcp_may_update_window
+r_static
+r_inline
+r_int
 id|tcp_may_update_window
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -9556,7 +9556,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -9698,7 +9698,7 @@ id|prior_snd_una
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -9808,7 +9808,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -9898,7 +9898,7 @@ id|delta
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -9948,7 +9948,7 @@ id|sk
 (brace
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -10004,7 +10004,7 @@ id|sk
 (brace
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -10036,7 +10036,7 @@ id|sk
 (brace
 r_const
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -10111,7 +10111,7 @@ id|now
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -10209,7 +10209,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -10302,7 +10302,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -10329,7 +10329,7 @@ id|westwood_may_change_cumul
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -10350,7 +10350,7 @@ id|westwood_partial_update
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -10372,7 +10372,7 @@ id|westwood_complete_update
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -10401,7 +10401,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -10493,7 +10493,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -10590,7 +10590,7 @@ id|flag
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -11067,7 +11067,7 @@ op_star
 id|skb
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -11491,7 +11491,7 @@ suffix:semicolon
 multiline_comment|/* Fast parse options. This hopes to only see timestamps.&n; * If it is wrong it falls back on tcp_parse_options().&n; */
 DECL|function|tcp_fast_parse_options
 r_static
-id|__inline__
+r_inline
 r_int
 id|tcp_fast_parse_options
 c_func
@@ -11507,7 +11507,7 @@ op_star
 id|th
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -11651,15 +11651,15 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-r_static
-id|__inline__
-r_void
 DECL|function|tcp_store_ts_recent
+r_static
+r_inline
+r_void
 id|tcp_store_ts_recent
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -11673,15 +11673,15 @@ op_assign
 id|xtime.tv_sec
 suffix:semicolon
 )brace
-r_static
-id|__inline__
-r_void
 DECL|function|tcp_replace_ts_recent
+r_static
+r_inline
+r_void
 id|tcp_replace_ts_recent
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -11743,7 +11743,7 @@ id|tcp_disordered_ack
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -11850,13 +11850,13 @@ suffix:semicolon
 )brace
 DECL|function|tcp_paws_discard
 r_static
-id|__inline__
+r_inline
 r_int
 id|tcp_paws_discard
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -11905,7 +11905,7 @@ id|tcp_sequence
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -12043,7 +12043,7 @@ id|th
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -12335,13 +12335,13 @@ suffix:semicolon
 )brace
 DECL|function|tcp_dsack_set
 r_static
-id|__inline__
+r_inline
 r_void
 id|tcp_dsack_set
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -12424,13 +12424,13 @@ suffix:semicolon
 )brace
 DECL|function|tcp_dsack_extend
 r_static
-id|__inline__
+r_inline
 r_void
 id|tcp_dsack_extend
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -12487,7 +12487,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -12616,7 +12616,7 @@ id|tcp_sack_maybe_coalesce
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -12797,7 +12797,7 @@ id|end_seq
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -12991,7 +12991,7 @@ id|tcp_sack_remove
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -13168,7 +13168,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -13443,7 +13443,7 @@ op_assign
 id|skb-&gt;h.th
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -15183,7 +15183,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -15430,7 +15430,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -15638,7 +15638,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -15731,7 +15731,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -15917,7 +15917,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -16030,7 +16030,7 @@ id|ofo_possible
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -16116,7 +16116,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -16169,7 +16169,7 @@ id|th
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -16373,7 +16373,7 @@ id|th
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -16510,7 +16510,7 @@ id|hlen
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -16722,7 +16722,7 @@ id|len
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -17632,7 +17632,7 @@ id|len
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -18354,7 +18354,7 @@ id|len
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign

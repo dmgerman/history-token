@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt; /* for ppc_md */
 macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 multiline_comment|/* Token for Sensors */
 DECL|macro|KEY_SWITCH
 mdefine_line|#define KEY_SWITCH&t;&t;0x0001
@@ -50,8 +51,6 @@ DECL|macro|IBM_DRCONNECTOR
 mdefine_line|#define IBM_DRCONNECTOR&t;&t;0x232b /* 9003 */
 DECL|macro|IBM_POWERSUPPLY
 mdefine_line|#define IBM_POWERSUPPLY&t;&t;0x232c /* 9004 */
-DECL|macro|IBM_INTQUEUE
-mdefine_line|#define IBM_INTQUEUE&t;&t;0x232d /* 9005 */
 multiline_comment|/* Status return values */
 DECL|macro|SENSOR_CRITICAL_HIGH
 mdefine_line|#define SENSOR_CRITICAL_HIGH&t;13
@@ -148,8 +147,6 @@ mdefine_line|#define DR_ACTION&t;&t;0x2329 /* 9001 */
 DECL|macro|DR_INDICATOR
 mdefine_line|#define DR_INDICATOR&t;&t;0x232a /* 9002 */
 multiline_comment|/* 9003 - 9004: Vendor specific */
-DECL|macro|GLOBAL_INTERRUPT_QUEUE
-mdefine_line|#define GLOBAL_INTERRUPT_QUEUE&t;0x232d /* 9005 */
 multiline_comment|/* 9006 - 9999: Vendor specific */
 multiline_comment|/* other */
 DECL|macro|MAX_SENSORS
@@ -2528,19 +2525,6 @@ comma
 l_string|&quot;Exchange&quot;
 )brace
 suffix:semicolon
-r_const
-r_char
-op_star
-id|ibm_intqueue
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;Disabled&quot;
-comma
-l_string|&quot;Enabled&quot;
-)brace
-suffix:semicolon
 r_int
 id|have_strings
 op_assign
@@ -3129,58 +3113,6 @@ comma
 l_string|&quot;Powersupply:&bslash;t&quot;
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|IBM_INTQUEUE
-suffix:colon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;Interrupt queue:&bslash;t&quot;
-)paren
-suffix:semicolon
-id|num_states
-op_assign
-r_sizeof
-(paren
-id|ibm_intqueue
-)paren
-op_div
-r_sizeof
-(paren
-r_char
-op_star
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|state
-OL
-id|num_states
-)paren
-(brace
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;%s&bslash;t&quot;
-comma
-id|ibm_intqueue
-(braket
-id|state
-)braket
-)paren
-suffix:semicolon
-id|have_strings
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_default

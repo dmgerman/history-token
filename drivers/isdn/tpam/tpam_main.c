@@ -115,12 +115,14 @@ comma
 l_string|&quot;ID-String of the driver&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|id
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Finds a board by its driver ID.&n; *&n; * &t;driverId: driver ID (as referenced by the IDSN link layer)&n; *&n; * Return: the tpam_card structure if found, NULL on error.&n; */
@@ -346,9 +348,12 @@ id|card-&gt;irq
 op_assign
 id|dev-&gt;irq
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|card-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|sprintf
 c_func

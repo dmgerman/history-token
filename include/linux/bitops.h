@@ -2,7 +2,6 @@ macro_line|#ifndef _LINUX_BITOPS_H
 DECL|macro|_LINUX_BITOPS_H
 mdefine_line|#define _LINUX_BITOPS_H
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/*&n; * ffs: find first bit set. This is defined the same way as&n; * the libc and compiler builtin ffs routines, therefore&n; * differs in spirit from the above ffz (man ffs).&n; */
 DECL|function|generic_ffs
 r_static
@@ -263,6 +262,8 @@ r_return
 id|r
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Include this here because some architectures need generic_ffs/fls in&n; * scope&n; */
+macro_line|#include &lt;asm/bitops.h&gt;
 DECL|function|get_bitmask_order
 r_static
 id|__inline__

@@ -68,7 +68,7 @@ id|holder_cpu
 suffix:semicolon
 id|yield_count
 op_assign
-id|holder_paca-&gt;lppaca.xYieldCount
+id|holder_paca-&gt;lppaca.yield_count
 suffix:semicolon
 r_if
 c_cond
@@ -199,7 +199,7 @@ id|holder_cpu
 suffix:semicolon
 id|yield_count
 op_assign
-id|holder_paca-&gt;lppaca.xYieldCount
+id|holder_paca-&gt;lppaca.yield_count
 suffix:semicolon
 r_if
 c_cond

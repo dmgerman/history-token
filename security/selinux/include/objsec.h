@@ -46,12 +46,6 @@ id|u32
 id|create_sid
 suffix:semicolon
 multiline_comment|/* fscreate SID */
-DECL|member|avcr
-r_struct
-id|avc_entry_ref
-id|avcr
-suffix:semicolon
-multiline_comment|/* reference to process permissions */
 DECL|member|ptrace_sid
 id|u32
 id|ptrace_sid
@@ -97,12 +91,6 @@ id|u16
 id|sclass
 suffix:semicolon
 multiline_comment|/* security class of this object */
-DECL|member|avcr
-r_struct
-id|avc_entry_ref
-id|avcr
-suffix:semicolon
-multiline_comment|/* reference to object permissions */
 DECL|member|initialized
 r_int
 r_char
@@ -149,18 +137,6 @@ id|u32
 id|fown_sid
 suffix:semicolon
 multiline_comment|/* SID of file owner (for SIGIO) */
-DECL|member|avcr
-r_struct
-id|avc_entry_ref
-id|avcr
-suffix:semicolon
-multiline_comment|/* reference to fd permissions */
-DECL|member|inode_avcr
-r_struct
-id|avc_entry_ref
-id|inode_avcr
-suffix:semicolon
-multiline_comment|/* reference to object permissions */
 )brace
 suffix:semicolon
 DECL|struct|superblock_security_struct
@@ -252,12 +228,6 @@ id|u32
 id|sid
 suffix:semicolon
 multiline_comment|/* SID of message */
-DECL|member|avcr
-r_struct
-id|avc_entry_ref
-id|avcr
-suffix:semicolon
-multiline_comment|/* reference to permissions */
 )brace
 suffix:semicolon
 DECL|struct|ipc_security_struct
@@ -287,12 +257,6 @@ id|u32
 id|sid
 suffix:semicolon
 multiline_comment|/* SID of IPC resource */
-DECL|member|avcr
-r_struct
-id|avc_entry_ref
-id|avcr
-suffix:semicolon
-multiline_comment|/* reference to permissions */
 )brace
 suffix:semicolon
 DECL|struct|bprm_security_struct
@@ -321,6 +285,11 @@ DECL|member|set
 r_int
 r_char
 id|set
+suffix:semicolon
+multiline_comment|/*&n;&t; * unsafe is used to share failure information from bprm_apply_creds()&n;&t; * to bprm_post_apply_creds().&n;&t; */
+DECL|member|unsafe
+r_char
+id|unsafe
 suffix:semicolon
 )brace
 suffix:semicolon

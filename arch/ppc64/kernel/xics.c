@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
@@ -269,6 +268,13 @@ r_int
 id|default_distrib_server
 op_assign
 l_int|0
+suffix:semicolon
+DECL|variable|interrupt_server_size
+r_int
+r_int
+id|interrupt_server_size
+op_assign
+l_int|8
 suffix:semicolon
 multiline_comment|/*&n; * XICS only has a single IPI, so encode the messages per CPU&n; */
 DECL|variable|__cacheline_aligned
@@ -2296,6 +2302,32 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* take last element */
 )brace
+id|ireg
+op_assign
+(paren
+id|uint
+op_star
+)paren
+id|get_property
+c_func
+(paren
+id|np
+comma
+l_string|&quot;ibm,interrupt-server#-size&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ireg
+)paren
+id|interrupt_server_size
+op_assign
+op_star
+id|ireg
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -2596,7 +2628,7 @@ r_void
 r_if
 c_cond
 (paren
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_eq
 id|IC_PPC_XIC
 op_logical_and
@@ -2912,26 +2944,7 @@ r_void
 )paren
 (brace
 r_int
-id|set_indicator
-op_assign
-id|rtas_token
-c_func
-(paren
-l_string|&quot;set-indicator&quot;
-)paren
-suffix:semicolon
-r_const
-r_int
-r_int
-id|giqs
-op_assign
-l_int|9005UL
-suffix:semicolon
-multiline_comment|/* Global Interrupt Queue Server */
-r_int
 id|status
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -2944,14 +2957,6 @@ op_assign
 id|smp_processor_id
 c_func
 (paren
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|set_indicator
-op_eq
-id|RTAS_UNKNOWN_SERVICE
 )paren
 suffix:semicolon
 multiline_comment|/* Reject any interrupt that was queued to us... */
@@ -2970,25 +2975,23 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Refuse any new interrupts... */
-id|rtas_call
-c_func
-(paren
-id|set_indicator
-comma
-l_int|3
-comma
-l_int|1
-comma
-op_amp
+multiline_comment|/* remove ourselves from the global interrupt queue */
 id|status
-comma
-id|giqs
-comma
-id|hard_smp_processor_id
+op_assign
+id|rtas_set_indicator
 c_func
 (paren
+id|GLOBAL_INTERRUPT_QUEUE
+comma
+(paren
+l_int|1UL
+op_lshift
+id|interrupt_server_size
 )paren
+op_minus
+l_int|1
+op_minus
+id|default_distrib_server
 comma
 l_int|0
 )paren

@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
@@ -677,20 +678,12 @@ multiline_comment|/* none yet */
 )brace
 r_else
 (brace
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|cnode
-op_assign
-l_int|0
-suffix:semicolon
-id|cnode
-OL
-id|numnodes
-suffix:semicolon
-id|cnode
-op_increment
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -708,6 +701,7 @@ id|shub_1_1_found
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/**&n; * sn_setup - SN platform setup routine&n; * @cmdline_p: kernel command line&n; *&n; * Handles platform setup for SN machines.  This includes determining&n; * the RTC frequency (via a SAL call), initializing secondary CPUs, and&n; * setting up per-node data areas.  The console is also initialized here.&n; */
@@ -1064,19 +1058,10 @@ id|pda-&gt;cnodeid_to_nasid_table
 )paren
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|cnode
-op_assign
-l_int|0
-suffix:semicolon
-id|cnode
-OL
-id|numnodes
-suffix:semicolon
-id|cnode
-op_increment
 )paren
 id|pda-&gt;cnodeid_to_nasid_table
 (braket
@@ -1094,7 +1079,10 @@ id|cnode
 suffix:semicolon
 id|numionodes
 op_assign
-id|numnodes
+id|num_online_nodes
+c_func
+(paren
+)paren
 suffix:semicolon
 id|scan_for_ionodes
 c_func
@@ -1102,19 +1090,10 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Allocate &amp; initalize the nodepda for each node.&n;&t; */
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|cnode
-op_assign
-l_int|0
-suffix:semicolon
-id|cnode
-OL
-id|numnodes
-suffix:semicolon
-id|cnode
-op_increment
 )paren
 (brace
 id|nodepdaindr
@@ -1184,7 +1163,10 @@ c_loop
 (paren
 id|cnode
 op_assign
-id|numnodes
+id|num_online_nodes
+c_func
+(paren
+)paren
 suffix:semicolon
 id|cnode
 OL
@@ -1265,19 +1247,10 @@ id|nodepdaindr
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set up IO related platform-dependent nodepda fields.&n;&t; * The following routine actually sets up the hubinfo struct&n;&t; * in nodepda.&n;&t; */
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|cnode
-op_assign
-l_int|0
-suffix:semicolon
-id|cnode
-OL
-id|numnodes
-suffix:semicolon
-id|cnode
-op_increment
 )paren
 (brace
 id|bte_init_node
@@ -1485,7 +1458,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NR_NODES
+id|MAX_NUMNODES
 suffix:semicolon
 id|i
 op_increment
@@ -1752,7 +1725,10 @@ c_func
 (paren
 )paren
 op_eq
-id|numnodes
+id|num_online_nodes
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 ques
@@ -1822,7 +1798,8 @@ op_add_assign
 l_int|2
 )paren
 (brace
-id|u64
+r_char
+op_star
 id|klgraph_header
 suffix:semicolon
 id|cnodeid_t
@@ -1841,8 +1818,6 @@ l_int|1
 )paren
 r_continue
 suffix:semicolon
-id|klgraph_header
-op_assign
 id|cnodeid
 op_assign
 op_minus
@@ -1850,18 +1825,21 @@ l_int|1
 suffix:semicolon
 id|klgraph_header
 op_assign
+id|__va
+c_func
+(paren
 id|ia64_sn_get_klconfig_addr
 c_func
 (paren
 id|nasid
 )paren
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|klgraph_header
-op_le
-l_int|0
 )paren
 (brace
 r_if

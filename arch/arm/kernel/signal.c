@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -3179,21 +3178,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-(brace
-id|refrigerator
+id|try_to_freeze
 c_func
 (paren
 l_int|0
 )paren
-suffix:semicolon
+)paren
 r_goto
 id|no_signal
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

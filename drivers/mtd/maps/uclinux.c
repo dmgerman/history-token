@@ -1,5 +1,5 @@
 multiline_comment|/****************************************************************************/
-multiline_comment|/*&n; *&t;uclinux.c -- generic memory mapped MTD driver for uclinux&n; *&n; *&t;(C) Copyright 2002, Greg Ungerer (gerg@snapgear.com)&n; *&n; * &t;$Id: uclinux.c,v 1.9 2004/11/04 13:24:15 gleixner Exp $&n; */
+multiline_comment|/*&n; *&t;uclinux.c -- generic memory mapped MTD driver for uclinux&n; *&n; *&t;(C) Copyright 2002, Greg Ungerer (gerg@snapgear.com)&n; *&n; * &t;$Id: uclinux.c,v 1.10 2005/01/05 18:05:13 dwmw2 Exp $&n; */
 multiline_comment|/****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -85,11 +85,6 @@ id|map_info
 op_star
 id|map
 op_assign
-(paren
-r_struct
-id|map_info
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 op_star
@@ -261,10 +256,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|mapp-&gt;virt
 )paren
 suffix:semicolon

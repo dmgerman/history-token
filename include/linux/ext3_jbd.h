@@ -16,17 +16,6 @@ mdefine_line|#define EXT3_XATTR_TRANS_BLOCKS&t;&t;6U
 multiline_comment|/* Define the minimum size for a transaction which modifies data.  This&n; * needs to take into account the fact that we may end up modifying two&n; * quota files too (one for the group, one for the user quota).  The&n; * superblock only gets updated once, of course, so don&squot;t bother&n; * counting that again for the quota updates. */
 DECL|macro|EXT3_DATA_TRANS_BLOCKS
 mdefine_line|#define EXT3_DATA_TRANS_BLOCKS&t;&t;(EXT3_SINGLEDATA_TRANS_BLOCKS + &bslash;&n;&t;&t;&t;&t;&t; EXT3_XATTR_TRANS_BLOCKS - 2 + &bslash;&n;&t;&t;&t;&t;&t; 2*EXT3_QUOTA_TRANS_BLOCKS)
-r_extern
-r_int
-id|ext3_writepage_trans_blocks
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-suffix:semicolon
 multiline_comment|/* Delete operations potentially hit one directory&squot;s namespace plus an&n; * entire inode, plus arbitrary amounts of bitmap/indirection data.  Be&n; * generous.  We can grow the delete transaction later if necessary. */
 DECL|macro|EXT3_DELETE_TRANS_BLOCKS
 mdefine_line|#define EXT3_DELETE_TRANS_BLOCKS&t;(2 * EXT3_DATA_TRANS_BLOCKS + 64)
@@ -289,11 +278,16 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-r_void
-DECL|function|ext3_journal_forget
-id|ext3_journal_forget
+r_int
+DECL|function|__ext3_journal_forget
+id|__ext3_journal_forget
 c_func
 (paren
+r_const
+r_char
+op_star
+id|where
+comma
 id|handle_t
 op_star
 id|handle
@@ -304,6 +298,9 @@ op_star
 id|bh
 )paren
 (brace
+r_int
+id|err
+op_assign
 id|journal_forget
 c_func
 (paren
@@ -311,6 +308,28 @@ id|handle
 comma
 id|bh
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+id|ext3_journal_abort_handle
+c_func
+(paren
+id|where
+comma
+id|__FUNCTION__
+comma
+id|bh
+comma
+id|handle
+comma
+id|err
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 r_static
@@ -499,6 +518,8 @@ DECL|macro|ext3_journal_get_create_access
 mdefine_line|#define ext3_journal_get_create_access(handle, bh) &bslash;&n;&t;__ext3_journal_get_create_access(__FUNCTION__, (handle), (bh))
 DECL|macro|ext3_journal_dirty_metadata
 mdefine_line|#define ext3_journal_dirty_metadata(handle, bh) &bslash;&n;&t;__ext3_journal_dirty_metadata(__FUNCTION__, (handle), (bh))
+DECL|macro|ext3_journal_forget
+mdefine_line|#define ext3_journal_forget(handle, bh) &bslash;&n;&t;__ext3_journal_forget(__FUNCTION__, (handle), (bh))
 r_int
 id|ext3_journal_dirty_data
 c_func

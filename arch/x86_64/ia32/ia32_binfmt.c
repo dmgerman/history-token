@@ -628,7 +628,7 @@ mdefine_line|#define load_elf_binary load_elf32_binary
 DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(r, load_addr)&t;elf32_init(r)
 DECL|macro|setup_arg_pages
-mdefine_line|#define setup_arg_pages(bprm, exec_stack)&t;ia32_setup_arg_pages(bprm, exec_stack)
+mdefine_line|#define setup_arg_pages(bprm, stack_top, exec_stack) &bslash;&n;&t;ia32_setup_arg_pages(bprm, stack_top, exec_stack)
 r_int
 id|ia32_setup_arg_pages
 c_func
@@ -637,6 +637,10 @@ r_struct
 id|linux_binprm
 op_star
 id|bprm
+comma
+r_int
+r_int
+id|stack_top
 comma
 r_int
 id|executable_stack
@@ -781,6 +785,10 @@ r_struct
 id|linux_binprm
 op_star
 id|bprm
+comma
+r_int
+r_int
+id|stack_top
 comma
 r_int
 id|executable_stack

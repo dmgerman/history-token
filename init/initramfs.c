@@ -1255,7 +1255,7 @@ id|SkipIt
 suffix:semicolon
 id|next_state
 op_assign
-id|Start
+id|Reset
 suffix:semicolon
 r_if
 c_cond
@@ -1275,10 +1275,6 @@ id|free_hash
 c_func
 (paren
 )paren
-suffix:semicolon
-id|next_state
-op_assign
-id|Reset
 suffix:semicolon
 r_return
 l_int|0
@@ -1600,7 +1596,7 @@ id|SkipIt
 suffix:semicolon
 id|next_state
 op_assign
-id|Start
+id|Reset
 suffix:semicolon
 r_return
 l_int|0
@@ -1785,6 +1781,28 @@ suffix:semicolon
 id|state
 op_assign
 id|Start
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|c
+op_eq
+l_int|0
+)paren
+(brace
+id|buf
+op_add_assign
+id|written
+suffix:semicolon
+id|len
+op_sub_assign
+id|written
+suffix:semicolon
+id|state
+op_assign
+id|Reset
 suffix:semicolon
 )brace
 r_else
@@ -2048,6 +2066,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|unpack_to_rootfs
+r_static
 r_char
 op_star
 id|__init
@@ -2326,8 +2345,12 @@ suffix:semicolon
 r_extern
 r_char
 id|__initramfs_start
+(braket
+)braket
 comma
 id|__initramfs_end
+(braket
+)braket
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 macro_line|#include &lt;linux/initrd.h&gt;
@@ -2348,13 +2371,10 @@ op_assign
 id|unpack_to_rootfs
 c_func
 (paren
-op_amp
 id|__initramfs_start
 comma
-op_amp
 id|__initramfs_end
 op_minus
-op_amp
 id|__initramfs_start
 comma
 l_int|0

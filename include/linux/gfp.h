@@ -37,6 +37,8 @@ DECL|macro|__GFP_NO_GROW
 mdefine_line|#define __GFP_NO_GROW&t;0x2000&t;/* Slab internal usage */
 DECL|macro|__GFP_COMP
 mdefine_line|#define __GFP_COMP&t;0x4000&t;/* Add compound page metadata */
+DECL|macro|__GFP_ZERO
+mdefine_line|#define __GFP_ZERO&t;0x8000&t;/* Return zeroed page on success */
 DECL|macro|__GFP_BITS_SHIFT
 mdefine_line|#define __GFP_BITS_SHIFT 16&t;/* Room for 16 __GFP_FOO bits */
 DECL|macro|__GFP_BITS_MASK

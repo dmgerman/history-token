@@ -409,7 +409,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_ARCH_S390X */
 )brace
 DECL|function|cpu_idle
-r_int
+r_void
 id|cpu_idle
 c_func
 (paren
@@ -426,9 +426,6 @@ id|default_idle
 c_func
 (paren
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|show_regs

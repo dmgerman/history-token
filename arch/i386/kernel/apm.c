@@ -2892,13 +2892,13 @@ suffix:semicolon
 id|device_suspend
 c_func
 (paren
-l_int|3
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 id|device_power_down
 c_func
 (paren
-l_int|3
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 multiline_comment|/* serialize with the timer interrupt */
@@ -3134,7 +3134,7 @@ suffix:semicolon
 id|device_power_down
 c_func
 (paren
-l_int|3
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 multiline_comment|/* serialize with the timer interrupt */
@@ -8372,7 +8372,7 @@ op_assign
 id|original_pm_idle
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We are about to unload the current idle thread pm callback&n;&t;&t; * (pm_idle), Wait for all processors to update cached/local&n;&t;&t; * copies of pm_idle before proceeding.&n;&t;&t; */
-id|synchronize_kernel
+id|cpu_idle_wait
 c_func
 (paren
 )paren

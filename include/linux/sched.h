@@ -12,11 +12,13 @@ macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
+macro_line|#include &lt;asm/cputime.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -93,10 +95,11 @@ DECL|macro|EXP_15
 mdefine_line|#define EXP_15&t;&t;2037&t;&t;/* 1/exp(5sec/15min) */
 DECL|macro|CALC_LOAD
 mdefine_line|#define CALC_LOAD(load,exp,n) &bslash;&n;&t;load *= exp; &bslash;&n;&t;load += n*(FIXED_1-exp); &bslash;&n;&t;load &gt;&gt;= FSHIFT;
-DECL|macro|CT_TO_SECS
-mdefine_line|#define CT_TO_SECS(x)&t;((x) / HZ)
-DECL|macro|CT_TO_USECS
-mdefine_line|#define CT_TO_USECS(x)&t;(((x) % HZ) * 1000000/HZ)
+r_extern
+r_int
+r_int
+id|total_forks
+suffix:semicolon
 r_extern
 r_int
 id|nr_threads
@@ -176,6 +179,9 @@ DECL|macro|__set_current_state
 mdefine_line|#define __set_current_state(state_value)&t;&t;&t;&bslash;&n;&t;do { current-&gt;state = (state_value); } while (0)
 DECL|macro|set_current_state
 mdefine_line|#define set_current_state(state_value)&t;&t;&bslash;&n;&t;set_mb(current-&gt;state, (state_value))
+multiline_comment|/* Task command name length */
+DECL|macro|TASK_COMM_LEN
+mdefine_line|#define TASK_COMM_LEN 16
 multiline_comment|/*&n; * Scheduling policies&n; */
 DECL|macro|SCHED_NORMAL
 mdefine_line|#define SCHED_NORMAL&t;&t;0
@@ -322,11 +328,7 @@ r_void
 id|scheduler_tick
 c_func
 (paren
-r_int
-id|user_tick
-comma
-r_int
-id|system
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -708,6 +710,18 @@ r_struct
 id|kioctx
 id|default_kioctx
 suffix:semicolon
+DECL|member|hiwater_rss
+r_int
+r_int
+id|hiwater_rss
+suffix:semicolon
+multiline_comment|/* High-water RSS usage */
+DECL|member|hiwater_vm
+r_int
+r_int
+id|hiwater_vm
+suffix:semicolon
+multiline_comment|/* High-water virtual memory usage */
 )brace
 suffix:semicolon
 DECL|struct|sighand_struct
@@ -745,6 +759,11 @@ DECL|member|live
 id|atomic_t
 id|live
 suffix:semicolon
+DECL|member|wait_chldexit
+id|wait_queue_head_t
+id|wait_chldexit
+suffix:semicolon
+multiline_comment|/* for wait4() */
 multiline_comment|/* current thread group signal load-balancing target: */
 DECL|member|curr_target
 id|task_t
@@ -758,10 +777,6 @@ id|sigpending
 id|shared_pending
 suffix:semicolon
 multiline_comment|/* thread group exit support */
-DECL|member|group_exit
-r_int
-id|group_exit
-suffix:semicolon
 DECL|member|group_exit_code
 r_int
 id|group_exit_code
@@ -782,11 +797,12 @@ DECL|member|group_stop_count
 r_int
 id|group_stop_count
 suffix:semicolon
-multiline_comment|/* 1 if group stopped since last SIGCONT, -1 if SIGCONT since report */
-DECL|member|stop_state
+DECL|member|flags
 r_int
-id|stop_state
+r_int
+id|flags
 suffix:semicolon
+multiline_comment|/* see SIGNAL_* flags below */
 multiline_comment|/* POSIX.1b Interval Timers */
 DECL|member|posix_timers
 r_struct
@@ -823,8 +839,7 @@ DECL|member|utime
 DECL|member|stime
 DECL|member|cutime
 DECL|member|cstime
-r_int
-r_int
+id|cputime_t
 id|utime
 comma
 id|stime
@@ -872,6 +887,15 @@ id|RLIM_NLIMITS
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Bits in flags field of signal_struct.&n; */
+DECL|macro|SIGNAL_STOP_STOPPED
+mdefine_line|#define SIGNAL_STOP_STOPPED&t;0x00000001 /* job control stop in effect */
+DECL|macro|SIGNAL_STOP_DEQUEUED
+mdefine_line|#define SIGNAL_STOP_DEQUEUED&t;0x00000002 /* stop signal dequeued */
+DECL|macro|SIGNAL_STOP_CONTINUED
+mdefine_line|#define SIGNAL_STOP_CONTINUED&t;0x00000004 /* SIGCONT since WCONTINUED reap */
+DECL|macro|SIGNAL_GROUP_EXIT
+mdefine_line|#define SIGNAL_GROUP_EXIT&t;0x00000008 /* group exit in progress */
 multiline_comment|/*&n; * Priority of a process goes from 0..MAX_PRIO-1, valid RT&n; * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL tasks are&n; * in the range MAX_RT_PRIO..MAX_PRIO-1. Priority values&n; * are inverted: lower p-&gt;prio value means higher priority.&n; *&n; * The MAX_USER_RT_PRIO value allows the actual maximum&n; * RT priority to be separate from the value exported to&n; * user-space.  This allows kernel threads to set their&n; * priority to a value higher than any user task. Note:&n; * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.&n; */
 DECL|macro|MAX_USER_RT_PRIO
 mdefine_line|#define MAX_USER_RT_PRIO&t;100
@@ -1429,10 +1453,6 @@ r_int
 r_int
 id|sleep_avg
 suffix:semicolon
-DECL|member|interactive_credit
-r_int
-id|interactive_credit
-suffix:semicolon
 DECL|member|timestamp
 DECL|member|last_ran
 r_int
@@ -1583,11 +1603,6 @@ id|pids
 id|PIDTYPE_MAX
 )braket
 suffix:semicolon
-DECL|member|wait_chldexit
-id|wait_queue_head_t
-id|wait_chldexit
-suffix:semicolon
-multiline_comment|/* for wait4() */
 DECL|member|vfork_done
 r_struct
 id|completion
@@ -1615,26 +1630,26 @@ r_int
 id|rt_priority
 suffix:semicolon
 DECL|member|it_real_value
-DECL|member|it_prof_value
-DECL|member|it_virt_value
+DECL|member|it_real_incr
 r_int
 r_int
 id|it_real_value
 comma
-id|it_prof_value
-comma
-id|it_virt_value
-suffix:semicolon
-DECL|member|it_real_incr
-DECL|member|it_prof_incr
-DECL|member|it_virt_incr
-r_int
-r_int
 id|it_real_incr
-comma
-id|it_prof_incr
+suffix:semicolon
+DECL|member|it_virt_value
+DECL|member|it_virt_incr
+id|cputime_t
+id|it_virt_value
 comma
 id|it_virt_incr
+suffix:semicolon
+DECL|member|it_prof_value
+DECL|member|it_prof_incr
+id|cputime_t
+id|it_prof_value
+comma
+id|it_prof_incr
 suffix:semicolon
 DECL|member|real_timer
 r_struct
@@ -1643,8 +1658,7 @@ id|real_timer
 suffix:semicolon
 DECL|member|utime
 DECL|member|stime
-r_int
-r_int
+id|cputime_t
 id|utime
 comma
 id|stime
@@ -1759,7 +1773,7 @@ DECL|member|comm
 r_char
 id|comm
 (braket
-l_int|16
+id|TASK_COMM_LEN
 )braket
 suffix:semicolon
 multiline_comment|/* file system info */
@@ -1942,6 +1956,37 @@ id|wait_queue_t
 op_star
 id|io_wait
 suffix:semicolon
+multiline_comment|/* i/o counters(bytes read/written, #syscalls */
+DECL|member|rchar
+DECL|member|wchar
+DECL|member|syscr
+DECL|member|syscw
+id|u64
+id|rchar
+comma
+id|wchar
+comma
+id|syscr
+comma
+id|syscw
+suffix:semicolon
+macro_line|#if defined(CONFIG_BSD_PROCESS_ACCT)
+DECL|member|acct_rss_mem1
+id|u64
+id|acct_rss_mem1
+suffix:semicolon
+multiline_comment|/* accumulated rss usage */
+DECL|member|acct_vm_mem1
+id|u64
+id|acct_vm_mem1
+suffix:semicolon
+multiline_comment|/* accumulated virtual memory usage */
+DECL|member|acct_stimexpd
+id|clock_t
+id|acct_stimexpd
+suffix:semicolon
+multiline_comment|/* clock_t-converted stime since last update */
+macro_line|#endif
 macro_line|#ifdef CONFIG_NUMA
 DECL|member|mempolicy
 r_struct
@@ -2050,7 +2095,7 @@ mdefine_line|#define PF_MEMDIE&t;0x00001000&t;/* Killed for out-of-memory */
 DECL|macro|PF_FLUSHER
 mdefine_line|#define PF_FLUSHER&t;0x00002000&t;/* responsible for disk writeback */
 DECL|macro|PF_FREEZE
-mdefine_line|#define PF_FREEZE&t;0x00004000&t;/* this task should be frozen for suspend */
+mdefine_line|#define PF_FREEZE&t;0x00004000&t;/* this task is being frozen for suspend now */
 DECL|macro|PF_NOFREEZE
 mdefine_line|#define PF_NOFREEZE&t;0x00008000&t;/* this thread should not be frozen */
 DECL|macro|PF_FROZEN
@@ -2097,6 +2142,22 @@ id|cpumask_t
 id|new_mask
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpus_intersects
+c_func
+(paren
+id|new_mask
+comma
+id|cpu_online_map
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2125,6 +2186,28 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|sched_exec
 mdefine_line|#define sched_exec()   {}
+macro_line|#endif
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+r_extern
+r_void
+id|idle_task_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|idle_task_exit
+r_static
+r_inline
+r_void
+id|idle_task_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 macro_line|#endif
 r_extern
 r_void
@@ -2187,6 +2270,22 @@ c_func
 (paren
 r_int
 id|cpu
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sched_setscheduler
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+r_int
+comma
+r_struct
+id|sched_param
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -3792,44 +3891,47 @@ id|TIF_NEED_RESCHED
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * cond_resched() and cond_resched_lock(): latency reduction via&n; * explicit rescheduling in places that are safe. The return&n; * value indicates whether a reschedule was done in fact.&n; * cond_resched_lock() will drop the spinlock before scheduling,&n; * cond_resched_softirq() will enable bhs before scheduling.&n; */
 r_extern
-r_void
-id|__cond_resched
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|function|cond_resched
-r_static
-r_inline
-r_void
+r_int
 id|cond_resched
 c_func
 (paren
 r_void
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|need_resched
+suffix:semicolon
+r_extern
+r_int
+id|cond_resched_lock
 c_func
 (paren
-)paren
-)paren
-id|__cond_resched
-c_func
-(paren
+id|spinlock_t
+op_star
+id|lock
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * cond_resched_lock() - if a reschedule is pending, drop the given lock,&n; * call schedule, and on return reacquire the lock.&n; *&n; * This works OK both with and without CONFIG_PREEMPT.  We do strange low-level&n; * operations here to prevent schedule() from being called twice (once via&n; * spin_unlock(), once by hand).&n; */
-DECL|function|cond_resched_lock
+r_extern
+r_int
+id|cond_resched_softirq
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Does a critical section need to be broken due to another&n; * task waiting?:&n; */
+macro_line|#if defined(CONFIG_PREEMPT) &amp;&amp; defined(CONFIG_SMP)
+DECL|macro|need_lockbreak
+macro_line|# define need_lockbreak(lock) ((lock)-&gt;break_lock)
+macro_line|#else
+DECL|macro|need_lockbreak
+macro_line|# define need_lockbreak(lock) 0
+macro_line|#endif
+multiline_comment|/*&n; * Does a critical section need to be broken due to another&n; * task waiting or preemption being signalled:&n; */
+DECL|function|lock_need_resched
 r_static
 r_inline
-r_void
-id|cond_resched_lock
+r_int
+id|lock_need_resched
 c_func
 (paren
 id|spinlock_t
@@ -3840,35 +3942,23 @@ id|lock
 r_if
 c_cond
 (paren
+id|need_lockbreak
+c_func
+(paren
+id|lock
+)paren
+op_logical_or
 id|need_resched
 c_func
 (paren
 )paren
 )paren
-(brace
-id|_raw_spin_unlock
-c_func
-(paren
-id|lock
-)paren
+r_return
+l_int|1
 suffix:semicolon
-id|preempt_enable_no_resched
-c_func
-(paren
-)paren
+r_return
+l_int|0
 suffix:semicolon
-id|__cond_resched
-c_func
-(paren
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-id|lock
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   callers must hold sighand-&gt;siglock.  */
 r_extern

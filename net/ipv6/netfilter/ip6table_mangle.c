@@ -915,12 +915,6 @@ op_assign
 l_string|&quot;mangle&quot;
 comma
 dot
-id|table
-op_assign
-op_amp
-id|initial_table.repl
-comma
-dot
 id|valid_hooks
 op_assign
 id|MANGLE_VALID_HOOKS
@@ -1112,31 +1106,6 @@ id|NF_ACCEPT
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* FIXME: Push down to extensions --RR */
-r_if
-c_cond
-(paren
-id|skb_is_nonlinear
-c_func
-(paren
-op_star
-id|pskb
-)paren
-op_logical_and
-id|skb_linearize
-c_func
-(paren
-op_star
-id|pskb
-comma
-id|GFP_ATOMIC
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-id|NF_DROP
-suffix:semicolon
 multiline_comment|/* save source/dest address, nfmark, hoplimit, flowlabel, priority,  */
 id|memcpy
 c_func
@@ -1488,6 +1457,9 @@ c_func
 (paren
 op_amp
 id|packet_mangler
+comma
+op_amp
+id|initial_table.repl
 )paren
 suffix:semicolon
 r_if

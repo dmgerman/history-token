@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/systemcfg.h&gt;
 macro_line|#if 0
 mdefine_line|#define DEBUG(A...)&t;printk(KERN_ERR A)
 macro_line|#else
@@ -1871,12 +1872,11 @@ id|systemcfg-&gt;platform
 op_amp
 id|PLATFORM_PSERIES
 )paren
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;rtasd: no RTAS on system&bslash;n&quot;
+l_string|&quot;rtasd: no event-scan on system&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

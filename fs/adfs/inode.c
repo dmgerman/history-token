@@ -793,7 +793,7 @@ suffix:colon
 op_star
 id|tv
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 r_return
 suffix:semicolon

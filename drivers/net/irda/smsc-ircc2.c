@@ -9546,12 +9546,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ircc_dma
 comma
-l_string|&quot;1i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9562,12 +9564,14 @@ comma
 l_string|&quot;DMA channel&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ircc_irq
 comma
-l_string|&quot;1i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9578,12 +9582,14 @@ comma
 l_string|&quot;IRQ line&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ircc_fir
 comma
-l_string|&quot;1-4i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9594,12 +9600,14 @@ comma
 l_string|&quot;FIR Base Address&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ircc_sir
 comma
-l_string|&quot;1-4i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9610,12 +9618,14 @@ comma
 l_string|&quot;SIR Base Address&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ircc_cfg
 comma
-l_string|&quot;1-4i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9626,12 +9636,14 @@ comma
 l_string|&quot;Configuration register base address&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ircc_transceiver
 comma
-l_string|&quot;1i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -512,11 +512,6 @@ id|gf1_info_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &quot;seq_instr.h&quot;
-r_extern
-r_char
-op_star
-id|snd_seq_gf1_id
-suffix:semicolon
 r_typedef
 r_struct
 (brace

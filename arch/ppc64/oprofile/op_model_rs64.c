@@ -440,9 +440,9 @@ suffix:semicolon
 multiline_comment|/* Only applies to POWER3, but should be safe on RS64 */
 id|mmcr0
 op_or_assign
-id|MMCR0_PMC1INTCONTROL
+id|MMCR0_PMC1CE
 op_or
-id|MMCR0_PMCNINTCONTROL
+id|MMCR0_PMCjCE
 suffix:semicolon
 id|mtspr
 c_func
@@ -716,15 +716,6 @@ op_ge
 id|KERNELBASE
 )paren
 suffix:semicolon
-r_int
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* set the PMM bit (see comment below) */
 id|mtmsrd
 c_func
@@ -779,7 +770,7 @@ dot
 id|enabled
 )paren
 (brace
-id|oprofile_add_sample
+id|oprofile_add_pc
 c_func
 (paren
 id|pc
@@ -787,8 +778,6 @@ comma
 id|is_kernel
 comma
 id|i
-comma
-id|cpu
 )paren
 suffix:semicolon
 id|ctr_write

@@ -996,6 +996,10 @@ suffix:colon
 op_amp
 id|default_ops
 suffix:semicolon
+id|s-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 id|root
 op_assign
 id|new_inode
@@ -1794,6 +1798,10 @@ op_assign
 op_amp
 id|s_ops
 suffix:semicolon
+id|s-&gt;s_time_gran
+op_assign
+l_int|1
+suffix:semicolon
 id|inode
 op_assign
 id|new_inode
@@ -2580,6 +2588,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|generic_read_dir
+)paren
+suffix:semicolon
+DECL|variable|get_sb_pseudo
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_sb_pseudo
 )paren
 suffix:semicolon
 DECL|variable|simple_commit_write

@@ -27,6 +27,7 @@ DECL|macro|BT_DBG
 mdefine_line|#define BT_DBG(D...)
 macro_line|#endif
 DECL|function|hci_acl_connect
+r_static
 r_void
 id|hci_acl_connect
 c_func

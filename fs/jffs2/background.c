@@ -1,9 +1,8 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: background.c,v 1.49 2004/07/13 08:56:40 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: background.c,v 1.50 2004/11/16 20:36:10 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 r_static
 r_int
@@ -353,21 +352,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-(brace
-id|refrigerator
+id|try_to_freeze
 c_func
 (paren
 l_int|0
 )paren
-suffix:semicolon
-multiline_comment|/* refrigerator() should recalc sigpending for us&n;&t;&t;&t;   but doesn&squot;t. No matter - allow_signal() will. */
+)paren
 r_continue
 suffix:semicolon
-)brace
 id|cond_resched
 c_func
 (paren

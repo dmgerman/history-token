@@ -15,7 +15,7 @@ DECL|macro|PTRS_PER_PGD
 mdefine_line|#define PTRS_PER_PGD&t;&t;2048
 multiline_comment|/*&n; * PMD_SHIFT determines the size of the area a second-level page table can map&n; * PGDIR_SHIFT determines what a third-level page table entry can map&n; */
 DECL|macro|PMD_SHIFT
-mdefine_line|#define PMD_SHIFT&t;&t;20
+mdefine_line|#define PMD_SHIFT&t;&t;21
 DECL|macro|PGDIR_SHIFT
 mdefine_line|#define PGDIR_SHIFT&t;&t;21
 DECL|macro|LIBRARY_TEXT_START
@@ -402,7 +402,7 @@ mdefine_line|#define pmd_present(pmd)&t;(pmd_val(pmd))
 DECL|macro|pmd_bad
 mdefine_line|#define pmd_bad(pmd)&t;&t;(pmd_val(pmd) &amp; 2)
 DECL|macro|set_pmd
-mdefine_line|#define set_pmd(pmdp,pmd)&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&bslash;&n;&t;&t;*pmdp = pmd;&t;&t;&bslash;&n;&t;&t;flush_pmd_entry(pmdp);&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define set_pmd(pmdp,pmd)&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&bslash;&n;&t;&t;*(pmdp) = pmd;&t;&t;&bslash;&n;&t;&t;flush_pmd_entry(pmdp);&t;&bslash;&n;&t;} while (0)
 DECL|macro|copy_pmd
 mdefine_line|#define copy_pmd(pmdpd,pmdps)&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&bslash;&n;&t;&t;pmdpd[0] = pmdps[0];&t;&bslash;&n;&t;&t;pmdpd[1] = pmdps[1];&t;&bslash;&n;&t;&t;flush_pmd_entry(pmdpd);&t;&bslash;&n;&t;} while (0)
 DECL|macro|pmd_clear

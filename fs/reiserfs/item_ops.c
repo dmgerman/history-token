@@ -427,6 +427,7 @@ id|vi-&gt;vi_ih
 suffix:semicolon
 )brace
 DECL|variable|stat_data_ops
+r_static
 r_struct
 id|item_operations
 id|stat_data_ops
@@ -825,6 +826,7 @@ id|vi-&gt;vi_ih
 suffix:semicolon
 )brace
 DECL|variable|direct_ops
+r_static
 r_struct
 id|item_operations
 id|direct_ops
@@ -1469,6 +1471,7 @@ id|vi-&gt;vi_ih
 suffix:semicolon
 )brace
 DECL|variable|indirect_ops
+r_static
 r_struct
 id|item_operations
 id|indirect_ops
@@ -2806,6 +2809,7 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|variable|direntry_ops
+r_static
 r_struct
 id|item_operations
 id|direntry_ops
@@ -3149,6 +3153,7 @@ l_string|&quot;green-16011: Invalid item type observed, run fsck ASAP&quot;
 suffix:semicolon
 )brace
 DECL|variable|errcatch_ops
+r_static
 r_struct
 id|item_operations
 id|errcatch_ops

@@ -22,6 +22,7 @@ id|sk_buff
 op_star
 )paren
 suffix:semicolon
+r_static
 r_struct
 id|sctp_association
 op_star
@@ -52,6 +53,7 @@ op_star
 id|transportp
 )paren
 suffix:semicolon
+r_static
 r_struct
 id|sctp_endpoint
 op_star
@@ -63,6 +65,32 @@ r_union
 id|sctp_addr
 op_star
 id|laddr
+)paren
+suffix:semicolon
+r_static
+r_struct
+id|sctp_association
+op_star
+id|__sctp_lookup_association
+c_func
+(paren
+r_const
+r_union
+id|sctp_addr
+op_star
+id|local
+comma
+r_const
+r_union
+id|sctp_addr
+op_star
+id|peer
+comma
+r_struct
+id|sctp_transport
+op_star
+op_star
+id|pt
 )paren
 suffix:semicolon
 multiline_comment|/* Calculate the SCTP checksum of an SCTP packet.  */
@@ -346,6 +374,21 @@ r_struct
 id|sctphdr
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* Make sure we at least have chunk headers worth of data left. */
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OL
+r_sizeof
+(paren
+r_struct
+id|sctp_chunkhdr
+)paren
+)paren
+r_goto
+id|discard_it
 suffix:semicolon
 id|family
 op_assign
@@ -905,6 +948,64 @@ id|SCTP_RTXR_PMTUD
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * SCTP Implementer&squot;s Guide, 2.37 ICMP handling procedures&n; *&n; * ICMP8) If the ICMP code is a &quot;Unrecognized next header type encountered&quot;&n; *        or a &quot;Protocol Unreachable&quot; treat this message as an abort&n; *        with the T bit set.&n; *&n; * This function sends an event to the state machine, which will abort the&n; * association.&n; *&n; */
+DECL|function|sctp_icmp_proto_unreachable
+r_void
+id|sctp_icmp_proto_unreachable
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
+id|sctp_endpoint
+op_star
+id|ep
+comma
+r_struct
+id|sctp_association
+op_star
+id|asoc
+comma
+r_struct
+id|sctp_transport
+op_star
+id|t
+)paren
+(brace
+id|SCTP_DEBUG_PRINTK
+c_func
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|sctp_do_sm
+c_func
+(paren
+id|SCTP_EVENT_T_OTHER
+comma
+id|SCTP_ST_OTHER
+c_func
+(paren
+id|SCTP_EVENT_ICMP_PROTO_UNREACH
+)paren
+comma
+id|asoc-&gt;state
+comma
+id|asoc-&gt;ep
+comma
+id|asoc
+comma
+l_int|NULL
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Common lookup code for icmp/icmpv6 error handler. */
 DECL|function|sctp_err_lookup
 r_struct
@@ -1102,6 +1203,10 @@ c_cond
 id|asoc
 )paren
 (brace
+id|sk
+op_assign
+id|asoc-&gt;base.sk
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1124,10 +1229,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|sk
-op_assign
-id|asoc-&gt;base.sk
-suffix:semicolon
 )brace
 r_else
 id|sk
@@ -1503,6 +1604,33 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|ICMP_PROT_UNREACH
+op_eq
+id|code
+)paren
+(brace
+id|sctp_icmp_proto_unreachable
+c_func
+(paren
+id|sk
+comma
+id|ep
+comma
+id|asoc
+comma
+id|transport
+)paren
+suffix:semicolon
+r_goto
+id|out_unlock
+suffix:semicolon
+)brace
+)brace
 id|err
 op_assign
 id|icmp_err_convert
@@ -1627,9 +1755,6 @@ op_star
 )paren
 id|skb-&gt;data
 suffix:semicolon
-multiline_comment|/* Scan through all the chunks in the packet.  */
-r_do
-(brace
 id|ch_end
 op_assign
 (paren
@@ -1650,6 +1775,23 @@ id|ch-&gt;length
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Scan through all the chunks in the packet.  */
+r_while
+c_loop
+(paren
+id|ch_end
+OG
+(paren
+id|__u8
+op_star
+)paren
+id|ch
+op_logical_and
+id|ch_end
+OL
+id|skb-&gt;tail
+)paren
+(brace
 multiline_comment|/* RFC 8.4, 2) If the OOTB packet contains an ABORT chunk, the&n;&t;&t; * receiver MUST silently discard the OOTB packet and take no&n;&t;&t; * further action.&n;&t;&t; */
 r_if
 c_cond
@@ -1719,15 +1861,27 @@ op_star
 )paren
 id|ch_end
 suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
 id|ch_end
-OL
-id|skb-&gt;tail
+op_assign
+(paren
+(paren
+id|__u8
+op_star
+)paren
+id|ch
+)paren
+op_plus
+id|WORD_ROUND
+c_func
+(paren
+id|ntohs
+c_func
+(paren
+id|ch-&gt;length
+)paren
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1739,6 +1893,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Insert endpoint into the hash table.  */
 DECL|function|__sctp_hash_endpoint
+r_static
 r_void
 id|__sctp_hash_endpoint
 c_func
@@ -1866,6 +2021,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Remove endpoint from the hash table.  */
 DECL|function|__sctp_unhash_endpoint
+r_static
 r_void
 id|__sctp_unhash_endpoint
 c_func
@@ -1978,6 +2134,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Look up an endpoint. */
 DECL|function|__sctp_rcv_lookup_endpoint
+r_static
 r_struct
 id|sctp_endpoint
 op_star
@@ -2114,37 +2271,9 @@ r_return
 id|ep
 suffix:semicolon
 )brace
-multiline_comment|/* Add an association to the hash. Local BH-safe. */
-DECL|function|sctp_hash_established
-r_void
-id|sctp_hash_established
-c_func
-(paren
-r_struct
-id|sctp_association
-op_star
-id|asoc
-)paren
-(brace
-id|sctp_local_bh_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|__sctp_hash_established
-c_func
-(paren
-id|asoc
-)paren
-suffix:semicolon
-id|sctp_local_bh_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Insert association into the hash table.  */
 DECL|function|__sctp_hash_established
+r_static
 r_void
 id|__sctp_hash_established
 c_func
@@ -2244,10 +2373,10 @@ id|head-&gt;lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Remove association from the hash table.  Local BH-safe. */
-DECL|function|sctp_unhash_established
+multiline_comment|/* Add an association to the hash. Local BH-safe. */
+DECL|function|sctp_hash_established
 r_void
-id|sctp_unhash_established
+id|sctp_hash_established
 c_func
 (paren
 r_struct
@@ -2261,7 +2390,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__sctp_unhash_established
+id|__sctp_hash_established
 c_func
 (paren
 id|asoc
@@ -2275,6 +2404,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Remove association from the hash table.  */
 DECL|function|__sctp_unhash_established
+r_static
 r_void
 id|__sctp_unhash_established
 c_func
@@ -2358,8 +2488,38 @@ id|head-&gt;lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Remove association from the hash table.  Local BH-safe. */
+DECL|function|sctp_unhash_established
+r_void
+id|sctp_unhash_established
+c_func
+(paren
+r_struct
+id|sctp_association
+op_star
+id|asoc
+)paren
+(brace
+id|sctp_local_bh_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|__sctp_unhash_established
+c_func
+(paren
+id|asoc
+)paren
+suffix:semicolon
+id|sctp_local_bh_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Look up an association. */
 DECL|function|__sctp_lookup_association
+r_static
 r_struct
 id|sctp_association
 op_star
@@ -2518,6 +2678,7 @@ id|asoc
 suffix:semicolon
 )brace
 multiline_comment|/* Look up an association. BH-safe. */
+id|SCTP_STATIC
 DECL|function|sctp_lookup_association
 r_struct
 id|sctp_association
@@ -2750,6 +2911,25 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* The code below will attempt to walk the chunk and extract&n;&t; * parameter information.  Before we do that, we need to verify&n;&t; * that the chunk length doesn&squot;t cause overflow.  Otherwise, we&squot;ll&n;&t; * walk off the end.&n;&t; */
+r_if
+c_cond
+(paren
+id|WORD_ROUND
+c_func
+(paren
+id|ntohs
+c_func
+(paren
+id|ch-&gt;length
+)paren
+)paren
+OG
+id|skb-&gt;len
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 multiline_comment|/*&n;&t; * This code will NOT touch anything inside the chunk--it is&n;&t; * strictly READ-ONLY.&n;&t; *&n;&t; * RFC 2960 3  SCTP packet Format&n;&t; *&n;&t; * Multiple chunks can be bundled into one SCTP packet up to&n;&t; * the MTU size, except for the INIT, INIT ACK, and SHUTDOWN&n;&t; * COMPLETE chunks.  These chunks MUST NOT be bundled with any&n;&t; * other chunk in a packet.  See Section 6.10 for more details&n;&t; * on chunk bundling.&n;&t; */
 multiline_comment|/* Find the start of the TLVs and the end of the chunk.  This is&n;&t; * the region we search for address parameters.&n;&t; */
 id|init
@@ -2838,6 +3018,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Lookup an association for an inbound skb. */
 DECL|function|__sctp_rcv_lookup
+r_static
 r_struct
 id|sctp_association
 op_star

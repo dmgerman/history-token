@@ -1334,6 +1334,14 @@ id|d_off
 op_assign
 id|file-&gt;f_pos
 suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|__put_user
 c_func
 (paren
@@ -1342,6 +1350,9 @@ comma
 op_amp
 id|lastdirent-&gt;d_off
 )paren
+)paren
+r_goto
+id|out_putf
 suffix:semicolon
 id|error
 op_assign

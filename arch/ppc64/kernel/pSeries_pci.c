@@ -11,7 +11,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &quot;mpic.h&quot;
@@ -564,7 +563,6 @@ id|rtas_pci_write_config
 )brace
 suffix:semicolon
 DECL|function|is_python
-r_static
 r_int
 id|is_python
 c_func
@@ -1533,7 +1531,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_eq
 id|IC_OPEN_PIC
 )paren
@@ -1654,7 +1652,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_eq
 id|IC_OPEN_PIC
 op_logical_and
@@ -2466,33 +2464,6 @@ c_func
 )paren
 suffix:semicolon
 id|pSeries_request_regions
-c_func
-(paren
-)paren
-suffix:semicolon
-id|pci_fix_bus_sysdata
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|of_chosen
-op_logical_or
-op_logical_neg
-id|get_property
-c_func
-(paren
-id|of_chosen
-comma
-l_string|&quot;linux,iommu-off&quot;
-comma
-l_int|NULL
-)paren
-)paren
-id|iommu_setup_pSeries
 c_func
 (paren
 )paren

@@ -15,6 +15,10 @@ DECL|member|sample_lost_no_mapping
 id|atomic_t
 id|sample_lost_no_mapping
 suffix:semicolon
+DECL|member|bt_lost_no_mapping
+id|atomic_t
+id|bt_lost_no_mapping
+suffix:semicolon
 DECL|member|event_lost_overflow
 id|atomic_t
 id|event_lost_overflow

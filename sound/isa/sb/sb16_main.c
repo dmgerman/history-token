@@ -2354,6 +2354,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; *  open/close&n; */
 DECL|function|snd_sb16_playback_open
+r_static
 r_int
 id|snd_sb16_playback_open
 c_func
@@ -2606,6 +2607,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_sb16_playback_close
+r_static
 r_int
 id|snd_sb16_playback_close
 c_func
@@ -2667,6 +2669,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_sb16_capture_open
+r_static
 r_int
 id|snd_sb16_capture_open
 c_func
@@ -2919,6 +2922,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_sb16_capture_close
+r_static
 r_int
 id|snd_sb16_capture_close
 c_func
@@ -3356,6 +3360,7 @@ id|change
 suffix:semicolon
 )brace
 DECL|variable|snd_sb16_dma_control
+r_static
 id|snd_kcontrol_new_t
 id|snd_sb16_dma_control
 op_assign

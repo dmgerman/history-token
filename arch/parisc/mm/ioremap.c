@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * arch/parisc/mm/ioremap.c&n; *&n; * Re-map IO memory to kernel address space so that we can access it.&n; * This is needed for high PCI addresses that aren&squot;t mapped in the&n; * 640k-1MB IO memory area on PC&squot;s&n; *&n; * (C) Copyright 1995 1996 Linus Torvalds&n; * (C) Copyright 2001 Helge Deller &lt;deller@gmx.de&gt;&n; */
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 DECL|function|remap_area_pte
@@ -468,10 +469,128 @@ id|error
 suffix:semicolon
 )brace
 macro_line|#endif /* USE_HPPA_IOREMAP */
+macro_line|#ifdef CONFIG_DEBUG_IOREMAP
+DECL|variable|last
+r_static
+r_int
+r_int
+id|last
+op_assign
+l_int|0
+suffix:semicolon
+DECL|function|gsc_bad_addr
+r_void
+id|gsc_bad_addr
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|last
+op_plus
+id|HZ
+op_star
+l_int|10
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;gsc_foo() called with bad address 0x%lx&bslash;n&quot;
+comma
+id|addr
+)paren
+suffix:semicolon
+id|dump_stack
+c_func
+(paren
+)paren
+suffix:semicolon
+id|last
+op_assign
+id|jiffies
+suffix:semicolon
+)brace
+)brace
+DECL|variable|gsc_bad_addr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|gsc_bad_addr
+)paren
+suffix:semicolon
+DECL|function|__raw_bad_addr
+r_void
+id|__raw_bad_addr
+c_func
+(paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|last
+op_plus
+id|HZ
+op_star
+l_int|10
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;__raw_foo() called with bad address 0x%p&bslash;n&quot;
+comma
+id|addr
+)paren
+suffix:semicolon
+id|dump_stack
+c_func
+(paren
+)paren
+suffix:semicolon
+id|last
+op_assign
+id|jiffies
+suffix:semicolon
+)brace
+)brace
+DECL|variable|__raw_bad_addr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__raw_bad_addr
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Generic mapping function (not visible outside):&n; */
 multiline_comment|/*&n; * Remap an arbitrary physical address space into the kernel virtual&n; * address space. Needed when the kernel wants to access high addresses&n; * directly.&n; *&n; * NOTE! We need to allow non-page-aligned mappings too: we will obviously&n; * have to convert them into an offset in a page-aligned mapping, but the&n; * caller shouldn&squot;t need to know that small detail.&n; */
 DECL|function|__ioremap
 r_void
+id|__iomem
 op_star
 id|__ioremap
 c_func
@@ -530,13 +649,33 @@ op_or_assign
 l_int|0xfc000000
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_DEBUG_IOREMAP
 r_return
 (paren
 r_void
+id|__iomem
+op_star
+)paren
+(paren
+id|phys_addr
+op_minus
+(paren
+l_int|0x1UL
+op_lshift
+id|NYBBLE_SHIFT
+)paren
+)paren
+suffix:semicolon
+macro_line|#else
+r_return
+(paren
+r_void
+id|__iomem
 op_star
 )paren
 id|phys_addr
 suffix:semicolon
+macro_line|#endif
 macro_line|#else
 r_void
 op_star
@@ -735,6 +874,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren
@@ -755,6 +895,7 @@ id|iounmap
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -784,6 +925,7 @@ op_amp
 (paren
 r_int
 r_int
+id|__force
 )paren
 id|addr
 )paren

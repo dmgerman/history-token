@@ -41,6 +41,28 @@ r_int
 id|to
 )paren
 suffix:semicolon
+r_static
+r_int
+id|reiserfs_prepare_write
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|f
+comma
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+id|from
+comma
+r_int
+id|to
+)paren
+suffix:semicolon
 DECL|function|reiserfs_delete_inode
 r_void
 id|reiserfs_delete_inode
@@ -1567,6 +1589,7 @@ suffix:semicolon
 singleline_comment|// this is called to create file map. So, _get_block_create_0 will not
 singleline_comment|// read direct item
 DECL|function|reiserfs_bmap
+r_static
 r_int
 id|reiserfs_bmap
 (paren
@@ -6806,38 +6829,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: no need any more. right? */
-DECL|function|reiserfs_sync_inode
-r_int
-id|reiserfs_sync_inode
-(paren
-r_struct
-id|reiserfs_transaction_handle
-op_star
-id|th
-comma
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_int
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-id|reiserfs_update_sd
-(paren
-id|th
-comma
-id|inode
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
 multiline_comment|/* stat data of new object is inserted already, this inserts the item&n;   containing &quot;.&quot; and &quot;..&quot; entries */
 DECL|function|reiserfs_new_directory
 r_static
@@ -7528,7 +7519,7 @@ id|inode-&gt;i_atime
 op_assign
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|inode-&gt;i_size
 op_assign
@@ -10653,6 +10644,7 @@ id|wbc
 suffix:semicolon
 )brace
 DECL|function|reiserfs_prepare_write
+r_static
 r_int
 id|reiserfs_prepare_write
 c_func

@@ -485,6 +485,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * forte_ac97_read:&n; * @codec:&t;AC97 codec to read from&n; * @reg:&t;register to read&n; */
+r_static
 id|u16
 DECL|function|forte_ac97_read
 id|forte_ac97_read
@@ -623,6 +624,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * forte_ac97_write:&n; * @codec:&t;AC97 codec to send command to&n; * @reg:&t;register to write&n; * @val:&t;value to write&n; */
+r_static
 r_void
 DECL|function|forte_ac97_write
 id|forte_ac97_write

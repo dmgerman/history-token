@@ -43,5 +43,37 @@ suffix:semicolon
 multiline_comment|/* Ports */
 )brace
 suffix:semicolon
+DECL|struct|ipt_multiport_v1
+r_struct
+id|ipt_multiport_v1
+(brace
+DECL|member|flags
+id|u_int8_t
+id|flags
+suffix:semicolon
+multiline_comment|/* Type of comparison */
+DECL|member|count
+id|u_int8_t
+id|count
+suffix:semicolon
+multiline_comment|/* Number of ports */
+DECL|member|ports
+id|u_int16_t
+id|ports
+(braket
+id|IPT_MULTI_PORTS
+)braket
+suffix:semicolon
+multiline_comment|/* Ports */
+DECL|member|pflags
+id|u_int8_t
+id|pflags
+(braket
+id|IPT_MULTI_PORTS
+)braket
+suffix:semicolon
+multiline_comment|/* Port flags */
+)brace
+suffix:semicolon
 macro_line|#endif /*_IPT_MULTIPORT_H*/
 eof

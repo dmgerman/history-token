@@ -38,9 +38,9 @@ macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
+macro_line|#include &lt;asm/plpar_wrappers.h&gt;
 macro_line|#include &quot;i8259.h&quot;
 macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
@@ -112,13 +112,16 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|SystemReset_FWNMI
+id|system_reset_fwnmi
 c_func
 (paren
 r_void
 )paren
-comma
-id|MachineCheck_FWNMI
+suffix:semicolon
+multiline_comment|/* from head.S */
+r_extern
+r_void
+id|machine_check_fwnmi
 c_func
 (paren
 r_void
@@ -130,6 +133,10 @@ r_void
 id|generic_find_legacy_serial_ports
 c_func
 (paren
+id|u64
+op_star
+id|physport
+comma
 r_int
 r_int
 op_star
@@ -163,6 +170,28 @@ r_extern
 r_int
 r_int
 id|ppc_tb_freq
+suffix:semicolon
+r_extern
+r_void
+id|pSeries_system_reset_exception
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pSeries_machine_check_exception
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
 suffix:semicolon
 DECL|variable|chrp_int_ack_special
 r_static
@@ -295,7 +324,7 @@ c_func
 r_int
 r_int
 )paren
-id|SystemReset_FWNMI
+id|system_reset_fwnmi
 )paren
 comma
 id|__pa
@@ -305,7 +334,7 @@ c_func
 r_int
 r_int
 )paren
-id|MachineCheck_FWNMI
+id|machine_check_fwnmi
 )paren
 )paren
 suffix:semicolon
@@ -700,7 +729,7 @@ multiline_comment|/* Fixup ppc_md depending on the type of interrupt controller 
 r_if
 c_cond
 (paren
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_eq
 id|IC_OPEN_PIC
 )paren
@@ -1074,7 +1103,7 @@ id|__irq_offset_value
 op_assign
 id|NUM_ISA_INTERRUPTS
 suffix:semicolon
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_assign
 id|IC_INVALID
 suffix:semicolon
@@ -1126,7 +1155,7 @@ comma
 l_string|&quot;open-pic&quot;
 )paren
 )paren
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_assign
 id|IC_OPEN_PIC
 suffix:semicolon
@@ -1142,7 +1171,7 @@ comma
 l_string|&quot;ppc-xicp&quot;
 )paren
 )paren
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_assign
 id|IC_PPC_XIC
 suffix:semicolon
@@ -1150,7 +1179,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;initialize_naca: failed to recognize&quot;
+l_string|&quot;pSeries_discover_pic: failed to recognize&quot;
 l_string|&quot; interrupt-controller&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1226,6 +1255,9 @@ r_int
 r_int
 id|default_speed
 suffix:semicolon
+id|u64
+id|physport
+suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -1277,6 +1309,9 @@ id|generic_find_legacy_serial_ports
 c_func
 (paren
 op_amp
+id|physport
+comma
+op_amp
 id|default_speed
 )paren
 suffix:semicolon
@@ -1296,7 +1331,7 @@ r_else
 r_if
 c_cond
 (paren
-id|naca-&gt;serialPortAddr
+id|physport
 )paren
 (brace
 multiline_comment|/* Map the uart for udbg. */
@@ -1309,7 +1344,7 @@ op_star
 id|__ioremap
 c_func
 (paren
-id|naca-&gt;serialPortAddr
+id|physport
 comma
 l_int|16
 comma
@@ -1343,18 +1378,7 @@ l_string|&quot;Hello World !&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|iommu_off
-)paren
-id|pci_dma_init_direct
-c_func
-(paren
-)paren
-suffix:semicolon
-r_else
-id|tce_init_pSeries
+id|iommu_init_early_pSeries
 c_func
 (paren
 )paren
@@ -2331,6 +2355,16 @@ dot
 id|check_legacy_ioport
 op_assign
 id|pSeries_check_legacy_ioport
+comma
+dot
+id|system_reset_exception
+op_assign
+id|pSeries_system_reset_exception
+comma
+dot
+id|machine_check_exception
+op_assign
+id|pSeries_machine_check_exception
 comma
 )brace
 suffix:semicolon

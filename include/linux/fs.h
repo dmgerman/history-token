@@ -115,10 +115,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|NR_FILE
 mdefine_line|#define NR_FILE  8192&t;/* this can well be larger on a larger system */
-DECL|macro|NR_RESERVED_FILES
-mdefine_line|#define NR_RESERVED_FILES 10 /* reserved for root */
-DECL|macro|NR_SUPER
-mdefine_line|#define NR_SUPER 256
 DECL|macro|MAY_EXEC
 mdefine_line|#define MAY_EXEC 1
 DECL|macro|MAY_WRITE
@@ -202,8 +198,6 @@ DECL|macro|MS_VERBOSE
 mdefine_line|#define MS_VERBOSE&t;32768
 DECL|macro|MS_POSIXACL
 mdefine_line|#define MS_POSIXACL&t;(1&lt;&lt;16)&t;/* VFS does not apply the umask */
-DECL|macro|MS_ONE_SECOND
-mdefine_line|#define MS_ONE_SECOND&t;(1&lt;&lt;17)&t;/* fs has 1 sec a/m/ctime resolution */
 DECL|macro|MS_ACTIVE
 mdefine_line|#define MS_ACTIVE&t;(1&lt;&lt;30)
 DECL|macro|MS_NOUSER
@@ -258,8 +252,6 @@ DECL|macro|IS_NODIRATIME
 mdefine_line|#define IS_NODIRATIME(inode)&t;__IS_FLG(inode, MS_NODIRATIME)
 DECL|macro|IS_POSIXACL
 mdefine_line|#define IS_POSIXACL(inode)&t;__IS_FLG(inode, MS_POSIXACL)
-DECL|macro|IS_ONE_SECOND
-mdefine_line|#define IS_ONE_SECOND(inode)&t;__IS_FLG(inode, MS_ONE_SECOND)
 DECL|macro|IS_DEADDIR
 mdefine_line|#define IS_DEADDIR(inode)&t;((inode)-&gt;i_flags &amp; S_DEAD)
 DECL|macro|IS_NOCMTIME
@@ -816,7 +808,8 @@ id|i_mmap_lock
 suffix:semicolon
 multiline_comment|/* protect tree, count, list */
 DECL|member|truncate_count
-id|atomic_t
+r_int
+r_int
 id|truncate_count
 suffix:semicolon
 multiline_comment|/* Cover race condition with truncate */
@@ -1076,6 +1069,11 @@ DECL|member|i_list
 r_struct
 id|list_head
 id|i_list
+suffix:semicolon
+DECL|member|i_sb_list
+r_struct
+id|list_head
+id|i_sb_list
 suffix:semicolon
 DECL|member|i_dentry
 r_struct
@@ -2635,6 +2633,12 @@ op_star
 op_star
 id|s_xattr
 suffix:semicolon
+DECL|member|s_inodes
+r_struct
+id|list_head
+id|s_inodes
+suffix:semicolon
+multiline_comment|/* all inodes */
 DECL|member|s_dirty
 r_struct
 id|list_head
@@ -2704,7 +2708,24 @@ id|semaphore
 id|s_vfs_rename_sem
 suffix:semicolon
 multiline_comment|/* Kludge */
+multiline_comment|/* Granuality of c/m/atime in ns.&n;&t;   Cannot be worse than a second */
+DECL|member|s_time_gran
+id|u32
+id|s_time_gran
+suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|timespec
+id|current_fs_time
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Snapshotting support.&n; */
 r_enum
@@ -3139,7 +3160,12 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * NOTE:&n; * read, write, poll, fsync, readv, writev can be called&n; *   without the big kernel lock held in all filesystems.&n; */
+multiline_comment|/* These macros are for out of kernel modules to test that&n; * the kernel supports the unlocked_ioctl and compat_ioctl&n; * fields in struct file_operations. */
+DECL|macro|HAVE_COMPAT_IOCTL
+mdefine_line|#define HAVE_COMPAT_IOCTL 1
+DECL|macro|HAVE_UNLOCKED_IOCTL
+mdefine_line|#define HAVE_UNLOCKED_IOCTL 1
+multiline_comment|/*&n; * NOTE:&n; * read, write, poll, fsync, readv, writev, unlocked_ioctl and compat_ioctl&n; * can be called without the big kernel lock held in all filesystems.&n; */
 DECL|struct|file_operations
 r_struct
 id|file_operations
@@ -3295,6 +3321,42 @@ r_struct
 id|inode
 op_star
 comma
+r_struct
+id|file
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|member|unlocked_ioctl
+r_int
+(paren
+op_star
+id|unlocked_ioctl
+)paren
+(paren
+r_struct
+id|file
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|member|compat_ioctl
+r_int
+(paren
+op_star
+id|compat_ioctl
+)paren
+(paren
 r_struct
 id|file
 op_star
@@ -5105,9 +5167,6 @@ id|kstatfs
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Return value for VFS lock functions - tells locks.c to lock conventionally&n; * REALLY kosha for root NFS and nfs_lock&n; */
-DECL|macro|LOCK_USE_CLNT
-mdefine_line|#define LOCK_USE_CLNT 1
 DECL|macro|FLOCK_VERIFY_READ
 mdefine_line|#define FLOCK_VERIFY_READ  1
 DECL|macro|FLOCK_VERIFY_WRITE
@@ -5987,7 +6046,7 @@ id|inode-&gt;i_mapping
 suffix:semicolon
 )brace
 r_extern
-r_void
+r_int
 id|invalidate_inode_pages2
 c_func
 (paren
@@ -5998,7 +6057,7 @@ id|mapping
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|write_inode_now
 c_func
 (paren

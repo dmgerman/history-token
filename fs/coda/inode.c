@@ -316,6 +316,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* exported operations */
 DECL|variable|coda_super_operations
+r_static
 r_struct
 id|super_operations
 id|coda_super_operations
@@ -1028,7 +1029,7 @@ id|vattr
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|coda_iattr_to_vattr
 c_func

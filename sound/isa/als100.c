@@ -491,6 +491,31 @@ l_string|&quot;@H@0001&quot;
 )brace
 )brace
 comma
+multiline_comment|/* ALS200 OEM */
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;ALS0200&quot;
+comma
+dot
+id|devs
+op_assign
+(brace
+(brace
+l_string|&quot;@@@0020&quot;
+)brace
+comma
+(brace
+l_string|&quot;@X@0020&quot;
+)brace
+comma
+(brace
+l_string|&quot;@H@0020&quot;
+)brace
+)brace
+)brace
+comma
 multiline_comment|/* RTL3000 */
 (brace
 dot

@@ -34,6 +34,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|devpts_file_inode_operations
+r_static
 r_struct
 id|inode_operations
 id|devpts_file_inode_operations
@@ -385,6 +386,10 @@ suffix:semicolon
 id|s-&gt;s_xattr
 op_assign
 id|devpts_xattr_handlers
+suffix:semicolon
+id|s-&gt;s_time_gran
+op_assign
+l_int|1
 suffix:semicolon
 id|inode
 op_assign

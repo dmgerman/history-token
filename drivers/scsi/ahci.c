@@ -1109,6 +1109,7 @@ comma
 id|board_ahci
 )brace
 comma
+multiline_comment|/* ICH6 */
 (brace
 id|PCI_VENDOR_ID_INTEL
 comma
@@ -1125,6 +1126,41 @@ comma
 id|board_ahci
 )brace
 comma
+multiline_comment|/* ICH6M */
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+l_int|0x27c1
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|board_ahci
+)brace
+comma
+multiline_comment|/* ICH7 */
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+l_int|0x27c5
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|board_ahci
+)brace
+comma
+multiline_comment|/* ICH7M */
 (brace
 )brace
 multiline_comment|/* terminate list */
@@ -2346,47 +2382,6 @@ id|ahci_fill_sg
 c_func
 (paren
 id|qc
-)paren
-suffix:semicolon
-)brace
-DECL|function|ahci_dma_complete
-r_static
-r_inline
-r_void
-id|ahci_dma_complete
-(paren
-r_struct
-id|ata_port
-op_star
-id|ap
-comma
-r_struct
-id|ata_queued_cmd
-op_star
-id|qc
-comma
-r_int
-id|have_err
-)paren
-(brace
-multiline_comment|/* get drive status; clear intr; complete txn */
-id|ata_qc_complete
-c_func
-(paren
-id|ata_qc_from_tag
-c_func
-(paren
-id|ap
-comma
-id|ap-&gt;active_tag
-)paren
-comma
-id|have_err
-ques
-c_cond
-id|ATA_ERR
-suffix:colon
-l_int|0
 )paren
 suffix:semicolon
 )brace

@@ -7606,6 +7606,7 @@ id|right
 suffix:semicolon
 )brace
 DECL|function|es_rec_set_recmask
+r_static
 r_int
 id|es_rec_set_recmask
 c_func

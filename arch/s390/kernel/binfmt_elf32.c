@@ -521,18 +521,20 @@ DECL|macro|MODULE_DESCRIPTION
 macro_line|#undef MODULE_DESCRIPTION
 DECL|macro|MODULE_AUTHOR
 macro_line|#undef MODULE_AUTHOR
-DECL|macro|jiffies_to_timeval
-mdefine_line|#define jiffies_to_timeval jiffies_to_compat_timeval
+DECL|macro|cputime_to_timeval
+macro_line|#undef cputime_to_timeval
+DECL|macro|cputime_to_timeval
+mdefine_line|#define cputime_to_timeval cputime_to_compat_timeval
 r_static
 id|__inline__
 r_void
-DECL|function|jiffies_to_compat_timeval
-id|jiffies_to_compat_timeval
+DECL|function|cputime_to_compat_timeval
+id|cputime_to_compat_timeval
 c_func
 (paren
-r_int
-r_int
-id|jiffies
+r_const
+id|cputime_t
+id|cputime
 comma
 r_struct
 id|compat_timeval
@@ -542,23 +544,15 @@ id|value
 (brace
 id|value-&gt;tv_usec
 op_assign
-(paren
-id|jiffies
+id|cputime
 op_mod
-id|HZ
-)paren
-op_star
-(paren
-l_int|1000000L
-op_div
-id|HZ
-)paren
+l_int|1000000
 suffix:semicolon
 id|value-&gt;tv_sec
 op_assign
-id|jiffies
+id|cputime
 op_div
-id|HZ
+l_int|1000000
 suffix:semicolon
 )brace
 macro_line|#include &quot;../../../fs/binfmt_elf.c&quot;

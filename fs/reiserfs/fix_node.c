@@ -2012,13 +2012,22 @@ dot
 id|vi_index
 op_ne
 id|TYPE_DIRENTRY
+op_logical_and
+id|vn-&gt;vn_vi
+(braket
+id|split_item_num
+)braket
+dot
+id|vi_index
+op_ne
+id|TYPE_INDIRECT
 )paren
 id|reiserfs_warning
 (paren
 id|tb-&gt;tb_sb
 comma
 l_string|&quot;vs-8115: get_num_ver: not &quot;
-l_string|&quot;directory item&quot;
+l_string|&quot;directory or indirect item&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2783,6 +2792,7 @@ mdefine_line|#define SET_PAR_SHIFT_LEFT &bslash;&n;if (h)&bslash;&n;{&bslash;&n;
 DECL|macro|SET_PAR_SHIFT_RIGHT
 mdefine_line|#define SET_PAR_SHIFT_RIGHT &bslash;&n;if (h)&bslash;&n;{&bslash;&n;   int to_r;&bslash;&n;   &bslash;&n;   to_r = (MAX_NR_KEY(Sh)+1 - rpar + vn-&gt;vn_nr_item + 1) / 2 - (MAX_NR_KEY(Sh) + 1 - rpar);&bslash;&n;   &bslash;&n;   set_parameters (tb, h, 0, to_r, rnver, NULL, -1, -1);&bslash;&n;}&bslash;&n;else &bslash;&n;{&bslash;&n;   if (rset==RIGHT_SHIFT_FLOW)&bslash;&n;     set_parameters (tb, h, 0, rpar, rnver, snum012+rset,&bslash;&n;&t;&t;  -1, tb-&gt;rbytes);&bslash;&n;   else&bslash;&n;     set_parameters (tb, h, 0, rpar - (tb-&gt;rbytes!=-1), rnver, snum012+rset,&bslash;&n;&t;&t;  -1, -1);&bslash;&n;}
 DECL|function|free_buffers_in_tb
+r_static
 r_void
 id|free_buffers_in_tb
 (paren

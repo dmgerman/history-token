@@ -61,12 +61,12 @@ r_struct
 id|idr
 id|posix_timers_id
 suffix:semicolon
-DECL|variable|idr_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|idr_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Just because the timer is not in the timer list does NOT mean it is&n; * inactive.  It could be in the &quot;fire&quot; routine getting a new expire time.&n; */
 DECL|macro|TIMER_INACTIVE

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: scan.c,v 1.112 2004/09/12 09:56:13 gleixner Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: scan.c,v 1.115 2004/11/17 12:59:08 dedekind Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -130,7 +130,7 @@ r_struct
 id|jffs2_raw_inode
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_JFFS2_FS_NAND
+macro_line|#if defined CONFIG_JFFS2_FS_NAND || defined CONFIG_JFFS2_FS_NOR_ECC
 r_if
 c_cond
 (paren
@@ -529,7 +529,7 @@ r_case
 id|BLK_STATE_PARTDIRTY
 suffix:colon
 multiline_comment|/* Some data, but not full. Dirty list. */
-multiline_comment|/* Except that we want to remember the block with most free space,&n;                           and stick it in the &squot;nextblock&squot; position to start writing to it.&n;                           Later when we do snapshots, this must be the most recent block,&n;                           not the one with most free space.&n;                        */
+multiline_comment|/* We want to remember the block with most free space&n;                           and stick it in the &squot;nextblock&squot; position to start writing to it. */
 r_if
 c_cond
 (paren
@@ -809,7 +809,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_JFFS2_FS_NAND
+macro_line|#if defined CONFIG_JFFS2_FS_NAND || defined CONFIG_JFFS2_FS_NOR_ECC
 r_if
 c_cond
 (paren

@@ -1,5 +1,5 @@
 multiline_comment|/* Overhauled routines for dealing with different mmap regions of flash */
-multiline_comment|/* $Id: map.h,v 1.45 2004/09/21 14:31:17 bjd Exp $ */
+multiline_comment|/* $Id: map.h,v 1.46 2005/01/05 17:09:44 dwmw2 Exp $ */
 macro_line|#ifndef __LINUX_MTD_MAP_H__
 DECL|macro|__LINUX_MTD_MAP_H__
 mdefine_line|#define __LINUX_MTD_MAP_H__
@@ -1053,6 +1053,8 @@ op_or_assign
 id|buf
 (braket
 id|i
+op_minus
+id|start
 )braket
 op_lshift
 id|bitpos

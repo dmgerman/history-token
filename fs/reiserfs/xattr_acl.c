@@ -10,6 +10,25 @@ macro_line|#include &lt;linux/reiserfs_acl.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_static
 r_int
+id|reiserfs_set_acl
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_int
+id|type
+comma
+r_struct
+id|posix_acl
+op_star
+id|acl
+)paren
+suffix:semicolon
+r_static
+r_int
 DECL|function|xattr_set_acl
 id|xattr_set_acl
 c_func
@@ -1178,6 +1197,7 @@ id|acl
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Inode operation set_posix_acl().&n; *&n; * inode-&gt;i_sem: down&n; * BKL held [before 2.5.x]&n; */
+r_static
 r_int
 DECL|function|reiserfs_set_acl
 id|reiserfs_set_acl

@@ -248,12 +248,12 @@ comma
 dot
 id|upper_margin
 op_assign
-l_int|39
+l_int|33
 comma
 dot
 id|lower_margin
 op_assign
-l_int|8
+l_int|10
 comma
 dot
 id|hsync_len

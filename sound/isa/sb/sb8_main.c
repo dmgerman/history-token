@@ -1967,6 +1967,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; *&n; */
 DECL|function|snd_sb8_open
+r_static
 r_int
 id|snd_sb8_open
 c_func
@@ -2171,6 +2172,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_sb8_close
+r_static
 r_int
 id|snd_sb8_close
 c_func

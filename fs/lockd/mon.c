@@ -18,7 +18,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
+DECL|variable|nsm_program
+r_static
 r_struct
 id|rpc_program
 id|nsm_program
@@ -965,6 +966,7 @@ id|rpc_stat
 id|nsm_stats
 suffix:semicolon
 DECL|variable|nsm_program
+r_static
 r_struct
 id|rpc_program
 id|nsm_program

@@ -3,12 +3,6 @@ macro_line|#ifndef _PPC_SECTIONS_H
 DECL|macro|_PPC_SECTIONS_H
 mdefine_line|#define _PPC_SECTIONS_H
 macro_line|#include &lt;asm-generic/sections.h&gt;
-r_extern
-r_char
-id|_end
-(braket
-)braket
-suffix:semicolon
 DECL|macro|__pmac
 mdefine_line|#define __pmac __attribute__ ((__section__ (&quot;.pmac.text&quot;)))
 DECL|macro|__pmacdata

@@ -1117,9 +1117,9 @@ suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;
 singleline_comment|//CONFIG_BEFS_DEBUG
 )brace
+macro_line|#if 0
 multiline_comment|/* unused */
 r_void
-DECL|function|befs_dump_small_data
 id|befs_dump_small_data
 c_func
 (paren
@@ -1137,7 +1137,6 @@ id|sd
 )brace
 multiline_comment|/* unused */
 r_void
-DECL|function|befs_dump_run
 id|befs_dump_run
 c_func
 (paren
@@ -1179,6 +1178,7 @@ suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;
 singleline_comment|//CONFIG_BEFS_DEBUG
 )brace
+macro_line|#endif  /*  0  */
 r_void
 DECL|function|befs_dump_index_entry
 id|befs_dump_index_entry

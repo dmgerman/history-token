@@ -3,7 +3,6 @@ macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;sys/ptrace.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &quot;ptproxy.h&quot;
 macro_line|#include &quot;sysdep.h&quot;
 macro_line|#include &quot;wait.h&quot;

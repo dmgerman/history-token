@@ -11030,6 +11030,10 @@ id|searchp-&gt;spinlock
 suffix:semicolon
 id|next
 suffix:colon
+id|cond_resched
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 id|check_irq_on

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/kernel/workqueue.c&n; *&n; * Generic mechanism for defining kernel helper threads for running&n; * arbitrary tasks in process context.&n; *&n; * Started by Ingo Molnar, Copyright (C) 2002&n; *&n; * Derived from the taskqueue/keventd code by:&n; *&n; *   David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *   Andrew Morton &lt;andrewm@uow.edu.au&gt;&n; *   Kai Petzke &lt;wpp@marie.physik.tu-berlin.de&gt;&n; *   Theodore Ts&squot;o &lt;tytso@mit.edu&gt;&n; */
+multiline_comment|/*&n; * linux/kernel/workqueue.c&n; *&n; * Generic mechanism for defining kernel helper threads for running&n; * arbitrary tasks in process context.&n; *&n; * Started by Ingo Molnar, Copyright (C) 2002&n; *&n; * Derived from the taskqueue/keventd code by:&n; *&n; *   David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *   Andrew Morton &lt;andrewm@uow.edu.au&gt;&n; *   Kai Petzke &lt;wpp@marie.physik.tu-berlin.de&gt;&n; *   Theodore Ts&squot;o &lt;tytso@mit.edu&gt;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -90,12 +90,12 @@ multiline_comment|/* Empty if single thread */
 )brace
 suffix:semicolon
 multiline_comment|/* All the per-cpu workqueues on the system, for hotplug cpu to add/remove&n;   threads to each one as cpus come/go. */
-DECL|variable|workqueue_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|workqueue_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD
@@ -678,7 +678,7 @@ c_func
 id|current
 comma
 op_minus
-l_int|10
+l_int|5
 )paren
 suffix:semicolon
 multiline_comment|/* Block and flush all signals */

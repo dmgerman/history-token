@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * mtdram - a test mtd device&n; * $Id: mtdram.c,v 1.34 2004/11/16 18:29:01 dwmw2 Exp $&n; * Author: Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * Copyright (c) 1999 Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * This code is GPL&n; *&n; */
+multiline_comment|/*&n; * mtdram - a test mtd device&n; * $Id: mtdram.c,v 1.35 2005/01/05 18:05:12 dwmw2 Exp $&n; * Author: Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * Copyright (c) 1999 Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * This code is GPL&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -31,12 +31,14 @@ id|erase_size
 op_assign
 id|CONFIG_MTDRAM_ERASE_SIZE
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|total_size
 comma
-l_string|&quot;l&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -47,12 +49,14 @@ comma
 l_string|&quot;Total device size in KiB&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|erase_size
 comma
-l_string|&quot;l&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -655,11 +659,6 @@ suffix:semicolon
 multiline_comment|/* Allocate some memory */
 id|mtd_info
 op_assign
-(paren
-r_struct
-id|mtd_info
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -807,11 +806,6 @@ suffix:semicolon
 multiline_comment|/* Allocate some memory */
 id|mtd_info
 op_assign
-(paren
-r_struct
-id|mtd_info
-op_star
-)paren
 id|kmalloc
 c_func
 (paren

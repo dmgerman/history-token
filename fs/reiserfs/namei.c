@@ -2365,7 +2365,7 @@ id|dir-&gt;i_mtime
 op_assign
 id|dir-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 r_if
 c_cond
@@ -3839,7 +3839,7 @@ id|dir-&gt;i_ctime
 op_assign
 id|dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|reiserfs_update_sd
 (paren
@@ -4209,7 +4209,7 @@ suffix:semicolon
 )brace
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|reiserfs_update_sd
 (paren
@@ -4231,7 +4231,7 @@ id|dir-&gt;i_ctime
 op_assign
 id|dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|reiserfs_update_sd
 (paren
@@ -4939,7 +4939,7 @@ suffix:semicolon
 )brace
 id|inode-&gt;i_ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|reiserfs_update_sd
 (paren
@@ -6015,7 +6015,7 @@ id|old_de.de_bh
 suffix:semicolon
 id|ctime
 op_assign
-id|CURRENT_TIME
+id|CURRENT_TIME_SEC
 suffix:semicolon
 id|old_dir-&gt;i_ctime
 op_assign

@@ -3456,7 +3456,8 @@ c_cond
 op_logical_neg
 id|pgdir
 )paren
-r_return
+r_goto
+id|out
 suffix:semicolon
 id|mm-&gt;context.huge_pgdir
 op_assign
@@ -3580,6 +3581,8 @@ comma
 id|pgdir
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|spin_unlock
 c_func
 (paren
@@ -3819,7 +3822,7 @@ op_assign
 (paren
 id|hash
 op_amp
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 )paren
 op_star
 id|HPTES_PER_GROUP
@@ -3921,7 +3924,7 @@ op_assign
 (paren
 id|hash
 op_amp
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 )paren
 op_star
 id|HPTES_PER_GROUP
@@ -4005,7 +4008,7 @@ op_assign
 op_complement
 id|hash
 op_amp
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 )paren
 op_star
 id|HPTES_PER_GROUP
@@ -4061,7 +4064,7 @@ op_assign
 (paren
 id|hash
 op_amp
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 )paren
 op_star
 id|HPTES_PER_GROUP

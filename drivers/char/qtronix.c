@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kbd_ll.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1327,10 +1326,11 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|kbd_controller_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|kbd_controller_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_int
@@ -1635,12 +1635,6 @@ singleline_comment|//&t;__aux_write_ack(AUX_ENABLE_DEV);  /* ping the mouse :) *
 r_return
 suffix:semicolon
 )brace
-id|add_mouse_randomness
-c_func
-(paren
-id|scancode
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2072,9 +2066,20 @@ op_minus
 id|i
 )paren
 (brace
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_atime
+r_struct
+id|inode
+op_star
+id|inode
 op_assign
-id|CURRENT_TIME
+id|file-&gt;f_dentry-&gt;d_inode
+suffix:semicolon
+id|inode-&gt;i_atime
+op_assign
+id|current_fs_time
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
 suffix:semicolon
 r_return
 id|count

@@ -191,6 +191,7 @@ op_star
 id|fattr
 )paren
 suffix:semicolon
+r_static
 r_int
 id|smb_proc_query_cifsunix
 c_func
@@ -6148,22 +6149,28 @@ c_cond
 id|data_off
 OG
 id|SMB_READX_MAX_PAD
+op_logical_or
+id|data_off
+OL
+l_int|0
 )paren
 (brace
 id|PARANOIA
 c_func
 (paren
-l_string|&quot;offset is larger than max pad!&bslash;n&quot;
+l_string|&quot;offset is larger than SMB_READX_MAX_PAD or negative!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|PARANOIA
 c_func
 (paren
-l_string|&quot;%d &gt; %d&bslash;n&quot;
+l_string|&quot;%d &gt; %d || %d &lt; 0&bslash;n&quot;
 comma
 id|data_off
 comma
 id|SMB_READX_MAX_PAD
+comma
+id|data_off
 )paren
 suffix:semicolon
 id|req-&gt;rq_rlen
@@ -8310,6 +8317,11 @@ r_struct
 id|smb_fattr
 op_star
 id|fattr
+comma
+r_struct
+id|super_block
+op_star
+id|sb
 )paren
 (brace
 id|smb_init_dirent
@@ -8331,7 +8343,11 @@ suffix:semicolon
 multiline_comment|/* traditional root inode number */
 id|fattr-&gt;f_mtime
 op_assign
-id|CURRENT_TIME
+id|current_fs_time
+c_func
+(paren
+id|sb
+)paren
 suffix:semicolon
 id|smb_finish_dirent
 c_func
@@ -9300,6 +9316,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|smb_decode_unix_basic
+r_static
 r_void
 id|smb_decode_unix_basic
 c_func
@@ -15537,6 +15554,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|smb_proc_query_cifsunix
 id|smb_proc_query_cifsunix

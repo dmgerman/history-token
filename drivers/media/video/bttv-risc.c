@@ -453,6 +453,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|bttv_risc_planar
 id|bttv_risc_planar
@@ -1161,6 +1162,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|bttv_risc_overlay
 id|bttv_risc_overlay
@@ -1682,6 +1684,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* ---------------------------------------------------------- */
+r_static
 r_void
 DECL|function|bttv_calc_geo
 id|bttv_calc_geo
@@ -1997,6 +2000,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+r_static
 r_void
 DECL|function|bttv_apply_geo
 id|bttv_apply_geo

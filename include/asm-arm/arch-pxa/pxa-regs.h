@@ -444,13 +444,6 @@ DECL|macro|DCMD_WIDTH4
 mdefine_line|#define DCMD_WIDTH4&t;(3 &lt;&lt; 14)&t;/* 4 byte width (Word) */
 DECL|macro|DCMD_LENGTH
 mdefine_line|#define DCMD_LENGTH&t;0x01fff&t;&t;/* length mask (max = 8K - 1) */
-multiline_comment|/* default combinations */
-DECL|macro|DCMD_RXPCDR
-mdefine_line|#define DCMD_RXPCDR&t;(DCMD_INCTRGADDR|DCMD_FLOWSRC|DCMD_BURST32|DCMD_WIDTH4)
-DECL|macro|DCMD_RXMCDR
-mdefine_line|#define DCMD_RXMCDR&t;(DCMD_INCTRGADDR|DCMD_FLOWSRC|DCMD_BURST32|DCMD_WIDTH4)
-DECL|macro|DCMD_TXPCDR
-mdefine_line|#define DCMD_TXPCDR&t;(DCMD_INCSRCADDR|DCMD_FLOWTRG|DCMD_BURST32|DCMD_WIDTH4)
 multiline_comment|/*&n; * UARTs&n; */
 multiline_comment|/* Full Function UART (FFUART) */
 DECL|macro|FFUART
@@ -2609,6 +2602,8 @@ mdefine_line|#define SSCR0_NCS&t;&t;(1 &lt;&lt; 21)&t;/* Network Clock Select */
 DECL|macro|SSCR0_EDSS
 mdefine_line|#define SSCR0_EDSS&t;&t;(1 &lt;&lt; 20)&t;/* Extended Data Size Select */
 multiline_comment|/* extra bits in PXA255, PXA26x and PXA27x SSP ports */
+DECL|macro|SSCR0_PSP
+mdefine_line|#define SSCR0_PSP&t;&t;(3 &lt;&lt; 4)&t;/* PSP - Programmable Serial Protocol */
 DECL|macro|SSCR1_TTELP
 mdefine_line|#define SSCR1_TTELP&t;&t;(1 &lt;&lt; 31)&t;/* TXD Tristate Enable Last Phase */
 DECL|macro|SSCR1_TTE

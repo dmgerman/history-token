@@ -35,11 +35,13 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* default: BIOS */
-id|MODULE_PARM
+id|module_param
 (paren
 id|trans_mode
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -62,11 +64,13 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* default: ON */
-id|MODULE_PARM
+id|module_param
 (paren
 id|auto_param
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -85,11 +89,13 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* default: OFF */
-id|MODULE_PARM
+id|module_param
 (paren
 id|disc_priv
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

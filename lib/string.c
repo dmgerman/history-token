@@ -1,7 +1,5 @@
 multiline_comment|/*&n; *  linux/lib/string.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
 multiline_comment|/*&n; * stupid library routines.. The optimized versions should generally be found&n; * as inline code in &lt;asm-xx/string.h&gt;&n; *&n; * These are buggy as well..&n; *&n; * * Fri Jun 25 1999, Ingo Oeser &lt;ioe@informatik.tu-chemnitz.de&gt;&n; * -  Added strsep() which will replace strtok() soon (because strsep() is&n; *    reentrant and should be faster). Use only strsep() in new code, please.&n; *&n; * * Sat Feb 09 2002, Jason Thomas &lt;jason@topic.com.au&gt;,&n; *                    Matthew Hawkins &lt;matt@mh.dropbear.id.au&gt;&n; * -  Kissed strtok() goodbye&n; */
-DECL|macro|IN_STRING_C
-mdefine_line|#define IN_STRING_C 1
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;

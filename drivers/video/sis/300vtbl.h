@@ -1,6 +1,6 @@
 multiline_comment|/* $XFree86$ */
 multiline_comment|/* $XdotOrg$ */
-multiline_comment|/*&n; * Register settings for SiS 300 series&n; *&n; * Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; *&n; * If distributed as part of the Linux kernel, the following license terms&n; * apply:&n; *&n; * * This program is free software; you can redistribute it and/or modify&n; * * it under the terms of the GNU General Public License as published by&n; * * the Free Software Foundation; either version 2 of the named License,&n; * * or any later version.&n; * *&n; * * This program is distributed in the hope that it will be useful,&n; * * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * * GNU General Public License for more details.&n; * *&n; * * You should have received a copy of the GNU General Public License&n; * * along with this program; if not, write to the Free Software&n; * * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Otherwise, the following license terms apply:&n; *&n; * * Redistribution and use in source and binary forms, with or without&n; * * modification, are permitted provided that the following conditions&n; * * are met:&n; * * 1) Redistributions of source code must retain the above copyright&n; * *    notice, this list of conditions and the following disclaimer.&n; * * 2) Redistributions in binary form must reproduce the above copyright&n; * *    notice, this list of conditions and the following disclaimer in the&n; * *    documentation and/or other materials provided with the distribution.&n; * * 3) The name of the author may not be used to endorse or promote products&n; * *    derived from this software without specific prior written permission.&n; * *&n; * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESSED OR&n; * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,&n; * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY&n; * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&n; * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * Author: &t;Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&n; *&n; */
+multiline_comment|/*&n; * Register settings for SiS 300 series&n; *&n; * Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; *&n; * If distributed as part of the Linux kernel, the following license terms&n; * apply:&n; *&n; * * This program is free software; you can redistribute it and/or modify&n; * * it under the terms of the GNU General Public License as published by&n; * * the Free Software Foundation; either version 2 of the named License,&n; * * or any later version.&n; * *&n; * * This program is distributed in the hope that it will be useful,&n; * * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * * GNU General Public License for more details.&n; * *&n; * * You should have received a copy of the GNU General Public License&n; * * along with this program; if not, write to the Free Software&n; * * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Otherwise, the following license terms apply:&n; *&n; * * Redistribution and use in source and binary forms, with or without&n; * * modification, are permitted provided that the following conditions&n; * * are met:&n; * * 1) Redistributions of source code must retain the above copyright&n; * *    notice, this list of conditions and the following disclaimer.&n; * * 2) Redistributions in binary form must reproduce the above copyright&n; * *    notice, this list of conditions and the following disclaimer in the&n; * *    documentation and/or other materials provided with the distribution.&n; * * 3) The name of the author may not be used to endorse or promote products&n; * *    derived from this software without specific prior written permission.&n; * *&n; * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESS OR&n; * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,&n; * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY&n; * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&n; * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * Author: &t;Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&n; *&n; */
 DECL|variable|SiS300_SModeIDTable
 r_static
 r_const
@@ -517,7 +517,7 @@ comma
 (brace
 l_int|0x31
 comma
-l_int|0x0a1b
+l_int|0x4a1b
 comma
 l_int|0x0000
 comma
@@ -541,7 +541,7 @@ multiline_comment|/* 720x480x8 */
 (brace
 l_int|0x32
 comma
-l_int|0x2a1b
+l_int|0x6a1b
 comma
 l_int|0x0000
 comma
@@ -565,7 +565,7 @@ multiline_comment|/* 720x576x8 */
 (brace
 l_int|0x33
 comma
-l_int|0x0a1d
+l_int|0x4a1d
 comma
 l_int|0x0000
 comma
@@ -589,7 +589,7 @@ multiline_comment|/* 720x480x16 */
 (brace
 l_int|0x34
 comma
-l_int|0x2a1d
+l_int|0x6a1d
 comma
 l_int|0x0000
 comma
@@ -613,7 +613,7 @@ multiline_comment|/* 720x576x16 */
 (brace
 l_int|0x35
 comma
-l_int|0x0a1f
+l_int|0x4a1f
 comma
 l_int|0x0000
 comma
@@ -637,7 +637,7 @@ multiline_comment|/* 720x480x32 */
 (brace
 l_int|0x36
 comma
-l_int|0x2a1f
+l_int|0x6a1f
 comma
 l_int|0x0000
 comma
@@ -1486,7 +1486,7 @@ multiline_comment|/* 2048x1536x16 - not in BIOS! */
 (brace
 l_int|0x70
 comma
-l_int|0x2a1b
+l_int|0x6a1b
 comma
 l_int|0x0000
 comma
@@ -1510,7 +1510,7 @@ multiline_comment|/* 800x480x8 */
 (brace
 l_int|0x71
 comma
-l_int|0x0a1b
+l_int|0x4a1b
 comma
 l_int|0x0000
 comma
@@ -1534,7 +1534,7 @@ multiline_comment|/* 1024x576x8 */
 (brace
 l_int|0x74
 comma
-l_int|0x0a1d
+l_int|0x4a1d
 comma
 l_int|0x0000
 comma
@@ -1582,7 +1582,7 @@ multiline_comment|/* 1280x720x16 */
 (brace
 l_int|0x76
 comma
-l_int|0x2a1f
+l_int|0x6a1f
 comma
 l_int|0x0000
 comma
@@ -1606,7 +1606,7 @@ multiline_comment|/* 800x480x32 */
 (brace
 l_int|0x77
 comma
-l_int|0x0a3f
+l_int|0x4a3f
 comma
 l_int|0x0000
 comma
@@ -1678,7 +1678,7 @@ multiline_comment|/* 1280x720x8 */
 (brace
 l_int|0x7a
 comma
-l_int|0x2a1d
+l_int|0x6a1d
 comma
 l_int|0x0000
 comma
@@ -1774,7 +1774,7 @@ multiline_comment|/* 1280x960x32 */
 (brace
 l_int|0x20
 comma
-l_int|0x0a1b
+l_int|0x4a1b
 comma
 l_int|0x0000
 comma
@@ -1798,7 +1798,7 @@ multiline_comment|/* 1024x600 */
 (brace
 l_int|0x21
 comma
-l_int|0x0a3d
+l_int|0x4a3d
 comma
 l_int|0x0000
 comma
@@ -1821,7 +1821,7 @@ comma
 (brace
 l_int|0x22
 comma
-l_int|0x0a7f
+l_int|0x4a7f
 comma
 l_int|0x0000
 comma
@@ -1844,7 +1844,7 @@ comma
 (brace
 l_int|0x23
 comma
-l_int|0x0a1b
+l_int|0x4a1b
 comma
 l_int|0x0000
 comma
@@ -1868,7 +1868,7 @@ multiline_comment|/* 1152x768 */
 (brace
 l_int|0x24
 comma
-l_int|0x0a3d
+l_int|0x4a3d
 comma
 l_int|0x0000
 comma
@@ -1891,7 +1891,7 @@ comma
 (brace
 l_int|0x25
 comma
-l_int|0x0a7f
+l_int|0x4a7f
 comma
 l_int|0x0000
 comma
@@ -1914,7 +1914,7 @@ comma
 (brace
 l_int|0x29
 comma
-l_int|0x0e1b
+l_int|0x4e1b
 comma
 l_int|0x0000
 comma
@@ -1938,7 +1938,7 @@ multiline_comment|/* 1152x864 */
 (brace
 l_int|0x2a
 comma
-l_int|0x0e3d
+l_int|0x4e3d
 comma
 l_int|0x0000
 comma
@@ -1961,7 +1961,7 @@ comma
 (brace
 l_int|0x2b
 comma
-l_int|0x0e7f
+l_int|0x4e7f
 comma
 l_int|0x0000
 comma
@@ -1984,7 +1984,7 @@ comma
 (brace
 l_int|0x39
 comma
-l_int|0x2a1b
+l_int|0x6a1b
 comma
 l_int|0x0000
 comma
@@ -1998,7 +1998,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x38
+l_int|0x39
 comma
 op_minus
 l_int|1
@@ -2008,7 +2008,7 @@ multiline_comment|/* 848x480 */
 (brace
 l_int|0x3b
 comma
-l_int|0x2a3d
+l_int|0x6a3d
 comma
 l_int|0x0000
 comma
@@ -2022,7 +2022,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x38
+l_int|0x39
 comma
 op_minus
 l_int|1
@@ -2031,7 +2031,7 @@ comma
 (brace
 l_int|0x3e
 comma
-l_int|0x2a7f
+l_int|0x6a7f
 comma
 l_int|0x0000
 comma
@@ -2045,7 +2045,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x38
+l_int|0x39
 comma
 op_minus
 l_int|1
@@ -2054,7 +2054,7 @@ comma
 (brace
 l_int|0x3f
 comma
-l_int|0x2a1b
+l_int|0x6a1b
 comma
 l_int|0x0000
 comma
@@ -2068,7 +2068,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x3a
+l_int|0x3b
 comma
 op_minus
 l_int|1
@@ -2078,7 +2078,7 @@ multiline_comment|/* 856x480 */
 (brace
 l_int|0x42
 comma
-l_int|0x2a3d
+l_int|0x6a3d
 comma
 l_int|0x0000
 comma
@@ -2092,7 +2092,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x3a
+l_int|0x3b
 comma
 op_minus
 l_int|1
@@ -2101,7 +2101,7 @@ comma
 (brace
 l_int|0x45
 comma
-l_int|0x2a7f
+l_int|0x6a7f
 comma
 l_int|0x0000
 comma
@@ -2115,7 +2115,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x3a
+l_int|0x3b
 comma
 op_minus
 l_int|1
@@ -2124,7 +2124,7 @@ comma
 (brace
 l_int|0x48
 comma
-l_int|0x223b
+l_int|0x6a3b
 comma
 l_int|0x0000
 comma
@@ -2138,7 +2138,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x3c
+l_int|0x3d
 comma
 op_minus
 l_int|1
@@ -2148,7 +2148,7 @@ multiline_comment|/* 1360x768 */
 (brace
 l_int|0x4b
 comma
-l_int|0x227d
+l_int|0x6a7d
 comma
 l_int|0x0000
 comma
@@ -2162,7 +2162,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x3c
+l_int|0x3d
 comma
 op_minus
 l_int|1
@@ -2171,7 +2171,7 @@ comma
 (brace
 l_int|0x4e
 comma
-l_int|0x22ff
+l_int|0x6aff
 comma
 l_int|0x0000
 comma
@@ -2185,7 +2185,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x3c
+l_int|0x3d
 comma
 op_minus
 l_int|1
@@ -2280,7 +2280,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x3d
+l_int|0x3e
 comma
 op_minus
 l_int|1
@@ -2304,7 +2304,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x3d
+l_int|0x3e
 comma
 op_minus
 l_int|1
@@ -2327,7 +2327,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x3d
+l_int|0x3e
 comma
 op_minus
 l_int|1
@@ -2336,7 +2336,7 @@ comma
 (brace
 l_int|0x5f
 comma
-l_int|0x2a1b
+l_int|0x6a1b
 comma
 l_int|0x0000
 comma
@@ -2350,7 +2350,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x3e
+l_int|0x3f
 comma
 op_minus
 l_int|1
@@ -2360,7 +2360,7 @@ multiline_comment|/* 768x576x8 */
 (brace
 l_int|0x60
 comma
-l_int|0x2a1d
+l_int|0x6a1d
 comma
 l_int|0x0000
 comma
@@ -2374,7 +2374,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x3e
+l_int|0x3f
 comma
 op_minus
 l_int|1
@@ -2384,7 +2384,7 @@ multiline_comment|/* 768x576x16 */
 (brace
 l_int|0x61
 comma
-l_int|0x2a1f
+l_int|0x6a1f
 comma
 l_int|0x0000
 comma
@@ -2398,7 +2398,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x3e
+l_int|0x3f
 comma
 op_minus
 l_int|1
@@ -2408,7 +2408,7 @@ multiline_comment|/* 768x576x32 */
 (brace
 l_int|0x67
 comma
-l_int|0x2e3b
+l_int|0x6e3b
 comma
 l_int|0x0000
 comma
@@ -2422,7 +2422,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x3f
+l_int|0x40
 comma
 op_minus
 l_int|1
@@ -2432,7 +2432,7 @@ multiline_comment|/* 1360x1024x8 (BARCO) */
 (brace
 l_int|0x6f
 comma
-l_int|0x2e7d
+l_int|0x6e7d
 comma
 l_int|0x0000
 comma
@@ -2446,7 +2446,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x3f
+l_int|0x40
 comma
 op_minus
 l_int|1
@@ -2456,7 +2456,7 @@ multiline_comment|/* 1360x1024x16 (BARCO) */
 (brace
 l_int|0x72
 comma
-l_int|0x2eff
+l_int|0x6eff
 comma
 l_int|0x0000
 comma
@@ -2470,7 +2470,7 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0x3f
+l_int|0x40
 comma
 op_minus
 l_int|1
@@ -2558,7 +2558,7 @@ l_int|0x07
 comma
 l_int|0x48
 comma
-l_int|0x00
+l_int|0x05
 comma
 l_int|0x6a
 comma
@@ -2579,7 +2579,7 @@ l_int|0x06
 comma
 l_int|0x8b
 comma
-l_int|0x00
+l_int|0x05
 comma
 l_int|0x6a
 comma
@@ -2600,7 +2600,7 @@ l_int|0x08
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x05
 comma
 l_int|0x6a
 comma
@@ -2621,7 +2621,7 @@ l_int|0x0c
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x05
 comma
 l_int|0x6a
 comma
@@ -2642,7 +2642,7 @@ l_int|0x4e
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x05
 comma
 l_int|0x6a
 comma
@@ -2663,7 +2663,7 @@ l_int|0x13
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x05
 comma
 l_int|0x6a
 comma
@@ -2768,7 +2768,7 @@ l_int|0x05
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x04
 comma
 l_int|0x2e
 comma
@@ -2789,7 +2789,7 @@ l_int|0x08
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x04
 comma
 l_int|0x2e
 comma
@@ -2810,7 +2810,7 @@ l_int|0x0a
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x04
 comma
 l_int|0x2e
 comma
@@ -2831,7 +2831,7 @@ l_int|0x10
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x04
 comma
 l_int|0x2e
 comma
@@ -2865,7 +2865,7 @@ l_int|0
 comma
 multiline_comment|/* 10 */
 (brace
-l_int|0xc04f
+l_int|0xc06f
 comma
 l_int|0x31
 comma
@@ -2873,7 +2873,7 @@ l_int|0x01
 comma
 l_int|0x06
 comma
-l_int|0x00
+l_int|0x13
 comma
 l_int|0x31
 comma
@@ -2886,7 +2886,7 @@ l_int|0
 comma
 multiline_comment|/* 11 */
 (brace
-l_int|0x004f
+l_int|0x006f
 comma
 l_int|0x32
 comma
@@ -2894,7 +2894,7 @@ l_int|0x03
 comma
 l_int|0x06
 comma
-l_int|0x00
+l_int|0x14
 comma
 l_int|0x32
 comma
@@ -2915,7 +2915,7 @@ l_int|0x05
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x06
 comma
 l_int|0x37
 comma
@@ -2999,7 +2999,7 @@ l_int|0x11
 comma
 l_int|0x8c
 comma
-l_int|0x00
+l_int|0x06
 comma
 l_int|0x37
 comma
@@ -3020,7 +3020,7 @@ l_int|0x52
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x06
 comma
 l_int|0x37
 comma
@@ -3041,7 +3041,7 @@ l_int|0x16
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x06
 comma
 l_int|0x37
 comma
@@ -3062,7 +3062,7 @@ l_int|0x4d
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x07
 comma
 l_int|0x3a
 comma
@@ -3083,7 +3083,7 @@ l_int|0x14
 comma
 l_int|0x07
 comma
-l_int|0x00
+l_int|0x07
 comma
 l_int|0x3a
 comma
@@ -3104,7 +3104,7 @@ l_int|0x17
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x07
 comma
 l_int|0x3a
 comma
@@ -3125,7 +3125,7 @@ l_int|0x98
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x07
 comma
 l_int|0x3a
 comma
@@ -3455,7 +3455,7 @@ comma
 multiline_comment|/* 2c */
 multiline_comment|/* VCLK 0x09 */
 (brace
-l_int|0x0057
+l_int|0x0077
 comma
 l_int|0x35
 comma
@@ -3463,7 +3463,7 @@ l_int|0x27
 comma
 l_int|0x08
 comma
-l_int|0x00
+l_int|0x18
 comma
 l_int|0x70
 comma
@@ -3484,7 +3484,7 @@ l_int|0x37
 comma
 l_int|0x08
 comma
-l_int|0x00
+l_int|0x18
 comma
 l_int|0x70
 comma
@@ -3505,7 +3505,7 @@ l_int|0x08
 comma
 l_int|0x08
 comma
-l_int|0x00
+l_int|0x18
 comma
 l_int|0x70
 comma
@@ -3518,7 +3518,7 @@ l_int|0
 comma
 multiline_comment|/* 2f */
 (brace
-l_int|0x0057
+l_int|0x0077
 comma
 l_int|0x38
 comma
@@ -3526,7 +3526,7 @@ l_int|0x09
 comma
 l_int|0x09
 comma
-l_int|0x00
+l_int|0x19
 comma
 l_int|0x71
 comma
@@ -3547,7 +3547,7 @@ l_int|0x38
 comma
 l_int|0x09
 comma
-l_int|0x00
+l_int|0x19
 comma
 l_int|0x71
 comma
@@ -3568,7 +3568,7 @@ l_int|0x11
 comma
 l_int|0x09
 comma
-l_int|0x00
+l_int|0x19
 comma
 l_int|0x71
 comma
@@ -3581,7 +3581,7 @@ l_int|0
 comma
 multiline_comment|/* 32 */
 (brace
-l_int|0x0057
+l_int|0x0077
 comma
 l_int|0x3b
 comma
@@ -3589,7 +3589,7 @@ l_int|0x39
 comma
 l_int|0x0a
 comma
-l_int|0x00
+l_int|0x0c
 comma
 l_int|0x75
 comma
@@ -3610,7 +3610,7 @@ l_int|0x3a
 comma
 l_int|0x0a
 comma
-l_int|0x00
+l_int|0x0c
 comma
 l_int|0x75
 comma
@@ -3631,7 +3631,7 @@ l_int|0x3b
 comma
 l_int|0x0a
 comma
-l_int|0x00
+l_int|0x0c
 comma
 l_int|0x75
 comma
@@ -3644,15 +3644,15 @@ l_int|0
 comma
 multiline_comment|/* 35 */
 (brace
-l_int|0x0047
+l_int|0x0067
 comma
-l_int|0x3e
+l_int|0x49
 comma
-l_int|0x34
+l_int|0x35
 comma
 l_int|0x06
 comma
-l_int|0x00
+l_int|0x1a
 comma
 l_int|0x29
 comma
@@ -3663,7 +3663,28 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* 36 1152x864-75Hz */
+multiline_comment|/* 36 1152x864-60Hz  */
+(brace
+l_int|0x0067
+comma
+l_int|0x3e
+comma
+l_int|0x34
+comma
+l_int|0x06
+comma
+l_int|0x1a
+comma
+l_int|0x29
+comma
+l_int|1152
+comma
+l_int|864
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* 37 1152x864-75Hz */
 (brace
 l_int|0x0047
 comma
@@ -3673,7 +3694,7 @@ l_int|0x3a
 comma
 l_int|0x06
 comma
-l_int|0x00
+l_int|0x1a
 comma
 l_int|0x29
 comma
@@ -3684,7 +3705,7 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* 37 1152x864-85Hz */
+multiline_comment|/* 38 1152x864-85Hz */
 (brace
 l_int|0x00c7
 comma
@@ -3694,7 +3715,7 @@ l_int|0x28
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x16
 comma
 l_int|0x39
 comma
@@ -3705,7 +3726,7 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* 38 848x480-38Hzi */
+multiline_comment|/* 39 848x480-38Hzi */
 (brace
 l_int|0xc067
 comma
@@ -3715,7 +3736,7 @@ l_int|0x3d
 comma
 l_int|0x0b
 comma
-l_int|0x0b
+l_int|0x16
 comma
 l_int|0x39
 comma
@@ -3726,7 +3747,7 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* 39 848x480-60Hz  */
+multiline_comment|/* 3a 848x480-60Hz  */
 (brace
 l_int|0x00c7
 comma
@@ -3736,7 +3757,7 @@ l_int|0x28
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x17
 comma
 l_int|0x3f
 comma
@@ -3747,7 +3768,7 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* 3a 856x480-38Hzi */
+multiline_comment|/* 3b 856x480-38Hzi */
 (brace
 l_int|0xc047
 comma
@@ -3757,7 +3778,7 @@ l_int|0x28
 comma
 l_int|0x00
 comma
-l_int|0x00
+l_int|0x17
 comma
 l_int|0x3f
 comma
@@ -3768,7 +3789,7 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* 3b 856x480-60Hz  */
+multiline_comment|/* 3c 856x480-60Hz  */
 (brace
 l_int|0x0067
 comma
@@ -3778,7 +3799,7 @@ l_int|0x3e
 comma
 l_int|0x0c
 comma
-l_int|0x0b
+l_int|0x1b
 comma
 l_int|0x48
 comma
@@ -3789,7 +3810,7 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* 3c 1360x768-60Hz */
+multiline_comment|/* 3d 1360x768-60Hz */
 (brace
 l_int|0x0077
 comma
@@ -3799,7 +3820,7 @@ l_int|0x3f
 comma
 l_int|0x08
 comma
-l_int|0x00
+l_int|0x08
 comma
 l_int|0x55
 comma
@@ -3810,9 +3831,9 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* 3d 1280x768-60Hz */
+multiline_comment|/* 3e 1280x768-60Hz */
 (brace
-l_int|0x004f
+l_int|0x006f
 comma
 l_int|0x47
 comma
@@ -3820,7 +3841,7 @@ l_int|0x03
 comma
 l_int|0x06
 comma
-l_int|0x00
+l_int|0x15
 comma
 l_int|0x5f
 comma
@@ -3831,7 +3852,7 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* 3e 768x576 */
+multiline_comment|/* 3f 768x576 */
 (brace
 l_int|0x0027
 comma
@@ -3841,7 +3862,7 @@ l_int|0x13
 comma
 l_int|0x08
 comma
-l_int|0x08
+l_int|0x00
 comma
 l_int|0x67
 comma
@@ -3852,7 +3873,7 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* 3f 1360x1024-59Hz (BARCO1366 only) */
+multiline_comment|/* 40 1360x1024-59Hz (BARCO1366 only) */
 (brace
 l_int|0xffff
 comma
@@ -5815,7 +5836,7 @@ l_int|0x00
 comma
 l_int|0x01
 comma
-multiline_comment|/* TW: Corrected VDE, VBE */
+multiline_comment|/* Corrected VDE, VBE */
 l_int|0x00
 )brace
 )brace
@@ -8182,7 +8203,47 @@ comma
 l_int|0x00
 )brace
 )brace
+comma
 multiline_comment|/* 0x48 */
+(brace
+(brace
+l_int|0xcd
+comma
+l_int|0x8f
+comma
+l_int|0x8f
+comma
+l_int|0x91
+comma
+l_int|0x9b
+comma
+l_int|0x1b
+comma
+l_int|0x7a
+comma
+l_int|0xff
+comma
+multiline_comment|/* 1152x864-60 */
+l_int|0x64
+comma
+l_int|0x8c
+comma
+l_int|0x5f
+comma
+l_int|0x62
+comma
+l_int|0x7b
+comma
+l_int|0x10
+comma
+l_int|0x00
+comma
+l_int|0x07
+comma
+l_int|0x41
+)brace
+)brace
+multiline_comment|/* 0x49 */
 )brace
 suffix:semicolon
 DECL|variable|SiS300_MCLKData_630
@@ -8870,15 +8931,15 @@ comma
 multiline_comment|/* 0x34 */
 multiline_comment|/* Replacement for index 0x14 for 630 (?) */
 (brace
-l_int|0xce
+l_int|0x70
 comma
-l_int|0x25
+l_int|0x28
 comma
-l_int|189
+l_int|90
 )brace
 comma
 multiline_comment|/* 0x35 */
-multiline_comment|/* Replacement for index 0x1b for 730 (and 540?) */
+multiline_comment|/* 1152x864@60 */
 (brace
 l_int|0x45
 comma
@@ -8969,18 +9030,6 @@ l_int|88
 comma
 multiline_comment|/* 0x3e */
 multiline_comment|/* 1360x768-60 */
-macro_line|#if 0
-(brace
-l_int|0x3f
-comma
-l_int|0x64
-comma
-l_int|46
-)brace
-comma
-multiline_comment|/* 0x3f */
-multiline_comment|/* 640x480-100 */
-macro_line|#endif
 (brace
 l_int|0x70
 comma
@@ -9000,7 +9049,7 @@ l_int|76
 )brace
 comma
 multiline_comment|/* 0x40 */
-multiline_comment|/* test for SiS730 */
+multiline_comment|/* test for SiS730 --- LIMIT for table (&amp;0x3f) */
 (brace
 l_int|0x15
 comma
@@ -9052,16 +9101,36 @@ comma
 multiline_comment|/* 0x45 */
 multiline_comment|/* 1280x1024-75, better clock for VGA2 */
 (brace
+l_int|0x70
+comma
+l_int|0x29
+comma
+l_int|81
+)brace
+comma
+multiline_comment|/* 0x46 */
+multiline_comment|/* unused */
+(brace
 l_int|0
 comma
 l_int|0
 comma
 l_int|0
 )brace
-multiline_comment|/* 0x46 custom (will be filled out) */
+comma
+multiline_comment|/* 0x47 custom (will be filled out) */
+(brace
+l_int|0xce
+comma
+l_int|0x25
+comma
+l_int|189
+)brace
+multiline_comment|/* 0x48 */
+multiline_comment|/* Replacement for index 0x1b for 730 (and 540?) */
 )brace
 suffix:semicolon
-macro_line|#ifndef LINUX_XF86
+macro_line|#ifdef LINUX_KERNEL
 DECL|variable|SiS300_SR07
 r_static
 id|UCHAR
@@ -9161,7 +9230,7 @@ l_int|0x00
 )brace
 )brace
 suffix:semicolon
-macro_line|#ifndef LINUX_XF86
+macro_line|#ifdef LINUX_KERNEL
 DECL|variable|SiS300_SR1F
 r_static
 id|UCHAR

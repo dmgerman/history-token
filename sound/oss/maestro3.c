@@ -674,6 +674,7 @@ id|card
 )paren
 suffix:semicolon
 DECL|variable|m3_reboot_nb
+r_static
 r_struct
 id|notifier_block
 id|m3_reboot_nb
@@ -3701,6 +3702,7 @@ l_string|&quot;set_dmac??&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|function|get_dma_pos
+r_static
 id|u32
 id|get_dma_pos
 c_func
@@ -3797,6 +3799,7 @@ l_int|16
 suffix:semicolon
 )brace
 DECL|function|get_dmaa
+r_static
 id|u32
 id|get_dmaa
 c_func
@@ -3841,6 +3844,7 @@ id|offset
 suffix:semicolon
 )brace
 DECL|function|get_dmac
+r_static
 id|u32
 id|get_dmac
 c_func
@@ -9328,6 +9332,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|m3_ac97_read
+r_static
 id|u16
 id|m3_ac97_read
 c_func
@@ -9460,6 +9465,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|m3_ac97_write
+r_static
 r_void
 id|m3_ac97_write
 c_func
@@ -9764,6 +9770,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|remote_codec_config
+r_static
 r_void
 id|remote_codec_config
 c_func
@@ -11493,6 +11500,7 @@ comma
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM
 DECL|function|alloc_dsp_suspendmem
+r_static
 r_int
 id|alloc_dsp_suspendmem
 c_func
@@ -11542,6 +11550,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|free_dsp_suspendmem
+r_static
 r_void
 id|free_dsp_suspendmem
 c_func
@@ -13184,29 +13193,35 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef M_DEBUG
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|external_amp
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|gpio_pin
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|m3_pci_driver

@@ -987,6 +987,11 @@ op_mod
 l_int|1000000
 )paren
 suffix:semicolon
+id|parisc_setup_cache_timing
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* These are in a non-obvious order, will fix when we have an iotree */
 macro_line|#if defined(CONFIG_IOSAPIC)
 id|iosapic_init

@@ -67,9 +67,17 @@ DECL|macro|flush_cache_vmap
 mdefine_line|#define flush_cache_vmap(start, end)&t;&t;flush_cache_all()
 DECL|macro|flush_cache_vunmap
 mdefine_line|#define flush_cache_vunmap(start, end)&t;&t;flush_cache_all()
-multiline_comment|/* The following value needs to be tuned and probably scaled with the&n; * cache size.&n; */
-DECL|macro|FLUSH_THRESHOLD
-mdefine_line|#define FLUSH_THRESHOLD 0x80000
+r_extern
+r_int
+id|parisc_cache_flush_threshold
+suffix:semicolon
+r_void
+id|parisc_setup_cache_timing
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_static
 r_inline
 r_void
@@ -86,16 +94,6 @@ r_int
 id|end
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
-id|flush_user_dcache_range_asm
-c_func
-(paren
-id|start
-comma
-id|end
-)paren
-suffix:semicolon
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -105,7 +103,7 @@ op_minus
 id|start
 )paren
 OL
-id|FLUSH_THRESHOLD
+id|parisc_cache_flush_threshold
 )paren
 id|flush_user_dcache_range_asm
 c_func
@@ -121,7 +119,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_static
 r_inline
@@ -139,16 +136,6 @@ r_int
 id|end
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
-id|flush_user_icache_range_asm
-c_func
-(paren
-id|start
-comma
-id|end
-)paren
-suffix:semicolon
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -158,7 +145,7 @@ op_minus
 id|start
 )paren
 OL
-id|FLUSH_THRESHOLD
+id|parisc_cache_flush_threshold
 )paren
 id|flush_user_icache_range_asm
 c_func
@@ -174,7 +161,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_extern
 r_void

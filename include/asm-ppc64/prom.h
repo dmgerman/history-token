@@ -10,10 +10,6 @@ DECL|macro|PTRUNRELOC
 mdefine_line|#define PTRUNRELOC(x)   ((typeof(x))((unsigned long)(x) + offset))
 DECL|macro|RELOC
 mdefine_line|#define RELOC(x)        (*PTRRELOC(&amp;(x)))
-DECL|macro|LONG_LSW
-mdefine_line|#define LONG_LSW(X) (((unsigned long)X) &amp; 0xffffffff)
-DECL|macro|LONG_MSW
-mdefine_line|#define LONG_MSW(X) (((unsigned long)X) &gt;&gt; 32)
 multiline_comment|/* Definitions used by the flattened device tree */
 DECL|macro|OF_DT_HEADER
 mdefine_line|#define OF_DT_HEADER&t;&t;0xd00dfeed&t;/* 4: version, 4: total size */
@@ -84,16 +80,6 @@ DECL|typedef|ihandle
 r_typedef
 id|u32
 id|ihandle
-suffix:semicolon
-DECL|typedef|phandle32
-r_typedef
-id|u32
-id|phandle32
-suffix:semicolon
-DECL|typedef|ihandle32
-r_typedef
-id|u32
-id|ihandle32
 suffix:semicolon
 DECL|struct|address_range
 r_struct
@@ -184,33 +170,6 @@ id|size
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|of_tce_table
-r_struct
-id|of_tce_table
-(brace
-DECL|member|node
-id|phandle
-id|node
-suffix:semicolon
-DECL|member|base
-r_int
-r_int
-id|base
-suffix:semicolon
-DECL|member|size
-r_int
-r_int
-id|size
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|of_tce_table
-id|of_tce_table
-(braket
-)braket
-suffix:semicolon
 DECL|struct|reg_property
 r_struct
 id|reg_property
@@ -256,53 +215,6 @@ DECL|member|size
 r_int
 r_int
 id|size
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|reg_property_pmac
-r_struct
-id|reg_property_pmac
-(brace
-DECL|member|address_hi
-r_int
-r_int
-id|address_hi
-suffix:semicolon
-DECL|member|address_lo
-r_int
-r_int
-id|address_lo
-suffix:semicolon
-DECL|member|size
-r_int
-r_int
-id|size
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|translation_property
-r_struct
-id|translation_property
-(brace
-DECL|member|virt
-r_int
-r_int
-id|virt
-suffix:semicolon
-DECL|member|size
-r_int
-r_int
-id|size
-suffix:semicolon
-DECL|member|phys
-r_int
-r_int
-id|phys
-suffix:semicolon
-DECL|member|flags
-r_int
-r_int
-id|flags
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -403,13 +315,6 @@ r_int
 id|devfn
 suffix:semicolon
 multiline_comment|/* for pci devices */
-DECL|macro|DN_STATUS_BIST_FAILED
-mdefine_line|#define DN_STATUS_BIST_FAILED (1&lt;&lt;0)
-DECL|member|status
-r_int
-id|status
-suffix:semicolon
-multiline_comment|/* Current device status (non-zero is bad) */
 DECL|member|eeh_mode
 r_int
 id|eeh_mode
@@ -866,14 +771,6 @@ r_int
 comma
 r_int
 r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|relocate_nodes
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 r_extern

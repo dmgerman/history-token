@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#ifdef CONFIG_KALLSYMS_ALL
 DECL|macro|all_var
 mdefine_line|#define all_var 1
@@ -38,6 +39,12 @@ c_func
 (paren
 (paren
 id|weak
+comma
+id|section
+c_func
+(paren
+l_string|&quot;data&quot;
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -93,29 +100,6 @@ c_func
 id|weak
 )paren
 )paren
-suffix:semicolon
-multiline_comment|/* Defined by the linker script. */
-r_extern
-r_char
-id|_stext
-(braket
-)braket
-comma
-id|_etext
-(braket
-)braket
-comma
-id|_sinittext
-(braket
-)braket
-comma
-id|_einittext
-(braket
-)braket
-comma
-id|_end
-(braket
-)braket
 suffix:semicolon
 DECL|function|is_kernel_inittext
 r_static

@@ -62,6 +62,10 @@ r_int
 r_int
 id|lpevent_count
 suffix:semicolon
+DECL|variable|ppc64_interrupt_controller
+id|u64
+id|ppc64_interrupt_controller
+suffix:semicolon
 DECL|function|show_interrupts
 r_int
 id|show_interrupts
@@ -929,10 +933,10 @@ macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
-id|lpaca-&gt;lppaca.xIntDword.xFields.xIpiCnt
+id|lpaca-&gt;lppaca.int_dword.fields.ipi_cnt
 )paren
 (brace
-id|lpaca-&gt;lppaca.xIntDword.xFields.xIpiCnt
+id|lpaca-&gt;lppaca.int_dword.fields.ipi_cnt
 op_assign
 l_int|0
 suffix:semicolon
@@ -977,10 +981,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lpaca-&gt;lppaca.xIntDword.xFields.xDecrInt
+id|lpaca-&gt;lppaca.int_dword.fields.decr_int
 )paren
 (brace
-id|lpaca-&gt;lppaca.xIntDword.xFields.xDecrInt
+id|lpaca-&gt;lppaca.int_dword.fields.decr_int
 op_assign
 l_int|0
 suffix:semicolon
@@ -1225,7 +1229,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;interrupt_controller
+id|ppc64_interrupt_controller
 op_eq
 id|IC_OPEN_PIC
 )paren

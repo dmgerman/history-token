@@ -687,8 +687,8 @@ comma
 op_increment
 id|mr-&gt;order
 )paren
-multiline_comment|/* nothing */
 suffix:semicolon
+multiline_comment|/* nothing */
 id|mr-&gt;first_seg
 op_assign
 id|mthca_alloc_mtt
@@ -1427,8 +1427,8 @@ comma
 op_increment
 id|dev-&gt;mr_table.max_mtt_order
 )paren
-multiline_comment|/* nothing */
 suffix:semicolon
+multiline_comment|/* nothing */
 id|dev-&gt;mr_table.mtt_buddy
 op_assign
 id|kmalloc

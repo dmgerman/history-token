@@ -39,6 +39,13 @@ id|NR_CPUS
 )braket
 suffix:semicolon
 multiline_comment|/* Package ID of each logical CPU */
+DECL|variable|phys_proc_id
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|phys_proc_id
+)paren
+suffix:semicolon
 multiline_comment|/* bitmap of online cpus */
 DECL|variable|cpu_online_map
 id|cpumask_t
@@ -1239,17 +1246,10 @@ DECL|variable|cpucount
 r_int
 id|cpucount
 suffix:semicolon
-r_extern
-r_int
-id|cpu_idle
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Activate a secondary processor.&n; */
 DECL|function|start_secondary
-r_int
+r_static
+r_void
 id|__init
 id|start_secondary
 c_func
@@ -1349,7 +1349,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
 id|cpu_idle
 c_func
 (paren

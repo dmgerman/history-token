@@ -399,6 +399,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* the 128+64 on these outb&squot;s is to keep the volume stable while tuning &n; * without them, the volume _will_ creep up with each frequency change&n; * and bit 4 (+16) is to keep the signal strength meter enabled&n; */
 DECL|function|send_0_byte
+r_static
 r_void
 id|send_0_byte
 c_func
@@ -506,6 +507,7 @@ l_int|1000
 suffix:semicolon
 )brace
 DECL|function|send_1_byte
+r_static
 r_void
 id|send_1_byte
 c_func
@@ -1498,12 +1500,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|io
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1514,12 +1518,14 @@ comma
 l_string|&quot;I/O address of the RadioTrack card (0x20f or 0x30f)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|radio_nr
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|function|cleanup_rtrack_module
