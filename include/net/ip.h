@@ -423,7 +423,7 @@ id|flags
 suffix:semicolon
 r_extern
 r_int
-id|generic_getfrag
+id|ip_generic_getfrag
 c_func
 (paren
 r_void
@@ -564,14 +564,9 @@ r_struct
 id|iovec
 id|iov
 (braket
-l_int|2
+l_int|1
 )braket
 suffix:semicolon
-DECL|member|n_iov
-r_int
-id|n_iov
-suffix:semicolon
-multiline_comment|/* redundant */
 DECL|member|csum
 id|u32
 id|csum
