@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/drivers/pcmcia/sa1100_sa1111.c&n; *&n; * We impl
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
