@@ -42,10 +42,6 @@ DECL|enumerator|BH_Async_Write
 id|BH_Async_Write
 comma
 multiline_comment|/* Is under end_buffer_async_write I/O */
-DECL|enumerator|BH_JBD
-id|BH_JBD
-comma
-multiline_comment|/* Has an attached ext3 journal_head */
 DECL|enumerator|BH_Boundary
 id|BH_Boundary
 comma
