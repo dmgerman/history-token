@@ -136,7 +136,6 @@ id|READ_DWORD
 c_func
 (paren
 (paren
-op_amp
 id|base
 op_plus
 id|offset
@@ -154,7 +153,6 @@ id|READ_DWORD
 c_func
 (paren
 (paren
-op_amp
 id|base
 op_plus
 id|offset
@@ -172,7 +170,6 @@ id|READ_DWORD
 c_func
 (paren
 (paren
-op_amp
 id|base
 op_plus
 id|offset
@@ -190,7 +187,6 @@ id|READ_DWORD
 c_func
 (paren
 (paren
-op_amp
 id|base
 op_plus
 id|offset
