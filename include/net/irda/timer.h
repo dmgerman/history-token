@@ -30,12 +30,12 @@ DECL|macro|MEDIABUSY_TIMEOUT
 mdefine_line|#define MEDIABUSY_TIMEOUT   (500*HZ/1000)    /* 500 msec */
 DECL|macro|SMALLBUSY_TIMEOUT
 mdefine_line|#define SMALLBUSY_TIMEOUT   (100*HZ/1000)    /* 100 msec - IrLAP 6.13.4 */
-multiline_comment|/*&n; *  Slot timer must never exceed 85 ms, and must always be at least 25 ms, &n; *  suggested to  75-85 msec by IrDA lite. This doesn&squot;t work with a lot of&n; *  devices, and other stackes uses a lot more, so it&squot;s best we do it as well&n; */
+multiline_comment|/*&n; *  Slot timer must never exceed 85 ms, and must always be at least 25 ms, &n; *  suggested to  75-85 msec by IrDA lite. This doesn&squot;t work with a lot of&n; *  devices, and other stackes uses a lot more, so it&squot;s best we do it as well&n; *  (Note : this is the default value and sysctl overides it - Jean II)&n; */
 DECL|macro|SLOT_TIMEOUT
 mdefine_line|#define SLOT_TIMEOUT            (90*HZ/1000)
-multiline_comment|/* &n; *  We set the query timeout to 100 ms and then expect the value to be &n; *  multiplied with the number of slots to product the actual timeout value&n; */
-DECL|macro|QUERY_TIMEOUT
-mdefine_line|#define QUERY_TIMEOUT           (HZ/10)       
+multiline_comment|/* &n; *  The latest discovery frame (XID) is longer due to the extra discovery&n; *  information (hints, device name...). This is its extra length.&n; *  We use that when setting the query timeout. Jean II&n; */
+DECL|macro|XIDEXTRA_TIMEOUT
+mdefine_line|#define XIDEXTRA_TIMEOUT        (34*HZ/1000)  /* 34 msec */
 DECL|macro|WATCHDOG_TIMEOUT
 mdefine_line|#define WATCHDOG_TIMEOUT        (20*HZ)       /* 20 sec */
 DECL|typedef|TIMER_CALLBACK
@@ -130,7 +130,10 @@ op_star
 id|self
 comma
 r_int
-id|timeout
+id|S
+comma
+r_int
+id|s
 )paren
 suffix:semicolon
 r_void

@@ -1424,15 +1424,15 @@ id|self-&gt;frame_sent
 op_assign
 id|FALSE
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Remember to multiply the query timeout value with&n;&t;&t;&t; * the number of slots used&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Go to reply state until end of discovery to&n;&t;&t;&t; * inhibit our own transmissions. Set the timer&n;&t;&t;&t; * to not stay forever there... Jean II&n;&t;&t;&t; */
 id|irlap_start_query_timer
 c_func
 (paren
 id|self
 comma
-id|QUERY_TIMEOUT
-op_star
 id|info-&gt;S
+comma
+id|info-&gt;s
 )paren
 suffix:semicolon
 id|irlap_next_state
@@ -1446,7 +1446,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* This is the final slot. How is it possible ?&n;&t;&t; * This would happen is both discoveries are just slightly&n;&t;&t; * offset (if they are in sync, all packets are lost).&n;&t;&t; * Most often, all the discovery requests will be received&n;&t;&t; * in QUERY state (see my comment there), except for the&n;&t;&t; * last frame that will come here.&n;&t;&t; * The big trouble when it happen is that active discovery&n;&t;&t; * doesn&squot;t happen, because nobody answer the discoveries&n;&t;&t; * frame of the other guy, so the log shows up empty.&n;&t;&t; * What should we do ?&n;&t;&t; * Not much. It&squot;s too late to answer those discovery frames,&n;&t;&t; * so we just pass the info to IrLMP who will put it in the&n;&t;&t; * log (and post an event).&n;&t;&t; * Jean II&n;&t;&t; */
+multiline_comment|/* This is the final slot. How is it possible ?&n;&t;&t; * This would happen is both discoveries are just slightly&n;&t;&t; * offset (if they are in sync, all packets are lost).&n;&t;&t; * Most often, all the discovery requests will be received&n;&t;&t; * in QUERY state (see my comment there), except for the&n;&t;&t; * last frame that will come here.&n;&t;&t; * The big trouble when it happen is that active discovery&n;&t;&t; * doesn&squot;t happen, because nobody answer the discoveries&n;&t;&t; * frame of the other guy, so the log shows up empty.&n;&t;&t; * What should we do ?&n;&t;&t; * Not much. It&squot;s too late to answer those discovery frames,&n;&t;&t; * so we just pass the info to IrLMP who will put it in the&n;&t;&t; * log (and post an event).&n;&t;&t; * Another cause would be devices that do discovery much&n;&t;&t; * slower than us, however the latest fixes should minimise&n;&t;&t; * those cases...&n;&t;&t; * Jean II&n;&t;&t; */
 id|IRDA_DEBUG
 c_func
 (paren
@@ -2199,7 +2199,7 @@ suffix:colon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|2
+l_int|0
 comma
 l_string|&quot;%s(), QUERY_TIMER_EXPIRED &lt;%ld&gt;&bslash;n&quot;
 comma
@@ -2270,6 +2270,8 @@ id|info-&gt;discovery
 suffix:semicolon
 )brace
 r_else
+(brace
+multiline_comment|/* If it&squot;s our slot, send our reply */
 r_if
 c_cond
 (paren
@@ -2314,14 +2316,20 @@ id|self-&gt;frame_sent
 op_assign
 id|TRUE
 suffix:semicolon
-id|irlap_next_state
+)brace
+multiline_comment|/* Readjust our timer to accomodate devices&n;&t;&t;&t; * doing faster or slower discovery than us...&n;&t;&t;&t; * Jean II */
+id|irlap_start_query_timer
 c_func
 (paren
 id|self
 comma
-id|LAP_REPLY
+id|info-&gt;S
+comma
+id|info-&gt;s
 )paren
 suffix:semicolon
+multiline_comment|/* Keep state */
+singleline_comment|//irlap_next_state(self, LAP_REPLY);
 )brace
 r_break
 suffix:semicolon
