@@ -200,6 +200,12 @@ r_char
 id|used
 suffix:semicolon
 multiline_comment|/* True if open */
+DECL|member|present
+r_int
+r_char
+id|present
+suffix:semicolon
+multiline_comment|/* True if not disconnected */
 DECL|member|bidir
 r_int
 r_char
@@ -246,6 +252,14 @@ c_func
 l_string|&quot;dev=0x%p&quot;
 comma
 id|usblp-&gt;dev
+)paren
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;present=%d&quot;
+comma
+id|usblp-&gt;present
 )paren
 suffix:semicolon
 id|dbg
@@ -775,6 +789,9 @@ id|usblp-&gt;dev
 op_logical_or
 op_logical_neg
 id|usblp-&gt;used
+op_logical_or
+op_logical_neg
+id|usblp-&gt;present
 )paren
 r_return
 suffix:semicolon
@@ -844,6 +861,9 @@ id|usblp-&gt;dev
 op_logical_or
 op_logical_neg
 id|usblp-&gt;used
+op_logical_or
+op_logical_neg
+id|usblp-&gt;present
 )paren
 r_return
 suffix:semicolon
@@ -1116,6 +1136,9 @@ id|usblp
 op_logical_or
 op_logical_neg
 id|usblp-&gt;dev
+op_logical_or
+op_logical_neg
+id|usblp-&gt;present
 )paren
 r_goto
 id|out
@@ -1394,7 +1417,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|usblp-&gt;dev
+id|usblp-&gt;present
 )paren
 (brace
 id|usblp_unlink_urbs
@@ -1566,7 +1589,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|usblp-&gt;dev
+id|usblp-&gt;present
 )paren
 (brace
 id|retval
@@ -2498,7 +2521,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|usblp-&gt;dev
+id|usblp-&gt;present
 )paren
 (brace
 id|up
@@ -2755,7 +2778,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|usblp-&gt;dev
+id|usblp-&gt;present
 )paren
 (brace
 id|count
@@ -2903,7 +2926,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|usblp-&gt;dev
+id|usblp-&gt;present
 )paren
 (brace
 id|count
@@ -3659,6 +3682,10 @@ id|intf
 comma
 id|usblp
 )paren
+suffix:semicolon
+id|usblp-&gt;present
+op_assign
+l_int|1
 suffix:semicolon
 r_return
 l_int|0
@@ -4493,9 +4520,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|usblp-&gt;dev
+id|usblp-&gt;present
 op_assign
-l_int|NULL
+l_int|0
 suffix:semicolon
 id|usb_set_intfdata
 (paren
@@ -4522,7 +4549,7 @@ id|usblp
 )paren
 suffix:semicolon
 r_else
-multiline_comment|/* cleanup later, on close */
+multiline_comment|/* cleanup later, on release */
 id|up
 (paren
 op_amp
