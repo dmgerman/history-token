@@ -7791,9 +7791,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|module_init
+DECL|variable|filelock_init
+id|core_initcall
 c_func
 (paren
 id|filelock_init
 )paren
+suffix:semicolon
 eof
