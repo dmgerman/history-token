@@ -3843,12 +3843,16 @@ r_if
 c_cond
 (paren
 id|rdev2-&gt;desc_nr
+op_plus
+l_int|1
 OG
 id|max_dev
 )paren
 id|max_dev
 op_assign
 id|rdev2-&gt;desc_nr
+op_plus
+l_int|1
 suffix:semicolon
 id|sb-&gt;max_dev
 op_assign
@@ -3952,6 +3956,14 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* not supported yet */
+id|sb-&gt;sb_csum
+op_assign
+id|calc_sb_1_csum
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 )brace
 DECL|variable|super_types
 r_struct
