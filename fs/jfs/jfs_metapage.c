@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_superblock.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
