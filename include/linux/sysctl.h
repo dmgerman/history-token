@@ -127,8 +127,8 @@ suffix:semicolon
 multiline_comment|/* CTL_BUS names: */
 r_enum
 (brace
-DECL|enumerator|BUS_ISA
-id|BUS_ISA
+DECL|enumerator|CTL_BUS_ISA
+id|CTL_BUS_ISA
 op_assign
 l_int|1
 multiline_comment|/* ISA */

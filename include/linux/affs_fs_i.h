@@ -102,8 +102,7 @@ id|i_ext_bh
 suffix:semicolon
 multiline_comment|/* bh of last extended block */
 DECL|member|mmu_private
-r_int
-r_int
+id|loff_t
 id|mmu_private
 suffix:semicolon
 DECL|member|i_protect

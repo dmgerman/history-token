@@ -7607,8 +7607,7 @@ id|get_block_t
 op_star
 id|get_block
 comma
-r_int
-r_int
+id|loff_t
 op_star
 id|bytes
 )paren
