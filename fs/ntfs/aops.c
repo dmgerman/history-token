@@ -1,4 +1,4 @@
-multiline_comment|/**&n; * aops.c - NTFS kernel address space operations and page cache handling.&n; * &t;    Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001,2002 Anton Altaparmakov.&n; * Copyright (c) 2002 Richard Russon.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/**&n; * aops.c - NTFS kernel address space operations and page cache handling.&n; * &t;    Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -354,13 +354,7 @@ id|rec_size
 suffix:semicolon
 id|rec_size
 op_assign
-id|ni
-op_member_access_from_pointer
-id|_IDM
-c_func
-(paren
-id|index_block_size
-)paren
+id|ni-&gt;itype.index.block_size
 suffix:semicolon
 id|recs
 op_assign
@@ -454,13 +448,7 @@ id|page-&gt;index
 op_lshift
 id|PAGE_CACHE_SHIFT
 op_rshift
-id|ni
-op_member_access_from_pointer
-id|_IDM
-c_func
-(paren
-id|index_block_size_bits
-)paren
+id|ni-&gt;itype.index.block_size_bits
 )paren
 op_plus
 id|i
@@ -1501,13 +1489,7 @@ suffix:semicolon
 r_else
 id|base_ni
 op_assign
-id|ni
-op_member_access_from_pointer
-id|_INE
-c_func
-(paren
-id|base_ntfs_ino
-)paren
+id|ni-&gt;ext.base_ntfs_ino
 suffix:semicolon
 multiline_comment|/* Map, pin, and lock the mft record. */
 id|mrec
@@ -1625,13 +1607,7 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-id|ctx-&gt;attr
-op_member_access_from_pointer
-id|_ARA
-c_func
-(paren
-id|value_length
-)paren
+id|ctx-&gt;attr-&gt;data.resident.value_length
 )paren
 suffix:semicolon
 id|addr
@@ -1708,13 +1684,7 @@ op_plus
 id|le16_to_cpu
 c_func
 (paren
-id|ctx-&gt;attr
-op_member_access_from_pointer
-id|_ARA
-c_func
-(paren
-id|value_offset
-)paren
+id|ctx-&gt;attr-&gt;data.resident.value_offset
 )paren
 comma
 id|bytes
@@ -3230,13 +3200,7 @@ suffix:semicolon
 r_else
 id|base_ni
 op_assign
-id|ni
-op_member_access_from_pointer
-id|_INE
-c_func
-(paren
-id|base_ntfs_ino
-)paren
+id|ni-&gt;ext.base_ntfs_ino
 suffix:semicolon
 multiline_comment|/* Map, pin, and lock the mft record. */
 id|m
@@ -3362,13 +3326,7 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-id|ctx-&gt;attr
-op_member_access_from_pointer
-id|_ARA
-c_func
-(paren
-id|value_length
-)paren
+id|ctx-&gt;attr-&gt;data.resident.value_length
 )paren
 suffix:semicolon
 r_if
@@ -3484,13 +3442,7 @@ op_plus
 id|le16_to_cpu
 c_func
 (paren
-id|ctx-&gt;attr
-op_member_access_from_pointer
-id|_ARA
-c_func
-(paren
-id|value_offset
-)paren
+id|ctx-&gt;attr-&gt;data.resident.value_offset
 )paren
 op_plus
 id|attr_pos
@@ -5638,13 +5590,7 @@ suffix:semicolon
 r_else
 id|base_ni
 op_assign
-id|ni
-op_member_access_from_pointer
-id|_INE
-c_func
-(paren
-id|base_ntfs_ino
-)paren
+id|ni-&gt;ext.base_ntfs_ino
 suffix:semicolon
 multiline_comment|/* Map, pin, and lock the mft record. */
 id|m
@@ -5770,13 +5716,7 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-id|ctx-&gt;attr
-op_member_access_from_pointer
-id|_ARA
-c_func
-(paren
-id|value_length
-)paren
+id|ctx-&gt;attr-&gt;data.resident.value_length
 )paren
 suffix:semicolon
 r_if
@@ -5880,13 +5820,7 @@ op_plus
 id|le16_to_cpu
 c_func
 (paren
-id|ctx-&gt;attr
-op_member_access_from_pointer
-id|_ARA
-c_func
-(paren
-id|value_offset
-)paren
+id|ctx-&gt;attr-&gt;data.resident.value_offset
 )paren
 op_plus
 id|attr_pos
