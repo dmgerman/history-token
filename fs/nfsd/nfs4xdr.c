@@ -8595,9 +8595,7 @@ c_func
 id|dentry
 )paren
 )paren
-(brace
-id|nfserr
-op_assign
+r_return
 id|nfserrno
 c_func
 (paren
@@ -8608,10 +8606,6 @@ id|dentry
 )paren
 )paren
 suffix:semicolon
-r_return
-id|nfserr
-suffix:semicolon
-)brace
 id|exp_get
 c_func
 (paren
@@ -8645,24 +8639,12 @@ id|exp
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * -EAGAIN is the only error returned from&n;&t;&t; * nfsd_cross_mnt() and it indicates that an&n;&t;&t; * up-call has  been initiated to fill in the export&n;&t;&t; * options on exp.  When the answer comes back,&n;&t;&t; * this call will be retried.&n;&t;&t; */
-id|dput
-c_func
-(paren
-id|dentry
-)paren
-suffix:semicolon
-id|exp_put
-c_func
-(paren
-id|exp
-)paren
-suffix:semicolon
 id|nfserr
 op_assign
 id|nfserr_dropit
 suffix:semicolon
-r_return
-id|nfserr
+r_goto
+id|out_put
 suffix:semicolon
 )brace
 )brace
@@ -8686,6 +8668,8 @@ comma
 id|cd-&gt;rd_rqstp
 )paren
 suffix:semicolon
+id|out_put
+suffix:colon
 id|dput
 c_func
 (paren
