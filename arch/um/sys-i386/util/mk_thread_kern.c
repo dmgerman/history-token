@@ -1,3 +1,4 @@
+macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;linux/stddef.h&quot;
 macro_line|#include &quot;linux/sched.h&quot;
 r_extern
@@ -79,6 +80,7 @@ id|arch.debugregs
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MODE_TT
 id|print_constant
 c_func
 (paren
@@ -93,6 +95,7 @@ id|mode.tt.extern_pid
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|print_tail
 c_func
 (paren
