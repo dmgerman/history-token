@@ -2342,6 +2342,10 @@ op_logical_or
 id|boot_cpu_data.cpu_type
 op_eq
 id|pcxw2
+op_logical_or
+id|boot_cpu_data.cpu_type
+op_eq
+id|mako
 )paren
 (brace
 id|perf_processor_interface
@@ -2354,6 +2358,10 @@ c_cond
 id|boot_cpu_data.cpu_type
 op_eq
 id|pcxw2
+op_logical_or
+id|boot_cpu_data.cpu_type
+op_eq
+id|mako
 )paren
 id|bitmask_array
 op_assign

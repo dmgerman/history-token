@@ -1026,6 +1026,17 @@ id|ha-&gt;host_no
 )paren
 suffix:semicolon
 )paren
+id|qla_printk
+c_func
+(paren
+id|KERN_WARNING
+comma
+id|ha
+comma
+l_string|&quot;Mailbox command timeout occured. Scheduling ISP &quot;
+l_string|&quot;abort.&bslash;n&quot;
+)paren
+suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -1085,6 +1096,17 @@ id|ha-&gt;host_no
 )paren
 suffix:semicolon
 )paren
+id|qla_printk
+c_func
+(paren
+id|KERN_WARNING
+comma
+id|ha
+comma
+l_string|&quot;Mailbox command timeout occured. Issuing ISP &quot;
+l_string|&quot;abort.&bslash;n&quot;
+)paren
+suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -3789,7 +3811,6 @@ op_eq
 id|FCS_DEVICE_LOST
 )paren
 (brace
-multiline_comment|/* v2.19.8 Ignore abort request if port is down */
 r_return
 l_int|1
 suffix:semicolon
@@ -4133,6 +4154,17 @@ op_ne
 id|QLA_SUCCESS
 )paren
 (brace
+id|qla_printk
+c_func
+(paren
+id|KERN_WARNING
+comma
+id|ha
+comma
+l_string|&quot;Failed Abort Device Mailbox command. Scheduling ISP &quot;
+l_string|&quot;abort.&bslash;n&quot;
+)paren
+suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -6065,7 +6097,7 @@ id|scsi_qla_host_t
 op_star
 id|ha
 comma
-r_uint8
+r_uint16
 id|loop_id
 comma
 id|link_stat_t

@@ -2473,6 +2473,13 @@ id|entries
 )paren
 suffix:semicolon
 macro_line|#endif
+r_void
+id|set_firmware_width
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_int
 id|pdc_do_firm_test_reset
 c_func

@@ -828,6 +828,16 @@ c_func
 id|iodesc
 )paren
 suffix:semicolon
+id|qla_printk
+c_func
+(paren
+id|KERN_WARNING
+comma
+id|iodesc-&gt;ha
+comma
+l_string|&quot;IO descriptor timeout. Scheduling ISP abort.&bslash;n&quot;
+)paren
+suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -1141,7 +1151,7 @@ suffix:semicolon
 r_else
 id|ha-&gt;req_q_cnt
 op_assign
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 op_minus
 (paren
 id|ha-&gt;req_ring_index

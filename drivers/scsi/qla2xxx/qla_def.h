@@ -170,6 +170,12 @@ DECL|macro|RD_REG_WORD
 mdefine_line|#define RD_REG_WORD(addr)&t;&t;readw(addr)
 DECL|macro|RD_REG_DWORD
 mdefine_line|#define RD_REG_DWORD(addr)&t;&t;readl(addr)
+DECL|macro|RD_REG_BYTE_RELAXED
+mdefine_line|#define RD_REG_BYTE_RELAXED(addr)&t;readb_relaxed(addr)
+DECL|macro|RD_REG_WORD_RELAXED
+mdefine_line|#define RD_REG_WORD_RELAXED(addr)&t;readw_relaxed(addr)
+DECL|macro|RD_REG_DWORD_RELAXED
+mdefine_line|#define RD_REG_DWORD_RELAXED(addr)&t;readl_relaxed(addr)
 DECL|macro|WRT_REG_BYTE
 mdefine_line|#define WRT_REG_BYTE(addr, data)&t;writeb(data,addr)
 DECL|macro|WRT_REG_WORD
@@ -236,25 +242,14 @@ multiline_comment|/* Maximum outstanding commands in ISP queues (1-65535) */
 DECL|macro|MAX_OUTSTANDING_COMMANDS
 mdefine_line|#define MAX_OUTSTANDING_COMMANDS&t;1024
 multiline_comment|/* ISP request and response entry counts (37-65535) */
-DECL|macro|REQUEST_ENTRY_CNT
-mdefine_line|#define REQUEST_ENTRY_CNT&t;&t;2048&t;/* Number of request entries. */
+DECL|macro|REQUEST_ENTRY_CNT_2100
+mdefine_line|#define REQUEST_ENTRY_CNT_2100&t;&t;128&t;/* Number of request entries. */
+DECL|macro|REQUEST_ENTRY_CNT_2200
+mdefine_line|#define REQUEST_ENTRY_CNT_2200&t;&t;2048&t;/* Number of request entries. */
 DECL|macro|RESPONSE_ENTRY_CNT_2100
 mdefine_line|#define RESPONSE_ENTRY_CNT_2100&t;&t;64&t;/* Number of response entries.*/
 DECL|macro|RESPONSE_ENTRY_CNT_2300
 mdefine_line|#define RESPONSE_ENTRY_CNT_2300&t;&t;512&t;/* Number of response entries.*/
-multiline_comment|/* Calculations for SG segments */
-DECL|macro|SEGS_PER_REQUEST_32
-mdefine_line|#define SEGS_PER_REQUEST_32&t;3 
-DECL|macro|SEGS_PER_CONT_32
-mdefine_line|#define SEGS_PER_CONT_32&t;7
-DECL|macro|SG_SEGMENTS_32
-mdefine_line|#define SG_SEGMENTS_32 (SEGS_PER_REQUEST_32 + &bslash;&n;    (SEGS_PER_CONT_32 * (REQUEST_ENTRY_CNT - 2)))     
-DECL|macro|SEGS_PER_REQUEST_64
-mdefine_line|#define SEGS_PER_REQUEST_64&t;2 
-DECL|macro|SEGS_PER_CONT_64
-mdefine_line|#define SEGS_PER_CONT_64&t;5
-DECL|macro|SG_SEGMENTS_64
-mdefine_line|#define SG_SEGMENTS_64 (SEGS_PER_REQUEST_64 + &bslash;&n;    (SEGS_PER_CONT_64 * (REQUEST_ENTRY_CNT - 2)))     
 multiline_comment|/*&n; * SCSI Request Block &n; */
 DECL|struct|srb
 r_typedef
@@ -432,7 +427,9 @@ mdefine_line|#define SRB_BUSY&t;&t;BIT_8&t;/* Command is in busy retry state */
 DECL|macro|SRB_FO_CANCEL
 mdefine_line|#define SRB_FO_CANCEL&t;&t;BIT_9&t;/* Command don&squot;t need to do failover */
 DECL|macro|SRB_IOCTL
-mdefine_line|#define&t;SRB_IOCTL&t;&t;BIT_10&t;/* IOCTL command. */
+mdefine_line|#define SRB_IOCTL&t;&t;BIT_10&t;/* IOCTL command. */
+DECL|macro|SRB_TAPE
+mdefine_line|#define SRB_TAPE&t;&t;BIT_11&t;/* FCP2 (Tape) command. */
 multiline_comment|/*&n; * SRB state definitions&n; */
 DECL|macro|SRB_FREE_STATE
 mdefine_line|#define SRB_FREE_STATE&t;&t;0&t;/*   returned back */
@@ -4552,12 +4549,6 @@ DECL|macro|RFT_ID_SNS_CMD_SIZE
 mdefine_line|#define&t;RFT_ID_SNS_CMD_SIZE&t;60
 DECL|macro|RFT_ID_SNS_DATA_SIZE
 mdefine_line|#define&t;RFT_ID_SNS_DATA_SIZE&t;16
-DECL|macro|RFF_ID_SNS_SCMD_LEN
-mdefine_line|#define&t;RFF_ID_SNS_SCMD_LEN&t;8
-DECL|macro|RFF_ID_SNS_CMD_SIZE
-mdefine_line|#define&t;RFF_ID_SNS_CMD_SIZE&t;32
-DECL|macro|RFF_ID_SNS_DATA_SIZE
-mdefine_line|#define&t;RFF_ID_SNS_DATA_SIZE&t;16
 DECL|macro|RNN_ID_SNS_SCMD_LEN
 mdefine_line|#define&t;RNN_ID_SNS_SCMD_LEN&t;10
 DECL|macro|RNN_ID_SNS_CMD_SIZE
@@ -4647,13 +4638,6 @@ r_uint8
 id|rft_data
 (braket
 id|RFT_ID_SNS_DATA_SIZE
-)braket
-suffix:semicolon
-DECL|member|rff_data
-r_uint8
-id|rff_data
-(braket
-id|RFF_ID_SNS_DATA_SIZE
 )braket
 suffix:semicolon
 DECL|member|rnn_data
@@ -5106,6 +5090,10 @@ r_uint16
 id|req_q_cnt
 suffix:semicolon
 multiline_comment|/* Number of available entries. */
+DECL|member|request_q_length
+r_uint16
+id|request_q_length
+suffix:semicolon
 DECL|member|response_dma
 id|dma_addr_t
 id|response_dma
@@ -5808,14 +5796,6 @@ suffix:semicolon
 DECL|member|nvram_version
 r_uint8
 id|nvram_version
-suffix:semicolon
-DECL|member|optrom_major
-r_uint8
-id|optrom_major
-suffix:semicolon
-DECL|member|optrom_minor
-r_uint8
-id|optrom_minor
 suffix:semicolon
 DECL|member|isp_abort_cnt
 r_uint32

@@ -14523,21 +14523,21 @@ multiline_comment|/* 0x05f0 - 0x05ff */
 (brace
 l_int|0x0600
 comma
-l_int|0x0ff0
+l_int|0x0fe0
 comma
 id|pcxl
 )brace
 comma
-multiline_comment|/* 0x0600 - 0x060f */
+multiline_comment|/* 0x0600 - 0x061f */
 (brace
-l_int|0x0610
+l_int|0x0880
 comma
 l_int|0x0ff0
 comma
-id|pcxl
+id|mako
 )brace
 comma
-multiline_comment|/* 0x0610 - 0x061f */
+multiline_comment|/* 0x0880 - 0x088f */
 (brace
 l_int|0x0000
 comma
@@ -14654,6 +14654,15 @@ id|pcxw2
 )braket
 (brace
 l_string|&quot;PA8700 (PCX-W2)&quot;
+comma
+l_string|&quot;2.0&quot;
+)brace
+comma
+(braket
+id|mako
+)braket
+(brace
+l_string|&quot;PA8800 (MAKO)&quot;
 comma
 l_string|&quot;2.0&quot;
 )brace

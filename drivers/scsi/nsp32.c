@@ -3354,7 +3354,7 @@ c_cond
 (paren
 id|newid
 op_ge
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|data-&gt;lunt
@@ -3362,7 +3362,7 @@ id|data-&gt;lunt
 op_logical_or
 id|newlun
 op_ge
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|data-&gt;lunt
@@ -6231,7 +6231,7 @@ l_int|0
 suffix:semicolon
 id|id
 OL
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|data-&gt;target
@@ -6413,7 +6413,7 @@ suffix:semicolon
 )brace
 id|thislength
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|thislength
@@ -9665,7 +9665,7 @@ id|nsp32_sync_table_40M
 suffix:semicolon
 id|data-&gt;syncnum
 op_assign
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|nsp32_sync_table_40M
@@ -9683,7 +9683,7 @@ id|nsp32_sync_table_20M
 suffix:semicolon
 id|data-&gt;syncnum
 op_assign
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|nsp32_sync_table_20M
@@ -9701,7 +9701,7 @@ id|nsp32_sync_table_pci
 suffix:semicolon
 id|data-&gt;syncnum
 op_assign
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|nsp32_sync_table_pci
@@ -9730,7 +9730,7 @@ id|nsp32_sync_table_40M
 suffix:semicolon
 id|data-&gt;syncnum
 op_assign
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|nsp32_sync_table_40M
@@ -9848,7 +9848,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|data-&gt;lunt
@@ -9867,7 +9867,7 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|data-&gt;lunt
@@ -9885,7 +9885,7 @@ id|offset
 op_assign
 id|i
 op_star
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|data-&gt;lunt
@@ -9974,7 +9974,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|data-&gt;target
@@ -10658,7 +10658,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|data-&gt;target

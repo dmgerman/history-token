@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  sata_vsc.c - Vitesse VSC7174 4 port DPA SATA&n; *&n; *  Copyright 2004 SGI&n; *&n; *  Bits from Jeff Garzik, Copyright RedHat, Inc.&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; *  for more details.&n; */
+multiline_comment|/*&n; *  sata_vsc.c - Vitesse VSC7174 4 port DPA SATA&n; *&n; *  Maintained by:  Jeremy Higdon @ SGI&n; * &t;&t;    Please ALWAYS copy linux-ide@vger.kernel.org&n; *&t;&t;    on emails.&n; *&n; *  Copyright 2004 SGI&n; *&n; *  Bits from Jeff Garzik, Copyright RedHat, Inc.&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; *  for more details.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;

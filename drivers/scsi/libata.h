@@ -137,17 +137,13 @@ id|tf
 suffix:semicolon
 r_extern
 r_void
-id|ata_thread_wake
+id|atapi_start
 c_func
 (paren
 r_struct
-id|ata_port
+id|ata_queued_cmd
 op_star
-id|ap
-comma
-r_int
-r_int
-id|thr_state
+id|qc
 )paren
 suffix:semicolon
 multiline_comment|/* libata-scsi.c */

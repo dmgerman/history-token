@@ -69,7 +69,9 @@ DECL|macro|BIT_31
 mdefine_line|#define BIT_31&t;0x80000000
 macro_line|#if MEMORY_MAPPED_IO
 DECL|macro|RD_REG_WORD
-mdefine_line|#define RD_REG_WORD(addr)&t;&t;readw(addr)
+mdefine_line|#define RD_REG_WORD(addr)&t;&t;readw_relaxed(addr)
+DECL|macro|RD_REG_WORD_dmasync
+mdefine_line|#define RD_REG_WORD_dmasync(addr)&t;readw(addr)
 DECL|macro|WRT_REG_WORD
 mdefine_line|#define WRT_REG_WORD(addr, data)&t;writew(data, addr)
 macro_line|#else&t;&t;&t;&t;/* MEMORY_MAPPED_IO */

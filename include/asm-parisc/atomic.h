@@ -6,39 +6,95 @@ macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/* Copyright (C) 2000 Philipp Rumpf &lt;prumpf@tux.org&gt;.  */
 multiline_comment|/*&n; * Atomic operations that C can&squot;t guarantee us.  Useful for&n; * resource counting etc..&n; *&n; * And probably incredibly slow on parisc.  OTOH, we don&squot;t&n; * have to write any serious assembly.   prumpf&n; */
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* Use an array of spinlocks for our atomic_ts.&n;** Hash function to index into a different SPINLOCK.&n;** Since &quot;a&quot; is usually an address, &quot;&gt;&gt;8&quot; makes one spinlock per 64-bytes.&n;*/
+macro_line|#include &lt;asm/cache.h&gt;&t;&t;/* we use L1_CACHE_BYTES */
+DECL|typedef|atomic_lock_t
+r_typedef
+id|spinlock_t
+id|atomic_lock_t
+suffix:semicolon
+multiline_comment|/* Use an array of spinlocks for our atomic_ts.&n; * Hash function to index into a different SPINLOCK.&n; * Since &quot;a&quot; is usually an address, use one spinlock per cacheline.&n; */
 DECL|macro|ATOMIC_HASH_SIZE
 macro_line|#  define ATOMIC_HASH_SIZE 4
 DECL|macro|ATOMIC_HASH
-macro_line|#  define ATOMIC_HASH(a) (&amp;__atomic_hash[(((unsigned long) a)&gt;&gt;8)&amp;(ATOMIC_HASH_SIZE-1)])
+macro_line|#  define ATOMIC_HASH(a) (&amp;(__atomic_hash[ (((unsigned long) a)/L1_CACHE_BYTES) &amp; (ATOMIC_HASH_SIZE-1) ]))
 r_extern
-id|spinlock_t
+id|atomic_lock_t
 id|__atomic_hash
 (braket
 id|ATOMIC_HASH_SIZE
 )braket
+id|__lock_aligned
 suffix:semicolon
-multiline_comment|/* copied from &lt;asm/spinlock.h&gt; and modified */
-DECL|macro|SPIN_LOCK
-macro_line|#  define SPIN_LOCK(x) &bslash;&n;&t;do { while(__ldcw(&amp;(x)-&gt;lock) == 0); } while(0)
-DECL|macro|SPIN_UNLOCK
-macro_line|#  define SPIN_UNLOCK(x) &bslash;&n;&t;do { (x)-&gt;lock = 1; } while(0)
+DECL|function|atomic_spin_lock
+r_static
+r_inline
+r_void
+id|atomic_spin_lock
+c_func
+(paren
+id|atomic_lock_t
+op_star
+id|a
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|__ldcw
+c_func
+(paren
+id|a
+)paren
+op_eq
+l_int|0
+)paren
+r_while
+c_loop
+(paren
+id|a-&gt;lock
+(braket
+l_int|0
+)braket
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|atomic_spin_unlock
+r_static
+r_inline
+r_void
+id|atomic_spin_unlock
+c_func
+(paren
+id|atomic_lock_t
+op_star
+id|a
+)paren
+(brace
+id|a-&gt;lock
+(braket
+l_int|0
+)braket
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 macro_line|#else
 DECL|macro|ATOMIC_HASH_SIZE
 macro_line|#  define ATOMIC_HASH_SIZE 1
 DECL|macro|ATOMIC_HASH
 macro_line|#  define ATOMIC_HASH(a)&t;(0)
-multiline_comment|/* copied from &lt;linux/spinlock.h&gt; and modified */
-DECL|macro|SPIN_LOCK
-macro_line|#  define SPIN_LOCK(x) (void)(x)
-DECL|macro|SPIN_UNLOCK
-macro_line|#  define SPIN_UNLOCK(x) do { } while(0)
+DECL|macro|atomic_spin_lock
+macro_line|#  define atomic_spin_lock(x) (void)(x)
+DECL|macro|atomic_spin_unlock
+macro_line|#  define atomic_spin_unlock(x) do { } while(0)
 macro_line|#endif
 multiline_comment|/* copied from &lt;linux/spinlock.h&gt; and modified */
-DECL|macro|SPIN_LOCK_IRQSAVE
-mdefine_line|#define SPIN_LOCK_IRQSAVE(lock, flags)&t;&t;do { local_irq_save(flags);       SPIN_LOCK(lock); } while (0)
-DECL|macro|SPIN_UNLOCK_IRQRESTORE
-mdefine_line|#define SPIN_UNLOCK_IRQRESTORE(lock, flags)&t;do { SPIN_UNLOCK(lock);  local_irq_restore(flags); } while (0)
+DECL|macro|atomic_spin_lock_irqsave
+mdefine_line|#define atomic_spin_lock_irqsave(lock, flags)&t;do { &t;&bslash;&n;&t;local_irq_save(flags);&t;&t;&t;&t;&bslash;&n;&t;atomic_spin_lock(lock); &t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|atomic_spin_unlock_irqrestore
+mdefine_line|#define atomic_spin_unlock_irqrestore(lock, flags) do {&t;&bslash;&n;&t;atomic_spin_unlock(lock);&t;&t;&t;&bslash;&n;&t;local_irq_restore(flags);&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* Note that we need not lock read accesses - aligned word writes/reads&n; * are atomic, so a reader never sees unconsistent values.&n; *&n; * Cache-line alignment would conflict with, for example, linux/module.h&n; */
 DECL|member|counter
 DECL|typedef|atomic_t
@@ -369,7 +425,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|SPIN_LOCK_IRQSAVE
+id|atomic_spin_lock_irqsave
 c_func
 (paren
 id|ATOMIC_HASH
@@ -389,7 +445,7 @@ op_add_assign
 id|i
 )paren
 suffix:semicolon
-id|SPIN_UNLOCK_IRQRESTORE
+id|atomic_spin_unlock_irqrestore
 c_func
 (paren
 id|ATOMIC_HASH
@@ -424,7 +480,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|SPIN_LOCK_IRQSAVE
+id|atomic_spin_lock_irqsave
 c_func
 (paren
 id|ATOMIC_HASH
@@ -440,7 +496,7 @@ id|v-&gt;counter
 op_assign
 id|i
 suffix:semicolon
-id|SPIN_UNLOCK_IRQRESTORE
+id|atomic_spin_unlock_irqrestore
 c_func
 (paren
 id|ATOMIC_HASH

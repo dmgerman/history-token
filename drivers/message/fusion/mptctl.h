@@ -33,6 +33,8 @@ DECL|macro|MPTIOCINFO
 mdefine_line|#define MPTIOCINFO&t;&t;_IOWR(MPT_MAGIC_NUMBER,17,struct mpt_ioctl_iocinfo)
 DECL|macro|MPTIOCINFO1
 mdefine_line|#define MPTIOCINFO1&t;&t;_IOWR(MPT_MAGIC_NUMBER,17,struct mpt_ioctl_iocinfo_rev0)
+DECL|macro|MPTIOCINFO2
+mdefine_line|#define MPTIOCINFO2&t;&t;_IOWR(MPT_MAGIC_NUMBER,17,struct mpt_ioctl_iocinfo_rev1)
 DECL|macro|MPTTARGETINFO
 mdefine_line|#define MPTTARGETINFO&t;&t;_IOWR(MPT_MAGIC_NUMBER,18,struct mpt_ioctl_targetinfo)
 DECL|macro|MPTTEST
@@ -176,6 +178,54 @@ id|u
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|mpt_ioctl_pci_info2
+r_struct
+id|mpt_ioctl_pci_info2
+(brace
+r_union
+(brace
+r_struct
+(brace
+DECL|member|deviceNumber
+r_int
+r_int
+id|deviceNumber
+suffix:colon
+l_int|5
+suffix:semicolon
+DECL|member|functionNumber
+r_int
+r_int
+id|functionNumber
+suffix:colon
+l_int|3
+suffix:semicolon
+DECL|member|busNumber
+r_int
+r_int
+id|busNumber
+suffix:colon
+l_int|24
+suffix:semicolon
+DECL|member|bits
+)brace
+id|bits
+suffix:semicolon
+DECL|member|asUlong
+r_int
+r_int
+id|asUlong
+suffix:semicolon
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
+DECL|member|segmentID
+r_int
+id|segmentID
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; *  Adapter Information Page&n; *  Read only.&n; *  Data starts at offset 0xC&n; */
 DECL|macro|MPT_IOCTL_INTERFACE_FC
 mdefine_line|#define MPT_IOCTL_INTERFACE_FC&t;&t;(0x01)
@@ -186,6 +236,90 @@ mdefine_line|#define MPT_IOCTL_VERSION_LENGTH&t;(32)
 DECL|struct|mpt_ioctl_iocinfo
 r_struct
 id|mpt_ioctl_iocinfo
+(brace
+DECL|member|hdr
+id|mpt_ioctl_header
+id|hdr
+suffix:semicolon
+DECL|member|adapterType
+r_int
+id|adapterType
+suffix:semicolon
+multiline_comment|/* SCSI or FCP */
+DECL|member|port
+r_int
+id|port
+suffix:semicolon
+multiline_comment|/* port number */
+DECL|member|pciId
+r_int
+id|pciId
+suffix:semicolon
+multiline_comment|/* PCI Id. */
+DECL|member|hwRev
+r_int
+id|hwRev
+suffix:semicolon
+multiline_comment|/* hardware revision */
+DECL|member|subSystemDevice
+r_int
+id|subSystemDevice
+suffix:semicolon
+multiline_comment|/* PCI subsystem Device ID */
+DECL|member|subSystemVendor
+r_int
+id|subSystemVendor
+suffix:semicolon
+multiline_comment|/* PCI subsystem Vendor ID */
+DECL|member|numDevices
+r_int
+id|numDevices
+suffix:semicolon
+multiline_comment|/* number of devices */
+DECL|member|FWVersion
+r_int
+id|FWVersion
+suffix:semicolon
+multiline_comment|/* FW Version (integer) */
+DECL|member|BIOSVersion
+r_int
+id|BIOSVersion
+suffix:semicolon
+multiline_comment|/* BIOS Version (integer) */
+DECL|member|driverVersion
+r_char
+id|driverVersion
+(braket
+id|MPT_IOCTL_VERSION_LENGTH
+)braket
+suffix:semicolon
+multiline_comment|/* Driver Version (string) */
+DECL|member|busChangeEvent
+r_char
+id|busChangeEvent
+suffix:semicolon
+DECL|member|hostId
+r_char
+id|hostId
+suffix:semicolon
+DECL|member|rsvd
+r_char
+id|rsvd
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|pciInfo
+r_struct
+id|mpt_ioctl_pci_info2
+id|pciInfo
+suffix:semicolon
+multiline_comment|/* Added Rev 2 */
+)brace
+suffix:semicolon
+DECL|struct|mpt_ioctl_iocinfo_rev1
+r_struct
+id|mpt_ioctl_iocinfo_rev1
 (brace
 DECL|member|hdr
 id|mpt_ioctl_header

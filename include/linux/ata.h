@@ -469,6 +469,16 @@ op_assign
 l_int|0x90
 comma
 multiline_comment|/* execute device diagnostic */
+DECL|enumerator|ATA_CMD_FLUSH
+id|ATA_CMD_FLUSH
+op_assign
+l_int|0xE7
+comma
+DECL|enumerator|ATA_CMD_FLUSH_EXT
+id|ATA_CMD_FLUSH_EXT
+op_assign
+l_int|0xEA
+comma
 DECL|enumerator|ATA_CMD_ID_ATA
 id|ATA_CMD_ID_ATA
 op_assign
@@ -822,8 +832,12 @@ multiline_comment|/* IO operation */
 suffix:semicolon
 DECL|macro|ata_id_is_ata
 mdefine_line|#define ata_id_is_ata(dev)&t;(((dev)-&gt;id[0] &amp; (1 &lt;&lt; 15)) == 0)
+DECL|macro|ata_id_wcache_enabled
+mdefine_line|#define ata_id_wcache_enabled(dev) ((dev)-&gt;id[85] &amp; (1 &lt;&lt; 5))
 DECL|macro|ata_id_has_lba48
 mdefine_line|#define ata_id_has_lba48(dev)&t;((dev)-&gt;id[83] &amp; (1 &lt;&lt; 10))
+DECL|macro|ata_id_has_wcache
+mdefine_line|#define ata_id_has_wcache(dev)&t;((dev)-&gt;id[82] &amp; (1 &lt;&lt; 5))
 DECL|macro|ata_id_has_lba
 mdefine_line|#define ata_id_has_lba(dev)&t;((dev)-&gt;id[49] &amp; (1 &lt;&lt; 8))
 DECL|macro|ata_id_has_dma

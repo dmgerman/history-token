@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/parisc/kernel/firmware.c  - safe PDC access routines&n; *&n; *&t;PDC == Processor Dependent Code&n; *&n; * See http://www.parisc-linux.org/documentation/index.html&n; * for documentation describing the entry points and calling&n; * conventions defined below.&n; *&n; * Copyright 1999 SuSE GmbH Nuernberg (Philipp Rumpf, prumpf@tux.org)&n; * Copyright 1999 The Puffin Group, (Alex deVries, David Kennedy)&n; * Copyright 2003 Grant Grundler &lt;grundler parisc-linux org&gt;&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; */
+multiline_comment|/*&n; * arch/parisc/kernel/firmware.c  - safe PDC access routines&n; *&n; *&t;PDC == Processor Dependent Code&n; *&n; * See http://www.parisc-linux.org/documentation/index.html&n; * for documentation describing the entry points and calling&n; * conventions defined below.&n; *&n; * Copyright 1999 SuSE GmbH Nuernberg (Philipp Rumpf, prumpf@tux.org)&n; * Copyright 1999 The Puffin Group, (Alex deVries, David Kennedy)&n; * Copyright 2003 Grant Grundler &lt;grundler parisc-linux org&gt;&n; * Copyright 2003,2004 Ryan Bradetich &lt;rbrad@parisc-linux.org&gt;&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; */
 multiline_comment|/*&t;I think it would be in everyone&squot;s best interest to follow this&n; *&t;guidelines when writing PDC wrappers:&n; *&n; *&t; - the name of the pdc wrapper should match one of the macros&n; *&t;   used for the first two arguments&n; *&t; - don&squot;t use caps for random parts of the name&n; *&t; - use the static PDC result buffers and &quot;copyout&quot; to structs&n; *&t;   supplied by the caller to encapsulate alignment restrictions&n; *&t; - hold pdc_lock while in PDC or using static result buffers&n; *&t; - use __pa() to convert virtual (kernel) pointers to physical&n; *&t;   ones.&n; *&t; - the name of the struct used for pdc return values should equal&n; *&t;   one of the macros used for the first two arguments to the&n; *&t;   corresponding PDC call&n; *&t; - keep the order of arguments&n; *&t; - don&squot;t be smart (setting trailing NUL bytes for strings, return&n; *&t;   something useful even if the call failed) unless you are sure&n; *&t;   it&squot;s not going to affect functionality or performance&n; *&n; *&t;Example:&n; *&t;int pdc_cache_info(struct pdc_cache_info *cache_info )&n; *&t;{&n; *&t;&t;int retval;&n; *&n; *&t;&t;spin_lock_irq(&amp;pdc_lock);&n; *&t;&t;retval = mem_pdc_call(PDC_CACHE,PDC_CACHE_INFO,__pa(cache_info),0);&n; *&t;&t;convert_to_wide(pdc_result);&n; *&t;&t;memcpy(cache_info, pdc_result, sizeof(*cache_info));&n; *&t;&t;spin_unlock_irq(&amp;pdc_lock);&n; *&n; *&t;&t;return retval;&n; *&t;}&n; *&t;&t;&t;&t;&t;prumpf&t;991016&t;&n; */
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -54,6 +54,19 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef __LP64__
+DECL|macro|WIDE_FIRMWARE
+mdefine_line|#define WIDE_FIRMWARE 0x1
+DECL|macro|NARROW_FIRMWARE
+mdefine_line|#define NARROW_FIRMWARE 0x2
+multiline_comment|/* Firmware needs to be initially set to narrow to determine the &n; * actual firmware width. */
+DECL|variable|parisc_narrow_firmware
+r_int
+id|parisc_narrow_firmware
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* on all currently-supported platforms, IODC I/O calls are always&n; * 32-bit calls, and MEM_PDC calls are always the same width as the OS.&n; * This means Cxxx boxes can&squot;t run wide kernels right now. -PB&n; *&n; * CONFIG_PDC_NARROW has been added to allow 64-bit kernels to run on&n; * systems with 32-bit MEM_PDC calls. This will allow wide kernels to&n; * run on Cxxx boxes now. -RB&n; *&n; * Note that some PAT boxes may have 64-bit IODC I/O...&n; */
 macro_line|#ifdef __LP64__
 r_int
@@ -83,14 +96,14 @@ dot
 dot
 )paren
 suffix:semicolon
-macro_line|#if defined(__LP64__) &amp;&amp; ! defined(CONFIG_PDC_NARROW)
+macro_line|#ifdef __LP64__
 DECL|macro|MEM_PDC
-mdefine_line|#define MEM_PDC (unsigned long)(PAGE0-&gt;mem_pdc_hi) &lt;&lt; 32 | PAGE0-&gt;mem_pdc
+macro_line|#   define MEM_PDC (unsigned long)(PAGE0-&gt;mem_pdc_hi) &lt;&lt; 32 | PAGE0-&gt;mem_pdc
 DECL|macro|mem_pdc_call
-macro_line|#   define mem_pdc_call(args...) real64_call(MEM_PDC, args)
+macro_line|#   define mem_pdc_call(args...) unlikely(parisc_narrow_firmware) ? real32_call(MEM_PDC, args) : real64_call(MEM_PDC, args)
 macro_line|#else
 DECL|macro|MEM_PDC
-mdefine_line|#define MEM_PDC (unsigned long)PAGE0-&gt;mem_pdc
+macro_line|#   define MEM_PDC (unsigned long)PAGE0-&gt;mem_pdc
 DECL|macro|mem_pdc_call
 macro_line|#   define mem_pdc_call(args...) real32_call(MEM_PDC, args)
 macro_line|#endif
@@ -107,7 +120,17 @@ r_int
 id|address
 )paren
 (brace
-macro_line|#ifdef CONFIG_PDC_NARROW
+macro_line|#ifdef __LP64__
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|parisc_narrow_firmware
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -150,6 +173,7 @@ id|u32
 id|address
 suffix:semicolon
 )brace
+)brace
 macro_line|#endif
 r_return
 id|address
@@ -168,10 +192,11 @@ op_star
 id|addr
 )paren
 (brace
-macro_line|#ifdef CONFIG_PDC_NARROW
+macro_line|#ifdef __LP64__
 r_int
 id|i
 suffix:semicolon
+r_int
 r_int
 op_star
 id|p
@@ -183,6 +208,16 @@ op_star
 )paren
 id|addr
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|parisc_narrow_firmware
+)paren
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -209,6 +244,77 @@ id|i
 )braket
 suffix:semicolon
 )brace
+)brace
+macro_line|#endif
+)brace
+multiline_comment|/**&n; * set_firmware_width - Determine if the firmware is wide or narrow.&n; * &n; * This function must be called before any pdc_* function that uses the convert_to_wide&n; * function.&n; */
+DECL|function|set_firmware_width
+r_void
+id|__init
+id|set_firmware_width
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef __LP64__
+r_int
+id|retval
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|pdc_lock
+)paren
+suffix:semicolon
+id|retval
+op_assign
+id|mem_pdc_call
+c_func
+(paren
+id|PDC_MODEL
+comma
+id|PDC_MODEL_CAPABILITIES
+comma
+id|__pa
+c_func
+(paren
+id|pdc_result
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|convert_to_wide
+c_func
+(paren
+id|pdc_result
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdc_result
+(braket
+l_int|0
+)braket
+op_ne
+id|NARROW_FIRMWARE
+)paren
+(brace
+id|parisc_narrow_firmware
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|pdc_lock
+)paren
+suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/**&n; * pdc_emergency_unlock - Unlock the linux pdc lock&n; *&n; * This call unlocks the linux pdc lock in case we need some PDC functions&n; * (like pdc_add_valid) during kernel stack dump.&n; */
@@ -1749,6 +1855,16 @@ op_star
 id|period
 op_assign
 l_int|250
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|80
+suffix:colon
+op_star
+id|period
+op_assign
+l_int|125
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -4,6 +4,7 @@ mdefine_line|#define __VIRT_CONVERT__
 multiline_comment|/*&n; * Macros used for converting between virtual and physical mappings.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifdef CONFIG_AMIGA

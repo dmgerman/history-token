@@ -151,7 +151,13 @@ DECL|enumerator|pcxw2
 id|pcxw2
 op_assign
 l_int|10
+comma
 multiline_comment|/* pa8700&t;&t;pa 2.0  */
+DECL|enumerator|mako
+id|mako
+op_assign
+l_int|11
+multiline_comment|/* pa8800&t;&t;pa 2.0  */
 )brace
 suffix:semicolon
 r_extern

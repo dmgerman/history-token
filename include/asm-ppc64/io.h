@@ -574,7 +574,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;lbz%U1%X1 %0,%1; twi 0,%0,0; isync&quot;
+l_string|&quot;eieio; lbz%U1%X1 %0,%1; twi 0,%0,0; isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -613,7 +613,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stb%U0%X0 %1,%0; eieio&quot;
+l_string|&quot;sync; stb%U0%X0 %1,%0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -649,7 +649,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;lhbrx %0,0,%1; twi 0,%0,0; isync&quot;
+l_string|&quot;eieio; lhbrx %0,0,%1; twi 0,%0,0; isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -693,7 +693,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;lhz%U1%X1 %0,%1; twi 0,%0,0; isync&quot;
+l_string|&quot;eieio; lhz%U1%X1 %0,%1; twi 0,%0,0; isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -732,7 +732,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;sthbrx %1,0,%2; eieio&quot;
+l_string|&quot;sync; sthbrx %1,0,%2&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -773,7 +773,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;sth%U0%X0 %1,%0; eieio&quot;
+l_string|&quot;sync; sth%U0%X0 %1,%0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -808,7 +808,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;lwbrx %0,0,%1; twi 0,%0,0; isync&quot;
+l_string|&quot;eieio; lwbrx %0,0,%1; twi 0,%0,0; isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -851,7 +851,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;lwz%U1%X1 %0,%1; twi 0,%0,0; isync&quot;
+l_string|&quot;eieio; lwz%U1%X1 %0,%1; twi 0,%0,0; isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -889,7 +889,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stwbrx %1,0,%2; eieio&quot;
+l_string|&quot;sync; stwbrx %1,0,%2&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -929,7 +929,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stw%U0%X0 %1,%0; eieio&quot;
+l_string|&quot;sync; stw%U0%X0 %1,%0; eieio&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -969,7 +969,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;ld %1,0(%2)&bslash;n&quot;
+l_string|&quot;eieio; ld %1,0(%2)&bslash;n&quot;
 l_string|&quot;twi 0,%1,0&bslash;n&quot;
 l_string|&quot;isync&bslash;n&quot;
 l_string|&quot;rldimi %0,%1,5*8,1*8&bslash;n&quot;
@@ -1029,7 +1029,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;ld %0,0(%1); twi 0,%0,0; isync&quot;
+l_string|&quot;eieio; ld %0,0(%1); twi 0,%0,0; isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -1079,8 +1079,7 @@ l_string|&quot;rldimi %0,%1,7*8,4*8&bslash;n&quot;
 l_string|&quot;rldicl %1,%1,32,0&bslash;n&quot;
 l_string|&quot;rlwimi %0,%1,8,8,31&bslash;n&quot;
 l_string|&quot;rlwimi %0,%1,24,16,23&bslash;n&quot;
-l_string|&quot;std %0,0(%2)&bslash;n&quot;
-l_string|&quot;eieio&bslash;n&quot;
+l_string|&quot;sync; std %0,0(%2)&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -1126,7 +1125,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;std %1,0(%0); eieio&quot;
+l_string|&quot;sync; std %1,0(%0)&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren

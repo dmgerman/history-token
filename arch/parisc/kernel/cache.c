@@ -704,13 +704,6 @@ id|page
 )paren
 suffix:semicolon
 r_struct
-id|mm_struct
-op_star
-id|mm
-op_assign
-id|current-&gt;active_mm
-suffix:semicolon
-r_struct
 id|list_head
 op_star
 id|l
@@ -733,7 +726,7 @@ id|mapping
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* check shared list first if it&squot;s not empty...it&squot;s usually&n;&t; * the shortest */
+multiline_comment|/* We have ensured in arch_get_unmapped_area() that all shared&n;&t; * mappings are mapped at equivalent addresses, so we only need&n;&t; * to flush one for them all to become coherent */
 id|list_for_each
 c_func
 (paren
@@ -751,6 +744,8 @@ suffix:semicolon
 r_int
 r_int
 id|off
+comma
+id|addr
 suffix:semicolon
 id|mpnt
 op_assign
@@ -764,16 +759,6 @@ id|vm_area_struct
 comma
 id|shared
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If this VMA is not in our MM, we can ignore it.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|mpnt-&gt;vm_mm
-op_ne
-id|mm
-)paren
-r_continue
 suffix:semicolon
 r_if
 c_cond
@@ -805,11 +790,8 @@ id|PAGE_SHIFT
 )paren
 r_continue
 suffix:semicolon
-id|flush_cache_page
-c_func
-(paren
-id|mpnt
-comma
+id|addr
+op_assign
 id|mpnt-&gt;vm_start
 op_plus
 (paren
@@ -817,13 +799,35 @@ id|off
 op_lshift
 id|PAGE_SHIFT
 )paren
+suffix:semicolon
+multiline_comment|/* flush instructions produce non access tlb misses.&n;&t;&t; * On PA, we nullify these instructions rather than &n;&t;&t; * taking a page fault if the pte doesn&squot;t exist, so we&n;&t;&t; * have to find a congruent address with an existing&n;&t;&t; * translation */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|translation_exists
+c_func
+(paren
+id|mpnt
+comma
+id|addr
+)paren
+)paren
+r_continue
+suffix:semicolon
+id|__flush_cache_page
+c_func
+(paren
+id|mpnt
+comma
+id|addr
 )paren
 suffix:semicolon
-multiline_comment|/* All user shared mappings should be equivalently mapped,&n;&t;&t; * so once we&squot;ve flushed one we should be ok&n;&t;&t; */
+multiline_comment|/* If we find an address to flush, that will also&n;&t;&t; * bring all the private mappings up to date (see&n;&t;&t; * comment below) */
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* then check private mapping list for read only shared mappings&n;&t; * which are flagged by VM_MAYSHARE */
+multiline_comment|/* we have carefully arranged in arch_get_unmapped_area() that&n;&t; * *any* mappings of a file are always congruently mapped (whether&n;&t; * declared as MAP_PRIVATE or MAP_SHARED), so we only need&n;&t; * to flush one address here too */
 id|list_for_each
 c_func
 (paren
@@ -841,6 +845,8 @@ suffix:semicolon
 r_int
 r_int
 id|off
+comma
+id|addr
 suffix:semicolon
 id|mpnt
 op_assign
@@ -854,22 +860,6 @@ id|vm_area_struct
 comma
 id|shared
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mpnt-&gt;vm_mm
-op_ne
-id|mm
-op_logical_or
-op_logical_neg
-(paren
-id|mpnt-&gt;vm_flags
-op_amp
-id|VM_MAYSHARE
-)paren
-)paren
-r_continue
 suffix:semicolon
 r_if
 c_cond
@@ -901,11 +891,8 @@ id|PAGE_SHIFT
 )paren
 r_continue
 suffix:semicolon
-id|flush_cache_page
-c_func
-(paren
-id|mpnt
-comma
+id|addr
+op_assign
 id|mpnt-&gt;vm_start
 op_plus
 (paren
@@ -913,10 +900,33 @@ id|off
 op_lshift
 id|PAGE_SHIFT
 )paren
+suffix:semicolon
+multiline_comment|/* This is just for speed.  If the page translation isn&squot;t&n;&t;&t; * there there&squot;s no point exciting the nadtlb handler into&n;&t;&t; * a nullification frenzy */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|translation_exists
+c_func
+(paren
+id|mpnt
+comma
+id|addr
+)paren
+)paren
+(brace
+r_continue
+suffix:semicolon
+)brace
+id|__flush_cache_page
+c_func
+(paren
+id|mpnt
+comma
+id|addr
 )paren
 suffix:semicolon
-multiline_comment|/* All user shared mappings should be equivalently mapped,&n;&t;&t; * so once we&squot;ve flushed one we should be ok&n;&t;&t; */
-r_break
+r_return
 suffix:semicolon
 )brace
 )brace

@@ -1742,50 +1742,6 @@ suffix:semicolon
 id|DRM_FIND_MAP
 c_func
 (paren
-id|dev_priv-&gt;fb
-comma
-id|init-&gt;fb_offset
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev_priv-&gt;fb
-)paren
-(brace
-id|DRM_ERROR
-c_func
-(paren
-l_string|&quot;failed to find framebuffer!&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Assign dev_private so we can do cleanup. */
-id|dev-&gt;dev_private
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|dev_priv
-suffix:semicolon
-id|mga_do_cleanup_dma
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_return
-id|DRM_ERR
-c_func
-(paren
-id|EINVAL
-)paren
-suffix:semicolon
-)brace
-id|DRM_FIND_MAP
-c_func
-(paren
 id|dev_priv-&gt;mmio
 comma
 id|init-&gt;mmio_offset
@@ -2364,12 +2320,12 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if _HAVE_DMA_IRQ
+macro_line|#if __HAVE_IRQ
 multiline_comment|/* Make sure interrupts are disabled here because the uninstall ioctl&n;&t; * may not have been called from userspace and after dev_private&n;&t; * is freed, it&squot;s too late.&n;&t; */
 r_if
 c_cond
 (paren
-id|dev-&gt;irq
+id|dev-&gt;irq_enabled
 )paren
 id|DRM
 c_func

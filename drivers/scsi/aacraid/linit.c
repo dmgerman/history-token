@@ -1954,7 +1954,15 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * We can exit If all the commands are complete&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|active
+)paren
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t; * We can exit If all the commands are complete&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1965,7 +1973,6 @@ l_int|0
 r_return
 id|SUCCESS
 suffix:semicolon
-)brace
 id|spin_unlock_irq
 c_func
 (paren

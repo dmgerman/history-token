@@ -1464,7 +1464,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|aic_dev-&gt;r_bins
@@ -1519,7 +1519,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|aic_dev-&gt;w_bins
@@ -1623,9 +1623,11 @@ id|buffer
 suffix:semicolon
 id|length
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|length
 comma
 id|size

@@ -6447,39 +6447,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * Super operations for mount time when we don&squot;t have enough setup to use the&n; * proper functions.&n; */
-DECL|variable|ntfs_mount_sops
-r_struct
-id|super_operations
-id|ntfs_mount_sops
-op_assign
-(brace
-dot
-id|alloc_inode
-op_assign
-id|ntfs_alloc_big_inode
-comma
-multiline_comment|/* VFS: Allocate new inode. */
-dot
-id|destroy_inode
-op_assign
-id|ntfs_destroy_big_inode
-comma
-multiline_comment|/* VFS: Deallocate inode. */
-dot
-id|read_inode
-op_assign
-id|ntfs_read_inode_mount
-comma
-multiline_comment|/* VFS: Load inode from disk,&n;&t;&t;&t;&t;&t;&t;     called from iget(). */
-dot
-id|clear_inode
-op_assign
-id|ntfs_clear_big_inode
-comma
-multiline_comment|/* VFS: Called when inode is&n;&t;&t;&t;&t;&t;&t;     removed from memory. */
-)brace
-suffix:semicolon
 multiline_comment|/**&n; * The complete super operations.&n; */
 DECL|variable|ntfs_sops
 r_struct
@@ -7013,26 +6980,17 @@ op_assign
 id|MAX_LFS_FILESIZE
 suffix:semicolon
 multiline_comment|/*&n;&t; * Now load the metadata required for the page cache and our address&n;&t; * space operations to function. We do this by setting up a specialised&n;&t; * read_inode method and then just calling the normal iget() to obtain&n;&t; * the inode for $MFT which is sufficient to allow our normal inode&n;&t; * operations and associated address space operations to function.&n;&t; */
-multiline_comment|/*&n;&t; * Poison vol-&gt;mft_ino so we know whether iget() called into our&n;&t; * ntfs_read_inode_mount() method.&n;&t; */
-DECL|macro|OGIN
-mdefine_line|#define OGIN&t;((struct inode*)n2p(le32_to_cpu(0x4e49474f)))&t;/* OGIN */
-id|vol-&gt;mft_ino
-op_assign
-id|OGIN
-suffix:semicolon
 id|sb-&gt;s_op
 op_assign
 op_amp
-id|ntfs_mount_sops
+id|ntfs_sops
 suffix:semicolon
 id|tmp_ino
 op_assign
-id|iget
+id|new_inode
 c_func
 (paren
-id|vol-&gt;sb
-comma
-id|FILE_MFT
+id|sb
 )paren
 suffix:semicolon
 r_if
@@ -7040,16 +6998,6 @@ c_cond
 (paren
 op_logical_neg
 id|tmp_ino
-op_logical_or
-id|tmp_ino
-op_ne
-id|vol-&gt;mft_ino
-op_logical_or
-id|is_bad_inode
-c_func
-(paren
-id|tmp_ino
-)paren
 )paren
 (brace
 r_if
@@ -7066,38 +7014,50 @@ comma
 l_string|&quot;Failed to load essential metadata.&quot;
 )paren
 suffix:semicolon
+r_goto
+id|err_out_now
+suffix:semicolon
+)brace
+id|tmp_ino-&gt;i_ino
+op_assign
+id|FILE_MFT
+suffix:semicolon
+id|insert_inode_hash
+c_func
+(paren
+id|tmp_ino
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|ntfs_read_inode_mount
+c_func
+(paren
 id|tmp_ino
-op_logical_and
-id|vol-&gt;mft_ino
-op_eq
-id|OGIN
+)paren
+OL
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|silent
 )paren
 id|ntfs_error
 c_func
 (paren
 id|sb
 comma
-l_string|&quot;BUG: iget() did not call &quot;
-l_string|&quot;ntfs_read_inode_mount() method!&bslash;n&quot;
+l_string|&quot;Failed to load essential metadata.&quot;
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|tmp_ino
-)paren
-r_goto
-id|cond_iput_mft_ino_err_out_now
 suffix:semicolon
 r_goto
 id|iput_tmp_ino_err_out_now
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Note: sb-&gt;s_op has already been set to &amp;ntfs_sops by our specialized&n;&t; * ntfs_read_inode_mount() method when it was invoked by iget().&n;&t; */
 id|down
 c_func
 (paren
@@ -7463,16 +7423,10 @@ c_func
 id|tmp_ino
 )paren
 suffix:semicolon
-id|cond_iput_mft_ino_err_out_now
-suffix:colon
 r_if
 c_cond
 (paren
 id|vol-&gt;mft_ino
-op_logical_and
-id|vol-&gt;mft_ino
-op_ne
-id|OGIN
 op_logical_and
 id|vol-&gt;mft_ino
 op_ne
@@ -7490,8 +7444,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|macro|OGIN
-macro_line|#undef OGIN
 multiline_comment|/*&n;&t; * This is needed to get ntfs_clear_extent_inode() called for each&n;&t; * inode we have ever called ntfs_iget()/iput() on, otherwise we A)&n;&t; * leak resources and B) a subsequent mount fails automatically due to&n;&t; * ntfs_iget() never calling down into our ntfs_read_locked_inode()&n;&t; * method again... FIXME: Do we need to do this twice now because of&n;&t; * attribute inodes? I think not, so leave as is for now... (AIA)&n;&t; */
 r_if
 c_cond

@@ -14,61 +14,22 @@ macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;../qlogicfas.h&quot;
+macro_line|#include &quot;../qlogicfas408.h&quot;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
 macro_line|#include &lt;pcmcia/ciscode.h&gt;
-r_extern
-id|Scsi_Host_Template
-id|qlogicfas_driver_template
-suffix:semicolon
-r_extern
-r_void
-id|qlogicfas_preset
-c_func
-(paren
-r_int
-id|port
-comma
-r_int
-id|irq
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|qlogicfas_bus_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|irqreturn_t
-id|do_ql_ihandl
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
+multiline_comment|/* Set the following to 2 to use normal interrupt (active high/totempole-&n; * tristate), otherwise use 0 (REQUIRED FOR PCMCIA) for active low, open&n; * drain&n; */
+DECL|macro|INT_TYPE
+mdefine_line|#define INT_TYPE&t;0
 DECL|variable|qlogic_name
 r_static
 r_char
-op_star
 id|qlogic_name
+(braket
+)braket
 op_assign
 l_string|&quot;qlogic_cs&quot;
 suffix:semicolon
@@ -102,6 +63,90 @@ macro_line|#else
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...)
 macro_line|#endif
+DECL|variable|qlogicfas_driver_template
+r_static
+id|Scsi_Host_Template
+id|qlogicfas_driver_template
+op_assign
+(brace
+dot
+id|module
+op_assign
+id|THIS_MODULE
+comma
+dot
+id|name
+op_assign
+id|qlogic_name
+comma
+dot
+id|proc_name
+op_assign
+id|qlogic_name
+comma
+dot
+id|info
+op_assign
+id|qlogicfas408_info
+comma
+dot
+id|queuecommand
+op_assign
+id|qlogicfas408_queuecommand
+comma
+dot
+id|eh_abort_handler
+op_assign
+id|qlogicfas408_abort
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|qlogicfas408_bus_reset
+comma
+dot
+id|eh_device_reset_handler
+op_assign
+id|qlogicfas408_device_reset
+comma
+dot
+id|eh_host_reset_handler
+op_assign
+id|qlogicfas408_host_reset
+comma
+dot
+id|bios_param
+op_assign
+id|qlogicfas408_biosparam
+comma
+dot
+id|can_queue
+op_assign
+l_int|1
+comma
+dot
+id|this_id
+op_assign
+op_minus
+l_int|1
+comma
+dot
+id|sg_tablesize
+op_assign
+id|SG_ALL
+comma
+dot
+id|cmd_per_lun
+op_assign
+l_int|1
+comma
+dot
+id|use_clustering
+op_assign
+id|DISABLE_CLUSTERING
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
 multiline_comment|/* Bit map of interrupts to choose from */
@@ -266,20 +311,20 @@ op_star
 id|shost
 suffix:semicolon
 multiline_comment|/* registered host structure */
-id|qlogicfas_priv_t
+r_struct
+id|qlogicfas408_priv
+op_star
 id|priv
 suffix:semicolon
 id|qltyp
 op_assign
-id|inb
+id|qlogicfas408_get_chip_type
 c_func
 (paren
 id|qbase
-op_plus
-l_int|0xe
+comma
+id|INT_TYPE
 )paren
-op_amp
-l_int|0xf8
 suffix:semicolon
 id|qinitid
 op_assign
@@ -297,91 +342,16 @@ op_assign
 l_int|7
 suffix:semicolon
 multiline_comment|/* if no ID, use 7 */
-id|outb
+id|qlogicfas408_setup
 c_func
 (paren
-l_int|1
-comma
 id|qbase
-op_plus
-l_int|8
-)paren
-suffix:semicolon
-multiline_comment|/* set for PIO pseudo DMA */
-id|REG0
-suffix:semicolon
-id|outb
-c_func
-(paren
-l_int|0x40
-op_or
-id|qlcfg8
-op_or
+comma
 id|qinitid
 comma
-id|qbase
-op_plus
-l_int|8
+id|INT_TYPE
 )paren
 suffix:semicolon
-multiline_comment|/* (ini) bus id, disable scsi rst */
-id|outb
-c_func
-(paren
-id|qlcfg5
-comma
-id|qbase
-op_plus
-l_int|5
-)paren
-suffix:semicolon
-multiline_comment|/* select timer */
-id|outb
-c_func
-(paren
-id|qlcfg9
-comma
-id|qbase
-op_plus
-l_int|9
-)paren
-suffix:semicolon
-multiline_comment|/* prescaler */
-macro_line|#if QL_RESET_AT_START
-id|outb
-c_func
-(paren
-l_int|3
-comma
-id|qbase
-op_plus
-l_int|3
-)paren
-suffix:semicolon
-id|REG1
-suffix:semicolon
-multiline_comment|/* FIXME: timeout */
-r_while
-c_loop
-(paren
-id|inb
-c_func
-(paren
-id|qbase
-op_plus
-l_int|0xf
-)paren
-op_amp
-l_int|4
-)paren
-id|cpu_relax
-c_func
-(paren
-)paren
-suffix:semicolon
-id|REG0
-suffix:semicolon
-macro_line|#endif
 id|host-&gt;name
 op_assign
 id|qlogic_name
@@ -396,7 +366,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|qlogicfas_priv
+id|qlogicfas408_priv
 )paren
 )paren
 suffix:semicolon
@@ -436,15 +406,10 @@ id|qlirq
 suffix:semicolon
 id|priv
 op_assign
+id|get_priv_by_host
+c_func
 (paren
-id|qlogicfas_priv_t
-)paren
-op_amp
-(paren
-id|shost-&gt;hostdata
-(braket
-l_int|0
-)braket
+id|shost
 )paren
 suffix:semicolon
 id|priv-&gt;qlirq
@@ -459,6 +424,14 @@ id|priv-&gt;qinitid
 op_assign
 id|qinitid
 suffix:semicolon
+id|priv-&gt;shost
+op_assign
+id|shost
+suffix:semicolon
+id|priv-&gt;int_type
+op_assign
+id|INT_TYPE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -467,7 +440,7 @@ c_func
 (paren
 id|qlirq
 comma
-id|do_ql_ihandl
+id|qlogicfas408_ihandl
 comma
 l_int|0
 comma
@@ -1289,14 +1262,6 @@ l_int|0xd
 )paren
 suffix:semicolon
 )brace
-id|qlogicfas_driver_template.name
-op_assign
-id|qlogic_name
-suffix:semicolon
-id|qlogicfas_driver_template.proc_name
-op_assign
-id|qlogic_name
-suffix:semicolon
 multiline_comment|/* The KXL-810AN has a bigger IO port window */
 r_if
 c_cond
@@ -1712,7 +1677,7 @@ l_int|0xd
 suffix:semicolon
 )brace
 multiline_comment|/* Ugggglllyyyy!!! */
-id|qlogicfas_bus_reset
+id|qlogicfas408_bus_reset
 c_func
 (paren
 l_int|NULL

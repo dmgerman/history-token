@@ -4,11 +4,13 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 r_static
 r_void
 id|ppa_reset_pulse
@@ -40,7 +42,8 @@ id|mode
 suffix:semicolon
 multiline_comment|/* Transfer mode                */
 DECL|member|cur_cmd
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cur_cmd
 suffix:semicolon
@@ -2283,7 +2286,8 @@ r_int
 id|ppa_send_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -2355,7 +2359,8 @@ r_int
 id|ppa_completion
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -2736,7 +2741,8 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -2959,7 +2965,8 @@ id|ppa_struct
 op_star
 id|dev
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -3488,7 +3495,8 @@ r_int
 id|ppa_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -3498,7 +3506,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -3725,7 +3734,8 @@ r_int
 id|ppa_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -3823,7 +3833,8 @@ r_int
 id|ppa_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -4339,7 +4350,8 @@ suffix:semicolon
 )brace
 DECL|variable|ppa_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|ppa_template
 op_assign
 (brace

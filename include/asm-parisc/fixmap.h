@@ -1,9 +1,14 @@
 macro_line|#ifndef _ASM_FIXMAP_H
 DECL|macro|_ASM_FIXMAP_H
 mdefine_line|#define _ASM_FIXMAP_H
-multiline_comment|/*&n; * Allocate a 8 Mb temporary mapping area for copy_user_page/clear_user_page.&n; * This area needs to be aligned on a 8 Mb boundary.&n; *&n; * FIXME:&n; *&n; * For PA-RISC, this has no meaning.  It is starting to be used on x86&n; * for vsyscalls.  PA will probably do this using space registers.&n; */
-multiline_comment|/* This TMPALIAS_MAP_START reserves some of the memory where the&n; * FIXMAP region is on x86.  It&squot;s only real use is to constrain&n; * VMALLOC_END (see pktable.h) */
+multiline_comment|/*&n; * This file defines the locations of the fixed mappings on parisc.&n; *&n; * All of the values in this file are machine virtual addresses.&n; *&n; * All of the values in this file must be &lt;4GB (because of assembly&n; * loading restrictions).  If you place this region anywhere above&n; * __PAGE_OFFSET, you must adjust the memory map accordingly */
+multiline_comment|/* The alias region is used in kernel space to do copy/clear to or&n; * from areas congruently mapped with user space.  It is 8MB large&n; * and must be 16MB aligned */
 DECL|macro|TMPALIAS_MAP_START
-mdefine_line|#define TMPALIAS_MAP_START (__PAGE_OFFSET - 0x01000000)
+mdefine_line|#define TMPALIAS_MAP_START&t;((__PAGE_OFFSET) - 16*1024*1024)
+multiline_comment|/* This is the kernel area for all maps (vmalloc, dma etc.)  most&n; * usually, it extends up to TMPALIAS_MAP_START.  Virtual addresses&n; * 0..GATEWAY_PAGE_SIZE are reserved for the gateway page */
+DECL|macro|KERNEL_MAP_START
+mdefine_line|#define KERNEL_MAP_START&t;(GATEWAY_PAGE_SIZE)
+DECL|macro|KERNEL_MAP_END
+mdefine_line|#define KERNEL_MAP_END&t;&t;(TMPALIAS_MAP_START)
 macro_line|#endif
 eof

@@ -10,12 +10,14 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/offsets.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/pdc_chassis.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/unwind.h&gt;
 DECL|variable|hlt_counter
 r_int
 id|hlt_counter
@@ -925,5 +927,97 @@ suffix:colon
 r_return
 id|error
 suffix:semicolon
+)brace
+r_int
+r_int
+DECL|function|get_wchan
+id|get_wchan
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|p
+)paren
+(brace
+r_struct
+id|unwind_frame_info
+id|info
+suffix:semicolon
+r_int
+r_int
+id|ip
+suffix:semicolon
+r_int
+id|count
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t; * These bracket the sleeping functions..&n;&t; */
+DECL|macro|first_sched
+macro_line|#&t;define first_sched&t;((unsigned long) scheduling_functions_start_here)
+DECL|macro|last_sched
+macro_line|#&t;define last_sched&t;((unsigned long) scheduling_functions_end_here)
+id|unwind_frame_init_from_blocked_task
+c_func
+(paren
+op_amp
+id|info
+comma
+id|p
+)paren
+suffix:semicolon
+r_do
+(brace
+r_if
+c_cond
+(paren
+id|unwind_once
+c_func
+(paren
+op_amp
+id|info
+)paren
+OL
+l_int|0
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|ip
+op_assign
+id|info.ip
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ip
+OL
+id|first_sched
+op_logical_or
+id|ip
+op_ge
+id|last_sched
+)paren
+r_return
+id|ip
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|count
+op_increment
+OL
+l_int|16
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+DECL|macro|first_sched
+macro_line|#&t;undef first_sched
+DECL|macro|last_sched
+macro_line|#&t;undef last_sched
 )brace
 eof

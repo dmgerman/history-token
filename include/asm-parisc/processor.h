@@ -38,7 +38,7 @@ DECL|macro|DEFAULT_MAP_BASE
 mdefine_line|#define DEFAULT_MAP_BASE&t;DEFAULT_MAP_BASE32
 macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/*&n;** Data detected about CPUs at boot time which is the same for all CPU&squot;s.&n;** HP boxes are SMP - ie identical processors.&n;**&n;** FIXME: some CPU rev info may be processor specific...&n;*/
+multiline_comment|/*&n; * Data detected about CPUs at boot time which is the same for all CPU&squot;s.&n; * HP boxes are SMP - ie identical processors.&n; *&n; * FIXME: some CPU rev info may be processor specific...&n; */
 DECL|struct|system_cpuinfo_parisc
 r_struct
 id|system_cpuinfo_parisc
@@ -116,7 +116,7 @@ suffix:semicolon
 multiline_comment|/* e.g. &quot;1.1e&quot; */
 )brace
 suffix:semicolon
-multiline_comment|/*&n;** Per CPU data structure - ie varies per CPU.&n;*/
+multiline_comment|/* Per CPU data structure - ie varies per CPU.  */
 DECL|struct|cpuinfo_parisc
 r_struct
 id|cpuinfo_parisc
@@ -260,6 +260,8 @@ DECL|typedef|mm_segment_t
 )brace
 id|mm_segment_t
 suffix:semicolon
+DECL|macro|ARCH_MIN_TASKALIGN
+mdefine_line|#define ARCH_MIN_TASKALIGN&t;8
 DECL|struct|thread_struct
 r_struct
 id|thread_struct
@@ -397,9 +399,7 @@ op_star
 id|mm
 )paren
 suffix:semicolon
-DECL|function|get_wchan
-r_static
-r_inline
+r_extern
 r_int
 r_int
 id|get_wchan
@@ -410,19 +410,17 @@ id|task_struct
 op_star
 id|p
 )paren
-(brace
-r_return
-l_int|0xdeadbeef
 suffix:semicolon
-multiline_comment|/* XXX */
-)brace
 DECL|macro|KSTK_EIP
 mdefine_line|#define KSTK_EIP(tsk)&t;((tsk)-&gt;thread.regs.iaoq[0])
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)&t;((tsk)-&gt;thread.regs.gr[30])
-macro_line|#ifdef  CONFIG_PA20
+multiline_comment|/*&n; * PA 2.0 defines data prefetch instructions on page 6-11 of the Kane book.&n; * In addition, many implementations do hardware prefetching of both&n; * instructions and data.&n; *&n; * PA7300LC (page 14-4 of the ERS) also implements prefetching by a load&n; * to gr0 but not in a way that Linux can use.  If the load would cause an&n; * interruption (eg due to prefetching 0), it is suppressed on PA2.0&n; * processors, but not on 7300LC.&n; */
+macro_line|#ifdef  CONFIG_PREFETCH
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH
+DECL|macro|ARCH_HAS_PREFETCHW
+mdefine_line|#define ARCH_HAS_PREFETCHW
 DECL|function|prefetch
 r_extern
 r_inline
@@ -449,8 +447,6 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-DECL|macro|ARCH_HAS_PREFETCHW
-mdefine_line|#define ARCH_HAS_PREFETCHW
 DECL|function|prefetchw
 r_extern
 r_inline

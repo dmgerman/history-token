@@ -77,6 +77,15 @@ r_int
 suffix:semicolon
 r_extern
 r_int
+id|i91u_bus_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|i91u_biosparam
 c_func
 (paren
@@ -95,7 +104,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|i91u_REVID
-mdefine_line|#define i91u_REVID &quot;Initio INI-9X00U/UW SCSI device driver; Revision: 1.03g&quot;
+mdefine_line|#define i91u_REVID &quot;Initio INI-9X00U/UW SCSI device driver; Revision: 1.04a&quot;
 DECL|macro|VIRT_TO_BUS
 mdefine_line|#define VIRT_TO_BUS(i)  (unsigned int) virt_to_bus((void *)(i))
 DECL|macro|ULONG

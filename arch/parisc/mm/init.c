@@ -1799,8 +1799,12 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * Just an arbitrary offset to serve as a &quot;hole&quot; between mapping areas&n; * (between top of physical memory and a potential pcxl dma mapping&n; * area, and below the vmalloc mapping area).&n; *&n; * The current 32K value just means that there will be a 32K &quot;hole&quot;&n; * between mapping areas. That means that  any out-of-bounds memory&n; * accesses will hopefully be caught. The vmalloc() routines leaves&n; * a hole of 4kB between each vmalloced area for the same reason.&n; */
+multiline_comment|/* Leave room for gateway page expansion */
+macro_line|#if KERNEL_MAP_START &lt; GATEWAY_PAGE_SIZE
+macro_line|#error KERNEL_MAP_START is in gateway reserved region
+macro_line|#endif
 DECL|macro|MAP_START
-mdefine_line|#define MAP_START 0x4000 /* Leave room for gateway page expansion */
+mdefine_line|#define MAP_START (KERNEL_MAP_START)
 DECL|macro|VM_MAP_OFFSET
 mdefine_line|#define VM_MAP_OFFSET  (32*1024)
 DECL|macro|SET_MAP_OFFSET
@@ -2445,6 +2449,8 @@ l_int|0
 )paren
 comma
 id|PAGE_SIZE
+op_lshift
+id|PMD_ORDER
 )paren
 suffix:semicolon
 id|pmd

@@ -562,6 +562,13 @@ DECL|macro|SCSI_2
 mdefine_line|#define SCSI_2          3
 DECL|macro|SCSI_3
 mdefine_line|#define SCSI_3          4
+multiline_comment|/*&n; * INQ PERIPHERAL QUALIFIERS&n; */
+DECL|macro|SCSI_INQ_PQ_CON
+mdefine_line|#define SCSI_INQ_PQ_CON         0x00
+DECL|macro|SCSI_INQ_PQ_NOT_CON
+mdefine_line|#define SCSI_INQ_PQ_NOT_CON     0x01
+DECL|macro|SCSI_INQ_PQ_NOT_CAP
+mdefine_line|#define SCSI_INQ_PQ_NOT_CAP     0x03
 multiline_comment|/*&n; * Here are some scsi specific ioctl commands which are sometimes useful.&n; *&n; * Note that include/linux/cdrom.h also defines IOCTL 0x5300 - 0x5395&n; */
 multiline_comment|/* Used to obtain PUN and LUN info.  Conflicts with CDROMAUDIOBUFSIZ */
 DECL|macro|SCSI_IOCTL_GET_IDLUN

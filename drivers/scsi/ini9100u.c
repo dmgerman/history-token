@@ -1,4 +1,4 @@
-multiline_comment|/**************************************************************************&n; * Initio 9100 device driver for Linux.&n; *&n; * Copyright (c) 1994-1998 Initio Corporation&n; * Copyright (c) 1998 Bas Vermeulen &lt;bvermeul@blackstar.xs4all.nl&gt;&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * --------------------------------------------------------------------------&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification, immediately at the beginning of the file.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice, this list of conditions and the following disclaimer in the&n; *    documentation and/or other materials provided with the distribution.&n; * 3. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Where this Software is combined with software released under the terms of &n; * the GNU General Public License (&quot;GPL&quot;) and the terms of the GPL would require the &n; * combined work to also be released under the terms of the GPL, the terms&n; * and conditions of this License will apply in addition to those of the&n; * GPL with the exception of any terms or conditions of this License that&n; * conflict with, or are expressly prohibited by, the GPL.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; *************************************************************************&n; *&n; * DESCRIPTION:&n; *&n; * This is the Linux low-level SCSI driver for Initio INI-9X00U/UW SCSI host&n; * adapters&n; *&n; * 08/06/97 hc&t;- v1.01h&n; *&t;&t;- Support inic-940 and inic-935&n; * 09/26/97 hc&t;- v1.01i&n; *&t;&t;- Make correction from J.W. Schultz suggestion&n; * 10/13/97 hc&t;- Support reset function&n; * 10/21/97 hc&t;- v1.01j&n; *&t;&t;- Support 32 LUN (SCSI 3)&n; * 01/14/98 hc&t;- v1.01k&n; *&t;&t;- Fix memory allocation problem&n; * 03/04/98 hc&t;- v1.01l&n; *&t;&t;- Fix tape rewind which will hang the system problem&n; *&t;&t;- Set can_queue to tul_num_scb&n; * 06/25/98 hc&t;- v1.01m&n; *&t;&t;- Get it work for kernel version &gt;= 2.1.75&n; *&t;&t;- Dynamic assign SCSI bus reset holding time in init_tulip()&n; * 07/02/98 hc&t;- v1.01n&n; *&t;&t;- Support 0002134A&n; * 08/07/98 hc  - v1.01o&n; *&t;&t;- Change the tul_abort_srb routine to use scsi_done. &lt;01&gt;&n; * 09/07/98 hl  - v1.02&n; *              - Change the INI9100U define and proc_dir_entry to&n; *                reflect the newer Kernel 2.1.118, but the v1.o1o&n; *                should work with Kernel 2.1.118.&n; * 09/20/98 wh  - v1.02a&n; *              - Support Abort command.&n; *              - Handle reset routine.&n; * 09/21/98 hl  - v1.03&n; *              - remove comments.&n; * 12/09/98 bv&t;- v1.03a&n; *&t;&t;- Removed unused code&n; * 12/13/98 bv&t;- v1.03b&n; *&t;&t;- Remove cli() locking for kernels &gt;= 2.1.95. This uses&n; *&t;&t;  spinlocks to serialize access to the pSRB_head and&n; *&t;&t;  pSRB_tail members of the HCS structure.&n; * 09/01/99 bv&t;- v1.03d&n; *&t;&t;- Fixed a deadlock problem in SMP.&n; * 21/01/99 bv&t;- v1.03e&n; *&t;&t;- Add support for the Domex 3192U PCI SCSI&n; *&t;&t;  This is a slightly modified patch by&n; *&t;&t;  Brian Macy &lt;bmacy@sunshinecomputing.com&gt;&n; * 22/02/99 bv&t;- v1.03f&n; *&t;&t;- Didn&squot;t detect the INIC-950 in 2.0.x correctly.&n; *&t;&t;  Now fixed.&n; * 05/07/99 bv&t;- v1.03g&n; *&t;&t;- Changed the assumption that HZ = 100&n; * 10/17/03 mc&t;- v1.04&n; *&t;&t;- added new DMA API support&n; **************************************************************************/
+multiline_comment|/**************************************************************************&n; * Initio 9100 device driver for Linux.&n; *&n; * Copyright (c) 1994-1998 Initio Corporation&n; * Copyright (c) 1998 Bas Vermeulen &lt;bvermeul@blackstar.xs4all.nl&gt;&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * --------------------------------------------------------------------------&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification, immediately at the beginning of the file.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice, this list of conditions and the following disclaimer in the&n; *    documentation and/or other materials provided with the distribution.&n; * 3. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Where this Software is combined with software released under the terms of &n; * the GNU General Public License (&quot;GPL&quot;) and the terms of the GPL would require the &n; * combined work to also be released under the terms of the GPL, the terms&n; * and conditions of this License will apply in addition to those of the&n; * GPL with the exception of any terms or conditions of this License that&n; * conflict with, or are expressly prohibited by, the GPL.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; *************************************************************************&n; *&n; * DESCRIPTION:&n; *&n; * This is the Linux low-level SCSI driver for Initio INI-9X00U/UW SCSI host&n; * adapters&n; *&n; * 08/06/97 hc&t;- v1.01h&n; *&t;&t;- Support inic-940 and inic-935&n; * 09/26/97 hc&t;- v1.01i&n; *&t;&t;- Make correction from J.W. Schultz suggestion&n; * 10/13/97 hc&t;- Support reset function&n; * 10/21/97 hc&t;- v1.01j&n; *&t;&t;- Support 32 LUN (SCSI 3)&n; * 01/14/98 hc&t;- v1.01k&n; *&t;&t;- Fix memory allocation problem&n; * 03/04/98 hc&t;- v1.01l&n; *&t;&t;- Fix tape rewind which will hang the system problem&n; *&t;&t;- Set can_queue to tul_num_scb&n; * 06/25/98 hc&t;- v1.01m&n; *&t;&t;- Get it work for kernel version &gt;= 2.1.75&n; *&t;&t;- Dynamic assign SCSI bus reset holding time in init_tulip()&n; * 07/02/98 hc&t;- v1.01n&n; *&t;&t;- Support 0002134A&n; * 08/07/98 hc  - v1.01o&n; *&t;&t;- Change the tul_abort_srb routine to use scsi_done. &lt;01&gt;&n; * 09/07/98 hl  - v1.02&n; *              - Change the INI9100U define and proc_dir_entry to&n; *                reflect the newer Kernel 2.1.118, but the v1.o1o&n; *                should work with Kernel 2.1.118.&n; * 09/20/98 wh  - v1.02a&n; *              - Support Abort command.&n; *              - Handle reset routine.&n; * 09/21/98 hl  - v1.03&n; *              - remove comments.&n; * 12/09/98 bv&t;- v1.03a&n; *&t;&t;- Removed unused code&n; * 12/13/98 bv&t;- v1.03b&n; *&t;&t;- Remove cli() locking for kernels &gt;= 2.1.95. This uses&n; *&t;&t;  spinlocks to serialize access to the pSRB_head and&n; *&t;&t;  pSRB_tail members of the HCS structure.&n; * 09/01/99 bv&t;- v1.03d&n; *&t;&t;- Fixed a deadlock problem in SMP.&n; * 21/01/99 bv&t;- v1.03e&n; *&t;&t;- Add support for the Domex 3192U PCI SCSI&n; *&t;&t;  This is a slightly modified patch by&n; *&t;&t;  Brian Macy &lt;bmacy@sunshinecomputing.com&gt;&n; * 22/02/99 bv&t;- v1.03f&n; *&t;&t;- Didn&squot;t detect the INIC-950 in 2.0.x correctly.&n; *&t;&t;  Now fixed.&n; * 05/07/99 bv&t;- v1.03g&n; *&t;&t;- Changed the assumption that HZ = 100&n; * 10/17/03 mc&t;- v1.04&n; *&t;&t;- added new DMA API support&n; * 06/01/04 jmd&t;- v1.04a&n; *&t;&t;- Re-add reset_bus support&n; **************************************************************************/
 DECL|macro|CVT_LINUX_VERSION
 mdefine_line|#define CVT_LINUX_VERSION(V,P,S)        (V * 65536 + P * 256 + S)
 macro_line|#ifndef LINUX_VERSION_CODE
@@ -67,6 +67,11 @@ comma
 singleline_comment|//&t;.abort&t;&t;= i91u_abort,
 singleline_comment|//&t;.reset&t;&t;= i91u_reset,
 dot
+id|eh_bus_reset_handler
+op_assign
+id|i91u_bus_reset
+comma
+dot
 id|bios_param
 op_assign
 id|i91u_biosparam
@@ -125,7 +130,7 @@ r_char
 op_star
 id|i91uVersion
 op_assign
-l_string|&quot;v1.04&quot;
+l_string|&quot;v1.04a&quot;
 suffix:semicolon
 DECL|macro|TULSZ
 mdefine_line|#define TULSZ(sz)     (sizeof(sz) / sizeof(sz[0]))
@@ -2086,6 +2091,40 @@ id|SCpnt-&gt;device-&gt;id
 comma
 id|reset_flags
 )paren
+suffix:semicolon
+)brace
+DECL|function|i91u_bus_reset
+r_int
+id|i91u_bus_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+(brace
+id|HCS
+op_star
+id|pHCB
+suffix:semicolon
+id|pHCB
+op_assign
+(paren
+id|HCS
+op_star
+)paren
+id|SCpnt-&gt;device-&gt;host-&gt;base
+suffix:semicolon
+id|tul_reset_scsi
+c_func
+(paren
+id|pHCB
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Return the &quot;logical geometry&quot;&n; */
