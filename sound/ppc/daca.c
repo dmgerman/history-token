@@ -850,8 +850,6 @@ id|daca_put_amp
 comma
 )brace
 suffix:semicolon
-DECL|macro|num_controls
-mdefine_line|#define num_controls(ary) (sizeof(ary) / sizeof(snd_kcontrol_new_t))
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 DECL|function|daca_resume
 r_static
@@ -1082,7 +1080,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|daca_mixers

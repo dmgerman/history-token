@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   ALSA driver for ATI IXP 150/200/250/300 AC97 controllers&n; *&n; *&t;Copyright (c) 2004 Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; *   ALSA driver for ATI IXP 150/200/250 AC97 modem controllers&n; *&n; *&t;Copyright (c) 2004 Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -22,7 +22,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;ATI IXP AC97 controller&quot;
+l_string|&quot;ATI IXP MC97 controller&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -34,7 +34,7 @@ suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
-l_string|&quot;{{ATI,IXP150/200/250/300}}&quot;
+l_string|&quot;{{ATI,IXP150/200/250}}&quot;
 )paren
 suffix:semicolon
 DECL|variable|index
@@ -93,30 +93,6 @@ l_int|1
 )braket
 op_assign
 l_int|48000
-)brace
-suffix:semicolon
-DECL|variable|spdif_aclink
-r_static
-r_int
-id|spdif_aclink
-(braket
-id|SNDRV_CARDS
-)braket
-op_assign
-(brace
-(braket
-l_int|0
-dot
-dot
-dot
-(paren
-id|SNDRV_CARDS
-op_minus
-l_int|1
-)paren
-)braket
-op_assign
-l_int|1
 )brace
 suffix:semicolon
 DECL|variable|boot_devs
@@ -204,41 +180,25 @@ comma
 l_string|&quot;AC&squot;97 codec clock (default 48000Hz).&quot;
 )paren
 suffix:semicolon
-id|module_param_array
-c_func
-(paren
-id|spdif_aclink
-comma
-r_bool
-comma
-id|boot_devs
-comma
-l_int|0444
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|spdif_aclink
-comma
-l_string|&quot;S/PDIF over AC-link.&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n; */
 DECL|macro|ATI_REG_ISR
 mdefine_line|#define ATI_REG_ISR&t;&t;&t;0x00&t;/* interrupt source */
-DECL|macro|ATI_REG_ISR_IN_XRUN
-mdefine_line|#define  ATI_REG_ISR_IN_XRUN&t;&t;(1U&lt;&lt;0)
-DECL|macro|ATI_REG_ISR_IN_STATUS
-mdefine_line|#define  ATI_REG_ISR_IN_STATUS&t;&t;(1U&lt;&lt;1)
-DECL|macro|ATI_REG_ISR_OUT_XRUN
-mdefine_line|#define  ATI_REG_ISR_OUT_XRUN&t;&t;(1U&lt;&lt;2)
-DECL|macro|ATI_REG_ISR_OUT_STATUS
-mdefine_line|#define  ATI_REG_ISR_OUT_STATUS&t;&t;(1U&lt;&lt;3)
-DECL|macro|ATI_REG_ISR_SPDF_XRUN
-mdefine_line|#define  ATI_REG_ISR_SPDF_XRUN&t;&t;(1U&lt;&lt;4)
-DECL|macro|ATI_REG_ISR_SPDF_STATUS
-mdefine_line|#define  ATI_REG_ISR_SPDF_STATUS&t;(1U&lt;&lt;5)
+DECL|macro|ATI_REG_ISR_MODEM_IN_XRUN
+mdefine_line|#define  ATI_REG_ISR_MODEM_IN_XRUN&t;(1U&lt;&lt;0)
+DECL|macro|ATI_REG_ISR_MODEM_IN_STATUS
+mdefine_line|#define  ATI_REG_ISR_MODEM_IN_STATUS&t;(1U&lt;&lt;1)
+DECL|macro|ATI_REG_ISR_MODEM_OUT1_XRUN
+mdefine_line|#define  ATI_REG_ISR_MODEM_OUT1_XRUN&t;(1U&lt;&lt;2)
+DECL|macro|ATI_REG_ISR_MODEM_OUT1_STATUS
+mdefine_line|#define  ATI_REG_ISR_MODEM_OUT1_STATUS&t;(1U&lt;&lt;3)
+DECL|macro|ATI_REG_ISR_MODEM_OUT2_XRUN
+mdefine_line|#define  ATI_REG_ISR_MODEM_OUT2_XRUN&t;(1U&lt;&lt;4)
+DECL|macro|ATI_REG_ISR_MODEM_OUT2_STATUS
+mdefine_line|#define  ATI_REG_ISR_MODEM_OUT2_STATUS&t;(1U&lt;&lt;5)
+DECL|macro|ATI_REG_ISR_MODEM_OUT3_XRUN
+mdefine_line|#define  ATI_REG_ISR_MODEM_OUT3_XRUN&t;(1U&lt;&lt;6)
+DECL|macro|ATI_REG_ISR_MODEM_OUT3_STATUS
+mdefine_line|#define  ATI_REG_ISR_MODEM_OUT3_STATUS&t;(1U&lt;&lt;7)
 DECL|macro|ATI_REG_ISR_PHYS_INTR
 mdefine_line|#define  ATI_REG_ISR_PHYS_INTR&t;&t;(1U&lt;&lt;8)
 DECL|macro|ATI_REG_ISR_PHYS_MISMATCH
@@ -251,20 +211,20 @@ DECL|macro|ATI_REG_ISR_CODEC2_NOT_READY
 mdefine_line|#define  ATI_REG_ISR_CODEC2_NOT_READY&t;(1U&lt;&lt;12)
 DECL|macro|ATI_REG_ISR_NEW_FRAME
 mdefine_line|#define  ATI_REG_ISR_NEW_FRAME&t;&t;(1U&lt;&lt;13)
+DECL|macro|ATI_REG_ISR_MODEM_GPIO_DATA
+mdefine_line|#define  ATI_REG_ISR_MODEM_GPIO_DATA&t;(1U&lt;&lt;14)
 DECL|macro|ATI_REG_IER
 mdefine_line|#define ATI_REG_IER&t;&t;&t;0x04&t;/* interrupt enable */
-DECL|macro|ATI_REG_IER_IN_XRUN_EN
-mdefine_line|#define  ATI_REG_IER_IN_XRUN_EN&t;&t;(1U&lt;&lt;0)
-DECL|macro|ATI_REG_IER_IO_STATUS_EN
-mdefine_line|#define  ATI_REG_IER_IO_STATUS_EN&t;(1U&lt;&lt;1)
-DECL|macro|ATI_REG_IER_OUT_XRUN_EN
-mdefine_line|#define  ATI_REG_IER_OUT_XRUN_EN&t;(1U&lt;&lt;2)
-DECL|macro|ATI_REG_IER_OUT_XRUN_COND
-mdefine_line|#define  ATI_REG_IER_OUT_XRUN_COND&t;(1U&lt;&lt;3)
-DECL|macro|ATI_REG_IER_SPDF_XRUN_EN
-mdefine_line|#define  ATI_REG_IER_SPDF_XRUN_EN&t;(1U&lt;&lt;4)
-DECL|macro|ATI_REG_IER_SPDF_STATUS_EN
-mdefine_line|#define  ATI_REG_IER_SPDF_STATUS_EN&t;(1U&lt;&lt;5)
+DECL|macro|ATI_REG_IER_MODEM_IN_XRUN_EN
+mdefine_line|#define  ATI_REG_IER_MODEM_IN_XRUN_EN&t;(1U&lt;&lt;0)
+DECL|macro|ATI_REG_IER_MODEM_STATUS_EN
+mdefine_line|#define  ATI_REG_IER_MODEM_STATUS_EN&t;(1U&lt;&lt;1)
+DECL|macro|ATI_REG_IER_MODEM_OUT1_XRUN_EN
+mdefine_line|#define  ATI_REG_IER_MODEM_OUT1_XRUN_EN&t;(1U&lt;&lt;2)
+DECL|macro|ATI_REG_IER_MODEM_OUT2_XRUN_EN
+mdefine_line|#define  ATI_REG_IER_MODEM_OUT2_XRUN_EN&t;(1U&lt;&lt;4)
+DECL|macro|ATI_REG_IER_MODEM_OUT3_XRUN_EN
+mdefine_line|#define  ATI_REG_IER_MODEM_OUT3_XRUN_EN&t;(1U&lt;&lt;6)
 DECL|macro|ATI_REG_IER_PHYS_INTR_EN
 mdefine_line|#define  ATI_REG_IER_PHYS_INTR_EN&t;(1U&lt;&lt;8)
 DECL|macro|ATI_REG_IER_PHYS_MISMATCH_EN
@@ -277,52 +237,36 @@ DECL|macro|ATI_REG_IER_CODEC2_INTR_EN
 mdefine_line|#define  ATI_REG_IER_CODEC2_INTR_EN&t;(1U&lt;&lt;12)
 DECL|macro|ATI_REG_IER_NEW_FRAME_EN
 mdefine_line|#define  ATI_REG_IER_NEW_FRAME_EN&t;(1U&lt;&lt;13)&t;/* (RO */
-DECL|macro|ATI_REG_IER_SET_BUS_BUSY
-mdefine_line|#define  ATI_REG_IER_SET_BUS_BUSY&t;(1U&lt;&lt;14)&t;/* (WO) audio is running */
+DECL|macro|ATI_REG_IER_MODEM_GPIO_DATA_EN
+mdefine_line|#define  ATI_REG_IER_MODEM_GPIO_DATA_EN&t;(1U&lt;&lt;14)&t;/* (WO) modem is running */
+DECL|macro|ATI_REG_IER_MODEM_SET_BUS_BUSY
+mdefine_line|#define  ATI_REG_IER_MODEM_SET_BUS_BUSY&t;(1U&lt;&lt;15)
 DECL|macro|ATI_REG_CMD
 mdefine_line|#define ATI_REG_CMD&t;&t;&t;0x08&t;/* command */
 DECL|macro|ATI_REG_CMD_POWERDOWN
-mdefine_line|#define  ATI_REG_CMD_POWERDOWN&t;&t;(1U&lt;&lt;0)
-DECL|macro|ATI_REG_CMD_RECEIVE_EN
-mdefine_line|#define  ATI_REG_CMD_RECEIVE_EN&t;&t;(1U&lt;&lt;1)
-DECL|macro|ATI_REG_CMD_SEND_EN
-mdefine_line|#define  ATI_REG_CMD_SEND_EN&t;&t;(1U&lt;&lt;2)
-DECL|macro|ATI_REG_CMD_STATUS_MEM
-mdefine_line|#define  ATI_REG_CMD_STATUS_MEM&t;&t;(1U&lt;&lt;3)
-DECL|macro|ATI_REG_CMD_SPDF_OUT_EN
-mdefine_line|#define  ATI_REG_CMD_SPDF_OUT_EN&t;(1U&lt;&lt;4)
-DECL|macro|ATI_REG_CMD_SPDF_STATUS_MEM
-mdefine_line|#define  ATI_REG_CMD_SPDF_STATUS_MEM&t;(1U&lt;&lt;5)
-DECL|macro|ATI_REG_CMD_SPDF_THRESHOLD
-mdefine_line|#define  ATI_REG_CMD_SPDF_THRESHOLD&t;(3U&lt;&lt;6)
-DECL|macro|ATI_REG_CMD_SPDF_THRESHOLD_SHIFT
-mdefine_line|#define  ATI_REG_CMD_SPDF_THRESHOLD_SHIFT&t;6
-DECL|macro|ATI_REG_CMD_IN_DMA_EN
-mdefine_line|#define  ATI_REG_CMD_IN_DMA_EN&t;&t;(1U&lt;&lt;8)
-DECL|macro|ATI_REG_CMD_OUT_DMA_EN
-mdefine_line|#define  ATI_REG_CMD_OUT_DMA_EN&t;&t;(1U&lt;&lt;9)
-DECL|macro|ATI_REG_CMD_SPDF_DMA_EN
-mdefine_line|#define  ATI_REG_CMD_SPDF_DMA_EN&t;(1U&lt;&lt;10)
-DECL|macro|ATI_REG_CMD_SPDF_OUT_STOPPED
-mdefine_line|#define  ATI_REG_CMD_SPDF_OUT_STOPPED&t;(1U&lt;&lt;11)
-DECL|macro|ATI_REG_CMD_SPDF_CONFIG_MASK
-mdefine_line|#define  ATI_REG_CMD_SPDF_CONFIG_MASK&t;(7U&lt;&lt;12)
-DECL|macro|ATI_REG_CMD_SPDF_CONFIG_34
-mdefine_line|#define   ATI_REG_CMD_SPDF_CONFIG_34&t;(1U&lt;&lt;12)
-DECL|macro|ATI_REG_CMD_SPDF_CONFIG_78
-mdefine_line|#define   ATI_REG_CMD_SPDF_CONFIG_78&t;(2U&lt;&lt;12)
-DECL|macro|ATI_REG_CMD_SPDF_CONFIG_69
-mdefine_line|#define   ATI_REG_CMD_SPDF_CONFIG_69&t;(3U&lt;&lt;12)
-DECL|macro|ATI_REG_CMD_SPDF_CONFIG_01
-mdefine_line|#define   ATI_REG_CMD_SPDF_CONFIG_01&t;(4U&lt;&lt;12)
-DECL|macro|ATI_REG_CMD_INTERLEAVE_SPDF
-mdefine_line|#define  ATI_REG_CMD_INTERLEAVE_SPDF&t;(1U&lt;&lt;16)
+mdefine_line|#define  ATI_REG_CMD_POWERDOWN&t;(1U&lt;&lt;0)
+DECL|macro|ATI_REG_CMD_MODEM_RECEIVE_EN
+mdefine_line|#define  ATI_REG_CMD_MODEM_RECEIVE_EN&t;(1U&lt;&lt;1)&t;/* modem only */
+DECL|macro|ATI_REG_CMD_MODEM_SEND1_EN
+mdefine_line|#define  ATI_REG_CMD_MODEM_SEND1_EN&t;(1U&lt;&lt;2)&t;/* modem only */
+DECL|macro|ATI_REG_CMD_MODEM_SEND2_EN
+mdefine_line|#define  ATI_REG_CMD_MODEM_SEND2_EN&t;(1U&lt;&lt;3)&t;/* modem only */
+DECL|macro|ATI_REG_CMD_MODEM_SEND3_EN
+mdefine_line|#define  ATI_REG_CMD_MODEM_SEND3_EN&t;(1U&lt;&lt;4)&t;/* modem only */
+DECL|macro|ATI_REG_CMD_MODEM_STATUS_MEM
+mdefine_line|#define  ATI_REG_CMD_MODEM_STATUS_MEM&t;(1U&lt;&lt;5)&t;/* modem only */
+DECL|macro|ATI_REG_CMD_MODEM_IN_DMA_EN
+mdefine_line|#define  ATI_REG_CMD_MODEM_IN_DMA_EN&t;(1U&lt;&lt;8)&t;/* modem only */
+DECL|macro|ATI_REG_CMD_MODEM_OUT_DMA1_EN
+mdefine_line|#define  ATI_REG_CMD_MODEM_OUT_DMA1_EN&t;(1U&lt;&lt;9)&t;/* modem only */
+DECL|macro|ATI_REG_CMD_MODEM_OUT_DMA2_EN
+mdefine_line|#define  ATI_REG_CMD_MODEM_OUT_DMA2_EN&t;(1U&lt;&lt;10)&t;/* modem only */
+DECL|macro|ATI_REG_CMD_MODEM_OUT_DMA3_EN
+mdefine_line|#define  ATI_REG_CMD_MODEM_OUT_DMA3_EN&t;(1U&lt;&lt;11)&t;/* modem only */
 DECL|macro|ATI_REG_CMD_AUDIO_PRESENT
 mdefine_line|#define  ATI_REG_CMD_AUDIO_PRESENT&t;(1U&lt;&lt;20)
-DECL|macro|ATI_REG_CMD_INTERLEAVE_IN
-mdefine_line|#define  ATI_REG_CMD_INTERLEAVE_IN&t;(1U&lt;&lt;21)
-DECL|macro|ATI_REG_CMD_INTERLEAVE_OUT
-mdefine_line|#define  ATI_REG_CMD_INTERLEAVE_OUT&t;(1U&lt;&lt;22)
+DECL|macro|ATI_REG_CMD_MODEM_GPIO_THRU_DMA
+mdefine_line|#define  ATI_REG_CMD_MODEM_GPIO_THRU_DMA&t;(1U&lt;&lt;22)&t;/* modem only */
 DECL|macro|ATI_REG_CMD_LOOPBACK_EN
 mdefine_line|#define  ATI_REG_CMD_LOOPBACK_EN&t;(1U&lt;&lt;23)
 DECL|macro|ATI_REG_CMD_PACKED_DIS
@@ -371,80 +315,77 @@ DECL|macro|ATI_REG_COUNTER_BITCLOCK
 mdefine_line|#define  ATI_REG_COUNTER_BITCLOCK&t;(31U&lt;&lt;8)
 DECL|macro|ATI_REG_IN_FIFO_THRESHOLD
 mdefine_line|#define ATI_REG_IN_FIFO_THRESHOLD&t;0x1c
-DECL|macro|ATI_REG_IN_DMA_LINKPTR
-mdefine_line|#define ATI_REG_IN_DMA_LINKPTR&t;&t;0x20
-DECL|macro|ATI_REG_IN_DMA_DT_START
-mdefine_line|#define ATI_REG_IN_DMA_DT_START&t;&t;0x24&t;/* RO */
-DECL|macro|ATI_REG_IN_DMA_DT_NEXT
-mdefine_line|#define ATI_REG_IN_DMA_DT_NEXT&t;&t;0x28&t;/* RO */
-DECL|macro|ATI_REG_IN_DMA_DT_CUR
-mdefine_line|#define ATI_REG_IN_DMA_DT_CUR&t;&t;0x2c&t;/* RO */
-DECL|macro|ATI_REG_IN_DMA_DT_SIZE
-mdefine_line|#define ATI_REG_IN_DMA_DT_SIZE&t;&t;0x30
-DECL|macro|ATI_REG_OUT_DMA_SLOT
-mdefine_line|#define ATI_REG_OUT_DMA_SLOT&t;&t;0x34
-DECL|macro|ATI_REG_OUT_DMA_SLOT_BIT
-mdefine_line|#define  ATI_REG_OUT_DMA_SLOT_BIT(x)&t;(1U &lt;&lt; ((x) - 3))
-DECL|macro|ATI_REG_OUT_DMA_SLOT_MASK
-mdefine_line|#define  ATI_REG_OUT_DMA_SLOT_MASK&t;0x1ff
-DECL|macro|ATI_REG_OUT_DMA_THRESHOLD_MASK
-mdefine_line|#define  ATI_REG_OUT_DMA_THRESHOLD_MASK&t;0xf800
-DECL|macro|ATI_REG_OUT_DMA_THRESHOLD_SHIFT
-mdefine_line|#define  ATI_REG_OUT_DMA_THRESHOLD_SHIFT&t;11
-DECL|macro|ATI_REG_OUT_DMA_LINKPTR
-mdefine_line|#define ATI_REG_OUT_DMA_LINKPTR&t;&t;0x38
-DECL|macro|ATI_REG_OUT_DMA_DT_START
-mdefine_line|#define ATI_REG_OUT_DMA_DT_START&t;0x3c&t;/* RO */
-DECL|macro|ATI_REG_OUT_DMA_DT_NEXT
-mdefine_line|#define ATI_REG_OUT_DMA_DT_NEXT&t;&t;0x40&t;/* RO */
-DECL|macro|ATI_REG_OUT_DMA_DT_CUR
-mdefine_line|#define ATI_REG_OUT_DMA_DT_CUR&t;&t;0x44&t;/* RO */
-DECL|macro|ATI_REG_OUT_DMA_DT_SIZE
-mdefine_line|#define ATI_REG_OUT_DMA_DT_SIZE&t;&t;0x48
-DECL|macro|ATI_REG_SPDF_CMD
-mdefine_line|#define ATI_REG_SPDF_CMD&t;&t;0x4c
-DECL|macro|ATI_REG_SPDF_CMD_LFSR
-mdefine_line|#define  ATI_REG_SPDF_CMD_LFSR&t;&t;(1U&lt;&lt;4)
-DECL|macro|ATI_REG_SPDF_CMD_SINGLE_CH
-mdefine_line|#define  ATI_REG_SPDF_CMD_SINGLE_CH&t;(1U&lt;&lt;5)
-DECL|macro|ATI_REG_SPDF_CMD_LFSR_ACC
-mdefine_line|#define  ATI_REG_SPDF_CMD_LFSR_ACC&t;(0xff&lt;&lt;8)&t;/* RO */
-DECL|macro|ATI_REG_SPDF_DMA_LINKPTR
-mdefine_line|#define ATI_REG_SPDF_DMA_LINKPTR&t;0x50
-DECL|macro|ATI_REG_SPDF_DMA_DT_START
-mdefine_line|#define ATI_REG_SPDF_DMA_DT_START&t;0x54&t;/* RO */
-DECL|macro|ATI_REG_SPDF_DMA_DT_NEXT
-mdefine_line|#define ATI_REG_SPDF_DMA_DT_NEXT&t;0x58&t;/* RO */
-DECL|macro|ATI_REG_SPDF_DMA_DT_CUR
-mdefine_line|#define ATI_REG_SPDF_DMA_DT_CUR&t;&t;0x5c&t;/* RO */
-DECL|macro|ATI_REG_SPDF_DMA_DT_SIZE
-mdefine_line|#define ATI_REG_SPDF_DMA_DT_SIZE&t;0x60
+DECL|macro|ATI_REG_MODEM_IN_DMA_LINKPTR
+mdefine_line|#define ATI_REG_MODEM_IN_DMA_LINKPTR&t;0x20
+DECL|macro|ATI_REG_MODEM_IN_DMA_DT_START
+mdefine_line|#define ATI_REG_MODEM_IN_DMA_DT_START&t;0x24&t;/* RO */
+DECL|macro|ATI_REG_MODEM_IN_DMA_DT_NEXT
+mdefine_line|#define ATI_REG_MODEM_IN_DMA_DT_NEXT&t;0x28&t;/* RO */
+DECL|macro|ATI_REG_MODEM_IN_DMA_DT_CUR
+mdefine_line|#define ATI_REG_MODEM_IN_DMA_DT_CUR&t;0x2c&t;/* RO */
+DECL|macro|ATI_REG_MODEM_IN_DMA_DT_SIZE
+mdefine_line|#define ATI_REG_MODEM_IN_DMA_DT_SIZE&t;0x30
+DECL|macro|ATI_REG_MODEM_OUT_FIFO
+mdefine_line|#define ATI_REG_MODEM_OUT_FIFO&t;&t;0x34&t;/* output threshold */
+DECL|macro|ATI_REG_MODEM_OUT1_DMA_THRESHOLD_MASK
+mdefine_line|#define  ATI_REG_MODEM_OUT1_DMA_THRESHOLD_MASK&t;(0xf&lt;&lt;16)
+DECL|macro|ATI_REG_MODEM_OUT1_DMA_THRESHOLD_SHIFT
+mdefine_line|#define  ATI_REG_MODEM_OUT1_DMA_THRESHOLD_SHIFT&t;16
+DECL|macro|ATI_REG_MODEM_OUT_DMA1_LINKPTR
+mdefine_line|#define ATI_REG_MODEM_OUT_DMA1_LINKPTR&t;0x38
+DECL|macro|ATI_REG_MODEM_OUT_DMA2_LINKPTR
+mdefine_line|#define ATI_REG_MODEM_OUT_DMA2_LINKPTR&t;0x3c
+DECL|macro|ATI_REG_MODEM_OUT_DMA3_LINKPTR
+mdefine_line|#define ATI_REG_MODEM_OUT_DMA3_LINKPTR&t;0x40
+DECL|macro|ATI_REG_MODEM_OUT_DMA1_DT_START
+mdefine_line|#define ATI_REG_MODEM_OUT_DMA1_DT_START&t;0x44
+DECL|macro|ATI_REG_MODEM_OUT_DMA1_DT_NEXT
+mdefine_line|#define ATI_REG_MODEM_OUT_DMA1_DT_NEXT&t;0x48
+DECL|macro|ATI_REG_MODEM_OUT_DMA1_DT_CUR
+mdefine_line|#define ATI_REG_MODEM_OUT_DMA1_DT_CUR&t;0x4c
+DECL|macro|ATI_REG_MODEM_OUT_DMA2_DT_START
+mdefine_line|#define ATI_REG_MODEM_OUT_DMA2_DT_START&t;0x50
+DECL|macro|ATI_REG_MODEM_OUT_DMA2_DT_NEXT
+mdefine_line|#define ATI_REG_MODEM_OUT_DMA2_DT_NEXT&t;0x54
+DECL|macro|ATI_REG_MODEM_OUT_DMA2_DT_CUR
+mdefine_line|#define ATI_REG_MODEM_OUT_DMA2_DT_CUR&t;0x58
+DECL|macro|ATI_REG_MODEM_OUT_DMA3_DT_START
+mdefine_line|#define ATI_REG_MODEM_OUT_DMA3_DT_START&t;0x5c
+DECL|macro|ATI_REG_MODEM_OUT_DMA3_DT_NEXT
+mdefine_line|#define ATI_REG_MODEM_OUT_DMA3_DT_NEXT&t;0x60
+DECL|macro|ATI_REG_MODEM_OUT_DMA3_DT_CUR
+mdefine_line|#define ATI_REG_MODEM_OUT_DMA3_DT_CUR&t;0x64
+DECL|macro|ATI_REG_MODEM_OUT_DMA12_DT_SIZE
+mdefine_line|#define ATI_REG_MODEM_OUT_DMA12_DT_SIZE&t;0x68
+DECL|macro|ATI_REG_MODEM_OUT_DMA3_DT_SIZE
+mdefine_line|#define ATI_REG_MODEM_OUT_DMA3_DT_SIZE&t;0x6c
+DECL|macro|ATI_REG_MODEM_OUT_FIFO_USED
+mdefine_line|#define ATI_REG_MODEM_OUT_FIFO_USED     0x70
+DECL|macro|ATI_REG_MODEM_OUT_GPIO
+mdefine_line|#define ATI_REG_MODEM_OUT_GPIO&t;&t;0x74
+DECL|macro|ATI_REG_MODEM_OUT_GPIO_EN
+mdefine_line|#define  ATI_REG_MODEM_OUT_GPIO_EN&t;   1
+DECL|macro|ATI_REG_MODEM_OUT_GPIO_DATA_SHIFT
+mdefine_line|#define  ATI_REG_MODEM_OUT_GPIO_DATA_SHIFT 5
+DECL|macro|ATI_REG_MODEM_IN_GPIO
+mdefine_line|#define ATI_REG_MODEM_IN_GPIO&t;&t;0x78
 DECL|macro|ATI_REG_MODEM_MIRROR
 mdefine_line|#define ATI_REG_MODEM_MIRROR&t;&t;0x7c
 DECL|macro|ATI_REG_AUDIO_MIRROR
 mdefine_line|#define ATI_REG_AUDIO_MIRROR&t;&t;0x80
-DECL|macro|ATI_REG_6CH_REORDER
-mdefine_line|#define ATI_REG_6CH_REORDER&t;&t;0x84&t;/* reorder slots for 6ch */
-DECL|macro|ATI_REG_6CH_REORDER_EN
-mdefine_line|#define  ATI_REG_6CH_REORDER_EN&t;&t;(1U&lt;&lt;0)&t;/* 3,4,7,8,6,9 -&gt; 3,4,6,9,7,8 */
-DECL|macro|ATI_REG_FIFO_FLUSH
-mdefine_line|#define ATI_REG_FIFO_FLUSH&t;&t;0x88
-DECL|macro|ATI_REG_FIFO_OUT_FLUSH
-mdefine_line|#define  ATI_REG_FIFO_OUT_FLUSH&t;&t;(1U&lt;&lt;0)
-DECL|macro|ATI_REG_FIFO_IN_FLUSH
-mdefine_line|#define  ATI_REG_FIFO_IN_FLUSH&t;&t;(1U&lt;&lt;1)
+DECL|macro|ATI_REG_MODEM_FIFO_FLUSH
+mdefine_line|#define ATI_REG_MODEM_FIFO_FLUSH&t;0x88
+DECL|macro|ATI_REG_MODEM_FIFO_OUT1_FLUSH
+mdefine_line|#define  ATI_REG_MODEM_FIFO_OUT1_FLUSH&t;(1U&lt;&lt;0)
+DECL|macro|ATI_REG_MODEM_FIFO_OUT2_FLUSH
+mdefine_line|#define  ATI_REG_MODEM_FIFO_OUT2_FLUSH&t;(1U&lt;&lt;1)
+DECL|macro|ATI_REG_MODEM_FIFO_OUT3_FLUSH
+mdefine_line|#define  ATI_REG_MODEM_FIFO_OUT3_FLUSH&t;(1U&lt;&lt;2)
+DECL|macro|ATI_REG_MODEM_FIFO_IN_FLUSH
+mdefine_line|#define  ATI_REG_MODEM_FIFO_IN_FLUSH&t;(1U&lt;&lt;3)
 multiline_comment|/* LINKPTR */
 DECL|macro|ATI_REG_LINKPTR_EN
 mdefine_line|#define  ATI_REG_LINKPTR_EN&t;&t;(1U&lt;&lt;0)
-multiline_comment|/* [INT|OUT|SPDIF]_DMA_DT_SIZE */
-DECL|macro|ATI_REG_DMA_DT_SIZE
-mdefine_line|#define  ATI_REG_DMA_DT_SIZE&t;&t;(0xffffU&lt;&lt;0)
-DECL|macro|ATI_REG_DMA_FIFO_USED
-mdefine_line|#define  ATI_REG_DMA_FIFO_USED&t;&t;(0x1fU&lt;&lt;16)
-DECL|macro|ATI_REG_DMA_FIFO_FREE
-mdefine_line|#define  ATI_REG_DMA_FIFO_FREE&t;&t;(0x1fU&lt;&lt;21)
-DECL|macro|ATI_REG_DMA_STATE
-mdefine_line|#define  ATI_REG_DMA_STATE&t;&t;(7U&lt;&lt;26)
 DECL|macro|ATI_MAX_DESCRIPTORS
 mdefine_line|#define ATI_MAX_DESCRIPTORS&t;256&t;/* max number of descriptor packets */
 multiline_comment|/*&n; */
@@ -499,7 +440,6 @@ suffix:semicolon
 multiline_comment|/*&n; * stream enum&n; */
 DECL|enumerator|ATI_DMA_PLAYBACK
 DECL|enumerator|ATI_DMA_CAPTURE
-DECL|enumerator|ATI_DMA_SPDIF
 DECL|enumerator|NUM_ATI_DMAS
 r_enum
 (brace
@@ -507,15 +447,12 @@ id|ATI_DMA_PLAYBACK
 comma
 id|ATI_DMA_CAPTURE
 comma
-id|ATI_DMA_SPDIF
-comma
 id|NUM_ATI_DMAS
 )brace
 suffix:semicolon
 multiline_comment|/* DMAs */
 DECL|enumerator|ATI_PCM_OUT
 DECL|enumerator|ATI_PCM_IN
-DECL|enumerator|ATI_PCM_SPDIF
 DECL|enumerator|NUM_ATI_PCMS
 r_enum
 (brace
@@ -523,20 +460,15 @@ id|ATI_PCM_OUT
 comma
 id|ATI_PCM_IN
 comma
-id|ATI_PCM_SPDIF
-comma
 id|NUM_ATI_PCMS
 )brace
 suffix:semicolon
 multiline_comment|/* AC97 pcm slots */
 DECL|enumerator|ATI_PCMDEV_ANALOG
-DECL|enumerator|ATI_PCMDEV_DIGITAL
 DECL|enumerator|NUM_ATI_PCMDEVS
 r_enum
 (brace
 id|ATI_PCMDEV_ANALOG
-comma
-id|ATI_PCMDEV_DIGITAL
 comma
 id|NUM_ATI_PCMDEVS
 )brace
@@ -687,6 +619,13 @@ id|pci_dev
 op_star
 id|pci
 suffix:semicolon
+DECL|member|res
+r_struct
+id|resource
+op_star
+id|res
+suffix:semicolon
+multiline_comment|/* memory i/o */
 DECL|member|addr
 r_int
 r_int
@@ -783,7 +722,7 @@ op_assign
 (brace
 l_int|0x1002
 comma
-l_int|0x4341
+l_int|0x434d
 comma
 id|PCI_ANY_ID
 comma
@@ -797,23 +736,6 @@ l_int|0
 )brace
 comma
 multiline_comment|/* SB200 */
-(brace
-l_int|0x1002
-comma
-l_int|0x4361
-comma
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* SB300 */
 (brace
 l_int|0
 comma
@@ -1988,12 +1910,6 @@ id|CMD
 suffix:semicolon
 id|reg
 op_or_assign
-l_int|0x02
-op_lshift
-id|ATI_REG_CMD_SPDF_THRESHOLD_SHIFT
-suffix:semicolon
-id|reg
-op_or_assign
 id|ATI_REG_CMD_BURST_EN
 suffix:semicolon
 id|atiixp_write
@@ -2002,35 +1918,6 @@ c_func
 id|chip
 comma
 id|CMD
-comma
-id|reg
-)paren
-suffix:semicolon
-id|reg
-op_assign
-id|atiixp_read
-c_func
-(paren
-id|chip
-comma
-id|SPDF_CMD
-)paren
-suffix:semicolon
-id|reg
-op_and_assign
-op_complement
-(paren
-id|ATI_REG_SPDF_CMD_LFSR
-op_or
-id|ATI_REG_SPDF_CMD_SINGLE_CH
-)paren
-suffix:semicolon
-id|atiixp_write
-c_func
-(paren
-id|chip
-comma
-id|SPDF_CMD
 comma
 id|reg
 )paren
@@ -2054,15 +1941,11 @@ id|chip
 comma
 id|IER
 comma
-id|ATI_REG_IER_IO_STATUS_EN
+id|ATI_REG_IER_MODEM_STATUS_EN
 op_or
-id|ATI_REG_IER_IN_XRUN_EN
+id|ATI_REG_IER_MODEM_IN_XRUN_EN
 op_or
-id|ATI_REG_IER_OUT_XRUN_EN
-op_or
-id|ATI_REG_IER_SPDF_XRUN_EN
-op_or
-id|ATI_REG_IER_SPDF_STATUS_EN
+id|ATI_REG_IER_MODEM_OUT1_XRUN_EN
 )paren
 suffix:semicolon
 r_return
@@ -2350,16 +2233,14 @@ id|CMD
 )paren
 op_amp
 (paren
-id|ATI_REG_CMD_SEND_EN
+id|ATI_REG_CMD_MODEM_SEND1_EN
 op_or
-id|ATI_REG_CMD_RECEIVE_EN
-op_or
-id|ATI_REG_CMD_SPDF_OUT_EN
+id|ATI_REG_CMD_MODEM_RECEIVE_EN
 )paren
 )paren
 id|bus_busy
 op_assign
-id|ATI_REG_IER_SET_BUS_BUSY
+id|ATI_REG_IER_MODEM_SET_BUS_BUSY
 suffix:semicolon
 r_else
 id|bus_busy
@@ -2373,7 +2254,7 @@ id|chip
 comma
 id|IER
 comma
-id|ATI_REG_IER_SET_BUS_BUSY
+id|ATI_REG_IER_MODEM_SET_BUS_BUSY
 comma
 id|bus_busy
 )paren
@@ -2415,9 +2296,13 @@ op_star
 id|substream-&gt;runtime-&gt;private_data
 suffix:semicolon
 r_int
-id|err
+r_int
+id|reg
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 id|snd_assert
 c_func
@@ -2431,6 +2316,21 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd
+op_ne
+id|SNDRV_PCM_TRIGGER_START
+op_logical_and
+id|cmd
+op_ne
+id|SNDRV_PCM_TRIGGER_STOP
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -2438,67 +2338,127 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
-r_switch
-c_cond
+multiline_comment|/* hook off/on: via GPIO_OUT */
+r_for
+c_loop
 (paren
-id|cmd
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NUM_ATI_CODECS
+suffix:semicolon
+id|i
+op_increment
 )paren
 (brace
-r_case
-id|SNDRV_PCM_TRIGGER_START
-suffix:colon
-id|dma-&gt;ops
-op_member_access_from_pointer
-id|enable_transfer
+r_if
+c_cond
+(paren
+id|chip-&gt;ac97
+(braket
+id|i
+)braket
+)paren
+(brace
+id|reg
+op_assign
+id|snd_ac97_read
 c_func
 (paren
-id|chip
+id|chip-&gt;ac97
+(braket
+id|i
+)braket
 comma
-l_int|1
+id|AC97_GPIO_STATUS
 )paren
-suffix:semicolon
-id|dma-&gt;running
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SNDRV_PCM_TRIGGER_STOP
-suffix:colon
-id|dma-&gt;ops
-op_member_access_from_pointer
-id|enable_transfer
-c_func
-(paren
-id|chip
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|dma-&gt;running
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|err
-op_assign
-op_minus
-id|EINVAL
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+)brace
 r_if
 c_cond
 (paren
-op_logical_neg
-id|err
+id|cmd
+op_eq
+id|SNDRV_PCM_TRIGGER_START
 )paren
 (brace
+id|reg
+op_or_assign
+id|AC97_GPIO_LINE1_OH
+suffix:semicolon
+)brace
+r_else
+id|reg
+op_and_assign
+op_complement
+id|AC97_GPIO_LINE1_OH
+suffix:semicolon
+id|reg
+op_assign
+(paren
+id|reg
+op_lshift
+id|ATI_REG_MODEM_OUT_GPIO_DATA_SHIFT
+)paren
+op_or
+id|ATI_REG_MODEM_OUT_GPIO_EN
+suffix:semicolon
+id|atiixp_write
+c_func
+(paren
+id|chip
+comma
+id|MODEM_OUT_GPIO
+comma
+id|reg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd
+op_eq
+id|SNDRV_PCM_TRIGGER_START
+)paren
+(brace
+id|dma-&gt;ops
+op_member_access_from_pointer
+id|enable_transfer
+c_func
+(paren
+id|chip
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|dma-&gt;running
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+(brace
+id|dma-&gt;ops
+op_member_access_from_pointer
+id|enable_transfer
+c_func
+(paren
+id|chip
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|dma-&gt;running
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|snd_atiixp_check_bus_busy
 c_func
 (paren
@@ -2528,7 +2488,6 @@ id|chip
 )paren
 suffix:semicolon
 )brace
-)brace
 id|spin_unlock
 c_func
 (paren
@@ -2537,7 +2496,7 @@ id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 r_return
-id|err
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * lowlevel callbacks for each DMA type&n; *&n; * every callback is supposed to be called in chip-&gt;reg_lock spinlock&n; */
@@ -2558,9 +2517,9 @@ c_func
 (paren
 id|chip
 comma
-id|FIFO_FLUSH
+id|MODEM_FIFO_FLUSH
 comma
-id|ATI_REG_FIFO_OUT_FLUSH
+id|ATI_REG_MODEM_FIFO_OUT1_FLUSH
 )paren
 suffix:semicolon
 )brace
@@ -2604,7 +2563,7 @@ c_cond
 (paren
 id|data
 op_amp
-id|ATI_REG_CMD_OUT_DMA_EN
+id|ATI_REG_CMD_MODEM_OUT_DMA1_EN
 )paren
 r_return
 suffix:semicolon
@@ -2616,14 +2575,14 @@ id|chip
 suffix:semicolon
 id|data
 op_or_assign
-id|ATI_REG_CMD_OUT_DMA_EN
+id|ATI_REG_CMD_MODEM_OUT_DMA1_EN
 suffix:semicolon
 )brace
 r_else
 id|data
 op_and_assign
 op_complement
-id|ATI_REG_CMD_OUT_DMA_EN
+id|ATI_REG_CMD_MODEM_OUT_DMA1_EN
 suffix:semicolon
 id|atiixp_write
 c_func
@@ -2658,12 +2617,12 @@ id|chip
 comma
 id|CMD
 comma
-id|ATI_REG_CMD_SEND_EN
+id|ATI_REG_CMD_MODEM_SEND1_EN
 comma
 id|on
 ques
 c_cond
-id|ATI_REG_CMD_SEND_EN
+id|ATI_REG_CMD_MODEM_SEND1_EN
 suffix:colon
 l_int|0
 )paren
@@ -2691,12 +2650,12 @@ id|chip
 comma
 id|CMD
 comma
-id|ATI_REG_CMD_IN_DMA_EN
+id|ATI_REG_CMD_MODEM_IN_DMA_EN
 comma
 id|on
 ques
 c_cond
-id|ATI_REG_CMD_IN_DMA_EN
+id|ATI_REG_CMD_MODEM_IN_DMA_EN
 suffix:colon
 l_int|0
 )paren
@@ -2742,35 +2701,14 @@ op_logical_neg
 (paren
 id|data
 op_amp
-id|ATI_REG_CMD_RECEIVE_EN
+id|ATI_REG_CMD_MODEM_RECEIVE_EN
 )paren
 )paren
 (brace
 id|data
 op_or_assign
-id|ATI_REG_CMD_RECEIVE_EN
+id|ATI_REG_CMD_MODEM_RECEIVE_EN
 suffix:semicolon
-macro_line|#if 0 /* FIXME: this causes the endless loop */
-multiline_comment|/* wait until slot 3/4 are finished */
-r_while
-c_loop
-(paren
-(paren
-id|atiixp_read
-c_func
-(paren
-id|chip
-comma
-id|COUNTER
-)paren
-op_amp
-id|ATI_REG_COUNTER_SLOT
-)paren
-op_ne
-l_int|5
-)paren
-suffix:semicolon
-macro_line|#endif
 id|atiixp_write
 c_func
 (paren
@@ -2791,7 +2729,7 @@ id|chip
 comma
 id|CMD
 comma
-id|ATI_REG_CMD_RECEIVE_EN
+id|ATI_REG_CMD_MODEM_RECEIVE_EN
 comma
 l_int|0
 )paren
@@ -2814,332 +2752,10 @@ c_func
 (paren
 id|chip
 comma
-id|FIFO_FLUSH
+id|MODEM_FIFO_FLUSH
 comma
-id|ATI_REG_FIFO_IN_FLUSH
+id|ATI_REG_MODEM_FIFO_IN_FLUSH
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/* enable/disable SPDIF OUT DMA */
-DECL|function|atiixp_spdif_enable_dma
-r_static
-r_void
-id|atiixp_spdif_enable_dma
-c_func
-(paren
-id|atiixp_t
-op_star
-id|chip
-comma
-r_int
-id|on
-)paren
-(brace
-id|atiixp_update
-c_func
-(paren
-id|chip
-comma
-id|CMD
-comma
-id|ATI_REG_CMD_SPDF_DMA_EN
-comma
-id|on
-ques
-c_cond
-id|ATI_REG_CMD_SPDF_DMA_EN
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* start/stop SPDIF OUT DMA */
-DECL|function|atiixp_spdif_enable_transfer
-r_static
-r_void
-id|atiixp_spdif_enable_transfer
-c_func
-(paren
-id|atiixp_t
-op_star
-id|chip
-comma
-r_int
-id|on
-)paren
-(brace
-r_int
-r_int
-id|data
-suffix:semicolon
-id|data
-op_assign
-id|atiixp_read
-c_func
-(paren
-id|chip
-comma
-id|CMD
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|on
-)paren
-id|data
-op_or_assign
-id|ATI_REG_CMD_SPDF_OUT_EN
-suffix:semicolon
-r_else
-id|data
-op_and_assign
-op_complement
-id|ATI_REG_CMD_SPDF_OUT_EN
-suffix:semicolon
-id|atiixp_write
-c_func
-(paren
-id|chip
-comma
-id|CMD
-comma
-id|data
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* flush FIFO of SPDIF OUT DMA */
-DECL|function|atiixp_spdif_flush_dma
-r_static
-r_void
-id|atiixp_spdif_flush_dma
-c_func
-(paren
-id|atiixp_t
-op_star
-id|chip
-)paren
-(brace
-r_int
-id|timeout
-suffix:semicolon
-multiline_comment|/* DMA off, transfer on */
-id|atiixp_spdif_enable_dma
-c_func
-(paren
-id|chip
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|atiixp_spdif_enable_transfer
-c_func
-(paren
-id|chip
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|timeout
-op_assign
-l_int|100
-suffix:semicolon
-r_do
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|atiixp_read
-c_func
-(paren
-id|chip
-comma
-id|SPDF_DMA_DT_SIZE
-)paren
-op_amp
-id|ATI_REG_DMA_FIFO_USED
-)paren
-)paren
-r_break
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|timeout
-op_decrement
-OG
-l_int|0
-)paren
-suffix:semicolon
-id|atiixp_spdif_enable_transfer
-c_func
-(paren
-id|chip
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* set up slots and formats for SPDIF OUT */
-DECL|function|snd_atiixp_spdif_prepare
-r_static
-r_int
-id|snd_atiixp_spdif_prepare
-c_func
-(paren
-id|snd_pcm_substream_t
-op_star
-id|substream
-)paren
-(brace
-id|atiixp_t
-op_star
-id|chip
-op_assign
-id|snd_pcm_substream_chip
-c_func
-(paren
-id|substream
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|chip-&gt;spdif_over_aclink
-)paren
-(brace
-r_int
-r_int
-id|data
-suffix:semicolon
-multiline_comment|/* enable slots 10/11 */
-id|atiixp_update
-c_func
-(paren
-id|chip
-comma
-id|CMD
-comma
-id|ATI_REG_CMD_SPDF_CONFIG_MASK
-comma
-id|ATI_REG_CMD_SPDF_CONFIG_01
-)paren
-suffix:semicolon
-id|data
-op_assign
-id|atiixp_read
-c_func
-(paren
-id|chip
-comma
-id|OUT_DMA_SLOT
-)paren
-op_amp
-op_complement
-id|ATI_REG_OUT_DMA_SLOT_MASK
-suffix:semicolon
-id|data
-op_or_assign
-id|ATI_REG_OUT_DMA_SLOT_BIT
-c_func
-(paren
-l_int|10
-)paren
-op_or
-id|ATI_REG_OUT_DMA_SLOT_BIT
-c_func
-(paren
-l_int|11
-)paren
-suffix:semicolon
-id|data
-op_or_assign
-l_int|0x04
-op_lshift
-id|ATI_REG_OUT_DMA_THRESHOLD_SHIFT
-suffix:semicolon
-id|atiixp_write
-c_func
-(paren
-id|chip
-comma
-id|OUT_DMA_SLOT
-comma
-id|data
-)paren
-suffix:semicolon
-id|atiixp_update
-c_func
-(paren
-id|chip
-comma
-id|CMD
-comma
-id|ATI_REG_CMD_INTERLEAVE_OUT
-comma
-id|substream-&gt;runtime-&gt;format
-op_eq
-id|SNDRV_PCM_FORMAT_S16_LE
-ques
-c_cond
-id|ATI_REG_CMD_INTERLEAVE_OUT
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|atiixp_update
-c_func
-(paren
-id|chip
-comma
-id|CMD
-comma
-id|ATI_REG_CMD_SPDF_CONFIG_MASK
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|atiixp_update
-c_func
-(paren
-id|chip
-comma
-id|CMD
-comma
-id|ATI_REG_CMD_INTERLEAVE_SPDF
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* set up slots and formats for analog OUT */
@@ -3175,6 +2791,7 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
+multiline_comment|/* set output threshold */
 id|data
 op_assign
 id|atiixp_read
@@ -3182,146 +2799,28 @@ c_func
 (paren
 id|chip
 comma
-id|OUT_DMA_SLOT
+id|MODEM_OUT_FIFO
 )paren
-op_amp
+suffix:semicolon
+id|data
+op_and_assign
 op_complement
-id|ATI_REG_OUT_DMA_SLOT_MASK
+id|ATI_REG_MODEM_OUT1_DMA_THRESHOLD_MASK
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|substream-&gt;runtime-&gt;channels
-)paren
-(brace
-r_case
-l_int|8
-suffix:colon
-id|data
-op_or_assign
-id|ATI_REG_OUT_DMA_SLOT_BIT
-c_func
-(paren
-l_int|10
-)paren
-op_or
-id|ATI_REG_OUT_DMA_SLOT_BIT
-c_func
-(paren
-l_int|11
-)paren
-suffix:semicolon
-multiline_comment|/* fallthru */
-r_case
-l_int|6
-suffix:colon
-id|data
-op_or_assign
-id|ATI_REG_OUT_DMA_SLOT_BIT
-c_func
-(paren
-l_int|7
-)paren
-op_or
-id|ATI_REG_OUT_DMA_SLOT_BIT
-c_func
-(paren
-l_int|8
-)paren
-suffix:semicolon
-multiline_comment|/* fallthru */
-r_case
-l_int|4
-suffix:colon
-id|data
-op_or_assign
-id|ATI_REG_OUT_DMA_SLOT_BIT
-c_func
-(paren
-l_int|6
-)paren
-op_or
-id|ATI_REG_OUT_DMA_SLOT_BIT
-c_func
-(paren
-l_int|9
-)paren
-suffix:semicolon
-multiline_comment|/* fallthru */
-r_default
-suffix:colon
-id|data
-op_or_assign
-id|ATI_REG_OUT_DMA_SLOT_BIT
-c_func
-(paren
-l_int|3
-)paren
-op_or
-id|ATI_REG_OUT_DMA_SLOT_BIT
-c_func
-(paren
-l_int|4
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/* set output threshold */
 id|data
 op_or_assign
 l_int|0x04
 op_lshift
-id|ATI_REG_OUT_DMA_THRESHOLD_SHIFT
+id|ATI_REG_MODEM_OUT1_DMA_THRESHOLD_SHIFT
 suffix:semicolon
 id|atiixp_write
 c_func
 (paren
 id|chip
 comma
-id|OUT_DMA_SLOT
+id|MODEM_OUT_FIFO
 comma
 id|data
-)paren
-suffix:semicolon
-id|atiixp_update
-c_func
-(paren
-id|chip
-comma
-id|CMD
-comma
-id|ATI_REG_CMD_INTERLEAVE_OUT
-comma
-id|substream-&gt;runtime-&gt;format
-op_eq
-id|SNDRV_PCM_FORMAT_S16_LE
-ques
-c_cond
-id|ATI_REG_CMD_INTERLEAVE_OUT
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * enable 6 channel re-ordering bit if needed&n;&t; */
-id|atiixp_update
-c_func
-(paren
-id|chip
-comma
-l_int|6
-id|CH_REORDER
-comma
-id|ATI_REG_6CH_REORDER_EN
-comma
-id|substream-&gt;runtime-&gt;channels
-op_ge
-l_int|6
-ques
-c_cond
-id|ATI_REG_6CH_REORDER_EN
-suffix:colon
-l_int|0
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -3347,49 +2846,6 @@ op_star
 id|substream
 )paren
 (brace
-id|atiixp_t
-op_star
-id|chip
-op_assign
-id|snd_pcm_substream_chip
-c_func
-(paren
-id|substream
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-)paren
-suffix:semicolon
-id|atiixp_update
-c_func
-(paren
-id|chip
-comma
-id|CMD
-comma
-id|ATI_REG_CMD_INTERLEAVE_IN
-comma
-id|substream-&gt;runtime-&gt;format
-op_eq
-id|SNDRV_PCM_FORMAT_S16_LE
-ques
-c_cond
-id|ATI_REG_CMD_INTERLEAVE_IN
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3432,6 +2888,9 @@ id|substream-&gt;runtime-&gt;private_data
 suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 id|err
 op_assign
@@ -3503,79 +2962,62 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
+multiline_comment|/* set up modem rate */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NUM_ATI_CODECS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 r_if
 c_cond
 (paren
-id|dma-&gt;ac97_pcm_type
-op_ge
-l_int|0
-)paren
-(brace
-r_struct
-id|ac97_pcm
-op_star
-id|pcm
-op_assign
-id|chip-&gt;pcms
+op_logical_neg
+id|chip-&gt;ac97
 (braket
-id|dma-&gt;ac97_pcm_type
+id|i
 )braket
-suffix:semicolon
-multiline_comment|/* PCM is bound to AC97 codec(s)&n;&t;&t; * set up the AC97 codecs&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|dma-&gt;pcm_open_flag
 )paren
-(brace
-id|snd_ac97_pcm_close
+r_continue
+suffix:semicolon
+id|snd_ac97_write
 c_func
 (paren
-id|pcm
-)paren
-suffix:semicolon
-id|dma-&gt;pcm_open_flag
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-id|err
-op_assign
-id|snd_ac97_pcm_open
-c_func
-(paren
-id|pcm
+id|chip-&gt;ac97
+(braket
+id|i
+)braket
+comma
+id|AC97_LINE1_RATE
 comma
 id|params_rate
 c_func
 (paren
 id|hw_params
 )paren
-comma
-id|params_channels
-c_func
-(paren
-id|hw_params
-)paren
-comma
-id|pcm-&gt;r
-(braket
-l_int|0
-)braket
-dot
-id|slots
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|snd_ac97_write
+c_func
 (paren
-id|err
-op_ge
+id|chip-&gt;ac97
+(braket
+id|i
+)braket
+comma
+id|AC97_LINE1_LEVEL
+comma
 l_int|0
 )paren
-id|dma-&gt;pcm_open_flag
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 r_return
@@ -3613,33 +3055,6 @@ op_star
 )paren
 id|substream-&gt;runtime-&gt;private_data
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dma-&gt;pcm_open_flag
-)paren
-(brace
-r_struct
-id|ac97_pcm
-op_star
-id|pcm
-op_assign
-id|chip-&gt;pcms
-(braket
-id|dma-&gt;ac97_pcm_type
-)braket
-suffix:semicolon
-id|snd_ac97_pcm_close
-c_func
-(paren
-id|pcm
-)paren
-suffix:semicolon
-id|dma-&gt;pcm_open_flag
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 id|atiixp_clear_dma_packets
 c_func
 (paren
@@ -3677,8 +3092,6 @@ id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
 id|SNDRV_PCM_INFO_BLOCK_TRANSFER
 op_or
-id|SNDRV_PCM_INFO_RESUME
-op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 )paren
 comma
@@ -3686,23 +3099,25 @@ dot
 id|formats
 op_assign
 id|SNDRV_PCM_FMTBIT_S16_LE
-op_or
-id|SNDRV_PCM_FMTBIT_S32_LE
 comma
 dot
 id|rates
 op_assign
-id|SNDRV_PCM_RATE_48000
+id|SNDRV_PCM_RATE_8000
+op_or
+id|SNDRV_PCM_RATE_16000
+op_or
+id|SNDRV_PCM_RATE_KNOT
 comma
 dot
 id|rate_min
 op_assign
-l_int|48000
+l_int|8000
 comma
 dot
 id|rate_max
 op_assign
-l_int|48000
+l_int|16000
 comma
 dot
 id|channels_min
@@ -3782,6 +3197,49 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+r_static
+r_int
+r_int
+id|rates
+(braket
+)braket
+op_assign
+(brace
+l_int|8000
+comma
+l_int|9600
+comma
+l_int|12000
+comma
+l_int|16000
+)brace
+suffix:semicolon
+r_static
+id|snd_pcm_hw_constraint_list_t
+id|hw_constraints_rates
+op_assign
+(brace
+dot
+id|count
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|rates
+)paren
+comma
+dot
+id|list
+op_assign
+id|rates
+comma
+dot
+id|mask
+op_assign
+l_int|0
+comma
+)brace
+suffix:semicolon
 id|snd_assert
 c_func
 (paren
@@ -3818,35 +3276,28 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pcm_type
-op_ge
-l_int|0
-)paren
-(brace
-id|runtime-&gt;hw.rates
+(paren
+id|err
 op_assign
-id|chip-&gt;pcms
-(braket
-id|pcm_type
-)braket
-op_member_access_from_pointer
-id|rates
-suffix:semicolon
-id|snd_pcm_limit_hw_rates
+id|snd_pcm_hw_constraint_list
 c_func
 (paren
 id|runtime
+comma
+l_int|0
+comma
+id|SNDRV_PCM_HW_PARAM_RATE
+comma
+op_amp
+id|hw_constraints_rates
 )paren
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|err
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* direct SPDIF */
-id|runtime-&gt;hw.formats
-op_assign
-id|SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4043,30 +3494,6 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-id|substream-&gt;runtime-&gt;hw.channels_max
-op_assign
-id|chip-&gt;max_channels
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|chip-&gt;max_channels
-OG
-l_int|2
-)paren
-multiline_comment|/* channels must be even */
-id|snd_pcm_hw_constraint_step
-c_func
-(paren
-id|substream-&gt;runtime
-comma
-l_int|0
-comma
-id|SNDRV_PCM_HW_PARAM_CHANNELS
-comma
-l_int|2
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4199,164 +3626,6 @@ id|ATI_DMA_CAPTURE
 )paren
 suffix:semicolon
 )brace
-DECL|function|snd_atiixp_spdif_open
-r_static
-r_int
-id|snd_atiixp_spdif_open
-c_func
-(paren
-id|snd_pcm_substream_t
-op_star
-id|substream
-)paren
-(brace
-id|atiixp_t
-op_star
-id|chip
-op_assign
-id|snd_pcm_substream_chip
-c_func
-(paren
-id|substream
-)paren
-suffix:semicolon
-r_int
-id|err
-suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|chip-&gt;open_mutex
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|chip-&gt;spdif_over_aclink
-)paren
-multiline_comment|/* share DMA_PLAYBACK */
-id|err
-op_assign
-id|snd_atiixp_pcm_open
-c_func
-(paren
-id|substream
-comma
-op_amp
-id|chip-&gt;dmas
-(braket
-id|ATI_DMA_PLAYBACK
-)braket
-comma
-l_int|2
-)paren
-suffix:semicolon
-r_else
-id|err
-op_assign
-id|snd_atiixp_pcm_open
-c_func
-(paren
-id|substream
-comma
-op_amp
-id|chip-&gt;dmas
-(braket
-id|ATI_DMA_SPDIF
-)braket
-comma
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|chip-&gt;open_mutex
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
-DECL|function|snd_atiixp_spdif_close
-r_static
-r_int
-id|snd_atiixp_spdif_close
-c_func
-(paren
-id|snd_pcm_substream_t
-op_star
-id|substream
-)paren
-(brace
-id|atiixp_t
-op_star
-id|chip
-op_assign
-id|snd_pcm_substream_chip
-c_func
-(paren
-id|substream
-)paren
-suffix:semicolon
-r_int
-id|err
-suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|chip-&gt;open_mutex
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|chip-&gt;spdif_over_aclink
-)paren
-id|err
-op_assign
-id|snd_atiixp_pcm_close
-c_func
-(paren
-id|substream
-comma
-op_amp
-id|chip-&gt;dmas
-(braket
-id|ATI_DMA_PLAYBACK
-)braket
-)paren
-suffix:semicolon
-r_else
-id|err
-op_assign
-id|snd_atiixp_pcm_close
-c_func
-(paren
-id|substream
-comma
-op_amp
-id|chip-&gt;dmas
-(braket
-id|ATI_DMA_SPDIF
-)braket
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|chip-&gt;open_mutex
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
 multiline_comment|/* AC97 playback */
 DECL|variable|snd_atiixp_playback_ops
 r_static
@@ -4455,191 +3724,6 @@ id|snd_atiixp_pcm_pointer
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* SPDIF playback */
-DECL|variable|snd_atiixp_spdif_ops
-r_static
-id|snd_pcm_ops_t
-id|snd_atiixp_spdif_ops
-op_assign
-(brace
-dot
-id|open
-op_assign
-id|snd_atiixp_spdif_open
-comma
-dot
-id|close
-op_assign
-id|snd_atiixp_spdif_close
-comma
-dot
-id|ioctl
-op_assign
-id|snd_pcm_lib_ioctl
-comma
-dot
-id|hw_params
-op_assign
-id|snd_atiixp_pcm_hw_params
-comma
-dot
-id|hw_free
-op_assign
-id|snd_atiixp_pcm_hw_free
-comma
-dot
-id|prepare
-op_assign
-id|snd_atiixp_spdif_prepare
-comma
-dot
-id|trigger
-op_assign
-id|snd_atiixp_pcm_trigger
-comma
-dot
-id|pointer
-op_assign
-id|snd_atiixp_pcm_pointer
-comma
-)brace
-suffix:semicolon
-DECL|variable|__devinitdata
-r_static
-r_struct
-id|ac97_pcm
-id|atiixp_pcm_defs
-(braket
-)braket
-id|__devinitdata
-op_assign
-(brace
-multiline_comment|/* front PCM */
-(brace
-dot
-id|exclusive
-op_assign
-l_int|1
-comma
-dot
-id|r
-op_assign
-(brace
-(brace
-dot
-id|slots
-op_assign
-(paren
-l_int|1
-op_lshift
-id|AC97_SLOT_PCM_LEFT
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-id|AC97_SLOT_PCM_RIGHT
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-id|AC97_SLOT_PCM_CENTER
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-id|AC97_SLOT_PCM_SLEFT
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-id|AC97_SLOT_PCM_SRIGHT
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-id|AC97_SLOT_LFE
-)paren
-)brace
-)brace
-)brace
-comma
-multiline_comment|/* PCM IN #1 */
-(brace
-dot
-id|stream
-op_assign
-l_int|1
-comma
-dot
-id|exclusive
-op_assign
-l_int|1
-comma
-dot
-id|r
-op_assign
-(brace
-(brace
-dot
-id|slots
-op_assign
-(paren
-l_int|1
-op_lshift
-id|AC97_SLOT_PCM_LEFT
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-id|AC97_SLOT_PCM_RIGHT
-)paren
-)brace
-)brace
-)brace
-comma
-multiline_comment|/* S/PDIF OUT (optional) */
-(brace
-dot
-id|exclusive
-op_assign
-l_int|1
-comma
-dot
-id|spdif
-op_assign
-l_int|1
-comma
-dot
-id|r
-op_assign
-(brace
-(brace
-dot
-id|slots
-op_assign
-(paren
-l_int|1
-op_lshift
-id|AC97_SLOT_SPDIF_LEFT2
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-id|AC97_SLOT_SPDIF_RIGHT2
-)paren
-)brace
-)brace
-)brace
-comma
-)brace
-suffix:semicolon
 DECL|variable|snd_atiixp_playback_dma_ops
 r_static
 id|atiixp_dma_ops_t
@@ -4654,12 +3738,12 @@ comma
 dot
 id|llp_offset
 op_assign
-id|ATI_REG_OUT_DMA_LINKPTR
+id|ATI_REG_MODEM_OUT_DMA1_LINKPTR
 comma
 dot
 id|dt_cur
 op_assign
-id|ATI_REG_OUT_DMA_DT_CUR
+id|ATI_REG_MODEM_OUT_DMA1_DT_CUR
 comma
 dot
 id|enable_dma
@@ -4692,12 +3776,12 @@ comma
 dot
 id|llp_offset
 op_assign
-id|ATI_REG_IN_DMA_LINKPTR
+id|ATI_REG_MODEM_IN_DMA_LINKPTR
 comma
 dot
 id|dt_cur
 op_assign
-id|ATI_REG_IN_DMA_DT_CUR
+id|ATI_REG_MODEM_IN_DMA_DT_CUR
 comma
 dot
 id|enable_dma
@@ -4713,44 +3797,6 @@ dot
 id|flush_dma
 op_assign
 id|atiixp_in_flush_dma
-comma
-)brace
-suffix:semicolon
-DECL|variable|snd_atiixp_spdif_dma_ops
-r_static
-id|atiixp_dma_ops_t
-id|snd_atiixp_spdif_dma_ops
-op_assign
-(brace
-dot
-id|type
-op_assign
-id|ATI_DMA_SPDIF
-comma
-dot
-id|llp_offset
-op_assign
-id|ATI_REG_SPDF_DMA_LINKPTR
-comma
-dot
-id|dt_cur
-op_assign
-id|ATI_REG_SPDF_DMA_DT_CUR
-comma
-dot
-id|enable_dma
-op_assign
-id|atiixp_spdif_enable_dma
-comma
-dot
-id|enable_transfer
-op_assign
-id|atiixp_spdif_enable_transfer
-comma
-dot
-id|flush_dma
-op_assign
-id|atiixp_spdif_flush_dma
 comma
 )brace
 suffix:semicolon
@@ -4770,18 +3816,8 @@ id|snd_pcm_t
 op_star
 id|pcm
 suffix:semicolon
-id|ac97_bus_t
-op_star
-id|pbus
-op_assign
-id|chip-&gt;ac97_bus
-suffix:semicolon
 r_int
 id|err
-comma
-id|i
-comma
-id|num_pcms
 suffix:semicolon
 multiline_comment|/* initialize constants */
 id|chip-&gt;dmas
@@ -4804,141 +3840,6 @@ op_assign
 op_amp
 id|snd_atiixp_capture_dma_ops
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|chip-&gt;spdif_over_aclink
-)paren
-id|chip-&gt;dmas
-(braket
-id|ATI_DMA_SPDIF
-)braket
-dot
-id|ops
-op_assign
-op_amp
-id|snd_atiixp_spdif_dma_ops
-suffix:semicolon
-multiline_comment|/* assign AC97 pcm */
-r_if
-c_cond
-(paren
-id|chip-&gt;spdif_over_aclink
-)paren
-id|num_pcms
-op_assign
-l_int|3
-suffix:semicolon
-r_else
-id|num_pcms
-op_assign
-l_int|2
-suffix:semicolon
-id|err
-op_assign
-id|snd_ac97_pcm_assign
-c_func
-(paren
-id|pbus
-comma
-id|num_pcms
-comma
-id|atiixp_pcm_defs
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-OL
-l_int|0
-)paren
-r_return
-id|err
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|num_pcms
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|chip-&gt;pcms
-(braket
-id|i
-)braket
-op_assign
-op_amp
-id|pbus-&gt;pcms
-(braket
-id|i
-)braket
-suffix:semicolon
-id|chip-&gt;max_channels
-op_assign
-l_int|2
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pbus-&gt;pcms
-(braket
-id|ATI_PCM_OUT
-)braket
-dot
-id|r
-(braket
-l_int|0
-)braket
-dot
-id|slots
-op_amp
-(paren
-l_int|1
-op_lshift
-id|AC97_SLOT_PCM_SLEFT
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pbus-&gt;pcms
-(braket
-id|ATI_PCM_OUT
-)braket
-dot
-id|r
-(braket
-l_int|0
-)braket
-dot
-id|slots
-op_amp
-(paren
-l_int|1
-op_lshift
-id|AC97_SLOT_LFE
-)paren
-)paren
-id|chip-&gt;max_channels
-op_assign
-l_int|6
-suffix:semicolon
-r_else
-id|chip-&gt;max_channels
-op_assign
-l_int|4
-suffix:semicolon
-)brace
 multiline_comment|/* PCM #0: analog I/O */
 id|err
 op_assign
@@ -4947,7 +3848,7 @@ c_func
 (paren
 id|chip-&gt;card
 comma
-l_string|&quot;ATI IXP AC97&quot;
+l_string|&quot;ATI IXP MC97&quot;
 comma
 id|ATI_PCMDEV_ANALOG
 comma
@@ -5000,7 +3901,7 @@ c_func
 (paren
 id|pcm-&gt;name
 comma
-l_string|&quot;ATI IXP AC97&quot;
+l_string|&quot;ATI IXP MC97&quot;
 )paren
 suffix:semicolon
 id|chip-&gt;pcmdevs
@@ -5032,184 +3933,6 @@ op_star
 l_int|1024
 )paren
 suffix:semicolon
-multiline_comment|/* no SPDIF support on codec? */
-r_if
-c_cond
-(paren
-id|chip-&gt;pcms
-(braket
-id|ATI_PCM_SPDIF
-)braket
-op_logical_and
-op_logical_neg
-id|chip-&gt;pcms
-(braket
-id|ATI_PCM_SPDIF
-)braket
-op_member_access_from_pointer
-id|rates
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* FIXME: non-48k sample rate doesn&squot;t work on my test machine with AD1888 */
-r_if
-c_cond
-(paren
-id|chip-&gt;pcms
-(braket
-id|ATI_PCM_SPDIF
-)braket
-)paren
-id|chip-&gt;pcms
-(braket
-id|ATI_PCM_SPDIF
-)braket
-op_member_access_from_pointer
-id|rates
-op_assign
-id|SNDRV_PCM_RATE_48000
-suffix:semicolon
-multiline_comment|/* PCM #1: spdif playback */
-id|err
-op_assign
-id|snd_pcm_new
-c_func
-(paren
-id|chip-&gt;card
-comma
-l_string|&quot;ATI IXP IEC958&quot;
-comma
-id|ATI_PCMDEV_DIGITAL
-comma
-l_int|1
-comma
-l_int|0
-comma
-op_amp
-id|pcm
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-OL
-l_int|0
-)paren
-r_return
-id|err
-suffix:semicolon
-id|snd_pcm_set_ops
-c_func
-(paren
-id|pcm
-comma
-id|SNDRV_PCM_STREAM_PLAYBACK
-comma
-op_amp
-id|snd_atiixp_spdif_ops
-)paren
-suffix:semicolon
-id|pcm-&gt;private_data
-op_assign
-id|chip
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|chip-&gt;spdif_over_aclink
-)paren
-id|strcpy
-c_func
-(paren
-id|pcm-&gt;name
-comma
-l_string|&quot;ATI IXP IEC958 (AC97)&quot;
-)paren
-suffix:semicolon
-r_else
-id|strcpy
-c_func
-(paren
-id|pcm-&gt;name
-comma
-l_string|&quot;ATI IXP IEC958 (Direct)&quot;
-)paren
-suffix:semicolon
-id|chip-&gt;pcmdevs
-(braket
-id|ATI_PCMDEV_DIGITAL
-)braket
-op_assign
-id|pcm
-suffix:semicolon
-id|snd_pcm_lib_preallocate_pages_for_all
-c_func
-(paren
-id|pcm
-comma
-id|SNDRV_DMA_TYPE_DEV
-comma
-id|snd_dma_pci_data
-c_func
-(paren
-id|chip-&gt;pci
-)paren
-comma
-l_int|64
-op_star
-l_int|1024
-comma
-l_int|128
-op_star
-l_int|1024
-)paren
-suffix:semicolon
-multiline_comment|/* pre-select AC97 SPDIF slots 10/11 */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NUM_ATI_CODECS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|chip-&gt;ac97
-(braket
-id|i
-)braket
-)paren
-id|snd_ac97_update_bits
-c_func
-(paren
-id|chip-&gt;ac97
-(braket
-id|i
-)braket
-comma
-id|AC97_EXTENDED_STATUS
-comma
-l_int|0x03
-op_lshift
-l_int|4
-comma
-l_int|0x03
-op_lshift
-l_int|4
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -5269,7 +3992,7 @@ c_cond
 (paren
 id|status
 op_amp
-id|ATI_REG_ISR_OUT_XRUN
+id|ATI_REG_ISR_MODEM_OUT1_XRUN
 )paren
 id|snd_atiixp_xrun_dma
 c_func
@@ -5289,7 +4012,7 @@ c_cond
 (paren
 id|status
 op_amp
-id|ATI_REG_ISR_OUT_STATUS
+id|ATI_REG_ISR_MODEM_OUT1_STATUS
 )paren
 id|snd_atiixp_update_dma
 c_func
@@ -5308,7 +4031,7 @@ c_cond
 (paren
 id|status
 op_amp
-id|ATI_REG_ISR_IN_XRUN
+id|ATI_REG_ISR_MODEM_IN_XRUN
 )paren
 id|snd_atiixp_xrun_dma
 c_func
@@ -5328,7 +4051,7 @@ c_cond
 (paren
 id|status
 op_amp
-id|ATI_REG_ISR_IN_STATUS
+id|ATI_REG_ISR_MODEM_IN_STATUS
 )paren
 id|snd_atiixp_update_dma
 c_func
@@ -5342,53 +4065,6 @@ id|ATI_DMA_CAPTURE
 )braket
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|chip-&gt;spdif_over_aclink
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|status
-op_amp
-id|ATI_REG_ISR_SPDF_XRUN
-)paren
-id|snd_atiixp_xrun_dma
-c_func
-(paren
-id|chip
-comma
-op_amp
-id|chip-&gt;dmas
-(braket
-id|ATI_DMA_SPDIF
-)braket
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|status
-op_amp
-id|ATI_REG_ISR_SPDF_STATUS
-)paren
-id|snd_atiixp_update_dma
-c_func
-(paren
-id|chip
-comma
-op_amp
-id|chip-&gt;dmas
-(braket
-id|ATI_DMA_SPDIF
-)braket
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* for codec detection */
 r_if
 c_cond
@@ -5571,7 +4247,7 @@ id|pbus-&gt;shared_type
 op_assign
 id|AC97_SHARED_TYPE_ATIIXP
 suffix:semicolon
-multiline_comment|/* shared with modem driver */
+multiline_comment|/* shared with audio driver */
 id|chip-&gt;ac97_bus
 op_assign
 id|pbus
@@ -5635,7 +4311,7 @@ id|i
 suffix:semicolon
 id|ac97.scaps
 op_assign
-id|AC97_SCAP_SKIP_MODEM
+id|AC97_SCAP_SKIP_AUDIO
 suffix:semicolon
 r_if
 c_cond
@@ -5673,7 +4349,7 @@ multiline_comment|/* to be sure */
 id|snd_printdd
 c_func
 (paren
-l_string|&quot;atiixp: codec %d not available for audio&bslash;n&quot;
+l_string|&quot;atiixp: codec %d not available for modem&bslash;n&quot;
 comma
 id|i
 )paren
@@ -6275,7 +4951,7 @@ c_func
 (paren
 id|pci
 comma
-l_string|&quot;ATI IXP AC97&quot;
+l_string|&quot;ATI IXP MC97&quot;
 )paren
 )paren
 OL
@@ -6573,15 +5249,7 @@ c_func
 (paren
 id|card-&gt;driver
 comma
-id|spdif_aclink
-(braket
-id|dev
-)braket
-ques
-c_cond
-l_string|&quot;ATIIXP&quot;
-suffix:colon
-l_string|&quot;ATIIXP-SPDMA&quot;
+l_string|&quot;ATIIXP-MODEM&quot;
 )paren
 suffix:semicolon
 id|strcpy
@@ -6589,7 +5257,7 @@ c_func
 (paren
 id|card-&gt;shortname
 comma
-l_string|&quot;ATI IXP&quot;
+l_string|&quot;ATI IXP Modem&quot;
 )paren
 suffix:semicolon
 r_if
@@ -6632,13 +5300,6 @@ l_int|0
 )paren
 r_goto
 id|__error
-suffix:semicolon
-id|chip-&gt;spdif_over_aclink
-op_assign
-id|spdif_aclink
-(braket
-id|dev
-)braket
 suffix:semicolon
 r_if
 c_cond
@@ -6807,7 +5468,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;ATI IXP AC97 controller&quot;
+l_string|&quot;ATI IXP MC97 controller&quot;
 comma
 dot
 id|id_table

@@ -16369,9 +16369,6 @@ id|snd_dma_free_pages
 c_func
 (paren
 op_amp
-id|emu-&gt;dma_dev
-comma
-op_amp
 id|emu-&gt;fx8010.etram_pages
 )paren
 suffix:semicolon
@@ -16398,8 +16395,13 @@ c_cond
 id|snd_dma_alloc_pages
 c_func
 (paren
-op_amp
-id|emu-&gt;dma_dev
+id|SNDRV_DMA_TYPE_DEV
+comma
+id|snd_dma_pci_data
+c_func
+(paren
+id|emu-&gt;pci
+)paren
 comma
 id|size
 op_star

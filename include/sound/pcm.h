@@ -468,6 +468,8 @@ DECL|macro|SNDRV_PCM_TRIGGER_SUSPEND
 mdefine_line|#define SNDRV_PCM_TRIGGER_SUSPEND&t;5
 DECL|macro|SNDRV_PCM_TRIGGER_RESUME
 mdefine_line|#define SNDRV_PCM_TRIGGER_RESUME&t;6
+DECL|macro|SNDRV_PCM_POS_XRUN
+mdefine_line|#define SNDRV_PCM_POS_XRUN&t;&t;((snd_pcm_uframes_t)-1)
 multiline_comment|/* If you change this don&squot;t forget to change rates[] table in pcm_native.c */
 DECL|macro|SNDRV_PCM_RATE_5512
 mdefine_line|#define SNDRV_PCM_RATE_5512&t;&t;(1&lt;&lt;0)&t;&t;/* 5512Hz */
@@ -1262,15 +1264,15 @@ r_int
 id|buffer_bytes_max
 suffix:semicolon
 multiline_comment|/* limit ring buffer size */
-DECL|member|dma_device
-r_struct
-id|snd_dma_device
-id|dma_device
-suffix:semicolon
 DECL|member|dma_buffer
 r_struct
 id|snd_dma_buffer
 id|dma_buffer
+suffix:semicolon
+DECL|member|dma_buf_id
+r_int
+r_int
+id|dma_buf_id
 suffix:semicolon
 DECL|member|dma_max
 r_int

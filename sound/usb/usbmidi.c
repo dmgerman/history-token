@@ -5610,7 +5610,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Temporarily stop input. &n; */
+multiline_comment|/*&n; * Temporarily stop input.&n; */
 DECL|function|snd_usbmidi_input_stop
 r_void
 id|snd_usbmidi_input_stop

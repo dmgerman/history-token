@@ -2323,8 +2323,6 @@ id|p
 )paren
 suffix:semicolon
 )brace
-DECL|macro|NELEM
-mdefine_line|#define NELEM(arr) (sizeof(arr)/sizeof((arr)[0]))
 multiline_comment|/*&n; * Send initialization arrays to start up, this just follows the&n; * initialisation sequence in the adip.&n; */
 r_static
 r_void
@@ -2345,7 +2343,7 @@ id|emu
 comma
 id|init1
 comma
-id|NELEM
+id|ARRAY_SIZE
 c_func
 (paren
 id|init1
@@ -2384,7 +2382,7 @@ id|emu
 comma
 id|init2
 comma
-id|NELEM
+id|ARRAY_SIZE
 c_func
 (paren
 id|init2
@@ -2400,7 +2398,7 @@ id|emu
 comma
 id|init3
 comma
-id|NELEM
+id|ARRAY_SIZE
 c_func
 (paren
 id|init3
@@ -2440,7 +2438,7 @@ id|emu
 comma
 id|init4
 comma
-id|NELEM
+id|ARRAY_SIZE
 c_func
 (paren
 id|init4
