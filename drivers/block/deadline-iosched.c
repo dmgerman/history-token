@@ -3767,7 +3767,9 @@ comma
 )brace
 suffix:semicolon
 DECL|function|deadline_init
+r_static
 r_int
+id|__init
 id|deadline_init
 c_func
 (paren
@@ -3834,7 +3836,9 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|deadline_exit
+r_static
 r_void
+id|__exit
 id|deadline_exit
 c_func
 (paren
