@@ -470,31 +470,6 @@ c_func
 id|cred
 )paren
 suffix:semicolon
-multiline_comment|/* Clean up the V4 state */
-id|nfs4_put_state_owner
-c_func
-(paren
-id|inode
-comma
-id|nfsi-&gt;wo_owner
-)paren
-suffix:semicolon
-id|nfs4_put_state_owner
-c_func
-(paren
-id|inode
-comma
-id|nfsi-&gt;ro_owner
-)paren
-suffix:semicolon
-id|nfs4_put_state_owner
-c_func
-(paren
-id|inode
-comma
-id|nfsi-&gt;rw_owner
-)paren
-suffix:semicolon
 )brace
 r_void
 DECL|function|nfs_put_super
@@ -3887,8 +3862,6 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Ensure that mmap has a recent RPC credential for use when writing out&n; * shared pages&n; */
-r_static
-r_inline
 r_void
 DECL|function|nfs_set_mmcred
 id|nfs_set_mmcred
@@ -7053,7 +7026,7 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|nfs4_zero_state
-mdefine_line|#define nfs4_zero_state(nfsi) &bslash;&n;&t;do { &bslash;&n;&t;&t;(nfsi)-&gt;wo_owner = NULL; &bslash;&n;&t;&t;(nfsi)-&gt;ro_owner = NULL; &bslash;&n;&t;&t;(nfsi)-&gt;rw_owner = NULL; &bslash;&n;&t;} while(0)
+mdefine_line|#define nfs4_zero_state(nfsi) &bslash;&n;&t;do { &bslash;&n;&t;&t;INIT_LIST_HEAD(&amp;(nfsi)-&gt;open_states); &bslash;&n;&t;} while(0)
 DECL|macro|register_nfs4fs
 mdefine_line|#define register_nfs4fs() register_filesystem(&amp;nfs4_fs_type)
 DECL|macro|unregister_nfs4fs

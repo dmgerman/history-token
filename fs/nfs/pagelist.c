@@ -111,7 +111,7 @@ id|p
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * nfs_create_request - Create an NFS read/write request.&n; * @cred: RPC credential to use&n; * @inode: inode to which the request is attached&n; * @page: page to write&n; * @offset: starting offset within the page for the write&n; * @count: number of bytes to read/write&n; *&n; * The page must be locked by the caller. This makes sure we never&n; * create two different requests for the same page, and avoids&n; * a possible deadlock when we reach the hard limit on the number&n; * of dirty pages.&n; * User should ensure it is safe to sleep in this function.&n; */
+multiline_comment|/**&n; * nfs_create_request - Create an NFS read/write request.&n; * @file: file descriptor to use&n; * @inode: inode to which the request is attached&n; * @page: page to write&n; * @offset: starting offset within the page for the write&n; * @count: number of bytes to read/write&n; *&n; * The page must be locked by the caller. This makes sure we never&n; * create two different requests for the same page, and avoids&n; * a possible deadlock when we reach the hard limit on the number&n; * of dirty pages.&n; * User should ensure it is safe to sleep in this function.&n; */
 r_struct
 id|nfs_page
 op_star
@@ -120,9 +120,9 @@ id|nfs_create_request
 c_func
 (paren
 r_struct
-id|rpc_cred
+id|file
 op_star
-id|cred
+id|file
 comma
 r_struct
 id|inode
@@ -240,19 +240,6 @@ id|req-&gt;wb_bytes
 op_assign
 id|count
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cred
-)paren
-id|req-&gt;wb_cred
-op_assign
-id|get_rpccred
-c_func
-(paren
-id|cred
-)paren
-suffix:semicolon
 id|req-&gt;wb_inode
 op_assign
 id|inode
@@ -260,6 +247,16 @@ suffix:semicolon
 id|req-&gt;wb_count
 op_assign
 l_int|1
+suffix:semicolon
+id|server-&gt;rpc_ops
+op_member_access_from_pointer
+id|request_init
+c_func
+(paren
+id|req
+comma
+id|file
+)paren
 suffix:semicolon
 r_return
 id|req
@@ -277,6 +274,15 @@ op_star
 id|req
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|req-&gt;wb_state
+)paren
+id|req-&gt;wb_state
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* Release struct file or cached credential */
 r_if
 c_cond

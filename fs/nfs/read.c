@@ -287,19 +287,6 @@ comma
 id|page
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|file
-)paren
-id|rdata.cred
-op_assign
-id|nfs_file_cred
-c_func
-(paren
-id|file
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * This works now because the socket layer never tries to DMA&n;&t; * into this buffer directly.&n;&t; */
 r_do
 (brace
@@ -381,6 +368,8 @@ c_func
 (paren
 op_amp
 id|rdata
+comma
+id|file
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -529,11 +518,7 @@ op_assign
 id|nfs_create_request
 c_func
 (paren
-id|nfs_file_cred
-c_func
-(paren
 id|file
-)paren
 comma
 id|inode
 comma
@@ -1497,11 +1482,7 @@ op_assign
 id|nfs_create_request
 c_func
 (paren
-id|nfs_file_cred
-c_func
-(paren
 id|desc-&gt;filp
-)paren
 comma
 id|inode
 comma
