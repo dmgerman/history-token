@@ -2486,6 +2486,7 @@ r_int
 r_int
 id|xcall_call_function
 suffix:semicolon
+multiline_comment|/*&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler or from a bottom half handler.&n; */
 DECL|function|smp_call_function
 r_int
 id|smp_call_function
@@ -2557,7 +2558,7 @@ id|data.wait
 op_assign
 id|wait
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -2623,7 +2624,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -2635,7 +2636,7 @@ l_int|0
 suffix:semicolon
 id|out_timeout
 suffix:colon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
