@@ -1276,6 +1276,7 @@ suffix:semicolon
 )brace
 )brace
 id|spin_unlock
+(paren
 op_amp
 id|ep-&gt;lock
 )paren
