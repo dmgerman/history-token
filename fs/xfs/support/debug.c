@@ -229,7 +229,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;%s&quot;
+l_string|&quot;%s&bslash;n&quot;
 comma
 id|message
 )paren
@@ -242,7 +242,7 @@ suffix:colon
 id|xdprintk
 c_func
 (paren
-l_string|&quot;%s&quot;
+l_string|&quot;%s&bslash;n&quot;
 comma
 id|message
 )paren
