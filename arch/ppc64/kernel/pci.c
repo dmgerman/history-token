@@ -1368,10 +1368,6 @@ DECL|function|pci_alloc_pci_controller
 id|pci_alloc_pci_controller
 c_func
 (paren
-r_char
-op_star
-id|model
-comma
 r_enum
 id|phb_types
 id|controller_type
@@ -1382,15 +1378,9 @@ id|pci_controller
 op_star
 id|hose
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_PHBINIT
-comma
-l_string|&quot;PCI: Allocate pci_controller for %s&bslash;n&quot;
-comma
+r_char
+op_star
 id|model
-)paren
 suffix:semicolon
 id|hose
 op_assign
@@ -1442,6 +1432,48 @@ id|pci_controller
 )paren
 )paren
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|controller_type
+)paren
+(brace
+r_case
+id|phb_type_python
+suffix:colon
+id|model
+op_assign
+l_string|&quot;PHB PY&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|phb_type_speedwagon
+suffix:colon
+id|model
+op_assign
+l_string|&quot;PHB SW&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|phb_type_winnipeg
+suffix:colon
+id|model
+op_assign
+l_string|&quot;PHB WP&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|model
+op_assign
+l_string|&quot;PHB UK&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
