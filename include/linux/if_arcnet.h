@@ -4,6 +4,8 @@ DECL|macro|_LINUX_IF_ARCNET_H
 mdefine_line|#define _LINUX_IF_ARCNET_H
 macro_line|#include &lt;linux/if_ether.h&gt;
 multiline_comment|/*&n; *    These are the defined ARCnet Protocol ID&squot;s.&n; */
+multiline_comment|/* CAP mode */
+multiline_comment|/* No macro but uses 1-8 */
 multiline_comment|/* RFC1201 Protocol ID&squot;s */
 DECL|macro|ARC_P_IP
 mdefine_line|#define ARC_P_IP&t;&t;212&t;/* 0xD4 */
@@ -123,6 +125,45 @@ multiline_comment|/* 493 bytes&t;&t;&t;&t;*/
 suffix:semicolon
 DECL|macro|ETH_ENCAP_HDR_SIZE
 mdefine_line|#define ETH_ENCAP_HDR_SIZE 14
+DECL|struct|arc_cap
+r_struct
+id|arc_cap
+(brace
+DECL|member|proto
+r_uint8
+id|proto
+suffix:semicolon
+DECL|member|cookie
+r_uint8
+id|cookie
+(braket
+r_sizeof
+(paren
+r_int
+)paren
+)braket
+suffix:semicolon
+multiline_comment|/* Actually NOT sent over the network */
+r_union
+(brace
+DECL|member|ack
+r_uint8
+id|ack
+suffix:semicolon
+DECL|member|raw
+r_uint8
+id|raw
+(braket
+l_int|0
+)braket
+suffix:semicolon
+multiline_comment|/* 507 bytes */
+DECL|member|mes
+)brace
+id|mes
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * The data needed by the actual arcnet hardware.&n; *&n; * Now, in the real arcnet hardware, the third and fourth bytes are the&n; * &squot;offset&squot; specification instead of the length, and the soft data is at&n; * the _end_ of the 512-byte buffer.  We hide this complexity inside the&n; * driver.&n; */
 DECL|struct|arc_hardware
 r_struct
@@ -176,6 +217,11 @@ DECL|member|eth_encap
 r_struct
 id|arc_eth_encap
 id|eth_encap
+suffix:semicolon
+DECL|member|cap
+r_struct
+id|arc_cap
+id|cap
 suffix:semicolon
 DECL|member|raw
 r_uint8

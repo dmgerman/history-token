@@ -493,22 +493,6 @@ id|minor_version
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|OUTREG64
-mdefine_line|#define OUTREG64(mmap, addr, val)&t;__raw_writeq((val), (mmap)+(addr))
-DECL|macro|OUTREG32
-mdefine_line|#define OUTREG32(mmap, addr, val)&t;__raw_writel((val), (mmap)+(addr))
-DECL|macro|OUTREG16
-mdefine_line|#define OUTREG16(mmap, addr, val)&t;__raw_writew((val), (mmap)+(addr))
-DECL|macro|OUTREG8
-mdefine_line|#define OUTREG8(mmap, addr, val)&t;__raw_writeb((val), (mmap)+(addr))
-DECL|macro|INREG64
-mdefine_line|#define INREG64(mmap, addr)&t;&t;__raw_readq((mmap)+(addr))
-DECL|macro|INREG32
-mdefine_line|#define INREG32(mmap, addr)&t;&t;__raw_readl((mmap)+(addr))
-DECL|macro|INREG16
-mdefine_line|#define INREG16(mmap, addr)&t;&t;__raw_readw((mmap)+(addr))
-DECL|macro|INREG8
-mdefine_line|#define INREG8(mmap, addr)&t;&t;__raw_readb((mmap)+(addr))
 DECL|macro|KB
 mdefine_line|#define KB(x)&t;((x) * 1024)
 DECL|macro|MB

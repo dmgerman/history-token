@@ -606,6 +606,8 @@ DECL|member|pcc_err_reg
 id|u64
 id|pcc_err_reg
 suffix:semicolon
+DECL|macro|PCC_FB_ECC_DB_ERR
+mdefine_line|#define PCC_FB_ECC_DB_ERR&t;&t;vBIT(0xFF, 16, 8)
 DECL|member|pcc_err_mask
 id|u64
 id|pcc_err_mask
@@ -1122,6 +1124,8 @@ DECL|macro|RX_PA_CFG_IGNORE_SNAP_OUI
 mdefine_line|#define RX_PA_CFG_IGNORE_SNAP_OUI          BIT(2)
 DECL|macro|RX_PA_CFG_IGNORE_LLC_CTRL
 mdefine_line|#define RX_PA_CFG_IGNORE_LLC_CTRL          BIT(3)
+DECL|macro|RX_PA_CFG_IGNORE_L2_ERR
+mdefine_line|#define RX_PA_CFG_IGNORE_L2_ERR            BIT(6)
 DECL|member|unused12
 id|u8
 id|unused12

@@ -8,7 +8,10 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &quot;agp.h&quot;
 DECL|variable|agp_gatt_table
 id|__u32
@@ -27,6 +30,92 @@ c_func
 id|agp_memory_reserved
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_X86)
+DECL|function|map_page_into_agp
+r_int
+id|map_page_into_agp
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|i
+op_assign
+id|change_page_attr
+c_func
+(paren
+id|page
+comma
+l_int|1
+comma
+id|PAGE_KERNEL_NOCACHE
+)paren
+suffix:semicolon
+id|global_flush_tlb
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|i
+suffix:semicolon
+)brace
+DECL|variable|map_page_into_agp
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|map_page_into_agp
+)paren
+suffix:semicolon
+DECL|function|unmap_page_from_agp
+r_int
+id|unmap_page_from_agp
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|i
+op_assign
+id|change_page_attr
+c_func
+(paren
+id|page
+comma
+l_int|1
+comma
+id|PAGE_KERNEL
+)paren
+suffix:semicolon
+id|global_flush_tlb
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|i
+suffix:semicolon
+)brace
+DECL|variable|unmap_page_from_agp
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|unmap_page_from_agp
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Generic routines for handling agp_memory structures -&n; * They use the basic page allocation routines to do the brunt of the work.&n; */
 DECL|function|agp_free_key
 r_void
@@ -548,18 +637,10 @@ id|memory
 id|i
 )braket
 op_assign
-id|agp_bridge-&gt;driver
-op_member_access_from_pointer
-id|mask_memory
-c_func
-(paren
 id|virt_to_phys
 c_func
 (paren
 id|addr
-)paren
-comma
-id|type
 )paren
 suffix:semicolon
 r_new
@@ -1817,24 +1898,10 @@ suffix:semicolon
 id|u32
 id|agp3
 suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|device
-op_assign
-id|pci_find_device
+id|for_each_pci_dev
 c_func
 (paren
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
 id|device
-)paren
-)paren
-op_ne
-l_int|NULL
 )paren
 (brace
 id|cap_ptr
@@ -2044,24 +2111,10 @@ id|mode
 op_mul_assign
 l_int|4
 suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|device
-op_assign
-id|pci_find_device
+id|for_each_pci_dev
 c_func
 (paren
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
 id|device
-)paren
-)paren
-op_ne
-l_int|NULL
 )paren
 (brace
 id|u8
@@ -2946,6 +2999,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|writel
 c_func
 (paren
@@ -2956,6 +3010,16 @@ op_plus
 id|i
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|agp_bridge-&gt;gatt_table
+op_plus
+id|i
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -3436,6 +3500,7 @@ comma
 id|j
 op_increment
 )paren
+(brace
 id|writel
 c_func
 (paren
@@ -3457,6 +3522,16 @@ op_plus
 id|j
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|agp_bridge-&gt;gatt_table
+op_plus
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
+)brace
 id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|tlb_flush
@@ -3533,6 +3608,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|writel
 c_func
 (paren
@@ -3541,6 +3617,21 @@ comma
 id|agp_bridge-&gt;gatt_table
 op_plus
 id|i
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
+id|agp_bridge-&gt;gatt_table
+op_plus
+id|i
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
+)brace
+id|global_cache_flush
+c_func
+(paren
 )paren
 suffix:semicolon
 id|agp_bridge-&gt;driver
@@ -3815,7 +3906,6 @@ c_func
 id|agp_enable
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 DECL|function|ipi_handler
 r_static
 r_void
@@ -3833,7 +3923,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|global_cache_flush
 r_void
 id|global_cache_flush
@@ -3842,7 +3931,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -3867,13 +3955,6 @@ id|PFX
 l_string|&quot;timed out waiting for the other CPUs!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#else
-id|flush_agp_cache
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|global_cache_flush
 id|EXPORT_SYMBOL

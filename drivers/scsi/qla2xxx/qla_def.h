@@ -76,14 +76,11 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_SCSI_QLA6312) || defined(CONFIG_SCSI_QLA6312_MODULE)
 DECL|macro|IS_QLA6312
 mdefine_line|#define IS_QLA6312(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP6312)
-macro_line|#else
-DECL|macro|IS_QLA6312
-mdefine_line|#define IS_QLA6312(ha)&t;0
-macro_line|#endif
-macro_line|#if defined(CONFIG_SCSI_QLA6322) || defined(CONFIG_SCSI_QLA6322_MODULE)
 DECL|macro|IS_QLA6322
 mdefine_line|#define IS_QLA6322(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP6322)
 macro_line|#else
+DECL|macro|IS_QLA6312
+mdefine_line|#define IS_QLA6312(ha)&t;0
 DECL|macro|IS_QLA6322
 mdefine_line|#define IS_QLA6322(ha)&t;0
 macro_line|#endif
@@ -532,6 +529,10 @@ DECL|macro|NVR_DESELECT
 mdefine_line|#define NVR_DESELECT&t;&t;0
 DECL|macro|NVR_BUSY
 mdefine_line|#define NVR_BUSY&t;&t;BIT_15
+DECL|macro|NVR_WRT_ENABLE
+mdefine_line|#define NVR_WRT_ENABLE&t;&t;BIT_14&t;/* Write enable */
+DECL|macro|NVR_PR_ENABLE
+mdefine_line|#define NVR_PR_ENABLE&t;&t;BIT_13&t;/* Protection register enable */
 DECL|macro|NVR_DATA_IN
 mdefine_line|#define NVR_DATA_IN&t;&t;BIT_3
 DECL|macro|NVR_DATA_OUT
@@ -2047,15 +2048,15 @@ DECL|member|reserved_2
 r_uint8
 id|reserved_2
 (braket
-l_int|24
+l_int|22
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t; * LSB BIT 0 = Output Swing 1G bit 0&n;&t; * LSB BIT 1 = Output Swing 1G bit 1&n;&t; * LSB BIT 2 = Output Swing 1G bit 2&n;&t; * LSB BIT 3 = Output Emphasis 1G bit 0&n;&t; * LSB BIT 4 = Output Emphasis 1G bit 1&n;&t; * LSB BIT 5 = Output Swing 2G bit 0&n;&t; * LSB BIT 6 = Output Swing 2G bit 1&n;&t; * LSB BIT 7 = Output Swing 2G bit 2&n;&t; *            &n;&t; * MSB BIT 0 = Output Emphasis 2G bit 0&n;&t; * MSB BIT 1 = Output Emphasis 2G bit 1&n;&t; * MSB BIT 2 = Output Enable&n;&t; * MSB BIT 3 =&n;&t; * MSB BIT 4 =&n;&t; * MSB BIT 5 =&n;&t; * MSB BIT 6 =&n;&t; * MSB BIT 7 =&n;&t; */
+multiline_comment|/*&n;&t; * LSB BIT 0 = Tx Sensitivity 1G bit 0&n;&t; * LSB BIT 1 = Tx Sensitivity 1G bit 1&n;&t; * LSB BIT 2 = Tx Sensitivity 1G bit 2&n;&t; * LSB BIT 3 = Tx Sensitivity 1G bit 3&n;&t; * LSB BIT 4 = Rx Sensitivity 1G bit 0&n;&t; * LSB BIT 5 = Rx Sensitivity 1G bit 1&n;&t; * LSB BIT 6 = Rx Sensitivity 1G bit 2&n;&t; * LSB BIT 7 = Rx Sensitivity 1G bit 3&n;&t; *            &n;&t; * MSB BIT 0 = Tx Sensitivity 2G bit 0&n;&t; * MSB BIT 1 = Tx Sensitivity 2G bit 1&n;&t; * MSB BIT 2 = Tx Sensitivity 2G bit 2&n;&t; * MSB BIT 3 = Tx Sensitivity 2G bit 3&n;&t; * MSB BIT 4 = Rx Sensitivity 2G bit 0&n;&t; * MSB BIT 5 = Rx Sensitivity 2G bit 1&n;&t; * MSB BIT 6 = Rx Sensitivity 2G bit 2&n;&t; * MSB BIT 7 = Rx Sensitivity 2G bit 3&n;&t; *&n;&t; * LSB BIT 0 = Output Swing 1G bit 0&n;&t; * LSB BIT 1 = Output Swing 1G bit 1&n;&t; * LSB BIT 2 = Output Swing 1G bit 2&n;&t; * LSB BIT 3 = Output Emphasis 1G bit 0&n;&t; * LSB BIT 4 = Output Emphasis 1G bit 1&n;&t; * LSB BIT 5 = Output Swing 2G bit 0&n;&t; * LSB BIT 6 = Output Swing 2G bit 1&n;&t; * LSB BIT 7 = Output Swing 2G bit 2&n;&t; *            &n;&t; * MSB BIT 0 = Output Emphasis 2G bit 0&n;&t; * MSB BIT 1 = Output Emphasis 2G bit 1&n;&t; * MSB BIT 2 = Output Enable&n;&t; * MSB BIT 3 =&n;&t; * MSB BIT 4 =&n;&t; * MSB BIT 5 =&n;&t; * MSB BIT 6 =&n;&t; * MSB BIT 7 =&n;&t; */
 DECL|member|seriallink_options
 r_uint8
 id|seriallink_options
 (braket
-l_int|2
+l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * NVRAM host parameter block&n;&t; *&n;&t; * LSB BIT 0 = Enable spinup delay&n;&t; * LSB BIT 1 = Disable BIOS&n;&t; * LSB BIT 2 = Enable Memory Map BIOS&n;&t; * LSB BIT 3 = Enable Selectable Boot&n;&t; * LSB BIT 4 = Disable RISC code load&n;&t; * LSB BIT 5 = Set cache line size 1&n;&t; * LSB BIT 6 = PCI Parity Disable&n;&t; * LSB BIT 7 = Enable extended logging&n;&t; *&n;&t; * MSB BIT 0 = Enable 64bit addressing&n;&t; * MSB BIT 1 = Enable lip reset&n;&t; * MSB BIT 2 = Enable lip full login&n;&t; * MSB BIT 3 = Enable target reset&n;&t; * MSB BIT 4 = Enable database storage&n;&t; * MSB BIT 5 = Enable cache flush read&n;&t; * MSB BIT 6 = Enable database load&n;&t; * MSB BIT 7 = Enable alternate WWN&n;&t; */
@@ -2114,7 +2115,7 @@ id|alternate_node_name
 id|WWN_SIZE
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t; * BIT 0 = Boot Zoning&n;&t; * BIT 1 = Alt-Boot Enable&n;&t; * BIT 2 = Report SCSI Path&n;&t; * BIT 3 = unused&n;&t; * BIT 4 = unused&n;&t; * BIT 5 = unused&n;&t; * BIT 6 = unused&n;&t; * BIT 7 = unused&n;&t; */
+multiline_comment|/*&n;&t; * BIT 0 = Selective Login&n;&t; * BIT 1 = Alt-Boot Enable&n;&t; * BIT 2 =&n;&t; * BIT 3 = Boot Order List&n;&t; * BIT 4 =&n;&t; * BIT 5 = Selective LUN&n;&t; * BIT 6 =&n;&t; * BIT 7 = unused&n;&t; */
 DECL|member|efi_parameters
 r_uint8
 id|efi_parameters
@@ -2917,6 +2918,8 @@ mdefine_line|#define CS_RETRY&t;&t;0x82&t;/* Driver defined */
 DECL|macro|CS_LOOP_DOWN_ABORT
 mdefine_line|#define CS_LOOP_DOWN_ABORT&t;0x83&t;/* Driver defined */
 multiline_comment|/*&n; * Status entry status flags&n; */
+DECL|macro|SF_ABTS_TERMINATED
+mdefine_line|#define SF_ABTS_TERMINATED&t;BIT_10
 DECL|macro|SF_LOGOUT_SENT
 mdefine_line|#define SF_LOGOUT_SENT&t;&t;BIT_13
 multiline_comment|/*&n; * ISP queue - status continuation entry structure definition.&n; */
@@ -3664,6 +3667,8 @@ r_int
 r_int
 id|q_flag
 suffix:semicolon
+DECL|macro|LUN_MPIO_RESET_CNTS
+mdefine_line|#define LUN_MPIO_RESET_CNTS&t;1&t;/* Lun */
 DECL|macro|LUN_MPIO_BUSY
 mdefine_line|#define LUN_MPIO_BUSY&t;&t;2&t;/* Lun is changing paths  */
 DECL|macro|LUN_EXEC_DELAYED
@@ -3970,6 +3975,10 @@ DECL|macro|FCF_FAILBACK_DISABLE
 mdefine_line|#define FCF_FAILBACK_DISABLE&t;BIT_21
 DECL|macro|FCF_FAILOVER_DISABLE
 mdefine_line|#define FCF_FAILOVER_DISABLE&t;BIT_22
+DECL|macro|FCF_DSXXX_DEVICE
+mdefine_line|#define FCF_DSXXX_DEVICE&t;BIT_23
+DECL|macro|FCF_AA_EVA_DEVICE
+mdefine_line|#define FCF_AA_EVA_DEVICE&t;BIT_24
 multiline_comment|/* No loop ID flag. */
 DECL|macro|FC_NO_LOOP_ID
 mdefine_line|#define FC_NO_LOOP_ID&t;&t;0x1000
@@ -4972,6 +4981,12 @@ id|enable_target_reset
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|enable_led_scheme
+r_uint32
+id|enable_led_scheme
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|flags
 )brace
 id|flags
@@ -5045,6 +5060,8 @@ DECL|macro|IODESC_PROCESS_NEEDED
 mdefine_line|#define IODESC_PROCESS_NEEDED&t;22      /* IO descriptor processing needed */
 DECL|macro|IOCTL_ERROR_RECOVERY
 mdefine_line|#define IOCTL_ERROR_RECOVERY&t;23      
+DECL|macro|LOOP_RESET_NEEDED
+mdefine_line|#define LOOP_RESET_NEEDED&t;24
 DECL|member|device_flags
 r_uint32
 id|device_flags
@@ -5788,7 +5805,7 @@ DECL|member|fw_seriallink_options
 r_uint8
 id|fw_seriallink_options
 (braket
-l_int|2
+l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* Firmware dump information. */

@@ -970,6 +970,12 @@ op_logical_neg
 id|priv
 )paren
 suffix:semicolon
+id|pci_enable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren

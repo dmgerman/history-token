@@ -643,7 +643,9 @@ id|buf_dma
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|enum|velocity_owner
 r_enum
+id|velocity_owner
 (brace
 DECL|enumerator|OWNED_BY_HOST
 id|OWNED_BY_HOST
@@ -654,9 +656,7 @@ DECL|enumerator|OWNED_BY_NIC
 id|OWNED_BY_NIC
 op_assign
 l_int|1
-DECL|variable|velocity_owner
 )brace
-id|velocity_owner
 suffix:semicolon
 multiline_comment|/*&n; *&t;MAC registers and macros.&n; */
 DECL|macro|MCAM_SIZE

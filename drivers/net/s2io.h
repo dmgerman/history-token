@@ -8,6 +8,8 @@ DECL|macro|BIT
 mdefine_line|#define BIT(loc)&t;&t;(0x8000000000000000ULL &gt;&gt; (loc))
 DECL|macro|vBIT
 mdefine_line|#define vBIT(val, loc, sz)&t;(((u64)val) &lt;&lt; (64-loc-sz))
+DECL|macro|INV
+mdefine_line|#define INV(d)  ((d&amp;0xff)&lt;&lt;24) | (((d&gt;&gt;8)&amp;0xff)&lt;&lt;16) | (((d&gt;&gt;16)&amp;0xff)&lt;&lt;8)| ((d&gt;&gt;24)&amp;0xff)
 macro_line|#ifndef BOOL
 DECL|macro|BOOL
 mdefine_line|#define BOOL    int
@@ -85,8 +87,6 @@ mdefine_line|#define ALIGN_SIZE  &t;&t;&t;127
 DECL|macro|PCIX_COMMAND_REGISTER
 mdefine_line|#define&t;PCIX_COMMAND_REGISTER&t;0x62
 multiline_comment|/*&n; * Debug related variables.&n; */
-DECL|macro|DEBUG_ON
-mdefine_line|#define DEBUG_ON TRUE
 multiline_comment|/* different debug levels. */
 DECL|macro|ERR_DBG
 mdefine_line|#define&t;ERR_DBG&t;&t;0
@@ -876,9 +876,9 @@ id|tx_fifo_config
 (brace
 DECL|macro|MAX_AVAILABLE_TXDS
 mdefine_line|#define&t;MAX_AVAILABLE_TXDS&t;8192
-DECL|member|FifoLen
+DECL|member|fifo_len
 id|u32
-id|FifoLen
+id|fifo_len
 suffix:semicolon
 multiline_comment|/* specifies len of FIFO upto 8192, ie no of TxDLs */
 multiline_comment|/* Priority definition */
@@ -898,15 +898,15 @@ DECL|macro|TX_FIFO_PRI_6
 mdefine_line|#define TX_FIFO_PRI_6               6
 DECL|macro|TX_FIFO_PRI_7
 mdefine_line|#define TX_FIFO_PRI_7               7&t;/*lowest */
-DECL|member|FifoPriority
+DECL|member|fifo_priority
 id|u8
-id|FifoPriority
+id|fifo_priority
 suffix:semicolon
 multiline_comment|/* specifies pointer level for FIFO */
 multiline_comment|/* user should not set twos fifos with same pri */
-DECL|member|fNoSnoop
+DECL|member|f_no_snoop
 id|u8
-id|fNoSnoop
+id|f_no_snoop
 suffix:semicolon
 DECL|macro|NO_SNOOP_TXD
 mdefine_line|#define NO_SNOOP_TXD                0x01
@@ -922,9 +922,9 @@ r_typedef
 r_struct
 id|rx_ring_config
 (brace
-DECL|member|NumRxd
+DECL|member|num_rxd
 id|u32
-id|NumRxd
+id|num_rxd
 suffix:semicolon
 multiline_comment|/*No of RxDs per Rx Ring */
 DECL|macro|RX_RING_PRI_0
@@ -943,57 +943,31 @@ DECL|macro|RX_RING_PRI_6
 mdefine_line|#define RX_RING_PRI_6               6
 DECL|macro|RX_RING_PRI_7
 mdefine_line|#define RX_RING_PRI_7               7&t;/* lowest */
-DECL|member|RingPriority
+DECL|member|ring_priority
 id|u8
-id|RingPriority
+id|ring_priority
 suffix:semicolon
 multiline_comment|/*Specifies service priority of ring */
 multiline_comment|/* OSM should not set any two rings with same priority */
-DECL|member|RingOrg
+DECL|member|ring_org
 id|u8
-id|RingOrg
+id|ring_org
 suffix:semicolon
 multiline_comment|/*Organization of ring */
 DECL|macro|RING_ORG_BUFF1
-mdefine_line|#define RING_ORG_BUFF1           0x01
+mdefine_line|#define RING_ORG_BUFF1&t;&t;0x01
 DECL|macro|RX_RING_ORG_BUFF3
-mdefine_line|#define RX_RING_ORG_BUFF3           0x03
+mdefine_line|#define RX_RING_ORG_BUFF3&t;0x03
 DECL|macro|RX_RING_ORG_BUFF5
-mdefine_line|#define RX_RING_ORG_BUFF5           0x05
-multiline_comment|/* In case of 3 buffer recv. mode, size of three buffers is expected as.. */
-DECL|macro|BUFF_SZ_1
-mdefine_line|#define BUFF_SZ_1                   22&t;/* ethernet header */
-DECL|macro|BUFF_SZ_2
-mdefine_line|#define BUFF_SZ_2                   (64+64)&t;/* max. IP+TCP header size */
-DECL|macro|BUFF_SZ_3
-mdefine_line|#define BUFF_SZ_3                   (1500-20-20)&t;/* TCP payload */
-DECL|macro|BUFF_SZ_3_JUMBO
-mdefine_line|#define BUFF_SZ_3_JUMBO             (9600-20-20)&t;/* Jumbo TCP payload */
-DECL|member|RxdThresh
-id|u32
-id|RxdThresh
-suffix:semicolon
-multiline_comment|/*No of used Rxds NIC can store before transfer to host */
-DECL|macro|DEFAULT_RXD_THRESHOLD
-mdefine_line|#define DEFAULT_RXD_THRESHOLD       0x1&t;/* TODO */
-DECL|member|fNoSnoop
+mdefine_line|#define RX_RING_ORG_BUFF5&t;0x05
+DECL|member|f_no_snoop
 id|u8
-id|fNoSnoop
+id|f_no_snoop
 suffix:semicolon
 DECL|macro|NO_SNOOP_RXD
 mdefine_line|#define NO_SNOOP_RXD                0x01
 DECL|macro|NO_SNOOP_RXD_BUFFER
 mdefine_line|#define NO_SNOOP_RXD_BUFFER         0x02
-DECL|member|RxD_BackOff_Interval
-id|u32
-id|RxD_BackOff_Interval
-suffix:semicolon
-DECL|macro|RXD_BACKOFF_INTERVAL_DEF
-mdefine_line|#define RXD_BACKOFF_INTERVAL_DEF        0x0
-DECL|macro|RXD_BACKOFF_INTERVAL_MIN
-mdefine_line|#define RXD_BACKOFF_INTERVAL_MIN        0x0
-DECL|macro|RXD_BACKOFF_INTERVAL_MAX
-mdefine_line|#define RXD_BACKOFF_INTERVAL_MAX        0x0
 DECL|typedef|rx_ring_config_t
 )brace
 id|rx_ring_config_t
@@ -1004,93 +978,49 @@ r_struct
 id|config_param
 (brace
 multiline_comment|/* Tx Side */
-DECL|member|TxFIFONum
+DECL|member|tx_fifo_num
 id|u32
-id|TxFIFONum
+id|tx_fifo_num
 suffix:semicolon
 multiline_comment|/*Number of Tx FIFOs */
 DECL|macro|MAX_TX_FIFOS
 mdefine_line|#define MAX_TX_FIFOS 8
-DECL|member|TxCfg
+DECL|member|tx_cfg
 id|tx_fifo_config_t
-id|TxCfg
+id|tx_cfg
 (braket
 id|MAX_TX_FIFOS
 )braket
 suffix:semicolon
 multiline_comment|/*Per-Tx FIFO config */
-DECL|member|MaxTxDs
+DECL|member|max_txds
 id|u32
-id|MaxTxDs
+id|max_txds
 suffix:semicolon
 multiline_comment|/*Max no. of Tx buffer descriptor per TxDL */
-DECL|member|TxVLANEnable
-id|BOOL
-id|TxVLANEnable
-suffix:semicolon
-multiline_comment|/*TRUE: Insert VLAN ID, FALSE: Don&squot;t insert */
-DECL|macro|TX_REQ_TIMEOUT_DEFAULT
-mdefine_line|#define TX_REQ_TIMEOUT_DEFAULT          0x0
-DECL|macro|TX_REQ_TIMEOUT_MIN
-mdefine_line|#define TX_REQ_TIMEOUT_MIN              0x0
-DECL|macro|TX_REQ_TIMEOUT_MAX
-mdefine_line|#define TX_REQ_TIMEOUT_MAX              0x0
-DECL|member|TxReqTimeOut
-id|u32
-id|TxReqTimeOut
-suffix:semicolon
-DECL|member|TxFlow
-id|BOOL
-id|TxFlow
-suffix:semicolon
-multiline_comment|/*Tx flow control enable */
-DECL|member|RxFlow
-id|BOOL
-id|RxFlow
-suffix:semicolon
-DECL|member|OverrideTxServiceState
-id|BOOL
-id|OverrideTxServiceState
-suffix:semicolon
-multiline_comment|/* TRUE: Overide, FALSE: Do not override &n;&t;&t;&t;&t;&t;   Use the new priority information&n;&t;&t;&t;&t;&t;   of service state. It is not recommended&n;&t;&t;&t;&t;&t;   to change but OSM can opt to do so */
-DECL|macro|MAX_SERVICE_STATES
-mdefine_line|#define MAX_SERVICE_STATES  36
-DECL|member|TxServiceState
-id|u8
-id|TxServiceState
-(braket
-id|MAX_SERVICE_STATES
-)braket
-suffix:semicolon
-multiline_comment|/* Array element represent &squot;priority&squot; &n;&t; * and array index represents&n;&t; *  &squot;Service state&squot; e.g. &n;&t; *  TxServiceState[3]=7; it means &n;&t; *  Service state 3 is associated &n;&t; *  with priority 7 of a Tx FIFO */
-DECL|member|TxIntrType
+DECL|member|tx_intr_type
 id|u64
-id|TxIntrType
+id|tx_intr_type
 suffix:semicolon
 multiline_comment|/* Specifies if Tx Intr is UTILZ or PER_LIST type. */
 multiline_comment|/* Rx Side */
-DECL|member|RxRingNum
+DECL|member|rx_ring_num
 id|u32
-id|RxRingNum
+id|rx_ring_num
 suffix:semicolon
 multiline_comment|/*Number of receive rings */
 DECL|macro|MAX_RX_RINGS
 mdefine_line|#define MAX_RX_RINGS 8
 DECL|macro|MAX_RX_BLOCKS_PER_RING
 mdefine_line|#define MAX_RX_BLOCKS_PER_RING  150
-DECL|member|RxCfg
+DECL|member|rx_cfg
 id|rx_ring_config_t
-id|RxCfg
+id|rx_cfg
 (braket
 id|MAX_RX_RINGS
 )braket
 suffix:semicolon
 multiline_comment|/*Per-Rx Ring config */
-DECL|member|RxVLANEnable
-id|BOOL
-id|RxVLANEnable
-suffix:semicolon
-multiline_comment|/*TRUE: Strip off VLAN tag from the frame,&n;&t;&t;&t;&t;   FALSE: Don&squot;t strip off VLAN tag */
 DECL|macro|HEADER_ETHERNET_II_802_3_SIZE
 mdefine_line|#define HEADER_ETHERNET_II_802_3_SIZE 14
 DECL|macro|HEADER_802_2_SIZE
@@ -1113,43 +1043,6 @@ DECL|macro|MAX_MTU_JUMBO
 mdefine_line|#define MAX_MTU_JUMBO               (MAX_PYLD_JUMBO+18)
 DECL|macro|MAX_MTU_JUMBO_VLAN
 mdefine_line|#define MAX_MTU_JUMBO_VLAN          (MAX_PYLD_JUMBO+22)
-DECL|member|MTU
-id|u32
-id|MTU
-suffix:semicolon
-multiline_comment|/*Maximum Payload */
-DECL|member|JumboEnable
-id|BOOL
-id|JumboEnable
-suffix:semicolon
-multiline_comment|/*Enable Jumbo frames recv/send */
-DECL|member|OverrideRxServiceState
-id|BOOL
-id|OverrideRxServiceState
-suffix:semicolon
-multiline_comment|/* TRUE: Overide, FALSE: Do not override &n;&t;&t;&t;&t;&t;   Use the new priority information&n;&t;&t;&t;&t;&t;   of service state. It is not recommended&n;&t;&t;&t;&t;&t;   to change but OSM can opt to do so */
-DECL|macro|MAX_SERVICE_STATES
-mdefine_line|#define MAX_SERVICE_STATES  36
-DECL|member|RxServiceState
-id|u8
-id|RxServiceState
-(braket
-id|MAX_SERVICE_STATES
-)braket
-suffix:semicolon
-multiline_comment|/* Array element represent &squot;priority&squot; &n;&t; * and array index represents &n;&t; * &squot;Service state&squot;e.g. &n;&t; * RxServiceState[3]=7; it means &n;&t; * Service state 3 is associated &n;&t; * with priority 7 of a Rx FIFO */
-DECL|member|StatAutoRefresh
-id|BOOL
-id|StatAutoRefresh
-suffix:semicolon
-multiline_comment|/* When true, StatRefreshTime have valid value */
-DECL|member|StatRefreshTime
-id|u32
-id|StatRefreshTime
-suffix:semicolon
-multiline_comment|/*Time for refreshing statistics */
-DECL|macro|STAT_TRSF_PER_1_SECOND
-mdefine_line|#define     STAT_TRSF_PER_1_SECOND      0x208D5
 )brace
 suffix:semicolon
 multiline_comment|/* Structure representing MAC Addrs */
@@ -1271,6 +1164,25 @@ DECL|typedef|TxD_t
 )brace
 id|TxD_t
 suffix:semicolon
+multiline_comment|/* Structure to hold the phy and virt addr of every TxDL. */
+DECL|struct|list_info_hold
+r_typedef
+r_struct
+id|list_info_hold
+(brace
+DECL|member|list_phy_addr
+id|dma_addr_t
+id|list_phy_addr
+suffix:semicolon
+DECL|member|list_virt_addr
+r_void
+op_star
+id|list_virt_addr
+suffix:semicolon
+DECL|typedef|list_info_hold_t
+)brace
+id|list_info_hold_t
+suffix:semicolon
 multiline_comment|/* Rx descriptor structure */
 DECL|struct|_RxD_t
 r_typedef
@@ -1310,28 +1222,66 @@ DECL|member|Control_2
 id|u64
 id|Control_2
 suffix:semicolon
+macro_line|#ifndef CONFIG_2BUFF_MODE
 DECL|macro|MASK_BUFFER0_SIZE
 mdefine_line|#define MASK_BUFFER0_SIZE       vBIT(0xFFFF,0,16)
 DECL|macro|SET_BUFFER0_SIZE
 mdefine_line|#define SET_BUFFER0_SIZE(val)   vBIT(val,0,16)
+macro_line|#else
+DECL|macro|MASK_BUFFER0_SIZE
+mdefine_line|#define MASK_BUFFER0_SIZE       vBIT(0xFF,0,16)
+DECL|macro|MASK_BUFFER1_SIZE
+mdefine_line|#define MASK_BUFFER1_SIZE       vBIT(0xFFFF,16,16)
+DECL|macro|MASK_BUFFER2_SIZE
+mdefine_line|#define MASK_BUFFER2_SIZE       vBIT(0xFFFF,32,16)
+DECL|macro|SET_BUFFER0_SIZE
+mdefine_line|#define SET_BUFFER0_SIZE(val)   vBIT(val,8,8)
+DECL|macro|SET_BUFFER1_SIZE
+mdefine_line|#define SET_BUFFER1_SIZE(val)   vBIT(val,16,16)
+DECL|macro|SET_BUFFER2_SIZE
+mdefine_line|#define SET_BUFFER2_SIZE(val)   vBIT(val,32,16)
+macro_line|#endif
 DECL|macro|MASK_VLAN_TAG
 mdefine_line|#define MASK_VLAN_TAG           vBIT(0xFFFF,48,16)
 DECL|macro|SET_VLAN_TAG
 mdefine_line|#define SET_VLAN_TAG(val)       vBIT(val,48,16)
 DECL|macro|SET_NUM_TAG
 mdefine_line|#define SET_NUM_TAG(val)       vBIT(val,16,32)
+macro_line|#ifndef CONFIG_2BUFF_MODE
 DECL|macro|RXD_GET_BUFFER0_SIZE
 mdefine_line|#define RXD_GET_BUFFER0_SIZE(Control_2) (u64)((Control_2 &amp; vBIT(0xFFFF,0,16)))
-multiline_comment|/*    &n;#define TXD_GET_BUFFER1_SIZE(Control_2) (u16)((Control_2 &amp; MASK_BUFFER1_SIZE) &gt;&gt; (63-31))  &n;#define TXD_GET_BUFFER2_SIZE(Control_2) (u16)((Control_2 &amp; MASK_BUFFER2_SIZE) &gt;&gt; (63-47))  &n;*/
+macro_line|#else
+DECL|macro|RXD_GET_BUFFER0_SIZE
+mdefine_line|#define RXD_GET_BUFFER0_SIZE(Control_2) (u8)((Control_2 &amp; MASK_BUFFER0_SIZE) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&gt;&gt; 48)
+DECL|macro|RXD_GET_BUFFER1_SIZE
+mdefine_line|#define RXD_GET_BUFFER1_SIZE(Control_2) (u16)((Control_2 &amp; MASK_BUFFER1_SIZE) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&gt;&gt; 32)
+DECL|macro|RXD_GET_BUFFER2_SIZE
+mdefine_line|#define RXD_GET_BUFFER2_SIZE(Control_2) (u16)((Control_2 &amp; MASK_BUFFER2_SIZE) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&gt;&gt; 16)
+DECL|macro|BUF0_LEN
+mdefine_line|#define BUF0_LEN&t;40
+DECL|macro|BUF1_LEN
+mdefine_line|#define BUF1_LEN&t;1
+macro_line|#endif
 DECL|member|Buffer0_ptr
 id|u64
 id|Buffer0_ptr
 suffix:semicolon
+macro_line|#ifdef CONFIG_2BUFF_MODE
+DECL|member|Buffer1_ptr
+id|u64
+id|Buffer1_ptr
+suffix:semicolon
+DECL|member|Buffer2_ptr
+id|u64
+id|Buffer2_ptr
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|RxD_t
 )brace
 id|RxD_t
 suffix:semicolon
 multiline_comment|/* Structure that represents the Rx descriptor block which contains &n; * 128 Rx descriptors.&n; */
+macro_line|#ifndef CONFIG_2BUFF_MODE
 DECL|struct|_RxD_block
 r_typedef
 r_struct
@@ -1356,21 +1306,85 @@ DECL|member|reserved_1
 id|u64
 id|reserved_1
 suffix:semicolon
-multiline_comment|/* 0xFEFFFFFFFFFFFFFF to mark last Rxd in this blk */
+multiline_comment|/* 0xFEFFFFFFFFFFFFFF to mark last &n;&t;&t;&t;&t; * Rxd in this blk */
 DECL|member|reserved_2_pNext_RxD_block
 id|u64
 id|reserved_2_pNext_RxD_block
 suffix:semicolon
-multiline_comment|/*@ Logical ptr to next */
+multiline_comment|/* Logical ptr to next */
 DECL|member|pNext_RxD_Blk_physical
 id|u64
 id|pNext_RxD_Blk_physical
 suffix:semicolon
-multiline_comment|/* Buff0_ptr.&n;&t;&t;&t;&t;&t;   In a 32 bit arch the upper 32 bits &n;&t;&t;&t;&t;&t;   should be 0 */
+multiline_comment|/* Buff0_ptr.In a 32 bit arch&n;&t;&t;&t;&t;&t; * the upper 32 bits should &n;&t;&t;&t;&t;&t; * be 0 */
 DECL|typedef|RxD_block_t
 )brace
 id|RxD_block_t
 suffix:semicolon
+macro_line|#else
+DECL|struct|_RxD_block
+r_typedef
+r_struct
+id|_RxD_block
+(brace
+DECL|macro|MAX_RXDS_PER_BLOCK
+mdefine_line|#define MAX_RXDS_PER_BLOCK             85
+DECL|member|rxd
+id|RxD_t
+id|rxd
+(braket
+id|MAX_RXDS_PER_BLOCK
+)braket
+suffix:semicolon
+DECL|macro|END_OF_BLOCK
+mdefine_line|#define END_OF_BLOCK    0xFEFFFFFFFFFFFFFFULL
+DECL|member|reserved_1
+id|u64
+id|reserved_1
+suffix:semicolon
+multiline_comment|/* 0xFEFFFFFFFFFFFFFF to mark last Rxd &n;&t;&t;&t;&t; * in this blk */
+DECL|member|pNext_RxD_Blk_physical
+id|u64
+id|pNext_RxD_Blk_physical
+suffix:semicolon
+multiline_comment|/* Phy ponter to next blk. */
+DECL|typedef|RxD_block_t
+)brace
+id|RxD_block_t
+suffix:semicolon
+DECL|macro|SIZE_OF_BLOCK
+mdefine_line|#define SIZE_OF_BLOCK&t;4096
+multiline_comment|/* Structure to hold virtual addresses of Buf0 and Buf1 in &n; * 2buf mode. */
+DECL|struct|bufAdd
+r_typedef
+r_struct
+id|bufAdd
+(brace
+DECL|member|ba_0_org
+r_void
+op_star
+id|ba_0_org
+suffix:semicolon
+DECL|member|ba_1_org
+r_void
+op_star
+id|ba_1_org
+suffix:semicolon
+DECL|member|ba_0
+r_void
+op_star
+id|ba_0
+suffix:semicolon
+DECL|member|ba_1
+r_void
+op_star
+id|ba_1
+suffix:semicolon
+DECL|typedef|buffAdd_t
+)brace
+id|buffAdd_t
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Structure which stores all the MAC control parameters */
 multiline_comment|/* This structure stores the offset of the RxD in the ring &n; * from which the Rx Interrupt processor can start picking &n; * up the RxDs for processing.&n; */
 DECL|struct|_rx_curr_get_info_t
@@ -1427,26 +1441,6 @@ r_struct
 id|mac_info
 (brace
 multiline_comment|/* rx side stuff */
-DECL|member|rxd_ring_mem_sz
-id|u32
-id|rxd_ring_mem_sz
-suffix:semicolon
-DECL|member|RxRing
-id|RxD_t
-op_star
-id|RxRing
-(braket
-id|MAX_RX_RINGS
-)braket
-suffix:semicolon
-multiline_comment|/* Logical Rx ring pointers */
-DECL|member|RxRing_Phy
-id|dma_addr_t
-id|RxRing_Phy
-(braket
-id|MAX_RX_RINGS
-)braket
-suffix:semicolon
 multiline_comment|/* Put pointer info which indictes which RxD has to be replenished &n;&t; * with a new buffer.&n;&t; */
 DECL|member|rx_curr_put_info
 id|rx_curr_put_info_t
@@ -1467,48 +1461,20 @@ DECL|member|rmac_pause_time
 id|u16
 id|rmac_pause_time
 suffix:semicolon
-multiline_comment|/* this will be used in receive function, this decides which ring would&n;&t;   be processed first. eg: ring with priority value 0 (highest) should&n;&t;   be processed first. &n;&t;   first 3 LSB bits represent ring number which should be processed &n;&t;   first, similarly next 3 bits represent next ring to be processed.&n;&t;   eg: value of _rx_ring_pri_map = 0x0000 003A means &n;&t;   ring #2 would be processed first and #7 would be processed next&n;&t; */
-DECL|member|_rx_ring_pri_map
-id|u32
-id|_rx_ring_pri_map
+DECL|member|mc_pause_threshold_q0q3
+id|u16
+id|mc_pause_threshold_q0q3
+suffix:semicolon
+DECL|member|mc_pause_threshold_q4q7
+id|u16
+id|mc_pause_threshold_q4q7
 suffix:semicolon
 multiline_comment|/* tx side stuff */
-DECL|member|txd_list_mem
-r_void
-op_star
-id|txd_list_mem
-suffix:semicolon
-multiline_comment|/* orignal pointer to allocated mem */
-DECL|member|txd_list_mem_phy
-id|dma_addr_t
-id|txd_list_mem_phy
-suffix:semicolon
-DECL|member|txd_list_mem_sz
-id|u32
-id|txd_list_mem_sz
-suffix:semicolon
 multiline_comment|/* logical pointer of start of each Tx FIFO */
 DECL|member|tx_FIFO_start
 id|TxFIFO_element_t
 op_star
 id|tx_FIFO_start
-(braket
-id|MAX_TX_FIFOS
-)braket
-suffix:semicolon
-multiline_comment|/* logical pointer of start of TxDL which corresponds to each Tx FIFO */
-DECL|member|txdl_start
-id|TxD_t
-op_star
-id|txdl_start
-(braket
-id|MAX_TX_FIFOS
-)braket
-suffix:semicolon
-multiline_comment|/* Same as txdl_start but phy addr */
-DECL|member|txdl_start_phy
-id|dma_addr_t
-id|txdl_start_phy
 (braket
 id|MAX_TX_FIFOS
 )braket
@@ -1528,11 +1494,6 @@ id|tx_curr_get_info
 id|MAX_TX_FIFOS
 )braket
 suffix:semicolon
-DECL|member|txdl_len
-id|u16
-id|txdl_len
-suffix:semicolon
-multiline_comment|/* length of a TxDL, same for all */
 DECL|member|stats_mem
 r_void
 op_star
@@ -1548,10 +1509,10 @@ DECL|member|stats_mem_sz
 id|u32
 id|stats_mem_sz
 suffix:semicolon
-DECL|member|StatsInfo
+DECL|member|stats_info
 id|StatInfo_t
 op_star
-id|StatsInfo
+id|stats_info
 suffix:semicolon
 multiline_comment|/* Logical address of the stat block */
 DECL|typedef|mac_info_t
@@ -1596,6 +1557,17 @@ DECL|typedef|rx_block_info_t
 )brace
 id|rx_block_info_t
 suffix:semicolon
+multiline_comment|/* Default Tunable parameters of the NIC. */
+DECL|macro|DEFAULT_FIFO_LEN
+mdefine_line|#define DEFAULT_FIFO_LEN 4096
+DECL|macro|SMALL_RXD_CNT
+mdefine_line|#define SMALL_RXD_CNT&t;30 * (MAX_RXDS_PER_BLOCK+1)
+DECL|macro|LARGE_RXD_CNT
+mdefine_line|#define LARGE_RXD_CNT&t;100 * (MAX_RXDS_PER_BLOCK+1)
+DECL|macro|SMALL_BLK_CNT
+mdefine_line|#define SMALL_BLK_CNT&t;30
+DECL|macro|LARGE_BLK_CNT
+mdefine_line|#define LARGE_BLK_CNT&t;100
 multiline_comment|/* Structure representing one instance of the NIC */
 DECL|struct|s2io_nic
 r_typedef
@@ -1606,16 +1578,16 @@ DECL|macro|MAX_MAC_SUPPORTED
 mdefine_line|#define MAX_MAC_SUPPORTED   16
 DECL|macro|MAX_SUPPORTED_MULTICASTS
 mdefine_line|#define MAX_SUPPORTED_MULTICASTS MAX_MAC_SUPPORTED
-DECL|member|defMacAddr
+DECL|member|def_mac_addr
 id|macaddr_t
-id|defMacAddr
+id|def_mac_addr
 (braket
 id|MAX_MAC_SUPPORTED
 )braket
 suffix:semicolon
-DECL|member|preMacAddr
+DECL|member|pre_mac_addr
 id|macaddr_t
-id|preMacAddr
+id|pre_mac_addr
 (braket
 id|MAX_MAC_SUPPORTED
 )braket
@@ -1667,7 +1639,9 @@ id|tasklet_struct
 id|task
 suffix:semicolon
 DECL|member|tasklet_status
-id|atomic_t
+r_volatile
+r_int
+r_int
 id|tasklet_status
 suffix:semicolon
 DECL|member|timer
@@ -1742,14 +1716,16 @@ id|rx_bufs_left
 id|MAX_RX_RINGS
 )braket
 suffix:semicolon
-DECL|member|isr_lock
-id|spinlock_t
-id|isr_lock
-suffix:semicolon
 DECL|member|tx_lock
 id|spinlock_t
 id|tx_lock
 suffix:semicolon
+macro_line|#ifndef CONFIG_S2IO_NAPI
+DECL|member|put_lock
+id|spinlock_t
+id|put_lock
+suffix:semicolon
+macro_line|#endif
 DECL|macro|PROMISC
 mdefine_line|#define PROMISC     1
 DECL|macro|ALL_MULTI
@@ -1799,36 +1775,19 @@ DECL|member|rx_err_count
 id|u16
 id|rx_err_count
 suffix:semicolon
-macro_line|#if DEBUG_ON
-DECL|member|rxpkt_bytes
-id|u64
-id|rxpkt_bytes
-suffix:semicolon
-DECL|member|txpkt_bytes
-id|u64
-id|txpkt_bytes
-suffix:semicolon
-DECL|member|int_cnt
+macro_line|#ifndef CONFIG_S2IO_NAPI
+multiline_comment|/* Index to the absolute position of the put pointer of Rx ring. */
+DECL|member|put_pos
 r_int
-id|int_cnt
-suffix:semicolon
-DECL|member|rxint_cnt
-r_int
-id|rxint_cnt
-suffix:semicolon
-DECL|member|txint_cnt
-r_int
-id|txint_cnt
-suffix:semicolon
-DECL|member|rxpkt_cnt
-id|u64
-id|rxpkt_cnt
+id|put_pos
+(braket
+id|MAX_RX_RINGS
+)braket
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*  Place holders for the virtual and physical addresses of &n;&t; *  all the Rx Blocks&n;&t; */
-r_struct
-id|rx_block_info
+multiline_comment|/*&n;&t; *  Place holders for the virtual and physical addresses of &n;&t; *  all the Rx Blocks&n;&t; */
 DECL|member|rx_blocks
+id|rx_block_info_t
 id|rx_blocks
 (braket
 id|MAX_RX_RINGS
@@ -1849,6 +1808,15 @@ r_int
 id|pkt_cnt
 (braket
 id|MAX_RX_RINGS
+)braket
+suffix:semicolon
+multiline_comment|/* Place holder of all the TX List&squot;s Phy and Virt addresses. */
+DECL|member|list_info
+id|list_info_hold_t
+op_star
+id|list_info
+(braket
+id|MAX_TX_FIFOS
 )braket
 suffix:semicolon
 multiline_comment|/*  Id timer, used to blink NIC to physically identify NIC. */
@@ -1900,6 +1868,36 @@ DECL|macro|LINK_DOWN
 mdefine_line|#define&t;LINK_DOWN&t;1
 DECL|macro|LINK_UP
 mdefine_line|#define&t;LINK_UP&t;&t;2
+macro_line|#ifdef CONFIG_2BUFF_MODE
+multiline_comment|/* Buffer Address store. */
+DECL|member|ba
+id|buffAdd_t
+op_star
+op_star
+id|ba
+(braket
+id|MAX_RX_RINGS
+)braket
+suffix:semicolon
+macro_line|#endif
+DECL|member|task_flag
+r_int
+id|task_flag
+suffix:semicolon
+DECL|macro|CARD_DOWN
+mdefine_line|#define CARD_DOWN 1
+DECL|macro|CARD_UP
+mdefine_line|#define CARD_UP 2
+DECL|member|card_state
+id|atomic_t
+id|card_state
+suffix:semicolon
+DECL|member|link_state
+r_volatile
+r_int
+r_int
+id|link_state
+suffix:semicolon
 DECL|typedef|nic_t
 )brace
 id|nic_t
@@ -1908,13 +1906,6 @@ DECL|macro|RESET_ERROR
 mdefine_line|#define RESET_ERROR 1;
 DECL|macro|CMD_ERROR
 mdefine_line|#define CMD_ERROR   2;
-multiline_comment|/* Default Tunable parameters of the NIC. */
-DECL|macro|DEFAULT_FIFO_LEN
-mdefine_line|#define DEFAULT_FIFO_LEN 4096
-DECL|macro|SMALL_RXD_CNT
-mdefine_line|#define SMALL_RXD_CNT&t;40 * (MAX_RXDS_PER_BLOCK+1)
-DECL|macro|LARGE_RXD_CNT
-mdefine_line|#define LARGE_RXD_CNT&t;100 * (MAX_RXDS_PER_BLOCK+1)
 multiline_comment|/*  OS related system calls */
 macro_line|#ifndef readq
 DECL|function|readq
@@ -1944,10 +1935,16 @@ op_plus
 l_int|4
 )paren
 suffix:semicolon
+(paren
+id|u64
+)paren
 id|ret
 op_lshift_assign
 l_int|32
 suffix:semicolon
+(paren
+id|u64
+)paren
 id|ret
 op_or_assign
 id|readl
@@ -2010,6 +2007,109 @@ l_int|4
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* In 32 bit modes, some registers have to be written in a &n; * particular order to expect correct hardware operation. The&n; * macro SPECIAL_REG_WRITE is used to perform such ordered &n; * writes. Defines UF (Upper First) and LF (Lower First) will &n; * be used to specify the required write order.&n; */
+DECL|macro|UF
+mdefine_line|#define UF&t;1
+DECL|macro|LF
+mdefine_line|#define LF&t;2
+DECL|function|SPECIAL_REG_WRITE
+r_static
+r_inline
+r_void
+id|SPECIAL_REG_WRITE
+c_func
+(paren
+id|u64
+id|val
+comma
+r_void
+op_star
+id|addr
+comma
+r_int
+id|order
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|order
+op_eq
+id|LF
+)paren
+(brace
+id|writel
+c_func
+(paren
+(paren
+id|u32
+)paren
+(paren
+id|val
+)paren
+comma
+id|addr
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+(paren
+id|u32
+)paren
+(paren
+id|val
+op_rshift
+l_int|32
+)paren
+comma
+(paren
+id|addr
+op_plus
+l_int|4
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|writel
+c_func
+(paren
+(paren
+id|u32
+)paren
+(paren
+id|val
+op_rshift
+l_int|32
+)paren
+comma
+(paren
+id|addr
+op_plus
+l_int|4
+)paren
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+(paren
+id|u32
+)paren
+(paren
+id|val
+)paren
+comma
+id|addr
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#else
+DECL|macro|SPECIAL_REG_WRITE
+mdefine_line|#define SPECIAL_REG_WRITE(val, addr, dummy) writeq(val, addr)
 macro_line|#endif
 multiline_comment|/*  Interrupt related values of Xena */
 DECL|macro|ENABLE_INTRS
@@ -2070,9 +2170,14 @@ multiline_comment|/*  PIC level Interrupts TODO*/
 multiline_comment|/*  DMA level Inressupts */
 DECL|macro|TXDMA_PFC_INT_M
 mdefine_line|#define TXDMA_PFC_INT_M     BIT(0)
+DECL|macro|TXDMA_PCC_INT_M
+mdefine_line|#define TXDMA_PCC_INT_M     BIT(2)
 multiline_comment|/*  PFC block interrupts */
 DECL|macro|PFC_MISC_ERR_1
 mdefine_line|#define PFC_MISC_ERR_1      BIT(0)&t;/* Interrupt to indicate FIFO full */
+multiline_comment|/* PCC block interrupts. */
+DECL|macro|PCC_FB_ECC_ERR
+mdefine_line|#define&t;PCC_FB_ECC_ERR&t;   vBIT(0xff, 16, 8)&t;/* Interrupt to indicate&n;&t;&t;&t;&t;&t;&t;   PCC_FB_ECC Error. */
 multiline_comment|/*&n; * Prototype declaration.&n; */
 r_static
 r_int
@@ -2106,7 +2211,7 @@ id|pdev
 suffix:semicolon
 r_static
 r_int
-id|initSharedMem
+id|init_shared_mem
 c_func
 (paren
 r_struct
@@ -2117,7 +2222,7 @@ id|sp
 suffix:semicolon
 r_static
 r_void
-id|freeSharedMem
+id|free_shared_mem
 c_func
 (paren
 r_struct
@@ -2128,7 +2233,7 @@ id|sp
 suffix:semicolon
 r_static
 r_int
-id|initNic
+id|init_nic
 c_func
 (paren
 r_struct
@@ -2140,7 +2245,7 @@ suffix:semicolon
 macro_line|#ifndef CONFIG_S2IO_NAPI
 r_static
 r_void
-id|rxIntrHandler
+id|rx_intr_handler
 c_func
 (paren
 r_struct
@@ -2152,7 +2257,7 @@ suffix:semicolon
 macro_line|#endif
 r_static
 r_void
-id|txIntrHandler
+id|tx_intr_handler
 c_func
 (paren
 r_struct
@@ -2163,7 +2268,7 @@ id|sp
 suffix:semicolon
 r_static
 r_void
-id|alarmIntrHandler
+id|alarm_intr_handler
 c_func
 (paren
 r_struct
@@ -2219,9 +2324,10 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_2BUFF_MODE
 r_static
 r_int
-id|rxOsmHandler
+id|rx_osm_handler
 c_func
 (paren
 id|nic_t
@@ -2239,6 +2345,29 @@ r_int
 id|ring_no
 )paren
 suffix:semicolon
+macro_line|#else
+r_static
+r_int
+id|rx_osm_handler
+c_func
+(paren
+id|nic_t
+op_star
+id|sp
+comma
+id|RxD_t
+op_star
+id|rxdp
+comma
+r_int
+id|ring_no
+comma
+id|buffAdd_t
+op_star
+id|ba
+)paren
+suffix:semicolon
+macro_line|#endif
 r_void
 id|s2io_link
 c_func
@@ -2336,6 +2465,36 @@ r_static
 r_struct
 id|ethtool_ops
 id|netdev_ethtool_ops
+suffix:semicolon
+r_static
+r_void
+id|s2io_set_link
+c_func
+(paren
+r_int
+r_int
+id|data
+)paren
+suffix:semicolon
+r_static
+r_void
+id|s2io_card_down
+c_func
+(paren
+id|nic_t
+op_star
+id|nic
+)paren
+suffix:semicolon
+r_static
+r_int
+id|s2io_card_up
+c_func
+(paren
+id|nic_t
+op_star
+id|nic
+)paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _S2IO_H */
 eof

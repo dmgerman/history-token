@@ -147,6 +147,7 @@ id|y
 suffix:semicolon
 )brace
 DECL|variable|sha512_K
+r_static
 r_const
 id|u64
 id|sha512_K

@@ -159,13 +159,6 @@ c_func
 id|boot_cpu_data
 )paren
 suffix:semicolon
-DECL|variable|MCA_bus
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|MCA_bus
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 DECL|variable|node_data
 id|EXPORT_SYMBOL

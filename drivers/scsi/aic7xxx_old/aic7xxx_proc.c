@@ -96,6 +96,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   aic7xxx_set_info&n; *&n; * Description:&n; *   Set parameters for the driver from the /proc filesystem.&n; *-F*************************************************************************/
+r_static
 r_int
 DECL|function|aic7xxx_set_info
 id|aic7xxx_set_info

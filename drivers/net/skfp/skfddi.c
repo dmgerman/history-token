@@ -722,6 +722,11 @@ id|port
 comma
 id|len
 suffix:semicolon
+r_void
+id|__iomem
+op_star
+id|mem
+suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -985,12 +990,8 @@ id|err_out2
 suffix:semicolon
 )brace
 macro_line|#ifdef MEM_MAPPED_IO
-id|dev-&gt;base_addr
+id|mem
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -999,18 +1000,30 @@ comma
 id|len
 )paren
 suffix:semicolon
+macro_line|#else
+id|mem
+op_assign
+id|ioport_map
+c_func
+(paren
+id|port
+comma
+id|len
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;base_addr
+id|mem
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;skfp:  Unable to map MEMORY register, &quot;
+l_string|&quot;skfp:  Unable to map register, &quot;
 l_string|&quot;FDDI adapter will be disabled.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1023,12 +1036,6 @@ r_goto
 id|err_out3
 suffix:semicolon
 )brace
-macro_line|#else
-id|dev-&gt;base_addr
-op_assign
-id|port
-suffix:semicolon
-macro_line|#endif
 id|dev-&gt;irq
 op_assign
 id|pdev-&gt;irq
@@ -1128,6 +1135,10 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|smc-&gt;hw.iop
+op_assign
+id|mem
+suffix:semicolon
 id|smc-&gt;os.ResetRequested
 op_assign
 id|FALSE
@@ -1138,6 +1149,14 @@ c_func
 op_amp
 id|smc-&gt;os.SendSkbQueue
 )paren
+suffix:semicolon
+id|dev-&gt;base_addr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|mem
 suffix:semicolon
 id|err
 op_assign
@@ -1261,11 +1280,14 @@ macro_line|#ifdef MEM_MAPPED_IO
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
+id|smc-&gt;hw.iop
 )paren
-id|dev-&gt;base_addr
+suffix:semicolon
+macro_line|#else
+id|ioport_unmap
+c_func
+(paren
+id|smc-&gt;hw.iop
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1381,11 +1403,14 @@ macro_line|#ifdef MEM_MAPPED_IO
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
+id|lp-&gt;hw.iop
 )paren
-id|p-&gt;base_addr
+suffix:semicolon
+macro_line|#else
+id|ioport_unmap
+c_func
+(paren
+id|lp-&gt;hw.iop
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1460,10 +1485,6 @@ l_string|&quot;entering skfp_driver_init&bslash;n&quot;
 suffix:semicolon
 singleline_comment|// set the io address in private structures
 id|bp-&gt;base_addr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
-id|smc-&gt;hw.iop
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon

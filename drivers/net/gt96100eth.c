@@ -792,22 +792,12 @@ c_func
 r_return
 suffix:semicolon
 r_else
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 id|ms
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
-)brace
 )brace
 r_static
 r_int
@@ -2691,7 +2681,7 @@ op_amp
 id|abort_bits
 )paren
 (brace
-singleline_comment|// snooze for 20 msec and check again
+singleline_comment|// snooze for 1 msec and check again
 id|gt96100_delay
 c_func
 (paren
