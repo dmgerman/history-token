@@ -3717,6 +3717,17 @@ id|dev
 )paren
 )paren
 (brace
+id|dma_free_coherent
+(paren
+id|gendev
+comma
+id|lp-&gt;dma_size
+comma
+id|lp-&gt;rx_ring
+comma
+id|lp-&gt;dma_rings
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENXIO
