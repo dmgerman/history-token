@@ -282,6 +282,8 @@ DECL|macro|M1064_XVIDPLLN
 mdefine_line|#define M1064_XVIDPLLN&t;&t;0x8F
 DECL|macro|M1064_XPWRCTRL
 mdefine_line|#define M1064_XPWRCTRL&t;&t;0xA0
+DECL|macro|M1064_XPANMODE
+mdefine_line|#define M1064_XPANMODE&t;&t;0xA2
 DECL|enum|POS1064
 r_enum
 id|POS1064
@@ -367,7 +369,13 @@ comma
 id|POS1064_XCOLKEYH
 comma
 DECL|enumerator|POS1064_XOUTPUTCONN
+DECL|enumerator|POS1064_XPANMODE
+DECL|enumerator|POS1064_XPWRCTRL
 id|POS1064_XOUTPUTCONN
+comma
+id|POS1064_XPANMODE
+comma
+id|POS1064_XPWRCTRL
 )brace
 suffix:semicolon
 macro_line|#endif&t;/* __MATROXFB_DAC1064_H__ */

@@ -370,6 +370,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|PageReserved
+c_func
+(paren
+id|page
+)paren
+op_logical_or
 op_logical_neg
 id|put_page_testzero
 c_func

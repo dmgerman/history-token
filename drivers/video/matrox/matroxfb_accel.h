@@ -29,11 +29,7 @@ r_void
 id|matrox_cfbX_init
 c_func
 (paren
-id|WPMINFO
-r_struct
-id|display
-op_star
-id|p
+id|WPMINFO2
 )paren
 suffix:semicolon
 r_void

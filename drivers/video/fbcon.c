@@ -12754,7 +12754,7 @@ macro_line|#if defined(CONFIG_FBCON_IPLAN2P2) || defined(CONFIG_FBCON_IPLAN2P4) 
 r_int
 id|line_length
 op_assign
-id|p-&gt;line_length
+id|info-&gt;fix.line_length
 suffix:semicolon
 multiline_comment|/* for support of Atari interleaved planes */
 DECL|macro|MAP_X
@@ -12999,15 +12999,15 @@ op_eq
 l_int|1
 op_logical_and
 (paren
-id|p-&gt;fix.type
+id|info-&gt;fix.type
 op_eq
 id|FB_TYPE_PACKED_PIXELS
 op_logical_or
-id|p-&gt;fix.type
+id|info-&gt;fix.type
 op_eq
 id|FB_TYPE_PLANES
 op_logical_or
-id|p-&gt;fix.type
+id|info-&gt;fix.type
 op_eq
 id|FB_TYPE_INTERLEAVED_PLANES
 )paren
@@ -13020,7 +13020,7 @@ id|inverse
 op_assign
 id|p-&gt;inverse
 op_logical_or
-id|p-&gt;visual
+id|info-&gt;fix.visual
 op_eq
 id|FB_VISUAL_MONO01
 ques
