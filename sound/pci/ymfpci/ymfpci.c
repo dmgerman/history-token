@@ -684,10 +684,11 @@ id|fm_port
 (braket
 id|dev
 )braket
-op_le
-l_int|0
+op_eq
+l_int|1
 )paren
 (brace
+multiline_comment|/* auto-detect */
 id|fm_port
 (braket
 id|dev
@@ -757,10 +758,11 @@ id|mpu_port
 (braket
 id|dev
 )braket
-op_le
-l_int|0
+op_eq
+l_int|1
 )paren
 (brace
+multiline_comment|/* auto-detect */
 id|mpu_port
 (braket
 id|dev
@@ -837,6 +839,7 @@ op_eq
 l_int|1
 )paren
 (brace
+multiline_comment|/* auto-detect */
 id|joystick_port
 (braket
 id|dev
@@ -955,8 +958,7 @@ id|fm_port
 id|dev
 )braket
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1008,8 +1010,7 @@ id|fm_port
 id|dev
 )braket
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 r_switch
@@ -1072,8 +1073,7 @@ id|mpu_port
 id|dev
 )braket
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1125,8 +1125,7 @@ id|mpu_port
 id|dev
 )braket
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef SUPPORT_JOYSTICK
@@ -1264,8 +1263,7 @@ id|joystick_port
 id|dev
 )braket
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1321,8 +1319,7 @@ id|joystick_port
 id|dev
 )braket
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif

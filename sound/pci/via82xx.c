@@ -95,23 +95,6 @@ id|mpu_port
 (braket
 id|SNDRV_CARDS
 )braket
-op_assign
-(brace
-(braket
-l_int|0
-dot
-dot
-dot
-(paren
-id|SNDRV_CARDS
-op_minus
-l_int|1
-)paren
-)braket
-op_assign
-op_minus
-l_int|1
-)brace
 suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
 DECL|variable|joystick
@@ -7565,8 +7548,7 @@ id|mpu_port
 id|dev
 )braket
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 id|legacy
 op_and_assign
@@ -7724,8 +7706,7 @@ id|mpu_port
 id|dev
 )braket
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef SUPPORT_JOYSTICK

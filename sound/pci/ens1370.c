@@ -266,7 +266,7 @@ c_func
 id|joystick_port
 comma
 id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0},{0x200},{0x208},{0x210},{0x218}},dialog:list&quot;
+l_string|&quot;,allows:{{0},{1},{0x200},{0x208},{0x210},{0x218}},dialog:list&quot;
 )paren
 suffix:semicolon
 macro_line|#else

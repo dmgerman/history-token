@@ -104,25 +104,6 @@ id|mpu_port
 (braket
 id|SNDRV_CARDS
 )braket
-op_assign
-(brace
-l_int|0x330
-comma
-(braket
-l_int|1
-dot
-dot
-dot
-(paren
-id|SNDRV_CARDS
-op_minus
-l_int|1
-)paren
-)braket
-op_assign
-op_minus
-l_int|1
-)brace
 suffix:semicolon
 DECL|variable|fm_port
 r_static
@@ -131,25 +112,6 @@ id|fm_port
 (braket
 id|SNDRV_CARDS
 )braket
-op_assign
-(brace
-l_int|0x388
-comma
-(braket
-l_int|1
-dot
-dot
-dot
-(paren
-id|SNDRV_CARDS
-op_minus
-l_int|1
-)paren
-)braket
-op_assign
-op_minus
-l_int|1
-)brace
 suffix:semicolon
 macro_line|#ifdef DO_SOFT_AC3
 DECL|variable|soft_ac3
@@ -305,7 +267,7 @@ c_func
 id|mpu_port
 comma
 id|SNDRV_ENABLED
-l_string|&quot;,allows:{{-1},{0x330},{0x320},{0x310},{0x300}},dialog:list&quot;
+l_string|&quot;,allows:{{0},{0x330},{0x320},{0x310},{0x300}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -336,7 +298,7 @@ c_func
 id|fm_port
 comma
 id|SNDRV_ENABLED
-l_string|&quot;,allows:{{-1},{0x388},{0x3c8},{0x3e0},{0x3e8}},dialog:list&quot;
+l_string|&quot;,allows:{{0},{0x388},{0x3c8},{0x3e0},{0x3e8}},dialog:list&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef DO_SOFT_AC3
@@ -13404,7 +13366,6 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-r_int
 id|iomidi
 op_assign
 id|mpu_port
@@ -13412,7 +13373,6 @@ id|mpu_port
 id|dev
 )braket
 suffix:semicolon
-r_int
 r_int
 id|iosynth
 op_assign

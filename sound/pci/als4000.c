@@ -2962,6 +2962,7 @@ id|p
 op_add_assign
 l_int|8
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -2981,8 +2982,18 @@ l_string|&quot;ALS4000 gameport&quot;
 op_ne
 l_int|NULL
 )paren
+(brace
+id|joystick_port
+(braket
+id|dev
+)braket
+op_assign
+id|p
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
+)brace
 )brace
 r_else
 r_if
