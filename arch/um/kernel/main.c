@@ -674,17 +674,13 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Let any pending signals fire, then disable them.  This&n;&t;&t; * ensures that they won&squot;t be delivered after the exec, when&n;&t;&t; * they are definitely not expected.&n;&t;&t; */
-id|unblock_signals
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* stop timers and set SIG*ALRM to be ignored */
 id|disable_timer
 c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* disable SIGIO for the fds and set SIGIO to be ignored */
 id|err
 op_assign
 id|deactivate_all_fds
@@ -708,6 +704,12 @@ id|err
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Let any pending signals fire now.  This ensures&n;&t;&t; * that they won&squot;t be delivered after the exec, when&n;&t;&t; * they are definitely not expected.&n;&t;&t; */
+id|unblock_signals
+c_func
+(paren
+)paren
+suffix:semicolon
 id|execvp
 c_func
 (paren

@@ -1776,6 +1776,20 @@ id|err
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* If there is a signal already queued, after unblocking ignore it */
+id|set_handler
+c_func
+(paren
+id|SIGIO
+comma
+id|SIG_IGN
+comma
+l_int|0
+comma
+op_minus
+l_int|1
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
