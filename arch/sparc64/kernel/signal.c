@@ -388,6 +388,8 @@ id|regs-&gt;tstate
 op_and_assign
 op_complement
 (paren
+id|TSTATE_ASI
+op_or
 id|TSTATE_ICC
 op_or
 id|TSTATE_XCC
@@ -399,6 +401,8 @@ op_or_assign
 id|tstate
 op_amp
 (paren
+id|TSTATE_ASI
+op_or
 id|TSTATE_ICC
 op_or
 id|TSTATE_XCC
@@ -2775,11 +2779,13 @@ id|regs-&gt;u_regs
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* User can only change condition codes in %tstate. */
+multiline_comment|/* User can only change condition codes and %asi in %tstate. */
 id|regs-&gt;tstate
 op_and_assign
 op_complement
 (paren
+id|TSTATE_ASI
+op_or
 id|TSTATE_ICC
 op_or
 id|TSTATE_XCC
@@ -2791,6 +2797,8 @@ op_or_assign
 id|tstate
 op_amp
 (paren
+id|TSTATE_ASI
+op_or
 id|TSTATE_ICC
 op_or
 id|TSTATE_XCC
