@@ -5,6 +5,7 @@ mdefine_line|#define _ISLPCI_DEV_H
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
+macro_line|#include &lt;net/iw_handler.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,41)
 macro_line|# include &lt;linux/workqueue.h&gt;
@@ -254,6 +255,12 @@ r_struct
 id|iw_statistics
 id|iwstatistics
 suffix:semicolon
+DECL|member|spy_data
+r_struct
+id|iw_spy_data
+id|spy_data
+suffix:semicolon
+multiline_comment|/* iwspy support */
 DECL|member|acl
 r_struct
 id|islpci_acl

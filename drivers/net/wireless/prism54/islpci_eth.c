@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  &n; *  Copyright (C) 2002 Intersil Americas Inc.&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
+multiline_comment|/*&n; *  &n; *  Copyright (C) 2002 Intersil Americas Inc.&n; *  Copyright (C) 2004 Aurelien Alleaume &lt;slts@free.fr&gt;&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1179,7 +1179,7 @@ l_int|8
 op_amp
 l_int|0x01
 )paren
-multiline_comment|/* This one is bad. Drop it !*/
+multiline_comment|/* This one is bad. Drop it ! */
 id|discard
 op_assign
 l_int|1
@@ -1210,6 +1210,92 @@ id|PACKET_OTHERHOST
 suffix:semicolon
 )brace
 r_else
+(brace
+r_if
+c_cond
+(paren
+id|skb-&gt;data
+(braket
+l_int|2
+op_star
+id|ETH_ALEN
+)braket
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* The packet has a rx_annex. Read it for spy monitoring, Then&n;&t;&t;&t; * remove it, while keeping the 2 leading MAC addr.&n;&t;&t;&t; */
+r_struct
+id|iw_quality
+id|wstats
+suffix:semicolon
+r_struct
+id|obj_rx_annex
+op_star
+id|annex
+op_assign
+(paren
+r_struct
+id|obj_rx_annex
+op_star
+)paren
+id|skb-&gt;data
+suffix:semicolon
+id|wstats.level
+op_assign
+id|annex-&gt;rssi
+suffix:semicolon
+multiline_comment|/* The noise value can be a bit outdated if nobody&squot;s &n;&t;&t;&t; * reading wireless stats... */
+id|wstats.noise
+op_assign
+id|priv-&gt;iwstatistics.qual.noise
+suffix:semicolon
+id|wstats.qual
+op_assign
+id|wstats.level
+op_minus
+id|wstats.noise
+suffix:semicolon
+id|wstats.updated
+op_assign
+l_int|0x07
+suffix:semicolon
+multiline_comment|/* Update spy records */
+id|wireless_spy_update
+c_func
+(paren
+id|ndev
+comma
+id|annex-&gt;addr2
+comma
+op_amp
+id|wstats
+)paren
+suffix:semicolon
+multiline_comment|/* 20 = sizeof(struct obj_rx_annex) - 2*ETH_ALEN */
+id|memcpy
+c_func
+(paren
+id|skb-&gt;data
+op_plus
+l_int|20
+comma
+id|skb-&gt;data
+comma
+l_int|2
+op_star
+id|ETH_ALEN
+)paren
+suffix:semicolon
+id|skb_pull
+c_func
+(paren
+id|skb
+comma
+l_int|20
+)paren
+suffix:semicolon
+)brace
 id|skb-&gt;protocol
 op_assign
 id|eth_type_trans
@@ -1220,6 +1306,7 @@ comma
 id|ndev
 )paren
 suffix:semicolon
+)brace
 id|skb-&gt;ip_summed
 op_assign
 id|CHECKSUM_NONE
