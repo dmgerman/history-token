@@ -41,7 +41,7 @@ id|large
 suffix:semicolon
 r_extern
 r_struct
-id|Naca
+id|naca_struct
 op_star
 id|naca
 suffix:semicolon
