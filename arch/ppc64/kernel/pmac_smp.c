@@ -1,4 +1,6 @@
 multiline_comment|/*&n; * SMP support for power macintosh.&n; *&n; * We support both the old &quot;powersurge&quot; SMP architecture&n; * and the current Core99 (G4 PowerMac) machines.&n; *&n; * Note that we don&squot;t support the very first rev. of&n; * Apple/DayStar 2 CPUs board, the one with the funky&n; * watchdog. Hopefully, none of these should be there except&n; * maybe internally to Apple. I should probably still add some&n; * code to detect this card though and disable SMP. --BenH.&n; *&n; * Support Macintosh G4 SMP by Troy Benjegerdes (hozer@drgw.net)&n; * and Ben Herrenschmidt &lt;benh@kernel.crashing.org&gt;.&n; *&n; * Support for DayStar quad CPU cards&n; * Copyright (C) XLR8, Inc. 1994-2000&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -26,6 +28,13 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/keylargo.h&gt;
 macro_line|#include &quot;mpic.h&quot;
+macro_line|#ifdef DEBUG
+DECL|macro|DBG
+mdefine_line|#define DBG(fmt...) udbg_printf(fmt)
+macro_line|#else
+DECL|macro|DBG
+mdefine_line|#define DBG(fmt...)
+macro_line|#endif
 r_extern
 r_void
 id|pmac_secondary_start_1
@@ -268,6 +277,8 @@ suffix:semicolon
 r_case
 l_int|3
 suffix:colon
+r_default
+suffix:colon
 id|new_vector
 op_assign
 (paren
@@ -443,29 +454,13 @@ dot
 id|progress
 c_func
 (paren
-l_string|&quot;core99_setup_cpu 0 done&quot;
+l_string|&quot;smp_core99_setup_cpu 0 done&quot;
 comma
 l_int|0x349
 )paren
 suffix:semicolon
 )brace
 )brace
-r_extern
-r_void
-id|smp_generic_give_timebase
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|smp_generic_take_timebase
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|__pmacdata
 r_struct
 id|smp_ops_t

@@ -13,6 +13,21 @@ r_extern
 r_int
 id|boot_cpuid
 suffix:semicolon
+r_extern
+r_void
+id|cpu_die
+c_func
+(paren
+r_void
+)paren
+id|__attribute__
+c_func
+(paren
+(paren
+id|noreturn
+)paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
@@ -92,32 +107,7 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|cpu_die
-c_func
-(paren
-r_void
-)paren
-id|__attribute__
-c_func
-(paren
-(paren
-id|noreturn
-)paren
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|query_cpu_stopped
-c_func
-(paren
-r_int
-r_int
-id|pcpu
-)paren
-suffix:semicolon
-macro_line|#endif /* !(CONFIG_SMP) */
+macro_line|#endif /* CONFIG_SMP */
 DECL|macro|get_hard_smp_processor_id
 mdefine_line|#define get_hard_smp_processor_id(CPU) (paca[(CPU)].hw_cpu_id)
 DECL|macro|set_hard_smp_processor_id
@@ -154,6 +144,37 @@ comma
 r_int
 id|msg
 )paren
+suffix:semicolon
+r_extern
+r_void
+id|smp_generic_kick_cpu
+c_func
+(paren
+r_int
+id|nr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|smp_generic_give_timebase
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|smp_generic_take_timebase
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|smp_ops_t
+op_star
+id|smp_ops
 suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* !(_PPC64_SMP_H) */
