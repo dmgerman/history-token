@@ -3069,14 +3069,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|free
-suffix:colon
-id|kfree
-c_func
-(paren
-id|priv
-)paren
-suffix:semicolon
 id|deinit
 suffix:colon
 r_if

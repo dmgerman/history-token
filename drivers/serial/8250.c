@@ -1314,7 +1314,7 @@ op_assign
 id|rev
 op_or
 (paren
-id|scratch3
+id|id3
 op_lshift
 l_int|8
 )paren
