@@ -459,6 +459,8 @@ id|state
 op_eq
 id|ACPI_STATE_S3
 op_logical_or
+id|state
+op_eq
 id|ACPI_STATE_S4
 )paren
 (brace
