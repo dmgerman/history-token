@@ -5952,6 +5952,11 @@ id|lcra
 comma
 id|lsr
 suffix:semicolon
+id|irqreturn_t
+id|ret
+op_assign
+id|IRQ_NONE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5971,8 +5976,8 @@ comma
 id|irq
 )paren
 suffix:semicolon
-r_return
-id|IRQ_NONE
+r_goto
+id|irq_ret
 suffix:semicolon
 )brace
 id|self
@@ -6013,7 +6018,6 @@ op_le
 id|SMSC_IRCC2_MAX_SIR_SPEED
 )paren
 (brace
-id|irqreturn_t
 id|ret
 op_assign
 id|smsc_ircc_interrupt_sir
@@ -6022,15 +6026,8 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-)paren
-suffix:semicolon
-r_return
-id|ret
+r_goto
+id|irq_ret_unlock
 suffix:semicolon
 )brace
 id|iobase
@@ -6054,6 +6051,20 @@ id|iobase
 op_plus
 id|IRCC_IIR
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|iir
+op_eq
+l_int|0
+)paren
+r_goto
+id|irq_ret_unlock
+suffix:semicolon
+id|ret
+op_assign
+id|IRQ_HANDLED
 suffix:semicolon
 multiline_comment|/* Disable interrupts */
 id|outb
@@ -6170,6 +6181,8 @@ op_plus
 id|IRCC_IER
 )paren
 suffix:semicolon
+id|irq_ret_unlock
+suffix:colon
 id|spin_unlock
 c_func
 (paren
@@ -6177,12 +6190,10 @@ op_amp
 id|self-&gt;lock
 )paren
 suffix:semicolon
+id|irq_ret
+suffix:colon
 r_return
-id|IRQ_RETVAL
-c_func
-(paren
-id|iir
-)paren
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irport_interrupt_sir (irq, dev_id, regs)&n; *&n; *    Interrupt handler for SIR modes&n; */
@@ -6235,6 +6246,16 @@ id|UART_IIR
 )paren
 op_amp
 id|UART_IIR_ID
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|iir
+op_eq
+l_int|0
+)paren
+r_return
+id|IRQ_NONE
 suffix:semicolon
 r_while
 c_loop
@@ -6364,11 +6385,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*spin_unlock(&amp;self-&gt;lock);*/
 r_return
-id|IRQ_RETVAL
-c_func
-(paren
-id|iir
-)paren
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#if 0 /* unused */
