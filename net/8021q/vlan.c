@@ -1116,6 +1116,10 @@ id|new_dev-&gt;destructor
 op_assign
 id|free_netdev
 suffix:semicolon
+id|new_dev-&gt;do_ioctl
+op_assign
+id|vlan_dev_ioctl
+suffix:semicolon
 )brace
 multiline_comment|/*  Attach a VLAN device to a mac address (ie Ethernet Card).&n; *  Returns the device that was created, or NULL if there was&n; *  an error of some kind.&n; */
 DECL|function|register_vlan_device
