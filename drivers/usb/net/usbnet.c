@@ -9945,7 +9945,7 @@ macro_line|#ifdef CONFIG_USB_ZAURUS
 DECL|macro|HAVE_HARDWARE
 mdefine_line|#define&t;HAVE_HARDWARE
 macro_line|#include &lt;linux/crc32.h&gt;
-multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Zaurus is also a SA-1110 based PDA, but one using a different driver&n; * (and framing) for its USB slave/gadget controller than the case above.&n; *&n; * For the current version of that driver, the main way that framing is&n; * nonstandard (also from perspective of the CDC ethernet model!) is a&n; * crc32, added to help detect when some sa1100 usb-to-memory DMA errata&n; * haven&squot;t been fully worked around.&n; *&n; * PXA based models use the same framing, and also can&squot;t implement&n; * set_interface properly.&n; *&n; *-------------------------------------------------------------------------*/
+multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Zaurus is also a SA-1110 based PDA, but one using a different driver&n; * (and framing) for its USB slave/gadget controller than the case above.&n; *&n; * For the current version of that driver, the main way that framing is&n; * nonstandard (also from perspective of the CDC ethernet model!) is a&n; * crc32, added to help detect when some sa1100 usb-to-memory DMA errata&n; * haven&squot;t been fully worked around.  Also, all Zaurii use the same&n; * default Ethernet address.&n; *&n; * PXA based models use the same framing, and also can&squot;t implement&n; * set_interface properly.&n; *&n; * All known Zaurii lie about their standards conformance.  Most lie by&n; * saying they support CDC Ethernet.  Some lie and say they support CDC&n; * MDLM (as if for access to cell phone modems).  Someone, please beat &n; * on Sharp for a while with a cluestick.&n; *&n; *-------------------------------------------------------------------------*/
 r_static
 r_struct
 id|sk_buff
@@ -10213,6 +10213,36 @@ comma
 suffix:semicolon
 DECL|macro|ZAURUS_PXA_INFO
 mdefine_line|#define&t;ZAURUS_PXA_INFO&t;&t;((unsigned long)&amp;zaurus_pxa_info)
+DECL|variable|zaurus_pxa_mdlm_info
+r_static
+r_const
+r_struct
+id|driver_info
+id|zaurus_pxa_mdlm_info
+op_assign
+(brace
+dot
+id|description
+op_assign
+l_string|&quot;Sharp Zaurus, PXA-255 based&quot;
+comma
+dot
+id|flags
+op_assign
+id|FLAG_FRAMING_Z
+comma
+dot
+id|check_connect
+op_assign
+id|always_connected
+comma
+dot
+id|tx_fixup
+op_assign
+id|zaurus_tx_fixup
+comma
+)brace
+suffix:semicolon
 DECL|variable|olympus_mxl_info
 r_static
 r_const
@@ -14971,7 +15001,7 @@ comma
 comma
 macro_line|#endif
 macro_line|#if&t;defined(CONFIG_USB_ZAURUS) || defined(CONFIG_USB_CDCETHER)
-multiline_comment|/*&n; * SA-1100 based Sharp Zaurus (&quot;collie&quot;), or compatible.&n; * Same idea as above, but different framing.&n; *&n; * PXA-2xx based models are also lying-about-cdc.&n; *&n; * NOTE:  OpenZaurus versions with 2.6 kernels won&squot;t use these entries,&n; * unlike the older ones with 2.4 &quot;embedix&quot; kernels.&n; *&n; * NOTE:  These entries do double-duty, serving as blacklist entries&n; * whenever Zaurus support isn&squot;t enabled, but CDC Ethernet is.&n; */
+multiline_comment|/*&n; * SA-1100 based Sharp Zaurus (&quot;collie&quot;), or compatible.&n; * Same idea as above, but different framing.&n; *&n; * PXA-2xx based models are also lying-about-cdc.&n; * Some models don&squot;t even tell the same lies ...&n; *&n; * NOTE:  OpenZaurus versions with 2.6 kernels won&squot;t use these entries,&n; * unlike the older ones with 2.4 &quot;embedix&quot; kernels.&n; *&n; * NOTE:  These entries do double-duty, serving as blacklist entries&n; * whenever Zaurus support isn&squot;t enabled, but CDC Ethernet is.&n; */
 DECL|macro|ZAURUS_MASTER_INTERFACE
 mdefine_line|#define&t;ZAURUS_MASTER_INTERFACE &bslash;&n;&t;.bInterfaceClass&t;= USB_CLASS_COMM, &bslash;&n;&t;.bInterfaceSubClass&t;= USB_CDC_SUBCLASS_ETHERNET, &bslash;&n;&t;.bInterfaceProtocol&t;= USB_CDC_PROTO_NONE
 (brace
@@ -15154,6 +15184,7 @@ id|idVendor
 op_assign
 l_int|0x04DD
 comma
+multiline_comment|/* reported with some C860 units */
 dot
 id|idProduct
 op_assign
@@ -15167,6 +15198,56 @@ id|driver_info
 op_assign
 id|ZAURUS_PXA_INFO
 comma
+macro_line|#ifdef&t;CONFIG_USB_ZAURUS
+multiline_comment|/* at least some (reports vary) C-860 units have very different&n;&t; * lies about their standards support.&n;&t; */
+)brace
+comma
+(brace
+dot
+id|match_flags
+op_assign
+id|USB_DEVICE_ID_MATCH_INT_INFO
+op_or
+id|USB_DEVICE_ID_MATCH_DEVICE
+comma
+dot
+id|idVendor
+op_assign
+l_int|0x04DD
+comma
+multiline_comment|/* reported with some C860 units */
+dot
+id|idProduct
+op_assign
+l_int|0x9031
+comma
+multiline_comment|/* C-860 */
+dot
+id|bInterfaceClass
+op_assign
+id|USB_CLASS_COMM
+comma
+dot
+id|bInterfaceSubClass
+op_assign
+id|USB_CDC_SUBCLASS_MDLM
+comma
+dot
+id|bInterfaceProtocol
+op_assign
+id|USB_CDC_PROTO_NONE
+comma
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|zaurus_pxa_mdlm_info
+comma
+macro_line|#endif
 )brace
 comma
 multiline_comment|/* Olympus has some models with a Zaurus-compatible option.&n; * R-1000 uses a FreeScale i.MXL cpu (ARMv4T)&n; */

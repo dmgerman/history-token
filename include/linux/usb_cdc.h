@@ -1,8 +1,16 @@
 multiline_comment|/*&n; * USB Communications Device Class (CDC) definitions&n; *&n; * CDC says how to talk to lots of different types of network adapters,&n; * notably ethernet adapters and various modems.  It&squot;s used mostly with&n; * firmware based USB peripherals.&n; */
 DECL|macro|USB_CDC_SUBCLASS_ACM
-mdefine_line|#define USB_CDC_SUBCLASS_ACM&t;&t;&t;2
+mdefine_line|#define USB_CDC_SUBCLASS_ACM&t;&t;&t;0x02
 DECL|macro|USB_CDC_SUBCLASS_ETHERNET
-mdefine_line|#define USB_CDC_SUBCLASS_ETHERNET&t;&t;6
+mdefine_line|#define USB_CDC_SUBCLASS_ETHERNET&t;&t;0x06
+DECL|macro|USB_CDC_SUBCLASS_WHCM
+mdefine_line|#define USB_CDC_SUBCLASS_WHCM&t;&t;&t;0x08
+DECL|macro|USB_CDC_SUBCLASS_DMM
+mdefine_line|#define USB_CDC_SUBCLASS_DMM&t;&t;&t;0x09
+DECL|macro|USB_CDC_SUBCLASS_MDLM
+mdefine_line|#define USB_CDC_SUBCLASS_MDLM&t;&t;&t;0x0a
+DECL|macro|USB_CDC_SUBCLASS_OBEX
+mdefine_line|#define USB_CDC_SUBCLASS_OBEX&t;&t;&t;0x0b
 DECL|macro|USB_CDC_PROTO_NONE
 mdefine_line|#define USB_CDC_PROTO_NONE&t;&t;&t;0
 DECL|macro|USB_CDC_ACM_PROTO_AT_V25TER
@@ -33,6 +41,16 @@ DECL|macro|USB_CDC_COUNTRY_TYPE
 mdefine_line|#define USB_CDC_COUNTRY_TYPE&t;&t;0x07
 DECL|macro|USB_CDC_ETHERNET_TYPE
 mdefine_line|#define USB_CDC_ETHERNET_TYPE&t;&t;0x0f&t;&t;/* ether_desc */
+DECL|macro|USB_CDC_WHCM_TYPE
+mdefine_line|#define USB_CDC_WHCM_TYPE&t;&t;0x11
+DECL|macro|USB_CDC_MDLM_TYPE
+mdefine_line|#define USB_CDC_MDLM_TYPE&t;&t;0x12&t;&t;/* mdlm_desc */
+DECL|macro|USB_CDC_MDLM_DETAIL_TYPE
+mdefine_line|#define USB_CDC_MDLM_DETAIL_TYPE&t;0x13&t;&t;/* mdlm_detail_desc */
+DECL|macro|USB_CDC_DMM_TYPE
+mdefine_line|#define USB_CDC_DMM_TYPE&t;&t;0x14
+DECL|macro|USB_CDC_OBEX_TYPE
+mdefine_line|#define USB_CDC_OBEX_TYPE&t;&t;0x15
 multiline_comment|/* &quot;Header Functional Descriptor&quot; from CDC spec  5.2.3.1 */
 DECL|struct|usb_cdc_header_desc
 r_struct
@@ -198,6 +216,78 @@ suffix:semicolon
 DECL|member|bNumberPowerFilters
 id|__u8
 id|bNumberPowerFilters
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* &quot;MDLM Functional Descriptor&quot; from CDC WMC spec 6.7.2.3 */
+DECL|struct|usb_cdc_mdlm_desc
+r_struct
+id|usb_cdc_mdlm_desc
+(brace
+DECL|member|bLength
+id|__u8
+id|bLength
+suffix:semicolon
+DECL|member|bDescriptorType
+id|__u8
+id|bDescriptorType
+suffix:semicolon
+DECL|member|bDescriptorSubType
+id|__u8
+id|bDescriptorSubType
+suffix:semicolon
+DECL|member|bcdVersion
+id|__le16
+id|bcdVersion
+suffix:semicolon
+DECL|member|bGUID
+id|__u8
+id|bGUID
+(braket
+l_int|16
+)braket
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* &quot;MDLM Detail Functional Descriptor&quot; from CDC WMC spec 6.7.2.4 */
+DECL|struct|usb_cdc_mdlm_detail_desc
+r_struct
+id|usb_cdc_mdlm_detail_desc
+(brace
+DECL|member|bLength
+id|__u8
+id|bLength
+suffix:semicolon
+DECL|member|bDescriptorType
+id|__u8
+id|bDescriptorType
+suffix:semicolon
+DECL|member|bDescriptorSubType
+id|__u8
+id|bDescriptorSubType
+suffix:semicolon
+multiline_comment|/* type is associated with mdlm_desc.bGUID */
+DECL|member|bGuidDescriptorType
+id|__u8
+id|bGuidDescriptorType
+suffix:semicolon
+DECL|member|bDetailData
+id|__u8
+id|bDetailData
+(braket
+)braket
 suffix:semicolon
 )brace
 id|__attribute__
