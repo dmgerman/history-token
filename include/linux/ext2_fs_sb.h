@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  linux/include/linux/ext2_fs_sb.h&n; *&n; * Copyright 
 macro_line|#ifndef _LINUX_EXT2_FS_SB
 DECL|macro|_LINUX_EXT2_FS_SB
 mdefine_line|#define _LINUX_EXT2_FS_SB
+macro_line|#include &lt;linux/blockgroup_lock.h&gt;
+macro_line|#include &lt;linux/percpu_counter.h&gt;
 multiline_comment|/*&n; * second extended-fs super-block data in memory&n; */
 DECL|struct|ext2_sb_info
 r_struct
@@ -140,6 +142,16 @@ DECL|member|s_debts
 id|u8
 op_star
 id|s_debts
+suffix:semicolon
+DECL|member|s_freeblocks_counter
+r_struct
+id|percpu_counter
+id|s_freeblocks_counter
+suffix:semicolon
+DECL|member|s_blockgroup_lock
+r_struct
+id|blockgroup_lock
+id|s_blockgroup_lock
 suffix:semicolon
 )brace
 suffix:semicolon
