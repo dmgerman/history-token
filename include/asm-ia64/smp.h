@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SMP Support&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2001-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * SMP Support&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2001-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#ifndef _ASM_IA64_SMP_H
 DECL|macro|_ASM_IA64_SMP_H
 mdefine_line|#define _ASM_IA64_SMP_H
@@ -171,9 +171,6 @@ c_func
 id|i
 )paren
 op_eq
-(paren
-id|__u32
-)paren
 id|cpuid
 )paren
 r_break

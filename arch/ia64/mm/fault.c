@@ -707,6 +707,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 r_goto
 id|survive
 suffix:semicolon

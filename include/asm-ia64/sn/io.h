@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000 Ralf Baechle&n; * Copyright (C) 2000-2001 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; * Copyright (C) 2000 Ralf Baechle&n; */
 macro_line|#ifndef _ASM_IA64_SN_IO_H
 DECL|macro|_ASM_IA64_SN_IO_H
 mdefine_line|#define _ASM_IA64_SN_IO_H
@@ -63,5 +63,14 @@ macro_line|#elif defined(CONFIG_IA64_SGI_SN2)
 macro_line|#include &lt;asm/sn/sn2/shub.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
 macro_line|#endif
+multiline_comment|/*&n; * Used to ensure write ordering (like mb(), but for I/O space)&n; */
+r_extern
+r_void
+id|sn_mmiob
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASM_IA64_SN_IO_H */
 eof

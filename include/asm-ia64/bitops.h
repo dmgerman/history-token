@@ -932,6 +932,7 @@ id|test_bit
 r_int
 id|nr
 comma
+r_const
 r_volatile
 r_void
 op_star

@@ -872,7 +872,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Synchronize the ITC with the BP&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sal_platform_features
+op_amp
+id|IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Synchronize the ITC with the BP&n;&t;&t; */
 id|Dprintk
 c_func
 (paren
@@ -885,6 +896,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Get our bogomips.&n;&t; */
 id|ia64_init_itm
 c_func
