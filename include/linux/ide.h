@@ -1,7 +1,7 @@
 macro_line|#ifndef _IDE_H
 DECL|macro|_IDE_H
 mdefine_line|#define _IDE_H
-multiline_comment|/*&n; *  linux/include/linux/ide.h&n; *&n; *  Copyright (C) 1994-1998  Linus Torvalds &amp; authors&n; */
+multiline_comment|/*&n; *  linux/include/linux/ide.h&n; *&n; *  Copyright (C) 1994-2002  Linus Torvalds &amp; authors&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -10,22 +10,17 @@ macro_line|#include &lt;linux/hdsmart.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/hdreg.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_TIMEOUT
-DECL|macro|__IDEDMA_TIMEOUT
-macro_line|#  define __IDEDMA_TIMEOUT
-macro_line|#else /* CONFIG_BLK_DEV_IDEDMA_TIMEOUT */
-DECL|macro|__IDEDMA_TIMEOUT
-macro_line|#  undef __IDEDMA_TIMEOUT
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_TIMEOUT */
 multiline_comment|/*&n; * This is the multiple IDE interface driver, as evolved from hd.c.&n; * It supports up to four IDE interfaces, on one or more IRQs (usually 14 &amp; 15).&n; * There can be up to two drives per interface, as per the ATA-2 spec.&n; *&n; * Primary i/f:    ide0: major=3;  (hda)         minor=0; (hdb)         minor=64&n; * Secondary i/f:  ide1: major=22; (hdc or hd1a) minor=0; (hdd or hd1b) minor=64&n; * Tertiary i/f:   ide2: major=33; (hde)         minor=0; (hdf)         minor=64&n; * Quaternary i/f: ide3: major=34; (hdg)         minor=0; (hdh)         minor=64&n; */
 multiline_comment|/******************************************************************************&n; * IDE driver configuration options (play with these as desired):&n; *&n; * REALLY_SLOW_IO can be defined in ide.c and ide-cd.c, if necessary&n; */
 DECL|macro|REALLY_FAST_IO
-macro_line|#undef REALLY_FAST_IO&t;&t;&t;/* define if ide ports are perfect */
+mdefine_line|#define REALLY_FAST_IO&t;&t;&t;/* define if ide ports are perfect */
 DECL|macro|INITIAL_MULT_COUNT
 mdefine_line|#define INITIAL_MULT_COUNT&t;0&t;/* off=0; on=2,4,8,16,32, etc.. */
 macro_line|#ifndef SUPPORT_SLOW_DATA_PORTS&t;&t;/* 1 to support slow data ports */
@@ -193,12 +188,6 @@ DECL|macro|IDE_BCOUNTL_REG
 mdefine_line|#define IDE_BCOUNTL_REG&t;&t;IDE_LCYL_REG
 DECL|macro|IDE_BCOUNTH_REG
 mdefine_line|#define IDE_BCOUNTH_REG&t;&t;IDE_HCYL_REG
-DECL|macro|GET_ERR
-mdefine_line|#define GET_ERR()&t;&t;IN_BYTE(IDE_ERROR_REG)
-DECL|macro|GET_STAT
-mdefine_line|#define GET_STAT()&t;&t;IN_BYTE(IDE_STATUS_REG)
-DECL|macro|GET_ALTSTAT
-mdefine_line|#define GET_ALTSTAT()&t;&t;IN_BYTE(IDE_CONTROL_REG)
 DECL|macro|OK_STAT
 mdefine_line|#define OK_STAT(stat,good,bad)&t;(((stat)&amp;((good)|(bad)))==(good))
 DECL|macro|BAD_R_STAT
@@ -211,6 +200,39 @@ DECL|macro|DRIVE_READY
 mdefine_line|#define DRIVE_READY&t;&t;(READY_STAT  | SEEK_STAT)
 DECL|macro|DATA_READY
 mdefine_line|#define DATA_READY&t;&t;(DRQ_STAT)
+DECL|macro|BAD_CRC
+mdefine_line|#define BAD_CRC&t;&t;&t;(ABRT_ERR    | ICRC_ERR)
+DECL|macro|SATA_NR_PORTS
+mdefine_line|#define SATA_NR_PORTS&t;&t;(3)&t;/* 16 possible ?? */
+DECL|macro|SATA_STATUS_OFFSET
+mdefine_line|#define SATA_STATUS_OFFSET&t;(0)
+DECL|macro|SATA_STATUS_REG
+mdefine_line|#define SATA_STATUS_REG&t;&t;(HWIF(drive)-&gt;sata_scr[SATA_STATUS_OFFSET])
+DECL|macro|SATA_ERROR_OFFSET
+mdefine_line|#define SATA_ERROR_OFFSET&t;(1)
+DECL|macro|SATA_ERROR_REG
+mdefine_line|#define SATA_ERROR_REG&t;&t;(HWIF(drive)-&gt;sata_scr[SATA_ERROR_OFFSET])
+DECL|macro|SATA_CONTROL_OFFSET
+mdefine_line|#define SATA_CONTROL_OFFSET&t;(2)
+DECL|macro|SATA_CONTROL_REG
+mdefine_line|#define SATA_CONTROL_REG&t;(HWIF(drive)-&gt;sata_scr[SATA_CONTROL_OFFSET])
+DECL|macro|SATA_MISC_OFFSET
+mdefine_line|#define SATA_MISC_OFFSET&t;(0)
+DECL|macro|SATA_MISC_REG
+mdefine_line|#define SATA_MISC_REG&t;&t;(HWIF(drive)-&gt;sata_misc[SATA_MISC_OFFSET])
+DECL|macro|SATA_PHY_OFFSET
+mdefine_line|#define SATA_PHY_OFFSET&t;&t;(1)
+DECL|macro|SATA_PHY_REG
+mdefine_line|#define SATA_PHY_REG&t;&t;(HWIF(drive)-&gt;sata_misc[SATA_PHY_OFFSET])
+DECL|macro|SATA_IEN_OFFSET
+mdefine_line|#define SATA_IEN_OFFSET&t;&t;(2)
+DECL|macro|SATA_IEN_REG
+mdefine_line|#define SATA_IEN_REG&t;&t;(HWIF(drive)-&gt;sata_misc[SATA_IEN_OFFSET])
+multiline_comment|/*&n; * Our Physical Region Descriptor (PRD) table should be large enough&n; * to handle the biggest I/O request we are likely to see.  Since requests&n; * can have no more than 256 sectors, and since the typical blocksize is&n; * two or more sectors, we could get by with a limit of 128 entries here for&n; * the usual worst case.  Most requests seem to include some contiguous blocks,&n; * further reducing the number of table entries required.&n; *&n; * The driver reverts to PIO mode for individual requests that exceed&n; * this limit (possible with 512 byte blocksizes, eg. MSDOS f/s), so handling&n; * 100% of all crazy scenarios here is not necessary.&n; *&n; * As it turns out though, we must allocate a full 4KB page for this,&n; * so the two PRD tables (ide0 &amp; ide1) will each get half of that,&n; * allowing each to have about 256 entries (8 bytes each) from this.&n; */
+DECL|macro|PRD_BYTES
+mdefine_line|#define PRD_BYTES       8
+DECL|macro|PRD_ENTRIES
+mdefine_line|#define PRD_ENTRIES     (PAGE_SIZE / (2 * PRD_BYTES))
 multiline_comment|/*&n; * sector count bits&n; */
 DECL|macro|NSEC_CD
 mdefine_line|#define NSEC_CD&t;&t;&t;0x01
@@ -234,8 +256,6 @@ DECL|macro|PARTN_MASK
 mdefine_line|#define PARTN_MASK&t;((1&lt;&lt;PARTN_BITS)-1)&t;/* a useful bit mask */
 DECL|macro|MAX_DRIVES
 mdefine_line|#define MAX_DRIVES&t;2&t;/* per interface; 2 assumed by lots of code */
-DECL|macro|CASCADE_DRIVES
-mdefine_line|#define CASCADE_DRIVES&t;8&t;/* per interface; 8|2 assumed by lots of code */
 DECL|macro|SECTOR_SIZE
 mdefine_line|#define SECTOR_SIZE&t;512
 DECL|macro|SECTOR_WORDS
@@ -246,14 +266,6 @@ DECL|macro|IDE_MIN
 mdefine_line|#define IDE_MIN(a,b)&t;((a)&lt;(b) ? (a):(b))
 DECL|macro|IDE_MAX
 mdefine_line|#define IDE_MAX(a,b)&t;((a)&gt;(b) ? (a):(b))
-macro_line|#ifndef SPLIT_WORD
-DECL|macro|SPLIT_WORD
-macro_line|#  define SPLIT_WORD(W,HB,LB) ((HB)=(W&gt;&gt;8), (LB)=(W-((W&gt;&gt;8)&lt;&lt;8)))
-macro_line|#endif
-macro_line|#ifndef MAKE_WORD
-DECL|macro|MAKE_WORD
-macro_line|#  define MAKE_WORD(W,HB,LB) ((W)=((HB&lt;&lt;8)+LB))
-macro_line|#endif
 multiline_comment|/*&n; * Timeouts for various operations:&n; */
 DECL|macro|WAIT_DRQ
 mdefine_line|#define WAIT_DRQ&t;(5*HZ/100)&t;/* 50msec - spec allows up to 20ms */
@@ -272,16 +284,6 @@ DECL|macro|WAIT_CMD
 mdefine_line|#define WAIT_CMD&t;(10*HZ)&t;/* 10sec  - maximum wait for an IRQ to happen */
 DECL|macro|WAIT_MIN_SLEEP
 mdefine_line|#define WAIT_MIN_SLEEP&t;(2*HZ/100)&t;/* 20msec - minimum sleep time */
-DECL|macro|SELECT_DRIVE
-mdefine_line|#define SELECT_DRIVE(hwif,drive)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (hwif-&gt;selectproc)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;hwif-&gt;selectproc(drive);&t;&t;&t;&bslash;&n;&t;OUT_BYTE((drive)-&gt;select.all, hwif-&gt;io_ports[IDE_SELECT_OFFSET]); &bslash;&n;}
-DECL|macro|SELECT_INTERRUPT
-mdefine_line|#define SELECT_INTERRUPT(hwif,drive)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (hwif-&gt;intrproc)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;hwif-&gt;intrproc(drive);&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;OUT_BYTE((drive)-&gt;ctl|2, hwif-&gt;io_ports[IDE_CONTROL_OFFSET]);&t;&bslash;&n;}
-DECL|macro|SELECT_MASK
-mdefine_line|#define SELECT_MASK(hwif,drive,mask)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (hwif-&gt;maskproc)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;hwif-&gt;maskproc(drive,mask);&t;&t;&t;&bslash;&n;}
-DECL|macro|SELECT_READ_WRITE
-mdefine_line|#define SELECT_READ_WRITE(hwif,drive,func)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (hwif-&gt;rwproc)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;hwif-&gt;rwproc(drive,func);&t;&t;&t;&bslash;&n;}
-DECL|macro|QUIRK_LIST
-mdefine_line|#define QUIRK_LIST(hwif,drive)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (hwif-&gt;quirkproc)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(drive)-&gt;quirk_list = hwif-&gt;quirkproc(drive);&t;&bslash;&n;}
 DECL|macro|HOST
 mdefine_line|#define HOST(hwif,chipset)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return ((hwif)-&gt;chipset == chipset) ? 1 : 0;&t;&t;&bslash;&n;}
 DECL|macro|IDE_DEBUG
@@ -357,12 +359,319 @@ id|ide_4drives
 comma
 DECL|enumerator|ide_pmac
 DECL|enumerator|ide_etrax100
+DECL|enumerator|ide_acorn
 id|ide_pmac
 comma
 id|ide_etrax100
+comma
+id|ide_acorn
 DECL|typedef|hwif_chipset_t
 )brace
 id|hwif_chipset_t
+suffix:semicolon
+DECL|struct|ide_io_ops_s
+r_typedef
+r_struct
+id|ide_io_ops_s
+(brace
+multiline_comment|/* insert io operations here! */
+DECL|member|OUTB
+r_void
+(paren
+op_star
+id|OUTB
+)paren
+(paren
+id|u8
+id|addr
+comma
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|OUTW
+r_void
+(paren
+op_star
+id|OUTW
+)paren
+(paren
+id|u16
+id|addr
+comma
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|OUTL
+r_void
+(paren
+op_star
+id|OUTL
+)paren
+(paren
+id|u32
+id|addr
+comma
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|OUTBP
+r_void
+(paren
+op_star
+id|OUTBP
+)paren
+(paren
+id|u8
+id|addr
+comma
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|OUTWP
+r_void
+(paren
+op_star
+id|OUTWP
+)paren
+(paren
+id|u16
+id|addr
+comma
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|OUTLP
+r_void
+(paren
+op_star
+id|OUTLP
+)paren
+(paren
+id|u32
+id|addr
+comma
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|OUTSW
+r_void
+(paren
+op_star
+id|OUTSW
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+DECL|member|OUTSWP
+r_void
+(paren
+op_star
+id|OUTSWP
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+DECL|member|OUTSL
+r_void
+(paren
+op_star
+id|OUTSL
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+DECL|member|OUTSLP
+r_void
+(paren
+op_star
+id|OUTSLP
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+DECL|member|INB
+id|u8
+(paren
+op_star
+id|INB
+)paren
+(paren
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|INW
+id|u16
+(paren
+op_star
+id|INW
+)paren
+(paren
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|INL
+id|u32
+(paren
+op_star
+id|INL
+)paren
+(paren
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|INBP
+id|u8
+(paren
+op_star
+id|INBP
+)paren
+(paren
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|INWP
+id|u16
+(paren
+op_star
+id|INWP
+)paren
+(paren
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|INLP
+id|u32
+(paren
+op_star
+id|INLP
+)paren
+(paren
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|INSW
+r_void
+(paren
+op_star
+id|INSW
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+DECL|member|INSWP
+r_void
+(paren
+op_star
+id|INSWP
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+DECL|member|INSL
+r_void
+(paren
+op_star
+id|INSL
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+DECL|member|INSLP
+r_void
+(paren
+op_star
+id|INSLP
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+DECL|typedef|ide_io_ops_t
+)brace
+id|ide_io_ops_t
 suffix:semicolon
 multiline_comment|/*&n; * Structure to hold all information about the location of this port&n; */
 DECL|struct|hw_regs_s
@@ -403,6 +712,27 @@ multiline_comment|/* interface specific data */
 DECL|member|chipset
 id|hwif_chipset_t
 id|chipset
+suffix:semicolon
+macro_line|#if 0
+id|ide_io_ops_t
+op_star
+id|iops
+suffix:semicolon
+multiline_comment|/* */
+macro_line|#endif
+DECL|member|sata_scr
+id|sata_ioreg_t
+id|sata_scr
+(braket
+id|SATA_NR_PORTS
+)braket
+suffix:semicolon
+DECL|member|sata_misc
+id|sata_ioreg_t
+id|sata_misc
+(braket
+id|SATA_NR_PORTS
+)braket
 suffix:semicolon
 DECL|typedef|hw_regs_t
 )brace
@@ -450,11 +780,36 @@ id|ide_ack_intr_t
 op_star
 id|ack_intr
 comma
+macro_line|#if 0
+id|ide_io_ops_t
+op_star
+id|iops
+comma
+macro_line|#endif
 r_int
 id|irq
 )paren
 suffix:semicolon
 macro_line|#include &lt;asm/ide.h&gt;
+multiline_comment|/* Currently only m68k, apus and m8xx need it */
+macro_line|#ifdef IDE_ARCH_ACK_INTR
+r_extern
+r_int
+id|ide_irq_lock
+suffix:semicolon
+DECL|macro|ide_ack_intr
+macro_line|# define ide_ack_intr(hwif) (hwif-&gt;hw.ack_intr ? hwif-&gt;hw.ack_intr(hwif) : 1)
+macro_line|#else
+DECL|macro|ide_ack_intr
+macro_line|# define ide_ack_intr(hwif) (1)
+macro_line|#endif
+multiline_comment|/* Currently only Atari needs it */
+macro_line|#ifndef IDE_ARCH_LOCK
+DECL|macro|ide_release_lock
+macro_line|# define ide_release_lock(lock)&t;&t;&t;do {} while (0)
+DECL|macro|ide_get_lock
+macro_line|# define ide_get_lock(lock, hdlr, data)&t;&t;do {} while (0)
+macro_line|#endif /* IDE_ARCH_LOCK */
 multiline_comment|/*&n; * If the arch-dependant ide.h did not declare/define any OUT_BYTE&n; * or IN_BYTE functions, we make some defaults here.&n; */
 macro_line|#ifndef HAVE_ARCH_OUT_BYTE
 macro_line|# ifdef REALLY_FAST_IO
@@ -462,25 +817,45 @@ DECL|macro|OUT_BYTE
 macro_line|#  define OUT_BYTE(b,p)&t;&t;outb((b),(p))
 DECL|macro|OUT_WORD
 macro_line|#  define OUT_WORD(w,p)&t;&t;outw((w),(p))
+DECL|macro|OUT_LONG
+macro_line|#  define OUT_LONG(l,p)&t;&t;outl((l),(p))
 macro_line|# else
 DECL|macro|OUT_BYTE
 macro_line|#  define OUT_BYTE(b,p)&t;&t;outb_p((b),(p))
 DECL|macro|OUT_WORD
 macro_line|#  define OUT_WORD(w,p)&t;&t;outw_p((w),(p))
+DECL|macro|OUT_LONG
+macro_line|#  define OUT_LONG(l,p)&t;&t;outl_p((l),(p))
 macro_line|# endif
+DECL|macro|OUT_BYTE_P
+macro_line|# define OUT_BYTE_P(b,p)&t;outb_p((b),(p))
+DECL|macro|OUT_WORD_P
+macro_line|# define OUT_WORD_P(w,p)&t;outw_p((w),(p))
+DECL|macro|OUT_LONG_P
+macro_line|# define OUT_LONG_P(l,p)&t;outl_p((l),(p))
 macro_line|#endif
 macro_line|#ifndef HAVE_ARCH_IN_BYTE
 macro_line|# ifdef REALLY_FAST_IO
 DECL|macro|IN_BYTE
-macro_line|#  define IN_BYTE(p)&t;&t;(byte)inb(p)
+macro_line|#  define IN_BYTE(p)&t;&t;(u8) inb(p)
 DECL|macro|IN_WORD
-macro_line|#  define IN_WORD(p)&t;&t;(short)inw(p)
+macro_line|#  define IN_WORD(p)&t;&t;(u16) inw(p)
+DECL|macro|IN_LONG
+macro_line|#  define IN_LONG(p)&t;&t;(u32) inl(p)
 macro_line|# else
 DECL|macro|IN_BYTE
-macro_line|#  define IN_BYTE(p)&t;&t;(byte)inb_p(p)
+macro_line|#  define IN_BYTE(p)&t;&t;(u8) inb_p(p)
 DECL|macro|IN_WORD
-macro_line|#  define IN_WORD(p)&t;&t;(short)inw_p(p)
+macro_line|#  define IN_WORD(p)&t;&t;(u16) inw_p(p)
+DECL|macro|IN_LONG
+macro_line|#  define IN_LONG(p)&t;&t;(u32) inl_p(p)
 macro_line|# endif
+DECL|macro|IN_BYTE_P
+macro_line|# define IN_BYTE_P(p)&t;&t;(u8) inb_p(p)
+DECL|macro|IN_WORD_P
+macro_line|# define IN_WORD_P(p)&t;&t;(u16) inw_p(p)
+DECL|macro|IN_LONG_P
+macro_line|# define IN_LONG_P(p)&t;&t;(u32) inl_p(p)
 macro_line|#endif
 multiline_comment|/*&n; * Now for the data we need to maintain per-drive:  ide_drive_t&n; */
 DECL|macro|ide_scsi
@@ -495,6 +870,7 @@ DECL|macro|ide_tape
 mdefine_line|#define ide_tape&t;0x1
 DECL|macro|ide_floppy
 mdefine_line|#define ide_floppy&t;0x0
+multiline_comment|/*&n; * Special Driver Flags&n; *&n; * set_geometry&t;: respecify drive geometry&n; * recalibrate&t;: seek to cyl 0&n; * set_multmode&t;: set multmode count&n; * set_tune&t;: tune interface for drive&n; * serviced&t;: service command&n; * reserved&t;: unused&n; */
 r_typedef
 r_union
 (brace
@@ -503,7 +879,6 @@ id|all
 suffix:colon
 l_int|8
 suffix:semicolon
-multiline_comment|/* all of the bits together */
 r_struct
 (brace
 macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
@@ -513,79 +888,67 @@ id|set_geometry
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* respecify drive geometry */
 DECL|member|recalibrate
 r_int
 id|recalibrate
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* seek to cyl 0      */
 DECL|member|set_multmode
 r_int
 id|set_multmode
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* set multmode count */
 DECL|member|set_tune
 r_int
 id|set_tune
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* tune interface for drive */
 DECL|member|serviced
 r_int
 id|serviced
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* service command */
 DECL|member|reserved
 r_int
 id|reserved
 suffix:colon
 l_int|3
 suffix:semicolon
-multiline_comment|/* unused */
 macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
 r_int
 id|reserved
 suffix:colon
 l_int|3
 suffix:semicolon
-multiline_comment|/* unused */
 r_int
 id|serviced
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* service command */
 r_int
 id|set_tune
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* tune interface for drive */
 r_int
 id|set_multmode
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* set multmode count */
 r_int
 id|recalibrate
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* seek to cyl 0      */
 r_int
 id|set_geometry
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* respecify drive geometry */
 macro_line|#else
 macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
 macro_line|#endif
@@ -597,6 +960,66 @@ DECL|typedef|special_t
 )brace
 id|special_t
 suffix:semicolon
+multiline_comment|/*&n; * ATA DATA Register Special.&n; * ATA NSECTOR Count Register().&n; * ATAPI Byte Count Register.&n; * Channel index ordering pairs.&n; */
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|16
+suffix:semicolon
+r_struct
+(brace
+macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
+DECL|member|low
+r_int
+id|low
+suffix:colon
+l_int|8
+suffix:semicolon
+multiline_comment|/* LSB */
+DECL|member|high
+r_int
+id|high
+suffix:colon
+l_int|8
+suffix:semicolon
+multiline_comment|/* MSB */
+macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
+r_int
+id|high
+suffix:colon
+l_int|8
+suffix:semicolon
+multiline_comment|/* MSB */
+r_int
+id|low
+suffix:colon
+l_int|8
+suffix:semicolon
+multiline_comment|/* LSB */
+macro_line|#else
+macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
+macro_line|#endif
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|ata_nsector_t
+DECL|typedef|ata_data_t
+DECL|typedef|atapi_bcount_t
+DECL|typedef|ata_index_t
+)brace
+id|ata_nsector_t
+comma
+id|ata_data_t
+comma
+id|atapi_bcount_t
+comma
+id|ata_index_t
+suffix:semicolon
+multiline_comment|/*&n; * ATA-IDE Error Register&n; *&n; * mark&t;&t;: Bad address mark&n; * tzero&t;: Couldn&squot;t find track 0&n; * abrt&t;&t;: Aborted Command&n; * mcr&t;&t;: Media Change Request&n; * id&t;&t;: ID field not found&n; * mce&t;&t;: Media Change Event&n; * ecc&t;&t;: Uncorrectable ECC error&n; * bdd&t;&t;: dual meaing&n; */
 r_typedef
 r_union
 (brace
@@ -605,7 +1028,118 @@ id|all
 suffix:colon
 l_int|8
 suffix:semicolon
-multiline_comment|/* all of the bits together */
+r_struct
+(brace
+macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
+DECL|member|mark
+r_int
+id|mark
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|tzero
+r_int
+id|tzero
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|abrt
+r_int
+id|abrt
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|mcr
+r_int
+id|mcr
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|id
+r_int
+id|id
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|mce
+r_int
+id|mce
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|ecc
+r_int
+id|ecc
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|bdd
+r_int
+id|bdd
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
+r_int
+id|bdd
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|ecc
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|mce
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|id
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|mcr
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|abrt
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|tzero
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|mark
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#else
+macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
+macro_line|#endif
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|ata_error_t
+)brace
+id|ata_error_t
+suffix:semicolon
+multiline_comment|/*&n; * ATA-IDE Select Register, aka Device-Head&n; *&n; * head&t;&t;: always zeros here&n; * unit&t;&t;: drive select number: 0/1&n; * bit5&t;&t;: always 1&n; * lba&t;&t;: using LBA instead of CHS&n; * bit7&t;&t;: always 1&n; */
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
 r_struct
 (brace
 macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
@@ -615,66 +1149,56 @@ id|head
 suffix:colon
 l_int|4
 suffix:semicolon
-multiline_comment|/* always zeros here */
 DECL|member|unit
 r_int
 id|unit
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* drive select number: 0/1 */
 DECL|member|bit5
 r_int
 id|bit5
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* always 1 */
 DECL|member|lba
 r_int
 id|lba
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* using LBA instead of CHS */
 DECL|member|bit7
 r_int
 id|bit7
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* always 1 */
 macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
 r_int
 id|bit7
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* always 1 */
 r_int
 id|lba
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* using LBA instead of CHS */
 r_int
 id|bit5
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* always 1 */
 r_int
 id|unit
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* drive select number: 0/1 */
 r_int
 id|head
 suffix:colon
 l_int|4
 suffix:semicolon
-multiline_comment|/* always zeros here */
 macro_line|#else
 macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
 macro_line|#endif
@@ -683,9 +1207,13 @@ DECL|member|b
 id|b
 suffix:semicolon
 DECL|typedef|select_t
+DECL|typedef|ata_select_t
 )brace
 id|select_t
+comma
+id|ata_select_t
 suffix:semicolon
+multiline_comment|/*&n; * The ATA-IDE Status Register.&n; * The ATAPI Status Register.&n; *&n; * check&t;: Error occurred&n; * idx&t;&t;: Index Error&n; * corr&t;&t;: Correctable error occurred&n; * drq&t;&t;: Data is request by the device&n; * dsc&t;&t;: Disk Seek Complete&t;&t;&t;: ata&n; *&t;&t;: Media access command finished&t;&t;: atapi&n; * df&t;&t;: Device Fault&t;&t;&t;&t;: ata&n; *&t;&t;: Reserved&t;&t;&t;&t;: atapi&n; * drdy&t;&t;: Ready, Command Mode Capable&t;&t;: ata&n; *&t;&t;: Ignored for ATAPI commands&t;&t;: atapi&n; * bsy&t;&t;: Disk is Busy&n; *&t;&t;: The device has access to the command block&n; */
 r_typedef
 r_union
 (brace
@@ -694,7 +1222,121 @@ id|all
 suffix:colon
 l_int|8
 suffix:semicolon
-multiline_comment|/* all of the bits together */
+r_struct
+(brace
+macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
+DECL|member|check
+r_int
+id|check
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|idx
+r_int
+id|idx
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|corr
+r_int
+id|corr
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|drq
+r_int
+id|drq
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|dsc
+r_int
+id|dsc
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|df
+r_int
+id|df
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|drdy
+r_int
+id|drdy
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|bsy
+r_int
+id|bsy
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
+r_int
+id|bsy
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|drdy
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|df
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|dsc
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|drq
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|corr
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|idx
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|check
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#else
+macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
+macro_line|#endif
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|ata_status_t
+DECL|typedef|atapi_status_t
+)brace
+id|ata_status_t
+comma
+id|atapi_status_t
+suffix:semicolon
+multiline_comment|/*&n; * ATA-IDE Control Register&n; *&n; * bit0&t;&t;: Should be set to zero&n; * nIEN&t;&t;: device INTRQ to host&n; * SRST&t;&t;: host soft reset bit&n; * bit3&t;&t;: ATA-2 thingy, Should be set to 1&n; * reserved456&t;: Reserved&n; * HOB&t;&t;: 48-bit address ordering, High Ordered Bit&n; */
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
 r_struct
 (brace
 macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
@@ -710,21 +1352,18 @@ id|nIEN
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* device INTRQ to host */
 DECL|member|SRST
 r_int
 id|SRST
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* host soft reset bit */
 DECL|member|bit3
 r_int
 id|bit3
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* ATA-2 thingy */
 DECL|member|reserved456
 r_int
 id|reserved456
@@ -737,14 +1376,12 @@ id|HOB
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 48-bit address ordering */
 macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
 r_int
 id|HOB
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 48-bit address ordering */
 r_int
 id|reserved456
 suffix:colon
@@ -755,19 +1392,16 @@ id|bit3
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* ATA-2 thingy */
 r_int
 id|SRST
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* host soft reset bit */
 r_int
 id|nIEN
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* device INTRQ to host */
 r_int
 id|bit0
 suffix:colon
@@ -780,9 +1414,303 @@ DECL|member|b
 )brace
 id|b
 suffix:semicolon
-DECL|typedef|control_t
+DECL|typedef|ata_control_t
 )brace
-id|control_t
+id|ata_control_t
+suffix:semicolon
+multiline_comment|/*&n; * ATAPI Feature Register&n; *&n; * dma&t;&t;: Using DMA or PIO&n; * reserved321&t;: Reserved&n; * reserved654&t;: Reserved (Tag Type)&n; * reserved7&t;: Reserved&n; */
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+r_struct
+(brace
+macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
+DECL|member|dma
+r_int
+id|dma
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|reserved321
+r_int
+id|reserved321
+suffix:colon
+l_int|3
+suffix:semicolon
+DECL|member|reserved654
+r_int
+id|reserved654
+suffix:colon
+l_int|3
+suffix:semicolon
+DECL|member|reserved7
+r_int
+id|reserved7
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
+r_int
+id|reserved7
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|reserved654
+suffix:colon
+l_int|3
+suffix:semicolon
+r_int
+id|reserved321
+suffix:colon
+l_int|3
+suffix:semicolon
+r_int
+id|dma
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#else
+macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
+macro_line|#endif
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|atapi_feature_t
+)brace
+id|atapi_feature_t
+suffix:semicolon
+multiline_comment|/*&n; * ATAPI Interrupt Reason Register.&n; *&n; * cod&t;&t;: Information transferred is command (1) or data (0)&n; * io&t;&t;: The device requests us to read (1) or write (0)&n; * reserved&t;: Reserved&n; */
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+r_struct
+(brace
+macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
+DECL|member|cod
+r_int
+id|cod
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|io
+r_int
+id|io
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|reserved
+r_int
+id|reserved
+suffix:colon
+l_int|6
+suffix:semicolon
+macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
+r_int
+id|reserved
+suffix:colon
+l_int|6
+suffix:semicolon
+r_int
+id|io
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|cod
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#else
+macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
+macro_line|#endif
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|atapi_ireason_t
+)brace
+id|atapi_ireason_t
+suffix:semicolon
+multiline_comment|/*&n; * The ATAPI error register.&n; *&n; * ili&t;&t;: Illegal Length Indication&n; * eom&t;&t;: End Of Media Detected&n; * abrt&t;&t;: Aborted command - As defined by ATA&n; * mcr&t;&t;: Media Change Requested - As defined by ATA&n; * sense_key&t;: Sense key of the last failed packet command&n; */
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+r_struct
+(brace
+macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
+DECL|member|ili
+r_int
+id|ili
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|eom
+r_int
+id|eom
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|abrt
+r_int
+id|abrt
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|mcr
+r_int
+id|mcr
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|sense_key
+r_int
+id|sense_key
+suffix:colon
+l_int|4
+suffix:semicolon
+macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
+r_int
+id|sense_key
+suffix:colon
+l_int|4
+suffix:semicolon
+r_int
+id|mcr
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|abrt
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|eom
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|ili
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#else
+macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
+macro_line|#endif
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|atapi_error_t
+)brace
+id|atapi_error_t
+suffix:semicolon
+multiline_comment|/*&n; * ATAPI floppy Drive Select Register&n; *&n; * sam_lun&t;: Logical unit number&n; * reserved3&t;: Reserved&n; * drv&t;&t;: The responding drive will be drive 0 (0) or drive 1 (1)&n; * one5&t;&t;: Should be set to 1&n; * reserved6&t;: Reserved&n; * one7&t;&t;: Should be set to 1&n; */
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+r_struct
+(brace
+macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
+DECL|member|sam_lun
+r_int
+id|sam_lun
+suffix:colon
+l_int|3
+suffix:semicolon
+DECL|member|reserved3
+r_int
+id|reserved3
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|drv
+r_int
+id|drv
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|one5
+r_int
+id|one5
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|reserved6
+r_int
+id|reserved6
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|one7
+r_int
+id|one7
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
+r_int
+id|one7
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|reserved6
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|one5
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|drv
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|reserved3
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|sam_lun
+suffix:colon
+l_int|3
+suffix:semicolon
+macro_line|#else
+macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
+macro_line|#endif
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|atapi_select_t
+)brace
+id|atapi_select_t
 suffix:semicolon
 r_struct
 id|ide_driver_s
@@ -795,11 +1723,34 @@ r_typedef
 r_struct
 id|ide_drive_s
 (brace
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* drive name, such as &quot;hda&quot; */
+DECL|member|driver_req
+r_char
+id|driver_req
+(braket
+l_int|10
+)braket
+suffix:semicolon
+multiline_comment|/* requests specific driver */
 DECL|member|queue
 id|request_queue_t
 id|queue
 suffix:semicolon
 multiline_comment|/* request queue */
+DECL|member|rq
+r_struct
+id|request
+op_star
+id|rq
+suffix:semicolon
+multiline_comment|/* current request */
 DECL|member|next
 r_struct
 id|ide_drive_s
@@ -807,6 +1758,52 @@ op_star
 id|next
 suffix:semicolon
 multiline_comment|/* circular list of hwgroup drives */
+DECL|member|driver
+r_struct
+id|ide_driver_s
+op_star
+id|driver
+suffix:semicolon
+multiline_comment|/* (ide_driver_t *) */
+DECL|member|driver_data
+r_void
+op_star
+id|driver_data
+suffix:semicolon
+multiline_comment|/* extra driver data */
+DECL|member|id
+r_struct
+id|hd_driveid
+op_star
+id|id
+suffix:semicolon
+multiline_comment|/* drive model identification info */
+DECL|member|proc
+r_struct
+id|proc_dir_entry
+op_star
+id|proc
+suffix:semicolon
+multiline_comment|/* /proc/ide/ directory entry */
+DECL|member|settings
+r_struct
+id|ide_settings_s
+op_star
+id|settings
+suffix:semicolon
+multiline_comment|/* /proc/ide/ drive settings */
+DECL|member|de
+id|devfs_handle_t
+id|de
+suffix:semicolon
+multiline_comment|/* directory for device */
+DECL|member|hwif
+r_struct
+id|hwif_s
+op_star
+id|hwif
+suffix:semicolon
+multiline_comment|/* actually (ide_hwif_t *) */
 DECL|member|sleep
 r_int
 r_int
@@ -836,56 +1833,71 @@ id|special_t
 id|special
 suffix:semicolon
 multiline_comment|/* special action flags */
+DECL|member|select
+id|select_t
+id|select
+suffix:semicolon
+multiline_comment|/* basic drive/head select reg value */
 DECL|member|keep_settings
-id|byte
+id|u8
 id|keep_settings
 suffix:semicolon
 multiline_comment|/* restore settings after drive reset */
+DECL|member|autodma
+id|u8
+id|autodma
+suffix:semicolon
+multiline_comment|/* device can safely use dma on host */
 DECL|member|using_dma
-id|byte
+id|u8
 id|using_dma
 suffix:semicolon
 multiline_comment|/* disk is using dma for read/write */
+DECL|member|using_tcq
+id|u8
+id|using_tcq
+suffix:semicolon
+multiline_comment|/* disk is using queueing */
 DECL|member|retry_pio
-id|byte
+id|u8
 id|retry_pio
 suffix:semicolon
 multiline_comment|/* retrying dma capable host in pio */
 DECL|member|state
-id|byte
+id|u8
 id|state
 suffix:semicolon
 multiline_comment|/* retry state */
 DECL|member|waiting_for_dma
-id|byte
+id|u8
 id|waiting_for_dma
 suffix:semicolon
 multiline_comment|/* dma currently in progress */
 DECL|member|unmask
-id|byte
+id|u8
 id|unmask
 suffix:semicolon
-multiline_comment|/* flag: okay to unmask other irqs */
+multiline_comment|/* okay to unmask other irqs */
 DECL|member|slow
-id|byte
+id|u8
 id|slow
 suffix:semicolon
-multiline_comment|/* flag: slow data port */
+multiline_comment|/* slow data port */
 DECL|member|bswap
-id|byte
+id|u8
 id|bswap
 suffix:semicolon
-multiline_comment|/* flag: byte swap data */
+multiline_comment|/* byte swap data */
 DECL|member|dsc_overlap
-id|byte
+id|u8
 id|dsc_overlap
 suffix:semicolon
-multiline_comment|/* flag: DSC overlap */
+multiline_comment|/* DSC overlap */
 DECL|member|nice1
-id|byte
+id|u8
 id|nice1
 suffix:semicolon
-multiline_comment|/* flag: give potential excess bandwidth */
+multiline_comment|/* give potential excess bandwidth */
 DECL|member|present
 r_int
 id|present
@@ -907,6 +1919,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1 if need to do check_media_change */
+DECL|member|is_flash
+r_int
+id|is_flash
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 1 if probed as flash */
 DECL|member|forced_geom
 r_int
 id|forced_geom
@@ -934,35 +1953,35 @@ id|nobios
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* flag: do not probe bios for drive */
+multiline_comment|/* do not probe bios for drive */
 DECL|member|atapi_overlap
 r_int
 id|atapi_overlap
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* flag: ATAPI overlap (not supported) */
+multiline_comment|/* ATAPI overlap (not supported) */
 DECL|member|nice0
 r_int
 id|nice0
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* flag: give obvious excess bandwidth */
+multiline_comment|/* give obvious excess bandwidth */
 DECL|member|nice2
 r_int
 id|nice2
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* flag: give a share in our own bandwidth */
+multiline_comment|/* give a share in our own bandwidth */
 DECL|member|doorlocking
 r_int
 id|doorlocking
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* flag: for removable only: door lock/unlock works */
+multiline_comment|/* for removable only: door lock/unlock works */
 DECL|member|autotune
 r_int
 id|autotune
@@ -988,90 +2007,114 @@ DECL|member|addressing
 r_int
 id|addressing
 suffix:semicolon
-multiline_comment|/*&t;: 3;&n;&t;&t;&t;&t;&t; *  0=28-bit&n;&t;&t;&t;&t;&t; *  1=48-bit&n;&t;&t;&t;&t;&t; *  2=48-bit doing 28-bit&n;&t;&t;&t;&t;&t; *  3=64-bit&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*      : 3;&n;&t;&t;&t;&t;&t; *  0=28-bit&n;&t;&t;&t;&t;&t; *  1=48-bit&n;&t;&t;&t;&t;&t; *  2=48-bit doing 28-bit&n;&t;&t;&t;&t;&t; *  3=64-bit&n;&t;&t;&t;&t;&t; */
 DECL|member|scsi
-id|byte
+id|u8
 id|scsi
 suffix:semicolon
 multiline_comment|/* 0=default, 1=skip current ide-subdriver for ide-scsi emulation */
+DECL|member|quirk_list
+id|u8
+id|quirk_list
+suffix:semicolon
+multiline_comment|/* considered quirky, set for a specific host */
+DECL|member|suspend_reset
+id|u8
+id|suspend_reset
+suffix:semicolon
+multiline_comment|/* drive suspend mode flag, soft-reset recovers */
+DECL|member|init_speed
+id|u8
+id|init_speed
+suffix:semicolon
+multiline_comment|/* transfer rate set at boot */
+DECL|member|current_speed
+id|u8
+id|current_speed
+suffix:semicolon
+multiline_comment|/* current transfer rate set */
+DECL|member|dn
+id|u8
+id|dn
+suffix:semicolon
+multiline_comment|/* now wide spread use */
+DECL|member|wcache
+id|u8
+id|wcache
+suffix:semicolon
+multiline_comment|/* status of write cache */
+DECL|member|acoustic
+id|u8
+id|acoustic
+suffix:semicolon
+multiline_comment|/* acoustic management */
 DECL|member|media
-id|byte
+id|u8
 id|media
 suffix:semicolon
 multiline_comment|/* disk, cdrom, tape, floppy, ... */
-DECL|member|select
-id|select_t
-id|select
-suffix:semicolon
-multiline_comment|/* basic drive/head select reg value */
 DECL|member|ctl
-id|byte
+id|u8
 id|ctl
 suffix:semicolon
 multiline_comment|/* &quot;normal&quot; value for IDE_CONTROL_REG */
 DECL|member|ready_stat
-id|byte
+id|u8
 id|ready_stat
 suffix:semicolon
 multiline_comment|/* min status value for drive ready */
 DECL|member|mult_count
-id|byte
+id|u8
 id|mult_count
 suffix:semicolon
 multiline_comment|/* current multiple sector setting */
 DECL|member|mult_req
-id|byte
+id|u8
 id|mult_req
 suffix:semicolon
 multiline_comment|/* requested multiple sector setting */
 DECL|member|tune_req
-id|byte
+id|u8
 id|tune_req
 suffix:semicolon
 multiline_comment|/* requested drive tuning setting */
 DECL|member|io_32bit
-id|byte
+id|u8
 id|io_32bit
 suffix:semicolon
 multiline_comment|/* 0=16-bit, 1=32-bit, 2/3=32bit+sync */
 DECL|member|bad_wstat
-id|byte
+id|u8
 id|bad_wstat
 suffix:semicolon
 multiline_comment|/* used for ignoring WRERR_STAT */
 DECL|member|nowerr
-id|byte
+id|u8
 id|nowerr
 suffix:semicolon
 multiline_comment|/* used for ignoring WRERR_STAT */
 DECL|member|sect0
-id|byte
+id|u8
 id|sect0
 suffix:semicolon
 multiline_comment|/* offset of first sector for DM6:DDO */
-DECL|member|usage
-r_int
-r_int
-id|usage
-suffix:semicolon
-multiline_comment|/* current &quot;open()&quot; count for drive */
 DECL|member|head
-id|byte
+id|u8
 id|head
 suffix:semicolon
 multiline_comment|/* &quot;real&quot; number of heads */
 DECL|member|sect
-id|byte
+id|u8
 id|sect
 suffix:semicolon
 multiline_comment|/* &quot;real&quot; sectors per track */
 DECL|member|bios_head
-id|byte
+id|u8
 id|bios_head
 suffix:semicolon
 multiline_comment|/* BIOS/fdisk/LILO number of heads */
 DECL|member|bios_sect
-id|byte
+id|u8
 id|bios_sect
 suffix:semicolon
 multiline_comment|/* BIOS/fdisk/LILO sectors per track */
@@ -1087,87 +2130,40 @@ r_int
 id|cyl
 suffix:semicolon
 multiline_comment|/* &quot;real&quot; number of cyls */
-DECL|member|capacity
-r_int
-r_int
-id|capacity
-suffix:semicolon
-multiline_comment|/* total number of sectors */
-DECL|member|capacity48
-r_int
-r_int
-r_int
-id|capacity48
-suffix:semicolon
-multiline_comment|/* total number of sectors */
 DECL|member|drive_data
 r_int
 r_int
 id|drive_data
 suffix:semicolon
-multiline_comment|/* for use by tuneproc/selectproc as needed */
-DECL|member|hwif
-r_struct
-id|hwif_s
-op_star
-id|hwif
+multiline_comment|/* use by tuneproc/selectproc */
+DECL|member|usage
+r_int
+r_int
+id|usage
 suffix:semicolon
-multiline_comment|/* actually (ide_hwif_t *) */
-DECL|member|id
-r_struct
-id|hd_driveid
-op_star
-id|id
+multiline_comment|/* current &quot;open()&quot; count for drive */
+DECL|member|failures
+r_int
+r_int
+id|failures
 suffix:semicolon
-multiline_comment|/* drive model identification info */
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|4
-)braket
+multiline_comment|/* current failure count */
+DECL|member|max_failures
+r_int
+r_int
+id|max_failures
 suffix:semicolon
-multiline_comment|/* drive name, such as &quot;hda&quot; */
-DECL|member|driver
-r_struct
-id|ide_driver_s
-op_star
-id|driver
+multiline_comment|/* maximum allowed failure count */
+DECL|member|capacity
+id|u32
+id|capacity
 suffix:semicolon
-multiline_comment|/* (ide_driver_t *) */
-DECL|member|driver_data
-r_void
-op_star
-id|driver_data
+multiline_comment|/* total number of sectors */
+DECL|member|capacity48
+id|u64
+id|capacity48
 suffix:semicolon
-multiline_comment|/* extra driver data */
-DECL|member|de
-id|devfs_handle_t
-id|de
-suffix:semicolon
-multiline_comment|/* directory for device */
-DECL|member|proc
-r_struct
-id|proc_dir_entry
-op_star
-id|proc
-suffix:semicolon
-multiline_comment|/* /proc/ide/ directory entry */
-DECL|member|settings
-r_struct
-id|ide_settings_s
-op_star
-id|settings
-suffix:semicolon
-multiline_comment|/* /proc/ide/ drive settings */
-DECL|member|driver_req
-r_char
-id|driver_req
-(braket
-l_int|10
-)braket
-suffix:semicolon
-multiline_comment|/* requests specific driver */
+multiline_comment|/* total number of sectors */
 DECL|member|last_lun
 r_int
 id|last_lun
@@ -1188,53 +2184,6 @@ r_int
 id|crc_count
 suffix:semicolon
 multiline_comment|/* crc counter to reduce drive speed */
-DECL|member|quirk_list
-id|byte
-id|quirk_list
-suffix:semicolon
-multiline_comment|/* drive is considered quirky if set for a specific host */
-DECL|member|suspend_reset
-id|byte
-id|suspend_reset
-suffix:semicolon
-multiline_comment|/* drive suspend mode flag, soft-reset recovers */
-DECL|member|init_speed
-id|byte
-id|init_speed
-suffix:semicolon
-multiline_comment|/* transfer rate set at boot */
-DECL|member|current_speed
-id|byte
-id|current_speed
-suffix:semicolon
-multiline_comment|/* current transfer rate set */
-DECL|member|dn
-id|byte
-id|dn
-suffix:semicolon
-multiline_comment|/* now wide spread use */
-DECL|member|wcache
-id|byte
-id|wcache
-suffix:semicolon
-multiline_comment|/* status of write cache */
-DECL|member|acoustic
-id|byte
-id|acoustic
-suffix:semicolon
-multiline_comment|/* acoustic management */
-DECL|member|failures
-r_int
-r_int
-id|failures
-suffix:semicolon
-multiline_comment|/* current failure count */
-DECL|member|max_failures
-r_int
-r_int
-id|max_failures
-suffix:semicolon
-multiline_comment|/* maximum allowed failure count */
 DECL|member|list
 r_struct
 id|list_head
@@ -1250,114 +2199,304 @@ DECL|typedef|ide_drive_t
 )brace
 id|ide_drive_t
 suffix:semicolon
-multiline_comment|/*&n; * An ide_dmaproc_t() initiates/aborts DMA read/write operations on a drive.&n; *&n; * The caller is assumed to have selected the drive and programmed the drive&squot;s&n; * sector address using CHS or LBA.  All that remains is to prepare for DMA&n; * and then issue the actual read/write DMA/PIO command to the drive.&n; *&n; * Returns 0 if all went well.&n; * Returns 1 if DMA read/write could not be started, in which case the caller&n; * should either try again later, or revert to PIO for the current request.&n; */
-DECL|enumerator|ide_dma_read
-DECL|enumerator|ide_dma_write
-DECL|enumerator|ide_dma_begin
+DECL|struct|ide_pio_ops_s
 r_typedef
-r_enum
+r_struct
+id|ide_pio_ops_s
 (brace
+DECL|member|ata_input_data
+r_void
+(paren
+op_star
+id|ata_input_data
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_void
+op_star
+comma
+id|u32
+)paren
+suffix:semicolon
+DECL|member|ata_output_data
+r_void
+(paren
+op_star
+id|ata_output_data
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_void
+op_star
+comma
+id|u32
+)paren
+suffix:semicolon
+DECL|member|atapi_input_bytes
+r_void
+(paren
+op_star
+id|atapi_input_bytes
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_void
+op_star
+comma
+id|u32
+)paren
+suffix:semicolon
+DECL|member|atapi_output_bytes
+r_void
+(paren
+op_star
+id|atapi_output_bytes
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_void
+op_star
+comma
+id|u32
+)paren
+suffix:semicolon
+DECL|typedef|ide_pio_ops_t
+)brace
+id|ide_pio_ops_t
+suffix:semicolon
+DECL|struct|ide_dma_ops_s
+r_typedef
+r_struct
+id|ide_dma_ops_s
+(brace
+multiline_comment|/* insert dma operations here! */
+DECL|member|ide_dma_read
+r_int
+(paren
+op_star
 id|ide_dma_read
-comma
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_write
+r_int
+(paren
+op_star
 id|ide_dma_write
-comma
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_begin
+r_int
+(paren
+op_star
 id|ide_dma_begin
-comma
-DECL|enumerator|ide_dma_end
-DECL|enumerator|ide_dma_check
-DECL|enumerator|ide_dma_on
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_end
+r_int
+(paren
+op_star
 id|ide_dma_end
-comma
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_check
+r_int
+(paren
+op_star
 id|ide_dma_check
-comma
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_on
+r_int
+(paren
+op_star
 id|ide_dma_on
-comma
-DECL|enumerator|ide_dma_off
-DECL|enumerator|ide_dma_off_quietly
-DECL|enumerator|ide_dma_test_irq
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_off
+r_int
+(paren
+op_star
 id|ide_dma_off
-comma
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_off_quietly
+r_int
+(paren
+op_star
 id|ide_dma_off_quietly
-comma
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_test_irq
+r_int
+(paren
+op_star
 id|ide_dma_test_irq
-comma
-DECL|enumerator|ide_dma_host_on
-DECL|enumerator|ide_dma_host_off
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_host_on
+r_int
+(paren
+op_star
 id|ide_dma_host_on
-comma
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_host_off
+r_int
+(paren
+op_star
 id|ide_dma_host_off
-comma
-DECL|enumerator|ide_dma_bad_drive
-DECL|enumerator|ide_dma_good_drive
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_bad_drive
+r_int
+(paren
+op_star
 id|ide_dma_bad_drive
-comma
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_good_drive
+r_int
+(paren
+op_star
 id|ide_dma_good_drive
-comma
-DECL|enumerator|ide_dma_verbose
-DECL|enumerator|ide_dma_retune
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_count
+r_int
+(paren
+op_star
+id|ide_dma_count
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_verbose
+r_int
+(paren
+op_star
 id|ide_dma_verbose
-comma
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_retune
+r_int
+(paren
+op_star
 id|ide_dma_retune
-comma
-DECL|enumerator|ide_dma_lostirq
-DECL|enumerator|ide_dma_timeout
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_lostirq
+r_int
+(paren
+op_star
 id|ide_dma_lostirq
-comma
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_timeout
+r_int
+(paren
+op_star
 id|ide_dma_timeout
-DECL|typedef|ide_dma_action_t
-)brace
-id|ide_dma_action_t
-suffix:semicolon
-DECL|typedef|ide_dmaproc_t
-r_typedef
-r_int
-(paren
-id|ide_dmaproc_t
 )paren
 (paren
-id|ide_dma_action_t
-comma
 id|ide_drive_t
 op_star
+id|drive
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * An ide_ideproc_t() performs CPU-polled transfers to/from a drive.&n; * Arguments are: the drive, the buffer pointer, and the length (in bytes or&n; * words depending on if it&squot;s an IDE or ATAPI call).&n; *&n; * If it is not defined for a controller, standard-code is used from ide.c.&n; *&n; * Controllers which are not memory-mapped in the standard way need to &n; * override that mechanism using this function to work.&n; *&n; */
-DECL|enumerator|ideproc_ide_input_data
-DECL|enumerator|ideproc_ide_output_data
-r_typedef
-r_enum
-(brace
-id|ideproc_ide_input_data
-comma
-id|ideproc_ide_output_data
-comma
-DECL|enumerator|ideproc_atapi_input_bytes
-DECL|enumerator|ideproc_atapi_output_bytes
-id|ideproc_atapi_input_bytes
-comma
-id|ideproc_atapi_output_bytes
-DECL|typedef|ide_ide_action_t
+DECL|typedef|ide_dma_ops_t
 )brace
-id|ide_ide_action_t
-suffix:semicolon
-DECL|typedef|ide_ideproc_t
-r_typedef
-r_void
-(paren
-id|ide_ideproc_t
-)paren
-(paren
-id|ide_ide_action_t
-comma
-id|ide_drive_t
-op_star
-comma
-r_void
-op_star
-comma
-r_int
-r_int
-)paren
+id|ide_dma_ops_t
 suffix:semicolon
 multiline_comment|/*&n; * mapping stuff, prepare for highmem...&n; * &n; * temporarily mapping a (possible) highmem bio for PIO transfer&n; */
 DECL|macro|ide_rq_offset
@@ -1442,418 +2581,14 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * A Verbose noise maker for debugging on the attempted transfer rates.&n; */
-DECL|function|ide_xfer_verbose
-r_extern
-r_inline
-r_char
-op_star
-id|ide_xfer_verbose
-(paren
-id|byte
-id|xfer_rate
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|xfer_rate
-)paren
-(brace
-r_case
-id|XFER_UDMA_7
-suffix:colon
-r_return
-l_string|&quot;UDMA 7&quot;
-suffix:semicolon
-r_case
-id|XFER_UDMA_6
-suffix:colon
-r_return
-l_string|&quot;UDMA 6&quot;
-suffix:semicolon
-r_case
-id|XFER_UDMA_5
-suffix:colon
-r_return
-l_string|&quot;UDMA 5&quot;
-suffix:semicolon
-r_case
-id|XFER_UDMA_4
-suffix:colon
-r_return
-l_string|&quot;UDMA 4&quot;
-suffix:semicolon
-r_case
-id|XFER_UDMA_3
-suffix:colon
-r_return
-l_string|&quot;UDMA 3&quot;
-suffix:semicolon
-r_case
-id|XFER_UDMA_2
-suffix:colon
-r_return
-l_string|&quot;UDMA 2&quot;
-suffix:semicolon
-r_case
-id|XFER_UDMA_1
-suffix:colon
-r_return
-l_string|&quot;UDMA 1&quot;
-suffix:semicolon
-r_case
-id|XFER_UDMA_0
-suffix:colon
-r_return
-l_string|&quot;UDMA 0&quot;
-suffix:semicolon
-r_case
-id|XFER_MW_DMA_2
-suffix:colon
-r_return
-l_string|&quot;MW DMA 2&quot;
-suffix:semicolon
-r_case
-id|XFER_MW_DMA_1
-suffix:colon
-r_return
-l_string|&quot;MW DMA 1&quot;
-suffix:semicolon
-r_case
-id|XFER_MW_DMA_0
-suffix:colon
-r_return
-l_string|&quot;MW DMA 0&quot;
-suffix:semicolon
-r_case
-id|XFER_SW_DMA_2
-suffix:colon
-r_return
-l_string|&quot;SW DMA 2&quot;
-suffix:semicolon
-r_case
-id|XFER_SW_DMA_1
-suffix:colon
-r_return
-l_string|&quot;SW DMA 1&quot;
-suffix:semicolon
-r_case
-id|XFER_SW_DMA_0
-suffix:colon
-r_return
-l_string|&quot;SW DMA 0&quot;
-suffix:semicolon
-r_case
-id|XFER_PIO_4
-suffix:colon
-r_return
-l_string|&quot;PIO 4&quot;
-suffix:semicolon
-r_case
-id|XFER_PIO_3
-suffix:colon
-r_return
-l_string|&quot;PIO 3&quot;
-suffix:semicolon
-r_case
-id|XFER_PIO_2
-suffix:colon
-r_return
-l_string|&quot;PIO 2&quot;
-suffix:semicolon
-r_case
-id|XFER_PIO_1
-suffix:colon
-r_return
-l_string|&quot;PIO 1&quot;
-suffix:semicolon
-r_case
-id|XFER_PIO_0
-suffix:colon
-r_return
-l_string|&quot;PIO 0&quot;
-suffix:semicolon
-r_case
-id|XFER_PIO_SLOW
-suffix:colon
-r_return
-l_string|&quot;PIO SLOW&quot;
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_string|&quot;XFER ERROR&quot;
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/*&n; * A Verbose noise maker for debugging on the attempted dmaing calls.&n; */
-DECL|function|ide_dmafunc_verbose
-r_extern
-r_inline
-r_char
-op_star
-id|ide_dmafunc_verbose
-(paren
-id|ide_dma_action_t
-id|dmafunc
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|dmafunc
-)paren
-(brace
-r_case
-id|ide_dma_read
-suffix:colon
-r_return
-l_string|&quot;ide_dma_read&quot;
-suffix:semicolon
-r_case
-id|ide_dma_write
-suffix:colon
-r_return
-l_string|&quot;ide_dma_write&quot;
-suffix:semicolon
-r_case
-id|ide_dma_begin
-suffix:colon
-r_return
-l_string|&quot;ide_dma_begin&quot;
-suffix:semicolon
-r_case
-id|ide_dma_end
-suffix:colon
-r_return
-l_string|&quot;ide_dma_end:&quot;
-suffix:semicolon
-r_case
-id|ide_dma_check
-suffix:colon
-r_return
-l_string|&quot;ide_dma_check&quot;
-suffix:semicolon
-r_case
-id|ide_dma_on
-suffix:colon
-r_return
-l_string|&quot;ide_dma_on&quot;
-suffix:semicolon
-r_case
-id|ide_dma_off
-suffix:colon
-r_return
-l_string|&quot;ide_dma_off&quot;
-suffix:semicolon
-r_case
-id|ide_dma_off_quietly
-suffix:colon
-r_return
-l_string|&quot;ide_dma_off_quietly&quot;
-suffix:semicolon
-r_case
-id|ide_dma_test_irq
-suffix:colon
-r_return
-l_string|&quot;ide_dma_test_irq&quot;
-suffix:semicolon
-r_case
-id|ide_dma_host_on
-suffix:colon
-r_return
-l_string|&quot;ide_dma_host_on&quot;
-suffix:semicolon
-r_case
-id|ide_dma_host_off
-suffix:colon
-r_return
-l_string|&quot;ide_dma_host_off&quot;
-suffix:semicolon
-r_case
-id|ide_dma_bad_drive
-suffix:colon
-r_return
-l_string|&quot;ide_dma_bad_drive&quot;
-suffix:semicolon
-r_case
-id|ide_dma_good_drive
-suffix:colon
-r_return
-l_string|&quot;ide_dma_good_drive&quot;
-suffix:semicolon
-r_case
-id|ide_dma_verbose
-suffix:colon
-r_return
-l_string|&quot;ide_dma_verbose&quot;
-suffix:semicolon
-r_case
-id|ide_dma_retune
-suffix:colon
-r_return
-l_string|&quot;ide_dma_retune&quot;
-suffix:semicolon
-r_case
-id|ide_dma_lostirq
-suffix:colon
-r_return
-l_string|&quot;ide_dma_lostirq&quot;
-suffix:semicolon
-r_case
-id|ide_dma_timeout
-suffix:colon
-r_return
-l_string|&quot;ide_dma_timeout&quot;
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_string|&quot;unknown&quot;
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/*&n; * An ide_tuneproc_t() is used to set the speed of an IDE interface&n; * to a particular PIO mode.  The &quot;byte&quot; parameter is used&n; * to select the PIO mode by number (0,1,2,3,4,5), and a value of 255&n; * indicates that the interface driver should &quot;auto-tune&quot; the PIO mode&n; * according to the drive capabilities in drive-&gt;id;&n; *&n; * Not all interface types support tuning, and not all of those&n; * support all possible PIO settings.  They may silently ignore&n; * or round values as they see fit.&n; */
-DECL|typedef|ide_tuneproc_t
-r_typedef
-r_void
-(paren
-id|ide_tuneproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-comma
-id|byte
-)paren
-suffix:semicolon
-DECL|typedef|ide_speedproc_t
-r_typedef
-r_int
-(paren
-id|ide_speedproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-comma
-id|byte
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * This is used to provide support for strange interfaces&n; */
-DECL|typedef|ide_selectproc_t
-r_typedef
-r_void
-(paren
-id|ide_selectproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|ide_resetproc_t
-r_typedef
-r_void
-(paren
-id|ide_resetproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|ide_quirkproc_t
-r_typedef
-r_int
-(paren
-id|ide_quirkproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|ide_intrproc_t
-r_typedef
-r_void
-(paren
-id|ide_intrproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|ide_maskproc_t
-r_typedef
-r_void
-(paren
-id|ide_maskproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-DECL|typedef|ide_rw_proc_t
-r_typedef
-r_void
-(paren
-id|ide_rw_proc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-comma
-id|ide_dma_action_t
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * ide soft-power support&n; */
-DECL|typedef|ide_busproc_t
-r_typedef
-r_int
-(paren
-id|ide_busproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 DECL|macro|IDE_CHIPSET_PCI_MASK
 mdefine_line|#define IDE_CHIPSET_PCI_MASK&t;&bslash;&n;    ((1&lt;&lt;ide_pci)|(1&lt;&lt;ide_cmd646)|(1&lt;&lt;ide_ali14xx))
 DECL|macro|IDE_CHIPSET_IS_PCI
 mdefine_line|#define IDE_CHIPSET_IS_PCI(c)&t;((IDE_CHIPSET_PCI_MASK &gt;&gt; (c)) &amp; 1)
 macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
-DECL|struct|ide_pci_devid_s
-r_typedef
 r_struct
-id|ide_pci_devid_s
-(brace
-DECL|member|vid
-r_int
-r_int
-id|vid
+id|ide_pci_device_s
 suffix:semicolon
-DECL|member|did
-r_int
-r_int
-id|did
-suffix:semicolon
-DECL|typedef|ide_pci_devid_t
-)brace
-id|ide_pci_devid_t
-suffix:semicolon
-DECL|macro|IDE_PCI_DEVID_NULL
-mdefine_line|#define IDE_PCI_DEVID_NULL&t;((ide_pci_devid_t){0,0})
-DECL|macro|IDE_PCI_DEVID_EQ
-mdefine_line|#define IDE_PCI_DEVID_EQ(a,b)&t;(a.vid == b.vid &amp;&amp; a.did == b.did)
 macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
 DECL|struct|hwif_s
 r_typedef
@@ -1867,6 +2602,13 @@ op_star
 id|next
 suffix:semicolon
 multiline_comment|/* for linked-list in ide_hwgroup_t */
+DECL|member|mate
+r_struct
+id|hwif_s
+op_star
+id|mate
+suffix:semicolon
+multiline_comment|/* other hwif from same PCI chip */
 DECL|member|hwgroup
 r_struct
 id|hwgroup_s
@@ -1874,6 +2616,22 @@ op_star
 id|hwgroup
 suffix:semicolon
 multiline_comment|/* actually (ide_hwgroup_t *) */
+DECL|member|proc
+r_struct
+id|proc_dir_entry
+op_star
+id|proc
+suffix:semicolon
+multiline_comment|/* /proc/ide/ directory entry */
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|6
+)braket
+suffix:semicolon
+multiline_comment|/* name of interface, eg. &quot;ide0&quot; */
+multiline_comment|/* task file registers for pata and sata */
 DECL|member|io_ports
 id|ide_ioreg_t
 id|io_ports
@@ -1881,8 +2639,20 @@ id|io_ports
 id|IDE_NR_PORTS
 )braket
 suffix:semicolon
-multiline_comment|/* task file registers */
-multiline_comment|/*&n; *     FIXME!! need a generic register set :-/  PPC guys ideas??&n; *&n; *     ide_mmioreg_t   mm_ports[IDE_NR_PORTS]; &quot;task file registers&quot;&n; *&n; */
+DECL|member|sata_scr
+id|sata_ioreg_t
+id|sata_scr
+(braket
+id|SATA_NR_PORTS
+)braket
+suffix:semicolon
+DECL|member|sata_misc
+id|sata_ioreg_t
+id|sata_misc
+(braket
+id|SATA_NR_PORTS
+)braket
+suffix:semicolon
 DECL|member|hw
 id|hw_regs_t
 id|hw
@@ -1896,11 +2666,88 @@ id|MAX_DRIVES
 )braket
 suffix:semicolon
 multiline_comment|/* drive info */
-DECL|member|addressing
-r_int
-id|addressing
+DECL|member|major
+id|u8
+id|major
 suffix:semicolon
-multiline_comment|/* hosts addressing */
+multiline_comment|/* our major number */
+DECL|member|index
+id|u8
+id|index
+suffix:semicolon
+multiline_comment|/* 0 for ide0; 1 for ide1; ... */
+DECL|member|channel
+id|u8
+id|channel
+suffix:semicolon
+multiline_comment|/* for dual-port chips: 0=primary, 1=secondary */
+DECL|member|straight8
+id|u8
+id|straight8
+suffix:semicolon
+multiline_comment|/* Alan&squot;s straight 8 check */
+DECL|member|bus_state
+id|u8
+id|bus_state
+suffix:semicolon
+multiline_comment|/* power state of the IDE bus */
+DECL|member|atapi_dma
+id|u8
+id|atapi_dma
+suffix:semicolon
+multiline_comment|/* host supports atapi_dma */
+DECL|member|ultra_mask
+id|u8
+id|ultra_mask
+suffix:semicolon
+DECL|member|mwdma_mask
+id|u8
+id|mwdma_mask
+suffix:semicolon
+DECL|member|swdma_mask
+id|u8
+id|swdma_mask
+suffix:semicolon
+DECL|member|chipset
+id|hwif_chipset_t
+id|chipset
+suffix:semicolon
+multiline_comment|/* sub-module for tuning.. */
+macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+suffix:semicolon
+multiline_comment|/* for pci chipsets */
+DECL|member|cds
+r_struct
+id|ide_pci_device_s
+op_star
+id|cds
+suffix:semicolon
+multiline_comment|/* chipset device struct */
+macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
+macro_line|#if 0
+id|ide_hwif_ops_t
+op_star
+id|hwifops
+suffix:semicolon
+macro_line|#else
+multiline_comment|/* routine is for HBA specific IDENTITY operations */
+DECL|member|identify
+r_int
+(paren
+op_star
+id|identify
+)paren
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* routine to tune PIO mode for drives */
 DECL|member|tuneproc
 r_void
 (paren
@@ -1911,10 +2758,10 @@ id|tuneproc
 id|ide_drive_t
 op_star
 comma
-id|byte
+id|u8
 )paren
 suffix:semicolon
-multiline_comment|/* routine to tune PIO mode for drives */
+multiline_comment|/* routine to retune DMA modes for drives */
 DECL|member|speedproc
 r_int
 (paren
@@ -1925,10 +2772,10 @@ id|speedproc
 id|ide_drive_t
 op_star
 comma
-id|byte
+id|u8
 )paren
 suffix:semicolon
-multiline_comment|/* routine to retune DMA modes for drives */
+multiline_comment|/* tweaks hardware to select drive */
 DECL|member|selectproc
 r_void
 (paren
@@ -1940,7 +2787,31 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* tweaks hardware to select drive */
+multiline_comment|/* chipset polling based on hba specifics */
+DECL|member|reset_poll
+r_int
+(paren
+op_star
+id|reset_poll
+)paren
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* chipset specific changes to default for device-hba resets */
+DECL|member|pre_reset
+r_void
+(paren
+op_star
+id|pre_reset
+)paren
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* routine to reset controller after a disk reset */
 DECL|member|resetproc
 r_void
 (paren
@@ -1952,7 +2823,7 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* routine to reset controller after a disk reset */
+multiline_comment|/* special interrupt handling for shared pci interrupts */
 DECL|member|intrproc
 r_void
 (paren
@@ -1964,7 +2835,7 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* special interrupt handling for shared pci interrupts */
+multiline_comment|/* special host masking for drive selection */
 DECL|member|maskproc
 r_void
 (paren
@@ -1978,7 +2849,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* special host masking for drive selection */
+multiline_comment|/* check host&squot;s drive quirk list */
 DECL|member|quirkproc
 r_int
 (paren
@@ -1990,55 +2861,7 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* check host&squot;s drive quirk list */
-DECL|member|rwproc
-r_void
-(paren
-op_star
-id|rwproc
-)paren
-(paren
-id|ide_drive_t
-op_star
-comma
-id|ide_dma_action_t
-)paren
-suffix:semicolon
-multiline_comment|/* adjust timing based upon rq-&gt;cmd direction */
-DECL|member|ideproc
-r_void
-(paren
-op_star
-id|ideproc
-)paren
-(paren
-id|ide_ide_action_t
-comma
-id|ide_drive_t
-op_star
-comma
-r_void
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* CPU-polled transfer routine */
-DECL|member|dmaproc
-r_int
-(paren
-op_star
-id|dmaproc
-)paren
-(paren
-id|ide_dma_action_t
-comma
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* dma read/write/abort routine */
+multiline_comment|/* driver soft-power interface */
 DECL|member|busproc
 r_int
 (paren
@@ -2052,26 +2875,625 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* driver soft-power interface */
+singleline_comment|//&t;/* host rate limiter */
+singleline_comment|//&t;u8&t;(*ratemask)(ide_drive_t *);
+singleline_comment|//&t;/* device rate limiter */
+singleline_comment|//&t;u8&t;(*ratefilter)(ide_drive_t *, u8);
+macro_line|#endif
+macro_line|#if 0
+id|ide_pio_ops_t
+op_star
+id|pioops
+suffix:semicolon
+macro_line|#else
+DECL|member|ata_input_data
+r_void
+(paren
+op_star
+id|ata_input_data
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_void
+op_star
+comma
+id|u32
+)paren
+suffix:semicolon
+DECL|member|ata_output_data
+r_void
+(paren
+op_star
+id|ata_output_data
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_void
+op_star
+comma
+id|u32
+)paren
+suffix:semicolon
+DECL|member|atapi_input_bytes
+r_void
+(paren
+op_star
+id|atapi_input_bytes
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_void
+op_star
+comma
+id|u32
+)paren
+suffix:semicolon
+DECL|member|atapi_output_bytes
+r_void
+(paren
+op_star
+id|atapi_output_bytes
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_void
+op_star
+comma
+id|u32
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if 0
+id|ide_dma_ops_t
+op_star
+id|dmaops
+suffix:semicolon
+macro_line|#else
+DECL|member|ide_dma_read
+r_int
+(paren
+op_star
+id|ide_dma_read
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_write
+r_int
+(paren
+op_star
+id|ide_dma_write
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_begin
+r_int
+(paren
+op_star
+id|ide_dma_begin
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_end
+r_int
+(paren
+op_star
+id|ide_dma_end
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_check
+r_int
+(paren
+op_star
+id|ide_dma_check
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_on
+r_int
+(paren
+op_star
+id|ide_dma_on
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_off
+r_int
+(paren
+op_star
+id|ide_dma_off
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_off_quietly
+r_int
+(paren
+op_star
+id|ide_dma_off_quietly
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_test_irq
+r_int
+(paren
+op_star
+id|ide_dma_test_irq
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_host_on
+r_int
+(paren
+op_star
+id|ide_dma_host_on
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_host_off
+r_int
+(paren
+op_star
+id|ide_dma_host_off
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_bad_drive
+r_int
+(paren
+op_star
+id|ide_dma_bad_drive
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_good_drive
+r_int
+(paren
+op_star
+id|ide_dma_good_drive
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_count
+r_int
+(paren
+op_star
+id|ide_dma_count
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_verbose
+r_int
+(paren
+op_star
+id|ide_dma_verbose
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_retune
+r_int
+(paren
+op_star
+id|ide_dma_retune
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_lostirq
+r_int
+(paren
+op_star
+id|ide_dma_lostirq
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_timeout
+r_int
+(paren
+op_star
+id|ide_dma_timeout
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if 0
+id|ide_io_ops_t
+op_star
+id|iops
+suffix:semicolon
+macro_line|#else
+DECL|member|OUTB
+r_void
+(paren
+op_star
+id|OUTB
+)paren
+(paren
+id|u8
+id|addr
+comma
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|OUTW
+r_void
+(paren
+op_star
+id|OUTW
+)paren
+(paren
+id|u16
+id|addr
+comma
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|OUTL
+r_void
+(paren
+op_star
+id|OUTL
+)paren
+(paren
+id|u32
+id|addr
+comma
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|OUTBP
+r_void
+(paren
+op_star
+id|OUTBP
+)paren
+(paren
+id|u8
+id|addr
+comma
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|OUTWP
+r_void
+(paren
+op_star
+id|OUTWP
+)paren
+(paren
+id|u16
+id|addr
+comma
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|OUTLP
+r_void
+(paren
+op_star
+id|OUTLP
+)paren
+(paren
+id|u32
+id|addr
+comma
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|OUTSW
+r_void
+(paren
+op_star
+id|OUTSW
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+DECL|member|OUTSWP
+r_void
+(paren
+op_star
+id|OUTSWP
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+DECL|member|OUTSL
+r_void
+(paren
+op_star
+id|OUTSL
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+DECL|member|OUTSLP
+r_void
+(paren
+op_star
+id|OUTSLP
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+DECL|member|INB
+id|u8
+(paren
+op_star
+id|INB
+)paren
+(paren
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|INW
+id|u16
+(paren
+op_star
+id|INW
+)paren
+(paren
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|INL
+id|u32
+(paren
+op_star
+id|INL
+)paren
+(paren
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|INBP
+id|u8
+(paren
+op_star
+id|INBP
+)paren
+(paren
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|INWP
+id|u16
+(paren
+op_star
+id|INWP
+)paren
+(paren
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|INLP
+id|u32
+(paren
+op_star
+id|INLP
+)paren
+(paren
+id|u32
+id|port
+)paren
+suffix:semicolon
+DECL|member|INSW
+r_void
+(paren
+op_star
+id|INSW
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+DECL|member|INSWP
+r_void
+(paren
+op_star
+id|INSWP
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+DECL|member|INSL
+r_void
+(paren
+op_star
+id|INSL
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+DECL|member|INSLP
+r_void
+(paren
+op_star
+id|INSLP
+)paren
+(paren
+id|u32
+id|port
+comma
+r_void
+op_star
+id|addr
+comma
+id|u32
+id|count
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* dma physical region descriptor table (cpu view) */
 DECL|member|dmatable_cpu
 r_int
 r_int
 op_star
 id|dmatable_cpu
 suffix:semicolon
-multiline_comment|/* dma physical region descriptor table (cpu view) */
+multiline_comment|/* dma physical region descriptor table (dma view) */
 DECL|member|dmatable_dma
 id|dma_addr_t
 id|dmatable_dma
 suffix:semicolon
-multiline_comment|/* dma physical region descriptor table (dma view) */
+multiline_comment|/* Scatter-gather list used to build the above */
 DECL|member|sg_table
 r_struct
 id|scatterlist
 op_star
 id|sg_table
 suffix:semicolon
-multiline_comment|/* Scatter-gather list used to build the above */
 DECL|member|sg_nents
 r_int
 id|sg_nents
@@ -2087,19 +3509,79 @@ r_int
 id|sg_dma_active
 suffix:semicolon
 multiline_comment|/* is it in use */
-DECL|member|mate
-r_struct
-id|hwif_s
-op_star
-id|mate
+DECL|member|mmio
+r_int
+id|mmio
 suffix:semicolon
-multiline_comment|/* other hwif from same PCI chip */
+multiline_comment|/* hosts iomio (0), mmio (1) or custom (2) select */
+DECL|member|rqsize
+r_int
+id|rqsize
+suffix:semicolon
+multiline_comment|/* max sectors per request */
+DECL|member|addressing
+r_int
+id|addressing
+suffix:semicolon
+multiline_comment|/* hosts addressing */
+DECL|member|irq
+r_int
+id|irq
+suffix:semicolon
+multiline_comment|/* our irq number */
+DECL|member|initializing
+r_int
+id|initializing
+suffix:semicolon
+multiline_comment|/* set while initializing self */
+DECL|member|dma_master
+r_int
+r_int
+id|dma_master
+suffix:semicolon
+multiline_comment|/* reference base addr dmabase */
 DECL|member|dma_base
 r_int
 r_int
 id|dma_base
 suffix:semicolon
 multiline_comment|/* base addr for dma ports */
+DECL|member|dma_command
+r_int
+r_int
+id|dma_command
+suffix:semicolon
+multiline_comment|/* dma command register */
+DECL|member|dma_vendor1
+r_int
+r_int
+id|dma_vendor1
+suffix:semicolon
+multiline_comment|/* dma vendor 1 register */
+DECL|member|dma_status
+r_int
+r_int
+id|dma_status
+suffix:semicolon
+multiline_comment|/* dma status register */
+DECL|member|dma_vendor3
+r_int
+r_int
+id|dma_vendor3
+suffix:semicolon
+multiline_comment|/* dma vendor 3 register */
+DECL|member|dma_prdtable
+r_int
+r_int
+id|dma_prdtable
+suffix:semicolon
+multiline_comment|/* actual prd table address */
+DECL|member|dma_base2
+r_int
+r_int
+id|dma_base2
+suffix:semicolon
+multiline_comment|/* extended base addr for dma ports */
 DECL|member|dma_extra
 r_int
 id|dma_extra
@@ -2117,41 +3599,14 @@ r_int
 id|select_data
 suffix:semicolon
 multiline_comment|/* for use by chipset-specific code */
-DECL|member|proc
-r_struct
-id|proc_dir_entry
-op_star
-id|proc
-suffix:semicolon
-multiline_comment|/* /proc/ide/ directory entry */
-DECL|member|irq
+macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
+DECL|member|last_time
 r_int
-id|irq
+r_int
+id|last_time
 suffix:semicolon
-multiline_comment|/* our irq number */
-DECL|member|major
-id|byte
-id|major
-suffix:semicolon
-multiline_comment|/* our major number */
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|6
-)braket
-suffix:semicolon
-multiline_comment|/* name of interface, eg. &quot;ide0&quot; */
-DECL|member|index
-id|byte
-id|index
-suffix:semicolon
-multiline_comment|/* 0 for ide0; 1 for ide1; ... */
-DECL|member|chipset
-id|hwif_chipset_t
-id|chipset
-suffix:semicolon
-multiline_comment|/* sub-module for tuning.. */
+multiline_comment|/* time when previous rq was done */
+macro_line|#endif
 DECL|member|noprobe
 r_int
 id|noprobe
@@ -2172,7 +3627,7 @@ id|serialized
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* serialized operation with mate hwif */
+multiline_comment|/* serialized all channel operation */
 DECL|member|sharing_irq
 r_int
 id|sharing_irq
@@ -2193,7 +3648,7 @@ id|autodma
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* automatically try to enable DMA at boot */
+multiline_comment|/* auto-attempt using DMA at boot */
 DECL|member|udma_four
 r_int
 id|udma_four
@@ -2201,56 +3656,26 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=ATA-66 capable, 0=default */
-DECL|member|no_highmem
+DECL|member|highmem
 r_int
-id|no_highmem
+id|highmem
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* always use high i/o bounce */
-DECL|member|channel
-id|byte
-id|channel
-suffix:semicolon
-multiline_comment|/* for dual-port chips: 0=primary, 1=secondary */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
-DECL|member|pci_dev
-r_struct
-id|pci_dev
-op_star
-id|pci_dev
-suffix:semicolon
-multiline_comment|/* for pci chipsets */
-DECL|member|pci_devid
-id|ide_pci_devid_t
-id|pci_devid
-suffix:semicolon
-multiline_comment|/* for pci chipsets: {VID,DID} */
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
-macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
-DECL|member|last_time
+multiline_comment|/* can do full 32-bit dma */
+DECL|member|no_dsc
 r_int
-r_int
-id|last_time
+id|no_dsc
+suffix:colon
+l_int|1
 suffix:semicolon
-multiline_comment|/* time when previous rq was done */
-macro_line|#endif
-DECL|member|straight8
-id|byte
-id|straight8
-suffix:semicolon
-multiline_comment|/* Alan&squot;s straight 8 check */
+multiline_comment|/* 0 default, 1 dsc_overlap disabled */
 DECL|member|hwif_data
 r_void
 op_star
 id|hwif_data
 suffix:semicolon
 multiline_comment|/* extra hwif data */
-DECL|member|bus_state
-id|byte
-id|bus_state
-suffix:semicolon
-multiline_comment|/* power state of the IDE bus */
 DECL|typedef|ide_hwif_t
 )brace
 id|ide_hwif_t
@@ -2265,7 +3690,7 @@ comma
 multiline_comment|/* no drive operation was started */
 DECL|enumerator|ide_started
 id|ide_started
-multiline_comment|/* a drive operation was started, and a handler was set */
+multiline_comment|/* a drive operation was started, handler was set */
 DECL|typedef|ide_startstop_t
 )brace
 id|ide_startstop_t
@@ -2308,7 +3733,6 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * when ide_timer_expiry fires, invoke a handler of this type&n; * to decide what to do.&n; */
 DECL|typedef|ide_expiry_t
 r_typedef
 r_int
@@ -2325,77 +3749,111 @@ r_typedef
 r_struct
 id|hwgroup_s
 (brace
+multiline_comment|/* irq handler, if active */
 DECL|member|handler
-id|ide_handler_t
+id|ide_startstop_t
+(paren
 op_star
 id|handler
+)paren
+(paren
+id|ide_drive_t
+op_star
+)paren
 suffix:semicolon
-multiline_comment|/* irq handler, if active */
+multiline_comment|/* irq handler, suspended if active */
 DECL|member|handler_save
-id|ide_handler_t
+id|ide_startstop_t
+(paren
 op_star
 id|handler_save
+)paren
+(paren
+id|ide_drive_t
+op_star
+)paren
 suffix:semicolon
-multiline_comment|/* irq handler, if active */
+multiline_comment|/* BOOL: protects all fields below */
 DECL|member|busy
 r_volatile
 r_int
 id|busy
 suffix:semicolon
-multiline_comment|/* BOOL: protects all fields below */
+multiline_comment|/* BOOL: wake us up on timer expiry */
 DECL|member|sleeping
 r_int
 id|sleeping
 suffix:semicolon
-multiline_comment|/* BOOL: wake us up on timer expiry */
+multiline_comment|/* current drive */
 DECL|member|drive
 id|ide_drive_t
 op_star
 id|drive
 suffix:semicolon
-multiline_comment|/* current drive */
+multiline_comment|/* ptr to current hwif in linked-list */
 DECL|member|hwif
 id|ide_hwif_t
 op_star
 id|hwif
 suffix:semicolon
-multiline_comment|/* ptr to current hwif in linked-list */
+macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+multiline_comment|/* for pci chipsets */
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+suffix:semicolon
+multiline_comment|/* chipset device struct */
+DECL|member|cds
+r_struct
+id|ide_pci_device_s
+op_star
+id|cds
+suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
+multiline_comment|/* current request */
 DECL|member|rq
 r_struct
 id|request
 op_star
 id|rq
 suffix:semicolon
-multiline_comment|/* current request */
+multiline_comment|/* failsafe timer */
 DECL|member|timer
 r_struct
 id|timer_list
 id|timer
 suffix:semicolon
-multiline_comment|/* failsafe timer */
+multiline_comment|/* local copy of current write rq */
 DECL|member|wrq
 r_struct
 id|request
 id|wrq
 suffix:semicolon
-multiline_comment|/* local copy of current write rq */
+multiline_comment|/* timeout value during long polls */
 DECL|member|poll_timeout
 r_int
 r_int
 id|poll_timeout
 suffix:semicolon
-multiline_comment|/* timeout value during long polls */
+multiline_comment|/* queried upon timeouts */
 DECL|member|expiry
-id|ide_expiry_t
+r_int
+(paren
 op_star
 id|expiry
+)paren
+(paren
+id|ide_drive_t
+op_star
+)paren
 suffix:semicolon
-multiline_comment|/* queried upon timeouts */
+multiline_comment|/* ide_system_bus_speed */
 DECL|member|pio_clock
 r_int
 id|pio_clock
 suffix:semicolon
-multiline_comment|/* ide_system_bus_speed */
 DECL|typedef|ide_hwgroup_t
 )brace
 id|ide_hwgroup_t
@@ -2635,6 +4093,7 @@ DECL|typedef|ide_proc_entry_t
 id|ide_proc_entry_t
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
+r_extern
 r_void
 id|proc_ide_create
 c_func
@@ -2642,6 +4101,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|proc_ide_destroy
 c_func
@@ -2649,6 +4109,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|recreate_proc_ide_device
 c_func
@@ -2660,6 +4121,7 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|destroy_proc_ide_device
 c_func
@@ -2671,6 +4133,7 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|destroy_proc_ide_drives
 c_func
@@ -2679,6 +4142,7 @@ id|ide_hwif_t
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|create_proc_ide_interfaces
 c_func
@@ -2686,6 +4150,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_add_proc_entries
 c_func
@@ -2693,17 +4158,15 @@ c_func
 r_struct
 id|proc_dir_entry
 op_star
-id|dir
 comma
 id|ide_proc_entry_t
 op_star
-id|p
 comma
 r_void
 op_star
-id|data
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_remove_proc_entries
 c_func
@@ -2711,11 +4174,9 @@ c_func
 r_struct
 id|proc_dir_entry
 op_star
-id|dir
 comma
 id|ide_proc_entry_t
 op_star
-id|p
 )paren
 suffix:semicolon
 DECL|variable|proc_ide_read_capacity
@@ -2760,7 +4221,7 @@ op_star
 id|version
 suffix:semicolon
 DECL|member|media
-id|byte
+id|u8
 id|media
 suffix:semicolon
 DECL|member|busy
@@ -2865,10 +4326,12 @@ id|ide_drive_t
 op_star
 comma
 r_int
+comma
+r_int
 )paren
 suffix:semicolon
 DECL|member|sense
-id|byte
+id|u8
 (paren
 op_star
 id|sense
@@ -2881,7 +4344,7 @@ r_const
 r_char
 op_star
 comma
-id|byte
+id|u8
 )paren
 suffix:semicolon
 DECL|member|error
@@ -2898,7 +4361,7 @@ r_const
 r_char
 op_star
 comma
-id|byte
+id|u8
 )paren
 suffix:semicolon
 DECL|member|ioctl
@@ -3025,11 +4488,11 @@ id|ide_proc_entry_t
 op_star
 id|proc
 suffix:semicolon
-DECL|member|reinit
+DECL|member|attach
 r_int
 (paren
 op_star
-id|reinit
+id|attach
 )paren
 (paren
 id|ide_drive_t
@@ -3118,6 +4581,43 @@ DECL|typedef|ide_module_t
 )brace
 id|ide_module_t
 suffix:semicolon
+DECL|struct|ide_devices_s
+r_typedef
+r_struct
+id|ide_devices_s
+(brace
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* hdX */
+DECL|member|attached
+r_int
+id|attached
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* native */
+DECL|member|alttached
+r_int
+id|alttached
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* alternate */
+DECL|member|next
+r_struct
+id|ide_devices_s
+op_star
+id|next
+suffix:semicolon
+DECL|typedef|ide_devices_t
+)brace
+id|ide_devices_t
+suffix:semicolon
 multiline_comment|/*&n; * ide_hwifs[] is the master data structure used to keep track&n; * of just about everything in ide.c.  Whenever possible, routines&n; * should be using pointers to a drive (ide_drive_t *) or&n; * pointers to a hwif (ide_hwif_t *), rather than indexing this&n; * structure directly (the allocation/layout may change!).&n; *&n; */
 macro_line|#ifndef _IDE_C
 r_extern
@@ -3130,7 +4630,37 @@ multiline_comment|/* master data repository */
 r_extern
 id|ide_module_t
 op_star
+id|ide_chipsets
+suffix:semicolon
+r_extern
+id|ide_module_t
+op_star
 id|ide_probe
+suffix:semicolon
+r_extern
+id|ide_devices_t
+op_star
+id|idedisk
+suffix:semicolon
+r_extern
+id|ide_devices_t
+op_star
+id|idecd
+suffix:semicolon
+r_extern
+id|ide_devices_t
+op_star
+id|idefloppy
+suffix:semicolon
+r_extern
+id|ide_devices_t
+op_star
+id|idetape
+suffix:semicolon
+r_extern
+id|ide_devices_t
+op_star
+id|idescsi
 suffix:semicolon
 macro_line|#endif
 r_extern
@@ -3145,6 +4675,7 @@ mdefine_line|#define LOCAL_END_REQUEST&t;/* Don&squot;t generate end_request in 
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device)&t;(minor(device) &gt;&gt; PARTN_BITS)
 macro_line|#include &lt;linux/blk.h&gt;
+r_extern
 r_int
 id|ide_end_request
 (paren
@@ -3154,9 +4685,13 @@ id|drive
 comma
 r_int
 id|uptodate
+comma
+r_int
+id|nrsecs
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This is used on exit from the driver, to designate the next irq handler&n; * and also to start the safety timer.&n; */
+r_extern
 r_void
 id|ide_set_handler
 (paren
@@ -3177,7 +4712,7 @@ op_star
 id|expiry
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Error reporting, in human readable form (luxurious, but a memory hog).&n; */
+multiline_comment|/*&n; * Error reporting, in human readable form (luxurious, but a memory hog).&n; *&n; * (drive, msg, status)&n; */
 id|byte
 id|ide_dump_status
 (paren
@@ -3194,7 +4729,7 @@ id|byte
 id|stat
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * ide_error() takes action based on the error returned by the controller.&n; * The caller should return immediately after invoking this.&n; */
+multiline_comment|/*&n; * ide_error() takes action based on the error returned by the controller.&n; * The caller should return immediately after invoking this.&n; *&n; * (drive, msg, status)&n; */
 id|ide_startstop_t
 id|ide_error
 (paren
@@ -3211,66 +4746,71 @@ id|byte
 id|stat
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Issue a simple drive command&n; * The drive must be selected beforehand.&n; */
+multiline_comment|/*&n; * Issue a simple drive command&n; * The drive must be selected beforehand.&n; *&n; * (drive, command, nsector, handler)&n; */
+r_extern
 r_void
 id|ide_cmd
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
-id|byte
-id|cmd
+id|u8
 comma
-id|byte
-id|nsect
+id|u8
 comma
 id|ide_handler_t
 op_star
-id|handler
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * ide_fixstring() cleans up and (optionally) byte-swaps a text string,&n; * removing leading/trailing blanks and compressing internal blanks.&n; * It is primarily used to tidy up the model name/number fields as&n; * returned by the WIN_[P]IDENTIFY commands.&n; */
+r_extern
+r_void
+id|ide_fix_driveid
+c_func
+(paren
+r_struct
+id|hd_driveid
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * ide_fixstring() cleans up and (optionally) byte-swaps a text string,&n; * removing leading/trailing blanks and compressing internal blanks.&n; * It is primarily used to tidy up the model name/number fields as&n; * returned by the WIN_[P]IDENTIFY commands.&n; *&n; * (s, bytecount, byteswap)&n; */
+r_extern
 r_void
 id|ide_fixstring
+c_func
 (paren
-id|byte
+id|u8
 op_star
-id|s
 comma
 r_const
 r_int
-id|bytecount
 comma
 r_const
 r_int
-id|byteswap
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This routine busy-waits for the drive status to be not &quot;busy&quot;.&n; * It then checks the status for all of the &quot;good&quot; bits and none&n; * of the &quot;bad&quot; bits, and if all is okay it returns 0.  All other&n; * cases return 1 after doing &quot;*startstop = ide_error()&quot;, and the&n; * caller should return the updated value of &quot;startstop&quot; in this case.&n; * &quot;startstop&quot; is unchanged when the function returns 0;&n; */
+multiline_comment|/*&n; * This routine busy-waits for the drive status to be not &quot;busy&quot;.&n; * It then checks the status for all of the &quot;good&quot; bits and none&n; * of the &quot;bad&quot; bits, and if all is okay it returns 0.  All other&n; * cases return 1 after doing &quot;*startstop = ide_error()&quot;, and the&n; * caller should return the updated value of &quot;startstop&quot; in this case.&n; * &quot;startstop&quot; is unchanged when the function returns 0;&n; * (startstop, drive, good, bad, timeout)&n; */
+r_extern
 r_int
 id|ide_wait_stat
+c_func
 (paren
 id|ide_startstop_t
 op_star
-id|startstop
 comma
 id|ide_drive_t
 op_star
-id|drive
 comma
-id|byte
-id|good
+id|u8
 comma
-id|byte
-id|bad
+id|u8
 comma
 r_int
 r_int
-id|timeout
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This routine is called from the partition-table code in genhd.c&n; * to &quot;convert&quot; a drive to a logical geometry with fewer than 1024 cyls.&n; */
+r_extern
 r_int
 id|ide_xlate_1024
 (paren
@@ -3286,6 +4826,7 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Convert kdev_t structure into ide_drive_t * one.&n; */
+r_extern
 id|ide_drive_t
 op_star
 id|get_info_ptr
@@ -3295,6 +4836,7 @@ id|i_rdev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Return the current idea about the total capacity of this drive.&n; */
+r_extern
 r_int
 r_int
 id|current_capacity
@@ -3304,6 +4846,7 @@ op_star
 id|drive
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_revalidate_drive
 (paren
@@ -3313,6 +4856,7 @@ id|drive
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Start a reset operation for an IDE interface.&n; * The caller should return immediately after invoking this.&n; */
+r_extern
 id|ide_startstop_t
 id|ide_do_reset
 (paren
@@ -3321,6 +4865,7 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Re-Start an operation for an IDE interface.&n; * The caller should return immediately after invoking this.&n; */
+r_extern
 r_int
 id|restart_request
 (paren
@@ -3333,6 +4878,7 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This function is intended to be used prior to invoking ide_do_drive_cmd().&n; */
+r_extern
 r_void
 id|ide_init_drive_cmd
 (paren
@@ -3366,72 +4912,67 @@ DECL|typedef|ide_action_t
 id|ide_action_t
 suffix:semicolon
 multiline_comment|/*&n; * This function issues a special IDE device request&n; * onto the request queue.&n; *&n; * If action is ide_wait, then the rq is queued at the end of the&n; * request queue, and the function sleeps until it has been processed.&n; * This is for use when invoked from an ioctl handler.&n; *&n; * If action is ide_preempt, then the rq is queued at the head of&n; * the request queue, displacing the currently-being-processed&n; * request and this function returns immediately without waiting&n; * for the new rq to be completed.  This is VERY DANGEROUS, and is&n; * intended for careful use by the ATAPI tape/cdrom driver code.&n; *&n; * If action is ide_next, then the rq is queued immediately after&n; * the currently-being-processed-request (if any), and the function&n; * returns without waiting for the new rq to be completed.  As above,&n; * This is VERY DANGEROUS, and is intended for careful use by the&n; * ATAPI tape/cdrom driver code.&n; *&n; * If action is ide_end, then the rq is queued at the end of the&n; * request queue, and the function returns immediately without waiting&n; * for the new rq to be completed. This is again intended for careful&n; * use by the ATAPI tape/cdrom driver code.&n; */
+r_extern
 r_int
 id|ide_do_drive_cmd
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 r_struct
 id|request
 op_star
-id|rq
 comma
 id|ide_action_t
-id|action
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Clean up after success/failure of an explicit drive cmd.&n; * stat/err are used only when (HWGROUP(drive)-&gt;rq-&gt;cmd == IDE_DRIVE_CMD).&n; * stat/err are used only when (HWGROUP(drive)-&gt;rq-&gt;cmd == IDE_DRIVE_TASK_MASK).&n; */
+multiline_comment|/*&n; * Clean up after success/failure of an explicit drive cmd.&n; * stat/err are used only when (HWGROUP(drive)-&gt;rq-&gt;cmd == IDE_DRIVE_CMD).&n; * stat/err are used only when (HWGROUP(drive)-&gt;rq-&gt;cmd == IDE_DRIVE_TASK_MASK).&n; *&n; * (ide_drive_t *drive, u8 stat, u8 err)&n; */
+r_extern
 r_void
 id|ide_end_drive_cmd
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
-id|byte
-id|stat
+id|u8
 comma
-id|byte
-id|err
+id|u8
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Issue ATA command and wait for completion. use for implementing commands in kernel&n; */
+multiline_comment|/*&n; * Issue ATA command and wait for completion.&n; * Use for implementing commands in kernel&n; *&n; *  (ide_drive_t *drive, u8 cmd, u8 nsect, u8 feature, u8 sectors, u8 *buf)&n; */
+r_extern
 r_int
 id|ide_wait_cmd
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
-r_int
-id|cmd
+id|u8
 comma
-r_int
-id|nsect
+id|u8
 comma
-r_int
-id|feature
+id|u8
 comma
-r_int
-id|sectors
+id|u8
 comma
-id|byte
+id|u8
 op_star
-id|buf
 )paren
 suffix:semicolon
+multiline_comment|/* (ide_drive_t *drive, u8 *buf) */
+r_extern
 r_int
 id|ide_wait_cmd_task
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
-id|byte
+id|u8
 op_star
-id|buf
 )paren
 suffix:semicolon
 DECL|struct|ide_task_s
@@ -3439,6 +4980,7 @@ r_typedef
 r_struct
 id|ide_task_s
 (brace
+multiline_comment|/*&n; *&t;struct hd_drive_task_hdr&t;tf;&n; *&t;task_struct_t&t;&t;tf;&n; *&t;struct hd_drive_hob_hdr&t;&t;hobf;&n; *&t;hob_struct_t&t;&t;hobf;&n; */
 DECL|member|tfRegister
 id|task_ioreg_t
 id|tfRegister
@@ -3506,6 +5048,7 @@ r_typedef
 r_struct
 id|pkt_task_s
 (brace
+multiline_comment|/*&n; *&t;struct hd_drive_task_hdr&t;pktf;&n; *&t;task_struct_t&t;&t;pktf;&n; *&t;u8&t;&t;&t;pkcdb[12];&n; */
 DECL|member|tfRegister
 id|task_ioreg_t
 id|tfRegister
@@ -3542,442 +5085,609 @@ DECL|typedef|pkt_task_t
 )brace
 id|pkt_task_t
 suffix:semicolon
+r_extern
+r_inline
+r_void
+id|SELECT_DRIVE
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_inline
+r_void
+id|SELECT_INTERRUPT
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_inline
+r_void
+id|SELECT_MASK
+c_func
+(paren
+id|ide_drive_t
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_inline
+r_void
+id|QUIRK_LIST
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|ata_input_data
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 r_void
 op_star
-id|buffer
 comma
-r_int
-r_int
-id|wcount
+id|u32
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ata_output_data
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 r_void
 op_star
-id|buffer
 comma
-r_int
-r_int
-id|wcount
+id|u32
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|atapi_input_bytes
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 r_void
 op_star
-id|buffer
 comma
-r_int
-r_int
-id|bytecount
+id|u32
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|atapi_output_bytes
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 r_void
 op_star
-id|buffer
 comma
-r_int
-r_int
-id|bytecount
+id|u32
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|taskfile_input_data
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 r_void
 op_star
-id|buffer
 comma
-r_int
-r_int
-id|wcount
+id|u32
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|taskfile_output_data
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 r_void
 op_star
-id|buffer
 comma
-r_int
-r_int
-id|wcount
+id|u32
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|drive_is_ready
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|wait_for_ready
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 r_int
-id|timeout
+multiline_comment|/* timeout */
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * taskfile io for disks for now...and builds request from ide_ioctl&n; */
+r_extern
 id|ide_startstop_t
 id|do_rw_taskfile
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 id|ide_task_t
 op_star
-id|task
 )paren
 suffix:semicolon
+multiline_comment|/* (ide_drive_t *drive, u8 stat, u8 err) */
+r_extern
 r_void
 id|ide_end_taskfile
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
-id|byte
-id|stat
+id|u8
 comma
-id|byte
-id|err
+id|u8
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Special Flagged Register Validation Caller&n; */
+r_extern
 id|ide_startstop_t
 id|flagged_taskfile
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 id|ide_task_t
 op_star
-id|task
 )paren
 suffix:semicolon
+r_extern
 id|ide_startstop_t
 id|set_multmode_intr
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
+r_extern
 id|ide_startstop_t
 id|set_geometry_intr
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
+r_extern
 id|ide_startstop_t
 id|recal_intr
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
+r_extern
 id|ide_startstop_t
 id|task_no_data_intr
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
+r_extern
 id|ide_startstop_t
 id|task_in_intr
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
+r_extern
 id|ide_startstop_t
 id|task_mulin_intr
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
+r_extern
 id|ide_startstop_t
 id|pre_task_out_intr
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 r_struct
 id|request
 op_star
-id|rq
 )paren
 suffix:semicolon
+r_extern
 id|ide_startstop_t
 id|task_out_intr
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
+r_extern
 id|ide_startstop_t
 id|pre_task_mulout_intr
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 r_struct
 id|request
 op_star
-id|rq
 )paren
 suffix:semicolon
+r_extern
 id|ide_startstop_t
 id|task_mulout_intr
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_init_drive_taskfile
+c_func
 (paren
 r_struct
 id|request
 op_star
-id|rq
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|ide_raw_taskfile
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 id|ide_task_t
 op_star
-id|cmd
 comma
-id|byte
+id|u8
 op_star
-id|buf
 )paren
 suffix:semicolon
+r_extern
 id|ide_pre_handler_t
 op_star
 id|ide_pre_handler_parser
+c_func
 (paren
 r_struct
 id|hd_drive_task_hdr
 op_star
-id|taskfile
 comma
 r_struct
 id|hd_drive_hob_hdr
 op_star
-id|hobfile
 )paren
 suffix:semicolon
+r_extern
 id|ide_handler_t
 op_star
 id|ide_handler_parser
+c_func
 (paren
 r_struct
 id|hd_drive_task_hdr
 op_star
-id|taskfile
 comma
 r_struct
 id|hd_drive_hob_hdr
 op_star
-id|hobfile
 )paren
 suffix:semicolon
+r_extern
 id|ide_post_handler_t
 op_star
 id|ide_post_handler_parser
+c_func
 (paren
 r_struct
 id|hd_drive_task_hdr
 op_star
-id|taskfile
 comma
 r_struct
 id|hd_drive_hob_hdr
 op_star
-id|hobfile
 )paren
 suffix:semicolon
 multiline_comment|/* Expects args is a full set of TF registers and parses the command type */
+r_extern
 r_int
 id|ide_cmd_type_parser
+c_func
 (paren
 id|ide_task_t
 op_star
-id|args
 )paren
 suffix:semicolon
 r_int
 id|ide_taskfile_ioctl
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 r_struct
 id|inode
 op_star
-id|inode
 comma
 r_struct
 id|file
 op_star
-id|file
 comma
 r_int
 r_int
-id|cmd
 comma
 r_int
 r_int
-id|arg
 )paren
 suffix:semicolon
 r_int
 id|ide_cmd_ioctl
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 r_struct
 id|inode
 op_star
-id|inode
 comma
 r_struct
 id|file
 op_star
-id|file
 comma
 r_int
 r_int
-id|cmd
 comma
 r_int
 r_int
-id|arg
 )paren
 suffix:semicolon
 r_int
 id|ide_task_ioctl
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 r_struct
 id|inode
 op_star
-id|inode
 comma
 r_struct
 id|file
 op_star
-id|file
 comma
 r_int
 r_int
-id|cmd
 comma
 r_int
 r_int
-id|arg
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PKT_TASK_IOCTL
+macro_line|#if 0
+mdefine_line|#define IDEFLOPPY_PC_BUFFER_SIZE        256
+mdefine_line|#define IDETAPE_PC_BUFFER_SIZE          256
+mdefine_line|#define IDE_PC_BUFFER_SIZE          256
+r_typedef
+r_struct
+id|ide_packet_command_s
+(brace
+multiline_comment|/* Actual packet bytes */
+id|u8
+id|c
+(braket
+l_int|12
+)braket
+suffix:semicolon
+multiline_comment|/* On each retry, we increment retries */
 r_int
-id|pkt_taskfile_ioctl
+id|retries
+suffix:semicolon
+multiline_comment|/* Error code */
+r_int
+id|error
+suffix:semicolon
+multiline_comment|/* Bytes to transfer */
+r_int
+id|request_transfer
+suffix:semicolon
+multiline_comment|/* Bytes actually transferred */
+r_int
+id|actually_transferred
+suffix:semicolon
+multiline_comment|/* Size of our data buffer */
+r_int
+id|buffer_size
+suffix:semicolon
+r_struct
+id|buffer_head
+op_star
+id|bh
+suffix:semicolon
+id|u8
+op_star
+id|b_data
+suffix:semicolon
+multiline_comment|/* The corresponding request */
+r_struct
+id|request
+op_star
+id|rq
+suffix:semicolon
+macro_line|# if 0
+multiline_comment|/* Scatter gather table */
+r_struct
+id|scatterlist
+op_star
+id|sg
+suffix:semicolon
+macro_line|# endif
+r_int
+id|b_count
+suffix:semicolon
+multiline_comment|/* Data buffer */
+id|u8
+op_star
+id|buffer
+suffix:semicolon
+multiline_comment|/* Pointer into the above buffer */
+id|u8
+op_star
+id|current_position
+suffix:semicolon
+multiline_comment|/* Called when this packet command is completed */
+id|ide_startstop_t
+(paren
+op_star
+id|callback
+)paren
 (paren
 id|ide_drive_t
 op_star
-id|drive
+)paren
+suffix:semicolon
+multiline_comment|/* Temporary buffer */
+id|u8
+id|pc_buffer
+(braket
+id|IDE_PC_BUFFER_SIZE
+)braket
+suffix:semicolon
+multiline_comment|/* Status/Action bit flags: long for set_bit */
+r_int
+r_int
+id|flags
+suffix:semicolon
+)brace
+id|ide_pc_t
+suffix:semicolon
+id|ide
+op_minus
+id|cd
+id|orthoginal
+suffix:colon
+op_minus
+op_div
+r_struct
+id|packet_command
+(brace
+r_char
+op_star
+id|buffer
+suffix:semicolon
+r_int
+id|buflen
+suffix:semicolon
+r_int
+id|stat
+suffix:semicolon
+r_int
+id|quiet
+suffix:semicolon
+r_int
+id|timeout
+suffix:semicolon
+r_struct
+id|request_sense
+op_star
+id|sense
+suffix:semicolon
+r_int
+r_char
+id|c
+(braket
+l_int|12
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PKT_TASK_IOCTL
+r_extern
+r_int
+id|pkt_taskfile_ioctl
+c_func
+(paren
+id|ide_drive_t
+op_star
 comma
 r_struct
 id|inode
 op_star
-id|inode
 comma
 r_struct
 id|file
 op_star
-id|file
 comma
 r_int
 r_int
-id|cmd
 comma
 r_int
 r_int
-id|arg
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PKT_TASK_IOCTL */
+r_extern
 r_void
 id|ide_delay_50ms
+c_func
 (paren
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|system_bus_clock
 c_func
@@ -3985,87 +5695,94 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|byte
+r_extern
+id|u8
 id|ide_auto_reduce_xfer
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|ide_driveid_update
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|ide_ata66_check
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 id|ide_task_t
 op_star
-id|args
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|ide_config_drive_speed
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
-id|byte
-id|speed
+id|u8
 )paren
 suffix:semicolon
-id|byte
+r_extern
+id|u8
 id|eighty_ninty_three
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|set_transfer
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 id|ide_task_t
 op_star
-id|args
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|taskfile_lib_get_identify
+c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
 comma
-id|byte
+id|u8
 op_star
-id|buf
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * ide_system_bus_speed() returns what we think is the system VESA/PCI&n; * bus speed (in MHz).  This is used for calculating interface PIO timings.&n; * The default is 40 for known PCI systems, 50 otherwise.&n; * The &quot;idebus=xx&quot; parameter can be used to override this value.&n; */
+r_extern
 r_int
 id|ide_system_bus_speed
+c_func
 (paren
 r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * ide_stall_queue() can be used by a drive to give excess bandwidth back&n; * to the hwgroup by sleeping for timeout jiffies.&n; */
+r_extern
 r_void
 id|ide_stall_queue
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -4077,6 +5794,7 @@ id|timeout
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * ide_get_queue() returns the queue which corresponds to a given device.&n; */
+r_extern
 id|request_queue_t
 op_star
 id|ide_get_queue
@@ -4085,7 +5803,8 @@ id|kdev_t
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * CompactFlash cards and their brethern pretend to be removable hard disks,&n; * but they never have a slave unit, and they don&squot;t have doorlock mechanisms.&n; * This test catches them, and is invoked elsewhere when setting appropriate config bits.&n; */
+multiline_comment|/*&n; * CompactFlash cards and their brethern pretend to be removable hard disks,&n; * but they never have a slave unit, and they don&squot;t have doorlock mechanisms.&n; * This test catches them, and is invoked elsewhere when setting appropriate&n; * config bits.&n; */
+r_extern
 r_int
 id|drive_is_flashcard
 (paren
@@ -4094,24 +5813,28 @@ op_star
 id|drive
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|ide_spin_wait_hwgroup
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_timer_expiry
+c_func
 (paren
 r_int
 r_int
-id|data
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_intr
+c_func
 (paren
 r_int
 id|irq
@@ -4126,16 +5849,19 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|do_ide_request
+c_func
 (paren
 id|request_queue_t
 op_star
-id|q
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_init_subdrivers
+c_func
 (paren
 r_void
 )paren
@@ -4155,25 +5881,66 @@ id|generic_subdriver_entries
 )braket
 suffix:semicolon
 macro_line|#endif
+r_extern
 r_int
 id|ata_attach
 c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
 macro_line|#ifdef _IDE_C
 macro_line|#ifdef CONFIG_BLK_DEV_IDE
+r_extern
 r_int
 id|ideprobe_init
+c_func
 (paren
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+r_extern
+r_void
+id|ide_scan_pcibus
+c_func
+(paren
+r_int
+id|scan_direction
+)paren
+id|__init
+suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
 macro_line|#endif /* CONFIG_BLK_DEV_IDE */
 macro_line|#endif /* _IDE_C */
+r_extern
+r_void
+id|default_hwif_iops
+c_func
+(paren
+id|ide_hwif_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|default_hwif_mmiops
+c_func
+(paren
+id|ide_hwif_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|default_hwif_transport
+c_func
+(paren
+id|ide_hwif_t
+op_star
+)paren
+suffix:semicolon
 r_int
 id|ide_register_driver
 c_func
@@ -4230,6 +5997,51 @@ id|driver
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|struct|ide_pci_host_proc_s
+r_typedef
+r_struct
+id|ide_pci_host_proc_s
+(brace
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|set
+id|u8
+id|set
+suffix:semicolon
+DECL|member|get_info
+id|get_info_t
+op_star
+id|get_info
+suffix:semicolon
+DECL|member|parent
+r_struct
+id|proc_dir_entry
+op_star
+id|parent
+suffix:semicolon
+DECL|member|next
+r_struct
+id|ide_pci_host_proc_s
+op_star
+id|next
+suffix:semicolon
+DECL|typedef|ide_pci_host_proc_t
+)brace
+id|ide_pci_host_proc_t
+suffix:semicolon
+r_void
+id|ide_pci_register_host_proc
+c_func
+(paren
+id|ide_pci_host_proc_t
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PROC_FS */
 DECL|macro|ON_BOARD
 mdefine_line|#define ON_BOARD&t;&t;1
 DECL|macro|NEVER_BOARD
@@ -4241,23 +6053,31 @@ macro_line|#else /* CONFIG_BLK_DEV_OFFBOARD */
 DECL|macro|OFF_BOARD
 macro_line|#  define OFF_BOARD&t;&t;NEVER_BOARD
 macro_line|#endif /* CONFIG_BLK_DEV_OFFBOARD */
+DECL|macro|NODMA
+mdefine_line|#define NODMA 0
+DECL|macro|NOAUTODMA
+mdefine_line|#define NOAUTODMA 1
+DECL|macro|AUTODMA
+mdefine_line|#define AUTODMA 2
+DECL|macro|EOL
+mdefine_line|#define EOL 255
 DECL|struct|ide_pci_enablebit_s
 r_typedef
 r_struct
 id|ide_pci_enablebit_s
 (brace
 DECL|member|reg
-id|byte
+id|u8
 id|reg
 suffix:semicolon
 multiline_comment|/* byte pci reg holding the enable-bit */
 DECL|member|mask
-id|byte
+id|u8
 id|mask
 suffix:semicolon
 multiline_comment|/* mask to isolate the enable-bit */
 DECL|member|val
-id|byte
+id|u8
 id|val
 suffix:semicolon
 multiline_comment|/* value of masked reg when &quot;enabled&quot; */
@@ -4270,20 +6090,24 @@ r_typedef
 r_struct
 id|ide_pci_device_s
 (brace
-DECL|member|devid
-id|ide_pci_devid_t
-id|devid
+DECL|member|vendor
+id|u16
+id|vendor
+suffix:semicolon
+DECL|member|device
+id|u16
+id|device
 suffix:semicolon
 DECL|member|name
 r_char
 op_star
 id|name
 suffix:semicolon
-DECL|member|fixup_device
+DECL|member|init_setup
 r_void
 (paren
 op_star
-id|fixup_device
+id|init_setup
 )paren
 (paren
 r_struct
@@ -4312,12 +6136,11 @@ r_char
 op_star
 )paren
 suffix:semicolon
-DECL|member|ata66_check
-r_int
-r_int
+DECL|member|init_iops
+r_void
 (paren
 op_star
-id|ata66_check
+id|init_iops
 )paren
 (paren
 id|ide_hwif_t
@@ -4335,11 +6158,11 @@ id|ide_hwif_t
 op_star
 )paren
 suffix:semicolon
-DECL|member|dma_init
+DECL|member|init_dma
 r_void
 (paren
 op_star
-id|dma_init
+id|init_dma
 )paren
 (paren
 id|ide_hwif_t
@@ -4348,6 +6171,14 @@ comma
 r_int
 r_int
 )paren
+suffix:semicolon
+DECL|member|channels
+id|u8
+id|channels
+suffix:semicolon
+DECL|member|autodma
+id|u8
+id|autodma
 suffix:semicolon
 DECL|member|enablebits
 id|ide_pci_enablebit_t
@@ -4357,7 +6188,7 @@ l_int|2
 )braket
 suffix:semicolon
 DECL|member|bootable
-id|byte
+id|u8
 id|bootable
 suffix:semicolon
 DECL|member|extra
@@ -4365,202 +6196,18 @@ r_int
 r_int
 id|extra
 suffix:semicolon
+DECL|member|next
+r_struct
+id|ide_pci_device_s
+op_star
+id|next
+suffix:semicolon
 DECL|typedef|ide_pci_device_t
 )brace
 id|ide_pci_device_t
 suffix:semicolon
 macro_line|#ifdef LINUX_PCI_H
-DECL|function|ide_register_xp_fix
 r_extern
-r_inline
-r_void
-id|ide_register_xp_fix
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_int
-r_int
-id|cmd
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
-r_int
-id|base_address
-(braket
-l_int|4
-)braket
-op_assign
-(brace
-l_int|0x1f0
-comma
-l_int|0x3f4
-comma
-l_int|0x170
-comma
-l_int|0x374
-)brace
-suffix:semicolon
-id|local_irq_save
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|pci_read_config_word
-c_func
-(paren
-id|dev
-comma
-id|PCI_COMMAND
-comma
-op_amp
-id|cmd
-)paren
-suffix:semicolon
-id|pci_write_config_word
-c_func
-(paren
-id|dev
-comma
-id|PCI_COMMAND
-comma
-id|cmd
-op_amp
-op_complement
-id|PCI_COMMAND_IO
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|4
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|dev-&gt;resource
-(braket
-id|i
-)braket
-dot
-id|start
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;resource
-(braket
-id|i
-)braket
-dot
-id|end
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;resource
-(braket
-id|i
-)braket
-dot
-id|flags
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|4
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|dev-&gt;resource
-(braket
-id|i
-)braket
-dot
-id|start
-op_assign
-id|base_address
-(braket
-id|i
-)braket
-suffix:semicolon
-id|dev-&gt;resource
-(braket
-id|i
-)braket
-dot
-id|flags
-op_or_assign
-id|PCI_BASE_ADDRESS_SPACE_IO
-suffix:semicolon
-id|pci_write_config_dword
-c_func
-(paren
-id|dev
-comma
-(paren
-id|PCI_BASE_ADDRESS_0
-op_plus
-(paren
-id|i
-op_star
-l_int|4
-)paren
-)paren
-comma
-id|dev-&gt;resource
-(braket
-id|i
-)braket
-dot
-id|start
-)paren
-suffix:semicolon
-)brace
-id|pci_write_config_word
-c_func
-(paren
-id|dev
-comma
-id|PCI_COMMAND
-comma
-id|cmd
-)paren
-suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-)brace
 r_void
 id|ide_setup_pci_device
 c_func
@@ -4568,162 +6215,369 @@ c_func
 r_struct
 id|pci_dev
 op_star
-id|dev
 comma
 id|ide_pci_device_t
 op_star
-id|d
 )paren
-id|__init
+suffix:semicolon
+r_extern
+r_void
+id|ide_setup_pci_devices
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+r_struct
+id|pci_dev
+op_star
+comma
+id|ide_pci_device_t
+op_star
+)paren
 suffix:semicolon
 macro_line|#endif /* LINUX_PCI_H */
-r_int
-r_int
-id|ide_find_free_region
-(paren
-r_int
-r_int
-id|size
-)paren
-id|__init
-suffix:semicolon
-r_void
-id|ide_scan_pcibus
-(paren
-r_int
-id|scan_direction
-)paren
-id|__init
-suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|macro|BAD_DMA_DRIVE
 mdefine_line|#define BAD_DMA_DRIVE&t;&t;0
 DECL|macro|GOOD_DMA_DRIVE
 mdefine_line|#define GOOD_DMA_DRIVE&t;&t;1
+r_extern
 r_int
 id|ide_build_dmatable
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
-id|ide_dma_action_t
-id|func
+r_struct
+id|request
+op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_destroy_dmatable
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
+r_extern
 id|ide_startstop_t
 id|ide_dma_intr
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 )paren
 suffix:semicolon
-r_int
-id|check_drive_lists
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_int
-id|good_bad
-)paren
-suffix:semicolon
-r_int
-id|report_drive_dmaing
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_int
-id|ide_dmaproc
-(paren
-id|ide_dma_action_t
-id|func
-comma
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
+r_extern
 r_int
 id|ide_release_dma
+c_func
 (paren
 id|ide_hwif_t
 op_star
-id|hwif
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_setup_dma
+c_func
 (paren
 id|ide_hwif_t
 op_star
-id|hwif
 comma
 r_int
 r_int
-id|dmabase
 comma
 r_int
 r_int
-id|num_ports
 )paren
-id|__init
 suffix:semicolon
+r_extern
 r_int
-r_int
-id|ide_get_or_set_dma_base
+id|__ide_dma_host_off
+c_func
 (paren
-id|ide_hwif_t
+id|ide_drive_t
 op_star
-id|hwif
-comma
-r_int
-id|extra
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
-id|__init
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
+r_extern
+r_int
+id|__ide_dma_off_quietly
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_off
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_host_on
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_on
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_check
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_read
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_write
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_begin
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_end
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_test_irq
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_bad_drive
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_good_drive
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_count
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_verbose
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_retune
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_lostirq
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_timeout
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+r_extern
 r_void
 id|hwif_unregister
+c_func
+(paren
+id|ide_hwif_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|export_ide_init_queue
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+id|u8
+id|export_probe_for_drive
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|probe_hwif_init
+c_func
+(paren
+id|ide_hwif_t
+op_star
+)paren
+suffix:semicolon
+DECL|function|ide_get_hwifdata
+r_static
+r_inline
+r_void
+op_star
+id|ide_get_hwifdata
 (paren
 id|ide_hwif_t
 op_star
 id|hwif
 )paren
+(brace
+r_return
+id|hwif-&gt;hwif_data
 suffix:semicolon
+)brace
+DECL|function|ide_set_hwifdata
+r_static
+r_inline
 r_void
-id|export_ide_init_queue
+id|ide_set_hwifdata
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+id|hwif-&gt;hwif_data
+op_assign
+id|data
+suffix:semicolon
+)brace
+multiline_comment|/* ide-lib.c */
+r_extern
+id|u8
+id|ide_dma_speed
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+id|u8
+id|mode
+)paren
+suffix:semicolon
+r_extern
+id|u8
+id|ide_rate_filter
+c_func
+(paren
+id|u8
+id|mode
+comma
+id|u8
+id|speed
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ide_dma_enable
+c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
 )paren
 suffix:semicolon
-id|byte
-id|export_probe_for_drive
-(paren
-id|ide_drive_t
+r_extern
+r_char
 op_star
-id|drive
+id|ide_xfer_verbose
+c_func
+(paren
+id|u8
+id|xfer_rate
 )paren
 suffix:semicolon
 r_extern
