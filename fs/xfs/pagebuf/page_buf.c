@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;support/debug.h&gt;
 macro_line|#include &lt;support/kmem.h&gt;
 macro_line|#include &quot;page_buf_internal.h&quot;
@@ -5651,6 +5652,20 @@ id|tmp
 suffix:semicolon
 r_do
 (brace
+multiline_comment|/* swsusp */
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
