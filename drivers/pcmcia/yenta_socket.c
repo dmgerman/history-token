@@ -4767,7 +4767,7 @@ id|dev-&gt;dev
 comma
 id|state
 comma
-l_int|0
+id|SUSPEND_SAVE_STATE
 )paren
 suffix:semicolon
 )brace
