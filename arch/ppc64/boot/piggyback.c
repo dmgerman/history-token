@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Copyright 2001 IBM Corp &n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;unistd.h&gt;
+macro_line|#include &lt;string.h&gt;
 r_extern
 r_int
 id|ce_exec_config
@@ -49,6 +50,10 @@ id|buf
 l_int|8192
 )braket
 suffix:semicolon
+r_char
+op_star
+id|varname
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -76,6 +81,35 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+id|varname
+op_assign
+id|strrchr
+c_func
+(paren
+id|argv
+(braket
+l_int|1
+)braket
+comma
+l_char|&squot;/&squot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|varname
+)paren
+id|varname
+op_increment
+suffix:semicolon
+r_else
+id|varname
+op_assign
+id|argv
+(braket
+l_int|1
+)braket
+suffix:semicolon
 id|fprintf
 c_func
 (paren
@@ -131,10 +165,7 @@ id|stdout
 comma
 l_string|&quot;&bslash;t.globl %s_data&bslash;n&quot;
 comma
-id|argv
-(braket
-l_int|1
-)braket
+id|varname
 )paren
 suffix:semicolon
 id|fprintf
@@ -144,10 +175,7 @@ id|stdout
 comma
 l_string|&quot;%s_data:&bslash;n&quot;
 comma
-id|argv
-(braket
-l_int|1
-)braket
+id|varname
 )paren
 suffix:semicolon
 id|pos
@@ -358,10 +386,7 @@ id|stdout
 comma
 l_string|&quot;&bslash;t.globl %s_len&bslash;n&quot;
 comma
-id|argv
-(braket
-l_int|1
-)braket
+id|varname
 )paren
 suffix:semicolon
 id|fprintf
@@ -371,10 +396,7 @@ id|stdout
 comma
 l_string|&quot;%s_len:&bslash;t.long&bslash;t0x%x&bslash;n&quot;
 comma
-id|argv
-(braket
-l_int|1
-)braket
+id|varname
 comma
 id|pos
 )paren
