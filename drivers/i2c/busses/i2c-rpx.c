@@ -1,10 +1,8 @@
 multiline_comment|/*&n; * Embedded Planet RPX Lite MPC8xx CPM I2C interface.&n; * Copyright (c) 1999 Dan Malek (dmalek@jlc.net).&n; *&n; * moved into proper i2c interface;&n; * Brad Parker (brad@heeltoe.com)&n; *&n; * RPX lite specific parts of the i2c interface&n; * Update:  There actually isn&squot;t anything RPXLite-specific about this module.&n; * This should work for most any 8xx board.  The console messages have been &n; * changed to eliminate RPXLite references.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-8xx.h&gt;
 macro_line|#include &lt;asm/mpc8xx.h&gt;
