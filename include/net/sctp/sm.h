@@ -999,7 +999,7 @@ op_star
 comma
 r_int
 comma
-r_int
+id|__u16
 )paren
 suffix:semicolon
 r_struct
@@ -1025,12 +1025,13 @@ op_star
 id|sctp_make_asconf_ack
 c_func
 (paren
+r_const
 r_struct
 id|sctp_association
 op_star
 id|asoc
 comma
-r_int
+id|__u32
 id|serial
 comma
 r_int
@@ -1052,9 +1053,6 @@ r_struct
 id|sctp_chunk
 op_star
 id|asconf
-comma
-r_int
-id|vparam_len
 )paren
 suffix:semicolon
 r_void
