@@ -215,22 +215,6 @@ comma
 comma
 )brace
 suffix:semicolon
-DECL|variable|c2
-r_static
-r_int
-id|c2
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-DECL|variable|c3
-r_static
-r_int
-id|c3
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 DECL|struct|acpi_processor_errata
 r_struct
 id|acpi_processor_errata
@@ -400,30 +384,6 @@ r_static
 r_struct
 id|acpi_processor_errata
 id|errata
-suffix:semicolon
-id|module_param_named
-c_func
-(paren
-id|c2
-comma
-id|c2
-comma
-r_bool
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|module_param_named
-c_func
-(paren
-id|c3
-comma
-id|c3
-comma
-r_bool
-comma
-l_int|0
-)paren
 suffix:semicolon
 DECL|variable|pm_idle_save
 r_static
@@ -1020,10 +980,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_int
+r_int
 id|next_state
 op_assign
 l_int|0
 suffix:semicolon
+r_int
 r_int
 id|sleep_ticks
 op_assign
@@ -1382,7 +1344,7 @@ id|next_state
 op_assign
 id|pr-&gt;power.state
 suffix:semicolon
-multiline_comment|/*&n;&t; * Promotion?&n;&t; * ----------&n;&t; * Track the number of longs (time asleep is greater than threshold)&n;&t; * and promote when the count threshold is reached.  Note that bus&n;&t; * mastering activity may prevent promotions.&n;&t; * Do not promote above acpi_cstate_limit.&n;&t; */
+multiline_comment|/*&n;&t; * Promotion?&n;&t; * ----------&n;&t; * Track the number of longs (time asleep is greater than threshold)&n;&t; * and promote when the count threshold is reached.  Note that bus&n;&t; * mastering activity may prevent promotions.&n;&t; * Do not promote above max_cstate.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1391,7 +1353,7 @@ op_logical_and
 (paren
 id|cx-&gt;promotion.state
 op_le
-id|acpi_cstate_limit
+id|max_cstate
 )paren
 )paren
 (brace
@@ -1499,18 +1461,18 @@ suffix:semicolon
 )brace
 id|end
 suffix:colon
-multiline_comment|/*&n;&t; * Demote if current state exceeds acpi_cstate_limit&n;&t; */
+multiline_comment|/*&n;&t; * Demote if current state exceeds max_cstate&n;&t; */
 r_if
 c_cond
 (paren
 id|pr-&gt;power.state
 OG
-id|acpi_cstate_limit
+id|max_cstate
 )paren
 (brace
 id|next_state
 op_assign
-id|acpi_cstate_limit
+id|max_cstate
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * New Cx State?&n;&t; * -------------&n;&t; * If we&squot;re going to start using a new Cx state we must clean up&n;&t; * from the previous and prepare to use the new.&n;&t; */
@@ -1899,20 +1861,6 @@ l_string|&quot;C2 not supported in SMP mode&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|c2
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;C2 disabled&bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Otherwise we&squot;ve met all of our C2 requirements.&n;&t;&t; * Normalize the C2 latency to expidite policy.&n;&t;&t; */
 r_else
 (brace
@@ -2035,20 +1983,6 @@ l_string|&quot;C3 not supported on PIIX4 with Type-F DMA&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|c3
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;C3 disabled&bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Otherwise we&squot;ve met all of our C3 requirements.  &n;&t;&t; * Normalize the C2 latency to expidite policy.  Enable&n;&t;&t; * checking of bus mastering status (bm_check) so we can &n;&t;&t; * use this in our C3 policy.&n;&t;&t; */
 r_else
 (brace
@@ -3016,9 +2950,8 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_int
+r_int
 id|i
-op_assign
-l_int|0
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
@@ -3860,9 +3793,8 @@ op_member_access_from_pointer
 r_private
 suffix:semicolon
 r_int
+r_int
 id|i
-op_assign
-l_int|0
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
@@ -6657,9 +6589,8 @@ op_member_access_from_pointer
 r_private
 suffix:semicolon
 r_int
+r_int
 id|i
-op_assign
-l_int|0
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
@@ -6683,11 +6614,14 @@ id|seq
 comma
 l_string|&quot;active state:            C%d&bslash;n&quot;
 l_string|&quot;default state:           C%d&bslash;n&quot;
+l_string|&quot;max_cstate:              C%d&bslash;n&quot;
 l_string|&quot;bus master activity:     %08x&bslash;n&quot;
 comma
 id|pr-&gt;power.state
 comma
 id|pr-&gt;power.default_state
+comma
+id|max_cstate
 comma
 id|pr-&gt;power.bm_activity
 )paren
@@ -9190,7 +9124,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* IBM ThinkPad R40e crashes mysteriously when going into C2 or C3. &n;   For now disable this. Probably a bug somewhere else. */
+multiline_comment|/*&n; * IBM ThinkPad R40e crashes mysteriously when going into C2 or C3. &n; * For now disable this. Probably a bug somewhere else.&n; *&n; * To skip this limit, boot/load with a large max_cstate limit.&n; */
 DECL|function|no_c2c3
 r_static
 r_int
@@ -9203,38 +9137,30 @@ op_star
 id|id
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|max_cstate
+OG
+id|ACPI_C_STATES_MAX
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s detected - C2,C3 disabled. Overwrite with &bslash;&quot;processor.c2=1 processor.c3=1&bslash;n&bslash;&quot;&quot;
+id|KERN_NOTICE
+id|PREFIX
+l_string|&quot;%s detected - C2,C3 disabled.&quot;
+l_string|&quot; Override with &bslash;&quot;processor.max_cstate=9&bslash;&quot;&bslash;n&quot;
 comma
 id|id-&gt;ident
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|c2
-op_eq
-op_minus
-l_int|1
-)paren
-id|c2
+id|max_cstate
 op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|c3
-op_eq
-op_minus
 l_int|1
-)paren
-id|c3
-op_assign
-l_int|0
 suffix:semicolon
 r_return
 l_int|0
@@ -9426,6 +9352,22 @@ c_func
 id|processor_dmi_table
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|max_cstate
+OL
+id|ACPI_C_STATES_MAX
+)paren
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;ACPI: processor limited to max C-state %d&bslash;n&quot;
+comma
+id|max_cstate
+)paren
+suffix:semicolon
 id|return_VALUE
 c_func
 (paren
@@ -9493,9 +9435,9 @@ suffix:semicolon
 id|module_param_named
 c_func
 (paren
-id|acpi_cstate_limit
+id|max_cstate
 comma
-id|acpi_cstate_limit
+id|max_cstate
 comma
 id|uint
 comma

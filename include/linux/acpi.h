@@ -1690,7 +1690,7 @@ multiline_comment|/*&n; * Set highest legal C-state&n; * 0: C0 okay, but not C1&
 r_extern
 r_int
 r_int
-id|acpi_cstate_limit
+id|max_cstate
 suffix:semicolon
 DECL|function|acpi_get_cstate_limit
 r_static
@@ -1704,7 +1704,7 @@ r_void
 )paren
 (brace
 r_return
-id|acpi_cstate_limit
+id|max_cstate
 suffix:semicolon
 )brace
 DECL|function|acpi_set_cstate_limit
@@ -1719,7 +1719,7 @@ r_int
 id|new_limit
 )paren
 (brace
-id|acpi_cstate_limit
+id|max_cstate
 op_assign
 id|new_limit
 suffix:semicolon

@@ -3789,19 +3789,19 @@ comma
 id|acpi_wake_gpes_always_on_setup
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * acpi_cstate_limit is defined in the base kernel so modules can&n; * change it w/o depending on the state of the processor module.&n; */
-DECL|variable|acpi_cstate_limit
+multiline_comment|/*&n; * max_cstate is defined in the base kernel so modules can&n; * change it w/o depending on the state of the processor module.&n; */
+DECL|variable|max_cstate
 r_int
 r_int
-id|acpi_cstate_limit
+id|max_cstate
 op_assign
 id|ACPI_C_STATES_MAX
 suffix:semicolon
-DECL|variable|acpi_cstate_limit
+DECL|variable|max_cstate
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|acpi_cstate_limit
+id|max_cstate
 )paren
 suffix:semicolon
 eof
