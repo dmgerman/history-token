@@ -1917,16 +1917,6 @@ id|dev
 )paren
 suffix:semicolon
 r_int
-id|pdev_set_mwi
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_int
 id|pci_set_dma_mask
 c_func
 (paren
