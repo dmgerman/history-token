@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/rt_sigframe.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/offsets.h&gt;
 macro_line|#ifdef CONFIG_COMPAT
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &quot;signal32.h&quot;
@@ -2092,6 +2093,43 @@ id|PSW_W
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* If we are singlestepping, arrange a trap to be delivered&n;&t;&t;   when we return to userspace. Note the semantics -- we&n;&t;&t;   should trap before the first insn in the handler is&n;&t;&t;   executed. Ref:&n;&t;&t;&t;http://sources.redhat.com/ml/gdb/2004-11/msg00245.html&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|pa_psw
+c_func
+(paren
+id|current
+)paren
+op_member_access_from_pointer
+id|r
+)paren
+(brace
+id|pa_psw
+c_func
+(paren
+id|current
+)paren
+op_member_access_from_pointer
+id|r
+op_assign
+l_int|0
+suffix:semicolon
+id|psw
+op_or_assign
+id|PSW_R
+suffix:semicolon
+id|mtctl
+c_func
+(paren
+op_minus
+l_int|1
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 id|regs-&gt;gr
 (braket
 l_int|0
