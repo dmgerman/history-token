@@ -26433,8 +26433,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+r_break
+suffix:semicolon
 )brace
 )brace
 )brace
@@ -26738,13 +26738,12 @@ id|index
 op_assign
 id|ha
 suffix:semicolon
-id|scsi_set_device
+id|IPS_SCSI_SET_DEVICE
 c_func
 (paren
 id|sh
 comma
-op_amp
-id|ha-&gt;pcidev-&gt;dev
+id|ha
 )paren
 suffix:semicolon
 multiline_comment|/* Store away needed values for later use */
@@ -27761,6 +27760,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
 id|pci_set_dma_mask
 c_func
 (paren
@@ -27771,7 +27773,27 @@ id|u64
 )paren
 l_int|0xffffffff
 )paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Unable to set DMA Mask&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+id|ips_abort_init
+c_func
+(paren
+id|ha
+comma
+id|index
+)paren
+suffix:semicolon
+)brace
 )brace
 id|ha-&gt;enq
 op_assign

@@ -148,7 +148,7 @@ DECL|macro|IPS_SGLIST_SIZE
 mdefine_line|#define IPS_SGLIST_SIZE(ha)       (IPS_USE_ENH_SGLIST(ha) ? &bslash;&n;                                         sizeof(IPS_ENH_SG_LIST) : sizeof(IPS_STD_SG_LIST))
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,4)
 DECL|macro|pci_set_dma_mask
-mdefine_line|#define pci_set_dma_mask(dev,mask) (1)
+mdefine_line|#define pci_set_dma_mask(dev,mask) ( mask &gt; 0xffffffff ? 1:0 )
 DECL|macro|scsi_set_pci_device
 mdefine_line|#define scsi_set_pci_device(sh,dev) (0)
 macro_line|#endif
@@ -172,6 +172,8 @@ DECL|macro|IPS_ADD_HOST
 mdefine_line|#define IPS_ADD_HOST(shost,device)
 DECL|macro|IPS_REMOVE_HOST
 mdefine_line|#define IPS_REMOVE_HOST(shost)
+DECL|macro|IPS_SCSI_SET_DEVICE
+mdefine_line|#define IPS_SCSI_SET_DEVICE(sh,ha)   scsi_set_pci_device(sh, (ha)-&gt;pcidev)
 macro_line|#else
 DECL|macro|IPS_REGISTER_HOSTS
 mdefine_line|#define IPS_REGISTER_HOSTS(SHT)      (!ips_detect(SHT))
@@ -181,6 +183,8 @@ DECL|macro|IPS_ADD_HOST
 mdefine_line|#define IPS_ADD_HOST(shost,device)   scsi_add_host(shost,device)
 DECL|macro|IPS_REMOVE_HOST
 mdefine_line|#define IPS_REMOVE_HOST(shost)       scsi_remove_host(shost)
+DECL|macro|IPS_SCSI_SET_DEVICE
+mdefine_line|#define IPS_SCSI_SET_DEVICE(sh,ha)   scsi_set_device(sh, &amp;(ha)-&gt;pcidev-&gt;dev)
 macro_line|#endif
 macro_line|#ifndef MDELAY
 DECL|macro|MDELAY
