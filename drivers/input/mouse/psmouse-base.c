@@ -946,9 +946,9 @@ id|PSMOUSE_CMD_RESET_BAT
 )paren
 id|timeout
 op_assign
-l_int|2000000
+l_int|4000000
 suffix:semicolon
-multiline_comment|/* 2 sec */
+multiline_comment|/* 4 sec */
 r_if
 c_cond
 (paren
