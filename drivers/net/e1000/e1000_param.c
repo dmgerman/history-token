@@ -1319,6 +1319,9 @@ id|adapter-&gt;hw.media_type
 r_case
 id|e1000_media_type_fiber
 suffix:colon
+r_case
+id|e1000_media_type_internal_serdes
+suffix:colon
 id|e1000_check_fiber_options
 c_func
 (paren

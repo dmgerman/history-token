@@ -39,14 +39,26 @@ comma
 DECL|enumerator|e1000_82545
 id|e1000_82545
 comma
+DECL|enumerator|e1000_82545_rev_3
+id|e1000_82545_rev_3
+comma
 DECL|enumerator|e1000_82546
 id|e1000_82546
+comma
+DECL|enumerator|e1000_82546_rev_3
+id|e1000_82546_rev_3
 comma
 DECL|enumerator|e1000_82541
 id|e1000_82541
 comma
+DECL|enumerator|e1000_82541_rev_2
+id|e1000_82541_rev_2
+comma
 DECL|enumerator|e1000_82547
 id|e1000_82547
+comma
+DECL|enumerator|e1000_82547_rev_2
+id|e1000_82547_rev_2
 comma
 DECL|enumerator|e1000_num_macs
 id|e1000_num_macs
@@ -87,6 +99,11 @@ DECL|enumerator|e1000_media_type_fiber
 id|e1000_media_type_fiber
 op_assign
 l_int|1
+comma
+DECL|enumerator|e1000_media_type_internal_serdes
+id|e1000_media_type_internal_serdes
+op_assign
+l_int|2
 comma
 DECL|enumerator|e1000_num_media_types
 id|e1000_num_media_types
@@ -166,6 +183,9 @@ id|e1000_bus_type_pci
 comma
 DECL|enumerator|e1000_bus_type_pcix
 id|e1000_bus_type_pcix
+comma
+DECL|enumerator|e1000_bus_type_reserved
+id|e1000_bus_type_reserved
 DECL|typedef|e1000_bus_type
 )brace
 id|e1000_bus_type
@@ -214,6 +234,9 @@ id|e1000_bus_width_32
 comma
 DECL|enumerator|e1000_bus_width_64
 id|e1000_bus_width_64
+comma
+DECL|enumerator|e1000_bus_width_reserved
+id|e1000_bus_width_reserved
 DECL|typedef|e1000_bus_width
 )brace
 id|e1000_bus_width
@@ -482,6 +505,65 @@ DECL|typedef|e1000_phy_type
 )brace
 id|e1000_phy_type
 suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|e1000_ms_hw_default
+id|e1000_ms_hw_default
+op_assign
+l_int|0
+comma
+DECL|enumerator|e1000_ms_force_master
+id|e1000_ms_force_master
+comma
+DECL|enumerator|e1000_ms_force_slave
+id|e1000_ms_force_slave
+comma
+DECL|enumerator|e1000_ms_auto
+id|e1000_ms_auto
+DECL|typedef|e1000_ms_type
+)brace
+id|e1000_ms_type
+suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|e1000_ffe_config_enabled
+id|e1000_ffe_config_enabled
+op_assign
+l_int|0
+comma
+DECL|enumerator|e1000_ffe_config_active
+id|e1000_ffe_config_active
+comma
+DECL|enumerator|e1000_ffe_config_blocked
+id|e1000_ffe_config_blocked
+DECL|typedef|e1000_ffe_config
+)brace
+id|e1000_ffe_config
+suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|e1000_dsp_config_disabled
+id|e1000_dsp_config_disabled
+op_assign
+l_int|0
+comma
+DECL|enumerator|e1000_dsp_config_enabled
+id|e1000_dsp_config_enabled
+comma
+DECL|enumerator|e1000_dsp_config_activated
+id|e1000_dsp_config_activated
+comma
+DECL|enumerator|e1000_dsp_config_undefined
+id|e1000_dsp_config_undefined
+op_assign
+l_int|0xFF
+DECL|typedef|e1000_dsp_config
+)brace
+id|e1000_dsp_config
+suffix:semicolon
 DECL|struct|e1000_phy_info
 r_struct
 id|e1000_phy_info
@@ -581,7 +663,7 @@ DECL|macro|E1000_ERR_PHY_TYPE
 mdefine_line|#define E1000_ERR_PHY_TYPE 6
 multiline_comment|/* Function prototypes */
 multiline_comment|/* Initialization */
-r_void
+r_int32
 id|e1000_reset_hw
 c_func
 (paren
@@ -603,6 +685,16 @@ id|hw
 suffix:semicolon
 r_int32
 id|e1000_set_mac_type
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+)paren
+suffix:semicolon
+r_void
+id|e1000_set_media_type
 c_func
 (paren
 r_struct
@@ -662,7 +754,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-r_void
+r_int32
 id|e1000_get_speed_and_duplex
 c_func
 (paren
@@ -1265,6 +1357,32 @@ r_uint32
 id|value
 )paren
 suffix:semicolon
+r_int32
+id|e1000_config_dsp_after_link_change
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+comma
+id|boolean_t
+id|link_up
+)paren
+suffix:semicolon
+r_int32
+id|e1000_set_d3_lplu_state
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+comma
+id|boolean_t
+id|active
+)paren
+suffix:semicolon
 DECL|macro|E1000_READ_REG_IO
 mdefine_line|#define E1000_READ_REG_IO(a, reg) &bslash;&n;    e1000_read_reg_io((a), E1000_##reg)
 DECL|macro|E1000_WRITE_REG_IO
@@ -1298,6 +1416,12 @@ DECL|macro|E1000_DEV_ID_82545EM_COPPER
 mdefine_line|#define E1000_DEV_ID_82545EM_COPPER      0x100F
 DECL|macro|E1000_DEV_ID_82545EM_FIBER
 mdefine_line|#define E1000_DEV_ID_82545EM_FIBER       0x1011
+DECL|macro|E1000_DEV_ID_82545GM_COPPER
+mdefine_line|#define E1000_DEV_ID_82545GM_COPPER      0x1026
+DECL|macro|E1000_DEV_ID_82545GM_FIBER
+mdefine_line|#define E1000_DEV_ID_82545GM_FIBER       0x1027
+DECL|macro|E1000_DEV_ID_82545GM_SERDES
+mdefine_line|#define E1000_DEV_ID_82545GM_SERDES      0x1028
 DECL|macro|E1000_DEV_ID_82546EB_COPPER
 mdefine_line|#define E1000_DEV_ID_82546EB_COPPER      0x1010
 DECL|macro|E1000_DEV_ID_82546EB_FIBER
@@ -1306,12 +1430,24 @@ DECL|macro|E1000_DEV_ID_82546EB_QUAD_COPPER
 mdefine_line|#define E1000_DEV_ID_82546EB_QUAD_COPPER 0x101D
 DECL|macro|E1000_DEV_ID_82541EI
 mdefine_line|#define E1000_DEV_ID_82541EI             0x1013
-DECL|macro|E1000_DEV_ID_82541EP
-mdefine_line|#define E1000_DEV_ID_82541EP             0x1018
+DECL|macro|E1000_DEV_ID_82541EI_MOBILE
+mdefine_line|#define E1000_DEV_ID_82541EI_MOBILE      0x1018
+DECL|macro|E1000_DEV_ID_82541ER
+mdefine_line|#define E1000_DEV_ID_82541ER             0x1078
+DECL|macro|E1000_DEV_ID_82547GI
+mdefine_line|#define E1000_DEV_ID_82547GI             0x1075
+DECL|macro|E1000_DEV_ID_82541GI
+mdefine_line|#define E1000_DEV_ID_82541GI             0x1076
+DECL|macro|E1000_DEV_ID_82541GI_MOBILE
+mdefine_line|#define E1000_DEV_ID_82541GI_MOBILE      0x1077
+DECL|macro|E1000_DEV_ID_82546GB_COPPER
+mdefine_line|#define E1000_DEV_ID_82546GB_COPPER      0x1079
+DECL|macro|E1000_DEV_ID_82546GB_FIBER
+mdefine_line|#define E1000_DEV_ID_82546GB_FIBER       0x107A
+DECL|macro|E1000_DEV_ID_82546GB_SERDES
+mdefine_line|#define E1000_DEV_ID_82546GB_SERDES      0x107B
 DECL|macro|E1000_DEV_ID_82547EI
 mdefine_line|#define E1000_DEV_ID_82547EI             0x1019
-DECL|macro|NUM_DEV_IDS
-mdefine_line|#define NUM_DEV_IDS 20
 DECL|macro|NODE_ADDRESS_SIZE
 mdefine_line|#define NODE_ADDRESS_SIZE 6
 DECL|macro|ETH_LENGTH_OF_ADDRESS
@@ -1887,6 +2023,8 @@ mdefine_line|#define E1000_FFVT_SIZE E1000_FLEXIBLE_FILTER_SIZE_MAX
 multiline_comment|/* Register Set. (82543, 82544)&n; *&n; * Registers are defined to be 32 bits and  should be accessed as 32 bit values.&n; * These registers are physically located on the NIC, but are mapped into the&n; * host memory address space.&n; *&n; * RW - register is both readable and writable&n; * RO - register is read only&n; * WO - register is write only&n; * R/clr - register is read only and is cleared when read&n; * A - register array&n; */
 DECL|macro|E1000_CTRL
 mdefine_line|#define E1000_CTRL     0x00000  /* Device Control - RW */
+DECL|macro|E1000_CTRL_DUP
+mdefine_line|#define E1000_CTRL_DUP 0x00004  /* Device Control Duplicate (Shadow) - RW */
 DECL|macro|E1000_STATUS
 mdefine_line|#define E1000_STATUS   0x00008  /* Device Status - RO */
 DECL|macro|E1000_EECD
@@ -2683,6 +2821,18 @@ r_struct
 id|e1000_eeprom_info
 id|eeprom
 suffix:semicolon
+DECL|member|master_slave
+id|e1000_ms_type
+id|master_slave
+suffix:semicolon
+DECL|member|original_master_slave
+id|e1000_ms_type
+id|original_master_slave
+suffix:semicolon
+DECL|member|ffe_config_state
+id|e1000_ffe_config
+id|ffe_config_state
+suffix:semicolon
 DECL|member|io_base
 r_uint32
 id|io_base
@@ -2746,6 +2896,14 @@ suffix:semicolon
 DECL|member|ledctl_mode2
 r_uint32
 id|ledctl_mode2
+suffix:semicolon
+DECL|member|phy_spd_default
+r_uint16
+id|phy_spd_default
+suffix:semicolon
+DECL|member|dsp_reset_counter
+r_uint16
+id|dsp_reset_counter
 suffix:semicolon
 DECL|member|autoneg_advertised
 r_uint16
@@ -2849,6 +3007,10 @@ DECL|member|speed_downgraded
 id|boolean_t
 id|speed_downgraded
 suffix:semicolon
+DECL|member|dsp_config_state
+id|e1000_dsp_config
+id|dsp_config_state
+suffix:semicolon
 DECL|member|get_link_status
 id|boolean_t
 id|get_link_status
@@ -2861,9 +3023,17 @@ DECL|member|tbi_compatibility_on
 id|boolean_t
 id|tbi_compatibility_on
 suffix:semicolon
+DECL|member|phy_reset_disable
+id|boolean_t
+id|phy_reset_disable
+suffix:semicolon
 DECL|member|fc_send_xon
 id|boolean_t
 id|fc_send_xon
+suffix:semicolon
+DECL|member|fc_strict_ieee
+id|boolean_t
+id|fc_strict_ieee
 suffix:semicolon
 DECL|member|report_tx_early
 id|boolean_t
@@ -3656,19 +3826,25 @@ DECL|macro|EEPROM_SIZE_MASK
 mdefine_line|#define EEPROM_SIZE_MASK        0x1C00
 multiline_comment|/* EEPROM Word Offsets */
 DECL|macro|EEPROM_COMPAT
-mdefine_line|#define EEPROM_COMPAT              0x0003
+mdefine_line|#define EEPROM_COMPAT                 0x0003
 DECL|macro|EEPROM_ID_LED_SETTINGS
-mdefine_line|#define EEPROM_ID_LED_SETTINGS     0x0004
+mdefine_line|#define EEPROM_ID_LED_SETTINGS        0x0004
+DECL|macro|EEPROM_SERDES_AMPLITUDE
+mdefine_line|#define EEPROM_SERDES_AMPLITUDE       0x0006 /* For SERDES output amplitude adjustment. */
 DECL|macro|EEPROM_INIT_CONTROL1_REG
-mdefine_line|#define EEPROM_INIT_CONTROL1_REG   0x000A
+mdefine_line|#define EEPROM_INIT_CONTROL1_REG      0x000A
 DECL|macro|EEPROM_INIT_CONTROL2_REG
-mdefine_line|#define EEPROM_INIT_CONTROL2_REG   0x000F
+mdefine_line|#define EEPROM_INIT_CONTROL2_REG      0x000F
+DECL|macro|EEPROM_INIT_CONTROL3_PORT_B
+mdefine_line|#define EEPROM_INIT_CONTROL3_PORT_B   0x0014
+DECL|macro|EEPROM_INIT_CONTROL3_PORT_A
+mdefine_line|#define EEPROM_INIT_CONTROL3_PORT_A   0x0024
 DECL|macro|EEPROM_CFG
-mdefine_line|#define EEPROM_CFG                 0x0012
+mdefine_line|#define EEPROM_CFG                    0x0012
 DECL|macro|EEPROM_FLASH_VERSION
-mdefine_line|#define EEPROM_FLASH_VERSION       0x0032
+mdefine_line|#define EEPROM_FLASH_VERSION          0x0032
 DECL|macro|EEPROM_CHECKSUM_REG
-mdefine_line|#define EEPROM_CHECKSUM_REG        0x003F
+mdefine_line|#define EEPROM_CHECKSUM_REG           0x003F
 multiline_comment|/* Word definitions for ID LED Settings */
 DECL|macro|ID_LED_RESERVED_0000
 mdefine_line|#define ID_LED_RESERVED_0000 0x0000
@@ -3700,6 +3876,9 @@ DECL|macro|IGP_ACTIVITY_LED_ENABLE
 mdefine_line|#define IGP_ACTIVITY_LED_ENABLE 0x0300
 DECL|macro|IGP_LED3_MODE
 mdefine_line|#define IGP_LED3_MODE           0x07000000
+multiline_comment|/* Mask bits for SERDES amplitude adjustment in Word 6 of the EEPROM */
+DECL|macro|EEPROM_SERDES_AMPLITUDE_MASK
+mdefine_line|#define EEPROM_SERDES_AMPLITUDE_MASK  0x000F
 multiline_comment|/* Mask bits for fields in Word 0x0a of the EEPROM */
 DECL|macro|EEPROM_WORD0A_ILOS
 mdefine_line|#define EEPROM_WORD0A_ILOS   0x0010
@@ -3730,6 +3909,8 @@ DECL|macro|EEPROM_NODE_ADDRESS_BYTE_0
 mdefine_line|#define EEPROM_NODE_ADDRESS_BYTE_0 0
 DECL|macro|EEPROM_PBA_BYTE_1
 mdefine_line|#define EEPROM_PBA_BYTE_1          8
+DECL|macro|EEPROM_RESERVED_WORD
+mdefine_line|#define EEPROM_RESERVED_WORD          0xFFFF
 multiline_comment|/* EEPROM Map Sizes (Byte Counts) */
 DECL|macro|PBA_SIZE
 mdefine_line|#define PBA_SIZE 4
@@ -3929,8 +4110,22 @@ DECL|macro|M88E1000_EXT_PHY_SPEC_CTRL
 mdefine_line|#define M88E1000_EXT_PHY_SPEC_CTRL 0x14  /* Extended PHY Specific Control */
 DECL|macro|M88E1000_RX_ERR_CNTR
 mdefine_line|#define M88E1000_RX_ERR_CNTR       0x15  /* Receive Error Counter */
+DECL|macro|M88E1000_PHY_EXT_CTRL
+mdefine_line|#define M88E1000_PHY_EXT_CTRL      0x1A  /* PHY extend control register */
+DECL|macro|M88E1000_PHY_PAGE_SELECT
+mdefine_line|#define M88E1000_PHY_PAGE_SELECT   0x1D  /* Reg 29 for page number setting */
+DECL|macro|M88E1000_PHY_GEN_CONTROL
+mdefine_line|#define M88E1000_PHY_GEN_CONTROL   0x1E  /* Its meaning depends on reg 29 */
+DECL|macro|M88E1000_PHY_VCO_REG_BIT8
+mdefine_line|#define M88E1000_PHY_VCO_REG_BIT8  0x100 /* Bits 8 &amp; 11 are adjusted for */
+DECL|macro|M88E1000_PHY_VCO_REG_BIT11
+mdefine_line|#define M88E1000_PHY_VCO_REG_BIT11 0x800    /* improved BER performance */
 DECL|macro|IGP01E1000_IEEE_REGS_PAGE
 mdefine_line|#define IGP01E1000_IEEE_REGS_PAGE  0x0000
+DECL|macro|IGP01E1000_IEEE_RESTART_AUTONEG
+mdefine_line|#define IGP01E1000_IEEE_RESTART_AUTONEG 0x3300
+DECL|macro|IGP01E1000_IEEE_FORCE_GIGA
+mdefine_line|#define IGP01E1000_IEEE_FORCE_GIGA      0x0140
 multiline_comment|/* IGP01E1000 Specific Registers */
 DECL|macro|IGP01E1000_PHY_PORT_CONFIG
 mdefine_line|#define IGP01E1000_PHY_PORT_CONFIG 0x10 /* PHY Specific Port Config Register */
@@ -3955,16 +4150,48 @@ DECL|macro|IGP01E1000_PHY_AGC_C
 mdefine_line|#define IGP01E1000_PHY_AGC_C        0x1472
 DECL|macro|IGP01E1000_PHY_AGC_D
 mdefine_line|#define IGP01E1000_PHY_AGC_D        0x1872
-multiline_comment|/* Number of AGC registers */
-DECL|macro|IGP01E1000_PHY_AGC_NUM
-mdefine_line|#define IGP01E1000_PHY_AGC_NUM     4
+multiline_comment|/* IGP01E1000 DSP Reset Register */
+DECL|macro|IGP01E1000_PHY_DSP_RESET
+mdefine_line|#define IGP01E1000_PHY_DSP_RESET   0x1F33
+DECL|macro|IGP01E1000_PHY_DSP_SET
+mdefine_line|#define IGP01E1000_PHY_DSP_SET     0x1F71
+DECL|macro|IGP01E1000_PHY_DSP_FFE
+mdefine_line|#define IGP01E1000_PHY_DSP_FFE     0x1F35
+DECL|macro|IGP01E1000_PHY_CHANNEL_NUM
+mdefine_line|#define IGP01E1000_PHY_CHANNEL_NUM    4
+DECL|macro|IGP01E1000_PHY_AGC_PARAM_A
+mdefine_line|#define IGP01E1000_PHY_AGC_PARAM_A    0x1171
+DECL|macro|IGP01E1000_PHY_AGC_PARAM_B
+mdefine_line|#define IGP01E1000_PHY_AGC_PARAM_B    0x1271
+DECL|macro|IGP01E1000_PHY_AGC_PARAM_C
+mdefine_line|#define IGP01E1000_PHY_AGC_PARAM_C    0x1471
+DECL|macro|IGP01E1000_PHY_AGC_PARAM_D
+mdefine_line|#define IGP01E1000_PHY_AGC_PARAM_D    0x1871
+DECL|macro|IGP01E1000_PHY_EDAC_MU_INDEX
+mdefine_line|#define IGP01E1000_PHY_EDAC_MU_INDEX        0xC000
+DECL|macro|IGP01E1000_PHY_EDAC_SIGN_EXT_9_BITS
+mdefine_line|#define IGP01E1000_PHY_EDAC_SIGN_EXT_9_BITS 0x8000
+DECL|macro|IGP01E1000_PHY_ANALOG_TX_STATE
+mdefine_line|#define IGP01E1000_PHY_ANALOG_TX_STATE      0x2890
+DECL|macro|IGP01E1000_PHY_ANALOG_CLASS_A
+mdefine_line|#define IGP01E1000_PHY_ANALOG_CLASS_A       0x2000
+DECL|macro|IGP01E1000_PHY_FORCE_ANALOG_ENABLE
+mdefine_line|#define IGP01E1000_PHY_FORCE_ANALOG_ENABLE  0x0004
+DECL|macro|IGP01E1000_PHY_DSP_FFE_CM_CP
+mdefine_line|#define IGP01E1000_PHY_DSP_FFE_CM_CP        0x0069
+DECL|macro|IGP01E1000_PHY_DSP_FFE_DEFAULT
+mdefine_line|#define IGP01E1000_PHY_DSP_FFE_DEFAULT      0x002A
 multiline_comment|/* IGP01E1000 PCS Initialization register - stores the polarity status when&n; * speed = 1000 Mbps. */
 DECL|macro|IGP01E1000_PHY_PCS_INIT_REG
 mdefine_line|#define IGP01E1000_PHY_PCS_INIT_REG  0x00B4
+DECL|macro|IGP01E1000_PHY_PCS_CTRL_REG
+mdefine_line|#define IGP01E1000_PHY_PCS_CTRL_REG  0x00B5
 DECL|macro|IGP01E1000_ANALOG_REGS_PAGE
 mdefine_line|#define IGP01E1000_ANALOG_REGS_PAGE  0x20C0
 DECL|macro|MAX_PHY_REG_ADDRESS
 mdefine_line|#define MAX_PHY_REG_ADDRESS 0x1F        /* 5 bit address bus (0-0x1F) */
+DECL|macro|MAX_PHY_MULTI_PAGE_REG
+mdefine_line|#define MAX_PHY_MULTI_PAGE_REG  0xF     /*Registers that are equal on all pages*/
 multiline_comment|/* PHY Control Register */
 DECL|macro|MII_CR_SPEED_SELECT_MSB
 mdefine_line|#define MII_CR_SPEED_SELECT_MSB 0x0040  /* bits 6,13: 10=1000, 01=100, 00=10 */
@@ -4140,9 +4367,15 @@ mdefine_line|#define SR_1000T_MS_CONFIG_RES    0x4000 /* 1=Local TX is Master, 0
 DECL|macro|SR_1000T_MS_CONFIG_FAULT
 mdefine_line|#define SR_1000T_MS_CONFIG_FAULT  0x8000 /* Master/Slave config fault */
 DECL|macro|SR_1000T_REMOTE_RX_STATUS_SHIFT
-mdefine_line|#define SR_1000T_REMOTE_RX_STATUS_SHIFT 12
+mdefine_line|#define SR_1000T_REMOTE_RX_STATUS_SHIFT          12
 DECL|macro|SR_1000T_LOCAL_RX_STATUS_SHIFT
-mdefine_line|#define SR_1000T_LOCAL_RX_STATUS_SHIFT  13
+mdefine_line|#define SR_1000T_LOCAL_RX_STATUS_SHIFT           13
+DECL|macro|SR_1000T_PHY_EXCESSIVE_IDLE_ERR_COUNT
+mdefine_line|#define SR_1000T_PHY_EXCESSIVE_IDLE_ERR_COUNT    5
+DECL|macro|FFE_IDLE_ERR_COUNT_TIMEOUT_20
+mdefine_line|#define FFE_IDLE_ERR_COUNT_TIMEOUT_20            20
+DECL|macro|FFE_IDLE_ERR_COUNT_TIMEOUT_100
+mdefine_line|#define FFE_IDLE_ERR_COUNT_TIMEOUT_100           100
 multiline_comment|/* Extended Status Register */
 DECL|macro|IEEE_ESR_1000T_HD_CAPS
 mdefine_line|#define IEEE_ESR_1000T_HD_CAPS 0x1000 /* 1000T HD capable */
@@ -4348,6 +4581,13 @@ DECL|macro|IGP01E1000_MSE_CHANNEL_B
 mdefine_line|#define IGP01E1000_MSE_CHANNEL_B        0x0F00
 DECL|macro|IGP01E1000_MSE_CHANNEL_A
 mdefine_line|#define IGP01E1000_MSE_CHANNEL_A        0xF000
+multiline_comment|/* IGP01E1000 DSP reset macros */
+DECL|macro|DSP_RESET_ENABLE
+mdefine_line|#define DSP_RESET_ENABLE     0x0
+DECL|macro|DSP_RESET_DISABLE
+mdefine_line|#define DSP_RESET_DISABLE    0x2
+DECL|macro|E1000_MAX_DSP_RESETS
+mdefine_line|#define E1000_MAX_DSP_RESETS 10
 multiline_comment|/* IGP01E1000 AGC Registers */
 DECL|macro|IGP01E1000_AGC_LENGTH_SHIFT
 mdefine_line|#define IGP01E1000_AGC_LENGTH_SHIFT 7         /* Coarse - 13:11, Fine - 10:7 */
@@ -4636,13 +4876,13 @@ DECL|macro|IGP01E1000_GMII_SPD
 mdefine_line|#define IGP01E1000_GMII_SPD                    0x20 /* Enable SPD */
 multiline_comment|/* IGP01E1000 Analog Register */
 DECL|macro|IGP01E1000_ANALOG_SPARE_FUSE_STATUS
-mdefine_line|#define IGP01E1000_ANALOG_SPARE_FUSE_STATUS         0x0011
+mdefine_line|#define IGP01E1000_ANALOG_SPARE_FUSE_STATUS       0x20D1
 DECL|macro|IGP01E1000_ANALOG_FUSE_STATUS
-mdefine_line|#define IGP01E1000_ANALOG_FUSE_STATUS               0x0010
+mdefine_line|#define IGP01E1000_ANALOG_FUSE_STATUS             0x20D0
 DECL|macro|IGP01E1000_ANALOG_FUSE_CONTROL
-mdefine_line|#define IGP01E1000_ANALOG_FUSE_CONTROL              0x001C
+mdefine_line|#define IGP01E1000_ANALOG_FUSE_CONTROL            0x20DC
 DECL|macro|IGP01E1000_ANALOG_FUSE_BYPASS
-mdefine_line|#define IGP01E1000_ANALOG_FUSE_BYPASS               0x001E
+mdefine_line|#define IGP01E1000_ANALOG_FUSE_BYPASS             0x20DE
 DECL|macro|IGP01E1000_ANALOG_FUSE_POLY_MASK
 mdefine_line|#define IGP01E1000_ANALOG_FUSE_POLY_MASK            0xF000
 DECL|macro|IGP01E1000_ANALOG_FUSE_FINE_MASK
@@ -4723,5 +4963,9 @@ DECL|macro|ADVERTISE_1000_FULL
 mdefine_line|#define ADVERTISE_1000_FULL 0x0020
 DECL|macro|AUTONEG_ADVERTISE_SPEED_DEFAULT
 mdefine_line|#define AUTONEG_ADVERTISE_SPEED_DEFAULT 0x002F  /* Everything but 1000-Half */
+DECL|macro|AUTONEG_ADVERTISE_10_100_ALL
+mdefine_line|#define AUTONEG_ADVERTISE_10_100_ALL    0x000F /* All 10/100 speeds*/
+DECL|macro|AUTONEG_ADVERTISE_10_ALL
+mdefine_line|#define AUTONEG_ADVERTISE_10_ALL        0x0003 /* 10Mbps Full &amp; Half speeds*/
 macro_line|#endif /* _E1000_HW_H_ */
 eof
