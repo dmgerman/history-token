@@ -318,7 +318,7 @@ id|reiserfs_panic
 id|sb
 comma
 l_string|&quot;PAP-14050: direct2indirect: &quot;
-l_string|&quot;direct item (%k) not found&quot;
+l_string|&quot;direct item (%K) not found&quot;
 comma
 op_amp
 id|end_key
@@ -340,7 +340,7 @@ id|is_direct_le_ih
 id|p_le_ih
 )paren
 comma
-l_string|&quot;vs-14055: direct item expected(%k), found %h&quot;
+l_string|&quot;vs-14055: direct item expected(%K), found %h&quot;
 comma
 op_amp
 id|end_key
@@ -907,7 +907,7 @@ c_func
 id|p_s_sb
 comma
 l_string|&quot;PAP-5520: indirect2direct: &quot;
-l_string|&quot;item to be converted %k does not exist&quot;
+l_string|&quot;item to be converted %K does not exist&quot;
 comma
 id|p_s_item_key
 )paren

@@ -303,7 +303,7 @@ op_amp
 id|pos_key
 )paren
 comma
-l_string|&quot;vs-9000: found item %h does not match to dir we readdir %k&quot;
+l_string|&quot;vs-9000: found item %h does not match to dir we readdir %K&quot;
 comma
 id|ih
 comma

@@ -1916,7 +1916,7 @@ id|NAME_NOT_FOUND
 id|reiserfs_warning
 (paren
 l_string|&quot;vs-7032: reiserfs_add_entry: &quot;
-l_string|&quot;entry with this key (%k) already exists&bslash;n&quot;
+l_string|&quot;entry with this key (%K) already exists&bslash;n&quot;
 comma
 op_amp
 id|entry_key

@@ -444,7 +444,7 @@ l_int|1
 suffix:semicolon
 id|reiserfs_warning
 (paren
-l_string|&quot;comp_cpu_keys: type are compared for %k and %k&bslash;n&quot;
+l_string|&quot;comp_cpu_keys: type are compared for %K and %K&bslash;n&quot;
 comma
 id|key1
 comma
@@ -5915,7 +5915,7 @@ c_func
 (paren
 id|p_s_sb
 comma
-l_string|&quot;PAP-5580: reiserfs_cut_from_item: item to convert does not exist (%k)&quot;
+l_string|&quot;PAP-5580: reiserfs_cut_from_item: item to convert does not exist (%K)&quot;
 comma
 id|p_s_item_key
 )paren
@@ -6726,7 +6726,7 @@ id|n_deleted
 OG
 id|n_file_size
 comma
-l_string|&quot;PAP-5670: reiserfs_truncate_file returns too big number: deleted %d, file_size %lu, item_key %k&quot;
+l_string|&quot;PAP-5670: reiserfs_truncate_file returns too big number: deleted %d, file_size %lu, item_key %K&quot;
 comma
 id|n_deleted
 comma
