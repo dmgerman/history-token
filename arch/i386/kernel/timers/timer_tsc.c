@@ -664,6 +664,13 @@ id|freq
 op_assign
 id|data
 suffix:semicolon
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -780,6 +787,13 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
