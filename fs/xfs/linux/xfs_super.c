@@ -160,7 +160,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Figure out maximum filesize, on Linux this can depend on&n;&t; * the filesystem blocksize (on 32 bit platforms).&n;&t; * __block_prepare_write does this in an [unsigned] long...&n;&t; *      page-&gt;index &lt;&lt; (PAGE_CACHE_SHIFT - bbits)&n;&t; * So, for page sized blocks (4K on 32 bit platforms),&n;&t; * this wraps at around 8Tb (hence MAX_LFS_FILESIZE which is&n;&t; *      (((u64)PAGE_CACHE_SIZE &lt;&lt; (BITS_PER_LONG-1))-1)&n;&t; * but for smaller blocksizes it is less (bbits = log2 bsize).&n;&t; * Note1: get_block_t takes a long (implicit cast from above)&n;&t; * Note2: The Large Block Device (LBD and HAVE_SECTOR_T) patch&n;&t; * can optionally convert the [unsigned] long from above into&n;&t; * an [unsigned] long long.&n;&t; */
 macro_line|#if BITS_PER_LONG == 32
-macro_line|# if defined(HAVE_SECTOR_T)
+macro_line|# if defined(CONFIG_LBD)
 id|ASSERT
 c_func
 (paren
@@ -726,6 +726,76 @@ id|inode
 )paren
 suffix:semicolon
 )brace
+)brace
+r_void
+DECL|function|xfs_flush_inode
+id|xfs_flush_inode
+c_func
+(paren
+id|xfs_inode_t
+op_star
+id|ip
+)paren
+(brace
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|LINVFS_GET_IP
+c_func
+(paren
+id|XFS_ITOV
+c_func
+(paren
+id|ip
+)paren
+)paren
+suffix:semicolon
+id|filemap_fdatawrite
+c_func
+(paren
+id|inode-&gt;i_mapping
+)paren
+suffix:semicolon
+)brace
+r_void
+DECL|function|xfs_flush_device
+id|xfs_flush_device
+c_func
+(paren
+id|xfs_inode_t
+op_star
+id|ip
+)paren
+(brace
+id|sync_blockdev
+c_func
+(paren
+id|XFS_ITOV
+c_func
+(paren
+id|ip
+)paren
+op_member_access_from_pointer
+id|v_vfsp-&gt;vfs_super-&gt;s_bdev
+)paren
+suffix:semicolon
+id|xfs_log_force
+c_func
+(paren
+id|ip-&gt;i_mount
+comma
+(paren
+id|xfs_lsn_t
+)paren
+l_int|0
+comma
+id|XFS_LOG_FORCE
+op_or
+id|XFS_LOG_SYNC
+)paren
+suffix:semicolon
 )brace
 r_int
 DECL|function|xfs_blkdev_get
@@ -3388,7 +3458,7 @@ id|message
 id|__initdata
 op_assign
 id|KERN_INFO
-l_string|&quot;SGI XFS &quot;
+"&bslash;"
 id|XFS_VERSION_STRING
 l_string|&quot; with &quot;
 id|XFS_BUILD_OPTIONS
@@ -3410,6 +3480,12 @@ suffix:semicolon
 id|xfs_physmem
 op_assign
 id|si.totalram
+suffix:semicolon
+id|ktrace_init
+c_func
+(paren
+l_int|64
+)paren
 suffix:semicolon
 id|error
 op_assign
@@ -3552,6 +3628,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|ktrace_uninit
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|variable|init_xfs_fs
 id|module_init
@@ -3576,7 +3657,6 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;SGI XFS &quot;
 id|XFS_VERSION_STRING
 l_string|&quot; with &quot;
 id|XFS_BUILD_OPTIONS

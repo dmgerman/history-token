@@ -19,14 +19,6 @@ macro_line|#include &quot;xfs_ialloc.h&quot;
 macro_line|#include &quot;xfs_alloc.h&quot;
 macro_line|#include &quot;xfs_bit.h&quot;
 macro_line|#include &quot;xfs_error.h&quot;
-macro_line|#if defined(DEBUG)
-multiline_comment|/*&n; * Allocation tracing.&n; */
-DECL|variable|xfs_alloc_trace_buf
-id|ktrace_t
-op_star
-id|xfs_alloc_trace_buf
-suffix:semicolon
-macro_line|#endif
 DECL|macro|XFS_ABSDIFF
 mdefine_line|#define XFS_ABSDIFF(a,b)&t;(((a) &lt;= (b)) ? ((b) - (a)) : ((a) - (b)))
 DECL|macro|XFSA_FIXUP_BNO_OK
@@ -52,6 +44,11 @@ id|len
 )paren
 suffix:semicolon
 macro_line|#if defined(XFS_ALLOC_TRACE)
+DECL|variable|xfs_alloc_trace_buf
+id|ktrace_t
+op_star
+id|xfs_alloc_trace_buf
+suffix:semicolon
 DECL|macro|TRACE_ALLOC
 mdefine_line|#define&t;TRACE_ALLOC(s,a)&t;&bslash;&n;&t;xfs_alloc_trace_alloc(fname, s, a, __LINE__)
 DECL|macro|TRACE_FREE

@@ -21,18 +21,20 @@ DECL|macro|ARCH_NOCONVERT
 mdefine_line|#define ARCH_NOCONVERT 1
 macro_line|#if __BYTE_ORDER == __LITTLE_ENDIAN
 DECL|macro|ARCH_CONVERT
-mdefine_line|#define ARCH_CONVERT   0
+macro_line|# define ARCH_CONVERT&t;0
 macro_line|#else
 DECL|macro|ARCH_CONVERT
-mdefine_line|#define ARCH_CONVERT   ARCH_NOCONVERT
+macro_line|# define ARCH_CONVERT&t;ARCH_NOCONVERT
 macro_line|#endif
 multiline_comment|/* generic swapping macros */
+macro_line|#ifndef HAVE_SWABMACROS
 DECL|macro|INT_SWAP16
 mdefine_line|#define INT_SWAP16(type,var) ((typeof(type))(__swab16((__u16)(var))))
 DECL|macro|INT_SWAP32
 mdefine_line|#define INT_SWAP32(type,var) ((typeof(type))(__swab32((__u32)(var))))
 DECL|macro|INT_SWAP64
 mdefine_line|#define INT_SWAP64(type,var) ((typeof(type))(__swab64((__u64)(var))))
+macro_line|#endif
 DECL|macro|INT_SWAP
 mdefine_line|#define INT_SWAP(type, var) &bslash;&n;    ((sizeof(type) == 8) ? INT_SWAP64(type,var) : &bslash;&n;    ((sizeof(type) == 4) ? INT_SWAP32(type,var) : &bslash;&n;    ((sizeof(type) == 2) ? INT_SWAP16(type,var) : &bslash;&n;    (var))))
 DECL|macro|INT_SWAP_UNALIGNED_32

@@ -35,10 +35,11 @@ macro_line|#include &lt;linux/xfs_globals.h&gt;
 macro_line|#include &lt;linux/xfs_fs_subr.h&gt;
 macro_line|#include &lt;linux/xfs_lrw.h&gt;
 macro_line|#include &lt;pagebuf/page_buf.h&gt;
-macro_line|#ifndef STATIC
-DECL|macro|STATIC
-mdefine_line|#define STATIC static
-macro_line|#endif
+multiline_comment|/*&n; * Feature macros (disable/enable)&n; */
+DECL|macro|HAVE_REFCACHE
+macro_line|#undef  HAVE_REFCACHE&t;/* reference cache not needed for NFS in 2.6 */
+DECL|macro|HAVE_SENDFILE
+mdefine_line|#define HAVE_SENDFILE&t;/* sendfile(2) exists in 2.6, but not in 2.4 */
 multiline_comment|/*&n; * State flag for unwritten extent buffers.&n; *&n; * We need to be able to distinguish between these and delayed&n; * allocate buffers within XFS.  The generic IO path code does&n; * not need to distinguish - we use the BH_Delay flag for both&n; * delalloc and these ondisk-uninitialised buffers.&n; */
 id|BUFFER_FNS
 c_func
@@ -90,6 +91,14 @@ DECL|macro|xfs_inherit_nodump
 mdefine_line|#define xfs_inherit_nodump&t;xfs_params.inherit_nodump.val
 DECL|macro|xfs_inherit_noatime
 mdefine_line|#define xfs_inherit_noatime&t;xfs_params.inherit_noatim.val
+DECL|macro|current_cpu
+mdefine_line|#define current_cpu()&t;&t;smp_processor_id()
+DECL|macro|current_pid
+mdefine_line|#define current_pid()&t;&t;(current-&gt;pid)
+DECL|macro|current_fsuid
+mdefine_line|#define current_fsuid(cred)&t;(current-&gt;fsuid)
+DECL|macro|current_fsgid
+mdefine_line|#define current_fsgid(cred)&t;(current-&gt;fsgid)
 DECL|macro|NBPP
 mdefine_line|#define NBPP&t;&t;PAGE_SIZE
 DECL|macro|DPPSHFT
@@ -197,6 +206,22 @@ DECL|macro|howmany
 mdefine_line|#define howmany(x, y)&t;(((x)+((y)-1))/(y))
 DECL|macro|roundup
 mdefine_line|#define roundup(x, y)&t;((((x)+((y)-1))/(y))*(y))
+DECL|function|xfs_stack_trace
+r_static
+r_inline
+r_void
+id|xfs_stack_trace
+c_func
+(paren
+r_void
+)paren
+(brace
+id|dump_stack
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Move the kernel do_div definition off to one side */
 macro_line|#if defined __i386__
 multiline_comment|/* For ia32 we need to pull some tricks to get past various versions&n; * of the compiler which do not like us using do_div in the middle&n; * of large functions.&n; */
