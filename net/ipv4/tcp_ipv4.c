@@ -4968,7 +4968,13 @@ id|check
 op_div
 l_int|2
 suffix:semicolon
-id|tcp_socket-&gt;sk-&gt;protinfo.af_inet.ttl
+id|inet_sk
+c_func
+(paren
+id|tcp_socket-&gt;sk
+)paren
+op_member_access_from_pointer
+id|ttl
 op_assign
 id|sysctl_ip_default_ttl
 suffix:semicolon
