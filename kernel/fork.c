@@ -2613,6 +2613,10 @@ comma
 r_int
 r_int
 id|stack_size
+comma
+r_int
+op_star
+id|user_tid
 )paren
 (brace
 r_int
@@ -3130,6 +3134,45 @@ id|retval
 r_goto
 id|bad_fork_cleanup_namespace
 suffix:semicolon
+multiline_comment|/*&n;&t; * Notify the child of the TID?&n;&t; */
+id|retval
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|clone_flags
+op_amp
+id|CLONE_SETTID
+)paren
+r_if
+c_cond
+(paren
+id|put_user
+c_func
+(paren
+id|p-&gt;pid
+comma
+id|user_tid
+)paren
+)paren
+r_goto
+id|bad_fork_cleanup_namespace
+suffix:semicolon
+multiline_comment|/*&n;&t; * Does the userspace VM want the TID cleared on mm_release()?&n;&t; */
+r_if
+c_cond
+(paren
+id|clone_flags
+op_amp
+id|CLONE_CLEARTID
+)paren
+id|p-&gt;user_tid
+op_assign
+id|user_tid
+suffix:semicolon
 multiline_comment|/* Our parent execution domain becomes current domain&n;&t;   These must match for thread signalling to apply */
 id|p-&gt;parent_exec_id
 op_assign
@@ -3513,6 +3556,10 @@ comma
 r_int
 r_int
 id|stack_size
+comma
+r_int
+op_star
+id|user_tid
 )paren
 (brace
 r_struct
@@ -3532,6 +3579,8 @@ comma
 id|regs
 comma
 id|stack_size
+comma
+id|user_tid
 )paren
 suffix:semicolon
 r_if
