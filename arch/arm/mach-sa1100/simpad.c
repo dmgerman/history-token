@@ -819,7 +819,7 @@ l_string|&quot;Simpad&quot;
 id|MAINTAINER
 c_func
 (paren
-l_string|&quot;Juergen Messerer&quot;
+l_string|&quot;Holger Freyther&quot;
 )paren
 id|BOOT_MEM
 c_func
