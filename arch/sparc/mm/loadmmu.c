@@ -45,14 +45,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|ioport_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|load_mmu
 r_void
 id|__init
@@ -114,11 +106,6 @@ c_func
 suffix:semicolon
 )brace
 id|btfixup
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ioport_init
 c_func
 (paren
 )paren
