@@ -16,6 +16,12 @@ DECL|enum|fixed_addresses
 r_enum
 id|fixed_addresses
 (brace
+DECL|enumerator|FIX_VSYSCALL
+id|FIX_VSYSCALL
+comma
+DECL|enumerator|FIX_HOLE
+id|FIX_HOLE
+comma
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|enumerator|FIX_APIC_BASE
 id|FIX_APIC_BASE
@@ -149,9 +155,9 @@ DECL|macro|set_fixmap_nocache
 mdefine_line|#define set_fixmap_nocache(idx, phys) &bslash;&n;&t;&t;__set_fixmap(idx, phys, PAGE_KERNEL_NOCACHE)
 DECL|macro|clear_fixmap
 mdefine_line|#define clear_fixmap(idx) &bslash;&n;&t;&t;__set_fixmap(idx, 0, __pgprot(0))
-multiline_comment|/*&n; * used by vmalloc.c.&n; *&n; * Leave one empty page between vmalloc&squot;ed areas and&n; * the start of the fixmap, and leave one page empty&n; * at the top of mem..&n; */
+multiline_comment|/*&n; * used by vmalloc.c.&n; *&n; * Leave one empty page between vmalloc&squot;ed areas and&n; * the start of the fixmap.&n; */
 DECL|macro|FIXADDR_TOP
-mdefine_line|#define FIXADDR_TOP&t;(0xffffe000UL)
+mdefine_line|#define FIXADDR_TOP&t;(0xfffff000UL)
 DECL|macro|__FIXADDR_SIZE
 mdefine_line|#define __FIXADDR_SIZE&t;(__end_of_permanent_fixed_addresses &lt;&lt; PAGE_SHIFT)
 DECL|macro|FIXADDR_START
