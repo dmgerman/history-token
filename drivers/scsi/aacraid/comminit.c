@@ -212,7 +212,7 @@ id|u32
 (paren
 id|ulong
 )paren
-id|base
+id|phys
 )paren
 suffix:semicolon
 id|init-&gt;AdapterFibsPhysicalAddress

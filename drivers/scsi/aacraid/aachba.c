@@ -1601,10 +1601,17 @@ r_int
 r_int
 id|cpu_flags
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|scsicmd-&gt;device-&gt;host
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+id|host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -1620,7 +1627,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+id|host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -3832,6 +3839,13 @@ r_int
 id|ret
 suffix:semicolon
 r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|scsicmd-&gt;device-&gt;host
+suffix:semicolon
+r_struct
 id|aac_dev
 op_star
 id|dev
@@ -3841,7 +3855,7 @@ r_struct
 id|aac_dev
 op_star
 )paren
-id|scsicmd-&gt;device-&gt;host-&gt;hostdata
+id|host-&gt;hostdata
 suffix:semicolon
 id|cardtype
 op_assign
@@ -3851,7 +3865,7 @@ id|fsa_dev_ptr
 op_assign
 id|fsa_dev
 (braket
-id|scsicmd-&gt;device-&gt;host-&gt;unique_id
+id|host-&gt;unique_id
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;If the bus, target or lun is out of range, return fail&n;&t; *&t;Test does not apply to ID 16, the pseudo id for the controller&n;&t; *&t;itself.&n;&t; */
@@ -3860,7 +3874,7 @@ c_cond
 (paren
 id|scsicmd-&gt;device-&gt;id
 op_ne
-id|scsicmd-&gt;device-&gt;host-&gt;this_id
+id|host-&gt;this_id
 )paren
 (brace
 r_if
@@ -3948,7 +3962,7 @@ suffix:colon
 id|spin_unlock_irq
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 id|probe_container
@@ -3962,7 +3976,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 r_if
@@ -4275,7 +4289,7 @@ c_cond
 (paren
 id|scsicmd-&gt;device-&gt;id
 op_eq
-id|scsicmd-&gt;device-&gt;host-&gt;this_id
+id|host-&gt;this_id
 )paren
 id|inq_data_ptr-&gt;inqd_pdt
 op_assign
@@ -4744,7 +4758,7 @@ multiline_comment|/*&n;&t;&t;&t; *&t;Hack to keep track of ordinal number of the
 id|spin_unlock_irq
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 r_if
@@ -4778,7 +4792,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
@@ -4793,7 +4807,7 @@ suffix:colon
 id|spin_unlock_irq
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 id|ret
@@ -4809,7 +4823,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|scsicmd-&gt;device-&gt;host-&gt;host_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
