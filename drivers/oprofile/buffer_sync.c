@@ -70,11 +70,6 @@ id|task_struct
 op_star
 id|task
 op_assign
-(paren
-r_struct
-id|task_struct
-op_star
-)paren
 id|data
 suffix:semicolon
 id|spin_lock
