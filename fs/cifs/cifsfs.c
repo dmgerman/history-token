@@ -184,6 +184,19 @@ c_func
 id|sb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifs_sb
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|cifs_sb-&gt;local_nls
 op_assign
 id|load_nls_default
@@ -315,7 +328,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-multiline_comment|/*&t;rc = cifs_umount(sb);  BB is CIFS unmount routine needed? */
 r_if
 c_cond
 (paren
@@ -328,9 +340,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;cifs_umount failed with return code %d&bslash;n&quot;
-comma
-id|rc
+l_string|&quot;cifs_mount failed with no root inode&quot;
 )paren
 )paren
 suffix:semicolon
@@ -386,6 +396,14 @@ l_string|&quot;In cifs_put_super&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+op_star
+l_int|4
+)paren
+suffix:semicolon
 id|cifs_sb
 op_assign
 id|CIFS_SB
@@ -394,6 +412,27 @@ c_func
 id|sb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifs_sb
+op_eq
+l_int|NULL
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;&bslash;nEmpty cifs superblock info passed to unmount&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|rc
 op_assign
 id|cifs_umount
@@ -423,12 +462,6 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|cifs_sb
-)paren
-(brace
 id|unload_nls
 c_func
 (paren
@@ -441,7 +474,6 @@ c_func
 id|cifs_sb
 )paren
 suffix:semicolon
-)brace
 r_return
 suffix:semicolon
 )brace
@@ -1442,6 +1474,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|GlobalCurrentXid
+op_assign
+l_int|0
+suffix:semicolon
 id|GlobalTotalActiveXid
 op_assign
 l_int|0
@@ -1449,6 +1485,14 @@ suffix:semicolon
 id|GlobalMaxActiveXid
 op_assign
 l_int|0
+suffix:semicolon
+id|GlobalSMBSeslock
+op_assign
+id|RW_LOCK_UNLOCKED
+suffix:semicolon
+id|GlobalMid_Lock
+op_assign
+id|RW_LOCK_UNLOCKED
 suffix:semicolon
 id|rc
 op_assign

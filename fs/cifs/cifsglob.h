@@ -764,7 +764,7 @@ r_struct
 id|list_head
 id|GlobalServerList
 suffix:semicolon
-multiline_comment|/* BB this one is not implemented yet */
+multiline_comment|/* BB not implemented yet */
 DECL|variable|GlobalSMBSessionList
 id|GLOBAL_EXTERN
 r_struct
@@ -777,13 +777,12 @@ r_struct
 id|list_head
 id|GlobalTreeConnectionList
 suffix:semicolon
-multiline_comment|/*&n; * Global list of free SMB structures&n; */
-DECL|variable|GlobalFreeSMB
+DECL|variable|GlobalSMBSeslock
 id|GLOBAL_EXTERN
-r_void
-op_star
-id|GlobalFreeSMB
+id|rwlock_t
+id|GlobalSMBSeslock
 suffix:semicolon
+multiline_comment|/* protects list inserts on 3 above */
 multiline_comment|/*&n; * Global transaction id (XID) information&n; */
 DECL|variable|GlobalCurrentXid
 id|GLOBAL_EXTERN
@@ -806,6 +805,13 @@ r_int
 id|GlobalMaxActiveXid
 suffix:semicolon
 multiline_comment|/* prot by GlobalMid_Sem */
+DECL|variable|GlobalMid_Lock
+id|GLOBAL_EXTERN
+id|rwlock_t
+id|GlobalMid_Lock
+suffix:semicolon
+multiline_comment|/* protects above and list operations */
+multiline_comment|/* on midQ entries */
 DECL|variable|Local_System_Name
 id|GLOBAL_EXTERN
 r_char
@@ -843,7 +849,7 @@ r_int
 r_int
 id|multiuser_mount
 suffix:semicolon
-multiline_comment|/* if enabled allows new sessions&n;                                     to be established on existing mount if we&n;&t;&t;&t;&t;&t;                 have the uid/password or Kerberos credential &n;                                     or equivalent for current user */
+multiline_comment|/* if enabled allows new sessions&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;to be established on existing mount if we&n;&t;&t;&t;&t;&t;                have the uid/password or Kerberos credential &n;&t;&t;&t;&t;&t;&t;&t;&t;&t;or equivalent for current user */
 DECL|variable|oplockEnabled
 id|GLOBAL_EXTERN
 r_int
@@ -856,7 +862,7 @@ r_int
 r_int
 id|extended_security
 suffix:semicolon
-multiline_comment|/* if on, session setup sent &n;                                     with more secure ntlmssp2 challenge/resp */
+multiline_comment|/* if on, session setup sent &n;&t;&t;&t;&t;&t;&t;&t;&t;&t;with more secure ntlmssp2 challenge/resp */
 DECL|variable|ntlmv2_support
 id|GLOBAL_EXTERN
 r_int

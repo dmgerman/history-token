@@ -845,6 +845,13 @@ id|task_to_wake
 op_assign
 l_int|NULL
 suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|GlobalMid_Lock
+)paren
+suffix:semicolon
 id|list_for_each
 c_func
 (paren
@@ -901,6 +908,13 @@ id|MID_RESPONSE_RECEIVED
 suffix:semicolon
 )brace
 )brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|GlobalMid_Lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1039,6 +1053,13 @@ c_func
 id|smb_buffer
 )paren
 suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1099,7 +1120,7 @@ id|server
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* BB need to more gracefully handle the rare negative session &n;               response case because response will be still outstanding */
+multiline_comment|/* BB need to more gracefully handle the rare negative session &n;&t;&t;&t;   response case because response will be still outstanding */
 id|cERROR
 c_func
 (paren
@@ -1112,6 +1133,13 @@ l_string|&quot;&bslash;nThere are still active MIDs in queue and we are exiting 
 suffix:semicolon
 multiline_comment|/* BB wake up waitors, and/or wait and/or free stale mids and try again? BB */
 multiline_comment|/* BB Need to fix bug in error path above - perhaps wait until smb requests&n;   time out and then free the tcp per server struct BB */
+id|read_unlock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
 id|cFYI
 c_func
 (paren
@@ -2020,6 +2048,13 @@ id|psrvTcp
 op_assign
 l_int|NULL
 suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
 id|list_for_each
 c_func
 (paren
@@ -2078,14 +2113,30 @@ id|MAX_USERNAME_SIZE
 op_eq
 l_int|0
 )paren
+(brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
 r_return
 id|ses
 suffix:semicolon
 multiline_comment|/* found exact match on both tcp and SMB sessions */
 )brace
 )brace
+)brace
 multiline_comment|/* else tcp and smb sessions need reconnection */
 )brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -2118,6 +2169,13 @@ r_struct
 id|cifsTconInfo
 op_star
 id|tcon
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
 suffix:semicolon
 id|list_for_each
 c_func
@@ -2249,6 +2307,14 @@ id|MAX_USERNAME_SIZE
 op_eq
 l_int|0
 )paren
+(brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
 r_return
 id|tcon
 suffix:semicolon
@@ -2258,6 +2324,14 @@ multiline_comment|/* also matched user (smb session)*/
 )brace
 )brace
 )brace
+)brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -2969,6 +3043,9 @@ id|mount_data
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|parse_mount_options
 c_func
 (paren
@@ -2979,7 +3056,19 @@ comma
 op_amp
 id|volume_info
 )paren
+)paren
+(brace
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3061,7 +3150,7 @@ id|xid
 suffix:semicolon
 r_return
 op_minus
-id|ENODEV
+id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/* BB add support to use the multiuser_mount flag BB */
@@ -11073,8 +11162,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* wake_up_process(ses-&gt;server-&gt;tsk);*/
-multiline_comment|/* was worth a try */
 id|schedule_timeout
 c_func
 (paren
@@ -11116,11 +11203,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* No luck figuring out a better way to_close socket */
-multiline_comment|/*ses-&gt;server-&gt;ssocket-&gt;sk-&gt;prot-&gt;close(ses-&gt;server-&gt;ssocket-&gt;sk,0);*/
-multiline_comment|/*  ses-&gt;server-&gt;ssocket = NULL; */
-multiline_comment|/* serialize better */
-multiline_comment|/* sock_wake_async(ses-&gt;server-&gt;ssocket,3,POLL_HUP); */
 )brace
 )brace
 r_else
