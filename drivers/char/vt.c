@@ -9206,11 +9206,6 @@ c_func
 suffix:semicolon
 id|vt
 op_assign
-(paren
-r_struct
-id|vt_struct
-op_star
-)paren
 id|tty-&gt;driver_data
 suffix:semicolon
 r_if
@@ -9370,11 +9365,6 @@ c_func
 suffix:semicolon
 id|vt
 op_assign
-(paren
-r_struct
-id|vt_struct
-op_star
-)paren
 id|tty-&gt;driver_data
 suffix:semicolon
 r_if
@@ -11100,7 +11090,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;/dev/ttyN handling&n; */
+multiline_comment|/*&n; * /dev/ttyN handling&n; */
 DECL|function|con_write
 r_static
 r_int
@@ -11278,11 +11268,6 @@ id|vt_struct
 op_star
 id|vt
 op_assign
-(paren
-r_struct
-id|vt_struct
-op_star
-)paren
 id|tty-&gt;driver_data
 suffix:semicolon
 id|wake_up_interruptible
@@ -11447,11 +11432,6 @@ c_func
 suffix:semicolon
 id|vt
 op_assign
-(paren
-r_struct
-id|vt_struct
-op_star
-)paren
 id|tty-&gt;driver_data
 suffix:semicolon
 r_if
