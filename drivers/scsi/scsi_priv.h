@@ -98,7 +98,7 @@ r_extern
 r_struct
 id|Scsi_Host
 op_star
-id|scsi_host_hn_get
+id|scsi_host_lookup
 c_func
 (paren
 r_int
@@ -606,6 +606,11 @@ op_star
 id|scsi_sysfs_sdev_attrs
 (braket
 )braket
+suffix:semicolon
+r_extern
+r_struct
+r_class
+id|shost_class
 suffix:semicolon
 macro_line|#endif /* _SCSI_PRIV_H */
 eof

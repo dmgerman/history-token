@@ -1273,7 +1273,7 @@ id|ENODEV
 suffix:semicolon
 id|shost
 op_assign
-id|scsi_host_hn_get
+id|scsi_host_lookup
 c_func
 (paren
 id|host
@@ -1390,7 +1390,7 @@ id|ENODEV
 suffix:semicolon
 id|shost
 op_assign
-id|scsi_host_hn_get
+id|scsi_host_lookup
 c_func
 (paren
 id|host
