@@ -3031,7 +3031,7 @@ c_func
 l_string|&quot;setting up CRTC&bslash;n&quot;
 )paren
 suffix:semicolon
-id|PRINTKI
+id|DPRINTK
 c_func
 (paren
 l_string|&quot;set primary CRT to %ix%i %c%c composite %c&bslash;n&quot;
@@ -3278,7 +3278,7 @@ comma
 id|par
 )paren
 suffix:semicolon
-id|PRINTKI
+id|DPRINTK
 c_func
 (paren
 l_string|&quot;set secondary CRT to %ix%i %c%c&bslash;n&quot;
