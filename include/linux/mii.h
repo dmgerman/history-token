@@ -19,6 +19,10 @@ DECL|macro|MII_LPA
 mdefine_line|#define MII_LPA             0x05        /* Link partner ability reg    */
 DECL|macro|MII_EXPANSION
 mdefine_line|#define MII_EXPANSION       0x06        /* Expansion register          */
+DECL|macro|MII_CTRL1000
+mdefine_line|#define MII_CTRL1000        0x09        /* 1000BASE-T control          */
+DECL|macro|MII_STAT1000
+mdefine_line|#define MII_STAT1000        0x0a        /* 1000BASE-T status           */
 DECL|macro|MII_DCOUNTER
 mdefine_line|#define MII_DCOUNTER        0x12        /* Disconnect counter          */
 DECL|macro|MII_FCSCOUNTER
@@ -105,11 +109,11 @@ mdefine_line|#define ADVERTISE_100FULL       0x0100  /* Try for 100mbps full-dup
 DECL|macro|ADVERTISE_100BASE4
 mdefine_line|#define ADVERTISE_100BASE4      0x0200  /* Try for 100mbps 4k packets  */
 DECL|macro|ADVERTISE_PAUSE_CAP
-mdefine_line|#define ADVERTISE_PAUSE_CAP&t;0x0400  /* Try for pause               */
+mdefine_line|#define ADVERTISE_PAUSE_CAP     0x0400  /* Try for pause               */
 DECL|macro|ADVERTISE_PAUSE_ASYM
-mdefine_line|#define ADVERTISE_PAUSE_ASYM&t;0x0800  /* Try for asymetric pause     */
+mdefine_line|#define ADVERTISE_PAUSE_ASYM    0x0800  /* Try for asymetric pause     */
 DECL|macro|ADVERTISE_RESV
-mdefine_line|#define ADVERTISE_RESV          0x1c00  /* Unused...                   */
+mdefine_line|#define ADVERTISE_RESV          0x1000  /* Unused...                   */
 DECL|macro|ADVERTISE_RFAULT
 mdefine_line|#define ADVERTISE_RFAULT        0x2000  /* Say we can detect faults    */
 DECL|macro|ADVERTISE_LPACK
@@ -134,11 +138,11 @@ mdefine_line|#define LPA_100FULL             0x0100  /* Can do 100mbps full-dupl
 DECL|macro|LPA_100BASE4
 mdefine_line|#define LPA_100BASE4            0x0200  /* Can do 100mbps 4k packets   */
 DECL|macro|LPA_PAUSE_CAP
-mdefine_line|#define LPA_PAUSE_CAP&t;&t;0x0400  /* Can pause                   */
+mdefine_line|#define LPA_PAUSE_CAP           0x0400  /* Can pause                   */
 DECL|macro|LPA_PAUSE_ASYM
-mdefine_line|#define LPA_PAUSE_ASYM&t;&t;0x0800&t;/* Can pause asymetrically     */
+mdefine_line|#define LPA_PAUSE_ASYM          0x0800  /* Can pause asymetrically     */
 DECL|macro|LPA_RESV
-mdefine_line|#define LPA_RESV                0x1c00  /* Unused...                   */
+mdefine_line|#define LPA_RESV                0x1000  /* Unused...                   */
 DECL|macro|LPA_RFAULT
 mdefine_line|#define LPA_RFAULT              0x2000  /* Link partner faulted        */
 DECL|macro|LPA_LPACK
@@ -169,6 +173,20 @@ DECL|macro|NWAYTEST_LOOPBACK
 mdefine_line|#define NWAYTEST_LOOPBACK       0x0100  /* Enable loopback for N-way   */
 DECL|macro|NWAYTEST_RESV2
 mdefine_line|#define NWAYTEST_RESV2          0xfe00  /* Unused...                   */
+multiline_comment|/* 1000BASE-T Control register */
+DECL|macro|ADVERTISE_1000FULL
+mdefine_line|#define ADVERTISE_1000FULL      0x0200  /* Advertise 1000BASE-T full duplex */
+DECL|macro|ADVERTISE_1000HALF
+mdefine_line|#define ADVERTISE_1000HALF      0x0100  /* Advertise 1000BASE-T half duplex */
+multiline_comment|/* 1000BASE-T Status register */
+DECL|macro|LPA_1000LOCALRXOK
+mdefine_line|#define LPA_1000LOCALRXOK       0x2000  /* Link partner local receiver status */
+DECL|macro|LPA_1000REMRXOK
+mdefine_line|#define LPA_1000REMRXOK         0x1000  /* Link partner remote receiver status */
+DECL|macro|LPA_1000FULL
+mdefine_line|#define LPA_1000FULL            0x0800  /* Link partner 1000BASE-T full duplex */
+DECL|macro|LPA_1000HALF
+mdefine_line|#define LPA_1000HALF            0x0400  /* Link partner 1000BASE-T half duplex */
 DECL|struct|mii_if_info
 r_struct
 id|mii_if_info
@@ -205,6 +223,14 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* is autoneg. disabled? */
+DECL|member|supports_gmii
+r_int
+r_int
+id|supports_gmii
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* are GMII registers supported? */
 DECL|member|dev
 r_struct
 id|net_device
