@@ -791,9 +791,9 @@ DECL|member|v6
 id|sctp_ipv6addr_param_t
 id|v6
 suffix:semicolon
-DECL|typedef|sctpIpAddress_t
+DECL|typedef|sctp_addr_param_t
 )brace
-id|sctpIpAddress_t
+id|sctp_addr_param_t
 suffix:semicolon
 multiline_comment|/* RFC 2960.  Section 3.3.5 Heartbeat.&n; *    Heartbeat Information: variable length&n; *    The Sender-specific Heartbeat Info field should normally include&n; *    information about the sender&squot;s current time when this HEARTBEAT&n; *    chunk is sent and the destination transport address to which this&n; *    HEARTBEAT is sent (see Section 8.3).&n; */
 DECL|struct|sctp_sender_hb_info
@@ -2453,6 +2453,21 @@ op_star
 )paren
 suffix:semicolon
 r_int
+id|sctp_has_association
+c_func
+(paren
+r_const
+id|sockaddr_storage_t
+op_star
+id|laddr
+comma
+r_const
+id|sockaddr_storage_t
+op_star
+id|paddr
+)paren
+suffix:semicolon
+r_int
 id|sctp_verify_init
 c_func
 (paren
@@ -2854,6 +2869,11 @@ multiline_comment|/* &n;&t; * Last Rcvd   : This is the last TSN received in seq
 DECL|member|ctsn_ack_point
 id|__u32
 id|ctsn_ack_point
+suffix:semicolon
+multiline_comment|/* Highest TSN that is acknowledged by incoming SACKs. */
+DECL|member|highest_sacked
+id|__u32
+id|highest_sacked
 suffix:semicolon
 multiline_comment|/* The number of unacknowledged data chunks.  Reported through&n;&t; * the SCTP_STATUS sockopt.&n;&t; */
 DECL|member|unack_data
