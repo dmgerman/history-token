@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/arch/m68k/motorola.c&n; *&n; * Routines specific to the Motorola MMU, originally from:&n; * linux/arch/m68k/init.c &n; * which are Copyright (C) 1995 Hamish Macdonald&n; * &n; * Moved 8/20/1999 Sam Creasey&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -30,6 +31,13 @@ r_int
 id|mm_cachebits
 op_assign
 l_int|0
+suffix:semicolon
+DECL|variable|mm_cachebits
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mm_cachebits
+)paren
 suffix:semicolon
 macro_line|#endif
 DECL|function|kernel_page_table

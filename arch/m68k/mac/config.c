@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/arch/m68k/mac/config.c&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 multiline_comment|/*&n; * Miscellaneous linux stuff&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -756,6 +757,13 @@ r_struct
 id|mac_model
 op_star
 id|macintosh_config
+suffix:semicolon
+DECL|variable|macintosh_config
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|macintosh_config
+)paren
 suffix:semicolon
 DECL|variable|mac_data_table
 r_static
