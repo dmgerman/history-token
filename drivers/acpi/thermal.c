@@ -42,8 +42,8 @@ DECL|macro|ACPI_THERMAL_MODE_ACTIVE
 mdefine_line|#define ACPI_THERMAL_MODE_ACTIVE&t;0x00
 DECL|macro|ACPI_THERMAL_MODE_PASSIVE
 mdefine_line|#define ACPI_THERMAL_MODE_PASSIVE&t;0x01
-DECL|macro|ACPI_THERMAL_MODE_CRT
-mdefine_line|#define ACPI_THERMAL_MODE_CRT   &t;0xff
+DECL|macro|ACPI_THERMAL_MODE_CRITICAL
+mdefine_line|#define ACPI_THERMAL_MODE_CRITICAL   &t;0xff
 DECL|macro|ACPI_THERMAL_PATH_POWEROFF
 mdefine_line|#define ACPI_THERMAL_PATH_POWEROFF&t;&quot;/sbin/poweroff&quot;
 DECL|macro|ACPI_THERMAL_MAX_ACTIVE
@@ -4107,7 +4107,7 @@ c_cond
 (paren
 id|tz-&gt;cooling_mode
 op_eq
-id|ACPI_THERMAL_MODE_CRT
+id|ACPI_THERMAL_MODE_CRITICAL
 )paren
 id|seq_printf
 c_func
@@ -5470,7 +5470,7 @@ r_else
 multiline_comment|/* _ACx and _PSV are optional, but _CRT is required */
 id|tz-&gt;cooling_mode
 op_assign
-id|ACPI_THERMAL_MODE_CRT
+id|ACPI_THERMAL_MODE_CRITICAL
 suffix:semicolon
 )brace
 )brace
