@@ -291,8 +291,16 @@ DECL|function|sn_init_cpei_timer
 id|sn_init_cpei_timer
 c_func
 (paren
+r_void
 )paren
 (brace
+id|init_timer
+c_func
+(paren
+op_amp
+id|sn_cpei_timer
+)paren
+suffix:semicolon
 id|sn_cpei_timer.expires
 op_assign
 id|jiffies

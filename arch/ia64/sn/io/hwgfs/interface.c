@@ -148,6 +148,10 @@ comma
 id|is_dir
 )paren
 suffix:semicolon
+id|nd-&gt;flags
+op_or_assign
+id|LOOKUP_PARENT
+suffix:semicolon
 r_if
 c_cond
 (paren

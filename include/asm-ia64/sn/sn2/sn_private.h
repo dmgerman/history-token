@@ -607,14 +607,6 @@ id|node
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|per_cpu_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|is_fine_dirmode
 c_func
@@ -872,7 +864,7 @@ l_int|1
 )braket
 suffix:semicolon
 DECL|member|h_bwwait
-id|sv_t
+id|wait_queue_head_t
 id|h_bwwait
 suffix:semicolon
 multiline_comment|/* wait for big window to free */

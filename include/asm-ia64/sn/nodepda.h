@@ -195,7 +195,7 @@ DECL|macro|cnodeid_to_vertex
 mdefine_line|#define cnodeid_to_vertex(cnodeid) (NODEPDA(cnodeid)-&gt;node_vertex)
 multiline_comment|/*&n; * Check if given a compact node id the corresponding node has all the&n; * cpus disabled. &n; */
 DECL|macro|is_headless_node
-mdefine_line|#define is_headless_node(cnode)&t;&t;((cnode == CNODEID_NONE) ||&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t; (node_data(cnode)-&gt;active_cpu_count == 0))
+mdefine_line|#define is_headless_node(cnode)&t;&t;(!test_bit(cnode, &amp;node_has_active_cpus))
 multiline_comment|/*&n; * Check if given a node vertex handle the corresponding node has all the&n; * cpus disabled. &n; */
 DECL|macro|is_headless_node_vertex
 mdefine_line|#define is_headless_node_vertex(_nodevhdl) &bslash;&n;&t;&t;&t;is_headless_node(nodevertex_to_cnodeid(_nodevhdl))
