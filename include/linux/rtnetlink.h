@@ -1246,9 +1246,6 @@ DECL|macro|TCA_RTA
 mdefine_line|#define TCA_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct tcmsg))))
 DECL|macro|TCA_PAYLOAD
 mdefine_line|#define TCA_PAYLOAD(n) NLMSG_PAYLOAD(n,sizeof(struct tcmsg))
-multiline_comment|/* SUMMARY: maximal rtattr understood by kernel */
-DECL|macro|RTATTR_MAX
-mdefine_line|#define RTATTR_MAX&t;&t;RTA_MAX
 multiline_comment|/* RTnetlink multicast groups */
 DECL|macro|RTMGRP_LINK
 mdefine_line|#define RTMGRP_LINK&t;&t;1
