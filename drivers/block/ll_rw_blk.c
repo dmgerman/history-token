@@ -3255,6 +3255,32 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * blk_run_queue - run a single device queue&n; * @q&t;The queue to run&n; */
+DECL|function|__blk_run_queue
+r_void
+id|__blk_run_queue
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+)paren
+(brace
+id|blk_remove_plug
+c_func
+(paren
+id|q
+)paren
+suffix:semicolon
+id|q
+op_member_access_from_pointer
+id|request_fn
+c_func
+(paren
+id|q
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * blk_run_queues - fire all plugged queues&n; *&n; * Description:&n; *   Start I/O on all plugged queues known to the block layer. Queues that&n; *   are currently stopped are ignored. This is equivalent to the older&n; *   tq_disk task queue run.&n; **/
 DECL|macro|blk_plug_entry
 mdefine_line|#define blk_plug_entry(entry) list_entry((entry), request_queue_t, plug_list)
@@ -7523,6 +7549,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__blk_stop_queue
+)paren
+suffix:semicolon
+DECL|variable|__blk_run_queue
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__blk_run_queue
 )paren
 suffix:semicolon
 DECL|variable|blk_run_queues
