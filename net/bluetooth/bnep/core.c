@@ -1678,7 +1678,7 @@ id|dev
 suffix:semicolon
 id|nskb-&gt;ip_summed
 op_assign
-id|CHECKSUM_UNNECESSARY
+id|CHECKSUM_NONE
 suffix:semicolon
 id|nskb-&gt;protocol
 op_assign
