@@ -1819,10 +1819,6 @@ id|mmu_gather_t
 op_star
 id|tlb
 suffix:semicolon
-id|pgd_t
-op_star
-id|dir
-suffix:semicolon
 r_int
 r_int
 id|start
@@ -1834,16 +1830,6 @@ op_assign
 id|address
 op_plus
 id|size
-suffix:semicolon
-id|dir
-op_assign
-id|pgd_offset
-c_func
-(paren
-id|mm
-comma
-id|address
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * This is a long-lived spinlock. That&squot;s fine.&n;&t; * There&squot;s no contention, because the page table&n;&t; * lock only protects against kswapd anyway, and&n;&t; * even if kswapd happened to be looking at this&n;&t; * process we _want_ it to get stuck.&n;&t; */
 r_if
