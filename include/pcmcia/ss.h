@@ -776,9 +776,6 @@ id|dev
 comma
 id|u32
 id|state
-comma
-id|u32
-id|level
 )paren
 suffix:semicolon
 r_extern
@@ -790,9 +787,6 @@ r_struct
 id|device
 op_star
 id|dev
-comma
-id|u32
-id|level
 )paren
 suffix:semicolon
 macro_line|#endif /* _LINUX_SS_H */

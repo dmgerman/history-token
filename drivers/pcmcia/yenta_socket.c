@@ -4744,8 +4744,6 @@ op_amp
 id|dev-&gt;dev
 comma
 id|state
-comma
-id|SUSPEND_SAVE_STATE
 )paren
 suffix:semicolon
 r_if
@@ -4920,8 +4918,6 @@ c_func
 (paren
 op_amp
 id|dev-&gt;dev
-comma
-id|RESUME_RESTORE_STATE
 )paren
 suffix:semicolon
 )brace
