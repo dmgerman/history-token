@@ -6,6 +6,114 @@ macro_line|#include &lt;linux/config.h&gt;
 r_struct
 id|scsi_transport_template
 suffix:semicolon
+multiline_comment|/*&n; * FC Port definitions - Following FC HBAAPI guidelines&n; *&n; * Note: Not all binary values for the different fields match HBAAPI.&n; *  Instead, we use densely packed ordinal values or enums.&n; *  We get away with this as we never present the actual binary values&n; *  externally. For sysfs, we always present the string that describes&n; *  the value. Thus, an admin doesn&squot;t need a magic HBAAPI decoder ring&n; *  to understand the values. The HBAAPI user-space library is free to&n; *  convert the strings into the HBAAPI-specified binary values.&n; *&n; * Note: Not all HBAAPI-defined values are contained in the definitions&n; *  below. Those not appropriate to an fc_host (e.g. FCP initiator) have&n; *  been removed.&n; */
+multiline_comment|/*&n; * fc_port_type: If you alter this, you also need to alter scsi_transport_fc.c&n; * (for the ascii descriptions).&n; */
+DECL|enum|fc_port_type
+r_enum
+id|fc_port_type
+(brace
+DECL|enumerator|FC_PORTTYPE_UNKNOWN
+id|FC_PORTTYPE_UNKNOWN
+comma
+DECL|enumerator|FC_PORTTYPE_OTHER
+id|FC_PORTTYPE_OTHER
+comma
+DECL|enumerator|FC_PORTTYPE_NOTPRESENT
+id|FC_PORTTYPE_NOTPRESENT
+comma
+DECL|enumerator|FC_PORTTYPE_NPORT
+id|FC_PORTTYPE_NPORT
+comma
+multiline_comment|/* Attached to FPort */
+DECL|enumerator|FC_PORTTYPE_NLPORT
+id|FC_PORTTYPE_NLPORT
+comma
+multiline_comment|/* (Public) Loop w/ FLPort */
+DECL|enumerator|FC_PORTTYPE_LPORT
+id|FC_PORTTYPE_LPORT
+comma
+multiline_comment|/* (Private) Loop w/o FLPort */
+DECL|enumerator|FC_PORTTYPE_PTP
+id|FC_PORTTYPE_PTP
+comma
+multiline_comment|/* Point to Point w/ another NPort */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * fc_port_state: If you alter this, you also need to alter scsi_transport_fc.c&n; * (for the ascii descriptions).&n; */
+DECL|enum|fc_port_state
+r_enum
+id|fc_port_state
+(brace
+DECL|enumerator|FC_PORTSTATE_UNKNOWN
+id|FC_PORTSTATE_UNKNOWN
+comma
+DECL|enumerator|FC_PORTSTATE_ONLINE
+id|FC_PORTSTATE_ONLINE
+comma
+DECL|enumerator|FC_PORTSTATE_OFFLINE
+id|FC_PORTSTATE_OFFLINE
+comma
+multiline_comment|/* User has taken Port Offline */
+DECL|enumerator|FC_PORTSTATE_BYPASSED
+id|FC_PORTSTATE_BYPASSED
+comma
+DECL|enumerator|FC_PORTSTATE_DIAGNOSTICS
+id|FC_PORTSTATE_DIAGNOSTICS
+comma
+DECL|enumerator|FC_PORTSTATE_LINKDOWN
+id|FC_PORTSTATE_LINKDOWN
+comma
+DECL|enumerator|FC_PORTSTATE_ERROR
+id|FC_PORTSTATE_ERROR
+comma
+DECL|enumerator|FC_PORTSTATE_LOOPBACK
+id|FC_PORTSTATE_LOOPBACK
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* &n; * FC Classes of Service&n; * Note: values are not enumerated, as they can be &quot;or&squot;d&quot; together&n; * for reporting (e.g. report supported_classes). If you alter this list,&n; * you also need to alter scsi_transport_fc.c (for the ascii descriptions).&n; */
+DECL|macro|FC_COS_UNSPECIFIED
+mdefine_line|#define FC_COS_UNSPECIFIED&t;&t;0
+DECL|macro|FC_COS_CLASS1
+mdefine_line|#define FC_COS_CLASS1&t;&t;&t;2
+DECL|macro|FC_COS_CLASS2
+mdefine_line|#define FC_COS_CLASS2&t;&t;&t;4
+DECL|macro|FC_COS_CLASS3
+mdefine_line|#define FC_COS_CLASS3&t;&t;&t;8
+DECL|macro|FC_COS_CLASS4
+mdefine_line|#define FC_COS_CLASS4&t;&t;&t;0x10
+DECL|macro|FC_COS_CLASS6
+mdefine_line|#define FC_COS_CLASS6&t;&t;&t;0x40
+multiline_comment|/* &n; * FC Port Speeds&n; * Note: values are not enumerated, as they can be &quot;or&squot;d&quot; together&n; * for reporting (e.g. report supported_speeds). If you alter this list,&n; * you also need to alter scsi_transport_fc.c (for the ascii descriptions).&n; */
+DECL|macro|FC_PORTSPEED_UNKNOWN
+mdefine_line|#define FC_PORTSPEED_UNKNOWN&t;&t;0 /* Unknown - transceiver&n;&t;&t;&t;&t;&t;     incapable of reporting */
+DECL|macro|FC_PORTSPEED_1GBIT
+mdefine_line|#define FC_PORTSPEED_1GBIT&t;&t;1
+DECL|macro|FC_PORTSPEED_2GBIT
+mdefine_line|#define FC_PORTSPEED_2GBIT&t;&t;2
+DECL|macro|FC_PORTSPEED_10GBIT
+mdefine_line|#define FC_PORTSPEED_10GBIT&t;&t;4
+DECL|macro|FC_PORTSPEED_4GBIT
+mdefine_line|#define FC_PORTSPEED_4GBIT&t;&t;8
+DECL|macro|FC_PORTSPEED_NOT_NEGOTIATED
+mdefine_line|#define FC_PORTSPEED_NOT_NEGOTIATED&t;(1 &lt;&lt; 15) /* Speed not established */
+multiline_comment|/*&n; * fc_tgtid_binding_type: If you alter this, you also need to alter&n; * scsi_transport_fc.c (for the ascii descriptions).&n; */
+DECL|enum|fc_tgtid_binding_type
+r_enum
+id|fc_tgtid_binding_type
+(brace
+DECL|enumerator|FC_TGTID_BIND_BY_WWPN
+id|FC_TGTID_BIND_BY_WWPN
+comma
+DECL|enumerator|FC_TGTID_BIND_BY_WWNN
+id|FC_TGTID_BIND_BY_WWNN
+comma
+DECL|enumerator|FC_TGTID_BIND_BY_ID
+id|FC_TGTID_BIND_BY_ID
+comma
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * FC Remote Port (Target) Attributes&n; */
 DECL|struct|fc_starget_attrs
 r_struct
 id|fc_starget_attrs
@@ -16,15 +124,15 @@ r_int
 id|port_id
 suffix:semicolon
 DECL|member|node_name
-r_uint64
+id|u64
 id|node_name
 suffix:semicolon
 DECL|member|port_name
-r_uint64
+id|u64
 id|port_name
 suffix:semicolon
 DECL|member|dev_loss_tmo
-r_uint32
+id|u32
 id|dev_loss_tmo
 suffix:semicolon
 multiline_comment|/* Remote Port loss timeout in seconds. */
@@ -53,97 +161,174 @@ id|fc_host_statistics
 (brace
 multiline_comment|/* port statistics */
 DECL|member|seconds_since_last_reset
-r_uint64
+id|u64
 id|seconds_since_last_reset
 suffix:semicolon
 DECL|member|tx_frames
-r_uint64
+id|u64
 id|tx_frames
 suffix:semicolon
 DECL|member|tx_words
-r_uint64
+id|u64
 id|tx_words
 suffix:semicolon
 DECL|member|rx_frames
-r_uint64
+id|u64
 id|rx_frames
 suffix:semicolon
 DECL|member|rx_words
-r_uint64
+id|u64
 id|rx_words
 suffix:semicolon
 DECL|member|lip_count
-r_uint64
+id|u64
 id|lip_count
 suffix:semicolon
 DECL|member|nos_count
-r_uint64
+id|u64
 id|nos_count
 suffix:semicolon
 DECL|member|error_frames
-r_uint64
+id|u64
 id|error_frames
 suffix:semicolon
 DECL|member|dumped_frames
-r_uint64
+id|u64
 id|dumped_frames
 suffix:semicolon
 DECL|member|link_failure_count
-r_uint64
+id|u64
 id|link_failure_count
 suffix:semicolon
 DECL|member|loss_of_sync_count
-r_uint64
+id|u64
 id|loss_of_sync_count
 suffix:semicolon
 DECL|member|loss_of_signal_count
-r_uint64
+id|u64
 id|loss_of_signal_count
 suffix:semicolon
 DECL|member|prim_seq_protocol_err_count
-r_uint64
+id|u64
 id|prim_seq_protocol_err_count
 suffix:semicolon
 DECL|member|invalid_tx_word_count
-r_uint64
+id|u64
 id|invalid_tx_word_count
 suffix:semicolon
 DECL|member|invalid_crc_count
-r_uint64
+id|u64
 id|invalid_crc_count
 suffix:semicolon
 multiline_comment|/* fc4 statistics  (only FCP supported currently) */
 DECL|member|fcp_input_requests
-r_uint64
+id|u64
 id|fcp_input_requests
 suffix:semicolon
 DECL|member|fcp_output_requests
-r_uint64
+id|u64
 id|fcp_output_requests
 suffix:semicolon
 DECL|member|fcp_control_requests
-r_uint64
+id|u64
 id|fcp_control_requests
 suffix:semicolon
 DECL|member|fcp_input_megabytes
-r_uint64
+id|u64
 id|fcp_input_megabytes
 suffix:semicolon
 DECL|member|fcp_output_megabytes
-r_uint64
+id|u64
 id|fcp_output_megabytes
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * FC Local Port (Host) Attributes&n; *&n; * Attributes are based on HBAAPI V2.0 definitions.&n; * Note: OSDeviceName is determined by user-space library&n; *&n; * Fixed attributes are not expected to change. The driver is&n; * expected to set these values after successfully calling scsi_add_host().&n; * The transport fully manages all get functions w/o driver interaction.&n; *&n; * Dynamic attributes are expected to change. The driver participates&n; * in all get/set operations via functions provided by the driver.&n; *&n; * Private attributes are transport-managed values. They are fully&n; * managed by the transport w/o driver interaction.&n; */
+DECL|macro|FC_FC4_LIST_SIZE
+mdefine_line|#define FC_FC4_LIST_SIZE&t;&t;32
+DECL|macro|FC_SYMBOLIC_NAME_SIZE
+mdefine_line|#define FC_SYMBOLIC_NAME_SIZE&t;&t;256
 DECL|struct|fc_host_attrs
 r_struct
 id|fc_host_attrs
 (brace
+multiline_comment|/* Fixed Attributes */
+DECL|member|node_name
+id|u64
+id|node_name
+suffix:semicolon
+DECL|member|port_name
+id|u64
+id|port_name
+suffix:semicolon
+DECL|member|supported_classes
+id|u32
+id|supported_classes
+suffix:semicolon
+DECL|member|supported_fc4s
+id|u8
+id|supported_fc4s
+(braket
+id|FC_FC4_LIST_SIZE
+)braket
+suffix:semicolon
+DECL|member|symbolic_name
+r_char
+id|symbolic_name
+(braket
+id|FC_SYMBOLIC_NAME_SIZE
+)braket
+suffix:semicolon
+DECL|member|supported_speeds
+id|u32
+id|supported_speeds
+suffix:semicolon
+DECL|member|maxframe_size
+id|u32
+id|maxframe_size
+suffix:semicolon
+multiline_comment|/* Dynamic Attributes */
+DECL|member|port_id
+id|u32
+id|port_id
+suffix:semicolon
+DECL|member|port_type
+r_enum
+id|fc_port_type
+id|port_type
+suffix:semicolon
+DECL|member|port_state
+r_enum
+id|fc_port_state
+id|port_state
+suffix:semicolon
+DECL|member|active_fc4s
+id|u8
+id|active_fc4s
+(braket
+id|FC_FC4_LIST_SIZE
+)braket
+suffix:semicolon
+DECL|member|speed
+id|u32
+id|speed
+suffix:semicolon
+DECL|member|fabric_name
+id|u64
+id|fabric_name
+suffix:semicolon
 DECL|member|link_down_tmo
-r_uint32
+id|u32
 id|link_down_tmo
 suffix:semicolon
 multiline_comment|/* Link Down timeout in seconds. */
+multiline_comment|/* Private (Transport-managed) Attributes */
+DECL|member|tgtid_bind_type
+r_enum
+id|fc_tgtid_binding_type
+id|tgtid_bind_type
+suffix:semicolon
+multiline_comment|/* internal data */
 DECL|member|link_down_work
 r_struct
 id|work_struct
@@ -151,8 +336,36 @@ id|link_down_work
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|fc_host_node_name
+mdefine_line|#define fc_host_node_name(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;node_name)
+DECL|macro|fc_host_port_name
+mdefine_line|#define fc_host_port_name(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;port_name)
+DECL|macro|fc_host_supported_classes
+mdefine_line|#define fc_host_supported_classes(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;supported_classes)
+DECL|macro|fc_host_supported_fc4s
+mdefine_line|#define fc_host_supported_fc4s(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;supported_fc4s)
+DECL|macro|fc_host_symbolic_name
+mdefine_line|#define fc_host_symbolic_name(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;symbolic_name)
+DECL|macro|fc_host_supported_speeds
+mdefine_line|#define fc_host_supported_speeds(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;supported_speeds)
+DECL|macro|fc_host_maxframe_size
+mdefine_line|#define fc_host_maxframe_size(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;maxframe_size)
+DECL|macro|fc_host_port_id
+mdefine_line|#define fc_host_port_id(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;port_id)
+DECL|macro|fc_host_port_type
+mdefine_line|#define fc_host_port_type(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;port_type)
+DECL|macro|fc_host_port_state
+mdefine_line|#define fc_host_port_state(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;port_state)
+DECL|macro|fc_host_active_fc4s
+mdefine_line|#define fc_host_active_fc4s(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;active_fc4s)
+DECL|macro|fc_host_speed
+mdefine_line|#define fc_host_speed(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;speed)
+DECL|macro|fc_host_fabric_name
+mdefine_line|#define fc_host_fabric_name(x)&t;&bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;fabric_name)
 DECL|macro|fc_host_link_down_tmo
 mdefine_line|#define fc_host_link_down_tmo(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;link_down_tmo)
+DECL|macro|fc_host_tgtid_bind_type
+mdefine_line|#define fc_host_tgtid_bind_type(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;tgtid_bind_type)
 DECL|macro|fc_host_link_down_work
 mdefine_line|#define fc_host_link_down_work(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;link_down_work)
 multiline_comment|/* The functions by which the transport class and the driver communicate */
@@ -219,7 +432,79 @@ r_struct
 id|scsi_target
 op_star
 comma
-r_uint32
+id|u32
+)paren
+suffix:semicolon
+DECL|member|get_host_port_id
+r_void
+(paren
+op_star
+id|get_host_port_id
+)paren
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+DECL|member|get_host_port_type
+r_void
+(paren
+op_star
+id|get_host_port_type
+)paren
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+DECL|member|get_host_port_state
+r_void
+(paren
+op_star
+id|get_host_port_state
+)paren
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+DECL|member|get_host_active_fc4s
+r_void
+(paren
+op_star
+id|get_host_active_fc4s
+)paren
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+DECL|member|get_host_speed
+r_void
+(paren
+op_star
+id|get_host_speed
+)paren
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+DECL|member|get_host_fabric_name
+r_void
+(paren
+op_star
+id|get_host_fabric_name
+)paren
+(paren
+r_struct
+id|Scsi_Host
+op_star
 )paren
 suffix:semicolon
 DECL|member|get_host_link_down_tmo
@@ -245,7 +530,7 @@ r_struct
 id|Scsi_Host
 op_star
 comma
-r_uint32
+id|u32
 )paren
 suffix:semicolon
 DECL|member|get_fc_host_stats
@@ -303,6 +588,99 @@ id|show_starget_dev_loss_tmo
 suffix:colon
 l_int|1
 suffix:semicolon
+multiline_comment|/* host fixed attributes */
+DECL|member|show_host_node_name
+r_int
+r_int
+id|show_host_node_name
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_port_name
+r_int
+r_int
+id|show_host_port_name
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_supported_classes
+r_int
+r_int
+id|show_host_supported_classes
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_supported_fc4s
+r_int
+r_int
+id|show_host_supported_fc4s
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_symbolic_name
+r_int
+r_int
+id|show_host_symbolic_name
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_supported_speeds
+r_int
+r_int
+id|show_host_supported_speeds
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_maxframe_size
+r_int
+r_int
+id|show_host_maxframe_size
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* host dynamic attributes */
+DECL|member|show_host_port_id
+r_int
+r_int
+id|show_host_port_id
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_port_type
+r_int
+r_int
+id|show_host_port_type
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_port_state
+r_int
+r_int
+id|show_host_port_state
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_active_fc4s
+r_int
+r_int
+id|show_host_active_fc4s
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_speed
+r_int
+r_int
+id|show_host_speed
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_host_fabric_name
+r_int
+r_int
+id|show_host_fabric_name
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|show_host_link_down_tmo
 r_int
 r_int
@@ -310,7 +688,6 @@ id|show_host_link_down_tmo
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Private Attributes */
 )brace
 suffix:semicolon
 r_struct
