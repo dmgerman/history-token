@@ -1,24 +1,6 @@
-multiline_comment|/* &n; *&n; * SNI64 specific PCI support for SNI IO.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1997, 1998, 2000-2003 Silicon Graphics, Inc.  All rights reserved.&n; */
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/sn/types.h&gt;
-macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
-macro_line|#include &lt;asm/sn/driver.h&gt;
-macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/param.h&gt;
-macro_line|#include &lt;asm/sn/pio.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
-macro_line|#include &lt;asm/sn/sn_private.h&gt;
-macro_line|#include &lt;asm/sn/addrs.h&gt;
+multiline_comment|/* &n; * SNI64 specific PCI support for SNI IO.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1997, 1998, 2000-2003 Silicon Graphics, Inc.  All rights reserved.&n; */
 macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/hcl_util.h&gt;
-macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
-macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
-macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 multiline_comment|/*&n; * These routines are only used during sn_pci_init for probing each bus, and&n; * can probably be removed with a little more cleanup now that the SAL routines&n; * work on sn2.&n; */
 r_extern
 id|vertex_hdl_t

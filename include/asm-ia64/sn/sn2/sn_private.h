@@ -52,14 +52,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|set_master_bridge_base
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|check_nasid_equiv
 c_func

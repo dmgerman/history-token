@@ -26,14 +26,6 @@ c_func
 id|nasid_t
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|iograph_early_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|master_nasid
 id|nasid_t
 id|master_nasid
@@ -48,64 +40,6 @@ op_assign
 id|INVALID_NASID
 suffix:semicolon
 multiline_comment|/* This is the master base I/O nasid */
-multiline_comment|/*&n; * mlreset(void)&n; * &t;very early machine reset - at this point NO interrupts have been&n; * &t;enabled; nor is memory, tlb, p0, etc setup.&n; *&n; * &t;slave is zero when mlreset is called for the master processor and&n; *&t;is nonzero thereafter.&n; */
-r_void
-DECL|function|mlreset
-id|mlreset
-c_func
-(paren
-r_int
-id|slave
-)paren
-(brace
-multiline_comment|/*&n;&t; * We are the master cpu and node.&n;&t; */
-id|master_nasid
-op_assign
-id|get_nasid
-c_func
-(paren
-)paren
-suffix:semicolon
-id|set_master_bridge_base
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* We&squot;re the master processor */
-id|master_procid
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-id|master_nasid
-op_assign
-id|cpuid_to_nasid
-c_func
-(paren
-id|master_procid
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * master_nasid we get back better be same as one from&n;&t; * get_nasid()&n;&t; */
-id|ASSERT_ALWAYS
-c_func
-(paren
-id|master_nasid
-op_eq
-id|get_nasid
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* early initialization of iograph */
-id|iograph_early_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* XXX - Move the meat of this to intr.c ? */
 multiline_comment|/*&n; * Set up the platform-dependent fields in the nodepda.&n; */
 DECL|function|init_platform_nodepda
