@@ -282,9 +282,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs: shutting down&bslash;n&quot;
-)paren
+l_string|&quot;shutting down&quot;
 )paren
 suffix:semicolon
 )brace
@@ -809,11 +807,9 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs: starting up, sbi = %p&bslash;n&quot;
+l_string|&quot;starting up, sbi = %p&quot;
 comma
 id|sbi
-)paren
 )paren
 suffix:semicolon
 id|memset
@@ -1053,13 +1049,11 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs: pipe fd = %d, pgrp = %u&bslash;n&quot;
+l_string|&quot;pipe fd = %d, pgrp = %u&quot;
 comma
 id|pipefd
 comma
 id|sbi-&gt;oz_pgrp
-)paren
 )paren
 suffix:semicolon
 id|pipe

@@ -933,6 +933,9 @@ r_struct
 id|audit_context
 suffix:semicolon
 multiline_comment|/* See audit.c */
+r_struct
+id|mempolicy
+suffix:semicolon
 DECL|struct|task_struct
 r_struct
 id|task_struct
@@ -1485,6 +1488,19 @@ op_star
 id|last_siginfo
 suffix:semicolon
 multiline_comment|/* For ptrace use.  */
+macro_line|#ifdef CONFIG_NUMA
+DECL|member|mempolicy
+r_struct
+id|mempolicy
+op_star
+id|mempolicy
+suffix:semicolon
+DECL|member|il_next
+r_int
+id|il_next
+suffix:semicolon
+multiline_comment|/* could be shared with used_math */
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|process_group

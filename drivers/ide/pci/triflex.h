@@ -61,11 +61,6 @@ op_assign
 id|init_chipset_triflex
 comma
 dot
-id|init_iops
-op_assign
-l_int|NULL
-comma
-dot
 id|init_hwif
 op_assign
 id|init_hwif_triflex
@@ -105,14 +100,6 @@ dot
 id|bootable
 op_assign
 id|ON_BOARD
-comma
-)brace
-comma
-(brace
-dot
-id|bootable
-op_assign
-id|EOL
 comma
 )brace
 )brace

@@ -14,8 +14,9 @@ DECL|variable|fmt_hex
 r_static
 r_const
 r_char
-op_star
 id|fmt_hex
+(braket
+)braket
 op_assign
 l_string|&quot;%#x&bslash;n&quot;
 suffix:semicolon
@@ -23,8 +24,9 @@ DECL|variable|fmt_dec
 r_static
 r_const
 r_char
-op_star
 id|fmt_dec
+(braket
+)braket
 op_assign
 l_string|&quot;%d&bslash;n&quot;
 suffix:semicolon
@@ -32,8 +34,9 @@ DECL|variable|fmt_ulong
 r_static
 r_const
 r_char
-op_star
 id|fmt_ulong
+(braket
+)braket
 op_assign
 l_string|&quot;%lu&bslash;n&quot;
 suffix:semicolon

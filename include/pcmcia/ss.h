@@ -415,6 +415,12 @@ id|InUse
 comma
 id|Config
 suffix:semicolon
+DECL|member|res
+r_struct
+id|resource
+op_star
+id|res
+suffix:semicolon
 DECL|typedef|io_window_t
 )brace
 id|io_window_t

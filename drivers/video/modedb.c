@@ -2733,10 +2733,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/**&n; *&t;__fb_try_mode - test a video mode&n; *&t;@var: frame buffer user defined part of display&n; *&t;@info: frame buffer info structure&n; *&t;@mode: frame buffer video mode structure&n; *&t;@bpp: color depth in bits per pixel&n; *&n; *&t;Tries a video mode to test it&squot;s validity for device @info.&n; *&n; *&t;Returns 1 on success.&n; *&n; */
-DECL|function|__fb_try_mode
+multiline_comment|/**&n; *&t;fb_try_mode - test a video mode&n; *&t;@var: frame buffer user defined part of display&n; *&t;@info: frame buffer info structure&n; *&t;@mode: frame buffer video mode structure&n; *&t;@bpp: color depth in bits per pixel&n; *&n; *&t;Tries a video mode to test it&squot;s validity for device @info.&n; *&n; *&t;Returns 1 on success.&n; *&n; */
+DECL|function|fb_try_mode
 r_int
-id|__fb_try_mode
+id|fb_try_mode
 c_func
 (paren
 r_struct
@@ -2763,7 +2763,7 @@ id|bpp
 r_int
 id|err
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|DPRINTK
 c_func
@@ -2877,7 +2877,6 @@ op_complement
 id|FB_ACTIVATE_TEST
 suffix:semicolon
 r_return
-op_logical_neg
 id|err
 suffix:semicolon
 )brace
@@ -3324,7 +3323,8 @@ op_eq
 id|refresh
 )paren
 op_logical_and
-id|__fb_try_mode
+op_logical_neg
+id|fb_try_mode
 c_func
 (paren
 id|var
@@ -3356,7 +3356,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__fb_try_mode
+op_logical_neg
+id|fb_try_mode
 c_func
 (paren
 id|var
@@ -3394,7 +3395,8 @@ op_increment
 r_if
 c_cond
 (paren
-id|__fb_try_mode
+op_logical_neg
+id|fb_try_mode
 c_func
 (paren
 id|var

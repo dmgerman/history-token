@@ -6207,12 +6207,6 @@ id|info-&gt;fbops
 op_eq
 op_amp
 id|atyfb_ops
-op_logical_and
-id|info-&gt;display_fg
-op_logical_and
-id|info-&gt;display_fg-&gt;vc_num
-op_eq
-id|i
 )paren
 (brace
 id|par

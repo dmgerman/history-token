@@ -227,9 +227,8 @@ suffix:semicolon
 DECL|member|gm_pfs
 r_struct
 id|pf_desc
+op_star
 id|gm_pfs
-(braket
-)braket
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -20,10 +20,10 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* #define DEBUG */
 macro_line|#ifdef DEBUG
 DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(D) do{ printk(&quot;pid %d: &quot;, current-&gt;pid); printk D; } while(0)
+mdefine_line|#define DPRINTK(fmt,args...) do { printk(KERN_DEBUG &quot;pid %d: %s: &quot; fmt &quot;&bslash;n&quot; , current-&gt;pid , __FUNCTION__ , ##args); } while(0)
 macro_line|#else
 DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(D) do {} while(0)
+mdefine_line|#define DPRINTK(fmt,args...) do {} while(0)
 macro_line|#endif
 DECL|macro|AUTOFS_SUPER_MAGIC
 mdefine_line|#define AUTOFS_SUPER_MAGIC 0x0187

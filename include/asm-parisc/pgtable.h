@@ -1298,12 +1298,6 @@ macro_line|#endif
 )brace
 DECL|macro|pte_same
 mdefine_line|#define pte_same(A,B)&t;(pte_val(A) == pte_val(B))
-DECL|typedef|pte_addr_t
-r_typedef
-id|pte_t
-op_star
-id|pte_addr_t
-suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range remap_page_range

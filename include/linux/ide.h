@@ -5405,8 +5405,6 @@ DECL|macro|NOAUTODMA
 mdefine_line|#define NOAUTODMA 1
 DECL|macro|AUTODMA
 mdefine_line|#define AUTODMA 2
-DECL|macro|EOL
-mdefine_line|#define EOL 255
 DECL|struct|ide_pci_enablebit_s
 r_typedef
 r_struct

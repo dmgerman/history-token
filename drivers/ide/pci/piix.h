@@ -47,7 +47,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|DECLARE_PIIX_DEV
-mdefine_line|#define DECLARE_PIIX_DEV(pci_id, name_str) &bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.vendor&t;&t;= PCI_VENDOR_ID_INTEL,&t;&bslash;&n;&t;&t;.device&t;&t;= pci_id,&t;&t;&bslash;&n;&t;&t;.name&t;&t;= name_str,&t;&t;&bslash;&n;&t;&t;.init_setup&t;= init_setup_piix,&t;&bslash;&n;&t;&t;.init_chipset&t;= init_chipset_piix,&t;&bslash;&n;&t;&t;.init_iops&t;= NULL,&t;&t;&t;&bslash;&n;&t;&t;.init_hwif&t;= init_hwif_piix,&t;&bslash;&n;&t;&t;.channels&t;= 2,&t;&t;&t;&bslash;&n;&t;&t;.autodma&t;= AUTODMA,&t;&t;&bslash;&n;&t;&t;.enablebits&t;= {{0x41,0x80,0x80}, {0x43,0x80,0x80}}, &bslash;&n;&t;&t;.bootable&t;= ON_BOARD,&t;&t;&bslash;&n;&t;&t;.extra&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;}
+mdefine_line|#define DECLARE_PIIX_DEV(pci_id, name_str) &bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.vendor&t;&t;= PCI_VENDOR_ID_INTEL,&t;&bslash;&n;&t;&t;.device&t;&t;= pci_id,&t;&t;&bslash;&n;&t;&t;.name&t;&t;= name_str,&t;&t;&bslash;&n;&t;&t;.init_setup&t;= init_setup_piix,&t;&bslash;&n;&t;&t;.init_chipset&t;= init_chipset_piix,&t;&bslash;&n;&t;&t;.init_hwif&t;= init_hwif_piix,&t;&bslash;&n;&t;&t;.channels&t;= 2,&t;&t;&t;&bslash;&n;&t;&t;.autodma&t;= AUTODMA,&t;&t;&bslash;&n;&t;&t;.enablebits&t;= {{0x41,0x80,0x80}, {0x43,0x80,0x80}}, &bslash;&n;&t;&t;.bootable&t;= ON_BOARD,&t;&t;&bslash;&n;&t;}
 multiline_comment|/*&n; *&t;Table of the various PIIX capability blocks&n; *&n; */
 DECL|variable|__devinitdata
 r_static
@@ -99,16 +99,6 @@ op_assign
 id|init_setup_piix
 comma
 dot
-id|init_chipset
-op_assign
-l_int|NULL
-comma
-dot
-id|init_iops
-op_assign
-l_int|NULL
-comma
-dot
 id|init_hwif
 op_assign
 id|init_hwif_piix
@@ -148,11 +138,6 @@ dot
 id|bootable
 op_assign
 id|ON_BOARD
-comma
-dot
-id|extra
-op_assign
-l_int|0
 comma
 )brace
 comma
@@ -317,34 +302,6 @@ id|PCI_DEVICE_ID_INTEL_ICH6_19
 comma
 l_string|&quot;ICH6&quot;
 )paren
-comma
-(brace
-dot
-id|vendor
-op_assign
-l_int|0
-comma
-dot
-id|device
-op_assign
-l_int|0
-comma
-dot
-id|channels
-op_assign
-l_int|0
-comma
-dot
-id|init_setup
-op_assign
-l_int|NULL
-comma
-dot
-id|bootable
-op_assign
-id|EOL
-comma
-)brace
 )brace
 suffix:semicolon
 macro_line|#endif /* PIIX_H */

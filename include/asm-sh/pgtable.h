@@ -875,12 +875,6 @@ mdefine_line|#define pgoff_to_pte(off)&t;((pte_t) { (off) | _PAGE_FILE })
 multiline_comment|/*&n; * Routines for update of PTE &n; *&n; * We just can use generic implementation, as SuperH has no SMP feature.&n; * (We needed atomic implementation for SMP)&n; *&n; */
 DECL|macro|pte_same
 mdefine_line|#define pte_same(A,B)&t;(pte_val(A) == pte_val(B))
-DECL|typedef|pte_addr_t
-r_typedef
-id|pte_t
-op_star
-id|pte_addr_t
-suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)

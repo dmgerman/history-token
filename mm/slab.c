@@ -46,10 +46,10 @@ macro_line|#endif
 multiline_comment|/* Legal flag mask for kmem_cache_create(). */
 macro_line|#if DEBUG
 DECL|macro|CREATE_MASK
-macro_line|# define CREATE_MASK&t;(SLAB_DEBUG_INITIAL | SLAB_RED_ZONE | &bslash;&n;&t;&t;&t; SLAB_POISON | SLAB_HWCACHE_ALIGN | &bslash;&n;&t;&t;&t; SLAB_NO_REAP | SLAB_CACHE_DMA | &bslash;&n;&t;&t;&t; SLAB_MUST_HWCACHE_ALIGN | SLAB_STORE_USER | &bslash;&n;&t;&t;&t; SLAB_RECLAIM_ACCOUNT )
+macro_line|# define CREATE_MASK&t;(SLAB_DEBUG_INITIAL | SLAB_RED_ZONE | &bslash;&n;&t;&t;&t; SLAB_POISON | SLAB_HWCACHE_ALIGN | &bslash;&n;&t;&t;&t; SLAB_NO_REAP | SLAB_CACHE_DMA | &bslash;&n;&t;&t;&t; SLAB_MUST_HWCACHE_ALIGN | SLAB_STORE_USER | &bslash;&n;&t;&t;&t; SLAB_RECLAIM_ACCOUNT | SLAB_PANIC)
 macro_line|#else
 DECL|macro|CREATE_MASK
-macro_line|# define CREATE_MASK&t;(SLAB_HWCACHE_ALIGN | SLAB_NO_REAP | &bslash;&n;&t;&t;&t; SLAB_CACHE_DMA | SLAB_MUST_HWCACHE_ALIGN | &bslash;&n;&t;&t;&t; SLAB_RECLAIM_ACCOUNT)
+macro_line|# define CREATE_MASK&t;(SLAB_HWCACHE_ALIGN | SLAB_NO_REAP | &bslash;&n;&t;&t;&t; SLAB_CACHE_DMA | SLAB_MUST_HWCACHE_ALIGN | &bslash;&n;&t;&t;&t; SLAB_RECLAIM_ACCOUNT | SLAB_PANIC)
 macro_line|#endif
 multiline_comment|/*&n; * kmem_bufctl_t:&n; *&n; * Bufctl&squot;s are used for linking objs within a slab&n; * linked offsets.&n; *&n; * This implementation relies on &quot;struct page&quot; for locating the cache &amp;&n; * slab an object belongs to.&n; * This allows the bufctl structure to be small (one int), but limits&n; * the number of objects a slab (not a cache) can contain when off-slab&n; * bufctls are used. The limit is the size of the largest general cache&n; * that does not use off-slab slabs.&n; * For 32bit archs with 4 kB pages, is this 56.&n; * This is not serious, as it is only for large objects, when it is unwise&n; * to have too many per slab.&n; * Note: This limit can be raised by introducing a general cache whose size&n; * is less than 512 (PAGE_SIZE&lt;&lt;3), but greater than 256.&n; */
 DECL|macro|BUFCTL_END
@@ -4931,6 +4931,26 @@ c_func
 suffix:semicolon
 id|opps
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cachep
+op_logical_and
+(paren
+id|flags
+op_amp
+id|SLAB_PANIC
+)paren
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;kmem_cache_create(): failed to create slab `%s&squot;&bslash;n&quot;
+comma
+id|name
+)paren
+suffix:semicolon
 r_return
 id|cachep
 suffix:semicolon

@@ -497,8 +497,6 @@ op_star
 id|cookie
 )paren
 suffix:semicolon
-DECL|macro|HAVE_ARCH_SYS_PAUSE
-mdefine_line|#define HAVE_ARCH_SYS_PAUSE
 macro_line|#endif /* !(__KERNEL__) */
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(_ASMSPARC64_SIGNAL_H) */

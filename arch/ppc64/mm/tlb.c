@@ -9,7 +9,6 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
-macro_line|#include &lt;asm/rmap.h&gt;
 id|DEFINE_PER_CPU
 c_func
 (paren
@@ -116,10 +115,21 @@ id|ptepage-&gt;mapping
 suffix:semicolon
 id|addr
 op_assign
-id|ptep_to_address
-c_func
+id|ptepage-&gt;index
+op_plus
 (paren
+(paren
+(paren
+r_int
+r_int
+)paren
 id|ptep
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
+op_star
+id|PTRS_PER_PTE
 )paren
 suffix:semicolon
 r_if

@@ -204,7 +204,6 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
-macro_line|#include &lt;linux/mii.h&gt;
 multiline_comment|/* enable PIO instead of MMIO, if CONFIG_EEPRO100_PIO is selected */
 macro_line|#ifdef CONFIG_EEPRO100_PIO
 DECL|macro|USE_IO

@@ -299,6 +299,14 @@ l_int|2048
 )brace
 comma
 (brace
+l_int|0x60
+comma
+id|LVL_1_DATA
+comma
+l_int|16
+)brace
+comma
+(brace
 l_int|0x66
 comma
 id|LVL_1_DATA

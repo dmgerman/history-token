@@ -379,11 +379,9 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_root_readdir called, filp-&gt;f_pos = %lld&bslash;n&quot;
+l_string|&quot;called, filp-&gt;f_pos = %lld&quot;
 comma
 id|file-&gt;f_pos
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Don&squot;t set reghost flag if:&n;&t; * 1) f_pos is larger than zero -- we&squot;ve already been here.&n;&t; * 2) we haven&squot;t even enabled reghosting in the 1st place.&n;&t; * 3) this is the daemon doing a readdir&n;&t; */
@@ -405,11 +403,9 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_root_readdir: needs_reghost = %d&bslash;n&quot;
+l_string|&quot;needs_reghost = %d&quot;
 comma
 id|sbi-&gt;needs_reghost
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -832,8 +828,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_dir_open: file=%p dentry=%p %.*s&bslash;n&quot;
+l_string|&quot;file=%p dentry=%p %.*s&quot;
 comma
 id|file
 comma
@@ -842,7 +837,6 @@ comma
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -870,9 +864,7 @@ id|dentry
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_dir_open: dentry busy&bslash;n&quot;
-)paren
+l_string|&quot;dentry busy&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1111,8 +1103,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_dir_close: file=%p dentry=%p %.*s&bslash;n&quot;
+l_string|&quot;file=%p dentry=%p %.*s&quot;
 comma
 id|file
 comma
@@ -1121,7 +1112,6 @@ comma
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1149,9 +1139,7 @@ id|dentry
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_dir_close: dentry busy&bslash;n&quot;
-)paren
+l_string|&quot;dentry busy&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1248,8 +1236,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_readdir: file=%p dentry=%p %.*s&bslash;n&quot;
+l_string|&quot;file=%p dentry=%p %.*s&quot;
 comma
 id|file
 comma
@@ -1258,7 +1245,6 @@ comma
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1286,9 +1272,7 @@ id|dentry
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_readdir: dentry busy&bslash;n&quot;
-)paren
+l_string|&quot;dentry busy&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1439,15 +1423,13 @@ id|AUTOFS_INF_EXPIRING
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;try_to_fill_entry: waiting for expire %p name=%.*s&bslash;n&quot;
+l_string|&quot;waiting for expire %p name=%.*s&quot;
 comma
 id|dentry
 comma
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 id|status
@@ -1465,11 +1447,9 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;try_to_fill_entry: expire done status=%d&bslash;n&quot;
+l_string|&quot;expire done status=%d&quot;
 comma
 id|status
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -1479,8 +1459,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;try_to_fill_entry: dentry=%p %.*s ino=%p&bslash;n&quot;
+l_string|&quot;dentry=%p %.*s ino=%p&quot;
 comma
 id|dentry
 comma
@@ -1489,7 +1468,6 @@ comma
 id|dentry-&gt;d_name.name
 comma
 id|dentry-&gt;d_inode
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for a pending mount, triggering one if there isn&squot;t one already */
@@ -1504,13 +1482,11 @@ l_int|NULL
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;try_to_fill_entry: waiting for mount name=%.*s&bslash;n&quot;
+l_string|&quot;waiting for mount name=%.*s&quot;
 comma
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 id|status
@@ -1528,11 +1504,9 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;try_to_fill_entry: mount done status=%d&bslash;n&quot;
+l_string|&quot;mount done status=%d&quot;
 comma
 id|status
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1617,13 +1591,11 @@ id|current-&gt;link_count
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;try_to_fill_entry: waiting for mount name=%.*s&bslash;n&quot;
+l_string|&quot;waiting for mount name=%.*s&quot;
 comma
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 id|spin_lock
@@ -1659,11 +1631,9 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;try_to_fill_entry: mount done status=%d&bslash;n&quot;
+l_string|&quot;mount done status=%d&quot;
 comma
 id|status
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1883,15 +1853,13 @@ id|dentry-&gt;d_subdirs
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_root_revalidate: dentry=%p %.*s, emptydir&bslash;n&quot;
+l_string|&quot;dentry=%p %.*s, emptydir&quot;
 comma
 id|dentry
 comma
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -1969,11 +1937,9 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_dentry_release: releasing %p&bslash;n&quot;
+l_string|&quot;releasing %p&quot;
 comma
 id|de
-)paren
 )paren
 suffix:semicolon
 id|inf
@@ -2079,8 +2045,7 @@ macro_line|#if 0
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_dir_lookup: iignoring lookup of %.*s/%.*s&bslash;n&quot;
+l_string|&quot;ignoring lookup of %.*s/%.*s&quot;
 comma
 id|dentry-&gt;d_parent-&gt;d_name.len
 comma
@@ -2089,7 +2054,6 @@ comma
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2145,13 +2109,11 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_root_lookup: name = %.*s&bslash;n&quot;
+l_string|&quot;name = %.*s&quot;
 comma
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2189,8 +2151,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_lookup: pid = %u, pgrp = %u, catatonic = %d, oz_mode = %d&bslash;n&quot;
+l_string|&quot;pid = %u, pgrp = %u, catatonic = %d, oz_mode = %d&quot;
 comma
 id|current-&gt;pid
 comma
@@ -2203,7 +2164,6 @@ comma
 id|sbi-&gt;catatonic
 comma
 id|oz_mode
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Mark the dentry incomplete, but add it. This is needed so&n;&t; * that the VFS layer knows about the dentry, and we can count&n;&t; * on catching any lookups through the revalidate.&n;&t; *&n;&t; * Let all the hard work be done by the revalidate function that&n;&t; * needs to be able to do this anyway..&n;&t; *&n;&t; * We need to do this before we release the directory semaphore.&n;&t; */
@@ -2425,15 +2385,13 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_dir_symlink: %s &lt;- %.*s&bslash;n&quot;
+l_string|&quot;%s &lt;- %.*s&quot;
 comma
 id|symname
 comma
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2861,15 +2819,13 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_dir_mkdir: dentry %p, creating %.*s&bslash;n&quot;
+l_string|&quot;dentry %p, creating %.*s&quot;
 comma
 id|dentry
 comma
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 id|ino
@@ -3122,11 +3078,9 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs_ask_reghost: returning %d&bslash;n&quot;
+l_string|&quot;returning %d&quot;
 comma
 id|sbi-&gt;needs_reghost
-)paren
 )paren
 suffix:semicolon
 id|status
@@ -3192,11 +3146,9 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_toggle_reghost: reghost = %d&bslash;n&quot;
+l_string|&quot;reghost = %d&quot;
 comma
 id|val
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -3257,11 +3209,9 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs_ask_umount: returning %d&bslash;n&quot;
+l_string|&quot;returning %d&quot;
 comma
 id|status
-)paren
 )paren
 suffix:semicolon
 id|status
@@ -3352,8 +3302,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_root_ioctl: cmd = 0x%08x, arg = 0x%08lx, sbi = %p, pgrp = %u&bslash;n&quot;
+l_string|&quot;cmd = 0x%08x, arg = 0x%08lx, sbi = %p, pgrp = %u&quot;
 comma
 id|cmd
 comma
@@ -3365,7 +3314,6 @@ id|process_group
 c_func
 (paren
 id|current
-)paren
 )paren
 )paren
 suffix:semicolon

@@ -224,6 +224,10 @@ suffix:semicolon
 )brace
 DECL|macro|flush_dcache_page
 mdefine_line|#define flush_dcache_page(page)&t;&t;__flush_page_to_ram(page_address(page))
+DECL|macro|flush_dcache_mmap_lock
+mdefine_line|#define flush_dcache_mmap_lock(mapping)&t;&t;do { } while (0)
+DECL|macro|flush_dcache_mmap_unlock
+mdefine_line|#define flush_dcache_mmap_unlock(mapping)&t;do { } while (0)
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma, page)&t;__flush_page_to_ram(page_address(page))
 DECL|macro|flush_icache_user_range

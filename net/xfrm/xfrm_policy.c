@@ -639,6 +639,13 @@ suffix:semicolon
 r_int
 id|dir
 suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|xp-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -873,6 +880,13 @@ id|xp
 suffix:semicolon
 id|out
 suffix:colon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|xp-&gt;lock
+)paren
+suffix:semicolon
 id|xfrm_pol_put
 c_func
 (paren

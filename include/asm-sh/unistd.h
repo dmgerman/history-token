@@ -564,6 +564,50 @@ DECL|macro|_syscall5
 mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5) &bslash;&n;type name (type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5) &bslash;&n;{ &bslash;&n;register long __sc3 __asm__ (&quot;r3&quot;) = __NR_##name; &bslash;&n;register long __sc4 __asm__ (&quot;r4&quot;) = (long) arg1; &bslash;&n;register long __sc5 __asm__ (&quot;r5&quot;) = (long) arg2; &bslash;&n;register long __sc6 __asm__ (&quot;r6&quot;) = (long) arg3; &bslash;&n;register long __sc7 __asm__ (&quot;r7&quot;) = (long) arg4; &bslash;&n;register long __sc0 __asm__ (&quot;r0&quot;) = (long) arg5; &bslash;&n;__asm__ __volatile__ (&quot;trapa&t;#0x15&quot; &bslash;&n;&t;: &quot;=z&quot; (__sc0) &bslash;&n;&t;: &quot;0&quot; (__sc0), &quot;r&quot; (__sc4), &quot;r&quot; (__sc5), &quot;r&quot; (__sc6), &quot;r&quot; (__sc7),  &bslash;&n;&t;  &quot;r&quot; (__sc3) &bslash;&n;&t;: &quot;memory&quot; ); &bslash;&n;__syscall_return(type,__sc0); &bslash;&n;}
 DECL|macro|_syscall6
 mdefine_line|#define _syscall6(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5,type6,arg6) &bslash;&n;type name (type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5, type6 arg6) &bslash;&n;{ &bslash;&n;register long __sc3 __asm__ (&quot;r3&quot;) = __NR_##name; &bslash;&n;register long __sc4 __asm__ (&quot;r4&quot;) = (long) arg1; &bslash;&n;register long __sc5 __asm__ (&quot;r5&quot;) = (long) arg2; &bslash;&n;register long __sc6 __asm__ (&quot;r6&quot;) = (long) arg3; &bslash;&n;register long __sc7 __asm__ (&quot;r7&quot;) = (long) arg4; &bslash;&n;register long __sc0 __asm__ (&quot;r0&quot;) = (long) arg5; &bslash;&n;register long __sc1 __asm__ (&quot;r1&quot;) = (long) arg6; &bslash;&n;__asm__ __volatile__ (&quot;trapa&t;#0x15&quot; &bslash;&n;&t;: &quot;=z&quot; (__sc0) &bslash;&n;&t;: &quot;0&quot; (__sc0), &quot;r&quot; (__sc4), &quot;r&quot; (__sc5), &quot;r&quot; (__sc6), &quot;r&quot; (__sc7),  &bslash;&n;&t;  &quot;r&quot; (__sc3), &quot;r&quot; (__sc1) &bslash;&n;&t;: &quot;memory&quot; ); &bslash;&n;__syscall_return(type,__sc0); &bslash;&n;}
+macro_line|#ifdef __KERNEL__
+DECL|macro|__ARCH_WANT_IPC_PARSE_VERSION
+mdefine_line|#define __ARCH_WANT_IPC_PARSE_VERSION
+DECL|macro|__ARCH_WANT_OLD_READDIR
+mdefine_line|#define __ARCH_WANT_OLD_READDIR
+DECL|macro|__ARCH_WANT_OLD_STAT
+mdefine_line|#define __ARCH_WANT_OLD_STAT
+DECL|macro|__ARCH_WANT_STAT64
+mdefine_line|#define __ARCH_WANT_STAT64
+DECL|macro|__ARCH_WANT_SYS_ALARM
+mdefine_line|#define __ARCH_WANT_SYS_ALARM
+DECL|macro|__ARCH_WANT_SYS_GETHOSTNAME
+mdefine_line|#define __ARCH_WANT_SYS_GETHOSTNAME
+DECL|macro|__ARCH_WANT_SYS_PAUSE
+mdefine_line|#define __ARCH_WANT_SYS_PAUSE
+DECL|macro|__ARCH_WANT_SYS_SGETMASK
+mdefine_line|#define __ARCH_WANT_SYS_SGETMASK
+DECL|macro|__ARCH_WANT_SYS_SIGNAL
+mdefine_line|#define __ARCH_WANT_SYS_SIGNAL
+DECL|macro|__ARCH_WANT_SYS_TIME
+mdefine_line|#define __ARCH_WANT_SYS_TIME
+DECL|macro|__ARCH_WANT_SYS_UTIME
+mdefine_line|#define __ARCH_WANT_SYS_UTIME
+DECL|macro|__ARCH_WANT_SYS_WAITPID
+mdefine_line|#define __ARCH_WANT_SYS_WAITPID
+DECL|macro|__ARCH_WANT_SYS_SOCKETCALL
+mdefine_line|#define __ARCH_WANT_SYS_SOCKETCALL
+DECL|macro|__ARCH_WANT_SYS_FADVISE64
+mdefine_line|#define __ARCH_WANT_SYS_FADVISE64
+DECL|macro|__ARCH_WANT_SYS_GETPGRP
+mdefine_line|#define __ARCH_WANT_SYS_GETPGRP
+DECL|macro|__ARCH_WANT_SYS_LLSEEK
+mdefine_line|#define __ARCH_WANT_SYS_LLSEEK
+DECL|macro|__ARCH_WANT_SYS_NICE
+mdefine_line|#define __ARCH_WANT_SYS_NICE
+DECL|macro|__ARCH_WANT_SYS_OLD_GETRLIMIT
+mdefine_line|#define __ARCH_WANT_SYS_OLD_GETRLIMIT
+DECL|macro|__ARCH_WANT_SYS_OLDUMOUNT
+mdefine_line|#define __ARCH_WANT_SYS_OLDUMOUNT
+DECL|macro|__ARCH_WANT_SYS_SIGPENDING
+mdefine_line|#define __ARCH_WANT_SYS_SIGPENDING
+DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
+mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
+macro_line|#endif
 macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

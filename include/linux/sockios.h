@@ -150,6 +150,15 @@ DECL|macro|SIOCBONDINFOQUERY
 mdefine_line|#define SIOCBONDINFOQUERY      0x8994&t;/* rtn info about bond state    */
 DECL|macro|SIOCBONDCHANGEACTIVE
 mdefine_line|#define SIOCBONDCHANGEACTIVE   0x8995   /* update to a new active slave */
+multiline_comment|/* bridge calls */
+DECL|macro|SIOCBRADDBR
+mdefine_line|#define SIOCBRADDBR     0x89a0&t;&t;/* create new bridge device     */
+DECL|macro|SIOCBRDELBR
+mdefine_line|#define SIOCBRDELBR     0x89a1&t;&t;/* remove bridge device         */
+DECL|macro|SIOCBRADDIF
+mdefine_line|#define SIOCBRADDIF&t;0x89a2&t;&t;/* add interface to bridge      */
+DECL|macro|SIOCBRDELIF
+mdefine_line|#define SIOCBRDELIF&t;0x89a3&t;&t;/* remove interface from bridge */
 multiline_comment|/* Device private ioctl calls */
 multiline_comment|/*&n; *&t;These 16 ioctls are available to devices via the do_ioctl() device&n; *&t;vector. Each device should include this file and redefine these names&n; *&t;as their own. Because these are device dependent it is a good idea&n; *&t;_NOT_ to issue them to random objects and hope.&n; *&n; *&t;THESE IOCTLS ARE _DEPRECATED_ AND WILL DISAPPEAR IN 2.5.X -DaveM&n; */
 DECL|macro|SIOCDEVPRIVATE

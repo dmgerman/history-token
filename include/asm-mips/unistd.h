@@ -1571,6 +1571,48 @@ mdefine_line|#define _syscall5(type,name,atype,a,btype,b,ctype,c,dtype,d,etype,e
 DECL|macro|_syscall6
 mdefine_line|#define _syscall6(type,name,atype,a,btype,b,ctype,c,dtype,d,etype,e,ftype,f) &bslash;&n;type name (atype a,btype b,ctype c,dtype d,etype e,ftype f) &bslash;&n;{ &bslash;&n;&t;register unsigned long __a0 asm(&quot;$4&quot;) = (unsigned long) a; &bslash;&n;&t;register unsigned long __a1 asm(&quot;$5&quot;) = (unsigned long) b; &bslash;&n;&t;register unsigned long __a2 asm(&quot;$6&quot;) = (unsigned long) c; &bslash;&n;&t;register unsigned long __a3 asm(&quot;$7&quot;) = (unsigned long) d; &bslash;&n;&t;register unsigned long __a4 asm(&quot;$8&quot;) = (unsigned long) e; &bslash;&n;&t;register unsigned long __a5 asm(&quot;$9&quot;) = (unsigned long) f; &bslash;&n;&t;unsigned long __v0; &bslash;&n;&t;&bslash;&n;&t;__asm__ volatile ( &bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;li&bslash;t$2, %7&bslash;t&bslash;t&bslash;t# &quot; #name &quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;move&bslash;t%0, $2&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.set&bslash;treorder&quot; &bslash;&n;&t;: &quot;=&amp;r&quot; (__v0), &quot;+r&quot; (__a3) &bslash;&n;&t;: &quot;r&quot; (__a0), &quot;r&quot; (__a1), &quot;r&quot; (__a2), &quot;r&quot; (__a4), &quot;r&quot; (__a5), &bslash;&n;&t;  &quot;i&quot; (__NR_##name) &bslash;&n;&t;: &quot;$2&quot;,&quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;, &quot;$12&quot;, &quot;$13&quot;, &quot;$14&quot;, &quot;$15&quot;, &quot;$24&quot;); &bslash;&n;&t;&bslash;&n;&t;if (__a3 == 0) &bslash;&n;&t;&t;return (type) __v0; &bslash;&n;&t;errno = __v0; &bslash;&n;&t;return -1; &bslash;&n;}
 macro_line|#endif /* (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64) */
+macro_line|#ifdef __KERNEL__
+DECL|macro|__ARCH_WANT_IPC_PARSE_VERSION
+mdefine_line|#define __ARCH_WANT_IPC_PARSE_VERSION
+DECL|macro|__ARCH_WANT_OLD_READDIR
+mdefine_line|#define __ARCH_WANT_OLD_READDIR
+DECL|macro|__ARCH_WANT_SYS_ALARM
+mdefine_line|#define __ARCH_WANT_SYS_ALARM
+DECL|macro|__ARCH_WANT_SYS_GETHOSTNAME
+mdefine_line|#define __ARCH_WANT_SYS_GETHOSTNAME
+DECL|macro|__ARCH_WANT_SYS_PAUSE
+mdefine_line|#define __ARCH_WANT_SYS_PAUSE
+DECL|macro|__ARCH_WANT_SYS_SGETMASK
+mdefine_line|#define __ARCH_WANT_SYS_SGETMASK
+DECL|macro|__ARCH_WANT_SYS_TIME
+mdefine_line|#define __ARCH_WANT_SYS_TIME
+DECL|macro|__ARCH_WANT_SYS_UTIME
+mdefine_line|#define __ARCH_WANT_SYS_UTIME
+DECL|macro|__ARCH_WANT_SYS_WAITPID
+mdefine_line|#define __ARCH_WANT_SYS_WAITPID
+DECL|macro|__ARCH_WANT_SYS_SOCKETCALL
+mdefine_line|#define __ARCH_WANT_SYS_SOCKETCALL
+DECL|macro|__ARCH_WANT_SYS_FADVISE64
+mdefine_line|#define __ARCH_WANT_SYS_FADVISE64
+DECL|macro|__ARCH_WANT_SYS_GETPGRP
+mdefine_line|#define __ARCH_WANT_SYS_GETPGRP
+DECL|macro|__ARCH_WANT_SYS_LLSEEK
+mdefine_line|#define __ARCH_WANT_SYS_LLSEEK
+DECL|macro|__ARCH_WANT_SYS_NICE
+mdefine_line|#define __ARCH_WANT_SYS_NICE
+DECL|macro|__ARCH_WANT_SYS_OLD_GETRLIMIT
+mdefine_line|#define __ARCH_WANT_SYS_OLD_GETRLIMIT
+DECL|macro|__ARCH_WANT_SYS_OLDUMOUNT
+mdefine_line|#define __ARCH_WANT_SYS_OLDUMOUNT
+DECL|macro|__ARCH_WANT_SYS_SIGPENDING
+mdefine_line|#define __ARCH_WANT_SYS_SIGPENDING
+DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
+mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
+macro_line|# ifndef __mips64
+DECL|macro|__ARCH_WANT_STAT64
+macro_line|#  define __ARCH_WANT_STAT64
+macro_line|# endif
+macro_line|#endif
 macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

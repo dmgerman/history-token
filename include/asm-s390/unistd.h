@@ -683,6 +683,46 @@ DECL|macro|_syscall4
 mdefine_line|#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,&bslash;&n;&t;&t;  type4,name4)&t;&t;&t;&t;     &bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4) {  &bslash;&n;&t;register type1 __arg1 asm(&quot;2&quot;) = arg1;&t;&t;     &bslash;&n;&t;register type2 __arg2 asm(&quot;3&quot;) = arg2;&t;&t;     &bslash;&n;&t;register type3 __arg3 asm(&quot;4&quot;) = arg3;&t;&t;     &bslash;&n;&t;register type4 __arg4 asm(&quot;5&quot;) = arg4;&t;&t;     &bslash;&n;&t;register long __svcres asm(&quot;2&quot;);&t;&t;     &bslash;&n;&t;long __res;&t;&t;&t;&t;&t;     &bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .if %1 &lt; 256&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc %b1&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .else&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    la  %%r1,%1&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc 0&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .endif&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;: &quot;=d&quot; (__svcres)&t;&t;&t;     &bslash;&n;&t;&t;: &quot;i&quot; (__NR_##name),&t;&t;&t;     &bslash;&n;&t;&t;  &quot;0&quot; (__arg1),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg2),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg3),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg4)&t;&t;&t;&t;     &bslash;&n;&t;&t;: _svc_clobber );&t;&t;&t;     &bslash;&n;&t;__res = __svcres;&t;&t;&t;&t;     &bslash;&n;&t;__syscall_return(type,__res);&t;&t;&t;     &bslash;&n;}
 DECL|macro|_syscall5
 mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,&bslash;&n;&t;&t;  type4,name4,type5,name5)&t;&t;     &bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4,    &bslash;&n;&t;  type5 arg5) {&t;&t;&t;&t;&t;     &bslash;&n;&t;register type1 __arg1 asm(&quot;2&quot;) = arg1;&t;&t;     &bslash;&n;&t;register type2 __arg2 asm(&quot;3&quot;) = arg2;&t;&t;     &bslash;&n;&t;register type3 __arg3 asm(&quot;4&quot;) = arg3;&t;&t;     &bslash;&n;&t;register type4 __arg4 asm(&quot;5&quot;) = arg4;&t;&t;     &bslash;&n;&t;register type5 __arg5 asm(&quot;6&quot;) = arg5;&t;&t;     &bslash;&n;&t;register long __svcres asm(&quot;2&quot;);&t;&t;     &bslash;&n;&t;long __res;&t;&t;&t;&t;&t;     &bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .if %1 &lt; 256&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc %b1&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .else&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    la  %%r1,%1&bslash;n&quot;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    svc 0&bslash;n&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;&quot;    .endif&quot;&t;&t;&t;&t;     &bslash;&n;&t;&t;: &quot;=d&quot; (__svcres)&t;&t;&t;     &bslash;&n;&t;&t;: &quot;i&quot; (__NR_##name),&t;&t;&t;     &bslash;&n;&t;&t;  &quot;0&quot; (__arg1),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg2),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg3),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg4),&t;&t;&t;&t;     &bslash;&n;&t;&t;  &quot;d&quot; (__arg5)&t;&t;&t;&t;     &bslash;&n;&t;&t;: _svc_clobber );&t;&t;&t;     &bslash;&n;&t;__res = __svcres;&t;&t;&t;&t;     &bslash;&n;&t;__syscall_return(type,__res);&t;&t;&t;     &bslash;&n;}
+macro_line|#ifdef __KERNEL__
+DECL|macro|__ARCH_WANT_IPC_PARSE_VERSION
+mdefine_line|#define __ARCH_WANT_IPC_PARSE_VERSION
+DECL|macro|__ARCH_WANT_OLD_READDIR
+mdefine_line|#define __ARCH_WANT_OLD_READDIR
+DECL|macro|__ARCH_WANT_SYS_ALARM
+mdefine_line|#define __ARCH_WANT_SYS_ALARM
+DECL|macro|__ARCH_WANT_SYS_GETHOSTNAME
+mdefine_line|#define __ARCH_WANT_SYS_GETHOSTNAME
+DECL|macro|__ARCH_WANT_SYS_PAUSE
+mdefine_line|#define __ARCH_WANT_SYS_PAUSE
+DECL|macro|__ARCH_WANT_SYS_SIGNAL
+mdefine_line|#define __ARCH_WANT_SYS_SIGNAL
+DECL|macro|__ARCH_WANT_SYS_TIME
+mdefine_line|#define __ARCH_WANT_SYS_TIME
+DECL|macro|__ARCH_WANT_SYS_UTIME
+mdefine_line|#define __ARCH_WANT_SYS_UTIME
+DECL|macro|__ARCH_WANT_SYS_SOCKETCALL
+mdefine_line|#define __ARCH_WANT_SYS_SOCKETCALL
+DECL|macro|__ARCH_WANT_SYS_FADVISE64
+mdefine_line|#define __ARCH_WANT_SYS_FADVISE64
+DECL|macro|__ARCH_WANT_SYS_GETPGRP
+mdefine_line|#define __ARCH_WANT_SYS_GETPGRP
+DECL|macro|__ARCH_WANT_SYS_LLSEEK
+mdefine_line|#define __ARCH_WANT_SYS_LLSEEK
+DECL|macro|__ARCH_WANT_SYS_NICE
+mdefine_line|#define __ARCH_WANT_SYS_NICE
+DECL|macro|__ARCH_WANT_SYS_OLD_GETRLIMIT
+mdefine_line|#define __ARCH_WANT_SYS_OLD_GETRLIMIT
+DECL|macro|__ARCH_WANT_SYS_OLDUMOUNT
+mdefine_line|#define __ARCH_WANT_SYS_OLDUMOUNT
+DECL|macro|__ARCH_WANT_SYS_SIGPENDING
+mdefine_line|#define __ARCH_WANT_SYS_SIGPENDING
+DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
+mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
+macro_line|# ifndef CONFIG_ARCH_S390X
+DECL|macro|__ARCH_WANT_STAT64
+macro_line|#   define __ARCH_WANT_STAT64
+macro_line|# endif
+macro_line|#endif
 macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;

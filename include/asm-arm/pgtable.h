@@ -581,12 +581,6 @@ mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
 multiline_comment|/*&n; * remap a physical address `phys&squot; of size `size&squot; with page protection `prot&squot;&n; * into virtual address `from&squot;&n; */
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range(vma,from,phys,size,prot) &bslash;&n;&t;&t;remap_page_range(vma,from,phys,size,prot)
-DECL|typedef|pte_addr_t
-r_typedef
-id|pte_t
-op_star
-id|pte_addr_t
-suffix:semicolon
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init() do { } while (0)
 macro_line|#endif /* !__ASSEMBLY__ */

@@ -1482,12 +1482,6 @@ mdefine_line|#define io_remap_page_range remap_page_range
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
-DECL|typedef|pte_addr_t
-r_typedef
-id|pte_t
-op_star
-id|pte_addr_t
-suffix:semicolon
 r_extern
 r_int
 id|get_pteptr

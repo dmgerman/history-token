@@ -4,6 +4,10 @@ mdefine_line|#define __LINUX_GFP_H
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
+r_struct
+id|vm_area_struct
+suffix:semicolon
 multiline_comment|/*&n; * GFP bitmasks..&n; */
 multiline_comment|/* Zone modifiers in GFP_ZONEMASK (see linux/mmzone.h - low two bits) */
 DECL|macro|__GFP_DMA
@@ -138,10 +142,91 @@ id|GFP_ZONEMASK
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NUMA
+r_extern
+r_struct
+id|page
+op_star
+id|alloc_pages_current
+c_func
+(paren
+r_int
+id|gfp_mask
+comma
+r_int
+id|order
+)paren
+suffix:semicolon
+r_static
+r_inline
+r_struct
+id|page
+op_star
+DECL|function|alloc_pages
+id|alloc_pages
+c_func
+(paren
+r_int
+r_int
+id|gfp_mask
+comma
+r_int
+r_int
+id|order
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|order
+op_ge
+id|MAX_ORDER
+)paren
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+r_return
+id|alloc_pages_current
+c_func
+(paren
+id|gfp_mask
+comma
+id|order
+)paren
+suffix:semicolon
+)brace
+r_extern
+r_struct
+id|page
+op_star
+id|alloc_page_vma
+c_func
+(paren
+r_int
+id|gfp_mask
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
+macro_line|#else
 DECL|macro|alloc_pages
 mdefine_line|#define alloc_pages(gfp_mask, order) &bslash;&n;&t;&t;alloc_pages_node(numa_node_id(), gfp_mask, order)
+DECL|macro|alloc_page_vma
+mdefine_line|#define alloc_page_vma(gfp_mask, vma, addr) alloc_pages(gfp_mask, 0)
+macro_line|#endif
 DECL|macro|alloc_page
-mdefine_line|#define alloc_page(gfp_mask) &bslash;&n;&t;&t;alloc_pages_node(numa_node_id(), gfp_mask, 0)
+mdefine_line|#define alloc_page(gfp_mask) alloc_pages(gfp_mask, 0)
 r_extern
 r_int
 r_int

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 multiline_comment|/*&n; * swapper_space is a fiction, retained to simplify the path through&n; * vmscan&squot;s shrink_list.  Only those fields initialized below are used.&n; */
@@ -18,6 +19,16 @@ dot
 id|writepage
 op_assign
 id|swap_writepage
+comma
+dot
+id|sync_page
+op_assign
+id|block_sync_page
+comma
+dot
+id|set_page_dirty
+op_assign
+id|__set_page_dirty_nobuffers
 comma
 )brace
 suffix:semicolon
@@ -198,13 +209,7 @@ op_logical_neg
 id|error
 )paren
 (brace
-id|page_cache_get
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -231,6 +236,12 @@ op_logical_neg
 id|error
 )paren
 (brace
+id|page_cache_get
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|SetPageLocked
 c_func
 (paren
@@ -259,14 +270,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_else
-id|page_cache_release
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -681,7 +685,7 @@ id|page
 op_member_access_from_pointer
 r_private
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -694,7 +698,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -1060,7 +1064,7 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -1097,7 +1101,7 @@ id|find_success
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -1124,6 +1128,15 @@ c_func
 (paren
 id|swp_entry_t
 id|entry
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
 )paren
 (brace
 r_struct
@@ -1142,7 +1155,7 @@ suffix:semicolon
 r_do
 (brace
 multiline_comment|/*&n;&t;&t; * First check the swap cache.  Since this is normally&n;&t;&t; * called after lookup_swap_cache() failed, re-calling&n;&t;&t; * that would confuse statistics.&n;&t;&t; */
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -1171,7 +1184,7 @@ c_func
 id|found_page
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -1195,10 +1208,14 @@ id|new_page
 (brace
 id|new_page
 op_assign
-id|alloc_page
+id|alloc_page_vma
 c_func
 (paren
 id|GFP_HIGHUSER
+comma
+id|vma
+comma
+id|addr
 )paren
 suffix:semicolon
 r_if

@@ -740,23 +740,11 @@ id|dnotify_struct
 comma
 l_int|0
 comma
-l_int|0
+id|SLAB_PANIC
 comma
 l_int|NULL
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dn_cache
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;cannot create dnotify slab cache&quot;
 )paren
 suffix:semicolon
 r_return

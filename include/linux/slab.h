@@ -52,6 +52,8 @@ DECL|macro|SLAB_STORE_USER
 mdefine_line|#define SLAB_STORE_USER&t;&t;0x00010000UL&t;/* store the last owner for bug hunting */
 DECL|macro|SLAB_RECLAIM_ACCOUNT
 mdefine_line|#define SLAB_RECLAIM_ACCOUNT&t;0x00020000UL&t;/* track pages allocated to indicate&n;&t;&t;&t;&t;&t;&t;   what is reclaimable later*/
+DECL|macro|SLAB_PANIC
+mdefine_line|#define SLAB_PANIC&t;&t;0x00040000UL&t;/* panic if kmem_cache_create() fails */
 multiline_comment|/* flags passed to a constructor func */
 DECL|macro|SLAB_CTOR_CONSTRUCTOR
 mdefine_line|#define&t;SLAB_CTOR_CONSTRUCTOR&t;0x001UL&t;&t;/* if not set, then deconstructor */

@@ -1382,22 +1382,12 @@ comma
 id|SLAB_HWCACHE_ALIGN
 op_or
 id|SLAB_RECLAIM_ACCOUNT
+op_or
+id|SLAB_PANIC
 comma
 id|init_once
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|bdev_cachep
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Cannot create bdev_cache SLAB cache&quot;
 )paren
 suffix:semicolon
 id|err

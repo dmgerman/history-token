@@ -3,6 +3,16 @@ macro_line|#ifndef _LINUX_IF_BRIDGE_H
 DECL|macro|_LINUX_IF_BRIDGE_H
 mdefine_line|#define _LINUX_IF_BRIDGE_H
 macro_line|#include &lt;linux/types.h&gt;
+DECL|macro|SYSFS_BRIDGE_ATTR
+mdefine_line|#define SYSFS_BRIDGE_ATTR&t;&quot;bridge&quot;
+DECL|macro|SYSFS_BRIDGE_FDB
+mdefine_line|#define SYSFS_BRIDGE_FDB&t;&quot;brforward&quot;
+DECL|macro|SYSFS_BRIDGE_PORT_SUBDIR
+mdefine_line|#define SYSFS_BRIDGE_PORT_SUBDIR &quot;brif&quot;
+DECL|macro|SYSFS_BRIDGE_PORT_ATTR
+mdefine_line|#define SYSFS_BRIDGE_PORT_ATTR&t;&quot;brport&quot;
+DECL|macro|SYSFS_BRIDGE_PORT_LINK
+mdefine_line|#define SYSFS_BRIDGE_PORT_LINK&t;&quot;bridge&quot;
 DECL|macro|BRCTL_VERSION
 mdefine_line|#define BRCTL_VERSION 1
 DECL|macro|BRCTL_GET_VERSION
@@ -235,6 +245,9 @@ op_star
 id|ioctl_hook
 )paren
 (paren
+r_int
+r_int
+comma
 r_int
 r_int
 )paren

@@ -637,10 +637,18 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_IDE_ARM
+id|initializing
+op_assign
+l_int|1
+suffix:semicolon
 id|ide_arm_init
 c_func
 (paren
 )paren
+suffix:semicolon
+id|initializing
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -8830,23 +8838,6 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDE_PMAC */
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_SWARM
-(brace
-r_extern
-r_void
-id|swarm_ide_probe
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|swarm_ide_probe
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDE_SWARM */
 macro_line|#ifdef CONFIG_BLK_DEV_GAYLE
 (brace
 r_extern

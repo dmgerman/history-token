@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
 multiline_comment|/*&n; * per-CPU timer vector definitions:&n; */
@@ -3396,7 +3397,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__)
+macro_line|#ifdef __ARCH_WANT_SYS_ALARM
 multiline_comment|/*&n; * For backwards compatibility?  This can be done in libc so Alpha&n; * and all newer ports shouldn&squot;t need it.&n; */
 DECL|function|sys_alarm
 id|asmlinkage

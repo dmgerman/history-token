@@ -104,6 +104,44 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* 0: hot.  1: cold */
+macro_line|#ifdef CONFIG_NUMA
+DECL|member|numa_hit
+r_int
+r_int
+id|numa_hit
+suffix:semicolon
+multiline_comment|/* allocated in intended node */
+DECL|member|numa_miss
+r_int
+r_int
+id|numa_miss
+suffix:semicolon
+multiline_comment|/* allocated in non intended node */
+DECL|member|numa_foreign
+r_int
+r_int
+id|numa_foreign
+suffix:semicolon
+multiline_comment|/* was intended here, hit elsewhere */
+DECL|member|interleave_hit
+r_int
+r_int
+id|interleave_hit
+suffix:semicolon
+multiline_comment|/* interleaver prefered this zone */
+DECL|member|local_node
+r_int
+r_int
+id|local_node
+suffix:semicolon
+multiline_comment|/* allocation from local node */
+DECL|member|other_node
+r_int
+r_int
+id|other_node
+suffix:semicolon
+multiline_comment|/* allocation from other node */
+macro_line|#endif
 DECL|variable|____cacheline_aligned_in_smp
 )brace
 id|____cacheline_aligned_in_smp

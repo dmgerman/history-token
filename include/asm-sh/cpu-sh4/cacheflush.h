@@ -79,6 +79,10 @@ op_star
 id|pg
 )paren
 suffix:semicolon
+DECL|macro|flush_dcache_mmap_lock
+mdefine_line|#define flush_dcache_mmap_lock(mapping)&t;&t;do { } while (0)
+DECL|macro|flush_dcache_mmap_unlock
+mdefine_line|#define flush_dcache_mmap_unlock(mapping)&t;do { } while (0)
 r_extern
 r_void
 id|flush_icache_range

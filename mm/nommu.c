@@ -2221,15 +2221,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-DECL|function|pte_chain_init
-r_void
-id|pte_chain_init
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 DECL|function|swap_unplug_io_fn
 r_void
 id|swap_unplug_io_fn

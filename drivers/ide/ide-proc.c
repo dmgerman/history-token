@@ -2432,9 +2432,11 @@ id|parse_error
 suffix:semicolon
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|p
 op_minus
 id|start

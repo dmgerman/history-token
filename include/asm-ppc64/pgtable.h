@@ -1332,12 +1332,6 @@ op_star
 id|addr
 )paren
 suffix:semicolon
-DECL|typedef|pte_addr_t
-r_typedef
-id|pte_t
-op_star
-id|pte_addr_t
-suffix:semicolon
 r_int
 id|pSeries_lpar_hpte_insert
 c_func

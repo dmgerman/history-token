@@ -3,12 +3,6 @@ DECL|macro|__V850_PGTABLE_H__
 mdefine_line|#define __V850_PGTABLE_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-DECL|typedef|pte_addr_t
-r_typedef
-id|pte_t
-op_star
-id|pte_addr_t
-suffix:semicolon
 DECL|macro|pgd_present
 mdefine_line|#define pgd_present(pgd)&t;(1) /* pages are always present on NO_MM */
 DECL|macro|pgd_none
