@@ -2354,7 +2354,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_HOTPLUG_CPU
 multiline_comment|/* This version can&squot;t take the spinlock, because it never returns */
 DECL|variable|rtas_stop_self_args
 r_struct
@@ -2451,7 +2450,6 @@ l_string|&quot;Alas, I survived.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_HOTPLUG_CPU */
 multiline_comment|/*&n; * Return the firmware-specified size of the error log buffer&n; *  for all rtas calls that require an error buffer argument.&n; *  This includes &squot;check-exception&squot; and &squot;rtas-last-error&squot;.&n; */
 DECL|function|rtas_get_error_log_max
 r_int

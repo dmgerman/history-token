@@ -984,6 +984,8 @@ DECL|macro|pci_dev_b
 mdefine_line|#define pci_dev_b(n) list_entry(n, struct pci_dev, bus_list)
 DECL|macro|to_pci_dev
 mdefine_line|#define&t;to_pci_dev(n) container_of(n, struct pci_dev, dev)
+DECL|macro|for_each_pci_dev
+mdefine_line|#define for_each_pci_dev(d) while ((d = pci_get_device(PCI_ANY_ID, PCI_ANY_ID, d)) != NULL)
 multiline_comment|/*&n; *  For PCI devices, the region numbers are assigned this way:&n; *&n; *&t;0-5&t;standard PCI regions&n; *&t;6&t;expansion ROM&n; *&t;7-10&t;bridges: address space assigned to buses behind the bridge&n; */
 DECL|macro|PCI_ROM_RESOURCE
 mdefine_line|#define PCI_ROM_RESOURCE 6
