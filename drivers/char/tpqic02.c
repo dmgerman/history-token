@@ -248,10 +248,10 @@ id|need_rewind
 op_assign
 id|YES
 suffix:semicolon
-DECL|variable|current_tape_dev
+DECL|variable|current_type
 r_static
-id|kdev_t
-id|current_tape_dev
+r_int
+id|current_type
 suffix:semicolon
 DECL|variable|extra_blocks_left
 r_static
@@ -2204,7 +2204,7 @@ c_cond
 id|TP_DIAGS
 c_func
 (paren
-id|current_tape_dev
+id|current_type
 )paren
 )paren
 id|printk
@@ -2300,7 +2300,7 @@ c_cond
 id|TP_DIAGS
 c_func
 (paren
-id|current_tape_dev
+id|current_type
 )paren
 )paren
 id|printk
@@ -2399,7 +2399,7 @@ c_cond
 id|TP_DIAGS
 c_func
 (paren
-id|current_tape_dev
+id|current_type
 )paren
 )paren
 id|printk
@@ -5760,7 +5760,7 @@ c_cond
 id|TP_DIAGS
 c_func
 (paren
-id|current_tape_dev
+id|current_type
 )paren
 )paren
 id|printk
@@ -6076,10 +6076,14 @@ op_star
 id|ppos
 )paren
 (brace
-id|kdev_t
-id|dev
+r_int
+id|type
 op_assign
+id|minor
+c_func
+(paren
 id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -6127,7 +6131,7 @@ c_cond
 id|TP_DIAGS
 c_func
 (paren
-id|current_tape_dev
+id|current_type
 )paren
 )paren
 id|printk
@@ -6136,11 +6140,7 @@ c_func
 id|TPQIC02_NAME
 l_string|&quot;: request READ, minor=%x, buf=%p, count=%lx, pos=%Lx, flags=%x&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|dev
-)paren
+id|type
 comma
 id|buf
 comma
@@ -6613,10 +6613,14 @@ op_star
 id|ppos
 )paren
 (brace
-id|kdev_t
-id|dev
+r_int
+id|type
 op_assign
+id|minor
+c_func
+(paren
 id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -6661,7 +6665,7 @@ c_cond
 id|TP_DIAGS
 c_func
 (paren
-id|current_tape_dev
+id|current_type
 )paren
 )paren
 (brace
@@ -6671,11 +6675,7 @@ c_func
 id|TPQIC02_NAME
 l_string|&quot;: request WRITE, minor=%x, buf=%p, count=%lx, pos=%Lx, flags=%x&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|dev
-)paren
+id|type
 comma
 id|buf
 comma
@@ -7181,10 +7181,14 @@ op_star
 id|filp
 )paren
 (brace
-id|kdev_t
-id|dev
+r_int
+id|type
 op_assign
+id|minor
+c_func
+(paren
 id|inode-&gt;i_rdev
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -7207,20 +7211,16 @@ c_cond
 id|TP_DIAGS
 c_func
 (paren
-id|dev
+id|type
 )paren
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;qic02_tape_open: dev=%s, flags=%x     &quot;
+l_string|&quot;qic02_tape_open: dev=tpqic2(%d), flags=%x     &quot;
 comma
-id|cdevname
-c_func
-(paren
-id|dev
-)paren
+id|type
 comma
 id|flags
 )paren
@@ -7229,11 +7229,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|minor
-c_func
-(paren
-id|dev
-)paren
+id|type
 op_eq
 l_int|255
 )paren
@@ -7527,7 +7523,7 @@ c_cond
 id|TP_DENS
 c_func
 (paren
-id|dev
+id|type
 )paren
 op_ne
 l_int|0
@@ -7537,13 +7533,13 @@ op_logical_and
 id|TP_DENS
 c_func
 (paren
-id|current_tape_dev
+id|current_type
 )paren
 op_ne
 id|TP_DENS
 c_func
 (paren
-id|dev
+id|type
 )paren
 )paren
 )paren
@@ -7572,9 +7568,9 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* density bits still the same, but TP_DIAGS bit &n;&t;&t; * may have changed.&n;&t;&t; */
-id|current_tape_dev
+id|current_type
 op_assign
-id|dev
+id|type
 suffix:semicolon
 )brace
 r_if
@@ -7703,13 +7699,13 @@ c_cond
 id|TP_DENS
 c_func
 (paren
-id|current_tape_dev
+id|current_type
 )paren
 op_eq
 id|TP_DENS
 c_func
 (paren
-id|dev
+id|type
 )paren
 )paren
 (brace
@@ -7717,9 +7713,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|current_tape_dev
+id|current_type
 op_assign
-id|dev
+id|type
 suffix:semicolon
 id|need_rewind
 op_assign
@@ -7736,7 +7732,7 @@ op_assign
 id|TP_DENS
 c_func
 (paren
-id|dev
+id|type
 )paren
 suffix:semicolon
 )brace
@@ -7794,7 +7790,7 @@ c_cond
 id|TP_DENS
 c_func
 (paren
-id|dev
+id|type
 )paren
 )paren
 (brace
@@ -7925,9 +7921,9 @@ op_assign
 id|YES
 suffix:semicolon
 multiline_comment|/* force reset */
-id|current_tape_dev
+id|current_type
 op_assign
-id|NODEV
+l_int|0
 suffix:semicolon
 multiline_comment|/* earlier 0xff80 */
 r_return
@@ -7957,10 +7953,14 @@ op_star
 id|filp
 )paren
 (brace
-id|kdev_t
-id|dev
+r_int
+id|type
 op_assign
+id|minor
+c_func
+(paren
 id|inode-&gt;i_rdev
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7968,20 +7968,16 @@ c_cond
 id|TP_DIAGS
 c_func
 (paren
-id|dev
+id|type
 )paren
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;qic02_tape_release: dev=%s&bslash;n&quot;
+l_string|&quot;qic02_tape_release: dev=tpqic2(%d)&bslash;n&quot;
 comma
-id|cdevname
-c_func
-(paren
-id|dev
-)paren
+id|type
 )paren
 suffix:semicolon
 )brace
@@ -8023,12 +8019,10 @@ multiline_comment|/* Rewind only if minor number requires it AND &n;&t;&t; * rea
 r_if
 c_cond
 (paren
-(paren
 id|TP_REWCLOSE
 c_func
 (paren
-id|dev
-)paren
+id|type
 )paren
 op_logical_and
 (paren
@@ -8459,7 +8453,7 @@ c_cond
 id|TP_DIAGS
 c_func
 (paren
-id|current_tape_dev
+id|current_type
 )paren
 )paren
 id|printk
@@ -8722,7 +8716,7 @@ c_cond
 id|TP_DIAGS
 c_func
 (paren
-id|current_tape_dev
+id|current_type
 )paren
 )paren
 id|printk
@@ -8903,7 +8897,7 @@ c_cond
 id|TP_DIAGS
 c_func
 (paren
-id|current_tape_dev
+id|current_type
 )paren
 )paren
 id|printk
@@ -8976,7 +8970,7 @@ c_cond
 id|TP_DIAGS
 c_func
 (paren
-id|current_tape_dev
+id|current_type
 )paren
 )paren
 id|printk
@@ -9738,15 +9732,9 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|current_tape_dev
+id|current_type
 op_assign
-id|mk_kdev
-c_func
-(paren
-id|QIC02_TAPE_MAJOR
-comma
 l_int|0
-)paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_QIC02_DYNCONF
 id|printk
