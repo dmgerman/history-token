@@ -2477,6 +2477,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  The console `switch&squot; structure for the MDA based console&n; */
 DECL|variable|mda_con
+r_static
 r_const
 r_struct
 id|consw
@@ -2604,6 +2605,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|mda_console_exit
+r_static
 r_void
 id|__exit
 id|mda_console_exit

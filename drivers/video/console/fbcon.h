@@ -354,14 +354,6 @@ DECL|macro|SCROLL_REDRAW
 mdefine_line|#define SCROLL_REDRAW&t;   0x004
 DECL|macro|SCROLL_PAN_REDRAW
 mdefine_line|#define SCROLL_PAN_REDRAW  0x005
-r_extern
-r_int
-id|fb_console_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_FB_TILEBLITTING
 r_extern
 r_void
@@ -400,12 +392,6 @@ id|fbcon_ops
 op_star
 id|ops
 )paren
-suffix:semicolon
-r_extern
-r_const
-r_struct
-id|consw
-id|fb_con
 suffix:semicolon
 macro_line|#endif /* _VIDEO_FBCON_H */
 eof

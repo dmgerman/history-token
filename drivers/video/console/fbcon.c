@@ -75,6 +75,7 @@ id|MAX_NR_CONSOLES
 )braket
 suffix:semicolon
 DECL|variable|con2fb_map
+r_static
 r_int
 r_char
 id|con2fb_map
@@ -83,6 +84,7 @@ id|MAX_NR_CONSOLES
 )braket
 suffix:semicolon
 DECL|variable|con2fb_map_boot
+r_static
 r_int
 r_char
 id|con2fb_map_boot
@@ -110,6 +112,7 @@ id|FBCON_LOGO_CANSHOW
 suffix:semicolon
 multiline_comment|/* Software scrollback */
 DECL|variable|fbcon_softback_size
+r_static
 r_int
 id|fbcon_softback_size
 op_assign
@@ -183,6 +186,13 @@ id|info_idx
 op_assign
 op_minus
 l_int|1
+suffix:semicolon
+DECL|variable|fb_con
+r_static
+r_const
+r_struct
+id|consw
+id|fb_con
 suffix:semicolon
 DECL|macro|CM_SOFTBACK
 mdefine_line|#define CM_SOFTBACK&t;(8)
@@ -1203,7 +1213,9 @@ l_int|5
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|fb_console_setup
+r_static
 r_int
 id|__init
 id|fb_console_setup
@@ -1532,6 +1544,7 @@ comma
 id|fb_console_setup
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|function|search_fb_in_map
 r_static
 r_int
@@ -5085,6 +5098,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|function|update_var
+r_static
 r_int
 id|update_var
 c_func
@@ -14172,6 +14186,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  The console `switch&squot; structure for the frame buffer based console&n; */
 DECL|variable|fb_con
+r_static
 r_const
 r_struct
 id|consw
@@ -14310,6 +14325,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|fb_console_init
+r_static
 r_int
 id|__init
 id|fb_console_init
@@ -14420,6 +14436,7 @@ id|fb_console_init
 suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|function|fb_console_exit
+r_static
 r_void
 id|__exit
 id|fb_console_exit
@@ -14461,14 +14478,6 @@ id|fb_console_exit
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; *  Visible symbols for modules&n; */
-DECL|variable|fb_con
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|fb_con
-)paren
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

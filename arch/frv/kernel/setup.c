@@ -78,13 +78,6 @@ id|consw
 op_star
 id|conswitchp
 suffix:semicolon
-macro_line|#ifdef CONFIG_FRAMEBUFFER
-r_extern
-r_struct
-id|consw
-id|fb_con
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_MB93090_MB00
 DECL|variable|mb93090_banner

@@ -451,13 +451,6 @@ r_extern
 r_const
 r_struct
 id|consw
-id|fb_con
-suffix:semicolon
-multiline_comment|/* frame buffer based console */
-r_extern
-r_const
-r_struct
-id|consw
 id|vga_con
 suffix:semicolon
 multiline_comment|/* VGA text console */
