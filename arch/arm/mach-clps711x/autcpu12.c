@@ -54,7 +54,7 @@ id|SZ_1M
 comma
 id|DOMAIN_IO
 comma
-l_int|1
+l_int|0
 comma
 l_int|1
 comma

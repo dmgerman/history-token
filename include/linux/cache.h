@@ -3,9 +3,11 @@ DECL|macro|__LINUX_CACHE_H
 mdefine_line|#define __LINUX_CACHE_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
+DECL|macro|ALIGN
+mdefine_line|#define ALIGN(x,a) (((x)+(a)-1)&amp;~((a)-1))
 macro_line|#ifndef L1_CACHE_ALIGN
 DECL|macro|L1_CACHE_ALIGN
-mdefine_line|#define L1_CACHE_ALIGN(x) (((x)+(L1_CACHE_BYTES-1))&amp;~(L1_CACHE_BYTES-1))
+mdefine_line|#define L1_CACHE_ALIGN(x) ALIGN(x, L1_CACHE_BYTES)
 macro_line|#endif
 macro_line|#ifndef SMP_CACHE_BYTES
 DECL|macro|SMP_CACHE_BYTES

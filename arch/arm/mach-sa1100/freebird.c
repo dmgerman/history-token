@@ -231,7 +231,7 @@ l_int|0x00100000
 comma
 id|DOMAIN_IO
 comma
-l_int|1
+l_int|0
 comma
 l_int|1
 comma
@@ -250,7 +250,7 @@ l_int|0x00100000
 comma
 id|DOMAIN_IO
 comma
-l_int|1
+l_int|0
 comma
 l_int|1
 comma

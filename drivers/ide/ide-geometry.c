@@ -13,15 +13,6 @@ c_func
 id|kdev_t
 )paren
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|current_capacity
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * If heads is nonzero: find a translation with this many heads and S=63.&n; * Otherwise: find out how OnTrack Disk Manager would translate the disk.&n; */
 r_static
 r_void
@@ -89,13 +80,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * The specs say: take geometry as obtained from Identify, compute&n;&t; * total capacity C*H*S from that, and truncate to 1024*255*63. Now&n;&t; * take S=63, H the first in the sequence 4, 8, 16, 32, 64, 128, 255&n;&t; * such that 63*H*1024 &gt;= total.  [Please tell aeb@cwi.nl in case this&n;&t; * computes a geometry different from what OnTrack uses.]&n;&t; */
 id|total
 op_assign
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|capacity
+id|ata_capacity
 c_func
 (paren
 id|drive
@@ -451,7 +436,7 @@ l_int|0
 dot
 id|nr_sects
 op_assign
-id|current_capacity
+id|ata_capacity
 c_func
 (paren
 id|drive

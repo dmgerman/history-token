@@ -3295,13 +3295,7 @@ r_return
 op_minus
 id|EINPROGRESS
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* To avoid races on the sleep */
-multiline_comment|/* A Connect Ack with Choke or timeout or failed routing will go to&n;&t; * closed.  */
+multiline_comment|/* Here, there is a race condition : the state may change between&n;&t; * our test and the sleep, via irda_connect_confirm().&n;&t; * The way to workaround that is to sleep with a timeout, so that&n;&t; * we don&squot;t sleep forever and check the state when waking up.&n;&t; * 50ms is plenty good enough, because the LAP is already connected.&n;&t; * Jean II */
 r_while
 c_loop
 (paren
@@ -3310,10 +3304,14 @@ op_eq
 id|TCP_SYN_SENT
 )paren
 (brace
-id|interruptible_sleep_on
+id|interruptible_sleep_on_timeout
 c_func
 (paren
 id|sk-&gt;sleep
+comma
+id|HZ
+op_div
+l_int|20
 )paren
 suffix:semicolon
 r_if
@@ -3326,11 +3324,6 @@ id|current
 )paren
 )paren
 (brace
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ERESTARTSYS
@@ -3345,11 +3338,6 @@ op_ne
 id|TCP_ESTABLISHED
 )paren
 (brace
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 id|sock-&gt;state
 op_assign
 id|SS_UNCONNECTED
@@ -3366,11 +3354,6 @@ multiline_comment|/* Always set at this point */
 id|sock-&gt;state
 op_assign
 id|SS_CONNECTED
-suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/* At this point, IrLMP has assigned our source address */
 id|self-&gt;saddr
