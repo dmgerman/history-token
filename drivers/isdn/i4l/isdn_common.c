@@ -855,7 +855,6 @@ comma
 id|ST_SLOT_ACTIVE
 )paren
 suffix:semicolon
-singleline_comment|//FIXME&t;drivers[di]-&gt;online |= (1 &lt;&lt; (c-&gt;arg));
 id|isdn_info_update
 c_func
 (paren
@@ -1981,12 +1980,6 @@ DECL|struct|isdn_driver
 r_struct
 id|isdn_driver
 (brace
-DECL|member|online
-r_int
-r_int
-id|online
-suffix:semicolon
-multiline_comment|/* Channel Online flags        */
 DECL|member|flags
 r_int
 r_int
@@ -5796,22 +5789,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|drivers
-(braket
-id|di
-)braket
-op_member_access_from_pointer
-id|online
-op_and_assign
-op_complement
-(paren
-l_int|1
-op_lshift
-(paren
-id|c-&gt;arg
-)paren
-)paren
-suffix:semicolon
 id|isdn_info_update
 c_func
 (paren
@@ -5896,21 +5873,6 @@ id|c-&gt;arg
 )paren
 suffix:semicolon
 multiline_comment|/* Signal B-channel-connect to network-devices */
-id|drivers
-(braket
-id|di
-)braket
-op_member_access_from_pointer
-id|online
-op_or_assign
-(paren
-l_int|1
-op_lshift
-(paren
-id|c-&gt;arg
-)paren
-)paren
-suffix:semicolon
 id|isdn_info_update
 c_func
 (paren
@@ -5978,22 +5940,6 @@ c_func
 l_string|&quot;BHUP: %d&bslash;n&quot;
 comma
 id|i
-)paren
-suffix:semicolon
-id|drivers
-(braket
-id|di
-)braket
-op_member_access_from_pointer
-id|online
-op_and_assign
-op_complement
-(paren
-l_int|1
-op_lshift
-(paren
-id|c-&gt;arg
-)paren
 )paren
 suffix:semicolon
 id|isdn_info_update
@@ -7169,14 +7115,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;%ld &quot;
-comma
-id|drivers
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|online
+l_string|&quot;0 &quot;
 )paren
 suffix:semicolon
 id|p
