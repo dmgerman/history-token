@@ -1031,8 +1031,9 @@ id|i2c_msg
 id|msg
 op_assign
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 id|addr
 comma
 dot
@@ -5685,8 +5686,9 @@ id|buf
 op_assign
 id|rpt
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|2
 )brace
 comma
@@ -5736,8 +5738,9 @@ id|buf
 op_assign
 id|rpt
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|2
 )brace
 comma
@@ -5787,8 +5790,9 @@ id|buf
 op_assign
 id|rpt
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|2
 )brace
 comma
