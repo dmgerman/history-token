@@ -564,10 +564,6 @@ id|info-&gt;xmit
 )paren
 suffix:semicolon
 )brace
-id|port-&gt;mctrl
-op_assign
-l_int|0
-suffix:semicolon
 id|retval
 op_assign
 id|port-&gt;ops
