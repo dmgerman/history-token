@@ -2182,6 +2182,28 @@ r_goto
 id|error1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_ACPI_EC
+multiline_comment|/*&n;&t; * ACPI 2.0 requires the EC driver to be loaded and work before&n;&t; * the EC device is found in the namespace (i.e. before acpi_initialize_objects()&n;&t; * is called).&n;&t; *&n;&t; * This is accomplished by looking for the ECDT table, and getting &n;&t; * the EC parameters out of that.&n;&t; */
+id|status
+op_assign
+id|acpi_ec_ecdt_probe
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+c_func
+(paren
+id|status
+)paren
+)paren
+r_goto
+id|error1
+suffix:semicolon
+macro_line|#endif
 id|status
 op_assign
 id|acpi_initialize_objects

@@ -131,6 +131,15 @@ id|state
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* --------------------------------------------------------------------------&n;                                  Embedded Controller&n;   -------------------------------------------------------------------------- */
+macro_line|#ifdef CONFIG_ACPI_EC
+r_int
+id|acpi_ec_ecdt_probe
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------------&n;                                    Processor&n;   -------------------------------------------------------------------------- */
 DECL|macro|ACPI_PROCESSOR_LIMIT_NONE
 mdefine_line|#define ACPI_PROCESSOR_LIMIT_NONE&t;0x00
