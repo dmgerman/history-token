@@ -414,7 +414,7 @@ c_func
 id|m
 comma
 l_string|&quot;,&quot;
-id|MNTOPT_UQUOTA
+id|MNTOPT_USRQUOTA
 )paren
 suffix:colon
 id|seq_puts
@@ -448,7 +448,7 @@ c_func
 id|m
 comma
 l_string|&quot;,&quot;
-id|MNTOPT_GQUOTA
+id|MNTOPT_GRPQUOTA
 )paren
 suffix:colon
 id|seq_puts
