@@ -8354,9 +8354,6 @@ id|elevator_exit
 c_func
 (paren
 id|device-&gt;request_queue
-comma
-op_amp
-id|device-&gt;request_queue-&gt;elevator
 )paren
 suffix:semicolon
 id|rc
@@ -8367,8 +8364,6 @@ c_func
 id|device-&gt;request_queue
 comma
 op_amp
-id|device-&gt;request_queue-&gt;elevator
-comma
 id|elevator_noop
 )paren
 suffix:semicolon
