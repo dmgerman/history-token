@@ -465,6 +465,8 @@ mdefine_line|#define list_entry(ptr, type, member) &bslash;&n;&t;container_of(pt
 multiline_comment|/**&n; * list_for_each&t;-&t;iterate over a list&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
 DECL|macro|list_for_each
 mdefine_line|#define list_for_each(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next, prefetch(pos-&gt;next); pos != (head); &bslash;&n;        &t;pos = pos-&gt;next, prefetch(pos-&gt;next))
+DECL|macro|list_for_each_noprefetch
+mdefine_line|#define list_for_each_noprefetch(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next; pos != (head); pos = pos-&gt;next)
 multiline_comment|/**&n; * list_for_each_prev&t;-&t;iterate over a list backwards&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
 DECL|macro|list_for_each_prev
 mdefine_line|#define list_for_each_prev(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;prev, prefetch(pos-&gt;prev); pos != (head); &bslash;&n;        &t;pos = pos-&gt;prev, prefetch(pos-&gt;prev))

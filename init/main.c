@@ -127,6 +127,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|pidhash_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|pte_chain_init
 c_func
 (paren
@@ -1504,6 +1512,11 @@ c_func
 )paren
 suffix:semicolon
 id|kmem_cache_sizes_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|pidhash_init
 c_func
 (paren
 )paren

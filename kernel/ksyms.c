@@ -3196,13 +3196,6 @@ c_func
 id|tasklist_lock
 )paren
 suffix:semicolon
-DECL|variable|pidhash
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pidhash
-)paren
-suffix:semicolon
 macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(__GENERIC_PER_CPU)
 DECL|variable|__per_cpu_offset
 id|EXPORT_SYMBOL
