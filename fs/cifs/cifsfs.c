@@ -1725,7 +1725,7 @@ id|poffset
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CIFS_EXPERIMENTAL    /* BB fixme - fix user char * to kernel char * mapping here BB */
+macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL    /* BB fixme - fix user char * to kernel char * mapping here BB */
 multiline_comment|/* check whether we can cache writes locally */
 r_if
 c_cond
@@ -1912,7 +1912,7 @@ id|poffset
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CIFS_EXPERIMENTAL    /* BB fixme - fix user char * to kernel char * mapping here BB */
+macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL    /* BB fixme - fix user char * to kernel char * mapping here BB */
 multiline_comment|/* check whether we can cache writes locally */
 r_if
 c_cond
