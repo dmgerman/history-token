@@ -1639,15 +1639,8 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-macro_line|#else
+DECL|function|parport_sunbpp_init
+r_static
 r_int
 id|__init
 id|parport_sunbpp_init
@@ -1655,7 +1648,6 @@ c_func
 (paren
 r_void
 )paren
-macro_line|#endif
 (brace
 r_struct
 id|sbus_bus
@@ -1718,28 +1710,11 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Derrick J Brashear&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;Parport Driver for Sparc bidirectional Port&quot;
-)paren
-suffix:semicolon
-id|MODULE_SUPPORTED_DEVICE
-c_func
-(paren
-l_string|&quot;Sparc Bidirectional Parallel Port&quot;
-)paren
-suffix:semicolon
+DECL|function|parport_sunbpp_exit
+r_static
 r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+id|parport_sunbpp_exit
 c_func
 (paren
 r_void
@@ -1837,11 +1812,38 @@ id|next
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Derrick J Brashear&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Parport Driver for Sparc bidirectional Port&quot;
+)paren
+suffix:semicolon
+id|MODULE_SUPPORTED_DEVICE
+c_func
+(paren
+l_string|&quot;Sparc Bidirectional Parallel Port&quot;
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|module_init
+c_func
+(paren
+id|parport_sunbpp_init
+)paren
+id|module_exit
+c_func
+(paren
+id|parport_sunbpp_exit
+)paren
 eof

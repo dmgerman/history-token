@@ -275,6 +275,7 @@ comma
 suffix:semicolon
 multiline_comment|/* --- Initialisation code -------------------------------- */
 DECL|function|parport_arc_init
+r_static
 r_int
 id|parport_arc_init
 c_func
@@ -395,4 +396,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|module_init
+c_func
+(paren
+id|parport_arc_init
+)paren
 eof

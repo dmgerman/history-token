@@ -872,6 +872,7 @@ comma
 suffix:semicolon
 multiline_comment|/* ----------- Initialisation code --------------------------------- */
 DECL|function|parport_amiga_init
+r_static
 r_int
 id|__init
 id|parport_amiga_init
@@ -1055,6 +1056,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|parport_amiga_exit
+r_static
 r_void
 id|__exit
 id|parport_amiga_exit

@@ -1338,6 +1338,7 @@ comma
 suffix:semicolon
 multiline_comment|/* ----------- Initialisation code --------------------------------- */
 DECL|function|parport_mfc3_init
+r_static
 r_int
 id|__init
 id|parport_mfc3_init
@@ -1633,6 +1634,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|parport_mfc3_exit
+r_static
 r_void
 id|__exit
 id|parport_mfc3_exit
