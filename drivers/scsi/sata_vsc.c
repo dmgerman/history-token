@@ -1334,7 +1334,7 @@ l_int|0x1f
 suffix:semicolon
 id|probe_ent-&gt;udma_mask
 op_assign
-l_int|0x3f
+l_int|0x7f
 suffix:semicolon
 multiline_comment|/* We have 4 ports per PCI function */
 id|vsc_sata_setup_port
