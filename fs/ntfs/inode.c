@@ -298,11 +298,7 @@ id|ni-&gt;name
 id|i
 )braket
 op_assign
-id|cpu_to_le16
-c_func
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 r_return

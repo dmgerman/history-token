@@ -4477,11 +4477,7 @@ c_func
 l_char|&squot;a&squot;
 )paren
 comma
-id|const_cpu_to_le16
-c_func
-(paren
 l_int|0
-)paren
 )brace
 suffix:semicolon
 r_static
@@ -4504,11 +4500,7 @@ c_func
 l_char|&squot;Q&squot;
 )paren
 comma
-id|const_cpu_to_le16
-c_func
-(paren
 l_int|0
-)paren
 )brace
 suffix:semicolon
 id|ntfs_debug
