@@ -5409,14 +5409,6 @@ op_amp
 id|stp-&gt;st_deny_bmap
 )paren
 suffix:semicolon
-multiline_comment|/* bump the stateid */
-id|update_stateid
-c_func
-(paren
-op_amp
-id|stp-&gt;st_stateid
-)paren
-suffix:semicolon
 )brace
 id|dprintk
 c_func
