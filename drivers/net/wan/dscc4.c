@@ -778,6 +778,10 @@ id|dscc4_set_iface
 c_func
 (paren
 r_struct
+id|dscc4_dev_priv
+op_star
+comma
+r_struct
 id|net_device
 op_star
 )paren
@@ -4570,6 +4574,8 @@ op_assign
 id|dscc4_set_iface
 c_func
 (paren
+id|dpriv
+comma
 id|dev
 )paren
 suffix:semicolon
@@ -5244,6 +5250,11 @@ r_int
 id|dscc4_set_iface
 c_func
 (paren
+r_struct
+id|dscc4_dev_priv
+op_star
+id|dpriv
+comma
 r_struct
 id|net_device
 op_star
