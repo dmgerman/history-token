@@ -44,6 +44,7 @@ macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#ifdef CONFIG_SYSCTL
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#endif
@@ -1120,12 +1121,11 @@ r_struct
 id|inet6_dev
 op_star
 id|in6_dev
-op_assign
-id|in6_dev_get
-c_func
-(paren
-id|dev
-)paren
+suffix:semicolon
+r_struct
+id|neigh_parms
+op_star
+id|parms
 suffix:semicolon
 r_int
 id|is_multicast
@@ -1136,6 +1136,19 @@ c_func
 id|addr
 )paren
 suffix:semicolon
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|in6_dev
+op_assign
+id|in6_dev_get
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1143,18 +1156,39 @@ id|in6_dev
 op_eq
 l_int|NULL
 )paren
+(brace
+id|rcu_read_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|in6_dev-&gt;nd_parms
-)paren
-id|neigh-&gt;parms
+)brace
+id|parms
 op_assign
 id|in6_dev-&gt;nd_parms
+suffix:semicolon
+id|__neigh_parms_put
+c_func
+(paren
+id|neigh-&gt;parms
+)paren
+suffix:semicolon
+id|neigh-&gt;parms
+op_assign
+id|neigh_parms_clone
+c_func
+(paren
+id|parms
+)paren
+suffix:semicolon
+id|rcu_read_unlock
+c_func
+(paren
+)paren
 suffix:semicolon
 id|neigh-&gt;type
 op_assign
