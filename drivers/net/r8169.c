@@ -1762,7 +1762,7 @@ id|pdev
 suffix:semicolon
 id|err_out
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -2048,7 +2048,7 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
