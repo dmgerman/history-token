@@ -2749,6 +2749,13 @@ c_func
 id|netdev_state_change
 )paren
 suffix:semicolon
+DECL|variable|netdev_boot_setup_check
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|netdev_boot_setup_check
+)paren
+suffix:semicolon
 DECL|variable|dev_new_index
 id|EXPORT_SYMBOL
 c_func
