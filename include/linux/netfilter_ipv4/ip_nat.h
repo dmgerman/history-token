@@ -16,9 +16,15 @@ DECL|enumerator|IP_NAT_MANIP_DST
 id|IP_NAT_MANIP_DST
 )brace
 suffix:semicolon
+macro_line|#ifndef CONFIG_IP_NF_NAT_LOCAL
 multiline_comment|/* SRC manip occurs only on POST_ROUTING */
 DECL|macro|HOOK2MANIP
 mdefine_line|#define HOOK2MANIP(hooknum) ((hooknum) != NF_IP_POST_ROUTING)
+macro_line|#else
+multiline_comment|/* SRC manip occurs POST_ROUTING or LOCAL_IN */
+DECL|macro|HOOK2MANIP
+mdefine_line|#define HOOK2MANIP(hooknum) ((hooknum) != NF_IP_POST_ROUTING &amp;&amp; (hooknum) != NF_IP_LOCAL_IN)
+macro_line|#endif
 multiline_comment|/* 2.3.19 (I hope) will define this in linux/netfilter_ipv4.h. */
 macro_line|#ifndef SO_ORIGINAL_DST
 DECL|macro|SO_ORIGINAL_DST

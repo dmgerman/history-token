@@ -1112,7 +1112,7 @@ op_ne
 id|exp
 )paren
 r_goto
-id|out_unlock
+id|finish
 suffix:semicolon
 r_if
 c_cond
@@ -1158,7 +1158,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_goto
-id|out_unlock
+id|finish
 suffix:semicolon
 )brace
 multiline_comment|/* We currently export only dirs and regular files.&n;&t; * This is what umountd does.&n;&t; */
@@ -1338,13 +1338,21 @@ id|exp-&gt;ex_parent
 op_assign
 id|parent
 suffix:semicolon
-id|exp-&gt;ex_dentry
-op_assign
-id|nd.dentry
-suffix:semicolon
 id|exp-&gt;ex_mnt
 op_assign
+id|mntget
+c_func
+(paren
 id|nd.mnt
+)paren
+suffix:semicolon
+id|exp-&gt;ex_dentry
+op_assign
+id|dget
+c_func
+(paren
+id|nd.dentry
+)paren
 suffix:semicolon
 id|exp-&gt;ex_flags
 op_assign
@@ -1423,7 +1431,15 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Unlock hashtable */
+id|finish
+suffix:colon
+id|path_release
+c_func
+(paren
+op_amp
+id|nd
+)paren
+suffix:semicolon
 id|out_unlock
 suffix:colon
 id|exp_writeunlock
@@ -1435,19 +1451,6 @@ id|out
 suffix:colon
 r_return
 id|err
-suffix:semicolon
-multiline_comment|/* Release the dentry */
-id|finish
-suffix:colon
-id|path_release
-c_func
-(paren
-op_amp
-id|nd
-)paren
-suffix:semicolon
-r_goto
-id|out_unlock
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Unexport a file system. The export entry has already&n; * been removed from the client&squot;s list of exported fs&squot;s.&n; */
@@ -1924,11 +1927,6 @@ id|fh
 suffix:semicolon
 id|out
 suffix:colon
-r_if
-c_cond
-(paren
-id|path
-)paren
 id|path_release
 c_func
 (paren

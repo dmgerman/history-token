@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acresrc.h - Resource Manager function prototypes&n; *       $Revision: 25 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: acresrc.h - Resource Manager function prototypes&n; *       $Revision: 30 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACRESRC_H__
 DECL|macro|__ACRESRC_H__
 mdefine_line|#define __ACRESRC_H__
@@ -55,13 +55,9 @@ id|acpi_operand_object
 op_star
 id|byte_stream_buffer
 comma
-id|u8
+id|acpi_buffer
 op_star
 id|output_buffer
-comma
-id|u32
-op_star
-id|output_buffer_length
 )paren
 suffix:semicolon
 id|acpi_status
@@ -71,13 +67,9 @@ id|acpi_resource
 op_star
 id|linked_list_buffer
 comma
-id|u8
+id|acpi_buffer
 op_star
 id|output_buffer
-comma
-id|u32
-op_star
-id|output_buffer_length
 )paren
 suffix:semicolon
 id|acpi_status
@@ -85,18 +77,14 @@ id|acpi_rs_create_pci_routing_table
 (paren
 id|acpi_operand_object
 op_star
-id|method_return_object
+id|package_object
 comma
-id|u8
+id|acpi_buffer
 op_star
 id|output_buffer
-comma
-id|u32
-op_star
-id|output_buffer_length
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *Function prototypes called from Acpi_rs_create*APIs&n; */
+multiline_comment|/*&n; *Function prototypes called from Acpi_rs_create*&n; */
 r_void
 id|acpi_rs_dump_resource_list
 (paren
@@ -140,7 +128,7 @@ comma
 id|u32
 id|byte_stream_buffer_length
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|size_needed
 )paren
@@ -152,7 +140,7 @@ id|acpi_resource
 op_star
 id|linked_list_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|size_needed
 )paren
@@ -164,7 +152,7 @@ id|acpi_operand_object
 op_star
 id|package_object
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|buffer_size_needed
 )paren
@@ -181,7 +169,6 @@ id|byte_stream_buffer_length
 comma
 id|u8
 op_star
-op_star
 id|output_buffer
 )paren
 suffix:semicolon
@@ -197,7 +184,6 @@ id|byte_stream_size_needed
 comma
 id|u8
 op_star
-op_star
 id|output_buffer
 )paren
 suffix:semicolon
@@ -208,7 +194,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -217,7 +203,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -229,7 +215,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -238,7 +224,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -255,7 +241,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
@@ -272,7 +258,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
@@ -284,7 +270,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -293,7 +279,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -310,7 +296,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
@@ -322,7 +308,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -331,7 +317,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -348,7 +334,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
@@ -360,7 +346,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -369,7 +355,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -386,7 +372,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
@@ -398,7 +384,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -407,7 +393,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -424,7 +410,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
@@ -436,7 +422,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -445,7 +431,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -462,19 +448,19 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
 suffix:semicolon
 id|acpi_status
-id|acpi_rs_start_dependent_functions_resource
+id|acpi_rs_start_depend_fns_resource
 (paren
 id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -483,19 +469,19 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
 suffix:semicolon
 id|acpi_status
-id|acpi_rs_end_dependent_functions_resource
+id|acpi_rs_end_depend_fns_resource
 (paren
 id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -504,13 +490,13 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
 suffix:semicolon
 id|acpi_status
-id|acpi_rs_start_dependent_functions_stream
+id|acpi_rs_start_depend_fns_stream
 (paren
 id|acpi_resource
 op_star
@@ -521,13 +507,13 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
 suffix:semicolon
 id|acpi_status
-id|acpi_rs_end_dependent_functions_stream
+id|acpi_rs_end_depend_fns_stream
 (paren
 id|acpi_resource
 op_star
@@ -538,7 +524,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
@@ -550,7 +536,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -559,7 +545,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -576,7 +562,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
@@ -588,7 +574,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -597,7 +583,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -609,7 +595,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -618,7 +604,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -635,7 +621,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
@@ -652,7 +638,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
@@ -664,7 +650,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -673,7 +659,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -690,7 +676,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
@@ -702,7 +688,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -711,7 +697,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -728,7 +714,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren
@@ -740,7 +726,7 @@ id|u8
 op_star
 id|byte_stream_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 comma
@@ -749,7 +735,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|structure_size
 )paren
@@ -766,7 +752,7 @@ op_star
 op_star
 id|output_buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|bytes_consumed
 )paren

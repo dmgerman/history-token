@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 24 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 30 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -9,7 +9,7 @@ macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exconvrt&quot;
 )paren
@@ -57,8 +57,11 @@ r_sizeof
 id|acpi_integer
 )paren
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
+l_string|&quot;Ex_convert_to_integer&quot;
+comma
+id|obj_desc
 )paren
 suffix:semicolon
 r_switch
@@ -75,7 +78,7 @@ id|result_desc
 op_assign
 id|obj_desc
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -112,7 +115,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_TYPE
 )paren
@@ -133,7 +136,7 @@ op_logical_neg
 id|ret_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -186,11 +189,11 @@ id|obj_desc-&gt;common.type
 r_case
 id|ACPI_TYPE_STRING
 suffix:colon
-multiline_comment|/* TBD: Need to use 64-bit STRTOUL */
+multiline_comment|/* TBD: Need to use 64-bit ACPI_STRTOUL */
 multiline_comment|/*&n;&t;&t; * Convert string to an integer&n;&t;&t; * String must be hexadecimal as per the ACPI specification&n;&t;&t; */
 id|result
 op_assign
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|pointer
 comma
@@ -279,7 +282,7 @@ id|result_desc
 op_assign
 id|ret_desc
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -323,8 +326,11 @@ id|u8
 op_star
 id|new_buf
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
+l_string|&quot;Ex_convert_to_buffer&quot;
+comma
+id|obj_desc
 )paren
 suffix:semicolon
 r_switch
@@ -351,7 +357,7 @@ op_logical_neg
 id|ret_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -375,7 +381,7 @@ id|u32
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Need enough space for one integers */
+multiline_comment|/* Need enough space for one integer */
 id|ret_desc-&gt;buffer.length
 op_assign
 id|integer_size
@@ -394,7 +400,7 @@ op_logical_neg
 id|new_buf
 )paren
 (brace
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Ex_convert_to_buffer: Buffer allocation failure&bslash;n&quot;
@@ -406,7 +412,7 @@ id|acpi_ut_remove_reference
 id|ret_desc
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -452,30 +458,6 @@ op_assign
 id|new_buf
 suffix:semicolon
 multiline_comment|/* Return the new buffer descriptor */
-r_if
-c_cond
-(paren
-op_star
-id|result_desc
-op_eq
-id|obj_desc
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|walk_state-&gt;opcode
-op_ne
-id|AML_STORE_OP
-)paren
-(brace
-id|acpi_ut_remove_reference
-(paren
-id|obj_desc
-)paren
-suffix:semicolon
-)brace
-)brace
 op_star
 id|result_desc
 op_assign
@@ -505,15 +487,13 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_TYPE
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -568,7 +548,7 @@ id|leading_zero
 op_assign
 id|TRUE
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -665,7 +645,7 @@ op_assign
 id|u8
 )paren
 (paren
-id|ASCII_ZERO
+id|ACPI_ASCII_ZERO
 op_plus
 id|remainder
 )paren
@@ -733,7 +713,7 @@ c_cond
 (paren
 id|hex_digit
 op_ne
-id|ASCII_ZERO
+id|ACPI_ASCII_ZERO
 )paren
 (brace
 id|leading_zero
@@ -780,7 +760,7 @@ id|string
 l_int|0
 )braket
 op_assign
-id|ASCII_ZERO
+id|ACPI_ASCII_ZERO
 suffix:semicolon
 id|k
 op_assign
@@ -854,8 +834,11 @@ id|u8
 op_star
 id|pointer
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
+l_string|&quot;Ex_convert_to_string&quot;
+comma
+id|obj_desc
 )paren
 suffix:semicolon
 r_switch
@@ -919,7 +902,7 @@ op_logical_neg
 id|ret_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -942,7 +925,7 @@ op_logical_neg
 id|new_buf
 )paren
 (brace
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Ex_convert_to_string: Buffer allocation failure&bslash;n&quot;
@@ -954,7 +937,7 @@ id|acpi_ut_remove_reference
 id|ret_desc
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -1083,7 +1066,7 @@ OG
 id|ACPI_MAX_STRING_CONVERSION
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_STRING_LIMIT
 )paren
@@ -1105,7 +1088,7 @@ op_logical_neg
 id|ret_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -1141,7 +1124,7 @@ op_logical_neg
 id|new_buf
 )paren
 (brace
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Ex_convert_to_string: Buffer allocation failure&bslash;n&quot;
@@ -1153,7 +1136,7 @@ id|acpi_ut_remove_reference
 id|ret_desc
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -1232,7 +1215,7 @@ id|new_buf
 suffix:semicolon
 id|ret_desc-&gt;string.length
 op_assign
-id|STRLEN
+id|ACPI_STRLEN
 (paren
 (paren
 r_char
@@ -1293,7 +1276,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Must copy the string first and then truncate it */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NOT_IMPLEMENTED
 )paren
@@ -1303,32 +1286,34 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_TYPE
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_convert_to_target_type&n; *&n; * PARAMETERS:  *Obj_desc       - Object to be converted.&n; *              Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_convert_to_target_type&n; *&n; * PARAMETERS:  Destination_type    - Current type of the destination&n; *              Source_desc         - Source object to be converted.&n; *              Walk_state          - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Implements &quot;implicit conversion&quot; rules for storing an object.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_convert_to_target_type
 id|acpi_ex_convert_to_target_type
 (paren
-id|acpi_object_type8
+id|acpi_object_type
 id|destination_type
 comma
 id|acpi_operand_object
 op_star
+id|source_desc
+comma
+id|acpi_operand_object
 op_star
-id|obj_desc
+op_star
+id|result_desc
 comma
 id|acpi_walk_state
 op_star
@@ -1340,10 +1325,16 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_convert_to_target_type&quot;
 )paren
+suffix:semicolon
+multiline_comment|/* Default behavior */
+op_star
+id|result_desc
+op_assign
+id|source_desc
 suffix:semicolon
 multiline_comment|/*&n;&t; * If required by the target,&n;&t; * perform implicit conversion on the source before we store it.&n;&t; */
 r_switch
@@ -1387,12 +1378,7 @@ c_cond
 (paren
 id|destination_type
 op_ne
-(paren
-op_star
-id|obj_desc
-)paren
-op_member_access_from_pointer
-id|common.type
+id|source_desc-&gt;common.type
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -1405,8 +1391,7 @@ comma
 id|acpi_ut_get_type_name
 (paren
 (paren
-op_star
-id|obj_desc
+id|source_desc
 )paren
 op_member_access_from_pointer
 id|common.type
@@ -1453,10 +1438,9 @@ id|status
 op_assign
 id|acpi_ex_convert_to_integer
 (paren
-op_star
-id|obj_desc
+id|source_desc
 comma
-id|obj_desc
+id|result_desc
 comma
 id|walk_state
 )paren
@@ -1471,10 +1455,9 @@ id|status
 op_assign
 id|acpi_ex_convert_to_string
 (paren
-op_star
-id|obj_desc
+id|source_desc
 comma
-id|obj_desc
+id|result_desc
 comma
 l_int|16
 comma
@@ -1488,15 +1471,14 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * The operand must be a String.  We can convert an&n;&t;&t;&t; * Integer or Buffer if necessary&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * The operand must be a Buffer.  We can convert an&n;&t;&t;&t; * Integer or String if necessary&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_convert_to_buffer
 (paren
-op_star
-id|obj_desc
+id|source_desc
 comma
-id|obj_desc
+id|result_desc
 comma
 id|walk_state
 )paren

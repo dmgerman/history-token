@@ -1645,7 +1645,7 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|MAY_PTRACE
-mdefine_line|#define MAY_PTRACE(p) &bslash;&n;(p==current||(p-&gt;p_pptr==current&amp;&amp;(p-&gt;ptrace &amp; PT_PTRACED)&amp;&amp;p-&gt;state==TASK_STOPPED))
+mdefine_line|#define MAY_PTRACE(p) &bslash;&n;(p==current||(p-&gt;parent==current&amp;&amp;(p-&gt;ptrace &amp; PT_PTRACED)&amp;&amp;p-&gt;state==TASK_STOPPED))
 DECL|function|mem_open
 r_static
 r_int
@@ -3624,6 +3624,10 @@ id|inode
 suffix:semicolon
 id|out_unlock
 suffix:colon
+id|ei-&gt;pde
+op_assign
+l_int|NULL
+suffix:semicolon
 id|iput
 c_func
 (paren

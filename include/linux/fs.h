@@ -2020,16 +2020,13 @@ mdefine_line|#define MNT_DETACH&t;0x00000002&t;/* Just detach from the tree */
 macro_line|#include &lt;linux/ext3_fs_sb.h&gt;
 macro_line|#include &lt;linux/hpfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/ntfs_fs_sb.h&gt;
-macro_line|#include &lt;linux/msdos_fs_sb.h&gt;
 macro_line|#include &lt;linux/iso_fs_sb.h&gt;
 macro_line|#include &lt;linux/sysv_fs_sb.h&gt;
 macro_line|#include &lt;linux/affs_fs_sb.h&gt;
 macro_line|#include &lt;linux/ufs_fs_sb.h&gt;
 macro_line|#include &lt;linux/romfs_fs_sb.h&gt;
-macro_line|#include &lt;linux/smb_fs_sb.h&gt;
 macro_line|#include &lt;linux/hfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/adfs_fs_sb.h&gt;
-macro_line|#include &lt;linux/qnx4_fs_sb.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/bfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/udf_fs_sb.h&gt;
@@ -2194,11 +2191,6 @@ r_struct
 id|ntfs_sb_info
 id|ntfs_sb
 suffix:semicolon
-DECL|member|msdos_sb
-r_struct
-id|msdos_sb_info
-id|msdos_sb
-suffix:semicolon
 DECL|member|isofs_sb
 r_struct
 id|isofs_sb_info
@@ -2229,11 +2221,6 @@ r_struct
 id|romfs_sb_info
 id|romfs_sb
 suffix:semicolon
-DECL|member|smbfs_sb
-r_struct
-id|smb_sb_info
-id|smbfs_sb
-suffix:semicolon
 DECL|member|hfs_sb
 r_struct
 id|hfs_sb_info
@@ -2243,11 +2230,6 @@ DECL|member|adfs_sb
 r_struct
 id|adfs_sb_info
 id|adfs_sb
-suffix:semicolon
-DECL|member|qnx4_sb
-r_struct
-id|qnx4_sb_info
-id|qnx4_sb
 suffix:semicolon
 DECL|member|reiserfs_sb
 r_struct
@@ -7409,24 +7391,6 @@ id|origin
 )paren
 suffix:semicolon
 r_extern
-id|ssize_t
-id|generic_read_dir
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_char
-op_star
-comma
-r_int
-comma
-id|loff_t
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|generic_file_open
 c_func
@@ -7531,21 +7495,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|dcache_readdir
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_void
-op_star
-comma
-id|filldir_t
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|vfs_stat
 c_func
 (paren
@@ -7626,6 +7575,79 @@ r_char
 id|root_device_name
 (braket
 )braket
+suffix:semicolon
+r_extern
+r_int
+id|dcache_readdir
+c_func
+(paren
+r_struct
+id|file
+op_star
+comma
+r_void
+op_star
+comma
+id|filldir_t
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|simple_statfs
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_struct
+id|statfs
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|dentry
+op_star
+id|simple_lookup
+c_func
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|dentry
+op_star
+)paren
+suffix:semicolon
+r_extern
+id|ssize_t
+id|generic_read_dir
+c_func
+(paren
+r_struct
+id|file
+op_star
+comma
+r_char
+op_star
+comma
+r_int
+comma
+id|loff_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|file_operations
+id|simple_dir_operations
+suffix:semicolon
+r_extern
+r_struct
+id|inode_operations
+id|simple_dir_inode_operations
 suffix:semicolon
 r_extern
 r_void

@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actbl.h - Table data structures defined in ACPI specification&n; *       $Revision: 46 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: actbl.h - Table data structures defined in ACPI specification&n; *       $Revision: 52 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTBL_H__
 DECL|macro|__ACTBL_H__
 mdefine_line|#define __ACTBL_H__
@@ -27,7 +27,7 @@ mdefine_line|#define SSDT_SIG                &quot;SSDT&quot;      /* Secondary 
 DECL|macro|SBST_SIG
 mdefine_line|#define SBST_SIG                &quot;SBST&quot;      /* Smart Battery Specification Table */
 DECL|macro|SPIC_SIG
-mdefine_line|#define SPIC_SIG                &quot;SPIC&quot;      /* iosapic table */
+mdefine_line|#define SPIC_SIG                &quot;SPIC&quot;      /* IOSAPIC table */
 DECL|macro|BOOT_SIG
 mdefine_line|#define BOOT_SIG                &quot;BOOT&quot;      /* Boot table */
 DECL|macro|GL_OWNED
@@ -64,12 +64,12 @@ id|signature
 l_int|8
 )braket
 suffix:semicolon
-multiline_comment|/* contains &quot;RSD PTR &quot; */
+multiline_comment|/* ACPI signature, contains &quot;RSD PTR &quot; */
 DECL|member|checksum
 id|u8
 id|checksum
 suffix:semicolon
-multiline_comment|/* to make sum of struct == 0 */
+multiline_comment|/* To make sum of struct == 0 */
 DECL|member|oem_id
 id|NATIVE_CHAR
 id|oem_id
@@ -110,7 +110,7 @@ id|reserved
 l_int|3
 )braket
 suffix:semicolon
-multiline_comment|/* reserved field must be 0 */
+multiline_comment|/* Reserved field must be 0 */
 DECL|typedef|RSDP_DESCRIPTOR
 )brace
 id|RSDP_DESCRIPTOR
@@ -126,22 +126,22 @@ id|signature
 l_int|4
 )braket
 suffix:semicolon
-multiline_comment|/* identifies type of table */
+multiline_comment|/* ACPI signature (4 ASCII characters) */
 DECL|member|length
 id|u32
 id|length
 suffix:semicolon
-multiline_comment|/* length of table, in bytes,&n;&t;&t;&t;  * including header */
+multiline_comment|/* Length of table, in bytes, including header */
 DECL|member|revision
 id|u8
 id|revision
 suffix:semicolon
-multiline_comment|/* specification minor version # */
+multiline_comment|/* ACPI Specification minor version # */
 DECL|member|checksum
 id|u8
 id|checksum
 suffix:semicolon
-multiline_comment|/* to make sum of entire table == 0 */
+multiline_comment|/* To make sum of entire table == 0 */
 DECL|member|oem_id
 id|NATIVE_CHAR
 id|oem_id
@@ -210,7 +210,7 @@ DECL|member|header
 id|acpi_table_header
 id|header
 suffix:semicolon
-multiline_comment|/* table header */
+multiline_comment|/* ACPI table header */
 DECL|member|local_apic_address
 id|u32
 id|local_apic_address
@@ -268,7 +268,7 @@ DECL|member|local_apic_id
 id|u8
 id|local_apic_id
 suffix:semicolon
-multiline_comment|/* processor&squot;s local APIC id */
+multiline_comment|/* Processor&squot;s local APIC id */
 DECL|member|processor_enabled
 id|u32
 id|processor_enabled
@@ -303,7 +303,7 @@ DECL|member|reserved
 id|u8
 id|reserved
 suffix:semicolon
-multiline_comment|/* reserved - must be zero */
+multiline_comment|/* Reserved - must be zero */
 DECL|member|io_apic_address
 id|u32
 id|io_apic_address
@@ -313,13 +313,13 @@ DECL|member|vector
 id|u32
 id|vector
 suffix:semicolon
-multiline_comment|/* interrupt vector index where INTI&n;&t;&t;&t;  * lines start */
+multiline_comment|/* Interrupt vector index where INTI&n;&t;&t;&t;  * lines start */
 DECL|typedef|IO_APIC
 )brace
 id|IO_APIC
 suffix:semicolon
-multiline_comment|/*&n;**  IA64 TODO:  Add SAPIC Tables&n;*/
-multiline_comment|/*&n;**  IA64 TODO:  Modify Smart Battery Description to comply with ACPI IA64&n;**              extensions.&n;*/
+multiline_comment|/*&n; *  IA64 TBD:  Add SAPIC Tables&n; */
+multiline_comment|/*&n; *  IA64 TBD:   Modify Smart Battery Description to comply with ACPI IA64&n; *              extensions.&n; */
 r_typedef
 r_struct
 multiline_comment|/* Smart Battery Description Table */
@@ -357,6 +357,8 @@ DECL|macro|ACPI_TABLE_SINGLE
 mdefine_line|#define ACPI_TABLE_SINGLE       0
 DECL|macro|ACPI_TABLE_MULTIPLE
 mdefine_line|#define ACPI_TABLE_MULTIPLE     1
+DECL|macro|ACPI_TABLE_EXECUTABLE
+mdefine_line|#define ACPI_TABLE_EXECUTABLE   2
 multiline_comment|/* Data about each known table type */
 DECL|struct|_acpi_table_support
 r_typedef
@@ -373,6 +375,12 @@ id|NATIVE_CHAR
 op_star
 id|signature
 suffix:semicolon
+DECL|member|global_ptr
+r_void
+op_star
+op_star
+id|global_ptr
+suffix:semicolon
 DECL|member|sig_length
 id|u8
 id|sig_length
@@ -381,23 +389,12 @@ DECL|member|flags
 id|u8
 id|flags
 suffix:semicolon
-DECL|member|status
-id|u16
-id|status
-suffix:semicolon
-DECL|member|global_ptr
-r_void
-op_star
-op_star
-id|global_ptr
-suffix:semicolon
 DECL|typedef|ACPI_TABLE_SUPPORT
 )brace
 id|ACPI_TABLE_SUPPORT
 suffix:semicolon
 multiline_comment|/*&n; * Get the architecture-specific tables&n; */
-macro_line|#include &quot;actbl1.h&quot;   /* Acpi 1.0 table defintions */
-macro_line|#include &quot;actbl71.h&quot;  /* Acpi 0.71 IA-64 Extension table defintions */
+macro_line|#include &quot;actbl1.h&quot;   /* Acpi 1.0 table definitions */
 macro_line|#include &quot;actbl2.h&quot;   /* Acpi 2.0 table definitions */
 macro_line|#endif /* __ACTBL_H__ */
 eof

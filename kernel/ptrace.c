@@ -38,7 +38,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|child-&gt;p_pptr
+id|child-&gt;parent
 op_ne
 id|current
 )paren
@@ -254,7 +254,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|task-&gt;p_pptr
+id|task-&gt;parent
 op_ne
 id|current
 )paren
@@ -265,7 +265,7 @@ c_func
 id|task
 )paren
 suffix:semicolon
-id|task-&gt;p_pptr
+id|task-&gt;parent
 op_assign
 id|current
 suffix:semicolon
@@ -368,9 +368,9 @@ c_func
 id|child
 )paren
 suffix:semicolon
-id|child-&gt;p_pptr
+id|child-&gt;parent
 op_assign
-id|child-&gt;p_opptr
+id|child-&gt;real_parent
 suffix:semicolon
 id|SET_LINKS
 c_func

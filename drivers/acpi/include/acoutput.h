@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acoutput.h -- debug output&n; *       $Revision: 84 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: acoutput.h -- debug output&n; *       $Revision: 86 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACOUTPUT_H__
 DECL|macro|__ACOUTPUT_H__
 mdefine_line|#define __ACOUTPUT_H__
@@ -27,34 +27,18 @@ DECL|macro|ACPI_DEBUGGER
 mdefine_line|#define ACPI_DEBUGGER               0x00000200
 DECL|macro|ACPI_OS_SERVICES
 mdefine_line|#define ACPI_OS_SERVICES            0x00000400
-DECL|macro|ACPI_BUS
-mdefine_line|#define ACPI_BUS                    0x00010000
-DECL|macro|ACPI_SYSTEM
-mdefine_line|#define ACPI_SYSTEM                 0x00020000
-DECL|macro|ACPI_POWER
-mdefine_line|#define ACPI_POWER                  0x00040000
-DECL|macro|ACPI_EC
-mdefine_line|#define ACPI_EC                     0x00080000
-DECL|macro|ACPI_AC_ADAPTER
-mdefine_line|#define ACPI_AC_ADAPTER             0x00100000
-DECL|macro|ACPI_BATTERY
-mdefine_line|#define ACPI_BATTERY                0x00200000
-DECL|macro|ACPI_BUTTON
-mdefine_line|#define ACPI_BUTTON                 0x00400000
-DECL|macro|ACPI_PROCESSOR
-mdefine_line|#define ACPI_PROCESSOR              0x00800000
-DECL|macro|ACPI_THERMAL
-mdefine_line|#define ACPI_THERMAL                0x01000000
-DECL|macro|ACPI_FAN
-mdefine_line|#define ACPI_FAN                    0x02000000
 DECL|macro|ACPI_ALL_COMPONENTS
-mdefine_line|#define ACPI_ALL_COMPONENTS         0x0FFFFFFF
+mdefine_line|#define ACPI_ALL_COMPONENTS         0x00000FFF
 DECL|macro|ACPI_COMPONENT_DEFAULT
 mdefine_line|#define ACPI_COMPONENT_DEFAULT      (ACPI_ALL_COMPONENTS)
+multiline_comment|/* Component IDs for ACPI tools and utilities */
 DECL|macro|ACPI_COMPILER
-mdefine_line|#define ACPI_COMPILER               0x10000000
+mdefine_line|#define ACPI_COMPILER               0x00001000
 DECL|macro|ACPI_TOOLS
-mdefine_line|#define ACPI_TOOLS                  0x20000000
+mdefine_line|#define ACPI_TOOLS                  0x00002000
+multiline_comment|/* Component IDs reserved for ACPI drivers */
+DECL|macro|ACPI_ALL_DRIVERS
+mdefine_line|#define ACPI_ALL_DRIVERS            0xFFFF0000
 multiline_comment|/*&n; * Raw debug output levels, do not use these in the DEBUG_PRINT macros&n; */
 DECL|macro|ACPI_LV_OK
 mdefine_line|#define ACPI_LV_OK                  0x00000001

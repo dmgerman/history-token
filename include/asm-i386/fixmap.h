@@ -4,6 +4,7 @@ DECL|macro|_ASM_FIXMAP_H
 mdefine_line|#define _ASM_FIXMAP_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#include &lt;asm/apicdef.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifdef CONFIG_HIGHMEM
@@ -54,6 +55,12 @@ id|FIX_LI_PCIB
 comma
 multiline_comment|/* Lithium PCI Bridge B */
 macro_line|#endif
+macro_line|#ifdef CONFIG_X86_F00F_BUG
+DECL|enumerator|FIX_F00F_IDT
+id|FIX_F00F_IDT
+comma
+multiline_comment|/* Virtual mapping for IDT */
+macro_line|#endif
 macro_line|#ifdef CONFIG_HIGHMEM
 DECL|enumerator|FIX_KMAP_BEGIN
 id|FIX_KMAP_BEGIN
@@ -69,6 +76,20 @@ id|KM_TYPE_NR
 op_star
 id|NR_CPUS
 )paren
+op_minus
+l_int|1
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_ACPI_BOOT
+DECL|enumerator|FIX_ACPI_BEGIN
+id|FIX_ACPI_BEGIN
+comma
+DECL|enumerator|FIX_ACPI_END
+id|FIX_ACPI_END
+op_assign
+id|FIX_ACPI_BEGIN
+op_plus
+id|FIX_ACPI_PAGES
 op_minus
 l_int|1
 comma

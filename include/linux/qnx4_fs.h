@@ -239,6 +239,39 @@ macro_line|#else
 DECL|macro|QNX4DEBUG
 mdefine_line|#define QNX4DEBUG(X) (void) 0
 macro_line|#endif
+DECL|struct|qnx4_sb_info
+r_struct
+id|qnx4_sb_info
+(brace
+DECL|member|sb_buf
+r_struct
+id|buffer_head
+op_star
+id|sb_buf
+suffix:semicolon
+multiline_comment|/* superblock buffer */
+DECL|member|sb
+r_struct
+id|qnx4_super_block
+op_star
+id|sb
+suffix:semicolon
+multiline_comment|/* our superblock */
+DECL|member|Version
+r_int
+r_int
+id|Version
+suffix:semicolon
+multiline_comment|/* may be useful */
+DECL|member|BitMap
+r_struct
+id|qnx4_inode_entry
+op_star
+id|BitMap
+suffix:semicolon
+multiline_comment|/* useful */
+)brace
+suffix:semicolon
 DECL|struct|qnx4_inode_info
 r_struct
 id|qnx4_inode_info
@@ -531,6 +564,25 @@ r_int
 id|create
 )paren
 suffix:semicolon
+DECL|function|qnx4_sb
+r_static
+r_inline
+r_struct
+id|qnx4_sb_info
+op_star
+id|qnx4_sb
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
+suffix:semicolon
+)brace
 DECL|function|qnx4_i
 r_static
 r_inline

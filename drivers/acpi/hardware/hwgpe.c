@@ -1,15 +1,38 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: hwgpe - Low level GPE enable/disable/clear functions&n; *              $Revision: 35 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: hwgpe - Low level GPE enable/disable/clear functions&n; *              $Revision: 39 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_HARDWARE
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;hwgpe&quot;
 )paren
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_get_gpe_bit_mask&n; *&n; * PARAMETERS:  Gpe_number      - The GPE&n; *&n; * RETURN:      Gpe register bitmask for this gpe level&n; *&n; * DESCRIPTION: Get the bitmask for this GPE&n; *&n; ******************************************************************************/
+id|u32
+DECL|function|acpi_hw_get_gpe_bit_mask
+id|acpi_hw_get_gpe_bit_mask
+(paren
+id|u32
+id|gpe_number
+)paren
+(brace
+r_return
+(paren
+id|acpi_gbl_gpe_number_info
+(braket
+id|acpi_ev_get_gpe_number_index
+(paren
+id|gpe_number
+)paren
+)braket
+dot
+id|bit_mask
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_enable_gpe&n; *&n; * PARAMETERS:  Gpe_number      - The GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Enable a single GPE.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_hw_enable_gpe
@@ -28,28 +51,25 @@ suffix:semicolon
 id|u32
 id|bit_mask
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Translate GPE number to index into global registers array.&n;&t; */
+multiline_comment|/* Translate GPE number to index into global registers array. */
 id|register_index
 op_assign
-id|acpi_gbl_gpe_valid
-(braket
-id|gpe_number
-)braket
-suffix:semicolon
-multiline_comment|/*&n;&t; * Figure out the bit offset for this GPE within the target register.&n;&t; */
-id|bit_mask
-op_assign
-id|acpi_gbl_decode_to8bit
-(braket
-id|MOD_8
+id|acpi_ev_get_gpe_register_index
 (paren
 id|gpe_number
 )paren
-)braket
+suffix:semicolon
+multiline_comment|/* Get the register bitmask for this GPE */
+id|bit_mask
+op_assign
+id|acpi_hw_get_gpe_bit_mask
+(paren
+id|gpe_number
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Read the current value of the register, set the appropriate bit&n;&t; * to enable the GPE, and write out the new register.&n;&t; */
 id|in_byte
@@ -58,7 +78,7 @@ l_int|0
 suffix:semicolon
 id|acpi_os_read_port
 (paren
-id|acpi_gbl_gpe_registers
+id|acpi_gbl_gpe_register_info
 (braket
 id|register_index
 )braket
@@ -73,7 +93,7 @@ l_int|8
 suffix:semicolon
 id|acpi_os_write_port
 (paren
-id|acpi_gbl_gpe_registers
+id|acpi_gbl_gpe_register_info
 (braket
 id|register_index
 )braket
@@ -105,31 +125,28 @@ suffix:semicolon
 id|u32
 id|bit_mask
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Translate GPE number to index into global registers array.&n;&t; */
+multiline_comment|/* Translate GPE number to index into global registers array. */
 id|register_index
 op_assign
-id|acpi_gbl_gpe_valid
-(braket
-id|gpe_number
-)braket
-suffix:semicolon
-multiline_comment|/*&n;&t; * Figure out the bit offset for this GPE within the target register.&n;&t; */
-id|bit_mask
-op_assign
-id|acpi_gbl_decode_to8bit
-(braket
-id|MOD_8
+id|acpi_ev_get_gpe_register_index
 (paren
 id|gpe_number
 )paren
-)braket
+suffix:semicolon
+multiline_comment|/* Get the register bitmask for this GPE */
+id|bit_mask
+op_assign
+id|acpi_hw_get_gpe_bit_mask
+(paren
+id|gpe_number
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the bit so we will not disable this when sleeping&n;&t; */
-id|acpi_gbl_gpe_registers
+id|acpi_gbl_gpe_register_info
 (braket
 id|register_index
 )braket
@@ -157,28 +174,25 @@ suffix:semicolon
 id|u32
 id|bit_mask
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Translate GPE number to index into global registers array.&n;&t; */
+multiline_comment|/* Translate GPE number to index into global registers array. */
 id|register_index
 op_assign
-id|acpi_gbl_gpe_valid
-(braket
-id|gpe_number
-)braket
-suffix:semicolon
-multiline_comment|/*&n;&t; * Figure out the bit offset for this GPE within the target register.&n;&t; */
-id|bit_mask
-op_assign
-id|acpi_gbl_decode_to8bit
-(braket
-id|MOD_8
+id|acpi_ev_get_gpe_register_index
 (paren
 id|gpe_number
 )paren
-)braket
+suffix:semicolon
+multiline_comment|/* Get the register bitmask for this GPE */
+id|bit_mask
+op_assign
+id|acpi_hw_get_gpe_bit_mask
+(paren
+id|gpe_number
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Read the current value of the register, clear the appropriate bit,&n;&t; * and write out the new register value to disable the GPE.&n;&t; */
 id|in_byte
@@ -187,7 +201,7 @@ l_int|0
 suffix:semicolon
 id|acpi_os_read_port
 (paren
-id|acpi_gbl_gpe_registers
+id|acpi_gbl_gpe_register_info
 (braket
 id|register_index
 )braket
@@ -202,7 +216,7 @@ l_int|8
 suffix:semicolon
 id|acpi_os_write_port
 (paren
-id|acpi_gbl_gpe_registers
+id|acpi_gbl_gpe_register_info
 (braket
 id|register_index
 )braket
@@ -241,31 +255,28 @@ suffix:semicolon
 id|u32
 id|bit_mask
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Translate GPE number to index into global registers array.&n;&t; */
+multiline_comment|/* Translate GPE number to index into global registers array. */
 id|register_index
 op_assign
-id|acpi_gbl_gpe_valid
-(braket
-id|gpe_number
-)braket
-suffix:semicolon
-multiline_comment|/*&n;&t; * Figure out the bit offset for this GPE within the target register.&n;&t; */
-id|bit_mask
-op_assign
-id|acpi_gbl_decode_to8bit
-(braket
-id|MOD_8
+id|acpi_ev_get_gpe_register_index
 (paren
 id|gpe_number
 )paren
-)braket
+suffix:semicolon
+multiline_comment|/* Get the register bitmask for this GPE */
+id|bit_mask
+op_assign
+id|acpi_hw_get_gpe_bit_mask
+(paren
+id|gpe_number
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Clear the bit so we will disable this when sleeping&n;&t; */
-id|acpi_gbl_gpe_registers
+id|acpi_gbl_gpe_register_info
 (braket
 id|register_index
 )braket
@@ -291,33 +302,30 @@ suffix:semicolon
 id|u32
 id|bit_mask
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Translate GPE number to index into global registers array.&n;&t; */
+multiline_comment|/* Translate GPE number to index into global registers array. */
 id|register_index
 op_assign
-id|acpi_gbl_gpe_valid
-(braket
-id|gpe_number
-)braket
-suffix:semicolon
-multiline_comment|/*&n;&t; * Figure out the bit offset for this GPE within the target register.&n;&t; */
-id|bit_mask
-op_assign
-id|acpi_gbl_decode_to8bit
-(braket
-id|MOD_8
+id|acpi_ev_get_gpe_register_index
 (paren
 id|gpe_number
 )paren
-)braket
+suffix:semicolon
+multiline_comment|/* Get the register bitmask for this GPE */
+id|bit_mask
+op_assign
+id|acpi_hw_get_gpe_bit_mask
+(paren
+id|gpe_number
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Write a one to the appropriate bit in the status register to&n;&t; * clear this GPE.&n;&t; */
 id|acpi_os_write_port
 (paren
-id|acpi_gbl_gpe_registers
+id|acpi_gbl_gpe_register_info
 (braket
 id|register_index
 )braket
@@ -358,7 +366,11 @@ id|bit_mask
 op_assign
 l_int|0
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_GPE_REGISTER_INFO
+op_star
+id|gpe_register_info
+suffix:semicolon
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -379,38 +391,38 @@ id|event_status
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Translate GPE number to index into global registers array.&n;&t; */
+multiline_comment|/* Translate GPE number to index into global registers array. */
 id|register_index
 op_assign
-id|acpi_gbl_gpe_valid
-(braket
-id|gpe_number
-)braket
-suffix:semicolon
-multiline_comment|/*&n;&t; * Figure out the bit offset for this GPE within the target register.&n;&t; */
-id|bit_mask
-op_assign
-id|acpi_gbl_decode_to8bit
-(braket
-id|MOD_8
+id|acpi_ev_get_gpe_register_index
 (paren
 id|gpe_number
 )paren
+suffix:semicolon
+id|gpe_register_info
+op_assign
+op_amp
+id|acpi_gbl_gpe_register_info
+(braket
+id|register_index
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t; * Enabled?:&n;&t; */
+multiline_comment|/* Get the register bitmask for this GPE */
+id|bit_mask
+op_assign
+id|acpi_hw_get_gpe_bit_mask
+(paren
+id|gpe_number
+)paren
+suffix:semicolon
+multiline_comment|/* GPE Enabled? */
 id|in_byte
 op_assign
 l_int|0
 suffix:semicolon
 id|acpi_os_read_port
 (paren
-id|acpi_gbl_gpe_registers
-(braket
-id|register_index
-)braket
-dot
-id|enable_addr
+id|gpe_register_info-&gt;enable_addr
 comma
 op_amp
 id|in_byte
@@ -434,18 +446,13 @@ op_or_assign
 id|ACPI_EVENT_FLAG_ENABLED
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Enabled for wake?:&n;&t; */
+multiline_comment|/* GPE Enabled for wake? */
 r_if
 c_cond
 (paren
 id|bit_mask
 op_amp
-id|acpi_gbl_gpe_registers
-(braket
-id|register_index
-)braket
-dot
-id|wake_enable
+id|gpe_register_info-&gt;wake_enable
 )paren
 (brace
 (paren
@@ -456,19 +463,14 @@ op_or_assign
 id|ACPI_EVENT_FLAG_WAKE_ENABLED
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Set?&n;&t; */
+multiline_comment|/* GPE active (set)? */
 id|in_byte
 op_assign
 l_int|0
 suffix:semicolon
 id|acpi_os_read_port
 (paren
-id|acpi_gbl_gpe_registers
-(braket
-id|register_index
-)braket
-dot
-id|status_addr
+id|gpe_register_info-&gt;status_addr
 comma
 op_amp
 id|in_byte
@@ -493,7 +495,7 @@ id|ACPI_EVENT_FLAG_SET
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_disable_non_wakeup_gpes&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Disable all non-wakeup GPEs&n; *              Call with interrupts disabled. The interrupt handler also&n; *              modifies Acpi_gbl_Gpe_registers[i].Enable, so it should not be&n; *              given the chance to run until after non-wake GPEs are&n; *              re-enabled.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_disable_non_wakeup_gpes&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Disable all non-wakeup GPEs&n; *              Call with interrupts disabled. The interrupt handler also&n; *              modifies Acpi_gbl_Gpe_register_info[i].Enable, so it should not be&n; *              given the chance to run until after non-wake GPEs are&n; *              re-enabled.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_hw_disable_non_wakeup_gpes
 id|acpi_hw_disable_non_wakeup_gpes
@@ -504,7 +506,11 @@ r_void
 id|u32
 id|i
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_GPE_REGISTER_INFO
+op_star
+id|gpe_register_info
+suffix:semicolon
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -523,44 +529,32 @@ id|i
 op_increment
 )paren
 (brace
+id|gpe_register_info
+op_assign
+op_amp
+id|acpi_gbl_gpe_register_info
+(braket
+id|i
+)braket
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Read the enabled status of all GPEs. We&n;&t;&t; * will be using it to restore all the GPEs later.&n;&t;&t; */
 id|acpi_os_read_port
 (paren
-id|acpi_gbl_gpe_registers
-(braket
-id|i
-)braket
-dot
-id|enable_addr
+id|gpe_register_info-&gt;enable_addr
 comma
 op_amp
-id|acpi_gbl_gpe_registers
-(braket
-id|i
-)braket
-dot
-id|enable
+id|gpe_register_info-&gt;enable
 comma
 l_int|8
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Disable all GPEs but wakeup GPEs.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Disable all GPEs except wakeup GPEs.&n;&t;&t; */
 id|acpi_os_write_port
 c_func
 (paren
-id|acpi_gbl_gpe_registers
-(braket
-id|i
-)braket
-dot
-id|enable_addr
+id|gpe_register_info-&gt;enable_addr
 comma
-id|acpi_gbl_gpe_registers
-(braket
-id|i
-)braket
-dot
-id|wake_enable
+id|gpe_register_info-&gt;wake_enable
 comma
 l_int|8
 )paren
@@ -578,7 +572,11 @@ r_void
 id|u32
 id|i
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_GPE_REGISTER_INFO
+op_star
+id|gpe_register_info
+suffix:semicolon
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -597,23 +595,21 @@ id|i
 op_increment
 )paren
 (brace
+id|gpe_register_info
+op_assign
+op_amp
+id|acpi_gbl_gpe_register_info
+(braket
+id|i
+)braket
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We previously stored the enabled status of all GPEs.&n;&t;&t; * Blast them back in.&n;&t;&t; */
 id|acpi_os_write_port
 c_func
 (paren
-id|acpi_gbl_gpe_registers
-(braket
-id|i
-)braket
-dot
-id|enable_addr
+id|gpe_register_info-&gt;enable_addr
 comma
-id|acpi_gbl_gpe_registers
-(braket
-id|i
-)braket
-dot
-id|enable
+id|gpe_register_info-&gt;enable
 comma
 l_int|8
 )paren

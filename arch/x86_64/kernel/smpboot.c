@@ -1675,7 +1675,12 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * We remove it from the pidhash and the runqueue&n;&t; * once we got the process:&n;&t; */
 id|idle
 op_assign
-id|init_task.prev_task
+id|prev_task
+c_func
+(paren
+op_amp
+id|init_task
+)paren
 suffix:semicolon
 r_if
 c_cond

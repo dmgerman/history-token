@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsobject - Dispatcher object management routines&n; *              $Revision: 81 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsobject - Dispatcher object management routines&n; *              $Revision: 90 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -8,7 +8,7 @@ macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dsobject&quot;
 )paren
@@ -33,7 +33,7 @@ op_star
 id|return_value
 )paren
 (brace
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 suffix:semicolon
 id|acpi_status
@@ -52,7 +52,7 @@ suffix:semicolon
 id|u8
 id|table_revision
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_init_one_object&quot;
 )paren
@@ -221,6 +221,19 @@ id|acpi_ns_delete_namespace_subtree
 id|obj_handle
 )paren
 suffix:semicolon
+id|acpi_ns_delete_namespace_by_owner
+(paren
+(paren
+(paren
+id|acpi_namespace_node
+op_star
+)paren
+id|obj_handle
+)paren
+op_member_access_from_pointer
+id|object-&gt;method.owning_id
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -255,7 +268,7 @@ suffix:semicolon
 id|acpi_init_walk_info
 id|info
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_initialize_objects&quot;
 )paren
@@ -421,7 +434,7 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_init_object_from_op&quot;
 )paren
@@ -465,6 +478,17 @@ id|obj_desc-&gt;common.type
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
+id|obj_desc-&gt;buffer.node
+op_assign
+(paren
+id|acpi_namespace_node
+op_star
+)paren
+id|walk_state-&gt;operands
+(braket
+l_int|0
+)braket
+suffix:semicolon
 multiline_comment|/* First arg is a number */
 id|acpi_ds_create_operand
 (paren
@@ -581,7 +605,7 @@ id|obj_desc-&gt;buffer.pointer
 op_assign
 l_int|NULL
 suffix:semicolon
-id|REPORT_WARNING
+id|ACPI_REPORT_WARNING
 (paren
 (paren
 l_string|&quot;Buffer created with zero length in AML&bslash;n&quot;
@@ -659,7 +683,7 @@ id|AE_TYPE
 )paren
 suffix:semicolon
 )brace
-id|MEMCPY
+id|ACPI_MEMCPY
 (paren
 id|obj_desc-&gt;buffer.pointer
 comma
@@ -711,7 +735,7 @@ id|op-&gt;value.string
 suffix:semicolon
 id|obj_desc-&gt;string.length
 op_assign
-id|STRLEN
+id|ACPI_STRLEN
 (paren
 id|op-&gt;value.string
 )paren
@@ -843,20 +867,14 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|acpi_object_type8
-id|type
-suffix:semicolon
 id|acpi_status
 id|status
-suffix:semicolon
-id|u32
-id|length
 suffix:semicolon
 r_char
 op_star
 id|name
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_build_internal_simple_obj&quot;
 )paren
@@ -869,7 +887,7 @@ op_eq
 id|AML_INT_NAMEPATH_OP
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * This is an object reference.  If The name was&n;&t;&t; * previously looked up in the NS, it is stored in this op.&n;&t;&t; * Otherwise, go ahead and look it up now&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This is an object reference.  If this name was&n;&t;&t; * previously looked up in the namespace, it was stored in this op.&n;&t;&t; * Otherwise, go ahead and look it up now&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -887,11 +905,11 @@ id|op-&gt;value.string
 comma
 id|ACPI_TYPE_ANY
 comma
-id|IMODE_EXECUTE
+id|ACPI_IMODE_EXECUTE
 comma
-id|NS_SEARCH_PARENT
+id|ACPI_NS_SEARCH_PARENT
 op_or
-id|NS_DONT_OPEN_SCOPE
+id|ACPI_NS_DONT_OPEN_SCOPE
 comma
 l_int|NULL
 comma
@@ -933,8 +951,7 @@ id|ACPI_UINT32_MAX
 comma
 id|op-&gt;value.string
 comma
-op_amp
-id|length
+l_int|NULL
 comma
 op_amp
 id|name
@@ -946,7 +963,7 @@ c_cond
 id|name
 )paren
 (brace
-id|REPORT_WARNING
+id|ACPI_REPORT_WARNING
 (paren
 (paren
 l_string|&quot;Reference %s at AML %X not found&bslash;n&quot;
@@ -965,7 +982,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|REPORT_WARNING
+id|ACPI_REPORT_WARNING
 (paren
 (paren
 l_string|&quot;Reference %s at AML %X not found&bslash;n&quot;
@@ -993,30 +1010,20 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * The reference will be a Reference&n;&t;&t; * TBD: [Restructure] unless we really need a separate&n;&t;&t; *  type of INTERNAL_TYPE_REFERENCE change&n;&t;&t; *  Acpi_ds_map_opcode_to_data_type to handle this case&n;&t;&t; */
-id|type
-op_assign
-id|INTERNAL_TYPE_REFERENCE
-suffix:semicolon
-)brace
-r_else
-(brace
-id|type
-op_assign
-id|acpi_ds_map_opcode_to_data_type
-(paren
-id|op-&gt;opcode
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Create and init the internal ACPI object */
 id|obj_desc
 op_assign
 id|acpi_ut_create_internal_object
 (paren
-id|type
+(paren
+id|acpi_ps_get_opcode_info
+(paren
+id|op-&gt;opcode
+)paren
+)paren
+op_member_access_from_pointer
+id|object_type
 )paren
 suffix:semicolon
 r_if
@@ -1109,7 +1116,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_build_internal_package_obj&quot;
 )paren
@@ -1360,7 +1367,7 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ds_create_node&quot;
 comma
@@ -1371,7 +1378,10 @@ multiline_comment|/*&n;&t; * Because of the execution pass through the non-contr
 r_if
 c_cond
 (paren
-id|node-&gt;object
+id|acpi_ns_get_attached_object
+(paren
+id|node
+)paren
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -1436,9 +1446,6 @@ id|node
 comma
 id|obj_desc
 comma
-(paren
-id|u8
-)paren
 id|node-&gt;type
 )paren
 suffix:semicolon

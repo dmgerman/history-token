@@ -1,11 +1,11 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsalloc - Namespace allocation and deletion utilities&n; *              $Revision: 60 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsalloc - Namespace allocation and deletion utilities&n; *              $Revision: 70 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsalloc&quot;
 )paren
@@ -23,7 +23,7 @@ id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_create_node&quot;
 )paren
@@ -62,10 +62,6 @@ id|total_allocated
 op_increment
 )paren
 suffix:semicolon
-id|node-&gt;data_type
-op_assign
-id|ACPI_DESC_TYPE_NAMED
-suffix:semicolon
 id|node-&gt;name
 op_assign
 id|name
@@ -73,6 +69,13 @@ suffix:semicolon
 id|node-&gt;reference_count
 op_assign
 l_int|1
+suffix:semicolon
+id|ACPI_SET_DESCRIPTOR_TYPE
+(paren
+id|node
+comma
+id|ACPI_DESC_TYPE_NAMED
+)paren
 suffix:semicolon
 id|return_PTR
 (paren
@@ -102,7 +105,7 @@ id|acpi_namespace_node
 op_star
 id|next_node
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ns_delete_node&quot;
 comma
@@ -111,7 +114,7 @@ id|node
 suffix:semicolon
 id|parent_node
 op_assign
-id|acpi_ns_get_parent_object
+id|acpi_ns_get_parent_node
 (paren
 id|node
 )paren
@@ -183,19 +186,12 @@ id|total_freed
 op_increment
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Detach an object if there is one&n;&t; */
-r_if
-c_cond
-(paren
-id|node-&gt;object
-)paren
-(brace
+multiline_comment|/*&n;&t; * Detach an object if there is one then delete the node&n;&t; */
 id|acpi_ns_detach_object
 (paren
 id|node
 )paren
 suffix:semicolon
-)brace
 id|ACPI_MEM_FREE
 (paren
 id|node
@@ -204,7 +200,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_install_node&n; *&n; * PARAMETERS:  Walk_state      - Current state of the walk&n; *              Parent_node     - The parent of the new Node&n; *              Node            - The new Node to install&n; *              Type            - ACPI object type of the new Node&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Initialize a new entry within a namespace table.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_install_node&n; *&n; * PARAMETERS:  Walk_state      - Current state of the walk&n; *              Parent_node     - The parent of the new Node&n; *              Node            - The new Node to install&n; *              Type            - ACPI object type of the new Node&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Initialize a new namespace node and install it amongst&n; *              its peers.&n; *&n; *              Note: Current namespace lookup is linear search, so the nodes&n; *              are not linked in any particular order.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_install_node
 id|acpi_ns_install_node
@@ -223,7 +219,7 @@ op_star
 id|node
 comma
 multiline_comment|/* New Child*/
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 )paren
 (brace
@@ -236,7 +232,7 @@ id|acpi_namespace_node
 op_star
 id|child_node
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_install_node&quot;
 )paren
@@ -253,8 +249,7 @@ op_assign
 id|walk_state-&gt;owner_id
 suffix:semicolon
 )brace
-multiline_comment|/* link the new entry into the parent and existing children */
-multiline_comment|/* TBD: Could be first, last, or alphabetic */
+multiline_comment|/* Link the new entry into the parent and existing children */
 id|child_node
 op_assign
 id|parent_node-&gt;child
@@ -434,7 +429,7 @@ c_loop
 (paren
 id|node
 op_assign
-id|acpi_ns_get_parent_object
+id|acpi_ns_get_parent_node
 (paren
 id|node
 )paren
@@ -450,7 +445,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_children&n; *&n; * PARAMETERS:  Parent_node     - Delete this objects children&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete all children of the parent object. Deletes a&n; *              &quot;scope&quot;.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_children&n; *&n; * PARAMETERS:  Parent_node     - Delete this objects children&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete all children of the parent object. In other words,&n; *              deletes a &quot;scope&quot;.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_delete_children
 id|acpi_ns_delete_children
@@ -471,7 +466,7 @@ suffix:semicolon
 id|u8
 id|flags
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ns_delete_children&quot;
 comma
@@ -597,7 +592,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_namespace_subtree&n; *&n; * PARAMETERS:  Parent_node     - Root of the subtree to be deleted&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete a subtree of the namespace.  This includes all objects&n; *              stored within the subtree.  Scope tables are deleted also&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_namespace_subtree&n; *&n; * PARAMETERS:  Parent_node     - Root of the subtree to be deleted&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete a subtree of the namespace.  This includes all objects&n; *              stored within the subtree.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_delete_namespace_subtree
 id|acpi_ns_delete_namespace_subtree
@@ -618,7 +613,7 @@ id|level
 op_assign
 l_int|1
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_delete_namespace_subtree&quot;
 )paren
@@ -717,7 +712,7 @@ suffix:semicolon
 multiline_comment|/* Move up the tree to the grandparent */
 id|parent_node
 op_assign
-id|acpi_ns_get_parent_object
+id|acpi_ns_get_parent_node
 (paren
 id|parent_node
 )paren
@@ -743,25 +738,37 @@ id|node
 (brace
 id|acpi_namespace_node
 op_star
-id|next_node
+id|parent_node
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|acpi_namespace_node
+op_star
+id|this_node
+suffix:semicolon
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Decrement the reference count(s) of this node and all&n;&t; * nodes up to the root,  Delete anything with zero remaining references.&n;&t; */
-id|next_node
+id|this_node
 op_assign
 id|node
 suffix:semicolon
 r_while
 c_loop
 (paren
-id|next_node
+id|this_node
 )paren
 (brace
-multiline_comment|/* Decrement the reference count on this node*/
-id|next_node-&gt;reference_count
+multiline_comment|/* Prepare to move up to parent */
+id|parent_node
+op_assign
+id|acpi_ns_get_parent_node
+(paren
+id|this_node
+)paren
+suffix:semicolon
+multiline_comment|/* Decrement the reference count on this node */
+id|this_node-&gt;reference_count
 op_decrement
 suffix:semicolon
 multiline_comment|/* Delete the node if no more references */
@@ -769,28 +776,24 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|next_node-&gt;reference_count
+id|this_node-&gt;reference_count
 )paren
 (brace
 multiline_comment|/* Delete all children and delete the node */
 id|acpi_ns_delete_children
 (paren
-id|next_node
+id|this_node
 )paren
 suffix:semicolon
 id|acpi_ns_delete_node
 (paren
-id|next_node
+id|this_node
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Move up to parent */
-id|next_node
+id|this_node
 op_assign
-id|acpi_ns_get_parent_object
-(paren
-id|next_node
-)paren
+id|parent_node
 suffix:semicolon
 )brace
 )brace
@@ -807,6 +810,10 @@ id|acpi_namespace_node
 op_star
 id|child_node
 suffix:semicolon
+id|acpi_namespace_node
+op_star
+id|deletion_node
+suffix:semicolon
 id|u32
 id|level
 suffix:semicolon
@@ -814,9 +821,11 @@ id|acpi_namespace_node
 op_star
 id|parent_node
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE_U32
 (paren
 l_string|&quot;Ns_delete_namespace_by_owner&quot;
+comma
+id|owner_id
 )paren
 suffix:semicolon
 id|parent_node
@@ -825,7 +834,11 @@ id|acpi_gbl_root_node
 suffix:semicolon
 id|child_node
 op_assign
-l_int|0
+l_int|NULL
+suffix:semicolon
+id|deletion_node
+op_assign
+l_int|NULL
 suffix:semicolon
 id|level
 op_assign
@@ -840,7 +853,7 @@ OG
 l_int|0
 )paren
 (brace
-multiline_comment|/* Get the next node in this scope (NULL if none) */
+multiline_comment|/*&n;&t;&t; * Get the next child of this parent node. When Child_node is NULL,&n;&t;&t; * the first child of the parent is returned&n;&t;&t; */
 id|child_node
 op_assign
 id|acpi_ns_get_next_node
@@ -855,6 +868,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|deletion_node
+)paren
+(brace
+id|acpi_ns_remove_reference
+(paren
+id|deletion_node
+)paren
+suffix:semicolon
+id|deletion_node
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|child_node
 )paren
 (brace
@@ -866,7 +895,7 @@ op_eq
 id|owner_id
 )paren
 (brace
-multiline_comment|/* Found a child node - detach any attached object */
+multiline_comment|/* Found a matching child node - detach any attached object */
 id|acpi_ns_detach_object
 (paren
 id|child_node
@@ -883,7 +912,7 @@ id|ACPI_TYPE_ANY
 comma
 id|child_node
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -897,7 +926,7 @@ id|child_node
 suffix:semicolon
 id|child_node
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -909,10 +938,9 @@ op_eq
 id|owner_id
 )paren
 (brace
-id|acpi_ns_remove_reference
-(paren
+id|deletion_node
+op_assign
 id|child_node
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -938,10 +966,9 @@ op_eq
 id|owner_id
 )paren
 (brace
-id|acpi_ns_remove_reference
-(paren
+id|deletion_node
+op_assign
 id|parent_node
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -953,7 +980,7 @@ suffix:semicolon
 multiline_comment|/* Move up the tree to the grandparent */
 id|parent_node
 op_assign
-id|acpi_ns_get_parent_object
+id|acpi_ns_get_parent_node
 (paren
 id|parent_node
 )paren

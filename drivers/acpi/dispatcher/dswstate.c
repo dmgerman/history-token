@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *              $Revision: 54 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *              $Revision: 59 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -8,7 +8,7 @@ macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dswstate&quot;
 )paren
@@ -33,7 +33,7 @@ id|acpi_generic_state
 op_star
 id|state
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_result_insert&quot;
 )paren
@@ -200,7 +200,7 @@ id|acpi_generic_state
 op_star
 id|state
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_result_remove&quot;
 )paren
@@ -372,7 +372,7 @@ id|acpi_generic_state
 op_star
 id|state
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_result_pop&quot;
 )paren
@@ -550,7 +550,7 @@ id|acpi_generic_state
 op_star
 id|state
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_result_pop_from_bottom&quot;
 )paren
@@ -736,7 +736,7 @@ id|acpi_generic_state
 op_star
 id|state
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_result_push&quot;
 )paren
@@ -889,7 +889,7 @@ id|acpi_generic_state
 op_star
 id|state
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_result_stack_push&quot;
 )paren
@@ -958,7 +958,7 @@ id|acpi_generic_state
 op_star
 id|state
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_result_stack_pop&quot;
 )paren
@@ -1036,7 +1036,7 @@ id|walk_state
 id|u32
 id|i
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ds_obj_stack_delete_all&quot;
 comma
@@ -1105,7 +1105,7 @@ op_star
 id|walk_state
 )paren
 (brace
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_obj_stack_push&quot;
 )paren
@@ -1200,7 +1200,7 @@ op_star
 id|walk_state
 )paren
 (brace
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_obj_stack_pop_object&quot;
 )paren
@@ -1342,7 +1342,7 @@ id|walk_state
 id|u32
 id|i
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_obj_stack_pop&quot;
 )paren
@@ -1445,7 +1445,7 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_obj_stack_pop_and_delete&quot;
 )paren
@@ -1564,7 +1564,7 @@ op_star
 id|walk_state
 )paren
 (brace
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ds_obj_stack_get_value&quot;
 comma
@@ -1626,38 +1626,27 @@ id|index
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_get_current_walk_state&n; *&n; * PARAMETERS:  Walk_list       - Get current active state for this walk list&n; *&n; * RETURN:      Pointer to the current walk state&n; *&n; * DESCRIPTION: Get the walk state that is at the head of the list (the &quot;current&quot;&n; *              walk state.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_get_current_walk_state&n; *&n; * PARAMETERS:  Thread          - Get current active state for this Thread&n; *&n; * RETURN:      Pointer to the current walk state&n; *&n; * DESCRIPTION: Get the walk state that is at the head of the list (the &quot;current&quot;&n; *              walk state.)&n; *&n; ******************************************************************************/
 id|acpi_walk_state
 op_star
 DECL|function|acpi_ds_get_current_walk_state
 id|acpi_ds_get_current_walk_state
 (paren
-id|acpi_walk_list
+id|ACPI_THREAD_STATE
 op_star
-id|walk_list
+id|thread
 )paren
 (brace
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_get_current_walk_state&quot;
-)paren
-suffix:semicolon
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_PARSE
-comma
-l_string|&quot;Ds_get_current_walk_state, =%p&bslash;n&quot;
-comma
-id|walk_list-&gt;walk_state
-)paren
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|walk_list
+id|thread
 )paren
 (brace
 r_return
@@ -1666,9 +1655,20 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_PARSE
+comma
+l_string|&quot;Ds_get_current_walk_state, =%p&bslash;n&quot;
+comma
+id|thread-&gt;walk_state_list
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
-id|walk_list-&gt;walk_state
+id|thread-&gt;walk_state_list
 )paren
 suffix:semicolon
 )brace
@@ -1681,21 +1681,21 @@ id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|acpi_walk_list
+id|ACPI_THREAD_STATE
 op_star
-id|walk_list
+id|thread
 )paren
 (brace
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_push_walk_state&quot;
 )paren
 suffix:semicolon
 id|walk_state-&gt;next
 op_assign
-id|walk_list-&gt;walk_state
+id|thread-&gt;walk_state_list
 suffix:semicolon
-id|walk_list-&gt;walk_state
+id|thread-&gt;walk_state_list
 op_assign
 id|walk_state
 suffix:semicolon
@@ -1708,23 +1708,23 @@ op_star
 DECL|function|acpi_ds_pop_walk_state
 id|acpi_ds_pop_walk_state
 (paren
-id|acpi_walk_list
+id|ACPI_THREAD_STATE
 op_star
-id|walk_list
+id|thread
 )paren
 (brace
 id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_pop_walk_state&quot;
 )paren
 suffix:semicolon
 id|walk_state
 op_assign
-id|walk_list-&gt;walk_state
+id|thread-&gt;walk_state_list
 suffix:semicolon
 r_if
 c_cond
@@ -1733,11 +1733,11 @@ id|walk_state
 )paren
 (brace
 multiline_comment|/* Next walk state becomes the current walk state */
-id|walk_list-&gt;walk_state
+id|thread-&gt;walk_state_list
 op_assign
 id|walk_state-&gt;next
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Don&squot;t clear the NEXT field, this serves as an indicator&n;&t;&t; * that there is a parent WALK STATE&n;&t;&t; *     Walk_state-&gt;Next = NULL;&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Don&squot;t clear the NEXT field, this serves as an indicator&n;&t;&t; * that there is a parent WALK STATE&n;&t;&t; *     NO: Walk_state-&gt;Next = NULL;&n;&t;&t; */
 )brace
 id|return_PTR
 (paren
@@ -1745,7 +1745,7 @@ id|walk_state
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_walk_state&n; *&n; * PARAMETERS:  Origin          - Starting point for this walk&n; *              Walk_list       - Owning walk list&n; *&n; * RETURN:      Pointer to the new walk state.&n; *&n; * DESCRIPTION: Allocate and initialize a new walk state.  The current walk state&n; *              is set to this new state.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_walk_state&n; *&n; * PARAMETERS:  Origin          - Starting point for this walk&n; *              Thread          - Current thread state&n; *&n; * RETURN:      Pointer to the new walk state.&n; *&n; * DESCRIPTION: Allocate and initialize a new walk state.  The current walk&n; *              state is set to this new state.&n; *&n; ******************************************************************************/
 id|acpi_walk_state
 op_star
 DECL|function|acpi_ds_create_walk_state
@@ -1762,9 +1762,9 @@ id|acpi_operand_object
 op_star
 id|mth_desc
 comma
-id|acpi_walk_list
+id|ACPI_THREAD_STATE
 op_star
-id|walk_list
+id|thread
 )paren
 (brace
 id|acpi_walk_state
@@ -1774,7 +1774,7 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_create_walk_state&quot;
 )paren
@@ -1815,9 +1815,9 @@ id|walk_state-&gt;method_desc
 op_assign
 id|mth_desc
 suffix:semicolon
-id|walk_state-&gt;walk_list
+id|walk_state-&gt;thread
 op_assign
-id|walk_list
+id|thread
 suffix:semicolon
 multiline_comment|/* Init the method args/local */
 macro_line|#ifndef _ACPI_ASL_COMPILER
@@ -1854,14 +1854,14 @@ multiline_comment|/* Put the new state at the head of the walk list */
 r_if
 c_cond
 (paren
-id|walk_list
+id|thread
 )paren
 (brace
 id|acpi_ds_push_walk_state
 (paren
 id|walk_state
 comma
-id|walk_list
+id|thread
 )paren
 suffix:semicolon
 )brace
@@ -1920,7 +1920,7 @@ op_assign
 op_amp
 id|walk_state-&gt;parser_state
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_init_aml_walk&quot;
 )paren
@@ -1940,7 +1940,6 @@ op_plus
 id|aml_length
 suffix:semicolon
 multiline_comment|/* The Next_op of the Next_walk will be the beginning of the method */
-multiline_comment|/* TBD: [Restructure] -- obsolete? */
 id|walk_state-&gt;next_op
 op_assign
 l_int|NULL
@@ -1990,7 +1989,7 @@ id|method_node
 suffix:semicolon
 id|walk_state-&gt;walk_type
 op_assign
-id|WALK_METHOD
+id|ACPI_WALK_METHOD
 suffix:semicolon
 id|walk_state-&gt;method_node
 op_assign
@@ -2111,7 +2110,7 @@ id|acpi_generic_state
 op_star
 id|state
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ds_delete_walk_state&quot;
 comma
@@ -2249,7 +2248,7 @@ id|acpi_ds_delete_walk_state_cache
 r_void
 )paren
 (brace
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_delete_walk_state_cache&quot;
 )paren

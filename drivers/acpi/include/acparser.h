@@ -1,16 +1,13 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: acparser.h - AML Parser subcomponent prototypes and defines&n; *       $Revision: 54 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: acparser.h - AML Parser subcomponent prototypes and defines&n; *       $Revision: 58 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACPARSER_H__
 DECL|macro|__ACPARSER_H__
 mdefine_line|#define __ACPARSER_H__
 DECL|macro|OP_HAS_RETURN_VALUE
-mdefine_line|#define OP_HAS_RETURN_VALUE         1
+mdefine_line|#define OP_HAS_RETURN_VALUE             1
 multiline_comment|/* variable # arguments */
 DECL|macro|ACPI_VAR_ARGS
-mdefine_line|#define ACPI_VAR_ARGS               ACPI_UINT32_MAX
-multiline_comment|/* maximum virtual address */
-DECL|macro|ACPI_MAX_AML
-mdefine_line|#define ACPI_MAX_AML                ((u8 *)(~0UL))
+mdefine_line|#define ACPI_VAR_ARGS                   ACPI_UINT32_MAX
 DECL|macro|ACPI_PARSE_DELETE_TREE
 mdefine_line|#define ACPI_PARSE_DELETE_TREE          0x0001
 DECL|macro|ACPI_PARSE_NO_TREE_DELETE
@@ -25,7 +22,7 @@ DECL|macro|ACPI_PARSE_EXECUTE
 mdefine_line|#define ACPI_PARSE_EXECUTE              0x0030
 DECL|macro|ACPI_PARSE_MODE_MASK
 mdefine_line|#define ACPI_PARSE_MODE_MASK            0x0030
-multiline_comment|/* psapi - Parser external interfaces */
+multiline_comment|/* Parser external interfaces */
 id|acpi_status
 id|acpi_psx_load_table
 (paren
@@ -93,13 +90,11 @@ comma
 id|u32
 id|arg_type
 comma
-multiline_comment|/* type of argument */
 id|acpi_parse_object
 op_star
 id|arg
 )paren
 suffix:semicolon
-multiline_comment|/* (OUT) argument data */
 r_void
 id|acpi_ps_get_next_namepath
 (paren
@@ -144,6 +139,31 @@ op_star
 id|arg_count
 )paren
 suffix:semicolon
+multiline_comment|/* psfind */
+id|acpi_parse_object
+op_star
+id|acpi_ps_find_name
+(paren
+id|acpi_parse_object
+op_star
+id|scope
+comma
+id|u32
+id|name
+comma
+id|u32
+id|opcode
+)paren
+suffix:semicolon
+id|acpi_parse_object
+op_star
+id|acpi_ps_get_parent
+(paren
+id|acpi_parse_object
+op_star
+id|op
+)paren
+suffix:semicolon
 multiline_comment|/* psopcode - AML Opcode information */
 r_const
 id|acpi_opcode_info
@@ -163,6 +183,40 @@ id|opcode
 )paren
 suffix:semicolon
 multiline_comment|/* psparse - top level parsing routines */
+id|u32
+id|acpi_ps_get_opcode_size
+(paren
+id|u32
+id|opcode
+)paren
+suffix:semicolon
+id|u8
+id|acpi_ps_complete_this_op
+(paren
+id|acpi_walk_state
+op_star
+id|walk_state
+comma
+id|acpi_parse_object
+op_star
+id|op
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ps_next_parse_state
+(paren
+id|acpi_walk_state
+op_star
+id|walk_state
+comma
+id|acpi_parse_object
+op_star
+id|op
+comma
+id|acpi_status
+id|callback_status
+)paren
+suffix:semicolon
 id|acpi_status
 id|acpi_ps_find_object
 (paren
@@ -428,6 +482,14 @@ id|op
 comma
 id|acpi_parse_upwards
 id|ascending_callback
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ps_delete_completed_op
+(paren
+id|acpi_walk_state
+op_star
+id|walk_state
 )paren
 suffix:semicolon
 multiline_comment|/* psutils - parser utilities */

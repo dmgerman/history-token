@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresop - AML Interpreter operand/object resolution&n; *              $Revision: 41 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresop - AML Interpreter operand/object resolution&n; *              $Revision: 47 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -10,7 +10,7 @@ macro_line|#include &quot;actables.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exresop&quot;
 )paren
@@ -30,7 +30,7 @@ op_star
 id|object
 )paren
 (brace
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ex_check_object_type&quot;
 )paren
@@ -91,7 +91,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_operands&n; *&n; * PARAMETERS:  Opcode              Opcode being interpreted&n; *              Stack_ptr           Top of operand stack&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert stack entries to required types&n; *&n; *      Each nibble in Arg_types represents one required operand&n; *      and indicates the required Type:&n; *&n; *      The corresponding stack entry will be converted to the&n; *      required type if possible, else return an exception&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_operands&n; *&n; * PARAMETERS:  Opcode              - Opcode being interpreted&n; *              Stack_ptr           - Pointer to the operand stack to be&n; *                                    resolved&n; *              Walk_state          - Current stateu&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert multiple input operands to the types required by the&n; *              target operator.&n; *&n; *      Each nibble (actually 5 bits)  in Arg_types represents one required&n; *      operand and indicates the required Type:&n; *&n; *      The corresponding operand will be converted to the required type if&n; *      possible, otherwise we abort with an exception.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_resolve_operands
 id|acpi_ex_resolve_operands
@@ -139,7 +139,7 @@ suffix:semicolon
 id|acpi_object_type
 id|type_needed
 suffix:semicolon
-id|FUNCTION_TRACE_U32
+id|ACPI_FUNCTION_TRACE_U32
 (paren
 l_string|&quot;Ex_resolve_operands&quot;
 comma
@@ -256,17 +256,18 @@ op_star
 id|stack_ptr
 suffix:semicolon
 multiline_comment|/* Decode the descriptor type */
-r_if
+r_switch
 c_cond
 (paren
-id|VALID_DESCRIPTOR_TYPE
+id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
 id|obj_desc
-comma
-id|ACPI_DESC_TYPE_NAMED
 )paren
 )paren
 (brace
+r_case
+id|ACPI_DESC_TYPE_NAMED
+suffix:colon
 multiline_comment|/* Node */
 id|object_type
 op_assign
@@ -280,19 +281,11 @@ id|obj_desc
 op_member_access_from_pointer
 id|type
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|VALID_DESCRIPTOR_TYPE
-(paren
-id|obj_desc
-comma
+r_break
+suffix:semicolon
+r_case
 id|ACPI_DESC_TYPE_INTERNAL
-)paren
-)paren
-(brace
+suffix:colon
 multiline_comment|/* ACPI internal object */
 id|object_type
 op_assign
@@ -394,7 +387,7 @@ suffix:colon
 r_case
 id|AML_REVISION_OP
 suffix:colon
-id|DEBUG_ONLY_MEMBERS
+id|ACPI_DEBUG_ONLY_MEMBERS
 (paren
 id|ACPI_DEBUG_PRINT
 (paren
@@ -415,7 +408,7 @@ suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ERROR
 comma
 l_string|&quot;Reference Opcode: Unknown [%02x]&bslash;n&quot;
 comma
@@ -428,13 +421,12 @@ id|return_ACPI_STATUS
 id|AE_AML_OPERAND_TYPE
 )paren
 suffix:semicolon
+)brace
+)brace
 r_break
 suffix:semicolon
-)brace
-)brace
-)brace
-r_else
-(brace
+r_default
+suffix:colon
 multiline_comment|/* Invalid descriptor */
 id|ACPI_DEBUG_PRINT
 (paren
@@ -443,7 +435,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Bad descriptor type %X in Obj %p&bslash;n&quot;
 comma
-id|obj_desc-&gt;common.data_type
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|obj_desc
+)paren
 comma
 id|obj_desc
 )paren
@@ -476,9 +471,41 @@ id|this_arg_type
 )paren
 (brace
 r_case
+id|ARGI_REF_OR_STRING
+suffix:colon
+multiline_comment|/* Can be a String or Reference */
+r_if
+c_cond
+(paren
+(paren
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|obj_desc
+)paren
+op_eq
+id|ACPI_DESC_TYPE_INTERNAL
+)paren
+op_logical_and
+(paren
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
+op_eq
+id|ACPI_TYPE_STRING
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * String found - the string references a named object and must be&n;&t;&t;&t;&t; * resolved to a node&n;&t;&t;&t;&t; */
+r_goto
+id|next_operand
+suffix:semicolon
+)brace
+multiline_comment|/* Else not a string - fall through to the normal Reference case below */
+r_case
 id|ARGI_REFERENCE
 suffix:colon
-multiline_comment|/* References */
+multiline_comment|/* References: */
 r_case
 id|ARGI_INTEGER_REF
 suffix:colon
@@ -491,7 +518,7 @@ suffix:colon
 r_case
 id|ARGI_TARGETREF
 suffix:colon
-multiline_comment|/* TBD: must implement implicit conversion rules before store */
+multiline_comment|/* Allows implicit conversion rules before store */
 r_case
 id|ARGI_FIXED_TARGET
 suffix:colon
@@ -499,19 +526,19 @@ multiline_comment|/* No implicit conversion before store to target */
 r_case
 id|ARGI_SIMPLE_TARGET
 suffix:colon
-multiline_comment|/* Name, Local, or Arg - no implicit conversion */
+multiline_comment|/* Name, Local, or Arg - no implicit conversion  */
 multiline_comment|/* Need an operand of type INTERNAL_TYPE_REFERENCE */
 r_if
 c_cond
 (paren
-id|VALID_DESCRIPTOR_TYPE
+id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
 id|obj_desc
-comma
+)paren
+op_eq
 id|ACPI_DESC_TYPE_NAMED
 )paren
-)paren
-multiline_comment|/* direct name ptr OK as-is */
+multiline_comment|/* Node (name) ptr OK as-is */
 (brace
 r_goto
 id|next_operand
@@ -571,8 +598,6 @@ suffix:semicolon
 )brace
 r_goto
 id|next_operand
-suffix:semicolon
-r_break
 suffix:semicolon
 r_case
 id|ARGI_ANYTYPE
@@ -750,7 +775,7 @@ id|AE_TYPE
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ERROR
 comma
 l_string|&quot;Needed [Integer/String/Buffer], found [%s] %p&bslash;n&quot;
 comma
@@ -783,8 +808,6 @@ suffix:semicolon
 )brace
 r_goto
 id|next_operand
-suffix:semicolon
-r_break
 suffix:semicolon
 r_case
 id|ARGI_BUFFER
@@ -822,7 +845,7 @@ id|AE_TYPE
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ERROR
 comma
 l_string|&quot;Needed [Integer/String/Buffer], found [%s] %p&bslash;n&quot;
 comma
@@ -855,8 +878,6 @@ suffix:semicolon
 )brace
 r_goto
 id|next_operand
-suffix:semicolon
-r_break
 suffix:semicolon
 r_case
 id|ARGI_STRING
@@ -898,7 +919,7 @@ id|AE_TYPE
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ERROR
 comma
 l_string|&quot;Needed [Integer/String/Buffer], found [%s] %p&bslash;n&quot;
 comma
@@ -932,53 +953,39 @@ suffix:semicolon
 r_goto
 id|next_operand
 suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|ARGI_COMPUTEDATA
 suffix:colon
 multiline_comment|/* Need an operand of type INTEGER, STRING or BUFFER */
-r_if
+r_switch
 c_cond
 (paren
 (paren
-id|ACPI_TYPE_INTEGER
-op_ne
-(paren
 op_star
 id|stack_ptr
 )paren
 op_member_access_from_pointer
 id|common.type
-)paren
-op_logical_and
-(paren
-id|ACPI_TYPE_STRING
-op_ne
-(paren
-op_star
-id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
-)paren
-op_logical_and
-(paren
-id|ACPI_TYPE_BUFFER
-op_ne
-(paren
-op_star
-id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
-)paren
 )paren
 (brace
+r_case
+id|ACPI_TYPE_INTEGER
+suffix:colon
+r_case
+id|ACPI_TYPE_STRING
+suffix:colon
+r_case
+id|ACPI_TYPE_BUFFER
+suffix:colon
+multiline_comment|/* Valid operand */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ERROR
 comma
 l_string|&quot;Needed [Integer/String/Buffer], found [%s] %p&bslash;n&quot;
 comma
@@ -1006,90 +1013,10 @@ suffix:semicolon
 r_goto
 id|next_operand
 suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|ARGI_DATAOBJECT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * ARGI_DATAOBJECT is only used by the Size_of operator.&n;&t;&t;&t; *&n;&t;&t;&t; * The ACPI specification allows Size_of to return the size of&n;&t;&t;&t; *  a Buffer, String or Package.  However, the MS ACPI.SYS AML&n;&t;&t;&t; *  Interpreter also allows an Node reference to return without&n;&t;&t;&t; *  error with a size of 4.&n;&t;&t;&t; */
-multiline_comment|/* Need a buffer, string, package or Node reference */
-r_if
-c_cond
-(paren
-(paren
-(paren
-op_star
-id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
-op_ne
-id|ACPI_TYPE_BUFFER
-)paren
-op_logical_and
-(paren
-(paren
-op_star
-id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
-op_ne
-id|ACPI_TYPE_STRING
-)paren
-op_logical_and
-(paren
-(paren
-op_star
-id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
-op_ne
-id|ACPI_TYPE_PACKAGE
-)paren
-op_logical_and
-(paren
-(paren
-op_star
-id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
-op_ne
-id|INTERNAL_TYPE_REFERENCE
-)paren
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;Needed [Buf/Str/Pkg/Ref], found [%s] %p&bslash;n&quot;
-comma
-id|acpi_ut_get_type_name
-(paren
-(paren
-op_star
-id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
-)paren
-comma
-op_star
-id|stack_ptr
-)paren
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|AE_AML_OPERAND_TYPE
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t;&t; * If this is a reference, only allow a reference to an Node.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * ARGI_DATAOBJECT is only used by the Size_of operator.&n;&t;&t;&t; * Need a buffer, string, package, or Node reference.&n;&t;&t;&t; *&n;&t;&t;&t; * The only reference allowed here is a direct reference to&n;&t;&t;&t; * a namespace node.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1118,7 +1045,7 @@ id|reference.node
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ERROR
 comma
 l_string|&quot;Needed [Node Reference], found [%p]&bslash;n&quot;
 comma
@@ -1133,59 +1060,100 @@ id|AE_AML_OPERAND_TYPE
 )paren
 suffix:semicolon
 )brace
-)brace
-r_goto
-id|next_operand
+multiline_comment|/* Get the object attached to the node */
+id|temp_node
+op_assign
+id|acpi_ns_get_attached_object
+(paren
+(paren
+op_star
+id|stack_ptr
+)paren
+op_member_access_from_pointer
+id|reference.node
+)paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ARGI_COMPLEXOBJ
-suffix:colon
-multiline_comment|/* Need a buffer or package or (ACPI 2.0) String */
 r_if
 c_cond
 (paren
-(paren
-(paren
-op_star
-id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
-op_ne
-id|ACPI_TYPE_BUFFER
-)paren
-op_logical_and
-(paren
-(paren
-op_star
-id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
-op_ne
-id|ACPI_TYPE_STRING
-)paren
-op_logical_and
-(paren
-(paren
-op_star
-id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
-op_ne
-id|ACPI_TYPE_PACKAGE
-)paren
+op_logical_neg
+id|temp_node
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ERROR
 comma
-l_string|&quot;Needed [Buf/Pkg], found [%s] %p&bslash;n&quot;
+l_string|&quot;Node [%p] has no attached object&bslash;n&quot;
+comma
+(paren
+op_star
+id|stack_ptr
+)paren
+op_member_access_from_pointer
+id|reference.node
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_OPERAND_TYPE
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t;&t;&t; * Swap the reference object with the node&squot;s object.  Must add&n;&t;&t;&t;&t; * a reference to the node object, and remove a reference from&n;&t;&t;&t;&t; * the original reference object.&n;&t;&t;&t;&t; */
+id|acpi_ut_add_reference
+(paren
+id|temp_node
+)paren
+suffix:semicolon
+id|acpi_ut_remove_reference
+(paren
+op_star
+id|stack_ptr
+)paren
+suffix:semicolon
+(paren
+op_star
+id|stack_ptr
+)paren
+op_assign
+id|temp_node
+suffix:semicolon
+)brace
+multiline_comment|/* Need a buffer, string, package */
+r_switch
+c_cond
+(paren
+(paren
+op_star
+id|stack_ptr
+)paren
+op_member_access_from_pointer
+id|common.type
+)paren
+(brace
+r_case
+id|ACPI_TYPE_PACKAGE
+suffix:colon
+r_case
+id|ACPI_TYPE_STRING
+suffix:colon
+r_case
+id|ACPI_TYPE_BUFFER
+suffix:colon
+multiline_comment|/* Valid operand */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Needed [Buf/Str/Pkg], found [%s] %p&bslash;n&quot;
 comma
 id|acpi_ut_get_type_name
 (paren
@@ -1211,7 +1179,65 @@ suffix:semicolon
 r_goto
 id|next_operand
 suffix:semicolon
+r_case
+id|ARGI_COMPLEXOBJ
+suffix:colon
+multiline_comment|/* Need a buffer or package or (ACPI 2.0) String */
+r_switch
+c_cond
+(paren
+(paren
+op_star
+id|stack_ptr
+)paren
+op_member_access_from_pointer
+id|common.type
+)paren
+(brace
+r_case
+id|ACPI_TYPE_PACKAGE
+suffix:colon
+r_case
+id|ACPI_TYPE_STRING
+suffix:colon
+r_case
+id|ACPI_TYPE_BUFFER
+suffix:colon
+multiline_comment|/* Valid operand */
 r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Needed [Buf/Str/Pkg], found [%s] %p&bslash;n&quot;
+comma
+id|acpi_ut_get_type_name
+(paren
+(paren
+op_star
+id|stack_ptr
+)paren
+op_member_access_from_pointer
+id|common.type
+)paren
+comma
+op_star
+id|stack_ptr
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_OPERAND_TYPE
+)paren
+suffix:semicolon
+)brace
+r_goto
+id|next_operand
 suffix:semicolon
 r_default
 suffix:colon

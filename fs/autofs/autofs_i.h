@@ -417,18 +417,8 @@ id|autofs_symlink_inode_operations
 suffix:semicolon
 r_extern
 r_struct
-id|inode_operations
-id|autofs_dir_inode_operations
-suffix:semicolon
-r_extern
-r_struct
 id|file_operations
 id|autofs_root_operations
-suffix:semicolon
-r_extern
-r_struct
-id|file_operations
-id|autofs_dir_operations
 suffix:semicolon
 multiline_comment|/* Initializing function */
 r_int

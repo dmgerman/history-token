@@ -847,6 +847,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_X86_F00F_BUG
 multiline_comment|/*&n;&t; * Pentium F0 0F C7 C8 bug workaround.&n;&t; */
 r_if
 c_cond
@@ -888,6 +889,7 @@ r_return
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 id|no_context
 suffix:colon
 multiline_comment|/* Are we prepared to handle this kernel fault?  */

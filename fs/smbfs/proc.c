@@ -12932,9 +12932,10 @@ id|smb_sb_info
 op_star
 id|server
 op_assign
-op_amp
+id|SMB_SB
+c_func
 (paren
-id|sb-&gt;u.smbfs_sb
+id|sb
 )paren
 suffix:semicolon
 r_int

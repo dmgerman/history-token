@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exregion - ACPI default Op_region (address space) handlers&n; *              $Revision: 61 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exregion - ACPI default Op_region (address space) handlers&n; *              $Revision: 72 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -8,7 +8,7 @@ macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exregion&quot;
 )paren
@@ -26,7 +26,7 @@ comma
 id|u32
 id|bit_width
 comma
-id|u32
+id|acpi_integer
 op_star
 id|value
 comma
@@ -59,7 +59,13 @@ suffix:semicolon
 id|u32
 id|length
 suffix:semicolon
-id|FUNCTION_TRACE
+id|u32
+id|window_size
+suffix:semicolon
+id|u32
+id|remaining
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_system_memory_space_handler&quot;
 )paren
@@ -98,6 +104,15 @@ l_int|4
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+l_int|64
+suffix:colon
+id|length
+op_assign
+l_int|8
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|ACPI_DEBUG_PRINT
@@ -115,8 +130,6 @@ id|return_ACPI_STATUS
 (paren
 id|AE_AML_OPERAND_VALUE
 )paren
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Does the request fit into the cached memory mapping?&n;&t; * Is 1) Address below the current mapping? OR&n;&t; *    2) Address beyond the current mapping?&n;&t; */
@@ -166,11 +179,45 @@ id|mem_info-&gt;mapped_length
 )paren
 suffix:semicolon
 )brace
-id|mem_info-&gt;mapped_length
+multiline_comment|/*&n;&t;&t; * Don&squot;t attempt to map memory beyond the end of the region, and&n;&t;&t; * constrain the maximum mapping size to something reasonable.&n;&t;&t; */
+id|remaining
 op_assign
-l_int|0
+(paren
+id|u32
+)paren
+(paren
+(paren
+id|mem_info-&gt;address
+op_plus
+(paren
+id|ACPI_PHYSICAL_ADDRESS
+)paren
+id|mem_info-&gt;length
+)paren
+op_minus
+id|address
+)paren
 suffix:semicolon
-multiline_comment|/* In case of failure below */
+r_if
+c_cond
+(paren
+id|remaining
+OG
+id|SYSMEM_REGION_WINDOW_SIZE
+)paren
+(brace
+id|window_size
+op_assign
+id|SYSMEM_REGION_WINDOW_SIZE
+suffix:semicolon
+)brace
+r_else
+(brace
+id|window_size
+op_assign
+id|remaining
+suffix:semicolon
+)brace
 multiline_comment|/* Create a new mapping starting at the address given */
 id|status
 op_assign
@@ -178,7 +225,7 @@ id|acpi_os_map_memory
 (paren
 id|address
 comma
-id|SYSMEM_REGION_WINDOW_SIZE
+id|window_size
 comma
 (paren
 r_void
@@ -198,6 +245,10 @@ id|status
 )paren
 )paren
 (brace
+id|mem_info-&gt;mapped_length
+op_assign
+l_int|0
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -211,11 +262,10 @@ id|address
 suffix:semicolon
 id|mem_info-&gt;mapped_length
 op_assign
-id|SYSMEM_REGION_WINDOW_SIZE
+id|window_size
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Generate a logical pointer corresponding to the address we want to&n;&t; * access&n;&t; */
-multiline_comment|/* TBD: should these pointers go to 64-bit in all cases ? */
 id|logical_addr_ptr
 op_assign
 id|mem_info-&gt;mapped_logical_address
@@ -243,12 +293,12 @@ id|function
 comma
 id|bit_width
 comma
-id|HIDWORD
+id|ACPI_HIDWORD
 (paren
 id|address
 )paren
 comma
-id|LODWORD
+id|ACPI_LODWORD
 (paren
 id|address
 )paren
@@ -263,8 +313,13 @@ id|function
 )paren
 (brace
 r_case
-id|ACPI_READ_ADR_SPACE
+id|ACPI_READ
 suffix:colon
+op_star
+id|value
+op_assign
+l_int|0
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -292,7 +347,7 @@ suffix:semicolon
 r_case
 l_int|16
 suffix:colon
-id|MOVE_UNALIGNED16_TO_32
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 id|value
 comma
@@ -304,7 +359,19 @@ suffix:semicolon
 r_case
 l_int|32
 suffix:colon
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
+(paren
+id|value
+comma
+id|logical_addr_ptr
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|64
+suffix:colon
+id|ACPI_MOVE_UNALIGNED64_TO_64
 (paren
 id|value
 comma
@@ -317,7 +384,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACPI_WRITE_ADR_SPACE
+id|ACPI_WRITE
 suffix:colon
 r_switch
 c_cond
@@ -346,7 +413,7 @@ suffix:semicolon
 r_case
 l_int|16
 suffix:colon
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 id|logical_addr_ptr
 comma
@@ -358,7 +425,19 @@ suffix:semicolon
 r_case
 l_int|32
 suffix:colon
-id|MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_UNALIGNED32_TO_32
+(paren
+id|logical_addr_ptr
+comma
+id|value
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|64
+suffix:colon
+id|ACPI_MOVE_UNALIGNED64_TO_64
 (paren
 id|logical_addr_ptr
 comma
@@ -399,7 +478,7 @@ comma
 id|u32
 id|bit_width
 comma
-id|u32
+id|acpi_integer
 op_star
 id|value
 comma
@@ -417,7 +496,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_system_io_space_handler&quot;
 )paren
@@ -433,12 +512,12 @@ id|function
 comma
 id|bit_width
 comma
-id|HIDWORD
+id|ACPI_HIDWORD
 (paren
 id|address
 )paren
 comma
-id|LODWORD
+id|ACPI_LODWORD
 (paren
 id|address
 )paren
@@ -453,7 +532,7 @@ id|function
 )paren
 (brace
 r_case
-id|ACPI_READ_ADR_SPACE
+id|ACPI_READ
 suffix:colon
 op_star
 id|value
@@ -477,7 +556,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACPI_WRITE_ADR_SPACE
+id|ACPI_WRITE
 suffix:colon
 id|status
 op_assign
@@ -525,7 +604,7 @@ comma
 id|u32
 id|bit_width
 comma
-id|u32
+id|acpi_integer
 op_star
 id|value
 comma
@@ -550,12 +629,12 @@ suffix:semicolon
 id|u16
 id|pci_register
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_pci_config_space_handler&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  The arguments to Acpi_os(Read|Write)Pci_cfg(Byte|Word|Dword) are:&n;&t; *&n;&t; *  Pci_segment is the PCI bus segment range 0-31&n;&t; *  Pci_bus     is the PCI bus number range 0-255&n;&t; *  Pci_device  is the PCI device number range 0-31&n;&t; *  Pci_function is the PCI device function number&n;&t; *  Pci_register is the Config space register range 0-255 bytes&n;&t; *&n;&t; *  Value - input value for write, output address for read&n;&t; *&n;&t; */
+multiline_comment|/*&n;&t; *  The arguments to Acpi_os(Read|Write)Pci_configuration are:&n;&t; *&n;&t; *  Pci_segment is the PCI bus segment range 0-31&n;&t; *  Pci_bus     is the PCI bus number range 0-255&n;&t; *  Pci_device  is the PCI device number range 0-31&n;&t; *  Pci_function is the PCI device function number&n;&t; *  Pci_register is the Config space register range 0-255 bytes&n;&t; *&n;&t; *  Value - input value for write, output address for read&n;&t; *&n;&t; */
 id|pci_id
 op_assign
 (paren
@@ -568,6 +647,9 @@ id|pci_register
 op_assign
 (paren
 id|u16
+)paren
+(paren
+id|ACPI_SIZE
 )paren
 id|address
 suffix:semicolon
@@ -601,7 +683,7 @@ id|function
 )paren
 (brace
 r_case
-id|ACPI_READ_ADR_SPACE
+id|ACPI_READ
 suffix:colon
 op_star
 id|value
@@ -624,7 +706,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACPI_WRITE_ADR_SPACE
+id|ACPI_WRITE
 suffix:colon
 id|status
 op_assign
@@ -671,7 +753,7 @@ comma
 id|u32
 id|bit_width
 comma
-id|u32
+id|acpi_integer
 op_star
 id|value
 comma
@@ -689,7 +771,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_cmos_space_handler&quot;
 )paren
@@ -714,7 +796,7 @@ comma
 id|u32
 id|bit_width
 comma
-id|u32
+id|acpi_integer
 op_star
 id|value
 comma
@@ -732,11 +814,129 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_pci_bar_space_handler&quot;
 )paren
 suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_data_table_space_handler&n; *&n; * PARAMETERS:  Function            - Read or Write operation&n; *              Address             - Where in the space to read or write&n; *              Bit_width           - Field width in bits (8, 16, or 32)&n; *              Value               - Pointer to in or out value&n; *              Handler_context     - Pointer to Handler&squot;s context&n; *              Region_context      - Pointer to context specific to the&n; *                                    accessed region&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Handler for the Data Table address space (Op Region)&n; *&n; ******************************************************************************/
+id|acpi_status
+DECL|function|acpi_ex_data_table_space_handler
+id|acpi_ex_data_table_space_handler
+(paren
+id|u32
+id|function
+comma
+id|ACPI_PHYSICAL_ADDRESS
+id|address
+comma
+id|u32
+id|bit_width
+comma
+id|acpi_integer
+op_star
+id|value
+comma
+r_void
+op_star
+id|handler_context
+comma
+r_void
+op_star
+id|region_context
+)paren
+(brace
+id|acpi_status
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+id|u32
+id|byte_width
+op_assign
+id|ACPI_DIV_8
+(paren
+id|bit_width
+)paren
+suffix:semicolon
+id|u32
+id|i
+suffix:semicolon
+r_char
+op_star
+id|logical_addr_ptr
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_data_table_space_handler&quot;
+)paren
+suffix:semicolon
+id|logical_addr_ptr
+op_assign
+id|ACPI_PHYSADDR_TO_PTR
+(paren
+id|address
+)paren
+suffix:semicolon
+multiline_comment|/* Perform the memory read or write */
+r_switch
+c_cond
+(paren
+id|function
+)paren
+(brace
+r_case
+id|ACPI_READ
+suffix:colon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|byte_width
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+(paren
+(paren
+r_char
+op_star
+)paren
+id|value
+)paren
+(braket
+id|i
+)braket
+op_assign
+id|logical_addr_ptr
+(braket
+id|i
+)braket
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|ACPI_WRITE
+suffix:colon
+id|return_ACPI_STATUS
+(paren
+id|AE_SUPPORT
+)paren
+suffix:semicolon
+)brace
 id|return_ACPI_STATUS
 (paren
 id|status

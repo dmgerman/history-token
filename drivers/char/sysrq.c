@@ -1100,9 +1100,6 @@ c_func
 (paren
 r_int
 id|sig
-comma
-r_int
-id|even_init
 )paren
 (brace
 r_struct
@@ -1120,30 +1117,12 @@ r_if
 c_cond
 (paren
 id|p-&gt;mm
-)paren
-(brace
-multiline_comment|/* Not swapper nor kernel thread */
-r_if
-c_cond
-(paren
-id|p-&gt;pid
-op_eq
-l_int|1
 op_logical_and
-id|even_init
-)paren
-multiline_comment|/* Ugly hack to kill init */
-id|p-&gt;pid
-op_assign
-l_int|0x8000
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|p-&gt;pid
 op_ne
 l_int|1
 )paren
+multiline_comment|/* Not swapper, init nor kernel thread */
 id|force_sig
 c_func
 (paren
@@ -1152,7 +1131,6 @@ comma
 id|p
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 DECL|function|sysrq_handle_term
@@ -1184,8 +1162,6 @@ id|send_sig_all
 c_func
 (paren
 id|SIGTERM
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|console_loglevel
@@ -1243,8 +1219,6 @@ id|send_sig_all
 c_func
 (paren
 id|SIGKILL
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|console_loglevel
@@ -1270,65 +1244,6 @@ comma
 id|action_msg
 suffix:colon
 l_string|&quot;Kill All Tasks&quot;
-comma
-)brace
-suffix:semicolon
-DECL|function|sysrq_handle_killall
-r_static
-r_void
-id|sysrq_handle_killall
-c_func
-(paren
-r_int
-id|key
-comma
-r_struct
-id|pt_regs
-op_star
-id|pt_regs
-comma
-r_struct
-id|kbd_struct
-op_star
-id|kbd
-comma
-r_struct
-id|tty_struct
-op_star
-id|tty
-)paren
-(brace
-id|send_sig_all
-c_func
-(paren
-id|SIGKILL
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|console_loglevel
-op_assign
-l_int|8
-suffix:semicolon
-)brace
-DECL|variable|sysrq_killall_op
-r_static
-r_struct
-id|sysrq_key_op
-id|sysrq_killall_op
-op_assign
-(brace
-id|handler
-suffix:colon
-id|sysrq_handle_killall
-comma
-id|help_msg
-suffix:colon
-l_string|&quot;killalL&quot;
-comma
-id|action_msg
-suffix:colon
-l_string|&quot;Kill All Tasks (even init)&quot;
 comma
 )brace
 suffix:semicolon
@@ -1439,8 +1354,7 @@ l_int|NULL
 comma
 macro_line|#endif
 multiline_comment|/* l */
-op_amp
-id|sysrq_killall_op
+l_int|NULL
 comma
 multiline_comment|/* m */
 op_amp

@@ -1,12 +1,12 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 83 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 94 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;utcopy&quot;
 )paren
@@ -28,25 +28,28 @@ id|u8
 op_star
 id|data_space
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|buffer_space_used
 )paren
 (brace
-id|u32
-id|length
-op_assign
-l_int|0
+id|acpi_buffer
+id|buffer
 suffix:semicolon
 id|acpi_status
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_copy_isimple_to_esimple&quot;
 )paren
+suffix:semicolon
+op_star
+id|buffer_space_used
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check for NULL object case (could be an uninitialized&n;&t; * package element&n;&t; */
 r_if
@@ -56,11 +59,6 @@ op_logical_neg
 id|internal_object
 )paren
 (brace
-op_star
-id|buffer_space_used
-op_assign
-l_int|0
-suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_OK
@@ -68,7 +66,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/* Always clear the external object */
-id|MEMSET
+id|ACPI_MEMSET
 (paren
 id|external_object
 comma
@@ -95,16 +93,6 @@ id|internal_object-&gt;common.type
 r_case
 id|ACPI_TYPE_STRING
 suffix:colon
-id|length
-op_assign
-id|internal_object-&gt;string.length
-op_plus
-l_int|1
-suffix:semicolon
-id|external_object-&gt;string.length
-op_assign
-id|internal_object-&gt;string.length
-suffix:semicolon
 id|external_object-&gt;string.pointer
 op_assign
 (paren
@@ -113,7 +101,21 @@ op_star
 )paren
 id|data_space
 suffix:semicolon
-id|MEMCPY
+id|external_object-&gt;string.length
+op_assign
+id|internal_object-&gt;string.length
+suffix:semicolon
+op_star
+id|buffer_space_used
+op_assign
+id|ACPI_ROUND_UP_TO_NATIVE_WORD
+(paren
+id|internal_object-&gt;string.length
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+id|ACPI_MEMCPY
 (paren
 (paren
 r_void
@@ -127,7 +129,9 @@ op_star
 )paren
 id|internal_object-&gt;string.pointer
 comma
-id|length
+id|internal_object-&gt;string.length
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -135,19 +139,23 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
-id|length
+id|external_object-&gt;buffer.pointer
 op_assign
-id|internal_object-&gt;buffer.length
+id|data_space
 suffix:semicolon
 id|external_object-&gt;buffer.length
 op_assign
 id|internal_object-&gt;buffer.length
 suffix:semicolon
-id|external_object-&gt;buffer.pointer
+op_star
+id|buffer_space_used
 op_assign
-id|data_space
+id|ACPI_ROUND_UP_TO_NATIVE_WORD
+(paren
+id|internal_object-&gt;string.length
+)paren
 suffix:semicolon
-id|MEMCPY
+id|ACPI_MEMCPY
 (paren
 (paren
 r_void
@@ -161,7 +169,7 @@ op_star
 )paren
 id|internal_object-&gt;buffer.pointer
 comma
-id|length
+id|internal_object-&gt;buffer.length
 )paren
 suffix:semicolon
 r_break
@@ -241,10 +249,6 @@ r_case
 id|AML_INT_NAMEPATH_OP
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * This is a named reference, get the string.  We already know that&n;&t;&t;&t; * we have room for it, use max length&n;&t;&t;&t; */
-id|length
-op_assign
-id|MAX_STRING_LENGTH
-suffix:semicolon
 id|external_object-&gt;type
 op_assign
 id|ACPI_TYPE_STRING
@@ -255,6 +259,14 @@ op_assign
 id|NATIVE_CHAR
 op_star
 )paren
+id|data_space
+suffix:semicolon
+id|buffer.length
+op_assign
+id|MAX_STRING_LENGTH
+suffix:semicolon
+id|buffer.pointer
+op_assign
 id|data_space
 suffix:semicolon
 id|status
@@ -268,19 +280,21 @@ op_star
 id|internal_object-&gt;reference.node
 comma
 op_amp
-id|length
-comma
-(paren
-r_char
-op_star
-)paren
-id|data_space
+id|buffer
 )paren
 suffix:semicolon
 multiline_comment|/* Converted (external) string length is returned from above */
 id|external_object-&gt;string.length
 op_assign
-id|length
+id|buffer.length
+suffix:semicolon
+op_star
+id|buffer_space_used
+op_assign
+id|ACPI_ROUND_UP_TO_NATIVE_WORD
+(paren
+id|buffer.length
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -338,20 +352,7 @@ id|return_ACPI_STATUS
 id|AE_SUPPORT
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
-op_star
-id|buffer_space_used
-op_assign
-(paren
-id|u32
-)paren
-id|ROUND_UP_TO_NATIVE_WORD
-(paren
-id|length
-)paren
-suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -394,7 +395,7 @@ op_star
 )paren
 id|context
 suffix:semicolon
-id|u32
+id|ACPI_SIZE
 id|object_space
 suffix:semicolon
 id|u32
@@ -404,7 +405,7 @@ id|acpi_object
 op_star
 id|target_object
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -443,7 +444,7 @@ id|object_type
 r_case
 id|ACPI_COPY_TYPE_SIMPLE
 suffix:colon
-multiline_comment|/*&n;&t;&t; * This is a simple or null object -- get the size&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This is a simple or null object&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ut_copy_isimple_to_esimple
@@ -503,10 +504,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Save space for the array of objects (Package elements)&n;&t;&t; * update the buffer length counter&n;&t;&t; */
 id|object_space
 op_assign
-(paren
-id|u32
-)paren
-id|ROUND_UP_TO_NATIVE_WORD
+id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 id|target_object-&gt;package.count
 op_star
@@ -554,7 +552,7 @@ id|u8
 op_star
 id|buffer
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|space_used
 )paren
@@ -569,7 +567,7 @@ suffix:semicolon
 id|acpi_pkg_info
 id|info
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_copy_ipackage_to_epackage&quot;
 )paren
@@ -600,7 +598,7 @@ id|info.free_space
 op_assign
 id|buffer
 op_plus
-id|ROUND_UP_TO_NATIVE_WORD
+id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 r_sizeof
 (paren
@@ -629,7 +627,7 @@ id|info.free_space
 op_add_assign
 id|external_object-&gt;package.count
 op_star
-id|ROUND_UP_TO_NATIVE_WORD
+id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 r_sizeof
 (paren
@@ -679,7 +677,7 @@ id|ret_buffer
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_copy_iobject_to_eobject&quot;
 )paren
@@ -687,12 +685,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_THIS_OBJECT_TYPE
-(paren
-id|internal_object
-comma
+id|internal_object-&gt;common.type
+op_eq
 id|ACPI_TYPE_PACKAGE
-)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Package object:  Copy all subobjects (including&n;&t;&t; * nested packages)&n;&t;&t; */
@@ -731,7 +726,7 @@ op_star
 )paren
 id|ret_buffer-&gt;pointer
 op_plus
-id|ROUND_UP_TO_NATIVE_WORD
+id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 r_sizeof
 (paren
@@ -778,7 +773,7 @@ id|acpi_operand_object
 op_star
 id|internal_object
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_copy_esimple_to_isimple&quot;
 )paren
@@ -832,8 +827,6 @@ id|return_ACPI_STATUS
 id|AE_SUPPORT
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 r_switch
 c_cond
@@ -867,7 +860,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-id|MEMCPY
+id|ACPI_MEMCPY
 (paren
 id|internal_object-&gt;string.pointer
 comma
@@ -905,7 +898,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-id|MEMCPY
+id|ACPI_MEMCPY
 (paren
 id|internal_object-&gt;buffer.pointer
 comma
@@ -991,7 +984,7 @@ id|acpi_object
 op_star
 id|this_external_obj
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_copy_epackage_to_ipackage&quot;
 )paren
@@ -1062,7 +1055,7 @@ id|internal_object
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_copy_eobject_to_iobject&quot;
 )paren
@@ -1075,8 +1068,7 @@ op_eq
 id|ACPI_TYPE_PACKAGE
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Package objects contain other objects (which can be objects)&n;&t;&t; * buildpackage does it all&n;&t;&t; *&n;&t;&t; * TBD: Package conversion must be completed and tested&n;&t;&t; * NOTE: this code converts packages as input parameters to&n;&t;&t; * control methods only.  This is a very, very rare case.&n;&t;&t; */
-multiline_comment|/*&n;&t;&t;Status = Acpi_ut_copy_epackage_to_ipackage(Internal_object,&n;&t;&t;&t;&t; Ret_buffer-&gt;Pointer,&n;&t;&t;&t;&t; &amp;Ret_buffer-&gt;Length);&n;*/
+multiline_comment|/*&n;&t;&t; * Packages as external input to control methods are not supported,&n;&t;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -1111,7 +1103,141 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_ielement_to_ielement&n; *&n; * PARAMETERS:  ACPI_PKG_CALLBACK&n; *&n; * RETURN:      Status          - the status of the call&n; *&n; * DESCRIPTION: Copy one package element to another package element&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_simple_object&n; *&n; * PARAMETERS:  Source_desc         - The internal object to be copied&n; *              Dest_desc           - New target object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Simple copy of one internal object to another.  Reference count&n; *              of the destination object is preserved.&n; *&n; ******************************************************************************/
+id|acpi_status
+DECL|function|acpi_ut_copy_simple_object
+id|acpi_ut_copy_simple_object
+(paren
+id|acpi_operand_object
+op_star
+id|source_desc
+comma
+id|acpi_operand_object
+op_star
+id|dest_desc
+)paren
+(brace
+id|u16
+id|reference_count
+suffix:semicolon
+id|acpi_operand_object
+op_star
+id|next_object
+suffix:semicolon
+multiline_comment|/* Save fields from destination that we don&squot;t want to overwrite */
+id|reference_count
+op_assign
+id|dest_desc-&gt;common.reference_count
+suffix:semicolon
+id|next_object
+op_assign
+id|dest_desc-&gt;common.next_object
+suffix:semicolon
+multiline_comment|/* Copy the entire source object over the destination object*/
+id|ACPI_MEMCPY
+(paren
+(paren
+r_char
+op_star
+)paren
+id|dest_desc
+comma
+(paren
+r_char
+op_star
+)paren
+id|source_desc
+comma
+r_sizeof
+(paren
+id|acpi_operand_object
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Restore the saved fields */
+id|dest_desc-&gt;common.reference_count
+op_assign
+id|reference_count
+suffix:semicolon
+id|dest_desc-&gt;common.next_object
+op_assign
+id|next_object
+suffix:semicolon
+multiline_comment|/* Handle the objects with extra data */
+r_switch
+c_cond
+(paren
+id|dest_desc-&gt;common.type
+)paren
+(brace
+r_case
+id|ACPI_TYPE_BUFFER
+suffix:colon
+id|dest_desc-&gt;buffer.node
+op_assign
+l_int|NULL
+suffix:semicolon
+r_case
+id|ACPI_TYPE_STRING
+suffix:colon
+multiline_comment|/*&n;&t;&t; * Allocate and copy the actual string if and only if:&n;&t;&t; * 1) There is a valid string (length &gt; 0)&n;&t;&t; * 2) The string is not static (not in an ACPI table) (in this case,&n;&t;&t; *    the actual pointer was already copied above)&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|source_desc-&gt;string.length
+)paren
+op_logical_and
+(paren
+op_logical_neg
+(paren
+id|source_desc-&gt;common.flags
+op_amp
+id|AOPOBJ_STATIC_POINTER
+)paren
+)paren
+)paren
+(brace
+id|dest_desc-&gt;string.pointer
+op_assign
+id|ACPI_MEM_ALLOCATE
+(paren
+id|source_desc-&gt;string.length
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dest_desc-&gt;string.pointer
+)paren
+(brace
+r_return
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
+id|ACPI_MEMCPY
+(paren
+id|dest_desc-&gt;string.pointer
+comma
+id|source_desc-&gt;string.pointer
+comma
+id|source_desc-&gt;string.length
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+)brace
+r_return
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_ielement_to_ielement&n; *&n; * PARAMETERS:  ACPI_PKG_CALLBACK&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy one package element to another package element&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_copy_ielement_to_ielement
 id|acpi_ut_copy_ielement_to_ielement
@@ -1149,7 +1275,7 @@ id|acpi_operand_object
 op_star
 id|target_object
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -1202,17 +1328,11 @@ suffix:semicolon
 )brace
 id|status
 op_assign
-id|acpi_ex_store_object_to_object
+id|acpi_ut_copy_simple_object
 (paren
 id|source_object
 comma
 id|target_object
-comma
-(paren
-id|acpi_walk_state
-op_star
-)paren
-id|context
 )paren
 suffix:semicolon
 r_if
@@ -1255,7 +1375,6 @@ op_logical_neg
 id|target_object
 )paren
 (brace
-multiline_comment|/* TBD: must delete package created up to this point */
 r_return
 (paren
 id|AE_NO_MEMORY
@@ -1316,7 +1435,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_copy_ipackage_to_ipackage&quot;
 )paren
@@ -1347,10 +1466,6 @@ op_star
 )paren
 )paren
 suffix:semicolon
-id|dest_obj-&gt;package.next_element
-op_assign
-id|dest_obj-&gt;package.elements
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1358,7 +1473,7 @@ op_logical_neg
 id|dest_obj-&gt;package.elements
 )paren
 (brace
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Aml_build_copy_internal_package_object: Package allocation failure&bslash;n&quot;
@@ -1371,6 +1486,12 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Init */
+id|dest_obj-&gt;package.next_element
+op_assign
+id|dest_obj-&gt;package.elements
+suffix:semicolon
+multiline_comment|/*&n;&t; * Copy the package element-by-element by walking the package &quot;tree&quot;.&n;&t; * This handles nested packages of arbitrary depth.&n;&t; */
 id|status
 op_assign
 id|acpi_ut_walk_package_tree
@@ -1384,6 +1505,115 @@ comma
 id|walk_state
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+multiline_comment|/* On failure, delete the destination package object */
+id|acpi_ut_remove_reference
+(paren
+id|dest_obj
+)paren
+suffix:semicolon
+)brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_iobject_to_iobject&n; *&n; * PARAMETERS:  Walk_state          - Current walk state&n; *              Source_desc         - The internal object to be copied&n; *              Dest_desc           - Where the copied object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy an internal object to a new internal object&n; *&n; ******************************************************************************/
+id|acpi_status
+DECL|function|acpi_ut_copy_iobject_to_iobject
+id|acpi_ut_copy_iobject_to_iobject
+(paren
+id|acpi_operand_object
+op_star
+id|source_desc
+comma
+id|acpi_operand_object
+op_star
+op_star
+id|dest_desc
+comma
+id|acpi_walk_state
+op_star
+id|walk_state
+)paren
+(brace
+id|acpi_status
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE
+(paren
+l_string|&quot;Ut_copy_iobject_to_iobject&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Create the top level object */
+op_star
+id|dest_desc
+op_assign
+id|acpi_ut_create_internal_object
+(paren
+id|source_desc-&gt;common.type
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+op_star
+id|dest_desc
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Copy the object and possible subobjects */
+r_if
+c_cond
+(paren
+id|source_desc-&gt;common.type
+op_eq
+id|ACPI_TYPE_PACKAGE
+)paren
+(brace
+id|status
+op_assign
+id|acpi_ut_copy_ipackage_to_ipackage
+(paren
+id|source_desc
+comma
+op_star
+id|dest_desc
+comma
+id|walk_state
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|status
+op_assign
+id|acpi_ut_copy_simple_object
+(paren
+id|source_desc
+comma
+op_star
+id|dest_desc
+)paren
+suffix:semicolon
+)brace
 id|return_ACPI_STATUS
 (paren
 id|status

@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 58 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 66 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __AMLCODE_H__
 DECL|macro|__AMLCODE_H__
 mdefine_line|#define __AMLCODE_H__
@@ -318,7 +318,7 @@ DECL|macro|ARGP_QWORDDATA
 mdefine_line|#define ARGP_QWORDDATA              0x11
 DECL|macro|ARGP_SIMPLENAME
 mdefine_line|#define ARGP_SIMPLENAME             0x12
-multiline_comment|/*&n; * Resolved argument types for the AML Interpreter&n; * Each field in the Arg_types u32 is 5 bits, allowing for a maximum of 6 arguments.&n; * There can be up to 31 unique argument types (0 is end-of-arg-list indicator)&n; */
+multiline_comment|/*&n; * Resolved argument types for the AML Interpreter&n; * Each field in the Arg_types u32 is 5 bits, allowing for a maximum of 6 arguments.&n; * There can be up to 31 unique argument types (0 is end-of-arg-list indicator)&n; *&n; * Note: If and when 5 bits becomes insufficient, it would probably be best&n; * to convert to a 6-byte array of argument types, allowing 8 bits per argument.&n; */
 multiline_comment|/* &quot;Standard&quot; ACPI types are 1-15 (0x0F) */
 DECL|macro|ARGI_INTEGER
 mdefine_line|#define ARGI_INTEGER                ACPI_TYPE_INTEGER       /* 1 */
@@ -365,6 +365,8 @@ DECL|macro|ARGI_SIMPLE_TARGET
 mdefine_line|#define ARGI_SIMPLE_TARGET          0x1C     /* Name, Local, Arg -- no implicit conversion */
 DECL|macro|ARGI_BUFFERSTRING
 mdefine_line|#define ARGI_BUFFERSTRING           0x1D
+DECL|macro|ARGI_REF_OR_STRING
+mdefine_line|#define ARGI_REF_OR_STRING          0x1E     /* Reference or String (Used by DEREFOF op only) */
 DECL|macro|ARGI_INVALID_OPCODE
 mdefine_line|#define ARGI_INVALID_OPCODE         0xFFFFFFFF
 multiline_comment|/*&n; * hash offsets&n; */
@@ -534,11 +536,14 @@ comma
 DECL|enumerator|REGION_PCI_BAR
 id|REGION_PCI_BAR
 comma
+DECL|enumerator|REGION_DATA_TABLE
+id|REGION_DATA_TABLE
+comma
+multiline_comment|/* Internal use only */
 DECL|enumerator|REGION_FIXED_HW
 id|REGION_FIXED_HW
 op_assign
 l_int|0x7F
-comma
 DECL|typedef|AML_REGION_TYPES
 )brace
 id|AML_REGION_TYPES
@@ -582,104 +587,127 @@ id|AML_MATCH_OPERATOR
 suffix:semicolon
 DECL|macro|MAX_MATCH_OPERATOR
 mdefine_line|#define MAX_MATCH_OPERATOR          5
-multiline_comment|/* Field Access Types */
-DECL|macro|ACCESS_TYPE_MASK
-mdefine_line|#define ACCESS_TYPE_MASK            0x0f
-DECL|macro|ACCESS_TYPE_SHIFT
-mdefine_line|#define ACCESS_TYPE_SHIFT           0
+multiline_comment|/*&n; * Field_flags&n; *&n; * This byte is extracted from the AML and includes three separate&n; * pieces of information about the field:&n; * 1) The field access type&n; * 2) The field update rule&n; * 3) The lock rule for the field&n; *&n; * Bits 00 - 03 : Access_type (Any_acc, Byte_acc, etc.)&n; *      04      : Lock_rule (1 == Lock)&n; *      05 - 06 : Update_rule&n; */
+DECL|macro|AML_FIELD_ACCESS_TYPE_MASK
+mdefine_line|#define AML_FIELD_ACCESS_TYPE_MASK  0x0F
+DECL|macro|AML_FIELD_LOCK_RULE_MASK
+mdefine_line|#define AML_FIELD_LOCK_RULE_MASK    0x10
+DECL|macro|AML_FIELD_UPDATE_RULE_MASK
+mdefine_line|#define AML_FIELD_UPDATE_RULE_MASK  0x60
+multiline_comment|/* 1) Field Access Types */
 r_typedef
 r_enum
 (brace
-DECL|enumerator|ACCESS_ANY_ACC
-id|ACCESS_ANY_ACC
+DECL|enumerator|AML_FIELD_ACCESS_ANY
+id|AML_FIELD_ACCESS_ANY
 op_assign
-l_int|0
+l_int|0x00
 comma
-DECL|enumerator|ACCESS_BYTE_ACC
-id|ACCESS_BYTE_ACC
+DECL|enumerator|AML_FIELD_ACCESS_BYTE
+id|AML_FIELD_ACCESS_BYTE
 op_assign
-l_int|1
+l_int|0x01
 comma
-DECL|enumerator|ACCESS_WORD_ACC
-id|ACCESS_WORD_ACC
+DECL|enumerator|AML_FIELD_ACCESS_WORD
+id|AML_FIELD_ACCESS_WORD
 op_assign
-l_int|2
+l_int|0x02
 comma
-DECL|enumerator|ACCESS_DWORD_ACC
-id|ACCESS_DWORD_ACC
+DECL|enumerator|AML_FIELD_ACCESS_DWORD
+id|AML_FIELD_ACCESS_DWORD
 op_assign
-l_int|3
+l_int|0x03
 comma
-DECL|enumerator|ACCESS_QWORD_ACC
-id|ACCESS_QWORD_ACC
+DECL|enumerator|AML_FIELD_ACCESS_QWORD
+id|AML_FIELD_ACCESS_QWORD
 op_assign
-l_int|4
+l_int|0x04
 comma
 multiline_comment|/* ACPI 2.0 */
-DECL|enumerator|ACCESS_BLOCK_ACC
-id|ACCESS_BLOCK_ACC
+DECL|enumerator|AML_FIELD_ACCESS_BUFFER
+id|AML_FIELD_ACCESS_BUFFER
 op_assign
-l_int|4
-comma
-DECL|enumerator|ACCESS_SMBSEND_RECV_ACC
-id|ACCESS_SMBSEND_RECV_ACC
-op_assign
-l_int|5
-comma
-DECL|enumerator|ACCESS_SMBQUICK_ACC
-id|ACCESS_SMBQUICK_ACC
-op_assign
-l_int|6
+l_int|0x05
+multiline_comment|/* ACPI 2.0 */
 DECL|typedef|AML_ACCESS_TYPE
 )brace
 id|AML_ACCESS_TYPE
 suffix:semicolon
-multiline_comment|/* Field Lock Rules */
-DECL|macro|LOCK_RULE_MASK
-mdefine_line|#define LOCK_RULE_MASK              0x10
-DECL|macro|LOCK_RULE_SHIFT
-mdefine_line|#define LOCK_RULE_SHIFT             4
+multiline_comment|/* 2) Field Lock Rules */
 r_typedef
 r_enum
 (brace
-DECL|enumerator|GLOCK_NEVER_LOCK
-id|GLOCK_NEVER_LOCK
+DECL|enumerator|AML_FIELD_LOCK_NEVER
+id|AML_FIELD_LOCK_NEVER
 op_assign
-l_int|0
+l_int|0x00
 comma
-DECL|enumerator|GLOCK_ALWAYS_LOCK
-id|GLOCK_ALWAYS_LOCK
+DECL|enumerator|AML_FIELD_LOCK_ALWAYS
+id|AML_FIELD_LOCK_ALWAYS
 op_assign
-l_int|1
+l_int|0x10
 DECL|typedef|AML_LOCK_RULE
 )brace
 id|AML_LOCK_RULE
 suffix:semicolon
-multiline_comment|/* Field Update Rules */
-DECL|macro|UPDATE_RULE_MASK
-mdefine_line|#define UPDATE_RULE_MASK            0x060
-DECL|macro|UPDATE_RULE_SHIFT
-mdefine_line|#define UPDATE_RULE_SHIFT           5
+multiline_comment|/* 3) Field Update Rules */
 r_typedef
 r_enum
 (brace
-DECL|enumerator|UPDATE_PRESERVE
-id|UPDATE_PRESERVE
+DECL|enumerator|AML_FIELD_UPDATE_PRESERVE
+id|AML_FIELD_UPDATE_PRESERVE
 op_assign
-l_int|0
+l_int|0x00
 comma
-DECL|enumerator|UPDATE_WRITE_AS_ONES
-id|UPDATE_WRITE_AS_ONES
+DECL|enumerator|AML_FIELD_UPDATE_WRITE_AS_ONES
+id|AML_FIELD_UPDATE_WRITE_AS_ONES
 op_assign
-l_int|1
+l_int|0x20
 comma
-DECL|enumerator|UPDATE_WRITE_AS_ZEROS
-id|UPDATE_WRITE_AS_ZEROS
+DECL|enumerator|AML_FIELD_UPDATE_WRITE_AS_ZEROS
+id|AML_FIELD_UPDATE_WRITE_AS_ZEROS
 op_assign
-l_int|2
+l_int|0x40
 DECL|typedef|AML_UPDATE_RULE
 )brace
 id|AML_UPDATE_RULE
+suffix:semicolon
+multiline_comment|/*&n; * Field Access Attributes.&n; * This byte is extracted from the AML via the&n; * Access_as keyword&n; */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|AML_FIELD_ATTRIB_SMB_QUICK
+id|AML_FIELD_ATTRIB_SMB_QUICK
+op_assign
+l_int|0x02
+comma
+DECL|enumerator|AML_FIELD_ATTRIB_SMB_SEND_RCV
+id|AML_FIELD_ATTRIB_SMB_SEND_RCV
+op_assign
+l_int|0x04
+comma
+DECL|enumerator|AML_FIELD_ATTRIB_SMB_BYTE
+id|AML_FIELD_ATTRIB_SMB_BYTE
+op_assign
+l_int|0x06
+comma
+DECL|enumerator|AML_FIELD_ATTRIB_SMB_WORD
+id|AML_FIELD_ATTRIB_SMB_WORD
+op_assign
+l_int|0x08
+comma
+DECL|enumerator|AML_FIELD_ATTRIB_SMB_BLOCK
+id|AML_FIELD_ATTRIB_SMB_BLOCK
+op_assign
+l_int|0x0A
+comma
+DECL|enumerator|AML_FIELD_ATTRIB_SMB_CALL
+id|AML_FIELD_ATTRIB_SMB_CALL
+op_assign
+l_int|0x0E
+DECL|typedef|AML_ACCESS_ATTRIBUTE
+)brace
+id|AML_ACCESS_ATTRIBUTE
 suffix:semicolon
 multiline_comment|/* bit fields in Method_flags byte */
 DECL|macro|METHOD_FLAGS_ARG_COUNT
@@ -689,10 +717,8 @@ mdefine_line|#define METHOD_FLAGS_SERIALIZED     0x08
 DECL|macro|METHOD_FLAGS_SYNCH_LEVEL
 mdefine_line|#define METHOD_FLAGS_SYNCH_LEVEL    0xF0
 multiline_comment|/* Array sizes.  Used for range checking also */
-DECL|macro|NUM_REGION_TYPES
-mdefine_line|#define NUM_REGION_TYPES            7
 DECL|macro|NUM_ACCESS_TYPES
-mdefine_line|#define NUM_ACCESS_TYPES            7
+mdefine_line|#define NUM_ACCESS_TYPES            6
 DECL|macro|NUM_UPDATE_RULES
 mdefine_line|#define NUM_UPDATE_RULES            3
 DECL|macro|NUM_MATCH_OPS
@@ -701,7 +727,5 @@ DECL|macro|NUM_OPCODES
 mdefine_line|#define NUM_OPCODES                 256
 DECL|macro|NUM_FIELD_NAMES
 mdefine_line|#define NUM_FIELD_NAMES             2
-DECL|macro|USER_REGION_BEGIN
-mdefine_line|#define USER_REGION_BEGIN           0x80
 macro_line|#endif /* __AMLCODE_H__ */
 eof

@@ -1,5 +1,5 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbutils - AML debugger utilities&n; *              $Revision: 45 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbutils - AML debugger utilities&n; *              $Revision: 51 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -12,7 +12,7 @@ macro_line|#include &quot;acdispat.h&quot;
 macro_line|#ifdef ENABLE_DEBUGGER
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DEBUGGER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dbutils&quot;
 )paren
@@ -35,14 +35,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|output_flags
 op_amp
-id|DB_REDIRECTABLE_OUTPUT
+id|ACPI_DB_REDIRECTABLE_OUTPUT
 )paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_and
 id|acpi_gbl_db_output_to_file
 )paren
 (brace
@@ -50,7 +48,6 @@ id|acpi_dbg_level
 op_assign
 id|acpi_gbl_db_debug_level
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -82,11 +79,10 @@ id|ACPI_LV_TABLES
 suffix:semicolon
 id|acpi_ut_dump_buffer
 (paren
+id|ACPI_TO_POINTER
 (paren
-id|u8
-op_star
-)paren
 id|address
+)paren
 comma
 l_int|64
 comma
@@ -173,12 +169,12 @@ id|acpi_os_printf
 (paren
 l_string|&quot;[Integer] = %8.8X%8.8X&bslash;n&quot;
 comma
-id|HIDWORD
+id|ACPI_HIDWORD
 (paren
 id|obj_desc-&gt;integer.value
 )paren
 comma
-id|LODWORD
+id|ACPI_LODWORD
 (paren
 id|obj_desc-&gt;integer.value
 )paren
@@ -358,7 +354,7 @@ id|name
 r_return
 suffix:semicolon
 )brace
-id|STRUPR
+id|ACPI_STRUPR
 (paren
 id|name
 )paren
@@ -470,7 +466,7 @@ id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -642,7 +638,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_local_ns_lookup&n; *&n; * PARAMETERS:  Name            - Name to lookup&n; *&n; * RETURN:      Pointer to a namespace node&n; *&n; * DESCRIPTION: Lookup a name in the ACPI namespace&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_local_ns_lookup&n; *&n; * PARAMETERS:  Name            - Name to lookup&n; *&n; * RETURN:      Pointer to a namespace node&n; *&n; * DESCRIPTION: Lookup a name in the ACPI namespace&n; *&n; * Note: Currently begins search from the root.  Could be enhanced to use&n; * the current prefix (scope) node as the search beginning point.&n; *&n; ******************************************************************************/
 id|acpi_namespace_node
 op_star
 DECL|function|acpi_db_local_ns_lookup
@@ -704,9 +700,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Lookup the name */
-multiline_comment|/* TBD: [Investigate] what scope do we use? */
-multiline_comment|/* Use the root scope for the start of the search */
+multiline_comment|/*&n;&t; * Lookup the name.&n;&t; * (Uses root node as the search starting point)&n;&t; */
 id|status
 op_assign
 id|acpi_ns_lookup
@@ -717,11 +711,11 @@ id|internal_path
 comma
 id|ACPI_TYPE_ANY
 comma
-id|IMODE_EXECUTE
+id|ACPI_IMODE_EXECUTE
 comma
-id|NS_NO_UPSEARCH
+id|ACPI_NS_NO_UPSEARCH
 op_or
-id|NS_DONT_OPEN_SCOPE
+id|ACPI_NS_DONT_OPEN_SCOPE
 comma
 l_int|NULL
 comma

@@ -1,44 +1,44 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acnamesp.h - Namespace subcomponent prototypes and defines&n; *       $Revision: 110 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: acnamesp.h - Namespace subcomponent prototypes and defines&n; *       $Revision: 123 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACNAMESP_H__
 DECL|macro|__ACNAMESP_H__
 mdefine_line|#define __ACNAMESP_H__
 multiline_comment|/* To search the entire name space, pass this as Search_base */
-DECL|macro|NS_ALL
-mdefine_line|#define NS_ALL                  ((acpi_handle)0)
+DECL|macro|ACPI_NS_ALL
+mdefine_line|#define ACPI_NS_ALL                 ((acpi_handle)0)
 multiline_comment|/*&n; * Elements of Acpi_ns_properties are bit significant&n; * and should be one-to-one with values of acpi_object_type&n; */
-DECL|macro|NSP_NORMAL
-mdefine_line|#define NSP_NORMAL              0
-DECL|macro|NSP_NEWSCOPE
-mdefine_line|#define NSP_NEWSCOPE            1   /* a definition of this type opens a name scope */
-DECL|macro|NSP_LOCAL
-mdefine_line|#define NSP_LOCAL               2   /* suppress search of enclosing scopes */
+DECL|macro|ACPI_NS_NORMAL
+mdefine_line|#define ACPI_NS_NORMAL              0
+DECL|macro|ACPI_NS_NEWSCOPE
+mdefine_line|#define ACPI_NS_NEWSCOPE            1   /* a definition of this type opens a name scope */
+DECL|macro|ACPI_NS_LOCAL
+mdefine_line|#define ACPI_NS_LOCAL               2   /* suppress search of enclosing scopes */
 multiline_comment|/* Definitions of the predefined namespace names  */
 DECL|macro|ACPI_UNKNOWN_NAME
-mdefine_line|#define ACPI_UNKNOWN_NAME       (u32) 0x3F3F3F3F     /* Unknown name is  &quot;????&quot; */
+mdefine_line|#define ACPI_UNKNOWN_NAME           (u32) 0x3F3F3F3F     /* Unknown name is  &quot;????&quot; */
 DECL|macro|ACPI_ROOT_NAME
-mdefine_line|#define ACPI_ROOT_NAME          (u32) 0x2F202020     /* Root name is     &quot;/   &quot; */
+mdefine_line|#define ACPI_ROOT_NAME              (u32) 0x2F202020     /* Root name is     &quot;/   &quot; */
 DECL|macro|ACPI_SYS_BUS_NAME
-mdefine_line|#define ACPI_SYS_BUS_NAME       (u32) 0x5F53425F     /* Sys bus name is  &quot;_SB_&quot; */
-DECL|macro|NS_ROOT_PATH
-mdefine_line|#define NS_ROOT_PATH            &quot;/&quot;
-DECL|macro|NS_SYSTEM_BUS
-mdefine_line|#define NS_SYSTEM_BUS           &quot;_SB_&quot;
+mdefine_line|#define ACPI_SYS_BUS_NAME           (u32) 0x5F53425F     /* Sys bus name is  &quot;_SB_&quot; */
+DECL|macro|ACPI_NS_ROOT_PATH
+mdefine_line|#define ACPI_NS_ROOT_PATH           &quot;&bslash;&bslash;&quot;
+DECL|macro|ACPI_NS_SYSTEM_BUS
+mdefine_line|#define ACPI_NS_SYSTEM_BUS          &quot;_SB_&quot;
 multiline_comment|/* Flags for Acpi_ns_lookup, Acpi_ns_search_and_enter */
-DECL|macro|NS_NO_UPSEARCH
-mdefine_line|#define NS_NO_UPSEARCH          0
-DECL|macro|NS_SEARCH_PARENT
-mdefine_line|#define NS_SEARCH_PARENT        0x01
-DECL|macro|NS_DONT_OPEN_SCOPE
-mdefine_line|#define NS_DONT_OPEN_SCOPE      0x02
-DECL|macro|NS_NO_PEER_SEARCH
-mdefine_line|#define NS_NO_PEER_SEARCH       0x04
-DECL|macro|NS_ERROR_IF_FOUND
-mdefine_line|#define NS_ERROR_IF_FOUND       0x08
-DECL|macro|NS_WALK_UNLOCK
-mdefine_line|#define NS_WALK_UNLOCK          TRUE
-DECL|macro|NS_WALK_NO_UNLOCK
-mdefine_line|#define NS_WALK_NO_UNLOCK       FALSE
+DECL|macro|ACPI_NS_NO_UPSEARCH
+mdefine_line|#define ACPI_NS_NO_UPSEARCH         0
+DECL|macro|ACPI_NS_SEARCH_PARENT
+mdefine_line|#define ACPI_NS_SEARCH_PARENT       0x01
+DECL|macro|ACPI_NS_DONT_OPEN_SCOPE
+mdefine_line|#define ACPI_NS_DONT_OPEN_SCOPE     0x02
+DECL|macro|ACPI_NS_NO_PEER_SEARCH
+mdefine_line|#define ACPI_NS_NO_PEER_SEARCH      0x04
+DECL|macro|ACPI_NS_ERROR_IF_FOUND
+mdefine_line|#define ACPI_NS_ERROR_IF_FOUND      0x08
+DECL|macro|ACPI_NS_WALK_UNLOCK
+mdefine_line|#define ACPI_NS_WALK_UNLOCK         TRUE
+DECL|macro|ACPI_NS_WALK_NO_UNLOCK
+mdefine_line|#define ACPI_NS_WALK_NO_UNLOCK      FALSE
 id|acpi_status
 id|acpi_ns_load_namespace
 (paren
@@ -99,7 +99,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ns_walk_namespace
 (paren
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 comma
 id|acpi_handle
@@ -128,7 +128,7 @@ id|acpi_namespace_node
 op_star
 id|acpi_ns_get_next_node
 (paren
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 comma
 id|acpi_namespace_node
@@ -208,10 +208,10 @@ id|NATIVE_CHAR
 op_star
 id|name
 comma
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 comma
-id|operating_mode
+id|acpi_interpreter_mode
 id|interpreter_mode
 comma
 id|u32
@@ -322,6 +322,17 @@ id|component
 )paren
 suffix:semicolon
 r_void
+id|acpi_ns_print_pathname
+(paren
+id|u32
+id|num_segments
+comma
+r_char
+op_star
+id|pathname
+)paren
+suffix:semicolon
+r_void
 id|acpi_ns_dump_root_devices
 (paren
 r_void
@@ -330,7 +341,7 @@ suffix:semicolon
 r_void
 id|acpi_ns_dump_objects
 (paren
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 comma
 id|u8
@@ -453,17 +464,17 @@ op_star
 id|this_node
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Scope manipulation - nsscope&n; */
+multiline_comment|/*&n; * Name and Scope manipulation - nsnames&n; */
 id|u32
 id|acpi_ns_opens_scope
 (paren
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 )paren
 suffix:semicolon
 id|NATIVE_CHAR
 op_star
-id|acpi_ns_get_table_pathname
+id|acpi_ns_get_external_pathname
 (paren
 id|acpi_namespace_node
 op_star
@@ -483,15 +494,11 @@ id|acpi_status
 id|acpi_ns_handle_to_pathname
 (paren
 id|acpi_handle
-id|obj_handle
+id|target_handle
 comma
-id|u32
+id|acpi_buffer
 op_star
-id|buf_size
-comma
-id|NATIVE_CHAR
-op_star
-id|user_buffer
+id|buffer
 )paren
 suffix:semicolon
 id|u8
@@ -507,15 +514,18 @@ id|search_for
 )paren
 suffix:semicolon
 id|acpi_status
-id|acpi_ns_get_node
+id|acpi_ns_get_node_by_path
 (paren
 id|NATIVE_CHAR
 op_star
-id|pathname
+id|external_pathname
 comma
 id|acpi_namespace_node
 op_star
 id|in_prefix_node
+comma
+id|u32
+id|flags
 comma
 id|acpi_namespace_node
 op_star
@@ -523,7 +533,7 @@ op_star
 id|out_node
 )paren
 suffix:semicolon
-id|u32
+id|ACPI_SIZE
 id|acpi_ns_get_pathname_length
 (paren
 id|acpi_namespace_node
@@ -531,7 +541,7 @@ op_star
 id|node
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Object management for NTEs - nsobject&n; */
+multiline_comment|/*&n; * Object management for namespace nodes - nsobject&n; */
 id|acpi_status
 id|acpi_ns_attach_object
 (paren
@@ -543,8 +553,68 @@ id|acpi_operand_object
 op_star
 id|object
 comma
-id|acpi_object_type8
+id|acpi_object_type
 id|type
+)paren
+suffix:semicolon
+id|acpi_operand_object
+op_star
+id|acpi_ns_get_attached_object
+(paren
+id|acpi_namespace_node
+op_star
+id|node
+)paren
+suffix:semicolon
+id|acpi_operand_object
+op_star
+id|acpi_ns_get_secondary_object
+(paren
+id|acpi_operand_object
+op_star
+id|obj_desc
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ns_attach_data
+(paren
+id|acpi_namespace_node
+op_star
+id|node
+comma
+id|ACPI_OBJECT_HANDLER
+id|handler
+comma
+r_void
+op_star
+id|data
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ns_detach_data
+(paren
+id|acpi_namespace_node
+op_star
+id|node
+comma
+id|ACPI_OBJECT_HANDLER
+id|handler
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ns_get_attached_data
+(paren
+id|acpi_namespace_node
+op_star
+id|node
+comma
+id|ACPI_OBJECT_HANDLER
+id|handler
+comma
+r_void
+op_star
+op_star
+id|data
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Namespace searching and entry - nssearch&n; */
@@ -562,10 +632,10 @@ id|acpi_namespace_node
 op_star
 id|node
 comma
-id|operating_mode
+id|acpi_interpreter_mode
 id|interpreter_mode
 comma
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 comma
 id|u32
@@ -587,7 +657,7 @@ id|acpi_namespace_node
 op_star
 id|node
 comma
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 comma
 id|acpi_namespace_node
@@ -613,7 +683,7 @@ op_star
 id|node
 comma
 multiline_comment|/* New Child*/
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 )paren
 suffix:semicolon
@@ -632,17 +702,8 @@ id|NATIVE_CHAR
 id|sep
 )paren
 suffix:semicolon
-id|acpi_object_type8
+id|acpi_object_type
 id|acpi_ns_get_type
-(paren
-id|acpi_namespace_node
-op_star
-id|node
-)paren
-suffix:semicolon
-r_void
-op_star
-id|acpi_ns_get_attached_object
 (paren
 id|acpi_namespace_node
 op_star
@@ -652,7 +713,7 @@ suffix:semicolon
 id|u32
 id|acpi_ns_local
 (paren
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 )paren
 suffix:semicolon
@@ -730,7 +791,7 @@ r_void
 suffix:semicolon
 id|acpi_namespace_node
 op_star
-id|acpi_ns_get_parent_object
+id|acpi_ns_get_parent_node
 (paren
 id|acpi_namespace_node
 op_star

@@ -1,5 +1,5 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utdelete - object deletion and reference count utilities&n; *              $Revision: 81 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utdelete - object deletion and reference count utilities&n; *              $Revision: 87 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -7,7 +7,7 @@ macro_line|#include &quot;actables.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;utdelete&quot;
 )paren
@@ -31,7 +31,11 @@ id|acpi_operand_object
 op_star
 id|handler_desc
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|acpi_operand_object
+op_star
+id|second_desc
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ut_delete_internal_obj&quot;
 comma
@@ -237,10 +241,17 @@ id|object
 )paren
 )paren
 suffix:semicolon
+id|second_desc
+op_assign
+id|acpi_ns_get_secondary_object
+(paren
+id|object
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|object-&gt;region.extra
+id|second_desc
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Free the Region_context if and only if the handler is one of the&n;&t;&t;&t; * default handlers -- and therefore, we created the context object&n;&t;&t;&t; * locally, it was not created by an external caller.&n;&t;&t;&t; */
@@ -258,19 +269,19 @@ op_logical_and
 (paren
 id|handler_desc-&gt;addr_handler.hflags
 op_eq
-id|ADDR_HANDLER_DEFAULT_INSTALLED
+id|ACPI_ADDR_HANDLER_DEFAULT_INSTALLED
 )paren
 )paren
 (brace
 id|obj_pointer
 op_assign
-id|object-&gt;region.extra-&gt;extra.region_context
+id|second_desc-&gt;extra.region_context
 suffix:semicolon
 )brace
 multiline_comment|/* Now we can free the Extra object */
 id|acpi_ut_delete_object_desc
 (paren
-id|object-&gt;region.extra
+id|second_desc
 )paren
 suffix:semicolon
 )brace
@@ -290,15 +301,22 @@ id|object
 )paren
 )paren
 suffix:semicolon
+id|second_desc
+op_assign
+id|acpi_ns_get_secondary_object
+(paren
+id|object
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|object-&gt;buffer_field.extra
+id|second_desc
 )paren
 (brace
 id|acpi_ut_delete_object_desc
 (paren
-id|object-&gt;buffer_field.extra
+id|second_desc
 )paren
 suffix:semicolon
 )brace
@@ -309,7 +327,7 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Delete any allocated memory found above&n;&t; */
+multiline_comment|/* Free any allocated memory (pointer within the object) found above */
 r_if
 c_cond
 (paren
@@ -321,7 +339,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Deleting Obj Ptr %p &bslash;n&quot;
+l_string|&quot;Deleting Object Subptr %p&bslash;n&quot;
 comma
 id|obj_pointer
 )paren
@@ -333,49 +351,13 @@ id|obj_pointer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Only delete the object if it was dynamically allocated */
-r_if
-c_cond
-(paren
-id|object-&gt;common.flags
-op_amp
-id|AOPOBJ_STATIC_ALLOCATION
-)paren
-(brace
+multiline_comment|/* Now the object can be safely deleted */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Object %p [%s] static allocation, no delete&bslash;n&quot;
-comma
-id|object
-comma
-id|acpi_ut_get_type_name
-(paren
-id|object-&gt;common.type
-)paren
-)paren
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|object-&gt;common.flags
-op_amp
-id|AOPOBJ_STATIC_ALLOCATION
-)paren
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;Deleting object %p [%s]&bslash;n&quot;
+l_string|&quot;Deleting Object %p [%s]&bslash;n&quot;
 comma
 id|object
 comma
@@ -391,7 +373,6 @@ id|acpi_ut_delete_object_desc
 id|object
 )paren
 suffix:semicolon
-)brace
 id|return_VOID
 suffix:semicolon
 )brace
@@ -411,7 +392,7 @@ op_star
 op_star
 id|internal_obj
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_delete_internal_object_list&quot;
 )paren
@@ -470,7 +451,7 @@ suffix:semicolon
 id|u16
 id|new_count
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ut_update_ref_count&quot;
 )paren
@@ -725,7 +706,7 @@ id|acpi_generic_state
 op_star
 id|state
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ut_update_object_reference&quot;
 comma
@@ -746,16 +727,16 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Make sure that this isn&squot;t a namespace handle or an AML pointer&n;&t; */
+multiline_comment|/*&n;&t; * Make sure that this isn&squot;t a namespace handle&n;&t; */
 r_if
 c_cond
 (paren
-id|VALID_DESCRIPTOR_TYPE
+id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
 id|object
-comma
-id|ACPI_DESC_TYPE_NAMED
 )paren
+op_eq
+id|ACPI_DESC_TYPE_NAMED
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -1012,7 +993,7 @@ id|status
 op_assign
 id|acpi_ut_create_update_state_and_push
 (paren
-id|object-&gt;bank_field.bank_register_obj
+id|object-&gt;bank_field.bank_obj
 comma
 id|action
 comma
@@ -1167,7 +1148,7 @@ op_star
 id|object
 )paren
 (brace
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ut_add_reference&quot;
 comma
@@ -1209,7 +1190,7 @@ op_star
 id|object
 )paren
 (brace
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ut_remove_reference&quot;
 comma
@@ -1224,12 +1205,12 @@ op_logical_neg
 id|object
 op_logical_or
 (paren
-id|VALID_DESCRIPTOR_TYPE
+id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
 id|object
-comma
-id|ACPI_DESC_TYPE_NAMED
 )paren
+op_eq
+id|ACPI_DESC_TYPE_NAMED
 )paren
 )paren
 (brace

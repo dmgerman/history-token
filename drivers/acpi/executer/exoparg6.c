@@ -1,12 +1,12 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg6 - AML execution - opcodes with 6 arguments&n; *              $Revision: 4 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg6 - AML execution - opcodes with 6 arguments&n; *              $Revision: 10 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exoparg6&quot;
 )paren
@@ -190,7 +190,7 @@ id|acpi_operand_object
 op_star
 id|this_element
 suffix:semicolon
-id|FUNCTION_TRACE_STR
+id|ACPI_FUNCTION_TRACE_STR
 (paren
 l_string|&quot;Ex_opcode_6A_0T_1R&quot;
 comma
@@ -326,7 +326,7 @@ id|return_desc-&gt;integer.value
 op_assign
 id|ACPI_INTEGER_MAX
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Examine each element until a match is found.  Within the loop,&n;&t;&t; * &quot;continue&quot; signifies that the current element does not match&n;&t;&t; * and the next should be examined.&n;&t;&t; * Upon finding a match, the loop will terminate via &quot;break&quot; at&n;&t;&t; * the bottom.  If it terminates &quot;normally&quot;, Match_value will be -1&n;&t;&t; * (its initial value) indicating that no match was found.  When&n;&t;&t; * returned as a Number, this will produce the Ones value as specified.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Examine each element until a match is found.  Within the loop,&n;&t;&t; * &quot;continue&quot; signifies that the current element does not match&n;&t;&t; * and the next should be examined.&n;&t;&t; *&n;&t;&t; * Upon finding a match, the loop will terminate via &quot;break&quot; at&n;&t;&t; * the bottom.  If it terminates &quot;normally&quot;, Match_value will be -1&n;&t;&t; * (its initial value) indicating that no match was found.  When&n;&t;&t; * returned as a Number, this will produce the Ones value as specified.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -356,7 +356,7 @@ id|package.elements
 id|index
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Treat any NULL or non-numeric elements as non-matching.&n;&t;&t;&t; * TBD [Unhandled] - if an element is a Name,&n;&t;&t;&t; *      should we examine its value?&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Treat any NULL or non-numeric elements as non-matching.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -371,7 +371,7 @@ id|ACPI_TYPE_INTEGER
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Within these switch statements:&n;&t;&t;&t; *      &quot;break&quot; (exit from the switch) signifies a match;&n;&t;&t;&t; *      &quot;continue&quot; (proceed to next iteration of enclosing&n;&t;&t;&t; *          &quot;for&quot; loop) signifies a non-match.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * &quot;continue&quot; (proceed to next iteration of enclosing&n;&t;&t;&t; * &quot;for&quot; loop) signifies a non-match.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -447,16 +447,19 @@ id|AML_LOAD_TABLE_OP
 suffix:colon
 id|status
 op_assign
-id|AE_NOT_IMPLEMENTED
-suffix:semicolon
-r_goto
-id|cleanup
+id|acpi_ex_load_table_op
+(paren
+id|walk_state
+comma
+op_amp
+id|return_desc
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_ex_opcode_3A_0T_0R: Unknown opcode %X&bslash;n&quot;
@@ -471,8 +474,6 @@ id|AE_AML_BAD_OPCODE
 suffix:semicolon
 r_goto
 id|cleanup
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 id|walk_state-&gt;result_obj

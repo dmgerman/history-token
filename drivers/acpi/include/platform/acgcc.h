@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acgcc.h - GCC specific defines, etc.&n; *       $Revision: 14 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: acgcc.h - GCC specific defines, etc.&n; *       $Revision: 19 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACGCC_H__
 DECL|macro|__ACGCC_H__
 mdefine_line|#define __ACGCC_H__
@@ -8,19 +8,29 @@ DECL|macro|_IA64
 mdefine_line|#define _IA64
 DECL|macro|COMPILER_DEPENDENT_UINT64
 mdefine_line|#define COMPILER_DEPENDENT_UINT64   unsigned long
+multiline_comment|/*&n; * Calling conventions:&n; *&n; * ACPI_SYSTEM_XFACE        - Interfaces to host OS (handlers, threads)&n; * ACPI_EXTERNAL_XFACE      - External ACPI interfaces&n; * ACPI_INTERNAL_XFACE      - Internal ACPI interfaces&n; * ACPI_INTERNAL_VAR_XFACE  - Internal variable-parameter list interfaces&n; */
+DECL|macro|ACPI_SYSTEM_XFACE
+mdefine_line|#define ACPI_SYSTEM_XFACE
+DECL|macro|ACPI_EXTERNAL_XFACE
+mdefine_line|#define ACPI_EXTERNAL_XFACE
+DECL|macro|ACPI_INTERNAL_XFACE
+mdefine_line|#define ACPI_INTERNAL_XFACE
+DECL|macro|ACPI_INTERNAL_VAR_XFACE
+mdefine_line|#define ACPI_INTERNAL_VAR_XFACE
 multiline_comment|/* Single threaded */
 DECL|macro|ACPI_APPLICATION
 mdefine_line|#define ACPI_APPLICATION
+multiline_comment|/* Asm macros */
 DECL|macro|ACPI_ASM_MACROS
 mdefine_line|#define ACPI_ASM_MACROS
 DECL|macro|causeinterrupt
 mdefine_line|#define causeinterrupt(level)
 DECL|macro|BREAKPOINT3
 mdefine_line|#define BREAKPOINT3
-DECL|macro|disable
-mdefine_line|#define disable() __cli()
-DECL|macro|enable
-mdefine_line|#define enable()  __sti()
+DECL|macro|acpi_disable_irqs
+mdefine_line|#define acpi_disable_irqs() __cli()
+DECL|macro|acpi_enable_irqs
+mdefine_line|#define acpi_enable_irqs()  __sti()
 multiline_comment|/*! [Begin] no source code translation */
 macro_line|#include &lt;asm/pal.h&gt;
 DECL|macro|halt
@@ -35,16 +45,26 @@ multiline_comment|/*! [End] no source code translation !*/
 macro_line|#else /* DO IA32 */
 DECL|macro|COMPILER_DEPENDENT_UINT64
 mdefine_line|#define COMPILER_DEPENDENT_UINT64   unsigned long long
+multiline_comment|/*&n; * Calling conventions:&n; *&n; * ACPI_SYSTEM_XFACE        - Interfaces to host OS (handlers, threads)&n; * ACPI_EXTERNAL_XFACE      - External ACPI interfaces&n; * ACPI_INTERNAL_XFACE      - Internal ACPI interfaces&n; * ACPI_INTERNAL_VAR_XFACE  - Internal variable-parameter list interfaces&n; */
+DECL|macro|ACPI_SYSTEM_XFACE
+mdefine_line|#define ACPI_SYSTEM_XFACE
+DECL|macro|ACPI_EXTERNAL_XFACE
+mdefine_line|#define ACPI_EXTERNAL_XFACE
+DECL|macro|ACPI_INTERNAL_XFACE
+mdefine_line|#define ACPI_INTERNAL_XFACE
+DECL|macro|ACPI_INTERNAL_VAR_XFACE
+mdefine_line|#define ACPI_INTERNAL_VAR_XFACE
+multiline_comment|/* Asm macros */
 DECL|macro|ACPI_ASM_MACROS
 mdefine_line|#define ACPI_ASM_MACROS
 DECL|macro|causeinterrupt
 mdefine_line|#define causeinterrupt(level)
 DECL|macro|BREAKPOINT3
 mdefine_line|#define BREAKPOINT3
-DECL|macro|disable
-mdefine_line|#define disable() __cli()
-DECL|macro|enable
-mdefine_line|#define enable()  __sti()
+DECL|macro|acpi_disable_irqs
+mdefine_line|#define acpi_disable_irqs() __cli()
+DECL|macro|acpi_enable_irqs
+mdefine_line|#define acpi_enable_irqs()  __sti()
 DECL|macro|halt
 mdefine_line|#define halt()    __asm__ __volatile__ (&quot;sti; hlt&quot;:::&quot;memory&quot;)
 multiline_comment|/*! [Begin] no source code translation&n; *&n; * A brief explanation as GNU inline assembly is a bit hairy&n; *  %0 is the output parameter in EAX (&quot;=a&quot;)&n; *  %1 and %2 are the input parameters in ECX (&quot;c&quot;)&n; *  and an immediate value (&quot;i&quot;) respectively&n; *  All actual register references are preceded with &quot;%%&quot; as in &quot;%%edx&quot;&n; *  Immediate values in the assembly are preceded by &quot;$&quot; as in &quot;$0x1&quot;&n; *  The final asm parameter are the operation altered non-output registers.&n; */
@@ -56,7 +76,7 @@ multiline_comment|/*&n; * Math helper asm macros&n; */
 DECL|macro|ACPI_DIV_64_BY_32
 mdefine_line|#define ACPI_DIV_64_BY_32(n_hi, n_lo, d32, q32, r32) &bslash;&n;&t;&t;asm(&quot;divl %2;&quot;        &bslash;&n;&t;&t;:&quot;=a&quot;(q32), &quot;=d&quot;(r32) &bslash;&n;&t;&t;:&quot;r&quot;(d32),            &bslash;&n;&t;&t;&quot;0&quot;(n_lo), &quot;1&quot;(n_hi))
 DECL|macro|ACPI_SHIFT_RIGHT_64
-mdefine_line|#define ACPI_SHIFT_RIGHT_64(n_hi, n_lo) &bslash;&n;&t;asm(&quot;shrl   $1,%2;&quot;             &bslash;&n;&t;    &quot;rcrl   $1,%3;&quot;             &bslash;&n;&t;    :&quot;=r&quot;(n_hi), &quot;=r&quot;(n_lo)     &bslash;&n;&t;    :&quot;0&quot;(n_hi), &quot;1&quot;(n_lo))
+mdefine_line|#define ACPI_SHIFT_RIGHT_64(n_hi, n_lo) &bslash;&n;&t;asm(&quot;shrl   $1,%2;&quot;             &bslash;&n;&t;&t;&quot;rcrl   $1,%3;&quot;             &bslash;&n;&t;&t;:&quot;=r&quot;(n_hi), &quot;=r&quot;(n_lo)     &bslash;&n;&t;&t;:&quot;0&quot;(n_hi), &quot;1&quot;(n_lo))
 multiline_comment|/*! [End] no source code translation !*/
 macro_line|#endif /* IA 32 */
 multiline_comment|/* This macro is used to tag functions as &quot;printf-like&quot; because&n; * some compilers (like GCC) can catch printf format string problems.&n; */

@@ -1,24 +1,14 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psutils - Parser miscellaneous utilities (Parser only)&n; *              $Revision: 44 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psutils - Parser miscellaneous utilities (Parser only)&n; *              $Revision: 49 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_PARSER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;psutils&quot;
 )paren
-DECL|macro|PARSEOP_GENERIC
-mdefine_line|#define PARSEOP_GENERIC     0x01
-DECL|macro|PARSEOP_NAMED
-mdefine_line|#define PARSEOP_NAMED       0x02
-DECL|macro|PARSEOP_DEFERRED
-mdefine_line|#define PARSEOP_DEFERRED    0x04
-DECL|macro|PARSEOP_BYTELIST
-mdefine_line|#define PARSEOP_BYTELIST    0x08
-DECL|macro|PARSEOP_IN_CACHE
-mdefine_line|#define PARSEOP_IN_CACHE    0x80
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_init_op&n; *&n; * PARAMETERS:  Op              - A newly allocated Op object&n; *              Opcode          - Opcode to store in the Op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Allocate an acpi_op, choose op type (and thus size) based on&n; *              opcode&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ps_init_op
@@ -32,12 +22,7 @@ id|u16
 id|opcode
 )paren
 (brace
-r_const
-id|acpi_opcode_info
-op_star
-id|aml_op
-suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -49,20 +34,20 @@ id|op-&gt;opcode
 op_assign
 id|opcode
 suffix:semicolon
-id|aml_op
-op_assign
+id|ACPI_DEBUG_ONLY_MEMBERS
+(paren
+id|ACPI_STRNCPY
+(paren
+id|op-&gt;op_name
+comma
+(paren
 id|acpi_ps_get_opcode_info
 (paren
 id|opcode
 )paren
-suffix:semicolon
-id|DEBUG_ONLY_MEMBERS
-(paren
-id|STRNCPY
-(paren
-id|op-&gt;op_name
-comma
-id|aml_op-&gt;name
+)paren
+op_member_access_from_pointer
+id|name
 comma
 r_sizeof
 (paren
@@ -99,7 +84,7 @@ id|acpi_opcode_info
 op_star
 id|op_info
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -128,7 +113,7 @@ id|acpi_parse2_object
 suffix:semicolon
 id|flags
 op_assign
-id|PARSEOP_DEFERRED
+id|ACPI_PARSEOP_DEFERRED
 suffix:semicolon
 )brace
 r_else
@@ -149,7 +134,7 @@ id|acpi_parse2_object
 suffix:semicolon
 id|flags
 op_assign
-id|PARSEOP_NAMED
+id|ACPI_PARSEOP_NAMED
 suffix:semicolon
 )brace
 r_else
@@ -170,7 +155,7 @@ id|acpi_parse2_object
 suffix:semicolon
 id|flags
 op_assign
-id|PARSEOP_BYTELIST
+id|ACPI_PARSEOP_BYTELIST
 suffix:semicolon
 )brace
 r_else
@@ -184,7 +169,7 @@ id|acpi_parse_object
 suffix:semicolon
 id|flags
 op_assign
-id|PARSEOP_GENERIC
+id|ACPI_PARSEOP_GENERIC
 suffix:semicolon
 )brace
 r_if
@@ -252,7 +237,7 @@ op_star
 id|op
 )paren
 (brace
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ps_free_op&quot;
 )paren
@@ -282,7 +267,7 @@ c_cond
 (paren
 id|op-&gt;flags
 op_eq
-id|PARSEOP_GENERIC
+id|ACPI_PARSEOP_GENERIC
 )paren
 (brace
 id|acpi_ut_release_to_cache
@@ -312,7 +297,7 @@ id|acpi_ps_delete_parse_cache
 r_void
 )paren
 (brace
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ps_delete_parse_cache&quot;
 )paren
@@ -405,7 +390,7 @@ c_cond
 (paren
 id|op-&gt;flags
 op_amp
-id|PARSEOP_GENERIC
+id|ACPI_PARSEOP_GENERIC
 )paren
 (brace
 r_return
@@ -448,7 +433,7 @@ c_cond
 (paren
 id|op-&gt;flags
 op_amp
-id|PARSEOP_GENERIC
+id|ACPI_PARSEOP_GENERIC
 )paren
 (brace
 r_return

@@ -28,6 +28,8 @@ DECL|macro|PCI_BIOS_IRQ_SCAN
 mdefine_line|#define PCI_BIOS_IRQ_SCAN&t;0x2000
 DECL|macro|PCI_ASSIGN_ALL_BUSSES
 mdefine_line|#define PCI_ASSIGN_ALL_BUSSES&t;0x4000
+DECL|macro|PCI_NO_ACPI_ROUTING
+mdefine_line|#define PCI_NO_ACPI_ROUTING&t;0x8000
 r_extern
 r_int
 r_int
@@ -207,6 +209,10 @@ r_extern
 r_int
 r_int
 id|pcibios_irq_mask
+suffix:semicolon
+r_extern
+r_int
+id|pci_use_acpi_routing
 suffix:semicolon
 r_void
 id|pcibios_irq_init

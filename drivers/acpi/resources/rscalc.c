@@ -1,12 +1,12 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscalc - Calculate stream and list lengths&n; *              $Revision: 32 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscalc - Calculate stream and list lengths&n; *              $Revision: 39 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_RESOURCES
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;rscalc&quot;
 )paren
@@ -19,17 +19,17 @@ id|acpi_resource
 op_star
 id|linked_list
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|size_needed
 )paren
 (brace
-id|u32
+id|ACPI_SIZE
 id|byte_stream_size_needed
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|ACPI_SIZE
 id|segment_size
 suffix:semicolon
 id|acpi_resource_ext_irq
@@ -43,7 +43,7 @@ id|done
 op_assign
 id|FALSE
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Rs_calculate_byte_stream_length&quot;
 )paren
@@ -326,8 +326,6 @@ id|return_ACPI_STATUS
 id|AE_AML_INVALID_RESOURCE_TYPE
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 multiline_comment|/* switch (Linked_list-&gt;Id) */
 multiline_comment|/*&n;&t;&t; * Update the total&n;&t;&t; */
@@ -338,7 +336,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Point to the next object&n;&t;&t; */
 id|linked_list
 op_assign
-id|POINTER_ADD
+id|ACPI_PTR_ADD
 (paren
 id|acpi_resource
 comma
@@ -372,7 +370,7 @@ comma
 id|u32
 id|byte_stream_buffer_length
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|size_needed
 )paren
@@ -422,7 +420,7 @@ suffix:semicolon
 id|u8
 id|additional_bytes
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Rs_calculate_list_length&quot;
 )paren
@@ -451,7 +449,7 @@ id|resource_type
 )paren
 (brace
 r_case
-id|RESOURCE_DESC_MEMORY_24
+id|ACPI_RDESC_TYPE_MEMORY_24
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * 24-Bit Memory Resource&n;&t;&t;&t; */
 id|bytes_consumed
@@ -460,7 +458,7 @@ l_int|12
 suffix:semicolon
 id|structure_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_mem24
 )paren
@@ -468,7 +466,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RESOURCE_DESC_LARGE_VENDOR
+id|ACPI_RDESC_TYPE_LARGE_VENDOR
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Vendor Defined Resource&n;&t;&t;&t; */
 id|buffer
@@ -478,7 +476,7 @@ suffix:semicolon
 op_increment
 id|buffer
 suffix:semicolon
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 op_amp
 id|temp16
@@ -498,14 +496,14 @@ op_assign
 (paren
 id|u16
 )paren
-id|ROUND_UP_TO_32_bITS
+id|ACPI_ROUND_UP_TO_32_bITS
 (paren
 id|temp16
 )paren
 suffix:semicolon
 id|structure_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_vendor
 )paren
@@ -522,7 +520,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RESOURCE_DESC_MEMORY_32
+id|ACPI_RDESC_TYPE_MEMORY_32
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * 32-Bit Memory Range Resource&n;&t;&t;&t; */
 id|bytes_consumed
@@ -531,7 +529,7 @@ l_int|20
 suffix:semicolon
 id|structure_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_mem32
 )paren
@@ -539,7 +537,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RESOURCE_DESC_FIXED_MEMORY_32
+id|ACPI_RDESC_TYPE_FIXED_MEMORY_32
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * 32-Bit Fixed Memory Resource&n;&t;&t;&t; */
 id|bytes_consumed
@@ -548,7 +546,7 @@ l_int|12
 suffix:semicolon
 id|structure_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_fixed_mem32
 )paren
@@ -556,7 +554,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RESOURCE_DESC_QWORD_ADDRESS_SPACE
+id|ACPI_RDESC_TYPE_QWORD_ADDRESS_SPACE
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * 64-Bit Address Resource&n;&t;&t;&t; */
 id|buffer
@@ -566,7 +564,7 @@ suffix:semicolon
 op_increment
 id|buffer
 suffix:semicolon
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 op_amp
 id|temp16
@@ -614,14 +612,14 @@ op_assign
 (paren
 id|u8
 )paren
-id|ROUND_UP_TO_64_bITS
+id|ACPI_ROUND_UP_TO_64_bITS
 (paren
 id|temp8
 )paren
 suffix:semicolon
 id|structure_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_address64
 )paren
@@ -638,7 +636,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RESOURCE_DESC_DWORD_ADDRESS_SPACE
+id|ACPI_RDESC_TYPE_DWORD_ADDRESS_SPACE
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * 32-Bit Address Resource&n;&t;&t;&t; */
 id|buffer
@@ -648,7 +646,7 @@ suffix:semicolon
 op_increment
 id|buffer
 suffix:semicolon
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 op_amp
 id|temp16
@@ -696,14 +694,14 @@ op_assign
 (paren
 id|u8
 )paren
-id|ROUND_UP_TO_32_bITS
+id|ACPI_ROUND_UP_TO_32_bITS
 (paren
 id|temp8
 )paren
 suffix:semicolon
 id|structure_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_address32
 )paren
@@ -720,7 +718,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RESOURCE_DESC_WORD_ADDRESS_SPACE
+id|ACPI_RDESC_TYPE_WORD_ADDRESS_SPACE
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * 16-Bit Address Resource&n;&t;&t;&t; */
 id|buffer
@@ -730,7 +728,7 @@ suffix:semicolon
 op_increment
 id|buffer
 suffix:semicolon
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 op_amp
 id|temp16
@@ -778,14 +776,14 @@ op_assign
 (paren
 id|u8
 )paren
-id|ROUND_UP_TO_32_bITS
+id|ACPI_ROUND_UP_TO_32_bITS
 (paren
 id|temp8
 )paren
 suffix:semicolon
 id|structure_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_address16
 )paren
@@ -802,7 +800,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RESOURCE_DESC_EXTENDED_XRUPT
+id|ACPI_RDESC_TYPE_EXTENDED_XRUPT
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Extended IRQ&n;&t;&t;&t; */
 id|buffer
@@ -812,7 +810,7 @@ suffix:semicolon
 op_increment
 id|buffer
 suffix:semicolon
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 op_amp
 id|temp16
@@ -892,14 +890,14 @@ op_assign
 (paren
 id|u8
 )paren
-id|ROUND_UP_TO_32_bITS
+id|ACPI_ROUND_UP_TO_32_bITS
 (paren
 id|temp8
 )paren
 suffix:semicolon
 id|structure_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_ext_irq
 )paren
@@ -925,7 +923,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RESOURCE_DESC_IRQ_FORMAT
+id|ACPI_RDESC_TYPE_IRQ_FORMAT
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * IRQ Resource.&n;&t;&t;&t; * Determine if it there are two or three trailing bytes&n;&t;&t;&t; */
 id|buffer
@@ -962,7 +960,7 @@ op_increment
 id|buffer
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Look at the number of bits set&n;&t;&t;&t; */
-id|MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_UNALIGNED16_TO_16
 (paren
 op_amp
 id|temp16
@@ -1004,7 +1002,7 @@ suffix:semicolon
 )brace
 id|structure_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_io
 )paren
@@ -1021,7 +1019,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RESOURCE_DESC_DMA_FORMAT
+id|ACPI_RDESC_TYPE_DMA_FORMAT
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * DMA Resource&n;&t;&t;&t; */
 id|buffer
@@ -1076,7 +1074,7 @@ suffix:semicolon
 )brace
 id|structure_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_dma
 )paren
@@ -1093,7 +1091,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RESOURCE_DESC_START_DEPENDENT
+id|ACPI_RDESC_TYPE_START_DEPENDENT
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Start Dependent Functions Resource&n;&t;&t;&t; * Determine if it there are two or three trailing bytes&n;&t;&t;&t; */
 id|buffer
@@ -1127,7 +1125,7 @@ suffix:semicolon
 )brace
 id|structure_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_start_dpf
 )paren
@@ -1135,7 +1133,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RESOURCE_DESC_END_DEPENDENT
+id|ACPI_RDESC_TYPE_END_DEPENDENT
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * End Dependent Functions Resource&n;&t;&t;&t; */
 id|bytes_consumed
@@ -1149,7 +1147,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RESOURCE_DESC_IO_PORT
+id|ACPI_RDESC_TYPE_IO_PORT
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * IO Port Resource&n;&t;&t;&t; */
 id|bytes_consumed
@@ -1158,7 +1156,7 @@ l_int|8
 suffix:semicolon
 id|structure_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_io
 )paren
@@ -1166,7 +1164,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RESOURCE_DESC_FIXED_IO_PORT
+id|ACPI_RDESC_TYPE_FIXED_IO_PORT
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Fixed IO Port Resource&n;&t;&t;&t; */
 id|bytes_consumed
@@ -1175,7 +1173,7 @@ l_int|4
 suffix:semicolon
 id|structure_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_fixed_io
 )paren
@@ -1183,7 +1181,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RESOURCE_DESC_SMALL_VENDOR
+id|ACPI_RDESC_TYPE_SMALL_VENDOR
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Vendor Specific Resource&n;&t;&t;&t; */
 id|buffer
@@ -1218,14 +1216,14 @@ op_assign
 (paren
 id|u8
 )paren
-id|ROUND_UP_TO_32_bITS
+id|ACPI_ROUND_UP_TO_32_bITS
 (paren
 id|temp8
 )paren
 suffix:semicolon
 id|structure_size
 op_assign
-id|SIZEOF_RESOURCE
+id|ACPI_SIZEOF_RESOURCE
 (paren
 id|acpi_resource_vendor
 )paren
@@ -1242,7 +1240,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RESOURCE_DESC_END_TAG
+id|ACPI_RDESC_TYPE_END_TAG
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * End Tag&n;&t;&t;&t; */
 id|bytes_consumed
@@ -1267,13 +1265,15 @@ id|return_ACPI_STATUS
 id|AE_AML_INVALID_RESOURCE_TYPE
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Update the return value and counter&n;&t;&t; */
 id|buffer_size
 op_add_assign
+id|ACPI_ALIGN_RESOURCE_SIZE
+c_func
+(paren
 id|structure_size
+)paren
 suffix:semicolon
 id|bytes_parsed
 op_add_assign
@@ -1306,7 +1306,7 @@ id|acpi_operand_object
 op_star
 id|package_object
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|buffer_size_needed
 )paren
@@ -1342,7 +1342,7 @@ suffix:semicolon
 id|u32
 id|table_index
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Rs_calculate_pci_routing_table_length&quot;
 )paren
@@ -1462,7 +1462,7 @@ op_add_assign
 (paren
 r_sizeof
 (paren
-id|pci_routing_table
+id|acpi_pci_routing_table
 )paren
 op_minus
 l_int|4
@@ -1531,7 +1531,7 @@ suffix:semicolon
 multiline_comment|/* Round up the size since each element must be aligned */
 id|temp_size_needed
 op_assign
-id|ROUND_UP_TO_64_bITS
+id|ACPI_ROUND_UP_TO_64_bITS
 (paren
 id|temp_size_needed
 )paren
@@ -1549,7 +1549,7 @@ id|temp_size_needed
 op_plus
 r_sizeof
 (paren
-id|pci_routing_table
+id|acpi_pci_routing_table
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS

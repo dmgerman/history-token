@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of acpi_operand_object  (Internal object only)&n; *       $Revision: 93 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of acpi_operand_object  (Internal object only)&n; *       $Revision: 106 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACOBJECT_H
 DECL|macro|_ACOBJECT_H
 mdefine_line|#define _ACOBJECT_H
@@ -7,24 +7,23 @@ multiline_comment|/*&n; * The acpi_operand_object  is used to pass AML operands 
 multiline_comment|/******************************************************************************&n; *&n; * Common Descriptors&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; * Common area for all objects.&n; *&n; * Data_type is used to differentiate between internal descriptors, and MUST&n; * be the first byte in this structure.&n; */
 DECL|macro|ACPI_OBJECT_COMMON_HEADER
-mdefine_line|#define ACPI_OBJECT_COMMON_HEADER           /* SIZE/ALIGNMENT: 32-bits plus trailing 8-bit flag */&bslash;&n;&t;u8                          data_type;          /* To differentiate various internal objs */&bslash;&n;&t;u8                          type;               /* acpi_object_type */&bslash;&n;&t;u16                         reference_count;    /* For object deletion management */&bslash;&n;&t;u8                          flags; &bslash;&n;
+mdefine_line|#define ACPI_OBJECT_COMMON_HEADER           /* SIZE/ALIGNMENT: 32 bits, one ptr plus trailing 8-bit flag */&bslash;&n;&t;u8                          descriptor;         /* To differentiate various internal objs */&bslash;&n;&t;u8                          type;               /* acpi_object_type */&bslash;&n;&t;u16                         reference_count;    /* For object deletion management */&bslash;&n;&t;union acpi_operand_obj      *next_object;       /* Objects linked to parent NS node */&bslash;&n;&t;u8                          flags; &bslash;&n;
 multiline_comment|/* Defines for flag byte above */
-DECL|macro|AOPOBJ_STATIC_ALLOCATION
-mdefine_line|#define AOPOBJ_STATIC_ALLOCATION    0x1
+DECL|macro|AOPOBJ_RESERVED
+mdefine_line|#define AOPOBJ_RESERVED             0x01
 DECL|macro|AOPOBJ_STATIC_POINTER
-mdefine_line|#define AOPOBJ_STATIC_POINTER       0x2
+mdefine_line|#define AOPOBJ_STATIC_POINTER       0x02
 DECL|macro|AOPOBJ_DATA_VALID
-mdefine_line|#define AOPOBJ_DATA_VALID           0x4
-DECL|macro|AOPOBJ_ZERO_CONST
-mdefine_line|#define AOPOBJ_ZERO_CONST           0x4
-DECL|macro|AOPOBJ_INITIALIZED
-mdefine_line|#define AOPOBJ_INITIALIZED          0x8
-multiline_comment|/*&n; * Common bitfield for the field objects&n; * &quot;Field Datum&quot;    -- a datum from the actual field object&n; * &quot;Buffer Datum&quot;   -- a datum from a user buffer, read from or to be written to the field&n; */
+mdefine_line|#define AOPOBJ_DATA_VALID           0x04
+DECL|macro|AOPOBJ_OBJECT_INITIALIZED
+mdefine_line|#define AOPOBJ_OBJECT_INITIALIZED   0x08
+DECL|macro|AOPOBJ_SETUP_COMPLETE
+mdefine_line|#define AOPOBJ_SETUP_COMPLETE       0x10
+DECL|macro|AOPOBJ_SINGLE_DATUM
+mdefine_line|#define AOPOBJ_SINGLE_DATUM         0x20
+multiline_comment|/*&n; * Common bitfield for the field objects&n; * &quot;Field Datum&quot;  -- a datum from the actual field object&n; * &quot;Buffer Datum&quot; -- a datum from a user buffer, read from or to be written to the field&n; */
 DECL|macro|ACPI_COMMON_FIELD_INFO
-mdefine_line|#define ACPI_COMMON_FIELD_INFO              /* SIZE/ALIGNMENT: 24 bits + three 32-bit values */&bslash;&n;&t;u8                          access_flags;&bslash;&n;&t;u16                         bit_length;         /* Length of field in bits */&bslash;&n;&t;u32                         base_byte_offset;   /* Byte offset within containing object */&bslash;&n;&t;u8                          access_bit_width;   /* Read/Write size in bits (from ASL Access_type)*/&bslash;&n;&t;u8                          access_byte_width;  /* Read/Write size in bytes */&bslash;&n;&t;u8                          update_rule;        /* How neighboring field bits are handled */&bslash;&n;&t;u8                          lock_rule;          /* Global Lock: 1 = &quot;Must Lock&quot; */&bslash;&n;&t;u8                          start_field_bit_offset;/* Bit offset within first field datum (0-63) */&bslash;&n;&t;u8                          datum_valid_bits;   /* Valid bit in first &quot;Field datum&quot; */&bslash;&n;&t;u8                          end_field_valid_bits; /* Valid bits in the last &quot;field datum&quot; */&bslash;&n;&t;u8                          end_buffer_valid_bits; /* Valid bits in the last &quot;buffer datum&quot; */&bslash;&n;&t;u32                         value;              /* Value to store into the Bank or Index register */
-multiline_comment|/* Access flag bits */
-DECL|macro|AFIELD_SINGLE_DATUM
-mdefine_line|#define AFIELD_SINGLE_DATUM         0x1
+mdefine_line|#define ACPI_COMMON_FIELD_INFO              /* SIZE/ALIGNMENT: 24 bits + three 32-bit values */&bslash;&n;&t;u8                          field_flags;        /* Access, update, and lock bits */&bslash;&n;&t;u8                          attribute;          /* From Access_as keyword */&bslash;&n;&t;u8                          access_byte_width;  /* Read/Write size in bytes */&bslash;&n;&t;u32                         bit_length;         /* Length of field in bits */&bslash;&n;&t;u32                         base_byte_offset;   /* Byte offset within containing object */&bslash;&n;&t;u8                          start_field_bit_offset;/* Bit offset within first field datum (0-63) */&bslash;&n;&t;u8                          datum_valid_bits;   /* Valid bit in first &quot;Field datum&quot; */&bslash;&n;&t;u8                          end_field_valid_bits; /* Valid bits in the last &quot;field datum&quot; */&bslash;&n;&t;u8                          end_buffer_valid_bits; /* Valid bits in the last &quot;buffer datum&quot; */&bslash;&n;&t;u32                         value;              /* Value to store into the Bank or Index register */&bslash;&n;&t;acpi_namespace_node         *node;              /* Link back to parent node */
 multiline_comment|/*&n; * Fields common to both Strings and Buffers&n; */
 DECL|macro|ACPI_COMMON_BUFFER_INFO
 mdefine_line|#define ACPI_COMMON_BUFFER_INFO &bslash;&n;&t;u32                         length;
@@ -95,6 +94,12 @@ op_star
 id|pointer
 suffix:semicolon
 multiline_comment|/* Buffer value in AML stream or in allocated space */
+DECL|member|node
+id|acpi_namespace_node
+op_star
+id|node
+suffix:semicolon
+multiline_comment|/* Link back to parent node */
 DECL|typedef|ACPI_OBJECT_BUFFER
 )brace
 id|ACPI_OBJECT_BUFFER
@@ -233,15 +238,16 @@ DECL|member|acquisition_depth
 id|u16
 id|acquisition_depth
 suffix:semicolon
+DECL|member|owner_thread
+r_struct
+id|acpi_thread_state
+op_star
+id|owner_thread
+suffix:semicolon
 DECL|member|semaphore
 r_void
 op_star
 id|semaphore
-suffix:semicolon
-DECL|member|owner
-r_void
-op_star
-id|owner
 suffix:semicolon
 DECL|member|prev
 r_union
@@ -278,13 +284,6 @@ DECL|member|address
 id|ACPI_PHYSICAL_ADDRESS
 id|address
 suffix:semicolon
-DECL|member|extra
-r_union
-id|acpi_operand_obj
-op_star
-id|extra
-suffix:semicolon
-multiline_comment|/* Pointer to executable AML (in region definition) */
 DECL|member|addr_handler
 r_union
 id|acpi_operand_obj
@@ -460,11 +459,11 @@ op_star
 id|region_obj
 suffix:semicolon
 multiline_comment|/* Containing Op_region object */
-DECL|member|bank_register_obj
+DECL|member|bank_obj
 r_union
 id|acpi_operand_obj
 op_star
-id|bank_register_obj
+id|bank_obj
 suffix:semicolon
 multiline_comment|/* Bank_select Register object */
 DECL|typedef|ACPI_OBJECT_BANK_FIELD
@@ -503,19 +502,6 @@ multiline_comment|/* BUFFER FIELD */
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 id|ACPI_COMMON_FIELD_INFO
-DECL|member|extra
-r_union
-id|acpi_operand_obj
-op_star
-id|extra
-suffix:semicolon
-multiline_comment|/* Pointer to executable AML (in field definition) */
-DECL|member|node
-id|acpi_namespace_node
-op_star
-id|node
-suffix:semicolon
-multiline_comment|/* Parent (containing) object node */
 DECL|member|buffer_obj
 r_union
 id|acpi_operand_obj
@@ -553,8 +539,8 @@ DECL|typedef|ACPI_OBJECT_NOTIFY_HANDLER
 id|ACPI_OBJECT_NOTIFY_HANDLER
 suffix:semicolon
 multiline_comment|/* Flags for address handler */
-DECL|macro|ADDR_HANDLER_DEFAULT_INSTALLED
-mdefine_line|#define ADDR_HANDLER_DEFAULT_INSTALLED  0x1
+DECL|macro|ACPI_ADDR_HANDLER_DEFAULT_INSTALLED
+mdefine_line|#define ACPI_ADDR_HANDLER_DEFAULT_INSTALLED  0x1
 r_typedef
 r_struct
 multiline_comment|/* ADDRESS HANDLER */
@@ -685,6 +671,24 @@ DECL|typedef|ACPI_OBJECT_EXTRA
 )brace
 id|ACPI_OBJECT_EXTRA
 suffix:semicolon
+r_typedef
+r_struct
+multiline_comment|/* DATA */
+(brace
+id|ACPI_OBJECT_COMMON_HEADER
+DECL|member|handler
+id|ACPI_OBJECT_HANDLER
+id|handler
+suffix:semicolon
+DECL|member|pointer
+r_void
+op_star
+id|pointer
+suffix:semicolon
+DECL|typedef|ACPI_OBJECT_DATA
+)brace
+id|ACPI_OBJECT_DATA
+suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * acpi_operand_object  Descriptor - a giant union of all of the above&n; *&n; *****************************************************************************/
 DECL|union|acpi_operand_obj
 r_typedef
@@ -782,6 +786,10 @@ suffix:semicolon
 DECL|member|extra
 id|ACPI_OBJECT_EXTRA
 id|extra
+suffix:semicolon
+DECL|member|data
+id|ACPI_OBJECT_DATA
+id|data
 suffix:semicolon
 DECL|typedef|acpi_operand_object
 )brace

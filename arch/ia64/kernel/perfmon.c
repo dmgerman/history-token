@@ -20,7 +20,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/delay.h&gt; /* for ia64_get_itc() */
 macro_line|#ifdef CONFIG_PERFMON
-multiline_comment|/*&n; * For PMU which rely on the debug registers for some features, you must&n; * you must enable the following flag to activate the support for&n; * accessing the registers via the perfmonctl() interface.&n; */
+multiline_comment|/*&n; * For PMUs which rely on the debug registers for some features, you&n; * must enable the following flag to activate the support for&n; * accessing the registers via the perfmonctl() interface.&n; */
 macro_line|#ifdef CONFIG_ITANIUM
 DECL|macro|PFM_PMU_USES_DBR
 mdefine_line|#define PFM_PMU_USES_DBR&t;1
@@ -778,6 +778,16 @@ r_int
 r_int
 id|pfm_recorded_samples_count
 suffix:semicolon
+DECL|variable|reset_pmcs
+r_static
+r_int
+r_int
+id|reset_pmcs
+(braket
+id|IA64_NUM_PMC_REGS
+)braket
+suffix:semicolon
+multiline_comment|/* contains PAL reset values for PMCS */
 r_static
 r_void
 id|pfm_vm_close
@@ -826,6 +836,7 @@ id|task_struct
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 r_static
 r_void
 id|pfm_fetch_regs
@@ -844,6 +855,7 @@ op_star
 id|ctx
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 r_void
 id|pfm_lazy_save_regs
@@ -1193,6 +1205,7 @@ id|size
 OG
 l_int|0
 )paren
+(brace
 id|mem_map_unreserve
 c_func
 (paren
@@ -1229,6 +1242,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This function gets called from mm/mmap.c:exit_mmap() only when there is a sampling buffer&n; * attached to the context AND the current task has a mapping for it, i.e., it is the original&n; * creator of the context.&n; *&n; * This function is used to remember the fact that the vma describing the sampling buffer&n; * has now been removed. It can only be called when no other tasks share the same mm context.&n; *&n; */
 r_static
 r_void
+DECL|function|pfm_vm_close
 id|pfm_vm_close
 c_func
 (paren
@@ -1335,6 +1349,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This function is called from pfm_destroy_context() and also from pfm_inherit()&n; * to explicitely remove the sampling buffer mapping from the user level address space.&n; */
 r_static
 r_int
+DECL|function|pfm_remove_smpl_mapping
 id|pfm_remove_smpl_mapping
 c_func
 (paren
@@ -1470,6 +1485,7 @@ suffix:semicolon
 r_static
 id|pfm_context_t
 op_star
+DECL|function|pfm_context_alloc
 id|pfm_context_alloc
 c_func
 (paren
@@ -1518,6 +1534,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|pfm_context_free
 id|pfm_context_free
 c_func
 (paren
@@ -1540,6 +1557,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|pfm_remap_buffer
 id|pfm_remap_buffer
 c_func
 (paren
@@ -1642,6 +1660,7 @@ multiline_comment|/*&n; * counts the number of PMDS to save per entry.&n; * This
 r_static
 r_int
 r_int
+DECL|function|pfm_smpl_entry_size
 id|pfm_smpl_entry_size
 c_func
 (paren
@@ -1707,6 +1726,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Allocates the sampling buffer and remaps it into caller&squot;s address space&n; */
 r_static
 r_int
+DECL|function|pfm_smpl_buffer_alloc
 id|pfm_smpl_buffer_alloc
 c_func
 (paren
@@ -2270,6 +2290,7 @@ suffix:semicolon
 multiline_comment|/*&n; * XXX: do something better here&n; */
 r_static
 r_int
+DECL|function|pfm_bad_permissions
 id|pfm_bad_permissions
 c_func
 (paren
@@ -2314,6 +2335,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|pfx_is_sane
 id|pfx_is_sane
 c_func
 (paren
@@ -2530,6 +2552,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|pfm_create_context
 id|pfm_create_context
 c_func
 (paren
@@ -3247,6 +3270,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|pfm_reset_regs
 id|pfm_reset_regs
 c_func
 (paren
@@ -3513,6 +3537,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|pfm_write_pmcs
 id|pfm_write_pmcs
 c_func
 (paren
@@ -3982,6 +4007,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|pfm_write_pmds
 id|pfm_write_pmds
 c_func
 (paren
@@ -4349,6 +4375,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|pfm_read_pmds
 id|pfm_read_pmds
 c_func
 (paren
@@ -4735,6 +4762,7 @@ suffix:semicolon
 macro_line|#ifdef PFM_PMU_USES_DBR
 multiline_comment|/*&n; * Only call this function when a process it trying to&n; * write the debug registers (reading is always allowed)&n; */
 r_int
+DECL|function|pfm_use_debug_registers
 id|pfm_use_debug_registers
 c_func
 (paren
@@ -4840,6 +4868,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function is called for every task that exits with the&n; * IA64_THREAD_DBG_VALID set. This indicates a task which was&n; * able to use the debug registers for debugging purposes via&n; * ptrace(). Therefore we know it was not using them for&n; * perfmormance monitoring, so we only decrement the number&n; * of &quot;ptraced&quot; debug register users to keep the count up to date&n; */
 r_int
+DECL|function|pfm_release_debug_registers
 id|pfm_release_debug_registers
 c_func
 (paren
@@ -4901,6 +4930,7 @@ suffix:semicolon
 macro_line|#else /* PFM_PMU_USES_DBR is true */
 multiline_comment|/*&n; * in case, the PMU does not use the debug registers, these two functions are nops.&n; * The first function is called from arch/ia64/kernel/ptrace.c.&n; * The second function is called from arch/ia64/kernel/process.c.&n; */
 r_int
+DECL|function|pfm_use_debug_registers
 id|pfm_use_debug_registers
 c_func
 (paren
@@ -4915,6 +4945,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_int
+DECL|function|pfm_release_debug_registers
 id|pfm_release_debug_registers
 c_func
 (paren
@@ -4931,6 +4962,7 @@ suffix:semicolon
 macro_line|#endif /* PFM_PMU_USES_DBR */
 r_static
 r_int
+DECL|function|pfm_restart
 id|pfm_restart
 c_func
 (paren
@@ -4978,6 +5010,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -4999,6 +5032,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5161,9 +5195,253 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_SMP
+multiline_comment|/*&n; * On UP kernels, we do not need to constantly set the psr.pp bit&n; * when a task is scheduled. The psr.pp bit can only be changed in&n; * the kernel because of a user request. Given we are on a UP non preeemptive &n; * kernel we know that no other task is running, so we cna simply update their&n; * psr.pp from their saved state. There is this no impact on the context switch&n; * code compared to the SMP case.&n; */
+r_static
+r_void
+DECL|function|pfm_tasklist_toggle_pp
+id|pfm_tasklist_toggle_pp
+c_func
+(paren
+r_int
+r_int
+id|val
+)paren
+(brace
+r_struct
+id|task_struct
+op_star
+id|p
+suffix:semicolon
+r_struct
+id|pt_regs
+op_star
+id|regs
+suffix:semicolon
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot;invoked by [%d] pp=%u&bslash;n&quot;
+comma
+id|current-&gt;pid
+comma
+id|val
+)paren
+)paren
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+id|for_each_task
+c_func
+(paren
+id|p
+)paren
+(brace
+id|regs
+op_assign
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|p
+op_plus
+id|IA64_STK_OFFSET
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * position on pt_regs saved on stack on 1st entry into the kernel&n;&t;&t; */
+id|regs
+op_decrement
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * update psr.pp&n;&t;&t; */
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|pp
+op_assign
+id|val
+suffix:semicolon
+)brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_static
 r_int
-id|pfm_destroy_context
+DECL|function|pfm_stop
+id|pfm_stop
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
+id|pfm_context_t
+op_star
+id|ctx
+comma
+r_void
+op_star
+id|arg
+comma
+r_int
+id|count
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+multiline_comment|/* we don&squot;t quite support this right now */
+r_if
+c_cond
+(paren
+id|task
+op_ne
+id|current
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+multiline_comment|/* &n;&t; * Cannot do anything before PMU is enabled &n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|CTX_IS_ENABLED
+c_func
+(paren
+id|ctx
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot;[%d] fl_system=%d owner=%p current=%p&bslash;n&quot;
+comma
+id|current-&gt;pid
+comma
+id|ctx-&gt;ctx_fl_system
+comma
+id|PMU_OWNER
+c_func
+(paren
+)paren
+comma
+id|current
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* simply stop monitoring but not the PMU */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_fl_system
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;rsm psr.pp;;&quot;
+op_scope_resolution
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* disable dcr pp */
+id|ia64_set_dcr
+c_func
+(paren
+id|ia64_get_dcr
+c_func
+(paren
+)paren
+op_amp
+op_complement
+id|IA64_DCR_PP
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+id|local_cpu_data-&gt;pfm_dcr_pp
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#else
+id|pfm_tasklist_toggle_pp
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|pp
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;rum psr.up;;&quot;
+op_scope_resolution
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|up
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|pfm_disable
+id|pfm_disable
 c_func
 (paren
 r_struct
@@ -5203,6 +5481,27 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|CTX_IS_ENABLED
+c_func
+(paren
+id|ctx
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+multiline_comment|/*&n;&t; * stop monitoring, freeze PMU, and save state in context&n;&t; * this call will clear IA64_THREAD_PM_VALID for per-task sessions.&n;&t; */
+id|pfm_flush_regs
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|ctx-&gt;ctx_fl_system
 )paren
 (brace
@@ -5215,15 +5514,6 @@ op_member_access_from_pointer
 id|pp
 op_assign
 l_int|0
-suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;rsm psr.pp;;&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -5238,41 +5528,135 @@ id|up
 op_assign
 l_int|0
 suffix:semicolon
-id|__asm__
-id|__volatile__
+)brace
+multiline_comment|/* &n;&t; * goes back to default behavior &n;&t; * no need to change live psr.sp because useless at the kernel level&n;&t; */
+id|ia64_psr
+c_func
 (paren
-l_string|&quot;rum psr.up;;&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
+id|regs
+)paren
+op_member_access_from_pointer
+id|sp
+op_assign
+l_int|1
+suffix:semicolon
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot;enabling psr.sp for [%d]&bslash;n&quot;
+comma
+id|current-&gt;pid
+)paren
 )paren
 suffix:semicolon
-id|task-&gt;thread.flags
-op_and_assign
-op_complement
-id|IA64_THREAD_PM_VALID
+id|ctx-&gt;ctx_flags.state
+op_assign
+id|PFM_CTX_DISABLED
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
-id|SET_PMU_OWNER
+r_static
+r_int
+DECL|function|pfm_destroy_context
+id|pfm_destroy_context
 c_func
 (paren
-l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/* freeze PMU */
-id|ia64_set_pmc
-c_func
-(paren
-l_int|0
+r_struct
+id|task_struct
+op_star
+id|task
 comma
-l_int|1
+id|pfm_context_t
+op_star
+id|ctx
+comma
+r_void
+op_star
+id|arg
+comma
+r_int
+id|count
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
+(brace
+multiline_comment|/* we don&squot;t quite support this right now */
+r_if
+c_cond
+(paren
+id|task
+op_ne
+id|current
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
-id|ia64_srlz_d
+multiline_comment|/*&n;&t; * if context was never enabled, then there is not much&n;&t; * to do&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|CTX_IS_ENABLED
 c_func
 (paren
+id|ctx
+)paren
+)paren
+r_goto
+id|skipped_stop
+suffix:semicolon
+multiline_comment|/*&n;&t; * Disable context: stop monitoring, flush regs to software state (useless here), &n;&t; * and freeze PMU&n;&t; * &n;&t; * The IA64_THREAD_PM_VALID is cleared by pfm_flush_regs() called from pfm_disable()&n;&t; */
+id|pfm_disable
+c_func
+(paren
+id|task
+comma
+id|ctx
+comma
+id|arg
+comma
+id|count
+comma
+id|regs
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_fl_system
+)paren
+(brace
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|pp
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|up
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* restore security level */
 id|ia64_psr
 c_func
@@ -5284,6 +5668,8 @@ id|sp
 op_assign
 l_int|1
 suffix:semicolon
+id|skipped_stop
+suffix:colon
 multiline_comment|/*&n;&t; * remove sampling buffer mapping, if any&n;&t; */
 r_if
 c_cond
@@ -5310,6 +5696,7 @@ suffix:semicolon
 multiline_comment|/*&n; * does nothing at the moment&n; */
 r_static
 r_int
+DECL|function|pfm_unprotect_context
 id|pfm_unprotect_context
 c_func
 (paren
@@ -5341,6 +5728,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|pfm_protect_context
 id|pfm_protect_context
 c_func
 (paren
@@ -5398,6 +5786,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|pfm_debug
 id|pfm_debug
 c_func
 (paren
@@ -5467,87 +5856,103 @@ macro_line|#ifdef PFM_PMU_USES_DBR
 r_typedef
 r_struct
 (brace
+DECL|member|ibr_mask
 r_int
 r_int
 id|ibr_mask
 suffix:colon
 l_int|56
 suffix:semicolon
+DECL|member|ibr_plm
 r_int
 r_int
 id|ibr_plm
 suffix:colon
 l_int|4
 suffix:semicolon
+DECL|member|ibr_ig
 r_int
 r_int
 id|ibr_ig
 suffix:colon
 l_int|3
 suffix:semicolon
+DECL|member|ibr_x
 r_int
 r_int
 id|ibr_x
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|typedef|ibr_mask_reg_t
 )brace
 id|ibr_mask_reg_t
 suffix:semicolon
 r_typedef
 r_struct
 (brace
+DECL|member|dbr_mask
 r_int
 r_int
 id|dbr_mask
 suffix:colon
 l_int|56
 suffix:semicolon
+DECL|member|dbr_plm
 r_int
 r_int
 id|dbr_plm
 suffix:colon
 l_int|4
 suffix:semicolon
+DECL|member|dbr_ig
 r_int
 r_int
 id|dbr_ig
 suffix:colon
 l_int|2
 suffix:semicolon
+DECL|member|dbr_w
 r_int
 r_int
 id|dbr_w
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|dbr_r
 r_int
 r_int
 id|dbr_r
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|typedef|dbr_mask_reg_t
 )brace
 id|dbr_mask_reg_t
 suffix:semicolon
 r_typedef
 r_union
 (brace
+DECL|member|val
 r_int
 r_int
 id|val
 suffix:semicolon
+DECL|member|ibr
 id|ibr_mask_reg_t
 id|ibr
 suffix:semicolon
+DECL|member|dbr
 id|dbr_mask_reg_t
 id|dbr
 suffix:semicolon
+DECL|typedef|dbreg_t
 )brace
 id|dbreg_t
 suffix:semicolon
 r_static
 r_int
+DECL|function|pfm_write_ibr_dbr
 id|pfm_write_ibr_dbr
 c_func
 (paren
@@ -6163,6 +6568,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|pfm_write_ibrs
 id|pfm_write_ibrs
 c_func
 (paren
@@ -6232,6 +6638,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|pfm_write_dbrs
 id|pfm_write_dbrs
 c_func
 (paren
@@ -6302,6 +6709,7 @@ suffix:semicolon
 macro_line|#endif /* PFM_PMU_USES_DBR */
 r_static
 r_int
+DECL|function|pfm_get_features
 id|pfm_get_features
 c_func
 (paren
@@ -6379,6 +6787,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|pfm_start
 id|pfm_start
 c_func
 (paren
@@ -6492,10 +6901,19 @@ op_or
 id|IA64_DCR_PP
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 id|local_cpu_data-&gt;pfm_dcr_pp
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#else
+id|pfm_tasklist_toggle_pp
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
 id|ia64_psr
 c_func
 (paren
@@ -6574,6 +6992,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|pfm_enable
 id|pfm_enable
 c_func
 (paren
@@ -6795,279 +7214,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
-r_int
-id|pfm_disable
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
-id|pfm_context_t
-op_star
-id|ctx
-comma
-r_void
-op_star
-id|arg
-comma
-r_int
-id|count
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-multiline_comment|/* we don&squot;t quite support this right now */
-r_if
-c_cond
-(paren
-id|task
-op_ne
-id|current
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|CTX_IS_ENABLED
-c_func
-(paren
-id|ctx
-)paren
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-multiline_comment|/*&n;&t; * stop monitoring, freeze PMU, and save state in context&n;&t; */
-id|pfm_flush_regs
-c_func
-(paren
-id|task
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * just to make sure nothing starts again when back in user mode.&n;&t; * pfm_flush_regs() freezes the PMU anyway.&n;&t; */
-r_if
-c_cond
-(paren
-id|ctx-&gt;ctx_fl_system
-)paren
-(brace
-id|ia64_psr
-c_func
-(paren
-id|regs
-)paren
-op_member_access_from_pointer
-id|pp
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_else
-(brace
-id|ia64_psr
-c_func
-(paren
-id|regs
-)paren
-op_member_access_from_pointer
-id|up
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* &n;&t; * goes back to default behavior &n;&t; * no need to change live psr.sp because useless at the kernel level&n;&t; */
-id|ia64_psr
-c_func
-(paren
-id|regs
-)paren
-op_member_access_from_pointer
-id|sp
-op_assign
-l_int|1
-suffix:semicolon
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot;enabling psr.sp for [%d]&bslash;n&quot;
-comma
-id|current-&gt;pid
-)paren
-)paren
-suffix:semicolon
-id|ctx-&gt;ctx_flags.state
-op_assign
-id|PFM_CTX_DISABLED
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_static
-r_int
-id|pfm_stop
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
-id|pfm_context_t
-op_star
-id|ctx
-comma
-r_void
-op_star
-id|arg
-comma
-r_int
-id|count
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-multiline_comment|/* we don&squot;t quite support this right now */
-r_if
-c_cond
-(paren
-id|task
-op_ne
-id|current
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-multiline_comment|/* &n;&t; * Cannot do anything before PMU is enabled &n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|CTX_IS_ENABLED
-c_func
-(paren
-id|ctx
-)paren
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot;[%d] fl_system=%d owner=%p current=%p&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|ctx-&gt;ctx_fl_system
-comma
-id|PMU_OWNER
-c_func
-(paren
-)paren
-comma
-id|current
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* simply stop monitoring but not the PMU */
-r_if
-c_cond
-(paren
-id|ctx-&gt;ctx_fl_system
-)paren
-(brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;rsm psr.pp;;&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* disable dcr pp */
-id|ia64_set_dcr
-c_func
-(paren
-id|ia64_get_dcr
-c_func
-(paren
-)paren
-op_amp
-op_complement
-id|IA64_DCR_PP
-)paren
-suffix:semicolon
-id|local_cpu_data-&gt;pfm_dcr_pp
-op_assign
-l_int|0
-suffix:semicolon
-id|ia64_psr
-c_func
-(paren
-id|regs
-)paren
-op_member_access_from_pointer
-id|pp
-op_assign
-l_int|0
-suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;rsm psr.pp;;&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|ia64_psr
-c_func
-(paren
-id|regs
-)paren
-op_member_access_from_pointer
-id|up
-op_assign
-l_int|0
-suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;rum psr.up;;&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * functions MUST be listed in the increasing order of their index (see permfon.h)&n; */
+DECL|variable|pfm_cmd_tab
 r_static
 id|pfm_cmd_desc_t
 id|pfm_cmd_tab
@@ -7076,9 +7224,11 @@ id|pfm_cmd_tab
 op_assign
 initialization_block
 suffix:semicolon
+DECL|macro|PFM_CMD_COUNT
 mdefine_line|#define PFM_CMD_COUNT&t;(sizeof(pfm_cmd_tab)/sizeof(pfm_cmd_desc_t))
 r_static
 r_int
+DECL|function|check_task_state
 id|check_task_state
 c_func
 (paren
@@ -7202,6 +7352,7 @@ suffix:semicolon
 )brace
 id|asmlinkage
 r_int
+DECL|function|sys_perfmonctl
 id|sys_perfmonctl
 (paren
 id|pid_t
@@ -7650,6 +7801,7 @@ id|ret
 suffix:semicolon
 )brace
 r_void
+DECL|function|pfm_ovfl_block_reset
 id|pfm_ovfl_block_reset
 (paren
 r_void
@@ -7813,6 +7965,7 @@ multiline_comment|/* state restored, can go back to work (user mode) */
 multiline_comment|/*&n; * This function will record an entry in the sampling if it is not full already.&n; * Return:&n; * &t;0 : buffer is not full (did not BECOME full: still space or was already full)&n; * &t;1 : buffer is full (recorded the last entry)&n; */
 r_static
 r_int
+DECL|function|pfm_record_sample
 id|pfm_record_sample
 c_func
 (paren
@@ -8154,6 +8307,7 @@ multiline_comment|/*&n; * main overflow processing routine.&n; * it can be calle
 r_static
 r_int
 r_int
+DECL|function|pfm_overflow_handler
 id|pfm_overflow_handler
 c_func
 (paren
@@ -8899,6 +9053,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|perfmon_interrupt
 id|perfmon_interrupt
 (paren
 r_int
@@ -9030,6 +9185,7 @@ suffix:semicolon
 multiline_comment|/* for debug only */
 r_static
 r_int
+DECL|function|perfmon_proc_info
 id|perfmon_proc_info
 c_func
 (paren
@@ -9039,6 +9195,7 @@ id|page
 )paren
 (brace
 macro_line|#ifdef CONFIG_SMP
+DECL|macro|cpu_is_online
 mdefine_line|#define cpu_is_online(i) (cpu_online_map &amp; (1UL &lt;&lt; i))
 macro_line|#else
 mdefine_line|#define cpu_is_online(i)        1
@@ -9160,7 +9317,7 @@ c_func
 comma
 id|pmc0
 comma
-id|pfm_debug
+id|pfm_debug_mode
 ques
 c_cond
 l_string|&quot;On&quot;
@@ -9168,6 +9325,7 @@ suffix:colon
 l_string|&quot;Off&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 id|p
 op_add_assign
 id|sprintf
@@ -9187,6 +9345,7 @@ comma
 id|local_cpu_data-&gt;pfm_dcr_pp
 )paren
 suffix:semicolon
+macro_line|#endif
 id|LOCK_PFS
 c_func
 (paren
@@ -9281,6 +9440,7 @@ suffix:semicolon
 multiline_comment|/* /proc interface, for debug only */
 r_static
 r_int
+DECL|function|perfmon_read_entry
 id|perfmon_read_entry
 c_func
 (paren
@@ -9368,7 +9528,9 @@ r_return
 id|len
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SMP
 r_void
+DECL|function|pfm_syst_wide_update_task
 id|pfm_syst_wide_update_task
 c_func
 (paren
@@ -9421,7 +9583,9 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 r_void
+DECL|function|pfm_save_regs
 id|pfm_save_regs
 (paren
 r_struct
@@ -9473,6 +9637,7 @@ singleline_comment|//ctx-&gt;ctx_last_cpu  = smp_processor_id();
 )brace
 r_static
 r_void
+DECL|function|pfm_lazy_save_regs
 id|pfm_lazy_save_regs
 (paren
 r_struct
@@ -9655,8 +9820,10 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 id|do_nothing
 suffix:colon
+macro_line|#endif
 multiline_comment|/*&n;&t; * declare we are done saving this context&n;&t; *&n;&t; * must be an atomic operation&n;&t; */
 id|atomic_set
 c_func
@@ -9672,6 +9839,7 @@ macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * Handles request coming from other CPUs&n; */
 r_static
 r_void
+DECL|function|pfm_handle_fetch_regs
 id|pfm_handle_fetch_regs
 c_func
 (paren
@@ -9926,6 +10094,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Function call to fetch PMU state from another CPU identified by &squot;cpu&squot;.&n; * If the context is being saved on the remote CPU, then we busy wait until&n; * the saving is done and then we return. In this case, non IPI is sent.&n; * Otherwise, we send an IPI to the remote CPU, potentially interrupting &n; * pfm_lazy_save_regs() over there.&n; *&n; * If the retval==1, then it means that we interrupted remote save and that we must&n; * wait until the saving is over before proceeding.&n; * Otherwise, we did the saving on the remote CPU, and it was done by the time we got there.&n; * in either case, we can proceed.&n; */
 r_static
 r_void
+DECL|function|pfm_fetch_regs
 id|pfm_fetch_regs
 c_func
 (paren
@@ -10120,6 +10289,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SMP */
 r_void
+DECL|function|pfm_load_regs
 id|pfm_load_regs
 (paren
 r_struct
@@ -10151,9 +10321,12 @@ id|psr
 suffix:semicolon
 r_int
 id|i
-comma
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_int
 id|cpu
 suffix:semicolon
+macro_line|#endif
 id|owner
 op_assign
 id|PMU_OWNER
@@ -10589,108 +10762,10 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * XXX: make this routine able to work with non current context&n; */
 r_static
 r_void
-id|pfm_model_specific_reset_pmu
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-macro_line|#ifdef CONFIG_ITANIUM
-multiline_comment|/* opcode matcher set to all 1s */
-id|ia64_set_pmc
-c_func
-(paren
-l_int|8
-comma
-op_complement
-l_int|0UL
-)paren
-suffix:semicolon
-id|ia64_set_pmc
-c_func
-(paren
-l_int|9
-comma
-op_complement
-l_int|0UL
-)paren
-suffix:semicolon
-multiline_comment|/* I-EAR config cleared, plm=0 */
-id|ia64_set_pmc
-c_func
-(paren
-l_int|10
-comma
-l_int|0UL
-)paren
-suffix:semicolon
-multiline_comment|/* D-EAR config cleared, PMC[11].pt must be 1 */
-id|ia64_set_pmc
-c_func
-(paren
-l_int|11
-comma
-l_int|1UL
-op_lshift
-l_int|28
-)paren
-suffix:semicolon
-multiline_comment|/* BTB config. plm=0 */
-id|ia64_set_pmc
-c_func
-(paren
-l_int|12
-comma
-l_int|0UL
-)paren
-suffix:semicolon
-multiline_comment|/* Instruction address range, PMC[13].ta must be 1 */
-id|ia64_set_pmc
-c_func
-(paren
-l_int|13
-comma
-l_int|1UL
-)paren
-suffix:semicolon
-multiline_comment|/* &n;&t; * Clear all PMDs &n;&t; *&n;&t; * XXX: may be good enough to rely on the impl_regs to generalize&n;&t; * this. &n;&t; */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|18
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|ia64_set_pmd
-c_func
-(paren
-id|i
-comma
-l_int|0UL
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-)brace
-multiline_comment|/*&n; * XXX: this routine is not very portable for PMCs&n; * XXX: make this routine able to work with non current context&n; */
-r_static
-r_void
+DECL|function|ia64_reset_pmu
 id|ia64_reset_pmu
 c_func
 (paren
@@ -10700,12 +10775,6 @@ op_star
 id|task
 )paren
 (brace
-id|pfm_context_t
-op_star
-id|ctx
-op_assign
-id|task-&gt;thread.pfm_context
-suffix:semicolon
 r_struct
 id|thread_struct
 op_star
@@ -10713,6 +10782,12 @@ id|t
 op_assign
 op_amp
 id|task-&gt;thread
+suffix:semicolon
+id|pfm_context_t
+op_star
+id|ctx
+op_assign
+id|t-&gt;pfm_context
 suffix:semicolon
 r_int
 r_int
@@ -10738,7 +10813,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* PMU is frozen, no pending overflow bits */
+multiline_comment|/* Let&squot;s make sure the PMU is frozen */
 id|ia64_set_pmc
 c_func
 (paren
@@ -10747,105 +10822,121 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Let&squot;s first do the architected initializations&n;&t; */
-multiline_comment|/* clear counters */
-id|ia64_set_pmd
-c_func
-(paren
-l_int|4
-comma
-l_int|0UL
-)paren
+multiline_comment|/*&n;&t; * install reset values for PMC. We skip PMC0 (done above)&n;&t; * XX: good up to 64 PMCS&n;&t; */
+id|mask
+op_assign
+id|pmu_conf.impl_regs
+(braket
+l_int|0
+)braket
+op_rshift
+l_int|1
 suffix:semicolon
-id|ia64_set_pmd
-c_func
+r_for
+c_loop
 (paren
-l_int|5
-comma
-l_int|0UL
-)paren
+id|i
+op_assign
+l_int|1
 suffix:semicolon
-id|ia64_set_pmd
-c_func
-(paren
-l_int|6
-comma
-l_int|0UL
-)paren
+id|mask
 suffix:semicolon
-id|ia64_set_pmd
-c_func
-(paren
-l_int|7
-comma
-l_int|0UL
-)paren
-suffix:semicolon
-multiline_comment|/* clear overflow status bits */
-id|ia64_set_pmc
-c_func
-(paren
+id|mask
+op_rshift_assign
 l_int|1
 comma
-l_int|0UL
+id|i
+op_increment
 )paren
-suffix:semicolon
+(brace
+r_if
+c_cond
+(paren
+id|mask
+op_amp
+l_int|0x1
+)paren
+(brace
 id|ia64_set_pmc
 c_func
 (paren
-l_int|2
+id|i
 comma
-l_int|0UL
+id|reset_pmcs
+(braket
+id|i
+)braket
 )paren
 suffix:semicolon
-id|ia64_set_pmc
+multiline_comment|/*&n;&t;&t;&t; * When restoring context, we must restore ALL pmcs, even the ones &n;&t;&t;&t; * that the task does not use to avoid leaks and possibly corruption&n;&t;&t;&t; * of the sesion because of configuration conflicts. So here, we &n;&t;&t;&t; * initializaed the table used in the context switch restore routine.&n;&t; &t;&t; */
+id|t-&gt;pmc
+(braket
+id|i
+)braket
+op_assign
+id|reset_pmcs
+(braket
+id|i
+)braket
+suffix:semicolon
+id|DBprintk
 c_func
 (paren
-l_int|3
+(paren
+l_string|&quot; pmc[%d]=0x%lx&bslash;n&quot;
 comma
-l_int|0UL
+id|i
+comma
+id|reset_pmcs
+(braket
+id|i
+)braket
+)paren
 )paren
 suffix:semicolon
-multiline_comment|/* clear counting monitor configuration */
-id|ia64_set_pmc
-c_func
-(paren
+)brace
+)brace
+multiline_comment|/*&n;&t; * clear reset values for PMD. &n;&t; * XX: good up to 64 PMDS. Suppose that zero is a valid value.&n;&t; */
+id|mask
+op_assign
+id|pmu_conf.impl_regs
+(braket
 l_int|4
+)braket
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|mask
+suffix:semicolon
+id|mask
+op_rshift_assign
+l_int|1
+comma
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mask
+op_amp
+l_int|0x1
+)paren
+id|ia64_set_pmd
+c_func
+(paren
+id|i
 comma
 l_int|0UL
 )paren
 suffix:semicolon
-id|ia64_set_pmc
-c_func
-(paren
-l_int|5
-comma
-l_int|0UL
-)paren
-suffix:semicolon
-id|ia64_set_pmc
-c_func
-(paren
-l_int|6
-comma
-l_int|0UL
-)paren
-suffix:semicolon
-id|ia64_set_pmc
-c_func
-(paren
-l_int|7
-comma
-l_int|0UL
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Now let&squot;s do the CPU model specific initializations&n;&t; */
-id|pfm_model_specific_reset_pmu
-c_func
-(paren
-id|task
-)paren
-suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * On context switched restore, we must restore ALL pmc even&n;&t; * when they are not actively used by the task. In UP, the incoming process &n;&t; * may otherwise pick up left over PMC state from the previous process.&n;&t; * As opposed to PMD, stale PMC can cause harm to the incoming&n;&t; * process because they may change what is being measured. &n;&t; * Therefore, we must systematically reinstall the entire&n;&t; * PMC state. In SMP, the same thing is possible on the &n;&t; * same CPU but also on between 2 CPUs.&n;&t; *&n;&t; * There is unfortunately no easy way to avoid this problem&n;&t; * on either UP or SMP. This definitively slows down the &n;&t; * pfm_load_regs(). &n;&t; */
 multiline_comment|/*&n;&t;  * We must include all the PMC in this mask to make sure we don&squot;t&n;&t;  * see any side effect of the stale state, such as opcode matching&n;&t;  * or range restrictions, for instance.&n;&t;  */
 id|ctx-&gt;ctx_reload_pmcs
@@ -10858,50 +10949,6 @@ id|pmu_conf.impl_regs
 l_int|0
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t; * make sure we pick up whatever values were installed&n;&t; * for the CPU model specific reset. We also include&n;&t; * the architected PMC (pmc4-pmc7)&n;&t; *&n;&t; * This step is required in order to restore the correct values in PMC when&n;&t; * the task is switched out and back in just after the PFM_ENABLE.&n;&t; */
-id|mask
-op_assign
-id|pmu_conf.impl_regs
-(braket
-l_int|0
-)braket
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|mask
-suffix:semicolon
-id|i
-op_increment
-comma
-id|mask
-op_rshift_assign
-l_int|1
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|mask
-op_amp
-l_int|0x1
-)paren
-id|t-&gt;pmc
-(braket
-id|i
-)braket
-op_assign
-id|ia64_get_pmc
-c_func
-(paren
-id|i
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * useful in case of re-enable after disable&n;&t; */
 id|ctx-&gt;ctx_used_pmds
 (braket
@@ -10932,6 +10979,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function is called when a thread exits (from exit_thread()).&n; * This is a simplified pfm_save_regs() that simply flushes the current&n; * register state into the save area taking into account any pending&n; * overflow. This time no notification is sent because the task is dying&n; * anyway. The inline processing of overflows avoids loosing some counts.&n; * The PMU is frozen on exit from this call and is to never be reenabled&n; * again for this task.&n; *&n; */
 r_void
+DECL|function|pfm_flush_regs
 id|pfm_flush_regs
 (paren
 r_struct
@@ -10988,6 +11036,15 @@ c_cond
 id|ctx-&gt;ctx_fl_system
 )paren
 (brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;rsm psr.pp;;&quot;
+op_scope_resolution
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* disable dcr pp */
 id|ia64_set_dcr
 c_func
@@ -11001,6 +11058,7 @@ op_complement
 id|IA64_DCR_PP
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 id|local_cpu_data-&gt;pfm_syst_wide
 op_assign
 l_int|0
@@ -11009,15 +11067,14 @@ id|local_cpu_data-&gt;pfm_dcr_pp
 op_assign
 l_int|0
 suffix:semicolon
-id|__asm__
-id|__volatile__
+macro_line|#else
+id|pfm_tasklist_toggle_pp
+c_func
 (paren
-l_string|&quot;rsm psr.pp;;&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
+l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
@@ -11297,6 +11354,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * task is the newly created task, pt_regs for new child&n; */
 r_int
+DECL|function|pfm_inherit
 id|pfm_inherit
 c_func
 (paren
@@ -11701,6 +11759,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; *&n; * We cannot touch any of the PMU registers at this point as we may&n; * not be running on the same CPU the task was last run on.  Therefore&n; * it is assumed that the PMU has been stopped appropriately in&n; * pfm_flush_regs() called from exit_thread(). &n; *&n; * The function is called in the context of the parent via a release_thread()&n; * and wait4(). The task is not in the tasklist anymore.&n; */
 r_void
+DECL|function|pfm_context_exit
 id|pfm_context_exit
 c_func
 (paren
@@ -12034,6 +12093,7 @@ multiline_comment|/* pfm_notifiers is cleaned in pfm_cleanup_notifiers() */
 )brace
 multiline_comment|/*&n; * function invoked from release_thread when pfm_smpl_buf_list is not NULL&n; */
 r_int
+DECL|function|pfm_cleanup_smpl_buf
 id|pfm_cleanup_smpl_buf
 c_func
 (paren
@@ -12128,6 +12188,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * function invoked from release_thread to make sure that the ctx_owner field does not&n; * point to an unexisting task.&n; */
 r_void
+DECL|function|pfm_cleanup_owners
 id|pfm_cleanup_owners
 c_func
 (paren
@@ -12240,6 +12301,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * function called from release_thread to make sure that the ctx_notify_task is not pointing&n; * to an unexisting task&n; */
 r_void
+DECL|function|pfm_cleanup_notifiers
 id|pfm_cleanup_notifiers
 c_func
 (paren
@@ -12350,6 +12412,7 @@ id|tasklist_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|perfmon_irqaction
 r_static
 r_struct
 id|irqaction
@@ -12369,9 +12432,68 @@ suffix:colon
 l_string|&quot;perfmon&quot;
 )brace
 suffix:semicolon
+r_static
+r_void
+DECL|function|pfm_pmu_snapshot
+id|pfm_pmu_snapshot
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|IA64_NUM_PMC_REGS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|i
+op_ge
+id|pmu_conf.num_pmcs
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|PMC_IS_IMPL
+c_func
+(paren
+id|i
+)paren
+)paren
+id|reset_pmcs
+(braket
+id|i
+)braket
+op_assign
+id|ia64_get_pmc
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n; * perfmon initialization routine, called from the initcall() table&n; */
 r_int
 id|__init
+DECL|function|perfmon_init
 id|perfmon_init
 (paren
 r_void
@@ -12492,11 +12614,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;perfmon: %u bits counters (max value 0x%016lx)&bslash;n&quot;
+l_string|&quot;perfmon: %u bits counters&bslash;n&quot;
 comma
 id|pm_info.pal_perf_mon_info_s.width
-comma
-id|pmu_conf.perf_ovfl_val
 )paren
 suffix:semicolon
 id|printk
@@ -12573,6 +12693,12 @@ suffix:semicolon
 id|pmu_conf.num_dbrs
 op_lshift_assign
 l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; * take a snapshot of all PMU registers. PAL is supposed&n;&t; * to configure them with stable/safe values, i.e., not&n;&t; * capturing anything.&n;&t; * We take a snapshot now, before we make any modifications. This&n;&t; * will become our master copy. Then we will reuse the snapshot&n;&t; * to reset the PMU in pfm_enable(). Using this technique, perfmon&n;&t; * does NOT have to know about the specific values to program for&n;&t; * the PMC/PMD. The safe values may be different from one CPU model to&n;&t; * the other.&n;&t; */
+id|pfm_pmu_snapshot
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* &n;&t; * list the pmc registers used to control monitors &n;&t; * XXX: unfortunately this information is not provided by PAL&n;&t; *&n;&t; * We start with the architected minimum and then refine for each CPU model&n;&t; */
 id|pmu_conf.monitor_pmcs
@@ -12692,6 +12818,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|perfmon_init
 id|__initcall
 c_func
 (paren
@@ -12699,6 +12826,7 @@ id|perfmon_init
 )paren
 suffix:semicolon
 r_void
+DECL|function|perfmon_init_percpu
 id|perfmon_init_percpu
 (paren
 r_void
@@ -12719,6 +12847,7 @@ suffix:semicolon
 macro_line|#else /* !CONFIG_PERFMON */
 id|asmlinkage
 r_int
+DECL|function|sys_perfmonctl
 id|sys_perfmonctl
 (paren
 r_int
