@@ -9,10 +9,11 @@ r_struct
 id|kmem_cache_s
 id|kmem_cache_t
 suffix:semicolon
+macro_line|#include&t;&lt;linux/config.h&gt;&t;/* kmalloc_sizes.h needs CONFIG_ options */
 macro_line|#include&t;&lt;linux/gfp.h&gt;
 macro_line|#include&t;&lt;linux/types.h&gt;
-macro_line|#include&t;&lt;asm/page.h&gt;
-macro_line|#include&t;&lt;asm/cache.h&gt;
+macro_line|#include&t;&lt;asm/page.h&gt;&t;&t;/* kmalloc_sizes.h needs PAGE_SIZE */
+macro_line|#include&t;&lt;asm/cache.h&gt;&t;&t;/* kmalloc_sizes.h needs L1_CACHE_BYTES */
 multiline_comment|/* flags for kmem_cache_alloc() */
 DECL|macro|SLAB_NOFS
 mdefine_line|#define&t;SLAB_NOFS&t;&t;GFP_NOFS
