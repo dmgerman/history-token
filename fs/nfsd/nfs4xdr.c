@@ -3932,7 +3932,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|argp-&gt;pagelen
+id|len
 op_ge
 id|PAGE_SIZE
 )paren
@@ -3963,8 +3963,8 @@ op_assign
 id|argp-&gt;pagelen
 suffix:semicolon
 id|argp-&gt;pagelen
-op_assign
-l_int|0
+op_sub_assign
+id|len
 suffix:semicolon
 )brace
 )brace
@@ -4004,7 +4004,15 @@ id|v
 dot
 id|iov_base
 op_plus
+(paren
+id|XDR_QUADLEN
+c_func
+(paren
 id|len
+)paren
+op_lshift
+l_int|2
+)paren
 )paren
 suffix:semicolon
 id|write-&gt;wr_vec
