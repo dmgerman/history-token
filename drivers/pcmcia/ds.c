@@ -228,7 +228,8 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-r_extern
+DECL|variable|proc_pccard
+r_static
 r_struct
 id|proc_dir_entry
 op_star
