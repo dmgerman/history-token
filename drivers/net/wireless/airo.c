@@ -5230,7 +5230,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|priv-&gt;xmit.task.routine
+id|priv-&gt;xmit.task.func
 op_assign
 (paren
 r_void
@@ -5576,7 +5576,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|priv-&gt;xmit11.task.routine
+id|priv-&gt;xmit11.task.func
 op_assign
 (paren
 r_void
@@ -6076,7 +6076,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|ai-&gt;promisc_task.routine
+id|ai-&gt;promisc_task.func
 op_assign
 (paren
 r_void
@@ -6184,7 +6184,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|ai-&gt;promisc_task.routine
+id|ai-&gt;promisc_task.func
 op_assign
 (paren
 r_void
@@ -7844,7 +7844,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|ai-&gt;event_task.routine
+id|ai-&gt;event_task.func
 op_assign
 (paren
 r_void
@@ -7958,7 +7958,7 @@ macro_line|#endif
 )brace
 r_else
 (brace
-id|ai-&gt;mic_task.routine
+id|ai-&gt;mic_task.func
 op_assign
 (paren
 r_void
