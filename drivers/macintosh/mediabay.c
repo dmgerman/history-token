@@ -255,6 +255,9 @@ macro_line|#endif
 multiline_comment|/* Note: All delays are not in milliseconds and converted to HZ relative&n; * values by the macro below&n; */
 DECL|macro|MS_TO_HZ
 mdefine_line|#define MS_TO_HZ(ms)&t;((ms * HZ + 999) / 1000)
+multiline_comment|/*&n; * Wait that number of ms between each step in normal polling mode&n; */
+DECL|macro|MB_POLL_DELAY
+mdefine_line|#define MB_POLL_DELAY&t;25
 multiline_comment|/*&n; * Consider the media-bay ID value stable if it is the same for&n; * this number of milliseconds&n; */
 DECL|macro|MB_STABLE_DELAY
 mdefine_line|#define MB_STABLE_DELAY&t;100
@@ -263,7 +266,7 @@ DECL|macro|MB_POWER_DELAY
 mdefine_line|#define MB_POWER_DELAY&t;200
 multiline_comment|/*&n; * Hold the media-bay reset signal true for this many ticks&n; * after a device is inserted before releasing it.&n; */
 DECL|macro|MB_RESET_DELAY
-mdefine_line|#define MB_RESET_DELAY&t;40
+mdefine_line|#define MB_RESET_DELAY&t;50
 multiline_comment|/*&n; * Wait this long after the reset signal is released and before doing&n; * further operations. After this delay, the IDE reset signal is released&n; * too for an IDE device&n; */
 DECL|macro|MB_SETUP_DELAY
 mdefine_line|#define MB_SETUP_DELAY&t;100
@@ -1424,8 +1427,19 @@ c_cond
 id|id
 op_ne
 id|bay-&gt;content_id
-op_logical_and
-op_increment
+)paren
+(brace
+id|bay-&gt;value_count
+op_add_assign
+id|MS_TO_HZ
+c_func
+(paren
+id|MB_POLL_DELAY
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|bay-&gt;value_count
 op_ge
 id|MS_TO_HZ
@@ -1435,7 +1449,7 @@ id|MB_STABLE_DELAY
 )paren
 )paren
 (brace
-multiline_comment|/* If the device type changes without going thru &quot;MB_NO&quot;, we force&n;&t;           a pass by &quot;MB_NO&quot; to make sure things are properly reset */
+multiline_comment|/* If the device type changes without going thru&n;&t;&t;&t;&t; * &quot;MB_NO&quot;, we force a pass by &quot;MB_NO&quot; to make sure&n;&t;&t;&t;&t; * things are properly reset&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1512,6 +1526,7 @@ comma
 id|bay-&gt;index
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 )brace
@@ -1966,18 +1981,30 @@ id|bay-&gt;timer
 op_ne
 l_int|0
 )paren
-op_logical_and
-(paren
-(paren
-op_decrement
+)paren
+(brace
 id|bay-&gt;timer
+op_sub_assign
+id|MS_TO_HZ
+c_func
+(paren
+id|MB_POLL_DELAY
 )paren
-op_ne
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bay-&gt;timer
+OG
 l_int|0
-)paren
 )paren
 r_return
 suffix:semicolon
+id|bay-&gt;timer
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -2372,13 +2399,18 @@ OG
 l_int|0
 )paren
 id|bay-&gt;timer
-op_decrement
+op_sub_assign
+id|MS_TO_HZ
+c_func
+(paren
+id|MB_POLL_DELAY
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|bay-&gt;timer
-op_eq
+op_le
 l_int|0
 )paren
 (brace
@@ -2413,6 +2445,10 @@ id|bay
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|bay-&gt;timer
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_break
@@ -2610,7 +2646,7 @@ c_func
 id|MS_TO_HZ
 c_func
 (paren
-l_int|10
+id|MB_POLL_DELAY
 )paren
 )paren
 suffix:semicolon
@@ -2672,33 +2708,34 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|request_OF_resource
+id|macio_resource_count
 c_func
 (paren
-id|ofnode
-comma
-l_int|0
-comma
-l_int|NULL
+id|mdev
 )paren
-)paren
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
-multiline_comment|/* Media bay registers are located at the beginning of the&n;         * mac-io chip, we get the parent address for now (hrm...)&n;         */
-r_if
-c_cond
-(paren
-id|ofnode-&gt;parent-&gt;n_addrs
-op_eq
-l_int|0
+OL
+l_int|1
 )paren
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|macio_request_resources
+c_func
+(paren
+id|mdev
+comma
+l_string|&quot;media-bay&quot;
+)paren
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+multiline_comment|/* Media bay registers are located at the beginning of the&n;         * mac-io chip, we get the parent address for now (hrm...)&n;         */
 id|regbase
 op_assign
 (paren
@@ -2727,12 +2764,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|release_OF_resource
+id|macio_release_resources
 c_func
 (paren
-id|ofnode
-comma
-l_int|0
+id|mdev
 )paren
 suffix:semicolon
 r_return
@@ -2870,7 +2905,7 @@ c_func
 id|MS_TO_HZ
 c_func
 (paren
-l_int|10
+id|MB_POLL_DELAY
 )paren
 )paren
 suffix:semicolon
@@ -2900,11 +2935,10 @@ id|mb_up
 suffix:semicolon
 )brace
 multiline_comment|/* Mark us ready by filling our mdev data */
-id|dev_set_drvdata
+id|macio_set_drvdata
 c_func
 (paren
-op_amp
-id|mdev-&gt;ofdev.dev
+id|mdev
 comma
 id|bay
 )paren
@@ -2952,11 +2986,10 @@ id|media_bay_info
 op_star
 id|bay
 op_assign
-id|dev_get_drvdata
+id|macio_get_drvdata
 c_func
 (paren
-op_amp
-id|mdev-&gt;ofdev.dev
+id|mdev
 )paren
 suffix:semicolon
 r_if
@@ -3009,7 +3042,7 @@ c_func
 id|MS_TO_HZ
 c_func
 (paren
-l_int|10
+id|MB_POLL_DELAY
 )paren
 )paren
 suffix:semicolon
@@ -3040,11 +3073,10 @@ id|media_bay_info
 op_star
 id|bay
 op_assign
-id|dev_get_drvdata
+id|macio_get_drvdata
 c_func
 (paren
-op_amp
-id|mdev-&gt;ofdev.dev
+id|mdev
 )paren
 suffix:semicolon
 r_if
@@ -3173,7 +3205,7 @@ c_func
 id|MS_TO_HZ
 c_func
 (paren
-l_int|10
+id|MB_POLL_DELAY
 )paren
 )paren
 suffix:semicolon
