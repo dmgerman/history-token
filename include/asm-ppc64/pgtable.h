@@ -1422,6 +1422,33 @@ mdefine_line|#define  ptep_set_access_flags(__vma, __address, __ptep, __entry, _
 multiline_comment|/*&n; * Macro to mark a page protection value as &quot;uncacheable&quot;.&n; */
 DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;(__pgprot(pgprot_val(prot) | _PAGE_NO_CACHE | _PAGE_GUARDED))
+r_struct
+id|file
+suffix:semicolon
+r_extern
+id|pgprot_t
+id|phys_mem_access_prot
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|size
+comma
+id|pgprot_t
+id|vma_prot
+)paren
+suffix:semicolon
+DECL|macro|__HAVE_PHYS_MEM_ACCESS_PROT
+mdefine_line|#define __HAVE_PHYS_MEM_ACCESS_PROT
 DECL|macro|__HAVE_ARCH_PTE_SAME
 mdefine_line|#define __HAVE_ARCH_PTE_SAME
 DECL|macro|pte_same

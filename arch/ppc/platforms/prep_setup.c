@@ -4115,6 +4115,10 @@ id|ppc_md.get_irq
 op_assign
 id|i8259_irq
 suffix:semicolon
+id|ppc_md.phys_mem_access_prot
+op_assign
+id|pci_phys_mem_access_prot
+suffix:semicolon
 id|ppc_md.restart
 op_assign
 id|prep_restart

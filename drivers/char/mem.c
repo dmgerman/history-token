@@ -133,18 +133,6 @@ op_amp
 id|EFI_MEMORY_WB
 )paren
 suffix:semicolon
-macro_line|#elif defined(CONFIG_PPC64)
-multiline_comment|/* On PPC64, we always do non-cacheable access to the IO hole and&n;&t; * cacheable elsewhere. Cache paradox can checkstop the CPU and&n;&t; * the high_memory heuristic below is wrong on machines with memory&n;&t; * above the IO hole... Ah, and of course, XFree86 doesn&squot;t pass&n;&t; * O_SYNC when mapping us to tap IO space. Surprised ?&n;&t; */
-r_return
-op_logical_neg
-id|page_is_ram
-c_func
-(paren
-id|addr
-op_rshift
-id|PAGE_SHIFT
-)paren
-suffix:semicolon
 macro_line|#else
 multiline_comment|/*&n;&t; * Accessing memory above the top the kernel knows about or through a file pointer&n;&t; * that was marked O_SYNC will be done non-cached.&n;&t; */
 r_if
@@ -722,7 +710,32 @@ op_star
 id|vma
 )paren
 (brace
-macro_line|#ifdef pgprot_noncached
+macro_line|#if defined(__HAVE_PHYS_MEM_ACCESS_PROT)
+r_int
+r_int
+id|offset
+op_assign
+id|vma-&gt;vm_pgoff
+op_lshift
+id|PAGE_SHIFT
+suffix:semicolon
+id|vma-&gt;vm_page_prot
+op_assign
+id|phys_mem_access_prot
+c_func
+(paren
+id|file
+comma
+id|offset
+comma
+id|vma-&gt;vm_end
+op_minus
+id|vma-&gt;vm_start
+comma
+id|vma-&gt;vm_page_prot
+)paren
+suffix:semicolon
+macro_line|#elif defined(pgprot_noncached)
 r_int
 r_int
 id|offset

@@ -4704,15 +4704,21 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#elif defined(__powerpc__)
-id|pgprot_val
+id|vma-&gt;vm_page_prot
+op_assign
+id|phys_mem_access_prot
 c_func
 (paren
+id|file
+comma
+id|off
+comma
+id|vma-&gt;vm_end
+op_minus
+id|vma-&gt;vm_start
+comma
 id|vma-&gt;vm_page_prot
 )paren
-op_or_assign
-id|_PAGE_NO_CACHE
-op_or
-id|_PAGE_GUARDED
 suffix:semicolon
 macro_line|#elif defined(__alpha__)
 multiline_comment|/* Caching is off in the I/O space quadrant by design.  */
