@@ -1323,6 +1323,17 @@ comma
 (brace
 l_string|&quot;SEAGATE&quot;
 comma
+l_string|&quot;ST34555N&quot;
+comma
+l_string|&quot;0930&quot;
+comma
+id|BLIST_NOTQ
+)brace
+comma
+multiline_comment|/* Chokes on tagged INQUIRY */
+(brace
+l_string|&quot;SEAGATE&quot;
+comma
 l_string|&quot;ST3390N&quot;
 comma
 l_string|&quot;9546&quot;
