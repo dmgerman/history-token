@@ -114,6 +114,7 @@ suffix:semicolon
 r_static
 r_inline
 r_int
+r_int
 DECL|function|cls_set_class
 id|cls_set_class
 c_func
@@ -136,12 +137,6 @@ id|cl
 r_int
 r_int
 id|old_cl
-suffix:semicolon
-id|qdisc_lock_tree
-c_func
-(paren
-id|tp-&gt;q-&gt;dev
-)paren
 suffix:semicolon
 id|tcf_tree_lock
 c_func
