@@ -7815,6 +7815,7 @@ op_assign
 (brace
 dot
 id|notifier_call
+op_assign
 id|prom_reconfig_notifier
 comma
 dot
