@@ -12,6 +12,9 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 DECL|macro|DECLARE_PER_CPU
 mdefine_line|#define DECLARE_PER_CPU(type, name) extern __typeof__(type) per_cpu__##name
+multiline_comment|/* Separate out the type, so (int[3], foo) works. */
+DECL|macro|DEFINE_PER_CPU
+mdefine_line|#define DEFINE_PER_CPU(type, name) &bslash;&n;    __attribute__((__section__(&quot;.data.percpu&quot;))) __typeof__(type) per_cpu__##name
 multiline_comment|/*&n; * Pretty much a literal copy of asm-generic/percpu.h, except that percpu_modcopy() is an&n; * external routine, to avoid include-hell.&n; */
 macro_line|#ifdef CONFIG_SMP
 r_extern
@@ -32,9 +35,6 @@ comma
 id|local_per_cpu_offset
 )paren
 suffix:semicolon
-multiline_comment|/* Separate out the type, so (int[3], foo) works. */
-DECL|macro|DEFINE_PER_CPU
-mdefine_line|#define DEFINE_PER_CPU(type, name) &bslash;&n;    __attribute__((__section__(&quot;.data.percpu&quot;))) __typeof__(type) per_cpu__##name
 DECL|macro|per_cpu
 mdefine_line|#define per_cpu(var, cpu)  (*RELOC_HIDE(&amp;per_cpu__##var, __per_cpu_offset[cpu]))
 DECL|macro|__get_cpu_var
@@ -59,8 +59,6 @@ id|size
 )paren
 suffix:semicolon
 macro_line|#else /* ! SMP */
-DECL|macro|DEFINE_PER_CPU
-mdefine_line|#define DEFINE_PER_CPU(type, name)&t;&t;__typeof__(type) per_cpu__##name
 DECL|macro|per_cpu
 mdefine_line|#define per_cpu(var, cpu)&t;&t;&t;((void)cpu, per_cpu__##var)
 DECL|macro|__get_cpu_var
