@@ -2002,6 +2002,59 @@ c_func
 id|tbh
 )paren
 suffix:semicolon
+multiline_comment|/*      &n;&t;&t; * We need an optimization barrier here, otherwise we start&n;&t;&t; * hitting the below fixup code when accessing a loopback&n;&t;&t; * mounted ntfs partition. This indicates either there is a&n;&t;&t; * race condition in the loop driver or, more likely, gcc&n;&t;&t; * overoptimises the code without the barrier and it doesn&squot;t &n;&t;&t; * do the Right Thing(TM).&n;&t;&t; */
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|buffer_uptodate
+c_func
+(paren
+id|tbh
+)paren
+)paren
+)paren
+(brace
+id|ntfs_warning
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;Buffer is unlocked but not &quot;
+l_string|&quot;uptodate! Unplugging the disk queue &quot;
+l_string|&quot;and rescheduling.&quot;
+)paren
+suffix:semicolon
+id|get_bh
+c_func
+(paren
+id|tbh
+)paren
+suffix:semicolon
+id|blk_run_queues
+c_func
+(paren
+)paren
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|put_bh
+c_func
+(paren
+id|tbh
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2019,6 +2072,15 @@ id|tbh
 r_goto
 id|read_err
 suffix:semicolon
+id|ntfs_warning
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;Buffer is now uptodate. Good.&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * Get the compression buffer. We must not sleep any more&n;&t; * until we are finished with it.&n;&t; */
 id|spin_lock

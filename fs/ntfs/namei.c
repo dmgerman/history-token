@@ -397,6 +397,10 @@ id|dentry
 op_star
 id|real_dent
 suffix:semicolon
+id|MFT_RECORD
+op_star
+id|m
+suffix:semicolon
 id|attr_search_context
 op_star
 id|ctx
@@ -477,10 +481,6 @@ r_else
 multiline_comment|/* if (name-&gt;type == FILE_NAME_DOS) */
 (brace
 multiline_comment|/* Case 3. */
-id|MFT_RECORD
-op_star
-id|m
-suffix:semicolon
 id|FILE_NAME_ATTR
 op_star
 id|fn
@@ -505,8 +505,6 @@ op_assign
 id|map_mft_record
 c_func
 (paren
-id|READ
-comma
 id|ni
 )paren
 suffix:semicolon
@@ -528,8 +526,16 @@ c_func
 id|m
 )paren
 suffix:semicolon
+id|m
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ctx
+op_assign
+l_int|NULL
+suffix:semicolon
 r_goto
-id|name_err_out
+id|err_out
 suffix:semicolon
 )brace
 id|ctx
@@ -555,7 +561,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|unm_err_out
+id|err_out
 suffix:semicolon
 )brace
 r_do
@@ -608,7 +614,7 @@ op_minus
 id|EIO
 suffix:semicolon
 r_goto
-id|put_unm_err_out
+id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Consistency checks. */
@@ -624,7 +630,7 @@ op_logical_or
 id|a-&gt;flags
 )paren
 r_goto
-id|eio_put_unm_err_out
+id|eio_err_out
 suffix:semicolon
 id|val_len
 op_assign
@@ -664,7 +670,7 @@ id|a-&gt;length
 )paren
 )paren
 r_goto
-id|eio_put_unm_err_out
+id|eio_err_out
 suffix:semicolon
 id|fn
 op_assign
@@ -715,7 +721,7 @@ OG
 id|val_len
 )paren
 r_goto
-id|eio_put_unm_err_out
+id|eio_err_out
 suffix:semicolon
 )brace
 r_while
@@ -771,12 +777,18 @@ suffix:semicolon
 id|unmap_mft_record
 c_func
 (paren
-id|READ
-comma
 id|ni
 )paren
 suffix:semicolon
 )brace
+id|m
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ctx
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* Check if a conversion error occured. */
 r_if
 c_cond
@@ -797,7 +809,7 @@ r_int
 id|nls_name.len
 suffix:semicolon
 r_goto
-id|name_err_out
+id|err_out
 suffix:semicolon
 )brace
 id|nls_name.hash
@@ -861,7 +873,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|name_err_out
+id|err_out
 suffix:semicolon
 )brace
 id|d_add
@@ -920,7 +932,7 @@ suffix:semicolon
 r_return
 id|real_dent
 suffix:semicolon
-id|eio_put_unm_err_out
+id|eio_err_out
 suffix:colon
 id|ntfs_error
 c_func
@@ -935,26 +947,30 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
-id|put_unm_err_out
+id|err_out
 suffix:colon
+r_if
+c_cond
+(paren
+id|ctx
+)paren
 id|put_attr_search_ctx
 c_func
 (paren
 id|ctx
 )paren
 suffix:semicolon
-id|unm_err_out
-suffix:colon
+r_if
+c_cond
+(paren
+id|m
+)paren
 id|unmap_mft_record
 c_func
 (paren
-id|READ
-comma
 id|ni
 )paren
 suffix:semicolon
-id|name_err_out
-suffix:colon
 id|iput
 c_func
 (paren

@@ -3940,8 +3940,6 @@ op_assign
 id|map_mft_record
 c_func
 (paren
-id|READ
-comma
 id|base_ni
 )paren
 suffix:semicolon
@@ -4114,8 +4112,6 @@ suffix:colon
 id|unmap_mft_record
 c_func
 (paren
-id|READ
-comma
 id|base_ni
 )paren
 suffix:semicolon
@@ -6604,8 +6600,6 @@ id|ctx-&gt;base_ntfs_ino
 id|unmap_mft_record
 c_func
 (paren
-id|READ
-comma
 id|ctx-&gt;ntfs_ino
 )paren
 suffix:semicolon
@@ -6694,8 +6688,6 @@ id|ctx-&gt;base_ntfs_ino
 id|unmap_mft_record
 c_func
 (paren
-id|READ
-comma
 id|ctx-&gt;ntfs_ino
 )paren
 suffix:semicolon
