@@ -227,5 +227,21 @@ id|phys_cpu_present_map
 )paren
 suffix:semicolon
 )brace
+DECL|function|cpu_mask_to_apicid
+r_static
+r_inline
+r_int
+r_int
+id|cpu_mask_to_apicid
+(paren
+r_int
+r_int
+id|cpumask
+)paren
+(brace
+r_return
+id|cpumask
+suffix:semicolon
+)brace
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof
