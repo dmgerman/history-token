@@ -362,6 +362,12 @@ mdefine_line|#define AC97_GPIO_LINE2_PULSE   0x4000  /* Opt./ Pulse Dial Line2 (
 DECL|macro|AC97_GPIO_LINE2_HL1R
 mdefine_line|#define AC97_GPIO_LINE2_HL1R    0x8000  /* Opt./ Handset to Line2 relay control (out) */
 multiline_comment|/* specific - SigmaTel */
+DECL|macro|AC97_SIGMATEL_OUTSEL
+mdefine_line|#define AC97_SIGMATEL_OUTSEL&t;0x64&t;/* Output Select, STAC9758 */
+DECL|macro|AC97_SIGMATEL_INSEL
+mdefine_line|#define AC97_SIGMATEL_INSEL&t;0x66&t;/* Input Select, STAC9758 */
+DECL|macro|AC97_SIGMATEL_IOMISC
+mdefine_line|#define AC97_SIGMATEL_IOMISC&t;0x68&t;/* STAC9758 */
 DECL|macro|AC97_SIGMATEL_ANALOG
 mdefine_line|#define AC97_SIGMATEL_ANALOG&t;0x6c&t;/* Analog Special */
 DECL|macro|AC97_SIGMATEL_DAC2INVERT
@@ -370,6 +376,8 @@ DECL|macro|AC97_SIGMATEL_BIAS1
 mdefine_line|#define AC97_SIGMATEL_BIAS1&t;0x70
 DECL|macro|AC97_SIGMATEL_BIAS2
 mdefine_line|#define AC97_SIGMATEL_BIAS2&t;0x72
+DECL|macro|AC97_SIGMATEL_VARIOUS
+mdefine_line|#define AC97_SIGMATEL_VARIOUS&t;0x72&t;/* STAC9758 */
 DECL|macro|AC97_SIGMATEL_MULTICHN
 mdefine_line|#define AC97_SIGMATEL_MULTICHN&t;0x74&t;/* Multi-Channel programming */
 DECL|macro|AC97_SIGMATEL_CIC1

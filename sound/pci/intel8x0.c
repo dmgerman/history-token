@@ -51,6 +51,8 @@ l_string|&quot;{Intel,82801BA-ICH2},&quot;
 l_string|&quot;{Intel,82801CA-ICH3},&quot;
 l_string|&quot;{Intel,82801DB-ICH4},&quot;
 l_string|&quot;{Intel,ICH5},&quot;
+l_string|&quot;{Intel,ICH6},&quot;
+l_string|&quot;{Intel,6300ESB},&quot;
 l_string|&quot;{Intel,MX440},&quot;
 l_string|&quot;{SiS,SI7012},&quot;
 l_string|&quot;{NVidia,nForce Audio},&quot;
@@ -417,6 +419,14 @@ macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH5
 DECL|macro|PCI_DEVICE_ID_INTEL_ICH5
 mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH5&t;0x24d5
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ESB_5
+DECL|macro|PCI_DEVICE_ID_INTEL_ESB_5
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ESB_5&t;0x25a6
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH6_3
+DECL|macro|PCI_DEVICE_ID_INTEL_ICH6_3
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH6_3&t;0x266e
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_SI_7012
 DECL|macro|PCI_DEVICE_ID_SI_7012
 mdefine_line|#define PCI_DEVICE_ID_SI_7012&t;&t;0x7012
@@ -556,6 +566,16 @@ mdefine_line|#define ICH_STARTBM&t;&t;&t;0x01&t;/* start busmaster operation */
 multiline_comment|/* global block */
 DECL|macro|ICH_REG_GLOB_CNT
 mdefine_line|#define ICH_REG_GLOB_CNT&t;&t;0x2c&t;/* dword - global control */
+DECL|macro|ICH_PCM_SPDIF_MASK
+mdefine_line|#define   ICH_PCM_SPDIF_MASK&t;0xc0000000&t;/* s/pdif pcm slot mask (ICH4) */
+DECL|macro|ICH_PCM_SPDIF_NONE
+mdefine_line|#define   ICH_PCM_SPDIF_NONE&t;0x00000000&t;/* reserved - undefined */
+DECL|macro|ICH_PCM_SPDIF_78
+mdefine_line|#define   ICH_PCM_SPDIF_78&t;0x40000000&t;/* s/pdif pcm on slots 7&amp;8 */
+DECL|macro|ICH_PCM_SPDIF_69
+mdefine_line|#define   ICH_PCM_SPDIF_69&t;0x80000000&t;/* s/pdif pcm on slots 6&amp;9 */
+DECL|macro|ICH_PCM_SPDIF_1011
+mdefine_line|#define   ICH_PCM_SPDIF_1011&t;0xc0000000&t;/* s/pdif pcm on slots 10&amp;11 */
 DECL|macro|ICH_PCM_20BIT
 mdefine_line|#define   ICH_PCM_20BIT&t;&t;0x00400000&t;/* 20-bit samples (ICH4) */
 DECL|macro|ICH_PCM_246_MASK
@@ -1499,6 +1519,40 @@ id|DEVICE_INTEL_ICH4
 )brace
 comma
 multiline_comment|/* ICH5 */
+(brace
+l_int|0x8086
+comma
+l_int|0x25a6
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_INTEL_ICH4
+)brace
+comma
+multiline_comment|/* ESB */
+(brace
+l_int|0x8086
+comma
+l_int|0x266e
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_INTEL_ICH4
+)brace
+comma
+multiline_comment|/* ICH6 */
 (brace
 l_int|0x8086
 comma
@@ -12956,6 +13010,18 @@ comma
 id|PCI_DEVICE_ID_INTEL_ICH5
 comma
 l_string|&quot;Intel ICH5&quot;
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_INTEL_ESB_5
+comma
+l_string|&quot;Intel 6300ESB&quot;
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_INTEL_ICH6_3
+comma
+l_string|&quot;Intel ICH6&quot;
 )brace
 comma
 (brace
