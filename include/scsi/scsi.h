@@ -318,6 +318,8 @@ DECL|macro|TYPE_COMM
 mdefine_line|#define TYPE_COMM           0x09    /* Communications device */
 DECL|macro|TYPE_ENCLOSURE
 mdefine_line|#define TYPE_ENCLOSURE      0x0d    /* Enclosure Services Device */
+DECL|macro|TYPE_RAID
+mdefine_line|#define TYPE_RAID           0x0c
 DECL|macro|TYPE_NO_LUN
 mdefine_line|#define TYPE_NO_LUN         0x7f
 multiline_comment|/*&n; * standard mode-select header prepended to all mode-select commands&n; */

@@ -81,7 +81,7 @@ l_string|&quot;Unknown          &quot;
 comma
 l_string|&quot;Unknown          &quot;
 comma
-l_string|&quot;Unknown          &quot;
+l_string|&quot;RAID             &quot;
 comma
 l_string|&quot;Enclosure        &quot;
 comma
