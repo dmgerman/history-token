@@ -1624,11 +1624,14 @@ id|j
 comma
 id|k
 suffix:semicolon
+r_const
 r_struct
 id|ac97_pcm
 op_star
 id|pcm
-comma
+suffix:semicolon
+r_struct
+id|ac97_pcm
 op_star
 id|rpcms
 comma

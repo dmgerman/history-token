@@ -11189,8 +11189,6 @@ id|KERN_ERR
 l_string|&quot;AC&squot;97 %d access error (not audio or modem codec)&bslash;n&quot;
 comma
 id|ac97-&gt;num
-comma
-id|ac97-&gt;id
 )paren
 suffix:semicolon
 id|snd_ac97_free
