@@ -5,8 +5,7 @@ macro_line|#include &lt;linux/threads.h&gt;&t;/* For NR_CPUS */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/psr.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-multiline_comment|/* To enable this code, just define SPIN_LOCK_DEBUG in asm/spinlock.h */
-macro_line|#ifdef SPIN_LOCK_DEBUG
+macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Some notes on how these debugging routines work.  When a lock is acquired&n; * an extra debugging member lock-&gt;owner_pc is set to the caller of the lock&n; * acquisition routine.  Right before releasing a lock, the debugging program&n; * counter is cleared to zero.&n; *&n; * Furthermore, since PC&squot;s are 4 byte aligned on Sparc, we stuff the CPU&n; * number of the owner in the lowest two bits.&n; */
 DECL|macro|STORE_CALLER
 mdefine_line|#define STORE_CALLER(A) __asm__ __volatile__(&quot;mov %%i7, %0&quot; : &quot;=r&quot; (A));
@@ -881,5 +880,5 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* SPIN_LOCK_DEBUG */
+macro_line|#endif /* SMP */
 eof
