@@ -432,6 +432,12 @@ r_struct
 id|list_head
 id|socket_device_list
 suffix:semicolon
+multiline_comment|/* deprecated, a cleaned up version will be moved into this&n;&t;   struct soon */
+DECL|member|instance
+id|dev_link_t
+op_star
+id|instance
+suffix:semicolon
 DECL|member|dev
 r_struct
 id|device
