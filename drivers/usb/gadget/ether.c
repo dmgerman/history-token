@@ -8460,6 +8460,8 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+macro_line|#ifdef DEV_CONFIG_CDC
+multiline_comment|/* pxa25x only does CDC subset; often used with RNDIS */
 )brace
 r_else
 r_if
@@ -8473,6 +8475,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* FIXME remove endpoint from descriptor list */
+macro_line|#endif
 )brace
 )brace
 macro_line|#endif
