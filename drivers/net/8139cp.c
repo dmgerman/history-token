@@ -4517,6 +4517,13 @@ op_star
 id|cp
 )paren
 (brace
+r_struct
+id|net_device
+op_star
+id|dev
+op_assign
+id|cp-&gt;dev
+suffix:semicolon
 id|cpw16
 c_func
 (paren
@@ -4590,6 +4597,12 @@ id|cp-&gt;tx_tail
 op_assign
 l_int|0
 suffix:semicolon
+(paren
+r_void
+)paren
+id|dev
+suffix:semicolon
+multiline_comment|/* avoid compiler warning when synchronize_irq()&n;&t;&t;     * disappears during !CONFIG_SMP&n;&t;&t;     */
 )brace
 DECL|function|cp_reset_hw
 r_static
