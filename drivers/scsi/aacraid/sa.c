@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
@@ -979,8 +980,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* aac_sa_check_health */
-multiline_comment|/**&n; *&t;aac_sa_init&t;-&t;initialize an ARM based AAC card&n; *&t;@dev: device to configure&n; *&t;@devnum: adapter number&n; *&n; *&t;Allocate and set up resources for the ARM based AAC variants. The &n; *&t;device_interface in the commregion will be allocated and linked &n; *&t;to the comm region.&n; */
+multiline_comment|/**&n; *&t;aac_sa_init&t;-&t;initialize an ARM based AAC card&n; *&t;@dev: device to configure&n; *&n; *&t;Allocate and set up resources for the ARM based AAC variants. The &n; *&t;device_interface in the commregion will be allocated and linked &n; *&t;to the comm region.&n; */
 DECL|function|aac_sa_init
 r_int
 id|aac_sa_init
@@ -990,10 +990,6 @@ r_struct
 id|aac_dev
 op_star
 id|dev
-comma
-r_int
-r_int
-id|devnum
 )paren
 (brace
 r_int
@@ -1011,10 +1007,6 @@ r_const
 r_char
 op_star
 id|name
-suffix:semicolon
-id|dev-&gt;devnum
-op_assign
-id|devnum
 suffix:semicolon
 id|dprintk
 c_func

@@ -232,7 +232,8 @@ id|hw_fib
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * number of 4k pages of host physical memory. The aacraid fw needs&n;&t; * this number to be less than 4gb worth of pages. num_physpages is in&n;&t; * system page units. New firmware doesn&squot;t have any issues with the&n;&t; * mapping system, but older Firmware did, and had *troubles* dealing&n;&t; * with the math overloading past 32 bits, thus we must limit this&n;&t; * field.&n;&t; *&n;&t; * FIXME: this assumes the memory is mapped zero-&gt;n, which isnt&n;&t; * always true on real computers.&n;&t; */
+multiline_comment|/* &n;&t; * number of 4k pages of host physical memory. The aacraid fw needs&n;&t; * this number to be less than 4gb worth of pages. num_physpages is in&n;&t; * system page units. New firmware doesn&squot;t have any issues with the&n;&t; * mapping system, but older Firmware did, and had *troubles* dealing&n;&t; * with the math overloading past 32 bits, thus we must limit this&n;&t; * field.&n;&t; *&n;&t; * This assumes the memory is mapped zero-&gt;n, which isnt&n;&t; * always true on real computers. It also has some slight problems&n;&t; * with the GART on x86-64. I&squot;ve btw never tried DMA from PCI space&n;&t; * on this platform but don&squot;t be suprised if its problematic.&n;&t; */
+macro_line|#ifndef CONFIG_GART_IOMMU
 r_if
 c_cond
 (paren
@@ -265,6 +266,7 @@ l_int|12
 suffix:semicolon
 )brace
 r_else
+macro_line|#endif&t;
 (brace
 id|init-&gt;HostPhysMemPages
 op_assign
