@@ -239,7 +239,7 @@ l_int|0
 comma
 l_string|&quot;3&quot;
 (paren
-l_int|0xffffffff
+l_int|0xffffffffu
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
@@ -335,7 +335,7 @@ l_int|0
 comma
 l_string|&quot;3&quot;
 (paren
-l_int|0xffffffff
+l_int|0xffffffffu
 )paren
 comma
 l_string|&quot;g&quot;
@@ -710,7 +710,7 @@ l_int|0
 comma
 l_string|&quot;0&quot;
 (paren
-l_int|0xffffffff
+l_int|0xffffffffu
 )paren
 )paren
 suffix:semicolon

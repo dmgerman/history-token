@@ -233,6 +233,7 @@ id|swap_cache_info.exist_race
 suffix:semicolon
 )brace
 DECL|function|add_to_swap_cache
+r_static
 r_int
 id|add_to_swap_cache
 c_func
@@ -293,7 +294,7 @@ id|swapper_space
 comma
 id|entry.val
 comma
-id|GFP_ATOMIC
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Anon pages are already on the LRU, we don&squot;t run lru_cache_add here.&n;&t; */

@@ -167,8 +167,6 @@ DECL|macro|TIOCSSERIAL
 mdefine_line|#define TIOCSSERIAL&t;0x541F
 DECL|macro|TCSBRKP
 mdefine_line|#define TCSBRKP&t;&t;0x5425
-DECL|macro|TIOCTTYGSTRUCT
-mdefine_line|#define TIOCTTYGSTRUCT&t;0x5426
 DECL|macro|TIOCSERCONFIG
 mdefine_line|#define TIOCSERCONFIG&t;0x5453
 DECL|macro|TIOCSERGWILD

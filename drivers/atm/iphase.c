@@ -17560,7 +17560,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|ia_remove_one
+)paren
 comma
 )brace
 suffix:semicolon

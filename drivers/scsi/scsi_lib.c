@@ -2038,7 +2038,7 @@ suffix:semicolon
 id|print_sense
 c_func
 (paren
-l_string|&quot;sd&quot;
+l_string|&quot;&quot;
 comma
 id|cmd
 )paren
@@ -2112,7 +2112,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;SCSI %s error : host %d channel %d id %d lun %d return code = %x&bslash;n&quot;
+l_string|&quot;SCSI %s error : &lt;%d %d %d %d&gt; return code = 0x%x&bslash;n&quot;
 comma
 (paren
 id|sdt
@@ -2148,7 +2148,7 @@ id|DRIVER_SENSE
 id|print_sense
 c_func
 (paren
-l_string|&quot;sd&quot;
+l_string|&quot;&quot;
 comma
 id|cmd
 )paren
@@ -2749,15 +2749,6 @@ id|q
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * get next queueable request.  We do this early to make sure&n;&t;&t; * that the request is fully prepared even if we cannot &n;&t;&t; * accept it.  If there is no request, we&squot;ll detect this&n;&t;&t; * lower down.&n;&t;&t; */
-id|req
-op_assign
-id|elv_next_request
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2930,17 +2921,14 @@ id|sdev-&gt;starved
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If we couldn&squot;t find a request that could be queued, then we&n;&t;&t; * can also quit.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|blk_queue_empty
+multiline_comment|/*&n;&t;&t; * get next queueable request.  We do this early to make sure&n;&t;&t; * that the request is fully prepared even if we cannot &n;&t;&t; * accept it.  If there is no request, we&squot;ll detect this&n;&t;&t; * lower down.&n;&t;&t; */
+id|req
+op_assign
+id|elv_next_request
 c_func
 (paren
 id|q
 )paren
-)paren
-r_break
 suffix:semicolon
 r_if
 c_cond

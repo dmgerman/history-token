@@ -1232,7 +1232,7 @@ id|self-&gt;bulk_out_ep
 comma
 id|skb-&gt;data
 comma
-id|IRDA_USB_MAX_MTU
+id|IRDA_SKB_MAX_MTU
 comma
 id|write_bulk_callback
 comma
@@ -1309,6 +1309,7 @@ op_add_assign
 id|IU_USB_MIN_RTT
 suffix:semicolon
 macro_line|#endif /* IU_USB_MIN_RTT */
+multiline_comment|/* If the usec counter did wraparound, the diff will&n;&t;&t;&t; * go negative (tv_usec is a long), so we need to&n;&t;&t;&t; * correct it by one second. Jean II */
 r_if
 c_cond
 (paren
@@ -2113,87 +2114,30 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* Check that we have an urb */
-r_if
-c_cond
+multiline_comment|/* This should never happen */
+id|ASSERT
+c_func
 (paren
-op_logical_neg
+id|skb
+op_ne
+l_int|NULL
+comma
+r_return
+suffix:semicolon
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
 id|urb
-)paren
-(brace
-id|WARNING
-c_func
-(paren
-l_string|&quot;%s(), Bug : urb == NULL&bslash;n&quot;
+op_ne
+l_int|NULL
 comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
-multiline_comment|/* Allocate new skb if it has not been recycled */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|skb
-)paren
-(brace
-id|skb
-op_assign
-id|dev_alloc_skb
-c_func
-(paren
-id|IRDA_USB_MAX_MTU
-op_plus
-l_int|1
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|skb
-)paren
-(brace
-multiline_comment|/* If this ever happen, we are in deep s***.&n;&t;&t;&t; * Basically, the Rx path will stop... */
-id|WARNING
-c_func
-(paren
-l_string|&quot;%s(), Failed to allocate Rx skb&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-multiline_comment|/* Reset recycled skb */
-id|skb-&gt;data
-op_assign
-id|skb-&gt;tail
-op_assign
-id|skb-&gt;head
-suffix:semicolon
-id|skb-&gt;len
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* Make sure IP header get aligned (IrDA header is 5 bytes ) */
-id|skb_reserve
-c_func
-(paren
-id|skb
-comma
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* Save ourselves */
+multiline_comment|/* Save ourselves in the skb */
 id|cb
 op_assign
 (paren
@@ -2311,7 +2255,15 @@ suffix:semicolon
 r_struct
 id|sk_buff
 op_star
-r_new
+id|newskb
+suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|dataskb
+suffix:semicolon
+r_int
+id|docopy
 suffix:semicolon
 id|IRDA_DEBUG
 c_func
@@ -2494,11 +2446,89 @@ op_amp
 id|self-&gt;stamp
 )paren
 suffix:semicolon
-multiline_comment|/* Fix skb, and remove USB-IrDA header */
+multiline_comment|/* Check if we need to copy the data to a new skb or not.&n;&t; * For most frames, we use ZeroCopy and pass the already&n;&t; * allocated skb up the stack.&n;&t; * If the frame is small, it is more efficient to copy it&n;&t; * to save memory (copy will be fast anyway - that&squot;s&n;&t; * called Rx-copy-break). Jean II */
+id|docopy
+op_assign
+(paren
+id|urb-&gt;actual_length
+OL
+id|IRDA_RX_COPY_THRESHOLD
+)paren
+suffix:semicolon
+multiline_comment|/* Allocate a new skb */
+id|newskb
+op_assign
+id|dev_alloc_skb
+c_func
+(paren
+id|docopy
+ques
+c_cond
+id|urb-&gt;actual_length
+suffix:colon
+id|IRDA_SKB_MAX_MTU
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|newskb
+)paren
+(brace
+id|self-&gt;stats.rx_dropped
+op_increment
+suffix:semicolon
+multiline_comment|/* We could deliver the current skb, but this would stall&n;&t;&t; * the Rx path. Better drop the packet... Jean II */
+r_goto
+id|done
+suffix:semicolon
+)brace
+multiline_comment|/* Make sure IP header get aligned (IrDA header is 5 bytes) */
+multiline_comment|/* But IrDA-USB header is 1 byte. Jean II */
+singleline_comment|//skb_reserve(newskb, USB_IRDA_HEADER - 1);
+r_if
+c_cond
+(paren
+id|docopy
+)paren
+(brace
+multiline_comment|/* Copy packet, so we can recycle the original */
+id|memcpy
+c_func
+(paren
+id|newskb-&gt;data
+comma
+id|skb-&gt;data
+comma
+id|urb-&gt;actual_length
+)paren
+suffix:semicolon
+multiline_comment|/* Deliver this new skb */
+id|dataskb
+op_assign
+id|newskb
+suffix:semicolon
+multiline_comment|/* And hook the old skb to the URB&n;&t;&t; * Note : we don&squot;t need to &quot;clean up&quot; the old skb,&n;&t;&t; * as we never touched it. Jean II */
+)brace
+r_else
+(brace
+multiline_comment|/* We are using ZeroCopy. Deliver old skb */
+id|dataskb
+op_assign
+id|skb
+suffix:semicolon
+multiline_comment|/* And hook the new skb to the URB */
+id|skb
+op_assign
+id|newskb
+suffix:semicolon
+)brace
+multiline_comment|/* Set proper length on skb &amp; remove USB-IrDA header */
 id|skb_put
 c_func
 (paren
-id|skb
+id|dataskb
 comma
 id|urb-&gt;actual_length
 )paren
@@ -2506,111 +2536,21 @@ suffix:semicolon
 id|skb_pull
 c_func
 (paren
-id|skb
+id|dataskb
 comma
 id|USB_IRDA_HEADER
 )paren
 suffix:semicolon
-multiline_comment|/* Don&squot;t waste a lot of memory on small IrDA frames */
-r_if
-c_cond
-(paren
-id|skb-&gt;len
-OL
-id|RX_COPY_THRESHOLD
-)paren
-(brace
-r_new
-op_assign
-id|dev_alloc_skb
-c_func
-(paren
-id|skb-&gt;len
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-r_new
-)paren
-(brace
-id|self-&gt;stats.rx_dropped
-op_increment
-suffix:semicolon
-r_goto
-id|done
-suffix:semicolon
-)brace
-multiline_comment|/* Make sure IP header get aligned (IrDA header is 5 bytes) */
-id|skb_reserve
-c_func
-(paren
-r_new
-comma
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* Copy packet, so we can recycle the original */
-id|memcpy
-c_func
-(paren
-id|skb_put
-c_func
-(paren
-r_new
-comma
-id|skb-&gt;len
-)paren
-comma
-id|skb-&gt;data
-comma
-id|skb-&gt;len
-)paren
-suffix:semicolon
-multiline_comment|/* We will cleanup the skb in irda_usb_submit() */
-)brace
-r_else
-(brace
-multiline_comment|/* Deliver the original skb */
-r_new
-op_assign
-id|skb
-suffix:semicolon
-id|skb
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-id|self-&gt;stats.rx_bytes
-op_add_assign
-r_new
-op_member_access_from_pointer
-id|len
-suffix:semicolon
-id|self-&gt;stats.rx_packets
-op_increment
-suffix:semicolon
 multiline_comment|/* Ask the networking layer to queue the packet for the IrDA stack */
-r_new
-op_member_access_from_pointer
-id|dev
+id|dataskb-&gt;dev
 op_assign
 id|self-&gt;netdev
 suffix:semicolon
-r_new
-op_member_access_from_pointer
-id|mac.raw
+id|dataskb-&gt;mac.raw
 op_assign
-r_new
-op_member_access_from_pointer
-id|data
+id|dataskb-&gt;data
 suffix:semicolon
-r_new
-op_member_access_from_pointer
-id|protocol
+id|dataskb-&gt;protocol
 op_assign
 id|htons
 c_func
@@ -2621,8 +2561,16 @@ suffix:semicolon
 id|netif_rx
 c_func
 (paren
-r_new
+id|dataskb
 )paren
+suffix:semicolon
+multiline_comment|/* Keep stats up to date */
+id|self-&gt;stats.rx_bytes
+op_add_assign
+id|dataskb-&gt;len
+suffix:semicolon
+id|self-&gt;stats.rx_packets
+op_increment
 suffix:semicolon
 id|self-&gt;netdev-&gt;last_rx
 op_assign
@@ -2909,12 +2857,46 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
+r_struct
+id|sk_buff
+op_star
+id|skb
+op_assign
+id|dev_alloc_skb
+c_func
+(paren
+id|IRDA_SKB_MAX_MTU
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|skb
+)paren
+(brace
+multiline_comment|/* If this ever happen, we are in deep s***.&n;&t;&t;&t; * Basically, we can&squot;t start the Rx path... */
+id|WARNING
+c_func
+(paren
+l_string|&quot;%s(), Failed to allocate Rx skb&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+singleline_comment|//skb_reserve(newskb, USB_IRDA_HEADER - 1);
 id|irda_usb_submit
 c_func
 (paren
 id|self
 comma
-l_int|NULL
+id|skb
 comma
 id|self-&gt;rx_urb
 (braket
@@ -2922,6 +2904,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Ready to play !!! */
 r_return
 l_int|0
@@ -3613,16 +3596,6 @@ c_func
 id|self
 )paren
 suffix:semicolon
-multiline_comment|/* Initialise list of skb beeing curently transmitted */
-id|self-&gt;tx_list
-op_assign
-id|hashbin_new
-c_func
-(paren
-id|HB_NOLOCK
-)paren
-suffix:semicolon
-multiline_comment|/* unused */
 multiline_comment|/* Allocate the buffer for speed changes */
 multiline_comment|/* Don&squot;t change this buffer size and allocation without doing&n;&t; * some heavy and complete testing. Don&squot;t ask why :-(&n;&t; * Jean II */
 id|self-&gt;speed_buff
@@ -3857,19 +3830,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Delete all pending skbs */
-id|hashbin_delete
-c_func
-(paren
-id|self-&gt;tx_list
-comma
-(paren
-id|FREE_FUNC
-)paren
-op_amp
-id|dev_kfree_skb_any
-)paren
-suffix:semicolon
 multiline_comment|/* Remove the speed buffer */
 r_if
 c_cond
@@ -4877,26 +4837,13 @@ op_minus
 id|EPIPE
 suffix:colon
 multiline_comment|/* -EPIPE = -32 */
-id|usb_clear_halt
-c_func
-(paren
-id|dev
-comma
-id|usb_sndctrlpipe
-c_func
-(paren
-id|dev
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* Martin Diehl says if we get a -EPIPE we should&n;&t;&t;&t; * be fine and we don&squot;t need to do a usb_clear_halt().&n;&t;&t;&t; * - Jean II */
 id|IRDA_DEBUG
 c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s(), Clearing stall on control interface&bslash;n&quot;
+l_string|&quot;%s(), Received -EPIPE, ignoring...&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren

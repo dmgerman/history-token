@@ -447,17 +447,42 @@ op_star
 id|s_info
 suffix:semicolon
 multiline_comment|/* socket_info_t */
-DECL|member|use_bus_pm
-r_int
-r_int
-id|use_bus_pm
-suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
 r_struct
 id|device_class
 id|pcmcia_socket_class
+suffix:semicolon
+multiline_comment|/* socket drivers are expected to use these callbacks in their .drv struct */
+r_int
+id|pcmcia_socket_dev_suspend
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+id|u32
+id|state
+comma
+id|u32
+id|level
+)paren
+suffix:semicolon
+r_int
+id|pcmcia_socket_dev_resume
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+id|u32
+id|level
+)paren
 suffix:semicolon
 macro_line|#endif /* _LINUX_SS_H */
 eof

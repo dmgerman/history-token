@@ -54,8 +54,6 @@ DECL|macro|A
 mdefine_line|#define A(__x)&t;&t;((unsigned long)(__x))
 DECL|macro|AA
 mdefine_line|#define AA(__x)&t;&t;((unsigned long)(__x))
-DECL|macro|u32_to_ptr
-mdefine_line|#define u32_to_ptr(x)&t;((void *)(u64)(x))
 DECL|macro|ROUND_UP
 mdefine_line|#define ROUND_UP(x,a)&t;((__typeof__(x))(((unsigned long)(x) + ((a) - 1)) &amp; ~((a) - 1)))
 DECL|macro|NAME_OFFSET
@@ -11358,7 +11356,7 @@ comma
 r_int
 id|nr
 comma
-id|u32
+id|compat_uptr_t
 op_star
 id|iocbpp
 )paren
@@ -11466,7 +11464,7 @@ id|i
 op_increment
 )paren
 (brace
-id|u32
+id|compat_uptr_t
 id|p32
 suffix:semicolon
 r_struct
@@ -11504,7 +11502,7 @@ suffix:semicolon
 )brace
 id|user_iocb
 op_assign
-id|u32_to_ptr
+id|compat_ptr
 c_func
 (paren
 id|p32

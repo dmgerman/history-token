@@ -8965,6 +8965,11 @@ id|in_atomic
 c_func
 (paren
 )paren
+op_logical_or
+id|irqs_disabled
+c_func
+(paren
+)paren
 )paren
 (brace
 r_if

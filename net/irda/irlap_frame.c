@@ -1061,7 +1061,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|discovery-&gt;daddr
+id|discovery-&gt;data.daddr
 )paren
 suffix:semicolon
 r_switch
@@ -1143,7 +1143,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|discovery-&gt;hints.byte
+id|discovery-&gt;data.hints
 (braket
 l_int|0
 )braket
@@ -1166,7 +1166,7 @@ id|info
 l_int|0
 )braket
 op_assign
-id|discovery-&gt;hints.byte
+id|discovery-&gt;data.hints
 (braket
 l_int|0
 )braket
@@ -1176,7 +1176,7 @@ id|info
 l_int|1
 )braket
 op_assign
-id|discovery-&gt;hints.byte
+id|discovery-&gt;data.hints
 (braket
 l_int|1
 )braket
@@ -1199,7 +1199,7 @@ id|info
 l_int|0
 )braket
 op_assign
-id|discovery-&gt;hints.byte
+id|discovery-&gt;data.hints
 (braket
 l_int|0
 )braket
@@ -1220,7 +1220,7 @@ id|info
 l_int|0
 )braket
 op_assign
-id|discovery-&gt;charset
+id|discovery-&gt;data.charset
 suffix:semicolon
 id|len
 op_assign
@@ -1251,7 +1251,7 @@ c_func
 (paren
 id|info
 comma
-id|discovery-&gt;nickname
+id|discovery-&gt;data.info
 comma
 id|len
 )paren
@@ -1440,11 +1440,11 @@ id|discovery_t
 )paren
 )paren
 suffix:semicolon
-id|discovery-&gt;daddr
+id|discovery-&gt;data.daddr
 op_assign
 id|info-&gt;daddr
 suffix:semicolon
-id|discovery-&gt;saddr
+id|discovery-&gt;data.saddr
 op_assign
 id|self-&gt;saddr
 suffix:semicolon
@@ -1461,7 +1461,7 @@ l_string|&quot;%s(), daddr=%08x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|discovery-&gt;daddr
+id|discovery-&gt;data.daddr
 )paren
 suffix:semicolon
 id|discovery_info
@@ -1479,7 +1479,7 @@ id|xid_frame
 )paren
 suffix:semicolon
 multiline_comment|/* Get info returned from peer */
-id|discovery-&gt;hints.byte
+id|discovery-&gt;data.hints
 (braket
 l_int|0
 )braket
@@ -1508,7 +1508,7 @@ comma
 l_string|&quot;EXTENSION&bslash;n&quot;
 )paren
 suffix:semicolon
-id|discovery-&gt;hints.byte
+id|discovery-&gt;data.hints
 (braket
 l_int|1
 )braket
@@ -1518,7 +1518,7 @@ id|discovery_info
 l_int|1
 )braket
 suffix:semicolon
-id|discovery-&gt;charset
+id|discovery-&gt;data.charset
 op_assign
 id|discovery_info
 (braket
@@ -1540,14 +1540,14 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|discovery-&gt;hints.byte
+id|discovery-&gt;data.hints
 (braket
 l_int|1
 )braket
 op_assign
 l_int|0
 suffix:semicolon
-id|discovery-&gt;charset
+id|discovery-&gt;data.charset
 op_assign
 id|discovery_info
 (braket
@@ -1578,7 +1578,7 @@ suffix:semicolon
 id|strncpy
 c_func
 (paren
-id|discovery-&gt;nickname
+id|discovery-&gt;data.info
 comma
 id|text
 comma
@@ -1590,7 +1590,7 @@ op_assign
 id|strlen
 c_func
 (paren
-id|discovery-&gt;nickname
+id|discovery-&gt;data.info
 )paren
 suffix:semicolon
 id|info-&gt;discovery
@@ -1850,11 +1850,11 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|discovery-&gt;daddr
+id|discovery-&gt;data.daddr
 op_assign
 id|info-&gt;daddr
 suffix:semicolon
-id|discovery-&gt;saddr
+id|discovery-&gt;data.saddr
 op_assign
 id|self-&gt;saddr
 suffix:semicolon
@@ -1862,7 +1862,7 @@ id|discovery-&gt;timestamp
 op_assign
 id|jiffies
 suffix:semicolon
-id|discovery-&gt;hints.byte
+id|discovery-&gt;data.hints
 (braket
 l_int|0
 )braket
@@ -1883,7 +1883,7 @@ op_amp
 id|HINT_EXTENSION
 )paren
 (brace
-id|discovery-&gt;hints.byte
+id|discovery-&gt;data.hints
 (braket
 l_int|1
 )braket
@@ -1893,7 +1893,7 @@ id|discovery_info
 l_int|1
 )braket
 suffix:semicolon
-id|discovery-&gt;charset
+id|discovery-&gt;data.charset
 op_assign
 id|discovery_info
 (braket
@@ -1915,14 +1915,14 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|discovery-&gt;hints.byte
+id|discovery-&gt;data.hints
 (braket
 l_int|1
 )braket
 op_assign
 l_int|0
 suffix:semicolon
-id|discovery-&gt;charset
+id|discovery-&gt;data.charset
 op_assign
 id|discovery_info
 (braket
@@ -1953,7 +1953,7 @@ suffix:semicolon
 id|strncpy
 c_func
 (paren
-id|discovery-&gt;nickname
+id|discovery-&gt;data.info
 comma
 id|text
 comma
@@ -1965,7 +1965,7 @@ op_assign
 id|strlen
 c_func
 (paren
-id|discovery-&gt;nickname
+id|discovery-&gt;data.info
 )paren
 suffix:semicolon
 id|info-&gt;discovery

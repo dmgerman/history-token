@@ -41,6 +41,8 @@ r_enum
 (brace
 DECL|enumerator|S_PNP
 id|S_PNP
+op_assign
+l_int|0
 comma
 DECL|enumerator|S_PDA
 id|S_PDA
@@ -79,6 +81,7 @@ DECL|typedef|SERVICE
 )brace
 id|SERVICE
 suffix:semicolon
+multiline_comment|/* For selective discovery */
 DECL|typedef|DISCOVERY_CALLBACK1
 r_typedef
 r_void
@@ -87,7 +90,7 @@ op_star
 id|DISCOVERY_CALLBACK1
 )paren
 (paren
-id|discovery_t
+id|discinfo_t
 op_star
 comma
 id|DISCOVERY_MODE
@@ -96,6 +99,7 @@ r_void
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* For expiry (the same) */
 DECL|typedef|DISCOVERY_CALLBACK2
 r_typedef
 r_void
@@ -104,8 +108,10 @@ op_star
 id|DISCOVERY_CALLBACK2
 )paren
 (paren
-id|hashbin_t
+id|discinfo_t
 op_star
+comma
+id|DISCOVERY_MODE
 comma
 r_void
 op_star
@@ -120,7 +126,7 @@ id|queue
 suffix:semicolon
 multiline_comment|/* Must be first */
 DECL|member|hints
-id|__u16
+id|__u16_host_order
 id|hints
 suffix:semicolon
 multiline_comment|/* Hint bits */
@@ -137,7 +143,7 @@ id|queue
 suffix:semicolon
 multiline_comment|/* Must be first */
 DECL|member|hint_mask
-id|__u16
+id|__u16_host_order
 id|hint_mask
 suffix:semicolon
 DECL|member|disco_callback
@@ -146,7 +152,7 @@ id|disco_callback
 suffix:semicolon
 multiline_comment|/* Selective discovery */
 DECL|member|expir_callback
-id|DISCOVERY_CALLBACK1
+id|DISCOVERY_CALLBACK2
 id|expir_callback
 suffix:semicolon
 multiline_comment|/* Selective expiration */
@@ -493,7 +499,7 @@ comma
 id|DISCOVERY_CALLBACK1
 id|disco_clb
 comma
-id|DISCOVERY_CALLBACK1
+id|DISCOVERY_CALLBACK2
 id|expir_clb
 comma
 r_void
@@ -524,7 +530,7 @@ comma
 id|DISCOVERY_CALLBACK1
 id|disco_clb
 comma
-id|DISCOVERY_CALLBACK1
+id|DISCOVERY_CALLBACK2
 id|expir_clb
 comma
 r_void
@@ -690,8 +696,7 @@ r_int
 id|nslots
 )paren
 suffix:semicolon
-r_struct
-id|irda_device_info
+id|discinfo_t
 op_star
 id|irlmp_get_discoveries
 c_func
@@ -734,9 +739,12 @@ r_void
 id|irlmp_discovery_expiry
 c_func
 (paren
-id|discovery_t
+id|discinfo_t
 op_star
 id|expiry
+comma
+r_int
+id|number
 )paren
 suffix:semicolon
 r_int

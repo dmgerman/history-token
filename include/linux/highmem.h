@@ -51,6 +51,11 @@ op_star
 id|page
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|page_address
 c_func

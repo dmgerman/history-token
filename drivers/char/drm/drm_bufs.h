@@ -1801,7 +1801,7 @@ op_amp
 id|buf-&gt;dma_wait
 )paren
 suffix:semicolon
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_assign
 l_int|0
 suffix:semicolon
@@ -2935,7 +2935,7 @@ op_amp
 id|buf-&gt;dma_wait
 )paren
 suffix:semicolon
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_assign
 l_int|0
 suffix:semicolon
@@ -3735,7 +3735,7 @@ op_amp
 id|buf-&gt;dma_wait
 )paren
 suffix:semicolon
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_assign
 l_int|0
 suffix:semicolon
@@ -4956,19 +4956,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_ne
-id|current-&gt;pid
+id|filp
 )paren
 (brace
 id|DRM_ERROR
 c_func
 (paren
-l_string|&quot;Process %d freeing buffer owned by %d&bslash;n&quot;
+l_string|&quot;Process %d freeing buffer not owned&bslash;n&quot;
 comma
 id|current-&gt;pid
-comma
-id|buf-&gt;pid
 )paren
 suffix:semicolon
 r_return

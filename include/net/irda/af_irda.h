@@ -75,12 +75,12 @@ id|qos_info
 id|qos_tx
 suffix:semicolon
 DECL|member|mask
-id|__u16
+id|__u16_host_order
 id|mask
 suffix:semicolon
 multiline_comment|/* Hint bits mask */
 DECL|member|hints
-id|__u16
+id|__u16_host_order
 id|hints
 suffix:semicolon
 multiline_comment|/* Hint bits */
@@ -123,11 +123,9 @@ op_star
 id|cachelog
 suffix:semicolon
 multiline_comment|/* Result of discovery query */
-DECL|member|cachediscovery
-r_struct
-id|discovery_t
-op_star
-id|cachediscovery
+DECL|member|cachedaddr
+id|__u32
+id|cachedaddr
 suffix:semicolon
 multiline_comment|/* Result of selective discovery query */
 DECL|member|nslots

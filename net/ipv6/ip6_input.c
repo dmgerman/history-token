@@ -20,6 +20,7 @@ macro_line|#include &lt;net/rawv6.h&gt;
 macro_line|#include &lt;net/ndisc.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 DECL|function|ip6_rcv_finish
 r_static
 r_inline
@@ -524,6 +525,36 @@ l_int|NULL
 (brace
 r_int
 id|ret
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ipprot-&gt;no_policy
+op_logical_and
+op_logical_neg
+id|xfrm6_policy_check
+c_func
+(paren
+l_int|NULL
+comma
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|ret
 op_assign
 id|ipprot
 op_member_access_from_pointer
@@ -567,6 +598,20 @@ op_logical_neg
 id|raw_sk
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|xfrm6_policy_check
+c_func
+(paren
+l_int|NULL
+comma
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+(brace
 id|IP6_INC_STATS_BH
 c_func
 (paren
@@ -589,6 +634,7 @@ id|nexthdr
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace

@@ -3513,6 +3513,16 @@ op_assign
 op_amp
 id|pcmcia_socket_class
 comma
+dot
+id|suspend
+op_assign
+id|pcmcia_socket_dev_suspend
+comma
+dot
+id|resume
+op_assign
+id|pcmcia_socket_dev_resume
+comma
 )brace
 suffix:semicolon
 DECL|variable|hd64465_device

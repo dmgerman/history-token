@@ -198,7 +198,6 @@ op_star
 id|ip
 )paren
 (brace
-r_static
 r_struct
 id|Scsi_Host
 op_star

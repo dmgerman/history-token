@@ -182,7 +182,7 @@ id|tss
 op_assign
 id|init_tss
 op_plus
-id|smp_processor_id
+id|get_cpu
 c_func
 (paren
 )paren
@@ -202,6 +202,11 @@ suffix:semicolon
 id|current-&gt;thread.saved_esp0
 op_assign
 l_int|0
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
+)paren
 suffix:semicolon
 id|loadsegment
 c_func
@@ -955,7 +960,7 @@ id|tss
 op_assign
 id|init_tss
 op_plus
-id|smp_processor_id
+id|get_cpu
 c_func
 (paren
 )paren
@@ -975,6 +980,11 @@ id|disable_sysenter
 c_func
 (paren
 id|tss
+)paren
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tsk-&gt;thread.screen_bitmap

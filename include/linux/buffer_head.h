@@ -157,6 +157,21 @@ suffix:semicolon
 multiline_comment|/* associated with another mapping */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Debug&n; */
+r_void
+id|__buffer_error
+c_func
+(paren
+r_char
+op_star
+id|file
+comma
+r_int
+id|line
+)paren
+suffix:semicolon
+DECL|macro|buffer_error
+mdefine_line|#define buffer_error() __buffer_error(__FILE__, __LINE__)
 multiline_comment|/*&n; * macro tricks to expand the set_buffer_foo(), clear_buffer_foo()&n; * and buffer_foo() functions.&n; */
 DECL|macro|BUFFER_FNS
 mdefine_line|#define BUFFER_FNS(bit, name)&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void set_buffer_##name(struct buffer_head *bh)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void clear_buffer_##name(struct buffer_head *bh)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;clear_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline int buffer_##name(struct buffer_head *bh)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&t;&bslash;&n;}
@@ -1072,12 +1087,12 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-DECL|function|sb_bread
 r_static
 r_inline
 r_struct
 id|buffer_head
 op_star
+DECL|function|sb_bread
 id|sb_bread
 c_func
 (paren
@@ -1102,12 +1117,12 @@ id|sb-&gt;s_blocksize
 )paren
 suffix:semicolon
 )brace
-DECL|function|sb_getblk
 r_static
 r_inline
 r_struct
 id|buffer_head
 op_star
+DECL|function|sb_getblk
 id|sb_getblk
 c_func
 (paren
@@ -1198,6 +1213,7 @@ op_assign
 id|block
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Calling wait_on_buffer() for a zero-ref buffer is illegal, so we call into&n; * __wait_on_buffer() just to trip a debug check.  Because debug code in inline&n; * functions is bloaty.&n; */
 DECL|function|wait_on_buffer
 r_static
 r_inline
@@ -1219,6 +1235,15 @@ c_func
 (paren
 id|bh
 )paren
+op_logical_or
+id|atomic_read
+c_func
+(paren
+op_amp
+id|bh-&gt;b_count
+)paren
+op_eq
+l_int|0
 )paren
 id|__wait_on_buffer
 c_func
@@ -1256,20 +1281,5 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Debug&n; */
-r_void
-id|__buffer_error
-c_func
-(paren
-r_char
-op_star
-id|file
-comma
-r_int
-id|line
-)paren
-suffix:semicolon
-DECL|macro|buffer_error
-mdefine_line|#define buffer_error() __buffer_error(__FILE__, __LINE__)
 macro_line|#endif /* _LINUX_BUFFER_HEAD_H */
 eof

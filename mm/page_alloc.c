@@ -343,6 +343,7 @@ op_star
 id|page
 comma
 r_int
+r_int
 id|order
 )paren
 (brace
@@ -424,6 +425,7 @@ id|page
 op_star
 id|page
 comma
+r_int
 r_int
 id|order
 )paren

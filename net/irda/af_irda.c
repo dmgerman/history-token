@@ -1137,14 +1137,14 @@ id|self-&gt;query_wait
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_selective_discovery_indication (discovery)&n; *&n; *    Got a selective discovery indication from IrLMP.&n; *&n; * IrLMP is telling us that this node is matching our hint bit&n; * filter. Check if it&squot;s a newly discovered node (or if node changed its&n; * hint bits), and then wake up any process waiting for answer...&n; */
+multiline_comment|/*&n; * Function irda_selective_discovery_indication (discovery)&n; *&n; *    Got a selective discovery indication from IrLMP.&n; *&n; * IrLMP is telling us that this node is new and matching our hint bit&n; * filter. Wake up any process waiting for answer...&n; */
 DECL|function|irda_selective_discovery_indication
 r_static
 r_void
 id|irda_selective_discovery_indication
 c_func
 (paren
-id|discovery_t
+id|discinfo_t
 op_star
 id|discovery
 comma
@@ -1198,31 +1198,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Check if node is discovered is a new one or an old one.&n;&t; * We check when how long ago this node was discovered, with a&n;&t; * coarse timeout (we may miss some discovery events or be delayed).&n;&t; * Note : by doing this test here, we avoid waking up a process ;-)&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|jiffies
-op_minus
-id|discovery-&gt;first_timestamp
-)paren
-OG
-(paren
-id|sysctl_discovery_timeout
-op_star
-id|HZ
-)paren
-)paren
-(brace
-r_return
-suffix:semicolon
-multiline_comment|/* Too old, not interesting -&gt; goodbye */
-)brace
 multiline_comment|/* Pass parameter to the caller */
-id|self-&gt;cachediscovery
+id|self-&gt;cachedaddr
 op_assign
-id|discovery
+id|discovery-&gt;daddr
 suffix:semicolon
 multiline_comment|/* Wake up process if its waiting for device to be discovered */
 id|wake_up_interruptible
@@ -1284,9 +1263,9 @@ id|self-&gt;cachelog
 op_assign
 l_int|NULL
 suffix:semicolon
-id|self-&gt;cachediscovery
+id|self-&gt;cachedaddr
 op_assign
-l_int|NULL
+l_int|0
 suffix:semicolon
 id|self-&gt;errno
 op_assign
@@ -1813,8 +1792,7 @@ op_star
 id|name
 )paren
 (brace
-r_struct
-id|irda_device_info
+id|discinfo_t
 op_star
 id|discoveries
 suffix:semicolon
@@ -1878,7 +1856,7 @@ c_func
 op_amp
 id|number
 comma
-id|self-&gt;mask
+id|self-&gt;mask.word
 comma
 id|self-&gt;nslots
 )paren
@@ -3762,7 +3740,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|self-&gt;mask
+id|self-&gt;mask.word
 op_assign
 l_int|0xffff
 suffix:semicolon
@@ -7067,6 +7045,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+multiline_comment|/* The input is really a (__u8 hints[2]), easier as an int */
 r_if
 c_cond
 (paren
@@ -7129,6 +7108,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+multiline_comment|/* The input is really a (__u8 hints[2]), easier as an int */
 r_if
 c_cond
 (paren
@@ -7149,7 +7129,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 multiline_comment|/* Set the new hint mask */
-id|self-&gt;mask
+id|self-&gt;mask.word
 op_assign
 (paren
 id|__u16
@@ -7157,7 +7137,7 @@ id|__u16
 id|opt
 suffix:semicolon
 multiline_comment|/* Mask out extension bits */
-id|self-&gt;mask
+id|self-&gt;mask.word
 op_and_assign
 l_int|0x7f7f
 suffix:semicolon
@@ -7166,10 +7146,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|self-&gt;mask
+id|self-&gt;mask.word
 )paren
 (brace
-id|self-&gt;mask
+id|self-&gt;mask.word
 op_assign
 l_int|0xFFFF
 suffix:semicolon
@@ -7460,7 +7440,7 @@ c_func
 op_amp
 id|list.len
 comma
-id|self-&gt;mask
+id|self-&gt;mask.word
 comma
 id|self-&gt;nslots
 )paren
@@ -8328,7 +8308,7 @@ c_func
 (paren
 id|self-&gt;ckey
 comma
-id|self-&gt;mask
+id|self-&gt;mask.word
 comma
 id|irda_selective_discovery_indication
 comma
@@ -8353,7 +8333,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|self-&gt;cachediscovery
+id|self-&gt;cachedaddr
 )paren
 (brace
 r_int
@@ -8423,9 +8403,9 @@ c_func
 id|self-&gt;query_wait
 comma
 (paren
-id|self-&gt;cachediscovery
+id|self-&gt;cachedaddr
 op_ne
-l_int|NULL
+l_int|0
 op_logical_or
 id|self-&gt;errno
 op_eq
@@ -8498,7 +8478,7 @@ c_func
 (paren
 id|self-&gt;ckey
 comma
-id|self-&gt;mask
+id|self-&gt;mask.word
 comma
 l_int|NULL
 comma
@@ -8512,19 +8492,42 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|self-&gt;cachediscovery
+id|self-&gt;cachedaddr
 )paren
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
 multiline_comment|/* Didn&squot;t find any devices */
-multiline_comment|/* Cleanup */
-id|self-&gt;cachediscovery
+id|daddr
 op_assign
-l_int|NULL
+id|self-&gt;cachedaddr
 suffix:semicolon
-multiline_comment|/* Note : We don&squot;t return anything to the user.&n;&t;&t; * We could return the device that triggered the wake up,&n;&t;&t; * but it&squot;s probably better to force the user to query&n;&t;&t; * the whole discovery log and let him pick one device...&n;&t;&t; */
+multiline_comment|/* Cleanup */
+id|self-&gt;cachedaddr
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* We return the daddr of the device that trigger the&n;&t;&t; * wakeup. As irlmp pass us only the new devices, we&n;&t;&t; * are sure that it&squot;s not an old device.&n;&t;&t; * If the user want more details, he should query&n;&t;&t; * the whole discovery log and pick one device...&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|put_user
+c_func
+(paren
+id|daddr
+comma
+(paren
+r_int
+op_star
+)paren
+id|optval
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
