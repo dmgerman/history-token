@@ -7,6 +7,10 @@ macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/bug.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+r_struct
+id|vm_area_struct
+suffix:semicolon
+multiline_comment|/* forward declaration (include/linux/mm.h) */
 r_extern
 id|pgd_t
 id|swapper_pg_dir
@@ -1048,15 +1052,6 @@ id|pte
 )paren
 (brace
 multiline_comment|/* We do not explicitly set the dirty bit because the&n;&t; * sske instruction is slow. It is faster to let the&n;&t; * next instruction set the dirty bit.&n;&t; */
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_and_assign
-op_complement
-id|_PAGE_ISCLEAN
-suffix:semicolon
 r_return
 id|pte
 suffix:semicolon
@@ -1072,24 +1067,7 @@ id|pte_t
 id|pte
 )paren
 (brace
-id|asm
-r_volatile
-(paren
-l_string|&quot;rrbe 0,%0&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* S/390 doesn&squot;t keep its dirty/referenced bit in the pte.&n;&t; * There is no point in clearing the real referenced bit.&n;&t; */
 r_return
 id|pte
 suffix:semicolon
@@ -1105,27 +1083,7 @@ id|pte_t
 id|pte
 )paren
 (brace
-multiline_comment|/* To set the referenced bit we read the first word from the real&n;&t; * page with a special instruction: load using real address (lura).&n;&t; * Isn&squot;t S/390 a nice architecture ?! */
-id|asm
-r_volatile
-(paren
-l_string|&quot;lura 0,%0&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_amp
-id|PAGE_MASK
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* S/390 doesn&squot;t keep its dirty/referenced bit in the pte.&n;&t; * There is no point in setting the real referenced bit.&n;&t; */
 r_return
 id|pte
 suffix:semicolon
@@ -1174,6 +1132,36 @@ r_return
 id|ccode
 op_amp
 l_int|2
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_int
+DECL|function|ptep_clear_flush_young
+id|ptep_clear_flush_young
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|address
+comma
+id|pte_t
+op_star
+id|ptep
+)paren
+(brace
+multiline_comment|/* No need to flush TLB; bits are in storage key */
+r_return
+id|ptep_test_and_clear_young
+c_func
+(paren
+id|ptep
+)paren
 suffix:semicolon
 )brace
 DECL|function|ptep_test_and_clear_dirty
@@ -1260,6 +1248,36 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_int
+DECL|function|ptep_clear_flush_dirty
+id|ptep_clear_flush_dirty
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|address
+comma
+id|pte_t
+op_star
+id|ptep
+)paren
+(brace
+multiline_comment|/* No need to flush TLB; bits are in storage key */
+r_return
+id|ptep_test_and_clear_dirty
+c_func
+(paren
+id|ptep
+)paren
+suffix:semicolon
+)brace
 DECL|function|ptep_get_and_clear
 r_static
 r_inline
@@ -1278,6 +1296,131 @@ op_assign
 op_star
 id|ptep
 suffix:semicolon
+id|pte_clear
+c_func
+(paren
+id|ptep
+)paren
+suffix:semicolon
+r_return
+id|pte
+suffix:semicolon
+)brace
+r_static
+r_inline
+id|pte_t
+DECL|function|ptep_clear_flush
+id|ptep_clear_flush
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|address
+comma
+id|pte_t
+op_star
+id|ptep
+)paren
+(brace
+id|pte_t
+id|pte
+op_assign
+op_star
+id|ptep
+suffix:semicolon
+macro_line|#ifndef __s390x__
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_INVALID
+)paren
+)paren
+(brace
+multiline_comment|/* S390 has 1mb segments, we are emulating 4MB segments */
+id|pte_t
+op_star
+id|pto
+op_assign
+(paren
+id|pte_t
+op_star
+)paren
+(paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|ptep
+)paren
+op_amp
+l_int|0x7ffffc00
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;ipte %0,%1&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|pto
+)paren
+comma
+l_string|&quot;a&quot;
+(paren
+id|address
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#else /* __s390x__ */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_INVALID
+)paren
+)paren
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;ipte %0,%1&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|ptep
+)paren
+comma
+l_string|&quot;a&quot;
+(paren
+id|address
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif /* __s390x__ */
 id|pte_clear
 c_func
 (paren
@@ -1336,6 +1479,49 @@ c_func
 (paren
 op_star
 id|ptep
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|ptep_establish
+id|ptep_establish
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|address
+comma
+id|pte_t
+op_star
+id|ptep
+comma
+id|pte_t
+id|entry
+)paren
+(brace
+id|ptep_clear_flush
+c_func
+(paren
+id|vma
+comma
+id|address
+comma
+id|ptep
+)paren
+suffix:semicolon
+id|set_pte
+c_func
+(paren
+id|ptep
+comma
+id|entry
 )paren
 suffix:semicolon
 )brace
@@ -1567,5 +1753,26 @@ macro_line|#ifdef __s390x__
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 macro_line|# define HAVE_ARCH_UNMAPPED_AREA
 macro_line|#endif /* __s390x__ */
+DECL|macro|__HAVE_ARCH_PTEP_ESTABLISH
+mdefine_line|#define __HAVE_ARCH_PTEP_ESTABLISH
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+DECL|macro|__HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+mdefine_line|#define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+DECL|macro|__HAVE_ARCH_PTEP_CLEAR_DIRTY_FLUSH
+mdefine_line|#define __HAVE_ARCH_PTEP_CLEAR_DIRTY_FLUSH
+DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
+mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
+DECL|macro|__HAVE_ARCH_PTEP_CLEAR_FLUSH
+mdefine_line|#define __HAVE_ARCH_PTEP_CLEAR_FLUSH
+DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
+mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
+DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
+mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
+DECL|macro|__HAVE_ARCH_PTE_SAME
+mdefine_line|#define __HAVE_ARCH_PTE_SAME
+macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* _S390_PAGE_H */
 eof
