@@ -2519,6 +2519,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * pointer callbacks&n; */
 multiline_comment|/*&n; * calculate the linear position at the given sg-buffer index and the rest count&n; */
+DECL|macro|check_invalid_pos
+mdefine_line|#define check_invalid_pos(viadev,pos) &bslash;&n;&t;((pos) &lt; viadev-&gt;lastpos &amp;&amp; ((pos) &gt;= viadev-&gt;bufsize2 || viadev-&gt;lastpos &lt; viadev-&gt;bufsize2))
 DECL|function|calc_linear_pos
 r_static
 r_inline
@@ -2555,12 +2557,6 @@ id|idx
 dot
 id|size
 suffix:semicolon
-multiline_comment|/* FIXME: is this always true? */
-r_if
-c_cond
-(paren
-id|count
-)paren
 id|res
 op_assign
 id|viadev-&gt;idx_table
@@ -2574,16 +2570,6 @@ id|size
 op_minus
 id|count
 suffix:semicolon
-r_else
-id|res
-op_assign
-id|viadev-&gt;idx_table
-(braket
-id|idx
-)braket
-dot
-id|offset
-suffix:semicolon
 multiline_comment|/* check the validity of the calculated position */
 r_if
 c_cond
@@ -2591,21 +2577,40 @@ c_cond
 id|size
 OL
 id|count
-op_logical_or
-(paren
-id|res
-OL
-id|viadev-&gt;lastpos
-op_logical_and
-(paren
-id|res
-op_ge
-id|viadev-&gt;bufsize2
-op_logical_or
-id|viadev-&gt;lastpos
-OL
-id|viadev-&gt;bufsize2
 )paren
+(brace
+id|snd_printd
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;invalid via82xx_cur_ptr (size = %d, count = %d)&bslash;n&quot;
+comma
+(paren
+r_int
+)paren
+id|size
+comma
+(paren
+r_int
+)paren
+id|count
+)paren
+suffix:semicolon
+id|res
+op_assign
+id|viadev-&gt;lastpos
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|check_invalid_pos
+c_func
+(paren
+id|viadev
+comma
+id|res
 )paren
 )paren
 (brace
@@ -2641,12 +2646,13 @@ id|count
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* count register returns full size when end of buffer is reached */
 r_if
 c_cond
 (paren
+id|count
+op_logical_and
 id|size
-op_ne
+OL
 id|count
 )paren
 (brace
@@ -2664,6 +2670,24 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|count
+)paren
+multiline_comment|/* bogus count 0 on the DMA boundary? */
+id|res
+op_assign
+id|viadev-&gt;idx_table
+(braket
+id|idx
+)braket
+dot
+id|offset
+suffix:semicolon
+r_else
+multiline_comment|/* count register returns full size when end of buffer is reached */
 id|res
 op_assign
 id|viadev-&gt;idx_table
@@ -2678,18 +2702,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|res
-OL
-id|viadev-&gt;lastpos
-op_logical_and
+id|check_invalid_pos
+c_func
 (paren
+id|viadev
+comma
 id|res
-op_ge
-id|viadev-&gt;bufsize2
-op_logical_or
-id|viadev-&gt;lastpos
-OL
-id|viadev-&gt;bufsize2
 )paren
 )paren
 (brace
