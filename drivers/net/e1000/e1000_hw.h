@@ -2231,9 +2231,17 @@ DECL|member|tx_packet_delta
 r_uint32
 id|tx_packet_delta
 suffix:semicolon
-DECL|member|ledctl
+DECL|member|ledctl_default
 r_uint32
-id|ledctl
+id|ledctl_default
+suffix:semicolon
+DECL|member|ledctl_mode1
+r_uint32
+id|ledctl_mode1
+suffix:semicolon
+DECL|member|ledctl_mode2
+r_uint32
+id|ledctl_mode2
 suffix:semicolon
 DECL|member|autoneg_advertised
 r_uint16
@@ -3082,14 +3090,41 @@ mdefine_line|#define EEPROM_EWEN_OPCODE  0x13 /* EERPOM erase/write enable */
 DECL|macro|EEPROM_EWDS_OPCODE
 mdefine_line|#define EEPROM_EWDS_OPCODE  0x10 /* EERPOM erast/write disable */
 multiline_comment|/* EEPROM Word Offsets */
+DECL|macro|EEPROM_ID_LED_SETTINGS
+mdefine_line|#define EEPROM_ID_LED_SETTINGS     0x0004
 DECL|macro|EEPROM_INIT_CONTROL1_REG
-mdefine_line|#define EEPROM_INIT_CONTROL1_REG 0x000A
+mdefine_line|#define EEPROM_INIT_CONTROL1_REG   0x000A
 DECL|macro|EEPROM_INIT_CONTROL2_REG
-mdefine_line|#define EEPROM_INIT_CONTROL2_REG 0x000F
+mdefine_line|#define EEPROM_INIT_CONTROL2_REG   0x000F
 DECL|macro|EEPROM_FLASH_VERSION
-mdefine_line|#define EEPROM_FLASH_VERSION     0x0032
+mdefine_line|#define EEPROM_FLASH_VERSION       0x0032
 DECL|macro|EEPROM_CHECKSUM_REG
-mdefine_line|#define EEPROM_CHECKSUM_REG      0x003F
+mdefine_line|#define EEPROM_CHECKSUM_REG        0x003F
+multiline_comment|/* Word definitions for ID LED Settings */
+DECL|macro|ID_LED_RESERVED_0000
+mdefine_line|#define ID_LED_RESERVED_0000 0x0000
+DECL|macro|ID_LED_RESERVED_FFFF
+mdefine_line|#define ID_LED_RESERVED_FFFF 0xFFFF
+DECL|macro|ID_LED_DEFAULT
+mdefine_line|#define ID_LED_DEFAULT       ((ID_LED_OFF1_ON2 &lt;&lt; 12) | &bslash;&n;&t;&t;              (ID_LED_OFF1_OFF2 &lt;&lt; 8) | &bslash;&n;&t;&t;              (ID_LED_DEF1_DEF2 &lt;&lt; 4) | &bslash;&n;&t;&t;&t;      (ID_LED_DEF1_DEF2))
+DECL|macro|ID_LED_DEF1_DEF2
+mdefine_line|#define ID_LED_DEF1_DEF2     0x1
+DECL|macro|ID_LED_DEF1_ON2
+mdefine_line|#define ID_LED_DEF1_ON2      0x2
+DECL|macro|ID_LED_DEF1_OFF2
+mdefine_line|#define ID_LED_DEF1_OFF2     0x3
+DECL|macro|ID_LED_ON1_DEF2
+mdefine_line|#define ID_LED_ON1_DEF2      0x4
+DECL|macro|ID_LED_ON1_ON2
+mdefine_line|#define ID_LED_ON1_ON2       0x5
+DECL|macro|ID_LED_ON1_OFF2
+mdefine_line|#define ID_LED_ON1_OFF2      0x6
+DECL|macro|ID_LED_OFF1_DEF2
+mdefine_line|#define ID_LED_OFF1_DEF2     0x7
+DECL|macro|ID_LED_OFF1_ON2
+mdefine_line|#define ID_LED_OFF1_ON2      0x8
+DECL|macro|ID_LED_OFF1_OFF2
+mdefine_line|#define ID_LED_OFF1_OFF2     0x9
 multiline_comment|/* Mask bits for fields in Word 0x0a of the EEPROM */
 DECL|macro|EEPROM_WORD0A_ILOS
 mdefine_line|#define EEPROM_WORD0A_ILOS   0x0010

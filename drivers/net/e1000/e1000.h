@@ -33,7 +33,6 @@ macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#ifdef NETIF_F_HW_VLAN_TX
 macro_line|#include &lt;linux/if_vlan.h&gt;
@@ -229,6 +228,18 @@ DECL|member|irq_sem
 id|atomic_t
 id|irq_sem
 suffix:semicolon
+macro_line|#ifdef ETHTOOL_PHYS_ID
+DECL|member|blink_timer
+r_struct
+id|timer_list
+id|blink_timer
+suffix:semicolon
+DECL|member|led_status
+r_int
+r_int
+id|led_status
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* TX */
 DECL|member|tx_ring
 r_struct

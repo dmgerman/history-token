@@ -10,8 +10,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|macro|usec_delay
 mdefine_line|#define usec_delay(x) udelay(x)
+macro_line|#ifndef msec_delay
 DECL|macro|msec_delay
 mdefine_line|#define msec_delay(x)&t;do { if(in_interrupt()) { &bslash;&n;&t;                &t;mdelay(x); &bslash;&n;&t;&t;&t;} else { &bslash;&n;&t;&t;&t;&t;set_current_state(TASK_UNINTERRUPTIBLE); &bslash;&n;&t;&t;&t;&t;schedule_timeout((x * HZ)/1000); &bslash;&n;&t;&t;&t;} } while(0)
+macro_line|#endif
 DECL|macro|PCI_COMMAND_REGISTER
 mdefine_line|#define PCI_COMMAND_REGISTER   PCI_COMMAND
 DECL|macro|CMD_MEM_WRT_INVALIDATE

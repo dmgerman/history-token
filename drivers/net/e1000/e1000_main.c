@@ -24,7 +24,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;4.2.8&quot;
+l_string|&quot;4.2.9-k1&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -416,7 +416,7 @@ comma
 l_string|&quot;IBM Mobile, Desktop &amp; Server Adapters&quot;
 )brace
 suffix:semicolon
-multiline_comment|/* e1000_main.c Function Prototypes */
+multiline_comment|/* Local Function Prototypes */
 r_int
 id|e1000_up
 c_func
@@ -1768,6 +1768,13 @@ OL
 l_int|0
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;The EEPROM Checksum Is Not Valid&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|err_eeprom
 suffix:semicolon
