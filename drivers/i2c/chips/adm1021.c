@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
-macro_line|#include &lt;linux/i2c-proc.h&gt;
+macro_line|#include &lt;linux/i2c-sensor.h&gt;
 multiline_comment|/* Registers */
 DECL|macro|ADM1021_SYSCTL_TEMP
 mdefine_line|#define ADM1021_SYSCTL_TEMP&t;&t;1200
@@ -109,82 +109,78 @@ multiline_comment|/* adm1021 constants specified below */
 multiline_comment|/* The adm1021 registers */
 multiline_comment|/* Read-only */
 DECL|macro|ADM1021_REG_TEMP
-mdefine_line|#define ADM1021_REG_TEMP 0x00
+mdefine_line|#define ADM1021_REG_TEMP&t;&t;0x00
 DECL|macro|ADM1021_REG_REMOTE_TEMP
-mdefine_line|#define ADM1021_REG_REMOTE_TEMP 0x01
+mdefine_line|#define ADM1021_REG_REMOTE_TEMP&t;&t;0x01
 DECL|macro|ADM1021_REG_STATUS
-mdefine_line|#define ADM1021_REG_STATUS 0x02
+mdefine_line|#define ADM1021_REG_STATUS&t;&t;0x02
 DECL|macro|ADM1021_REG_MAN_ID
-mdefine_line|#define ADM1021_REG_MAN_ID 0x0FE&t;/* 0x41 = AMD, 0x49 = TI, 0x4D = Maxim, 0x23 = Genesys , 0x54 = Onsemi*/
+mdefine_line|#define ADM1021_REG_MAN_ID&t;&t;0x0FE&t;/* 0x41 = AMD, 0x49 = TI, 0x4D = Maxim, 0x23 = Genesys , 0x54 = Onsemi*/
 DECL|macro|ADM1021_REG_DEV_ID
-mdefine_line|#define ADM1021_REG_DEV_ID 0x0FF&t;/* ADM1021 = 0x0X, ADM1023 = 0x3X */
+mdefine_line|#define ADM1021_REG_DEV_ID&t;&t;0x0FF&t;/* ADM1021 = 0x0X, ADM1023 = 0x3X */
 DECL|macro|ADM1021_REG_DIE_CODE
-mdefine_line|#define ADM1021_REG_DIE_CODE 0x0FF&t;/* MAX1617A */
+mdefine_line|#define ADM1021_REG_DIE_CODE&t;&t;0x0FF&t;/* MAX1617A */
 multiline_comment|/* These use different addresses for reading/writing */
 DECL|macro|ADM1021_REG_CONFIG_R
-mdefine_line|#define ADM1021_REG_CONFIG_R 0x03
+mdefine_line|#define ADM1021_REG_CONFIG_R&t;&t;0x03
 DECL|macro|ADM1021_REG_CONFIG_W
-mdefine_line|#define ADM1021_REG_CONFIG_W 0x09
+mdefine_line|#define ADM1021_REG_CONFIG_W&t;&t;0x09
 DECL|macro|ADM1021_REG_CONV_RATE_R
-mdefine_line|#define ADM1021_REG_CONV_RATE_R 0x04
+mdefine_line|#define ADM1021_REG_CONV_RATE_R&t;&t;0x04
 DECL|macro|ADM1021_REG_CONV_RATE_W
-mdefine_line|#define ADM1021_REG_CONV_RATE_W 0x0A
+mdefine_line|#define ADM1021_REG_CONV_RATE_W&t;&t;0x0A
 multiline_comment|/* These are for the ADM1023&squot;s additional precision on the remote temp sensor */
 DECL|macro|ADM1021_REG_REM_TEMP_PREC
-mdefine_line|#define ADM1021_REG_REM_TEMP_PREC 0x010
+mdefine_line|#define ADM1021_REG_REM_TEMP_PREC&t;0x010
 DECL|macro|ADM1021_REG_REM_OFFSET
-mdefine_line|#define ADM1021_REG_REM_OFFSET 0x011
+mdefine_line|#define ADM1021_REG_REM_OFFSET&t;&t;0x011
 DECL|macro|ADM1021_REG_REM_OFFSET_PREC
-mdefine_line|#define ADM1021_REG_REM_OFFSET_PREC 0x012
+mdefine_line|#define ADM1021_REG_REM_OFFSET_PREC&t;0x012
 DECL|macro|ADM1021_REG_REM_TOS_PREC
-mdefine_line|#define ADM1021_REG_REM_TOS_PREC 0x013
+mdefine_line|#define ADM1021_REG_REM_TOS_PREC&t;0x013
 DECL|macro|ADM1021_REG_REM_THYST_PREC
-mdefine_line|#define ADM1021_REG_REM_THYST_PREC 0x014
+mdefine_line|#define ADM1021_REG_REM_THYST_PREC&t;0x014
 multiline_comment|/* limits */
 DECL|macro|ADM1021_REG_TOS_R
-mdefine_line|#define ADM1021_REG_TOS_R 0x05
+mdefine_line|#define ADM1021_REG_TOS_R&t;&t;0x05
 DECL|macro|ADM1021_REG_TOS_W
-mdefine_line|#define ADM1021_REG_TOS_W 0x0B
+mdefine_line|#define ADM1021_REG_TOS_W&t;&t;0x0B
 DECL|macro|ADM1021_REG_REMOTE_TOS_R
-mdefine_line|#define ADM1021_REG_REMOTE_TOS_R 0x07
+mdefine_line|#define ADM1021_REG_REMOTE_TOS_R&t;0x07
 DECL|macro|ADM1021_REG_REMOTE_TOS_W
-mdefine_line|#define ADM1021_REG_REMOTE_TOS_W 0x0D
+mdefine_line|#define ADM1021_REG_REMOTE_TOS_W&t;0x0D
 DECL|macro|ADM1021_REG_THYST_R
-mdefine_line|#define ADM1021_REG_THYST_R 0x06
+mdefine_line|#define ADM1021_REG_THYST_R&t;&t;0x06
 DECL|macro|ADM1021_REG_THYST_W
-mdefine_line|#define ADM1021_REG_THYST_W 0x0C
+mdefine_line|#define ADM1021_REG_THYST_W&t;&t;0x0C
 DECL|macro|ADM1021_REG_REMOTE_THYST_R
-mdefine_line|#define ADM1021_REG_REMOTE_THYST_R 0x08
+mdefine_line|#define ADM1021_REG_REMOTE_THYST_R&t;0x08
 DECL|macro|ADM1021_REG_REMOTE_THYST_W
-mdefine_line|#define ADM1021_REG_REMOTE_THYST_W 0x0E
+mdefine_line|#define ADM1021_REG_REMOTE_THYST_W&t;0x0E
 multiline_comment|/* write-only */
 DECL|macro|ADM1021_REG_ONESHOT
-mdefine_line|#define ADM1021_REG_ONESHOT 0x0F
+mdefine_line|#define ADM1021_REG_ONESHOT&t;&t;0x0F
 multiline_comment|/* Conversions. Rounding and limit checking is only done on the TO_REG&n;   variants. Note that you should be a bit careful with which arguments&n;   these macros are called: arguments may be evaluated more than once.&n;   Fixing this is just not worth it. */
 multiline_comment|/* Conversions  note: 1021 uses normal integer signed-byte format*/
 DECL|macro|TEMP_FROM_REG
-mdefine_line|#define TEMP_FROM_REG(val) (val &gt; 127 ? val-256 : val)
+mdefine_line|#define TEMP_FROM_REG(val)&t;(val &gt; 127 ? val-256 : val)
 DECL|macro|TEMP_TO_REG
-mdefine_line|#define TEMP_TO_REG(val)   (SENSORS_LIMIT((val &lt; 0 ? val+256 : val),0,255))
+mdefine_line|#define TEMP_TO_REG(val)&t;(SENSORS_LIMIT((val &lt; 0 ? val+256 : val),0,255))
 multiline_comment|/* Initial values */
 multiline_comment|/* Note: Even though I left the low and high limits named os and hyst, &n;they don&squot;t quite work like a thermostat the way the LM75 does.  I.e., &n;a lower temp than THYST actually triggers an alarm instead of &n;clearing it.  Weird, ey?   --Phil  */
 DECL|macro|adm1021_INIT_TOS
-mdefine_line|#define adm1021_INIT_TOS 60
+mdefine_line|#define adm1021_INIT_TOS&t;&t;60
 DECL|macro|adm1021_INIT_THYST
-mdefine_line|#define adm1021_INIT_THYST 20
+mdefine_line|#define adm1021_INIT_THYST&t;&t;20
 DECL|macro|adm1021_INIT_REMOTE_TOS
-mdefine_line|#define adm1021_INIT_REMOTE_TOS 60
+mdefine_line|#define adm1021_INIT_REMOTE_TOS&t;&t;60
 DECL|macro|adm1021_INIT_REMOTE_THYST
-mdefine_line|#define adm1021_INIT_REMOTE_THYST 20
+mdefine_line|#define adm1021_INIT_REMOTE_THYST&t;20
 multiline_comment|/* Each client has this additional data */
 DECL|struct|adm1021_data
 r_struct
 id|adm1021_data
 (brace
-DECL|member|sysctl_id
-r_int
-id|sysctl_id
-suffix:semicolon
 DECL|member|type
 r_enum
 id|chips
@@ -206,48 +202,59 @@ r_int
 id|last_updated
 suffix:semicolon
 multiline_comment|/* In jiffies */
-DECL|member|temp
-DECL|member|temp_os
-DECL|member|temp_hyst
+DECL|member|temp_max
 id|u8
-id|temp
-comma
-id|temp_os
-comma
-id|temp_hyst
+id|temp_max
 suffix:semicolon
 multiline_comment|/* Register values */
-DECL|member|remote_temp
-DECL|member|remote_temp_os
+DECL|member|temp_hyst
+id|u8
+id|temp_hyst
+suffix:semicolon
+DECL|member|temp_input
+id|u8
+id|temp_input
+suffix:semicolon
+DECL|member|remote_temp_max
+id|u8
+id|remote_temp_max
+suffix:semicolon
 DECL|member|remote_temp_hyst
+id|u8
+id|remote_temp_hyst
+suffix:semicolon
+DECL|member|remote_temp_input
+id|u8
+id|remote_temp_input
+suffix:semicolon
 DECL|member|alarms
+id|u8
+id|alarms
+suffix:semicolon
+multiline_comment|/* special values for ADM1021 only */
 DECL|member|die_code
 id|u8
-id|remote_temp
-comma
-id|remote_temp_os
-comma
-id|remote_temp_hyst
-comma
-id|alarms
-comma
 id|die_code
 suffix:semicolon
 multiline_comment|/* Special values for ADM1023 only */
 DECL|member|remote_temp_prec
-DECL|member|remote_temp_os_prec
-DECL|member|remote_temp_hyst_prec
 id|u8
 id|remote_temp_prec
-comma
+suffix:semicolon
+DECL|member|remote_temp_os_prec
+id|u8
 id|remote_temp_os_prec
-comma
+suffix:semicolon
+DECL|member|remote_temp_hyst_prec
+id|u8
 id|remote_temp_hyst_prec
-comma
+suffix:semicolon
 DECL|member|remote_temp_offset
-DECL|member|remote_temp_offset_prec
+id|u8
 id|remote_temp_offset
-comma
+suffix:semicolon
+DECL|member|remote_temp_offset_prec
+id|u8
 id|remote_temp_offset_prec
 suffix:semicolon
 )brace
@@ -275,10 +282,6 @@ id|adapter
 comma
 r_int
 id|address
-comma
-r_int
-r_int
-id|flags
 comma
 r_int
 id|kind
@@ -335,106 +338,6 @@ id|reg
 comma
 id|u16
 id|value
-)paren
-suffix:semicolon
-r_static
-r_void
-id|adm1021_temp
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-comma
-r_int
-id|operation
-comma
-r_int
-id|ctl_name
-comma
-r_int
-op_star
-id|nrels_mag
-comma
-r_int
-op_star
-id|results
-)paren
-suffix:semicolon
-r_static
-r_void
-id|adm1021_remote_temp
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-comma
-r_int
-id|operation
-comma
-r_int
-id|ctl_name
-comma
-r_int
-op_star
-id|nrels_mag
-comma
-r_int
-op_star
-id|results
-)paren
-suffix:semicolon
-r_static
-r_void
-id|adm1021_alarms
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-comma
-r_int
-id|operation
-comma
-r_int
-id|ctl_name
-comma
-r_int
-op_star
-id|nrels_mag
-comma
-r_int
-op_star
-id|results
-)paren
-suffix:semicolon
-r_static
-r_void
-id|adm1021_die_code
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-comma
-r_int
-id|operation
-comma
-r_int
-id|ctl_name
-comma
-r_int
-op_star
-id|nrels_mag
-comma
-r_int
-op_star
-id|results
 )paren
 suffix:semicolon
 r_static
@@ -496,208 +399,6 @@ id|adm1021_detach_client
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* These files are created for each detected adm1021. This is just a template;&n;   though at first sight, you might think we could use a statically&n;   allocated list, we need some way to get back to the parent - which&n;   is done through one of the &squot;extra&squot; fields which are initialized&n;   when a new copy is allocated. */
-DECL|variable|adm1021_dir_table_template
-r_static
-id|ctl_table
-id|adm1021_dir_table_template
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|ADM1021_SYSCTL_TEMP
-comma
-l_string|&quot;temp1&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0644
-comma
-l_int|NULL
-comma
-op_amp
-id|i2c_proc_real
-comma
-op_amp
-id|i2c_sysctl_real
-comma
-l_int|NULL
-comma
-op_amp
-id|adm1021_temp
-)brace
-comma
-(brace
-id|ADM1021_SYSCTL_REMOTE_TEMP
-comma
-l_string|&quot;temp2&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0644
-comma
-l_int|NULL
-comma
-op_amp
-id|i2c_proc_real
-comma
-op_amp
-id|i2c_sysctl_real
-comma
-l_int|NULL
-comma
-op_amp
-id|adm1021_remote_temp
-)brace
-comma
-(brace
-id|ADM1021_SYSCTL_DIE_CODE
-comma
-l_string|&quot;die_code&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0444
-comma
-l_int|NULL
-comma
-op_amp
-id|i2c_proc_real
-comma
-op_amp
-id|i2c_sysctl_real
-comma
-l_int|NULL
-comma
-op_amp
-id|adm1021_die_code
-)brace
-comma
-(brace
-id|ADM1021_SYSCTL_ALARMS
-comma
-l_string|&quot;alarms&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0444
-comma
-l_int|NULL
-comma
-op_amp
-id|i2c_proc_real
-comma
-op_amp
-id|i2c_sysctl_real
-comma
-l_int|NULL
-comma
-op_amp
-id|adm1021_alarms
-)brace
-comma
-(brace
-l_int|0
-)brace
-)brace
-suffix:semicolon
-DECL|variable|adm1021_max_dir_table_template
-r_static
-id|ctl_table
-id|adm1021_max_dir_table_template
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|ADM1021_SYSCTL_TEMP
-comma
-l_string|&quot;temp1&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0644
-comma
-l_int|NULL
-comma
-op_amp
-id|i2c_proc_real
-comma
-op_amp
-id|i2c_sysctl_real
-comma
-l_int|NULL
-comma
-op_amp
-id|adm1021_temp
-)brace
-comma
-(brace
-id|ADM1021_SYSCTL_REMOTE_TEMP
-comma
-l_string|&quot;temp2&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0644
-comma
-l_int|NULL
-comma
-op_amp
-id|i2c_proc_real
-comma
-op_amp
-id|i2c_sysctl_real
-comma
-l_int|NULL
-comma
-op_amp
-id|adm1021_remote_temp
-)brace
-comma
-(brace
-id|ADM1021_SYSCTL_ALARMS
-comma
-l_string|&quot;alarms&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0444
-comma
-l_int|NULL
-comma
-op_amp
-id|i2c_proc_real
-comma
-op_amp
-id|i2c_sysctl_real
-comma
-l_int|NULL
-comma
-op_amp
-id|adm1021_alarms
-)brace
-comma
-(brace
-l_int|0
-)brace
-)brace
-suffix:semicolon
 multiline_comment|/* I choose here for semi-static allocation. Complete dynamic&n;   allocation could also be used; the code needed for this would probably&n;   take more memory than the datastructure takes now. */
 DECL|variable|adm1021_id
 r_static
@@ -705,6 +406,210 @@ r_int
 id|adm1021_id
 op_assign
 l_int|0
+suffix:semicolon
+DECL|macro|show
+mdefine_line|#define show(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&bslash;&n;&t;struct adm1021_data *data = i2c_get_clientdata(client);&t;&bslash;&n;&t;int temp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;adm1021_update_client(client);&t;&t;&t;&t;&bslash;&n;&t;temp = TEMP_FROM_REG(data-&gt;value);&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, temp);&t;&t;&t;&bslash;&n;}
+DECL|variable|temp_max
+id|show
+c_func
+(paren
+id|temp_max
+)paren
+suffix:semicolon
+DECL|variable|temp_hyst
+id|show
+c_func
+(paren
+id|temp_hyst
+)paren
+suffix:semicolon
+DECL|variable|temp_input
+id|show
+c_func
+(paren
+id|temp_input
+)paren
+suffix:semicolon
+DECL|variable|remote_temp_max
+id|show
+c_func
+(paren
+id|remote_temp_max
+)paren
+suffix:semicolon
+DECL|variable|remote_temp_hyst
+id|show
+c_func
+(paren
+id|remote_temp_hyst
+)paren
+suffix:semicolon
+DECL|variable|remote_temp_input
+id|show
+c_func
+(paren
+id|remote_temp_input
+)paren
+suffix:semicolon
+DECL|variable|alarms
+id|show
+c_func
+(paren
+id|alarms
+)paren
+suffix:semicolon
+DECL|variable|die_code
+id|show
+c_func
+(paren
+id|die_code
+)paren
+suffix:semicolon
+DECL|macro|set
+mdefine_line|#define set(value, reg)&t;&bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&bslash;&n;&t;struct adm1021_data *data = i2c_get_clientdata(client);&t;&bslash;&n;&t;int temp = simple_strtoul(buf, NULL, 10);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;data-&gt;value = TEMP_TO_REG(temp);&t;&t;&t;&bslash;&n;&t;adm1021_write_value(client, reg, data-&gt;value);&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+id|set
+c_func
+(paren
+id|temp_max
+comma
+id|ADM1021_REG_TOS_W
+)paren
+suffix:semicolon
+id|set
+c_func
+(paren
+id|temp_hyst
+comma
+id|ADM1021_REG_THYST_W
+)paren
+suffix:semicolon
+id|set
+c_func
+(paren
+id|remote_temp_max
+comma
+id|ADM1021_REG_REMOTE_TOS_W
+)paren
+suffix:semicolon
+id|set
+c_func
+(paren
+id|remote_temp_hyst
+comma
+id|ADM1021_REG_REMOTE_THYST_W
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|temp_max1
+comma
+id|S_IWUSR
+op_or
+id|S_IRUGO
+comma
+id|show_temp_max
+comma
+id|set_temp_max
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|temp_min1
+comma
+id|S_IWUSR
+op_or
+id|S_IRUGO
+comma
+id|show_temp_hyst
+comma
+id|set_temp_hyst
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|temp_input1
+comma
+id|S_IRUGO
+comma
+id|show_temp_input
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|temp_max2
+comma
+id|S_IWUSR
+op_or
+id|S_IRUGO
+comma
+id|show_remote_temp_max
+comma
+id|set_remote_temp_max
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|temp_min2
+comma
+id|S_IWUSR
+op_or
+id|S_IRUGO
+comma
+id|show_remote_temp_hyst
+comma
+id|set_remote_temp_hyst
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|temp_input2
+comma
+id|S_IRUGO
+comma
+id|show_remote_temp_input
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|alarms
+comma
+id|S_IRUGO
+comma
+id|show_alarms
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|die_code
+comma
+id|S_IRUGO
+comma
+id|show_die_code
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 DECL|function|adm1021_attach_adapter
 r_static
@@ -744,10 +649,6 @@ id|adapter
 comma
 r_int
 id|address
-comma
-r_int
-r_int
-id|flags
 comma
 r_int
 id|kind
@@ -797,9 +698,13 @@ id|adapter
 )paren
 )paren
 (brace
-id|printk
+id|dev_dbg
+c_func
 (paren
-l_string|&quot;adm1021.o: adm1021_detect called for an ISA bus adapter?!?&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;adm1021_detect called for an ISA bus adapter?!?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -978,6 +883,7 @@ c_cond
 (paren
 (paren
 id|adm1021_read_value
+c_func
 (paren
 id|new_client
 comma
@@ -1034,6 +940,7 @@ l_int|0x4d
 op_logical_and
 (paren
 id|adm1021_read_value
+c_func
 (paren
 id|new_client
 comma
@@ -1053,6 +960,7 @@ r_if
 c_cond
 (paren
 id|adm1021_read_value
+c_func
 (paren
 id|new_client
 comma
@@ -1228,16 +1136,17 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;adm1021.o: Internal error: unknown kind (%d)?!?&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Internal error: unknown kind (%d)?!?&quot;
 comma
 id|kind
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|error1
 suffix:semicolon
@@ -1290,41 +1199,92 @@ id|new_client
 r_goto
 id|error3
 suffix:semicolon
-multiline_comment|/* Register a new directory entry with module sensors */
-id|err
-op_assign
-id|i2c_register_entry
+id|device_create_file
 c_func
 (paren
-id|new_client
+op_amp
+id|new_client-&gt;dev
 comma
-id|type_name
-comma
-(paren
-id|data-&gt;type
-op_eq
-id|adm1021
+op_amp
+id|dev_attr_temp_max1
 )paren
-ques
-c_cond
-id|adm1021_dir_table_template
-suffix:colon
-id|adm1021_max_dir_table_template
+suffix:semicolon
+id|device_create_file
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+op_amp
+id|dev_attr_temp_min1
+)paren
+suffix:semicolon
+id|device_create_file
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+op_amp
+id|dev_attr_temp_input1
+)paren
+suffix:semicolon
+id|device_create_file
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+op_amp
+id|dev_attr_temp_max2
+)paren
+suffix:semicolon
+id|device_create_file
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+op_amp
+id|dev_attr_temp_min2
+)paren
+suffix:semicolon
+id|device_create_file
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+op_amp
+id|dev_attr_temp_input2
+)paren
+suffix:semicolon
+id|device_create_file
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+op_amp
+id|dev_attr_alarms
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
-OL
-l_int|0
+id|data-&gt;type
+op_eq
+id|adm1021
 )paren
-r_goto
-id|error4
-suffix:semicolon
-id|data-&gt;sysctl_id
-op_assign
-id|err
+id|device_create_file
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+op_amp
+id|dev_attr_die_code
+)paren
 suffix:semicolon
 multiline_comment|/* Initialize the ADM1021 chip */
 id|adm1021_init_client
@@ -1335,14 +1295,6 @@ id|new_client
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|error4
-suffix:colon
-id|i2c_detach_client
-c_func
-(paren
-id|new_client
-)paren
 suffix:semicolon
 id|error3
 suffix:colon
@@ -1467,27 +1419,6 @@ id|client
 r_int
 id|err
 suffix:semicolon
-id|i2c_deregister_entry
-c_func
-(paren
-(paren
-(paren
-r_struct
-id|adm1021_data
-op_star
-)paren
-(paren
-id|i2c_get_clientdata
-c_func
-(paren
-id|client
-)paren
-)paren
-)paren
-op_member_access_from_pointer
-id|sysctl_id
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1502,9 +1433,13 @@ id|client
 )paren
 )paren
 (brace
-id|printk
+id|dev_err
+c_func
 (paren
-l_string|&quot;adm1021.o: Client deregistration failed, client not detached.&bslash;n&quot;
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;Client deregistration failed, client not detached.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1641,15 +1576,16 @@ op_logical_neg
 id|data-&gt;valid
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
+op_amp
+id|client-&gt;dev
+comma
 l_string|&quot;Starting adm1021 update&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-id|data-&gt;temp
+id|data-&gt;temp_input
 op_assign
 id|adm1021_read_value
 c_func
@@ -1659,7 +1595,7 @@ comma
 id|ADM1021_REG_TEMP
 )paren
 suffix:semicolon
-id|data-&gt;temp_os
+id|data-&gt;temp_max
 op_assign
 id|adm1021_read_value
 c_func
@@ -1679,7 +1615,7 @@ comma
 id|ADM1021_REG_THYST_R
 )paren
 suffix:semicolon
-id|data-&gt;remote_temp
+id|data-&gt;remote_temp_input
 op_assign
 id|adm1021_read_value
 c_func
@@ -1689,7 +1625,7 @@ comma
 id|ADM1021_REG_REMOTE_TEMP
 )paren
 suffix:semicolon
-id|data-&gt;remote_temp_os
+id|data-&gt;remote_temp_max
 op_assign
 id|adm1021_read_value
 c_func
@@ -1814,6 +1750,14 @@ id|data-&gt;update_lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME, remove these four functions, they are here to verify the sysfs&n; * conversion is correct, or not */
+id|__attribute__
+c_func
+(paren
+(paren
+id|unused
+)paren
+)paren
 DECL|function|adm1021_temp
 r_static
 r_void
@@ -1886,7 +1830,7 @@ op_assign
 id|TEMP_FROM_REG
 c_func
 (paren
-id|data-&gt;temp_os
+id|data-&gt;temp_max
 )paren
 suffix:semicolon
 id|results
@@ -1908,7 +1852,7 @@ op_assign
 id|TEMP_FROM_REG
 c_func
 (paren
-id|data-&gt;temp
+id|data-&gt;temp_input
 )paren
 suffix:semicolon
 op_star
@@ -1935,7 +1879,7 @@ op_ge
 l_int|1
 )paren
 (brace
-id|data-&gt;temp_os
+id|data-&gt;temp_max
 op_assign
 id|TEMP_TO_REG
 c_func
@@ -1953,7 +1897,7 @@ id|client
 comma
 id|ADM1021_REG_TOS_W
 comma
-id|data-&gt;temp_os
+id|data-&gt;temp_max
 )paren
 suffix:semicolon
 )brace
@@ -1990,6 +1934,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|unused
+)paren
+)paren
 DECL|function|adm1021_remote_temp
 r_static
 r_void
@@ -2084,7 +2035,7 @@ op_assign
 id|TEMP_FROM_REG
 c_func
 (paren
-id|data-&gt;remote_temp_os
+id|data-&gt;remote_temp_max
 )paren
 suffix:semicolon
 id|results
@@ -2106,7 +2057,7 @@ op_assign
 id|TEMP_FROM_REG
 c_func
 (paren
-id|data-&gt;remote_temp
+id|data-&gt;remote_temp_input
 )paren
 suffix:semicolon
 r_if
@@ -2191,13 +2142,15 @@ id|results
 l_int|3
 )braket
 op_assign
+(paren
 id|TEMP_FROM_REG
 c_func
 (paren
-id|data-&gt;remote_temp
+id|data-&gt;remote_temp_input
 )paren
 op_star
 l_int|1000
+)paren
 op_plus
 (paren
 (paren
@@ -2305,7 +2258,7 @@ op_assign
 id|prec
 suffix:semicolon
 )brace
-id|data-&gt;remote_temp_os
+id|data-&gt;remote_temp_max
 op_assign
 id|TEMP_TO_REG
 c_func
@@ -2323,7 +2276,7 @@ id|client
 comma
 id|ADM1021_REG_REMOTE_TOS_W
 comma
-id|data-&gt;remote_temp_os
+id|data-&gt;remote_temp_max
 )paren
 suffix:semicolon
 )brace
@@ -2513,6 +2466,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|unused
+)paren
+)paren
 DECL|function|adm1021_die_code
 r_static
 r_void
@@ -2602,6 +2562,13 @@ id|SENSORS_PROC_REAL_WRITE
 multiline_comment|/* Can&squot;t write to it */
 )brace
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|unused
+)paren
+)paren
 DECL|function|adm1021_alarms
 r_static
 r_void
@@ -2730,7 +2697,8 @@ suffix:semicolon
 )brace
 id|MODULE_AUTHOR
 (paren
-l_string|&quot;Frodo Looijaard &lt;frodol@dds.nl&gt; and Philip Edelbrock &lt;phil@netroedge.com&gt;&quot;
+l_string|&quot;Frodo Looijaard &lt;frodol@dds.nl&gt; and &quot;
+l_string|&quot;Philip Edelbrock &lt;phil@netroedge.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

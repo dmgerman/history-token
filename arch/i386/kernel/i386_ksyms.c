@@ -625,22 +625,6 @@ id|flush_tlb_page
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_X86_LOCAL_APIC) &amp;&amp; defined(CONFIG_PM)
-DECL|variable|set_nmi_pm_callback
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|set_nmi_pm_callback
-)paren
-suffix:semicolon
-DECL|variable|unset_nmi_pm_callback
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|unset_nmi_pm_callback
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_X86_IO_APIC
 DECL|variable|IO_APIC_get_PCI_irq_vector
 id|EXPORT_SYMBOL

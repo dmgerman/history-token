@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -2973,6 +2974,14 @@ l_string|&quot;apm: suspend was vetoed, but suspending anyway.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|device_suspend
+c_func
+(paren
+l_int|3
+comma
+id|SUSPEND_POWER_DOWN
+)paren
+suffix:semicolon
 multiline_comment|/* serialize with the timer interrupt */
 id|write_seqlock_irq
 c_func
@@ -3069,6 +3078,12 @@ l_int|0
 suffix:colon
 op_minus
 id|EIO
+suffix:semicolon
+id|device_resume
+c_func
+(paren
+id|RESUME_POWER_ON
+)paren
 suffix:semicolon
 id|pm_send_all
 c_func
@@ -3545,6 +3560,12 @@ c_func
 (paren
 op_amp
 id|xtime_lock
+)paren
+suffix:semicolon
+id|device_resume
+c_func
+(paren
+id|RESUME_POWER_ON
 )paren
 suffix:semicolon
 id|pm_send_all
