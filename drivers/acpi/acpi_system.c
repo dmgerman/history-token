@@ -479,12 +479,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;acpi_restore_register_state...&quot;
-)paren
-suffix:semicolon
 id|acpi_restore_register_state
 c_func
 (paren
@@ -494,12 +488,6 @@ id|restore_flags
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;acpi returning...&quot;
 )paren
 suffix:semicolon
 r_return
@@ -620,22 +608,10 @@ c_func
 id|state
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;acpi_leave_sleep_state...&quot;
-)paren
-suffix:semicolon
 id|acpi_leave_sleep_state
 c_func
 (paren
 id|state
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;ook&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* make sure interrupts are enabled */

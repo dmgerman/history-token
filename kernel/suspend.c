@@ -1,6 +1,5 @@
-multiline_comment|/*&n; * linux/kernel/swsusp.c&n; *&n; * This file is to realize architecture-independent&n; * machine suspend feature using pretty near only high-level routines&n; *&n; * Copyright (C) 1998-2001 Gabor Kuti &lt;seasons@fornax.hu&gt;&n; * Copyright (C) 1998,2001,2002 Pavel Machek &lt;pavel@suse.cz&gt;&n; *&n; * I&squot;d like to thank the following people for their work:&n; * &n; * Pavel Machek &lt;pavel@ucw.cz&gt;:&n; * Modifications, defectiveness pointing, being with me at the very beginning,&n; * suspend to swap space, stop all tasks.&n; *&n; * Steve Doddi &lt;dirk@loth.demon.co.uk&gt;: &n; * Support the possibility of hardware state restoring.&n; *&n; * Raph &lt;grey.havens@earthling.net&gt;:&n; * Support for preserving states of network devices and virtual console&n; * (including X and svgatextmode)&n; *&n; * Kurt Garloff &lt;garloff@suse.de&gt;:&n; * Straightened the critical function in order to prevent compilers from&n; * playing tricks with local variables.&n; *&n; * Andreas Mohr &lt;a.mohr@mailto.de&gt;&n; *&n; * Alex Badea &lt;vampire@go.ro&gt;:&n; * Fixed runaway init&n; *&n; * More state savers are welcome. Especially for the scsi layer...&n; *&n; * For TODOs,FIXMEs also look in Documentation/swsusp.txt&n; */
+multiline_comment|/*&n; * linux/kernel/swsusp.c&n; *&n; * This file is to realize architecture-independent&n; * machine suspend feature using pretty near only high-level routines&n; *&n; * Copyright (C) 1998-2001 Gabor Kuti &lt;seasons@fornax.hu&gt;&n; * Copyright (C) 1998,2001,2002 Pavel Machek &lt;pavel@suse.cz&gt;&n; *&n; * I&squot;d like to thank the following people for their work:&n; * &n; * Pavel Machek &lt;pavel@ucw.cz&gt;:&n; * Modifications, defectiveness pointing, being with me at the very beginning,&n; * suspend to swap space, stop all tasks. Port to 2.4.18-ac and 2.5.17.&n; *&n; * Steve Doddi &lt;dirk@loth.demon.co.uk&gt;: &n; * Support the possibility of hardware state restoring.&n; *&n; * Raph &lt;grey.havens@earthling.net&gt;:&n; * Support for preserving states of network devices and virtual console&n; * (including X and svgatextmode)&n; *&n; * Kurt Garloff &lt;garloff@suse.de&gt;:&n; * Straightened the critical function in order to prevent compilers from&n; * playing tricks with local variables.&n; *&n; * Andreas Mohr &lt;a.mohr@mailto.de&gt;&n; *&n; * Alex Badea &lt;vampire@go.ro&gt;:&n; * Fixed runaway init&n; *&n; * More state savers are welcome. Especially for the scsi layer...&n; *&n; * For TODOs,FIXMEs also look in Documentation/swsusp.txt&n; */
 multiline_comment|/*&n; * TODO:&n; *&n; * - we should launch a kernel_thread to process suspend request, cleaning up&n; * bdflush from this task. (check apm.c for something similar).&n; */
-multiline_comment|/* FIXME: try to poison to memory */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swapctl.h&gt;
@@ -170,7 +169,7 @@ id|pm_suspend_state
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Suspend pagedir is allocated before final copy, therefore it&n;   must be freed after resume &n;&n;   Warning: this is evil. There are actually two pagedirs at time of&n;   resume. One is &quot;pagedir_save&quot;, which is empty frame allocated at&n;   time of suspend, that must be freed. Second is &quot;pagedir_nosave&quot;, &n;   allocated at time of resume, that travells through memory not to&n;   collide with anything.&n; */
+multiline_comment|/* Suspend pagedir is allocated before final copy, therefore it&n;   must be freed after resume &n;&n;   Warning: this is evil. There are actually two pagedirs at time of&n;   resume. One is &quot;pagedir_save&quot;, which is empty frame allocated at&n;   time of suspend, that must be freed. Second is &quot;pagedir_nosave&quot;, &n;   allocated at time of resume, that travels through memory not to&n;   collide with anything.&n; */
 DECL|variable|__nosavedata
 r_static
 id|suspend_pagedir_t
@@ -237,7 +236,7 @@ id|sh
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * XXX: We try to keep some more pages free so that I/O operations succeed&n; * without paging. Might this be more?&n; *&n; * [If this is not enough, might it corrupt our data silently?]&n; */
+multiline_comment|/*&n; * XXX: We try to keep some more pages free so that I/O operations succeed&n; * without paging. Might this be more?&n; */
 DECL|macro|PAGES_FOR_IO
 mdefine_line|#define PAGES_FOR_IO&t;512
 DECL|variable|name_suspend
@@ -735,7 +734,6 @@ c_func
 r_void
 )paren
 (brace
-singleline_comment|//&t;sync_dev(0); FIXME
 r_while
 c_loop
 (paren
@@ -2582,7 +2580,6 @@ c_func
 l_string|&quot;Not all processes stopped!&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;panic(&quot;Some processes survived?&bslash;n&quot;);
 id|thaw_processes
 c_func
 (paren
@@ -2601,229 +2598,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Free as much memory as possible&n; */
-DECL|variable|eaten_memory
-r_static
-r_void
-op_star
-op_star
-id|eaten_memory
-suffix:semicolon
-DECL|function|eat_memory
-r_static
-r_void
-id|eat_memory
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-r_void
-op_star
-op_star
-id|c
-op_assign
-id|eaten_memory
-comma
-op_star
-id|m
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Eating pages &quot;
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|m
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|get_free_page
-c_func
-(paren
-id|GFP_HIGHUSER
-)paren
-)paren
-)paren
-(brace
-id|memset
-c_func
-(paren
-id|m
-comma
-l_int|0
-comma
-id|PAGE_SIZE
-)paren
-suffix:semicolon
-id|eaten_memory
-op_assign
-id|m
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|i
-op_mod
-l_int|100
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;.(%d)&quot;
-comma
-id|i
-)paren
-suffix:semicolon
-op_star
-id|eaten_memory
-op_assign
-id|c
-suffix:semicolon
-id|c
-op_assign
-id|eaten_memory
-suffix:semicolon
-id|i
-op_increment
-suffix:semicolon
-macro_line|#if 1
-multiline_comment|/* 40000 == 160MB */
-multiline_comment|/* 10000 for 64MB */
-multiline_comment|/* 2500 for  16MB */
-r_if
-c_cond
-(paren
-id|i
-OG
-l_int|40000
-)paren
-r_break
-suffix:semicolon
-macro_line|#endif
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;(%dK)&bslash;n&quot;
-comma
-id|i
-op_star
-l_int|4
-)paren
-suffix:semicolon
-)brace
-DECL|function|free_memory
-r_static
-r_void
-id|free_memory
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-r_void
-op_star
-op_star
-id|c
-op_assign
-id|eaten_memory
-comma
-op_star
-id|f
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Freeing pages &quot;
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|c
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|i
-op_mod
-l_int|5000
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;.&quot;
-)paren
-suffix:semicolon
-id|f
-op_assign
-op_star
-id|c
-suffix:semicolon
-id|c
-op_assign
-op_star
-id|c
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|f
-)paren
-(brace
-id|free_page
-c_func
-(paren
-(paren
-r_int
-)paren
-id|f
-)paren
-suffix:semicolon
-id|i
-op_increment
-suffix:semicolon
-)brace
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;(%dK)&bslash;n&quot;
-comma
-id|i
-op_star
-l_int|4
-)paren
-suffix:semicolon
-id|eaten_memory
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Try to free as much memory as possible, but do not OOM-kill anyone&n; *&n; * Notice: all userland should be stopped at this point, or livelock is possible.&n; */
 DECL|function|free_some_memory
 r_static
@@ -2834,7 +2608,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if 1
 id|PRINTS
 c_func
 (paren
@@ -2870,24 +2643,6 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-l_string|&quot;Using memeat&bslash;n&quot;
-)paren
-suffix:semicolon
-id|eat_memory
-c_func
-(paren
-)paren
-suffix:semicolon
-id|free_memory
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* Make disk drivers accept operations, again */
 DECL|function|drivers_unsuspend
@@ -3302,11 +3057,6 @@ l_string|&quot;Count and copy returned another count than when counting?&bslash;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * End of critical section. From now on, we can write to memory,&n;&t; * but we should not touch disk. This specially means we must _not_&n;&t; * touch swap space! Except we must write out our image of course.&n;&t; *&n;&t; * Following line enforces not writing to disk until we choose.&n;&t; */
-id|suspend_device
-op_assign
-id|NODEV
-suffix:semicolon
-multiline_comment|/* We do not want any writes, thanx */
 id|drivers_unsuspend
 c_func
 (paren
@@ -4017,7 +3767,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|does_collide
-mdefine_line|#define does_collide(addr)&t;&bslash;&n;&t;&t;does_collide_order(pagedir_nosave, addr, 0)
+mdefine_line|#define does_collide(addr) does_collide_order(pagedir_nosave, addr, 0)
 multiline_comment|/*&n; * Returns true if given address/order collides with any orig_address &n; */
 DECL|function|does_collide_order
 r_static
@@ -4187,7 +3937,7 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* This is deep magic&n;&t;   We have to avoid recursion (not to overflow kernel stack), and that&squot;s why&n;&t;   code looks pretty cryptic&n;&t;*/
+multiline_comment|/*&n;&t; * We have to avoid recursion (not to overflow kernel stack),&n;&t; * and that&squot;s why code looks pretty cryptic &n;&t; */
 id|suspend_pagedir_t
 op_star
 id|new_pagedir

@@ -460,6 +460,7 @@ id|error
 suffix:semicolon
 )brace
 DECL|function|pci_pm_suspend
+r_static
 r_int
 id|pci_pm_suspend
 c_func
@@ -517,6 +518,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pci_pm_resume
+r_static
 r_int
 id|pci_pm_resume
 c_func
