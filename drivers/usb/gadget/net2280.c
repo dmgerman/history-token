@@ -5070,6 +5070,7 @@ l_int|1
 op_lshift
 id|GENERATE_RESUME
 comma
+op_amp
 id|dev-&gt;usb-&gt;usbstat
 )paren
 suffix:semicolon
