@@ -396,6 +396,12 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+id|iounmap
+c_func
+(paren
+id|hc_registers
+)paren
+suffix:semicolon
 id|release_mem_region
 c_func
 (paren
