@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  include/asm-s390/spinlock.h&n; *&n; *  S390 version&n
 macro_line|#ifndef __ASM_SPINLOCK_H
 DECL|macro|__ASM_SPINLOCK_H
 mdefine_line|#define __ASM_SPINLOCK_H
+multiline_comment|/*&n; * Grmph, take care of %&amp;#! user space programs that include&n; * asm/spinlock.h. The diagnose is only available in kernel&n; * context.&n; */
+macro_line|#include &lt;asm/lowcore.h&gt;
 multiline_comment|/*&n; * Simple spin lock operations.  There are two variants, one clears IRQ&squot;s&n; * on the local processor, one does not.&n; *&n; * We make no fairness assumptions. They have a cost.&n; */
 r_typedef
 r_struct
@@ -199,6 +201,8 @@ DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0, 0 }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x)&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
+DECL|macro|rwlock_is_locked
+mdefine_line|#define rwlock_is_locked(x) ((x)-&gt;lock != 0)
 DECL|macro|_raw_read_lock
 mdefine_line|#define _raw_read_lock(rw)   &bslash;&n;        asm volatile(&quot;   lg    2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: # diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: nihh  2,0x7fff&bslash;n&quot; /* clear high (=write) bit */ &bslash;&n;                     &quot;   la    3,1(2)&bslash;n&quot;   /* one more reader */  &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; /* try to write new value */ &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
 DECL|macro|_raw_read_unlock

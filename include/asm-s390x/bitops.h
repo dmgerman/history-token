@@ -3238,6 +3238,8 @@ id|r
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * hweightN: returns the hamming weight (i.e. the number&n; * of bits set) of a N-bit word&n; */
+DECL|macro|hweight64
+mdefine_line|#define hweight64(x)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __x = (x);&t;&t;&t;&t;&bslash;&n;&t;unsigned int __w;&t;&t;&t;&t;&t;&bslash;&n;&t;__w = generic_hweight32((unsigned int) __x);&t;&t;&bslash;&n;&t;__w += generic_hweight32((unsigned int) (__x&gt;&gt;32));&t;&bslash;&n;&t;__w;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|hweight32
 mdefine_line|#define hweight32(x) generic_hweight32(x)
 DECL|macro|hweight16
