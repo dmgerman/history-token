@@ -2034,10 +2034,17 @@ c_cond
 op_logical_neg
 id|k
 )paren
+(brace
+id|kfree
+(paren
+id|longhaul_table
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
