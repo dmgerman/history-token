@@ -157,6 +157,9 @@ l_char|&squot;%&squot;
 r_return
 l_int|0
 suffix:semicolon
+id|p
+op_increment
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
