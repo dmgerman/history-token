@@ -4345,6 +4345,11 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
+DECL|member|gen_driver
+r_struct
+id|device_driver
+id|gen_driver
+suffix:semicolon
 DECL|member|drives
 r_struct
 id|list_head
