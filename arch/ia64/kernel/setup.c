@@ -1388,7 +1388,7 @@ id|family
 comma
 l_string|&quot;Itanium 2&quot;
 comma
-l_int|9
+l_int|10
 )paren
 suffix:semicolon
 r_break
@@ -2099,7 +2099,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|my_cpu_data-&gt;family
+id|my_cpu_info-&gt;family
 op_eq
 l_int|0x1f
 )paren
@@ -2139,7 +2139,6 @@ op_amp
 l_int|0x80
 )paren
 )paren
-(brace
 id|PAL_CALL_PHYS
 c_func
 (paren
@@ -2158,7 +2157,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 macro_line|#endif

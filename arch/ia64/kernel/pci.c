@@ -872,8 +872,16 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* phase 1 fixups (after buses scanned) */
 r_return
+l_int|0
 suffix:semicolon
 )brace
+DECL|variable|pcibios_init
+id|subsys_initcall
+c_func
+(paren
+id|pcibios_init
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *  Called after each bus is probed, but before its children&n; *  are examined.&n; */
 r_void
 id|__init
