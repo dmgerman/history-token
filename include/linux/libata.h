@@ -790,6 +790,16 @@ r_int
 r_int
 id|cursect
 suffix:semicolon
+DECL|member|nbytes
+r_int
+r_int
+id|nbytes
+suffix:semicolon
+DECL|member|curbytes
+r_int
+r_int
+id|curbytes
+suffix:semicolon
 DECL|member|cursg
 r_int
 r_int
