@@ -2890,13 +2890,6 @@ c_func
 id|clear_inode
 )paren
 suffix:semicolon
-DECL|variable|___strtok
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|___strtok
-)paren
-suffix:semicolon
 DECL|variable|init_special_inode
 id|EXPORT_SYMBOL
 c_func
