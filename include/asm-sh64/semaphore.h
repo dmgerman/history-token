@@ -24,23 +24,10 @@ DECL|member|wait
 id|wait_queue_head_t
 id|wait
 suffix:semicolon
-macro_line|#ifdef WAITQUEUE_DEBUG
-DECL|member|__magic
-r_int
-id|__magic
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
-macro_line|#ifdef WAITQUEUE_DEBUG
-DECL|macro|__SEM_DEBUG_INIT
-macro_line|# define __SEM_DEBUG_INIT(name) &bslash;&n;&t;&t;, (int)&amp;(name).__magic
-macro_line|#else
-DECL|macro|__SEM_DEBUG_INIT
-macro_line|# define __SEM_DEBUG_INIT(name)
-macro_line|#endif
 DECL|macro|__SEMAPHORE_INITIALIZER
-mdefine_line|#define __SEMAPHORE_INITIALIZER(name,count) &bslash;&n;{ ATOMIC_INIT(count), 0, __WAIT_QUEUE_HEAD_INITIALIZER((name).wait) &bslash;&n;&t;__SEM_DEBUG_INIT(name) }
+mdefine_line|#define __SEMAPHORE_INITIALIZER(name, n)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.count&t;&t;= ATOMIC_INIT(n),&t;&t;&t;&t;&bslash;&n;&t;.sleepers&t;= 0,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.wait&t;&t;= __WAIT_QUEUE_HEAD_INITIALIZER((name).wait)&t;&bslash;&n;}
 DECL|macro|__MUTEX_INITIALIZER
 mdefine_line|#define __MUTEX_INITIALIZER(name) &bslash;&n;&t;__SEMAPHORE_INITIALIZER(name,1)
 DECL|macro|__DECLARE_SEMAPHORE_GENERIC
@@ -85,16 +72,6 @@ op_amp
 id|sem-&gt;wait
 )paren
 suffix:semicolon
-macro_line|#ifdef WAITQUEUE_DEBUG
-id|sem-&gt;__magic
-op_assign
-(paren
-r_int
-)paren
-op_amp
-id|sem-&gt;__magic
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|init_MUTEX
 r_static
@@ -237,14 +214,6 @@ op_star
 id|sem
 )paren
 (brace
-macro_line|#ifdef WAITQUEUE_DEBUG
-id|CHECK_MAGIC
-c_func
-(paren
-id|sem-&gt;__magic
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -282,14 +251,6 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef WAITQUEUE_DEBUG
-id|CHECK_MAGIC
-c_func
-(paren
-id|sem-&gt;__magic
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -332,14 +293,6 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef WAITQUEUE_DEBUG
-id|CHECK_MAGIC
-c_func
-(paren
-id|sem-&gt;__magic
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -378,14 +331,6 @@ op_star
 id|sem
 )paren
 (brace
-macro_line|#ifdef WAITQUEUE_DEBUG
-id|CHECK_MAGIC
-c_func
-(paren
-id|sem-&gt;__magic
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
