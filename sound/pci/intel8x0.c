@@ -143,6 +143,14 @@ id|buggy_irq
 id|SNDRV_CARDS
 )braket
 suffix:semicolon
+DECL|variable|xbox
+r_static
+r_int
+id|xbox
+(braket
+id|SNDRV_CARDS
+)braket
+suffix:semicolon
 DECL|variable|boot_devs
 r_static
 r_int
@@ -266,6 +274,26 @@ c_func
 id|buggy_irq
 comma
 l_string|&quot;Enable workaround for buggy interrupts on some motherboards.&quot;
+)paren
+suffix:semicolon
+id|module_param_array
+c_func
+(paren
+id|xbox
+comma
+r_bool
+comma
+id|boot_devs
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|xbox
+comma
+l_string|&quot;Set to 1 for Xbox, if you have problems with the AC&squot;97 codec detection.&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  Direct registers&n; */
@@ -1214,6 +1242,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* workaround for buggy mobos */
+DECL|member|xbox
+r_int
+id|xbox
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* workaround for Xbox AC&squot;97 detection */
 DECL|member|ac97_bus
 id|ac97_bus_t
 op_star
@@ -8762,6 +8797,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|chip-&gt;xbox
+)paren
+id|ac97.scaps
+op_or_assign
+id|AC97_SCAP_DETECT_BY_VENDOR
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|chip-&gt;device_type
 op_ne
 id|DEVICE_ALI
@@ -13364,6 +13408,18 @@ id|dev
 )braket
 )paren
 id|chip-&gt;buggy_irq
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|xbox
+(braket
+id|dev
+)braket
+)paren
+id|chip-&gt;xbox
 op_assign
 l_int|1
 suffix:semicolon

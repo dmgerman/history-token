@@ -580,6 +580,8 @@ DECL|macro|AC97_SCAP_INDEP_SDIN
 mdefine_line|#define AC97_SCAP_INDEP_SDIN&t;(1&lt;&lt;6)&t;/* independent SDIN */
 DECL|macro|AC97_SCAP_INV_EAPD
 mdefine_line|#define AC97_SCAP_INV_EAPD&t;(1&lt;&lt;7)&t;/* inverted EAPD */
+DECL|macro|AC97_SCAP_DETECT_BY_VENDOR
+mdefine_line|#define AC97_SCAP_DETECT_BY_VENDOR (1&lt;&lt;8) /* use vendor registers for read tests */
 multiline_comment|/* ac97-&gt;flags */
 DECL|macro|AC97_HAS_PC_BEEP
 mdefine_line|#define AC97_HAS_PC_BEEP&t;(1&lt;&lt;0)&t;/* force PC Speaker usage */
