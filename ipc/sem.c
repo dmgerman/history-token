@@ -5290,6 +5290,7 @@ id|u-&gt;semadj
 id|i
 )braket
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t; * Range checks of the new semaphore value,&n;&t;&t;&t;&t; * not defined by sus:&n;&t;&t;&t;&t; * - Some unices ignore the undo entirely&n;&t;&t;&t;&t; *   (e.g. HP UX 11i 11.22, Tru64 V5.1)&n;&t;&t;&t;&t; * - some cap the value (e.g. FreeBSD caps&n;&t;&t;&t;&t; *   at 0, but doesn&squot;t enforce SEMVMX)&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * Linux caps the semaphore value, both at 0&n;&t;&t;&t;&t; * and at SEMVMX.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * &t;Manfred &lt;manfred@colorfullife.com&gt;&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5301,7 +5302,17 @@ id|sem-&gt;semval
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* shouldn&squot;t happen */
+r_if
+c_cond
+(paren
+id|sem-&gt;semval
+OG
+id|SEMVMX
+)paren
+id|sem-&gt;semval
+op_assign
+id|SEMVMX
+suffix:semicolon
 id|sem-&gt;sempid
 op_assign
 id|current-&gt;tgid
