@@ -3135,6 +3135,14 @@ r_return
 id|pdev-&gt;dev.bus_id
 suffix:semicolon
 )brace
+multiline_comment|/* Some archs want to see the pretty pci name, so use this macro */
+macro_line|#ifdef CONFIG_PCI_NAMES
+DECL|macro|pci_pretty_name
+mdefine_line|#define pci_pretty_name(dev) ((dev)-&gt;pretty_name)
+macro_line|#else
+DECL|macro|pci_pretty_name
+mdefine_line|#define pci_pretty_name(dev) &quot;&quot;
+macro_line|#endif
 multiline_comment|/*&n; *  The world is not perfect and supplies us with broken PCI devices.&n; *  For at least a part of these bugs we need a work-around, so both&n; *  generic (drivers/pci/quirks.c) and per-architecture code can define&n; *  fixup hooks to be called for particular buggy devices.&n; */
 DECL|struct|pci_fixup
 r_struct
