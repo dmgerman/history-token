@@ -8298,6 +8298,12 @@ id|par-&gt;external_display
 op_assign
 id|external
 suffix:semicolon
+id|info-&gt;flags
+op_assign
+id|FBINFO_DEFAULT
+op_or
+id|FBINFO_HWACCEL_YPAN
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -8380,6 +8386,14 @@ comma
 l_string|&quot;MagicGraph 256AV&quot;
 )paren
 suffix:semicolon
+id|info-&gt;flags
+op_or_assign
+id|FBINFO_HWACCEL_IMAGEBLIT
+op_or
+id|FBINFO_HWACCEL_COPYAREA
+op_or
+id|FBINFO_HWACCEL_FILLRECT
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -8392,6 +8406,14 @@ id|info-&gt;fix.id
 comma
 l_string|&quot;MagicGraph 256AV+&quot;
 )paren
+suffix:semicolon
+id|info-&gt;flags
+op_or_assign
+id|FBINFO_HWACCEL_IMAGEBLIT
+op_or
+id|FBINFO_HWACCEL_COPYAREA
+op_or
+id|FBINFO_HWACCEL_FILLRECT
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -8406,6 +8428,14 @@ comma
 l_string|&quot;MagicGraph 256ZX&quot;
 )paren
 suffix:semicolon
+id|info-&gt;flags
+op_or_assign
+id|FBINFO_HWACCEL_IMAGEBLIT
+op_or
+id|FBINFO_HWACCEL_COPYAREA
+op_or
+id|FBINFO_HWACCEL_FILLRECT
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -8418,6 +8448,14 @@ id|info-&gt;fix.id
 comma
 l_string|&quot;MagicGraph 256XL+&quot;
 )paren
+suffix:semicolon
+id|info-&gt;flags
+op_or_assign
+id|FBINFO_HWACCEL_IMAGEBLIT
+op_or
+id|FBINFO_HWACCEL_COPYAREA
+op_or
+id|FBINFO_HWACCEL_FILLRECT
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -8450,18 +8488,6 @@ id|info-&gt;fbops
 op_assign
 op_amp
 id|neofb_ops
-suffix:semicolon
-id|info-&gt;flags
-op_assign
-id|FBINFO_DEFAULT
-op_or
-id|FBINFO_HWACCEL_YPAN
-op_or
-id|FBINFO_HWACCEL_IMAGEBLIT
-op_or
-id|FBINFO_HWACCEL_COPYAREA
-op_or
-id|FBINFO_HWACCEL_COPYAREA
 suffix:semicolon
 id|info-&gt;pseudo_palette
 op_assign
