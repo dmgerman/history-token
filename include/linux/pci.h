@@ -82,11 +82,11 @@ mdefine_line|#define  PCI_HEADER_TYPE_CARDBUS 2
 DECL|macro|PCI_BIST
 mdefine_line|#define PCI_BIST&t;&t;0x0f&t;/* 8 bits */
 DECL|macro|PCI_BIST_CODE_MASK
-mdefine_line|#define PCI_BIST_CODE_MASK&t;0x0f&t;/* Return result */
+mdefine_line|#define  PCI_BIST_CODE_MASK&t;0x0f&t;/* Return result */
 DECL|macro|PCI_BIST_START
-mdefine_line|#define PCI_BIST_START&t;&t;0x40&t;/* 1 to start BIST, 2 secs or less */
+mdefine_line|#define  PCI_BIST_START&t;&t;0x40&t;/* 1 to start BIST, 2 secs or less */
 DECL|macro|PCI_BIST_CAPABLE
-mdefine_line|#define PCI_BIST_CAPABLE&t;0x80&t;/* 1 if BIST capable */
+mdefine_line|#define  PCI_BIST_CAPABLE&t;0x80&t;/* 1 if BIST capable */
 multiline_comment|/*&n; * Base addresses specify locations in memory or I/O space.&n; * Decoded size can be determined by writing a value of &n; * 0xffffffff to the register, and reading it back.  Only &n; * 1 bits are decoded.&n; */
 DECL|macro|PCI_BASE_ADDRESS_0
 mdefine_line|#define PCI_BASE_ADDRESS_0&t;0x10&t;/* 32 bits */
@@ -302,6 +302,8 @@ DECL|macro|PCI_CAP_ID_MSI
 mdefine_line|#define  PCI_CAP_ID_MSI&t;&t;0x05&t;/* Message Signalled Interrupts */
 DECL|macro|PCI_CAP_ID_CHSWP
 mdefine_line|#define  PCI_CAP_ID_CHSWP&t;0x06&t;/* CompactPCI HotSwap */
+DECL|macro|PCI_CAP_ID_PCIX
+mdefine_line|#define  PCI_CAP_ID_PCIX&t;0x07&t;/* PCI-X */
 DECL|macro|PCI_CAP_LIST_NEXT
 mdefine_line|#define PCI_CAP_LIST_NEXT&t;1&t;/* Next capability in the list */
 DECL|macro|PCI_CAP_FLAGS
@@ -402,6 +404,15 @@ DECL|macro|PCI_AGP_COMMAND_RATE1
 mdefine_line|#define  PCI_AGP_COMMAND_RATE1&t;0x0001&t;/* Use 1x rate */
 DECL|macro|PCI_AGP_SIZEOF
 mdefine_line|#define PCI_AGP_SIZEOF&t;&t;12
+multiline_comment|/* Vital Product Data */
+DECL|macro|PCI_VPD_ADDR
+mdefine_line|#define PCI_VPD_ADDR&t;&t;2&t;/* Address to access (15 bits!) */
+DECL|macro|PCI_VPD_ADDR_MASK
+mdefine_line|#define  PCI_VPD_ADDR_MASK&t;0x7fff&t;/* Address mask */
+DECL|macro|PCI_VPD_ADDR_F
+mdefine_line|#define  PCI_VPD_ADDR_F&t;&t;0x8000&t;/* Write 0, 1 indicates completion */
+DECL|macro|PCI_VPD_DATA
+mdefine_line|#define PCI_VPD_DATA&t;&t;4&t;/* 32-bits of data returned here */
 multiline_comment|/* Slot Identification */
 DECL|macro|PCI_SID_ESR
 mdefine_line|#define PCI_SID_ESR&t;&t;2&t;/* Expansion Slot Register */
@@ -432,6 +443,58 @@ DECL|macro|PCI_MSI_DATA_32
 mdefine_line|#define PCI_MSI_DATA_32&t;&t;8&t;/* 16 bits of data for 32-bit devices */
 DECL|macro|PCI_MSI_DATA_64
 mdefine_line|#define PCI_MSI_DATA_64&t;&t;12&t;/* 16 bits of data for 64-bit devices */
+multiline_comment|/* CompactPCI Hotswap Register */
+DECL|macro|PCI_CHSWP_CSR
+mdefine_line|#define PCI_CHSWP_CSR&t;&t;2&t;/* Control and Status Register */
+DECL|macro|PCI_CHSWP_DHA
+mdefine_line|#define  PCI_CHSWP_DHA&t;&t;0x01&t;/* Device Hiding Arm */
+DECL|macro|PCI_CHSWP_EIM
+mdefine_line|#define  PCI_CHSWP_EIM&t;&t;0x02&t;/* ENUM# Signal Mask */
+DECL|macro|PCI_CHSWP_PIE
+mdefine_line|#define  PCI_CHSWP_PIE&t;&t;0x04&t;/* Pending Insert or Extract */
+DECL|macro|PCI_CHSWP_LOO
+mdefine_line|#define  PCI_CHSWP_LOO&t;&t;0x08&t;/* LED On / Off */
+DECL|macro|PCI_CHSWP_PI
+mdefine_line|#define  PCI_CHSWP_PI&t;&t;0x30&t;/* Programming Interface */
+DECL|macro|PCI_CHSWP_EXT
+mdefine_line|#define  PCI_CHSWP_EXT&t;&t;0x40&t;/* ENUM# status - extraction */
+DECL|macro|PCI_CHSWP_INS
+mdefine_line|#define  PCI_CHSWP_INS&t;&t;0x80&t;/* ENUM# status - insertion */
+multiline_comment|/* PCI-X registers */
+DECL|macro|PCI_X_CMD
+mdefine_line|#define PCI_X_CMD&t;&t;2&t;/* Modes &amp; Features */
+DECL|macro|PCI_X_CMD_DPERR_E
+mdefine_line|#define  PCI_X_CMD_DPERR_E&t;0x0001&t;/* Data Parity Error Recovery Enable */
+DECL|macro|PCI_X_CMD_ERO
+mdefine_line|#define  PCI_X_CMD_ERO&t;&t;0x0002&t;/* Enable Relaxed Ordering */
+DECL|macro|PCI_X_CMD_MAX_READ
+mdefine_line|#define  PCI_X_CMD_MAX_READ&t;0x000c&t;/* Max Memory Read Byte Count */
+DECL|macro|PCI_X_CMD_MAX_SPLIT
+mdefine_line|#define  PCI_X_CMD_MAX_SPLIT&t;0x0070&t;/* Max Outstanding Split Transactions */
+DECL|macro|PCI_X_DEVFN
+mdefine_line|#define PCI_X_DEVFN&t;&t;4&t;/* A copy of devfn. */
+DECL|macro|PCI_X_BUSNR
+mdefine_line|#define PCI_X_BUSNR&t;&t;5&t;/* Bus segment number */
+DECL|macro|PCI_X_STATUS
+mdefine_line|#define PCI_X_STATUS&t;&t;6&t;/* PCI-X capabilities */
+DECL|macro|PCI_X_STATUS_64BIT
+mdefine_line|#define  PCI_X_STATUS_64BIT&t;0x0001&t;/* 64-bit device */
+DECL|macro|PCI_X_STATUS_133MHZ
+mdefine_line|#define  PCI_X_STATUS_133MHZ&t;0x0002&t;/* 133 MHz capable */
+DECL|macro|PCI_X_STATUS_SPL_DISC
+mdefine_line|#define  PCI_X_STATUS_SPL_DISC&t;0x0004&t;/* Split Completion Discarded */
+DECL|macro|PCI_X_STATUS_UNX_SPL
+mdefine_line|#define  PCI_X_STATUS_UNX_SPL&t;0x0008&t;/* Unexpected Split Completion */
+DECL|macro|PCI_X_STATUS_COMPLEX
+mdefine_line|#define  PCI_X_STATUS_COMPLEX&t;0x0010&t;/* Device Complexity */
+DECL|macro|PCI_X_STATUS_MAX_READ
+mdefine_line|#define  PCI_X_STATUS_MAX_READ&t;0x0060&t;/* Designed Maximum Memory Read Count */
+DECL|macro|PCI_X_STATUS_MAX_SPLIT
+mdefine_line|#define  PCI_X_STATUS_MAX_SPLIT&t;0x0380&t;/* Design Max Outstanding Split Trans */
+DECL|macro|PCI_X_STATUS_MAX_CUM
+mdefine_line|#define  PCI_X_STATUS_MAX_CUM&t;0x1c00&t;/* Designed Max Cumulative Read Size */
+DECL|macro|PCI_X_STATUS_SPL_ERR
+mdefine_line|#define  PCI_X_STATUS_SPL_ERR&t;0x2000&t;/* Rcvd Split Completion Error Msg */
 multiline_comment|/* Include the ID list */
 macro_line|#include &lt;linux/pci_ids.h&gt;
 multiline_comment|/*&n; * The PCI interface treats multi-function devices as independent&n; * devices.  The slot/function address of each device is encoded&n; * in a single byte as follows:&n; *&n; *&t;7:3 = slot&n; *&t;2:0 = function&n; */

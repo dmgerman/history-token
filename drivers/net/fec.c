@@ -508,6 +508,17 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_static
+r_void
+id|fec_set_mac_address
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* MII processing.  We keep this as simple as possible.  Requests are&n; * placed on the list (if there is room).  When the request is finished&n; * by the MII, an optional function may be called.&n; */
 DECL|struct|mii_list
 r_typedef
@@ -5647,6 +5658,12 @@ op_assign
 id|dev-&gt;priv
 suffix:semicolon
 multiline_comment|/* I should reset the ring buffers here, but I don&squot;t yet know&n;&t; * a simple way to do that.&n;&t; */
+id|fec_set_mac_address
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|fep-&gt;sequence_done
 op_assign
 l_int|0
@@ -5686,6 +5703,7 @@ id|phy_cmd_config
 )paren
 suffix:semicolon
 multiline_comment|/* display configuration */
+multiline_comment|/* FIXME: use netif_carrier_{on,off} ; this polls&n;&t;&t; * until link is up which is wrong...  could be&n;&t;&t; * 30 seconds or more we are trapped in here. -jgarzik&n;&t;&t; */
 r_while
 c_loop
 (paren
@@ -6080,7 +6098,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Set a MAC change in hardware.&n; */
 r_static
-r_int
+r_void
 DECL|function|fec_set_mac_address
 id|fec_set_mac_address
 c_func
@@ -6089,21 +6107,10 @@ r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_void
-op_star
-id|p
 )paren
 (brace
 r_int
 id|i
-suffix:semicolon
-r_struct
-id|sockaddr
-op_star
-id|addr
-op_assign
-id|p
 suffix:semicolon
 r_volatile
 id|fec_t
@@ -6114,31 +6121,7 @@ id|fecp
 op_assign
 id|fec_hwp
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|netif_running
-c_func
-(paren
-id|dev
-)paren
-)paren
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-multiline_comment|/* Set the device copy of the Ethernet address&n;&t;*/
-id|memcpy
-c_func
-(paren
-id|dev-&gt;dev_addr
-comma
-id|addr-&gt;sa_data
-comma
-id|dev-&gt;addr_len
-)paren
-suffix:semicolon
-multiline_comment|/* Set our copy of the Ethernet address &n;&t;*/
+multiline_comment|/* Set our copy of the Ethernet address */
 r_for
 c_loop
 (paren
@@ -6157,7 +6140,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|my_enet_addr
 (braket
 id|i
@@ -6183,8 +6165,7 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
-)brace
-multiline_comment|/* Set station address.&n;&t;*/
+multiline_comment|/* Set station address. */
 id|fecp-&gt;fec_addr_low
 op_assign
 (paren
@@ -6209,9 +6190,6 @@ l_int|2
 )braket
 op_lshift
 l_int|16
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize the FEC Ethernet on 860T (or ColdFire 5272).&n; */
@@ -6354,7 +6332,7 @@ id|fecp-&gt;fec_r_des_active
 op_assign
 l_int|0x01000000
 suffix:semicolon
-multiline_comment|/* Set the Ethernet address.  If using multiple Enets on the 8xx,&n;&t; * this needs some work to get unique addresses.&n;&t; */
+multiline_comment|/* Set the Ethernet address.  If using multiple Enets on the 8xx,&n;&t; * this needs some work to get unique addresses.&n;&t; *&n;&t; * This is our default MAC address unless the user changes&n;&t; * it via eth_mac_addr (our dev-&gt;set_mac_addr handler).&n;&t; */
 id|fec_get_mac
 c_func
 (paren
@@ -6651,10 +6629,6 @@ suffix:semicolon
 id|dev-&gt;set_multicast_list
 op_assign
 id|set_multicast_list
-suffix:semicolon
-id|dev-&gt;set_mac_address
-op_assign
-id|fec_set_mac_address
 suffix:semicolon
 r_for
 c_loop

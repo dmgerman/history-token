@@ -1061,22 +1061,26 @@ id|AUTO_IRQS
 op_assign
 (brace
 (brace
+dot
 id|handler
-suffix:colon
+op_assign
 id|ami_badint
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;spurious int&quot;
 )brace
 comma
 (brace
+dot
 id|handler
-suffix:colon
+op_assign
 id|ami_int1
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;int1 handler&quot;
 )brace
 comma
@@ -1087,32 +1091,38 @@ multiline_comment|/* CIAA */
 )brace
 comma
 (brace
+dot
 id|handler
-suffix:colon
+op_assign
 id|ami_int3
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;int3 handler&quot;
 )brace
 comma
 (brace
+dot
 id|handler
-suffix:colon
+op_assign
 id|ami_int4
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;int4 handler&quot;
 )brace
 comma
 (brace
+dot
 id|handler
-suffix:colon
+op_assign
 id|ami_int5
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;int5 handler&quot;
 )brace
 comma
@@ -1123,12 +1133,14 @@ multiline_comment|/* CIAB */
 )brace
 comma
 (brace
+dot
 id|handler
-suffix:colon
+op_assign
 id|ami_int7
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;int7 handler&quot;
 )brace
 comma
