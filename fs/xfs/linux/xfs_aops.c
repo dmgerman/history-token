@@ -4530,13 +4530,10 @@ c_func
 id|bh
 )paren
 )paren
-id|clear_bit
+id|clear_buffer_unwritten
 c_func
 (paren
-id|BH_Unwritten
-comma
-op_amp
-id|bh-&gt;b_state
+id|bh
 )paren
 suffix:semicolon
 r_else
