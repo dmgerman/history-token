@@ -1,10 +1,12 @@
 multiline_comment|/*&n; * arch/ppc/platforms/sbc82xx.c&n; *&n; * SBC82XX platform support&n; *&n; * Author: Guy Streeter &lt;streeter@redhat.com&gt;&n; *&n; * Derived from: est8260_setup.c by Allen Curtis, ONZ&n; *&n; * Copyright 2004 Red Hat, Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
+macro_line|#include &lt;asm/immap_8260.h&gt;
 DECL|variable|callback_setup_arch
 r_static
 r_void
@@ -93,8 +95,8 @@ comma
 l_string|&quot;vendor&bslash;t&bslash;t: Wind River&bslash;n&quot;
 l_string|&quot;machine&bslash;t&bslash;t: SBC PowerQUICC II&bslash;n&quot;
 l_string|&quot;&bslash;n&quot;
-l_string|&quot;mem size&bslash;t&bslash;t: 0x%08x&bslash;n&quot;
-l_string|&quot;console baud&bslash;t&bslash;t: %d&bslash;n&quot;
+l_string|&quot;mem size&bslash;t&bslash;t: 0x%08lx&bslash;n&quot;
+l_string|&quot;console baud&bslash;t&bslash;t: %ld&bslash;n&quot;
 l_string|&quot;&bslash;n&quot;
 comma
 id|binfo-&gt;bi_memsize
@@ -144,6 +146,14 @@ c_func
 r_void
 )paren
 (brace
+r_volatile
+id|memctl8260_t
+op_star
+id|mc
+op_assign
+op_amp
+id|immr-&gt;im_memctl
+suffix:semicolon
 id|TODC_INIT
 c_func
 (paren
@@ -157,6 +167,19 @@ id|SBC82xx_TODC_NVRAM_ADDR
 comma
 l_int|0
 )paren
+suffix:semicolon
+multiline_comment|/* Set up CS11 for RTC chip */
+id|mc-&gt;memc_br11
+op_assign
+l_int|0
+suffix:semicolon
+id|mc-&gt;memc_or11
+op_assign
+l_int|0xffff0836
+suffix:semicolon
+id|mc-&gt;memc_br11
+op_assign
+l_int|0x80000801
 suffix:semicolon
 id|todc_info-&gt;nvram_data
 op_assign
@@ -243,6 +266,23 @@ id|r6
 comma
 id|r7
 )paren
+suffix:semicolon
+multiline_comment|/* u-boot may be using one of the FCC Ethernet devices.&n;&t;   Use the MAC address to the SCC. */
+id|__res
+(braket
+m_offsetof
+(paren
+id|bd_t
+comma
+id|bi_enetaddr
+(braket
+l_int|5
+)braket
+)paren
+)braket
+op_and_assign
+op_complement
+l_int|3
 suffix:semicolon
 multiline_comment|/* Anything special for this platform */
 id|ppc_md.show_cpuinfo
