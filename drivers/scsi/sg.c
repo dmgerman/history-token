@@ -2892,6 +2892,9 @@ l_string|&quot;program %s not setting count and/or reply_len properly&bslash;n&q
 comma
 id|old_hdr.reply_len
 op_minus
+(paren
+r_int
+)paren
 id|SZ_SG_HEADER
 comma
 id|input_size
