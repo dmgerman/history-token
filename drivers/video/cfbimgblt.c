@@ -1118,6 +1118,8 @@ op_decrement
 suffix:semicolon
 )paren
 (brace
+id|INIT_FASTPATH
+suffix:semicolon
 id|dst
 op_assign
 (paren
@@ -1134,8 +1136,6 @@ suffix:semicolon
 id|src
 op_assign
 id|s
-suffix:semicolon
-id|INIT_FASTPATH
 suffix:semicolon
 r_for
 c_loop
