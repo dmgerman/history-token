@@ -9756,6 +9756,20 @@ c_func
 id|cpu_present_map
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
+DECL|variable|cpu_online_map
+id|cpumask_t
+id|cpu_online_map
+op_assign
+id|CPU_MASK_ALL
+suffix:semicolon
+DECL|variable|cpu_possible_map
+id|cpumask_t
+id|cpu_possible_map
+op_assign
+id|CPU_MASK_ALL
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/**&n; * sys_sched_getaffinity - get the cpu affinity of a process&n; * @pid: pid of the process&n; * @len: length in bytes of the bitmask pointed to by user_mask_ptr&n; * @user_mask_ptr: user-space pointer to hold the current cpu mask&n; */
 DECL|function|sys_sched_getaffinity
 id|asmlinkage

@@ -232,9 +232,6 @@ r_int
 id|next_pending
 )paren
 (brace
-id|cpumask_t
-id|active
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -255,24 +252,14 @@ id|rcu_ctrlblk.cur
 )paren
 (brace
 multiline_comment|/* Can&squot;t change, since spin lock held. */
-id|active
-op_assign
-id|nohz_cpu_mask
-suffix:semicolon
-id|cpus_complement
-c_func
-(paren
-id|active
-)paren
-suffix:semicolon
-id|cpus_and
+id|cpus_andnot
 c_func
 (paren
 id|rcu_state.rcu_cpu_mask
 comma
 id|cpu_online_map
 comma
-id|active
+id|nohz_cpu_mask
 )paren
 suffix:semicolon
 id|write_seqcount_begin
