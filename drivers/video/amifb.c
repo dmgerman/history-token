@@ -2100,7 +2100,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|amifb_interrupt
 c_func
 (paren
@@ -8792,7 +8792,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * VBlank Display Interrupt&n;&t; */
 DECL|function|amifb_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|amifb_interrupt
 c_func
 (paren
@@ -8924,6 +8924,9 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* --------------------------- Hardware routines --------------------------- */
 multiline_comment|/*&n;&t; * Get the video params out of `var&squot;. If a value doesn&squot;t fit, round&n;&t; * it up, if it&squot;s too big, return -EINVAL.&n;&t; */
