@@ -11173,7 +11173,7 @@ c_func
 (paren
 id|NBPP
 comma
-l_int|0
+id|KM_SLEEP
 )paren
 suffix:semicolon
 id|s
