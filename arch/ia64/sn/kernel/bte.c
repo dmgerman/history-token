@@ -144,8 +144,6 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-op_logical_neg
-(paren
 (paren
 id|len
 op_amp
@@ -164,10 +162,11 @@ op_amp
 id|L1_CACHE_MASK
 )paren
 )paren
-)paren
 suffix:semicolon
 id|BUG_ON
 c_func
+(paren
+op_logical_neg
 (paren
 id|len
 OL
@@ -179,6 +178,7 @@ l_int|1
 )paren
 op_lshift
 id|L1_CACHE_SHIFT
+)paren
 )paren
 )paren
 suffix:semicolon
