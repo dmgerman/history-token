@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux driver attachment glue for aic7770 based controllers.&n; *&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7770_linux.c#9 $&n; */
+multiline_comment|/*&n; * Linux driver attachment glue for aic7770 based controllers.&n; *&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7770_osm.c#11 $&n; */
 macro_line|#include &quot;aic7xxx_osm.h&quot;
 DECL|macro|MINSLOT
 mdefine_line|#define MINSLOT&t;&t;&t;1
@@ -37,16 +37,6 @@ id|eisaBase
 suffix:semicolon
 r_int
 id|found
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|aic7xxx_no_probe
-)paren
-r_return
-(paren
-l_int|0
-)paren
 suffix:semicolon
 id|eisaBase
 op_assign
@@ -269,14 +259,6 @@ multiline_comment|/*&n;&t;&t;&t;&t; * If we can&squot;t allocate this one,&n;&t;
 r_break
 suffix:semicolon
 )brace
-id|ahc-&gt;tag
-op_assign
-id|BUS_SPACE_PIO
-suffix:semicolon
-id|ahc-&gt;bsh.ioport
-op_assign
-id|eisaBase
-suffix:semicolon
 id|error
 op_assign
 id|aic7770_config
@@ -285,6 +267,8 @@ c_func
 id|ahc
 comma
 id|entry
+comma
+id|eisaBase
 )paren
 suffix:semicolon
 r_if
@@ -295,6 +279,10 @@ op_ne
 l_int|0
 )paren
 (brace
+id|ahc-&gt;bsh.ioport
+op_assign
+l_int|0
+suffix:semicolon
 id|ahc_free
 c_func
 (paren
@@ -331,6 +319,9 @@ r_struct
 id|ahc_softc
 op_star
 id|ahc
+comma
+id|u_int
+id|port
 )paren
 (brace
 multiline_comment|/*&n;&t; * Lock out other contenders for our i/o space.&n;&t; */
@@ -338,7 +329,7 @@ macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,0)
 id|request_region
 c_func
 (paren
-id|ahc-&gt;bsh.ioport
+id|port
 comma
 id|AHC_EISA_IOSIZE
 comma
@@ -352,7 +343,7 @@ c_cond
 id|request_region
 c_func
 (paren
-id|ahc-&gt;bsh.ioport
+id|port
 comma
 id|AHC_EISA_IOSIZE
 comma
@@ -367,6 +358,14 @@ id|ENOMEM
 )paren
 suffix:semicolon
 macro_line|#endif
+id|ahc-&gt;tag
+op_assign
+id|BUS_SPACE_PIO
+suffix:semicolon
+id|ahc-&gt;bsh.ioport
+op_assign
+id|port
+suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -412,16 +411,12 @@ id|shared
 op_assign
 id|SA_SHIRQ
 suffix:semicolon
-id|ahc-&gt;platform_data-&gt;irq
-op_assign
-id|irq
-suffix:semicolon
 id|error
 op_assign
 id|request_irq
 c_func
 (paren
-id|ahc-&gt;platform_data-&gt;irq
+id|irq
 comma
 id|ahc_linux_isr
 comma
@@ -431,6 +426,17 @@ l_string|&quot;aic7xxx&quot;
 comma
 id|ahc
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+op_eq
+l_int|0
+)paren
+id|ahc-&gt;platform_data-&gt;irq
+op_assign
+id|irq
 suffix:semicolon
 r_return
 (paren

@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * Copyright (c) 1994 John Aycock&n; *   The University of Calgary Department of Computer Science.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7xxx_osm.h#107 $&n; *&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7xxx_osm.h#107 $&n; *&n; */
-macro_line|#ifndef _AIC7XXX_LINUX_H_
-DECL|macro|_AIC7XXX_LINUX_H_
-mdefine_line|#define _AIC7XXX_LINUX_H_
+multiline_comment|/*&n; * Adaptec AIC79xx device driver for Linux.&n; *&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic79xx_osm.h#87 $&n; *&n; */
+macro_line|#ifndef _AIC79XX_LINUX_H_
+DECL|macro|_AIC79XX_LINUX_H_
+mdefine_line|#define _AIC79XX_LINUX_H_
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#ifndef AHC_MODVERSION_FILE
+macro_line|#ifndef AHD_MODVERSION_FILE
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#endif
@@ -28,7 +28,7 @@ macro_line|#include &lt;linux/malloc.h&gt;
 macro_line|#endif
 multiline_comment|/* Core SCSI definitions */
 DECL|macro|AIC_LIB_PREFIX
-mdefine_line|#define AIC_LIB_PREFIX ahc
+mdefine_line|#define AIC_LIB_PREFIX ahd
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;aiclib.h&quot;
@@ -40,62 +40,68 @@ macro_line|#endif
 macro_line|#include &quot;cam.h&quot;
 macro_line|#include &quot;queue.h&quot;
 macro_line|#include &quot;scsi_message.h&quot;
+macro_line|#include &quot;scsi_iu.h&quot;
 multiline_comment|/*********************************** Debugging ********************************/
-macro_line|#ifdef CONFIG_AIC7XXX_DEBUG_ENABLE
-macro_line|#ifdef CONFIG_AIC7XXX_DEBUG_MASK
-DECL|macro|AHC_DEBUG
-mdefine_line|#define AHC_DEBUG 1
-DECL|macro|AHC_DEBUG_OPTS
-mdefine_line|#define AHC_DEBUG_OPTS CONFIG_AIC7XXX_DEBUG_MASK
+macro_line|#ifdef CONFIG_AIC79XX_DEBUG_ENABLE
+macro_line|#ifdef CONFIG_AIC79XX_DEBUG_MASK
+DECL|macro|AHD_DEBUG
+mdefine_line|#define AHD_DEBUG 1
+DECL|macro|AHD_DEBUG_OPTS
+mdefine_line|#define AHD_DEBUG_OPTS CONFIG_AIC79XX_DEBUG_MASK
 macro_line|#else
 multiline_comment|/*&n; * Compile in debugging code, but do not enable any printfs.&n; */
-DECL|macro|AHC_DEBUG
-mdefine_line|#define AHC_DEBUG 1
+DECL|macro|AHD_DEBUG
+mdefine_line|#define AHD_DEBUG 1
 macro_line|#endif
 multiline_comment|/* No debugging code. */
 macro_line|#endif
+multiline_comment|/********************************** Misc Macros *******************************/
+DECL|macro|roundup
+mdefine_line|#define&t;roundup(x, y)   ((((x)+((y)-1))/(y))*(y))
+DECL|macro|powerof2
+mdefine_line|#define&t;powerof2(x)&t;((((x)-1)&amp;(x))==0)
 multiline_comment|/************************* Forward Declarations *******************************/
 r_struct
-id|ahc_softc
+id|ahd_softc
 suffix:semicolon
-DECL|typedef|ahc_dev_softc_t
+DECL|typedef|ahd_dev_softc_t
 r_typedef
 r_struct
 id|pci_dev
 op_star
-id|ahc_dev_softc_t
+id|ahd_dev_softc_t
 suffix:semicolon
-DECL|typedef|ahc_io_ctx_t
+DECL|typedef|ahd_io_ctx_t
 r_typedef
 id|Scsi_Cmnd
 op_star
-id|ahc_io_ctx_t
+id|ahd_io_ctx_t
 suffix:semicolon
 multiline_comment|/******************************* Byte Order ***********************************/
-DECL|macro|ahc_htobe16
-mdefine_line|#define ahc_htobe16(x)&t;cpu_to_be16(x)
-DECL|macro|ahc_htobe32
-mdefine_line|#define ahc_htobe32(x)&t;cpu_to_be32(x)
-DECL|macro|ahc_htobe64
-mdefine_line|#define ahc_htobe64(x)&t;cpu_to_be64(x)
-DECL|macro|ahc_htole16
-mdefine_line|#define ahc_htole16(x)&t;cpu_to_le16(x)
-DECL|macro|ahc_htole32
-mdefine_line|#define ahc_htole32(x)&t;cpu_to_le32(x)
-DECL|macro|ahc_htole64
-mdefine_line|#define ahc_htole64(x)&t;cpu_to_le64(x)
-DECL|macro|ahc_be16toh
-mdefine_line|#define ahc_be16toh(x)&t;be16_to_cpu(x)
-DECL|macro|ahc_be32toh
-mdefine_line|#define ahc_be32toh(x)&t;be32_to_cpu(x)
-DECL|macro|ahc_be64toh
-mdefine_line|#define ahc_be64toh(x)&t;be64_to_cpu(x)
-DECL|macro|ahc_le16toh
-mdefine_line|#define ahc_le16toh(x)&t;le16_to_cpu(x)
-DECL|macro|ahc_le32toh
-mdefine_line|#define ahc_le32toh(x)&t;le32_to_cpu(x)
-DECL|macro|ahc_le64toh
-mdefine_line|#define ahc_le64toh(x)&t;le64_to_cpu(x)
+DECL|macro|ahd_htobe16
+mdefine_line|#define ahd_htobe16(x)&t;cpu_to_be16(x)
+DECL|macro|ahd_htobe32
+mdefine_line|#define ahd_htobe32(x)&t;cpu_to_be32(x)
+DECL|macro|ahd_htobe64
+mdefine_line|#define ahd_htobe64(x)&t;cpu_to_be64(x)
+DECL|macro|ahd_htole16
+mdefine_line|#define ahd_htole16(x)&t;cpu_to_le16(x)
+DECL|macro|ahd_htole32
+mdefine_line|#define ahd_htole32(x)&t;cpu_to_le32(x)
+DECL|macro|ahd_htole64
+mdefine_line|#define ahd_htole64(x)&t;cpu_to_le64(x)
+DECL|macro|ahd_be16toh
+mdefine_line|#define ahd_be16toh(x)&t;be16_to_cpu(x)
+DECL|macro|ahd_be32toh
+mdefine_line|#define ahd_be32toh(x)&t;be32_to_cpu(x)
+DECL|macro|ahd_be64toh
+mdefine_line|#define ahd_be64toh(x)&t;be64_to_cpu(x)
+DECL|macro|ahd_le16toh
+mdefine_line|#define ahd_le16toh(x)&t;le16_to_cpu(x)
+DECL|macro|ahd_le32toh
+mdefine_line|#define ahd_le32toh(x)&t;le32_to_cpu(x)
+DECL|macro|ahd_le64toh
+mdefine_line|#define ahd_le64toh(x)&t;le64_to_cpu(x)
 macro_line|#ifndef LITTLE_ENDIAN
 DECL|macro|LITTLE_ENDIAN
 mdefine_line|#define LITTLE_ENDIAN 1234
@@ -117,20 +123,16 @@ macro_line|#endif /* BYTE_ORDER */
 multiline_comment|/************************* Configuration Data *********************************/
 r_extern
 r_int
-id|aic7xxx_no_probe
+id|aic79xx_allow_memio
 suffix:semicolon
 r_extern
 r_int
-id|aic7xxx_allow_memio
-suffix:semicolon
-r_extern
-r_int
-id|aic7xxx_detect_complete
+id|aic79xx_detect_complete
 suffix:semicolon
 r_extern
 id|Scsi_Host_Template
 op_star
-id|aic7xxx_driver_template
+id|aic79xx_driver_template
 suffix:semicolon
 multiline_comment|/***************************** Bus Space/DMA **********************************/
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,2,17)
@@ -197,9 +199,9 @@ DECL|typedef|bus_dma_segment_t
 )brace
 id|bus_dma_segment_t
 suffix:semicolon
-DECL|struct|ahc_linux_dma_tag
+DECL|struct|ahd_linux_dma_tag
 r_struct
-id|ahc_linux_dma_tag
+id|ahd_linux_dma_tag
 (brace
 DECL|member|alignment
 id|bus_size_t
@@ -218,13 +220,13 @@ suffix:semicolon
 DECL|typedef|bus_dma_tag_t
 r_typedef
 r_struct
-id|ahc_linux_dma_tag
+id|ahd_linux_dma_tag
 op_star
 id|bus_dma_tag_t
 suffix:semicolon
-DECL|struct|ahc_linux_dmamap
+DECL|struct|ahd_linux_dmamap
 r_struct
-id|ahc_linux_dmamap
+id|ahd_linux_dmamap
 (brace
 DECL|member|bus_addr
 id|bus_addr_t
@@ -235,7 +237,7 @@ suffix:semicolon
 DECL|typedef|bus_dmamap_t
 r_typedef
 r_struct
-id|ahc_linux_dmamap
+id|ahd_linux_dmamap
 op_star
 id|bus_dmamap_t
 suffix:semicolon
@@ -283,11 +285,11 @@ mdefine_line|#define BUS_SPACE_MAXADDR_32BIT&t;0xFFFFFFFF
 DECL|macro|BUS_SPACE_MAXSIZE_32BIT
 mdefine_line|#define BUS_SPACE_MAXSIZE_32BIT&t;0xFFFFFFFF
 r_int
-id|ahc_dma_tag_create
+id|ahd_dma_tag_create
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 id|bus_dma_tag_t
@@ -331,11 +333,11 @@ multiline_comment|/*dma_tagp*/
 )paren
 suffix:semicolon
 r_void
-id|ahc_dma_tag_destroy
+id|ahd_dma_tag_destroy
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 id|bus_dma_tag_t
@@ -343,11 +345,11 @@ multiline_comment|/*tag*/
 )paren
 suffix:semicolon
 r_int
-id|ahc_dmamem_alloc
+id|ahd_dmamem_alloc
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 id|bus_dma_tag_t
@@ -367,11 +369,11 @@ multiline_comment|/*mapp*/
 )paren
 suffix:semicolon
 r_void
-id|ahc_dmamem_free
+id|ahd_dmamem_free
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 id|bus_dma_tag_t
@@ -386,11 +388,11 @@ multiline_comment|/*map*/
 )paren
 suffix:semicolon
 r_void
-id|ahc_dmamap_destroy
+id|ahd_dmamap_destroy
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 id|bus_dma_tag_t
@@ -401,13 +403,13 @@ multiline_comment|/*map*/
 )paren
 suffix:semicolon
 r_int
-id|ahc_dmamap_load
+id|ahd_dmamap_load
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 id|bus_dma_tag_t
 multiline_comment|/*dmat*/
@@ -434,11 +436,11 @@ multiline_comment|/*flags*/
 )paren
 suffix:semicolon
 r_int
-id|ahc_dmamap_unload
+id|ahd_dmamap_unload
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 id|bus_dma_tag_t
@@ -446,7 +448,7 @@ comma
 id|bus_dmamap_t
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Operations performed by ahc_dmamap_sync().&n; */
+multiline_comment|/*&n; * Operations performed by ahd_dmamap_sync().&n; */
 DECL|macro|BUS_DMASYNC_PREREAD
 mdefine_line|#define BUS_DMASYNC_PREREAD&t;0x01&t;/* pre-read synchronization */
 DECL|macro|BUS_DMASYNC_POSTREAD
@@ -455,37 +457,37 @@ DECL|macro|BUS_DMASYNC_PREWRITE
 mdefine_line|#define BUS_DMASYNC_PREWRITE&t;0x04&t;/* pre-write synchronization */
 DECL|macro|BUS_DMASYNC_POSTWRITE
 mdefine_line|#define BUS_DMASYNC_POSTWRITE&t;0x08&t;/* post-write synchronization */
-multiline_comment|/*&n; * XXX&n; * ahc_dmamap_sync is only used on buffers allocated with&n; * the pci_alloc_consistent() API.  Although I&squot;m not sure how&n; * this works on architectures with a write buffer, Linux does&n; * not have an API to sync &quot;coherent&quot; memory.  Perhaps we need&n; * to do an mb()?&n; */
-DECL|macro|ahc_dmamap_sync
-mdefine_line|#define ahc_dmamap_sync(ahc, dma_tag, dmamap, offset, len, op)
+multiline_comment|/*&n; * XXX&n; * ahd_dmamap_sync is only used on buffers allocated with&n; * the pci_alloc_consistent() API.  Although I&squot;m not sure how&n; * this works on architectures with a write buffer, Linux does&n; * not have an API to sync &quot;coherent&quot; memory.  Perhaps we need&n; * to do an mb()?&n; */
+DECL|macro|ahd_dmamap_sync
+mdefine_line|#define ahd_dmamap_sync(ahd, dma_tag, dmamap, offset, len, op)
 multiline_comment|/************************** Timer DataStructures ******************************/
-DECL|typedef|ahc_timer_t
+DECL|typedef|ahd_timer_t
 r_typedef
 r_struct
 id|timer_list
-id|ahc_timer_t
+id|ahd_timer_t
 suffix:semicolon
 multiline_comment|/********************************** Includes **********************************/
 multiline_comment|/* Host template and function declarations referenced by the template. */
-macro_line|#include &quot;aic7xxx_host.h&quot;
+macro_line|#include &quot;aic79xx_host.h&quot;
 multiline_comment|/* Core driver definitions */
-macro_line|#if CONFIG_AIC7XXX_REG_PRETTY_PRINT
+macro_line|#if CONFIG_AIC79XX_REG_PRETTY_PRINT
 DECL|macro|AIC_DEBUG_REGISTERS
 mdefine_line|#define AIC_DEBUG_REGISTERS 1
 macro_line|#else
 DECL|macro|AIC_DEBUG_REGISTERS
 mdefine_line|#define AIC_DEBUG_REGISTERS 0
 macro_line|#endif
-macro_line|#include &quot;aic7xxx.h&quot;
+macro_line|#include &quot;aic79xx.h&quot;
 multiline_comment|/***************************** Timer Facilities *******************************/
-DECL|macro|ahc_timer_init
-mdefine_line|#define ahc_timer_init init_timer
-DECL|macro|ahc_timer_stop
-mdefine_line|#define ahc_timer_stop del_timer
-DECL|typedef|ahc_linux_callback_t
+DECL|macro|ahd_timer_init
+mdefine_line|#define ahd_timer_init init_timer
+DECL|macro|ahd_timer_stop
+mdefine_line|#define ahd_timer_stop del_timer
+DECL|typedef|ahd_linux_callback_t
 r_typedef
 r_void
-id|ahc_linux_callback_t
+id|ahd_linux_callback_t
 (paren
 id|u_long
 )paren
@@ -493,17 +495,17 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_timer_reset
+id|ahd_timer_reset
 c_func
 (paren
-id|ahc_timer_t
+id|ahd_timer_t
 op_star
 id|timer
 comma
-r_int
+id|u_int
 id|usec
 comma
-id|ahc_callback_t
+id|ahd_callback_t
 op_star
 id|func
 comma
@@ -515,7 +517,7 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_scb_timer_reset
+id|ahd_scb_timer_reset
 c_func
 (paren
 r_struct
@@ -530,18 +532,18 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-DECL|function|ahc_timer_reset
-id|ahc_timer_reset
+DECL|function|ahd_timer_reset
+id|ahd_timer_reset
 c_func
 (paren
-id|ahc_timer_t
+id|ahd_timer_t
 op_star
 id|timer
 comma
-r_int
+id|u_int
 id|usec
 comma
-id|ahc_callback_t
+id|ahd_callback_t
 op_star
 id|func
 comma
@@ -551,15 +553,15 @@ id|arg
 )paren
 (brace
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 suffix:semicolon
-id|ahc
+id|ahd
 op_assign
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 )paren
 id|arg
@@ -592,7 +594,7 @@ suffix:semicolon
 id|timer-&gt;function
 op_assign
 (paren
-id|ahc_linux_callback_t
+id|ahd_linux_callback_t
 op_star
 )paren
 id|func
@@ -607,8 +609,8 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-DECL|function|ahc_scb_timer_reset
-id|ahc_scb_timer_reset
+DECL|function|ahd_scb_timer_reset
+id|ahd_scb_timer_reset
 c_func
 (paren
 r_struct
@@ -644,13 +646,13 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#endif
-DECL|macro|AIC7XXX_DRIVER_VERSION
-mdefine_line|#define AIC7XXX_DRIVER_VERSION &quot;6.2.22&quot;
+DECL|macro|AIC79XX_DRIVER_VERSION
+mdefine_line|#define AIC79XX_DRIVER_VERSION &quot;1.3.0.ALPHA2&quot;
 multiline_comment|/**************************** Front End Queues ********************************/
 multiline_comment|/*&n; * Data structure used to cast the Linux struct scsi_cmnd to something&n; * that allows us to use the queue macros.  The linux structure has&n; * plenty of space to hold the links fields as required by the queue&n; * macros, but the queue macors require them to have the correct type.&n; */
-DECL|struct|ahc_cmd_internal
+DECL|struct|ahd_cmd_internal
 r_struct
-id|ahc_cmd_internal
+id|ahd_cmd_internal
 (brace
 multiline_comment|/* Area owned by the Linux scsi layer. */
 DECL|member|private
@@ -671,21 +673,21 @@ r_union
 id|STAILQ_ENTRY
 c_func
 (paren
-id|ahc_cmd
+id|ahd_cmd
 )paren
 id|ste
 suffix:semicolon
 id|LIST_ENTRY
 c_func
 (paren
-id|ahc_cmd
+id|ahd_cmd
 )paren
 id|le
 suffix:semicolon
 id|TAILQ_ENTRY
 c_func
 (paren
-id|ahc_cmd
+id|ahd_cmd
 )paren
 id|tqe
 suffix:semicolon
@@ -699,15 +701,15 @@ id|end
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|ahc_cmd
+DECL|struct|ahd_cmd
 r_struct
-id|ahc_cmd
+id|ahd_cmd
 (brace
 r_union
 (brace
 DECL|member|icmd
 r_struct
-id|ahc_cmd_internal
+id|ahd_cmd_internal
 id|icmd
 suffix:semicolon
 DECL|member|scsi_cmd
@@ -732,75 +734,75 @@ multiline_comment|/*&n; * A per probed device structure used to deal with some e
 id|TAILQ_HEAD
 c_func
 (paren
-id|ahc_busyq
+id|ahd_busyq
 comma
-id|ahc_cmd
+id|ahd_cmd
 )paren
 suffix:semicolon
 r_typedef
 r_enum
 (brace
-DECL|enumerator|AHC_DEV_UNCONFIGURED
-id|AHC_DEV_UNCONFIGURED
+DECL|enumerator|AHD_DEV_UNCONFIGURED
+id|AHD_DEV_UNCONFIGURED
 op_assign
 l_int|0x01
 comma
-DECL|enumerator|AHC_DEV_FREEZE_TIL_EMPTY
-id|AHC_DEV_FREEZE_TIL_EMPTY
+DECL|enumerator|AHD_DEV_FREEZE_TIL_EMPTY
+id|AHD_DEV_FREEZE_TIL_EMPTY
 op_assign
 l_int|0x02
 comma
 multiline_comment|/* Freeze queue until active == 0 */
-DECL|enumerator|AHC_DEV_TIMER_ACTIVE
-id|AHC_DEV_TIMER_ACTIVE
+DECL|enumerator|AHD_DEV_TIMER_ACTIVE
+id|AHD_DEV_TIMER_ACTIVE
 op_assign
 l_int|0x04
 comma
 multiline_comment|/* Our timer is active */
-DECL|enumerator|AHC_DEV_ON_RUN_LIST
-id|AHC_DEV_ON_RUN_LIST
+DECL|enumerator|AHD_DEV_ON_RUN_LIST
+id|AHD_DEV_ON_RUN_LIST
 op_assign
 l_int|0x08
 comma
 multiline_comment|/* Queued to be run later */
-DECL|enumerator|AHC_DEV_Q_BASIC
-id|AHC_DEV_Q_BASIC
+DECL|enumerator|AHD_DEV_Q_BASIC
+id|AHD_DEV_Q_BASIC
 op_assign
 l_int|0x10
 comma
 multiline_comment|/* Allow basic device queuing */
-DECL|enumerator|AHC_DEV_Q_TAGGED
-id|AHC_DEV_Q_TAGGED
+DECL|enumerator|AHD_DEV_Q_TAGGED
+id|AHD_DEV_Q_TAGGED
 op_assign
 l_int|0x20
 comma
 multiline_comment|/* Allow full SCSI2 command queueing */
-DECL|enumerator|AHC_DEV_PERIODIC_OTAG
-id|AHC_DEV_PERIODIC_OTAG
+DECL|enumerator|AHD_DEV_PERIODIC_OTAG
+id|AHD_DEV_PERIODIC_OTAG
 op_assign
 l_int|0x40
 multiline_comment|/* Send OTAG to prevent starvation */
-DECL|typedef|ahc_linux_dev_flags
+DECL|typedef|ahd_linux_dev_flags
 )brace
-id|ahc_linux_dev_flags
+id|ahd_linux_dev_flags
 suffix:semicolon
 r_struct
-id|ahc_linux_target
+id|ahd_linux_target
 suffix:semicolon
-DECL|struct|ahc_linux_device
+DECL|struct|ahd_linux_device
 r_struct
-id|ahc_linux_device
+id|ahd_linux_device
 (brace
 id|TAILQ_ENTRY
 c_func
 (paren
-id|ahc_linux_device
+id|ahd_linux_device
 )paren
 id|links
 suffix:semicolon
 DECL|member|busyq
 r_struct
-id|ahc_busyq
+id|ahd_busyq
 id|busyq
 suffix:semicolon
 multiline_comment|/*&n;&t; * The number of transactions currently&n;&t; * queued to the device.&n;&t; */
@@ -828,10 +830,10 @@ DECL|member|tag_success_count
 id|u_int
 id|tag_success_count
 suffix:semicolon
-DECL|macro|AHC_TAG_SUCCESS_INTERVAL
-mdefine_line|#define AHC_TAG_SUCCESS_INTERVAL 50
+DECL|macro|AHD_TAG_SUCCESS_INTERVAL
+mdefine_line|#define AHD_TAG_SUCCESS_INTERVAL 50
 DECL|member|flags
-id|ahc_linux_dev_flags
+id|ahd_linux_dev_flags
 id|flags
 suffix:semicolon
 multiline_comment|/*&n;&t; * Per device timer.&n;&t; */
@@ -855,15 +857,15 @@ DECL|member|last_queuefull_same_count
 id|u_int
 id|last_queuefull_same_count
 suffix:semicolon
-DECL|macro|AHC_LOCK_TAGS_COUNT
-mdefine_line|#define AHC_LOCK_TAGS_COUNT 50
-multiline_comment|/*&n;&t; * How many transactions have been queued&n;&t; * without the device going idle.  We use&n;&t; * this statistic to determine when to issue&n;&t; * an ordered tag to prevent transaction&n;&t; * starvation.  This statistic is only updated&n;&t; * if the AHC_DEV_PERIODIC_OTAG flag is set&n;&t; * on this device.&n;&t; */
+DECL|macro|AHD_LOCK_TAGS_COUNT
+mdefine_line|#define AHD_LOCK_TAGS_COUNT 50
+multiline_comment|/*&n;&t; * How many transactions have been queued&n;&t; * without the device going idle.  We use&n;&t; * this statistic to determine when to issue&n;&t; * an ordered tag to prevent transaction&n;&t; * starvation.  This statistic is only updated&n;&t; * if the AHD_DEV_PERIODIC_OTAG flag is set&n;&t; * on this device.&n;&t; */
 DECL|member|commands_since_idle_or_otag
 id|u_int
 id|commands_since_idle_or_otag
 suffix:semicolon
-DECL|macro|AHC_OTAG_THRESH
-mdefine_line|#define AHC_OTAG_THRESH&t;500
+DECL|macro|AHD_OTAG_THRESH
+mdefine_line|#define AHD_OTAG_THRESH&t;500
 DECL|member|lun
 r_int
 id|lun
@@ -875,7 +877,7 @@ id|scsi_device
 suffix:semicolon
 DECL|member|target
 r_struct
-id|ahc_linux_target
+id|ahd_linux_target
 op_star
 id|target
 suffix:semicolon
@@ -884,67 +886,67 @@ suffix:semicolon
 r_typedef
 r_enum
 (brace
-DECL|enumerator|AHC_DV_REQUIRED
-id|AHC_DV_REQUIRED
+DECL|enumerator|AHD_DV_REQUIRED
+id|AHD_DV_REQUIRED
 op_assign
 l_int|0x01
-DECL|typedef|ahc_linux_targ_flags
+DECL|typedef|ahd_linux_targ_flags
 )brace
-id|ahc_linux_targ_flags
+id|ahd_linux_targ_flags
 suffix:semicolon
 multiline_comment|/* DV States */
 r_typedef
 r_enum
 (brace
-DECL|enumerator|AHC_DV_STATE_EXIT
-id|AHC_DV_STATE_EXIT
+DECL|enumerator|AHD_DV_STATE_EXIT
+id|AHD_DV_STATE_EXIT
 op_assign
 l_int|0
 comma
-DECL|enumerator|AHC_DV_STATE_INQ_SHORT_ASYNC
-id|AHC_DV_STATE_INQ_SHORT_ASYNC
+DECL|enumerator|AHD_DV_STATE_INQ_SHORT_ASYNC
+id|AHD_DV_STATE_INQ_SHORT_ASYNC
 comma
-DECL|enumerator|AHC_DV_STATE_TUR
-id|AHC_DV_STATE_TUR
+DECL|enumerator|AHD_DV_STATE_TUR
+id|AHD_DV_STATE_TUR
 comma
-DECL|enumerator|AHC_DV_STATE_INQ_ASYNC
-id|AHC_DV_STATE_INQ_ASYNC
+DECL|enumerator|AHD_DV_STATE_INQ_ASYNC
+id|AHD_DV_STATE_INQ_ASYNC
 comma
-DECL|enumerator|AHC_DV_STATE_INQ_ASYNC_VERIFY
-id|AHC_DV_STATE_INQ_ASYNC_VERIFY
+DECL|enumerator|AHD_DV_STATE_INQ_ASYNC_VERIFY
+id|AHD_DV_STATE_INQ_ASYNC_VERIFY
 comma
-DECL|enumerator|AHC_DV_STATE_REBD
-id|AHC_DV_STATE_REBD
+DECL|enumerator|AHD_DV_STATE_REBD
+id|AHD_DV_STATE_REBD
 comma
-DECL|enumerator|AHC_DV_STATE_INQ_VERIFY
-id|AHC_DV_STATE_INQ_VERIFY
+DECL|enumerator|AHD_DV_STATE_INQ_VERIFY
+id|AHD_DV_STATE_INQ_VERIFY
 comma
-DECL|enumerator|AHC_DV_STATE_WEB
-id|AHC_DV_STATE_WEB
+DECL|enumerator|AHD_DV_STATE_WEB
+id|AHD_DV_STATE_WEB
 comma
-DECL|enumerator|AHC_DV_STATE_REB
-id|AHC_DV_STATE_REB
+DECL|enumerator|AHD_DV_STATE_REB
+id|AHD_DV_STATE_REB
 comma
-DECL|enumerator|AHC_DV_STATE_SU
-id|AHC_DV_STATE_SU
+DECL|enumerator|AHD_DV_STATE_SU
+id|AHD_DV_STATE_SU
 comma
-DECL|enumerator|AHC_DV_STATE_BUSY
-id|AHC_DV_STATE_BUSY
-DECL|typedef|ahc_dv_state
+DECL|enumerator|AHD_DV_STATE_BUSY
+id|AHD_DV_STATE_BUSY
+DECL|typedef|ahd_dv_state
 )brace
-id|ahc_dv_state
+id|ahd_dv_state
 suffix:semicolon
-DECL|struct|ahc_linux_target
+DECL|struct|ahd_linux_target
 r_struct
-id|ahc_linux_target
+id|ahd_linux_target
 (brace
 DECL|member|devices
 r_struct
-id|ahc_linux_device
+id|ahd_linux_device
 op_star
 id|devices
 (braket
-id|AHC_NUM_LUNS
+id|AHD_NUM_LUNS
 )braket
 suffix:semicolon
 DECL|member|channel
@@ -961,17 +963,17 @@ id|refcount
 suffix:semicolon
 DECL|member|last_tinfo
 r_struct
-id|ahc_transinfo
+id|ahd_transinfo
 id|last_tinfo
 suffix:semicolon
-DECL|member|ahc
+DECL|member|ahd
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 suffix:semicolon
 DECL|member|flags
-id|ahc_linux_targ_flags
+id|ahd_linux_targ_flags
 id|flags
 suffix:semicolon
 DECL|member|inq_data
@@ -1002,7 +1004,7 @@ id|u_int
 id|dv_echo_size
 suffix:semicolon
 DECL|member|dv_state
-id|ahc_dv_state
+id|ahd_dv_state
 id|dv_state
 suffix:semicolon
 DECL|member|dv_state_retry
@@ -1010,12 +1012,12 @@ id|u_int
 id|dv_state_retry
 suffix:semicolon
 DECL|member|dv_buffer
-r_char
+r_uint8
 op_star
 id|dv_buffer
 suffix:semicolon
 DECL|member|dv_buffer1
-r_char
+r_uint8
 op_star
 id|dv_buffer1
 suffix:semicolon
@@ -1023,17 +1025,17 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/********************* Definitions Required by the Core ***********************/
 multiline_comment|/*&n; * Number of SG segments we require.  So long as the S/G segments for&n; * a particular transaction are allocated in a physically contiguous&n; * manner and are allocated below 4GB, the number of S/G segments is&n; * unrestricted.&n; */
-DECL|macro|AHC_NSEG
-mdefine_line|#define        AHC_NSEG 128
+DECL|macro|AHD_NSEG
+mdefine_line|#define        AHD_NSEG 128
 multiline_comment|/*&n; * Per-SCB OSM storage.&n; */
 r_typedef
 r_enum
 (brace
-DECL|enumerator|AHC_UP_EH_SEMAPHORE
-id|AHC_UP_EH_SEMAPHORE
-DECL|typedef|ahc_linux_scb_flags
+DECL|enumerator|AHD_UP_EH_SEMAPHORE
+id|AHD_UP_EH_SEMAPHORE
+DECL|typedef|ahd_linux_scb_flags
 )brace
-id|ahc_linux_scb_flags
+id|ahd_linux_scb_flags
 suffix:semicolon
 DECL|struct|scb_platform_data
 r_struct
@@ -1041,7 +1043,7 @@ id|scb_platform_data
 (brace
 DECL|member|dev
 r_struct
-id|ahc_linux_device
+id|ahd_linux_device
 op_star
 id|dev
 suffix:semicolon
@@ -1066,7 +1068,7 @@ id|sense_resid
 suffix:semicolon
 multiline_comment|/* Auto-Sense residual */
 DECL|member|flags
-id|ahc_linux_scb_flags
+id|ahd_linux_scb_flags
 id|flags
 suffix:semicolon
 )brace
@@ -1075,67 +1077,67 @@ multiline_comment|/*&n; * Define a structure used for each host adapter.  All me
 r_typedef
 r_enum
 (brace
-DECL|enumerator|AHC_DV_WAIT_SIMQ_EMPTY
-id|AHC_DV_WAIT_SIMQ_EMPTY
+DECL|enumerator|AHD_DV_WAIT_SIMQ_EMPTY
+id|AHD_DV_WAIT_SIMQ_EMPTY
 op_assign
 l_int|0x01
 comma
-DECL|enumerator|AHC_DV_WAIT_SIMQ_RELEASE
-id|AHC_DV_WAIT_SIMQ_RELEASE
+DECL|enumerator|AHD_DV_WAIT_SIMQ_RELEASE
+id|AHD_DV_WAIT_SIMQ_RELEASE
 op_assign
 l_int|0x02
 comma
-DECL|enumerator|AHC_DV_ACTIVE
-id|AHC_DV_ACTIVE
+DECL|enumerator|AHD_DV_ACTIVE
+id|AHD_DV_ACTIVE
 op_assign
 l_int|0x04
 comma
-DECL|enumerator|AHC_DV_SHUTDOWN
-id|AHC_DV_SHUTDOWN
+DECL|enumerator|AHD_DV_SHUTDOWN
+id|AHD_DV_SHUTDOWN
 op_assign
 l_int|0x08
 comma
-DECL|enumerator|AHC_RUN_CMPLT_Q_TIMER
-id|AHC_RUN_CMPLT_Q_TIMER
+DECL|enumerator|AHD_RUN_CMPLT_Q_TIMER
+id|AHD_RUN_CMPLT_Q_TIMER
 op_assign
 l_int|0x10
-DECL|typedef|ahc_linux_softc_flags
+DECL|typedef|ahd_linux_softc_flags
 )brace
-id|ahc_linux_softc_flags
+id|ahd_linux_softc_flags
 suffix:semicolon
 id|TAILQ_HEAD
 c_func
 (paren
-id|ahc_completeq
+id|ahd_completeq
 comma
-id|ahc_cmd
+id|ahd_cmd
 )paren
 suffix:semicolon
-DECL|struct|ahc_platform_data
+DECL|struct|ahd_platform_data
 r_struct
-id|ahc_platform_data
+id|ahd_platform_data
 (brace
 multiline_comment|/*&n;&t; * Fields accessed from interrupt context.&n;&t; */
 DECL|member|targets
 r_struct
-id|ahc_linux_target
+id|ahd_linux_target
 op_star
 id|targets
 (braket
-id|AHC_NUM_TARGETS
+id|AHD_NUM_TARGETS
 )braket
 suffix:semicolon
 id|TAILQ_HEAD
 c_func
 (paren
 comma
-id|ahc_linux_device
+id|ahd_linux_device
 )paren
 id|device_runq
 suffix:semicolon
 DECL|member|completeq
 r_struct
-id|ahc_completeq
+id|ahd_completeq
 id|completeq
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
@@ -1192,8 +1194,8 @@ op_star
 id|host
 suffix:semicolon
 multiline_comment|/* pointer to scsi host */
-DECL|macro|AHC_LINUX_NOIRQ
-mdefine_line|#define AHC_LINUX_NOIRQ&t;((uint32_t)~0)
+DECL|macro|AHD_LINUX_NOIRQ
+mdefine_line|#define AHD_LINUX_NOIRQ&t;((uint32_t)~0)
 DECL|member|irq
 r_uint32
 id|irq
@@ -1213,7 +1215,7 @@ id|bus_addr_t
 id|hw_dma_mask
 suffix:semicolon
 DECL|member|flags
-id|ahc_linux_softc_flags
+id|ahd_linux_softc_flags
 id|flags
 suffix:semicolon
 )brace
@@ -1232,7 +1234,7 @@ mdefine_line|#define free(ptr, type) kfree(ptr)
 r_static
 id|__inline
 r_void
-id|ahc_delay
+id|ahd_delay
 c_func
 (paren
 r_int
@@ -1241,8 +1243,8 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-DECL|function|ahc_delay
-id|ahc_delay
+DECL|function|ahd_delay
+id|ahd_delay
 c_func
 (paren
 r_int
@@ -1280,13 +1282,28 @@ macro_line|#endif
 r_static
 id|__inline
 r_uint8
-id|ahc_inb
+id|ahd_inb
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
+comma
+r_int
+id|port
+)paren
+suffix:semicolon
+r_static
+id|__inline
+r_uint16
+id|ahd_inw_atomic
+c_func
+(paren
+r_struct
+id|ahd_softc
+op_star
+id|ahd
 comma
 r_int
 id|port
@@ -1295,13 +1312,13 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_outb
+id|ahd_outb
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 id|port
@@ -1313,13 +1330,31 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_outsb
+id|ahd_outw_atomic
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
+comma
+r_int
+id|port
+comma
+r_uint16
+id|val
+)paren
+suffix:semicolon
+r_static
+id|__inline
+r_void
+id|ahd_outsb
+c_func
+(paren
+r_struct
+id|ahd_softc
+op_star
+id|ahd
 comma
 r_int
 id|port
@@ -1334,13 +1369,13 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_insb
+id|ahd_insb
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 id|port
@@ -1355,14 +1390,14 @@ suffix:semicolon
 r_static
 id|__inline
 r_uint8
-DECL|function|ahc_inb
-id|ahc_inb
+DECL|function|ahd_inb
+id|ahd_inb
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 id|port
@@ -1375,7 +1410,10 @@ macro_line|#ifdef MMAPIO
 r_if
 c_cond
 (paren
-id|ahc-&gt;tag
+id|ahd-&gt;tags
+(braket
+l_int|0
+)braket
 op_eq
 id|BUS_SPACE_MEMIO
 )paren
@@ -1385,7 +1423,12 @@ op_assign
 id|readb
 c_func
 (paren
-id|ahc-&gt;bsh.maddr
+id|ahd-&gt;bshs
+(braket
+l_int|0
+)braket
+dot
+id|maddr
 op_plus
 id|port
 )paren
@@ -1398,9 +1441,24 @@ op_assign
 id|inb
 c_func
 (paren
-id|ahc-&gt;bsh.ioport
-op_plus
+id|ahd-&gt;bshs
+(braket
+(paren
 id|port
+)paren
+op_rshift
+l_int|8
+)braket
+dot
+id|ioport
+op_plus
+(paren
+(paren
+id|port
+)paren
+op_amp
+l_int|0xFF
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1410,9 +1468,137 @@ op_assign
 id|inb
 c_func
 (paren
-id|ahc-&gt;bsh.ioport
+id|ahd-&gt;bshs
+(braket
+(paren
+id|port
+)paren
+op_rshift
+l_int|8
+)braket
+dot
+id|ioport
+op_plus
+(paren
+(paren
+id|port
+)paren
+op_amp
+l_int|0xFF
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+(paren
+id|x
+)paren
+suffix:semicolon
+)brace
+r_static
+id|__inline
+r_uint16
+DECL|function|ahd_inw_atomic
+id|ahd_inw_atomic
+c_func
+(paren
+r_struct
+id|ahd_softc
+op_star
+id|ahd
+comma
+r_int
+id|port
+)paren
+(brace
+r_uint8
+id|x
+suffix:semicolon
+macro_line|#ifdef MMAPIO
+r_if
+c_cond
+(paren
+id|ahd-&gt;tags
+(braket
+l_int|0
+)braket
+op_eq
+id|BUS_SPACE_MEMIO
+)paren
+(brace
+id|x
+op_assign
+id|readw
+c_func
+(paren
+id|ahd-&gt;bshs
+(braket
+l_int|0
+)braket
+dot
+id|maddr
 op_plus
 id|port
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|x
+op_assign
+id|inw
+c_func
+(paren
+id|ahd-&gt;bshs
+(braket
+(paren
+id|port
+)paren
+op_rshift
+l_int|8
+)braket
+dot
+id|ioport
+op_plus
+(paren
+(paren
+id|port
+)paren
+op_amp
+l_int|0xFF
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+id|x
+op_assign
+id|inw
+c_func
+(paren
+id|ahd-&gt;bshs
+(braket
+(paren
+id|port
+)paren
+op_rshift
+l_int|8
+)braket
+dot
+id|ioport
+op_plus
+(paren
+(paren
+id|port
+)paren
+op_amp
+l_int|0xFF
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1430,14 +1616,14 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-DECL|function|ahc_outb
-id|ahc_outb
+DECL|function|ahd_outb
+id|ahd_outb
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 id|port
@@ -1450,7 +1636,10 @@ macro_line|#ifdef MMAPIO
 r_if
 c_cond
 (paren
-id|ahc-&gt;tag
+id|ahd-&gt;tags
+(braket
+l_int|0
+)braket
 op_eq
 id|BUS_SPACE_MEMIO
 )paren
@@ -1460,7 +1649,12 @@ c_func
 (paren
 id|val
 comma
-id|ahc-&gt;bsh.maddr
+id|ahd-&gt;bshs
+(braket
+l_int|0
+)braket
+dot
+id|maddr
 op_plus
 id|port
 )paren
@@ -1473,9 +1667,22 @@ c_func
 (paren
 id|val
 comma
-id|ahc-&gt;bsh.ioport
-op_plus
+id|ahd-&gt;bshs
+(braket
+(paren
 id|port
+)paren
+op_rshift
+l_int|8
+)braket
+dot
+id|ioport
+op_plus
+(paren
+id|port
+op_amp
+l_int|0xFF
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1485,9 +1692,22 @@ c_func
 (paren
 id|val
 comma
-id|ahc-&gt;bsh.ioport
-op_plus
+id|ahd-&gt;bshs
+(braket
+(paren
 id|port
+)paren
+op_rshift
+l_int|8
+)braket
+dot
+id|ioport
+op_plus
+(paren
+id|port
+op_amp
+l_int|0xFF
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1500,14 +1720,118 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-DECL|function|ahc_outsb
-id|ahc_outsb
+DECL|function|ahd_outw_atomic
+id|ahd_outw_atomic
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
+comma
+r_int
+id|port
+comma
+r_uint16
+id|val
+)paren
+(brace
+macro_line|#ifdef MMAPIO
+r_if
+c_cond
+(paren
+id|ahd-&gt;tags
+(braket
+l_int|0
+)braket
+op_eq
+id|BUS_SPACE_MEMIO
+)paren
+(brace
+id|writew
+c_func
+(paren
+id|val
+comma
+id|ahd-&gt;bshs
+(braket
+l_int|0
+)braket
+dot
+id|maddr
+op_plus
+id|port
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|outw
+c_func
+(paren
+id|val
+comma
+id|ahd-&gt;bshs
+(braket
+(paren
+id|port
+)paren
+op_rshift
+l_int|8
+)braket
+dot
+id|ioport
+op_plus
+(paren
+id|port
+op_amp
+l_int|0xFF
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+id|outw
+c_func
+(paren
+id|val
+comma
+id|ahd-&gt;bshs
+(braket
+(paren
+id|port
+)paren
+op_rshift
+l_int|8
+)braket
+dot
+id|ioport
+op_plus
+(paren
+id|port
+op_amp
+l_int|0xFF
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_static
+id|__inline
+r_void
+DECL|function|ahd_outsb
+id|ahd_outsb
+c_func
+(paren
+r_struct
+id|ahd_softc
+op_star
+id|ahd
 comma
 r_int
 id|port
@@ -1538,10 +1862,10 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|ahc_outb
+id|ahd_outb
 c_func
 (paren
-id|ahc
+id|ahd
 comma
 id|port
 comma
@@ -1554,14 +1878,14 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-DECL|function|ahc_insb
-id|ahc_insb
+DECL|function|ahd_insb
+id|ahd_insb
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 id|port
@@ -1596,10 +1920,10 @@ op_star
 id|array
 op_increment
 op_assign
-id|ahc_inb
+id|ahd_inb
 c_func
 (paren
-id|ahc
+id|ahd
 comma
 id|port
 )paren
@@ -1607,11 +1931,11 @@ suffix:semicolon
 )brace
 multiline_comment|/**************************** Initialization **********************************/
 r_int
-id|ahc_linux_register_host
+id|ahd_linux_register_host
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 id|Scsi_Host_Template
@@ -1619,7 +1943,7 @@ op_star
 )paren
 suffix:semicolon
 r_uint64
-id|ahc_linux_get_memsize
+id|ahd_linux_get_memsize
 c_func
 (paren
 r_void
@@ -1650,7 +1974,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_void
-id|ahc_format_transinfo
+id|ahd_format_transinfo
 c_func
 (paren
 r_struct
@@ -1659,7 +1983,7 @@ op_star
 id|info
 comma
 r_struct
-id|ahc_transinfo
+id|ahd_transinfo
 op_star
 id|tinfo
 )paren
@@ -1669,22 +1993,22 @@ multiline_comment|/* Lock protecting internal data structures */
 r_static
 id|__inline
 r_void
-id|ahc_lockinit
+id|ahd_lockinit
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 )paren
 suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_lock
+id|ahd_lock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 r_int
@@ -1696,11 +2020,11 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_unlock
+id|ahd_unlock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 r_int
@@ -1713,11 +2037,11 @@ multiline_comment|/* Lock acquisition and release of the above lock in midlayer 
 r_static
 id|__inline
 r_void
-id|ahc_midlayer_entrypoint_lock
+id|ahd_midlayer_entrypoint_lock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 r_int
@@ -1729,11 +2053,11 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_midlayer_entrypoint_unlock
+id|ahd_midlayer_entrypoint_unlock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 r_int
@@ -1746,22 +2070,22 @@ multiline_comment|/* Lock held during command compeletion to the upper layer */
 r_static
 id|__inline
 r_void
-id|ahc_done_lockinit
+id|ahd_done_lockinit
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 )paren
 suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_done_lock
+id|ahd_done_lock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 r_int
@@ -1773,11 +2097,11 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_done_unlock
+id|ahd_done_unlock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 r_int
@@ -1786,15 +2110,15 @@ op_star
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Lock held during ahc_list manipulation and ahc softc frees */
+multiline_comment|/* Lock held during ahd_list manipulation and ahd softc frees */
 r_extern
 id|spinlock_t
-id|ahc_list_spinlock
+id|ahd_list_spinlock
 suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_list_lockinit
+id|ahd_list_lockinit
 c_func
 (paren
 r_void
@@ -1803,7 +2127,7 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_list_lock
+id|ahd_list_lock
 c_func
 (paren
 r_int
@@ -1815,7 +2139,7 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_list_unlock
+id|ahd_list_unlock
 c_func
 (paren
 r_int
@@ -1828,35 +2152,35 @@ macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 r_static
 id|__inline
 r_void
-DECL|function|ahc_lockinit
-id|ahc_lockinit
+DECL|function|ahd_lockinit
+id|ahd_lockinit
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 )paren
 (brace
 id|spin_lock_init
 c_func
 (paren
 op_amp
-id|ahc-&gt;platform_data-&gt;spin_lock
+id|ahd-&gt;platform_data-&gt;spin_lock
 )paren
 suffix:semicolon
 )brace
 r_static
 id|__inline
 r_void
-DECL|function|ahc_lock
-id|ahc_lock
+DECL|function|ahd_lock
+id|ahd_lock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 r_int
@@ -1873,7 +2197,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|ahc-&gt;platform_data-&gt;spin_lock
+id|ahd-&gt;platform_data-&gt;spin_lock
 comma
 op_star
 id|flags
@@ -1883,14 +2207,14 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-DECL|function|ahc_unlock
-id|ahc_unlock
+DECL|function|ahd_unlock
+id|ahd_unlock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 r_int
@@ -1902,7 +2226,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|ahc-&gt;platform_data-&gt;spin_lock
+id|ahd-&gt;platform_data-&gt;spin_lock
 comma
 op_star
 id|flags
@@ -1912,14 +2236,14 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-DECL|function|ahc_midlayer_entrypoint_lock
-id|ahc_midlayer_entrypoint_lock
+DECL|function|ahd_midlayer_entrypoint_lock
+id|ahd_midlayer_entrypoint_lock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 r_int
@@ -1929,10 +2253,10 @@ id|flags
 (brace
 multiline_comment|/*&n;&t; * In 2.5.X, the midlayer takes our lock just before&n;&t; * calling us, so avoid locking again.&n;&t; */
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
-id|ahc_lock
+id|ahd_lock
 c_func
 (paren
-id|ahc
+id|ahd
 comma
 id|flags
 )paren
@@ -1942,14 +2266,14 @@ macro_line|#endif
 r_static
 id|__inline
 r_void
-DECL|function|ahc_midlayer_entrypoint_unlock
-id|ahc_midlayer_entrypoint_unlock
+DECL|function|ahd_midlayer_entrypoint_unlock
+id|ahd_midlayer_entrypoint_unlock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 r_int
@@ -1959,10 +2283,10 @@ id|flags
 (brace
 multiline_comment|/*&n;&t; * In 2.5.X, the midlayer takes our lock just before&n;&t; * calling us and unlocks when we return, so let it do the unlock.&n;&t; */
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
-id|ahc_unlock
+id|ahd_unlock
 c_func
 (paren
-id|ahc
+id|ahd
 comma
 id|flags
 )paren
@@ -1972,14 +2296,14 @@ macro_line|#endif
 r_static
 id|__inline
 r_void
-DECL|function|ahc_done_lockinit
-id|ahc_done_lockinit
+DECL|function|ahd_done_lockinit
+id|ahd_done_lockinit
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 )paren
 (brace
 multiline_comment|/*&n;&t; * In 2.5.X, our own lock is held during completions.&n;&t; * In previous versions, the io_request_lock is used.&n;&t; * In either case, we can&squot;t initialize this lock again.&n;&t; */
@@ -1987,14 +2311,14 @@ multiline_comment|/*&n;&t; * In 2.5.X, our own lock is held during completions.&
 r_static
 id|__inline
 r_void
-DECL|function|ahc_done_lock
-id|ahc_done_lock
+DECL|function|ahd_done_lock
+id|ahd_done_lock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 r_int
@@ -2023,14 +2347,14 @@ macro_line|#endif
 r_static
 id|__inline
 r_void
-DECL|function|ahc_done_unlock
-id|ahc_done_unlock
+DECL|function|ahd_done_unlock
+id|ahd_done_unlock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 r_int
@@ -2054,8 +2378,8 @@ macro_line|#endif
 r_static
 id|__inline
 r_void
-DECL|function|ahc_list_lockinit
-id|ahc_list_lockinit
+DECL|function|ahd_list_lockinit
+id|ahd_list_lockinit
 c_func
 (paren
 )paren
@@ -2064,15 +2388,15 @@ id|spin_lock_init
 c_func
 (paren
 op_amp
-id|ahc_list_spinlock
+id|ahd_list_spinlock
 )paren
 suffix:semicolon
 )brace
 r_static
 id|__inline
 r_void
-DECL|function|ahc_list_lock
-id|ahc_list_lock
+DECL|function|ahd_list_lock
+id|ahd_list_lock
 c_func
 (paren
 r_int
@@ -2090,7 +2414,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|ahc_list_spinlock
+id|ahd_list_spinlock
 comma
 op_star
 id|flags
@@ -2100,8 +2424,8 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-DECL|function|ahc_list_unlock
-id|ahc_list_unlock
+DECL|function|ahd_list_unlock
+id|ahd_list_unlock
 c_func
 (paren
 r_int
@@ -2114,39 +2438,36 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|ahc_list_spinlock
+id|ahd_list_spinlock
 comma
 op_star
 id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,93) */
-r_static
-id|__inline
-r_void
-DECL|function|ahc_lockinit
-id|ahc_lockinit
+macro_line|#else /* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,0) */
+DECL|function|ahd_lockinit
+id|ahd_lockinit
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 )paren
 (brace
 )brace
 r_static
 id|__inline
 r_void
-DECL|function|ahc_lock
-id|ahc_lock
+DECL|function|ahd_lock
+id|ahd_lock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 r_int
@@ -2175,14 +2496,14 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-DECL|function|ahc_unlock
-id|ahc_unlock
+DECL|function|ahd_unlock
+id|ahd_unlock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 r_int
@@ -2198,31 +2519,28 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-r_static
-id|__inline
-r_void
-DECL|function|ahc_done_lockinit
-id|ahc_done_lockinit
+DECL|function|ahd_done_lockinit
+id|ahd_done_lockinit
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 )paren
 (brace
 )brace
 r_static
 id|__inline
 r_void
-DECL|function|ahc_done_lock
-id|ahc_done_lock
+DECL|function|ahd_done_lock
+id|ahd_done_lock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 r_int
@@ -2230,19 +2548,19 @@ op_star
 id|flags
 )paren
 (brace
-multiline_comment|/*&n;&t; * The done lock is always held while&n;&t; * the ahc lock is held so blocking&n;&t; * interrupts again would have no effect.&n;&t; */
+multiline_comment|/*&n;&t; * The done lock is always held while&n;&t; * the ahd lock is held so blocking&n;&t; * interrupts again would have no effect.&n;&t; */
 )brace
 r_static
 id|__inline
 r_void
-DECL|function|ahc_done_unlock
-id|ahc_done_unlock
+DECL|function|ahd_done_unlock
+id|ahd_done_unlock
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 r_int
@@ -2254,8 +2572,8 @@ id|flags
 r_static
 id|__inline
 r_void
-DECL|function|ahc_list_lockinit
-id|ahc_list_lockinit
+DECL|function|ahd_list_lockinit
+id|ahd_list_lockinit
 c_func
 (paren
 )paren
@@ -2264,8 +2582,8 @@ c_func
 r_static
 id|__inline
 r_void
-DECL|function|ahc_list_lock
-id|ahc_list_lock
+DECL|function|ahd_list_lock
+id|ahd_list_lock
 c_func
 (paren
 r_int
@@ -2295,8 +2613,8 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-DECL|function|ahc_list_unlock
-id|ahc_list_unlock
+DECL|function|ahd_list_unlock
+id|ahd_list_unlock
 c_func
 (paren
 r_int
@@ -2334,6 +2652,8 @@ DECL|macro|PCIM_CMD_MWRICEN
 mdefine_line|#define PCIM_CMD_MWRICEN&t;0x0010
 DECL|macro|PCIM_CMD_PERRESPEN
 mdefine_line|#define PCIM_CMD_PERRESPEN&t;0x0040
+DECL|macro|PCIM_CMD_SERRESPEN
+mdefine_line|#define&t;PCIM_CMD_SERRESPEN&t;0x0100
 DECL|macro|PCIR_STATUS
 mdefine_line|#define PCIR_STATUS&t;&t;0x06
 DECL|macro|PCIR_REVID
@@ -2363,77 +2683,73 @@ DECL|macro|PCIR_SUBVEND_0
 mdefine_line|#define PCIR_SUBVEND_0&t;0x2c
 DECL|macro|PCIR_SUBDEV_0
 mdefine_line|#define PCIR_SUBDEV_0&t;0x2e
+multiline_comment|/****************************** PCI-X definitions *****************************/
+DECL|macro|PCIXR_COMMAND
+mdefine_line|#define PCIXR_COMMAND&t;0x96
+DECL|macro|PCIXR_DEVADDR
+mdefine_line|#define PCIXR_DEVADDR&t;0x98
+DECL|macro|PCIXM_DEVADDR_FNUM
+mdefine_line|#define PCIXM_DEVADDR_FNUM&t;0x0003&t;/* Function Number */
+DECL|macro|PCIXM_DEVADDR_DNUM
+mdefine_line|#define PCIXM_DEVADDR_DNUM&t;0x00F8&t;/* Device Number */
+DECL|macro|PCIXM_DEVADDR_BNUM
+mdefine_line|#define PCIXM_DEVADDR_BNUM&t;0xFF00&t;/* Bus Number */
+DECL|macro|PCIXR_STATUS
+mdefine_line|#define PCIXR_STATUS&t;0x9A
+DECL|macro|PCIXM_STATUS_64BIT
+mdefine_line|#define PCIXM_STATUS_64BIT&t;0x0001&t;/* Active 64bit connection to device. */
+DECL|macro|PCIXM_STATUS_133CAP
+mdefine_line|#define PCIXM_STATUS_133CAP&t;0x0002&t;/* Device is 133MHz capable */
+DECL|macro|PCIXM_STATUS_SCDISC
+mdefine_line|#define PCIXM_STATUS_SCDISC&t;0x0004&t;/* Split Completion Discarded */
+DECL|macro|PCIXM_STATUS_UNEXPSC
+mdefine_line|#define PCIXM_STATUS_UNEXPSC&t;0x0008&t;/* Unexpected Split Completion */
+DECL|macro|PCIXM_STATUS_CMPLEXDEV
+mdefine_line|#define PCIXM_STATUS_CMPLEXDEV&t;0x0010&t;/* Device Complexity (set == bridge) */
+DECL|macro|PCIXM_STATUS_MAXMRDBC
+mdefine_line|#define PCIXM_STATUS_MAXMRDBC&t;0x0060&t;/* Maximum Burst Read Count */
+DECL|macro|PCIXM_STATUS_MAXSPLITS
+mdefine_line|#define PCIXM_STATUS_MAXSPLITS&t;0x0380&t;/* Maximum Split Transactions */
+DECL|macro|PCIXM_STATUS_MAXCRDS
+mdefine_line|#define PCIXM_STATUS_MAXCRDS&t;0x1C00&t;/* Maximum Cumulative Read Size */
+DECL|macro|PCIXM_STATUS_RCVDSCEM
+mdefine_line|#define PCIXM_STATUS_RCVDSCEM&t;0x2000&t;/* Received a Split Comp w/Error msg */
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 r_extern
 r_struct
 id|pci_driver
-id|aic7xxx_pci_driver
+id|aic79xx_pci_driver
 suffix:semicolon
 macro_line|#endif
 r_typedef
 r_enum
 (brace
-DECL|enumerator|AHC_POWER_STATE_D0
-id|AHC_POWER_STATE_D0
+DECL|enumerator|AHD_POWER_STATE_D0
+id|AHD_POWER_STATE_D0
 comma
-DECL|enumerator|AHC_POWER_STATE_D1
-id|AHC_POWER_STATE_D1
+DECL|enumerator|AHD_POWER_STATE_D1
+id|AHD_POWER_STATE_D1
 comma
-DECL|enumerator|AHC_POWER_STATE_D2
-id|AHC_POWER_STATE_D2
+DECL|enumerator|AHD_POWER_STATE_D2
+id|AHD_POWER_STATE_D2
 comma
-DECL|enumerator|AHC_POWER_STATE_D3
-id|AHC_POWER_STATE_D3
-DECL|typedef|ahc_power_state
+DECL|enumerator|AHD_POWER_STATE_D3
+id|AHD_POWER_STATE_D3
+DECL|typedef|ahd_power_state
 )brace
-id|ahc_power_state
+id|ahd_power_state
 suffix:semicolon
 r_void
-id|ahc_power_state_change
+id|ahd_power_state_change
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
-id|ahc_power_state
+id|ahd_power_state
 id|new_state
-)paren
-suffix:semicolon
-multiline_comment|/**************************** VL/EISA Routines ********************************/
-r_int
-id|aic7770_linux_probe
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-)paren
-suffix:semicolon
-r_int
-id|aic7770_map_registers
-c_func
-(paren
-r_struct
-id|ahc_softc
-op_star
-id|ahc
-comma
-id|u_int
-id|port
-)paren
-suffix:semicolon
-r_int
-id|aic7770_map_int
-c_func
-(paren
-r_struct
-id|ahc_softc
-op_star
-id|ahc
-comma
-id|u_int
-id|irq
 )paren
 suffix:semicolon
 multiline_comment|/******************************* PCI Routines *********************************/
@@ -2445,7 +2761,7 @@ macro_line|#endif
 macro_line|#include &lt;linux/bios32.h&gt;
 macro_line|#endif
 r_int
-id|ahc_linux_pci_probe
+id|ahd_linux_pci_probe
 c_func
 (paren
 id|Scsi_Host_Template
@@ -2453,32 +2769,32 @@ op_star
 )paren
 suffix:semicolon
 r_int
-id|ahc_pci_map_registers
+id|ahd_pci_map_registers
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 )paren
 suffix:semicolon
 r_int
-id|ahc_pci_map_int
+id|ahd_pci_map_int
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 )paren
 suffix:semicolon
 r_static
 id|__inline
 r_uint32
-id|ahc_pci_read_config
+id|ahd_pci_read_config
 c_func
 (paren
-id|ahc_dev_softc_t
+id|ahd_dev_softc_t
 id|pci
 comma
 r_int
@@ -2491,11 +2807,11 @@ suffix:semicolon
 r_static
 id|__inline
 r_uint32
-DECL|function|ahc_pci_read_config
-id|ahc_pci_read_config
+DECL|function|ahd_pci_read_config
+id|ahd_pci_read_config
 c_func
 (paren
-id|ahc_dev_softc_t
+id|ahd_dev_softc_t
 id|pci
 comma
 r_int
@@ -2588,7 +2904,7 @@ suffix:colon
 id|panic
 c_func
 (paren
-l_string|&quot;ahc_pci_read_config: Read size too big&quot;
+l_string|&quot;ahd_pci_read_config: Read size too big&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* NOTREACHED */
@@ -2602,10 +2918,10 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_pci_write_config
+id|ahd_pci_write_config
 c_func
 (paren
-id|ahc_dev_softc_t
+id|ahd_dev_softc_t
 id|pci
 comma
 r_int
@@ -2621,11 +2937,11 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-DECL|function|ahc_pci_write_config
-id|ahc_pci_write_config
+DECL|function|ahd_pci_write_config
+id|ahd_pci_write_config
 c_func
 (paren
-id|ahc_dev_softc_t
+id|ahd_dev_softc_t
 id|pci
 comma
 r_int
@@ -2694,7 +3010,7 @@ suffix:colon
 id|panic
 c_func
 (paren
-l_string|&quot;ahc_pci_write_config: Write size too big&quot;
+l_string|&quot;ahd_pci_write_config: Write size too big&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* NOTREACHED */
@@ -2703,20 +3019,20 @@ multiline_comment|/* NOTREACHED */
 r_static
 id|__inline
 r_int
-id|ahc_get_pci_function
+id|ahd_get_pci_function
 c_func
 (paren
-id|ahc_dev_softc_t
+id|ahd_dev_softc_t
 )paren
 suffix:semicolon
 r_static
 id|__inline
 r_int
-DECL|function|ahc_get_pci_function
-id|ahc_get_pci_function
+DECL|function|ahd_get_pci_function
+id|ahd_get_pci_function
 c_func
 (paren
-id|ahc_dev_softc_t
+id|ahd_dev_softc_t
 id|pci
 )paren
 (brace
@@ -2733,20 +3049,20 @@ suffix:semicolon
 r_static
 id|__inline
 r_int
-id|ahc_get_pci_slot
+id|ahd_get_pci_slot
 c_func
 (paren
-id|ahc_dev_softc_t
+id|ahd_dev_softc_t
 )paren
 suffix:semicolon
 r_static
 id|__inline
 r_int
-DECL|function|ahc_get_pci_slot
-id|ahc_get_pci_slot
+DECL|function|ahd_get_pci_slot
+id|ahd_get_pci_slot
 c_func
 (paren
-id|ahc_dev_softc_t
+id|ahd_dev_softc_t
 id|pci
 )paren
 (brace
@@ -2763,20 +3079,20 @@ suffix:semicolon
 r_static
 id|__inline
 r_int
-id|ahc_get_pci_bus
+id|ahd_get_pci_bus
 c_func
 (paren
-id|ahc_dev_softc_t
+id|ahd_dev_softc_t
 )paren
 suffix:semicolon
 r_static
 id|__inline
 r_int
-DECL|function|ahc_get_pci_bus
-id|ahc_get_pci_bus
+DECL|function|ahd_get_pci_bus
+id|ahd_get_pci_bus
 c_func
 (paren
-id|ahc_dev_softc_t
+id|ahd_dev_softc_t
 id|pci
 )paren
 (brace
@@ -2789,32 +3105,32 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_flush_device_writes
+id|ahd_flush_device_writes
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 )paren
 suffix:semicolon
 r_static
 id|__inline
 r_void
-DECL|function|ahc_flush_device_writes
-id|ahc_flush_device_writes
+DECL|function|ahd_flush_device_writes
+id|ahd_flush_device_writes
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 )paren
 (brace
 multiline_comment|/* XXX Is this sufficient for all architectures??? */
-id|ahc_inb
+id|ahd_inb
 c_func
 (paren
-id|ahc
+id|ahd
 comma
 id|INTSTAT
 )paren
@@ -2835,23 +3151,23 @@ DECL|macro|pci_unmap_single
 mdefine_line|#define pci_unmap_single(pdev, buffer, buflen, direction)
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,3)
-DECL|macro|ahc_pci_set_dma_mask
-mdefine_line|#define ahc_pci_set_dma_mask pci_set_dma_mask
+DECL|macro|ahd_pci_set_dma_mask
+mdefine_line|#define ahd_pci_set_dma_mask pci_set_dma_mask
 macro_line|#else
 multiline_comment|/*&n; * Always &quot;return&quot; 0 for success.&n; */
-DECL|macro|ahc_pci_set_dma_mask
-mdefine_line|#define ahc_pci_set_dma_mask(dev_softc, mask)  &t;&t;&t;&bslash;&n;&t;(((dev_softc)-&gt;dma_mask = mask) &amp;&amp; 0)
+DECL|macro|ahd_pci_set_dma_mask
+mdefine_line|#define ahd_pci_set_dma_mask(dev_softc, mask)&t;&bslash;&n;&t;(((dev_softc)-&gt;dma_mask = mask) &amp;&amp; 0)
 macro_line|#endif
 multiline_comment|/*************************** Domain Validation ********************************/
-DECL|macro|AHC_DV_CMD
-mdefine_line|#define AHC_DV_CMD(cmd) ((cmd)-&gt;scsi_done == ahc_linux_dv_complete)
-DECL|macro|AHC_DV_SIMQ_FROZEN
-mdefine_line|#define AHC_DV_SIMQ_FROZEN(ahc)&t;&t;&t;&t;&t;&bslash;&n;&t;((((ahc)-&gt;platform_data-&gt;flags &amp; AHC_DV_ACTIVE) != 0)&t;&bslash;&n;&t; &amp;&amp; (ahc)-&gt;platform_data-&gt;qfrozen == 1)
-multiline_comment|/*********************** Transaction Access Wrappers *************************/
+DECL|macro|AHD_DV_CMD
+mdefine_line|#define AHD_DV_CMD(cmd) ((cmd)-&gt;scsi_done == ahd_linux_dv_complete)
+DECL|macro|AHD_DV_SIMQ_FROZEN
+mdefine_line|#define AHD_DV_SIMQ_FROZEN(ahd)&t;&t;&t;&t;&t;&bslash;&n;&t;((((ahd)-&gt;platform_data-&gt;flags &amp; AHD_DV_ACTIVE) != 0)&t;&bslash;&n;&t; &amp;&amp; (ahd)-&gt;platform_data-&gt;qfrozen == 1)
+multiline_comment|/*********************** Transaction Access Wrappers **************************/
 r_static
 id|__inline
 r_void
-id|ahc_cmd_set_transaction_status
+id|ahd_cmd_set_transaction_status
 c_func
 (paren
 id|Scsi_Cmnd
@@ -2863,7 +3179,7 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_set_transaction_status
+id|ahd_set_transaction_status
 c_func
 (paren
 r_struct
@@ -2876,7 +3192,7 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_cmd_set_scsi_status
+id|ahd_cmd_set_scsi_status
 c_func
 (paren
 id|Scsi_Cmnd
@@ -2888,7 +3204,7 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_set_scsi_status
+id|ahd_set_scsi_status
 c_func
 (paren
 r_struct
@@ -2901,29 +3217,7 @@ suffix:semicolon
 r_static
 id|__inline
 r_uint32
-id|ahc_cmd_get_transaction_status
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-)paren
-suffix:semicolon
-r_static
-id|__inline
-r_uint32
-id|ahc_get_transaction_status
-c_func
-(paren
-r_struct
-id|scb
-op_star
-)paren
-suffix:semicolon
-r_static
-id|__inline
-r_uint32
-id|ahc_cmd_get_scsi_status
+id|ahd_cmd_get_transaction_status
 c_func
 (paren
 id|Scsi_Cmnd
@@ -2934,7 +3228,29 @@ suffix:semicolon
 r_static
 id|__inline
 r_uint32
-id|ahc_get_scsi_status
+id|ahd_get_transaction_status
+c_func
+(paren
+r_struct
+id|scb
+op_star
+)paren
+suffix:semicolon
+r_static
+id|__inline
+r_uint32
+id|ahd_cmd_get_scsi_status
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
+r_static
+id|__inline
+r_uint32
+id|ahd_get_scsi_status
 c_func
 (paren
 r_struct
@@ -2945,7 +3261,7 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_set_transaction_tag
+id|ahd_set_transaction_tag
 c_func
 (paren
 r_struct
@@ -2960,7 +3276,7 @@ suffix:semicolon
 r_static
 id|__inline
 id|u_long
-id|ahc_get_transfer_length
+id|ahd_get_transfer_length
 c_func
 (paren
 r_struct
@@ -2971,7 +3287,7 @@ suffix:semicolon
 r_static
 id|__inline
 r_int
-id|ahc_get_transfer_dir
+id|ahd_get_transfer_dir
 c_func
 (paren
 r_struct
@@ -2982,7 +3298,7 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_set_residual
+id|ahd_set_residual
 c_func
 (paren
 r_struct
@@ -2995,7 +3311,7 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_set_sense_residual
+id|ahd_set_sense_residual
 c_func
 (paren
 r_struct
@@ -3010,7 +3326,7 @@ suffix:semicolon
 r_static
 id|__inline
 id|u_long
-id|ahc_get_residual
+id|ahd_get_residual
 c_func
 (paren
 r_struct
@@ -3021,7 +3337,7 @@ suffix:semicolon
 r_static
 id|__inline
 id|u_long
-id|ahc_get_sense_residual
+id|ahd_get_sense_residual
 c_func
 (paren
 r_struct
@@ -3032,7 +3348,7 @@ suffix:semicolon
 r_static
 id|__inline
 r_int
-id|ahc_perform_autosense
+id|ahd_perform_autosense
 c_func
 (paren
 r_struct
@@ -3043,11 +3359,11 @@ suffix:semicolon
 r_static
 id|__inline
 r_uint32
-id|ahc_get_sense_bufsize
+id|ahd_get_sense_bufsize
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 r_struct
@@ -3058,28 +3374,28 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_notify_xfer_settings_change
+id|ahd_notify_xfer_settings_change
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 r_struct
-id|ahc_devinfo
+id|ahd_devinfo
 op_star
 )paren
 suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_platform_scb_free
+id|ahd_platform_scb_free
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_struct
 id|scb
@@ -3090,7 +3406,7 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|ahc_freeze_scb
+id|ahd_freeze_scb
 c_func
 (paren
 r_struct
@@ -3101,9 +3417,9 @@ id|scb
 suffix:semicolon
 r_static
 id|__inline
-DECL|function|ahc_cmd_set_transaction_status
+DECL|function|ahd_cmd_set_transaction_status
 r_void
-id|ahc_cmd_set_transaction_status
+id|ahd_cmd_set_transaction_status
 c_func
 (paren
 id|Scsi_Cmnd
@@ -3132,9 +3448,9 @@ suffix:semicolon
 )brace
 r_static
 id|__inline
-DECL|function|ahc_set_transaction_status
+DECL|function|ahd_set_transaction_status
 r_void
-id|ahc_set_transaction_status
+id|ahd_set_transaction_status
 c_func
 (paren
 r_struct
@@ -3146,7 +3462,7 @@ r_uint32
 id|status
 )paren
 (brace
-id|ahc_cmd_set_transaction_status
+id|ahd_cmd_set_transaction_status
 c_func
 (paren
 id|scb-&gt;io_ctx
@@ -3157,9 +3473,9 @@ suffix:semicolon
 )brace
 r_static
 id|__inline
-DECL|function|ahc_cmd_set_scsi_status
+DECL|function|ahd_cmd_set_scsi_status
 r_void
-id|ahc_cmd_set_scsi_status
+id|ahd_cmd_set_scsi_status
 c_func
 (paren
 id|Scsi_Cmnd
@@ -3182,9 +3498,9 @@ suffix:semicolon
 )brace
 r_static
 id|__inline
-DECL|function|ahc_set_scsi_status
+DECL|function|ahd_set_scsi_status
 r_void
-id|ahc_set_scsi_status
+id|ahd_set_scsi_status
 c_func
 (paren
 r_struct
@@ -3196,7 +3512,7 @@ r_uint32
 id|status
 )paren
 (brace
-id|ahc_cmd_set_scsi_status
+id|ahd_cmd_set_scsi_status
 c_func
 (paren
 id|scb-&gt;io_ctx
@@ -3207,9 +3523,9 @@ suffix:semicolon
 )brace
 r_static
 id|__inline
-DECL|function|ahc_cmd_get_transaction_status
+DECL|function|ahd_cmd_get_transaction_status
 r_uint32
-id|ahc_cmd_get_transaction_status
+id|ahd_cmd_get_transaction_status
 c_func
 (paren
 id|Scsi_Cmnd
@@ -3231,9 +3547,9 @@ suffix:semicolon
 )brace
 r_static
 id|__inline
-DECL|function|ahc_get_transaction_status
+DECL|function|ahd_get_transaction_status
 r_uint32
-id|ahc_get_transaction_status
+id|ahd_get_transaction_status
 c_func
 (paren
 r_struct
@@ -3244,7 +3560,7 @@ id|scb
 (brace
 r_return
 (paren
-id|ahc_cmd_get_transaction_status
+id|ahd_cmd_get_transaction_status
 c_func
 (paren
 id|scb-&gt;io_ctx
@@ -3254,9 +3570,9 @@ suffix:semicolon
 )brace
 r_static
 id|__inline
-DECL|function|ahc_cmd_get_scsi_status
+DECL|function|ahd_cmd_get_scsi_status
 r_uint32
-id|ahc_cmd_get_scsi_status
+id|ahd_cmd_get_scsi_status
 c_func
 (paren
 id|Scsi_Cmnd
@@ -3274,9 +3590,9 @@ suffix:semicolon
 )brace
 r_static
 id|__inline
-DECL|function|ahc_get_scsi_status
+DECL|function|ahd_get_scsi_status
 r_uint32
-id|ahc_get_scsi_status
+id|ahd_get_scsi_status
 c_func
 (paren
 r_struct
@@ -3287,7 +3603,7 @@ id|scb
 (brace
 r_return
 (paren
-id|ahc_cmd_get_scsi_status
+id|ahd_cmd_get_scsi_status
 c_func
 (paren
 id|scb-&gt;io_ctx
@@ -3297,9 +3613,9 @@ suffix:semicolon
 )brace
 r_static
 id|__inline
-DECL|function|ahc_set_transaction_tag
+DECL|function|ahd_set_transaction_tag
 r_void
-id|ahc_set_transaction_tag
+id|ahd_set_transaction_tag
 c_func
 (paren
 r_struct
@@ -3318,9 +3634,9 @@ multiline_comment|/*&n;&t; * Nothing to do for linux as the incoming transaction
 )brace
 r_static
 id|__inline
-DECL|function|ahc_get_transfer_length
+DECL|function|ahd_get_transfer_length
 id|u_long
-id|ahc_get_transfer_length
+id|ahd_get_transfer_length
 c_func
 (paren
 r_struct
@@ -3337,9 +3653,9 @@ suffix:semicolon
 )brace
 r_static
 id|__inline
-DECL|function|ahc_get_transfer_dir
+DECL|function|ahd_get_transfer_dir
 r_int
-id|ahc_get_transfer_dir
+id|ahd_get_transfer_dir
 c_func
 (paren
 r_struct
@@ -3422,9 +3738,9 @@ macro_line|#endif
 )brace
 r_static
 id|__inline
-DECL|function|ahc_set_residual
+DECL|function|ahd_set_residual
 r_void
-id|ahc_set_residual
+id|ahd_set_residual
 c_func
 (paren
 r_struct
@@ -3450,9 +3766,9 @@ macro_line|#endif
 )brace
 r_static
 id|__inline
-DECL|function|ahc_set_sense_residual
+DECL|function|ahd_set_sense_residual
 r_void
-id|ahc_set_sense_residual
+id|ahd_set_sense_residual
 c_func
 (paren
 r_struct
@@ -3471,9 +3787,9 @@ suffix:semicolon
 )brace
 r_static
 id|__inline
-DECL|function|ahc_get_residual
+DECL|function|ahd_get_residual
 id|u_long
-id|ahc_get_residual
+id|ahd_get_residual
 c_func
 (paren
 r_struct
@@ -3498,9 +3814,9 @@ macro_line|#endif
 )brace
 r_static
 id|__inline
-DECL|function|ahc_get_sense_residual
+DECL|function|ahd_get_sense_residual
 id|u_long
-id|ahc_get_sense_residual
+id|ahd_get_sense_residual
 c_func
 (paren
 r_struct
@@ -3517,9 +3833,9 @@ suffix:semicolon
 )brace
 r_static
 id|__inline
-DECL|function|ahc_perform_autosense
+DECL|function|ahd_perform_autosense
 r_int
-id|ahc_perform_autosense
+id|ahd_perform_autosense
 c_func
 (paren
 r_struct
@@ -3538,14 +3854,14 @@ suffix:semicolon
 r_static
 id|__inline
 r_uint32
-DECL|function|ahc_get_sense_bufsize
-id|ahc_get_sense_bufsize
+DECL|function|ahd_get_sense_bufsize
+id|ahd_get_sense_bufsize
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_struct
 id|scb
@@ -3566,17 +3882,17 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-DECL|function|ahc_notify_xfer_settings_change
-id|ahc_notify_xfer_settings_change
+DECL|function|ahd_notify_xfer_settings_change
+id|ahd_notify_xfer_settings_change
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_struct
-id|ahc_devinfo
+id|ahd_devinfo
 op_star
 id|devinfo
 )paren
@@ -3586,14 +3902,14 @@ multiline_comment|/* Nothing to do here for linux */
 r_static
 id|__inline
 r_void
-DECL|function|ahc_platform_scb_free
-id|ahc_platform_scb_free
+DECL|function|ahd_platform_scb_free
+id|ahd_platform_scb_free
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_struct
 id|scb
@@ -3601,20 +3917,20 @@ op_star
 id|scb
 )paren
 (brace
-id|ahc-&gt;flags
+id|ahd-&gt;flags
 op_and_assign
 op_complement
-id|AHC_RESOURCE_SHORTAGE
+id|AHD_RESOURCE_SHORTAGE
 suffix:semicolon
 )brace
 r_int
-id|ahc_platform_alloc
+id|ahd_platform_alloc
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_void
 op_star
@@ -3622,23 +3938,33 @@ id|platform_arg
 )paren
 suffix:semicolon
 r_void
-id|ahc_platform_free
+id|ahd_platform_free
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 )paren
 suffix:semicolon
 r_void
-id|ahc_platform_freeze_devq
+id|ahd_platform_init
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
+)paren
+suffix:semicolon
+r_void
+id|ahd_platform_freeze_devq
+c_func
+(paren
+r_struct
+id|ahd_softc
+op_star
+id|ahd
 comma
 r_struct
 id|scb
@@ -3646,11 +3972,31 @@ op_star
 id|scb
 )paren
 suffix:semicolon
+r_void
+id|ahd_freeze_simq
+c_func
+(paren
+r_struct
+id|ahd_softc
+op_star
+id|ahd
+)paren
+suffix:semicolon
+r_void
+id|ahd_release_simq
+c_func
+(paren
+r_struct
+id|ahd_softc
+op_star
+id|ahd
+)paren
+suffix:semicolon
 r_static
 id|__inline
 r_void
-DECL|function|ahc_freeze_scb
-id|ahc_freeze_scb
+DECL|function|ahd_freeze_scb
+id|ahd_freeze_scb
 c_func
 (paren
 r_struct
@@ -3687,30 +4033,30 @@ suffix:semicolon
 )brace
 )brace
 r_void
-id|ahc_platform_set_tags
+id|ahd_platform_set_tags
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_struct
-id|ahc_devinfo
+id|ahd_devinfo
 op_star
 id|devinfo
 comma
-id|ahc_queue_alg
+id|ahd_queue_alg
 )paren
 suffix:semicolon
 r_int
-id|ahc_platform_abort_scbs
+id|ahd_platform_abort_scbs
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 comma
 r_int
 id|target
@@ -3732,7 +4078,7 @@ id|status
 )paren
 suffix:semicolon
 r_void
-id|ahc_linux_isr
+id|ahd_linux_isr
 c_func
 (paren
 r_int
@@ -3749,34 +4095,34 @@ id|regs
 )paren
 suffix:semicolon
 r_void
-id|ahc_platform_flushwork
+id|ahd_platform_flushwork
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 )paren
 suffix:semicolon
 r_int
-id|ahc_softc_comp
+id|ahd_softc_comp
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 )paren
 suffix:semicolon
 r_void
-id|ahc_done
+id|ahd_done
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 r_struct
@@ -3785,11 +4131,11 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|ahc_send_async
+id|ahd_send_async
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 r_char
@@ -3808,11 +4154,11 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|ahc_print_path
+id|ahd_print_path
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
 comma
 r_struct
@@ -3821,27 +4167,27 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|ahc_platform_dump_card_state
+id|ahd_platform_dump_card_state
 c_func
 (paren
 r_struct
-id|ahc_softc
+id|ahd_softc
 op_star
-id|ahc
+id|ahd
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
-DECL|macro|AHC_PCI_CONFIG
-mdefine_line|#define AHC_PCI_CONFIG 1
+DECL|macro|AHD_PCI_CONFIG
+mdefine_line|#define AHD_PCI_CONFIG 1
 macro_line|#else
-DECL|macro|AHC_PCI_CONFIG
-mdefine_line|#define AHC_PCI_CONFIG 0
+DECL|macro|AHD_PCI_CONFIG
+mdefine_line|#define AHD_PCI_CONFIG 0
 macro_line|#endif
 DECL|macro|bootverbose
-mdefine_line|#define bootverbose aic7xxx_verbose
+mdefine_line|#define bootverbose aic79xx_verbose
 r_extern
 r_int
-id|aic7xxx_verbose
+id|aic79xx_verbose
 suffix:semicolon
-macro_line|#endif /* _AIC7XXX_LINUX_H_ */
+macro_line|#endif /* _AIC79XX_LINUX_H_ */
 eof

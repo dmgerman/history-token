@@ -1,8 +1,8 @@
-multiline_comment|/*&n; * Data structures and definitions for the CAM system.&n; *&n; * Copyright (c) 1997 Justin T. Gibbs.&n; * Copyright (c) 2000 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/cam.h#11 $&n; */
+multiline_comment|/*&n; * Data structures and definitions for the CAM system.&n; *&n; * Copyright (c) 1997 Justin T. Gibbs.&n; * Copyright (c) 2000 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/cam.h#15 $&n; */
 macro_line|#ifndef _AIC7XXX_CAM_H
 DECL|macro|_AIC7XXX_CAM_H
 mdefine_line|#define _AIC7XXX_CAM_H 1
-multiline_comment|/* Provide a mapping from CAM constructs to Linux SCSI constructs */
+macro_line|#include &lt;linux/types.h&gt;
 DECL|macro|CAM_BUS_WILDCARD
 mdefine_line|#define&t;CAM_BUS_WILDCARD ((u_int)~0)
 DECL|macro|CAM_TARGET_WILDCARD
@@ -13,152 +13,126 @@ multiline_comment|/* CAM Status field values */
 r_typedef
 r_enum
 (brace
-multiline_comment|/* CCB request is in progress */
 DECL|enumerator|CAM_REQ_INPROG
 id|CAM_REQ_INPROG
-op_assign
-l_int|0x3F
 comma
-multiline_comment|/* Some value unused by Linux */
-multiline_comment|/* CCB request completed without error */
+multiline_comment|/* CCB request is in progress */
 DECL|enumerator|CAM_REQ_CMP
 id|CAM_REQ_CMP
-op_assign
-id|DID_OK
 comma
-multiline_comment|/* CCB request aborted by the host */
+multiline_comment|/* CCB request completed without error */
 DECL|enumerator|CAM_REQ_ABORTED
 id|CAM_REQ_ABORTED
-op_assign
-id|DID_ABORT
 comma
-multiline_comment|/* Unable to abort CCB request */
+multiline_comment|/* CCB request aborted by the host */
 DECL|enumerator|CAM_UA_ABORT
 id|CAM_UA_ABORT
-op_assign
-id|DID_ERROR
 comma
-multiline_comment|/* CCB request completed with an error */
+multiline_comment|/* Unable to abort CCB request */
 DECL|enumerator|CAM_REQ_CMP_ERR
 id|CAM_REQ_CMP_ERR
-op_assign
-id|DID_ERROR
 comma
-multiline_comment|/* CAM subsytem is busy */
+multiline_comment|/* CCB request completed with an error */
 DECL|enumerator|CAM_BUSY
 id|CAM_BUSY
-op_assign
-id|DID_BUS_BUSY
 comma
-multiline_comment|/* CCB request was invalid */
+multiline_comment|/* CAM subsytem is busy */
 DECL|enumerator|CAM_REQ_INVALID
 id|CAM_REQ_INVALID
-op_assign
-id|DID_BAD_TARGET
 comma
-multiline_comment|/* Supplied Path ID is invalid */
+multiline_comment|/* CCB request was invalid */
 DECL|enumerator|CAM_PATH_INVALID
 id|CAM_PATH_INVALID
-op_assign
-id|DID_BAD_TARGET
 comma
-multiline_comment|/* Target Selection Timeout */
+multiline_comment|/* Supplied Path ID is invalid */
 DECL|enumerator|CAM_SEL_TIMEOUT
 id|CAM_SEL_TIMEOUT
-op_assign
-id|DID_NO_CONNECT
 comma
-multiline_comment|/* Command timeout */
+multiline_comment|/* Target Selection Timeout */
 DECL|enumerator|CAM_CMD_TIMEOUT
 id|CAM_CMD_TIMEOUT
-op_assign
-id|DID_ERROR
 comma
-multiline_comment|/*&n;&t;&t;&t;&t;&t;      * Should never occur in Linux&n;&t;&t;&t;&t;&t;      * as the upper level code&n;&t;&t;&t;&t;&t;      * handles all timeout processing.&n;&t;&t;&t;&t;&t;      */
-multiline_comment|/* SCSI error, look at error code in CCB */
+multiline_comment|/* Command timeout */
 DECL|enumerator|CAM_SCSI_STATUS_ERROR
 id|CAM_SCSI_STATUS_ERROR
-op_assign
-id|DID_OK
 comma
-multiline_comment|/* Linux looks at status byte */
-multiline_comment|/* SCSI Bus Reset Sent/Received */
+multiline_comment|/* SCSI error, look at error code in CCB */
 DECL|enumerator|CAM_SCSI_BUS_RESET
 id|CAM_SCSI_BUS_RESET
-op_assign
-id|DID_RESET
 comma
-multiline_comment|/* Uncorrectable parity error occurred */
+multiline_comment|/* SCSI Bus Reset Sent/Received */
 DECL|enumerator|CAM_UNCOR_PARITY
 id|CAM_UNCOR_PARITY
-op_assign
-id|DID_PARITY
 comma
-multiline_comment|/* Autosense: request sense cmd fail */
+multiline_comment|/* Uncorrectable parity error occurred */
 DECL|enumerator|CAM_AUTOSENSE_FAIL
 id|CAM_AUTOSENSE_FAIL
-op_assign
-id|DID_ERROR
 comma
-multiline_comment|/* No HBA Detected Error */
+multiline_comment|/* Autosense: request sense cmd fail */
 DECL|enumerator|CAM_NO_HBA
 id|CAM_NO_HBA
-op_assign
-id|DID_ERROR
 comma
-multiline_comment|/* Data Overrun error */
+multiline_comment|/* No HBA Detected Error */
 DECL|enumerator|CAM_DATA_RUN_ERR
 id|CAM_DATA_RUN_ERR
-op_assign
-id|DID_ERROR
 comma
-multiline_comment|/* Unexpected Bus Free */
+multiline_comment|/* Data Overrun error */
 DECL|enumerator|CAM_UNEXP_BUSFREE
 id|CAM_UNEXP_BUSFREE
-op_assign
-id|DID_ERROR
 comma
-multiline_comment|/* CCB length supplied is inadequate */
+multiline_comment|/* Unexpected Bus Free */
+DECL|enumerator|CAM_SEQUENCE_FAIL
+id|CAM_SEQUENCE_FAIL
+comma
+multiline_comment|/* Protocol Violation */
 DECL|enumerator|CAM_CCB_LEN_ERR
 id|CAM_CCB_LEN_ERR
-op_assign
-id|DID_ERROR
 comma
-multiline_comment|/* Unable to provide requested capability */
+multiline_comment|/* CCB length supplied is inadequate */
 DECL|enumerator|CAM_PROVIDE_FAIL
 id|CAM_PROVIDE_FAIL
-op_assign
-id|DID_ERROR
 comma
-multiline_comment|/* A SCSI BDR msg was sent to target */
+multiline_comment|/* Unable to provide requested capability */
 DECL|enumerator|CAM_BDR_SENT
 id|CAM_BDR_SENT
-op_assign
-id|DID_RESET
 comma
-multiline_comment|/* CCB request terminated by the host */
+multiline_comment|/* A SCSI BDR msg was sent to target */
 DECL|enumerator|CAM_REQ_TERMIO
 id|CAM_REQ_TERMIO
-op_assign
-id|DID_ERROR
 comma
-multiline_comment|/* Unrecoverable Host Bus Adapter Error */
+multiline_comment|/* CCB request terminated by the host */
 DECL|enumerator|CAM_UNREC_HBA_ERROR
 id|CAM_UNREC_HBA_ERROR
-op_assign
-id|DID_ERROR
 comma
-multiline_comment|/* The request was too large for this host */
+multiline_comment|/* Unrecoverable Host Bus Adapter Error */
 DECL|enumerator|CAM_REQ_TOO_BIG
 id|CAM_REQ_TOO_BIG
-op_assign
-id|DID_ERROR
 comma
+multiline_comment|/* The request was too large for this host */
+DECL|enumerator|CAM_UA_TERMIO
+id|CAM_UA_TERMIO
+comma
+multiline_comment|/* Unable to terminate I/O CCB request */
+DECL|enumerator|CAM_MSG_REJECT_REC
+id|CAM_MSG_REJECT_REC
+comma
+multiline_comment|/* Message Reject Received */
+DECL|enumerator|CAM_DEV_NOT_THERE
+id|CAM_DEV_NOT_THERE
+comma
+multiline_comment|/* SCSI Device Not Installed/there */
+DECL|enumerator|CAM_RESRC_UNAVAIL
+id|CAM_RESRC_UNAVAIL
+comma
+multiline_comment|/* Resource Unavailable */
 multiline_comment|/*&n;&t; * This request should be requeued to preserve&n;&t; * transaction ordering.  This typically occurs&n;&t; * when the SIM recognizes an error that should&n;&t; * freeze the queue and must place additional&n;&t; * requests for the target at the sim level&n;&t; * back into the XPT queue.&n;&t; */
 DECL|enumerator|CAM_REQUEUE_REQ
 id|CAM_REQUEUE_REQ
+comma
+DECL|enumerator|CAM_DEV_QFRZN
+id|CAM_DEV_QFRZN
 op_assign
-id|DID_BUS_BUSY
+l_int|0x40
 comma
 DECL|enumerator|CAM_STATUS_MASK
 id|CAM_STATUS_MASK
