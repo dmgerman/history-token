@@ -188,6 +188,11 @@ multiline_comment|/* Big F */
 id|COMPATIBLE_IOCTL
 c_func
 (paren
+id|FBIOBLANK
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
 id|FBIOGET_VSCREENINFO
 )paren
 id|COMPATIBLE_IOCTL
