@@ -121,6 +121,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|hfsplus_ext_build_key
+r_static
 r_void
 id|hfsplus_ext_build_key
 c_func
@@ -1549,6 +1550,7 @@ id|EIO
 suffix:semicolon
 )brace
 DECL|function|hfsplus_free_extents
+r_static
 r_int
 id|hfsplus_free_extents
 c_func

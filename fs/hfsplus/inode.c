@@ -138,6 +138,7 @@ id|hfsplus_get_block
 suffix:semicolon
 )brace
 DECL|function|hfsplus_releasepage
+r_static
 r_int
 id|hfsplus_releasepage
 c_func
@@ -1617,6 +1618,7 @@ id|file_operations
 id|hfsplus_dir_operations
 suffix:semicolon
 DECL|variable|hfsplus_file_inode_operations
+r_static
 r_struct
 id|inode_operations
 id|hfsplus_file_inode_operations
@@ -1655,6 +1657,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|hfsplus_file_operations
+r_static
 r_struct
 id|file_operations
 id|hfsplus_file_operations

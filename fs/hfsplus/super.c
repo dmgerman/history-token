@@ -426,6 +426,7 @@ id|inode
 suffix:semicolon
 )brace
 DECL|function|hfsplus_write_inode
+r_static
 r_int
 id|hfsplus_write_inode
 c_func
@@ -1439,6 +1440,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hfsplus_remount
+r_static
 r_int
 id|hfsplus_remount
 c_func

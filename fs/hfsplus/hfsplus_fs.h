@@ -617,12 +617,6 @@ DECL|macro|hfs_brec_insert
 mdefine_line|#define hfs_brec_insert hfsplus_brec_insert
 DECL|macro|hfs_brec_remove
 mdefine_line|#define hfs_brec_remove hfsplus_brec_remove
-DECL|macro|hfs_bnode_split
-mdefine_line|#define hfs_bnode_split hfsplus_bnode_split
-DECL|macro|hfs_brec_update_parent
-mdefine_line|#define hfs_brec_update_parent hfsplus_brec_update_parent
-DECL|macro|hfs_btree_inc_height
-mdefine_line|#define hfs_btree_inc_height hfsplus_btree_inc_height
 DECL|macro|hfs_find_init
 mdefine_line|#define hfs_find_init hfsplus_find_init
 DECL|macro|hfs_find_exit
@@ -1003,35 +997,6 @@ id|hfs_find_data
 op_star
 )paren
 suffix:semicolon
-r_struct
-id|hfs_bnode
-op_star
-id|hfs_bnode_split
-c_func
-(paren
-r_struct
-id|hfs_find_data
-op_star
-)paren
-suffix:semicolon
-r_int
-id|hfs_brec_update_parent
-c_func
-(paren
-r_struct
-id|hfs_find_data
-op_star
-)paren
-suffix:semicolon
-r_int
-id|hfs_btree_inc_height
-c_func
-(paren
-r_struct
-id|hfs_btree
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* bfind.c */
 r_int
 id|hfs_find_init
@@ -1210,20 +1175,6 @@ op_star
 comma
 id|hfsplus_btree_key
 op_star
-)paren
-suffix:semicolon
-r_void
-id|hfsplus_ext_build_key
-c_func
-(paren
-id|hfsplus_btree_key
-op_star
-comma
-id|u32
-comma
-id|u32
-comma
-id|u8
 )paren
 suffix:semicolon
 r_void

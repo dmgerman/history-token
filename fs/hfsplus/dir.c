@@ -1224,6 +1224,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hfsplus_create
+r_static
 r_int
 id|hfsplus_create
 c_func
@@ -1337,6 +1338,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hfsplus_link
+r_static
 r_int
 id|hfsplus_link
 c_func
@@ -1656,6 +1658,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hfsplus_unlink
+r_static
 r_int
 id|hfsplus_unlink
 c_func
@@ -1911,6 +1914,7 @@ id|res
 suffix:semicolon
 )brace
 DECL|function|hfsplus_mkdir
+r_static
 r_int
 id|hfsplus_mkdir
 c_func
@@ -2021,6 +2025,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hfsplus_rmdir
+r_static
 r_int
 id|hfsplus_rmdir
 c_func
@@ -2105,6 +2110,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hfsplus_symlink
+r_static
 r_int
 id|hfsplus_symlink
 c_func
@@ -2258,6 +2264,7 @@ id|res
 suffix:semicolon
 )brace
 DECL|function|hfsplus_mknod
+r_static
 r_int
 id|hfsplus_mknod
 c_func
@@ -2388,6 +2395,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hfsplus_rename
+r_static
 r_int
 id|hfsplus_rename
 c_func

@@ -1,6 +1,40 @@
 multiline_comment|/*&n; *  linux/fs/hfsplus/brec.c&n; *&n; * Copyright (C) 2001&n; * Brad Boyer (flar@allandria.com)&n; * (C) 2003 Ardis Technologies &lt;roman@ardistech.com&gt;&n; *&n; * Handle individual btree records&n; */
 macro_line|#include &quot;hfsplus_fs.h&quot;
 macro_line|#include &quot;hfsplus_raw.h&quot;
+r_static
+r_struct
+id|hfs_bnode
+op_star
+id|hfs_bnode_split
+c_func
+(paren
+r_struct
+id|hfs_find_data
+op_star
+id|fd
+)paren
+suffix:semicolon
+r_static
+r_int
+id|hfs_brec_update_parent
+c_func
+(paren
+r_struct
+id|hfs_find_data
+op_star
+id|fd
+)paren
+suffix:semicolon
+r_static
+r_int
+id|hfs_btree_inc_height
+c_func
+(paren
+r_struct
+id|hfs_btree
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* Get the length and offset of the given record in the given node */
 DECL|function|hfs_brec_lenoff
 id|u16
@@ -1073,6 +1107,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hfs_bnode_split
+r_static
 r_struct
 id|hfs_bnode
 op_star
@@ -1659,6 +1694,7 @@ id|new_node
 suffix:semicolon
 )brace
 DECL|function|hfs_brec_update_parent
+r_static
 r_int
 id|hfs_brec_update_parent
 c_func
@@ -2183,6 +2219,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hfs_btree_inc_height
+r_static
 r_int
 id|hfs_btree_inc_height
 c_func
