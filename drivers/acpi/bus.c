@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  acpi_bus.c - ACPI Bus Driver ($Revision: 66 $)&n; *&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/*&n; *  acpi_bus.c - ACPI Bus Driver ($Revision: 77 $)&n; *&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -47,24 +47,18 @@ DECL|variable|acpi_disabled
 r_static
 id|u8
 id|acpi_disabled
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|acpi_root
 r_struct
 id|acpi_device
 op_star
 id|acpi_root
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|acpi_root_dir
 r_struct
 id|proc_dir_entry
 op_star
 id|acpi_root_dir
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|macro|STRUCT_TO_INT
 mdefine_line|#define STRUCT_TO_INT(s)&t;(*((int*)&amp;s))
@@ -177,6 +171,23 @@ comma
 id|less_than_or_equal
 comma
 l_string|&quot;Field beyond end of region&quot;
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* Compaq Presario 711FR */
+(brace
+l_string|&quot;COMAPQ&quot;
+comma
+l_string|&quot;EAGLES&quot;
+comma
+l_int|0x06040000
+comma
+id|ACPI_TABLE_DSDT
+comma
+id|less_than_or_equal
+comma
+l_string|&quot;SCI issues (C2 disabled)&quot;
 comma
 l_int|0
 )brace
@@ -1063,8 +1074,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -1169,8 +1178,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -1275,8 +1282,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -1450,8 +1455,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -1570,8 +1573,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -1584,8 +1585,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|ACPI_DEBUG_PRINT
@@ -2888,8 +2887,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -2956,8 +2953,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|acpi_bus_get_device
 c_func
 (paren
@@ -3211,8 +3206,6 @@ id|device-&gt;flags.hardware_id
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|strstr
 c_func
 (paren
@@ -3355,6 +3348,8 @@ r_case
 id|ACPI_TYPE_PACKAGE
 suffix:colon
 multiline_comment|/* TBD: Support CID packages */
+r_break
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -3372,14 +3367,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|strstr
 c_func
 (paren
-id|cid
+id|driver-&gt;ids
 comma
-id|device-&gt;pnp.hardware_id
+id|cid
 )paren
 )paren
 r_return
@@ -3461,8 +3454,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 (brace
@@ -3505,15 +3496,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-l_int|0
-op_ne
 id|result
-)paren
 op_logical_and
-(paren
 id|driver-&gt;ops.remove
-)paren
 )paren
 id|driver-&gt;ops
 dot
@@ -3680,8 +3665,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -3717,8 +3700,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -3851,8 +3832,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -3982,8 +3961,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|acpi_bus_match
 c_func
 (paren
@@ -4007,8 +3984,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_eq
+op_logical_neg
 id|result
 )paren
 op_increment
@@ -4739,8 +4715,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -4767,8 +4741,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -5079,8 +5051,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -5105,8 +5075,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -5404,8 +5372,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 (brace
@@ -6210,11 +6176,6 @@ id|acpi_bus_init_irq
 r_void
 )paren
 (brace
-r_int
-id|result
-op_assign
-l_int|0
-suffix:semicolon
 id|acpi_status
 id|status
 op_assign
@@ -6237,11 +6198,6 @@ op_amp
 id|arg
 )brace
 suffix:semicolon
-r_int
-id|irq_model
-op_assign
-l_int|0
-suffix:semicolon
 r_char
 op_star
 id|message
@@ -6255,36 +6211,14 @@ l_string|&quot;acpi_bus_init_irq&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t; * Let the system know what interrupt model we are using by&n;&t; * evaluating the &bslash;_PIC object, if exists.&n;&t; */
-id|result
-op_assign
-id|acpi_get_interrupt_model
-c_func
-(paren
-op_amp
-id|irq_model
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-id|result
-)paren
-id|return_VALUE
-c_func
-(paren
-id|result
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
-id|irq_model
+id|acpi_irq_model
 )paren
 (brace
 r_case
-id|ACPI_INT_MODEL_PIC
+id|ACPI_IRQ_MODEL_PIC
 suffix:colon
 id|message
 op_assign
@@ -6293,7 +6227,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACPI_INT_MODEL_IOAPIC
+id|ACPI_IRQ_MODEL_IOAPIC
 suffix:colon
 id|message
 op_assign
@@ -6302,7 +6236,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACPI_INT_MODEL_IOSAPIC
+id|ACPI_IRQ_MODEL_IOSAPIC
 suffix:colon
 id|message
 op_assign
@@ -6312,11 +6246,20 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|message
-op_assign
-l_string|&quot;UNKNOWN&quot;
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PREFIX
+l_string|&quot;Unknown interrupt routing model&bslash;n&quot;
+)paren
 suffix:semicolon
-r_break
+id|return_VALUE
+c_func
+(paren
+op_minus
+id|ENODEV
+)paren
 suffix:semicolon
 )brace
 id|printk
@@ -6331,7 +6274,7 @@ id|message
 suffix:semicolon
 id|arg.integer.value
 op_assign
-id|irq_model
+id|acpi_irq_model
 suffix:semicolon
 id|status
 op_assign
@@ -6621,7 +6564,7 @@ suffix:semicolon
 id|progress
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t; * [5] Register for all standard device notifications.&n;&t; */
+multiline_comment|/*&n;&t; * [5] Get the system interrupt model and evaluate &bslash;_PIC.&n;&t; */
 id|result
 op_assign
 id|acpi_bus_init_irq
@@ -6632,12 +6575,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
 id|end
+suffix:semicolon
+id|progress
+op_increment
 suffix:semicolon
 multiline_comment|/*&n;&t; * [6] Register for all standard device notifications.&n;&t; */
 id|status
@@ -6704,8 +6648,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -6806,8 +6748,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -6824,8 +6764,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 r_goto
@@ -6833,11 +6771,10 @@ id|end
 suffix:semicolon
 id|end
 suffix:colon
+multiline_comment|/*&n;&t; * Clean up if anything went awry.&n;&t; */
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 (brace
@@ -7086,17 +7023,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;Bus Driver revision %08x&bslash;n&quot;
-comma
-id|ACPI_DRIVER_VERSION
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|PREFIX
-l_string|&quot;Core Subsystem revision %08x&bslash;n&quot;
+l_string|&quot;Subsystem revision %08x&bslash;n&quot;
 comma
 id|ACPI_CA_VERSION
 )paren
@@ -7161,8 +7088,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|result
 )paren
 id|return_VALUE
@@ -7281,7 +7206,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 DECL|variable|acpi_init
 id|subsys_initcall
 c_func
@@ -7289,7 +7213,6 @@ c_func
 id|acpi_init
 )paren
 suffix:semicolon
-macro_line|#endif
 id|__setup
 c_func
 (paren
