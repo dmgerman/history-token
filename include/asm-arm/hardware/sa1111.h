@@ -697,6 +697,10 @@ id|irq
 l_int|6
 )braket
 suffix:semicolon
+DECL|member|dma_mask
+id|u64
+id|dma_mask
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|SA1111_DEV

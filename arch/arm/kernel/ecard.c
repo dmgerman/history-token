@@ -635,7 +635,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_CPU_32
 macro_line|#include &lt;linux/completion.h&gt;
 DECL|variable|ecard_pid
 r_static
@@ -1048,11 +1047,6 @@ id|ecard_completion
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-multiline_comment|/*&n; * On 26-bit processors, we don&squot;t need the kcardd thread to access the&n; * expansion card loaders.  We do it directly.&n; */
-DECL|macro|ecard_call
-mdefine_line|#define ecard_call(req)&t;ecard_do_request(req)
-macro_line|#endif
 multiline_comment|/* ======================= Mid-level card control ===================== */
 r_static
 r_void
@@ -4084,7 +4078,6 @@ id|slot
 comma
 id|irqhw
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_32
 id|init_waitqueue_head
 c_func
 (paren
@@ -4092,7 +4085,6 @@ op_amp
 id|ecard_wait
 )paren
 suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren

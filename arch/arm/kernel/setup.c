@@ -411,7 +411,6 @@ DECL|macro|lp1
 mdefine_line|#define lp1 io_res[1]
 DECL|macro|lp2
 mdefine_line|#define lp2 io_res[2]
-macro_line|#ifdef CONFIG_CPU_32
 DECL|variable|cache_types
 r_static
 r_const
@@ -810,10 +809,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#else
-DECL|macro|dump_cpu_info
-mdefine_line|#define dump_cpu_info() do { } while (0)
-macro_line|#endif
 DECL|function|cpu_architecture
 r_int
 id|cpu_architecture
@@ -3168,7 +3163,6 @@ op_amp
 l_int|15
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_32
 (brace
 r_int
 r_int
@@ -3300,7 +3294,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif
 id|seq_puts
 c_func
 (paren

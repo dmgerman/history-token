@@ -432,20 +432,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The semaphore operations have a special calling sequence that&n; * allow us to do a simpler in-line version of them. These routines&n; * need to convert that sequence back into the C sequence when&n; * there is contention on the semaphore.&n; *&n; * ip contains the semaphore pointer on entry. Save the C-clobbered&n; * registers (r0 to r3 and lr), but not ip, as we use it as a return&n; * value in some cases..&n; */
-macro_line|#ifdef CONFIG_CPU_26
-id|asm
-c_func
-(paren
-l_string|&quot;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_failed&t;&t;&t;&bslash;n&bslash;&n;__down_failed:&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_interruptible_failed&t;&bslash;n&bslash;&n;__down_interruptible_failed:&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down_interruptible&t;&t;&bslash;n&bslash;&n;&t;mov&t;ip, r0&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_trylock_failed&t;&t;&bslash;n&bslash;&n;__down_trylock_failed:&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down_trylock&t;&t;&t;&bslash;n&bslash;&n;&t;mov&t;ip, r0&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__up_wakeup&t;&t;&t;&bslash;n&bslash;&n;__up_wakeup:&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__up&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&quot;
-)paren
-suffix:semicolon
-macro_line|#else
-multiline_comment|/* 32 bit version */
 id|asm
 c_func
 (paren
 l_string|&quot;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_failed&t;&t;&t;&bslash;n&bslash;&n;__down_failed:&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_interruptible_failed&t;&bslash;n&bslash;&n;__down_interruptible_failed:&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down_interruptible&t;&t;&bslash;n&bslash;&n;&t;mov&t;ip, r0&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_trylock_failed&t;&t;&bslash;n&bslash;&n;__down_trylock_failed:&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down_trylock&t;&t;&t;&bslash;n&bslash;&n;&t;mov&t;ip, r0&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__up_wakeup&t;&t;&t;&bslash;n&bslash;&n;__up_wakeup:&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__up&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}&t;&t;&bslash;n&bslash;&n;&t;&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 eof

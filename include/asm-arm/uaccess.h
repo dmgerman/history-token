@@ -23,15 +23,15 @@ id|fixup
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Returns 0 if exception not found and fixup otherwise.  */
 r_extern
 r_int
-r_int
-id|search_exception_table
+id|fixup_exception
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 DECL|macro|get_ds

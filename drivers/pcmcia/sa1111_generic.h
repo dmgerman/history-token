@@ -69,6 +69,16 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|pcmcia_badge4_init
+c_func
+(paren
+r_struct
+id|device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|pcmcia_jornada720_init
 c_func
 (paren

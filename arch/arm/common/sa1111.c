@@ -83,6 +83,11 @@ op_assign
 id|SA1111_DEVID_USB
 comma
 dot
+id|dma_mask
+op_assign
+l_int|0xffffffffLL
+comma
+dot
 id|irq
 op_assign
 (brace
@@ -1640,6 +1645,11 @@ id|sadev-&gt;dev.bus
 op_assign
 op_amp
 id|sa1111_bus_type
+suffix:semicolon
+id|sadev-&gt;dev.dma_mask
+op_assign
+op_amp
+id|sadev-&gt;dma_mask
 suffix:semicolon
 id|sadev-&gt;res.start
 op_assign
