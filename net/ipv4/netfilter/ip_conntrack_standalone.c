@@ -3557,7 +3557,7 @@ id|ip_ct_no_defrag
 op_assign
 l_int|1
 suffix:semicolon
-id|smp_wmb
+id|synchronize_net
 c_func
 (paren
 )paren
