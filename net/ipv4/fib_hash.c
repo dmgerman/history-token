@@ -1954,7 +1954,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
-id|fa
+id|prev_fa
 suffix:semicolon
 )brace
 r_return
