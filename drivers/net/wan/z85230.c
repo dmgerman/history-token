@@ -199,7 +199,7 @@ r_return
 id|r
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;write_zsreg - Write to a Z8530 channel register&n; *&t;@c: The Z8530 channel&n; *&t;@reg: Register number&n; *&t;@val: Value to write&n; *&n; *&t;Write a value to an indexed register. The caller must hold the lock&n; *&t;to honour the irritating delay rules. We know about register 0&n; *&t;being fast to access.&n; */
+multiline_comment|/**&n; *&t;write_zsreg - Write to a Z8530 channel register&n; *&t;@c: The Z8530 channel&n; *&t;@reg: Register number&n; *&t;@val: Value to write&n; *&n; *&t;Write a value to an indexed register. The caller must hold the lock&n; *&t;to honour the irritating delay rules. We know about register 0&n; *&t;being fast to access.&n; *&n; *      Assumes c-&gt;lock is held.&n; */
 DECL|function|write_zsreg
 r_static
 r_inline
@@ -219,18 +219,6 @@ id|u8
 id|val
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|c-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -252,14 +240,6 @@ c_func
 id|c-&gt;ctrlio
 comma
 id|val
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|c-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -729,6 +709,12 @@ id|ch
 comma
 id|stat
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+id|c-&gt;lock
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -903,6 +889,12 @@ comma
 id|RES_H_IUS
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+id|c-&gt;lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;z8530_tx - Handle a PIO transmit event&n; *&t;@c: Z8530 channel to process&n; *&n; *&t;Z8530 transmit interrupt handler for the PIO mode. The basic&n; *&t;idea is to attempt to keep the FIFO fed. We fill as many bytes&n; *&t;in as possible, its quite possible that we won&squot;t keep up with the&n; *&t;data rate otherwise.&n; */
 DECL|function|z8530_tx
@@ -917,6 +909,12 @@ op_star
 id|c
 )paren
 (brace
+id|spin_lock
+c_func
+(paren
+id|c-&gt;lock
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1026,6 +1024,12 @@ comma
 id|RES_H_IUS
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+id|c-&gt;lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;z8530_status - Handle a PIO status exception&n; *&t;@chan: Z8530 channel to process&n; *&n; *&t;A status event occurred in PIO synchronous mode. There are several&n; *&t;reasons the chip will bother us here. A transmit underrun means we&n; *&t;failed to feed the chip fast enough and just broke a packet. A DCD&n; *&t;change is a line up or down. We communicate that back to the protocol&n; *&t;layer for synchronous PPP to renegotiate.&n; */
 DECL|function|z8530_status
@@ -1044,6 +1048,12 @@ id|u8
 id|status
 comma
 id|altered
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+id|chan-&gt;lock
+)paren
 suffix:semicolon
 id|status
 op_assign
@@ -1211,6 +1221,12 @@ comma
 id|RES_H_IUS
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+id|chan-&gt;lock
+)paren
+suffix:semicolon
 )brace
 DECL|variable|z8530_sync
 r_struct
@@ -1245,6 +1261,12 @@ op_star
 id|chan
 )paren
 (brace
+id|spin_lock
+c_func
+(paren
+id|chan-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1324,6 +1346,12 @@ id|chan
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+id|chan-&gt;lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;z8530_dma_tx - Handle a DMA TX event&n; *&t;@chan:&t;The Z8530 channel to handle&n; *&n; *&t;We have received an interrupt while doing DMA transmissions. It&n; *&t;shouldn&squot;t happen. Scream loudly if it does.&n; */
 DECL|function|z8530_dma_tx
@@ -1338,6 +1366,12 @@ op_star
 id|chan
 )paren
 (brace
+id|spin_lock
+c_func
+(paren
+id|chan-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1373,6 +1407,12 @@ id|z8530_tx
 c_func
 (paren
 id|chan
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+id|chan-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -1469,6 +1509,12 @@ id|chan
 suffix:semicolon
 )brace
 )brace
+id|spin_lock
+c_func
+(paren
+id|chan-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1586,6 +1632,12 @@ c_func
 id|chan
 comma
 id|RES_H_IUS
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+id|chan-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -2408,7 +2460,9 @@ id|c
 (brace
 r_int
 r_int
-id|flags
+id|cflags
+comma
+id|dflags
 suffix:semicolon
 id|c-&gt;sync
 op_assign
@@ -2593,7 +2647,7 @@ c_func
 (paren
 id|c-&gt;lock
 comma
-id|flags
+id|cflags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;TX DMA via DIR/REQ&n;&t; */
@@ -2703,7 +2757,7 @@ id|R1
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;DMA interrupts&n;&t; */
 multiline_comment|/*&n;&t; *&t;Set up the DMA configuration&n;&t; */
-id|flags
+id|dflags
 op_assign
 id|claim_dma_lock
 c_func
@@ -2790,7 +2844,7 @@ suffix:semicolon
 id|release_dma_lock
 c_func
 (paren
-id|flags
+id|dflags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Select the DMA interrupt handlers&n;&t; */
@@ -2839,7 +2893,7 @@ c_func
 (paren
 id|c-&gt;lock
 comma
-id|flags
+id|cflags
 )paren
 suffix:semicolon
 r_return
@@ -3154,7 +3208,9 @@ id|c
 (brace
 r_int
 r_int
-id|flags
+id|cflags
+comma
+id|dflags
 suffix:semicolon
 id|printk
 c_func
@@ -3252,7 +3308,7 @@ c_func
 (paren
 id|c-&gt;lock
 comma
-id|flags
+id|cflags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Load the PIO receive ring&n;&t; */
@@ -3337,7 +3393,7 @@ id|R1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Set up the DMA configuration&n;&t; */
-id|flags
+id|dflags
 op_assign
 id|claim_dma_lock
 c_func
@@ -3373,7 +3429,7 @@ suffix:semicolon
 id|release_dma_lock
 c_func
 (paren
-id|flags
+id|dflags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Select the DMA interrupt handlers&n;&t; */
@@ -3422,7 +3478,7 @@ c_func
 (paren
 id|c-&gt;lock
 comma
-id|flags
+id|cflags
 )paren
 suffix:semicolon
 r_return
@@ -3455,7 +3511,9 @@ id|c
 (brace
 r_int
 r_int
-id|flags
+id|dflags
+comma
+id|cflags
 suffix:semicolon
 id|u8
 id|chk
@@ -3465,7 +3523,7 @@ c_func
 (paren
 id|c-&gt;lock
 comma
-id|flags
+id|cflags
 )paren
 suffix:semicolon
 id|c-&gt;irqs
@@ -3482,7 +3540,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Disable the PC DMA channels&n;&t; */
-id|flags
+id|dflags
 op_assign
 id|claim_dma_lock
 c_func
@@ -3512,7 +3570,7 @@ suffix:semicolon
 id|release_dma_lock
 c_func
 (paren
-id|flags
+id|dflags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Disable DMA control mode&n;&t; */
@@ -3653,6 +3711,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|c-&gt;lock
+comma
+id|cflags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3730,6 +3796,7 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Locked operation part of the z8530 init code&n; */
 DECL|function|do_z8530_init
 r_static
+r_inline
 r_int
 id|do_z8530_init
 c_func
@@ -3758,17 +3825,6 @@ suffix:semicolon
 id|dev-&gt;chanB.dcdcheck
 op_assign
 id|DCD
-suffix:semicolon
-multiline_comment|/* Set up the chip level lock */
-id|dev-&gt;chanA.lock
-op_assign
-op_amp
-id|dev-&gt;lock
-suffix:semicolon
-id|dev-&gt;chanB.lock
-op_assign
-op_amp
-id|dev-&gt;lock
 suffix:semicolon
 multiline_comment|/* Reset the chip */
 id|write_zsreg
