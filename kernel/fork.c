@@ -1158,7 +1158,7 @@ op_amp
 id|file-&gt;f_mapping-&gt;i_shared_sem
 )paren
 suffix:semicolon
-id|list_add_tail
+id|list_add
 c_func
 (paren
 op_amp
