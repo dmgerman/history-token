@@ -691,9 +691,7 @@ r_int
 )paren
 id|p-&gt;thread_info
 op_plus
-l_int|2
-op_star
-id|PAGE_SIZE
+id|THREAD_SIZE
 suffix:semicolon
 r_return
 id|CHOOSE_MODE_PROC

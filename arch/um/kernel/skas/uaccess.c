@@ -99,7 +99,7 @@ l_int|0
 comma
 id|is_write
 comma
-l_int|0
+l_int|1
 comma
 op_amp
 id|dummy_code
