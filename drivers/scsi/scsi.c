@@ -1600,6 +1600,13 @@ id|host
 op_assign
 id|cmd-&gt;host
 suffix:semicolon
+r_struct
+id|scsi_device
+op_star
+id|device
+op_assign
+id|cmd-&gt;device
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -1641,9 +1648,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|cmd-&gt;device-&gt;device_blocked
+id|device-&gt;device_blocked
 op_assign
-id|cmd-&gt;device-&gt;max_device_blocked
+id|device-&gt;max_device_blocked
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Register the fact that we own the thing for now.&n;&t; */
@@ -1660,29 +1667,15 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Decrement the counters, since these commands are no longer&n;&t; * active on the host/device.&n;&t; */
-id|spin_lock_irqsave
+id|scsi_host_busy_dec_and_test
 c_func
 (paren
-id|cmd-&gt;host-&gt;host_lock
+id|host
 comma
-id|flags
+id|device
 )paren
 suffix:semicolon
-id|cmd-&gt;host-&gt;host_busy
-op_decrement
-suffix:semicolon
-id|cmd-&gt;device-&gt;device_busy
-op_decrement
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|cmd-&gt;host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Insert this command at the head of the queue for it&squot;s device.&n;&t; * It will go before all other commands that are already in the queue.&n;&t; */
+multiline_comment|/*&n;&t; * Insert this command at the head of the queue for it&squot;s device.&n;&t; * It will go before all other commands that are already in the queue.&n;&t; *&n;&t; * NOTE: there is magic here about the way the queue is&n;&t; * plugged if we have no outstanding commands.&n;&t; * scsi_insert_special_cmd eventually calls&n;&t; * blk_queue_insert().  Although this *doesn&squot;t* plug the&n;&t; * queue, it does call the request function.  The SCSI request&n;&t; * function detects the blocked condition and plugs the queue&n;&t; * appropriately.&n;&t; */
 id|scsi_insert_special_cmd
 c_func
 (paren
