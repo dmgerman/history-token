@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/net/gianfar_ethtool.c&n; *&n; * Gianfar Ethernet Driver&n; * Ethtool support for Gianfar Enet&n; * Based on e1000 ethtool support&n; *&n; * Author: Andy Fleming&n; * Maintainer: Kumar Gala (kumar.gala@freescale.com)&n; *&n; * Copyright 2004 Freescale Semiconductor, Inc&n; *&n; * This software may be used and distributed according to &n; * the terms of the GNU Public License, Version 2, incorporated herein &n; * by reference.&n; */
+multiline_comment|/*&n; *  drivers/net/gianfar_ethtool.c&n; *&n; *  Gianfar Ethernet Driver&n; *  Ethtool support for Gianfar Enet&n; *  Based on e1000 ethtool support&n; *&n; *  Author: Andy Fleming&n; *  Maintainer: Kumar Gala (kumar.gala@freescale.com)&n; *&n; *  Copyright (c) 2003,2004 Freescale Semiconductor, Inc.&n; *&n; *  This software may be used and distributed according to &n; *  the terms of the GNU Public License, Version 2, incorporated herein &n; *  by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -187,121 +187,121 @@ id|ETH_GSTRING_LEN
 )braket
 op_assign
 (brace
-l_string|&quot;RX Dropped by Kernel&quot;
+l_string|&quot;rx-dropped-by-kernel&quot;
 comma
-l_string|&quot;RX Large Frame Errors&quot;
+l_string|&quot;rx-large-frame-errors&quot;
 comma
-l_string|&quot;RX Short Frame Errors&quot;
+l_string|&quot;rx-short-frame-errors&quot;
 comma
-l_string|&quot;RX Non-Octet Errors&quot;
+l_string|&quot;rx-non-octet-errors&quot;
 comma
-l_string|&quot;RX CRC Errors&quot;
+l_string|&quot;rx-crc-errors&quot;
 comma
-l_string|&quot;RX Overrun Errors&quot;
+l_string|&quot;rx-overrun-errors&quot;
 comma
-l_string|&quot;RX Busy Errors&quot;
+l_string|&quot;rx-busy-errors&quot;
 comma
-l_string|&quot;RX Babbling Errors&quot;
+l_string|&quot;rx-babbling-errors&quot;
 comma
-l_string|&quot;RX Truncated Frames&quot;
+l_string|&quot;rx-truncated-frames&quot;
 comma
-l_string|&quot;Ethernet Bus Error&quot;
+l_string|&quot;ethernet-bus-error&quot;
 comma
-l_string|&quot;TX Babbling Errors&quot;
+l_string|&quot;tx-babbling-errors&quot;
 comma
-l_string|&quot;TX Underrun Errors&quot;
+l_string|&quot;tx-underrun-errors&quot;
 comma
-l_string|&quot;RX SKB Missing Errors&quot;
+l_string|&quot;rx-skb-missing-errors&quot;
 comma
-l_string|&quot;TX Timeout Errors&quot;
+l_string|&quot;tx-timeout-errors&quot;
 comma
-l_string|&quot;tx&amp;rx 64B frames&quot;
+l_string|&quot;tx-rx-64-frames&quot;
 comma
-l_string|&quot;tx&amp;rx 65-127B frames&quot;
+l_string|&quot;tx-rx-65-127-frames&quot;
 comma
-l_string|&quot;tx&amp;rx 128-255B frames&quot;
+l_string|&quot;tx-rx-128-255-frames&quot;
 comma
-l_string|&quot;tx&amp;rx 256-511B frames&quot;
+l_string|&quot;tx-rx-256-511-frames&quot;
 comma
-l_string|&quot;tx&amp;rx 512-1023B frames&quot;
+l_string|&quot;tx-rx-512-1023-frames&quot;
 comma
-l_string|&quot;tx&amp;rx 1024-1518B frames&quot;
+l_string|&quot;tx-rx-1024-1518-frames&quot;
 comma
-l_string|&quot;tx&amp;rx 1519-1522B Good VLAN&quot;
+l_string|&quot;tx-rx-1519-1522-good-vlan&quot;
 comma
-l_string|&quot;RX bytes&quot;
+l_string|&quot;rx-bytes&quot;
 comma
-l_string|&quot;RX Packets&quot;
+l_string|&quot;rx-packets&quot;
 comma
-l_string|&quot;RX FCS Errors&quot;
+l_string|&quot;rx-fcs-errors&quot;
 comma
-l_string|&quot;Receive Multicast Packet&quot;
+l_string|&quot;receive-multicast-packet&quot;
 comma
-l_string|&quot;Receive Broadcast Packet&quot;
+l_string|&quot;receive-broadcast-packet&quot;
 comma
-l_string|&quot;RX Control Frame Packets&quot;
+l_string|&quot;rx-control-frame-packets&quot;
 comma
-l_string|&quot;RX Pause Frame Packets&quot;
+l_string|&quot;rx-pause-frame-packets&quot;
 comma
-l_string|&quot;RX Unknown OP Code&quot;
+l_string|&quot;rx-unknown-op-code&quot;
 comma
-l_string|&quot;RX Alignment Error&quot;
+l_string|&quot;rx-alignment-error&quot;
 comma
-l_string|&quot;RX Frame Length Error&quot;
+l_string|&quot;rx-frame-length-error&quot;
 comma
-l_string|&quot;RX Code Error&quot;
+l_string|&quot;rx-code-error&quot;
 comma
-l_string|&quot;RX Carrier Sense Error&quot;
+l_string|&quot;rx-carrier-sense-error&quot;
 comma
-l_string|&quot;RX Undersize Packets&quot;
+l_string|&quot;rx-undersize-packets&quot;
 comma
-l_string|&quot;RX Oversize Packets&quot;
+l_string|&quot;rx-oversize-packets&quot;
 comma
-l_string|&quot;RX Fragmented Frames&quot;
+l_string|&quot;rx-fragmented-frames&quot;
 comma
-l_string|&quot;RX Jabber Frames&quot;
+l_string|&quot;rx-jabber-frames&quot;
 comma
-l_string|&quot;RX Dropped Frames&quot;
+l_string|&quot;rx-dropped-frames&quot;
 comma
-l_string|&quot;TX Byte Counter&quot;
+l_string|&quot;tx-byte-counter&quot;
 comma
-l_string|&quot;TX Packets&quot;
+l_string|&quot;tx-packets&quot;
 comma
-l_string|&quot;TX Multicast Packets&quot;
+l_string|&quot;tx-multicast-packets&quot;
 comma
-l_string|&quot;TX Broadcast Packets&quot;
+l_string|&quot;tx-broadcast-packets&quot;
 comma
-l_string|&quot;TX Pause Control Frames&quot;
+l_string|&quot;tx-pause-control-frames&quot;
 comma
-l_string|&quot;TX Deferral Packets&quot;
+l_string|&quot;tx-deferral-packets&quot;
 comma
-l_string|&quot;TX Excessive Deferral Packets&quot;
+l_string|&quot;tx-excessive-deferral-packets&quot;
 comma
-l_string|&quot;TX Single Collision Packets&quot;
+l_string|&quot;tx-single-collision-packets&quot;
 comma
-l_string|&quot;TX Multiple Collision Packets&quot;
+l_string|&quot;tx-multiple-collision-packets&quot;
 comma
-l_string|&quot;TX Late Collision Packets&quot;
+l_string|&quot;tx-late-collision-packets&quot;
 comma
-l_string|&quot;TX Excessive Collision Packets&quot;
+l_string|&quot;tx-excessive-collision-packets&quot;
 comma
-l_string|&quot;TX Total Collision&quot;
+l_string|&quot;tx-total-collision&quot;
 comma
-l_string|&quot;RESERVED&quot;
+l_string|&quot;reserved&quot;
 comma
-l_string|&quot;TX Dropped Frames&quot;
+l_string|&quot;tx-dropped-frames&quot;
 comma
-l_string|&quot;TX Jabber Frames&quot;
+l_string|&quot;tx-jabber-frames&quot;
 comma
-l_string|&quot;TX FCS Errors&quot;
+l_string|&quot;tx-fcs-errors&quot;
 comma
-l_string|&quot;TX Control Frames&quot;
+l_string|&quot;tx-control-frames&quot;
 comma
-l_string|&quot;TX Oversize Frames&quot;
+l_string|&quot;tx-oversize-frames&quot;
 comma
-l_string|&quot;TX Undersize Frames&quot;
+l_string|&quot;tx-undersize-frames&quot;
 comma
-l_string|&quot;TX Fragmented Frames&quot;
+l_string|&quot;tx-fragmented-frames&quot;
 comma
 )brace
 suffix:semicolon
@@ -334,12 +334,11 @@ id|gfar_private
 op_star
 id|priv
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|gfar_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 id|u32
 op_star
@@ -508,12 +507,11 @@ id|gfar_private
 op_star
 id|priv
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|gfar_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 id|u64
 op_star
@@ -590,7 +588,7 @@ c_func
 (paren
 id|drvinfo-&gt;driver
 comma
-id|gfar_driver_name
+id|DRV_NAME
 comma
 id|GFAR_INFOSTR_LEN
 )paren
@@ -664,12 +662,11 @@ id|gfar_private
 op_star
 id|priv
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|gfar_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 id|uint
 id|gigabit_support
@@ -726,11 +723,11 @@ id|ADVERTISED_Autoneg
 suffix:semicolon
 id|cmd-&gt;speed
 op_assign
-id|priv-&gt;speed
+id|priv-&gt;mii_info-&gt;speed
 suffix:semicolon
 id|cmd-&gt;duplex
 op_assign
-id|priv-&gt;duplexity
+id|priv-&gt;mii_info-&gt;duplex
 suffix:semicolon
 id|cmd-&gt;port
 op_assign
@@ -738,7 +735,7 @@ id|PORT_MII
 suffix:semicolon
 id|cmd-&gt;phy_address
 op_assign
-id|priv-&gt;einfo-&gt;phyid
+id|priv-&gt;mii_info-&gt;mii_id
 suffix:semicolon
 id|cmd-&gt;transceiver
 op_assign
@@ -809,12 +806,11 @@ id|gfar_private
 op_star
 id|priv
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|gfar_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 id|u32
 op_star
@@ -868,37 +864,6 @@ id|theregs
 (braket
 id|i
 )braket
-suffix:semicolon
-)brace
-multiline_comment|/* Return the link state 1 is up, 0 is down */
-DECL|function|gfar_get_link
-id|u32
-id|gfar_get_link
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_struct
-id|gfar_private
-op_star
-id|priv
-op_assign
-(paren
-r_struct
-id|gfar_private
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
-r_return
-(paren
-id|u32
-)paren
-id|priv-&gt;link
 suffix:semicolon
 )brace
 multiline_comment|/* Fill in a buffer with the strings which correspond to the&n; * stats */
@@ -959,7 +924,7 @@ multiline_comment|/* The timer is different, depending on the interface speed */
 r_switch
 c_cond
 (paren
-id|priv-&gt;speed
+id|priv-&gt;mii_info-&gt;speed
 )paren
 (brace
 r_case
@@ -1035,7 +1000,7 @@ multiline_comment|/* The timer is different, depending on the interface speed */
 r_switch
 c_cond
 (paren
-id|priv-&gt;speed
+id|priv-&gt;mii_info-&gt;speed
 )paren
 (brace
 r_case
@@ -1104,12 +1069,11 @@ id|gfar_private
 op_star
 id|priv
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|gfar_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 id|cvals-&gt;rx_coalesce_usecs
 op_assign
@@ -1220,12 +1184,11 @@ id|gfar_private
 op_star
 id|priv
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|gfar_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 multiline_comment|/* Set up rx coalescing */
 r_if
@@ -1391,12 +1354,11 @@ id|gfar_private
 op_star
 id|priv
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|gfar_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 id|rvals-&gt;rx_max_pending
 op_assign
@@ -1457,12 +1419,11 @@ id|gfar_private
 op_star
 id|priv
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|gfar_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|err
@@ -1719,7 +1680,7 @@ comma
 dot
 id|get_link
 op_assign
-id|gfar_get_link
+id|ethtool_op_get_link
 comma
 dot
 id|get_coalesce
@@ -1756,6 +1717,212 @@ id|get_ethtool_stats
 op_assign
 id|gfar_fill_stats
 comma
+)brace
+suffix:semicolon
+DECL|variable|gfar_normon_nocoalesce_ethtool_ops
+r_struct
+id|ethtool_ops
+id|gfar_normon_nocoalesce_ethtool_ops
+op_assign
+(brace
+dot
+id|get_settings
+op_assign
+id|gfar_gsettings
+comma
+dot
+id|get_drvinfo
+op_assign
+id|gfar_gdrvinfo
+comma
+dot
+id|get_regs_len
+op_assign
+id|gfar_reglen
+comma
+dot
+id|get_regs
+op_assign
+id|gfar_get_regs
+comma
+dot
+id|get_link
+op_assign
+id|ethtool_op_get_link
+comma
+dot
+id|get_ringparam
+op_assign
+id|gfar_gringparam
+comma
+dot
+id|set_ringparam
+op_assign
+id|gfar_sringparam
+comma
+dot
+id|get_strings
+op_assign
+id|gfar_gstrings_normon
+comma
+dot
+id|get_stats_count
+op_assign
+id|gfar_stats_count_normon
+comma
+dot
+id|get_ethtool_stats
+op_assign
+id|gfar_fill_stats_normon
+comma
+)brace
+suffix:semicolon
+DECL|variable|gfar_nocoalesce_ethtool_ops
+r_struct
+id|ethtool_ops
+id|gfar_nocoalesce_ethtool_ops
+op_assign
+(brace
+dot
+id|get_settings
+op_assign
+id|gfar_gsettings
+comma
+dot
+id|get_drvinfo
+op_assign
+id|gfar_gdrvinfo
+comma
+dot
+id|get_regs_len
+op_assign
+id|gfar_reglen
+comma
+dot
+id|get_regs
+op_assign
+id|gfar_get_regs
+comma
+dot
+id|get_link
+op_assign
+id|ethtool_op_get_link
+comma
+dot
+id|get_ringparam
+op_assign
+id|gfar_gringparam
+comma
+dot
+id|set_ringparam
+op_assign
+id|gfar_sringparam
+comma
+dot
+id|get_strings
+op_assign
+id|gfar_gstrings
+comma
+dot
+id|get_stats_count
+op_assign
+id|gfar_stats_count
+comma
+dot
+id|get_ethtool_stats
+op_assign
+id|gfar_fill_stats
+comma
+)brace
+suffix:semicolon
+DECL|variable|gfar_normon_ethtool_ops
+r_struct
+id|ethtool_ops
+id|gfar_normon_ethtool_ops
+op_assign
+(brace
+dot
+id|get_settings
+op_assign
+id|gfar_gsettings
+comma
+dot
+id|get_drvinfo
+op_assign
+id|gfar_gdrvinfo
+comma
+dot
+id|get_regs_len
+op_assign
+id|gfar_reglen
+comma
+dot
+id|get_regs
+op_assign
+id|gfar_get_regs
+comma
+dot
+id|get_link
+op_assign
+id|ethtool_op_get_link
+comma
+dot
+id|get_coalesce
+op_assign
+id|gfar_gcoalesce
+comma
+dot
+id|set_coalesce
+op_assign
+id|gfar_scoalesce
+comma
+dot
+id|get_ringparam
+op_assign
+id|gfar_gringparam
+comma
+dot
+id|set_ringparam
+op_assign
+id|gfar_sringparam
+comma
+dot
+id|get_strings
+op_assign
+id|gfar_gstrings_normon
+comma
+dot
+id|get_stats_count
+op_assign
+id|gfar_stats_count_normon
+comma
+dot
+id|get_ethtool_stats
+op_assign
+id|gfar_fill_stats_normon
+comma
+)brace
+suffix:semicolon
+DECL|variable|gfar_op_array
+r_struct
+id|ethtool_ops
+op_star
+id|gfar_op_array
+(braket
+)braket
+op_assign
+(brace
+op_amp
+id|gfar_ethtool_ops
+comma
+op_amp
+id|gfar_normon_ethtool_ops
+comma
+op_amp
+id|gfar_nocoalesce_ethtool_ops
+comma
+op_amp
+id|gfar_normon_nocoalesce_ethtool_ops
 )brace
 suffix:semicolon
 eof

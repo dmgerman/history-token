@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * drivers/net/gianfar.h&n; *&n; * Gianfar Ethernet Driver&n; * Driver for FEC on MPC8540 and TSEC on MPC8540/MPC8560&n; * Based on 8260_io/fcc_enet.c&n; *&n; * Author: Andy Fleming&n; * Maintainer: Kumar Gala (kumar.gala@freescale.com)&n; *&n; * Copyright 2004 Freescale Semiconductor, Inc&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; *  Still left to do:&n; *      -Add support for module parameters&n; */
+multiline_comment|/* &n; * drivers/net/gianfar.h&n; *&n; * Gianfar Ethernet Driver&n; * Driver for FEC on MPC8540 and TSEC on MPC8540/MPC8560&n; * Based on 8260_io/fcc_enet.c&n; *&n; * Author: Andy Fleming&n; * Maintainer: Kumar Gala (kumar.gala@freescale.com)&n; *&n; * Copyright (c) 2002-2004 Freescale Semiconductor, Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; *  Still left to do:&n; *      -Add support for module parameters&n; *&t;-Add support for ethtool -s&n; *&t;-Add patch for ethtool phys id&n; */
 macro_line|#ifndef __GIANFAR_H
 DECL|macro|__GIANFAR_H
 mdefine_line|#define __GIANFAR_H
@@ -22,15 +22,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,41)
 macro_line|#include &lt;linux/workqueue.h&gt;
-macro_line|#else
-macro_line|#include &lt;linux/tqueue.h&gt;
-DECL|macro|work_struct
-mdefine_line|#define work_struct tq_struct
-DECL|macro|schedule_work
-mdefine_line|#define schedule_work schedule_task
-macro_line|#endif
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;asm/ocp.h&gt;
@@ -46,13 +38,23 @@ DECL|macro|INCREMENTAL_BUFFER_SIZE
 mdefine_line|#define INCREMENTAL_BUFFER_SIZE 512
 DECL|macro|MAC_ADDR_LEN
 mdefine_line|#define MAC_ADDR_LEN 6
+DECL|macro|PHY_INIT_TIMEOUT
+mdefine_line|#define PHY_INIT_TIMEOUT 100000
+DECL|macro|GFAR_PHY_CHANGE_TIME
+mdefine_line|#define GFAR_PHY_CHANGE_TIME 2
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;%s: Gianfar Ethernet Controller Version 1.1, &quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;gfar-enet&quot;
 r_extern
+r_const
 r_char
 id|gfar_driver_name
 (braket
 )braket
 suffix:semicolon
 r_extern
+r_const
 r_char
 id|gfar_driver_version
 (braket
@@ -92,14 +94,18 @@ DECL|macro|GFAR_100_TIME
 mdefine_line|#define GFAR_100_TIME   2560
 DECL|macro|GFAR_10_TIME
 mdefine_line|#define GFAR_10_TIME    25600
+DECL|macro|DEFAULT_TX_COALESCE
+mdefine_line|#define DEFAULT_TX_COALESCE 1
 DECL|macro|DEFAULT_TXCOUNT
 mdefine_line|#define DEFAULT_TXCOUNT&t;16
 DECL|macro|DEFAULT_TXTIME
-mdefine_line|#define DEFAULT_TXTIME&t;32768
+mdefine_line|#define DEFAULT_TXTIME&t;400
+DECL|macro|DEFAULT_RX_COALESCE
+mdefine_line|#define DEFAULT_RX_COALESCE 1
 DECL|macro|DEFAULT_RXCOUNT
 mdefine_line|#define DEFAULT_RXCOUNT&t;16
 DECL|macro|DEFAULT_RXTIME
-mdefine_line|#define DEFAULT_RXTIME&t;32768
+mdefine_line|#define DEFAULT_RXTIME&t;400
 DECL|macro|TBIPA_VALUE
 mdefine_line|#define TBIPA_VALUE&t;&t;0x1f
 DECL|macro|MIIMCFG_INIT_VALUE
@@ -1314,12 +1320,6 @@ op_star
 id|regs
 suffix:semicolon
 multiline_comment|/* Pointer to the GFAR memory mapped Registers */
-DECL|member|phyinfo
-r_struct
-id|phy_info
-op_star
-id|phyinfo
-suffix:semicolon
 DECL|member|phyregs
 r_struct
 id|gfar
@@ -1380,39 +1380,30 @@ r_int
 r_int
 id|rxclean
 suffix:semicolon
-DECL|member|link
-r_int
-id|link
-suffix:semicolon
-multiline_comment|/* current link state */
-DECL|member|oldlink
-r_int
-id|oldlink
-suffix:semicolon
-DECL|member|duplexity
-r_int
-id|duplexity
-suffix:semicolon
-multiline_comment|/* Indicates negotiated duplex state */
-DECL|member|olddplx
-r_int
-id|olddplx
-suffix:semicolon
-DECL|member|speed
-r_int
-id|speed
-suffix:semicolon
-multiline_comment|/* Indicates negotiated speed */
-DECL|member|oldspeed
-r_int
-id|oldspeed
-suffix:semicolon
 multiline_comment|/* Info structure initialized by board setup code */
 DECL|member|einfo
 r_struct
 id|ocp_gfar_data
 op_star
 id|einfo
+suffix:semicolon
+DECL|member|mii_info
+r_struct
+id|gfar_mii_info
+op_star
+id|mii_info
+suffix:semicolon
+DECL|member|oldspeed
+r_int
+id|oldspeed
+suffix:semicolon
+DECL|member|oldduplex
+r_int
+id|oldduplex
+suffix:semicolon
+DECL|member|oldlink
+r_int
+id|oldlink
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1469,5 +1460,13 @@ id|val
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_struct
+id|ethtool_ops
+op_star
+id|gfar_op_array
+(braket
+)braket
+suffix:semicolon
 macro_line|#endif /* __GIANFAR_H */
 eof
