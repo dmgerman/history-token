@@ -2483,7 +2483,7 @@ op_assign
 dot
 id|proc_name
 op_assign
-l_string|&quot;esp&quot;
+l_string|&quot;mac_esp&quot;
 comma
 dot
 id|name
