@@ -876,6 +876,7 @@ op_minus
 id|ib_ptr
 )paren
 suffix:semicolon
+multiline_comment|/* We refer to the reverse direction (&quot;!dir&quot;)&n;&t;&t;&t; * tuples here, because we&squot;re expecting&n;&t;&t;&t; * something in the other * direction.&n;&t;&t;&t; * Doesn&squot;t matter unless NAT is happening.  */
 id|exp-&gt;tuple
 op_assign
 (paren
@@ -895,10 +896,11 @@ comma
 (brace
 id|ct-&gt;tuplehash
 (braket
+op_logical_neg
 id|dir
 )braket
 dot
-id|tuple.src.ip
+id|tuple.dst.ip
 comma
 (brace
 dot
