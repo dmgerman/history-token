@@ -2,6 +2,7 @@ multiline_comment|/*&n; * arch/ppc/common/misc-simple.c&n; *&n; * Misc. bootload
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
