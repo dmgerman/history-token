@@ -322,7 +322,7 @@ id|packet
 l_int|2
 )braket
 op_amp
-l_int|7
+l_int|8
 )paren
 op_minus
 (paren
@@ -334,7 +334,7 @@ id|packet
 l_int|2
 )braket
 op_amp
-l_int|8
+l_int|7
 )paren
 )paren
 suffix:semicolon
@@ -412,7 +412,7 @@ op_rshift
 l_int|4
 )paren
 op_amp
-l_int|7
+l_int|8
 )paren
 op_minus
 (paren
@@ -428,7 +428,7 @@ op_rshift
 l_int|4
 )paren
 op_amp
-l_int|8
+l_int|7
 )paren
 )paren
 suffix:semicolon
@@ -524,6 +524,7 @@ id|dev
 comma
 id|REL_WHEEL
 comma
+op_minus
 (paren
 r_int
 r_char
@@ -559,7 +560,7 @@ id|packet
 l_int|3
 )braket
 op_amp
-l_int|7
+l_int|8
 )paren
 op_minus
 (paren
@@ -571,7 +572,7 @@ id|packet
 l_int|3
 )braket
 op_amp
-l_int|8
+l_int|7
 )paren
 )paren
 suffix:semicolon
