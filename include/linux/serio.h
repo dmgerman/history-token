@@ -10,6 +10,32 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+DECL|struct|serio_device_id
+r_struct
+id|serio_device_id
+(brace
+DECL|member|type
+r_int
+r_char
+id|type
+suffix:semicolon
+DECL|member|extra
+r_int
+r_char
+id|extra
+suffix:semicolon
+DECL|member|id
+r_int
+r_char
+id|id
+suffix:semicolon
+DECL|member|proto
+r_int
+r_char
+id|proto
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|serio
 r_struct
 id|serio
@@ -38,35 +64,10 @@ r_int
 r_int
 id|manual_bind
 suffix:semicolon
-DECL|member|idbus
-r_int
-r_int
-id|idbus
-suffix:semicolon
-DECL|member|idvendor
-r_int
-r_int
-id|idvendor
-suffix:semicolon
-DECL|member|idproduct
-r_int
-r_int
-id|idproduct
-suffix:semicolon
-DECL|member|idversion
-r_int
-r_int
-id|idversion
-suffix:semicolon
-DECL|member|type
-r_int
-r_int
-id|type
-suffix:semicolon
-DECL|member|event
-r_int
-r_int
-id|event
+DECL|member|id
+r_struct
+id|serio_device_id
+id|id
 suffix:semicolon
 DECL|member|lock
 id|spinlock_t
@@ -186,6 +187,12 @@ DECL|member|description
 r_char
 op_star
 id|description
+suffix:semicolon
+DECL|member|id_table
+r_struct
+id|serio_device_id
+op_star
+id|id_table
 suffix:semicolon
 DECL|member|manual_bind
 r_int
@@ -664,22 +671,24 @@ DECL|macro|SERIO_PARITY
 mdefine_line|#define SERIO_PARITY&t;2
 DECL|macro|SERIO_FRAME
 mdefine_line|#define SERIO_FRAME&t;4
-DECL|macro|SERIO_TYPE
-mdefine_line|#define SERIO_TYPE&t;0xff000000UL
+DECL|macro|SERIO_ANY
+mdefine_line|#define SERIO_ANY&t;0xff
+multiline_comment|/*&n; * Serio types&n; */
 DECL|macro|SERIO_XT
-mdefine_line|#define SERIO_XT&t;0x00000000UL
+mdefine_line|#define SERIO_XT&t;0x00
 DECL|macro|SERIO_8042
-mdefine_line|#define SERIO_8042&t;0x01000000UL
+mdefine_line|#define SERIO_8042&t;0x01
 DECL|macro|SERIO_RS232
-mdefine_line|#define SERIO_RS232&t;0x02000000UL
+mdefine_line|#define SERIO_RS232&t;0x02
 DECL|macro|SERIO_HIL_MLC
-mdefine_line|#define SERIO_HIL_MLC&t;0x03000000UL
+mdefine_line|#define SERIO_HIL_MLC&t;0x03
 DECL|macro|SERIO_PS_PSTHRU
-mdefine_line|#define SERIO_PS_PSTHRU&t;0x05000000UL
+mdefine_line|#define SERIO_PS_PSTHRU&t;0x05
 DECL|macro|SERIO_8042_XL
-mdefine_line|#define SERIO_8042_XL&t;0x06000000UL
-DECL|macro|SERIO_PROTO
-mdefine_line|#define SERIO_PROTO&t;0xFFUL
+mdefine_line|#define SERIO_8042_XL&t;0x06
+multiline_comment|/*&n; * Serio types&n; */
+DECL|macro|SERIO_UNKNOWN
+mdefine_line|#define SERIO_UNKNOWN&t;0x00
 DECL|macro|SERIO_MSC
 mdefine_line|#define SERIO_MSC&t;0x01
 DECL|macro|SERIO_SUN
@@ -732,9 +741,5 @@ DECL|macro|SERIO_SEMTECH
 mdefine_line|#define SERIO_SEMTECH&t;0x27
 DECL|macro|SERIO_LKKBD
 mdefine_line|#define SERIO_LKKBD&t;0x28
-DECL|macro|SERIO_ID
-mdefine_line|#define SERIO_ID&t;0xff00UL
-DECL|macro|SERIO_EXTRA
-mdefine_line|#define SERIO_EXTRA&t;0xff0000UL
 macro_line|#endif
 eof

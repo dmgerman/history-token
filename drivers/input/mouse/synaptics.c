@@ -1335,7 +1335,7 @@ id|serio
 )paren
 )paren
 suffix:semicolon
-id|serio-&gt;type
+id|serio-&gt;id.type
 op_assign
 id|SERIO_PS_PSTHRU
 suffix:semicolon

@@ -3276,7 +3276,7 @@ id|serio
 )paren
 )paren
 suffix:semicolon
-id|serio-&gt;type
+id|serio-&gt;id.type
 op_assign
 id|i8042_direct
 ques
@@ -3417,7 +3417,7 @@ id|serio
 )paren
 )paren
 suffix:semicolon
-id|serio-&gt;type
+id|serio-&gt;id.type
 op_assign
 id|SERIO_8042
 suffix:semicolon
@@ -3551,7 +3551,7 @@ id|serio
 )paren
 )paren
 suffix:semicolon
-id|serio-&gt;type
+id|serio-&gt;id.type
 op_assign
 id|SERIO_8042
 suffix:semicolon
