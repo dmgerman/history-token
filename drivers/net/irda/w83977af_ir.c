@@ -367,6 +367,7 @@ id|dev
 suffix:semicolon
 multiline_comment|/*&n; * Function w83977af_init ()&n; *&n; *    Initialize chip. Just try to find out how many chips we are dealing with&n; *    and where they are&n; */
 DECL|function|w83977af_init
+r_static
 r_int
 id|__init
 id|w83977af_init
@@ -451,6 +452,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function w83977af_cleanup ()&n; *&n; *    Close all configured chips&n; *&n; */
 DECL|function|w83977af_cleanup
+r_static
 r_void
 id|__exit
 id|w83977af_cleanup

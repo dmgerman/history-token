@@ -92,6 +92,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|esi_init
+r_static
 r_int
 id|__init
 id|esi_init
@@ -110,6 +111,7 @@ id|dongle
 suffix:semicolon
 )brace
 DECL|function|esi_cleanup
+r_static
 r_void
 id|__exit
 id|esi_cleanup

@@ -269,6 +269,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function ep7211_ir_init(void)&n; *&n; *    Initialize EP7211 I/R module&n; *&n; */
 DECL|function|ep7211_ir_init
+r_static
 r_int
 id|__init
 id|ep7211_ir_init
