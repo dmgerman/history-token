@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * super.c&n; *&n; * PURPOSE&n; *  Super block routines for the OSTA-UDF(tm) filesystem.&n; *&n; * DESCRIPTION&n; *  OSTA-UDF(tm) = Optical Storage Technology Association&n; *  Universal Disk Format.&n; *&n; *  This code is based on version 2.00 of the UDF specification,&n; *  and revision 3 of the ECMA 167 standard [equivalent to ISO 13346].&n; *    http://www.osta.org/&n; *    http://www.ecma.ch/&n; *    http://www.iso.org/&n; *&n; * CONTACTS&n; *  E-mail regarding any portion of the Linux UDF file system should be&n; *  directed to the development team mailing list (run by majordomo):&n; *&t;  linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *  This file is distributed under the terms of the GNU General Public&n; *  License (GPL). Copies of the GPL can be obtained from:&n; *    ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *  Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1998 Dave Boynton&n; *  (C) 1998-2000 Ben Fennema&n; *  (C) 2000 Stelias Computing Inc&n; *&n; * HISTORY&n; *&n; *  09/24/98 dgb  changed to allow compiling outside of kernel, and&n; *                added some debugging.&n; *  10/01/98 dgb  updated to allow (some) possibility of compiling w/2.0.34&n; *  10/16/98      attempting some multi-session support&n; *  10/17/98      added freespace count for &quot;df&quot;&n; *  11/11/98 gr   added novrs option&n; *  11/26/98 dgb  added fileset,anchor mount options&n; *  12/06/98 blf  really hosed things royally. vat/sparing support. sequenced vol descs&n; *                rewrote option handling based on isofs&n; *  12/20/98      find the free space bitmap (if it exists)&n; */
+multiline_comment|/*&n; * super.c&n; *&n; * PURPOSE&n; *  Super block routines for the OSTA-UDF(tm) filesystem.&n; *&n; * DESCRIPTION&n; *  OSTA-UDF(tm) = Optical Storage Technology Association&n; *  Universal Disk Format.&n; *&n; *  This code is based on version 2.00 of the UDF specification,&n; *  and revision 3 of the ECMA 167 standard [equivalent to ISO 13346].&n; *    http://www.osta.org/&n; *    http://www.ecma.ch/&n; *    http://www.iso.org/&n; *&n; * CONTACTS&n; *  E-mail regarding any portion of the Linux UDF file system should be&n; *  directed to the development team mailing list (run by majordomo):&n; *&t;  linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *  This file is distributed under the terms of the GNU General Public&n; *  License (GPL). Copies of the GPL can be obtained from:&n; *    ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *  Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1998 Dave Boynton&n; *  (C) 1998-2001 Ben Fennema&n; *  (C) 2000 Stelias Computing Inc&n; *&n; * HISTORY&n; *&n; *  09/24/98 dgb  changed to allow compiling outside of kernel, and&n; *                added some debugging.&n; *  10/01/98 dgb  updated to allow (some) possibility of compiling w/2.0.34&n; *  10/16/98      attempting some multi-session support&n; *  10/17/98      added freespace count for &quot;df&quot;&n; *  11/11/98 gr   added novrs option&n; *  11/26/98 dgb  added fileset,anchor mount options&n; *  12/06/98 blf  really hosed things royally. vat/sparing support. sequenced vol descs&n; *                rewrote option handling based on isofs&n; *  12/20/98      find the free space bitmap (if it exists)&n; */
 macro_line|#include &quot;udfdecl.h&quot;    
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -1773,7 +1773,7 @@ id|silent
 )paren
 (brace
 r_struct
-id|VolStructDesc
+id|volStructDesc
 op_star
 id|vsd
 op_assign
@@ -1828,7 +1828,7 @@ OL
 r_sizeof
 (paren
 r_struct
-id|VolStructDesc
+id|volStructDesc
 )paren
 )paren
 id|sectorsize
@@ -1836,7 +1836,7 @@ op_assign
 r_sizeof
 (paren
 r_struct
-id|VolStructDesc
+id|volStructDesc
 )paren
 suffix:semicolon
 r_else
@@ -1912,7 +1912,7 @@ id|vsd
 op_assign
 (paren
 r_struct
-id|VolStructDesc
+id|volStructDesc
 op_star
 )paren
 (paren
@@ -1959,9 +1959,9 @@ c_func
 (paren
 id|vsd-&gt;stdIdent
 comma
-id|STD_ID_CD001
+id|VSD_STD_ID_CD001
 comma
-id|STD_ID_LEN
+id|VSD_STD_ID_LEN
 )paren
 )paren
 (brace
@@ -2054,9 +2054,9 @@ c_func
 (paren
 id|vsd-&gt;stdIdent
 comma
-id|STD_ID_BEA01
+id|VSD_STD_ID_BEA01
 comma
-id|STD_ID_LEN
+id|VSD_STD_ID_LEN
 )paren
 )paren
 (brace
@@ -2071,9 +2071,9 @@ c_func
 (paren
 id|vsd-&gt;stdIdent
 comma
-id|STD_ID_TEA01
+id|VSD_STD_ID_TEA01
 comma
-id|STD_ID_LEN
+id|VSD_STD_ID_LEN
 )paren
 )paren
 (brace
@@ -2096,9 +2096,9 @@ c_func
 (paren
 id|vsd-&gt;stdIdent
 comma
-id|STD_ID_NSR02
+id|VSD_STD_ID_NSR02
 comma
-id|STD_ID_LEN
+id|VSD_STD_ID_LEN
 )paren
 )paren
 (brace
@@ -2117,9 +2117,9 @@ c_func
 (paren
 id|vsd-&gt;stdIdent
 comma
-id|STD_ID_NSR03
+id|VSD_STD_ID_NSR03
 comma
-id|STD_ID_LEN
+id|VSD_STD_ID_LEN
 )paren
 )paren
 (brace
@@ -2208,10 +2208,10 @@ id|bh
 op_assign
 l_int|NULL
 suffix:semicolon
-id|Uint16
+r_uint16
 id|ident
 suffix:semicolon
-id|Uint32
+r_uint32
 id|location
 suffix:semicolon
 r_int
@@ -2381,7 +2381,7 @@ c_cond
 (paren
 id|ident
 op_eq
-id|TID_ANCHOR_VOL_DESC_PTR
+id|TAG_IDENT_AVDP
 )paren
 (brace
 r_if
@@ -2519,11 +2519,11 @@ c_cond
 (paren
 id|ident
 op_eq
-id|TID_FILE_ENTRY
+id|TAG_IDENT_FE
 op_logical_or
 id|ident
 op_eq
-id|TID_EXTENDED_FILE_ENTRY
+id|TAG_IDENT_EFE
 )paren
 (brace
 id|lastblock
@@ -2635,7 +2635,7 @@ c_cond
 (paren
 id|ident
 op_eq
-id|TID_ANCHOR_VOL_DESC_PTR
+id|TAG_IDENT_AVDP
 op_logical_and
 id|location
 op_eq
@@ -2773,7 +2773,7 @@ c_cond
 (paren
 id|ident
 op_eq
-id|TID_ANCHOR_VOL_DESC_PTR
+id|TAG_IDENT_AVDP
 op_logical_and
 id|location
 op_eq
@@ -2899,7 +2899,7 @@ c_cond
 (paren
 id|ident
 op_eq
-id|TID_ANCHOR_VOL_DESC_PTR
+id|TAG_IDENT_AVDP
 op_logical_and
 id|location
 op_eq
@@ -3017,7 +3017,7 @@ c_cond
 (paren
 id|ident
 op_ne
-id|TID_ANCHOR_VOL_DESC_PTR
+id|TAG_IDENT_AVDP
 )paren
 op_logical_and
 (paren
@@ -3026,11 +3026,11 @@ op_logical_or
 (paren
 id|ident
 op_ne
-id|TID_FILE_ENTRY
+id|TAG_IDENT_FE
 op_logical_and
 id|ident
 op_ne
-id|TID_EXTENDED_FILE_ENTRY
+id|TAG_IDENT_EFE
 )paren
 )paren
 )paren
@@ -3089,7 +3089,7 @@ suffix:semicolon
 r_int
 id|lastblock
 suffix:semicolon
-id|Uint16
+r_uint16
 id|ident
 suffix:semicolon
 r_if
@@ -3135,7 +3135,7 @@ c_cond
 (paren
 id|ident
 op_ne
-id|TID_FILE_SET_DESC
+id|TAG_IDENT_FSD
 )paren
 (brace
 id|udf_release_data
@@ -3245,11 +3245,11 @@ id|ident
 )paren
 (brace
 r_case
-id|TID_SPACE_BITMAP_DESC
+id|TAG_IDENT_SBD
 suffix:colon
 (brace
 r_struct
-id|SpaceBitmapDesc
+id|spaceBitmapDesc
 op_star
 id|sp
 suffix:semicolon
@@ -3257,7 +3257,7 @@ id|sp
 op_assign
 (paren
 r_struct
-id|SpaceBitmapDesc
+id|spaceBitmapDesc
 op_star
 )paren
 id|bh-&gt;b_data
@@ -3277,7 +3277,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|SpaceBitmapDesc
+id|spaceBitmapDesc
 )paren
 op_minus
 l_int|1
@@ -3296,7 +3296,7 @@ r_break
 suffix:semicolon
 )brace
 r_case
-id|TID_FILE_SET_DESC
+id|TAG_IDENT_FSD
 suffix:colon
 (brace
 op_star
@@ -3424,7 +3424,7 @@ id|bh
 )paren
 (brace
 r_struct
-id|PrimaryVolDesc
+id|primaryVolDesc
 op_star
 id|pvoldesc
 suffix:semicolon
@@ -3446,7 +3446,7 @@ id|pvoldesc
 op_assign
 (paren
 r_struct
-id|PrimaryVolDesc
+id|primaryVolDesc
 op_star
 )paren
 id|bh-&gt;b_data
@@ -3639,7 +3639,7 @@ id|root
 )paren
 (brace
 r_struct
-id|FileSetDesc
+id|fileSetDesc
 op_star
 id|fset
 suffix:semicolon
@@ -3647,7 +3647,7 @@ id|fset
 op_assign
 (paren
 r_struct
-id|FileSetDesc
+id|fileSetDesc
 op_star
 )paren
 id|bh-&gt;b_data
@@ -3702,7 +3702,7 @@ id|bh
 )paren
 (brace
 r_struct
-id|PartitionDesc
+id|partitionDesc
 op_star
 id|p
 suffix:semicolon
@@ -3713,7 +3713,7 @@ id|p
 op_assign
 (paren
 r_struct
-id|PartitionDesc
+id|partitionDesc
 op_star
 )paren
 id|bh-&gt;b_data
@@ -3819,13 +3819,97 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|le32_to_cpu
+c_func
+(paren
+id|p-&gt;accessType
+)paren
+op_eq
+id|PD_ACCESS_TYPE_READ_ONLY
+)paren
+id|UDF_SB_PARTFLAGS
+c_func
+(paren
+id|sb
+comma
+id|i
+)paren
+op_or_assign
+id|UDF_PART_FLAG_READ_ONLY
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|le32_to_cpu
+c_func
+(paren
+id|p-&gt;accessType
+)paren
+op_eq
+id|PD_ACCESS_TYPE_WRITE_ONCE
+)paren
+id|UDF_SB_PARTFLAGS
+c_func
+(paren
+id|sb
+comma
+id|i
+)paren
+op_or_assign
+id|UDF_PART_FLAG_WRITE_ONCE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|le32_to_cpu
+c_func
+(paren
+id|p-&gt;accessType
+)paren
+op_eq
+id|PD_ACCESS_TYPE_REWRITABLE
+)paren
+id|UDF_SB_PARTFLAGS
+c_func
+(paren
+id|sb
+comma
+id|i
+)paren
+op_or_assign
+id|UDF_PART_FLAG_REWRITABLE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|le32_to_cpu
+c_func
+(paren
+id|p-&gt;accessType
+)paren
+op_eq
+id|PD_ACCESS_TYPE_OVERWRITABLE
+)paren
+id|UDF_SB_PARTFLAGS
+c_func
+(paren
+id|sb
+comma
+id|i
+)paren
+op_or_assign
+id|UDF_PART_FLAG_OVERWRITABLE
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 id|strcmp
 c_func
 (paren
 id|p-&gt;partitionContents.ident
 comma
-id|PARTITION_CONTENTS_NSR02
+id|PD_PARTITION_CONTENTS_NSR02
 )paren
 op_logical_or
 op_logical_neg
@@ -3834,12 +3918,12 @@ c_func
 (paren
 id|p-&gt;partitionContents.ident
 comma
-id|PARTITION_CONTENTS_NSR03
+id|PD_PARTITION_CONTENTS_NSR03
 )paren
 )paren
 (brace
 r_struct
-id|PartitionHeaderDesc
+id|partitionHeaderDesc
 op_star
 id|phd
 suffix:semicolon
@@ -3847,7 +3931,7 @@ id|phd
 op_assign
 (paren
 r_struct
-id|PartitionHeaderDesc
+id|partitionHeaderDesc
 op_star
 )paren
 (paren
@@ -3857,7 +3941,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|phd-&gt;unallocatedSpaceTable.extLength
+id|phd-&gt;unallocSpaceTable.extLength
 )paren
 (brace
 id|lb_addr
@@ -3867,7 +3951,7 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-id|phd-&gt;unallocatedSpaceTable.extPosition
+id|phd-&gt;unallocSpaceTable.extPosition
 )paren
 comma
 id|i
@@ -3905,7 +3989,7 @@ suffix:semicolon
 id|udf_debug
 c_func
 (paren
-l_string|&quot;unallocatedSpaceTable (part %d) @ %ld&bslash;n&quot;
+l_string|&quot;unallocSpaceTable (part %d) @ %ld&bslash;n&quot;
 comma
 id|i
 comma
@@ -3925,7 +4009,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|phd-&gt;unallocatedSpaceBitmap.extLength
+id|phd-&gt;unallocSpaceBitmap.extLength
 )paren
 (brace
 id|UDF_SB_ALLOC_BITMAP
@@ -3969,7 +4053,7 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-id|phd-&gt;unallocatedSpaceBitmap.extLength
+id|phd-&gt;unallocSpaceBitmap.extLength
 )paren
 suffix:semicolon
 id|UDF_SB_PARTMAPS
@@ -3986,7 +4070,7 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-id|phd-&gt;unallocatedSpaceBitmap.extPosition
+id|phd-&gt;unallocSpaceBitmap.extPosition
 )paren
 suffix:semicolon
 id|UDF_SB_PARTFLAGS
@@ -4002,7 +4086,7 @@ suffix:semicolon
 id|udf_debug
 c_func
 (paren
-l_string|&quot;unallocatedSpaceBitmap (part %d) @ %d&bslash;n&quot;
+l_string|&quot;unallocSpaceBitmap (part %d) @ %d&bslash;n&quot;
 comma
 id|i
 comma
@@ -4293,7 +4377,7 @@ id|fileset
 )paren
 (brace
 r_struct
-id|LogicalVolDesc
+id|logicalVolDesc
 op_star
 id|lvd
 suffix:semicolon
@@ -4304,14 +4388,14 @@ id|j
 comma
 id|offset
 suffix:semicolon
-id|Uint8
+r_uint8
 id|type
 suffix:semicolon
 id|lvd
 op_assign
 (paren
 r_struct
-id|LogicalVolDesc
+id|logicalVolDesc
 op_star
 )paren
 id|bh-&gt;b_data
@@ -4363,7 +4447,7 @@ op_add_assign
 (paren
 (paren
 r_struct
-id|GenericPartitionMap
+id|genericPartitionMap
 op_star
 )paren
 op_amp
@@ -4383,7 +4467,7 @@ op_assign
 (paren
 (paren
 r_struct
-id|GenericPartitionMap
+id|genericPartitionMap
 op_star
 )paren
 op_amp
@@ -4406,13 +4490,13 @@ l_int|1
 )paren
 (brace
 r_struct
-id|GenericPartitionMap1
+id|genericPartitionMap1
 op_star
 id|gpm1
 op_assign
 (paren
 r_struct
-id|GenericPartitionMap1
+id|genericPartitionMap1
 op_star
 )paren
 op_amp
@@ -4482,13 +4566,13 @@ l_int|2
 )paren
 (brace
 r_struct
-id|UdfPartitionMap2
+id|udfPartitionMap2
 op_star
 id|upm2
 op_assign
 (paren
 r_struct
-id|UdfPartitionMap2
+id|udfPartitionMap2
 op_star
 )paren
 op_amp
@@ -4526,7 +4610,7 @@ c_func
 (paren
 (paren
 (paren
-id|Uint16
+r_uint16
 op_star
 )paren
 id|upm2-&gt;partIdent.identSuffix
@@ -4569,7 +4653,7 @@ c_func
 (paren
 (paren
 (paren
-id|Uint16
+r_uint16
 op_star
 )paren
 id|upm2-&gt;partIdent.identSuffix
@@ -4624,25 +4708,25 @@ id|UDF_ID_SPARABLE
 )paren
 )paren
 (brace
-id|Uint32
+r_uint32
 id|loc
 suffix:semicolon
-id|Uint16
+r_uint16
 id|ident
 suffix:semicolon
 r_struct
-id|SparingTable
+id|sparingTable
 op_star
 id|st
 suffix:semicolon
 r_struct
-id|SparablePartitionMap
+id|sparablePartitionMap
 op_star
 id|spm
 op_assign
 (paren
 r_struct
-id|SparablePartitionMap
+id|sparablePartitionMap
 op_star
 )paren
 op_amp
@@ -4754,7 +4838,7 @@ id|st
 op_assign
 (paren
 r_struct
-id|SparingTable
+id|sparingTable
 op_star
 )paren
 id|UDF_SB_TYPESPAR
@@ -4995,7 +5079,7 @@ id|bh
 op_assign
 l_int|NULL
 suffix:semicolon
-id|Uint16
+r_uint16
 id|ident
 suffix:semicolon
 r_while
@@ -5024,7 +5108,7 @@ id|ident
 op_logical_and
 id|ident
 op_eq
-id|TID_LOGICAL_VOL_INTEGRITY_DESC
+id|TAG_IDENT_LVID
 )paren
 (brace
 id|UDF_SB_LVIDBH
@@ -5145,12 +5229,12 @@ id|VDS_POS_LENGTH
 )braket
 suffix:semicolon
 r_struct
-id|GenericDesc
+id|generic_desc
 op_star
 id|gd
 suffix:semicolon
 r_struct
-id|VolDescPtr
+id|volDescPtr
 op_star
 id|vdp
 suffix:semicolon
@@ -5164,10 +5248,10 @@ id|i
 comma
 id|j
 suffix:semicolon
-id|Uint32
+r_uint32
 id|vdsn
 suffix:semicolon
-id|Uint16
+r_uint16
 id|ident
 suffix:semicolon
 r_int
@@ -5241,7 +5325,7 @@ id|gd
 op_assign
 (paren
 r_struct
-id|GenericDesc
+id|generic_desc
 op_star
 )paren
 id|bh-&gt;b_data
@@ -5261,7 +5345,7 @@ id|ident
 )paren
 (brace
 r_case
-id|TID_PRIMARY_VOL_DESC
+id|TAG_IDENT_PVD
 suffix:colon
 multiline_comment|/* ISO 13346 3/10.1 */
 r_if
@@ -5299,7 +5383,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|TID_VOL_DESC_PTR
+id|TAG_IDENT_VDP
 suffix:colon
 multiline_comment|/* ISO 13346 3/10.3 */
 r_if
@@ -5337,7 +5421,7 @@ id|vdp
 op_assign
 (paren
 r_struct
-id|VolDescPtr
+id|volDescPtr
 op_star
 )paren
 id|bh-&gt;b_data
@@ -5372,7 +5456,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|TID_IMP_USE_VOL_DESC
+id|TAG_IDENT_IUVD
 suffix:colon
 multiline_comment|/* ISO 13346 3/10.4 */
 r_if
@@ -5410,7 +5494,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|TID_PARTITION_DESC
+id|TAG_IDENT_PD
 suffix:colon
 multiline_comment|/* ISO 13346 3/10.5 */
 r_if
@@ -5436,7 +5520,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|TID_LOGICAL_VOL_DESC
+id|TAG_IDENT_LVD
 suffix:colon
 multiline_comment|/* ISO 13346 3/10.6 */
 r_if
@@ -5474,7 +5558,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|TID_UNALLOC_SPACE_DESC
+id|TAG_IDENT_USD
 suffix:colon
 multiline_comment|/* ISO 13346 3/10.8 */
 r_if
@@ -5512,7 +5596,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|TID_TERMINATING_DESC
+id|TAG_IDENT_TD
 suffix:colon
 multiline_comment|/* ISO 13346 3/10.9 */
 id|vds
@@ -5714,7 +5798,7 @@ id|gd
 op_assign
 (paren
 r_struct
-id|GenericDesc
+id|generic_desc
 op_star
 )paren
 id|bh2-&gt;b_data
@@ -5724,7 +5808,7 @@ c_cond
 (paren
 id|ident
 op_eq
-id|TID_PARTITION_DESC
+id|TAG_IDENT_PD
 )paren
 id|udf_load_partdesc
 c_func
@@ -5869,11 +5953,11 @@ id|fileset
 )paren
 (brace
 r_struct
-id|AnchorVolDescPtr
+id|anchorVolDescPtr
 op_star
 id|anchor
 suffix:semicolon
-id|Uint16
+r_uint16
 id|ident
 suffix:semicolon
 r_struct
@@ -5979,7 +6063,7 @@ id|anchor
 op_assign
 (paren
 r_struct
-id|AnchorVolDescPtr
+id|anchorVolDescPtr
 op_star
 )paren
 id|bh-&gt;b_data
@@ -6419,7 +6503,7 @@ id|bh
 op_assign
 l_int|NULL
 suffix:semicolon
-id|Uint32
+r_uint32
 id|pos
 suffix:semicolon
 id|pos
@@ -6462,7 +6546,7 @@ c_func
 (paren
 (paren
 r_struct
-id|VirtualAllocationTable20
+id|virtualAllocationTable20
 op_star
 )paren
 id|bh-&gt;b_data
@@ -6663,7 +6747,7 @@ id|sb
 op_member_access_from_pointer
 id|integrityType
 op_assign
-id|INTEGRITY_TYPE_OPEN
+id|LVID_INTEGRITY_TYPE_OPEN
 suffix:semicolon
 id|UDF_SB_LVID
 c_func
@@ -6751,7 +6835,7 @@ id|descTag.tagChecksum
 op_add_assign
 (paren
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 op_amp
@@ -6810,7 +6894,7 @@ id|sb
 op_member_access_from_pointer
 id|integrityType
 op_eq
-id|INTEGRITY_TYPE_OPEN
+id|LVID_INTEGRITY_TYPE_OPEN
 )paren
 (brace
 r_int
@@ -6990,7 +7074,7 @@ id|sb
 op_member_access_from_pointer
 id|integrityType
 op_assign
-id|INTEGRITY_TYPE_CLOSE
+id|LVID_INTEGRITY_TYPE_CLOSE
 suffix:semicolon
 id|UDF_SB_LVID
 c_func
@@ -7078,7 +7162,7 @@ id|descTag.tagChecksum
 op_add_assign
 (paren
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 op_amp
@@ -7588,7 +7672,7 @@ id|sb
 )paren
 )paren
 (brace
-id|Uint16
+r_uint16
 id|minUDFReadRev
 op_assign
 id|le16_to_cpu
@@ -7603,7 +7687,7 @@ op_member_access_from_pointer
 id|minUDFReadRev
 )paren
 suffix:semicolon
-id|Uint16
+r_uint16
 id|minUDFWriteRev
 op_assign
 id|le16_to_cpu
@@ -7618,7 +7702,7 @@ op_member_access_from_pointer
 id|minUDFWriteRev
 )paren
 suffix:semicolon
-multiline_comment|/* Uint16 maxUDFWriteRev = le16_to_cpu(UDF_SB_LVIDIU(sb)-&gt;maxUDFWriteRev); */
+multiline_comment|/* uint16_t maxUDFWriteRev = le16_to_cpu(UDF_SB_LVIDIU(sb)-&gt;maxUDFWriteRev); */
 r_if
 c_cond
 (paren
@@ -9107,21 +9191,21 @@ suffix:semicolon
 id|lb_addr
 id|loc
 suffix:semicolon
-id|Uint32
+r_uint32
 id|bytes
 suffix:semicolon
-id|Uint8
+r_uint8
 id|value
 suffix:semicolon
-id|Uint8
+r_uint8
 op_star
 id|ptr
 suffix:semicolon
-id|Uint16
+r_uint16
 id|ident
 suffix:semicolon
 r_struct
-id|SpaceBitmapDesc
+id|spaceBitmapDesc
 op_star
 id|bm
 suffix:semicolon
@@ -9176,7 +9260,7 @@ c_cond
 (paren
 id|ident
 op_ne
-id|TID_SPACE_BITMAP_DESC
+id|TAG_IDENT_SBD
 )paren
 (brace
 id|udf_release_data
@@ -9200,7 +9284,7 @@ id|bm
 op_assign
 (paren
 r_struct
-id|SpaceBitmapDesc
+id|spaceBitmapDesc
 op_star
 )paren
 id|bh-&gt;b_data
@@ -9214,14 +9298,14 @@ op_assign
 r_sizeof
 (paren
 r_struct
-id|SpaceBitmapDesc
+id|spaceBitmapDesc
 )paren
 suffix:semicolon
 multiline_comment|/* offset in first block only */
 id|ptr
 op_assign
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 id|bh-&gt;b_data
@@ -9341,7 +9425,7 @@ suffix:semicolon
 id|ptr
 op_assign
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 id|bh-&gt;b_data
@@ -9382,7 +9466,7 @@ id|accum
 op_assign
 l_int|0
 suffix:semicolon
-id|Uint32
+r_uint32
 id|extoffset
 comma
 id|elen
@@ -9392,7 +9476,7 @@ id|bloc
 comma
 id|eloc
 suffix:semicolon
-id|Sint8
+r_int8
 id|etype
 suffix:semicolon
 r_struct
@@ -9415,7 +9499,7 @@ op_assign
 r_sizeof
 (paren
 r_struct
-id|UnallocatedSpaceEntry
+id|unallocSpaceEntry
 )paren
 suffix:semicolon
 r_while

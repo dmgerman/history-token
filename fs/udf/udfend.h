@@ -1,42 +1,8 @@
 macro_line|#ifndef __UDF_ENDIAN_H
 DECL|macro|__UDF_ENDIAN_H
 mdefine_line|#define __UDF_ENDIAN_H
-macro_line|#ifndef __KERNEL__ 
-macro_line|#include &lt;sys/types.h&gt;
-macro_line|#if __BYTE_ORDER == 0
-macro_line|#error &quot;__BYTE_ORDER must be defined&quot;
-macro_line|#elif __BYTE_ORDER == __BIG_ENDIAN
-DECL|macro|le16_to_cpu
-mdefine_line|#define le16_to_cpu(x) &bslash;&n;&t;((Uint16)((((Uint16)(x) &amp; 0x00FFU) &lt;&lt; 8) | &bslash;&n;&t;&t;  (((Uint16)(x) &amp; 0xFF00U) &gt;&gt; 8)))
-DECL|macro|le32_to_cpu
-mdefine_line|#define le32_to_cpu(x) &bslash;&n;&t;((Uint32)((((Uint32)(x) &amp; 0x000000FFU) &lt;&lt; 24) | &bslash;&n;&t;&t;  (((Uint32)(x) &amp; 0x0000FF00U) &lt;&lt;  8) | &bslash;&n;&t;&t;  (((Uint32)(x) &amp; 0x00FF0000U) &gt;&gt;  8) | &bslash;&n;&t;&t;  (((Uint32)(x) &amp; 0xFF000000U) &gt;&gt; 24)))
-DECL|macro|le64_to_cpu
-mdefine_line|#define le64_to_cpu(x) &bslash;&n;&t;((Uint64)((((Uint64)(x) &amp; 0x00000000000000FFULL) &lt;&lt; 56) | &bslash;&n;&t;&t;  (((Uint64)(x) &amp; 0x000000000000FF00ULL) &lt;&lt; 40) | &bslash;&n;&t;&t;  (((Uint64)(x) &amp; 0x0000000000FF0000ULL) &lt;&lt; 24) | &bslash;&n;&t;&t;  (((Uint64)(x) &amp; 0x00000000FF000000ULL) &lt;&lt;  8) | &bslash;&n;&t;&t;  (((Uint64)(x) &amp; 0x000000FF00000000ULL) &gt;&gt;  8) | &bslash;&n;&t;&t;  (((Uint64)(x) &amp; 0x0000FF0000000000ULL) &gt;&gt; 24) | &bslash;&n;&t;&t;  (((Uint64)(x) &amp; 0x00FF000000000000ULL) &gt;&gt; 40) | &bslash;&n;&t;&t;  (((Uint64)(x) &amp; 0xFF00000000000000ULL) &gt;&gt; 56)))&t;&t;
-DECL|macro|cpu_to_le16
-mdefine_line|#define cpu_to_le16(x) (le16_to_cpu(x))
-DECL|macro|cpu_to_le32
-mdefine_line|#define cpu_to_le32(x) (le32_to_cpu(x))
-DECL|macro|cpu_to_le64
-mdefine_line|#define cpu_to_le64(x) (le64_to_cpu(x))
-macro_line|#else /* __BYTE_ORDER == __LITTLE_ENDIAN */
-DECL|macro|le16_to_cpu
-mdefine_line|#define le16_to_cpu(x) (x)
-DECL|macro|le32_to_cpu
-mdefine_line|#define le32_to_cpu(x) (x)
-DECL|macro|le64_to_cpu
-mdefine_line|#define le64_to_cpu(x) (x)
-DECL|macro|cpu_to_le16
-mdefine_line|#define cpu_to_le16(x) (x)
-DECL|macro|cpu_to_le32
-mdefine_line|#define cpu_to_le32(x) (x)
-DECL|macro|cpu_to_le64
-mdefine_line|#define cpu_to_le64(x) (x)
-macro_line|#endif /* __BYTE_ORDER == 0 */
-macro_line|#include &lt;string.h&gt;
-macro_line|#else /* __KERNEL__ */
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#endif /* ! __KERNEL__ */
 DECL|function|lelb_to_cpu
 r_static
 r_inline

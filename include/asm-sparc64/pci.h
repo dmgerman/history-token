@@ -448,7 +448,7 @@ DECL|macro|HAVE_ARCH_PCI_MWI
 mdefine_line|#define HAVE_ARCH_PCI_MWI
 r_extern
 r_int
-id|pcibios_set_mwi
+id|pcibios_prep_mwi
 c_func
 (paren
 r_struct

@@ -969,6 +969,7 @@ suffix:semicolon
 multiline_comment|/* Starting in v2.1.*, the LANCE/PCnet probe is now similar to the other&n;   board probes now that kmalloc() can allocate ISA DMA-able regions.&n;   This also allows the LANCE driver to be used as a module.&n;   */
 DECL|function|lance_probe
 r_int
+id|__init
 id|lance_probe
 c_func
 (paren

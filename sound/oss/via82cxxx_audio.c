@@ -6542,6 +6542,7 @@ suffix:semicolon
 r_int
 id|ofs
 op_assign
+(paren
 id|n
 op_mod
 (paren
@@ -6549,6 +6550,9 @@ id|PAGE_SIZE
 op_div
 id|chan-&gt;frag_size
 )paren
+)paren
+op_star
+id|chan-&gt;frag_size
 suffix:semicolon
 id|size
 op_assign

@@ -1,9 +1,7 @@
-multiline_comment|/*&n; * balloc.c&n; *&n; * PURPOSE&n; *&t;Block allocation handling routines for the OSTA-UDF(tm) filesystem.&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1999-2000 Ben Fennema&n; *  (C) 1999 Stelias Computing Inc&n; *&n; * HISTORY&n; *&n; *  02/24/99 blf  Created.&n; *&n; */
+multiline_comment|/*&n; * balloc.c&n; *&n; * PURPOSE&n; *&t;Block allocation handling routines for the OSTA-UDF(tm) filesystem.&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1999-2001 Ben Fennema&n; *  (C) 1999 Stelias Computing Inc&n; *&n; * HISTORY&n; *&n; *  02/24/99 blf  Created.&n; *&n; */
 macro_line|#include &quot;udfdecl.h&quot;
-macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
-macro_line|#include &lt;linux/udf_fs.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;udf_i.h&quot;
 macro_line|#include &quot;udf_sb.h&quot;
@@ -23,12 +21,12 @@ DECL|macro|leNUM_to_cpup
 mdefine_line|#define leNUM_to_cpup(x,y) xleNUM_to_cpup(x,y)
 DECL|macro|xleNUM_to_cpup
 mdefine_line|#define xleNUM_to_cpup(x,y) (le ## x ## _to_cpup(y))
-DECL|macro|UintBPL
-mdefine_line|#define UintBPL Uint(BITS_PER_LONG)
-DECL|macro|Uint
-mdefine_line|#define Uint(x) xUint(x)
-DECL|macro|xUint
-mdefine_line|#define xUint(x) Uint ## x
+DECL|macro|uintBPL_t
+mdefine_line|#define uintBPL_t uint(BITS_PER_LONG)
+DECL|macro|uint
+mdefine_line|#define uint(x) xuint(x)
+DECL|macro|xuint
+mdefine_line|#define xuint(x) uint ## x ## _t
 DECL|function|find_next_one_bit
 r_extern
 r_inline
@@ -46,13 +44,13 @@ r_int
 id|offset
 )paren
 (brace
-id|UintBPL
+id|uintBPL_t
 op_star
 id|p
 op_assign
 (paren
 (paren
-id|UintBPL
+id|uintBPL_t
 op_star
 )paren
 id|addr
@@ -64,7 +62,7 @@ op_div
 id|BITS_PER_LONG
 )paren
 suffix:semicolon
-id|UintBPL
+id|uintBPL_t
 id|result
 op_assign
 id|offset
@@ -76,7 +74,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|UintBPL
+id|uintBPL_t
 id|tmp
 suffix:semicolon
 r_if
@@ -508,10 +506,10 @@ comma
 id|lb_addr
 id|bloc
 comma
-id|Uint32
+r_uint32
 id|offset
 comma
-id|Uint32
+r_uint32
 id|count
 )paren
 (brace
@@ -601,7 +599,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|SpaceBitmapDesc
+id|spaceBitmapDesc
 )paren
 op_lshift
 l_int|3
@@ -904,13 +902,13 @@ id|udf_bitmap
 op_star
 id|bitmap
 comma
-id|Uint16
+r_uint16
 id|partition
 comma
-id|Uint32
+r_uint32
 id|first_block
 comma
-id|Uint32
+r_uint32
 id|block_count
 )paren
 (brace
@@ -1008,7 +1006,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|SpaceBitmapDesc
+id|spaceBitmapDesc
 )paren
 op_lshift
 l_int|3
@@ -1037,7 +1035,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|SpaceBitmapDesc
+id|spaceBitmapDesc
 )paren
 op_lshift
 l_int|3
@@ -1063,7 +1061,7 @@ suffix:colon
 r_sizeof
 (paren
 r_struct
-id|SpaceBitmapDesc
+id|spaceBitmapDesc
 )paren
 suffix:semicolon
 id|bitmap_nr
@@ -1296,10 +1294,10 @@ id|udf_bitmap
 op_star
 id|bitmap
 comma
-id|Uint16
+r_uint16
 id|partition
 comma
-id|Uint32
+r_uint32
 id|goal
 comma
 r_int
@@ -1392,7 +1390,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|SpaceBitmapDesc
+id|spaceBitmapDesc
 )paren
 op_lshift
 l_int|3
@@ -1418,7 +1416,7 @@ suffix:colon
 r_sizeof
 (paren
 r_struct
-id|SpaceBitmapDesc
+id|spaceBitmapDesc
 )paren
 suffix:semicolon
 id|bitmap_nr
@@ -1689,7 +1687,7 @@ suffix:colon
 r_sizeof
 (paren
 r_struct
-id|SpaceBitmapDesc
+id|spaceBitmapDesc
 )paren
 suffix:semicolon
 id|bitmap_nr
@@ -1977,7 +1975,7 @@ op_minus
 r_sizeof
 (paren
 r_struct
-id|SpaceBitmapDesc
+id|spaceBitmapDesc
 )paren
 op_lshift
 l_int|3
@@ -2127,19 +2125,19 @@ comma
 id|lb_addr
 id|bloc
 comma
-id|Uint32
+r_uint32
 id|offset
 comma
-id|Uint32
+r_uint32
 id|count
 )paren
 (brace
-id|Uint32
+r_uint32
 id|start
 comma
 id|end
 suffix:semicolon
-id|Uint32
+r_uint32
 id|nextoffset
 comma
 id|oextoffset
@@ -2161,7 +2159,7 @@ comma
 op_star
 id|nbh
 suffix:semicolon
-id|Sint8
+r_int8
 id|etype
 suffix:semicolon
 r_int
@@ -2311,7 +2309,7 @@ op_assign
 r_sizeof
 (paren
 r_struct
-id|UnallocatedSpaceEntry
+id|unallocSpaceEntry
 )paren
 suffix:semicolon
 id|elen
@@ -2725,7 +2723,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 op_star
 id|aed
 suffix:semicolon
@@ -2735,11 +2733,7 @@ id|start
 suffix:semicolon
 id|elen
 op_assign
-(paren
-id|EXTENT_RECORDED_ALLOCATED
-op_lshift
-l_int|30
-)paren
+id|EXT_RECORDED_ALLOCATED
 op_or
 (paren
 id|count
@@ -2756,7 +2750,7 @@ c_func
 id|table
 )paren
 op_eq
-id|ICB_FLAG_AD_SHORT
+id|ICBTAG_FLAG_AD_SHORT
 )paren
 id|adsize
 op_assign
@@ -2775,7 +2769,7 @@ c_func
 id|table
 )paren
 op_eq
-id|ICB_FLAG_AD_LONG
+id|ICBTAG_FLAG_AD_LONG
 )paren
 id|adsize
 op_assign
@@ -2895,7 +2889,7 @@ id|aed
 op_assign
 (paren
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 op_star
 )paren
 (paren
@@ -2951,7 +2945,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 )paren
 suffix:semicolon
 id|memcpy
@@ -2969,7 +2963,7 @@ op_assign
 r_sizeof
 (paren
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 )paren
 op_plus
 id|adsize
@@ -3006,7 +3000,7 @@ op_assign
 r_sizeof
 (paren
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 )paren
 suffix:semicolon
 r_if
@@ -3036,7 +3030,7 @@ id|aed
 op_assign
 (paren
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 op_star
 )paren
 (paren
@@ -3078,12 +3072,43 @@ id|table
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|UDF_SB_UDFREV
+c_func
+(paren
+id|sb
+)paren
+op_ge
+l_int|0x0200
+)paren
 id|udf_new_tag
 c_func
 (paren
 id|nbh-&gt;b_data
 comma
-id|TID_ALLOC_EXTENT_DESC
+id|TAG_IDENT_AED
+comma
+l_int|3
+comma
+l_int|1
+comma
+id|nbloc.logicalBlockNum
+comma
+r_sizeof
+(paren
+id|tag
+)paren
+)paren
+suffix:semicolon
+r_else
+id|udf_new_tag
+c_func
+(paren
+id|nbh-&gt;b_data
+comma
+id|TAG_IDENT_AED
 comma
 l_int|2
 comma
@@ -3108,7 +3133,7 @@ id|table
 )paren
 (brace
 r_case
-id|ICB_FLAG_AD_SHORT
+id|ICBTAG_FLAG_AD_SHORT
 suffix:colon
 (brace
 id|sad
@@ -3124,9 +3149,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|EXTENT_NEXT_EXTENT_ALLOCDECS
-op_lshift
-l_int|30
+id|EXT_NEXT_EXTENT_ALLOCDECS
 op_or
 id|sb-&gt;s_blocksize
 )paren
@@ -3143,7 +3166,7 @@ r_break
 suffix:semicolon
 )brace
 r_case
-id|ICB_FLAG_AD_LONG
+id|ICBTAG_FLAG_AD_LONG
 suffix:colon
 (brace
 id|lad
@@ -3159,9 +3182,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|EXTENT_NEXT_EXTENT_ALLOCDECS
-op_lshift
-l_int|30
+id|EXT_NEXT_EXTENT_ALLOCDECS
 op_or
 id|sb-&gt;s_blocksize
 )paren
@@ -3264,7 +3285,7 @@ id|aed
 op_assign
 (paren
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 op_star
 )paren
 id|nbh-&gt;b_data
@@ -3348,13 +3369,13 @@ id|inode
 op_star
 id|table
 comma
-id|Uint16
+r_uint16
 id|partition
 comma
-id|Uint32
+r_uint32
 id|first_block
 comma
-id|Uint32
+r_uint32
 id|block_count
 )paren
 (brace
@@ -3363,7 +3384,7 @@ id|alloc_count
 op_assign
 l_int|0
 suffix:semicolon
-id|Uint32
+r_uint32
 id|extoffset
 comma
 id|elen
@@ -3380,7 +3401,7 @@ id|buffer_head
 op_star
 id|bh
 suffix:semicolon
-id|Sint8
+r_int8
 id|etype
 op_assign
 op_minus
@@ -3415,7 +3436,7 @@ c_func
 id|table
 )paren
 op_eq
-id|ICB_FLAG_AD_SHORT
+id|ICBTAG_FLAG_AD_SHORT
 )paren
 id|adsize
 op_assign
@@ -3434,7 +3455,7 @@ c_func
 id|table
 )paren
 op_eq
-id|ICB_FLAG_AD_LONG
+id|ICBTAG_FLAG_AD_LONG
 )paren
 id|adsize
 op_assign
@@ -3458,7 +3479,7 @@ op_assign
 r_sizeof
 (paren
 r_struct
-id|UnallocatedSpaceEntry
+id|unallocSpaceEntry
 )paren
 suffix:semicolon
 id|bloc
@@ -3764,10 +3785,10 @@ id|inode
 op_star
 id|table
 comma
-id|Uint16
+r_uint16
 id|partition
 comma
-id|Uint32
+r_uint32
 id|goal
 comma
 r_int
@@ -3775,21 +3796,23 @@ op_star
 id|err
 )paren
 (brace
-id|Uint32
+r_uint32
 id|spread
 op_assign
 l_int|0xFFFFFFFF
 comma
 id|nspread
+op_assign
+l_int|0xFFFFFFFF
 suffix:semicolon
-id|Uint32
+r_uint32
 id|newblock
 op_assign
 l_int|0
 comma
 id|adsize
 suffix:semicolon
-id|Uint32
+r_uint32
 id|extoffset
 comma
 id|goal_extoffset
@@ -3817,7 +3840,7 @@ comma
 op_star
 id|goal_bh
 suffix:semicolon
-id|Sint8
+r_int8
 id|etype
 suffix:semicolon
 op_star
@@ -3835,7 +3858,7 @@ c_func
 id|table
 )paren
 op_eq
-id|ICB_FLAG_AD_SHORT
+id|ICBTAG_FLAG_AD_SHORT
 )paren
 id|adsize
 op_assign
@@ -3854,7 +3877,7 @@ c_func
 id|table
 )paren
 op_eq
-id|ICB_FLAG_AD_LONG
+id|ICBTAG_FLAG_AD_LONG
 )paren
 id|adsize
 op_assign
@@ -3894,13 +3917,13 @@ id|goal
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* We search for the closest matching block to goal. If we find a exact hit,&t;   we stop. Otherwise we keep going till we run out of extents.&n;&t;   We store the buffer_head, bloc, and extoffset of the current closest&n;&t;   match and use that when we are done.&n;&t;*/
+multiline_comment|/* We search for the closest matching block to goal. If we find a exact hit,&n;&t;   we stop. Otherwise we keep going till we run out of extents.&n;&t;   We store the buffer_head, bloc, and extoffset of the current closest&n;&t;   match and use that when we are done.&n;&t;*/
 id|extoffset
 op_assign
 r_sizeof
 (paren
 r_struct
-id|UnallocatedSpaceEntry
+id|unallocSpaceEntry
 )paren
 suffix:semicolon
 id|bloc
@@ -4301,14 +4324,14 @@ comma
 id|lb_addr
 id|bloc
 comma
-id|Uint32
+r_uint32
 id|offset
 comma
-id|Uint32
+r_uint32
 id|count
 )paren
 (brace
-id|Uint16
+r_uint16
 id|partition
 op_assign
 id|bloc.partitionReferenceNum
@@ -4500,13 +4523,13 @@ id|inode
 op_star
 id|inode
 comma
-id|Uint16
+r_uint16
 id|partition
 comma
-id|Uint32
+r_uint32
 id|first_block
 comma
-id|Uint32
+r_uint32
 id|block_count
 )paren
 (brace
@@ -4698,10 +4721,10 @@ id|inode
 op_star
 id|inode
 comma
-id|Uint16
+r_uint16
 id|partition
 comma
-id|Uint32
+r_uint32
 id|goal
 comma
 r_int
