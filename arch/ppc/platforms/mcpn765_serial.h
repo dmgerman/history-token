@@ -21,7 +21,9 @@ mdefine_line|#define RS_TABLE_SIZE  4
 macro_line|#endif
 multiline_comment|/* Rate for the 1.8432 Mhz clock for the onboard serial chip */
 DECL|macro|BASE_BAUD
-mdefine_line|#define BASE_BAUD ( 1843200 / 16 )
+mdefine_line|#define BASE_BAUD&t;( 1843200 / 16 )
+DECL|macro|UART_CLK
+mdefine_line|#define UART_CLK&t;1843200
 macro_line|#ifdef CONFIG_SERIAL_DETECT_IRQ
 DECL|macro|STD_COM_FLAGS
 mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF|ASYNC_SKIP_TEST|ASYNC_AUTO_IRQ)

@@ -8238,7 +8238,7 @@ r_int
 id|count
 )paren
 (brace
-macro_line|#if defined(CONFIG_KGDB) &amp;&amp; !defined(CONFIG_USE_SERIAL2_KGDB)
+macro_line|#if defined(CONFIG_KGDB_CONSOLE) &amp;&amp; !defined(CONFIG_USE_SERIAL2_KGDB)
 multiline_comment|/* Try to let stub handle output. Returns true if it did. */
 r_if
 c_cond

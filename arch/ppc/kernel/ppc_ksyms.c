@@ -881,6 +881,13 @@ c_func
 id|flush_tlb_kernel_range
 )paren
 suffix:semicolon
+DECL|variable|flush_tlb_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_tlb_page
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ALTIVEC
 DECL|variable|last_task_used_altivec
 id|EXPORT_SYMBOL

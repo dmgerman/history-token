@@ -689,8 +689,8 @@ DECL|macro|MEM_B2EA
 mdefine_line|#define MEM_B2EA&t;0x60
 r_int
 r_int
-DECL|function|decompress_kernel
-id|decompress_kernel
+DECL|function|load_kernel
+id|load_kernel
 c_func
 (paren
 r_int

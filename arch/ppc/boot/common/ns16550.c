@@ -232,6 +232,8 @@ id|BASE_BAUD
 op_div
 id|SERIAL_BAUD
 )paren
+op_amp
+l_int|0xFF
 )paren
 suffix:semicolon
 id|outb
