@@ -4201,9 +4201,8 @@ c_cond
 (paren
 id|disable
 )paren
-r_return
-op_minus
-l_int|1
+r_goto
+id|out1
 suffix:semicolon
 id|pd_queue
 op_assign
@@ -4307,7 +4306,7 @@ id|out1
 suffix:colon
 r_return
 op_minus
-l_int|1
+id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|pd_exit
