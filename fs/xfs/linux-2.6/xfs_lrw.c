@@ -3666,6 +3666,10 @@ id|pos
 op_assign
 id|xip-&gt;i_d.di_size
 suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 r_goto
 id|retry
 suffix:semicolon

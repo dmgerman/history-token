@@ -852,13 +852,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * No free extents left.&n;&t;&t; */
 r_else
-id|INT_ZERO
-c_func
-(paren
 id|agf-&gt;agf_longest
-comma
-id|ARCH_CONVERT
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 id|mp-&gt;m_perag
 (braket
