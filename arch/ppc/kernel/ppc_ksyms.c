@@ -352,7 +352,7 @@ id|ucSystemType
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if !__INLINE_BITOPS
+macro_line|#if !defined(__INLINE_BITOPS)
 DECL|variable|set_bit
 id|EXPORT_SYMBOL
 c_func

@@ -1321,19 +1321,39 @@ id|fpscr
 suffix:semicolon
 multiline_comment|/* Floating point status */
 macro_line|#ifdef CONFIG_ALTIVEC
-DECL|member|vr
+multiline_comment|/* Complete AltiVec register set */
 id|vector128
 id|vr
 (braket
 l_int|32
 )braket
-suffix:semicolon
-multiline_comment|/* Complete AltiVec set */
-DECL|member|vscr
-id|vector128
-id|vscr
+id|__attribute
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|16
+)paren
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* AltiVec status */
+id|vector128
+id|vscr
+id|__attribute
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|16
+)paren
+)paren
+)paren
+suffix:semicolon
 DECL|member|vrsave
 r_int
 r_int

@@ -40,7 +40,7 @@ DECL|macro|LAST_CONTEXT
 mdefine_line|#define LAST_CONTEXT    &t;15
 DECL|macro|FIRST_CONTEXT
 mdefine_line|#define FIRST_CONTEXT    &t;0
-macro_line|#elif CONFIG_4xx
+macro_line|#elif defined(CONFIG_4xx)
 DECL|macro|NO_CONTEXT
 mdefine_line|#define NO_CONTEXT      &t;256
 DECL|macro|LAST_CONTEXT

@@ -2209,7 +2209,7 @@ op_star
 id|pp
 suffix:semicolon
 DECL|macro|ADDBASE
-mdefine_line|#define ADDBASE(x)&t;(x = (x)? ((typeof (x))((unsigned long)(x) + base)): 0)
+mdefine_line|#define ADDBASE(x)&t;(x = (typeof (x))((x)? ((unsigned long)(x) + base): 0))
 id|base
 op_assign
 (paren

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;asm/xmon.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/bootx.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
@@ -1692,6 +1693,7 @@ DECL|function|xmon_init_scc
 id|xmon_init_scc
 c_func
 (paren
+r_void
 )paren
 (brace
 r_if

@@ -754,7 +754,7 @@ c_func
 id|s
 )paren
 suffix:semicolon
-macro_line|#if CHECK_STACK
+macro_line|#ifdef CHECK_STACK
 id|check_stack
 c_func
 (paren
