@@ -15,8 +15,8 @@ mdefine_line|#define PDC202XX_DEBUG_DRIVE_INFO&t;&t;0
 DECL|macro|PDC202XX_DECODE_REGISTER_INFO
 mdefine_line|#define PDC202XX_DECODE_REGISTER_INFO&t;&t;0
 DECL|variable|pdc_quirk_drives
-r_const
 r_static
+r_const
 r_char
 op_star
 id|pdc_quirk_drives

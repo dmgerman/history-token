@@ -924,8 +924,8 @@ id|pnp_dev_table
 suffix:semicolon
 DECL|function|avoid_irq_share
 r_static
-r_void
 r_inline
+r_void
 id|avoid_irq_share
 c_func
 (paren

@@ -55,21 +55,16 @@ DECL|macro|TAG_NONE
 macro_line|#undef TAG_NONE
 DECL|macro|TAG_NONE
 mdefine_line|#define TAG_NONE 0xff
-multiline_comment|/* For the m68k, the number of bits in &squot;allocated&squot; must be a multiple of 32! */
-macro_line|#if (MAX_TAGS % 32) != 0
-macro_line|#error &quot;MAX_TAGS must be a multiple of 32!&quot;
-macro_line|#endif
 r_typedef
 r_struct
 (brace
-DECL|member|allocated
-r_int
+id|DECLARE_BITMAP
+c_func
+(paren
 id|allocated
-(braket
+comma
 id|MAX_TAGS
-op_div
-l_int|32
-)braket
+)paren
 suffix:semicolon
 DECL|member|nr_allocated
 r_int
@@ -163,17 +158,12 @@ id|target
 id|lun
 )braket
 suffix:semicolon
-id|memset
+id|CLEAR_BITMAP
 c_func
 (paren
-op_amp
 id|ta-&gt;allocated
 comma
-l_int|0
-comma
 id|MAX_TAGS
-op_div
-l_int|8
 )paren
 suffix:semicolon
 id|ta-&gt;nr_allocated
@@ -377,7 +367,6 @@ op_assign
 id|find_first_zero_bit
 c_func
 (paren
-op_amp
 id|ta-&gt;allocated
 comma
 id|MAX_TAGS
@@ -388,7 +377,6 @@ c_func
 (paren
 id|cmd-&gt;tag
 comma
-op_amp
 id|ta-&gt;allocated
 )paren
 suffix:semicolon
@@ -518,7 +506,6 @@ c_func
 (paren
 id|cmd-&gt;tag
 comma
-op_amp
 id|ta-&gt;allocated
 )paren
 suffix:semicolon
@@ -612,17 +599,12 @@ id|target
 id|lun
 )braket
 suffix:semicolon
-id|memset
+id|CLEAR_BITMAP
 c_func
 (paren
-op_amp
 id|ta-&gt;allocated
 comma
-l_int|0
-comma
 id|MAX_TAGS
-op_div
-l_int|8
 )paren
 suffix:semicolon
 id|ta-&gt;nr_allocated

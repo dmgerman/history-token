@@ -7504,8 +7504,8 @@ l_string|&quot;***********************END***********************&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|function|range_exists_already
-r_int
 r_static
+r_int
 id|range_exists_already
 (paren
 r_struct

@@ -11050,8 +11050,8 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;Try to find an ECH board and initialize it. This code is capable of&n; *&t;dealing with all types of ECH board.&n; */
 DECL|function|stl_initech
 r_static
-r_int
 r_inline
+r_int
 id|stl_initech
 c_func
 (paren
@@ -23557,8 +23557,8 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;Process an RX bad character.&n; */
 DECL|function|stl_sc26198rxbadch
 r_static
-r_void
 r_inline
+r_void
 id|stl_sc26198rxbadch
 c_func
 (paren

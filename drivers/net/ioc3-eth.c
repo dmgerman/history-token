@@ -5797,8 +5797,8 @@ suffix:semicolon
 )brace
 DECL|function|ioc3_serial_probe
 r_static
-r_void
 r_inline
+r_void
 id|ioc3_serial_probe
 c_func
 (paren

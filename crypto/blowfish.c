@@ -31,8 +31,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|bf_pbox
-r_const
 r_static
+r_const
 id|u32
 id|bf_pbox
 (braket
@@ -81,8 +81,8 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|bf_sbox
-r_const
 r_static
+r_const
 id|u32
 id|bf_sbox
 (braket

@@ -1564,8 +1564,8 @@ id|sctx
 op_assign
 id|ctx
 suffix:semicolon
-r_const
 r_static
+r_const
 r_struct
 id|sha1_ctx
 id|initstate
@@ -1791,8 +1791,8 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-r_const
 r_static
+r_const
 id|u8
 id|padding
 (braket

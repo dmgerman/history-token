@@ -9260,8 +9260,8 @@ suffix:semicolon
 )brace
 DECL|function|eot_interrupt
 r_static
-r_void
 r_inline
+r_void
 id|eot_interrupt
 c_func
 (paren

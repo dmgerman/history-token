@@ -5,6 +5,8 @@ macro_line|#ifdef&t;__KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|DECLARE_BITMAP
 mdefine_line|#define DECLARE_BITMAP(name,bits) &bslash;&n;&t;unsigned long name[((bits)+BITS_PER_LONG-1)/BITS_PER_LONG]
+DECL|macro|CLEAR_BITMAP
+mdefine_line|#define CLEAR_BITMAP(name,bits) &bslash;&n;&t;memset(name, 0, ((bits)+BITS_PER_LONG-1)/8)
 macro_line|#endif
 macro_line|#include &lt;linux/posix_types.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
