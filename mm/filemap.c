@@ -1004,7 +1004,7 @@ suffix:semicolon
 r_do
 (brace
 id|unlocked
-op_or_assign
+op_assign
 id|truncate_list_pages
 c_func
 (paren
@@ -1036,7 +1036,7 @@ id|partial
 )paren
 suffix:semicolon
 id|unlocked
-op_assign
+op_or_assign
 id|truncate_list_pages
 c_func
 (paren
