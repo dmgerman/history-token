@@ -2610,7 +2610,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 id|printk
@@ -2627,6 +2627,8 @@ id|ata_error
 c_func
 (paren
 id|drive
+comma
+id|rq
 comma
 id|__FUNCTION__
 )paren

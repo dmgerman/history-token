@@ -225,7 +225,20 @@ id|line
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#endif
+macro_line|#ifdef PROC_FS_JFS /* see jfs_debug.h */
+DECL|variable|base
+r_static
+r_struct
+id|proc_dir_entry
+op_star
+id|base
+suffix:semicolon
+macro_line|#ifdef CONFIG_JFS_DEBUG
+r_extern
+id|read_proc_t
+id|jfs_txanchor_read
+suffix:semicolon
 DECL|function|loglevel_read
 r_static
 r_int
@@ -379,10 +392,7 @@ r_return
 id|count
 suffix:semicolon
 )brace
-r_extern
-id|read_proc_t
-id|jfs_txanchor_read
-suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_JFS_STATISTICS
 r_extern
 id|read_proc_t
@@ -397,13 +407,6 @@ id|read_proc_t
 id|jfs_mpstat_read
 suffix:semicolon
 macro_line|#endif
-DECL|variable|base
-r_static
-r_struct
-id|proc_dir_entry
-op_star
-id|base
-suffix:semicolon
 r_static
 r_struct
 (brace
@@ -430,13 +433,6 @@ id|Entries
 )braket
 op_assign
 (brace
-(brace
-l_string|&quot;TxAnchor&quot;
-comma
-id|jfs_txanchor_read
-comma
-)brace
-comma
 macro_line|#ifdef CONFIG_JFS_STATISTICS
 (brace
 l_string|&quot;lmstats&quot;
@@ -460,6 +456,14 @@ comma
 )brace
 comma
 macro_line|#endif
+macro_line|#ifdef CONFIG_JFS_DEBUG
+(brace
+l_string|&quot;TxAnchor&quot;
+comma
+id|jfs_txanchor_read
+comma
+)brace
+comma
 (brace
 l_string|&quot;loglevel&quot;
 comma
@@ -467,6 +471,7 @@ id|loglevel_read
 comma
 id|loglevel_write
 )brace
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|NPROCENT
@@ -622,6 +627,5 @@ id|base
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_PROC_FS */
-macro_line|#endif /* CONFIG_JFS_DEBUG */
+macro_line|#endif /* PROC_FS_JFS */
 eof

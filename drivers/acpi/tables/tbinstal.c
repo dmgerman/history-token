@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbinstal - ACPI table installation and removal&n; *              $Revision: 61 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbinstal - ACPI table installation and removal&n; *              $Revision: 62 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -20,6 +20,9 @@ comma
 id|acpi_table_desc
 op_star
 id|table_info
+comma
+id|u8
+id|search_type
 )paren
 (brace
 id|NATIVE_UINT
@@ -46,6 +49,26 @@ id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
+id|acpi_gbl_acpi_table_data
+(braket
+id|i
+)braket
+dot
+id|flags
+op_amp
+id|ACPI_TABLE_TYPE_MASK
+)paren
+op_ne
+id|search_type
+)paren
+(brace
+r_continue
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -90,7 +113,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;ACPI Signature match %4.4s&bslash;n&quot;
+l_string|&quot;Table [%4.4s] matched and is a required ACPI table&bslash;n&quot;
 comma
 (paren
 r_char
@@ -112,13 +135,28 @@ id|AE_OK
 suffix:semicolon
 )brace
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Table [%4.4s] is not a required ACPI table - ignored&bslash;n&quot;
+comma
+(paren
+r_char
+op_star
+)paren
+id|signature
+)paren
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_TABLE_NOT_SUPPORTED
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_install_table&n; *&n; * PARAMETERS:  Table_info          - Return value from Acpi_tb_get_table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate all tables other than the RSDT.  The RSDT must&n; *              already be loaded and validated.&n; *              Install the table into the global data structs.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_install_table&n; *&n; * PARAMETERS:  Table_info          - Return value from Acpi_tb_get_table_body&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate all tables other than the RSDT.  The RSDT must&n; *              already be loaded and validated.&n; *              Install the table into the global data structs.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_install_table
 id|acpi_tb_install_table
@@ -136,29 +174,6 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;Tb_install_table&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check the table signature and make sure it is recognized&n;&t; * Also checks the header checksum&n;&t; */
-id|status
-op_assign
-id|acpi_tb_recognize_table
-(paren
-id|table_info
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Lock tables while installing */
 id|status
 op_assign
@@ -176,6 +191,20 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Could not acquire table mutex for [%4.4s], %s&bslash;n&quot;
+comma
+id|table_info-&gt;pointer-&gt;signature
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -192,6 +221,30 @@ comma
 id|table_info
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Could not install ACPI table [%s], %s&bslash;n&quot;
+comma
+id|table_info-&gt;pointer-&gt;signature
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -224,7 +277,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_recognize_table&n; *&n; * PARAMETERS:  Table_info          - Return value from Acpi_tb_get_table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check a table signature for a match against known table types&n; *&n; * NOTE:  All table pointers are validated as follows:&n; *          1) Table pointer must point to valid physical memory&n; *          2) Signature must be 4 ASCII chars, even if we don&squot;t recognize the&n; *             name&n; *          3) Table must be readable for length specified in the header&n; *          4) Table checksum must be valid (with the exception of the FACS&n; *             which has no checksum for some odd reason)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_recognize_table&n; *&n; * PARAMETERS:  Table_info          - Return value from Acpi_tb_get_table_body&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check a table signature for a match against known table types&n; *&n; * NOTE:  All table pointers are validated as follows:&n; *          1) Table pointer must point to valid physical memory&n; *          2) Signature must be 4 ASCII chars, even if we don&squot;t recognize the&n; *             name&n; *          3) Table must be readable for length specified in the header&n; *          4) Table checksum must be valid (with the exception of the FACS&n; *             which has no checksum for some odd reason)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_recognize_table
 id|acpi_tb_recognize_table
@@ -232,6 +285,9 @@ id|acpi_tb_recognize_table
 id|acpi_table_desc
 op_star
 id|table_info
+comma
+id|u8
+id|search_type
 )paren
 (brace
 id|acpi_table_header
@@ -276,6 +332,8 @@ id|acpi_tb_match_signature
 id|table_header-&gt;signature
 comma
 id|table_info
+comma
+id|search_type
 )paren
 suffix:semicolon
 r_if
@@ -323,40 +381,6 @@ id|ACPI_SIZE
 )paren
 id|table_header-&gt;length
 suffix:semicolon
-multiline_comment|/*&n;&t; * Validate checksum for _most_ tables,&n;&t; * even the ones whose signature we don&squot;t recognize&n;&t; */
-r_if
-c_cond
-(paren
-id|table_info-&gt;type
-op_ne
-id|ACPI_TABLE_FACS
-)paren
-(brace
-id|status
-op_assign
-id|acpi_tb_verify_table_checksum
-(paren
-id|table_header
-)paren
-suffix:semicolon
-macro_line|#if (!ACPI_CHECKSUM_ABORT)
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-multiline_comment|/* Ignore the error if configuration says so */
-id|status
-op_assign
-id|AE_OK
-suffix:semicolon
-)brace
-macro_line|#endif
-)brace
 id|return_ACPI_STATUS
 (paren
 id|status

@@ -73,6 +73,10 @@ op_star
 id|rq
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|ata_taskfile
 op_star
@@ -80,9 +84,12 @@ id|args
 op_assign
 id|rq-&gt;special
 suffix:semicolon
-r_int
-r_int
-id|flags
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
 suffix:semicolon
 id|ide__sti
 c_func
@@ -92,7 +99,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-id|drive-&gt;channel-&gt;lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -116,7 +123,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|drive-&gt;channel-&gt;lock
+id|ch-&gt;lock
 comma
 id|flags
 )paren
@@ -128,7 +135,7 @@ id|args
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * If we encounter _any_ error doing I/O to one of the tags, we must&n; * invalidate the pending queue. Clear the software busy queue and requeue&n; * on the request queue for restart. Issue a WIN_NOP to clear hardware queue.&n; */
@@ -290,15 +297,13 @@ suffix:semicolon
 )brace
 id|rq
 op_assign
-id|blk_get_request
+id|__blk_get_request
 c_func
 (paren
 op_amp
 id|drive-&gt;queue
 comma
 id|READ
-comma
-id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -309,15 +314,13 @@ id|rq
 )paren
 id|rq
 op_assign
-id|blk_get_request
+id|__blk_get_request
 c_func
 (paren
 op_amp
 id|drive-&gt;queue
 comma
 id|WRITE
-comma
-id|GFP_ATOMIC
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * blk_queue_invalidate_tags() just added back at least one command&n;&t; * to the free list, so there _must_ be at least one free.&n;&t; */
@@ -327,6 +330,11 @@ c_func
 op_logical_neg
 id|rq
 )paren
+suffix:semicolon
+multiline_comment|/* WIN_NOP is a special request so set it&squot;s flags ?? */
+id|rq-&gt;flags
+op_assign
+id|REQ_SPECIAL
 suffix:semicolon
 id|rq-&gt;special
 op_assign
@@ -533,7 +541,7 @@ comma
 id|drive-&gt;rq
 )paren
 op_eq
-id|ide_started
+id|ATA_OP_CONTINUES
 )paren
 r_return
 suffix:semicolon
@@ -739,7 +747,7 @@ op_star
 id|rq
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * issue SERVICE command to drive -- drive must have been selected first,&n; * and it must have reported a need for service (status has SERVICE_STAT set)&n; *&n; * Also, nIEN must be set as not to need protection against ide_dmaq_intr&n; *&n; * Channel lock should be held.&n; */
+multiline_comment|/*&n; * issue SERVICE command to drive -- drive must have been selected first,&n; * and it must have reported a need for service (status has SERVICE_STAT set)&n; *&n; * Also, nIEN must be set as not to need protection against ide_dmaq_intr&n; */
 DECL|function|service
 r_static
 id|ide_startstop_t
@@ -763,9 +771,6 @@ op_star
 id|ch
 op_assign
 id|drive-&gt;channel
-suffix:semicolon
-id|ide_startstop_t
-id|ret
 suffix:semicolon
 r_int
 r_int
@@ -800,7 +805,7 @@ id|drive-&gt;channel-&gt;active
 )paren
 )paren
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 multiline_comment|/*&n;&t; * need to select the right drive first...&n;&t; */
 r_if
@@ -869,7 +874,7 @@ id|drive
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 macro_line|#ifdef IDE_TCQ_NIEN
@@ -908,7 +913,7 @@ id|drive
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * should not happen, a buggy device could introduce loop&n;&t; */
@@ -940,7 +945,7 @@ id|drive-&gt;name
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 id|tag
@@ -1007,12 +1012,20 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 id|drive-&gt;rq
 op_assign
 id|rq
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * we&squot;ll start a dma read or write, device will trigger&n;&t; * interrupt to indicate end of transfer, release is not allowed&n;&t; */
 id|TCQ_PRINTK
@@ -1025,8 +1038,7 @@ comma
 id|stat
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 id|udma_tcq_start
 c_func
 (paren
@@ -1034,17 +1046,6 @@ id|drive
 comma
 id|rq
 )paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-id|ret
 suffix:semicolon
 )brace
 DECL|function|check_service
@@ -1085,7 +1086,7 @@ id|drive
 )paren
 )paren
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 r_if
 c_cond
@@ -1120,7 +1121,7 @@ id|ide_dmaq_intr
 )paren
 suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 DECL|function|dmaq_complete
@@ -1140,17 +1141,6 @@ op_star
 id|rq
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
 id|u8
 id|dma_stat
 suffix:semicolon
@@ -1198,7 +1188,7 @@ id|drive
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 r_if
@@ -1228,15 +1218,6 @@ comma
 id|rq-&gt;tag
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|__ata_end_request
 c_func
 (paren
@@ -1248,14 +1229,6 @@ op_logical_neg
 id|dma_stat
 comma
 id|rq-&gt;nr_sectors
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * we completed this command, check if we can service a new command&n;&t; */
@@ -1478,6 +1451,8 @@ id|drive
 comma
 op_amp
 id|args
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1591,6 +1566,8 @@ id|drive
 comma
 op_amp
 id|args
+comma
+l_int|NULL
 )paren
 )paren
 (brace
@@ -1639,6 +1616,8 @@ id|drive
 comma
 op_amp
 id|args
+comma
+l_int|NULL
 )paren
 )paren
 (brace
@@ -1688,6 +1667,8 @@ id|drive
 comma
 op_amp
 id|args
+comma
+l_int|NULL
 )paren
 )paren
 (brace
@@ -1813,7 +1794,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; * UDMA transfer handling functions.&n; */
-multiline_comment|/*&n; * Invoked from a SERVICE interrupt, command etc already known.  Just need to&n; * start the dma engine for this tag.&n; *&n; * Channel lock should be held.&n; */
+multiline_comment|/*&n; * Invoked from a SERVICE interrupt, command etc already known.  Just need to&n; * start the dma engine for this tag.&n; */
 DECL|function|udma_tcq_start
 r_static
 id|ide_startstop_t
@@ -1876,7 +1857,7 @@ id|drive
 )paren
 )paren
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 r_if
 c_cond
@@ -1890,7 +1871,7 @@ id|rq
 )paren
 )paren
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 id|__set_irq
 c_func
@@ -1909,10 +1890,10 @@ id|rq
 )paren
 suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Start a queued command from scratch.&n; *&n; * Channel lock should be held.&n; */
+multiline_comment|/*&n; * Start a queued command from scratch.&n; */
 DECL|function|udma_tcq_init
 id|ide_startstop_t
 id|udma_tcq_init
@@ -2003,7 +1984,7 @@ id|drive
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 macro_line|#ifdef IDE_TCQ_NIEN
@@ -2035,7 +2016,7 @@ l_string|&quot;tcq_start&quot;
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * drive released the bus, clear active tag and&n;&t; * check for service&n;&t; */
@@ -2061,10 +2042,10 @@ id|drive-&gt;rq
 op_assign
 l_int|NULL
 suffix:semicolon
-id|__set_irq
+id|set_irq
 c_func
 (paren
-id|drive-&gt;channel
+id|drive
 comma
 id|ide_dmaq_intr
 )paren
@@ -2099,7 +2080,7 @@ id|rq
 )paren
 suffix:semicolon
 r_return
-id|ide_released
+id|ATA_OP_RELEASED
 suffix:semicolon
 )brace
 id|TCQ_PRINTK

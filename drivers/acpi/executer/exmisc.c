@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmisc - ACPI AML (p-code) execution - specific opcodes&n; *              $Revision: 106 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmisc - ACPI AML (p-code) execution - specific opcodes&n; *              $Revision: 107 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exmisc&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_get_object_reference&n; *&n; * PARAMETERS:  Obj_desc        - Create a reference to this object&n; *              Return_desc        - Where to store the reference&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Obtain and return a &quot;reference&quot; to the target object&n; *              Common code for the Ref_of_op and the Cond_ref_of_op.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_get_object_reference&n; *&n; * PARAMETERS:  Obj_desc            - Create a reference to this object&n; *              Return_desc         - Where to store the reference&n; *              Walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Obtain and return a &quot;reference&quot; to the target object&n; *              Common code for the Ref_of_op and the Cond_ref_of_op.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_get_object_reference
 id|acpi_ex_get_object_reference
@@ -29,10 +29,13 @@ op_star
 id|walk_state
 )paren
 (brace
-id|acpi_status
-id|status
-op_assign
-id|AE_OK
+id|acpi_operand_object
+op_star
+id|reference_obj
+suffix:semicolon
+id|acpi_operand_object
+op_star
+id|referenced_obj
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
@@ -40,6 +43,11 @@ l_string|&quot;Ex_get_object_reference&quot;
 comma
 id|obj_desc
 )paren
+suffix:semicolon
+op_star
+id|return_desc
+op_assign
+l_int|NULL
 suffix:semicolon
 r_switch
 c_cond
@@ -64,20 +72,13 @@ op_ne
 id|INTERNAL_TYPE_REFERENCE
 )paren
 (brace
-op_star
-id|return_desc
-op_assign
-l_int|NULL
-suffix:semicolon
-id|status
-op_assign
-id|AE_TYPE
-suffix:semicolon
-r_goto
-id|cleanup
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_OPERAND_TYPE
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Not a Name -- an indirect name pointer would have&n;&t;&t; * been converted to a direct name pointer in Acpi_ex_resolve_operands&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Must be a reference to a Local or Arg&n;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -90,23 +91,10 @@ suffix:colon
 r_case
 id|AML_ARG_OP
 suffix:colon
-id|status
+multiline_comment|/* The referenced object is the pseudo-node for the local/arg */
+id|referenced_obj
 op_assign
-id|acpi_ds_method_data_get_node
-(paren
-id|obj_desc-&gt;reference.opcode
-comma
-id|obj_desc-&gt;reference.offset
-comma
-id|walk_state
-comma
-id|ACPI_CAST_INDIRECT_PTR
-(paren
-id|acpi_namespace_node
-comma
-id|return_desc
-)paren
-)paren
+id|obj_desc-&gt;reference.object
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -117,23 +105,16 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;(Internal) Unknown Ref subtype %02x&bslash;n&quot;
+l_string|&quot;Unknown Reference subtype %X&bslash;n&quot;
 comma
 id|obj_desc-&gt;reference.opcode
 )paren
 )paren
 suffix:semicolon
-op_star
-id|return_desc
-op_assign
-l_int|NULL
-suffix:semicolon
-id|status
-op_assign
+id|return_ACPI_STATUS
+(paren
 id|AE_AML_INTERNAL
-suffix:semicolon
-r_goto
-id|cleanup
+)paren
 suffix:semicolon
 )brace
 r_break
@@ -141,9 +122,8 @@ suffix:semicolon
 r_case
 id|ACPI_DESC_TYPE_NAMED
 suffix:colon
-multiline_comment|/* Must be a named object;  Just return the Node */
-op_star
-id|return_desc
+multiline_comment|/*&n;&t;&t; * A named reference that has already been resolved to a Node&n;&t;&t; */
+id|referenced_obj
 op_assign
 id|obj_desc
 suffix:semicolon
@@ -151,28 +131,75 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Invalid descriptor type %X in %p&bslash;n&quot;
+comma
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|obj_desc
+)paren
+comma
+id|obj_desc
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_TYPE
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Create a new reference object */
+id|reference_obj
+op_assign
+id|acpi_ut_create_internal_object
+(paren
+id|INTERNAL_TYPE_REFERENCE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|reference_obj
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
+id|reference_obj-&gt;reference.opcode
+op_assign
+id|AML_REF_OF_OP
+suffix:semicolon
+id|reference_obj-&gt;reference.object
+op_assign
+id|referenced_obj
+suffix:semicolon
 op_star
 id|return_desc
 op_assign
-l_int|NULL
+id|reference_obj
 suffix:semicolon
-id|status
-op_assign
-id|AE_TYPE
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|cleanup
-suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Obj=%p Ref=%p&bslash;n&quot;
+l_string|&quot;Object %p Type [%s], returning Reference %p&bslash;n&quot;
 comma
 id|obj_desc
+comma
+id|acpi_ut_get_object_type_name
+(paren
+id|obj_desc
+)paren
 comma
 op_star
 id|return_desc
@@ -181,7 +208,7 @@ id|return_desc
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|status
+id|AE_OK
 )paren
 suffix:semicolon
 )brace

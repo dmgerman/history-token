@@ -5704,7 +5704,7 @@ id|seq
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* We need to check signals first, to get correct SIGURG&n;&t;&t; * handling. FIXME: Need to check this doesnt impact 1003.1g&n;&t;&t; * and move it down to the bottom of the loop&n;&t;&t; */
+multiline_comment|/* We need to check signals first, to get correct SIGURG&n;&t;&t; * handling. FIXME: Need to check this doesn&squot;t impact 1003.1g&n;&t;&t; * and move it down to the bottom of the loop&n;&t;&t; */
 r_if
 c_cond
 (paren

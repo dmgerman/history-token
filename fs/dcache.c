@@ -323,6 +323,10 @@ suffix:semicolon
 id|dentry_stat.nr_unused
 op_increment
 suffix:semicolon
+id|dentry-&gt;d_vfs_flags
+op_or_assign
+id|DCACHE_REFERENCED
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -2862,10 +2866,6 @@ id|len
 r_continue
 suffix:semicolon
 )brace
-id|dentry-&gt;d_vfs_flags
-op_or_assign
-id|DCACHE_REFERENCED
-suffix:semicolon
 r_return
 id|dentry
 suffix:semicolon

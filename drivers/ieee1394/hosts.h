@@ -69,6 +69,10 @@ DECL|member|tlabel_lock
 id|spinlock_t
 id|tlabel_lock
 suffix:semicolon
+DECL|member|tlabel_current
+id|u32
+id|tlabel_current
+suffix:semicolon
 DECL|member|iso_listen_count
 r_int
 r_char

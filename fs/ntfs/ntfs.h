@@ -75,12 +75,22 @@ multiline_comment|/* The various operations structs defined throughout the drive
 r_extern
 r_struct
 id|super_operations
-id|ntfs_mount_sops
+id|ntfs_sops
 suffix:semicolon
 r_extern
 r_struct
 id|super_operations
-id|ntfs_sops
+id|ntfs_mount_sops
+suffix:semicolon
+r_extern
+r_struct
+id|address_space_operations
+id|ntfs_aops
+suffix:semicolon
+r_extern
+r_struct
+id|address_space_operations
+id|ntfs_mft_aops
 suffix:semicolon
 r_extern
 r_struct
@@ -94,11 +104,6 @@ id|ntfs_file_inode_ops
 suffix:semicolon
 r_extern
 r_struct
-id|address_space_operations
-id|ntfs_file_aops
-suffix:semicolon
-r_extern
-r_struct
 id|file_operations
 id|ntfs_dir_ops
 suffix:semicolon
@@ -109,11 +114,6 @@ id|ntfs_dir_inode_ops
 suffix:semicolon
 r_extern
 r_struct
-id|address_space_operations
-id|ntfs_dir_aops
-suffix:semicolon
-r_extern
-r_struct
 id|file_operations
 id|ntfs_empty_file_ops
 suffix:semicolon
@@ -121,16 +121,6 @@ r_extern
 r_struct
 id|inode_operations
 id|ntfs_empty_inode_ops
-suffix:semicolon
-r_extern
-r_struct
-id|address_space_operations
-id|ntfs_mft_aops
-suffix:semicolon
-r_extern
-r_struct
-id|address_space_operations
-id|ntfs_mftbmp_aops
 suffix:semicolon
 multiline_comment|/* Generic macro to convert pointers to values for comparison purposes. */
 macro_line|#ifndef p2n
@@ -289,7 +279,7 @@ multiline_comment|/* Declarations of functions and global variables. */
 multiline_comment|/* From fs/ntfs/compress.c */
 r_extern
 r_int
-id|ntfs_file_read_compressed_block
+id|ntfs_read_compressed_block
 c_func
 (paren
 r_struct

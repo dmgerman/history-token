@@ -7,7 +7,7 @@ r_char
 op_star
 id|sg_version_str
 op_assign
-l_string|&quot;Version: 3.5.25 (20020504)&quot;
+l_string|&quot;Version: 3.5.26 (20020708)&quot;
 suffix:semicolon
 macro_line|#endif
 DECL|variable|sg_version_num
@@ -64,13 +64,13 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#endif /* LINUX_VERSION_CODE */
 DECL|macro|SG_ALLOW_DIO_DEF
 mdefine_line|#define SG_ALLOW_DIO_DEF 0
-DECL|macro|SG_ALLOW_DIO_CODE
-mdefine_line|#define SG_ALLOW_DIO_CODE&t;/* compile out be commenting this define */
+multiline_comment|/* #define SG_ALLOW_DIO_CODE */
+multiline_comment|/* compile out be commenting this define */
 macro_line|#ifdef SG_ALLOW_DIO_CODE
 macro_line|#include &lt;linux/iobuf.h&gt;
-macro_line|#endif
 DECL|macro|SG_NEW_KIOVEC
 mdefine_line|#define SG_NEW_KIOVEC 0&t;/* use alloc_kiovec(), not alloc_kiovec_sz() */
+macro_line|#endif
 DECL|macro|SG_MAX_DEVS_MASK
 mdefine_line|#define SG_MAX_DEVS_MASK ((1U &lt;&lt; KDEV_MINOR_BITS) - 1)
 DECL|variable|sg_big_buff
@@ -244,6 +244,7 @@ op_star
 id|buffer
 suffix:semicolon
 multiline_comment|/* Data buffer or scatter list + mem_src_arr */
+macro_line|#ifdef SG_ALLOW_DIO_CODE
 DECL|member|kiobp
 r_struct
 id|kiobuf
@@ -256,6 +257,7 @@ r_char
 id|mapped
 suffix:semicolon
 multiline_comment|/* indicates kiobp has locked pages */
+macro_line|#endif
 DECL|member|buffer_mem_src
 r_char
 id|buffer_mem_src
@@ -734,7 +736,7 @@ id|srp
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|sg_read_oxfer
 c_func
 (paren
@@ -1057,6 +1059,32 @@ suffix:semicolon
 r_static
 r_inline
 r_int
+r_char
+op_star
+id|sg_scatg2virt
+c_func
+(paren
+r_const
+r_struct
+id|scatterlist
+op_star
+id|sclp
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+r_static
+r_int
+id|sg_last_dev
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef SG_ALLOW_DIO_CODE
+r_static
+r_inline
+r_int
 id|sg_alloc_kiovec
 c_func
 (paren
@@ -1092,30 +1120,6 @@ comma
 r_int
 op_star
 id|szp
-)paren
-suffix:semicolon
-r_static
-r_inline
-r_int
-r_char
-op_star
-id|sg_scatg2virt
-c_func
-(paren
-r_const
-r_struct
-id|scatterlist
-op_star
-id|sclp
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-r_static
-r_int
-id|sg_last_dev
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1810,6 +1814,9 @@ id|SZ_SG_HEADER
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -1820,6 +1827,10 @@ id|buf
 comma
 id|SZ_SG_HEADER
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -1837,6 +1848,9 @@ op_ge
 id|SZ_SG_IO_HDR
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -1847,6 +1861,10 @@ id|buf
 comma
 id|SZ_SG_IO_HDR
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|req_pack_id
 op_assign
@@ -2171,6 +2189,9 @@ op_ge
 id|SZ_SG_HEADER
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -2181,6 +2202,10 @@ id|old_hdr
 comma
 id|SZ_SG_HEADER
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|buf
 op_add_assign
@@ -2204,6 +2229,13 @@ id|count
 OG
 id|SZ_SG_HEADER
 )paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|res
+op_assign
 id|sg_read_oxfer
 c_func
 (paren
@@ -2215,7 +2247,13 @@ id|count
 op_minus
 id|SZ_SG_HEADER
 )paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 )brace
 r_else
 id|count
@@ -2395,6 +2433,9 @@ id|len
 r_goto
 id|err_out
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -2404,7 +2445,17 @@ id|srp-&gt;sense_b
 comma
 id|len
 )paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_goto
+id|err_out
+suffix:semicolon
+)brace
 id|hp-&gt;sb_len_wr
 op_assign
 id|len
@@ -2424,6 +2475,9 @@ id|hp-&gt;info
 op_or_assign
 id|SG_INFO_CHECK
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -2433,7 +2487,17 @@ id|hp
 comma
 id|SZ_SG_IO_HDR
 )paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_goto
+id|err_out
+suffix:semicolon
+)brace
 id|err
 op_assign
 id|sg_read_xfer
@@ -2658,6 +2722,9 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -2668,6 +2735,10 @@ id|buf
 comma
 id|SZ_SG_HEADER
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|blocking
 op_assign
@@ -3010,6 +3081,9 @@ id|hp-&gt;usr_ptr
 op_assign
 l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -3019,6 +3093,10 @@ id|buf
 comma
 id|cmd_size
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|k
 op_assign
@@ -3177,6 +3255,9 @@ op_assign
 op_amp
 id|srp-&gt;header
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -3186,7 +3267,21 @@ id|buf
 comma
 id|SZ_SG_IO_HDR
 )paren
+)paren
+(brace
+id|sg_remove_request
+c_func
+(paren
+id|sfp
+comma
+id|srp
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3361,6 +3456,9 @@ id|k
 suffix:semicolon
 multiline_comment|/* protects following copy_from_user()s + get_user()s */
 )brace
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -3370,7 +3468,21 @@ id|hp-&gt;cmdp
 comma
 id|hp-&gt;cmd_len
 )paren
+)paren
+(brace
+id|sg_remove_request
+c_func
+(paren
+id|sfp
+comma
+id|srp
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5233,6 +5345,8 @@ comma
 id|iflags
 )paren
 suffix:semicolon
+r_return
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -5248,9 +5362,13 @@ id|SZ_SG_REQ_INFO
 op_star
 id|SG_MAX_QUEUE
 )paren
-suffix:semicolon
-r_return
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
 l_int|0
+)paren
 suffix:semicolon
 )brace
 r_case
@@ -5489,6 +5607,9 @@ op_star
 )paren
 id|arg
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -5499,6 +5620,10 @@ id|siocp-&gt;data
 comma
 l_int|1
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -10654,6 +10779,9 @@ id|usglen
 suffix:colon
 id|num_xfer
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -10663,6 +10791,10 @@ id|up
 comma
 id|usglen
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|p
 op_add_assign
@@ -10852,6 +10984,10 @@ c_cond
 (paren
 id|ok
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -10861,7 +10997,12 @@ id|up
 comma
 id|num_xfer
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -10871,6 +11012,10 @@ c_cond
 (paren
 id|ok
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -10880,7 +11025,12 @@ id|up
 comma
 id|usglen
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 id|p
 op_add_assign
 id|usglen
@@ -10907,6 +11057,10 @@ c_cond
 (paren
 id|ok
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -10916,7 +11070,12 @@ id|up
 comma
 id|num_xfer
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -10926,6 +11085,10 @@ c_cond
 (paren
 id|ok
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -10935,7 +11098,12 @@ id|up
 comma
 id|ksglen
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 id|up
 op_add_assign
 id|ksglen
@@ -11047,6 +11215,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -11068,6 +11239,10 @@ id|SZ_SG_IOVEC
 comma
 id|SZ_SG_IOVEC
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|p
 op_assign
@@ -11648,6 +11823,9 @@ id|usglen
 suffix:colon
 id|num_xfer
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -11657,6 +11835,10 @@ id|p
 comma
 id|usglen
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|p
 op_add_assign
@@ -11846,6 +12028,10 @@ c_cond
 (paren
 id|ok
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -11855,7 +12041,12 @@ id|p
 comma
 id|num_xfer
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -11865,6 +12056,10 @@ c_cond
 (paren
 id|ok
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -11874,7 +12069,12 @@ id|p
 comma
 id|usglen
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 id|p
 op_add_assign
 id|usglen
@@ -11901,6 +12101,10 @@ c_cond
 (paren
 id|ok
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -11910,7 +12114,12 @@ id|p
 comma
 id|num_xfer
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -11920,6 +12129,10 @@ c_cond
 (paren
 id|ok
 )paren
+(brace
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -11929,7 +12142,12 @@ id|p
 comma
 id|ksglen
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 id|up
 op_add_assign
 id|ksglen
@@ -11948,7 +12166,7 @@ suffix:semicolon
 )brace
 DECL|function|sg_read_oxfer
 r_static
-r_void
+r_int
 id|sg_read_oxfer
 c_func
 (paren
@@ -12000,6 +12218,7 @@ l_int|0
 )paren
 )paren
 r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -12067,6 +12286,9 @@ OG
 id|num_read_xfer
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -12080,12 +12302,19 @@ id|sclp
 comma
 id|num_read_xfer
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -12099,6 +12328,10 @@ id|sclp
 comma
 id|num
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|num_read_xfer
 op_sub_assign
@@ -12121,6 +12354,10 @@ suffix:semicolon
 )brace
 )brace
 r_else
+(brace
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -12130,6 +12367,14 @@ id|schp-&gt;buffer
 comma
 id|num_read_xfer
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sg_build_reserve
@@ -12964,10 +13209,12 @@ id|resp-&gt;my_cmdp
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef SG_ALLOW_DIO_CODE
 id|resp-&gt;data.kiobp
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
 )brace
 id|write_unlock_irqrestore
 c_func
@@ -14402,6 +14649,7 @@ r_return
 id|resp
 suffix:semicolon
 )brace
+macro_line|#ifdef SG_ALLOW_DIO_CODE
 DECL|function|sg_alloc_kiovec
 r_static
 r_inline
@@ -14447,6 +14695,7 @@ id|bufp
 suffix:semicolon
 macro_line|#endif
 )brace
+macro_line|#endif
 DECL|function|sg_low_free
 r_static
 r_void
@@ -14622,6 +14871,7 @@ id|mem_src
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef SG_ALLOW_DIO_CODE
 DECL|function|sg_free_kiovec
 r_static
 r_inline
@@ -14665,6 +14915,7 @@ id|bufp
 suffix:semicolon
 macro_line|#endif
 )brace
+macro_line|#endif
 DECL|function|sg_ms_to_jif
 r_static
 r_int
@@ -16098,6 +16349,9 @@ id|count
 suffix:colon
 l_int|10
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -16107,6 +16361,10 @@ id|buffer
 comma
 id|num
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|buff
 (braket
@@ -16284,6 +16542,9 @@ id|count
 suffix:colon
 l_int|10
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -16293,6 +16554,10 @@ id|buffer
 comma
 id|num
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|buff
 (braket
@@ -16321,6 +16586,7 @@ op_le
 l_int|1048576
 )paren
 (brace
+multiline_comment|/* limit &quot;big buff&quot; to 1 MB */
 id|sg_big_buff
 op_assign
 id|k

@@ -54,7 +54,7 @@ macro_line|#endif
 macro_line|#ifndef _TLB
 macro_line|#error Unknown TLB model
 macro_line|#endif
-multiline_comment|/*&n; *&t;Data Abort Model&n; *&t;================&n; *&n; *&t;We have the following to choose from:&n; *&t;  arm6          - ARM6 style&n; *&t;  arm7&t;&t;- ARM7 style&n; *&t;  v4_early&t;- ARMv4 without Thumb early abort handler&n; *&t;  v4t_late&t;- ARMv4 with Thumb late abort handler&n; *&t;  v4t_early&t;- ARMv4 with Thumb early abort handler&n; *&t;  v5ej_early&t;- ARMv5 with Thumb and Java early abort handler&n; */
+multiline_comment|/*&n; *&t;Data Abort Model&n; *&t;================&n; *&n; *&t;We have the following to choose from:&n; *&t;  arm6          - ARM6 style&n; *&t;  arm7&t;&t;- ARM7 style&n; *&t;  v4_early&t;- ARMv4 without Thumb early abort handler&n; *&t;  v4t_late&t;- ARMv4 with Thumb late abort handler&n; *&t;  v4t_early&t;- ARMv4 with Thumb early abort handler&n; *&t;  v5tej_early&t;- ARMv5 with Thumb and Java early abort handler&n; *&t;  xscale&t;- ARMv5 with Thumb with Xscale extensions&n; */
 DECL|macro|CPU_ABORT_HANDLER
 macro_line|#undef CPU_ABORT_HANDLER
 DECL|macro|MULTI_ABORT
@@ -95,7 +95,7 @@ DECL|macro|CPU_ABORT_HANDLER
 macro_line|#  define CPU_ABORT_HANDLER v4_early_abort
 macro_line|# endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_ARM920T) || defined(CONFIG_CPU_ARM922T) || &bslash;&n;    defined(CONFIG_CPU_ARM1020) || defined(CONFIG_CPU_XSCALE)
+macro_line|#if defined(CONFIG_CPU_ARM920T) || defined(CONFIG_CPU_ARM922T) || &bslash;&n;    defined(CONFIG_CPU_ARM1020)
 macro_line|# ifdef CPU_ABORT_HANDLER
 DECL|macro|MULTI_ABORT
 macro_line|#  define MULTI_ABORT 1
@@ -110,13 +110,22 @@ DECL|macro|MULTI_ABORT
 macro_line|#  define MULTI_ABORT 1
 macro_line|# else
 DECL|macro|CPU_ABORT_HANDLER
-macro_line|#  define CPU_ABORT_HANDLER v5ej_early_abort
+macro_line|#  define CPU_ABORT_HANDLER v5tej_early_abort
+macro_line|# endif
+macro_line|#endif
+macro_line|#if defined(CONFIG_CPU_XSCALE)
+macro_line|# ifdef CPU_ABORT_HANDLER
+DECL|macro|MULTI_ABORT
+macro_line|#  define MULTI_ABORT 1
+macro_line|# else
+DECL|macro|CPU_ABORT_HANDLER
+macro_line|#  define CPU_ABORT_HANDLER xscale_abort
 macro_line|# endif
 macro_line|#endif
 macro_line|#ifndef CPU_ABORT_HANDLER
 macro_line|#error Unknown data abort handler type
 macro_line|#endif
-multiline_comment|/*&n; *&t;User Space Model&n; *&t;================&n; *&n; *&t;This section selects the correct set of functions for dealing with&n; *&t;page-based copying and clearing for user space for the particular&n; *&t;processor(s) we&squot;re building for.&n; *&n; *&t;We have the following to choose from:&n; *&t;  v3&t;&t;- ARMv3&n; *&t;  v4wt&t;&t;- ARMv4 with writethrough cache, without minicache&n; *&t;  v4wb&t;&t;- ARMv4 with writeback cache, without minicache&n; *&t;  v4_mc&t;&t;- ARMv4 with minicache&n; *&t;  v5te_mc&t;- ARMv5TE with minicache&n; */
+multiline_comment|/*&n; *&t;User Space Model&n; *&t;================&n; *&n; *&t;This section selects the correct set of functions for dealing with&n; *&t;page-based copying and clearing for user space for the particular&n; *&t;processor(s) we&squot;re building for.&n; *&n; *&t;We have the following to choose from:&n; *&t;  v3&t;&t;- ARMv3&n; *&t;  v4wt&t;&t;- ARMv4 with writethrough cache, without minicache&n; *&t;  v4wb&t;&t;- ARMv4 with writeback cache, without minicache&n; *&t;  v4_mc&t;&t;- ARMv4 with minicache&n; *&t;  xscale&t;- Xscale&n; */
 DECL|macro|_USER
 macro_line|#undef _USER
 DECL|macro|MULTI_USER
@@ -163,7 +172,7 @@ DECL|macro|MULTI_USER
 macro_line|#  define MULTI_USER 1
 macro_line|# else
 DECL|macro|_USER
-macro_line|#  define _USER v5te_mc
+macro_line|#  define _USER xscale_mc
 macro_line|# endif
 macro_line|#endif
 macro_line|#ifndef _USER

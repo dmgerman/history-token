@@ -2040,7 +2040,7 @@ comma
 l_int|0x100000
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Firmware doesnt always clear this bit which is critical&n;&t;&t; * for good performance - Anton&n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * Firmware doesn&squot;t always clear this bit which is critical&n;&t;&t; * for good performance - Anton&n;&t;&t; */
 (brace
 r_volatile
 id|u32

@@ -181,16 +181,40 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set the IRQ edges&n;&t; */
-id|set_irq_type
-c_func
-(paren
-id|IRQ_GPIO23
-comma
-id|IRQT_RISING
-)paren
+multiline_comment|/*&n;&t; * Ensure that these pins are set as outputs and are driving&n;&t; * logic 0.  This ensures that we won&squot;t inadvertently toggle&n;&t; * the WS latch in the CPLD, and we don&squot;t float causing&n;&t; * excessive power drain.  --rmk&n;&t; */
+id|GPDR
+op_or_assign
+id|GPIO_SSP_TXD
+op_or
+id|GPIO_SSP_SCLK
+op_or
+id|GPIO_SSP_SFRM
 suffix:semicolon
-multiline_comment|/* UCB1300 */
+id|GPCR
+op_assign
+id|GPIO_SSP_TXD
+op_or
+id|GPIO_SSP_SCLK
+op_or
+id|GPIO_SSP_SFRM
+suffix:semicolon
+multiline_comment|/*&n;&t; * Set up registers for sleep mode.&n;&t; */
+id|PWER
+op_assign
+id|PWER_GPIO0
+suffix:semicolon
+id|PGSR
+op_assign
+l_int|0
+suffix:semicolon
+id|PCFR
+op_assign
+l_int|0
+suffix:semicolon
+id|PSDR
+op_assign
+l_int|0
+suffix:semicolon
 id|sa1100fb_lcd_power
 op_assign
 id|assabet_lcd_power
@@ -773,14 +797,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_void
-id|neponset_map_io
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 id|sa1100_map_io
 c_func
 (paren
@@ -798,6 +814,11 @@ id|assabet_io_desc
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Set SUS bit in SDCR0 so serial port 1 functions.&n;&t; * Its called GPCLKR0 in my SA1110 manual.&n;&t; */
+id|Ser1SDCR0
+op_or_assign
+id|SDCR0_SUS
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -808,6 +829,14 @@ c_func
 )paren
 (brace
 macro_line|#ifdef CONFIG_ASSABET_NEPONSET
+r_extern
+r_void
+id|neponset_map_io
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We map Neponset registers even if it isn&squot;t present since&n;&t;&t; * many drivers will try to probe their stuff (and fail).&n;&t;&t; * This is still more friendly than a kernel paging request&n;&t;&t; * crash.&n;&t;&t; */
 id|neponset_map_io
 c_func
@@ -831,11 +860,6 @@ l_int|2
 comma
 l_int|1
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Set SUS bit in SDCR0 so serial port 1 functions.&n;&t;&t; * Its called GPCLKR0 in my SA1110 manual.&n;&t;&t; */
-id|Ser1SDCR0
-op_or_assign
-id|SDCR0_SUS
 suffix:semicolon
 )brace
 r_else
@@ -866,40 +890,6 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* radio module */
 )brace
-multiline_comment|/*&n;&t; * Ensure that these pins are set as outputs and are driving&n;&t; * logic 0.  This ensures that we won&squot;t inadvertently toggle&n;&t; * the WS latch in the CPLD, and we don&squot;t float causing&n;&t; * excessive power drain.  --rmk&n;&t; */
-id|GPDR
-op_or_assign
-id|GPIO_SSP_TXD
-op_or
-id|GPIO_SSP_SCLK
-op_or
-id|GPIO_SSP_SFRM
-suffix:semicolon
-id|GPCR
-op_assign
-id|GPIO_SSP_TXD
-op_or
-id|GPIO_SSP_SCLK
-op_or
-id|GPIO_SSP_SFRM
-suffix:semicolon
-multiline_comment|/*&n;&t; * Set up registers for sleep mode.&n;&t; */
-id|PWER
-op_assign
-id|PWER_GPIO0
-suffix:semicolon
-id|PGSR
-op_assign
-l_int|0
-suffix:semicolon
-id|PCFR
-op_assign
-l_int|0
-suffix:semicolon
-id|PSDR
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 id|MACHINE_START
 c_func

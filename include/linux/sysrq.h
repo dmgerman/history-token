@@ -4,9 +4,6 @@ r_struct
 id|pt_regs
 suffix:semicolon
 r_struct
-id|kbd_struct
-suffix:semicolon
-r_struct
 id|tty_struct
 suffix:semicolon
 DECL|struct|sysrq_key_op
@@ -24,10 +21,6 @@ r_int
 comma
 r_struct
 id|pt_regs
-op_star
-comma
-r_struct
-id|kbd_struct
 op_star
 comma
 r_struct
@@ -60,10 +53,6 @@ id|pt_regs
 op_star
 comma
 r_struct
-id|kbd_struct
-op_star
-comma
-r_struct
 id|tty_struct
 op_star
 )paren
@@ -77,10 +66,6 @@ r_int
 comma
 r_struct
 id|pt_regs
-op_star
-comma
-r_struct
-id|kbd_struct
 op_star
 comma
 r_struct

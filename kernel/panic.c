@@ -201,7 +201,7 @@ id|panic_notifier_list
 comma
 l_int|0
 comma
-l_int|NULL
+id|buf
 )paren
 suffix:semicolon
 r_if

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/mach-integrator/cpu.c&n; *&n; *  Copyright (C) 2001 Deep Blue Solutions Ltd.&n; *&n; *  $Id: cpu.c,v 1.4 2002/05/29 11:41:55 rmk Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * CPU support functions&n; */
+multiline_comment|/*&n; *  linux/arch/arm/mach-integrator/cpu.c&n; *&n; *  Copyright (C) 2001 Deep Blue Solutions Ltd.&n; *&n; *  $Id: cpu.c,v 1.5 2002/07/06 16:53:17 rmk Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * CPU support functions&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -457,24 +457,40 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ
-id|cpufreq_init
-c_func
-(paren
+(brace
+r_struct
+id|cpufreq_driver
+id|cpufreq_driver
+suffix:semicolon
+id|cpufreq_driver.freq.min
+op_assign
+l_int|12000
+suffix:semicolon
+id|cpufreq_driver.freq.max
+op_assign
+l_int|160000
+suffix:semicolon
+id|cpufreq_driver.freq.cur
+op_assign
 id|cpu_freq_khz
-comma
-l_int|1000
-comma
-l_int|0
-)paren
 suffix:semicolon
-id|cpufreq_setfunctions
+id|cpufreq_driver.validate
+op_assign
+op_amp
+id|integrator_validatespeed
+suffix:semicolon
+id|cpufreq_driver.setspeed
+op_assign
+op_amp
+id|integrator_setspeed
+suffix:semicolon
+id|cpufreq_register
 c_func
 (paren
-id|integrator_validatespeed
-comma
-id|integrator_setspeed
+id|cpufreq_driver
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|cm_stat
 op_assign

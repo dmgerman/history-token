@@ -142,14 +142,6 @@ DECL|macro|loaddebug
 mdefine_line|#define loaddebug(thread,register) &bslash;&n;               __asm__(&quot;movl %0,%%db&quot; #register  &bslash;&n;                       : /* no output */ &bslash;&n;                       :&quot;r&quot; ((thread)-&gt;debugreg[register]))
 r_extern
 r_void
-id|do_fpu_end
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|fix_processor_context
 c_func
 (paren

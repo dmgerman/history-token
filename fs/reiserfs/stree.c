@@ -2592,7 +2592,7 @@ id|p_s_bh
 op_assign
 id|p_s_last_element-&gt;pe_buffer
 op_assign
-id|reiserfs_bread
+id|sb_bread
 c_func
 (paren
 id|p_s_sb

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -734,7 +735,7 @@ comma
 l_string|&quot;The permission bits of the files in /proc&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* This is a kind of sloppy hack to get this information to OUT4500 and&n;   IN4500.  I would be extremely interested in the situation where this&n;   doesnt work though!!! */
+multiline_comment|/* This is a kind of sloppy hack to get this information to OUT4500 and&n;   IN4500.  I would be extremely interested in the situation where this&n;   doesn&squot;t work though!!! */
 DECL|variable|do8bitIO
 r_static
 r_int
@@ -18953,7 +18954,7 @@ id|airo_devices
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Since the card doesnt automatically switch to the right WEP mode,&n;   we will make it do it.  If the card isn&squot;t associated, every secs we&n;   will switch WEP modes to see if that will help.  If the card is&n;   associated we will check every minute to see if anything has&n;   changed. */
+multiline_comment|/* Since the card doesn&squot;t automatically switch to the right WEP mode,&n;   we will make it do it.  If the card isn&squot;t associated, every secs we&n;   will switch WEP modes to see if that will help.  If the card is&n;   associated we will check every minute to see if anything has&n;   changed. */
 DECL|function|timer_func
 r_static
 r_void

@@ -586,7 +586,7 @@ r_int
 id|i
 suffix:semicolon
 id|ide_startstop_t
-id|startstop
+id|ret
 suffix:semicolon
 r_if
 c_cond
@@ -681,9 +681,8 @@ c_func
 id|hwif-&gt;lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|ata_status_poll
 c_func
 (paren
@@ -696,10 +695,14 @@ comma
 id|WAIT_DRQ
 comma
 l_int|NULL
-comma
-op_amp
-id|startstop
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+id|ATA_OP_READY
 )paren
 (brace
 id|printk
@@ -1575,9 +1578,7 @@ id|nsect
 op_le
 l_int|0
 )paren
-(brace
-multiline_comment|/* FIXME: no queue locking above! */
-id|ata_end_request
+id|__ata_end_request
 c_func
 (paren
 id|drive
@@ -1585,9 +1586,10 @@ comma
 id|rq
 comma
 l_int|1
+comma
+l_int|0
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Now the data has been read in, do the following:&n;&t; *&n;&t; * if there are still sectors left in the request, if we know there are&n;&t; * still sectors available from the interface, go back and read the&n;&t; * next bit of the request.  else if DRQ is asserted, there are more&n;&t; * sectors available, so go back and find out how many, then read them&n;&t; * in.  else if BUSY is asserted, we are going to get an interrupt, so&n;&t; * set the handler for the interrupt and just return&n;&t; */
 r_if
 c_cond
@@ -1633,26 +1635,6 @@ op_amp
 id|BUSY_STAT
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t;&t; * file access too.&n;&t;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|ata_set_handler
 c_func
 (paren
@@ -1663,14 +1645,6 @@ comma
 id|WAIT_CMD
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_READ
@@ -1686,7 +1660,7 @@ id|drive-&gt;name
 suffix:semicolon
 macro_line|#endif
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 id|printk
@@ -1712,7 +1686,7 @@ l_string|&quot;promise read intr&quot;
 suffix:semicolon
 )brace
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * promise_complete_pollfunc()&n; * This is the polling function for waiting (nicely!) until drive stops&n; * being busy. It is invoked at the end of a write, after the previous poll&n; * has finished.&n; *&n; * Once not busy, the end request is called.&n; */
@@ -1733,10 +1707,6 @@ op_star
 id|rq
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|ata_channel
 op_star
@@ -1771,15 +1741,6 @@ id|ch-&gt;poll_timeout
 )paren
 )paren
 (brace
-multiline_comment|/* FIXME: this locking should encompass the above&n;&t;&t;&t; * register file access too.&n;&t;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|ata_set_handler
 c_func
 (paren
@@ -1794,16 +1755,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 multiline_comment|/* continue polling... */
 )brace
@@ -1847,15 +1800,6 @@ id|drive-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* FIXME: this locking should encompass the above&n;&t; * register file access too.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|__ata_end_request
 c_func
 (paren
@@ -1868,16 +1812,8 @@ comma
 id|rq-&gt;nr_sectors
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * promise_multwrite() transfers a block of up to mcount sectors of data&n; * to a drive as part of a disk multiple-sector write operation.&n; *&n; * Returns 0 on success.&n; *&n; * Note that we may be called from two contexts - the do_rw_disk context&n; * and IRQ context. The IRQ can happen any time after we&squot;ve output the&n; * full &quot;mcount&quot; number of sectors, so we must make sure we update the&n; * state _before_ we output the final part of the data!&n; */
@@ -2059,24 +1995,12 @@ op_star
 id|rq
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|ata_channel
 op_star
 id|ch
 op_assign
 id|drive-&gt;channel
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2116,16 +2040,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 multiline_comment|/* continue polling... */
 )brace
@@ -2150,14 +2066,6 @@ comma
 l_int|0
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -2216,16 +2124,8 @@ id|drive-&gt;status
 )paren
 suffix:semicolon
 macro_line|#endif
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This transfers a block of one or more sectors of data to a drive as part of&n; * a disk write operation. All but 4 sectors are transferred in the first&n; * attempt, then the interface is polled (nicely!) for completion before the&n; * final 4 sectors are transferred. There is no interrupt generated on writes&n; * (at least on the DC4030VL-2), we just have to poll for NOT BUSY.&n; */
@@ -2246,10 +2146,6 @@ op_star
 id|rq
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|ata_channel
 op_star
@@ -2279,15 +2175,6 @@ id|rq-&gt;buffer
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * If there are more than 4 sectors to transfer, do n-4 then go into&n;&t; * the polling strategy as defined above.&n;&t; */
 r_if
 c_cond
@@ -2313,16 +2200,8 @@ l_int|4
 )paren
 )paren
 (brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 id|ch-&gt;poll_timeout
@@ -2345,16 +2224,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 r_else
@@ -2373,19 +2244,9 @@ comma
 id|rq-&gt;nr_sectors
 )paren
 )paren
-(brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
-)brace
 id|ch-&gt;poll_timeout
 op_assign
 id|jiffies
@@ -2406,14 +2267,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 macro_line|#ifdef DEBUG_WRITE
 id|printk
 c_func
@@ -2429,7 +2282,7 @@ id|drive-&gt;status
 suffix:semicolon
 macro_line|#endif
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 )brace
@@ -2489,7 +2342,7 @@ comma
 l_string|&quot;pdc4030 bad flags&quot;
 )paren
 suffix:semicolon
-id|ata_end_request
+id|__ata_end_request
 c_func
 (paren
 id|drive
@@ -2497,10 +2350,12 @@ comma
 id|rq
 comma
 l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 id|ata_irq_enable
@@ -2609,26 +2464,6 @@ op_amp
 l_int|0x01
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t;&t;&t; * file access too.&n;&t;&t;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 macro_line|#ifdef DEBUG_READ
 id|printk
 c_func
@@ -2653,16 +2488,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 id|udelay
@@ -2694,39 +2521,18 @@ id|drive-&gt;name
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 r_case
 id|WRITE
 suffix:colon
 (brace
 id|ide_startstop_t
-id|startstop
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
+id|ret
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Strategy on write is: look for the DRQ that should have been&n;&t;&t; * immediately asserted copy the request into the hwgroup&squot;s&n;&t;&t; * scratchpad call the promise_write function to deal with&n;&t;&t; * writing the data out.&n;&t;&t; *&n;&t;&t; * NOTE: No interrupts are generated on writes. Write&n;&t;&t; * completion must be polled&n;&t;&t; */
-multiline_comment|/* FIXME: Move this lock upwards.&n;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|ata_status_poll
 c_func
 (paren
@@ -2739,10 +2545,14 @@ comma
 id|WAIT_DRQ
 comma
 id|rq
-comma
-op_amp
-id|startstop
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+id|ATA_OP_READY
 )paren
 (brace
 id|printk
@@ -2755,16 +2565,8 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|startstop
+id|ret
 suffix:semicolon
 )brace
 r_if
@@ -2779,14 +2581,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* local CPU only */
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|promise_do_write
 c_func
@@ -2806,8 +2600,7 @@ id|KERN_ERR
 l_string|&quot;pdc4030: command not READ or WRITE! Huh?&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: This should already run under the lock. */
-id|ata_end_request
+id|__ata_end_request
 c_func
 (paren
 id|drive
@@ -2815,10 +2608,12 @@ comma
 id|rq
 comma
 l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 )brace

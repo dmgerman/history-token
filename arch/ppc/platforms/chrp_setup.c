@@ -131,84 +131,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|pckbd_setkeycode
-c_func
-(paren
-r_int
-r_int
-id|scancode
-comma
-r_int
-r_int
-id|keycode
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pckbd_getkeycode
-c_func
-(paren
-r_int
-r_int
-id|scancode
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pckbd_translate
-c_func
-(paren
-r_int
-r_char
-id|scancode
-comma
-r_int
-r_char
-op_star
-id|keycode
-comma
-r_char
-id|raw_mode
-)paren
-suffix:semicolon
-r_extern
-r_char
-id|pckbd_unexpected_up
-c_func
-(paren
-r_int
-r_char
-id|keycode
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pckbd_leds
-c_func
-(paren
-r_int
-r_char
-id|leds
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pckbd_init_hw
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|pckbd_sysrq_xlate
-(braket
-l_int|128
-)braket
-suffix:semicolon
-r_extern
 r_void
 id|select_adb_keyboard
 c_func
@@ -1669,7 +1591,7 @@ op_minus
 id|NUM_8259_INTERRUPTS
 )braket
 suffix:semicolon
-macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_ADB_KEYBOARD) &amp;&amp; defined(XMON)&t;
+macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_INPUT_ADBHID) &amp;&amp; defined(XMON)&t;
 r_struct
 id|device_node
 op_star
@@ -1816,7 +1738,7 @@ c_func
 id|chrp_int_ack
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_ADB_KEYBOARD) &amp;&amp; defined(XMON)
+macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_INPUT_ADBHID) &amp;&amp; defined(XMON)
 multiline_comment|/* see if there is a keyboard in the device tree&n;&t;   with a parent of type &quot;adb&quot; */
 r_for
 c_loop
@@ -1963,7 +1885,7 @@ comma
 l_int|0x7777
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_VT) &amp;&amp; (defined(CONFIG_ADB_KEYBOARD) || defined(CONFIG_INPUT))
+macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_INPUT)
 multiline_comment|/* see if there is a keyboard in the device tree&n;&t;   with a parent of type &quot;adb&quot; */
 (brace
 r_struct
@@ -2017,7 +1939,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* CONFIG_VT &amp;&amp; (CONFIG_ADB_KEYBOARD || CONFIG_INPUT) */
+macro_line|#endif /* CONFIG_VT &amp;&amp; CONFIG_INPUT */
 )brace
 r_void
 id|__init
@@ -2148,43 +2070,6 @@ id|ppc_md.find_end_of_memory
 op_assign
 id|pmac_find_end_of_memory
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-multiline_comment|/* these are adjusted in chrp_init2 if we have an ADB keyboard */
-id|ppc_md.kbd_setkeycode
-op_assign
-id|pckbd_setkeycode
-suffix:semicolon
-id|ppc_md.kbd_getkeycode
-op_assign
-id|pckbd_getkeycode
-suffix:semicolon
-id|ppc_md.kbd_translate
-op_assign
-id|pckbd_translate
-suffix:semicolon
-id|ppc_md.kbd_unexpected_up
-op_assign
-id|pckbd_unexpected_up
-suffix:semicolon
-id|ppc_md.kbd_leds
-op_assign
-id|pckbd_leds
-suffix:semicolon
-id|ppc_md.kbd_init_hw
-op_assign
-id|pckbd_init_hw
-suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-id|ppc_md.ppc_kbd_sysrq_xlate
-op_assign
-id|pckbd_sysrq_xlate
-suffix:semicolon
-id|SYSRQ_KEY
-op_assign
-l_int|0x54
-suffix:semicolon
-macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
-macro_line|#endif /* CONFIG_VT */
 r_if
 c_cond
 (paren

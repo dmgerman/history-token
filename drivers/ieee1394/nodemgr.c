@@ -722,10 +722,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ret
-op_ne
-op_minus
-id|EAGAIN
 )paren
 r_break
 suffix:semicolon
@@ -4475,6 +4473,22 @@ id|nodeid
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* &n;&t; * Must retry a few times if config rom read returns zero (how long?). Will&n;&t; * not normally occur, but we should do the right thing. For example, with&n;&t; * some sbp2 devices, the bridge chipset cannot return valid config rom reads&n;&t; * immediately after power-on, since they need to detect the type of &n;&t; * device attached (disk or CD-ROM).&n;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|4
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -4512,6 +4526,37 @@ id|nodeid
 )paren
 )paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|buffer
+(braket
+l_int|0
+)braket
+)paren
+r_break
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|schedule_timeout
+(paren
+id|HZ
+op_div
+l_int|4
+)paren
+)paren
 r_return
 op_minus
 l_int|1
@@ -4789,22 +4834,25 @@ op_ne
 id|IEEE1394_BUSID_MAGIC
 )paren
 (brace
-multiline_comment|/* This isn&squot;t a 1394 device */
-id|HPSB_ERR
+multiline_comment|/* This isn&squot;t a 1394 device, but we let it slide. There&n;&t;&t; * was a report of a device with broken firmware which&n;&t;&t; * reported &squot;2394&squot; instead of &squot;1394&squot;, which is obviously a&n;&t;&t; * mistake. One would hope that a non-1394 device never&n;&t;&t; * gets connected to Firewire bus. If someone does, we&n;&t;&t; * shouldn&squot;t be held responsible, so we&squot;ll allow it with a&n;&t;&t; * warning.  */
+id|HPSB_WARN
 c_func
 (paren
 l_string|&quot;Node &quot;
 id|NODE_BUS_FMT
-l_string|&quot; isn&squot;t an IEEE 1394 device&quot;
+l_string|&quot; has invalid busID magic [0x%08x]&quot;
 comma
 id|NODE_BUS_ARGS
 c_func
 (paren
 id|nodeid
 )paren
+comma
+id|buffer
+(braket
+l_int|1
+)braket
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 id|guid
@@ -5018,7 +5066,7 @@ r_int
 r_int
 id|generation
 suffix:semicolon
-multiline_comment|/* Pause for 1 second, to make sure things settle down. If&n;&t; * schedule_timeout returns non-zero, it means we caught a signal&n;&t; * and need to return. */
+multiline_comment|/* Pause for 1/4 second, to make sure things settle down. If&n;&t; * schedule_timeout returns non-zero, it means we caught a signal&n;&t; * and need to return. */
 id|set_current_state
 c_func
 (paren
@@ -5031,6 +5079,8 @@ c_cond
 id|schedule_timeout
 (paren
 id|HZ
+op_div
+l_int|4
 )paren
 )paren
 r_return
