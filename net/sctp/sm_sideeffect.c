@@ -1149,6 +1149,20 @@ id|event
 )paren
 )paren
 suffix:semicolon
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_NEW_STATE
+comma
+id|SCTP_STATE
+c_func
+(paren
+id|SCTP_STATE_CLOSED
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* SEND_FAILED sent later when cleaning up the association. */
 id|asoc-&gt;outqueue.error
 op_assign
