@@ -917,6 +917,17 @@ macro_line|#else
 DECL|macro|smp_init
 mdefine_line|#define smp_init()&t;do { } while (0)
 macro_line|#endif
+DECL|function|setup_per_cpu_areas
+r_static
+r_inline
+r_void
+id|setup_per_cpu_areas
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 macro_line|#else
 macro_line|#ifdef __GENERIC_PER_CPU
 DECL|variable|__per_cpu_offset
@@ -1028,18 +1039,6 @@ id|size
 )paren
 suffix:semicolon
 )brace
-)brace
-macro_line|#else
-DECL|function|setup_per_cpu_areas
-r_static
-r_inline
-r_void
-id|setup_per_cpu_areas
-c_func
-(paren
-r_void
-)paren
-(brace
 )brace
 macro_line|#endif /* !__GENERIC_PER_CPU */
 multiline_comment|/* Called by boot processor to activate the rest. */
