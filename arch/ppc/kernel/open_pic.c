@@ -69,14 +69,6 @@ r_static
 r_int
 id|open_pic_irq_offset
 suffix:semicolon
-DECL|variable|chrp_int_ack_special
-r_static
-r_volatile
-r_int
-r_char
-op_star
-id|chrp_int_ack_special
-suffix:semicolon
 DECL|variable|ISR
 r_static
 r_volatile
@@ -1100,11 +1092,6 @@ r_int
 id|offset
 comma
 r_int
-r_char
-op_star
-id|chrp_ack
-comma
-r_int
 id|programmer_switch_irq
 )paren
 (brace
@@ -1317,10 +1304,6 @@ suffix:semicolon
 id|open_pic_irq_offset
 op_assign
 id|offset
-suffix:semicolon
-id|chrp_int_ack_special
-op_assign
-id|chrp_ack
 suffix:semicolon
 multiline_comment|/* Initialize timer interrupts */
 r_if
@@ -3044,26 +3027,16 @@ op_eq
 id|open_pic_irq_offset
 )paren
 (brace
-multiline_comment|/*&n;                 * This magic address generates a PCI IACK cycle.&n;                 */
-r_if
-c_cond
-(paren
-id|chrp_int_ack_special
-)paren
-id|irq
-op_assign
-op_star
-id|chrp_int_ack_special
-suffix:semicolon
 macro_line|#ifndef CONFIG_GEMINI
-r_else
 id|irq
 op_assign
-id|i8259_poll
+id|i8259_irq
 c_func
 (paren
+id|regs
 )paren
 suffix:semicolon
+multiline_comment|/* get IRQ from cascade */
 macro_line|#endif
 id|openpic_eoi
 c_func

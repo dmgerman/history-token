@@ -1788,8 +1788,6 @@ l_int|1
 comma
 l_int|0
 comma
-l_int|0
-comma
 id|nmi_irq
 )paren
 suffix:semicolon

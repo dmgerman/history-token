@@ -2560,8 +2560,6 @@ l_int|1
 comma
 id|NUM_8259_INTERRUPTS
 comma
-l_int|0
-comma
 op_minus
 l_int|1
 )paren

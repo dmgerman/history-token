@@ -1666,11 +1666,8 @@ r_int
 id|i
 suffix:semicolon
 r_int
-r_char
-op_star
-id|chrp_int_ack_special
-op_assign
-l_int|0
+r_int
+id|chrp_int_ack
 suffix:semicolon
 r_int
 r_char
@@ -1743,16 +1740,8 @@ l_int|NULL
 )paren
 r_continue
 suffix:semicolon
-id|chrp_int_ack_special
+id|chrp_int_ack
 op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-id|ioremap
-c_func
-(paren
 id|addrp
 (braket
 id|prom_n_addr_cells
@@ -1763,9 +1752,6 @@ id|np
 op_minus
 l_int|1
 )braket
-comma
-l_int|1
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1780,7 +1766,8 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;Cannot find pci to get ack address&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;Cannot find PCI interrupt acknowledge address&bslash;n&quot;
 )paren
 suffix:semicolon
 id|chrp_find_openpic
@@ -1815,8 +1802,6 @@ l_int|1
 comma
 id|NUM_8259_INTERRUPTS
 comma
-id|chrp_int_ack_special
-comma
 id|nmi_irq
 )paren
 suffix:semicolon
@@ -1847,7 +1832,7 @@ suffix:semicolon
 id|i8259_init
 c_func
 (paren
-l_int|0
+id|chrp_int_ack
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_ADB_KEYBOARD) &amp;&amp; defined(XMON)

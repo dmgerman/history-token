@@ -735,8 +735,6 @@ l_int|1
 comma
 id|NUM_8259_INTERRUPTS
 comma
-l_int|NULL
-comma
 op_minus
 l_int|1
 )paren
@@ -768,10 +766,11 @@ op_amp
 id|i8259_pic
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * The EPIC allows for a read in the range of 0xFEF00000 -&gt;&n;&t; * 0xFEFFFFFF to generate a PCI interrupt-acknowledge transaction.&n;&t; */
 id|i8259_init
 c_func
 (paren
-l_int|0
+l_int|0xfef00000
 )paren
 suffix:semicolon
 )brace
