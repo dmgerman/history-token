@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
-macro_line|#ifdef CONFIG_PM
 multiline_comment|/* page backup entry */
 DECL|struct|pbe
 r_typedef
@@ -74,6 +73,7 @@ op_star
 id|zone
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PM
 multiline_comment|/* kernel/power/swsusp.c */
 r_extern
 r_int
