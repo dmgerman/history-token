@@ -317,6 +317,7 @@ suffix:semicolon
 DECL|member|cmap_regs
 r_struct
 id|cmap_regs
+id|__iomem
 op_star
 id|cmap_regs
 suffix:semicolon
@@ -328,6 +329,7 @@ suffix:semicolon
 DECL|member|control_regs
 r_struct
 id|control_regs
+id|__iomem
 op_star
 id|control_regs
 suffix:semicolon
@@ -343,6 +345,7 @@ id|control_regs_size
 suffix:semicolon
 DECL|member|frame_buffer
 id|__u8
+id|__iomem
 op_star
 id|frame_buffer
 suffix:semicolon
@@ -2115,6 +2118,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|preg
+id|__iomem
 op_star
 id|rp
 suffix:semicolon
@@ -4639,10 +4643,6 @@ id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
 id|info-&gt;screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|p-&gt;frame_buffer
 op_plus
 id|CTRLFB_OFF
