@@ -8789,6 +8789,16 @@ id|dp
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|filpp
+)paren
+op_star
+id|filpp
+op_assign
+id|dp-&gt;dl_vfs_file
+suffix:semicolon
 )brace
 id|status
 op_assign
