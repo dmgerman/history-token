@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Sony Programmable I/O Control Device driver for VAIO&n; *&n; * Copyright (C) 2001-2003 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2001 Michael Ashley &lt;m.ashley@unsw.edu.au&gt;&n; *&n; * Copyright (C) 2001 Junichi Morita &lt;jun1m@mars.dti.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Takaya Kinjo &lt;t-kinjo@tc4.so-net.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * Sony Programmable I/O Control Device driver for VAIO&n; *&n; * Copyright (C) 2001-2004 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2001 Michael Ashley &lt;m.ashley@unsw.edu.au&gt;&n; *&n; * Copyright (C) 2001 Junichi Morita &lt;jun1m@mars.dti.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Takaya Kinjo &lt;t-kinjo@tc4.so-net.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
@@ -1802,7 +1802,7 @@ comma
 id|v2
 )paren
 suffix:semicolon
-multiline_comment|/* We need to return IRQ_HANDLED here because there *are*&n;&t; * events belonging to the sonypi device we don&squot;t know about, &n;&t; * but we still don&squot;t want those to pollute the logs... */
+multiline_comment|/* We need to return IRQ_HANDLED here because there *are*&n;&t; * events belonging to the sonypi device we don&squot;t know about,&n;&t; * but we still don&squot;t want those to pollute the logs... */
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
@@ -3304,13 +3304,23 @@ id|miscdevice
 id|sonypi_misc_device
 op_assign
 (brace
+dot
+id|minor
+op_assign
 op_minus
 l_int|1
 comma
+dot
+id|name
+op_assign
 l_string|&quot;sonypi&quot;
 comma
+dot
+id|fops
+op_assign
 op_amp
 id|sonypi_misc_fops
+comma
 )brace
 suffix:semicolon
 DECL|function|sonypi_enable
@@ -3743,7 +3753,7 @@ op_minus
 id|EIO
 suffix:semicolon
 r_goto
-id|out1
+id|out_pcienable
 suffix:semicolon
 )brace
 id|sonypi_misc_device.minor
@@ -3783,7 +3793,7 @@ l_string|&quot;sonypi: misc_register failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
-id|out1
+id|out_miscreg
 suffix:semicolon
 )brace
 r_if
@@ -3910,7 +3920,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|out2
+id|out_reqreg
 suffix:semicolon
 )brace
 r_for
@@ -3995,7 +4005,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|out3
+id|out_reqirq
 suffix:semicolon
 )brace
 r_if
@@ -4053,10 +4063,6 @@ id|REL_WHEEL
 suffix:semicolon
 id|sonypi_device.input_jog_dev.name
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -4177,10 +4183,6 @@ id|sonypi_device.input_key_dev.keybit
 suffix:semicolon
 id|sonypi_device.input_key_dev.name
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -4352,7 +4354,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sonypi: Sony Programmable I/O Controller Driver v%s.&bslash;n&quot;
+l_string|&quot;sonypi: Sony Programmable I/O Controller Driver&quot;
+l_string|&quot;v%s.&bslash;n&quot;
 comma
 id|SONYPI_DRIVER_VERSION
 )paren
@@ -4497,7 +4500,7 @@ comma
 id|sonypi_irq
 )paren
 suffix:semicolon
-id|out3
+id|out_reqirq
 suffix:colon
 id|release_region
 c_func
@@ -4507,7 +4510,7 @@ comma
 id|sonypi_device.region_size
 )paren
 suffix:semicolon
-id|out2
+id|out_reqreg
 suffix:colon
 id|misc_deregister
 c_func
@@ -4516,7 +4519,20 @@ op_amp
 id|sonypi_misc_device
 )paren
 suffix:semicolon
-id|out1
+id|out_miscreg
+suffix:colon
+r_if
+c_cond
+(paren
+id|pcidev
+)paren
+id|pci_disable_device
+c_func
+(paren
+id|pcidev
+)paren
+suffix:semicolon
+id|out_pcienable
 suffix:colon
 id|kfifo_free
 c_func
