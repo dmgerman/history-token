@@ -575,28 +575,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;** Routing PCI interrupts for all devices because &bslash;&quot;pci=routeirq&bslash;&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;** was specified.  If this was required to make a driver work,&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;** please email the output of &bslash;&quot;lspci&bslash;&quot; to bjorn.helgaas@hp.com&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;** so I can fix the driver.&bslash;n&quot;
+l_string|&quot;PCI: Routing interrupts for all devices because &bslash;&quot;pci=routeirq&bslash;&quot; specified&bslash;n&quot;
 )paren
 suffix:semicolon
 id|for_each_pci_dev
@@ -612,57 +591,13 @@ id|dev
 suffix:semicolon
 )brace
 r_else
-(brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;** PCI interrupts are no longer routed automatically.  If this&bslash;n&quot;
+l_string|&quot;PCI: If a device doesn&squot;t work, try &bslash;&quot;pci=routeirq&bslash;&quot;.  If it helps, post a report&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;** causes a device to stop working, it is probably because the&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;** driver failed to call pci_enable_device().  As a temporary&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;** workaround, the &bslash;&quot;pci=routeirq&bslash;&quot; argument restores the old&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;** behavior.  If this argument makes the device work again,&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;** please email the output of &bslash;&quot;lspci&bslash;&quot; to bjorn.helgaas@hp.com&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;** so I can fix the driver.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
