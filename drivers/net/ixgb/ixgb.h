@@ -322,6 +322,12 @@ r_struct
 id|ixgb_hw_stats
 id|stats
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI_MSI
+DECL|member|have_msi
+id|boolean_t
+id|have_msi
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _IXGB_H_ */
