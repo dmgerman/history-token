@@ -31,6 +31,9 @@ r_struct
 id|elevator_s
 id|elevator_t
 suffix:semicolon
+r_struct
+id|request_pm_state
+suffix:semicolon
 DECL|macro|BLKDEV_MIN_RQ
 mdefine_line|#define BLKDEV_MIN_RQ&t;4
 DECL|macro|BLKDEV_MAX_RQ
@@ -248,6 +251,13 @@ r_int
 r_int
 id|timeout
 suffix:semicolon
+multiline_comment|/*&n;&t; * For Power Management requests&n;&t; */
+DECL|member|pm
+r_struct
+id|request_pm_state
+op_star
+id|pm
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * first three bits match BIO_RW* bits, important&n; */
@@ -325,6 +335,22 @@ comma
 DECL|enumerator|__REQ_DRIVE_TASKFILE
 id|__REQ_DRIVE_TASKFILE
 comma
+DECL|enumerator|__REQ_PREEMPT
+id|__REQ_PREEMPT
+comma
+multiline_comment|/* set for &quot;ide_preempt&quot; requests */
+DECL|enumerator|__REQ_PM_SUSPEND
+id|__REQ_PM_SUSPEND
+comma
+multiline_comment|/* suspend request */
+DECL|enumerator|__REQ_PM_RESUME
+id|__REQ_PM_RESUME
+comma
+multiline_comment|/* resume request */
+DECL|enumerator|__REQ_PM_SHUTDOWN
+id|__REQ_PM_SHUTDOWN
+comma
+multiline_comment|/* shutdown request */
 DECL|enumerator|__REQ_NR_BITS
 id|__REQ_NR_BITS
 comma
@@ -367,6 +393,37 @@ DECL|macro|REQ_DRIVE_TASK
 mdefine_line|#define REQ_DRIVE_TASK&t;(1 &lt;&lt; __REQ_DRIVE_TASK)
 DECL|macro|REQ_DRIVE_TASKFILE
 mdefine_line|#define REQ_DRIVE_TASKFILE&t;(1 &lt;&lt; __REQ_DRIVE_TASKFILE)
+DECL|macro|REQ_PREEMPT
+mdefine_line|#define REQ_PREEMPT&t;(1 &lt;&lt; __REQ_PREEMPT)
+DECL|macro|REQ_PM_SUSPEND
+mdefine_line|#define REQ_PM_SUSPEND&t;(1 &lt;&lt; __REQ_PM_SUSPEND)
+DECL|macro|REQ_PM_RESUME
+mdefine_line|#define REQ_PM_RESUME&t;(1 &lt;&lt; __REQ_PM_RESUME)
+DECL|macro|REQ_PM_SHUTDOWN
+mdefine_line|#define REQ_PM_SHUTDOWN&t;(1 &lt;&lt; __REQ_PM_SHUTDOWN)
+multiline_comment|/*&n; * State information carried for REQ_PM_SUSPEND and REQ_PM_RESUME&n; * requests. Some step values could eventually be made generic.&n; */
+DECL|struct|request_pm_state
+r_struct
+id|request_pm_state
+(brace
+multiline_comment|/* PM state machine step value, currently driver specific */
+DECL|member|pm_step
+r_int
+id|pm_step
+suffix:semicolon
+multiline_comment|/* requested PM state value (S1, S2, S3, S4, ...) */
+DECL|member|pm_state
+id|u32
+id|pm_state
+suffix:semicolon
+DECL|member|data
+r_void
+op_star
+id|data
+suffix:semicolon
+multiline_comment|/* for driver use */
+)brace
+suffix:semicolon
 macro_line|#include &lt;linux/elevator.h&gt;
 DECL|typedef|merge_request_fn
 r_typedef
@@ -751,6 +808,12 @@ DECL|macro|blk_fs_request
 mdefine_line|#define blk_fs_request(rq)&t;((rq)-&gt;flags &amp; REQ_CMD)
 DECL|macro|blk_pc_request
 mdefine_line|#define blk_pc_request(rq)&t;((rq)-&gt;flags &amp; REQ_BLOCK_PC)
+DECL|macro|blk_pm_suspend_request
+mdefine_line|#define blk_pm_suspend_request(rq)&t;((rq)-&gt;flags &amp; REQ_PM_SUSPEND)
+DECL|macro|blk_pm_resume_request
+mdefine_line|#define blk_pm_resume_request(rq)&t;((rq)-&gt;flags &amp; REQ_PM_RESUME)
+DECL|macro|blk_pm_request
+mdefine_line|#define blk_pm_request(rq)&t;&bslash;&n;&t;((rq)-&gt;flags &amp; (REQ_PM_SUSPEND | REQ_PM_RESUME))
 DECL|macro|list_entry_rq
 mdefine_line|#define list_entry_rq(ptr)&t;list_entry((ptr), struct request, queuelist)
 DECL|macro|rq_data_dir

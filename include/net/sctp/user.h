@@ -820,6 +820,19 @@ id|spinfo_mtu
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Peer addresses&squot;s state. */
+DECL|enum|sctp_spinfo_state
+r_enum
+id|sctp_spinfo_state
+(brace
+DECL|enumerator|SCTP_INACTIVE
+id|SCTP_INACTIVE
+comma
+DECL|enumerator|SCTP_ACTIVE
+id|SCTP_ACTIVE
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * 7.1.1 Retransmission Timeout Parameters (SCTP_RTOINFO)&n; *&n; *   The protocol parameters used to initialize and bound retransmission&n; *   timeout (RTO) are tunable.  See [SCTP] for more information on how&n; *   these parameters are used in RTO calculation.  The peer address&n; *   parameter is ignored for TCP style socket.&n; */
 DECL|struct|sctp_rtoinfo
 r_struct

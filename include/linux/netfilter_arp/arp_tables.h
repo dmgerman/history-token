@@ -254,7 +254,7 @@ mdefine_line|#define ARPT_INV_ARPPRO&t;&t;0x0100&t;/* Invert the sense of ARP PR
 DECL|macro|ARPT_INV_ARPHLN
 mdefine_line|#define ARPT_INV_ARPHLN&t;&t;0x0200&t;/* Invert the sense of ARP HLN. */
 DECL|macro|ARPT_INV_MASK
-mdefine_line|#define ARPT_INV_MASK&t;&t;0x007F&t;/* All possible flag bits mask. */
+mdefine_line|#define ARPT_INV_MASK&t;&t;0x03FF&t;/* All possible flag bits mask. */
 multiline_comment|/* This structure defines each of the firewall rules.  Consists of 3&n;   parts which are 1) general ARP header stuff 2) match specific&n;   stuff 3) the target to perform if the rule matches */
 DECL|struct|arpt_entry
 r_struct

@@ -53,12 +53,7 @@ DECL|macro|SCTP_STATIC
 mdefine_line|#define SCTP_STATIC static
 macro_line|#endif
 multiline_comment|/*&n; * Function declarations.&n; */
-multiline_comment|/*&n; * sctp_protocol.c&n; */
-r_extern
-r_struct
-id|sctp_protocol
-id|sctp_proto
-suffix:semicolon
+multiline_comment|/*&n; * sctp/protocol.c&n; */
 r_extern
 r_struct
 id|sock
@@ -74,10 +69,6 @@ r_int
 id|sctp_copy_local_addr_list
 c_func
 (paren
-r_struct
-id|sctp_protocol
-op_star
-comma
 r_struct
 id|sctp_bind_addr
 op_star
@@ -651,6 +642,10 @@ id|sctp_dbg_objcnt_bind_addr
 suffix:semicolon
 r_extern
 id|atomic_t
+id|sctp_dbg_objcnt_bind_bucket
+suffix:semicolon
+r_extern
+id|atomic_t
 id|sctp_dbg_objcnt_addr
 suffix:semicolon
 r_extern
@@ -1092,6 +1087,17 @@ suffix:semicolon
 id|__s32
 id|ret
 suffix:semicolon
+multiline_comment|/* Avoid divide by zero. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rto
+)paren
+id|rto
+op_assign
+l_int|1
+suffix:semicolon
 id|sctp_rand
 op_add_assign
 id|jiffies
@@ -1193,9 +1199,13 @@ suffix:semicolon
 )brace
 multiline_comment|/* Walk through a list of TLV parameters.  Don&squot;t trust the&n; * individual parameter lengths and instead depend on&n; * the chunk length to indicate when to stop.  Make sure&n; * there is room for a param header too.&n; */
 DECL|macro|sctp_walk_params
-mdefine_line|#define sctp_walk_params(pos, chunk, member)&bslash;&n;_sctp_walk_params((pos), (chunk), ntohs((chunk)-&gt;chunk_hdr.length), member)
+mdefine_line|#define sctp_walk_params(pos, chunk, member)&bslash;&n;_sctp_walk_params((pos), (chunk), WORD_ROUND(ntohs((chunk)-&gt;chunk_hdr.length)), member)
 DECL|macro|_sctp_walk_params
 mdefine_line|#define _sctp_walk_params(pos, chunk, end, member)&bslash;&n;for (pos.v = chunk-&gt;member;&bslash;&n;     pos.v &lt;= (void *)chunk + end - sizeof(sctp_paramhdr_t) &amp;&amp;&bslash;&n;     pos.v &lt;= (void *)chunk + end - WORD_ROUND(ntohs(pos.p-&gt;length)); &bslash;&n;     pos.v += WORD_ROUND(ntohs(pos.p-&gt;length)))
+DECL|macro|sctp_walk_errors
+mdefine_line|#define sctp_walk_errors(err, chunk_hdr)&bslash;&n;_sctp_walk_errors((err), (chunk_hdr), ntohs((chunk_hdr)-&gt;length))
+DECL|macro|_sctp_walk_errors
+mdefine_line|#define _sctp_walk_errors(err, chunk_hdr, end)&bslash;&n;for (err = (sctp_errhdr_t *)((void *)chunk_hdr + &bslash;&n;&t;    sizeof(sctp_chunkhdr_t));&bslash;&n;     (void *)err &lt;= (void *)chunk_hdr + end - sizeof(sctp_errhdr_t) &amp;&amp;&bslash;&n;     (void *)err &lt;= (void *)chunk_hdr + end - &bslash;&n;&t;&t;    WORD_ROUND(ntohs(err-&gt;length));&bslash;&n;     err = (sctp_errhdr_t *)((void *)err + &bslash;&n;&t;    WORD_ROUND(ntohs(err-&gt;length))))
 multiline_comment|/* Round an int up to the next multiple of 4.  */
 DECL|macro|WORD_ROUND
 mdefine_line|#define WORD_ROUND(s) (((s)+3)&amp;~3)
@@ -1287,24 +1297,6 @@ id|sk
 )paren
 suffix:semicolon
 multiline_comment|/* Static inline functions. */
-multiline_comment|/* Return the SCTP protocol structure. */
-DECL|function|sctp_get_protocol
-r_static
-r_inline
-r_struct
-id|sctp_protocol
-op_star
-id|sctp_get_protocol
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-op_amp
-id|sctp_proto
-suffix:semicolon
-)brace
 multiline_comment|/* Convert from an IP version number to an Address Family symbol.  */
 DECL|function|ipver2af
 r_static
@@ -1400,22 +1392,12 @@ id|__u16
 id|lport
 )paren
 (brace
-r_struct
-id|sctp_protocol
-op_star
-id|sctp_proto
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 (paren
 id|lport
 op_amp
 (paren
-id|sctp_proto-&gt;port_hashsize
+id|sctp_port_hashsize
 op_minus
 l_int|1
 )paren
@@ -1434,22 +1416,12 @@ id|__u16
 id|lport
 )paren
 (brace
-r_struct
-id|sctp_protocol
-op_star
-id|sctp_proto
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 (paren
 id|lport
 op_amp
 (paren
-id|sctp_proto-&gt;ep_hashsize
+id|sctp_ep_hashsize
 op_minus
 l_int|1
 )paren
@@ -1471,16 +1443,6 @@ id|__u16
 id|rport
 )paren
 (brace
-r_struct
-id|sctp_protocol
-op_star
-id|sctp_proto
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
-)paren
-suffix:semicolon
 r_int
 id|h
 op_assign
@@ -1503,7 +1465,7 @@ r_return
 id|h
 op_amp
 (paren
-id|sctp_proto-&gt;assoc_hashsize
+id|sctp_assoc_hashsize
 op_minus
 l_int|1
 )paren
@@ -1528,16 +1490,6 @@ id|__u32
 id|vtag
 )paren
 (brace
-r_struct
-id|sctp_protocol
-op_star
-id|sctp_proto
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
-)paren
-suffix:semicolon
 r_int
 id|h
 op_assign
@@ -1558,7 +1510,7 @@ r_return
 id|h
 op_amp
 (paren
-id|sctp_proto-&gt;assoc_hashsize
+id|sctp_assoc_hashsize
 op_minus
 l_int|1
 )paren

@@ -1600,7 +1600,11 @@ c_cond
 (paren
 id|seq
 op_ne
+(paren
 id|state-&gt;seqno
+op_amp
+l_int|0xffff
+)paren
 )paren
 (brace
 r_if
@@ -1619,6 +1623,8 @@ comma
 id|seq
 comma
 id|state-&gt;seqno
+op_amp
+l_int|0xffff
 )paren
 suffix:semicolon
 r_return

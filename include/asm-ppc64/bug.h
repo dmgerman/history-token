@@ -1,40 +1,50 @@
 macro_line|#ifndef _PPC64_BUG_H
 DECL|macro|_PPC64_BUG_H
 mdefine_line|#define _PPC64_BUG_H
-macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * Define an illegal instr to trap on the bug.&n; * We don&squot;t use 0 because that marks the end of a function&n; * in the ELF ABI.  That&squot;s &quot;Boo Boo&quot; in case you wonder...&n; */
 DECL|macro|BUG_OPCODE
 mdefine_line|#define BUG_OPCODE .long 0x00b00b00  /* For asm */
 DECL|macro|BUG_ILLEGAL_INSTR
 mdefine_line|#define BUG_ILLEGAL_INSTR &quot;0x00b00b00&quot; /* For BUG macro */
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#ifdef CONFIG_XMON
+DECL|struct|bug_entry
 r_struct
-id|pt_regs
+id|bug_entry
+(brace
+DECL|member|bug_addr
+r_int
+r_int
+id|bug_addr
 suffix:semicolon
-r_extern
-r_void
-id|xmon
-c_func
-(paren
-r_struct
-id|pt_regs
+DECL|member|line
+r_int
+id|line
+suffix:semicolon
+DECL|member|file
+r_const
+r_char
 op_star
-id|excp
-)paren
+id|file
 suffix:semicolon
+DECL|member|function
+r_const
+r_char
+op_star
+id|function
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * If this bit is set in the line number it means that the trap&n; * is for WARN_ON rather than BUG or BUG_ON.&n; */
+DECL|macro|BUG_WARNING_TRAP
+mdefine_line|#define BUG_WARNING_TRAP&t;0x1000000
 DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;xmon(0); &bslash;&n;} while (0)
-macro_line|#else
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;__asm__ __volatile__(&quot;.long &quot; BUG_ILLEGAL_INSTR); &bslash;&n;} while (0)
-macro_line|#endif
+mdefine_line|#define BUG() do {&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t; &bslash;&n;&t;&t;&quot;1:&t;twi 31,0,0&bslash;n&quot;&t;&t;&t;&t;&t; &bslash;&n;&t;&t;&quot;.section __bug_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;&t;&t;&t; &bslash;&n;&t;&t;&quot;&t;.llong 1b,%0,%1,%2&bslash;n&quot;&t;&t;&t;&t; &bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;&t;: : &quot;i&quot; (__LINE__), &quot;i&quot; (__FILE__), &quot;i&quot; (__FUNCTION__)); &bslash;&n;} while (0)
 DECL|macro|BUG_ON
-mdefine_line|#define BUG_ON(condition) do { if (unlikely((condition)!=0)) BUG(); } while(0)
+mdefine_line|#define BUG_ON(x) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;tdnei %0,0&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section __bug_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.llong 1b,%1,%2,%3&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: : &quot;r&quot; (x), &quot;i&quot; (__LINE__), &quot;i&quot; (__FILE__),&t;&bslash;&n;&t;&t;    &quot;i&quot; (__FUNCTION__));&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page) do { BUG(); } while (0)
 DECL|macro|WARN_ON
-mdefine_line|#define WARN_ON(condition) do { &bslash;&n;&t;if (unlikely((condition)!=0)) { &bslash;&n;&t;&t;printk(&quot;Badness in %s at %s:%d&bslash;n&quot;, __FUNCTION__, __FILE__, __LINE__); &bslash;&n;&t;&t;dump_stack(); &bslash;&n;&t;} &bslash;&n;} while (0)
+mdefine_line|#define WARN_ON(x) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;tdnei %0,0&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section __bug_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.llong 1b,%1,%2,%3&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: : &quot;r&quot; (x), &quot;i&quot; (__LINE__ + BUG_WARNING_TRAP),&t;&bslash;&n;&t;&t;    &quot;i&quot; (__FILE__), &quot;i&quot; (__FUNCTION__));&t;&bslash;&n;} while (0)
 macro_line|#endif
 macro_line|#endif
 eof

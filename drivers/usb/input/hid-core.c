@@ -4238,6 +4238,19 @@ id|data
 r_int
 id|n
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|report-&gt;id
+OG
+l_int|0
+)paren
+op_star
+id|data
+op_increment
+op_assign
+id|report-&gt;id
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4807,6 +4820,12 @@ l_int|3
 )paren
 op_plus
 l_int|1
+op_plus
+(paren
+id|report-&gt;id
+OG
+l_int|0
+)paren
 suffix:semicolon
 id|hid-&gt;urbout-&gt;dev
 op_assign
@@ -4914,17 +4933,9 @@ op_plus
 l_int|1
 op_plus
 (paren
-(paren
 id|report-&gt;id
 OG
 l_int|0
-)paren
-op_logical_and
-(paren
-id|dir
-op_ne
-id|USB_DIR_OUT
-)paren
 )paren
 suffix:semicolon
 id|hid-&gt;urbctrl-&gt;pipe
@@ -6154,6 +6165,10 @@ DECL|macro|USB_VENDOR_ID_ESSENTIAL_REALITY
 mdefine_line|#define USB_VENDOR_ID_ESSENTIAL_REALITY&t;0x0d7f
 DECL|macro|USB_DEVICE_ID_ESSENTIAL_REALITY_P5
 mdefine_line|#define USB_DEVICE_ID_ESSENTIAL_REALITY_P5&t;0x0100
+DECL|macro|USB_VENDOR_ID_A4TECH
+mdefine_line|#define USB_VENDOR_ID_A4TECH&t;&t;0x09DA
+DECL|macro|USB_DEVICE_ID_A4TECH_WCP32PU
+mdefine_line|#define USB_DEVICE_ID_A4TECH_WCP32PU&t;0x0006
 DECL|struct|hid_blacklist
 r_struct
 id|hid_blacklist
@@ -6557,6 +6572,14 @@ comma
 id|USB_DEVICE_ID_ESSENTIAL_REALITY_P5
 comma
 id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_A4TECH
+comma
+id|USB_DEVICE_ID_A4TECH_WCP32PU
+comma
+id|HID_QUIRK_2WHEEL_MOUSE_HACK
 )brace
 comma
 (brace

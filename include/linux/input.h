@@ -122,6 +122,8 @@ DECL|macro|EVIOCRMFF
 mdefine_line|#define EVIOCRMFF&t;&t;_IOW(&squot;E&squot;, 0x81, int)&t;&t;&t;/* Erase a force effect */
 DECL|macro|EVIOCGEFFECTS
 mdefine_line|#define EVIOCGEFFECTS&t;&t;_IOR(&squot;E&squot;, 0x84, int)&t;&t;&t;/* Report number of effects playable at the same time */
+DECL|macro|EVIOCGRAB
+mdefine_line|#define EVIOCGRAB&t;&t;_IOW(&squot;E&squot;, 0x90, int)&t;&t;&t;/* Grab/Release device */
 multiline_comment|/*&n; * Event types&n; */
 DECL|macro|EV_SYN
 mdefine_line|#define EV_SYN&t;&t;&t;0x00
@@ -861,6 +863,14 @@ DECL|macro|KEY_TEEN
 mdefine_line|#define KEY_TEEN&t;&t;0x19e
 DECL|macro|KEY_TWEN
 mdefine_line|#define KEY_TWEN&t;&t;0x19f
+DECL|macro|KEY_DEL_EOL
+mdefine_line|#define KEY_DEL_EOL&t;&t;0x1c0
+DECL|macro|KEY_DEL_EOS
+mdefine_line|#define KEY_DEL_EOS&t;&t;0x1c1
+DECL|macro|KEY_INS_LINE
+mdefine_line|#define KEY_INS_LINE&t;&t;0x1c2
+DECL|macro|KEY_DEL_LINE
+mdefine_line|#define KEY_DEL_LINE&t;&t;0x1c3
 DECL|macro|KEY_MAX
 mdefine_line|#define KEY_MAX&t;&t;&t;0x1ff
 multiline_comment|/*&n; * Relative axes&n; */
@@ -938,6 +948,8 @@ DECL|macro|MSC_SERIAL
 mdefine_line|#define MSC_SERIAL&t;&t;0x00
 DECL|macro|MSC_PULSELED
 mdefine_line|#define MSC_PULSELED&t;&t;0x01
+DECL|macro|MSC_GESTURE
+mdefine_line|#define MSC_GESTURE&t;&t;0x02
 DECL|macro|MSC_MAX
 mdefine_line|#define MSC_MAX&t;&t;&t;0x07
 multiline_comment|/*&n; * LEDs&n; */
@@ -1723,6 +1735,12 @@ r_int
 id|effect_id
 )paren
 suffix:semicolon
+DECL|member|grab
+r_struct
+id|input_handle
+op_star
+id|grab
+suffix:semicolon
 DECL|member|h_list
 r_struct
 id|list_head
@@ -2071,6 +2089,24 @@ c_func
 (paren
 r_struct
 id|input_handler
+op_star
+)paren
+suffix:semicolon
+r_int
+id|input_grab_device
+c_func
+(paren
+r_struct
+id|input_handle
+op_star
+)paren
+suffix:semicolon
+r_void
+id|input_release_device
+c_func
+(paren
+r_struct
+id|input_handle
 op_star
 )paren
 suffix:semicolon

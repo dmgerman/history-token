@@ -4346,7 +4346,7 @@ comma
 dot
 id|masks
 op_assign
-l_int|NULL
+id|intel_generic_masks
 comma
 dot
 id|agp_enable

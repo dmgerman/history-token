@@ -27,6 +27,7 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallHpt.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 DECL|variable|last_task_used_math
 r_struct
 id|task_struct
@@ -1748,10 +1749,9 @@ multiline_comment|/*&n;&t; * __get_free_pages() might give us a page &gt; KERNBA
 r_if
 c_cond
 (paren
-id|cpu_has_largepage
-c_func
-(paren
-)paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_16M_PAGE
 )paren
 r_return
 suffix:semicolon

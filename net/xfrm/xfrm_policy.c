@@ -962,7 +962,6 @@ l_int|1
 id|flow_cache_flush
 c_func
 (paren
-id|policy
 )paren
 suffix:semicolon
 id|xfrm_pol_put

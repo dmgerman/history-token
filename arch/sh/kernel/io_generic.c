@@ -1,8 +1,8 @@
-multiline_comment|/* $Id: io_generic.c,v 1.12 2000/11/14 16:45:11 sugioka Exp $&n; *&n; * linux/arch/sh/kernel/io_generic.c&n; *&n; * Copyright (C) 2000  Niibe Yutaka&n; *&n; * Generic I/O routine. These can be used where a machine specific version&n; * is not required.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; */
+multiline_comment|/* $Id: io_generic.c,v 1.1.1.1.4.2.2.1 2003/01/10 17:26:56 lethal Exp $&n; *&n; * linux/arch/sh/kernel/io_generic.c&n; *&n; * Copyright (C) 2000  Niibe Yutaka&n; *&n; * Generic I/O routine. These can be used where a machine specific version&n; * is not required.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#if defined(__sh3__)
+macro_line|#if defined(CONFIG_CPU_SH3)
 multiline_comment|/* I&squot;m not sure SH7709 has this kind of bug */
 DECL|macro|SH3_PCMCIA_BUG_WORKAROUND
 mdefine_line|#define SH3_PCMCIA_BUG_WORKAROUND 1

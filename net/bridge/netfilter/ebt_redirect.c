@@ -67,7 +67,7 @@ c_func
 op_star
 id|pskb.mac.ethernet-&gt;h_dest
 comma
-id|in-&gt;br_port-&gt;br-&gt;dev.dev_addr
+id|in-&gt;br_port-&gt;br-&gt;dev-&gt;dev_addr
 comma
 id|ETH_ALEN
 )paren
