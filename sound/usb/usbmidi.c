@@ -627,17 +627,6 @@ l_int|0
 r_return
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|usb_pipeint
-c_func
-(paren
-id|urb-&gt;pipe
-)paren
-)paren
-(brace
 id|urb-&gt;dev
 op_assign
 id|ep-&gt;umidi-&gt;chip-&gt;dev
@@ -650,7 +639,6 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Converts the data read from a Midiman device to standard USB MIDI packets.&n; */
 DECL|function|snd_usbmidi_in_midiman_complete
