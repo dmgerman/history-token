@@ -8,7 +8,7 @@ op_star
 id|version
 op_assign
 l_string|&quot;eepro100.c:v1.09j-t 9/29/99 Donald Becker http://cesdis.gsfc.nasa.gov/linux/drivers/eepro100.html&bslash;n&quot;
-l_string|&quot;eepro100.c: $Revision: 1.35 $ 2000/11/17 Modified by Andrey V. Savochkin &lt;saw@saw.sw.com.sg&gt; and others&bslash;n&quot;
+l_string|&quot;eepro100.c: $Revision: 1.36 $ 2000/11/17 Modified by Andrey V. Savochkin &lt;saw@saw.sw.com.sg&gt; and others&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* A few user-configurable values that apply to all boards.&n;   First set is undocumented and spelled per Intel recommendations. */
 DECL|variable|congenb
@@ -2688,6 +2688,14 @@ op_plus
 id|SCBPort
 )paren
 suffix:semicolon
+id|inl
+c_func
+(paren
+id|ioaddr
+op_plus
+id|SCBPort
+)paren
+suffix:semicolon
 id|udelay
 c_func
 (paren
@@ -3313,6 +3321,14 @@ op_plus
 id|SCBPort
 )paren
 suffix:semicolon
+id|inl
+c_func
+(paren
+id|ioaddr
+op_plus
+id|SCBPort
+)paren
+suffix:semicolon
 id|udelay
 c_func
 (paren
@@ -3375,16 +3391,12 @@ id|TX_RING_SIZE
 suffix:semicolon
 id|sp-&gt;lstats_dma
 op_assign
-id|cpu_to_le32
-c_func
-(paren
 id|TX_RING_ELEM_DMA
 c_func
 (paren
 id|sp
 comma
 id|TX_RING_SIZE
-)paren
 )paren
 suffix:semicolon
 id|init_timer
@@ -4375,6 +4387,7 @@ op_plus
 id|SCBPointer
 )paren
 suffix:semicolon
+multiline_comment|/* impose a delay to avoid a bug */
 id|inl
 c_func
 (paren
@@ -4383,7 +4396,12 @@ op_plus
 id|SCBPointer
 )paren
 suffix:semicolon
-multiline_comment|/* XXX */
+id|udelay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
 id|outb
 c_func
 (paren
@@ -4431,15 +4449,6 @@ op_plus
 id|SCBPointer
 )paren
 suffix:semicolon
-id|inl
-c_func
-(paren
-id|ioaddr
-op_plus
-id|SCBPointer
-)paren
-suffix:semicolon
-multiline_comment|/* XXX */
 id|outb
 c_func
 (paren
@@ -4625,9 +4634,6 @@ suffix:semicolon
 id|outl
 c_func
 (paren
-id|cpu_to_le32
-c_func
-(paren
 id|TX_RING_ELEM_DMA
 c_func
 (paren
@@ -4636,7 +4642,6 @@ comma
 id|sp-&gt;dirty_tx
 op_mod
 id|TX_RING_SIZE
-)paren
 )paren
 comma
 id|ioaddr
@@ -6017,8 +6022,6 @@ id|dev-&gt;name
 suffix:semicolon
 id|outl
 (paren
-id|cpu_to_le32
-(paren
 id|TX_RING_ELEM_DMA
 (paren
 id|sp
@@ -6027,7 +6030,6 @@ id|dirty_tx
 op_mod
 id|TX_RING_SIZE
 )braket
-)paren
 )paren
 comma
 id|ioaddr

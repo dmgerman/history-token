@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *&t;X.25 Packet Layer release 002&n; *&n; *&t;This is ALPHA test software. This code may break your machine, randomly fail to work with new &n; *&t;releases, misbehave and/or generally screw up. It might even work. &n; *&n; *&t;This code REQUIRES 2.1.15 or higher&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;X.25 001&t;Jonathan Naylor&t;Started coding.&n; *&t;X.25 002&t;Jonathan Naylor&t;New timer architecture.&n; *&t;2000-09-04&t;Henner Eisen&t;Prevented x25_output() skb leakage.&n; *&t;2000-10-27&t;Henner Eisen&t;MSG_DONTWAIT for fragment allocation.&n; *&t;2000-11-10&t;Henner Eisen&t;x25_send_iframe(): re-queued frames&n; *&t;&t;&t;&t;&t;needed cleaned seq-number fields.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;

@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * NET4:&t;Sysctl interface to net af_unix subsystem.&n; *&n; * Authors:&t;Mike Shaver.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 r_extern
 r_int
 id|sysctl_unix_max_dgram_qlen

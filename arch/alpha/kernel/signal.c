@@ -20,23 +20,6 @@ mdefine_line|#define DEBUG_SIG 0
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
 id|asmlinkage
-r_int
-id|sys_wait4
-c_func
-(paren
-r_int
-comma
-r_int
-op_star
-comma
-r_int
-comma
-r_struct
-id|rusage
-op_star
-)paren
-suffix:semicolon
-id|asmlinkage
 r_void
 id|ret_from_sys_call
 c_func

@@ -68,7 +68,7 @@ l_int|16
 op_plus
 id|ofs
 op_star
-l_int|3
+l_int|8
 )paren
 comma
 l_int|0x804

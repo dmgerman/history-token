@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * $Id: pci.c,v 1.64 1999/09/17 18:01:53 cort Exp $&n; * Common pmac/prep/chrp pci routines. -- Cort&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;

@@ -8,28 +8,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-id|asmlinkage
-r_int
-id|sys_wait4
-c_func
-(paren
-id|pid_t
-id|pid
-comma
-r_int
-r_int
-op_star
-id|stat_addr
-comma
-r_int
-id|options
-comma
-r_int
-r_int
-op_star
-id|ru
-)paren
-suffix:semicolon
 r_extern
 id|asmlinkage
 r_void

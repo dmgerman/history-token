@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * $Id: prep_pci.c,v 1.40 1999/09/17 17:23:05 cort Exp $&n; * PReP pci functions.&n; * Originally by Gary Thomas&n; * rewritten and updated by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * The motherboard routes/maps will disappear shortly. -- Cort&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

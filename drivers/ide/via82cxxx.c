@@ -3623,10 +3623,12 @@ op_assign
 op_amp
 id|via82cxxx_dmaproc
 suffix:semicolon
+macro_line|#ifdef CONFIG_IDEDMA_AUTO
 id|hwif-&gt;autodma
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace

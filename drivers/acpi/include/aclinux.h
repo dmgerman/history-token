@@ -5,7 +5,6 @@ DECL|macro|__ACLINUX_H__
 mdefine_line|#define __ACLINUX_H__
 DECL|macro|ACPI_OS_NAME
 mdefine_line|#define ACPI_OS_NAME                &quot;Linux&quot;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;

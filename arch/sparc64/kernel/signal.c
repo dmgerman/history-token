@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: signal.c,v 1.54 2000/09/05 21:44:54 davem Exp $&n; *  arch/sparc64/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *  Copyright (C) 1997 Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997,1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: signal.c,v 1.55 2001/01/24 21:05:13 davem Exp $&n; *  arch/sparc64/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *  Copyright (C) 1997 Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997,1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -20,28 +20,6 @@ macro_line|#include &lt;asm/siginfo.h&gt;
 macro_line|#include &lt;asm/visasm.h&gt;
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
-id|asmlinkage
-r_int
-id|sys_wait4
-c_func
-(paren
-id|pid_t
-id|pid
-comma
-r_int
-r_int
-op_star
-id|stat_addr
-comma
-r_int
-id|options
-comma
-r_int
-r_int
-op_star
-id|ru
-)paren
-suffix:semicolon
 id|asmlinkage
 r_int
 id|do_signal

@@ -3973,14 +3973,6 @@ id|inode-&gt;i_size
 op_assign
 id|offset
 suffix:semicolon
-id|truncate_inode_pages
-c_func
-(paren
-id|mapping
-comma
-id|offset
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -4069,10 +4061,13 @@ op_amp
 id|mapping-&gt;i_shared_lock
 )paren
 suffix:semicolon
-multiline_comment|/* this should go into -&gt;truncate */
-id|inode-&gt;i_size
-op_assign
+id|truncate_inode_pages
+c_func
+(paren
+id|mapping
+comma
 id|offset
+)paren
 suffix:semicolon
 r_if
 c_cond

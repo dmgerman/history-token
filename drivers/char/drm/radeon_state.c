@@ -3356,7 +3356,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|1
+l_int|0
 )paren
 id|radeon_print_dirty
 c_func

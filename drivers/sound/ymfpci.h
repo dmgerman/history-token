@@ -2,6 +2,7 @@ macro_line|#ifndef __YMFPCI_H
 DECL|macro|__YMFPCI_H
 mdefine_line|#define __YMFPCI_H
 multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *  Definitions for Yahama YMF724/740/744/754 chips&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; *  Direct registers&n; */
 multiline_comment|/* #define YMFREG(codec, reg)&t;&t;(codec-&gt;port + YDSXGR_##reg) */
 DECL|macro|YDSXGR_INTFLAG
@@ -206,8 +207,18 @@ DECL|macro|YDSXG_AC97READCMD
 mdefine_line|#define YDSXG_AC97READCMD&t;&t;0x8000
 DECL|macro|YDSXG_AC97WRITECMD
 mdefine_line|#define YDSXG_AC97WRITECMD&t;&t;0x0000
+DECL|macro|PCIR_LEGCTRL
+mdefine_line|#define PCIR_LEGCTRL&t;&t;&t;0x40
+DECL|macro|PCIR_ELEGCTRL
+mdefine_line|#define PCIR_ELEGCTRL&t;&t;&t;0x42
 DECL|macro|PCIR_DSXGCTRL
 mdefine_line|#define PCIR_DSXGCTRL&t;&t;&t;0x48
+DECL|macro|PCIR_OPLADR
+mdefine_line|#define PCIR_OPLADR&t;&t;&t;0x60
+DECL|macro|PCIR_SBADR
+mdefine_line|#define PCIR_SBADR&t;&t;&t;0x62
+DECL|macro|PCIR_MPUADR
+mdefine_line|#define PCIR_MPUADR&t;&t;&t;0x64
 DECL|macro|YDSXG_DSPLENGTH
 mdefine_line|#define YDSXG_DSPLENGTH&t;&t;&t;0x0080
 DECL|macro|YDSXG_CTRLLENGTH
@@ -371,12 +382,12 @@ DECL|member|base
 id|u32
 id|base
 suffix:semicolon
-multiline_comment|/* 32-bit address */
+multiline_comment|/* 32-bit address (aligned at 4) */
 DECL|member|loop_end
 id|u32
 id|loop_end
 suffix:semicolon
-multiline_comment|/* 32-bit offset */
+multiline_comment|/* size in BYTES (aligned at 4) */
 DECL|member|start
 id|u32
 id|start
@@ -422,14 +433,8 @@ suffix:semicolon
 DECL|typedef|ymfpci_voice_t
 r_typedef
 r_struct
-id|stru_ymfpci_voice
+id|ymf_voice
 id|ymfpci_voice_t
-suffix:semicolon
-DECL|typedef|ymfpci_pcm_t
-r_typedef
-r_struct
-id|ymf_pcm
-id|ymfpci_pcm_t
 suffix:semicolon
 multiline_comment|/*&n; * Throughout the code Yaroslav names YMF unit pointer &quot;codec&quot;&n; * even though it does not correspond to any codec. Must be historic.&n; * We replace it with &quot;unit&quot; over time.&n; * AC97 parts use &quot;codec&quot; to denote a codec, naturally.&n; */
 DECL|typedef|ymfpci_t
@@ -453,134 +458,61 @@ DECL|typedef|ymfpci_voice_type_t
 )brace
 id|ymfpci_voice_type_t
 suffix:semicolon
-DECL|struct|stru_ymfpci_voice
+DECL|struct|ymf_voice
 r_struct
-id|stru_ymfpci_voice
+id|ymf_voice
 (brace
-DECL|member|codec
-id|ymfpci_t
-op_star
-id|codec
-suffix:semicolon
+singleline_comment|// ymfpci_t *codec;
 DECL|member|number
 r_int
 id|number
 suffix:semicolon
 DECL|member|use
-r_int
-id|use
-suffix:colon
-l_int|1
-comma
 DECL|member|pcm
-id|pcm
-suffix:colon
-l_int|1
-comma
 DECL|member|synth
-id|synth
-suffix:colon
-l_int|1
-comma
 DECL|member|midi
+r_char
+id|use
+comma
+id|pcm
+comma
+id|synth
+comma
 id|midi
-suffix:colon
-l_int|1
 suffix:semicolon
+singleline_comment|// bool
 DECL|member|bank
 id|ymfpci_playback_bank_t
 op_star
 id|bank
 suffix:semicolon
-DECL|member|interrupt
-r_void
-(paren
-op_star
-id|interrupt
-)paren
-(paren
-id|ymfpci_t
-op_star
-id|codec
-comma
-id|ymfpci_voice_t
-op_star
-id|voice
-)paren
-suffix:semicolon
 DECL|member|ypcm
-id|ymfpci_pcm_t
+r_struct
+id|ymf_pcm
 op_star
 id|ypcm
 suffix:semicolon
 )brace
 suffix:semicolon
-r_typedef
-r_enum
+DECL|struct|ymf_capture
+r_struct
+id|ymf_capture
 (brace
-DECL|enumerator|PLAYBACK_VOICE
-id|PLAYBACK_VOICE
-comma
-DECL|enumerator|CAPTURE_REC
-id|CAPTURE_REC
-comma
-DECL|enumerator|CAPTURE_AC97
-id|CAPTURE_AC97
-comma
-DECL|enumerator|EFFECT_DRY_LEFT
-id|EFFECT_DRY_LEFT
-comma
-DECL|enumerator|EFFECT_DRY_RIGHT
-id|EFFECT_DRY_RIGHT
-comma
-DECL|enumerator|EFFECT_EFF1
-id|EFFECT_EFF1
-comma
-DECL|enumerator|EFFECT_EFF2
-id|EFFECT_EFF2
-comma
-DECL|enumerator|EFFECT_EFF3
-id|EFFECT_EFF3
-DECL|typedef|ymfpci_pcm_type_t
-)brace
-id|ymfpci_pcm_type_t
+singleline_comment|// struct ymf_unit *unit;
+DECL|member|use
+r_int
+id|use
 suffix:semicolon
-DECL|struct|ymf_pcm
+DECL|member|bank
+id|ymfpci_capture_bank_t
+op_star
+id|bank
+suffix:semicolon
+DECL|member|ypcm
 r_struct
 id|ymf_pcm
-(brace
-DECL|member|codec
-id|ymfpci_t
 op_star
-id|codec
-suffix:semicolon
-DECL|member|type
-id|ymfpci_pcm_type_t
-id|type
-suffix:semicolon
-DECL|member|state
-r_struct
-id|ymf_state
-op_star
-id|state
-suffix:semicolon
-DECL|member|voices
-id|ymfpci_voice_t
-op_star
-id|voices
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* playback only */
-DECL|member|running
-r_int
-id|running
-suffix:semicolon
-singleline_comment|// +
-DECL|member|spdif
-r_int
-id|spdif
+id|ypcm
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -603,7 +535,6 @@ r_void
 op_star
 id|work_ptr
 suffix:semicolon
-singleline_comment|// +
 DECL|member|bank_size_playback
 r_int
 r_int
@@ -629,25 +560,21 @@ r_void
 op_star
 id|bank_base_playback
 suffix:semicolon
-singleline_comment|// +
 DECL|member|bank_base_capture
 r_void
 op_star
 id|bank_base_capture
 suffix:semicolon
-singleline_comment|// +
 DECL|member|bank_base_effect
 r_void
 op_star
 id|bank_base_effect
 suffix:semicolon
-singleline_comment|// +
 DECL|member|work_base
 r_void
 op_star
 id|work_base
 suffix:semicolon
-singleline_comment|// +
 DECL|member|ctrl_playback
 id|u32
 op_star
@@ -695,10 +622,19 @@ id|u32
 id|active_bank
 suffix:semicolon
 DECL|member|voices
-id|ymfpci_voice_t
+r_struct
+id|ymf_voice
 id|voices
 (braket
 l_int|64
+)braket
+suffix:semicolon
+DECL|member|capture
+r_struct
+id|ymf_capture
+id|capture
+(braket
+l_int|5
 )braket
 suffix:semicolon
 DECL|member|ac97_codec
@@ -720,6 +656,25 @@ id|pci_dev
 op_star
 id|pci
 suffix:semicolon
+macro_line|#ifdef CONFIG_SOUND_YMFPCI_LEGACY
+multiline_comment|/* legacy hardware resources */
+DECL|member|iosynth
+DECL|member|iomidi
+r_int
+r_int
+id|iosynth
+comma
+id|iomidi
+suffix:semicolon
+DECL|member|opl3_data
+DECL|member|mpu_data
+r_struct
+id|address_info
+id|opl3_data
+comma
+id|mpu_data
+suffix:semicolon
+macro_line|#endif
 DECL|member|reg_lock
 id|spinlock_t
 id|reg_lock
@@ -745,18 +700,13 @@ id|ymf_devs
 suffix:semicolon
 DECL|member|states
 r_struct
-id|ymf_state
-op_star
+id|list_head
 id|states
-(braket
-l_int|1
-)braket
 suffix:semicolon
-singleline_comment|// *
-multiline_comment|/* ypcm may be the same thing as state, but not for record, effects. */
+multiline_comment|/* List of states for this unit */
+multiline_comment|/* For the moment we do not traverse list of states so it is&n;&t; * entirely useless. Will be used (PM) or killed. XXX */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * &quot;Software&quot; or virtual channel, an instance of opened /dev/dsp.&n; */
 DECL|struct|ymf_dmabuf
 r_struct
 id|ymf_dmabuf
@@ -820,10 +770,6 @@ r_int
 id|dmasize
 suffix:semicolon
 multiline_comment|/* Total rawbuf[] size */
-DECL|member|fragsamples
-r_int
-id|fragsamples
-suffix:semicolon
 multiline_comment|/* OSS stuff */
 DECL|member|mapped
 r_int
@@ -877,10 +823,88 @@ suffix:semicolon
 multiline_comment|/* redundant, computed from the above */
 )brace
 suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|PLAYBACK_VOICE
+id|PLAYBACK_VOICE
+comma
+DECL|enumerator|CAPTURE_REC
+id|CAPTURE_REC
+comma
+DECL|enumerator|CAPTURE_AC97
+id|CAPTURE_AC97
+comma
+DECL|enumerator|EFFECT_DRY_LEFT
+id|EFFECT_DRY_LEFT
+comma
+DECL|enumerator|EFFECT_DRY_RIGHT
+id|EFFECT_DRY_RIGHT
+comma
+DECL|enumerator|EFFECT_EFF1
+id|EFFECT_EFF1
+comma
+DECL|enumerator|EFFECT_EFF2
+id|EFFECT_EFF2
+comma
+DECL|enumerator|EFFECT_EFF3
+id|EFFECT_EFF3
+DECL|typedef|ymfpci_pcm_type_t
+)brace
+id|ymfpci_pcm_type_t
+suffix:semicolon
+multiline_comment|/* This is variant record, but we hate unions. Little waste on pointers []. */
+DECL|struct|ymf_pcm
+r_struct
+id|ymf_pcm
+(brace
+DECL|member|type
+id|ymfpci_pcm_type_t
+id|type
+suffix:semicolon
+DECL|member|state
+r_struct
+id|ymf_state
+op_star
+id|state
+suffix:semicolon
+DECL|member|voices
+id|ymfpci_voice_t
+op_star
+id|voices
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|capture_bank_number
+r_int
+id|capture_bank_number
+suffix:semicolon
+DECL|member|dmabuf
+r_struct
+id|ymf_dmabuf
+id|dmabuf
+suffix:semicolon
+DECL|member|running
+r_int
+id|running
+suffix:semicolon
+DECL|member|spdif
+r_int
+id|spdif
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * &quot;Software&quot; or virtual channel, an instance of opened /dev/dsp.&n; * It may have two physical channels (pcms) for duplex operations.&n; */
 DECL|struct|ymf_state
 r_struct
 id|ymf_state
 (brace
+DECL|member|chain
+r_struct
+id|list_head
+id|chain
+suffix:semicolon
 DECL|member|unit
 r_struct
 id|ymf_unit
@@ -888,30 +912,19 @@ op_star
 id|unit
 suffix:semicolon
 multiline_comment|/* backpointer */
-multiline_comment|/* virtual channel number */
-DECL|member|virt
-r_int
-id|virt
-suffix:semicolon
-singleline_comment|// * unused a.t.m.
-DECL|member|ypcm
+DECL|member|rpcm
+DECL|member|wpcm
 r_struct
 id|ymf_pcm
-id|ypcm
+id|rpcm
+comma
+id|wpcm
 suffix:semicolon
-singleline_comment|// *
-DECL|member|dmabuf
-r_struct
-id|ymf_dmabuf
-id|dmabuf
-suffix:semicolon
-singleline_comment|// *
 DECL|member|format
 r_struct
 id|ymf_pcm_format
 id|format
 suffix:semicolon
-singleline_comment|// *
 )brace
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* __YMFPCI_H */

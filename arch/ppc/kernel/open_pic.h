@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  arch/ppc/kernel/open_pic.h -- OpenPIC Interrupt Handl
 macro_line|#ifndef _PPC_KERNEL_OPEN_PIC_H
 DECL|macro|_PPC_KERNEL_OPEN_PIC_H
 mdefine_line|#define _PPC_KERNEL_OPEN_PIC_H
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|OPENPIC_SIZE
 mdefine_line|#define OPENPIC_SIZE&t;0x40000
 multiline_comment|/* OpenPIC IRQ controller structure */
