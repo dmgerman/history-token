@@ -14,6 +14,73 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/arch_hooks.h&gt;
+multiline_comment|/*&n; * every pentium local APIC has two &squot;local interrupts&squot;, with a&n; * soft-definable vector attached to both interrupts, one of&n; * which is a timer interrupt, the other one is error counter&n; * overflow. Linux uses the local APIC timer interrupt to get&n; * a much simpler SMP time architecture:&n; */
+DECL|function|BUILD_SMP_INTERRUPT
+id|BUILD_SMP_INTERRUPT
+c_func
+(paren
+id|apic_timer_interrupt
+comma
+id|LOCAL_TIMER_VECTOR
+)paren
+id|BUILD_SMP_INTERRUPT
+c_func
+(paren
+id|error_interrupt
+comma
+id|ERROR_APIC_VECTOR
+)paren
+id|BUILD_SMP_INTERRUPT
+c_func
+(paren
+id|spurious_interrupt
+comma
+id|SPURIOUS_APIC_VECTOR
+)paren
+r_void
+id|__init
+id|apic_intr_init
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_SMP
+id|smp_intr_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* self generated IPI for local APIC timer */
+id|set_intr_gate
+c_func
+(paren
+id|LOCAL_TIMER_VECTOR
+comma
+id|apic_timer_interrupt
+)paren
+suffix:semicolon
+multiline_comment|/* IPI vectors for APIC spurious and error interrupts */
+id|set_intr_gate
+c_func
+(paren
+id|SPURIOUS_APIC_VECTOR
+comma
+id|spurious_interrupt
+)paren
+suffix:semicolon
+id|set_intr_gate
+c_func
+(paren
+id|ERROR_APIC_VECTOR
+comma
+id|error_interrupt
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Using APIC to generate smp_local_timer_interrupt? */
 DECL|variable|using_apic_timer
 r_int

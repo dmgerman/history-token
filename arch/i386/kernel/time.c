@@ -21,8 +21,8 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/fixmap.h&gt;
-macro_line|#include &lt;asm/cobalt.h&gt;
+macro_line|#include &lt;asm/arch_hooks.h&gt;
+macro_line|#include &quot;do_timer.h&quot;
 multiline_comment|/*&n; * for x86_do_profile()&n; */
 macro_line|#include &lt;linux/irq.h&gt;
 DECL|variable|cpu_khz
@@ -930,62 +930,12 @@ id|i8259A_lock
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_VISWS
-multiline_comment|/* Clear the interrupt */
-id|co_cpu_write
-c_func
-(paren
-id|CO_CPU_STAT
-comma
-id|co_cpu_read
-c_func
-(paren
-id|CO_CPU_STAT
-)paren
-op_amp
-op_complement
-id|CO_STAT_TIMEINTR
-)paren
-suffix:semicolon
-macro_line|#endif
-id|do_timer
+id|do_timer_interrupt_hook
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * In the SMP case we use the local APIC timer interrupt to do the&n; * profiling, except when we simulate SMP mode on a uniprocessor&n; * system, in that case we have to call the local interrupt handler.&n; */
-macro_line|#ifndef CONFIG_X86_LOCAL_APIC
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
-id|x86_do_profile
-c_func
-(paren
-id|regs-&gt;eip
-)paren
-suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|using_apic_timer
-)paren
-id|smp_local_timer_interrupt
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * If we have an externally synchronized Linux clock, then update&n;&t; * CMOS clock accordingly every ~11 minutes. Set_rtc_mmss() has to be&n;&t; * called as close as possible to 500 ms before the new second starts.&n;&t; */
 r_if
 c_cond
@@ -1093,7 +1043,6 @@ id|use_tsc
 suffix:semicolon
 multiline_comment|/*&n; * This is the same as the above, except we _also_ save the current&n; * Time Stamp Counter value at the time of the timer interrupt, so that&n; * we later on can estimate the time of day more exactly.&n; */
 DECL|function|timer_interrupt
-r_static
 r_void
 id|timer_interrupt
 c_func
@@ -1477,31 +1426,12 @@ id|sec
 )paren
 suffix:semicolon
 )brace
-DECL|variable|irq0
-r_static
-r_struct
-id|irqaction
-id|irq0
-op_assign
-(brace
-id|timer_interrupt
-comma
-id|SA_INTERRUPT
-comma
-l_int|0
-comma
-l_string|&quot;timer&quot;
-comma
-l_int|NULL
-comma
-l_int|NULL
-)brace
-suffix:semicolon
 multiline_comment|/* ------ Calibrate the TSC ------- &n; * Return 2^32 * (1 / (TSC clocks per usec)) for do_fast_gettimeoffset().&n; * Too much 64-bit arithmetic here to do this cleanly in C, and for&n; * accuracy&squot;s sake we want to keep the overhead on the CTC speaker (channel 2)&n; * output busy loop as low as possible. We avoid reading the CTC registers&n; * directly because of the awkward 8-bit access mechanism of the 82C54&n; * device.&n; */
 DECL|macro|CALIBRATE_LATCH
 mdefine_line|#define CALIBRATE_LATCH&t;(5 * LATCH)
 DECL|macro|CALIBRATE_TIME
 mdefine_line|#define CALIBRATE_TIME&t;(5 * 1000020/HZ)
+macro_line|#ifdef CONFIG_X86_TSC
 DECL|function|calibrate_tsc
 r_static
 r_int
@@ -1739,6 +1669,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_X86_TSC */
 DECL|function|time_init
 r_void
 id|__init
@@ -1764,6 +1695,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * If we have APM enabled or the CPU clock speed is variable&n; * (CPU stops clock on HLT or slows clock to save power)&n; * then the TSC timestamps may diverge by up to 1 jiffy from&n; * &squot;real time&squot; but nothing will break.&n; * The most frequent case is that the CPU is &quot;woken&quot; from a halt&n; * state by the timer interrupt itself, so we get 0 error. In the&n; * rare cases where a driver would &quot;wake&quot; the CPU and request a&n; * timestamp, the maximum error is &lt; 1 jiffy. But timestamps are&n; * still perfectly ordered.&n; * Note that the TSC counter will be reset if APM suspends&n; * to disk; this won&squot;t break the kernel, though, &squot;cuz we&squot;re&n; * smart.  See arch/i386/kernel/apm.c.&n; */
+macro_line|#ifdef CONFIG_X86_TSC
 multiline_comment|/*&n; &t; *&t;Firstly we have to do a CPU check for chips with&n; &t; * &t;a potentially buggy TSC. At this point we haven&squot;t run&n; &t; *&t;the ident/bugs checks so we must run this hook as it&n; &t; *&t;may turn off the TSC flag.&n; &t; *&n; &t; *&t;NOTE: this doesnt yet handle SMP 486 machines where only&n; &t; *&t;some CPU&squot;s have a TSC. Thats never worked and nobody has&n; &t; *&t;moaned if you have the only one in the world - you fix it!&n; &t; */
 id|dodgy_tsc
 c_func
@@ -1870,75 +1802,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef CONFIG_VISWS
-id|printk
+macro_line|#endif /* CONFIG_X86_TSC */
+id|time_init_hook
 c_func
 (paren
-l_string|&quot;Starting Cobalt Timer system clock&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Set the countdown value */
-id|co_cpu_write
-c_func
-(paren
-id|CO_CPU_TIMEVAL
-comma
-id|CO_TIME_HZ
-op_div
-id|HZ
-)paren
-suffix:semicolon
-multiline_comment|/* Start the timer */
-id|co_cpu_write
-c_func
-(paren
-id|CO_CPU_CTRL
-comma
-id|co_cpu_read
-c_func
-(paren
-id|CO_CPU_CTRL
-)paren
-op_or
-id|CO_CTRL_TIMERUN
-)paren
-suffix:semicolon
-multiline_comment|/* Enable (unmask) the timer interrupt */
-id|co_cpu_write
-c_func
-(paren
-id|CO_CPU_CTRL
-comma
-id|co_cpu_read
-c_func
-(paren
-id|CO_CPU_CTRL
-)paren
-op_amp
-op_complement
-id|CO_CTRL_TIMEMASK
-)paren
-suffix:semicolon
-multiline_comment|/* Wire cpu IDT entry to s/w handler (and Cobalt APIC to IDT) */
-id|setup_irq
-c_func
-(paren
-id|CO_IRQ_TIMER
-comma
-op_amp
-id|irq0
-)paren
-suffix:semicolon
-macro_line|#else
-id|setup_irq
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|irq0
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 eof

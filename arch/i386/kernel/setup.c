@@ -36,6 +36,7 @@ macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/arch_hooks.h&gt;
 multiline_comment|/*&n; * Machine setup..&n; */
 DECL|variable|ignore_irq13
 r_char
@@ -2425,13 +2426,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef CONFIG_VISWS
-id|visws_get_board_type_and_rev
+id|pre_setup_arch_hook
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ROOT_DEV
 op_assign
 id|to_kdev_t

@@ -1,0 +1,72 @@
+multiline_comment|/* defines for inline arch setup functions */
+macro_line|#include &lt;asm/fixmap.h&gt;
+macro_line|#include &lt;asm/cobalt.h&gt;
+DECL|function|do_timer_interrupt_hook
+r_static
+r_inline
+r_void
+id|do_timer_interrupt_hook
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+multiline_comment|/* Clear the interrupt */
+id|co_cpu_write
+c_func
+(paren
+id|CO_CPU_STAT
+comma
+id|co_cpu_read
+c_func
+(paren
+id|CO_CPU_STAT
+)paren
+op_amp
+op_complement
+id|CO_STAT_TIMEINTR
+)paren
+suffix:semicolon
+id|do_timer
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * In the SMP case we use the local APIC timer interrupt to do the&n; * profiling, except when we simulate SMP mode on a uniprocessor&n; * system, in that case we have to call the local interrupt handler.&n; */
+macro_line|#ifndef CONFIG_X86_LOCAL_APIC
+r_if
+c_cond
+(paren
+op_logical_neg
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+id|x86_do_profile
+c_func
+(paren
+id|regs-&gt;eip
+)paren
+suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|using_apic_timer
+)paren
+id|smp_local_timer_interrupt
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+eof
