@@ -76,7 +76,6 @@ id|mask
 suffix:semicolon
 )brace
 DECL|function|__send_IPI_shortcut
-r_inline
 r_void
 id|__send_IPI_shortcut
 c_func
@@ -142,7 +141,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is only used on smaller machines.&n; */
 DECL|function|send_IPI_mask_bitmask
-r_inline
 r_void
 id|send_IPI_mask_bitmask
 c_func
