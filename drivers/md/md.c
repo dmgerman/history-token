@@ -870,6 +870,7 @@ id|hd
 id|dname-&gt;name
 op_assign
 id|disk_name
+c_func
 (paren
 id|hd
 comma
@@ -878,6 +879,8 @@ c_func
 (paren
 id|dev
 )paren
+op_minus
+id|hd-&gt;first_minor
 comma
 id|dname-&gt;namebuf
 )paren

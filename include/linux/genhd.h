@@ -885,7 +885,7 @@ op_star
 id|hd
 comma
 r_int
-id|minor
+id|part
 comma
 r_char
 op_star
@@ -902,9 +902,6 @@ op_star
 id|dev
 comma
 r_int
-id|minor
-comma
-r_int
 id|unregister
 )paren
 suffix:semicolon
@@ -916,9 +913,6 @@ r_struct
 id|gendisk
 op_star
 id|hd
-comma
-r_int
-id|minor
 )paren
 suffix:semicolon
 DECL|function|disk_index

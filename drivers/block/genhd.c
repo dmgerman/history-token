@@ -129,13 +129,7 @@ suffix:semicolon
 id|wipe_partitions
 c_func
 (paren
-id|mk_kdev
-c_func
-(paren
-id|disk-&gt;major
-comma
-id|disk-&gt;first_minor
-)paren
+id|disk
 )paren
 suffix:semicolon
 id|write_lock
@@ -205,8 +199,6 @@ id|devfs_register_partitions
 c_func
 (paren
 id|disk
-comma
-id|disk-&gt;first_minor
 comma
 l_int|1
 )paren
@@ -576,8 +568,6 @@ c_func
 id|sgp
 comma
 id|n
-op_plus
-id|sgp-&gt;first_minor
 comma
 id|buf
 )paren

@@ -711,8 +711,10 @@ r_int
 id|wipe_partitions
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|gendisk
+op_star
+id|disk
 )paren
 suffix:semicolon
 r_extern

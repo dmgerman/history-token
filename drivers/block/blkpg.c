@@ -55,11 +55,6 @@ c_func
 id|bdev-&gt;bd_dev
 )paren
 suffix:semicolon
-r_struct
-id|hd_struct
-op_star
-id|part
-suffix:semicolon
 multiline_comment|/* convert bytes to sectors, check for fit in a hd_struct */
 id|ppstart
 op_assign
@@ -127,18 +122,6 @@ r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-id|part
-op_assign
-id|g-&gt;part
-op_plus
-id|minor
-c_func
-(paren
-id|dev
-)paren
-op_minus
-id|g-&gt;first_minor
-suffix:semicolon
 multiline_comment|/* existing drive? */
 multiline_comment|/* drive and partition number OK? */
 r_if
@@ -175,7 +158,7 @@ multiline_comment|/* partition number in use? */
 r_if
 c_cond
 (paren
-id|part
+id|g-&gt;part
 (braket
 id|p-&gt;pno
 )braket
@@ -216,7 +199,7 @@ id|pstart
 op_plus
 id|plength
 op_le
-id|part
+id|g-&gt;part
 (braket
 id|i
 )braket
@@ -225,14 +208,14 @@ id|start_sect
 op_logical_or
 id|pstart
 op_ge
-id|part
+id|g-&gt;part
 (braket
 id|i
 )braket
 dot
 id|start_sect
 op_plus
-id|part
+id|g-&gt;part
 (braket
 id|i
 )braket
@@ -245,7 +228,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 multiline_comment|/* all seems OK */
-id|part
+id|g-&gt;part
 (braket
 id|p-&gt;pno
 )braket
@@ -254,7 +237,7 @@ id|start_sect
 op_assign
 id|pstart
 suffix:semicolon
-id|part
+id|g-&gt;part
 (braket
 id|p-&gt;pno
 )braket
@@ -266,12 +249,6 @@ suffix:semicolon
 id|devfs_register_partitions
 (paren
 id|g
-comma
-id|minor
-c_func
-(paren
-id|dev
-)paren
 comma
 l_int|0
 )paren
@@ -316,11 +293,6 @@ id|block_device
 op_star
 id|bdevp
 suffix:semicolon
-r_struct
-id|hd_struct
-op_star
-id|part
-suffix:semicolon
 r_int
 id|holder
 suffix:semicolon
@@ -342,18 +314,6 @@ id|g
 r_return
 op_minus
 id|ENXIO
-suffix:semicolon
-id|part
-op_assign
-id|g-&gt;part
-op_plus
-id|minor
-c_func
-(paren
-id|dev
-)paren
-op_minus
-id|g-&gt;first_minor
 suffix:semicolon
 r_if
 c_cond
@@ -389,7 +349,7 @@ multiline_comment|/* existing drive and partition? */
 r_if
 c_cond
 (paren
-id|part
+id|g-&gt;part
 (braket
 id|p-&gt;pno
 )braket
@@ -478,7 +438,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|part
+id|g-&gt;part
 (braket
 id|p-&gt;pno
 )braket
@@ -487,7 +447,7 @@ id|start_sect
 op_assign
 l_int|0
 suffix:semicolon
-id|part
+id|g-&gt;part
 (braket
 id|p-&gt;pno
 )braket
@@ -499,12 +459,6 @@ suffix:semicolon
 id|devfs_register_partitions
 (paren
 id|g
-comma
-id|minor
-c_func
-(paren
-id|dev
-)paren
 comma
 l_int|0
 )paren

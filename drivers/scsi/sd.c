@@ -241,20 +241,6 @@ r_int
 id|index
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|driverfs_remove_partitions
-c_func
-(paren
-r_struct
-id|gendisk
-op_star
-id|hd
-comma
-r_int
-id|minor
-)paren
-suffix:semicolon
 macro_line|#if defined(CONFIG_PPC32)
 multiline_comment|/**&n; *&t;sd_find_target - find kdev_t of first scsi disk that matches&n; *&t;given host and scsi_id. &n; *&t;@host: Scsi_Host object pointer that owns scsi device of interest&n; *&t;@scsi_id: scsi (target) id number of device of interest&n; *&n; *&t;Returns kdev_t of first scsi device that matches arguments or&n; *&t;NODEV of no match.&n; *&n; *&t;Notes: Looks like a hack, should scan for &lt;host,channel,id,lin&gt;&n; *&t;tuple.&n; *&t;[Architectural dependency: ppc only.] Moved here from &n; *&t;arch/ppc/pmac_setup.c.&n; **/
 id|kdev_t
@@ -5428,12 +5414,6 @@ id|sd_disks
 (braket
 id|dsk_nr
 )braket
-comma
-id|minor
-c_func
-(paren
-id|dev
-)paren
 )paren
 suffix:semicolon
 id|del_gendisk
