@@ -2736,6 +2736,20 @@ id|index
 r_int
 id|cc
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|device_is_online
+c_func
+(paren
+id|sch
+)paren
+)paren
+multiline_comment|/* cio could be doing I/O. */
+r_return
+l_int|0
+suffix:semicolon
 id|cc
 op_assign
 id|stsch
