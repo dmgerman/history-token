@@ -3,18 +3,18 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#ifdef CONFIG_USB_DEBUG
+DECL|macro|DEBUG
+macro_line|#&t;define DEBUG
+macro_line|#else
+DECL|macro|DEBUG
+macro_line|#&t;undef DEBUG
+macro_line|#endif
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/uts.h&gt;&t;&t;&t;/* for UTS_SYSNAME */
 macro_line|#include &lt;linux/pci.h&gt;&t;&t;&t;/* for hcd-&gt;pdev and dma addressing */
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#ifdef CONFIG_USB_DEBUG
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
-macro_line|#else
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;hcd.h&quot;
 singleline_comment|// #define USB_BANDWIDTH_MESSAGES
@@ -3097,6 +3097,13 @@ id|hcd
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|device
+op_star
+id|sys
+op_assign
+l_int|0
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -3137,26 +3144,6 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|urb-&gt;hcpriv
-op_logical_or
-id|urb-&gt;transfer_flags
-op_amp
-id|URB_TIMEOUT_KILLED
-)paren
-(brace
-id|retval
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-r_goto
-id|done
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
 id|urb-&gt;dev
 op_logical_or
 op_logical_neg
@@ -3172,10 +3159,14 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-multiline_comment|/* giveback clears dev; non-null means it&squot;s linked at this level */
 id|dev
 op_assign
 id|urb-&gt;dev-&gt;hcpriv
+suffix:semicolon
+id|sys
+op_assign
+op_amp
+id|urb-&gt;dev-&gt;dev
 suffix:semicolon
 id|hcd
 op_assign
@@ -3200,7 +3191,23 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-multiline_comment|/* Except for interrupt transfers, any status except -EINPROGRESS&n;&t; * means the HCD already started to unlink this URB from the hardware.&n;&t; * So there&squot;s no more work to do.&n;&t; *&n;&t; * For interrupt transfers, this is the only way to trigger unlinking&n;&t; * from the hardware.  Since we (currently) overload urb-&gt;status to&n;&t; * tell the driver to unlink, error status might get clobbered ...&n;&t; * unless that transfer hasn&squot;t yet restarted.  One such case is when&n;&t; * the URB gets unlinked from its completion handler.&n;&t; *&n;&t; * FIXME use an URB_UNLINKED flag to match URB_TIMEOUT_KILLED&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|urb-&gt;hcpriv
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
+multiline_comment|/* Any status except -EINPROGRESS means something already started to&n;&t; * unlink this URB from the hardware.  So there&squot;s no more work to do.&n;&t; *&n;&t; * FIXME use better explicit urb state&n;&t; */
 r_if
 c_cond
 (paren
@@ -3208,13 +3215,6 @@ id|urb-&gt;status
 op_ne
 op_minus
 id|EINPROGRESS
-op_logical_and
-id|usb_pipetype
-(paren
-id|urb-&gt;pipe
-)paren
-op_ne
-id|PIPE_INTERRUPT
 )paren
 (brace
 id|retval
@@ -3227,21 +3227,6 @@ id|done
 suffix:semicolon
 )brace
 multiline_comment|/* maybe set up to block until the urb&squot;s completion fires.  the&n;&t; * lower level hcd code is always async, locking on urb-&gt;status&n;&t; * updates; an intercepted completion unblocks us.&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|urb-&gt;transfer_flags
-op_amp
-id|URB_TIMEOUT_KILLED
-)paren
-)paren
-id|urb-&gt;status
-op_assign
-op_minus
-id|ETIMEDOUT
-suffix:semicolon
-r_else
 r_if
 c_cond
 (paren
@@ -3364,26 +3349,25 @@ comma
 id|urb
 )paren
 suffix:semicolon
-singleline_comment|// FIXME:  if retval and we tried to splice, whoa!!
+multiline_comment|/* hcds shouldn&squot;t really fail these calls, but... */
 r_if
 c_cond
 (paren
 id|retval
-op_logical_and
-id|urb-&gt;status
-op_eq
-op_minus
-id|ENOENT
 )paren
-id|err
+(brace
+id|dev_dbg
 (paren
-l_string|&quot;whoa! retval %d&quot;
+op_star
+id|sys
+comma
+l_string|&quot;dequeue %p --&gt; %d&bslash;n&quot;
+comma
+id|urb
 comma
 id|retval
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* block till giveback, if needed */
 r_if
 c_cond
 (paren
@@ -3391,27 +3375,58 @@ op_logical_neg
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-(paren
 id|URB_ASYNC_UNLINK
-op_or
-id|URB_TIMEOUT_KILLED
 )paren
-)paren
-op_logical_and
-id|HCD_IS_RUNNING
-(paren
-id|hcd-&gt;state
-)paren
-op_logical_and
-op_logical_neg
-id|retval
 )paren
 (brace
-id|dbg
+id|spin_lock_irqsave
 (paren
-l_string|&quot;%s: wait for giveback urb %p&quot;
+op_amp
+id|urb-&gt;lock
 comma
-id|hcd-&gt;self.bus_name
+id|flags
+)paren
+suffix:semicolon
+id|urb-&gt;complete
+op_assign
+id|splice.complete
+suffix:semicolon
+id|urb-&gt;context
+op_assign
+id|splice.context
+suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|urb-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
+r_goto
+id|bye
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* block till giveback, if needed */
+r_if
+c_cond
+(paren
+id|urb-&gt;transfer_flags
+op_amp
+id|URB_ASYNC_UNLINK
+)paren
+r_return
+op_minus
+id|EINPROGRESS
+suffix:semicolon
+id|dev_dbg
+(paren
+op_star
+id|sys
+comma
+l_string|&quot;wait for giveback urb %p&bslash;n&quot;
 comma
 id|urb
 )paren
@@ -3422,29 +3437,8 @@ op_amp
 id|splice.done
 )paren
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-(paren
-id|urb-&gt;transfer_flags
-op_amp
-id|URB_ASYNC_UNLINK
-)paren
-op_logical_and
-id|retval
-op_eq
-l_int|0
-)paren
-(brace
 r_return
-op_minus
-id|EINPROGRESS
-suffix:semicolon
-)brace
-r_goto
-id|bye
+l_int|0
 suffix:semicolon
 id|done
 suffix:colon
@@ -3468,17 +3462,17 @@ r_if
 c_cond
 (paren
 id|retval
+op_logical_and
+id|sys
 )paren
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;%s: hcd_unlink_urb fail %d&quot;
+op_star
+id|sys
 comma
-id|hcd
-ques
-c_cond
-id|hcd-&gt;self.bus_name
-suffix:colon
-l_string|&quot;(no bus?)&quot;
+l_string|&quot;hcd_unlink_urb %p fail %d&bslash;n&quot;
+comma
+id|urb
 comma
 id|retval
 )paren
