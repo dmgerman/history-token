@@ -2735,10 +2735,24 @@ id|mod
 )paren
 suffix:semicolon
 multiline_comment|/* Final destruction now noone is using it. */
+id|up
+c_func
+(paren
+op_amp
+id|module_mutex
+)paren
+suffix:semicolon
 id|mod
 op_member_access_from_pointer
 m_exit
 (paren
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|module_mutex
 )paren
 suffix:semicolon
 id|free_module
