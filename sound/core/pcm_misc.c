@@ -509,7 +509,7 @@ r_case
 id|SNDRV_PCM_FORMAT_IEC958_SUBFRAME_BE
 suffix:colon
 r_return
-l_int|24
+l_int|32
 suffix:semicolon
 r_case
 id|SNDRV_PCM_FORMAT_MU_LAW
