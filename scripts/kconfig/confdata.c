@@ -2045,6 +2045,12 @@ comma
 l_string|&quot;include/linux/autoconf.h&quot;
 )paren
 suffix:semicolon
+id|file_write_dep
+c_func
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
