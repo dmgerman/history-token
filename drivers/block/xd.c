@@ -441,6 +441,11 @@ id|i
 comma
 id|controller
 suffix:semicolon
+id|u_char
+id|count
+op_assign
+l_int|0
+suffix:semicolon
 r_int
 r_int
 id|address
