@@ -3001,6 +3001,26 @@ id|info
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* usb_reset_device() briefly reverts to address 0 */
+r_if
+c_cond
+(paren
+id|usb_pipedevice
+(paren
+id|urb-&gt;pipe
+)paren
+op_eq
+l_int|0
+)paren
+id|qh-&gt;hw_info1
+op_and_assign
+id|cpu_to_le32
+c_func
+(paren
+op_complement
+l_int|0x7f
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* usb_clear_halt() means qh data toggle gets reset */
 r_if
