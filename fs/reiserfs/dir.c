@@ -255,6 +255,10 @@ id|pos_key
 )paren
 suffix:semicolon
 multiline_comment|/*  reiserfs_warning (inode-&gt;i_sb, &quot;reiserfs_readdir 1: f_pos = %Ld&quot;, filp-&gt;f_pos);*/
+id|path_to_entry.reada
+op_assign
+id|PATH_READA
+suffix:semicolon
 r_while
 c_loop
 (paren

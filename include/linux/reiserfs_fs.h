@@ -2514,6 +2514,10 @@ mdefine_line|#define ILLEGAL_PATH_ELEMENT_OFFSET 1 /* Must be equal to FIRST_PAT
 DECL|macro|MAX_FEB_SIZE
 mdefine_line|#define MAX_FEB_SIZE 6   /* this MUST be MAX_HEIGHT + 1. See about FEB below */
 multiline_comment|/* We need to keep track of who the ancestors of nodes are.  When we&n;   perform a search we record which nodes were visited while&n;   descending the tree looking for the node we searched for. This list&n;   of nodes is called the path.  This information is used while&n;   performing balancing.  Note that this path information may become&n;   invalid, and this means we must check it when using it to see if it&n;   is still valid. You&squot;ll need to read search_by_key and the comments&n;   in it, especially about decrement_counters_in_path(), to understand&n;   this structure.  &n;&n;Paths make the code so much harder to work with and debug.... An&n;enormous number of bugs are due to them, and trying to write or modify&n;code that uses them just makes my head hurt.  They are based on an&n;excessive effort to avoid disturbing the precious VFS code.:-( The&n;gods only know how we are going to SMP the code that uses them.&n;znodes are the way! */
+DECL|macro|PATH_READA
+mdefine_line|#define PATH_READA&t;0x1 /* do read ahead */
+DECL|macro|PATH_READA_BACK
+mdefine_line|#define PATH_READA_BACK 0x2 /* read backwards */
 DECL|struct|path
 r_struct
 id|path
@@ -2523,6 +2527,10 @@ r_int
 id|path_length
 suffix:semicolon
 multiline_comment|/* Length of the array above.   */
+DECL|member|reada
+r_int
+id|reada
+suffix:semicolon
 DECL|member|path_elements
 r_struct
 id|path_element
@@ -2541,7 +2549,7 @@ suffix:semicolon
 DECL|macro|pos_in_item
 mdefine_line|#define pos_in_item(path) ((path)-&gt;pos_in_item)
 DECL|macro|INITIALIZE_PATH
-mdefine_line|#define INITIALIZE_PATH(var) &bslash;&n;struct path var = {.path_length = ILLEGAL_PATH_ELEMENT_OFFSET,}
+mdefine_line|#define INITIALIZE_PATH(var) &bslash;&n;struct path var = {.path_length = ILLEGAL_PATH_ELEMENT_OFFSET, .reada = 0,}
 multiline_comment|/* Get path element by path and path position. */
 DECL|macro|PATH_OFFSET_PELEMENT
 mdefine_line|#define PATH_OFFSET_PELEMENT(p_s_path,n_offset)  ((p_s_path)-&gt;path_elements +(n_offset))
