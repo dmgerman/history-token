@@ -8080,6 +8080,29 @@ id|AC97_TUNE_HP_ONLY
 )brace
 comma
 (brace
+dot
+id|vendor
+op_assign
+l_int|0x1028
+comma
+dot
+id|device
+op_assign
+l_int|0x012d
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Dell Precision 450&quot;
+comma
+multiline_comment|/* AD1981B*/
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
 multiline_comment|/* FIXME: which codec? */
 dot
 id|vendor
@@ -8096,6 +8119,52 @@ id|name
 op_assign
 l_string|&quot;Hewlett-Packard onboard&quot;
 comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x103c
+comma
+dot
+id|device
+op_assign
+l_int|0x12f1
+comma
+dot
+id|name
+op_assign
+l_string|&quot;HP xw8200&quot;
+comma
+multiline_comment|/* AD1981B*/
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x103c
+comma
+dot
+id|device
+op_assign
+l_int|0x3008
+comma
+dot
+id|name
+op_assign
+l_string|&quot;HP xw4200&quot;
+comma
+multiline_comment|/* AD1981B*/
 dot
 id|type
 op_assign
