@@ -3233,13 +3233,11 @@ suffix:semicolon
 multiline_comment|/*&n; * Tagged Command Queueing:&n; */
 multiline_comment|/*&n; * ata_request flag bits&n; */
 DECL|macro|ATA_AR_QUEUED
-mdefine_line|#define ATA_AR_QUEUED&t;1
+mdefine_line|#define ATA_AR_QUEUED&t;1&t;/* was queued */
 DECL|macro|ATA_AR_SETUP
-mdefine_line|#define ATA_AR_SETUP&t;2
-DECL|macro|ATA_AR_RETURN
-mdefine_line|#define ATA_AR_RETURN&t;4
-DECL|macro|ATA_AR_STATIC
-mdefine_line|#define ATA_AR_STATIC&t;8
+mdefine_line|#define ATA_AR_SETUP&t;2&t;/* dma table mapped */
+DECL|macro|ATA_AR_POOL
+mdefine_line|#define ATA_AR_POOL&t;4&t;/* originated from drive pool */
 multiline_comment|/*&n; * if turn-around time is longer than this, halve queue depth&n; */
 DECL|macro|ATA_AR_MAX_TURNAROUND
 mdefine_line|#define ATA_AR_MAX_TURNAROUND&t;(3 * HZ)
@@ -3370,6 +3368,10 @@ comma
 id|ar
 )paren
 suffix:semicolon
+id|ar-&gt;ar_flags
+op_or_assign
+id|ATA_AR_POOL
+suffix:semicolon
 )brace
 r_return
 id|ar
@@ -3395,12 +3397,9 @@ id|ar
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
 id|ar-&gt;ar_flags
 op_amp
-id|ATA_AR_STATIC
-)paren
+id|ATA_AR_POOL
 )paren
 id|list_add
 c_func

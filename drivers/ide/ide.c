@@ -2827,13 +2827,6 @@ id|IDE_HCYL_REG
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|ar-&gt;ar_flags
-op_amp
-id|ATA_AR_RETURN
-)paren
 id|ata_ar_put
 c_func
 (paren

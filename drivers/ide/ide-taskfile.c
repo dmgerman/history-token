@@ -1639,6 +1639,68 @@ l_int|0xE0
 suffix:colon
 l_int|0xEF
 suffix:semicolon
+macro_line|#if 0
+id|printk
+c_func
+(paren
+l_string|&quot;ata_taskfile ... %p&bslash;n&quot;
+comma
+id|args-&gt;handler
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;   sector feature          %02x&bslash;n&quot;
+comma
+id|args-&gt;taskfile.feature
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;   sector count            %02x&bslash;n&quot;
+comma
+id|args-&gt;taskfile.sector_count
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;   drive/head              %02x&bslash;n&quot;
+comma
+id|args-&gt;taskfile.device_head
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;   command                 %02x&bslash;n&quot;
+comma
+id|args-&gt;taskfile.command
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rq
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;   rq-&gt;nr_sectors          %2li&bslash;n&quot;
+comma
+id|rq-&gt;nr_sectors
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;   rq-&gt;                   = null&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* (ks/hs): Moved to start, do not use for multiple out commands */
 r_if
 c_cond
@@ -2406,6 +2468,7 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * first segment of the request is complete. note that this does not&n;&t; * necessarily mean that the entire request is done!! this is only&n;&t; * true if ide_end_request() returns 0.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2415,7 +2478,6 @@ op_le
 l_int|0
 )paren
 (brace
-multiline_comment|/* (hs): swapped next 2 lines */
 id|DTF
 c_func
 (paren
@@ -2430,6 +2492,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ide_end_request
 c_func
 (paren
@@ -2438,46 +2501,26 @@ comma
 l_int|1
 )paren
 )paren
-(brace
-id|ide_set_handler
-c_func
-(paren
-id|drive
-comma
-op_amp
-id|task_in_intr
-comma
-id|WAIT_CMD
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_return
-id|ide_started
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-id|ide_set_handler
-c_func
-(paren
-id|drive
-comma
-op_amp
-id|task_in_intr
-comma
-id|WAIT_CMD
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_return
-id|ide_started
-suffix:semicolon
-)brace
 r_return
 id|ide_stopped
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * still data left to transfer&n;&t; */
+id|ide_set_handler
+c_func
+(paren
+id|drive
+comma
+op_amp
+id|task_in_intr
+comma
+id|WAIT_CMD
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_return
+id|ide_started
 suffix:semicolon
 )brace
 DECL|function|pre_task_out_intr
@@ -3636,11 +3679,6 @@ comma
 op_amp
 id|star
 )paren
-suffix:semicolon
-multiline_comment|/* Don&squot;t put this request on free_req list after usage.&n;&t; */
-id|star.ar_flags
-op_or_assign
-id|ATA_AR_STATIC
 suffix:semicolon
 id|init_taskfile_request
 c_func
