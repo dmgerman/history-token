@@ -258,6 +258,17 @@ DECL|struct|page
 r_struct
 id|page
 (brace
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* atomic flags, some possibly&n;&t;&t;&t;&t;&t;   updated asynchronously */
+DECL|member|count
+id|atomic_t
+id|count
+suffix:semicolon
+multiline_comment|/* Usage count, see below. */
 DECL|member|list
 r_struct
 id|list_head
@@ -277,17 +288,6 @@ r_int
 id|index
 suffix:semicolon
 multiline_comment|/* Our offset within mapping. */
-DECL|member|count
-id|atomic_t
-id|count
-suffix:semicolon
-multiline_comment|/* Usage count, see below. */
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* atomic flags, some possibly&n;&t;&t;&t;&t;&t;   updated asynchronously */
 DECL|member|lru
 r_struct
 id|list_head
