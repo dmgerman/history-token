@@ -33,17 +33,6 @@ op_star
 )paren
 suffix:semicolon
 r_int
-id|jfs_permission_have_sem
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_int
 id|jfs_permission
 c_func
 (paren
