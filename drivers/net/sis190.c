@@ -1964,6 +1964,9 @@ suffix:semicolon
 id|u16
 id|reg31
 suffix:semicolon
+r_int
+id|val
+suffix:semicolon
 m_assert
 (paren
 id|pdev
@@ -2368,7 +2371,6 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-r_int
 id|val
 op_assign
 id|smdio_read
