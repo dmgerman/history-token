@@ -2395,7 +2395,8 @@ suffix:semicolon
 id|capi20_put_message
 c_func
 (paren
-id|global.ap.applid
+op_amp
+id|global.ap
 comma
 id|skb
 )paren
@@ -6558,7 +6559,8 @@ c_loop
 id|capi20_get_message
 c_func
 (paren
-id|global.ap.applid
+op_amp
+id|global.ap
 comma
 op_amp
 id|skb
@@ -9322,7 +9324,8 @@ op_assign
 id|capi20_put_message
 c_func
 (paren
-id|global.ap.applid
+op_amp
+id|global.ap
 comma
 id|nskb
 )paren
@@ -9403,7 +9406,8 @@ op_assign
 id|capi20_put_message
 c_func
 (paren
-id|global.ap.applid
+op_amp
+id|global.ap
 comma
 id|skb
 )paren
@@ -11440,7 +11444,8 @@ suffix:semicolon
 id|capi20_set_callback
 c_func
 (paren
-id|global.ap.applid
+op_amp
+id|global.ap
 comma
 id|lower_callback
 )paren
@@ -11481,7 +11486,8 @@ suffix:semicolon
 id|capi20_set_signal
 c_func
 (paren
-id|global.ap.applid
+op_amp
+id|global.ap
 comma
 id|capidrv_signal
 comma
