@@ -11,7 +11,7 @@ DECL|macro|cpu_to_node
 mdefine_line|#define cpu_to_node(cpu) (int)(cpu_to_node_map[cpu])
 multiline_comment|/*&n; * Returns a bitmask of CPUs on Node &squot;node&squot;.&n; */
 DECL|macro|node_to_cpumask
-mdefine_line|#define node_to_cpumask(node) (node_to_cpumask[node])
+mdefine_line|#define node_to_cpumask(node) (node_to_cpu_mask[node])
 macro_line|#else
 DECL|macro|cpu_to_node
 mdefine_line|#define cpu_to_node(cpu) (0)
