@@ -3852,7 +3852,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * alb_set_mac_address&n; * @bond:&n; * @addr:&n; *&n; * In TLB mode all slaves are configured to the bond&squot;s hw address, but set&n; * their dev_addr field to different addresses (based on their permanent hw&n; * addresses).&n; *&n; * For each slave, this function sets the interface to the new address and then&n; * changes its dev_addr field to its previous value.&n; * &n; * Unwinding assumes bond&squot;s mac address has not yet changed.&n; */
+multiline_comment|/**&n; * alb_set_mac_address&n; * @bond:&n; * @addr:&n; *&n; * In TLB mode all slaves are configured to the bond&squot;s hw address, but set&n; * their dev_addr field to different addresses (based on their permanent hw&n; * addresses).&n; *&n; * For each slave, this function sets the interface to the new address and then&n; * changes its dev_addr field to its previous value.&n; *&n; * Unwinding assumes bond&squot;s mac address has not yet changed.&n; */
 DECL|function|alb_set_mac_address
 r_static
 r_int
