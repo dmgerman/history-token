@@ -201,6 +201,13 @@ c_func
 id|m68k_debug_device
 )paren
 suffix:semicolon
+DECL|variable|mach_hwclk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mach_hwclk
+)paren
+suffix:semicolon
 DECL|variable|dump_fpu
 id|EXPORT_SYMBOL
 c_func
