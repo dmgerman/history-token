@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * ohci1394.c - driver for OHCI 1394 boards&n; * Copyright (C)1999,2000 Sebastien Rougeaux &lt;sebastien.rougeaux@anu.edu.au&gt;&n; *                        Gord Peters &lt;GordPeters@smarttech.com&gt;&n; *              2001      Ben Collins &lt;bcollins@debian.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
-multiline_comment|/*&n; * Things known to be working:&n; * . Async Request Transmit&n; * . Async Response Receive&n; * . Async Request Receive&n; * . Async Response Transmit&n; * . Iso Receive&n; * . DMA mmap for iso receive&n; * . Config ROM generation&n; *&n; * Things implemented, but still in test phase:&n; * . Iso Transmit&n; * . Async Stream Packets Transmit (Receive done via Iso interface)&n; * &n; * Things not implemented:&n; * . DMA error recovery&n; *&n; * Known bugs:&n; * . devctl BUS_RESET arg confusion (reset type or root holdoff?)&n; *   added LONG_RESET_ROOT and SHORT_RESET_ROOT for root holdoff --kk&n; */
-multiline_comment|/* &n; * Acknowledgments:&n; *&n; * Adam J Richter &lt;adam@yggdrasil.com&gt;&n; *  . Use of pci_class to find device&n; *&n; * Emilie Chung&t;&lt;emilie.chung@axis.com&gt;&n; *  . Tip on Async Request Filter&n; *&n; * Pascal Drolet &lt;pascal.drolet@informission.ca&gt;&n; *  . Various tips for optimization and functionnalities&n; *&n; * Robert Ficklin &lt;rficklin@westengineering.com&gt;&n; *  . Loop in irq_handler&n; *&n; * James Goodwin &lt;jamesg@Filanet.com&gt;&n; *  . Various tips on initialization, self-id reception, etc.&n; *&n; * Albrecht Dress &lt;ad@mpifr-bonn.mpg.de&gt;&n; *  . Apple PowerBook detection&n; *&n; * Daniel Kobras &lt;daniel.kobras@student.uni-tuebingen.de&gt;&n; *  . Reset the board properly before leaving + misc cleanups&n; *&n; * Leon van Stuivenberg &lt;leonvs@iae.nl&gt;&n; *  . Bug fixes&n; *&n; * Ben Collins &lt;bcollins@debian.org&gt;&n; *  . Working big-endian support&n; *  . Updated to 2.4.x module scheme (PCI aswell)&n; *  . Config ROM generation&n; *&n; * Manfred Weihs &lt;weihs@ict.tuwien.ac.at&gt;&n; *  . Reworked code for initiating bus resets&n; *    (long, short, with or without hold-off)&n; *&n; * Nandu Santhi &lt;contactnandu@users.sourceforge.net&gt;&n; *  . Added support for nVidia nForce2 onboard Firewire chipset&n; *&n; */
+multiline_comment|/*&n; * Things known to be working:&n; * . Async Request Transmit&n; * . Async Response Receive&n; * . Async Request Receive&n; * . Async Response Transmit&n; * . Iso Receive&n; * . DMA mmap for iso receive&n; * . Config ROM generation&n; *&n; * Things implemented, but still in test phase:&n; * . Iso Transmit&n; * . Async Stream Packets Transmit (Receive done via Iso interface)&n; *&n; * Things not implemented:&n; * . DMA error recovery&n; *&n; * Known bugs:&n; * . devctl BUS_RESET arg confusion (reset type or root holdoff?)&n; *   added LONG_RESET_ROOT and SHORT_RESET_ROOT for root holdoff --kk&n; */
+multiline_comment|/*&n; * Acknowledgments:&n; *&n; * Adam J Richter &lt;adam@yggdrasil.com&gt;&n; *  . Use of pci_class to find device&n; *&n; * Emilie Chung&t;&lt;emilie.chung@axis.com&gt;&n; *  . Tip on Async Request Filter&n; *&n; * Pascal Drolet &lt;pascal.drolet@informission.ca&gt;&n; *  . Various tips for optimization and functionnalities&n; *&n; * Robert Ficklin &lt;rficklin@westengineering.com&gt;&n; *  . Loop in irq_handler&n; *&n; * James Goodwin &lt;jamesg@Filanet.com&gt;&n; *  . Various tips on initialization, self-id reception, etc.&n; *&n; * Albrecht Dress &lt;ad@mpifr-bonn.mpg.de&gt;&n; *  . Apple PowerBook detection&n; *&n; * Daniel Kobras &lt;daniel.kobras@student.uni-tuebingen.de&gt;&n; *  . Reset the board properly before leaving + misc cleanups&n; *&n; * Leon van Stuivenberg &lt;leonvs@iae.nl&gt;&n; *  . Bug fixes&n; *&n; * Ben Collins &lt;bcollins@debian.org&gt;&n; *  . Working big-endian support&n; *  . Updated to 2.4.x module scheme (PCI aswell)&n; *  . Config ROM generation&n; *&n; * Manfred Weihs &lt;weihs@ict.tuwien.ac.at&gt;&n; *  . Reworked code for initiating bus resets&n; *    (long, short, with or without hold-off)&n; *&n; * Nandu Santhi &lt;contactnandu@users.sourceforge.net&gt;&n; *  . Added support for nVidia nForce2 onboard Firewire chipset&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
@@ -87,7 +87,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1172 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1203 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 DECL|variable|phys_dma
@@ -1041,119 +1041,6 @@ l_string|&quot;Soft reset finished&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|run_context
-r_static
-r_int
-id|run_context
-c_func
-(paren
-r_struct
-id|ti_ohci
-op_star
-id|ohci
-comma
-r_int
-id|reg
-comma
-r_char
-op_star
-id|msg
-)paren
-(brace
-id|u32
-id|nodeId
-suffix:semicolon
-multiline_comment|/* check that the node id is valid */
-id|nodeId
-op_assign
-id|reg_read
-c_func
-(paren
-id|ohci
-comma
-id|OHCI1394_NodeID
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|nodeId
-op_amp
-l_int|0x80000000
-)paren
-)paren
-(brace
-id|PRINT
-c_func
-(paren
-id|KERN_ERR
-comma
-l_string|&quot;Running dma failed because Node ID is not valid&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* check that the node number != 63 */
-r_if
-c_cond
-(paren
-(paren
-id|nodeId
-op_amp
-l_int|0x3f
-)paren
-op_eq
-l_int|63
-)paren
-(brace
-id|PRINT
-c_func
-(paren
-id|KERN_ERR
-comma
-l_string|&quot;Running dma failed because Node ID == 63&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* Run the dma context */
-id|reg_write
-c_func
-(paren
-id|ohci
-comma
-id|reg
-comma
-l_int|0x8000
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|msg
-)paren
-id|PRINT
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;%s&quot;
-comma
-id|msg
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Generate the dma receive prgs and start the context */
 DECL|function|initialize_dma_rcv_ctx
 r_static
@@ -1928,7 +1815,7 @@ op_amp
 id|ohci-&gt;at_resp_context
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Accept AT requests from all nodes. This probably &n;&t; * will have to be controlled from the subsystem&n;&t; * on a per node basis.&n;&t; */
+multiline_comment|/*&n;&t; * Accept AT requests from all nodes. This probably&n;&t; * will have to be controlled from the subsystem&n;&t; * on a per node basis.&n;&t; */
 id|reg_write
 c_func
 (paren
@@ -2208,8 +2095,187 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Serial EEPROM Sanity check. */
+r_if
+c_cond
+(paren
+(paren
+id|ohci-&gt;max_packet_size
+OL
+l_int|512
+)paren
+op_logical_or
+(paren
+id|ohci-&gt;max_packet_size
+OG
+l_int|4096
+)paren
+)paren
+(brace
+multiline_comment|/* Serial EEPROM contents are suspect, set a sane max packet&n;&t;&t; * size and print the raw contents for bug reports if verbose&n;&t;&t; * debug is enabled. */
+macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
+r_int
+id|i
+suffix:semicolon
+macro_line|#endif
+id|PRINT
+c_func
+(paren
+id|KERN_DEBUG
+comma
+l_string|&quot;Serial EEPROM has suspicious values, &quot;
+l_string|&quot;attempting to setting max_packet_size to 512 bytes&quot;
+)paren
+suffix:semicolon
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_BusOptions
+comma
+(paren
+id|reg_read
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_BusOptions
+)paren
+op_amp
+l_int|0xf007
+)paren
+op_or
+l_int|0x8002
+)paren
+suffix:semicolon
+id|ohci-&gt;max_packet_size
+op_assign
+l_int|512
+suffix:semicolon
+macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
+id|PRINT
+c_func
+(paren
+id|KERN_DEBUG
+comma
+l_string|&quot;    EEPROM Present: %d&quot;
+comma
+(paren
+id|reg_read
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_Version
+)paren
+op_rshift
+l_int|24
+)paren
+op_amp
+l_int|0x1
+)paren
+suffix:semicolon
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_GUID_ROM
+comma
+l_int|0x80000000
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+(paren
+(paren
+id|i
+OL
+l_int|1000
+)paren
+op_logical_and
+(paren
+id|reg_read
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_GUID_ROM
+)paren
+op_amp
+l_int|0x80000000
+)paren
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|udelay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|0x20
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_GUID_ROM
+comma
+l_int|0x02000000
+)paren
+suffix:semicolon
+id|PRINT
+c_func
+(paren
+id|KERN_DEBUG
+comma
+l_string|&quot;    EEPROM %02x: %02x&quot;
+comma
+id|i
+comma
+(paren
+id|reg_read
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_GUID_ROM
+)paren
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0xff
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/* &n; * Insert a packet in the DMA fifo and generate the DMA prg&n; * FIXME: rewrite the program in order to accept packets crossing&n; *        page boundaries.&n; *        check also that a single dma descriptor doesn&squot;t cross a &n; *        page boundary.&n; */
+macro_line|#endif
+)brace
+)brace
+multiline_comment|/*&n; * Insert a packet in the DMA fifo and generate the DMA prg&n; * FIXME: rewrite the program in order to accept packets crossing&n; *        page boundaries.&n; *        check also that a single dma descriptor doesn&squot;t cross a&n; *        page boundary.&n; */
 DECL|function|insert_packet
 r_static
 r_void
@@ -2288,7 +2354,7 @@ op_eq
 id|DMA_CTX_ASYNC_RESP
 )paren
 (brace
-multiline_comment|/* &n;&t;&t; * For response packets, we need to put a timeout value in&n;&t;&t; * the 16 lower bits of the status... let&squot;s try 1 sec timeout &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * For response packets, we need to put a timeout value in&n;&t;&t; * the 16 lower bits of the status... let&squot;s try 1 sec timeout&n;&t;&t; */
 id|cycleTimer
 op_assign
 id|reg_read
@@ -2649,7 +2715,7 @@ op_or
 id|packet-&gt;data_size
 )paren
 suffix:semicolon
-multiline_comment|/* &n;                         * Check that the packet data buffer&n;                         * does not cross a page boundary.&n;&t;&t;&t; *&n;&t;&t;&t; * XXX Fix this some day. eth1394 seems to trigger&n;&t;&t;&t; * it, but ignoring it doesn&squot;t seem to cause a&n;&t;&t;&t; * problem.&n;                         */
+multiline_comment|/*&n;                         * Check that the packet data buffer&n;                         * does not cross a page boundary.&n;&t;&t;&t; *&n;&t;&t;&t; * XXX Fix this some day. eth1394 seems to trigger&n;&t;&t;&t; * it, but ignoring it doesn&squot;t seem to cause a&n;&t;&t;&t; * problem.&n;                         */
 macro_line|#if 0
 r_if
 c_cond
@@ -3188,7 +3254,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This function fills the FIFO with the (eventual) pending packets&n; * and runs or wakes up the DMA prg if necessary.&n; *&n; * The function MUST be called with the d-&gt;lock held.&n; */
 DECL|function|dma_trm_flush
 r_static
-r_int
+r_void
 id|dma_trm_flush
 c_func
 (paren
@@ -3206,46 +3272,54 @@ id|d
 r_struct
 id|hpsb_packet
 op_star
-id|p
+id|packet
+comma
+op_star
+id|ptmp
 suffix:semicolon
 r_int
-id|idx
-comma
-id|z
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|list_empty
-c_func
-(paren
-op_amp
-id|d-&gt;pending_list
-)paren
-op_logical_or
-id|d-&gt;free_prgs
-op_eq
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-id|p
-op_assign
-id|driver_packet
-c_func
-(paren
-id|d-&gt;pending_list.next
-)paren
-suffix:semicolon
 id|idx
 op_assign
 id|d-&gt;prg_ind
 suffix:semicolon
+r_int
+id|z
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* insert the packets into the dma fifo */
+id|list_for_each_entry_safe
+c_func
+(paren
+id|packet
+comma
+id|ptmp
+comma
+op_amp
+id|d-&gt;pending_list
+comma
+id|driver_list
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|d-&gt;free_prgs
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* For the first packet only */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|z
+)paren
 id|z
 op_assign
 (paren
-id|p-&gt;data_size
+id|packet-&gt;data_size
 )paren
 ques
 c_cond
@@ -3253,39 +3327,12 @@ l_int|3
 suffix:colon
 l_int|2
 suffix:semicolon
-multiline_comment|/* insert the packets into the dma fifo */
-r_while
-c_loop
-(paren
-id|d-&gt;free_prgs
-OG
-l_int|0
-op_logical_and
-op_logical_neg
-id|list_empty
+multiline_comment|/* Insert the packet */
+id|list_del_init
 c_func
 (paren
 op_amp
-id|d-&gt;pending_list
-)paren
-)paren
-(brace
-r_struct
-id|hpsb_packet
-op_star
-id|p
-op_assign
-id|driver_packet
-c_func
-(paren
-id|d-&gt;pending_list.next
-)paren
-suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|p-&gt;driver_list
+id|packet-&gt;driver_list
 )paren
 suffix:semicolon
 id|insert_packet
@@ -3295,26 +3342,21 @@ id|ohci
 comma
 id|d
 comma
-id|p
+id|packet
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Nothing must have been done, either no free_prgs or no packets */
 r_if
 c_cond
 (paren
-id|d-&gt;free_prgs
+id|z
 op_eq
 l_int|0
 )paren
-id|DBGMSG
-c_func
-(paren
-l_string|&quot;Transmit DMA FIFO ctx=%d is full... waiting&quot;
-comma
-id|d-&gt;ctx
-)paren
+r_return
 suffix:semicolon
-multiline_comment|/* Is the context running ? (should be unless it is &n;&t;   the first packet to be sent in this context) */
+multiline_comment|/* Is the context running ? (should be unless it is&n;&t;   the first packet to be sent in this context) */
 r_if
 c_cond
 (paren
@@ -3332,6 +3374,17 @@ l_int|0x8000
 )paren
 )paren
 (brace
+id|u32
+id|nodeId
+op_assign
+id|reg_read
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_NodeID
+)paren
+suffix:semicolon
 id|DBGMSG
 c_func
 (paren
@@ -3355,14 +3408,42 @@ op_or
 id|z
 )paren
 suffix:semicolon
-id|run_context
+multiline_comment|/* Check that the node id is valid, and not 63 */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|nodeId
+op_amp
+l_int|0x80000000
+)paren
+op_logical_or
+(paren
+id|nodeId
+op_amp
+l_int|0x3f
+)paren
+op_eq
+l_int|63
+)paren
+id|PRINT
+c_func
+(paren
+id|KERN_ERR
+comma
+l_string|&quot;Running dma failed because Node ID is not valid&quot;
+)paren
+suffix:semicolon
+r_else
+id|reg_write
 c_func
 (paren
 id|ohci
 comma
 id|d-&gt;ctrlSet
 comma
-l_int|NULL
+l_int|0x8000
 )paren
 suffix:semicolon
 )brace
@@ -3385,7 +3466,6 @@ op_amp
 l_int|0x400
 )paren
 )paren
-(brace
 id|DBGMSG
 c_func
 (paren
@@ -3394,7 +3474,6 @@ comma
 id|d-&gt;ctx
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* do this always, to avoid race condition */
 id|reg_write
 c_func
@@ -3408,7 +3487,6 @@ l_int|0x1000
 suffix:semicolon
 )brace
 r_return
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Transmission of an async or iso packet */
@@ -8988,6 +9066,14 @@ id|ohci
 op_assign
 id|d-&gt;ohci
 suffix:semicolon
+r_struct
+id|hpsb_packet
+op_star
+id|packet
+comma
+op_star
+id|ptmp
+suffix:semicolon
 id|ohci1394_stop_context
 c_func
 (paren
@@ -9063,11 +9149,9 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Now process subsystem callbacks for the packets from the&n;&t; * context. */
-r_while
-c_loop
+r_if
+c_cond
 (paren
-op_logical_neg
 id|list_empty
 c_func
 (paren
@@ -9075,17 +9159,7 @@ op_amp
 id|packet_list
 )paren
 )paren
-(brace
-r_struct
-id|hpsb_packet
-op_star
-id|p
-op_assign
-id|driver_packet
-c_func
-(paren
-id|packet_list.next
-)paren
+r_return
 suffix:semicolon
 id|PRINT
 c_func
@@ -9097,11 +9171,25 @@ comma
 id|d-&gt;ctx
 )paren
 suffix:semicolon
-id|list_del
+multiline_comment|/* Now process subsystem callbacks for the packets from this&n;&t; * context. */
+id|list_for_each_entry_safe
+c_func
+(paren
+id|packet
+comma
+id|ptmp
+comma
+op_amp
+id|packet_list
+comma
+id|driver_list
+)paren
+(brace
+id|list_del_init
 c_func
 (paren
 op_amp
-id|p-&gt;driver_list
+id|packet-&gt;driver_list
 )paren
 suffix:semicolon
 id|hpsb_packet_sent
@@ -9109,7 +9197,7 @@ c_func
 (paren
 id|ohci-&gt;host
 comma
-id|p
+id|packet
 comma
 id|ACKX_ABORTED
 )paren
@@ -9927,13 +10015,17 @@ l_string|&quot;reqTxComplete&quot;
 )paren
 suffix:semicolon
 r_else
-id|tasklet_schedule
+id|dma_trm_tasklet
 c_func
 (paren
-op_amp
-id|d-&gt;task
+(paren
+r_int
+r_int
+)paren
+id|d
 )paren
 suffix:semicolon
+singleline_comment|//tasklet_schedule(&amp;d-&gt;task);
 id|event
 op_and_assign
 op_complement
@@ -10706,7 +10798,7 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * Determine the length of a packet in the buffer&n; * Optimization suggested by Pascal Drolet &lt;pascal.drolet@informission.ca&gt;&n; */
+multiline_comment|/*&n; * Determine the length of a packet in the buffer&n; * Optimization suggested by Pascal Drolet &lt;pascal.drolet@informission.ca&gt;&n; */
 DECL|function|packet_length
 r_static
 id|__inline__
@@ -11705,6 +11797,9 @@ r_struct
 id|hpsb_packet
 op_star
 id|packet
+comma
+op_star
+id|ptmp
 suffix:semicolon
 r_int
 r_int
@@ -11727,26 +11822,19 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-op_logical_neg
-id|list_empty
+id|list_for_each_entry_safe
 c_func
 (paren
+id|packet
+comma
+id|ptmp
+comma
 op_amp
 id|d-&gt;fifo_list
-)paren
+comma
+id|driver_list
 )paren
 (brace
-id|packet
-op_assign
-id|driver_packet
-c_func
-(paren
-id|d-&gt;fifo_list.next
-)paren
-suffix:semicolon
 id|datasize
 op_assign
 id|packet-&gt;data_size
@@ -12105,7 +12193,7 @@ comma
 id|d-&gt;ctx
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -12319,7 +12407,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp

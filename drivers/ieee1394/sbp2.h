@@ -484,7 +484,7 @@ macro_line|#ifndef TYPE_SDAD
 DECL|macro|TYPE_SDAD
 mdefine_line|#define TYPE_SDAD&t;&t;&t;0x0e&t;/* simplified direct access device */
 macro_line|#endif
-multiline_comment|/*&n; * SCSI direction table... &n; * (now used as a back-up in case the direction passed down from above is &quot;unknown&quot;)&n; *&n; * DIN = IN data direction&n; * DOU = OUT data direction&n; * DNO = No data transfer&n; * DUN = Unknown data direction&n; *&n; * Opcode 0xec (Teac specific &quot;opc execute&quot;) possibly should be DNO,&n; * but we&squot;ll change it when somebody reports a problem with this.&n; */
+multiline_comment|/*&n; * SCSI direction table...&n; * (now used as a back-up in case the direction passed down from above is &quot;unknown&quot;)&n; *&n; * DIN = IN data direction&n; * DOU = OUT data direction&n; * DNO = No data transfer&n; * DUN = Unknown data direction&n; *&n; * Opcode 0xec (Teac specific &quot;opc execute&quot;) possibly should be DNO,&n; * but we&squot;ll change it when somebody reports a problem with this.&n; */
 DECL|macro|DIN
 mdefine_line|#define DIN&t;&t;&t;&t;ORB_DIRECTION_READ_FROM_MEDIA
 DECL|macro|DOU
@@ -492,7 +492,7 @@ mdefine_line|#define DOU&t;&t;&t;&t;ORB_DIRECTION_WRITE_TO_MEDIA
 DECL|macro|DNO
 mdefine_line|#define DNO&t;&t;&t;&t;ORB_DIRECTION_NO_DATA_TRANSFER
 DECL|macro|DUN
-mdefine_line|#define DUN&t;&t;&t;&t;DIN 
+mdefine_line|#define DUN&t;&t;&t;&t;DIN
 DECL|variable|sbp2scsi_direction_table
 r_static
 id|unchar
@@ -1033,7 +1033,7 @@ DECL|enumerator|CMD_DMA_SINGLE
 id|CMD_DMA_SINGLE
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * Encapsulates all the info necessary for an outstanding command. &n; */
+multiline_comment|/*&n; * Encapsulates all the info necessary for an outstanding command.&n; */
 DECL|struct|sbp2_command_info
 r_struct
 id|sbp2_command_info
@@ -1237,12 +1237,12 @@ DECL|member|sbp2_firmware_revision
 id|u32
 id|sbp2_firmware_revision
 suffix:semicolon
-multiline_comment|/* &n;&t; * Variable used for logins, reconnects, logouts, query logins&n;&t; */
+multiline_comment|/*&n;&t; * Variable used for logins, reconnects, logouts, query logins&n;&t; */
 DECL|member|sbp2_login_complete
 id|atomic_t
 id|sbp2_login_complete
 suffix:semicolon
-multiline_comment|/* &n;&t; * Pool of command orbs, so we can have more than overlapped command per id&n;&t; */
+multiline_comment|/*&n;&t; * Pool of command orbs, so we can have more than overlapped command per id&n;&t; */
 DECL|member|sbp2_command_orb_lock
 id|spinlock_t
 id|sbp2_command_orb_lock

@@ -7,7 +7,7 @@ macro_line|#include &quot;ohci1394.h&quot;
 macro_line|#include &quot;dma.h&quot;
 multiline_comment|/* data structures private to the dv1394 driver */
 multiline_comment|/* none of this is exposed to user-space */
-multiline_comment|/* &n;   the 8-byte CIP (Common Isochronous Packet) header that precedes&n;   each packet of DV data.&n;&n;   See the IEC 61883 standard. &n;*/
+multiline_comment|/*&n;   the 8-byte CIP (Common Isochronous Packet) header that precedes&n;   each packet of DV data.&n;&n;   See the IEC 61883 standard.&n;*/
 DECL|struct|CIP_header
 DECL|member|b
 r_struct
@@ -138,7 +138,7 @@ op_amp
 l_int|0xFF
 suffix:semicolon
 )brace
-multiline_comment|/* &n;   DMA commands used to program the OHCI&squot;s DMA engine&n;&n;   See the Texas Instruments OHCI 1394 chipset documentation. &n;*/
+multiline_comment|/*&n;   DMA commands used to program the OHCI&squot;s DMA engine&n;&n;   See the Texas Instruments OHCI 1394 chipset documentation.&n;*/
 DECL|struct|output_more_immediate
 DECL|member|q
 r_struct
@@ -728,7 +728,7 @@ id|data_size
 suffix:semicolon
 multiline_comment|/* xferStatus &amp; resCount, resCount must be initialize to data_size */
 )brace
-multiline_comment|/* &n;   A &quot;DMA descriptor block&quot; consists of several contiguous DMA commands.&n;   struct DMA_descriptor_block encapsulates all of the commands necessary &n;   to send one packet of DV data. &n;   &n;   There are three different types of these blocks:&n;&n;        1) command to send an empty packet (CIP header only, no DV data):&n;&n;&t;    OUTPUT_MORE-Immediate &lt;-- contains the iso header in-line&n;&t;    OUTPUT_LAST           &lt;-- points to the CIP header&n;&n;&t;2) command to send a full packet when the DV data payload does NOT&n;&t;   cross a page boundary:&n;&n;&t;    OUTPUT_MORE-Immediate &lt;-- contains the iso header in-line&n;&t;    OUTPUT_MORE           &lt;-- points to the CIP header&n;&t;    OUTPUT_LAST           &lt;-- points to entire DV data payload&n;&n;&t;3) command to send a full packet when the DV payload DOES cross&n;&t;   a page boundary:&n;&n;&t;    OUTPUT_MORE-Immediate &lt;-- contains the iso header in-line&n;&t;    OUTPUT_MORE           &lt;-- points to the CIP header&n;&t;    OUTPUT_MORE           &lt;-- points to first part of DV data payload&n;&t;    OUTPUT_LAST           &lt;-- points to second part of DV data payload&n;&n;   This struct describes all three block types using unions.&n;&n;   !!! It is vital that an even number of these descriptor blocks fit on one&n;   page of memory, since a block cannot cross a page boundary !!!&n;&n; */
+multiline_comment|/*&n;   A &quot;DMA descriptor block&quot; consists of several contiguous DMA commands.&n;   struct DMA_descriptor_block encapsulates all of the commands necessary&n;   to send one packet of DV data.&n;&n;   There are three different types of these blocks:&n;&n;        1) command to send an empty packet (CIP header only, no DV data):&n;&n;&t;    OUTPUT_MORE-Immediate &lt;-- contains the iso header in-line&n;&t;    OUTPUT_LAST           &lt;-- points to the CIP header&n;&n;&t;2) command to send a full packet when the DV data payload does NOT&n;&t;   cross a page boundary:&n;&n;&t;    OUTPUT_MORE-Immediate &lt;-- contains the iso header in-line&n;&t;    OUTPUT_MORE           &lt;-- points to the CIP header&n;&t;    OUTPUT_LAST           &lt;-- points to entire DV data payload&n;&n;&t;3) command to send a full packet when the DV payload DOES cross&n;&t;   a page boundary:&n;&n;&t;    OUTPUT_MORE-Immediate &lt;-- contains the iso header in-line&n;&t;    OUTPUT_MORE           &lt;-- points to the CIP header&n;&t;    OUTPUT_MORE           &lt;-- points to first part of DV data payload&n;&t;    OUTPUT_LAST           &lt;-- points to second part of DV data payload&n;&n;   This struct describes all three block types using unions.&n;&n;   !!! It is vital that an even number of these descriptor blocks fit on one&n;   page of memory, since a block cannot cross a page boundary !!!&n;&n; */
 DECL|struct|DMA_descriptor_block
 r_struct
 id|DMA_descriptor_block
@@ -832,7 +832,7 @@ DECL|member|u
 )brace
 id|u
 suffix:semicolon
-multiline_comment|/* ensure that PAGE_SIZE % sizeof(struct DMA_descriptor_block) == 0 &n;&t;   by padding out to 128 bytes */
+multiline_comment|/* ensure that PAGE_SIZE % sizeof(struct DMA_descriptor_block) == 0&n;&t;   by padding out to 128 bytes */
 DECL|member|__pad__
 id|u32
 id|__pad__
@@ -864,7 +864,7 @@ r_int
 r_int
 id|frame_num
 suffix:semicolon
-multiline_comment|/* FRAME_CLEAR - DMA program not set up, waiting for data &n;&t;   FRAME_READY - DMA program written, ready to transmit&n;&n;&t;   Changes to these should be locked against the interrupt&n;&t;*/
+multiline_comment|/* FRAME_CLEAR - DMA program not set up, waiting for data&n;&t;   FRAME_READY - DMA program written, ready to transmit&n;&n;&t;   Changes to these should be locked against the interrupt&n;&t;*/
 r_enum
 (brace
 DECL|enumerator|FRAME_CLEAR
@@ -1064,7 +1064,7 @@ op_star
 id|f
 )paren
 suffix:semicolon
-multiline_comment|/* struct video_card contains all data associated with one instance&n;   of the dv1394 driver &n;*/
+multiline_comment|/* struct video_card contains all data associated with one instance&n;   of the dv1394 driver&n;*/
 DECL|enum|modes
 r_enum
 id|modes
@@ -1156,7 +1156,7 @@ r_int
 r_int
 id|open
 suffix:semicolon
-multiline_comment|/* &n;&t;   2) the spinlock - this provides mutual exclusion between the interrupt&n;&t;   handler and process-context operations. Generally you must take the&n;&t;   spinlock under the following conditions:&n;&t;     1) DMA (and hence the interrupt handler) may be running&n;&t;     AND&n;&t;     2) you need to operate on the video_card, especially active_frame&n;&n;&t;     It is OK to play with video_card without taking the spinlock if&n;&t;     you are certain that DMA is not running. Even if DMA is running,&n;&t;     it is OK to *read* active_frame with the lock, then drop it&n;&t;     immediately. This is safe because the interrupt handler will never&n;&t;     advance active_frame onto a frame that is not READY (and the spinlock&n;&t;     must be held while marking a frame READY).&n;&n;&t;     spinlock is also used to protect ohci_it_ctx and ohci_ir_ctx,&n;&t;     which can be accessed from both process and interrupt context&n;&t; */
+multiline_comment|/*&n;&t;   2) the spinlock - this provides mutual exclusion between the interrupt&n;&t;   handler and process-context operations. Generally you must take the&n;&t;   spinlock under the following conditions:&n;&t;     1) DMA (and hence the interrupt handler) may be running&n;&t;     AND&n;&t;     2) you need to operate on the video_card, especially active_frame&n;&n;&t;     It is OK to play with video_card without taking the spinlock if&n;&t;     you are certain that DMA is not running. Even if DMA is running,&n;&t;     it is OK to *read* active_frame with the lock, then drop it&n;&t;     immediately. This is safe because the interrupt handler will never&n;&t;     advance active_frame onto a frame that is not READY (and the spinlock&n;&t;     must be held while marking a frame READY).&n;&n;&t;     spinlock is also used to protect ohci_it_ctx and ohci_ir_ctx,&n;&t;     which can be accessed from both process and interrupt context&n;&t; */
 DECL|member|spinlock
 id|spinlock_t
 id|spinlock
@@ -1214,7 +1214,7 @@ DECL|member|n_frames
 r_int
 id|n_frames
 suffix:semicolon
-multiline_comment|/* this is the frame that is currently &quot;owned&quot; by the OHCI DMA controller&n;&t;   (set to -1 iff DMA is not running) &n;&n;&t;   ! must lock against the interrupt handler when accessing it !&n;&n;&t;   RULES:&n;&n;&t;       Only the interrupt handler may change active_frame if DMA&n;&t;          is running; if not, process may change it&n;&n;&t;       If the next frame is READY, the interrupt handler will advance&n;&t;       active_frame when the current frame is finished.&n;&n;&t;       If the next frame is CLEAR, the interrupt handler will re-transmit&n;&t;       the current frame, and the dropped_frames counter will be  incremented.&n;&n;&t;       The interrupt handler will NEVER advance active_frame to a&n;&t;       frame that is not READY.&n;&t;       &n;&t;*/
+multiline_comment|/* this is the frame that is currently &quot;owned&quot; by the OHCI DMA controller&n;&t;   (set to -1 iff DMA is not running)&n;&n;&t;   ! must lock against the interrupt handler when accessing it !&n;&n;&t;   RULES:&n;&n;&t;       Only the interrupt handler may change active_frame if DMA&n;&t;          is running; if not, process may change it&n;&n;&t;       If the next frame is READY, the interrupt handler will advance&n;&t;       active_frame when the current frame is finished.&n;&n;&t;       If the next frame is CLEAR, the interrupt handler will re-transmit&n;&t;       the current frame, and the dropped_frames counter will be  incremented.&n;&n;&t;       The interrupt handler will NEVER advance active_frame to a&n;&t;       frame that is not READY.&n;&t;*/
 DECL|member|active_frame
 r_int
 id|active_frame
@@ -1311,7 +1311,7 @@ id|mode
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n;   if the video_card is not initialized, then the ONLY fields that are valid are:&n;   ohci&n;   open&n;   n_frames&n;*/
+multiline_comment|/*&n;   if the video_card is not initialized, then the ONLY fields that are valid are:&n;   ohci&n;   open&n;   n_frames&n;*/
 DECL|function|video_card_initialized
 r_static
 r_inline
@@ -1372,7 +1372,7 @@ r_int
 id|free_user_buf
 )paren
 suffix:semicolon
-multiline_comment|/* NTSC empty packet rate accurate to within 0.01%, &n;   calibrated against a Sony DSR-40 DVCAM deck */
+multiline_comment|/* NTSC empty packet rate accurate to within 0.01%,&n;   calibrated against a Sony DSR-40 DVCAM deck */
 DECL|macro|CIP_N_NTSC
 mdefine_line|#define CIP_N_NTSC   68000000
 DECL|macro|CIP_D_NTSC

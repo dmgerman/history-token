@@ -298,8 +298,8 @@ op_assign
 id|nodemgr_get_max_rom
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * Basically what we do here is start off retrieving the bus_info block.&n; * From there will fill in some info about the node, verify it is of IEEE&n; * 1394 type, and that the crc checks out ok. After that we start off with&n; * the root directory, and subdirectories. To do this, we retrieve the&n; * quadlet header for a directory, find out the length, and retrieve the&n; * complete directory entry (be it a leaf or a directory). We then process&n; * it and add the info to our structure for that particular node.&n; *&n; * We verify CRC&squot;s along the way for each directory/block/leaf. The entire&n; * node structure is generic, and simply stores the information in a way&n; * that&squot;s easy to parse by the protocol interface.&n; */
-multiline_comment|/* &n; * The nodemgr relies heavily on the Driver Model for device callbacks and&n; * driver/device mappings. The old nodemgr used to handle all this itself,&n; * but now we are much simpler because of the LDM.&n; */
+multiline_comment|/*&n; * Basically what we do here is start off retrieving the bus_info block.&n; * From there will fill in some info about the node, verify it is of IEEE&n; * 1394 type, and that the crc checks out ok. After that we start off with&n; * the root directory, and subdirectories. To do this, we retrieve the&n; * quadlet header for a directory, find out the length, and retrieve the&n; * complete directory entry (be it a leaf or a directory). We then process&n; * it and add the info to our structure for that particular node.&n; *&n; * We verify CRC&squot;s along the way for each directory/block/leaf. The entire&n; * node structure is generic, and simply stores the information in a way&n; * that&squot;s easy to parse by the protocol interface.&n; */
+multiline_comment|/*&n; * The nodemgr relies heavily on the Driver Model for device callbacks and&n; * driver/device mappings. The old nodemgr used to handle all this itself,&n; * but now we are much simpler because of the LDM.&n; */
 r_static
 id|DECLARE_MUTEX
 c_func
@@ -1388,12 +1388,6 @@ id|daemonize
 c_func
 (paren
 l_string|&quot;kfwrescan&quot;
-)paren
-suffix:semicolon
-id|allow_signal
-c_func
-(paren
-id|SIGTERM
 )paren
 suffix:semicolon
 id|bus_rescan_devices
@@ -4862,7 +4856,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 DECL|macro|PUT_ENVP
-mdefine_line|#define PUT_ENVP(fmt,val) &t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;envp[i++] = buffer;&t;&t;&t;&t;&t;&bslash;&n;&t;length += snprintf(buffer, buffer_size - length,&t;&bslash;&n;&t;&t;&t;   fmt, val);&t;&t;&t;&t;&bslash;&n;&t;if ((buffer_size - length &lt;= 0) || (i &gt;= num_envp))&t;&bslash;&n;&t;&t;return -ENOMEM;&t;&t;&t;&t;&t;&bslash;&n;&t;++length;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;buffer += length;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define PUT_ENVP(fmt,val) &t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    &t;int printed;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;envp[i++] = buffer;&t;&t;&t;&t;&t;&bslash;&n;&t;printed = snprintf(buffer, buffer_size - length,&t;&bslash;&n;&t;&t;&t;   fmt, val);&t;&t;&t;&t;&bslash;&n;&t;if ((buffer_size - (length+printed) &lt;= 0) || (i &gt;= num_envp))&t;&bslash;&n;&t;&t;return -ENOMEM;&t;&t;&t;&t;&t;&bslash;&n;&t;length += printed+1;&t;&t;&t;&t;&t;&bslash;&n;&t;buffer += printed+1;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 id|PUT_ENVP
 c_func
 (paren
@@ -6162,11 +6156,20 @@ id|cycles
 id|quadlet_t
 id|bc
 suffix:semicolon
+multiline_comment|/* if irm_id == -1 then there is no IRM on this bus */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|host-&gt;is_irm
+op_logical_or
+id|host-&gt;irm_id
+op_eq
+(paren
+id|nodeid_t
+)paren
+op_minus
+l_int|1
 )paren
 r_return
 l_int|1
@@ -6507,12 +6510,6 @@ id|daemonize
 c_func
 (paren
 id|hi-&gt;daemon_name
-)paren
-suffix:semicolon
-id|allow_signal
-c_func
-(paren
-id|SIGTERM
 )paren
 suffix:semicolon
 multiline_comment|/* Setup our device-model entries */

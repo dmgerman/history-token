@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * dv1394.c - DV input/output over IEEE 1394 on OHCI chips&n; *   Copyright (C)2001 Daniel Maas &lt;dmaas@dcine.com&gt;&n; *     receive by Dan Dennedy &lt;dan@dennedy.org&gt;&n; *&n; * based on:&n; *  video1394.c - video driver for OHCI 1394 boards&n; *  Copyright (C)1999,2000 Sebastien Rougeaux &lt;sebastien.rougeaux@anu.edu.au&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
 multiline_comment|/*&n;  OVERVIEW&n;&n;  I designed dv1394 as a &quot;pipe&quot; that you can use to shoot DV onto a&n;  FireWire bus. In transmission mode, dv1394 does the following:&n;&n;   1. accepts contiguous frames of DV data from user-space, via write()&n;      or mmap() (see dv1394.h for the complete API)&n;   2. wraps IEC 61883 packets around the DV data, inserting&n;      empty synchronization packets as necessary&n;   3. assigns accurate SYT timestamps to the outgoing packets&n;   4. shoots them out using the OHCI card&squot;s IT DMA engine&n;&n;   Thanks to Dan Dennedy, we now have a receive mode that does the following:&n;&n;   1. accepts raw IEC 61883 packets from the OHCI card&n;   2. re-assembles the DV data payloads into contiguous frames,&n;      discarding empty packets&n;   3. sends the DV data to user-space via read() or mmap()&n;*/
-multiline_comment|/*&n;  TODO:&n;&n;  - tunable frame-drop behavior: either loop last frame, or halt transmission&n;  &n;  - use a scatter/gather buffer for DMA programs (f-&gt;descriptor_pool)&n;    so that we don&squot;t rely on allocating 64KB of contiguous kernel memory&n;    via pci_alloc_consistent()&n;    &n;  DONE:&n;  - during reception, better handling of dropped frames and continuity errors&n;  - during reception, prevent DMA from bypassing the irq tasklets&n;  - reduce irq rate during reception (1/250 packets).&n;  - add many more internal buffers during reception with scatter/gather dma.&n;  - add dbc (continuity) checking on receive, increment status.dropped_frames&n;    if not continuous.&n;  - restart IT DMA after a bus reset&n;  - safely obtain and release ISO Tx channels in cooperation with OHCI driver&n;  - map received DIF blocks to their proper location in DV frame (ensure&n;    recovery if dropped packet)&n;  - handle bus resets gracefully (OHCI card seems to take care of this itself(!))&n;  - do not allow resizing the user_buf once allocated; eliminate nuke_buffer_mappings&n;  - eliminated #ifdef DV1394_DEBUG_LEVEL by inventing macros debug_printk and irq_printk&n;  - added wmb() and mb() to places where PCI read/write ordering needs to be enforced&n;  - set video-&gt;id correctly&n;  - store video_cards in an array indexed by OHCI card ID, rather than a list&n;  - implement DMA context allocation to cooperate with other users of the OHCI&n;  - fix all XXX showstoppers&n;  - disable IR/IT DMA interrupts on shutdown&n;  - flush pci writes to the card by issuing a read&n;  - devfs and character device dispatching (* needs testing with Linux 2.2.x)&n;  - switch over to the new kernel DMA API (pci_map_*()) (* needs testing on platforms with IOMMU!)&n;  - keep all video_cards in a list (for open() via chardev), set file-&gt;private_data = video&n;  - dv1394_poll should indicate POLLIN when receiving buffers are available&n;  - add proc fs interface to set cip_n, cip_d, syt_offset, and video signal&n;  - expose xmit and recv as separate devices (not exclusive)&n;  - expose NTSC and PAL as separate devices (can be overridden)&n;&n;*/
+multiline_comment|/*&n;  TODO:&n;&n;  - tunable frame-drop behavior: either loop last frame, or halt transmission&n;&n;  - use a scatter/gather buffer for DMA programs (f-&gt;descriptor_pool)&n;    so that we don&squot;t rely on allocating 64KB of contiguous kernel memory&n;    via pci_alloc_consistent()&n;&n;  DONE:&n;  - during reception, better handling of dropped frames and continuity errors&n;  - during reception, prevent DMA from bypassing the irq tasklets&n;  - reduce irq rate during reception (1/250 packets).&n;  - add many more internal buffers during reception with scatter/gather dma.&n;  - add dbc (continuity) checking on receive, increment status.dropped_frames&n;    if not continuous.&n;  - restart IT DMA after a bus reset&n;  - safely obtain and release ISO Tx channels in cooperation with OHCI driver&n;  - map received DIF blocks to their proper location in DV frame (ensure&n;    recovery if dropped packet)&n;  - handle bus resets gracefully (OHCI card seems to take care of this itself(!))&n;  - do not allow resizing the user_buf once allocated; eliminate nuke_buffer_mappings&n;  - eliminated #ifdef DV1394_DEBUG_LEVEL by inventing macros debug_printk and irq_printk&n;  - added wmb() and mb() to places where PCI read/write ordering needs to be enforced&n;  - set video-&gt;id correctly&n;  - store video_cards in an array indexed by OHCI card ID, rather than a list&n;  - implement DMA context allocation to cooperate with other users of the OHCI&n;  - fix all XXX showstoppers&n;  - disable IR/IT DMA interrupts on shutdown&n;  - flush pci writes to the card by issuing a read&n;  - devfs and character device dispatching (* needs testing with Linux 2.2.x)&n;  - switch over to the new kernel DMA API (pci_map_*()) (* needs testing on platforms with IOMMU!)&n;  - keep all video_cards in a list (for open() via chardev), set file-&gt;private_data = video&n;  - dv1394_poll should indicate POLLIN when receiving buffers are available&n;  - add proc fs interface to set cip_n, cip_d, syt_offset, and video signal&n;  - expose xmit and recv as separate devices (not exclusive)&n;  - expose NTSC and PAL as separate devices (can be overridden)&n;&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
@@ -34,7 +34,7 @@ macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;nodemgr.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
-macro_line|#include &quot;highlevel.h&quot;&t;
+macro_line|#include &quot;highlevel.h&quot;
 macro_line|#include &quot;dv1394.h&quot;
 macro_line|#include &quot;dv1394-private.h&quot;
 macro_line|#include &quot;ohci1394.h&quot;
@@ -457,7 +457,7 @@ id|f
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n;   frame_prepare() - build the DMA program for transmitting&n;   &n;   Frame_prepare() must be called OUTSIDE the video-&gt;spinlock.&n;   However, frame_prepare() must still be serialized, so&n;   it should be called WITH the video-&gt;sem taken.&n; */
+multiline_comment|/*&n;   frame_prepare() - build the DMA program for transmitting&n;&n;   Frame_prepare() must be called OUTSIDE the video-&gt;spinlock.&n;   However, frame_prepare() must still be serialized, so&n;   it should be called WITH the video-&gt;sem taken.&n; */
 DECL|function|frame_prepare
 r_static
 r_void
@@ -630,7 +630,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* the block surely won&squot;t cross a page boundary, &n;&t;&t;   since an even number of descriptor_blocks fit on a page */
+multiline_comment|/* the block surely won&squot;t cross a page boundary,&n;&t;&t;   since an even number of descriptor_blocks fit on a page */
 id|block
 op_assign
 op_amp
@@ -1428,7 +1428,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* link this descriptor block into the DMA program by filling in &n;&t;&t;   the branch address of the previous block */
+multiline_comment|/* link this descriptor block into the DMA program by filling in&n;&t;&t;   the branch address of the previous block */
 multiline_comment|/* note: we are not linked into the active DMA chain yet */
 r_if
 c_cond
@@ -1458,7 +1458,7 @@ id|f-&gt;n_packets
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* when we first assemble a new frame, set the final branch &n;&t;   to loop back up to the top */
+multiline_comment|/* when we first assemble a new frame, set the final branch&n;&t;   to loop back up to the top */
 op_star
 (paren
 id|f-&gt;frame_end_branch
@@ -1882,7 +1882,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* the OHCI card has the ability to start ISO transmission on a&n;&t;&t;   particular cycle (start-on-cycle). This way we can ensure that&n;&t;&t;   the first DV frame will have an accurate timestamp.&n;&t;&t;   &n;&t;&t;   However, start-on-cycle only appears to work if the OHCI card &n;&t;&t;   is cycle master! Since the consequences of messing up the first&n;&t;&t;   timestamp are minimal*, just disable start-on-cycle for now.&n;&n;&t;&t;   * my DV deck drops the first few frames before it &quot;locks in;&quot;&n;&t;&t;     so the first frame having an incorrect timestamp is inconsequential.&n;&t;&t;*/
+multiline_comment|/* the OHCI card has the ability to start ISO transmission on a&n;&t;&t;   particular cycle (start-on-cycle). This way we can ensure that&n;&t;&t;   the first DV frame will have an accurate timestamp.&n;&n;&t;&t;   However, start-on-cycle only appears to work if the OHCI card&n;&t;&t;   is cycle master! Since the consequences of messing up the first&n;&t;&t;   timestamp are minimal*, just disable start-on-cycle for now.&n;&n;&t;&t;   * my DV deck drops the first few frames before it &quot;locks in;&quot;&n;&t;&t;     so the first frame having an incorrect timestamp is inconsequential.&n;&t;&t;*/
 macro_line|#if 0
 id|reg_write
 c_func
@@ -2138,7 +2138,7 @@ id|irq_flags
 suffix:semicolon
 )brace
 multiline_comment|/*** RECEIVE FUNCTIONS *****************************************************/
-multiline_comment|/* &n;&t;frame method put_packet&n;&n;&t;map and copy the packet data to its location in the frame &n;&t;based upon DIF section and sequence &n;*/
+multiline_comment|/*&n;&t;frame method put_packet&n;&n;&t;map and copy the packet data to its location in the frame&n;&t;based upon DIF section and sequence&n;*/
 r_static
 r_void
 r_inline
@@ -2669,7 +2669,7 @@ l_int|12
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n;   receive_packets() - build the DMA program for receiving&n;*/
+multiline_comment|/*&n;   receive_packets() - build the DMA program for receiving&n;*/
 DECL|function|receive_packets
 r_static
 r_void
@@ -7608,7 +7608,7 @@ l_int|0x11
 )paren
 (brace
 multiline_comment|/* check for start of frame */
-multiline_comment|/* DRD&gt; Changed to check section type ([0]&gt;&gt;5==0) &n;&t;&t;&t;&t;   and dif sequence ([1]&gt;&gt;4==0) */
+multiline_comment|/* DRD&gt; Changed to check section type ([0]&gt;&gt;5==0)&n;&t;&t;&t;&t;   and dif sequence ([1]&gt;&gt;4==0) */
 id|sof
 op_assign
 (paren
@@ -10031,6 +10031,15 @@ suffix:semicolon
 id|dv1394_cdev.owner
 op_assign
 id|THIS_MODULE
+suffix:semicolon
+id|kobject_set_name
+c_func
+(paren
+op_amp
+id|dv1394_cdev.kobj
+comma
+l_string|&quot;dv1394&quot;
+)paren
 suffix:semicolon
 id|ret
 op_assign

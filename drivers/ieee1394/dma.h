@@ -4,7 +4,7 @@ DECL|macro|IEEE1394_DMA_H
 mdefine_line|#define IEEE1394_DMA_H
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
-multiline_comment|/* struct dma_prog_region&n;   &n;   a small, physically-contiguous DMA buffer with random-access,&n;   synchronous usage characteristics&n;*/
+multiline_comment|/* struct dma_prog_region&n;&n;   a small, physically-contiguous DMA buffer with random-access,&n;   synchronous usage characteristics&n;*/
 DECL|struct|dma_prog_region
 r_struct
 id|dma_prog_region
@@ -99,7 +99,7 @@ op_plus
 id|offset
 suffix:semicolon
 )brace
-multiline_comment|/* struct dma_region&n;   &n;   a large, non-physically-contiguous DMA buffer with streaming,&n;   asynchronous usage characteristics&n;*/
+multiline_comment|/* struct dma_region&n;&n;   a large, non-physically-contiguous DMA buffer with streaming,&n;   asynchronous usage characteristics&n;*/
 DECL|struct|dma_region
 r_struct
 id|dma_region

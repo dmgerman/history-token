@@ -39,7 +39,7 @@ id|end
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * The above structs are internal to highlevel driver handling.  Only the&n; * following structures are of interest to actual highlevel drivers.  &n; */
+multiline_comment|/*&n; * The above structs are internal to highlevel driver handling.  Only the&n; * following structures are of interest to actual highlevel drivers.&n; */
 DECL|struct|hpsb_highlevel
 r_struct
 id|hpsb_highlevel
@@ -184,9 +184,9 @@ DECL|struct|hpsb_address_ops
 r_struct
 id|hpsb_address_ops
 (brace
-multiline_comment|/*&n;         * Null function pointers will make the respective operation complete &n;         * with RCODE_TYPE_ERROR.  Makes for easy to implement read-only &n;         * registers (just leave everything but read NULL).&n;         *&n;         * All functions shall return appropriate IEEE 1394 rcodes.&n;         */
+multiline_comment|/*&n;         * Null function pointers will make the respective operation complete&n;         * with RCODE_TYPE_ERROR.  Makes for easy to implement read-only&n;         * registers (just leave everything but read NULL).&n;         *&n;         * All functions shall return appropriate IEEE 1394 rcodes.&n;         */
 multiline_comment|/* These functions have to implement block reads for themselves. */
-multiline_comment|/* These functions either return a response code&n;           or a negative number. In the first case a response will be generated; in the &n;           later case, no response will be sent and the driver, that handled the request&n;           will send the response itself&n;        */
+multiline_comment|/* These functions either return a response code&n;           or a negative number. In the first case a response will be generated; in the&n;           later case, no response will be sent and the driver, that handled the request&n;           will send the response itself&n;        */
 DECL|member|read
 r_int
 (paren
@@ -351,7 +351,7 @@ op_star
 id|host
 )paren
 suffix:semicolon
-multiline_comment|/* these functions are called to handle transactions. They are called, when&n;   a packet arrives. The flags argument contains the second word of the first header&n;   quadlet of the incoming packet (containing transaction label, retry code,&n;   transaction code and priority). These functions either return a response code&n;   or a negative number. In the first case a response will be generated; in the &n;   later case, no response will be sent and the driver, that handled the request&n;   will send the response itself.&n;*/
+multiline_comment|/* these functions are called to handle transactions. They are called, when&n;   a packet arrives. The flags argument contains the second word of the first header&n;   quadlet of the incoming packet (containing transaction label, retry code,&n;   transaction code and priority). These functions either return a response code&n;   or a negative number. In the first case a response will be generated; in the&n;   later case, no response will be sent and the driver, that handled the request&n;   will send the response itself.&n;*/
 r_int
 id|highlevel_read
 c_func
