@@ -454,6 +454,16 @@ DECL|macro|__NR_tuxcall
 mdefine_line|#define __NR_tuxcall&t;&t;225
 DECL|macro|__NR_sendfile64
 mdefine_line|#define __NR_sendfile64&t;&t;226
+DECL|macro|__NR_io_setup
+mdefine_line|#define __NR_io_setup&t;&t;227
+DECL|macro|__NR_io_destroy
+mdefine_line|#define __NR_io_destroy&t;&t;228
+DECL|macro|__NR_io_getevents
+mdefine_line|#define __NR_io_getevents&t;229
+DECL|macro|__NR_io_submit
+mdefine_line|#define __NR_io_submit&t;&t;230
+DECL|macro|__NR_io_cancel
+mdefine_line|#define __NR_io_cancel&t;&t;231
 DECL|macro|__NR
 mdefine_line|#define __NR(n)&t;#n
 DECL|macro|__syscall_return

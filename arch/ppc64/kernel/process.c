@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/init_task.h&gt;
+macro_line|#include &lt;linux/prctl.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -817,9 +818,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* XXX temporary */
-DECL|macro|PR_FP_EXC_PRECISE
-mdefine_line|#define PR_FP_EXC_PRECISE&t;3&t;/* precise exception mode */
 DECL|function|set_fpexc_mode
 r_int
 id|set_fpexc_mode
