@@ -17,6 +17,8 @@ DECL|macro|BREAKPOINT_INSTRUCTION
 mdefine_line|#define BREAKPOINT_INSTRUCTION&t;0x7fe00008&t;/* trap */
 DECL|macro|MAX_INSN_SIZE
 mdefine_line|#define MAX_INSN_SIZE 1
+DECL|macro|JPROBE_ENTRY
+mdefine_line|#define JPROBE_ENTRY(pentry)&t;(kprobe_opcode_t *)((func_descr_t *)pentry)
 multiline_comment|/* Architecture specific copy of original instruction */
 DECL|struct|arch_specific_insn
 r_struct
