@@ -466,8 +466,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|exp
-op_logical_and
 (paren
 id|err
 op_assign

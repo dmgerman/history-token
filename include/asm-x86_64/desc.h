@@ -610,10 +610,6 @@ id|d.p
 op_assign
 l_int|1
 suffix:semicolon
-id|d.g
-op_assign
-l_int|1
-suffix:semicolon
 id|d.limit1
 op_assign
 (paren
@@ -740,6 +736,8 @@ comma
 id|DESC_LDT
 comma
 id|size
+op_star
+l_int|8
 )paren
 suffix:semicolon
 )brace

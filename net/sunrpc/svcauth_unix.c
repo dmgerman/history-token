@@ -1,5 +1,6 @@
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sunrpc/types.h&gt;
 macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
 macro_line|#include &lt;linux/sunrpc/svcsock.h&gt;
@@ -2036,6 +2037,11 @@ op_assign
 l_string|&quot;null&quot;
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|flavour
 op_assign
 id|RPC_AUTH_NULL
@@ -2574,6 +2580,11 @@ dot
 id|name
 op_assign
 l_string|&quot;unix&quot;
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|flavour
