@@ -626,7 +626,7 @@ c_func
 (paren
 l_string|&quot;xlog_header_check_recover(1)&quot;
 comma
-id|XFS_ERRLEVEL_LOW
+id|XFS_ERRLEVEL_HIGH
 comma
 id|mp
 )paren
@@ -680,7 +680,7 @@ c_func
 (paren
 l_string|&quot;xlog_header_check_recover(2)&quot;
 comma
-id|XFS_ERRLEVEL_LOW
+id|XFS_ERRLEVEL_HIGH
 comma
 id|mp
 )paren
@@ -787,7 +787,7 @@ c_func
 (paren
 l_string|&quot;xlog_header_check_mount&quot;
 comma
-id|XFS_ERRLEVEL_LOW
+id|XFS_ERRLEVEL_HIGH
 comma
 id|mp
 )paren

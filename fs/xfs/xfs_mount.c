@@ -1040,7 +1040,7 @@ c_func
 (paren
 l_string|&quot;xfs_mount_validate_sb(1)&quot;
 comma
-id|XFS_ERRLEVEL_LOW
+id|XFS_ERRLEVEL_HIGH
 comma
 id|mp
 comma
@@ -1084,7 +1084,7 @@ c_func
 (paren
 l_string|&quot;xfs_mount_validate_sb(2)&quot;
 comma
-id|XFS_ERRLEVEL_LOW
+id|XFS_ERRLEVEL_HIGH
 comma
 id|mp
 comma
