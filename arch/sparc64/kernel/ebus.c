@@ -156,7 +156,7 @@ suffix:semicolon
 )brace
 DECL|function|ebus_dma_irq
 r_static
-r_void
+id|irqreturn_t
 id|ebus_dma_irq
 c_func
 (paren
@@ -254,6 +254,9 @@ comma
 id|p-&gt;client_cookie
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -285,7 +288,13 @@ comma
 id|p-&gt;client_cookie
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 DECL|function|ebus_dma_register
 r_int

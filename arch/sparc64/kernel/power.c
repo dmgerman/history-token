@@ -38,7 +38,7 @@ id|button_pressed
 suffix:semicolon
 DECL|function|power_handler
 r_static
-r_void
+id|irqreturn_t
 id|power_handler
 c_func
 (paren
@@ -75,6 +75,10 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: Check registers for status... */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PCI */
 r_extern

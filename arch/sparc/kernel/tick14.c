@@ -160,7 +160,7 @@ r_void
 id|claim_ticker14
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler

@@ -323,7 +323,7 @@ multiline_comment|/*&n; * timer_interrupt() needs to keep up the real-time clock
 DECL|macro|TICK_SIZE
 mdefine_line|#define TICK_SIZE (tick_nsec / 1000)
 DECL|function|timer_interrupt
-r_void
+id|irqreturn_t
 id|timer_interrupt
 c_func
 (paren
@@ -517,6 +517,9 @@ c_func
 op_amp
 id|xtime_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Kick start a stopped clock (procedure from the Sun NVRAM/hostid FAQ). */
