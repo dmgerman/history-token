@@ -10,8 +10,6 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) (((a)&lt;(b))?(a):(b))
 DECL|macro|DEBUG_PROLOG_ENTRY
 mdefine_line|#define DEBUG_PROLOG_ENTRY -1
 multiline_comment|/* typedefs */
@@ -1753,7 +1751,7 @@ id|p_info
 suffix:semicolon
 id|size
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 (paren
@@ -2836,7 +2834,7 @@ id|active
 comma
 id|buf
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|len
@@ -2943,7 +2941,7 @@ id|active
 comma
 id|buf
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|len
@@ -3141,12 +3139,14 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|MIN
+id|min
 c_func
 (paren
 id|numargs
 comma
 (paren
+r_int
+)paren
 (paren
 id|id-&gt;buf_size
 op_div
@@ -3157,7 +3157,6 @@ r_int
 )paren
 op_minus
 l_int|1
-)paren
 )paren
 suffix:semicolon
 id|idx
@@ -3329,12 +3328,14 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|MIN
+id|min
 c_func
 (paren
 id|numargs
 comma
 (paren
+r_int
+)paren
 (paren
 id|id-&gt;buf_size
 op_div
@@ -3345,7 +3346,6 @@ r_int
 )paren
 op_minus
 l_int|1
-)paren
 )paren
 suffix:semicolon
 id|idx
@@ -4898,7 +4898,7 @@ suffix:semicolon
 multiline_comment|/* number of arguments used for sprintf (without the format string) */
 id|num_used_args
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|DEBUG_SPRINTF_MAX_ARGS
