@@ -292,15 +292,6 @@ mdefine_line|#define POOLBITS&t;poolwords*32
 DECL|macro|POOLBYTES
 mdefine_line|#define POOLBYTES&t;poolwords*4
 multiline_comment|/*&n; * For the purposes of better mixing, we use the CRC-32 polynomial as&n; * well to make a twisted Generalized Feedback Shift Reigster&n; *&n; * (See M. Matsumoto &amp; Y. Kurita, 1992.  Twisted GFSR generators.  ACM&n; * Transactions on Modeling and Computer Simulation 2(3):179-194.&n; * Also see M. Matsumoto &amp; Y. Kurita, 1994.  Twisted GFSR generators&n; * II.  ACM Transactions on Mdeling and Computer Simulation 4:254-266)&n; *&n; * Thanks to Colin Plumb for suggesting this.&n; *&n; * We have not analyzed the resultant polynomial to prove it primitive;&n; * in fact it almost certainly isn&squot;t.  Nonetheless, the irreducible factors&n; * of a random large-degree polynomial over GF(2) are more than large enough&n; * that periodicity is not a concern.&n; *&n; * The input hash is much less sensitive than the output hash.  All&n; * that we want of it is that it be a good non-cryptographic hash;&n; * i.e. it not produce collisions when fed &quot;random&quot; data of the sort&n; * we expect to see.  As long as the pool state differs for different&n; * inputs, we have preserved the input entropy and done a good job.&n; * The fact that an intelligent attacker can construct inputs that&n; * will produce controlled alterations to the pool&squot;s state is not&n; * important because we don&squot;t consider such inputs to contribute any&n; * randomness.  The only property we need with respect to them is that&n; * the attacker can&squot;t increase his/her knowledge of the pool&squot;s state.&n; * Since all additions are reversible (knowing the final state and the&n; * input, you can reconstruct the initial state), if an attacker has&n; * any uncertainty about the initial state, he/she can only shuffle&n; * that uncertainty about, but never cause any collisions (which would&n; * decrease the uncertainty).&n; *&n; * The chosen system lets the state of the pool be (essentially) the input&n; * modulo the generator polymnomial.  Now, for random primitive polynomials,&n; * this is a universal class of hash functions, meaning that the chance&n; * of a collision is limited by the attacker&squot;s knowledge of the generator&n; * polynomail, so if it is chosen at random, an attacker can never force&n; * a collision.  Here, we use a fixed polynomial, but we *can* assume that&n; * ###--&gt; it is unknown to the processes generating the input entropy. &lt;-###&n; * Because of this important property, this is a good, collision-resistant&n; * hash; hash collisions will occur no more often than chance.&n; */
-multiline_comment|/*&n; * Linux 2.2 compatibility&n; */
-macro_line|#ifndef DECLARE_WAITQUEUE
-DECL|macro|DECLARE_WAITQUEUE
-mdefine_line|#define DECLARE_WAITQUEUE(WAIT, PTR) struct wait_queue WAIT = { PTR, NULL }
-macro_line|#endif
-macro_line|#ifndef DECLARE_WAIT_QUEUE_HEAD
-DECL|macro|DECLARE_WAIT_QUEUE_HEAD
-mdefine_line|#define DECLARE_WAIT_QUEUE_HEAD(WAIT) struct wait_queue *WAIT
-macro_line|#endif
 multiline_comment|/*&n; * Static global variables&n; */
 DECL|variable|random_state
 r_static
