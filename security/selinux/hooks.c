@@ -3498,6 +3498,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Check permission betweeen a pair of tasks, e.g. signal checks,&n;   fork check, ptrace check, etc. */
 DECL|function|task_has_perm
+r_static
 r_int
 id|task_has_perm
 c_func
@@ -3550,6 +3551,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Check whether a task is allowed to use a capability. */
 DECL|function|task_has_capability
+r_static
 r_int
 id|task_has_capability
 c_func
@@ -3616,6 +3618,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Check whether a task is allowed to use a system operation. */
 DECL|function|task_has_system
+r_static
 r_int
 id|task_has_system
 c_func
@@ -3656,6 +3659,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Check whether a task has a particular permission to an inode.&n;   The &squot;adp&squot; parameter is optional and allows other audit&n;   data to be passed (e.g. the dentry). */
 DECL|function|inode_has_perm
+r_static
 r_int
 id|inode_has_perm
 c_func
@@ -4605,6 +4609,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Check whether a task can perform a filesystem operation. */
 DECL|function|superblock_has_perm
+r_static
 r_int
 id|superblock_has_perm
 c_func
@@ -4841,6 +4846,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Set an inode&squot;s SID to a specified value. */
 DECL|function|inode_security_set_sid
+r_static
 r_int
 id|inode_security_set_sid
 c_func
@@ -16716,6 +16722,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* module stacking operations */
 DECL|function|selinux_register_security
+r_static
 r_int
 id|selinux_register_security
 (paren
@@ -16773,6 +16780,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|selinux_unregister_security
+r_static
 r_int
 id|selinux_unregister_security
 (paren
@@ -17559,6 +17567,7 @@ id|size
 suffix:semicolon
 )brace
 DECL|variable|selinux_ops
+r_static
 r_struct
 id|security_operations
 id|selinux_ops
@@ -18209,6 +18218,7 @@ macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|selinux_init
+r_static
 id|__init
 r_int
 id|selinux_init

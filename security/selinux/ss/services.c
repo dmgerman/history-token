@@ -59,6 +59,7 @@ mdefine_line|#define LOAD_LOCK down(&amp;load_sem)
 DECL|macro|LOAD_UNLOCK
 mdefine_line|#define LOAD_UNLOCK up(&amp;load_sem)
 DECL|variable|sidtab
+r_static
 r_struct
 id|sidtab
 id|sidtab
@@ -82,7 +83,8 @@ id|latest_granting
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Forward declarations. */
+multiline_comment|/* Forward declaration. */
+r_static
 r_int
 id|context_struct_to_string
 c_func
@@ -104,6 +106,7 @@ id|scontext_len
 suffix:semicolon
 multiline_comment|/*&n; * Return the boolean value of a constraint expression&n; * when it is applied to the specified source and target&n; * security contexts.&n; *&n; * xcontext is a special beast...  It is used by the validatetrans rules&n; * only.  For these rules, scontext is the context before the transition,&n; * tcontext is the context after the transition, and xcontext is the context&n; * of the process performing the transition.  All other callers of&n; * constraint_expr_eval should pass in NULL for xcontext.&n; */
 DECL|function|constraint_expr_eval
+r_static
 r_int
 id|constraint_expr_eval
 c_func
@@ -1957,6 +1960,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Write the security context string representation of&n; * the context structure `context&squot; into a dynamically&n; * allocated string of the correct size.  Set `*scontext&squot;&n; * to point to this string and set `*scontext_len&squot; to&n; * the length of the string.&n; */
 DECL|function|context_struct_to_string
+r_static
 r_int
 id|context_struct_to_string
 c_func

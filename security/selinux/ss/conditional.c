@@ -875,6 +875,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|bool_isvalid
+r_static
 r_int
 id|bool_isvalid
 c_func
