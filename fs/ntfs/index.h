@@ -167,8 +167,6 @@ r_else
 id|mark_ntfs_record_dirty
 c_func
 (paren
-id|ictx-&gt;idx_ni
-comma
 id|ictx-&gt;page
 comma
 (paren

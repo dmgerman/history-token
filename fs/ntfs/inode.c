@@ -8811,12 +8811,6 @@ id|ctx-&gt;ntfs_ino
 id|mark_ntfs_record_dirty
 c_func
 (paren
-id|NTFS_I
-c_func
-(paren
-id|ni-&gt;vol-&gt;mft_ino
-)paren
-comma
 id|ctx-&gt;ntfs_ino-&gt;page
 comma
 id|ctx-&gt;ntfs_ino-&gt;page_ofs

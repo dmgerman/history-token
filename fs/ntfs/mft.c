@@ -1070,12 +1070,6 @@ suffix:semicolon
 id|mark_ntfs_record_dirty
 c_func
 (paren
-id|NTFS_I
-c_func
-(paren
-id|ni-&gt;vol-&gt;mft_ino
-)paren
-comma
 id|ni-&gt;page
 comma
 id|ni-&gt;page_ofs
