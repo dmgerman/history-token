@@ -37,8 +37,6 @@ DECL|variable|nf_registered
 r_static
 r_int
 id|nf_registered
-op_assign
-l_int|0
 suffix:semicolon
 DECL|struct|ingress_qdisc_data
 r_struct
@@ -791,26 +789,34 @@ id|nf_hook_ops
 id|ing_ops
 op_assign
 (brace
-(brace
-l_int|NULL
-comma
-l_int|NULL
-)brace
-comma
+dot
+id|hook
+op_assign
 id|ing_hook
 comma
+dot
+id|owner
+op_assign
 id|THIS_MODULE
 comma
+dot
+id|pf
+op_assign
 id|PF_INET
 comma
+dot
+id|hooknum
+op_assign
 id|NF_IP_PRE_ROUTING
 comma
+dot
+id|priority
+op_assign
 id|NF_IP_PRI_FILTER
 op_plus
 l_int|1
+comma
 )brace
-suffix:semicolon
-DECL|function|ingress_init
 r_int
 id|ingress_init
 c_func
@@ -916,7 +922,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-DECL|function|ingress_reset
 r_static
 r_void
 id|ingress_reset
@@ -961,7 +966,6 @@ multiline_comment|/*&n;#endif&n;*/
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
 multiline_comment|/* ------------------------------------------------------------- */
-DECL|function|ingress_destroy
 r_static
 r_void
 id|ingress_destroy
@@ -1050,7 +1054,6 @@ id|p-&gt;q
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|function|ingress_dump
 r_static
 r_int
 id|ingress_dump
@@ -1126,7 +1129,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|variable|ingress_class_ops
 r_static
 r_struct
 id|Qdisc_class_ops

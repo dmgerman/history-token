@@ -715,6 +715,8 @@ r_struct
 id|tc_u_knode
 op_star
 id|n
+op_assign
+l_int|NULL
 suffix:semicolon
 id|sel
 op_assign
@@ -731,8 +733,8 @@ id|sel
 OG
 id|ht-&gt;divisor
 )paren
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 r_for
 c_loop
@@ -757,11 +759,12 @@ id|n-&gt;handle
 op_eq
 id|handle
 )paren
+r_break
+suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|n
-suffix:semicolon
-r_return
-l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|u32_get
