@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/cris/kernel/ptrace.c&n; *&n; * Parts taken from the m68k port.&n; * &n; * Copyright (c) 2000 Axis Communications AB&n; *&n; * Authors:   Bjorn Wesen&n; *&n; * $Log: ptrace.c,v $&n; * Revision 1.3  2000/12/18 23:45:25  bjornw&n; * Linux/CRIS first version&n; *&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/cris/kernel/ptrace.c&n; *&n; * Parts taken from the m68k port.&n; * &n; * Copyright (c) 2000, 2001 Axis Communications AB&n; *&n; * Authors:   Bjorn Wesen&n; *&n; * $Log: ptrace.c,v $&n; * Revision 1.5  2001/03/26 14:24:28  orjanf&n; * * Changed loop condition.&n; * * Added comment documenting non-standard ptrace behaviour.&n; *&n; * Revision 1.4  2001/03/20 19:44:41  bjornw&n; * Use the user_regs macro instead of thread.esp0&n; *&n; * Revision 1.3  2000/12/18 23:45:25  bjornw&n; * Linux/CRIS first version&n; *&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -51,7 +51,7 @@ r_if
 c_cond
 (paren
 id|regno
-op_le
+OL
 id|PT_MAX
 )paren
 r_return
@@ -61,8 +61,10 @@ r_int
 r_int
 op_star
 )paren
+id|user_regs
+c_func
 (paren
-id|task-&gt;thread.esp0
+id|task
 )paren
 )paren
 (braket
@@ -117,7 +119,7 @@ r_if
 c_cond
 (paren
 id|regno
-op_le
+OL
 id|PT_MAX
 )paren
 (paren
@@ -126,8 +128,10 @@ r_int
 r_int
 op_star
 )paren
+id|user_regs
+c_func
 (paren
-id|task-&gt;thread.esp0
+id|task
 )paren
 )paren
 (braket
@@ -145,6 +149,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Note that this implementation of ptrace behaves differently from vanilla&n; * ptrace.  Contrary to what the man page says, in the PTRACE_PEEKTEXT,&n; * PTRACE_PEEKDATA, and PTRACE_PEEKUSER requests the data variable is not&n; * ignored.  Instead, the data variable is expected to point at a location&n; * (in user space) where the result of the ptrace call is written (instead of&n; * being returned).&n; */
 DECL|function|sys_ptrace
 id|asmlinkage
 r_int

@@ -387,5 +387,5 @@ l_string|&quot;RZ1001&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif CONFIG_BLK_DEV_IDEPCI
+macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
 eof

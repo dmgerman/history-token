@@ -70,10 +70,16 @@ DECL|struct|pnp_dev_t
 r_struct
 id|pnp_dev_t
 (brace
+DECL|member|card_vendor
+DECL|member|card_device
 DECL|member|vendor
 DECL|member|device
 r_int
 r_int
+id|card_vendor
+comma
+id|card_device
+comma
 id|vendor
 comma
 id|device
@@ -256,8 +262,12 @@ id|idepnp_devices
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* Generic ESDI/IDE/ATA compatible hard disk controller&r; */
+multiline_comment|/* Generic ESDI/IDE/ATA compatible hard disk controller */
 (brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
 id|ISAPNP_VENDOR
 c_func
 (paren
@@ -282,29 +292,28 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-DECL|macro|NR_PNP_DEVICES
 macro_line|#ifdef MODULE
-DECL|struct|pnp_dev_inst
+DECL|macro|NR_PNP_DEVICES
 mdefine_line|#define NR_PNP_DEVICES 8
-DECL|member|dev
+DECL|struct|pnp_dev_inst
 r_struct
 id|pnp_dev_inst
 (brace
-DECL|member|dev_type
+DECL|member|dev
 r_struct
 id|pci_dev
 op_star
 id|dev
 suffix:semicolon
+DECL|member|dev_type
 r_struct
 id|pnp_dev_t
 op_star
 id|dev_type
 suffix:semicolon
-DECL|variable|devices
 )brace
 suffix:semicolon
-DECL|variable|pnp_ide_dev_idx
+DECL|variable|devices
 r_static
 r_struct
 id|pnp_dev_inst
@@ -313,6 +322,7 @@ id|devices
 id|NR_PNP_DEVICES
 )braket
 suffix:semicolon
+DECL|variable|pnp_ide_dev_idx
 r_static
 r_int
 id|pnp_ide_dev_idx
@@ -321,6 +331,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Probe for ISA PnP IDE interfaces.&n; */
+DECL|function|pnpide_init
 r_void
 id|__init
 id|pnpide_init

@@ -27,7 +27,7 @@ id|S42XX_REQUEST_PORT_OFFSET
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*  &n; *  This card is the oposite of the other cards.  &n; *   0 turns interrupts on... &n; *   0x08 turns them off... &n; */
+multiline_comment|/*  &n; *  This card is the opposite of the other cards.  &n; *   0 turns interrupts on... &n; *   0x08 turns them off... &n; */
 DECL|function|smart4_intr_mask
 r_static
 r_void

@@ -993,7 +993,7 @@ c_cond
 id|st
 )paren
 (brace
-multiline_comment|/* An error has occured */
+multiline_comment|/* An error has occurred */
 id|dprintk
 c_func
 (paren

@@ -11579,7 +11579,7 @@ op_plus
 id|z
 )paren
 suffix:semicolon
-id|scsi_set_pci_info
+id|scsi_set_pci_device
 c_func
 (paren
 id|pshost

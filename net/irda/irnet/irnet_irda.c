@@ -1156,7 +1156,7 @@ op_assign
 l_int|0xffff
 suffix:semicolon
 multiline_comment|/* For W2k compatibility */
-macro_line|#else DISCOVERY_NOMASK
+macro_line|#else /* DISCOVERY_NOMASK */
 id|self-&gt;mask
 op_assign
 id|irlmp_service_to_hint
@@ -1165,7 +1165,7 @@ c_func
 id|S_LAN
 )paren
 suffix:semicolon
-macro_line|#endif DISCOVERY_NOMASK
+macro_line|#endif /* DISCOVERY_NOMASK */
 id|self-&gt;tx_flow
 op_assign
 id|FLOW_START
@@ -2406,7 +2406,7 @@ id|tsap
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif STREAM_COMPAT
+macro_line|#endif /* STREAM_COMPAT */
 multiline_comment|/* Clean up the original one to keep it in listen state */
 id|self-&gt;tsap-&gt;dtsap_sel
 op_assign
@@ -2451,7 +2451,7 @@ op_member_access_from_pointer
 id|chan
 )paren
 suffix:semicolon
-macro_line|#endif CONNECT_INDIC_KICK
+macro_line|#endif /* CONNECT_INDIC_KICK */
 multiline_comment|/* Notify the control channel */
 id|irnet_post_event
 c_func
@@ -2532,7 +2532,7 @@ comma
 id|P_NORMAL
 )paren
 suffix:semicolon
-macro_line|#endif FAIL_SEND_DISCONNECT
+macro_line|#endif /* FAIL_SEND_DISCONNECT */
 multiline_comment|/* Clean up the server to keep it in listen state */
 id|self-&gt;tsap-&gt;dtsap_sel
 op_assign
@@ -2642,7 +2642,7 @@ c_func
 id|hints
 )paren
 suffix:semicolon
-macro_line|#endif ADVERTISE_HINT
+macro_line|#endif /* ADVERTISE_HINT */
 multiline_comment|/* Register with LM-IAS (so that people can connect to us) */
 id|irnet_server.ias_obj
 op_assign
@@ -2741,7 +2741,7 @@ c_func
 id|irnet_server.skey
 )paren
 suffix:semicolon
-macro_line|#endif ADVERTISE_HINT
+macro_line|#endif /* ADVERTISE_HINT */
 multiline_comment|/* Unregister with LM-IAS */
 r_if
 c_cond
@@ -3307,7 +3307,7 @@ id|self-&gt;tsap
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif STREAM_COMPAT
+macro_line|#endif /* STREAM_COMPAT */
 multiline_comment|/* At this point, IrLMP has assigned our source address */
 id|self-&gt;saddr
 op_assign
@@ -3359,7 +3359,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-macro_line|#else PASS_CONNECT_PACKETS
+macro_line|#else /* PASS_CONNECT_PACKETS */
 id|DERROR
 c_func
 (paren
@@ -3375,7 +3375,7 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Note : will be optimised with other kfree... */
-macro_line|#endif PASS_CONNECT_PACKETS
+macro_line|#endif /* PASS_CONNECT_PACKETS */
 )brace
 r_else
 id|kfree_skb
@@ -3436,6 +3436,11 @@ op_star
 )paren
 id|instance
 suffix:semicolon
+id|LOCAL_FLOW
+id|oldflow
+op_assign
+id|self-&gt;tx_flow
+suffix:semicolon
 id|DENTER
 c_func
 (paren
@@ -3475,11 +3480,30 @@ comma
 l_string|&quot;IrTTP wants us to start again&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Check if we really need to wake up PPP */
+r_if
+c_cond
+(paren
+id|oldflow
+op_eq
+id|FLOW_STOP
+)paren
+(brace
 id|ppp_output_wakeup
 c_func
 (paren
 op_amp
 id|self-&gt;chan
+)paren
+suffix:semicolon
+)brace
+r_else
+id|DEBUG
+c_func
+(paren
+id|IRDA_CB_INFO
+comma
+l_string|&quot;But we were already transmitting !!!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3816,7 +3840,7 @@ id|tsap
 )paren
 suffix:semicolon
 multiline_comment|/* Note : no return, fall through... */
-macro_line|#else ALLOW_SIMULT_CONNECT
+macro_line|#else /* ALLOW_SIMULT_CONNECT */
 id|irnet_disconnect_server
 c_func
 (paren
@@ -3827,7 +3851,7 @@ id|skb
 suffix:semicolon
 r_return
 suffix:semicolon
-macro_line|#endif ALLOW_SIMULT_CONNECT
+macro_line|#endif /* ALLOW_SIMULT_CONNECT */
 )brace
 multiline_comment|/* So : at this point, we have a socket, and it is idle. Good ! */
 id|irnet_connect_socket
@@ -3875,7 +3899,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-macro_line|#else PASS_CONNECT_PACKETS
+macro_line|#else /* PASS_CONNECT_PACKETS */
 id|DERROR
 c_func
 (paren
@@ -3891,7 +3915,7 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Note : will be optimised with other kfree... */
-macro_line|#endif PASS_CONNECT_PACKETS
+macro_line|#endif /* PASS_CONNECT_PACKETS */
 )brace
 r_else
 id|kfree_skb
@@ -4239,7 +4263,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif DISCOVERY_EVENTS
+macro_line|#endif /* DISCOVERY_EVENTS */
 multiline_comment|/*********************** PROC ENTRY CALLBACKS ***********************/
 multiline_comment|/*&n; * We create a instance in the /proc filesystem, and here we take care&n; * of that...&n; */
 macro_line|#ifdef CONFIG_PROC_FS
@@ -4683,7 +4707,7 @@ op_assign
 id|hashbin_new
 c_func
 (paren
-id|HB_LOCAL
+id|HB_NOLOCK
 )paren
 suffix:semicolon
 id|DABORT
@@ -4810,7 +4834,7 @@ comma
 id|proc_irda
 )paren
 suffix:semicolon
-macro_line|#endif CONFIG_PROC_FS
+macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* Remove our IrNET server from existence */
 id|irnet_destroy_server
 c_func

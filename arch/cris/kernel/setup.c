@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: setup.c,v 1.11 2001/03/02 15:52:03 bjornw Exp $&n; *&n; *  linux/arch/cris/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2001  Axis Communications AB&n; */
+multiline_comment|/* $Id: setup.c,v 1.14 2001/04/03 12:54:12 starvik Exp $&n; *&n; *  linux/arch/cris/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2001  Axis Communications AB&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of initialization&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -100,7 +100,7 @@ comma
 id|romfs_in_flash
 suffix:semicolon
 multiline_comment|/* from head.S */
-multiline_comment|/* This mainly sets up the memory area, and can be really confusing.&n; *&n; * The physical DRAM is virtually mapped into dram_start to dram_end&n; * (usually c0000000 to c0000000 + DRAM size). The physical address is&n; * given by the macro __pa().&n; *&n; * In this DRAM, the kernel code and data is loaded, in the beginning.&n; * It really starts at c00a0000 to make room for some special pages - &n; * the start address is text_start. The kernel data ends at _end. After&n; * this the ROM filesystem is appended (if there is any).&n; * &n; * Between this address and dram_end, we have RAM pages usable to the&n; * boot code and the system.&n; *&n; */
+multiline_comment|/* This mainly sets up the memory area, and can be really confusing.&n; *&n; * The physical DRAM is virtually mapped into dram_start to dram_end&n; * (usually c0000000 to c0000000 + DRAM size). The physical address is&n; * given by the macro __pa().&n; *&n; * In this DRAM, the kernel code and data is loaded, in the beginning.&n; * It really starts at c0004000 to make room for some special pages - &n; * the start address is text_start. The kernel data ends at _end. After&n; * this the ROM filesystem is appended (if there is any).&n; * &n; * Between this address and dram_end, we have RAM pages usable to the&n; * boot code and the system.&n; *&n; */
 r_void
 id|__init
 DECL|function|setup_arch
@@ -138,14 +138,6 @@ op_star
 id|b
 )paren
 suffix:semicolon
-macro_line|#if (defined(CONFIG_CHR_DEV_FLASH) || defined(CONFIG_BLK_DEV_FLASH))
-multiline_comment|/* TODO: move this into flash_init I think */
-id|flash_probe
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* register an initial console printing routine for printk&squot;s */
 id|init_etrax_debug
 c_func
@@ -330,7 +322,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* we dont use a command line yet, so just let it be an empty string */
+multiline_comment|/* we dont use a command line yet, so just let it be an empty string &n;&t;   to start with */
 op_star
 id|cmdline_p
 op_assign

@@ -10,6 +10,7 @@ macro_line|#include &lt;sys/sysmacros.h&gt;
 macro_line|#include &lt;unistd.h&gt;&t;/* contains read/write */
 macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;linux/a.out.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;errno.h&gt;
 DECL|macro|MINIX_HEADER
 mdefine_line|#define MINIX_HEADER 32

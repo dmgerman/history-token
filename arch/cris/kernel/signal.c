@@ -19,6 +19,7 @@ DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
 multiline_comment|/* a syscall in Linux/CRIS is a break 13 instruction which is 2 bytes */
 multiline_comment|/* manipulate regs so that upon return, it will be re-executed */
+multiline_comment|/* We rely on that pc points to the instruction after &quot;break 13&quot;, so the&n; * library must never do strange things like putting it in a delay slot.&n; */
 DECL|macro|RESTART_CRIS_SYS
 mdefine_line|#define RESTART_CRIS_SYS(regs) regs-&gt;r10 = regs-&gt;orig_r10; regs-&gt;irp -= 2;
 r_int
@@ -222,7 +223,7 @@ id|err
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Atomically swap in the new signal mask, and wait for a signal.&n; */
+multiline_comment|/*&n; * Atomically swap in the new signal mask, and wait for a signal.  Define &n; * dummy arguments to be able to reach the regs argument.  (Note that this&n; * arrangement relies on old_sigset_t occupying one register.)&n; */
 r_int
 DECL|function|sys_sigsuspend
 id|sys_sigsuspend
@@ -230,23 +231,28 @@ c_func
 (paren
 id|old_sigset_t
 id|mask
-)paren
-(brace
+comma
+r_int
+id|r11
+comma
+r_int
+id|r12
+comma
+r_int
+id|r13
+comma
+r_int
+id|mof
+comma
+r_int
+id|srp
+comma
 r_struct
 id|pt_regs
 op_star
 id|regs
-op_assign
-(paren
-r_struct
-id|pt_regs
-op_star
 )paren
-id|current_regs
-c_func
-(paren
-)paren
-suffix:semicolon
+(brace
 id|sigset_t
 id|saveset
 suffix:semicolon
@@ -327,6 +333,7 @@ id|EINTR
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Define dummy arguments to be able to reach the regs argument.  (Note that&n; * this arrangement relies on size_t occupying one register.)&n; */
 r_int
 DECL|function|sys_rt_sigsuspend
 id|sys_rt_sigsuspend
@@ -338,23 +345,25 @@ id|unewset
 comma
 r_int
 id|sigsetsize
-)paren
-(brace
+comma
+r_int
+id|r12
+comma
+r_int
+id|r13
+comma
+r_int
+id|mof
+comma
+r_int
+id|srp
+comma
 r_struct
 id|pt_regs
 op_star
 id|regs
-op_assign
-(paren
-r_struct
-id|pt_regs
-op_star
 )paren
-id|current_regs
-c_func
-(paren
-)paren
-suffix:semicolon
+(brace
 id|sigset_t
 id|saveset
 comma
@@ -857,30 +866,37 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Define dummy arguments to be able to reach the regs argument.  */
 DECL|function|sys_sigreturn
 id|asmlinkage
 r_int
 id|sys_sigreturn
 c_func
 (paren
-r_void
-)paren
-(brace
+r_int
+id|r10
+comma
+r_int
+id|r11
+comma
+r_int
+id|r12
+comma
+r_int
+id|r13
+comma
+r_int
+id|mof
+comma
+r_int
+id|srp
+comma
 r_struct
 id|pt_regs
 op_star
 id|regs
-op_assign
-(paren
-r_struct
-id|pt_regs
-op_star
 )paren
-id|current_regs
-c_func
-(paren
-)paren
-suffix:semicolon
+(brace
 r_struct
 id|sigframe
 op_star
@@ -1044,30 +1060,37 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Define dummy arguments to be able to reach the regs argument.  */
 DECL|function|sys_rt_sigreturn
 id|asmlinkage
 r_int
 id|sys_rt_sigreturn
 c_func
 (paren
-r_void
-)paren
-(brace
+r_int
+id|r10
+comma
+r_int
+id|r11
+comma
+r_int
+id|r12
+comma
+r_int
+id|r13
+comma
+r_int
+id|mof
+comma
+r_int
+id|srp
+comma
 r_struct
 id|pt_regs
 op_star
 id|regs
-op_assign
-(paren
-r_struct
-id|pt_regs
-op_star
 )paren
-id|current_regs
-c_func
-(paren
-)paren
-suffix:semicolon
+(brace
 r_struct
 id|rt_sigframe
 op_star
@@ -1571,7 +1594,6 @@ op_amp
 id|frame-&gt;retcode
 suffix:semicolon
 multiline_comment|/* This is movu.w __NR_sigreturn, r9; break 13; */
-multiline_comment|/* TODO: check byteorder */
 id|err
 op_or_assign
 id|__put_user
@@ -2211,7 +2233,7 @@ id|current-&gt;sigmask_lock
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Note that &squot;init&squot; is a special process: it doesn&squot;t get signals it doesn&squot;t&n; * want to handle. Thus you cannot kill init even with a SIGKILL even by&n; * mistake.&n; */
+multiline_comment|/*&n; * Note that &squot;init&squot; is a special process: it doesn&squot;t get signals it doesn&squot;t&n; * want to handle. Thus you cannot kill init even with a SIGKILL even by&n; * mistake.&n; *&n; * Also note that the regs structure given here as an argument, is the latest&n; * pushed pt_regs. It may or may not be the same as the first pushed registers&n; * when the initial usermode-&gt;kernelmode transition took place. Therefore&n; * we can use user_mode(regs) to see if we came directly from kernel or user&n; * mode below.&n; */
 DECL|function|do_signal
 r_int
 id|do_signal

@@ -1657,14 +1657,6 @@ suffix:semicolon
 r_case
 id|LM_CONNECT_INDICATION
 suffix:colon
-id|irlmp_next_lsap_state
-c_func
-(paren
-id|self
-comma
-id|LSAP_CONNECT_PEND
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1686,6 +1678,14 @@ suffix:semicolon
 id|self-&gt;conn_skb
 op_assign
 id|skb
+suffix:semicolon
+id|irlmp_next_lsap_state
+c_func
+(paren
+id|self
+comma
+id|LSAP_CONNECT_PEND
+)paren
 suffix:semicolon
 id|irlmp_do_lap_event
 c_func
@@ -2018,6 +2018,33 @@ r_case
 id|LM_CONNECT_REQUEST
 suffix:colon
 multiline_comment|/* Keep state */
+r_break
+suffix:semicolon
+r_case
+id|LM_CONNECT_INDICATION
+suffix:colon
+multiline_comment|/* Will happen in some rare cases when the socket get stuck,&n;&t;&t; * the other side retries the connect request.&n;&t;&t; * We just unstuck the socket - Jean II */
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+id|__FUNCTION__
+l_string|&quot;(), LM_CONNECT_INDICATION, &quot;
+l_string|&quot;LSAP stuck in CONNECT_PEND state...&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Keep state */
+id|irlmp_do_lap_event
+c_func
+(paren
+id|self-&gt;lap
+comma
+id|LM_LAP_CONNECT_REQUEST
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case

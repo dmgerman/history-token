@@ -2759,6 +2759,11 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IRDA
+id|irda_proto_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|irda_device_init
 c_func
 (paren

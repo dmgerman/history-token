@@ -544,6 +544,10 @@ c_func
 id|result
 )paren
 suffix:semicolon
+id|result-&gt;d_vfs_flags
+op_or_assign
+id|DCACHE_REFERENCED
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren

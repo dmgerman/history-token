@@ -2718,15 +2718,27 @@ id|p-&gt;pdeath_signal
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Give the parent&squot;s dynamic priority entirely to the child.  The&n;&t; * total amount of dynamic priorities in the system doesn&squot;t change&n;&t; * (more scheduling fairness), but the child will run first, which&n;&t; * is especially useful in avoiding a lot of copy-on-write faults&n;&t; * if the child for a fork() just wants to do a few simple things&n;&t; * and then exec(). This is only important in the first timeslice.&n;&t; * In the long run, the scheduling behavior is unchanged.&n;&t; */
+multiline_comment|/*&n;&t; * &quot;share&quot; dynamic priority between parent and child, thus the&n;&t; * total amount of dynamic priorities in the system doesnt change,&n;&t; * more scheduling fairness. This is only important in the first&n;&t; * timeslice, on the long run the scheduling behaviour is unchanged.&n;&t; */
 id|p-&gt;counter
 op_assign
+(paren
 id|current-&gt;counter
+op_plus
+l_int|1
+)paren
+op_rshift
+l_int|1
 suffix:semicolon
 id|current-&gt;counter
-op_assign
-l_int|0
+op_rshift_assign
+l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|current-&gt;counter
+)paren
 id|current-&gt;need_resched
 op_assign
 l_int|1

@@ -1,8 +1,16 @@
-multiline_comment|/* $Id: semaphore-helper.h,v 1.1 2000/07/13 16:52:42 bjornw Exp $&n; *&n; * SMP- and interrupt-safe semaphores helper functions. Generic versions, no&n; * optimizations whatsoever... &n; *&n; */
+multiline_comment|/* $Id: semaphore-helper.h,v 1.3 2001/03/26 15:00:33 orjanf Exp $&n; *&n; * SMP- and interrupt-safe semaphores helper functions. Generic versions, no&n; * optimizations whatsoever... &n; *&n; */
 macro_line|#ifndef _ASM_SEMAPHORE_HELPER_H
 DECL|macro|_ASM_SEMAPHORE_HELPER_H
 mdefine_line|#define _ASM_SEMAPHORE_HELPER_H
 macro_line|#include &lt;asm/atomic.h&gt;
+DECL|macro|read
+mdefine_line|#define read(a) ((a)-&gt;counter)
+DECL|macro|inc
+mdefine_line|#define inc(a) (((a)-&gt;counter)++)
+DECL|macro|dec
+mdefine_line|#define dec(a) (((a)-&gt;counter)--)
+DECL|macro|count_inc
+mdefine_line|#define count_inc(a) ((*(a))++)
 multiline_comment|/*&n; * These two _must_ execute atomically wrt each other.&n; */
 DECL|function|wake_one_more
 r_static
@@ -25,14 +33,6 @@ id|sem-&gt;waking
 )paren
 suffix:semicolon
 )brace
-DECL|macro|read
-mdefine_line|#define read(a) ((a)-&gt;counter)
-DECL|macro|inc
-mdefine_line|#define inc(a) (((a)-&gt;counter)++)
-DECL|macro|dec
-mdefine_line|#define dec(a) (((a)-&gt;counter)--)
-DECL|macro|count_inc
-mdefine_line|#define count_inc(a) ((*(a))++)
 DECL|function|waking_non_zero
 r_static
 r_inline

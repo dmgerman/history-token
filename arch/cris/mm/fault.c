@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/cris/mm/fault.c&n; *&n; *  Copyright (C) 2000  Axis Communications AB&n; *&n; *  Authors:  Bjorn Wesen &n; * &n; *  $Log: fault.c,v $&n; *  Revision 1.9  2001/03/05 13:22:20  bjornw&n; *  Spell-fix and fix in vmalloc_fault handling&n; *&n; *  Revision 1.8  2000/11/22 14:45:31  bjornw&n; *  * 2.4.0-test10 removed the set_pgdir instantaneous kernel global mapping&n; *    into all processes. Instead we fill in the missing PTE entries on demand.&n; *&n; *  Revision 1.7  2000/11/21 16:39:09  bjornw&n; *  fixup switches frametype&n; *&n; *  Revision 1.6  2000/11/17 16:54:08  bjornw&n; *  More detailed siginfo reporting&n; *&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/cris/mm/fault.c&n; *&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:  Bjorn Wesen &n; * &n; *  $Log: fault.c,v $&n; *  Revision 1.12  2001/04/04 10:51:14  bjornw&n; *  mmap_sem is grabbed for reading&n; *&n; *  Revision 1.11  2001/03/23 07:36:07  starvik&n; *  Corrected according to review remarks&n; *&n; *  Revision 1.10  2001/03/21 16:10:11  bjornw&n; *  CRIS_FRAME_FIXUP not needed anymore, use FRAME_NORMAL&n; *&n; *  Revision 1.9  2001/03/05 13:22:20  bjornw&n; *  Spell-fix and fix in vmalloc_fault handling&n; *&n; *  Revision 1.8  2000/11/22 14:45:31  bjornw&n; *  * 2.4.0-test10 removed the set_pgdir instantaneous kernel global mapping&n; *    into all processes. Instead we fill in the missing PTE entries on demand.&n; *&n; *  Revision 1.7  2000/11/21 16:39:09  bjornw&n; *  fixup switches frametype&n; *&n; *  Revision 1.6  2000/11/17 16:54:08  bjornw&n; *  More detailed siginfo reporting&n; *&n; *&n; */
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -138,6 +138,9 @@ op_amp
 id|PAGE_MASK
 suffix:semicolon
 multiline_comment|/* get faulting address */
+id|D
+c_func
+(paren
 id|page_id
 op_assign
 id|IO_EXTRACT
@@ -148,6 +151,55 @@ comma
 id|page_id
 comma
 id|cause
+)paren
+)paren
+suffix:semicolon
+id|D
+c_func
+(paren
+id|acc
+op_assign
+id|IO_EXTRACT
+c_func
+(paren
+id|R_MMU_CAUSE
+comma
+id|acc_excp
+comma
+id|cause
+)paren
+)paren
+suffix:semicolon
+id|D
+c_func
+(paren
+id|inv
+op_assign
+id|IO_EXTRACT
+c_func
+(paren
+id|R_MMU_CAUSE
+comma
+id|inv_excp
+comma
+id|cause
+)paren
+)paren
+suffix:semicolon
+id|D
+c_func
+(paren
+id|index
+op_assign
+id|IO_EXTRACT
+c_func
+(paren
+id|R_TLB_SELECT
+comma
+id|index
+comma
+id|select
+)paren
 )paren
 suffix:semicolon
 id|miss
@@ -172,42 +224,6 @@ comma
 id|we_excp
 comma
 id|cause
-)paren
-suffix:semicolon
-id|acc
-op_assign
-id|IO_EXTRACT
-c_func
-(paren
-id|R_MMU_CAUSE
-comma
-id|acc_excp
-comma
-id|cause
-)paren
-suffix:semicolon
-id|inv
-op_assign
-id|IO_EXTRACT
-c_func
-(paren
-id|R_MMU_CAUSE
-comma
-id|inv_excp
-comma
-id|cause
-)paren
-suffix:semicolon
-id|index
-op_assign
-id|IO_EXTRACT
-c_func
-(paren
-id|R_TLB_SELECT
-comma
-id|index
-comma
-id|select
 )paren
 suffix:semicolon
 id|D
@@ -911,7 +927,7 @@ suffix:semicolon
 )brace
 id|no_context
 suffix:colon
-multiline_comment|/* Are we prepared to handle this kernel fault?&n;&t; *&n;&t; * (The kernel has valid exception-points in the source &n;&t; *  when it accesses user-memory. When it fails in one&n;&t; *  of those points, we find it in a table and do a jump&n;&t; *  to some fixup code that loads an appropriate error&n;&t; *  code)&n;&t; */
+multiline_comment|/* Are we prepared to handle this kernel fault?&n;&t; *&n;&t; * (The kernel has valid exception-points in the source &n;&t; *  when it acesses user-memory. When it fails in one&n;&t; *  of those points, we find it in a table and do a jump&n;&t; *  to some fixup code that loads an appropriate error&n;&t; *  code)&n;&t; */
 r_if
 c_cond
 (paren
@@ -928,13 +944,15 @@ op_ne
 l_int|0
 )paren
 (brace
+multiline_comment|/* Adjust the instruction pointer in the stackframe */
 id|regs-&gt;irp
 op_assign
 id|fixup
 suffix:semicolon
+multiline_comment|/* We do not want to return by restoring the CPU-state&n;&t;&t; * anymore, so switch frame-types (see ptrace.h)&n;&t;&t; */
 id|regs-&gt;frametype
 op_assign
-id|CRIS_FRAME_FIXUP
+id|CRIS_FRAME_NORMAL
 suffix:semicolon
 id|D
 c_func
@@ -951,7 +969,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Oops. The kernel tried to access some bad page. We&squot;ll have to&n; * terminate things with extreme prejudice.&n; */
+multiline_comment|/*&n;&t; * Oops. The kernel tried to access some bad page. We&squot;ll have to&n;&t; * terminate things with extreme prejudice.&n;&t; */
 r_if
 c_cond
 (paren

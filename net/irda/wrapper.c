@@ -408,7 +408,7 @@ op_plus
 id|n
 )paren
 suffix:semicolon
-macro_line|#else ifdef __BIG_ENDIAN
+macro_line|#else /* ifdef __BIG_ENDIAN */
 id|n
 op_add_assign
 id|stuff_byte

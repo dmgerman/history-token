@@ -585,7 +585,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Clear and enable interrupts, but only on PPC. On 68K it&squot;s done  */
-multiline_comment|/* for us by the the main VIA driver in arch/m68k/mac/via.c        */
+multiline_comment|/* for us by the main VIA driver in arch/m68k/mac/via.c        */
 macro_line|#ifndef CONFIG_MAC
 id|via
 (braket

@@ -106,8 +106,8 @@ DECL|macro|__NR_getegid
 mdefine_line|#define __NR_getegid&t;&t; 50
 DECL|macro|__NR_acct
 mdefine_line|#define __NR_acct&t;&t; 51
-DECL|macro|__NR_phys
-mdefine_line|#define __NR_phys&t;&t; 52
+DECL|macro|__NR_umount2
+mdefine_line|#define __NR_umount2&t;&t; 52
 DECL|macro|__NR_lock
 mdefine_line|#define __NR_lock&t;&t; 53
 DECL|macro|__NR_ioctl

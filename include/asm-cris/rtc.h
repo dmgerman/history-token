@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: rtc.h,v 1.1 2000/07/10 16:32:31 bjornw Exp $ */
+multiline_comment|/* $Id: rtc.h,v 1.3 2001/03/21 09:56:31 magnusmn Exp $ */
 macro_line|#ifndef RTC_H
 DECL|macro|RTC_H
 mdefine_line|#define RTC_H
@@ -18,7 +18,29 @@ DECL|macro|RTC_WEEKDAY
 mdefine_line|#define RTC_WEEKDAY 5
 DECL|macro|RTC_YEAR
 mdefine_line|#define RTC_YEAR 6
-macro_line|#ifdef CONFIG_DS1302
+DECL|macro|RTC_CONTROL
+mdefine_line|#define RTC_CONTROL 7
+multiline_comment|/* Bits in CONTROL register */
+DECL|macro|RTC_CONTROL_WRITEPROTECT
+mdefine_line|#define RTC_CONTROL_WRITEPROTECT 0x80
+DECL|macro|RTC_TRICKLECHARGER
+mdefine_line|#define RTC_TRICKLECHARGER 8
+multiline_comment|/* Bits in TRICKLECHARGER register TCS TCS TCS TCS DS DS RS RS */
+DECL|macro|RTC_TCR_PATTERN
+mdefine_line|#define   RTC_TCR_PATTERN 0xA0 /* 1010xxxx */
+DECL|macro|RTC_TCR_1DIOD
+mdefine_line|#define   RTC_TCR_1DIOD 0x04 /* xxxx01xx */
+DECL|macro|RTC_TCR_2DIOD
+mdefine_line|#define   RTC_TCR_2DIOD 0x08 /* xxxx10xx */
+DECL|macro|RTC_TCR_DISABLED
+mdefine_line|#define   RTC_TCR_DISABLED 0x00 /* xxxxxx00 Disabled */
+DECL|macro|RTC_TCR_2KOHM
+mdefine_line|#define   RTC_TCR_2KOHM 0x01      /* xxxxxx01 2KOhm */
+DECL|macro|RTC_TCR_4KOHM
+mdefine_line|#define   RTC_TCR_4KOHM 0x02      /* xxxxxx10 4kOhm */
+DECL|macro|RTC_TCR_8KOHM
+mdefine_line|#define   RTC_TCR_8KOHM 0x03      /* xxxxxx11 8kOhm */
+macro_line|#ifdef CONFIG_ETRAX_DS1302
 DECL|macro|CMOS_READ
 mdefine_line|#define CMOS_READ(x) ds1302_readreg(x)
 DECL|macro|CMOS_WRITE
@@ -87,5 +109,7 @@ DECL|macro|RTC_RD_TIME
 mdefine_line|#define RTC_RD_TIME&t;_IOR(&squot;p&squot;, 0x09, struct rtc_time) /* Read RTC time   */
 DECL|macro|RTC_SET_TIME
 mdefine_line|#define RTC_SET_TIME&t;_IOW(&squot;p&squot;, 0x0a, struct rtc_time) /* Set RTC time    */
+DECL|macro|RTC_SET_CHARGE
+mdefine_line|#define RTC_SET_CHARGE  _IOW(&squot;p&squot;, 0x0b, int) /* Set CHARGE mode    */
 macro_line|#endif
 eof

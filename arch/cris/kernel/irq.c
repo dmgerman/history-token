@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: irq.c,v 1.11 2001/02/27 13:52:52 bjornw Exp $&n; *&n; *&t;linux/arch/cris/kernel/irq.c&n; *&n; *      Copyright (c) 2000,2001 Axis Communications AB&n; *&n; *      Authors: Bjorn Wesen (bjornw@axis.com)&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * Notice Linux/CRIS: these routines do not care about SMP&n; *&n; */
+multiline_comment|/* $Id: irq.c,v 1.14 2001/04/17 13:58:39 orjanf Exp $&n; *&n; *&t;linux/arch/cris/kernel/irq.c&n; *&n; *      Copyright (c) 2000,2001 Axis Communications AB&n; *&n; *      Authors: Bjorn Wesen (bjornw@axis.com)&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * Notice Linux/CRIS: these routines do not care about SMP&n; *&n; */
 multiline_comment|/*&n; * IRQ&squot;s are in fact implemented a bit like signal handlers for the kernel.&n; * Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
@@ -461,7 +461,7 @@ l_int|25
 comma
 l_int|0x2000000
 )paren
-multiline_comment|/* IRQ 26-30 are resereved */
+multiline_comment|/* IRQ 26-30 are reserved */
 id|BUILD_IRQ
 c_func
 (paren
@@ -981,12 +981,10 @@ op_increment
 suffix:semicolon
 id|action
 op_assign
-op_star
-(paren
-id|irq
-op_plus
 id|irq_action
-)paren
+(braket
+id|irq
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -1011,12 +1009,10 @@ c_func
 suffix:semicolon
 id|action
 op_assign
-op_star
-(paren
-id|irq
-op_plus
 id|irq_action
-)paren
+(braket
+id|irq
+)braket
 suffix:semicolon
 id|do_random
 op_assign
@@ -1545,9 +1541,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|irq
-(braket
 id|irq_action
+(braket
+id|irq
 )braket
 )paren
 (brace
@@ -1634,21 +1630,21 @@ r_void
 suffix:semicolon
 multiline_comment|/* from entry.S */
 r_void
-id|gdb_handle_breakpoint
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* from traps.c */
-r_void
 id|do_sigtrap
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* also from traps.c */
+multiline_comment|/* from entry.S */
+r_void
+id|gdb_handle_breakpoint
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* from entry.S */
 DECL|function|init_IRQ
 r_void
 id|init_IRQ
@@ -1831,7 +1827,7 @@ comma
 id|system_call
 )paren
 suffix:semicolon
-multiline_comment|/* setup a breakpoint handler for debugging used for both user and&n;           kernel mode debugging  (which is why it is not inside an ifdef&n;           CONFIG_KGDB) */
+multiline_comment|/* setup a breakpoint handler for debugging used for both user and&n;           kernel mode debugging  (which is why it is not inside an ifdef&n;           CONFIG_ETRAX_KGDB) */
 id|set_break_vector
 c_func
 (paren
@@ -1840,7 +1836,7 @@ comma
 id|gdb_handle_breakpoint
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_KGDB
+macro_line|#ifdef CONFIG_ETRAX_KGDB
 multiline_comment|/* setup kgdb if its enabled, and break into the debugger */
 id|kgdb_init
 c_func

@@ -41,7 +41,8 @@ mdefine_line|#define IM_RESET_DELAY&t;60 /* seconds allowed for a reset */
 multiline_comment|/* driver debugging - #undef all for normal operation */
 multiline_comment|/* if defined: count interrupts and ignore this special one: */
 DECL|macro|IM_DEBUG_TIMEOUT
-macro_line|#undef&t;IM_DEBUG_TIMEOUT&t;50            
+macro_line|#undef&t;IM_DEBUG_TIMEOUT&t;
+singleline_comment|//50            
 DECL|macro|TIMEOUT_PUN
 mdefine_line|#define TIMEOUT_PUN&t;0
 DECL|macro|TIMEOUT_LUN

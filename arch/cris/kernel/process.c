@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: process.c,v 1.12 2001/02/27 13:52:52 bjornw Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; */
+multiline_comment|/* $Id: process.c,v 1.13 2001/03/20 19:44:06 bjornw Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; *  $Log: process.c,v $&n; *  Revision 1.13  2001/03/20 19:44:06  bjornw&n; *  Use the 7th syscall argument for regs instead of current_regs&n; *&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 singleline_comment|//#define DEBUG
 multiline_comment|/*&n; * Initial task structure. Make this a per-architecture thing,&n; * because different architectures tend to have different&n; * alignment requirements and potentially different initial&n; * setup.&n; */
@@ -97,9 +98,6 @@ id|hlt_counter
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* in a system call, set_esp0 is called to remember the stack frame, therefore&n;   in the implementation of syscalls we can use that value to access the stack&n;   frame and saved registers.&n;*/
-DECL|macro|currentregs
-mdefine_line|#define currentregs ((struct pt_regs *)current-&gt;thread.esp0)
 DECL|function|disable_hlt
 r_void
 id|disable_hlt
@@ -381,24 +379,11 @@ suffix:semicolon
 multiline_comment|/* put the pt_regs structure at the end of the new kernel stack page and fix it up&n;&t; * remember that the task_struct doubles as the kernel stack for the task&n;&t; */
 id|childregs
 op_assign
+id|user_regs
+c_func
 (paren
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-(paren
-(paren
-r_int
-r_int
-)paren
 id|p
-op_plus
-id|THREAD_SIZE
 )paren
-)paren
-op_minus
-l_int|1
 suffix:semicolon
 op_star
 id|childregs
@@ -454,28 +439,19 @@ r_int
 )paren
 id|swstack
 suffix:semicolon
-multiline_comment|/* esp0 keeps the pt_regs stacked structure pointer */
-id|p-&gt;thread.esp0
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|childregs
-suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;kern_stack_page 0x%x, used stack %d, thread.usp 0x%x, usp 0x%x&bslash;n&quot;
+l_string|&quot;copy_thread: new regs at 0x%p, as shown below:&bslash;n&quot;
 comma
-id|current-&gt;kernel_stack_page
-comma
-id|usedstack
-comma
-id|p-&gt;thread.usp
-comma
-id|usp
+id|childregs
+)paren
+suffix:semicolon
+id|show_registers
+c_func
+(paren
+id|childregs
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -628,13 +604,35 @@ id|dump-&gt;i387
 suffix:semicolon
 macro_line|#endif 
 )brace
+multiline_comment|/* &n; * Be aware of the &quot;magic&quot; 7th argument in the four system-calls below.&n; * They need the latest stackframe, which is put as the 7th argument by&n; * entry.S. The previous arguments are dummies or actually used, but need&n; * to be defined to reach the 7th argument.&n; *&n; * N.B.: Another method to get the stackframe is to use current_regs(). But&n; * it returns the latest stack-frame stacked when going from _user mode_ and&n; * some of these (at least sys_clone) are called from kernel-mode sometimes&n; * (for example during kernel_thread, above) and thus cannot use it. Thus,&n; * to be sure not to get any surprises, we use the method for the other calls&n; * as well.&n; */
 DECL|function|sys_fork
 id|asmlinkage
 r_int
 id|sys_fork
 c_func
 (paren
-r_void
+r_int
+id|r10
+comma
+r_int
+id|r11
+comma
+r_int
+id|r12
+comma
+r_int
+id|r13
+comma
+r_int
+id|mof
+comma
+r_int
+id|srp
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_return
@@ -648,7 +646,7 @@ c_func
 (paren
 )paren
 comma
-id|currentregs
+id|regs
 comma
 l_int|0
 )paren
@@ -668,6 +666,23 @@ comma
 r_int
 r_int
 id|flags
+comma
+r_int
+id|r12
+comma
+r_int
+id|r13
+comma
+r_int
+id|mof
+comma
+r_int
+id|srp
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_if
@@ -691,7 +706,7 @@ id|flags
 comma
 id|newusp
 comma
-id|currentregs
+id|regs
 comma
 l_int|0
 )paren
@@ -704,7 +719,28 @@ r_int
 id|sys_vfork
 c_func
 (paren
-r_void
+r_int
+id|r10
+comma
+r_int
+id|r11
+comma
+r_int
+id|r12
+comma
+r_int
+id|r13
+comma
+r_int
+id|mof
+comma
+r_int
+id|srp
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_return
@@ -722,7 +758,7 @@ c_func
 (paren
 )paren
 comma
-id|currentregs
+id|regs
 comma
 l_int|0
 )paren
@@ -749,6 +785,20 @@ r_char
 op_star
 op_star
 id|envp
+comma
+r_int
+id|r13
+comma
+r_int
+id|mof
+comma
+r_int
+id|srp
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -797,7 +847,7 @@ id|argv
 comma
 id|envp
 comma
-id|currentregs
+id|regs
 )paren
 suffix:semicolon
 id|putname

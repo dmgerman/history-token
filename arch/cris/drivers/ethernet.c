@@ -1,7 +1,9 @@
-multiline_comment|/* $Id: ethernet.c,v 1.8 2001/02/27 13:52:48 bjornw Exp $&n; *&n; * e100net.c: A network driver for the ETRAX 100LX network controller.&n; *&n; * Copyright (c) 1998-2001 Axis Communications AB.&n; *&n; * The outline of this driver comes from skeleton.c.&n; *&n; * $Log: ethernet.c,v $&n; * Revision 1.8  2001/02/27 13:52:48  bjornw&n; * malloc.h -&gt; slab.h&n; *&n; * Revision 1.7  2001/02/23 13:46:38  bjornw&n; * Spellling check&n; *&n; * Revision 1.6  2001/01/26 15:21:04  starvik&n; * Don&squot;t disable interrupts while reading MDIO registers (MDIO is slow)&n; * Corrected promiscuous mode&n; * Improved deallocation of IRQs (&quot;ifconfig eth0 down&quot; now works)&n; *&n; * Revision 1.5  2000/11/29 17:22:22  bjornw&n; * Get rid of the udword types legacy stuff&n; *&n; * Revision 1.4  2000/11/22 16:36:09  bjornw&n; * Please marketing by using the correct case when spelling Etrax.&n; *&n; * Revision 1.3  2000/11/21 16:43:04  bjornw&n; * Minor short-&gt;int change&n; *&n; * Revision 1.2  2000/11/08 14:27:57  bjornw&n; * 2.4 port&n; *&n; * Revision 1.1  2000/11/06 13:56:00  bjornw&n; * Verbatim copy of the 1.24 version of e100net.c from elinux&n; *&n; * Revision 1.24  2000/10/04 15:55:23  bjornw&n; * * Use virt_to_phys etc. for DMA addresses&n; * * Removed bogus CHECKSUM_UNNECESSARY&n; *&n; *&n; */
+multiline_comment|/* $Id: ethernet.c,v 1.12 2001/04/05 11:43:11 tobiasa Exp $&n; *&n; * e100net.c: A network driver for the ETRAX 100LX network controller.&n; *&n; * Copyright (c) 1998-2001 Axis Communications AB.&n; *&n; * The outline of this driver comes from skeleton.c.&n; *&n; * $Log: ethernet.c,v $&n; * Revision 1.12  2001/04/05 11:43:11  tobiasa&n; * Check dev before panic.&n; *&n; * Revision 1.11  2001/04/04 11:21:05  markusl&n; * Updated according to review remarks&n; *&n; * Revision 1.10  2001/03/26 16:03:06  bjornw&n; * Needs linux/config.h&n; *&n; * Revision 1.9  2001/03/19 14:47:48  pkj&n; * * Make sure there is always a pause after the network LEDs are&n; *   changed so they will not look constantly lit during heavy traffic.&n; * * Always use HZ when setting times relative to jiffies.&n; * * Use LED_NETWORK_SET() when setting the network LEDs.&n; *&n; * Revision 1.8  2001/02/27 13:52:48  bjornw&n; * malloc.h -&gt; slab.h&n; *&n; * Revision 1.7  2001/02/23 13:46:38  bjornw&n; * Spellling check&n; *&n; * Revision 1.6  2001/01/26 15:21:04  starvik&n; * Don&squot;t disable interrupts while reading MDIO registers (MDIO is slow)&n; * Corrected promiscuous mode&n; * Improved deallocation of IRQs (&quot;ifconfig eth0 down&quot; now works)&n; *&n; * Revision 1.5  2000/11/29 17:22:22  bjornw&n; * Get rid of the udword types legacy stuff&n; *&n; * Revision 1.4  2000/11/22 16:36:09  bjornw&n; * Please marketing by using the correct case when spelling Etrax.&n; *&n; * Revision 1.3  2000/11/21 16:43:04  bjornw&n; * Minor short-&gt;int change&n; *&n; * Revision 1.2  2000/11/08 14:27:57  bjornw&n; * 2.4 port&n; *&n; * Revision 1.1  2000/11/06 13:56:00  bjornw&n; * Verbatim copy of the 1.24 version of e100net.c from elinux&n; *&n; * Revision 1.24  2000/10/04 15:55:23  bjornw&n; * * Use virt_to_phys etc. for DMA addresses&n; * * Removed bogus CHECKSUM_UNNECESSARY&n; *&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -10,20 +12,24 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;asm/svinto.h&gt;     /* DMA and register descriptions */
+macro_line|#include &lt;asm/io.h&gt;         /* LED_* I/O functions */
+macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
 singleline_comment|//#define ETHDEBUG
 DECL|macro|D
 mdefine_line|#define D(x)
+DECL|macro|ETH_TX_DMA
+mdefine_line|#define ETH_TX_DMA 0
+DECL|macro|ETH_RX_DMA
+mdefine_line|#define ETH_RX_DMA 1
 multiline_comment|/*&n; * The name of the card. Is used for messages and in the requests for&n; * io regions, irqs and dma channels&n; */
 DECL|variable|cardname
 r_static
@@ -115,10 +121,15 @@ DECL|macro|MDIO_PHYS_ADDR
 mdefine_line|#define MDIO_PHYS_ADDR                      0x0
 multiline_comment|/* Network flash constants */
 DECL|macro|NET_FLASH_TIME
-mdefine_line|#define NET_FLASH_TIME                        2 /* 20 ms */
+mdefine_line|#define NET_FLASH_TIME                  (HZ/50) /* 20 ms */
+DECL|macro|NET_FLASH_PAUSE
+mdefine_line|#define NET_FLASH_PAUSE                (HZ/100) /* 10 ms */
 DECL|macro|NET_LINK_UP_CHECK_INTERVAL
-mdefine_line|#define NET_LINK_UP_CHECK_INTERVAL          200 /* 2 s   */
-multiline_comment|/* RX_DESC_BUF_SIZE should be a multiple of four to avoid the buffer&n; * alignment bug in Etrax 100 release 1&n; */
+mdefine_line|#define NET_LINK_UP_CHECK_INTERVAL       (2*HZ) /* 2 s   */
+DECL|macro|NO_NETWORK_ACTIVITY
+mdefine_line|#define NO_NETWORK_ACTIVITY 0
+DECL|macro|NETWORK_ACTIVITY
+mdefine_line|#define NETWORK_ACTIVITY    1
 DECL|macro|RX_DESC_BUF_SIZE
 mdefine_line|#define RX_DESC_BUF_SIZE   256
 DECL|macro|NBR_OF_RX_DESC
@@ -162,11 +173,31 @@ id|RxDescList
 (braket
 id|NBR_OF_RX_DESC
 )braket
+id|__attribute__
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|4
+)paren
+)paren
+)paren
 suffix:semicolon
 DECL|variable|TxDesc
 r_static
 id|etrax_dma_descr
 id|TxDesc
+id|__attribute__
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|4
+)paren
+)paren
+)paren
 suffix:semicolon
 DECL|variable|tx_skb
 r_static
@@ -193,15 +224,15 @@ r_static
 r_int
 id|current_speed
 suffix:semicolon
-DECL|variable|led_clear_time
+DECL|variable|led_next_time
 r_static
 r_int
-id|led_clear_time
+id|led_next_time
 suffix:semicolon
-DECL|variable|nolink
+DECL|variable|led_active
 r_static
 r_int
-id|nolink
+id|led_active
 suffix:semicolon
 multiline_comment|/* Index to functions, as function prototypes. */
 r_static
@@ -461,6 +492,15 @@ r_int
 id|dummy
 )paren
 suffix:semicolon
+r_static
+r_void
+id|e100_set_network_leds
+c_func
+(paren
+r_int
+id|active
+)paren
+suffix:semicolon
 DECL|macro|tx_done
 mdefine_line|#define tx_done(dev) (*R_DMA_CH0_CMD == 0)
 multiline_comment|/*&n; * Check for a network adaptor of this type, and return &squot;0&squot; if one exists.&n; * If dev-&gt;base_addr == 0, probe all likely locations.&n; * If dev-&gt;base_addr == 1, always return failure.&n; * If dev-&gt;base_addr == 2, allocate space for the device and return success&n; * (detachable devices only).&n; */
@@ -488,7 +528,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ETRAX 100LX 10/100MBit ethernet v2.0 (c) 2000 Axis Communications AB&bslash;n&quot;
+l_string|&quot;ETRAX 100LX 10/100MBit ethernet v2.0 (c) 2000-2001 Axis Communications AB&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev-&gt;base_addr
@@ -534,6 +574,18 @@ r_sizeof
 r_struct
 id|net_local
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;init_etherdev failed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -823,10 +875,6 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* Initialize speed indicator stuff. */
-id|nolink
-op_assign
-l_int|0
-suffix:semicolon
 id|current_speed
 op_assign
 l_int|10
@@ -856,6 +904,8 @@ id|clear_led_timer.expires
 op_assign
 id|jiffies
 op_plus
+id|HZ
+op_div
 l_int|10
 suffix:semicolon
 id|add_timer
@@ -1072,15 +1122,80 @@ suffix:semicolon
 op_star
 id|R_IRQ_MASK0_CLR
 op_assign
-l_int|0xe0000
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK0_CLR
+comma
+id|overrun
+comma
+id|clr
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK0_CLR
+comma
+id|underrun
+comma
+id|clr
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK0_CLR
+comma
+id|excessive_col
+comma
+id|clr
+)paren
 suffix:semicolon
-multiline_comment|/* clear excessive_col, over/underrun irq mask */
+multiline_comment|/* clear dma0 and 1 eop and descr irq masks */
 op_star
 id|R_IRQ_MASK2_CLR
 op_assign
-l_int|0xf
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK2_CLR
+comma
+id|dma0_descr
+comma
+id|clr
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK2_CLR
+comma
+id|dma0_eop
+comma
+id|clr
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK2_CLR
+comma
+id|dma1_descr
+comma
+id|clr
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK2_CLR
+comma
+id|dma1_eop
+comma
+id|clr
+)paren
 suffix:semicolon
-multiline_comment|/* clear dma0 and 1 eop and descr irq masks */
 multiline_comment|/* Reset and wait for the DMA channels */
 id|RESET_DMA
 c_func
@@ -1195,7 +1310,7 @@ c_cond
 id|request_dma
 c_func
 (paren
-l_int|0
+id|ETH_TX_DMA
 comma
 id|cardname
 )paren
@@ -1211,7 +1326,7 @@ c_cond
 id|request_dma
 c_func
 (paren
-l_int|1
+id|ETH_RX_DMA
 comma
 id|cardname
 )paren
@@ -1223,7 +1338,7 @@ multiline_comment|/* this will cause some &squot;trying to free free irq&squot; 
 id|free_dma
 c_func
 (paren
-l_int|0
+id|ETH_TX_DMA
 )paren
 suffix:semicolon
 id|free_irq
@@ -1231,7 +1346,11 @@ c_func
 (paren
 id|NETWORK_DMARX_IRQ
 comma
-l_int|NULL
+(paren
+r_void
+op_star
+)paren
+id|dev
 )paren
 suffix:semicolon
 id|free_irq
@@ -1239,7 +1358,11 @@ c_func
 (paren
 id|NETWORK_DMATX_IRQ
 comma
-l_int|NULL
+(paren
+r_void
+op_star
+)paren
+id|dev
 )paren
 suffix:semicolon
 id|free_irq
@@ -1247,7 +1370,11 @@ c_func
 (paren
 id|NETWORK_STATUS_IRQ
 comma
-l_int|NULL
+(paren
+r_void
+op_star
+)paren
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -1548,6 +1675,11 @@ r_int
 r_int
 id|data
 suffix:semicolon
+r_int
+id|old_speed
+op_assign
+id|current_speed
+suffix:semicolon
 id|data
 op_assign
 id|e100_get_mdio_reg
@@ -1567,31 +1699,13 @@ id|MDIO_LINK_UP_MASK
 )paren
 )paren
 (brace
-id|nolink
+id|current_speed
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
-id|LED_NETWORK_TX_SET
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* Make it red, link is down. */
 )brace
 r_else
 (brace
-id|nolink
-op_assign
-l_int|0
-suffix:semicolon
-id|LED_NETWORK_TX_SET
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* Link is up again, clear red LED. */
 id|data
 op_assign
 id|e100_get_mdio_reg
@@ -1600,27 +1714,33 @@ c_func
 id|MDIO_AUX_CTRL_STATUS_REG
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|current_speed
+op_assign
 (paren
 id|data
 op_amp
 id|MDIO_SPEED
-)paren
-(brace
-id|current_speed
-op_assign
+ques
+c_cond
 l_int|100
-suffix:semicolon
-)brace
-r_else
-(brace
-id|current_speed
-op_assign
+suffix:colon
 l_int|10
+)paren
 suffix:semicolon
 )brace
-)brace
+r_if
+c_cond
+(paren
+id|old_speed
+op_ne
+id|current_speed
+)paren
+id|e100_set_network_leds
+c_func
+(paren
+id|NO_NETWORK_ACTIVITY
+)paren
+suffix:semicolon
 multiline_comment|/* Reinitialize the timer. */
 id|speed_timer.expires
 op_assign
@@ -1866,52 +1986,70 @@ r_char
 id|bit
 )paren
 (brace
-r_volatile
-r_int
-id|i
-suffix:semicolon
 op_star
 id|R_NETWORK_MGM_CTRL
 op_assign
-l_int|2
-op_or
-id|bit
-op_amp
-l_int|1
-suffix:semicolon
-r_for
-c_loop
+id|IO_STATE
+c_func
 (paren
-id|i
-op_assign
-l_int|40
+id|R_NETWORK_MGM_CTRL
+comma
+id|mdoe
+comma
+id|enable
+)paren
+op_or
+id|IO_FIELD
+c_func
+(paren
+id|R_NETWORK_MGM_CTRL
+comma
+id|mdio
+comma
+id|bit
+)paren
 suffix:semicolon
-id|i
-suffix:semicolon
-id|i
-op_decrement
+id|udelay
+c_func
+(paren
+l_int|1
 )paren
 suffix:semicolon
 op_star
 id|R_NETWORK_MGM_CTRL
 op_assign
-l_int|6
-op_or
-id|bit
-op_amp
-l_int|1
-suffix:semicolon
-r_for
-c_loop
+id|IO_STATE
+c_func
 (paren
-id|i
-op_assign
-l_int|40
+id|R_NETWORK_MGM_CTRL
+comma
+id|mdoe
+comma
+id|enable
+)paren
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_NETWORK_MGM_CTRL
+comma
+id|mdck
+)paren
+op_or
+id|IO_FIELD
+c_func
+(paren
+id|R_NETWORK_MGM_CTRL
+comma
+id|mdio
+comma
+id|bit
+)paren
 suffix:semicolon
-id|i
-suffix:semicolon
-id|i
-op_decrement
+id|udelay
+c_func
+(paren
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1928,10 +2066,6 @@ r_int
 r_char
 id|bit
 suffix:semicolon
-r_volatile
-r_int
-id|i
-suffix:semicolon
 op_star
 id|R_NETWORK_MGM_CTRL
 op_assign
@@ -1939,40 +2073,38 @@ l_int|0
 suffix:semicolon
 id|bit
 op_assign
+id|IO_EXTRACT
+c_func
+(paren
+id|R_NETWORK_STAT
+comma
+id|mdio
+comma
 op_star
 id|R_NETWORK_STAT
-op_amp
-l_int|1
+)paren
 suffix:semicolon
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|40
-suffix:semicolon
-id|i
-suffix:semicolon
-id|i
-op_decrement
+l_int|1
 )paren
 suffix:semicolon
 op_star
 id|R_NETWORK_MGM_CTRL
 op_assign
-l_int|4
-suffix:semicolon
-r_for
-c_loop
+id|IO_MASK
+c_func
 (paren
-id|i
-op_assign
-l_int|40
+id|R_NETWORK_MGM_CTRL
+comma
+id|mdck
+)paren
 suffix:semicolon
-id|i
-suffix:semicolon
-id|i
-op_decrement
+id|udelay
+c_func
+(paren
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -2042,7 +2174,7 @@ c_func
 (paren
 id|cmd
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 id|data
@@ -2311,10 +2443,14 @@ c_cond
 (paren
 id|irqbits
 op_amp
+id|IO_STATE
+c_func
 (paren
-l_int|1U
-op_lshift
-l_int|3
+id|R_IRQ_MASK2_RD
+comma
+id|dma1_eop
+comma
+id|active
 )paren
 )paren
 (brace
@@ -2365,19 +2501,45 @@ op_member_access_from_pointer
 id|stats.rx_packets
 op_increment
 suffix:semicolon
+multiline_comment|/* restart/continue on the channel, for safety */
 op_star
 id|R_DMA_CH1_CMD
 op_assign
-l_int|3
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH1_CMD
+comma
+id|cmd
+comma
+id|restart
+)paren
 suffix:semicolon
-multiline_comment|/* restart/continue on the channel, for safety */
+multiline_comment|/* clear dma channel 1 eop/descr irq bits */
 op_star
 id|R_DMA_CH1_CLR_INTR
 op_assign
-l_int|3
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH1_CLR_INTR
+comma
+id|clr_eop
+comma
+r_do
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH1_CLR_INTR
+comma
+id|clr_descr
+comma
+r_do
+)paren
 suffix:semicolon
-multiline_comment|/* clear dma channel 1 eop/descr irq bits */
-multiline_comment|/* now, we might have gotten another packet so we have to loop back&n;&t;&t;&t;   and check if so */
+multiline_comment|/* now, we might have gotten another packet&n;&t;&t;&t;   so we have to loop back and check if so */
 )brace
 )brace
 )brace
@@ -2432,15 +2594,23 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
+multiline_comment|/* check for a dma0_eop interrupt */
 r_if
 c_cond
 (paren
 id|irqbits
 op_amp
-l_int|2
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK2_RD
+comma
+id|dma0_eop
+comma
+id|active
+)paren
 )paren
 (brace
-multiline_comment|/* check for a dma0_eop interrupt */
 multiline_comment|/* This protects us from concurrent execution of&n;&t;&t; * our dev-&gt;hard_start_xmit function above.&n;&t;&t; */
 id|spin_lock
 c_func
@@ -2567,19 +2737,23 @@ op_assign
 op_star
 id|R_IRQ_MASK0_RD
 suffix:semicolon
+multiline_comment|/* check for overrun irq */
 r_if
 c_cond
 (paren
 id|irqbits
 op_amp
+id|IO_STATE
+c_func
 (paren
-l_int|1
-op_lshift
-l_int|19
+id|R_IRQ_MASK0_RD
+comma
+id|overrun
+comma
+id|active
 )paren
 )paren
 (brace
-multiline_comment|/* check for overrun irq */
 id|update_rx_stats
 c_func
 (paren
@@ -2599,27 +2773,36 @@ l_string|&quot;ethernet receiver overrun!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* check for excessive collision irq */
 r_if
 c_cond
 (paren
 id|irqbits
 op_amp
+id|IO_STATE
+c_func
 (paren
-l_int|1
-op_lshift
-l_int|17
+id|R_IRQ_MASK0_RD
+comma
+id|excessive_col
+comma
+id|active
 )paren
 )paren
 (brace
-multiline_comment|/* check for excessive collision irq */
 op_star
 id|R_NETWORK_TR_CTRL
 op_assign
-l_int|1
-op_lshift
-l_int|8
+id|IO_STATE
+c_func
+(paren
+id|R_NETWORK_TR_CTRL
+comma
+id|clr_error
+comma
+id|clr
+)paren
 suffix:semicolon
-multiline_comment|/* clear the interrupt */
 id|np-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
@@ -2662,6 +2845,18 @@ r_int
 id|i
 suffix:semicolon
 r_struct
+id|net_local
+op_star
+id|np
+op_assign
+(paren
+r_struct
+id|net_local
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
+r_struct
 id|etrax_dma_descr
 op_star
 id|mySaveRxDesc
@@ -2673,48 +2868,36 @@ r_char
 op_star
 id|skb_data_ptr
 suffix:semicolon
-multiline_comment|/* light the network rx packet depending on the current speed.&n;&t;** But only if link has been detected.&n;&t;*/
 r_if
 c_cond
 (paren
 op_logical_neg
-id|nolink
-)paren
-r_if
-c_cond
-(paren
-id|current_speed
-op_eq
-l_int|10
+id|led_active
+op_logical_and
+id|jiffies
+OG
+id|led_next_time
 )paren
 (brace
-id|LED_NETWORK_TX_SET
+multiline_comment|/* light the network leds depending on the current speed. */
+id|e100_set_network_leds
 c_func
 (paren
-l_int|1
-)paren
-suffix:semicolon
-id|LED_NETWORK_RX_SET
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_else
-id|LED_NETWORK_RX_SET
-c_func
-(paren
-l_int|1
+id|NETWORK_ACTIVITY
 )paren
 suffix:semicolon
 multiline_comment|/* Set the earliest time we may clear the LED */
-id|led_clear_time
+id|led_next_time
 op_assign
 id|jiffies
 op_plus
 id|NET_FLASH_TIME
 suffix:semicolon
+id|led_active
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* If the packet is broken down in many small packages then merge&n;&t; * count how much space we will need to alloc with skb_alloc() for&n;&t; * it to fit.&n;&t; */
 r_while
 c_loop
@@ -2861,6 +3044,9 @@ op_logical_neg
 id|skb
 )paren
 (brace
+id|np-&gt;stats.rx_errors
+op_increment
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2895,7 +3081,7 @@ id|ETHER_HEAD_LEN
 )paren
 suffix:semicolon
 multiline_comment|/* allocate room for the header */
-macro_line|#if 0
+macro_line|#ifdef ETHDEBUG
 id|printk
 c_func
 (paren
@@ -3088,15 +3274,79 @@ suffix:semicolon
 op_star
 id|R_IRQ_MASK0_CLR
 op_assign
-l_int|0xe0000
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK0_CLR
+comma
+id|overrun
+comma
+id|clr
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK0_CLR
+comma
+id|underrun
+comma
+id|clr
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK0_CLR
+comma
+id|excessive_col
+comma
+id|clr
+)paren
 suffix:semicolon
-multiline_comment|/* clear excessive_col, over/underrun irq mask */
 op_star
 id|R_IRQ_MASK2_CLR
 op_assign
-l_int|0xf
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK2_CLR
+comma
+id|dma0_descr
+comma
+id|clr
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK2_CLR
+comma
+id|dma0_eop
+comma
+id|clr
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK2_CLR
+comma
+id|dma1_descr
+comma
+id|clr
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_IRQ_MASK2_CLR
+comma
+id|dma1_eop
+comma
+id|clr
+)paren
 suffix:semicolon
-multiline_comment|/* clear dma0 and 1 eop and descr irq masks */
 multiline_comment|/* Stop the receiver and the transmitter */
 id|RESET_DMA
 c_func
@@ -3150,13 +3400,13 @@ suffix:semicolon
 id|free_dma
 c_func
 (paren
-l_int|0
+id|ETH_TX_DMA
 )paren
 suffix:semicolon
 id|free_dma
 c_func
 (paren
-l_int|1
+id|ETH_RX_DMA
 )paren
 suffix:semicolon
 multiline_comment|/* Update the statistics here. */
@@ -3775,52 +4025,36 @@ id|length
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* light the network leds depending on the current speed.&n;&t;** But only if link has been detected.&n;&t;*/
 r_if
 c_cond
 (paren
 op_logical_neg
-id|nolink
+id|led_active
+op_logical_and
+id|jiffies
+OG
+id|led_next_time
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|current_speed
-op_eq
-l_int|10
-)paren
-(brace
-id|LED_NETWORK_TX_SET
+multiline_comment|/* light the network leds depending on the current speed. */
+id|e100_set_network_leds
 c_func
 (paren
-l_int|1
+id|NETWORK_ACTIVITY
 )paren
 suffix:semicolon
-id|LED_NETWORK_RX_SET
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|LED_NETWORK_RX_SET
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/* Set the earliest time we may clear the LED */
-id|led_clear_time
+id|led_next_time
 op_assign
 id|jiffies
 op_plus
 id|NET_FLASH_TIME
 suffix:semicolon
+id|led_active
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* configure the tx dma descriptor */
 id|TxDesc.sw_len
 op_assign
@@ -3881,40 +4115,37 @@ id|dummy
 r_if
 c_cond
 (paren
+id|led_active
+op_logical_and
 id|jiffies
 OG
-id|led_clear_time
+id|led_next_time
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|nolink
-)paren
-id|LED_NETWORK_TX_SET
+id|e100_set_network_leds
 c_func
 (paren
-l_int|1
+id|NO_NETWORK_ACTIVITY
 )paren
 suffix:semicolon
-r_else
-id|LED_NETWORK_TX_SET
-c_func
-(paren
-l_int|0
-)paren
+multiline_comment|/* Set the earliest time we may set the LED */
+id|led_next_time
+op_assign
+id|jiffies
+op_plus
+id|NET_FLASH_PAUSE
 suffix:semicolon
-id|LED_NETWORK_RX_SET
-c_func
-(paren
+id|led_active
+op_assign
 l_int|0
-)paren
 suffix:semicolon
 )brace
 id|clear_led_timer.expires
 op_assign
 id|jiffies
 op_plus
+id|HZ
+op_div
 l_int|10
 suffix:semicolon
 id|add_timer
@@ -3924,6 +4155,94 @@ op_amp
 id|clear_led_timer
 )paren
 suffix:semicolon
+)brace
+r_static
+r_void
+DECL|function|e100_set_network_leds
+id|e100_set_network_leds
+c_func
+(paren
+r_int
+id|active
+)paren
+(brace
+macro_line|#ifdef CONFIG_LED_OFF_DURING_ACTIVITY
+r_int
+id|light_leds
+op_assign
+(paren
+id|active
+op_eq
+id|NO_NETWORK_ACTIVITY
+)paren
+suffix:semicolon
+macro_line|#else
+r_int
+id|light_leds
+op_assign
+(paren
+id|active
+op_eq
+id|NETWORK_ACTIVITY
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|current_speed
+)paren
+(brace
+multiline_comment|/* Make LED red, link is down */
+id|LED_NETWORK_SET
+c_func
+(paren
+id|LED_RED
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|light_leds
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|current_speed
+op_eq
+l_int|10
+)paren
+(brace
+id|LED_NETWORK_SET
+c_func
+(paren
+id|LED_ORANGE
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|LED_NETWORK_SET
+c_func
+(paren
+id|LED_GREEN
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|LED_NETWORK_SET
+c_func
+(paren
+id|LED_OFF
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|variable|dev_etrax_ethernet
 r_static

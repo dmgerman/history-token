@@ -3,7 +3,7 @@ macro_line|#ifndef _ASM_CRIS_TIMEX_H
 DECL|macro|_ASM_CRIS_TIMEX_H
 mdefine_line|#define _ASM_CRIS_TIMEX_H
 DECL|macro|CLOCK_TICK_RATE
-mdefine_line|#define CLOCK_TICK_RATE 9600 /* Underlying frequency of the HZ timer */
+mdefine_line|#define CLOCK_TICK_RATE 19200 /* Underlying frequency of the HZ timer */
 multiline_comment|/*&n; * We don&squot;t have a cycle-counter.. but we do not support SMP anyway where this is&n; * used so it does not matter.&n; */
 DECL|typedef|cycles_t
 r_typedef

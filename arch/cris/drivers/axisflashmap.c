@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Physical mapping layer for MTD using the Axis partitiontable format&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; *&n; * This file is under the GPL.&n; *&n; * First partition is always sector 0 regardless of if we find a partitiontable&n; * or not. In the start of the next sector, there can be a partitiontable that&n; * tells us what other partitions to define. If there isn&squot;t, we use a default&n; * partition split defined below.&n; *&n; * $Log: axisflashmap.c,v $&n; * Revision 1.4  2001/02/23 12:47:15  bjornw&n; * Uncached flash in LOW_MAP moved from 0xe to 0x8&n; *&n; * Revision 1.3  2001/02/16 12:11:45  jonashg&n; * MTD driver amd_flash is now included in MTD CVS repository.&n; * (It&squot;s now in drivers/mtd).&n; *&n; * Revision 1.2  2001/02/09 11:12:22  jonashg&n; * Support for AMD compatible non-CFI flash chips.&n; * Only tested with Toshiba TC58FVT160 so far.&n; *&n; * Revision 1.1  2001/01/12 17:01:18  bjornw&n; * * Added axisflashmap.c, a physical mapping for MTD that reads and understands&n; *   Axis partition-table format.&n; *&n; *&n; */
+multiline_comment|/*&n; * Physical mapping layer for MTD using the Axis partitiontable format&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; *&n; * This file is under the GPL.&n; *&n; * First partition is always sector 0 regardless of if we find a partitiontable&n; * or not. In the start of the next sector, there can be a partitiontable that&n; * tells us what other partitions to define. If there isn&squot;t, we use a default&n; * partition split defined below.&n; *&n; * $Log: axisflashmap.c,v $&n; * Revision 1.7  2001/04/05 13:41:46  markusl&n; * Updated according to review remarks&n; *&n; * Revision 1.6  2001/03/07 09:21:21  bjornw&n; * No need to waste .data&n; *&n; * Revision 1.5  2001/03/06 16:27:01  jonashg&n; * Probe the entire flash area for flash devices.&n; *&n; * Revision 1.4  2001/02/23 12:47:15  bjornw&n; * Uncached flash in LOW_MAP moved from 0xe to 0x8&n; *&n; * Revision 1.3  2001/02/16 12:11:45  jonashg&n; * MTD driver amd_flash is now included in MTD CVS repository.&n; * (It&squot;s now in drivers/mtd).&n; *&n; * Revision 1.2  2001/02/09 11:12:22  jonashg&n; * Support for AMD compatible non-CFI flash chips.&n; * Only tested with Toshiba TC58FVT160 so far.&n; *&n; * Revision 1.1  2001/01/12 17:01:18  bjornw&n; * * Added axisflashmap.c, a physical mapping for MTD that reads and understands&n; *   Axis partition-table format.&n; *&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -19,13 +19,10 @@ mdefine_line|#define FLASH_UNCACHED_ADDR  KSEG_E
 DECL|macro|FLASH_CACHED_ADDR
 mdefine_line|#define FLASH_CACHED_ADDR    KSEG_F
 macro_line|#endif
-multiline_comment|/*&n; * WINDOW_SIZE is the total size where the flash chips are mapped,&n; * my guess is that this can be the total memory area even if there&n; * are many flash chips inside the area or if they are not all mounted.&n; * So possibly we can get rid of the CONFIG_ here and just write something&n; * like 32 MB always.&n; */
+multiline_comment|/*&n; * WINDOW_SIZE is the total size where the flash chips may be mapped.&n; * MTD probes should find all devices there and it does not matter&n; * if there are unmapped gaps or aliases (mirrors of flash devices).&n; * The MTD probes will ignore them.&n; */
 DECL|macro|WINDOW_SIZE
-mdefine_line|#define WINDOW_SIZE  (CONFIG_ETRAX_FLASH_LENGTH * 1024 * 1024)
-multiline_comment|/* Byte-offset where the partition-table is placed in the first chip&n; */
-DECL|macro|PTABLE_SECTOR
-mdefine_line|#define PTABLE_SECTOR 65536
-multiline_comment|/* &n; * Map driver&n; *&n; * Ok this is the scoop - we need to access the flash both with and without&n; * the cache - without when doing all the fancy flash interfacing, and with&n; * when we do actual copying because otherwise it will be slow like molasses.&n; * I hope this works the way it&squot;s intended, so that there won&squot;t be any cases&n; * of non-synchronicity because of the different access modes below...&n; */
+mdefine_line|#define WINDOW_SIZE  (128 * 1024 * 1024)
+multiline_comment|/* &n; * Map driver&n; *&n; * Ok this is the scoop - we need to access the flash both with and without&n; * the cache - without when doing all the fancy flash interfacing, and with&n; * when we do actual copying because otherwise it will be slow like molasses.&n; */
 DECL|function|flash_read8
 r_static
 id|__u8
@@ -256,49 +253,6 @@ op_assign
 id|d
 suffix:semicolon
 )brace
-DECL|function|flash_copy_to
-r_static
-r_void
-id|flash_copy_to
-c_func
-(paren
-r_struct
-id|map_info
-op_star
-id|map
-comma
-r_int
-r_int
-id|to
-comma
-r_const
-r_void
-op_star
-id|from
-comma
-id|ssize_t
-id|len
-)paren
-(brace
-id|memcpy
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-(paren
-id|FLASH_CACHED_ADDR
-op_plus
-id|to
-)paren
-comma
-id|from
-comma
-id|len
-)paren
-suffix:semicolon
-)brace
 DECL|variable|axis_map
 r_static
 r_struct
@@ -346,9 +300,6 @@ id|write32
 suffix:colon
 id|flash_write32
 comma
-id|copy_to
-suffix:colon
-id|flash_copy_to
 )brace
 suffix:semicolon
 multiline_comment|/* If no partition-table was found, we use this default-set.&n; */
@@ -373,7 +324,7 @@ l_string|&quot;boot firmware&quot;
 comma
 id|size
 suffix:colon
-id|PTABLE_SECTOR
+id|CONFIG_ETRAX_PTABLE_SECTOR
 comma
 id|offset
 suffix:colon
@@ -391,7 +342,7 @@ l_int|0x1a0000
 comma
 id|offset
 suffix:colon
-id|PTABLE_SECTOR
+id|CONFIG_ETRAX_PTABLE_SECTOR
 )brace
 comma
 (brace
@@ -408,7 +359,7 @@ suffix:colon
 (paren
 l_int|0x1a0000
 op_plus
-id|PTABLE_SECTOR
+id|CONFIG_ETRAX_PTABLE_SECTOR
 )paren
 )brace
 )brace
@@ -583,6 +534,11 @@ id|FLASH_CACHED_ADDR
 suffix:semicolon
 id|mymtd
 op_assign
+(paren
+r_struct
+id|mtd_info
+op_star
+)paren
 id|do_cfi_probe
 c_func
 (paren
@@ -600,6 +556,11 @@ id|mymtd
 (brace
 id|mymtd
 op_assign
+(paren
+r_struct
+id|mtd_info
+op_star
+)paren
 id|do_amd_flash_probe
 c_func
 (paren
@@ -644,7 +605,7 @@ op_star
 (paren
 id|FLASH_CACHED_ADDR
 op_plus
-id|PTABLE_SECTOR
+id|CONFIG_ETRAX_PTABLE_SECTOR
 op_plus
 id|PARTITION_TABLE_OFFSET
 )paren
@@ -743,7 +704,7 @@ r_int
 r_int
 id|offset
 op_assign
-id|PTABLE_SECTOR
+id|CONFIG_ETRAX_PTABLE_SECTOR
 suffix:semicolon
 r_int
 r_char
@@ -902,52 +863,6 @@ OL
 id|MAX_PARTITIONS
 )paren
 (brace
-macro_line|#if 0
-multiline_comment|/* wait with multi-chip support until we know&n;&t;&t;&t; * how mtd detects multiple chips&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|offset
-op_plus
-id|ptable-&gt;offset
-)paren
-op_ge
-id|chips
-(braket
-l_int|0
-)braket
-dot
-id|size
-)paren
-(brace
-id|partitions
-(braket
-id|pidx
-)braket
-dot
-id|start
-op_assign
-id|offset
-op_plus
-id|chips
-(braket
-l_int|1
-)braket
-dot
-id|start
-op_plus
-id|ptable-&gt;offset
-op_minus
-id|chips
-(braket
-l_int|0
-)braket
-dot
-id|size
-suffix:semicolon
-)brace
-macro_line|#endif
 id|axis_partitions
 (braket
 id|pidx

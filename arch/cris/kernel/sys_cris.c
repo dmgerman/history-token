@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sys_cris.c,v 1.4 2001/01/31 14:55:58 perf Exp $&n; *&n; * linux/arch/cris/kernel/sys_etrax.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on some platforms.&n; * Since we don&squot;t have to do any backwards compatibility, our&n; * versions are done in the most &quot;normal&quot; way possible.&n; *&n; */
+multiline_comment|/* $Id: sys_cris.c,v 1.7 2001/04/17 11:52:15 orjanf Exp $&n; *&n; * linux/arch/cris/kernel/sys_cris.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on some platforms.&n; * Since we don&squot;t have to do any backwards compatibility, our&n; * versions are done in the most &quot;normal&quot; way possible.&n; *&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -796,16 +796,6 @@ suffix:semicolon
 r_case
 id|SHMAT
 suffix:colon
-r_switch
-c_cond
-(paren
-id|version
-)paren
-(brace
-r_default
-suffix:colon
-(brace
-)brace
 (brace
 id|ulong
 id|raddr
@@ -840,53 +830,6 @@ r_return
 id|put_user
 (paren
 id|raddr
-comma
-(paren
-id|ulong
-op_star
-)paren
-id|third
-)paren
-suffix:semicolon
-)brace
-r_case
-l_int|1
-suffix:colon
-multiline_comment|/* iBCS2 emulator entry point */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|segment_eq
-c_func
-(paren
-id|get_fs
-c_func
-(paren
-)paren
-comma
-id|get_ds
-c_func
-(paren
-)paren
-)paren
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_return
-id|sys_shmat
-(paren
-id|first
-comma
-(paren
-r_char
-op_star
-)paren
-id|ptr
-comma
-id|second
 comma
 (paren
 id|ulong

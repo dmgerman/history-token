@@ -50,7 +50,7 @@ macro_line|#else
 DECL|macro|IRDA_DEBUG
 mdefine_line|#define IRDA_DEBUG(n, args...)
 DECL|macro|ASSERT
-mdefine_line|#define ASSERT(expr, func)
+mdefine_line|#define ASSERT(expr, func) &bslash;&n;if(!(expr)) do { &bslash;&n;        func } while (0)
 macro_line|#endif /* CONFIG_IRDA_DEBUG */
 DECL|macro|WARNING
 mdefine_line|#define WARNING(args...) printk(KERN_WARNING args)

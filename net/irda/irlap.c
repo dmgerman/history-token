@@ -2912,25 +2912,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_RECYCLE_RR
-r_if
-c_cond
-(paren
-id|self-&gt;recycle_rr_skb
-)paren
-(brace
-id|dev_kfree_skb
-c_func
-(paren
-id|self-&gt;recycle_rr_skb
-)paren
-suffix:semicolon
-id|self-&gt;recycle_rr_skb
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Function irlap_setspeed (self, speed)&n; *&n; *    Change the speed of the IrDA port&n; *&n; */
 DECL|function|irlap_change_speed
@@ -3605,12 +3586,10 @@ c_cond
 (paren
 id|now
 )paren
-(brace
 id|self-&gt;bofs_count
 op_assign
 id|self-&gt;next_bofs
 suffix:semicolon
-)brace
 multiline_comment|/* Set the negociated link speed (may need the new xbofs value) */
 id|irlap_change_speed
 c_func
@@ -3672,7 +3651,7 @@ id|self-&gt;N1
 op_assign
 l_int|3000
 op_div
-id|self-&gt;qos_tx.max_turn_time.value
+id|self-&gt;qos_rx.max_turn_time.value
 suffix:semicolon
 id|IRDA_DEBUG
 c_func
@@ -3690,7 +3669,7 @@ id|self-&gt;qos_tx.link_disc_time.value
 op_star
 l_int|1000
 op_div
-id|self-&gt;qos_tx.max_turn_time.value
+id|self-&gt;qos_rx.max_turn_time.value
 suffix:semicolon
 id|IRDA_DEBUG
 c_func

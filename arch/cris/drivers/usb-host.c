@@ -2974,7 +2974,7 @@ suffix:semicolon
 id|dbg_intr
 c_func
 (paren
-l_string|&quot;One ep successfully inserted&quot;
+l_string|&quot;One ep sucessfully inserted&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8513,7 +8513,7 @@ id|no_error
 )paren
 )paren
 (brace
-multiline_comment|/* no_error means that this urb was successfully sent or that we have&n;&t;&t;&t;&t;   some undefinde error*/
+multiline_comment|/* no_error means that this urb was sucessfully sent or that we have&n;&t;&t;&t;&t;   some undefinde error*/
 r_if
 c_cond
 (paren
@@ -9090,11 +9090,11 @@ id|no_error
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t;  This means that the endpoint has no error, is disabled&n;&t;&t;&t;&t;&t;&t;  and had inserted traffic,&n;&t;&t;&t;&t;&t;&t;  i.e. transfer successfully completed&n;&t;&t;&t;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;&t;&t;&t;  This means that the endpoint has no error, is disabled&n;&t;&t;&t;&t;&t;&t;  and had inserted traffic,&n;&t;&t;&t;&t;&t;&t;  i.e. transfer sucessfully completed&n;&t;&t;&t;&t;&t;&t;*/
 id|dbg_ctrl
 c_func
 (paren
-l_string|&quot;Last SB for CTRL %d sent successfully&quot;
+l_string|&quot;Last SB for CTRL %d sent sucessfully&quot;
 comma
 id|epid
 )paren
@@ -9175,11 +9175,11 @@ id|no_error
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t;  This means that the endpoint has no error, is disabled&n;&t;&t;&t;&t;&t;&t;  and had inserted traffic,&n;&t;&t;&t;&t;&t;&t;  i.e. transfer successfully completed&n;&t;&t;&t;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;&t;&t;&t;  This means that the endpoint has no error, is disabled&n;&t;&t;&t;&t;&t;&t;  and had inserted traffic,&n;&t;&t;&t;&t;&t;&t;  i.e. transfer sucessfully completed&n;&t;&t;&t;&t;&t;&t;*/
 id|dbg_bulk
 c_func
 (paren
-l_string|&quot;Last SB for BULK %d sent successfully&quot;
+l_string|&quot;Last SB for BULK %d sent sucessfully&quot;
 comma
 id|epid
 )paren

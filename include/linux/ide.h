@@ -2114,6 +2114,10 @@ op_star
 id|ide_probe
 suffix:semicolon
 macro_line|#endif
+r_extern
+r_int
+id|noautodma
+suffix:semicolon
 multiline_comment|/*&n; * We need blk.h, but we replace its end_request by our own version.&n; */
 DECL|macro|IDE_DRIVER
 mdefine_line|#define IDE_DRIVER&t;&t;/* Toggle some magic bits in blk.h */

@@ -38,8 +38,9 @@ mdefine_line|#define ELF_DATA&t;ELFDATA2LSB;
 DECL|macro|ELF_ARCH
 mdefine_line|#define ELF_ARCH&t;EM_CRIS
 multiline_comment|/* SVR4/i386 ABI (pages 3-31, 3-32) says that when the program&n;&t;   starts (a register; assume first param register for CRIS)&n;&t;   contains a pointer to a function which might be&n;&t;   registered using `atexit&squot;.  This provides a mean for the&n;&t;   dynamic linker to call DT_FINI functions for shared libraries&n;&t;   that have been loaded before the code runs.&n;&n;&t;   A value of 0 tells we have no such handler.  */
+multiline_comment|/* Explicitly set registers to 0 to increase determinism.  */
 DECL|macro|ELF_PLAT_INIT
-mdefine_line|#define ELF_PLAT_INIT(_r)&t;((_r)-&gt;r10 = 0)
+mdefine_line|#define ELF_PLAT_INIT(_r)&t;do { &bslash;&n;&t;(_r)-&gt;r13 = 0; (_r)-&gt;r12 = 0; (_r)-&gt;r11 = 0; (_r)-&gt;r10 = 0; &bslash;&n;&t;(_r)-&gt;r9 = 0;  (_r)-&gt;r8 = 0;  (_r)-&gt;r7 = 0;  (_r)-&gt;r6 = 0;  &bslash;&n;&t;(_r)-&gt;r5 = 0;  (_r)-&gt;r4 = 0;  (_r)-&gt;r3 = 0;  (_r)-&gt;r2 = 0;  &bslash;&n;&t;(_r)-&gt;r1 = 0;  (_r)-&gt;r0 = 0;  (_r)-&gt;mof = 0; (_r)-&gt;srp = 0; &bslash;&n;} while (0)
 DECL|macro|USE_ELF_CORE_DUMP
 macro_line|#undef USE_ELF_CORE_DUMP
 DECL|macro|ELF_EXEC_PAGESIZE

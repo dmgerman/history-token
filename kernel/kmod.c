@@ -526,7 +526,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;request_module - try to load a kernel module&n; *&t;@module_name: Name of module&n; *&n; * &t;Load a module using the user mode module loader. The function returns&n; *&t;zero on success or a negative errno code on failure. Note that a&n; * &t;successful module load does not mean the module did not then unload&n; *&t;and exit on an error of its own. Callers must check that the service&n; *&t;they requested is now available not blindly invoke it.&n; *&n; *&t;If module auto-loading support is disabled then this function&n; *&t;becomes a no-operation.&n; */
+multiline_comment|/**&n; * request_module - try to load a kernel module&n; * @module_name: Name of module&n; *&n; * Load a module using the user mode module loader. The function returns&n; * zero on success or a negative errno code on failure. Note that a&n; * successful module load does not mean the module did not then unload&n; * and exit on an error of its own. Callers must check that the service&n; * they requested is now available not blindly invoke it.&n; *&n; * If module auto-loading support is disabled then this function&n; * becomes a no-operation.&n; */
 DECL|function|request_module
 r_int
 id|request_module

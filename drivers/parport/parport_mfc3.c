@@ -130,7 +130,7 @@ op_star
 id|p
 )paren
 (brace
-multiline_comment|/* clears interupt bit. Triggers also /STROBE. */
+multiline_comment|/* clears interrupt bit. Triggers also /STROBE. */
 r_return
 id|pia
 c_func

@@ -5931,6 +5931,7 @@ id|linkinfo_dn
 id|link
 suffix:semicolon
 r_int
+r_int
 id|r_len
 suffix:semicolon
 r_void

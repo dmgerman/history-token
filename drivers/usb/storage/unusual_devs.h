@@ -177,6 +177,30 @@ comma
 id|US_FL_START_STOP
 )paren
 comma
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04e6
+comma
+l_int|0x0005
+comma
+l_int|0x0100
+comma
+l_int|0x0208
+comma
+l_string|&quot;SCM Microsystems Inc&quot;
+comma
+l_string|&quot;eUSB SmartMedia / CompactFlash Adapter&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_DPCM_USB
+comma
+l_int|NULL
+comma
+id|US_FL_START_STOP
+)paren
+comma
 macro_line|#endif
 id|UNUSUAL_DEV
 c_func

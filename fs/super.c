@@ -5734,7 +5734,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Flags is a 32-bit value that allows up to 32 non-fs dependent flags to&n; * be given to the mount() call (ie: read-only, no-dev, no-suid etc).&n; *&n; * data is a (void *) that can point to any structure up to&n; * PAGE_SIZE-1 bytes, which can contain arbitrary fs-dependent&n; * information (or be NULL).&n; */
+multiline_comment|/*&n; * Flags is a 32-bit value that allows up to 31 non-fs dependent flags to&n; * be given to the mount() call (ie: read-only, no-dev, no-suid etc).&n; *&n; * data is a (void *) that can point to any structure up to&n; * PAGE_SIZE-1 bytes, which can contain arbitrary fs-dependent&n; * information (or be NULL).&n; *&n; * Pre-0.97 versions of mount() didn&squot;t have a flags word.&n; * When the flags word was introduced its top half was required&n; * to have the magic value 0xC0ED, and this remained so until 2.4.0-test9.&n; * Therefore, if this magic number is present, it carries no information&n; * and must be discarded.&n; */
 DECL|function|do_mount
 r_int
 id|do_mount
@@ -5786,6 +5786,23 @@ r_int
 id|retval
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* Discard magic */
+r_if
+c_cond
+(paren
+(paren
+id|flags
+op_amp
+id|MS_MGC_MSK
+)paren
+op_eq
+id|MS_MGC_VAL
+)paren
+id|flags
+op_and_assign
+op_complement
+id|MS_MGC_MSK
 suffix:semicolon
 multiline_comment|/* Basic sanity checks */
 r_if

@@ -2620,6 +2620,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|urb-&gt;dev
+op_ne
+id|uhci-&gt;rh.dev
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|urb-&gt;transfer_buffer_length
 )paren
 (brace
@@ -2696,6 +2704,7 @@ id|urbp-&gt;setup_packet_dma_handle
 r_return
 l_int|NULL
 suffix:semicolon
+)brace
 )brace
 r_return
 id|urbp
@@ -2979,7 +2988,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|urb-&gt;setup_packet
+id|urbp-&gt;setup_packet_dma_handle
 )paren
 id|pci_unmap_single
 c_func
@@ -2999,7 +3008,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|urb-&gt;transfer_buffer_length
+id|urbp-&gt;transfer_buffer_dma_handle
 )paren
 id|pci_unmap_single
 c_func
@@ -9873,7 +9882,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|urb-&gt;transfer_buffer_length
+id|urbp-&gt;transfer_buffer_dma_handle
 )paren
 id|pci_dma_sync_single
 c_func
@@ -9899,15 +9908,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|usb_pipetype
-c_func
-(paren
-id|urb-&gt;pipe
-)paren
-op_eq
-id|PIPE_CONTROL
-op_logical_and
-id|urb-&gt;setup_packet
+id|urbp-&gt;setup_packet_dma_handle
 )paren
 id|pci_dma_sync_single
 c_func

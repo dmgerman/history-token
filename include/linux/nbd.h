@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * 1999 Copyright (C) Pavel Machek, pavel@ucw.cz. This code is GPL.&n; * 1999/11/04 Copyright (C) 1999 VMware, Inc. (Regis &quot;HPReg&quot; Duchesne)&n; *            Made nbd_end_request() use the io_request_lock&n; */
+multiline_comment|/*&n; * 1999 Copyright (C) Pavel Machek, pavel@ucw.cz. This code is GPL.&n; * 1999/11/04 Copyright (C) 1999 VMware, Inc. (Regis &quot;HPReg&quot; Duchesne)&n; *            Made nbd_end_request() use the io_request_lock&n; * 2001 Copyright (C) Steven Whitehouse&n; *            New nbd_end_request() for compatibility with new linux block&n; *            layer code.&n; */
 macro_line|#ifndef LINUX_NBD_H
 DECL|macro|LINUX_NBD_H
 mdefine_line|#define LINUX_NBD_H

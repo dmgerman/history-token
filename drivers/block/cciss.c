@@ -23,9 +23,9 @@ macro_line|#include &lt;linux/genhd.h&gt;
 DECL|macro|CCISS_DRIVER_VERSION
 mdefine_line|#define CCISS_DRIVER_VERSION(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME &quot;Compaq CISS Driver (v 2.4.2)&quot;
+mdefine_line|#define DRIVER_NAME &quot;Compaq CISS Driver (v 2.4.3)&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,4,2)
+mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,4,3)
 multiline_comment|/* Embedded module documentation macros - see modules.h */
 id|MODULE_AUTHOR
 c_func
@@ -430,10 +430,10 @@ c_func
 id|buffer
 comma
 l_string|&quot;%s:  Compaq %s Controller&bslash;n&quot;
-l_string|&quot;       Board ID: %08lx&bslash;n&quot;
+l_string|&quot;       Board ID: 0x%08lx&bslash;n&quot;
 l_string|&quot;       Firmware Version: %c%c%c%c&bslash;n&quot;
-l_string|&quot;       Memory Address: %08lx&bslash;n&quot;
-l_string|&quot;       IRQ: 0x%x&bslash;n&quot;
+l_string|&quot;       Memory Address: 0x%08lx&bslash;n&quot;
+l_string|&quot;       IRQ: %d&bslash;n&quot;
 l_string|&quot;       Logical drives: %d&bslash;n&quot;
 l_string|&quot;       Current Q depth: %d&bslash;n&quot;
 l_string|&quot;       Current # commands on controller %d&bslash;n&quot;
@@ -636,9 +636,9 @@ op_assign
 id|proc_mkdir
 c_func
 (paren
-l_string|&quot;driver/cciss&quot;
+l_string|&quot;cciss&quot;
 comma
-l_int|NULL
+id|proc_root_driver
 )paren
 suffix:semicolon
 r_if
@@ -3320,6 +3320,8 @@ c_loop
 id|i
 op_assign
 id|max_p
+op_minus
+l_int|1
 suffix:semicolon
 id|i
 op_ge
@@ -3336,9 +3338,9 @@ id|start
 op_plus
 id|i
 suffix:semicolon
-id|kdev_t
-id|devi
-op_assign
+id|invalidate_device
+c_func
+(paren
 id|MKDEV
 c_func
 (paren
@@ -3348,39 +3350,8 @@ id|ctlr
 comma
 id|minor
 )paren
-suffix:semicolon
-r_struct
-id|super_block
-op_star
-id|sb
-op_assign
-id|get_super
-c_func
-(paren
-id|devi
-)paren
-suffix:semicolon
-id|sync_dev
-c_func
-(paren
-id|devi
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sb
-)paren
-id|invalidate_inodes
-c_func
-(paren
-id|sb
-)paren
-suffix:semicolon
-id|invalidate_buffers
-c_func
-(paren
-id|devi
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|gdev-&gt;part
@@ -5535,6 +5506,13 @@ suffix:semicolon
 id|u64bit
 id|temp64
 suffix:semicolon
+singleline_comment|// Loop till the queue is empty if or it is plugged
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -6120,12 +6098,8 @@ op_assign
 id|h-&gt;Qdepth
 suffix:semicolon
 )brace
-id|start_io
-c_func
-(paren
-id|h
-)paren
-suffix:semicolon
+)brace
+singleline_comment|// while loop
 )brace
 DECL|function|do_cciss_intr
 r_static
@@ -9853,10 +9827,9 @@ suffix:semicolon
 id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;driver/cciss&quot;
+l_string|&quot;cciss&quot;
 comma
-op_amp
-id|proc_root
+id|proc_root_driver
 )paren
 suffix:semicolon
 id|kfree

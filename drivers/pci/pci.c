@@ -3302,6 +3302,7 @@ multiline_comment|/*&n;&t;&t; * Ugh. We don&squot;t know enough about this bridg
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Unknown bridge resource %d: assuming transparent&bslash;n&quot;
 comma
 l_int|0
@@ -3408,6 +3409,7 @@ multiline_comment|/* See comment above. Same thing */
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Unknown bridge resource %d: assuming transparent&bslash;n&quot;
 comma
 l_int|1
@@ -3583,6 +3585,7 @@ multiline_comment|/* See comments above */
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Unknown bridge resource %d: assuming transparent&bslash;n&quot;
 comma
 l_int|2

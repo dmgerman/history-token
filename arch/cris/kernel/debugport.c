@@ -1,4 +1,4 @@
-multiline_comment|/* Serialport functions for debugging&n; *&n; * Copyright (c) 2000 Axis Communications AB&n; *&n; * Authors:  Bjorn Wesen&n; *&n; * Exports:&n; *    console_print_etrax(char *buf)&n; *    int getDebugChar()&n; *    putDebugChar(int)&n; *    enableDebugIRQ()&n; *    init_etrax_debug()&n; *&n; * $Log: debugport.c,v $&n; * Revision 1.4  2000/10/06 12:37:26  bjornw&n; * Use physical addresses when talking to DMA&n; *&n; *&n; */
+multiline_comment|/* Serialport functions for debugging&n; *&n; * Copyright (c) 2000 Axis Communications AB&n; *&n; * Authors:  Bjorn Wesen&n; *&n; * Exports:&n; *    console_print_etrax(char *buf)&n; *    int getDebugChar()&n; *    putDebugChar(int)&n; *    enableDebugIRQ()&n; *    init_etrax_debug()&n; *&n; * $Log: debugport.c,v $&n; * Revision 1.6  2001/04/17 13:58:39  orjanf&n; * * Renamed CONFIG_KGDB to CONFIG_ETRAX_KGDB.&n; *&n; * Revision 1.5  2001/03/26 14:22:05  bjornw&n; * Namechange of some config options&n; *&n; * Revision 1.4  2000/10/06 12:37:26  bjornw&n; * Use physical addresses when talking to DMA&n; *&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -7,7 +7,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/svinto.h&gt;
 macro_line|#include &lt;asm/io.h&gt;             /* Get SIMCOUT. */
 multiline_comment|/* Which serial-port is our debug port ? */
-macro_line|#if defined(CONFIG_DEBUG_PORT0) || defined(CONFIG_DEBUG_PORT_NULL)
+macro_line|#if defined(CONFIG_ETRAX_DEBUG_PORT0) || defined(CONFIG_ETRAX_DEBUG_PORT_NULL)
 DECL|macro|DEBUG_PORT_IDX
 mdefine_line|#define DEBUG_PORT_IDX 0
 DECL|macro|DEBUG_OCMD
@@ -31,7 +31,7 @@ mdefine_line|#define DEBUG_IRQ IO_STATE(R_IRQ_MASK1_SET, ser0_data, set)
 DECL|macro|DEBUG_DMA_IRQ_CLR
 mdefine_line|#define DEBUG_DMA_IRQ_CLR IO_STATE(R_IRQ_MASK2_CLR, dma6_descr, clr)
 macro_line|#endif
-macro_line|#ifdef CONFIG_DEBUG_PORT1
+macro_line|#ifdef CONFIG_ETRAX_DEBUG_PORT1
 DECL|macro|DEBUG_PORT_IDX
 mdefine_line|#define DEBUG_PORT_IDX 1
 DECL|macro|DEBUG_OCMD
@@ -55,7 +55,7 @@ mdefine_line|#define DEBUG_IRQ IO_STATE(R_IRQ_MASK1_SET, ser1_data, set)
 DECL|macro|DEBUG_DMA_IRQ_CLR
 mdefine_line|#define DEBUG_DMA_IRQ_CLR IO_STATE(R_IRQ_MASK2_CLR, dma8_descr, clr)
 macro_line|#endif
-macro_line|#ifdef CONFIG_DEBUG_PORT2
+macro_line|#ifdef CONFIG_ETRAX_DEBUG_PORT2
 DECL|macro|DEBUG_PORT_IDX
 mdefine_line|#define DEBUG_PORT_IDX 2
 DECL|macro|DEBUG_OCMD
@@ -79,7 +79,7 @@ mdefine_line|#define DEBUG_IRQ IO_STATE(R_IRQ_MASK1_SET, ser2_data, set)
 DECL|macro|DEBUG_DMA_IRQ_CLR
 mdefine_line|#define DEBUG_DMA_IRQ_CLR IO_STATE(R_IRQ_MASK2_CLR, dma2_descr, clr)
 macro_line|#endif
-macro_line|#ifdef CONFIG_DEBUG_PORT3
+macro_line|#ifdef CONFIG_ETRAX_DEBUG_PORT3
 DECL|macro|DEBUG_PORT_IDX
 mdefine_line|#define DEBUG_PORT_IDX 3
 DECL|macro|DEBUG_OCMD
@@ -137,7 +137,7 @@ suffix:semicolon
 r_int
 id|in_progress
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_PORT_NULL
+macro_line|#ifdef CONFIG_ETRAX_DEBUG_PORT_NULL
 multiline_comment|/* no debug printout at all */
 r_return
 suffix:semicolon
@@ -166,7 +166,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_KGDB
+macro_line|#ifdef CONFIG_ETRAX_KGDB
 multiline_comment|/* kgdb needs to output debug info using the gdb protocol */
 id|putDebugString
 c_func

@@ -153,6 +153,11 @@ DECL|macro|DWORD
 mdefine_line|#define DWORD __u32
 DECL|macro|CISS_MAX_LUN
 mdefine_line|#define CISS_MAX_LUN&t;16&t;
+DECL|macro|LEVEL2LUN
+mdefine_line|#define LEVEL2LUN   1   
+singleline_comment|// index into Target(x) structure, due to byte swapping
+DECL|macro|LEVEL3LUN
+mdefine_line|#define LEVEL3LUN   0
 macro_line|#pragma pack(1)
 singleline_comment|//Command List Structure
 DECL|union|_SCSI3Addr_struct
@@ -162,6 +167,10 @@ id|_SCSI3Addr_struct
 (brace
 r_struct
 (brace
+DECL|member|Dev
+id|BYTE
+id|Dev
+suffix:semicolon
 DECL|member|Bus
 id|BYTE
 id|Bus
@@ -175,16 +184,16 @@ suffix:colon
 l_int|2
 suffix:semicolon
 singleline_comment|// b00
-DECL|member|Dev
-id|BYTE
-id|Dev
-suffix:semicolon
 DECL|member|PeripDev
 )brace
 id|PeripDev
 suffix:semicolon
 r_struct
 (brace
+DECL|member|DevLSB
+id|BYTE
+id|DevLSB
+suffix:semicolon
 DECL|member|DevMSB
 id|BYTE
 id|DevMSB
@@ -198,16 +207,24 @@ suffix:colon
 l_int|2
 suffix:semicolon
 singleline_comment|// b01
-DECL|member|DevLSB
-id|BYTE
-id|DevLSB
-suffix:semicolon
 DECL|member|LogDev
 )brace
 id|LogDev
 suffix:semicolon
 r_struct
 (brace
+DECL|member|Dev
+id|BYTE
+id|Dev
+suffix:colon
+l_int|5
+suffix:semicolon
+DECL|member|Bus
+id|BYTE
+id|Bus
+suffix:colon
+l_int|3
+suffix:semicolon
 DECL|member|Targ
 id|BYTE
 id|Targ
@@ -221,18 +238,6 @@ suffix:colon
 l_int|2
 suffix:semicolon
 singleline_comment|// b10
-DECL|member|Dev
-id|BYTE
-id|Dev
-suffix:colon
-l_int|5
-suffix:semicolon
-DECL|member|Bus
-id|BYTE
-id|Bus
-suffix:colon
-l_int|3
-suffix:semicolon
 DECL|member|LogUnit
 )brace
 id|LogUnit

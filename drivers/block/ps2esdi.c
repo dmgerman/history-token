@@ -38,7 +38,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|PS2ESDI_IRQ
 mdefine_line|#define PS2ESDI_IRQ 14
 DECL|macro|MAX_HD
-mdefine_line|#define MAX_HD 1
+mdefine_line|#define MAX_HD 2
 DECL|macro|MAX_RETRIES
 mdefine_line|#define MAX_RETRIES 5
 DECL|macro|MAX_16BIT
@@ -307,6 +307,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
 r_void
 id|ps2esdi_reset_timer
 c_func
@@ -317,6 +318,7 @@ id|unused
 )paren
 suffix:semicolon
 DECL|variable|dma_arb_level
+r_static
 id|u_int
 id|dma_arb_level
 suffix:semicolon
@@ -336,6 +338,7 @@ id|ps2esdi_wait_open
 )paren
 suffix:semicolon
 DECL|variable|no_int_yet
+r_static
 r_int
 id|no_int_yet
 suffix:semicolon
@@ -422,6 +425,7 @@ op_minus
 l_int|1
 suffix:semicolon
 DECL|variable|tp720esdi
+r_static
 r_int
 id|tp720esdi
 op_assign
@@ -429,6 +433,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Is it Integrated ESDI of ThinkPad-720? */
 DECL|variable|intg_esdi
+r_static
 r_int
 id|intg_esdi
 op_assign
@@ -463,10 +468,12 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#if 0
 macro_line|#if 0&t;&t;&t;&t;/* try both - I don&squot;t know which one is better... UB */
+r_static
 r_struct
 id|ps2esdi_i_struct
 id|ps2esdi_info
 (braket
+id|MAX_HD
 )braket
 op_assign
 (brace
@@ -500,10 +507,12 @@ l_int|0
 )brace
 suffix:semicolon
 macro_line|#else
+r_static
 r_struct
 id|ps2esdi_i_struct
 id|ps2esdi_info
 (braket
+id|MAX_HD
 )braket
 op_assign
 (brace
@@ -539,10 +548,12 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 DECL|variable|ps2esdi_info
+r_static
 r_struct
 id|ps2esdi_i_struct
 id|ps2esdi_info
 (braket
+id|MAX_HD
 )braket
 op_assign
 (brace
@@ -726,10 +737,11 @@ suffix:semicolon
 multiline_comment|/* ps2esdi_init */
 macro_line|#ifdef MODULE
 DECL|variable|cyl
+r_static
 r_int
 id|cyl
 (braket
-l_int|2
+id|MAX_HD
 )braket
 op_assign
 (brace
@@ -741,10 +753,11 @@ l_int|1
 )brace
 suffix:semicolon
 DECL|variable|head
+r_static
 r_int
 id|head
 (braket
-l_int|2
+id|MAX_HD
 )braket
 op_assign
 (brace
@@ -756,10 +769,11 @@ l_int|1
 )brace
 suffix:semicolon
 DECL|variable|sect
+r_static
 r_int
 id|sect
 (braket
-l_int|2
+id|MAX_HD
 )braket
 op_assign
 (brace
@@ -821,8 +835,8 @@ op_assign
 l_int|0
 suffix:semicolon
 id|drive
-op_le
-l_int|1
+OL
+id|MAX_HD
 suffix:semicolon
 id|drive
 op_increment
@@ -5557,9 +5571,9 @@ op_or
 id|partition
 )paren
 suffix:semicolon
-id|kdev_t
-id|devp
-op_assign
+id|invalidate_device
+c_func
+(paren
 id|MKDEV
 c_func
 (paren
@@ -5567,46 +5581,13 @@ id|MAJOR_NR
 comma
 id|minor
 )paren
-suffix:semicolon
-r_struct
-id|super_block
-op_star
-id|sb
-op_assign
-id|get_super
-c_func
-(paren
-id|devp
-)paren
-suffix:semicolon
-id|sync_dev
-c_func
-(paren
-id|devp
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sb
-)paren
-id|invalidate_inodes
-c_func
-(paren
-id|sb
-)paren
-suffix:semicolon
-id|invalidate_buffers
-c_func
-(paren
-id|devp
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|ps2esdi_gendisk.part
 (braket
-id|start
-op_plus
-id|partition
+id|minor
 )braket
 dot
 id|start_sect
@@ -5615,9 +5596,7 @@ l_int|0
 suffix:semicolon
 id|ps2esdi_gendisk.part
 (braket
-id|start
-op_plus
-id|partition
+id|minor
 )braket
 dot
 id|nr_sects
@@ -5680,6 +5659,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ps2esdi_reset_timer
+r_static
 r_void
 id|ps2esdi_reset_timer
 c_func

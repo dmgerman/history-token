@@ -42,17 +42,21 @@ DECL|macro|PT_SRP
 mdefine_line|#define PT_SRP       18
 DECL|macro|PT_IRP
 mdefine_line|#define PT_IRP       19
+DECL|macro|PT_CSRINSTR
+mdefine_line|#define PT_CSRINSTR  20    /* CPU Status record remnants - valid if frametype == busfault */
+DECL|macro|PT_CSRADDR
+mdefine_line|#define PT_CSRADDR   21
+DECL|macro|PT_CSRDATA
+mdefine_line|#define PT_CSRDATA   22
 DECL|macro|PT_USP
-mdefine_line|#define PT_USP       20    /* special case - USP is not in the pt_regs */
+mdefine_line|#define PT_USP       23    /* special case - USP is not in the pt_regs */
 DECL|macro|PT_MAX
-mdefine_line|#define PT_MAX       20
+mdefine_line|#define PT_MAX       23
 multiline_comment|/* Frame types */
 DECL|macro|CRIS_FRAME_NORMAL
-mdefine_line|#define CRIS_FRAME_NORMAL   0  /* normal frame like pt_regs struct */
+mdefine_line|#define CRIS_FRAME_NORMAL   0  /* normal frame without SBFS stacking */
 DECL|macro|CRIS_FRAME_BUSFAULT
-mdefine_line|#define CRIS_FRAME_BUSFAULT 1  /* SBFS frame of 4 longwords on top, including irp */
-DECL|macro|CRIS_FRAME_FIXUP
-mdefine_line|#define CRIS_FRAME_FIXUP    2  /* SBFS frame which should do a normal return, not RBF */
+mdefine_line|#define CRIS_FRAME_BUSFAULT 1  /* frame stacked using SBFS, need RBF return path */
 multiline_comment|/* Arbitrarily choose the same ptrace numbers as used by the Sparc code. */
 DECL|macro|PTRACE_GETREGS
 mdefine_line|#define PTRACE_GETREGS            12
@@ -168,6 +172,21 @@ DECL|member|irp
 r_int
 r_int
 id|irp
+suffix:semicolon
+DECL|member|csrinstr
+r_int
+r_int
+id|csrinstr
+suffix:semicolon
+DECL|member|csraddr
+r_int
+r_int
+id|csraddr
+suffix:semicolon
+DECL|member|csrdata
+r_int
+r_int
+id|csrdata
 suffix:semicolon
 )brace
 suffix:semicolon

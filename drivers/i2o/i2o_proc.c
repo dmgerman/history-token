@@ -13407,7 +13407,7 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;    [%s] HW CRC supression&bslash;n&quot;
+l_string|&quot;    [%s] HW CRC suppression&bslash;n&quot;
 comma
 (paren
 id|work32
@@ -13563,7 +13563,7 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;    [%s] Loopback supression enable&bslash;n&quot;
+l_string|&quot;    [%s] Loopback suppression enable&bslash;n&quot;
 comma
 (paren
 id|work32

@@ -319,9 +319,9 @@ mdefine_line|#define UART_RSA_SRR_Rx_FIFO_NHFL (1 &lt;&lt; 4) /* Rx FIFO is not 
 DECL|macro|UART_RSA_SRR_Rx_FIFO_NFUL
 mdefine_line|#define UART_RSA_SRR_Rx_FIFO_NFUL (1 &lt;&lt; 5) /* Rx FIFO is not full (1) */
 DECL|macro|UART_RSA_SRR_Rx_TOUT
-mdefine_line|#define UART_RSA_SRR_Rx_TOUT (1 &lt;&lt; 6) /* Character reception timeout occured (1) */
+mdefine_line|#define UART_RSA_SRR_Rx_TOUT (1 &lt;&lt; 6) /* Character reception timeout occurred (1) */
 DECL|macro|UART_RSA_SRR_TIMER
-mdefine_line|#define UART_RSA_SRR_TIMER (1 &lt;&lt; 7) /* Timer interrupt occured */
+mdefine_line|#define UART_RSA_SRR_TIMER (1 &lt;&lt; 7) /* Timer interrupt occurred */
 DECL|macro|UART_RSA_FRR
 mdefine_line|#define UART_RSA_FRR ((UART_RSA_BASE) + 2) /* OUT: FIFO Reset Register */
 DECL|macro|UART_RSA_TIVSR

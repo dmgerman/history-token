@@ -1,7 +1,7 @@
 macro_line|#ifndef _CRIS_STAT_H
 DECL|macro|_CRIS_STAT_H
 mdefine_line|#define _CRIS_STAT_H
-multiline_comment|/* verbatim copy of i386 version */
+multiline_comment|/* Keep this a verbatim copy of i386 version; tweak CRIS-specific bits in&n;   the kernel if necessary.  */
 DECL|struct|__old_kernel_stat
 r_struct
 id|__old_kernel_stat
@@ -187,10 +187,12 @@ id|__pad0
 l_int|10
 )braket
 suffix:semicolon
-DECL|member|st_ino
+DECL|macro|STAT64_HAS_BROKEN_ST_INO
+mdefine_line|#define STAT64_HAS_BROKEN_ST_INO&t;1
+DECL|member|__st_ino
 r_int
 r_int
-id|st_ino
+id|__st_ino
 suffix:semicolon
 DECL|member|st_mode
 r_int
@@ -278,15 +280,11 @@ r_int
 id|__pad7
 suffix:semicolon
 multiline_comment|/* will be high 32 bits of ctime someday */
-DECL|member|__unused1
+DECL|member|st_ino
 r_int
 r_int
-id|__unused1
-suffix:semicolon
-DECL|member|__unused2
 r_int
-r_int
-id|__unused2
+id|st_ino
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -1395,7 +1395,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; *  Fragment the frame, this function will also queue the&n;&t;&t; *  fragments, we don&squot;t care about the fact the the transmit&n;&t;&t; *  queue may be overfilled by all the segments for a little&n;&t;&t; *  while&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Fragment the frame, this function will also queue the&n;&t;&t; *  fragments, we don&squot;t care about the fact the transmit&n;&t;&t; *  queue may be overfilled by all the segments for a little&n;&t;&t; *  while&n;&t;&t; */
 id|irttp_fragment_skb
 c_func
 (paren
@@ -1628,6 +1628,76 @@ op_amp
 l_int|0x7f
 )paren
 suffix:semicolon
+multiline_comment|/* Detach from socket.&n;&t;&t; * The current skb has a reference to the socket that sent&n;&t;&t; * it (skb-&gt;sk). When we pass it to IrLMP, the skb will be&n;&t;&t; * stored in in IrLAP (self-&gt;wx_list). When we are within&n;&t;&t; * IrLAP, we loose the notion of socket, so we should not&n;&t;&t; * have a reference to a socket. So, we drop it here.&n;&t;&t; * &n;&t;&t; * Why does it matter ?&n;&t;&t; * When the skb is freed (kfree_skb), if it is associated&n;&t;&t; * with a socket, it release buffer space on the socket&n;&t;&t; * (through sock_wfree() and sock_def_write_space()).&n;&t;&t; * If the socket no longer exist, we may crash. Hard.&n;&t;&t; * When we close a socket, we make sure that associated packets&n;&t;&t; * in IrTTP are freed. However, we have no way to cancel&n;&t;&t; * the packet that we have passed to IrLAP. So, if a packet&n;&t;&t; * remains in IrLAP (retry on the link or else) after we&n;&t;&t; * close the socket, we are dead !&n;&t;&t; * Jean II */
+r_if
+c_cond
+(paren
+id|skb-&gt;sk
+op_ne
+l_int|NULL
+)paren
+(brace
+r_struct
+id|sk_buff
+op_star
+id|tx_skb
+suffix:semicolon
+multiline_comment|/* IrSOCK application, IrOBEX, ... */
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|4
+comma
+id|__FUNCTION__
+l_string|&quot;() : Detaching SKB from socket.&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Note : still looking for a more efficient way&n;&t;&t;&t; * to do that - Jean II */
+multiline_comment|/* Get another skb on the same buffer, but without&n;&t;&t;&t; * a reference to the socket (skb-&gt;sk = NULL) */
+id|tx_skb
+op_assign
+id|skb_clone
+c_func
+(paren
+id|skb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tx_skb
+op_ne
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* Release the skb associated with the&n;&t;&t;&t;&t; * socket, and use the new skb insted */
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|skb
+op_assign
+id|tx_skb
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/* IrCOMM over IrTTP, IrLAN, ... */
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|4
+comma
+id|__FUNCTION__
+l_string|&quot;() : Got SKB not attached to a socket.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 id|irlmp_data_request
 c_func
 (paren

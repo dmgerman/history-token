@@ -15,8 +15,8 @@ multiline_comment|/* Compatibility with old ppp drivers&n; * Should be defined i
 macro_line|#ifndef PPPIOCSLINKNAME
 DECL|macro|PPPIOCSLINKNAME
 mdefine_line|#define PPPIOCSLINKNAME&t;_IOW(&squot;t&squot;, 74, struct ppp_option_data)
-macro_line|#endif PPPIOCSLINKNAME
-macro_line|#endif LINKNAME_IOCTL
+macro_line|#endif /* PPPIOCSLINKNAME */
+macro_line|#endif /* LINKNAME_IOCTL */
 multiline_comment|/* PPP hardcore stuff */
 multiline_comment|/* Bits in rbits (PPP flags in irnet struct) */
 DECL|macro|SC_RCV_BITS
@@ -296,5 +296,5 @@ comma
 id|ppp_irnet_ioctl
 )brace
 suffix:semicolon
-macro_line|#endif IRNET_PPP_H
+macro_line|#endif /* IRNET_PPP_H */
 eof

@@ -28,5 +28,10 @@ DECL|macro|IO_SETINPUT
 mdefine_line|#define IO_SETINPUT   0x9  /* Set direction 0=unchanged 1=input, &n;                              returns current dir */
 DECL|macro|IO_SETOUTPUT
 mdefine_line|#define IO_SETOUTPUT  0xA  /* Set direction 0=unchanged 1=output,&n;                              returns current dir */
+multiline_comment|/* LED ioctl extended */
+DECL|macro|IO_LED_SETBIT
+mdefine_line|#define IO_LED_SETBIT 0xB
+DECL|macro|IO_LED_CLRBIT
+mdefine_line|#define IO_LED_CLRBIT 0xC
 macro_line|#endif
 eof

@@ -333,7 +333,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------------------- */
-multiline_comment|/* i2c adresses                                                           */
+multiline_comment|/* i2c addresses                                                           */
 DECL|variable|normal_i2c
 r_static
 r_int

@@ -1051,7 +1051,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|64
+id|NUM_PAGEID
 suffix:semicolon
 id|i
 op_increment

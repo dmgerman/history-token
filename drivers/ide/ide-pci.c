@@ -3688,6 +3688,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|dev-&gt;bus-&gt;self
+op_logical_and
 id|dev-&gt;bus-&gt;self-&gt;vendor
 op_eq
 id|PCI_VENDOR_ID_INTEL

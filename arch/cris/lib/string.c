@@ -30,6 +30,7 @@ multiline_comment|/*#&t;&t;&t;      dword, not just word-if-both-src-and-dst-&t;
 multiline_comment|/*#&t;&t;&t;      are-misaligned.&t;&t;&t;&t;    */
 multiline_comment|/*#                                                                         */
 multiline_comment|/*#-------------------------------------------------------------------------*/
+macro_line|#include &lt;linux/types.h&gt;
 DECL|function|memcpy
 r_void
 op_star
@@ -45,7 +46,6 @@ r_void
 op_star
 id|psrc
 comma
-r_int
 r_int
 id|pn
 )paren

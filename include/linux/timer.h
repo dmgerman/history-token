@@ -3,7 +3,7 @@ DECL|macro|_LINUX_TIMER_H
 mdefine_line|#define _LINUX_TIMER_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-multiline_comment|/*&n; * This is completely separate from the above, and is the&n; * &quot;new and improved&quot; way of handling timers more dynamically.&n; * Hopefully efficient and general enough for most things.&n; *&n; * The &quot;hardcoded&quot; timers above are still useful for well-&n; * defined problems, but the timer-list is probably better&n; * when you need multiple outstanding timers or similar.&n; *&n; * The &quot;data&quot; field is in case you want to use the same&n; * timeout function for several timeouts. You can use this&n; * to distinguish between the different invocations.&n; */
+multiline_comment|/*&n; * In Linux 2.4, static timers have been removed from the kernel.&n; * Timers may be dynamically created and destroyed, and should be initialized&n; * by a call to init_timer() upon creation.&n; *&n; * The &quot;data&quot; field enables use of a common timeout function for several&n; * timeouts. You can use this field to distinguish between the different&n; * invocations.&n; */
 DECL|struct|timer_list
 r_struct
 id|timer_list

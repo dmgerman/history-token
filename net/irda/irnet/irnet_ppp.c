@@ -605,7 +605,7 @@ r_return
 id|done_event
 suffix:semicolon
 )brace
-macro_line|#endif INITIAL_DISCOVERY
+macro_line|#endif /* INITIAL_DISCOVERY */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Read is used to get IrNET events&n; */
 r_static
@@ -749,7 +749,7 @@ id|event
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif INITIAL_DISCOVERY
+macro_line|#endif /* INITIAL_DISCOVERY */
 multiline_comment|/* Put ourselves on the wait queue to be woken up */
 id|add_wait_queue
 c_func
@@ -1329,7 +1329,7 @@ op_or
 id|POLLRDNORM
 suffix:semicolon
 )brace
-macro_line|#endif INITIAL_DISCOVERY
+macro_line|#endif /* INITIAL_DISCOVERY */
 id|DEXIT
 c_func
 (paren
@@ -1405,7 +1405,7 @@ op_minus
 id|EPERM
 suffix:semicolon
 )brace
-macro_line|#endif SECURE_DEVIRNET
+macro_line|#endif /* SECURE_DEVIRNET */
 multiline_comment|/* Allocate a private structure for this IrNET instance */
 id|ap
 op_assign
@@ -1468,10 +1468,42 @@ r_private
 op_assign
 id|ap
 suffix:semicolon
+id|ap-&gt;chan.ops
+op_assign
+op_amp
+id|irnet_ppp_ops
+suffix:semicolon
+id|ap-&gt;chan.mtu
+op_assign
+(paren
+l_int|2048
+op_minus
+id|TTP_MAX_HEADER
+op_minus
+l_int|2
+op_minus
+id|PPP_HDRLEN
+)paren
+suffix:semicolon
+id|ap-&gt;chan.hdrlen
+op_assign
+l_int|2
+op_plus
+id|TTP_MAX_HEADER
+suffix:semicolon
+multiline_comment|/* for A/C + Max IrDA hdr */
 multiline_comment|/* PPP parameters */
 id|ap-&gt;mru
 op_assign
-id|PPP_MRU
+(paren
+l_int|2048
+op_minus
+id|TTP_MAX_HEADER
+op_minus
+l_int|2
+op_minus
+id|PPP_HDRLEN
+)paren
 suffix:semicolon
 id|ap-&gt;xaccm
 (braket
@@ -2087,7 +2119,7 @@ op_minus
 id|EPERM
 suffix:semicolon
 )brace
-macro_line|#endif SECURE_DEVIRNET
+macro_line|#endif /* SECURE_DEVIRNET */
 id|err
 op_assign
 op_minus
@@ -2146,22 +2178,7 @@ comma
 l_string|&quot;Entering PPP discipline.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* PPP channel setup */
-id|ap-&gt;chan
-dot
-r_private
-op_assign
-id|ap
-suffix:semicolon
-id|ap-&gt;chan.ops
-op_assign
-op_amp
-id|irnet_ppp_ops
-suffix:semicolon
-id|ap-&gt;chan.mtu
-op_assign
-id|PPP_MRU
-suffix:semicolon
+multiline_comment|/* PPP channel setup (ap-&gt;chan in configued in dev_irnet_open())*/
 id|err
 op_assign
 id|ppp_register_channel
@@ -2571,7 +2588,7 @@ op_amp
 id|ap-&gt;chan
 )paren
 suffix:semicolon
-macro_line|#endif FLUSH_TO_PPP
+macro_line|#endif /* FLUSH_TO_PPP */
 id|err
 op_assign
 l_int|0
@@ -3021,7 +3038,7 @@ c_func
 id|self
 )paren
 suffix:semicolon
-macro_line|#endif CONNECT_IN_SEND
+macro_line|#endif /* CONNECT_IN_SEND */
 id|DEBUG
 c_func
 (paren
@@ -3052,7 +3069,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif BLOCK_WHEN_CONNECT
+macro_line|#endif /* BLOCK_WHEN_CONNECT */
 multiline_comment|/* Dropping packet, pppd will retry later */
 id|dev_kfree_skb
 c_func

@@ -131,8 +131,7 @@ id|ret
 suffix:semicolon
 macro_line|#ifndef CONFIG_MODULES
 multiline_comment|/* There is only the kernel to search.  */
-id|ret
-op_assign
+r_return
 id|search_one_table
 c_func
 (paren
@@ -144,14 +143,6 @@ l_int|1
 comma
 id|addr
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-r_return
-id|ret
 suffix:semicolon
 macro_line|#else
 multiline_comment|/* The kernel is the last &quot;module&quot; -- no need to treat it special.  */

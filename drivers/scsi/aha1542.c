@@ -693,6 +693,7 @@ multiline_comment|/* Only used at boot time, so we do not need to worry about la
 DECL|function|aha1542_in
 r_static
 r_int
+id|__init
 id|aha1542_in
 c_func
 (paren
@@ -802,6 +803,7 @@ multiline_comment|/* Similar to aha1542_in, except that we wait a very short per
 DECL|function|aha1542_in1
 r_static
 r_int
+id|__init
 id|aha1542_in1
 c_func
 (paren
@@ -4151,6 +4153,7 @@ multiline_comment|/* This function should only be called for 1542C boards - we c
 DECL|function|aha1542_mbenable
 r_static
 r_int
+id|__init
 id|aha1542_mbenable
 c_func
 (paren

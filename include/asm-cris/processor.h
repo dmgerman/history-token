@@ -7,7 +7,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;).&n; */
 DECL|macro|current_text_addr
-mdefine_line|#define current_text_addr() ({ __label__ _l; _l: &amp;&amp;_l;})
+mdefine_line|#define current_text_addr() ({void *pc; __asm__ (&quot;move.d pc,%0&quot; : &quot;=rm&quot; (pc)); pc; })
 multiline_comment|/* CRIS has no problems with write protection */
 DECL|macro|wp_works_ok
 mdefine_line|#define wp_works_ok 1
@@ -22,6 +22,11 @@ macro_line|#endif
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE      (TASK_SIZE / 3)
+multiline_comment|/* THREAD_SIZE is the size of the task_struct/kernel_stack combo.&n; * normally, the stack is found by doing something like p + THREAD_SIZE&n; * in CRIS, a page is 8192 bytes, which seems like a sane size&n; */
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE       PAGE_SIZE
+DECL|macro|KERNEL_STACK_SIZE
+mdefine_line|#define KERNEL_STACK_SIZE PAGE_SIZE
 multiline_comment|/* CRIS thread_struct. this really has nothing to do with the processor itself, since&n; * CRIS does not do any hardware task-switching, but it&squot;s here for legacy reasons.&n; * The thread_struct here is used when task-switching using _resume defined in entry.S.&n; * The offsets here are hardcoded into _resume - if you change this struct, you need to&n; * change them as well!!!&n;*/
 DECL|struct|thread_struct
 r_struct
@@ -39,12 +44,6 @@ r_int
 id|usp
 suffix:semicolon
 multiline_comment|/* user stack pointer */
-DECL|member|esp0
-r_int
-r_int
-id|esp0
-suffix:semicolon
-multiline_comment|/* points to start of saved stack frame, set in entry.S */
 DECL|member|dccr
 r_int
 r_int
@@ -53,9 +52,12 @@ suffix:semicolon
 multiline_comment|/* saved flag register */
 )brace
 suffix:semicolon
-multiline_comment|/* saved stack-frame upon syscall entry, points to registers */
+multiline_comment|/*&n; * At user-&gt;kernel entry, the pt_regs struct is stacked on the top of the kernel-stack.&n; * This macro allows us to find those regs for a task.&n; * Notice that subsequent pt_regs stackings, like recursive interrupts occuring while&n; * we&squot;re in the kernel, won&squot;t affect this - only the first user-&gt;kernel transition&n; * registers are reached by this.&n; */
+DECL|macro|user_regs
+mdefine_line|#define user_regs(task) (((struct pt_regs *)((unsigned long)(task) + THREAD_SIZE)) - 1)
+multiline_comment|/*&n; * Dito but for the currently running task&n; */
 DECL|macro|current_regs
-mdefine_line|#define current_regs() (current-&gt;thread.esp0)
+mdefine_line|#define current_regs() user_regs(current)
 multiline_comment|/* INIT_MMAP is the kernels map of memory, between KSEG_C and KSEG_D */
 macro_line|#ifdef CONFIG_CRIS_LOW_MAP
 DECL|macro|INIT_MMAP
@@ -65,12 +67,7 @@ DECL|macro|INIT_MMAP
 mdefine_line|#define INIT_MMAP { &amp;init_mm, KSEG_C, KSEG_D, NULL, PAGE_SHARED, &bslash;&n;&t;&t;&t;     VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL }
 macro_line|#endif
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  { &bslash;&n;   0, 0, 0, 0x20 }  /* ccr = int enable, nothing else */
-multiline_comment|/* TODO: REMOVE */
-DECL|macro|alloc_kernel_stack
-mdefine_line|#define alloc_kernel_stack()    __get_free_page(GFP_KERNEL)
-DECL|macro|free_kernel_stack
-mdefine_line|#define free_kernel_stack(page) free_page((page))
+mdefine_line|#define INIT_THREAD  { &bslash;&n;   0, 0, 0x20 }  /* ccr = int enable, nothing else */
 r_extern
 r_int
 id|kernel_thread
@@ -110,7 +107,7 @@ id|p
 )paren
 suffix:semicolon
 DECL|macro|KSTK_EIP
-mdefine_line|#define KSTK_EIP(tsk)   &bslash;&n;    ({                  &bslash;&n;        unsigned long eip = 0;   &bslash;&n;        if ((tsk)-&gt;thread.esp0 &gt; PAGE_SIZE &amp;&amp; &bslash;&n;            VALID_PAGE(virt_to_page((tsk)-&gt;thread.esp0))) &bslash;&n;              eip = ((struct pt_regs *) (tsk)-&gt;thread.esp0)-&gt;irp; &bslash;&n;        eip; })
+mdefine_line|#define KSTK_EIP(tsk)   &bslash;&n;    ({                  &bslash;&n;        unsigned long eip = 0;   &bslash;&n;        unsigned long regs = (unsigned long)user_regs(tsk); &bslash;&n;        if (regs &gt; PAGE_SIZE &amp;&amp; &bslash;&n;            VALID_PAGE(virt_to_page(regs))) &bslash;&n;              eip = ((struct pt_regs *)regs)-&gt;irp; &bslash;&n;        eip; })
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)   ((tsk) == current ? rdusp() : (tsk)-&gt;thread.usp)
 DECL|macro|copy_segments
@@ -130,6 +127,7 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* Nothing needs to be done.  */
 )brace
 multiline_comment|/* Free all resources held by a thread. */
 DECL|function|release_thread
@@ -145,6 +143,7 @@ op_star
 id|dead_task
 )paren
 (brace
+multiline_comment|/* Nothing needs to be done.  */
 )brace
 multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; */
 DECL|function|thread_saved_pc
@@ -166,23 +165,15 @@ r_return
 r_int
 r_int
 )paren
+id|user_regs
+c_func
 (paren
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-id|t-&gt;esp0
+id|t
 )paren
 op_member_access_from_pointer
 id|irp
 suffix:semicolon
 )brace
-multiline_comment|/* THREAD_SIZE is the size of the task_struct/kernel_stack combo.&n; * normally, the stack is found by doing something like p + THREAD_SIZE&n; * in CRIS, a page is 8192 bytes, which seems like a sane size&n; */
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE     PAGE_SIZE
-DECL|macro|KERNEL_STACK_SIZE
-mdefine_line|#define KERNEL_STACK_SIZE PAGE_SIZE
 DECL|macro|alloc_task_struct
 mdefine_line|#define alloc_task_struct()  ((struct task_struct *) __get_free_pages(GFP_KERNEL,1))
 DECL|macro|free_task_struct

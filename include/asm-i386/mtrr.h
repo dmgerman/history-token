@@ -206,6 +206,21 @@ r_int
 id|size
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|mtrr_centaur_report_mcr
+c_func
+(paren
+r_int
+id|mcr
+comma
+id|u32
+id|lo
+comma
+id|u32
+id|hi
+)paren
+suffix:semicolon
 macro_line|#  else
 DECL|function|mtrr_add
 r_static
@@ -305,6 +320,25 @@ id|size
 r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|mtrr_centaur_report_mcr
+r_static
+id|__inline__
+r_void
+id|mtrr_centaur_report_mcr
+c_func
+(paren
+r_int
+id|mcr
+comma
+id|u32
+id|lo
+comma
+id|u32
+id|hi
+)paren
+(brace
 suffix:semicolon
 )brace
 macro_line|#  endif

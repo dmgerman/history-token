@@ -500,6 +500,18 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|c-&gt;bus.pci.queue_buggy
+op_assign
+l_int|0
+suffix:semicolon
+id|c-&gt;bus.pci.dpt
+op_assign
+l_int|0
+suffix:semicolon
+id|c-&gt;bus.pci.short_req
+op_assign
+l_int|0
+suffix:semicolon
 id|c-&gt;irq_mask
 op_assign
 (paren
@@ -574,6 +586,65 @@ id|c-&gt;type
 op_assign
 id|I2O_TYPE_PCI
 suffix:semicolon
+multiline_comment|/*&n;&t; *&t;Cards that fall apart if you hit them with large I/O&n;&t; *&t;loads...&n;&t; */
+r_if
+c_cond
+(paren
+id|dev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_NCR
+op_logical_and
+id|dev-&gt;device
+op_eq
+l_int|0x0630
+)paren
+(brace
+id|c-&gt;bus.pci.short_req
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;I2O: Symbios FC920 workarounds activated.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|dev-&gt;subsystem_vendor
+op_eq
+id|PCI_VENDOR_ID_PROMISE
+)paren
+(brace
+id|c-&gt;bus.pci.queue_buggy
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;I2O: Promise workarounds activated.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; *&t;Cards that go bananas if you quiesce them before you reset&n;&t; *&t;them&n;&t; */
+r_if
+c_cond
+(paren
+id|dev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_DPT
+)paren
+(brace
+id|c-&gt;bus.pci.dpt
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* &n;&t; * Enable Write Combining MTRR for IOP&squot;s memory region&n;&t; */
 macro_line|#ifdef CONFIG_MTRR
 id|c-&gt;bus.pci.mtrr_reg0
@@ -602,6 +673,10 @@ c_cond
 id|dev-&gt;vendor
 op_eq
 id|PCI_VENDOR_ID_INTEL
+op_logical_or
+id|dev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_DPT
 )paren
 (brace
 id|printk

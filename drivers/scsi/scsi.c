@@ -107,7 +107,7 @@ l_int|10
 comma
 l_int|12
 comma
-l_int|16
+l_int|12
 comma
 l_int|12
 comma

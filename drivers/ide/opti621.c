@@ -19,7 +19,7 @@ DECL|macro|OPTI621_MAX_PIO
 mdefine_line|#define OPTI621_MAX_PIO 3
 multiline_comment|/* In fact, I do not have any PIO 4 drive&n; * (address: 25 ns, data: 70 ns, recovery: 35 ns),&n; * but OPTi 82C621 is programmable and it can do (minimal values):&n; * on 40MHz PCI bus (pulse 25 ns):&n; *  address: 25 ns, data: 25 ns, recovery: 50 ns;&n; * on 20MHz PCI bus (pulse 50 ns):&n; *  address: 50 ns, data: 50 ns, recovery: 100 ns.&n; */
 multiline_comment|/* #define READ_PREFETCH 0 */
-multiline_comment|/* Uncommnent for disable read prefetch.&n; * There is some readprefetch capatibility in hdparm,&n; * but when I type hdparm -P 1 /dev/hda, I got errors&n; * and till reset drive is inacessible.&n; * This (hw) read prefetch is safe on my drive.&n; */
+multiline_comment|/* Uncommnent for disable read prefetch.&n; * There is some readprefetch capatibility in hdparm,&n; * but when I type hdparm -P 1 /dev/hda, I got errors&n; * and till reset drive is inaccessible.&n; * This (hw) read prefetch is safe on my drive.&n; */
 macro_line|#ifndef READ_PREFETCH
 DECL|macro|READ_PREFETCH
 mdefine_line|#define READ_PREFETCH 0x40 /* read prefetch is enabled */

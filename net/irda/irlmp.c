@@ -3387,6 +3387,17 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|skb-&gt;sk
+op_eq
+l_int|NULL
+comma
+multiline_comment|/* Just a warning - NOP */
+suffix:semicolon
+)paren
+suffix:semicolon
 multiline_comment|/* Make room for MUX header */
 id|ASSERT
 c_func

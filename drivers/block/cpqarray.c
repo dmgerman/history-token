@@ -20,9 +20,9 @@ macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|SMART2_DRIVER_VERSION
 mdefine_line|#define SMART2_DRIVER_VERSION(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME &quot;Compaq SMART2 Driver (v 2.4.2)&quot;
+mdefine_line|#define DRIVER_NAME &quot;Compaq SMART2 Driver (v 2.4.3)&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION SMART2_DRIVER_VERSION(2,4,2)
+mdefine_line|#define DRIVER_VERSION SMART2_DRIVER_VERSION(2,4,3)
 multiline_comment|/* Embedded module documentation macros - see modules.h */
 multiline_comment|/* Original author Chris Frantz - Compaq Computer Corporation */
 id|MODULE_AUTHOR
@@ -914,9 +914,9 @@ op_assign
 id|proc_mkdir
 c_func
 (paren
-l_string|&quot;driver/array&quot;
+l_string|&quot;array&quot;
 comma
-l_int|NULL
+id|proc_root_driver
 )paren
 suffix:semicolon
 r_if
@@ -1031,12 +1031,12 @@ c_func
 id|buffer
 comma
 l_string|&quot;%s:  Compaq %s Controller&bslash;n&quot;
-l_string|&quot;       Board ID: %08lx&bslash;n&quot;
+l_string|&quot;       Board ID: 0x%08lx&bslash;n&quot;
 l_string|&quot;       Firmware Revision: %c%c%c%c&bslash;n&quot;
-l_string|&quot;       Controller Sig: %08lx&bslash;n&quot;
-l_string|&quot;       Memory Address: %08lx&bslash;n&quot;
-l_string|&quot;       I/O Port: %04x&bslash;n&quot;
-l_string|&quot;       IRQ: %x&bslash;n&quot;
+l_string|&quot;       Controller Sig: 0x%08lx&bslash;n&quot;
+l_string|&quot;       Memory Address: 0x%08lx&bslash;n&quot;
+l_string|&quot;       I/O Port: 0x%04x&bslash;n&quot;
+l_string|&quot;       IRQ: %d&bslash;n&quot;
 l_string|&quot;       Logical drives: %d&bslash;n&quot;
 l_string|&quot;       Physical drives: %d&bslash;n&bslash;n&quot;
 l_string|&quot;       Current Q depth: %d&bslash;n&quot;
@@ -1487,9 +1487,9 @@ suffix:semicolon
 id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;driver/array&quot;
+l_string|&quot;array&quot;
 comma
-l_int|NULL
+id|proc_root_driver
 )paren
 suffix:semicolon
 r_for
@@ -3108,7 +3108,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;cpqarray: Device %x has been found at %x %x&bslash;n&quot;
+l_string|&quot;cpqarray: Device 0x%x has&quot;
+l_string|&quot; been found at bus %d dev %d func %d&bslash;n&quot;
 comma
 id|ida_vendor_id
 (braket
@@ -3117,7 +3118,17 @@ id|brdtype
 comma
 id|pdev-&gt;bus-&gt;number
 comma
+id|PCI_SLOT
+c_func
+(paren
 id|pdev-&gt;devfn
+)paren
+comma
+id|PCI_FUNC
+c_func
+(paren
+id|pdev-&gt;devfn
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -4779,6 +4790,13 @@ id|request
 op_star
 id|creq
 suffix:semicolon
+singleline_comment|// Loop till the queue is empty if or it is plugged 
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -5202,12 +5220,8 @@ id|h-&gt;maxQsinceinit
 op_assign
 id|h-&gt;Qdepth
 suffix:semicolon
-id|start_io
-c_func
-(paren
-id|h
-)paren
-suffix:semicolon
+)brace
+singleline_comment|// while loop
 )brace
 multiline_comment|/* &n; * start_io submits everything on a controller&squot;s request queue&n; * and moves it to the completion queue.&n; *&n; * Interrupts had better be off if you&squot;re in here&n; */
 DECL|function|start_io
@@ -8089,6 +8103,8 @@ c_loop
 id|i
 op_assign
 id|max_p
+op_minus
+l_int|1
 suffix:semicolon
 id|i
 op_ge
@@ -8105,9 +8121,9 @@ id|start
 op_plus
 id|i
 suffix:semicolon
-id|kdev_t
-id|devi
-op_assign
+id|invalidate_device
+c_func
+(paren
 id|MKDEV
 c_func
 (paren
@@ -8117,39 +8133,8 @@ id|ctlr
 comma
 id|minor
 )paren
-suffix:semicolon
-r_struct
-id|super_block
-op_star
-id|sb
-op_assign
-id|get_super
-c_func
-(paren
-id|devi
-)paren
-suffix:semicolon
-id|sync_dev
-c_func
-(paren
-id|devi
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sb
-)paren
-id|invalidate_inodes
-c_func
-(paren
-id|sb
-)paren
-suffix:semicolon
-id|invalidate_buffers
-c_func
-(paren
-id|devi
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|gdev-&gt;part

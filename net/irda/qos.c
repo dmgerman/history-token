@@ -1272,7 +1272,7 @@ l_string|&quot;(), nothing more we can do!&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif CONFIG_IRDA_DYNAMIC_WINDOW
+macro_line|#endif /* CONFIG_IRDA_DYNAMIC_WINDOW */
 )brace
 multiline_comment|/*&n; * Function irlap_negotiate (qos_device, qos_session, skb)&n; *&n; *    Negotiate QoS values, not really that much negotiation :-)&n; *    We just set the QoS capabilities for the peer station&n; *&n; */
 DECL|function|irlap_qos_negotiate

@@ -2030,7 +2030,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * do_sr_request() is the request handler function for the sr driver.&n; * Its function in life is to take block device requests, and&n; * translate them to SCSI commands.&n; */
 DECL|function|sr_detect
 r_static
 r_int
@@ -4083,9 +4082,10 @@ op_eq
 id|SDp
 )paren
 (brace
-id|kdev_t
-id|devi
-op_assign
+multiline_comment|/*&n;&t;&t;&t; * Since the cdrom is read-only, no need to sync the device.&n;&t;&t;&t; * We should be kind to our buffer cache, however.&n;&t;&t;&t; */
+id|invalidate_device
+c_func
+(paren
 id|MKDEV
 c_func
 (paren
@@ -4093,34 +4093,8 @@ id|MAJOR_NR
 comma
 id|i
 )paren
-suffix:semicolon
-r_struct
-id|super_block
-op_star
-id|sb
-op_assign
-id|get_super
-c_func
-(paren
-id|devi
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Since the cdrom is read-only, no need to sync the device.&n;&t;&t;&t; * We should be kind to our buffer cache, however.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|sb
-)paren
-id|invalidate_inodes
-c_func
-(paren
-id|sb
-)paren
-suffix:semicolon
-id|invalidate_buffers
-c_func
-(paren
-id|devi
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Reset things back to a sane state so that one can re-load a new&n;&t;&t;&t; * driver (perhaps the same one).&n;&t;&t;&t; */

@@ -26,6 +26,7 @@ multiline_comment|/*#                           implementation) take up 90% of s
 multiline_comment|/*#                           output.  Measurements needed.                 */
 multiline_comment|/*#                                                                         */
 multiline_comment|/*#-------------------------------------------------------------------------*/
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* No, there&squot;s no macro saying 12*4, since it is &quot;hard&quot; to get it into&n;   the asm in a good way.  Thus better to expose the problem everywhere.&n;   */
 multiline_comment|/* Assuming 1 cycle per dword written or read (ok, not really true), and&n;   one per instruction, then 43+3*(n/48-1) &lt;= 24+24*(n/48-1)&n;   so n &gt;= 45.7; n &gt;= 0.9; we win on the first full 48-byte block to set. */
 DECL|macro|ZERO_BLOCK_SIZE
@@ -43,7 +44,6 @@ comma
 r_int
 id|c
 comma
-r_int
 r_int
 id|plen
 )paren
@@ -85,7 +85,12 @@ multiline_comment|/* Ugh.  This is fragile at best.  Check with newer GCC releas
 id|__asm__
 c_func
 (paren
-l_string|&quot;movu.b %0,r13&bslash;n&bslash;tlslq 8,r13&bslash;n&bslash;tmove.b %0,r13&bslash;n&bslash;tmove.d r13,%0&bslash;n&bslash;tlslq 16,r13&bslash;n&bslash;tor.d r13,%0&quot;
+l_string|&quot;movu.b %0,r13&bslash;n&bslash;t&quot;
+l_string|&quot;lslq 8,r13&bslash;n&bslash;t&quot;
+l_string|&quot;move.b %0,r13&bslash;n&bslash;t&quot;
+l_string|&quot;move.d r13,%0&bslash;n&bslash;t&quot;
+l_string|&quot;lslq 16,r13&bslash;n&bslash;t&quot;
+l_string|&quot;or.d r13,%0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren

@@ -1139,6 +1139,7 @@ multiline_comment|/* note: the size must be a power of 2 */
 DECL|function|batch_entropy_init
 r_static
 r_int
+id|__init
 id|batch_entropy_init
 c_func
 (paren

@@ -2336,10 +2336,6 @@ id|name
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize the module.  */
-id|mod-&gt;flags
-op_or_assign
-id|MOD_INITIALIZING
-suffix:semicolon
 id|atomic_set
 c_func
 (paren
@@ -2348,6 +2344,10 @@ id|mod-&gt;uc.usecount
 comma
 l_int|1
 )paren
+suffix:semicolon
+id|mod-&gt;flags
+op_or_assign
+id|MOD_INITIALIZING
 suffix:semicolon
 r_if
 c_cond
@@ -2620,29 +2620,6 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-op_eq
-l_int|0
-)paren
-(brace
-id|error
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-id|put_mod_name
-c_func
-(paren
-id|name
-)paren
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 id|error
 op_assign
 op_minus
@@ -3928,6 +3905,7 @@ id|info.flags
 op_assign
 id|mod-&gt;flags
 suffix:semicolon
+multiline_comment|/* usecount is one too high here - report appropriately to&n;&t;&t;   compensate for locking */
 id|info.usecount
 op_assign
 (paren
@@ -3951,6 +3929,8 @@ c_func
 op_amp
 id|mod-&gt;uc.usecount
 )paren
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -4100,19 +4080,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|namelen
-op_eq
-l_int|0
-)paren
-id|mod
-op_assign
-op_amp
-id|kernel_module
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
 (paren
 id|mod
 op_assign
@@ -4143,6 +4110,14 @@ id|name
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* __MOD_ touches the flags. We must avoid that */
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|mod-&gt;uc.usecount
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -4261,6 +4236,13 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|mod-&gt;uc.usecount
+)paren
+suffix:semicolon
 id|out
 suffix:colon
 id|unlock_kernel

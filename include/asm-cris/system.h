@@ -1,11 +1,9 @@
-multiline_comment|/* $Id: system.h,v 1.3 2000/10/17 14:56:27 bjornw Exp $ */
+multiline_comment|/* $Id: system.h,v 1.4 2001/03/20 19:46:00 bjornw Exp $ */
 macro_line|#ifndef __ASM_CRIS_SYSTEM_H
 DECL|macro|__ASM_CRIS_SYSTEM_H
 mdefine_line|#define __ASM_CRIS_SYSTEM_H
-macro_line|#include &lt;asm/segment.h&gt;
-multiline_comment|/* I need a task-specific debug struct (and the define for #ifdef&n;   RELOC_DEBUG) to kludge into task_struct. */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/eshlibld.h&gt;
+macro_line|#include &lt;asm/segment.h&gt;
 multiline_comment|/* the switch_to macro calls resume, an asm function in entry.S which does the actual&n; * task switching.&n; */
 r_extern
 r_struct

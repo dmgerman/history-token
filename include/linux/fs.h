@@ -170,6 +170,11 @@ mdefine_line|#define MS_BIND&t;&t;4096
 multiline_comment|/*&n; * Flags that can be altered by MS_REMOUNT&n; */
 DECL|macro|MS_RMT_MASK
 mdefine_line|#define MS_RMT_MASK&t;(MS_RDONLY|MS_NOSUID|MS_NODEV|MS_NOEXEC|&bslash;&n;&t;&t;&t;MS_SYNCHRONOUS|MS_MANDLOCK|MS_NOATIME|MS_NODIRATIME)
+multiline_comment|/*&n; * Old magic mount flag and mask&n; */
+DECL|macro|MS_MGC_VAL
+mdefine_line|#define MS_MGC_VAL 0xC0ED0000
+DECL|macro|MS_MGC_MSK
+mdefine_line|#define MS_MGC_MSK 0xffff0000
 multiline_comment|/* Inode flags - they have nothing to superblock flags now */
 DECL|macro|S_SYNC
 mdefine_line|#define S_SYNC&t;&t;1&t;/* Writes are synced at once */
@@ -4557,6 +4562,16 @@ c_func
 r_struct
 id|super_block
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|invalidate_device
+c_func
+(paren
+id|kdev_t
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern

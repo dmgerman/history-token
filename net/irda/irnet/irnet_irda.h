@@ -4,6 +4,7 @@ DECL|macro|IRNET_IRDA_H
 mdefine_line|#define IRNET_IRDA_H
 multiline_comment|/***************************** INCLUDES *****************************/
 macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/* Please add other headers in irnet.h */
 macro_line|#include &quot;irnet.h&quot;&t;&t;/* Module global include */
 multiline_comment|/************************ CONSTANTS &amp; MACROS ************************/
 multiline_comment|/*&n; * Name of the service (socket name) used by IrNET&n; */
@@ -379,7 +380,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#endif CONFIG_PROC_FS
+macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/**************************** VARIABLES ****************************/
 multiline_comment|/*&n; * The IrNET server. Listen to connection requests and co...&n; */
 DECL|variable|irnet_server
@@ -402,6 +403,6 @@ id|proc_dir_entry
 op_star
 id|proc_irda
 suffix:semicolon
-macro_line|#endif CONFIG_PROC_FS
-macro_line|#endif IRNET_IRDA_H
+macro_line|#endif /* CONFIG_PROC_FS */
+macro_line|#endif /* IRNET_IRDA_H */
 eof

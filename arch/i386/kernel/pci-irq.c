@@ -471,6 +471,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: Discovered primary peer bus %02x [IRQ]&bslash;n&quot;
 comma
 id|i
@@ -1318,6 +1319,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SiS pirq: advanced IDE/ACPI/DAQ mapping not yet implemented&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1329,6 +1331,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SiS router pirq escape (%d)&bslash;n&quot;
 comma
 id|pirq
@@ -1468,6 +1471,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;advanced SiS pirq mapping not yet implemented&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1479,6 +1483,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SiS router pirq escape (%d)&bslash;n&quot;
 comma
 id|pirq
@@ -1534,6 +1539,7 @@ l_int|8
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;VLSI router pirq escape (%d)&bslash;n&quot;
 comma
 id|pirq
@@ -1591,6 +1597,7 @@ l_int|8
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;VLSI router pirq escape (%d)&bslash;n&quot;
 comma
 id|pirq
@@ -2009,6 +2016,7 @@ id|rt-&gt;signature
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: Using BIOS for IRQ routing&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2126,6 +2134,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: Using IRQ router %s [%04x/%04x] at %s&bslash;n&quot;
 comma
 id|pirq_router-&gt;name
@@ -2704,6 +2713,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: %s IRQ %d for device %s&bslash;n&quot;
 comma
 id|msg
@@ -2785,6 +2795,7 @@ id|irq
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;IRQ routing conflict in pirq table for device %s&bslash;n&quot;
 comma
 id|dev2-&gt;slot_name
@@ -2813,6 +2824,7 @@ id|dev2
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: The same IRQ used for device %s&bslash;n&quot;
 comma
 id|dev2-&gt;slot_name
@@ -3168,6 +3180,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI-&gt;APIC IRQ transform: (B%d,I%d,P%d) -&gt; %d&bslash;n&quot;
 comma
 id|dev-&gt;bus-&gt;number

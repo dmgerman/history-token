@@ -3589,19 +3589,6 @@ op_star
 id|file
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
-r_struct
-id|super_block
-op_star
-id|sb
-op_assign
-id|get_super
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-suffix:semicolon
-macro_line|#endif
 r_int
 id|minor
 op_assign
@@ -3636,29 +3623,12 @@ id|minor
 )paren
 suffix:semicolon
 multiline_comment|/* Flush all writes */
-id|fsync_dev
+id|invalidate_device
 c_func
 (paren
 id|inode-&gt;i_rdev
-)paren
-suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
-r_if
-c_cond
-(paren
-id|sb
-)paren
-id|invalidate_inodes
-c_func
-(paren
-id|sb
-)paren
-suffix:semicolon
-macro_line|#endif
-id|invalidate_buffers
-c_func
-(paren
-id|inode-&gt;i_rdev
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for any pending erase operations to complete */

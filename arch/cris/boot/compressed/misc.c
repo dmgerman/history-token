@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * misc.c&n; *&n; * $Id: misc.c,v 1.3 2001/01/17 15:54:18 jonashg Exp $&n; * &n; * This is a collection of several routines from gzip-1.0.3 &n; * adapted for Linux.&n; *&n; * malloc by Hannu Savolainen 1993 and Matthias Urlichs 1994&n; * puts by Nick Holloway 1993, better puts by Martin Mares 1995&n; * adoptation for Linux/CRIS Axis Communications AB, 1999&n; * &n; */
+multiline_comment|/*&n; * misc.c&n; *&n; * $Id: misc.c,v 1.6 2001/04/09 10:00:21 starvik Exp $&n; * &n; * This is a collection of several routines from gzip-1.0.3 &n; * adapted for Linux.&n; *&n; * malloc by Hannu Savolainen 1993 and Matthias Urlichs 1994&n; * puts by Nick Holloway 1993, better puts by Martin Mares 1995&n; * adoptation for Linux/CRIS Axis Communications AB, 1999&n; * &n; */
 multiline_comment|/* where the piggybacked kernel image expects itself to live.&n; * it is the same adress we use when we network load an uncompressed&n; * image into DRAM, and it is the address the kernel is linked to live&n; * at by etrax100.ld.&n; */
 DECL|macro|KERNEL_LOAD_ADR
 mdefine_line|#define KERNEL_LOAD_ADR 0x40004000
@@ -418,7 +418,7 @@ op_star
 id|s
 )paren
 (brace
-macro_line|#ifndef CONFIG_DEBUG_PORT_NULL
+macro_line|#ifndef CONFIG_ETRAX_DEBUG_PORT_NULL
 r_while
 c_loop
 (paren
@@ -426,7 +426,7 @@ op_star
 id|s
 )paren
 (brace
-macro_line|#ifdef CONFIG_DEBUG_PORT0
+macro_line|#ifdef CONFIG_ETRAX_DEBUG_PORT0
 r_while
 c_loop
 (paren
@@ -453,7 +453,7 @@ id|s
 op_increment
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DEBUG_PORT1
+macro_line|#ifdef CONFIG_ETRAX_DEBUG_PORT1
 r_while
 c_loop
 (paren
@@ -480,7 +480,7 @@ id|s
 op_increment
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DEBUG_PORT2
+macro_line|#ifdef CONFIG_ETRAX_DEBUG_PORT2
 r_while
 c_loop
 (paren
@@ -507,7 +507,7 @@ id|s
 op_increment
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DEBUG_PORT3
+macro_line|#ifdef CONFIG_ETRAX_DEBUG_PORT3
 r_while
 c_loop
 (paren
@@ -827,12 +827,15 @@ c_func
 (paren
 )paren
 (brace
+r_char
+id|revision
+suffix:semicolon
 multiline_comment|/* input_data is set in head.S */
 id|inbuf
 op_assign
 id|input_data
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_PORT0
+macro_line|#ifdef CONFIG_ETRAX_DEBUG_PORT0
 op_star
 id|R_SERIAL0_XOFF
 op_assign
@@ -849,7 +852,7 @@ op_assign
 l_int|0x40
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DEBUG_PORT1
+macro_line|#ifdef CONFIG_ETRAX_DEBUG_PORT1
 op_star
 id|R_SERIAL1_XOFF
 op_assign
@@ -866,7 +869,12 @@ op_assign
 l_int|0x40
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DEBUG_PORT2
+macro_line|#ifdef CONFIG_ETRAX_DEBUG_PORT2
+op_star
+id|R_GEN_CONFIG
+op_assign
+l_int|0x08
+suffix:semicolon
 op_star
 id|R_SERIAL2_XOFF
 op_assign
@@ -883,7 +891,12 @@ op_assign
 l_int|0x40
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DEBUG_PORT3
+macro_line|#ifdef CONFIG_ETRAX_DEBUG_PORT3
+op_star
+id|R_GEN_CONFIG
+op_assign
+l_int|0x100
+suffix:semicolon
 op_star
 id|R_SERIAL3_XOFF
 op_assign
@@ -910,6 +923,40 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|__asm__
+r_volatile
+(paren
+l_string|&quot;move vr,%0&quot;
+suffix:colon
+l_string|&quot;=rm&quot;
+(paren
+id|revision
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|revision
+OL
+l_int|10
+)paren
+(brace
+id|puts
+c_func
+(paren
+l_string|&quot;You need an ETRAX 100LX to run linux 2.4&bslash;n&quot;
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
+suffix:semicolon
+)brace
+)brace
 id|puts
 c_func
 (paren

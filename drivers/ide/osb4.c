@@ -2113,17 +2113,16 @@ id|reg64
 )paren
 suffix:semicolon
 macro_line|#endif
+singleline_comment|//&t;reg64 &amp;= ~0x0000A000;
+singleline_comment|//#ifdef CONFIG_SMP
+singleline_comment|//&t;reg64 |= 0x00008000;
+singleline_comment|//#endif
+multiline_comment|/* Assume the APIC was set up properly by the BIOS for now . If it&n;&t;   wasnt we need to do a fix up _way_ earlier. Bits 15,10,3 control&n;&t;   APIC enable, routing and decode */
 id|reg64
 op_and_assign
 op_complement
-l_int|0x0000A000
+l_int|0x00002000
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-id|reg64
-op_or_assign
-l_int|0x00008000
-suffix:semicolon
-macro_line|#endif
 id|pci_write_config_dword
 c_func
 (paren
@@ -2253,6 +2252,12 @@ c_cond
 id|hwif-&gt;dma_base
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|noautodma
+)paren
 id|hwif-&gt;autodma
 op_assign
 l_int|1

@@ -960,6 +960,16 @@ id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
+id|MESSAGE
+c_func
+(paren
+l_string|&quot;%s, Found chip at base=0x%03x&bslash;n&quot;
+comma
+id|driver_name
+comma
+id|info-&gt;cfg_base
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -977,6 +987,14 @@ l_int|1
 r_return
 op_minus
 l_int|1
+suffix:semicolon
+id|MESSAGE
+c_func
+(paren
+l_string|&quot;%s, driver loaded (Dag Brattli)&bslash;n&quot;
+comma
+id|driver_name
+)paren
 suffix:semicolon
 multiline_comment|/* Allocate new instance of the driver */
 id|self
@@ -1266,13 +1284,13 @@ l_int|NULL
 id|kfree
 c_func
 (paren
-id|self
+id|self-&gt;rx_buff.head
 )paren
 suffix:semicolon
 id|kfree
 c_func
 (paren
-id|self-&gt;rx_buff.head
+id|self
 )paren
 suffix:semicolon
 r_return
@@ -2777,16 +2795,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|MESSAGE
-c_func
-(paren
-l_string|&quot;%s, Found chip at base=0x%03x&bslash;n&quot;
-comma
-id|driver_name
-comma
-id|info-&gt;cfg_base
-)paren
-suffix:semicolon
 multiline_comment|/* Switch to advanced mode */
 id|switch_bank
 c_func
@@ -2956,14 +2964,6 @@ l_int|4
 )paren
 suffix:semicolon
 multiline_comment|/* Set beginning frag, and preamble length */
-id|MESSAGE
-c_func
-(paren
-l_string|&quot;%s, driver loaded (Dag Brattli)&bslash;n&quot;
-comma
-id|driver_name
-)paren
-suffix:semicolon
 multiline_comment|/* Enable receive interrupts */
 id|switch_bank
 c_func
@@ -7174,7 +7174,7 @@ c_func
 (paren
 id|self-&gt;io.irq
 comma
-id|self
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -7702,9 +7702,6 @@ op_star
 id|self
 )paren
 (brace
-r_int
-id|iobase
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7713,35 +7710,11 @@ id|self-&gt;io.suspended
 )paren
 r_return
 suffix:semicolon
-id|iobase
-op_assign
-id|self-&gt;io.fir_base
-suffix:semicolon
-multiline_comment|/* Switch to advanced mode */
-id|switch_bank
+id|nsc_ircc_setup
 c_func
 (paren
-id|iobase
-comma
-id|BANK2
-)paren
-suffix:semicolon
-id|outb
-c_func
-(paren
-id|ECR1_EXT_SL
-comma
-id|iobase
-op_plus
-id|ECR1
-)paren
-suffix:semicolon
-id|switch_bank
-c_func
-(paren
-id|iobase
-comma
-id|BANK0
+op_amp
+id|self-&gt;io
 )paren
 suffix:semicolon
 id|nsc_ircc_net_open

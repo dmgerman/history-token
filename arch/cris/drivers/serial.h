@@ -18,36 +18,33 @@ id|baud
 suffix:semicolon
 DECL|member|port
 r_volatile
-r_int
-r_char
+id|u8
 op_star
 id|port
 suffix:semicolon
 multiline_comment|/* R_SERIALx_CTRL */
 DECL|member|irq
-r_int
-r_int
+id|u32
 id|irq
 suffix:semicolon
 multiline_comment|/* bitnr in R_IRQ_MASK2 for dmaX_descr */
 DECL|member|oclrintradr
 r_volatile
-r_char
+id|u8
 op_star
 id|oclrintradr
 suffix:semicolon
 multiline_comment|/* adr to R_DMA_CHx_CLR_INTR, output */
 DECL|member|ofirstadr
 r_volatile
-r_int
-r_int
+id|u32
 op_star
 id|ofirstadr
 suffix:semicolon
 multiline_comment|/* adr to R_DMA_CHx_FIRST, output */
 DECL|member|ocmdadr
 r_volatile
-r_char
+id|u8
 op_star
 id|ocmdadr
 suffix:semicolon
@@ -55,38 +52,35 @@ multiline_comment|/* adr to R_DMA_CHx_CMD, output */
 DECL|member|ostatusadr
 r_const
 r_volatile
-r_int
-r_int
+id|u8
 op_star
 id|ostatusadr
 suffix:semicolon
 multiline_comment|/* adr to R_DMA_CHx_STATUS, output */
 DECL|member|ohwswadr
 r_volatile
-r_int
-r_int
+id|u32
 op_star
 id|ohwswadr
 suffix:semicolon
 multiline_comment|/* adr to R_DMA_CHx_HWSW, output */
 DECL|member|iclrintradr
 r_volatile
-r_char
+id|u8
 op_star
 id|iclrintradr
 suffix:semicolon
 multiline_comment|/* adr to R_DMA_CHx_CLR_INTR, input */
 DECL|member|ifirstadr
 r_volatile
-r_int
-r_int
+id|u32
 op_star
 id|ifirstadr
 suffix:semicolon
 multiline_comment|/* adr to R_DMA_CHx_FIRST, input */
 DECL|member|icmdadr
 r_volatile
-r_char
+id|u8
 op_star
 id|icmdadr
 suffix:semicolon
@@ -94,16 +88,14 @@ multiline_comment|/* adr to R_DMA_CHx_CMD, input */
 DECL|member|istatusadr
 r_const
 r_volatile
-r_int
-r_int
+id|u8
 op_star
 id|istatusadr
 suffix:semicolon
 multiline_comment|/* adr to R_DMA_CHx_STATUS, input */
 DECL|member|ihwswadr
 r_volatile
-r_int
-r_int
+id|u32
 op_star
 id|ihwswadr
 suffix:semicolon
@@ -114,20 +106,17 @@ id|flags
 suffix:semicolon
 multiline_comment|/* defined in tty.h */
 DECL|member|rx_ctrl
-r_int
-r_char
+id|u8
 id|rx_ctrl
 suffix:semicolon
 multiline_comment|/* shadow for R_SERIALx_REC_CTRL */
 DECL|member|tx_ctrl
-r_int
-r_char
+id|u8
 id|tx_ctrl
 suffix:semicolon
 multiline_comment|/* shadow for R_SERIALx_TR_CTRL */
 DECL|member|iseteop
-r_int
-r_char
+id|u8
 id|iseteop
 suffix:semicolon
 multiline_comment|/* bit number for R_SET_EOP for the input dma */

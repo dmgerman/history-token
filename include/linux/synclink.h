@@ -1,9 +1,9 @@
-multiline_comment|/*&n; * SyncLink Multiprotocol Serial Adapter Driver&n; *&n; * $Id: synclink.h,v 3.2 2000/11/06 22:34:38 paul Exp $&n; *&n; * Copyright (C) 1998-2000 by Microgate Corporation&n; * &n; * Redistribution of this file is permitted under &n; * the terms of the GNU General Public License (GPL)&n; */
+multiline_comment|/*&n; * SyncLink Multiprotocol Serial Adapter Driver&n; *&n; * $Id: synclink.h,v 3.5 2001/03/26 17:04:36 ez Exp $&n; *&n; * Copyright (C) 1998-2000 by Microgate Corporation&n; * &n; * Redistribution of this file is permitted under &n; * the terms of the GNU Public License (GPL)&n; */
 macro_line|#ifndef _SYNCLINK_H_
 DECL|macro|_SYNCLINK_H_
 mdefine_line|#define _SYNCLINK_H_
 DECL|macro|SYNCLINK_H_VERSION
-mdefine_line|#define SYNCLINK_H_VERSION 3.2
+mdefine_line|#define SYNCLINK_H_VERSION 3.5
 DECL|macro|BOOLEAN
 mdefine_line|#define BOOLEAN int
 DECL|macro|TRUE
@@ -134,6 +134,14 @@ DECL|macro|HDLC_CRC_16_CCITT
 mdefine_line|#define HDLC_CRC_16_CCITT&t;&t;1
 DECL|macro|HDLC_CRC_32_CCITT
 mdefine_line|#define HDLC_CRC_32_CCITT&t;&t;2
+DECL|macro|HDLC_CRC_MASK
+mdefine_line|#define HDLC_CRC_MASK&t;&t;&t;0x00ff
+DECL|macro|HDLC_CRC_RETURN_EX
+mdefine_line|#define HDLC_CRC_RETURN_EX&t;&t;0x8000
+DECL|macro|RX_OK
+mdefine_line|#define RX_OK&t;&t;&t;&t;0
+DECL|macro|RX_CRC_ERROR
+mdefine_line|#define RX_CRC_ERROR&t;&t;&t;1
 DECL|macro|HDLC_TXIDLE_FLAGS
 mdefine_line|#define HDLC_TXIDLE_FLAGS&t;&t;0
 DECL|macro|HDLC_TXIDLE_ALT_ZEROS_ONES
@@ -190,6 +198,8 @@ DECL|macro|MGSL_MODE_ASYNC
 mdefine_line|#define MGSL_MODE_ASYNC&t;&t;1
 DECL|macro|MGSL_MODE_HDLC
 mdefine_line|#define MGSL_MODE_HDLC&t;&t;2
+DECL|macro|MGSL_MODE_RAW
+mdefine_line|#define MGSL_MODE_RAW&t;&t;6
 DECL|macro|MGSL_BUS_TYPE_ISA
 mdefine_line|#define MGSL_BUS_TYPE_ISA&t;1
 DECL|macro|MGSL_BUS_TYPE_EISA
@@ -291,6 +301,10 @@ DECL|macro|MICROGATE_VENDOR_ID
 mdefine_line|#define MICROGATE_VENDOR_ID 0x13c0
 DECL|macro|SYNCLINK_DEVICE_ID
 mdefine_line|#define SYNCLINK_DEVICE_ID 0x0010
+DECL|macro|MGSCC_DEVICE_ID
+mdefine_line|#define MGSCC_DEVICE_ID 0x0020
+DECL|macro|SYNCLINK_SCA_DEVICE_ID
+mdefine_line|#define SYNCLINK_SCA_DEVICE_ID 0x0030
 DECL|macro|MGSL_MAX_SERIAL_NUMBER
 mdefine_line|#define MGSL_MAX_SERIAL_NUMBER 30
 multiline_comment|/*&n;** device diagnostics status&n;*/

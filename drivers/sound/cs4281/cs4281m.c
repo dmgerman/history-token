@@ -275,8 +275,6 @@ l_string|&quot;cs4281: invalid magic value&bslash;n&quot;
 suffix:semicolon
 DECL|macro|VALIDATE_STATE
 mdefine_line|#define VALIDATE_STATE(s)                         &bslash;&n;({                                                &bslash;&n;        if (!(s) || (s)-&gt;magic != CS4281_MAGIC) { &bslash;&n;                printk(invalid_magic);            &bslash;&n;                return -ENXIO;                    &bslash;&n;        }                                         &bslash;&n;})
-DECL|macro|list_for_each
-mdefine_line|#define list_for_each(pos, head) &bslash;&n;        for (pos = (head)-&gt;next; pos != (head); pos = pos-&gt;next)
 singleline_comment|//LIST_HEAD(cs4281_devs);
 DECL|variable|cs4281_devs
 r_struct

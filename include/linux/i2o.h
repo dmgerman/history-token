@@ -117,6 +117,12 @@ op_star
 id|next
 suffix:semicolon
 multiline_comment|/* Chain */
+DECL|member|prev
+r_struct
+id|i2o_device
+op_star
+id|prev
+suffix:semicolon
 DECL|member|dev_name
 r_char
 id|dev_name
@@ -136,6 +142,27 @@ DECL|member|irq
 r_int
 id|irq
 suffix:semicolon
+DECL|member|queue_buggy
+r_int
+id|queue_buggy
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Don&squot;t send a lot of messages */
+DECL|member|short_req
+r_int
+id|short_req
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Use small block sizes&t;*/
+DECL|member|dpt
+r_int
+id|dpt
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Don&squot;t quiesce&t;&t;*/
 macro_line|#ifdef CONFIG_MTRR
 DECL|member|mtrr_reg0
 r_int
@@ -269,6 +296,13 @@ id|u32
 id|mem_phys
 suffix:semicolon
 multiline_comment|/* MFA physical */
+DECL|member|battery
+r_int
+id|battery
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Has a battery backup */
 DECL|member|proc_entry
 r_struct
 id|proc_dir_entry
@@ -979,6 +1013,29 @@ comma
 r_int
 comma
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|i2o_post_wait_mem
+c_func
+(paren
+r_struct
+id|i2o_controller
+op_star
+comma
+id|u32
+op_star
+comma
+r_int
+comma
+r_int
+comma
+r_void
+op_star
+comma
+r_void
+op_star
 )paren
 suffix:semicolon
 r_extern

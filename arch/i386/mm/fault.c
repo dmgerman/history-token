@@ -1061,7 +1061,7 @@ suffix:semicolon
 id|vmalloc_fault
 suffix:colon
 (brace
-multiline_comment|/*&n;&t;&t; * Synchronize this task&squot;s top level page-table&n;&t;&t; * with the &squot;reference&squot; page table.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Synchronize this task&squot;s top level page-table&n;&t;&t; * with the &squot;reference&squot; page table.&n;&t;&t; *&n;&t;&t; * Do _not_ use &quot;tsk&quot; here. We might be inside&n;&t;&t; * an interrupt in the middle of a task switch..&n;&t;&t; */
 r_int
 id|offset
 op_assign
@@ -1085,11 +1085,30 @@ comma
 op_star
 id|pmd_k
 suffix:semicolon
+id|asm
+c_func
+(paren
+l_string|&quot;movl %%cr3,%0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|pgd
+)paren
+)paren
+suffix:semicolon
 id|pgd
 op_assign
-id|tsk-&gt;active_mm-&gt;pgd
-op_plus
 id|offset
+op_plus
+(paren
+id|pgd_t
+op_star
+)paren
+id|__va
+c_func
+(paren
+id|pgd
+)paren
 suffix:semicolon
 id|pgd_k
 op_assign

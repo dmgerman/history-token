@@ -1,4 +1,4 @@
-multiline_comment|/*  &n; * Simple synchronous serial port driver for ETRAX 100LX.&n; *&n; * Synchronous serial ports are used for continous streamed data like audio.&n; * The deault setting for this driver is compatible with the STA 013 MP3 decoder&n; * The driver can easily be tuned to fit other audio encoder/decoders and SPI&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; * &n; * Author: Mikael Starvik &n; *&n; */
+multiline_comment|/*  &n; * Simple synchronous serial port driver for ETRAX 100LX.&n; *&n; * Synchronous serial ports are used for continous streamed data like audio.&n; * The default setting for this driver is compatible with the STA 013 MP3&n; * decoder. The driver can easily be tuned to fit other audio encoder/decoders&n; * and SPI&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; * &n; * Author: Mikael Starvik &n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -17,37 +17,43 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/sync_serial.h&gt;
 multiline_comment|/* The receiver is a bit tricky beacuse of the continous stream of data. */
-multiline_comment|/*&t;&t;&t;&t;&t;&t;&t;&t;&t; */
-multiline_comment|/* Two DMA descriptors are linked together. Each DMA descriptor is&t; */
-multiline_comment|/* responsible for one half of a common buffer.&t;&t;&t;&t; */
-multiline_comment|/*&t;&t;&t;&t;&t;&t;&t;&t;&t; */
-multiline_comment|/* ------------------------------&t;&t;&t;&t;&t; */
-multiline_comment|/* |   ----------   ----------&t;|&t;&t;&t;&t;&t; */
-multiline_comment|/* --&gt; | Descr1 |--&gt;| Descr2 |---&t;&t;&t;&t;&t; */
-multiline_comment|/*     ----------   ----------&t;&t;&t;&t;&t;&t; */
-multiline_comment|/*&t; |&t;       |&t;&t;&t;&t;&t;&t; */
-multiline_comment|/*&t; v&t;       v&t;&t;&t;&t;&t;&t; */
-multiline_comment|/*&t; -----------------------------&t;&t;&t;&t;&t; */
-multiline_comment|/*&t;&#xfffd;|&t;      BUFFER&t;     |&t;&t;&t;&t;&t; */
-multiline_comment|/*&t; -----------------------------&t;&t;&t;&t;&t; */
-multiline_comment|/*&t; |&t;&t;|&t;&t;&t;&t;&t;&t; */
-multiline_comment|/*&t;readp&t;      writep&t;&t;&t;&t;&t;&t; */
-multiline_comment|/*&t;&t;&t;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/*                                                                       */
+multiline_comment|/* Two DMA descriptors are linked together. Each DMA descriptor is       */
+multiline_comment|/* responsible for one half of a common buffer.                          */
+multiline_comment|/*                                                                       */
+multiline_comment|/* ------------------------------                                        */
+multiline_comment|/* |   ----------   ----------&t;|                                        */
+multiline_comment|/* --&gt; | Descr1 |--&gt;| Descr2 |---                                        */
+multiline_comment|/*     ----------   ----------                                           */
+multiline_comment|/*         |            |                                                */
+multiline_comment|/*         v            v                                                */
+multiline_comment|/*   -----------------------------                                       */
+multiline_comment|/*   |        BUFFER             |                                       */
+multiline_comment|/*   -----------------------------                                       */
+multiline_comment|/*      |             |                                                  */
+multiline_comment|/*    readp          writep                                              */
+multiline_comment|/*                                                                       */
 multiline_comment|/* If the application keeps up the pace readp will be right after writep.*/
-multiline_comment|/* If the application can&squot;t keep the pace we have to throw away data.&t; */
+multiline_comment|/* If the application can&squot;t keep the pace we have to throw away data.    */
 multiline_comment|/* The idea is that readp should be ready with the data pointed out by&t; */
 multiline_comment|/* Descr1 when the DMA has filled in Descr2. Otherwise we will discard&t; */
 multiline_comment|/* the rest of the data pointed out by Descr1 and set readp to the start */
-multiline_comment|/* of Descr2&t;&t;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* of Descr2                                                             */
 DECL|macro|SYNC_SERIAL_MAJOR
 mdefine_line|#define SYNC_SERIAL_MAJOR 125
+multiline_comment|/* IN_BUFFER_SIZE should be a multiple of 6 to make sure that 24 bit */
+multiline_comment|/* words can be handled */
 DECL|macro|IN_BUFFER_SIZE
-mdefine_line|#define IN_BUFFER_SIZE 8192
+mdefine_line|#define IN_BUFFER_SIZE 12288
 DECL|macro|OUT_BUFFER_SIZE
 mdefine_line|#define OUT_BUFFER_SIZE 4096
+DECL|macro|DEFAULT_FRAME_RATE
+mdefine_line|#define DEFAULT_FRAME_RATE 0
+DECL|macro|DEFAULT_WORD_RATE
+mdefine_line|#define DEFAULT_WORD_RATE 7
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(x) 
-multiline_comment|/* Define some macros to access Etrax 100 registers */
+multiline_comment|/* Define some macros to access ETRAX 100 registers */
 DECL|macro|SETF
 mdefine_line|#define SETF(var, reg, field, val) var = (var &amp; ~IO_MASK(##reg##, field)) | &bslash;&n;&t;&t;&t;&t;&t;  IO_FIELD(##reg##, field, val)
 DECL|macro|SETS
@@ -147,11 +153,6 @@ r_char
 id|ready_irq_bit
 suffix:semicolon
 multiline_comment|/* In R_IRQ_MASK1_SET and R_IRQ_MASK1_CLR */
-DECL|member|input_dma_eop_bit
-r_char
-id|input_dma_eop_bit
-suffix:semicolon
-multiline_comment|/* In R_IRQ_MASK2_RD */
 DECL|member|input_dma_descr_bit
 r_char
 id|input_dma_descr_bit
@@ -162,11 +163,6 @@ r_char
 id|output_dma_bit
 suffix:semicolon
 multiline_comment|/* In R_IRQ_MASK2_RD */
-DECL|member|eop_bit
-r_char
-id|eop_bit
-suffix:semicolon
-multiline_comment|/* In R_SET_EOP */
 DECL|member|enabled
 r_int
 id|enabled
@@ -496,14 +492,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-r_static
-r_void
-id|flush_handler
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* The ports */
 DECL|variable|ports
 r_static
@@ -577,15 +565,6 @@ c_func
 (paren
 id|R_IRQ_MASK2_RD
 comma
-id|dma9_eop
-)paren
-comma
-multiline_comment|/* input_dma_eop_bit */
-id|IO_BITNR
-c_func
-(paren
-id|R_IRQ_MASK2_RD
-comma
 id|dma9_descr
 )paren
 comma
@@ -599,14 +578,6 @@ id|dma8_eop
 )paren
 comma
 multiline_comment|/* output_dma_bit */
-id|IO_BITNR
-c_func
-(paren
-id|R_SET_EOP
-comma
-id|ch9_eop
-)paren
-multiline_comment|/* eop_bit */
 )brace
 comma
 (brace
@@ -672,19 +643,10 @@ c_func
 (paren
 id|R_IRQ_MASK2_RD
 comma
-id|dma5_eop
-)paren
-comma
-multiline_comment|/* input_dma_eop_bit */
-id|IO_BITNR
-c_func
-(paren
-id|R_IRQ_MASK2_RD
-comma
 id|dma5_descr
 )paren
 comma
-multiline_comment|/* input_dma_eop_bit */
+multiline_comment|/* input_dma_descr_bit */
 id|IO_BITNR
 c_func
 (paren
@@ -694,14 +656,6 @@ id|dma4_eop
 )paren
 comma
 multiline_comment|/* output_dma_bit */
-id|IO_BITNR
-c_func
-(paren
-id|R_SET_EOP
-comma
-id|ch5_eop
-)paren
-multiline_comment|/* eop_bit */
 )brace
 )brace
 suffix:semicolon
@@ -719,13 +673,6 @@ r_int
 id|gen_config_ii_shadow
 op_assign
 l_int|0
-suffix:semicolon
-multiline_comment|/* Timer used to flush data from the DMA */
-DECL|variable|flush_timer
-r_static
-r_struct
-id|timer_list
-id|flush_timer
 suffix:semicolon
 DECL|macro|NUMBER_OF_PORTS
 mdefine_line|#define NUMBER_OF_PORTS (sizeof(ports)/sizeof(sync_port))
@@ -924,7 +871,11 @@ l_int|0
 comma
 l_string|&quot;synchronous serial 1 dma tr&quot;
 comma
-l_int|NULL
+op_amp
+id|ports
+(braket
+l_int|0
+)braket
 )paren
 )paren
 (brace
@@ -949,7 +900,11 @@ l_int|0
 comma
 l_string|&quot;synchronous serial 1 dma rx&quot;
 comma
-l_int|NULL
+op_amp
+id|ports
+(braket
+l_int|0
+)braket
 )paren
 )paren
 (brace
@@ -987,15 +942,49 @@ suffix:semicolon
 op_star
 id|R_DMA_CH8_CLR_INTR
 op_assign
-l_int|3
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH8_CLR_INTR
+comma
+id|clr_eop
+comma
+r_do
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH8_CLR_INTR
+comma
+id|clr_descr
+comma
+r_do
+)paren
 suffix:semicolon
-multiline_comment|/* Clear IRQ */
 op_star
 id|R_DMA_CH9_CLR_INTR
 op_assign
-l_int|3
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH9_CLR_INTR
+comma
+id|clr_eop
+comma
+r_do
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH9_CLR_INTR
+comma
+id|clr_descr
+comma
+r_do
+)paren
 suffix:semicolon
-multiline_comment|/* Clear IRQ */
 op_star
 id|R_IRQ_MASK2_SET
 op_assign
@@ -1015,16 +1004,6 @@ c_func
 id|R_IRQ_MASK2_SET
 comma
 id|dma8_descr
-comma
-id|set
-)paren
-op_or
-id|IO_STATE
-c_func
-(paren
-id|R_IRQ_MASK2_SET
-comma
-id|dma9_eop
 comma
 id|set
 )paren
@@ -1079,7 +1058,11 @@ id|SA_SHIRQ
 comma
 l_string|&quot;synchronous serial manual irq&quot;
 comma
-l_int|NULL
+op_amp
+id|ports
+(braket
+l_int|0
+)braket
 )paren
 )paren
 id|panic
@@ -1167,7 +1150,11 @@ l_int|0
 comma
 l_string|&quot;synchronous serial 3 dma tr&quot;
 comma
-l_int|NULL
+op_amp
+id|ports
+(braket
+l_int|1
+)braket
 )paren
 )paren
 (brace
@@ -1192,7 +1179,11 @@ l_int|0
 comma
 l_string|&quot;synchronous serial 3 dma rx&quot;
 comma
-l_int|NULL
+op_amp
+id|ports
+(braket
+l_int|1
+)braket
 )paren
 )paren
 (brace
@@ -1230,15 +1221,49 @@ suffix:semicolon
 op_star
 id|R_DMA_CH4_CLR_INTR
 op_assign
-l_int|3
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH4_CLR_INTR
+comma
+id|clr_eop
+comma
+r_do
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH4_CLR_INTR
+comma
+id|clr_descr
+comma
+r_do
+)paren
 suffix:semicolon
-multiline_comment|/* Clear IRQ */
 op_star
 id|R_DMA_CH5_CLR_INTR
 op_assign
-l_int|3
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH5_CLR_INTR
+comma
+id|clr_eop
+comma
+r_do
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH5_CLR_INTR
+comma
+id|clr_descr
+comma
+r_do
+)paren
 suffix:semicolon
-multiline_comment|/* Clear IRQ */
 op_star
 id|R_IRQ_MASK2_SET
 op_assign
@@ -1258,16 +1283,6 @@ c_func
 id|R_IRQ_MASK2_SET
 comma
 id|dma4_descr
-comma
-id|set
-)paren
-op_or
-id|IO_STATE
-c_func
-(paren
-id|R_IRQ_MASK2_SET
-comma
-id|dma5_eop
 comma
 id|set
 )paren
@@ -1334,7 +1349,11 @@ id|SA_SHIRQ
 comma
 l_string|&quot;synchronous serial manual irq&quot;
 comma
-l_int|NULL
+op_amp
+id|ports
+(braket
+l_int|1
+)braket
 )paren
 )paren
 id|panic
@@ -1429,7 +1448,7 @@ id|R_SYNC_SERIAL_PRESCALE
 comma
 id|frame_rate
 comma
-l_int|0
+id|DEFAULT_FRAME_RATE
 )paren
 op_or
 id|IO_FIELD
@@ -1439,7 +1458,7 @@ id|R_SYNC_SERIAL_PRESCALE
 comma
 id|word_rate
 comma
-l_int|7
+id|DEFAULT_WORD_RATE
 )paren
 op_or
 id|IO_STATE
@@ -1459,52 +1478,10 @@ id|R_GEN_CONFIG_II
 op_assign
 id|gen_config_ii_shadow
 suffix:semicolon
-multiline_comment|/*Initialize DMA flush timer if dma is used */
-r_if
-c_cond
-(paren
-id|ports
-(braket
-l_int|0
-)braket
-dot
-id|use_dma
-op_logical_or
-id|ports
-(braket
-l_int|1
-)braket
-dot
-id|use_dma
-)paren
-(brace
-id|init_timer
-c_func
-(paren
-op_amp
-id|flush_timer
-)paren
-suffix:semicolon
-id|flush_timer.function
-op_assign
-id|flush_handler
-suffix:semicolon
-id|mod_timer
-c_func
-(paren
-op_amp
-id|flush_timer
-comma
-id|jiffies
-op_plus
-l_int|10
-)paren
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
-l_string|&quot;Etrax100LX synchronous serial port driver&bslash;n&quot;
+l_string|&quot;ETRAX 100LX synchronous serial port driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1671,7 +1648,7 @@ id|R_SYNC_SERIAL1_CTRL
 comma
 id|clk_halt
 comma
-id|running
+id|stopped
 )paren
 op_or
 id|IO_STATE
@@ -1691,7 +1668,7 @@ id|R_SYNC_SERIAL1_CTRL
 comma
 id|tr_enable
 comma
-id|enable
+id|disable
 )paren
 op_or
 id|IO_STATE
@@ -1971,13 +1948,55 @@ op_star
 id|file
 )paren
 (brace
-id|ports
-(braket
+r_int
+id|dev
+op_assign
 id|MINOR
 c_func
 (paren
 id|inode-&gt;i_rdev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev
+OL
+l_int|0
+op_logical_or
+id|dev
+op_ge
+id|NUMBER_OF_PORTS
+op_logical_or
+op_logical_neg
+id|ports
+(braket
+id|dev
+)braket
+dot
+id|enabled
+)paren
+(brace
+id|DEBUG
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;Invalid minor %d&bslash;n&quot;
+comma
+id|dev
+)paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+id|ports
+(braket
+id|dev
 )braket
 dot
 id|busy
@@ -2014,6 +2033,11 @@ id|arg
 )paren
 (brace
 r_int
+id|return_val
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|dev
 op_assign
 id|MINOR
@@ -2024,6 +2048,45 @@ id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 suffix:semicolon
 id|sync_port
 op_star
+id|port
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev
+OL
+l_int|0
+op_logical_or
+id|dev
+op_ge
+id|NUMBER_OF_PORTS
+op_logical_or
+op_logical_neg
+id|ports
+(braket
+id|dev
+)braket
+dot
+id|enabled
+)paren
+(brace
+id|DEBUG
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;Invalid minor %d&bslash;n&quot;
+comma
+id|dev
+)paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|port
 op_assign
 op_amp
@@ -2054,7 +2117,25 @@ suffix:semicolon
 op_star
 id|R_DMA_CH4_CLR_INTR
 op_assign
-l_int|3
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH4_CLR_INTR
+comma
+id|clr_eop
+comma
+r_do
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH4_CLR_INTR
+comma
+id|clr_descr
+comma
+r_do
+)paren
 suffix:semicolon
 id|SETS
 c_func
@@ -2086,7 +2167,25 @@ suffix:semicolon
 op_star
 id|R_DMA_CH8_CLR_INTR
 op_assign
-l_int|3
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH8_CLR_INTR
+comma
+id|clr_eop
+comma
+r_do
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH8_CLR_INTR
+comma
+id|clr_descr
+comma
+r_do
+)paren
 suffix:semicolon
 id|SETS
 c_func
@@ -3050,9 +3149,10 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_return
+id|return_val
+op_assign
 op_minus
-id|EINVAL
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Set config and enable port */
@@ -3102,7 +3202,7 @@ op_assign
 id|gen_config_ii_shadow
 suffix:semicolon
 r_return
-l_int|0
+id|return_val
 suffix:semicolon
 )brace
 DECL|function|sync_serial_manual_write
@@ -3129,6 +3229,15 @@ op_star
 id|ppos
 )paren
 (brace
+r_int
+id|dev
+op_assign
+id|MINOR
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+)paren
+suffix:semicolon
 id|DECLARE_WAITQUEUE
 c_func
 (paren
@@ -3140,15 +3249,50 @@ suffix:semicolon
 id|sync_port
 op_star
 id|port
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev
+OL
+l_int|0
+op_logical_or
+id|dev
+op_ge
+id|NUMBER_OF_PORTS
+op_logical_or
+op_logical_neg
+id|ports
+(braket
+id|dev
+)braket
+dot
+id|enabled
+)paren
+(brace
+id|DEBUG
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;Invalid minor %d&bslash;n&quot;
+comma
+id|dev
+)paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+id|port
 op_assign
 op_amp
 id|ports
 (braket
-id|MINOR
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
-)paren
+id|dev
 )braket
 suffix:semicolon
 id|copy_from_user
@@ -3225,6 +3369,21 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|signal_pending
+c_func
+(paren
+id|current
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EINTR
+suffix:semicolon
+)brace
 r_return
 id|count
 suffix:semicolon
@@ -3253,6 +3412,15 @@ op_star
 id|ppos
 )paren
 (brace
+r_int
+id|dev
+op_assign
+id|MINOR
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+)paren
+suffix:semicolon
 id|DECLARE_WAITQUEUE
 c_func
 (paren
@@ -3264,15 +3432,50 @@ suffix:semicolon
 id|sync_port
 op_star
 id|port
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev
+OL
+l_int|0
+op_logical_or
+id|dev
+op_ge
+id|NUMBER_OF_PORTS
+op_logical_or
+op_logical_neg
+id|ports
+(braket
+id|dev
+)braket
+dot
+id|enabled
+)paren
+(brace
+id|DEBUG
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;Invalid minor %d&bslash;n&quot;
+comma
+id|dev
+)paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+id|port
 op_assign
 op_amp
 id|ports
 (braket
-id|MINOR
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
-)paren
+id|dev
 )braket
 suffix:semicolon
 id|DEBUG
@@ -3288,6 +3491,47 @@ comma
 id|count
 )paren
 )paren
+suffix:semicolon
+id|count
+op_assign
+id|count
+OG
+id|OUT_BUFFER_SIZE
+ques
+c_cond
+id|OUT_BUFFER_SIZE
+suffix:colon
+id|count
+suffix:semicolon
+multiline_comment|/* Make sure transmitter is running */
+id|SETS
+c_func
+(paren
+id|port-&gt;ctrl_data_shadow
+comma
+id|R_SYNC_SERIAL1_CTRL
+comma
+id|clk_halt
+comma
+id|running
+)paren
+suffix:semicolon
+id|SETS
+c_func
+(paren
+id|port-&gt;ctrl_data_shadow
+comma
+id|R_SYNC_SERIAL1_CTRL
+comma
+id|tr_enable
+comma
+id|enable
+)paren
+suffix:semicolon
+op_star
+id|port-&gt;ctrl_data
+op_assign
+id|port-&gt;ctrl_data_shadow
 suffix:semicolon
 r_if
 c_cond
@@ -3367,6 +3611,21 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|signal_pending
+c_func
+(paren
+id|current
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EINTR
+suffix:semicolon
+)brace
 r_return
 id|count
 suffix:semicolon
@@ -3395,21 +3654,20 @@ id|ppos
 )paren
 (brace
 r_int
-id|avail
-suffix:semicolon
-id|sync_port
-op_star
-id|port
+id|dev
 op_assign
-op_amp
-id|ports
-(braket
 id|MINOR
 c_func
 (paren
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 )paren
-)braket
+suffix:semicolon
+r_int
+id|avail
+suffix:semicolon
+id|sync_port
+op_star
+id|port
 suffix:semicolon
 r_char
 op_star
@@ -3423,15 +3681,94 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev
+OL
+l_int|0
+op_logical_or
+id|dev
+op_ge
+id|NUMBER_OF_PORTS
+op_logical_or
+op_logical_neg
+id|ports
+(braket
+id|dev
+)braket
+dot
+id|enabled
+)paren
+(brace
 id|DEBUG
 c_func
 (paren
 id|printk
 c_func
 (paren
-l_string|&quot;Read dev %d count&bslash;n&quot;
+l_string|&quot;Invalid minor %d&bslash;n&quot;
+comma
+id|dev
 )paren
 )paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+id|port
+op_assign
+op_amp
+id|ports
+(braket
+id|dev
+)braket
+suffix:semicolon
+id|DEBUG
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;Read dev %d count %d&bslash;n&quot;
+comma
+id|dev
+comma
+id|count
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure receiver is running */
+id|SETS
+c_func
+(paren
+id|port-&gt;ctrl_data_shadow
+comma
+id|R_SYNC_SERIAL1_CTRL
+comma
+id|clk_halt
+comma
+id|running
+)paren
+suffix:semicolon
+id|SETS
+c_func
+(paren
+id|port-&gt;ctrl_data_shadow
+comma
+id|R_SYNC_SERIAL1_CTRL
+comma
+id|rec_enable
+comma
+id|enable
+)paren
+suffix:semicolon
+op_star
+id|port-&gt;ctrl_data
+op_assign
+id|port-&gt;ctrl_data_shadow
 suffix:semicolon
 multiline_comment|/* Calculate number of available bytes */
 r_while
@@ -3461,6 +3798,21 @@ op_amp
 id|port-&gt;in_wait_q
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|signal_pending
+c_func
+(paren
+id|current
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EINTR
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Save pointers to avoid that they are modified by interrupt */
 id|start
@@ -3907,8 +4259,6 @@ l_int|0
 suffix:semicolon
 id|port-&gt;in_descr1.ctrl
 op_assign
-id|d_eop
-op_or
 id|d_int
 suffix:semicolon
 id|port-&gt;in_descr1.status
@@ -3939,8 +4289,6 @@ id|port-&gt;in_descr1
 suffix:semicolon
 id|port-&gt;in_descr2.ctrl
 op_assign
-id|d_eop
-op_or
 id|d_int
 suffix:semicolon
 id|port-&gt;in_descr2.status
@@ -4357,80 +4705,6 @@ id|port-&gt;in_wait_q
 suffix:semicolon
 multiline_comment|/* wake up the waiting process */
 )brace
-r_else
-r_if
-c_cond
-(paren
-id|ireg
-op_amp
-(paren
-l_int|1
-op_lshift
-id|port-&gt;input_dma_eop_bit
-)paren
-)paren
-multiline_comment|/* EOP interrupt */
-(brace
-multiline_comment|/* EOP interrupt means that DMA has not reached end of descriptor */
-op_star
-id|port-&gt;input_dma_clr_irq
-op_assign
-id|IO_STATE
-c_func
-(paren
-id|R_DMA_CH0_CLR_INTR
-comma
-id|clr_eop
-comma
-r_do
-)paren
-op_or
-id|IO_STATE
-c_func
-(paren
-id|R_DMA_CH0_CLR_INTR
-comma
-id|clr_descr
-comma
-r_do
-)paren
-suffix:semicolon
-multiline_comment|/* Find out the current descriptor */
-r_if
-c_cond
-(paren
-id|port-&gt;writep
-op_ge
-id|port-&gt;in_buffer
-op_plus
-id|IN_BUFFER_SIZE
-op_div
-l_int|2
-)paren
-id|port-&gt;writep
-op_add_assign
-id|port-&gt;in_descr2.hw_len
-suffix:semicolon
-r_else
-id|port-&gt;writep
-op_add_assign
-id|port-&gt;in_descr1.hw_len
-suffix:semicolon
-id|start_dma_in
-c_func
-(paren
-id|port
-)paren
-suffix:semicolon
-id|wake_up_interruptible
-c_func
-(paren
-op_amp
-id|port-&gt;in_wait_q
-)paren
-suffix:semicolon
-multiline_comment|/* wake up the waiting process */
-)brace
 )brace
 )brace
 DECL|function|manual_interrupt
@@ -4799,71 +5073,6 @@ multiline_comment|/* Wake up application */
 )brace
 )brace
 )brace
-)brace
-DECL|function|flush_handler
-r_static
-r_void
-id|flush_handler
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NUMBER_OF_PORTS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ports
-(braket
-id|i
-)braket
-dot
-id|enabled
-)paren
-(brace
-op_star
-id|R_SET_EOP
-op_assign
-l_int|1
-op_lshift
-id|ports
-(braket
-id|i
-)braket
-dot
-id|eop_bit
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* restart flush timer */
-id|mod_timer
-c_func
-(paren
-op_amp
-id|flush_timer
-comma
-id|jiffies
-op_plus
-l_int|10
-)paren
-suffix:semicolon
 )brace
 DECL|variable|etrax_sync_serial_init
 id|module_init

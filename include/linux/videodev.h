@@ -1100,6 +1100,8 @@ DECL|macro|VID_HARDWARE_ZR356700
 mdefine_line|#define VID_HARDWARE_ZR356700&t;28&t;/* Zoran 36700 series */
 DECL|macro|VID_HARDWARE_W9966
 mdefine_line|#define VID_HARDWARE_W9966&t;29
+DECL|macro|VID_HARDWARE_SE401
+mdefine_line|#define VID_HARDWARE_SE401&t;30&t;/* SE401 USB webcams */
 multiline_comment|/*&n; *&t;Initialiser list&n; */
 DECL|struct|video_init
 r_struct
