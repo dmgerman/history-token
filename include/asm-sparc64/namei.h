@@ -3,9 +3,9 @@ macro_line|#ifndef __SPARC64_NAMEI_H
 DECL|macro|__SPARC64_NAMEI_H
 mdefine_line|#define __SPARC64_NAMEI_H
 DECL|macro|SPARC_BSD_EMUL
-mdefine_line|#define SPARC_BSD_EMUL &quot;usr/gnemul/sunos/&quot;
+mdefine_line|#define SPARC_BSD_EMUL &quot;/usr/gnemul/sunos/&quot;
 DECL|macro|SPARC_SOL_EMUL
-mdefine_line|#define SPARC_SOL_EMUL &quot;usr/gnemul/solaris/&quot;
+mdefine_line|#define SPARC_SOL_EMUL &quot;/usr/gnemul/solaris/&quot;
 DECL|function|__emul_prefix
 r_static
 r_inline
