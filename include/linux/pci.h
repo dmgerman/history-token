@@ -1166,8 +1166,6 @@ id|pci_devices
 )paren
 suffix:semicolon
 )brace
-DECL|macro|pci_for_each_dev
-mdefine_line|#define pci_for_each_dev(dev) &bslash;&n;&t;for(dev = pci_dev_g(pci_devices.next); dev != pci_dev_g(&amp;pci_devices); dev = pci_dev_g(dev-&gt;global_list.next))
 DECL|macro|pci_for_each_dev_reverse
 mdefine_line|#define pci_for_each_dev_reverse(dev) &bslash;&n;&t;for(dev = pci_dev_g(pci_devices.prev); dev != pci_dev_g(&amp;pci_devices); dev = pci_dev_g(dev-&gt;global_list.prev))
 DECL|macro|pci_for_each_bus
@@ -2757,8 +2755,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|pci_for_each_dev
-mdefine_line|#define pci_for_each_dev(dev) &bslash;&n;&t;for(dev = NULL; 0; )
 DECL|macro|isa_bridge
 mdefine_line|#define&t;isa_bridge&t;((struct pci_dev *)NULL)
 macro_line|#else
