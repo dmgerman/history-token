@@ -8602,6 +8602,14 @@ id|dev
 r_return
 l_int|0
 suffix:semicolon
+id|pci_restore_state
+c_func
+(paren
+id|pdev
+comma
+id|bp-&gt;pci_cfg_state
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren

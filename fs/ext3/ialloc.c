@@ -964,7 +964,13 @@ id|sb-&gt;s_root-&gt;d_inode
 )paren
 op_logical_or
 (paren
-id|parent-&gt;i_flags
+id|EXT3_I
+c_func
+(paren
+id|parent
+)paren
+op_member_access_from_pointer
+id|i_flags
 op_amp
 id|EXT3_TOPDIR_FL
 )paren

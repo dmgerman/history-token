@@ -714,7 +714,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_INET_ECN
 r_if
 c_cond
 (paren
@@ -726,7 +725,6 @@ id|info-&gt;tcpi_options
 op_or_assign
 id|TCPI_OPT_ECN
 suffix:semicolon
-macro_line|#endif
 id|info-&gt;tcpi_rto
 op_assign
 (paren
