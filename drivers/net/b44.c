@@ -1,6 +1,7 @@
 multiline_comment|/* b44.c: Broadcom 4400 device driver.&n; *&n; * Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; * Fixed by Pekka Pietikainen (pp@ee.oulu.fi)&n; *&n; * Distribute under GPL.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
@@ -93,12 +94,23 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+DECL|variable|b44_debug
+r_static
+r_int
+id|b44_debug
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* -1 == use B44_DEF_MSG_ENABLE as value */
+id|module_param
 c_func
 (paren
 id|b44_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -109,15 +121,6 @@ comma
 l_string|&quot;B44 bitmapped debugging message enable value&quot;
 )paren
 suffix:semicolon
-DECL|variable|b44_debug
-r_static
-r_int
-id|b44_debug
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/* -1 == use B44_DEF_MSG_ENABLE as value */
 DECL|variable|b44_pci_tbl
 r_static
 r_struct
