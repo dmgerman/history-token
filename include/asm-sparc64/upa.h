@@ -35,7 +35,7 @@ mdefine_line|#define UPA_PORTID_ID           0x000000000000ffff /* Module Indent
 multiline_comment|/* UPA I/O space accessors */
 macro_line|#if defined(__KERNEL__) &amp;&amp; !defined(__ASSEMBLY__)
 DECL|function|_upa_readb
-r_extern
+r_static
 id|__inline__
 r_int
 r_char
@@ -78,7 +78,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|_upa_readw
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -121,7 +121,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|_upa_readl
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -164,7 +164,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|_upa_readq
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -207,7 +207,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|_upa_writeb
-r_extern
+r_static
 id|__inline__
 r_void
 id|_upa_writeb
@@ -248,7 +248,7 @@ id|ASI_PHYS_BYPASS_EC_E
 suffix:semicolon
 )brace
 DECL|function|_upa_writew
-r_extern
+r_static
 id|__inline__
 r_void
 id|_upa_writew
@@ -289,7 +289,7 @@ id|ASI_PHYS_BYPASS_EC_E
 suffix:semicolon
 )brace
 DECL|function|_upa_writel
-r_extern
+r_static
 id|__inline__
 r_void
 id|_upa_writel
@@ -330,7 +330,7 @@ id|ASI_PHYS_BYPASS_EC_E
 suffix:semicolon
 )brace
 DECL|function|_upa_writeq
-r_extern
+r_static
 id|__inline__
 r_void
 id|_upa_writeq

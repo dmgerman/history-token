@@ -38,7 +38,7 @@ mdefine_line|#define __access_ok(addr,size) 1
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size) 1
 DECL|function|verify_area
-r_extern
+r_static
 r_inline
 r_int
 id|verify_area
@@ -216,7 +216,7 @@ mdefine_line|#define copy_to_user(to,from,n) &bslash;&n;&t;__copy_to_user((void 
 DECL|macro|copy_in_user
 mdefine_line|#define copy_in_user(to,from,n) &bslash;&n;&t;__copy_in_user((void *)(to), &bslash;&n;&t;(void *) (from), (__kernel_size_t)(n))
 DECL|function|__clear_user
-r_extern
+r_static
 id|__inline__
 id|__kernel_size_t
 id|__clear_user
