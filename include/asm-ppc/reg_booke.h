@@ -172,10 +172,18 @@ DECL|macro|SPRN_TSR
 mdefine_line|#define SPRN_TSR&t;0x3D8&t;/* Timer Status Register */
 DECL|macro|SPRN_TCR
 mdefine_line|#define SPRN_TCR&t;0x3DA&t;/* Timer Control Register */
+DECL|macro|SPRN_SRR2
+mdefine_line|#define SPRN_SRR2&t;0x3DE&t;/* Save/Restore Register 2 */
+DECL|macro|SPRN_SRR3
+mdefine_line|#define SPRN_SRR3&t;0x3DF&t;/* Save/Restore Register 3 */
 DECL|macro|SPRN_DBSR
 mdefine_line|#define SPRN_DBSR&t;0x3F0&t;/* Debug Status Register */&t;&t;
 DECL|macro|SPRN_DBCR0
 mdefine_line|#define SPRN_DBCR0&t;0x3F2&t;/* Debug Control Register 0 */
+DECL|macro|SPRN_DAC1
+mdefine_line|#define SPRN_DAC1&t;0x3F6&t;/* Data Address Compare 1 */
+DECL|macro|SPRN_DAC2
+mdefine_line|#define SPRN_DAC2&t;0x3F7&t;/* Data Address Compare 2 */
 macro_line|#endif
 multiline_comment|/* Bit definitions for the DBSR. */
 multiline_comment|/*&n; * DBSR bits which have conflicting definitions on true Book E versus IBM 40x.&n; */
