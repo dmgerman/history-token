@@ -1053,7 +1053,7 @@ id|uptodate
 op_assign
 l_int|1
 suffix:semicolon
-id|ata_end_request
+id|__ata_end_request
 c_func
 (paren
 id|drive
@@ -1061,6 +1061,8 @@ comma
 id|rq
 comma
 id|uptodate
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1167,7 +1169,7 @@ suffix:semicolon
 op_star
 id|startstop
 op_assign
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 r_return
 l_int|1
@@ -1596,7 +1598,7 @@ multiline_comment|/* Retry, or handle the next request. */
 op_star
 id|startstop
 op_assign
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 r_return
 l_int|1
@@ -1604,7 +1606,7 @@ suffix:semicolon
 )brace
 DECL|function|cdrom_timer_expiry
 r_static
-r_int
+id|ide_startstop_t
 id|cdrom_timer_expiry
 c_func
 (paren
@@ -1617,14 +1619,13 @@ r_struct
 id|request
 op_star
 id|rq
+comma
+r_int
+r_int
+op_star
+id|wait
 )paren
 (brace
-r_int
-r_int
-id|wait
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t; * Some commands are *slow* and normally take a long time to&n;&t; * complete. Usually we can use the ATAPI &quot;disconnect&quot; to bypass&n;&t; * this, but not all commands/drives support that. Let&n;&t; * ide_timer_expiry keep polling us for these.&n;&t; */
 r_switch
 c_cond
@@ -1644,14 +1645,17 @@ suffix:colon
 r_case
 id|GPCMD_RESERVE_RZONE_TRACK
 suffix:colon
+op_star
 id|wait
 op_assign
 id|WAIT_CMD
 suffix:semicolon
-r_break
+r_return
+id|ATA_OP_CONTINUES
 suffix:semicolon
 r_default
 suffix:colon
+op_star
 id|wait
 op_assign
 l_int|0
@@ -1660,7 +1664,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
-id|wait
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/* Set up the device registers for transferring a packet command on DEV,&n;   expecting to later transfer XFERLEN bytes.  HANDLER is the routine&n;   which actually transfers the command to the drive.  If this is a&n;   drq_interrupt device, this routine will arrange for HANDLER to be&n;   called when the interrupt from the drive arrives.  Otherwise, HANDLER&n;   will be called immediately after the drive is prepared for the transfer. */
@@ -1687,20 +1691,6 @@ id|ata_handler_t
 id|handler
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
-id|ide_startstop_t
-id|startstop
-suffix:semicolon
 r_struct
 id|cdrom_info
 op_star
@@ -1711,18 +1701,9 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Wait for the controller to be idle. */
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|ata_status_poll
 c_func
 (paren
@@ -1735,17 +1716,18 @@ comma
 id|WAIT_READY
 comma
 id|rq
-comma
-op_amp
-id|startstop
 )paren
-)paren
-id|ret
-op_assign
-id|startstop
 suffix:semicolon
-r_else
-(brace
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+id|ATA_OP_READY
+)paren
+r_return
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1880,7 +1862,7 @@ suffix:semicolon
 multiline_comment|/* packet command */
 id|ret
 op_assign
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 r_else
@@ -1893,15 +1875,6 @@ id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
 multiline_comment|/* packet command */
-multiline_comment|/* FIXME: Oj kurwa! We have to ungrab the lock before&n;&t;&t;&t; * the IRQ handler gets called.&n;&t;&t;&t; */
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|handler
@@ -1912,24 +1885,7 @@ comma
 id|rq
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
-)brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -1964,17 +1920,6 @@ id|ata_handler_t
 id|handler
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
 id|ide_startstop_t
 id|startstop
 suffix:semicolon
@@ -2019,19 +1964,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* FIXME: make this locking go away */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Otherwise, we must wait for DRQ to get set. */
-r_if
-c_cond
-(paren
+id|startstop
+op_assign
 id|ata_status_poll
 c_func
 (paren
@@ -2044,43 +1979,20 @@ comma
 id|WAIT_READY
 comma
 id|rq
-comma
-op_amp
-id|startstop
-)paren
-)paren
-(brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|startstop
+op_ne
+id|ATA_OP_READY
+)paren
 r_return
 id|startstop
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Arm the interrupt handler and send the command to the device. */
-multiline_comment|/* FIXME: make this locking go away */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|ata_set_handler
 c_func
 (paren
@@ -2103,16 +2015,8 @@ comma
 id|CDROM_PACKET_SIZE
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; * Block read functions.&n; */
@@ -2426,17 +2330,6 @@ id|rq
 )paren
 (brace
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
-r_int
 id|stat
 suffix:semicolon
 r_int
@@ -2537,15 +2430,6 @@ op_logical_neg
 id|dma_error
 )paren
 (brace
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t;&t; * file access too.&n;&t;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|__ata_end_request
 c_func
 (paren
@@ -2558,16 +2442,8 @@ comma
 id|rq-&gt;nr_sectors
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 r_else
@@ -2659,7 +2535,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/* Check that the drive is expecting to do the same thing we are. */
@@ -2679,7 +2555,7 @@ id|ireason
 )paren
 )paren
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 multiline_comment|/* Assume that the drive will always provide data in multiples&n;&t;   of at least SECTOR_SIZE, as it gets hairy to keep track&n;&t;   of the transfers otherwise. */
 r_if
@@ -2746,7 +2622,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/* The number of sectors we need to read from the drive. */
@@ -2923,14 +2799,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Done moving data! Wait for another interrupt. */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|ata_set_handler
 c_func
 (paren
@@ -2943,16 +2811,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Try to satisfy some of the current read request from our cached data.&n; * Returns nonzero if the request has been completed, zero otherwise.&n; */
@@ -3250,7 +3110,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 id|sector
@@ -3442,7 +3302,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 DECL|function|cdrom_start_seek_continuation
@@ -3753,7 +3613,7 @@ id|rq
 )paren
 )paren
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 id|blk_attempt_remerge
 c_func
@@ -3838,17 +3698,6 @@ op_star
 id|rq
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
 r_int
 id|ireason
 comma
@@ -4007,7 +3856,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/* Figure out how much data to transfer. */
@@ -4185,14 +4034,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Now we wait for another interrupt. */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|ata_set_handler
 c_func
 (paren
@@ -4205,16 +4046,8 @@ comma
 id|cdrom_timer_expiry
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 DECL|function|cdrom_do_pc_continuation
@@ -4730,17 +4563,6 @@ id|rq
 )paren
 (brace
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
-r_int
 id|stat
 comma
 id|ireason
@@ -4866,15 +4688,6 @@ comma
 l_string|&quot;dma error&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t; * file access too.&n;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|__ata_end_request
 c_func
 (paren
@@ -4887,16 +4700,8 @@ comma
 id|rq-&gt;nr_sectors
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/* Read the interrupt reason and the transfer length. */
@@ -4976,7 +4781,7 @@ id|uptodate
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/* Check that the drive is expecting to do the same thing we are. */
@@ -5003,7 +4808,7 @@ id|ireason
 )paren
 )paren
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 id|sectors_to_transfer
 op_assign
@@ -5110,14 +4915,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* re-arm handler */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|ata_set_handler
 c_func
 (paren
@@ -5132,16 +4929,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 DECL|function|cdrom_start_write_cont
@@ -5231,7 +5020,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * for dvd-ram and such media, it&squot;s a really big deal to get&n;&t; * big writes all the time. so scour the queue and attempt to&n;&t; * remerge requests, often the plugging will not have had time&n;&t; * to do this properly&n;&t; */
@@ -5300,13 +5089,6 @@ id|sector_t
 id|block
 )paren
 (brace
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
@@ -5377,7 +5159,7 @@ id|IDECD_SEEK_TIMER
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 id|printk
@@ -5399,13 +5181,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: make this unlocking go away*/
-id|spin_unlock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5476,12 +5251,6 @@ id|info-&gt;last_block
 op_assign
 id|block
 suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -5499,13 +5268,6 @@ id|REQ_SENSE
 )paren
 )paren
 (brace
-multiline_comment|/* FIXME: make this unlocking go away*/
-id|spin_unlock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|cdrom_do_packet_command
@@ -5514,12 +5276,6 @@ c_func
 id|drive
 comma
 id|rq
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -5536,13 +5292,6 @@ id|REQ_SPECIAL
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * FIXME: Kill REQ_SEPCIAL and replace it with commands queued&n;&t;&t; * at the request queue instead as suggested by Linus.&n;&t;&t; *&n;&t;&t; * right now this can only be a reset...&n;&t;&t; */
-multiline_comment|/* FIXME: make this unlocking go away*/
-id|spin_unlock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 id|cdrom_end_request
 c_func
 (paren
@@ -5553,14 +5302,8 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 r_else
@@ -5613,13 +5356,6 @@ op_star
 op_amp
 id|pc
 suffix:semicolon
-multiline_comment|/* FIXME: make this unlocking go away*/
-id|spin_unlock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 id|startstop
 op_assign
 id|cdrom_do_packet_command
@@ -5628,12 +5364,6 @@ c_func
 id|drive
 comma
 id|rq
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -5656,13 +5386,6 @@ comma
 l_string|&quot;ide-cd bad flags&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: make this unlocking go away*/
-id|spin_unlock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 id|cdrom_end_request
 c_func
 (paren
@@ -5673,14 +5396,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; * Ioctl handling.&n; *&n; * Routines which queue packet commands take as a final argument a pointer&n; * to a request_sense struct.  If execution of the command results&n; * in an error with a CHECK CONDITION status, this structure will be filled&n; * with the results of the subsequent request sense command.  The pointer&n; * can also be NULL, in which case no sense information is returned.&n; */
