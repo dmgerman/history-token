@@ -247,8 +247,8 @@ id|disable
 )brace
 )brace
 suffix:semicolon
-DECL|function|pt_setup
 r_void
+DECL|function|pt_setup
 id|pt_setup
 c_func
 (paren
@@ -333,17 +333,17 @@ macro_line|#include &quot;paride.h&quot;
 DECL|macro|PT_MAX_RETRIES
 mdefine_line|#define PT_MAX_RETRIES  5
 DECL|macro|PT_TMO
-mdefine_line|#define PT_TMO          3000            /* interrupt timeout in jiffies */
+mdefine_line|#define PT_TMO          3000&t;/* interrupt timeout in jiffies */
 DECL|macro|PT_SPIN_DEL
-mdefine_line|#define PT_SPIN_DEL     50              /* spin delay in micro-seconds  */
+mdefine_line|#define PT_SPIN_DEL     50&t;/* spin delay in micro-seconds  */
 DECL|macro|PT_RESET_TMO
-mdefine_line|#define PT_RESET_TMO    30&t;&t;/* 30 seconds */
+mdefine_line|#define PT_RESET_TMO    30&t;/* 30 seconds */
 DECL|macro|PT_READY_TMO
-mdefine_line|#define PT_READY_TMO&t;60&t;&t;/* 60 seconds */
+mdefine_line|#define PT_READY_TMO&t;60&t;/* 60 seconds */
 DECL|macro|PT_REWIND_TMO
-mdefine_line|#define PT_REWIND_TMO&t;1200&t;&t;/* 20 minutes */
+mdefine_line|#define PT_REWIND_TMO&t;1200&t;/* 20 minutes */
 DECL|macro|PT_SPIN
-mdefine_line|#define PT_SPIN         ((1000000/(HZ*PT_SPIN_DEL))*PT_TMO)  
+mdefine_line|#define PT_SPIN         ((1000000/(HZ*PT_SPIN_DEL))*PT_TMO)
 DECL|macro|STAT_ERR
 mdefine_line|#define STAT_ERR        0x00001
 DECL|macro|STAT_INDEX
@@ -423,6 +423,7 @@ suffix:semicolon
 r_static
 r_int
 id|pt_release
+c_func
 (paren
 r_struct
 id|inode
@@ -491,6 +492,7 @@ suffix:semicolon
 r_static
 r_int
 id|pt_identify
+c_func
 (paren
 r_int
 id|unit
@@ -642,6 +644,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|pt_init_units
+r_static
 r_void
 id|pt_init_units
 c_func
@@ -2145,7 +2148,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|flg
 op_and_assign
 (paren
@@ -2165,7 +2167,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2459,7 +2460,6 @@ op_ne
 id|l
 )paren
 )paren
-(brace
 id|l
 op_assign
 id|targ
@@ -2475,7 +2475,6 @@ op_plus
 id|offs
 )braket
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2534,7 +2533,6 @@ suffix:semicolon
 id|k
 op_increment
 )paren
-(brace
 id|v
 op_assign
 id|v
@@ -2552,7 +2550,6 @@ op_amp
 l_int|0xff
 )paren
 suffix:semicolon
-)brace
 r_return
 id|v
 suffix:semicolon
@@ -2961,6 +2958,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * returns  0, with id set if drive is detected&n; *&t;   -1, if drive detection failed&n; */
 DECL|function|pt_probe
 r_static
 r_int
@@ -2970,7 +2968,6 @@ c_func
 r_int
 id|unit
 )paren
-multiline_comment|/*&t;returns  0, with id set if drive is detected&n;&t;        -1, if drive detection failed&n;*/
 (brace
 r_if
 c_cond
@@ -3172,7 +3169,6 @@ r_if
 c_cond
 (paren
 id|pi_init
-c_func
 (paren
 id|PI
 comma
@@ -3267,6 +3263,7 @@ DECL|function|pt_open
 r_static
 r_int
 id|pt_open
+c_func
 (paren
 r_struct
 id|inode
@@ -3368,9 +3365,7 @@ id|PT_WRITE_OK
 )paren
 op_logical_and
 (paren
-id|file
-op_member_access_from_pointer
-id|f_mode
+id|file-&gt;f_mode
 op_amp
 l_int|2
 )paren
@@ -3613,10 +3608,11 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-DECL|function|pt_release
 r_static
 r_int
+DECL|function|pt_release
 id|pt_release
+c_func
 (paren
 r_struct
 id|inode
@@ -4359,7 +4355,6 @@ r_if
 c_cond
 (paren
 id|pt_atapi
-c_func
 (paren
 id|unit
 comma
@@ -4871,6 +4866,7 @@ l_int|1
 suffix:semicolon
 )brace
 id|devfs_mk_dir
+c_func
 (paren
 l_string|&quot;pt&quot;
 )paren
