@@ -70,7 +70,7 @@ suffix:semicolon
 DECL|macro|BFUSB_MAX_BLOCK_SIZE
 mdefine_line|#define BFUSB_MAX_BLOCK_SIZE&t;256
 DECL|macro|BFUSB_BLOCK_TIMEOUT
-mdefine_line|#define BFUSB_BLOCK_TIMEOUT&t;(HZ * 3)
+mdefine_line|#define BFUSB_BLOCK_TIMEOUT&t;3000
 DECL|macro|BFUSB_TX_PROCESS
 mdefine_line|#define BFUSB_TX_PROCESS&t;1
 DECL|macro|BFUSB_TX_WAKEUP
@@ -2558,8 +2558,6 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 OL
@@ -2783,8 +2781,6 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 )paren
@@ -2866,8 +2862,6 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 suffix:semicolon
