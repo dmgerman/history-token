@@ -208,22 +208,20 @@ DECL|macro|S_SYNC
 mdefine_line|#define S_SYNC&t;&t;1&t;/* Writes are synced at once */
 DECL|macro|S_NOATIME
 mdefine_line|#define S_NOATIME&t;2&t;/* Do not update access times */
-DECL|macro|S_QUOTA
-mdefine_line|#define S_QUOTA&t;&t;4&t;/* Quota initialized for file */
 DECL|macro|S_APPEND
-mdefine_line|#define S_APPEND&t;8&t;/* Append-only file */
+mdefine_line|#define S_APPEND&t;4&t;/* Append-only file */
 DECL|macro|S_IMMUTABLE
-mdefine_line|#define S_IMMUTABLE&t;16&t;/* Immutable file */
+mdefine_line|#define S_IMMUTABLE&t;8&t;/* Immutable file */
 DECL|macro|S_DEAD
-mdefine_line|#define S_DEAD&t;&t;32&t;/* removed, but still open directory */
+mdefine_line|#define S_DEAD&t;&t;16&t;/* removed, but still open directory */
 DECL|macro|S_NOQUOTA
-mdefine_line|#define S_NOQUOTA&t;64&t;/* Inode is not counted to quota */
+mdefine_line|#define S_NOQUOTA&t;32&t;/* Inode is not counted to quota */
 DECL|macro|S_DIRSYNC
-mdefine_line|#define S_DIRSYNC&t;128&t;/* Directory modifications are synchronous */
+mdefine_line|#define S_DIRSYNC&t;64&t;/* Directory modifications are synchronous */
 DECL|macro|S_NOCMTIME
-mdefine_line|#define S_NOCMTIME&t;256&t;/* Do not update file c/mtime */
+mdefine_line|#define S_NOCMTIME&t;128&t;/* Do not update file c/mtime */
 DECL|macro|S_SWAPFILE
-mdefine_line|#define S_SWAPFILE&t;512&t;/* Do not truncate: swapon got its bmaps */
+mdefine_line|#define S_SWAPFILE&t;256&t;/* Do not truncate: swapon got its bmaps */
 multiline_comment|/*&n; * Note that nosuid etc flags are inode-specific: setting some file-system&n; * flags just means all the inodes inherit those flags by default. It might be&n; * possible to override it selectively if you really wanted to with some&n; * ioctl() that is not currently implemented.&n; *&n; * Exception: MS_RDONLY is always applied to the entire file system.&n; *&n; * Unfortunately, it is possible to change a filesystems flags with it mounted&n; * with files in use.  This means that all of the inodes will not have their&n; * i_flags updated.  Hence, i_flags no longer inherit the superblock mount&n; * flags, so these have to be checked separately. -- rmk@arm.uk.linux.org&n; */
 DECL|macro|__IS_FLG
 mdefine_line|#define __IS_FLG(inode,flg) ((inode)-&gt;i_sb-&gt;s_flags &amp; (flg))
@@ -235,8 +233,6 @@ DECL|macro|IS_DIRSYNC
 mdefine_line|#define IS_DIRSYNC(inode)&t;(__IS_FLG(inode, MS_SYNCHRONOUS|MS_DIRSYNC) || &bslash;&n;&t;&t;&t;&t;&t;((inode)-&gt;i_flags &amp; (S_SYNC|S_DIRSYNC)))
 DECL|macro|IS_MANDLOCK
 mdefine_line|#define IS_MANDLOCK(inode)&t;__IS_FLG(inode, MS_MANDLOCK)
-DECL|macro|IS_QUOTAINIT
-mdefine_line|#define IS_QUOTAINIT(inode)&t;((inode)-&gt;i_flags &amp; S_QUOTA)
 DECL|macro|IS_NOQUOTA
 mdefine_line|#define IS_NOQUOTA(inode)&t;((inode)-&gt;i_flags &amp; S_NOQUOTA)
 DECL|macro|IS_APPEND

@@ -4221,7 +4221,7 @@ id|inode_lock
 )paren
 suffix:semicolon
 multiline_comment|/* This lock is for inodes code */
-multiline_comment|/* We don&squot;t have to lock against quota code - test IS_QUOTAINIT is just for speedup... */
+multiline_comment|/* We hold dqptr_sem so we are safe against the quota code */
 id|list_for_each
 c_func
 (paren
@@ -4251,7 +4251,8 @@ id|inode-&gt;i_sb
 op_eq
 id|sb
 op_logical_and
-id|IS_QUOTAINIT
+op_logical_neg
+id|IS_NOQUOTA
 c_func
 (paren
 id|inode
@@ -4297,7 +4298,8 @@ id|inode-&gt;i_sb
 op_eq
 id|sb
 op_logical_and
-id|IS_QUOTAINIT
+op_logical_neg
+id|IS_NOQUOTA
 c_func
 (paren
 id|inode
@@ -4339,7 +4341,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_QUOTAINIT
+op_logical_neg
+id|IS_NOQUOTA
 c_func
 (paren
 id|inode
@@ -4381,7 +4384,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_QUOTAINIT
+op_logical_neg
+id|IS_NOQUOTA
 c_func
 (paren
 id|inode
