@@ -2216,22 +2216,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|err_small
-suffix:colon
-id|affs_error
-c_func
-(paren
-id|inode-&gt;i_sb
-comma
-l_string|&quot;get_block&quot;
-comma
-l_string|&quot;Block &lt; 0&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
 id|err_big
 suffix:colon
 id|affs_error

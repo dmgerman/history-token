@@ -488,11 +488,6 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * SECTION: Operations on the device structure.&n; */
-DECL|variable|dasd_devfs_handle
-r_static
-id|devfs_handle_t
-id|dasd_devfs_handle
-suffix:semicolon
 DECL|variable|dasd_init_waitq
 r_static
 id|wait_queue_head_t
@@ -8953,15 +8948,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dasd_devfs_handle
-)paren
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|dasd_devfs_handle
+l_string|&quot;dasd&quot;
 )paren
 suffix:semicolon
 r_if
@@ -9170,8 +9160,10 @@ comma
 l_string|&quot;debug area created&quot;
 )paren
 suffix:semicolon
-id|dasd_devfs_handle
-op_assign
+r_if
+c_cond
+(paren
+op_logical_neg
 id|devfs_mk_dir
 c_func
 (paren
@@ -9181,13 +9173,6 @@ l_string|&quot;dasd&quot;
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dasd_devfs_handle
-OL
-l_int|0
 )paren
 (brace
 id|DBF_EVENT

@@ -361,11 +361,6 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; *&t;Allocate the controlling structure and add it to the sound driver&n; *&t;list. Acquires locks as needed&n; */
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
 DECL|function|sound_insert_unit
 r_static
 r_int
@@ -429,7 +424,7 @@ suffix:semicolon
 r_char
 id|name_buf
 (braket
-l_int|16
+l_int|32
 )braket
 suffix:semicolon
 r_if
@@ -506,7 +501,7 @@ id|sprintf
 (paren
 id|name_buf
 comma
-l_string|&quot;%s&quot;
+l_string|&quot;sound/%s&quot;
 comma
 id|name
 )paren
@@ -516,7 +511,7 @@ id|sprintf
 (paren
 id|name_buf
 comma
-l_string|&quot;%s%d&quot;
+l_string|&quot;sound/%s%d&quot;
 comma
 id|name
 comma
@@ -529,7 +524,7 @@ id|s-&gt;de
 op_assign
 id|devfs_register
 (paren
-id|devfs_handle
+l_int|NULL
 comma
 id|name_buf
 comma
@@ -1663,9 +1658,10 @@ comma
 l_string|&quot;sound&quot;
 )paren
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
+c_func
 (paren
-id|devfs_handle
+l_string|&quot;sound&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1709,8 +1705,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|devfs_handle
-op_assign
 id|devfs_mk_dir
 (paren
 l_int|NULL

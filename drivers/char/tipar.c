@@ -78,11 +78,6 @@ op_assign
 id|TIMAXTIME
 suffix:semicolon
 multiline_comment|/* timeout in tenth of seconds     */
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
 DECL|variable|tp_count
 r_static
 r_int
@@ -1470,7 +1465,7 @@ id|port
 r_char
 id|name
 (braket
-l_int|8
+l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* Register our module into parport */
@@ -1528,7 +1523,7 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;%d&quot;
+l_string|&quot;ticables/par/%d&quot;
 comma
 id|nr
 )paren
@@ -1551,7 +1546,7 @@ suffix:semicolon
 id|devfs_register
 c_func
 (paren
-id|devfs_handle
+l_int|NULL
 comma
 id|name
 comma
@@ -1754,8 +1749,6 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* Use devfs with tree: /dev/ticables/par/[0..2] */
-id|devfs_handle
-op_assign
 id|devfs_mk_dir
 c_func
 (paren
@@ -1813,12 +1806,6 @@ op_amp
 id|tipar_driver
 )paren
 suffix:semicolon
-id|devfs_unregister
-c_func
-(paren
-id|devfs_handle
-)paren
-suffix:semicolon
 id|unregister_chrdev
 c_func
 (paren
@@ -1867,7 +1854,21 @@ dot
 id|dev
 )paren
 suffix:semicolon
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;ticables/par/%d&quot;
+comma
+id|i
+)paren
+suffix:semicolon
 )brace
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;ticables/par&quot;
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren

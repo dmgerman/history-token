@@ -30,12 +30,6 @@ r_struct
 id|file_operations
 id|vfc_fops
 suffix:semicolon
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
-multiline_comment|/*  For the directory  */
 DECL|variable|vfc_dev_lst
 r_struct
 id|vfc_dev
@@ -501,7 +495,7 @@ id|instance
 r_char
 id|devname
 (braket
-l_int|8
+l_int|16
 )braket
 suffix:semicolon
 r_if
@@ -655,7 +649,7 @@ id|sprintf
 (paren
 id|devname
 comma
-l_string|&quot;%d&quot;
+l_string|&quot;vfc/%d&quot;
 comma
 id|instance
 )paren
@@ -664,7 +658,7 @@ id|dev-&gt;de
 op_assign
 id|devfs_register
 (paren
-id|devfs_handle
+l_int|NULL
 comma
 id|devname
 comma
@@ -3302,8 +3296,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|devfs_handle
-op_assign
 id|devfs_mk_dir
 (paren
 l_int|NULL
@@ -3469,9 +3461,12 @@ l_int|NULL
 r_return
 suffix:semicolon
 )brace
-id|devfs_unregister
+id|devfs_remove
+c_func
 (paren
-id|dev-&gt;de
+l_string|&quot;vfc/%d&quot;
+comma
+id|dev-&gt;instance
 )paren
 suffix:semicolon
 id|sbus_iounmap
@@ -3539,9 +3534,10 @@ op_star
 id|devp
 )paren
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
+c_func
 (paren
-id|devfs_handle
+l_string|&quot;vfc&quot;
 )paren
 suffix:semicolon
 id|kfree

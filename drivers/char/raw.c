@@ -358,12 +358,10 @@ op_assign
 id|filp-&gt;private_data
 suffix:semicolon
 r_return
-id|blkdev_ioctl
+id|ioctl_by_bdev
 c_func
 (paren
-id|bdev-&gt;bd_inode
-comma
-l_int|NULL
+id|bdev
 comma
 id|command
 comma
@@ -928,6 +926,12 @@ id|module_exit
 c_func
 (paren
 id|raw_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

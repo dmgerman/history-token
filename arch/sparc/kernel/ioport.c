@@ -3382,7 +3382,7 @@ comma
 id|sparc_cpu_model
 )paren
 suffix:semicolon
-id|halt
+id|prom_halt
 c_func
 (paren
 )paren

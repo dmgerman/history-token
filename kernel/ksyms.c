@@ -44,6 +44,7 @@ macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -3105,6 +3106,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|dump_stack
+)paren
+suffix:semicolon
+DECL|variable|ptrace_notify
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ptrace_notify
 )paren
 suffix:semicolon
 DECL|variable|current_kernel_time
