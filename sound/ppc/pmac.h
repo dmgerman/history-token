@@ -457,13 +457,6 @@ id|chip
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_PBOOK
-DECL|member|sleep_registered
-r_int
-r_int
-id|sleep_registered
-suffix:colon
-l_int|1
-suffix:semicolon
 DECL|member|suspend
 r_void
 (paren
