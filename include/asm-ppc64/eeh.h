@@ -1072,15 +1072,6 @@ id|destsave
 op_assign
 id|dest
 suffix:semicolon
-r_const
-r_volatile
-r_void
-id|__iomem
-op_star
-id|srcsave
-op_assign
-id|src
-suffix:semicolon
 r_int
 r_int
 id|nsave
@@ -1370,7 +1361,7 @@ id|u32
 id|eeh_check_failure
 c_func
 (paren
-id|srcsave
+id|src
 comma
 (paren
 op_star
