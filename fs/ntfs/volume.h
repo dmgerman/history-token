@@ -206,12 +206,6 @@ id|rw_semaphore
 id|mftbmp_lock
 suffix:semicolon
 multiline_comment|/* Lock for serializing accesses to the&n;&t;&t;&t;&t;&t;    mft record bitmap ($MFT/$BITMAP). */
-DECL|member|nr_mft_records
-r_int
-r_int
-id|nr_mft_records
-suffix:semicolon
-multiline_comment|/* Number of mft records == number of&n;&t;&t;&t;&t;&t;   bits in mft bitmap. */
 macro_line|#ifdef NTFS_RW
 DECL|member|mftmirr_ino
 r_struct

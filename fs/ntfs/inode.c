@@ -6592,9 +6592,6 @@ op_logical_neg
 id|next_vcn
 )paren
 (brace
-id|u64
-id|ll
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6654,18 +6651,15 @@ c_func
 id|attr-&gt;data.non_resident.allocated_size
 )paren
 suffix:semicolon
-multiline_comment|/* Set the number of mft records. */
-id|ll
-op_assign
-id|vi-&gt;i_size
-op_rshift
-id|vol-&gt;mft_record_size_bits
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Verify the number of mft records does not exceed&n;&t;&t;&t; * 2^32 - 1.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
-id|ll
+(paren
+id|vi-&gt;i_size
+op_rshift
+id|vol-&gt;mft_record_size_bits
+)paren
 op_ge
 (paren
 l_int|1ULL
@@ -6686,10 +6680,6 @@ r_goto
 id|put_err_out
 suffix:semicolon
 )brace
-id|vol-&gt;nr_mft_records
-op_assign
-id|ll
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * We have got the first extent of the runlist for&n;&t;&t;&t; * $MFT which means it is now relatively safe to call&n;&t;&t;&t; * the normal ntfs_read_inode() function.&n;&t;&t;&t; * Complete reading the inode, this will actually&n;&t;&t;&t; * re-read the mft record for $MFT, this time entering&n;&t;&t;&t; * it into the page cache with which we complete the&n;&t;&t;&t; * kick start of the volume. It should be safe to do&n;&t;&t;&t; * this now as the first extent of $MFT/$DATA is&n;&t;&t;&t; * already known and we would hope that we don&squot;t need&n;&t;&t;&t; * further extents in order to find the other&n;&t;&t;&t; * attributes belonging to $MFT. Only time will tell if&n;&t;&t;&t; * this is really the case. If not we will have to play&n;&t;&t;&t; * magic at this point, possibly duplicating a lot of&n;&t;&t;&t; * ntfs_read_inode() at this point. We will need to&n;&t;&t;&t; * ensure we do enough of its work to be able to call&n;&t;&t;&t; * ntfs_read_inode() on extents of $MFT/$DATA. But lets&n;&t;&t;&t; * hope this never happens...&n;&t;&t;&t; */
 id|ntfs_read_locked_inode
 c_func
