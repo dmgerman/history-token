@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/vt.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console_struct.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 multiline_comment|/*&n; * Presently, a lot of graphics programs do not restore the contents of&n; * the higher font pages.  Defining this flag will avoid use of them, but&n; * will lose support for PIO_FONTRESET.  Note that many font operations are&n; * not likely to work with these programs anyway; they need to be&n; * fixed.  The linux/Documentation directory includes a code snippet&n; * to save and restore the text font.&n; */
 macro_line|#ifdef CONFIG_VGA_CONSOLE
 DECL|macro|BROKEN_GRAPHICS_PROGRAMS
@@ -438,6 +439,21 @@ r_int
 r_int
 id|new_console
 )paren
+suffix:semicolon
+multiline_comment|/*&n; * vc_screen.c shares this temporary buffer with the console write code so that&n; * we can easily avoid touching user space while holding the console spinlock.&n; */
+r_extern
+r_char
+id|con_buf
+(braket
+id|PAGE_SIZE
+)braket
+suffix:semicolon
+DECL|macro|CON_BUF_SIZE
+mdefine_line|#define CON_BUF_SIZE&t;PAGE_SIZE
+r_extern
+r_struct
+id|semaphore
+id|con_buf_sem
 suffix:semicolon
 macro_line|#endif /* _VT_KERN_H */
 eof

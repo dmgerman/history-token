@@ -132,9 +132,11 @@ id|orig
 r_int
 id|size
 suffix:semicolon
-id|lock_kernel
+id|down
 c_func
 (paren
+op_amp
+id|con_buf_sem
 )paren
 suffix:semicolon
 id|size
@@ -153,9 +155,11 @@ id|orig
 (brace
 r_default
 suffix:colon
-id|unlock_kernel
+id|up
 c_func
 (paren
+op_amp
+id|con_buf_sem
 )paren
 suffix:semicolon
 r_return
@@ -192,9 +196,11 @@ template_param
 id|size
 )paren
 (brace
-id|unlock_kernel
+id|up
 c_func
 (paren
+op_amp
+id|con_buf_sem
 )paren
 suffix:semicolon
 r_return
@@ -206,30 +212,17 @@ id|file-&gt;f_pos
 op_assign
 id|offset
 suffix:semicolon
-id|unlock_kernel
+id|up
 c_func
 (paren
+op_amp
+id|con_buf_sem
 )paren
 suffix:semicolon
 r_return
 id|file-&gt;f_pos
 suffix:semicolon
 )brace
-multiline_comment|/* We share this temporary buffer with the console write code&n; * so that we can easily avoid touching user space while holding the&n; * console spinlock.&n; */
-r_extern
-r_char
-id|con_buf
-(braket
-id|PAGE_SIZE
-)braket
-suffix:semicolon
-DECL|macro|CON_BUF_SIZE
-mdefine_line|#define CON_BUF_SIZE&t;PAGE_SIZE
-r_extern
-r_struct
-id|semaphore
-id|con_buf_sem
-suffix:semicolon
 r_static
 id|ssize_t
 DECL|function|vcs_read
@@ -273,9 +266,6 @@ id|inode
 suffix:semicolon
 r_int
 id|pos
-op_assign
-op_star
-id|ppos
 suffix:semicolon
 r_int
 id|viewed
@@ -305,6 +295,11 @@ c_func
 op_amp
 id|con_buf_sem
 )paren
+suffix:semicolon
+id|pos
+op_assign
+op_star
+id|ppos
 suffix:semicolon
 multiline_comment|/* Select the proper current console and verify&n;&t; * sanity of the situation under the console lock.&n;&t; */
 id|acquire_console_sem
@@ -960,9 +955,6 @@ id|inode
 suffix:semicolon
 r_int
 id|pos
-op_assign
-op_star
-id|ppos
 suffix:semicolon
 r_int
 id|viewed
@@ -1002,6 +994,11 @@ c_func
 op_amp
 id|con_buf_sem
 )paren
+suffix:semicolon
+id|pos
+op_assign
+op_star
+id|ppos
 suffix:semicolon
 multiline_comment|/* Select the proper current console and verify&n;&t; * sanity of the situation under the console lock.&n;&t; */
 id|acquire_console_sem
