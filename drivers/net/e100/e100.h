@@ -402,6 +402,10 @@ DECL|macro|SCB_GCR2_EEPROM_ACCESS_SEMAPHORE
 mdefine_line|#define SCB_GCR2_EEPROM_ACCESS_SEMAPHORE BIT_7
 multiline_comment|/* EEPROM bit definitions */
 multiline_comment|/*- EEPROM control register bits */
+DECL|macro|EEPROM_FLAG_ASF
+mdefine_line|#define EEPROM_FLAG_ASF  0x8000
+DECL|macro|EEPROM_FLAG_GCL
+mdefine_line|#define EEPROM_FLAG_GCL  0x4000
 DECL|macro|EN_TRNF
 mdefine_line|#define EN_TRNF          0x10&t;/* Enable turnoff */
 DECL|macro|EEDO
@@ -432,6 +436,10 @@ DECL|macro|EEPROM_PWA_NO
 mdefine_line|#define EEPROM_PWA_NO                   8
 DECL|macro|EEPROM_ID_WORD
 mdefine_line|#define EEPROM_ID_WORD&t;&t;&t;0x0A
+DECL|macro|EEPROM_CONFIG_ASF
+mdefine_line|#define EEPROM_CONFIG_ASF&t;&t;0x0D
+DECL|macro|EEPROM_SMBUS_ADDR
+mdefine_line|#define EEPROM_SMBUS_ADDR&t;&t;0x90
 DECL|macro|EEPROM_SUM
 mdefine_line|#define EEPROM_SUM                      0xbaba
 singleline_comment|// Zero Locking Algorithm definitions:
