@@ -2282,6 +2282,9 @@ id|mddev-&gt;sb_dirty
 op_assign
 l_int|1
 suffix:semicolon
+id|mddev-&gt;degraded
+op_increment
+suffix:semicolon
 id|conf-&gt;working_disks
 op_decrement
 suffix:semicolon
@@ -7976,6 +7979,8 @@ op_assign
 id|sb-&gt;raid_disks
 suffix:semicolon
 multiline_comment|/*&n;&t; * 0 for a fully functional array, 1 for a degraded array.&n;&t; */
+id|mddev-&gt;degraded
+op_assign
 id|conf-&gt;failed_disks
 op_assign
 id|conf-&gt;raid_disks
@@ -8101,7 +8106,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|conf-&gt;failed_disks
+id|mddev-&gt;degraded
 OG
 l_int|1
 )paren
@@ -8130,7 +8135,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|conf-&gt;failed_disks
+id|mddev-&gt;degraded
 op_eq
 l_int|1
 op_logical_and
@@ -9355,6 +9360,9 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * if we activate a spare, we definitely replace a&n;&t; * non-operational disk slot in the &squot;low&squot; area of&n;&t; * the disk array.&n;&t; */
+id|mddev-&gt;degraded
+op_decrement
+suffix:semicolon
 id|conf-&gt;failed_disks
 op_decrement
 suffix:semicolon

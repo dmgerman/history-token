@@ -637,6 +637,11 @@ id|mdp_disk_t
 op_star
 id|spare
 suffix:semicolon
+DECL|member|degraded
+r_int
+id|degraded
+suffix:semicolon
+multiline_comment|/* whether md should consider&n;&t;&t;&t;&t;&t;&t;&t; * adding a spare&n;&t;&t;&t;&t;&t;&t;&t; */
 DECL|member|recovery_active
 id|atomic_t
 id|recovery_active

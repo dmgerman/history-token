@@ -2289,9 +2289,14 @@ c_cond
 op_logical_neg
 id|mirror-&gt;write_only
 )paren
+(brace
 id|sb-&gt;active_disks
 op_decrement
 suffix:semicolon
+id|mddev-&gt;degraded
+op_increment
+suffix:semicolon
+)brace
 id|sb-&gt;working_disks
 op_decrement
 suffix:semicolon
@@ -2963,6 +2968,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * if we activate a spare, we definitely replace a&n;&t; * non-operational disk slot in the &squot;low&squot; area of&n;&t; * the disk array.&n;&t; */
 id|conf-&gt;working_disks
 op_increment
+suffix:semicolon
+id|mddev-&gt;degraded
+op_decrement
 suffix:semicolon
 m_abort
 suffix:colon
@@ -5275,6 +5283,10 @@ r_goto
 id|out_free_conf
 suffix:semicolon
 )brace
+id|mddev-&gt;degraded
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5358,6 +5370,19 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|disk-&gt;used_slot
+op_logical_and
+id|disk_idk
+OL
+id|conf-&gt;raid_disks
+)paren
+id|mddev-&gt;degraded
+op_increment
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * find the first working one and use it as a starting point&n;&t; * to read balancing.&n;&t; */
 r_for

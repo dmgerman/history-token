@@ -13737,9 +13737,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sb-&gt;active_disks
-OL
-id|sb-&gt;raid_disks
+id|mddev-&gt;degraded
 )paren
 (brace
 id|mddev-&gt;spare
