@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Kernel CAPI 2.0 Module - /proc/capi handling&n; * &n; 
 macro_line|#include &quot;kcapi.h&quot;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 r_static
 r_char
 op_star
