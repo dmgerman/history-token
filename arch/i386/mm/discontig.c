@@ -4,9 +4,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 DECL|variable|node_data

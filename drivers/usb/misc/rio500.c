@@ -48,11 +48,6 @@ op_star
 id|rio_dev
 suffix:semicolon
 multiline_comment|/* init: probe_rio */
-DECL|member|devfs
-id|devfs_handle_t
-id|devfs
-suffix:semicolon
-multiline_comment|/* devfs device */
 DECL|member|ifnum
 r_int
 r_int
@@ -1926,8 +1921,6 @@ comma
 id|rio-&gt;ibuf
 )paren
 suffix:semicolon
-id|rio-&gt;devfs
-op_assign
 id|devfs_register
 c_func
 (paren
@@ -1955,19 +1948,6 @@ op_amp
 id|usb_rio_fops
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rio-&gt;devfs
-op_eq
-l_int|NULL
-)paren
-id|dbg
-c_func
-(paren
-l_string|&quot;probe_rio: device node registration failed&quot;
 )paren
 suffix:semicolon
 id|init_MUTEX
@@ -2025,10 +2005,10 @@ c_cond
 id|rio
 )paren
 (brace
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|rio-&gt;devfs
+l_string|&quot;usb/rio500&quot;
 )paren
 suffix:semicolon
 id|usb_deregister_dev

@@ -1060,10 +1060,10 @@ l_int|9
 )paren
 suffix:semicolon
 )brace
-DECL|function|end_request
+DECL|function|raid1_end_request
 r_static
 r_int
-id|end_request
+id|raid1_end_request
 c_func
 (paren
 r_struct
@@ -1976,7 +1976,7 @@ id|mirror-&gt;rdev-&gt;bdev
 suffix:semicolon
 id|read_bio-&gt;bi_end_io
 op_assign
-id|end_request
+id|raid1_end_request
 suffix:semicolon
 id|read_bio-&gt;bi_rw
 op_assign
@@ -2145,7 +2145,7 @@ id|rdev-&gt;bdev
 suffix:semicolon
 id|mbio-&gt;bi_end_io
 op_assign
-id|end_request
+id|raid1_end_request
 suffix:semicolon
 id|mbio-&gt;bi_rw
 op_assign
@@ -2194,7 +2194,7 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We have to be a bit careful about the semaphore above, thats&n;&t; * why we start the requests separately. Since generic_make_request()&n;&t; * can sleep, this is the safer solution. Imagine, end_request&n;&t; * decreasing the semaphore before we could have set it up ...&n;&t; * We could play tricks with the semaphore (presetting it and&n;&t; * correcting at the end if sum_bios is not &squot;n&squot; but we have to&n;&t; * do end_request by hand if all requests finish until we had a&n;&t; * chance to set up the semaphore correctly ... lots of races).&n;&t; */
+multiline_comment|/*&n;&t; * We have to be a bit careful about the semaphore above, thats&n;&t; * why we start the requests separately. Since generic_make_request()&n;&t; * can sleep, this is the safer solution. Imagine, raid1_end_request&n;&t; * decreasing the semaphore before we could have set it up ...&n;&t; * We could play tricks with the semaphore (presetting it and&n;&t; * correcting at the end if sum_bios is not &squot;n&squot; but we have to&n;&t; * do raid1_end_request by hand if all requests finish until we had a&n;&t; * chance to set up the semaphore correctly ... lots of races).&n;&t; */
 id|md_write_start
 c_func
 (paren
