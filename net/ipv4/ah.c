@@ -796,6 +796,11 @@ op_star
 id|x
 comma
 r_struct
+id|xfrm_decap_state
+op_star
+id|decap
+comma
+r_struct
 id|sk_buff
 op_star
 id|skb

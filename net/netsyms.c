@@ -1219,6 +1219,13 @@ c_func
 id|km_waitq
 )paren
 suffix:semicolon
+DECL|variable|km_new_mapping
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|km_new_mapping
+)paren
+suffix:semicolon
 DECL|variable|xfrm_cfg_sem
 id|EXPORT_SYMBOL
 c_func

@@ -611,8 +611,7 @@ comma
 id|seq
 suffix:semicolon
 r_struct
-id|xfrm_state
-op_star
+id|sec_decap_state
 id|xfrm_vec
 (braket
 id|XFRM_MAX_DEPTH
@@ -875,6 +874,16 @@ c_func
 (paren
 id|x
 comma
+op_amp
+(paren
+id|xfrm_vec
+(braket
+id|xfrm_nr
+)braket
+dot
+id|decap
+)paren
+comma
 id|skb
 )paren
 suffix:semicolon
@@ -928,6 +937,8 @@ id|xfrm_vec
 id|xfrm_nr
 op_increment
 )braket
+dot
+id|xvec
 op_assign
 id|x
 suffix:semicolon
@@ -1161,7 +1172,7 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|skb-&gt;sp-&gt;xvec
+id|skb-&gt;sp-&gt;x
 op_plus
 id|skb-&gt;sp-&gt;len
 comma
@@ -1171,8 +1182,8 @@ id|xfrm_nr
 op_star
 r_sizeof
 (paren
-r_void
-op_star
+r_struct
+id|sec_decap_state
 )paren
 )paren
 suffix:semicolon
@@ -1268,6 +1279,8 @@ id|xfrm_vec
 (braket
 id|xfrm_nr
 )braket
+dot
+id|xvec
 )paren
 suffix:semicolon
 id|kfree_skb
