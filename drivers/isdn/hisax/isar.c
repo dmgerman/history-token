@@ -127,9 +127,9 @@ id|addr
 )paren
 (brace
 r_return
-id|cs
+id|cs-&gt;bc_hw_ops
 op_member_access_from_pointer
-id|BC_Read_Reg
+id|read_reg
 c_func
 (paren
 id|cs
@@ -162,9 +162,9 @@ id|u8
 id|val
 )paren
 (brace
-id|cs
+id|cs-&gt;bc_hw_ops
 op_member_access_from_pointer
-id|BC_Write_Reg
+id|write_reg
 c_func
 (paren
 id|cs

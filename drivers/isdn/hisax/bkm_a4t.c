@@ -579,6 +579,25 @@ id|value
 )paren
 suffix:semicolon
 )brace
+DECL|variable|jade_ops
+r_static
+r_struct
+id|bc_hw_ops
+id|jade_ops
+op_assign
+(brace
+dot
+id|read_reg
+op_assign
+id|ReadJADE
+comma
+dot
+id|write_reg
+op_assign
+id|WriteJADE
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * fast interrupt JADE stuff goes here&n; */
 DECL|macro|READJADE
 mdefine_line|#define READJADE(cs, nr, reg) readreg(cs-&gt;hw.ax.jade_ale,&bslash;&n; &t;&t;cs-&gt;hw.ax.jade_adr, reg + (nr == -1 ? 0 : (nr ? 0xC0 : 0x80)))
@@ -1574,15 +1593,10 @@ op_assign
 op_amp
 id|WriteISACfifo
 suffix:semicolon
-id|cs-&gt;BC_Read_Reg
+id|cs-&gt;bc_hw_ops
 op_assign
 op_amp
-id|ReadJADE
-suffix:semicolon
-id|cs-&gt;BC_Write_Reg
-op_assign
-op_amp
-id|WriteJADE
+id|jade_ops
 suffix:semicolon
 id|cs-&gt;BC_Send_Data
 op_assign

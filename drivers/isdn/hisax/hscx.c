@@ -77,9 +77,9 @@ op_assign
 id|bcs-&gt;hw.hscx.hscx
 suffix:semicolon
 r_return
-id|cs
+id|cs-&gt;bc_hw_ops
 op_member_access_from_pointer
-id|BC_Read_Reg
+id|read_reg
 c_func
 (paren
 id|cs
@@ -121,9 +121,9 @@ id|hscx
 op_assign
 id|bcs-&gt;hw.hscx.hscx
 suffix:semicolon
-id|cs
+id|cs-&gt;bc_hw_ops
 op_member_access_from_pointer
-id|BC_Write_Reg
+id|write_reg
 c_func
 (paren
 id|cs
@@ -159,9 +159,9 @@ id|verB
 suffix:semicolon
 id|verA
 op_assign
-id|cs
+id|cs-&gt;bc_hw_ops
 op_member_access_from_pointer
-id|BC_Read_Reg
+id|read_reg
 c_func
 (paren
 id|cs
@@ -175,9 +175,9 @@ l_int|0xf
 suffix:semicolon
 id|verB
 op_assign
-id|cs
+id|cs-&gt;bc_hw_ops
 op_member_access_from_pointer
-id|BC_Read_Reg
+id|read_reg
 c_func
 (paren
 id|cs

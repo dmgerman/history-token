@@ -325,6 +325,25 @@ id|value
 )paren
 suffix:semicolon
 )brace
+DECL|variable|hscx_ops
+r_static
+r_struct
+id|bc_hw_ops
+id|hscx_ops
+op_assign
+(brace
+dot
+id|read_reg
+op_assign
+id|ReadHSCX
+comma
+dot
+id|write_reg
+op_assign
+id|WriteHSCX
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * fast interrupt HSCX stuff goes here&n; */
 DECL|macro|READHSCX
 mdefine_line|#define READHSCX(cs, nr, reg) readreg(cs-&gt;hw.teles3.hscx[nr], reg)
@@ -2491,15 +2510,10 @@ op_assign
 op_amp
 id|WriteISACfifo
 suffix:semicolon
-id|cs-&gt;BC_Read_Reg
+id|cs-&gt;bc_hw_ops
 op_assign
 op_amp
-id|ReadHSCX
-suffix:semicolon
-id|cs-&gt;BC_Write_Reg
-op_assign
-op_amp
-id|WriteHSCX
+id|hscx_ops
 suffix:semicolon
 id|cs-&gt;BC_Send_Data
 op_assign
