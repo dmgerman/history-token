@@ -10580,7 +10580,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * There are no bdflush tunables left.  But distributions are&n; * still running obsolete flush daemons, so we terminate them here.&n; */
+multiline_comment|/*&n; * There are no bdflush tunables left.  But distributions are&n; * still running obsolete flush daemons, so we terminate them here.&n; *&n; * Use of bdflush() is deprecated and will be removed in a future kernel.&n; * The `pdflush&squot; kernel threads fully replace bdflush daemons and this call.&n; */
 DECL|function|sys_bdflush
 id|asmlinkage
 r_int
@@ -10594,6 +10594,10 @@ r_int
 id|data
 )paren
 (brace
+r_static
+r_int
+id|msg_count
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10608,6 +10612,35 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|msg_count
+OL
+l_int|5
+)paren
+(brace
+id|msg_count
+op_increment
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;warning: process `%s&squot; used the obsolete bdflush&quot;
+l_string|&quot; system call&bslash;n&quot;
+comma
+id|current-&gt;comm
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Fix your initscripts?&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
