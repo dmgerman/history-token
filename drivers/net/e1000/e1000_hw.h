@@ -3929,6 +3929,8 @@ DECL|macro|M88E1000_EXT_PHY_SPEC_CTRL
 mdefine_line|#define M88E1000_EXT_PHY_SPEC_CTRL 0x14  /* Extended PHY Specific Control */
 DECL|macro|M88E1000_RX_ERR_CNTR
 mdefine_line|#define M88E1000_RX_ERR_CNTR       0x15  /* Receive Error Counter */
+DECL|macro|IGP01E1000_IEEE_REGS_PAGE
+mdefine_line|#define IGP01E1000_IEEE_REGS_PAGE  0x0000
 multiline_comment|/* IGP01E1000 Specific Registers */
 DECL|macro|IGP01E1000_PHY_PORT_CONFIG
 mdefine_line|#define IGP01E1000_PHY_PORT_CONFIG 0x10 /* PHY Specific Port Config Register */
@@ -3959,6 +3961,8 @@ mdefine_line|#define IGP01E1000_PHY_AGC_NUM     4
 multiline_comment|/* IGP01E1000 PCS Initialization register - stores the polarity status when&n; * speed = 1000 Mbps. */
 DECL|macro|IGP01E1000_PHY_PCS_INIT_REG
 mdefine_line|#define IGP01E1000_PHY_PCS_INIT_REG  0x00B4
+DECL|macro|IGP01E1000_ANALOG_REGS_PAGE
+mdefine_line|#define IGP01E1000_ANALOG_REGS_PAGE  0x20C0
 DECL|macro|MAX_PHY_REG_ADDRESS
 mdefine_line|#define MAX_PHY_REG_ADDRESS 0x1F        /* 5 bit address bus (0-0x1F) */
 multiline_comment|/* PHY Control Register */
@@ -4630,6 +4634,33 @@ DECL|macro|IGP01E1000_GMII_FLEX_SPD
 mdefine_line|#define IGP01E1000_GMII_FLEX_SPD               0x10 /* Enable flexible speed&n;                                                     * on Link-Up */
 DECL|macro|IGP01E1000_GMII_SPD
 mdefine_line|#define IGP01E1000_GMII_SPD                    0x20 /* Enable SPD */
+multiline_comment|/* IGP01E1000 Analog Register */
+DECL|macro|IGP01E1000_ANALOG_SPARE_FUSE_STATUS
+mdefine_line|#define IGP01E1000_ANALOG_SPARE_FUSE_STATUS         0x0011
+DECL|macro|IGP01E1000_ANALOG_FUSE_STATUS
+mdefine_line|#define IGP01E1000_ANALOG_FUSE_STATUS               0x0010
+DECL|macro|IGP01E1000_ANALOG_FUSE_CONTROL
+mdefine_line|#define IGP01E1000_ANALOG_FUSE_CONTROL              0x001C
+DECL|macro|IGP01E1000_ANALOG_FUSE_BYPASS
+mdefine_line|#define IGP01E1000_ANALOG_FUSE_BYPASS               0x001E
+DECL|macro|IGP01E1000_ANALOG_FUSE_POLY_MASK
+mdefine_line|#define IGP01E1000_ANALOG_FUSE_POLY_MASK            0xF000
+DECL|macro|IGP01E1000_ANALOG_FUSE_FINE_MASK
+mdefine_line|#define IGP01E1000_ANALOG_FUSE_FINE_MASK            0x0F80
+DECL|macro|IGP01E1000_ANALOG_FUSE_COARSE_MASK
+mdefine_line|#define IGP01E1000_ANALOG_FUSE_COARSE_MASK          0x0070
+DECL|macro|IGP01E1000_ANALOG_SPARE_FUSE_ENABLED
+mdefine_line|#define IGP01E1000_ANALOG_SPARE_FUSE_ENABLED        0x0100
+DECL|macro|IGP01E1000_ANALOG_FUSE_ENABLE_SW_CONTROL
+mdefine_line|#define IGP01E1000_ANALOG_FUSE_ENABLE_SW_CONTROL    0x0002
+DECL|macro|IGP01E1000_ANALOG_FUSE_COARSE_THRESH
+mdefine_line|#define IGP01E1000_ANALOG_FUSE_COARSE_THRESH        0x0040
+DECL|macro|IGP01E1000_ANALOG_FUSE_COARSE_10
+mdefine_line|#define IGP01E1000_ANALOG_FUSE_COARSE_10            0x0010
+DECL|macro|IGP01E1000_ANALOG_FUSE_FINE_1
+mdefine_line|#define IGP01E1000_ANALOG_FUSE_FINE_1               0x0080
+DECL|macro|IGP01E1000_ANALOG_FUSE_FINE_10
+mdefine_line|#define IGP01E1000_ANALOG_FUSE_FINE_10              0x0500
 multiline_comment|/* Bit definitions for valid PHY IDs. */
 DECL|macro|M88E1000_E_PHY_ID
 mdefine_line|#define M88E1000_E_PHY_ID  0x01410C50

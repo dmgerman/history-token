@@ -8399,9 +8399,9 @@ l_string|&quot;%s: interrupt  status=%#4.4x ackstat=%#4.4x new intstat=%#4.4x.&b
 comma
 id|dev-&gt;name
 comma
-id|ackstat
-comma
 id|status
+comma
+id|ackstat
 comma
 id|RTL_R16
 (paren
