@@ -89,7 +89,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|RCinterrupt
 (paren
 r_int
@@ -1973,7 +1973,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * RCinterrupt()&n; * &n; * Interrupt handler. &n; * This routine sets up a couple of pointers and calls&n; * RCProcI2OMsgQ(), which in turn process the message and&n; * calls one of our callback functions.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|RCinterrupt
 id|RCinterrupt
 (paren
@@ -2017,6 +2017,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+r_return
 id|RCProcI2OMsgQ
 (paren
 id|dev

@@ -1294,7 +1294,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;** =========================================================================&n;** RCProcI2OMsgQ()&n;**&n;** Process I2O outbound message queue until empty.&n;** =========================================================================&n;*/
-r_void
+id|irqreturn_t
 DECL|function|RCProcI2OMsgQ
 id|RCProcI2OMsgQ
 (paren
@@ -1343,6 +1343,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|phyAddrMsg
 op_assign
@@ -2006,6 +2007,9 @@ op_assign
 id|pPab-&gt;p_atu-&gt;OutQueue
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n;** =========================================================================&n;**  Returns LAN interface statistical counters to space provided by caller at&n;**  StatsReturnAddr.  Returns 0 if success, else RC_RETURN code.&n;**  This function will call the WaitCallback function provided by&n;**  user while waiting for card to respond.&n;** =========================================================================&n;*/
 id|RC_RETURN

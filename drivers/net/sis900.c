@@ -683,7 +683,7 @@ id|net_dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|sis900_interrupt
 c_func
 (paren
@@ -745,7 +745,7 @@ id|net_dev
 suffix:semicolon
 r_static
 id|u16
-id|sis900_compute_hashtable_index
+id|sis900_mcast_bitnr
 c_func
 (paren
 id|u8
@@ -6598,7 +6598,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;sis900_interrupt: - sis900 interrupt handler&n; *&t;@irq: the irq number&n; *&t;@dev_instance: the client data object&n; *&t;@regs: snapshot of processor context&n; *&n; *&t;The interrupt handler does all of the Rx thread work, &n; *&t;and cleans up after the Tx thread&n; */
 DECL|function|sis900_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sis900_interrupt
 c_func
 (paren
@@ -6641,6 +6641,12 @@ id|net_dev-&gt;base_addr
 suffix:semicolon
 id|u32
 id|status
+suffix:semicolon
+r_int
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|spin_lock
 (paren
@@ -6687,6 +6693,10 @@ l_int|0
 )paren
 multiline_comment|/* nothing intresting happened */
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/* why dow&squot;t we break after Tx/Rx case ?? keyword: full-duplex */
 r_if
@@ -6816,6 +6826,11 @@ id|sis_priv-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;sis900_rx: - sis900 receive routine&n; *&t;@net_dev: the net device which receives data&n; *&n; *&t;Process receive interrupt events, &n; *&t;put buffer to higher layer and refill buffer pool&n; *&t;Note: This fucntion is called by interrupt handler, &n; *&t;don&squot;t do &quot;too much&quot; work here&n; */
@@ -8418,11 +8433,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_compute_hashtable_index: - compute hashtable index &n; *&t;@addr: multicast address&n; *&t;@revision: revision id of chip&n; *&n; *&t;SiS 900 uses the most sigificant 7 bits to index a 128 bits multicast&n; *&t;hash table, which makes this function a little bit different from other drivers&n; *&t;SiS 900 B0 &amp; 635 M/B uses the most significat 8 bits to index 256 bits&n; *   &t;multicast hash table. &n; */
-DECL|function|sis900_compute_hashtable_index
+multiline_comment|/**&n; *&t;sis900_mcast_bitnr: - compute hashtable index &n; *&t;@addr: multicast address&n; *&t;@revision: revision id of chip&n; *&n; *&t;SiS 900 uses the most sigificant 7 bits to index a 128 bits multicast&n; *&t;hash table, which makes this function a little bit different from other drivers&n; *&t;SiS 900 B0 &amp; 635 M/B uses the most significat 8 bits to index 256 bits&n; *   &t;multicast hash table. &n; */
+DECL|function|sis900_mcast_bitnr
 r_static
+r_inline
 id|u16
-id|sis900_compute_hashtable_index
+id|sis900_mcast_bitnr
 c_func
 (paren
 id|u8
@@ -8688,20 +8704,33 @@ id|mclist
 op_assign
 id|mclist-&gt;next
 )paren
-id|set_bit
-c_func
-(paren
-id|sis900_compute_hashtable_index
+(brace
+r_int
+r_int
+id|bit_nr
+op_assign
+id|sis900_mcast_bitnr
 c_func
 (paren
 id|mclist-&gt;dmi_addr
 comma
 id|revision
 )paren
-comma
+suffix:semicolon
 id|mc_filter
+(braket
+id|bit_nr
+op_rshift
+l_int|4
+)braket
+op_or_assign
+(paren
+l_int|1
+op_lshift
+id|bit_nr
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* update Multicast Hash Table in Receive Filter */
 r_for

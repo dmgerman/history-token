@@ -613,7 +613,7 @@ id|WaitCallback
 )paren
 suffix:semicolon
 multiline_comment|/* &n;    ** RCProcI2OMsgQ()&n;    ** &n;    ** Called from user&squot;s polling loop or Interrupt Service Routine for a PCI &n;    ** interrupt from the RedCreek PCI adapter.  User responsible for determining&n;    ** and hooking the PCI interrupt. This function will call the registered&n;    ** callback functions, TransmitCallbackFunction or ReceiveCallbackFunction,&n;    ** if a TX or RX transaction has completed.&n;  */
-r_void
+id|irqreturn_t
 id|RCProcI2OMsgQ
 (paren
 r_struct

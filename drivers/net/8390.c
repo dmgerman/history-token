@@ -1043,7 +1043,7 @@ suffix:semicolon
 "&f;"
 multiline_comment|/**&n; * ei_interrupt - handle the interrupts from an 8390&n; * @irq: interrupt number&n; * @dev_id: a pointer to the net_device&n; * @regs: unused&n; *&n; * Handle the ether interface interrupts. We pull packets from&n; * the 8390 via the card specific functions and fire them at the networking&n; * stack. We also handle transmit completions and wake the transmit path if&n; * necessary. We also update the counters and do other housekeeping as&n; * needed.&n; */
 DECL|function|ei_interrupt
-r_void
+id|irqreturn_t
 id|ei_interrupt
 c_func
 (paren
@@ -1098,6 +1098,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|e8390_base
@@ -1167,6 +1168,7 @@ id|ei_local-&gt;page_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* Change to page 0 and read the intr status reg. */
@@ -1512,6 +1514,7 @@ id|ei_local-&gt;page_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ei_tx_err - handle transmitter error&n; * @dev: network device which threw the exception&n; *&n; * A transmitter error has happened. Most likely excess collisions (which&n; * is a fairly normal condition). If the error is one where the Tx will&n; * have been aborted, we try and send another one right away, instead of&n; * letting the failed packet sit and collect dust in the Tx buffer. This&n; * is a much better solution as it avoids kernel based Tx timeouts, and&n; * an unnecessary card reset.&n; *&n; * Called with lock held.&n; */
