@@ -30,12 +30,6 @@ DECL|struct|driver_file_entry
 r_struct
 id|driver_file_entry
 (brace
-DECL|member|parent
-r_struct
-id|driver_dir_entry
-op_star
-id|parent
-suffix:semicolon
 DECL|member|name
 r_char
 op_star
