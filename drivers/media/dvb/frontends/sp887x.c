@@ -50,7 +50,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Microtune MT7072DTF&quot;
+l_string|&quot;Microtune MT7202DTF&quot;
 comma
 dot
 id|type
