@@ -19575,7 +19575,7 @@ id|ipr_ioarcb
 op_star
 id|ioarcb
 suffix:semicolon
-id|u32
+id|dma_addr_t
 id|dma_addr
 suffix:semicolon
 r_int

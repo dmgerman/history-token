@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ipr.h -- driver for IBM Power Linux RAID adapters&n; *&n; * Written By: Brian King &lt;brking@us.ibm.com&gt;, IBM Corporation&n; *&n; * Copyright (C) 2003, 2004 IBM Corporation&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
+multiline_comment|/*&n; * ipr.h -- driver for IBM Power Linux RAID adapters&n; *&n; * Written By: Brian King &lt;brking@us.ibm.com&gt;, IBM Corporation&n; *&n; * Copyright (C) 2003, 2004 IBM Corporation&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Alan Cox &lt;alan@redhat.com&gt; - Removed several careless u32/dma_addr_t errors&n; *&t;&t;&t;&t;that broke 64bit platforms.&n; */
 macro_line|#ifndef _IPR_H
 DECL|macro|_IPR_H
 mdefine_line|#define _IPR_H
@@ -2041,7 +2041,7 @@ id|ipr_hcam
 id|hcam
 suffix:semicolon
 DECL|member|hostrcb_dma
-id|u32
+id|dma_addr_t
 id|hostrcb_dma
 suffix:semicolon
 DECL|member|queue
@@ -2691,7 +2691,7 @@ op_star
 id|cfg_table
 suffix:semicolon
 DECL|member|cfg_table_dma
-id|u32
+id|dma_addr_t
 id|cfg_table_dma
 suffix:semicolon
 DECL|member|resource_table_label
@@ -2738,7 +2738,7 @@ id|IPR_NUM_HCAMS
 )braket
 suffix:semicolon
 DECL|member|hostrcb_dma
-id|u32
+id|dma_addr_t
 id|hostrcb_dma
 (braket
 id|IPR_NUM_HCAMS
@@ -2760,7 +2760,7 @@ op_star
 id|host_rrq
 suffix:semicolon
 DECL|member|host_rrq_dma
-id|u32
+id|dma_addr_t
 id|host_rrq_dma
 suffix:semicolon
 DECL|macro|IPR_HRRQ_REQ_RESP_HANDLE_MASK
@@ -2905,7 +2905,7 @@ op_star
 id|vpd_cbs
 suffix:semicolon
 DECL|member|vpd_cbs_dma
-id|u32
+id|dma_addr_t
 id|vpd_cbs_dma
 suffix:semicolon
 DECL|member|ipr_cmd_pool
