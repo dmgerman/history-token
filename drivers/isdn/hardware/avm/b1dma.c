@@ -1864,16 +1864,9 @@ suffix:semicolon
 id|u32
 id|txlen
 suffix:semicolon
-r_int
-id|inint
-suffix:semicolon
 r_void
 op_star
 id|p
-suffix:semicolon
-id|inint
-op_assign
-id|card-&gt;interrupt
 suffix:semicolon
 id|skb
 op_assign
@@ -2017,9 +2010,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;tx(%d): put msg len=%d&bslash;n&quot;
-comma
-id|inint
+l_string|&quot;tx: put msg len=%d&bslash;n&quot;
 comma
 id|txlen
 )paren
@@ -2060,9 +2051,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;tx(%d): put 0x%x len=%d&bslash;n&quot;
-comma
-id|inint
+l_string|&quot;tx: put 0x%x len=%d&bslash;n&quot;
 comma
 id|skb-&gt;data
 (braket
@@ -3218,63 +3207,14 @@ id|regs
 id|avmcard
 op_star
 id|card
-suffix:semicolon
-id|card
 op_assign
-(paren
-id|avmcard
-op_star
-)paren
 id|devptr
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|card
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;b1dma: interrupt: wrong device&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|card-&gt;interrupt
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: reentering interrupt hander&bslash;n&quot;
-comma
-id|card-&gt;name
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|card-&gt;interrupt
-op_assign
-l_int|1
 suffix:semicolon
 id|b1dma_handle_interrupt
 c_func
 (paren
 id|card
 )paren
-suffix:semicolon
-id|card-&gt;interrupt
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */

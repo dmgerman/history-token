@@ -178,10 +178,6 @@ l_int|2048
 )braket
 suffix:semicolon
 multiline_comment|/* capimsg data part */
-DECL|member|interrupt
-r_int
-id|interrupt
-suffix:semicolon
 DECL|member|mbase
 r_void
 op_star
