@@ -1465,7 +1465,10 @@ id|pegasus
 comma
 id|PhyAddr
 comma
-l_int|4
+r_sizeof
+(paren
+id|data
+)paren
 comma
 id|data
 )paren
@@ -1849,10 +1852,10 @@ id|data
 (brace
 r_int
 id|i
-comma
-id|tmp
 suffix:semicolon
 id|__u8
+id|tmp
+comma
 id|d
 (braket
 l_int|4
@@ -5566,7 +5569,7 @@ op_star
 id|pegasus
 )paren
 (brace
-id|u16
+id|__u8
 id|data
 op_assign
 l_int|0xa5
