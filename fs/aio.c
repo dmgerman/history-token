@@ -989,7 +989,7 @@ id|ctx-&gt;user_id
 comma
 id|current-&gt;mm
 comma
-id|ctx-&gt;ring_info.ring-&gt;nr
+id|ctx-&gt;ring_info.nr
 )paren
 suffix:semicolon
 r_return
@@ -1500,7 +1500,7 @@ id|aio_nr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* aio_get_req&n; *&t;Allocate a slot for an aio request.  Increments the users count&n; * of the kioctx so that the kioctx stays around until all requests are&n; * complete.  Returns -EAGAIN if no requests are free.&n; */
+multiline_comment|/* aio_get_req&n; *&t;Allocate a slot for an aio request.  Increments the users count&n; * of the kioctx so that the kioctx stays around until all requests are&n; * complete.  Returns NULL if no requests are free.&n; */
 r_static
 r_struct
 id|kiocb
@@ -1669,6 +1669,10 @@ id|req-&gt;ki_users
 op_assign
 l_int|1
 suffix:semicolon
+id|okay
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -1679,10 +1683,6 @@ id|kiocb_cachep
 comma
 id|req
 )paren
-suffix:semicolon
-id|okay
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 id|kunmap_atomic
