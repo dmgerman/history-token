@@ -269,7 +269,6 @@ id|upcase_len
 id|u32
 id|cnt
 comma
-id|u32
 id|min_len
 suffix:semicolon
 id|uchar_t
