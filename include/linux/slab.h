@@ -264,7 +264,12 @@ suffix:semicolon
 r_extern
 id|kmem_cache_t
 op_star
-id|sigact_cachep
+id|signal_cachep
+suffix:semicolon
+r_extern
+id|kmem_cache_t
+op_star
+id|sighand_cachep
 suffix:semicolon
 r_extern
 id|kmem_cache_t

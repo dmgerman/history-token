@@ -2431,7 +2431,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|sigfillset
@@ -2451,7 +2451,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|set_user_nice
