@@ -3107,6 +3107,9 @@ id|mask
 op_assign
 id|cpu_online_map
 suffix:semicolon
+id|u64
+id|data0
+suffix:semicolon
 id|cpu_clear
 c_func
 (paren
@@ -3117,9 +3120,6 @@ c_func
 comma
 id|mask
 )paren
-suffix:semicolon
-id|u64
-id|data0
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_DCFLUSH
 id|atomic_inc
