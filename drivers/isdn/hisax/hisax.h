@@ -3216,6 +3216,8 @@ DECL|macro|FLG_ARCOFI_ERROR
 mdefine_line|#define FLG_ARCOFI_ERROR&t;9
 DECL|macro|FLG_HW_L1_UINT
 mdefine_line|#define FLG_HW_L1_UINT&t;&t;10
+DECL|macro|FLG_BUGGY_PLX9050
+mdefine_line|#define FLG_BUGGY_PLX9050       11
 DECL|struct|IsdnCardState
 r_struct
 id|IsdnCardState
