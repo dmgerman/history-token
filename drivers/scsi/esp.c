@@ -331,7 +331,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Forward declarations. */
 r_static
-r_void
+id|irqreturn_t
 id|esp_intr
 c_func
 (paren
@@ -17778,7 +17778,7 @@ suffix:semicolon
 multiline_comment|/* Service only the ESP described by dev_id. */
 DECL|function|esp_intr
 r_static
-r_void
+id|irqreturn_t
 id|esp_intr
 c_func
 (paren
@@ -17873,6 +17873,9 @@ id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|esp_slave_alloc
