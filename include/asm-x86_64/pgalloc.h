@@ -1,7 +1,6 @@
 macro_line|#ifndef _X86_64_PGALLOC_H
 DECL|macro|_X86_64_PGALLOC_H
 mdefine_line|#define _X86_64_PGALLOC_H
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/pda.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
