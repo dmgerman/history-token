@@ -1130,6 +1130,25 @@ op_star
 id|sk
 )paren
 suffix:semicolon
+DECL|function|sk_stream_memory_free
+r_static
+r_inline
+r_int
+id|sk_stream_memory_free
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+(brace
+r_return
+id|sk-&gt;sk_wmem_queued
+OL
+id|sk-&gt;sk_sndbuf
+suffix:semicolon
+)brace
 multiline_comment|/* The per-socket spinlock must be held here. */
 DECL|macro|sk_add_backlog
 mdefine_line|#define sk_add_backlog(__sk, __skb)&t;&t;&t;&t;&bslash;&n;do {&t;if (!(__sk)-&gt;sk_backlog.tail) {&t;&t;&t;&t;&bslash;&n;&t;&t;(__sk)-&gt;sk_backlog.head =&t;&t;&t;&bslash;&n;&t;&t;     (__sk)-&gt;sk_backlog.tail = (__skb);&t;&t;&bslash;&n;&t;} else {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;((__sk)-&gt;sk_backlog.tail)-&gt;next = (__skb);&t;&bslash;&n;&t;&t;(__sk)-&gt;sk_backlog.tail = (__skb);&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(__skb)-&gt;next = NULL;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
