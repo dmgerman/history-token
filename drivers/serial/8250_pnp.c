@@ -148,6 +148,14 @@ comma
 l_int|0
 )brace
 comma
+multiline_comment|/* E-Tech */
+multiline_comment|/* E-Tech CyberBULLET PC56RVP */
+(brace
+l_string|&quot;ETT0002&quot;
+comma
+l_int|0
+)brace
+comma
 multiline_comment|/* FUJITSU */
 multiline_comment|/* Fujitsu 33600 PnP-I2 R Plug &amp; Play */
 (brace
