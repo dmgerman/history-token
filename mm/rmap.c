@@ -1097,7 +1097,7 @@ comma
 id|page
 )paren
 suffix:semicolon
-r_break
+r_continue
 suffix:semicolon
 r_case
 id|SWAP_AGAIN
@@ -1120,7 +1120,8 @@ id|ret
 op_assign
 id|SWAP_FAIL
 suffix:semicolon
-r_break
+r_goto
+id|give_up
 suffix:semicolon
 r_case
 id|SWAP_ERROR
@@ -1129,10 +1130,13 @@ id|ret
 op_assign
 id|SWAP_ERROR
 suffix:semicolon
-r_break
+r_goto
+id|give_up
 suffix:semicolon
 )brace
 )brace
+id|give_up
+suffix:colon
 multiline_comment|/* Check whether we can convert to direct pte pointer */
 id|pc
 op_assign

@@ -7,6 +7,7 @@ macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -45,6 +46,11 @@ id|no_int_routing
 id|__initdata
 suffix:semicolon
 r_extern
+r_int
+r_int
+id|phys_cpu_present_map
+suffix:semicolon
+r_extern
 r_volatile
 r_int
 r_int
@@ -74,15 +80,16 @@ r_int
 r_int
 id|ap_wakeup_vector
 suffix:semicolon
+DECL|macro|cpu_possible
+mdefine_line|#define cpu_possible(cpu)&t;(phys_cpu_present_map &amp; (1UL &lt;&lt; (cpu)))
 DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu) (cpu_online_map &amp; (1&lt;&lt;(cpu)))
-DECL|function|num_online_cpus
-r_extern
+mdefine_line|#define cpu_online(cpu)&t;&t;(cpu_online_map &amp; (1UL &lt;&lt; (cpu)))
+r_static
 r_inline
 r_int
 r_int
+DECL|function|num_online_cpus
 id|num_online_cpus
-c_func
 (paren
 r_void
 )paren
@@ -95,12 +102,11 @@ id|cpu_online_map
 )paren
 suffix:semicolon
 )brace
-DECL|function|any_online_cpu
-r_extern
+r_static
 r_inline
 r_int
+DECL|function|any_online_cpu
 id|any_online_cpu
-c_func
 (paren
 r_int
 r_int
@@ -128,7 +134,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function to map hard smp processor id to logical id.  Slow, so&n; * don&squot;t use this in performance-critical code.&n; */
+multiline_comment|/*&n; * Function to map hard smp processor id to logical id.  Slow, so don&squot;t use this in&n; * performance-critical code.&n; */
 r_static
 r_inline
 r_int
@@ -328,7 +334,6 @@ multiline_comment|/* Upping and downing of CPUs */
 r_extern
 r_int
 id|__cpu_disable
-c_func
 (paren
 r_void
 )paren
@@ -336,7 +341,6 @@ suffix:semicolon
 r_extern
 r_void
 id|__cpu_die
-c_func
 (paren
 r_int
 r_int
@@ -346,15 +350,21 @@ suffix:semicolon
 r_extern
 r_int
 id|__cpu_up
-c_func
 (paren
 r_int
 r_int
 id|cpu
 )paren
 suffix:semicolon
-DECL|macro|NO_PROC_ID
-mdefine_line|#define NO_PROC_ID&t;&t;0xffffffff&t;/* no processor magic marker */
+r_extern
+r_void
+id|__init
+id|smp_build_cpu_map
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|__init

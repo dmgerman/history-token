@@ -150,6 +150,7 @@ r_while
 c_loop
 (paren
 id|unlikely
+c_func
 (paren
 (paren
 id|__s32
@@ -158,6 +159,7 @@ id|result
 op_eq
 op_minus
 l_int|1
+)paren
 )paren
 id|__asm__
 id|__volatile__

@@ -355,7 +355,7 @@ op_star
 id|rt
 suffix:semicolon
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|our_addr
 suffix:semicolon

@@ -38,10 +38,10 @@ r_void
 id|unregister_snap_client
 c_func
 (paren
-r_int
-r_char
+r_struct
+id|datalink_proto
 op_star
-id|desc
+id|proto
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -1535,9 +1535,6 @@ macro_line|#endif
 id|irq_enter
 c_func
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 id|disable_pil_irq
@@ -1635,23 +1632,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-id|irq
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|softirq_pending
-c_func
-(paren
-id|cpu
-)paren
-)paren
-id|do_softirq
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -1709,9 +1689,6 @@ suffix:semicolon
 id|irq_enter
 c_func
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 id|kstat.irqs
@@ -1736,9 +1713,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 id|enable_pil_irq
@@ -1747,20 +1721,9 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|softirq_pending
-c_func
-(paren
-id|cpu
-)paren
-)paren
-id|do_softirq
-c_func
-(paren
-)paren
-suffix:semicolon
+singleline_comment|// XXX Eek, it&squot;s totally changed with preempt_count() and such
+singleline_comment|// if (softirq_pending(cpu))
+singleline_comment|//&t;do_softirq();
 )brace
 macro_line|#endif
 multiline_comment|/* Fast IRQ&squot;s on the Sparc can only have one routine attached to them,&n; * thus no sharing possible.&n; */

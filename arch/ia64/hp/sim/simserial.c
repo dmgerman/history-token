@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Simulated Serial Driver (fake serial)&n; *&n; * This driver is mostly used for bringup purposes and will go away.&n; * It has a strong dependency on the system console. All outputs&n; * are rerouted to the same facility as the one used by printk which, in our&n; * case means sys_sim.c console (goes via the simulator). The code hereafter&n; * is completely leveraged from the serial.c driver.&n; *&n; * Copyright (C) 1999-2000, 2002 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 02/04/00 D. Mosberger&t;Merged in serial.c bug fixes in rs_close().&n; * 02/25/00 D. Mosberger&t;Synced up with 2.3.99pre-5 version of serial.c.&n; */
+multiline_comment|/*&n; * Simulated Serial Driver (fake serial)&n; *&n; * This driver is mostly used for bringup purposes and will go away.&n; * It has a strong dependency on the system console. All outputs&n; * are rerouted to the same facility as the one used by printk which, in our&n; * case means sys_sim.c console (goes via the simulator). The code hereafter&n; * is completely leveraged from the serial.c driver.&n; *&n; * Copyright (C) 1999-2000, 2002 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 02/04/00 D. Mosberger&t;Merged in serial.c bug fixes in rs_close().&n; * 02/25/00 D. Mosberger&t;Synced up with 2.3.99pre-5 version of serial.c.&n; * 07/30/02 D. Mosberger&t;Replace sti()/cli() with explicit spinlocks &amp; local irq masking&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_KDB
 macro_line|# include &lt;linux/kdb.h&gt;
@@ -79,6 +80,13 @@ op_star
 id|serial_version
 op_assign
 l_string|&quot;0.6&quot;
+suffix:semicolon
+DECL|variable|serial_lock
+r_static
+id|spinlock_t
+id|serial_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * This has been extracted from asm/serial.h. We need one eventually but&n; * I don&squot;t know exactly what we&squot;re going to put in it so just fake one&n; * for now.&n; */
 DECL|macro|BASE_BAUD
@@ -674,15 +682,13 @@ id|info-&gt;xmit.buf
 )paren
 r_return
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -701,9 +707,12 @@ op_eq
 l_int|0
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -731,9 +740,12 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -762,15 +774,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -925,9 +935,12 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1043,12 +1056,6 @@ id|tmp_buf
 r_return
 l_int|0
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1136,11 +1143,16 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
+id|flags
 )paren
 suffix:semicolon
+(brace
 id|c1
 op_assign
 id|CIRC_SPACE_TO_END
@@ -1192,9 +1204,13 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|restore_flags
+)brace
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1221,9 +1237,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_while
@@ -1307,9 +1327,12 @@ op_add_assign
 id|c
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1448,15 +1471,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|info-&gt;xmit.head
@@ -1465,9 +1486,12 @@ id|info-&gt;xmit.tail
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2067,19 +2091,17 @@ id|state-&gt;irq
 )paren
 suffix:semicolon
 macro_line|#endif
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Disable interrupts */
-multiline_comment|/*&n;&t; * First unlink the serial port from the IRQ chain...&n;&t; */
+(brace
+multiline_comment|/*&n;&t;&t; * First unlink the serial port from the IRQ chain...&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2106,7 +2128,7 @@ id|state-&gt;irq
 op_assign
 id|info-&gt;next_port
 suffix:semicolon
-multiline_comment|/*&n;&t; * Free the IRQ, if necessary&n;&t; */
+multiline_comment|/*&n;&t;&t; * Free the IRQ, if necessary&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2231,9 +2253,13 @@ op_and_assign
 op_complement
 id|ASYNC_INITIALIZED
 suffix:semicolon
-id|restore_flags
+)brace
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2289,15 +2315,13 @@ id|state
 op_assign
 id|info-&gt;state
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -2320,9 +2344,12 @@ suffix:semicolon
 macro_line|#endif
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2404,9 +2431,12 @@ id|state-&gt;count
 (brace
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2417,9 +2447,12 @@ id|info-&gt;flags
 op_or_assign
 id|ASYNC_CLOSING
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2871,15 +2904,13 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -3217,9 +3248,12 @@ id|info-&gt;flags
 op_or_assign
 id|ASYNC_INITIALIZED
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3228,9 +3262,12 @@ l_int|0
 suffix:semicolon
 id|errout
 suffix:colon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|serial_lock
+comma
 id|flags
 )paren
 suffix:semicolon

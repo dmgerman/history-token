@@ -116,35 +116,13 @@ DECL|macro|pgd_set
 mdefine_line|#define pgd_set(pgdp,pmdp) BTFIXUP_CALL(pgd_set)(pgdp,pmdp)
 DECL|macro|pgd_populate
 mdefine_line|#define pgd_populate(MM, PGD, PMD)      pgd_set(PGD, PMD)
-DECL|function|pmd_alloc_one
-r_static
-id|__inline__
-id|pmd_t
-op_star
-id|pmd_alloc_one
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-r_int
-r_int
-id|address
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|BTFIXUPDEF_CALL
 c_func
 (paren
 id|pmd_t
 op_star
 comma
-id|pmd_alloc_one_fast
+id|pmd_alloc_one
 comma
 r_struct
 id|mm_struct
@@ -153,8 +131,8 @@ comma
 r_int
 r_int
 )paren
-DECL|macro|pmd_alloc_one_fast
-mdefine_line|#define pmd_alloc_one_fast(mm, address)&t;BTFIXUP_CALL(pmd_alloc_one_fast)(mm, address)
+DECL|macro|pmd_alloc_one
+mdefine_line|#define pmd_alloc_one(mm, address)&t;BTFIXUP_CALL(pmd_alloc_one)(mm, address)
 id|BTFIXUPDEF_CALL
 c_func
 (paren
@@ -247,10 +225,8 @@ comma
 id|pte_t
 op_star
 )paren
-DECL|macro|free_pte_fast
-mdefine_line|#define free_pte_fast(pte)&t;BTFIXUP_CALL(free_pte_fast)(pte)
 DECL|macro|pte_free_kernel
-mdefine_line|#define pte_free_kernel(pte)&t;free_pte_fast(pte)
+mdefine_line|#define pte_free_kernel(pte)&t;BTFIXUP_CALL(free_pte_fast)(pte)
 id|BTFIXUPDEF_CALL
 c_func
 (paren

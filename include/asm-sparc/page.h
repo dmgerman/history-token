@@ -21,7 +21,8 @@ macro_line|#endif
 DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK    (~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;asm/head.h&gt;       /* for KERNBASE */
+multiline_comment|/* #include &lt;asm/head.h&gt; XXX */
+multiline_comment|/* for KERNBASE */
 macro_line|#include &lt;asm/btfixup.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * XXX I am hitting compiler bugs with __builtin_trap. This has&n; * hit me before and rusty was blaming his netfilter bugs on&n; * this so lets disable it. - Anton&n; */
@@ -119,14 +120,17 @@ suffix:semicolon
 )brace
 id|iopte_t
 suffix:semicolon
-DECL|member|pmd
+DECL|member|pmdv
 DECL|typedef|pmd_t
 r_typedef
 r_struct
 (brace
 r_int
 r_int
-id|pmd
+id|pmdv
+(braket
+l_int|16
+)braket
 suffix:semicolon
 )brace
 id|pmd_t
@@ -184,7 +188,7 @@ mdefine_line|#define pte_val(x)&t;((x).pte)
 DECL|macro|iopte_val
 mdefine_line|#define iopte_val(x)&t;((x).iopte)
 DECL|macro|pmd_val
-mdefine_line|#define pmd_val(x)      ((x).pmd)
+mdefine_line|#define pmd_val(x)      ((x).pmdv[0])
 DECL|macro|pgd_val
 mdefine_line|#define pgd_val(x)&t;((x).pgd)
 DECL|macro|ctxd_val
@@ -197,8 +201,8 @@ DECL|macro|__pte
 mdefine_line|#define __pte(x)&t;((pte_t) { (x) } )
 DECL|macro|__iopte
 mdefine_line|#define __iopte(x)&t;((iopte_t) { (x) } )
-DECL|macro|__pmd
-mdefine_line|#define __pmd(x)        ((pmd_t) { (x) } )
+multiline_comment|/* #define __pmd(x)        ((pmd_t) { (x) } ) */
+multiline_comment|/* XXX procedure with loop */
 DECL|macro|__pgd
 mdefine_line|#define __pgd(x)&t;((pgd_t) { (x) } )
 DECL|macro|__ctxd
@@ -221,10 +225,19 @@ r_int
 r_int
 id|iopte_t
 suffix:semicolon
+DECL|member|pmdv
 DECL|typedef|pmd_t
 r_typedef
+r_struct
+(brace
 r_int
 r_int
+id|pmdv
+(braket
+l_int|16
+)braket
+suffix:semicolon
+)brace
 id|pmd_t
 suffix:semicolon
 DECL|typedef|pgd_t
@@ -256,7 +269,7 @@ mdefine_line|#define pte_val(x)&t;(x)
 DECL|macro|iopte_val
 mdefine_line|#define iopte_val(x)&t;(x)
 DECL|macro|pmd_val
-mdefine_line|#define pmd_val(x)      (x)
+mdefine_line|#define pmd_val(x)      ((x).pmdv[0])
 DECL|macro|pgd_val
 mdefine_line|#define pgd_val(x)&t;(x)
 DECL|macro|ctxd_val
@@ -269,8 +282,8 @@ DECL|macro|__pte
 mdefine_line|#define __pte(x)&t;(x)
 DECL|macro|__iopte
 mdefine_line|#define __iopte(x)&t;(x)
-DECL|macro|__pmd
-mdefine_line|#define __pmd(x)        (x)
+multiline_comment|/* #define __pmd(x)        (x) */
+multiline_comment|/* XXX later */
 DECL|macro|__pgd
 mdefine_line|#define __pgd(x)&t;(x)
 DECL|macro|__ctxd

@@ -49,6 +49,10 @@ r_extern
 id|ia64_mv_outl_t
 id|__ia64_outl
 suffix:semicolon
+r_extern
+id|ia64_mv_mmiob_t
+id|__ia64_mmiob
+suffix:semicolon
 DECL|macro|MACHVEC_HELPER
 mdefine_line|#define MACHVEC_HELPER(name)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; struct ia64_machine_vector machvec_##name __attribute__ ((unused, __section__ (&quot;.machvec&quot;)))&t;&bslash;&n;&t;= MACHVEC_INIT(name);
 DECL|macro|MACHVEC_DEFINE

@@ -10,9 +10,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/bpp.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#ifdef CONFIG_SPARC32
-macro_line|#include &lt;asm/pcic.h&gt;&t;&t;/* pcic_present */
-macro_line|#endif
 DECL|variable|sbus_root
 r_struct
 id|sbus_bus
@@ -37,6 +34,16 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+r_extern
+r_int
+id|pcic_present
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Perhaps when I figure out more about the iommu we&squot;ll put a&n; * device registration routine here that probe_sbus() calls to&n; * setup the iommu for each Sbus.&n; */
 multiline_comment|/* We call this for each SBus device, and fill the structure based&n; * upon the prom device tree.  We return the start of memory after&n; * the things we have allocated.&n; */
 multiline_comment|/* #define DEBUG_FILL */
@@ -1538,7 +1545,6 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef CONFIG_PCI
-macro_line|#ifdef CONFIG_SPARC32
 r_if
 c_cond
 (paren
@@ -1561,30 +1567,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pcibios_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|prom_printf
-c_func
-(paren
-l_string|&quot;Neither SBUS nor PCI found.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|prom_halt
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

@@ -201,7 +201,7 @@ suffix:semicolon
 multiline_comment|/* Node ID when acquired. */
 DECL|member|node_addr
 r_struct
-id|at_addr
+id|atalk_addr
 id|node_addr
 suffix:semicolon
 multiline_comment|/* Full node address */
@@ -3524,13 +3524,13 @@ op_amp
 id|ifr-&gt;ifr_addr
 suffix:semicolon
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|aa
 op_assign
 (paren
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 )paren
 op_amp

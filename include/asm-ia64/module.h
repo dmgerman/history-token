@@ -275,7 +275,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;module_arch_init: archdata-&gt;unw_table out of bounds.&bslash;n&quot;
+l_string|&quot;module_arch_init: archdata-&gt;segment_base out of bounds.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

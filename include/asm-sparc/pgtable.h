@@ -5,10 +5,8 @@ mdefine_line|#define _SPARC_PGTABLE_H
 multiline_comment|/*  asm-sparc/pgtable.h:  Defines and functions used to work&n; *                        with Sparc page tables.&n; *&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-multiline_comment|/* XXX This creates many nasty warnings. */
-multiline_comment|/* #include &lt;linux/highmem.h&gt; */
-multiline_comment|/* kmap_atomic in pte_offset_map */
-macro_line|#include &lt;asm/asi.h&gt;
+multiline_comment|/* #include &lt;asm/asi.h&gt; */
+multiline_comment|/* doesn&squot;t seem like being used XXX */
 macro_line|#ifdef CONFIG_SUN4
 macro_line|#include &lt;asm/pgtsun4.h&gt;
 macro_line|#else
@@ -41,18 +39,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|BTFIXUPDEF_CALL
-c_func
-(paren
-r_void
-comma
-id|quick_kernel_fault
-comma
-r_int
-r_int
-)paren
-DECL|macro|quick_kernel_fault
-mdefine_line|#define quick_kernel_fault(addr) BTFIXUP_CALL(quick_kernel_fault)(addr)
 multiline_comment|/* Routines for data transfer buffers. */
 id|BTFIXUPDEF_CALL
 c_func
@@ -563,14 +549,7 @@ DECL|macro|BAD_PAGE
 mdefine_line|#define BAD_PAGE __bad_page()
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
-multiline_comment|/* number of bits that fit into a memory pointer */
-DECL|macro|BITS_PER_PTR
-mdefine_line|#define BITS_PER_PTR      (8*sizeof(unsigned long))
-multiline_comment|/* to align the pointer to a pointer address */
-DECL|macro|PTR_MASK
-mdefine_line|#define PTR_MASK          (~(sizeof(void*)-1))
-DECL|macro|SIZEOF_PTR_LOG2
-mdefine_line|#define SIZEOF_PTR_LOG2   2
+multiline_comment|/*&n; */
 id|BTFIXUPDEF_CALL_CONST
 c_func
 (paren
@@ -1258,20 +1237,15 @@ r_int
 )paren
 DECL|macro|pte_offset_kernel
 mdefine_line|#define pte_offset_kernel(dir,addr) BTFIXUP_CALL(pte_offset_kernel)(dir,addr)
-multiline_comment|/* __pte_offset is not BTFIXUP-ed, but PTRS_PER_PTE is, so it&squot;s ok. */
-DECL|macro|__pte_offset
-mdefine_line|#define __pte_offset(address) &bslash;&n;&t;(((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
-macro_line|#if 0 /* XXX Should we expose pmd_page_kernel? */
-mdefine_line|#define pte_offset_kernel(dir, addr) &bslash;&n;&t;((pte_t *) pmd_page_kernel(*(dir)) + __pte_offset(addr))
-macro_line|#endif
+multiline_comment|/*&n; * This shortcut works on sun4m (and sun4d) because the nocache area is static,&n; * and sun4c is guaranteed to have no highmem anyway.&n; */
 DECL|macro|pte_offset_map
-mdefine_line|#define pte_offset_map(dir, addr) &bslash;&n;&t;((pte_t *) kmap_atomic(pmd_page(*(dir)), KM_PTE0) + __pte_offset(addr))
+mdefine_line|#define pte_offset_map(d, a)&t;&t;pte_offset_kernel(d,a)
 DECL|macro|pte_offset_map_nested
-mdefine_line|#define pte_offset_map_nested(dir, addr) &bslash;&n;&t;((pte_t *) kmap_atomic(pmd_page(*(dir)), KM_PTE1) + __pte_offset(addr))
+mdefine_line|#define pte_offset_map_nested(d, a)&t;pte_offset_kernel(d,a)
 DECL|macro|pte_unmap
-mdefine_line|#define pte_unmap(pte)&t;&t;kunmap_atomic(pte, KM_PTE0)
+mdefine_line|#define pte_unmap(pte)&t;&t;do{}while(0)
 DECL|macro|pte_unmap_nested
-mdefine_line|#define pte_unmap_nested(pte)&t;kunmap_atomic(pte, KM_PTE1)
+mdefine_line|#define pte_unmap_nested(pte)&t;do{}while(0)
 multiline_comment|/* The permissions for pgprot_val to make a page mapped on the obio space */
 r_extern
 r_int

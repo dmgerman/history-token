@@ -299,17 +299,9 @@ DECL|member|cpu_collision
 r_int
 id|cpu_collision
 suffix:semicolon
+DECL|variable|____cacheline_aligned
 )brace
-id|__attribute__
-(paren
-(paren
-id|__aligned__
-c_func
-(paren
-id|SMP_CACHE_BYTES
-)paren
-)paren
-)paren
+id|____cacheline_aligned
 suffix:semicolon
 r_extern
 r_struct
@@ -909,6 +901,8 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+DECL|macro|HAVE_NETDEV_POLL
+mdefine_line|#define HAVE_NETDEV_POLL
 DECL|member|poll
 r_int
 (paren
@@ -1696,18 +1690,9 @@ id|net_device
 id|backlog_dev
 suffix:semicolon
 multiline_comment|/* Sorry. 8) */
+DECL|variable|____cacheline_aligned
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|__aligned__
-c_func
-(paren
-id|SMP_CACHE_BYTES
-)paren
-)paren
-)paren
+id|____cacheline_aligned
 suffix:semicolon
 r_extern
 r_struct
