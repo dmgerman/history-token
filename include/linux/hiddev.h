@@ -238,7 +238,7 @@ DECL|macro|HID_FIELD_INDEX_NONE
 mdefine_line|#define HID_FIELD_INDEX_NONE 0xffffffff
 multiline_comment|/*&n; * Protocol version.&n; */
 DECL|macro|HID_VERSION
-mdefine_line|#define HID_VERSION&t;&t;0x010002
+mdefine_line|#define HID_VERSION&t;&t;0x010003
 multiline_comment|/*&n; * IOCTLs (0x00 - 0x7f)&n; */
 DECL|macro|HIDIOCGVERSION
 mdefine_line|#define HIDIOCGVERSION&t;&t;_IOR(&squot;H&squot;, 0x01, int)
