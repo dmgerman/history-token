@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: kcapi.c,v 1.1.2.4 2004/02/10 01:07:11 keil Exp $&n; * &n; * Kernel CAPI 2.0 Module&n; * &n; * Copyright 1999 by Carsten Paeth &lt;calle@calle.de&gt;&n; * Copyright 2002 by Kai Germaschewski &lt;kai@germaschewski.name&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: kcapi.c,v 1.1.2.5 2004/03/15 12:32:31 armin Exp $&n; * &n; * Kernel CAPI 2.0 Module&n; * &n; * Copyright 1999 by Carsten Paeth &lt;calle@calle.de&gt;&n; * Copyright 2002 by Kai Germaschewski &lt;kai@germaschewski.name&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|CONFIG_AVMB1_COMPAT
 mdefine_line|#define CONFIG_AVMB1_COMPAT
 macro_line|#include &quot;kcapi.h&quot;
@@ -25,7 +25,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.1.2.4 $&quot;
+l_string|&quot;$Revision: 1.1.2.5 $&quot;
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|variable|showcapimsgs
@@ -859,6 +859,14 @@ suffix:semicolon
 id|u16
 id|applid
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|showcapimsgs
+op_amp
+l_int|1
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -868,6 +876,7 @@ comma
 id|contr
 )paren
 suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -932,6 +941,14 @@ suffix:semicolon
 id|u16
 id|applid
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|showcapimsgs
+op_amp
+l_int|1
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -941,6 +958,7 @@ comma
 id|contr
 )paren
 suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -2343,6 +2361,14 @@ id|ap-&gt;rparam
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|showcapimsgs
+op_amp
+l_int|1
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -2352,6 +2378,7 @@ comma
 id|applid
 )paren
 suffix:semicolon
+)brace
 r_return
 id|CAPI_NOERROR
 suffix:semicolon
@@ -2441,6 +2468,14 @@ l_int|1
 op_assign
 l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|showcapimsgs
+op_amp
+l_int|1
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -2450,6 +2485,7 @@ comma
 id|ap-&gt;applid
 )paren
 suffix:semicolon
+)brace
 r_return
 id|CAPI_NOERROR
 suffix:semicolon
