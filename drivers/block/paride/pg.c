@@ -2750,6 +2750,9 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -2764,6 +2767,10 @@ id|buf
 comma
 id|hs
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -2903,6 +2910,9 @@ id|PG.busy
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -2916,6 +2926,10 @@ id|count
 op_minus
 id|hs
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 id|count
@@ -3093,6 +3107,9 @@ id|PG.status
 op_amp
 l_int|0x0f
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -3107,6 +3124,10 @@ id|hdr
 comma
 id|hs
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -3115,6 +3136,9 @@ id|copy
 OG
 l_int|0
 )paren
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -3126,6 +3150,10 @@ id|PG.bufptr
 comma
 id|copy
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 id|copy
