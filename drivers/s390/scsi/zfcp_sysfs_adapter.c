@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_sysfs_adapter.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * sysfs adapter related routines&n; *&n; * (C) Copyright IBM Corp. 2003, 2004&n; *&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *&t;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_SYSFS_ADAPTER_C_REVISION
-mdefine_line|#define ZFCP_SYSFS_ADAPTER_C_REVISION &quot;$Revision: 1.36 $&quot;
+mdefine_line|#define ZFCP_SYSFS_ADAPTER_C_REVISION &quot;$Revision: 1.37 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA                   ZFCP_LOG_AREA_CONFIG
@@ -295,6 +295,8 @@ c_func
 id|adapter
 comma
 id|wwpn
+comma
+l_int|0
 comma
 l_int|0
 )paren
