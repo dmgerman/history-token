@@ -72,10 +72,24 @@ r_int
 id|isa_io_base
 suffix:semicolon
 multiline_comment|/* NULL if no ISA bus */
+DECL|variable|isa_io_base
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|isa_io_base
+)paren
+suffix:semicolon
 DECL|variable|pci_io_base
 r_int
 r_int
 id|pci_io_base
+suffix:semicolon
+DECL|variable|pci_io_base
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_io_base
+)paren
 suffix:semicolon
 r_void
 id|iSeries_pcibios_init

@@ -1761,6 +1761,13 @@ l_int|0
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
 )brace
+DECL|variable|start_thread
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|start_thread
+)paren
+suffix:semicolon
 DECL|function|set_fpexc_mode
 r_int
 id|set_fpexc_mode
@@ -2565,6 +2572,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|get_wchan
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_wchan
+)paren
+suffix:semicolon
 DECL|function|show_stack
 r_void
 id|show_stack

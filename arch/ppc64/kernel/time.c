@@ -94,6 +94,13 @@ op_assign
 l_int|100
 suffix:semicolon
 multiline_comment|/* sane default */
+DECL|variable|tb_ticks_per_usec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tb_ticks_per_usec
+)paren
+suffix:semicolon
 DECL|variable|tb_ticks_per_sec
 r_int
 r_int

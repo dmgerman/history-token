@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2508,4 +2509,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|do_signal
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_signal
+)paren
+suffix:semicolon
 eof

@@ -255,6 +255,13 @@ r_struct
 id|machdep_calls
 id|ppc_md
 suffix:semicolon
+DECL|variable|ppc_md
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ppc_md
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 DECL|variable|SYSRQ_KEY
 r_int

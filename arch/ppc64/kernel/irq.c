@@ -49,6 +49,13 @@ id|irq_desc
 id|NR_IRQS
 )braket
 suffix:semicolon
+DECL|variable|irq_desc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irq_desc
+)paren
+suffix:semicolon
 DECL|variable|distribute_irqs
 r_int
 id|distribute_irqs

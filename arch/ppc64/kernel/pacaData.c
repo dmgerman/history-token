@@ -1891,4 +1891,11 @@ macro_line|#endif
 macro_line|#endif
 )brace
 suffix:semicolon
+DECL|variable|paca
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|paca
+)paren
+suffix:semicolon
 eof
