@@ -545,6 +545,10 @@ op_increment
 suffix:semicolon
 )brace
 )brace
+id|S390_lowcore.kernel_asce
+op_assign
+id|pgdir_k
+suffix:semicolon
 multiline_comment|/* enable virtual mapping in kernel mode */
 id|__asm__
 id|__volatile__
@@ -920,6 +924,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|S390_lowcore.kernel_asce
+op_assign
+id|pgdir_k
+suffix:semicolon
 multiline_comment|/* enable virtual mapping in kernel mode */
 id|__asm__
 id|__volatile__

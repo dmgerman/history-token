@@ -34,7 +34,7 @@ mdefine_line|#define ELF_ET_DYN_BASE         (TASK31_SIZE / 3 * 2)
 multiline_comment|/* Wow, the &quot;main&quot; arch needs arch dependent functions too.. :) */
 multiline_comment|/* regs is struct pt_regs, pr_reg is elf_gregset_t (which is&n;   now struct_user_regs, they are different) */
 DECL|macro|ELF_CORE_COPY_REGS
-mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs)        &bslash;&n;&t;{ &bslash;&n;&t;int i; &bslash;&n;&t;memcpy(&amp;pr_reg.psw.mask, &amp;regs-&gt;psw.mask, 4); &bslash;&n;&t;memcpy(&amp;pr_reg.psw.addr, ((char*)&amp;regs-&gt;psw.addr)+4, 4); &bslash;&n;&t;for(i=0; i&lt;NUM_GPRS; i++) &bslash;&n;&t;&t;pr_reg.gprs[i] = regs-&gt;gprs[i]; &bslash;&n;&t;for(i=0; i&lt;NUM_ACRS; i++) &bslash;&n;&t;&t;pr_reg.acrs[i] = regs-&gt;acrs[i]; &bslash;&n;&t;pr_reg.orig_gpr2 = regs-&gt;orig_gpr2; &bslash;&n;&t;}
+mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs) dump_regs32(regs, &amp;pr_reg);
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this CPU supports. */
 DECL|macro|ELF_HWCAP
 mdefine_line|#define ELF_HWCAP (0)
@@ -83,6 +83,82 @@ r_typedef
 id|s390_regs32
 id|elf_gregset_t
 suffix:semicolon
+DECL|function|dump_regs32
+r_static
+r_inline
+r_int
+id|dump_regs32
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|ptregs
+comma
+id|elf_gregset_t
+op_star
+id|regs
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|regs-&gt;psw.mask
+comma
+op_amp
+id|ptregs-&gt;psw.mask
+comma
+l_int|4
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|regs-&gt;psw.addr
+comma
+op_amp
+id|ptregs-&gt;psw.addr
+comma
+l_int|4
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NUM_GPRS
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|regs-&gt;gprs
+(braket
+id|i
+)braket
+op_assign
+id|ptregs-&gt;gprs
+(braket
+id|i
+)braket
+suffix:semicolon
+id|regs-&gt;orig_gpr2
+op_assign
+id|ptregs-&gt;orig_gpr2
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
