@@ -40,6 +40,8 @@ DECL|macro|_FP_FRAC_ZEROP_1
 mdefine_line|#define _FP_FRAC_ZEROP_1(X)&t;(X##_f == 0)
 DECL|macro|_FP_FRAC_OVERP_1
 mdefine_line|#define _FP_FRAC_OVERP_1(fs,X)&t;(X##_f &amp; _FP_OVERFLOW_##fs)
+DECL|macro|_FP_FRAC_CLEAR_OVERP_1
+mdefine_line|#define _FP_FRAC_CLEAR_OVERP_1(fs,X)&t;(X##_f &amp;= ~_FP_OVERFLOW_##fs)
 DECL|macro|_FP_FRAC_EQ_1
 mdefine_line|#define _FP_FRAC_EQ_1(X, Y)&t;(X##_f == Y##_f)
 DECL|macro|_FP_FRAC_GE_1

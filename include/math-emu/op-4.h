@@ -42,6 +42,8 @@ DECL|macro|_FP_FRAC_NEGP_4
 mdefine_line|#define _FP_FRAC_NEGP_4(X)      ((_FP_WS_TYPE)X##_f[3] &lt; 0)
 DECL|macro|_FP_FRAC_OVERP_4
 mdefine_line|#define _FP_FRAC_OVERP_4(fs,X)  (_FP_FRAC_HIGH_##fs(X) &amp; _FP_OVERFLOW_##fs)
+DECL|macro|_FP_FRAC_CLEAR_OVERP_4
+mdefine_line|#define _FP_FRAC_CLEAR_OVERP_4(fs,X)  (_FP_FRAC_HIGH_##fs(X) &amp;= ~_FP_OVERFLOW_##fs)
 DECL|macro|_FP_FRAC_EQ_4
 mdefine_line|#define _FP_FRAC_EQ_4(X,Y)&t;&t;&t;&t;&bslash;&n; (X##_f[0] == Y##_f[0] &amp;&amp; X##_f[1] == Y##_f[1]&t;&t;&bslash;&n;  &amp;&amp; X##_f[2] == Y##_f[2] &amp;&amp; X##_f[3] == Y##_f[3])
 DECL|macro|_FP_FRAC_GT_4

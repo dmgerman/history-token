@@ -2063,6 +2063,9 @@ id|npc
 comma
 id|fpu_save
 suffix:semicolon
+id|mm_segment_t
+id|old_fs
+suffix:semicolon
 id|sigset_t
 id|set
 suffix:semicolon
@@ -2432,6 +2435,19 @@ r_goto
 id|segv
 suffix:semicolon
 multiline_comment|/* It is more difficult to avoid calling this function than to&n;&t;   call it and ignore errors.  */
+id|old_fs
+op_assign
+id|get_fs
+c_func
+(paren
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|KERNEL_DS
+)paren
+suffix:semicolon
 id|do_sigaltstack
 c_func
 (paren
@@ -2445,6 +2461,12 @@ r_int
 r_int
 )paren
 id|sf
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|old_fs
 )paren
 suffix:semicolon
 r_switch
@@ -6149,6 +6171,9 @@ id|svr4_gregset_t
 op_star
 id|gr
 suffix:semicolon
+id|mm_segment_t
+id|old_fs
+suffix:semicolon
 id|u32
 id|pc
 comma
@@ -6436,6 +6461,19 @@ r_goto
 id|sigsegv
 suffix:semicolon
 multiline_comment|/* It is more difficult to avoid calling this function than to&n;&t;   call it and ignore errors.  */
+id|old_fs
+op_assign
+id|get_fs
+c_func
+(paren
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|KERNEL_DS
+)paren
+suffix:semicolon
 id|do_sigaltstack
 c_func
 (paren
@@ -6448,6 +6486,12 @@ id|regs-&gt;u_regs
 (braket
 id|UREG_I6
 )braket
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|old_fs
 )paren
 suffix:semicolon
 id|sigdelsetmask
