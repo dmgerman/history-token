@@ -10812,22 +10812,13 @@ l_int|0
 id|snd_printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_WARNING
 l_string|&quot;AC&squot;97 %d does not respond - RESET&bslash;n&quot;
 comma
 id|ac97-&gt;num
 )paren
 suffix:semicolon
-id|snd_ac97_free
-c_func
-(paren
-id|ac97
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
+multiline_comment|/* proceed anyway - it&squot;s often non-critical */
 )brace
 )brace
 id|__access_ok
