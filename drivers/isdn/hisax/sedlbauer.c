@@ -3341,7 +3341,9 @@ id|cs-&gt;hw.sedl.bus
 op_ne
 id|SEDL_BUS_PCMCIA
 op_logical_and
-id|check_region
+(paren
+op_logical_neg
+id|request_region
 c_func
 (paren
 (paren
@@ -3349,6 +3351,9 @@ id|cs-&gt;hw.sedl.cfg_reg
 )paren
 comma
 id|bytecnt
+comma
+l_string|&quot;sedlbauer isdn&quot;
+)paren
 )paren
 )paren
 (brace
@@ -3373,19 +3378,6 @@ suffix:semicolon
 r_return
 (paren
 l_int|0
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|request_region
-c_func
-(paren
-id|cs-&gt;hw.sedl.cfg_reg
-comma
-id|bytecnt
-comma
-l_string|&quot;sedlbauer isdn&quot;
 )paren
 suffix:semicolon
 )brace
