@@ -651,6 +651,26 @@ c_func
 id|nlh
 )paren
 suffix:semicolon
+multiline_comment|/* We might not have a timestamp, get one */
+r_if
+c_cond
+(paren
+id|skb-&gt;stamp.tv_sec
+op_eq
+l_int|0
+)paren
+id|do_gettimeofday
+c_func
+(paren
+(paren
+r_struct
+id|timeval
+op_star
+)paren
+op_amp
+id|skb-&gt;stamp
+)paren
+suffix:semicolon
 multiline_comment|/* copy hook, prefix, timestamp, payload, etc. */
 id|pm-&gt;data_len
 op_assign
