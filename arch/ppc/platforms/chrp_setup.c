@@ -1904,11 +1904,8 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_NVRAM  
-id|pmac_nvram_init
-c_func
-(paren
-)paren
-suffix:semicolon
+singleline_comment|// XX replace this in a more saner way
+singleline_comment|//&t;pmac_nvram_init();
 macro_line|#endif
 id|request_region
 c_func

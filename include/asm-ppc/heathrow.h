@@ -16,8 +16,8 @@ mdefine_line|#define HEATHROW_FCR&t;&t;&t;0x38&t;/* Feature control */
 DECL|macro|HEATHROW_AUX_CNTL_REG
 mdefine_line|#define HEATHROW_AUX_CNTL_REG&t;&t;0x3c&t;/* Aux control */
 multiline_comment|/*&n; * Bits in feature control register.&n; * Bits postfixed with a _N are in inverse logic&n; */
-DECL|macro|HRW_RESET_SCC
-mdefine_line|#define HRW_RESET_SCC&t;&t;0x00000001&t;/* actually controls transceiver... */
+DECL|macro|HRW_SCC_TRANS_EN_N
+mdefine_line|#define HRW_SCC_TRANS_EN_N&t;0x00000001&t;/* Also controls modem power */
 DECL|macro|HRW_BAY_POWER_N
 mdefine_line|#define HRW_BAY_POWER_N&t;&t;0x00000002
 DECL|macro|HRW_BAY_PCI_ENABLE
@@ -68,8 +68,8 @@ DECL|macro|HRW_IDE1_RESET_N
 mdefine_line|#define HRW_IDE1_RESET_N&t;0x00800000&t;/* Media bay */
 DECL|macro|HRW_SLOW_SCC_PCLK
 mdefine_line|#define HRW_SLOW_SCC_PCLK&t;0x01000000&t;/* ??? (0) */
-DECL|macro|HRW_MODEM_POWER_N
-mdefine_line|#define HRW_MODEM_POWER_N&t;0x02000000&t;/* Used by internal modem on wallstreet */
+DECL|macro|HRW_RESET_SCC
+mdefine_line|#define HRW_RESET_SCC&t;&t;0x02000000
 DECL|macro|HRW_MFDC_CELL_ENABLE
 mdefine_line|#define HRW_MFDC_CELL_ENABLE&t;0x04000000&t;/* ??? (0) */
 DECL|macro|HRW_USE_MFDC
@@ -81,11 +81,6 @@ mdefine_line|#define HRW_BMAC_RESET&t;&t;0x80000000&t;/* not documented in OF */
 multiline_comment|/* We OR those features at boot on desktop G3s */
 DECL|macro|HRW_DEFAULTS
 mdefine_line|#define HRW_DEFAULTS&t;&t;(HRW_SCCA_IO | HRW_SCCB_IO | HRW_SCC_ENABLE)
-multiline_comment|/* Those seem to be different on paddington */
-DECL|macro|PADD_MODEM_POWER_N
-mdefine_line|#define PADD_MODEM_POWER_N&t;0x00000001&t;/* modem power on paddington */
-DECL|macro|PADD_RESET_SCC
-mdefine_line|#define PADD_RESET_SCC&t;&t;0x02000000&t;/* check this please */
 multiline_comment|/* Looks like Heathrow has some sort of GPIOs as well... */
 DECL|macro|HRW_GPIO_MODEM_RESET
 mdefine_line|#define HRW_GPIO_MODEM_RESET&t;0x6d

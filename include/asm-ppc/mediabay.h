@@ -18,13 +18,6 @@ DECL|macro|MB_POWER
 mdefine_line|#define MB_POWER&t;6&t;/* media bay contains a Power device (???) */
 DECL|macro|MB_NO
 mdefine_line|#define MB_NO&t;&t;7&t;/* media bay contains nothing */
-r_void
-id|media_bay_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_int
 id|check_media_bay
 c_func

@@ -4,9 +4,11 @@ macro_line|#ifndef __PPC_ASM_PMAC_FEATURE_H
 DECL|macro|__PPC_ASM_PMAC_FEATURE_H
 mdefine_line|#define __PPC_ASM_PMAC_FEATURE_H
 multiline_comment|/*&n; * Known Mac motherboard models&n; * &n; * Please, report any error here to benh@kernel.crashing.org, thanks !&n; */
-multiline_comment|/* PowerSurge are the first generation of PCI Pmacs. This include&n; * all of the Grand-Central based machines&n; */
+multiline_comment|/* PowerSurge are the first generation of PCI Pmacs. This include&n; * all of the Grand-Central based machines. We currently don&squot;t&n; * differenciate most of them.&n; */
 DECL|macro|PMAC_TYPE_PSURGE
 mdefine_line|#define PMAC_TYPE_PSURGE&t;&t;0x10&t;/* PowerSurge */
+DECL|macro|PMAC_TYPE_ANS
+mdefine_line|#define PMAC_TYPE_ANS&t;&t;&t;0x11&t;/* Apple Network Server */
 multiline_comment|/* Here is the infamous serie of OHare based machines&n; */
 DECL|macro|PMAC_TYPE_COMET
 mdefine_line|#define PMAC_TYPE_COMET&t;&t;&t;0x20&t;/* Beleived to be PowerBook 2400 */
@@ -59,6 +61,8 @@ DECL|macro|PMAC_TYPE_TITANIUM
 mdefine_line|#define PMAC_TYPE_TITANIUM&t;&t;0x47&t;/* Titanium PowerBook */
 DECL|macro|PMAC_TYPE_TITANIUM2
 mdefine_line|#define PMAC_TYPE_TITANIUM2&t;&t;0x48&t;/* Titanium II PowerBook */
+DECL|macro|PMAC_TYPE_TITANIUM3
+mdefine_line|#define PMAC_TYPE_TITANIUM3&t;&t;0x49&t;/* Titanium III PowerBook (with L3) */
 DECL|macro|PMAC_TYPE_UNKNOWN_CORE99
 mdefine_line|#define PMAC_TYPE_UNKNOWN_CORE99&t;0x5f
 multiline_comment|/* MacRISC2 machines based on the Pangea chipset&n; */
@@ -218,14 +222,6 @@ suffix:semicolon
 r_extern
 r_void
 id|pmac_feature_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pmac_feature_late_init
 c_func
 (paren
 r_void

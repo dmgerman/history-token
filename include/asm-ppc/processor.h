@@ -384,13 +384,15 @@ mdefine_line|#define&t;  HID0_SBCLK&t;(1&lt;&lt;27)
 DECL|macro|HID0_EICE
 mdefine_line|#define&t;  HID0_EICE&t;(1&lt;&lt;26)
 DECL|macro|HID0_TBEN
-mdefine_line|#define&t;  HID0_TBEN&t;(1&lt;&lt;26)&t;&t;/* Timebase enable - 7450 */
+mdefine_line|#define&t;  HID0_TBEN&t;(1&lt;&lt;26)&t;&t;/* Timebase enable - 745x */
 DECL|macro|HID0_ECLK
 mdefine_line|#define&t;  HID0_ECLK&t;(1&lt;&lt;25)
 DECL|macro|HID0_PAR
 mdefine_line|#define&t;  HID0_PAR&t;(1&lt;&lt;24)
 DECL|macro|HID0_STEN
-mdefine_line|#define&t;  HID0_STEN&t;(1&lt;&lt;24)&t;&t;/* S/W Tablewalk enable - 7450 */
+mdefine_line|#define&t;  HID0_STEN&t;(1&lt;&lt;24)&t;&t;/* Software table search enable - 745x */
+DECL|macro|HID0_HIGH_BAT
+mdefine_line|#define&t;  HID0_HIGH_BAT&t;(1&lt;&lt;23)&t;&t;/* Enable high BATs - 7455 */
 DECL|macro|HID0_DOZE
 mdefine_line|#define&t;  HID0_DOZE&t;(1&lt;&lt;23)
 DECL|macro|HID0_NAP
@@ -425,14 +427,14 @@ DECL|macro|HID0_SIED
 mdefine_line|#define&t;  HID0_SIED&t;(1&lt;&lt;7)&t;&t;/* Serial Instr. Execution [Disable] */
 DECL|macro|HID0_DFCA
 mdefine_line|#define&t;  HID0_DFCA&t;(1&lt;&lt;6)&t;&t;/* Data Cache Flush Assist */
+DECL|macro|HID0_LRSTK
+mdefine_line|#define   HID0_LRSTK&t;(1&lt;&lt;4)&t;&t;/* Link register stack - 745x */
 DECL|macro|HID0_BTIC
 mdefine_line|#define   HID0_BTIC&t;(1&lt;&lt;5)&t;&t;/* Branch Target Instr Cache Enable */
-DECL|macro|HID0_LRSTK
-mdefine_line|#define   HID0_LRSTK&t;(1&lt;&lt;4)&t;&t;/* Link Stack enable - 7450 */
 DECL|macro|HID0_ABE
 mdefine_line|#define   HID0_ABE&t;(1&lt;&lt;3)&t;&t;/* Address Broadcast Enable */
 DECL|macro|HID0_FOLD
-mdefine_line|#define   HID0_FOLD&t;(1&lt;&lt;3)&t;&t;/* Branch Folding enable - 7450 */
+mdefine_line|#define   HID0_FOLD&t;(1&lt;&lt;3)&t;&t;/* Branch Folding enable - 745x */
 DECL|macro|HID0_BHTE
 mdefine_line|#define&t;  HID0_BHTE&t;(1&lt;&lt;2)&t;&t;/* Branch History Table Enable */
 DECL|macro|HID0_BTCD
@@ -569,6 +571,42 @@ DECL|macro|SPRN_L3CR
 mdefine_line|#define&t;SPRN_L3CR&t;0x3FA&t;/* Level 3 Cache Control Regsiter (7450) */
 DECL|macro|L3CR_L3E
 mdefine_line|#define L3CR_L3E&t;&t;0x80000000&t;/* L3 enable */
+DECL|macro|L3CR_L3PE
+mdefine_line|#define L3CR_L3PE&t;&t;0x40000000&t;/* L3 data parity enable */
+DECL|macro|L3CR_L3APE
+mdefine_line|#define L3CR_L3APE&t;&t;0x20000000&t;/* L3 addr parity enable */
+DECL|macro|L3CR_L3SIZ
+mdefine_line|#define L3CR_L3SIZ&t;&t;0x10000000&t;/* L3 size */
+DECL|macro|L3CR_L3CLKEN
+mdefine_line|#define L3CR_L3CLKEN&t;&t;0x08000000&t;/* L3 clock enable */
+DECL|macro|L3CR_L3RES
+mdefine_line|#define L3CR_L3RES&t;&t;0x04000000&t;/* L3 special reserved bit */
+DECL|macro|L3CR_L3CLKDIV
+mdefine_line|#define L3CR_L3CLKDIV&t;&t;0x03800000&t;/* L3 clock divisor */
+DECL|macro|L3CR_L3IO
+mdefine_line|#define L3CR_L3IO&t;&t;0x00400000&t;/* L3 instruction only */
+DECL|macro|L3CR_L3SPO
+mdefine_line|#define L3CR_L3SPO&t;&t;0x00040000&t;/* L3 sample point override */
+DECL|macro|L3CR_L3CKSP
+mdefine_line|#define L3CR_L3CKSP&t;&t;0x00030000&t;/* L3 clock sample point */
+DECL|macro|L3CR_L3PSP
+mdefine_line|#define L3CR_L3PSP&t;&t;0x0000e000&t;/* L3 P-clock sample point */
+DECL|macro|L3CR_L3REP
+mdefine_line|#define L3CR_L3REP&t;&t;0x00001000&t;/* L3 replacement algorithm */
+DECL|macro|L3CR_L3HWF
+mdefine_line|#define L3CR_L3HWF&t;&t;0x00000800&t;/* L3 hardware flush */
+DECL|macro|L3CR_L3I
+mdefine_line|#define L3CR_L3I&t;&t;0x00000400&t;/* L3 global invalidate */
+DECL|macro|L3CR_L3RT
+mdefine_line|#define L3CR_L3RT&t;&t;0x00000300&t;/* L3 SRAM type */
+DECL|macro|L3CR_L3NIRCA
+mdefine_line|#define L3CR_L3NIRCA&t;&t;0x00000080&t;/* L3 non-integer ratio clock adj. */
+DECL|macro|L3CR_L3DO
+mdefine_line|#define L3CR_L3DO&t;&t;0x00000040&t;/* L3 data only mode */
+DECL|macro|L3CR_PMEN
+mdefine_line|#define L3CR_PMEN&t;&t;0x00000004&t;/* L3 private memory enable */
+DECL|macro|L3CR_PMSIZ
+mdefine_line|#define L3CR_PMSIZ&t;&t;0x00000001&t;/* L3 private memory size */
 DECL|macro|SPRN_MSSCR0
 mdefine_line|#define SPRN_MSSCR0&t;0x3f6&t;/* Memory Subsystem Control Register 0 */
 DECL|macro|SPRN_MSSSR0
@@ -889,6 +927,10 @@ DECL|macro|SRR0
 mdefine_line|#define&t;SRR0&t;SPRN_SRR0&t;/* Save and Restore Register 0 */
 DECL|macro|SRR1
 mdefine_line|#define&t;SRR1&t;SPRN_SRR1&t;/* Save and Restore Register 1 */
+DECL|macro|SRR2
+mdefine_line|#define&t;SRR2&t;SPRN_SRR2&t;/* Save and Restore Register 2 */
+DECL|macro|SRR3
+mdefine_line|#define&t;SRR3&t;SPRN_SRR3&t;/* Save and Restore Register 3 */
 DECL|macro|TBRL
 mdefine_line|#define&t;TBRL&t;SPRN_TBRL&t;/* Time Base Read Lower Register */
 DECL|macro|TBRU
