@@ -239,6 +239,16 @@ r_int
 id|flags
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|rt6_info
+op_star
+id|ndisc_get_dummy_rt
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;support functions for ND&n; *&n; */
 r_extern
 r_struct

@@ -120,6 +120,65 @@ DECL|macro|rt0_type
 mdefine_line|#define rt0_type&t;&t;rt_hdr.type;
 )brace
 suffix:semicolon
+DECL|struct|ipv6_auth_hdr
+r_struct
+id|ipv6_auth_hdr
+(brace
+DECL|member|nexthdr
+id|__u8
+id|nexthdr
+suffix:semicolon
+DECL|member|hdrlen
+id|__u8
+id|hdrlen
+suffix:semicolon
+multiline_comment|/* This one is measured in 32 bit units! */
+DECL|member|reserved
+id|__u16
+id|reserved
+suffix:semicolon
+DECL|member|spi
+id|__u32
+id|spi
+suffix:semicolon
+DECL|member|seq_no
+id|__u32
+id|seq_no
+suffix:semicolon
+multiline_comment|/* Sequence number */
+DECL|member|auth_data
+id|__u8
+id|auth_data
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* Length variable but &gt;=4. Mind the 64 bit alignment! */
+)brace
+suffix:semicolon
+DECL|struct|ipv6_esp_hdr
+r_struct
+id|ipv6_esp_hdr
+(brace
+DECL|member|spi
+id|__u32
+id|spi
+suffix:semicolon
+DECL|member|seq_no
+id|__u32
+id|seq_no
+suffix:semicolon
+multiline_comment|/* Sequence number */
+DECL|member|enc_data
+id|__u8
+id|enc_data
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* Length variable but &gt;=8. Mind the 64 bit alignment! */
+)brace
+suffix:semicolon
 multiline_comment|/*&n; *&t;IPv6 fixed header&n; *&n; *&t;BEWARE, it is incorrect. The first 4 bits of flow_lbl&n; *&t;are glued to priority now, forming &quot;class&quot;.&n; */
 DECL|struct|ipv6hdr
 r_struct

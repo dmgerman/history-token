@@ -489,6 +489,14 @@ op_logical_and
 id|nexthdr
 op_ne
 id|IPPROTO_UDP
+op_logical_and
+id|nexthdr
+op_ne
+id|NEXTHDR_AUTH
+op_logical_and
+id|nexthdr
+op_ne
+id|NEXTHDR_ESP
 )paren
 (brace
 id|nhoff

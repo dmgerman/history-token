@@ -34,6 +34,7 @@ macro_line|#include &lt;net/ip_fib.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#ifdef CONFIG_SYSCTL
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#endif
@@ -11889,6 +11890,48 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
 macro_line|#endif /* CONFIG_NET_CLS_ROUTE */
+DECL|function|xfrm_dst_lookup
+r_int
+id|xfrm_dst_lookup
+c_func
+(paren
+r_struct
+id|xfrm_dst
+op_star
+op_star
+id|dst
+comma
+r_struct
+id|flowi
+op_star
+id|fl
+)paren
+(brace
+r_int
+id|err
+op_assign
+l_int|0
+suffix:semicolon
+id|err
+op_assign
+id|__ip_route_output_key
+c_func
+(paren
+(paren
+r_struct
+id|rtable
+op_star
+op_star
+)paren
+id|dst
+comma
+id|fl
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 DECL|function|ip_rt_init
 r_int
 id|__init
@@ -12335,6 +12378,14 @@ c_func
 (paren
 op_amp
 id|rt_periodic_timer
+)paren
+suffix:semicolon
+id|xfrm_dst_lookup_register
+c_func
+(paren
+id|xfrm_dst_lookup
+comma
+id|AF_INET
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS

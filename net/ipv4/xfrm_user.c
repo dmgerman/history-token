@@ -956,7 +956,7 @@ id|AF_INET
 suffix:colon
 id|x1
 op_assign
-id|xfrm_state_lookup
+id|xfrm4_state_lookup
 c_func
 (paren
 id|x-&gt;props.saddr.xfrm4_addr
@@ -1083,7 +1083,7 @@ id|AF_INET
 suffix:colon
 id|x
 op_assign
-id|xfrm_state_lookup
+id|xfrm4_state_lookup
 c_func
 (paren
 id|p-&gt;saddr.xfrm4_addr
@@ -1773,7 +1773,7 @@ id|AF_INET
 suffix:colon
 id|x
 op_assign
-id|xfrm_state_lookup
+id|xfrm4_state_lookup
 c_func
 (paren
 id|p-&gt;saddr.xfrm4_addr
