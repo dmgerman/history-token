@@ -1231,7 +1231,7 @@ id|ohci
 op_assign
 id|hcd_to_ohci
 (paren
-id|hcd
+id|_hcd
 )paren
 suffix:semicolon
 id|ohci_dbg
