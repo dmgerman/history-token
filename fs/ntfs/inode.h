@@ -266,8 +266,16 @@ multiline_comment|/*&n; * NOTE: We should be adding dirty mft records to a list 
 multiline_comment|/*&n; * Macro tricks to expand the NInoFoo(), NInoSetFoo(), and NInoClearFoo()&n; * functions.&n; */
 DECL|macro|NINO_FNS
 mdefine_line|#define NINO_FNS(flag)&t;&t;&t;&t;&t;&bslash;&n;static inline int NIno##flag(ntfs_inode *ni)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_bit(NI_##flag, &amp;(ni)-&gt;state);&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void NInoSet##flag(ntfs_inode *ni)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_bit(NI_##flag, &amp;(ni)-&gt;state);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void NInoClear##flag(ntfs_inode *ni)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;clear_bit(NI_##flag, &amp;(ni)-&gt;state);&t;&t;&bslash;&n;}
+multiline_comment|/*&n; * As above for NInoTestSetFoo() and NInoTestClearFoo().&n; */
+DECL|macro|TAS_NINO_FNS
+mdefine_line|#define TAS_NINO_FNS(flag)&t;&t;&t;&t;&t;&bslash;&n;static inline int NInoTestSet##flag(ntfs_inode *ni)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_and_set_bit(NI_##flag, &amp;(ni)-&gt;state);&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline int NInoTestClear##flag(ntfs_inode *ni)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_and_clear_bit(NI_##flag, &amp;(ni)-&gt;state);&t;&bslash;&n;}
 multiline_comment|/* Emit the ntfs inode bitops functions. */
 id|NINO_FNS
+c_func
+(paren
+id|Dirty
+)paren
+id|TAS_NINO_FNS
 c_func
 (paren
 id|Dirty
@@ -560,6 +568,6 @@ op_star
 id|attr
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif /* _LINUX_NTFS_FS_INODE_H */
+macro_line|#endif /* NTFS_RW */
+macro_line|#endif /* _LINUX_NTFS_INODE_H */
 eof
