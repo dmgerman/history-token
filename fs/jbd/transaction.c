@@ -234,6 +234,8 @@ op_amp
 id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
+id|repeat_locked
+suffix:colon
 r_if
 c_cond
 (paren
@@ -529,15 +531,8 @@ comma
 id|needed
 )paren
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_state_lock
-)paren
-suffix:semicolon
 r_goto
-id|repeat
+id|repeat_locked
 suffix:semicolon
 )brace
 multiline_comment|/* OK, account for the buffers that this operation expects to&n;&t; * use and add the handle to the running transaction. */
