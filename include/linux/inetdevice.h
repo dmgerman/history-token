@@ -123,6 +123,10 @@ op_star
 id|ifa_list
 suffix:semicolon
 multiline_comment|/* IP ifaddr chain&t;&t;*/
+DECL|member|mc_initted
+r_int
+id|mc_initted
+suffix:semicolon
 DECL|member|mc_list
 r_struct
 id|ip_mc_list
