@@ -1223,7 +1223,7 @@ suffix:semicolon
 id|ata_dev_id_string
 c_func
 (paren
-id|dev
+id|dev-&gt;id
 comma
 id|model_num
 comma

@@ -2677,10 +2677,9 @@ r_void
 id|ata_dev_id_string
 c_func
 (paren
-r_struct
-id|ata_device
+id|u16
 op_star
-id|dev
+id|id
 comma
 r_int
 r_char
@@ -2710,7 +2709,7 @@ l_int|0
 (brace
 id|c
 op_assign
-id|dev-&gt;id
+id|id
 (braket
 id|ofs
 )braket
@@ -2727,7 +2726,7 @@ op_increment
 suffix:semicolon
 id|c
 op_assign
-id|dev-&gt;id
+id|id
 (braket
 id|ofs
 )braket
@@ -3467,14 +3466,14 @@ op_logical_neg
 id|ata_id_has_dma
 c_func
 (paren
-id|dev
+id|dev-&gt;id
 )paren
 op_logical_or
 op_logical_neg
 id|ata_id_has_lba
 c_func
 (paren
-id|dev
+id|dev-&gt;id
 )paren
 )paren
 (brace
@@ -3571,7 +3570,7 @@ op_logical_neg
 id|ata_id_is_ata
 c_func
 (paren
-id|dev
+id|dev-&gt;id
 )paren
 )paren
 multiline_comment|/* sanity check */
@@ -3640,7 +3639,7 @@ c_cond
 id|ata_id_has_lba48
 c_func
 (paren
-id|dev
+id|dev-&gt;id
 )paren
 )paren
 (brace
@@ -3653,7 +3652,7 @@ op_assign
 id|ata_id_u64
 c_func
 (paren
-id|dev
+id|dev-&gt;id
 comma
 l_int|100
 )paren
@@ -3666,7 +3665,7 @@ op_assign
 id|ata_id_u32
 c_func
 (paren
-id|dev
+id|dev-&gt;id
 comma
 l_int|60
 )paren
@@ -3720,7 +3719,7 @@ c_cond
 id|ata_id_is_ata
 c_func
 (paren
-id|dev
+id|dev-&gt;id
 )paren
 )paren
 multiline_comment|/* sanity check */
@@ -14101,6 +14100,13 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|ata_dev_id_string
+)paren
+suffix:semicolon
+DECL|variable|ata_scsi_simulate
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ata_scsi_simulate
 )paren
 suffix:semicolon
 eof
