@@ -496,16 +496,20 @@ c_func
 (paren
 id|part
 comma
-l_string|&quot;%4d  %4d %10d %s&bslash;n&quot;
+l_string|&quot;%4d  %4d %10ld %s&bslash;n&quot;
 comma
 id|sgp-&gt;major
 comma
 id|n
 comma
-id|sgp-&gt;sizes
+id|sgp-&gt;part
 (braket
 id|n
 )braket
+dot
+id|nr_sects
+op_lshift
+l_int|1
 comma
 id|disk_name
 c_func

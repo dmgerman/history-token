@@ -322,16 +322,6 @@ r_static
 r_int
 id|no_int_yet
 suffix:semicolon
-DECL|variable|ps2esdi_sizes
-r_static
-r_int
-id|ps2esdi_sizes
-(braket
-id|MAX_HD
-op_lshift
-l_int|6
-)braket
-suffix:semicolon
 DECL|variable|ps2esdi_drives
 r_static
 r_int
@@ -590,10 +580,6 @@ comma
 id|part
 suffix:colon
 id|ps2esdi
-comma
-id|sizes
-suffix:colon
-id|ps2esdi_sizes
 comma
 id|fops
 suffix:colon

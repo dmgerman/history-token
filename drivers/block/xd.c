@@ -275,16 +275,6 @@ op_lshift
 l_int|6
 )braket
 suffix:semicolon
-DECL|variable|xd_sizes
-r_static
-r_int
-id|xd_sizes
-(braket
-id|XD_MAXDRIVES
-op_lshift
-l_int|6
-)braket
-suffix:semicolon
 DECL|variable|xd_lock
 r_static
 id|spinlock_t
@@ -319,10 +309,6 @@ comma
 id|part
 suffix:colon
 id|xd_struct
-comma
-id|sizes
-suffix:colon
-id|xd_sizes
 comma
 id|fops
 suffix:colon

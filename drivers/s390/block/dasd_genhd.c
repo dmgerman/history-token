@@ -152,10 +152,6 @@ id|devfs_handle_t
 op_star
 id|gd_de_arr
 suffix:semicolon
-r_int
-op_star
-id|gd_sizes
-suffix:semicolon
 r_char
 op_star
 id|gd_flags
@@ -231,21 +227,6 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-id|gd_sizes
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_int
-)paren
-op_lshift
-id|MINORBITS
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
 multiline_comment|/* Check if one of the allocations failed. */
 r_if
 c_cond
@@ -263,10 +244,6 @@ op_eq
 l_int|NULL
 op_logical_or
 id|gd_part
-op_eq
-l_int|NULL
-op_logical_or
-id|gd_sizes
 op_eq
 l_int|NULL
 )paren
@@ -392,10 +369,6 @@ id|mi-&gt;gendisk.part
 op_assign
 id|gd_part
 suffix:semicolon
-id|mi-&gt;gendisk.sizes
-op_assign
-id|gd_sizes
-suffix:semicolon
 multiline_comment|/* Initialize the gendisk arrays. */
 id|memset
 c_func
@@ -443,21 +416,6 @@ op_lshift
 id|MINORBITS
 )paren
 suffix:semicolon
-id|memset
-c_func
-(paren
-id|gd_sizes
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_int
-)paren
-op_lshift
-id|MINORBITS
-)paren
-suffix:semicolon
 multiline_comment|/* Setup block device pointers for the new major. */
 id|blk_dev
 (braket
@@ -467,13 +425,6 @@ dot
 id|queue
 op_assign
 id|dasd_get_queue
-suffix:semicolon
-id|blk_size
-(braket
-id|new_major
-)braket
-op_assign
-id|gd_sizes
 suffix:semicolon
 multiline_comment|/* Insert the new major info structure into dasd_major_info list. */
 id|spin_lock
@@ -518,12 +469,6 @@ multiline_comment|/* We rely on kfree to do the != NULL check. */
 id|kfree
 c_func
 (paren
-id|gd_sizes
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
 id|gd_part
 )paren
 suffix:semicolon
@@ -561,10 +506,6 @@ op_star
 id|mi
 )paren
 (brace
-r_int
-op_star
-id|bs
-suffix:semicolon
 r_int
 id|major
 comma
@@ -623,13 +564,6 @@ id|queue
 op_assign
 l_int|NULL
 suffix:semicolon
-id|bs
-op_assign
-id|blk_size
-(braket
-id|major
-)braket
-suffix:semicolon
 id|blk_clear
 c_func
 (paren
@@ -666,12 +600,6 @@ id|rc
 )paren
 suffix:semicolon
 multiline_comment|/* Free memory. */
-id|kfree
-c_func
-(paren
-id|bs
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1325,42 +1253,6 @@ c_func
 (paren
 id|device-&gt;kdev
 )paren
-suffix:semicolon
-multiline_comment|/* FIXME: do we really need that */
-id|minor
-op_assign
-id|minor
-c_func
-(paren
-id|device-&gt;kdev
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-(paren
-l_int|1
-op_lshift
-id|DASD_PARTN_BITS
-)paren
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|gdp-&gt;sizes
-(braket
-id|minor
-op_plus
-id|i
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * This is confusing. The funcions is devfs_register_partitions&n;&t; * but the 1 as third parameter makes it do an unregister...&n;&t; * FIXME: there must be a better way to get rid of the devfs entries&n;&t; */
 id|devfs_register_partitions

@@ -246,12 +246,6 @@ op_star
 id|part
 suffix:semicolon
 multiline_comment|/* [indexed by minor] */
-DECL|member|sizes
-r_int
-op_star
-id|sizes
-suffix:semicolon
-multiline_comment|/* [idem], device size in blocks */
 DECL|member|nr_real
 r_int
 id|nr_real

@@ -185,16 +185,6 @@ op_lshift
 l_int|6
 )braket
 suffix:semicolon
-DECL|variable|mfm_sizes
-r_static
-r_int
-id|mfm_sizes
-(braket
-id|MFM_MAXDRIVES
-op_lshift
-l_int|6
-)braket
-suffix:semicolon
 multiline_comment|/* Stuff from the assembly routines */
 r_extern
 r_int
@@ -5225,10 +5215,6 @@ comma
 id|part
 suffix:colon
 id|mfm
-comma
-id|sizes
-suffix:colon
-id|mfm_sizes
 comma
 )brace
 suffix:semicolon

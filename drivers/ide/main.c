@@ -1747,12 +1747,6 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|gd-&gt;sizes
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
 id|gd-&gt;part
 )paren
 suffix:semicolon

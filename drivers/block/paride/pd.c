@@ -685,14 +685,6 @@ id|pd_hd
 id|PD_DEVS
 )braket
 suffix:semicolon
-DECL|variable|pd_sizes
-r_static
-r_int
-id|pd_sizes
-(braket
-id|PD_DEVS
-)braket
-suffix:semicolon
 DECL|macro|PD_NAMELEN
 mdefine_line|#define PD_NAMELEN&t;8
 DECL|struct|pd_unit
@@ -937,10 +929,6 @@ comma
 id|part
 suffix:colon
 id|pd_hd
-comma
-id|sizes
-suffix:colon
-id|pd_sizes
 comma
 id|fops
 suffix:colon
