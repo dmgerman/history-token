@@ -5308,6 +5308,13 @@ id|info-&gt;link_status
 op_assign
 l_int|0x00
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|info-&gt;watchdog
+)paren
+suffix:semicolon
 id|info-&gt;watchdog.function
 op_assign
 op_amp

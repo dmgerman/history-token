@@ -1156,11 +1156,15 @@ r_struct
 id|timer_list
 id|acsi_timer
 op_assign
-(brace
-id|function
-suffix:colon
+id|TIMER_INITIALIZER
+c_func
+(paren
 id|acsi_times_out
-)brace
+comma
+l_int|0
+comma
+l_int|0
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ATARI_SLM
 r_extern

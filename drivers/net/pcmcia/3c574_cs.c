@@ -2261,6 +2261,13 @@ op_assign
 id|config.u.autoselect
 suffix:semicolon
 )brace
+id|init_timer
+c_func
+(paren
+op_amp
+id|lp-&gt;media
+)paren
+suffix:semicolon
 (brace
 r_int
 id|phy
