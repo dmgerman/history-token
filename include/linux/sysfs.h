@@ -2,6 +2,7 @@ multiline_comment|/*&n; * sysfs.h - definitions for the device driver filesystem
 macro_line|#ifndef _SYSFS_H_
 DECL|macro|_SYSFS_H_
 mdefine_line|#define _SYSFS_H_
+macro_line|#include &lt;asm/atomic.h&gt;
 r_struct
 id|kobject
 suffix:semicolon
@@ -156,6 +157,57 @@ r_int
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|sysfs_dirent
+r_struct
+id|sysfs_dirent
+(brace
+DECL|member|s_count
+id|atomic_t
+id|s_count
+suffix:semicolon
+DECL|member|s_sibling
+r_struct
+id|list_head
+id|s_sibling
+suffix:semicolon
+DECL|member|s_children
+r_struct
+id|list_head
+id|s_children
+suffix:semicolon
+DECL|member|s_element
+r_void
+op_star
+id|s_element
+suffix:semicolon
+DECL|member|s_type
+r_int
+id|s_type
+suffix:semicolon
+DECL|member|s_mode
+id|umode_t
+id|s_mode
+suffix:semicolon
+DECL|member|s_dentry
+r_struct
+id|dentry
+op_star
+id|s_dentry
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|SYSFS_ROOT
+mdefine_line|#define SYSFS_ROOT&t;&t;0x0001
+DECL|macro|SYSFS_DIR
+mdefine_line|#define SYSFS_DIR&t;&t;0x0002
+DECL|macro|SYSFS_KOBJ_ATTR
+mdefine_line|#define SYSFS_KOBJ_ATTR &t;0x0004
+DECL|macro|SYSFS_KOBJ_BIN_ATTR
+mdefine_line|#define SYSFS_KOBJ_BIN_ATTR&t;0x0008
+DECL|macro|SYSFS_KOBJ_LINK
+mdefine_line|#define SYSFS_KOBJ_LINK &t;0x0020
+DECL|macro|SYSFS_NOT_PINNED
+mdefine_line|#define SYSFS_NOT_PINNED&t;(SYSFS_KOBJ_ATTR | SYSFS_KOBJ_BIN_ATTR | SYSFS_KOBJ_LINK)
 macro_line|#ifdef CONFIG_SYSFS
 r_extern
 r_int

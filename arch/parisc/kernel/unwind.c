@@ -3,7 +3,9 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/assembly.h&gt;
 macro_line|#include &lt;asm/unwind.h&gt;
 multiline_comment|/* #define DEBUG 1 */
 macro_line|#ifdef DEBUG
@@ -77,7 +79,7 @@ id|unwind_table_entry
 op_star
 id|e
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -87,32 +89,35 @@ id|hi
 comma
 id|mid
 suffix:semicolon
-r_for
-c_loop
-(paren
 id|lo
 op_assign
 l_int|0
-comma
+suffix:semicolon
 id|hi
 op_assign
 id|table-&gt;length
+op_minus
+l_int|1
 suffix:semicolon
+r_while
+c_loop
+(paren
 id|lo
-OL
+op_le
 id|hi
-suffix:semicolon
 )paren
 (brace
 id|mid
 op_assign
 (paren
-id|lo
-op_plus
 id|hi
+op_minus
+id|lo
 )paren
 op_div
 l_int|2
+op_plus
+id|lo
 suffix:semicolon
 id|e
 op_assign
@@ -132,6 +137,8 @@ id|e-&gt;region_start
 id|hi
 op_assign
 id|mid
+op_minus
+l_int|1
 suffix:semicolon
 r_else
 r_if
@@ -148,15 +155,15 @@ op_plus
 l_int|1
 suffix:semicolon
 r_else
-r_break
-suffix:semicolon
-)brace
 r_return
 id|e
 suffix:semicolon
 )brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 r_static
-r_inline
 r_const
 r_struct
 id|unwind_table_entry
@@ -363,6 +370,33 @@ id|start
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|start
+template_param
+(paren
+id|start
+op_plus
+l_int|1
+)paren
+op_member_access_from_pointer
+id|region_start
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;WARNING: Out of order unwind entry! %p and %p&bslash;n&quot;
+comma
+id|start
+comma
+id|start
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+)brace
 id|start-&gt;region_start
 op_add_assign
 id|base_addr
@@ -432,7 +466,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|unwind_table_init
 c_func
@@ -685,8 +719,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|e
+op_eq
+l_int|NULL
 )paren
 (brace
 r_int
@@ -711,6 +746,140 @@ comma
 id|info-&gt;ip
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_KALLSYMS
+multiline_comment|/* Handle some frequent special cases.... */
+(brace
+r_char
+id|symname
+(braket
+id|KSYM_NAME_LEN
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+r_char
+op_star
+id|modname
+suffix:semicolon
+r_int
+r_int
+id|symsize
+comma
+id|offset
+suffix:semicolon
+id|kallsyms_lookup
+c_func
+(paren
+id|info-&gt;ip
+comma
+op_amp
+id|symsize
+comma
+op_amp
+id|offset
+comma
+op_amp
+id|modname
+comma
+id|symname
+)paren
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;info-&gt;ip = 0x%lx, name = %s&bslash;n&quot;
+comma
+id|info-&gt;ip
+comma
+id|symname
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+id|symname
+comma
+l_string|&quot;_switch_to_ret&quot;
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|info-&gt;prev_sp
+op_assign
+id|info-&gt;sp
+op_minus
+id|CALLEE_SAVE_FRAME_SIZE
+suffix:semicolon
+id|info-&gt;prev_ip
+op_assign
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+(paren
+id|info-&gt;prev_sp
+op_minus
+id|RP_OFFSET
+)paren
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;_switch_to_ret @ %lx - setting &quot;
+l_string|&quot;prev_sp=%lx prev_ip=%lx&bslash;n&quot;
+comma
+id|info-&gt;ip
+comma
+id|info-&gt;prev_sp
+comma
+id|info-&gt;prev_ip
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+id|symname
+comma
+l_string|&quot;ret_from_kernel_thread&quot;
+)paren
+op_eq
+l_int|0
+op_logical_or
+id|strcmp
+c_func
+(paren
+id|symname
+comma
+l_string|&quot;syscall_exit&quot;
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|info-&gt;prev_ip
+op_assign
+id|info-&gt;prev_sp
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 multiline_comment|/* Since we are doing the unwinding blind, we don&squot;t know if&n;&t;&t;   we are adjusting the stack correctly or extracting the rp&n;&t;&t;   correctly. The rp is checked to see if it belongs to the&n;&t;&t;   kernel text section, if not we assume we don&squot;t have a &n;&t;&t;   correct stack frame and we continue to unwind the stack.&n;&t;&t;   This is not quite correct, and will fail for loadable&n;&t;&t;   modules. */
 id|sp
 op_assign
@@ -721,17 +890,28 @@ l_int|63
 suffix:semicolon
 r_do
 (brace
+r_int
+r_int
+id|tmp
+suffix:semicolon
 id|info-&gt;prev_sp
 op_assign
 id|sp
 op_minus
 l_int|64
 suffix:semicolon
-multiline_comment|/* FIXME: what happens if we unwind too far so that &n;&t;&t;&t;   sp no longer falls in a mapped kernel page? */
-macro_line|#ifndef __LP64__
 id|info-&gt;prev_ip
 op_assign
-op_star
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|tmp
+comma
 (paren
 r_int
 r_int
@@ -740,25 +920,16 @@ op_star
 (paren
 id|info-&gt;prev_sp
 op_minus
-l_int|20
+id|RP_OFFSET
 )paren
+)paren
+)paren
+r_break
 suffix:semicolon
-macro_line|#else
 id|info-&gt;prev_ip
 op_assign
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|info-&gt;prev_sp
-op_minus
-l_int|16
-)paren
+id|tmp
 suffix:semicolon
-macro_line|#endif
 id|sp
 op_assign
 id|info-&gt;prev_sp
@@ -776,10 +947,15 @@ r_int
 id|_etext
 )paren
 suffix:semicolon
+id|info-&gt;rp
+op_assign
+l_int|0
+suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;analyzing func @ %lx with no unwind info, setting prev_sp=%lx prev_ip=%lx&bslash;n&quot;
+l_string|&quot;analyzing func @ %lx with no unwind info, setting &quot;
+l_string|&quot;prev_sp=%lx prev_ip=%lx&bslash;n&quot;
 comma
 id|info-&gt;ip
 comma
@@ -794,7 +970,8 @@ r_else
 id|dbg
 c_func
 (paren
-l_string|&quot;e-&gt;start = 0x%x, e-&gt;end = 0x%x, Save_SP = %d, Save_RP = %d size = %u&bslash;n&quot;
+l_string|&quot;e-&gt;start = 0x%x, e-&gt;end = 0x%x, Save_SP = %d, &quot;
+l_string|&quot;Save_RP = %d size = %u&bslash;n&quot;
 comma
 id|e-&gt;region_start
 comma
@@ -899,7 +1076,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;analyzing func @ %lx, insn=%08x @ %lx, frame_size = %ld&bslash;n&quot;
+l_string|&quot;analyzing func @ %lx, insn=%08x @ &quot;
+l_string|&quot;%lx, frame_size = %ld&bslash;n&quot;
 comma
 id|info-&gt;ip
 comma
@@ -921,7 +1099,7 @@ op_amp
 l_int|0xffe00008
 )paren
 op_eq
-l_int|0x7ec00008
+l_int|0x73c00008
 )paren
 (brace
 multiline_comment|/* std,ma X,D(sp) */
@@ -958,7 +1136,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;analyzing func @ %lx, insn=%08x @ %lx, frame_size = %ld&bslash;n&quot;
+l_string|&quot;analyzing func @ %lx, insn=%08x @ &quot;
+l_string|&quot;%lx, frame_size = %ld&bslash;n&quot;
 comma
 id|info-&gt;ip
 comma
@@ -991,7 +1170,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;analyzing func @ %lx, insn=stw rp,-20(sp) @ %lx&bslash;n&quot;
+l_string|&quot;analyzing func @ %lx, insn=stw rp,&quot;
+l_string|&quot;-20(sp) @ %lx&bslash;n&quot;
 comma
 id|info-&gt;ip
 comma
@@ -1020,7 +1200,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;analyzing func @ %lx, insn=std rp,-16(sp) @ %lx&bslash;n&quot;
+l_string|&quot;analyzing func @ %lx, insn=std rp,&quot;
+l_string|&quot;-16(sp) @ %lx&bslash;n&quot;
 comma
 id|info-&gt;ip
 comma
@@ -1065,13 +1246,16 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;analyzing func @ %lx, setting prev_sp=%lx prev_ip=%lx&bslash;n&quot;
+l_string|&quot;analyzing func @ %lx, setting prev_sp=%lx &quot;
+l_string|&quot;prev_ip=%lx npc=%lx&bslash;n&quot;
 comma
 id|info-&gt;ip
 comma
 id|info-&gt;prev_sp
 comma
 id|info-&gt;prev_ip
+comma
+id|npc
 )paren
 suffix:semicolon
 )brace
@@ -1147,7 +1331,8 @@ r_int
 )paren
 id|t-&gt;pid
 suffix:colon
-l_int|0
+op_minus
+l_int|1
 comma
 id|info-&gt;sp
 comma
@@ -1287,10 +1472,16 @@ c_func
 (paren
 l_string|&quot;(%d) Continue unwind to sp=%08lx ip=%08lx&bslash;n&quot;
 comma
+id|next_frame-&gt;t
+ques
+c_cond
 (paren
 r_int
 )paren
 id|next_frame-&gt;t-&gt;pid
+suffix:colon
+op_minus
+l_int|1
 comma
 id|next_frame-&gt;sp
 comma

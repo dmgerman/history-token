@@ -118,7 +118,7 @@ mdefine_line|#define __inlc(port)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&
 DECL|macro|__ioaddrc
 mdefine_line|#define __ioaddrc(port)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long addr;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__PORT_PCIO((port)))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;addr = PCIO_BASE + (port);&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;addr = IO_BASE + (port);&t;&t;&t;&t;&t;&bslash;&n;&t;addr;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__mem_pci
-mdefine_line|#define __mem_pci(addr) addr
+mdefine_line|#define __mem_pci(addr) (addr)
 DECL|macro|inb
 mdefine_line|#define inb(p)&t; &t;(__builtin_constant_p((p)) ? __inbc(p)    : __inb(p))
 DECL|macro|inw

@@ -1,10 +1,12 @@
-multiline_comment|/* &n; *    Debugging versions of SMP locking primitives.&n; *&n; *    Copyright (C) 2004 Thibaut VARENE &lt;varenet@esiee.fr&gt;&n; *&n; *    Some code stollen from alpha &amp; sparc64 ;)&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* &n; *    Debugging versions of SMP locking primitives.&n; *&n; *    Copyright (C) 2004 Thibaut VARENE &lt;varenet@esiee.fr&gt;&n; *&n; *    Some code stollen from alpha &amp; sparc64 ;)&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *    We use pdc_printf() throughout the file for all output messages, to avoid&n; *    losing messages because of disabled interrupts. Since we&squot;re using these&n; *    messages for debugging purposes, it makes sense not to send them to the&n; *    linux console.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/hardirq.h&gt;&t;/* in_interrupt() */
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/hardirq.h&gt;&t;/* in_interrupt() */
+macro_line|#include &lt;asm/pdc.h&gt;
 DECL|macro|INIT_STUCK
 macro_line|#undef INIT_STUCK
 DECL|macro|INIT_STUCK
@@ -72,6 +74,11 @@ id|try_again
 suffix:colon
 multiline_comment|/* Do the actual locking */
 multiline_comment|/* &lt;T-Bone&gt; ggg: we can&squot;t get stuck on the outter loop?&n;&t; * &lt;ggg&gt; T-Bone: We can hit the outer loop&n;&t; *&t;alot if multiple CPUs are constantly racing for a lock&n;&t; *&t;and the backplane is NOT fair about which CPU sees&n;&t; *&t;the update first. But it won&squot;t hang since every failed&n;&t; *&t;attempt will drop us back into the inner loop and&n;&t; *&t;decrement `stuck&squot;.&n;&t; * &lt;ggg&gt; K-class and some of the others are NOT fair in the HW&n;&t; * &t;implementation so we could see false positives.&n;&t; * &t;But fixing the lock contention is easier than&n;&t; * &t;fixing the HW to be fair.&n;&t; * &lt;tausq&gt; __ldcw() returns 1 if we get the lock; otherwise we&n;&t; * &t;spin until the value of the lock changes, or we time out.&n;&t; */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|a
 op_assign
 id|__ldcw_align
@@ -109,6 +116,11 @@ op_decrement
 id|stuck
 )paren
 suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -121,10 +133,9 @@ l_int|0
 )paren
 )paren
 (brace
-id|printk
+id|pdc_printf
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s:%d: spin_lock(%s/%p) stuck in %s at %p(%d)&quot;
 l_string|&quot; owned by %s:%d in %s at %p(%d)&bslash;n&quot;
 comma
@@ -200,10 +211,9 @@ id|printed
 )paren
 )paren
 (brace
-id|printk
+id|pdc_printf
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s:%d: spin_lock grabbed in %s at %p(%d) %ld ticks&bslash;n&quot;
 comma
 id|base_file
@@ -252,6 +262,13 @@ r_int
 r_int
 op_star
 id|a
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|a
 op_assign
 id|__ldcw_align
 c_func
@@ -279,10 +296,9 @@ id|lock-&gt;babble
 id|lock-&gt;babble
 op_decrement
 suffix:semicolon
-id|printk
+id|pdc_printf
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s:%d: spin_unlock(%s:%p) not locked&bslash;n&quot;
 comma
 id|base_file
@@ -299,6 +315,11 @@ op_star
 id|a
 op_assign
 l_int|1
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 DECL|function|_dbg_spin_trylock
@@ -327,6 +348,13 @@ r_int
 r_int
 op_star
 id|a
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|a
 op_assign
 id|__ldcw_align
 c_func
@@ -334,10 +362,6 @@ c_func
 id|lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|ret
 op_assign
 (paren
@@ -349,7 +373,16 @@ id|a
 op_ne
 l_int|0
 )paren
+suffix:semicolon
+id|mb
+c_func
+(paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 (brace
 id|lock-&gt;oncpu
@@ -460,10 +493,9 @@ c_func
 )paren
 (brace
 multiline_comment|/* acquiring write lock in interrupt context, bad idea */
-id|printk
+id|pdc_printf
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;write_lock caller: %s:%d, IRQs enabled,&bslash;n&quot;
 comma
 id|bfile
@@ -526,10 +558,9 @@ l_int|0
 )paren
 )paren
 (brace
-id|printk
+id|pdc_printf
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s:%d: write_lock stuck on writer&quot;
 l_string|&quot; in %s at %p(%d) %ld ticks&bslash;n&quot;
 comma
@@ -570,10 +601,9 @@ l_int|0
 )paren
 )paren
 (brace
-id|printk
+id|pdc_printf
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s:%d: write_lock stuck on reader&quot;
 l_string|&quot; in %s at %p(%d) %ld ticks&bslash;n&quot;
 comma
@@ -632,10 +662,9 @@ id|printed
 )paren
 )paren
 (brace
-id|printk
+id|pdc_printf
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s:%d: write_lock grabbed in %s at %p(%d) %ld ticks&bslash;n&quot;
 comma
 id|bfile
@@ -654,6 +683,128 @@ id|started
 )paren
 suffix:semicolon
 )brace
+)brace
+DECL|function|_dbg_write_trylock
+r_int
+id|_dbg_write_trylock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|rw
+comma
+r_const
+r_char
+op_star
+id|bfile
+comma
+r_int
+id|bline
+)paren
+(brace
+macro_line|#if 0
+r_void
+op_star
+id|inline_pc
+op_assign
+id|__builtin_return_address
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_int
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* acquiring write lock in interrupt context, bad idea */
+id|pdc_printf
+c_func
+(paren
+l_string|&quot;write_lock caller: %s:%d, IRQs enabled,&bslash;n&quot;
+comma
+id|bfile
+comma
+id|bline
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Note: if interrupts are disabled (which is most likely), the printk&n;&t;will never show on the console. We might need a polling method to flush&n;&t;the dmesg buffer anyhow. */
+id|_raw_spin_lock
+c_func
+(paren
+op_amp
+id|rw-&gt;lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rw-&gt;counter
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* this basically never happens */
+id|_raw_spin_unlock
+c_func
+(paren
+op_amp
+id|rw-&gt;lock
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* got it.  now leave without unlocking */
+id|rw-&gt;counter
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* remember we are locked */
+macro_line|#if 0
+id|pdc_printf
+c_func
+(paren
+l_string|&quot;%s:%d: try write_lock grabbed in %s at %p(%d)&bslash;n&quot;
+comma
+id|bfile
+comma
+id|bline
+comma
+id|current-&gt;comm
+comma
+id|inline_pc
+comma
+id|cpu
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|_dbg_read_lock
 r_void
@@ -720,10 +871,9 @@ id|rw-&gt;counter
 op_increment
 suffix:semicolon
 macro_line|#if 0
-id|printk
+id|pdc_printf
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s:%d: read_lock grabbed in %s at %p(%d) %ld ticks&bslash;n&quot;
 comma
 id|bfile

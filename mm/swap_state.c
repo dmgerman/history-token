@@ -66,6 +66,8 @@ id|RADIX_TREE_INIT
 c_func
 (paren
 id|GFP_ATOMIC
+op_or
+id|__GFP_NOWARN
 )paren
 comma
 dot

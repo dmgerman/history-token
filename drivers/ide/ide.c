@@ -2695,14 +2695,12 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
-id|destroy_proc_ide_drives
+id|destroy_proc_ide_interface
 c_func
 (paren
 id|hwif
 )paren
 suffix:semicolon
-macro_line|#endif
 id|hwgroup
 op_assign
 id|hwif-&gt;hwgroup
@@ -7430,7 +7428,7 @@ l_string|&quot;autotune&quot;
 comma
 l_string|&quot;noautotune&quot;
 comma
-l_string|&quot;stroke&quot;
+l_string|&quot;minus8&quot;
 comma
 l_string|&quot;swapdata&quot;
 comma
@@ -7620,7 +7618,7 @@ op_assign
 id|IDE_TUNE_AUTO
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 op_minus
@@ -7632,19 +7630,7 @@ op_assign
 id|IDE_TUNE_NOAUTO
 suffix:semicolon
 r_goto
-id|done
-suffix:semicolon
-r_case
-op_minus
-l_int|8
-suffix:colon
-multiline_comment|/* stroke */
-id|drive-&gt;stroke
-op_assign
-l_int|1
-suffix:semicolon
-r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 op_minus
@@ -8255,7 +8241,7 @@ op_assign
 l_int|1
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 macro_line|#else
 r_goto
@@ -8272,7 +8258,7 @@ op_assign
 l_int|1
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 op_minus
@@ -8284,7 +8270,7 @@ op_assign
 l_int|1
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 op_minus
@@ -8310,7 +8296,7 @@ op_assign
 id|IDE_TUNE_NOAUTO
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 op_minus
@@ -8336,7 +8322,7 @@ op_assign
 id|IDE_TUNE_AUTO
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 op_minus
@@ -8366,7 +8352,7 @@ op_assign
 l_int|1
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 op_minus
@@ -8477,7 +8463,7 @@ op_assign
 id|ide_forced
 suffix:semicolon
 r_goto
-id|done
+id|obsolete_option
 suffix:semicolon
 r_case
 l_int|0
@@ -8504,6 +8490,17 @@ id|printk
 c_func
 (paren
 l_string|&quot; -- BAD OPTION&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+id|obsolete_option
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot; -- OBSOLETE OPTION, WILL BE REMOVED SOON!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

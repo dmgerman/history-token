@@ -2100,14 +2100,14 @@ op_logical_neg
 id|use_firmware
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; &t; * Size the bridge windows.&n;&t;&t; &t; */
+multiline_comment|/*&n;&t;&t;&t; * Size the bridge windows.&n;&t;&t;&t; */
 id|pci_bus_size_bridges
 c_func
 (paren
 id|bus
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; &t; * Assign resources.&n;&t;&t; &t; */
+multiline_comment|/*&n;&t;&t;&t; * Assign resources.&n;&t;&t;&t; */
 id|pci_bus_assign_resources
 c_func
 (paren

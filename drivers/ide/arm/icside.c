@@ -590,6 +590,9 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_ICS
+macro_line|#ifndef CONFIG_IDEDMA_ICS_AUTO
+macro_line|#warning CONFIG_IDEDMA_ICS_AUTO=n support is obsolete, and will be removed soon.
+macro_line|#endif
 multiline_comment|/*&n; * SG-DMA support.&n; *&n; * Similar to the BM-DMA, but we use the RiscPCs IOMD DMA controllers.&n; * There is only one DMA controller per card, which means that only&n; * one drive can be accessed at one time.  NOTE! We do not enforce that&n; * here, but we rely on the main IDE driver spotting that both&n; * interfaces use the same IRQ, which should guarantee this.&n; */
 DECL|function|icside_build_sglist
 r_static
@@ -1440,7 +1443,7 @@ op_star
 id|drive
 comma
 id|u8
-id|command
+id|cmd
 )paren
 (brace
 multiline_comment|/* issue cmd to drive */

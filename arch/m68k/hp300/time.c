@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
+macro_line|#include &lt;asm/blinken.h&gt;
 macro_line|#include &quot;ints.h&quot;
 multiline_comment|/* Clock hardware definitions */
 DECL|macro|CLOCKBASE
@@ -96,6 +97,15 @@ l_string|&quot;a&quot;
 (paren
 id|CLOCKBASE
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/* Turn off the network and SCSI leds */
+id|blinken_leds
+c_func
+(paren
+l_int|0
+comma
+l_int|0xe0
 )paren
 suffix:semicolon
 r_return

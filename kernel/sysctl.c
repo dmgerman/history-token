@@ -1489,7 +1489,7 @@ comma
 dot
 id|maxlen
 op_assign
-id|KMOD_PATH_LEN
+id|HOTPLUG_PATH_LEN
 comma
 dot
 id|mode
@@ -3800,6 +3800,7 @@ id|proc_dointvec
 comma
 )brace
 comma
+macro_line|#ifdef CONFIG_DNOTIFY
 (brace
 dot
 id|ctl_name
@@ -3838,6 +3839,7 @@ id|proc_dointvec
 comma
 )brace
 comma
+macro_line|#endif
 (brace
 dot
 id|ctl_name

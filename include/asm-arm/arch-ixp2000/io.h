@@ -5,7 +5,7 @@ mdefine_line|#define __ASM_ARM_ARCH_IO_H
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT&t;&t;0xffffffff
 DECL|macro|__mem_pci
-mdefine_line|#define __mem_pci(a)&t;&t;((unsigned long)(a))
+mdefine_line|#define __mem_pci(a)&t;&t;(a)
 multiline_comment|/*&n; * Pick up VMALLOC_END&n; */
 DECL|macro|___io
 mdefine_line|#define ___io(p)&t;&t;((unsigned long)((p)+IXP2000_PCI_IO_VIRT_BASE))

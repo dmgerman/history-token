@@ -25,19 +25,6 @@ macro_line|#ifndef CONFIG_PPC64
 macro_line|#include &lt;asm/mediabay.h&gt;
 macro_line|#endif
 macro_line|#include &quot;ide-timing.h&quot;
-r_extern
-r_void
-id|ide_do_request
-c_func
-(paren
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-comma
-r_int
-id|masked_irq
-)paren
-suffix:semicolon
 DECL|macro|IDE_PMAC_DEBUG
 mdefine_line|#define IDE_PMAC_DEBUG
 DECL|macro|DMA_WAIT_TIMEOUT
@@ -8478,36 +8465,6 @@ id|hwif-&gt;ide_dma_lostirq
 op_assign
 op_amp
 id|pmac_ide_dma_lostirq
-suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PMAC_AUTO
-r_if
-c_cond
-(paren
-op_logical_neg
-id|noautodma
-)paren
-id|hwif-&gt;autodma
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
-id|hwif-&gt;drives
-(braket
-l_int|0
-)braket
-dot
-id|autodma
-op_assign
-id|hwif-&gt;autodma
-suffix:semicolon
-id|hwif-&gt;drives
-(braket
-l_int|1
-)braket
-dot
-id|autodma
-op_assign
-id|hwif-&gt;autodma
 suffix:semicolon
 id|hwif-&gt;atapi_dma
 op_assign

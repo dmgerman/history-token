@@ -453,11 +453,6 @@ id|NR_BANKS
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
-r_struct
-id|meminfo
-id|meminfo
-suffix:semicolon
 multiline_comment|/*&n; * Early command line parameters.&n; */
 DECL|struct|early_params
 r_struct

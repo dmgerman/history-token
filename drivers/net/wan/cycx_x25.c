@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/wanrouter.h&gt;&t;/* WAN router definitions */
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* htons(), etc. */
 macro_line|#include &lt;linux/cyclomx.h&gt;&t;/* Cyclom 2X common user API definitions */
 macro_line|#include &lt;linux/cycx_x25.h&gt;&t;/* X.25 firmware API definitions */
+macro_line|#include &lt;net/x25device.h&gt;
 multiline_comment|/* Defines &amp; Macros */
 DECL|macro|CYCX_X25_MAX_CMD_RETRY
 mdefine_line|#define CYCX_X25_MAX_CMD_RETRY 5
@@ -6358,25 +6359,15 @@ id|ptr
 op_assign
 id|event
 suffix:semicolon
-id|skb-&gt;dev
-op_assign
-id|dev
-suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|htons
+id|x25_type_trans
 c_func
 (paren
-id|ETH_P_X25
+id|skb
+comma
+id|dev
 )paren
-suffix:semicolon
-id|skb-&gt;mac.raw
-op_assign
-id|skb-&gt;data
-suffix:semicolon
-id|skb-&gt;pkt_type
-op_assign
-id|PACKET_HOST
 suffix:semicolon
 id|netif_rx
 c_func

@@ -12,11 +12,13 @@ multiline_comment|/*&n; * The second extended filesystem constants/structures&n;
 multiline_comment|/*&n; * Define EXT3FS_DEBUG to produce debug messages&n; */
 DECL|macro|EXT3FS_DEBUG
 macro_line|#undef EXT3FS_DEBUG
-multiline_comment|/*&n; * Define EXT3_PREALLOCATE to preallocate data blocks for expanding files&n; */
-DECL|macro|EXT3_PREALLOCATE
-macro_line|#undef  EXT3_PREALLOCATE /* @@@ Fix this! */
-DECL|macro|EXT3_DEFAULT_PREALLOC_BLOCKS
-mdefine_line|#define EXT3_DEFAULT_PREALLOC_BLOCKS&t;8
+multiline_comment|/*&n; * Define EXT3_RESERVATION to reserve data blocks for expanding files&n; */
+DECL|macro|EXT3_DEFAULT_RESERVE_BLOCKS
+mdefine_line|#define EXT3_DEFAULT_RESERVE_BLOCKS     8
+DECL|macro|EXT3_MAX_RESERVE_BLOCKS
+mdefine_line|#define EXT3_MAX_RESERVE_BLOCKS         1024
+DECL|macro|EXT3_RESERVE_WINDOW_NOT_ALLOCATED
+mdefine_line|#define EXT3_RESERVE_WINDOW_NOT_ALLOCATED 0
 multiline_comment|/*&n; * Always enable hashed directories&n; */
 DECL|macro|CONFIG_EXT3_INDEX
 mdefine_line|#define CONFIG_EXT3_INDEX
@@ -231,6 +233,86 @@ DECL|macro|EXT3_STATE_JDATA
 mdefine_line|#define EXT3_STATE_JDATA&t;&t;0x00000001 /* journaled data exists */
 DECL|macro|EXT3_STATE_NEW
 mdefine_line|#define EXT3_STATE_NEW&t;&t;&t;0x00000002 /* inode is newly created */
+multiline_comment|/* Used to pass group descriptor data when online resize is done */
+DECL|struct|ext3_new_group_input
+r_struct
+id|ext3_new_group_input
+(brace
+DECL|member|group
+id|__u32
+id|group
+suffix:semicolon
+multiline_comment|/* Group number for this data */
+DECL|member|block_bitmap
+id|__u32
+id|block_bitmap
+suffix:semicolon
+multiline_comment|/* Absolute block number of block bitmap */
+DECL|member|inode_bitmap
+id|__u32
+id|inode_bitmap
+suffix:semicolon
+multiline_comment|/* Absolute block number of inode bitmap */
+DECL|member|inode_table
+id|__u32
+id|inode_table
+suffix:semicolon
+multiline_comment|/* Absolute block number of inode table start */
+DECL|member|blocks_count
+id|__u32
+id|blocks_count
+suffix:semicolon
+multiline_comment|/* Total number of blocks in this group */
+DECL|member|reserved_blocks
+id|__u16
+id|reserved_blocks
+suffix:semicolon
+multiline_comment|/* Number of reserved blocks in this group */
+DECL|member|unused
+id|__u16
+id|unused
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* The struct ext3_new_group_input in kernel space, with free_blocks_count */
+DECL|struct|ext3_new_group_data
+r_struct
+id|ext3_new_group_data
+(brace
+DECL|member|group
+id|__u32
+id|group
+suffix:semicolon
+DECL|member|block_bitmap
+id|__u32
+id|block_bitmap
+suffix:semicolon
+DECL|member|inode_bitmap
+id|__u32
+id|inode_bitmap
+suffix:semicolon
+DECL|member|inode_table
+id|__u32
+id|inode_table
+suffix:semicolon
+DECL|member|blocks_count
+id|__u32
+id|blocks_count
+suffix:semicolon
+DECL|member|reserved_blocks
+id|__u16
+id|reserved_blocks
+suffix:semicolon
+DECL|member|unused
+id|__u16
+id|unused
+suffix:semicolon
+DECL|member|free_blocks_count
+id|__u32
+id|free_blocks_count
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * ioctl commands&n; */
 DECL|macro|EXT3_IOC_GETFLAGS
 mdefine_line|#define&t;EXT3_IOC_GETFLAGS&t;&t;_IOR(&squot;f&squot;, 1, long)
@@ -240,6 +322,10 @@ DECL|macro|EXT3_IOC_GETVERSION
 mdefine_line|#define&t;EXT3_IOC_GETVERSION&t;&t;_IOR(&squot;f&squot;, 3, long)
 DECL|macro|EXT3_IOC_SETVERSION
 mdefine_line|#define&t;EXT3_IOC_SETVERSION&t;&t;_IOW(&squot;f&squot;, 4, long)
+DECL|macro|EXT3_IOC_GROUP_EXTEND
+mdefine_line|#define EXT3_IOC_GROUP_EXTEND&t;&t;_IOW(&squot;f&squot;, 7, unsigned long)
+DECL|macro|EXT3_IOC_GROUP_ADD
+mdefine_line|#define EXT3_IOC_GROUP_ADD&t;&t;_IOW(&squot;f&squot;, 8,struct ext3_new_group_input)
 DECL|macro|EXT3_IOC_GETVERSION_OLD
 mdefine_line|#define&t;EXT3_IOC_GETVERSION_OLD&t;&t;_IOR(&squot;v&squot;, 1, long)
 DECL|macro|EXT3_IOC_SETVERSION_OLD
@@ -248,6 +334,10 @@ macro_line|#ifdef CONFIG_JBD_DEBUG
 DECL|macro|EXT3_IOC_WAIT_FOR_READONLY
 mdefine_line|#define EXT3_IOC_WAIT_FOR_READONLY&t;_IOR(&squot;f&squot;, 99, long)
 macro_line|#endif
+DECL|macro|EXT3_IOC_GETRSVSZ
+mdefine_line|#define EXT3_IOC_GETRSVSZ&t;&t;_IOR(&squot;f&squot;, 5, long)
+DECL|macro|EXT3_IOC_SETRSVSZ
+mdefine_line|#define EXT3_IOC_SETRSVSZ&t;&t;_IOW(&squot;f&squot;, 6, long)
 multiline_comment|/*&n; * Structure of an inode on the disk&n; */
 DECL|struct|ext3_inode
 r_struct
@@ -526,43 +616,45 @@ DECL|macro|EXT3_ORPHAN_FS
 mdefine_line|#define&t;EXT3_ORPHAN_FS&t;&t;&t;0x0004&t;/* Orphans being recovered */
 multiline_comment|/*&n; * Mount flags&n; */
 DECL|macro|EXT3_MOUNT_CHECK
-mdefine_line|#define EXT3_MOUNT_CHECK&t;&t;0x0001&t;/* Do mount-time checks */
+mdefine_line|#define EXT3_MOUNT_CHECK&t;&t;0x00001&t;/* Do mount-time checks */
 DECL|macro|EXT3_MOUNT_OLDALLOC
-mdefine_line|#define EXT3_MOUNT_OLDALLOC&t;&t;0x0002  /* Don&squot;t use the new Orlov allocator */
+mdefine_line|#define EXT3_MOUNT_OLDALLOC&t;&t;0x00002  /* Don&squot;t use the new Orlov allocator */
 DECL|macro|EXT3_MOUNT_GRPID
-mdefine_line|#define EXT3_MOUNT_GRPID&t;&t;0x0004&t;/* Create files with directory&squot;s group */
+mdefine_line|#define EXT3_MOUNT_GRPID&t;&t;0x00004&t;/* Create files with directory&squot;s group */
 DECL|macro|EXT3_MOUNT_DEBUG
-mdefine_line|#define EXT3_MOUNT_DEBUG&t;&t;0x0008&t;/* Some debugging messages */
+mdefine_line|#define EXT3_MOUNT_DEBUG&t;&t;0x00008&t;/* Some debugging messages */
 DECL|macro|EXT3_MOUNT_ERRORS_CONT
-mdefine_line|#define EXT3_MOUNT_ERRORS_CONT&t;&t;0x0010&t;/* Continue on errors */
+mdefine_line|#define EXT3_MOUNT_ERRORS_CONT&t;&t;0x00010&t;/* Continue on errors */
 DECL|macro|EXT3_MOUNT_ERRORS_RO
-mdefine_line|#define EXT3_MOUNT_ERRORS_RO&t;&t;0x0020&t;/* Remount fs ro on errors */
+mdefine_line|#define EXT3_MOUNT_ERRORS_RO&t;&t;0x00020&t;/* Remount fs ro on errors */
 DECL|macro|EXT3_MOUNT_ERRORS_PANIC
-mdefine_line|#define EXT3_MOUNT_ERRORS_PANIC&t;&t;0x0040&t;/* Panic on errors */
+mdefine_line|#define EXT3_MOUNT_ERRORS_PANIC&t;&t;0x00040&t;/* Panic on errors */
 DECL|macro|EXT3_MOUNT_MINIX_DF
-mdefine_line|#define EXT3_MOUNT_MINIX_DF&t;&t;0x0080&t;/* Mimics the Minix statfs */
+mdefine_line|#define EXT3_MOUNT_MINIX_DF&t;&t;0x00080&t;/* Mimics the Minix statfs */
 DECL|macro|EXT3_MOUNT_NOLOAD
-mdefine_line|#define EXT3_MOUNT_NOLOAD&t;&t;0x0100&t;/* Don&squot;t use existing journal*/
+mdefine_line|#define EXT3_MOUNT_NOLOAD&t;&t;0x00100&t;/* Don&squot;t use existing journal*/
 DECL|macro|EXT3_MOUNT_ABORT
-mdefine_line|#define EXT3_MOUNT_ABORT&t;&t;0x0200&t;/* Fatal error detected */
+mdefine_line|#define EXT3_MOUNT_ABORT&t;&t;0x00200&t;/* Fatal error detected */
 DECL|macro|EXT3_MOUNT_DATA_FLAGS
-mdefine_line|#define EXT3_MOUNT_DATA_FLAGS&t;&t;0x0C00&t;/* Mode for data writes: */
+mdefine_line|#define EXT3_MOUNT_DATA_FLAGS&t;&t;0x00C00&t;/* Mode for data writes: */
 DECL|macro|EXT3_MOUNT_JOURNAL_DATA
-mdefine_line|#define EXT3_MOUNT_JOURNAL_DATA&t;0x0400&t;/* Write data to journal */
+mdefine_line|#define EXT3_MOUNT_JOURNAL_DATA&t;&t;0x00400&t;/* Write data to journal */
 DECL|macro|EXT3_MOUNT_ORDERED_DATA
-mdefine_line|#define EXT3_MOUNT_ORDERED_DATA&t;0x0800&t;/* Flush data before commit */
+mdefine_line|#define EXT3_MOUNT_ORDERED_DATA&t;&t;0x00800&t;/* Flush data before commit */
 DECL|macro|EXT3_MOUNT_WRITEBACK_DATA
-mdefine_line|#define EXT3_MOUNT_WRITEBACK_DATA&t;0x0C00&t;/* No data ordering */
+mdefine_line|#define EXT3_MOUNT_WRITEBACK_DATA&t;0x00C00&t;/* No data ordering */
 DECL|macro|EXT3_MOUNT_UPDATE_JOURNAL
-mdefine_line|#define EXT3_MOUNT_UPDATE_JOURNAL&t;0x1000&t;/* Update the journal format */
+mdefine_line|#define EXT3_MOUNT_UPDATE_JOURNAL&t;0x01000&t;/* Update the journal format */
 DECL|macro|EXT3_MOUNT_NO_UID32
-mdefine_line|#define EXT3_MOUNT_NO_UID32&t;&t;0x2000  /* Disable 32-bit UIDs */
+mdefine_line|#define EXT3_MOUNT_NO_UID32&t;&t;0x02000  /* Disable 32-bit UIDs */
 DECL|macro|EXT3_MOUNT_XATTR_USER
-mdefine_line|#define EXT3_MOUNT_XATTR_USER&t;&t;0x4000&t;/* Extended user attributes */
+mdefine_line|#define EXT3_MOUNT_XATTR_USER&t;&t;0x04000&t;/* Extended user attributes */
 DECL|macro|EXT3_MOUNT_POSIX_ACL
-mdefine_line|#define EXT3_MOUNT_POSIX_ACL&t;&t;0x8000&t;/* POSIX Access Control Lists */
+mdefine_line|#define EXT3_MOUNT_POSIX_ACL&t;&t;0x08000&t;/* POSIX Access Control Lists */
+DECL|macro|EXT3_MOUNT_RESERVATION
+mdefine_line|#define EXT3_MOUNT_RESERVATION&t;&t;0x10000&t;/* Preallocation */
 DECL|macro|EXT3_MOUNT_BARRIER
-mdefine_line|#define EXT3_MOUNT_BARRIER&t;&t;0x10000 /* Use block barriers */
+mdefine_line|#define EXT3_MOUNT_BARRIER&t;&t;0x20000 /* Use block barriers */
 multiline_comment|/* Compatibility, for having both ext2_fs.h and ext3_fs.h included at once */
 macro_line|#ifndef _LINUX_EXT2_FS_H
 DECL|macro|clear_opt
@@ -819,10 +911,11 @@ id|__u8
 id|s_prealloc_dir_blocks
 suffix:semicolon
 multiline_comment|/* Nr to preallocate for dirs */
-DECL|member|s_padding1
+DECL|member|s_reserved_gdt_blocks
 id|__u16
-id|s_padding1
+id|s_reserved_gdt_blocks
 suffix:semicolon
+multiline_comment|/* Per group desc for online growth */
 multiline_comment|/*&n;&t; * Journaling support valid if EXT3_FEATURE_COMPAT_HAS_JOURNAL set.&n;&t; */
 DECL|member|s_journal_uuid
 multiline_comment|/*D0*/
@@ -1334,12 +1427,6 @@ comma
 r_int
 r_int
 comma
-id|__u32
-op_star
-comma
-id|__u32
-op_star
-comma
 r_int
 op_star
 )paren
@@ -1360,6 +1447,27 @@ r_int
 comma
 r_int
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ext3_free_blocks_sb
+(paren
+id|handle_t
+op_star
+comma
+r_struct
+id|super_block
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -1417,6 +1525,22 @@ comma
 r_int
 op_star
 id|retries
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|rsv_window_add
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_struct
+id|reserve_window_node
+op_star
+id|rsv
 )paren
 suffix:semicolon
 multiline_comment|/* dir.c */
@@ -1727,7 +1851,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|ext3_discard_prealloc
+id|ext3_discard_reservation
 (paren
 r_struct
 id|inode
@@ -1852,6 +1976,43 @@ comma
 id|__u32
 op_star
 id|next_hash
+)paren
+suffix:semicolon
+multiline_comment|/* resize.c */
+r_extern
+r_int
+id|ext3_group_add
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_struct
+id|ext3_new_group_data
+op_star
+id|input
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ext3_group_extend
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_struct
+id|ext3_super_block
+op_star
+id|es
+comma
+r_int
+r_int
+id|n_blocks_count
 )paren
 suffix:semicolon
 multiline_comment|/* super.c */

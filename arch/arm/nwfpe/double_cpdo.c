@@ -295,6 +295,15 @@ id|u.f64
 op_assign
 id|rFm
 suffix:semicolon
+macro_line|#ifdef __ARMEB__
+id|u.i
+(braket
+l_int|0
+)braket
+op_xor_assign
+l_int|0x80000000
+suffix:semicolon
+macro_line|#else
 id|u.i
 (braket
 l_int|1
@@ -302,6 +311,7 @@ l_int|1
 op_xor_assign
 l_int|0x80000000
 suffix:semicolon
+macro_line|#endif
 r_return
 id|u.f64
 suffix:semicolon
@@ -324,6 +334,15 @@ id|u.f64
 op_assign
 id|rFm
 suffix:semicolon
+macro_line|#ifdef __ARMEB__
+id|u.i
+(braket
+l_int|0
+)braket
+op_and_assign
+l_int|0x7fffffff
+suffix:semicolon
+macro_line|#else
 id|u.i
 (braket
 l_int|1
@@ -331,6 +350,7 @@ l_int|1
 op_and_assign
 l_int|0x7fffffff
 suffix:semicolon
+macro_line|#endif
 r_return
 id|u.f64
 suffix:semicolon

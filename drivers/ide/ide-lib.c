@@ -1593,13 +1593,6 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-DECL|variable|ide_toggle_bounce
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_toggle_bounce
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;ide_set_xfer_rate&t;-&t;set transfer rate&n; *&t;@drive: drive to set&n; *&t;@speed: speed to attempt to set&n; *&t;&n; *&t;General helper for setting the speed of an IDE device. This&n; *&t;function knows about user enforced limits from the configuration&n; *&t;which speedproc() does not.  High level drivers should never&n; *&t;invoke speedproc() directly.&n; */
 DECL|function|ide_set_xfer_rate
 r_int

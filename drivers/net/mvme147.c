@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 multiline_comment|/* Used for the temporal inet entries and routing */
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
-macro_line|#include &lt;linux/dio.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -35,11 +34,6 @@ DECL|member|lance
 r_struct
 id|lance_private
 id|lance
-suffix:semicolon
-DECL|member|base
-r_void
-op_star
-id|base
 suffix:semicolon
 DECL|member|ram
 r_int
@@ -77,7 +71,7 @@ id|m147lance_writerap
 c_func
 (paren
 r_struct
-id|m147lance_private
+id|lance_private
 op_star
 id|lp
 comma
@@ -92,7 +86,7 @@ id|m147lance_writerdp
 c_func
 (paren
 r_struct
-id|m147lance_private
+id|lance_private
 op_star
 id|lp
 comma
@@ -108,7 +102,7 @@ id|m147lance_readrdp
 c_func
 (paren
 r_struct
-id|m147lance_private
+id|lance_private
 op_star
 id|lp
 )paren
@@ -493,16 +487,9 @@ op_star
 id|name
 suffix:semicolon
 multiline_comment|/* discards const, shut up gcc */
-id|lp-&gt;lance.ll
+id|lp-&gt;lance.base
 op_assign
-(paren
-r_struct
-id|lance_regs
-op_star
-)paren
-(paren
 id|dev-&gt;base_addr
-)paren
 suffix:semicolon
 id|lp-&gt;lance.init_block
 op_assign
@@ -621,7 +608,7 @@ id|m147lance_writerap
 c_func
 (paren
 r_struct
-id|m147lance_private
+id|lance_private
 op_star
 id|lp
 comma
@@ -630,9 +617,15 @@ r_int
 id|value
 )paren
 (brace
-id|lp-&gt;lance.ll-&gt;rap
-op_assign
+id|out_be16
+c_func
+(paren
+id|lp-&gt;base
+op_plus
+id|LANCE_RAP
+comma
 id|value
+)paren
 suffix:semicolon
 )brace
 DECL|function|m147lance_writerdp
@@ -642,7 +635,7 @@ id|m147lance_writerdp
 c_func
 (paren
 r_struct
-id|m147lance_private
+id|lance_private
 op_star
 id|lp
 comma
@@ -651,9 +644,15 @@ r_int
 id|value
 )paren
 (brace
-id|lp-&gt;lance.ll-&gt;rdp
-op_assign
+id|out_be16
+c_func
+(paren
+id|lp-&gt;base
+op_plus
+id|LANCE_RDP
+comma
 id|value
+)paren
 suffix:semicolon
 )brace
 DECL|function|m147lance_readrdp
@@ -664,13 +663,19 @@ id|m147lance_readrdp
 c_func
 (paren
 r_struct
-id|m147lance_private
+id|lance_private
 op_star
 id|lp
 )paren
 (brace
 r_return
-id|lp-&gt;lance.ll-&gt;rdp
+id|in_be16
+c_func
+(paren
+id|lp-&gt;base
+op_plus
+id|LANCE_RDP
+)paren
 suffix:semicolon
 )brace
 DECL|function|m147lance_open

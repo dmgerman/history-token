@@ -1,32 +1,43 @@
-multiline_comment|/* linux/include/asm-arm/arch-s3c2410/system.h&n; *&n; * (c) 2003 Simtec Electronics&n; *  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 - System function defines and includes&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  12-May-2003 BJD  Created file&n; *  14-May-2003 BJD  Removed idle to aid debugging&n; *  12-Jun-2003 BJD  Added reset via watchdog&n; *  04-Sep-2003 BJD  Moved to v2.6&n; */
+multiline_comment|/* linux/include/asm-arm/arch-s3c2410/system.h&n; *&n; * (c) 2003 Simtec Electronics&n; *  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 - System function defines and includes&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  12-May-2003 BJD  Created file&n; *  14-May-2003 BJD  Removed idle to aid debugging&n; *  12-Jun-2003 BJD  Added reset via watchdog&n; *  04-Sep-2003 BJD  Moved to v2.6&n; *  28-Oct-2004 BJD  Added over-ride for idle, and fixed reset panic()&n; */
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/arch/map.h&gt;
+macro_line|#include &lt;asm/arch/idle.h&gt;
 macro_line|#include &lt;asm/arch/regs-watchdog.h&gt;
 macro_line|#include &lt;asm/arch/regs-clock.h&gt;
-r_extern
+DECL|variable|s3c24xx_idle
 r_void
-id|printascii
-c_func
 (paren
-r_const
-r_char
 op_star
+id|s3c24xx_idle
+)paren
+(paren
+r_void
 )paren
 suffix:semicolon
+DECL|function|s3c24xx_default_idle
 r_void
-DECL|function|arch_idle
-id|arch_idle
+id|s3c24xx_default_idle
 c_func
 (paren
 r_void
 )paren
 (brace
-singleline_comment|//unsigned long reg = S3C2410_CLKCON;
-singleline_comment|//printascii(&quot;arch_idle:&bslash;n&quot;);
+r_int
+r_int
+id|reg
+op_assign
+id|S3C2410_CLKCON
+suffix:semicolon
+r_int
+r_int
+id|tmp
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/* idle the system by using the idle mode which will wait for an&n;&t; * interrupt to happen before restarting the system.&n;&t; */
-multiline_comment|/* going into idle state upsets the jtag, so don&squot;t do it&n;&t; * at the moment */
-macro_line|#if 0
+multiline_comment|/* Warning: going into idle state upsets jtag scanning */
 id|__raw_writel
 c_func
 (paren
@@ -62,7 +73,7 @@ op_increment
 )paren
 (brace
 id|tmp
-op_assign
+op_add_assign
 id|__raw_readl
 c_func
 (paren
@@ -71,7 +82,7 @@ id|reg
 suffix:semicolon
 multiline_comment|/* ensure loop not optimised out */
 )brace
-singleline_comment|//printascii(&quot;arch_idle: done&bslash;n&quot;);
+multiline_comment|/* this bit is not cleared on re-start... */
 id|__raw_writel
 c_func
 (paren
@@ -91,7 +102,35 @@ comma
 id|reg
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
+DECL|function|arch_idle
+r_static
+r_void
+id|arch_idle
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|s3c24xx_idle
+op_ne
+l_int|NULL
+)paren
+(paren
+id|s3c24xx_idle
+)paren
+(paren
+)paren
+suffix:semicolon
+r_else
+id|s3c24xx_default_idle
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -176,9 +215,10 @@ c_func
 l_int|5000
 )paren
 suffix:semicolon
-id|panic
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Watchdog reset failed to assert reset&bslash;n&quot;
 )paren
 suffix:semicolon
