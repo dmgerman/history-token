@@ -1,4 +1,6 @@
 multiline_comment|/*&n; *&t;Intel CPU Microcode Update Driver for Linux&n; *&n; *&t;Copyright (C) 2000-2004 Tigran Aivazian&n; *&n; *&t;This driver allows to upgrade microcode on Intel processors&n; *&t;belonging to IA-32 family - PentiumPro, Pentium II, &n; *&t;Pentium III, Xeon, Pentium 4, etc.&n; *&n; *&t;Reference: Section 8.10 of Volume III, Intel Pentium 4 Manual, &n; *&t;Order Number 245472 or free download from:&n; *&t;&t;&n; *&t;http://developer.intel.com/design/pentium4/manuals/245472.htm&n; *&n; *&t;For more information, go to http://www.urbanmyth.org/microcode&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;1.0&t;16 Feb 2000, Tigran Aivazian &lt;tigran@sco.com&gt;&n; *&t;&t;Initial release.&n; *&t;1.01&t;18 Feb 2000, Tigran Aivazian &lt;tigran@sco.com&gt;&n; *&t;&t;Added read() support + cleanups.&n; *&t;1.02&t;21 Feb 2000, Tigran Aivazian &lt;tigran@sco.com&gt;&n; *&t;&t;Added &squot;device trimming&squot; support. open(O_WRONLY) zeroes&n; *&t;&t;and frees the saved copy of applied microcode.&n; *&t;1.03&t;29 Feb 2000, Tigran Aivazian &lt;tigran@sco.com&gt;&n; *&t;&t;Made to use devfs (/dev/cpu/microcode) + cleanups.&n; *&t;1.04&t;06 Jun 2000, Simon Trimmer &lt;simon@veritas.com&gt;&n; *&t;&t;Added misc device support (now uses both devfs and misc).&n; *&t;&t;Added MICROCODE_IOCFREE ioctl to clear memory.&n; *&t;1.05&t;09 Jun 2000, Simon Trimmer &lt;simon@veritas.com&gt;&n; *&t;&t;Messages for error cases (non Intel &amp; no suitable microcode).&n; *&t;1.06&t;03 Aug 2000, Tigran Aivazian &lt;tigran@veritas.com&gt;&n; *&t;&t;Removed -&gt;release(). Removed exclusive open and status bitmap.&n; *&t;&t;Added microcode_rwsem to serialize read()/write()/ioctl().&n; *&t;&t;Removed global kernel lock usage.&n; *&t;1.07&t;07 Sep 2000, Tigran Aivazian &lt;tigran@veritas.com&gt;&n; *&t;&t;Write 0 to 0x8B msr and then cpuid before reading revision,&n; *&t;&t;so that it works even if there were no update done by the&n; *&t;&t;BIOS. Otherwise, reading from 0x8B gives junk (which happened&n; *&t;&t;to be 0 on my machine which is why it worked even when I&n; *&t;&t;disabled update by the BIOS)&n; *&t;&t;Thanks to Eric W. Biederman &lt;ebiederman@lnxi.com&gt; for the fix.&n; *&t;1.08&t;11 Dec 2000, Richard Schaal &lt;richard.schaal@intel.com&gt; and&n; *&t;&t;&t;     Tigran Aivazian &lt;tigran@veritas.com&gt;&n; *&t;&t;Intel Pentium 4 processor support and bugfixes.&n; *&t;1.09&t;30 Oct 2001, Tigran Aivazian &lt;tigran@veritas.com&gt;&n; *&t;&t;Bugfix for HT (Hyper-Threading) enabled processors&n; *&t;&t;whereby processor resources are shared by all logical processors&n; *&t;&t;in a single CPU package.&n; *&t;1.10&t;28 Feb 2002 Asit K Mallick &lt;asit.k.mallick@intel.com&gt; and&n; *&t;&t;Tigran Aivazian &lt;tigran@veritas.com&gt;,&n; *&t;&t;Serialize updates as required on HT processors due to speculative&n; *&t;&t;nature of implementation.&n; *&t;1.11&t;22 Mar 2002 Tigran Aivazian &lt;tigran@veritas.com&gt;&n; *&t;&t;Fix the panic when writing zero-length microcode chunk.&n; *&t;1.12&t;29 Sep 2003 Nitin Kamble &lt;nitin.a.kamble@intel.com&gt;, &n; *&t;&t;Jun Nakajima &lt;jun.nakajima@intel.com&gt;&n; *&t;&t;Support for the microcode updates in the new format.&n; *&t;1.13&t;10 Oct 2003 Tigran Aivazian &lt;tigran@veritas.com&gt;&n; *&t;&t;Removed -&gt;read() method and obsoleted MICROCODE_IOCFREE ioctl&n; *&t;&t;because we no longer hold a copy of applied microcode &n; *&t;&t;in kernel memory.&n; *&t;1.14&t;25 Jun 2004 Tigran Aivazian &lt;tigran@veritas.com&gt;&n; *&t;&t;Fix sigmatch() macro to handle old CPUs with pf == 0.&n; *&t;&t;Thanks to Stuart Swales for pointing out this bug.&n; */
+singleline_comment|//#define DEBUG /* pr_debug */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -30,15 +32,6 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 DECL|macro|MICROCODE_VERSION
 mdefine_line|#define MICROCODE_VERSION &t;&quot;1.14&quot;
-DECL|macro|MICRO_DEBUG
-mdefine_line|#define MICRO_DEBUG &t;&t;0
-macro_line|#if MICRO_DEBUG
-DECL|macro|dprintk
-mdefine_line|#define dprintk(x...) printk(KERN_INFO x)
-macro_line|#else
-DECL|macro|dprintk
-mdefine_line|#define dprintk(x...)
-macro_line|#endif
 DECL|macro|DEFAULT_UCODE_DATASIZE
 mdefine_line|#define DEFAULT_UCODE_DATASIZE &t;(2000) &t;  /* 2000 bytes */
 DECL|macro|MC_HEADER_SIZE
@@ -385,7 +378,7 @@ comma
 id|uci-&gt;rev
 )paren
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;microcode: collect_cpu_info : sig=0x%x, pf=0x%x, rev=0x%x&bslash;n&quot;
@@ -430,13 +423,13 @@ id|ucode_cpu_info
 op_plus
 id|cpu_num
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;Microcode Found.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;   Header Revision 0x%x&bslash;n&quot;
@@ -444,7 +437,7 @@ comma
 id|mc_header-&gt;hdrver
 )paren
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;   Loader Revision 0x%x&bslash;n&quot;
@@ -452,7 +445,7 @@ comma
 id|mc_header-&gt;ldrver
 )paren
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;   Revision 0x%x &bslash;n&quot;
@@ -460,7 +453,7 @@ comma
 id|mc_header-&gt;rev
 )paren
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;   Date %x/%x/%x&bslash;n&quot;
@@ -492,7 +485,7 @@ l_int|0xFFFF
 )paren
 )paren
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;   Signature 0x%x&bslash;n&quot;
@@ -500,7 +493,7 @@ comma
 id|sig
 )paren
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;   Type 0x%x Family 0x%x Model 0x%x Stepping 0x%x&bslash;n&quot;
@@ -544,7 +537,7 @@ l_int|0xf
 )paren
 )paren
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;   Processor Flags 0x%x&bslash;n&quot;
@@ -552,7 +545,7 @@ comma
 id|pf
 )paren
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;   Checksum 0x%x&bslash;n&quot;
@@ -618,7 +611,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;microcode: CPU%d found a matching microcode update with &quot;
