@@ -1064,13 +1064,6 @@ r_struct
 id|rpc_task
 op_star
 id|task
-comma
-r_int
-r_int
-id|count
-comma
-r_int
-id|eof
 )paren
 (brace
 r_struct
@@ -1099,6 +1092,12 @@ id|fattr
 op_assign
 op_amp
 id|data-&gt;fattr
+suffix:semicolon
+r_int
+r_int
+id|count
+op_assign
+id|data-&gt;res.count
 suffix:semicolon
 id|dprintk
 c_func
@@ -1212,7 +1211,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|eof
+id|data-&gt;res.eof
 op_logical_or
 (paren
 (paren

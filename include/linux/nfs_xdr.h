@@ -1565,48 +1565,6 @@ suffix:semicolon
 multiline_comment|/* request */
 )brace
 suffix:semicolon
-DECL|struct|nfs4_read
-r_struct
-id|nfs4_read
-(brace
-DECL|member|rd_offset
-id|u64
-id|rd_offset
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|rd_length
-id|u32
-id|rd_length
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|rd_eof
-id|u32
-op_star
-id|rd_eof
-suffix:semicolon
-multiline_comment|/* response */
-DECL|member|rd_bytes_read
-id|u32
-op_star
-id|rd_bytes_read
-suffix:semicolon
-multiline_comment|/* response */
-DECL|member|rd_pages
-r_struct
-id|page
-op_star
-op_star
-id|rd_pages
-suffix:semicolon
-multiline_comment|/* zero-copy data */
-DECL|member|rd_pgbase
-r_int
-r_int
-id|rd_pgbase
-suffix:semicolon
-multiline_comment|/* zero-copy data */
-)brace
-suffix:semicolon
 DECL|struct|nfs4_readdir
 r_struct
 id|nfs4_readdir
@@ -1925,11 +1883,6 @@ r_struct
 id|nfs4_putfh
 id|putfh
 suffix:semicolon
-DECL|member|read
-r_struct
-id|nfs4_read
-id|read
-suffix:semicolon
 DECL|member|readdir
 r_struct
 id|nfs4_readdir
@@ -2099,10 +2052,6 @@ id|pagevec
 id|NFS_READ_MAXIOV
 )braket
 suffix:semicolon
-r_union
-(brace
-r_struct
-(brace
 DECL|member|args
 r_struct
 id|nfs_readargs
@@ -2113,44 +2062,14 @@ r_struct
 id|nfs_readres
 id|res
 suffix:semicolon
-DECL|member|v3
-)brace
-id|v3
-suffix:semicolon
-multiline_comment|/* also v2 */
 macro_line|#ifdef CONFIG_NFS_V4
-r_struct
-(brace
-DECL|member|compound
-r_struct
-id|nfs4_compound
-id|compound
+DECL|member|timestamp
+r_int
+r_int
+id|timestamp
 suffix:semicolon
-DECL|member|ops
-r_struct
-id|nfs4_op
-id|ops
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|res_count
-id|u32
-id|res_count
-suffix:semicolon
-DECL|member|res_eof
-id|u32
-id|res_eof
-suffix:semicolon
-DECL|member|v4
-)brace
-id|v4
-suffix:semicolon
+multiline_comment|/* For lease renewal */
 macro_line|#endif
-DECL|member|u
-)brace
-id|u
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|nfs_write_data

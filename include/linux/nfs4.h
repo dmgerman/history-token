@@ -546,6 +546,9 @@ DECL|enumerator|NFSPROC4_CLNT_COMPOUND
 id|NFSPROC4_CLNT_COMPOUND
 comma
 multiline_comment|/* Soon to be unused */
+DECL|enumerator|NFSPROC4_CLNT_READ
+id|NFSPROC4_CLNT_READ
+comma
 )brace
 suffix:semicolon
 macro_line|#endif

@@ -1147,13 +1147,6 @@ c_func
 r_struct
 id|rpc_task
 op_star
-comma
-r_int
-r_int
-id|count
-comma
-r_int
-id|eof
 )paren
 suffix:semicolon
 r_extern
