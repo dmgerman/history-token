@@ -545,7 +545,7 @@ l_int|0x0002
 )paren
 comma
 )brace
-id|__attrobite__
+id|__attribute__
 (paren
 (paren
 id|__packed__
