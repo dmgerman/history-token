@@ -294,6 +294,7 @@ DECL|function|enable_slot
 r_static
 r_int
 id|enable_slot
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -309,11 +310,6 @@ op_assign
 id|hotplug_slot
 op_member_access_from_pointer
 r_private
-suffix:semicolon
-r_int
-id|retval
-op_assign
-l_int|0
 suffix:semicolon
 id|dbg
 c_func
@@ -326,16 +322,12 @@ id|hotplug_slot-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* enable the specified slot */
-id|retval
-op_assign
+r_return
 id|acpiphp_enable_slot
 c_func
 (paren
 id|slot-&gt;acpi_slot
 )paren
-suffix:semicolon
-r_return
-id|retval
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * disable_slot - disable and power off a slot&n; * @hotplug_slot: slot to disable&n; *&n; * Actual tasks are done in acpiphp_disable_slot()&n; *&n; */
@@ -343,6 +335,7 @@ DECL|function|disable_slot
 r_static
 r_int
 id|disable_slot
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -359,11 +352,6 @@ id|hotplug_slot
 op_member_access_from_pointer
 r_private
 suffix:semicolon
-r_int
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -375,16 +363,12 @@ id|hotplug_slot-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* disable the specified slot */
-id|retval
-op_assign
+r_return
 id|acpiphp_disable_slot
 c_func
 (paren
 id|slot-&gt;acpi_slot
 )paren
-suffix:semicolon
-r_return
-id|retval
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * set_attention_status - set attention LED&n; *&n; * TBD:&n; * ACPI doesn&squot;t have known method to manipulate&n; * attention status LED.&n; *&n; */
@@ -392,6 +376,7 @@ DECL|function|set_attention_status
 r_static
 r_int
 id|set_attention_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -402,11 +387,6 @@ id|u8
 id|status
 )paren
 (brace
-r_int
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -447,7 +427,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
-id|retval
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * hardware_test - hardware test&n; *&n; * We have nothing to do for now...&n; *&n; */
@@ -455,6 +435,7 @@ DECL|function|hardware_test
 r_static
 r_int
 id|hardware_test
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -474,11 +455,6 @@ id|hotplug_slot
 op_member_access_from_pointer
 r_private
 suffix:semicolon
-r_int
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -495,13 +471,9 @@ c_func
 l_string|&quot;No hardware tests are defined for this driver&bslash;n&quot;
 )paren
 suffix:semicolon
-id|retval
-op_assign
+r_return
 op_minus
 id|ENODEV
-suffix:semicolon
-r_return
-id|retval
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * get_power_status - get power status of a slot&n; * @hotplug_slot: slot to get status&n; * @value: pointer to store status&n; *&n; * Some platforms may not implement _STA method properly.&n; * In that case, the value returned may not be reliable.&n; *&n; */
@@ -509,6 +481,7 @@ DECL|function|get_power_status
 r_static
 r_int
 id|get_power_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -528,11 +501,6 @@ op_assign
 id|hotplug_slot
 op_member_access_from_pointer
 r_private
-suffix:semicolon
-r_int
-id|retval
-op_assign
-l_int|0
 suffix:semicolon
 id|dbg
 c_func
@@ -554,7 +522,7 @@ id|slot-&gt;acpi_slot
 )paren
 suffix:semicolon
 r_return
-id|retval
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * get_attention_status - get attention LED status&n; *&n; * TBD:&n; * ACPI doesn&squot;t provide any formal means to access attention LED status.&n; *&n; */
@@ -562,6 +530,7 @@ DECL|function|get_attention_status
 r_static
 r_int
 id|get_attention_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -573,11 +542,6 @@ op_star
 id|value
 )paren
 (brace
-r_int
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -594,7 +558,7 @@ op_assign
 id|hotplug_slot-&gt;info-&gt;attention_status
 suffix:semicolon
 r_return
-id|retval
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * get_latch_status - get latch status of a slot&n; * @hotplug_slot: slot to get status&n; * @value: pointer to store status&n; *&n; * ACPI doesn&squot;t provide any formal means to access latch status.&n; * Instead, we fake latch status from _STA&n; *&n; */
@@ -602,6 +566,7 @@ DECL|function|get_latch_status
 r_static
 r_int
 id|get_latch_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -621,11 +586,6 @@ op_assign
 id|hotplug_slot
 op_member_access_from_pointer
 r_private
-suffix:semicolon
-r_int
-id|retval
-op_assign
-l_int|0
 suffix:semicolon
 id|dbg
 c_func
@@ -647,7 +607,7 @@ id|slot-&gt;acpi_slot
 )paren
 suffix:semicolon
 r_return
-id|retval
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * get_adapter_status - get adapter status of a slot&n; * @hotplug_slot: slot to get status&n; * @value: pointer to store status&n; *&n; * ACPI doesn&squot;t provide any formal means to access adapter status.&n; * Instead, we fake adapter status from _STA&n; *&n; */
@@ -655,6 +615,7 @@ DECL|function|get_adapter_status
 r_static
 r_int
 id|get_adapter_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -674,11 +635,6 @@ op_assign
 id|hotplug_slot
 op_member_access_from_pointer
 r_private
-suffix:semicolon
-r_int
-id|retval
-op_assign
-l_int|0
 suffix:semicolon
 id|dbg
 c_func
@@ -700,7 +656,7 @@ id|slot-&gt;acpi_slot
 )paren
 suffix:semicolon
 r_return
-id|retval
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * get_address - get pci address of a slot&n; * @hotplug_slot: slot to get status&n; * @busdev: pointer to struct pci_busdev (seg, bus, dev)&n; *&n; */
@@ -708,6 +664,7 @@ DECL|function|get_address
 r_static
 r_int
 id|get_address
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -727,11 +684,6 @@ op_assign
 id|hotplug_slot
 op_member_access_from_pointer
 r_private
-suffix:semicolon
-r_int
-id|retval
-op_assign
-l_int|0
 suffix:semicolon
 id|dbg
 c_func
@@ -753,7 +705,7 @@ id|slot-&gt;acpi_slot
 )paren
 suffix:semicolon
 r_return
-id|retval
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* return dummy value because ACPI doesn&squot;t provide any method... */
@@ -865,6 +817,7 @@ DECL|function|make_slot_name
 r_static
 r_void
 id|make_slot_name
+c_func
 (paren
 r_struct
 id|slot
@@ -948,6 +901,7 @@ r_static
 r_int
 id|__init
 id|init_slots
+c_func
 (paren
 r_void
 )paren
