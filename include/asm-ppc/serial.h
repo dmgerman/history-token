@@ -13,7 +13,7 @@ macro_line|#include &lt;platforms/powerpmc250_serial.h&gt;
 macro_line|#elif defined(CONFIG_LOPEC)
 macro_line|#include &lt;platforms/lopec_serial.h&gt;
 macro_line|#elif defined(CONFIG_MCPN765)
-macro_line|#include &lt;platforms/mcpn765_serial.h&gt;
+macro_line|#include &lt;platforms/mcpn765.h&gt;
 macro_line|#elif defined(CONFIG_MVME5100)
 macro_line|#include &lt;platforms/mvme5100_serial.h&gt;
 macro_line|#elif defined(CONFIG_PRPMC750)

@@ -39,7 +39,6 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/hawk.h&gt;
 macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#include &quot;mcpn765.h&quot;
-macro_line|#include &quot;mcpn765_serial.h&quot;
 DECL|variable|__initdata
 r_static
 id|u_char
