@@ -33,9 +33,13 @@ r_void
 id|isdn_ciscohdlck_receive
 c_func
 (paren
+id|isdn_net_dev
+op_star
+id|p
+comma
 id|isdn_net_local
 op_star
-id|lp
+id|olp
 comma
 r_struct
 id|sk_buff

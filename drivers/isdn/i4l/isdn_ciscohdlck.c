@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Linux ISDN subsystem, CISCO HDLC network interfaces&n; *&n; * Copyright 1994-1998  by Fritz Elfert (fritz@isdn4linux.de)&n; *           1995,96    by Thinking Objects Software GmbH Wuerzburg&n; *           1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *           1999-2002  by Kai Germaschewski &lt;kai@germaschewski.name&gt;&n; *           2001       by Bjoern A. Zeeb &lt;i4l@zabbadoz.net&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For info on the protocol, see http://i4l.zabbadoz.net/i4l/cisco-hdlc.txt&n; */
 macro_line|#include &quot;isdn_common.h&quot;
 macro_line|#include &quot;isdn_net.h&quot;
+macro_line|#include &quot;isdn_ciscohdlck.h&quot;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 multiline_comment|/* &n; * CISCO HDLC keepalive specific stuff&n; */
 r_static
@@ -80,6 +81,7 @@ id|skb
 suffix:semicolon
 )brace
 multiline_comment|/* cisco hdlck device private ioctls */
+r_static
 r_int
 DECL|function|isdn_ciscohdlck_dev_ioctl
 id|isdn_ciscohdlck_dev_ioctl
@@ -1503,9 +1505,13 @@ DECL|function|isdn_ciscohdlck_receive
 id|isdn_ciscohdlck_receive
 c_func
 (paren
+id|isdn_net_dev
+op_star
+id|idev
+comma
 id|isdn_net_local
 op_star
-id|lp
+id|olp
 comma
 r_struct
 id|sk_buff
@@ -1513,6 +1519,13 @@ op_star
 id|skb
 )paren
 (brace
+id|isdn_net_local
+op_star
+id|lp
+op_assign
+op_amp
+id|idev-&gt;local
+suffix:semicolon
 r_int
 r_char
 op_star
@@ -1583,6 +1596,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|addr
 op_ne
 id|CISCO_ADDR_UNICAST
@@ -1591,25 +1605,7 @@ id|addr
 op_ne
 id|CISCO_ADDR_BROADCAST
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: Unknown Cisco addr 0x%02x&bslash;n&quot;
-comma
-id|lp-&gt;name
-comma
-id|addr
-)paren
-suffix:semicolon
-r_goto
-id|out_free
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
+op_logical_or
 id|ctrl
 op_ne
 id|CISCO_CTRL
@@ -1618,10 +1614,12 @@ id|CISCO_CTRL
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;%s: Unknown Cisco ctrl 0x%02x&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;%s: Unknown Cisco header %#02x %#02x&bslash;n&quot;
 comma
 id|lp-&gt;name
+comma
+id|addr
 comma
 id|ctrl
 )paren
@@ -1674,6 +1672,14 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* no special cisco protocol */
+id|isdn_net_reset_huptimer
+c_func
+(paren
+id|lp
+comma
+id|olp
+)paren
+suffix:semicolon
 id|skb-&gt;protocol
 op_assign
 id|htons
@@ -1787,13 +1793,6 @@ op_star
 id|p
 )paren
 (brace
-id|isdn_net_local
-op_star
-id|lp
-op_assign
-op_amp
-id|p-&gt;local
-suffix:semicolon
 id|p-&gt;dev.hard_header
 op_assign
 id|isdn_ciscohdlck_header
@@ -1812,21 +1811,9 @@ id|IFF_NOARP
 op_or
 id|IFF_POINTOPOINT
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|lp-&gt;p_encap
-op_eq
-id|ISDN_NET_ENCAP_CISCOHDLCK
-)paren
 id|p-&gt;dev.do_ioctl
 op_assign
 id|isdn_ciscohdlck_dev_ioctl
-suffix:semicolon
-r_else
-id|p-&gt;dev.do_ioctl
-op_assign
-l_int|NULL
 suffix:semicolon
 r_return
 l_int|0

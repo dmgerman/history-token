@@ -4877,29 +4877,21 @@ suffix:semicolon
 r_case
 id|ISDN_NET_ENCAP_CISCOHDLCK
 suffix:colon
+r_case
+id|ISDN_NET_ENCAP_CISCOHDLC
+suffix:colon
 id|isdn_ciscohdlck_receive
 c_func
 (paren
-id|lp
+id|lp-&gt;netdev
+comma
+id|olp
 comma
 id|skb
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
-r_case
-id|ISDN_NET_ENCAP_CISCOHDLC
-suffix:colon
-multiline_comment|/* CISCO-HDLC IP with type field and  fake I-frame-header */
-id|skb_pull
-c_func
-(paren
-id|skb
-comma
-l_int|2
-)paren
-suffix:semicolon
-multiline_comment|/* Fall through */
 r_case
 id|ISDN_NET_ENCAP_IPTYP
 suffix:colon
@@ -10879,8 +10871,7 @@ c_func
 (paren
 id|skb
 comma
-op_amp
-id|p-&gt;dev
+id|skb-&gt;dev
 )paren
 suffix:semicolon
 id|netif_rx
