@@ -13629,11 +13629,6 @@ r_struct
 id|sched_group
 id|sched_group_init
 suffix:semicolon
-id|cpumask_t
-id|cpu_mask_all
-op_assign
-id|CPU_MASK_ALL
-suffix:semicolon
 id|memset
 c_func
 (paren
@@ -13651,7 +13646,7 @@ id|sched_domain
 suffix:semicolon
 id|sched_domain_init.span
 op_assign
-id|cpu_mask_all
+id|CPU_MASK_ALL
 suffix:semicolon
 id|sched_domain_init.groups
 op_assign
@@ -13684,7 +13679,7 @@ id|sched_group
 suffix:semicolon
 id|sched_group_init.cpumask
 op_assign
-id|cpu_mask_all
+id|CPU_MASK_ALL
 suffix:semicolon
 id|sched_group_init.next
 op_assign

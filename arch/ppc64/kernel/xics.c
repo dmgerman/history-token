@@ -923,11 +923,6 @@ id|irq
 )braket
 suffix:semicolon
 id|cpumask_t
-id|allcpus
-op_assign
-id|CPU_MASK_ALL
-suffix:semicolon
-id|cpumask_t
 id|tmp
 op_assign
 id|CPU_MASK_NONE
@@ -952,7 +947,7 @@ c_func
 (paren
 id|cpumask
 comma
-id|allcpus
+id|CPU_MASK_ALL
 )paren
 )paren
 (brace
@@ -2797,11 +2792,6 @@ r_int
 id|newmask
 suffix:semicolon
 id|cpumask_t
-id|allcpus
-op_assign
-id|CPU_MASK_ALL
-suffix:semicolon
-id|cpumask_t
 id|tmp
 op_assign
 id|CPU_MASK_NONE
@@ -2882,7 +2872,7 @@ c_func
 (paren
 id|cpumask
 comma
-id|allcpus
+id|CPU_MASK_ALL
 )paren
 )paren
 (brace

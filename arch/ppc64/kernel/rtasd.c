@@ -1363,11 +1363,6 @@ c_func
 l_string|&quot;event-scan&quot;
 )paren
 suffix:semicolon
-id|cpumask_t
-id|all
-op_assign
-id|CPU_MASK_ALL
-suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
@@ -1642,7 +1637,7 @@ c_func
 (paren
 id|current
 comma
-id|all
+id|CPU_MASK_ALL
 )paren
 suffix:semicolon
 multiline_comment|/* Drop hotplug lock, and sleep for a bit (at least&n;&t;&t; * one second since some machines have problems if we&n;&t;&t; * call event-scan too quickly). */
