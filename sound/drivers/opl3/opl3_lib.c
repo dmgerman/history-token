@@ -305,6 +305,12 @@ op_lshift
 l_int|2
 )paren
 suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
 id|writel
 c_func
 (paren
@@ -321,6 +327,12 @@ l_int|1
 )paren
 op_lshift
 l_int|2
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|30
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore

@@ -3823,7 +3823,7 @@ suffix:semicolon
 multiline_comment|/* AK4524 chip select; address 0x48 bit 0-3 */
 DECL|function|snd_ice1712_ews88mt_chip_select
 r_static
-r_void
+r_int
 id|snd_ice1712_ews88mt_chip_select
 c_func
 (paren
@@ -3853,6 +3853,8 @@ op_le
 l_int|0x0f
 comma
 r_return
+op_minus
+id|EINVAL
 )paren
 suffix:semicolon
 id|snd_i2c_lock
@@ -3861,8 +3863,8 @@ c_func
 id|ice-&gt;i2c
 )paren
 suffix:semicolon
-id|snd_runtime_check
-c_func
+r_if
+c_cond
 (paren
 id|snd_i2c_readbytes
 c_func
@@ -3877,17 +3879,11 @@ id|data
 comma
 l_int|1
 )paren
-op_eq
+op_ne
 l_int|1
-comma
-id|snd_i2c_unlock
-c_func
-(paren
-id|ice-&gt;i2c
 )paren
-suffix:semicolon
-r_return
-)paren
+r_goto
+id|__error
 suffix:semicolon
 id|ndata
 op_assign
@@ -3906,8 +3902,8 @@ id|ndata
 op_ne
 id|data
 )paren
-id|snd_runtime_check
-c_func
+r_if
+c_cond
 (paren
 id|snd_i2c_sendbytes
 c_func
@@ -3922,9 +3918,12 @@ id|ndata
 comma
 l_int|1
 )paren
-op_eq
+op_ne
 l_int|1
-comma
+)paren
+r_goto
+id|__error
+suffix:semicolon
 id|snd_i2c_unlock
 c_func
 (paren
@@ -3932,13 +3931,26 @@ id|ice-&gt;i2c
 )paren
 suffix:semicolon
 r_return
-)paren
+l_int|0
 suffix:semicolon
+id|__error
+suffix:colon
 id|snd_i2c_unlock
 c_func
 (paren
 id|ice-&gt;i2c
 )paren
+suffix:semicolon
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;AK4524 chip select failed, check cable to the front module&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * write AK4524 register&n; */
@@ -4013,6 +4025,9 @@ id|ICE1712_SUBDEVICE_EWS88MT
 )paren
 (brace
 multiline_comment|/* assert AK4524 CS */
+r_if
+c_cond
+(paren
 id|snd_ice1712_ews88mt_chip_select
 c_func
 (paren
@@ -4027,6 +4042,10 @@ id|chip
 op_amp
 l_int|0x0f
 )paren
+OL
+l_int|0
+)paren
+r_return
 suffix:semicolon
 singleline_comment|//snd_ice1712_ews88mt_chip_select(ice, 0x0f);
 )brace
@@ -4934,7 +4953,7 @@ id|ice-&gt;i2c
 suffix:semicolon
 r_return
 op_minus
-id|EREMOTE
+id|EIO
 suffix:semicolon
 )brace
 r_if
@@ -4962,7 +4981,7 @@ id|ice-&gt;i2c
 suffix:semicolon
 r_return
 op_minus
-id|EREMOTE
+id|EIO
 suffix:semicolon
 )brace
 id|nval
@@ -5019,7 +5038,7 @@ l_int|2
 id|res
 op_assign
 op_minus
-id|EREMOTE
+id|EIO
 suffix:semicolon
 )brace
 r_else
@@ -16268,7 +16287,7 @@ id|ice-&gt;i2c
 suffix:semicolon
 r_return
 op_minus
-id|EREMOTE
+id|EIO
 suffix:semicolon
 )brace
 id|snd_i2c_unlock
@@ -16362,7 +16381,7 @@ id|ice-&gt;i2c
 suffix:semicolon
 r_return
 op_minus
-id|EREMOTE
+id|EIO
 suffix:semicolon
 )brace
 id|ndata
@@ -16418,7 +16437,7 @@ id|ice-&gt;i2c
 suffix:semicolon
 r_return
 op_minus
-id|EREMOTE
+id|EIO
 suffix:semicolon
 )brace
 id|snd_i2c_unlock
@@ -16517,7 +16536,7 @@ id|ice-&gt;i2c
 suffix:semicolon
 r_return
 op_minus
-id|EREMOTE
+id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* reversed; high = +4dBu, low = -10dBV */
@@ -16629,7 +16648,7 @@ id|ice-&gt;i2c
 suffix:semicolon
 r_return
 op_minus
-id|EREMOTE
+id|EIO
 suffix:semicolon
 )brace
 id|ndata
@@ -16693,7 +16712,7 @@ id|ice-&gt;i2c
 suffix:semicolon
 r_return
 op_minus
-id|EREMOTE
+id|EIO
 suffix:semicolon
 )brace
 id|snd_i2c_unlock
@@ -16882,7 +16901,7 @@ id|ice-&gt;i2c
 suffix:semicolon
 r_return
 op_minus
-id|EREMOTE
+id|EIO
 suffix:semicolon
 )brace
 id|snd_i2c_unlock
@@ -17027,7 +17046,7 @@ id|ice-&gt;i2c
 suffix:semicolon
 r_return
 op_minus
-id|EREMOTE
+id|EIO
 suffix:semicolon
 )brace
 id|ndata
@@ -17160,7 +17179,7 @@ id|ice-&gt;i2c
 suffix:semicolon
 r_return
 op_minus
-id|EREMOTE
+id|EIO
 suffix:semicolon
 )brace
 id|snd_i2c_unlock
@@ -17321,7 +17340,7 @@ id|ice-&gt;i2c
 suffix:semicolon
 r_return
 op_minus
-id|EREMOTE
+id|EIO
 suffix:semicolon
 )brace
 id|snd_i2c_unlock
@@ -17400,7 +17419,7 @@ id|ice-&gt;i2c
 suffix:semicolon
 r_return
 op_minus
-id|EREMOTE
+id|EIO
 suffix:semicolon
 )brace
 id|snd_i2c_unlock
@@ -20231,6 +20250,31 @@ id|ice-&gt;eeprom.subvendor
 )paren
 (brace
 r_case
+id|ICE1712_SUBDEVICE_EWS88MT
+suffix:colon
+multiline_comment|/* Check if the front module is connected */
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|snd_ice1712_ews88mt_chip_select
+c_func
+(paren
+id|ice
+comma
+l_int|0x0f
+)paren
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
+multiline_comment|/* Fall through */
+r_case
 id|ICE1712_SUBDEVICE_DELTA66
 suffix:colon
 r_case
@@ -20241,9 +20285,6 @@ id|ICE1712_SUBDEVICE_AUDIOPHILE
 suffix:colon
 r_case
 id|ICE1712_SUBDEVICE_EWX2496
-suffix:colon
-r_case
-id|ICE1712_SUBDEVICE_EWS88MT
 suffix:colon
 r_case
 id|ICE1712_SUBDEVICE_DMX6FIRE

@@ -7861,7 +7861,6 @@ comma
 id|hw-&gt;formats
 )paren
 suffix:semicolon
-singleline_comment|//err = snd_pcm_hw_constraint_mask(runtime, SNDRV_PCM_HW_PARAM_FORMAT, hw-&gt;formats);
 id|snd_assert
 c_func
 (paren
