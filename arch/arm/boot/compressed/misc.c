@@ -7,12 +7,12 @@ suffix:semicolon
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/arch/uncompress.h&gt;
 macro_line|#ifdef STANDALONE_DEBUG
-DECL|macro|puts
-mdefine_line|#define puts printf
+DECL|macro|putstr
+mdefine_line|#define putstr printf
 macro_line|#endif
 macro_line|#ifdef CONFIG_DEBUG_ICEDCC
-DECL|macro|puts
-mdefine_line|#define puts icedcc_puts
+DECL|macro|putstr
+mdefine_line|#define putstr icedcc_putstr
 DECL|macro|putc
 mdefine_line|#define putc icedcc_putc
 r_extern
@@ -26,8 +26,8 @@ id|ch
 suffix:semicolon
 r_static
 r_void
-DECL|function|icedcc_puts
-id|icedcc_puts
+DECL|function|icedcc_putstr
+id|icedcc_putstr
 c_func
 (paren
 r_const
@@ -722,7 +722,7 @@ op_star
 suffix:semicolon
 r_static
 r_void
-id|puts
+id|putstr
 c_func
 (paren
 r_const
@@ -1083,7 +1083,7 @@ id|outcnt
 op_assign
 l_int|0
 suffix:semicolon
-id|puts
+id|putstr
 c_func
 (paren
 l_string|&quot;.&quot;
@@ -1101,19 +1101,19 @@ op_star
 id|x
 )paren
 (brace
-id|puts
+id|putstr
 c_func
 (paren
 l_string|&quot;&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
-id|puts
+id|putstr
 c_func
 (paren
 id|x
 )paren
 suffix:semicolon
-id|puts
+id|putstr
 c_func
 (paren
 l_string|&quot;&bslash;n&bslash;n -- System halted&quot;
@@ -1179,7 +1179,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|puts
+id|putstr
 c_func
 (paren
 l_string|&quot;Uncompressing Linux...&quot;
@@ -1190,7 +1190,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|puts
+id|putstr
 c_func
 (paren
 l_string|&quot; done, booting the kernel.&bslash;n&quot;
@@ -1226,7 +1226,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|puts
+id|putstr
 c_func
 (paren
 l_string|&quot;Uncompressing Linux...&quot;
@@ -1237,7 +1237,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|puts
+id|putstr
 c_func
 (paren
 l_string|&quot;done.&bslash;n&quot;

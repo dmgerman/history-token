@@ -180,10 +180,10 @@ DECL|macro|params
 mdefine_line|#define params (&amp;params_phys)
 macro_line|#ifndef STANDALONE_DEBUG 
 multiline_comment|/*&n; * This does not append a newline&n; */
-DECL|function|puts
+DECL|function|putstr
 r_static
 r_void
-id|puts
+id|putstr
 c_func
 (paren
 r_const

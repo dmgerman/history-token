@@ -25,10 +25,10 @@ DECL|macro|UARTDRx
 mdefine_line|#define UARTDRx&t;UARTDR1
 macro_line|#endif
 multiline_comment|/*&n; * This does not append a newline&n; */
-DECL|function|puts
+DECL|function|putstr
 r_static
 r_void
-id|puts
+id|putstr
 c_func
 (paren
 r_const
