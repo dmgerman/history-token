@@ -170,12 +170,13 @@ id|urb-&gt;status
 )paren
 (brace
 r_case
-id|USB_ST_NOERROR
+l_int|0
 suffix:colon
 r_break
 suffix:semicolon
 r_case
-id|USB_ST_NORESPONSE
+op_minus
+id|ETIMEDOUT
 suffix:colon
 id|dbg
 c_func
@@ -461,9 +462,9 @@ singleline_comment|//&t;if ( !ether_dev )
 singleline_comment|//&t;&t;return;
 singleline_comment|//&t;&t;
 singleline_comment|//&t;switch ( urb-&gt;status ) {
-singleline_comment|//&t;&t;case USB_ST_NOERROR:
+singleline_comment|//&t;&t;case 0:
 singleline_comment|//&t;&t;&t;break;
-singleline_comment|//&t;&t;case USB_ST_URB_KILLED:
+singleline_comment|//&t;&t;case -ENOENT:
 singleline_comment|//&t;&t;&t;return;
 singleline_comment|//&t;&t;default:
 singleline_comment|//&t;&t;&t;info(&quot;intr status %d&quot;, urb-&gt;status);
@@ -898,9 +899,6 @@ suffix:semicolon
 r_int
 id|res
 suffix:semicolon
-singleline_comment|// We are finally getting used!
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 singleline_comment|// Turn on the USB and let the packets flow!!!
 r_if
 c_cond
@@ -924,8 +922,6 @@ l_string|&quot;can&squot;t enable_net_traffic() - %d&quot;
 comma
 id|res
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -1074,9 +1070,6 @@ c_func
 op_amp
 id|ether_dev-&gt;intr_urb
 )paren
-suffix:semicolon
-singleline_comment|// We are not being used now.
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 singleline_comment|// That&squot;s it.  I&squot;m done.
 r_return
@@ -1418,6 +1411,7 @@ l_int|6
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0
 id|usb_control_msg
 c_func
 (paren
@@ -1471,6 +1465,7 @@ id|HZ
 )paren
 suffix:semicolon
 multiline_comment|/* timeout */
+macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -1478,12 +1473,14 @@ id|buff
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0 
 id|CDC_SetEthernetPacketFilter
 c_func
 (paren
 id|ether_dev
 )paren
 suffix:semicolon
+macro_line|#endif&t;
 singleline_comment|// Tell the kernel to start giving frames to us again.
 id|netif_wake_queue
 c_func
@@ -4133,6 +4130,12 @@ singleline_comment|// (And I don&squot;t mean &quot;set [it] up the bomb&quot;.)
 id|net-&gt;priv
 op_assign
 id|ether_dev
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|net
+)paren
 suffix:semicolon
 id|net-&gt;open
 op_assign

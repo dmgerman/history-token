@@ -152,10 +152,6 @@ DECL|macro|BUG
 mdefine_line|#define BUG()&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__);&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&quot;call_pal %0  # bugchk&quot; : : &quot;i&quot; (PAL_bugchk));&t;&bslash;&n;} while (0)
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page)&t;BUG()
-DECL|macro|BUG_ON
-mdefine_line|#define BUG_ON(condition)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (unlikely((long)(condition)))&bslash;&n;&t;&t;&t;BUG();&t;&t;&t;&bslash;&n;&t;} while (0)
-DECL|macro|BUG_ON
-mdefine_line|#define BUG_ON(condition)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (unlikely((int)(condition)))&t;&bslash;&n;&t;&t;&t;BUG();&t;&t;&t;&bslash;&n;&t;} while (0)
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
 r_extern

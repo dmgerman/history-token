@@ -6,6 +6,9 @@ macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+DECL|macro|_HID_BOOT_PROTOCOL
+mdefine_line|#define&t;_HID_BOOT_PROTOCOL
+macro_line|#include &quot;hid.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v1.6&quot;
@@ -455,7 +458,7 @@ id|pipe
 )paren
 )paren
 suffix:semicolon
-id|usb_set_idle
+id|hid_set_idle
 c_func
 (paren
 id|dev

@@ -9504,14 +9504,6 @@ comma
 id|do_cciss_request
 )paren
 suffix:semicolon
-id|blk_queue_headactive
-c_func
-(paren
-id|q
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|blk_queue_bounce_limit
 c_func
 (paren

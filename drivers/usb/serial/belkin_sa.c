@@ -565,14 +565,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
+op_eq
+l_int|1
 )paren
 (brace
-id|port-&gt;active
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/*Start reading from the device*/
 multiline_comment|/* TODO: Look at possibility of submitting mulitple URBs to device to&n;&t;&t; *       enhance buffering.  Win trace shows 16 initial read URBs.&n;&t;&t; */
 id|port-&gt;read_urb-&gt;dev
@@ -739,7 +736,7 @@ id|port-&gt;interrupt_in_urb
 )paren
 suffix:semicolon
 )brace
-id|port-&gt;active
+id|port-&gt;open_count
 op_assign
 l_int|0
 suffix:semicolon

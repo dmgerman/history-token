@@ -2091,7 +2091,7 @@ c_cond
 (paren
 id|drive-&gt;using_dma
 op_logical_and
-id|rq-&gt;special
+id|rq-&gt;bio
 )paren
 id|dma_ok
 op_assign

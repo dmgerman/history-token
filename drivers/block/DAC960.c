@@ -7506,14 +7506,6 @@ comma
 id|DAC960_RequestFunction
 )paren
 suffix:semicolon
-id|blk_queue_headactive
-c_func
-(paren
-id|RequestQueue
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|RequestQueue-&gt;queuedata
 op_assign
 id|Controller

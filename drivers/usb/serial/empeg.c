@@ -425,8 +425,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
+op_eq
+l_int|1
 )paren
 (brace
 multiline_comment|/* Force default termio settings */
@@ -436,10 +437,6 @@ id|port
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-id|port-&gt;active
-op_assign
-l_int|1
 suffix:semicolon
 id|bytes_in
 op_assign
@@ -600,10 +597,6 @@ id|port-&gt;read_urb
 )paren
 suffix:semicolon
 )brace
-id|port-&gt;active
-op_assign
-l_int|0
-suffix:semicolon
 id|port-&gt;open_count
 op_assign
 l_int|0

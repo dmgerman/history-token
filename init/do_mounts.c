@@ -1972,9 +1972,12 @@ op_plus
 l_int|1
 )paren
 (brace
+r_int
+id|err
+suffix:semicolon
 id|err
 op_assign
-id|mount
+id|sys_mount
 c_func
 (paren
 id|name

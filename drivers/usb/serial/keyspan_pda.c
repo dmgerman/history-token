@@ -2420,14 +2420,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
+op_eq
+l_int|1
 )paren
 (brace
-id|port-&gt;active
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* find out how much room is in the Tx ring */
 id|rc
 op_assign
@@ -2618,10 +2615,6 @@ suffix:colon
 op_decrement
 id|port-&gt;open_count
 suffix:semicolon
-id|port-&gt;active
-op_assign
-l_int|0
-suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|up
@@ -2709,10 +2702,6 @@ id|port-&gt;interrupt_in_urb
 )paren
 suffix:semicolon
 )brace
-id|port-&gt;active
-op_assign
-l_int|0
-suffix:semicolon
 id|port-&gt;open_count
 op_assign
 l_int|0

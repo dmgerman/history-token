@@ -366,14 +366,6 @@ id|parport
 op_star
 id|pb
 suffix:semicolon
-multiline_comment|/*&n;     * unlock to allow the lowlevel parport driver to probe&n;     * the irqs&n;     */
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|io_request_lock
-)paren
-suffix:semicolon
 id|pb
 op_assign
 id|parport_enumerate
@@ -408,13 +400,6 @@ id|printk
 c_func
 (paren
 l_string|&quot;imm: parport reports no devices.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|io_request_lock
 )paren
 suffix:semicolon
 r_return
@@ -559,13 +544,6 @@ id|i
 )braket
 dot
 id|dev
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|io_request_lock
 )paren
 suffix:semicolon
 r_return
@@ -802,13 +780,6 @@ op_eq
 l_int|1
 )paren
 (brace
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|io_request_lock
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -823,12 +794,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|spin_lock_irq
-(paren
-op_amp
-id|io_request_lock
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -3464,7 +3429,13 @@ id|cmd-&gt;SCp.buffer-&gt;length
 suffix:semicolon
 id|cmd-&gt;SCp.ptr
 op_assign
-id|cmd-&gt;SCp.buffer-&gt;address
+id|page_address
+c_func
+(paren
+id|cmd-&gt;SCp.buffer-&gt;page
+)paren
+op_plus
+id|cmd-&gt;SCp.buffer-&gt;offset
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Make sure that we transfer even number of bytes&n;&t;&t; * otherwise it makes imm_byte_out() messy.&n;&t;&t; */
 r_if
@@ -3703,6 +3674,13 @@ id|cmd
 op_assign
 id|tmp-&gt;cur_cmd
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|cmd-&gt;host
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -3917,7 +3895,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -3938,7 +3916,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4157,7 +4135,13 @@ id|cmd-&gt;SCp.buffer-&gt;length
 suffix:semicolon
 id|cmd-&gt;SCp.ptr
 op_assign
-id|cmd-&gt;SCp.buffer-&gt;address
+id|page_address
+c_func
+(paren
+id|cmd-&gt;SCp.buffer-&gt;page
+)paren
+op_plus
+id|cmd-&gt;SCp.buffer-&gt;offset
 suffix:semicolon
 )brace
 r_else

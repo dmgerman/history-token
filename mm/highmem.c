@@ -1391,6 +1391,8 @@ c_func
 (paren
 id|from-&gt;bv_page
 )paren
+op_plus
+id|from-&gt;bv_offset
 suffix:semicolon
 id|memcpy
 c_func
@@ -1398,8 +1400,6 @@ c_func
 id|vto
 comma
 id|vfrom
-op_plus
-id|from-&gt;bv_offset
 comma
 id|to-&gt;bv_len
 )paren
@@ -1407,7 +1407,7 @@ suffix:semicolon
 id|kunmap
 c_func
 (paren
-id|to-&gt;bv_page
+id|from-&gt;bv_page
 )paren
 suffix:semicolon
 )brace

@@ -237,14 +237,6 @@ comma
 id|scsi_request_fn
 )paren
 suffix:semicolon
-id|blk_queue_headactive
-c_func
-(paren
-id|q
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|q-&gt;queuedata
 op_assign
 (paren
@@ -412,6 +404,11 @@ op_assign
 id|RQ_SCSI_DONE
 suffix:semicolon
 multiline_comment|/* Busy, but indicate request done */
+r_if
+c_cond
+(paren
+id|req-&gt;waiting
+)paren
 id|complete
 c_func
 (paren

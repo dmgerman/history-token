@@ -5131,7 +5131,7 @@ suffix:semicolon
 multiline_comment|/*&n; * just wrap this around cdrom_do_packet_command&n; */
 DECL|function|cdrom_do_block_pc
 r_static
-r_int
+id|ide_startstop_t
 id|cdrom_do_block_pc
 c_func
 (paren
@@ -7655,6 +7655,12 @@ op_amp
 id|pc
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cgc-&gt;stat
+)paren
 id|cgc-&gt;buflen
 op_sub_assign
 id|pc.buflen

@@ -2875,14 +2875,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
+op_eq
+l_int|1
 )paren
 (brace
-id|port-&gt;active
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* force low_latency on so that our tty_push actually forces the data through, &n;&t;&t;   otherwise it is scheduled, and with high data rates (like with OHCI) data&n;&t;&t;   can get lost. */
 id|port-&gt;tty-&gt;low_latency
 op_assign
@@ -2912,10 +2909,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|port-&gt;active
-op_assign
-l_int|0
-suffix:semicolon
 id|port-&gt;open_count
 op_assign
 l_int|0
@@ -3151,10 +3144,6 @@ id|edge_port-&gt;openPending
 op_assign
 id|FALSE
 suffix:semicolon
-id|port-&gt;active
-op_assign
-l_int|0
-suffix:semicolon
 id|port-&gt;open_count
 op_assign
 l_int|0
@@ -3211,10 +3200,6 @@ suffix:semicolon
 id|edge_port-&gt;openPending
 op_assign
 id|FALSE
-suffix:semicolon
-id|port-&gt;active
-op_assign
-l_int|0
 suffix:semicolon
 id|port-&gt;open_count
 op_assign
@@ -3868,10 +3853,6 @@ id|edge_port-&gt;txfifo.fifo
 )paren
 suffix:semicolon
 )brace
-id|port-&gt;active
-op_assign
-l_int|0
-suffix:semicolon
 id|port-&gt;open_count
 op_assign
 l_int|0

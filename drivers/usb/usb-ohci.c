@@ -1975,7 +1975,8 @@ l_int|0
 suffix:semicolon
 id|urb-&gt;status
 op_assign
-id|USB_ST_URB_PENDING
+op_minus
+id|EINPROGRESS
 suffix:semicolon
 r_if
 c_cond
@@ -2064,7 +2065,8 @@ l_int|0
 suffix:semicolon
 id|urb-&gt;status
 op_assign
-id|USB_ST_URB_PENDING
+op_minus
+id|EINPROGRESS
 suffix:semicolon
 id|urb-&gt;start_frame
 op_assign
@@ -2843,7 +2845,8 @@ id|urb_priv
 suffix:semicolon
 id|urb-&gt;status
 op_assign
-id|USB_ST_URB_PENDING
+op_minus
+id|EINPROGRESS
 suffix:semicolon
 multiline_comment|/* link the ed into a chain if is not already */
 r_if
@@ -3044,7 +3047,8 @@ op_logical_and
 (paren
 id|urb-&gt;status
 op_eq
-id|USB_ST_URB_PENDING
+op_minus
+id|EINPROGRESS
 )paren
 )paren
 (brace
@@ -3209,7 +3213,8 @@ op_logical_and
 (paren
 id|urb-&gt;status
 op_eq
-id|USB_ST_URB_PENDING
+op_minus
+id|EINPROGRESS
 )paren
 )paren
 id|timeout
@@ -3239,7 +3244,8 @@ c_cond
 (paren
 id|urb-&gt;status
 op_eq
-id|USB_ST_URB_PENDING
+op_minus
+id|EINPROGRESS
 )paren
 (brace
 id|err

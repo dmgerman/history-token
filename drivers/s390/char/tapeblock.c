@@ -203,14 +203,6 @@ comma
 id|tape_request_fn
 )paren
 suffix:semicolon
-id|blk_queue_headactive
-(paren
-op_amp
-id|ti-&gt;request_queue
-comma
-l_int|0
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|tapeblock_mkdevfstree
 c_func

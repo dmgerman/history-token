@@ -1165,7 +1165,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* usb_unlink_urb calls the completion handler with status == USB_ST_URB_KILLED */
+multiline_comment|/* usb_unlink_urb calls the completion handler with status == -ENOENT */
 id|usb_unlink_urb
 c_func
 (paren
@@ -1268,6 +1268,11 @@ op_star
 )paren
 id|context
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ps
+)paren
 id|ps-&gt;ifclaimed
 op_assign
 l_int|0
@@ -1281,7 +1286,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;usbdevfs&quot;
+l_string|&quot;usbfs&quot;
 comma
 id|probe
 suffix:colon

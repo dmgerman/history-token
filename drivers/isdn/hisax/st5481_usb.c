@@ -464,7 +464,8 @@ c_cond
 (paren
 id|urb-&gt;status
 op_ne
-id|USB_ST_URB_KILLED
+op_minus
+id|ENOENT
 )paren
 (brace
 id|WARN
@@ -638,7 +639,8 @@ c_cond
 (paren
 id|urb-&gt;status
 op_ne
-id|USB_ST_URB_KILLED
+op_minus
+id|ENOENT
 )paren
 (brace
 id|WARN
@@ -1854,7 +1856,8 @@ c_cond
 (paren
 id|urb-&gt;status
 op_ne
-id|USB_ST_URB_KILLED
+op_minus
+id|ENOENT
 )paren
 (brace
 id|WARN

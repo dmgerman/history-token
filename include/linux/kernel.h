@@ -7,6 +7,7 @@ macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/* Optimization barrier */
 multiline_comment|/* The &quot;volatile&quot; is due to gcc bugs */
 DECL|macro|barrier
@@ -652,5 +653,7 @@ suffix:semicolon
 multiline_comment|/* Padding: libc5 uses this.. */
 )brace
 suffix:semicolon
+DECL|macro|BUG_ON
+mdefine_line|#define BUG_ON(condition) do { if (unlikely((condition)!=0)) BUG(); } while(0)
 macro_line|#endif
 eof

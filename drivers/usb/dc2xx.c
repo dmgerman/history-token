@@ -461,7 +461,8 @@ c_cond
 (paren
 id|retval
 op_ne
-id|USB_ST_TIMEOUT
+op_minus
+id|ETIMEDOUT
 )paren
 r_break
 suffix:semicolon
@@ -730,7 +731,8 @@ c_cond
 (paren
 id|result
 op_eq
-id|USB_ST_TIMEOUT
+op_minus
+id|ETIMEDOUT
 )paren
 (brace
 multiline_comment|/* NAK - delay a bit */

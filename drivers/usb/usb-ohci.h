@@ -10,52 +10,67 @@ op_assign
 (brace
 multiline_comment|/* mapping of the OHCI CC status to error codes */
 multiline_comment|/* No  Error  */
-id|USB_ST_NOERROR
+l_int|0
 comma
 multiline_comment|/* CRC Error  */
-id|USB_ST_CRC
+op_minus
+id|EILSEQ
 comma
 multiline_comment|/* Bit Stuff  */
-id|USB_ST_BITSTUFF
+op_minus
+id|EPROTO
 comma
 multiline_comment|/* Data Togg  */
-id|USB_ST_CRC
+op_minus
+id|EILSEQ
 comma
 multiline_comment|/* Stall      */
-id|USB_ST_STALL
+op_minus
+id|EPIPE
 comma
 multiline_comment|/* DevNotResp */
-id|USB_ST_NORESPONSE
+op_minus
+id|ETIMEDOUT
 comma
 multiline_comment|/* PIDCheck   */
-id|USB_ST_BITSTUFF
+op_minus
+id|EPROTO
 comma
 multiline_comment|/* UnExpPID   */
-id|USB_ST_BITSTUFF
+op_minus
+id|EPROTO
 comma
 multiline_comment|/* DataOver   */
-id|USB_ST_DATAOVERRUN
+op_minus
+id|EOVERFLOW
 comma
 multiline_comment|/* DataUnder  */
-id|USB_ST_DATAUNDERRUN
+op_minus
+id|EREMOTEIO
 comma
 multiline_comment|/* reservd    */
-id|USB_ST_NORESPONSE
+op_minus
+id|ETIMEDOUT
 comma
 multiline_comment|/* reservd    */
-id|USB_ST_NORESPONSE
+op_minus
+id|ETIMEDOUT
 comma
 multiline_comment|/* BufferOver */
-id|USB_ST_BUFFEROVERRUN
+op_minus
+id|ECOMM
 comma
 multiline_comment|/* BuffUnder  */
-id|USB_ST_BUFFERUNDERRUN
+op_minus
+id|ENOSR
 comma
 multiline_comment|/* Not Access */
-id|USB_ST_NORESPONSE
+op_minus
+id|ETIMEDOUT
 comma
 multiline_comment|/* Not Access */
-id|USB_ST_NORESPONSE
+op_minus
+id|ETIMEDOUT
 )brace
 suffix:semicolon
 macro_line|#include &lt;linux/config.h&gt;

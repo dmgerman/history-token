@@ -1175,7 +1175,8 @@ c_cond
 (paren
 id|result
 op_eq
-id|USB_ST_TIMEOUT
+op_minus
+id|ETIMEDOUT
 )paren
 (brace
 multiline_comment|/* NAK - so hold for a while */
@@ -1547,7 +1548,8 @@ c_cond
 (paren
 id|result
 op_eq
-id|USB_ST_TIMEOUT
+op_minus
+id|ETIMEDOUT
 op_logical_or
 id|result
 op_eq
@@ -1601,7 +1603,8 @@ c_cond
 (paren
 id|result
 op_ne
-id|USB_ST_DATAUNDERRUN
+op_minus
+id|EREMOTEIO
 )paren
 (brace
 id|up

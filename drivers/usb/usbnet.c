@@ -4881,7 +4881,8 @@ c_cond
 (paren
 id|urb-&gt;status
 op_eq
-id|USB_ST_STALL
+op_minus
+id|EPIPE
 )paren
 (brace
 r_if
@@ -6215,6 +6216,26 @@ l_int|0x2720
 )paren
 comma
 singleline_comment|// AnchorChips defaults
+id|driver_info
+suffix:colon
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|an2720_info
+comma
+)brace
+comma
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x0547
+comma
+l_int|0x2727
+)paren
+comma
+singleline_comment|// Xircom PGUNET
 id|driver_info
 suffix:colon
 (paren

@@ -13148,13 +13148,6 @@ comma
 id|do_dasd_request
 )paren
 suffix:semicolon
-id|blk_queue_headactive
-(paren
-id|device-&gt;request_queue
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|elevator_init
 (paren
 op_amp

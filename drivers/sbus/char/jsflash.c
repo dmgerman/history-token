@@ -2458,7 +2458,6 @@ comma
 id|DEVICE_REQUEST
 )paren
 suffix:semicolon
-multiline_comment|/* blk_queue_headactive(BLK_DEFAULT_QUEUE(MAJOR_NR), 0); */
 r_for
 c_loop
 (paren

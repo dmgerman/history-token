@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 1999,2000 Petko Manolov - Petkan (petkan@dce.bg)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *  Copyright (c) 1999,2000 Petko Manolov - Petkan (pmanolov@lnxw.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#ifndef&t;PEGASUS_DEV
 DECL|macro|PEGASUS_II
 mdefine_line|#define&t;PEGASUS_II&t;&t;0x80000000
@@ -362,6 +362,8 @@ DECL|macro|VENDOR_ELSA
 mdefine_line|#define&t;VENDOR_ELSA&t;&t;0x05cc
 DECL|macro|VENDOR_IODATA
 mdefine_line|#define&t;VENDOR_IODATA&t;&t;0x04bb
+DECL|macro|VENDOR_KINGSTON
+mdefine_line|#define&t;VENDOR_KINGSTON&t;&t;0x0951
 DECL|macro|VENDOR_LANEED
 mdefine_line|#define&t;VENDOR_LANEED&t;&t;0x056e
 DECL|macro|VENDOR_LINKSYS
@@ -742,6 +744,17 @@ comma
 id|VENDOR_IODATA
 comma
 l_int|0x0904
+comma
+id|DEFAULT_GPIO_RESET
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;Kingston KNU101TX Ethernet&quot;
+comma
+id|VENDOR_KINGSTON
+comma
+l_int|0x000a
 comma
 id|DEFAULT_GPIO_RESET
 )paren

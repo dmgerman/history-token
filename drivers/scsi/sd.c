@@ -1053,6 +1053,20 @@ l_int|6
 )braket
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t; * don&squot;t support specials for nwo&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|SCpnt-&gt;request.flags
+op_amp
+id|REQ_CMD
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|devm
 op_assign
 id|SD_PARTITION

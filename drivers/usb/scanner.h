@@ -312,6 +312,17 @@ c_func
 (paren
 l_int|0x06bd
 comma
+l_int|0x2095
+)paren
+)brace
+comma
+multiline_comment|/* SnapScan e25 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x06bd
+comma
 l_int|0x2097
 )paren
 )brace
@@ -328,6 +339,40 @@ l_int|0x208d
 )brace
 comma
 multiline_comment|/* Snapscan e40 */
+multiline_comment|/* Canon */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
+l_int|0x2202
+)paren
+)brace
+comma
+multiline_comment|/* FB620U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
+l_int|0x220b
+)paren
+)brace
+comma
+multiline_comment|/* D646U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
+l_int|0x2207
+)paren
+)brace
+comma
+multiline_comment|/* 1220U */
 multiline_comment|/* Colorado -- See Primax/Colorado below */
 multiline_comment|/* Epson -- See Seiko/Epson below */
 multiline_comment|/* Genius */
@@ -342,6 +387,72 @@ l_int|0x2001
 )brace
 comma
 multiline_comment|/* ColorPage-Vivid Pro */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0458
+comma
+l_int|0x2007
+)paren
+)brace
+comma
+multiline_comment|/* ColorPage HR6 V2 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0458
+comma
+l_int|0x2008
+)paren
+)brace
+comma
+multiline_comment|/* Unknown */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0458
+comma
+l_int|0x2009
+)paren
+)brace
+comma
+multiline_comment|/* Unknown */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0458
+comma
+l_int|0x2013
+)paren
+)brace
+comma
+multiline_comment|/* Unknown */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0458
+comma
+l_int|0x2015
+)paren
+)brace
+comma
+multiline_comment|/* Unknown  */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0458
+comma
+l_int|0x2016
+)paren
+)brace
+comma
+multiline_comment|/* Unknown  */
 multiline_comment|/* Hewlett Packard */
 (brace
 id|USB_DEVICE
@@ -478,6 +589,18 @@ l_int|0x4002
 )brace
 comma
 multiline_comment|/* Lifetec LT9385 */
+multiline_comment|/* Memorex */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0461
+comma
+l_int|0x0346
+)paren
+)brace
+comma
+multiline_comment|/* 6136u - repackaged Primax ? */
 multiline_comment|/* Microtek -- No longer supported - Enable SCSI and USB Microtek in kernel config */
 singleline_comment|//&t;{ USB_DEVICE(0x05da, 0x0099) },&t;/* ScanMaker X6 - X6U */
 singleline_comment|//&t;{ USB_DEVICE(0x05da, 0x0094) },&t;/* Phantom 336CX - C3 */
@@ -588,6 +711,139 @@ l_int|0x0010
 )brace
 comma
 multiline_comment|/* BearPaw 1200F */
+multiline_comment|/* Plustek */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0017
+)paren
+)brace
+comma
+multiline_comment|/* OpticPro UT12 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0011
+)paren
+)brace
+comma
+multiline_comment|/* OpticPro UT24 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0005
+)paren
+)brace
+comma
+multiline_comment|/* Unknown */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0007
+)paren
+)brace
+comma
+multiline_comment|/* Unknown */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x000F
+)paren
+)brace
+comma
+multiline_comment|/* Unknown */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0010
+)paren
+)brace
+comma
+multiline_comment|/* Unknown */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0012
+)paren
+)brace
+comma
+multiline_comment|/* Unknown */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0013
+)paren
+)brace
+comma
+multiline_comment|/* Unknown */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0014
+)paren
+)brace
+comma
+multiline_comment|/* Unknown */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0015
+)paren
+)brace
+comma
+multiline_comment|/* Unknown */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0016
+)paren
+)brace
+comma
+multiline_comment|/* Unknown */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0012
+)paren
+)brace
+comma
+multiline_comment|/* Unknown */
 multiline_comment|/* Primax/Colorado */
 (brace
 id|USB_DEVICE

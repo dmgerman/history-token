@@ -1177,7 +1177,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -1293,7 +1293,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -1411,7 +1411,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -1508,7 +1508,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -1612,7 +1612,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -1701,7 +1701,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -1807,7 +1807,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -1917,7 +1917,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -2011,7 +2011,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -2149,14 +2149,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
+op_eq
+l_int|1
 )paren
 (brace
-id|port-&gt;active
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* force low_latency on so that our tty_push actually forces the data through, &n;&t;&t;   otherwise it is scheduled, and with high data rates (like with OHCI) data&n;&t;&t;   can get lost. */
 id|port-&gt;tty-&gt;low_latency
 op_assign
@@ -2170,8 +2167,7 @@ id|serial-&gt;num_bulk_in
 )paren
 (brace
 multiline_comment|/* Start reading from the device */
-id|FILL_BULK_URB
-c_func
+id|usb_fill_bulk_urb
 (paren
 id|port-&gt;read_urb
 comma
@@ -2314,10 +2310,6 @@ id|port-&gt;read_urb
 )paren
 suffix:semicolon
 )brace
-id|port-&gt;active
-op_assign
-l_int|0
-suffix:semicolon
 id|port-&gt;open_count
 op_assign
 l_int|0
@@ -2489,15 +2481,13 @@ id|port-&gt;write_urb-&gt;transfer_buffer
 )paren
 suffix:semicolon
 multiline_comment|/* set up our urb */
-id|FILL_BULK_URB
-c_func
+id|usb_fill_bulk_urb
 (paren
 id|port-&gt;write_urb
 comma
 id|serial-&gt;dev
 comma
 id|usb_sndbulkpipe
-c_func
 (paren
 id|serial-&gt;dev
 comma
@@ -2864,15 +2854,13 @@ id|tty
 suffix:semicolon
 )brace
 multiline_comment|/* Continue trying to always read  */
-id|FILL_BULK_URB
-c_func
+id|usb_fill_bulk_urb
 (paren
 id|port-&gt;read_urb
 comma
 id|serial-&gt;dev
 comma
 id|usb_rcvbulkpipe
-c_func
 (paren
 id|serial-&gt;dev
 comma
@@ -3901,15 +3889,13 @@ r_goto
 id|probe_error
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
-c_func
+id|usb_fill_bulk_urb
 (paren
 id|port-&gt;read_urb
 comma
 id|dev
 comma
 id|usb_rcvbulkpipe
-c_func
 (paren
 id|dev
 comma
@@ -4028,15 +4014,13 @@ r_goto
 id|probe_error
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
-c_func
+id|usb_fill_bulk_urb
 (paren
 id|port-&gt;write_urb
 comma
 id|dev
 comma
 id|usb_sndbulkpipe
-c_func
 (paren
 id|dev
 comma
@@ -4151,15 +4135,13 @@ r_goto
 id|probe_error
 suffix:semicolon
 )brace
-id|FILL_INT_URB
-c_func
+id|usb_fill_int_urb
 (paren
 id|port-&gt;interrupt_in_urb
 comma
 id|dev
 comma
 id|usb_rcvintpipe
-c_func
 (paren
 id|dev
 comma
@@ -4589,7 +4571,7 @@ id|serial-&gt;port
 id|i
 )braket
 dot
-id|active
+id|open_count
 op_assign
 l_int|0
 suffix:semicolon

@@ -173,8 +173,6 @@ mdefine_line|#define BUG() __asm__ __volatile__(&quot;.byte 0x0f,0x0b&quot;)
 macro_line|#endif
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;&t;BUG(); &bslash;&n;} while (0)
-DECL|macro|BUG_ON
-mdefine_line|#define BUG_ON(condition)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (unlikely((int)(condition)))&t;&bslash;&n;&t;&t;&t;BUG();&t;&t;&t;&bslash;&n;&t;} while (0)
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
 r_static

@@ -886,14 +886,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
+op_eq
+l_int|1
 )paren
 (brace
-id|port-&gt;active
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* This will push the characters through immediately rather &n;&t;&t;   than queue a task to deliver them */
 id|port-&gt;tty-&gt;low_latency
 op_assign
@@ -1263,10 +1260,6 @@ id|port-&gt;read_urb
 )paren
 suffix:semicolon
 )brace
-id|port-&gt;active
-op_assign
-l_int|0
-suffix:semicolon
 id|port-&gt;open_count
 op_assign
 l_int|0

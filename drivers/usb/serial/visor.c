@@ -33,7 +33,7 @@ macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;visor.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.6&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.7&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -657,14 +657,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
+op_eq
+l_int|1
 )paren
 (brace
-id|port-&gt;active
-op_assign
-l_int|1
-suffix:semicolon
 id|bytes_in
 op_assign
 l_int|0
@@ -679,15 +676,13 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Start reading from the device */
-id|FILL_BULK_URB
-c_func
+id|usb_fill_bulk_urb
 (paren
 id|port-&gt;read_urb
 comma
 id|serial-&gt;dev
 comma
 id|usb_rcvbulkpipe
-c_func
 (paren
 id|serial-&gt;dev
 comma
@@ -893,10 +888,6 @@ id|port-&gt;read_urb
 )paren
 suffix:semicolon
 )brace
-id|port-&gt;active
-op_assign
-l_int|0
-suffix:semicolon
 id|port-&gt;open_count
 op_assign
 l_int|0
@@ -1168,14 +1159,13 @@ id|urb-&gt;transfer_buffer
 )paren
 suffix:semicolon
 multiline_comment|/* build up our urb */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|urb
 comma
 id|serial-&gt;dev
 comma
 id|usb_sndbulkpipe
-c_func
 (paren
 id|serial-&gt;dev
 comma
@@ -1713,15 +1703,13 @@ id|urb-&gt;actual_length
 suffix:semicolon
 )brace
 multiline_comment|/* Continue trying to always read  */
-id|FILL_BULK_URB
-c_func
+id|usb_fill_bulk_urb
 (paren
 id|port-&gt;read_urb
 comma
 id|serial-&gt;dev
 comma
 id|usb_rcvbulkpipe
-c_func
 (paren
 id|serial-&gt;dev
 comma
@@ -2346,33 +2334,15 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
-r_while
-c_loop
-(paren
 id|serial-&gt;port
 (braket
 id|i
 )braket
 dot
 id|open_count
-OG
+op_assign
 l_int|0
-)paren
-(brace
-id|visor_close
-(paren
-op_amp
-id|serial-&gt;port
-(braket
-id|i
-)braket
-comma
-l_int|NULL
-)paren
 suffix:semicolon
-)brace
-)brace
 )brace
 DECL|function|visor_ioctl
 r_static

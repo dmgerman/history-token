@@ -1685,14 +1685,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
+op_eq
+l_int|1
 )paren
 (brace
-id|port-&gt;active
-op_assign
-l_int|1
-suffix:semicolon
 DECL|macro|FISH
 mdefine_line|#define FISH(a,b,c,d)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;result=usb_control_msg(serial-&gt;dev, usb_rcvctrlpipe(serial-&gt;dev,0),&t;&bslash;&n;&t;&t;&t;&t;       b, a, c, d, buf, 1, 100);&t;&t;&t;&bslash;&n;&t;&t;dbg(&quot;0x%x:0x%x:0x%x:0x%x  %d - %x&quot;,a,b,c,d,result,buf[0]);
 DECL|macro|SOUP
@@ -2153,10 +2150,6 @@ id|result
 )paren
 suffix:semicolon
 )brace
-id|port-&gt;active
-op_assign
-l_int|0
-suffix:semicolon
 id|port-&gt;open_count
 op_assign
 l_int|0
@@ -2919,7 +2912,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|port-&gt;active
+id|port-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -3063,7 +3056,7 @@ multiline_comment|/* Schedule the next read _if_ we are still open */
 r_if
 c_cond
 (paren
-id|port-&gt;active
+id|port-&gt;open_count
 )paren
 (brace
 id|urb-&gt;dev

@@ -703,7 +703,7 @@ c_cond
 (paren
 id|purb-&gt;status
 op_ne
-id|USB_ST_NOERROR
+l_int|0
 )paren
 (brace
 id|WARNING
@@ -869,7 +869,7 @@ c_cond
 (paren
 id|purb-&gt;status
 op_ne
-id|USB_ST_NOERROR
+l_int|0
 )paren
 (brace
 multiline_comment|/* I get a lot of -ECONNABORTED = -103 here - Jean II */
@@ -894,7 +894,7 @@ suffix:semicolon
 multiline_comment|/* urb is now available */
 id|purb-&gt;status
 op_assign
-id|USB_ST_NOERROR
+l_int|0
 suffix:semicolon
 multiline_comment|/* If it was the speed URB, allow the stack to send more packets */
 r_if
@@ -1094,7 +1094,7 @@ c_cond
 (paren
 id|purb-&gt;status
 op_ne
-id|USB_ST_NOERROR
+l_int|0
 )paren
 (brace
 id|WARNING
@@ -1458,7 +1458,7 @@ c_cond
 (paren
 id|purb-&gt;status
 op_ne
-id|USB_ST_NOERROR
+l_int|0
 )paren
 (brace
 multiline_comment|/* I get a lot of -ECONNABORTED = -103 here - Jean II */
@@ -1483,7 +1483,7 @@ suffix:semicolon
 multiline_comment|/* urb is now available */
 id|purb-&gt;status
 op_assign
-id|USB_ST_NOERROR
+l_int|0
 suffix:semicolon
 multiline_comment|/* If the network is closed, stop everything */
 r_if
@@ -1640,7 +1640,7 @@ c_cond
 (paren
 id|purb-&gt;status
 op_ne
-id|USB_ST_NOERROR
+l_int|0
 )paren
 (brace
 id|IRDA_DEBUG
@@ -1664,9 +1664,9 @@ id|purb-&gt;status
 )paren
 (brace
 r_case
-id|USB_ST_URB_PENDING
+op_minus
+id|EINPROGRESS
 suffix:colon
-multiline_comment|/* -EINPROGRESS == -115 */
 id|usb_unlink_urb
 c_func
 (paren
@@ -1705,7 +1705,7 @@ suffix:colon
 multiline_comment|/* ??? - Play safe */
 id|purb-&gt;status
 op_assign
-id|USB_ST_NOERROR
+l_int|0
 suffix:semicolon
 id|netif_wake_queue
 c_func
@@ -1734,7 +1734,7 @@ c_cond
 (paren
 id|purb-&gt;status
 op_ne
-id|USB_ST_NOERROR
+l_int|0
 )paren
 (brace
 r_struct
@@ -1806,9 +1806,9 @@ id|purb-&gt;status
 )paren
 (brace
 r_case
-id|USB_ST_URB_PENDING
+op_minus
+id|EINPROGRESS
 suffix:colon
-multiline_comment|/* -EINPROGRESS == -115 */
 id|usb_unlink_urb
 c_func
 (paren
@@ -1868,7 +1868,7 @@ suffix:semicolon
 )brace
 id|purb-&gt;status
 op_assign
-id|USB_ST_NOERROR
+l_int|0
 suffix:semicolon
 id|netif_wake_queue
 c_func
@@ -2054,7 +2054,7 @@ suffix:semicolon
 multiline_comment|/* Note : unlink *must* be synchronous because of the code in &n;&t; * irda_usb_net_close() -&gt; free the skb - Jean II */
 id|purb-&gt;status
 op_assign
-id|USB_ST_NOERROR
+l_int|0
 suffix:semicolon
 id|purb-&gt;next
 op_assign
@@ -2212,7 +2212,7 @@ c_cond
 (paren
 id|purb-&gt;status
 op_ne
-id|USB_ST_NOERROR
+l_int|0
 )paren
 (brace
 r_switch
@@ -2222,9 +2222,9 @@ id|purb-&gt;status
 )paren
 (brace
 r_case
-id|USB_ST_CRC
+op_minus
+id|EILSEQ
 suffix:colon
-multiline_comment|/* -EILSEQ */
 id|self-&gt;stats.rx_errors
 op_increment
 suffix:semicolon
@@ -4456,13 +4456,13 @@ id|ret
 )paren
 (brace
 r_case
-id|USB_ST_NOERROR
+l_int|0
 suffix:colon
-multiline_comment|/* 0 */
 r_break
 suffix:semicolon
 r_case
-id|USB_ST_STALL
+op_minus
+id|EPIPE
 suffix:colon
 multiline_comment|/* -EPIPE = -32 */
 id|usb_clear_halt

@@ -814,7 +814,7 @@ c_cond
 (paren
 id|usbstatus
 op_ne
-id|USB_ST_NOERROR
+l_int|0
 op_logical_or
 id|len
 OL

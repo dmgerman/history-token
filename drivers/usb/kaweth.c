@@ -3405,6 +3405,22 @@ id|kaweth
 )paren
 suffix:semicolon
 )brace
+singleline_comment|// FIXME this completion stuff is a modified clone of
+singleline_comment|// an OLD version of some stuff in usb.c ... 
+DECL|struct|usb_api_data
+r_struct
+id|usb_api_data
+(brace
+DECL|member|wqh
+id|wait_queue_head_t
+id|wqh
+suffix:semicolon
+DECL|member|done
+r_int
+id|done
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------*&n; * completion handler for compatibility wrappers (sync control/bulk) *&n; *-------------------------------------------------------------------*/
 DECL|function|usb_api_blocking_completion
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Serial Converter driver&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * (10/10/2001) gkh&n; *&t;added vendor and product to serial structure.  Needed to determine device&n; *&t;owner when the device is disconnected.&n; *&n; * (05/30/2001) gkh&n; *&t;added sem to port structure and removed port_lock&n; *&n; * (10/05/2000) gkh&n; *&t;Added interrupt_in_endpointAddress and bulk_in_endpointAddress to help&n; *&t;fix bug with urb-&gt;dev not being set properly, now that the usb core&n; *&t;needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Added usb_serial_debug_data function to help get rid of #DEBUG in the&n; *&t;drivers.&n; *&n; * (08/28/2000) gkh&n; *&t;Added port_lock to port structure.&n; *&n; * (08/08/2000) gkh&n; *&t;Added open_count to port structure.&n; *&n; * (07/23/2000) gkh&n; *&t;Added bulk_out_endpointAddress to port structure.&n; *&n; * (07/19/2000) gkh, pberger, and borchers&n; *&t;Modifications to allow usb-serial drivers to be modules.&n; *&n; * &n; */
+multiline_comment|/*&n; * USB Serial Converter driver&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * (12/03/2001) gkh&n; *&t;removed active from the port structure.&n; *&t;added documentation to the usb_serial_device_type structure&n; *&n; * (10/10/2001) gkh&n; *&t;added vendor and product to serial structure.  Needed to determine device&n; *&t;owner when the device is disconnected.&n; *&n; * (05/30/2001) gkh&n; *&t;added sem to port structure and removed port_lock&n; *&n; * (10/05/2000) gkh&n; *&t;Added interrupt_in_endpointAddress and bulk_in_endpointAddress to help&n; *&t;fix bug with urb-&gt;dev not being set properly, now that the usb core&n; *&t;needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Added usb_serial_debug_data function to help get rid of #DEBUG in the&n; *&t;drivers.&n; *&n; * (08/28/2000) gkh&n; *&t;Added port_lock to port structure.&n; *&n; * (08/08/2000) gkh&n; *&t;Added open_count to port structure.&n; *&n; * (07/23/2000) gkh&n; *&t;Added bulk_out_endpointAddress to port structure.&n; *&n; * (07/19/2000) gkh, pberger, and borchers&n; *&t;Modifications to allow usb-serial drivers to be modules.&n; *&n; * &n; */
 macro_line|#ifndef __LINUX_USB_SERIAL_H
 DECL|macro|__LINUX_USB_SERIAL_H
 mdefine_line|#define __LINUX_USB_SERIAL_H
@@ -43,11 +43,6 @@ r_int
 r_char
 id|number
 suffix:semicolon
-DECL|member|active
-r_char
-id|active
-suffix:semicolon
-multiline_comment|/* someone has this device open */
 DECL|member|interrupt_in_buffer
 r_int
 r_char
@@ -219,7 +214,7 @@ multiline_comment|/* data private to the specific driver */
 suffix:semicolon
 DECL|macro|NUM_DONT_CARE
 mdefine_line|#define NUM_DONT_CARE&t;(-1)
-multiline_comment|/* This structure defines the individual serial converter. */
+multiline_comment|/**&n; * usb_serial_device_type - a structure that defines a usb serial device&n; * @name: pointer to a string that describes this device.  This string used&n; *&t;in the syslog messages when a device is inserted or removed.&n; * @id_table: pointer to a list of usb_device_id structures that define all&n; *&t;of the devices this structure can support.&n; * @num_interrupt_in: the number of interrupt in endpoints this device will&n; *&t;have.&n; * @num_bulk_in: the number of bulk in endpoints this device will have.&n; * @num_bulk_out: the number of bulk out endpoints this device will have.&n; * @num_ports: the number of different ports this device will have.&n; * @startup: pointer to the driver&squot;s startup function.  This will be called&n; *&t;when the driver is inserted into the system.  Return 0 to continue&n; *&t;on with the initialization sequence.  Anything else will abort it.&n; * @shutdown: pointer to the driver&squot;s shutdown function.  This will be&n; *&t;called when the device is removed from the system.&n; *&n; * This structure is defines a USB Serial device.  It provides all of&n; * the information that the USB serial core code needs.  If the function&n; * pointers are defined, then the USB serial core code will call them when&n; * the corresponding tty port functions are called.  If they are not&n; * called, the generic serial function will be used instead.&n; */
 DECL|struct|usb_serial_device_type
 r_struct
 id|usb_serial_device_type
@@ -252,14 +247,11 @@ DECL|member|num_ports
 r_char
 id|num_ports
 suffix:semicolon
-multiline_comment|/* number of serial ports this device has */
 DECL|member|driver_list
 r_struct
 id|list_head
 id|driver_list
 suffix:semicolon
-multiline_comment|/* function call to make before accepting driver */
-multiline_comment|/* return 0 to continue initialization, anything else to abort */
 DECL|member|startup
 r_int
 (paren

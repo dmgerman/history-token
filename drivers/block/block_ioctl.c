@@ -52,6 +52,8 @@ c_func
 id|q
 comma
 id|rq
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|generic_unplug_device

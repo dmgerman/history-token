@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * bluetooth.c   Version 0.12&n; *&n; * Copyright (c) 2000, 2001 Greg Kroah-Hartman&t;&lt;greg@kroah.com&gt;&n; * Copyright (c) 2000 Mark Douglas Corner&t;&lt;mcorner@umich.edu&gt;&n; *&n; * USB Bluetooth driver, based on the Bluetooth Spec version 1.0B&n; * &n; * (2001/07/09) Version 0.12 gkh&n; *&t;- removed in_interrupt() call, as it doesn&squot;t make sense to do &n; *&t;  that anymore.&n; *&n; * (2001/06/05) Version 0.11 gkh&n; *&t;- Fixed problem with read urb status saying that we have shutdown,&n; *&t;  and that we shouldn&squot;t resubmit the urb.  Patch from unknown.&n; *&n; * (2001/05/28) Version 0.10 gkh&n; *&t;- Fixed problem with using data from userspace in the bluetooth_write&n; *&t;  function as found by the CHECKER project.&n; *&t;- Added a buffer to the write_urb_pool which reduces the number of&n; *&t;  buffers being created and destroyed for ever write.  Also cleans&n; *&t;  up the logic a bit.&n; *&t;- Added a buffer to the control_urb_pool which fixes a memory leak&n; *&t;  when the device is removed from the system.&n; *&n; * (2001/05/28) Version 0.9 gkh&n; *&t;Fixed problem with bluetooth==NULL for bluetooth_read_bulk_callback&n; *&t;which was found by both the CHECKER project and Mikko Rahkonen.&n; *&n; * (08/04/2001) gb&n; *&t;Identify version on module load.&n; *&n; * (2001/03/10) Version 0.8 gkh&n; *&t;Fixed problem with not unlinking interrupt urb on device close&n; *&t;and resubmitting the read urb on error with bluetooth struct.&n; *&t;Thanks to Narayan Mohanram &lt;narayan@RovingNetworks.com&gt; for the&n; *&t;fixes.&n; *&n; * (11/29/2000) Version 0.7 gkh&n; *&t;Fixed problem with overrunning the tty flip buffer.&n; *&t;Removed unneeded NULL pointer initialization.&n; *&n; * (10/05/2000) Version 0.6 gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; *&t;Got a real major id number and name.&n; *&n; * (08/06/2000) Version 0.5 gkh&n; *&t;Fixed problem of not resubmitting the bulk read urb if there is&n; *&t;an error in the callback.  Ericsson devices seem to need this.&n; *&n; * (07/11/2000) Version 0.4 gkh&n; *&t;Fixed bug in disconnect for when we call tty_hangup&n; *&t;Fixed bug in bluetooth_ctrl_msg where the bluetooth struct was not&n; *&t;getting attached to the control urb properly.&n; *&t;Fixed bug in bluetooth_write where we pay attention to the result&n; *&t;of bluetooth_ctrl_msg.&n; *&n; * (08/03/2000) Version 0.3 gkh mdc&n; *&t;Merged in Mark&squot;s changes to make the driver play nice with the Axis&n; *&t;stack.&n; *&t;Made the write bulk use an urb pool to enable larger transfers with&n; *&t;fewer calls to the driver.&n; *&t;Fixed off by one bug in acl pkt receive&n; *&t;Made packet counters specific to each bluetooth device &n; *&t;Added checks for zero length callbacks&n; *&t;Added buffers for int and bulk packets.  Had to do this otherwise &n; *&t;packet types could intermingle.&n; *&t;Made a control urb pool for the control messages.&n; *&n; * (07/11/2000) Version 0.2 gkh&n; *&t;Fixed a small bug found by Nils Faerber in the usb_bluetooth_probe &n; *&t;function.&n; *&n; * (07/09/2000) Version 0.1 gkh&n; *&t;Initial release. Has support for sending ACL data (which is really just&n; *&t;a HCI frame.) Raw HCI commands and HCI events are not supported.&n; *&t;A ioctl will probably be needed for the HCI commands and events in the&n; *&t;future. All isoch endpoints are ignored at this time also.&n; *&t;This driver should work for all currently shipping USB Bluetooth &n; *&t;devices at this time :)&n; * &n; */
+multiline_comment|/*&n; * bluetooth.c   Version 0.13&n; *&n; * Copyright (c) 2000, 2001 Greg Kroah-Hartman&t;&lt;greg@kroah.com&gt;&n; * Copyright (c) 2000 Mark Douglas Corner&t;&lt;mcorner@umich.edu&gt;&n; *&n; * USB Bluetooth driver, based on the Bluetooth Spec version 1.0B&n; * &n; * (2001/11/30) Version 0.13 gkh&n; *&t;- added locking patch from Masoodur Rahman &lt;rmasoodu@in.ibm.com&gt;&n; *&t;- removed active variable, as open_count will do.&n; *&n; * (2001/07/09) Version 0.12 gkh&n; *&t;- removed in_interrupt() call, as it doesn&squot;t make sense to do &n; *&t;  that anymore.&n; *&n; * (2001/06/05) Version 0.11 gkh&n; *&t;- Fixed problem with read urb status saying that we have shutdown,&n; *&t;  and that we shouldn&squot;t resubmit the urb.  Patch from unknown.&n; *&n; * (2001/05/28) Version 0.10 gkh&n; *&t;- Fixed problem with using data from userspace in the bluetooth_write&n; *&t;  function as found by the CHECKER project.&n; *&t;- Added a buffer to the write_urb_pool which reduces the number of&n; *&t;  buffers being created and destroyed for ever write.  Also cleans&n; *&t;  up the logic a bit.&n; *&t;- Added a buffer to the control_urb_pool which fixes a memory leak&n; *&t;  when the device is removed from the system.&n; *&n; * (2001/05/28) Version 0.9 gkh&n; *&t;Fixed problem with bluetooth==NULL for bluetooth_read_bulk_callback&n; *&t;which was found by both the CHECKER project and Mikko Rahkonen.&n; *&n; * (08/04/2001) gb&n; *&t;Identify version on module load.&n; *&n; * (2001/03/10) Version 0.8 gkh&n; *&t;Fixed problem with not unlinking interrupt urb on device close&n; *&t;and resubmitting the read urb on error with bluetooth struct.&n; *&t;Thanks to Narayan Mohanram &lt;narayan@RovingNetworks.com&gt; for the&n; *&t;fixes.&n; *&n; * (11/29/2000) Version 0.7 gkh&n; *&t;Fixed problem with overrunning the tty flip buffer.&n; *&t;Removed unneeded NULL pointer initialization.&n; *&n; * (10/05/2000) Version 0.6 gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; *&t;Got a real major id number and name.&n; *&n; * (08/06/2000) Version 0.5 gkh&n; *&t;Fixed problem of not resubmitting the bulk read urb if there is&n; *&t;an error in the callback.  Ericsson devices seem to need this.&n; *&n; * (07/11/2000) Version 0.4 gkh&n; *&t;Fixed bug in disconnect for when we call tty_hangup&n; *&t;Fixed bug in bluetooth_ctrl_msg where the bluetooth struct was not&n; *&t;getting attached to the control urb properly.&n; *&t;Fixed bug in bluetooth_write where we pay attention to the result&n; *&t;of bluetooth_ctrl_msg.&n; *&n; * (08/03/2000) Version 0.3 gkh mdc&n; *&t;Merged in Mark&squot;s changes to make the driver play nice with the Axis&n; *&t;stack.&n; *&t;Made the write bulk use an urb pool to enable larger transfers with&n; *&t;fewer calls to the driver.&n; *&t;Fixed off by one bug in acl pkt receive&n; *&t;Made packet counters specific to each bluetooth device &n; *&t;Added checks for zero length callbacks&n; *&t;Added buffers for int and bulk packets.  Had to do this otherwise &n; *&t;packet types could intermingle.&n; *&t;Made a control urb pool for the control messages.&n; *&n; * (07/11/2000) Version 0.2 gkh&n; *&t;Fixed a small bug found by Nils Faerber in the usb_bluetooth_probe &n; *&t;function.&n; *&n; * (07/09/2000) Version 0.1 gkh&n; *&t;Initial release. Has support for sending ACL data (which is really just&n; *&t;a HCI frame.) Raw HCI commands and HCI events are not supported.&n; *&t;A ioctl will probably be needed for the HCI commands and events in the&n; *&t;future. All isoch endpoints are ignored at this time also.&n; *&t;This driver should work for all currently shipping USB Bluetooth &n; *&t;devices at this time :)&n; * &n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -17,7 +17,7 @@ mdefine_line|#define DEBUG
 macro_line|#include &lt;linux/usb.h&gt;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.12&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.13&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman, Mark Douglas Corner&quot;
 DECL|macro|DRIVER_DESC
@@ -108,16 +108,15 @@ r_char
 id|minor
 suffix:semicolon
 multiline_comment|/* the starting minor number for this device */
-DECL|member|active
-r_char
-id|active
-suffix:semicolon
-multiline_comment|/* someone has this device open */
 DECL|member|throttle
 r_int
 id|throttle
 suffix:semicolon
 multiline_comment|/* throttled by tty layer */
+DECL|member|open_count
+r_int
+id|open_count
+suffix:semicolon
 DECL|member|control_out_bInterfaceNum
 id|__u8
 id|control_out_bInterfaceNum
@@ -236,6 +235,11 @@ id|ACL_BUFFER_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* 64k preallocated, fix? */
+DECL|member|lock
+r_struct
+id|semaphore
+id|lock
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* local function prototypes */
@@ -1046,23 +1050,23 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+id|down
+(paren
+op_amp
+id|bluetooth-&gt;lock
+)paren
+suffix:semicolon
+op_increment
+id|bluetooth-&gt;open_count
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|bluetooth-&gt;active
+id|bluetooth-&gt;open_count
+op_eq
+l_int|1
 )paren
 (brace
-id|dbg
-(paren
-id|__FUNCTION__
-l_string|&quot; - device already open&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 multiline_comment|/* set up our structure making the tty driver remember our object, and us it */
 id|tty-&gt;driver_data
 op_assign
@@ -1072,12 +1076,8 @@ id|bluetooth-&gt;tty
 op_assign
 id|tty
 suffix:semicolon
-multiline_comment|/* force low_latency on so that our tty_push actually forces the data through, &n;&t; * otherwise it is scheduled, and with high data rates (like with OHCI) data&n;&t; * can get lost. */
+multiline_comment|/* force low_latency on so that our tty_push actually forces the data through, &n;&t; &t;* otherwise it is scheduled, and with high data rates (like with OHCI) data&n;&t; &t;* can get lost. */
 id|bluetooth-&gt;tty-&gt;low_latency
-op_assign
-l_int|1
-suffix:semicolon
-id|bluetooth-&gt;active
 op_assign
 l_int|1
 suffix:semicolon
@@ -1093,7 +1093,6 @@ suffix:semicolon
 macro_line|#ifndef BTBUGGYHARDWARE
 multiline_comment|/* Start reading from the device */
 id|FILL_BULK_URB
-c_func
 (paren
 id|bluetooth-&gt;read_urb
 comma
@@ -1140,7 +1139,6 @@ id|result
 suffix:semicolon
 macro_line|#endif
 id|FILL_INT_URB
-c_func
 (paren
 id|bluetooth-&gt;interrupt_in_urb
 comma
@@ -1185,6 +1183,14 @@ id|__FUNCTION__
 l_string|&quot; - usb_submit_urb(interrupt in) failed with status %d&quot;
 comma
 id|result
+)paren
+suffix:semicolon
+)brace
+id|up
+c_func
+(paren
+op_amp
+id|bluetooth-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -1247,7 +1253,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bluetooth-&gt;active
+id|bluetooth-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -1259,6 +1265,27 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|down
+(paren
+op_amp
+id|bluetooth-&gt;lock
+)paren
+suffix:semicolon
+op_decrement
+id|bluetooth-&gt;open_count
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bluetooth-&gt;open_count
+op_le
+l_int|0
+)paren
+(brace
+id|bluetooth-&gt;open_count
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* shutdown any bulk reads and writes that might be going on */
 r_for
 c_loop
@@ -1292,9 +1319,13 @@ id|usb_unlink_urb
 id|bluetooth-&gt;interrupt_in_urb
 )paren
 suffix:semicolon
-id|bluetooth-&gt;active
-op_assign
-l_int|0
+)brace
+id|up
+c_func
+(paren
+op_amp
+id|bluetooth-&gt;lock
+)paren
 suffix:semicolon
 )brace
 DECL|function|bluetooth_write
@@ -1402,7 +1433,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bluetooth-&gt;active
+id|bluetooth-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -1910,7 +1941,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bluetooth-&gt;active
+id|bluetooth-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -2024,7 +2055,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bluetooth-&gt;active
+id|bluetooth-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -2138,7 +2169,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bluetooth-&gt;active
+id|bluetooth-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -2208,7 +2239,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bluetooth-&gt;active
+id|bluetooth-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -2294,7 +2325,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bluetooth-&gt;active
+id|bluetooth-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -2367,7 +2398,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bluetooth-&gt;active
+id|bluetooth-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -2436,7 +2467,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bluetooth-&gt;active
+id|bluetooth-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -2551,7 +2582,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bluetooth-&gt;active
+id|bluetooth-&gt;open_count
 )paren
 (brace
 id|dbg
@@ -3516,7 +3547,7 @@ op_logical_neg
 id|bluetooth
 op_logical_or
 op_logical_neg
-id|bluetooth-&gt;active
+id|bluetooth-&gt;open_count
 )paren
 r_return
 suffix:semicolon
@@ -4149,6 +4180,13 @@ id|bluetooth-&gt;tqueue.data
 op_assign
 id|bluetooth
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|bluetooth-&gt;lock
+)paren
+suffix:semicolon
 multiline_comment|/* record the interface number for the control out */
 id|bluetooth-&gt;control_out_bInterfaceNum
 op_assign
@@ -4736,7 +4774,7 @@ r_if
 c_cond
 (paren
 (paren
-id|bluetooth-&gt;active
+id|bluetooth-&gt;open_count
 )paren
 op_logical_and
 (paren
@@ -4749,7 +4787,7 @@ c_func
 id|bluetooth-&gt;tty
 )paren
 suffix:semicolon
-id|bluetooth-&gt;active
+id|bluetooth-&gt;open_count
 op_assign
 l_int|0
 suffix:semicolon

@@ -3141,16 +3141,6 @@ comma
 id|xpram_request
 )paren
 suffix:semicolon
-id|blk_queue_headactive
-(paren
-id|BLK_DEFAULT_QUEUE
-(paren
-id|major
-)paren
-comma
-l_int|0
-)paren
-suffix:semicolon
 macro_line|#endif /* V22/V24 */
 id|read_ahead
 (braket

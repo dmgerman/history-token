@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;pegasus.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.4.21 (2001/08/27)&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.4.22 (2001/12/07)&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Petko Manolov &lt;pmanolov@lnxw.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -185,7 +185,7 @@ id|urb-&gt;status
 )paren
 (brace
 r_case
-id|USB_ST_NOERROR
+l_int|0
 suffix:colon
 r_if
 c_cond
@@ -216,12 +216,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|USB_ST_URB_PENDING
+op_minus
+id|EINPROGRESS
 suffix:colon
 r_return
 suffix:semicolon
 r_case
-id|USB_ST_URB_KILLED
+op_minus
+id|ENOENT
 suffix:colon
 r_break
 suffix:semicolon
@@ -2496,12 +2498,13 @@ id|urb-&gt;status
 )paren
 (brace
 r_case
-id|USB_ST_NOERROR
+l_int|0
 suffix:colon
 r_break
 suffix:semicolon
 r_case
-id|USB_ST_NORESPONSE
+op_minus
+id|ETIMEDOUT
 suffix:colon
 id|dbg
 c_func
@@ -2871,12 +2874,13 @@ id|urb-&gt;status
 )paren
 (brace
 r_case
-id|USB_ST_NOERROR
+l_int|0
 suffix:colon
 r_break
 suffix:semicolon
 r_case
-id|USB_ST_URB_KILLED
+op_minus
+id|ENOENT
 suffix:colon
 r_return
 suffix:semicolon
@@ -3371,8 +3375,6 @@ suffix:semicolon
 r_int
 id|res
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3396,8 +3398,6 @@ l_string|&quot;can&squot;t enable_net_traffic() - %d&quot;
 comma
 id|res
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -3596,8 +3596,6 @@ id|pegasus-&gt;intr_urb
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4163,6 +4161,12 @@ suffix:semicolon
 id|pegasus-&gt;net
 op_assign
 id|net
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|net
+)paren
 suffix:semicolon
 id|net-&gt;priv
 op_assign
