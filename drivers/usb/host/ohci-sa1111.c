@@ -354,7 +354,6 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif
-r_return
 id|usb_hcd_irq
 c_func
 (paren
@@ -364,6 +363,10 @@ id|hcd
 comma
 id|r
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * SA1111 seems to re-assert its interrupt immediately&n;&t; * after processing an interrupt.  Always return IRQ_HANDLED.&n;&t; */
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
