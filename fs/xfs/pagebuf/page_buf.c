@@ -496,6 +496,13 @@ r_struct
 id|pbstats
 id|pbstats
 suffix:semicolon
+multiline_comment|/*&n; * Queue for delayed I/O completion.&n; */
+DECL|variable|pagebuf_workqueue
+r_struct
+id|workqueue_struct
+op_star
+id|pagebuf_workqueue
+suffix:semicolon
 multiline_comment|/*&n; * Pagebuf allocation / freeing.&n; */
 DECL|macro|pb_to_gfp
 mdefine_line|#define pb_to_gfp(flags) &bslash;&n;&t;(((flags) &amp; PBF_READ_AHEAD) ? GFP_READAHEAD : &bslash;&n;&t; ((flags) &amp; PBF_DONT_BLOCK) ? GFP_NOFS : GFP_KERNEL)
@@ -4114,8 +4121,8 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Buffer Utility Routines&n; */
 multiline_comment|/*&n; *&t;pagebuf_iodone&n; *&n; *&t;pagebuf_iodone marks a buffer for which I/O is in progress&n; *&t;done with respect to that I/O.&t;The pb_done routine, if&n; *&t;present, will be called as a side-effect.&n; */
 r_void
-DECL|function|pagebuf_iodone_sched
-id|pagebuf_iodone_sched
+DECL|function|pagebuf_iodone_work
+id|pagebuf_iodone_work
 c_func
 (paren
 r_void
@@ -4251,26 +4258,24 @@ id|PBF_ASYNC
 )paren
 )paren
 (brace
-id|INIT_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 op_amp
-id|pb-&gt;pb_iodone_sched
+id|pb-&gt;pb_iodone_work
 comma
-id|pagebuf_iodone_sched
+id|pagebuf_iodone_work
 comma
-(paren
-r_void
-op_star
-)paren
 id|pb
 )paren
 suffix:semicolon
-id|schedule_task
+id|queue_work
 c_func
 (paren
+id|pagebuf_workqueue
+comma
 op_amp
-id|pb-&gt;pb_iodone_sched
+id|pb-&gt;pb_iodone_work
 )paren
 suffix:semicolon
 )brace
@@ -6894,6 +6899,24 @@ op_or
 id|CLONE_VM
 )paren
 suffix:semicolon
+id|pagebuf_workqueue
+op_assign
+id|create_workqueue
+c_func
+(paren
+l_string|&quot;pagebuf&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pagebuf_workqueue
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 )brace
 r_return
 l_int|0
@@ -6915,6 +6938,18 @@ c_cond
 id|pb_daemon
 )paren
 (brace
+id|flush_workqueue
+c_func
+(paren
+id|pagebuf_workqueue
+)paren
+suffix:semicolon
+id|destroy_workqueue
+c_func
+(paren
+id|pagebuf_workqueue
+)paren
+suffix:semicolon
 id|pb_daemon-&gt;active
 op_assign
 l_int|0
