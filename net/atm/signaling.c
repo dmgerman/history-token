@@ -605,6 +605,12 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 r_goto
 id|as_indicate_complete
 suffix:semicolon
@@ -668,7 +674,8 @@ comma
 id|msg-&gt;reply
 )paren
 suffix:semicolon
-r_break
+r_goto
+id|out
 suffix:semicolon
 r_case
 id|as_modify
@@ -732,6 +739,8 @@ c_func
 id|vcc-&gt;sk
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|dev_kfree_skb
 c_func
 (paren

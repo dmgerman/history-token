@@ -24,7 +24,8 @@ macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;net/pkt_sched.h&gt;
+macro_line|#include &lt;net/act_api.h&gt;
+macro_line|#include &lt;net/pkt_cls.h&gt;
 DECL|struct|tc_u_knode
 r_struct
 id|tc_u_knode
