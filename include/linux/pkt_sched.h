@@ -1012,23 +1012,41 @@ multiline_comment|/* VC state (ATM_VS_*; for output only) */
 suffix:semicolon
 DECL|macro|TCA_ATM_MAX
 mdefine_line|#define TCA_ATM_MAX&t;TCA_ATM_STATE
-multiline_comment|/* Delay section */
-DECL|struct|tc_dly_qopt
+multiline_comment|/* Network emulator */
+DECL|struct|tc_netem_qopt
 r_struct
-id|tc_dly_qopt
+id|tc_netem_qopt
 (brace
 DECL|member|latency
 id|__u32
 id|latency
 suffix:semicolon
+multiline_comment|/* added delay (us) */
 DECL|member|limit
 id|__u32
 id|limit
 suffix:semicolon
+multiline_comment|/* fifo limit (packets) */
 DECL|member|loss
 id|__u32
 id|loss
 suffix:semicolon
+multiline_comment|/* random packet loss (0=none ~0=100%) */
+DECL|member|gap
+id|__u32
+id|gap
+suffix:semicolon
+multiline_comment|/* re-ordering gap (0 for delay all) */
+DECL|member|duplicate
+id|__u32
+id|duplicate
+suffix:semicolon
+multiline_comment|/* random packet dup  (0=none ~0=100%) */
+DECL|member|rate
+id|__u32
+id|rate
+suffix:semicolon
+multiline_comment|/* maximum transmit rate (bytes/sec) */
 )brace
 suffix:semicolon
 macro_line|#endif
