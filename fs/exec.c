@@ -1419,7 +1419,7 @@ suffix:semicolon
 id|kunmap
 c_func
 (paren
-id|bprm
+id|bprm-&gt;page
 (braket
 id|j
 op_minus
@@ -1449,7 +1449,7 @@ suffix:semicolon
 id|kunmap
 c_func
 (paren
-id|bprm
+id|bprm-&gt;page
 (braket
 id|j
 op_minus
