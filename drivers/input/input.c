@@ -1288,7 +1288,7 @@ c_cond
 (paren
 id|id-&gt;flags
 op_amp
-id|INPUT_DEVICE_ID_MATCH_BUS
+id|INPUT_DEVICE_ID_MATCH_VERSION
 )paren
 r_if
 c_cond
