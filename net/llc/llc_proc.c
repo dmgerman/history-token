@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * proc_llc.c - proc interface for LLC&n; *&n; * Copyright (c) 2001 by Jay Schulist &lt;jschlst@samba.org&gt;&n; *&t;&t; 2002-2003 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -1244,28 +1243,4 @@ id|proc_net
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* CONFIG_PROC_FS */
-DECL|function|llc_proc_init
-r_int
-id|__init
-id|llc_proc_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|llc_proc_exit
-r_void
-id|llc_proc_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-macro_line|#endif /* CONFIG_PROC_FS */
 eof
