@@ -49,10 +49,10 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; */
+multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; * preempt_count needs to be 1 initially, until the scheduler is functional.&n; */
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;task:&t;&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;exec_domain:&t;&amp;default_exec_domain,&t;&bslash;&n;&t;flags:&t;&t;0,&t;&t;&t;&bslash;&n;&t;cpu:&t;&t;0,&t;&t;&t;&bslash;&n;&t;addr_limit:&t;KERNEL_DS,&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task&t;       = &amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain   = &amp;default_exec_domain,&t;&bslash;&n;&t;.flags&t;       = 0,&t;&t;&t;&bslash;&n;&t;.cpu&t;       = 0,&t;&t;&t;&bslash;&n;&t;.preempt_count = 1,&t;&t;&t;&bslash;&n;&t;.addr_limit     = KERNEL_DS,&t;&t;&bslash;&n;}
 DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack

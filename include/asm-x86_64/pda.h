@@ -74,16 +74,6 @@ r_int
 r_int
 id|__softirq_pending
 suffix:semicolon
-DECL|member|__local_irq_count
-r_int
-r_int
-id|__local_irq_count
-suffix:semicolon
-DECL|member|__local_bh_count
-r_int
-r_int
-id|__local_bh_count
-suffix:semicolon
 DECL|member|__nmi_count
 r_int
 r_int
@@ -106,6 +96,10 @@ suffix:semicolon
 DECL|member|mmu_state
 r_int
 id|mmu_state
+suffix:semicolon
+DECL|member|apic_timer_irqs
+r_int
+id|apic_timer_irqs
 suffix:semicolon
 DECL|variable|____cacheline_aligned
 )brace

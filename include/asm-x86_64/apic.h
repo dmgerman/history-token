@@ -8,7 +8,7 @@ macro_line|#include &lt;asm/apicdef.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|macro|APIC_DEBUG
-mdefine_line|#define APIC_DEBUG 0
+mdefine_line|#define APIC_DEBUG 1
 macro_line|#if APIC_DEBUG
 DECL|macro|Dprintk
 mdefine_line|#define Dprintk(x...) printk(x)
@@ -16,6 +16,9 @@ macro_line|#else
 DECL|macro|Dprintk
 mdefine_line|#define Dprintk(x...)
 macro_line|#endif
+r_struct
+id|pt_regs
+suffix:semicolon
 multiline_comment|/*&n; * Basic functions accessing APICs.&n; */
 DECL|function|apic_write
 r_static
@@ -255,7 +258,14 @@ id|regs
 suffix:semicolon
 r_extern
 r_void
-id|setup_APIC_clocks
+id|setup_boot_APIC_clock
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|setup_secondary_APIC_clock
 (paren
 r_void
 )paren
@@ -325,14 +335,6 @@ r_struct
 id|pm_dev
 op_star
 )paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|apic_timer_irqs
-(braket
-id|NR_CPUS
-)braket
 suffix:semicolon
 r_extern
 r_int

@@ -319,6 +319,10 @@ r_char
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|disable_apic
+suffix:semicolon
 DECL|function|x86_64_start_kernel
 r_void
 id|__init
@@ -376,6 +380,23 @@ op_plus
 l_int|12
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_IO_APIC
+r_if
+c_cond
+(paren
+id|strstr
+c_func
+(paren
+id|saved_command_line
+comma
+l_string|&quot;disableapic&quot;
+)paren
+)paren
+id|disable_apic
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 id|setup_boot_cpu_data
 c_func
 (paren

@@ -1,7 +1,6 @@
 multiline_comment|/*&n; *&t;linux/arch/x86_64/kernel/irq.c&n; *&n; *&t;Copyright (C) 1992, 1998 Linus Torvalds, Ingo Molnar&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; */
 multiline_comment|/*&n; * (mostly architecture independent, will move to kernel/irq.c in 2.5.)&n; *&n; * IRQs are in fact implemented a bit like signal handlers for the kernel.&n; * Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -234,19 +233,10 @@ comma
 l_string|&quot;           &quot;
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|for_each_cpu
+c_func
 (paren
 id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-id|smp_num_cpus
-suffix:semicolon
-id|j
-op_increment
 )paren
 id|seq_printf
 c_func
@@ -324,19 +314,10 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#else
-r_for
-c_loop
+id|for_each_cpu
+c_func
 (paren
 id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-id|smp_num_cpus
-suffix:semicolon
-id|j
-op_increment
 )paren
 id|seq_printf
 c_func
@@ -347,11 +328,7 @@ l_string|&quot;%10u &quot;
 comma
 id|kstat.irqs
 (braket
-id|cpu_logical_map
-c_func
-(paren
 id|j
-)paren
 )braket
 (braket
 id|i
@@ -426,19 +403,10 @@ comma
 l_string|&quot;NMI: &quot;
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|for_each_cpu
+c_func
 (paren
 id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-id|smp_num_cpus
-suffix:semicolon
-id|j
-op_increment
 )paren
 id|seq_printf
 c_func
@@ -449,11 +417,7 @@ l_string|&quot;%10u &quot;
 comma
 id|cpu_pda
 (braket
-id|cpu_logical_map
-c_func
-(paren
 id|j
-)paren
 )braket
 dot
 id|__nmi_count
@@ -476,19 +440,10 @@ comma
 l_string|&quot;LOC: &quot;
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|for_each_cpu
+c_func
 (paren
 id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-id|smp_num_cpus
-suffix:semicolon
-id|j
-op_increment
 )paren
 id|seq_printf
 c_func
@@ -497,14 +452,12 @@ id|p
 comma
 l_string|&quot;%10u &quot;
 comma
-id|apic_timer_irqs
+id|cpu_pda
 (braket
-id|cpu_logical_map
-c_func
-(paren
 id|j
-)paren
 )braket
+dot
+id|apic_timer_irqs
 )paren
 suffix:semicolon
 id|seq_putc
@@ -608,16 +561,6 @@ id|action
 (brace
 r_int
 id|status
-suffix:semicolon
-id|irq_enter
-c_func
-(paren
-l_int|0
-comma
-id|irq
-)paren
-suffix:semicolon
-id|status
 op_assign
 l_int|1
 suffix:semicolon
@@ -684,20 +627,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|irq_exit
-c_func
-(paren
-l_int|0
-comma
-id|irq
-)paren
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Generic enable/disable code: this just calls&n; * down into the PIC-specific version for the actual&n; * hardware disable after having gotten the irq&n; * controller lock. &n; */
-multiline_comment|/**&n; *&t;disable_irq_nosync - disable an irq without waiting&n; *&t;@irq: Interrupt to disable&n; *&n; *&t;Disable the selected interrupt line.  Disables and Enables are&n; *&t;nested.&n; *&t;Unlike disable_irq(), this function does not ensure existing&n; *&t;instances of the IRQ handler have completed before returning.&n; *&n; *&t;This function may be called from IRQ context.&n; */
+multiline_comment|/**&n; *&t;disable_irq_nosync - disable an irq without waiting&n; *&t;@irq: Interrupt to disable&n; *&n; *&t;Disable the selected interrupt line.  Disables and Enables are&n; *&t;nested.&n; *&t;Unlike disable_irq(), this function does not ensure existing&n; *&t;instances of the IRQ handler have completed before returning.&n; *&n; *&t;This function must not be called from IRQ context.&n; */
 DECL|function|disable_irq_nosync
 r_inline
 r_void
@@ -976,6 +911,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|irq_enter
+c_func
+(paren
+)paren
+suffix:semicolon
 id|kstat.irqs
 (braket
 id|cpu
@@ -1025,6 +965,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 op_logical_neg
 (paren
 id|status
@@ -1033,6 +976,7 @@ op_amp
 id|IRQ_DISABLED
 op_or
 id|IRQ_INPROGRESS
+)paren
 )paren
 )paren
 )paren
@@ -1061,8 +1005,12 @@ multiline_comment|/*&n;&t; * If there is no IRQ handler or it was disabled, exit
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|action
+)paren
 )paren
 r_goto
 id|out
@@ -1102,11 +1050,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 (paren
 id|desc-&gt;status
 op_amp
 id|IRQ_PENDING
+)paren
 )paren
 )paren
 r_break
@@ -1152,16 +1104,7 @@ op_amp
 id|desc-&gt;lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|softirq_pending
-c_func
-(paren
-id|cpu
-)paren
-)paren
-id|do_softirq
+id|irq_exit
 c_func
 (paren
 )paren
@@ -1290,7 +1233,7 @@ r_struct
 id|irqaction
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -1488,28 +1431,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* Wait to make sure it&squot;s not being used on another CPU */
-r_while
-c_loop
-(paren
-id|desc-&gt;status
-op_amp
-id|IRQ_INPROGRESS
-)paren
-(brace
-id|barrier
+id|synchronize_irq
 c_func
 (paren
+id|irq
 )paren
 suffix:semicolon
-id|cpu_relax
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -1666,7 +1593,7 @@ id|jiffies
 suffix:semicolon
 )paren
 multiline_comment|/* about 20ms delay */
-id|synchronize_irq
+id|barrier
 c_func
 (paren
 )paren
@@ -1761,7 +1688,7 @@ id|jiffies
 suffix:semicolon
 )paren
 multiline_comment|/* about 100ms delay */
-id|synchronize_irq
+id|barrier
 c_func
 (paren
 )paren

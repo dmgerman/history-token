@@ -208,7 +208,6 @@ DECL|macro|SIG_IGN
 mdefine_line|#define SIG_IGN&t;((__sighandler_t)1)&t;/* ignore signal */
 DECL|macro|SIG_ERR
 mdefine_line|#define SIG_ERR&t;((__sighandler_t)-1)&t;/* error return from signal */
-macro_line|#ifdef __KERNEL__
 DECL|struct|sigaction
 r_struct
 id|sigaction
@@ -250,7 +249,6 @@ id|sa
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
 DECL|struct|sigaltstack
 r_typedef
 r_struct

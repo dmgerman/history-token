@@ -108,6 +108,11 @@ comma
 id|mcgstl
 )paren
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -308,6 +313,11 @@ c_func
 suffix:semicolon
 )brace
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -489,6 +499,11 @@ c_func
 )paren
 )paren
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -576,6 +591,11 @@ c_func
 suffix:semicolon
 )brace
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|mce_timerfunc
 r_static

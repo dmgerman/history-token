@@ -5,11 +5,13 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/hardirq.h&gt;
 multiline_comment|/*&n; * the following functions deal with sending IPIs between CPUs.&n; *&n; * We use &squot;broadcast&squot;, CPU-&gt;CPU IPIs and self-IPIs too.&n; */
 DECL|function|__prepare_ICR
 r_static
@@ -143,7 +145,10 @@ multiline_comment|/*&n;&t; * if there are no other CPUs in the system then&n;&t;
 r_if
 c_cond
 (paren
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 OG
 l_int|1
 )paren
@@ -462,7 +467,7 @@ id|flush_cpumask
 suffix:semicolon
 id|out
 suffix:colon
-id|put_cpu
+id|put_cpu_no_resched
 c_func
 (paren
 )paren
@@ -1052,7 +1057,10 @@ suffix:semicolon
 r_int
 id|cpus
 op_assign
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 suffix:semicolon
@@ -1251,10 +1259,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|smp_num_cpus
-op_assign
-l_int|1
-suffix:semicolon
 id|local_irq_disable
 c_func
 (paren
@@ -1339,12 +1343,22 @@ id|call_data-&gt;started
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * At this point the info structure may be out of scope unless wait==1&n;&t; */
+id|irq_enter
+c_func
+(paren
+)paren
+suffix:semicolon
 (paren
 op_star
 id|func
 )paren
 (paren
 id|info
+)paren
+suffix:semicolon
+id|irq_exit
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
