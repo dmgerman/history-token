@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
 DECL|macro|VERSION_LCS_H
-mdefine_line|#define VERSION_LCS_H &quot;$Revision: 1.16 $&quot;
+mdefine_line|#define VERSION_LCS_H &quot;$Revision: 1.17 $&quot;
 DECL|macro|LCS_DBF_TEXT
 mdefine_line|#define LCS_DBF_TEXT(level, name, text) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_text_event(lcs_dbf_##name, level, text); &bslash;&n;&t;} while (0)
 DECL|macro|LCS_DBF_HEX
@@ -458,13 +458,24 @@ DECL|member|response_data
 id|__u32
 id|response_data
 suffix:semicolon
-DECL|member|lcs_ipass_ctlmsg
 )brace
 id|lcs_ipass_ctlmsg
+id|__attribute
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 DECL|member|lcs_qipassist
 )brace
 id|lcs_qipassist
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 macro_line|#endif /*CONFIG_IP_MULTICAST */
 DECL|member|cmd

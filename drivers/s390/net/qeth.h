@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/ccwgroup.h&gt;
 macro_line|#include &quot;qeth_mpc.h&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.110 $&quot;
+mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.111 $&quot;
 macro_line|#ifdef CONFIG_QETH_IPV6
 DECL|macro|QETH_VERSION_IPV6
 mdefine_line|#define QETH_VERSION_IPV6 &t;&quot;:IPv6&quot;
@@ -1404,7 +1404,7 @@ id|__u32
 id|pdu_hdr_ack
 suffix:semicolon
 DECL|member|ipa
-id|__u32
+id|__u16
 id|ipa
 suffix:semicolon
 )brace
@@ -1442,7 +1442,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|member|seqno
-r_int
+id|u32
 id|seqno
 suffix:semicolon
 DECL|member|offset
