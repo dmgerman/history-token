@@ -18,6 +18,9 @@ mdefine_line|#define IP6_TNL_F_USE_ORIG_FLOWLABEL 0x4
 multiline_comment|/* being used for Mobile IPv6 */
 DECL|macro|IP6_TNL_F_MIP6_DEV
 mdefine_line|#define IP6_TNL_F_MIP6_DEV 0x8
+multiline_comment|/* copy DSCP from the outer packet */
+DECL|macro|IP6_TNL_F_RCV_DSCP_COPY
+mdefine_line|#define IP6_TNL_F_RCV_DSCP_COPY 0x10
 DECL|struct|ip6_tnl_parm
 r_struct
 id|ip6_tnl_parm
