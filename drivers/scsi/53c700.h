@@ -388,76 +388,6 @@ l_int|0xffff0000
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* These represent the Nexus hashing functions.  A Nexus in SCSI terms&n; * just means the identification of an outstanding command, by ITL&n; * (Initiator Target Lun) or ITLQ (Initiator Target Lun Tag).  I&squot;m not&n; * very keen on XOR based hashes, so these are based on number theory&n; * instead.  All you need to do is to fix your hash bucket size and&n; * then choose reasonable strides which are coprime with the chosen&n; * bucket size&n; *&n; * Note: this mathematical hash can be made very efficient, if the&n; * compiler is good at optimising: Choose the number of buckets to be&n; * 2^n and the modulo becomes a logical and with (2^n-1).&n; * Additionally, if you chose the coprimes of the form 2^n-2^n the&n; * multiplication can be done by a shift and an addition. */
-DECL|macro|MAX_ITL_HASH_BUCKETS
-mdefine_line|#define MAX_ITL_HASH_BUCKETS&t;16
-DECL|macro|ITL_HASH_PRIME
-mdefine_line|#define ITL_HASH_PRIME&t;&t;7
-DECL|macro|MAX_ITLQ_HASH_BUCKETS
-mdefine_line|#define MAX_ITLQ_HASH_BUCKETS&t;64
-DECL|macro|ITLQ_PUN_PRIME
-mdefine_line|#define ITLQ_PUN_PRIME&t;&t;7
-DECL|macro|ITLQ_LUN_PRIME
-mdefine_line|#define ITLQ_LUN_PRIME&t;&t;3
-r_static
-r_inline
-r_int
-DECL|function|hash_ITL
-id|hash_ITL
-c_func
-(paren
-id|__u8
-id|pun
-comma
-id|__u8
-id|lun
-)paren
-(brace
-r_return
-(paren
-id|pun
-op_star
-id|ITL_HASH_PRIME
-op_plus
-id|lun
-)paren
-op_mod
-id|MAX_ITL_HASH_BUCKETS
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_int
-DECL|function|hash_ITLQ
-id|hash_ITLQ
-c_func
-(paren
-id|__u8
-id|pun
-comma
-id|__u8
-id|lun
-comma
-id|__u8
-id|tag
-)paren
-(brace
-r_return
-(paren
-id|pun
-op_star
-id|ITLQ_PUN_PRIME
-op_plus
-id|lun
-op_star
-id|ITLQ_LUN_PRIME
-op_plus
-id|tag
-)paren
-op_mod
-id|MAX_ITLQ_HASH_BUCKETS
-suffix:semicolon
-)brace
 DECL|struct|NCR_700_command_slot
 r_struct
 id|NCR_700_command_slot
@@ -519,30 +449,12 @@ DECL|member|dma_handle
 id|dma_addr_t
 id|dma_handle
 suffix:semicolon
-multiline_comment|/* Doubly linked ITL/ITLQ list kept in strict time order&n;&t; * (latest at the back) */
+multiline_comment|/* historical remnant, now used to link free commands */
 DECL|member|ITL_forw
 r_struct
 id|NCR_700_command_slot
 op_star
 id|ITL_forw
-suffix:semicolon
-DECL|member|ITL_back
-r_struct
-id|NCR_700_command_slot
-op_star
-id|ITL_back
-suffix:semicolon
-DECL|member|ITLQ_forw
-r_struct
-id|NCR_700_command_slot
-op_star
-id|ITLQ_forw
-suffix:semicolon
-DECL|member|ITLQ_back
-r_struct
-id|NCR_700_command_slot
-op_star
-id|ITLQ_back
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -693,51 +605,19 @@ DECL|member|reselection_id
 id|__u8
 id|reselection_id
 suffix:semicolon
-multiline_comment|/* flags for the host */
-multiline_comment|/* ITL list.  ALL outstanding commands are hashed here in strict&n;&t; * order, latest at the back */
-DECL|member|ITL_Hash_forw
-r_struct
-id|NCR_700_command_slot
-op_star
-id|ITL_Hash_forw
-(braket
-id|MAX_ITL_HASH_BUCKETS
-)braket
-suffix:semicolon
-DECL|member|ITL_Hash_back
-r_struct
-id|NCR_700_command_slot
-op_star
-id|ITL_Hash_back
-(braket
-id|MAX_ITL_HASH_BUCKETS
-)braket
-suffix:semicolon
-multiline_comment|/* Only tagged outstanding commands are hashed here (also latest&n;&t; * at the back) */
-DECL|member|ITLQ_Hash_forw
-r_struct
-id|NCR_700_command_slot
-op_star
-id|ITLQ_Hash_forw
-(braket
-id|MAX_ITLQ_HASH_BUCKETS
-)braket
-suffix:semicolon
-DECL|member|ITLQ_Hash_back
-r_struct
-id|NCR_700_command_slot
-op_star
-id|ITLQ_Hash_back
-(braket
-id|MAX_ITLQ_HASH_BUCKETS
-)braket
-suffix:semicolon
 multiline_comment|/* Free list, singly linked by ITL_forw elements */
 DECL|member|free_list
 r_struct
 id|NCR_700_command_slot
 op_star
 id|free_list
+suffix:semicolon
+multiline_comment|/* Completion for waited for ops, like reset, abort or&n;&t; * device reset.&n;&t; *&n;&t; * NOTE: relies on single threading in the error handler to&n;&t; * have only one outstanding at once */
+DECL|member|eh_complete
+r_struct
+id|completion
+op_star
+id|eh_complete
 suffix:semicolon
 )brace
 suffix:semicolon
