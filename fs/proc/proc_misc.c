@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1367,12 +1368,27 @@ id|page
 comma
 l_string|&quot;cpu  %u %u %u %lu&bslash;n&quot;
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|user
+)paren
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|nice
+)paren
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|system
+)paren
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|jif
 op_star
 id|num_online_cpus
@@ -1386,6 +1402,7 @@ op_plus
 id|nice
 op_plus
 id|system
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1429,21 +1446,36 @@ l_string|&quot;cpu%d %u %u %u %lu&bslash;n&quot;
 comma
 id|i
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|kstat.per_cpu_user
 (braket
 id|i
 )braket
+)paren
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|kstat.per_cpu_nice
 (braket
 id|i
 )braket
+)paren
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|kstat.per_cpu_system
 (braket
 id|i
 )braket
+)paren
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|jif
 op_minus
 (paren
@@ -1463,6 +1495,7 @@ id|kstat.per_cpu_system
 (braket
 id|i
 )braket
+)paren
 )paren
 )paren
 suffix:semicolon
