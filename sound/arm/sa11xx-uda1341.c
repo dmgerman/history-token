@@ -49,11 +49,11 @@ c_func
 l_string|&quot;{{UDA1341,iPAQ H3600 UDA1341TS}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -61,7 +61,7 @@ multiline_comment|/* ID for this card */
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;s&quot;
 )paren
@@ -69,7 +69,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for SA1100/SA1111 + UDA1341TS soundcard.&quot;
 )paren
@@ -3575,7 +3575,7 @@ c_func
 op_minus
 l_int|1
 comma
-id|snd_id
+id|id
 comma
 id|THIS_MODULE
 comma

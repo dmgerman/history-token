@@ -13,10 +13,10 @@ mdefine_line|#define HAMMERFALL_CHANNEL_BUFFER_SAMPLES  (16*1024)
 DECL|macro|HAMMERFALL_CHANNEL_BUFFER_BYTES
 mdefine_line|#define HAMMERFALL_CHANNEL_BUFFER_BYTES    (4*HAMMERFALL_CHANNEL_BUFFER_SAMPLES)
 multiline_comment|/* export */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 l_int|8
 )braket
@@ -42,7 +42,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -56,7 +56,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable cards to allocate buffers for.&quot;
 )paren
@@ -780,7 +780,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|i
 )braket

@@ -34,41 +34,41 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 op_assign
 id|SNDRV_DEFAULT_IDX1
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 op_assign
 id|SNDRV_DEFAULT_STR1
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 op_assign
 l_int|1
 suffix:semicolon
-DECL|variable|snd_enable_beep
+DECL|variable|enable_beep
 r_static
 r_int
-id|snd_enable_beep
+id|enable_beep
 op_assign
 l_int|1
 suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;i&quot;
 )paren
@@ -76,7 +76,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for &quot;
 id|CHIP_NAME
@@ -86,7 +86,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -94,7 +94,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;s&quot;
 )paren
@@ -102,7 +102,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for &quot;
 id|CHIP_NAME
@@ -112,7 +112,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -120,7 +120,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;i&quot;
 )paren
@@ -128,7 +128,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable this soundchip.&quot;
 )paren
@@ -136,7 +136,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -144,7 +144,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable_beep
+id|enable_beep
 comma
 l_string|&quot;i&quot;
 )paren
@@ -152,7 +152,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable_beep
+id|enable_beep
 comma
 l_string|&quot;Enable beep using PCM.&quot;
 )paren
@@ -160,7 +160,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable_beep
+id|enable_beep
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,&quot;
@@ -207,9 +207,9 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 comma
-id|snd_id
+id|id
 comma
 id|THIS_MODULE
 comma
@@ -570,7 +570,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_enable_beep
+id|enable_beep
 )paren
 id|snd_pmac_attach_beep
 c_func
@@ -694,7 +694,7 @@ c_func
 id|alsa_card_pmac_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-pmac=snd_enable,snd_index,snd_id,snd_enable_beep&n; */
+multiline_comment|/* format is: snd-pmac=enable,index,id,enable_beep&n; */
 DECL|function|alsa_card_pmac_setup
 r_static
 r_int
@@ -718,7 +718,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 )paren
 op_eq
 l_int|2
@@ -730,7 +730,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 )paren
 op_eq
 l_int|2
@@ -742,7 +742,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 )paren
 op_eq
 l_int|2
@@ -754,7 +754,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable_beep
+id|enable_beep
 )paren
 op_eq
 l_int|2
