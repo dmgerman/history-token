@@ -2438,6 +2438,8 @@ DECL|macro|sonic_chiptomem
 mdefine_line|#define sonic_chiptomem(bat) (bat)
 DECL|macro|PHYSADDR
 mdefine_line|#define PHYSADDR(quux) (quux)
+DECL|macro|CPHYSADDR
+mdefine_line|#define CPHYSADDR(quux) (quux)
 DECL|macro|sonic_request_irq
 mdefine_line|#define sonic_request_irq       request_irq
 DECL|macro|sonic_free_irq
