@@ -225,6 +225,13 @@ c_func
 id|__rpc_purge_current_upcall
 )paren
 suffix:semicolon
+DECL|variable|__rpc_purge_one_upcall
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__rpc_purge_one_upcall
+)paren
+suffix:semicolon
 multiline_comment|/* Client transport */
 DECL|variable|xprt_create_proto
 id|EXPORT_SYMBOL
