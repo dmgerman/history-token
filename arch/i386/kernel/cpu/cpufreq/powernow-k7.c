@@ -2201,43 +2201,9 @@ id|PFX
 l_string|&quot;This is indicative of a broken BIOS.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;Trying ACPI perflib&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ret
-op_assign
-id|powernow_acpi_init
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-(brace
-id|printk
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;ACPI and legacy methods failed&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;See http://www.codemonkey.org.uk/projects/cpufreq/powernow-k7.shtml&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 r_return
-id|ret
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|p
@@ -2538,6 +2504,13 @@ c_cond
 id|result
 )paren
 (brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Trying ACPI perflib&bslash;n&quot;
+)paren
+suffix:semicolon
 id|result
 op_assign
 id|powernow_acpi_init
@@ -2545,6 +2518,27 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+)paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;ACPI and legacy methods failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;See http://www.codemonkey.org.uk/projects/cpufreq/powernow-k7.shtml&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
