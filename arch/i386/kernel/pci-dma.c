@@ -432,13 +432,13 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|GFP_KERNEL
-comma
 r_sizeof
 (paren
 r_struct
 id|dma_coherent_mem
 )paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -469,9 +469,9 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|GFP_KERNEL
-comma
 id|bitmap_size
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
