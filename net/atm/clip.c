@@ -2392,6 +2392,15 @@ id|vcc-&gt;user_back
 op_assign
 id|clip_vcc
 suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|ATM_VF_IS_CLIP
+comma
+op_amp
+id|vcc-&gt;flags
+)paren
+suffix:semicolon
 id|clip_vcc-&gt;entry
 op_assign
 l_int|NULL

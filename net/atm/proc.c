@@ -16,14 +16,13 @@ macro_line|#include &lt;linux/atmclip.h&gt;
 macro_line|#include &lt;linux/atmarp.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/init.h&gt; /* for __init */
+macro_line|#include &lt;net/atmclip.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/param.h&gt; /* for HZ */
 macro_line|#include &quot;resources.h&quot;
 macro_line|#include &quot;common.h&quot; /* atm_proc_init prototype */
 macro_line|#include &quot;signaling.h&quot; /* to get sigd - ugly too */
-macro_line|#include &lt;net/atmclip.h&gt;
-macro_line|#include &quot;ipcommon.h&quot;
 macro_line|#if defined(CONFIG_ATM_LANE) || defined(CONFIG_ATM_LANE_MODULE)
 macro_line|#include &quot;lec.h&quot;
 macro_line|#include &quot;lec_arpc.h&quot;
@@ -717,10 +716,6 @@ DECL|member|family
 r_int
 id|family
 suffix:semicolon
-DECL|member|clip_info
-r_int
-id|clip_info
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|compare_family
@@ -1003,13 +998,6 @@ id|state-&gt;family
 op_assign
 id|family
 suffix:semicolon
-id|state-&gt;clip_info
-op_assign
-id|try_atm_clip_ops
-c_func
-(paren
-)paren
-suffix:semicolon
 id|seq
 op_assign
 id|file-&gt;private_data
@@ -1054,35 +1042,6 @@ op_star
 id|file
 )paren
 (brace
-macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
-r_struct
-id|seq_file
-op_star
-id|seq
-op_assign
-id|file-&gt;private_data
-suffix:semicolon
-r_struct
-id|vcc_state
-op_star
-id|state
-op_assign
-id|seq
-op_member_access_from_pointer
-r_private
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|state-&gt;clip_info
-)paren
-id|module_put
-c_func
-(paren
-id|atm_clip_ops-&gt;owner
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|seq_release_private
 c_func
@@ -1253,9 +1212,6 @@ r_struct
 id|atm_vcc
 op_star
 id|vcc
-comma
-r_int
-id|clip_info
 )paren
 (brace
 r_static
@@ -1375,16 +1331,16 @@ id|vcc-&gt;qos.txtp.traffic_class
 )braket
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
 r_if
 c_cond
 (paren
-id|clip_info
-op_logical_and
+id|test_bit
+c_func
 (paren
-id|vcc-&gt;push
-op_eq
-id|atm_clip_ops-&gt;clip_push
+id|ATM_VF_IS_CLIP
+comma
+op_amp
+id|vcc-&gt;flags
 )paren
 )paren
 (brace
@@ -1444,7 +1400,6 @@ l_string|&quot;None&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|seq_putc
 c_func
 (paren
@@ -2213,8 +2168,6 @@ c_func
 id|seq
 comma
 id|vcc
-comma
-id|state-&gt;clip_info
 )paren
 suffix:semicolon
 )brace

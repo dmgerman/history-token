@@ -345,6 +345,10 @@ DECL|enumerator|ATM_VF_WAITING
 id|ATM_VF_WAITING
 comma
 multiline_comment|/* waiting for reply from sigd */
+DECL|enumerator|ATM_VF_IS_CLIP
+id|ATM_VF_IS_CLIP
+comma
+multiline_comment|/* in use by CLIP protocol */
 )brace
 suffix:semicolon
 DECL|macro|ATM_VF2VS
