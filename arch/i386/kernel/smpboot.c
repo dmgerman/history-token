@@ -426,6 +426,7 @@ suffix:semicolon
 )brace
 id|valid_k7
 suffix:colon
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Architecture specific routine called by the kernel just before init is&n; * fired off. This allows the BP to have everything in order [we hope].&n; * At the end of this all the APs will hit the system scheduling and off&n; * we go. Each AP will load the system gdt&squot;s and jump through the kernel&n; * init into idle(). At this point the scheduler will one day take over&n; * and give them jobs to do. smp_callin is a standard routine&n; * we use to track CPUs as they power up.&n; */
 DECL|variable|smp_commenced
