@@ -5054,7 +5054,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|uhci-&gt;schedule_lock
+id|uhci-&gt;lock
 comma
 id|flags
 )paren
@@ -5345,7 +5345,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|uhci-&gt;schedule_lock
+id|uhci-&gt;lock
 comma
 id|flags
 )paren
@@ -5891,7 +5891,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|uhci-&gt;schedule_lock
+id|uhci-&gt;lock
 comma
 id|flags
 )paren
@@ -5985,7 +5985,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|uhci-&gt;schedule_lock
+id|uhci-&gt;lock
 comma
 id|flags
 )paren
@@ -6221,12 +6221,12 @@ id|regs
 id|__releases
 c_func
 (paren
-id|uhci-&gt;schedule_lock
+id|uhci-&gt;lock
 )paren
 id|__acquires
 c_func
 (paren
-id|uhci-&gt;schedule_lock
+id|uhci-&gt;lock
 )paren
 (brace
 r_struct
@@ -6252,7 +6252,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|uhci-&gt;schedule_lock
+id|uhci-&gt;lock
 )paren
 suffix:semicolon
 id|usb_hcd_giveback_urb
@@ -6269,7 +6269,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|uhci-&gt;schedule_lock
+id|uhci-&gt;lock
 )paren
 suffix:semicolon
 )brace

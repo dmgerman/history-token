@@ -191,7 +191,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|uhci-&gt;schedule_lock
+id|uhci-&gt;lock
 comma
 id|flags
 )paren
@@ -299,7 +299,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|uhci-&gt;schedule_lock
+id|uhci-&gt;lock
 comma
 id|flags
 )paren
@@ -627,7 +627,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|uhci-&gt;schedule_lock
+id|uhci-&gt;lock
 )paren
 suffix:semicolon
 id|age
@@ -757,7 +757,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|uhci-&gt;schedule_lock
+id|uhci-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* Wake up anyone waiting for an URB to complete */
@@ -1875,7 +1875,7 @@ id|spin_lock_init
 c_func
 (paren
 op_amp
-id|uhci-&gt;schedule_lock
+id|uhci-&gt;lock
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD
@@ -2752,7 +2752,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|uhci-&gt;schedule_lock
+id|uhci-&gt;lock
 )paren
 suffix:semicolon
 id|uhci_free_pending_qhs
@@ -2797,7 +2797,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|uhci-&gt;schedule_lock
+id|uhci-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* Wake up anyone waiting for an URB to complete */
