@@ -7655,6 +7655,13 @@ id|bh_size
 op_assign
 id|ni-&gt;vol-&gt;sb-&gt;s_blocksize
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|page-&gt;mapping-&gt;private_lock
+)paren
+suffix:semicolon
 id|bh
 op_assign
 id|head
@@ -7716,6 +7723,13 @@ id|bh-&gt;b_this_page
 )paren
 op_ne
 id|head
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|page-&gt;mapping-&gt;private_lock
 )paren
 suffix:semicolon
 id|__set_page_dirty_nobuffers
