@@ -6,15 +6,21 @@ multiline_comment|/*&n; *&n; *  Debug Stuff&n; *&n; */
 macro_line|#ifdef SST_DEBUG
 DECL|macro|dprintk
 macro_line|#  define dprintk(X...)&t;&t;printk(&quot;sstfb: &quot; X)
+DECL|macro|SST_DEBUG_REG
+macro_line|#  define SST_DEBUG_REG  1
+DECL|macro|SST_DEBUG_FUNC
+macro_line|#  define SST_DEBUG_FUNC 1
+DECL|macro|SST_DEBUG_VAR
+macro_line|#  define SST_DEBUG_VAR  1
 macro_line|#else
 DECL|macro|dprintk
 macro_line|#  define dprintk(X...)
 DECL|macro|SST_DEBUG_REG
-macro_line|#  undef SST_DEBUG_REG
+macro_line|#  define SST_DEBUG_REG  0
 DECL|macro|SST_DEBUG_FUNC
-macro_line|#  undef SST_DEBUG_FUNC
+macro_line|#  define SST_DEBUG_FUNC 0
 DECL|macro|SST_DEBUG_VAR
-macro_line|#  undef SST_DEBUG_VAR
+macro_line|#  define SST_DEBUG_VAR  0
 macro_line|#endif
 macro_line|#if (SST_DEBUG_REG &gt; 0)
 DECL|macro|r_dprintk
@@ -586,8 +592,9 @@ id|tiles_in_X
 suffix:semicolon
 multiline_comment|/* num of tiles in X res */
 DECL|member|mmio_vbase
-r_int
-r_int
+id|u8
+id|__iomem
+op_star
 id|mmio_vbase
 suffix:semicolon
 DECL|member|dac_sw

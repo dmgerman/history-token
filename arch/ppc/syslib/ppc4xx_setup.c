@@ -494,6 +494,7 @@ id|tb_ticks_per_jiffy
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SERIAL_TEXT_DEBUG
+macro_line|#ifdef SERIAL_DEBUG_IO_BASE
 multiline_comment|/* We assume that the UART has already been initialized by the&n;   firmware or the boot loader */
 r_static
 r_void
@@ -557,7 +558,6 @@ id|hex
 r_char
 id|c
 suffix:semicolon
-macro_line|#ifdef SERIAL_DEBUG_IO_BASE
 id|u8
 op_star
 id|com_port
@@ -607,15 +607,33 @@ comma
 l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#else
+r_static
+r_void
+DECL|function|ppc4xx_progress
+id|ppc4xx_progress
+c_func
+(paren
+r_char
+op_star
+id|s
+comma
+r_int
+r_int
+id|hex
+)paren
+(brace
 id|printk
 c_func
 (paren
 l_string|&quot;%s&bslash;r&bslash;n&quot;
+comma
+id|s
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
+macro_line|#endif
 macro_line|#endif&t;&t;&t;&t;/* CONFIG_SERIAL_TEXT_DEBUG */
 multiline_comment|/*&n; * IDE stuff.&n; * should be generic for every IDE PCI chipset&n; */
 macro_line|#if defined(CONFIG_PCI) &amp;&amp; defined(CONFIG_IDE)

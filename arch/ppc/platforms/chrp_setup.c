@@ -1570,6 +1570,16 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|_machine
+op_ne
+id|_MACH_chrp
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/* We have a cascade on OpenPIC IRQ 0, Linux IRQ 16 */
 id|openpic_hookup_cascade
 c_func
