@@ -3359,16 +3359,6 @@ id|x-&gt;props.header_len
 op_add_assign
 l_int|20
 suffix:semicolon
-id|x-&gt;props.trailer_len
-op_assign
-id|esp-&gt;auth.authlen
-op_plus
-id|crypto_tfm_alg_blocksize
-c_func
-(paren
-id|esp-&gt;conf.tfm
-)paren
-suffix:semicolon
 id|x-&gt;data
 op_assign
 id|esp
