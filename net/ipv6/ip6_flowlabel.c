@@ -3307,6 +3307,7 @@ r_void
 id|ip6_flowlabel_init
 c_func
 (paren
+r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_PROC_FS
@@ -3328,6 +3329,7 @@ r_void
 id|ip6_flowlabel_cleanup
 c_func
 (paren
+r_void
 )paren
 (brace
 id|del_timer
