@@ -4887,133 +4887,26 @@ DECL|macro|NEED_GENERIC_CDC
 mdefine_line|#define NEED_GENERIC_CDC
 macro_line|#endif
 macro_line|#ifdef&t;NEED_GENERIC_CDC
-multiline_comment|/* &quot;Header Functional Descriptor&quot; from CDC spec  5.2.3.1 */
-DECL|struct|header_desc
-r_struct
-id|header_desc
-(brace
-DECL|member|bLength
-id|u8
-id|bLength
-suffix:semicolon
-DECL|member|bDescriptorType
-id|u8
-id|bDescriptorType
-suffix:semicolon
-DECL|member|bDescriptorSubType
-id|u8
-id|bDescriptorSubType
-suffix:semicolon
-DECL|member|bcdCDC
-id|u16
-id|bcdCDC
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* &quot;Union Functional Descriptor&quot; from CDC spec 5.2.3.X */
-DECL|struct|union_desc
-r_struct
-id|union_desc
-(brace
-DECL|member|bLength
-id|u8
-id|bLength
-suffix:semicolon
-DECL|member|bDescriptorType
-id|u8
-id|bDescriptorType
-suffix:semicolon
-DECL|member|bDescriptorSubType
-id|u8
-id|bDescriptorSubType
-suffix:semicolon
-DECL|member|bMasterInterface0
-id|u8
-id|bMasterInterface0
-suffix:semicolon
-DECL|member|bSlaveInterface0
-id|u8
-id|bSlaveInterface0
-suffix:semicolon
-multiline_comment|/* ... and there could be other slave interfaces */
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* &quot;Ethernet Networking Functional Descriptor&quot; from CDC spec 5.2.3.16 */
-DECL|struct|ether_desc
-r_struct
-id|ether_desc
-(brace
-DECL|member|bLength
-id|u8
-id|bLength
-suffix:semicolon
-DECL|member|bDescriptorType
-id|u8
-id|bDescriptorType
-suffix:semicolon
-DECL|member|bDescriptorSubType
-id|u8
-id|bDescriptorSubType
-suffix:semicolon
-DECL|member|iMACAddress
-id|u8
-id|iMACAddress
-suffix:semicolon
-DECL|member|bmEthernetStatistics
-id|u32
-id|bmEthernetStatistics
-suffix:semicolon
-DECL|member|wMaxSegmentSize
-id|__le16
-id|wMaxSegmentSize
-suffix:semicolon
-DECL|member|wNumberMCFilters
-id|__le16
-id|wNumberMCFilters
-suffix:semicolon
-DECL|member|bNumberPowerFilters
-id|u8
-id|bNumberPowerFilters
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
+macro_line|#include &lt;linux/usb_cdc.h&gt;
 DECL|struct|cdc_state
 r_struct
 id|cdc_state
 (brace
 DECL|member|header
 r_struct
-id|header_desc
+id|usb_cdc_header_desc
 op_star
 id|header
 suffix:semicolon
 DECL|member|u
 r_struct
-id|union_desc
+id|usb_cdc_union_desc
 op_star
 id|u
 suffix:semicolon
 DECL|member|ether
 r_struct
-id|ether_desc
+id|usb_cdc_ether_desc
 op_star
 id|ether
 suffix:semicolon
@@ -5192,9 +5085,8 @@ l_int|2
 )paren
 (brace
 r_case
-l_int|0x00
+id|USB_CDC_HEADER_TYPE
 suffix:colon
-multiline_comment|/* Header, mostly useless */
 r_if
 c_cond
 (paren
@@ -5248,9 +5140,8 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x06
+id|USB_CDC_UNION_TYPE
 suffix:colon
-multiline_comment|/* Union (groups interfaces) */
 r_if
 c_cond
 (paren
@@ -5422,9 +5313,8 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x0F
+id|USB_CDC_ETHERNET_TYPE
 suffix:colon
-multiline_comment|/* Ethernet Networking */
 r_if
 c_cond
 (paren
@@ -5807,7 +5697,7 @@ op_star
 id|dev
 comma
 r_struct
-id|ether_desc
+id|usb_cdc_ether_desc
 op_star
 id|e
 )paren
@@ -14213,6 +14103,7 @@ comma
 comma
 (brace
 singleline_comment|// Linux Ethernet/RNDIS gadget on pxa210/25x/26x
+singleline_comment|// e.g. Gumstix, current OpenZaurus, ...
 id|USB_DEVICE_VER
 (paren
 l_int|0x0525
@@ -14238,7 +14129,9 @@ comma
 comma
 macro_line|#endif
 macro_line|#if&t;defined(CONFIG_USB_ZAURUS) || defined(CONFIG_USB_CDCETHER)
-multiline_comment|/*&n; * SA-1100 based Sharp Zaurus (&quot;collie&quot;), or compatible.&n; * Same idea as above, but different framing.&n; *&n; * PXA-2xx based models are also lying-about-cdc.&n; *&n; * NOTE:  These entries do double-duty, serving as blacklist entries&n; * whenever Zaurus support isn&squot;t enabled, but CDC Ethernet is.&n; */
+multiline_comment|/*&n; * SA-1100 based Sharp Zaurus (&quot;collie&quot;), or compatible.&n; * Same idea as above, but different framing.&n; *&n; * PXA-2xx based models are also lying-about-cdc.&n; *&n; * NOTE:  OpenZaurus versions with 2.6 kernels won&squot;t use these entries,&n; * unlike the older ones with 2.4 &quot;embedix&quot; kernels.&n; *&n; * NOTE:  These entries do double-duty, serving as blacklist entries&n; * whenever Zaurus support isn&squot;t enabled, but CDC Ethernet is.&n; */
+DECL|macro|ZAURUS_MASTER_INTERFACE
+mdefine_line|#define&t;ZAURUS_MASTER_INTERFACE &bslash;&n;&t;.bInterfaceClass&t;= USB_CLASS_COMM, &bslash;&n;&t;.bInterfaceSubClass&t;= USB_CDC_SUBCLASS_ETHERNET, &bslash;&n;&t;.bInterfaceProtocol&t;= USB_CDC_PROTO_NONE
 (brace
 dot
 id|match_flags
@@ -14257,22 +14150,7 @@ id|idProduct
 op_assign
 l_int|0x8004
 comma
-multiline_comment|/* match the master interface */
-dot
-id|bInterfaceClass
-op_assign
-id|USB_CLASS_COMM
-comma
-dot
-id|bInterfaceSubClass
-op_assign
-l_int|6
-multiline_comment|/* Ethernet model */
-comma
-dot
-id|bInterfaceProtocol
-op_assign
-l_int|0
+id|ZAURUS_MASTER_INTERFACE
 comma
 dot
 id|driver_info
@@ -14300,21 +14178,7 @@ op_assign
 l_int|0x8005
 comma
 multiline_comment|/* A-300 */
-dot
-id|bInterfaceClass
-op_assign
-id|USB_CLASS_COMM
-comma
-dot
-id|bInterfaceSubClass
-op_assign
-l_int|6
-multiline_comment|/* Ethernet model */
-comma
-dot
-id|bInterfaceProtocol
-op_assign
-l_int|0x00
+id|ZAURUS_MASTER_INTERFACE
 comma
 dot
 id|driver_info
@@ -14342,21 +14206,7 @@ op_assign
 l_int|0x8006
 comma
 multiline_comment|/* B-500/SL-5600 */
-dot
-id|bInterfaceClass
-op_assign
-id|USB_CLASS_COMM
-comma
-dot
-id|bInterfaceSubClass
-op_assign
-l_int|6
-multiline_comment|/* Ethernet model */
-comma
-dot
-id|bInterfaceProtocol
-op_assign
-l_int|0x00
+id|ZAURUS_MASTER_INTERFACE
 comma
 dot
 id|driver_info
@@ -14384,21 +14234,7 @@ op_assign
 l_int|0x8007
 comma
 multiline_comment|/* C-700 */
-dot
-id|bInterfaceClass
-op_assign
-id|USB_CLASS_COMM
-comma
-dot
-id|bInterfaceSubClass
-op_assign
-l_int|6
-multiline_comment|/* Ethernet model */
-comma
-dot
-id|bInterfaceProtocol
-op_assign
-l_int|0x00
+id|ZAURUS_MASTER_INTERFACE
 comma
 dot
 id|driver_info
@@ -14426,21 +14262,7 @@ op_assign
 l_int|0x9031
 comma
 multiline_comment|/* C-750 C-760 */
-dot
-id|bInterfaceClass
-op_assign
-id|USB_CLASS_COMM
-comma
-dot
-id|bInterfaceSubClass
-op_assign
-l_int|6
-multiline_comment|/* Ethernet model */
-comma
-dot
-id|bInterfaceProtocol
-op_assign
-l_int|0x00
+id|ZAURUS_MASTER_INTERFACE
 comma
 dot
 id|driver_info
@@ -14468,21 +14290,7 @@ op_assign
 l_int|0x9032
 comma
 multiline_comment|/* SL-6000 */
-dot
-id|bInterfaceClass
-op_assign
-id|USB_CLASS_COMM
-comma
-dot
-id|bInterfaceSubClass
-op_assign
-l_int|6
-multiline_comment|/* Ethernet model */
-comma
-dot
-id|bInterfaceProtocol
-op_assign
-l_int|0x00
+id|ZAURUS_MASTER_INTERFACE
 comma
 dot
 id|driver_info
@@ -14510,21 +14318,7 @@ op_assign
 l_int|0x9050
 comma
 multiline_comment|/* C-860 */
-dot
-id|bInterfaceClass
-op_assign
-id|USB_CLASS_COMM
-comma
-dot
-id|bInterfaceSubClass
-op_assign
-l_int|6
-multiline_comment|/* Ethernet model */
-comma
-dot
-id|bInterfaceProtocol
-op_assign
-l_int|0x00
+id|ZAURUS_MASTER_INTERFACE
 comma
 dot
 id|driver_info
@@ -14553,21 +14347,7 @@ op_assign
 l_int|0x0F02
 comma
 multiline_comment|/* R-1000 */
-dot
-id|bInterfaceClass
-op_assign
-id|USB_CLASS_COMM
-comma
-dot
-id|bInterfaceSubClass
-op_assign
-l_int|6
-multiline_comment|/* Ethernet model */
-comma
-dot
-id|bInterfaceProtocol
-op_assign
-l_int|0x00
+id|ZAURUS_MASTER_INTERFACE
 comma
 dot
 id|driver_info
@@ -14584,10 +14364,9 @@ id|USB_INTERFACE_INFO
 (paren
 id|USB_CLASS_COMM
 comma
-l_int|6
-multiline_comment|/* Ethernet model */
+id|USB_CDC_SUBCLASS_ETHERNET
 comma
-l_int|0
+id|USB_CDC_PROTO_NONE
 )paren
 comma
 dot
