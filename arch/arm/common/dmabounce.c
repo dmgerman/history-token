@@ -324,7 +324,7 @@ c_cond
 (paren
 id|buf
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|dev_warn
@@ -338,7 +338,7 @@ id|__func__
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -410,7 +410,7 @@ r_else
 (brace
 id|pool
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|safe
 op_assign
@@ -433,7 +433,7 @@ c_cond
 (paren
 id|safe
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|dev_warn
@@ -455,7 +455,7 @@ id|buf
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifdef STATS
