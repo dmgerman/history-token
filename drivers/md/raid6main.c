@@ -2304,6 +2304,9 @@ suffix:semicolon
 id|dev-&gt;req.bi_vcnt
 op_increment
 suffix:semicolon
+id|dev-&gt;req.bi_max_vecs
+op_increment
+suffix:semicolon
 id|dev-&gt;vec.bv_page
 op_assign
 id|dev-&gt;page
@@ -7982,6 +7985,10 @@ op_lshift
 id|BIO_UPTODATE
 suffix:semicolon
 id|bi-&gt;bi_vcnt
+op_assign
+l_int|1
+suffix:semicolon
+id|bi-&gt;bi_max_vecs
 op_assign
 l_int|1
 suffix:semicolon
