@@ -847,11 +847,6 @@ id|TUNSETDEBUG
 id|COMPATIBLE_IOCTL
 c_func
 (paren
-id|TUNSETIFF
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
 id|TUNSETPERSIST
 )paren
 id|COMPATIBLE_IOCTL

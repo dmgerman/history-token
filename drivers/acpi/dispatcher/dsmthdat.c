@@ -392,10 +392,10 @@ id|index
 )braket
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * A valid parameter.&n;&t;&t; * Store the argument in the method/walk descriptor&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * A valid parameter.&n;&t;&t; * Store the argument in the method/walk descriptor.&n;&t;&t; * Do not copy the arg in order to implement call by reference&n;&t;&t; */
 id|status
 op_assign
-id|acpi_ds_store_object_to_local
+id|acpi_ds_method_data_set_value
 (paren
 id|AML_ARG_OP
 comma

@@ -123,7 +123,7 @@ DECL|macro|TASK_UNMAPPED_BASE
 macro_line|# define TASK_UNMAPPED_BASE&t;(TASK_SIZE / 2)
 macro_line|#else /* __s390x__ */
 DECL|macro|TASK_SIZE
-macro_line|# define TASK_SIZE&t;&t;(0x20000000000UL)
+macro_line|# define TASK_SIZE&t;&t;(0x40000000000UL)
 DECL|macro|TASK31_SIZE
 macro_line|# define TASK31_SIZE&t;&t;(0x80000000UL)
 DECL|macro|TASK_UNMAPPED_BASE
@@ -403,6 +403,11 @@ l_string|&quot;a&quot;
 op_amp
 id|psw
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|psw
+)paren
 suffix:colon
 l_string|&quot;memory&quot;
 comma
@@ -426,6 +431,11 @@ suffix:colon
 l_string|&quot;a&quot;
 (paren
 op_amp
+id|psw
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
 id|psw
 )paren
 suffix:colon
@@ -487,6 +497,11 @@ l_string|&quot;a&quot;
 op_amp
 id|wait_psw
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|wait_psw
+)paren
 suffix:colon
 l_string|&quot;memory&quot;
 comma
@@ -510,6 +525,11 @@ suffix:colon
 l_string|&quot;a&quot;
 (paren
 op_amp
+id|wait_psw
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
 id|wait_psw
 )paren
 suffix:colon
@@ -544,11 +564,9 @@ id|psw_t
 )paren
 )braket
 suffix:semicolon
-r_char
+r_int
+r_int
 id|ctl_buf
-(braket
-l_int|4
-)braket
 suffix:semicolon
 id|psw_t
 op_star
@@ -597,10 +615,10 @@ macro_line|#ifndef __s390x__
 id|asm
 r_volatile
 (paren
-l_string|&quot;    stctl 0,0,0(%1)&bslash;n&quot;
-l_string|&quot;    ni    0(%1),0xef&bslash;n&quot;
+l_string|&quot;    stctl 0,0,0(%2)&bslash;n&quot;
+l_string|&quot;    ni    0(%2),0xef&bslash;n&quot;
 multiline_comment|/* switch off protection */
-l_string|&quot;    lctl  0,0,0(%1)&bslash;n&quot;
+l_string|&quot;    lctl  0,0,0(%2)&bslash;n&quot;
 l_string|&quot;    stpt  0xd8&bslash;n&quot;
 multiline_comment|/* store timer */
 l_string|&quot;    stckc 0xe0&bslash;n&quot;
@@ -621,10 +639,14 @@ l_string|&quot;    stm   0,15,0x180&bslash;n&quot;
 multiline_comment|/* store general registers */
 l_string|&quot;    stctl 0,15,0x1c0&bslash;n&quot;
 multiline_comment|/* store control registers */
-l_string|&quot;    oi    0(%1),0x10&bslash;n&quot;
+l_string|&quot;    oi    0x1c0,0x10&bslash;n&quot;
 multiline_comment|/* fake protection bit */
-l_string|&quot;    lpsw 0(%0)&quot;
+l_string|&quot;    lpsw 0(%1)&quot;
 suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|ctl_buf
+)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
@@ -636,6 +658,11 @@ l_string|&quot;a&quot;
 op_amp
 id|ctl_buf
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|dw_psw
+)paren
 suffix:colon
 l_string|&quot;cc&quot;
 )paren
@@ -644,10 +671,10 @@ macro_line|#else /* __s390x__ */
 id|asm
 r_volatile
 (paren
-l_string|&quot;    stctg 0,0,0(%1)&bslash;n&quot;
-l_string|&quot;    ni    4(%1),0xef&bslash;n&quot;
+l_string|&quot;    stctg 0,0,0(%2)&bslash;n&quot;
+l_string|&quot;    ni    4(%2),0xef&bslash;n&quot;
 multiline_comment|/* switch off protection */
-l_string|&quot;    lctlg 0,0,0(%1)&bslash;n&quot;
+l_string|&quot;    lctlg 0,0,0(%2)&bslash;n&quot;
 l_string|&quot;    lghi  1,0x1000&bslash;n&quot;
 l_string|&quot;    stpt  0x328(1)&bslash;n&quot;
 multiline_comment|/* store timer */
@@ -697,8 +724,12 @@ l_string|&quot;    stctg 0,15,0x380(1)&bslash;n&quot;
 multiline_comment|/* store control registers */
 l_string|&quot;    oi    0x384(1),0x10&bslash;n&quot;
 multiline_comment|/* fake protection bit */
-l_string|&quot;    lpswe 0(%0)&quot;
+l_string|&quot;    lpswe 0(%1)&quot;
 suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|ctl_buf
+)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
@@ -709,6 +740,11 @@ l_string|&quot;a&quot;
 (paren
 op_amp
 id|ctl_buf
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|dw_psw
 )paren
 suffix:colon
 l_string|&quot;cc&quot;

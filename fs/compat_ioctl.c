@@ -16436,6 +16436,13 @@ id|dev_ifsioc
 id|HANDLE_IOCTL
 c_func
 (paren
+id|TUNSETIFF
+comma
+id|dev_ifsioc
+)paren
+id|HANDLE_IOCTL
+c_func
+(paren
 id|SIOCETHTOOL
 comma
 id|ethtool_ioctl

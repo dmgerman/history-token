@@ -1652,6 +1652,12 @@ op_assign
 id|from-&gt;nfcache
 suffix:semicolon
 multiline_comment|/* Connection association is same as pre-frag packet */
+id|nf_conntrack_put
+c_func
+(paren
+id|to-&gt;nfct
+)paren
+suffix:semicolon
 id|to-&gt;nfct
 op_assign
 id|from-&gt;nfct

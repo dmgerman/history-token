@@ -457,12 +457,6 @@ l_int|7
 )braket
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 id|rw
 op_assign
 (paren

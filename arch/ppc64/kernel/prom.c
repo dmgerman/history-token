@@ -13282,6 +13282,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PROC_DEVICETREE
 multiline_comment|/*&n; * Add a node to /proc/device-tree.&n; */
 DECL|function|add_node_proc_entries
 r_static
@@ -13418,6 +13419,38 @@ id|parent-&gt;pde
 )paren
 suffix:semicolon
 )brace
+macro_line|#else /* !CONFIG_PROC_DEVICETREE */
+DECL|function|add_node_proc_entries
+r_static
+r_void
+id|add_node_proc_entries
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|np
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+DECL|function|remove_node_proc_entries
+r_static
+r_void
+id|remove_node_proc_entries
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|np
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PROC_DEVICETREE */
 multiline_comment|/*&n; * Fix up the uninitialized fields in a new device node:&n; * name, type, n_addrs, addrs, n_intrs, intrs, and pci-specific fields&n; *&n; * A lot of boot-time code is duplicated here, because functions such&n; * as finish_node_interrupts, interpret_pci_props, etc. cannot use the&n; * slab allocator.&n; *&n; * This should probably be split up into smaller chunks.&n; */
 DECL|function|of_finish_dynamic_node
 r_static
