@@ -22106,6 +22106,12 @@ c_func
 id|TIOCSTART
 )paren
 comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TIOCSTOP
+)paren
+comma
 multiline_comment|/* Little t */
 id|COMPATIBLE_IOCTL
 c_func
