@@ -1345,6 +1345,27 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* Done with this result state (Now that operand stack is built) */
+id|status
+op_assign
+id|acpi_ds_result_stack_pop
+(paren
+id|walk_state
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t;&t; * If a result object was returned from above, push it on the&n;&t;&t;&t; * current result stack&n;&t;&t;&t; */
 r_if
 c_cond

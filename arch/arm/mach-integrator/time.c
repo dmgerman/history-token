@@ -39,6 +39,7 @@ suffix:semicolon
 DECL|variable|rtc_base
 r_static
 r_void
+id|__iomem
 op_star
 id|rtc_base
 suffix:semicolon
@@ -411,7 +412,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;rtc-pl030&quot;
 comma
-id|rtc_base
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -456,7 +457,7 @@ id|dev-&gt;irq
 l_int|0
 )braket
 comma
-id|rtc_base
+id|dev
 )paren
 suffix:semicolon
 id|map_out
@@ -519,7 +520,7 @@ id|dev-&gt;irq
 l_int|0
 )braket
 comma
-id|rtc_base
+id|dev
 )paren
 suffix:semicolon
 id|unregister_rtc

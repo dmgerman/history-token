@@ -2359,6 +2359,14 @@ id|childstack
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* FPU must be disabled on SMP. */
+id|childregs-&gt;psr
+op_and_assign
+op_complement
+id|PSR_EF
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Set the return value for the child. */
 id|childregs-&gt;u_regs
 (braket

@@ -33,8 +33,8 @@ op_star
 id|clk
 suffix:semicolon
 DECL|member|base
-r_int
-r_char
+r_void
+id|__iomem
 op_star
 id|base
 suffix:semicolon
