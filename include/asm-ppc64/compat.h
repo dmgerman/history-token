@@ -321,5 +321,31 @@ DECL|macro|COMPAT_OFF_T_MAX
 mdefine_line|#define COMPAT_OFF_T_MAX&t;0x7fffffff
 DECL|macro|COMPAT_LOFF_T_MAX
 mdefine_line|#define COMPAT_LOFF_T_MAX&t;0x7fffffffffffffffL
+multiline_comment|/*&n; * A pointer passed in from user mode. This should not&n; * be used for syscall parameters, just declare them&n; * as pointers because the syscall entry code will have&n; * appropriately comverted them already.&n; */
+DECL|typedef|compat_uptr_t
+r_typedef
+id|u32
+id|compat_uptr_t
+suffix:semicolon
+DECL|function|compat_ptr
+r_static
+r_inline
+r_void
+op_star
+id|compat_ptr
+c_func
+(paren
+id|compat_ptr_t
+id|uptr
+)paren
+(brace
+r_return
+(paren
+r_void
+op_star
+)paren
+id|uptr
+suffix:semicolon
+)brace
 macro_line|#endif /* _ASM_PPC64_COMPAT_H */
 eof
