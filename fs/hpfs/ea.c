@@ -327,7 +327,7 @@ id|size
 op_plus
 l_int|1
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -989,7 +989,7 @@ id|ea-&gt;valuelen
 op_plus
 l_int|1
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -1227,7 +1227,7 @@ id|ea-&gt;valuelen
 op_plus
 l_int|1
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren

@@ -360,7 +360,7 @@ c_func
 (paren
 l_int|2048
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 suffix:semicolon
 r_if
@@ -640,7 +640,7 @@ c_func
 (paren
 l_int|2048
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren

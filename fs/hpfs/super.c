@@ -934,7 +934,7 @@ c_func
 (paren
 id|hpfs_inode_cachep
 comma
-id|SLAB_KERNEL
+id|SLAB_NOFS
 )paren
 suffix:semicolon
 r_if

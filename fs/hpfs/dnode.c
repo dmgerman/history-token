@@ -209,7 +209,7 @@ id|loff_t
 op_star
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -1611,7 +1611,7 @@ c_func
 (paren
 l_int|256
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -1911,7 +1911,7 @@ c_func
 (paren
 l_int|0x924
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -3409,7 +3409,7 @@ c_func
 (paren
 id|de-&gt;length
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -4251,7 +4251,7 @@ c_func
 (paren
 id|de-&gt;length
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -4717,7 +4717,7 @@ c_func
 (paren
 id|de_prev-&gt;length
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
@@ -7040,7 +7040,7 @@ c_func
 (paren
 l_int|256
 comma
-id|GFP_KERNEL
+id|GFP_NOFS
 )paren
 )paren
 )paren
