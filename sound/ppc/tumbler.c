@@ -3009,6 +3009,19 @@ suffix:semicolon
 r_int
 id|val
 suffix:semicolon
+macro_line|#ifdef PMAC_SUPPORT_AUTOMUTE
+r_if
+c_cond
+(paren
+id|chip-&gt;update_automute
+op_logical_and
+id|chip-&gt;auto_mute
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* don&squot;t touch in the auto-mute mode */
+macro_line|#endif&t;
 r_if
 c_cond
 (paren
