@@ -235,6 +235,7 @@ r_const
 r_char
 op_star
 comma
+r_const
 r_void
 op_star
 comma

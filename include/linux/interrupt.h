@@ -3,11 +3,13 @@ macro_line|#ifndef _LINUX_INTERRUPT_H
 DECL|macro|_LINUX_INTERRUPT_H
 mdefine_line|#define _LINUX_INTERRUPT_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/softirq.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 DECL|struct|irqaction
 r_struct
 id|irqaction

@@ -2392,7 +2392,7 @@ op_assign
 id|nfsd_get_raparms
 c_func
 (paren
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_dev
 comma
 id|inode-&gt;i_ino
 )paren
@@ -2881,7 +2881,7 @@ id|inode-&gt;i_ino
 op_logical_and
 id|last_dev
 op_eq
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_dev
 )paren
 )paren
 (brace
@@ -2964,7 +2964,7 @@ id|inode-&gt;i_ino
 suffix:semicolon
 id|last_dev
 op_assign
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_dev
 suffix:semicolon
 )brace
 id|dprintk

@@ -1,9 +1,8 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/time-acorn.c&n; *&n; *  Copyright (c) 1996-2000 Russell King.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Changelog:&n; *   24-Sep-1996&t;RMK&t;Created&n; *   10-Oct-1996&t;RMK&t;Brought up to date with arch-sa110eval&n; *   04-Dec-1997&t;RMK&t;Updated for new arch/arm/time.c&n; */
-macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware/ioc.h&gt;
 r_extern
 r_int

@@ -3,11 +3,11 @@ macro_line|#ifndef __ASM_ARCH_MEMORY_H
 DECL|macro|__ASM_ARCH_MEMORY_H
 mdefine_line|#define __ASM_ARCH_MEMORY_H
 DECL|macro|TASK_SIZE
-mdefine_line|#define TASK_SIZE&t;&t;(3u * 1024 * 1024 * 1024)
+mdefine_line|#define TASK_SIZE&t;&t;(0xbf000000)
 DECL|macro|TASK_SIZE_26
 mdefine_line|#define TASK_SIZE_26&t;&t;(64u * 1024 * 1024)
 DECL|macro|TASK_UNMAPPED_BASE
-mdefine_line|#define TASK_UNMAPPED_BASE&t;(1u * 1024 * 1024 * 1024)
+mdefine_line|#define TASK_UNMAPPED_BASE&t;(0x40000000)
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;&t;0xc0000000
 DECL|macro|PHYS_OFFSET

@@ -2586,6 +2586,7 @@ r_char
 op_star
 id|name
 comma
+r_const
 r_void
 op_star
 id|value
@@ -2764,6 +2765,7 @@ r_char
 op_star
 id|name
 comma
+r_const
 r_void
 op_star
 id|value
@@ -3452,6 +3454,7 @@ r_char
 op_star
 id|name
 comma
+r_const
 r_void
 op_star
 id|value

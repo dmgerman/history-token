@@ -1,18 +1,17 @@
 multiline_comment|/* smc-mca.c: A SMC Ultra ethernet driver for linux. */
 multiline_comment|/*&n;    Most of this driver, except for ultramca_probe is nearly&n;    verbatim from smc-ultra.c by Donald Becker. The rest is&n;    written and copyright 1996 by David Weis, weisd3458@uni.edu&n;&n;    This is a driver for the SMC Ultra and SMC EtherEZ ethercards.&n;&n;    This driver uses the cards in the 8390-compatible, shared memory mode.&n;    Most of the run-time complexity is handled by the generic code in&n;    8390.c.&n;&n;    This driver enables the shared memory only when doing the actual data&n;    transfers to avoid a bug in early version of the card that corrupted&n;    data transferred by a AHA1542.&n;&n;    This driver does not support the programmed-I/O data transfer mode of&n;    the EtherEZ.  That support (if available) is smc-ez.c.  Nor does it&n;    use the non-8390-compatible &quot;Altego&quot; mode. (No support currently planned.)&n;&n;    Changelog:&n;&n;    Paul Gortmaker&t; : multiple card support for module users.&n;    David Weis&t;&t; : Micro Channel-ized it.&n;    Tom Sightler&t; : Added support for IBM PS/2 Ethernet Adapter/A&n;    Christopher Turcksin : Changed MCA-probe so that multiple adapters are&n;&t;&t;&t;   found correctly (Jul 16, 1997)&n;    Chris Beauregard&t; : Tried to merge the two changes above (Dec 15, 1997)&n;    Tom Sightler&t; : Fixed minor detection bug caused by above merge&n;    Tom Sightler&t; : Added support for three more Western Digital&n;&t;&t;&t;   MCA-adapters&n;    Tom Sightler&t; : Added support for 2.2.x mca_find_unused_adapter&n;    Hartmut Schmidt&t; : - Modified parameter detection to handle each&n;&t;&t;&t;     card differently depending on a switch-list&n;&t;&t;&t;   - &squot;card_ver&squot; removed from the adapter list&n;&t;&t;&t;   - Some minor bug fixes&n;*/
+macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;8390.h&quot;
 macro_line|#include &quot;smc-mca.h&quot;
-macro_line|#include &lt;linux/mca.h&gt;
 r_int
 id|ultramca_probe
 c_func

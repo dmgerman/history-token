@@ -11,14 +11,18 @@ multiline_comment|/*&n; * Set this to zero to remove all the debug statements vi
 DECL|macro|DEBUGGING
 mdefine_line|#define DEBUGGING&t;1
 multiline_comment|/*&n;  Sources:&n;&n;&t;Crynwr packet driver epktisa.&n;&n;&t;Crystal Semiconductor data sheets.&n;&n;*/
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -27,11 +31,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#if ALLOW_DMA
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &quot;cs89x0.h&quot;
 DECL|variable|__initdata
 r_static

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * power.c - power management functions for the device tree.&n; * &n; * Copyright (c) 2002 Patrick Mochel&n; *&t;&t; 2002 Open Source Development Lab&n; * &n; *  Kai Germaschewski contributed to the list walking routines.&n; *&n; */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG 0
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -67,12 +67,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|device_present
-c_func
-(paren
-id|dev
-)paren
-op_logical_and
 id|dev-&gt;driver
 op_logical_and
 id|dev-&gt;driver-&gt;suspend
@@ -174,12 +168,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|device_present
-c_func
-(paren
-id|dev
-)paren
-op_logical_and
 id|dev-&gt;driver
 op_logical_and
 id|dev-&gt;driver-&gt;resume
@@ -271,12 +259,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|device_present
-c_func
-(paren
-id|dev
-)paren
-op_logical_and
 id|dev-&gt;driver
 op_logical_and
 id|dev-&gt;driver-&gt;shutdown

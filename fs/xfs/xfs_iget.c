@@ -634,7 +634,7 @@ op_amp
 id|ih-&gt;ih_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Read the disk inode attributes into a new inode structure and get&n;&t; * a new vnode for it.&t;Initialize the inode lock so we can idestroy&n;&t; * it soon if it&squot;s a dup.  This should also initialize i_dev, i_ino,&n;&t; * i_bno, i_mount, and i_index.&n;&t; */
+multiline_comment|/*&n;&t; * Read the disk inode attributes into a new inode structure and get&n;&t; * a new vnode for it.&t;Initialize the inode lock so we can idestroy&n;&t; * it soon if it&squot;s a dup.  This should also initialize i_ino, i_bno,&n;&t; * i_mount, and i_index.&n;&t; */
 id|error
 op_assign
 id|xfs_iread

@@ -107,7 +107,7 @@ c_func
 (paren
 l_string|&quot;PRESTO: BAD: cannot find cache for dev %d, ino %ld&bslash;n&quot;
 comma
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_dev
 comma
 id|inode-&gt;i_ino
 )paren

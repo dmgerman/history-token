@@ -4,16 +4,12 @@ multiline_comment|/*************************************************************
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -21,6 +17,9 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/hdlcdrv.h&gt;
 macro_line|#include &lt;linux/baycom.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|macro|BAYCOM_DEBUG
 mdefine_line|#define BAYCOM_DEBUG

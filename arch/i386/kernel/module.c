@@ -9,7 +9,7 @@ macro_line|#if 0
 mdefine_line|#define DEBUGP printk
 macro_line|#else
 DECL|macro|DEBUGP
-mdefine_line|#define DEBUGP(fmt , ...)
+mdefine_line|#define DEBUGP(fmt...)
 macro_line|#endif
 DECL|function|module_alloc
 r_void

@@ -172,6 +172,17 @@ r_int
 r_int
 id|nr_inactive
 suffix:semicolon
+DECL|member|all_unreclaimable
+r_int
+id|all_unreclaimable
+suffix:semicolon
+multiline_comment|/* All pages pinned */
+DECL|member|pages_scanned
+r_int
+r_int
+id|pages_scanned
+suffix:semicolon
+multiline_comment|/* since last reclaim */
 id|ZONE_PADDING
 c_func
 (paren
@@ -434,6 +445,16 @@ id|build_all_zonelists
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_void
+id|wakeup_kswapd
+c_func
+(paren
+r_struct
+id|zone
+op_star
+id|zone
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * for_each_pgdat - helper macro to iterate over all nodes&n; * @pgdat - pointer to a pg_data_t variable&n; *&n; * Meant to help with common loops of the form&n; * pgdat = pgdat_list;&n; * while(pgdat) {&n; * &t;...&n; * &t;pgdat = pgdat-&gt;pgdat_next;&n; * }&n; */

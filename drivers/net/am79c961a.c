@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  linux/drivers/net/am79c961.c&n; *&n; *  by Russell King &lt;rmk@arm.linux.org.uk&gt; 1995-2001.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Derived from various things including skeleton.c&n; *&n; * This is a special driver for the am79c961A Lance chip used in the&n; * Intel (formally Digital Equipment Corp) EBSA110 platform.  Please&n; * note that this can not be built as a module (it doesn&squot;t make sense).&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

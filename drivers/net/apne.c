@@ -1,15 +1,14 @@
 multiline_comment|/*&n; * Amiga Linux/68k 8390 based PCMCIA Ethernet Driver for the Amiga 1200&n; *&n; * (C) Copyright 1997 Alain Malek&n; *                    (Alain.Malek@cryogen.com)&n; *&n; * ----------------------------------------------------------------------------&n; *&n; * This program is based on&n; *&n; * ne.c:       A general non-shared-memory NS8390 ethernet driver for linux&n; *             Written 1992-94 by Donald Becker.&n; *&n; * 8390.c:     A general NS8390 ethernet driver core for linux.&n; *             Written 1992-94 by Donald Becker.&n; *&n; * cnetdevice: A Sana-II ethernet driver for AmigaOS&n; *             Written by Bruce Abbott (bhabbott@inhb.co.nz)&n; *&n; * ----------------------------------------------------------------------------&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of the Linux&n; * distribution for more details.&n; *&n; * ----------------------------------------------------------------------------&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;

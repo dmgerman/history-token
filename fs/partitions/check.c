@@ -1827,7 +1827,7 @@ id|KOBJ_NAME_LEN
 comma
 l_string|&quot;%s%d&quot;
 comma
-id|disk-&gt;disk_name
+id|disk-&gt;kobj.name
 comma
 id|part
 )paren

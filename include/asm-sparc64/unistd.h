@@ -362,9 +362,12 @@ DECL|macro|__NR_personality
 mdefine_line|#define __NR_personality        191 /* Linux Specific                              */
 DECL|macro|__NR_remap_file_pages
 mdefine_line|#define __NR_remap_file_pages   192 /* Linux Specific                              */
-multiline_comment|/* #define __NR_break           193    Linux Specific                              */
-multiline_comment|/* #define __NR_lock            194    Linux Specific                              */
-multiline_comment|/* #define __NR_mpx             195    Linux Specific                              */
+DECL|macro|__NR_epoll_create
+mdefine_line|#define __NR_epoll_create       193 /* Linux Specific                              */
+DECL|macro|__NR_epoll_ctl
+mdefine_line|#define __NR_epoll_ctl          194 /* Linux Specific                              */
+DECL|macro|__NR_epoll_wait
+mdefine_line|#define __NR_epoll_wait         195 /* Linux Specific                              */
 multiline_comment|/* #define __NR_ulimit          196    Linux Specific                              */
 DECL|macro|__NR_getppid
 mdefine_line|#define __NR_getppid            197 /* Linux Specific                              */

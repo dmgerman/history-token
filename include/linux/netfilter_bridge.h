@@ -4,7 +4,9 @@ mdefine_line|#define __LINUX_BRIDGE_NETFILTER_H
 multiline_comment|/* bridge-specific defines for netfilter. &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
+macro_line|#if defined(__KERNEL__) &amp;&amp; defined(CONFIG_NETFILTER)
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#endif
 multiline_comment|/* Bridge Hooks */
 multiline_comment|/* After promisc drops, checksum checks. */
 DECL|macro|NF_BR_PRE_ROUTING
@@ -26,6 +28,7 @@ DECL|macro|NF_BR_BROUTING
 mdefine_line|#define NF_BR_BROUTING&t;&t;5
 DECL|macro|NF_BR_NUMHOOKS
 mdefine_line|#define NF_BR_NUMHOOKS&t;&t;6
+macro_line|#ifdef __KERNEL__
 DECL|macro|BRNF_PKT_TYPE
 mdefine_line|#define BRNF_PKT_TYPE&t;&t;&t;0x01
 DECL|macro|BRNF_BRIDGED_DNAT
@@ -80,6 +83,7 @@ id|INT_MAX
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETFILTER
 r_static
 r_inline
 DECL|function|nf_bridge_alloc
@@ -191,5 +195,7 @@ id|daddr
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#endif /* CONFIG_NETFILTER */
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof
