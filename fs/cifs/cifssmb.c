@@ -3897,6 +3897,7 @@ id|u32
 )paren
 id|offset
 )paren
+suffix:semicolon
 id|pSMB-&gt;Locks
 (braket
 l_int|0
