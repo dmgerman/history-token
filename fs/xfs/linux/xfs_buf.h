@@ -131,7 +131,7 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|10
+l_int|7
 )paren
 comma
 multiline_comment|/* buffer has been staled, do not find it  */
@@ -141,7 +141,7 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|11
+l_int|8
 )paren
 comma
 multiline_comment|/* filesystem controls freeing memory  */
@@ -151,89 +151,17 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|12
+l_int|9
 )paren
 comma
 multiline_comment|/* schedule IO completion on fs datad  */
-multiline_comment|/* flags used only as arguments to access routines */
-DECL|enumerator|PBF_LOCK
-id|PBF_LOCK
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|13
-)paren
-comma
-multiline_comment|/* lock requested&t;&t;&t;   */
-DECL|enumerator|PBF_TRYLOCK
-id|PBF_TRYLOCK
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|14
-)paren
-comma
-multiline_comment|/* lock requested, but do not wait&t;   */
-DECL|enumerator|PBF_DONT_BLOCK
-id|PBF_DONT_BLOCK
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|15
-)paren
-comma
-multiline_comment|/* do not block in current thread&t;   */
-multiline_comment|/* flags used only internally */
-DECL|enumerator|_PBF_PAGECACHE
-id|_PBF_PAGECACHE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|16
-)paren
-comma
-multiline_comment|/* backed by pagecache&t;&t;   */
-DECL|enumerator|_PBF_ADDR_ALLOCATED
-id|_PBF_ADDR_ALLOCATED
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|19
-)paren
-comma
-multiline_comment|/* pb_addr space was allocated&t;   */
-DECL|enumerator|_PBF_MEM_ALLOCATED
-id|_PBF_MEM_ALLOCATED
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|20
-)paren
-comma
-multiline_comment|/* underlying pages are allocated  */
-DECL|enumerator|_PBF_MEM_SLAB
-id|_PBF_MEM_SLAB
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|21
-)paren
-comma
-multiline_comment|/* underlying pages are slab allocated  */
 DECL|enumerator|PBF_FORCEIO
 id|PBF_FORCEIO
 op_assign
 (paren
 l_int|1
 op_lshift
-l_int|22
+l_int|10
 )paren
 comma
 multiline_comment|/* ignore any cache state&t;&t;   */
@@ -243,7 +171,7 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|23
+l_int|11
 )paren
 comma
 multiline_comment|/* flush disk write cache&t;&t;   */
@@ -253,17 +181,69 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|24
+l_int|12
 )paren
 comma
 multiline_comment|/* asynchronous read-ahead&t;&t;   */
-DECL|enumerator|PBF_RUN_QUEUES
-id|PBF_RUN_QUEUES
+multiline_comment|/* flags used only as arguments to access routines */
+DECL|enumerator|PBF_LOCK
+id|PBF_LOCK
 op_assign
 (paren
 l_int|1
 op_lshift
-l_int|25
+l_int|14
+)paren
+comma
+multiline_comment|/* lock requested&t;&t;&t;   */
+DECL|enumerator|PBF_TRYLOCK
+id|PBF_TRYLOCK
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|15
+)paren
+comma
+multiline_comment|/* lock requested, but do not wait&t;   */
+DECL|enumerator|PBF_DONT_BLOCK
+id|PBF_DONT_BLOCK
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+comma
+multiline_comment|/* do not block in current thread&t;   */
+multiline_comment|/* flags used only internally */
+DECL|enumerator|_PBF_PAGE_CACHE
+id|_PBF_PAGE_CACHE
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|17
+)paren
+comma
+multiline_comment|/* backed by pagecache&t;&t;   */
+DECL|enumerator|_PBF_KMEM_ALLOC
+id|_PBF_KMEM_ALLOC
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|18
+)paren
+comma
+multiline_comment|/* backed by kmem_alloc()&t;&t;   */
+DECL|enumerator|_PBF_RUN_QUEUES
+id|_PBF_RUN_QUEUES
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|19
 )paren
 comma
 multiline_comment|/* run block device task queue&t;   */
@@ -1356,7 +1336,7 @@ id|PBF_WRITE
 op_or
 id|PBF_ASYNC
 op_or
-id|PBF_RUN_QUEUES
+id|_PBF_RUN_QUEUES
 )paren
 suffix:semicolon
 )brace
@@ -1441,7 +1421,7 @@ id|iowait
 )paren
 id|pb-&gt;pb_flags
 op_or_assign
-id|PBF_RUN_QUEUES
+id|_PBF_RUN_QUEUES
 suffix:semicolon
 id|xfs_buf_undelay
 c_func
