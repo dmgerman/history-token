@@ -104,6 +104,10 @@ DECL|macro|NEO_ICON128_ENABLE
 mdefine_line|#define NEO_ICON128_ENABLE&t;0x0000000C
 DECL|macro|NEO_ICON_BLANK
 mdefine_line|#define NEO_ICON_BLANK&t;&t;0x00000010
+DECL|macro|NEO_GR01_SUPPRESS_VSYNC
+mdefine_line|#define NEO_GR01_SUPPRESS_VSYNC 0x10
+DECL|macro|NEO_GR01_SUPPRESS_HSYNC
+mdefine_line|#define NEO_GR01_SUPPRESS_HSYNC 0x20
 macro_line|#ifdef __KERNEL__
 macro_line|#ifdef NEOFB_DEBUG
 DECL|macro|DBG
