@@ -3035,6 +3035,28 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* Check that the softirq receive buffer is valid */
+id|WARN_ON
+c_func
+(paren
+id|memcmp
+c_func
+(paren
+op_amp
+id|req-&gt;rq_rcv_buf
+comma
+op_amp
+id|req-&gt;rq_private_buf
+comma
+r_sizeof
+(paren
+id|req-&gt;rq_rcv_buf
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/* Verify the RPC header */
 r_if
 c_cond
