@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
+macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
@@ -60,6 +61,12 @@ r_static
 id|kmem_cache_t
 op_star
 id|hpsb_packet_cache
+suffix:semicolon
+DECL|variable|hpsb_packet_mempool
+r_static
+id|mempool_t
+op_star
+id|hpsb_packet_mempool
 suffix:semicolon
 multiline_comment|/* Some globals used */
 DECL|variable|hpsb_speedto_str
@@ -206,7 +213,7 @@ op_star
 id|data
 )paren
 (brace
-id|BUG_ON
+id|WARN_ON
 c_func
 (paren
 id|packet-&gt;complete_routine
@@ -252,10 +259,10 @@ l_int|NULL
 suffix:semicolon
 id|packet
 op_assign
-id|kmem_cache_alloc
+id|mempool_alloc
 c_func
 (paren
-id|hpsb_packet_cache
+id|hpsb_packet_mempool
 comma
 id|GFP_ATOMIC
 )paren
@@ -276,6 +283,17 @@ c_cond
 id|data_size
 )paren
 (brace
+id|data_size
+op_assign
+(paren
+id|data_size
+op_plus
+l_int|3
+)paren
+op_amp
+op_complement
+l_int|3
+suffix:semicolon
 id|data
 op_assign
 id|kmalloc
@@ -296,12 +314,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|kmem_cache_free
+id|mempool_free
 c_func
 (paren
-id|hpsb_packet_cache
-comma
 id|packet
+comma
+id|hpsb_packet_mempool
 )paren
 suffix:semicolon
 r_return
@@ -352,12 +370,12 @@ c_func
 id|packet-&gt;data
 )paren
 suffix:semicolon
-id|kmem_cache_free
+id|mempool_free
 c_func
 (paren
-id|hpsb_packet_cache
-comma
 id|packet
+comma
+id|hpsb_packet_mempool
 )paren
 suffix:semicolon
 )brace
@@ -4827,11 +4845,26 @@ id|hpsb_packet
 comma
 l_int|0
 comma
-l_int|0
+id|SLAB_HWCACHE_ALIGN
 comma
 id|hpsb_packet_ctor
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* Our memory pool keeps 32 packets allocated at all times. The&n;&t; * default callbacks use the hpsb_packet_cache for the allocation,&n;&t; * and the hpsb_packet_ctor call back makes sure that the packets&n;&t; * are setup properly. Smooooth. */
+id|hpsb_packet_mempool
+op_assign
+id|mempool_create
+c_func
+(paren
+l_int|32
+comma
+id|mempool_alloc_slab
+comma
+id|mempool_free_slab
+comma
+id|hpsb_packet_cache
 )paren
 suffix:semicolon
 id|bus_register
@@ -5005,6 +5038,12 @@ id|khpsbpkt_complete
 )paren
 suffix:semicolon
 )brace
+id|mempool_destroy
+c_func
+(paren
+id|hpsb_packet_mempool
+)paren
+suffix:semicolon
 id|kmem_cache_destroy
 c_func
 (paren
