@@ -4671,6 +4671,7 @@ id|DRIVER_SENSE
 )paren
 op_logical_and
 (paren
+(paren
 id|sreq-&gt;sr_sense_buffer
 (braket
 l_int|2
@@ -4680,6 +4681,18 @@ l_int|0x0f
 )paren
 op_eq
 id|UNIT_ATTENTION
+op_logical_or
+(paren
+id|sreq-&gt;sr_sense_buffer
+(braket
+l_int|2
+)braket
+op_amp
+l_int|0x0f
+)paren
+op_eq
+id|NOT_READY
+)paren
 op_logical_and
 id|sdev-&gt;removable
 )paren
