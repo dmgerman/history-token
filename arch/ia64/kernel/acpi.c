@@ -68,6 +68,12 @@ id|acpi_kbd_controller_present
 op_assign
 l_int|1
 suffix:semicolon
+DECL|variable|__initdata
+r_int
+id|acpi_disabled
+id|__initdata
+suffix:semicolon
+multiline_comment|/* XXX this shouldn&squot;t be needed---we can&squot;t boot without ACPI! */
 r_const
 r_char
 op_star
@@ -2052,7 +2058,7 @@ c_cond
 id|acpi_table_parse
 c_func
 (paren
-id|ACPI_FACP
+id|ACPI_FADT
 comma
 id|acpi_parse_fadt
 )paren
