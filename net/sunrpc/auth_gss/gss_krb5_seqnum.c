@@ -200,7 +200,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;krb5_get_seq_num: &bslash;n&quot;
+l_string|&quot;RPC:      krb5_get_seq_num:&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if

@@ -864,10 +864,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_NOTICE
 l_string|&quot;nfs_get_root: getattr error = %d&bslash;n&quot;
 comma
 op_minus
@@ -968,6 +967,11 @@ id|fattr
 comma
 )brace
 suffix:semicolon
+r_int
+id|no_root_error
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* We probably want something more informative here */
 id|snprintf
 c_func
@@ -1030,9 +1034,19 @@ c_func
 id|root_inode
 )paren
 )paren
+(brace
+id|no_root_error
+op_assign
+id|PTR_ERR
+c_func
+(paren
+id|root_inode
+)paren
+suffix:semicolon
 r_goto
 id|out_no_root
 suffix:semicolon
+)brace
 id|sb-&gt;s_root
 op_assign
 id|d_alloc_root
@@ -1047,9 +1061,16 @@ c_cond
 op_logical_neg
 id|sb-&gt;s_root
 )paren
+(brace
+id|no_root_error
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
 id|out_no_root
 suffix:semicolon
+)brace
 id|sb-&gt;s_root-&gt;d_op
 op_assign
 id|server-&gt;rpc_ops-&gt;dentry_ops
@@ -1358,10 +1379,13 @@ suffix:semicolon
 multiline_comment|/* Yargs. It didn&squot;t work out. */
 id|out_no_root
 suffix:colon
-id|printk
+id|dprintk
 c_func
 (paren
-l_string|&quot;nfs_read_super: get root inode failed&bslash;n&quot;
+l_string|&quot;nfs_sb_init: get root inode failed: errno %d&bslash;n&quot;
+comma
+op_minus
+id|no_root_error
 )paren
 suffix:semicolon
 r_if
@@ -1381,8 +1405,7 @@ id|root_inode
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EINVAL
+id|no_root_error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Create an RPC client handle.&n; */

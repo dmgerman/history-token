@@ -64,7 +64,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: krb5_encrypt: input data:&bslash;n&quot;
+l_string|&quot;RPC:      krb5_encrypt: input data:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_hexl
@@ -112,7 +112,7 @@ l_int|16
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_k5encrypt: tfm iv size to large %d&bslash;n&quot;
+l_string|&quot;RPC:      gss_k5encrypt: tfm iv size to large %d&bslash;n&quot;
 comma
 id|crypto_tfm_alg_ivsize
 c_func
@@ -208,7 +208,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: krb5_encrypt: output data:&bslash;n&quot;
+l_string|&quot;RPC:      krb5_encrypt: output data:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_hexl
@@ -230,7 +230,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;krb5_encrypt returns %d&bslash;n&quot;
+l_string|&quot;RPC:      krb5_encrypt returns %d&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -239,6 +239,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|krb5_encrypt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|krb5_encrypt
+)paren
+suffix:semicolon
 id|u32
 DECL|function|krb5_decrypt
 id|krb5_decrypt
@@ -291,7 +298,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: krb5_decrypt: input data:&bslash;n&quot;
+l_string|&quot;RPC:      krb5_decrypt: input data:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_hexl
@@ -339,7 +346,7 @@ l_int|16
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_k5decrypt: tfm iv size to large %d&bslash;n&quot;
+l_string|&quot;RPC:      gss_k5decrypt: tfm iv size to large %d&bslash;n&quot;
 comma
 id|crypto_tfm_alg_ivsize
 c_func
@@ -435,7 +442,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: krb5_decrypt: output_data:&bslash;n&quot;
+l_string|&quot;RPC:      krb5_decrypt: output_data:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_hexl
@@ -457,7 +464,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;gss_k5decrypt returns %d&bslash;n&quot;
+l_string|&quot;RPC:      gss_k5decrypt returns %d&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -466,6 +473,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|krb5_decrypt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|krb5_decrypt
+)paren
+suffix:semicolon
 r_void
 DECL|function|buf_to_sg
 id|buf_to_sg
@@ -505,10 +519,10 @@ op_assign
 id|len
 suffix:semicolon
 )brace
-multiline_comment|/* checksum the plaintext data and the first 8 bytes of the krb5 token header,&n; * as specified by the rfc: */
+multiline_comment|/* checksum the plaintext data and hdrlen bytes of the token header */
 id|s32
-DECL|function|krb5_make_checksum
-id|krb5_make_checksum
+DECL|function|make_checksum
+id|make_checksum
 c_func
 (paren
 id|s32
@@ -517,6 +531,9 @@ comma
 r_char
 op_star
 id|header
+comma
+r_int
+id|hdrlen
 comma
 r_struct
 id|xdr_buf
@@ -583,7 +600,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: krb5_make_checksum:&quot;
+l_string|&quot;RPC:      krb5_make_checksum:&quot;
 l_string|&quot; unsupported checksum %d&quot;
 comma
 id|cksumtype
@@ -653,7 +670,7 @@ id|sg
 comma
 id|header
 comma
-l_int|8
+id|hdrlen
 )paren
 suffix:semicolon
 id|crypto_digest_update
@@ -891,4 +908,11 @@ r_return
 id|code
 suffix:semicolon
 )brace
+DECL|variable|make_checksum
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|make_checksum
+)paren
+suffix:semicolon
 eof

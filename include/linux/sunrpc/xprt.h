@@ -55,13 +55,9 @@ DECL|struct|rpc_timeout
 r_struct
 id|rpc_timeout
 (brace
-DECL|member|to_current
-r_int
-r_int
-id|to_current
-comma
-multiline_comment|/* current timeout */
 DECL|member|to_initval
+r_int
+r_int
 id|to_initval
 comma
 multiline_comment|/* initial timeout */
@@ -99,12 +95,6 @@ op_star
 id|rq_xprt
 suffix:semicolon
 multiline_comment|/* RPC client */
-DECL|member|rq_timeout
-r_struct
-id|rpc_timeout
-id|rq_timeout
-suffix:semicolon
-multiline_comment|/* timeout parms */
 DECL|member|rq_snd_buf
 r_struct
 id|xdr_buf
@@ -156,6 +146,24 @@ id|xdr_buf
 id|rq_private_buf
 suffix:semicolon
 multiline_comment|/* The receive buffer&n;&t;&t;&t;&t;&t;&t;&t; * used in the softirq.&n;&t;&t;&t;&t;&t;&t;&t; */
+DECL|member|rq_majortimeo
+r_int
+r_int
+id|rq_majortimeo
+suffix:semicolon
+multiline_comment|/* major timeout alarm */
+DECL|member|rq_timeout
+r_int
+r_int
+id|rq_timeout
+suffix:semicolon
+multiline_comment|/* Current timeout value */
+DECL|member|rq_retries
+r_int
+r_int
+id|rq_retries
+suffix:semicolon
+multiline_comment|/* # of retries */
 multiline_comment|/*&n;&t; * For authentication (e.g. auth_des)&n;&t; */
 DECL|member|rq_creddata
 id|u32
@@ -176,10 +184,6 @@ r_int
 id|rq_xtime
 suffix:semicolon
 multiline_comment|/* when transmitted */
-DECL|member|rq_ntimeo
-r_int
-id|rq_ntimeo
-suffix:semicolon
 DECL|member|rq_ntrans
 r_int
 id|rq_ntrans
@@ -563,8 +567,9 @@ id|xprt_adjust_timeout
 c_func
 (paren
 r_struct
-id|rpc_timeout
+id|rpc_rqst
 op_star
+id|req
 )paren
 suffix:semicolon
 r_void
