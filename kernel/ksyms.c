@@ -1154,28 +1154,11 @@ c_func
 id|complete_and_exit
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-DECL|variable|__wake_up_sync
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|__wake_up_sync
-)paren
-suffix:semicolon
-multiline_comment|/* internal use only */
-macro_line|#endif
 DECL|variable|schedule_timeout
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|schedule_timeout
-)paren
-suffix:semicolon
-DECL|variable|idle_cpu
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|idle_cpu
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT)

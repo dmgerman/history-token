@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/qdio.h&gt;
 DECL|macro|QETH_NAME
 mdefine_line|#define QETH_NAME &quot; qeth&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &quot;$Revision: 1.56 $&quot;
+mdefine_line|#define VERSION_QETH_H &quot;$Revision: 1.58 $&quot;
 multiline_comment|/******************** CONFIG STUFF ***********************/
 singleline_comment|//#define QETH_DBF_LIKE_HELL
 macro_line|#ifdef CONFIG_QETH_IPV6
@@ -106,6 +106,8 @@ DECL|macro|QETH_DBF_HEX
 mdefine_line|#define QETH_DBF_HEX(ex,name,level,addr,len) &bslash;&n;        do { &bslash;&n;        if (ex) &bslash;&n;                debug_exception(qeth_dbf_##name,level,(void*)addr,len); &bslash;&n;        else &bslash;&n;                debug_event(qeth_dbf_##name,level,(void*)addr,len); &bslash;&n;        } while (0)
 DECL|macro|QETH_DBF_TEXT
 mdefine_line|#define QETH_DBF_TEXT(ex,name,level,text) &bslash;&n;        do { &bslash;&n;        if (ex) &bslash;&n;                debug_text_exception(qeth_dbf_##name,level,text); &bslash;&n;        else &bslash;&n;                debug_text_event(qeth_dbf_##name,level,text); &bslash;&n;        } while (0)
+DECL|macro|QETH_DBF_CARD
+mdefine_line|#define QETH_DBF_CARD(ex,name,level,text,card) &bslash;&n;&t;do { &bslash;&n;&t;&t;QETH_DBF_TEXT(ex,name,level,text); &bslash;&n;&t;&t;QETH_DBF_TEXT(ex,name,level,card-&gt;gdev-&gt;dev.bus_id); &bslash;&n;&t;} while (0)
 DECL|macro|QETH_DBF_HEX0
 mdefine_line|#define QETH_DBF_HEX0(ex,name,addr,len) QETH_DBF_HEX(ex,name,0,addr,len)
 DECL|macro|QETH_DBF_HEX1
@@ -155,6 +157,31 @@ DECL|macro|QETH_DBF_TEXT5
 mdefine_line|#define QETH_DBF_TEXT5(ex,name,text) do {} while (0)
 DECL|macro|QETH_DBF_TEXT6
 mdefine_line|#define QETH_DBF_TEXT6(ex,name,text) do {} while (0)
+macro_line|#endif /* QETH_DBF_LIKE_HELL */
+DECL|macro|QETH_DBF_CARD0
+mdefine_line|#define QETH_DBF_CARD0(ex,name,text,card) QETH_DBF_CARD(ex,name,0,text,card)
+DECL|macro|QETH_DBF_CARD1
+mdefine_line|#define QETH_DBF_CARD1(ex,name,text,card) QETH_DBF_CARD(ex,name,1,text,card)
+DECL|macro|QETH_DBF_CARD2
+mdefine_line|#define QETH_DBF_CARD2(ex,name,text,card) QETH_DBF_CARD(ex,name,2,text,card)
+macro_line|#ifdef QETH_DBF_LIKE_HELL
+DECL|macro|QETH_DBF_CARD3
+mdefine_line|#define QETH_DBF_CARD3(ex,name,text,card) QETH_DBF_CARD(ex,name,3,text,card)
+DECL|macro|QETH_DBF_CARD4
+mdefine_line|#define QETH_DBF_CARD4(ex,name,text,card) QETH_DBF_CARD(ex,name,4,text,card)
+DECL|macro|QETH_DBF_CARD5
+mdefine_line|#define QETH_DBF_CARD5(ex,name,text,card) QETH_DBF_CARD(ex,name,5,text,card)
+DECL|macro|QETH_DBF_CARD6
+mdefine_line|#define QETH_DBF_CARD6(ex,name,text,card) QETH_DBF_CARD(ex,name,6,text,card)
+macro_line|#else /* QETH_DBF_LIKE_HELL */
+DECL|macro|QETH_DBF_CARD3
+mdefine_line|#define QETH_DBF_CARD3(ex,name,text,card) do {} while (0)
+DECL|macro|QETH_DBF_CARD4
+mdefine_line|#define QETH_DBF_CARD4(ex,name,text,card) do {} while (0)
+DECL|macro|QETH_DBF_CARD5
+mdefine_line|#define QETH_DBF_CARD5(ex,name,text,card) do {} while (0)
+DECL|macro|QETH_DBF_CARD6
+mdefine_line|#define QETH_DBF_CARD6(ex,name,text,card) do {} while (0)
 macro_line|#endif /* QETH_DBF_LIKE_HELL */
 DECL|macro|QETH_DBF_SETUP_NAME
 mdefine_line|#define QETH_DBF_SETUP_NAME &quot;qeth_setup&quot;
@@ -1438,6 +1465,20 @@ DECL|macro|PROBLEM_MACHINE_CHECK
 mdefine_line|#define PROBLEM_MACHINE_CHECK 11
 DECL|macro|PROBLEM_TX_TIMEOUT
 mdefine_line|#define PROBLEM_TX_TIMEOUT 12
+DECL|macro|CARD_RDEV
+mdefine_line|#define CARD_RDEV(card) card-&gt;gdev-&gt;cdev[0]
+DECL|macro|CARD_WDEV
+mdefine_line|#define CARD_WDEV(card) card-&gt;gdev-&gt;cdev[1]
+DECL|macro|CARD_DDEV
+mdefine_line|#define CARD_DDEV(card) card-&gt;gdev-&gt;cdev[2]
+DECL|macro|CARD_BUS_ID
+mdefine_line|#define CARD_BUS_ID(card) card-&gt;gdev-&gt;dev.bus_id
+DECL|macro|CARD_RDEV_ID
+mdefine_line|#define CARD_RDEV_ID(card) card-&gt;gdev-&gt;cdev[0]-&gt;dev.bus_id
+DECL|macro|CARD_WDEV_ID
+mdefine_line|#define CARD_WDEV_ID(card) card-&gt;gdev-&gt;cdev[1]-&gt;dev.bus_id
+DECL|macro|CARD_DDEV_ID
+mdefine_line|#define CARD_DDEV_ID(card) card-&gt;gdev-&gt;cdev[2]-&gt;dev.bus_id
 DECL|macro|SENSE_COMMAND_REJECT_BYTE
 mdefine_line|#define SENSE_COMMAND_REJECT_BYTE 0
 DECL|macro|SENSE_COMMAND_REJECT_FLAG
@@ -2464,24 +2505,6 @@ r_struct
 id|ccwgroup_device
 op_star
 id|gdev
-suffix:semicolon
-DECL|member|rdev
-r_struct
-id|ccw_device
-op_star
-id|rdev
-suffix:semicolon
-DECL|member|wdev
-r_struct
-id|ccw_device
-op_star
-id|wdev
-suffix:semicolon
-DECL|member|ddev
-r_struct
-id|ccw_device
-op_star
-id|ddev
 suffix:semicolon
 DECL|member|unit_addr2
 r_int

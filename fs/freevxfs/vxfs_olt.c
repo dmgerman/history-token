@@ -242,7 +242,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;vxfs: please notify hch@caldera.de&bslash;n&quot;
+l_string|&quot;vxfs: please notify hch@infradead.org&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto

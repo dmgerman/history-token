@@ -56,11 +56,9 @@ macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -3905,7 +3903,11 @@ macro_line|#endif
 multiline_comment|/*&n;&t; * Info-&gt;count is now 1; so it&squot;s safe to sleep now.&n;&t; */
 id|info-&gt;session
 op_assign
-id|current-&gt;session
+id|process_session
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 id|info-&gt;pgrp
 op_assign

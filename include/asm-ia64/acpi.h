@@ -284,7 +284,7 @@ r_int
 id|__initdata
 id|nid_to_pxm_map
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 macro_line|#endif

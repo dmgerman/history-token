@@ -25,10 +25,8 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
@@ -26255,27 +26253,57 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
+r_int
+id|retval
+suffix:semicolon
+id|retval
+op_assign
 id|saa7146_register_extension
 c_func
 (paren
 op_amp
 id|av7110_extension
 )paren
-)paren
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+r_goto
+id|failed_saa7146_register
+suffix:semicolon
+id|retval
+op_assign
 id|av7110_ir_init
 c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+r_goto
+id|failed_av7110_ir_init
+suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|failed_av7110_ir_init
+suffix:colon
+id|saa7146_unregister_extension
+c_func
+(paren
+op_amp
+id|av7110_extension
+)paren
+suffix:semicolon
+id|failed_saa7146_register
+suffix:colon
+r_return
+id|retval
 suffix:semicolon
 )brace
 DECL|function|av7110_exit

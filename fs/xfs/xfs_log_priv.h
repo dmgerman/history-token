@@ -717,11 +717,13 @@ op_star
 id|l_xbuf
 suffix:semicolon
 multiline_comment|/* extra buffer for log&n;&t;&t;&t;&t;&t;&t; * wrapping */
-DECL|member|l_dev
-id|dev_t
-id|l_dev
+DECL|member|l_targ
+r_struct
+id|xfs_buftarg
+op_star
+id|l_targ
 suffix:semicolon
-multiline_comment|/* dev_t of log */
+multiline_comment|/* buftarg of log */
 DECL|member|l_logBBstart
 id|xfs_daddr_t
 id|l_logBBstart

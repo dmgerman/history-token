@@ -12614,6 +12614,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * proc interface&n; */
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|snd_cmipci_proc_read
 r_static
 r_void
@@ -12781,6 +12782,21 @@ id|snd_cmipci_proc_read
 )paren
 suffix:semicolon
 )brace
+macro_line|#else /* !CONFIG_PROC_FS */
+DECL|function|snd_cmipci_proc_init
+r_static
+r_inline
+r_void
+id|snd_cmipci_proc_init
+c_func
+(paren
+id|cmipci_t
+op_star
+id|cm
+)paren
+(brace
+)brace
+macro_line|#endif
 DECL|variable|snd_cmipci_ids
 r_static
 r_struct

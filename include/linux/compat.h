@@ -288,6 +288,31 @@ l_int|5
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|compat_dirent
+r_struct
+id|compat_dirent
+(brace
+DECL|member|d_ino
+id|u32
+id|d_ino
+suffix:semicolon
+DECL|member|d_off
+id|compat_off_t
+id|d_off
+suffix:semicolon
+DECL|member|d_reclen
+id|u16
+id|d_reclen
+suffix:semicolon
+DECL|member|d_name
+r_char
+id|d_name
+(braket
+l_int|256
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#endif /* CONFIG_COMPAT */
 macro_line|#endif /* _LINUX_COMPAT_H */
 eof

@@ -285,7 +285,7 @@ id|q-&gt;backing_dev_info.state
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * blk_get_backing_dev_info - get the address of a queue&squot;s backing_dev_info&n; * @dev:&t;device&n; *&n; * Locates the passed device&squot;s request queue and returns the address of its&n; * backing_dev_info&n; *&n; * Will return NULL if the request queue cannot be located.&n; */
+multiline_comment|/**&n; * blk_get_backing_dev_info - get the address of a queue&squot;s backing_dev_info&n; * @bdev:&t;device&n; *&n; * Locates the passed device&squot;s request queue and returns the address of its&n; * backing_dev_info&n; *&n; * Will return NULL if the request queue cannot be located.&n; */
 DECL|function|blk_get_backing_dev_info
 r_struct
 id|backing_dev_info
@@ -993,7 +993,7 @@ op_assign
 id|mask
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * blk_queue_dma_alignment - set dma length and memory alignment&n; * @q:  the request queue for the device&n; * @dma_mask:  alignment mask&n; *&n; * description:&n; *    set required memory and length aligment for direct dma transactions.&n; *    this is used when buiding direct io requests for the queue.&n; *&n; **/
+multiline_comment|/**&n; * blk_queue_dma_alignment - set dma length and memory alignment&n; * @q:     the request queue for the device&n; * @mask:  alignment mask&n; *&n; * description:&n; *    set required memory and length aligment for direct dma transactions.&n; *    this is used when buiding direct io requests for the queue.&n; *&n; **/
 DECL|function|blk_queue_dma_alignment
 r_void
 id|blk_queue_dma_alignment
@@ -3652,7 +3652,7 @@ id|q-&gt;queue_flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * blk_run_queue - run a single device queue&n; * @q&t;The queue to run&n; */
+multiline_comment|/**&n; * blk_run_queue - run a single device queue&n; * @q:&t;The queue to run&n; */
 DECL|function|blk_run_queue
 r_void
 id|blk_run_queue

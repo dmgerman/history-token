@@ -7,7 +7,6 @@ mdefine_line|#define HAVE_PARTITIONS
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#ifdef HAVE_PARTITIONS

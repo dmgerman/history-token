@@ -3350,12 +3350,6 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 )brace
 r_while
 c_loop

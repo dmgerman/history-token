@@ -2134,8 +2134,17 @@ id|__NR_utimes
 comma
 id|sys_utimes
 )paren
+DECL|macro|__NR_vserver
+mdefine_line|#define __NR_vserver&t;&t;236
+id|__SYSCALL
+c_func
+(paren
+id|__NR_vserver
+comma
+id|sys_ni_syscall
+)paren
 DECL|macro|__NR_syscall_max
-mdefine_line|#define __NR_syscall_max __NR_utimes
+mdefine_line|#define __NR_syscall_max __NR_vserver
 macro_line|#ifndef __NO_STUBS
 multiline_comment|/* user-visible error numbers are in the range -1 - -4095 */
 DECL|macro|__syscall_clobber

@@ -644,7 +644,7 @@ id|va.va_mask
 op_assign
 id|XFS_AT_STAT
 op_or
-id|XFS_AT_GENCOUNT
+id|XFS_AT_XFLAGS
 suffix:semicolon
 id|VOP_GETATTR
 c_func

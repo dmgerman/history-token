@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * MTD chip driver for pre-CFI Sharp flash chips&n; *&n; * Copyright 2000,2001 David A. Schleef &lt;ds@schleef.org&gt;&n; *           2000,2001 Lineo, Inc.&n; *&n; * $Id: sharp.c,v 1.12 2003/05/28 15:39:52 dwmw2 Exp $&n; *&n; * Devices supported:&n; *   LH28F016SCT Symmetrical block flash memory, 2Mx8&n; *   LH28F008SCT Symmetrical block flash memory, 1Mx8&n; *&n; * Documentation:&n; *   http://www.sharpmeg.com/datasheets/memic/flashcmp/&n; *   http://www.sharpmeg.com/datasheets/memic/flashcmp/01symf/16m/016sctl9.pdf&n; *   016sctl9.pdf&n; *&n; * Limitations:&n; *   This driver only supports 4x1 arrangement of chips.&n; *   Not tested on anything but PowerPC.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

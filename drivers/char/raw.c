@@ -9,8 +9,6 @@ macro_line|#include &lt;linux/raw.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|MAX_RAW_MINORS
-mdefine_line|#define MAX_RAW_MINORS&t;256
 DECL|struct|raw_device_data
 r_struct
 id|raw_device_data

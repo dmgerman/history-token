@@ -663,7 +663,11 @@ id|mp
 comma
 id|DM_EVENT_READ
 comma
+id|BHV_TO_VNODE
+c_func
+(paren
 id|bdp
+)paren
 comma
 op_star
 id|offset
@@ -951,7 +955,11 @@ id|mp
 comma
 id|DM_EVENT_READ
 comma
+id|BHV_TO_VNODE
+c_func
+(paren
 id|bdp
+)paren
 comma
 op_star
 id|offset
@@ -2292,7 +2300,7 @@ id|xip-&gt;i_mount
 comma
 id|DM_EVENT_WRITE
 comma
-id|bdp
+id|vp
 comma
 op_star
 id|offset

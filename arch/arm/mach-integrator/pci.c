@@ -124,13 +124,13 @@ l_int|4
 id|__initdata
 op_assign
 (brace
-id|IRQ_PCIINT0
+id|IRQ_AP_PCIINT0
 comma
-id|IRQ_PCIINT1
+id|IRQ_AP_PCIINT1
 comma
-id|IRQ_PCIINT2
+id|IRQ_AP_PCIINT2
 comma
-id|IRQ_PCIINT3
+id|IRQ_AP_PCIINT3
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * map the specified device/slot/pin to an IRQ.  This works out such&n; * that slot 9 pin 1 is INT0, pin 2 is INT1, and slot 10 pin 1 is INT1.&n; */

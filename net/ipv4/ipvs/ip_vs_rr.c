@@ -78,10 +78,11 @@ id|ip_vs_service
 op_star
 id|svc
 comma
+r_const
 r_struct
-id|iphdr
+id|sk_buff
 op_star
-id|iph
+id|skb
 )paren
 (brace
 r_struct

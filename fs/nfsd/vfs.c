@@ -3018,10 +3018,6 @@ op_div
 l_int|100
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
 id|dprintk
 c_func
 (paren

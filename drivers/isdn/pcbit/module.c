@@ -315,6 +315,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef MODULE
 r_int
 id|board
 suffix:semicolon
@@ -345,6 +346,7 @@ id|KERN_NOTICE
 l_string|&quot;PCBIT-D module unloaded&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#ifndef MODULE
 DECL|macro|MAX_PARA

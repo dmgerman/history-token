@@ -1,4 +1,4 @@
-multiline_comment|/* gdth_proc.c &n; * $Id: gdth_proc.c,v 1.35 2003/02/27 15:00:44 achim Exp $&n; */
+multiline_comment|/* gdth_proc.c &n; * $Id: gdth_proc.c,v 1.37 2003/09/17 08:31:53 achim Exp $&n; */
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x020407
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#endif

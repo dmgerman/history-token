@@ -1,7 +1,7 @@
 macro_line|#ifndef _GDTH_H
 DECL|macro|_GDTH_H
 mdefine_line|#define _GDTH_H
-multiline_comment|/*&n; * Header file for the GDT Disk Array/Storage RAID controllers driver for Linux&n; * &n; * gdth.h Copyright (C) 1995-02 ICP vortex, an Intel company, Achim Leubner&n; * See gdth.c for further informations and &n; * below for supported controller types&n; *&n; * &lt;achim.leubner@intel.com&gt;&n; *&n; * $Id: gdth.h,v 1.48 2003/02/27 14:58:22 achim Exp $&n; */
+multiline_comment|/*&n; * Header file for the GDT Disk Array/Storage RAID controllers driver for Linux&n; * &n; * gdth.h Copyright (C) 1995-03 ICP vortex, Achim Leubner&n; * See gdth.c for further informations and &n; * below for supported controller types&n; *&n; * &lt;achim_leubner@adaptec.com&gt;&n; *&n; * $Id: gdth.h,v 1.50 2003/09/17 08:29:58 achim Exp $&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#ifndef TRUE
@@ -15,11 +15,11 @@ macro_line|#endif
 multiline_comment|/* defines, macros */
 multiline_comment|/* driver version */
 DECL|macro|GDTH_VERSION_STR
-mdefine_line|#define GDTH_VERSION_STR        &quot;2.07&quot;
+mdefine_line|#define GDTH_VERSION_STR        &quot;2.08&quot;
 DECL|macro|GDTH_VERSION
 mdefine_line|#define GDTH_VERSION            2
 DECL|macro|GDTH_SUBVERSION
-mdefine_line|#define GDTH_SUBVERSION         7
+mdefine_line|#define GDTH_SUBVERSION         8
 multiline_comment|/* protocol version */
 DECL|macro|PROTOCOL_VERSION
 mdefine_line|#define PROTOCOL_VERSION        1

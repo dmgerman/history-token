@@ -5633,12 +5633,13 @@ id|flags
 suffix:semicolon
 )brace
 DECL|variable|__wake_up_sync
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|__wake_up_sync
 )paren
 suffix:semicolon
+multiline_comment|/* For internal use only */
 DECL|function|complete
 r_void
 id|complete
@@ -6441,7 +6442,7 @@ id|idle
 suffix:semicolon
 )brace
 DECL|variable|idle_cpu
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|idle_cpu
@@ -8304,7 +8305,7 @@ r_int
 r_int
 )paren
 (paren
-id|p
+id|p-&gt;thread_info
 op_plus
 l_int|1
 )paren

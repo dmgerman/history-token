@@ -5,7 +5,6 @@ multiline_comment|/*   Copyright (C) 1993, 1994, 1995  Eberhard Moenkeberg &lt;e
 multiline_comment|/*&n; * Trying to merge requests breaks this driver horribly (as in it goes&n; * boom and apparently has done so since 2.3.41).  As it is a legacy&n; * driver for a horribly slow double speed CD on a hideous interface&n; * designed for polled operation, I won&squot;t lose any sleep in simply&n; * disallowing merging.&t;&t;&t;&t;Paul G.  02/2001&n; *&n; * Thu May 30 14:14:47 CEST 2002:&n; *&n; * I have presumably found the reson for the above - there was a bogous&n; * end_request substitute, which was manipulating the request queues&n; * incorrectly. If someone has access to the actual hardware, and it&squot;s&n; * still operations - well  please free to test it.&n; *&n; * Marcin Dalecki&n; */
 multiline_comment|/*&n; * Add bio/kdev_t changes for 2.5.x required to make it work again. &n; * Still room for improvement in the request handling here if anyone&n; * actually cares.  Bring your own chainsaw.    Paul G.  02/2002&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

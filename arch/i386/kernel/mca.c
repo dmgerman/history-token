@@ -243,7 +243,7 @@ l_int|0x107
 suffix:semicolon
 DECL|macro|MCA_STANDARD_RESOURCES
 mdefine_line|#define MCA_STANDARD_RESOURCES&t;(sizeof(mca_standard_resources)/sizeof(struct resource))
-multiline_comment|/**&n; *&t;mca_read_pos - read the POS registers into a memory buffer&n; *&n; *&t;Returns 1 if a card actually exists (i.e. the pos isn&squot;t&n; *&t;all 0xff) or 0 otherwise&n; */
+multiline_comment|/**&n; *&t;mca_read_and_store_pos - read the POS registers into a memory buffer&n; *      @pos: a char pointer to 8 bytes, contains the POS register value on&n; *            successful return&n; *&n; *&t;Returns 1 if a card actually exists (i.e. the pos isn&squot;t&n; *&t;all 0xff) or 0 otherwise&n; */
 DECL|function|mca_read_and_store_pos
 r_static
 r_int

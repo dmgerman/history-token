@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
+macro_line|#include &lt;asm/cpcmd.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
@@ -274,6 +275,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sys_wait4
+)paren
+suffix:semicolon
+DECL|variable|cpcmd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpcmd
 )paren
 suffix:semicolon
 eof

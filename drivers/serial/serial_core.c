@@ -793,7 +793,7 @@ op_complement
 id|UIF_INITIALIZED
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;uart_update_timeout - update per-port FIFO timeout.&n; *&t;@port: uart_port structure describing the port.&n; *&t;@cflag: termios cflag value&n; *&t;@quot: uart clock divisor quotient&n; *&n; *&t;Set the port FIFO timeout value.  The @cflag value should&n; *&t;reflect the actual hardware settings.&n; */
+multiline_comment|/**&n; *&t;uart_update_timeout - update per-port FIFO timeout.&n; *&t;@port:  uart_port structure describing the port&n; *&t;@cflag: termios cflag value&n; *&t;@baud:  speed of the port&n; *&n; *&t;Set the port FIFO timeout value.  The @cflag value should&n; *&t;reflect the actual hardware settings.&n; */
 r_void
 DECL|function|uart_update_timeout
 id|uart_update_timeout
@@ -4737,12 +4737,6 @@ id|schedule_timeout
 c_func
 (paren
 id|state-&gt;close_delay
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
 )paren
 suffix:semicolon
 )brace

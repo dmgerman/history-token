@@ -5915,12 +5915,6 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
@@ -6112,12 +6106,6 @@ c_func
 l_int|30
 op_star
 id|HZ
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
 )paren
 suffix:semicolon
 id|remove_wait_queue

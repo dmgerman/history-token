@@ -16,13 +16,9 @@ DECL|macro|STD_COM_FLAGS
 mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)
 macro_line|#ifdef CONFIG_HD64465
 macro_line|#include &lt;asm/hd64465.h&gt;
-DECL|macro|RS_TABLE_SIZE
-mdefine_line|#define RS_TABLE_SIZE  1
 DECL|macro|STD_SERIAL_PORT_DEFNS
 mdefine_line|#define STD_SERIAL_PORT_DEFNS                   &bslash;&n;        /* UART CLK   PORT IRQ     FLAGS        */                      &bslash;&n;        { 0, BASE_BAUD, 0x3F8, HD64465_IRQ_UART, STD_COM_FLAGS }  /* ttyS0 */
 macro_line|#else
-DECL|macro|RS_TABLE_SIZE
-mdefine_line|#define RS_TABLE_SIZE  2
 DECL|macro|STD_SERIAL_PORT_DEFNS
 mdefine_line|#define STD_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;/* UART CLK   PORT IRQ     FLAGS        */&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x3F8, 4, STD_COM_FLAGS },&t;/* ttyS0 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x2F8, 3, STD_COM_FLAGS }&t;/* ttyS1 */
 macro_line|#endif

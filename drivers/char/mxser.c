@@ -3,7 +3,6 @@ multiline_comment|/*&n; *          mxser.c  -- MOXA Smartio family multiport ser
 multiline_comment|/*&n; *    MOXA Smartio Family Serial Driver&n; *&n; *      Copyright (C) 1999,2000  Moxa Technologies Co., LTD.&n; *&n; *      for             : LINUX 2.0.X, 2.2.X, 2.4.X&n; *      date            : 2001/05/01&n; *      version         : 1.2 &n; *      &n; *    Fixes for C104H/PCI by Tim Hockin &lt;thockin@sun.com&gt;&n; *    Added support for: C102, CI-132, CI-134, CP-132, CP-114, CT-114 cards&n; *                        by Damian Wrobel &lt;dwrobel@ertel.com.pl&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

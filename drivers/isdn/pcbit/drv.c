@@ -281,12 +281,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_mem_region
+op_logical_neg
+id|request_mem_region
 c_func
 (paren
 id|dev-&gt;ph_mem
 comma
 l_int|4096
+comma
+l_string|&quot;PCBIT mem&quot;
 )paren
 )paren
 (brace
@@ -319,19 +322,6 @@ suffix:semicolon
 r_return
 op_minus
 id|EACCES
-suffix:semicolon
-)brace
-r_else
-(brace
-id|request_mem_region
-c_func
-(paren
-id|dev-&gt;ph_mem
-comma
-l_int|4096
-comma
-l_string|&quot;PCBIT mem&quot;
-)paren
 suffix:semicolon
 )brace
 id|dev-&gt;sh_mem

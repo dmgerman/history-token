@@ -3,6 +3,7 @@ multiline_comment|/*&n; * Written by Steve Lord at SGI&n; */
 macro_line|#ifndef __PAGE_BUF_PRIVATE_H__
 DECL|macro|__PAGE_BUF_PRIVATE_H__
 mdefine_line|#define __PAGE_BUF_PRIVATE_H__
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &quot;page_buf.h&quot;
 DECL|macro|_PAGE_BUF_INTERNAL_
 mdefine_line|#define _PAGE_BUF_INTERNAL_
@@ -224,13 +225,18 @@ id|pb_get_read
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
+id|DECLARE_PER_CPU
+c_func
+(paren
 r_struct
 id|pbstats
+comma
 id|pbstats
+)paren
 suffix:semicolon
+multiline_comment|/* We don&squot;t disable preempt, not too worried about poking the&n; * wrong cpu&squot;s stat for now */
 DECL|macro|PB_STATS_INC
-mdefine_line|#define PB_STATS_INC(count)&t;( count ++ )
+mdefine_line|#define PB_STATS_INC(count)&t;(__get_cpu_var(pbstats).count++)
 macro_line|#ifndef STATIC
 DECL|macro|STATIC
 macro_line|# define STATIC&t;static

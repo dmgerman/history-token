@@ -1018,10 +1018,6 @@ id|ccw
 comma
 r_int
 id|magic
-comma
-r_int
-r_int
-id|flags
 )paren
 (brace
 r_int
@@ -1074,10 +1070,24 @@ id|EACCES
 )paren
 (brace
 multiline_comment|/* Try again later. */
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
+)paren
+suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
 l_int|1
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
 )paren
 suffix:semicolon
 r_continue
@@ -1102,13 +1112,11 @@ id|intparm
 op_assign
 id|magic
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|sch-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|wait_event
@@ -1153,13 +1161,11 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|sch-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Check at least for channel end / device end */
@@ -1200,10 +1206,24 @@ multiline_comment|/* Success. */
 r_break
 suffix:semicolon
 multiline_comment|/* Try again later. */
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
+)paren
+suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
 l_int|1
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -1259,10 +1279,6 @@ id|dbf_txt
 (braket
 l_int|15
 )braket
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_struct
 id|subchannel
@@ -1406,13 +1422,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|sch-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Save interrupt handler. */
@@ -1472,8 +1486,6 @@ comma
 id|rdc_ccw
 comma
 l_int|0x00D9C4C3
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Restore interrupt handler. */
@@ -1481,13 +1493,11 @@ id|cdev-&gt;handler
 op_assign
 id|handler
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|sch-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|clear_normalized_cda
@@ -1558,10 +1568,6 @@ r_struct
 id|ciw
 op_star
 id|ciw
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_char
 op_star
@@ -1748,13 +1754,11 @@ id|rcd_ccw-&gt;flags
 op_assign
 id|CCW_FLAG_SLI
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|sch-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Save interrupt handler. */
@@ -1814,8 +1818,6 @@ comma
 id|rcd_ccw
 comma
 l_int|0x00D9C3C4
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Restore interrupt handler. */
@@ -1823,13 +1825,11 @@ id|cdev-&gt;handler
 op_assign
 id|handler
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|sch-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n; &t; * on success we update the user input parms&n; &t; */

@@ -10,6 +10,7 @@ l_string|&quot;$Id: ixj.h,v 4.1 2001/08/04 14:49:27 craigs Exp $&quot;
 suffix:semicolon
 DECL|macro|IXJ_VERSION
 mdefine_line|#define IXJ_VERSION 3031
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ixjuser.h&gt;
 macro_line|#include &lt;linux/phonedev.h&gt;

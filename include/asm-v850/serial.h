@@ -8,8 +8,6 @@ DECL|macro|irq_cannonicalize
 mdefine_line|#define irq_cannonicalize(x) (x)
 DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD&t;250000&t;/* (16MHz / (16 * 38400)) * 9600 */
-DECL|macro|RS_TABLE_SIZE
-mdefine_line|#define RS_TABLE_SIZE&t;1
 DECL|macro|SERIAL_PORT_DFNS
 mdefine_line|#define SERIAL_PORT_DFNS &bslash;&n;   { 0, BASE_BAUD, CB_UART_BASE, IRQ_CB_EXTSIO, STD_COM_FLAGS },
 multiline_comment|/* Redefine UART register offsets.  */

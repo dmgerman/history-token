@@ -1249,9 +1249,9 @@ macro_line|#ifdef DEBUG
 id|prdev
 c_func
 (paren
-l_string|&quot;bad inode magic/vsn daddr 0x%llx #%d (magic=%x)&quot;
+l_string|&quot;bad inode magic/vsn daddr %lld #%d (magic=%x)&quot;
 comma
-id|mp-&gt;m_dev
+id|mp-&gt;m_ddev_targp
 comma
 (paren
 r_int

@@ -9,14 +9,8 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/numa.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#ifdef CONFIG_DISCONTIGMEM
-macro_line|#include &lt;asm/numnodes.h&gt;
-macro_line|#endif
-macro_line|#ifndef MAX_NUMNODES
-DECL|macro|MAX_NUMNODES
-mdefine_line|#define MAX_NUMNODES 1
-macro_line|#endif
 multiline_comment|/* Free memory management - zoned buddy allocator.  */
 macro_line|#ifndef CONFIG_FORCE_MAX_ZONEORDER
 DECL|macro|MAX_ORDER
@@ -586,14 +580,23 @@ DECL|macro|NODE_DATA
 mdefine_line|#define NODE_DATA(nid)&t;&t;(&amp;contig_page_data)
 DECL|macro|NODE_MEM_MAP
 mdefine_line|#define NODE_MEM_MAP(nid)&t;mem_map
-DECL|macro|MAX_NR_NODES
-mdefine_line|#define MAX_NR_NODES&t;&t;1
+DECL|macro|MAX_NODES_SHIFT
+mdefine_line|#define MAX_NODES_SHIFT&t;&t;0
 macro_line|#else /* CONFIG_DISCONTIGMEM */
 macro_line|#include &lt;asm/mmzone.h&gt;
-multiline_comment|/* page-&gt;zone is currently 8 bits ... */
-DECL|macro|MAX_NR_NODES
-mdefine_line|#define MAX_NR_NODES&t;&t;(255 / MAX_NR_ZONES)
+macro_line|#if BITS_PER_LONG == 32
+multiline_comment|/*&n; * with 32 bit flags field, page-&gt;zone is currently 8 bits.&n; * there are 3 zones (2 bits) and this leaves 8-2=6 bits for nodes.&n; */
+DECL|macro|MAX_NODES_SHIFT
+mdefine_line|#define MAX_NODES_SHIFT&t;&t;6
+macro_line|#elif BITS_PER_LONG == 64
+multiline_comment|/*&n; * with 64 bit flags field, there&squot;s plenty of room.&n; */
+DECL|macro|MAX_NODES_SHIFT
+mdefine_line|#define MAX_NODES_SHIFT&t;&t;10
+macro_line|#endif
 macro_line|#endif /* !CONFIG_DISCONTIGMEM */
+macro_line|#if NODES_SHIFT &gt; MAX_NODES_SHIFT
+macro_line|#error NODES_SHIFT &gt; MAX_NODES_SHIFT
+macro_line|#endif
 r_extern
 id|DECLARE_BITMAP
 c_func

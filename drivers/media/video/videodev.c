@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * Video capture interface for Linux&n; *&n; *&t;&t;A generic video device interface for the LINUX operating system&n; *&t;&t;using a set of device structures/vectors for low level operations.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Author:&t;Alan Cox, &lt;alan@redhat.com&gt;&n; *&n; * Fixes:&t;20000516  Claudio Matsuoka &lt;claudio@conectiva.com&gt;&n; *&t;&t;- Added procfs support&n; */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -11,7 +10,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;

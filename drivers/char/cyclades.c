@@ -90,7 +90,6 @@ mdefine_line|#define&t;CY_UNLOCK(info,flags)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;do {
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|macro|cy_put_user
@@ -10031,10 +10030,6 @@ id|char_time
 op_star
 l_int|5
 )paren
-suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
 suffix:semicolon
 macro_line|#ifdef CY_DEBUG_WAIT_UNTIL_SENT
 id|printk

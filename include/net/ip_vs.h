@@ -4,7 +4,7 @@ DECL|macro|_IP_VS_H
 mdefine_line|#define _IP_VS_H
 macro_line|#include &lt;asm/types.h&gt;&t;&t;/* For __uXX types */
 DECL|macro|IP_VS_VERSION_CODE
-mdefine_line|#define IP_VS_VERSION_CODE&t;0x010107
+mdefine_line|#define IP_VS_VERSION_CODE&t;0x010108
 DECL|macro|NVERSION
 mdefine_line|#define NVERSION(version)&t;&t;&t;&bslash;&n;&t;(version &gt;&gt; 16) &amp; 0xFF,&t;&t;&t;&bslash;&n;&t;(version &gt;&gt; 8) &amp; 0xFF,&t;&t;&t;&bslash;&n;&t;version &amp; 0xFF
 multiline_comment|/*&n; *      Virtual Service Flags&n; */
@@ -533,18 +533,18 @@ mdefine_line|#define IP_VS_DBG(level, msg...)&t;&t;&t;&bslash;&n;    do {&t;&t;&
 DECL|macro|IP_VS_DBG_RL
 mdefine_line|#define IP_VS_DBG_RL(msg...)&t;&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    if (net_ratelimit())&t;&t;&t;&bslash;&n;&t;&t;    printk(KERN_DEBUG &quot;IPVS: &quot; msg);&t;&bslash;&n;    } while (0)
 DECL|macro|IP_VS_DBG_PKT
-mdefine_line|#define IP_VS_DBG_PKT(level, pp, iph, msg)&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    if (level &lt;= ip_vs_get_debug_level())&t;&bslash;&n;&t;&t;pp-&gt;debug_packet(pp, iph, msg);&t;&t;&bslash;&n;    } while (0)
+mdefine_line|#define IP_VS_DBG_PKT(level, pp, skb, ofs, msg)&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    if (level &lt;= ip_vs_get_debug_level())&t;&bslash;&n;&t;&t;pp-&gt;debug_packet(pp, skb, ofs, msg);&t;&bslash;&n;    } while (0)
 DECL|macro|IP_VS_DBG_RL_PKT
-mdefine_line|#define IP_VS_DBG_RL_PKT(level, pp, iph, msg)&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    if (level &lt;= ip_vs_get_debug_level() &amp;&amp;&t;&bslash;&n;&t;&t;net_ratelimit())&t;&t;&t;&bslash;&n;&t;&t;pp-&gt;debug_packet(pp, iph, msg);&t;&t;&bslash;&n;    } while (0)
+mdefine_line|#define IP_VS_DBG_RL_PKT(level, pp, skb, ofs, msg)&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    if (level &lt;= ip_vs_get_debug_level() &amp;&amp;&t;&bslash;&n;&t;&t;net_ratelimit())&t;&t;&t;&bslash;&n;&t;&t;pp-&gt;debug_packet(pp, skb, ofs, msg);&t;&bslash;&n;    } while (0)
 macro_line|#else&t;/* NO DEBUGGING at ALL */
 DECL|macro|IP_VS_DBG
 mdefine_line|#define IP_VS_DBG(level, msg...)  do {} while (0)
 DECL|macro|IP_VS_DBG_RL
 mdefine_line|#define IP_VS_DBG_RL(msg...)  do {} while (0)
 DECL|macro|IP_VS_DBG_PKT
-mdefine_line|#define IP_VS_DBG_PKT(level, pp, iph, msg)&t;do {} while (0)
+mdefine_line|#define IP_VS_DBG_PKT(level, pp, skb, ofs, msg)&t;&t;do {} while (0)
 DECL|macro|IP_VS_DBG_RL_PKT
-mdefine_line|#define IP_VS_DBG_RL_PKT(level, pp, iph, msg)&t;do {} while (0)
+mdefine_line|#define IP_VS_DBG_RL_PKT(level, pp, skb, ofs, msg)&t;do {} while (0)
 macro_line|#endif
 DECL|macro|IP_VS_BUG
 mdefine_line|#define IP_VS_BUG() BUG()
@@ -767,42 +767,6 @@ id|IP_VS_ICMP_S_LAST
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;Transport protocol header&n; */
-DECL|union|ip_vs_tphdr
-r_union
-id|ip_vs_tphdr
-(brace
-DECL|member|raw
-r_int
-r_char
-op_star
-id|raw
-suffix:semicolon
-DECL|member|uh
-r_struct
-id|udphdr
-op_star
-id|uh
-suffix:semicolon
-DECL|member|th
-r_struct
-id|tcphdr
-op_star
-id|th
-suffix:semicolon
-DECL|member|icmph
-r_struct
-id|icmphdr
-op_star
-id|icmph
-suffix:semicolon
-DECL|member|portp
-id|__u16
-op_star
-id|portp
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/*&n; *&t;Delta sequence info structure&n; *&t;Each ip_vs_conn has 2 (output AND input seq. changes).&n; *      Only used in the VS/NAT.&n; */
 DECL|struct|ip_vs_seq
 r_struct
@@ -987,15 +951,6 @@ id|ip_vs_protocol
 op_star
 id|pp
 comma
-r_struct
-id|iphdr
-op_star
-id|iph
-comma
-r_union
-id|ip_vs_tphdr
-id|h
-comma
 r_int
 op_star
 id|verdict
@@ -1016,6 +971,7 @@ op_star
 id|conn_in_get
 )paren
 (paren
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -1026,14 +982,15 @@ id|ip_vs_protocol
 op_star
 id|pp
 comma
+r_const
 r_struct
 id|iphdr
 op_star
 id|iph
 comma
-r_union
-id|ip_vs_tphdr
-id|h
+r_int
+r_int
+id|proto_off
 comma
 r_int
 id|inverse
@@ -1048,6 +1005,7 @@ op_star
 id|conn_out_get
 )paren
 (paren
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -1058,14 +1016,15 @@ id|ip_vs_protocol
 op_star
 id|pp
 comma
+r_const
 r_struct
 id|iphdr
 op_star
 id|iph
 comma
-r_union
-id|ip_vs_tphdr
-id|h
+r_int
+r_int
+id|proto_off
 comma
 r_int
 id|inverse
@@ -1081,7 +1040,8 @@ id|snat_handler
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
 comma
 r_struct
 id|ip_vs_protocol
@@ -1092,18 +1052,6 @@ r_struct
 id|ip_vs_conn
 op_star
 id|cp
-comma
-r_struct
-id|iphdr
-op_star
-id|iph
-comma
-r_union
-id|ip_vs_tphdr
-id|h
-comma
-r_int
-id|size
 )paren
 suffix:semicolon
 DECL|member|dnat_handler
@@ -1116,7 +1064,8 @@ id|dnat_handler
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
 comma
 r_struct
 id|ip_vs_protocol
@@ -1127,18 +1076,6 @@ r_struct
 id|ip_vs_conn
 op_star
 id|cp
-comma
-r_struct
-id|iphdr
-op_star
-id|iph
-comma
-r_union
-id|ip_vs_tphdr
-id|h
-comma
-r_int
-id|size
 )paren
 suffix:semicolon
 DECL|member|csum_check
@@ -1157,18 +1094,6 @@ r_struct
 id|ip_vs_protocol
 op_star
 id|pp
-comma
-r_struct
-id|iphdr
-op_star
-id|iph
-comma
-r_union
-id|ip_vs_tphdr
-id|h
-comma
-r_int
-id|size
 )paren
 suffix:semicolon
 DECL|member|state_name
@@ -1199,14 +1124,11 @@ comma
 r_int
 id|direction
 comma
+r_const
 r_struct
-id|iphdr
+id|sk_buff
 op_star
-id|iph
-comma
-r_union
-id|ip_vs_tphdr
-id|h
+id|skb
 comma
 r_struct
 id|ip_vs_protocol
@@ -1265,11 +1187,16 @@ id|ip_vs_protocol
 op_star
 id|pp
 comma
+r_const
 r_struct
-id|iphdr
+id|sk_buff
 op_star
-id|iph
+id|skb
 comma
+r_int
+id|offset
+comma
+r_const
 r_char
 op_star
 id|msg
@@ -1804,10 +1731,11 @@ id|ip_vs_service
 op_star
 id|svc
 comma
+r_const
 r_struct
-id|iphdr
+id|sk_buff
 op_star
-id|iph
+id|skb
 )paren
 suffix:semicolon
 )brace
@@ -1875,7 +1803,7 @@ id|atomic_t
 id|usecnt
 suffix:semicolon
 multiline_comment|/* usage counter */
-multiline_comment|/* output hook */
+multiline_comment|/* output hook: return false if can&squot;t linearize. diff set for TCP.  */
 DECL|member|pkt_out
 r_int
 (paren
@@ -1894,9 +1822,14 @@ comma
 r_struct
 id|sk_buff
 op_star
+op_star
+comma
+r_int
+op_star
+id|diff
 )paren
 suffix:semicolon
-multiline_comment|/* input hook */
+multiline_comment|/* input hook: return false if can&squot;t linearize. diff set for TCP. */
 DECL|member|pkt_in
 r_int
 (paren
@@ -1915,6 +1848,11 @@ comma
 r_struct
 id|sk_buff
 op_star
+op_star
+comma
+r_int
+op_star
+id|diff
 )paren
 suffix:semicolon
 multiline_comment|/* ip_vs_app initializer */
@@ -2019,15 +1957,6 @@ id|ip_vs_app
 op_star
 id|app
 comma
-r_struct
-id|iphdr
-op_star
-id|iph
-comma
-r_union
-id|ip_vs_tphdr
-id|h
-comma
 r_int
 op_star
 id|verdict
@@ -2048,6 +1977,7 @@ op_star
 id|conn_in_get
 )paren
 (paren
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -2058,14 +1988,15 @@ id|ip_vs_app
 op_star
 id|app
 comma
+r_const
 r_struct
 id|iphdr
 op_star
 id|iph
 comma
-r_union
-id|ip_vs_tphdr
-id|h
+r_int
+r_int
+id|proto_off
 comma
 r_int
 id|inverse
@@ -2080,6 +2011,7 @@ op_star
 id|conn_out_get
 )paren
 (paren
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -2090,14 +2022,15 @@ id|ip_vs_app
 op_star
 id|app
 comma
+r_const
 r_struct
 id|iphdr
 op_star
 id|iph
 comma
-r_union
-id|ip_vs_tphdr
-id|h
+r_int
+r_int
+id|proto_off
 comma
 r_int
 id|inverse
@@ -2118,14 +2051,11 @@ comma
 r_int
 id|direction
 comma
+r_const
 r_struct
-id|iphdr
+id|sk_buff
 op_star
-id|iph
-comma
-r_union
-id|ip_vs_tphdr
-id|h
+id|skb
 comma
 r_struct
 id|ip_vs_app
@@ -2819,7 +2749,8 @@ comma
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
 )paren
 suffix:semicolon
 r_extern
@@ -2834,7 +2765,8 @@ comma
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
 )paren
 suffix:semicolon
 r_extern
@@ -2944,6 +2876,31 @@ id|name
 comma
 r_int
 id|to
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ip_vs_tcpudp_debug_packet
+c_func
+(paren
+r_struct
+id|ip_vs_protocol
+op_star
+id|pp
+comma
+r_const
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_int
+id|offset
+comma
+r_const
+r_char
+op_star
+id|msg
 )paren
 suffix:semicolon
 r_extern
@@ -3057,10 +3014,11 @@ id|ip_vs_service
 op_star
 id|svc
 comma
+r_const
 r_struct
-id|iphdr
+id|sk_buff
 op_star
-id|iph
+id|skb
 )paren
 suffix:semicolon
 r_extern
@@ -3082,10 +3040,6 @@ r_struct
 id|ip_vs_protocol
 op_star
 id|pp
-comma
-r_union
-id|ip_vs_tphdr
-id|h
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *      IPVS control data and functions (from ip_vs_ctl.c)&n; */
@@ -3422,6 +3376,9 @@ r_struct
 id|ip_vs_protocol
 op_star
 id|pp
+comma
+r_int
+id|offset
 )paren
 suffix:semicolon
 r_extern
@@ -3569,6 +3526,59 @@ r_return
 id|fwd
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|ip_vs_make_skb_writable
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+op_star
+id|pskb
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ip_vs_nat_icmp
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|ip_vs_protocol
+op_star
+id|pp
+comma
+r_struct
+id|ip_vs_conn
+op_star
+id|cp
+comma
+r_int
+id|dir
+)paren
+suffix:semicolon
+r_extern
+id|u16
+id|ip_vs_checksum_complete
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_int
+id|offset
+)paren
+suffix:semicolon
 DECL|function|ip_vs_check_diff
 r_static
 r_inline

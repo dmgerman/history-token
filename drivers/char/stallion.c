@@ -3,7 +3,6 @@ multiline_comment|/*&n; *&t;stallion.c  -- stallion multiport serial driver.&n; 
 multiline_comment|/*****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt; /* for linux/stallion.h */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -5143,10 +5142,6 @@ c_func
 (paren
 id|len
 )paren
-suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
 suffix:semicolon
 )brace
 )brace

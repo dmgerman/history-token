@@ -246,13 +246,6 @@ id|MAX_CTLR
 id|NWD
 )braket
 suffix:semicolon
-DECL|variable|proc_array
-r_static
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_array
-suffix:semicolon
 multiline_comment|/* Debug... */
 DECL|macro|DBG
 mdefine_line|#define DBG(s)&t;do { s } while(0)
@@ -653,40 +646,6 @@ id|i
 )paren
 (brace
 )brace
-DECL|function|ida_proc_get_info
-r_static
-r_int
-id|ida_proc_get_info
-c_func
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|length
-comma
-r_int
-op_star
-id|eof
-comma
-r_void
-op_star
-id|data
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 macro_line|#endif
 DECL|function|get_drv
 r_static
@@ -759,6 +718,13 @@ comma
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
+DECL|variable|proc_array
+r_static
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_array
+suffix:semicolon
 multiline_comment|/*&n; * Get us a file in /proc/array that says something about each controller.&n; * Create /proc/array if it doesn&squot;t exist yet.&n; */
 DECL|function|ida_procinit
 r_static

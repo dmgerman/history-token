@@ -88,7 +88,7 @@ id|zone_table
 (braket
 id|MAX_NR_ZONES
 op_star
-id|MAX_NR_NODES
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 DECL|variable|zone_table

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * $Id: iucv.c,v 1.14 2003/09/23 16:48:17 mschwide Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s):&n; *    Original source:&n; *      Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *      Xenia Tkatschow (xenia@us.ibm.com)&n; *    2Gb awareness and general cleanup:&n; *      Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *    The original source&n; *    CP Programming Service, IBM document # SC24-5760&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV lowlevel driver $Revision: 1.14 $&n; *&n; */
+multiline_comment|/* &n; * $Id: iucv.c,v 1.15 2003/10/01 09:25:15 mschwide Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s):&n; *    Original source:&n; *      Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *      Xenia Tkatschow (xenia@us.ibm.com)&n; *    2Gb awareness and general cleanup:&n; *      Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *    The original source&n; *    CP Programming Service, IBM document # SC24-5760&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV lowlevel driver $Revision: 1.15 $&n; *&n; */
 "&f;"
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -51,6 +51,18 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
+r_void
+DECL|function|iucv_root_release
+id|iucv_root_release
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+)brace
 DECL|variable|iucv_bus
 r_struct
 id|bus_type
@@ -79,6 +91,11 @@ dot
 id|bus_id
 op_assign
 l_string|&quot;iucv&quot;
+comma
+dot
+id|release
+op_assign
+id|iucv_root_release
 comma
 )brace
 suffix:semicolon
@@ -817,7 +834,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.14 $&quot;
+l_string|&quot;$Revision: 1.15 $&quot;
 suffix:semicolon
 r_char
 op_star

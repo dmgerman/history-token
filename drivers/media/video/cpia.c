@@ -3,7 +3,6 @@ multiline_comment|/* define _CPIA_DEBUG_ for verbose debug output (see cpia.h) *
 multiline_comment|/* #define _CPIA_DEBUG_  1 */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;

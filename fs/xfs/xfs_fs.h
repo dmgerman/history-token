@@ -1024,23 +1024,22 @@ DECL|typedef|xfs_fsop_attrmulti_handlereq_t
 )brace
 id|xfs_fsop_attrmulti_handlereq_t
 suffix:semicolon
-multiline_comment|/*&n; * File system identifier. Should be unique (at least per machine).&n; */
+multiline_comment|/*&n; * per machine unique filesystem identifier types.&n; */
+DECL|member|val
+DECL|typedef|xfs_fsid_t
 r_typedef
 r_struct
 (brace
-DECL|member|val
 id|__u32
 id|val
 (braket
 l_int|2
 )braket
 suffix:semicolon
-multiline_comment|/* file system id type */
-DECL|typedef|xfs_fsid_t
 )brace
 id|xfs_fsid_t
 suffix:semicolon
-multiline_comment|/*&n; * File identifier.  Should be unique per filesystem on a single machine.&n; * This is typically called by a stateless file server in order to generate&n; * &quot;file handles&quot;.&n; */
+multiline_comment|/* file system id type */
 macro_line|#ifndef HAVE_FID
 DECL|macro|MAXFIDSZ
 mdefine_line|#define MAXFIDSZ&t;46
@@ -1062,7 +1061,7 @@ id|fid_data
 id|MAXFIDSZ
 )braket
 suffix:semicolon
-multiline_comment|/* data (variable length)  */
+multiline_comment|/* data (fid_len worth)  */
 DECL|typedef|fid_t
 )brace
 id|fid_t
