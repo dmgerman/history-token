@@ -6598,7 +6598,6 @@ id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
 multiline_comment|/* *_IP_COPYSUM isn&squot;t defined anywhere and&n;&t;&t;&t;&t;   eth_copy_and_sum is memcpy for all archs so&n;&t;&t;&t;&t;   this is kind of pointless right now&n;&t;&t;&t;&t;   ... or? */
-macro_line|#if HAS_IP_COPYSUM&t;&t;/* Call copy + cksum if available. */
 id|eth_copy_and_sum
 c_func
 (paren
@@ -6624,29 +6623,6 @@ comma
 id|pkt_len
 )paren
 suffix:semicolon
-macro_line|#else
-id|memcpy
-c_func
-(paren
-id|skb_put
-c_func
-(paren
-id|skb
-comma
-id|pkt_len
-)paren
-comma
-id|rp-&gt;rx_skbuff
-(braket
-id|entry
-)braket
-op_member_access_from_pointer
-id|tail
-comma
-id|pkt_len
-)paren
-suffix:semicolon
-macro_line|#endif
 id|pci_dma_sync_single_for_device
 c_func
 (paren
