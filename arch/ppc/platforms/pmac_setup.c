@@ -2011,7 +2011,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif /* CONFIG_ADB_CUDA */
-macro_line|#ifdef CONFIG_ADB_PMU&t;
+macro_line|#ifdef CONFIG_ADB_PMU
 r_case
 id|SYS_CTRLER_PMU
 suffix:colon
@@ -2022,7 +2022,7 @@ c_func
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_ADB_PMU */&t;
+macro_line|#endif /* CONFIG_ADB_PMU */
 r_default
 suffix:colon
 suffix:semicolon
