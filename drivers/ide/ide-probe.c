@@ -4583,6 +4583,10 @@ c_cond
 id|drive-&gt;media
 op_eq
 id|ide_cdrom
+op_logical_or
+id|drive-&gt;media
+op_eq
+id|ide_optical
 )paren
 (paren
 r_void
