@@ -4941,6 +4941,18 @@ id|__GFP_FS
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* If we are already inside a transaction or the thread cannot&n;&t; * do I/O, we cannot release this page.&n;&t; */
+r_if
+c_cond
+(paren
+id|PFLAGS_TEST_FSTRANS
+c_func
+(paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * Convert delalloc space to real space, do not flush the&n;&t; * data out to disk, that will be done by the caller.&n;&t; * Never need to allocate space here - we will always&n;&t; * come back to writepage in that case.&n;&t; */
 r_if
 c_cond
