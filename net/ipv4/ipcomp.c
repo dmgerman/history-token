@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * IP Payload Compression Protocol (IPComp) - RFC3713.&n; *&n; * Copyright (c) 2003 James Morris &lt;jmorris@intercode.com.au&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option) &n; * any later version.&n; *&n; * Todo:&n; *   - Tunable compression parameters.&n; *   - Compression stats.&n; *   - Adaptive compression.&n; */
+multiline_comment|/*&n; * IP Payload Compression Protocol (IPComp) - RFC3173.&n; *&n; * Copyright (c) 2003 James Morris &lt;jmorris@intercode.com.au&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option) &n; * any later version.&n; *&n; * Todo:&n; *   - Tunable compression parameters.&n; *   - Compression stats.&n; *   - Adaptive compression.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
@@ -2017,7 +2017,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;IP Payload Compression Protocol (IPComp) - RFC3713&quot;
+l_string|&quot;IP Payload Compression Protocol (IPComp) - RFC3173&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
