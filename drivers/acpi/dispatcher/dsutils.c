@@ -79,7 +79,7 @@ r_if
 c_cond
 (paren
 (paren
-id|acpi_gbl_enable_interpeter_slack
+id|acpi_gbl_enable_interpreter_slack
 )paren
 op_logical_and
 (paren
