@@ -7383,7 +7383,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;DataOffset
+id|pSMBr-&gt;t2.DataOffset
 )paren
 suffix:semicolon
 id|__u16
@@ -7392,7 +7392,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;DataCount
+id|pSMBr-&gt;t2.DataCount
 )paren
 suffix:semicolon
 r_if
@@ -8378,7 +8378,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;DataOffset
+id|pSMBr-&gt;t2.DataOffset
 )paren
 suffix:semicolon
 multiline_comment|/* BB also check enough total bytes returned */
@@ -8837,7 +8837,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;DataOffset
+id|pSMBr-&gt;t2.DataOffset
 )paren
 suffix:semicolon
 multiline_comment|/* BB also check if enough total bytes returned */
@@ -11813,7 +11813,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;DataOffset
+id|pSMBr-&gt;t2.DataOffset
 )paren
 suffix:semicolon
 id|__u16
@@ -11822,7 +11822,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;DataCount
+id|pSMBr-&gt;t2.DataCount
 )paren
 suffix:semicolon
 id|cFYI
@@ -16914,7 +16914,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;DataOffset
+id|pSMBr-&gt;t2.DataOffset
 )paren
 suffix:semicolon
 multiline_comment|/* BB also check enough total bytes returned */
@@ -17602,7 +17602,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
-id|pSMBr-&gt;DataOffset
+id|pSMBr-&gt;t2.DataOffset
 )paren
 suffix:semicolon
 multiline_comment|/* BB also check enough total bytes returned */
