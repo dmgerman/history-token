@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  arch/s390/kernel/process.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com),&n; *               Hartmut Penner (hp@de.ibm.com),&n; *               Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com),&n; *&n; *  Derived from &quot;arch/i386/kernel/process.c&quot;&n; *    Copyright (C) 1995, Linus Torvalds&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -987,6 +988,7 @@ r_int
 id|newsp
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|parent_tidptr
 comma
@@ -1008,6 +1010,7 @@ id|parent_tidptr
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|regs.gprs
@@ -1019,6 +1022,7 @@ id|child_tidptr
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|regs.gprs
@@ -1125,6 +1129,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|regs.orig_gpr2
@@ -1159,7 +1164,9 @@ id|filename
 comma
 (paren
 r_char
+id|__user
 op_star
+id|__user
 op_star
 )paren
 id|regs.gprs
@@ -1169,7 +1176,9 @@ l_int|3
 comma
 (paren
 r_char
+id|__user
 op_star
+id|__user
 op_star
 )paren
 id|regs.gprs

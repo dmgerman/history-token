@@ -45,6 +45,7 @@ id|type
 comma
 r_const
 r_void
+id|__user
 op_star
 id|addr
 comma
@@ -105,8 +106,13 @@ macro_line|#else
 DECL|macro|__put_user_asm
 mdefine_line|#define __put_user_asm(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;err = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: mvcs  0(%1,%2),0(%3),%0&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;+&amp;d&quot; (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;d&quot; (sizeof(*(ptr))), &quot;a&quot; (ptr), &quot;a&quot; (&amp;(x)),&t;&bslash;&n;&t;&t;  &quot;K&quot; (-EFAULT), &quot;m&quot; (x)&t;&t;&t;&bslash;&n;&t;&t;: __uaccess_clobber );&t;&t;&t;&t;&bslash;&n;})
 macro_line|#endif
+macro_line|#ifndef __CHECKER__
 DECL|macro|__put_user
 mdefine_line|#define __put_user(x, ptr) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __x = (x);&t;&t;&t;&t;&bslash;&n;&t;int __pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (sizeof (*(ptr))) {&t;&t;&t;&t;&bslash;&n;&t;case 1:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 2:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 4:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 8:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__put_user_asm(__x, ptr, __pu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;default:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__pu_err = __put_user_bad();&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; }&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#else
+DECL|macro|__put_user
+mdefine_line|#define __put_user(x, ptr)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void __user *p;&t;&t;&t;&t;&bslash;&n;&t;p = (ptr);&t;&t;&t;&t;&bslash;&n;&t;0;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#endif
 DECL|macro|put_user
 mdefine_line|#define put_user(x, ptr)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__put_user(x, ptr);&t;&t;&t;&t;&t;&bslash;&n;})
 r_extern
@@ -124,8 +130,13 @@ macro_line|#else
 DECL|macro|__get_user_asm
 mdefine_line|#define __get_user_asm(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;err = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: mvcp  0(%2,%5),0(%3),%0&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;+&amp;d&quot; (err), &quot;=m&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;d&quot; (sizeof(*(ptr))), &quot;a&quot; (ptr),&t;&t;&bslash;&n;&t;&t;  &quot;K&quot; (-EFAULT), &quot;a&quot; (&amp;(x))&t;&t;&t;&bslash;&n;&t;&t;: __uaccess_clobber );&t;&t;&t;&t;&bslash;&n;})
 macro_line|#endif
+macro_line|#ifndef __CHECKER__
 DECL|macro|__get_user
 mdefine_line|#define __get_user(x, ptr)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __x;&t;&t;&t;&t;&t;&bslash;&n;&t;int __gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&t;&bslash;&n;&t;case 1:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 2:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 4:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 8:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_user_asm(__x, ptr, __gu_err);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;default:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__x = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__gu_err = __get_user_bad();&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = __x;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#else
+DECL|macro|__get_user
+mdefine_line|#define __get_user(x, ptr)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void __user *p;&t;&t;&t;&t;&bslash;&n;&t;p = (ptr);&t;&t;&t;&t;&bslash;&n;&t;0;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#endif
 DECL|macro|get_user
 mdefine_line|#define get_user(x, ptr)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__get_user(x, ptr);&t;&t;&t;&t;&t;&bslash;&n;})
 r_extern
@@ -150,6 +161,7 @@ r_int
 id|n
 comma
 r_void
+id|__user
 op_star
 id|to
 )paren
@@ -262,6 +274,7 @@ id|n
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 )paren
@@ -379,6 +392,7 @@ c_func
 (paren
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -386,6 +400,7 @@ r_int
 id|n
 comma
 r_void
+id|__user
 op_star
 id|to
 )paren
@@ -502,6 +517,7 @@ id|dst
 comma
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -522,6 +538,7 @@ id|dst
 comma
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -576,6 +593,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -593,6 +611,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -626,6 +645,7 @@ id|__clear_user_asm
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -642,6 +662,7 @@ id|__clear_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -669,6 +690,7 @@ id|clear_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma

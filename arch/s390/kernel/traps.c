@@ -859,6 +859,7 @@ id|c
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 (paren
@@ -1922,6 +1923,11 @@ op_star
 id|opcode
 )paren
 comma
+(paren
+id|__u16
+id|__user
+op_star
+)paren
 id|location
 )paren
 suffix:semicolon

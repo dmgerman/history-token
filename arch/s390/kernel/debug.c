@@ -129,6 +129,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|user_buf
 comma
@@ -152,6 +153,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buf
 comma
@@ -273,6 +275,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buf
 comma
@@ -305,6 +308,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buf
 comma
@@ -1662,6 +1666,7 @@ id|file
 comma
 multiline_comment|/* file descriptor */
 r_char
+id|__user
 op_star
 id|user_buf
 comma
@@ -1673,8 +1678,8 @@ multiline_comment|/* length of buffer */
 id|loff_t
 op_star
 id|offset
-multiline_comment|/* offset in the file */
 )paren
+multiline_comment|/* offset in the file */
 (brace
 r_int
 id|count
@@ -1858,6 +1863,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buf
 comma
@@ -3787,6 +3793,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buf
 comma
@@ -4137,6 +4144,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buf
 comma
