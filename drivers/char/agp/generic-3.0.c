@@ -1508,6 +1508,15 @@ comma
 id|PCI_CAP_ID_AGP
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mcapndx
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1564,15 +1573,6 @@ r_case
 l_int|0x0400
 suffix:colon
 multiline_comment|/* Multimedia controller */
-r_if
-c_cond
-(paren
-id|mcapndx
-op_eq
-l_int|0
-)paren
-r_continue
-suffix:semicolon
 r_if
 c_cond
 (paren
