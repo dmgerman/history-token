@@ -6195,7 +6195,7 @@ op_assign
 id|simple_statfs
 comma
 dot
-id|remount
+id|remount_fs
 op_assign
 id|openprom_remount
 comma
