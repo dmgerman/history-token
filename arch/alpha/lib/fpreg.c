@@ -442,6 +442,11 @@ id|val
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_return
 id|val
@@ -1333,6 +1338,11 @@ id|val
 )paren
 suffix:semicolon
 r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_return
