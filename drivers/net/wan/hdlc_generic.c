@@ -175,7 +175,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|ifr-&gt;ifr_settings.type
+id|ifr-&gt;ifr_settings-&gt;type
 )paren
 (brace
 r_case
@@ -195,7 +195,7 @@ id|IF_PROTO_X25
 suffix:colon
 id|proto
 op_assign
-id|ifr-&gt;ifr_settings.type
+id|ifr-&gt;ifr_settings-&gt;type
 suffix:semicolon
 r_break
 suffix:semicolon
