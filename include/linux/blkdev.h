@@ -85,6 +85,12 @@ DECL|member|rq_dev
 id|kdev_t
 id|rq_dev
 suffix:semicolon
+DECL|member|rq_disk
+r_struct
+id|gendisk
+op_star
+id|rq_disk
+suffix:semicolon
 DECL|member|errors
 r_int
 id|errors

@@ -915,6 +915,12 @@ DECL|member|bd_invalidated
 r_int
 id|bd_invalidated
 suffix:semicolon
+DECL|member|bd_disk
+r_struct
+id|gendisk
+op_star
+id|bd_disk
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|inode

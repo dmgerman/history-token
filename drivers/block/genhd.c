@@ -137,13 +137,6 @@ dot
 id|list
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|disk-&gt;minors
-OG
-l_int|1
-)paren
 id|list_add_tail
 c_func
 (paren
@@ -152,14 +145,6 @@ id|disk-&gt;full_list
 comma
 op_amp
 id|gendisk_list
-)paren
-suffix:semicolon
-r_else
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|disk-&gt;full_list
 )paren
 suffix:semicolon
 id|write_unlock
@@ -418,13 +403,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|variable|get_gendisk
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|get_gendisk
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* iterator */
 DECL|function|part_start
@@ -637,6 +615,10 @@ c_func
 (paren
 id|sgp
 )paren
+op_logical_or
+id|sgp-&gt;minors
+op_eq
+l_int|1
 )paren
 r_return
 l_int|0
@@ -1065,6 +1047,13 @@ l_int|1
 )paren
 id|disk-&gt;minor_shift
 op_increment
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|disk-&gt;full_list
+)paren
 suffix:semicolon
 id|disk-&gt;disk_dev.bus
 op_assign
