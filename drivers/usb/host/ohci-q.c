@@ -732,11 +732,12 @@ OL
 l_int|0
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;%s: ERR %d, interval %d msecs, load %d&quot;
+op_star
+id|ohci-&gt;hcd.controller
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;ERR %d, interval %d msecs, load %d&bslash;n&quot;
 comma
 id|branch
 comma
@@ -2873,9 +2874,11 @@ id|toggle
 suffix:semicolon
 )brace
 multiline_comment|/* help for troubleshooting: */
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;urb %p usb-%s-%s ep-%d-%s cc %d --&gt; status %d&quot;
+id|urb-&gt;dev-&gt;dev
+comma
+l_string|&quot;urb %p usb-%s-%s ep-%d-%s cc %d --&gt; status %d&bslash;n&quot;
 comma
 id|urb
 comma
