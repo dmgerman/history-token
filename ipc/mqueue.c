@@ -3548,6 +3548,7 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3561,7 +3562,6 @@ c_func
 id|msg_ptr
 )paren
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
