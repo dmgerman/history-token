@@ -9845,7 +9845,15 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-multiline_comment|/* Safe outside mutex since we only care about entries that&n;&t; * this cpu put into queue while under RTNL.&n;&t; */
+multiline_comment|/* Need to guard against multiple cpu&squot;s getting out of order. */
+id|down
+c_func
+(paren
+op_amp
+id|net_todo_run_mutex
+)paren
+suffix:semicolon
+multiline_comment|/* Not safe to do outside the semaphore.  We must not return&n;&t; * until all unregister events invoked by the local processor&n;&t; * have been completed (either by this todo run, or one on&n;&t; * another cpu).&n;&t; */
 r_if
 c_cond
 (paren
@@ -9856,15 +9864,8 @@ op_amp
 id|net_todo_list
 )paren
 )paren
-r_return
-suffix:semicolon
-multiline_comment|/* Need to guard against multiple cpu&squot;s getting out of order. */
-id|down
-c_func
-(paren
-op_amp
-id|net_todo_run_mutex
-)paren
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/* Snapshot list, allow later requests */
 id|spin_lock
@@ -10050,6 +10051,8 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|out
+suffix:colon
 id|up
 c_func
 (paren
