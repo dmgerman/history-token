@@ -84,57 +84,6 @@ DECL|macro|RSF16_MINFREQ
 mdefine_line|#define RSF16_MINFREQ 87*16000
 DECL|macro|RSF16_MAXFREQ
 mdefine_line|#define RSF16_MAXFREQ 108*16000
-multiline_comment|/* from radio-aimslab */
-DECL|function|sleep_delay
-r_static
-r_void
-id|sleep_delay
-c_func
-(paren
-r_int
-r_int
-id|n
-)paren
-(brace
-r_int
-id|d
-op_assign
-id|n
-op_div
-(paren
-l_int|1000000U
-op_div
-id|HZ
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|d
-)paren
-id|udelay
-c_func
-(paren
-id|n
-)paren
-suffix:semicolon
-r_else
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|d
-)paren
-suffix:semicolon
-)brace
-)brace
 DECL|function|wait
 r_static
 r_inline
@@ -578,10 +527,10 @@ id|port
 )paren
 suffix:semicolon
 multiline_comment|/* wait 0.11 sec */
-id|sleep_delay
+id|msleep
 c_func
 (paren
-l_int|110000LU
+l_int|110
 )paren
 suffix:semicolon
 multiline_comment|/* NOTE if mute this stop radio&n;&t;   you must set freq on unmute */
