@@ -2364,15 +2364,7 @@ id|usb_dev-&gt;bus-&gt;root_hub
 op_assign
 id|usb_dev
 suffix:semicolon
-id|usb_dev-&gt;epmaxpacketin
-(braket
-l_int|0
-)braket
-op_assign
-id|usb_dev-&gt;epmaxpacketout
-(braket
-l_int|0
-)braket
+id|usb_dev-&gt;ep0.desc.wMaxPacketSize
 op_assign
 l_int|64
 suffix:semicolon
@@ -4033,32 +4025,9 @@ id|local_irq_disable
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* ep is already gone from udev-&gt;ep_{in,out}[]; no more submits */
 id|rescan
 suffix:colon
-multiline_comment|/* (re)block new requests, as best we can */
-r_if
-c_cond
-(paren
-id|endpoint
-op_amp
-id|USB_DIR_IN
-)paren
-id|udev-&gt;epmaxpacketin
-(braket
-id|epnum
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-r_else
-id|udev-&gt;epmaxpacketout
-(braket
-id|epnum
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* then kill any current requests */
 id|spin_lock
 (paren
 op_amp
