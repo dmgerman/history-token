@@ -5,6 +5,10 @@ mdefine_line|#define _LINUX_ASM_VGA_H_
 macro_line|#include &lt;asm/types.h&gt;
 DECL|macro|VT_BUF_HAVE_RW
 mdefine_line|#define VT_BUF_HAVE_RW
+DECL|macro|scr_writew
+macro_line|#undef scr_writew
+DECL|macro|scr_readw
+macro_line|#undef scr_readw
 DECL|function|scr_writew
 r_static
 r_inline
