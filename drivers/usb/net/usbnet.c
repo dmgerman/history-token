@@ -1129,12 +1129,8 @@ r_if
 c_cond
 (paren
 id|gl_skb
-op_eq
-l_int|0
 )paren
-r_return
-l_int|0
-suffix:semicolon
+(brace
 singleline_comment|// copy the packet data to the new skb
 id|memcpy
 (paren
@@ -1182,6 +1178,7 @@ id|netif_rx
 id|gl_skb
 )paren
 suffix:semicolon
+)brace
 singleline_comment|// advance to the next packet
 id|packet
 op_assign
