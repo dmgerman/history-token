@@ -194,8 +194,11 @@ DECL|macro|SOURCE_ID
 mdefine_line|#define SOURCE_ID(flags)&t;(((flags) &gt;&gt; 28) &amp; 0x03)
 DECL|macro|TO_SIZE
 mdefine_line|#define TO_SIZE(state)&t;&t;(((state) &gt;&gt; 16) &amp; 0x1fff)
-DECL|macro|TO_STATE
-mdefine_line|#define TO_STATE(len)&t;&t;cpu_to_le32(((len) &amp; TxSizeMax) &lt;&lt; 16)
+multiline_comment|/*&n; * Given the operating range of Linux HDLC, the 2 defines below could be&n; * made simpler. However they are a fine reminder for the limitations of&n; * the driver: it&squot;s better to stay &lt; TxSizeMax and &lt; RxSizeMax.&n; */
+DECL|macro|TO_STATE_TX
+mdefine_line|#define TO_STATE_TX(len)&t;cpu_to_le32(((len) &amp; TxSizeMax) &lt;&lt; 16)
+DECL|macro|TO_STATE_RX
+mdefine_line|#define TO_STATE_RX(len)&t;cpu_to_le32((RX_MAX(len) % RxSizeMax) &lt;&lt; 16)
 DECL|macro|RX_MAX
 mdefine_line|#define RX_MAX(len)&t;&t;((((len) &gt;&gt; 5) + 1) &lt;&lt; 5)
 DECL|macro|SCC_REG_START
@@ -494,7 +497,9 @@ mdefine_line|#define TxSccRes&t;0x01000000
 DECL|macro|RxSccRes
 mdefine_line|#define RxSccRes&t;0x00010000
 DECL|macro|TxSizeMax
-mdefine_line|#define TxSizeMax&t;0x1fff
+mdefine_line|#define TxSizeMax&t;0x1fff&t;&t;/* Datasheet DS1 - 11.1.1.1 */
+DECL|macro|RxSizeMax
+mdefine_line|#define RxSizeMax&t;0x1ffc&t;&t;/* Datasheet DS1 - 11.1.2.1 */
 DECL|macro|Ccr0ClockMask
 mdefine_line|#define Ccr0ClockMask&t;0x0000003f
 DECL|macro|Ccr1LoopMask
@@ -1511,12 +1516,11 @@ id|pdev
 comma
 id|rx_fd-&gt;data
 comma
+id|RX_MAX
+c_func
 (paren
-op_star
-id|skbuff
+id|HDLC_MAX_MRU
 )paren
-op_member_access_from_pointer
-id|len
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -1571,6 +1575,16 @@ id|dpriv-&gt;rx_fd
 op_plus
 id|dirty
 suffix:semicolon
+r_const
+r_int
+id|len
+op_assign
+id|RX_MAX
+c_func
+(paren
+id|HDLC_MAX_MRU
+)paren
+suffix:semicolon
 r_struct
 id|sk_buff
 op_star
@@ -1586,11 +1600,7 @@ op_assign
 id|dev_alloc_skb
 c_func
 (paren
-id|RX_MAX
-c_func
-(paren
-id|HDLC_MAX_MRU
-)paren
+id|len
 )paren
 suffix:semicolon
 id|dpriv-&gt;rx_skbuff
@@ -1612,10 +1622,12 @@ id|dev
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|htons
+id|hdlc_type_trans
 c_func
 (paren
-id|ETH_P_IP
+id|skb
+comma
+id|dev
 )paren
 suffix:semicolon
 id|skb-&gt;mac.raw
@@ -1631,7 +1643,7 @@ id|dpriv-&gt;pci_priv-&gt;pdev
 comma
 id|skb-&gt;data
 comma
-id|skb-&gt;len
+id|len
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -2347,7 +2359,11 @@ id|pdev
 comma
 id|rx_fd-&gt;data
 comma
-id|pkt_len
+id|RX_MAX
+c_func
+(paren
+id|HDLC_MAX_MRU
+)paren
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -2375,13 +2391,13 @@ id|stats-&gt;rx_bytes
 op_add_assign
 id|pkt_len
 suffix:semicolon
-id|skb-&gt;tail
-op_add_assign
+id|skb_put
+c_func
+(paren
+id|skb
+comma
 id|pkt_len
-suffix:semicolon
-id|skb-&gt;len
-op_assign
-id|pkt_len
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4421,7 +4437,7 @@ id|tx_fd-&gt;state
 op_assign
 id|FrameEnd
 op_or
-id|TO_STATE
+id|TO_STATE_TX
 c_func
 (paren
 id|skb-&gt;len
@@ -5343,10 +5359,6 @@ op_ne
 id|bps
 )paren
 (brace
-id|settings-&gt;clock_rate
-op_assign
-id|bps
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -5355,10 +5367,14 @@ l_string|&quot;%s: clock adjusted (%08d -&gt; %08d)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|dpriv-&gt;settings.clock_rate
+id|settings-&gt;clock_rate
 comma
 id|bps
 )paren
+suffix:semicolon
+id|settings-&gt;clock_rate
+op_assign
+id|bps
 suffix:semicolon
 )brace
 )brace
@@ -6456,7 +6472,7 @@ id|tx_fd-&gt;state
 op_assign
 id|FrameEnd
 op_or
-id|TO_STATE
+id|TO_STATE_TX
 c_func
 (paren
 l_int|2
@@ -7816,7 +7832,7 @@ id|tx_fd-&gt;state
 op_assign
 id|FrameEnd
 op_or
-id|TO_STATE
+id|TO_STATE_TX
 c_func
 (paren
 id|DUMMY_SKB_SIZE
@@ -7994,7 +8010,7 @@ id|tx_fd-&gt;state
 op_assign
 id|FrameEnd
 op_or
-id|TO_STATE
+id|TO_STATE_TX
 c_func
 (paren
 l_int|2
@@ -8103,14 +8119,10 @@ l_int|0xbabeface
 suffix:semicolon
 id|rx_fd-&gt;state1
 op_or_assign
-(paren
-id|RX_MAX
+id|TO_STATE_RX
 c_func
 (paren
 id|HDLC_MAX_MRU
-)paren
-op_lshift
-l_int|16
 )paren
 suffix:semicolon
 singleline_comment|// FIXME: return value verifiee mais traitement suspect
