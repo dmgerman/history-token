@@ -425,11 +425,13 @@ suffix:semicolon
 multiline_comment|/* be16 */
 DECL|member|olympic_mmio
 id|u8
+id|__iomem
 op_star
 id|olympic_mmio
 suffix:semicolon
 DECL|member|olympic_lap
 id|u8
+id|__iomem
 op_star
 id|olympic_lap
 suffix:semicolon
