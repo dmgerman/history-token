@@ -16119,8 +16119,6 @@ c_cond
 id|state
 op_ne
 id|PFM_CTX_LOADED
-op_eq
-l_int|0
 )paren
 r_return
 l_int|0
@@ -20358,7 +20356,7 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|foo
+id|psr
 op_amp
 (paren
 id|IA64_PSR_I
