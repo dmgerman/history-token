@@ -28,8 +28,10 @@ DECL|macro|PORT_16850
 mdefine_line|#define PORT_16850&t;12
 DECL|macro|PORT_RSA
 mdefine_line|#define PORT_RSA&t;13
+DECL|macro|PORT_NS16550A
+mdefine_line|#define PORT_NS16550A&t;14
 DECL|macro|PORT_MAX_8250
-mdefine_line|#define PORT_MAX_8250&t;13&t;/* max port ID */
+mdefine_line|#define PORT_MAX_8250&t;14&t;/* max port ID */
 multiline_comment|/*&n; * ARM specific type numbers.  These are not currently guaranteed&n; * to be implemented, and will change in the future.  These are&n; * separate so any additions to the old serial.c that occur before&n; * we are merged can be easily merged here.&n; */
 DECL|macro|PORT_AMBA
 mdefine_line|#define PORT_AMBA&t;32
@@ -561,6 +563,8 @@ DECL|macro|UPF_BUGGY_UART
 mdefine_line|#define UPF_BUGGY_UART&t;&t;(1 &lt;&lt; 14)
 DECL|macro|UPF_AUTOPROBE
 mdefine_line|#define UPF_AUTOPROBE&t;&t;(1 &lt;&lt; 15)
+DECL|macro|UPF_MAGIC_MULTIPLIER
+mdefine_line|#define UPF_MAGIC_MULTIPLIER&t;(1 &lt;&lt; 16)
 DECL|macro|UPF_BOOT_ONLYMCA
 mdefine_line|#define UPF_BOOT_ONLYMCA&t;(1 &lt;&lt; 22)
 DECL|macro|UPF_CONS_FLOW
@@ -574,7 +578,7 @@ mdefine_line|#define UPF_RESOURCES&t;&t;(1 &lt;&lt; 30)
 DECL|macro|UPF_IOREMAP
 mdefine_line|#define UPF_IOREMAP&t;&t;(1 &lt;&lt; 31)
 DECL|macro|UPF_CHANGE_MASK
-mdefine_line|#define UPF_CHANGE_MASK&t;&t;(0x7fff)
+mdefine_line|#define UPF_CHANGE_MASK&t;&t;(0x17fff)
 DECL|macro|UPF_USR_MASK
 mdefine_line|#define UPF_USR_MASK&t;&t;(UPF_SPD_MASK|UPF_LOW_LATENCY)
 DECL|member|mctrl
@@ -845,7 +849,7 @@ id|cflag
 comma
 r_int
 r_int
-id|quot
+id|baud
 )paren
 suffix:semicolon
 r_int
@@ -887,15 +891,9 @@ id|uart_port
 op_star
 id|port
 comma
-r_struct
-id|termios
-op_star
-id|termios
-comma
-r_struct
-id|termios
-op_star
-id|old_termios
+r_int
+r_int
+id|baud
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Console helpers.&n; */
