@@ -102,9 +102,19 @@ r_int
 r_int
 id|com_port
 suffix:semicolon
+multiline_comment|/* We need to make sure that this is before the images to ensure&n; * that it&squot;s in a mapped location. - Tom */
 DECL|variable|hold_resid_buf
 id|bd_t
 id|hold_resid_buf
+id|__attribute__
+(paren
+(paren
+id|__section__
+(paren
+l_string|&quot;.data.boot&quot;
+)paren
+)paren
+)paren
 suffix:semicolon
 DECL|variable|hold_residual
 id|bd_t
