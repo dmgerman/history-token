@@ -163,12 +163,6 @@ r_struct
 id|completion
 id|complete
 suffix:semicolon
-DECL|member|next
-r_struct
-id|keywest_iface
-op_star
-id|next
-suffix:semicolon
 )brace
 suffix:semicolon
 r_enum

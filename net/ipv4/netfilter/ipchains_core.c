@@ -31,6 +31,18 @@ macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_core.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual BSD/GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ipchains backwards compatibility layer&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Understanding locking in this code: (thanks to Alan Cox for using&n; * little words to explain this to me). -- PR&n; *&n; * In UP, there can be two packets traversing the chains:&n; * 1) A packet from the current userspace context&n; * 2) A packet off the bh handlers (timer or net).&n; *&n; * For SMP (kernel v2.1+), multiply this by # CPUs.&n; *&n; * [Note that this in not correct for 2.2 - because the socket code always&n; *  uses lock_kernel() to serialize, and bottom halves (timers and net_bhs)&n; *  only run on one CPU at a time.  This will probably change for 2.3.&n; *  It is still good to use spinlocks because that avoids the global cli()&n; *  for updating the tables, which is rather costly in SMP kernels -AK]&n; *&n; * This means counters and backchains can get corrupted if no precautions&n; * are taken.&n; *&n; * To actually alter a chain on UP, we need only do a cli(), as this will&n; * stop a bh handler firing, as we are in the current userspace context&n; * (coming from a setsockopt()).&n; *&n; * On SMP, we need a write_lock_irqsave(), which is a simple cli() in&n; * UP.&n; *&n; * For backchains and counters, we use an array, indexed by&n; * [smp_processor_id()*2 + !in_interrupt()]; the array is of&n; * size [NR_CPUS*2].  For v2.0, NR_CPUS is effectively 1.  So,&n; * confident of uniqueness, we modify counters even though we only&n; * have a read lock (to read the counters, you need a write lock,&n; * though).  */
 multiline_comment|/* Why I didn&squot;t use straight locking... -- PR&n; *&n; * The backchains can be separated out of the ip_chains structure, and&n; * allocated as needed inside ip_fw_check().&n; *&n; * The counters, however, can&squot;t.  Trying to lock these means blocking&n; * interrupts every time we want to access them.  This would suck HARD&n; * performance-wise.  Not locking them leads to possible corruption,&n; * made worse on 32-bit machines (counters are 64-bit).  */
 multiline_comment|/*#define DEBUG_IP_FIREWALL*/
@@ -7617,10 +7629,4 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;Dual BSD/GPL&quot;
-)paren
-suffix:semicolon
 eof

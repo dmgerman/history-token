@@ -2544,10 +2544,10 @@ op_member_access_from_pointer
 id|lock
 )paren
 suffix:semicolon
-id|invalidate_inode_pages
+id|invalidate_remote_inode
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|inode
 )paren
 suffix:semicolon
 r_goto

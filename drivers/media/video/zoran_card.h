@@ -49,5 +49,16 @@ op_star
 id|zr
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|zoran_vdev_release
+c_func
+(paren
+r_struct
+id|video_device
+op_star
+id|vdev
+)paren
+suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* __ZORAN_CARD_H__ */
 eof

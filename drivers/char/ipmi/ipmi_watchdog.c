@@ -2097,10 +2097,10 @@ id|filep
 r_switch
 c_cond
 (paren
-id|minor
+id|iminor
 c_func
 (paren
-id|ino-&gt;i_rdev
+id|ino
 )paren
 )paren
 (brace
@@ -2265,10 +2265,10 @@ id|filep
 r_if
 c_cond
 (paren
-id|minor
+id|iminor
 c_func
 (paren
-id|ino-&gt;i_rdev
+id|ino
 )paren
 op_eq
 id|WATCHDOG_MINOR

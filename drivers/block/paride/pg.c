@@ -2329,8 +2329,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(dev)&t;(minor(dev) &amp; 0x7F)
 DECL|function|pg_open
 r_static
 r_int
@@ -2351,11 +2349,13 @@ id|file
 r_int
 id|unit
 op_assign
-id|DEVICE_NR
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
+op_amp
+l_int|0x7f
 suffix:semicolon
 r_struct
 id|pg

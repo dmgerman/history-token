@@ -1017,10 +1017,10 @@ macro_line|#ifdef CONFIG_INPUT_MOUSEDEV_PSAUX
 r_if
 c_cond
 (paren
-id|major
+id|imajor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_eq
 id|MISC_MAJOR
@@ -1033,10 +1033,10 @@ r_else
 macro_line|#endif
 id|i
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_minus
 id|MOUSEDEV_MINOR_BASE

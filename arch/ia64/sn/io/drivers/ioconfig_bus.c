@@ -1280,17 +1280,20 @@ id|file_operations
 id|ioconfig_bus_fops
 op_assign
 (brace
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|ioconfig_bus_ioctl
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|ioconfig_bus_open
 comma
 multiline_comment|/* open */
+dot
 id|release
-suffix:colon
+op_assign
 id|ioconfig_bus_close
 multiline_comment|/* release */
 )brace

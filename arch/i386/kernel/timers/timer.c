@@ -2,6 +2,9 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
+macro_line|#ifdef CONFIG_HPET_TIMER
+multiline_comment|/*&n; * HPET memory read is slower than tsc reads, but is more dependable as it&n; * always runs at constant frequency and reduces complexity due to&n; * cpufreq. So, we prefer HPET timer to tsc based one. Also, we cannot use&n; * timer_pit when HPET is active. So, we default to timer_tsc.&n; */
+macro_line|#endif
 multiline_comment|/* list of timers, ordered by preference, NULL terminated */
 DECL|variable|timers
 r_static
@@ -16,6 +19,11 @@ op_assign
 macro_line|#ifdef CONFIG_X86_CYCLONE_TIMER
 op_amp
 id|timer_cyclone
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_HPET_TIMER
+op_amp
+id|timer_hpet
 comma
 macro_line|#endif
 op_amp

@@ -7,25 +7,6 @@ macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/page-flags.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &quot;agp.h&quot;
-multiline_comment|/* registers */
-DECL|macro|NVIDIA_0_APBASE
-mdefine_line|#define NVIDIA_0_APBASE&t;&t;0x10
-DECL|macro|NVIDIA_0_APSIZE
-mdefine_line|#define NVIDIA_0_APSIZE&t;&t;0x80
-DECL|macro|NVIDIA_1_WBC
-mdefine_line|#define NVIDIA_1_WBC&t;&t;0xf0
-DECL|macro|NVIDIA_2_GARTCTRL
-mdefine_line|#define NVIDIA_2_GARTCTRL&t;0xd0
-DECL|macro|NVIDIA_2_APBASE
-mdefine_line|#define NVIDIA_2_APBASE&t;&t;0xd8
-DECL|macro|NVIDIA_2_APLIMIT
-mdefine_line|#define NVIDIA_2_APLIMIT&t;0xdc
-DECL|macro|NVIDIA_2_ATTBASE
-mdefine_line|#define NVIDIA_2_ATTBASE(i)&t;(0xe0 + (i) * 4)
-DECL|macro|NVIDIA_3_APBASE
-mdefine_line|#define NVIDIA_3_APBASE&t;&t;0x50
-DECL|macro|NVIDIA_3_APLIMIT
-mdefine_line|#define NVIDIA_3_APLIMIT&t;0x54
 DECL|struct|_nvidia_private
 r_static
 r_struct
@@ -226,7 +207,7 @@ c_func
 (paren
 id|agp_bridge-&gt;dev
 comma
-id|NVIDIA_0_APBASE
+id|AGP_APBASE
 comma
 op_amp
 id|apbase

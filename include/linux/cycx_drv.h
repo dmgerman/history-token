@@ -40,7 +40,8 @@ r_int
 id|irq
 suffix:semicolon
 DECL|member|dpmbase
-id|u32
+r_void
+op_star
 id|dpmbase
 suffix:semicolon
 DECL|member|dpmsize
@@ -133,7 +134,8 @@ r_int
 id|cycx_exec
 c_func
 (paren
-id|u32
+r_void
+op_star
 id|addr
 )paren
 suffix:semicolon

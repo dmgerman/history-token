@@ -181,6 +181,8 @@ l_int|2
 )braket
 (braket
 id|BUS_ID_SIZE
+op_plus
+l_int|1
 )braket
 comma
 op_star
@@ -288,6 +290,8 @@ id|end
 op_minus
 id|start
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 id|strlcpy
 (paren

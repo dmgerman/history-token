@@ -8217,6 +8217,11 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+DECL|variable|pcnet32_have_pci
+r_static
+r_int
+id|pcnet32_have_pci
+suffix:semicolon
 DECL|function|pcnet32_init_module
 r_static
 r_int
@@ -8267,12 +8272,20 @@ op_assign
 id|tx_start_pt
 suffix:semicolon
 multiline_comment|/* find the PCI devices */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|pci_module_init
 c_func
 (paren
 op_amp
 id|pcnet32_driver
 )paren
+)paren
+id|pcnet32_have_pci
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/* should we find any remaining VLbus devices ? */
 r_if
@@ -8301,7 +8314,11 @@ id|cards_found
 )paren
 suffix:semicolon
 r_return
+(paren
+id|pcnet32_have_pci
+op_plus
 id|cards_found
+)paren
 ques
 c_cond
 l_int|0
@@ -8395,6 +8412,18 @@ op_assign
 id|next_dev
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|pcnet32_have_pci
+)paren
+id|pci_unregister_driver
+c_func
+(paren
+op_amp
+id|pcnet32_driver
+)paren
+suffix:semicolon
 )brace
 DECL|variable|pcnet32_init_module
 id|module_init

@@ -187,16 +187,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_SYSVIPC)
-r_extern
-r_void
-id|ipc_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Are we up and running (ie do we have all the infrastructure&n; * set up)&n; */
 DECL|variable|system_running
 r_int
@@ -216,6 +206,19 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+multiline_comment|/* Default late time init is NULL. archs can override this later. */
+DECL|variable|late_time_init
+r_void
+(paren
+op_star
+id|late_time_init
+)paren
+(paren
+r_void
+)paren
+op_assign
+l_int|NULL
 suffix:semicolon
 r_extern
 r_void
@@ -1417,11 +1420,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|calibrate_delay
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 r_if
 c_cond
@@ -1469,6 +1467,21 @@ c_func
 )paren
 suffix:semicolon
 id|kmem_cache_init
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|late_time_init
+)paren
+id|late_time_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|calibrate_delay
 c_func
 (paren
 )paren
@@ -1538,13 +1551,6 @@ c_func
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 id|proc_root_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_SYSVIPC)
-id|ipc_init
 c_func
 (paren
 )paren

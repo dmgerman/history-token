@@ -1,6 +1,5 @@
 multiline_comment|/* Connection state tracking for netfilter.  This is separated from,&n;   but required by, the NAT layer; it can also be used by an iptables&n;   extension. */
 multiline_comment|/* (c) 1999 Paul `Rusty&squot; Russell.  Licenced under the GNU General&n; * Public Licence. &n; *&n; * 23 Apr 2001: Harald Welte &lt;laforge@gnumonks.org&gt;&n; * &t;- new API and handling of conntrack/nat helpers&n; * &t;- now capable of multiple expectations for one master&n; * 16 Jul 2002: Harald Welte &lt;laforge@gnumonks.org&gt;&n; * &t;- add usage/reference counts to ip_conntrack_expect&n; *&t;- export ip_conntrack[_expect]_{find_get,put} functions&n; * */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/icmp.h&gt;
@@ -995,6 +994,12 @@ op_star
 id|ct
 )paren
 (brace
+r_int
+r_int
+id|ho
+comma
+id|hr
+suffix:semicolon
 id|DEBUGP
 c_func
 (paren
@@ -1010,12 +1015,8 @@ op_amp
 id|ip_conntrack_lock
 )paren
 suffix:semicolon
-id|LIST_DELETE
-c_func
-(paren
-op_amp
-id|ip_conntrack_hash
-(braket
+id|ho
+op_assign
 id|hash_conntrack
 c_func
 (paren
@@ -1027,6 +1028,28 @@ id|IP_CT_DIR_ORIGINAL
 dot
 id|tuple
 )paren
+suffix:semicolon
+id|hr
+op_assign
+id|hash_conntrack
+c_func
+(paren
+op_amp
+id|ct-&gt;tuplehash
+(braket
+id|IP_CT_DIR_REPLY
+)braket
+dot
+id|tuple
+)paren
+suffix:semicolon
+id|LIST_DELETE
+c_func
+(paren
+op_amp
+id|ip_conntrack_hash
+(braket
+id|ho
 )braket
 comma
 op_amp
@@ -1042,17 +1065,7 @@ c_func
 op_amp
 id|ip_conntrack_hash
 (braket
-id|hash_conntrack
-c_func
-(paren
-op_amp
-id|ct-&gt;tuplehash
-(braket
-id|IP_CT_DIR_REPLY
-)braket
-dot
-id|tuple
-)paren
+id|hr
 )braket
 comma
 op_amp
@@ -1378,6 +1391,16 @@ id|ip_conntrack_tuple_hash
 op_star
 id|h
 suffix:semicolon
+r_int
+r_int
+id|hash
+op_assign
+id|hash_conntrack
+c_func
+(paren
+id|tuple
+)paren
+suffix:semicolon
 id|MUST_BE_READ_LOCKED
 c_func
 (paren
@@ -1393,11 +1416,7 @@ c_func
 op_amp
 id|ip_conntrack_hash
 (braket
-id|hash_conntrack
-c_func
-(paren
-id|tuple
-)paren
+id|hash
 )braket
 comma
 id|conntrack_tuple_cmp

@@ -5,6 +5,24 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_owner.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Marc Boucher &lt;marc@mbsi.ca&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;iptables owner match&quot;
+)paren
+suffix:semicolon
 r_static
 r_int
 DECL|function|match_comm
@@ -914,12 +932,6 @@ id|module_exit
 c_func
 (paren
 id|fini
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

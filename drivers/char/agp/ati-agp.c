@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ALi AGPGART routines.&n; */
+multiline_comment|/*&n; * ATi AGPGART routines.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1041,7 +1041,7 @@ l_int|0x20000
 suffix:semicolon
 )brace
 multiline_comment|/* address to map too */
-multiline_comment|/*&n;&t;pci_read_config_dword(agp_bridge.dev, ATI_APBASE, &amp;temp);&n;&t;agp_bridge.gart_bus_addr = (temp &amp; PCI_BASE_ADDRESS_MEM_MASK);&n;&t;printk(KERN_INFO &quot;IGP320 gart_bus_addr: %x&bslash;n&quot;, agp_bridge.gart_bus_addr);&n;        */
+multiline_comment|/*&n;&t;pci_read_config_dword(agp_bridge.dev, AGP_APBASE, &amp;temp);&n;&t;agp_bridge.gart_bus_addr = (temp &amp; PCI_BASE_ADDRESS_MEM_MASK);&n;&t;printk(KERN_INFO &quot;IGP320 gart_bus_addr: %x&bslash;n&quot;, agp_bridge.gart_bus_addr);&n;        */
 id|OUTREG32
 c_func
 (paren
@@ -1716,7 +1716,7 @@ c_func
 (paren
 id|agp_bridge-&gt;dev
 comma
-id|ATI_APBASE
+id|AGP_APBASE
 comma
 op_amp
 id|temp

@@ -26,11 +26,11 @@ multiline_comment|/*&n; * Vectors 0x10-0x1f are used for low priority interrupts
 DECL|macro|IA64_CPEP_VECTOR
 mdefine_line|#define IA64_CPEP_VECTOR&t;&t;0x1c&t;/* corrected platform error polling vector */
 DECL|macro|IA64_CMCP_VECTOR
-mdefine_line|#define IA64_CMCP_VECTOR&t;&t;0x1d&t;/* correctable machine-check polling vector */
+mdefine_line|#define IA64_CMCP_VECTOR&t;&t;0x1d&t;/* corrected machine-check polling vector */
 DECL|macro|IA64_CPE_VECTOR
 mdefine_line|#define IA64_CPE_VECTOR&t;&t;&t;0x1e&t;/* corrected platform error interrupt vector */
 DECL|macro|IA64_CMC_VECTOR
-mdefine_line|#define IA64_CMC_VECTOR&t;&t;&t;0x1f&t;/* correctable machine-check interrupt vector */
+mdefine_line|#define IA64_CMC_VECTOR&t;&t;&t;0x1f&t;/* corrected machine-check interrupt vector */
 multiline_comment|/*&n; * Vectors 0x20-0x2f are reserved for legacy ISA IRQs.&n; */
 DECL|macro|IA64_FIRST_DEVICE_VECTOR
 mdefine_line|#define IA64_FIRST_DEVICE_VECTOR&t;0x30

@@ -2603,7 +2603,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;msg_len: %Zd, sinfo_flags: 0x%x&bslash;n&quot;
+l_string|&quot;msg_len: %d, sinfo_flags: 0x%x&bslash;n&quot;
 comma
 id|msg_len
 comma

@@ -76,6 +76,30 @@ DECL|macro|to_macio_device
 mdefine_line|#define&t;to_macio_device(d) container_of(d, struct macio_dev, ofdev.dev)
 DECL|macro|of_to_macio_device
 mdefine_line|#define&t;of_to_macio_device(d) container_of(d, struct macio_dev, ofdev)
+r_extern
+r_struct
+id|macio_dev
+op_star
+id|macio_dev_get
+c_func
+(paren
+r_struct
+id|macio_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|macio_dev_put
+c_func
+(paren
+r_struct
+id|macio_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * A driver for a mac-io chip based device&n; */
 DECL|struct|macio_driver
 r_struct
@@ -144,9 +168,6 @@ id|dev
 comma
 id|u32
 id|state
-comma
-id|u32
-id|level
 )paren
 suffix:semicolon
 DECL|member|resume
@@ -160,9 +181,6 @@ r_struct
 id|macio_dev
 op_star
 id|dev
-comma
-id|u32
-id|level
 )paren
 suffix:semicolon
 DECL|member|shutdown

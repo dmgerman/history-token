@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * netfilter module for userspace packet logging daemons&n; *&n; * (C) 2000-2002 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; *&n; * 2000/09/22 ulog-cprange feature added&n; * 2001/01/04 in-kernel queue as proposed by Sebastian Zander &n; * &t;&t;&t;&t;&t;&t;&lt;zander@fokus.gmd.de&gt;&n; * 2001/01/30 per-rule nlgroup conflicts with global queue. &n; *            nlgroup now global (sysctl)&n; * 2001/04/19 ulog-queue reworked, now fixed buffer size specified at&n; * &t;      module loadtime -HW&n; * 2002/07/07 remove broken nflog_rcv() function -HW&n; * 2002/08/29 fix shifted/unshifted nlgroup bug -HW&n; * 2002/10/30 fix uninitialized mac_len field - &lt;Anders K. Pedersen&gt;&n; *&n; * Released under the terms of the GPL&n; *&n; * This module accepts two parameters: &n; * &n; * nlbufsiz:&n; *   The parameter specifies how big the buffer for each netlink multicast&n; * group is. e.g. If you say nlbufsiz=8192, up to eight kb of packets will&n; * get accumulated in the kernel until they are sent to userspace. It is&n; * NOT possible to allocate more than 128kB, and it is strongly discouraged,&n; * because atomically allocating 128kB inside the network rx softirq is not&n; * reliable. Please also keep in mind that this buffer size is allocated for&n; * each nlgroup you are using, so the total kernel memory usage increases&n; * by that factor.&n; *&n; * flushtimeout:&n; *   Specify, after how many clock ticks (intel: 100 per second) the queue&n; * should be flushed even if it is not full yet.&n; *&n; * ipt_ULOG.c,v 1.22 2002/10/30 09:07:31 laforge Exp&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -31,7 +30,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;IP tables userspace logging module&quot;
+l_string|&quot;iptables userspace logging module&quot;
 )paren
 suffix:semicolon
 DECL|macro|ULOG_NL_EVENT

@@ -32,6 +32,65 @@ id|offset
 suffix:semicolon
 DECL|macro|FILE_FCOUNT
 mdefine_line|#define FILE_FCOUNT(f) (((struct seq_file *)((f)-&gt;private_data))-&gt;private)
+DECL|variable|mtrr_strings
+r_static
+r_char
+op_star
+id|mtrr_strings
+(braket
+id|MTRR_NUM_TYPES
+)braket
+op_assign
+(brace
+l_string|&quot;uncachable&quot;
+comma
+multiline_comment|/* 0 */
+l_string|&quot;write-combining&quot;
+comma
+multiline_comment|/* 1 */
+l_string|&quot;?&quot;
+comma
+multiline_comment|/* 2 */
+l_string|&quot;?&quot;
+comma
+multiline_comment|/* 3 */
+l_string|&quot;write-through&quot;
+comma
+multiline_comment|/* 4 */
+l_string|&quot;write-protect&quot;
+comma
+multiline_comment|/* 5 */
+l_string|&quot;write-back&quot;
+comma
+multiline_comment|/* 6 */
+)brace
+suffix:semicolon
+DECL|function|mtrr_attrib_to_str
+r_char
+op_star
+id|mtrr_attrib_to_str
+c_func
+(paren
+r_int
+id|x
+)paren
+(brace
+r_return
+(paren
+id|x
+op_le
+l_int|6
+)paren
+ques
+c_cond
+id|mtrr_strings
+(braket
+id|x
+)braket
+suffix:colon
+l_string|&quot;?&quot;
+suffix:semicolon
+)brace
 r_static
 r_int
 DECL|function|mtrr_file_add
@@ -1747,32 +1806,6 @@ op_star
 id|proc_root_mtrr
 suffix:semicolon
 macro_line|#  endif&t;&t;&t;/*  CONFIG_PROC_FS  */
-DECL|function|attrib_to_str
-r_char
-op_star
-id|attrib_to_str
-c_func
-(paren
-r_int
-id|x
-)paren
-(brace
-r_return
-(paren
-id|x
-op_le
-l_int|6
-)paren
-ques
-c_cond
-id|mtrr_strings
-(braket
-id|x
-)braket
-suffix:colon
-l_string|&quot;?&quot;
-suffix:semicolon
-)brace
 DECL|function|mtrr_seq_show
 r_static
 r_int
@@ -1929,7 +1962,7 @@ id|size
 comma
 id|factor
 comma
-id|attrib_to_str
+id|mtrr_attrib_to_str
 c_func
 (paren
 id|type

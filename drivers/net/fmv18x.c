@@ -1571,8 +1571,6 @@ r_int
 r_char
 op_star
 id|buf
-op_assign
-id|skb-&gt;data
 suffix:semicolon
 r_int
 r_int
@@ -1639,6 +1637,10 @@ op_assign
 id|ETH_ZLEN
 suffix:semicolon
 )brace
+id|buf
+op_assign
+id|skb-&gt;data
+suffix:semicolon
 r_if
 c_cond
 (paren

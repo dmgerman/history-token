@@ -1,6 +1,5 @@
 multiline_comment|/* NAT for netfilter; shared with compatibility layer. */
 multiline_comment|/* (c) 1999 Paul `Rusty&squot; Russell.  Licenced under the GNU General&n;   Public Licence. */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -168,6 +167,12 @@ op_assign
 op_amp
 id|conn-&gt;nat.info
 suffix:semicolon
+r_int
+r_int
+id|hs
+comma
+id|hp
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -188,19 +193,8 @@ c_func
 id|info-&gt;byipsproto.conntrack
 )paren
 suffix:semicolon
-id|WRITE_LOCK
-c_func
-(paren
-op_amp
-id|ip_nat_lock
-)paren
-suffix:semicolon
-id|LIST_DELETE
-c_func
-(paren
-op_amp
-id|bysource
-(braket
+id|hs
+op_assign
 id|hash_by_src
 c_func
 (paren
@@ -219,18 +213,9 @@ id|IP_CT_DIR_ORIGINAL
 dot
 id|tuple.dst.protonum
 )paren
-)braket
-comma
-op_amp
-id|info-&gt;bysource
-)paren
 suffix:semicolon
-id|LIST_DELETE
-c_func
-(paren
-op_amp
-id|byipsproto
-(braket
+id|hp
+op_assign
 id|hash_by_ipsproto
 c_func
 (paren
@@ -255,6 +240,34 @@ id|IP_CT_DIR_REPLY
 dot
 id|tuple.dst.protonum
 )paren
+suffix:semicolon
+id|WRITE_LOCK
+c_func
+(paren
+op_amp
+id|ip_nat_lock
+)paren
+suffix:semicolon
+id|LIST_DELETE
+c_func
+(paren
+op_amp
+id|bysource
+(braket
+id|hs
+)braket
+comma
+op_amp
+id|info-&gt;bysource
+)paren
+suffix:semicolon
+id|LIST_DELETE
+c_func
+(paren
+op_amp
+id|byipsproto
+(braket
+id|hp
 )braket
 comma
 op_amp
@@ -991,6 +1004,10 @@ id|score
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|h
+suffix:semicolon
 id|MUST_BE_READ_LOCKED
 c_func
 (paren
@@ -998,12 +1015,8 @@ op_amp
 id|ip_nat_lock
 )paren
 suffix:semicolon
-id|LIST_FIND
-c_func
-(paren
-op_amp
-id|byipsproto
-(braket
+id|h
+op_assign
 id|hash_by_ipsproto
 c_func
 (paren
@@ -1013,6 +1026,14 @@ id|dst
 comma
 id|protonum
 )paren
+suffix:semicolon
+id|LIST_FIND
+c_func
+(paren
+op_amp
+id|byipsproto
+(braket
+id|h
 )braket
 comma
 id|fake_cmp

@@ -2943,9 +2943,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dir-&gt;d_inode-&gt;i_sb-&gt;s_dev
+id|dir-&gt;d_inode-&gt;i_sb
 op_ne
-id|inode-&gt;i_sb-&gt;s_dev
+id|inode-&gt;i_sb
 )paren
 r_goto
 id|exit_lock
@@ -8107,9 +8107,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|new_dir-&gt;i_sb-&gt;s_dev
+id|new_dir-&gt;i_sb
 op_ne
-id|old_dir-&gt;i_sb-&gt;s_dev
+id|old_dir-&gt;i_sb
 )paren
 r_return
 op_minus
@@ -8475,9 +8475,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|new_dir-&gt;i_sb-&gt;s_dev
+id|new_dir-&gt;i_sb
 op_ne
-id|old_dir-&gt;i_sb-&gt;s_dev
+id|old_dir-&gt;i_sb
 )paren
 r_return
 op_minus

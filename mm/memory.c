@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/vcache.h&gt;
 macro_line|#include &lt;linux/rmap-locking.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/rmap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -3618,7 +3619,15 @@ id|prot
 (brace
 r_int
 r_int
+id|base
+comma
 id|end
+suffix:semicolon
+id|base
+op_assign
+id|address
+op_amp
+id|PGDIR_MASK
 suffix:semicolon
 id|address
 op_and_assign
@@ -3655,6 +3664,8 @@ id|mm
 comma
 id|pmd
 comma
+id|base
+op_plus
 id|address
 )paren
 suffix:semicolon
@@ -3673,6 +3684,8 @@ c_func
 (paren
 id|pte
 comma
+id|base
+op_plus
 id|address
 comma
 id|end
@@ -5276,6 +5289,13 @@ id|mapping-&gt;i_shared_sem
 )paren
 suffix:semicolon
 )brace
+DECL|variable|invalidate_mmap_range
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|invalidate_mmap_range
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Handle all mappings that got truncated by a &quot;truncate()&quot;&n; * system call.&n; *&n; * NOTE! We have to be ready to update the memory sharing&n; * between the file and the memory map for a potential last&n; * incomplete page.  Ugly, but necessary.&n; */
 DECL|function|vmtruncate
 r_int
@@ -6317,6 +6337,8 @@ r_struct
 id|address_space
 op_star
 id|mapping
+op_assign
+l_int|NULL
 suffix:semicolon
 id|pte_t
 id|entry
@@ -6328,6 +6350,8 @@ id|pte_chain
 suffix:semicolon
 r_int
 id|sequence
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|ret
@@ -6371,6 +6395,12 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|vma-&gt;vm_file
+)paren
+(brace
 id|mapping
 op_assign
 id|vma-&gt;vm_file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
@@ -6384,6 +6414,7 @@ op_amp
 id|mapping-&gt;truncate_count
 )paren
 suffix:semicolon
+)brace
 id|smp_rmb
 c_func
 (paren
@@ -6526,6 +6557,9 @@ multiline_comment|/*&n;&t; * For a file-backed vma, someone could have truncated
 r_if
 c_cond
 (paren
+id|mapping
+op_logical_and
+(paren
 id|unlikely
 c_func
 (paren
@@ -6536,6 +6570,7 @@ c_func
 (paren
 op_amp
 id|mapping-&gt;truncate_count
+)paren
 )paren
 )paren
 )paren
@@ -6589,6 +6624,16 @@ id|page_table
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PageReserved
+c_func
+(paren
+id|new_page
+)paren
+)paren
 op_increment
 id|mm-&gt;rss
 suffix:semicolon

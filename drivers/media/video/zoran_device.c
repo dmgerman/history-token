@@ -36,10 +36,11 @@ id|zoran_num_formats
 suffix:semicolon
 r_extern
 r_int
-id|debug
+op_star
+id|zr_debug
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(num, format, args...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (debug &gt;= num) &bslash;&n;&t;&t;&t;printk(format, ##args); &bslash;&n;&t;} while (0)
+mdefine_line|#define dprintk(num, format, args...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (*zr_debug &gt;= num) &bslash;&n;&t;&t;&t;printk(format, ##args); &bslash;&n;&t;} while (0)
 DECL|variable|lml33dpath
 r_static
 r_int
@@ -382,7 +383,8 @@ id|zr
 r_if
 c_cond
 (paren
-id|debug
+op_star
+id|zr_debug
 OG
 l_int|2
 )paren
@@ -3392,8 +3394,6 @@ r_int
 id|res
 comma
 id|noerr
-suffix:semicolon
-id|noerr
 op_assign
 l_int|0
 suffix:semicolon
@@ -5134,7 +5134,8 @@ multiline_comment|/* Report error */
 r_if
 c_cond
 (paren
-id|debug
+op_star
+id|zr_debug
 OG
 l_int|1
 op_logical_and
@@ -5888,9 +5889,7 @@ l_int|0
 multiline_comment|/* it is finished, notify the user */
 id|zr-&gt;v4l_buffers.buffer
 (braket
-id|zr
-op_member_access_from_pointer
-id|v4l_grab_frame
+id|zr-&gt;v4l_grab_frame
 )braket
 dot
 id|state
@@ -5899,9 +5898,7 @@ id|BUZ_STATE_DONE
 suffix:semicolon
 id|zr-&gt;v4l_buffers.buffer
 (braket
-id|zr
-op_member_access_from_pointer
-id|v4l_grab_frame
+id|zr-&gt;v4l_grab_frame
 )braket
 dot
 id|bs.seq
@@ -5912,20 +5909,12 @@ id|do_gettimeofday
 c_func
 (paren
 op_amp
-id|zr
-op_member_access_from_pointer
-id|v4l_buffers
-dot
-id|buffer
+id|zr-&gt;v4l_buffers.buffer
 (braket
-id|zr
-op_member_access_from_pointer
-id|v4l_grab_frame
+id|zr-&gt;v4l_grab_frame
 )braket
 dot
-id|bs
-dot
-id|timestamp
+id|bs.timestamp
 )paren
 suffix:semicolon
 id|zr-&gt;v4l_grab_frame
@@ -5948,9 +5937,7 @@ id|wake_up_interruptible
 c_func
 (paren
 op_amp
-id|zr
-op_member_access_from_pointer
-id|v4l_capq
+id|zr-&gt;v4l_capq
 )paren
 suffix:semicolon
 multiline_comment|/* Check if there is another grab queued */
@@ -5971,9 +5958,7 @@ id|frame
 op_assign
 id|zr-&gt;v4l_pend
 (braket
-id|zr
-op_member_access_from_pointer
-id|v4l_pend_tail
+id|zr-&gt;v4l_pend_tail
 op_amp
 id|V4L_MASK_FRAME
 )braket
@@ -6153,7 +6138,8 @@ id|BUZ_MODE_MOTION_COMPRESS
 r_if
 c_cond
 (paren
-id|debug
+op_star
+id|zr_debug
 OG
 l_int|1
 op_logical_and
@@ -6231,9 +6217,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|zr
-op_member_access_from_pointer
-id|stat_com
+id|zr-&gt;stat_com
 (braket
 id|i
 )braket
@@ -6309,7 +6293,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
+op_star
+id|zr_debug
 OG
 l_int|2
 op_logical_and
@@ -6546,9 +6531,6 @@ r_int
 id|set_master
 )paren
 (brace
-id|u16
-id|command
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6564,6 +6546,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|u16
+id|command
+suffix:semicolon
 id|pci_read_config_word
 c_func
 (paren

@@ -1069,6 +1069,21 @@ id|cutime
 comma
 id|cstime
 suffix:semicolon
+DECL|member|nvcsw
+DECL|member|nivcsw
+DECL|member|cnvcsw
+DECL|member|cnivcsw
+r_int
+r_int
+id|nvcsw
+comma
+id|nivcsw
+comma
+id|cnvcsw
+comma
+id|cnivcsw
+suffix:semicolon
+multiline_comment|/* context switch counts */
 DECL|member|start_time
 id|u64
 id|start_time

@@ -232,6 +232,9 @@ c_func
 (paren
 l_string|&quot;NFSD: nfsd4_open filename %.*s&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|open-&gt;op_fname.len
 comma
 id|open-&gt;op_fname.data

@@ -979,11 +979,10 @@ id|off
 r_if
 c_cond
 (paren
+id|offset_in_page
+c_func
 (paren
 id|off
-op_amp
-op_complement
-id|PAGE_MASK
 )paren
 op_ne
 l_int|0

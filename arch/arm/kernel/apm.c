@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;asm/apm.h&gt; /* apm_power_info */
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * The apm_bios device is one of the misc char devices.&n; * This is its minor number.&n; */
 DECL|macro|APM_MINOR_DEV
@@ -166,41 +167,6 @@ op_assign
 l_string|&quot;1.13&quot;
 suffix:semicolon
 multiline_comment|/* no spaces */
-multiline_comment|/*&n; * This structure gets filled in by the machine specific &squot;get_power_status&squot;&n; * implementation.  Any fields which are not set default to a safe value.&n; */
-DECL|struct|apm_power_info
-r_struct
-id|apm_power_info
-(brace
-DECL|member|ac_line_status
-r_int
-r_char
-id|ac_line_status
-suffix:semicolon
-DECL|member|battery_status
-r_int
-r_char
-id|battery_status
-suffix:semicolon
-DECL|member|battery_flag
-r_int
-r_char
-id|battery_flag
-suffix:semicolon
-DECL|member|battery_life
-r_int
-r_char
-id|battery_life
-suffix:semicolon
-DECL|member|time
-r_int
-id|time
-suffix:semicolon
-DECL|member|units
-r_int
-id|units
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * Compatibility cruft until the IPAQ people move over to the new&n; * interface.&n; */
 DECL|function|__apm_get_power_status
 r_static
@@ -1303,28 +1269,34 @@ id|file_operations
 id|apm_bios_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|apm_read
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|apm_poll
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|apm_ioctl
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|apm_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|apm_release
 comma
 )brace
@@ -1336,16 +1308,19 @@ id|miscdevice
 id|apm_device
 op_assign
 (brace
+dot
 id|minor
-suffix:colon
+op_assign
 id|APM_MINOR_DEV
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;apm_bios&quot;
 comma
+dot
 id|fops
-suffix:colon
+op_assign
 op_amp
 id|apm_bios_fops
 )brace

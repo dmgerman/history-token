@@ -2725,20 +2725,6 @@ c_func
 l_string|&quot;biovec: can&squot;t init mempool&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;biovec pool[%d]: %3d bvecs: %3d entries (%d bytes)&bslash;n&quot;
-comma
-id|i
-comma
-id|bp-&gt;nr_vecs
-comma
-id|pool_entries
-comma
-id|size
-)paren
-suffix:semicolon
 )brace
 )brace
 DECL|function|init_bio
@@ -2809,30 +2795,6 @@ id|panic
 c_func
 (paren
 l_string|&quot;bio: can&squot;t create mempool&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;BIO: pool of %d setup, %ZuKb (%Zd bytes/bio)&bslash;n&quot;
-comma
-id|BIO_POOL_SIZE
-comma
-id|BIO_POOL_SIZE
-op_star
-r_sizeof
-(paren
-r_struct
-id|bio
-)paren
-op_rshift
-l_int|10
-comma
-r_sizeof
-(paren
-r_struct
-id|bio
-)paren
 )paren
 suffix:semicolon
 id|biovec_init_pools

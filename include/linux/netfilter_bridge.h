@@ -4,7 +4,7 @@ mdefine_line|#define __LINUX_BRIDGE_NETFILTER_H
 multiline_comment|/* bridge-specific defines for netfilter. &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
-macro_line|#if defined(__KERNEL__) &amp;&amp; defined(CONFIG_NETFILTER)
+macro_line|#if defined(__KERNEL__) &amp;&amp; defined(CONFIG_BRIDGE_NETFILTER)
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#endif
 multiline_comment|/* Bridge Hooks */
@@ -29,14 +29,6 @@ mdefine_line|#define NF_BR_BROUTING&t;&t;5
 DECL|macro|NF_BR_NUMHOOKS
 mdefine_line|#define NF_BR_NUMHOOKS&t;&t;6
 macro_line|#ifdef __KERNEL__
-DECL|macro|BRNF_PKT_TYPE
-mdefine_line|#define BRNF_PKT_TYPE&t;&t;&t;0x01
-DECL|macro|BRNF_BRIDGED_DNAT
-mdefine_line|#define BRNF_BRIDGED_DNAT&t;&t;0x02
-DECL|macro|BRNF_DONT_TAKE_PARENT
-mdefine_line|#define BRNF_DONT_TAKE_PARENT&t;&t;0x04
-DECL|macro|BRNF_BRIDGED
-mdefine_line|#define BRNF_BRIDGED&t;&t;&t;0x08
 DECL|enum|nf_br_hook_priorities
 r_enum
 id|nf_br_hook_priorities
@@ -85,7 +77,15 @@ id|INT_MAX
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETFILTER
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
+DECL|macro|BRNF_PKT_TYPE
+mdefine_line|#define BRNF_PKT_TYPE&t;&t;&t;0x01
+DECL|macro|BRNF_BRIDGED_DNAT
+mdefine_line|#define BRNF_BRIDGED_DNAT&t;&t;0x02
+DECL|macro|BRNF_DONT_TAKE_PARENT
+mdefine_line|#define BRNF_DONT_TAKE_PARENT&t;&t;0x04
+DECL|macro|BRNF_BRIDGED
+mdefine_line|#define BRNF_BRIDGED&t;&t;&t;0x08
 r_static
 r_inline
 DECL|function|nf_bridge_alloc
@@ -197,7 +197,7 @@ id|daddr
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_NETFILTER */
+macro_line|#endif /* CONFIG_BRIDGE_NETFILTER */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

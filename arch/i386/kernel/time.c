@@ -25,6 +25,7 @@ macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &quot;mach_time.h&quot;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/hpet.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &quot;io_ports.h&quot;
 r_extern
@@ -771,6 +772,90 @@ c_func
 id|time_init_device
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HPET_TIMER
+r_extern
+r_void
+(paren
+op_star
+id|late_time_init
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Duplicate of time_init() below, with hpet_enable part added */
+DECL|function|hpet_time_init
+r_void
+id|__init
+id|hpet_time_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|xtime.tv_sec
+op_assign
+id|get_cmos_time
+c_func
+(paren
+)paren
+suffix:semicolon
+id|wall_to_monotonic.tv_sec
+op_assign
+op_minus
+id|xtime.tv_sec
+suffix:semicolon
+id|xtime.tv_nsec
+op_assign
+(paren
+id|INITIAL_JIFFIES
+op_mod
+id|HZ
+)paren
+op_star
+(paren
+id|NSEC_PER_SEC
+op_div
+id|HZ
+)paren
+suffix:semicolon
+id|wall_to_monotonic.tv_nsec
+op_assign
+op_minus
+id|xtime.tv_nsec
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hpet_enable
+c_func
+(paren
+)paren
+op_ge
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Using HPET for base-timer&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|cur_timer
+op_assign
+id|select_timer
+c_func
+(paren
+)paren
+suffix:semicolon
+id|time_init_hook
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|time_init
 r_void
 id|__init
@@ -780,6 +865,25 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_HPET_TIMER
+r_if
+c_cond
+(paren
+id|is_hpet_capable
+c_func
+(paren
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * HPET initialization needs to do memory-mapped io. So, let&n;&t;&t; * us do a late initialization after mem_init().&n;&t;&t; */
+id|late_time_init
+op_assign
+id|hpet_time_init
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif
 id|xtime.tv_sec
 op_assign
 id|get_cmos_time

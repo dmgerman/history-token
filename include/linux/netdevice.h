@@ -301,16 +301,16 @@ DECL|member|cpu_collision
 r_int
 id|cpu_collision
 suffix:semicolon
-DECL|variable|____cacheline_aligned
 )brace
-id|____cacheline_aligned
 suffix:semicolon
-r_extern
+id|DECLARE_PER_CPU
+c_func
+(paren
 r_struct
 id|netif_rx_stats
+comma
 id|netdev_rx_stat
-(braket
-)braket
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;We tag multicasts with these structures.&n; */
 DECL|struct|dev_mc_list

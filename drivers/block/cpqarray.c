@@ -5541,10 +5541,10 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_ne
 l_int|0

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * linux/net/sunrpc/sysctl.c&n; *&n; * Sysctl interface to sunrpc module. This is for debugging only now.&n; *&n; * I would prefer to register the sunrpc table below sys/net, but that&squot;s&n; * impossible at the moment.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;

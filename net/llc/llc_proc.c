@@ -1140,6 +1140,10 @@ id|llc_proc_dir
 r_goto
 id|out
 suffix:semicolon
+id|llc_proc_dir-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|p
 op_assign
 id|create_proc_entry

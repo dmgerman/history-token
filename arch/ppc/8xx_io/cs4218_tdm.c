@@ -10851,10 +10851,10 @@ id|cs4218_control
 suffix:semicolon
 id|sound.minDev
 op_assign
-id|MINOR
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_amp
 l_int|0x0f
@@ -10876,10 +10876,10 @@ r_if
 c_cond
 (paren
 (paren
-id|MINOR
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_amp
 l_int|0x0f

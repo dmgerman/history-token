@@ -5,23 +5,6 @@ macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-r_extern
-r_void
-id|send_sigio
-c_func
-(paren
-r_struct
-id|fown_struct
-op_star
-id|fown
-comma
-r_int
-id|fd
-comma
-r_int
-id|band
-)paren
-suffix:semicolon
 DECL|variable|dir_notify_enable
 r_int
 id|dir_notify_enable
@@ -412,7 +395,7 @@ c_func
 (paren
 id|filp
 comma
-id|current-&gt;pid
+id|current-&gt;tgid
 comma
 l_int|1
 )paren

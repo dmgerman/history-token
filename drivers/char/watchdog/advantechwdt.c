@@ -350,6 +350,7 @@ dot
 id|identity
 op_assign
 l_string|&quot;Advantech WDT&quot;
+comma
 )brace
 suffix:semicolon
 r_switch

@@ -12061,6 +12061,9 @@ id|pci_dev
 op_star
 id|pdev
 suffix:semicolon
+r_int
+id|rc
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12284,42 +12287,80 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;cannot find slot&bslash;n&quot;
+l_string|&quot;planb: cannot find slot&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* XXX handle error */
+r_goto
+id|err_out
+suffix:semicolon
 )brace
 multiline_comment|/* Enable response in memory space, bus mastering,&n;&t;   use memory write and invalidate */
-id|pci_write_config_word
+id|rc
+op_assign
+id|pci_enable_device
+c_func
 (paren
 id|pdev
-comma
-id|PCI_COMMAND
-comma
-id|PCI_COMMAND_MEMORY
-op_or
-id|PCI_COMMAND_MASTER
-op_or
-id|PCI_COMMAND_INVALIDATE
 )paren
 suffix:semicolon
-multiline_comment|/* Set PCI Cache line size &amp; latency timer */
-id|pci_write_config_byte
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;planb: cannot enable PCI device %s&bslash;n&quot;
+comma
+id|pci_name
+c_func
 (paren
 id|pdev
-comma
-id|PCI_CACHE_LINE_SIZE
-comma
-l_int|0x8
+)paren
 )paren
 suffix:semicolon
-id|pci_write_config_byte
+r_goto
+id|err_out
+suffix:semicolon
+)brace
+id|rc
+op_assign
+id|pci_set_mwi
+c_func
 (paren
 id|pdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;planb: cannot enable MWI on PCI device %s&bslash;n&quot;
 comma
-id|PCI_LATENCY_TIMER
-comma
-l_int|0x40
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|err_out_disable
+suffix:semicolon
+)brace
+id|pci_set_master
+c_func
+(paren
+id|pdev
 )paren
 suffix:semicolon
 multiline_comment|/* Set the new base address */
@@ -12366,6 +12407,21 @@ id|irq
 suffix:semicolon
 r_return
 id|planb_num
+suffix:semicolon
+id|err_out_disable
+suffix:colon
+id|pci_disable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|err_out
+suffix:colon
+multiline_comment|/* FIXME handle error */
+multiline_comment|/* comment moved from pci_find_slot, above */
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|release_planb

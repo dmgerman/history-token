@@ -8,7 +8,7 @@ id|version
 (braket
 )braket
 op_assign
-l_string|&quot;sunlance.c:v2.01 08/Nov/01 Miguel de Icaza (miguel@nuclecu.unam.mx)&bslash;n&quot;
+l_string|&quot;sunlance.c:v2.02 24/Aug/03 Miguel de Icaza (miguel@nuclecu.unam.mx)&bslash;n&quot;
 suffix:semicolon
 DECL|variable|lancestr
 r_static
@@ -38,6 +38,7 @@ macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -5873,6 +5874,94 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/* Ethtool support... */
+DECL|function|sparc_lance_get_drvinfo
+r_static
+r_void
+id|sparc_lance_get_drvinfo
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ethtool_drvinfo
+op_star
+id|info
+)paren
+(brace
+r_struct
+id|lance_private
+op_star
+id|lp
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info-&gt;driver
+comma
+l_string|&quot;sunlance&quot;
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info-&gt;version
+comma
+l_string|&quot;2.02&quot;
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|info-&gt;bus_info
+comma
+l_string|&quot;SBUS:%d&quot;
+comma
+id|lp-&gt;sdev-&gt;slot
+)paren
+suffix:semicolon
+)brace
+DECL|function|sparc_lance_get_link
+r_static
+id|u32
+id|sparc_lance_get_link
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+multiline_comment|/* We really do not keep track of this, but this&n;&t; * is better than not reporting anything at all.&n;&t; */
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|variable|sparc_lance_ethtool_ops
+r_static
+r_struct
+id|ethtool_ops
+id|sparc_lance_ethtool_ops
+op_assign
+(brace
+dot
+id|get_drvinfo
+op_assign
+id|sparc_lance_get_drvinfo
+comma
+dot
+id|get_link
+op_assign
+id|sparc_lance_get_link
+comma
+)brace
+suffix:semicolon
 DECL|function|sparc_lance_init
 r_static
 r_int
@@ -6696,6 +6785,11 @@ id|dev-&gt;set_multicast_list
 op_assign
 op_amp
 id|lance_set_multicast
+suffix:semicolon
+id|dev-&gt;ethtool_ops
+op_assign
+op_amp
+id|sparc_lance_ethtool_ops
 suffix:semicolon
 id|dev-&gt;irq
 op_assign

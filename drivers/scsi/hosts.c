@@ -486,6 +486,12 @@ c_func
 id|shost
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Some drivers (eg aha1542) do scsi_register()/scsi_unregister()&n;&t; * during probing without performing a scsi_set_device() in between.&n;&t; * In this case dev-&gt;parent is NULL.&n;&t; */
+r_if
+c_cond
+(paren
+id|parent
+)paren
 id|put_device
 c_func
 (paren

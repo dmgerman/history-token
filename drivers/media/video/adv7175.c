@@ -1846,6 +1846,12 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* We should never get here!!! */
+id|kfree
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1899,6 +1905,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|kfree
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM

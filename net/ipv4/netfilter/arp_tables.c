@@ -12,6 +12,24 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/netfilter_arp/arp_tables.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David S. Miller &lt;davem@redhat.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;arptables core&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*#define DEBUG_ARP_TABLES*/
 multiline_comment|/*#define DEBUG_ARP_TABLES_USER*/
 macro_line|#ifdef DEBUG_ARP_TABLES
@@ -6183,12 +6201,6 @@ id|module_exit
 c_func
 (paren
 id|fini
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

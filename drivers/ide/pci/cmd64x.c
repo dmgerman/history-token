@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#include &quot;cmd64x.h&quot;
 macro_line|#if defined(DISPLAY_CMD64X_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/stat.h&gt;
@@ -3834,21 +3833,7 @@ comma
 l_int|64
 )paren
 suffix:semicolon
-macro_line|#ifdef __sparc_v9__
-(paren
-r_void
-)paren
-id|pci_write_config_byte
-c_func
-(paren
-id|dev
-comma
-id|PCI_CACHE_LINE_SIZE
-comma
-l_int|0x10
-)paren
-suffix:semicolon
-macro_line|#endif
+multiline_comment|/* FIXME: pci_set_master() to ensure a good latency timer value */
 multiline_comment|/* Setup interrupts. */
 (paren
 r_void

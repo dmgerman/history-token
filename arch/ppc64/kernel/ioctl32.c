@@ -3111,7 +3111,7 @@ mdefine_line|#define COMPATIBLE_IOCTL(cmd) HANDLE_IOCTL(cmd,sys_ioctl)
 DECL|macro|IOCTL_TABLE_START
 mdefine_line|#define IOCTL_TABLE_START &bslash;&n;&t;struct ioctl_trans ioctl_start[] = {
 DECL|macro|IOCTL_TABLE_END
-mdefine_line|#define IOCTL_TABLE_END &bslash;&n;&t;}; struct ioctl_trans ioctl_end[0];
+mdefine_line|#define IOCTL_TABLE_END &bslash;&n;&t;};
 id|IOCTL_TABLE_START
 macro_line|#include &lt;linux/compat_ioctl.h&gt;
 DECL|macro|DECLARES
@@ -3278,4 +3278,13 @@ comma
 id|do_usbdevfs_discsignal
 )paren
 id|IOCTL_TABLE_END
+r_int
+id|ioctl_table_size
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|ioctl_start
+)paren
+suffix:semicolon
 eof

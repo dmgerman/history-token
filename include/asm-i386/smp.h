@@ -33,10 +33,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-id|physid_mask_t
-id|phys_cpu_present_map
-suffix:semicolon
-r_extern
 r_int
 id|pic_mode
 suffix:semicolon

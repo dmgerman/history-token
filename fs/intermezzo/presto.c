@@ -105,9 +105,9 @@ id|cache
 id|CERROR
 c_func
 (paren
-l_string|&quot;PRESTO: BAD: cannot find cache for dev %d, ino %ld&bslash;n&quot;
+l_string|&quot;PRESTO: BAD: cannot find cache for dev %s, ino %ld&bslash;n&quot;
 comma
-id|inode-&gt;i_sb-&gt;s_dev
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|inode-&gt;i_ino
 )paren

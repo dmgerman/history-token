@@ -90,6 +90,11 @@ id|STICKY_TIMEOUTS
 op_assign
 l_int|0x4000000
 comma
+DECL|enumerator|ADDR_LIMIT_3GB
+id|ADDR_LIMIT_3GB
+op_assign
+l_int|0x8000000
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Personality types.&n; *&n; * These go in the low byte.  Avoid using the top bit, it will&n; * conflict with error returns.&n; */
@@ -186,6 +191,13 @@ DECL|enumerator|PER_LINUX32
 id|PER_LINUX32
 op_assign
 l_int|0x0008
+comma
+DECL|enumerator|PER_LINUX32_3GB
+id|PER_LINUX32_3GB
+op_assign
+l_int|0x0008
+op_or
+id|ADDR_LIMIT_3GB
 comma
 DECL|enumerator|PER_IRIX32
 id|PER_IRIX32

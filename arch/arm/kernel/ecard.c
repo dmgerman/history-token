@@ -3560,7 +3560,7 @@ id|buf
 comma
 l_string|&quot;%u&bslash;n&quot;
 comma
-id|ec-&gt;manufacturer
+id|ec-&gt;cid.manufacturer
 )paren
 suffix:semicolon
 )brace
@@ -3612,7 +3612,7 @@ id|buf
 comma
 l_string|&quot;%u&bslash;n&quot;
 comma
-id|ec-&gt;product
+id|ec-&gt;cid.product
 )paren
 suffix:semicolon
 )brace

@@ -17,38 +17,6 @@ macro_line|#include &lt;asm/gpio.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/regs267x.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
-DECL|macro|EXT_IRQ0
-mdefine_line|#define EXT_IRQ0 16
-DECL|macro|EXT_IRQ1
-mdefine_line|#define EXT_IRQ1 17
-DECL|macro|EXT_IRQ2
-mdefine_line|#define EXT_IRQ2 18
-DECL|macro|EXT_IRQ3
-mdefine_line|#define EXT_IRQ3 19
-DECL|macro|EXT_IRQ4
-mdefine_line|#define EXT_IRQ4 20
-DECL|macro|EXT_IRQ5
-mdefine_line|#define EXT_IRQ5 21
-DECL|macro|EXT_IRQ6
-mdefine_line|#define EXT_IRQ6 22
-DECL|macro|EXT_IRQ7
-mdefine_line|#define EXT_IRQ7 23
-DECL|macro|EXT_IRQ8
-mdefine_line|#define EXT_IRQ8 24
-DECL|macro|EXT_IRQ9
-mdefine_line|#define EXT_IRQ9 25
-DECL|macro|EXT_IRQ10
-mdefine_line|#define EXT_IRQ10 26
-DECL|macro|EXT_IRQ11
-mdefine_line|#define EXT_IRQ11 27
-DECL|macro|EXT_IRQ12
-mdefine_line|#define EXT_IRQ12 28
-DECL|macro|EXT_IRQ13
-mdefine_line|#define EXT_IRQ13 29
-DECL|macro|EXT_IRQ14
-mdefine_line|#define EXT_IRQ14 30
-DECL|macro|EXT_IRQ15
-mdefine_line|#define EXT_IRQ15 31
 multiline_comment|/*&n; * This structure has only 4 elements for speed reasons&n; */
 DECL|struct|irq_handler
 r_typedef
@@ -158,6 +126,10 @@ r_int
 op_star
 id|interrupt_redirect_table
 suffix:semicolon
+DECL|macro|CPU_VECTOR
+mdefine_line|#define CPU_VECTOR ((unsigned long *)0x000000)
+DECL|macro|ADDR_MASK
+mdefine_line|#define ADDR_MASK (0xffffff)
 DECL|function|get_vector_address
 r_static
 r_inline
@@ -176,12 +148,7 @@ r_int
 op_star
 id|rom_vector
 op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-l_int|0x000000
+id|CPU_VECTOR
 suffix:semicolon
 r_int
 r_int
@@ -198,6 +165,8 @@ id|rom_vector
 (braket
 id|EXT_IRQ0
 )braket
+op_amp
+id|ADDR_MASK
 suffix:semicolon
 multiline_comment|/* check romvector format */
 r_for
@@ -230,10 +199,14 @@ op_star
 l_int|4
 )paren
 op_ne
+(paren
 id|rom_vector
 (braket
 id|vec_no
 )braket
+op_amp
+id|ADDR_MASK
+)paren
 )paren
 r_return
 l_int|NULL
@@ -1404,7 +1377,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|enable_kmalloc
-id|__initcall
+id|core_initcall
 c_func
 (paren
 id|enable_kmalloc

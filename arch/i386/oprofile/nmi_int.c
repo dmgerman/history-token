@@ -1558,17 +1558,21 @@ r_case
 id|X86_VENDOR_AMD
 suffix:colon
 multiline_comment|/* Needs to be at least an Athlon (or hammer in 32bit mode) */
-r_if
+r_switch
 c_cond
 (paren
 id|family
-OL
-l_int|6
 )paren
+(brace
+r_default
+suffix:colon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_case
+l_int|6
+suffix:colon
 id|model
 op_assign
 op_amp
@@ -1578,6 +1582,25 @@ id|nmi_ops.cpu_type
 op_assign
 l_string|&quot;i386/athlon&quot;
 suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#if defined(CONFIG_X86_64)
+r_case
+l_int|0xf
+suffix:colon
+id|model
+op_assign
+op_amp
+id|op_athlon_spec
+suffix:semicolon
+id|nmi_ops.cpu_type
+op_assign
+l_string|&quot;x86-64/hammer&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif /* CONFIG_X86_64 */
+)brace
 r_break
 suffix:semicolon
 macro_line|#if !defined(CONFIG_X86_64)

@@ -6626,19 +6626,23 @@ id|acpi_driver
 id|acpi_sba_ioc_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;IOC IOMMU Driver&quot;
 comma
+dot
 id|ids
-suffix:colon
+op_assign
 l_string|&quot;HWP0001,HWP0004&quot;
 comma
+dot
 id|ops
-suffix:colon
+op_assign
 (brace
+dot
 id|add
-suffix:colon
+op_assign
 id|acpi_sba_ioc_add
 comma
 )brace

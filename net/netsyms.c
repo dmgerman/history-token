@@ -2979,5 +2979,19 @@ c_func
 id|ethtool_op_set_sg
 )paren
 suffix:semicolon
+DECL|variable|ethtool_op_get_tso
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ethtool_op_get_tso
+)paren
+suffix:semicolon
+DECL|variable|ethtool_op_set_tso
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ethtool_op_set_tso
+)paren
+suffix:semicolon
 macro_line|#endif  /* CONFIG_NET */
 eof

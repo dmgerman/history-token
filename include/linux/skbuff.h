@@ -77,7 +77,7 @@ id|master
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 DECL|struct|nf_bridge_info
 r_struct
 id|nf_bridge_info
@@ -449,7 +449,7 @@ r_int
 id|nf_debug
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 DECL|member|nf_bridge
 r_struct
 id|nf_bridge_info
@@ -3620,7 +3620,7 @@ id|nfct-&gt;master-&gt;use
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 DECL|function|nf_bridge_put
 r_static
 r_inline

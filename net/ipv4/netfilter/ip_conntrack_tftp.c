@@ -15,7 +15,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Netfilter connection tracking module for tftp&quot;
+l_string|&quot;tftp connection tracking helper&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -128,8 +128,7 @@ op_ne
 l_int|0
 )paren
 r_return
-op_minus
-l_int|1
+id|NF_ACCEPT
 suffix:semicolon
 r_switch
 c_cond

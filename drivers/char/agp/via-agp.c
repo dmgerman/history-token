@@ -146,7 +146,7 @@ c_func
 (paren
 id|agp_bridge-&gt;dev
 comma
-id|VIA_APBASE
+id|AGP_APBASE
 comma
 op_amp
 id|temp
@@ -474,7 +474,7 @@ c_func
 (paren
 id|agp_bridge-&gt;dev
 comma
-id|VIA_APBASE
+id|AGP_APBASE
 comma
 op_amp
 id|temp
@@ -1167,7 +1167,7 @@ comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;VP3&quot;
+l_string|&quot;Apollo VP3&quot;
 comma
 )brace
 comma
@@ -1180,7 +1180,7 @@ comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;MVP3&quot;
+l_string|&quot;Apollo MVP3&quot;
 comma
 )brace
 comma
@@ -1193,7 +1193,7 @@ comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;MVP4&quot;
+l_string|&quot;Apollo MVP4&quot;
 comma
 )brace
 comma
@@ -1207,7 +1207,7 @@ comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;PLE133 ProMedia&quot;
+l_string|&quot;Apollo ProMedia/PLE133Ta&quot;
 comma
 )brace
 comma
@@ -1216,7 +1216,7 @@ multiline_comment|/* VT82C693A / VT28C694T */
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_VIA_82C691
+id|PCI_DEVICE_ID_VIA_82C691_0
 comma
 dot
 id|chipset_name
@@ -1234,7 +1234,7 @@ comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;Apollo Pro KX133&quot;
+l_string|&quot;KX133&quot;
 comma
 )brace
 comma
@@ -1248,7 +1248,7 @@ comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;Apollo Pro 266&quot;
+l_string|&quot;Pro 266&quot;
 comma
 )brace
 comma
@@ -1262,7 +1262,7 @@ comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;Apollo KLE133&quot;
+l_string|&quot;KLE133&quot;
 comma
 )brace
 comma
@@ -1276,7 +1276,7 @@ comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;Apollo Pro KT133/KM133/TwisterK&quot;
+l_string|&quot;Twister-K/KT133x/KM133&quot;
 comma
 )brace
 comma
@@ -1304,7 +1304,7 @@ comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;Apollo Pro KT266/KT333&quot;
+l_string|&quot;KT266/KY266x/KT333&quot;
 comma
 )brace
 comma
@@ -1318,7 +1318,7 @@ comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;Apollo Pro 266T&quot;
+l_string|&quot;Pro266T&quot;
 comma
 )brace
 comma
@@ -1327,12 +1327,12 @@ multiline_comment|/* KM266 / PM266 */
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_VIA_KM266
+id|PCI_DEVICE_ID_VIA_XM266
 comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;KM266/PM266&quot;
+l_string|&quot;PM266/KM266&quot;
 comma
 )brace
 comma
@@ -1341,7 +1341,7 @@ multiline_comment|/* CLE266 */
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_VIA_CLE266
+id|PCI_DEVICE_ID_VIA_862X_0
 comma
 dot
 id|chipset_name
@@ -1359,48 +1359,34 @@ comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;Apollo Pro KT400&quot;
+l_string|&quot;KT400/KT400A/KT600&quot;
 comma
 )brace
 comma
-multiline_comment|/* VT8604 / VT8605 / VT8603 / TwisterT&n;&t; * (Apollo Pro133A chipset with S3 Savage4) */
+multiline_comment|/* VT8604 / VT8605 / VT8603&n;&t; * (Apollo Pro133A chipset with S3 Savage4) */
 (brace
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_VIA_82C694X_0
+id|PCI_DEVICE_ID_VIA_8605_0
 comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;Apollo ProSavage PM133/PL133/PN133/Twister&quot;
+l_string|&quot;ProSavage PM133/PL133/PN133&quot;
 )brace
 comma
-multiline_comment|/* VT8752*/
+multiline_comment|/* P4M266x/P4N266 */
 (brace
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_VIA_8752
+id|PCI_DEVICE_ID_VIA_8703_51_0
 comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;ProSavage DDR P4M266&quot;
-comma
-)brace
-comma
-multiline_comment|/* KN266/PN266 */
-(brace
-dot
-id|device_id
-op_assign
-id|PCI_DEVICE_ID_VIA_KN266
-comma
-dot
-id|chipset_name
-op_assign
-l_string|&quot;KN266/PN266&quot;
+l_string|&quot;P4M266x/P4N266&quot;
 comma
 )brace
 comma
@@ -1409,25 +1395,12 @@ multiline_comment|/* VT8754 */
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_VIA_8754
+id|PCI_DEVICE_ID_VIA_8754C_0
 comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;Apollo P4X333/P4X400&quot;
-)brace
-comma
-multiline_comment|/* P4N333 */
-(brace
-dot
-id|device_id
-op_assign
-id|PCI_DEVICE_ID_VIA_P4N333
-comma
-dot
-id|chipset_name
-op_assign
-l_string|&quot;P4N333&quot;
+l_string|&quot;PT800&quot;
 comma
 )brace
 comma
@@ -1436,13 +1409,12 @@ multiline_comment|/* P4X600 */
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_VIA_P4X600
+id|PCI_DEVICE_ID_VIA_8763_0
 comma
 dot
 id|chipset_name
 op_assign
 l_string|&quot;P4X600&quot;
-comma
 )brace
 comma
 multiline_comment|/* KM400 */
@@ -1450,26 +1422,54 @@ multiline_comment|/* KM400 */
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_VIA_KM400
+id|PCI_DEVICE_ID_VIA_8378_0
 comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;KM400&quot;
+l_string|&quot;KM400/KM400A&quot;
 comma
 )brace
 comma
-multiline_comment|/* P4M400 */
+multiline_comment|/* PT880 */
 (brace
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_VIA_P4M400
+id|PCI_DEVICE_ID_VIA_PT880
 comma
 dot
 id|chipset_name
 op_assign
-l_string|&quot;P4M400&quot;
+l_string|&quot;PT880&quot;
+comma
+)brace
+comma
+multiline_comment|/* PT890 */
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_8783_0
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;PT890&quot;
+comma
+)brace
+comma
+multiline_comment|/* PM800/PN800/PM880/PN880 */
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_PX8X0_0
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;PM800/PN800/PM880/PN880&quot;
 comma
 )brace
 comma
