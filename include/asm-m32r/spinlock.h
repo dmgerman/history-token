@@ -182,17 +182,16 @@ comma
 id|tmp1
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
-id|__label__
-id|here
-suffix:semicolon
-id|here
-suffix:colon
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|lock-&gt;magic
 op_ne
 id|SPINLOCK_MAGIC
+)paren
 )paren
 (brace
 id|printk
@@ -200,8 +199,11 @@ c_func
 (paren
 l_string|&quot;pc: %p&bslash;n&quot;
 comma
-op_logical_and
-id|here
+id|__builtin_return_address
+c_func
+(paren
+l_int|0
+)paren
 )paren
 suffix:semicolon
 id|BUG
