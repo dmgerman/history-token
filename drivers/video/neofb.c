@@ -8068,7 +8068,7 @@ suffix:semicolon
 DECL|variable|initialized
 r_static
 r_int
-id|__init
+id|__initdata
 id|initialized
 op_assign
 l_int|0
