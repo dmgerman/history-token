@@ -462,10 +462,9 @@ multiline_comment|/* XXX we currently map kernel text rw, should fix this */
 r_if
 c_cond
 (paren
-id|__is_processor
+id|cpu_has_largepage
 c_func
 (paren
-id|PV_POWER4
 )paren
 op_logical_and
 id|_naca-&gt;physicalMemorySize
@@ -894,17 +893,16 @@ id|new_pte
 suffix:semicolon
 DECL|macro|PPC64_HWNOEXEC
 mdefine_line|#define PPC64_HWNOEXEC (1 &lt;&lt; 2)
-multiline_comment|/* We do lazy icache flushing on POWER4 */
+multiline_comment|/* We do lazy icache flushing on cpus that support it */
 r_if
 c_cond
 (paren
 id|unlikely
 c_func
 (paren
-id|__is_processor
+id|cpu_has_noexecute
 c_func
 (paren
-id|PV_POWER4
 )paren
 op_logical_and
 id|pfn_valid

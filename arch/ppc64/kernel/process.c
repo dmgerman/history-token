@@ -1338,10 +1338,9 @@ multiline_comment|/*&n;&t; * __get_free_pages() might give us a page &gt; KERNBA
 r_if
 c_cond
 (paren
-id|__is_processor
+id|cpu_has_largepage
 c_func
 (paren
-id|PV_POWER4
 )paren
 )paren
 r_return

@@ -892,6 +892,8 @@ DECL|macro|PV_ICESTAR
 mdefine_line|#define&t;PV_ICESTAR&t;0x0036
 DECL|macro|PV_SSTAR
 mdefine_line|#define&t;PV_SSTAR&t;0x0037
+DECL|macro|PV_POWER4p
+mdefine_line|#define&t;PV_POWER4p&t;0x0038
 DECL|macro|PV_630
 mdefine_line|#define&t;PV_630        &t;0x0040
 DECL|macro|PV_630p
@@ -1222,6 +1224,14 @@ suffix:semicolon
 )brace
 DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)&t;prefetchw(x)
+DECL|macro|cpu_has_largepage
+mdefine_line|#define cpu_has_largepage()&t;(__is_processor(PV_POWER4) || &bslash;&n;&t;&t;&t;&t; __is_processor(PV_POWER4p))
+DECL|macro|cpu_has_slb
+mdefine_line|#define cpu_has_slb()&t;&t;(__is_processor(PV_POWER4) || &bslash;&n;&t;&t;&t;&t; __is_processor(PV_POWER4p))
+DECL|macro|cpu_has_tlbiel
+mdefine_line|#define cpu_has_tlbiel()&t;(__is_processor(PV_POWER4) || &bslash;&n;&t;&t;&t;&t; __is_processor(PV_POWER4p))
+DECL|macro|cpu_has_noexecute
+mdefine_line|#define cpu_has_noexecute()&t;(__is_processor(PV_POWER4) || &bslash;&n;&t;&t;&t;&t; __is_processor(PV_POWER4p))
 macro_line|#endif /* ASSEMBLY */
 macro_line|#endif /* __ASM_PPC64_PROCESSOR_H */
 eof

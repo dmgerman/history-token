@@ -35,6 +35,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/eeh.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/iSeries_dma.h&gt;
@@ -2475,10 +2476,9 @@ id|page
 r_if
 c_cond
 (paren
-id|__is_processor
+id|cpu_has_noexecute
 c_func
 (paren
-id|PV_POWER4
 )paren
 )paren
 r_return
@@ -2569,10 +2569,9 @@ multiline_comment|/* XXX we shouldnt have to do this, but glibc requires it */
 r_if
 c_cond
 (paren
-id|__is_processor
+id|cpu_has_noexecute
 c_func
 (paren
-id|PV_POWER4
 )paren
 )paren
 id|clear_bit
@@ -2647,10 +2646,9 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|__is_processor
+id|cpu_has_noexecute
 c_func
 (paren
-id|PV_POWER4
 )paren
 )paren
 id|clear_bit

@@ -1037,6 +1037,19 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|PV_POWER4p
+suffix:colon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;POWER4+ (gq)&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|PV_630
 suffix:colon
 id|seq_printf
