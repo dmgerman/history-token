@@ -731,6 +731,8 @@ l_string|&quot;b&quot;
 (paren
 id|addr
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -812,6 +814,8 @@ l_string|&quot;b&quot;
 (paren
 id|addr
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
