@@ -4752,22 +4752,15 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* don&squot;t need try_inc_mod_count if the driver is non-modular */
 r_if
 c_cond
 (paren
-op_star
-id|module
-op_logical_and
-(paren
-id|try_inc_mod_count
+op_logical_neg
+id|try_module_get
 c_func
 (paren
 op_star
 id|module
-)paren
-op_eq
-l_int|0
 )paren
 )paren
 (brace

@@ -4064,6 +4064,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************&n;*&n;* Driver Init&n;*&n;****************************************************************************/
 DECL|function|udsl_usb_init
+r_static
 r_int
 id|udsl_usb_init
 (paren
@@ -4120,7 +4121,8 @@ id|udsl_usb_driver
 suffix:semicolon
 )brace
 DECL|function|udsl_usb_cleanup
-r_int
+r_static
+r_void
 id|udsl_usb_cleanup
 (paren
 r_void
@@ -4137,38 +4139,21 @@ op_amp
 id|udsl_usb_driver
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|udsl_usb_init
+id|module_init
+c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|udsl_usb_init
-(paren
 )paren
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_int
-id|cleanup_module
+DECL|variable|udsl_usb_cleanup
+id|module_exit
+c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|udsl_usb_cleanup
-(paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#ifdef DEBUG_PACKET
 multiline_comment|/*******************************************************************************&n;*&n;* Debug &n;*&n;*******************************************************************************/
 DECL|function|udsl_print_packet

@@ -770,9 +770,12 @@ id|DeviceOutRequest
 op_or
 id|USB_REQ_SET_FEATURE
 suffix:colon
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;no device features yet yet&quot;
+op_star
+id|hcd-&gt;controller
+comma
+l_string|&quot;no device features yet yet&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -986,9 +989,12 @@ id|EndpointOutRequest
 op_or
 id|USB_REQ_SET_FEATURE
 suffix:colon
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;no endpoint features yet&quot;
+op_star
+id|hcd-&gt;controller
+comma
+l_string|&quot;no endpoint features yet&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1024,9 +1030,12 @@ op_assign
 op_minus
 id|EPIPE
 suffix:semicolon
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;unsupported hub control message (maxchild %d)&quot;
+op_star
+id|hcd-&gt;controller
+comma
+l_string|&quot;unsupported hub control message (maxchild %d)&bslash;n&quot;
 comma
 id|urb-&gt;dev-&gt;maxchild
 )paren
@@ -1042,9 +1051,12 @@ id|urb-&gt;actual_length
 op_assign
 l_int|0
 suffix:semicolon
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;CTRL: TypeReq=0x%x val=0x%x idx=0x%x len=%d ==&gt; %d&quot;
+op_star
+id|hcd-&gt;controller
+comma
+l_string|&quot;CTRL: TypeReq=0x%x val=0x%x idx=0x%x len=%d ==&gt; %d&bslash;n&quot;
 comma
 id|typeReq
 comma
@@ -1162,9 +1174,12 @@ OL
 id|len
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;not queuing status urb, stat %d&quot;
+op_star
+id|hcd-&gt;controller
+comma
+l_string|&quot;not queuing status urb, stat %d&bslash;n&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -1862,9 +1877,12 @@ id|usbfs_add_bus
 id|bus
 )paren
 suffix:semicolon
-id|info
+id|dev_info
 (paren
-l_string|&quot;new USB bus registered, assigned bus number %d&quot;
+op_star
+id|bus-&gt;controller
+comma
+l_string|&quot;new USB bus registered, assigned bus number %d&bslash;n&quot;
 comma
 id|bus-&gt;busnum
 )paren
@@ -1887,9 +1905,12 @@ op_star
 id|bus
 )paren
 (brace
-id|info
+id|dev_info
 (paren
-l_string|&quot;USB bus %d deregistered&quot;
+op_star
+id|bus-&gt;controller
+comma
+l_string|&quot;USB bus %d deregistered&bslash;n&quot;
 comma
 id|bus-&gt;busnum
 )paren
@@ -2353,9 +2374,11 @@ macro_line|#else
 l_string|&quot;would have &quot;
 suffix:semicolon
 macro_line|#endif
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;usb_check_bandwidth %sFAILED: %d + %ld = %d usec&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;usb_check_bandwidth %sFAILED: %d + %ld = %d usec&bslash;n&quot;
 comma
 id|mode
 comma
@@ -2429,9 +2452,11 @@ op_assign
 id|bustime
 suffix:semicolon
 macro_line|#ifdef USB_BANDWIDTH_MESSAGES
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;bandwidth alloc increased by %d (%s) to %d for %d requesters&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;bandwidth alloc increased by %d (%s) to %d for %d requesters&bslash;n&quot;
 comma
 id|bustime
 comma
@@ -2493,9 +2518,11 @@ id|dev-&gt;bus-&gt;bandwidth_int_reqs
 op_decrement
 suffix:semicolon
 macro_line|#ifdef USB_BANDWIDTH_MESSAGES
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;bandwidth alloc reduced by %d (%s) to %d for %d requesters&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;bandwidth alloc reduced by %d (%s) to %d for %d requesters&bslash;n&quot;
 comma
 id|urb-&gt;bandwidth
 comma
@@ -3293,8 +3320,11 @@ id|in_interrupt
 )paren
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
+op_star
+id|hcd-&gt;controller
+comma
 l_string|&quot;non-async unlink in_interrupt&quot;
 )paren
 suffix:semicolon
@@ -3595,9 +3625,12 @@ id|dev-&gt;urb_list
 )paren
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;free busy dev, %s devnum %d (bug!)&quot;
+op_star
+id|hcd-&gt;controller
+comma
+l_string|&quot;free busy dev, %s devnum %d (bug!)&bslash;n&quot;
 comma
 id|hcd-&gt;self.bus_name
 comma
@@ -3893,6 +3926,29 @@ id|usb_hcd_irq
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
+DECL|function|hcd_panic
+r_static
+r_void
+id|hcd_panic
+(paren
+r_void
+op_star
+id|_hcd
+)paren
+(brace
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+op_assign
+id|_hcd
+suffix:semicolon
+id|hcd-&gt;driver-&gt;stop
+(paren
+id|hcd
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * usb_hc_died - report abnormal shutdown of a host controller (bus glue)&n; * @hcd: pointer to the HCD representing the controller&n; *&n; * This is called by bus glue to report a USB host controller that died&n; * while operations may still have been pending.  It&squot;s called automatically&n; * by the PCI glue, so only glue for non-PCI busses should need to call it. &n; */
 DECL|function|usb_hc_died
 r_void
@@ -3975,9 +4031,12 @@ comma
 id|urb_list
 )paren
 suffix:semicolon
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;shutdown %s urb %p pipe %x, current status %d&quot;
+op_star
+id|hcd-&gt;controller
+comma
+l_string|&quot;shutdown %s urb %p pipe %x, current status %d&bslash;n&quot;
 comma
 id|hcd-&gt;self.bus_name
 comma
@@ -4030,21 +4089,24 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
+multiline_comment|/* hcd-&gt;stop() needs a task context */
+id|INIT_WORK
 (paren
-id|urb
-)paren
-id|usb_rh_status_dequeue
-(paren
-id|hcd
+op_amp
+id|hcd-&gt;work
 comma
-id|urb
+id|hcd_panic
+comma
+id|hcd
 )paren
 suffix:semicolon
-id|hcd-&gt;driver-&gt;stop
 (paren
-id|hcd
+r_void
+)paren
+id|schedule_work
+(paren
+op_amp
+id|hcd-&gt;work
 )paren
 suffix:semicolon
 )brace

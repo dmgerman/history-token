@@ -1605,7 +1605,7 @@ multiline_comment|/*&n;&t; *&t;Call device private open method&n;&t; */
 r_if
 c_cond
 (paren
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|dev-&gt;owner

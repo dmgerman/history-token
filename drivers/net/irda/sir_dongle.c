@@ -303,14 +303,12 @@ id|out_unlock
 suffix:semicolon
 multiline_comment|/* no such dongle */
 )brace
-multiline_comment|/* handling of SMP races with dongle module removal - three cases:&n;&t; * 1) dongle driver was already unregistered - then we haven&squot;t found the&n;&t; *&t;requested dongle above and are already out here&n;&t; * 2) the module is already marked deleted but the driver is still&n;&t; *&t;registered - then the try_inc_mod_count() below will fail&n;&t; * 3) the try_inc_mod_count() below succeeds before the module is marked&n;&t; *&t;deleted - then sys_delete_module() fails and prevents the removal&n;&t; *&t;because the module is in use.&n;&t; */
+multiline_comment|/* handling of SMP races with dongle module removal - three cases:&n;&t; * 1) dongle driver was already unregistered - then we haven&squot;t found the&n;&t; *&t;requested dongle above and are already out here&n;&t; * 2) the module is already marked deleted but the driver is still&n;&t; *&t;registered - then the try_module_get() below will fail&n;&t; * 3) the try_module_get() below succeeds before the module is marked&n;&t; *&t;deleted - then sys_delete_module() fails and prevents the removal&n;&t; *&t;because the module is in use.&n;&t; */
 r_if
 c_cond
 (paren
-id|drv-&gt;owner
-op_logical_and
 op_logical_neg
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|drv-&gt;owner

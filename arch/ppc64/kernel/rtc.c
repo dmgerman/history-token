@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;

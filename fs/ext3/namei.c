@@ -2779,9 +2779,17 @@ id|de
 op_ne
 l_int|0
 )paren
+(brace
+id|brelse
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 r_goto
 id|errout
 suffix:semicolon
+)brace
 id|count
 op_increment
 suffix:semicolon

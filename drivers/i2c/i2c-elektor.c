@@ -17,7 +17,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-pcf.h&gt;
-macro_line|#include &lt;linux/i2c-elektor.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;i2c-pcf8584.h&quot;
@@ -425,6 +424,7 @@ comma
 l_string|&quot;i2c (isa bus adapter)&quot;
 )paren
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -495,69 +495,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
-r_int
-id|pcf_isa_reg
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_static
-r_int
-id|pcf_isa_unreg
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_static
-r_void
-id|pcf_isa_inc_use
-c_func
-(paren
-r_struct
-id|i2c_adapter
-op_star
-id|adap
-)paren
-(brace
-macro_line|#ifdef MODULE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
-)brace
-r_static
-r_void
-id|pcf_isa_dec_use
-c_func
-(paren
-r_struct
-id|i2c_adapter
-op_star
-id|adap
-)paren
-(brace
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
-)brace
 multiline_comment|/* ------------------------------------------------------------------------&n; * Encapsulate the above functions in the correct operations structure.&n; * This is only done when more than one hardware adapter is supported.&n; */
+DECL|variable|pcf_isa_data
 r_static
 r_struct
 id|i2c_algo_pcf_data
@@ -606,12 +545,18 @@ l_int|100
 comma
 )brace
 suffix:semicolon
+DECL|variable|pcf_isa_ops
 r_static
 r_struct
 id|i2c_adapter
 id|pcf_isa_ops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|name
 op_assign
@@ -628,28 +573,9 @@ op_assign
 op_amp
 id|pcf_isa_data
 comma
-dot
-id|inc_use
-op_assign
-id|pcf_isa_inc_use
-comma
-dot
-id|dec_use
-op_assign
-id|pcf_isa_dec_use
-comma
-dot
-id|client_register
-op_assign
-id|pcf_isa_reg
-comma
-dot
-id|client_unregister
-op_assign
-id|pcf_isa_unreg
-comma
 )brace
 suffix:semicolon
+DECL|function|i2c_pcfisa_init
 r_static
 r_int
 id|__init
@@ -912,6 +838,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|i2c_pcfisa_exit
 r_static
 r_void
 id|i2c_pcfisa_exit
@@ -1031,12 +958,14 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+DECL|variable|i2c_pcfisa_init
 id|module_init
 c_func
 (paren
 id|i2c_pcfisa_init
 )paren
 suffix:semicolon
+DECL|variable|i2c_pcfisa_exit
 id|module_exit
 c_func
 (paren

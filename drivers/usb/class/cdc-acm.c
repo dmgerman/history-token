@@ -1187,7 +1187,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|tty_unregister_devfs
+id|tty_unregister_device
 c_func
 (paren
 op_amp
@@ -2963,13 +2963,11 @@ comma
 id|acm
 )paren
 suffix:semicolon
-id|tty_register_devfs
+id|tty_register_device
 c_func
 (paren
 op_amp
 id|acm_tty_driver
-comma
-l_int|0
 comma
 id|minor
 )paren
@@ -3102,7 +3100,7 @@ op_logical_neg
 id|acm-&gt;used
 )paren
 (brace
-id|tty_unregister_devfs
+id|tty_unregister_device
 c_func
 (paren
 op_amp

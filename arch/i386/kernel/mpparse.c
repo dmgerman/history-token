@@ -1199,7 +1199,8 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
+macro_line|#ifdef CONFIG_X86_NUMAQ
+DECL|function|MP_translation_info
 r_static
 r_void
 id|__init
@@ -1266,6 +1267,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read/parse the MPC oem tables&n; */
+DECL|function|smp_read_mpc_oem
 r_static
 r_void
 id|__init
@@ -1472,7 +1474,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif
+macro_line|#endif&t;/* CONFIG_X86_NUMAQ */
 multiline_comment|/*&n; * Read/parse the MPC&n; */
 DECL|function|smp_read_mpc
 r_static

@@ -127,6 +127,15 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* mm/page_alloc.c */
+r_extern
+r_void
+id|drain_local_pages
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* kernel/suspend.c */
 r_extern
 r_void

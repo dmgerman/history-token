@@ -2,6 +2,7 @@ multiline_comment|/* -*-linux-c-*-&n;&n; * vendor-specific code for SCSI CD-ROM&
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -440,8 +441,6 @@ id|rc
 suffix:semicolon
 )brace
 multiline_comment|/* This function gets called after a media change. Checks if the CD is&n;   multisession, asks for offset etc. */
-DECL|macro|BCD_TO_BIN
-mdefine_line|#define BCD_TO_BIN(x)    ((((int)x &amp; 0xf0) &gt;&gt; 4)*10 + ((int)x &amp; 0x0f))
 DECL|function|sr_cd_check
 r_int
 id|sr_cd_check
@@ -815,7 +814,7 @@ suffix:semicolon
 )brace
 id|min
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|buffer
@@ -826,7 +825,7 @@ l_int|15
 suffix:semicolon
 id|sec
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|buffer
@@ -837,7 +836,7 @@ l_int|16
 suffix:semicolon
 id|frame
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|buffer
@@ -958,7 +957,7 @@ r_break
 suffix:semicolon
 id|min
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|buffer
@@ -969,7 +968,7 @@ l_int|1
 suffix:semicolon
 id|sec
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|buffer
@@ -980,7 +979,7 @@ l_int|2
 suffix:semicolon
 id|frame
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|buffer

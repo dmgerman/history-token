@@ -3,10 +3,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &lt;linux/isdn/capicmd.h&gt;
-macro_line|#ifdef MODULE
-DECL|macro|MOD_USE_COUNT
-mdefine_line|#define MOD_USE_COUNT ( GET_USE_COUNT (&amp;__this_module))
-macro_line|#endif&t;/* MODULE */
 DECL|variable|lli_revision
 r_const
 r_char

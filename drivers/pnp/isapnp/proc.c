@@ -6,6 +6,11 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+r_extern
+r_struct
+id|pnp_protocol
+id|isapnp_protocol
+suffix:semicolon
 DECL|variable|isapnp_proc_bus_dir
 r_static
 r_struct

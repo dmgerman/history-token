@@ -31,13 +31,5 @@ DECL|macro|MK48T59_RTC_CONTROLB
 mdefine_line|#define MK48T59_RTC_CONTROLB&t;&t;0x1FF9
 DECL|macro|MK48T59_RTC_CB_STOP
 mdefine_line|#define MK48T59_RTC_CB_STOP&t;&t;0x80
-macro_line|#ifndef BCD_TO_BIN
-DECL|macro|BCD_TO_BIN
-mdefine_line|#define BCD_TO_BIN(val) ((val)=((val)&amp;15) + ((val)&gt;&gt;4)*10)
-macro_line|#endif
-macro_line|#ifndef BIN_TO_BCD
-DECL|macro|BIN_TO_BCD
-mdefine_line|#define BIN_TO_BCD(val) ((val)=(((val)/10)&lt;&lt;4) + (val)%10)
-macro_line|#endif
 macro_line|#endif /* _PPC_MK48T59_H */
 eof

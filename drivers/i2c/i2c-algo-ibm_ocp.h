@@ -108,7 +108,7 @@ suffix:semicolon
 DECL|macro|I2C_IIC_ADAP_MAX
 mdefine_line|#define I2C_IIC_ADAP_MAX&t;16
 r_int
-id|i2c_iic_add_bus
+id|i2c_ocp_add_bus
 c_func
 (paren
 r_struct
@@ -117,7 +117,7 @@ op_star
 )paren
 suffix:semicolon
 r_int
-id|i2c_iic_del_bus
+id|i2c_ocp_del_bus
 c_func
 (paren
 r_struct
