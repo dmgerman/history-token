@@ -2655,13 +2655,6 @@ c_func
 id|hwgraph_info_unexport_LBL
 )paren
 suffix:semicolon
-DECL|variable|hwgraph_path_lookup
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|hwgraph_path_lookup
-)paren
-suffix:semicolon
 DECL|variable|hwgraph_traverse
 id|EXPORT_SYMBOL
 c_func
