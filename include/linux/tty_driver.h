@@ -13,6 +13,12 @@ r_int
 id|magic
 suffix:semicolon
 multiline_comment|/* magic number for this structure */
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|driver_name
 r_const
 r_char
