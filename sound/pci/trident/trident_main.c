@@ -13575,7 +13575,6 @@ c_func
 id|chip
 comma
 r_return
-l_int|0
 )paren
 suffix:semicolon
 id|outb

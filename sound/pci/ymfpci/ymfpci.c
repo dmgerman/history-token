@@ -820,11 +820,11 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#else
-DECL|function|snc_ymfpci_create_gameport
+DECL|function|snd_ymfpci_create_gameport
 r_static
 r_inline
 r_int
-id|snc_ymfpci_create_gameport
+id|snd_ymfpci_create_gameport
 c_func
 (paren
 id|ymfpci_t
