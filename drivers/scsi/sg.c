@@ -8664,7 +8664,8 @@ c_func
 op_amp
 id|sdp-&gt;sg_driverfs_dev
 comma
-id|sg_device_type_file.name
+op_amp
+id|sg_device_type_file
 )paren
 suffix:semicolon
 id|device_remove_file
@@ -8673,7 +8674,8 @@ c_func
 op_amp
 id|sdp-&gt;sg_driverfs_dev
 comma
-id|sg_device_kdev_file.name
+op_amp
+id|sg_device_kdev_file
 )paren
 suffix:semicolon
 id|put_device

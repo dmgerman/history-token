@@ -20001,7 +20001,8 @@ id|tpnt-&gt;driverfs_dev_r
 id|mode
 )braket
 comma
-id|st_device_type_file.name
+op_amp
+id|st_device_type_file
 )paren
 suffix:semicolon
 id|device_remove_file
@@ -20013,7 +20014,8 @@ id|tpnt-&gt;driverfs_dev_r
 id|mode
 )braket
 comma
-id|st_device_kdev_file.name
+op_amp
+id|st_device_kdev_file
 )paren
 suffix:semicolon
 id|put_device

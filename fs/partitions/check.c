@@ -1356,7 +1356,8 @@ c_func
 (paren
 id|current_driverfs_dev
 comma
-id|partition_device_type_file.name
+op_amp
+id|partition_device_type_file
 )paren
 suffix:semicolon
 id|device_remove_file
@@ -1364,7 +1365,8 @@ c_func
 (paren
 id|current_driverfs_dev
 comma
-id|partition_device_kdev_file.name
+op_amp
+id|partition_device_kdev_file
 )paren
 suffix:semicolon
 id|put_device
@@ -1385,7 +1387,8 @@ c_func
 (paren
 id|current_driverfs_dev
 comma
-id|partition_device_type_file.name
+op_amp
+id|partition_device_type_file
 )paren
 suffix:semicolon
 id|device_remove_file
@@ -1393,7 +1396,8 @@ c_func
 (paren
 id|current_driverfs_dev
 comma
-id|partition_device_kdev_file.name
+op_amp
+id|partition_device_kdev_file
 )paren
 suffix:semicolon
 id|put_device
