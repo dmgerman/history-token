@@ -252,12 +252,6 @@ c_func
 id|state
 )paren
 suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|device_power_up
 c_func
 (paren
@@ -265,6 +259,12 @@ c_func
 suffix:semicolon
 id|Done
 suffix:colon
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
