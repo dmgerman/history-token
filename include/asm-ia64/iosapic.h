@@ -57,7 +57,7 @@ mdefine_line|#define&t;IOSAPIC_MSAK&t;&t;&t;1
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
-id|__devinit
+id|__init
 id|iosapic_system_init
 (paren
 r_int
@@ -66,7 +66,7 @@ id|pcat_compat
 suffix:semicolon
 r_extern
 r_void
-id|__devinit
+id|__init
 id|iosapic_init
 (paren
 r_int
@@ -98,6 +98,7 @@ id|gsi
 suffix:semicolon
 r_extern
 r_void
+id|__init
 id|iosapic_parse_prt
 (paren
 r_void
@@ -122,6 +123,7 @@ id|trigger
 suffix:semicolon
 r_extern
 r_void
+id|__init
 id|iosapic_override_isa_irq
 (paren
 r_int
@@ -143,6 +145,7 @@ id|trigger
 suffix:semicolon
 r_extern
 r_int
+id|__init
 id|iosapic_register_platform_intr
 (paren
 id|u32

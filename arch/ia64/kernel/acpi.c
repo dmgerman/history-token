@@ -3023,7 +3023,6 @@ id|irq
 suffix:semicolon
 )brace
 r_int
-id|__init
 DECL|function|acpi_register_irq
 id|acpi_register_irq
 (paren
