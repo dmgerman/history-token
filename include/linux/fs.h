@@ -4911,17 +4911,6 @@ id|dev_t
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|bd_acquire
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|bd_forget
 c_func
