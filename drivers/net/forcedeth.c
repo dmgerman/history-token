@@ -701,6 +701,12 @@ DECL|member|desc_ver
 id|u32
 id|desc_ver
 suffix:semicolon
+DECL|member|base
+r_void
+id|__iomem
+op_star
+id|base
+suffix:semicolon
 multiline_comment|/* rx specific fields.&n;&t; * Locking: Within irq hander or disable_irq+spin_lock(&amp;np-&gt;lock);&n;&t; */
 DECL|member|rx_ring
 r_struct
@@ -818,18 +824,18 @@ id|dev
 )paren
 (brace
 r_return
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|fe_priv
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 )brace
 DECL|function|get_hwbase
 r_static
 r_inline
 id|u8
+id|__iomem
 op_star
 id|get_hwbase
 c_func
@@ -841,11 +847,13 @@ id|dev
 )paren
 (brace
 r_return
+id|get_nvpriv
+c_func
 (paren
-id|u8
-op_star
+id|dev
 )paren
-id|dev-&gt;base_addr
+op_member_access_from_pointer
+id|base
 suffix:semicolon
 )brace
 DECL|function|pci_push
@@ -856,6 +864,7 @@ id|pci_push
 c_func
 (paren
 id|u8
+id|__iomem
 op_star
 id|base
 )paren
@@ -938,6 +947,7 @@ id|msg
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -1036,6 +1046,7 @@ id|value
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -1425,6 +1436,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -1916,6 +1928,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -2025,6 +2038,7 @@ id|dev
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -2102,6 +2116,7 @@ id|dev
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -2150,6 +2165,7 @@ id|dev
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -2238,6 +2254,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -2475,6 +2492,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -3705,6 +3723,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -4427,6 +4446,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -4857,6 +4877,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -5587,6 +5608,7 @@ id|dev
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -5698,6 +5720,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -6120,6 +6143,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -6206,6 +6230,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
@@ -7168,6 +7193,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -7339,6 +7365,7 @@ r_int
 id|addr
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -7668,12 +7695,8 @@ op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|dev-&gt;base_addr
+id|np-&gt;base
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -7686,10 +7709,18 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;base_addr
+id|np-&gt;base
 )paren
 r_goto
 id|out_relreg
+suffix:semicolon
+id|dev-&gt;base_addr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|np-&gt;base
 suffix:semicolon
 id|dev-&gt;irq
 op_assign
@@ -8553,6 +8584,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|base
 op_assign
