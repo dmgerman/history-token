@@ -469,6 +469,8 @@ DECL|macro|__NR_sys_fstatfs64
 mdefine_line|#define __NR_sys_fstatfs64&t;&t;1257
 DECL|macro|__NR_sys_statfs64
 mdefine_line|#define __NR_sys_statfs64&t;&t;1258
+DECL|macro|__NR_fadvises64_64
+mdefine_line|#define __NR_fadvises64_64&t;&t;1259
 macro_line|#ifdef __KERNEL__
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;&t;&t;256 /* length of syscall table */
