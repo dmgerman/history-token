@@ -2769,7 +2769,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; *                                                                          *&n; *        Section for driver control interface - /dev/snd/control?          *&n; *                                                                          *&n; ****************************************************************************/
 DECL|macro|SNDRV_CTL_VERSION
-mdefine_line|#define SNDRV_CTL_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 1)
+mdefine_line|#define SNDRV_CTL_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 2)
 DECL|struct|sndrv_ctl_card_info
 r_struct
 id|sndrv_ctl_card_info
@@ -2956,8 +2956,10 @@ DECL|macro|SNDRV_CTL_ELEM_ACCESS_LOCK
 mdefine_line|#define SNDRV_CTL_ELEM_ACCESS_LOCK&t;&t;(1&lt;&lt;9)&t;/* write lock */
 DECL|macro|SNDRV_CTL_ELEM_ACCESS_OWNER
 mdefine_line|#define SNDRV_CTL_ELEM_ACCESS_OWNER&t;&t;(1&lt;&lt;10)&t;/* write lock owner */
+DECL|macro|SNDRV_CTL_ELEM_ACCESS_DINDIRECT
+mdefine_line|#define SNDRV_CTL_ELEM_ACCESS_DINDIRECT&t;&t;(1&lt;&lt;30)&t;/* indirect access for matrix dimensions in the info structure */
 DECL|macro|SNDRV_CTL_ELEM_ACCESS_INDIRECT
-mdefine_line|#define SNDRV_CTL_ELEM_ACCESS_INDIRECT&t;&t;(1&lt;&lt;31)&t;/* indirect access */
+mdefine_line|#define SNDRV_CTL_ELEM_ACCESS_INDIRECT&t;&t;(1&lt;&lt;31)&t;/* indirect access for element value in the value structure */
 multiline_comment|/* for further details see the ACPI and PCI power management specification */
 DECL|macro|SNDRV_CTL_POWER_D0
 mdefine_line|#define SNDRV_CTL_POWER_D0&t;&t;0x0000&t;/* full On */
@@ -3179,12 +3181,42 @@ DECL|member|value
 )brace
 id|value
 suffix:semicolon
+r_union
+(brace
+DECL|member|d
+r_int
+r_int
+id|d
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* dimensions */
+DECL|member|d_ptr
+r_int
+r_int
+op_star
+id|d_ptr
+suffix:semicolon
+multiline_comment|/* indirect */
+DECL|member|dimen
+)brace
+id|dimen
+suffix:semicolon
 DECL|member|reserved
 r_int
 r_char
 id|reserved
 (braket
 l_int|64
+op_minus
+l_int|4
+op_star
+r_sizeof
+(paren
+r_int
+r_int
+)paren
 )braket
 suffix:semicolon
 )brace

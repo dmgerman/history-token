@@ -248,6 +248,7 @@ c_func
 op_amp
 id|stype
 comma
+op_star
 id|data
 comma
 r_sizeof

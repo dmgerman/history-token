@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  The driver for the Cirrus Logic&squot;s Sound Fusion 
 macro_line|#ifndef __CS46XX_DSP_TASK_TYPES_H__
 DECL|macro|__CS46XX_DSP_TASK_TYPES_H__
 mdefine_line|#define __CS46XX_DSP_TASK_TYPES_H__
+macro_line|#include &quot;cs46xx_dsp_scb_types.h&quot;
 multiline_comment|/*********************************************************************************************&n;Example hierarchy of stream control blocks in the SP&n;&n;hfgTree&n;Ptr____Call (c)&n;       &bslash;&n; -------+------         -------------      -------------      -------------      -----&n;| SBlaster IF  |______&bslash;| Foreground  |___&bslash;| Middlegr&squot;nd |___&bslash;| Background  |___&bslash;| Nul |&n;|              |Goto  /| tree header |g  /| tree header |g  /| tree header |g  /| SCB |r&n; -------------- (g)     -------------      -------------      -------------      -----&n;       |c                     |c                 |c                 |c&n;       |                      |                  |                  |&n;      &bslash;/                  -------------      -------------      -------------   &n;                       | Foreground  |_&bslash;  | Middlegr&squot;nd |_&bslash;  | Background  |_&bslash;&n;                       |     tree    |g/  |    tree     |g/  |     tree    |g/&n;                        -------------      -------------      -------------   &n;                              |c                 |c                 |c&n;                              |                  |                  | &n;                             &bslash;/                 &bslash;/                 &bslash;/ &n;&n;*********************************************************************************************/
 DECL|macro|HFG_FIRST_EXECUTE_MODE
 mdefine_line|#define&t;&t;HFG_FIRST_EXECUTE_MODE&t;&t;&t;0x0001
@@ -12,8 +13,7 @@ mdefine_line|#define&t;&t;HFG_CONTEXT_SWITCH_MODE&t;&t;&t;0x0002
 DECL|macro|HFG_CONTEXT_SWITCH_MODE_BIT
 mdefine_line|#define&t;&t;HFG_CONTEXT_SWITCH_MODE_BIT&t;&t;1
 DECL|macro|MAX_FG_STACK_SIZE
-mdefine_line|#define MAX_FG_STACK_SIZE &t;32&t;&t;&t;&t;
-singleline_comment|// THESE NEED TO BE COMPUTED PROPERLY
+mdefine_line|#define MAX_FG_STACK_SIZE &t;32&t;&t;&t;/* THESE NEED TO BE COMPUTED PROPERLY */
 DECL|macro|MAX_MG_STACK_SIZE
 mdefine_line|#define MAX_MG_STACK_SIZE &t;16
 DECL|macro|MAX_BG_STACK_SIZE
@@ -46,27 +46,23 @@ DECL|member|r98_save
 id|u32
 id|r98_save
 suffix:semicolon
-DECL|member|status_save
-id|u16
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 id|status_save
-suffix:semicolon
-DECL|member|ind_save
-id|u16
+comma
 id|ind_save
-suffix:semicolon
-DECL|member|rci1_save
-id|u16
+)paren
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 id|rci1_save
-suffix:semicolon
-DECL|member|rci0_save
-id|u16
+comma
 id|rci0_save
-suffix:semicolon
-DECL|member|r32_save
+)paren
 id|u32
 id|r32_save
 suffix:semicolon
-DECL|member|r76_save
 id|u32
 id|r76_save
 suffix:semicolon
@@ -74,15 +70,14 @@ DECL|member|rsd2_save
 id|u32
 id|rsd2_save
 suffix:semicolon
-DECL|member|rsi2_save
-id|u16
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 id|rsi2_save
-suffix:semicolon
+comma
 multiline_comment|/* See TaskTreeParameterBlock for &n;&t;&t;&t;&t;     remainder of registers  */
-DECL|member|rsa2Save
-id|u16
 id|rsa2Save
-suffix:semicolon
+)paren
 multiline_comment|/* saved as part of HFG context  */
 DECL|typedef|hf_save_area_t
 )brace
@@ -94,26 +89,24 @@ r_typedef
 r_struct
 id|_tree_link_t
 (brace
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 multiline_comment|/* Pointer to sibling task control block */
-DECL|member|next_scb
-id|u16
 id|next_scb
-suffix:semicolon
+comma
 multiline_comment|/* Pointer to child task control block */
-DECL|member|sub_ptr
-id|u16
 id|sub_ptr
-suffix:semicolon
+)paren
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 multiline_comment|/* Pointer to code entry point */
-DECL|member|entry_point
-id|u16
 id|entry_point
-suffix:semicolon
+comma
 multiline_comment|/* Pointer to local data */
-DECL|member|this_spb
-id|u16
 id|this_spb
-suffix:semicolon
+)paren
 DECL|typedef|tree_link_t
 )brace
 id|tree_link_t
@@ -123,56 +116,51 @@ r_typedef
 r_struct
 id|_task_tree_data_t
 (brace
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 multiline_comment|/* Initial tock count; controls task tree execution rate */
-DECL|member|tock_count_limit
-id|u16
 id|tock_count_limit
-suffix:semicolon
+comma
 multiline_comment|/* Tock down counter */
-DECL|member|tock_count
-id|u16
 id|tock_count
-suffix:semicolon
+)paren
 multiline_comment|/* Add to ActiveCount when TockCountLimit reached: &n;&t;   Subtract on task tree termination */
-DECL|member|active_tncrement
-id|u16
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 id|active_tncrement
-suffix:semicolon
+comma
 multiline_comment|/* Number of pending activations for task tree */
-DECL|member|active_count
-id|u16
 id|active_count
-suffix:semicolon
+)paren
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 multiline_comment|/* BitNumber to enable modification of correct bit in ActiveTaskFlags */
-DECL|member|active_bit
-id|u16
 id|active_bit
-suffix:semicolon
+comma
 multiline_comment|/* Pointer to OS location for indicating current activity on task level */
-DECL|member|active_task_flags_ptr
-id|u16
 id|active_task_flags_ptr
-suffix:semicolon
+)paren
 multiline_comment|/* Data structure for controlling movement of memory blocks:- &n;&t;   currently unused */
-DECL|member|mem_upd_ptr
-id|u16
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 id|mem_upd_ptr
-suffix:semicolon
+comma
 multiline_comment|/* Data structure for controlling synchronous link update */
-DECL|member|link_upd_ptr
-id|u16
 id|link_upd_ptr
-suffix:semicolon
+)paren
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 multiline_comment|/* Save area for remainder of full context. */
-DECL|member|save_area
-id|u16
 id|save_area
-suffix:semicolon
+comma
 multiline_comment|/* Address of start of local stack for data storage */
-DECL|member|data_stack_base_ptr
-id|u16
 id|data_stack_base_ptr
-suffix:semicolon
+)paren
 DECL|typedef|task_tree_data_t
 )brace
 id|task_tree_data_t
@@ -183,23 +171,21 @@ r_struct
 id|_interval_timer_data_t
 (brace
 multiline_comment|/* These data items have the same relative locations to those */
-DECL|member|interval_timer_period
-id|u16
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 id|interval_timer_period
-suffix:semicolon
-DECL|member|itd_unused
-id|u16
+comma
 id|itd_unused
-suffix:semicolon
+)paren
 multiline_comment|/* used for this data in the SPOS control block for SPOS 1.0 */
-DECL|member|num_FG_ticks_this_interval
-id|u16
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 id|num_FG_ticks_this_interval
-suffix:semicolon
-DECL|member|num_intervals
-id|u16
+comma
 id|num_intervals
-suffix:semicolon
+)paren
 DECL|typedef|interval_timer_data_t
 )brace
 id|interval_timer_data_t
@@ -211,60 +197,52 @@ r_struct
 id|_task_tree_context_block_t
 (brace
 multiline_comment|/* Up to 10 values are saved onto the stack.  8 for the task tree, 1 for&n;&t;   The access to the context switch (call or interrupt), and 1 spare that&n;&t;   users should never use.  This last may be required by the system */
-DECL|member|stack1
-id|u16
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 id|stack1
-suffix:semicolon
-DECL|member|stack0
-id|u16
+comma
 id|stack0
-suffix:semicolon
-DECL|member|stack3
-id|u16
+)paren
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 id|stack3
-suffix:semicolon
-DECL|member|stack2
-id|u16
+comma
 id|stack2
-suffix:semicolon
-DECL|member|stack5
-id|u16
+)paren
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 id|stack5
-suffix:semicolon
-DECL|member|stack4
-id|u16
+comma
 id|stack4
-suffix:semicolon
-DECL|member|stack7
-id|u16
+)paren
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 id|stack7
-suffix:semicolon
-DECL|member|stack6
-id|u16
+comma
 id|stack6
-suffix:semicolon
-DECL|member|stack9
-id|u16
+)paren
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 id|stack9
-suffix:semicolon
-DECL|member|stack8
-id|u16
+comma
 id|stack8
-suffix:semicolon
-DECL|member|saverfe
+)paren
 id|u32
 id|saverfe
 suffix:semicolon
 multiline_comment|/* Value may be overwriten by stack save algorithm.&n;&t;   Retain the size of the stack data saved here if used */
-DECL|member|reserved1
-id|u16
+id|___DSP_DUAL_16BIT_ALLOC
+c_func
+(paren
 id|reserved1
-suffix:semicolon
-DECL|member|stack_size
-id|u16
+comma
 id|stack_size
-suffix:semicolon
-DECL|member|saverba
+)paren
 id|u32
 id|saverba
 suffix:semicolon

@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASM_GENERIC_SIGINFO_H
 DECL|macro|_ASM_GENERIC_SIGINFO_H
 mdefine_line|#define _ASM_GENERIC_SIGINFO_H
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 DECL|union|sigval
 r_typedef

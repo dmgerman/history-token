@@ -76,6 +76,7 @@ id|sig_context
 suffix:semicolon
 DECL|member|extramask
 r_int
+r_int
 id|extramask
 (braket
 id|_COMPAT_NSIG_WORDS
@@ -114,6 +115,7 @@ l_int|2
 suffix:semicolon
 DECL|member|extramask
 r_int
+r_int
 id|extramask
 (braket
 id|_COMPAT_NSIG_WORDS
@@ -122,6 +124,7 @@ l_int|1
 )braket
 suffix:semicolon
 DECL|member|extra_size
+r_int
 r_int
 id|extra_size
 suffix:semicolon
@@ -178,6 +181,7 @@ id|stack
 suffix:semicolon
 DECL|member|extra_size
 r_int
+r_int
 id|extra_size
 suffix:semicolon
 multiline_comment|/* Should be sizeof(siginfo_extra_v8plus_t) */
@@ -205,6 +209,7 @@ id|copy_siginfo_to_user32
 c_func
 (paren
 id|siginfo_t32
+id|__user
 op_star
 id|to
 comma
@@ -221,6 +226,7 @@ c_cond
 (paren
 op_logical_neg
 id|access_ok
+c_func
 (paren
 id|VERIFY_WRITE
 comma
@@ -610,6 +616,7 @@ id|set32
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -877,6 +884,7 @@ op_star
 id|regs
 comma
 id|__siginfo_fpu_t
+id|__user
 op_star
 id|fpu
 )paren
@@ -1053,6 +1061,7 @@ id|regs
 (brace
 r_struct
 id|new_signal_frame32
+id|__user
 op_star
 id|sf
 suffix:semicolon
@@ -1093,6 +1102,7 @@ op_assign
 (paren
 r_struct
 id|new_signal_frame32
+id|__user
 op_star
 )paren
 id|regs-&gt;u_regs
@@ -1105,6 +1115,7 @@ r_if
 c_cond
 (paren
 id|verify_area
+c_func
 (paren
 id|VERIFY_READ
 comma
@@ -1404,6 +1415,7 @@ op_star
 r_sizeof
 (paren
 r_int
+r_int
 )paren
 )paren
 suffix:semicolon
@@ -1588,9 +1600,11 @@ id|regs
 (brace
 r_struct
 id|sigcontext32
+id|__user
 op_star
 id|scptr
 suffix:semicolon
+r_int
 r_int
 id|pc
 comma
@@ -1601,6 +1615,7 @@ suffix:semicolon
 id|sigset_t
 id|set
 suffix:semicolon
+r_int
 r_int
 id|seta
 (braket
@@ -1636,6 +1651,7 @@ op_assign
 (paren
 r_struct
 id|sigcontext32
+id|__user
 op_star
 )paren
 (paren
@@ -1753,6 +1769,7 @@ l_int|1
 op_star
 r_sizeof
 (paren
+r_int
 r_int
 )paren
 )paren
@@ -2044,14 +2061,14 @@ id|regs
 (brace
 r_struct
 id|rt_signal_frame32
+id|__user
 op_star
 id|sf
 suffix:semicolon
 r_int
 r_int
 id|psr
-suffix:semicolon
-r_int
+comma
 id|pc
 comma
 id|npc
@@ -2092,6 +2109,7 @@ op_assign
 (paren
 r_struct
 id|rt_signal_frame32
+id|__user
 op_star
 )paren
 id|regs-&gt;u_regs
@@ -2104,6 +2122,7 @@ r_if
 c_cond
 (paren
 id|verify_area
+c_func
 (paren
 id|VERIFY_READ
 comma
@@ -2631,6 +2650,7 @@ id|invalid_frame_pointer
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|fp
 comma
@@ -2675,6 +2695,7 @@ suffix:semicolon
 DECL|function|get_sigframe
 r_static
 r_void
+id|__user
 op_star
 id|get_sigframe
 c_func
@@ -2752,6 +2773,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -2791,14 +2813,17 @@ id|info
 (brace
 r_struct
 id|signal_sframe32
+id|__user
 op_star
 id|sframep
 suffix:semicolon
 r_struct
 id|sigcontext32
+id|__user
 op_star
 id|sc
 suffix:semicolon
+r_int
 r_int
 id|seta
 (braket
@@ -2829,13 +2854,7 @@ id|npc
 op_assign
 id|regs-&gt;tnpc
 suffix:semicolon
-macro_line|#if 0&t;
 r_int
-id|window
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif&t;
 r_int
 id|psr
 suffix:semicolon
@@ -2873,6 +2892,7 @@ op_assign
 (paren
 r_struct
 id|signal_sframe32
+id|__user
 op_star
 )paren
 id|get_sigframe
@@ -2889,6 +2909,7 @@ r_if
 c_cond
 (paren
 id|invalid_frame_pointer
+c_func
 (paren
 id|sframep
 comma
@@ -3085,6 +3106,7 @@ op_star
 r_sizeof
 (paren
 r_int
+r_int
 )paren
 )paren
 suffix:semicolon
@@ -3127,6 +3149,7 @@ suffix:semicolon
 id|psr
 op_assign
 id|tstate_to_psr
+c_func
 (paren
 id|regs-&gt;tstate
 )paren
@@ -3203,85 +3226,6 @@ op_amp
 id|sc-&gt;sigc_oswins
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* w_saved is not currently used... */
-r_if
-c_cond
-(paren
-id|get_thread_wsaved
-c_func
-(paren
-)paren
-)paren
-r_for
-c_loop
-(paren
-id|window
-op_assign
-l_int|0
-suffix:semicolon
-id|window
-OL
-id|get_thread_wsaved
-c_func
-(paren
-)paren
-suffix:semicolon
-id|window
-op_increment
-)paren
-(brace
-id|sc-&gt;sigc_spbuf
-(braket
-id|window
-)braket
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|current_thread_info
-c_func
-(paren
-)paren
-op_member_access_from_pointer
-id|rwbuf_stkptrs
-(braket
-id|window
-)braket
-suffix:semicolon
-id|err
-op_or_assign
-id|copy_to_user
-c_func
-(paren
-op_amp
-id|sc-&gt;sigc_wbuf
-(braket
-id|window
-)braket
-comma
-op_amp
-id|current_thread_info
-c_func
-(paren
-)paren
-op_member_access_from_pointer
-id|reg_window
-(braket
-id|window
-)braket
-comma
-r_sizeof
-(paren
-r_struct
-id|reg_window
-)paren
-)paren
-suffix:semicolon
-)brace
-r_else
-macro_line|#endif&t;
 id|err
 op_or_assign
 id|copy_in_user
@@ -3289,12 +3233,14 @@ c_func
 (paren
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|sframep
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 (paren
@@ -3426,6 +3372,7 @@ suffix:colon
 id|sig_code
 op_assign
 id|SUBSIG_BADTRAP
+c_func
 (paren
 id|info-&gt;si_trapno
 )paren
@@ -3732,6 +3679,7 @@ op_star
 id|regs
 comma
 id|__siginfo_fpu_t
+id|__user
 op_star
 id|fpu
 )paren
@@ -3912,6 +3860,7 @@ id|oldset
 (brace
 r_struct
 id|new_signal_frame32
+id|__user
 op_star
 id|sf
 suffix:semicolon
@@ -3926,6 +3875,7 @@ id|i
 comma
 id|err
 suffix:semicolon
+r_int
 r_int
 id|seta
 (braket
@@ -3977,6 +3927,7 @@ op_assign
 (paren
 r_struct
 id|new_signal_frame32
+id|__user
 op_star
 )paren
 id|get_sigframe
@@ -3994,6 +3945,7 @@ r_if
 c_cond
 (paren
 id|invalid_frame_pointer
+c_func
 (paren
 id|sf
 comma
@@ -4072,6 +4024,7 @@ suffix:semicolon
 id|psr
 op_assign
 id|tstate_to_psr
+c_func
 (paren
 id|regs-&gt;tstate
 )paren
@@ -4402,6 +4355,7 @@ op_star
 r_sizeof
 (paren
 r_int
+r_int
 )paren
 )paren
 suffix:semicolon
@@ -4412,12 +4366,14 @@ c_func
 (paren
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|sf
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 (paren
@@ -4774,39 +4730,39 @@ id|oldset
 )paren
 (brace
 id|svr4_signal_frame_t
+id|__user
 op_star
 id|sfp
 suffix:semicolon
 id|svr4_gregset_t
+id|__user
 op_star
 id|gr
 suffix:semicolon
 id|svr4_siginfo_t
+id|__user
 op_star
 id|si
 suffix:semicolon
 id|svr4_mcontext_t
+id|__user
 op_star
 id|mc
 suffix:semicolon
 id|svr4_gwindows_t
+id|__user
 op_star
 id|gw
 suffix:semicolon
 id|svr4_ucontext_t
+id|__user
 op_star
 id|uc
 suffix:semicolon
 id|svr4_sigset_t
 id|setv
 suffix:semicolon
-macro_line|#if 0&t;
 r_int
-id|window
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif&t;
 r_int
 id|psr
 suffix:semicolon
@@ -4836,6 +4792,7 @@ id|sfp
 op_assign
 (paren
 id|svr4_signal_frame_t
+id|__user
 op_star
 )paren
 id|get_sigframe
@@ -4858,6 +4815,7 @@ r_if
 c_cond
 (paren
 id|invalid_frame_pointer
+c_func
 (paren
 id|sfp
 comma
@@ -5007,6 +4965,7 @@ op_star
 r_sizeof
 (paren
 r_int
+r_int
 )paren
 )paren
 suffix:semicolon
@@ -5071,6 +5030,7 @@ suffix:semicolon
 id|psr
 op_assign
 id|tstate_to_psr
+c_func
 (paren
 id|regs-&gt;tstate
 )paren
@@ -5132,7 +5092,7 @@ id|SVR4_Y
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Copy g [1..7] and o [0..7] registers */
+multiline_comment|/* Copy g[1..7] and o[0..7] registers */
 r_for
 c_loop
 (paren
@@ -5288,100 +5248,7 @@ op_amp
 id|gw-&gt;count
 )paren
 suffix:semicolon
-multiline_comment|/* 3. Save each valid window&n;&t; *    Currently, it makes a copy of the windows from the kernel copy.&n;&t; *    David&squot;s code for SunOS, makes the copy but keeps the pointer to&n;&t; *    the kernel.  My version makes the pointer point to a userland &n;&t; *    copy of those.  Mhm, I wonder if I shouldn&squot;t just ignore those&n;&t; *    on setcontext and use those that are on the kernel, the signal&n;&t; *    handler should not be modyfing those, mhm.&n;&t; *&n;&t; *    These windows are just used in case synchronize_user_stack failed&n;&t; *    to flush the user windows.&n;&t; */
-macro_line|#if 0&t; 
-r_for
-c_loop
-(paren
-id|window
-op_assign
-l_int|0
-suffix:semicolon
-id|window
-OL
-id|get_thread_wsaved
-c_func
-(paren
-)paren
-suffix:semicolon
-id|window
-op_increment
-)paren
-(brace
-id|err
-op_or_assign
-id|__put_user
-c_func
-(paren
-(paren
-r_int
-op_star
-)paren
-op_amp
-(paren
-id|gw-&gt;win
-(braket
-id|window
-)braket
-)paren
-comma
-(paren
-r_int
-op_star
-op_star
-)paren
-id|gw-&gt;winptr
-op_plus
-id|window
-)paren
-suffix:semicolon
-id|err
-op_or_assign
-id|copy_to_user
-c_func
-(paren
-op_amp
-id|gw-&gt;win
-(braket
-id|window
-)braket
-comma
-op_amp
-id|current_thread_info
-c_func
-(paren
-)paren
-op_member_access_from_pointer
-id|reg_window
-(braket
-id|window
-)braket
-comma
-r_sizeof
-(paren
-id|svr4_rwindow_t
-)paren
-)paren
-suffix:semicolon
-id|err
-op_or_assign
-id|__put_user
-c_func
-(paren
-l_int|0
-comma
-(paren
-r_int
-op_star
-)paren
-id|gw-&gt;winptr
-op_plus
-id|window
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;
-multiline_comment|/* 4. We just pay attention to the gw-&gt;count field on setcontext */
+multiline_comment|/* 3. We just pay attention to the gw-&gt;count field on setcontext */
 id|set_thread_wsaved
 c_func
 (paren
@@ -5478,12 +5345,14 @@ l_int|14
 (brace
 r_struct
 id|reg_window32
+id|__user
 op_star
 id|rw
 op_assign
 (paren
 r_struct
 id|reg_window32
+id|__user
 op_star
 )paren
 (paren
@@ -5621,6 +5490,7 @@ id|svr4_getcontext
 c_func
 (paren
 id|svr4_ucontext_t
+id|__user
 op_star
 id|uc
 comma
@@ -5631,10 +5501,12 @@ id|regs
 )paren
 (brace
 id|svr4_gregset_t
+id|__user
 op_star
 id|gr
 suffix:semicolon
 id|svr4_mcontext_t
+id|__user
 op_star
 id|mc
 suffix:semicolon
@@ -5645,6 +5517,9 @@ r_int
 id|i
 comma
 id|err
+suffix:semicolon
+id|u32
+id|psr
 suffix:semicolon
 id|synchronize_user_stack
 c_func
@@ -5665,6 +5540,7 @@ c_func
 )paren
 )paren
 id|do_exit
+c_func
 (paren
 id|SIGSEGV
 )paren
@@ -5836,23 +5712,7 @@ id|SVR4_NPC
 )braket
 )paren
 suffix:semicolon
-macro_line|#if 1
-id|err
-op_or_assign
-id|__put_user
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|uc-&gt;mcontext.greg
-(braket
-id|SVR4_PSR
-)braket
-)paren
-suffix:semicolon
-macro_line|#else
-id|i
+id|psr
 op_assign
 id|tstate_to_psr
 c_func
@@ -5878,7 +5738,7 @@ l_int|0
 op_amp
 id|FPRS_FEF
 )paren
-id|i
+id|psr
 op_or_assign
 id|PSR_EF
 suffix:semicolon
@@ -5887,7 +5747,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|i
+id|psr
 comma
 op_amp
 id|uc-&gt;mcontext.greg
@@ -5896,7 +5756,6 @@ id|SVR4_PSR
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 id|err
 op_or_assign
 id|__put_user
@@ -5911,7 +5770,7 @@ id|SVR4_Y
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* Copy g [1..7] and o [0..7] registers */
+multiline_comment|/* Copy g[1..7] and o[0..7] registers */
 r_for
 c_loop
 (paren
@@ -6054,6 +5913,7 @@ id|svr4_setcontext
 c_func
 (paren
 id|svr4_ucontext_t
+id|__user
 op_star
 id|c
 comma
@@ -6064,6 +5924,7 @@ id|regs
 )paren
 (brace
 id|svr4_gregset_t
+id|__user
 op_star
 id|gr
 suffix:semicolon
@@ -6123,6 +5984,7 @@ l_int|3
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;Unaligned structure passed&bslash;n&quot;
 )paren
@@ -6221,6 +6083,7 @@ multiline_comment|/* that we don&squot;t want it to mess with our PC and nPC */
 id|err
 op_or_assign
 id|copy_from_user
+c_func
 (paren
 op_amp
 id|setv
@@ -6484,19 +6347,6 @@ c_func
 id|psr
 )paren
 suffix:semicolon
-macro_line|#if 0&t;
-r_if
-c_cond
-(paren
-id|psr
-op_amp
-id|PSR_EF
-)paren
-id|regs-&gt;tstate
-op_or_assign
-id|TSTATE_PEF
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Restore g[1..7] and o[0..7] registers */
 r_for
 c_loop
@@ -6630,6 +6480,7 @@ id|info
 (brace
 r_struct
 id|rt_signal_frame32
+id|__user
 op_star
 id|sf
 suffix:semicolon
@@ -6692,6 +6543,7 @@ op_assign
 (paren
 r_struct
 id|rt_signal_frame32
+id|__user
 op_star
 )paren
 id|get_sigframe
@@ -6709,6 +6561,7 @@ r_if
 c_cond
 (paren
 id|invalid_frame_pointer
+c_func
 (paren
 id|sf
 comma
@@ -6787,6 +6640,7 @@ suffix:semicolon
 id|psr
 op_assign
 id|tstate_to_psr
+c_func
 (paren
 id|regs-&gt;tstate
 )paren
@@ -7160,12 +7014,14 @@ c_func
 (paren
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|sf
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 (paren
@@ -8001,12 +7857,14 @@ id|sp
 (brace
 r_struct
 id|sigstack32
+id|__user
 op_star
 id|ssptr
 op_assign
 (paren
 r_struct
 id|sigstack32
+id|__user
 op_star
 )paren
 (paren
@@ -8021,12 +7879,14 @@ id|u_ssptr
 suffix:semicolon
 r_struct
 id|sigstack32
+id|__user
 op_star
 id|ossptr
 op_assign
 (paren
 r_struct
 id|sigstack32
+id|__user
 op_star
 )paren
 (paren
@@ -8112,7 +7972,7 @@ id|ssptr-&gt;the_stack
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* If the current stack was set with sigaltstack, don&squot;t&n;&t;&t;   swap stacks while we are on it.  */
+multiline_comment|/* If the current stack was set with sigaltstack, don&squot;t&n;&t;&t; * swap stacks while we are on it.&n;&t;&t; */
 id|ret
 op_assign
 op_minus
@@ -8132,7 +7992,7 @@ id|sp
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* Since we don&squot;t know the extent of the stack, and we don&squot;t&n;&t;&t;   track onstack-ness, but rather calculate it, we must&n;&t;&t;   presume a size.  Ho hum this interface is lossy.  */
+multiline_comment|/* Since we don&squot;t know the extent of the stack, and we don&squot;t&n;&t;&t; * track onstack-ness, but rather calculate it, we must&n;&t;&t; * presume a size.  Ho hum this interface is lossy.&n;&t;&t; */
 id|current-&gt;sas_ss_sp
 op_assign
 (paren
@@ -8204,6 +8064,7 @@ op_amp
 (paren
 (paren
 id|stack_t32
+id|__user
 op_star
 )paren
 (paren
@@ -8224,6 +8085,7 @@ op_amp
 (paren
 (paren
 id|stack_t32
+id|__user
 op_star
 )paren
 (paren
@@ -8244,6 +8106,7 @@ op_amp
 (paren
 (paren
 id|stack_t32
+id|__user
 op_star
 )paren
 (paren
@@ -8324,6 +8187,7 @@ op_amp
 (paren
 (paren
 id|stack_t32
+id|__user
 op_star
 )paren
 (paren
@@ -8344,6 +8208,7 @@ op_amp
 (paren
 (paren
 id|stack_t32
+id|__user
 op_star
 )paren
 (paren
@@ -8364,6 +8229,7 @@ op_amp
 (paren
 (paren
 id|stack_t32
+id|__user
 op_star
 )paren
 (paren

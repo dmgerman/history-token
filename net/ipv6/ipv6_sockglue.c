@@ -757,7 +757,11 @@ id|inet6_sock_nr
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_DEC_USE_COUNT
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 id|retv
 op_assign

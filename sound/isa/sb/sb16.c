@@ -412,7 +412,7 @@ macro_line|#ifdef CONFIG_PNP
 id|MODULE_PARM
 c_func
 (paren
-id|pnp
+id|isapnp
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -426,7 +426,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|pnp
+id|isapnp
 comma
 l_string|&quot;PnP detection for specified soundcard.&quot;
 )paren
@@ -434,7 +434,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|pnp
+id|isapnp
 comma
 id|SNDRV_ISAPNP_DESC
 )paren
@@ -1702,13 +1702,13 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|GFP_ATOMIC
-comma
 r_sizeof
 (paren
 r_struct
 id|pnp_resource_table
 )paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_int
@@ -1956,7 +1956,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|pnp_manual_config_dev
 c_func
 (paren
@@ -1966,11 +1965,10 @@ id|cfg
 comma
 l_int|0
 )paren
-)paren
 OL
 l_int|0
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1994,7 +1992,7 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -2237,7 +2235,7 @@ l_int|0
 OL
 l_int|0
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -2283,12 +2281,13 @@ c_func
 (paren
 l_string|&quot;pnp SB16: wavetable port=0x%lx&bslash;n&quot;
 comma
-id|pdev-&gt;resource
-(braket
+id|pnp_port_start
+c_func
+(paren
+id|pdev
+comma
 l_int|0
-)braket
-dot
-id|start
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2308,7 +2307,7 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -2608,7 +2607,7 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -2652,7 +2651,7 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -2696,7 +2695,7 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -3019,7 +3018,7 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -3180,7 +3179,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_INFO
@@ -3233,7 +3232,7 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -3651,7 +3650,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|snd_sb16_pnp_remove
 r_static
 r_void
@@ -3730,6 +3728,7 @@ id|snd_sb16_pnp_remove
 comma
 )brace
 suffix:semicolon
+macro_line|#endif /* CONFIG_PNP */
 DECL|function|alsa_card_sb16_init
 r_static
 r_int
@@ -3835,7 +3834,7 @@ r_continue
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -3882,7 +3881,7 @@ id|cards
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -3890,7 +3889,7 @@ l_string|&quot;Sound Blaster 16 soundcard not found or device busy&bslash;n&quot
 )paren
 suffix:semicolon
 macro_line|#ifdef SNDRV_SBAWE_EMU8000
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -3898,7 +3897,7 @@ l_string|&quot;In case, if you have non-AWE card, try snd-sb16 module&bslash;n&q
 )paren
 suffix:semicolon
 macro_line|#else
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -3974,7 +3973,7 @@ c_func
 id|alsa_card_sb16_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-sb16=enable,index,id,pnp,&n;&t;&t;       port,mpu_port,fm_port,&n;&t;&t;       irq,dma8,dma16,&n;&t;&t;       mic_agc,csp,&n;&t;&t;       [awe_port,seq_ports] */
+multiline_comment|/* format is: snd-sb16=enable,index,id,isapnp,&n;&t;&t;       port,mpu_port,fm_port,&n;&t;&t;       irq,dma8,dma16,&n;&t;&t;       mic_agc,csp,&n;&t;&t;       [awe_port,seq_ports] */
 DECL|function|alsa_card_sb16_setup
 r_static
 r_int

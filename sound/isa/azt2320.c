@@ -689,11 +689,11 @@ id|snd_azt2320_pnpids
 suffix:semicolon
 DECL|macro|DRIVER_NAME
 mdefine_line|#define&t;DRIVER_NAME&t;&quot;snd-card-azt2320&quot;
-DECL|function|snd_card_azt2320_isapnp
+DECL|function|snd_card_azt2320_pnp
 r_static
 r_int
-id|__init
-id|snd_card_azt2320_isapnp
+id|__devinit
+id|snd_card_azt2320_pnp
 c_func
 (paren
 r_int
@@ -994,7 +994,7 @@ l_int|0
 OL
 l_int|0
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1018,7 +1018,7 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1203,7 +1203,7 @@ l_int|0
 OL
 l_int|0
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1272,7 +1272,7 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1307,7 +1307,7 @@ multiline_comment|/* same of snd_sbdsp_command by Jaroslav Kysela */
 DECL|function|snd_card_azt2320_command
 r_static
 r_int
-id|__init
+id|__devinit
 id|snd_card_azt2320_command
 c_func
 (paren
@@ -1344,13 +1344,13 @@ l_int|50000
 suffix:semicolon
 id|i
 op_logical_and
+id|time_after
+c_func
 (paren
 id|limit
-op_minus
+comma
 id|jiffies
 )paren
-OG
-l_int|0
 suffix:semicolon
 id|i
 op_decrement
@@ -1394,7 +1394,7 @@ suffix:semicolon
 DECL|function|snd_card_azt2320_enable_wss
 r_static
 r_int
-id|__init
+id|__devinit
 id|snd_card_azt2320_enable_wss
 c_func
 (paren
@@ -1455,7 +1455,7 @@ suffix:semicolon
 DECL|function|snd_card_azt2320_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|snd_card_azt2320_probe
 c_func
 (paren
@@ -1544,7 +1544,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|snd_card_azt2320_isapnp
+id|snd_card_azt2320_pnp
 c_func
 (paren
 id|dev
@@ -1779,7 +1779,7 @@ l_int|NULL
 OL
 l_int|0
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1835,7 +1835,7 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -2006,7 +2006,7 @@ suffix:semicolon
 DECL|function|snd_azt2320_pnp_detect
 r_static
 r_int
-id|__init
+id|__devinit
 id|snd_azt2320_pnp_detect
 c_func
 (paren
@@ -2179,27 +2179,6 @@ id|cards
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
-id|cards
-op_add_assign
-id|isapnp_probe_cards
-c_func
-(paren
-id|snd_azt2320_pnpids
-comma
-id|snd_azt2320_isapnp_detect
-)paren
-suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;you have to enable ISA PnP support.&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|cards
 op_add_assign
 id|pnp_register_card_driver
@@ -2216,7 +2195,7 @@ c_cond
 op_logical_neg
 id|cards
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR

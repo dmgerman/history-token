@@ -518,6 +518,8 @@ DECL|macro|ICH_SIS_PCM_4
 mdefine_line|#define   ICH_SIS_PCM_4&t;&t;0x00000040&t;/* 4 channels (SIS7012) */
 DECL|macro|ICH_SIS_PCM_2
 mdefine_line|#define   ICH_SIS_PCM_2&t;&t;0x00000000&t;/* 2 channels (SIS7012) */
+DECL|macro|ICH_TRIE
+mdefine_line|#define   ICH_TRIE&t;&t;0x00000040&t;/* tertiary resume interrupt enable */
 DECL|macro|ICH_SRIE
 mdefine_line|#define   ICH_SRIE&t;&t;0x00000020&t;/* secondary resume interrupt enable */
 DECL|macro|ICH_PRIE
@@ -7704,6 +7706,10 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+id|ac97.pci
+op_assign
+id|chip-&gt;pci
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7742,8 +7748,6 @@ id|chip-&gt;ac97
 (braket
 l_int|0
 )braket
-comma
-id|chip-&gt;pci
 comma
 id|ac97_quirks
 )paren
