@@ -1994,8 +1994,11 @@ id|desc
 (brace
 r_static
 r_int
+r_int
 id|last
-comma
+suffix:semicolon
+r_static
+r_int
 id|lockup
 suffix:semicolon
 id|ecard_t

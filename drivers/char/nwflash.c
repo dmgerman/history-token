@@ -1280,6 +1280,10 @@ op_star
 id|pWritePtr
 suffix:semicolon
 r_int
+r_int
+id|timeout
+suffix:semicolon
+r_int
 id|temp
 comma
 id|temp1
@@ -1405,7 +1409,7 @@ l_int|100
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * wait while erasing in process (up to 10 sec)&n;&t; */
-id|temp
+id|timeout
 op_assign
 id|jiffies
 op_plus
@@ -1432,7 +1436,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|temp
+id|timeout
 )paren
 )paren
 (brace

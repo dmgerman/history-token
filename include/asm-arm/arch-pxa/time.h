@@ -143,9 +143,6 @@ id|regs
 )paren
 (brace
 r_int
-id|flags
-suffix:semicolon
-r_int
 id|next_match
 suffix:semicolon
 id|do_profile
@@ -167,12 +164,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|local_irq_save
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|do_timer
 c_func
 (paren
@@ -190,12 +181,6 @@ op_assign
 id|OSMR0
 op_add_assign
 id|LATCH
-)paren
-suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 )brace
