@@ -8944,7 +8944,6 @@ id|namlen
 )paren
 suffix:semicolon
 multiline_comment|/* name length &amp; name */
-multiline_comment|/*&n;&t; * Now we come to the ugly part: writing the fattr for this entry.&n;&t; */
 id|nfserr
 op_assign
 id|nfsd4_encode_dirent_fattr
@@ -8997,7 +8996,7 @@ r_default
 suffix:colon
 (brace
 )brace
-multiline_comment|/*&n;&t;&t; * If we get here, we experienced a miscellaneous&n;&t;&t; * failure while writing the attributes.  If the&n;&t;&t; * client requested the RDATTR_ERROR attribute,&n;&t;&t; * we stuff the error code into this attribute&n;&t;&t; * and continue.  If this attribute was not requested,&n;&t;&t; * then in accordance with the spec, we fail the&n;&t;&t; * entire READDIR operation(!)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If the client requested the RDATTR_ERROR attribute,&n;&t;&t; * we stuff the error code into this attribute&n;&t;&t; * and continue.  If this attribute was not requested,&n;&t;&t; * then in accordance with the spec, we fail the&n;&t;&t; * entire READDIR operation(!)&n;&t;&t; */
 r_if
 c_cond
 (paren
