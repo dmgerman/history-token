@@ -531,20 +531,6 @@ l_string|&quot; disabled&quot;
 )paren
 suffix:semicolon
 r_else
-r_if
-c_cond
-(paren
-id|available_cpus
-op_ge
-id|NR_CPUS
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; ignored (increase NR_CPUS)&quot;
-)paren
-suffix:semicolon
-r_else
 (brace
 id|printk
 c_func
@@ -1247,34 +1233,6 @@ l_int|32
 op_or
 id|ma-&gt;length_lo
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|num_memblks
-op_ge
-id|NR_MEMBLKS
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Too many mem chunks in SRAT. Ignoring %ld MBytes at %lx&bslash;n&quot;
-comma
-id|size
-op_div
-(paren
-l_int|1024
-op_star
-l_int|1024
-)paren
-comma
-id|paddr
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* Ignore disabled entries */
 r_if
 c_cond
@@ -2010,6 +1968,8 @@ c_func
 id|ACPI_MADT_LAPIC_ADDR_OVR
 comma
 id|acpi_parse_lapic_addr_ovr
+comma
+l_int|0
 )paren
 OL
 l_int|0
@@ -2031,6 +1991,8 @@ c_func
 id|ACPI_MADT_LSAPIC
 comma
 id|acpi_parse_lsapic
+comma
+id|NR_CPUS
 )paren
 OL
 l_int|1
@@ -2052,6 +2014,8 @@ c_func
 id|ACPI_MADT_LAPIC_NMI
 comma
 id|acpi_parse_lapic_nmi
+comma
+l_int|0
 )paren
 OL
 l_int|0
@@ -2074,6 +2038,8 @@ c_func
 id|ACPI_MADT_IOSAPIC
 comma
 id|acpi_parse_iosapic
+comma
+id|NR_IOSAPICS
 )paren
 OL
 l_int|1
@@ -2096,6 +2062,8 @@ c_func
 id|ACPI_MADT_PLAT_INT_SRC
 comma
 id|acpi_parse_plat_int_src
+comma
+id|ACPI_MAX_PLATFORM_INTERRUPTS
 )paren
 OL
 l_int|0
@@ -2117,6 +2085,8 @@ c_func
 id|ACPI_MADT_INT_SRC_OVR
 comma
 id|acpi_parse_int_src_ovr
+comma
+l_int|0
 )paren
 OL
 l_int|0
@@ -2138,6 +2108,8 @@ c_func
 id|ACPI_MADT_NMI_SRC
 comma
 id|acpi_parse_nmi_src
+comma
+l_int|0
 )paren
 OL
 l_int|0

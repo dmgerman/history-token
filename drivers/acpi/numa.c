@@ -24,6 +24,10 @@ id|entry_id
 comma
 id|acpi_madt_entry_handler
 id|handler
+comma
+r_int
+r_int
+id|max_entries
 )paren
 suffix:semicolon
 r_void
@@ -419,6 +423,10 @@ id|id
 comma
 id|acpi_madt_entry_handler
 id|handler
+comma
+r_int
+r_int
+id|max_entries
 )paren
 (brace
 r_return
@@ -436,6 +444,8 @@ comma
 id|id
 comma
 id|handler
+comma
+id|max_entries
 )paren
 suffix:semicolon
 )brace
@@ -477,6 +487,8 @@ c_func
 id|ACPI_SRAT_PROCESSOR_AFFINITY
 comma
 id|acpi_parse_processor_affinity
+comma
+id|NR_CPUS
 )paren
 suffix:semicolon
 id|result
@@ -487,6 +499,8 @@ c_func
 id|ACPI_SRAT_MEMORY_AFFINITY
 comma
 id|acpi_parse_memory_affinity
+comma
+id|NR_MEMBLKS
 )paren
 suffix:semicolon
 )brace
