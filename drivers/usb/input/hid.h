@@ -236,6 +236,8 @@ DECL|macro|HID_QUIRK_IGNORE
 mdefine_line|#define HID_QUIRK_IGNORE&t;0x04
 DECL|macro|HID_QUIRK_NOGET
 mdefine_line|#define HID_QUIRK_NOGET&t;&t;0x08
+DECL|macro|HID_QUIRK_HIDDEV
+mdefine_line|#define HID_QUIRK_HIDDEV&t;0x10
 multiline_comment|/*&n; * This is the global enviroment of the parser. This information is&n; * persistent for main-items. The global enviroment can be saved and&n; * restored with PUSH/POP statements.&n; */
 DECL|struct|hid_global
 r_struct
@@ -288,8 +290,8 @@ DECL|macro|HID_MAX_DESCRIPTOR_SIZE
 mdefine_line|#define HID_MAX_DESCRIPTOR_SIZE&t;&t;4096
 DECL|macro|HID_MAX_USAGES
 mdefine_line|#define HID_MAX_USAGES&t;&t;&t;1024
-DECL|macro|HID_MAX_APPLICATIONS
-mdefine_line|#define HID_MAX_APPLICATIONS&t;&t;16
+DECL|macro|HID_DEFAULT_NUM_COLLECTIONS
+mdefine_line|#define HID_DEFAULT_NUM_COLLECTIONS&t;16
 DECL|struct|hid_local
 r_struct
 id|hid_local
@@ -302,6 +304,14 @@ id|HID_MAX_USAGES
 )braket
 suffix:semicolon
 multiline_comment|/* usage array */
+DECL|member|collection_index
+r_int
+id|collection_index
+(braket
+id|HID_MAX_USAGES
+)braket
+suffix:semicolon
+multiline_comment|/* collection index array */
 DECL|member|usage_index
 r_int
 id|usage_index
@@ -333,6 +343,10 @@ DECL|member|usage
 r_int
 id|usage
 suffix:semicolon
+DECL|member|level
+r_int
+id|level
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|hid_usage
@@ -344,6 +358,11 @@ r_int
 id|hid
 suffix:semicolon
 multiline_comment|/* hid usage code */
+DECL|member|collection_index
+r_int
+id|collection_index
+suffix:semicolon
+multiline_comment|/* index into collection array */
 DECL|member|code
 id|__u16
 id|code
@@ -587,14 +606,23 @@ DECL|member|rsize
 r_int
 id|rsize
 suffix:semicolon
-DECL|member|application
-r_int
-id|application
-(braket
-id|HID_MAX_APPLICATIONS
-)braket
+DECL|member|collection
+r_struct
+id|hid_collection
+op_star
+id|collection
 suffix:semicolon
-multiline_comment|/* List of HID applications */
+multiline_comment|/* List of HID collections */
+DECL|member|collection_size
+r_int
+id|collection_size
+suffix:semicolon
+multiline_comment|/* Number of allocated hid_collections */
+DECL|member|maxcollection
+r_int
+id|maxcollection
+suffix:semicolon
+multiline_comment|/* Number of parsed collections */
 DECL|member|maxapplication
 r_int
 id|maxapplication
@@ -795,6 +823,54 @@ l_int|64
 )braket
 suffix:semicolon
 multiline_comment|/* Device unique identifier (serial #) */
+DECL|member|ff_private
+r_void
+op_star
+id|ff_private
+suffix:semicolon
+multiline_comment|/* Private data for the force-feedback driver */
+DECL|member|ff_exit
+r_void
+(paren
+op_star
+id|ff_exit
+)paren
+(paren
+r_struct
+id|hid_device
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Called by hid_exit_ff(hid) */
+DECL|member|ff_event
+r_int
+(paren
+op_star
+id|ff_event
+)paren
+(paren
+r_struct
+id|hid_device
+op_star
+id|hid
+comma
+r_struct
+id|input_dev
+op_star
+id|input
+comma
+r_int
+r_int
+id|type
+comma
+r_int
+r_int
+id|code
+comma
+r_int
+id|value
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|HID_GLOBAL_STACK_SIZE
@@ -828,8 +904,7 @@ id|hid_local
 id|local
 suffix:semicolon
 DECL|member|collection_stack
-r_struct
-id|hid_collection
+r_int
 id|collection_stack
 (braket
 id|HID_COLLECTION_STACK_SIZE
@@ -916,6 +991,8 @@ DECL|macro|hid_dump_device
 mdefine_line|#define hid_dump_device(c)&t;do { } while (0)
 DECL|macro|hid_dump_field
 mdefine_line|#define hid_dump_field(a,b)&t;do { } while (0)
+DECL|macro|resolv_usage
+mdefine_line|#define resolv_usage(a)&t;&t;do { } while (0)
 macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_USB_HIDINPUT
@@ -1104,4 +1181,140 @@ op_star
 id|hid
 )paren
 suffix:semicolon
+r_int
+id|hid_find_report_by_usage
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+id|hid
+comma
+id|__u32
+id|wanted_usage
+comma
+r_struct
+id|hid_report
+op_star
+op_star
+id|report
+comma
+r_int
+id|type
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_HID_FF
+r_int
+id|hid_ff_init
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+id|hid
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|hid_ff_init
+r_static
+r_inline
+r_int
+id|hid_ff_init
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+id|hid
+)paren
+(brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
+DECL|function|hid_ff_exit
+r_static
+r_inline
+r_void
+id|hid_ff_exit
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+id|hid
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|hid-&gt;ff_exit
+)paren
+id|hid
+op_member_access_from_pointer
+id|ff_exit
+c_func
+(paren
+id|hid
+)paren
+suffix:semicolon
+)brace
+DECL|function|hid_ff_event
+r_static
+r_inline
+r_int
+id|hid_ff_event
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+id|hid
+comma
+r_struct
+id|input_dev
+op_star
+id|input
+comma
+r_int
+r_int
+id|type
+comma
+r_int
+r_int
+id|code
+comma
+r_int
+id|value
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|hid-&gt;ff_event
+)paren
+r_return
+id|hid
+op_member_access_from_pointer
+id|ff_event
+c_func
+(paren
+id|hid
+comma
+id|input
+comma
+id|type
+comma
+id|code
+comma
+id|value
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
 eof

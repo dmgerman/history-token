@@ -1246,6 +1246,7 @@ multiline_comment|/* there are THREE levels of locking associated with video_car
 multiline_comment|/*&n;&t;   1) the &squot;open&squot; flag - this prevents more than one process from&n;&t;   opening the device. (the driver currently assumes only one opener).&n;&t;   This is a regular int, but use test_and_set_bit() (on bit zero) &n;&t;   for atomicity.&n;&t; */
 DECL|member|open
 r_int
+r_int
 id|open
 suffix:semicolon
 multiline_comment|/* &n;&t;   2) the spinlock - this provides mutual exclusion between the interrupt&n;&t;   handler and process-context operations. Generally you must take the&n;&t;   spinlock under the following conditions:&n;&t;     1) DMA (and hence the interrupt handler) may be running&n;&t;     AND&n;&t;     2) you need to operate on the video_card, especially active_frame&n;&n;&t;     It is OK to play with video_card without taking the spinlock if&n;&t;     you are certain that DMA is not running. Even if DMA is running,&n;&t;     it is OK to *read* active_frame with the lock, then drop it&n;&t;     immediately. This is safe because the interrupt handler will never&n;&t;     advance active_frame onto a frame that is not READY (and the spinlock&n;&t;     must be held while marking a frame READY).&n;&t; */

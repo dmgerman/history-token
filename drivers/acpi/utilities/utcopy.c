@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 101 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 103 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -496,15 +496,13 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Free space begins right after the first package&n;&t; */
 id|info.length
 op_assign
-l_int|0
-suffix:semicolon
-id|info.object_space
-op_assign
-l_int|0
-suffix:semicolon
-id|info.num_packages
-op_assign
-l_int|1
+id|ACPI_ROUND_UP_TO_NATIVE_WORD
+(paren
+r_sizeof
+(paren
+id|acpi_object
+)paren
+)paren
 suffix:semicolon
 id|info.free_space
 op_assign
@@ -517,6 +515,14 @@ r_sizeof
 id|acpi_object
 )paren
 )paren
+suffix:semicolon
+id|info.object_space
+op_assign
+l_int|0
+suffix:semicolon
+id|info.num_packages
+op_assign
+l_int|1
 suffix:semicolon
 id|external_object-&gt;type
 op_assign
@@ -538,7 +544,22 @@ comma
 id|info.free_space
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Build an array of ACPI_OBJECTS in the buffer&n;&t; * and move the free space past it&n;&t; */
+multiline_comment|/*&n;&t; * Leave room for an array of ACPI_OBJECTS in the buffer&n;&t; * and move the free space past it&n;&t; */
+id|info.length
+op_add_assign
+(paren
+id|ACPI_SIZE
+)paren
+id|external_object-&gt;package.count
+op_star
+id|ACPI_ROUND_UP_TO_NATIVE_WORD
+(paren
+r_sizeof
+(paren
+id|acpi_object
+)paren
+)paren
+suffix:semicolon
 id|info.free_space
 op_add_assign
 id|external_object-&gt;package.count

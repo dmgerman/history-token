@@ -37,6 +37,8 @@ DECL|macro|CHANNEL_ASYNC_SEND
 mdefine_line|#define CHANNEL_ASYNC_SEND       3
 DECL|macro|CHANNEL_ISO_SEND
 mdefine_line|#define CHANNEL_ISO_SEND         4
+DECL|macro|PCILYNX_CONFIG_ROM_LENGTH
+mdefine_line|#define PCILYNX_CONFIG_ROM_LENGTH   1024
 DECL|typedef|pcl_t
 r_typedef
 r_int
@@ -127,6 +129,15 @@ DECL|member|aux_port
 r_void
 op_star
 id|aux_port
+suffix:semicolon
+DECL|member|config_rom
+id|quadlet_t
+id|config_rom
+(braket
+id|PCILYNX_CONFIG_ROM_LENGTH
+op_div
+l_int|4
+)braket
 suffix:semicolon
 macro_line|#ifdef CONFIG_IEEE1394_PCILYNX_PORTS
 DECL|member|aux_intr_seen
@@ -337,6 +348,11 @@ DECL|member|iso_rcv
 )brace
 id|iso_rcv
 suffix:semicolon
+DECL|member|i2c_driven_state
+id|u32
+id|i2c_driven_state
+suffix:semicolon
+multiline_comment|/* the state we currently drive the Serial EEPROM Control register */
 )brace
 suffix:semicolon
 multiline_comment|/* the per-file data structure for mem space access */
@@ -530,6 +546,8 @@ DECL|macro|MISC_CONTROL
 mdefine_line|#define MISC_CONTROL                      0x40
 DECL|macro|MISC_CONTROL_SWRESET
 mdefine_line|#define MISC_CONTROL_SWRESET              (1&lt;&lt;0)
+DECL|macro|SERIAL_EEPROM_CONTROL
+mdefine_line|#define SERIAL_EEPROM_CONTROL             0x44
 DECL|macro|PCI_INT_STATUS
 mdefine_line|#define PCI_INT_STATUS                    0x48
 DECL|macro|PCI_INT_ENABLE

@@ -982,9 +982,6 @@ op_star
 )paren
 id|__us
 suffix:semicolon
-r_int
-id|action
-suffix:semicolon
 id|lock_kernel
 c_func
 (paren
@@ -1090,15 +1087,6 @@ c_func
 l_string|&quot;*** thread sleeping.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-comma
-id|US_STATE_IDLE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1119,6 +1107,60 @@ c_func
 l_string|&quot;*** thread awakened.&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* if us-&gt;srb is NULL, we are being asked to exit */
+r_if
+c_cond
+(paren
+id|us-&gt;srb
+op_eq
+l_int|NULL
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- exit command received&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|host
+op_assign
+id|us-&gt;srb-&gt;host
+suffix:semicolon
+multiline_comment|/* lock access to the state */
+id|scsi_lock
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
+multiline_comment|/* has the command been aborted *already* ? */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+id|us-&gt;srb-&gt;result
+op_assign
+id|DID_ABORT
+op_lshift
+l_int|16
+suffix:semicolon
+r_goto
+id|SkipForAbort
+suffix:semicolon
+)brace
+multiline_comment|/* set the state and release the lock */
 id|atomic_set
 c_func
 (paren
@@ -1128,63 +1170,10 @@ comma
 id|US_STATE_RUNNING
 )paren
 suffix:semicolon
-multiline_comment|/* lock access to the queue element */
-id|spin_lock_irq
+id|scsi_unlock
 c_func
 (paren
-op_amp
-id|us-&gt;queue_exclusion
-)paren
-suffix:semicolon
-multiline_comment|/* take the command off the queue */
-id|action
-op_assign
-id|us-&gt;action
-suffix:semicolon
-id|us-&gt;action
-op_assign
-l_int|0
-suffix:semicolon
-id|us-&gt;srb
-op_assign
-id|us-&gt;queue_srb
-suffix:semicolon
 id|host
-op_assign
-id|us-&gt;srb-&gt;host
-suffix:semicolon
-multiline_comment|/* release the queue lock as fast as possible */
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|us-&gt;queue_exclusion
-)paren
-suffix:semicolon
-multiline_comment|/* exit if we get a signal to exit */
-r_if
-c_cond
-(paren
-id|action
-op_eq
-id|US_ACT_EXIT
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- US_ACT_EXIT command received&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|BUG_ON
-c_func
-(paren
-id|action
-op_ne
-id|US_ACT_COMMAND
 )paren
 suffix:semicolon
 multiline_comment|/* lock the device pointers */
@@ -1317,13 +1306,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
-c_func
 (paren
-id|DEV_ATTACHED
-comma
+id|us-&gt;flags
 op_amp
-id|us-&gt;bitflags
+id|US_FL_DEV_ATTACHED
 )paren
 )paren
 (brace
@@ -1448,7 +1434,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* test_bit(DEV_ATTACHED, &amp;us-&gt;bitflags) */
+multiline_comment|/* !(us-&gt;flags &amp; US_FL_DEV_ATTACHED) */
 multiline_comment|/* Handle those devices which need us to fake &n;&t;&t; * their inquiry data */
 r_else
 r_if
@@ -1552,6 +1538,13 @@ id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* lock access to the state */
+id|scsi_lock
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 multiline_comment|/* indicate that the command is done */
 r_if
 c_cond
@@ -1571,12 +1564,6 @@ comma
 id|us-&gt;srb-&gt;result
 )paren
 suffix:semicolon
-id|scsi_lock
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
 id|us-&gt;srb
 op_member_access_from_pointer
 id|scsi_done
@@ -1585,29 +1572,31 @@ c_func
 id|us-&gt;srb
 )paren
 suffix:semicolon
-id|us-&gt;srb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|scsi_unlock
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
+id|SkipForAbort
+suffix:colon
 id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;scsi command aborted&bslash;n&quot;
 )paren
 suffix:semicolon
-id|us-&gt;srb
-op_assign
-l_int|NULL
-suffix:semicolon
+)brace
+multiline_comment|/* in case an abort request was received after the command&n;&t;&t; * completed, we must use a separate test to see whether&n;&t;&t; * we need to signal that the abort has finished */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
+op_eq
+id|US_STATE_ABORTING
+)paren
 id|complete
 c_func
 (paren
@@ -1617,7 +1606,26 @@ id|us-&gt;notify
 )paren
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* empty the queue, reset the state, and release the lock */
+id|us-&gt;srb
+op_assign
+l_int|NULL
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+comma
+id|US_STATE_IDLE
+)paren
+suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* for (;;) */
 multiline_comment|/* notify the exit routine that we&squot;re actually exiting now */
@@ -1634,7 +1642,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Set up the URB, the usb_ctrlrequest, and the IRQ pipe and handler.&n; * ss-&gt;dev_semaphore should already be locked.&n; * Note that this function assumes that all the data in the us_data&n; * strucuture is current.  This includes the ep_int field, which gives us&n; * the endpoint for the interrupt.&n; * Returns non-zero on failure, zero on success&n; */
+multiline_comment|/* Set up the URB, the usb_ctrlrequest, and the IRQ pipe and handler.&n; * ss-&gt;dev_semaphore must already be locked.&n; * Note that this function assumes that all the data in the us_data&n; * strucuture is current.  This includes the ep_int field, which gives us&n; * the endpoint for the interrupt.&n; * Returns non-zero on failure, zero on success&n; */
 DECL|function|usb_stor_allocate_urbs
 r_static
 r_int
@@ -1657,40 +1665,6 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
-multiline_comment|/* allocate the URB we&squot;re going to use */
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;Allocating URB&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ss-&gt;current_urb
-op_assign
-id|usb_alloc_urb
-c_func
-(paren
-l_int|0
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ss-&gt;current_urb
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;allocation failed&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* allocate the usb_ctrlrequest for control packets */
 id|US_DEBUGP
 c_func
@@ -1717,6 +1691,40 @@ c_cond
 (paren
 op_logical_neg
 id|ss-&gt;dr
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;allocation failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* allocate the URB we&squot;re going to use */
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;Allocating URB&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ss-&gt;current_urb
+op_assign
+id|usb_alloc_urb
+c_func
+(paren
+l_int|0
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ss-&gt;current_urb
 )paren
 (brace
 id|US_DEBUGP
@@ -1987,24 +1995,6 @@ id|ss-&gt;irq_urb_sem
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* free the usb_ctrlrequest buffer */
-r_if
-c_cond
-(paren
-id|ss-&gt;dr
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|ss-&gt;dr
-)paren
-suffix:semicolon
-id|ss-&gt;dr
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/* free up the main URB for this device */
 r_if
 c_cond
@@ -2045,15 +2035,29 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* mark the device as gone */
-id|clear_bit
+multiline_comment|/* free the usb_ctrlrequest buffer */
+r_if
+c_cond
+(paren
+id|ss-&gt;dr
+)paren
+(brace
+id|kfree
 c_func
 (paren
-id|DEV_ATTACHED
-comma
-op_amp
-id|ss-&gt;bitflags
+id|ss-&gt;dr
 )paren
+suffix:semicolon
+id|ss-&gt;dr
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/* mark the device as gone */
+id|ss-&gt;flags
+op_and_assign
+op_complement
+id|US_FL_DEV_ATTACHED
 suffix:semicolon
 id|usb_put_dev
 c_func
@@ -2736,13 +2740,10 @@ l_int|NULL
 )paren
 op_logical_and
 (paren
-id|test_bit
-c_func
 (paren
-id|DEV_ATTACHED
-comma
+id|ss-&gt;flags
 op_amp
-id|ss-&gt;bitflags
+id|US_FL_DEV_ATTACHED
 )paren
 op_logical_or
 op_logical_neg
@@ -2801,14 +2802,9 @@ id|ss-&gt;pusb_dev
 op_assign
 id|dev
 suffix:semicolon
-id|set_bit
-c_func
-(paren
-id|DEV_ATTACHED
-comma
-op_amp
-id|ss-&gt;bitflags
-)paren
+id|ss-&gt;flags
+op_or_assign
+id|US_FL_DEV_ATTACHED
 suffix:semicolon
 multiline_comment|/* copy over the endpoint data */
 id|ss-&gt;ep_in
@@ -2965,13 +2961,6 @@ id|ss-&gt;ip_waitq
 )paren
 )paren
 suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|ss-&gt;queue_exclusion
-)paren
-suffix:semicolon
 id|init_MUTEX
 c_func
 (paren
@@ -2990,7 +2979,7 @@ id|ss-&gt;current_urb_sem
 )paren
 )paren
 suffix:semicolon
-id|init_MUTEX
+id|init_MUTEX_LOCKED
 c_func
 (paren
 op_amp
@@ -3011,6 +3000,8 @@ suffix:semicolon
 id|ss-&gt;flags
 op_assign
 id|flags
+op_or
+id|US_FL_DEV_ATTACHED
 suffix:semicolon
 id|ss-&gt;unusual_dev
 op_assign
@@ -3648,15 +3639,6 @@ comma
 id|US_STATE_IDLE
 )paren
 suffix:semicolon
-id|set_bit
-c_func
-(paren
-id|DEV_ATTACHED
-comma
-op_amp
-id|ss-&gt;bitflags
-)paren
-suffix:semicolon
 id|ss-&gt;pid
 op_assign
 id|kernel_thread
@@ -3699,6 +3681,16 @@ id|ss-&gt;notify
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* unlock the device pointers */
+id|up
+c_func
+(paren
+op_amp
+(paren
+id|ss-&gt;dev_semaphore
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* now register&t; - our detect function will be called */
 id|ss-&gt;htmplt.module
 op_assign
@@ -3730,9 +3722,9 @@ l_string|&quot;Unable to register the scsi host&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* tell the control thread to exit */
-id|ss-&gt;action
+id|ss-&gt;srb
 op_assign
-id|US_ACT_EXIT
+l_int|NULL
 suffix:semicolon
 id|up
 c_func
@@ -3746,6 +3738,14 @@ c_func
 (paren
 op_amp
 id|ss-&gt;notify
+)paren
+suffix:semicolon
+multiline_comment|/* re-lock the device pointers */
+id|down
+c_func
+(paren
+op_amp
+id|ss-&gt;dev_semaphore
 )paren
 suffix:semicolon
 r_goto
@@ -3799,6 +3799,7 @@ r_return
 id|ss
 suffix:semicolon
 multiline_comment|/* we come here if there are any problems */
+multiline_comment|/* ss-&gt;dev_semaphore must be locked */
 id|BadDevice
 suffix:colon
 id|US_DEBUGP
@@ -3813,6 +3814,13 @@ c_func
 id|ss
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ss-&gt;dev_semaphore
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3822,14 +3830,6 @@ id|kfree
 c_func
 (paren
 id|ss
-)paren
-suffix:semicolon
-r_else
-id|up
-c_func
-(paren
-op_amp
-id|ss-&gt;dev_semaphore
 )paren
 suffix:semicolon
 r_return

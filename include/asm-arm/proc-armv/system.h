@@ -218,7 +218,7 @@ id|__volatile__
 (paren
 l_string|&quot;swpb %0, %1, [%2]&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|ret
 )paren
@@ -246,7 +246,7 @@ id|__volatile__
 (paren
 l_string|&quot;swp %0, %1, [%2]&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|ret
 )paren

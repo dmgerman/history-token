@@ -1280,6 +1280,9 @@ r_struct
 id|ata_device
 op_star
 id|drive
+comma
+r_int
+id|map
 )paren
 (brace
 r_struct
@@ -1548,7 +1551,7 @@ id|rq-&gt;nr_sectors
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 id|printk
@@ -1721,7 +1724,7 @@ id|DMA_MODE_WRITE
 )paren
 )paren
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 r_if
 c_cond
@@ -1731,7 +1734,7 @@ op_ne
 id|ATA_DISK
 )paren
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 id|ata_set_handler
 c_func
@@ -1827,7 +1830,7 @@ id|ch-&gt;hw.dma
 )paren
 suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 DECL|function|icside_irq_status

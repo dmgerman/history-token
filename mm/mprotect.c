@@ -1539,7 +1539,7 @@ suffix:semicolon
 id|error
 op_assign
 op_minus
-id|EFAULT
+id|ENOMEM
 suffix:semicolon
 r_if
 c_cond
@@ -1719,7 +1719,7 @@ id|nstart
 id|error
 op_assign
 op_minus
-id|EFAULT
+id|ENOMEM
 suffix:semicolon
 r_goto
 id|out

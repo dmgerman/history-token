@@ -5,6 +5,47 @@ mdefine_line|#define _SMB_FS_SB
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/smb.h&gt;
+multiline_comment|/*&n; * Upper limit on the total number of active smb_request structs.&n; */
+DECL|macro|MAX_REQUEST_HARD
+mdefine_line|#define MAX_REQUEST_HARD       256
+DECL|enum|smb_receive_state
+r_enum
+id|smb_receive_state
+(brace
+DECL|enumerator|SMB_RECV_START
+id|SMB_RECV_START
+comma
+multiline_comment|/* No data read, looking for length + sig */
+DECL|enumerator|SMB_RECV_HEADER
+id|SMB_RECV_HEADER
+comma
+multiline_comment|/* Reading the header data */
+DECL|enumerator|SMB_RECV_HCOMPLETE
+id|SMB_RECV_HCOMPLETE
+comma
+multiline_comment|/* Done with the header */
+DECL|enumerator|SMB_RECV_PARAM
+id|SMB_RECV_PARAM
+comma
+multiline_comment|/* Reading parameter words */
+DECL|enumerator|SMB_RECV_DATA
+id|SMB_RECV_DATA
+comma
+multiline_comment|/* Reading data bytes */
+DECL|enumerator|SMB_RECV_END
+id|SMB_RECV_END
+comma
+multiline_comment|/* End of request */
+DECL|enumerator|SMB_RECV_DROP
+id|SMB_RECV_DROP
+comma
+multiline_comment|/* Dropping this SMB */
+DECL|enumerator|SMB_RECV_REQUEST
+id|SMB_RECV_REQUEST
+comma
+multiline_comment|/* Received a request and not a reply */
+)brace
+suffix:semicolon
 multiline_comment|/* structure access macros */
 DECL|macro|server_from_inode
 mdefine_line|#define server_from_inode(inode) SMB_SB((inode)-&gt;i_sb)
@@ -16,6 +57,12 @@ DECL|struct|smb_sb_info
 r_struct
 id|smb_sb_info
 (brace
+multiline_comment|/* List of all smbfs superblocks */
+DECL|member|entry
+r_struct
+id|list_head
+id|entry
+suffix:semicolon
 DECL|member|state
 r_enum
 id|smb_conn_state
@@ -27,17 +74,38 @@ id|file
 op_star
 id|sock_file
 suffix:semicolon
+DECL|member|conn_error
+r_int
+id|conn_error
+suffix:semicolon
+DECL|member|rstate
+r_enum
+id|smb_receive_state
+id|rstate
+suffix:semicolon
+DECL|member|nr_requests
+id|atomic_t
+id|nr_requests
+suffix:semicolon
+DECL|member|xmitq
+r_struct
+id|list_head
+id|xmitq
+suffix:semicolon
+DECL|member|recvq
+r_struct
+id|list_head
+id|recvq
+suffix:semicolon
+DECL|member|mid
+id|u16
+id|mid
+suffix:semicolon
 DECL|member|mnt
 r_struct
 id|smb_mount_data_kernel
 op_star
 id|mnt
-suffix:semicolon
-DECL|member|temp_buf
-r_int
-r_char
-op_star
-id|temp_buf
 suffix:semicolon
 multiline_comment|/* Connections are counted. Each time a new socket arrives,&n;&t; * generation is incremented.&n;&t; */
 DECL|member|generation
@@ -59,20 +127,6 @@ r_struct
 id|semaphore
 id|sem
 suffix:semicolon
-DECL|member|wait
-id|wait_queue_head_t
-id|wait
-suffix:semicolon
-DECL|member|packet_size
-id|__u32
-id|packet_size
-suffix:semicolon
-DECL|member|packet
-r_int
-r_char
-op_star
-id|packet
-suffix:semicolon
 DECL|member|rcls
 r_int
 r_int
@@ -83,6 +137,32 @@ DECL|member|err
 r_int
 r_int
 id|err
+suffix:semicolon
+DECL|member|header
+r_int
+r_char
+id|header
+(braket
+id|SMB_HEADER_LEN
+op_plus
+l_int|20
+op_star
+l_int|2
+op_plus
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|header_len
+id|u32
+id|header_len
+suffix:semicolon
+DECL|member|smb_len
+id|u32
+id|smb_len
+suffix:semicolon
+DECL|member|smb_read
+id|u32
+id|smb_read
 suffix:semicolon
 multiline_comment|/* We use our own data_ready callback, but need the original one */
 DECL|member|data_ready
@@ -103,12 +183,6 @@ id|nls_table
 op_star
 id|local_nls
 suffix:semicolon
-multiline_comment|/* utf8 can make strings longer so we can&squot;t do in-place conversion.&n;&t;   This is a buffer for temporary stuff. We only need one so no need&n;&t;   to put it on the stack. This points to temp_buf space. */
-DECL|member|name_buf
-r_char
-op_star
-id|name_buf
-suffix:semicolon
 DECL|member|ops
 r_struct
 id|smb_ops
@@ -123,6 +197,30 @@ id|super_block
 suffix:semicolon
 )brace
 suffix:semicolon
+r_static
+r_inline
+r_int
+DECL|function|smb_lock_server_interruptible
+id|smb_lock_server_interruptible
+c_func
+(paren
+r_struct
+id|smb_sb_info
+op_star
+id|server
+)paren
+(brace
+r_return
+id|down_interruptible
+c_func
+(paren
+op_amp
+(paren
+id|server-&gt;sem
+)paren
+)paren
+suffix:semicolon
+)brace
 r_static
 r_inline
 r_void

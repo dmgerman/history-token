@@ -214,7 +214,7 @@ multiline_comment|/*&n; * The following macros handle the cache and bufferable b
 DECL|macro|_L_PTE_DEFAULT
 mdefine_line|#define _L_PTE_DEFAULT&t;L_PTE_PRESENT | L_PTE_YOUNG
 DECL|macro|_L_PTE_READ
-mdefine_line|#define _L_PTE_READ&t;L_PTE_USER | L_PTE_CACHEABLE | L_PTE_BUFFERABLE
+mdefine_line|#define _L_PTE_READ&t;L_PTE_USER | L_PTE_EXEC | L_PTE_CACHEABLE | L_PTE_BUFFERABLE
 DECL|macro|PAGE_NONE
 mdefine_line|#define PAGE_NONE       __pgprot(_L_PTE_DEFAULT)
 DECL|macro|PAGE_COPY
@@ -224,7 +224,7 @@ mdefine_line|#define PAGE_SHARED     __pgprot(_L_PTE_DEFAULT | _L_PTE_READ | L_P
 DECL|macro|PAGE_READONLY
 mdefine_line|#define PAGE_READONLY   __pgprot(_L_PTE_DEFAULT | _L_PTE_READ)
 DECL|macro|PAGE_KERNEL
-mdefine_line|#define PAGE_KERNEL     __pgprot(_L_PTE_DEFAULT | L_PTE_CACHEABLE | L_PTE_BUFFERABLE | L_PTE_DIRTY | L_PTE_WRITE)
+mdefine_line|#define PAGE_KERNEL     __pgprot(_L_PTE_DEFAULT | L_PTE_CACHEABLE | L_PTE_BUFFERABLE | L_PTE_DIRTY | L_PTE_WRITE | L_PTE_EXEC)
 DECL|macro|_PAGE_CHG_MASK
 mdefine_line|#define _PAGE_CHG_MASK&t;(PAGE_MASK | L_PTE_DIRTY | L_PTE_YOUNG)
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */

@@ -3,6 +3,11 @@ macro_line|#ifndef _H_JFS_DEBUG
 DECL|macro|_H_JFS_DEBUG
 mdefine_line|#define _H_JFS_DEBUG
 multiline_comment|/*&n; *&t;jfs_debug.h&n; *&n; * global debug message, data structure/macro definitions&n; * under control of CONFIG_JFS_DEBUG, CONFIG_JFS_STATISTICS;&n; */
+multiline_comment|/*&n; * Create /proc/fs/jfs if procfs is enabled andeither&n; * CONFIG_JFS_DEBUG or CONFIG_JFS_STATISTICS is defined&n; */
+macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; (defined(CONFIG_JFS_DEBUG) || defined(CONFIG_JFS_STATISTICS))
+DECL|macro|PROC_FS_JFS
+mdefine_line|#define PROC_FS_JFS
+macro_line|#endif
 multiline_comment|/*&n; *&t;assert with traditional printf/panic&n; */
 macro_line|#ifdef CONFIG_KERNEL_ASSERTS
 multiline_comment|/* kgdb stuff */

@@ -145,7 +145,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Not locking variabt of the end_request method.&n; *&n; * Channel lock should be held.&n; */
 DECL|function|__ata_end_request
 r_int
 id|__ata_end_request
@@ -170,9 +169,28 @@ id|nr_secs
 )paren
 (brace
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
+r_int
 id|ret
 op_assign
 l_int|1
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -290,45 +308,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-r_return
-id|ret
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * This is the default end request function as well&n; */
-DECL|function|ata_end_request
-r_int
-id|ata_end_request
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
-comma
-r_int
-id|uptodate
-)paren
-(brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
-id|spin_lock_irqsave
+id|spin_unlock_irqrestore
 c_func
 (paren
 id|ch-&gt;lock
@@ -336,33 +316,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|ret
-op_assign
-id|__ata_end_request
-c_func
-(paren
-id|drive
-comma
-id|rq
-comma
-id|uptodate
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|drive-&gt;channel-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This should get invoked any time we exit the driver to&n; * wait for an interrupt response from a drive.  handler() points&n; * at the appropriate code to handle the next interrupt, and a&n; * timer is started to prevent us from waiting forever in case&n; * something goes wrong (see the ide_timer_expiry() handler later on).&n; *&n; * Channel lock should be held.&n; */
+multiline_comment|/*&n; * This should get invoked any time we exit the driver to&n; * wait for an interrupt response from a drive.  handler() points&n; * at the appropriate code to handle the next interrupt, and a&n; * timer is started to prevent us from waiting forever in case&n; * something goes wrong (see the ide_timer_expiry() handler later on).&n; */
 DECL|function|ata_set_handler
 r_void
 id|ata_set_handler
@@ -384,6 +342,10 @@ id|ata_expiry_t
 id|expiry
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|ata_channel
 op_star
@@ -391,6 +353,15 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* FIXME: change it later to BUG_ON(ch-&gt;handler)  --bzolnier */
 r_if
 c_cond
 (paren
@@ -435,6 +406,14 @@ c_func
 (paren
 op_amp
 id|ch-&gt;timer
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -482,94 +461,30 @@ id|drive-&gt;channel-&gt;speedproc
 )paren
 (brace
 id|u8
-id|pio
+id|mode
 op_assign
-id|XFER_PIO_4
+id|drive-&gt;current_speed
 suffix:semicolon
 id|drive-&gt;crc_count
 op_assign
 l_int|0
 suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
-id|drive-&gt;current_speed
+id|mode
+OG
+id|XFER_UDMA_0
 )paren
-(brace
-r_case
-id|XFER_UDMA_7
-suffix:colon
-id|pio
-op_assign
-id|XFER_UDMA_6
+id|mode
+op_decrement
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|XFER_UDMA_6
-suffix:colon
-id|pio
-op_assign
-id|XFER_UDMA_5
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|XFER_UDMA_5
-suffix:colon
-id|pio
-op_assign
-id|XFER_UDMA_4
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|XFER_UDMA_4
-suffix:colon
-id|pio
-op_assign
-id|XFER_UDMA_3
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|XFER_UDMA_3
-suffix:colon
-id|pio
-op_assign
-id|XFER_UDMA_2
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|XFER_UDMA_2
-suffix:colon
-id|pio
-op_assign
-id|XFER_UDMA_1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|XFER_UDMA_1
-suffix:colon
-id|pio
-op_assign
-id|XFER_UDMA_0
-suffix:semicolon
-r_break
-suffix:semicolon
+r_else
 multiline_comment|/*&n;&t;&t;&t; * OOPS we do not goto non Ultra DMA modes&n;&t;&t;&t; * without iCRC&squot;s available we force&n;&t;&t;&t; * the system to PIO and make the user&n;&t;&t;&t; * invoke the ATA-1 ATA-2 DMA modes.&n;&t;&t;&t; */
-r_case
-id|XFER_UDMA_0
-suffix:colon
-r_default
-suffix:colon
-id|pio
+id|mode
 op_assign
 id|XFER_PIO_4
 suffix:semicolon
-)brace
 id|drive-&gt;channel
 op_member_access_from_pointer
 id|speedproc
@@ -577,7 +492,7 @@ c_func
 (paren
 id|drive
 comma
-id|pio
+id|mode
 )paren
 suffix:semicolon
 )brace
@@ -586,7 +501,7 @@ c_cond
 (paren
 id|drive-&gt;current_speed
 op_ge
-id|XFER_SW_DMA_0
+id|XFER_UDMA_0
 )paren
 id|udma_enable
 c_func
@@ -691,7 +606,7 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* needed below */
-multiline_comment|/*&n; * Poll the interface for completion every 50ms during an ATAPI drive reset&n; * operation. If the drive has not yet responded, and we have not yet hit our&n; * maximum waiting time, then the timer is restarted for another 50ms.&n; *&n; * Channel lock should be held.&n; */
+multiline_comment|/*&n; * Poll the interface for completion every 50ms during an ATAPI drive reset&n; * operation. If the drive has not yet responded, and we have not yet hit our&n; * maximum waiting time, then the timer is restarted for another 50ms.&n; */
 DECL|function|atapi_reset_pollfunc
 r_static
 id|ide_startstop_t
@@ -719,7 +634,7 @@ suffix:semicolon
 r_int
 id|ret
 op_assign
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 id|ata_select
 c_func
@@ -772,7 +687,7 @@ l_int|NULL
 suffix:semicolon
 id|ret
 op_assign
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 multiline_comment|/* continue polling */
 )brace
@@ -823,14 +738,14 @@ suffix:semicolon
 multiline_comment|/* done polling */
 id|ret
 op_assign
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Poll the interface for completion every 50ms during an ata reset operation.&n; * If the drives have not yet responded, and we have not yet hit our maximum&n; * waiting time, then the timer is restarted for another 50ms.&n; *&n; * Channel lock should be held.&n; */
+multiline_comment|/*&n; * Poll the interface for completion every 50ms during an ata reset operation.&n; * If the drives have not yet responded, and we have not yet hit our maximum&n; * waiting time, then the timer is restarted for another 50ms.&n; */
 DECL|function|reset_pollfunc
 r_static
 id|ide_startstop_t
@@ -901,12 +816,17 @@ l_int|NULL
 suffix:semicolon
 id|ret
 op_assign
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 multiline_comment|/* continue polling */
 )brace
 r_else
 (brace
+id|ch-&gt;poll_timeout
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* done polling */
 id|printk
 c_func
 (paren
@@ -922,7 +842,7 @@ id|drive-&gt;failures
 suffix:semicolon
 id|ret
 op_assign
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 )brace
@@ -931,6 +851,11 @@ r_else
 id|u8
 id|stat
 suffix:semicolon
+id|ch-&gt;poll_timeout
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* done polling */
 id|printk
 c_func
 (paren
@@ -1062,19 +987,14 @@ suffix:semicolon
 )brace
 id|ret
 op_assign
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
-id|ch-&gt;poll_timeout
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* done polling */
 r_return
-id|ide_stopped
+id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Attempt to recover a confused drive by resetting it.  Unfortunately,&n; * resetting a disk drive actually resets all devices on the same interface, so&n; * it can really be thought of as resetting the interface rather than resetting&n; * the drive.&n; *&n; * ATAPI devices have their own reset mechanism which allows them to be&n; * individually reset without clobbering other devices on the same interface.&n; *&n; * Unfortunately, the IDE interface does not generate an interrupt to let us&n; * know when the reset operation has finished, so we must poll for this.&n; * Equally poor, though, is the fact that this may a very long time to&n; * complete, (up to 30 seconds worst case).  So, instead of busy-waiting here&n; * for it, we set a timer to poll at 50ms intervals.&n; *&n; * Channel lock should be held.&n; */
+multiline_comment|/*&n; * Attempt to recover a confused drive by resetting it.  Unfortunately,&n; * resetting a disk drive actually resets all devices on the same interface, so&n; * it can really be thought of as resetting the interface rather than resetting&n; * the drive.&n; *&n; * ATAPI devices have their own reset mechanism which allows them to be&n; * individually reset without clobbering other devices on the same interface.&n; *&n; * Unfortunately, the IDE interface does not generate an interrupt to let us&n; * know when the reset operation has finished, so we must poll for this.&n; * Equally poor, though, is the fact that this may a very long time to&n; * complete, (up to 30 seconds worst case).  So, instead of busy-waiting here&n; * for it, we set a timer to poll at 50ms intervals.&n; */
 DECL|function|do_reset1
 r_static
 id|ide_startstop_t
@@ -1105,6 +1025,7 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
+multiline_comment|/* FIXME:  --bzolnier */
 id|__save_flags
 c_func
 (paren
@@ -1183,7 +1104,7 @@ id|flags
 suffix:semicolon
 multiline_comment|/* local CPU only */
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 )brace
@@ -1220,7 +1141,7 @@ id|flags
 suffix:semicolon
 multiline_comment|/* local CPU only */
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 DECL|function|read_24
@@ -1561,6 +1482,7 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* FIXME:  --bzolnier */
 id|__save_flags
 (paren
 id|flags
@@ -2013,7 +1935,7 @@ op_ne
 id|ATA_DISK
 )paren
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 r_if
 c_cond
@@ -2064,6 +1986,8 @@ id|drive
 comma
 op_amp
 id|args
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|printk
@@ -2080,12 +2004,12 @@ r_return
 id|IS_PDC4030_DRIVE
 ques
 c_cond
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:colon
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Take action based on the error returned by the drive.&n; *&n; * FIXME: Channel lock should be held.&n; */
+multiline_comment|/*&n; * Take action based on the error returned by the drive.&n; */
 DECL|function|ata_error
 id|ide_startstop_t
 id|ata_error
@@ -2127,6 +2051,7 @@ comma
 id|msg
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: at least !drive check is bogus  --bzolnier */
 r_if
 c_cond
 (paren
@@ -2137,7 +2062,7 @@ op_logical_neg
 id|rq
 )paren
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 multiline_comment|/* retry only &quot;normal&quot; I/O: */
 r_if
@@ -2156,7 +2081,7 @@ op_assign
 l_int|1
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/* other bits are useless when BUSY */
@@ -2222,7 +2147,7 @@ op_eq
 id|WIN_SPECIFY
 )paren
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 multiline_comment|/* some newer drives don&squot;t support WIN_SPECIFY */
 )brace
@@ -2348,7 +2273,6 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: make sure all end_request implementations are lock free */
 r_if
 c_cond
 (paren
@@ -2432,6 +2356,7 @@ id|ERROR_RECAL
 op_eq
 id|ERROR_RECAL
 )paren
+multiline_comment|/* FIXME: tries to acquire the channel lock -Zwane */
 r_return
 id|do_recalibrate
 c_func
@@ -2441,7 +2366,7 @@ id|drive
 suffix:semicolon
 )brace
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This initiates handling of a new I/O request.&n; */
@@ -2616,9 +2541,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|ata_status_poll
 c_func
 (paren
@@ -2633,10 +2557,14 @@ comma
 id|WAIT_READY
 comma
 id|rq
-comma
-op_amp
-id|ret
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+id|ATA_OP_READY
 )paren
 (brace
 id|printk
@@ -2726,7 +2654,7 @@ l_int|0
 suffix:semicolon
 id|ret
 op_assign
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 r_return
@@ -2742,11 +2670,7 @@ c_func
 (paren
 id|drive
 )paren
-)paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_and
 id|ata_ops
 c_func
 (paren
@@ -2755,13 +2679,6 @@ id|drive
 op_member_access_from_pointer
 id|end_request
 )paren
-(brace
-id|spin_unlock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 id|ata_ops
 c_func
 (paren
@@ -2778,27 +2695,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
-)brace
-r_else
-id|__ata_end_request
-c_func
-(paren
-id|drive
-comma
-id|rq
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
 r_else
 id|__ata_end_request
 c_func
@@ -2813,73 +2709,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
-suffix:semicolon
-)brace
-DECL|function|restart_request
-id|ide_startstop_t
-id|restart_request
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-)paren
-(brace
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|ch-&gt;handler
-op_assign
-l_int|NULL
-suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|ch-&gt;timer
-)paren
-suffix:semicolon
-id|ret
-op_assign
-id|start_request
-c_func
-(paren
-id|drive
-comma
-id|drive-&gt;rq
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-id|ret
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is used by a drive to give excess bandwidth back by sleeping for&n; * timeout jiffies.&n; */
@@ -2986,9 +2816,9 @@ op_logical_or
 id|time_after
 c_func
 (paren
-id|sleep
-comma
 id|drive-&gt;sleep
+comma
+id|sleep
 )paren
 )paren
 )paren
@@ -3070,11 +2900,11 @@ multiline_comment|/* There are no request pending for this device.&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|list_empty
+id|blk_queue_empty
 c_func
 (paren
 op_amp
-id|drive-&gt;queue.queue_head
+id|drive-&gt;queue
 )paren
 )paren
 r_continue
@@ -3244,39 +3074,60 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Feed commands to a drive until it barfs.  Called with queue lock held and&n; * busy channel.&n; */
-DECL|function|queue_commands
+multiline_comment|/*&n; * Issue a new request.&n; * Caller must have already done spin_lock_irqsave(channel-&gt;lock, ...)&n; */
+DECL|function|do_request
 r_static
 r_void
-id|queue_commands
+id|do_request
 c_func
 (paren
 r_struct
-id|ata_device
+id|ata_channel
 op_star
-id|drive
+id|channel
+)paren
+(brace
+id|ide_get_lock
+c_func
+(paren
+op_amp
+id|ide_irq_lock
+comma
+id|ata_irq_request
+comma
+id|channel
+)paren
+suffix:semicolon
+multiline_comment|/* for atari only: POSSIBLY BROKEN HERE(?) */
+id|__cli
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* necessary paranoia: ensure IRQs are masked on local CPU */
+r_while
+c_loop
+(paren
+op_logical_neg
+id|test_and_set_bit
+c_func
+(paren
+id|IDE_BUSY
+comma
+id|channel-&gt;active
+)paren
 )paren
 (brace
 r_struct
 id|ata_channel
 op_star
 id|ch
-op_assign
-id|drive-&gt;channel
 suffix:semicolon
-id|ide_startstop_t
-id|startstop
-op_assign
-op_minus
-l_int|1
+r_struct
+id|ata_device
+op_star
+id|drive
 suffix:semicolon
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-(brace
 r_struct
 id|request
 op_star
@@ -3284,6 +3135,130 @@ id|rq
 op_assign
 l_int|NULL
 suffix:semicolon
+id|ide_startstop_t
+id|startstop
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/* this will clear IDE_BUSY, if appropriate */
+id|drive
+op_assign
+id|choose_urgent_device
+c_func
+(paren
+id|channel
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drive
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* Remember the last drive we where acting on.&n;&t;&t; */
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
+id|ch-&gt;drive
+op_assign
+id|drive
+suffix:semicolon
+multiline_comment|/* Make sure that all drives on channels sharing the IRQ line&n;&t;&t; * with us won&squot;t generate IRQ&squot;s during our activity.&n;&t;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|MAX_HWIFS
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+r_struct
+id|ata_channel
+op_star
+id|tmp
+op_assign
+op_amp
+id|ide_hwifs
+(braket
+id|i
+)braket
+suffix:semicolon
+r_int
+id|j
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tmp-&gt;present
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ch-&gt;lock
+op_ne
+id|tmp-&gt;lock
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* Only care if there is any drive on the channel in&n;&t;&t;&t; * question.&n;&t;&t;&t; */
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+id|MAX_DRIVES
+suffix:semicolon
+op_increment
+id|j
+)paren
+(brace
+r_struct
+id|ata_device
+op_star
+id|other
+op_assign
+op_amp
+id|tmp-&gt;drives
+(braket
+id|j
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|other-&gt;present
+)paren
+id|ata_irq_enable
+c_func
+(paren
+id|other
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t;&t; * Feed commands to a drive until it barfs.&n;&t;&t; */
+r_do
+(brace
 r_if
 c_cond
 (paren
@@ -3305,7 +3280,7 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* Abort early if we can&squot;t queue another command. for non&n;&t;&t; * tcq, ata_can_queue is always 1 since we never get here&n;&t;&t; * unless the drive is idle.&n;&t;&t; */
+multiline_comment|/* Abort early if we can&squot;t queue another command. for&n;&t;&t;&t; * non tcq, ata_can_queue is always 1 since we never&n;&t;&t;&t; * get here unless the drive is idle.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3366,7 +3341,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* There&squot;s a small window between where the queue could be&n;&t;&t; * replugged while we are in here when using tcq (in which&n;&t;&t; * case the queue is probably empty anyways...), so check&n;&t;&t; * and leave if appropriate. When not using tcq, this is&n;&t;&t; * still a severe BUG!&n;&t;&t; */
+multiline_comment|/* There&squot;s a small window between where the queue could&n;&t;&t;&t; * be replugged while we are in here when using tcq (in&n;&t;&t;&t; * which case the queue is probably empty anyways...),&n;&t;&t;&t; * so check and leave if appropriate. When not using&n;&t;&t;&t; * tcq, this is still a severe BUG!&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3429,7 +3404,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* If there are queued commands, we can&squot;t start a non-fs&n;&t;&t; * request (really, a non-queuable command) until the&n;&t;&t; * queue is empty.&n;&t;&t; */
+multiline_comment|/* If there are queued commands, we can&squot;t start a&n;&t;&t;&t; * non-fs request (really, a non-queuable command)&n;&t;&t;&t; * until the queue is empty.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3452,6 +3427,12 @@ id|drive-&gt;rq
 op_assign
 id|rq
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|ide__sti
 c_func
 (paren
@@ -3468,140 +3449,25 @@ comma
 id|rq
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 multiline_comment|/* command started, we are busy */
-r_if
-c_cond
-(paren
-id|startstop
-op_eq
-id|ide_started
-)paren
-r_break
-suffix:semicolon
-multiline_comment|/* start_request() can return either ide_stopped (no command&n;&t;&t; * was started), ide_started (command started, don&squot;t queue&n;&t;&t; * more), or ide_released (command started, try and queue&n;&t;&t; * more).&n;&t;&t; */
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|startstop
-op_eq
-id|ide_stopped
-)paren
-id|set_bit
-c_func
-(paren
-id|IDE_BUSY
-comma
-op_amp
-id|hwgroup-&gt;flags
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
-)brace
-multiline_comment|/*&n; * Issue a new request.&n; * Caller must have already done spin_lock_irqsave(channel-&gt;lock, ...)&n; */
-DECL|function|do_request
-r_static
-r_void
-id|do_request
-c_func
-(paren
-r_struct
-id|ata_channel
-op_star
-id|channel
-)paren
-(brace
-id|ide_get_lock
-c_func
-(paren
-op_amp
-id|ide_irq_lock
-comma
-id|ata_irq_request
-comma
-id|channel
-)paren
-suffix:semicolon
-multiline_comment|/* for atari only: POSSIBLY BROKEN HERE(?) */
-singleline_comment|//&t;__cli();&t;/* necessary paranoia: ensure IRQs are masked on local CPU */
 r_while
 c_loop
 (paren
-op_logical_neg
-id|test_and_set_bit
-c_func
-(paren
-id|IDE_BUSY
-comma
-id|channel-&gt;active
-)paren
-)paren
-(brace
-r_struct
-id|ata_channel
-op_star
-id|ch
-suffix:semicolon
-r_struct
-id|ata_device
-op_star
-id|drive
-suffix:semicolon
-multiline_comment|/* this will clear IDE_BUSY, if appropriate */
-id|drive
-op_assign
-id|choose_urgent_device
-c_func
-(paren
-id|channel
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|drive
-)paren
-r_break
-suffix:semicolon
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
-multiline_comment|/* Disable intrerrupts from the drive on the previous channel.&n;&t;&t; *&n;&t;&t; * FIXME: This should be only done if we are indeed sharing the same&n;&t;&t; * interrupt line with it.&n;&t;&t; *&n;&t;&t; * FIXME: check this! It appears to act on the current channel!&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|ch
+id|startstop
 op_ne
-id|channel
-op_logical_and
-id|channel-&gt;sharing_irq
-op_logical_and
-id|ch-&gt;irq
-op_eq
-id|channel-&gt;irq
-)paren
-id|ata_irq_enable
-c_func
-(paren
-id|drive
-comma
-l_int|0
+id|ATA_OP_CONTINUES
 )paren
 suffix:semicolon
-multiline_comment|/* Remember the last drive we where acting on.&n;&t;&t; */
-id|ch-&gt;drive
-op_assign
-id|drive
-suffix:semicolon
-id|queue_commands
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
+multiline_comment|/* make sure the BUSY bit is set */
+multiline_comment|/* FIXME: perhaps there is some place where we miss to set it? */
+singleline_comment|//&t;&t;set_bit(IDE_BUSY, ch-&gt;active);
 )brace
 )brace
 DECL|function|do_ide_request
@@ -3674,7 +3540,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: IRQ handler was NULL&bslash;n&quot;
+l_string|&quot;%s: channel-&gt;drive was NULL&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3746,7 +3612,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: %s: IRQ handler was not busy?!&bslash;n&quot;
+l_string|&quot;%s: %s: channel was not busy?!&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
@@ -3764,11 +3630,7 @@ r_int
 id|wait
 suffix:semicolon
 multiline_comment|/* continue */
-r_if
-c_cond
-(paren
-(paren
-id|wait
+id|ret
 op_assign
 id|ch
 op_member_access_from_pointer
@@ -3778,13 +3640,26 @@ c_func
 id|drive
 comma
 id|drive-&gt;rq
+comma
+op_amp
+id|wait
 )paren
-)paren
-op_ne
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+id|ATA_OP_CONTINUES
 )paren
 (brace
 multiline_comment|/* reengage timer */
+r_if
+c_cond
+(paren
+id|wait
+)paren
+(brace
 id|ch-&gt;timer.expires
 op_assign
 id|jiffies
@@ -3798,6 +3673,7 @@ op_amp
 id|ch-&gt;timer
 )paren
 suffix:semicolon
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3825,10 +3701,6 @@ c_func
 id|ch-&gt;lock
 )paren
 suffix:semicolon
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
 macro_line|#if DISABLE_IRQ_NOSYNC
 id|disable_irq_nosync
 c_func
@@ -3845,6 +3717,7 @@ id|ch-&gt;irq
 suffix:semicolon
 multiline_comment|/* disable_irq_nosync ?? */
 macro_line|#endif
+multiline_comment|/* FIXME: IRQs are already disabled by spin_lock_irqsave()  --bzolnier */
 id|__cli
 c_func
 (paren
@@ -4013,7 +3886,7 @@ suffix:semicolon
 )brace
 id|ret
 op_assign
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 r_else
@@ -4046,7 +3919,7 @@ c_cond
 (paren
 id|ret
 op_eq
-id|ide_stopped
+id|ATA_OP_FINISHED
 )paren
 id|clear_bit
 c_func
@@ -4244,8 +4117,6 @@ suffix:semicolon
 id|ata_handler_t
 op_star
 id|handler
-op_assign
-id|ch-&gt;handler
 suffix:semicolon
 id|ide_startstop_t
 id|startstop
@@ -4270,6 +4141,10 @@ id|ch
 )paren
 r_goto
 id|out_lock
+suffix:semicolon
+id|handler
+op_assign
+id|ch-&gt;handler
 suffix:semicolon
 r_if
 c_cond
@@ -4406,7 +4281,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
 multiline_comment|/* service this interrupt, may set handler for next interrupt */
 id|startstop
 op_assign
@@ -4430,7 +4304,7 @@ c_cond
 (paren
 id|startstop
 op_eq
-id|ide_stopped
+id|ATA_OP_FINISHED
 )paren
 (brace
 r_if
@@ -4470,20 +4344,6 @@ id|__FUNCTION__
 suffix:semicolon
 )brace
 )brace
-r_else
-r_if
-c_cond
-(paren
-id|startstop
-op_eq
-id|ide_released
-)paren
-id|queue_commands
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
 id|out_lock
 suffix:colon
 id|spin_unlock_irqrestore
@@ -5067,21 +4927,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ata_error
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME: this is a trully bad name */
-DECL|variable|restart_request
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|restart_request
-)paren
-suffix:semicolon
-DECL|variable|ata_end_request
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ata_end_request
 )paren
 suffix:semicolon
 DECL|variable|__ata_end_request

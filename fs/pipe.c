@@ -969,7 +969,7 @@ r_break
 suffix:semicolon
 r_do
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Synchronous wake-up: it knows that this process&n;&t;&t;&t; * is going to give up this CPU, so it doesnt have&n;&t;&t;&t; * to do idle reschedules.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Synchronous wake-up: it knows that this process&n;&t;&t;&t; * is going to give up this CPU, so it doesn&squot;t have&n;&t;&t;&t; * to do idle reschedules.&n;&t;&t;&t; */
 id|wake_up_interruptible_sync
 c_func
 (paren

@@ -589,7 +589,7 @@ id|verbose
 )paren
 suffix:semicolon
 r_static
-r_int
+r_void
 id|pmac_udma_start
 c_func
 (paren
@@ -651,6 +651,9 @@ r_struct
 id|ata_device
 op_star
 id|drive
+comma
+r_int
+id|map
 )paren
 suffix:semicolon
 r_static
@@ -6275,7 +6278,7 @@ suffix:semicolon
 )brace
 DECL|function|pmac_udma_start
 r_static
-r_int
+r_void
 id|pmac_udma_start
 c_func
 (paren
@@ -6318,7 +6321,6 @@ OL
 l_int|0
 )paren
 r_return
-id|ide_stopped
 suffix:semicolon
 id|dma
 op_assign
@@ -6378,7 +6380,6 @@ id|dma-&gt;control
 )paren
 suffix:semicolon
 r_return
-id|ide_started
 suffix:semicolon
 )brace
 DECL|function|pmac_udma_stop
@@ -6566,7 +6567,7 @@ OL
 l_int|0
 )paren
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 r_if
 c_cond
@@ -6637,7 +6638,7 @@ id|reading
 )paren
 )paren
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 multiline_comment|/* Apple adds 60ns to wrDataSetup on reads */
 r_if
@@ -6725,7 +6726,7 @@ op_ne
 id|ATA_DISK
 )paren
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 id|ata_set_handler
 c_func
@@ -6818,7 +6819,7 @@ id|rq
 )paren
 suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * FIXME: This should be attached to a channel as we can see now!&n; */
@@ -6947,22 +6948,9 @@ id|drive-&gt;channel-&gt;active
 suffix:semicolon
 singleline_comment|//&t;if (drive-&gt;waiting_for_dma &gt;= DMA_WAIT_TIMEOUT) {
 singleline_comment|//&t;&t;printk(KERN_WARNING &quot;ide%d, timeout waiting &bslash;
-r_for
-c_loop
-id|dbdma
-id|command
-id|stop
-"&bslash;"
-id|n
-"&quot;"
-comma
-id|ix
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
+singleline_comment|//&t;&t;&t;&t;for dbdma command stop&bslash;n&quot;, ix);
+singleline_comment|//&t;&t;return 1;
+singleline_comment|//&t;}
 id|udelay
 c_func
 (paren
@@ -6973,6 +6961,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|pmac_udma_setup
 r_static
 r_int
 id|pmac_udma_setup
@@ -6982,6 +6971,9 @@ r_struct
 id|ata_device
 op_star
 id|drive
+comma
+r_int
+id|map
 )paren
 (brace
 multiline_comment|/* Change this to better match ide-dma.c */
@@ -7004,6 +6996,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|function|idepmac_sleep_device
 r_static
 r_void
 id|idepmac_sleep_device
@@ -7195,6 +7188,7 @@ macro_line|#ifdef CONFIG_PMAC_PBOOK
 r_static
 r_void
 id|__pmac
+DECL|function|idepmac_wake_device
 id|idepmac_wake_device
 c_func
 (paren
@@ -7303,6 +7297,7 @@ macro_line|#endif
 r_static
 r_void
 id|__pmac
+DECL|function|idepmac_sleep_interface
 id|idepmac_sleep_interface
 c_func
 (paren
@@ -7385,6 +7380,7 @@ suffix:semicolon
 r_static
 r_void
 id|__pmac
+DECL|function|idepmac_wake_interface
 id|idepmac_wake_interface
 c_func
 (paren
@@ -7486,6 +7482,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|idepmac_sleep_drive
 id|idepmac_sleep_drive
 c_func
 (paren
@@ -7548,6 +7545,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|idepmac_wake_drive
 id|idepmac_wake_drive
 c_func
 (paren
@@ -7694,6 +7692,7 @@ multiline_comment|/* Note: We support only master drives for now. This will have
 r_static
 r_int
 id|__pmac
+DECL|function|idepmac_notify_sleep
 id|idepmac_notify_sleep
 c_func
 (paren

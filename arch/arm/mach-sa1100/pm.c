@@ -110,7 +110,7 @@ id|sleep_save
 id|SLEEP_SAVE_SIZE
 )braket
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -401,7 +401,7 @@ c_func
 id|led_start
 )paren
 suffix:semicolon
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren

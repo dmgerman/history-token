@@ -561,30 +561,6 @@ id|ppc_md.find_end_of_memory
 op_assign
 id|iSeries_find_end_of_memory
 suffix:semicolon
-id|ppc_md.kbd_setkeycode
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ppc_md.kbd_getkeycode
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ppc_md.kbd_translate
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ppc_md.kbd_unexpected_up
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ppc_md.kbd_leds
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ppc_md.kbd_init_hw
-op_assign
-l_int|NULL
-suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 id|ppc_md.pcibios_fixup_bus
 op_assign
@@ -604,12 +580,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif /* CONFIG_PCI         */
-macro_line|#if defined(CONFIG_MAGIC_SYSRQ)
-id|ppc_md.ppc_kbd_sysrq_xlate
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 id|ppc_md.smp_ops
 op_assign

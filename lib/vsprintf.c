@@ -565,6 +565,7 @@ r_char
 op_star
 id|digits
 suffix:semicolon
+r_static
 r_const
 r_char
 id|small_digits
@@ -573,6 +574,7 @@ id|small_digits
 op_assign
 l_string|&quot;0123456789abcdefghijklmnopqrstuvwxyz&quot;
 suffix:semicolon
+r_static
 r_const
 r_char
 id|large_digits

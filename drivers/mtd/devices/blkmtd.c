@@ -704,7 +704,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/* Pre 2.4.4 doesnt have space for the block list in the kiobuf */
+multiline_comment|/* Pre 2.4.4 doesn&squot;t have space for the block list in the kiobuf */
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,4)
 id|blocks
 op_assign
@@ -1200,7 +1200,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Pre 2.4.4 doesnt have space for the block list in the kiobuf */
+multiline_comment|/* Pre 2.4.4 doesn&squot;t have space for the block list in the kiobuf */
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,4)
 id|blocks
 op_assign
@@ -1408,7 +1408,7 @@ op_minus
 l_int|9
 )paren
 suffix:semicolon
-multiline_comment|/* If we are writing to the last page on the device and it doesnt end&n;       * on a page boundary, subtract the number of sectors that dont exist.&n;       */
+multiline_comment|/* If we are writing to the last page on the device and it doesn&squot;t end&n;       * on a page boundary, subtract the number of sectors that dont exist.&n;       */
 r_if
 c_cond
 (paren

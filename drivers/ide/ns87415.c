@@ -430,7 +430,7 @@ id|rq
 )paren
 multiline_comment|/* use standard DMA stuff */
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 id|ns87415_prepare_drive
 c_func
@@ -442,7 +442,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* DMA failed: select PIO xfer */
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 DECL|function|ns87415_udma_setup
@@ -455,6 +455,9 @@ r_struct
 id|ata_device
 op_star
 id|drive
+comma
+r_int
+id|map
 )paren
 (brace
 r_if
@@ -484,6 +487,8 @@ id|udma_pci_setup
 c_func
 (paren
 id|drive
+comma
+id|map
 )paren
 suffix:semicolon
 )brace

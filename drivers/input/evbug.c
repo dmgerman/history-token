@@ -23,6 +23,15 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|evbug_name
+r_static
+r_char
+id|evbug_name
+(braket
+)braket
+op_assign
+l_string|&quot;evbug&quot;
+suffix:semicolon
 DECL|function|evbug_event
 r_static
 r_void
@@ -135,6 +144,10 @@ suffix:semicolon
 id|handle-&gt;handler
 op_assign
 id|handler
+suffix:semicolon
+id|handle-&gt;name
+op_assign
+id|evbug_name
 suffix:semicolon
 id|input_open_device
 c_func

@@ -3,6 +3,8 @@ macro_line|#ifndef _SPARC_CACHE_H
 DECL|macro|_SPARC_CACHE_H
 mdefine_line|#define _SPARC_CACHE_H
 macro_line|#include &lt;asm/asi.h&gt;
+DECL|macro|L1_CACHE_SHIFT
+mdefine_line|#define L1_CACHE_SHIFT 5
 DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define L1_CACHE_BYTES 32
 DECL|macro|L1_CACHE_ALIGN

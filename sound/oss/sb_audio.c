@@ -3837,8 +3837,6 @@ id|len
 )paren
 )paren
 r_return
-op_minus
-id|EFAULT
 suffix:semicolon
 op_star
 id|used
@@ -3952,8 +3950,6 @@ l_int|1
 )paren
 )paren
 r_return
-op_minus
-id|EFAULT
 suffix:semicolon
 r_for
 c_loop
@@ -4103,8 +4099,6 @@ id|locallen
 )paren
 )paren
 r_return
-op_minus
-id|EFAULT
 suffix:semicolon
 r_for
 c_loop

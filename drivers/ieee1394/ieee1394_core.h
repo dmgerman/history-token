@@ -354,6 +354,8 @@ DECL|macro|IEEE1394_MINOR_BLOCK_VIDEO1394
 mdefine_line|#define IEEE1394_MINOR_BLOCK_VIDEO1394     1
 DECL|macro|IEEE1394_MINOR_BLOCK_DV1394
 mdefine_line|#define IEEE1394_MINOR_BLOCK_DV1394        2
+DECL|macro|IEEE1394_MINOR_BLOCK_AMDTP
+mdefine_line|#define IEEE1394_MINOR_BLOCK_AMDTP         3
 DECL|macro|IEEE1394_MINOR_BLOCK_EXPERIMENTAL
 mdefine_line|#define IEEE1394_MINOR_BLOCK_EXPERIMENTAL 15
 multiline_comment|/* return the index (within a minor number block) of a file */
