@@ -42,6 +42,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
+r_const
 r_char
 op_star
 id|fmt

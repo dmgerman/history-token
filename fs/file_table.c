@@ -39,9 +39,10 @@ id|free_list
 )paren
 suffix:semicolon
 multiline_comment|/* public *and* exported. Not pretty! */
-DECL|variable|files_lock
+DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|files_lock
+id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon

@@ -3442,9 +3442,9 @@ id|isac-&gt;timer
 )paren
 suffix:semicolon
 )brace
-DECL|function|isac_setup
+DECL|function|hisax_isac_setup
 r_void
-id|isac_setup
+id|hisax_isac_setup
 c_func
 (paren
 r_struct
@@ -4191,11 +4191,11 @@ c_func
 id|isacsx_irq
 )paren
 suffix:semicolon
-DECL|variable|isac_setup
+DECL|variable|hisax_isac_setup
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|isac_setup
+id|hisax_isac_setup
 )paren
 suffix:semicolon
 DECL|variable|isac_irq

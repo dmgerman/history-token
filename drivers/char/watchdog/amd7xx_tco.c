@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;AMD 766/768 TCO Timer Driver&n; *&t;(c) Copyright 2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;&n; *&t;All Rights Reserved.&n; *&n; *&t;Parts from;&n; *&t;Hardware driver for the AMD 768 Random Number Generator (RNG)&n; *&t;(c) Copyright 2001 Red Hat Inc &lt;alan@redhat.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License version 2&n; *&t;as published by the Free Software Foundation.&n; *&n; *&t;The author(s) of this software shall not be held liable for damages&n; *&t;of any nature resulting due to the use of this software. This&n; *&t;software is provided AS-IS with no warranties.&n; *&n; */
+multiline_comment|/*&n; *&t;AMD 766/768 TCO Timer Driver&n; *&t;(c) Copyright 2002 Zwane Mwaikambo &lt;zwane@holomorphy.com&gt;&n; *&t;All Rights Reserved.&n; *&n; *&t;Parts from;&n; *&t;Hardware driver for the AMD 768 Random Number Generator (RNG)&n; *&t;(c) Copyright 2001 Red Hat Inc &lt;alan@redhat.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License version 2&n; *&t;as published by the Free Software Foundation.&n; *&n; *&t;The author(s) of this software shall not be held liable for damages&n; *&t;of any nature resulting due to the use of this software. This&n; *&t;software is provided AS-IS with no warranties.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -16,24 +16,22 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 DECL|macro|AMDTCO_MODULE_VER
-mdefine_line|#define AMDTCO_MODULE_VER&t;&quot;build 20020601&quot;
+mdefine_line|#define AMDTCO_MODULE_VER&t;&quot;build 20021116&quot;
 DECL|macro|AMDTCO_MODULE_NAME
 mdefine_line|#define AMDTCO_MODULE_NAME&t;&quot;amd7xx_tco&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&t;AMDTCO_MODULE_NAME &quot;: &quot;
 DECL|macro|MAX_TIMEOUT
-mdefine_line|#define&t;MAX_TIMEOUT&t;38&t;/* max of 38 seconds */
+mdefine_line|#define&t;MAX_TIMEOUT&t;38&t;/* max of 38 seconds, although the system will only&n;&t;&t;&t;&t; * reset itself after the second timeout */
 multiline_comment|/* pmbase registers */
-DECL|macro|GLOBAL_SMI_REG
-mdefine_line|#define GLOBAL_SMI_REG&t;0x2a
-DECL|macro|TCO_EN
-mdefine_line|#define TCO_EN&t;&t;(1 &lt;&lt; 1)&t;/* bit 1 in global SMI register */
 DECL|macro|TCO_RELOAD_REG
 mdefine_line|#define TCO_RELOAD_REG&t;0x40&t;&t;/* bits 0-5 are current count, 6-7 are reserved */
 DECL|macro|TCO_INITVAL_REG
 mdefine_line|#define TCO_INITVAL_REG&t;0x41&t;&t;/* bits 0-5 are value to load, 6-7 are reserved */
 DECL|macro|TCO_TIMEOUT_MASK
 mdefine_line|#define TCO_TIMEOUT_MASK&t;0x3f
+DECL|macro|TCO_STATUS1_REG
+mdefine_line|#define TCO_STATUS1_REG 0x44
 DECL|macro|TCO_STATUS2_REG
 mdefine_line|#define TCO_STATUS2_REG&t;0x46
 DECL|macro|NDTO_STS2
@@ -44,6 +42,8 @@ DECL|macro|TCO_CTRL1_REG
 mdefine_line|#define TCO_CTRL1_REG&t;0x48
 DECL|macro|TCO_HALT
 mdefine_line|#define TCO_HALT&t;(1 &lt;&lt; 11)
+DECL|macro|NO_REBOOT
+mdefine_line|#define NO_REBOOT&t;(1 &lt;&lt; 10)&t;/* in DevB:3x48 */
 DECL|variable|__initdata
 r_static
 r_char
@@ -55,13 +55,14 @@ op_assign
 id|KERN_INFO
 id|PFX
 id|AMDTCO_MODULE_VER
+l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 DECL|variable|timeout
 r_static
 r_int
 id|timeout
 op_assign
-l_int|38
+id|MAX_TIMEOUT
 suffix:semicolon
 DECL|variable|pmbase
 r_static
@@ -83,6 +84,7 @@ id|semaphore
 id|open_sem
 suffix:semicolon
 DECL|variable|amdtco_lock
+r_static
 id|spinlock_t
 id|amdtco_lock
 suffix:semicolon
@@ -110,6 +112,49 @@ comma
 l_string|&quot;range is 0-38 seconds, default is 38&quot;
 )paren
 suffix:semicolon
+DECL|function|seconds_to_ticks
+r_static
+r_inline
+id|u8
+id|seconds_to_ticks
+c_func
+(paren
+r_int
+id|seconds
+)paren
+(brace
+multiline_comment|/* the internal timer is stored as ticks which decrement&n;&t; * every 0.6 seconds */
+r_return
+(paren
+id|seconds
+op_star
+l_int|10
+)paren
+op_div
+l_int|6
+suffix:semicolon
+)brace
+DECL|function|ticks_to_seconds
+r_static
+r_inline
+r_int
+id|ticks_to_seconds
+c_func
+(paren
+id|u8
+id|ticks
+)paren
+(brace
+r_return
+(paren
+id|ticks
+op_star
+l_int|6
+)paren
+op_div
+l_int|10
+suffix:semicolon
+)brace
 DECL|function|amdtco_status
 r_static
 r_inline
@@ -188,43 +233,14 @@ c_func
 r_void
 )paren
 (brace
-id|u8
-id|reg
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|amdtco_lock
-)paren
-suffix:semicolon
-id|reg
-op_assign
-id|inb
-c_func
-(paren
-id|pmbase
-op_plus
-id|TCO_RELOAD_REG
-)paren
-suffix:semicolon
 id|outb
 c_func
 (paren
 l_int|1
-op_or
-id|reg
 comma
 id|pmbase
 op_plus
 id|TCO_RELOAD_REG
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|amdtco_lock
 )paren
 suffix:semicolon
 )brace
@@ -238,14 +254,25 @@ c_func
 r_void
 )paren
 (brace
-r_return
+id|u8
+id|reg
+op_assign
 id|inb
 c_func
 (paren
+id|pmbase
+op_plus
 id|TCO_RELOAD_REG
 )paren
 op_amp
 id|TCO_TIMEOUT_MASK
+suffix:semicolon
+r_return
+id|ticks_to_seconds
+c_func
+(paren
+id|reg
+)paren
 suffix:semicolon
 )brace
 DECL|function|amdtco_settimeout
@@ -262,27 +289,12 @@ id|timeout
 (brace
 id|u8
 id|reg
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|amdtco_lock
-)paren
-suffix:semicolon
-id|reg
 op_assign
-id|inb
+id|seconds_to_ticks
 c_func
 (paren
-id|pmbase
-op_plus
-id|TCO_INITVAL_REG
-)paren
-suffix:semicolon
-id|reg
-op_or_assign
 id|timeout
+)paren
 op_amp
 id|TCO_TIMEOUT_MASK
 suffix:semicolon
@@ -294,13 +306,6 @@ comma
 id|pmbase
 op_plus
 id|TCO_INITVAL_REG
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|amdtco_lock
 )paren
 suffix:semicolon
 )brace
@@ -324,28 +329,31 @@ op_amp
 id|amdtco_lock
 )paren
 suffix:semicolon
-id|reg
-op_assign
-id|inw
+multiline_comment|/* clear NO_REBOOT on DevB:3x48 p97 */
+id|pci_read_config_word
 c_func
 (paren
-id|pmbase
-op_plus
-id|GLOBAL_SMI_REG
+id|dev
+comma
+l_int|0x48
+comma
+op_amp
+id|reg
 )paren
 suffix:semicolon
 id|reg
-op_or_assign
-id|TCO_EN
+op_and_assign
+op_complement
+id|NO_REBOOT
 suffix:semicolon
-id|outw
+id|pci_write_config_word
 c_func
 (paren
-id|reg
+id|dev
 comma
-id|pmbase
-op_plus
-id|GLOBAL_SMI_REG
+l_int|0x48
+comma
+id|reg
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -503,6 +511,11 @@ id|timeout
 op_assign
 id|MAX_TIMEOUT
 suffix:semicolon
+id|amdtco_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|amdtco_settimeout
 c_func
 (paren
@@ -510,6 +523,11 @@ id|timeout
 )paren
 suffix:semicolon
 id|amdtco_global_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|amdtco_enable
 c_func
 (paren
 )paren
@@ -524,7 +542,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;Watchdog enabled, timeout = %d/%d seconds&quot;
+l_string|&quot;Watchdog enabled, timeout = %ds of %ds&bslash;n&quot;
 comma
 id|amdtco_gettimeout
 c_func
@@ -838,7 +856,7 @@ c_func
 (paren
 id|KERN_CRIT
 id|PFX
-l_string|&quot;Unexpected close!, timeout in %d seconds)&bslash;n&quot;
+l_string|&quot;Unexpected close!, timeout in %d seconds&bslash;n&quot;
 comma
 id|timeout
 )paren
@@ -958,12 +976,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-id|len
-suffix:semicolon
 )brace
 r_return
-l_int|0
+id|len
 suffix:semicolon
 )brace
 DECL|function|amdtco_notify_sys
@@ -1375,6 +1390,20 @@ id|ints
 l_int|1
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timeout
+op_logical_or
+id|timeout
+OG
+id|MAX_TIMEOUT
+)paren
+id|timeout
+op_assign
+id|MAX_TIMEOUT
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -1405,7 +1434,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;&quot;
+l_string|&quot;Zwane Mwaikambo &lt;zwane@holomorphy.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -1419,7 +1448,5 @@ c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
-suffix:semicolon
-id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 eof

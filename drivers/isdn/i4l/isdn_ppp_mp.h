@@ -46,9 +46,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-id|u16
-id|proto
 )paren
 suffix:semicolon
 r_void
@@ -132,9 +129,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-id|u16
-id|proto
 )paren
 (brace
 id|ippp_xmit
@@ -143,8 +137,6 @@ c_func
 id|idev
 comma
 id|skb
-comma
-id|proto
 )paren
 suffix:semicolon
 )brace

@@ -3,25 +3,6 @@ macro_line|#ifndef NUMAQ_H
 DECL|macro|NUMAQ_H
 mdefine_line|#define NUMAQ_H
 macro_line|#ifdef CONFIG_X86_NUMAQ
-multiline_comment|/*&n; * for now assume that 64Gb is max amount of RAM for whole system&n; *    64Gb / 4096bytes/page = 16777216 pages&n; */
-DECL|macro|MAX_NR_PAGES
-mdefine_line|#define MAX_NR_PAGES 16777216
-DECL|macro|MAX_ELEMENTS
-mdefine_line|#define MAX_ELEMENTS 256
-DECL|macro|PAGES_PER_ELEMENT
-mdefine_line|#define PAGES_PER_ELEMENT (16777216/256)
-r_extern
-r_int
-id|physnode_map
-(braket
-)braket
-suffix:semicolon
-DECL|macro|pfn_to_nid
-mdefine_line|#define pfn_to_nid(pfn)&t;({ physnode_map[(pfn) / PAGES_PER_ELEMENT]; })
-DECL|macro|pfn_to_pgdat
-mdefine_line|#define pfn_to_pgdat(pfn) NODE_DATA(pfn_to_nid(pfn))
-DECL|macro|PHYSADDR_TO_NID
-mdefine_line|#define PHYSADDR_TO_NID(pa) pfn_to_nid(pa &gt;&gt; PAGE_SHIFT)
 DECL|macro|MAX_NUMNODES
 mdefine_line|#define MAX_NUMNODES&t;&t;8
 r_extern
@@ -399,6 +380,7 @@ r_static
 r_inline
 r_int
 r_int
+op_star
 id|get_zholes_size
 c_func
 (paren
