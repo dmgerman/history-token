@@ -1,10 +1,114 @@
 macro_line|#ident &quot;$Id: raid6x86.h,v 1.3 2002/12/12 22:41:27 hpa Exp $&quot;
-multiline_comment|/* ----------------------------------------------------------------------- *&n; *&n; *   Copyright 2002 H. Peter Anvin - All Rights Reserved&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation, Inc., 53 Temple Place Ste 330,&n; *   Bostom MA 02111-1307, USA; either version 2 of the License, or&n; *   (at your option) any later version; incorporated herein by reference.&n; *&n; * ----------------------------------------------------------------------- */
+multiline_comment|/* ----------------------------------------------------------------------- *&n; *&n; *   Copyright 2002-2004 H. Peter Anvin - All Rights Reserved&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation, Inc., 53 Temple Place Ste 330,&n; *   Bostom MA 02111-1307, USA; either version 2 of the License, or&n; *   (at your option) any later version; incorporated herein by reference.&n; *&n; * ----------------------------------------------------------------------- */
 multiline_comment|/*&n; * raid6x86.h&n; *&n; * Definitions common to x86 and x86-64 RAID-6 code only&n; */
 macro_line|#ifndef LINUX_RAID_RAID6X86_H
 DECL|macro|LINUX_RAID_RAID6X86_H
 mdefine_line|#define LINUX_RAID_RAID6X86_H
 macro_line|#if defined(__i386__) || defined(__x86_64__)
+macro_line|#ifdef __x86_64__
+r_typedef
+r_struct
+(brace
+DECL|member|fsave
+r_int
+r_int
+id|fsave
+(braket
+l_int|27
+)braket
+suffix:semicolon
+DECL|member|cr0
+r_int
+r_int
+id|cr0
+suffix:semicolon
+DECL|typedef|raid6_mmx_save_t
+)brace
+id|raid6_mmx_save_t
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|16
+)paren
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* N.B.: For SSE we only save %xmm0-%xmm7 even for x86-64, since&n;   the code doesn&squot;t know about the additional x86-64 registers */
+r_typedef
+r_struct
+(brace
+DECL|member|sarea
+r_int
+r_int
+id|sarea
+(braket
+l_int|8
+op_star
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|cr0
+r_int
+r_int
+id|cr0
+suffix:semicolon
+DECL|typedef|raid6_sse_save_t
+)brace
+id|raid6_sse_save_t
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|16
+)paren
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* This is for x86-64-specific code which uses all 16 XMM registers */
+r_typedef
+r_struct
+(brace
+DECL|member|sarea
+r_int
+r_int
+id|sarea
+(braket
+l_int|16
+op_star
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|cr0
+r_int
+r_int
+id|cr0
+suffix:semicolon
+DECL|typedef|raid6_sse16_save_t
+)brace
+id|raid6_sse16_save_t
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|16
+)paren
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* On x86-64 the stack is 16-byte aligned */
+DECL|macro|SAREA
+mdefine_line|#define SAREA(x) (x-&gt;sarea)
+macro_line|#else /* __i386__ */
 r_typedef
 r_struct
 (brace
@@ -25,8 +129,7 @@ DECL|typedef|raid6_mmx_save_t
 )brace
 id|raid6_mmx_save_t
 suffix:semicolon
-multiline_comment|/* N.B.: For SSE we only save %xmm0-%xmm7 even for x86-64, since&n;   the code doesn&squot;t know about the additional x86-64 registers */
-multiline_comment|/* The +3 is so we can make sure the area is aligned properly */
+multiline_comment|/* On i386, the stack is only 8-byte aligned, but SSE requires 16-byte&n;   alignment.  The +3 is so we have the slack space to manually align&n;   a properly-sized area correctly.  */
 r_typedef
 r_struct
 (brace
@@ -50,68 +153,25 @@ suffix:semicolon
 DECL|typedef|raid6_sse_save_t
 )brace
 id|raid6_sse_save_t
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|16
-)paren
-)paren
-)paren
 suffix:semicolon
-macro_line|#ifdef __x86_64__
-multiline_comment|/* This is for x86-64-specific code which uses all 16 XMM registers */
-r_typedef
-r_struct
-(brace
-DECL|member|sarea
-r_int
-r_int
-id|sarea
-(braket
-l_int|16
-op_star
-l_int|4
-op_plus
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|cr0
-r_int
-r_int
-id|cr0
-suffix:semicolon
-DECL|typedef|raid6_sse16_save_t
-)brace
-id|raid6_sse16_save_t
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|16
-)paren
-)paren
-)paren
-suffix:semicolon
+DECL|macro|SAREA
+mdefine_line|#define SAREA(x) ((unsigned int *)((((unsigned long)&amp;(x)-&gt;sarea)+15) &amp; ~15))
 macro_line|#endif
 macro_line|#ifdef __KERNEL__ /* Real code */
+multiline_comment|/* Note: %cr0 is 32 bits on i386 and 64 bits on x86-64 */
 DECL|function|raid6_get_fpu
 r_static
 r_inline
-id|u32
+r_int
+r_int
 id|raid6_get_fpu
 c_func
 (paren
 r_void
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|cr0
 suffix:semicolon
 id|preempt_disable
@@ -122,7 +182,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;movl %%cr0,%0 ; clts&quot;
+l_string|&quot;mov %%cr0,%0 ; clts&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -141,14 +201,15 @@ r_void
 id|raid6_put_fpu
 c_func
 (paren
-id|u32
+r_int
+r_int
 id|cr0
 )paren
 (brace
 id|asm
 r_volatile
 (paren
-l_string|&quot;movl %0,%%cr0&quot;
+l_string|&quot;mov %0,%%cr0&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -167,7 +228,8 @@ macro_line|#else /* Dummy code for user space testing */
 DECL|function|raid6_get_fpu
 r_static
 r_inline
-id|u32
+r_int
+r_int
 id|raid6_get_fpu
 c_func
 (paren
@@ -185,7 +247,8 @@ r_void
 id|raid6_put_fpu
 c_func
 (paren
-id|u32
+r_int
+r_int
 id|cr0
 )paren
 (brace
@@ -276,45 +339,17 @@ op_star
 id|s
 )paren
 (brace
-macro_line|#ifdef __x86_64__
 r_int
 r_int
 op_star
 id|rsa
 op_assign
-id|s-&gt;sarea
-suffix:semicolon
-macro_line|#else
-multiline_comment|/* On i386 the save area may not be aligned */
-r_int
-r_int
-op_star
-id|rsa
-op_assign
+id|SAREA
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|s-&gt;sarea
-)paren
-op_plus
-l_int|15
-)paren
-op_amp
-op_complement
-l_int|15
+id|s
 )paren
 suffix:semicolon
-macro_line|#endif
 id|s-&gt;cr0
 op_assign
 id|raid6_get_fpu
@@ -447,45 +482,17 @@ op_star
 id|s
 )paren
 (brace
-macro_line|#ifdef __x86_64__
 r_int
 r_int
 op_star
 id|rsa
 op_assign
-id|s-&gt;sarea
-suffix:semicolon
-macro_line|#else
-multiline_comment|/* On i386 the save area may not be aligned */
-r_int
-r_int
-op_star
-id|rsa
-op_assign
+id|SAREA
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|s-&gt;sarea
-)paren
-op_plus
-l_int|15
-)paren
-op_amp
-op_complement
-l_int|15
+id|s
 )paren
 suffix:semicolon
-macro_line|#endif
 id|asm
 r_volatile
 (paren
@@ -625,46 +632,17 @@ op_star
 id|s
 )paren
 (brace
-macro_line|#ifdef __x86_64__
 r_int
 r_int
 op_star
 id|rsa
 op_assign
-op_amp
-id|s-&gt;sarea
-suffix:semicolon
-macro_line|#else
-multiline_comment|/* On i386 the save area may not be aligned */
-r_int
-r_int
-op_star
-id|rsa
-op_assign
+id|SAREA
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|s-&gt;sarea
-)paren
-op_plus
-l_int|15
-)paren
-op_amp
-op_complement
-l_int|15
+id|s
 )paren
 suffix:semicolon
-macro_line|#endif
 id|s-&gt;cr0
 op_assign
 id|raid6_get_fpu
@@ -797,45 +775,17 @@ op_star
 id|s
 )paren
 (brace
-macro_line|#ifdef __x86_64__
 r_int
 r_int
 op_star
 id|rsa
 op_assign
-id|s-&gt;sarea
-suffix:semicolon
-macro_line|#else
-multiline_comment|/* On i386 the save area may not be aligned */
-r_int
-r_int
-op_star
-id|rsa
-op_assign
+id|SAREA
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|s-&gt;sarea
-)paren
-op_plus
-l_int|15
-)paren
-op_amp
-op_complement
-l_int|15
+id|s
 )paren
 suffix:semicolon
-macro_line|#endif
 id|asm
 r_volatile
 (paren
@@ -967,6 +917,7 @@ macro_line|#ifdef __x86_64__
 DECL|function|raid6_before_sse16
 r_static
 r_inline
+r_void
 id|raid6_before_sse16
 c_func
 (paren
@@ -980,7 +931,11 @@ r_int
 op_star
 id|rsa
 op_assign
-id|s-&gt;sarea
+id|SAREA
+c_func
+(paren
+id|s
+)paren
 suffix:semicolon
 id|s-&gt;cr0
 op_assign
@@ -1217,6 +1172,7 @@ suffix:semicolon
 DECL|function|raid6_after_sse16
 r_static
 r_inline
+r_void
 id|raid6_after_sse16
 c_func
 (paren
@@ -1230,7 +1186,11 @@ r_int
 op_star
 id|rsa
 op_assign
-id|s-&gt;sarea
+id|SAREA
+c_func
+(paren
+id|s
+)paren
 suffix:semicolon
 id|asm
 r_volatile

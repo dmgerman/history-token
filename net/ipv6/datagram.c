@@ -1517,7 +1517,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ipv6_addr_type
+id|addr_type
 op_eq
 id|IPV6_ADDR_ANY
 )paren
@@ -1574,6 +1574,8 @@ op_amp
 id|src_info-&gt;ipi6_addr
 comma
 id|dev
+comma
+l_int|0
 )paren
 )paren
 (brace

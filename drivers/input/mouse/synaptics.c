@@ -954,7 +954,16 @@ suffix:semicolon
 id|mode
 op_or_assign
 id|SYN_BIT_ABSOLUTE_MODE
-op_or
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|psmouse_rate
+op_ge
+l_int|80
+)paren
+id|mode
+op_or_assign
 id|SYN_BIT_HIGH_RATE
 suffix:semicolon
 r_if
