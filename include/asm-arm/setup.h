@@ -401,7 +401,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|__tag
-mdefine_line|#define __tag __attribute__((unused, __section__(&quot;.taglist&quot;)))
+mdefine_line|#define __tag __attribute_used__ __attribute__((__section__(&quot;.taglist&quot;)))
 DECL|macro|__tagtable
 mdefine_line|#define __tagtable(tag, fn) &bslash;&n;static struct tagtable __tagtable_##fn __tag = { tag, fn }
 DECL|macro|tag_member_present
@@ -485,6 +485,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|__early_param
-mdefine_line|#define __early_param(name,fn)&t;&t;&t;&t;&bslash;&n;static struct early_params __early_##fn&t;&t;&t;&bslash;&n;__attribute__((section(&quot;__early_param&quot;), unused)) =&t;&bslash;&n;&t;{ name, fn }
+mdefine_line|#define __early_param(name,fn)&t;&t;&t;&t;&t;&bslash;&n;static struct early_params __early_##fn __attribute_used__&t;&bslash;&n;__attribute__((__section__(&quot;__early_param&quot;))) = { name, fn }
 macro_line|#endif
 eof
