@@ -292,6 +292,10 @@ DECL|member|tx_abs_int_delay
 r_uint32
 id|tx_abs_int_delay
 suffix:semicolon
+DECL|member|gotcl
+r_uint32
+id|gotcl
+suffix:semicolon
 DECL|member|tx_fifo_head
 r_uint32
 id|tx_fifo_head
@@ -333,6 +337,15 @@ suffix:semicolon
 DECL|member|rx_csum
 id|boolean_t
 id|rx_csum
+suffix:semicolon
+DECL|member|gorcl
+r_uint32
+id|gorcl
+suffix:semicolon
+multiline_comment|/* Interrupt Throttle Rate */
+DECL|member|itr
+r_uint32
+id|itr
 suffix:semicolon
 multiline_comment|/* OS defined structs */
 DECL|member|netdev

@@ -114,6 +114,15 @@ comma
 l_string|&quot;Receive Absolute Interrupt Delay&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Interrupt Throttle Rate (interrupts/sec)&n; *&n; * Valid Range: 100-100000 (0=off, 1=dynamic)&n; *&n; * Default Value: 1&n; */
+id|E1000_PARAM
+c_func
+(paren
+id|InterruptThrottleRate
+comma
+l_string|&quot;Interrupt Throttling Rate&quot;
+)paren
+suffix:semicolon
 DECL|macro|AUTONEG_ADV_DEFAULT
 mdefine_line|#define AUTONEG_ADV_DEFAULT  0x2F
 DECL|macro|AUTONEG_ADV_MASK
@@ -160,6 +169,12 @@ DECL|macro|MAX_TXABSDELAY
 mdefine_line|#define MAX_TXABSDELAY            0xFFFF
 DECL|macro|MIN_TXABSDELAY
 mdefine_line|#define MIN_TXABSDELAY                 0
+DECL|macro|DEFAULT_ITR
+mdefine_line|#define DEFAULT_ITR                    1
+DECL|macro|MAX_ITR
+mdefine_line|#define MAX_ITR                   100000
+DECL|macro|MIN_ITR
+mdefine_line|#define MIN_ITR                      100
 DECL|struct|e1000_option
 r_struct
 id|e1000_option
@@ -1181,6 +1196,118 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
+)brace
+(brace
+multiline_comment|/* Interrupt Throttling Rate */
+r_struct
+id|e1000_option
+id|opt
+op_assign
+(brace
+dot
+id|type
+op_assign
+id|range_option
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Interrupt Throttling Rate (ints/sec)&quot;
+comma
+dot
+id|err
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_ITR
+)paren
+comma
+dot
+id|def
+op_assign
+id|DEFAULT_ITR
+comma
+dot
+id|arg
+op_assign
+(brace
+dot
+id|r
+op_assign
+(brace
+dot
+id|min
+op_assign
+id|MIN_ITR
+comma
+dot
+id|max
+op_assign
+id|MAX_ITR
+)brace
+)brace
+)brace
+suffix:semicolon
+id|adapter-&gt;itr
+op_assign
+id|InterruptThrottleRate
+(braket
+id|bd
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|adapter-&gt;itr
+op_eq
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s turned off&bslash;n&quot;
+comma
+id|opt.name
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|adapter-&gt;itr
+op_eq
+l_int|1
+op_logical_or
+id|adapter-&gt;itr
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+multiline_comment|/* Dynamic mode */
+id|adapter-&gt;itr
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+(brace
+id|e1000_validate_option
+c_func
+(paren
+op_amp
+id|adapter-&gt;itr
+comma
+op_amp
+id|opt
+)paren
+suffix:semicolon
+)brace
 )brace
 r_switch
 c_cond
