@@ -8566,6 +8566,14 @@ id|drive-&gt;wcache
 op_assign
 l_int|1
 suffix:semicolon
+id|write_cache
+c_func
+(paren
+id|drive
+comma
+l_int|1
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * We must avoid issuing commands a drive does not understand&n;&t; * or we may crash it. We check flush cache is supported. We also&n;&t; * check we have the LBA48 flush cache if the drive capacity is&n;&t; * too large. By this time we have trimmed the drive capacity if&n;&t; * LBA48 is not available so we don&squot;t need to recheck that.&n;&t; */
 id|barrier
 op_assign
@@ -8616,15 +8624,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Now we have barrier awareness we can be properly conservative&n;&t;   by default with other drives. We turn off write caching when&n;&t;   barrier is not available. Users can adjust this at runtime if&n;&t;   they need unsafe but fast filesystems. This will reduce the&n;&t;   performance of non cache flush supporting disks but it means&n;&t;   you get the data order guarantees the journalling fs&squot;s require */
-id|write_cache
-c_func
-(paren
-id|drive
-comma
-id|barrier
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
