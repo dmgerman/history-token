@@ -389,6 +389,10 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|mapping
+op_assign
+id|page-&gt;mapping
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * The page is mapped into the page tables of one or more&n;&t;&t; * processes. Try to unmap it here.&n;&t;&t; */
 r_if
