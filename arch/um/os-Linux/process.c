@@ -439,18 +439,6 @@ r_int
 id|pid
 )paren
 (brace
-macro_line|#ifdef __NR_tkill
-id|syscall
-c_func
-(paren
-id|__NR_tkill
-comma
-id|pid
-comma
-id|SIGUSR1
-)paren
-suffix:semicolon
-macro_line|#else
 id|kill
 c_func
 (paren
@@ -459,7 +447,6 @@ comma
 id|SIGUSR1
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|os_getpid
 r_int
