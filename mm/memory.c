@@ -5025,7 +5025,7 @@ c_func
 (paren
 id|new_page
 comma
-id|mm
+id|vma
 comma
 id|address
 )paren
@@ -6196,7 +6196,7 @@ c_func
 (paren
 id|page
 comma
-id|mm
+id|vma
 comma
 id|address
 )paren
@@ -6482,7 +6482,7 @@ c_func
 (paren
 id|page
 comma
-id|mm
+id|vma
 comma
 id|addr
 )paren
@@ -6915,7 +6915,7 @@ c_func
 (paren
 id|new_page
 comma
-id|mm
+id|vma
 comma
 id|address
 )paren

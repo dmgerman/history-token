@@ -1704,7 +1704,7 @@ c_func
 (paren
 id|page
 comma
-id|vma-&gt;vm_mm
+id|vma
 comma
 id|address
 )paren

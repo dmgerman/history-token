@@ -1363,7 +1363,7 @@ r_return
 id|referenced
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * page_add_anon_rmap - add pte mapping to an anonymous page&n; * @page:&t;the page to add the mapping to&n; * @mm:&t;&t;the mm in which the mapping is added&n; * @address:&t;the user virtual address mapped&n; *&n; * The caller needs to hold the mm-&gt;page_table_lock.&n; */
+multiline_comment|/**&n; * page_add_anon_rmap - add pte mapping to an anonymous page&n; * @page:&t;the page to add the mapping to&n; * @vma:&t;the vm area in which the mapping is added&n; * @address:&t;the user virtual address mapped&n; *&n; * The caller needs to hold the mm-&gt;page_table_lock.&n; */
 DECL|function|page_add_anon_rmap
 r_void
 id|page_add_anon_rmap
@@ -1375,9 +1375,9 @@ op_star
 id|page
 comma
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -1389,7 +1389,7 @@ id|anonmm
 op_star
 id|anonmm
 op_assign
-id|mm-&gt;anonmm
+id|vma-&gt;vm_mm-&gt;anonmm
 suffix:semicolon
 id|BUG_ON
 c_func

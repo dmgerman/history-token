@@ -8,6 +8,7 @@ mdefine_line|#define page_map_lock(page) &bslash;&n;&t;bit_spin_lock(PG_maplock,
 DECL|macro|page_map_unlock
 mdefine_line|#define page_map_unlock(page) &bslash;&n;&t;bit_spin_unlock(PG_maplock, (unsigned long *)&amp;(page)-&gt;flags)
 macro_line|#ifdef CONFIG_MMU
+multiline_comment|/*&n; * rmap interfaces called when adding or removing pte of page&n; */
 r_void
 id|page_add_anon_rmap
 c_func
@@ -17,7 +18,7 @@ id|page
 op_star
 comma
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
 comma
 r_int
