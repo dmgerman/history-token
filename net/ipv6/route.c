@@ -1197,11 +1197,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* rt6_ins is called with FREE rt6_lock.&n;   It takes new route entry, the addition fails by any reason the&n;   route is freed. In any case, if caller does not hold it, it may&n;   be destroyed.&n; */
-DECL|function|rt6_ins
-r_static
+multiline_comment|/* ip6_ins_rt is called with FREE rt6_lock.&n;   It takes new route entry, the addition fails by any reason the&n;   route is freed. In any case, if caller does not hold it, it may&n;   be destroyed.&n; */
+DECL|function|ip6_ins_rt
 r_int
-id|rt6_ins
+id|ip6_ins_rt
 c_func
 (paren
 r_struct
@@ -1387,7 +1386,7 @@ id|rt-&gt;u.dst
 suffix:semicolon
 id|err
 op_assign
-id|rt6_ins
+id|ip6_ins_rt
 c_func
 (paren
 id|rt
@@ -3626,7 +3625,7 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-id|rt6_ins
+id|ip6_ins_rt
 c_func
 (paren
 id|rt
@@ -4245,7 +4244,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rt6_ins
+id|ip6_ins_rt
 c_func
 (paren
 id|nrt
@@ -4577,7 +4576,7 @@ l_int|1
 op_assign
 id|pmtu
 suffix:semicolon
-id|rt6_ins
+id|ip6_ins_rt
 c_func
 (paren
 id|nrt
@@ -5452,7 +5451,7 @@ id|rt-&gt;rt6i_dst.plen
 op_assign
 l_int|128
 suffix:semicolon
-id|rt6_ins
+id|ip6_ins_rt
 c_func
 (paren
 id|rt
