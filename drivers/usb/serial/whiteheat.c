@@ -1383,7 +1383,7 @@ op_logical_neg
 id|command
 )paren
 r_goto
-id|no_comand_buffer
+id|no_command_buffer
 suffix:semicolon
 id|command
 (braket
@@ -2352,7 +2352,7 @@ c_func
 (paren
 id|command
 )paren
-suffix:colon
+suffix:semicolon
 id|no_command_buffer
 suffix:colon
 r_return
