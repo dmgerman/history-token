@@ -419,6 +419,30 @@ DECL|macro|__NR_gettid
 mdefine_line|#define __NR_gettid&t;&t;207
 DECL|macro|__NR_tkill
 mdefine_line|#define __NR_tkill&t;&t;208
+DECL|macro|__NR_setxattr
+mdefine_line|#define __NR_setxattr&t;&t;209
+DECL|macro|__NR_lsetxattr
+mdefine_line|#define __NR_lsetxattr&t;&t;210
+DECL|macro|__NR_fsetxattr
+mdefine_line|#define __NR_fsetxattr&t;&t;211
+DECL|macro|__NR_getxattr
+mdefine_line|#define __NR_getxattr&t;&t;212
+DECL|macro|__NR_lgetxattr
+mdefine_line|#define __NR_lgetxattr&t;&t;213
+DECL|macro|__NR_fgetxattr
+mdefine_line|#define __NR_fgetxattr&t;&t;214
+DECL|macro|__NR_listxattr
+mdefine_line|#define __NR_listxattr&t;&t;215
+DECL|macro|__NR_llistxattr
+mdefine_line|#define __NR_llistxattr&t;&t;216
+DECL|macro|__NR_flistxattr
+mdefine_line|#define __NR_flistxattr&t;&t;217
+DECL|macro|__NR_removexattr
+mdefine_line|#define __NR_removexattr&t;218
+DECL|macro|__NR_lremovexattr
+mdefine_line|#define __NR_lremovexattr&t;219
+DECL|macro|__NR_fremovexattr
+mdefine_line|#define __NR_fremovexattr&t;220
 DECL|macro|__NR
 mdefine_line|#define __NR(n)&t;#n
 DECL|macro|__syscall_return
