@@ -511,7 +511,7 @@ suffix:semicolon
 )brace
 DECL|function|pcibios_assign_resources
 r_static
-r_void
+r_int
 id|__init
 id|pcibios_assign_resources
 c_func
@@ -684,6 +684,9 @@ id|PCI_ROM_RESOURCE
 suffix:semicolon
 )brace
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|pcibios_resource_survey
 r_void
@@ -719,12 +722,15 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|pcibios_assign_resources
+)brace
+multiline_comment|/**&n; * called in fs_initcall (one below subsys_initcall),&n; * give a chance for motherboard reserve resources&n; */
+DECL|variable|pcibios_assign_resources
+id|fs_initcall
 c_func
 (paren
+id|pcibios_assign_resources
 )paren
 suffix:semicolon
-)brace
 DECL|function|pcibios_enable_resources
 r_int
 id|pcibios_enable_resources
