@@ -38157,10 +38157,7 @@ c_func
 (paren
 id|pdev
 comma
-(paren
-id|u64
-)paren
-l_int|0xffffffff
+l_int|0xffffffffULL
 )paren
 suffix:semicolon
 r_if
