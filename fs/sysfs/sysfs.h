@@ -89,9 +89,7 @@ id|name
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|dentry
-op_star
+r_int
 id|sysfs_create_subdir
 c_func
 (paren
@@ -101,6 +99,11 @@ op_star
 comma
 r_const
 r_char
+op_star
+comma
+r_struct
+id|dentry
+op_star
 op_star
 )paren
 suffix:semicolon
