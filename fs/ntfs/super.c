@@ -10087,7 +10087,7 @@ id|ntfs_index_ctx_cache
 suffix:semicolon
 multiline_comment|/* A global default upcase table and a corresponding reference count. */
 DECL|variable|default_upcase
-m_wchar_t
+id|ntfschar
 op_star
 id|default_upcase
 op_assign

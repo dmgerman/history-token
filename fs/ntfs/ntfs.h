@@ -292,7 +292,7 @@ multiline_comment|/* From fs/ntfs/super.c */
 DECL|macro|default_upcase_len
 mdefine_line|#define default_upcase_len 0x10000
 r_extern
-m_wchar_t
+id|ntfschar
 op_star
 id|default_upcase
 suffix:semicolon
