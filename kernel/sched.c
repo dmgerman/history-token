@@ -7802,7 +7802,7 @@ id|mask
 comma
 id|p-&gt;cpus_allowed
 comma
-id|cpu_online_map
+id|cpu_possible_map
 )paren
 suffix:semicolon
 id|out_unlock
