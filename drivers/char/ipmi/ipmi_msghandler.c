@@ -12398,10 +12398,19 @@ id|notifier_block
 id|panic_block
 op_assign
 (brace
+dot
+id|notifier_call
+op_assign
 id|panic_event
 comma
+dot
+id|next
+op_assign
 l_int|NULL
 comma
+dot
+id|priority
+op_assign
 l_int|200
 multiline_comment|/* priority: INT_MAX &gt;= x &gt;= 0 */
 )brace
