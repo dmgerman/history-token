@@ -3088,13 +3088,6 @@ macro_line|#else
 l_int|0
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Note: spin_lock_irqsave is held by caller... */
-id|spin_unlock
-c_func
-(paren
-id|cmd-&gt;device-&gt;host-&gt;host_lock
-)paren
-suffix:semicolon
 id|ap
 op_assign
 (paren
@@ -3209,13 +3202,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|ap-&gt;host_set-&gt;lock
-)paren
-suffix:semicolon
 id|dev
 op_assign
 op_amp
@@ -3715,21 +3701,9 @@ suffix:semicolon
 )brace
 id|out_unlock
 suffix:colon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|ap-&gt;host_set-&gt;lock
-)paren
-suffix:semicolon
+multiline_comment|/* I will kill this soon... reduces 2.4 diff */
 id|out
 suffix:colon
-id|spin_lock
-c_func
-(paren
-id|cmd-&gt;device-&gt;host-&gt;host_lock
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

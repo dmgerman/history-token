@@ -9961,6 +9961,15 @@ op_amp
 id|ent-&gt;pdev-&gt;dev
 )paren
 suffix:semicolon
+id|scsi_assign_lock
+c_func
+(paren
+id|host
+comma
+op_amp
+id|host_set-&gt;lock
+)paren
+suffix:semicolon
 id|ap-&gt;flags
 op_assign
 id|ATA_FLAG_PORT_DISABLED
