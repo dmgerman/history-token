@@ -1152,6 +1152,7 @@ id|EIO
 suffix:semicolon
 )brace
 DECL|function|hfs_free_extents
+r_static
 r_int
 id|hfs_free_extents
 c_func

@@ -6,15 +6,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &quot;hfs_fs.h&quot;
 macro_line|#include &quot;btree.h&quot;
-DECL|variable|hfs_version
-r_const
-r_char
-id|hfs_version
-(braket
-)braket
-op_assign
-l_string|&quot;0.96&quot;
-suffix:semicolon
 DECL|variable|hfs_inode_cachep
 r_static
 id|kmem_cache_t
@@ -189,6 +180,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hfs_remount
+r_static
 r_int
 id|hfs_remount
 c_func

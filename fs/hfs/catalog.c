@@ -78,6 +78,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|hfs_cat_build_record
+r_static
 r_int
 id|hfs_cat_build_record
 c_func

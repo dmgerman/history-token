@@ -4,6 +4,18 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
 macro_line|#include &quot;hfs_fs.h&quot;
 macro_line|#include &quot;btree.h&quot;
+DECL|variable|hfs_file_operations
+r_static
+r_struct
+id|file_operations
+id|hfs_file_operations
+suffix:semicolon
+DECL|variable|hfs_file_inode_operations
+r_static
+r_struct
+id|inode_operations
+id|hfs_file_inode_operations
+suffix:semicolon
 multiline_comment|/*================ Variable-like macros ================*/
 DECL|macro|HFS_VALID_MODE_BITS
 mdefine_line|#define HFS_VALID_MODE_BITS  (S_IFREG | S_IFDIR | S_IRWXUGO)
@@ -137,6 +149,7 @@ id|hfs_get_block
 suffix:semicolon
 )brace
 DECL|function|hfs_releasepage
+r_static
 r_int
 id|hfs_releasepage
 c_func
@@ -1538,6 +1551,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|hfs_test_inode
+r_static
 r_int
 id|hfs_test_inode
 c_func
@@ -1611,6 +1625,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * hfs_read_inode&n; */
 DECL|function|hfs_read_inode
+r_static
 r_int
 id|hfs_read_inode
 c_func
@@ -3356,6 +3371,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|hfs_file_operations
+r_static
 r_struct
 id|file_operations
 id|hfs_file_operations
@@ -3404,6 +3420,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|hfs_file_inode_operations
+r_static
 r_struct
 id|inode_operations
 id|hfs_file_inode_operations

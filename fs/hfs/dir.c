@@ -3,6 +3,7 @@ macro_line|#include &quot;hfs_fs.h&quot;
 macro_line|#include &quot;btree.h&quot;
 multiline_comment|/*&n; * hfs_lookup()&n; */
 DECL|function|hfs_lookup
+r_static
 r_struct
 id|dentry
 op_star
@@ -180,6 +181,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * hfs_readdir&n; */
 DECL|function|hfs_readdir
+r_static
 r_int
 id|hfs_readdir
 c_func
@@ -823,6 +825,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * hfs_create()&n; *&n; * This is the create() entry in the inode_operations structure for&n; * regular HFS directories.  The purpose is to create a new file in&n; * a directory and return a corresponding inode, given the inode for&n; * the directory and the name (and its length) of the new file.&n; */
 DECL|function|hfs_create
+r_static
 r_int
 id|hfs_create
 c_func
@@ -938,6 +941,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * hfs_mkdir()&n; *&n; * This is the mkdir() entry in the inode_operations structure for&n; * regular HFS directories.  The purpose is to create a new directory&n; * in a directory, given the inode for the parent directory and the&n; * name (and its length) of the new directory.&n; */
 DECL|function|hfs_mkdir
+r_static
 r_int
 id|hfs_mkdir
 c_func
@@ -1050,6 +1054,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * hfs_unlink()&n; *&n; * This is the unlink() entry in the inode_operations structure for&n; * regular HFS directories.  The purpose is to delete an existing&n; * file, given the inode for the parent directory and the name&n; * (and its length) of the existing file.&n; */
 DECL|function|hfs_unlink
+r_static
 r_int
 id|hfs_unlink
 c_func
@@ -1123,6 +1128,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * hfs_rmdir()&n; *&n; * This is the rmdir() entry in the inode_operations structure for&n; * regular HFS directories.  The purpose is to delete an existing&n; * directory, given the inode for the parent directory and the name&n; * (and its length) of the existing directory.&n; */
 DECL|function|hfs_rmdir
+r_static
 r_int
 id|hfs_rmdir
 c_func
@@ -1208,6 +1214,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * hfs_rename()&n; *&n; * This is the rename() entry in the inode_operations structure for&n; * regular HFS directories.  The purpose is to rename an existing&n; * file or directory, given the inode for the current directory and&n; * the name (and its length) of the existing file/directory and the&n; * inode for the new directory and the name (and its length) of the&n; * new file/directory.&n; * XXX: how do you handle must_be dir?&n; */
 DECL|function|hfs_rename
+r_static
 r_int
 id|hfs_rename
 c_func
