@@ -6458,13 +6458,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|pbd_delwrite_lock
-)paren
-suffix:semicolon
 id|blk_run_queues
 c_func
 (paren
