@@ -15,7 +15,7 @@ macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * IOP331 I/O and Mem space regions for PCI autoconfiguration&n; */
 DECL|macro|IOP331_PCI_IO_WINDOW_SIZE
-mdefine_line|#define IOP331_PCI_IO_WINDOW_SIZE   0x10000
+mdefine_line|#define IOP331_PCI_IO_WINDOW_SIZE   0x00010000
 DECL|macro|IOP331_PCI_LOWER_IO_PA
 mdefine_line|#define IOP331_PCI_LOWER_IO_PA      0x90000000
 DECL|macro|IOP331_PCI_LOWER_IO_VA
@@ -30,22 +30,20 @@ DECL|macro|IOP331_PCI_UPPER_IO_BA
 mdefine_line|#define IOP331_PCI_UPPER_IO_BA      (IOP331_PCI_LOWER_IO_BA + IOP331_PCI_IO_WINDOW_SIZE - 1)
 DECL|macro|IOP331_PCI_IO_OFFSET
 mdefine_line|#define IOP331_PCI_IO_OFFSET        (IOP331_PCI_LOWER_IO_VA - IOP331_PCI_LOWER_IO_BA)
+multiline_comment|/* this can be 128M if OMWTVR1 is set */
 DECL|macro|IOP331_PCI_MEM_WINDOW_SIZE
-mdefine_line|#define IOP331_PCI_MEM_WINDOW_SIZE  (~*IOP331_IALR1 + 1)
+mdefine_line|#define IOP331_PCI_MEM_WINDOW_SIZE&t;0x04000000 /* 64M outbound window */
+singleline_comment|//#define IOP331_PCI_MEM_WINDOW_SIZE  (~*IOP331_IALR1 + 1)
 DECL|macro|IOP331_PCI_LOWER_MEM_PA
 mdefine_line|#define IOP331_PCI_LOWER_MEM_PA     0x80000000
-DECL|macro|IOP331_PCI_LOWER_MEM_VA
-mdefine_line|#define IOP331_PCI_LOWER_MEM_VA     0x80000000
 DECL|macro|IOP331_PCI_LOWER_MEM_BA
 mdefine_line|#define IOP331_PCI_LOWER_MEM_BA     (*IOP331_OMWTVR0)
 DECL|macro|IOP331_PCI_UPPER_MEM_PA
 mdefine_line|#define IOP331_PCI_UPPER_MEM_PA     (IOP331_PCI_LOWER_MEM_PA + IOP331_PCI_MEM_WINDOW_SIZE - 1)
-DECL|macro|IOP331_PCI_UPPER_MEM_VA
-mdefine_line|#define IOP331_PCI_UPPER_MEM_VA     (IOP331_PCI_LOWER_MEM_VA + IOP331_PCI_MEM_WINDOW_SIZE - 1)
 DECL|macro|IOP331_PCI_UPPER_MEM_BA
 mdefine_line|#define IOP331_PCI_UPPER_MEM_BA     (IOP331_PCI_LOWER_MEM_BA + IOP331_PCI_MEM_WINDOW_SIZE - 1)
 DECL|macro|IOP331_PCI_MEM_OFFSET
-mdefine_line|#define IOP331_PCI_MEM_OFFSET       (IOP331_PCI_LOWER_MEM_VA - IOP331_PCI_LOWER_MEM_BA)
+mdefine_line|#define IOP331_PCI_MEM_OFFSET       (IOP331_PCI_LOWER_MEM_PA - IOP331_PCI_LOWER_MEM_BA)
 multiline_comment|/*&n; * IOP331 chipset registers&n; */
 DECL|macro|IOP331_VIRT_MEM_BASE
 mdefine_line|#define IOP331_VIRT_MEM_BASE  0xfeffe000  /* chip virtual mem address*/
