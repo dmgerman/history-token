@@ -327,6 +327,7 @@ id|board_data
 suffix:semicolon
 DECL|member|regs
 r_void
+id|__iomem
 op_star
 id|regs
 suffix:semicolon

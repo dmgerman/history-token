@@ -3,8 +3,14 @@ macro_line|#ifndef _M68K_BLINKEN_H
 DECL|macro|_M68K_BLINKEN_H
 mdefine_line|#define _M68K_BLINKEN_H
 macro_line|#include &lt;asm/setup.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|HP300_LEDS
 mdefine_line|#define HP300_LEDS&t;&t;0xf001ffff
+r_extern
+r_int
+r_char
+id|ledstate
+suffix:semicolon
 DECL|function|blinken_leds
 r_static
 id|__inline__
@@ -13,7 +19,10 @@ id|blinken_leds
 c_func
 (paren
 r_int
-id|x
+id|on
+comma
+r_int
+id|off
 )paren
 (brace
 r_if
@@ -22,19 +31,22 @@ c_cond
 id|MACH_IS_HP300
 )paren
 (brace
-op_star
+id|ledstate
+op_or_assign
+id|on
+suffix:semicolon
+id|ledstate
+op_and_assign
+op_complement
+id|off
+suffix:semicolon
+id|out_8
+c_func
 (paren
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
 id|HP300_LEDS
-)paren
-op_assign
-(paren
-id|x
+comma
+op_complement
+id|ledstate
 )paren
 suffix:semicolon
 )brace

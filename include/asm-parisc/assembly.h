@@ -17,6 +17,8 @@ DECL|macro|RP_OFFSET
 mdefine_line|#define RP_OFFSET&t;16
 DECL|macro|FRAME_SIZE
 mdefine_line|#define FRAME_SIZE&t;128
+DECL|macro|CALLEE_SAVE_FRAME_SIZE
+mdefine_line|#define CALLEE_SAVE_FRAME_SIZE&t;144
 macro_line|#else
 DECL|macro|LDREG
 mdefine_line|#define LDREG&t;ldw
@@ -32,6 +34,8 @@ DECL|macro|RP_OFFSET
 mdefine_line|#define RP_OFFSET&t;20
 DECL|macro|FRAME_SIZE
 mdefine_line|#define FRAME_SIZE&t;64
+DECL|macro|CALLEE_SAVE_FRAME_SIZE
+mdefine_line|#define CALLEE_SAVE_FRAME_SIZE&t;128
 macro_line|#endif
 macro_line|#ifdef CONFIG_PA20
 DECL|macro|BL
@@ -1904,7 +1908,8 @@ id|ma
 op_mod
 id|r3
 comma
-l_int|144
+id|CALLEE_SAVE_FRAME_SIZE
+c_func
 (paren
 op_mod
 id|r30
@@ -2254,7 +2259,8 @@ id|ldd
 comma
 id|mb
 op_minus
-l_int|144
+id|CALLEE_SAVE_FRAME_SIZE
+c_func
 (paren
 op_mod
 id|r30
@@ -2274,7 +2280,8 @@ id|ma
 op_mod
 id|r3
 comma
-l_int|128
+id|CALLEE_SAVE_FRAME_SIZE
+c_func
 (paren
 op_mod
 id|r30
@@ -2620,7 +2627,8 @@ id|ldw
 comma
 id|mb
 op_minus
-l_int|128
+id|CALLEE_SAVE_FRAME_SIZE
+c_func
 (paren
 op_mod
 id|r30

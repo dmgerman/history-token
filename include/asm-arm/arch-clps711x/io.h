@@ -5,11 +5,11 @@ mdefine_line|#define __ASM_ARM_ARCH_IO_H
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffffffff
 DECL|macro|__io
-mdefine_line|#define __io(a)&t;&t;&t;((a))
+mdefine_line|#define __io(a)&t;&t;&t;((void __iomem *)(a))
 DECL|macro|__mem_pci
-mdefine_line|#define __mem_pci(a)&t;&t;((unsigned long)(a))
+mdefine_line|#define __mem_pci(a)&t;&t;(a)
 DECL|macro|__mem_isa
-mdefine_line|#define __mem_isa(a)&t;&t;((unsigned long)(a))
+mdefine_line|#define __mem_isa(a)&t;&t;(a)
 multiline_comment|/*&n; * We don&squot;t support ins[lb]/outs[lb].  Make them fault.&n; */
 DECL|macro|__raw_readsb
 mdefine_line|#define __raw_readsb(p,d,l)&t;do { *(int *)0 = 0; } while (0)

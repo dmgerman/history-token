@@ -1,6 +1,7 @@
 macro_line|#ifndef __ARCH_M68K_ATOMIC__
 DECL|macro|__ARCH_M68K_ATOMIC__
 mdefine_line|#define __ARCH_M68K_ATOMIC__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/system.h&gt;&t;/* local_irq_XXX() */
 multiline_comment|/*&n; * Atomic operations that C can&squot;t guarantee us.  Useful for&n; * resource counting etc..&n; */
 multiline_comment|/*&n; * We do not have SMP m68k systems, so we don&squot;t have to deal with that.&n; */

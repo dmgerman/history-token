@@ -5,8 +5,8 @@ mdefine_line|#define __ASM_ARM_ARCH_IO_H
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffffffff
 DECL|macro|__io
-mdefine_line|#define __io(a)       (a)
+mdefine_line|#define __io(a)&t;&t;((void __iomem *)(a))
 DECL|macro|__mem_pci
-mdefine_line|#define __mem_pci(a)  (a)
+mdefine_line|#define __mem_pci(a)&t;(a)
 macro_line|#endif
 eof

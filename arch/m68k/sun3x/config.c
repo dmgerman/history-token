@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Setup kernel for a Sun3x machine&n; *&n; * (C) 1999 Thomas Bogendoerfer (tsbogend@alpha.franken.de)&n; *&n; * based on code from Oliver Jowett &lt;oliver@jowett.manawatu.gen.nz&gt;&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
@@ -156,7 +157,7 @@ id|mach_get_hardware_list
 op_assign
 id|sun3x_get_hardware_list
 suffix:semicolon
-macro_line|#if defined(CONFIG_DUMMY_CONSOLE)
+macro_line|#ifdef CONFIG_DUMMY_CONSOLE
 id|conswitchp
 op_assign
 op_amp

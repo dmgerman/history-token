@@ -193,6 +193,7 @@ id|mmci_host
 (brace
 DECL|member|base
 r_void
+id|__iomem
 op_star
 id|base
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/char/serial167.c&n; *&n; * Driver for MVME166/7 board serial ports, which are via a CD2401.&n; * Based very much on cyclades.c.&n; *&n; * MVME166/7 work by Richard Hirst [richard@sleepie.demon.co.uk]&n; *&n; * ==============================================================&n; *&n; * static char rcsid[] =&n; * &quot;$Revision: 1.36.1.4 $$Date: 1995/03/29 06:14:14 $&quot;;&n; *&n; *  linux/kernel/cyclades.c&n; *&n; * Maintained by Marcio Saito (cyclades@netcom.com) and&n; * Randolph Bentson (bentson@grieg.seaslug.org)&n; *&n; * Much of the design and some of the code came from serial.c&n; * which was copyright (C) 1991, 1992  Linus Torvalds.  It was&n; * extensively rewritten by Theodore Ts&squot;o, 8/16/92 -- 9/14/92,&n; * and then fixed as suggested by Michael K. Johnson 12/12/92.&n; *&n; * This version does not support shared irq&squot;s.&n; *&n; * $Log: cyclades.c,v $&n; * Revision 1.36.1.4  1995/03/29  06:14:14  bentson&n; * disambiguate between Cyclom-16Y and Cyclom-32Ye;&n; *&n; * Changes:&n; *&n; * 200 lines of changes record removed - RGH 11-10-95, starting work on&n; * converting this to drive serial ports on mvme166 (cd2401).&n; *&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 2000/08/25&n; * - get rid of verify_area&n; * - use get_user to access memory from userspace in set_threshold,&n; *   set_default_threshold and set_timeout&n; * - don&squot;t use the panic function in serial167_init&n; * - do resource release on failure on serial167_init&n; * - include missing restore_flags in mvme167_serial_console_setup&n; */
+multiline_comment|/*&n; * linux/drivers/char/serial167.c&n; *&n; * Driver for MVME166/7 board serial ports, which are via a CD2401.&n; * Based very much on cyclades.c.&n; *&n; * MVME166/7 work by Richard Hirst [richard@sleepie.demon.co.uk]&n; *&n; * ==============================================================&n; *&n; * static char rcsid[] =&n; * &quot;$Revision: 1.36.1.4 $$Date: 1995/03/29 06:14:14 $&quot;;&n; *&n; *  linux/kernel/cyclades.c&n; *&n; * Maintained by Marcio Saito (cyclades@netcom.com) and&n; * Randolph Bentson (bentson@grieg.seaslug.org)&n; *&n; * Much of the design and some of the code came from serial.c&n; * which was copyright (C) 1991, 1992  Linus Torvalds.  It was&n; * extensively rewritten by Theodore Ts&squot;o, 8/16/92 -- 9/14/92,&n; * and then fixed as suggested by Michael K. Johnson 12/12/92.&n; *&n; * This version does not support shared irq&squot;s.&n; *&n; * $Log: cyclades.c,v $&n; * Revision 1.36.1.4  1995/03/29  06:14:14  bentson&n; * disambiguate between Cyclom-16Y and Cyclom-32Ye;&n; *&n; * Changes:&n; *&n; * 200 lines of changes record removed - RGH 11-10-95, starting work on&n; * converting this to drive serial ports on mvme166 (cd2401).&n; *&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 2000/08/25&n; * - get rid of verify_area&n; * - use get_user to access memory from userspace in set_threshold,&n; *   set_default_threshold and set_timeout&n; * - don&squot;t use the panic function in serial167_init&n; * - do resource release on failure on serial167_init&n; * - include missing restore_flags in mvme167_serial_console_setup&n; *&n; * Kars de Jong &lt;jongk@linux-m68k.org&gt; - 2004/09/06&n; * - replace bottom half handler with task queue handler&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -51,13 +51,6 @@ DECL|macro|STD_COM_FLAGS
 mdefine_line|#define STD_COM_FLAGS (0)
 DECL|macro|SERIAL_TYPE_NORMAL
 mdefine_line|#define SERIAL_TYPE_NORMAL  1
-DECL|variable|tq_cyclades
-id|DECLARE_TASK_QUEUE
-c_func
-(paren
-id|tq_cyclades
-)paren
-suffix:semicolon
 DECL|variable|cy_serial_driver
 r_static
 r_struct
@@ -1351,24 +1344,13 @@ op_lshift
 id|event
 suffix:semicolon
 multiline_comment|/* remember what kind of event and who */
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|info-&gt;tqueue
-comma
-op_amp
-id|tq_cyclades
 )paren
 suffix:semicolon
-multiline_comment|/* it belongs to */
-id|mark_bh
-c_func
-(paren
-id|CYCLADES_BH
-)paren
-suffix:semicolon
-multiline_comment|/* then trigger event */
 )brace
 multiline_comment|/* cy_sched_event */
 multiline_comment|/* The real interrupt service routines are called&n;   whenever the card wants its hand held--chars&n;   received, out buffer empty, modem change, etc.&n; */
@@ -1750,14 +1732,13 @@ r_else
 multiline_comment|/* there was a software buffer overrun&n;&t;       and nothing could be done about it!!! */
 )brace
 )brace
-id|queue_task
+id|schedule_delayed_work
 c_func
 (paren
 op_amp
-id|tty-&gt;flip.tqueue
+id|tty-&gt;flip.work
 comma
-op_amp
-id|tq_timer
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* end of service */
@@ -2759,14 +2740,13 @@ l_int|10L
 suffix:semicolon
 macro_line|#endif
 )brace
-id|queue_task
+id|schedule_delayed_work
 c_func
 (paren
 op_amp
-id|tty-&gt;flip.tqueue
+id|tty-&gt;flip.work
 comma
-op_amp
-id|tq_timer
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -2788,25 +2768,7 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* cy_rx_interrupt */
-multiline_comment|/*&n; * This routine is used to handle the &quot;bottom half&quot; processing for the&n; * serial driver, known also the &quot;software interrupt&quot; processing.&n; * This processing is done at the kernel interrupt level, after the&n; * cy_interrupt() has returned, BUT WITH INTERRUPTS TURNED ON.  This&n; * is where time-consuming activities which can not be done in the&n; * interrupt driver proper are done; the interrupt driver schedules&n; * them using cy_sched_event(), and they get done here.&n; *&n; * This is done through one level of indirection--the task queue.&n; * When a hardware interrupt service routine wants service by the&n; * driver&squot;s bottom half, it enqueues the appropriate tq_struct (one&n; * per port) to the tq_cyclades work queue and sets a request flag&n; * via mark_bh for processing that queue.  When the time is right,&n; * do_cyclades_bh is called (because of the mark_bh) and it requests&n; * that the work queue be processed.&n; *&n; * Although this may seem unwieldy, it gives the system a way to&n; * pass an argument (in this case the pointer to the cyclades_port&n; * structure) to the bottom half of the driver.  Previous kernels&n; * had to poll every port to see if that port needed servicing.&n; */
-r_static
-r_void
-DECL|function|do_cyclades_bh
-id|do_cyclades_bh
-c_func
-(paren
-r_void
-)paren
-(brace
-id|run_task_queue
-c_func
-(paren
-op_amp
-id|tq_cyclades
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* do_cyclades_bh */
+multiline_comment|/*&n; * This routine is used to handle the &quot;bottom half&quot; processing for the&n; * serial driver, known also the &quot;software interrupt&quot; processing.&n; * This processing is done at the kernel interrupt level, after the&n; * cy#/_interrupt() has returned, BUT WITH INTERRUPTS TURNED ON.  This&n; * is where time-consuming activities which can not be done in the&n; * interrupt driver proper are done; the interrupt driver schedules&n; * them using cy_sched_event(), and they get done here.&n; *&n; * This is done through one level of indirection--the task queue.&n; * When a hardware interrupt service routine wants service by the&n; * driver&squot;s bottom half, it enqueues the appropriate tq_struct (one&n; * per port) to the keventd work queue and sets a request flag&n; * that the work queue be processed.&n; *&n; * Although this may seem unwieldy, it gives the system a way to&n; * pass an argument (in this case the pointer to the cyclades_port&n; * structure) to the bottom half of the driver.  Previous kernels&n; * had to poll every port to see if that port needed servicing.&n; */
 r_static
 r_void
 DECL|function|do_softint
@@ -9386,14 +9348,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|init_bh
-c_func
-(paren
-id|CYCLADES_BH
-comma
-id|do_cyclades_bh
-)paren
-suffix:semicolon
 id|port_num
 op_assign
 l_int|0
@@ -9572,13 +9526,16 @@ id|info-&gt;default_timeout
 op_assign
 l_int|0
 suffix:semicolon
-id|info-&gt;tqueue.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|info-&gt;tqueue
+comma
 id|do_softint
-suffix:semicolon
-id|info-&gt;tqueue.data
-op_assign
+comma
 id|info
+)paren
 suffix:semicolon
 id|init_waitqueue_head
 c_func
