@@ -2522,6 +2522,8 @@ id|buf
 suffix:semicolon
 r_int
 id|i
+comma
+id|j
 suffix:semicolon
 r_struct
 id|uhci_qh
@@ -2839,6 +2841,22 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|j
+op_assign
+(paren
+id|i
+OL
+l_int|7
+)paren
+ques
+c_cond
+l_int|7
+suffix:colon
+id|i
+op_plus
+l_int|1
+suffix:semicolon
+multiline_comment|/* Next skeleton */
 r_if
 c_cond
 (paren
@@ -2871,9 +2889,7 @@ c_func
 (paren
 id|uhci-&gt;skelqh
 (braket
-id|i
-op_plus
-l_int|1
+id|j
 )braket
 op_member_access_from_pointer
 id|dma_handle
@@ -2984,9 +3000,7 @@ c_func
 (paren
 id|uhci-&gt;skelqh
 (braket
-id|i
-op_plus
-l_int|1
+id|j
 )braket
 op_member_access_from_pointer
 id|dma_handle
