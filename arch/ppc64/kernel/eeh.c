@@ -548,9 +548,9 @@ id|ibm_set_eeh_option
 op_ne
 id|RTAS_UNKNOWN_SERVICE
 op_logical_and
-id|_machine
+id|naca-&gt;platform
 op_eq
-id|_MACH_pSeriesLP
+id|PLATFORM_PSERIES_LPAR
 )paren
 id|eeh_implemented
 op_assign

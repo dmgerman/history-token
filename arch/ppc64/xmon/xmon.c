@@ -1933,9 +1933,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_ne
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 )paren
 r_return
 suffix:semicolon
@@ -2083,9 +2083,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_ne
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 )paren
 r_return
 suffix:semicolon

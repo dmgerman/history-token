@@ -97,8 +97,18 @@ multiline_comment|/* Type of interrupt controller */
 DECL|member|resv0
 id|u8
 id|resv0
+suffix:semicolon
+multiline_comment|/* Type of interrupt controller */
+DECL|member|platform
+id|u16
+id|platform
+suffix:semicolon
+multiline_comment|/* Platform flags */
+DECL|member|resv1
+id|u8
+id|resv1
 (braket
-l_int|6
+l_int|12
 )braket
 suffix:semicolon
 multiline_comment|/* Padding */

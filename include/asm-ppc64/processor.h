@@ -894,24 +894,13 @@ DECL|macro|PV_630
 mdefine_line|#define&t;PV_630        &t;0x0040
 DECL|macro|PV_630p
 mdefine_line|#define&t;PV_630p&t;        0x0041
-multiline_comment|/* Platforms supported by PPC64.  _machine is actually a set of flags */
-DECL|macro|_MACH_pSeriesHW
-mdefine_line|#define _MACH_pSeriesHW 0x00010000
-DECL|macro|_MACH_iSeriesHW
-mdefine_line|#define _MACH_iSeriesHW 0x00020000
-DECL|macro|_MACH_LPAR
-mdefine_line|#define _MACH_LPAR&t;0x00000001
-DECL|macro|_MACH_unknown
-mdefine_line|#define _MACH_unknown&t;0x00000000
-DECL|macro|_MACH_pSeries
-mdefine_line|#define _MACH_pSeries&t;(_MACH_pSeriesHW)
-DECL|macro|_MACH_pSeriesLP
-mdefine_line|#define _MACH_pSeriesLP&t;(_MACH_pSeriesHW | _MACH_LPAR)
-DECL|macro|_MACH_iSeries
-mdefine_line|#define _MACH_iSeries&t;(_MACH_iSeriesHW | _MACH_LPAR)
-multiline_comment|/* Compat defines for drivers */
-DECL|macro|_MACH_Pmac
-mdefine_line|#define _MACH_Pmac&t;0xf0000000&t;/* bogus value */
+multiline_comment|/* Platforms supported by PPC64 */
+DECL|macro|PLATFORM_PSERIES
+mdefine_line|#define PLATFORM_PSERIES      0x0100
+DECL|macro|PLATFORM_PSERIES_LPAR
+mdefine_line|#define PLATFORM_PSERIES_LPAR 0x0101
+DECL|macro|PLATFORM_ISERIES_LPAR
+mdefine_line|#define PLATFORM_ISERIES_LPAR 0x0201
 multiline_comment|/*&n; * List of interrupt controllers.&n; */
 DECL|macro|IC_INVALID
 mdefine_line|#define IC_INVALID    0
@@ -997,10 +986,6 @@ mdefine_line|#define EXC_FRAME_SIZE 64
 DECL|macro|mfasr
 mdefine_line|#define mfasr()&t;&t;({unsigned long rval; &bslash;&n;&t;&t;&t;asm volatile(&quot;mfasr %0&quot; : &quot;=r&quot; (rval)); rval;})
 macro_line|#ifndef __ASSEMBLY__
-r_extern
-r_int
-id|_machine
-suffix:semicolon
 r_extern
 r_int
 id|have_of

@@ -870,7 +870,7 @@ macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
 macro_line|#endif
 id|ppc_md.ppc_machine
 op_assign
-id|_machine
+id|naca-&gt;platform
 suffix:semicolon
 id|ppc_md.setup_arch
 op_assign
@@ -1076,9 +1076,9 @@ op_logical_neg
 id|rtas.base
 op_logical_or
 (paren
-id|_machine
+id|naca-&gt;platform
 op_ne
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 )paren
 )paren
 r_return

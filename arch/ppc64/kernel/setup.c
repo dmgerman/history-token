@@ -212,12 +212,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|_machine
-r_int
-id|_machine
-op_assign
-id|_MACH_unknown
-suffix:semicolon
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 DECL|variable|SYSRQ_KEY
 r_int
@@ -360,18 +354,18 @@ id|itLpNaca.xLparInstalled
 op_eq
 l_int|1
 )paren
-id|_machine
+id|naca-&gt;platform
 op_assign
-id|_MACH_iSeries
+id|PLATFORM_ISERIES_LPAR
 suffix:semicolon
 r_switch
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 )paren
 (brace
 r_case
-id|_MACH_iSeries
+id|PLATFORM_ISERIES_LPAR
 suffix:colon
 id|iSeries_init_early
 c_func
@@ -382,7 +376,7 @@ r_break
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_PSERIES
 r_case
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 suffix:colon
 id|pSeries_init_early
 c_func
@@ -405,7 +399,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|_MACH_pSeriesLP
+id|PLATFORM_PSERIES_LPAR
 suffix:colon
 id|pSeriesLP_init_early
 c_func
@@ -716,9 +710,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_amp
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 )paren
 (brace
 id|finish_device_tree
@@ -749,11 +743,11 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 )paren
 (brace
 r_case
-id|_MACH_iSeries
+id|PLATFORM_ISERIES_LPAR
 suffix:colon
 id|iSeries_init
 c_func
@@ -1088,9 +1082,9 @@ multiline_comment|/*&n;&t; * Assume here that all clock rates are the same in a&
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_ne
-id|_MACH_iSeries
+id|PLATFORM_ISERIES_LPAR
 )paren
 (brace
 r_struct

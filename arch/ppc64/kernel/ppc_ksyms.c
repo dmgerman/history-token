@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/elfcore.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/nvram.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
@@ -1018,15 +1017,6 @@ id|__no_use_cli
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif
-macro_line|#ifndef CONFIG_MACH_SPECIFIC
-DECL|variable|_machine
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|_machine
-)paren
-suffix:semicolon
 macro_line|#endif
 DECL|variable|ppc_md
 id|EXPORT_SYMBOL

@@ -396,9 +396,9 @@ r_if
 c_cond
 (paren
 (paren
-id|_machine
+id|naca-&gt;platform
 op_eq
-id|_MACH_iSeries
+id|PLATFORM_ISERIES_LPAR
 )paren
 op_logical_and
 (paren
@@ -3380,9 +3380,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_eq
-id|_MACH_pSeriesLP
+id|PLATFORM_PSERIES_LPAR
 )paren
 id|create_tce_tables_for_busesLP
 c_func
@@ -3505,9 +3505,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_eq
-id|_MACH_iSeries
+id|PLATFORM_ISERIES_LPAR
 )paren
 (brace
 r_if
@@ -3752,9 +3752,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_eq
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 )paren
 id|getTceTableParmsPSeries
 c_func

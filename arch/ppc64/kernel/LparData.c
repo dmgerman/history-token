@@ -874,15 +874,6 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/* Data area used in flush_hash_page  */
-DECL|variable|flush_hash_page_hpte
-r_int
-r_int
-id|flush_hash_page_hpte
-(braket
-l_int|2
-)braket
-suffix:semicolon
 DECL|variable|msChunks
 r_struct
 id|msChunks
