@@ -15,9 +15,6 @@ macro_line|#include &lt;linux/mpage.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &quot;xattr.h&quot;
 macro_line|#include &quot;acl.h&quot;
-multiline_comment|/*&n; * SEARCH_FROM_ZERO forces each block allocation to search from the start&n; * of the filesystem.  This is to force rapid reallocation of recently-freed&n; * blocks.  The file fragmentation is horrendous.&n; */
-DECL|macro|SEARCH_FROM_ZERO
-macro_line|#undef SEARCH_FROM_ZERO
 multiline_comment|/*&n; * Test whether an inode is a fast symlink.&n; */
 DECL|function|ext3_inode_is_fast_symlink
 r_static
@@ -1662,16 +1659,6 @@ id|ei-&gt;i_next_alloc_goal
 op_increment
 suffix:semicolon
 )brace
-macro_line|#ifdef SEARCH_FROM_ZERO
-id|ei-&gt;i_next_alloc_block
-op_assign
-l_int|0
-suffix:semicolon
-id|ei-&gt;i_next_alloc_goal
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Writer: end */
 multiline_comment|/* Reader: pointers, -&gt;i_next_alloc* */
 r_if
@@ -1717,13 +1704,6 @@ comma
 id|partial
 )paren
 suffix:semicolon
-macro_line|#ifdef SEARCH_FROM_ZERO
-op_star
-id|goal
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -2272,16 +2252,6 @@ dot
 id|key
 )paren
 suffix:semicolon
-macro_line|#ifdef SEARCH_FROM_ZERO
-id|ei-&gt;i_next_alloc_block
-op_assign
-l_int|0
-suffix:semicolon
-id|ei-&gt;i_next_alloc_goal
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Writer: end */
 multiline_comment|/* We are done with atomic stuff, now do the rest of housekeeping */
 id|inode-&gt;i_ctime
