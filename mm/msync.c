@@ -9,7 +9,6 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 multiline_comment|/*&n; * Called with mm-&gt;page_table_lock held to protect against other&n; * threads/the swapper from ripping pte&squot;s out from under us.&n; */
 DECL|function|filemap_sync_pte
 r_static
-r_inline
 r_int
 id|filemap_sync_pte
 c_func
@@ -17,10 +16,6 @@ c_func
 id|pte_t
 op_star
 id|ptep
-comma
-id|pmd_t
-op_star
-id|pmdp
 comma
 r_struct
 id|vm_area_struct
@@ -46,6 +41,12 @@ r_if
 c_cond
 (paren
 id|pte_present
+c_func
+(paren
+id|pte
+)paren
+op_logical_and
+id|pte_dirty
 c_func
 (paren
 id|pte
@@ -230,8 +231,6 @@ id|filemap_sync_pte
 c_func
 (paren
 id|pte
-comma
-id|pmd
 comma
 id|vma
 comma
