@@ -2238,13 +2238,6 @@ op_star
 id|priv
 )paren
 suffix:semicolon
-DECL|variable|isdn_ppp_revision
-r_char
-op_star
-id|isdn_ppp_revision
-op_assign
-l_string|&quot;$Revision: 1.85.6.9 $&quot;
-suffix:semicolon
 multiline_comment|/*&n; * frame log (debug)&n; */
 r_void
 DECL|function|isdn_ppp_frame_log

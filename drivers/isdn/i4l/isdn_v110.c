@@ -7,13 +7,6 @@ macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &quot;isdn_v110.h&quot;
 DECL|macro|ISDN_V110_DEBUG
 macro_line|#undef ISDN_V110_DEBUG
-DECL|variable|isdn_v110_revision
-r_char
-op_star
-id|isdn_v110_revision
-op_assign
-l_string|&quot;$Revision: 1.5.6.4 $&quot;
-suffix:semicolon
 DECL|macro|V110_38400
 mdefine_line|#define V110_38400 255
 DECL|macro|V110_19200

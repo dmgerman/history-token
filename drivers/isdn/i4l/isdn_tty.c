@@ -203,13 +203,6 @@ comma
 l_int|4
 )brace
 suffix:semicolon
-DECL|variable|isdn_tty_revision
-r_char
-op_star
-id|isdn_tty_revision
-op_assign
-l_string|&quot;$Revision: 1.94.6.9 $&quot;
-suffix:semicolon
 multiline_comment|/* isdn_tty_try_read() is called from within isdn_tty_rcv_skb()&n; * to stuff incoming data directly into a tty&squot;s flip-buffer. This&n; * is done to speed up tty-receiving if the receive-queue is empty.&n; * This routine MUST be called with interrupts off.&n; * Return:&n; *  1 = Success&n; *  0 = Failure, data has to be buffered and later processed by&n; *      isdn_tty_readmodem().&n; */
 r_static
 r_int

@@ -2,13 +2,6 @@ multiline_comment|/* Linux ISDN subsystem, audio conversion and compression&n; *
 macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &quot;isdn_audio.h&quot;
 macro_line|#include &quot;isdn_common.h&quot;
-DECL|variable|isdn_audio_revision
-r_char
-op_star
-id|isdn_audio_revision
-op_assign
-l_string|&quot;$Revision: 1.21.6.3 $&quot;
-suffix:semicolon
 multiline_comment|/*&n; * Misc. lookup-tables.&n; */
 multiline_comment|/* ulaw -&gt; signed 16-bit */
 DECL|variable|isdn_audio_ulaw_to_s16

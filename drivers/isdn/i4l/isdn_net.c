@@ -12,13 +12,6 @@ macro_line|#include &quot;isdn_ppp.h&quot;
 macro_line|#include &lt;linux/concap.h&gt;
 macro_line|#include &quot;isdn_concap.h&quot;
 macro_line|#include &quot;isdn_ciscohdlck.h&quot;
-DECL|variable|isdn_net_revision
-r_char
-op_star
-id|isdn_net_revision
-op_assign
-l_string|&quot;$Revision: 1.140.6.11 $&quot;
-suffix:semicolon
 singleline_comment|// ISDN_NET_ENCAP_IPTYP
 singleline_comment|// ethernet type field
 singleline_comment|// ======================================================================

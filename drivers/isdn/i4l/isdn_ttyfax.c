@@ -7,14 +7,6 @@ macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &quot;isdn_common.h&quot;
 macro_line|#include &quot;isdn_tty.h&quot;
 macro_line|#include &quot;isdn_ttyfax.h&quot;
-DECL|variable|isdn_tty_fax_revision
-r_static
-r_char
-op_star
-id|isdn_tty_fax_revision
-op_assign
-l_string|&quot;$Revision: 1.7.6.2 $&quot;
-suffix:semicolon
 DECL|macro|PARSE_ERROR1
 mdefine_line|#define PARSE_ERROR1 { isdn_tty_fax_modem_result(1, info); return 1; }
 r_static
