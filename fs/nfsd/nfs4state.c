@@ -775,7 +775,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NGROUPS
+id|SVC_CRED_NGROUPS
 suffix:semicolon
 id|i
 op_increment

@@ -221,6 +221,12 @@ c_func
 id|tsk-&gt;user
 )paren
 suffix:semicolon
+id|put_group_info
+c_func
+(paren
+id|tsk-&gt;group_info
+)paren
+suffix:semicolon
 id|free_task
 c_func
 (paren
@@ -3401,6 +3407,12 @@ op_amp
 id|p-&gt;user-&gt;processes
 )paren
 suffix:semicolon
+id|get_group_info
+c_func
+(paren
+id|p-&gt;group_info
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * If multiple threads are within copy_process(), then this check&n;&t; * triggers too late. This doesn&squot;t hurt, the check is only there&n;&t; * to stop root fork bombs.&n;&t; */
 r_if
 c_cond
@@ -4297,6 +4309,12 @@ id|p-&gt;thread_info-&gt;exec_domain-&gt;module
 suffix:semicolon
 id|bad_fork_cleanup_count
 suffix:colon
+id|put_group_info
+c_func
+(paren
+id|p-&gt;group_info
+)paren
+suffix:semicolon
 id|atomic_dec
 c_func
 (paren

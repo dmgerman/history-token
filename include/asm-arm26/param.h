@@ -17,10 +17,6 @@ macro_line|#else
 DECL|macro|HZ
 macro_line|# define HZ&t;&t;100
 macro_line|#endif
-macro_line|#ifndef NGROUPS
-DECL|macro|NGROUPS
-mdefine_line|#define NGROUPS         32
-macro_line|#endif
 macro_line|#ifndef NOGROUP
 DECL|macro|NOGROUP
 mdefine_line|#define NOGROUP         (-1)

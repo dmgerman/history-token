@@ -2222,7 +2222,7 @@ c_cond
 (paren
 id|i
 OL
-id|NGROUPS
+id|SVC_CRED_NGROUPS
 )paren
 id|cred-&gt;cr_groups
 (braket
@@ -2251,7 +2251,7 @@ c_cond
 (paren
 id|i
 OL
-id|NGROUPS
+id|SVC_CRED_NGROUPS
 )paren
 id|cred-&gt;cr_groups
 (braket

@@ -1945,12 +1945,10 @@ r_static
 r_int
 id|dummy_task_setgroups
 (paren
-r_int
-id|gidsetsize
-comma
-id|gid_t
+r_struct
+id|group_info
 op_star
-id|grouplist
+id|group_info
 )paren
 (brace
 r_return

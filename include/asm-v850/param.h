@@ -5,10 +5,6 @@ mdefine_line|#define __V850_PARAM_H__
 macro_line|#include &lt;asm/machdep.h&gt;&t;/* For HZ */
 DECL|macro|EXEC_PAGESIZE
 mdefine_line|#define EXEC_PAGESIZE&t;4096
-macro_line|#ifndef NGROUPS
-DECL|macro|NGROUPS
-mdefine_line|#define NGROUPS&t;&t;32
-macro_line|#endif
 macro_line|#ifndef NOGROUP
 DECL|macro|NOGROUP
 mdefine_line|#define NOGROUP&t;&t;(-1)
