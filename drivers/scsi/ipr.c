@@ -10405,6 +10405,15 @@ id|sdev-&gt;timeout
 op_assign
 id|IPR_VSET_RW_TIMEOUT
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|IPR_IS_DASD_DEVICE
+c_func
+(paren
+id|res-&gt;cfgte.std_inq_data
+)paren
+)paren
 id|sdev-&gt;allow_restart
 op_assign
 l_int|1
