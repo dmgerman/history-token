@@ -8,6 +8,7 @@ mdefine_line|#define _LINUX
 macro_line|#endif
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
+macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#ifdef CONFIG_ACPI
 DECL|enum|acpi_irq_model_id
