@@ -1936,6 +1936,12 @@ l_string|&quot;non-isochronous xfer mode.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+r_goto
+id|free_and_exit
+suffix:semicolon
+)brace
 )brace
 id|agp_3_5_nonisochronous_node_enable
 c_func
