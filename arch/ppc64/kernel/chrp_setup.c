@@ -658,7 +658,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PPC_PSERIES&t;/* This ifdef should go away */
 r_void
 op_star
 id|comport
@@ -668,6 +667,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ppc64_iommu_off
+)paren
+id|pci_dma_init_direct
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
 id|tce_init_pSeries
 c_func
 (paren
@@ -715,7 +725,6 @@ id|ppc_md.udbg_getc_poll
 op_assign
 id|udbg_getc_poll
 suffix:semicolon
-macro_line|#endif
 )brace
 r_void
 id|__init
