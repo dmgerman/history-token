@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * drivers/pci/pci-driver.c&n; *&n; */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/*&n; *  Registration of PCI drivers and handling of hot-pluggable devices.&n; */
 DECL|function|pci_device_probe
 r_static
