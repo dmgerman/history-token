@@ -429,6 +429,12 @@ op_logical_neg
 id|sharp
 )paren
 (brace
+id|kfree
+c_func
+(paren
+id|mtd
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon

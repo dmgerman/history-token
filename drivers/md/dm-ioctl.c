@@ -1069,6 +1069,12 @@ op_amp
 id|_hash_lock
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|new_name
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
@@ -1105,6 +1111,12 @@ c_func
 (paren
 op_amp
 id|_hash_lock
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|new_name
 )paren
 suffix:semicolon
 r_return

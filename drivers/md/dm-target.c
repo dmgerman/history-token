@@ -495,6 +495,17 @@ op_amp
 id|_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rv
+)paren
+id|kfree
+c_func
+(paren
+id|ti
+)paren
+suffix:semicolon
 r_return
 id|rv
 suffix:semicolon
