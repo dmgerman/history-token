@@ -30,55 +30,55 @@ DECL|macro|errno_NFSERR_IO
 mdefine_line|#define errno_NFSERR_IO&t;&t;EIO
 multiline_comment|/*&n; * Declare the space requirements for NFS arguments and replies as&n; * number of 32bit-words&n; */
 DECL|macro|NFS_fhandle_sz
-mdefine_line|#define NFS_fhandle_sz&t;&t;8
+mdefine_line|#define NFS_fhandle_sz&t;&t;(8)
 DECL|macro|NFS_sattr_sz
-mdefine_line|#define NFS_sattr_sz&t;&t;8
+mdefine_line|#define NFS_sattr_sz&t;&t;(8)
 DECL|macro|NFS_filename_sz
-mdefine_line|#define NFS_filename_sz&t;&t;1+(NFS2_MAXNAMLEN&gt;&gt;2)
+mdefine_line|#define NFS_filename_sz&t;&t;(1+(NFS2_MAXNAMLEN&gt;&gt;2))
 DECL|macro|NFS_path_sz
-mdefine_line|#define NFS_path_sz&t;&t;1+(NFS2_MAXPATHLEN&gt;&gt;2)
+mdefine_line|#define NFS_path_sz&t;&t;(1+(NFS2_MAXPATHLEN&gt;&gt;2))
 DECL|macro|NFS_fattr_sz
-mdefine_line|#define NFS_fattr_sz&t;&t;17
+mdefine_line|#define NFS_fattr_sz&t;&t;(17)
 DECL|macro|NFS_info_sz
-mdefine_line|#define NFS_info_sz&t;&t;5
+mdefine_line|#define NFS_info_sz&t;&t;(5)
 DECL|macro|NFS_entry_sz
-mdefine_line|#define NFS_entry_sz&t;&t;NFS_filename_sz+3
+mdefine_line|#define NFS_entry_sz&t;&t;(NFS_filename_sz+3)
 DECL|macro|NFS_diropargs_sz
-mdefine_line|#define NFS_diropargs_sz&t;NFS_fhandle_sz+NFS_filename_sz
+mdefine_line|#define NFS_diropargs_sz&t;(NFS_fhandle_sz+NFS_filename_sz)
 DECL|macro|NFS_sattrargs_sz
-mdefine_line|#define NFS_sattrargs_sz&t;NFS_fhandle_sz+NFS_sattr_sz
+mdefine_line|#define NFS_sattrargs_sz&t;(NFS_fhandle_sz+NFS_sattr_sz)
 DECL|macro|NFS_readlinkargs_sz
-mdefine_line|#define NFS_readlinkargs_sz&t;NFS_fhandle_sz
+mdefine_line|#define NFS_readlinkargs_sz&t;(NFS_fhandle_sz)
 DECL|macro|NFS_readargs_sz
-mdefine_line|#define NFS_readargs_sz&t;&t;NFS_fhandle_sz+3
+mdefine_line|#define NFS_readargs_sz&t;&t;(NFS_fhandle_sz+3)
 DECL|macro|NFS_writeargs_sz
-mdefine_line|#define NFS_writeargs_sz&t;NFS_fhandle_sz+4
+mdefine_line|#define NFS_writeargs_sz&t;(NFS_fhandle_sz+4)
 DECL|macro|NFS_createargs_sz
-mdefine_line|#define NFS_createargs_sz&t;NFS_diropargs_sz+NFS_sattr_sz
+mdefine_line|#define NFS_createargs_sz&t;(NFS_diropargs_sz+NFS_sattr_sz)
 DECL|macro|NFS_renameargs_sz
-mdefine_line|#define NFS_renameargs_sz&t;NFS_diropargs_sz+NFS_diropargs_sz
+mdefine_line|#define NFS_renameargs_sz&t;(NFS_diropargs_sz+NFS_diropargs_sz)
 DECL|macro|NFS_linkargs_sz
-mdefine_line|#define NFS_linkargs_sz&t;&t;NFS_fhandle_sz+NFS_diropargs_sz
+mdefine_line|#define NFS_linkargs_sz&t;&t;(NFS_fhandle_sz+NFS_diropargs_sz)
 DECL|macro|NFS_symlinkargs_sz
-mdefine_line|#define NFS_symlinkargs_sz&t;NFS_diropargs_sz+NFS_path_sz+NFS_sattr_sz
+mdefine_line|#define NFS_symlinkargs_sz&t;(NFS_diropargs_sz+NFS_path_sz+NFS_sattr_sz)
 DECL|macro|NFS_readdirargs_sz
-mdefine_line|#define NFS_readdirargs_sz&t;NFS_fhandle_sz+2
+mdefine_line|#define NFS_readdirargs_sz&t;(NFS_fhandle_sz+2)
 DECL|macro|NFS_attrstat_sz
-mdefine_line|#define NFS_attrstat_sz&t;&t;1+NFS_fattr_sz
+mdefine_line|#define NFS_attrstat_sz&t;&t;(1+NFS_fattr_sz)
 DECL|macro|NFS_diropres_sz
-mdefine_line|#define NFS_diropres_sz&t;&t;1+NFS_fhandle_sz+NFS_fattr_sz
+mdefine_line|#define NFS_diropres_sz&t;&t;(1+NFS_fhandle_sz+NFS_fattr_sz)
 DECL|macro|NFS_readlinkres_sz
-mdefine_line|#define NFS_readlinkres_sz&t;1
+mdefine_line|#define NFS_readlinkres_sz&t;(1)
 DECL|macro|NFS_readres_sz
-mdefine_line|#define NFS_readres_sz&t;&t;1+NFS_fattr_sz+1
+mdefine_line|#define NFS_readres_sz&t;&t;(1+NFS_fattr_sz+1)
 DECL|macro|NFS_writeres_sz
-mdefine_line|#define NFS_writeres_sz         NFS_attrstat_sz
+mdefine_line|#define NFS_writeres_sz         (NFS_attrstat_sz)
 DECL|macro|NFS_stat_sz
-mdefine_line|#define NFS_stat_sz&t;&t;1
+mdefine_line|#define NFS_stat_sz&t;&t;(1)
 DECL|macro|NFS_readdirres_sz
-mdefine_line|#define NFS_readdirres_sz&t;1
+mdefine_line|#define NFS_readdirres_sz&t;(1)
 DECL|macro|NFS_statfsres_sz
-mdefine_line|#define NFS_statfsres_sz&t;1+NFS_info_sz
+mdefine_line|#define NFS_statfsres_sz&t;(1+NFS_info_sz)
 multiline_comment|/*&n; * Common NFS XDR functions as inlines&n; */
 r_static
 r_inline

@@ -1852,6 +1852,8 @@ c_loop
 id|resp-&gt;status
 op_eq
 id|NLM_LCK_BLOCKED
+op_logical_and
+id|req-&gt;a_args.block
 )paren
 suffix:semicolon
 r_if

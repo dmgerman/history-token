@@ -1903,6 +1903,58 @@ r_return
 id|rpc_success
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * client sent a GRANTED_RES, let&squot;s remove the associated block&n; */
+r_static
+r_int
+DECL|function|nlmsvc_proc_granted_res
+id|nlmsvc_proc_granted_res
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+id|rqstp
+comma
+r_struct
+id|nlm_res
+op_star
+id|argp
+comma
+r_void
+op_star
+id|resp
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nlmsvc_ops
+)paren
+r_return
+id|rpc_success
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;lockd: GRANTED_RES   called&bslash;n&quot;
+)paren
+suffix:semicolon
+id|nlmsvc_grant_reply
+c_func
+(paren
+id|rqstp
+comma
+op_amp
+id|argp-&gt;cookie
+comma
+id|argp-&gt;status
+)paren
+suffix:semicolon
+r_return
+id|rpc_success
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * This is the generic lockd callback for async RPC calls&n; */
 r_static
 id|u32
@@ -2124,8 +2176,6 @@ DECL|macro|nlmsvc_proc_cancel_res
 mdefine_line|#define nlmsvc_proc_cancel_res&t;nlmsvc_proc_null
 DECL|macro|nlmsvc_proc_unlock_res
 mdefine_line|#define nlmsvc_proc_unlock_res&t;nlmsvc_proc_null
-DECL|macro|nlmsvc_proc_granted_res
-mdefine_line|#define nlmsvc_proc_granted_res&t;nlmsvc_proc_null
 DECL|struct|nlm_void
 DECL|member|dummy
 r_struct
@@ -2415,7 +2465,7 @@ c_func
 (paren
 id|granted_res
 comma
-id|grantedres
+id|res
 comma
 id|norep
 comma

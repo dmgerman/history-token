@@ -13,7 +13,7 @@ DECL|macro|ifdebug
 macro_line|#undef ifdebug
 macro_line|#if defined(RPC_DEBUG) &amp;&amp; defined(LOCKD_DEBUG)
 DECL|macro|ifdebug
-macro_line|# define ifdebug(flag)&t;&t;if (nlm_debug &amp; NLMDBG_##flag)
+macro_line|# define ifdebug(flag)&t;&t;if (unlikely(nlm_debug &amp; NLMDBG_##flag))
 macro_line|#else
 DECL|macro|ifdebug
 macro_line|# define ifdebug(flag)&t;&t;if (0)

@@ -707,7 +707,7 @@ r_return
 id|npages
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * nfs_scan_list - Scan a list for matching requests&n; * @head: One of the NFS inode request lists&n; * @dst: Destination list&n; * @file: if set, ensure we match requests from this file&n; * @idx_start: lower bound of page-&gt;index to scan&n; * @npages: idx_start + npages sets the upper bound to scan.&n; *&n; * Moves elements from one of the inode request lists.&n; * If the number of requests is set to 0, the entire address_space&n; * starting at index idx_start, is scanned.&n; * The requests are *not* checked to ensure that they form a contiguous set.&n; * You must be holding the nfs_wreq_lock when calling this function&n; */
+multiline_comment|/**&n; * nfs_scan_list - Scan a list for matching requests&n; * @head: One of the NFS inode request lists&n; * @dst: Destination list&n; * @idx_start: lower bound of page-&gt;index to scan&n; * @npages: idx_start + npages sets the upper bound to scan.&n; *&n; * Moves elements from one of the inode request lists.&n; * If the number of requests is set to 0, the entire address_space&n; * starting at index idx_start, is scanned.&n; * The requests are *not* checked to ensure that they form a contiguous set.&n; * You must be holding the nfs_wreq_lock when calling this function&n; */
 r_int
 DECL|function|nfs_scan_list
 id|nfs_scan_list
@@ -722,11 +722,6 @@ r_struct
 id|list_head
 op_star
 id|dst
-comma
-r_struct
-id|file
-op_star
-id|file
 comma
 r_int
 r_int
@@ -799,17 +794,6 @@ c_func
 (paren
 id|pos
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|file
-op_logical_and
-id|req-&gt;wb_file
-op_ne
-id|file
-)paren
-r_continue
 suffix:semicolon
 r_if
 c_cond

@@ -248,6 +248,20 @@ c_func
 id|xprt_set_timeout
 )paren
 suffix:semicolon
+DECL|variable|xprt_udp_slot_table_entries
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xprt_udp_slot_table_entries
+)paren
+suffix:semicolon
+DECL|variable|xprt_tcp_slot_table_entries
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xprt_tcp_slot_table_entries
+)paren
+suffix:semicolon
 multiline_comment|/* Client credential cache */
 DECL|variable|rpcauth_register
 id|EXPORT_SYMBOL
