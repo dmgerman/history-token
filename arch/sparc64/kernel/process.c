@@ -3492,7 +3492,7 @@ id|clone_flags
 op_amp
 id|CLONE_SETTLS
 )paren
-id|childregs-&gt;u_regs
+id|t-&gt;kregs-&gt;u_regs
 (braket
 id|UREG_G7
 )braket
