@@ -803,6 +803,8 @@ DECL|macro|nfserr_not_same
 mdefine_line|#define&t;nfserr_not_same&t;&t;__constant_htonl(NFSERR_NOT_SAME)
 DECL|macro|nfserr_restorefh
 mdefine_line|#define&t;nfserr_restorefh&t;__constant_htonl(NFSERR_RESTOREFH)
+DECL|macro|nfserr_attrnotsupp
+mdefine_line|#define&t;nfserr_attrnotsupp&t;__constant_htonl(NFSERR_ATTRNOTSUPP)
 DECL|macro|nfserr_bad_xdr
 mdefine_line|#define&t;nfserr_bad_xdr&t;&t;__constant_htonl(NFSERR_BAD_XDR)
 DECL|macro|nfserr_openmode
