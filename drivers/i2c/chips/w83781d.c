@@ -1870,6 +1870,8 @@ comma
 id|old2
 comma
 id|old3
+op_assign
+l_int|0
 suffix:semicolon
 id|val
 op_assign
