@@ -647,8 +647,10 @@ macro_line|#endif
 )brace
 multiline_comment|/**&n; *&t;ide_system_bus_speed&t;-&t;guess bus speed&n; *&n; *&t;ide_system_bus_speed() returns what we think is the system VESA/PCI&n; *&t;bus speed (in MHz). This is used for calculating interface PIO timings.&n; *&t;The default is 40 for known PCI systems, 50 otherwise.&n; *&t;The &quot;idebus=xx&quot; parameter can be used to override this value.&n; *&t;The actual value to be used is computed/displayed the first time&n; *&t;through. Drivers should only use this as a last resort.&n; *&n; *&t;Returns a guessed speed in MHz.&n; */
 DECL|function|ide_system_bus_speed
+r_static
 r_int
 id|ide_system_bus_speed
+c_func
 (paren
 r_void
 )paren
@@ -1009,6 +1011,7 @@ op_star
 id|proc_ide_root
 suffix:semicolon
 DECL|variable|generic_subdriver_entries
+r_static
 id|ide_proc_entry_t
 id|generic_subdriver_entries
 (braket
@@ -6385,9 +6388,11 @@ id|MAX_HWIFS
 suffix:semicolon
 multiline_comment|/*&n; * ide_setup() gets called VERY EARLY during initialization,&n; * to handle kernel &quot;command line&quot; strings beginning with &quot;hdx=&quot; or &quot;ide&quot;.&n; *&n; * Remember to update Documentation/ide.txt if you change something here.&n; */
 DECL|function|ide_setup
+r_static
 r_int
 id|__init
 id|ide_setup
+c_func
 (paren
 r_char
 op_star
@@ -8969,9 +8974,11 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * This is gets invoked once during initialization, to set *everything* up&n; */
 DECL|function|ide_init
+r_static
 r_int
 id|__init
 id|ide_init
+c_func
 (paren
 r_void
 )paren
@@ -9124,6 +9131,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
 DECL|variable|options
+r_static
 r_char
 op_star
 id|options

@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_UNISTD_H
 DECL|macro|_ASM_IA64_UNISTD_H
 mdefine_line|#define _ASM_IA64_UNISTD_H
-multiline_comment|/*&n; * IA-64 Linux syscall numbers and inline-functions.&n; *&n; * Copyright (C) 1998-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * IA-64 Linux syscall numbers and inline-functions.&n; *&n; * Copyright (C) 1998-2005 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;asm/break.h&gt;
 DECL|macro|__BREAK_SYSCALL
 mdefine_line|#define __BREAK_SYSCALL&t;&t;&t;__IA64_BREAK_SYSCALL
@@ -910,32 +910,7 @@ r_int
 id|sys_pipe
 c_func
 (paren
-r_int
-id|arg0
-comma
-r_int
-id|arg1
-comma
-r_int
-id|arg2
-comma
-r_int
-id|arg3
-comma
-r_int
-id|arg4
-comma
-r_int
-id|arg5
-comma
-r_int
-id|arg6
-comma
-r_int
-id|arg7
-comma
-r_int
-id|stack
+r_void
 )paren
 suffix:semicolon
 id|asmlinkage
@@ -956,21 +931,6 @@ comma
 r_int
 r_int
 id|data
-comma
-r_int
-id|arg4
-comma
-r_int
-id|arg5
-comma
-r_int
-id|arg6
-comma
-r_int
-id|arg7
-comma
-r_int
-id|stack
 )paren
 suffix:semicolon
 id|asmlinkage

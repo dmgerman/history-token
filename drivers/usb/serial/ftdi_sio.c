@@ -6386,7 +6386,7 @@ id|new_serial.baud_base
 op_ne
 id|priv-&gt;baud_base
 )paren
-op_logical_or
+op_logical_and
 (paren
 id|new_serial.baud_base
 OL

@@ -3237,7 +3237,7 @@ op_assign
 op_amp
 id|via_set_drive
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
+macro_line|#if defined(CONFIG_PPC_MULTIPLATFORM) &amp;&amp; defined(CONFIG_PPC32)
 r_if
 c_cond
 (paren
