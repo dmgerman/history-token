@@ -4306,7 +4306,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;cs: bind_device(): client 0x%p, sock %d, dev %s&bslash;n&quot;
+l_string|&quot;cs: bind_device(): client 0x%p, sock %p, dev %s&bslash;n&quot;
 comma
 id|client
 comma
@@ -6765,7 +6765,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;cs: register_client(): client 0x%p, sock %d, dev %s&bslash;n&quot;
+l_string|&quot;cs: register_client(): client 0x%p, sock %p, dev %s&bslash;n&quot;
 comma
 id|client
 comma
@@ -9301,7 +9301,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;cs: resetting socket %d&bslash;n&quot;
+l_string|&quot;cs: resetting socket %p&bslash;n&quot;
 comma
 id|handle-&gt;Socket
 )paren
@@ -9506,7 +9506,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;cs: suspending socket %d&bslash;n&quot;
+l_string|&quot;cs: suspending socket %p&bslash;n&quot;
 comma
 id|handle-&gt;Socket
 )paren
@@ -9626,7 +9626,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;cs: waking up socket %d&bslash;n&quot;
+l_string|&quot;cs: waking up socket %p&bslash;n&quot;
 comma
 id|handle-&gt;Socket
 )paren
@@ -9747,7 +9747,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;cs: user eject request on socket %d&bslash;n&quot;
+l_string|&quot;cs: user eject request on socket %p&bslash;n&quot;
 comma
 id|handle-&gt;Socket
 )paren
@@ -9875,7 +9875,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;cs: user insert request on socket %d&bslash;n&quot;
+l_string|&quot;cs: user insert request on socket %p&bslash;n&quot;
 comma
 id|handle-&gt;Socket
 )paren
