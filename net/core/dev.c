@@ -8548,6 +8548,44 @@ id|dev-&gt;kobj
 r_goto
 id|out_err
 suffix:semicolon
+multiline_comment|/* Fix illegal SG+CSUM combinations. */
+r_if
+c_cond
+(paren
+(paren
+id|dev-&gt;features
+op_amp
+id|NETIF_F_SG
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|dev-&gt;features
+op_amp
+(paren
+id|NETIF_F_IP_CSUM
+op_or
+id|NETIF_F_NO_CSUM
+op_or
+id|NETIF_F_HW_CSUM
+)paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: Dropping NETIF_F_SG since no checksum feature.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|dev-&gt;features
+op_and_assign
+op_complement
+id|NETIF_F_SG
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; *&t;nil rebuild_header routine,&n;&t; *&t;that should be never called and used as just bug trap.&n;&t; */
 r_if
 c_cond
