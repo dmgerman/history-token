@@ -10,13 +10,6 @@ c_func
 id|dpm_active
 )paren
 suffix:semicolon
-DECL|variable|dpm_suspended
-id|LIST_HEAD
-c_func
-(paren
-id|dpm_suspended
-)paren
-suffix:semicolon
 DECL|variable|dpm_off
 id|LIST_HEAD
 c_func
@@ -166,6 +159,15 @@ suffix:colon
 l_string|&quot;No Bus&quot;
 comma
 id|dev-&gt;kobj.name
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|dev-&gt;power.pm_users
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|down

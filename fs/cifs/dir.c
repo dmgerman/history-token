@@ -96,18 +96,6 @@ op_plus
 id|temp-&gt;d_name.len
 )paren
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot; len %d &quot;
-comma
-id|namelen
-)paren
-)paren
-suffix:semicolon
 id|temp
 op_assign
 id|temp-&gt;d_parent

@@ -2,9 +2,6 @@ multiline_comment|/**&n; * @file op_x86_model.h&n; * interface to x86 model-spec
 macro_line|#ifndef OP_X86_MODEL_H
 DECL|macro|OP_X86_MODEL_H
 mdefine_line|#define OP_X86_MODEL_H
-multiline_comment|/* Pentium IV needs all these */
-DECL|macro|MAX_MSR
-mdefine_line|#define MAX_MSR 63
 DECL|struct|op_saved_msr
 r_struct
 id|op_saved_msr
@@ -21,25 +18,19 @@ id|low
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|op_msr_group
+DECL|struct|op_msr
 r_struct
-id|op_msr_group
+id|op_msr
 (brace
-DECL|member|addrs
+DECL|member|addr
 r_int
 r_int
-id|addrs
-(braket
-id|MAX_MSR
-)braket
+id|addr
 suffix:semicolon
 DECL|member|saved
 r_struct
 id|op_saved_msr
 id|saved
-(braket
-id|MAX_MSR
-)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -49,12 +40,14 @@ id|op_msrs
 (brace
 DECL|member|counters
 r_struct
-id|op_msr_group
+id|op_msr
+op_star
 id|counters
 suffix:semicolon
 DECL|member|controls
 r_struct
-id|op_msr_group
+id|op_msr
+op_star
 id|controls
 suffix:semicolon
 )brace

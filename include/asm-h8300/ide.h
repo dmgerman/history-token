@@ -94,10 +94,12 @@ DECL|typedef|select_t
 id|select_t
 suffix:semicolon
 multiline_comment|/*&n; *&t;Our list of ports/irq&squot;s for different boards.&n; */
-multiline_comment|/* Such a description is OK ? */
-DECL|macro|DEPEND_HEADER
-mdefine_line|#define DEPEND_HEADER(target) &lt;asm/target/ide.h&gt; 
-macro_line|#include DEPEND_HEADER(TARGET)
+multiline_comment|/* machine depend header include */
+DECL|macro|H8300_IDE_DEFINE
+mdefine_line|#define H8300_IDE_DEFINE
+macro_line|#include &lt;asm/machine-depend.h&gt;
+DECL|macro|H8300_IDE_DEFINE
+macro_line|#undef  H8300_IDE_DEFINE
 multiline_comment|/****************************************************************************/
 DECL|function|ide_default_irq
 r_static

@@ -4372,37 +4372,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|generic_ide_suspend
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-comma
-id|u32
-id|state
-comma
-id|u32
-id|level
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|generic_ide_resume
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-comma
-id|u32
-id|level
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * IDE modules.&n; */
 DECL|macro|IDE_CHIPSET_MODULE
 mdefine_line|#define IDE_CHIPSET_MODULE&t;&t;0&t;/* not supported yet */
