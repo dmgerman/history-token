@@ -46,10 +46,6 @@ DECL|macro|short_pause
 mdefine_line|#define short_pause() udelay (1)
 DECL|macro|SPECIALIX_LEGAL_FLAGS
 mdefine_line|#define SPECIALIX_LEGAL_FLAGS &bslash;&n;&t;(ASYNC_HUP_NOTIFY   | ASYNC_SAK          | ASYNC_SPLIT_TERMIOS   | &bslash;&n;&t; ASYNC_SPD_HI       | ASYNC_SPEED_VHI    | ASYNC_SESSION_LOCKOUT | &bslash;&n;&t; ASYNC_PGRP_LOCKOUT | ASYNC_CALLOUT_NOHUP)
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 DECL|macro|RS_EVENT_WRITE_WAKEUP
 macro_line|#undef RS_EVENT_WRITE_WAKEUP
 DECL|macro|RS_EVENT_WRITE_WAKEUP
@@ -2691,9 +2687,11 @@ suffix:semicolon
 )brace
 id|count
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|port-&gt;break_length
 comma
 l_int|0xff
@@ -6385,12 +6383,14 @@ l_int|1
 (brace
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -6454,12 +6454,14 @@ c_func
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|c
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -6546,12 +6548,14 @@ c_func
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
