@@ -4785,6 +4785,26 @@ op_eq
 id|SCSI_DATA_NONE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|using_pio
+)paren
+multiline_comment|/* Check whether ATAPI DMA is safe */
+r_if
+c_cond
+(paren
+id|ata_check_atapi_dma
+c_func
+(paren
+id|qc
+)paren
+)paren
+id|using_pio
+op_assign
+l_int|1
+suffix:semicolon
 id|memcpy
 c_func
 (paren
