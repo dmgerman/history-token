@@ -285,6 +285,24 @@ comma
 r_uint64
 )paren
 suffix:semicolon
+r_int
+id|pcibr_slot_pwr
+c_func
+(paren
+id|vertex_hdl_t
+id|pcibr_vhdl
+comma
+id|pciio_slot_t
+id|slot
+comma
+r_int
+id|up
+comma
+r_char
+op_star
+id|err_msg
+)paren
+suffix:semicolon
 multiline_comment|/* &n; * PCI-X Max Outstanding Split Transactions translation array and Max Memory&n; * Read Byte Count translation array, as defined in the PCI-X Specification.&n; * Section 7.2.3 &amp; 7.2.4 of PCI-X Specification - rev 1.0&n; */
 DECL|macro|MAX_SPLIT_TABLE
 mdefine_line|#define MAX_SPLIT_TABLE 8
@@ -1250,7 +1268,7 @@ id|pcibr_vhdl
 comma
 id|slot
 comma
-l_int|NULL
+l_int|0
 comma
 id|req_p-&gt;req_resp.resp_l1_msg
 comma

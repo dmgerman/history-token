@@ -37,8 +37,6 @@ DECL|macro|PFM_CTX_MASKED
 mdefine_line|#define PFM_CTX_MASKED&t;&t;3&t;/* context is loaded but monitoring is masked due to overflow */
 DECL|macro|PFM_CTX_ZOMBIE
 mdefine_line|#define PFM_CTX_ZOMBIE&t;&t;4&t;/* owner of the context is closing it */
-DECL|macro|PFM_CTX_TERMINATED
-mdefine_line|#define PFM_CTX_TERMINATED&t;5&t;/* the task the context was loaded onto is gone */
 DECL|macro|PFM_INVALID_ACTIVATION
 mdefine_line|#define PFM_INVALID_ACTIVATION&t;(~0UL)
 multiline_comment|/*&n; * depth of message queue&n; */
@@ -1089,6 +1087,11 @@ r_int
 id|fastctxsw
 suffix:semicolon
 multiline_comment|/* turn on/off fast (unsecure) ctxsw */
+DECL|member|expert_mode
+r_int
+id|expert_mode
+suffix:semicolon
+multiline_comment|/* turn on/off value checking */
 DECL|member|debug_pfm_read
 r_int
 id|debug_pfm_read
@@ -1289,23 +1292,37 @@ op_star
 id|pfm_sysctl_header
 suffix:semicolon
 r_static
+r_int
+id|pfm_context_unload
+c_func
+(paren
+id|pfm_context_t
+op_star
+id|ctx
+comma
 r_void
-id|pfm_vm_close
+op_star
+id|arg
+comma
+r_int
+id|count
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_static
+r_int
+id|pfm_flush
 c_func
 (paren
 r_struct
-id|vm_area_struct
+id|file
 op_star
-id|area
+id|filp
 )paren
-suffix:semicolon
-DECL|variable|pfm_vm_ops
-r_static
-r_struct
-id|vm_operations_struct
-id|pfm_vm_ops
-op_assign
-initialization_block
 suffix:semicolon
 DECL|macro|pfm_get_cpu_var
 mdefine_line|#define pfm_get_cpu_var(v)&t;&t;__ia64_per_cpu_var(v)
@@ -1985,6 +2002,112 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_void
+DECL|function|pfm_restore_ibrs
+id|pfm_restore_ibrs
+c_func
+(paren
+r_int
+r_int
+op_star
+id|ibrs
+comma
+r_int
+r_int
+id|nibrs
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|nibrs
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|ia64_set_ibr
+c_func
+(paren
+id|i
+comma
+id|ibrs
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+)brace
+id|ia64_srlz_i
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|pfm_restore_dbrs
+id|pfm_restore_dbrs
+c_func
+(paren
+r_int
+r_int
+op_star
+id|dbrs
+comma
+r_int
+r_int
+id|ndbrs
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ndbrs
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|ia64_set_dbr
+c_func
+(paren
+id|i
+comma
+id|dbrs
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+)brace
+id|ia64_srlz_d
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * PMD[i] must be a counter. no check is made&n; */
 r_static
 r_inline
@@ -2471,7 +2594,7 @@ id|pfm_context_t
 op_star
 id|ctx
 suffix:semicolon
-multiline_comment|/* allocate context descriptor */
+multiline_comment|/* &n;&t; * allocate context descriptor &n;&t; * must be able to free with interrupts disabled&n;&t; */
 id|ctx
 op_assign
 id|kmalloc
@@ -2599,9 +2722,7 @@ id|DPRINT_ovfl
 c_func
 (paren
 (paren
-l_string|&quot;[%d] masking monitoring for [%d]&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;masking monitoring for [%d]&bslash;n&quot;
 comma
 id|task-&gt;pid
 )paren
@@ -3157,6 +3278,30 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * must restore DBR/IBR because could be modified while masked&n;&t; * XXX: need to optimize &n;&t; */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_fl_using_dbreg
+)paren
+(brace
+id|pfm_restore_ibrs
+c_func
+(paren
+id|ctx-&gt;ctx_ibrs
+comma
+id|pmu_conf.num_ibrs
+)paren
+suffix:semicolon
+id|pfm_restore_dbrs
+c_func
+(paren
+id|ctx-&gt;ctx_dbrs
+comma
+id|pmu_conf.num_dbrs
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * now restore PSR&n;&t; */
 r_if
 c_cond
@@ -3650,112 +3795,6 @@ c_func
 id|i
 comma
 id|pmcs
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-)brace
-id|ia64_srlz_d
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_void
-DECL|function|pfm_restore_ibrs
-id|pfm_restore_ibrs
-c_func
-(paren
-r_int
-r_int
-op_star
-id|ibrs
-comma
-r_int
-r_int
-id|nibrs
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|nibrs
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|ia64_set_ibr
-c_func
-(paren
-id|i
-comma
-id|ibrs
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-)brace
-id|ia64_srlz_i
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_void
-DECL|function|pfm_restore_dbrs
-id|pfm_restore_dbrs
-c_func
-(paren
-r_int
-r_int
-op_star
-id|dbrs
-comma
-r_int
-r_int
-id|ndbrs
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|ndbrs
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|ia64_set_dbr
-c_func
-(paren
-id|i
-comma
-id|dbrs
 (braket
 id|i
 )braket
@@ -6019,9 +6058,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;pfm_fasync called by [%d] on ctx_fd=%d on=%d async_queue=%p ret=%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;pfm_fasync called on ctx_fd=%d on=%d async_queue=%p ret=%d&bslash;n&quot;
 comma
 id|fd
 comma
@@ -6083,6 +6120,13 @@ r_struct
 id|task_struct
 op_star
 id|owner
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 r_if
 c_cond
@@ -6183,9 +6227,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] on CPU%d forcing system wide stop for [%d]&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;on CPU%d forcing system wide stop for [%d]&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -6196,68 +6238,49 @@ id|ctx-&gt;ctx_task-&gt;pid
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Update local PMU&n;&t; */
-id|ia64_setreg
+multiline_comment|/*&n;&t; * the context is already protected in pfm_close(), we simply&n;&t; * need to mask interrupts to avoid a PMU interrupt race on&n;&t; * this CPU&n;&t; */
+id|local_irq_save
 c_func
 (paren
-id|_IA64_REG_CR_DCR
+id|flags
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|pfm_context_unload
+c_func
+(paren
+id|ctx
 comma
-id|ia64_getreg
-c_func
-(paren
-id|_IA64_REG_CR_DCR
-)paren
-op_amp
-op_complement
-id|IA64_DCR_PP
-)paren
-suffix:semicolon
-id|ia64_srlz_i
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * update local cpuinfo&n;&t; */
-id|PFM_CPUINFO_CLEAR
-c_func
-(paren
-id|PFM_CPUINFO_DCR_PP
-)paren
-suffix:semicolon
-id|PFM_CPUINFO_CLEAR
-c_func
-(paren
-id|PFM_CPUINFO_SYST_WIDE
-)paren
-suffix:semicolon
-id|PFM_CPUINFO_CLEAR
-c_func
-(paren
-id|PFM_CPUINFO_EXCL_IDLE
-)paren
-suffix:semicolon
-id|pfm_clear_psr_pp
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * also stop monitoring in the local interrupted task&n;&t; */
-id|ia64_psr
-c_func
-(paren
+l_int|NULL
+comma
+l_int|0
+comma
 id|regs
 )paren
-op_member_access_from_pointer
-id|pp
-op_assign
-l_int|0
 suffix:semicolon
-id|SET_PMU_OWNER
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|DPRINT
 c_func
 (paren
-l_int|NULL
+(paren
+l_string|&quot;context_unload returned %d&bslash;n&quot;
 comma
-l_int|NULL
+id|ret
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * unmask interrupts, PMU interrupts are now spurious here&n;&t; */
+id|local_irq_restore
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -6279,9 +6302,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] calling CPU%d for cleanup&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;calling CPU%d for cleanup&bslash;n&quot;
 comma
 id|ctx-&gt;ctx_cpu
 )paren
@@ -6307,9 +6328,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] called CPU%d for cleanup ret=%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;called CPU%d for cleanup ret=%d&bslash;n&quot;
 comma
 id|ctx-&gt;ctx_cpu
 comma
@@ -6319,40 +6338,13 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SMP */
-multiline_comment|/*&n; * called either on explicit close() or from exit_files().&n; *&n; * IMPORTANT: we get called ONLY when the refcnt on the file gets to zero (fput()),i.e,&n; * last task to access the file. Nobody else can access the file at this point.&n; *&n; * When called from exit_files(), the VMA has been freed because exit_mm()&n; * is executed before exit_files().&n; *&n; * When called from exit_files(), the current task is not yet ZOMBIE but we will&n; * flush the PMU state to the context. This means * that when we see the context&n; * state as TERMINATED we are guranteed to have the latest PMU state available,&n; * even if the task itself is in the middle of being ctxsw out.&n; */
+multiline_comment|/*&n; * called for each close(). Partially free resources.&n; * When caller is self-monitoring, the context is unloaded.&n; */
 r_static
 r_int
-id|pfm_context_unload
+DECL|function|pfm_flush
+id|pfm_flush
 c_func
 (paren
-id|pfm_context_t
-op_star
-id|ctx
-comma
-r_void
-op_star
-id|arg
-comma
-r_int
-id|count
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_static
-r_int
-DECL|function|pfm_close
-id|pfm_close
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
 r_struct
 id|file
 op_star
@@ -6373,14 +6365,6 @@ id|pt_regs
 op_star
 id|regs
 suffix:semicolon
-id|DECLARE_WAITQUEUE
-c_func
-(paren
-id|wait
-comma
-id|current
-)paren
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -6397,50 +6381,11 @@ id|smpl_buf_vaddr
 op_assign
 l_int|NULL
 suffix:semicolon
-r_void
-op_star
-id|smpl_buf_addr
-op_assign
-l_int|NULL
-suffix:semicolon
-r_int
-id|free_possible
-op_assign
-l_int|1
-suffix:semicolon
 r_int
 id|state
 comma
 id|is_system
 suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;pfm_close called private=%p&bslash;n&quot;
-comma
-id|filp-&gt;private_data
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|inode
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;pfm_close: NULL inode&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6457,9 +6402,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;bad magic for [%d]&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;bad magic for&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -6488,7 +6431,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;perfmon: pfm_close: NULL ctx [%d]&bslash;n&quot;
+l_string|&quot;perfmon: pfm_flush: NULL ctx [%d]&bslash;n&quot;
 comma
 id|current-&gt;pid
 )paren
@@ -6511,9 +6454,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] cleaning up async_queue=%p&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;cleaning up async_queue=%p&bslash;n&quot;
 comma
 id|ctx-&gt;ctx_async_queue
 )paren
@@ -6568,9 +6509,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] ctx_state=%d is_current=%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;ctx_state=%d is_current=%d&bslash;n&quot;
 comma
 id|state
 comma
@@ -6585,23 +6524,8 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|state
-op_eq
-id|PFM_CTX_UNLOADED
-op_logical_or
-id|state
-op_eq
-id|PFM_CTX_TERMINATED
-)paren
-(brace
-r_goto
-id|doit
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * context still loaded/masked and self monitoring,&n;&t; * we stop/unload and we destroy right here&n;&t; *&n;&t; * We always go here for system-wide sessions&n;&t; */
+multiline_comment|/*&n;&t; * if state == UNLOADED, then task is NULL&n;&t; */
+multiline_comment|/*&n;&t; * we must stop and unload because we are losing access to the context.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6629,19 +6553,16 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] should be running on CPU%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;should be running on CPU%d&bslash;n&quot;
 comma
 id|ctx-&gt;ctx_cpu
 )paren
 )paren
 suffix:semicolon
-id|UNPROTECT_CTX
+multiline_comment|/*&n;&t;&t;&t; * keep context protected but unmask interrupt for IPI&n;&t;&t;&t; */
+id|local_irq_restore
 c_func
 (paren
-id|ctx
-comma
 id|flags
 )paren
 suffix:semicolon
@@ -6651,39 +6572,14 @@ c_func
 id|ctx
 )paren
 suffix:semicolon
-id|PROTECT_CTX
+multiline_comment|/*&n;&t;&t;&t; * restore interrupt masking&n;&t;&t;&t; */
+id|local_irq_save
 c_func
 (paren
-id|ctx
-comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * short circuit pfm_context_unload();&n;&t;&t;&t; */
-id|task-&gt;thread.pfm_context
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ctx-&gt;ctx_task
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ctx-&gt;ctx_state
-op_assign
-id|state
-op_assign
-id|PFM_CTX_UNLOADED
-suffix:semicolon
-id|pfm_unreserve_session
-c_func
-(paren
-id|ctx
-comma
-l_int|1
-comma
-id|ctx-&gt;ctx_cpu
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * context is unloaded at this point&n;&t;&t;&t; */
 )brace
 r_else
 macro_line|#endif /* CONFIG_SMP */
@@ -6692,9 +6588,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;forcing unload on [%d]&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;forcing unload&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -6711,28 +6605,259 @@ comma
 id|regs
 )paren
 suffix:semicolon
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;ctx_state=%d&bslash;n&quot;
+comma
 id|ctx-&gt;ctx_state
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t; * remove virtual mapping, if any, for the calling task.&n;&t; * cannot reset ctx field until last user is calling close().&n;&t; *&n;&t; * ctx_smpl_vaddr must never be cleared because it is needed&n;&t; * by every task with access to the context&n;&t; *&n;&t; * When called from do_exit(), the mm context is gone already, therefore&n;&t; * mm is NULL, i.e., the VMA is already gone  and we do not have to&n;&t; * do anything here&n;&t; */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_smpl_vaddr
+op_logical_and
+id|current-&gt;mm
+)paren
+(brace
+id|smpl_buf_vaddr
 op_assign
-id|PFM_CTX_TERMINATED
+id|ctx-&gt;ctx_smpl_vaddr
+suffix:semicolon
+id|smpl_buf_size
+op_assign
+id|ctx-&gt;ctx_smpl_size
+suffix:semicolon
+)brace
+id|UNPROTECT_CTX
+c_func
+(paren
+id|ctx
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * if there was a mapping, then we systematically remove it&n;&t; * at this point. Cannot be done inside critical section&n;&t; * because some VM function reenables interrupts.&n;&t; *&n;&t; */
+r_if
+c_cond
+(paren
+id|smpl_buf_vaddr
+)paren
+id|pfm_remove_smpl_mapping
+c_func
+(paren
+id|current
+comma
+id|smpl_buf_vaddr
+comma
+id|smpl_buf_size
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * called either on explicit close() or from exit_files(). &n; * Only the LAST user of the file gets to this point, i.e., it is&n; * called only ONCE.&n; *&n; * IMPORTANT: we get called ONLY when the refcnt on the file gets to zero &n; * (fput()),i.e, last task to access the file. Nobody else can access the &n; * file at this point.&n; *&n; * When called from exit_files(), the VMA has been freed because exit_mm()&n; * is executed before exit_files().&n; *&n; * When called from exit_files(), the current task is not yet ZOMBIE but we&n; * flush the PMU state to the context. &n; */
+r_static
+r_int
+DECL|function|pfm_close
+id|pfm_close
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+)paren
+(brace
+id|pfm_context_t
+op_star
+id|ctx
+suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|task
+suffix:semicolon
+r_struct
+id|pt_regs
+op_star
+id|regs
+suffix:semicolon
+id|DECLARE_WAITQUEUE
+c_func
+(paren
+id|wait
+comma
+id|current
+)paren
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+r_int
+id|smpl_buf_size
+op_assign
+l_int|0UL
+suffix:semicolon
+r_void
+op_star
+id|smpl_buf_addr
+op_assign
+l_int|NULL
+suffix:semicolon
+r_int
+id|free_possible
+op_assign
+l_int|1
+suffix:semicolon
+r_int
+id|state
+comma
+id|is_system
 suffix:semicolon
 id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] ctx_state=%d&bslash;n&quot;
+l_string|&quot;pfm_close called private=%p&bslash;n&quot;
 comma
-id|current-&gt;pid
-comma
-id|ctx-&gt;ctx_state
+id|filp-&gt;private_data
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|PFM_IS_FILE
+c_func
+(paren
+id|filp
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;bad magic&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBADF
+suffix:semicolon
 )brace
+id|ctx
+op_assign
+(paren
+id|pfm_context_t
+op_star
+)paren
+id|filp-&gt;private_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctx
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;perfmon: pfm_close: NULL ctx [%d]&bslash;n&quot;
+comma
+id|current-&gt;pid
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBADF
+suffix:semicolon
+)brace
+id|PROTECT_CTX
+c_func
+(paren
+id|ctx
+comma
+id|flags
+)paren
+suffix:semicolon
+id|state
+op_assign
+id|ctx-&gt;ctx_state
+suffix:semicolon
+id|is_system
+op_assign
+id|ctx-&gt;ctx_fl_system
+suffix:semicolon
+id|task
+op_assign
+id|PFM_CTX_TASK
+c_func
+(paren
+id|ctx
+)paren
+suffix:semicolon
+id|regs
+op_assign
+id|ia64_task_regs
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;ctx_state=%d is_current=%d&bslash;n&quot;
+comma
+id|state
+comma
+id|task
+op_eq
+id|current
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * if task == current, then pfm_flush() unloaded the context&n;&t; */
+r_if
+c_cond
+(paren
+id|state
+op_eq
+id|PFM_CTX_UNLOADED
+)paren
 r_goto
 id|doit
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * The task is currently blocked or will block after an overflow.&n;&t; * we must force it to wakeup to get out of the&n;&t; * MASKED state and transition to the unloaded state by itself&n;&t; */
+multiline_comment|/*&n;&t; * context is loaded/masked and task != current, we need to&n;&t; * either force an unload or go zombie&n;&t; */
+multiline_comment|/*&n;&t; * The task is currently blocked or will block after an overflow.&n;&t; * we must force it to wakeup to get out of the&n;&t; * MASKED state and transition to the unloaded state by itself.&n;&t; *&n;&t; * This situation is only possible for per-task mode&n;&t; */
 r_if
 c_cond
 (paren
@@ -6749,7 +6874,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * set a &quot;partial&quot; zombie state to be checked&n;&t;&t; * upon return from down() in pfm_handle_work().&n;&t;&t; *&n;&t;&t; * We cannot use the ZOMBIE state, because it is checked&n;&t;&t; * by pfm_load_regs() which is called upon wakeup from down().&n;&t;&t; * In such cas, it would free the context and then we would&n;&t;&t; * return to pfm_handle_work() which would access the&n;&t;&t; * stale context. Instead, we set a flag invisible to pfm_load_regs()&n;&t;&t; * but visible to pfm_handle_work().&n;&t;&t; *&n;&t;&t; * For some window of time, we have a zombie context with&n;&t;&t; * ctx_state = MASKED  and not ZOMBIE&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * set a &quot;partial&quot; zombie state to be checked&n;&t;&t; * upon return from down() in pfm_handle_work().&n;&t;&t; *&n;&t;&t; * We cannot use the ZOMBIE state, because it is checked&n;&t;&t; * by pfm_load_regs() which is called upon wakeup from down().&n;&t;&t; * In such case, it would free the context and then we would&n;&t;&t; * return to pfm_handle_work() which would access the&n;&t;&t; * stale context. Instead, we set a flag invisible to pfm_load_regs()&n;&t;&t; * but visible to pfm_handle_work().&n;&t;&t; *&n;&t;&t; * For some window of time, we have a zombie context with&n;&t;&t; * ctx_state = MASKED  and not ZOMBIE&n;&t;&t; */
 id|ctx-&gt;ctx_fl_going_zombie
 op_assign
 l_int|1
@@ -6766,11 +6891,9 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;waking up ctx_state=%d for [%d]&bslash;n&quot;
+l_string|&quot;waking up ctx_state=%d&bslash;n&quot;
 comma
 id|state
-comma
-id|current-&gt;pid
 )paren
 )paren
 suffix:semicolon
@@ -6829,21 +6952,26 @@ c_func
 id|TASK_RUNNING
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * context is terminated at this point&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * context is unloaded at this point&n;&t;&t; */
 id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;after zombie wakeup ctx_state=%d for [%d]&bslash;n&quot;
+l_string|&quot;after zombie wakeup ctx_state=%d for&bslash;n&quot;
 comma
 id|state
-comma
-id|current-&gt;pid
 )paren
 )paren
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|task
+op_ne
+id|current
+)paren
 (brace
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n;&t; &t; * switch context to zombie state&n;&t; &t; */
@@ -6883,34 +7011,13 @@ macro_line|#endif
 )brace
 id|doit
 suffix:colon
-multiline_comment|/* cannot assume task is defined from now on */
 multiline_comment|/* reload state, may have changed during  opening of critical section */
 id|state
 op_assign
 id|ctx-&gt;ctx_state
 suffix:semicolon
 multiline_comment|/*&n;&t; * the context is still attached to a task (possibly current)&n;&t; * we cannot destroy it right now&n;&t; */
-multiline_comment|/*&n;&t; * remove virtual mapping, if any. will be NULL when&n;&t; * called from exit_files().&n;&t; */
-r_if
-c_cond
-(paren
-id|ctx-&gt;ctx_smpl_vaddr
-)paren
-(brace
-id|smpl_buf_vaddr
-op_assign
-id|ctx-&gt;ctx_smpl_vaddr
-suffix:semicolon
-id|smpl_buf_size
-op_assign
-id|ctx-&gt;ctx_smpl_size
-suffix:semicolon
-id|ctx-&gt;ctx_smpl_vaddr
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * we must fre the sampling buffer right here because&n;&t; * we cannot rely on it being cleaned up later by the&n;&t; * monitored task. It is not possible to free vmalloc&squot;ed&n;&t; * memory in pfm_load_regs(). Instead, we remove the buffer&n;&t; * now. should there be subsequent PMU overflow originally&n;&t; * meant for sampling, the will be converted to spurious&n;&t; * and that&squot;s fine because the monitoring tools is gone anyway.&n;&t; */
+multiline_comment|/*&n;&t; * we must free the sampling buffer right here because&n;&t; * we cannot rely on it being cleaned up later by the&n;&t; * monitored task. It is not possible to free vmalloc&squot;ed&n;&t; * memory in pfm_load_regs(). Instead, we remove the buffer&n;&t; * now. should there be subsequent PMU overflow originally&n;&t; * meant for sampling, the will be converted to spurious&n;&t; * and that&squot;s fine because the monitoring tools is gone anyway.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6930,20 +7037,20 @@ id|ctx-&gt;ctx_smpl_hdr
 op_assign
 l_int|NULL
 suffix:semicolon
+id|ctx-&gt;ctx_fl_is_sampling
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] ctx_state=%d free_possible=%d vaddr=%p addr=%p size=%lu&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;ctx_state=%d free_possible=%d addr=%p size=%lu&bslash;n&quot;
 comma
 id|state
 comma
 id|free_possible
-comma
-id|smpl_buf_vaddr
 comma
 id|smpl_buf_addr
 comma
@@ -6962,7 +7069,7 @@ c_func
 id|ctx-&gt;ctx_buf_fmt
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * UNLOADED and TERMINATED mean that the session has already been&n;&t; * unreserved.&n;&t; */
+multiline_comment|/*&n;&t; * UNLOADED that the session has already been unreserved.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6996,22 +7103,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * if there was a mapping, then we systematically remove it&n;&t; * at this point. Cannot be done inside critical section&n;&t; * because some VM function reenables interrupts.&n;&t; *&n;&t; * All memory free operations (especially for vmalloc&squot;ed memory)&n;&t; * MUST be done with interrupts ENABLED.&n;&t; */
-r_if
-c_cond
-(paren
-id|smpl_buf_vaddr
-)paren
-id|pfm_remove_smpl_mapping
-c_func
-(paren
-id|current
-comma
-id|smpl_buf_vaddr
-comma
-id|smpl_buf_size
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * All memory free operations (especially for vmalloc&squot;ed memory)&n;&t; * MUST be done with interrupts ENABLED.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7118,6 +7210,11 @@ dot
 id|release
 op_assign
 id|pfm_close
+comma
+dot
+id|flush
+op_assign
+id|pfm_flush
 )brace
 suffix:semicolon
 r_static
@@ -7451,66 +7548,6 @@ id|fd
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function gets called from mm/mmap.c:exit_mmap() only when there is a sampling buffer&n; * attached to the context AND the current task has a mapping for it, i.e., it is the original&n; * creator of the context.&n; *&n; * This function is used to remember the fact that the vma describing the sampling buffer&n; * has now been removed. It can only be called when no other tasks share the same mm context.&n; *&n; */
-r_static
-r_void
-DECL|function|pfm_vm_close
-id|pfm_vm_close
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-)paren
-(brace
-id|pfm_context_t
-op_star
-id|ctx
-op_assign
-(paren
-id|pfm_context_t
-op_star
-)paren
-id|vma-&gt;vm_private_data
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|PROTECT_CTX
-c_func
-(paren
-id|ctx
-comma
-id|flags
-)paren
-suffix:semicolon
-id|ctx-&gt;ctx_smpl_vaddr
-op_assign
-l_int|NULL
-suffix:semicolon
-id|UNPROTECT_CTX
-c_func
-(paren
-id|ctx
-comma
-id|flags
-)paren
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;[%d] clearing vaddr for ctx %p&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|ctx
-)paren
-)paren
-suffix:semicolon
-)brace
 r_static
 r_int
 DECL|function|pfm_remap_buffer
@@ -7732,9 +7769,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d]  smpl_buf @%p&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;smpl_buf @%p&bslash;n&quot;
 comma
 id|smpl_buf
 )paren
@@ -7782,8 +7817,6 @@ op_or
 id|VM_MAYREAD
 op_or
 id|VM_RESERVED
-op_or
-id|VM_DONTCOPY
 suffix:semicolon
 id|vma-&gt;vm_page_prot
 op_assign
@@ -7792,8 +7825,7 @@ suffix:semicolon
 multiline_comment|/* XXX may need to change */
 id|vma-&gt;vm_ops
 op_assign
-op_amp
-id|pfm_vm_ops
+l_int|NULL
 suffix:semicolon
 id|vma-&gt;vm_pgoff
 op_assign
@@ -7805,9 +7837,8 @@ l_int|NULL
 suffix:semicolon
 id|vma-&gt;vm_private_data
 op_assign
-id|ctx
+l_int|NULL
 suffix:semicolon
-multiline_comment|/* information needed by the pfm_vm_close() function */
 multiline_comment|/*&n;&t; * Now we have everything we need and we can initialize&n;&t; * and connect all the data structures&n;&t; */
 id|ctx-&gt;ctx_smpl_hdr
 op_assign
@@ -8023,9 +8054,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] cur: uid=%d gid=%d task: euid=%d suid=%d uid=%d egid=%d sgid=%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;cur: uid=%d gid=%d task: euid=%d suid=%d uid=%d egid=%d sgid=%d&bslash;n&quot;
 comma
 id|current-&gt;uid
 comma
@@ -8659,9 +8688,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] task [%d] has not memory context (kernel thread)&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;task [%d] has not memory context (kernel thread)&bslash;n&quot;
 comma
 id|task-&gt;pid
 )paren
@@ -8686,9 +8713,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] no permission to attach to  [%d]&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;no permission to attach to  [%d]&bslash;n&quot;
 comma
 id|task-&gt;pid
 )paren
@@ -8743,9 +8768,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] cannot attach to  zombie task [%d]&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;cannot attach to  zombie task [%d]&bslash;n&quot;
 comma
 id|task-&gt;pid
 )paren
@@ -8779,9 +8802,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] cannot attach to non-stopped task [%d] state=%ld&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;cannot attach to non-stopped task [%d] state=%ld&bslash;n&quot;
 comma
 id|task-&gt;pid
 comma
@@ -9989,10 +10010,6 @@ c_cond
 (paren
 id|state
 op_eq
-id|PFM_CTX_TERMINATED
-op_logical_or
-id|state
-op_eq
 id|PFM_CTX_ZOMBIE
 )paren
 r_return
@@ -10028,9 +10045,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] should be running on CPU%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;should be running on CPU%d&bslash;n&quot;
 comma
 id|ctx-&gt;ctx_cpu
 )paren
@@ -10386,6 +10401,10 @@ multiline_comment|/*&n;&t;&t; * execute write checker, if any&n;&t;&t; */
 r_if
 c_cond
 (paren
+id|pfm_sysctl.expert_mode
+op_eq
+l_int|0
+op_logical_and
 id|PMC_WR_FUNC
 c_func
 (paren
@@ -10812,10 +10831,6 @@ c_func
 (paren
 id|state
 op_eq
-id|PFM_CTX_TERMINATED
-op_logical_or
-id|state
-op_eq
 id|PFM_CTX_ZOMBIE
 )paren
 )paren
@@ -10861,9 +10876,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] should be running on CPU%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;should be running on CPU%d&bslash;n&quot;
 comma
 id|ctx-&gt;ctx_cpu
 )paren
@@ -10954,6 +10967,10 @@ multiline_comment|/*&n;&t;&t; * execute write checker, if any&n;&t;&t; */
 r_if
 c_cond
 (paren
+id|pfm_sysctl.expert_mode
+op_eq
+l_int|0
+op_logical_and
 id|PMD_WR_FUNC
 c_func
 (paren
@@ -11484,9 +11501,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] should be running on CPU%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;should be running on CPU%d&bslash;n&quot;
 comma
 id|ctx-&gt;ctx_cpu
 )paren
@@ -11684,6 +11699,10 @@ c_cond
 id|unlikely
 c_func
 (paren
+id|pfm_sysctl.expert_mode
+op_eq
+l_int|0
+op_logical_and
 id|PMD_RD_FUNC
 c_func
 (paren
@@ -11797,7 +11816,7 @@ id|task_struct
 op_star
 id|task
 comma
-id|pfarg_reg_t
+r_void
 op_star
 id|req
 comma
@@ -11818,10 +11837,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|task
-op_eq
-l_int|NULL
-op_logical_or
 id|req
 op_eq
 l_int|NULL
@@ -11832,7 +11847,10 @@ id|EINVAL
 suffix:semicolon
 id|ctx
 op_assign
-id|task-&gt;thread.pfm_context
+id|GET_PMU_CTX
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -11852,6 +11870,10 @@ c_cond
 id|task
 op_ne
 id|current
+op_logical_and
+id|ctx-&gt;ctx_fl_system
+op_eq
+l_int|0
 )paren
 r_return
 op_minus
@@ -11888,7 +11910,7 @@ id|task_struct
 op_star
 id|task
 comma
-id|pfarg_reg_t
+r_void
 op_star
 id|req
 comma
@@ -11909,10 +11931,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|task
-op_eq
-l_int|NULL
-op_logical_or
 id|req
 op_eq
 l_int|NULL
@@ -11921,7 +11939,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-singleline_comment|//ctx = task-&gt;thread.pfm_context;
 id|ctx
 op_assign
 id|GET_PMU_CTX
@@ -11975,222 +11992,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pfm_mod_read_pmds
-)paren
-suffix:semicolon
-r_int
-DECL|function|pfm_mod_fast_read_pmds
-id|pfm_mod_fast_read_pmds
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
-r_int
-r_int
-id|mask
-(braket
-l_int|4
-)braket
-comma
-r_int
-r_int
-op_star
-id|addr
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-id|pfm_context_t
-op_star
-id|ctx
-suffix:semicolon
-r_int
-r_int
-id|m
-comma
-id|val
-suffix:semicolon
-r_int
-r_int
-id|j
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|task
-op_eq
-l_int|NULL
-op_logical_or
-id|addr
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-singleline_comment|//ctx = task-&gt;thread.pfm_context;
-id|ctx
-op_assign
-id|GET_PMU_CTX
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ctx
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-multiline_comment|/*&n;&t; * for now limit to current task, which is enough when calling&n;&t; * from overflow handler&n;&t; */
-r_if
-c_cond
-(paren
-id|task
-op_ne
-id|current
-op_logical_and
-id|ctx-&gt;ctx_fl_system
-op_eq
-l_int|0
-)paren
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-id|m
-op_assign
-id|mask
-(braket
-l_int|0
-)braket
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|m
-suffix:semicolon
-id|m
-op_rshift_assign
-l_int|1
-comma
-id|j
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|m
-op_amp
-l_int|0x1
-)paren
-op_eq
-l_int|0
-)paren
-r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|PMD_IS_IMPL
-c_func
-(paren
-id|j
-)paren
-op_logical_and
-id|CTX_IS_USED_PMD
-c_func
-(paren
-id|ctx
-comma
-id|j
-)paren
-)paren
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|PMD_IS_COUNTING
-c_func
-(paren
-id|j
-)paren
-)paren
-(brace
-id|val
-op_assign
-id|pfm_read_soft_counter
-c_func
-(paren
-id|ctx
-comma
-id|j
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|val
-op_assign
-id|ia64_get_pmd
-c_func
-(paren
-id|j
-)paren
-suffix:semicolon
-)brace
-op_star
-id|addr
-op_increment
-op_assign
-id|val
-suffix:semicolon
-multiline_comment|/* XXX: should call read checker routine? */
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;single_read_pmd[%u]=0x%lx&bslash;n&quot;
-comma
-id|j
-comma
-id|val
-)paren
-)paren
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|pfm_mod_fast_read_pmds
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pfm_mod_fast_read_pmds
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Only call this function when a process it trying to&n; * write the debug registers (reading is always allowed)&n; */
@@ -12505,20 +12306,6 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-r_case
-id|PFM_CTX_TERMINATED
-suffix:colon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;context is terminated, nothing to do&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 r_default
 suffix:colon
 id|DPRINT
@@ -12554,9 +12341,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] should be running on CPU%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;should be running on CPU%d&bslash;n&quot;
 comma
 id|ctx-&gt;ctx_cpu
 )paren
@@ -13128,10 +12913,6 @@ c_cond
 (paren
 id|state
 op_eq
-id|PFM_CTX_TERMINATED
-op_logical_or
-id|state
-op_eq
 id|PFM_CTX_ZOMBIE
 )paren
 r_return
@@ -13172,9 +12953,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] should be running on CPU%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;should be running on CPU%d&bslash;n&quot;
 comma
 id|ctx-&gt;ctx_cpu
 )paren
@@ -13743,6 +13522,194 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+r_int
+DECL|function|pfm_mod_write_ibrs
+id|pfm_mod_write_ibrs
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
+r_void
+op_star
+id|req
+comma
+r_int
+r_int
+id|nreq
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|pfm_context_t
+op_star
+id|ctx
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|req
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|ctx
+op_assign
+id|GET_PMU_CTX
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctx
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+multiline_comment|/*&n;&t; * for now limit to current task, which is enough when calling&n;&t; * from overflow handler&n;&t; */
+r_if
+c_cond
+(paren
+id|task
+op_ne
+id|current
+op_logical_and
+id|ctx-&gt;ctx_fl_system
+op_eq
+l_int|0
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+r_return
+id|pfm_write_ibrs
+c_func
+(paren
+id|ctx
+comma
+id|req
+comma
+id|nreq
+comma
+id|regs
+)paren
+suffix:semicolon
+)brace
+DECL|variable|pfm_mod_write_ibrs
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfm_mod_write_ibrs
+)paren
+suffix:semicolon
+r_int
+DECL|function|pfm_mod_write_dbrs
+id|pfm_mod_write_dbrs
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
+r_void
+op_star
+id|req
+comma
+r_int
+r_int
+id|nreq
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|pfm_context_t
+op_star
+id|ctx
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|req
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|ctx
+op_assign
+id|GET_PMU_CTX
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctx
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+multiline_comment|/*&n;&t; * for now limit to current task, which is enough when calling&n;&t; * from overflow handler&n;&t; */
+r_if
+c_cond
+(paren
+id|task
+op_ne
+id|current
+op_logical_and
+id|ctx-&gt;ctx_fl_system
+op_eq
+l_int|0
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+r_return
+id|pfm_write_dbrs
+c_func
+(paren
+id|ctx
+comma
+id|req
+comma
+id|nreq
+comma
+id|regs
+)paren
+suffix:semicolon
+)brace
+DECL|variable|pfm_mod_write_dbrs
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfm_mod_write_dbrs
+)paren
+suffix:semicolon
 r_static
 r_int
 DECL|function|pfm_get_features
@@ -13869,9 +13836,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] should be running on CPU%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;should be running on CPU%d&bslash;n&quot;
 comma
 id|ctx-&gt;ctx_cpu
 )paren
@@ -13886,9 +13851,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;current [%d] task [%d] ctx_state=%d is_system=%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;task [%d] ctx_state=%d is_system=%d&bslash;n&quot;
 comma
 id|PFM_CTX_TASK
 c_func
@@ -14017,9 +13980,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;pfm_stop: current [%d] task=[%d]&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;task=[%d]&bslash;n&quot;
 comma
 id|task-&gt;pid
 )paren
@@ -14100,9 +14061,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] should be running on CPU%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;should be running on CPU%d&bslash;n&quot;
 comma
 id|ctx-&gt;ctx_cpu
 )paren
@@ -14539,19 +14498,13 @@ c_cond
 id|state
 op_ne
 id|PFM_CTX_UNLOADED
-op_logical_and
-id|state
-op_ne
-id|PFM_CTX_TERMINATED
 )paren
 (brace
 id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] cannot load to [%d], invalid ctx_state=%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;cannot load to [%d], invalid ctx_state=%d&bslash;n&quot;
 comma
 id|req-&gt;load_pid
 comma
@@ -14596,9 +14549,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;cannot use blocking mode on self for [%d]&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;cannot use blocking mode on self&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -14662,9 +14613,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;system wide is self monitoring only current=%d load_pid=%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;system wide is self monitoring only load_pid=%d&bslash;n&quot;
 comma
 id|req-&gt;load_pid
 )paren
@@ -14830,9 +14779,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] before cmpxchg() old_ctx=%p new_ctx=%p&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;before cmpxchg() old_ctx=%p new_ctx=%p&bslash;n&quot;
 comma
 id|thread-&gt;pfm_context
 comma
@@ -15332,7 +15279,7 @@ op_star
 id|tregs
 suffix:semicolon
 r_int
-id|state
+id|prev_state
 comma
 id|is_system
 suffix:semicolon
@@ -15357,7 +15304,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|state
+id|prev_state
 op_assign
 id|ctx-&gt;ctx_state
 suffix:semicolon
@@ -15369,11 +15316,7 @@ multiline_comment|/*&n;&t; * unload only when necessary&n;&t; */
 r_if
 c_cond
 (paren
-id|state
-op_eq
-id|PFM_CTX_TERMINATED
-op_logical_or
-id|state
+id|prev_state
 op_eq
 id|PFM_CTX_UNLOADED
 )paren
@@ -15382,11 +15325,9 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] ctx_state=%d, nothing to do&bslash;n&quot;
+l_string|&quot;ctx_state=%d, nothing to do&bslash;n&quot;
 comma
-id|current-&gt;pid
-comma
-id|ctx-&gt;ctx_state
+id|prev_state
 )paren
 )paren
 suffix:semicolon
@@ -15418,8 +15359,6 @@ r_return
 id|ret
 suffix:semicolon
 id|ctx-&gt;ctx_state
-op_assign
-id|state
 op_assign
 id|PFM_CTX_UNLOADED
 suffix:semicolon
@@ -15453,6 +15392,13 @@ id|ctx
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * at this point we are done with the PMU&n;&t;&t; * so we can unreserve the resource.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|prev_state
+op_ne
+id|PFM_CTX_ZOMBIE
+)paren
 id|pfm_unreserve_session
 c_func
 (paren
@@ -15533,7 +15479,14 @@ comma
 id|ctx
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * at this point we are done with the PMU&n;&t; * so we can unreserve the resource.&n;&t; */
+multiline_comment|/*&n;&t; * at this point we are done with the PMU&n;&t; * so we can unreserve the resource.&n;&t; *&n;&t; * when state was ZOMBIE, we have already unreserved.&n;&t; */
+r_if
+c_cond
+(paren
+id|prev_state
+op_ne
+id|PFM_CTX_ZOMBIE
+)paren
 id|pfm_unreserve_session
 c_func
 (paren
@@ -15702,18 +15655,14 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;context &lt;%d&gt; force cleanup for [%d] by [%d]&bslash;n&quot;
-comma
-id|ctx-&gt;ctx_fd
+l_string|&quot;force cleanupf for [%d]&bslash;n&quot;
 comma
 id|task-&gt;pid
-comma
-id|current-&gt;pid
 )paren
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * called only from exit_thread(): task == current&n; */
+multiline_comment|/*&n; * called only from exit_thread(): task == current&n; * we come here only if current has a context attached (loaded or masked)&n; */
 r_void
 DECL|function|pfm_exit_thread
 id|pfm_exit_thread
@@ -15795,7 +15744,7 @@ id|state
 r_case
 id|PFM_CTX_UNLOADED
 suffix:colon
-multiline_comment|/*&n;&t; &t;&t; * come here only if attached&n;&t; &t;&t; */
+multiline_comment|/*&n;&t; &t;&t; * only comes to thios function if pfm_context is not NULL, i.e., cannot&n;&t;&t;&t; * be in unloaded state&n;&t; &t;&t; */
 id|printk
 c_func
 (paren
@@ -15841,23 +15790,19 @@ l_string|&quot;perfmon: pfm_exit_thread [%d] state=%d unload failed %d&bslash;n&
 comma
 id|task-&gt;pid
 comma
-id|ctx-&gt;ctx_state
+id|state
 comma
 id|ret
 )paren
 suffix:semicolon
 )brace
-id|ctx-&gt;ctx_state
-op_assign
-id|PFM_CTX_TERMINATED
-suffix:semicolon
 id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;ctx terminated by [%d]&bslash;n&quot;
+l_string|&quot;ctx unloaded for current state was %d&bslash;n&quot;
 comma
-id|task-&gt;pid
+id|state
 )paren
 )paren
 suffix:semicolon
@@ -15872,25 +15817,40 @@ suffix:semicolon
 r_case
 id|PFM_CTX_ZOMBIE
 suffix:colon
-id|pfm_clear_psr_up
-c_func
-(paren
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|ctx-&gt;ctx_smpl_hdr
-)paren
-suffix:semicolon
-id|pfm_force_cleanup
+id|ret
+op_assign
+id|pfm_context_unload
 c_func
 (paren
 id|ctx
 comma
+l_int|NULL
+comma
+l_int|0
+comma
 id|regs
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;perfmon: pfm_exit_thread [%d] state=%d unload failed %d&bslash;n&quot;
+comma
+id|task-&gt;pid
+comma
+id|state
+comma
+id|ret
+)paren
+suffix:semicolon
+)brace
 id|free_ok
 op_assign
 l_int|1
@@ -16108,7 +16068,7 @@ id|ctx-&gt;ctx_fl_system
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * context is UNLOADED, MASKED, TERMINATED we are safe to go&n;&t; */
+multiline_comment|/*&n;&t; * context is UNLOADED, MASKED we are safe to go&n;&t; */
 r_if
 c_cond
 (paren
@@ -16362,9 +16322,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] invalid cmd=%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;invalid cmd=%d&bslash;n&quot;
 comma
 id|cmd
 )paren
@@ -16436,9 +16394,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] invalid cmd=%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;invalid cmd=%d&bslash;n&quot;
 comma
 id|cmd
 )paren
@@ -16605,9 +16561,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] cannot copy_from_user %lu bytes @%p&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;cannot copy_from_user %lu bytes @%p&bslash;n&quot;
 comma
 id|sz
 comma
@@ -16660,9 +16614,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] restart_args sz=%lu xtra_sz=%lu&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;restart_args sz=%lu xtra_sz=%lu&bslash;n&quot;
 comma
 id|sz
 comma
@@ -16731,9 +16683,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] invalid fd %d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;invalid fd %d&bslash;n&quot;
 comma
 id|fd
 )paren
@@ -16763,9 +16713,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] fd %d not related to perfmon&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;fd %d not related to perfmon&bslash;n&quot;
 comma
 id|fd
 )paren
@@ -16799,9 +16747,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] no context for fd %d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;no context for fd %d&bslash;n&quot;
 comma
 id|fd
 )paren
@@ -16889,9 +16835,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] context unlocked&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;context unlocked&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -17235,20 +17179,11 @@ id|ctx-&gt;ctx_task
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * switch to terminated state&n;&t; */
-id|ctx-&gt;ctx_state
-op_assign
-id|PFM_CTX_TERMINATED
-suffix:semicolon
 id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;context &lt;%d&gt; terminated for [%d]&bslash;n&quot;
-comma
-id|ctx-&gt;ctx_fd
-comma
-id|current-&gt;pid
+l_string|&quot;context terminated&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -17374,13 +17309,18 @@ id|ctx-&gt;ctx_fl_trap_reason
 op_assign
 id|PFM_TRAP_REASON_NONE
 suffix:semicolon
+id|ovfl_regs
+op_assign
+id|ctx-&gt;ctx_ovfl_regs
+(braket
+l_int|0
+)braket
+suffix:semicolon
 id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] reason=%d state=%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;reason=%d state=%d&bslash;n&quot;
 comma
 id|reason
 comma
@@ -17388,7 +17328,7 @@ id|ctx-&gt;ctx_state
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * must be done before we check non-blocking mode&n;&t; */
+multiline_comment|/*&n;&t; * must be done before we check for simple-reset mode&n;&t; */
 r_if
 c_cond
 (paren
@@ -17400,13 +17340,6 @@ id|PFM_CTX_ZOMBIE
 )paren
 r_goto
 id|do_zombie
-suffix:semicolon
-id|ovfl_regs
-op_assign
-id|ctx-&gt;ctx_ovfl_regs
-(braket
-l_int|0
-)braket
 suffix:semicolon
 singleline_comment|//if (CTX_OVFL_NOBLOCK(ctx)) goto skip_blocking;
 r_if
@@ -17462,6 +17395,14 @@ id|ctx
 comma
 id|flags
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * we need to read the ovfl_regs only after wake-up&n;&t; * because we may have had pfm_write_pmds() in between&n;&t; * and that can changed PMD values and therefore &n;&t; * ovfl_regs is reset for these new PMD values.&n;&t; */
+id|ovfl_regs
+op_assign
+id|ctx-&gt;ctx_ovfl_regs
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -17571,9 +17512,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] waking up somebody&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;waking up somebody&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -17710,15 +17649,13 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;ovfl msg: msg=%p no_msg=%d fd=%d pid=%d ovfl_pmds=0x%lx&bslash;n&quot;
+l_string|&quot;ovfl msg: msg=%p no_msg=%d fd=%d ovfl_pmds=0x%lx&bslash;n&quot;
 comma
 id|msg
 comma
 id|ctx-&gt;ctx_fl_no_msg
 comma
 id|ctx-&gt;ctx_fd
-comma
-id|current-&gt;pid
 comma
 id|ovfl_pmds
 )paren
@@ -17808,15 +17745,13 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;end msg: msg=%p no_msg=%d ctx_fd=%d pid=%d&bslash;n&quot;
+l_string|&quot;end msg: msg=%p no_msg=%d ctx_fd=%d&bslash;n&quot;
 comma
 id|msg
 comma
 id|ctx-&gt;ctx_fl_no_msg
 comma
 id|ctx-&gt;ctx_fd
-comma
-id|current-&gt;pid
 )paren
 )paren
 suffix:semicolon
@@ -18487,9 +18422,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;current [%d] handler aborts leftover ovfl_pmds=0x%lx&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;handler aborts leftover ovfl_pmds=0x%lx&bslash;n&quot;
 comma
 id|pmd_mask
 op_lshift
@@ -18562,9 +18495,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;current [%d] ovfl_pmds=0x%lx reset_pmds=0x%lx&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;ovfl_pmds=0x%lx reset_pmds=0x%lx&bslash;n&quot;
 comma
 id|ovfl_pmds
 comma
@@ -18659,9 +18590,7 @@ id|DPRINT_ovfl
 c_func
 (paren
 (paren
-l_string|&quot;current [%d] owner [%d] pending=%ld reason=%u ovfl_pmds=0x%lx ovfl_notify=0x%lx masked=%d&bslash;n&quot;
-comma
-id|current-&gt;pid
+l_string|&quot;owner [%d] pending=%ld reason=%u ovfl_pmds=0x%lx ovfl_notify=0x%lx masked=%d&bslash;n&quot;
 comma
 id|GET_PMU_OWNER
 c_func
@@ -19264,6 +19193,25 @@ comma
 l_string|&quot;fastctxsw                 : %s&bslash;n&quot;
 comma
 id|pfm_sysctl.fastctxsw
+OG
+l_int|0
+ques
+c_cond
+l_string|&quot;Yes&quot;
+suffix:colon
+l_string|&quot;No&quot;
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;expert mode               : %s&bslash;n&quot;
+comma
+id|pfm_sysctl.expert_mode
 OG
 l_int|0
 ques
@@ -22641,11 +22589,9 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;perfmon: pfm_inherit clearing state for [%d] current [%d]&bslash;n&quot;
+l_string|&quot;perfmon: pfm_inherit clearing state for [%d]&bslash;n&quot;
 comma
 id|task-&gt;pid
-comma
-id|current-&gt;pid
 )paren
 )paren
 suffix:semicolon

@@ -6,6 +6,10 @@ id|ia64_mv_setup_t
 id|dig_setup
 suffix:semicolon
 r_extern
+id|ia64_mv_setup_t
+id|sba_setup
+suffix:semicolon
+r_extern
 id|ia64_mv_dma_alloc_coherent
 id|sba_alloc_coherent
 suffix:semicolon
@@ -41,7 +45,7 @@ multiline_comment|/*&n; * This stuff has dual use!&n; *&n; * For a generic kerne
 DECL|macro|platform_name
 mdefine_line|#define platform_name&t;&t;&t;&quot;hpzx1&quot;
 DECL|macro|platform_setup
-mdefine_line|#define platform_setup&t;&t;&t;dig_setup
+mdefine_line|#define platform_setup&t;&t;&t;sba_setup
 DECL|macro|platform_dma_init
 mdefine_line|#define platform_dma_init&t;&t;machvec_noop
 DECL|macro|platform_dma_alloc_coherent
