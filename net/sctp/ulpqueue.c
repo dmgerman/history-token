@@ -147,13 +147,13 @@ c_func
 (paren
 id|ulpq
 comma
+l_int|0
+comma
 r_sizeof
 (paren
 r_struct
 id|sctp_ulpq
 )paren
-comma
-l_int|0x00
 )paren
 suffix:semicolon
 id|ulpq-&gt;asoc
