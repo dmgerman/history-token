@@ -218,6 +218,12 @@ op_star
 id|sdev_target
 suffix:semicolon
 multiline_comment|/* used only for single_lun */
+DECL|member|sdev_bflags
+r_int
+r_int
+id|sdev_bflags
+suffix:semicolon
+multiline_comment|/* black/white flags as also found in&n;&t;&t;&t;&t; * scsi_devinfo.[hc]. For now used only to&n;&t;&t;&t;&t; * pass settings from slave_alloc to scsi&n;&t;&t;&t;&t; * core. */
 DECL|member|online
 r_int
 id|online
