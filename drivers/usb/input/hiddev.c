@@ -1,11 +1,6 @@
 multiline_comment|/*&n; *  Copyright (c) 2001 Paul Stewart&n; *  Copyright (c) 2001 Vojtech Pavlik&n; *&n; *  HID char devices, giving access to raw HID device events.&n; *&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to Paul Stewart &lt;stewart@wetlogic.net&gt;&n; */
-DECL|macro|HIDDEV_MINOR_BASE
-mdefine_line|#define HIDDEV_MINOR_BASE&t;96
-DECL|macro|HIDDEV_MINORS
-mdefine_line|#define HIDDEV_MINORS&t;&t;16
-DECL|macro|HIDDEV_BUFFER_SIZE
-mdefine_line|#define HIDDEV_BUFFER_SIZE&t;64
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -15,6 +10,19 @@ macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;hid.h&quot;
 macro_line|#include &lt;linux/hiddev.h&gt;
+macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
+DECL|macro|HIDDEV_MINOR_BASE
+mdefine_line|#define HIDDEV_MINOR_BASE&t;0
+DECL|macro|HIDDEV_MINORS
+mdefine_line|#define HIDDEV_MINORS&t;&t;256
+macro_line|#else
+DECL|macro|HIDDEV_MINOR_BASE
+mdefine_line|#define HIDDEV_MINOR_BASE&t;96
+DECL|macro|HIDDEV_MINORS
+mdefine_line|#define HIDDEV_MINORS&t;&t;16
+macro_line|#endif
+DECL|macro|HIDDEV_BUFFER_SIZE
+mdefine_line|#define HIDDEV_BUFFER_SIZE&t;64
 DECL|struct|hiddev
 r_struct
 id|hiddev
@@ -111,6 +119,12 @@ DECL|variable|hiddev_devfs_handle
 r_static
 id|devfs_handle_t
 id|hiddev_devfs_handle
+suffix:semicolon
+multiline_comment|/* forward reference to make our lives easier */
+r_extern
+r_struct
+id|usb_driver
+id|hiddev_driver
 suffix:semicolon
 multiline_comment|/*&n; * Find a report, given the report&squot;s type and ID.  The ID can be specified&n; * indirectly by REPORT_ID_FIRST (which returns the first report of the given&n; * type) or by (REPORT_ID_NEXT | old_id), which returns the next report of the&n; * given type which follows old_id.&n; */
 r_static
@@ -624,6 +638,17 @@ id|devfs_unregister
 c_func
 (paren
 id|hiddev-&gt;devfs
+)paren
+suffix:semicolon
+id|usb_deregister_dev
+c_func
+(paren
+op_amp
+id|hiddev_driver
+comma
+l_int|1
+comma
+id|hiddev-&gt;minor
 )paren
 suffix:semicolon
 id|hiddev_table
@@ -2713,6 +2738,21 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|usb_register_dev
+(paren
+op_amp
+id|hiddev_driver
+comma
+l_int|1
+comma
+op_amp
+id|minor
+)paren
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -2752,6 +2792,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond

@@ -12,12 +12,19 @@ DECL|macro|BRLVGER_DISPLAY_OFF
 mdefine_line|#define BRLVGER_DISPLAY_OFF&t;3
 DECL|macro|BRLVGER_BUZZ
 mdefine_line|#define BRLVGER_BUZZ&t;&t;4
+macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
+DECL|macro|MAX_NR_BRLVGER_DEVS
+mdefine_line|#define MAX_NR_BRLVGER_DEVS&t;256
+DECL|macro|BRLVGER_MINOR
+mdefine_line|#define BRLVGER_MINOR&t;&t;0
+macro_line|#else
 multiline_comment|/* Number of supported devices, and range of covered minors */
 DECL|macro|MAX_NR_BRLVGER_DEVS
 mdefine_line|#define MAX_NR_BRLVGER_DEVS&t;4
 multiline_comment|/* Base minor for the char devices */
 DECL|macro|BRLVGER_MINOR
 mdefine_line|#define BRLVGER_MINOR&t;&t;128
+macro_line|#endif
 multiline_comment|/* Size of some fields */
 DECL|macro|BRLVGER_HWVER_SIZE
 mdefine_line|#define BRLVGER_HWVER_SIZE&t;2
