@@ -19558,19 +19558,6 @@ r_int
 id|ret
 suffix:semicolon
 macro_line|#if (BITS_PER_LONG == 32)
-r_if
-c_cond
-(paren
-id|val-&gt;high
-op_ne
-l_int|0
-)paren
-id|ret
-op_assign
-op_complement
-l_int|0UL
-suffix:semicolon
-r_else
 id|ret
 op_assign
 id|val-&gt;low
