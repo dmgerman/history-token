@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -167,7 +168,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_return
-id|PCI_DMA_ERROR_CODE
+id|DMA_ERROR_CODE
 suffix:semicolon
 )brace
 r_if
@@ -311,7 +312,7 @@ r_else
 (brace
 multiline_comment|/* Third failure, give up */
 r_return
-id|PCI_DMA_ERROR_CODE
+id|DMA_ERROR_CODE
 suffix:semicolon
 )brace
 )brace
@@ -453,7 +454,7 @@ suffix:semicolon
 id|dma_addr_t
 id|ret
 op_assign
-id|PCI_DMA_ERROR_CODE
+id|DMA_ERROR_CODE
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -486,7 +487,7 @@ c_func
 (paren
 id|entry
 op_eq
-id|PCI_DMA_ERROR_CODE
+id|DMA_ERROR_CODE
 )paren
 )paren
 (brace
@@ -502,7 +503,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|PCI_DMA_ERROR_CODE
+id|DMA_ERROR_CODE
 suffix:semicolon
 )brace
 id|entry
@@ -1060,7 +1061,7 @@ c_func
 (paren
 id|entry
 op_eq
-id|PCI_DMA_ERROR_CODE
+id|DMA_ERROR_CODE
 )paren
 )paren
 (brace
@@ -1291,7 +1292,7 @@ op_increment
 suffix:semicolon
 id|outs-&gt;dma_address
 op_assign
-id|PCI_DMA_ERROR_CODE
+id|DMA_ERROR_CODE
 suffix:semicolon
 id|outs-&gt;dma_length
 op_assign

@@ -1,11 +1,12 @@
 multiline_comment|/*&n; * IBM PowerPC Virtual I/O Infrastructure Support.&n; *&n; *    Copyright (c) 2003 IBM Corp.&n; *     Dave Engebretsen engebret@us.ibm.com&n; *     Santiago Leon santil@us.ibm.com&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
-macro_line|#ifndef _VIO_H
-DECL|macro|_VIO_H
-mdefine_line|#define _VIO_H
+macro_line|#ifndef _ASM_VIO_H
+DECL|macro|_ASM_VIO_H
+mdefine_line|#define _ASM_VIO_H
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
@@ -587,5 +588,24 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* _PHYP_H */
+DECL|function|vio_dma_mapping_error
+r_static
+r_inline
+r_int
+id|vio_dma_mapping_error
+c_func
+(paren
+id|dma_addr_t
+id|dma_addr
+)paren
+(brace
+r_return
+id|dma_mapping_error
+c_func
+(paren
+id|dma_addr
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* _ASM_VIO_H */
 eof
