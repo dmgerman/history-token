@@ -4301,43 +4301,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-DECL|struct|ide_devices_s
-r_typedef
-r_struct
-id|ide_devices_s
-(brace
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|4
-)braket
-suffix:semicolon
-multiline_comment|/* hdX */
-DECL|member|attached
-r_int
-id|attached
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* native */
-DECL|member|alttached
-r_int
-id|alttached
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* alternate */
-DECL|member|next
-r_struct
-id|ide_devices_s
-op_star
-id|next
-suffix:semicolon
-DECL|typedef|ide_devices_t
-)brace
-id|ide_devices_t
-suffix:semicolon
 multiline_comment|/*&n; * ide_hwifs[] is the master data structure used to keep track&n; * of just about everything in ide.c.  Whenever possible, routines&n; * should be using pointers to a drive (ide_drive_t *) or&n; * pointers to a hwif (ide_hwif_t *), rather than indexing this&n; * structure directly (the allocation/layout may change!).&n; *&n; */
 macro_line|#ifndef _IDE_C
 r_extern
@@ -4347,31 +4310,6 @@ id|ide_hwifs
 )braket
 suffix:semicolon
 multiline_comment|/* master data repository */
-r_extern
-id|ide_devices_t
-op_star
-id|idedisk
-suffix:semicolon
-r_extern
-id|ide_devices_t
-op_star
-id|idecd
-suffix:semicolon
-r_extern
-id|ide_devices_t
-op_star
-id|idefloppy
-suffix:semicolon
-r_extern
-id|ide_devices_t
-op_star
-id|idetape
-suffix:semicolon
-r_extern
-id|ide_devices_t
-op_star
-id|idescsi
-suffix:semicolon
 macro_line|#endif
 r_extern
 r_int
