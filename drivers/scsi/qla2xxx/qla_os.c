@@ -14127,6 +14127,16 @@ id|ha-&gt;host_no
 )paren
 )paren
 suffix:semicolon
+id|qla_printk
+c_func
+(paren
+id|KERN_WARNING
+comma
+id|ha
+comma
+l_string|&quot;Loop down - aborting ISP.&bslash;n&quot;
+)paren
+suffix:semicolon
 id|set_bit
 c_func
 (paren
