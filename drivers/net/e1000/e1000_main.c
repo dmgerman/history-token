@@ -2939,28 +2939,6 @@ comma
 id|tctl
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC
-r_if
-c_cond
-(paren
-id|adapter-&gt;shared.mac_type
-op_ge
-id|e1000_82543
-)paren
-(brace
-id|E1000_WRITE_REG
-c_func
-(paren
-op_amp
-id|adapter-&gt;shared
-comma
-id|TXDCTL
-comma
-l_int|0x00020000
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Setup Transmit Descriptor Settings for this adapter */
 id|adapter-&gt;txd_cmd
 op_assign
@@ -3448,28 +3426,6 @@ id|rxcsum
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PPC
-r_if
-c_cond
-(paren
-id|adapter-&gt;shared.mac_type
-op_ge
-id|e1000_82543
-)paren
-(brace
-id|E1000_WRITE_REG
-c_func
-(paren
-op_amp
-id|adapter-&gt;shared
-comma
-id|RXDCTL
-comma
-l_int|0x00020000
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Enable Receives */
 id|E1000_WRITE_REG
 c_func
