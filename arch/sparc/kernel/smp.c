@@ -103,6 +103,13 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* XXX */
+DECL|variable|cache_decay_ticks
+r_int
+r_int
+id|cache_decay_ticks
+op_assign
+l_int|100
+suffix:semicolon
 DECL|variable|cpu_online_map
 id|cpumask_t
 id|cpu_online_map
