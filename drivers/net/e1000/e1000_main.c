@@ -554,7 +554,6 @@ comma
 id|e1000_pci_tbl
 )paren
 suffix:semicolon
-multiline_comment|/* Local Function Prototypes */
 r_int
 id|e1000_up
 c_func
@@ -598,6 +597,47 @@ r_uint16
 id|spddplx
 )paren
 suffix:semicolon
+r_int
+id|e1000_setup_tx_resources
+c_func
+(paren
+r_struct
+id|e1000_adapter
+op_star
+id|adapter
+)paren
+suffix:semicolon
+r_int
+id|e1000_setup_rx_resources
+c_func
+(paren
+r_struct
+id|e1000_adapter
+op_star
+id|adapter
+)paren
+suffix:semicolon
+r_void
+id|e1000_free_tx_resources
+c_func
+(paren
+r_struct
+id|e1000_adapter
+op_star
+id|adapter
+)paren
+suffix:semicolon
+r_void
+id|e1000_free_rx_resources
+c_func
+(paren
+r_struct
+id|e1000_adapter
+op_star
+id|adapter
+)paren
+suffix:semicolon
+multiline_comment|/* Local Function Prototypes */
 r_static
 r_int
 id|e1000_init_module
@@ -677,28 +717,6 @@ id|netdev
 )paren
 suffix:semicolon
 r_static
-r_int
-id|e1000_setup_tx_resources
-c_func
-(paren
-r_struct
-id|e1000_adapter
-op_star
-id|adapter
-)paren
-suffix:semicolon
-r_static
-r_int
-id|e1000_setup_rx_resources
-c_func
-(paren
-r_struct
-id|e1000_adapter
-op_star
-id|adapter
-)paren
-suffix:semicolon
-r_static
 r_void
 id|e1000_configure_tx
 c_func
@@ -745,28 +763,6 @@ suffix:semicolon
 r_static
 r_void
 id|e1000_clean_rx_ring
-c_func
-(paren
-r_struct
-id|e1000_adapter
-op_star
-id|adapter
-)paren
-suffix:semicolon
-r_static
-r_void
-id|e1000_free_tx_resources
-c_func
-(paren
-r_struct
-id|e1000_adapter
-op_star
-id|adapter
-)paren
-suffix:semicolon
-r_static
-r_void
-id|e1000_free_rx_resources
 c_func
 (paren
 r_struct
@@ -3175,7 +3171,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_setup_tx_resources - allocate Tx resources (Descriptors)&n; * @adapter: board private structure&n; *&n; * Return 0 on success, negative on failure&n; **/
-r_static
 r_int
 DECL|function|e1000_setup_tx_resources
 id|e1000_setup_tx_resources
@@ -3624,7 +3619,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * e1000_setup_rx_resources - allocate Rx resources (Descriptors)&n; * @adapter: board private structure&n; *&n; * Returns 0 on success, negative on failure&n; **/
-r_static
 r_int
 DECL|function|e1000_setup_rx_resources
 id|e1000_setup_rx_resources
@@ -4166,7 +4160,6 @@ id|rctl
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_free_tx_resources - Free Tx Resources&n; * @adapter: board private structure&n; *&n; * Free all transmit software resources&n; **/
-r_static
 r_void
 DECL|function|e1000_free_tx_resources
 id|e1000_free_tx_resources
@@ -4376,7 +4369,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_free_rx_resources - Free Rx Resources&n; * @adapter: board private structure&n; *&n; * Free all receive software resources&n; **/
-r_static
 r_void
 DECL|function|e1000_free_rx_resources
 id|e1000_free_rx_resources
