@@ -1110,7 +1110,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_SMP)
+macro_line|#if defined(CONFIG_IRQBALANCE)
 macro_line|# include &lt;asm/processor.h&gt;&t;/* kernel_thread() */
 macro_line|# include &lt;linux/kernel_stat.h&gt;&t;/* kstat */
 macro_line|# include &lt;linux/slab.h&gt;&t;&t;/* kmalloc() */
@@ -2951,7 +2951,7 @@ c_func
 id|balanced_irq_init
 )paren
 suffix:semicolon
-macro_line|#else /* !SMP */
+macro_line|#else /* !CONFIG_IRQBALANCE */
 DECL|function|move_irq
 r_static
 r_inline
@@ -2964,6 +2964,8 @@ id|irq
 )paren
 (brace
 )brace
+macro_line|#endif /* CONFIG_IRQBALANCE */
+macro_line|#ifndef CONFIG_SMP
 DECL|function|send_IPI_self
 r_void
 id|send_IPI_self
@@ -3003,7 +3005,7 @@ id|cfg
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* defined(CONFIG_SMP) */
+macro_line|#endif /* !CONFIG_SMP */
 multiline_comment|/*&n; * support for broken MP BIOSs, enables hand-redirection of PIRQ0-7 to&n; * specific CPU-side IRQs.&n; */
 DECL|macro|MAX_PIRQS
 mdefine_line|#define MAX_PIRQS 8
