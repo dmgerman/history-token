@@ -2226,20 +2226,10 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|memcpy
-c_func
-(paren
-id|e
-comma
-op_amp
-id|pe-&gt;e
-comma
-r_sizeof
-(paren
 op_star
 id|e
-)paren
-)paren
+op_assign
+id|pe-&gt;e
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Add a proper exception, and remove the&n;&t;&t; * in-flight exception from the list.&n;&t;&t; */
 id|down_write
