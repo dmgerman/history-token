@@ -1595,7 +1595,17 @@ comma
 id|hdev-&gt;name
 )paren
 suffix:semicolon
+multiline_comment|/* Synchronize with completion handlers */
 id|write_lock_irqsave
+c_func
+(paren
+op_amp
+id|husb-&gt;completion_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|write_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -1614,15 +1624,6 @@ id|hci_usb_flush
 c_func
 (paren
 id|hdev
-)paren
-suffix:semicolon
-id|write_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|husb-&gt;completion_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
