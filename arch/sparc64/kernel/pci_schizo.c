@@ -1016,11 +1016,11 @@ l_int|0
 comma
 multiline_comment|/* PCI slot 5  Int A, B, C, D&t;*/
 multiline_comment|/*0x18*/
-l_int|3
+l_int|4
 comma
 multiline_comment|/* SCSI&t;&t;&t;&t;*/
 multiline_comment|/*0x19*/
-l_int|3
+l_int|4
 comma
 multiline_comment|/* second SCSI&t;&t;&t;*/
 multiline_comment|/*0x1a*/
@@ -1060,7 +1060,7 @@ l_int|12
 comma
 multiline_comment|/* Serial&t;&t;&t;*/
 multiline_comment|/*0x23*/
-l_int|2
+l_int|4
 comma
 multiline_comment|/* EBUS I2C &t;&t;&t;*/
 multiline_comment|/*0x24*/
@@ -1234,7 +1234,7 @@ l_int|NULL
 (brace
 id|ret
 op_assign
-l_int|2
+l_int|4
 suffix:semicolon
 )brace
 r_else
@@ -1309,7 +1309,7 @@ r_default
 suffix:colon
 id|ret
 op_assign
-l_int|2
+l_int|4
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -2114,7 +2114,7 @@ l_int|0
 comma
 multiline_comment|/* PCI B slot 3  Int A, B, C, D */
 multiline_comment|/*0x20*/
-l_int|3
+l_int|4
 comma
 multiline_comment|/* SCSI&t;&t;&t;&t;*/
 multiline_comment|/*0x21*/
@@ -2138,7 +2138,7 @@ l_int|15
 comma
 multiline_comment|/* PowerFail&t;&t;&t;*/
 multiline_comment|/*0x26*/
-l_int|3
+l_int|4
 comma
 multiline_comment|/* second SCSI&t;&t;&t;*/
 multiline_comment|/*0x27*/
@@ -2146,7 +2146,7 @@ l_int|11
 comma
 multiline_comment|/* Floppy&t;&t;&t;*/
 multiline_comment|/*0x28*/
-l_int|2
+l_int|4
 comma
 multiline_comment|/* Spare Hardware&t;&t;*/
 multiline_comment|/*0x29*/
@@ -2248,7 +2248,7 @@ l_int|NULL
 (brace
 id|ret
 op_assign
-l_int|2
+l_int|4
 suffix:semicolon
 )brace
 r_else
@@ -2323,7 +2323,7 @@ r_default
 suffix:colon
 id|ret
 op_assign
-l_int|2
+l_int|4
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -181,13 +181,13 @@ mdefine_line|#define  FHC_BSR_SI&t;&t;0x00000001 /* Spare input pin value       
 DECL|macro|FHC_PREGS_ECC
 mdefine_line|#define FHC_PREGS_ECC&t;0x40UL&t;/* FHC ECC Control Register (16 bits) */
 DECL|macro|FHC_PREGS_JCTRL
-mdefine_line|#define FHC_PREGS_JCTRL&t;0x50UL&t;/* FHC JTAG Control Register */
+mdefine_line|#define FHC_PREGS_JCTRL&t;0xf0UL&t;/* FHC JTAG Control Register */
 DECL|macro|FHC_JTAG_CTRL_MENAB
 mdefine_line|#define  FHC_JTAG_CTRL_MENAB&t;0x80000000 /* Indicates this is JTAG Master&t; */
 DECL|macro|FHC_JTAG_CTRL_MNONE
 mdefine_line|#define  FHC_JTAG_CTRL_MNONE&t;0x40000000 /* Indicates no JTAG Master present&t; */
 DECL|macro|FHC_PREGS_JCMD
-mdefine_line|#define FHC_PREGS_JCMD&t;0x60UL&t;/* FHC JTAG Command Register */
+mdefine_line|#define FHC_PREGS_JCMD&t;0x100UL&t;/* FHC JTAG Command Register */
 DECL|member|ireg
 r_int
 r_int
