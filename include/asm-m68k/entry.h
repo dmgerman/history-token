@@ -10,13 +10,13 @@ multiline_comment|/* the following macro is used when enabling interrupts */
 macro_line|#if defined(MACH_ATARI_ONLY) &amp;&amp; !defined(CONFIG_HADES)
 multiline_comment|/* block out HSYNC on the atari */
 DECL|macro|ALLOWINT
-mdefine_line|#define ALLOWINT 0xfbff
+mdefine_line|#define ALLOWINT&t;(~0x400)
 DECL|macro|MAX_NOINT_IPL
 mdefine_line|#define&t;MAX_NOINT_IPL&t;3
 macro_line|#else
 multiline_comment|/* portable version */
 DECL|macro|ALLOWINT
-mdefine_line|#define ALLOWINT 0xf8ff
+mdefine_line|#define ALLOWINT&t;(~0x700)
 DECL|macro|MAX_NOINT_IPL
 mdefine_line|#define&t;MAX_NOINT_IPL&t;0
 macro_line|#endif /* machine compilation types */ 
