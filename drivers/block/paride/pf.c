@@ -224,6 +224,11 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|variable|pf_spin_lock
+r_static
+id|spinlock_t
+id|pf_spin_lock
+suffix:semicolon
 macro_line|#ifndef MODULE
 macro_line|#include &quot;setup.h&quot;
 DECL|variable|pf_stt
@@ -1038,6 +1043,9 @@ c_func
 id|q
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|pf_spin_lock
 )paren
 suffix:semicolon
 id|blk_queue_max_segments
@@ -4264,7 +4272,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -4286,7 +4294,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -4352,7 +4360,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -4450,7 +4458,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -4475,7 +4483,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -4585,7 +4593,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -4610,7 +4618,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -4672,7 +4680,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -4697,7 +4705,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -4794,7 +4802,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -4819,7 +4827,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -4887,7 +4895,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -4912,7 +4920,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -5050,7 +5058,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -5075,7 +5083,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -5093,7 +5101,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren
@@ -5118,7 +5126,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pf_spin_lock
 comma
 id|saved_flags
 )paren

@@ -66,6 +66,11 @@ r_static
 id|devfs_handle_t
 id|devfs_handle
 suffix:semicolon
+DECL|variable|nbd_lock
+r_static
+id|spinlock_t
+id|nbd_lock
+suffix:semicolon
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG( s )
 multiline_comment|/* #define DEBUG( s ) printk( s ) &n; */
@@ -1394,7 +1399,6 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -1432,7 +1436,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -1452,7 +1455,6 @@ suffix:semicolon
 id|spin_unlock
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -1465,7 +1467,6 @@ suffix:semicolon
 id|spin_lock
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -2237,6 +2238,9 @@ id|MAJOR_NR
 )paren
 comma
 id|do_nbd_request
+comma
+op_amp
+id|nbd_lock
 )paren
 suffix:semicolon
 r_for

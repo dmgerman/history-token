@@ -5635,7 +5635,6 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -6025,7 +6024,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -9502,6 +9500,14 @@ c_func
 id|q
 comma
 id|do_cciss_request
+comma
+op_amp
+id|hba
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|lock
 )paren
 suffix:semicolon
 id|blk_queue_bounce_limit

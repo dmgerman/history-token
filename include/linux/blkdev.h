@@ -456,6 +456,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * protects queue structures from reentrancy&n;&t; */
 DECL|member|queue_lock
 id|spinlock_t
+op_star
 id|queue_lock
 suffix:semicolon
 multiline_comment|/*&n;&t; * queue settings&n;&t; */
@@ -793,6 +794,19 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|blk_queue_assign_lock
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+comma
+id|spinlock_t
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|block_ioctl
 c_func
@@ -816,6 +830,9 @@ id|request_queue_t
 op_star
 comma
 id|request_fn_proc
+op_star
+comma
+id|spinlock_t
 op_star
 )paren
 suffix:semicolon

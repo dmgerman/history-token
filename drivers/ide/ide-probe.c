@@ -2825,6 +2825,9 @@ c_func
 id|q
 comma
 id|do_ide_request
+comma
+op_amp
+id|ide_lock
 )paren
 suffix:semicolon
 id|blk_queue_segment_boundary

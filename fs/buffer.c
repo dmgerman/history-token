@@ -8042,14 +8042,6 @@ id|blocks
 op_assign
 id|iobuf-&gt;blocks
 suffix:semicolon
-r_struct
-id|buffer_head
-id|bh
-suffix:semicolon
-id|bh.b_dev
-op_assign
-id|inode-&gt;i_dev
-suffix:semicolon
 id|nr_blocks
 op_assign
 id|iobuf-&gt;length
@@ -8075,6 +8067,10 @@ id|blocknr
 op_increment
 )paren
 (brace
+r_struct
+id|buffer_head
+id|bh
+suffix:semicolon
 id|bh.b_state
 op_assign
 l_int|0
@@ -8217,7 +8213,7 @@ comma
 op_amp
 id|iobuf
 comma
-id|bh.b_dev
+id|inode-&gt;i_dev
 comma
 id|blocks
 comma

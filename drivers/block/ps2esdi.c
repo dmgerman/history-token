@@ -742,6 +742,13 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* ps2esdi_init */
+DECL|variable|ps2esdi_init
+id|module_init
+c_func
+(paren
+id|ps2esdi_init
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|variable|cyl
 r_static

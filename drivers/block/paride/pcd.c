@@ -201,6 +201,11 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|variable|pcd_lock
+r_static
+id|spinlock_t
+id|pcd_lock
+suffix:semicolon
 macro_line|#ifndef MODULE
 macro_line|#include &quot;setup.h&quot;
 DECL|variable|pcd_stt
@@ -1112,6 +1117,9 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|pcd_lock
 )paren
 suffix:semicolon
 id|read_ahead
@@ -4130,7 +4138,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pcd_lock
 comma
 id|saved_flags
 )paren
@@ -4155,7 +4163,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pcd_lock
 comma
 id|saved_flags
 )paren
@@ -4223,7 +4231,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pcd_lock
 comma
 id|saved_flags
 )paren
@@ -4248,7 +4256,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pcd_lock
 comma
 id|saved_flags
 )paren
@@ -4328,7 +4336,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pcd_lock
 comma
 id|saved_flags
 )paren
@@ -4358,7 +4366,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pcd_lock
 comma
 id|saved_flags
 )paren
@@ -4375,7 +4383,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pcd_lock
 comma
 id|saved_flags
 )paren
@@ -4390,7 +4398,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|QUEUE-&gt;queue_lock
+id|pcd_lock
 comma
 id|saved_flags
 )paren

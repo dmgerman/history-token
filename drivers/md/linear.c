@@ -731,7 +731,7 @@ suffix:semicolon
 DECL|function|linear_init
 r_static
 r_int
-id|md__init
+id|__init
 id|linear_init
 (paren
 r_void

@@ -254,6 +254,10 @@ r_int
 r_int
 id|maxSG
 suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 singleline_comment|//* pointers to command and error info pool */ 
 DECL|member|cmd_pool
 id|CommandList_struct
@@ -754,6 +758,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|CCISS_LOCK
-mdefine_line|#define CCISS_LOCK(i)&t;(&amp;((BLK_DEFAULT_QUEUE(MAJOR_NR + i))-&gt;queue_lock))
+mdefine_line|#define CCISS_LOCK(i)&t;((BLK_DEFAULT_QUEUE(MAJOR_NR + i))-&gt;queue_lock)
 macro_line|#endif /* CCISS_H */
 eof

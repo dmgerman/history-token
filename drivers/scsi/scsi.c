@@ -240,6 +240,9 @@ c_func
 id|q
 comma
 id|scsi_request_fn
+comma
+op_amp
+id|SHpnt-&gt;host_lock
 )paren
 suffix:semicolon
 id|q-&gt;queuedata

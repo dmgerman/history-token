@@ -1535,7 +1535,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|sector_t
 id|fragment
 comma
 r_struct

@@ -3176,8 +3176,6 @@ op_star
 id|hwif
 )paren
 suffix:semicolon
-DECL|macro|DRIVE_LOCK
-mdefine_line|#define DRIVE_LOCK(drive)&t;(&amp;(drive)-&gt;queue.queue_lock)
 r_extern
 id|spinlock_t
 id|ide_lock

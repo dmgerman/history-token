@@ -1512,6 +1512,10 @@ id|new_bdev-&gt;bd_inode
 op_assign
 id|inode
 suffix:semicolon
+id|inode-&gt;i_mode
+op_assign
+id|S_IFBLK
+suffix:semicolon
 id|inode-&gt;i_rdev
 op_assign
 id|kdev

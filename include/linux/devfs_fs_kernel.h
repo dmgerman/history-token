@@ -44,13 +44,6 @@ id|devfs_entry
 op_star
 id|devfs_handle_t
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-DECL|macro|ROOT_DEVICE_NAME
-macro_line|#  define ROOT_DEVICE_NAME ((real_root_dev ==ROOT_DEV) ? root_device_name:NULL)
-macro_line|#else
-DECL|macro|ROOT_DEVICE_NAME
-macro_line|#  define ROOT_DEVICE_NAME root_device_name
-macro_line|#endif
 macro_line|#ifdef CONFIG_DEVFS_FS
 DECL|struct|unique_numspace
 r_struct

@@ -294,6 +294,10 @@ id|__u32
 op_star
 id|cmd_pool_bits
 suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|Qdepth
 r_int
 r_int
@@ -332,7 +336,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|IDA_LOCK
-mdefine_line|#define IDA_LOCK(i)&t;(&amp;((BLK_DEFAULT_QUEUE(MAJOR_NR + i))-&gt;queue_lock))
+mdefine_line|#define IDA_LOCK(i)&t;((BLK_DEFAULT_QUEUE(MAJOR_NR + i))-&gt;queue_lock)
 macro_line|#endif
 macro_line|#endif /* CPQARRAY_H */
 eof

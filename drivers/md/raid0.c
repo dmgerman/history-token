@@ -1461,7 +1461,7 @@ suffix:semicolon
 DECL|function|raid0_init
 r_static
 r_int
-id|md__init
+id|__init
 id|raid0_init
 (paren
 r_void

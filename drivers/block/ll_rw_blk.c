@@ -409,6 +409,31 @@ op_assign
 id|mask
 suffix:semicolon
 )brace
+DECL|function|blk_queue_assign_lock
+r_void
+id|blk_queue_assign_lock
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+comma
+id|spinlock_t
+op_star
+id|lock
+)paren
+(brace
+id|spin_lock_init
+c_func
+(paren
+id|lock
+)paren
+suffix:semicolon
+id|q-&gt;queue_lock
+op_assign
+id|lock
+suffix:semicolon
+)brace
 DECL|variable|rq_flags
 r_static
 r_char
@@ -1562,7 +1587,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 comma
 id|flags
@@ -1577,7 +1601,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 comma
 id|flags
@@ -1938,13 +1961,6 @@ dot
 id|wait
 )paren
 suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|q-&gt;queue_lock
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1986,6 +2002,10 @@ comma
 id|request_fn_proc
 op_star
 id|rfn
+comma
+id|spinlock_t
+op_star
+id|lock
 )paren
 (brace
 r_int
@@ -2073,6 +2093,10 @@ l_int|1
 op_lshift
 id|QUEUE_FLAG_CLUSTER
 )paren
+suffix:semicolon
+id|q-&gt;queue_lock
+op_assign
+id|lock
 suffix:semicolon
 multiline_comment|/*&n;&t; * by default assume old behaviour and bounce for any highmem page&n;&t; */
 id|blk_queue_bounce_limit
@@ -2247,7 +2271,6 @@ suffix:semicolon
 id|spin_lock_prefetch
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -2290,7 +2313,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -2307,7 +2329,6 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -3186,7 +3207,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 comma
 id|flags
@@ -3203,7 +3223,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 comma
 id|flags
@@ -3314,7 +3333,6 @@ suffix:semicolon
 id|spin_lock_prefetch
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -3353,7 +3371,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -3703,7 +3720,6 @@ l_int|NULL
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -3862,7 +3878,6 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -5603,6 +5618,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|blk_contig_segment
+)paren
+suffix:semicolon
+DECL|variable|blk_queue_assign_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|blk_queue_assign_lock
 )paren
 suffix:semicolon
 eof

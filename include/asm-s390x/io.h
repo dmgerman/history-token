@@ -9,8 +9,6 @@ DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffffffff
 DECL|macro|__io_virt
 mdefine_line|#define __io_virt(x)            ((void *)(PAGE_OFFSET | (unsigned long)(x)))
-DECL|macro|__io_phys
-mdefine_line|#define __io_phys(x)            ((unsigned long)(x) &amp; ~PAGE_OFFSET)
 multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv.&n; * These are pretty trivial&n; */
 DECL|function|virt_to_phys
 r_extern

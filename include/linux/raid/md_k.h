@@ -533,19 +533,19 @@ id|mdk_rdev_s
 (brace
 DECL|member|same_set
 r_struct
-id|md_list_head
+id|list_head
 id|same_set
 suffix:semicolon
 multiline_comment|/* RAID devices within the same set */
 DECL|member|all
 r_struct
-id|md_list_head
+id|list_head
 id|all
 suffix:semicolon
 multiline_comment|/* all RAID devices */
 DECL|member|pending
 r_struct
-id|md_list_head
+id|list_head
 id|pending
 suffix:semicolon
 multiline_comment|/* undetected RAID devices */
@@ -657,7 +657,7 @@ id|nb_dev
 suffix:semicolon
 DECL|member|disks
 r_struct
-id|md_list_head
+id|list_head
 id|disks
 suffix:semicolon
 DECL|member|sb_dirty
@@ -724,12 +724,12 @@ id|recovery_active
 suffix:semicolon
 multiline_comment|/* blocks scheduled, but not written */
 DECL|member|recovery_wait
-id|md_wait_queue_head_t
+id|wait_queue_head_t
 id|recovery_wait
 suffix:semicolon
 DECL|member|all_mddevs
 r_struct
-id|md_list_head
+id|list_head
 id|all_mddevs
 suffix:semicolon
 )brace
@@ -874,9 +874,8 @@ id|mddev_t
 op_star
 id|mddev
 comma
-r_int
-r_int
-id|block_nr
+id|sector_t
+id|sector_nr
 )paren
 suffix:semicolon
 )brace
@@ -964,7 +963,7 @@ id|mddev
 suffix:semicolon
 multiline_comment|/*&n; * iterates through some rdev ringlist. It&squot;s safe to remove the&n; * current &squot;rdev&squot;. Dont touch &squot;tmp&squot; though.&n; */
 DECL|macro|ITERATE_RDEV_GENERIC
-mdefine_line|#define ITERATE_RDEV_GENERIC(head,field,rdev,tmp)&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (tmp = head.next;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;rdev = md_list_entry(tmp, mdk_rdev_t, field),&t;&t;&bslash;&n;&t;&t;&t;tmp = tmp-&gt;next, tmp-&gt;prev != &amp;head&t;&t;&bslash;&n;&t;&t;; )
+mdefine_line|#define ITERATE_RDEV_GENERIC(head,field,rdev,tmp)&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for ((tmp) = (head).next;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(rdev) = (list_entry((tmp), mdk_rdev_t, field)),&t;&bslash;&n;&t;&t;&t;(tmp) = (tmp)-&gt;next, (tmp)-&gt;prev != &amp;(head)&t;&bslash;&n;&t;&t;; )
 multiline_comment|/*&n; * iterates through the &squot;same array disks&squot; ringlist&n; */
 DECL|macro|ITERATE_RDEV
 mdefine_line|#define ITERATE_RDEV(mddev,rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC((mddev)-&gt;disks,same_set,rdev,tmp)
@@ -979,7 +978,7 @@ DECL|macro|ITERATE_RDEV_PENDING
 mdefine_line|#define ITERATE_RDEV_PENDING(rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC(pending_raid_disks,pending,rdev,tmp)
 multiline_comment|/*&n; * iterates through all used mddevs in the system.&n; */
 DECL|macro|ITERATE_MDDEV
-mdefine_line|#define ITERATE_MDDEV(mddev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (tmp = all_mddevs.next;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;mddev = md_list_entry(tmp, mddev_t, all_mddevs),&t;&bslash;&n;&t;&t;&t;tmp = tmp-&gt;next, tmp-&gt;prev != &amp;all_mddevs&t;&bslash;&n;&t;&t;; )
+mdefine_line|#define ITERATE_MDDEV(mddev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (tmp = all_mddevs.next;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;mddev = list_entry(tmp, mddev_t, all_mddevs),&t;&bslash;&n;&t;&t;&t;tmp = tmp-&gt;next, tmp-&gt;prev != &amp;all_mddevs&t;&bslash;&n;&t;&t;; )
 DECL|function|lock_mddev
 r_static
 r_inline
@@ -1044,7 +1043,7 @@ op_star
 id|data
 suffix:semicolon
 DECL|member|wqueue
-id|md_wait_queue_head_t
+id|wait_queue_head_t
 id|wqueue
 suffix:semicolon
 DECL|member|flags
@@ -1085,7 +1084,7 @@ id|dev_name_s
 (brace
 DECL|member|list
 r_struct
-id|md_list_head
+id|list_head
 id|list
 suffix:semicolon
 DECL|member|dev

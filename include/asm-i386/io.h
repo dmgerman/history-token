@@ -34,32 +34,11 @@ r_int
 id|line
 )paren
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|__io_phys_debug
-c_func
-(paren
-r_int
-r_int
-id|x
-comma
-r_const
-r_char
-op_star
-id|file
-comma
-r_int
-id|line
-)paren
-suffix:semicolon
 DECL|macro|__io_virt
 mdefine_line|#define __io_virt(x) __io_virt_debug((unsigned long)(x), __FILE__, __LINE__)
-singleline_comment|//#define __io_phys(x) __io_phys_debug((unsigned long)(x), __FILE__, __LINE__)
 macro_line|#else
 DECL|macro|__io_virt
 mdefine_line|#define __io_virt(x) ((void *)(x))
-singleline_comment|//#define __io_phys(x) __pa(x)
 macro_line|#endif
 multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv.&n; * These are pretty trivial&n; */
 DECL|function|virt_to_phys

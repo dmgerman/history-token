@@ -2,6 +2,12 @@ macro_line|#ifndef _RAID1_H
 DECL|macro|_RAID1_H
 mdefine_line|#define _RAID1_H
 macro_line|#include &lt;linux/raid/md.h&gt;
+DECL|typedef|mirror_info_t
+r_typedef
+r_struct
+id|mirror_info
+id|mirror_info_t
+suffix:semicolon
 DECL|struct|mirror_info
 r_struct
 id|mirror_info
@@ -45,9 +51,15 @@ id|used_slot
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|raid1_private_data
+DECL|typedef|r1bio_t
+r_typedef
 r_struct
-id|raid1_private_data
+id|r1bio_s
+id|r1bio_t
+suffix:semicolon
+DECL|struct|r1_private_data_s
+r_struct
+id|r1_private_data_s
 (brace
 DECL|member|mddev
 id|mddev_t
@@ -55,8 +67,7 @@ op_star
 id|mddev
 suffix:semicolon
 DECL|member|mirrors
-r_struct
-id|mirror_info
+id|mirror_info_t
 id|mirrors
 (braket
 id|MD_SB_DISKS
@@ -79,8 +90,7 @@ r_int
 id|last_used
 suffix:semicolon
 DECL|member|next_sect
-r_int
-r_int
+id|sector_t
 id|next_sect
 suffix:semicolon
 DECL|member|sect_count
@@ -101,56 +111,13 @@ r_int
 id|resync_mirrors
 suffix:semicolon
 DECL|member|spare
-r_struct
-id|mirror_info
+id|mirror_info_t
 op_star
 id|spare
 suffix:semicolon
 DECL|member|device_lock
-id|md_spinlock_t
+id|spinlock_t
 id|device_lock
-suffix:semicolon
-multiline_comment|/* buffer pool */
-multiline_comment|/* buffer_heads that we have pre-allocated have b_pprev -&gt; &amp;freebh&n;&t; * and are linked into a stack using b_next&n;&t; * raid1_bh that are pre-allocated have R1BH_PreAlloc set.&n;&t; * All these variable are protected by device_lock&n;&t; */
-DECL|member|freebh
-r_struct
-id|buffer_head
-op_star
-id|freebh
-suffix:semicolon
-DECL|member|freebh_cnt
-r_int
-id|freebh_cnt
-suffix:semicolon
-multiline_comment|/* how many are on the list */
-DECL|member|freebh_blocked
-r_int
-id|freebh_blocked
-suffix:semicolon
-DECL|member|freer1
-r_struct
-id|raid1_bh
-op_star
-id|freer1
-suffix:semicolon
-DECL|member|freer1_blocked
-r_int
-id|freer1_blocked
-suffix:semicolon
-DECL|member|freer1_cnt
-r_int
-id|freer1_cnt
-suffix:semicolon
-DECL|member|freebuf
-r_struct
-id|raid1_bh
-op_star
-id|freebuf
-suffix:semicolon
-multiline_comment|/* each bh_req has a page allocated */
-DECL|member|wait_buffer
-id|md_wait_queue_head_t
-id|wait_buffer
 suffix:semicolon
 multiline_comment|/* for use when syncing mirrors: */
 DECL|member|start_active
@@ -192,32 +159,42 @@ r_int
 id|window
 suffix:semicolon
 DECL|member|wait_done
-id|md_wait_queue_head_t
+id|wait_queue_head_t
 id|wait_done
 suffix:semicolon
 DECL|member|wait_ready
-id|md_wait_queue_head_t
+id|wait_queue_head_t
 id|wait_ready
 suffix:semicolon
 DECL|member|segment_lock
-id|md_spinlock_t
+id|spinlock_t
 id|segment_lock
+suffix:semicolon
+DECL|member|r1bio_pool
+id|mempool_t
+op_star
+id|r1bio_pool
+suffix:semicolon
+DECL|member|r1buf_pool
+id|mempool_t
+op_star
+id|r1buf_pool
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|typedef|raid1_conf_t
+DECL|typedef|conf_t
 r_typedef
 r_struct
-id|raid1_private_data
-id|raid1_conf_t
+id|r1_private_data_s
+id|conf_t
 suffix:semicolon
 multiline_comment|/*&n; * this is the only point in the RAID code where we violate&n; * C type safety. mddev-&gt;private is an &squot;opaque&squot; pointer.&n; */
 DECL|macro|mddev_to_conf
-mdefine_line|#define mddev_to_conf(mddev) ((raid1_conf_t *) mddev-&gt;private)
+mdefine_line|#define mddev_to_conf(mddev) ((conf_t *) mddev-&gt;private)
 multiline_comment|/*&n; * this is our &squot;private&squot; &squot;collective&squot; RAID1 buffer head.&n; * it contains information about what kind of IO operations were started&n; * for this RAID1 operation, and about their status:&n; */
-DECL|struct|raid1_bh
+DECL|struct|r1bio_s
 r_struct
-id|raid1_bh
+id|r1bio_s
 (brace
 DECL|member|remaining
 id|atomic_t
@@ -227,6 +204,10 @@ multiline_comment|/* &squot;have we finished&squot; count,&n;&t;&t;&t;&t;&t;    
 DECL|member|cmd
 r_int
 id|cmd
+suffix:semicolon
+DECL|member|sector
+id|sector_t
+id|sector
 suffix:semicolon
 DECL|member|state
 r_int
@@ -238,38 +219,47 @@ id|mddev_t
 op_star
 id|mddev
 suffix:semicolon
-DECL|member|master_bh
+multiline_comment|/*&n;&t; * original bio going to /dev/mdx&n;&t; */
+DECL|member|master_bio
 r_struct
-id|buffer_head
+id|bio
 op_star
-id|master_bh
+id|master_bio
 suffix:semicolon
-DECL|member|mirror_bh_list
+multiline_comment|/*&n;&t; * if the IO is in READ direction, then this bio is used:&n;&t; */
+DECL|member|read_bio
 r_struct
-id|buffer_head
+id|bio
 op_star
-id|mirror_bh_list
+id|read_bio
 suffix:semicolon
-DECL|member|bh_req
+multiline_comment|/*&n;&t; * if the IO is in WRITE direction, then multiple bios are used:&n;&t; */
+DECL|member|write_bios
 r_struct
-id|buffer_head
-id|bh_req
+id|bio
+op_star
+id|write_bios
+(braket
+id|MD_SB_DISKS
+)braket
 suffix:semicolon
 DECL|member|next_r1
-r_struct
-id|raid1_bh
+id|r1bio_t
 op_star
 id|next_r1
 suffix:semicolon
 multiline_comment|/* next for retry or in free list */
+DECL|member|retry_list
+r_struct
+id|list_head
+id|retry_list
+suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* bits for raid1_bh.state */
-DECL|macro|R1BH_Uptodate
-mdefine_line|#define&t;R1BH_Uptodate&t;1
-DECL|macro|R1BH_SyncPhase
-mdefine_line|#define&t;R1BH_SyncPhase&t;2
-DECL|macro|R1BH_PreAlloc
-mdefine_line|#define&t;R1BH_PreAlloc&t;3&t;/* this was pre-allocated, add to free list */
+multiline_comment|/* bits for r1bio.state */
+DECL|macro|R1BIO_Uptodate
+mdefine_line|#define&t;R1BIO_Uptodate&t;1
+DECL|macro|R1BIO_SyncPhase
+mdefine_line|#define&t;R1BIO_SyncPhase&t;2
 macro_line|#endif
 eof

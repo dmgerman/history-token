@@ -581,9 +581,9 @@ c_cond
 id|MERGEABLE_BUFFERS
 c_func
 (paren
-id|bio
+id|req-&gt;biotail
 comma
-id|req-&gt;bio
+id|bio
 )paren
 )paren
 r_return
@@ -853,9 +853,6 @@ op_star
 id|SCpnt
 comma
 r_int
-id|sg_count_valid
-comma
-r_int
 id|dma_host
 )paren
 (brace
@@ -901,33 +898,10 @@ op_amp
 id|SCpnt-&gt;request
 suffix:semicolon
 multiline_comment|/*&n;&t; * First we need to know how many scatter gather segments are needed.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sg_count_valid
-)paren
-(brace
-id|count
-op_assign
-id|__count_segments
-c_func
-(paren
-id|req
-comma
-id|dma_host
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
 id|count
 op_assign
 id|req-&gt;nr_segments
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * If the dma pool is nearly empty, then queue a minimal request&n;&t; * with a single segment.  Typically this will satisfy a single&n;&t; * buffer.&n;&t; */
 r_if
 c_cond
@@ -1719,14 +1693,11 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|macro|INITIO
-mdefine_line|#define INITIO(_FUNCTION, _VALID, _DMA)&t;&t;&bslash;&n;static int _FUNCTION(Scsi_Cmnd * SCpnt)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;    return __init_io(SCpnt, _VALID, _DMA);&t;&bslash;&n;}
-multiline_comment|/*&n; * ll_rw_blk.c now keeps track of the number of segments in&n; * a request.  Thus we don&squot;t have to do it any more here.&n; * We always force &quot;_VALID&quot; to 1.  Eventually clean this up&n; * and get rid of the extra argument.&n; */
+mdefine_line|#define INITIO(_FUNCTION, _DMA)&t;&t;&t;&bslash;&n;static int _FUNCTION(Scsi_Cmnd * SCpnt)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;    return __init_io(SCpnt, _DMA);&t;&t;&bslash;&n;}
 id|INITIO
 c_func
 (paren
 id|scsi_init_io_v
-comma
-l_int|1
 comma
 l_int|0
 )paren
@@ -1734,8 +1705,6 @@ id|INITIO
 c_func
 (paren
 id|scsi_init_io_vd
-comma
-l_int|1
 comma
 l_int|1
 )paren

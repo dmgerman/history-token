@@ -57,7 +57,6 @@ suffix:semicolon
 id|ASSERT_LOCK
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 comma
 l_int|0
@@ -96,7 +95,6 @@ multiline_comment|/*&n;&t; * We have the option of inserting the head or the tai
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 comma
 id|flags
@@ -126,7 +124,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 comma
 id|flags
@@ -378,7 +375,6 @@ suffix:semicolon
 id|ASSERT_LOCK
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 comma
 l_int|0
@@ -387,7 +383,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 comma
 id|flags
@@ -633,7 +628,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 comma
 id|flags
@@ -683,7 +677,6 @@ suffix:semicolon
 id|ASSERT_LOCK
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 comma
 l_int|0
@@ -830,7 +823,7 @@ id|ASSERT_LOCK
 c_func
 (paren
 op_amp
-id|SCpnt-&gt;device-&gt;request_queue.queue_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 l_int|0
 )paren
@@ -1010,7 +1003,6 @@ multiline_comment|/*&n;&t; * We must do one of several things here:&n;&t; *&n;&t
 id|ASSERT_LOCK
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 comma
 l_int|0
@@ -1742,15 +1734,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ASSERT_LOCK
-c_func
-(paren
-op_amp
-id|req-&gt;q-&gt;queue_lock
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1851,7 +1834,6 @@ suffix:semicolon
 id|ASSERT_LOCK
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 comma
 l_int|1
@@ -1995,7 +1977,6 @@ c_func
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -2012,7 +1993,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -2263,7 +2243,6 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -2340,7 +2319,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -2407,7 +2385,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -2439,7 +2416,6 @@ multiline_comment|/*&n;&t;&t; * Now we need to grab the lock again.  We are abou
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
