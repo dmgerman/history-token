@@ -226,10 +226,6 @@ comma
 id|hwif
 )paren
 suffix:semicolon
-id|hwif-&gt;pnp_dev
-op_assign
-id|dev
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -2335,13 +2335,6 @@ op_star
 id|cds
 suffix:semicolon
 multiline_comment|/* chipset device struct */
-DECL|member|pnp_dev
-r_struct
-id|pnp_dev
-op_star
-id|pnp_dev
-suffix:semicolon
-multiline_comment|/* for PnP devices */
 DECL|member|rw_disk
 id|ide_startstop_t
 (paren
