@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  (C) 2001-2004  Dave Jones. &lt;davej@codemonkey.org.uk&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 2 different versions of Longhaul.&n; *  Version 1 (Longhaul) uses the BCR2 MSR at 0x1147.&n; *   It is present only in Samuel 1, Samuel 2 and Ezra.&n; *  Version 2 (Powersaver) uses the POWERSAVER MSR at 0x110a.&n; *   It is present in Ezra-T, Nehemiah and above.&n; *   In addition to scaling multiplier, it can also scale voltage.&n; *   There is provision for scaling FSB too, but this doesn&squot;t work&n; *   too well in practice.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -2443,11 +2444,21 @@ id|longhaul_table
 )paren
 suffix:semicolon
 )brace
-id|MODULE_PARM
+id|module_param
 (paren
 id|dont_scale_voltage
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dont_scale_voltage
+comma
+l_string|&quot;Don&squot;t scale voltage of processor&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
