@@ -10,6 +10,7 @@ macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;linux/slab.h&quot;
 macro_line|#include &quot;linux/tty.h&quot;
 macro_line|#include &quot;linux/binfmts.h&quot;
+macro_line|#include &quot;linux/ptrace.h&quot;
 macro_line|#include &quot;asm/signal.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;asm/unistd.h&quot;

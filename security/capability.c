@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 DECL|function|cap_capable
 r_int
 id|cap_capable

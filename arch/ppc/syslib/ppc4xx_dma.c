@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Author: Pete Popov &lt;ppopov@mvista.com&gt; or source@mvista.com&n; *&n; * arch/ppc/kernel/ppc405_dma.c&n; *&n; * 2000 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; *&n; * IBM 405 DMA Controller Functions&n; */
+multiline_comment|/*&n; * Author: Pete Popov &lt;ppopov@mvista.com&gt; or source@mvista.com&n; *&n; * arch/ppc/kernel/ppc405_dma.c&n; *&n; * 2000 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; *&n; * IBM 405 DMA Controller Functions&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/system.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/syslib/mpc10x_common.c&n; * &n; * Common routines for the Motorola SPS MPC106, MPC107 and MPC8240 Host bridge,&n; * Mem ctlr, EPIC, etc.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/syslib/mpc10x_common.c&n; * &n; * Common routines for the Motorola SPS MPC106, MPC107 and MPC8240 Host bridge,&n; * Mem ctlr, EPIC, etc.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 multiline_comment|/*&n; * *** WARNING - A BAT MUST be set to access the PCI config addr/data regs ***&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

@@ -119,7 +119,7 @@ c_func
 id|c
 comma
 op_amp
-id|head-&gt;list
+id|head-&gt;vm_list
 comma
 id|vm_list
 )paren

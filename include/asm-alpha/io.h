@@ -1264,6 +1264,8 @@ suffix:semicolon
 multiline_comment|/*&n; * XXX - We don&squot;t have csum_partial_copy_fromio() yet, so we cheat here and &n; * just copy it. The net code will then do the checksum later. Presently &n; * only used by some shared memory 8390 Ethernet cards anyway.&n; */
 DECL|macro|eth_io_copy_and_sum
 mdefine_line|#define eth_io_copy_and_sum(skb,src,len,unused) &bslash;&n;  memcpy_fromio((skb)-&gt;data,(src),(len))
+DECL|macro|isa_eth_io_copy_and_sum
+mdefine_line|#define isa_eth_io_copy_and_sum(skb,src,len,unused) &bslash;&n;  isa_memcpy_fromio((skb)-&gt;data,(src),(len))
 r_static
 r_inline
 r_int

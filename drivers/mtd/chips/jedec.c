@@ -3994,7 +3994,7 @@ op_star
 id|buf
 )paren
 (brace
-multiline_comment|/* Does IO to the currently selected chip. It takes the bank addressing&n;      base (which is divisable by the chip size) adds the necesary lower bits&n;      of addrshift (interleve index) and then adds the control register index. */
+multiline_comment|/* Does IO to the currently selected chip. It takes the bank addressing&n;      base (which is divisible by the chip size) adds the necessary lower bits&n;      of addrshift (interleve index) and then adds the control register index. */
 DECL|macro|flread
 mdefine_line|#define flread(x) map-&gt;read8(map,base+(off&amp;((1&lt;&lt;chip-&gt;addrshift)-1))+((x)&lt;&lt;chip-&gt;addrshift))
 DECL|macro|flwrite

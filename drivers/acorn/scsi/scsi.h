@@ -328,11 +328,11 @@ id|KERN_WARNING
 l_string|&quot;scsi%d.%c: bad request buffer &quot;
 l_string|&quot;length %d, should be %ld&bslash;n&quot;
 comma
-id|SCpnt-&gt;host-&gt;host_no
+id|SCpnt-&gt;device-&gt;host-&gt;host_no
 comma
 l_char|&squot;0&squot;
 op_plus
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|SCpnt-&gt;request_bufflen
 comma

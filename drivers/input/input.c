@@ -1782,6 +1782,8 @@ comma
 id|argv
 comma
 id|envp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|kfree

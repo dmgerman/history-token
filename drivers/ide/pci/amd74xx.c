@@ -2168,7 +2168,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;AMD_IDE: Bios didn&squot;t set cable bits corectly. Enabling workaround.&bslash;n&quot;
+l_string|&quot;AMD_IDE: Bios didn&squot;t set cable bits correctly. Enabling workaround.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|amd_80w

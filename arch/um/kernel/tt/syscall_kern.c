@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#include &quot;linux/types.h&quot;
 macro_line|#include &quot;linux/utime.h&quot;
 macro_line|#include &quot;linux/sys.h&quot;
+macro_line|#include &quot;linux/ptrace.h&quot;
 macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;

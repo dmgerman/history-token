@@ -425,21 +425,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_extern
-r_char
-op_star
-id|render_sigset_t
-c_func
-(paren
-id|sigset_t
-op_star
-id|set
-comma
-r_char
-op_star
-id|buffer
-)paren
-suffix:semicolon
 multiline_comment|/* Some extensions for manipulating the low 32 signals in particular.  */
 DECL|function|sigaddsetmask
 r_static

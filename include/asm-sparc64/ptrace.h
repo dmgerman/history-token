@@ -634,7 +634,7 @@ DECL|macro|PTRACE_GETFPAREGS
 mdefine_line|#define PTRACE_GETFPAREGS         20
 DECL|macro|PTRACE_SETFPAREGS
 mdefine_line|#define PTRACE_SETFPAREGS         21
-multiline_comment|/* There are for debugging 64-bit processes, either from a 32 or 64 bit&n; * parent.  Thus their compliments are for debugging 32-bit processes only.&n; */
+multiline_comment|/* There are for debugging 64-bit processes, either from a 32 or 64 bit&n; * parent.  Thus their complements are for debugging 32-bit processes only.&n; */
 DECL|macro|PTRACE_GETREGS64
 mdefine_line|#define PTRACE_GETREGS64&t;  22
 DECL|macro|PTRACE_SETREGS64
