@@ -1218,7 +1218,6 @@ c_func
 (paren
 id|X86_FEATURE_MCE
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 )paren
@@ -1326,7 +1325,6 @@ c_func
 (paren
 id|X86_FEATURE_MCA
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 )paren

@@ -619,21 +619,37 @@ l_int|14
 suffix:semicolon
 multiline_comment|/* legacy mode */
 r_else
+(brace
+r_static
+r_int
+id|primary_irq
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Ugly way to let the primary and secondary channel on the&n;&t;&t; * chip use the same IRQ line.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|hwif-&gt;unit
+op_eq
+id|ATA_PRIMARY
+)paren
+id|primary_irq
+op_assign
+id|hwif-&gt;irq
+suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
 op_logical_neg
 id|hwif-&gt;irq
-op_logical_and
-id|hwif-&gt;mate
-op_logical_and
-id|hwif-&gt;mate-&gt;irq
 )paren
 id|hwif-&gt;irq
 op_assign
-id|hwif-&gt;mate-&gt;irq
+id|primary_irq
 suffix:semicolon
-multiline_comment|/* sharing IRQ with mate */
+)brace
 id|ide_setup_dma
 c_func
 (paren

@@ -605,16 +605,41 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hwif-&gt;mate
+id|hwif-&gt;unit
+op_eq
+id|ATA_SECONDARY
 )paren
 (brace
+multiline_comment|/* FIXME: If we are initializing the secondary channel, let us&n;&t;&t; * assume that the primary channel got initialized just a tad&n;&t;&t; * bit before now.  It would be much cleaner if the data in&n;&t;&t; * ns87415_control just got duplicated.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hwif-&gt;select_data
+)paren
 id|hwif-&gt;select_data
 op_assign
-id|hwif-&gt;mate-&gt;select_data
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|ns87415_control
+(braket
+id|ns87415_count
+op_minus
+l_int|1
+)braket
 suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hwif-&gt;select_data
+)paren
 id|hwif-&gt;select_data
 op_assign
 (paren
@@ -804,21 +829,37 @@ l_int|14
 suffix:semicolon
 multiline_comment|/* legacy mode */
 r_else
+(brace
+r_static
+r_int
+id|primary_irq
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Ugly way to let the primary and secondary channel on the&n;&t;&t; * chip use the same IRQ line.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|hwif-&gt;unit
+op_eq
+id|ATA_PRIMARY
+)paren
+id|primary_irq
+op_assign
+id|hwif-&gt;irq
+suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
 op_logical_neg
 id|hwif-&gt;irq
-op_logical_and
-id|hwif-&gt;mate
-op_logical_and
-id|hwif-&gt;mate-&gt;irq
 )paren
 id|hwif-&gt;irq
 op_assign
-id|hwif-&gt;mate-&gt;irq
+id|primary_irq
 suffix:semicolon
-multiline_comment|/* share IRQ with mate */
+)brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
@@ -830,7 +871,7 @@ op_assign
 op_amp
 id|ns87415_dmaproc
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 id|hwif-&gt;selectproc
 op_assign
 op_amp

@@ -574,7 +574,6 @@ c_func
 (paren
 id|X86_FEATURE_MTRR
 comma
-op_amp
 id|boot_cpu_data.x86_capability
 )paren
 op_logical_or
@@ -583,7 +582,6 @@ c_func
 (paren
 id|X86_FEATURE_K6_MTRR
 comma
-op_amp
 id|boot_cpu_data.x86_capability
 )paren
 op_logical_or
@@ -592,7 +590,6 @@ c_func
 (paren
 id|X86_FEATURE_CYRIX_ARR
 comma
-op_amp
 id|boot_cpu_data.x86_capability
 )paren
 op_logical_or
@@ -601,7 +598,6 @@ c_func
 (paren
 id|X86_FEATURE_CENTAUR_MCR
 comma
-op_amp
 id|boot_cpu_data.x86_capability
 )paren
 )paren

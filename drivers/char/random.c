@@ -1596,7 +1596,6 @@ c_func
 (paren
 id|X86_FEATURE_TSC
 comma
-op_amp
 id|boot_cpu_data.x86_capability
 )paren
 )paren
