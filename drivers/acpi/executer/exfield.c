@@ -287,7 +287,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Obj=%p Type=%X Buf=%p Len=%X&bslash;n&quot;
+l_string|&quot;field_read [TO]:  Obj %p, Type %X, Buf %p, byte_len %X&bslash;n&quot;
 comma
 id|obj_desc
 comma
@@ -310,7 +310,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;field_write: bit_len=%X bit_off=%X byte_off=%X&bslash;n&quot;
+l_string|&quot;field_read [FROM]: bit_len %X, bit_off %X, byte_off %X&bslash;n&quot;
 comma
 id|obj_desc-&gt;common_field.bit_length
 comma
@@ -792,13 +792,21 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Obj=%p Type=%X Buf=%p Len=%X&bslash;n&quot;
+l_string|&quot;field_write [FROM]: Obj %p (%s:%X), Buf %p, byte_len %X&bslash;n&quot;
 comma
-id|obj_desc
+id|source_desc
+comma
+id|acpi_ut_get_type_name
+(paren
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
+)paren
 comma
 id|ACPI_GET_OBJECT_TYPE
 (paren
-id|obj_desc
+id|source_desc
 )paren
 comma
 id|buffer
@@ -812,7 +820,22 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;field_read: bit_len=%X bit_off=%X byte_off=%X&bslash;n&quot;
+l_string|&quot;field_write [TO]:  Obj %p (%s:%X), bit_len %X, bit_off %X, byte_off %X&bslash;n&quot;
+comma
+id|obj_desc
+comma
+id|acpi_ut_get_type_name
+(paren
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
+)paren
+comma
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 comma
 id|obj_desc-&gt;common_field.bit_length
 comma

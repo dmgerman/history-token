@@ -5,6 +5,7 @@ macro_line|#include &lt;acpi/amlcode.h&gt;
 macro_line|#include &lt;acpi/acdispat.h&gt;
 macro_line|#include &lt;acpi/acinterp.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
+macro_line|#include &lt;acpi/acparser.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
 id|ACPI_MODULE_NAME
@@ -420,6 +421,9 @@ suffix:colon
 r_case
 id|AML_DEBUG_OP
 suffix:colon
+r_case
+id|AML_LOAD_OP
+suffix:colon
 multiline_comment|/* Just leave the object as-is */
 r_break
 suffix:semicolon
@@ -430,9 +434,14 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unknown Reference opcode %X in %p&bslash;n&quot;
+l_string|&quot;Unknown Reference opcode %X (%s) in %p&bslash;n&quot;
 comma
 id|opcode
+comma
+id|acpi_ps_get_opcode_name
+(paren
+id|opcode
+)paren
 comma
 id|stack_desc
 )paren

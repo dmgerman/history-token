@@ -9,12 +9,8 @@ DECL|struct|rsdt_descriptor_rev1
 r_struct
 id|rsdt_descriptor_rev1
 (brace
-DECL|member|header
-r_struct
-id|acpi_table_header
-id|header
-suffix:semicolon
-multiline_comment|/* ACPI Table header */
+id|ACPI_TABLE_HEADER_DEF
+multiline_comment|/* ACPI common table header */
 DECL|member|table_offset_entry
 id|u32
 id|table_offset_entry
@@ -88,12 +84,8 @@ DECL|struct|fadt_descriptor_rev1
 r_struct
 id|fadt_descriptor_rev1
 (brace
-DECL|member|header
-r_struct
-id|acpi_table_header
-id|header
-suffix:semicolon
-multiline_comment|/* ACPI Table header */
+id|ACPI_TABLE_HEADER_DEF
+multiline_comment|/* ACPI common table header */
 DECL|member|firmware_ctrl
 id|u32
 id|firmware_ctrl

@@ -31,12 +31,8 @@ DECL|struct|rsdt_descriptor_rev2
 r_struct
 id|rsdt_descriptor_rev2
 (brace
-DECL|member|header
-r_struct
-id|acpi_table_header
-id|header
-suffix:semicolon
-multiline_comment|/* ACPI table header */
+id|ACPI_TABLE_HEADER_DEF
+multiline_comment|/* ACPI common table header */
 DECL|member|table_offset_entry
 id|u32
 id|table_offset_entry
@@ -53,12 +49,8 @@ DECL|struct|xsdt_descriptor_rev2
 r_struct
 id|xsdt_descriptor_rev2
 (brace
-DECL|member|header
-r_struct
-id|acpi_table_header
-id|header
-suffix:semicolon
-multiline_comment|/* ACPI table header */
+id|ACPI_TABLE_HEADER_DEF
+multiline_comment|/* ACPI common table header */
 DECL|member|table_offset_entry
 id|u64
 id|table_offset_entry
@@ -174,12 +166,8 @@ DECL|struct|fadt_descriptor_rev2
 r_struct
 id|fadt_descriptor_rev2
 (brace
-DECL|member|header
-r_struct
-id|acpi_table_header
-id|header
-suffix:semicolon
-multiline_comment|/* ACPI table header */
+id|ACPI_TABLE_HEADER_DEF
+multiline_comment|/* ACPI common table header */
 DECL|member|V1_firmware_ctrl
 id|u32
 id|V1_firmware_ctrl
@@ -548,6 +536,44 @@ id|acpi_generic_address
 id|xgpe1_blk
 suffix:semicolon
 multiline_comment|/* Extended General Purpose acpi_event 1 Reg Blk address */
+)brace
+suffix:semicolon
+multiline_comment|/* Embedded Controller */
+DECL|struct|ec_boot_resources
+r_struct
+id|ec_boot_resources
+(brace
+id|ACPI_TABLE_HEADER_DEF
+DECL|member|ec_control
+r_struct
+id|acpi_generic_address
+id|ec_control
+suffix:semicolon
+multiline_comment|/* Address of EC command/status register */
+DECL|member|ec_data
+r_struct
+id|acpi_generic_address
+id|ec_data
+suffix:semicolon
+multiline_comment|/* Address of EC data register */
+DECL|member|uid
+id|u32
+id|uid
+suffix:semicolon
+multiline_comment|/* Unique ID - must be same as the EC _UID method */
+DECL|member|gpe_bit
+id|u8
+id|gpe_bit
+suffix:semicolon
+multiline_comment|/* The GPE for the EC */
+DECL|member|ec_id
+id|u8
+id|ec_id
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* Full namepath of the EC in the ACPI namespace */
 )brace
 suffix:semicolon
 macro_line|#pragma pack()

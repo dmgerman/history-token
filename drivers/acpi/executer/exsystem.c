@@ -149,19 +149,15 @@ c_cond
 (paren
 id|how_long
 OG
-l_int|1000
+l_int|100
 )paren
-multiline_comment|/* 1 millisecond */
+multiline_comment|/* 100 microseconds */
 (brace
-multiline_comment|/* Since this thread will sleep, we must release the interpreter */
-id|acpi_ex_exit_interpreter
+multiline_comment|/*&n;&t;&t; * Longer than 100 usec, use sleep instead&n;&t;&t; * (according to ACPI specification)&n;&t;&t; */
+id|status
+op_assign
+id|acpi_ex_system_do_suspend
 (paren
-)paren
-suffix:semicolon
-id|acpi_os_sleep
-(paren
-l_int|0
-comma
 (paren
 id|how_long
 op_div
@@ -169,13 +165,6 @@ l_int|1000
 )paren
 op_plus
 l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* And now we must get the interpreter again */
-id|status
-op_assign
-id|acpi_ex_enter_interpreter
-(paren
 )paren
 suffix:semicolon
 )brace
