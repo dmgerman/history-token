@@ -6,6 +6,8 @@ DECL|macro|HOONTECH_DEVICE_DESC
 mdefine_line|#define  HOONTECH_DEVICE_DESC &bslash;&n;&t;&quot;{Hoontech,SoundTrack DSP 24},&quot; &bslash;&n;&t;&quot;{Hoontech,SoundTrack DSP 24 Value},&quot; &bslash;&n;&t;&quot;{Hoontech,SoundTrack DSP 24 Media 7.1},&quot; &bslash;&n;&t;&quot;{Event Electronics,EZ8},&quot;
 DECL|macro|ICE1712_SUBDEVICE_STDSP24
 mdefine_line|#define ICE1712_SUBDEVICE_STDSP24&t;&t;0x12141217&t;/* Hoontech SoundTrack Audio DSP 24 */
+DECL|macro|ICE1712_SUBDEVICE_STDSP24_VALUE
+mdefine_line|#define ICE1712_SUBDEVICE_STDSP24_VALUE&t;&t;0x00010010&t;/* A dummy id for Hoontech SoundTrack Audio DSP 24 Value */
 DECL|macro|ICE1712_SUBDEVICE_STDSP24_MEDIA7_1
 mdefine_line|#define ICE1712_SUBDEVICE_STDSP24_MEDIA7_1&t;0x16141217&t;/* Hoontech ST Audio DSP24 Media 7.1 */
 DECL|macro|ICE1712_SUBDEVICE_EVENT_EZ8
@@ -65,5 +67,12 @@ DECL|macro|ICE1712_STDSP24_BOX_MIDI1
 mdefine_line|#define ICE1712_STDSP24_BOX_MIDI1&t;(1&lt;&lt;8)
 DECL|macro|ICE1712_STDSP24_BOX_MIDI2
 mdefine_line|#define ICE1712_STDSP24_BOX_MIDI2&t;(1&lt;&lt;9)
+multiline_comment|/* Hoontech SoundTrack Audio DSP 24 Value definitions for modified hardware */
+DECL|macro|ICE1712_STDSP24_AK4524_CS
+mdefine_line|#define ICE1712_STDSP24_AK4524_CS&t;0x03&t;/* AK4524 chip select; low = active */
+DECL|macro|ICE1712_STDSP24_SERIAL_DATA
+mdefine_line|#define ICE1712_STDSP24_SERIAL_DATA&t;0x0c&t;/* ak4524 data */
+DECL|macro|ICE1712_STDSP24_SERIAL_CLOCK
+mdefine_line|#define ICE1712_STDSP24_SERIAL_CLOCK&t;0x30&t;/* ak4524 clock */
 macro_line|#endif /* __SOUND_HOONTECH_H */
 eof
