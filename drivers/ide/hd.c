@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/hd.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
-multiline_comment|/*&n; * This is the low-level hd interrupt support. It traverses the&n; * request-list, using interrupts to jump between functions. As&n; * all the functions are called within interrupts, we may not&n; * sleep. Special care is recommended.&n; * &n; *  modified by Drew Eckhardt to check nr of hd&squot;s from the CMOS.&n; *&n; *  Thanks to Branko Lankester, lankeste@fwi.uva.nl, who found a bug&n; *  in the early extended-partition checks and added DM partitions&n; *&n; *  IRQ-unmask, drive-id, multiple-mode, support for &quot;&gt;16 heads&quot;,&n; *  and general streamlining by Mark Lord.&n; *&n; *  Removed 99% of above. Use Mark&squot;s ide driver for those options.&n; *  This is now a lightweight ST-506 driver. (Paul Gortmaker)&n; *&n; *  Modified 1995 Russell King for ARM processor.&n; *&n; *  Bugfix: max_sectors must be &lt;= 255 or the wheels tend to come&n; *  off in a hurry once you queue things up - Paul G. 02/2001&n; */
+multiline_comment|/*&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; * This is the low-level hd interrupt support. It traverses the&n; * request-list, using interrupts to jump between functions. As&n; * all the functions are called within interrupts, we may not&n; * sleep. Special care is recommended.&n; *&n; *  modified by Drew Eckhardt to check nr of hd&squot;s from the CMOS.&n; *&n; *  Thanks to Branko Lankester, lankeste@fwi.uva.nl, who found a bug&n; *  in the early extended-partition checks and added DM partitions&n; *&n; *  IRQ-unmask, drive-id, multiple-mode, support for &quot;&gt;16 heads&quot;,&n; *  and general streamlining by Mark Lord.&n; *&n; *  Removed 99% of above. Use Mark&squot;s ide driver for those options.&n; *  This is now a lightweight ST-506 driver. (Paul Gortmaker)&n; *&n; *  Modified 1995 Russell King for ARM processor.&n; *&n; *  Bugfix: max_sectors must be &lt;= 255 or the wheels tend to come&n; *  off in a hurry once you queue things up - Paul G. 02/2001&n; */
 multiline_comment|/* Uncomment the following if you want verbose error reports. */
 multiline_comment|/* #define VERBOSE_ERRORS */
 macro_line|#include &lt;linux/errno.h&gt;
@@ -9,7 +8,6 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -17,6 +15,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt; /* CMOS defines */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
 DECL|macro|REALLY_SLOW_IO
 mdefine_line|#define REALLY_SLOW_IO
 macro_line|#include &lt;asm/system.h&gt;
@@ -27,6 +26,17 @@ mdefine_line|#define MAJOR_NR HD_MAJOR
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device)&gt;&gt;6)
 macro_line|#include &lt;linux/blk.h&gt;
+multiline_comment|/* ATA commands we use.&n; */
+DECL|macro|WIN_SPECIFY
+mdefine_line|#define WIN_SPECIFY&t;0x91 /* set drive geometry translation */
+DECL|macro|WIN_RESTORE
+mdefine_line|#define WIN_RESTORE&t;0x10
+DECL|macro|WIN_READ
+mdefine_line|#define WIN_READ&t;0x20 /* 28-Bit */
+DECL|macro|WIN_WRITE
+mdefine_line|#define WIN_WRITE&t;0x30 /* 28-Bit */
+DECL|macro|HD_IRQ
+mdefine_line|#define HD_IRQ 14&t;/* the standard disk interrupt */
 macro_line|#ifdef __arm__
 DECL|macro|HD_IRQ
 macro_line|#undef  HD_IRQ
@@ -36,6 +46,71 @@ macro_line|#ifdef __arm__
 DECL|macro|HD_IRQ
 mdefine_line|#define HD_IRQ IRQ_HARDDISK
 macro_line|#endif
+multiline_comment|/* Hd controller regster ports */
+DECL|macro|HD_DATA
+mdefine_line|#define HD_DATA&t;&t;0x1f0&t;&t;/* _CTL when writing */
+DECL|macro|HD_ERROR
+mdefine_line|#define HD_ERROR&t;0x1f1&t;&t;/* see err-bits */
+DECL|macro|HD_NSECTOR
+mdefine_line|#define HD_NSECTOR&t;0x1f2&t;&t;/* nr of sectors to read/write */
+DECL|macro|HD_SECTOR
+mdefine_line|#define HD_SECTOR&t;0x1f3&t;&t;/* starting sector */
+DECL|macro|HD_LCYL
+mdefine_line|#define HD_LCYL&t;&t;0x1f4&t;&t;/* starting cylinder */
+DECL|macro|HD_HCYL
+mdefine_line|#define HD_HCYL&t;&t;0x1f5&t;&t;/* high byte of starting cyl */
+DECL|macro|HD_CURRENT
+mdefine_line|#define HD_CURRENT&t;0x1f6&t;&t;/* 101dhhhh , d=drive, hhhh=head */
+DECL|macro|HD_STATUS
+mdefine_line|#define HD_STATUS&t;0x1f7&t;&t;/* see status-bits */
+DECL|macro|HD_FEATURE
+mdefine_line|#define HD_FEATURE&t;HD_ERROR&t;/* same io address, read=error, write=feature */
+DECL|macro|HD_PRECOMP
+mdefine_line|#define HD_PRECOMP&t;HD_FEATURE&t;/* obsolete use of this port - predates IDE */
+DECL|macro|HD_COMMAND
+mdefine_line|#define HD_COMMAND&t;HD_STATUS&t;/* same io address, read=status, write=cmd */
+DECL|macro|HD_CMD
+mdefine_line|#define HD_CMD&t;&t;0x3f6&t;&t;/* used for resets */
+DECL|macro|HD_ALTSTATUS
+mdefine_line|#define HD_ALTSTATUS&t;0x3f6&t;&t;/* same as HD_STATUS but doesn&squot;t clear irq */
+multiline_comment|/* Bits of HD_STATUS */
+DECL|macro|ERR_STAT
+mdefine_line|#define ERR_STAT&t;&t;0x01
+DECL|macro|INDEX_STAT
+mdefine_line|#define INDEX_STAT&t;&t;0x02
+DECL|macro|ECC_STAT
+mdefine_line|#define ECC_STAT&t;&t;0x04&t;/* Corrected error */
+DECL|macro|DRQ_STAT
+mdefine_line|#define DRQ_STAT&t;&t;0x08
+DECL|macro|SEEK_STAT
+mdefine_line|#define SEEK_STAT&t;&t;0x10
+DECL|macro|SERVICE_STAT
+mdefine_line|#define SERVICE_STAT&t;&t;SEEK_STAT
+DECL|macro|WRERR_STAT
+mdefine_line|#define WRERR_STAT&t;&t;0x20
+DECL|macro|READY_STAT
+mdefine_line|#define READY_STAT&t;&t;0x40
+DECL|macro|BUSY_STAT
+mdefine_line|#define BUSY_STAT&t;&t;0x80
+multiline_comment|/* Bits for HD_ERROR */
+DECL|macro|MARK_ERR
+mdefine_line|#define MARK_ERR&t;&t;0x01&t;/* Bad address mark */
+DECL|macro|TRK0_ERR
+mdefine_line|#define TRK0_ERR&t;&t;0x02&t;/* couldn&squot;t find track 0 */
+DECL|macro|ABRT_ERR
+mdefine_line|#define ABRT_ERR&t;&t;0x04&t;/* Command aborted */
+DECL|macro|MCR_ERR
+mdefine_line|#define MCR_ERR&t;&t;&t;0x08&t;/* media change request */
+DECL|macro|ID_ERR
+mdefine_line|#define ID_ERR&t;&t;&t;0x10&t;/* ID field not found */
+DECL|macro|MC_ERR
+mdefine_line|#define MC_ERR&t;&t;&t;0x20&t;/* media changed */
+DECL|macro|ECC_ERR
+mdefine_line|#define ECC_ERR&t;&t;&t;0x40&t;/* Uncorrectable ECC error */
+DECL|macro|BBD_ERR
+mdefine_line|#define BBD_ERR&t;&t;&t;0x80&t;/* pre-EIDE meaning:  block marked bad */
+DECL|macro|ICRC_ERR
+mdefine_line|#define ICRC_ERR&t;&t;0x80&t;/* new meaning:  CRC error during transfer */
 DECL|variable|hd_lock
 r_static
 id|spinlock_t
@@ -470,10 +545,6 @@ r_int
 id|stat
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_char
 id|devc
 suffix:semicolon
@@ -496,16 +567,6 @@ id|CURRENT-&gt;rq_dev
 )paren
 suffix:colon
 l_char|&squot;?&squot;
-suffix:semicolon
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
 suffix:semicolon
 macro_line|#ifdef VERBOSE_ERRORS
 id|printk
@@ -892,12 +953,7 @@ l_int|0xff
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* verbose errors */
-id|restore_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|check_status
 r_void
@@ -2244,7 +2300,7 @@ comma
 l_int|256
 )paren
 suffix:semicolon
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -2336,7 +2392,7 @@ c_func
 id|HD_IRQ
 )paren
 suffix:semicolon
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -2393,7 +2449,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -2547,7 +2603,7 @@ op_amp
 id|device_timer
 )paren
 suffix:semicolon
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -2575,7 +2631,7 @@ c_cond
 id|reset
 )paren
 (brace
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -3314,7 +3370,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren

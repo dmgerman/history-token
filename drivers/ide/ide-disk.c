@@ -5010,7 +5010,7 @@ suffix:semicolon
 )brace
 id|ret
 op_assign
-id|ide_unregister_subdriver
+id|ata_unregister_device
 c_func
 (paren
 id|drive
@@ -5684,7 +5684,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_register_subdriver
+id|ata_register_device
 c_func
 (paren
 id|drive
@@ -5695,9 +5695,10 @@ id|idedisk_driver
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-disk: %s: Failed to register the driver with ide.c&bslash;n&quot;
+l_string|&quot;%s: Failed to register the driver with ide.c&bslash;n&quot;
 comma
 id|drive-&gt;name
 )paren

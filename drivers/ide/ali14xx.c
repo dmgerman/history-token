@@ -371,7 +371,7 @@ id|data_port
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Set PIO mode for the specified drive.&n; * This function computes timing parameters&n; * and sets controller registers accordingly.&n; */
+multiline_comment|/*&n; * Set PIO mode for the specified drive.&n; * This function computes timing parameters&n; * and sets controller registers accordingly.&n; * It assumes IRQ&squot;s are disabled or at least that no other process will&n; * attempt to access the IDE registers concurrently.&n; */
 DECL|function|ali14xx_tune_drive
 r_static
 r_void
@@ -403,10 +403,6 @@ comma
 id|param3
 comma
 id|param4
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_struct
 id|ata_timing
@@ -547,19 +543,6 @@ l_int|1
 op_plus
 id|drive-&gt;select.b.unit
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 id|outb_p
 c_func
 (paren
@@ -628,13 +611,6 @@ comma
 id|base_port
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 )brace
 multiline_comment|/*&n; * Auto-detect the IDE controller port.&n; */
 DECL|function|find_port
