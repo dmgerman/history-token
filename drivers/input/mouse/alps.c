@@ -23,6 +23,8 @@ DECL|macro|ALPS_4BTN
 mdefine_line|#define ALPS_4BTN&t;0x08
 DECL|macro|ALPS_OLDPROTO
 mdefine_line|#define ALPS_OLDPROTO&t;0x10
+DECL|macro|ALPS_PASS
+mdefine_line|#define ALPS_PASS&t;0x20
 DECL|variable|alps_model_data
 r_static
 r_struct
@@ -189,7 +191,7 @@ l_int|0xf8
 comma
 l_int|0xf8
 comma
-l_int|0
+id|ALPS_PASS
 )brace
 comma
 (brace
@@ -237,6 +239,8 @@ l_int|0xf8
 comma
 l_int|0xf8
 comma
+id|ALPS_PASS
+op_or
 id|ALPS_DUALPOINT
 )brace
 comma
@@ -254,6 +258,8 @@ l_int|0xf8
 comma
 l_int|0xf8
 comma
+id|ALPS_PASS
+op_or
 id|ALPS_DUALPOINT
 )brace
 comma
@@ -270,6 +276,8 @@ l_int|0xf8
 comma
 l_int|0xf8
 comma
+id|ALPS_PASS
+op_or
 id|ALPS_DUALPOINT
 )brace
 comma
@@ -2124,7 +2132,7 @@ c_cond
 (paren
 id|priv-&gt;i-&gt;flags
 op_amp
-id|ALPS_DUALPOINT
+id|ALPS_PASS
 op_logical_and
 id|alps_passthrough_mode
 c_func
@@ -2198,7 +2206,7 @@ c_cond
 (paren
 id|priv-&gt;i-&gt;flags
 op_eq
-id|ALPS_DUALPOINT
+id|ALPS_PASS
 op_logical_and
 id|alps_passthrough_mode
 c_func
@@ -2351,7 +2359,7 @@ c_cond
 (paren
 id|priv-&gt;i-&gt;flags
 op_amp
-id|ALPS_DUALPOINT
+id|ALPS_PASS
 )paren
 op_logical_and
 id|alps_passthrough_mode
@@ -2452,7 +2460,7 @@ c_cond
 (paren
 id|priv-&gt;i-&gt;flags
 op_amp
-id|ALPS_DUALPOINT
+id|ALPS_PASS
 )paren
 op_logical_and
 id|alps_passthrough_mode
