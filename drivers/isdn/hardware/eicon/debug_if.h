@@ -184,6 +184,31 @@ id|diva_mnt_shutdown_xdi_adapters
 r_void
 )paren
 suffix:semicolon
+DECL|macro|DIVA_MAX_SELECTIVE_FILTER_LENGTH
+mdefine_line|#define DIVA_MAX_SELECTIVE_FILTER_LENGTH 127
+r_int
+id|diva_set_trace_filter
+(paren
+r_int
+id|filter_length
+comma
+r_const
+r_char
+op_star
+id|filter
+)paren
+suffix:semicolon
+r_int
+id|diva_get_trace_filter
+(paren
+r_int
+id|max_length
+comma
+r_char
+op_star
+id|filter
+)paren
+suffix:semicolon
 DECL|macro|DITRACE_CMD_GET_DRIVER_INFO
 mdefine_line|#define DITRACE_CMD_GET_DRIVER_INFO   1
 DECL|macro|DITRACE_READ_DRIVER_DBG_MASK
@@ -194,6 +219,10 @@ DECL|macro|DITRACE_READ_TRACE_ENTRY
 mdefine_line|#define DITRACE_READ_TRACE_ENTRY      4
 DECL|macro|DITRACE_READ_TRACE_ENTRYS
 mdefine_line|#define DITRACE_READ_TRACE_ENTRYS     5
+DECL|macro|DITRACE_WRITE_SELECTIVE_TRACE_FILTER
+mdefine_line|#define DITRACE_WRITE_SELECTIVE_TRACE_FILTER 6
+DECL|macro|DITRACE_READ_SELECTIVE_TRACE_FILTER
+mdefine_line|#define DITRACE_READ_SELECTIVE_TRACE_FILTER  7
 multiline_comment|/*&n;  Trace lavels for debug via management interface&n;  */
 DECL|macro|DIVA_MGT_DBG_TRACE
 mdefine_line|#define DIVA_MGT_DBG_TRACE          0x00000001 /* All trace messages from the card */

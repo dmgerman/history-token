@@ -612,8 +612,10 @@ r_extern
 id|_DbgHandle_
 id|myDriverDebugHandle
 suffix:semicolon
+DECL|struct|_OldDbgHandle_
 r_typedef
 r_struct
+id|_OldDbgHandle_
 DECL|member|next
 (brace
 r_struct
@@ -713,9 +715,9 @@ DECL|member|CardTrace
 )brace
 id|CardTrace
 suffix:semicolon
-DECL|member|u1
+DECL|member|Data
 )brace
-id|u1
+id|Data
 suffix:semicolon
 DECL|typedef|_DbgExtendedInfo_
 )brace
