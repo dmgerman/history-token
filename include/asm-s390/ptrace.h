@@ -481,7 +481,7 @@ mdefine_line|#define PSW_USER_BITS&t;(PSW_BASE_BITS | PSW_MASK_DAT | PSW_ASC_HOM
 multiline_comment|/* This macro merges a NEW PSW mask specified by the user into&n;   the currently active PSW mask CURRENT, modifying only those&n;   bits in CURRENT that the user may be allowed to change: this&n;   is the condition code and the program mask bits.  */
 DECL|macro|PSW_MASK_MERGE
 mdefine_line|#define PSW_MASK_MERGE(CURRENT,NEW) &bslash;&n;&t;(((CURRENT) &amp; ~(PSW_MASK_CC|PSW_MASK_PM)) | &bslash;&n;&t; ((NEW) &amp; (PSW_MASK_CC|PSW_MASK_PM)))
-multiline_comment|/*&n; * The first entries in pt_regs and user_regs_struct&n; * are common for the two structures. The s390_regs structure&n; * covers the common parts. It simplifies copying the common part&n; * between the three structures.&n; */
+multiline_comment|/*&n; * The s390_regs structure is used to define the elf_gregset_t.&n; */
 r_typedef
 r_struct
 (brace
@@ -514,6 +514,7 @@ DECL|typedef|s390_regs
 )brace
 id|s390_regs
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * The pt_regs struct defines the way the registers are stored on&n; * the stack during a system call.&n; */
 DECL|struct|pt_regs
 r_struct
@@ -529,14 +530,6 @@ r_int
 id|gprs
 (braket
 id|NUM_GPRS
-)braket
-suffix:semicolon
-DECL|member|acrs
-r_int
-r_int
-id|acrs
-(braket
-id|NUM_ACRS
 )braket
 suffix:semicolon
 DECL|member|orig_gpr2
@@ -555,13 +548,8 @@ r_int
 id|trap
 suffix:semicolon
 )brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Now for the program event recording (trace) definitions.&n; */
 r_typedef
 r_struct
