@@ -1371,7 +1371,7 @@ id|a3d
 op_star
 id|a3d
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 r_int
 id|i
@@ -1443,7 +1443,7 @@ id|a3d
 op_star
 id|a3d
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 r_if
 c_cond
@@ -1496,7 +1496,7 @@ id|a3d
 op_star
 id|a3d
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 r_if
 c_cond
@@ -2179,7 +2179,7 @@ c_func
 id|BTN_MIDDLE
 )paren
 suffix:semicolon
-id|a3d-&gt;adc.driver
+id|a3d-&gt;adc.port_data
 op_assign
 id|a3d
 suffix:semicolon

@@ -26,7 +26,7 @@ id|vortex_t
 op_star
 id|vortex
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 r_return
 id|hwread
@@ -54,7 +54,7 @@ id|vortex_t
 op_star
 id|vortex
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 id|hwwrite
 c_func
@@ -91,7 +91,7 @@ id|vortex_t
 op_star
 id|vortex
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 r_int
 id|i
@@ -190,7 +190,7 @@ id|vortex_t
 op_star
 id|vortex
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 r_switch
 c_cond
@@ -298,14 +298,11 @@ id|GFP_KERNEL
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
-suffix:semicolon
-id|vortex-&gt;gameport-&gt;driver
+id|vortex-&gt;gameport-&gt;port_data
 op_assign
 id|vortex
 suffix:semicolon

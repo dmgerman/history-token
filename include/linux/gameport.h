@@ -18,10 +18,10 @@ op_star
 r_private
 suffix:semicolon
 multiline_comment|/* Private pointer for joystick drivers */
-DECL|member|driver
+DECL|member|port_data
 r_void
 op_star
-id|driver
+id|port_data
 suffix:semicolon
 multiline_comment|/* Private pointer for gameport drivers */
 DECL|member|name

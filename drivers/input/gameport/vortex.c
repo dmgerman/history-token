@@ -94,7 +94,7 @@ id|vortex
 op_star
 id|vortex
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 r_return
 id|readb
@@ -123,7 +123,7 @@ id|vortex
 op_star
 id|vortex
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 id|writeb
 c_func
@@ -161,7 +161,7 @@ id|vortex
 op_star
 id|vortex
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 r_int
 id|i
@@ -262,7 +262,7 @@ id|vortex
 op_star
 id|vortex
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 r_switch
 c_cond
@@ -410,7 +410,7 @@ comma
 id|vortex
 )paren
 suffix:semicolon
-id|vortex-&gt;gameport.driver
+id|vortex-&gt;gameport.port_data
 op_assign
 id|vortex
 suffix:semicolon

@@ -160,7 +160,7 @@ id|l4
 op_star
 id|l4
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 r_int
 r_char
@@ -375,7 +375,7 @@ id|l4
 op_star
 id|l4
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 r_if
 c_cond
@@ -791,7 +791,7 @@ id|l4
 op_star
 id|l4
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 r_if
 c_cond
@@ -1260,7 +1260,7 @@ op_assign
 op_amp
 id|l4-&gt;gameport
 suffix:semicolon
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 op_assign
 id|l4
 suffix:semicolon

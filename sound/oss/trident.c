@@ -19732,7 +19732,7 @@ id|trident_card
 op_star
 id|card
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 r_return
 id|inb
@@ -19765,7 +19765,7 @@ id|trident_card
 op_star
 id|card
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 id|outb
 c_func
@@ -19807,7 +19807,7 @@ id|trident_card
 op_star
 id|card
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 r_int
 id|i
@@ -19916,7 +19916,7 @@ id|trident_card
 op_star
 id|card
 op_assign
-id|gameport-&gt;driver
+id|gameport-&gt;port_data
 suffix:semicolon
 r_switch
 c_cond
@@ -20299,7 +20299,7 @@ id|bitmap
 op_assign
 l_int|0UL
 suffix:semicolon
-id|card-&gt;gameport.driver
+id|card-&gt;gameport.port_data
 op_assign
 id|card
 suffix:semicolon
