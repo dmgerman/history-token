@@ -728,6 +728,28 @@ DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte) kunmap_atomic(pte, KM_PTE0)
 DECL|macro|pte_unmap_nested
 mdefine_line|#define pte_unmap_nested(pte) kunmap_atomic(pte, KM_PTE1)
+macro_line|#if defined(CONFIG_HIGHPTE) &amp;&amp; defined(CONFIG_HIGHMEM4G)
+DECL|typedef|pte_addr_t
+r_typedef
+id|u32
+id|pte_addr_t
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_HIGHPTE) &amp;&amp; defined(CONFIG_HIGHMEM64G)
+DECL|typedef|pte_addr_t
+r_typedef
+id|u64
+id|pte_addr_t
+suffix:semicolon
+macro_line|#endif
+macro_line|#if !defined(CONFIG_HIGHPTE)
+DECL|typedef|pte_addr_t
+r_typedef
+id|pte_t
+op_star
+id|pte_addr_t
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * The i386 doesn&squot;t have any external MMU info: the kernel page&n; * tables contain all the necessary information.&n; */
 DECL|macro|update_mmu_cache
 mdefine_line|#define update_mmu_cache(vma,address,pte) do { } while (0)

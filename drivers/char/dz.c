@@ -26,7 +26,6 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#endif /* if defined(CONFIG_SERIAL_CONSOLE) || defined(DEBUG_DZ) */
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dec/machtype.h&gt;

@@ -148,13 +148,6 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|s-&gt;s_locked_inodes
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
 id|s-&gt;s_files
 )paren
 suffix:semicolon

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* block_sync_page() */
 macro_line|#include &lt;asm/pgtable.h&gt;
 multiline_comment|/*&n; * swapper_inode doesn&squot;t do anything much.  It is really only here to&n; * avoid some special-casing in other parts of the kernel.&n; */
@@ -21,6 +22,27 @@ op_assign
 op_amp
 id|swapper_space
 comma
+)brace
+suffix:semicolon
+DECL|variable|swap_backing_dev_info
+r_static
+r_struct
+id|backing_dev_info
+id|swap_backing_dev_info
+op_assign
+(brace
+dot
+id|ra_pages
+op_assign
+l_int|0
+comma
+multiline_comment|/* No readahead */
+dot
+id|memory_backed
+op_assign
+l_int|1
+comma
+multiline_comment|/* Does not contribute to dirty memory */
 )brace
 suffix:semicolon
 r_extern
@@ -95,6 +117,12 @@ id|a_ops
 op_assign
 op_amp
 id|swap_aops
+comma
+dot
+id|backing_dev_info
+op_assign
+op_amp
+id|swap_backing_dev_info
 comma
 dot
 id|i_shared_lock

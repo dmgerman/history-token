@@ -12,8 +12,8 @@ DECL|macro|PG_referenced
 mdefine_line|#define PG_referenced&t;&t; 2
 DECL|macro|PG_uptodate
 mdefine_line|#define PG_uptodate&t;&t; 3
-DECL|macro|PG_dirty_dontuse
-mdefine_line|#define PG_dirty_dontuse&t; 4
+DECL|macro|PG_dirty
+mdefine_line|#define PG_dirty&t; &t; 4
 DECL|macro|PG_lru
 mdefine_line|#define PG_lru&t;&t;&t; 5
 DECL|macro|PG_active
@@ -125,15 +125,15 @@ mdefine_line|#define SetPageUptodate(page)&t;set_bit(PG_uptodate, &amp;(page)-&g
 DECL|macro|ClearPageUptodate
 mdefine_line|#define ClearPageUptodate(page)&t;clear_bit(PG_uptodate, &amp;(page)-&gt;flags)
 DECL|macro|PageDirty
-mdefine_line|#define PageDirty(page)&t;&t;test_bit(PG_dirty_dontuse, &amp;(page)-&gt;flags)
+mdefine_line|#define PageDirty(page)&t;&t;test_bit(PG_dirty, &amp;(page)-&gt;flags)
 DECL|macro|SetPageDirty
-mdefine_line|#define SetPageDirty(page)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!test_and_set_bit(PG_dirty_dontuse,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&amp;(page)-&gt;flags))&t;&t;&bslash;&n;&t;&t;&t;inc_page_state(nr_dirty);&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define SetPageDirty(page)&t;set_bit(PG_dirty, &amp;(page)-&gt;flags)
 DECL|macro|TestSetPageDirty
-mdefine_line|#define TestSetPageDirty(page)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = test_and_set_bit(PG_dirty_dontuse,&t;&t;&bslash;&n;&t;&t;&t;&t;&amp;(page)-&gt;flags);&t;&t;&t;&bslash;&n;&t;&t;if (!ret)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;inc_page_state(nr_dirty);&t;&t;&t;&bslash;&n;&t;&t;ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+mdefine_line|#define TestSetPageDirty(page)&t;test_and_set_bit(PG_dirty, &amp;(page)-&gt;flags)
 DECL|macro|ClearPageDirty
-mdefine_line|#define ClearPageDirty(page)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (test_and_clear_bit(PG_dirty_dontuse,&t;&t;&bslash;&n;&t;&t;&t;&t;&amp;(page)-&gt;flags))&t;&t;&t;&bslash;&n;&t;&t;&t;dec_page_state(nr_dirty);&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define ClearPageDirty(page)&t;clear_bit(PG_dirty, &amp;(page)-&gt;flags)
 DECL|macro|TestClearPageDirty
-mdefine_line|#define TestClearPageDirty(page)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = test_and_clear_bit(PG_dirty_dontuse,&t;&t;&bslash;&n;&t;&t;&t;&t;&amp;(page)-&gt;flags);&t;&t;&t;&bslash;&n;&t;&t;if (ret)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dec_page_state(nr_dirty);&t;&t;&t;&bslash;&n;&t;&t;ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+mdefine_line|#define TestClearPageDirty(page) test_and_clear_bit(PG_dirty, &amp;(page)-&gt;flags)
 DECL|macro|SetPageLRU
 mdefine_line|#define SetPageLRU(page)&t;set_bit(PG_lru, &amp;(page)-&gt;flags)
 DECL|macro|PageLRU
@@ -219,5 +219,35 @@ id|swapper_space
 suffix:semicolon
 DECL|macro|PageSwapCache
 mdefine_line|#define PageSwapCache(page) ((page)-&gt;mapping == &amp;swapper_space)
+r_int
+id|test_clear_page_dirty
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+DECL|function|clear_page_dirty
+r_static
+r_inline
+r_void
+id|clear_page_dirty
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+id|test_clear_page_dirty
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif&t;/* PAGE_FLAGS_H */
 eof

@@ -33,6 +33,11 @@ r_int
 id|state
 suffix:semicolon
 multiline_comment|/* Always use atomic bitops on this */
+DECL|member|memory_backed
+r_int
+id|memory_backed
+suffix:semicolon
+multiline_comment|/* Cannot clean pages with writepage */
 )brace
 suffix:semicolon
 r_extern

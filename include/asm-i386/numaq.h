@@ -9,10 +9,6 @@ DECL|macro|MAX_ELEMENTS
 mdefine_line|#define MAX_ELEMENTS 256
 DECL|macro|ELEMENT_REPRESENTS
 mdefine_line|#define ELEMENT_REPRESENTS 8 /* 256 Mb */
-DECL|macro|PHYSADDR_TO_NID
-mdefine_line|#define PHYSADDR_TO_NID(pa) numaqpa_to_nid(pa)
-DECL|macro|PFN_TO_NID
-mdefine_line|#define PFN_TO_NID(pa) numaqpfn_to_nid(pa)
 DECL|macro|MAX_NUMNODES
 mdefine_line|#define MAX_NUMNODES&t;&t;8
 macro_line|#ifdef CONFIG_NUMA
@@ -21,7 +17,7 @@ mdefine_line|#define _cpu_to_node(cpu) (cpu_to_logical_apicid(cpu) &gt;&gt; 4)
 macro_line|#endif /* CONFIG_NUMA */
 r_extern
 r_int
-id|numaqpa_to_nid
+id|pa_to_nid
 c_func
 (paren
 id|u64
@@ -29,7 +25,7 @@ id|u64
 suffix:semicolon
 r_extern
 r_int
-id|numaqpfn_to_nid
+id|pfn_to_nid
 c_func
 (paren
 r_int

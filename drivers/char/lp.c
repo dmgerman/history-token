@@ -958,7 +958,7 @@ r_if
 c_cond
 (paren
 id|written
-op_ge
+OG
 l_int|0
 )paren
 (brace
@@ -3513,6 +3513,7 @@ id|LP_NO
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;lp: ignoring parallel port (max. %d)&bslash;n&quot;
 comma
 id|LP_NO
@@ -3843,6 +3844,7 @@ id|lp_fops
 (brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;lp: unable to get major %d&bslash;n&quot;
 comma
 id|LP_MAJOR
@@ -3876,6 +3878,7 @@ id|lp_driver
 (brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;lp: unable to register with parport&bslash;n&quot;
 )paren
 suffix:semicolon
