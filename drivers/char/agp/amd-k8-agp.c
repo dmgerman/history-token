@@ -2330,6 +2330,10 @@ id|agp_bridge.type
 op_assign
 id|NOT_SUPPORTED
 suffix:semicolon
+id|agp_bridge.type
+op_assign
+id|AMD_8151
+suffix:semicolon
 r_return
 id|ret_val
 suffix:semicolon
