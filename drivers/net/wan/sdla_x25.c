@@ -5111,7 +5111,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*============================================================================&n; * Setup so that a frame can be transmitted on the occurence of a transmit&n; * interrupt.&n; *===========================================================================*/
+multiline_comment|/*============================================================================&n; * Setup so that a frame can be transmitted on the occurrence of a transmit&n; * interrupt.&n; *===========================================================================*/
 DECL|function|setup_for_delayed_transmit
 r_static
 r_void

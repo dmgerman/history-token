@@ -706,7 +706,7 @@ id|u_char
 op_star
 id|evc_multiple
 suffix:semicolon
-multiline_comment|/* multiple occurence */
+multiline_comment|/* multiple occurrence */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Values used by frame based services&n; * smt.c&n; */

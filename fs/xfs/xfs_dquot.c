@@ -5097,7 +5097,7 @@ l_string|&quot;DQPURGE -&gt;DQFLUSH: DQDIRTY&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* dqflush unlocks dqflock */
-multiline_comment|/*&n;&t;&t; * Given that dqpurge is a very rare occurence, it is OK&n;&t;&t; * that we&squot;re holding the hashlist and mplist locks&n;&t;&t; * across the disk write. But, ... XXXsup&n;&t;&t; *&n;&t;&t; * We don&squot;t care about getting disk errors here. We need&n;&t;&t; * to purge this dquot anyway, so we go ahead regardless.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Given that dqpurge is a very rare occurrence, it is OK&n;&t;&t; * that we&squot;re holding the hashlist and mplist locks&n;&t;&t; * across the disk write. But, ... XXXsup&n;&t;&t; *&n;&t;&t; * We don&squot;t care about getting disk errors here. We need&n;&t;&t; * to purge this dquot anyway, so we go ahead regardless.&n;&t;&t; */
 (paren
 r_void
 )paren

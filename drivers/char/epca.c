@@ -11324,7 +11324,7 @@ suffix:semicolon
 multiline_comment|/* End if channel valid */
 )brace
 multiline_comment|/* End pc_start */
-multiline_comment|/* ------------------------------------------------------------------&n;&t;The below routines pc_throttle and pc_unthrottle are used &n;&t;to slow (And resume) the receipt of data into the kernels&n;&t;receive buffers.  The exact occurence of this depends on the&n;&t;size of the kernels receive buffer and what the &squot;watermarks&squot;&n;&t;are set to for that buffer.  See the n_ttys.c file for more&n;&t;details. &n;______________________________________________________________________ */
+multiline_comment|/* ------------------------------------------------------------------&n;&t;The below routines pc_throttle and pc_unthrottle are used &n;&t;to slow (And resume) the receipt of data into the kernels&n;&t;receive buffers.  The exact occurrence of this depends on the&n;&t;size of the kernels receive buffer and what the &squot;watermarks&squot;&n;&t;are set to for that buffer.  See the n_ttys.c file for more&n;&t;details. &n;______________________________________________________________________ */
 multiline_comment|/* --------------------- Begin throttle  ----------------------- */
 DECL|function|pc_throttle
 r_static

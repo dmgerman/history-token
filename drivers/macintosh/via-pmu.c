@@ -7382,7 +7382,7 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Sightly increased the delay, I had one occurence of the message&n;&t; * reported&n;&t; */
+multiline_comment|/* Sightly increased the delay, I had one occurrence of the message&n;&t; * reported&n;&t; */
 r_int
 id|timeout
 op_assign
