@@ -1691,7 +1691,7 @@ id|pt_regs
 )paren
 suffix:semicolon
 r_return
-id|do_fork
+id|copy_process
 c_func
 (paren
 id|CLONE_VM
@@ -1815,6 +1815,12 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|wake_up_forked_process
+c_func
+(paren
+id|idle
+)paren
+suffix:semicolon
 multiline_comment|/*&n;         * We remove it from the pidhash and the runqueue&n;         * once we got the process:&n;         */
 id|init_idle
 c_func

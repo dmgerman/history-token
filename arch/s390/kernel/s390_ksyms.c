@@ -212,6 +212,13 @@ c_func
 id|overflowgid
 )paren
 suffix:semicolon
+DECL|variable|empty_zero_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|empty_zero_page
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_S390_SUPPORT
 multiline_comment|/*&n; * Dynamically add/remove 31 bit ioctl conversion functions.&n; */
 r_extern
