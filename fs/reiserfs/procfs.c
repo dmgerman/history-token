@@ -553,6 +553,11 @@ l_string|&quot;bread_misses: &bslash;t%lu&bslash;n&quot;
 l_string|&quot;search_by_key: &bslash;t%lu&bslash;n&quot;
 l_string|&quot;search_by_key_fs_changed: &bslash;t%lu&bslash;n&quot;
 l_string|&quot;search_by_key_restarted: &bslash;t%lu&bslash;n&quot;
+l_string|&quot;insert_item_restarted: &bslash;t%lu&bslash;n&quot;
+l_string|&quot;paste_into_item_restarted: &bslash;t%lu&bslash;n&quot;
+l_string|&quot;cut_from_item_restarted: &bslash;t%lu&bslash;n&quot;
+l_string|&quot;delete_solid_item_restarted: &bslash;t%lu&bslash;n&quot;
+l_string|&quot;delete_item_restarted: &bslash;t%lu&bslash;n&quot;
 l_string|&quot;leaked_oid: &bslash;t%lu&bslash;n&quot;
 l_string|&quot;leaves_removable: &bslash;t%lu&bslash;n&quot;
 comma
@@ -810,6 +815,36 @@ id|SFP
 c_func
 (paren
 id|search_by_key_restarted
+)paren
+comma
+id|SFP
+c_func
+(paren
+id|insert_item_restarted
+)paren
+comma
+id|SFP
+c_func
+(paren
+id|paste_into_item_restarted
+)paren
+comma
+id|SFP
+c_func
+(paren
+id|cut_from_item_restarted
+)paren
+comma
+id|SFP
+c_func
+(paren
+id|delete_solid_item_restarted
+)paren
+comma
+id|SFP
+c_func
+(paren
+id|delete_item_restarted
 )paren
 comma
 id|SFP

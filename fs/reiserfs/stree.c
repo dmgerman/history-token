@@ -4853,6 +4853,14 @@ id|REPEAT_SEARCH
 )paren
 r_break
 suffix:semicolon
+id|PROC_INFO_INC
+c_func
+(paren
+id|p_s_sb
+comma
+id|delete_item_restarted
+)paren
+suffix:semicolon
 singleline_comment|// file system changed, repeat search
 id|n_ret_value
 op_assign
@@ -5239,8 +5247,20 @@ id|retval
 op_eq
 id|REPEAT_SEARCH
 )paren
+(brace
+id|PROC_INFO_INC
+c_func
+(paren
+id|th
+op_member_access_from_pointer
+id|t_super
+comma
+id|delete_solid_item_restarted
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6041,6 +6061,14 @@ op_ne
 id|REPEAT_SEARCH
 )paren
 r_break
+suffix:semicolon
+id|PROC_INFO_INC
+c_func
+(paren
+id|p_s_sb
+comma
+id|cut_from_item_restarted
+)paren
 suffix:semicolon
 id|n_ret_value
 op_assign
@@ -7212,6 +7240,16 @@ id|REPEAT_SEARCH
 )paren
 (brace
 multiline_comment|/* file system changed while we were in the fix_nodes */
+id|PROC_INFO_INC
+c_func
+(paren
+id|th
+op_member_access_from_pointer
+id|t_super
+comma
+id|paste_into_item_restarted
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|search_for_position_by_key
@@ -7420,6 +7458,16 @@ id|REPEAT_SEARCH
 )paren
 (brace
 multiline_comment|/* file system changed while we were in the fix_nodes */
+id|PROC_INFO_INC
+c_func
+(paren
+id|th
+op_member_access_from_pointer
+id|t_super
+comma
+id|insert_item_restarted
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|search_item
