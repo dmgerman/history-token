@@ -133,8 +133,9 @@ id|u32
 id|irq
 suffix:semicolon
 DECL|member|io_mem
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|io_mem
 suffix:semicolon
 DECL|member|io_port
@@ -7758,26 +7759,13 @@ r_if
 c_cond
 (paren
 id|adapter-&gt;io_mem
-op_ne
-l_int|0
 )paren
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|adapter-&gt;io_mem
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|adapter
-op_ne
-l_int|0
-)paren
 id|kfree
 c_func
 (paren
@@ -7946,10 +7934,6 @@ id|start
 suffix:semicolon
 id|adapter-&gt;io_mem
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -7966,9 +7950,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|adapter-&gt;io_mem
-op_eq
-l_int|0
 )paren
 (brace
 id|dprintk
@@ -7986,7 +7969,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s: io memory maped at %lx&bslash;n&quot;
+l_string|&quot;%s: io memory maped at %p&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
