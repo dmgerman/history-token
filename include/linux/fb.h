@@ -1148,7 +1148,7 @@ id|wait
 suffix:semicolon
 multiline_comment|/* wait for blit idle, optional */
 DECL|member|fb_sync
-r_void
+r_int
 (paren
 op_star
 id|fb_sync

@@ -13,18 +13,20 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 DECL|macro|INCLUDE_TIMING_TABLE_DATA
 mdefine_line|#define INCLUDE_TIMING_TABLE_DATA
 DECL|macro|DBE_REG_BASE
-mdefine_line|#define DBE_REG_BASE regs
-macro_line|#include &lt;video/sgivw.h&gt;
+mdefine_line|#define DBE_REG_BASE default_par.regs
+macro_line|#include &lt;asm/sgi-vwdbe.h&gt;
 DECL|struct|sgivw_par
 r_struct
 id|sgivw_par
 (brace
 DECL|member|regs
+r_struct
 id|asregs
 op_star
 id|regs
@@ -41,25 +43,35 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; *  RAM we reserve for the frame buffer. This defines the maximum screen&n; *  size&n; *&n; *  The default can be overridden if the driver is compiled as a module&n; */
 multiline_comment|/* set by arch/i386/kernel/setup.c */
-DECL|variable|sgivwfb_mem_phys
-id|u_long
+r_extern
+r_int
+r_int
 id|sgivwfb_mem_phys
 suffix:semicolon
-DECL|variable|sgivwfb_mem_size
-id|u_long
+r_extern
+r_int
+r_int
 id|sgivwfb_mem_size
-suffix:semicolon
-DECL|variable|fb_info
-r_static
-r_struct
-id|fb_info
-id|fb_info
 suffix:semicolon
 DECL|variable|default_par
 r_static
 r_struct
 id|sgivw_par
 id|default_par
+suffix:semicolon
+DECL|variable|pseudo_palette
+r_static
+id|u32
+id|pseudo_palette
+(braket
+l_int|17
+)braket
+suffix:semicolon
+DECL|variable|fb_info
+r_static
+r_struct
+id|fb_info
+id|fb_info
 suffix:semicolon
 DECL|variable|ypan
 r_static
@@ -109,7 +121,7 @@ op_assign
 id|DBE_REG_SIZE
 comma
 dot
-id|accel_flags
+id|accel
 op_assign
 id|FB_ACCEL_NONE
 )brace
@@ -510,11 +522,11 @@ r_void
 )paren
 (brace
 r_int
-id|i
-suffix:semicolon
-r_int
 r_int
 id|readVal
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 singleline_comment|// Check to see if things are already turned off:
 singleline_comment|// 1) Check to see if dbe is not using the internal dotclock.
@@ -807,12 +819,17 @@ op_star
 id|info
 )paren
 (brace
-r_int
-id|err
-comma
-id|activate
+r_struct
+id|sgivw_par
+op_star
+id|par
 op_assign
-id|var-&gt;activate
+(paren
+r_struct
+id|sgivw_par
+op_star
+)paren
+id|info-&gt;par
 suffix:semicolon
 r_struct
 id|dbe_timing_info
@@ -1388,6 +1405,7 @@ id|frmWrite2
 comma
 id|frmWrite3b
 suffix:semicolon
+r_struct
 id|dbe_timing_info_t
 op_star
 id|currentTiming
@@ -3132,9 +3150,36 @@ op_div
 l_int|1024
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_mem_region
+c_func
+(paren
+id|DBE_REG_PHYS
+comma
+id|DBE_REG_SIZE
+comma
+l_string|&quot;sgivwfb&quot;
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sgivwfb: couldn&squot;t reserve mmio region&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|fail_request_mem_region
+suffix:semicolon
+)brace
 id|default_par.regs
 op_assign
 (paren
+r_struct
 id|asregs
 op_star
 )paren
@@ -3230,6 +3275,8 @@ id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
 id|fb_info.screen_base
 op_assign
+id|fb_info.screen_base
+op_assign
 id|ioremap_nocache
 c_func
 (paren
@@ -3296,16 +3343,14 @@ id|fail_register_framebuffer
 suffix:semicolon
 )brace
 id|printk
-c_func
 (paren
 id|KERN_INFO
-l_string|&quot;fb%d: Virtual frame buffer device, using %ldK of video memory&bslash;n&quot;
+l_string|&quot;fb%d: SGI BDE frame buffer device, using %ldK of video memory&bslash;n&quot;
 comma
 id|minor
 c_func
 (paren
 id|fb_info.node
-)paren
 comma
 id|sgivwfb_mem_size
 op_rshift
