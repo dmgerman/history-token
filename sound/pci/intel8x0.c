@@ -14173,6 +14173,7 @@ id|nr_dev
 )paren
 op_eq
 l_int|2
+op_logical_and
 id|get_option
 c_func
 (paren
