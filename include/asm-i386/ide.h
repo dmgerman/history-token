@@ -156,6 +156,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_X86_PC9800
 DECL|function|ide_init_hwif_ports
 r_static
 id|__inline__
@@ -189,7 +190,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_PC9800
 r_int
 r_int
 id|increment
@@ -203,7 +203,6 @@ l_int|2
 suffix:colon
 l_int|1
 suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -226,17 +225,10 @@ id|i
 op_assign
 id|reg
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_PC9800
 id|reg
 op_add_assign
 id|increment
 suffix:semicolon
-macro_line|#else
-id|reg
-op_add_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond
@@ -251,7 +243,6 @@ id|IDE_CONTROL_OFFSET
 op_assign
 id|ctrl_port
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_PC9800
 )brace
 r_else
 r_if
@@ -269,7 +260,6 @@ id|IDE_CONTROL_OFFSET
 op_assign
 l_int|0x74c
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -306,6 +296,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 DECL|macro|ide_init_default_irq
 mdefine_line|#define ide_init_default_irq(base)&t;(0)
