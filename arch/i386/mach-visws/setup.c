@@ -1,5 +1,12 @@
 multiline_comment|/*&n; *  Unmaintained SGI Visual Workstation support.&n; *  Split out from setup.c by davej@suse.de&n; */
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;asm/fixmap.h&gt;
+macro_line|#include &lt;asm/cobalt.h&gt;
+macro_line|#include &lt;asm/arch_hooks.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|variable|visws_board_type
 r_char
 id|visws_board_type
@@ -360,5 +367,138 @@ id|visws_board_rev
 )paren
 suffix:semicolon
 )brace
+DECL|function|pre_intr_init_hook
+r_void
+id|__init
+id|pre_intr_init_hook
+c_func
+(paren
+r_void
+)paren
+(brace
+id|init_VISWS_APIC_irqs
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|intr_init_hook
+r_void
+id|__init
+id|intr_init_hook
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+id|apic_intr_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+DECL|function|pre_setup_arch_hook
+r_void
+id|__init
+id|pre_setup_arch_hook
+c_func
+(paren
+)paren
+(brace
+id|visws_get_board_type_and_rev
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|irq0
+r_static
+r_struct
+id|irqaction
+id|irq0
+op_assign
+(brace
+id|timer_interrupt
+comma
+id|SA_INTERRUPT
+comma
+l_int|0
+comma
+l_string|&quot;timer&quot;
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+suffix:semicolon
+DECL|function|time_init_hook
+r_void
+id|__init
+id|time_init_hook
+c_func
+(paren
+r_void
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Starting Cobalt Timer system clock&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Set the countdown value */
+id|co_cpu_write
+c_func
+(paren
+id|CO_CPU_TIMEVAL
+comma
+id|CO_TIME_HZ
+op_div
+id|HZ
+)paren
+suffix:semicolon
+multiline_comment|/* Start the timer */
+id|co_cpu_write
+c_func
+(paren
+id|CO_CPU_CTRL
+comma
+id|co_cpu_read
+c_func
+(paren
+id|CO_CPU_CTRL
+)paren
+op_or
+id|CO_CTRL_TIMERUN
+)paren
+suffix:semicolon
+multiline_comment|/* Enable (unmask) the timer interrupt */
+id|co_cpu_write
+c_func
+(paren
+id|CO_CPU_CTRL
+comma
+id|co_cpu_read
+c_func
+(paren
+id|CO_CPU_CTRL
+)paren
+op_amp
+op_complement
+id|CO_CTRL_TIMEMASK
+)paren
+suffix:semicolon
+multiline_comment|/* Wire cpu IDT entry to s/w handler (and Cobalt APIC to IDT) */
+id|setup_irq
+c_func
+(paren
+id|CO_IRQ_TIMER
+comma
+op_amp
+id|irq0
+)paren
+suffix:semicolon
 )brace
 eof
