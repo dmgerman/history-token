@@ -398,12 +398,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_bit
+id|cpu_has
 c_func
 (paren
-id|X86_FEATURE_TSC
+id|c
 comma
-id|c-&gt;x86_capability
+id|X86_FEATURE_TSC
 )paren
 )paren
 (brace

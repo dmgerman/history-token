@@ -542,12 +542,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
+id|cpu_has
 c_func
 (paren
-id|X86_FEATURE_XMM
+id|c
 comma
-id|c-&gt;x86_capability
+id|X86_FEATURE_XMM
 )paren
 )paren
 (brace
