@@ -209,6 +209,10 @@ comma
 id|MPC85xx_UART0_SIZE
 )paren
 suffix:semicolon
+id|uart_req.type
+op_assign
+id|PORT_16650
+suffix:semicolon
 macro_line|#if defined(CONFIG_SERIAL_TEXT_DEBUG) || defined(CONFIG_KGDB)
 id|gen550_init
 c_func
