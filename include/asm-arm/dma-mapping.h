@@ -1070,6 +1070,25 @@ id|dir
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * DMA errors are defined by all-bits-set in the DMA address.&n; */
+DECL|function|dma_mapping_error
+r_static
+r_inline
+r_int
+id|dma_mapping_error
+c_func
+(paren
+id|dma_addr_t
+id|dma_addr
+)paren
+(brace
+r_return
+id|dma_addr
+op_eq
+op_complement
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof
