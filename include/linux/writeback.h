@@ -2,6 +2,9 @@ multiline_comment|/*&n; * include/linux/writeback.h.&n; *&n; * These declaration
 macro_line|#ifndef WRITEBACK_H
 DECL|macro|WRITEBACK_H
 mdefine_line|#define WRITEBACK_H
+r_struct
+id|backing_dev_info
+suffix:semicolon
 r_extern
 id|spinlock_t
 id|inode_lock
@@ -120,6 +123,29 @@ c_func
 (paren
 r_int
 id|wait
+)paren
+suffix:semicolon
+r_void
+id|writeback_backing_dev
+c_func
+(paren
+r_struct
+id|backing_dev_info
+op_star
+id|bdi
+comma
+r_int
+op_star
+id|nr_to_write
+comma
+r_enum
+id|writeback_sync_modes
+id|sync_mode
+comma
+r_int
+r_int
+op_star
+id|older_than_this
 )paren
 suffix:semicolon
 multiline_comment|/* writeback.h requires fs.h; it, too, is not included from here. */
