@@ -330,7 +330,7 @@ id|i
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 id|yield

@@ -2830,7 +2830,7 @@ id|page
 )paren
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|page
@@ -8053,7 +8053,7 @@ id|gate_vma
 suffix:semicolon
 macro_line|#else
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#endif
 )brace

@@ -210,7 +210,7 @@ l_int|NULL
 suffix:semicolon
 id|fl-&gt;fl_owner
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fl-&gt;fl_pid
 op_assign
