@@ -698,9 +698,14 @@ r_struct
 id|device
 op_star
 id|parent
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|error
+op_assign
+op_minus
+id|EINVAL
 suffix:semicolon
 id|dev
 op_assign
@@ -723,9 +728,8 @@ c_func
 id|dev-&gt;bus_id
 )paren
 )paren
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|Error
 suffix:semicolon
 id|parent
 op_assign

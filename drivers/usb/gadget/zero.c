@@ -909,7 +909,7 @@ r_static
 r_char
 id|manufacturer
 (braket
-l_int|40
+l_int|50
 )braket
 suffix:semicolon
 DECL|variable|serial

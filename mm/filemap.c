@@ -1278,12 +1278,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 id|smp_mb__after_clear_bit
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 id|wake_up_page
 c_func
 (paren
