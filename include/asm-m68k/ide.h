@@ -53,45 +53,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Set up a hw structure for a specified data port, control port and IRQ.&n; * This should follow whatever the default interface uses.&n; */
-DECL|function|ide_init_hwif_ports
-r_static
-id|__inline__
-r_void
-id|ide_init_hwif_ports
-c_func
-(paren
-id|hw_regs_t
-op_star
-id|hw
-comma
-r_int
-r_int
-id|data_port
-comma
-r_int
-r_int
-id|ctrl_port
-comma
-r_int
-op_star
-id|irq
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|data_port
-op_logical_or
-id|ctrl_port
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;ide_init_hwif_ports: must not be called&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 DECL|macro|ide_init_default_irq
 mdefine_line|#define ide_init_default_irq(base)&t;(0)
 multiline_comment|/*&n; * Get rid of defs from io.h - ide has its private and conflicting versions&n; * Since so far no single m68k platform uses ISA/PCI I/O space for IDE, we&n; * always use the `raw&squot; MMIO versions&n; */

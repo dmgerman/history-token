@@ -501,8 +501,7 @@ id|ctl_addr
 suffix:semicolon
 )brace
 macro_line|#include &lt;asm/ide.h&gt;
-multiline_comment|/*&n; * ide_init_hwif_ports() is OBSOLETE and will be removed in 2.7 series.&n; * New ports shouldn&squot;t define IDE_ARCH_OBSOLETE_INIT in &lt;asm/ide.h&gt;.&n; *&n; * m68k, m68knommu (broken) and i386-pc9800 (broken)&n; * still have their own versions.&n; */
-macro_line|#ifndef CONFIG_M68K
+multiline_comment|/*&n; * ide_init_hwif_ports() is OBSOLETE and will be removed in 2.7 series.&n; * New ports shouldn&squot;t define IDE_ARCH_OBSOLETE_INIT in &lt;asm/ide.h&gt;.&n; */
 macro_line|#ifdef IDE_ARCH_OBSOLETE_INIT
 DECL|function|ide_init_hwif_ports
 r_static
@@ -599,10 +598,48 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#else
-DECL|macro|ide_init_hwif_ports
-macro_line|# define ide_init_hwif_ports(hw, io, ctl, irq)&t;do {} while (0)
+DECL|function|ide_init_hwif_ports
+r_static
+r_inline
+r_void
+id|ide_init_hwif_ports
+c_func
+(paren
+id|hw_regs_t
+op_star
+id|hw
+comma
+r_int
+r_int
+id|io_addr
+comma
+r_int
+r_int
+id|ctl_addr
+comma
+r_int
+op_star
+id|irq
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|io_addr
+op_logical_or
+id|ctl_addr
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: must not be called&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* IDE_ARCH_OBSOLETE_INIT */
-macro_line|#endif /* !M68K */
 multiline_comment|/* Currently only m68k, apus and m8xx need it */
 macro_line|#ifndef IDE_ARCH_ACK_INTR
 DECL|macro|ide_ack_intr
