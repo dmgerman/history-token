@@ -2,22 +2,34 @@ multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karay
 macro_line|#ifndef __SYS_SIGCONTEXT_I386_H
 DECL|macro|__SYS_SIGCONTEXT_I386_H
 mdefine_line|#define __SYS_SIGCONTEXT_I386_H
+macro_line|#include &quot;sc.h&quot;
 DECL|macro|IP_RESTART_SYSCALL
 mdefine_line|#define IP_RESTART_SYSCALL(ip) ((ip) -= 2)
 DECL|macro|SC_RESTART_SYSCALL
 mdefine_line|#define SC_RESTART_SYSCALL(sc) IP_RESTART_SYSCALL(SC_IP(sc))
 DECL|macro|SC_SET_SYSCALL_RETURN
-mdefine_line|#define SC_SET_SYSCALL_RETURN(sc, result) do SC_EAX(sc) = (result) ; while(0)
+mdefine_line|#define SC_SET_SYSCALL_RETURN(sc, result) SC_EAX(sc) = (result)
 DECL|macro|SC_FAULT_ADDR
 mdefine_line|#define SC_FAULT_ADDR(sc) SC_CR2(sc)
+DECL|macro|SC_FAULT_TYPE
+mdefine_line|#define SC_FAULT_TYPE(sc) SC_ERR(sc)
+DECL|macro|FAULT_WRITE
+mdefine_line|#define FAULT_WRITE(err) (err &amp; 2)
+DECL|macro|TO_SC_ERR
+mdefine_line|#define TO_SC_ERR(is_write) ((is_write) ? 2 : 0)
 DECL|macro|SC_FAULT_WRITE
-mdefine_line|#define SC_FAULT_WRITE(sc) (SC_ERR(sc) &amp; 2)
+mdefine_line|#define SC_FAULT_WRITE(sc) (FAULT_WRITE(SC_ERR(sc)))
+DECL|macro|SC_TRAP_TYPE
+mdefine_line|#define SC_TRAP_TYPE(sc) SC_TRAPNO(sc)
 multiline_comment|/* ptrace expects that, at the start of a system call, %eax contains&n; * -ENOSYS, so this makes it so.&n; */
 DECL|macro|SC_START_SYSCALL
 mdefine_line|#define SC_START_SYSCALL(sc) do SC_EAX(sc) = -ENOSYS; while(0)
 multiline_comment|/* These are General Protection and Page Fault */
 DECL|macro|SEGV_IS_FIXABLE
-mdefine_line|#define SEGV_IS_FIXABLE(sc) ((SC_TRAPNO(sc) == 13) || (SC_TRAPNO(sc) == 14))
+mdefine_line|#define SEGV_IS_FIXABLE(trap) ((trap == 13) || (trap == 14))
+DECL|macro|SC_SEGV_IS_FIXABLE
+mdefine_line|#define SC_SEGV_IS_FIXABLE(sc) (SEGV_IS_FIXABLE(SC_TRAPNO(sc)))
+macro_line|#ifdef CONFIG_MODE_TT
 multiline_comment|/* XXX struct sigcontext needs declaring by now */
 DECL|function|sc_to_regs
 r_static
@@ -112,6 +124,97 @@ id|sc
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_MODE_SKAS
+DECL|function|host_to_regs
+r_static
+r_inline
+r_void
+id|host_to_regs
+c_func
+(paren
+r_struct
+id|uml_pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|regs-&gt;syscall
+op_assign
+id|UPT_ORIG_EAX
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+id|regs-&gt;args
+(braket
+l_int|0
+)braket
+op_assign
+id|UPT_EBX
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+id|regs-&gt;args
+(braket
+l_int|1
+)braket
+op_assign
+id|UPT_ECX
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+id|regs-&gt;args
+(braket
+l_int|2
+)braket
+op_assign
+id|UPT_EDX
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+id|regs-&gt;args
+(braket
+l_int|3
+)braket
+op_assign
+id|UPT_ESI
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+id|regs-&gt;args
+(braket
+l_int|4
+)braket
+op_assign
+id|UPT_EDI
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+id|regs-&gt;args
+(braket
+l_int|5
+)braket
+op_assign
+id|UPT_EBP
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_extern
 r_int
 r_int
