@@ -1213,9 +1213,6 @@ l_int|1
 (brace
 id|rc
 op_assign
-(paren
-id|s32
-)paren
 id|rtas_call
 c_func
 (paren
@@ -1231,9 +1228,6 @@ l_int|1
 comma
 l_int|NULL
 comma
-(paren
-r_int
-)paren
 id|args_buf-&gt;op
 )paren
 suffix:semicolon
@@ -1713,9 +1707,6 @@ id|VALIDATE_BUF_SIZE
 suffix:semicolon
 id|rc
 op_assign
-(paren
-id|s32
-)paren
 id|rtas_call
 c_func
 (paren
@@ -1728,6 +1719,9 @@ comma
 op_amp
 id|update_results
 comma
+(paren
+id|u32
+)paren
 id|__pa
 c_func
 (paren
@@ -1805,9 +1799,6 @@ id|rc
 suffix:semicolon
 id|args_buf-&gt;update_results
 op_assign
-(paren
-id|u32
-)paren
 id|update_results
 suffix:semicolon
 )brace

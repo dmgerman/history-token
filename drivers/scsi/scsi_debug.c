@@ -2584,6 +2584,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -8195,6 +8196,7 @@ id|sdebug_delay_show
 comma
 id|sdebug_delay_store
 )paren
+suffix:semicolon
 DECL|function|sdebug_opts_show
 r_static
 id|ssize_t
@@ -8364,6 +8366,7 @@ id|sdebug_opts_show
 comma
 id|sdebug_opts_store
 )paren
+suffix:semicolon
 DECL|function|sdebug_ptype_show
 r_static
 id|ssize_t
@@ -8474,6 +8477,7 @@ id|sdebug_ptype_show
 comma
 id|sdebug_ptype_store
 )paren
+suffix:semicolon
 DECL|function|sdebug_num_tgts_show
 r_static
 id|ssize_t
@@ -8589,6 +8593,7 @@ id|sdebug_num_tgts_show
 comma
 id|sdebug_num_tgts_store
 )paren
+suffix:semicolon
 DECL|function|sdebug_dev_size_mb_show
 r_static
 id|ssize_t
@@ -8630,6 +8635,7 @@ id|sdebug_dev_size_mb_show
 comma
 l_int|NULL
 )paren
+suffix:semicolon
 DECL|function|sdebug_num_parts_show
 r_static
 id|ssize_t
@@ -8671,6 +8677,7 @@ id|sdebug_num_parts_show
 comma
 l_int|NULL
 )paren
+suffix:semicolon
 DECL|function|sdebug_every_nth_show
 r_static
 id|ssize_t
@@ -8785,6 +8792,7 @@ id|sdebug_every_nth_show
 comma
 id|sdebug_every_nth_store
 )paren
+suffix:semicolon
 DECL|function|sdebug_max_luns_show
 r_static
 id|ssize_t
@@ -8900,6 +8908,7 @@ id|sdebug_max_luns_show
 comma
 id|sdebug_max_luns_store
 )paren
+suffix:semicolon
 DECL|function|sdebug_scsi_level_show
 r_static
 id|ssize_t
@@ -8941,6 +8950,7 @@ id|sdebug_scsi_level_show
 comma
 l_int|NULL
 )paren
+suffix:semicolon
 DECL|function|sdebug_add_host_show
 r_static
 id|ssize_t
@@ -9137,6 +9147,7 @@ id|sdebug_add_host_show
 comma
 id|sdebug_add_host_store
 )paren
+suffix:semicolon
 DECL|function|do_create_driverfs_files
 r_static
 r_void

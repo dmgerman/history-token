@@ -207,16 +207,14 @@ op_star
 id|real_mode
 suffix:semicolon
 multiline_comment|/* Pointer to real-mode data */
-DECL|macro|EXT_MEM_K
-mdefine_line|#define EXT_MEM_K   (*(unsigned short *)(real_mode + 0x2))
+DECL|macro|RM_EXT_MEM_K
+mdefine_line|#define RM_EXT_MEM_K   (*(unsigned short *)(real_mode + 0x2))
 macro_line|#ifndef STANDARD_MEMORY_BIOS_CALL
-DECL|macro|ALT_MEM_K
-mdefine_line|#define ALT_MEM_K   (*(unsigned long *)(real_mode + 0x1e0))
+DECL|macro|RM_ALT_MEM_K
+mdefine_line|#define RM_ALT_MEM_K   (*(unsigned long *)(real_mode + 0x1e0))
 macro_line|#endif
-DECL|macro|SCREEN_INFO
-mdefine_line|#define SCREEN_INFO (*(struct screen_info *)(real_mode+0))
-DECL|macro|EDID_INFO
-mdefine_line|#define EDID_INFO   (*(struct edid_info *)(real_mode+0x440))
+DECL|macro|RM_SCREEN_INFO
+mdefine_line|#define RM_SCREEN_INFO (*(struct screen_info *)(real_mode+0))
 r_extern
 r_char
 id|input_data
@@ -595,11 +593,11 @@ id|c
 suffix:semicolon
 id|x
 op_assign
-id|SCREEN_INFO.orig_x
+id|RM_SCREEN_INFO.orig_x
 suffix:semicolon
 id|y
 op_assign
-id|SCREEN_INFO.orig_y
+id|RM_SCREEN_INFO.orig_y
 suffix:semicolon
 r_while
 c_loop
@@ -697,11 +695,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|SCREEN_INFO.orig_x
+id|RM_SCREEN_INFO.orig_x
 op_assign
 id|x
 suffix:semicolon
-id|SCREEN_INFO.orig_y
+id|RM_SCREEN_INFO.orig_y
 op_assign
 id|y
 suffix:semicolon
@@ -1266,7 +1264,7 @@ macro_line|#ifdef STANDARD_MEMORY_BIOS_CALL
 r_if
 c_cond
 (paren
-id|EXT_MEM_K
+id|RM_EXT_MEM_K
 OL
 l_int|1024
 )paren
@@ -1281,14 +1279,14 @@ r_if
 c_cond
 (paren
 (paren
-id|ALT_MEM_K
+id|RM_ALT_MEM_K
 OG
-id|EXT_MEM_K
+id|RM_EXT_MEM_K
 ques
 c_cond
-id|ALT_MEM_K
+id|RM_ALT_MEM_K
 suffix:colon
-id|EXT_MEM_K
+id|RM_EXT_MEM_K
 )paren
 OL
 l_int|1024
@@ -1375,7 +1373,7 @@ macro_line|#ifdef STANDARD_MEMORY_BIOS_CALL
 r_if
 c_cond
 (paren
-id|EXT_MEM_K
+id|RM_EXT_MEM_K
 OL
 (paren
 l_int|3
@@ -1394,14 +1392,14 @@ r_if
 c_cond
 (paren
 (paren
-id|ALT_MEM_K
+id|RM_ALT_MEM_K
 OG
-id|EXT_MEM_K
+id|RM_EXT_MEM_K
 ques
 c_cond
-id|ALT_MEM_K
+id|RM_ALT_MEM_K
 suffix:colon
-id|EXT_MEM_K
+id|RM_EXT_MEM_K
 )paren
 OL
 (paren
@@ -1585,7 +1583,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCREEN_INFO.orig_video_mode
+id|RM_SCREEN_INFO.orig_video_mode
 op_eq
 l_int|7
 )paren
@@ -1620,11 +1618,11 @@ suffix:semicolon
 )brace
 id|lines
 op_assign
-id|SCREEN_INFO.orig_video_lines
+id|RM_SCREEN_INFO.orig_video_lines
 suffix:semicolon
 id|cols
 op_assign
-id|SCREEN_INFO.orig_video_cols
+id|RM_SCREEN_INFO.orig_video_cols
 suffix:semicolon
 r_if
 c_cond

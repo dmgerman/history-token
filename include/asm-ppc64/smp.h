@@ -57,10 +57,6 @@ id|cpu_available_map
 suffix:semicolon
 DECL|macro|cpu_present_at_boot
 mdefine_line|#define cpu_present_at_boot(cpu) cpu_isset(cpu, cpu_present_at_boot)
-DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu)          cpu_isset(cpu, cpu_online_map) 
-DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu)        cpu_isset(cpu, cpu_possible_map) 
 DECL|macro|cpu_available
 mdefine_line|#define cpu_available(cpu)       cpu_isset(cpu, cpu_available_map) 
 multiline_comment|/* Since OpenPIC has only 4 IPIs, we use slightly different message numbers.&n; *&n; * Make sure this matches openpic_request_IPIs in open_pic.c, or what shows up&n; * in /proc/interrupts will be wrong!!! --Troy */

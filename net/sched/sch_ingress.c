@@ -33,11 +33,15 @@ macro_line|#endif
 DECL|macro|PRIV
 mdefine_line|#define PRIV(sch) ((struct ingress_qdisc_data *) (sch)-&gt;data)
 multiline_comment|/* Thanks to Doron Oz for this hack&n;*/
+macro_line|#ifndef CONFIG_NET_CLS_ACT
+macro_line|#ifdef CONFIG_NETFILTER
 DECL|variable|nf_registered
 r_static
 r_int
 id|nf_registered
 suffix:semicolon
+macro_line|#endif
+macro_line|#endif
 DECL|struct|ingress_qdisc_data
 r_struct
 id|ingress_qdisc_data
@@ -467,7 +471,74 @@ id|res.classid
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Unlike normal &quot;enqueue&quot; functions, ingress_enqueue returns a&n;&t; * firewall FW_* code.&n;&t; */
-macro_line|#ifdef CONFIG_NET_CLS_POLICE
+macro_line|#ifdef CONFIG_NET_CLS_ACT
+id|sch-&gt;stats.packets
+op_increment
+suffix:semicolon
+id|sch-&gt;stats.bytes
+op_add_assign
+id|skb-&gt;len
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|result
+)paren
+(brace
+r_case
+id|TC_ACT_SHOT
+suffix:colon
+id|result
+op_assign
+id|TC_ACT_SHOT
+suffix:semicolon
+id|sch-&gt;stats.drops
+op_increment
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TC_ACT_STOLEN
+suffix:colon
+r_case
+id|TC_ACT_QUEUED
+suffix:colon
+id|result
+op_assign
+id|TC_ACT_STOLEN
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TC_ACT_RECLASSIFY
+suffix:colon
+r_case
+id|TC_ACT_OK
+suffix:colon
+r_case
+id|TC_ACT_UNSPEC
+suffix:colon
+r_default
+suffix:colon
+id|skb-&gt;tc_index
+op_assign
+id|TC_H_MIN
+c_func
+(paren
+id|res.classid
+)paren
+suffix:semicolon
+id|result
+op_assign
+id|TC_ACT_OK
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* backward compat */
+macro_line|#else
+macro_line|#ifdef&t;CONFIG_NET_CLS_POLICE  
 r_switch
 c_cond
 (paren
@@ -514,6 +585,16 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#else
+id|D2PRINTK
+c_func
+(paren
+l_string|&quot;Overriding result to ACCEPT&bslash;n&quot;
+)paren
+suffix:semicolon
+id|result
+op_assign
+id|NF_ACCEPT
+suffix:semicolon
 id|sch-&gt;stats.packets
 op_increment
 suffix:semicolon
@@ -522,14 +603,7 @@ op_add_assign
 id|skb-&gt;len
 suffix:semicolon
 macro_line|#endif
-id|skb-&gt;tc_index
-op_assign
-id|TC_H_MIN
-c_func
-(paren
-id|res.classid
-)paren
-suffix:semicolon
+macro_line|#endif
 r_return
 id|result
 suffix:semicolon
@@ -615,6 +689,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_NET_CLS_ACT
+macro_line|#ifdef CONFIG_NETFILTER
 r_static
 r_int
 r_int
@@ -794,6 +870,8 @@ l_int|1
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
+macro_line|#endif
 DECL|function|ingress_init
 r_int
 id|ingress_init
@@ -821,6 +899,39 @@ c_func
 id|sch
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure either netfilter or preferably CLS_ACT is&n;* compiled in */
+macro_line|#ifndef CONFIG_NET_CLS_ACT
+macro_line|#ifndef CONFIG_NETFILTER
+id|printk
+c_func
+(paren
+l_string|&quot;You MUST compile classifier actions into the kernel&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|error
+suffix:semicolon
+macro_line|#else
+id|printk
+c_func
+(paren
+l_string|&quot;Ingress scheduler: Classifier actions prefered over netfilter&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
+r_if
+c_cond
+(paren
+l_int|NULL
+op_eq
+id|p
+)paren
+r_goto
+id|error
+suffix:semicolon
+macro_line|#ifndef CONFIG_NET_CLS_ACT
+macro_line|#ifdef CONFIG_NETFILTER
 r_if
 c_cond
 (paren
@@ -855,6 +966,8 @@ id|nf_registered
 op_increment
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#endif
 id|DPRINTK
 c_func
 (paren
@@ -1319,6 +1432,8 @@ op_amp
 id|ingress_qdisc_ops
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_NET_CLS_ACT
+macro_line|#ifdef CONFIG_NETFILTER
 r_if
 c_cond
 (paren
@@ -1331,6 +1446,8 @@ op_amp
 id|ing_ops
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#endif
 )brace
 id|module_init
 c_func

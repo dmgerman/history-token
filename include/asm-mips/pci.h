@@ -194,6 +194,27 @@ r_int
 id|direction
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|pcibios_resource_to_bus
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_struct
+id|pci_bus_region
+op_star
+id|region
+comma
+r_struct
+id|resource
+op_star
+id|res
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* implement the pci_ DMA API in terms of the generic device dma_ one */
 macro_line|#include &lt;asm-generic/pci-dma-compat.h&gt;

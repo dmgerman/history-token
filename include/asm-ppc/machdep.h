@@ -492,8 +492,6 @@ r_struct
 id|machdep_calls
 id|ppc_md
 suffix:semicolon
-DECL|macro|COMMAND_LINE_SIZE
-mdefine_line|#define COMMAND_LINE_SIZE 512
 r_extern
 r_char
 id|cmd_line

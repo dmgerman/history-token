@@ -177,11 +177,18 @@ macro_line|#   define CPU_NAME cpu_v6
 macro_line|#  endif
 macro_line|# endif
 macro_line|#endif
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifndef MULTI_CPU
 macro_line|#include &quot;asm/cpu-single.h&quot;
 macro_line|#else
 macro_line|#include &quot;asm/cpu-multi32.h&quot;
 macro_line|#endif
+macro_line|#include &lt;asm/memory.h&gt;
+DECL|macro|cpu_switch_mm
+mdefine_line|#define cpu_switch_mm(pgd,mm) cpu_do_switch_mm(virt_to_phys(pgd),mm)
+DECL|macro|cpu_get_pgd
+mdefine_line|#define cpu_get_pgd()&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long pg;&t;&t;&t;&bslash;&n;&t;&t;__asm__(&quot;mrc&t;p15, 0, %0, c2, c0, 0&quot;&t;&bslash;&n;&t;&t;&t; : &quot;=r&quot; (pg) : : &quot;cc&quot;);&t;&t;&bslash;&n;&t;&t;pg &amp;= ~0x3fff;&t;&t;&t;&t;&bslash;&n;&t;&t;(pgd_t *)phys_to_virt(pg);&t;&t;&bslash;&n;&t;})
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_PROCFNS_H */
 eof

@@ -1097,6 +1097,11 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+id|print_modules
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1360,129 +1365,9 @@ l_string|&quot;.previous&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_MDULES
-multiline_comment|/* Given an address, look for it in the module exception tables. */
-DECL|function|search_module_dbetables
-r_const
-r_struct
-id|exception_table_entry
-op_star
-id|search_module_dbetables
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_const
-r_struct
-id|exception_table_entry
-op_star
-id|e
-op_assign
-l_int|NULL
-suffix:semicolon
-r_struct
-id|module
-op_star
-id|mod
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|modlist_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|list_for_each_entry
-c_func
-(paren
-id|mod
-comma
-op_amp
-id|modules
-comma
-id|list
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|mod-&gt;arch.num_dbeentries
-op_eq
-l_int|0
-)paren
-r_continue
-suffix:semicolon
-id|e
-op_assign
-id|search_extable
-c_func
-(paren
-id|mod-&gt;arch.dbe_table_start
-comma
-id|mod-&gt;arch.dbe_table_end
-op_plus
-id|mod-&gt;arch.num_dbeentries
-op_minus
-l_int|1
-comma
-id|addr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|e
-)paren
-r_break
-suffix:semicolon
-)brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|modlist_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* Now, if we found one, we are running inside it now, hence&n;           we cannot unload the module, hence no refcnt needed. */
-r_return
-id|e
-suffix:semicolon
-)brace
-macro_line|#else
-multiline_comment|/* Given an address, look for it in the exception tables. */
-r_static
-r_inline
-r_const
-r_struct
-id|exception_table_entry
-op_star
-DECL|function|search_module_dbetables
-id|search_module_dbetables
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Given an address, look for it in the exception tables. */
 DECL|function|search_dbe_tables
+r_static
 r_const
 r_struct
 id|exception_table_entry
@@ -3014,6 +2899,32 @@ id|current_cpu_data.cputype
 )paren
 (brace
 r_case
+id|CPU_24K
+suffix:colon
+multiline_comment|/* 24K cache parity not currently implemented in FPGA */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Disable cache parity protection for &quot;
+l_string|&quot;MIPS 24K CPU.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|write_c0_ecc
+c_func
+(paren
+id|read_c0_ecc
+c_func
+(paren
+)paren
+op_amp
+op_complement
+l_int|0x80000000
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|CPU_5KC
 suffix:colon
 multiline_comment|/* Set the PE bit (bit 31) in the c0_ecc register. */
@@ -3021,8 +2932,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Enable the cache parity protection for &quot;
-l_string|&quot;MIPS 5KC CPUs.&bslash;n&quot;
+l_string|&quot;Enable cache parity protection for &quot;
+l_string|&quot;MIPS 5KC/24K CPUs.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|write_c0_ecc
@@ -3034,6 +2945,29 @@ c_func
 )paren
 op_or
 l_int|0x80000000
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|CPU_20KC
+suffix:colon
+r_case
+id|CPU_25KF
+suffix:colon
+multiline_comment|/* Clear the DE bit (bit 16) in the c0_status register. */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Enable cache parity protection for &quot;
+l_string|&quot;MIPS 20KC/25KF CPUs.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|clear_c0_status
+c_func
+(paren
+id|ST0_DE
 )paren
 suffix:semicolon
 r_break

@@ -744,7 +744,7 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
-id|tcp_mem_reclaim
+id|sk_stream_mem_reclaim
 c_func
 (paren
 id|sk
@@ -926,9 +926,9 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|tcp_memory_pressure
+id|tcp_prot.memory_pressure
 )paren
-id|tcp_mem_reclaim
+id|sk_stream_mem_reclaim
 c_func
 (paren
 id|sk
@@ -981,7 +981,7 @@ c_cond
 id|tp-&gt;packets_out
 op_logical_or
 op_logical_neg
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 )paren
 (brace
 id|tp-&gt;probes_out
@@ -1647,7 +1647,7 @@ id|sk
 suffix:semicolon
 id|out
 suffix:colon
-id|tcp_mem_reclaim
+id|sk_stream_mem_reclaim
 c_func
 (paren
 id|sk
@@ -2333,7 +2333,7 @@ c_cond
 (paren
 id|tp-&gt;packets_out
 op_logical_or
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 )paren
 r_goto
 id|resched
@@ -2448,7 +2448,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|tcp_mem_reclaim
+id|sk_stream_mem_reclaim
 c_func
 (paren
 id|sk

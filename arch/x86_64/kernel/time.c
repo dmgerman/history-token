@@ -2437,7 +2437,7 @@ id|timer_interrupt
 comma
 id|SA_INTERRUPT
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;timer&quot;
 comma

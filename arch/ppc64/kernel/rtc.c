@@ -1301,7 +1301,6 @@ id|rtc_tm
 )paren
 (brace
 r_int
-r_int
 id|ret
 (braket
 l_int|8
@@ -1346,11 +1345,6 @@ l_int|0
 comma
 l_int|8
 comma
-(paren
-r_void
-op_star
-)paren
-op_amp
 id|ret
 )paren
 suffix:semicolon
@@ -1488,7 +1482,6 @@ id|rtc_tm
 )paren
 (brace
 r_int
-r_int
 id|ret
 (braket
 l_int|8
@@ -1533,11 +1526,6 @@ l_int|0
 comma
 l_int|8
 comma
-(paren
-r_void
-op_star
-)paren
-op_amp
 id|ret
 )paren
 suffix:semicolon

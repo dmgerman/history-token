@@ -2310,6 +2310,10 @@ id|dev-&gt;subsystem_device
 )paren
 (brace
 r_case
+l_int|0x80b1
+suffix:colon
+multiline_comment|/* P4GE-V */
+r_case
 l_int|0x80b2
 suffix:colon
 multiline_comment|/* P4PE */

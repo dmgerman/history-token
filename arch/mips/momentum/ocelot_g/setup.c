@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * setup.c&n; *&n; * BRIEF MODULE DESCRIPTION&n; * Momentum Computer Ocelot-G (CP7000G) - board dependent boot routines&n; *&n; * Copyright (C) 1996, 1997, 2001  Ralf Baechle&n; * Copyright (C) 2000 RidgeRun, Inc.&n; * Copyright (C) 2001 Red Hat, Inc.&n; * Copyright (C) 2002 Momentum Computer&n; *&n; * Author: Matthew Dharm, Momentum Computer&n; *   mdharm@momenco.com&n; *&n; * Author: RidgeRun, Inc.&n; *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * BRIEF MODULE DESCRIPTION&n; * Momentum Computer Ocelot-G (CP7000G) - board dependent boot routines&n; *&n; * Copyright (C) 1996, 1997, 2001  Ralf Baechle&n; * Copyright (C) 2000 RidgeRun, Inc.&n; * Copyright (C) 2001 Red Hat, Inc.&n; * Copyright (C) 2002 Momentum Computer&n; *&n; * Author: Matthew Dharm, Momentum Computer&n; *   mdharm@momenco.com&n; *&n; * Author: RidgeRun, Inc.&n; *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -15,14 +15,13 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/gt64240.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &quot;gt64240.h&quot;
 macro_line|#include &quot;ocelot_pld.h&quot;
 macro_line|#ifdef CONFIG_GALILLEO_GT64240_ETH
 r_extern
@@ -123,17 +122,6 @@ op_rshift
 l_int|6
 suffix:semicolon
 )brace
-r_static
-r_void
-id|__init
-id|setup_l3cache
-c_func
-(paren
-r_int
-r_int
-id|size
-)paren
-suffix:semicolon
 multiline_comment|/* setup code for a handoff from a version 2 PMON 2000 PROM */
 DECL|function|PMON_v2_setup
 r_void
@@ -230,9 +218,134 @@ op_assign
 l_int|0xf4000000
 suffix:semicolon
 )brace
-DECL|function|momenco_ocelot_g_setup
+r_extern
+r_int
+id|rm7k_tcache_enabled
+suffix:semicolon
+multiline_comment|/*&n; * This runs in KSEG1. See the verbiage in rm7k.c::probe_scache()&n; */
+DECL|macro|Page_Invalidate_T
+mdefine_line|#define Page_Invalidate_T 0x16
+DECL|function|setup_l3cache
 r_static
 r_void
+id|__init
+id|setup_l3cache
+c_func
+(paren
+r_int
+r_int
+id|size
+)paren
+(brace
+r_int
+r_register
+id|i
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Enabling L3 cache...&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Enable the L3 cache in the GT64120A&squot;s CPU Configuration register */
+id|GT_WRITE
+c_func
+(paren
+l_int|0
+comma
+id|GT_READ
+c_func
+(paren
+l_int|0
+)paren
+op_or
+(paren
+l_int|1
+op_lshift
+l_int|14
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Enable the L3 cache in the CPU */
+id|set_c0_config
+c_func
+(paren
+l_int|1
+op_lshift
+l_int|12
+multiline_comment|/* CONF_TE */
+)paren
+suffix:semicolon
+multiline_comment|/* Clear the cache */
+id|write_c0_taglo
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|write_c0_taghi
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|size
+suffix:semicolon
+id|i
+op_add_assign
+l_int|4096
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
+l_string|&quot;.set mips3&bslash;n&bslash;t&quot;
+l_string|&quot;cache %1, (%0)&bslash;n&bslash;t&quot;
+l_string|&quot;.set mips0&bslash;n&bslash;t&quot;
+l_string|&quot;.set reorder&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|KSEG0ADDR
+c_func
+(paren
+id|i
+)paren
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|Page_Invalidate_T
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Let the RM7000 MM code know that the tertiary cache is enabled */
+id|rm7k_tcache_enabled
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Done&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|momenco_ocelot_g_setup
+r_static
+r_int
 id|__init
 id|momenco_ocelot_g_setup
 c_func
@@ -250,10 +363,13 @@ r_int
 r_int
 )paren
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|KSEG1ADDR
 c_func
 (paren
-op_amp
 id|setup_l3cache
 )paren
 suffix:semicolon
@@ -680,6 +796,9 @@ comma
 l_int|0xfef73
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|momenco_ocelot_g_setup
 id|early_initcall
@@ -688,140 +807,6 @@ c_func
 id|momenco_ocelot_g_setup
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|rm7k_tcache_enabled
-suffix:semicolon
-multiline_comment|/*&n; * This runs in KSEG1. See the verbiage in rm7k.c::probe_scache()&n; */
-DECL|macro|Page_Invalidate_T
-mdefine_line|#define Page_Invalidate_T 0x16
-DECL|function|setup_l3cache
-r_static
-r_void
-id|__init
-id|setup_l3cache
-c_func
-(paren
-r_int
-r_int
-id|size
-)paren
-(brace
-r_int
-r_register
-id|i
-suffix:semicolon
-r_int
-r_int
-id|tmp
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Enabling L3 cache...&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Enable the L3 cache in the GT64120A&squot;s CPU Configuration register */
-id|GT_READ
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|tmp
-)paren
-suffix:semicolon
-id|GT_WRITE
-c_func
-(paren
-l_int|0
-comma
-id|tmp
-op_or
-(paren
-l_int|1
-op_lshift
-l_int|14
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Enable the L3 cache in the CPU */
-id|set_c0_config
-c_func
-(paren
-l_int|1
-op_lshift
-l_int|12
-multiline_comment|/* CONF_TE */
-)paren
-suffix:semicolon
-multiline_comment|/* Clear the cache */
-id|write_c0_taglo
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-id|write_c0_taghi
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|size
-suffix:semicolon
-id|i
-op_add_assign
-l_int|4096
-)paren
-(brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
-l_string|&quot;.set mips3&bslash;n&bslash;t&quot;
-l_string|&quot;cache %1, (%0)&bslash;n&bslash;t&quot;
-l_string|&quot;.set mips0&bslash;n&bslash;t&quot;
-l_string|&quot;.set reorder&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|KSEG0ADDR
-c_func
-(paren
-id|i
-)paren
-)paren
-comma
-l_string|&quot;i&quot;
-(paren
-id|Page_Invalidate_T
-)paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Let the RM7000 MM code know that the tertiary cache is enabled */
-id|rm7k_tcache_enabled
-op_assign
-l_int|1
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Done&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* This needs to be one of the first initcalls, because no I/O port access&n;   can work before this */
 DECL|function|io_base_ioremap
 r_static
@@ -833,10 +818,16 @@ r_void
 )paren
 (brace
 multiline_comment|/* we&squot;re mapping PCI accesses from 0xc0000000 to 0xf0000000 */
-r_void
-op_star
+r_int
+r_int
+id|io_remap_range
+suffix:semicolon
 id|io_remap_range
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|ioremap
 c_func
 (paren
@@ -851,23 +842,10 @@ c_cond
 op_logical_neg
 id|io_remap_range
 )paren
-(brace
 id|panic
 c_func
 (paren
 l_string|&quot;Could not ioremap I/O port range&quot;
-)paren
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;io_remap_range set at 0x%08x&bslash;n&quot;
-comma
-(paren
-r_uint32
-)paren
-id|io_remap_range
 )paren
 suffix:semicolon
 id|set_io_port_base

@@ -20,7 +20,7 @@ DECL|macro|RTAS_EXTENDED_DELAY_MAX
 mdefine_line|#define RTAS_EXTENDED_DELAY_MAX 9905
 DECL|macro|RTAS_UNKNOWN_OP
 mdefine_line|#define RTAS_UNKNOWN_OP&t;&t;-1099&t;/* Return Status - Unknown RTAS Token */
-multiline_comment|/*&n; * In general to call RTAS use rtas_token(&quot;string&quot;) to lookup&n; * an RTAS token for the given string (e.g. &quot;event-scan&quot;).&n; * To actually perform the call use&n; *    ret = rtas_call(token, n_in, n_out, ...)&n; * Where n_in is the number of input parameters and&n; *       n_out is the number of output parameters&n; *&n; * If the &quot;string&quot; is invalid on this system, RTAS_UNKOWN_SERVICE&n; * will be returned as a token.  rtas_call() does look for this&n; * token and error out gracefully so rtas_call(rtas_token(&quot;str&quot;), ...)&n; * may be safely used for one-shot calls to RTAS.&n; *&n; */
+multiline_comment|/*&n; * In general to call RTAS use rtas_token(&quot;string&quot;) to lookup&n; * an RTAS token for the given string (e.g. &quot;event-scan&quot;).&n; * To actually perform the call use&n; *    ret = rtas_call(token, n_in, n_out, ...)&n; * Where n_in is the number of input parameters and&n; *       n_out is the number of output parameters&n; *&n; * If the &quot;string&quot; is invalid on this system, RTAS_UNKNOWN_SERVICE&n; * will be returned as a token.  rtas_call() does look for this&n; * token and error out gracefully so rtas_call(rtas_token(&quot;str&quot;), ...)&n; * may be safely used for one-shot calls to RTAS.&n; *&n; */
 DECL|typedef|rtas_arg_t
 r_typedef
 id|u32
@@ -403,7 +403,6 @@ r_int
 comma
 r_int
 comma
-r_int
 r_int
 op_star
 comma

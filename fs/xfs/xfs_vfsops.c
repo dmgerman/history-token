@@ -305,7 +305,7 @@ comma
 l_string|&quot;xfs_chashlist&quot;
 )paren
 suffix:semicolon
-id|_ACL_ZONE_INIT
+id|xfs_acl_zone_init
 c_func
 (paren
 id|xfs_acl_zone
@@ -485,6 +485,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|xfs_acl_zone_destroy
+c_func
+(paren
+id|xfs_acl_zone
+)paren
+suffix:semicolon
 macro_line|#ifdef XFS_DIR2_TRACE
 id|ktrace_free
 c_func
@@ -603,12 +609,6 @@ id|kmem_cache_destroy
 c_func
 (paren
 id|xfs_chashlist_zone
-)paren
-suffix:semicolon
-id|_ACL_ZONE_DESTROY
-c_func
-(paren
-id|xfs_acl_zone
 )paren
 suffix:semicolon
 )brace

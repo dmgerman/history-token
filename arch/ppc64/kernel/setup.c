@@ -213,13 +213,6 @@ DECL|variable|powersave_nap
 r_int
 id|powersave_nap
 suffix:semicolon
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-id|COMMAND_LINE_SIZE
-)braket
-suffix:semicolon
 DECL|variable|aux_device_present
 r_int
 r_char
@@ -485,7 +478,6 @@ id|r7
 (brace
 macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PPC_PSERIES)
 r_int
-r_int
 id|ret
 comma
 id|i
@@ -732,10 +724,6 @@ l_int|3
 comma
 l_int|1
 comma
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|ret
 comma
@@ -745,6 +733,9 @@ c_func
 id|i
 )paren
 comma
+(paren
+id|u32
+)paren
 op_star
 (paren
 (paren

@@ -9010,6 +9010,8 @@ id|bio
 op_assign
 id|req-&gt;bio
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_int

@@ -1,16 +1,15 @@
-multiline_comment|/*&n; *  arch/mips/pmc-sierra/yosemite/setup.c&n; *&n; *  Copyright (C) 2003 PMC-Sierra Inc.&n; *  Author: Manish Lachwani (lachwani@pmc-sierra.com)&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *  Copyright (C) 2003 PMC-Sierra Inc.&n; *  Author: Manish Lachwani (lachwani@pmc-sierra.com)&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -20,10 +19,36 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;asm/pci_channel.h&gt;
+macro_line|#include &lt;asm/serial.h&gt;
+macro_line|#include &lt;linux/termios.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;asm/titan_dep.h&gt;
 macro_line|#include &quot;setup.h&quot;
+DECL|variable|titan_ge_mac_addr_base
+r_int
+r_char
+id|titan_ge_mac_addr_base
+(braket
+l_int|6
+)braket
+op_assign
+(brace
+l_int|0x00
+comma
+l_int|0x03
+comma
+l_int|0xcc
+comma
+l_int|0x1d
+comma
+l_int|0x22
+comma
+l_int|0x00
+)brace
+suffix:semicolon
 DECL|variable|cpu_clock
 r_int
 r_int
@@ -54,12 +79,18 @@ c_func
 r_void
 )paren
 (brace
+singleline_comment|//unsigned char *rtc_base = (unsigned char *) YOSEMITE_RTC_BASE;
 r_int
 r_char
 op_star
 id|rtc_base
 op_assign
-id|YOSEMITE_RTC_BASE
+(paren
+r_int
+r_char
+op_star
+)paren
+l_int|0xfc000000UL
 suffix:semicolon
 r_int
 r_int
@@ -75,6 +106,8 @@ id|min
 comma
 id|sec
 suffix:semicolon
+r_return
+suffix:semicolon
 multiline_comment|/* Stop the update to the time */
 id|rtc_base
 (braket
@@ -85,7 +118,7 @@ l_int|0x40
 suffix:semicolon
 id|year
 op_assign
-id|CONV_BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|rtc_base
@@ -96,7 +129,7 @@ l_int|0x7fff
 suffix:semicolon
 id|year
 op_add_assign
-id|CONV_BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|rtc_base
@@ -109,7 +142,7 @@ l_int|100
 suffix:semicolon
 id|month
 op_assign
-id|CONV_BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|rtc_base
@@ -120,7 +153,7 @@ l_int|0x7ffe
 suffix:semicolon
 id|day
 op_assign
-id|CONV_BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|rtc_base
@@ -131,7 +164,7 @@ l_int|0x7ffd
 suffix:semicolon
 id|hour
 op_assign
-id|CONV_BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|rtc_base
@@ -142,7 +175,7 @@ l_int|0x7ffb
 suffix:semicolon
 id|min
 op_assign
-id|CONV_BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|rtc_base
@@ -153,7 +186,7 @@ l_int|0x7ffa
 suffix:semicolon
 id|sec
 op_assign
-id|CONV_BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|rtc_base
@@ -203,25 +236,18 @@ r_char
 op_star
 id|rtc_base
 op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
 id|YOSEMITE_RTC_BASE
-suffix:semicolon
-r_int
-r_int
-id|year
-comma
-id|month
-comma
-id|day
-comma
-id|hour
-comma
-id|min
-comma
-id|sec
 suffix:semicolon
 r_struct
 id|rtc_time
 id|tm
+suffix:semicolon
+r_return
 suffix:semicolon
 multiline_comment|/* convert to a more useful format -- note months count from 0 */
 id|to_tm
@@ -251,7 +277,7 @@ id|rtc_base
 l_int|0x7fff
 )braket
 op_assign
-id|CONV_BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_year
@@ -264,7 +290,7 @@ id|rtc_base
 l_int|0x7ff1
 )braket
 op_assign
-id|CONV_BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_year
@@ -278,7 +304,7 @@ id|rtc_base
 l_int|0x7ffe
 )braket
 op_assign
-id|CONV_BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_mon
@@ -290,7 +316,7 @@ id|rtc_base
 l_int|0x7ffd
 )braket
 op_assign
-id|CONV_BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_mday
@@ -302,7 +328,7 @@ id|rtc_base
 l_int|0x7ffb
 )braket
 op_assign
-id|CONV_BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_hour
@@ -313,7 +339,7 @@ id|rtc_base
 l_int|0x7ffa
 )braket
 op_assign
-id|CONV_BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_min
@@ -324,7 +350,7 @@ id|rtc_base
 l_int|0x7ff9
 )braket
 op_assign
-id|CONV_BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_sec
@@ -336,7 +362,7 @@ id|rtc_base
 l_int|0x7ffc
 )braket
 op_assign
-id|CONV_BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_wday
@@ -370,7 +396,7 @@ id|irq
 id|setup_irq
 c_func
 (paren
-l_int|6
+l_int|7
 comma
 id|irq
 )paren
@@ -384,15 +410,15 @@ c_func
 r_void
 )paren
 (brace
-id|mips_counter_frequency
+id|board_timer_setup
+op_assign
+id|yosemite_timer_setup
+suffix:semicolon
+id|mips_hpt_frequency
 op_assign
 id|cpu_clock
 op_div
 l_int|2
-suffix:semicolon
-id|board_timer_setup
-op_assign
-id|yosemite_timer_setup
 suffix:semicolon
 id|rtc_get_time
 op_assign
@@ -401,6 +427,160 @@ suffix:semicolon
 id|rtc_set_time
 op_assign
 id|m48t37y_set_time
+suffix:semicolon
+)brace
+DECL|variable|uart_base
+r_int
+r_int
+id|uart_base
+op_assign
+l_int|0xfd000000L
+suffix:semicolon
+multiline_comment|/* No other usable initialization hook than this ...  */
+r_extern
+r_void
+(paren
+op_star
+id|late_time_init
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|variable|ocd_base
+r_int
+r_int
+id|ocd_base
+suffix:semicolon
+DECL|variable|ocd_base
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ocd_base
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Common setup before any secondaries are started&n; */
+DECL|macro|TITAN_UART_CLK
+mdefine_line|#define TITAN_UART_CLK&t;&t;3686400
+DECL|macro|TITAN_SERIAL_BASE_BAUD
+mdefine_line|#define TITAN_SERIAL_BASE_BAUD&t;(TITAN_UART_CLK / 16)
+DECL|macro|TITAN_SERIAL_IRQ
+mdefine_line|#define TITAN_SERIAL_IRQ&t;4
+DECL|macro|TITAN_SERIAL_BASE
+mdefine_line|#define TITAN_SERIAL_BASE&t;0xfd000008UL
+DECL|function|py_map_ocd
+r_static
+r_void
+id|__init
+id|py_map_ocd
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|uart_port
+id|up
+suffix:semicolon
+multiline_comment|/*&n;&t; * Not specifically interrupt stuff but in case of SMP core_send_ipi&n;&t; * needs this first so I&squot;m mapping it here ...&n;&t; */
+id|ocd_base
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ioremap
+c_func
+(paren
+id|OCD_BASE
+comma
+id|OCD_SIZE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ocd_base
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Mapping OCD failed - game over.  Your score is 0.&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Register to interrupt zero because we share the interrupt with&n;&t; * the serial driver which we don&squot;t properly support yet.&n;&t; */
+id|memset
+c_func
+(paren
+op_amp
+id|up
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|up
+)paren
+)paren
+suffix:semicolon
+id|up.membase
+op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
+id|ioremap
+c_func
+(paren
+id|TITAN_SERIAL_BASE
+comma
+l_int|8
+)paren
+suffix:semicolon
+id|up.irq
+op_assign
+id|TITAN_SERIAL_IRQ
+suffix:semicolon
+id|up.uartclk
+op_assign
+id|TITAN_UART_CLK
+suffix:semicolon
+id|up.regshift
+op_assign
+l_int|0
+suffix:semicolon
+id|up.iotype
+op_assign
+id|UPIO_MEM
+suffix:semicolon
+id|up.flags
+op_assign
+id|ASYNC_BOOT_AUTOCONF
+op_or
+id|ASYNC_SKIP_TEST
+suffix:semicolon
+id|up.line
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|early_serial_setup
+c_func
+(paren
+op_amp
+id|up
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Early serial init of port 0 failed&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 DECL|function|pmc_yosemite_setup
@@ -413,21 +593,21 @@ c_func
 r_void
 )paren
 (brace
-r_int
-r_int
-id|val
-op_assign
-l_int|0
-suffix:semicolon
-id|printk
+r_extern
+r_void
+id|pmon_smp_bootstrap
 c_func
 (paren
-l_string|&quot;PMC-Sierra Yosemite Board Setup  &bslash;n&quot;
+r_void
 )paren
 suffix:semicolon
 id|board_time_init
 op_assign
 id|yosemite_time_init
+suffix:semicolon
+id|late_time_init
+op_assign
+id|py_map_ocd
 suffix:semicolon
 multiline_comment|/* Add memory regions */
 id|add_memory_region
@@ -440,104 +620,36 @@ comma
 id|BOOT_MEM_RAM
 )paren
 suffix:semicolon
-id|add_memory_region
+macro_line|#if 0 /* XXX Crash ...  */
+id|OCD_WRITE
 c_func
 (paren
-l_int|0x10000000
+id|RM9000x2_OCD_HTSC
 comma
-l_int|0x10000000
-comma
-id|BOOT_MEM_RAM
-)paren
-suffix:semicolon
-multiline_comment|/* Setup the HT controller */
-id|val
-op_assign
-op_star
+id|OCD_READ
+c_func
 (paren
-r_volatile
-r_uint32
-op_star
+id|RM9000x2_OCD_HTSC
 )paren
-(paren
-id|HYPERTRANSPORT_CONFIG_REG
-)paren
-suffix:semicolon
-id|val
-op_or_assign
+op_or
 id|HYPERTRANSPORT_ENABLE
-suffix:semicolon
-op_star
-(paren
-r_volatile
-r_uint32
-op_star
 )paren
-(paren
-id|HYPERTRANSPORT_CONFIG_REG
-)paren
-op_assign
-id|val
 suffix:semicolon
 multiline_comment|/* Set the BAR. Shifted mode */
-op_star
-(paren
-r_volatile
-r_uint32
-op_star
-)paren
-(paren
-id|HYPERTRANSPORT_BAR0_REG
-)paren
-op_assign
-id|HYPERTRANSPORT_BAR0_ADDR
-suffix:semicolon
-op_star
-(paren
-r_volatile
-r_uint32
-op_star
-)paren
-(paren
-id|HYPERTRANSPORT_SIZE0_REG
-)paren
-op_assign
-id|HYPERTRANSPORT_SIZE0
-suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
-id|ioport_resource.start
-op_assign
-l_int|0xe0000000
-suffix:semicolon
-id|ioport_resource.end
-op_assign
-l_int|0xe0000000
-op_plus
-l_int|0x20000000
-op_minus
-l_int|1
-suffix:semicolon
-id|iomem_resource.start
-op_assign
-l_int|0xc0000000
-suffix:semicolon
-id|iomem_resource.end
-op_assign
-l_int|0xc0000000
-op_plus
-l_int|0x20000000
-op_minus
-l_int|1
-suffix:semicolon
-id|pci_scan_bus
+id|OCD_WRITE
 c_func
 (paren
-l_int|0
+id|RM9000x2_OCD_HTBAR0
 comma
-op_amp
-id|titan_pci_ops
+id|HYPERTRANSPORT_BAR0_ADDR
+)paren
+suffix:semicolon
+id|OCD_WRITE
+c_func
+(paren
+id|RM9000x2_OCD_HTMASK0
 comma
-l_int|NULL
+id|HYPERTRANSPORT_SIZE0
 )paren
 suffix:semicolon
 macro_line|#endif

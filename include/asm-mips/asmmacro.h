@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_ASMMACRO_H
 DECL|macro|_ASM_ASMMACRO_H
 mdefine_line|#define _ASM_ASMMACRO_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/hazards.h&gt;
 macro_line|#ifdef CONFIG_MIPS32
 macro_line|#include &lt;asm/asmmacro-32.h&gt;
 macro_line|#endif
@@ -36,6 +37,7 @@ id|mtc0
 id|reg
 comma
 id|CP0_STATUS
+id|irq_enable_hazard
 dot
 id|endm
 dot
@@ -75,12 +77,7 @@ id|mtc0
 id|reg
 comma
 id|CP0_STATUS
-DECL|variable|SSNOP
-id|SSNOP
-suffix:semicolon
-id|SSNOP
-suffix:semicolon
-id|SSNOP
+id|irq_disable_hazard
 dot
 id|endm
 macro_line|#ifdef CONFIG_CPU_SB1

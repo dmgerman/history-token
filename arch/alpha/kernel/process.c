@@ -276,19 +276,22 @@ id|flags
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Wait for the secondaries to halt. */
-id|clear_bit
+id|cpu_clear
 c_func
 (paren
 id|boot_cpuid
 comma
-op_amp
-id|cpu_present_mask
+id|cpu_possible_map
 )paren
 suffix:semicolon
 r_while
 c_loop
 (paren
-id|cpu_present_mask
+id|cpus_weight
+c_func
+(paren
+id|cpu_possible_map
+)paren
 )paren
 id|barrier
 c_func

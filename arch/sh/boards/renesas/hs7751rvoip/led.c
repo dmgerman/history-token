@@ -1,0 +1,55 @@
+multiline_comment|/*&n; * linux/arch/sh/kernel/setup_hs7751rvoip.c&n; *&n; * Copyright (C) 2000  Kazumoto Kojima&n; *&n; * Renesas Technology Sales HS7751RVoIP Support.&n; *&n; * Modified for HS7751RVoIP by&n; * Atom Create Engineering Co., Ltd. 2002.&n; * Lineo uSolutions, Inc. 2003.&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/hs7751rvoip/hs7751rvoip.h&gt;
+r_extern
+r_int
+r_int
+id|debug_counter
+suffix:semicolon
+DECL|function|debug_led_disp
+r_void
+id|debug_led_disp
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|value
+suffix:semicolon
+id|value
+op_assign
+(paren
+r_int
+r_char
+)paren
+id|debug_counter
+op_increment
+suffix:semicolon
+id|ctrl_outb
+c_func
+(paren
+(paren
+l_int|0xf0
+op_or
+id|value
+)paren
+comma
+id|PA_OUTPORTR
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|value
+op_eq
+l_int|0x0f
+)paren
+id|debug_counter
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+eof

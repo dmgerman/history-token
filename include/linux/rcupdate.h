@@ -4,20 +4,21 @@ DECL|macro|__LINUX_RCUPDATE_H
 mdefine_line|#define __LINUX_RCUPDATE_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/cache.h&gt;
-macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
-multiline_comment|/**&n; * struct rcu_head - callback structure for use with RCU&n; * @list: list_head to queue the update requests&n; * @func: actual update function to call after the grace period.&n; * @arg: argument to be passed to the actual update function.&n; */
+macro_line|#include &lt;linux/seqlock.h&gt;
+multiline_comment|/**&n; * struct rcu_head - callback structure for use with RCU&n; * @next: next update requests in a list&n; * @func: actual update function to call after the grace period.&n; */
 DECL|struct|rcu_head
 r_struct
 id|rcu_head
 (brace
-DECL|member|list
+DECL|member|next
 r_struct
-id|list_head
-id|list
+id|rcu_head
+op_star
+id|next
 suffix:semicolon
 DECL|member|func
 r_void
@@ -26,51 +27,48 @@ op_star
 id|func
 )paren
 (paren
-r_void
+r_struct
+id|rcu_head
 op_star
-id|obj
+id|head
 )paren
-suffix:semicolon
-DECL|member|arg
-r_void
-op_star
-id|arg
 suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|RCU_HEAD_INIT
-mdefine_line|#define RCU_HEAD_INIT(head) &bslash;&n;&t;&t;{ .list = LIST_HEAD_INIT(head.list), .func = NULL, .arg = NULL }
+mdefine_line|#define RCU_HEAD_INIT(head) { .next = NULL, .func = NULL }
 DECL|macro|RCU_HEAD
 mdefine_line|#define RCU_HEAD(head) struct rcu_head head = RCU_HEAD_INIT(head)
 DECL|macro|INIT_RCU_HEAD
-mdefine_line|#define INIT_RCU_HEAD(ptr) do { &bslash;&n;       INIT_LIST_HEAD(&amp;(ptr)-&gt;list); (ptr)-&gt;func = NULL; (ptr)-&gt;arg = NULL; &bslash;&n;} while (0)
-multiline_comment|/* Control variables for rcupdate callback mechanism. */
+mdefine_line|#define INIT_RCU_HEAD(ptr) do { &bslash;&n;       (ptr)-&gt;next = NULL; (ptr)-&gt;func = NULL; &bslash;&n;} while (0)
+multiline_comment|/* Global control variables for rcupdate callback mechanism. */
 DECL|struct|rcu_ctrlblk
 r_struct
 id|rcu_ctrlblk
 (brace
-DECL|member|mutex
-id|spinlock_t
-id|mutex
-suffix:semicolon
-multiline_comment|/* Guard this struct                  */
-DECL|member|curbatch
+DECL|member|cur
 r_int
-id|curbatch
+id|cur
 suffix:semicolon
-multiline_comment|/* Current batch number.&t;      */
-DECL|member|maxbatch
+multiline_comment|/* Current batch number.                      */
+DECL|member|completed
 r_int
-id|maxbatch
+id|completed
 suffix:semicolon
-multiline_comment|/* Max requested batch number.        */
-DECL|member|rcu_cpu_mask
-id|cpumask_t
-id|rcu_cpu_mask
+multiline_comment|/* Number of the last completed batch         */
+DECL|member|next_pending
+r_int
+id|next_pending
 suffix:semicolon
-multiline_comment|/* CPUs that need to switch in order  */
-multiline_comment|/* for current batch to proceed.      */
+multiline_comment|/* Is the next batch already waiting?         */
+DECL|member|lock
+id|seqcount_t
+id|lock
+suffix:semicolon
+multiline_comment|/* For atomic reads of cur and next_pending.  */
+DECL|variable|____cacheline_maxaligned_in_smp
 )brace
+id|____cacheline_maxaligned_in_smp
 suffix:semicolon
 multiline_comment|/* Is batch a before batch b ? */
 DECL|function|rcu_batch_before
@@ -127,6 +125,12 @@ DECL|struct|rcu_data
 r_struct
 id|rcu_data
 (brace
+multiline_comment|/* 1) quiescent state handling : */
+DECL|member|quiescbatch
+r_int
+id|quiescbatch
+suffix:semicolon
+multiline_comment|/* Batch # for grace period */
 DECL|member|qsctr
 r_int
 id|qsctr
@@ -138,6 +142,12 @@ id|last_qsctr
 suffix:semicolon
 multiline_comment|/* value of qsctr at beginning */
 multiline_comment|/* of rcu grace period */
+DECL|member|qs_pending
+r_int
+id|qs_pending
+suffix:semicolon
+multiline_comment|/* core waits for quiesc state */
+multiline_comment|/* 2) batch handling */
 DECL|member|batch
 r_int
 id|batch
@@ -145,12 +155,21 @@ suffix:semicolon
 multiline_comment|/* Batch # for current RCU batch */
 DECL|member|nxtlist
 r_struct
-id|list_head
+id|rcu_head
+op_star
 id|nxtlist
+suffix:semicolon
+DECL|member|nxttail
+r_struct
+id|rcu_head
+op_star
+op_star
+id|nxttail
 suffix:semicolon
 DECL|member|curlist
 r_struct
-id|list_head
+id|rcu_head
+op_star
 id|curlist
 suffix:semicolon
 )brace
@@ -169,18 +188,22 @@ r_struct
 id|rcu_ctrlblk
 id|rcu_ctrlblk
 suffix:semicolon
+DECL|macro|RCU_quiescbatch
+mdefine_line|#define RCU_quiescbatch(cpu)&t;(per_cpu(rcu_data, (cpu)).quiescbatch)
 DECL|macro|RCU_qsctr
 mdefine_line|#define RCU_qsctr(cpu) &t;&t;(per_cpu(rcu_data, (cpu)).qsctr)
 DECL|macro|RCU_last_qsctr
 mdefine_line|#define RCU_last_qsctr(cpu) &t;(per_cpu(rcu_data, (cpu)).last_qsctr)
+DECL|macro|RCU_qs_pending
+mdefine_line|#define RCU_qs_pending(cpu)&t;(per_cpu(rcu_data, (cpu)).qs_pending)
 DECL|macro|RCU_batch
 mdefine_line|#define RCU_batch(cpu) &t;&t;(per_cpu(rcu_data, (cpu)).batch)
 DECL|macro|RCU_nxtlist
 mdefine_line|#define RCU_nxtlist(cpu) &t;(per_cpu(rcu_data, (cpu)).nxtlist)
 DECL|macro|RCU_curlist
 mdefine_line|#define RCU_curlist(cpu) &t;(per_cpu(rcu_data, (cpu)).curlist)
-DECL|macro|RCU_QSCTR_INVALID
-mdefine_line|#define RCU_QSCTR_INVALID&t;0
+DECL|macro|RCU_nxttail
+mdefine_line|#define RCU_nxttail(cpu) &t;(per_cpu(rcu_data, (cpu)).nxttail)
 DECL|function|rcu_pending
 r_static
 r_inline
@@ -192,72 +215,74 @@ r_int
 id|cpu
 )paren
 (brace
+multiline_comment|/* This cpu has pending rcu entries and the grace period&n;&t; * for them has completed.&n;&t; */
 r_if
 c_cond
 (paren
-(paren
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
 id|RCU_curlist
 c_func
 (paren
 id|cpu
 )paren
-)paren
 op_logical_and
+op_logical_neg
 id|rcu_batch_before
 c_func
 (paren
+id|rcu_ctrlblk.completed
+comma
 id|RCU_batch
 c_func
 (paren
 id|cpu
 )paren
-comma
-id|rcu_ctrlblk.curbatch
 )paren
 )paren
-op_logical_or
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* This cpu has no pending entries, but there are new entries */
+r_if
+c_cond
 (paren
-id|list_empty
-c_func
-(paren
-op_amp
+op_logical_neg
 id|RCU_curlist
 c_func
 (paren
 id|cpu
 )paren
-)paren
 op_logical_and
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
 id|RCU_nxtlist
 c_func
 (paren
 id|cpu
 )paren
 )paren
-)paren
-op_logical_or
-id|cpu_isset
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* The rcu core waits for a quiescent state from the cpu */
+r_if
+c_cond
+(paren
+id|RCU_quiescbatch
 c_func
 (paren
 id|cpu
-comma
-id|rcu_ctrlblk.rcu_cpu_mask
+)paren
+op_ne
+id|rcu_ctrlblk.cur
+op_logical_or
+id|RCU_qs_pending
+c_func
+(paren
+id|cpu
 )paren
 )paren
 r_return
 l_int|1
 suffix:semicolon
-r_else
+multiline_comment|/* nothing to do */
 r_return
 l_int|0
 suffix:semicolon
@@ -286,6 +311,15 @@ r_int
 id|user
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|rcu_restart_cpu
+c_func
+(paren
+r_int
+id|cpu
+)paren
+suffix:semicolon
 multiline_comment|/* Exported interfaces */
 r_extern
 r_void
@@ -306,14 +340,11 @@ op_star
 id|func
 )paren
 (paren
-r_void
+r_struct
+id|rcu_head
 op_star
-id|arg
+id|head
 )paren
-comma
-r_void
-op_star
-id|arg
 )paren
 )paren
 suffix:semicolon

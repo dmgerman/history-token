@@ -49,13 +49,6 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-r_int
-id|abs
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
 DECL|variable|do_signal
 id|EXPORT_SYMBOL
 c_func
@@ -621,13 +614,6 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|memchr
-)paren
-suffix:semicolon
-DECL|variable|abs
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|abs
 )paren
 suffix:semicolon
 DECL|variable|timer_interrupt

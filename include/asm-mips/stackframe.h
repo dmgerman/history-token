@@ -1366,6 +1366,7 @@ id|mtc0
 id|t0
 comma
 id|CP0_STATUS
+id|irq_disable_hazard
 dot
 id|endm
 multiline_comment|/*&n; * Move to kernel mode and enable interrupts.&n; * Set cp0 enable bit as sign that we&squot;re running on the kernel stack&n; */
@@ -1394,6 +1395,7 @@ id|mtc0
 id|t0
 comma
 id|CP0_STATUS
+id|irq_enable_hazard
 dot
 id|endm
 multiline_comment|/*&n; * Just move to kernel mode and leave interrupts as they are.&n; * Set cp0 enable bit as sign that we&squot;re running on the kernel stack&n; */
@@ -1422,6 +1424,7 @@ id|mtc0
 id|t0
 comma
 id|CP0_STATUS
+id|irq_disable_hazard
 dot
 id|endm
 macro_line|#endif /* _ASM_STACKFRAME_H */

@@ -17,6 +17,15 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|__init
+id|sa1100_init_time
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|macro|SET_BANK
 mdefine_line|#define SET_BANK(__nr,__start,__size) &bslash;&n;&t;mi-&gt;bank[__nr].start = (__start), &bslash;&n;&t;mi-&gt;bank[__nr].size = (__size), &bslash;&n;&t;mi-&gt;bank[__nr].node = (((unsigned)(__start) - PHYS_OFFSET) &gt;&gt; 27)
 r_extern

@@ -244,12 +244,6 @@ op_minus
 l_int|1
 suffix:semicolon
 r_extern
-r_char
-id|saved_command_line
-(braket
-)braket
-suffix:semicolon
-r_extern
 r_int
 id|pmac_newworld
 suffix:semicolon

@@ -3,6 +3,7 @@ DECL|macro|_LINUX_INIT_H
 mdefine_line|#define _LINUX_INIT_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 multiline_comment|/* These macros are used to mark some functions or &n; * initialized data (doesn&squot;t apply to uninitialized data)&n; * as `initialization&squot; functions. The kernel can take this&n; * as hint that the function is used only during the initialization&n; * phase and free up used memory resources after&n; *&n; * Usage:&n; * For functions:&n; * &n; * You should add __init immediately before the function name, like:&n; *&n; * static void __init initme(int x, int y)&n; * {&n; *    extern int z; z = x * y;&n; * }&n; *&n; * If the function has a prototype somewhere, you can also add&n; * __init between closing brace of the prototype and semicolon:&n; *&n; * extern int initialize_foobar_device(int, int, int) __init;&n; *&n; * For initialized data:&n; * You should insert __initdata between the variable name and equal&n; * sign followed by value, e.g.:&n; *&n; * static int init_variable __initdata = 0;&n; * static char linux_logo[] __initdata = { 0x32, 0x36, ... };&n; *&n; * Don&squot;t forget to initialize data not at file scope, i.e. within a function,&n; * as gcc otherwise puts the data into the bss section and not into the init&n; * section.&n; * &n; * Also note, that this data cannot be &quot;const&quot;.&n; */
 multiline_comment|/* These are for everybody (although not all archs will actually&n;   discard it in modules) */
 DECL|macro|__init
@@ -63,6 +64,14 @@ id|__security_initcall_start
 comma
 id|__security_initcall_end
 suffix:semicolon
+multiline_comment|/* Defined in init/main.c */
+r_extern
+r_char
+id|saved_command_line
+(braket
+id|COMMAND_LINE_SIZE
+)braket
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef MODULE
 macro_line|#ifndef __ASSEMBLY__
@@ -112,17 +121,33 @@ r_char
 op_star
 )paren
 suffix:semicolon
+DECL|member|early
+r_int
+id|early
+suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* OBSOLETE: see moduleparam.h for the right way. */
+multiline_comment|/* Only for really core code.  See moduleparam.h for the normal way. */
 DECL|macro|__setup_param
-mdefine_line|#define __setup_param(str, unique_id, fn)&t;&t;&t;&bslash;&n;&t;static char __setup_str_##unique_id[] __initdata = str;&t;&bslash;&n;&t;static struct obs_kernel_param __setup_##unique_id&t;&bslash;&n;&t;&t; __attribute_used__&t;&t;&t;&t;&bslash;&n;&t;&t; __attribute__((__section__(&quot;.init.setup&quot;)))&t;&bslash;&n;&t;&t;= { __setup_str_##unique_id, fn }
+mdefine_line|#define __setup_param(str, unique_id, fn, early)&t;&t;&t;&bslash;&n;&t;static char __setup_str_##unique_id[] __initdata = str;&t;&bslash;&n;&t;static struct obs_kernel_param __setup_##unique_id&t;&bslash;&n;&t;&t; __attribute_used__&t;&t;&t;&t;&bslash;&n;&t;&t; __attribute__((__section__(&quot;.init.setup&quot;)))&t;&bslash;&n;&t;&t;= { __setup_str_##unique_id, fn, early }
 DECL|macro|__setup_null_param
-mdefine_line|#define __setup_null_param(str, unique_id)&t;&t;&t;&bslash;&n;&t;__setup_param(str, unique_id, NULL)
+mdefine_line|#define __setup_null_param(str, unique_id)&t;&t;&t;&bslash;&n;&t;__setup_param(str, unique_id, NULL, 0)
 DECL|macro|__setup
-mdefine_line|#define __setup(str, fn)&t;&t;&t;&t;&t;&bslash;&n;&t;__setup_param(str, fn, fn)
+mdefine_line|#define __setup(str, fn)&t;&t;&t;&t;&t;&bslash;&n;&t;__setup_param(str, fn, fn, 0)
 DECL|macro|__obsolete_setup
 mdefine_line|#define __obsolete_setup(str)&t;&t;&t;&t;&t;&bslash;&n;&t;__setup_null_param(str, __LINE__)
+multiline_comment|/* NOTE: fn is as per module_param, not __setup!  Emits warning if fn&n; * returns non-zero. */
+DECL|macro|early_param
+mdefine_line|#define early_param(str, fn)&t;&t;&t;&t;&t;&bslash;&n;&t;__setup_param(str, fn, fn, 1)
+multiline_comment|/* Relies on saved_command_line being set */
+r_void
+id|__init
+id|parse_early_param
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/**&n; * module_init() - driver initialization entry point&n; * @x: function to be run at kernel boot time or module insertion&n; * &n; * module_init() will either be called during do_initcalls (if&n; * builtin) or at module insertion time (if a module).  There can only&n; * be one per module.&n; */
 DECL|macro|module_init

@@ -312,7 +312,7 @@ r_char
 op_star
 id|temp
 suffix:semicolon
-r_int
+id|ssize_t
 id|length
 op_assign
 l_int|0

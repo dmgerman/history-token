@@ -442,6 +442,9 @@ id|q-&gt;t_c
 comma
 id|q-&gt;buffer
 comma
+(paren
+r_void
+)paren
 l_int|0
 )paren
 suffix:semicolon

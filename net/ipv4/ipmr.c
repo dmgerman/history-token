@@ -180,7 +180,7 @@ suffix:semicolon
 DECL|variable|pim_protocol
 r_static
 r_struct
-id|inet_protocol
+id|net_protocol
 id|pim_protocol
 suffix:semicolon
 DECL|variable|ipmr_expire_timer
@@ -4603,18 +4603,12 @@ id|opt
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETFILTER
-id|nf_conntrack_put
+id|nf_reset
 c_func
 (paren
-id|skb-&gt;nfct
+id|skb
 )paren
 suffix:semicolon
-id|skb-&gt;nfct
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|ipmr_forward_finish
 r_static
@@ -6116,18 +6110,12 @@ op_member_access_from_pointer
 id|rx_packets
 op_increment
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETFILTER
-id|nf_conntrack_put
+id|nf_reset
 c_func
 (paren
-id|skb-&gt;nfct
+id|skb
 )paren
 suffix:semicolon
-id|skb-&gt;nfct
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
 id|netif_rx
 c_func
 (paren
@@ -6490,18 +6478,12 @@ id|skb-&gt;dst
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETFILTER
-id|nf_conntrack_put
+id|nf_reset
 c_func
 (paren
-id|skb-&gt;nfct
+id|skb
 )paren
 suffix:semicolon
-id|skb-&gt;nfct
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
 id|netif_rx
 c_func
 (paren
@@ -8219,7 +8201,7 @@ macro_line|#ifdef CONFIG_IP_PIMSM_V2
 DECL|variable|pim_protocol
 r_static
 r_struct
-id|inet_protocol
+id|net_protocol
 id|pim_protocol
 op_assign
 (brace

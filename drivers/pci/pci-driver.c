@@ -2077,6 +2077,11 @@ id|resume
 op_assign
 id|pci_device_resume
 comma
+dot
+id|dev_attrs
+op_assign
+id|pci_dev_attrs
+comma
 )brace
 suffix:semicolon
 DECL|function|pci_driver_init

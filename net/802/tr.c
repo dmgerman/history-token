@@ -300,17 +300,6 @@ r_struct
 id|trllc
 op_star
 id|trllc
-op_assign
-(paren
-r_struct
-id|trllc
-op_star
-)paren
-(paren
-id|trh
-op_plus
-l_int|1
-)paren
 suffix:semicolon
 id|hdr_len
 op_assign

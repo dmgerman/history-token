@@ -148,8 +148,6 @@ id|cpu_callout_map
 suffix:semicolon
 DECL|macro|cpu_possible_map
 mdefine_line|#define cpu_possible_map cpu_callout_map
-DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu) cpu_isset(cpu, cpu_online_map)
 DECL|function|num_booting_cpus
 r_static
 r_inline
@@ -294,8 +292,6 @@ r_return
 id|BAD_APICID
 suffix:semicolon
 )brace
-DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu) cpu_isset(cpu, cpu_online_map)
 macro_line|#endif /* !ASSEMBLY */
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF&t;&t;/* No processor magic marker */
@@ -313,16 +309,19 @@ r_int
 id|cpu_mask_to_apicid
 c_func
 (paren
-id|cpumask_const_t
+id|cpumask_t
 id|cpumask
 )paren
 (brace
 r_return
-id|cpus_coerce_const
+id|cpus_addr
 c_func
 (paren
 id|cpumask
 )paren
+(braket
+l_int|0
+)braket
 suffix:semicolon
 )brace
 macro_line|#endif

@@ -16,13 +16,6 @@ c_func
 id|vr41xx_get_tclock_frequency
 )paren
 suffix:semicolon
-DECL|variable|vr41xx_set_intassign
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|vr41xx_set_intassign
-)paren
-suffix:semicolon
 DECL|variable|vr41xx_set_rtclong1_cycle
 id|EXPORT_SYMBOL
 c_func

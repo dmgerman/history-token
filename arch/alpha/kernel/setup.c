@@ -232,13 +232,6 @@ id|command_line
 id|COMMAND_LINE_SIZE
 )braket
 suffix:semicolon
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-id|COMMAND_LINE_SIZE
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * The format of &quot;screen_info&quot; is strange, and due to early&n; * i386-setup code. This is just enough to make the console&n; * code think we&squot;re on a VGA color display.&n; */
 DECL|variable|screen_info
 r_struct
@@ -5133,7 +5126,7 @@ c_func
 (paren
 id|f
 comma
-l_string|&quot;cpus active&bslash;t&bslash;t: %ld&bslash;n&quot;
+l_string|&quot;cpus active&bslash;t&bslash;t: %d&bslash;n&quot;
 l_string|&quot;cpu active mask&bslash;t&bslash;t: %016lx&bslash;n&quot;
 comma
 id|num_online_cpus
@@ -5141,7 +5134,14 @@ c_func
 (paren
 )paren
 comma
-id|cpu_present_mask
+id|cpus_addr
+c_func
+(paren
+id|cpu_possible_map
+)paren
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -285,6 +285,10 @@ id|ibm_dmi_probe
 c_func
 (paren
 )paren
+op_logical_and
+id|PIIX4_dev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_INTEL
 )paren
 (brace
 id|dev_err

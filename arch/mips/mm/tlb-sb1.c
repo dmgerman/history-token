@@ -368,7 +368,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Use a bogus region of memory (starting at 0) to sanitize the TLB&squot;s.&n; * Use increments of the maximum page size (16MB), and check for duplicate&n; * entries before doing a given write.  Then, when we&squot;re safe from collisions&n; * with the firmware, go back and give all the entries invalid addresses with&n; * the normal flush routine.  Wired entries will be killed as well!&n; */
 DECL|function|sb1_sanitize_tlb
+r_static
 r_void
+id|__init
 id|sb1_sanitize_tlb
 c_func
 (paren

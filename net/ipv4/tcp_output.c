@@ -34,14 +34,14 @@ op_star
 id|skb
 )paren
 (brace
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 op_assign
 id|skb-&gt;next
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 op_eq
 (paren
 r_struct
@@ -51,7 +51,7 @@ op_star
 op_amp
 id|sk-&gt;sk_write_queue
 )paren
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1134,11 +1134,11 @@ multiline_comment|/* Queue it, remembering where we must start sending. */
 r_if
 c_cond
 (paren
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 op_eq
 l_int|NULL
 )paren
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 op_assign
 id|skb
 suffix:semicolon
@@ -1174,7 +1174,7 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 suffix:semicolon
 r_if
 c_cond
@@ -1222,7 +1222,7 @@ id|sk-&gt;sk_allocation
 )paren
 )paren
 (brace
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1340,7 +1340,7 @@ suffix:semicolon
 multiline_comment|/* Get a new skb... force flag on. */
 id|buff
 op_assign
-id|tcp_alloc_skb
+id|sk_stream_alloc_skb
 c_func
 (paren
 id|sk
@@ -2227,7 +2227,7 @@ c_loop
 (paren
 id|skb
 op_assign
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 )paren
 op_logical_and
 id|tcp_snd_test
@@ -2355,7 +2355,7 @@ r_return
 op_logical_neg
 id|tp-&gt;packets_out
 op_logical_and
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 suffix:semicolon
 )brace
 r_return
@@ -2448,7 +2448,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tcp_memory_pressure
+id|tcp_prot.memory_pressure
 )paren
 id|tp-&gt;rcv_ssthresh
 op_assign
@@ -2840,7 +2840,7 @@ id|tp-&gt;fackets_out
 id|tp-&gt;fackets_out
 op_decrement
 suffix:semicolon
-id|tcp_free_skb
+id|sk_stream_free_skb
 c_func
 (paren
 id|sk
@@ -2898,14 +2898,12 @@ id|lost
 op_assign
 l_int|0
 suffix:semicolon
-id|for_retrans_queue
+id|sk_stream_for_retrans_queue
 c_func
 (paren
 id|skb
 comma
 id|sk
-comma
-id|tp
 )paren
 (brace
 r_if
@@ -3312,7 +3310,7 @@ op_logical_and
 (paren
 id|skb-&gt;next
 op_ne
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 )paren
 op_logical_and
 (paren
@@ -3641,14 +3639,12 @@ c_cond
 id|packet_cnt
 )paren
 (brace
-id|for_retrans_queue
+id|sk_stream_for_retrans_queue
 c_func
 (paren
 id|skb
 comma
 id|sk
-comma
-id|tp
 )paren
 (brace
 id|__u8
@@ -3805,14 +3801,12 @@ id|packet_cnt
 op_assign
 l_int|0
 suffix:semicolon
-id|for_retrans_queue
+id|sk_stream_for_retrans_queue
 c_func
 (paren
 id|skb
 comma
 id|sk
-comma
-id|tp
 )paren
 (brace
 r_if
@@ -3956,7 +3950,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 op_ne
 l_int|NULL
 )paren
@@ -4389,7 +4383,7 @@ comma
 id|nskb
 )paren
 suffix:semicolon
-id|tcp_free_skb
+id|sk_stream_free_skb
 c_func
 (paren
 id|sk
@@ -5837,7 +5831,7 @@ c_cond
 (paren
 id|skb
 op_assign
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 )paren
 op_ne
 l_int|NULL
@@ -6128,7 +6122,7 @@ c_cond
 id|tp-&gt;packets_out
 op_logical_or
 op_logical_neg
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 )paren
 (brace
 multiline_comment|/* Cancel probe timer, if it is not required. */

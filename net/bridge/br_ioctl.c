@@ -1925,10 +1925,9 @@ id|SIOCBRADDIF
 )paren
 suffix:semicolon
 )brace
-id|printk
+id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;Bridge does not support ioctl 0x%x&bslash;n&quot;
 comma
 id|cmd

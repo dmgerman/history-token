@@ -4,7 +4,7 @@ DECL|macro|__ASM_SH_UBC_H
 mdefine_line|#define __ASM_SH_UBC_H
 macro_line|#include &lt;asm/cpu/ubc.h&gt;
 multiline_comment|/* User Break Controller */
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7709)
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7707) || defined(CONFIG_CPU_SUBTYPE_SH7709) || &bslash;&n;    defined(CONFIG_CPU_SUBTYPE_SH7300)
 DECL|macro|UBC_TYPE_SH7729
 mdefine_line|#define UBC_TYPE_SH7729&t;(cpu_data-&gt;type == CPU_SH7729)
 macro_line|#else

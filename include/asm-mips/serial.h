@@ -208,22 +208,6 @@ macro_line|#else
 DECL|macro|MOMENCO_OCELOT_C_SERIAL_PORT_DEFNS
 mdefine_line|#define MOMENCO_OCELOT_C_SERIAL_PORT_DEFNS
 macro_line|#endif
-macro_line|#ifdef CONFIG_TITAN_SERIAL
-multiline_comment|/* 16552 20 MHz crystal */
-DECL|macro|TITAN_SERIAL_BASE_BAUD
-mdefine_line|#define TITAN_SERIAL_BASE_BAUD&t;( 20000000 / 16 )
-DECL|macro|TITAN_SERIAL_IRQ
-mdefine_line|#define&t;TITAN_SERIAL_IRQ&t;XXX
-DECL|macro|TITAN_SERIAL_BASE
-mdefine_line|#define&t;TITAN_SERIAL_BASE&t;0xffffffff
-DECL|macro|_TITAN_SERIAL_INIT
-mdefine_line|#define&t;_TITAN_SERIAL_INIT(int, base)&t;&t;&t;&t;&t;&bslash;&n;&t;{ baud_base: TITAN_SERIAL_BASE_BAUD, irq: int,&t;&t;&t;&bslash;&n;&t;  flags: STD_COM_FLAGS,&t;iomem_base: (u8 *) base,&t;&t;&bslash;&n;&t;  iomem_reg_shift: 2, io_type: SERIAL_IO_MEM&t;&t;&t;&bslash;&n;&t;}
-DECL|macro|TITAN_SERIAL_PORT_DEFNS
-mdefine_line|#define TITAN_SERIAL_PORT_DEFNS&t;&t;&t;&t;&t;&t;&bslash;&n;&t;_TITAN_SERIAL_INIT(TITAN_SERIAL_IRQ, TITAN_SERIAL_BASE)
-macro_line|#else
-DECL|macro|TITAN_SERIAL_PORT_DEFNS
-mdefine_line|#define TITAN_SERIAL_PORT_DEFNS
-macro_line|#endif
 macro_line|#ifdef CONFIG_DDB5477
 macro_line|#include &lt;asm/ddb5xxx/ddb5477.h&gt;
 DECL|macro|DDB5477_SERIAL_PORT_DEFNS
@@ -241,6 +225,6 @@ DECL|macro|IP32_SERIAL_PORT_DEFNS
 mdefine_line|#define IP32_SERIAL_PORT_DEFNS
 macro_line|#endif /* CONFIG_SGI_IP32 */
 DECL|macro|SERIAL_PORT_DFNS
-mdefine_line|#define SERIAL_PORT_DFNS&t;&t;&t;&t;&bslash;&n;&t;COBALT_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;DDB5477_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;EV96100_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;EXTRA_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;HUB6_SERIAL_PORT_DFNS&t;&t;&t;&t;&bslash;&n;&t;IP32_SERIAL_PORT_DEFNS                          &bslash;&n;&t;ITE_SERIAL_PORT_DEFNS           &t;&t;&bslash;&n;&t;IVR_SERIAL_PORT_DEFNS           &t;&t;&bslash;&n;&t;JAZZ_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;STD_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;MOMENCO_OCELOT_G_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;MOMENCO_OCELOT_C_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;MOMENCO_OCELOT_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;TITAN_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;TXX927_SERIAL_PORT_DEFNS                        &bslash;&n;&t;AU1000_SERIAL_PORT_DEFNS
+mdefine_line|#define SERIAL_PORT_DFNS&t;&t;&t;&t;&bslash;&n;&t;COBALT_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;DDB5477_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;EV96100_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;EXTRA_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;HUB6_SERIAL_PORT_DFNS&t;&t;&t;&t;&bslash;&n;&t;IP32_SERIAL_PORT_DEFNS                          &bslash;&n;&t;ITE_SERIAL_PORT_DEFNS           &t;&t;&bslash;&n;&t;IVR_SERIAL_PORT_DEFNS           &t;&t;&bslash;&n;&t;JAZZ_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;STD_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;MOMENCO_OCELOT_G_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;MOMENCO_OCELOT_C_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;MOMENCO_OCELOT_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;TXX927_SERIAL_PORT_DEFNS                        &bslash;&n;&t;AU1000_SERIAL_PORT_DEFNS
 macro_line|#endif /* _ASM_SERIAL_H */
 eof

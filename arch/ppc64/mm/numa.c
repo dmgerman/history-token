@@ -2040,6 +2040,8 @@ id|ZONE_DMA
 )braket
 op_assign
 id|node0_io_hole_size
+op_rshift
+id|PAGE_SHIFT
 suffix:semicolon
 id|dbg
 c_func

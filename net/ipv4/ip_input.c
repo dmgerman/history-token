@@ -264,10 +264,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|skb-&gt;nf_debug
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#endif /*CONFIG_NETFILTER_DEBUG*/
 id|__skb_pull
 c_func
@@ -277,19 +273,13 @@ comma
 id|ihl
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETFILTER
 multiline_comment|/* Free reference early: we don&squot;t need it any more, and it may&n;           hold ip_conntrack module loaded indefinitely. */
-id|nf_conntrack_put
+id|nf_reset
 c_func
 (paren
-id|skb-&gt;nfct
+id|skb
 )paren
 suffix:semicolon
-id|skb-&gt;nfct
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif /*CONFIG_NETFILTER*/
 multiline_comment|/* Point into the IP datagram, just past the header. */
 id|skb-&gt;h.raw
 op_assign
@@ -316,7 +306,7 @@ op_star
 id|raw_sk
 suffix:semicolon
 r_struct
-id|inet_protocol
+id|net_protocol
 op_star
 id|ipprot
 suffix:semicolon

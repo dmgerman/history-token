@@ -106,7 +106,7 @@ id|crime_memerr_intr
 comma
 id|SA_INTERRUPT
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;CRIME memory error&quot;
 comma
@@ -125,7 +125,7 @@ id|crime_cpuerr_intr
 comma
 id|SA_INTERRUPT
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;CRIME CPU error&quot;
 comma

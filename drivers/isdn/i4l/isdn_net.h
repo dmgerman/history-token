@@ -115,6 +115,7 @@ id|isdn_net_ioctl_phone
 op_star
 comma
 r_char
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -127,6 +128,7 @@ id|isdn_net_ioctl_phone
 op_star
 comma
 id|isdn_net_ioctl_phone
+id|__user
 op_star
 )paren
 suffix:semicolon

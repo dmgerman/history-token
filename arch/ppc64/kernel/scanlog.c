@@ -81,7 +81,6 @@ op_star
 id|data
 suffix:semicolon
 r_int
-r_int
 id|status
 suffix:semicolon
 r_int
@@ -225,12 +224,18 @@ l_int|1
 comma
 l_int|NULL
 comma
+(paren
+id|u32
+)paren
 id|__pa
 c_func
 (paren
 id|rtas_data_buf
 )paren
 comma
+(paren
+id|u32
+)paren
 id|count
 )paren
 suffix:semicolon
@@ -254,7 +259,7 @@ suffix:semicolon
 id|DEBUG
 c_func
 (paren
-l_string|&quot;status=%ld, data[0]=%x, data[1]=%x, data[2]=%x&bslash;n&quot;
+l_string|&quot;status=%d, data[0]=%x, data[1]=%x, data[2]=%x&bslash;n&quot;
 comma
 id|status
 comma
@@ -484,7 +489,6 @@ l_int|20
 )braket
 suffix:semicolon
 r_int
-r_int
 id|status
 suffix:semicolon
 r_if
@@ -564,7 +568,7 @@ l_int|1
 comma
 l_int|NULL
 comma
-l_int|NULL
+l_int|0
 comma
 l_int|0
 )paren
@@ -572,7 +576,7 @@ suffix:semicolon
 id|DEBUG
 c_func
 (paren
-l_string|&quot;rtas returns %ld&bslash;n&quot;
+l_string|&quot;rtas returns %d&bslash;n&quot;
 comma
 id|status
 )paren

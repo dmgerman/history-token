@@ -17,15 +17,6 @@ macro_line|#include &lt;asm/led.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;&t;/* for pa7300lc_init() proto */
 macro_line|#include &lt;asm/pdc_chassis.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|macro|COMMAND_LINE_SIZE
-mdefine_line|#define COMMAND_LINE_SIZE 1024
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-id|COMMAND_LINE_SIZE
-)braket
-suffix:semicolon
 DECL|variable|command_line
 r_char
 id|command_line

@@ -1166,7 +1166,6 @@ id|orinoco_pci_driver
 suffix:semicolon
 )brace
 DECL|function|orinoco_pci_exit
-r_extern
 r_void
 id|__exit
 id|orinoco_pci_exit

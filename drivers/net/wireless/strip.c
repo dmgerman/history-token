@@ -806,9 +806,7 @@ id|MetricomKey
 id|SIP0Key
 op_assign
 (brace
-(brace
 l_string|&quot;SIP0&quot;
-)brace
 )brace
 suffix:semicolon
 DECL|variable|ARP0Key
@@ -818,9 +816,7 @@ id|MetricomKey
 id|ARP0Key
 op_assign
 (brace
-(brace
 l_string|&quot;ARP0&quot;
-)brace
 )brace
 suffix:semicolon
 DECL|variable|ATR_Key
@@ -830,9 +826,7 @@ id|MetricomKey
 id|ATR_Key
 op_assign
 (brace
-(brace
 l_string|&quot;ATR &quot;
-)brace
 )brace
 suffix:semicolon
 DECL|variable|ACK_Key
@@ -842,9 +836,7 @@ id|MetricomKey
 id|ACK_Key
 op_assign
 (brace
-(brace
 l_string|&quot;ACK_&quot;
-)brace
 )brace
 suffix:semicolon
 DECL|variable|INF_Key
@@ -854,9 +846,7 @@ id|MetricomKey
 id|INF_Key
 op_assign
 (brace
-(brace
 l_string|&quot;INF_&quot;
-)brace
 )brace
 suffix:semicolon
 DECL|variable|ERR_Key
@@ -866,9 +856,7 @@ id|MetricomKey
 id|ERR_Key
 op_assign
 (brace
-(brace
 l_string|&quot;ERR_&quot;
-)brace
 )brace
 suffix:semicolon
 DECL|variable|MaxARPInterval
@@ -10362,6 +10350,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -10404,6 +10393,7 @@ id|addr
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -10444,19 +10434,10 @@ c_func
 (paren
 id|tty
 comma
-(paren
-r_struct
-id|file
-op_star
-)paren
 id|file
 comma
 id|cmd
 comma
-(paren
-r_int
-r_int
-)paren
 id|arg
 )paren
 suffix:semicolon

@@ -373,7 +373,6 @@ r_extern
 r_int
 id|nr_swap_pages
 suffix:semicolon
-multiline_comment|/* XXX: shouldn&squot;t this be ulong? --hch */
 r_extern
 r_int
 r_int

@@ -361,7 +361,7 @@ op_amp
 id|enable_fops
 )paren
 suffix:semicolon
-id|oprofilefs_create_file
+id|oprofilefs_create_file_perm
 c_func
 (paren
 id|sb
@@ -372,6 +372,8 @@ l_string|&quot;dump&quot;
 comma
 op_amp
 id|dump_fops
+comma
+l_int|0666
 )paren
 suffix:semicolon
 id|oprofilefs_create_file

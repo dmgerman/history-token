@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_inum.h&quot;
 macro_line|#include &quot;xfs_log.h&quot;
@@ -21,6 +21,7 @@ macro_line|#include &quot;xfs_inode.h&quot;
 macro_line|#include &quot;xfs_error.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;
 macro_line|#include &lt;linux/dcache.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|variable|linvfs_file_vm_ops
 r_static
 r_struct
@@ -1699,10 +1700,9 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|ASSERT
+id|unlock_kernel
 c_func
 (paren
-id|vp
 )paren
 suffix:semicolon
 id|VOP_IOCTL
@@ -1727,6 +1727,11 @@ id|VMODIFY
 c_func
 (paren
 id|vp
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* NOTE:  some of the ioctl&squot;s return positive #&squot;s as a&n;&t; *&t;  byte count indicating success, such as&n;&t; *&t;  readlink_by_handle.  So we don&squot;t &quot;sign flip&quot;&n;&t; *&t;  like most other routines.  This means true&n;&t; *&t;  errors need to be returned as a negative value.&n;&t; */
@@ -1772,6 +1777,11 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ASSERT
 c_func
 (paren
@@ -1800,6 +1810,11 @@ id|VMODIFY
 c_func
 (paren
 id|vp
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* NOTE:  some of the ioctl&squot;s return positive #&squot;s as a&n;&t; *&t;  byte count indicating success, such as&n;&t; *&t;  readlink_by_handle.  So we don&squot;t &quot;sign flip&quot;&n;&t; *&t;  like most other routines.  This means true&n;&t; *&t;  errors need to be returned as a negative value.&n;&t; */

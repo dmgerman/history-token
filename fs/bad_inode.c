@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 multiline_comment|/*&n; * The follow_link operation is special: it must behave as a no-op&n; * so that a bad root inode can at least be unmounted. To do this&n; * we must dput() the base and return the dentry with a dget().&n; */
 DECL|function|bad_follow_link
 r_static
@@ -22,8 +23,7 @@ op_star
 id|nd
 )paren
 (brace
-r_return
-id|vfs_follow_link
+id|nd_set_link
 c_func
 (paren
 id|nd
@@ -35,6 +35,9 @@ op_minus
 id|EIO
 )paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|return_EIO

@@ -87,8 +87,6 @@ id|cpu_online_map
 suffix:semicolon
 DECL|macro|cpu_possible_map
 mdefine_line|#define cpu_possible_map&t;phys_cpu_present_map
-DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu)&t;&t;cpu_isset(cpu, cpu_online_map)
 r_extern
 id|cpumask_t
 id|cpu_callout_map
@@ -169,15 +167,6 @@ c_func
 r_int
 r_int
 id|max_cpus
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Do whatever setup needs to be done for SMP at the board level.  Return&n; * the number of cpus in the system, including this one&n; */
-r_extern
-r_int
-id|prom_setup_smp
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Last chance for the board code to finish SMP initialization before&n; * the CPU is &quot;online&quot;.&n; */

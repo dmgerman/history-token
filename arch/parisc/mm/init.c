@@ -2055,7 +2055,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Free swap:&t; %6dkB&bslash;n&quot;
+l_string|&quot;Free swap:&t; %6ldkB&bslash;n&quot;
 comma
 id|nr_swap_pages
 op_lshift
