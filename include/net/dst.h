@@ -420,7 +420,7 @@ op_assign
 id|dst_metric
 c_func
 (paren
-id|dst-&gt;path
+id|dst
 comma
 id|RTAX_FEATURES
 )paren

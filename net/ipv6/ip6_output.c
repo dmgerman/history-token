@@ -3665,8 +3665,7 @@ c_cond
 id|dst_allfrag
 c_func
 (paren
-op_amp
-id|rt-&gt;u.dst
+id|rt-&gt;u.dst.path
 )paren
 )paren
 id|inet-&gt;cork.flags
