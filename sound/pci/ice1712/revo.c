@@ -424,7 +424,7 @@ l_int|8
 suffix:semicolon
 id|ice-&gt;num_total_adcs
 op_assign
-l_int|4
+l_int|2
 suffix:semicolon
 r_break
 suffix:semicolon
