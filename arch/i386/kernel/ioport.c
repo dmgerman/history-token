@@ -222,6 +222,13 @@ op_star
 id|tss
 suffix:semicolon
 r_int
+r_int
+op_star
+id|bitmap
+op_assign
+l_int|NULL
+suffix:semicolon
+r_int
 id|ret
 op_assign
 l_int|0
@@ -267,15 +274,6 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
-id|tss
-op_assign
-id|init_tss
-op_plus
-id|get_cpu
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * If it&squot;s the first ioperm() call in this thread&squot;s lifetime, set the&n;&t; * IO bitmap up. ioperm() is much less timing critical than clone(),&n;&t; * this is why we delay this operation until now:&n;&t; */
 r_if
 c_cond
@@ -284,11 +282,6 @@ op_logical_neg
 id|t-&gt;ts_io_bitmap
 )paren
 (brace
-r_int
-r_int
-op_star
-id|bitmap
-suffix:semicolon
 id|bitmap
 op_assign
 id|kmalloc
@@ -330,12 +323,26 @@ id|t-&gt;ts_io_bitmap
 op_assign
 id|bitmap
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * this activates it in the TSS&n;&t;&t; */
+)brace
+id|tss
+op_assign
+id|init_tss
+op_plus
+id|get_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bitmap
+)paren
 id|tss-&gt;bitmap
 op_assign
 id|IO_BITMAP_OFFSET
 suffix:semicolon
-)brace
+multiline_comment|/* Activate it in the TSS */
 multiline_comment|/*&n;&t; * do it in the per-thread copy and in the TSS ...&n;&t; */
 id|set_bitmap
 c_func
@@ -363,13 +370,13 @@ op_logical_neg
 id|turn_on
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 id|put_cpu
 c_func
 (paren
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|ret
 suffix:semicolon

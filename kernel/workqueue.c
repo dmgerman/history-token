@@ -302,7 +302,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|timer_t
+r_struct
+id|timer_list
 op_star
 id|timer
 op_assign

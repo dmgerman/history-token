@@ -42,7 +42,8 @@ op_star
 id|wq_data
 suffix:semicolon
 DECL|member|timer
-id|timer_t
+r_struct
+id|timer_list
 id|timer
 suffix:semicolon
 )brace

@@ -820,7 +820,7 @@ mdefine_line|#define swap_device_lock(p)&t;spin_lock(&amp;p-&gt;sdev_lock)
 DECL|macro|swap_device_unlock
 mdefine_line|#define swap_device_unlock(p)&t;spin_unlock(&amp;p-&gt;sdev_lock)
 r_extern
-r_void
+r_int
 id|shmem_unuse
 c_func
 (paren
