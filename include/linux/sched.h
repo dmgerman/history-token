@@ -2913,9 +2913,7 @@ DECL|macro|next_thread
 mdefine_line|#define next_thread(p) &bslash;&n;&t;list_entry((p)-&gt;thread_group.next, struct task_struct, thread_group)
 DECL|macro|thread_group_leader
 mdefine_line|#define thread_group_leader(p)&t;(p-&gt;pid == p-&gt;tgid)
-DECL|function|unhash_process
-r_static
-r_inline
+r_extern
 r_void
 id|unhash_process
 c_func
@@ -2925,44 +2923,7 @@ id|task_struct
 op_star
 id|p
 )paren
-(brace
-id|write_lock_irq
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
 suffix:semicolon
-id|nr_threads
-op_decrement
-suffix:semicolon
-id|unhash_pid
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
-id|REMOVE_LINKS
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|p-&gt;thread_group
-)paren
-suffix:semicolon
-id|write_unlock_irq
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Protects -&gt;fs, -&gt;files, -&gt;mm, and synchronises with wait4().  Nests inside tasklist_lock */
 DECL|function|task_lock
 r_static
