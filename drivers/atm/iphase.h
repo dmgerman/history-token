@@ -202,6 +202,7 @@ id|status
 suffix:semicolon
 DECL|member|buf
 r_void
+id|__user
 op_star
 id|buf
 suffix:semicolon

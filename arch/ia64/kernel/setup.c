@@ -1120,27 +1120,17 @@ id|efi.hcdp
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t; * Without HCDP, we won&squot;t discover any serial ports until the serial driver looks&n;&t; * in the ACPI namespace.  If ACPI claims there are some legacy devices, register&n;&t; * the legacy COM ports so serial console works earlier.  This is slightly dangerous&n;&t; * because we don&squot;t *really* know whether there&squot;s anything there, but we hope that&n;&t; * all new boxes will implement HCDP.&n;&t; */
-(brace
-r_extern
-r_int
-r_char
-id|acpi_legacy_devices
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|efi.hcdp
-op_logical_and
-id|acpi_legacy_devices
 )paren
 id|setup_serial_legacy
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_VT
 macro_line|# if defined(CONFIG_DUMMY_CONSOLE)
@@ -2337,6 +2327,13 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Clear ITC to eliminiate sched_clock() overflows in human time.  */
+id|ia64_set_itc
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/* disable all local interrupt sources: */
 id|ia64_set_itv
 c_func

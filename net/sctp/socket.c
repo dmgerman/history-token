@@ -3780,6 +3780,27 @@ c_func
 l_string|&quot;There is no association yet.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sinfo_flags
+op_amp
+(paren
+id|MSG_EOF
+op_or
+id|MSG_ABORT
+)paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|out_unlock
+suffix:semicolon
+)brace
 multiline_comment|/* Check for invalid stream against the stream counts,&n;&t;&t; * either the default or the user specified stream counts.&n;&t;&t; */
 r_if
 c_cond
@@ -9422,11 +9443,9 @@ id|params
 comma
 id|optval
 comma
-op_star
-id|optlen
+id|len
 )paren
 )paren
-multiline_comment|/* XXXXXX */
 r_return
 op_minus
 id|EFAULT
@@ -10190,6 +10209,7 @@ op_star
 id|from
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|to
 suffix:semicolon
@@ -10310,10 +10330,6 @@ suffix:semicolon
 )brace
 id|to
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|getaddrs.addrs
 suffix:semicolon
 id|list_for_each
@@ -15300,6 +15316,24 @@ id|err
 suffix:semicolon
 id|do_error
 suffix:colon
+r_if
+c_cond
+(paren
+id|asoc-&gt;counters
+(braket
+id|SCTP_COUNTER_INIT_ERROR
+)braket
+op_plus
+l_int|1
+op_ge
+id|asoc-&gt;max_init_attempts
+)paren
+id|err
+op_assign
+op_minus
+id|ETIMEDOUT
+suffix:semicolon
+r_else
 id|err
 op_assign
 op_minus

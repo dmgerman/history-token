@@ -115,6 +115,8 @@ DECL|macro|ARPHRD_IEEE80211_PRISM
 mdefine_line|#define ARPHRD_IEEE80211_PRISM 802&t;/* IEEE 802.11 + Prism2 header  */
 DECL|macro|ARPHRD_VOID
 mdefine_line|#define ARPHRD_VOID&t;  0xFFFF&t;/* Void type, nothing is known */
+DECL|macro|ARPHRD_NONE
+mdefine_line|#define ARPHRD_NONE&t;  0xFFFE&t;/* zero header length */
 multiline_comment|/* ARP protocol opcodes. */
 DECL|macro|ARPOP_REQUEST
 mdefine_line|#define&t;ARPOP_REQUEST&t;1&t;&t;/* ARP request&t;&t;&t;*/

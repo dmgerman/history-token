@@ -6710,6 +6710,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -7398,13 +7399,11 @@ id|mii_ioctl_data
 op_star
 id|data
 op_assign
+id|if_mii
+c_func
 (paren
-r_struct
-id|mii_ioctl_data
-op_star
+id|ifr
 )paren
-op_amp
-id|ifr-&gt;ifr_data
 suffix:semicolon
 r_struct
 id|amd8111e_priv
@@ -7452,10 +7451,6 @@ c_func
 (paren
 id|dev
 comma
-(paren
-r_void
-op_star
-)paren
 id|ifr-&gt;ifr_data
 )paren
 suffix:semicolon

@@ -1,7 +1,7 @@
 macro_line|#ifndef _PPC64_TLBFLUSH_H
 DECL|macro|_PPC64_TLBFLUSH_H
 mdefine_line|#define _PPC64_TLBFLUSH_H
-multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(vma, start, end) flushes a range of pages&n; *  - flush_tlb_kernel_range(start, end) flushes a range of kernel pages&n; *  - flush_tlb_pgtables(mm, start, end) flushes a range of page tables&n; */
+multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_page_nohash(vma, vmaddr) flushes one page if SW loaded TLB&n; *  - flush_tlb_range(vma, start, end) flushes a range of pages&n; *  - flush_tlb_kernel_range(start, end) flushes a range of kernel pages&n; *  - flush_tlb_pgtables(mm, start, end) flushes a range of page tables&n; */
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 DECL|macro|PPC64_TLB_BATCH_NR
@@ -112,6 +112,8 @@ DECL|macro|flush_tlb_mm
 mdefine_line|#define flush_tlb_mm(mm)&t;&t;&t;flush_tlb_pending()
 DECL|macro|flush_tlb_page
 mdefine_line|#define flush_tlb_page(vma, addr)&t;&t;flush_tlb_pending()
+DECL|macro|flush_tlb_page_nohash
+mdefine_line|#define flush_tlb_page_nohash(vma, addr)       &t;do { } while (0)
 DECL|macro|flush_tlb_range
 mdefine_line|#define flush_tlb_range(vma, start, end) &bslash;&n;&t;&t;do { (void)(start); flush_tlb_pending(); } while (0)
 DECL|macro|flush_tlb_kernel_range

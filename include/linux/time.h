@@ -123,6 +123,7 @@ r_int
 id|jiffies_to_msecs
 c_func
 (paren
+r_const
 r_int
 r_int
 id|j
@@ -178,6 +179,7 @@ r_int
 id|msecs_to_jiffies
 c_func
 (paren
+r_const
 r_int
 r_int
 id|m
@@ -236,6 +238,7 @@ DECL|function|timespec_to_jiffies
 id|timespec_to_jiffies
 c_func
 (paren
+r_const
 r_struct
 id|timespec
 op_star
@@ -313,6 +316,7 @@ DECL|function|jiffies_to_timespec
 id|jiffies_to_timespec
 c_func
 (paren
+r_const
 r_int
 r_int
 id|jiffies
@@ -357,6 +361,7 @@ DECL|function|timeval_to_jiffies
 id|timeval_to_jiffies
 c_func
 (paren
+r_const
 r_struct
 id|timeval
 op_star
@@ -432,6 +437,7 @@ DECL|function|jiffies_to_timeval
 id|jiffies_to_timeval
 c_func
 (paren
+r_const
 r_int
 r_int
 id|jiffies

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Locks for smp ppc&n; *&n; * Written by Cort Dougan (co
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/ppc_asm.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
@@ -11,6 +12,8 @@ DECL|macro|INIT_STUCK
 mdefine_line|#define INIT_STUCK 200000000 /*0xffffffff*/
 multiline_comment|/*&n; * Try to acquire a spinlock.&n; * Only does the stwcx. if the load returned 0 - the Programming&n; * Environments Manual suggests not doing unnecessary stcwx.&squot;s&n; * since they may inhibit forward progress by other CPUs in getting&n; * a lock.&n; */
 DECL|function|__spin_trylock
+r_static
+r_inline
 r_int
 r_int
 id|__spin_trylock
@@ -168,6 +171,13 @@ op_assign
 id|cpu
 suffix:semicolon
 )brace
+DECL|variable|_raw_spin_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_raw_spin_lock
+)paren
+suffix:semicolon
 DECL|function|_raw_spin_trylock
 r_int
 id|_raw_spin_trylock
@@ -214,6 +224,13 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|_raw_spin_trylock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_raw_spin_trylock
+)paren
+suffix:semicolon
 DECL|function|_raw_spin_unlock
 r_void
 id|_raw_spin_unlock
@@ -301,6 +318,13 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|_raw_spin_unlock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_raw_spin_unlock
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Just like x86, implement read-write locks as a 32-bit counter&n; * with the high bit (sign) being the &quot;write&quot; bit.&n; * -- Cort&n; */
 DECL|function|_raw_read_lock
 r_void
@@ -433,6 +457,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|_raw_read_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_raw_read_lock
+)paren
+suffix:semicolon
 DECL|function|_raw_read_unlock
 r_void
 id|_raw_read_unlock
@@ -485,6 +516,13 @@ id|lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|_raw_read_unlock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_raw_read_unlock
+)paren
+suffix:semicolon
 DECL|function|_raw_write_lock
 r_void
 id|_raw_write_lock
@@ -671,6 +709,95 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|_raw_write_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_raw_write_lock
+)paren
+suffix:semicolon
+DECL|function|_raw_write_trylock
+r_int
+id|_raw_write_trylock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|rw
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|test_and_set_bit
+c_func
+(paren
+l_int|31
+comma
+op_amp
+(paren
+id|rw
+)paren
+op_member_access_from_pointer
+id|lock
+)paren
+)paren
+multiline_comment|/* someone has a write lock */
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|rw
+)paren
+op_member_access_from_pointer
+id|lock
+op_amp
+op_complement
+(paren
+l_int|1
+op_lshift
+l_int|31
+)paren
+)paren
+(brace
+multiline_comment|/* someone has a read lock */
+multiline_comment|/* clear our write lock and wait for reads to go away */
+id|clear_bit
+c_func
+(paren
+l_int|31
+comma
+op_amp
+(paren
+id|rw
+)paren
+op_member_access_from_pointer
+id|lock
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|variable|_raw_write_trylock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_raw_write_trylock
+)paren
+suffix:semicolon
 DECL|function|_raw_write_unlock
 r_void
 id|_raw_write_unlock
@@ -728,5 +855,12 @@ id|lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|_raw_write_unlock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_raw_write_unlock
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

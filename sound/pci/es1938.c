@@ -3558,6 +3558,7 @@ id|snd_pcm_uframes_t
 id|pos
 comma
 r_void
+id|__user
 op_star
 id|dst
 comma
@@ -3675,6 +3676,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|dst

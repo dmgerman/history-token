@@ -3603,7 +3603,7 @@ id|u16
 op_star
 )paren
 op_amp
-id|rq-&gt;ifr_data
+id|rq-&gt;ifr_ifru
 suffix:semicolon
 id|ioaddr_t
 id|mii_addr

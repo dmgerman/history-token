@@ -156,6 +156,7 @@ id|device
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -224,6 +225,7 @@ id|device
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -242,14 +244,9 @@ id|SNDRV_CTL_IOCTL_PCM_INFO
 suffix:colon
 (brace
 id|snd_pcm_info_t
+id|__user
 op_star
 id|info
-op_assign
-(paren
-id|snd_pcm_info_t
-op_star
-)paren
-id|arg
 suffix:semicolon
 r_int
 r_int
@@ -271,6 +268,15 @@ suffix:semicolon
 id|snd_pcm_substream_t
 op_star
 id|substream
+suffix:semicolon
+id|info
+op_assign
+(paren
+id|snd_pcm_info_t
+id|__user
+op_star
+)paren
+id|arg
 suffix:semicolon
 r_if
 c_cond
@@ -455,6 +461,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg

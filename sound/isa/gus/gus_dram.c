@@ -15,6 +15,7 @@ op_star
 id|gus
 comma
 r_char
+id|__user
 op_star
 id|_buffer
 comma
@@ -198,6 +199,7 @@ op_star
 id|gus
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -235,6 +237,7 @@ op_star
 id|gus
 comma
 r_char
+id|__user
 op_star
 id|_buffer
 comma
@@ -436,6 +439,7 @@ op_star
 id|gus
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma

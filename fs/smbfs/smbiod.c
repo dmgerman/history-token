@@ -101,6 +101,7 @@ r_void
 id|smbiod_wake_up
 c_func
 (paren
+r_void
 )paren
 (brace
 r_if

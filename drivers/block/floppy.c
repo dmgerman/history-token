@@ -19043,7 +19043,7 @@ op_assign
 id|TOMINOR
 c_func
 (paren
-id|i
+id|dr
 )paren
 suffix:semicolon
 id|disks

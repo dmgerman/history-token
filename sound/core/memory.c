@@ -1231,6 +1231,7 @@ id|copy_to_user_fromio
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|dst
 comma
@@ -1361,6 +1362,7 @@ id|dst
 comma
 r_const
 r_void
+id|__user
 op_star
 id|src
 comma

@@ -503,13 +503,6 @@ id|master_time_stamp
 comma
 id|bound
 suffix:semicolon
-r_extern
-r_void
-id|ia64_cpu_local_tick
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#if DEBUG_ITC_SYNC
 r_struct
 (brace
@@ -1775,7 +1768,16 @@ id|cpu_to_node_map
 id|cpu
 )braket
 op_assign
+(paren
 id|node
+op_ge
+l_int|0
+)paren
+ques
+c_cond
+id|node
+suffix:colon
+l_int|0
 suffix:semicolon
 r_if
 c_cond

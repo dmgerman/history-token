@@ -105,6 +105,7 @@ id|substream
 comma
 r_struct
 id|sndrv_pcm_hw_params_old
+id|__user
 op_star
 id|_oparams
 )paren
@@ -120,6 +121,7 @@ id|substream
 comma
 r_struct
 id|sndrv_pcm_hw_params_old
+id|__user
 op_star
 id|_oparams
 )paren
@@ -351,6 +353,7 @@ op_star
 id|substream
 comma
 id|snd_pcm_info_t
+id|__user
 op_star
 id|_info
 )paren
@@ -1498,6 +1501,7 @@ op_star
 id|substream
 comma
 id|snd_pcm_hw_params_t
+id|__user
 op_star
 id|_params
 )paren
@@ -1987,6 +1991,7 @@ op_star
 id|substream
 comma
 id|snd_pcm_hw_params_t
+id|__user
 op_star
 id|_params
 )paren
@@ -2435,6 +2440,7 @@ op_star
 id|substream
 comma
 id|snd_pcm_sw_params_t
+id|__user
 op_star
 id|_params
 )paren
@@ -2711,6 +2717,7 @@ op_star
 id|substream
 comma
 id|snd_pcm_status_t
+id|__user
 op_star
 id|_status
 )paren
@@ -2812,6 +2819,7 @@ op_star
 id|substream
 comma
 id|snd_pcm_channel_info_t
+id|__user
 op_star
 id|_info
 )paren
@@ -11293,6 +11301,7 @@ op_star
 id|substream
 comma
 id|snd_pcm_sframes_t
+id|__user
 op_star
 id|res
 )paren
@@ -11459,6 +11468,7 @@ id|substream
 comma
 r_struct
 id|sndrv_pcm_sync_ptr
+id|__user
 op_star
 id|_sync_ptr
 )paren
@@ -11512,7 +11522,7 @@ id|sync_ptr.flags
 comma
 (paren
 r_int
-r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -11690,6 +11700,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -11708,6 +11719,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -11727,6 +11739,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -11760,6 +11773,7 @@ id|SNDRV_PCM_VERSION
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -11780,10 +11794,6 @@ c_func
 (paren
 id|substream
 comma
-(paren
-id|snd_pcm_info_t
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -11804,6 +11814,7 @@ id|xarg
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -11835,10 +11846,6 @@ c_func
 (paren
 id|substream
 comma
-(paren
-id|snd_pcm_hw_params_t
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -11851,10 +11858,6 @@ c_func
 (paren
 id|substream
 comma
-(paren
-id|snd_pcm_hw_params_t
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -11877,10 +11880,6 @@ c_func
 (paren
 id|substream
 comma
-(paren
-id|snd_pcm_sw_params_t
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -11893,10 +11892,6 @@ c_func
 (paren
 id|substream
 comma
-(paren
-id|snd_pcm_status_t
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -11909,10 +11904,6 @@ c_func
 (paren
 id|substream
 comma
-(paren
-id|snd_pcm_channel_info_t
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -11963,6 +11954,10 @@ c_func
 id|substream
 comma
 (paren
+r_int
+)paren
+(paren
+r_int
 r_int
 )paren
 id|arg
@@ -12017,10 +12012,6 @@ c_func
 (paren
 id|substream
 comma
-(paren
-id|snd_pcm_sframes_t
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -12033,11 +12024,6 @@ c_func
 (paren
 id|substream
 comma
-(paren
-r_struct
-id|sndrv_pcm_sync_ptr
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -12050,11 +12036,6 @@ c_func
 (paren
 id|substream
 comma
-(paren
-r_struct
-id|sndrv_pcm_hw_params_old
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -12067,11 +12048,6 @@ c_func
 (paren
 id|substream
 comma
-(paren
-r_struct
-id|sndrv_pcm_hw_params_old
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -12104,6 +12080,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -12144,7 +12121,9 @@ suffix:colon
 (brace
 id|snd_xferi_t
 id|xferi
-comma
+suffix:semicolon
+id|snd_xferi_t
+id|__user
 op_star
 id|_xferi
 op_assign
@@ -12245,7 +12224,9 @@ suffix:colon
 (brace
 id|snd_xfern_t
 id|xfern
-comma
+suffix:semicolon
+id|snd_xfern_t
+id|__user
 op_star
 id|_xfern
 op_assign
@@ -12258,6 +12239,8 @@ op_assign
 id|substream-&gt;runtime
 suffix:semicolon
 r_void
+id|__user
+op_star
 op_star
 id|bufs
 suffix:semicolon
@@ -12425,7 +12408,9 @@ suffix:colon
 (brace
 id|snd_pcm_uframes_t
 id|frames
-comma
+suffix:semicolon
+id|snd_pcm_uframes_t
+id|__user
 op_star
 id|_frames
 op_assign
@@ -12499,7 +12484,9 @@ suffix:colon
 (brace
 id|snd_pcm_uframes_t
 id|frames
-comma
+suffix:semicolon
+id|snd_pcm_uframes_t
+id|__user
 op_star
 id|_frames
 op_assign
@@ -12590,6 +12577,10 @@ comma
 (paren
 r_int
 )paren
+(paren
+r_int
+r_int
+)paren
 id|arg
 )paren
 suffix:semicolon
@@ -12651,6 +12642,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -12691,7 +12683,9 @@ suffix:colon
 (brace
 id|snd_xferi_t
 id|xferi
-comma
+suffix:semicolon
+id|snd_xferi_t
+id|__user
 op_star
 id|_xferi
 op_assign
@@ -12792,7 +12786,9 @@ suffix:colon
 (brace
 id|snd_xfern_t
 id|xfern
-comma
+suffix:semicolon
+id|snd_xfern_t
+id|__user
 op_star
 id|_xfern
 op_assign
@@ -12972,7 +12968,9 @@ suffix:colon
 (brace
 id|snd_pcm_uframes_t
 id|frames
-comma
+suffix:semicolon
+id|snd_pcm_uframes_t
+id|__user
 op_star
 id|_frames
 op_assign
@@ -13046,7 +13044,9 @@ suffix:colon
 (brace
 id|snd_pcm_uframes_t
 id|frames
-comma
+suffix:semicolon
+id|snd_pcm_uframes_t
+id|__user
 op_star
 id|_frames
 op_assign
@@ -13219,6 +13219,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -13297,6 +13298,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -13481,6 +13483,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -13624,6 +13627,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -13822,6 +13826,7 @@ r_int
 id|i
 suffix:semicolon
 r_void
+id|__user
 op_star
 op_star
 id|bufs
@@ -14053,6 +14058,7 @@ r_int
 id|i
 suffix:semicolon
 r_void
+id|__user
 op_star
 op_star
 id|bufs
@@ -15956,6 +15962,7 @@ id|substream
 comma
 r_struct
 id|sndrv_pcm_hw_params_old
+id|__user
 op_star
 id|_oparams
 )paren
@@ -16059,6 +16066,7 @@ id|substream
 comma
 r_struct
 id|sndrv_pcm_hw_params_old
+id|__user
 op_star
 id|_oparams
 )paren

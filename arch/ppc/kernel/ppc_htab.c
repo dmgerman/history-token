@@ -342,7 +342,7 @@ id|n
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_STD_MMU
+macro_line|#if defined(CONFIG_PPC_STD_MMU) &amp;&amp; !defined(CONFIG_PPC64BRIDGE)
 r_int
 r_int
 id|kptes
@@ -509,6 +509,7 @@ r_goto
 id|return_string
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_PPC64BRIDGE
 r_for
 c_loop
 (paren
@@ -578,6 +579,7 @@ id|uptes
 op_increment
 suffix:semicolon
 )brace
+macro_line|#endif
 id|n
 op_add_assign
 id|sprintf
@@ -592,9 +594,11 @@ l_string|&quot;Size&bslash;t&bslash;t: %luKb&bslash;n&quot;
 l_string|&quot;Buckets&bslash;t&bslash;t: %lu&bslash;n&quot;
 l_string|&quot;Address&bslash;t&bslash;t: %08lx&bslash;n&quot;
 l_string|&quot;Entries&bslash;t&bslash;t: %lu&bslash;n&quot;
+macro_line|#ifndef CONFIG_PPC64BRIDGE
 l_string|&quot;User ptes&bslash;t: %u&bslash;n&quot;
 l_string|&quot;Kernel ptes&bslash;t: %u&bslash;n&quot;
 l_string|&quot;Percent full&bslash;t: %lu%%&bslash;n&quot;
+macro_line|#endif
 comma
 (paren
 r_int
@@ -631,6 +635,7 @@ r_sizeof
 (paren
 id|PTE
 )paren
+macro_line|#ifndef CONFIG_PPC64BRIDGE
 comma
 id|uptes
 comma
@@ -654,6 +659,7 @@ r_sizeof
 id|PTE
 )paren
 )paren
+macro_line|#endif
 )paren
 suffix:semicolon
 id|n

@@ -28,6 +28,7 @@ id|sscape_microcode
 DECL|member|code
 r_int
 r_char
+id|__user
 op_star
 id|code
 suffix:semicolon

@@ -2644,11 +2644,6 @@ c_func
 (paren
 id|net
 comma
-(paren
-r_void
-id|__user
-op_star
-)paren
 id|rq-&gt;ifr_data
 )paren
 suffix:semicolon

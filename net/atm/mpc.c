@@ -2547,7 +2547,9 @@ id|atm_vcc
 op_star
 id|vcc
 comma
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -2583,10 +2585,6 @@ c_func
 op_amp
 id|ioc_data
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -6578,6 +6576,7 @@ r_void
 id|mpc_timer_refresh
 c_func
 (paren
+r_void
 )paren
 (brace
 id|mpc_timer.expires
@@ -6833,6 +6832,11 @@ c_func
 (paren
 id|vcc
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|arg
 )paren
 suffix:semicolon

@@ -382,6 +382,7 @@ id|snd_pcm_uframes_t
 id|pos
 comma
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -1701,6 +1702,7 @@ op_star
 id|substream
 comma
 id|snd_pcm_info_t
+id|__user
 op_star
 id|info
 )paren
@@ -3984,6 +3986,7 @@ id|substream
 comma
 r_const
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -4000,6 +4003,7 @@ op_star
 id|substream
 comma
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -4016,6 +4020,7 @@ op_star
 id|substream
 comma
 r_void
+id|__user
 op_star
 op_star
 id|bufs
@@ -4033,6 +4038,7 @@ op_star
 id|substream
 comma
 r_void
+id|__user
 op_star
 op_star
 id|bufs

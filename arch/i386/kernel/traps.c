@@ -1267,6 +1267,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ALERT
 l_string|&quot;kernel BUG at %s:%d!&bslash;n&quot;
 comma
 id|file
@@ -1349,6 +1350,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ALERT
 l_string|&quot;%s: %04lx [#%d]&bslash;n&quot;
 comma
 id|str

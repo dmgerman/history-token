@@ -8069,15 +8069,10 @@ l_int|0x52523032
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
-(paren
-op_amp
 id|rq-&gt;ifr_data
-(braket
-l_int|0
-)braket
-)paren
 )paren
 suffix:semicolon
 r_default

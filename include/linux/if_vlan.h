@@ -111,8 +111,9 @@ op_star
 id|hook
 )paren
 (paren
-r_int
-r_int
+r_void
+id|__user
+op_star
 )paren
 )paren
 suffix:semicolon

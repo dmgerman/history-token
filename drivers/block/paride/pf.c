@@ -1088,12 +1088,14 @@ id|inode-&gt;i_bdev-&gt;bd_disk-&gt;private_data
 suffix:semicolon
 r_struct
 id|hd_geometry
+id|__user
 op_star
 id|geo
 op_assign
 (paren
 r_struct
 id|hd_geometry
+id|__user
 op_star
 )paren
 id|arg

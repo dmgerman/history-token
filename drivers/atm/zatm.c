@@ -8660,6 +8660,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -8729,6 +8730,7 @@ op_amp
 (paren
 r_struct
 id|zatm_pool_req
+id|__user
 op_star
 )paren
 id|arg
@@ -8813,6 +8815,7 @@ op_amp
 (paren
 r_struct
 id|zatm_pool_req
+id|__user
 op_star
 )paren
 id|arg
@@ -8874,6 +8877,7 @@ op_amp
 (paren
 r_struct
 id|zatm_pool_req
+id|__user
 op_star
 )paren
 id|arg
@@ -8911,6 +8915,7 @@ op_amp
 (paren
 r_struct
 id|zatm_pool_req
+id|__user
 op_star
 )paren
 id|arg
@@ -9090,6 +9095,7 @@ r_int
 id|optname
 comma
 r_void
+id|__user
 op_star
 id|optval
 comma
@@ -9120,6 +9126,7 @@ r_int
 id|optname
 comma
 r_void
+id|__user
 op_star
 id|optval
 comma

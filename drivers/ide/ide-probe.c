@@ -755,35 +755,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize queue depth settings */
-id|drive-&gt;queue_depth
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ_DEPTH
-id|drive-&gt;queue_depth
-op_assign
-id|CONFIG_BLK_DEV_IDE_TCQ_DEPTH
-suffix:semicolon
-macro_line|#else
-id|drive-&gt;queue_depth
-op_assign
-id|drive-&gt;id-&gt;queue_depth
-op_plus
-l_int|1
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|drive-&gt;queue_depth
-template_param
-id|IDE_MAX_TAG
-)paren
-id|drive-&gt;queue_depth
-op_assign
-id|IDE_MAX_TAG
-suffix:semicolon
 r_return
 suffix:semicolon
 id|err_misc
@@ -2298,7 +2269,6 @@ id|hwif-&gt;gendev
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//EXPORT_SYMBOL(hwif_register);
 macro_line|#ifdef CONFIG_PPC
 DECL|function|wait_hwif_ready
 r_static
@@ -2454,8 +2424,10 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * This routine only knows how to look for drive units 0 and 1&n; * on an interface, so any setting of MAX_DRIVES &gt; 2 won&squot;t work here.&n; */
 DECL|function|probe_hwif
+r_static
 r_void
 id|probe_hwif
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -2963,15 +2935,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|variable|probe_hwif
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|probe_hwif
-)paren
-suffix:semicolon
+r_static
 r_int
 id|hwif_init
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -3065,8 +3032,10 @@ suffix:semicolon
 macro_line|#if MAX_HWIFS &gt; 1
 multiline_comment|/*&n; * save_match() is used to simplify logic in init_irq() below.&n; *&n; * A loophole here is that we may not know about a particular&n; * hwif&squot;s irq until after that hwif is actually probed/initialized..&n; * This could be a problem for the case where an hwif is on a&n; * dual interface that requires serialization (eg. cmd640) and another&n; * hwif using one of the same irqs is initialized beforehand.&n; *&n; * This routine detects and reports such situations, but does not fix them.&n; */
 DECL|function|save_match
+r_static
 r_void
 id|save_match
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -3145,13 +3114,6 @@ op_assign
 r_new
 suffix:semicolon
 )brace
-DECL|variable|save_match
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|save_match
-)paren
-suffix:semicolon
 macro_line|#endif /* MAX_HWIFS &gt; 1 */
 multiline_comment|/*&n; * init request queue&n; */
 DECL|function|ide_init_queue
@@ -4607,16 +4569,11 @@ id|hwif
 )paren
 suffix:semicolon
 )brace
-DECL|variable|init_gendisk
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|init_gendisk
-)paren
-suffix:semicolon
 DECL|function|hwif_init
+r_static
 r_int
 id|hwif_init
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -4908,13 +4865,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|hwif_init
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|hwif_init
-)paren
-suffix:semicolon
 DECL|function|ideprobe_init
 r_int
 id|ideprobe_init

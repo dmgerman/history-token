@@ -564,6 +564,7 @@ op_star
 id|dev
 comma
 id|slaving_request_t
+id|__user
 op_star
 id|srq
 )paren
@@ -579,6 +580,7 @@ op_star
 id|dev
 comma
 id|slaving_request_t
+id|__user
 op_star
 id|srq
 )paren
@@ -594,6 +596,7 @@ op_star
 id|dev
 comma
 id|slave_config_t
+id|__user
 op_star
 id|sc
 )paren
@@ -609,6 +612,7 @@ op_star
 id|dev
 comma
 id|slave_config_t
+id|__user
 op_star
 id|sc
 )paren
@@ -624,6 +628,7 @@ op_star
 id|dev
 comma
 id|master_config_t
+id|__user
 op_star
 id|mc
 )paren
@@ -639,6 +644,7 @@ op_star
 id|dev
 comma
 id|master_config_t
+id|__user
 op_star
 id|mc
 )paren
@@ -700,10 +706,6 @@ c_func
 (paren
 id|dev
 comma
-(paren
-id|slaving_request_t
-op_star
-)paren
 id|ifr-&gt;ifr_data
 )paren
 suffix:semicolon
@@ -716,10 +718,6 @@ c_func
 (paren
 id|dev
 comma
-(paren
-id|slaving_request_t
-op_star
-)paren
 id|ifr-&gt;ifr_data
 )paren
 suffix:semicolon
@@ -732,10 +730,6 @@ c_func
 (paren
 id|dev
 comma
-(paren
-id|slave_config_t
-op_star
-)paren
 id|ifr-&gt;ifr_data
 )paren
 suffix:semicolon
@@ -748,10 +742,6 @@ c_func
 (paren
 id|dev
 comma
-(paren
-id|slave_config_t
-op_star
-)paren
 id|ifr-&gt;ifr_data
 )paren
 suffix:semicolon
@@ -764,10 +754,6 @@ c_func
 (paren
 id|dev
 comma
-(paren
-id|master_config_t
-op_star
-)paren
 id|ifr-&gt;ifr_data
 )paren
 suffix:semicolon
@@ -780,10 +766,6 @@ c_func
 (paren
 id|dev
 comma
-(paren
-id|master_config_t
-op_star
-)paren
 id|ifr-&gt;ifr_data
 )paren
 suffix:semicolon
@@ -1270,6 +1252,7 @@ op_star
 id|master_dev
 comma
 id|slaving_request_t
+id|__user
 op_star
 id|srqp
 )paren
@@ -1496,6 +1479,7 @@ op_star
 id|master_dev
 comma
 id|slaving_request_t
+id|__user
 op_star
 id|srqp
 )paren
@@ -1635,6 +1619,7 @@ op_star
 id|dev
 comma
 id|slave_config_t
+id|__user
 op_star
 id|scp
 )paren
@@ -1792,6 +1777,7 @@ op_star
 id|dev
 comma
 id|slave_config_t
+id|__user
 op_star
 id|scp
 )paren
@@ -1930,6 +1916,7 @@ op_star
 id|dev
 comma
 id|master_config_t
+id|__user
 op_star
 id|mcp
 )paren
@@ -2005,6 +1992,7 @@ op_star
 id|dev
 comma
 id|master_config_t
+id|__user
 op_star
 id|mcp
 )paren

@@ -1112,8 +1112,9 @@ id|sock
 op_star
 id|sk
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -1138,10 +1139,6 @@ c_func
 op_amp
 id|req
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -1303,8 +1300,9 @@ r_int
 id|rfcomm_release_dev
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -1326,10 +1324,6 @@ c_func
 op_amp
 id|req
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -1437,8 +1431,9 @@ r_int
 id|rfcomm_get_dev_list
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -1485,6 +1480,7 @@ id|dev_num
 comma
 (paren
 id|u16
+id|__user
 op_star
 )paren
 id|arg
@@ -1705,10 +1701,6 @@ op_assign
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 id|dl
@@ -1738,8 +1730,9 @@ r_int
 id|rfcomm_get_dev_info
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -1772,10 +1765,6 @@ c_func
 op_amp
 id|di
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -1844,10 +1833,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -1888,15 +1873,16 @@ r_int
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
 id|BT_DBG
 c_func
 (paren
-l_string|&quot;cmd %d arg %ld&quot;
+l_string|&quot;cmd %d arg %p&quot;
 comma
 id|cmd
 comma

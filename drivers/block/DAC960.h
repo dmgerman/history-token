@@ -7808,11 +7808,13 @@ id|DataTransferLength
 suffix:semicolon
 DECL|member|DataTransferBuffer
 r_void
+id|__user
 op_star
 id|DataTransferBuffer
 suffix:semicolon
 DECL|member|DCDB
 id|DAC960_V1_DCDB_T
+id|__user
 op_star
 id|DCDB
 suffix:semicolon
@@ -7899,11 +7901,13 @@ id|RequestSenseLength
 suffix:semicolon
 DECL|member|DataTransferBuffer
 r_void
+id|__user
 op_star
 id|DataTransferBuffer
 suffix:semicolon
 DECL|member|RequestSenseBuffer
 r_void
+id|__user
 op_star
 id|RequestSenseBuffer
 suffix:semicolon
@@ -7982,6 +7986,7 @@ id|ControllerNumber
 suffix:semicolon
 DECL|member|HealthStatusBuffer
 id|DAC960_V2_HealthStatusBuffer_T
+id|__user
 op_star
 id|HealthStatusBuffer
 suffix:semicolon

@@ -2949,6 +2949,7 @@ r_void
 id|irlmp_do_expiry
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct
@@ -3710,6 +3711,7 @@ op_star
 id|irlmp_get_discovery_response
 c_func
 (paren
+r_void
 )paren
 (brace
 id|IRDA_DEBUG

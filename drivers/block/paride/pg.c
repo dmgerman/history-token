@@ -412,6 +412,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -435,6 +436,7 @@ id|filp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2547,6 +2549,7 @@ id|filp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2603,10 +2606,6 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|hdr
 comma
@@ -2794,6 +2793,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2953,10 +2953,6 @@ c_func
 (paren
 id|buf
 comma
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|hdr
 comma
