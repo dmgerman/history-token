@@ -327,8 +327,6 @@ id|stack_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sigcontext.h&gt;
-DECL|macro|sigmask
-mdefine_line|#define sigmask(sig)&t;(1UL &lt;&lt; ((sig) - 1))
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SH_SIGNAL_H */
 eof

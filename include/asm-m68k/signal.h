@@ -516,8 +516,6 @@ suffix:semicolon
 )brace
 DECL|macro|sigismember
 mdefine_line|#define sigismember(set,sig)&t;&t;&t;&bslash;&n;&t;(__builtin_constant_p(sig) ?&t;&t;&bslash;&n;&t; __const_sigismember(set,sig) :&t;&t;&bslash;&n;&t; __gen_sigismember(set,sig))
-DECL|macro|sigmask
-mdefine_line|#define sigmask(sig)&t;(1UL &lt;&lt; ((sig) - 1))
 DECL|function|sigfindinword
 r_extern
 id|__inline__
