@@ -3962,6 +3962,12 @@ c_func
 id|current
 )paren
 suffix:semicolon
+id|security_bprm_post_apply_creds
+c_func
+(paren
+id|bprm
+)paren
+suffix:semicolon
 )brace
 DECL|variable|compute_creds
 id|EXPORT_SYMBOL
