@@ -786,9 +786,17 @@ id|IPT_ECN_OP_SET_CWR
 )paren
 )paren
 op_logical_and
+(paren
 id|e-&gt;ip.proto
 op_ne
 id|IPPROTO_TCP
+op_logical_or
+(paren
+id|e-&gt;ip.invflags
+op_amp
+id|IPT_INV_PROTO
+)paren
+)paren
 )paren
 (brace
 id|printk
