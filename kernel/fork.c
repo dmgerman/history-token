@@ -413,6 +413,7 @@ c_func
 id|remove_wait_queue
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Note: we use &quot;set_current_state()&quot; _after_ the wait-queue add,&n; * because we need a memory barrier there on SMP, so that any&n; * wake-function that tests for the wait-queue being active&n; * will be guaranteed to see waitqueue addition _or_ subsequent&n; * tests in this thread will see the wakeup having taken place.&n; *&n; * The spin_unlock() itself is semi-permeable and only protects&n; * one way (it only protects stuff inside the critical region and&n; * stops them from bleeding out - it would still allow subsequent&n; * loads to move into the the critical region).&n; */
 DECL|function|prepare_to_wait
 r_void
 id|prepare_to_wait
@@ -433,12 +434,6 @@ id|state
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|__set_current_state
-c_func
-(paren
-id|state
-)paren
 suffix:semicolon
 id|wait-&gt;flags
 op_and_assign
@@ -470,6 +465,12 @@ c_func
 id|q
 comma
 id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|state
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -510,12 +511,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__set_current_state
-c_func
-(paren
-id|state
-)paren
-suffix:semicolon
 id|wait-&gt;flags
 op_or_assign
 id|WQ_FLAG_EXCLUSIVE
@@ -545,6 +540,12 @@ c_func
 id|q
 comma
 id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|state
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -588,11 +589,12 @@ c_func
 id|TASK_RUNNING
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * We can check for list emptiness outside the lock&n;&t; * IFF:&n;&t; *  - we use the &quot;careful&quot; check that verifies both&n;&t; *    the next and prev pointers, so that there cannot&n;&t; *    be any half-pending updates in progress on other&n;&t; *    CPU&squot;s that we haven&squot;t seen yet (and that might&n;&t; *    still change the stack area.&n;&t; * and&n;&t; *  - all other users take the lock (ie we can only&n;&t; *    have _one_ other CPU that looks at or modifies&n;&t; *    the list).&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|list_empty
+id|list_empty_careful
 c_func
 (paren
 op_amp

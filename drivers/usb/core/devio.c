@@ -1054,13 +1054,6 @@ op_amp
 id|ps-&gt;lock
 )paren
 suffix:semicolon
-id|wake_up
-c_func
-(paren
-op_amp
-id|ps-&gt;wait
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1099,6 +1092,13 @@ id|as-&gt;task
 )paren
 suffix:semicolon
 )brace
+id|wake_up
+c_func
+(paren
+op_amp
+id|ps-&gt;wait
+)paren
+suffix:semicolon
 )brace
 DECL|function|destroy_async
 r_static
