@@ -283,30 +283,12 @@ id|iw_stats
 id|wstats
 suffix:semicolon
 multiline_comment|/* Wireless-specific statistics */
+DECL|member|spy_data
+r_struct
+id|iw_spy_data
+id|spy_data
+suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef WIRELESS_SPY
-DECL|member|spy_number
-r_int
-id|spy_number
-suffix:semicolon
-multiline_comment|/* number of addresses to spy */
-DECL|member|spy_address
-id|mac_addr
-id|spy_address
-(braket
-id|IW_MAX_SPY
-)braket
-suffix:semicolon
-multiline_comment|/* the addresses to spy */
-DECL|member|spy_stat
-id|iw_qual
-id|spy_stat
-(braket
-id|IW_MAX_SPY
-)braket
-suffix:semicolon
-multiline_comment|/* statistics gathered */
-macro_line|#endif&t;/* WIRELESS_SPY */
 macro_line|#ifdef HISTOGRAM
 DECL|member|his_number
 r_int
