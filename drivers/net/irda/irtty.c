@@ -3475,18 +3475,7 @@ comma
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/* Disable interrupts &amp; save flags */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* Locking :&n;&t; * irda_device_dongle_init() can&squot;t be locked.&n;&t; * irda_task_execute() doesn&squot;t need to be locked (but&n;&t; * irtty_change_speed() should protect itself).&n;&t; * As this driver doesn&squot;t have spinlock protection, keep&n;&t; * old fashion locking :-(&n;&t; * Jean II&n;&t; */
 r_switch
 c_cond
 (paren
@@ -3591,11 +3580,7 @@ id|dongle-&gt;set_dtr_rts
 op_assign
 id|irtty_set_dtr_rts
 suffix:semicolon
-id|self-&gt;dongle
-op_assign
-id|dongle
-suffix:semicolon
-multiline_comment|/* Now initialize the dongle!  */
+multiline_comment|/* Now initialize the dongle!&n;&t;&t; * Safe to do unlocked : self-&gt;dongle is still NULL. */
 id|dongle-&gt;issue
 op_member_access_from_pointer
 id|open
@@ -3621,6 +3606,11 @@ l_int|NULL
 comma
 l_int|NULL
 )paren
+suffix:semicolon
+multiline_comment|/* Make dongle available to driver only now to avoid&n;&t;&t; * race conditions - Jean II */
+id|self-&gt;dongle
+op_assign
+id|dongle
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3687,6 +3677,18 @@ op_minus
 id|EPERM
 suffix:semicolon
 r_else
+(brace
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
 id|irtty_set_dtr_rts
 c_func
 (paren
@@ -3697,6 +3699,13 @@ comma
 id|irq-&gt;ifr_rts
 )paren
 suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -3718,6 +3727,18 @@ op_minus
 id|EPERM
 suffix:semicolon
 r_else
+(brace
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
 id|irtty_set_mode
 c_func
 (paren
@@ -3726,6 +3747,13 @@ comma
 id|irq-&gt;ifr_mode
 )paren
 suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_default
@@ -3736,12 +3764,6 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon

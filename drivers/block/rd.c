@@ -51,24 +51,6 @@ id|NUM_RAMDISKS
 )braket
 suffix:semicolon
 multiline_comment|/* Size of RAM disks in bytes   */
-DECL|variable|rd_hardsec
-r_static
-r_int
-id|rd_hardsec
-(braket
-id|NUM_RAMDISKS
-)braket
-suffix:semicolon
-multiline_comment|/* Size of real blocks in bytes */
-DECL|variable|rd_blocksizes
-r_static
-r_int
-id|rd_blocksizes
-(braket
-id|NUM_RAMDISKS
-)braket
-suffix:semicolon
-multiline_comment|/* Size of 1024 byte blocks :)  */
 DECL|variable|rd_kbsize
 r_static
 r_int
@@ -1605,20 +1587,6 @@ id|rd_size
 op_lshift
 l_int|10
 suffix:semicolon
-id|rd_hardsec
-(braket
-id|i
-)braket
-op_assign
-id|rd_blocksize
-suffix:semicolon
-id|rd_blocksizes
-(braket
-id|i
-)braket
-op_assign
-id|rd_blocksize
-suffix:semicolon
 id|rd_kbsize
 (braket
 id|i
@@ -1750,14 +1718,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|rd_blocksizes
-suffix:semicolon
-multiline_comment|/* Avoid set_blocksize() check */
 id|blk_size
 (braket
 id|MAJOR_NR

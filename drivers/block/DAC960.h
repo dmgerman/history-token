@@ -9422,13 +9422,6 @@ id|PartitionSizes
 id|DAC960_MinorCount
 )braket
 suffix:semicolon
-DECL|member|BlockSizes
-r_int
-id|BlockSizes
-(braket
-id|DAC960_MinorCount
-)braket
-suffix:semicolon
 DECL|member|ProgressBuffer
 r_int
 r_char

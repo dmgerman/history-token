@@ -6,8 +6,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/ppp_defs.h&gt;
-macro_line|#include &lt;linux/ppp-comp.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;net/irda/irlap_event.h&gt;
 DECL|macro|CONFIG_IRDA_DYNAMIC_WINDOW
@@ -29,10 +27,16 @@ DECL|macro|CBROADCAST
 mdefine_line|#define CBROADCAST 0xfe       /* Connection broadcast address */
 DECL|macro|XID_FORMAT
 mdefine_line|#define XID_FORMAT 0x01       /* Discovery XID format */
+multiline_comment|/* Nobody seems to use this constant. */
 DECL|macro|LAP_WINDOW_SIZE
 mdefine_line|#define LAP_WINDOW_SIZE 8
+multiline_comment|/* We keep the LAP queue very small to minimise the amount of buffering.&n; * this improve latency and reduce resource consumption.&n; * This work only because we have synchronous refilling of IrLAP through&n; * the flow control mechanism (via scheduler and IrTTP).&n; * 2 buffers is the minimum we can work with, one that we send while polling&n; * IrTTP, and another to know that we should not send the pf bit.&n; * Jean II */
+DECL|macro|LAP_HIGH_THRESHOLD
+mdefine_line|#define LAP_HIGH_THRESHOLD     2
+multiline_comment|/* Some rare non TTP clients don&squot;t implement flow control, and&n; * so don&squot;t comply with the above limit (and neither with this one).&n; * For IAP and management, it doesn&squot;t matter, because they never transmit much.&n; *.For IrLPT, this should be fixed.&n; * - Jean II */
 DECL|macro|LAP_MAX_QUEUE
-mdefine_line|#define LAP_MAX_QUEUE  10
+mdefine_line|#define LAP_MAX_QUEUE 10
+multiline_comment|/* Please note that all IrDA management frames (LMP/TTP conn req/disc and&n; * IAS queries) fall in the second category and are sent to LAP even if TTP&n; * is stopped. This means that those frames will wait only a maximum of&n; * two (2) data frames before beeing sent on the &quot;wire&quot;, which speed up&n; * new socket setup when the link is saturated.&n; * Same story for two sockets competing for the medium : if one saturates&n; * the LAP, when the other want to transmit it only has to wait for&n; * maximum three (3) packets (2 + one scheduling), which improve performance&n; * of delay sensitive applications.&n; * Jean II */
 DECL|macro|NR_EXPECTED
 mdefine_line|#define NR_EXPECTED     1
 DECL|macro|NR_UNEXPECTED
@@ -768,5 +772,64 @@ DECL|macro|IRLAP_GET_HEADER_SIZE
 mdefine_line|#define IRLAP_GET_HEADER_SIZE(self) (LAP_MAX_HEADER)
 DECL|macro|IRLAP_GET_TX_QUEUE_LEN
 mdefine_line|#define IRLAP_GET_TX_QUEUE_LEN(self) skb_queue_len(&amp;self-&gt;txq)
+multiline_comment|/* Return TRUE if the node is in primary mode (i.e. master)&n; * - Jean II */
+DECL|function|irlap_is_primary
+r_static
+r_inline
+r_int
+id|irlap_is_primary
+c_func
+(paren
+r_struct
+id|irlap_cb
+op_star
+id|self
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|self-&gt;state
+)paren
+(brace
+r_case
+id|LAP_XMIT_P
+suffix:colon
+r_case
+id|LAP_NRM_P
+suffix:colon
+id|ret
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|LAP_XMIT_S
+suffix:colon
+r_case
+id|LAP_NRM_S
+suffix:colon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ret
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_return
+id|ret
+suffix:semicolon
+)brace
 macro_line|#endif
 eof

@@ -2627,7 +2627,6 @@ id|bdp
 suffix:semicolon
 )brace
 r_void
-id|__devexit
 DECL|function|e100_phy_reset
 id|e100_phy_reset
 c_func

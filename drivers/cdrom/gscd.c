@@ -35,18 +35,6 @@ macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|gscd_port
 mdefine_line|#define gscd_port gscd&t;&t;/* for compatible parameter passing with &quot;insmod&quot; */
 macro_line|#include &quot;gscd.h&quot;
-DECL|variable|gscd_blocksizes
-r_static
-r_int
-id|gscd_blocksizes
-(braket
-l_int|1
-)braket
-op_assign
-(brace
-l_int|512
-)brace
-suffix:semicolon
 DECL|variable|gscdPresent
 r_static
 r_int
@@ -3530,13 +3518,6 @@ comma
 op_amp
 id|gscd_lock
 )paren
-suffix:semicolon
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|gscd_blocksizes
 suffix:semicolon
 id|disk_state
 op_assign

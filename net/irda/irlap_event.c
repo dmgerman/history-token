@@ -872,7 +872,23 @@ multiline_comment|/* FALLTHROUGH */
 r_case
 id|LAP_XMIT_S
 suffix:colon
-multiline_comment|/* &n;&t;&t; * Check if there are any queued data frames, and do not&n;&t;&t; * try to disconnect link if we send any data frames, since&n;&t;&t; * that will change the state away form XMIT&n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * We just received the pf bit and are at the beginning&n;&t;&t; * of a new LAP transmit window.&n;&t;&t; * Check if there are any queued data frames, and do not&n;&t;&t; * try to disconnect link if we send any data frames, since&n;&t;&t; * that will change the state away form XMIT&n;&t;&t; */
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|2
+comma
+id|__FUNCTION__
+l_string|&quot;() : queue len = %d&bslash;n&quot;
+comma
+id|skb_queue_len
+c_func
+(paren
+op_amp
+id|self-&gt;txq
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -889,6 +905,7 @@ id|self-&gt;local_busy
 op_assign
 id|TRUE
 suffix:semicolon
+multiline_comment|/* Theory of operation.&n;&t;&t;&t; * We send frames up to when we fill the window or&n;&t;&t;&t; * reach line capacity. Those frames will queue up&n;&t;&t;&t; * in the device queue, and the driver will slowly&n;&t;&t;&t; * send them.&n;&t;&t;&t; * After each frame that we send, we poll the higher&n;&t;&t;&t; * layer for more data. It&squot;s the right time to do&n;&t;&t;&t; * that because the link layer need to perform the mtt&n;&t;&t;&t; * and then send the first frame, so we can afford&n;&t;&t;&t; * to send a bit of time in kernel space.&n;&t;&t;&t; * The explicit flow indication allow to minimise&n;&t;&t;&t; * buffers (== lower latency), to avoid higher layer&n;&t;&t;&t; * polling via timers (== less context switches) and&n;&t;&t;&t; * to implement a crude scheduler - Jean II */
 multiline_comment|/* Try to send away all queued data frames */
 r_while
 c_loop
@@ -907,6 +924,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
+multiline_comment|/* Send one frame */
 id|ret
 op_assign
 (paren
@@ -930,6 +948,15 @@ id|kfree_skb
 c_func
 (paren
 id|skb
+)paren
+suffix:semicolon
+multiline_comment|/* Poll the higher layers for one more frame */
+id|irlmp_flow_indication
+c_func
+(paren
+id|self-&gt;notify.instance
+comma
+id|FLOW_START
 )paren
 suffix:semicolon
 r_if

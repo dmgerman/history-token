@@ -1880,14 +1880,6 @@ id|floppy_sizes
 l_int|256
 )braket
 suffix:semicolon
-DECL|variable|floppy_blocksizes
-r_static
-r_int
-id|floppy_blocksizes
-(braket
-l_int|256
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * The driver is trying to determine the correct media format&n; * while probing is set. rw_interrupt() clears it after a&n; * successful access.&n; */
 DECL|variable|probing
 r_static
@@ -16760,6 +16752,8 @@ c_cond
 id|NO_GEOM
 )paren
 (brace
+macro_line|#if 0
+multiline_comment|/*&n;&t; * What the devil is going on here?  We are not guaranteed to do&n;&t; * any IO and ENXIO case is nothing but ENOMEM in disguise - it&n;&t; * happens if and only if buffer cache is out of memory.  WTF?&n;&t; */
 multiline_comment|/* auto-sensing */
 r_int
 id|size
@@ -16850,6 +16844,15 @@ id|brelse
 c_func
 (paren
 id|bh
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
+id|process_fd_request
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -18362,13 +18365,6 @@ id|MAJOR_NR
 )braket
 op_assign
 id|floppy_sizes
-suffix:semicolon
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|floppy_blocksizes
 suffix:semicolon
 id|blk_init_queue
 c_func

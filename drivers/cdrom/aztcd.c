@@ -22,18 +22,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|variable|aztcd_blocksizes
-r_static
-r_int
-id|aztcd_blocksizes
-(braket
-l_int|1
-)braket
-op_assign
-(brace
-l_int|2048
-)brace
-suffix:semicolon
 multiline_comment|/*###########################################################################&n;  Defines&n;  ###########################################################################&n;*/
 DECL|macro|SET_TIMER
 mdefine_line|#define SET_TIMER(func, jifs)   delay_timer.expires = jiffies + (jifs); &bslash;&n;                                delay_timer.function = (void *) (func); &bslash;&n;                                add_timer(&amp;delay_timer);
@@ -7697,12 +7685,17 @@ op_amp
 id|aztSpin
 )paren
 suffix:semicolon
-id|blksize_size
-(braket
+id|blk_queue_hardsect_size
+c_func
+(paren
+id|BLK_DEFAULT_QUEUE
+c_func
+(paren
 id|MAJOR_NR
-)braket
-op_assign
-id|aztcd_blocksizes
+)paren
+comma
+l_int|2048
+)paren
 suffix:semicolon
 id|register_disk
 c_func

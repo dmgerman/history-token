@@ -5518,13 +5518,6 @@ id|cdu535_check_media_change
 comma
 )brace
 suffix:semicolon
-DECL|variable|sonycd535_block_size
-r_static
-r_int
-id|sonycd535_block_size
-op_assign
-id|CDU535_BLOCK_SIZE
-suffix:semicolon
 multiline_comment|/*&n; * Initialize the driver.&n; */
 r_int
 id|__init
@@ -5852,8 +5845,6 @@ id|sony535_irq_used
 op_assign
 id|tmp_irq
 suffix:semicolon
-macro_line|#ifndef MODULE
-multiline_comment|/* This code is not in MODULEs by default, since the autoirq stuff might&n; * not be in the module-accessible symbol table.&n; */
 multiline_comment|/* A negative sony535_irq_used will attempt an autoirq. */
 r_if
 c_cond
@@ -5863,10 +5854,17 @@ OL
 l_int|0
 )paren
 (brace
-id|autoirq_setup
+r_int
+r_int
+id|irq_mask
+comma
+id|delay
+suffix:semicolon
+id|irq_mask
+op_assign
+id|probe_irq_on
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 id|enable_interrupts
@@ -5883,12 +5881,32 @@ id|read_status_reg
 )paren
 suffix:semicolon
 multiline_comment|/* does a reset? */
-id|sony535_irq_used
+id|delay
 op_assign
-id|autoirq_report
+id|jiffies
+op_plus
+id|HZ
+op_div
+l_int|10
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|time_before
 c_func
 (paren
-l_int|10
+id|jiffies
+comma
+id|delay
+)paren
+)paren
+suffix:semicolon
+id|sony535_irq_used
+op_assign
+id|probe_irq_off
+c_func
+(paren
+id|irq_mask
 )paren
 suffix:semicolon
 id|disable_interrupts
@@ -5897,7 +5915,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6102,13 +6119,17 @@ op_amp
 id|sonycd535_lock
 )paren
 suffix:semicolon
-id|blksize_size
-(braket
+id|blk_queue_hardsect_size
+c_func
+(paren
+id|BLK_DEFAULT_QUEUE
+c_func
+(paren
 id|MAJOR_NR
-)braket
-op_assign
-op_amp
-id|sonycd535_block_size
+)paren
+comma
+id|CDU535_BLOCK_SIZE
+)paren
 suffix:semicolon
 id|sony_toc
 op_assign

@@ -80,16 +80,6 @@ mdefine_line|#define I2O_UNIT(dev)&t;(i2ob_dev[minor((dev)) &amp; 0xf0])
 DECL|macro|I2O_LOCK
 mdefine_line|#define I2O_LOCK(unit)&t;(i2ob_dev[(unit)].req_queue-&gt;queue_lock)
 multiline_comment|/*&n; *&t;Some of these can be made smaller later&n; */
-DECL|variable|i2ob_blksizes
-r_static
-r_int
-id|i2ob_blksizes
-(braket
-id|MAX_I2OB
-op_lshift
-l_int|4
-)braket
-suffix:semicolon
 DECL|variable|i2ob_sizes
 r_static
 r_int
@@ -6658,13 +6648,6 @@ id|MAJOR_NR
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; *&t;Now fill in the boiler plate&n;&t; */
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|i2ob_blksizes
-suffix:semicolon
 id|blk_size
 (braket
 id|MAJOR_NR
@@ -6781,13 +6764,6 @@ dot
 id|depth
 op_assign
 id|MAX_I2OB_DEPTH
-suffix:semicolon
-id|i2ob_blksizes
-(braket
-id|i
-)braket
-op_assign
-l_int|1024
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;Set up the queue&n;&t; */

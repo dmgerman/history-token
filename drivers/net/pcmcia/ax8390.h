@@ -57,28 +57,6 @@ macro_line|#else
 DECL|macro|ei_debug
 mdefine_line|#define ei_debug 1
 macro_line|#endif
-macro_line|#ifndef HAVE_AUTOIRQ
-multiline_comment|/* From auto_irq.c */
-r_extern
-r_void
-id|autoirq_setup
-c_func
-(paren
-r_int
-id|waittime
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|autoirq_report
-c_func
-(paren
-r_int
-id|waittime
-)paren
-suffix:semicolon
-macro_line|#endif
 r_static
 r_int
 id|ethdev_init

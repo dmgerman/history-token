@@ -623,7 +623,7 @@ mdefine_line|#define LSR_OE&t;&t;(1 &lt;&lt; 1)&t;/* Overrun Error */
 DECL|macro|LSR_DR
 mdefine_line|#define LSR_DR&t;&t;(1 &lt;&lt; 0)&t;/* Data Ready */
 DECL|macro|MCR_LOOP
-mdefine_line|#define MCR_LOOP&t;(1 &lt;&lt; 4)&t;*/
+mdefine_line|#define MCR_LOOP&t;(1 &lt;&lt; 4)
 DECL|macro|MCR_OUT2
 mdefine_line|#define MCR_OUT2&t;(1 &lt;&lt; 3)&t;/* force MSR_DCD in loopback mode */
 DECL|macro|MCR_OUT1

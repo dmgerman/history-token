@@ -9198,11 +9198,15 @@ multiline_comment|/* Request our IO Range */
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
+c_func
 (paren
 id|megaBase
 comma
 l_int|16
+comma
+l_string|&quot;megaraid&quot;
 )paren
 )paren
 (brace
@@ -9217,16 +9221,6 @@ r_goto
 id|err_unregister
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|megaBase
-comma
-l_int|16
-comma
-l_string|&quot;megaraid&quot;
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Request our IRQ */
 r_if

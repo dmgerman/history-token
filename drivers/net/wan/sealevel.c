@@ -587,12 +587,15 @@ multiline_comment|/*&n;&t; *&t;Get the needed I/O space&n;&t; */
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|iobase
 comma
 l_int|8
+comma
+l_string|&quot;Sealevel 4021&quot;
 )paren
 )paren
 (brace
@@ -609,16 +612,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|iobase
-comma
-l_int|8
-comma
-l_string|&quot;Sealevel 4021&quot;
-)paren
-suffix:semicolon
 id|b
 op_assign
 (paren
