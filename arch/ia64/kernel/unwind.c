@@ -1601,6 +1601,10 @@ r_int
 op_star
 )paren
 (paren
+(paren
+r_int
+r_int
+)paren
 id|pt
 op_plus
 id|pt_regs_off
