@@ -1050,18 +1050,6 @@ id|findData.ChangeTime
 )paren
 )paren
 suffix:semicolon
-id|inode-&gt;i_mode
-op_assign
-id|S_IALLUGO
-op_amp
-op_complement
-(paren
-id|S_ISUID
-op_or
-id|S_IXGRP
-)paren
-suffix:semicolon
-multiline_comment|/* 2767 perms indicate mandatory locking - will override for dirs later */
 id|cFYI
 c_func
 (paren
@@ -1073,6 +1061,11 @@ comma
 id|findData.Attributes
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* set default mode. will override for dirs below */
+id|inode-&gt;i_mode
+op_assign
+id|cifs_sb-&gt;mnt_file_mode
 suffix:semicolon
 r_if
 c_cond
@@ -1100,7 +1093,7 @@ id|ATTR_DIRECTORY
 multiline_comment|/* override default perms since we do not do byte range locking on dirs */
 id|inode-&gt;i_mode
 op_assign
-id|S_IRWXUGO
+id|cifs_sb-&gt;mnt_dir_mode
 suffix:semicolon
 id|inode-&gt;i_mode
 op_or_assign
@@ -1184,7 +1177,15 @@ c_func
 id|findData.NumberOfLinks
 )paren
 suffix:semicolon
-multiline_comment|/* BB fill in uid and gid here? with help from winbind? */
+multiline_comment|/* BB fill in uid and gid here? with help from winbind? &n;&t;&t;&t;or retrieve from NTFS stream extended attribute */
+id|inode-&gt;i_uid
+op_assign
+id|cifs_sb-&gt;mnt_uid
+suffix:semicolon
+id|inode-&gt;i_gid
+op_assign
+id|cifs_sb-&gt;mnt_gid
+suffix:semicolon
 r_if
 c_cond
 (paren

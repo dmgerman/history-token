@@ -4000,6 +4000,17 @@ c_func
 id|tmp_inode
 )paren
 suffix:semicolon
+r_struct
+id|cifs_sb_info
+op_star
+id|cifs_sb
+op_assign
+id|CIFS_SB
+c_func
+(paren
+id|tmp_inode-&gt;i_sb
+)paren
+suffix:semicolon
 id|pfindData-&gt;ExtFileAttributes
 op_assign
 id|le32_to_cpu
@@ -4079,16 +4090,19 @@ id|pfindData-&gt;ChangeTime
 suffix:semicolon
 multiline_comment|/* treat dos attribute of read-only as read-only mode bit e.g. 555? */
 multiline_comment|/* 2767 perms - indicate mandatory locking */
+multiline_comment|/* BB fill in uid and gid here? with help from winbind? &n;&t;&t;&t;or retrieve from NTFS stream extended attribute */
+id|tmp_inode-&gt;i_uid
+op_assign
+id|cifs_sb-&gt;mnt_uid
+suffix:semicolon
+id|tmp_inode-&gt;i_gid
+op_assign
+id|cifs_sb-&gt;mnt_gid
+suffix:semicolon
+multiline_comment|/* set default mode. will override for dirs below */
 id|tmp_inode-&gt;i_mode
 op_assign
-id|S_IALLUGO
-op_amp
-op_complement
-(paren
-id|S_ISUID
-op_or
-id|S_IXGRP
-)paren
+id|cifs_sb-&gt;mnt_file_mode
 suffix:semicolon
 id|cFYI
 c_func
@@ -4138,7 +4152,7 @@ suffix:semicolon
 multiline_comment|/* override default perms since we do not lock dirs */
 id|tmp_inode-&gt;i_mode
 op_assign
-id|S_IRWXUGO
+id|cifs_sb-&gt;mnt_dir_mode
 suffix:semicolon
 id|tmp_inode-&gt;i_mode
 op_or_assign
