@@ -891,10 +891,27 @@ op_assign
 id|inode-&gt;i_sb-&gt;s_bdev-&gt;bd_inode-&gt;i_mapping
 suffix:semicolon
 r_else
+(brace
+multiline_comment|/*&n;&t;&t; * If an nfs client tries to read an inode that is larger&n;&t;&t; * than any existing inodes, we may try to read past the&n;&t;&t; * end of the inode map&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|lblock
+op_lshift
+id|inode-&gt;i_blkbits
+)paren
+op_ge
+id|inode-&gt;i_size
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 id|mapping
 op_assign
 id|inode-&gt;i_mapping
 suffix:semicolon
+)brace
 id|hash_ptr
 op_assign
 id|meta_hash

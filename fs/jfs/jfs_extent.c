@@ -1596,6 +1596,13 @@ comma
 id|sbi
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|ji-&gt;ag_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1654,6 +1661,13 @@ op_assign
 id|ag
 suffix:semicolon
 )brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|ji-&gt;ag_lock
+)paren
+suffix:semicolon
 )brace
 r_return
 (paren
