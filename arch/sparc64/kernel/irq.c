@@ -1,5 +1,6 @@
 multiline_comment|/* $Id: irq.c,v 1.114 2002/01/11 08:45:38 davem Exp $&n; * irq.c: UltraSparc IRQ handling/init/registry.&n; *&n; * Copyright (C) 1997  David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1998  Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1998  Jakub Jelinek    (jj@ultra.linux.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
@@ -459,6 +460,10 @@ c_cond
 id|tlb_type
 op_eq
 id|cheetah
+op_logical_or
+id|tlb_type
+op_eq
+id|cheetah_plus
 )paren
 (brace
 multiline_comment|/* We set it to our Safari AID. */
@@ -4254,6 +4259,10 @@ c_cond
 id|tlb_type
 op_eq
 id|cheetah
+op_logical_or
+id|tlb_type
+op_eq
+id|cheetah_plus
 )paren
 (brace
 id|tid

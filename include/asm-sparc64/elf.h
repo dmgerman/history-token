@@ -82,7 +82,7 @@ macro_line|#endif
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this cpu supports.  */
 multiline_comment|/* On Ultra, we support all of the v8 capabilities. */
 DECL|macro|ELF_HWCAP
-mdefine_line|#define ELF_HWCAP&t;((HWCAP_SPARC_FLUSH | HWCAP_SPARC_STBAR | &bslash;&n;&t;&t;&t;  HWCAP_SPARC_SWAP | HWCAP_SPARC_MULDIV | &bslash;&n;&t;&t;&t;  HWCAP_SPARC_V9) | &bslash;&n;&t;&t;&t; ((tlb_type == cheetah) ? HWCAP_SPARC_ULTRA3 : 0))
+mdefine_line|#define ELF_HWCAP&t;((HWCAP_SPARC_FLUSH | HWCAP_SPARC_STBAR | &bslash;&n;&t;&t;&t;  HWCAP_SPARC_SWAP | HWCAP_SPARC_MULDIV | &bslash;&n;&t;&t;&t;  HWCAP_SPARC_V9) | &bslash;&n;&t;&t;&t; ((tlb_type == cheetah || tlb_type == cheetah_plus) ? &bslash;&n;&t;&t;&t;  HWCAP_SPARC_ULTRA3 : 0))
 multiline_comment|/* This yields a string that ld.so will use to load implementation&n;   specific libraries for optimization.  This is more specific in&n;   intent than poking at uname or /proc/cpuinfo.  */
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM&t;(NULL)

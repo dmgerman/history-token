@@ -1434,6 +1434,20 @@ id|image
 suffix:semicolon
 multiline_comment|/*&n;     *  Helper functions&n;     */
 r_extern
+r_void
+id|do_install_cmap
+c_func
+(paren
+r_int
+id|con
+comma
+r_struct
+id|fb_info
+op_star
+id|info
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|gen_update_var
 c_func

@@ -22,6 +22,8 @@ DECL|macro|TSB_EXTENSION_S
 mdefine_line|#define TSB_EXTENSION_S&t;&t;0x0000000000000050 /* Ultra-III and later, D-TLB only&t;*/
 DECL|macro|TSB_EXTENSION_N
 mdefine_line|#define TSB_EXTENSION_N&t;&t;0x0000000000000058 /* Ultra-III and later&t;&t;*/
+DECL|macro|TLB_TAG_ACCESS_EXT
+mdefine_line|#define TLB_TAG_ACCESS_EXT&t;0x0000000000000060 /* Ultra-III+ and later&t;&t;*/
 multiline_comment|/* These registers only exist as one entity, and are accessed&n; * via ASI_DMMU only.&n; */
 DECL|macro|PRIMARY_CONTEXT
 mdefine_line|#define PRIMARY_CONTEXT&t;&t;0x0000000000000008
@@ -49,6 +51,12 @@ DECL|enumerator|cheetah
 id|cheetah
 op_assign
 l_int|1
+comma
+DECL|enumerator|cheetah_plus
+id|cheetah_plus
+op_assign
+l_int|2
+comma
 )brace
 suffix:semicolon
 r_extern
@@ -57,7 +65,7 @@ id|ultra_tlb_layout
 id|tlb_type
 suffix:semicolon
 DECL|macro|SPARC64_USE_STICK
-mdefine_line|#define SPARC64_USE_STICK&t;(tlb_type == cheetah)
+mdefine_line|#define SPARC64_USE_STICK&t;(tlb_type != spitfire)
 DECL|macro|CHEETAH_HIGHEST_LOCKED_TLBENT
 mdefine_line|#define CHEETAH_HIGHEST_LOCKED_TLBENT&t;(16 - 1)
 DECL|macro|L1DCACHE_SIZE
@@ -1596,6 +1604,9 @@ c_func
 (paren
 r_int
 id|entry
+comma
+r_int
+id|tlb
 )paren
 (brace
 r_int
@@ -1617,7 +1628,7 @@ suffix:colon
 l_string|&quot;r&quot;
 (paren
 (paren
-l_int|2
+id|tlb
 op_lshift
 l_int|16
 )paren
@@ -1649,6 +1660,9 @@ c_func
 (paren
 r_int
 id|entry
+comma
+r_int
+id|tlb
 )paren
 (brace
 r_int
@@ -1669,7 +1683,7 @@ suffix:colon
 l_string|&quot;r&quot;
 (paren
 (paren
-l_int|2
+id|tlb
 op_lshift
 l_int|16
 )paren
@@ -1704,6 +1718,9 @@ comma
 r_int
 r_int
 id|data
+comma
+r_int
+id|tlb
 )paren
 (brace
 id|__asm__
@@ -1723,7 +1740,7 @@ comma
 l_string|&quot;r&quot;
 (paren
 (paren
-l_int|2
+id|tlb
 op_lshift
 l_int|16
 )paren

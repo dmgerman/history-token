@@ -1412,7 +1412,7 @@ multiline_comment|/*&n;&t;&t; * We dont check the error code - if userspace has&
 id|put_user
 c_func
 (paren
-l_int|0UL
+l_int|0
 comma
 id|tsk-&gt;user_tid
 )paren

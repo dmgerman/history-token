@@ -288,7 +288,8 @@ mdefine_line|#define __NR_poll               153 /* Common                      
 DECL|macro|__NR_getdents64
 mdefine_line|#define __NR_getdents64&t;&t;154 /* Linux specific&t;&t;&t;&t;   */
 multiline_comment|/* #define __NR_fcntl64         155    Linux sparc32 Specific                      */
-multiline_comment|/* #define __NR_getdirentries   156    SunOS Specific                              */
+DECL|macro|__NR_security
+mdefine_line|#define __NR_security           156 /* getdirentries under SunOS                   */
 DECL|macro|__NR_statfs
 mdefine_line|#define __NR_statfs             157 /* Common                                      */
 DECL|macro|__NR_fstatfs

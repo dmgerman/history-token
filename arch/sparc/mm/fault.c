@@ -2,6 +2,7 @@ multiline_comment|/* $Id: fault.c,v 1.122 2001/11/17 07:19:26 davem Exp $&n; * f
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
