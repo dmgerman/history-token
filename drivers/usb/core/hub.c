@@ -2951,6 +2951,16 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hub
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 id|ret
 op_assign
 id|get_port_status
