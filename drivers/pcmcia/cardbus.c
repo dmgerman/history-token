@@ -304,11 +304,6 @@ op_star
 id|s
 comma
 r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-r_struct
 id|resource
 op_star
 id|res
@@ -529,8 +524,6 @@ id|cb_setup_cis_mem
 c_func
 (paren
 id|s
-comma
-id|dev
 comma
 id|res
 )paren
