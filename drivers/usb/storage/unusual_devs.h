@@ -1774,15 +1774,15 @@ l_int|0x1001
 comma
 l_int|0x1000
 comma
-l_int|0x5009
+l_int|0x9999
 comma
 l_string|&quot;Casio&quot;
 comma
 l_string|&quot;QV DigitalCamera&quot;
 comma
-id|US_SC_8070
+id|US_SC_DEVICE
 comma
-id|US_PR_CB
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
