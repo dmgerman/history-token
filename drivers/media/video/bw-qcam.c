@@ -72,8 +72,8 @@ l_string|&quot;i&quot;
 suffix:semicolon
 macro_line|#endif
 DECL|function|read_lpstatus
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|read_lpstatus
 c_func
@@ -93,8 +93,8 @@ id|q-&gt;pport
 suffix:semicolon
 )brace
 DECL|function|read_lpcontrol
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|read_lpcontrol
 c_func
@@ -114,8 +114,8 @@ id|q-&gt;pport
 suffix:semicolon
 )brace
 DECL|function|read_lpdata
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|read_lpdata
 c_func
@@ -135,8 +135,8 @@ id|q-&gt;pport
 suffix:semicolon
 )brace
 DECL|function|write_lpdata
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|write_lpdata
 c_func
@@ -160,8 +160,8 @@ id|d
 suffix:semicolon
 )brace
 DECL|function|write_lpcontrol
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|write_lpcontrol
 c_func
@@ -1555,8 +1555,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Qc_readbytes reads some bytes from the QC and puts them in&n;   the supplied buffer.  It returns the number of bytes read,&n;   or -1 on error. */
 DECL|function|qc_readbytes
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|qc_readbytes
 c_func

@@ -341,8 +341,8 @@ id|hdrlen
 )paren
 suffix:semicolon
 macro_line|#endif
-r_extern
-id|__inline__
+r_static
+r_inline
 r_struct
 id|pcbit_chan
 op_star
