@@ -3376,7 +3376,14 @@ l_string|&quot;&quot;
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/*MODULE_DEVICE_TABLE(isapnp, isapnp_opl3sa2_list);*/
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pnp
+comma
+id|pnp_opl3sa2_list
+)paren
+suffix:semicolon
 DECL|function|opl3sa2_pnp_probe
 r_static
 r_int
@@ -3387,12 +3394,6 @@ r_struct
 id|pnp_dev
 op_star
 id|dev
-comma
-r_const
-r_struct
-id|pnp_id
-op_star
-id|card_id
 comma
 r_const
 r_struct
@@ -3661,11 +3662,6 @@ dot
 id|name
 op_assign
 l_string|&quot;opl3sa2&quot;
-comma
-dot
-id|card_id_table
-op_assign
-l_int|NULL
 comma
 dot
 id|id_table
