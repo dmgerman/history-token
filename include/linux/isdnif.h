@@ -217,10 +217,6 @@ DECL|macro|ISDN_CMD_SETL3
 mdefine_line|#define ISDN_CMD_SETL3   12       /* Set B-Chan. Layer3-Parameter          */
 DECL|macro|ISDN_CMD_GETL3
 mdefine_line|#define ISDN_CMD_GETL3   13       /* Get B-Chan. Layer3-Parameter          */
-DECL|macro|ISDN_CMD_LOCK
-mdefine_line|#define ISDN_CMD_LOCK    14       /* Signal usage by upper levels          */
-DECL|macro|ISDN_CMD_UNLOCK
-mdefine_line|#define ISDN_CMD_UNLOCK  15       /* Release usage-lock                    */
 DECL|macro|ISDN_CMD_SUSPEND
 mdefine_line|#define ISDN_CMD_SUSPEND 16       /* Suspend connection                    */
 DECL|macro|ISDN_CMD_RESUME
@@ -1024,6 +1020,12 @@ multiline_comment|/*&n; * The interface-struct itself (initialized at load-time 
 r_typedef
 r_struct
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 multiline_comment|/* Number of channels supported by this driver&n;   */
 DECL|member|channels
 r_int

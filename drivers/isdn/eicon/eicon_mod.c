@@ -2592,22 +2592,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-r_case
-id|ISDN_CMD_LOCK
-suffix:colon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-r_case
-id|ISDN_CMD_UNLOCK
-suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_TTY_FAX
 r_case
 id|ISDN_CMD_FAXCMD
@@ -4085,6 +4069,13 @@ r_int
 r_int
 )paren
 id|card
+)paren
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+op_amp
+id|card-&gt;interface
 )paren
 suffix:semicolon
 id|card-&gt;interface.maxbufsize
