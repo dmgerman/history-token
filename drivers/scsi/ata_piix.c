@@ -1393,6 +1393,8 @@ r_int
 id|pio
 op_assign
 id|adev-&gt;pio_mode
+op_minus
+id|XFER_PIO_0
 suffix:semicolon
 r_struct
 id|pci_dev
