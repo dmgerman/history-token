@@ -3423,16 +3423,6 @@ op_eq
 id|FLOPPY_MAJOR
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-r_if
-c_cond
-(paren
-op_logical_neg
-id|initrd_start
-)paren
-id|mount_initrd
-op_assign
-l_int|0
-suffix:semicolon
 id|real_root_dev
 op_assign
 id|ROOT_DEV
