@@ -1233,10 +1233,13 @@ r_int
 id|interactive_credit
 suffix:semicolon
 DECL|member|timestamp
+DECL|member|last_ran
 r_int
 r_int
 r_int
 id|timestamp
+comma
+id|last_ran
 suffix:semicolon
 DECL|member|activated
 r_int

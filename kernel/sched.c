@@ -152,7 +152,7 @@ id|p-&gt;static_prio
 suffix:semicolon
 )brace
 DECL|macro|task_hot
-mdefine_line|#define task_hot(p, now, sd) ((now) - (p)-&gt;timestamp &lt; (sd)-&gt;cache_hot_time)
+mdefine_line|#define task_hot(p, now, sd) ((long long) ((now) - (p)-&gt;last_ran)&t;&bslash;&n;&t;&t;&t;&t;&lt; (long long) (sd)-&gt;cache_hot_time)
 DECL|enum|idle_type
 r_enum
 id|idle_type
@@ -8884,6 +8884,8 @@ op_decrement
 suffix:semicolon
 )brace
 id|prev-&gt;timestamp
+op_assign
+id|prev-&gt;last_ran
 op_assign
 id|now
 suffix:semicolon
