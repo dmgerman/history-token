@@ -2902,7 +2902,7 @@ id|inode
 op_star
 comma
 r_struct
-id|qstr
+id|dentry
 op_star
 comma
 r_struct
@@ -2910,14 +2910,6 @@ id|iattr
 op_star
 comma
 id|dev_t
-comma
-r_struct
-id|nfs_fh
-op_star
-comma
-r_struct
-id|nfs_fattr
-op_star
 )paren
 suffix:semicolon
 DECL|member|statfs

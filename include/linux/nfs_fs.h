@@ -1021,6 +1021,27 @@ r_struct
 id|dentry_operations
 id|nfs_dentry_operations
 suffix:semicolon
+r_extern
+r_int
+id|nfs_instantiate
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+comma
+r_struct
+id|nfs_fh
+op_star
+id|fh
+comma
+r_struct
+id|nfs_fattr
+op_star
+id|fattr
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * linux/fs/nfs/symlink.c&n; */
 r_extern
 r_struct
