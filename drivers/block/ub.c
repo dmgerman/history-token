@@ -7038,6 +7038,11 @@ id|disk-&gt;private_data
 op_assign
 id|sc
 suffix:semicolon
+id|disk-&gt;driverfs_dev
+op_assign
+op_amp
+id|intf-&gt;dev
+suffix:semicolon
 id|rc
 op_assign
 op_minus
