@@ -8004,7 +8004,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;%04x %04x %04x %04x %04x %04x&bslash;n&quot;
+l_string|&quot;%04x %04x %04x %04x %04x %04x %04x&bslash;n&quot;
 comma
 id|rt6_stats.fib_nodes
 comma
@@ -8022,6 +8022,8 @@ c_func
 op_amp
 id|ip6_dst_ops.entries
 )paren
+comma
+id|rt6_stats.fib_discarded_routes
 )paren
 suffix:semicolon
 r_return

@@ -3020,6 +3020,9 @@ suffix:semicolon
 id|rt6_stats.fib_rt_entries
 op_decrement
 suffix:semicolon
+id|rt6_stats.fib_discarded_routes
+op_increment
+suffix:semicolon
 multiline_comment|/* Adjust walkers */
 id|read_lock
 c_func
