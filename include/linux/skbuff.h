@@ -451,15 +451,15 @@ DECL|member|nfcache
 id|__u32
 id|nfcache
 suffix:semicolon
+DECL|member|nfctinfo
+id|__u32
+id|nfctinfo
+suffix:semicolon
 DECL|member|nfct
 r_struct
 id|nf_conntrack
 op_star
 id|nfct
-suffix:semicolon
-DECL|member|nfctinfo
-id|__u32
-id|nfctinfo
 suffix:semicolon
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 DECL|member|nf_debug
