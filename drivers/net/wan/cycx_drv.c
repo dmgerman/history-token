@@ -1251,9 +1251,11 @@ id|code
 op_plus
 id|i
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+id|u32
+comma
 id|CFM_LOAD_BUFSZ
 comma
 (paren
@@ -1428,9 +1430,11 @@ id|code
 op_plus
 id|i
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+id|u32
+comma
 id|CFM_LOAD_BUFSZ
 comma
 (paren
