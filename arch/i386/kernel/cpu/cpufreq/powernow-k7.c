@@ -575,7 +575,7 @@ l_int|2
 (brace
 id|printk
 (paren
-l_string|&quot; nothing.&bslash;n&quot;
+l_string|&quot;nothing.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
