@@ -459,7 +459,9 @@ id|MODULE_STATE_GOING
 suffix:semicolon
 )brace
 multiline_comment|/* Is this address in a module? */
-r_int
+r_struct
+id|module
+op_star
 id|module_text_address
 c_func
 (paren
@@ -758,7 +760,9 @@ multiline_comment|/* Is this address in a module? */
 DECL|function|module_text_address
 r_static
 r_inline
-r_int
+r_struct
+id|module
+op_star
 id|module_text_address
 c_func
 (paren
@@ -768,7 +772,7 @@ id|addr
 )paren
 (brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Get/put a kernel symbol (calls should be symmetric) */

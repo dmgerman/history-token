@@ -116,6 +116,8 @@ c_func
 (paren
 id|addr
 )paren
+op_ne
+l_int|NULL
 suffix:semicolon
 )brace
 eof
