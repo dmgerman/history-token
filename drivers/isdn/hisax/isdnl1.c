@@ -4550,11 +4550,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cs-&gt;setstack_d
+id|cs-&gt;dc_l1_ops-&gt;open
 )paren
-id|cs
+id|cs-&gt;dc_l1_ops
 op_member_access_from_pointer
-id|setstack_d
+id|open
 c_func
 (paren
 id|st

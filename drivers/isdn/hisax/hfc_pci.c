@@ -6169,7 +6169,8 @@ suffix:semicolon
 multiline_comment|/***********************************************/
 multiline_comment|/* called during init setting l1 stack pointer */
 multiline_comment|/***********************************************/
-r_void
+r_static
+r_int
 DECL|function|setstack_hfcpci
 id|setstack_hfcpci
 c_func
@@ -6188,6 +6189,9 @@ id|cs
 id|st-&gt;l1.l1hw
 op_assign
 id|HFCPCI_l1hw
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************/
@@ -7579,11 +7583,11 @@ id|cs
 )paren
 suffix:semicolon
 )brace
-DECL|variable|hfcpci_l1_ops
+DECL|variable|hfcpci_bc_l1_ops
 r_static
 r_struct
 id|bc_l1_ops
-id|hfcpci_l1_ops
+id|hfcpci_bc_l1_ops
 op_assign
 (brace
 dot
@@ -7603,6 +7607,25 @@ id|close_hfcpci
 comma
 )brace
 suffix:semicolon
+DECL|variable|hfcpci_dc_l1_ops
+r_static
+r_struct
+id|dc_l1_ops
+id|hfcpci_dc_l1_ops
+op_assign
+(brace
+dot
+id|fill_fifo
+op_assign
+id|hfcpci_fill_dfifo
+comma
+dot
+id|open
+op_assign
+id|setstack_hfcpci
+comma
+)brace
+suffix:semicolon
 multiline_comment|/********************************/
 multiline_comment|/* called for card init message */
 multiline_comment|/********************************/
@@ -7618,10 +7641,6 @@ op_star
 id|cs
 )paren
 (brace
-id|cs-&gt;setstack_d
-op_assign
-id|setstack_hfcpci
-suffix:semicolon
 id|cs-&gt;dbusytimer.function
 op_assign
 (paren
@@ -7658,11 +7677,12 @@ suffix:semicolon
 id|cs-&gt;bc_l1_ops
 op_assign
 op_amp
-id|hfcpci_l1_ops
+id|hfcpci_bc_l1_ops
 suffix:semicolon
-id|cs-&gt;DC_Send_Data
+id|cs-&gt;dc_l1_ops
 op_assign
-id|hfcpci_fill_dfifo
+op_amp
+id|hfcpci_dc_l1_ops
 suffix:semicolon
 id|mode_hfcpci
 c_func
