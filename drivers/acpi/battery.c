@@ -32,8 +32,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 DECL|macro|ACPI_BATTERY_VALUE_UNKNOWN
 mdefine_line|#define ACPI_BATTERY_VALUE_UNKNOWN 0xFFFFFFFF
 DECL|macro|ACPI_BATTERY_FORMAT_BIF

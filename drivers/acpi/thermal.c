@@ -57,8 +57,6 @@ comma
 l_string|&quot;Thermal zone polling frequency, in 1/10 seconds.&bslash;n&quot;
 )paren
 suffix:semicolon
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 DECL|macro|ACPI_THERMAL_MAX_ACTIVE
 mdefine_line|#define ACPI_THERMAL_MAX_ACTIVE&t;10
 DECL|macro|KELVIN_TO_CELSIUS

@@ -16,8 +16,6 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;pci_bind&quot;
 )paren
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 DECL|struct|acpi_pci_data
 r_struct
 id|acpi_pci_data

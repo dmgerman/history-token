@@ -132,18 +132,6 @@ id|acpi_ec_ecdt_probe
 r_void
 )paren
 suffix:semicolon
-r_int
-id|acpi_ec_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|acpi_ec_exit
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------------&n;                                       Fan&n;   -------------------------------------------------------------------------- */
 DECL|macro|ACPI_FAN_COMPONENT
@@ -173,18 +161,6 @@ DECL|macro|ACPI_PCI_ROOT_DRIVER_NAME
 mdefine_line|#define ACPI_PCI_ROOT_DRIVER_NAME&t;&quot;ACPI PCI Root Bridge Driver&quot;
 DECL|macro|ACPI_PCI_ROOT_DEVICE_NAME
 mdefine_line|#define ACPI_PCI_ROOT_DEVICE_NAME&t;&quot;PCI Root Bridge&quot;
-r_int
-id|acpi_pci_root_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|acpi_pci_root_exit
-(paren
-r_void
-)paren
-suffix:semicolon
 r_void
 id|acpi_pci_get_translations
 (paren
@@ -228,18 +204,6 @@ id|handle
 comma
 r_int
 id|index
-)paren
-suffix:semicolon
-r_int
-id|acpi_pci_link_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|acpi_pci_link_exit
-(paren
-r_void
 )paren
 suffix:semicolon
 multiline_comment|/* ACPI PCI Interrupt Routing (pci_irq.c) */
@@ -331,18 +295,6 @@ r_int
 id|state
 )paren
 suffix:semicolon
-r_int
-id|acpi_power_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|acpi_power_exit
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------------&n;                                    Processor&n;   -------------------------------------------------------------------------- */
 DECL|macro|ACPI_PROCESSOR_COMPONENT
@@ -413,20 +365,6 @@ DECL|macro|ACPI_SYSTEM_FILE_DEBUG_LAYER
 mdefine_line|#define ACPI_SYSTEM_FILE_DEBUG_LAYER&t;&quot;debug_layer&quot;
 DECL|macro|ACPI_SYSTEM_FILE_DEBUG_LEVEL
 mdefine_line|#define ACPI_SYSTEM_FILE_DEBUG_LEVEL&t;&quot;debug_level&quot;
-macro_line|#ifdef CONFIG_ACPI_SYSTEM
-r_int
-id|acpi_system_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|acpi_system_exit
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------------&n;                                 Thermal Zone&n;   -------------------------------------------------------------------------- */
 DECL|macro|ACPI_THERMAL_COMPONENT
 mdefine_line|#define ACPI_THERMAL_COMPONENT&t;&t;0x04000000

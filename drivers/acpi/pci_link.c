@@ -15,8 +15,6 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;pci_link&quot;
 )paren
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 DECL|macro|ACPI_PCI_LINK_MAX_POSSIBLE
 mdefine_line|#define ACPI_PCI_LINK_MAX_POSSIBLE 16
 r_static
@@ -2167,9 +2165,10 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|function|acpi_pci_link_init
+r_static
 r_int
 id|__init
-DECL|function|acpi_pci_link_init
 id|acpi_pci_link_init
 (paren
 r_void
@@ -2179,6 +2178,17 @@ id|ACPI_FUNCTION_TRACE
 c_func
 (paren
 l_string|&quot;acpi_pci_link_init&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_disabled
+)paren
+id|return_VALUE
+c_func
+(paren
+l_int|0
 )paren
 suffix:semicolon
 id|acpi_link.count
@@ -2218,4 +2228,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_pci_link_init
+id|subsys_initcall
+c_func
+(paren
+id|acpi_pci_link_init
+)paren
+suffix:semicolon
 eof

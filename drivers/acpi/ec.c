@@ -15,8 +15,6 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;acpi_ec&quot;
 )paren
-DECL|macro|PREFIX
-mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 DECL|macro|ACPI_EC_FLAG_OBF
 mdefine_line|#define ACPI_EC_FLAG_OBF&t;0x01&t;/* Output buffer full */
 DECL|macro|ACPI_EC_FLAG_IBF
@@ -3046,9 +3044,10 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|acpi_ec_init
+r_static
 r_int
 id|__init
-DECL|function|acpi_ec_init
 id|acpi_ec_init
 (paren
 r_void
@@ -3063,6 +3062,17 @@ id|ACPI_FUNCTION_TRACE
 c_func
 (paren
 l_string|&quot;acpi_ec_init&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_disabled
+)paren
+id|return_VALUE
+c_func
+(paren
+l_int|0
 )paren
 suffix:semicolon
 id|result
@@ -3105,6 +3115,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_ec_init
+id|subsys_initcall
+c_func
+(paren
+id|acpi_ec_init
+)paren
+suffix:semicolon
 r_void
 id|__exit
 DECL|function|acpi_ec_ecdt_exit
