@@ -36,7 +36,7 @@ DECL|macro|SHMEM_MAX_BYTES
 mdefine_line|#define SHMEM_MAX_BYTES  ((unsigned long long)SHMEM_MAX_INDEX &lt;&lt; PAGE_CACHE_SHIFT)
 DECL|macro|VM_ACCT
 mdefine_line|#define VM_ACCT(size)    (PAGE_CACHE_ALIGN(size) &gt;&gt; PAGE_SHIFT)
-multiline_comment|/* info-&gt;flags needs a VM_flag to handle swapoff/truncate races efficiently */
+multiline_comment|/* info-&gt;flags needs a VM_flag to handle pagein/truncate races efficiently */
 DECL|macro|SHMEM_PAGEIN
 mdefine_line|#define SHMEM_PAGEIN&t; VM_READ
 multiline_comment|/* Pretend that each entry is of this size in directory&squot;s i_size */
@@ -1887,7 +1887,7 @@ id|SHMEM_PAGEIN
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Call truncate_inode_pages again: racing shmem_unuse_inode&n;&t;&t; * may have swizzled a page in from swap since vmtruncate or&n;&t;&t; * generic_delete_inode did it, before we lowered next_index.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Call truncate_inode_pages again: racing shmem_unuse_inode&n;&t;&t; * may have swizzled a page in from swap since vmtruncate or&n;&t;&t; * generic_delete_inode did it, before we lowered next_index.&n;&t;&t; * Also, though shmem_getpage checks i_size before adding to&n;&t;&t; * cache, no recheck after: so fix the narrow window there too.&n;&t;&t; */
 id|spin_unlock
 c_func
 (paren
@@ -3670,6 +3670,10 @@ id|mapping
 )paren
 )paren
 (brace
+id|info-&gt;flags
+op_or_assign
+id|SHMEM_PAGEIN
+suffix:semicolon
 id|shmem_swp_set
 c_func
 (paren
@@ -4060,6 +4064,10 @@ r_goto
 id|repeat
 suffix:semicolon
 )brace
+id|info-&gt;flags
+op_or_assign
+id|SHMEM_PAGEIN
+suffix:semicolon
 )brace
 id|info-&gt;alloced
 op_increment
