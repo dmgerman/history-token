@@ -4694,6 +4694,44 @@ id|SkIsrRetHandled
 suffix:semicolon
 )brace
 multiline_comment|/* SkGeIsrOnePort */
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+multiline_comment|/****************************************************************************&n; *&n; * &t;SkGePollController - polling receive, for netconsole&n; *&n; * Description:&n; *&t;Polling receive - used by netconsole and other diagnostic tools&n; *&t;to allow network i/o with interrupts disabled.&n; *&n; * Returns: N/A&n; */
+DECL|function|SkGePollController
+r_static
+r_void
+id|SkGePollController
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|disable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|SkGeIsr
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/****************************************************************************&n; *&n; *&t;SkGeOpen - handle start of initialized adapter&n; *&n; * Description:&n; *&t;This function starts the initialized adapter.&n; *&t;The board level variable is set and the adapter is&n; *&t;brought to full functionality.&n; *&t;The device flags are set for operation.&n; *&t;Do all necessary level 2 initialization, enable interrupts and&n; *&t;give start command to RLMT.&n; *&n; * Returns:&n; *&t;0 on success&n; *&t;!= 0 on error&n; */
 DECL|function|SkGeOpen
 r_static
@@ -20101,6 +20139,13 @@ op_assign
 op_amp
 id|SkGeChangeMtu
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+op_amp
+id|SkGePollController
+suffix:semicolon
+macro_line|#endif
 id|dev-&gt;flags
 op_and_assign
 op_complement
