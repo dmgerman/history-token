@@ -1211,23 +1211,20 @@ r_void
 r_static
 r_int
 id|use_apm_idle
-op_assign
-l_int|0
 suffix:semicolon
+multiline_comment|/* = 0 */
 r_static
 r_int
 r_int
 id|last_jiffies
-op_assign
-l_int|0
 suffix:semicolon
+multiline_comment|/* = 0 */
 r_static
 r_int
 r_int
 id|last_stime
-op_assign
-l_int|0
 suffix:semicolon
+multiline_comment|/* = 0 */
 r_int
 id|apm_is_idle
 op_assign
