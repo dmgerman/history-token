@@ -63,6 +63,12 @@ l_string|&quot;Realtek&quot;
 )brace
 comma
 (brace
+l_int|0x13f6
+comma
+l_string|&quot;C-Media&quot;
+)brace
+comma
+(brace
 l_int|0x434d
 comma
 l_string|&quot;C-Media&quot;
