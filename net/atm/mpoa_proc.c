@@ -370,7 +370,7 @@ id|v
 multiline_comment|/*&n; * READING function - called when the /proc/atm/mpoa file is read from.&n; */
 DECL|function|mpc_show
 r_static
-id|ssize_t
+r_int
 id|mpc_show
 c_func
 (paren
