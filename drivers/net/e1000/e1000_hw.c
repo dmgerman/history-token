@@ -1264,6 +1264,9 @@ suffix:colon
 r_case
 id|E1000_DEV_ID_82546GB_SERDES
 suffix:colon
+r_case
+id|E1000_DEV_ID_82546GB_PCIE
+suffix:colon
 id|hw-&gt;mac_type
 op_assign
 id|e1000_82546_rev_3
