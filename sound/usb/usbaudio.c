@@ -319,7 +319,7 @@ c_func
 id|nrpacks
 comma
 id|SNDRV_ENABLED
-l_string|&quot;,allows:{{2,10}}&quot;
+l_string|&quot;,allows:{{1,10}}&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
