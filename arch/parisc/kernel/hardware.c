@@ -1,58 +1,17 @@
-multiline_comment|/*&n; *    Hardware descriptions for HP 9000 based hardware, including&n; *    system types, SCSI controllers, DMA controllers, HPPB controllers&n; *    and lots more.&n; * &n; *    Based on the document &quot;PA-RISC 1.1 I/O Firmware Architecture &n; *    Reference Specification&quot;, March 7, 1999, version 0.96.  This&n; *    is available at ?.&n; *&n; *    Copyright 1999 by Alex deVries &lt;adevries@thepuffingroup.com&gt;&n; *    and copyright 1999 The Puffin Group Inc.&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2, or (at your option)&n; *    any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; * &n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; *    Hardware descriptions for HP 9000 based hardware, including&n; *    system types, SCSI controllers, DMA controllers, HPPB controllers&n; *    and lots more.&n; * &n; *    Based on the document &quot;PA-RISC 1.1 I/O Firmware Architecture &n; *    Reference Specification&quot;, March 7, 1999, version 0.96.  This&n; *    is available at http://parisc-linux.org/documentation/&n; *&n; *    Copyright 1999 by Alex deVries &lt;adevries@thepuffingroup.com&gt;&n; *    and copyright 1999 The Puffin Group Inc.&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2, or (at your option)&n; *    any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; * &n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-DECL|macro|HPHW_NUM_TYPES
-mdefine_line|#define HPHW_NUM_TYPES 3431
-DECL|variable|hw_type_name
-r_static
-r_char
-op_star
-id|hw_type_name
-(braket
-l_int|16
-)braket
-op_assign
-(brace
-l_string|&quot;Processor&quot;
-comma
-l_string|&quot;Memory&quot;
-comma
-l_string|&quot;B DMA&quot;
-comma
-l_string|&quot;Obsolete&quot;
-comma
-l_string|&quot;A DMA&quot;
-comma
-l_string|&quot;A Direct&quot;
-comma
-l_string|&quot;Obsolete&quot;
-comma
-l_string|&quot;Bus Converter Port&quot;
-comma
-l_string|&quot;HP CIO Adapter&quot;
-comma
-l_string|&quot;Console&quot;
-comma
-l_string|&quot;Foreign I/O Module&quot;
-comma
-l_string|&quot;Bus Adapter&quot;
-comma
-l_string|&quot;IOA (?)&quot;
-comma
-l_string|&quot;Bus Bridge to Foreign Bus&quot;
-comma
-l_string|&quot;HP Clothing: Fabric Component&quot;
-)brace
-suffix:semicolon
-multiline_comment|/*&n; *&t;XXX&t;Could this be __init ??&n; */
-DECL|variable|hp_hardware_list
+macro_line|#include &lt;linux/init.h&gt;
+multiline_comment|/*&n; *&t;HP PARISC Hardware Database&n; *&t;Access to this database is only possible during bootup&n; *&t;so don&squot;t reference this table after starting the init process&n; */
+DECL|variable|__initdata
 r_static
 r_struct
 id|hp_hardware
 id|hp_hardware_list
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 (brace
@@ -1414,6 +1373,18 @@ comma
 (brace
 id|HPHW_NPROC
 comma
+l_int|0x59C
+comma
+l_int|0x4
+comma
+l_int|0x81
+comma
+l_string|&quot;Raven U 180 (9000/780/C180)&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
 l_int|0x59D
 comma
 l_int|0x4
@@ -1444,7 +1415,7 @@ l_int|0x4
 comma
 l_int|0x91
 comma
-l_string|&quot;Raven U 180+ (9000/780/&bslash;?&bslash;?&bslash;?&bslash;?)&quot;
+l_string|&quot;Raven U 180+ (9000/780)&quot;
 )brace
 comma
 (brace
@@ -1804,7 +1775,7 @@ l_int|0x4
 comma
 l_int|0x81
 comma
-l_string|&quot;AllegroHigh W &quot;
+l_string|&quot;AllegroHigh W&quot;
 )brace
 comma
 (brace
@@ -1936,7 +1907,7 @@ l_int|0x4
 comma
 l_int|0x91
 comma
-l_string|&quot;Raven W 360 (9000/780/&bslash;?&bslash;?&bslash;?&bslash;?)&quot;
+l_string|&quot;Raven W 360 (9000/780)&quot;
 )brace
 comma
 (brace
@@ -1997,6 +1968,354 @@ comma
 l_int|0x91
 comma
 l_string|&quot;Crescendo 440&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5CC
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Prelude W 440&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5CD
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;SPP2600&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5CE
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;M2600&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5CF
+comma
+l_int|0x4
+comma
+l_int|0x81
+comma
+l_string|&quot;Allegro W+&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5D0
+comma
+l_int|0x4
+comma
+l_int|0x81
+comma
+l_string|&quot;Kazoo W+&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5D1
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Forte W+ 2w&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5D2
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Forte W+ 4w&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5D3
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Prelude W+ 540&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5D4
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Duet W+&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5D5
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Crescendo 550&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5D6
+comma
+l_int|0x4
+comma
+l_int|0x81
+comma
+l_string|&quot;Crescendo DC- 440&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5D7
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Keystone W+&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5D8
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Rhapsody wave 2 W+ DC-&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5D9
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Rhapsody wave 2 W+&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5DA
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Marcato W+ DC-&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5DB
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Marcato W+&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5DC
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Allegro W2&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5DD
+comma
+l_int|0x4
+comma
+l_int|0x81
+comma
+l_string|&quot;Duet W2&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5DE
+comma
+l_int|0x4
+comma
+l_int|0x81
+comma
+l_string|&quot;Piccolo W+&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5DF
+comma
+l_int|0x4
+comma
+l_int|0x81
+comma
+l_string|&quot;Cantata W2&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5E0
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Cantata DC- W2&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5E1
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Crescendo DC- W2&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5E2
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Crescendo 650 W2&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5E3
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Crescendo 750 W2&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5E4
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Keystone/Matterhorn W2 750&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5E5
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;PowerBar W+&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5E6
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Keystone/Matterhorn W2 650&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5E7
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Caribe W2 800&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x5E8
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Pikes Peak W2&quot;
 )brace
 comma
 (brace
@@ -2308,7 +2627,7 @@ l_int|0x4
 comma
 l_int|0x81
 comma
-l_string|&quot;Mirage 80 &quot;
+l_string|&quot;Mirage 80&quot;
 )brace
 comma
 (brace
@@ -3118,6 +3437,18 @@ comma
 (brace
 id|HPHW_A_DMA
 comma
+l_int|0x004
+comma
+l_int|0x0005E
+comma
+l_int|0x00
+comma
+l_string|&quot;Gecko Add-on Token Ring&quot;
+)brace
+comma
+(brace
+id|HPHW_A_DMA
+comma
 l_int|0x012
 comma
 l_int|0x00089
@@ -3209,6 +3540,18 @@ comma
 l_int|0x80
 comma
 l_string|&quot;Raven T&squot; Core FW-SCSI&quot;
+)brace
+comma
+(brace
+id|HPHW_A_DMA
+comma
+l_int|0x03b
+comma
+l_int|0x00089
+comma
+l_int|0x80
+comma
+l_string|&quot;Raven U/L2 Core FW-SCSI&quot;
 )brace
 comma
 (brace
@@ -4666,6 +5009,30 @@ comma
 (brace
 id|HPHW_BA
 comma
+l_int|0x00C
+comma
+l_int|0x0008E
+comma
+l_int|0x0
+comma
+l_string|&quot;Gecko Optional Wax BA&quot;
+)brace
+comma
+(brace
+id|HPHW_BA
+comma
+l_int|0x010
+comma
+l_int|0x0008E
+comma
+l_int|0x0
+comma
+l_string|&quot;Pace Wax BA&quot;
+)brace
+comma
+(brace
+id|HPHW_BA
+comma
 l_int|0x011
 comma
 l_int|0x0008E
@@ -5260,7 +5627,7 @@ l_int|0x00093
 comma
 l_int|0x0
 comma
-l_string|&quot;Anole 64 TIMI BA&quot;
+l_string|&quot;Anole 100 TIMI BA&quot;
 )brace
 comma
 (brace
@@ -5998,6 +6365,18 @@ comma
 (brace
 id|HPHW_FABRIC
 comma
+l_int|0x007
+comma
+l_int|0x000AA
+comma
+l_int|0x80
+comma
+l_string|&quot;Caribe DNA Central Agent&quot;
+)brace
+comma
+(brace
+id|HPHW_FABRIC
+comma
 l_int|0x004
 comma
 l_int|0x000AB
@@ -6448,7 +6827,7 @@ l_int|0x00072
 comma
 l_int|0x0
 comma
-l_string|&quot;Pace Core Lan (802.3)&quot;
+l_string|&quot;Pace Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -6460,7 +6839,7 @@ l_int|0x00072
 comma
 l_int|0x0
 comma
-l_string|&quot;Sidewinder Core Lan (802.3)&quot;
+l_string|&quot;Sidewinder Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -6532,7 +6911,7 @@ l_int|0x00072
 comma
 l_int|0x0
 comma
-l_string|&quot;Fast Pace Core Lan (802.3)&quot;
+l_string|&quot;Fast Pace Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -7720,7 +8099,7 @@ l_int|0x00074
 comma
 l_int|0x0
 comma
-l_string|&quot;Raven+ wSE FWSCSI Core Centronics&quot;
+l_string|&quot;Raven+ w SE FWSCSI Core Centronics&quot;
 )brace
 comma
 (brace
@@ -7732,7 +8111,7 @@ l_int|0x00074
 comma
 l_int|0x0
 comma
-l_string|&quot;Raven+ wDiff FWSCSI Core Centronics&quot;
+l_string|&quot;Raven+ w Diff FWSCSI Core Centronics&quot;
 )brace
 comma
 (brace
@@ -9724,7 +10103,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;SAIC L-80 Core PC Floopy&quot;
+l_string|&quot;SAIC L-80 Core PC Floppy&quot;
 )brace
 comma
 (brace
@@ -9736,7 +10115,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;PCX-L2 712/132 Core Floopy&quot;
+l_string|&quot;PCX-L2 712/132 Core Floppy&quot;
 )brace
 comma
 (brace
@@ -9748,7 +10127,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;PCX-L2 712/160 Core Floopy&quot;
+l_string|&quot;PCX-L2 712/160 Core Floppy&quot;
 )brace
 comma
 (brace
@@ -9760,7 +10139,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;Raven U/L2 Core PC Floopy&quot;
+l_string|&quot;Raven U/L2 Core PC Floppy&quot;
 )brace
 comma
 (brace
@@ -9772,7 +10151,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin 132 Core PC Floopy&quot;
+l_string|&quot;Merlin 132 Core PC Floppy&quot;
 )brace
 comma
 (brace
@@ -9784,7 +10163,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin 160 Core PC Floopy&quot;
+l_string|&quot;Merlin 160 Core PC Floppy&quot;
 )brace
 comma
 (brace
@@ -9796,7 +10175,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin+ 132 Core PC Floopy&quot;
+l_string|&quot;Merlin+ 132 Core PC Floppy&quot;
 )brace
 comma
 (brace
@@ -9808,7 +10187,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin+ 180 Core PC Floopy&quot;
+l_string|&quot;Merlin+ 180 Core PC Floppy&quot;
 )brace
 comma
 (brace
@@ -9820,7 +10199,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;Rocky1 Core PC Floopy&quot;
+l_string|&quot;Rocky1 Core PC Floppy&quot;
 )brace
 comma
 (brace
@@ -9832,7 +10211,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;Rocky2 120 Core PC Floopy&quot;
+l_string|&quot;Rocky2 120 Core PC Floppy&quot;
 )brace
 comma
 (brace
@@ -9844,7 +10223,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;Rocky2 150 Core PC Floopy&quot;
+l_string|&quot;Rocky2 150 Core PC Floppy&quot;
 )brace
 comma
 (brace
@@ -9856,7 +10235,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;Kiji L2 132 Core PC Floopy&quot;
+l_string|&quot;Kiji L2 132 Core PC Floppy&quot;
 )brace
 comma
 (brace
@@ -9868,7 +10247,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin Jr 132 Core PC Floopy&quot;
+l_string|&quot;Merlin Jr 132 Core PC Floppy&quot;
 )brace
 comma
 (brace
@@ -9880,7 +10259,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;Raven+ w SE FWSCSI Core PC Floopy&quot;
+l_string|&quot;Raven+ w SE FWSCSI Core PC Floppy&quot;
 )brace
 comma
 (brace
@@ -9892,7 +10271,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;Raven+ w Diff FWSCSI Core PC Floopy&quot;
+l_string|&quot;Raven+ w Diff FWSCSI Core PC Floppy&quot;
 )brace
 comma
 (brace
@@ -9904,7 +10283,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;Hitachi Tiny 64 Core PC Floopy&quot;
+l_string|&quot;Hitachi Tiny 64 Core PC Floppy&quot;
 )brace
 comma
 (brace
@@ -9916,7 +10295,7 @@ l_int|0x00083
 comma
 l_int|0x0
 comma
-l_string|&quot;Hitachi Tiny 80 Core PC Floopy&quot;
+l_string|&quot;Hitachi Tiny 80 Core PC Floppy&quot;
 )brace
 comma
 (brace
@@ -9928,7 +10307,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;KittyHawk GSY Core PC Keyboard&quot;
+l_string|&quot;KittyHawk GSY Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -9940,7 +10319,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Gecko Core PC Keyboard&quot;
+l_string|&quot;Gecko Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -9952,7 +10331,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Gecko Optional PC Keyboard&quot;
+l_string|&quot;Gecko Optional PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -9964,7 +10343,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Anole 64 Core PC Keyboard&quot;
+l_string|&quot;Anole 64 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -9976,7 +10355,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Anole 100 Core PC Keyboard&quot;
+l_string|&quot;Anole 100 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -9988,7 +10367,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Gecko 80 Core PC Keyboard&quot;
+l_string|&quot;Gecko 80 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10000,7 +10379,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Gecko 100 Core PC Keyboard&quot;
+l_string|&quot;Gecko 100 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10012,7 +10391,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;SkyHawk 100/120 Core PC Keyboard&quot;
+l_string|&quot;SkyHawk 100/120 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10024,7 +10403,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Piranha 100 Core PC Keyboard&quot;
+l_string|&quot;Piranha 100 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10036,7 +10415,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Mirage Jr Core PC Keyboard&quot;
+l_string|&quot;Mirage Jr Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10048,7 +10427,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Mirage Core PC Keyboard&quot;
+l_string|&quot;Mirage Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10060,7 +10439,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Electra Core PC Keyboard&quot;
+l_string|&quot;Electra Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10072,7 +10451,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Mirage 80 Core PC Keyboard&quot;
+l_string|&quot;Mirage 80 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10084,7 +10463,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Mirage 100+ Core PC Keyboard&quot;
+l_string|&quot;Mirage 100+ Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10096,7 +10475,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;UL 350 Core PC Keyboard&quot;
+l_string|&quot;UL 350 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10108,7 +10487,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;UL 550 Core PC Keyboard&quot;
+l_string|&quot;UL 550 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10120,7 +10499,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Raven T&squot; Core PC Keyboard&quot;
+l_string|&quot;Raven T&squot; Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10132,7 +10511,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Anole T Core PC Keyboard&quot;
+l_string|&quot;Anole T Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10144,7 +10523,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;SAIC L-80 Core PC Keyboard&quot;
+l_string|&quot;SAIC L-80 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10156,7 +10535,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;PCX-L2 712/132 Core Keyboard&quot;
+l_string|&quot;PCX-L2 712/132 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10168,7 +10547,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;PCX-L2 712/160 Core Keyboard&quot;
+l_string|&quot;PCX-L2 712/160 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10180,7 +10559,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Raven U/L2 Core PC Keyboard&quot;
+l_string|&quot;Raven U/L2 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10192,7 +10571,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin 132 Core PC Keyboard&quot;
+l_string|&quot;Merlin 132 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10204,7 +10583,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin 160 Core PC Keyboard&quot;
+l_string|&quot;Merlin 160 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10216,7 +10595,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin+ 132 Core PC Keyboard&quot;
+l_string|&quot;Merlin+ 132 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10228,7 +10607,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin+ 180 Core PC Keyboard&quot;
+l_string|&quot;Merlin+ 180 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10240,7 +10619,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Mohawk Core PC Keyboard&quot;
+l_string|&quot;Mohawk Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10252,7 +10631,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Rocky1 Core PC Keyboard&quot;
+l_string|&quot;Rocky1 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10264,7 +10643,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Rocky2 120 Core PC Keyboard&quot;
+l_string|&quot;Rocky2 120 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10276,7 +10655,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Rocky2 150 Core PC Keyboard&quot;
+l_string|&quot;Rocky2 150 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10288,7 +10667,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Rocky2 120 Dino PC Keyboard&quot;
+l_string|&quot;Rocky2 120 Dino PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10300,7 +10679,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Rocky2 150 Dino PC Keyboard&quot;
+l_string|&quot;Rocky2 150 Dino PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10312,7 +10691,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Anole L2 132 Core PC Keyboard&quot;
+l_string|&quot;Anole L2 132 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10324,7 +10703,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Anole L2 165 Core PC Keyboard&quot;
+l_string|&quot;Anole L2 165 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10336,7 +10715,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Kiji L2 132 Core PC Keyboard&quot;
+l_string|&quot;Kiji L2 132 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10348,7 +10727,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin Jr 132 Core PC Keyboard&quot;
+l_string|&quot;Merlin Jr 132 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10360,7 +10739,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Firehawk Core PC Keyboard&quot;
+l_string|&quot;Firehawk Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10372,7 +10751,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Raven+ w SE FWSCSI Core PC Keyboard&quot;
+l_string|&quot;Raven+ w SE FWSCSI Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10384,7 +10763,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Raven+ w Diff FWSCSI Core PC Keyboard&quot;
+l_string|&quot;Raven+ w Diff FWSCSI Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10396,7 +10775,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;FireHawk 200 Core PC Keyboard&quot;
+l_string|&quot;FireHawk 200 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10408,7 +10787,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;SummitHawk 230 Core PC Keyboard&quot;
+l_string|&quot;SummitHawk 230 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10420,7 +10799,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Hitachi Tiny 64 Core PC Keyboard&quot;
+l_string|&quot;Hitachi Tiny 64 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -10432,7 +10811,7 @@ l_int|0x00084
 comma
 l_int|0x0
 comma
-l_string|&quot;Hitachi Tiny 80 Core PC Keyboard&quot;
+l_string|&quot;Hitachi Tiny 80 Core PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -11014,25 +11393,13 @@ comma
 (brace
 id|HPHW_FIO
 comma
-l_int|0x03B
-comma
-l_int|0x00089
-comma
-l_int|0x0
-comma
-l_string|&quot;Raven U/L2 Core FW-SCSI&quot;
-)brace
-comma
-(brace
-id|HPHW_FIO
-comma
 l_int|0x011
 comma
 l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;WB-96 Core Lan (802.3)&quot;
+l_string|&quot;WB-96 Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11044,7 +11411,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Orville Core Lan (802.3)&quot;
+l_string|&quot;Orville Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11056,7 +11423,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Wilbur Core Lan (802.3)&quot;
+l_string|&quot;Wilbur Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11068,7 +11435,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;WB-80 Core Lan (802.3)&quot;
+l_string|&quot;WB-80 Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11080,7 +11447,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;KittyHawk GSY Core Lan (802.3)&quot;
+l_string|&quot;KittyHawk GSY Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11092,7 +11459,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Gecko Core Lan (802.3)&quot;
+l_string|&quot;Gecko Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11104,7 +11471,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Gecko Optional Lan (802.3)&quot;
+l_string|&quot;Gecko Optional LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11116,7 +11483,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Anole 64 Core Lan (802.3)&quot;
+l_string|&quot;Anole 64 Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11128,7 +11495,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Anole 100 Core Lan (802.3)&quot;
+l_string|&quot;Anole 100 Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11140,7 +11507,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Gecko 80 Core Lan (802.3)&quot;
+l_string|&quot;Gecko 80 Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11152,7 +11519,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Gecko 100 Core Lan (802.3)&quot;
+l_string|&quot;Gecko 100 Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11284,7 +11651,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Anole T Core Lan (802.3)&quot;
+l_string|&quot;Anole T Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11296,7 +11663,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;SAIC L-80 Core Lan (802.3)&quot;
+l_string|&quot;SAIC L-80 Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11308,7 +11675,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;PCX-L2 712/132 Core Lan (802.3)&quot;
+l_string|&quot;PCX-L2 712/132 Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11320,7 +11687,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;PCX-L2 712/160 Core Lan (802.3)&quot;
+l_string|&quot;PCX-L2 712/160 Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11332,7 +11699,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Raven U/L2 Core Lan (802.3)&quot;
+l_string|&quot;Raven U/L2 Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11344,7 +11711,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin 132 Core Lan (802.3)&quot;
+l_string|&quot;Merlin 132 Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11356,7 +11723,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin 160 Core Lan (802.3)&quot;
+l_string|&quot;Merlin 160 Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11368,7 +11735,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Mohawk Core Lan (802.3)&quot;
+l_string|&quot;Mohawk Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11452,7 +11819,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin Jr 132 Core Lan (802.3)&quot;
+l_string|&quot;Merlin Jr 132 Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11476,7 +11843,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Hitachi Tiny 64 Core Lan (802.3)&quot;
+l_string|&quot;Hitachi Tiny 64 Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -11488,7 +11855,7 @@ l_int|0x0008A
 comma
 l_int|0x0
 comma
-l_string|&quot;Hitachi Tiny 80 Core Lan (802.3)&quot;
+l_string|&quot;Hitachi Tiny 80 Core LAN (802.3)&quot;
 )brace
 comma
 (brace
@@ -12574,13 +12941,25 @@ comma
 (brace
 id|HPHW_FIO
 comma
+l_int|0x01B
+comma
+l_int|0x0008F
+comma
+l_int|0x0
+comma
+l_string|&quot;Anole 100 Boot Rom&quot;
+)brace
+comma
+(brace
+id|HPHW_FIO
+comma
 l_int|0x006
 comma
 l_int|0x00096
 comma
 l_int|0x0
 comma
-l_string|&quot;Raven U/L2 Dino PS2 Keyboard&quot;
+l_string|&quot;Raven U/L2 Dino PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -12592,7 +12971,7 @@ l_int|0x00096
 comma
 l_int|0x0
 comma
-l_string|&quot;Dino PS2 Keyboard&quot;
+l_string|&quot;Dino PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -12604,7 +12983,7 @@ l_int|0x00096
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin 132 Dino PS2 Keyboard&quot;
+l_string|&quot;Merlin 132 Dino PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -12616,7 +12995,7 @@ l_int|0x00096
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin 160 Dino PS2 Keyboard&quot;
+l_string|&quot;Merlin 160 Dino PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -12628,7 +13007,7 @@ l_int|0x00096
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin Jr 132 Dino PS2 Keyboard&quot;
+l_string|&quot;Merlin Jr 132 Dino PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -12640,7 +13019,7 @@ l_int|0x00096
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin+ 180 Dino PS2 Keyboard&quot;
+l_string|&quot;Merlin+ 180 Dino PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -12652,7 +13031,7 @@ l_int|0x00096
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin+ 132 Dino PS2 Keyboard&quot;
+l_string|&quot;Merlin+ 132 Dino PS/2 Port&quot;
 )brace
 comma
 (brace
@@ -12664,7 +13043,7 @@ l_int|0x00097
 comma
 l_int|0x0
 comma
-l_string|&quot;Cascade EISA 100VG lan&quot;
+l_string|&quot;Cascade EISA 100VG LAN&quot;
 )brace
 comma
 (brace
@@ -12760,7 +13139,7 @@ l_int|0x000A2
 comma
 l_int|0x0
 comma
-l_string|&quot;PCI Plug-in Lan&quot;
+l_string|&quot;PCI Plug-in LAN&quot;
 )brace
 comma
 (brace
@@ -12772,7 +13151,7 @@ l_int|0x000A2
 comma
 l_int|0x0
 comma
-l_string|&quot;Lego 360 Core PCI 10/100BT Lan&quot;
+l_string|&quot;Lego 360 Core PCI 10/100BT LAN&quot;
 )brace
 comma
 (brace
@@ -12784,7 +13163,7 @@ l_int|0x000A2
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin+ 132 Core PCI Lan&quot;
+l_string|&quot;Merlin+ 132 Core PCI LAN&quot;
 )brace
 comma
 (brace
@@ -12796,7 +13175,7 @@ l_int|0x000A2
 comma
 l_int|0x0
 comma
-l_string|&quot;Merlin+ 180 Core PCI Lan&quot;
+l_string|&quot;Merlin+ 180 Core PCI LAN&quot;
 )brace
 comma
 (brace
@@ -12808,7 +13187,7 @@ l_int|0x000A2
 comma
 l_int|0x0
 comma
-l_string|&quot;Raven+ w SE FWSCSI Core PCI Lan&quot;
+l_string|&quot;Raven+ w SE FWSCSI Core PCI LAN&quot;
 )brace
 comma
 (brace
@@ -12820,7 +13199,7 @@ l_int|0x000A2
 comma
 l_int|0x0
 comma
-l_string|&quot;Raven+ w Diff FWSCSI Core PCI Lan&quot;
+l_string|&quot;Raven+ w Diff FWSCSI Core PCI LAN&quot;
 )brace
 comma
 (brace
@@ -12832,7 +13211,7 @@ l_int|0x000A2
 comma
 l_int|0x0
 comma
-l_string|&quot;Staccato 132 PCI Lan&quot;
+l_string|&quot;Staccato 132 PCI LAN&quot;
 )brace
 comma
 (brace
@@ -12844,7 +13223,7 @@ l_int|0x000A2
 comma
 l_int|0x0
 comma
-l_string|&quot;Staccato 180 PCI Lan&quot;
+l_string|&quot;Staccato 180 PCI LAN&quot;
 )brace
 comma
 (brace
@@ -13318,1038 +13697,6 @@ comma
 (brace
 id|HPHW_MEMORY
 comma
-l_int|0x00C
-comma
-l_int|0x00008
-comma
-l_int|0x08
-comma
-l_string|&quot;Kahlua 8MB&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x00D
-comma
-l_int|0x00008
-comma
-l_int|0x08
-comma
-l_string|&quot;Kahlua 4MB&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x00E
-comma
-l_int|0x00008
-comma
-l_int|0x08
-comma
-l_string|&quot;Tequila 16MB&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x00F
-comma
-l_int|0x00008
-comma
-l_int|0x08
-comma
-l_string|&quot;Tequila 32MB&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x040
-comma
-l_int|0x00008
-comma
-l_int|0x00
-comma
-l_string|&quot;Hitachi&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x004
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Cheetah&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x005
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Emerald&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x008
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Indigo 3MB/5MB&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x00C
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Indigo 8MB&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x00D
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Paradise 4MB&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x00E
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Burgundy Onboard&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x012
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Indigo 12MB/20MB&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x013
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Cobra&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x014
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Nova&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x015
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Coral&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x016
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Bushmaster&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x017
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Scorpio&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x018
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Flounder&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x019
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Hardball&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x01A
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;CoralII 99&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x01B
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Scorpio Jr.&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x01C
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Strider-50 (715T)&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x01D
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Strider-33 (707T)&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x01E
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Trailways-50 (715S)&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x01F
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Trailways-33 (707S)&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x020
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Pace&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x021
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Sidewinder&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x022
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Orville&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x023
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Wilbur&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x026
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Gecko&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x027
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Scorpio Sr.&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x028
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Scorpio 100&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x029
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Spectra 50&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x02A
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;CoralII 132&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x02F
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;KittyHawk DC2-&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x030
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Spectra 75&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x031
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Spectra 100&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x032
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;KittyHawk DC3&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x033
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Fast Pace&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x034
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Snake Eagle&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x035
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Anole 64&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x036
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Anole 100&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x037
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Snake Cheetah&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x038
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Gecko 80&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x039
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Gecko 100&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x03A
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Gecko 120&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x03B
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Gila 80&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x03C
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Gila 100&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x03D
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Gila 120&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x03E
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Scorpio-L 80&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x03F
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Scorpio-L 100&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x040
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Scorpio-L 120&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x041
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Spectra-L 80&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x042
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Spectra-L 100&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x043
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Spectra-L 120&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x044
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Piranha 100&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x045
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Piranha 120&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x046
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Jason 50&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x047
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Jason 100&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x049
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;SkyHawk 100/120&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x04A
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Mirage Jr&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x04B
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Mirage 100&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x04C
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Mirage 100+&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x04D
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Electra 100&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x04E
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Electra 120&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x04F
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Mirage 80&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x050
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL Proc 1 way T&squot;100&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x051
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL Proc 1 way T&squot;120&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x052
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL Proc 2 way T&squot;100&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x053
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;KittyHawk DC3-&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x054
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL Proc 2 way T&squot;120&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x055
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Raven 120 mem&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x056
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL Proc L 75&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x057
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL Proc L 100&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x058
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Anole T&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x059
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;SAIC L-80&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x05A
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Merlin+ L2 180&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x05B
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Raven U 200 2-way&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x05C
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Raven U 180+&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x05D
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Raven U 200&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x05E
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Rocky2 150 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x08A
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Staccato L2 132 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x08B
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Staccato L2 180 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x05F
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;SPP2000 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x060
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Merlin L2 132&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x061
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Merlin+ L2 132&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
 l_int|0x063
 comma
 l_int|0x00009
@@ -14393,666 +13740,6 @@ comma
 l_int|0x00
 comma
 l_string|&quot;715/160 L2 Upgrade&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x067
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Merlin 160/ThunderHawk Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x068
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;LightningHawk Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x069
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Rocky1 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x06A
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Raven L2 132&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x06B
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Raven L2 160&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x06C
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Raven L2 187&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x06D
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Raven L2 200&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x06E
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Raven U 230&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x06F
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Raven U 240&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x070
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Rocky2 120 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x071
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Raven U 160&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x072
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Raven U 180&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x072
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL Proc 1 way T&squot;120 1MB/1MB&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x073
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL Proc 2 way T&squot;120 1MB/1MB&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x074
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Anole L2 132 memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x075
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Anole L2 165 memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x076
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL 1 way U160 512K/512K memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x077
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL 2 way U160 512K/512K memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x078
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Kiji L2 132 memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x079
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL 1 way U160 1M/1M memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x07A
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL 2 way U160 1M/1M memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x07B
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL 1 way U180 1M/1M memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x07C
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL 2 way U180 1M/1M memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x07D
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL 1 way U240 U+ 2M/2M memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x07E
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL 2 way U240 U+ 2M/2M memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x07F
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL L2 132 memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x080
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;UL L2 160 memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x081
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Merlin Jr 132 memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x082
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;FireHawk 200 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x083
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;SummitHawk Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x084
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Jade Upgrade Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x085
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;SPP2500 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x086
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;AllegroHigh Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x087
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;AllegroLow Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x088
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Forte 2w Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x089
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Forte 4w Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x08A
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Staccato L2 132 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x08B
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Staccato L2 180 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x090
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Prelude SMC Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x091
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Lego 360 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x7FF
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;NEC Aska memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x800
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Hitachi Tiny 64&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x801
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Hitachi Tiny 80&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x8FF
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Hitachi X memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x091
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;M2250 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x092
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;M2500 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x093
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Sonata 440 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x094
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Sonata 360 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x095
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Rhapsody 440 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x096
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Rhapsody 360 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x097
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Raven W 360 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x098
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Halfdome W 440 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x099
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Rhapsody DC- 440 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x09A
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Rhapsody DC- 360 Memory&quot;
-)brace
-comma
-(brace
-id|HPHW_MEMORY
-comma
-l_int|0x09B
-comma
-l_int|0x00009
-comma
-l_int|0x00
-comma
-l_string|&quot;Crescendo Memory&quot;
 )brace
 comma
 (brace
@@ -15104,10 +13791,12 @@ l_string|&quot;LGB Control&quot;
 )brace
 comma
 (brace
+id|HPHW_FAULTY
+comma
 l_int|0
 comma
 )brace
-multiline_comment|/* leave the last entry empty ! */
+multiline_comment|/* Special Marker for last entry */
 )brace
 suffix:semicolon
 DECL|struct|hp_cpu_type_mask
@@ -15130,11 +13819,12 @@ r_enum
 id|cpu_type
 id|cpu
 suffix:semicolon
-DECL|variable|hp_cpu_type_mask_list
+DECL|variable|__initdata
 )brace
 id|hp_cpu_type_mask_list
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 (brace
@@ -15410,21 +14100,39 @@ multiline_comment|/* 0x0594 - 0x0597 */
 (brace
 l_int|0x0598
 comma
-l_int|0x0ffc
-comma
-id|pcxu
-)brace
-comma
-multiline_comment|/* 0x0598 - 0x059b */
-(brace
-l_int|0x059c
-comma
 l_int|0x0ffe
 comma
 id|pcxu_
 )brace
 comma
-multiline_comment|/* 0x059c - 0x059d */
+multiline_comment|/* 0x0598 - 0x0599 */
+(brace
+l_int|0x059a
+comma
+l_int|0x0ffe
+comma
+id|pcxu
+)brace
+comma
+multiline_comment|/* 0x059a - 0x059b */
+(brace
+l_int|0x059c
+comma
+l_int|0x0fff
+comma
+id|pcxu
+)brace
+comma
+multiline_comment|/* 0x059c - 0x059c */
+(brace
+l_int|0x059d
+comma
+l_int|0x0fff
+comma
+id|pcxu_
+)brace
+comma
+multiline_comment|/* 0x059d - 0x059d */
 (brace
 l_int|0x059e
 comma
@@ -15590,12 +14298,192 @@ multiline_comment|/* 0x05bc - 0x05bf */
 (brace
 l_int|0x05c0
 comma
-l_int|0x0fc0
+l_int|0x0ffc
 comma
 id|pcxw
 )brace
 comma
-multiline_comment|/* 0x05c0 - 0x05ff */
+multiline_comment|/* 0x05c0 - 0x05c3 */
+(brace
+l_int|0x05c4
+comma
+l_int|0x0ffe
+comma
+id|pcxw
+)brace
+comma
+multiline_comment|/* 0x05c4 - 0x05c5 */
+(brace
+l_int|0x05c6
+comma
+l_int|0x0fff
+comma
+id|pcxw
+)brace
+comma
+multiline_comment|/* 0x05c6 - 0x05c6 */
+(brace
+l_int|0x05c7
+comma
+l_int|0x0fff
+comma
+id|pcxw_
+)brace
+comma
+multiline_comment|/* 0x05c7 - 0x05c7 */
+(brace
+l_int|0x05c8
+comma
+l_int|0x0ffc
+comma
+id|pcxw
+)brace
+comma
+multiline_comment|/* 0x05c8 - 0x05cb */
+(brace
+l_int|0x05cc
+comma
+l_int|0x0ffe
+comma
+id|pcxw
+)brace
+comma
+multiline_comment|/* 0x05cc - 0x05cd */
+(brace
+l_int|0x05ce
+comma
+l_int|0x0ffe
+comma
+id|pcxw_
+)brace
+comma
+multiline_comment|/* 0x05ce - 0x05cf */
+(brace
+l_int|0x05d0
+comma
+l_int|0x0ffc
+comma
+id|pcxw_
+)brace
+comma
+multiline_comment|/* 0x05d0 - 0x05d3 */
+(brace
+l_int|0x05d4
+comma
+l_int|0x0ffe
+comma
+id|pcxw_
+)brace
+comma
+multiline_comment|/* 0x05d4 - 0x05d5 */
+(brace
+l_int|0x05d6
+comma
+l_int|0x0fff
+comma
+id|pcxw
+)brace
+comma
+multiline_comment|/* 0x05d6 - 0x05d6 */
+(brace
+l_int|0x05d7
+comma
+l_int|0x0fff
+comma
+id|pcxw_
+)brace
+comma
+multiline_comment|/* 0x05d7 - 0x05d7 */
+(brace
+l_int|0x05d8
+comma
+l_int|0x0ffc
+comma
+id|pcxw_
+)brace
+comma
+multiline_comment|/* 0x05d8 - 0x05db */
+(brace
+l_int|0x05dc
+comma
+l_int|0x0ffe
+comma
+id|pcxw2
+)brace
+comma
+multiline_comment|/* 0x05dc - 0x05dd */
+(brace
+l_int|0x05de
+comma
+l_int|0x0fff
+comma
+id|pcxw_
+)brace
+comma
+multiline_comment|/* 0x05de - 0x05de */
+(brace
+l_int|0x05df
+comma
+l_int|0x0fff
+comma
+id|pcxw2
+)brace
+comma
+multiline_comment|/* 0x05df - 0x05df */
+(brace
+l_int|0x05e0
+comma
+l_int|0x0ffc
+comma
+id|pcxw2
+)brace
+comma
+multiline_comment|/* 0x05e0 - 0x05e3 */
+(brace
+l_int|0x05e4
+comma
+l_int|0x0fff
+comma
+id|pcxw2
+)brace
+comma
+multiline_comment|/* 0x05e4 - 0x05e4 */
+(brace
+l_int|0x05e5
+comma
+l_int|0x0fff
+comma
+id|pcxw_
+)brace
+comma
+multiline_comment|/* 0x05e5 - 0x05e5 */
+(brace
+l_int|0x05e6
+comma
+l_int|0x0ffe
+comma
+id|pcxw2
+)brace
+comma
+multiline_comment|/* 0x05e6 - 0x05e7 */
+(brace
+l_int|0x05e8
+comma
+l_int|0x0ff8
+comma
+id|pcxw2
+)brace
+comma
+multiline_comment|/* 0x05e8 - 0x05ef */
+(brace
+l_int|0x05f0
+comma
+l_int|0x0ff0
+comma
+id|pcxw2
+)brace
+comma
+multiline_comment|/* 0x05f0 - 0x05ff */
 (brace
 l_int|0x0600
 comma
@@ -15724,58 +14612,29 @@ l_string|&quot;PA8600 (PCX-W+)&quot;
 comma
 l_string|&quot;2.0&quot;
 )brace
-)brace
-suffix:semicolon
-DECL|function|parisc_getHWtype
-r_char
-op_star
-id|parisc_getHWtype
-c_func
-(paren
-r_int
-r_int
-id|hw_type
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|hw_type
-op_le
-id|HPHW_CIO
-)paren
-(brace
-r_return
-id|hw_type_name
+comma
 (braket
-id|hw_type
+id|pcxw2
 )braket
-suffix:semicolon
-)brace
-r_else
 (brace
-r_return
-l_string|&quot;Unknown Type&quot;
+l_string|&quot;PA8700 (PCX-W2)&quot;
+comma
+l_string|&quot;2.0&quot;
+)brace
+)brace
 suffix:semicolon
-)brace
-)brace
-DECL|function|parisc_getHWdescription
+r_const
 r_char
 op_star
-id|parisc_getHWdescription
+id|__init
+DECL|function|parisc_hardware_description
+id|parisc_hardware_description
 c_func
 (paren
-r_int
-r_int
-id|hw_type
-comma
-r_int
-r_int
-id|hversion
-comma
-r_int
-r_int
-id|sversion
+r_struct
+id|parisc_device_id
+op_star
+id|id
 )paren
 (brace
 r_struct
@@ -15790,7 +14649,9 @@ id|listptr
 op_assign
 id|hp_hardware_list
 suffix:semicolon
-id|listptr-&gt;name
+id|listptr-&gt;hw_type
+op_ne
+id|HPHW_FAULTY
 suffix:semicolon
 id|listptr
 op_increment
@@ -15802,19 +14663,19 @@ c_cond
 (paren
 id|listptr-&gt;hw_type
 op_eq
-id|hw_type
+id|id-&gt;hw_type
 )paren
 op_logical_and
 (paren
 id|listptr-&gt;hversion
 op_eq
-id|hversion
+id|id-&gt;hversion
 )paren
 op_logical_and
 (paren
 id|listptr-&gt;sversion
 op_eq
-id|sversion
+id|id-&gt;sversion
 )paren
 )paren
 (brace
@@ -15823,14 +14684,59 @@ id|listptr-&gt;name
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n;&t; * ok, the above hardware table isn&squot;t complete, and we haven&squot;t found&n;&t; * our device in this table. So let&squot;s now try to find a generic name&n;&t; * to describe the given hardware...&n;&t; */
+r_switch
+c_cond
+(paren
+id|id-&gt;hw_type
+)paren
+(brace
+r_case
+id|HPHW_NPROC
+suffix:colon
+r_return
+l_string|&quot;Unknown machine&quot;
+suffix:semicolon
+r_case
+id|HPHW_A_DIRECT
+suffix:colon
+r_switch
+c_cond
+(paren
+id|id-&gt;sversion
+)paren
+(brace
+r_case
+l_int|0x0D
+suffix:colon
+r_return
+l_string|&quot;MUX port&quot;
+suffix:semicolon
+r_case
+l_int|0x0E
+suffix:colon
+r_return
+l_string|&quot;RS-232 port&quot;
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|HPHW_MEMORY
+suffix:colon
+r_return
+l_string|&quot;Memory&quot;
+suffix:semicolon
+)brace
 r_return
 l_string|&quot;unknown device&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* Interpret hversion (ret[0]) from PDC_MODEL(4)/PDC_MODEL_INFO(0) */
-DECL|function|parisc_get_cpu_type
 r_enum
 id|cpu_type
+id|__init
+DECL|function|parisc_get_cpu_type
 id|parisc_get_cpu_type
 c_func
 (paren
@@ -15893,83 +14799,12 @@ suffix:semicolon
 id|panic
 c_func
 (paren
-l_string|&quot;parisc_get_cpu_type() could not identify CPU type&bslash;n&quot;
+l_string|&quot;could not identify CPU type&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 id|pcx
 suffix:semicolon
 multiline_comment|/* not reached: */
-)brace
-DECL|function|parisc_get_reference
-r_struct
-id|hp_hardware
-op_star
-id|parisc_get_reference
-c_func
-(paren
-r_int
-r_int
-id|hw_type
-comma
-r_int
-r_int
-id|hversion
-comma
-r_int
-r_int
-id|sversion
-)paren
-(brace
-r_struct
-id|hp_hardware
-op_star
-id|listptr
-op_assign
-id|hp_hardware_list
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|listptr
-op_assign
-id|hp_hardware_list
-suffix:semicolon
-id|listptr-&gt;name
-suffix:semicolon
-id|listptr
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|listptr-&gt;hw_type
-op_eq
-id|hw_type
-)paren
-op_logical_and
-(paren
-id|listptr-&gt;hversion
-op_eq
-id|hversion
-)paren
-op_logical_and
-(paren
-id|listptr-&gt;sversion
-op_eq
-id|sversion
-)paren
-)paren
-(brace
-r_return
-id|listptr
-suffix:semicolon
-)brace
-)brace
-r_return
-l_int|NULL
-suffix:semicolon
 )brace
 eof

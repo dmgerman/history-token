@@ -12,28 +12,20 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
+macro_line|#include &lt;asm/rt_sigframe.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 DECL|macro|DEBUG_SIG
 mdefine_line|#define DEBUG_SIG 0
+macro_line|#if DEBUG_SIG
+DECL|macro|DBG
+mdefine_line|#define DBG(x)&t;printk x
+macro_line|#else
+DECL|macro|DBG
+mdefine_line|#define DBG(x)
+macro_line|#endif
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
-r_extern
-r_int
-id|sys_wait4
-(paren
-r_int
-comma
-r_int
-op_star
-comma
-r_int
-comma
-r_struct
-id|rusage
-op_star
-)paren
-suffix:semicolon
 r_int
 id|do_signal
 c_func
@@ -65,26 +57,6 @@ op_star
 id|from
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|access_ok
-(paren
-id|VERIFY_WRITE
-comma
-id|to
-comma
-r_sizeof
-(paren
-id|siginfo_t
-)paren
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -399,7 +371,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|saveset
@@ -419,7 +391,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|regs-&gt;gr
@@ -466,30 +438,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Do a signal return - restore sigcontext.&n; */
-DECL|struct|rt_sigframe
-r_struct
-id|rt_sigframe
-(brace
-DECL|member|tramp
-r_int
-r_int
-id|tramp
-(braket
-l_int|4
-)braket
-suffix:semicolon
-DECL|member|info
-r_struct
-id|siginfo
-id|info
-suffix:semicolon
-DECL|member|uc
-r_struct
-id|ucontext
-id|uc
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* Trampoline for calling rt_sigreturn() */
 DECL|macro|INSN_LDI_R25_0
 mdefine_line|#define INSN_LDI_R25_0&t; 0x34190000 /* ldi  0,%r25 (in_syscall=0) */
@@ -500,13 +448,10 @@ mdefine_line|#define INSN_LDI_R20&t; 0x3414015a /* ldi  __NR_rt_sigreturn,%r20 *
 DECL|macro|INSN_BLE_SR2_R0
 mdefine_line|#define INSN_BLE_SR2_R0  0xe4008200 /* be,l 0x100(%sr2,%r0),%sr0,%r31 */
 DECL|macro|INSN_NOP
-mdefine_line|#define INSN_NOP&t; 0x80000240 /* nop */
+mdefine_line|#define INSN_NOP&t; 0x08000240 /* nop */
 multiline_comment|/* For debugging */
 DECL|macro|INSN_DIE_HORRIBLY
 mdefine_line|#define INSN_DIE_HORRIBLY 0x68000ccc /* stw %r0,0x666(%sr0,%r0) */
-multiline_comment|/*&n; * The 32-bit ABI wants at least 48 bytes for a function call frame:&n; * 16 bytes for arg0-arg3, and 32 bytes for magic (the only part of&n; * which Linux/parisc uses is sp-20 for the saved return pointer...)&n; * Then, the stack pointer must be rounded to a cache line (64 bytes).&n; */
-DECL|macro|PARISC_RT_SIGFRAME_SIZE
-mdefine_line|#define PARISC_RT_SIGFRAME_SIZE&t;&t;&t;&t;&t;&bslash;&n;&t;(((sizeof(struct rt_sigframe) + 48) + 63) &amp; -64)
 r_static
 r_int
 DECL|function|restore_sigcontext
@@ -600,9 +545,9 @@ op_amp
 id|sc-&gt;sc_sar
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
+(paren
 (paren
 l_string|&quot;restore_sigcontext: r28 is %ld&bslash;n&quot;
 comma
@@ -611,8 +556,8 @@ id|regs-&gt;gr
 l_int|28
 )braket
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|err
 suffix:semicolon
@@ -666,37 +611,15 @@ op_minus
 id|PARISC_RT_SIGFRAME_SIZE
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
+(paren
 (paren
 l_string|&quot;in sys_rt_sigreturn, frame is %p&bslash;n&quot;
 comma
 id|frame
 )paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Verify that it&squot;s a good sigcontext before using it */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|access_ok
-c_func
-(paren
-id|VERIFY_READ
-comma
-id|frame
-comma
-r_sizeof
-(paren
-op_star
-id|frame
 )paren
-)paren
-)paren
-r_goto
-id|give_sigsegv
 suffix:semicolon
 r_if
 c_cond
@@ -733,7 +656,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|current-&gt;blocked
@@ -749,7 +672,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 multiline_comment|/* Good thing we saved the old gr[30], eh? */
@@ -768,9 +691,9 @@ id|regs
 r_goto
 id|give_sigsegv
 suffix:semicolon
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
+(paren
 (paren
 l_string|&quot;usp: %#08lx stack %p&quot;
 comma
@@ -779,8 +702,8 @@ comma
 op_amp
 id|frame-&gt;uc.uc_stack
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* I don&squot;t know why everyone else assumes they can call this&n;           with a pointer to a stack_t on the kernel stack.  That&n;           makes no sense.  Anyway we&squot;ll do it like m68k, since we&n;           also are using segmentation in the same way as them. */
 r_if
 c_cond
@@ -819,8 +742,9 @@ l_int|0
 )braket
 suffix:semicolon
 macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
+(paren
 (paren
 l_string|&quot;returning to %#lx&bslash;n&quot;
 comma
@@ -829,11 +753,14 @@ id|regs-&gt;iaoq
 l_int|0
 )braket
 )paren
+)paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
+(paren
 l_string|&quot;in sys_rt_sigreturn:&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 id|show_regs
@@ -847,14 +774,14 @@ r_return
 suffix:semicolon
 id|give_sigsegv
 suffix:colon
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
 (paren
-l_string|&quot;fuckup in sys_rt_sigreturn, sending SIGSEGV&bslash;n&quot;
+(paren
+l_string|&quot;sys_rt_sigreturn sending SIGSEGV&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|si.si_signo
 op_assign
 id|SIGSEGV
@@ -937,9 +864,8 @@ id|sp
 id|sp
 op_assign
 id|current-&gt;sas_ss_sp
-op_plus
-id|current-&gt;sas_ss_size
 suffix:semicolon
+multiline_comment|/* Stacks grow up! */
 r_return
 (paren
 r_void
@@ -1044,9 +970,43 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_SIG
-id|printk
+id|err
+op_or_assign
+id|__put_user
 c_func
+(paren
+id|regs-&gt;sr
+(braket
+l_int|3
+)braket
+comma
+op_amp
+id|sc-&gt;sc_iasq
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|regs-&gt;sr
+(braket
+l_int|3
+)braket
+comma
+op_amp
+id|sc-&gt;sc_iasq
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
+id|DBG
+c_func
+(paren
 (paren
 l_string|&quot;setup_sigcontext: iaoq %#lx/%#lx&bslash;n&quot;
 comma
@@ -1060,8 +1020,8 @@ id|regs-&gt;gr
 l_int|31
 )braket
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -1095,9 +1055,9 @@ id|regs-&gt;iasq
 )paren
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
+(paren
 (paren
 l_string|&quot;setup_sigcontext: iaoq %#lx/%#lx&bslash;n&quot;
 comma
@@ -1111,8 +1071,8 @@ id|regs-&gt;iaoq
 l_int|1
 )braket
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 )brace
 id|err
 op_or_assign
@@ -1166,9 +1126,9 @@ op_amp
 id|sc-&gt;sc_sar
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
+(paren
 (paren
 l_string|&quot;setup_sigcontext: r28 is %ld&bslash;n&quot;
 comma
@@ -1177,8 +1137,8 @@ id|regs-&gt;gr
 l_int|28
 )braket
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|err
 suffix:semicolon
@@ -1243,38 +1203,6 @@ id|regs-&gt;gr
 l_int|30
 )braket
 suffix:semicolon
-multiline_comment|/* access_ok is broken, so do a simplistic &quot;are we stomping on&n;           kernel space&quot; assertion. */
-r_if
-c_cond
-(paren
-id|usp
-OG
-id|PAGE_OFFSET
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;setup_rt_frame: called on kernel space (usp=%#lx),  NOW YOU MUST DIE!!!&bslash;n&quot;
-comma
-id|usp
-)paren
-suffix:semicolon
-id|show_regs
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-suffix:semicolon
-)brace
-)brace
 id|frame
 op_assign
 id|get_sigframe
@@ -1291,30 +1219,9 @@ id|frame
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|access_ok
+id|DBG
 c_func
 (paren
-id|VERIFY_WRITE
-comma
-id|frame
-comma
-r_sizeof
-(paren
-op_star
-id|frame
-)paren
-)paren
-)paren
-r_goto
-id|give_sigsegv
-suffix:semicolon
-macro_line|#if DEBUG_SIG
-id|printk
-c_func
 (paren
 l_string|&quot;setup_rt_frame 1: frame %p info %p&bslash;n&quot;
 comma
@@ -1322,8 +1229,8 @@ id|frame
 comma
 id|info
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 id|err
 op_or_assign
 id|__copy_to_user
@@ -1496,14 +1403,16 @@ id|sid
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
+(paren
 (paren
 l_string|&quot;flushing 64 bytes at space %#x offset %p&bslash;n&quot;
 comma
 id|sid
 comma
 id|frame-&gt;tramp
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1674,6 +1583,13 @@ id|haddr
 suffix:semicolon
 r_else
 (brace
+id|regs-&gt;gr
+(braket
+l_int|0
+)braket
+op_assign
+id|USER_PSW
+suffix:semicolon
 id|regs-&gt;iaoq
 (braket
 l_int|0
@@ -1739,11 +1655,11 @@ op_amp
 id|frame-&gt;uc
 suffix:semicolon
 multiline_comment|/* ucontext pointer */
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
 (paren
-l_string|&quot;making sigreturn frame: %#lx + %#lx = %#lx&bslash;n&quot;
+(paren
+l_string|&quot;making sigreturn frame: %#lx + %#x = %#lx&bslash;n&quot;
 comma
 id|regs-&gt;gr
 (braket
@@ -1759,8 +1675,8 @@ l_int|30
 op_plus
 id|PARISC_RT_SIGFRAME_SIZE
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Raise the user stack pointer to make a proper call frame. */
 id|regs-&gt;gr
 (braket
@@ -1776,9 +1692,9 @@ op_plus
 id|PARISC_RT_SIGFRAME_SIZE
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
+(paren
 (paren
 l_string|&quot;SIG deliver (%s:%d): frame=0x%p sp=%#lx iaoq=%#lx/%#lx rp=%#lx&bslash;n&quot;
 comma
@@ -1805,21 +1721,21 @@ l_int|1
 comma
 id|rp
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
 id|give_sigsegv
 suffix:colon
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
 (paren
-l_string|&quot;fuckup in setup_rt_frame, sending SIGSEGV&bslash;n&quot;
+(paren
+l_string|&quot;setup_rt_frame sending SIGSEGV&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1911,9 +1827,9 @@ op_minus
 l_int|1
 )braket
 suffix:semicolon
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
+(paren
 (paren
 l_string|&quot;handle_signal(sig=%ld, ka=%p, info=%p, oldset=%p, regs=%p)&bslash;n&quot;
 comma
@@ -1927,8 +1843,8 @@ id|oldset
 comma
 id|regs
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Set up the stack frame */
 r_if
 c_cond
@@ -1979,7 +1895,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|sigorsets
@@ -2013,7 +1929,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 )brace
@@ -2052,9 +1968,9 @@ suffix:semicolon
 r_int
 id|signr
 suffix:semicolon
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
+(paren
 (paren
 l_string|&quot;do_signal(oldset=0x%p, regs=0x%p, sr7 %#lx, pending %d, in_syscall=%d&bslash;n&quot;
 comma
@@ -2071,8 +1987,8 @@ id|current-&gt;sigpending
 comma
 id|in_syscall
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Everyone else checks to see if they are in kernel mode at&n;&t;   this point and exits if that&squot;s the case.  I&squot;m not sure why&n;&t;   we would be called in that case, but for some reason we&n;&t;   are. */
 r_if
 c_cond
@@ -2085,9 +2001,9 @@ op_assign
 op_amp
 id|current-&gt;blocked
 suffix:semicolon
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
+(paren
 (paren
 l_string|&quot;do_signal: oldset %08lx:%08lx&bslash;n&quot;
 comma
@@ -2101,8 +2017,8 @@ id|oldset-&gt;sig
 l_int|1
 )braket
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 id|signr
 op_assign
 id|get_signal_to_deliver
@@ -2143,14 +2059,14 @@ r_case
 op_minus
 id|ERESTARTNOHAND
 suffix:colon
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
+(paren
 (paren
 l_string|&quot;ERESTARTNOHAND: returning -EINTR&bslash;n&quot;
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 id|regs-&gt;gr
 (braket
 l_int|28
@@ -2186,14 +2102,14 @@ id|SA_RESTART
 )paren
 )paren
 (brace
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
+(paren
 (paren
 l_string|&quot;ERESTARTSYS: putting -EINTR&bslash;n&quot;
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 id|regs-&gt;gr
 (braket
 l_int|28
@@ -2251,10 +2167,11 @@ id|in_syscall
 )paren
 )paren
 (brace
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
 (paren
+(paren
+id|KERN_DEBUG
 l_string|&quot;Exiting do_signal (success), regs-&gt;gr[28] = %ld&bslash;n&quot;
 comma
 id|regs-&gt;gr
@@ -2262,8 +2179,8 @@ id|regs-&gt;gr
 l_int|28
 )braket
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
@@ -2323,9 +2240,9 @@ id|regs-&gt;orig_r28
 suffix:semicolon
 )brace
 )brace
-macro_line|#if DEBUG_SIG
-id|printk
+id|DBG
 c_func
+(paren
 (paren
 l_string|&quot;Exiting do_signal (not delivered), regs-&gt;gr[28] = %ld&bslash;n&quot;
 comma
@@ -2334,8 +2251,8 @@ id|regs-&gt;gr
 l_int|28
 )braket
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

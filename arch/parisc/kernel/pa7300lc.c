@@ -1,9 +1,10 @@
 multiline_comment|/*&n; *   linux/arch/parisc/kernel/pa7300lc.c&n; *&t;- PA7300LC-specific functions&t;&n; *&n; *   Copyright (C) 2000 Philipp Rumpf */
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/gsc.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
 multiline_comment|/* CPU register indices */
 DECL|macro|MIOC_STATUS
 mdefine_line|#define MIOC_STATUS&t;0xf040
@@ -17,21 +18,6 @@ DECL|macro|DIOERR
 mdefine_line|#define DIOERR&t;&t;0xf0ec
 DECL|macro|HIDMAMEM
 mdefine_line|#define HIDMAMEM&t;0xf0f4
-multiline_comment|/* read CPU Diagnose register index */
-DECL|function|diag_read
-r_static
-id|u32
-id|diag_read
-c_func
-(paren
-r_int
-id|index
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* this returns the HPA of the CPU it was called on */
 DECL|function|cpu_hpa
 r_static

@@ -1,8 +1,8 @@
-multiline_comment|/*&n; * Just taken from alpha implementation.&n; * This can&squot;t work well, perhaps.&n; */
-multiline_comment|/*&n; *  Generic semaphore code. Buyer beware. Do your own&n; * specific changes in &lt;asm/semaphore-helper.h&gt;&n; */
+multiline_comment|/*&n; * Semaphore implementation Copyright (c) 2001 Matthew Wilcox, Hewlett-Packard&n; */
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;asm/semaphore-helper.h&gt;
-multiline_comment|/*&n; * Semaphores are implemented using a two-way counter:&n; * The &quot;count&quot; variable is decremented for each process&n; * that tries to sleep, while the &quot;waking&quot; variable is&n; * incremented when the &quot;up()&quot; code goes to wake up waiting&n; * processes.&n; *&n; * Notably, the inline &quot;up()&quot; and &quot;down()&quot; functions can&n; * efficiently test if they need to do any extra work (up&n; * needs to do something only if count was negative before&n; * the increment operation.&n; *&n; * waking_non_zero() (from asm/semaphore.h) must execute&n; * atomically.&n; *&n; * When __up() is called, the count was negative before&n; * incrementing it, and we need to wake up somebody.&n; *&n; * This routine adds one to the count of processes that need to&n; * wake up and exit.  ALL waiting processes actually wake up but&n; * only the one that gets to the &quot;waking&quot; field first will gate&n; * through and acquire the semaphore.  The others will go back&n; * to sleep.&n; *&n; * Note that these functions are only called when there is&n; * contention on the lock, and as such all this is the&n; * &quot;non-critical&quot; part of the whole semaphore business. The&n; * critical part is the inline stuff in &lt;asm/semaphore.h&gt;&n; * where we want to avoid any extra jumps and calls.&n; */
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+multiline_comment|/*&n; * Semaphores are complex as we wish to avoid using two variables.&n; * `count&squot; has multiple roles, depending on its value.  If it is positive&n; * or zero, there are no waiters.  The functions here will never be&n; * called; see &lt;asm/semaphore.h&gt;&n; *&n; * When count is -1 it indicates there is at least one task waiting&n; * for the semaphore.&n; *&n; * When count is less than that, there are &squot;- count - 1&squot; wakeups&n; * pending.  ie if it has value -3, there are 2 wakeups pending.&n; *&n; * Note that these functions are only called when there is contention&n; * on the lock, and as such all this is the &quot;non-critical&quot; part of the&n; * whole semaphore business. The critical part is the inline stuff in&n; * &lt;asm/semaphore.h&gt; where we want to avoid any extra jumps and calls.&n; */
 DECL|function|__up
 r_void
 id|__up
@@ -14,11 +14,8 @@ op_star
 id|sem
 )paren
 (brace
-id|wake_one_more
-c_func
-(paren
-id|sem
-)paren
+id|sem-&gt;count
+op_decrement
 suffix:semicolon
 id|wake_up
 c_func
@@ -28,11 +25,14 @@ id|sem-&gt;wait
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Perform the &quot;down&quot; function.  Return zero for semaphore acquired,&n; * return negative for signalled out of the function.&n; *&n; * If called from __down, the return is ignored and the wait loop is&n; * not interruptible.  This means that a task waiting on a semaphore&n; * using &quot;down()&quot; cannot be killed until someone does an &quot;up()&quot; on&n; * the semaphore.&n; *&n; * If called from __down_interruptible, the return value gets checked&n; * upon return.  If the return value is negative then the task continues&n; * with the negative value in the return register (it can be tested by&n; * the caller).&n; *&n; * Either form may be used in conjunction with &quot;up()&quot;.&n; *&n; */
+DECL|macro|wakers
+mdefine_line|#define wakers(count) (-1 - count)
 DECL|macro|DOWN_HEAD
-mdefine_line|#define DOWN_HEAD(task_state)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;state = (task_state);&t;&t;&t;&t;&t;&bslash;&n;&t;add_wait_queue(&amp;sem-&gt;wait, &amp;wait);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; * Ok, we&squot;re set up.  sem-&gt;count is known to be less than zero&t;&bslash;&n;&t; * so we must wait.&t;&t;&t;&t;&t;&t;&bslash;&n;&t; *&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; * We can let go the lock for purposes of waiting.&t;&t;&bslash;&n;&t; * We re-acquire it after awaking so as to protect&t;&t;&bslash;&n;&t; * all semaphore operations.&t;&t;&t;&t;&t;&bslash;&n;&t; *&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; * If &quot;up()&quot; is called before we call waking_non_zero() then&t;&bslash;&n;&t; * we will catch it right away.  If it is called later then&t;&bslash;&n;&t; * we will have to go through a wakeup cycle to catch it.&t;&bslash;&n;&t; *&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; * Multiple waiters contend for the semaphore lock to see&t;&bslash;&n;&t; * who gets to gate through and who has to wait some more.&t;&bslash;&n;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (;;) {
+mdefine_line|#define DOWN_HEAD&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int ret = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DECLARE_WAITQUEUE(wait, current);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* Note that someone is waiting */&t;&t;&t;&t;&bslash;&n;&t;if (sem-&gt;count == 0)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;sem-&gt;count = -1;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* protected by the sentry still -- use unlocked version */&t;&bslash;&n;&t;wait.flags = WQ_FLAG_EXCLUSIVE;&t;&t;&t;&t;&t;&bslash;&n;&t;__add_wait_queue_tail(&amp;sem-&gt;wait, &amp;wait);&t;&t;&t;&bslash;&n; lost_race:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irq(&amp;sem-&gt;sentry);&t;&t;&t;&t;&t;&bslash;&n;
 DECL|macro|DOWN_TAIL
-mdefine_line|#define DOWN_TAIL(task_state)&t;&t;&t;&bslash;&n;&t;&t;current-&gt;state = (task_state);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;state = TASK_RUNNING;&t;&t;&bslash;&n;&t;remove_wait_queue(&amp;sem-&gt;wait, &amp;wait);
+mdefine_line|#define DOWN_TAIL&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irq(&amp;sem-&gt;sentry);&t;&t;&t;&t;&t;&bslash;&n;&t;if (wakers(sem-&gt;count) == 0 &amp;&amp; ret == 0)&t;&t;&t;&bslash;&n;&t;&t;goto lost_race;&t;/* Someone stole our wakeup */&t;&t;&bslash;&n;&t;__remove_wait_queue(&amp;sem-&gt;wait, &amp;wait);&t;&t;&t;&t;&bslash;&n;&t;current-&gt;state = TASK_RUNNING;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!waitqueue_active(&amp;sem-&gt;wait) &amp;&amp; (sem-&gt;count &lt; 0))&t;&t;&bslash;&n;&t;&t;sem-&gt;count = wakers(sem-&gt;count);
+DECL|macro|UPDATE_COUNT
+mdefine_line|#define UPDATE_COUNT&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;sem-&gt;count += (sem-&gt;count &lt; 0) ? 1 : - 1;
 DECL|function|__down
 r_void
 id|__down
@@ -44,27 +44,30 @@ op_star
 id|sem
 )paren
 (brace
-id|DECLARE_WAITQUEUE
-c_func
-(paren
-id|wait
-comma
-id|current
-)paren
-suffix:semicolon
 id|DOWN_HEAD
+r_for
+c_loop
+(paren
+suffix:semicolon
+suffix:semicolon
+)paren
+(brace
+id|set_task_state
 c_func
 (paren
+id|current
+comma
 id|TASK_UNINTERRUPTIBLE
 )paren
+suffix:semicolon
+multiline_comment|/* we can _read_ this without the sentry */
 r_if
 c_cond
 (paren
-id|waking_non_zero
-c_func
-(paren
-id|sem
-)paren
+id|sem-&gt;count
+op_ne
+op_minus
+l_int|1
 )paren
 r_break
 suffix:semicolon
@@ -73,11 +76,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 id|DOWN_TAIL
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
+id|UPDATE_COUNT
 )brace
 DECL|function|__down_interruptible
 r_int
@@ -90,51 +91,47 @@ op_star
 id|sem
 )paren
 (brace
-id|DECLARE_WAITQUEUE
-c_func
-(paren
-id|wait
-comma
-id|current
-)paren
-suffix:semicolon
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 id|DOWN_HEAD
-c_func
+r_for
+c_loop
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-id|ret
-op_assign
-id|waking_non_zero_interruptible
-c_func
-(paren
-id|sem
-comma
-id|current
-)paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
+suffix:semicolon
 )paren
 (brace
+id|set_task_state
+c_func
+(paren
+id|current
+comma
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+multiline_comment|/* we can _read_ this without the sentry */
 r_if
 c_cond
 (paren
-id|ret
-op_eq
+id|sem-&gt;count
+op_ne
+op_minus
 l_int|1
 )paren
-multiline_comment|/* ret != 0 only if we get interrupted -arca */
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|signal_pending
+c_func
+(paren
+id|current
+)paren
+)paren
+(brace
 id|ret
 op_assign
-l_int|0
+op_minus
+id|EINTR
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -144,32 +141,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|DOWN_TAIL
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-r_return
-id|ret
-suffix:semicolon
 )brace
-DECL|function|__down_trylock
-r_int
-id|__down_trylock
-c_func
+id|DOWN_TAIL
+r_if
+c_cond
 (paren
-r_struct
-id|semaphore
-op_star
-id|sem
+op_logical_neg
+id|ret
 )paren
 (brace
+id|UPDATE_COUNT
+)brace
 r_return
-id|waking_non_zero_trylock
-c_func
-(paren
-id|sem
-)paren
+id|ret
 suffix:semicolon
 )brace
 eof
