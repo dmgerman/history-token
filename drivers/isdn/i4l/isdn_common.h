@@ -21,6 +21,8 @@ DECL|macro|ISDN_DEBUG_NET_DIAL
 macro_line|#undef  ISDN_DEBUG_NET_DIAL
 DECL|macro|ISDN_DEBUG_NET_ICALL
 macro_line|#undef  ISDN_DEBUG_NET_ICALL
+DECL|macro|isdn_BUG
+mdefine_line|#define isdn_BUG() &bslash;&n;do { printk(KERN_WARNING &quot;ISDN Bug at %s:%d&quot;, __FILE__, __LINE__); &bslash;&n;} while(0)
 multiline_comment|/* Prototypes */
 r_extern
 r_void
