@@ -261,6 +261,8 @@ c_func
 id|skb
 comma
 id|f-&gt;action
+comma
+id|res
 )paren
 suffix:semicolon
 r_if
