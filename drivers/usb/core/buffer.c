@@ -1,9 +1,14 @@
-multiline_comment|/*&n; * DMA memory management for framework level HCD code (hc_driver)&n; *&n; * This implementation plugs in through generic &quot;usb_bus&quot; level methods,&n; * and works with real PCI, or when &quot;pci device == null&quot; makes sense.&n; */
+multiline_comment|/*&n; * DMA memory management for framework level HCD code (hc_driver)&n; *&n; * This implementation plugs in through generic &quot;usb_bus&quot; level methods,&n; * and should work with all USB controllers, regardles of bus type.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/scatterlist.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;linux/dmapool.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
@@ -108,11 +113,11 @@ id|hcd-&gt;pool
 id|i
 )braket
 op_assign
-id|pci_pool_create
+id|dma_pool_create
 (paren
 id|name
 comma
-id|hcd-&gt;pdev
+id|hcd-&gt;self.controller
 comma
 id|size
 comma
@@ -182,7 +187,7 @@ op_increment
 )paren
 (brace
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|pool
 op_assign
@@ -197,7 +202,7 @@ c_cond
 id|pool
 )paren
 (brace
-id|pci_pool_destroy
+id|dma_pool_destroy
 (paren
 id|pool
 )paren
@@ -276,7 +281,7 @@ id|i
 )braket
 )paren
 r_return
-id|pci_pool_alloc
+id|dma_pool_alloc
 (paren
 id|hcd-&gt;pool
 (braket
@@ -290,13 +295,15 @@ id|dma
 suffix:semicolon
 )brace
 r_return
-id|pci_alloc_consistent
+id|dma_alloc_coherent
 (paren
-id|hcd-&gt;pdev
+id|hcd-&gt;self.controller
 comma
 id|size
 comma
 id|dma
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -364,7 +371,7 @@ id|i
 )braket
 )paren
 (brace
-id|pci_pool_free
+id|dma_pool_free
 (paren
 id|hcd-&gt;pool
 (braket
@@ -380,9 +387,9 @@ r_return
 suffix:semicolon
 )brace
 )brace
-id|pci_free_consistent
+id|dma_free_coherent
 (paren
-id|hcd-&gt;pdev
+id|hcd-&gt;self.controller
 comma
 id|size
 comma

@@ -2028,7 +2028,7 @@ op_amp
 id|itd-&gt;itd_list
 )paren
 suffix:semicolon
-id|pci_pool_free
+id|dma_pool_free
 (paren
 id|ehci-&gt;itd_pool
 comma
@@ -2815,7 +2815,7 @@ suffix:semicolon
 r_else
 id|itd
 op_assign
-id|pci_pool_alloc
+id|dma_pool_alloc
 (paren
 id|ehci-&gt;itd_pool
 comma

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * Copyright (c) 2001 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this file is part of ehci-hcd.c */
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * There&squot;s basically three types of memory:&n; *&t;- data used only by the HCD ... kmalloc is fine&n; *&t;- async and periodic schedules, shared by HC and HCD ... these&n; *&t;  need to use pci_pool or pci_alloc_consistent&n; *&t;- driver buffers, read/written by HC ... single shot DMA mapped &n; *&n; * There&squot;s also PCI &quot;register&quot; data, which is memory mapped.&n; * No memory seen by this driver is pageable.&n; */
+multiline_comment|/*&n; * There&squot;s basically three types of memory:&n; *&t;- data used only by the HCD ... kmalloc is fine&n; *&t;- async and periodic schedules, shared by HC and HCD ... these&n; *&t;  need to use dma_pool or dma_alloc_coherent&n; *&t;- driver buffers, read/written by HC ... single shot DMA mapped &n; *&n; * There&squot;s also PCI &quot;register&quot; data, which is memory mapped.&n; * No memory seen by this driver is pageable.&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* &n; * Allocator / cleanup for the per device structure&n; * Called by hcd init / removal code&n; */
 DECL|function|ehci_hcd_alloc
@@ -171,7 +171,7 @@ id|dma
 suffix:semicolon
 id|qtd
 op_assign
-id|pci_pool_alloc
+id|dma_pool_alloc
 (paren
 id|ehci-&gt;qtd_pool
 comma
@@ -218,7 +218,7 @@ op_star
 id|qtd
 )paren
 (brace
-id|pci_pool_free
+id|dma_pool_free
 (paren
 id|ehci-&gt;qtd_pool
 comma
@@ -259,7 +259,7 @@ r_struct
 id|ehci_qh
 op_star
 )paren
-id|pci_pool_alloc
+id|dma_pool_alloc
 (paren
 id|ehci-&gt;qh_pool
 comma
@@ -333,7 +333,7 @@ comma
 l_string|&quot;no dummy td&bslash;n&quot;
 )paren
 suffix:semicolon
-id|pci_pool_free
+id|dma_pool_free
 (paren
 id|ehci-&gt;qh_pool
 comma
@@ -448,7 +448,7 @@ id|usb_put_dev
 id|qh-&gt;dev
 )paren
 suffix:semicolon
-id|pci_pool_free
+id|dma_pool_free
 (paren
 id|ehci-&gt;qh_pool
 comma
@@ -487,13 +487,13 @@ id|ehci-&gt;async
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* PCI consistent memory and pools */
+multiline_comment|/* DMA consistent memory and pools */
 r_if
 c_cond
 (paren
 id|ehci-&gt;qtd_pool
 )paren
-id|pci_pool_destroy
+id|dma_pool_destroy
 (paren
 id|ehci-&gt;qtd_pool
 )paren
@@ -508,7 +508,7 @@ c_cond
 id|ehci-&gt;qh_pool
 )paren
 (brace
-id|pci_pool_destroy
+id|dma_pool_destroy
 (paren
 id|ehci-&gt;qh_pool
 )paren
@@ -523,7 +523,7 @@ c_cond
 (paren
 id|ehci-&gt;itd_pool
 )paren
-id|pci_pool_destroy
+id|dma_pool_destroy
 (paren
 id|ehci-&gt;itd_pool
 )paren
@@ -537,7 +537,7 @@ c_cond
 (paren
 id|ehci-&gt;sitd_pool
 )paren
-id|pci_pool_destroy
+id|dma_pool_destroy
 (paren
 id|ehci-&gt;sitd_pool
 )paren
@@ -551,9 +551,9 @@ c_cond
 (paren
 id|ehci-&gt;periodic
 )paren
-id|pci_free_consistent
+id|dma_free_coherent
 (paren
-id|ehci-&gt;hcd.pdev
+id|ehci-&gt;hcd.self.controller
 comma
 id|ehci-&gt;periodic_size
 op_star
@@ -608,11 +608,11 @@ suffix:semicolon
 multiline_comment|/* QTDs for control/bulk/intr transfers */
 id|ehci-&gt;qtd_pool
 op_assign
-id|pci_pool_create
+id|dma_pool_create
 (paren
 l_string|&quot;ehci_qtd&quot;
 comma
-id|ehci-&gt;hcd.pdev
+id|ehci-&gt;hcd.self.controller
 comma
 r_sizeof
 (paren
@@ -641,11 +641,11 @@ suffix:semicolon
 multiline_comment|/* QHs for control/bulk/intr transfers */
 id|ehci-&gt;qh_pool
 op_assign
-id|pci_pool_create
+id|dma_pool_create
 (paren
 l_string|&quot;ehci_qh&quot;
 comma
-id|ehci-&gt;hcd.pdev
+id|ehci-&gt;hcd.self.controller
 comma
 r_sizeof
 (paren
@@ -694,11 +694,11 @@ suffix:semicolon
 multiline_comment|/* ITD for high speed ISO transfers */
 id|ehci-&gt;itd_pool
 op_assign
-id|pci_pool_create
+id|dma_pool_create
 (paren
 l_string|&quot;ehci_itd&quot;
 comma
-id|ehci-&gt;hcd.pdev
+id|ehci-&gt;hcd.self.controller
 comma
 r_sizeof
 (paren
@@ -727,11 +727,11 @@ suffix:semicolon
 multiline_comment|/* SITD for full/low speed split ISO transfers */
 id|ehci-&gt;sitd_pool
 op_assign
-id|pci_pool_create
+id|dma_pool_create
 (paren
 l_string|&quot;ehci_sitd&quot;
 comma
-id|ehci-&gt;hcd.pdev
+id|ehci-&gt;hcd.self.controller
 comma
 r_sizeof
 (paren
@@ -764,9 +764,9 @@ op_assign
 id|u32
 op_star
 )paren
-id|pci_alloc_consistent
+id|dma_alloc_coherent
 (paren
-id|ehci-&gt;hcd.pdev
+id|ehci-&gt;hcd.self.controller
 comma
 id|ehci-&gt;periodic_size
 op_star
@@ -777,6 +777,8 @@ id|u32
 comma
 op_amp
 id|ehci-&gt;periodic_dma
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if

@@ -144,31 +144,31 @@ id|u32
 id|hcs_params
 suffix:semicolon
 multiline_comment|/* cached register copy */
-multiline_comment|/* per-HC memory pools (could be per-PCI-bus, but ...) */
+multiline_comment|/* per-HC memory pools (could be per-bus, but ...) */
 DECL|member|qh_pool
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|qh_pool
 suffix:semicolon
 multiline_comment|/* qh per active urb */
 DECL|member|qtd_pool
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|qtd_pool
 suffix:semicolon
 multiline_comment|/* one or more per qh */
 DECL|member|itd_pool
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|itd_pool
 suffix:semicolon
 multiline_comment|/* itd per iso urb */
 DECL|member|sitd_pool
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|sitd_pool
 suffix:semicolon

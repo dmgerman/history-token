@@ -2889,7 +2889,7 @@ id|ehci
 comma
 id|urb
 comma
-id|SLAB_ATOMIC
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 op_star

@@ -14,6 +14,8 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/dmapool.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
@@ -306,7 +308,7 @@ id|td
 suffix:semicolon
 id|td
 op_assign
-id|pci_pool_alloc
+id|dma_pool_alloc
 c_func
 (paren
 id|uhci-&gt;td_pool
@@ -1000,7 +1002,7 @@ c_func
 id|td-&gt;dev
 )paren
 suffix:semicolon
-id|pci_pool_free
+id|dma_pool_free
 c_func
 (paren
 id|uhci-&gt;td_pool
@@ -1040,7 +1042,7 @@ id|qh
 suffix:semicolon
 id|qh
 op_assign
-id|pci_pool_alloc
+id|dma_pool_alloc
 c_func
 (paren
 id|uhci-&gt;qh_pool
@@ -1170,7 +1172,7 @@ c_func
 id|qh-&gt;dev
 )paren
 suffix:semicolon
-id|pci_pool_free
+id|dma_pool_free
 c_func
 (paren
 id|uhci-&gt;qh_pool
@@ -8511,9 +8513,15 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|uhci-&gt;hcd.pdev
+id|uhci-&gt;hcd.self.controller
 op_logical_or
-id|uhci-&gt;hcd.pdev-&gt;vendor
+id|to_pci_dev
+c_func
+(paren
+id|uhci-&gt;hcd.self.controller
+)paren
+op_member_access_from_pointer
+id|vendor
 op_ne
 id|PCI_VENDOR_ID_INTEL
 )paren
@@ -8919,7 +8927,7 @@ c_cond
 id|uhci-&gt;qh_pool
 )paren
 (brace
-id|pci_pool_destroy
+id|dma_pool_destroy
 c_func
 (paren
 id|uhci-&gt;qh_pool
@@ -8936,7 +8944,7 @@ c_cond
 id|uhci-&gt;td_pool
 )paren
 (brace
-id|pci_pool_destroy
+id|dma_pool_destroy
 c_func
 (paren
 id|uhci-&gt;td_pool
@@ -8953,10 +8961,10 @@ c_cond
 id|uhci-&gt;fl
 )paren
 (brace
-id|pci_free_consistent
+id|dma_free_coherent
 c_func
 (paren
-id|uhci-&gt;hcd.pdev
+id|uhci-&gt;hcd.self.controller
 comma
 r_sizeof
 (paren
@@ -9048,7 +9056,11 @@ suffix:semicolon
 id|pci_write_config_word
 c_func
 (paren
-id|hcd-&gt;pdev
+id|to_pci_dev
+c_func
+(paren
+id|hcd-&gt;self.controller
+)paren
 comma
 id|USBLEGSUP
 comma
@@ -9117,7 +9129,11 @@ op_assign
 id|pci_resource_len
 c_func
 (paren
-id|hcd-&gt;pdev
+id|to_pci_dev
+c_func
+(paren
+id|hcd-&gt;self.controller
+)paren
 comma
 id|hcd-&gt;region
 )paren
@@ -9266,10 +9282,10 @@ id|uhci-&gt;frame_list_lock
 suffix:semicolon
 id|uhci-&gt;fl
 op_assign
-id|pci_alloc_consistent
+id|dma_alloc_coherent
 c_func
 (paren
-id|hcd-&gt;pdev
+id|hcd-&gt;self.controller
 comma
 r_sizeof
 (paren
@@ -9279,6 +9295,8 @@ id|uhci-&gt;fl
 comma
 op_amp
 id|dma_handle
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -9322,12 +9340,12 @@ id|dma_handle
 suffix:semicolon
 id|uhci-&gt;td_pool
 op_assign
-id|pci_pool_create
+id|dma_pool_create
 c_func
 (paren
 l_string|&quot;uhci_td&quot;
 comma
-id|hcd-&gt;pdev
+id|hcd-&gt;self.controller
 comma
 r_sizeof
 (paren
@@ -9350,7 +9368,7 @@ id|uhci-&gt;td_pool
 id|err
 c_func
 (paren
-l_string|&quot;unable to create td pci_pool&quot;
+l_string|&quot;unable to create td dma_pool&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -9359,12 +9377,12 @@ suffix:semicolon
 )brace
 id|uhci-&gt;qh_pool
 op_assign
-id|pci_pool_create
+id|dma_pool_create
 c_func
 (paren
 l_string|&quot;uhci_qh&quot;
 comma
-id|hcd-&gt;pdev
+id|hcd-&gt;self.controller
 comma
 r_sizeof
 (paren
@@ -9387,7 +9405,7 @@ id|uhci-&gt;qh_pool
 id|err
 c_func
 (paren
-l_string|&quot;unable to create qh pci_pool&quot;
+l_string|&quot;unable to create qh dma_pool&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -9797,8 +9815,7 @@ c_func
 (paren
 id|udev
 comma
-op_amp
-id|hcd-&gt;pdev-&gt;dev
+id|hcd-&gt;self.controller
 )paren
 op_ne
 l_int|0
@@ -9908,7 +9925,7 @@ l_int|NULL
 suffix:semicolon
 id|err_alloc_root_hub
 suffix:colon
-id|pci_pool_destroy
+id|dma_pool_destroy
 c_func
 (paren
 id|uhci-&gt;qh_pool
@@ -9920,7 +9937,7 @@ l_int|NULL
 suffix:semicolon
 id|err_create_qh_pool
 suffix:colon
-id|pci_pool_destroy
+id|dma_pool_destroy
 c_func
 (paren
 id|uhci-&gt;td_pool
@@ -9932,10 +9949,10 @@ l_int|NULL
 suffix:semicolon
 id|err_create_td_pool
 suffix:colon
-id|pci_free_consistent
+id|dma_free_coherent
 c_func
 (paren
-id|hcd-&gt;pdev
+id|hcd-&gt;self.controller
 comma
 r_sizeof
 (paren
@@ -10144,7 +10161,11 @@ suffix:semicolon
 id|pci_set_master
 c_func
 (paren
-id|uhci-&gt;hcd.pdev
+id|to_pci_dev
+c_func
+(paren
+id|uhci-&gt;hcd.self.controller
+)paren
 )paren
 suffix:semicolon
 r_if

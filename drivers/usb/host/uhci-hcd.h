@@ -530,13 +530,13 @@ id|io_addr
 suffix:semicolon
 DECL|member|qh_pool
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|qh_pool
 suffix:semicolon
 DECL|member|td_pool
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|td_pool
 suffix:semicolon
