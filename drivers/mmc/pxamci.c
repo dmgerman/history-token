@@ -2528,7 +2528,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;pxamci&quot;
+l_string|&quot;pxa2xx-mci&quot;
 comma
 dot
 id|bus
