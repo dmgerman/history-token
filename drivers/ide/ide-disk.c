@@ -4851,6 +4851,12 @@ c_cond
 id|rq-&gt;errors
 op_ge
 id|ERROR_MAX
+op_logical_or
+id|blk_noretry_request
+c_func
+(paren
+id|rq
+)paren
 )paren
 id|DRIVER
 c_func
