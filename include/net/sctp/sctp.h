@@ -115,7 +115,6 @@ id|sa_family_t
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * sctp/socket.c&n; */
-r_extern
 r_int
 id|sctp_backlog_rcv
 c_func
@@ -131,7 +130,6 @@ op_star
 id|skb
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|sctp_inet_listen
 c_func
@@ -145,7 +143,6 @@ r_int
 id|backlog
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_write_space
 c_func
@@ -156,7 +153,6 @@ op_star
 id|sk
 )paren
 suffix:semicolon
-r_extern
 r_int
 r_int
 id|sctp_poll
@@ -178,7 +174,6 @@ id|wait
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * sctp/primitive.c&n; */
-r_extern
 r_int
 id|sctp_primitive_ASSOCIATE
 c_func
@@ -192,7 +187,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|sctp_primitive_SHUTDOWN
 c_func
@@ -206,7 +200,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|sctp_primitive_ABORT
 c_func
@@ -220,7 +213,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|sctp_primitive_SEND
 c_func
@@ -234,7 +226,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|sctp_primitive_REQUESTHEARTBEAT
 c_func
@@ -249,7 +240,6 @@ id|arg
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * sctp/crc32c.c&n; */
-r_extern
 id|__u32
 id|sctp_start_cksum
 c_func
@@ -262,7 +252,6 @@ id|__u16
 id|count
 )paren
 suffix:semicolon
-r_extern
 id|__u32
 id|sctp_update_cksum
 c_func
@@ -278,7 +267,6 @@ id|__u32
 id|cksum
 )paren
 suffix:semicolon
-r_extern
 id|__u32
 id|sctp_end_cksum
 c_func
@@ -287,7 +275,6 @@ id|__u32
 id|cksum
 )paren
 suffix:semicolon
-r_extern
 id|__u32
 id|sctp_update_copy_cksum
 c_func
@@ -306,7 +293,6 @@ id|cksum
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * sctp/input.c&n; */
-r_extern
 r_int
 id|sctp_rcv
 c_func
@@ -317,7 +303,6 @@ op_star
 id|skb
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_v4_err
 c_func
@@ -331,7 +316,6 @@ id|u32
 id|info
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_hash_established
 c_func
@@ -341,7 +325,6 @@ id|sctp_association
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|__sctp_hash_established
 c_func
@@ -351,7 +334,6 @@ id|sctp_association
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_unhash_established
 c_func
@@ -361,7 +343,6 @@ id|sctp_association
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|__sctp_unhash_established
 c_func
@@ -371,7 +352,6 @@ id|sctp_association
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_hash_endpoint
 c_func
@@ -381,7 +361,6 @@ id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|__sctp_hash_endpoint
 c_func
@@ -391,7 +370,6 @@ id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_unhash_endpoint
 c_func
@@ -401,7 +379,6 @@ id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|__sctp_unhash_endpoint
 c_func
@@ -411,7 +388,6 @@ id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_struct
 id|sctp_association
 op_star
@@ -434,7 +410,6 @@ op_star
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_struct
 id|sock
 op_star
@@ -468,7 +443,6 @@ op_star
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_err_finish
 c_func
@@ -486,7 +460,6 @@ id|sctp_association
 op_star
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_icmp_frag_needed
 c_func
@@ -698,7 +671,6 @@ mdefine_line|#define SCTP_DBG_OBJCNT(name) &bslash;&n;atomic_t sctp_dbg_objcnt_#
 multiline_comment|/* Macro to help create new entries in in the global array of&n; * objcnt counters.&n; */
 DECL|macro|SCTP_DBG_OBJCNT_ENTRY
 mdefine_line|#define SCTP_DBG_OBJCNT_ENTRY(name) &bslash;&n;{.label= #name, .counter= &amp;sctp_dbg_objcnt_## name}
-r_extern
 r_void
 id|sctp_dbg_objcnt_init
 c_func
@@ -706,7 +678,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_dbg_objcnt_exit
 c_func
@@ -747,7 +718,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SCTP_DBG_OBJCOUNT */
 macro_line|#if defined CONFIG_SYSCTL
-r_extern
 r_void
 id|sctp_sysctl_register
 c_func
@@ -755,7 +725,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_sysctl_unregister
 c_func
@@ -795,7 +764,6 @@ multiline_comment|/* Size of Supported Address Parameter for &squot;x&squot; add
 DECL|macro|SCTP_SAT_LEN
 mdefine_line|#define SCTP_SAT_LEN(x) (sizeof(struct sctp_paramhdr) + (x) * sizeof(__u16))
 macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
-r_extern
 r_int
 id|sctp_v6_init
 c_func
@@ -803,7 +771,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_v6_exit
 c_func
@@ -811,7 +778,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|sctp_v6_err
 c_func
@@ -1282,7 +1248,6 @@ id|proc_dir_entry
 op_star
 id|proc_net_sctp
 suffix:semicolon
-r_extern
 r_void
 id|sctp_put_port
 c_func
@@ -1638,5 +1603,83 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_IPV6 */
 DECL|macro|sctp_sk
 mdefine_line|#define sctp_sk(__sk) (&amp;((struct sctp_sock *)__sk)-&gt;sctp)
+DECL|macro|sctp_style
+mdefine_line|#define sctp_style(sk, style) __sctp_style((sk), (SCTP_SOCKET_##style))
+DECL|function|__sctp_style
+r_int
+r_static
+r_inline
+id|__sctp_style
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+id|sctp_socket_type_t
+id|style
+)paren
+(brace
+r_return
+id|sctp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|type
+op_eq
+id|style
+suffix:semicolon
+)brace
+DECL|macro|sctp_state
+mdefine_line|#define sctp_state(asoc, state) __sctp_state((asoc), (SCTP_STATE_##state))
+DECL|function|__sctp_state
+r_int
+r_static
+r_inline
+id|__sctp_state
+c_func
+(paren
+r_struct
+id|sctp_association
+op_star
+id|asoc
+comma
+id|sctp_state_t
+id|state
+)paren
+(brace
+r_return
+id|asoc-&gt;state
+op_eq
+id|state
+suffix:semicolon
+)brace
+DECL|macro|sctp_sstate
+mdefine_line|#define sctp_sstate(sk, state) __sctp_sstate((sk), (SCTP_SS_##state))
+DECL|function|__sctp_sstate
+r_int
+r_static
+r_inline
+id|__sctp_sstate
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+id|sctp_sock_state_t
+id|state
+)paren
+(brace
+r_return
+id|sk-&gt;state
+op_eq
+id|state
+suffix:semicolon
+)brace
 macro_line|#endif /* __net_sctp_h__ */
 eof
