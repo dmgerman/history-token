@@ -4662,6 +4662,36 @@ comma
 l_int|0
 )paren
 comma
+id|AC97_SINGLE
+c_func
+(paren
+l_string|&quot;Headphone Jack Sense&quot;
+comma
+id|AC97_AD_JACK_SPDIF
+comma
+l_int|9
+comma
+l_int|1
+comma
+l_int|1
+)paren
+comma
+multiline_comment|/* inverted */
+id|AC97_SINGLE
+c_func
+(paren
+l_string|&quot;Line Jack Sense&quot;
+comma
+id|AC97_AD_JACK_SPDIF
+comma
+l_int|8
+comma
+l_int|1
+comma
+l_int|1
+)paren
+comma
+multiline_comment|/* inverted */
 )brace
 suffix:semicolon
 DECL|function|patch_ad1885_specific
@@ -4732,10 +4762,6 @@ op_star
 id|ac97
 )paren
 (brace
-r_int
-r_int
-id|jack
-suffix:semicolon
 id|patch_ad1881
 c_func
 (paren
@@ -4744,29 +4770,6 @@ id|ac97
 suffix:semicolon
 multiline_comment|/* This is required to deal with the Intel D815EEAL2 */
 multiline_comment|/* i.e. Line out is actually headphone out from codec */
-multiline_comment|/* turn off jack sense bits D8 &amp; D9 */
-id|jack
-op_assign
-id|snd_ac97_read
-c_func
-(paren
-id|ac97
-comma
-id|AC97_AD_JACK_SPDIF
-)paren
-suffix:semicolon
-id|snd_ac97_write_cache
-c_func
-(paren
-id|ac97
-comma
-id|AC97_AD_JACK_SPDIF
-comma
-id|jack
-op_or
-l_int|0x0300
-)paren
-suffix:semicolon
 multiline_comment|/* set default */
 id|snd_ac97_write_cache
 c_func
