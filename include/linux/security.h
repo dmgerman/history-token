@@ -10,8 +10,6 @@ macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/msg.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/netlink.h&gt;
 r_struct
 id|ctl_table
 suffix:semicolon
@@ -242,11 +240,25 @@ r_int
 id|pages
 )paren
 suffix:semicolon
-DECL|function|cap_netlink_send
-r_static
-r_inline
+r_struct
+id|msghdr
+suffix:semicolon
+r_struct
+id|sk_buff
+suffix:semicolon
+r_struct
+id|sock
+suffix:semicolon
+r_struct
+id|sockaddr
+suffix:semicolon
+r_struct
+id|socket
+suffix:semicolon
+r_extern
 r_int
 id|cap_netlink_send
+c_func
 (paren
 r_struct
 id|sock
@@ -258,56 +270,18 @@ id|sk_buff
 op_star
 id|skb
 )paren
-(brace
-id|NETLINK_CB
-(paren
-id|skb
-)paren
-dot
-id|eff_cap
-op_assign
-id|current-&gt;cap_effective
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|cap_netlink_recv
-r_static
-r_inline
+r_extern
 r_int
 id|cap_netlink_recv
+c_func
 (paren
 r_struct
 id|sk_buff
 op_star
 id|skb
 )paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cap_raised
-(paren
-id|NETLINK_CB
-(paren
-id|skb
-)paren
-dot
-id|eff_cap
-comma
-id|CAP_NET_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EPERM
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Values used in the task_security_ops calls&n; */
 multiline_comment|/* setuid or setgid, id0 == uid or gid */
 DECL|macro|LSM_SETID_ID
@@ -8373,7 +8347,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The netlink capability defaults need to be used inline by default&n; * (rather than hooking into the capability module) to reduce overhead&n; * in the networking code.&n; */
 DECL|function|security_netlink_send
 r_static
 r_inline
