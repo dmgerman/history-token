@@ -2108,8 +2108,6 @@ r_if
 c_cond
 (paren
 id|result
-OL
-l_int|0
 )paren
 (brace
 id|err
@@ -2121,8 +2119,7 @@ id|result
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|result
 suffix:semicolon
 )brace
 id|info
