@@ -2203,23 +2203,29 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_INTEL_82845_HB
 )paren
-op_logical_and
+r_switch
+c_cond
 (paren
 id|dev-&gt;subsystem_device
-op_eq
+)paren
+(brace
+r_case
+l_int|0x8070
+suffix:colon
+multiline_comment|/* P4B */
+r_case
 l_int|0x8088
-)paren
-)paren
+suffix:colon
 multiline_comment|/* P4B533 */
 id|asus_hides_smbus
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
