@@ -1628,17 +1628,22 @@ id|get_prepend_chunk
 suffix:semicolon
 multiline_comment|/* This packet should advertise ECN capability to the network&n;&t; * via the ECT bit.&n;&t; */
 DECL|member|ecn_capable
-r_int
+r_char
 id|ecn_capable
 suffix:semicolon
 multiline_comment|/* This packet contains a COOKIE-ECHO chunk. */
 DECL|member|has_cookie_echo
-r_int
+r_char
 id|has_cookie_echo
+suffix:semicolon
+multiline_comment|/* This packet containsa SACK chunk. */
+DECL|member|has_sack
+r_char
+id|has_sack
 suffix:semicolon
 multiline_comment|/* SCTP cannot fragment this packet. So let ip fragment it. */
 DECL|member|ipfragok
-r_int
+r_char
 id|ipfragok
 suffix:semicolon
 DECL|member|malloced

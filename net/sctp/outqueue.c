@@ -1146,7 +1146,7 @@ id|reason
 )paren
 (brace
 r_case
-id|SCTP_RETRANSMIT_T3_RTX
+id|SCTP_RTXR_T3_RTX
 suffix:colon
 id|sctp_transport_lower_cwnd
 c_func
@@ -1173,7 +1173,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCTP_RETRANSMIT_FAST_RTX
+id|SCTP_RTXR_FAST_RTX
 suffix:colon
 id|sctp_transport_lower_cwnd
 c_func
@@ -1189,6 +1189,9 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|SCTP_RTXR_PMTUD
+suffix:colon
 r_default
 suffix:colon
 r_break
@@ -2877,8 +2880,6 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-l_int|NULL
-op_ne
 (paren
 id|chunk
 op_assign
@@ -2935,7 +2936,7 @@ comma
 id|ev
 )paren
 suffix:semicolon
-multiline_comment|/* Free the chunk. This chunk is not on any&n;&t;&t;&t;&t; * list yet, just free it.&n;&t;&t;&t;&t; */
+multiline_comment|/* Free the chunk. */
 id|sctp_free_chunk
 c_func
 (paren
@@ -4958,7 +4959,7 @@ id|q
 comma
 id|transport
 comma
-id|SCTP_RETRANSMIT_FAST_RTX
+id|SCTP_RTXR_FAST_RTX
 )paren
 suffix:semicolon
 id|SCTP_DEBUG_PRINTK
