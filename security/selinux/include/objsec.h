@@ -343,6 +343,30 @@ suffix:semicolon
 multiline_comment|/* reference to permissions */
 )brace
 suffix:semicolon
+DECL|struct|sk_security_struct
+r_struct
+id|sk_security_struct
+(brace
+DECL|member|magic
+r_int
+r_int
+id|magic
+suffix:semicolon
+multiline_comment|/* magic number for this module */
+DECL|member|sk
+r_struct
+id|sock
+op_star
+id|sk
+suffix:semicolon
+multiline_comment|/* back pointer to sk object */
+DECL|member|peer_sid
+id|u32
+id|peer_sid
+suffix:semicolon
+multiline_comment|/* SID of peer */
+)brace
+suffix:semicolon
 r_extern
 r_int
 id|inode_security_set_sid
