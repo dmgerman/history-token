@@ -1102,6 +1102,10 @@ c_cond
 id|asoc
 )paren
 (brace
+id|sk
+op_assign
+id|asoc-&gt;base.sk
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1124,10 +1128,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|sk
-op_assign
-id|asoc-&gt;base.sk
-suffix:semicolon
 )brace
 r_else
 id|sk
