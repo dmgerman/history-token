@@ -1796,6 +1796,8 @@ id|edge_level
 comma
 op_amp
 id|active_high_low
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If no PRT entry was found, we&squot;ll try to derive an IRQ from the&n;&t; * device&squot;s parent bridge.&n;&t; */
@@ -1820,6 +1822,8 @@ id|edge_level
 comma
 op_amp
 id|active_high_low
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
