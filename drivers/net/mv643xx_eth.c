@@ -4022,6 +4022,9 @@ id|pkt_info.return_info
 op_assign
 id|skb
 suffix:semicolon
+id|mp-&gt;tx_ring_skbs
+op_increment
+suffix:semicolon
 id|status
 op_assign
 id|eth_port_send
@@ -4056,9 +4059,6 @@ l_string|&quot;%s: Error on transmitting packet&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
-suffix:semicolon
-id|mp-&gt;tx_ring_skbs
-op_increment
 suffix:semicolon
 )brace
 r_else
@@ -4536,6 +4536,9 @@ id|pkt_info.return_info
 op_assign
 id|skb
 suffix:semicolon
+id|mp-&gt;tx_ring_skbs
+op_increment
+suffix:semicolon
 id|status
 op_assign
 id|eth_port_send
@@ -4570,9 +4573,6 @@ l_string|&quot;%s: Error on transmitting packet&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
-suffix:semicolon
-id|mp-&gt;tx_ring_skbs
-op_increment
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Check if TX queue can handle another skb. If not, then&n;&t; * signal higher layers to stop requesting TX&n;&t; */
