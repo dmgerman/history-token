@@ -898,12 +898,12 @@ id|line-&gt;sem
 suffix:semicolon
 )brace
 )brace
-DECL|function|console_device
+DECL|function|um_console_device
 r_static
 r_struct
 id|tty_driver
 op_star
-id|console_device
+id|um_console_device
 c_func
 (paren
 r_struct
@@ -962,7 +962,7 @@ id|console_write
 comma
 id|device
 suffix:colon
-id|console_device
+id|um_console_device
 comma
 id|setup
 suffix:colon
