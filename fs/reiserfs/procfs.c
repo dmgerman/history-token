@@ -2236,7 +2236,9 @@ suffix:semicolon
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;reiserfs: cannot create /proc/%s/%s&bslash;n&quot;
+id|sb
+comma
+l_string|&quot;reiserfs: cannot create /proc/%s/%s&quot;
 comma
 id|proc_info_root_name
 comma
@@ -2506,9 +2508,10 @@ suffix:semicolon
 r_else
 (brace
 id|reiserfs_warning
-c_func
 (paren
-l_string|&quot;reiserfs: cannot create /proc/%s&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;reiserfs: cannot create /proc/%s&quot;
 comma
 id|proc_info_root_name
 )paren

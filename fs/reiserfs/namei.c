@@ -493,6 +493,8 @@ id|path
 (brace
 id|reiserfs_warning
 (paren
+id|sb
+comma
 l_string|&quot;vs-7000: search_by_entry_key: search_by_key returned item position == 0&quot;
 )paren
 suffix:semicolon
@@ -532,6 +534,8 @@ id|path
 suffix:semicolon
 id|reiserfs_warning
 (paren
+id|sb
+comma
 l_string|&quot;vs-7002: search_by_entry_key: no path to here&quot;
 )paren
 suffix:semicolon
@@ -1153,7 +1157,9 @@ id|IO_ERROR
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;zam-7001: io error in %s&bslash;n&quot;
+id|dir-&gt;i_sb
+comma
+l_string|&quot;zam-7001: io error in %s&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2100,8 +2106,10 @@ id|NAME_FOUND
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;zam-7002:%s: &bslash;&quot;reiserfs_find_entry&bslash;&quot; has returned&quot;
-l_string|&quot; unexpected value (%d)&bslash;n&quot;
+id|dir-&gt;i_sb
+comma
+l_string|&quot;zam-7002:%s: &bslash;&quot;reiserfs_find_entry&bslash;&quot; &quot;
+l_string|&quot;has returned unexpected value (%d)&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2141,7 +2149,9 @@ id|MAX_GENERATION_NUMBER
 multiline_comment|/* there is no free generation number */
 id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_add_entry: Congratulations! we have got hash function screwed up&bslash;n&quot;
+id|dir-&gt;i_sb
+comma
+l_string|&quot;reiserfs_add_entry: Congratulations! we have got hash function screwed up&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2246,8 +2256,10 @@ id|NAME_NOT_FOUND
 (brace
 id|reiserfs_warning
 (paren
+id|dir-&gt;i_sb
+comma
 l_string|&quot;vs-7032: reiserfs_add_entry: &quot;
-l_string|&quot;entry with this key (%K) already exists&bslash;n&quot;
+l_string|&quot;entry with this key (%K) already exists&quot;
 comma
 op_amp
 id|entry_key
@@ -3653,9 +3665,14 @@ id|inode-&gt;i_nlink
 op_ne
 l_int|1
 )paren
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_rmdir: empty directory has nlink != 2 (%d)&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;%s: empty directory has nlink &quot;
+l_string|&quot;!= 2 (%d)&quot;
+comma
+id|__FUNCTION__
 comma
 id|inode-&gt;i_nlink
 )paren
@@ -3938,10 +3955,14 @@ op_logical_neg
 id|inode-&gt;i_nlink
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_unlink: deleting nonexistent file (%s:%lu), %d&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;%s: deleting nonexistent file &quot;
+l_string|&quot;(%s:%lu), %d&quot;
+comma
+id|__FUNCTION__
 comma
 id|reiserfs_bdevname
 (paren
@@ -5837,7 +5858,9 @@ l_int|0
 )paren
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-7060: reiserfs_rename: couldn&squot;t not cut old name. Fsck later?&bslash;n&quot;
+id|old_dir-&gt;i_sb
+comma
+l_string|&quot;vs-7060: reiserfs_rename: couldn&squot;t not cut old name. Fsck later?&quot;
 )paren
 suffix:semicolon
 id|old_dir-&gt;i_size

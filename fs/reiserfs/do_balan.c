@@ -126,7 +126,7 @@ id|DISK_LEAF_NODE_LEVEL
 op_plus
 l_int|1
 comma
-l_string|&quot;vs- 12000: level: wrong FR %z&bslash;n&quot;
+l_string|&quot;vs- 12000: level: wrong FR %z&quot;
 comma
 id|tb-&gt;FR
 (braket
@@ -5656,7 +5656,7 @@ id|i
 )braket
 )paren
 comma
-l_string|&quot;PAP-12247: S_new[%d] : (%b)&bslash;n&quot;
+l_string|&quot;PAP-12247: S_new[%d] : (%b)&quot;
 comma
 id|i
 comma
@@ -6389,9 +6389,11 @@ id|buffer_dirty
 id|bh
 )paren
 )paren
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;store_thrown deals with dirty buffer&bslash;n&quot;
+id|tb-&gt;tb_sb
+comma
+l_string|&quot;store_thrown deals with dirty buffer&quot;
 )paren
 suffix:semicolon
 r_for
@@ -6448,7 +6450,9 @@ suffix:semicolon
 )brace
 id|reiserfs_warning
 (paren
-l_string|&quot;store_thrown: too many thrown buffers&bslash;n&quot;
+id|tb-&gt;tb_sb
+comma
+l_string|&quot;store_thrown: too many thrown buffers&quot;
 )paren
 suffix:semicolon
 )brace
@@ -6525,9 +6529,11 @@ id|i
 )braket
 )paren
 )paren
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;free_thrown deals with dirty buffer %d&bslash;n&quot;
+id|tb-&gt;tb_sb
+comma
+l_string|&quot;free_thrown deals with dirty buffer %d&quot;
 comma
 id|blocknr
 )paren
@@ -7169,7 +7175,9 @@ id|bh
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-12339: locked_or_not_in_tree: %s (%b)&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;vs-12339: locked_or_not_in_tree: %s (%b)&quot;
 comma
 id|which
 comma
@@ -7601,10 +7609,11 @@ l_string|&quot;12223&quot;
 )paren
 suffix:semicolon
 id|reiserfs_warning
-c_func
 (paren
+id|tb-&gt;tb_sb
+comma
 l_string|&quot;B_FREE_SPACE (PATH_H_PBUFFER(tb-&gt;tb_path,0)) = %d; &quot;
-l_string|&quot;MAX_CHILD_SIZE (%d) - dc_size( %y, %d ) [%d] = %d&bslash;n&quot;
+l_string|&quot;MAX_CHILD_SIZE (%d) - dc_size( %y, %d ) [%d] = %d&quot;
 comma
 id|left
 comma
@@ -7969,6 +7978,8 @@ l_int|0
 (brace
 id|reiserfs_warning
 (paren
+id|tb-&gt;tb_sb
+comma
 l_string|&quot;PAP-12350: do_balance: insert_size == 0, mode == %c&quot;
 comma
 id|flag

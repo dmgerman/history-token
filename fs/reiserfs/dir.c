@@ -217,6 +217,8 @@ suffix:semicolon
 id|reiserfs_check_lock_depth
 c_func
 (paren
+id|inode-&gt;i_sb
+comma
 l_string|&quot;readdir&quot;
 )paren
 suffix:semicolon
@@ -252,7 +254,7 @@ op_amp
 id|pos_key
 )paren
 suffix:semicolon
-multiline_comment|/*  reiserfs_warning (&quot;reiserfs_readdir 1: f_pos = %Ld&bslash;n&quot;, filp-&gt;f_pos);*/
+multiline_comment|/*  reiserfs_warning (inode-&gt;i_sb, &quot;reiserfs_readdir 1: f_pos = %Ld&quot;, filp-&gt;f_pos);*/
 r_while
 c_loop
 (paren

@@ -1205,7 +1205,9 @@ id|ENOSPC
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-9008: search_by_key (%K) returned %d&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;green-9008: search_by_key (%K) returned %d&quot;
 comma
 op_amp
 id|key
@@ -1978,7 +1980,10 @@ id|ENOSPC
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-9009: search_by_key (%K) returned %d&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;green-9009: search_by_key (%K) &quot;
+l_string|&quot;returned %d&quot;
 comma
 op_amp
 id|key
@@ -3570,9 +3575,11 @@ l_int|1
 )paren
 (brace
 id|reiserfs_warning
-c_func
 (paren
-l_string|&quot;green-9001: reiserfs_prepare_file_region_for_write called with zero number of pages to process&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;green-9001: reiserfs_prepare_file_region_for_write &quot;
+l_string|&quot;called with zero number of pages to process&quot;
 )paren
 suffix:semicolon
 r_return

@@ -414,7 +414,9 @@ id|vi
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;STATDATA, index %d, type 0x%x, %h&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;STATDATA, index %d, type 0x%x, %h&quot;
 comma
 id|vi-&gt;vi_index
 comma
@@ -810,7 +812,9 @@ id|vi
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;DIRECT, index %d, type 0x%x, %h&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;DIRECT, index %d, type 0x%x, %h&quot;
 comma
 id|vi-&gt;vi_index
 comma
@@ -1186,8 +1190,10 @@ id|ih
 op_mod
 id|UNFM_P_SIZE
 )paren
-id|printk
+id|reiserfs_warning
 (paren
+l_int|NULL
+comma
 l_string|&quot;indirect_print_item: invalid item len&quot;
 )paren
 suffix:semicolon
@@ -1450,7 +1456,9 @@ id|vi
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;INDIRECT, index %d, type 0x%x, %h&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;INDIRECT, index %d, type 0x%x, %h&quot;
 comma
 id|vi-&gt;vi_index
 comma
@@ -1541,6 +1549,8 @@ id|block_size
 (brace
 id|reiserfs_warning
 (paren
+l_int|NULL
+comma
 l_string|&quot;vs-16090: direntry_bytes_number: &quot;
 l_string|&quot;bytes number is asked for direntry&quot;
 )paren
@@ -2455,17 +2465,15 @@ op_eq
 id|dir_u-&gt;entry_count
 )paren
 (brace
-id|printk
+id|reiserfs_panic
 (paren
-l_string|&quot;free spze %d, entry_count %d&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;free space %d, entry_count %d&bslash;n&quot;
 comma
 id|free
 comma
 id|dir_u-&gt;entry_count
-)paren
-suffix:semicolon
-id|BUG
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -2747,7 +2755,9 @@ id|vi-&gt;vi_uarea
 suffix:semicolon
 id|reiserfs_warning
 (paren
-l_string|&quot;DIRENTRY, index %d, type 0x%x, %h, flags 0x%x&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;DIRENTRY, index %d, type 0x%x, %h, flags 0x%x&quot;
 comma
 id|vi-&gt;vi_index
 comma
@@ -2876,7 +2886,9 @@ id|block_size
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-16001: Invalid item type observed, run fsck ASAP&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;green-16001: Invalid item type observed, run fsck ASAP&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2896,7 +2908,9 @@ id|key
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-16002: Invalid item type observed, run fsck ASAP&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;green-16002: Invalid item type observed, run fsck ASAP&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2917,7 +2931,9 @@ id|bsize
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-16003: Invalid item type observed, run fsck ASAP&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;green-16003: Invalid item type observed, run fsck ASAP&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2941,7 +2957,9 @@ id|item
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-16004: Invalid item type observed, run fsck ASAP&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;green-16004: Invalid item type observed, run fsck ASAP&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2962,7 +2980,9 @@ id|item
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-16005: Invalid item type observed, run fsck ASAP&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;green-16005: Invalid item type observed, run fsck ASAP&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2990,7 +3010,9 @@ id|insert_size
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-16006: Invalid item type observed, run fsck ASAP&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;green-16006: Invalid item type observed, run fsck ASAP&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3021,7 +3043,9 @@ id|end_skip
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-16007: Invalid item type observed, run fsck ASAP&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;green-16007: Invalid item type observed, run fsck ASAP&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3045,7 +3069,9 @@ id|free
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-16008: Invalid item type observed, run fsck ASAP&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;green-16008: Invalid item type observed, run fsck ASAP&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3072,7 +3098,9 @@ id|count
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-16009: Invalid item type observed, run fsck ASAP&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;green-16009: Invalid item type observed, run fsck ASAP&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3092,7 +3120,9 @@ id|vi
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-16010: Invalid item type observed, run fsck ASAP&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;green-16010: Invalid item type observed, run fsck ASAP&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3112,7 +3142,9 @@ id|vi
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-16011: Invalid item type observed, run fsck ASAP&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;green-16011: Invalid item type observed, run fsck ASAP&quot;
 )paren
 suffix:semicolon
 )brace

@@ -446,7 +446,9 @@ l_int|1
 suffix:semicolon
 id|reiserfs_warning
 (paren
-l_string|&quot;comp_cpu_keys: type are compared for %K and %K&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;comp_cpu_keys: type are compared for %K and %K&quot;
 comma
 id|key1
 comma
@@ -1870,9 +1872,11 @@ op_ne
 id|DISK_LEAF_NODE_LEVEL
 )paren
 (brace
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;is_leaf: this should be caught earlier&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;is_leaf: this should be caught earlier&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1910,7 +1914,9 @@ id|MIN_ITEM_LEN
 multiline_comment|/* item number is too big or too small */
 id|reiserfs_warning
 (paren
-l_string|&quot;is_leaf: nr_item seems wrong: %z&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;is_leaf: nr_item seems wrong: %z&quot;
 comma
 id|bh
 )paren
@@ -1970,7 +1976,9 @@ id|blkh
 multiline_comment|/* free space does not match to calculated amount of use space */
 id|reiserfs_warning
 (paren
-l_string|&quot;is_leaf: free space seems wrong: %z&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;is_leaf: free space seems wrong: %z&quot;
 comma
 id|bh
 )paren
@@ -2031,7 +2039,9 @@ id|TYPE_ANY
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;is_leaf: wrong item type for item %h&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;is_leaf: wrong item type for item %h&quot;
 comma
 id|ih
 )paren
@@ -2062,7 +2072,9 @@ id|nr
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;is_leaf: item location seems wrong: %h&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;is_leaf: item location seems wrong: %h&quot;
 comma
 id|ih
 )paren
@@ -2087,7 +2099,9 @@ id|blocksize
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;is_leaf: item length seems wrong: %h&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;is_leaf: item length seems wrong: %h&quot;
 comma
 id|ih
 )paren
@@ -2114,7 +2128,9 @@ id|ih
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;is_leaf: item location seems wrong (second one): %h&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;is_leaf: item location seems wrong (second one): %h&quot;
 comma
 id|ih
 )paren
@@ -2196,9 +2212,11 @@ id|MAX_HEIGHT
 )paren
 (brace
 multiline_comment|/* this level is not possible for internal nodes */
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;is_internal: this should be caught earlier&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;is_internal: this should be caught earlier&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2236,7 +2254,9 @@ id|DC_SIZE
 multiline_comment|/* for internal which is not root we might check min number of keys */
 id|reiserfs_warning
 (paren
-l_string|&quot;is_internal: number of key seems wrong: %z&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;is_internal: number of key seems wrong: %z&quot;
 comma
 id|bh
 )paren
@@ -2277,7 +2297,9 @@ id|blkh
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;is_internal: free space seems wrong: %z&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;is_internal: free space seems wrong: %z&quot;
 comma
 id|bh
 )paren
@@ -2318,9 +2340,11 @@ op_ne
 id|level
 )paren
 (brace
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;is_tree_node: node level %d does not match to the expected one %d&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;is_tree_node: node level %d does not match to the expected one %d&quot;
 comma
 id|B_LEVEL
 (paren
@@ -2543,9 +2567,11 @@ l_int|50000
 )paren
 id|reiserfs_warning
 (paren
+id|p_s_sb
+comma
 l_string|&quot;PAP-5100: search_by_key: %s:&quot;
 l_string|&quot;there were %d iterations of while loop &quot;
-l_string|&quot;looking for key %K&bslash;n&quot;
+l_string|&quot;looking for key %K&quot;
 comma
 id|current-&gt;comm
 comma
@@ -2795,8 +2821,10 @@ id|expected_level
 (brace
 id|reiserfs_warning
 (paren
+id|p_s_sb
+comma
 l_string|&quot;vs-5150: search_by_key: &quot;
-l_string|&quot;invalid format found in block %ld. Fsck?&bslash;n&quot;
+l_string|&quot;invalid format found in block %ld. Fsck?&quot;
 comma
 id|p_s_bh-&gt;b_blocknr
 )paren
@@ -5037,8 +5065,10 @@ id|FILE_NOT_FOUND
 (brace
 id|reiserfs_warning
 (paren
+id|p_s_sb
+comma
 l_string|&quot;vs-5340: reiserfs_delete_item: &quot;
-l_string|&quot;no items of the file %K found&bslash;n&quot;
+l_string|&quot;no items of the file %K found&quot;
 comma
 id|p_s_item_key
 )paren
@@ -5239,11 +5269,11 @@ id|M_DELETE
 )paren
 suffix:semicolon
 macro_line|#ifdef REISERQUOTA_DEBUG
-id|printk
-c_func
+id|reiserfs_debug
 (paren
-id|KERN_DEBUG
-l_string|&quot;reiserquota delete_item(): freeing %u, id=%u type=%c&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;reiserquota delete_item(): freeing %u, id=%u type=%c&quot;
 comma
 id|quota_cut_bytes
 comma
@@ -5361,8 +5391,10 @@ id|IO_ERROR
 (brace
 id|reiserfs_warning
 (paren
+id|th-&gt;t_super
+comma
 l_string|&quot;vs-5350: reiserfs_delete_solid_item: &quot;
-l_string|&quot;i/o failure occurred trying to delete %K&bslash;n&quot;
+l_string|&quot;i/o failure occurred trying to delete %K&quot;
 comma
 op_amp
 id|cpu_key
@@ -5435,6 +5467,8 @@ l_int|1
 )paren
 id|reiserfs_warning
 (paren
+id|th-&gt;t_super
+comma
 l_string|&quot;vs-5355: reiserfs_delete_solid_item: %k not found&quot;
 comma
 id|key
@@ -5564,11 +5598,11 @@ id|inode
 (brace
 multiline_comment|/* Should we count quota for item? (we don&squot;t count quotas for save-links) */
 macro_line|#ifdef REISERQUOTA_DEBUG
-id|printk
-c_func
+id|reiserfs_debug
 (paren
-id|KERN_DEBUG
-l_string|&quot;reiserquota delete_solid_item(): freeing %u id=%u type=%c&bslash;n&quot;
+id|th-&gt;t_super
+comma
+l_string|&quot;reiserquota delete_solid_item(): freeing %u id=%u type=%c&quot;
 comma
 id|quota_cut_bytes
 comma
@@ -5597,8 +5631,10 @@ suffix:semicolon
 singleline_comment|// IO_ERROR, NO_DISK_SPACE, etc
 id|reiserfs_warning
 (paren
+id|th-&gt;t_super
+comma
 l_string|&quot;vs-5360: reiserfs_delete_solid_item: &quot;
-l_string|&quot;could not delete %K due to fix_nodes failure&bslash;n&quot;
+l_string|&quot;could not delete %K due to fix_nodes failure&quot;
 comma
 op_amp
 id|cpu_key
@@ -6047,9 +6083,11 @@ id|removed
 )paren
 suffix:semicolon
 )brace
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;indirect_to_direct_roll_back: indirect_to_direct conversion has been rolled back due to lack of disk space&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;indirect_to_direct_roll_back: indirect_to_direct conversion has been rolled back due to lack of disk space&quot;
 )paren
 suffix:semicolon
 singleline_comment|//mark_file_without_tail (inode);
@@ -6413,7 +6451,9 @@ r_continue
 suffix:semicolon
 id|reiserfs_warning
 (paren
-l_string|&quot;PAP-5610: reiserfs_cut_from_item: item %K not found&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;PAP-5610: reiserfs_cut_from_item: item %K not found&quot;
 comma
 id|p_s_item_key
 )paren
@@ -6476,6 +6516,8 @@ id|NO_DISK_SPACE
 )paren
 id|reiserfs_warning
 (paren
+id|p_s_sb
+comma
 l_string|&quot;NO_DISK_SPACE&quot;
 )paren
 suffix:semicolon
@@ -6759,11 +6801,11 @@ id|i_pack_on_close_mask
 suffix:semicolon
 )brace
 macro_line|#ifdef REISERQUOTA_DEBUG
-id|printk
-c_func
+id|reiserfs_debug
 (paren
-id|KERN_DEBUG
-l_string|&quot;reiserquota cut_from_item(): freeing %u id=%u type=%c&bslash;n&quot;
+id|p_s_inode-&gt;i_sb
+comma
+l_string|&quot;reiserquota cut_from_item(): freeing %u id=%u type=%c&quot;
 comma
 id|quota_cut_bytes
 comma
@@ -6808,7 +6850,9 @@ id|inode-&gt;i_nlink
 )paren
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-5655: truncate_directory: link count != 0&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;vs-5655: truncate_directory: link count != 0&quot;
 )paren
 suffix:semicolon
 id|set_le_key_k_offset
@@ -7032,8 +7076,10 @@ id|IO_ERROR
 (brace
 id|reiserfs_warning
 (paren
+id|p_s_inode-&gt;i_sb
+comma
 l_string|&quot;vs-5657: reiserfs_do_truncate: &quot;
-l_string|&quot;i/o failure occurred trying to truncate %K&bslash;n&quot;
+l_string|&quot;i/o failure occurred trying to truncate %K&quot;
 comma
 op_amp
 id|s_item_key
@@ -7062,8 +7108,10 @@ id|s_search_path
 suffix:semicolon
 id|reiserfs_warning
 (paren
+id|p_s_inode-&gt;i_sb
+comma
 l_string|&quot;PAP-5660: reiserfs_do_truncate: &quot;
-l_string|&quot;wrong result %d of search for %K&bslash;n&quot;
+l_string|&quot;wrong result %d of search for %K&quot;
 comma
 id|retval
 comma
@@ -7187,6 +7235,8 @@ l_int|0
 (brace
 id|reiserfs_warning
 (paren
+id|p_s_inode-&gt;i_sb
+comma
 l_string|&quot;vs-5665: reiserfs_do_truncate: reiserfs_cut_from_item failed&quot;
 )paren
 suffix:semicolon
@@ -7342,7 +7392,7 @@ id|ROUND_UP
 id|n_new_file_size
 )paren
 comma
-l_string|&quot;PAP-5680: truncate did not finish: new_file_size %Ld, current %Ld, oid %d&bslash;n&quot;
+l_string|&quot;PAP-5680: truncate did not finish: new_file_size %Ld, current %Ld, oid %d&quot;
 comma
 id|n_new_file_size
 comma
@@ -7610,11 +7660,11 @@ id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 macro_line|#ifdef REISERQUOTA_DEBUG
-id|printk
-c_func
+id|reiserfs_debug
 (paren
-id|KERN_DEBUG
-l_string|&quot;reiserquota paste_into_item(): allocating %u id=%u type=%c&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;reiserquota paste_into_item(): allocating %u id=%u type=%c&quot;
 comma
 id|n_pasted_size
 comma
@@ -7766,7 +7816,9 @@ id|POSITION_FOUND
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;PAP-5710: reiserfs_paste_into_item: entry or pasted byte (%K) exists&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;PAP-5710: reiserfs_paste_into_item: entry or pasted byte (%K) exists&quot;
 comma
 id|p_s_key
 )paren
@@ -7843,11 +7895,11 @@ id|s_paste_balance
 )paren
 suffix:semicolon
 macro_line|#ifdef REISERQUOTA_DEBUG
-id|printk
-c_func
+id|reiserfs_debug
 (paren
-id|KERN_DEBUG
-l_string|&quot;reiserquota paste_into_item(): freeing %u id=%u type=%c&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;reiserquota paste_into_item(): freeing %u id=%u type=%c&quot;
 comma
 id|n_pasted_size
 comma
@@ -7982,11 +8034,11 @@ id|UNFM_P_SIZE
 suffix:semicolon
 )brace
 macro_line|#ifdef REISERQUOTA_DEBUG
-id|printk
-c_func
+id|reiserfs_debug
 (paren
-id|KERN_DEBUG
-l_string|&quot;reiserquota insert_item(): allocating %u id=%u type=%c&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;reiserquota insert_item(): allocating %u id=%u type=%c&quot;
 comma
 id|quota_bytes
 comma
@@ -8145,8 +8197,10 @@ id|ITEM_FOUND
 (brace
 id|reiserfs_warning
 (paren
+id|th-&gt;t_super
+comma
 l_string|&quot;PAP-5760: reiserfs_insert_item: &quot;
-l_string|&quot;key %K already exists in the tree&bslash;n&quot;
+l_string|&quot;key %K already exists in the tree&quot;
 comma
 id|key
 )paren
@@ -8212,11 +8266,11 @@ id|s_ins_balance
 )paren
 suffix:semicolon
 macro_line|#ifdef REISERQUOTA_DEBUG
-id|printk
-c_func
+id|reiserfs_debug
 (paren
-id|KERN_DEBUG
-l_string|&quot;reiserquota insert_item(): freeing %u id=%u type=%c&bslash;n&quot;
+id|th-&gt;t_super
+comma
+l_string|&quot;reiserquota insert_item(): freeing %u id=%u type=%c&quot;
 comma
 id|quota_bytes
 comma

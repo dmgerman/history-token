@@ -1840,7 +1840,10 @@ l_int|2
 )paren
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-8111: get_num_ver: split_item_position is out of boundary&bslash;n&quot;
+id|tb-&gt;tb_sb
+comma
+l_string|&quot;vs-8111: get_num_ver: &quot;
+l_string|&quot;split_item_position is out of boundary&quot;
 )paren
 suffix:semicolon
 id|snum012
@@ -2012,7 +2015,10 @@ id|TYPE_DIRENTRY
 )paren
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-8115: get_num_ver: not directory item&bslash;n&quot;
+id|tb-&gt;tb_sb
+comma
+l_string|&quot;vs-8115: get_num_ver: not &quot;
+l_string|&quot;directory item&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8496,7 +8502,9 @@ l_int|200000
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-8301: reiserfs_kmalloc: allocated memory %d&bslash;n&quot;
+id|s
+comma
+l_string|&quot;vs-8301: reiserfs_kmalloc: allocated memory %d&quot;
 comma
 id|REISERFS_SB
 c_func
@@ -8519,7 +8527,6 @@ id|s_kmallocs
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*printk (&quot;malloc : size %d, allocated %d&bslash;n&quot;, size, REISERFS_SB(s)-&gt;s_kmallocs);*/
 r_return
 id|vp
 suffix:semicolon
@@ -8572,7 +8579,9 @@ l_int|0
 )paren
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-8302: reiserfs_kfree: allocated memory %d&bslash;n&quot;
+id|s
+comma
+l_string|&quot;vs-8302: reiserfs_kfree: allocated memory %d&quot;
 comma
 id|REISERFS_SB
 c_func
@@ -8810,8 +8819,10 @@ id|buf
 macro_line|#ifdef CONFIG_REISERFS_CHECK
 id|reiserfs_warning
 (paren
+id|tb-&gt;tb_sb
+comma
 l_string|&quot;vs-8345: get_mem_for_virtual_node: &quot;
-l_string|&quot;kmalloc failed. reiserfs kmalloced %d bytes&bslash;n&quot;
+l_string|&quot;kmalloc failed. reiserfs kmalloced %d bytes&quot;
 comma
 id|REISERFS_SB
 c_func
@@ -9643,7 +9654,11 @@ l_int|0
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;wait_tb_buffers_until_released(): too many iterations waiting for buffer to unlock (%b)&bslash;n&quot;
+id|p_s_tb-&gt;tb_sb
+comma
+l_string|&quot;wait_tb_buffers_until_released(): too many &quot;
+l_string|&quot;iterations waiting for buffer to unlock &quot;
+l_string|&quot;(%b)&quot;
 comma
 id|locked
 )paren
@@ -9975,10 +9990,14 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|printk
+id|reiserfs_panic
 c_func
 (paren
-l_string|&quot;mode = %c insert_size = %d&bslash;n&quot;
+id|p_s_tb-&gt;tb_sb
+comma
+l_string|&quot;PAP-8335: fix_nodes: Incorrect item number(%d); mode = %c insert_size = %d&bslash;n&quot;
+comma
+id|n_item_num
 comma
 id|n_op_mode
 comma
@@ -9986,16 +10005,6 @@ id|p_s_tb-&gt;insert_size
 (braket
 l_int|0
 )braket
-)paren
-suffix:semicolon
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_tb-&gt;tb_sb
-comma
-l_string|&quot;PAP-8335: fix_nodes: Incorrect item number(%d)&quot;
-comma
-id|n_item_num
 )paren
 suffix:semicolon
 )brace

@@ -37,6 +37,24 @@ mdefine_line|#define ROUND_UP(x) _ROUND_UP(x,8LL)
 multiline_comment|/* debug levels.  Right now, CONFIG_REISERFS_CHECK means print all debug&n;** messages.&n;*/
 DECL|macro|REISERFS_DEBUG_CODE
 mdefine_line|#define REISERFS_DEBUG_CODE 5 /* extra messages to help find/debug errors */ 
+r_void
+id|reiserfs_warning
+(paren
+r_struct
+id|super_block
+op_star
+id|s
+comma
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
 multiline_comment|/* assertions handling */
 multiline_comment|/** always check a condition and panic if it&squot;s false. */
 DECL|macro|RASSERT
@@ -1017,21 +1035,6 @@ mdefine_line|#define V1_DIRENTRY_UNIQUENESS 500
 DECL|macro|V1_ANY_UNIQUENESS
 mdefine_line|#define V1_ANY_UNIQUENESS 555 
 singleline_comment|// FIXME: comment is required
-r_extern
-r_void
-id|reiserfs_warning
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
-multiline_comment|/* __attribute__( ( format ( printf, 1, 2 ) ) ); */
 singleline_comment|//
 singleline_comment|// here are conversion routines
 singleline_comment|//
@@ -1091,9 +1094,10 @@ suffix:semicolon
 r_default
 suffix:colon
 id|reiserfs_warning
-c_func
 (paren
-l_string|&quot;vs-500: unknown uniqueness %d&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;vs-500: unknown uniqueness %d&quot;
 comma
 id|uniqueness
 )paren
@@ -1159,9 +1163,10 @@ suffix:semicolon
 r_default
 suffix:colon
 id|reiserfs_warning
-c_func
 (paren
-l_string|&quot;vs-501: unknown type %d&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;vs-501: unknown type %d&quot;
 comma
 id|type
 )paren
@@ -3894,6 +3899,11 @@ r_void
 id|reiserfs_check_lock_depth
 c_func
 (paren
+r_struct
+id|super_block
+op_star
+id|s
+comma
 r_char
 op_star
 id|caller
@@ -5739,7 +5749,37 @@ id|noreturn
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* __attribute__( ( format ( printf, 2, 3 ) ) ) */
+r_void
+id|reiserfs_info
+(paren
+r_struct
+id|super_block
+op_star
+id|s
+comma
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
+r_void
+id|reiserfs_printk
+(paren
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
 r_void
 id|reiserfs_debug
 (paren
@@ -5761,7 +5801,6 @@ dot
 dot
 )paren
 suffix:semicolon
-multiline_comment|/* __attribute__( ( format ( printf, 3, 4 ) ) ); */
 r_void
 id|print_virtual_node
 (paren

@@ -1192,7 +1192,9 @@ id|ih
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;not direntry %h&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;not direntry %h&quot;
 comma
 id|ih
 )paren
@@ -2724,15 +2726,12 @@ id|page
 suffix:semicolon
 id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs: Invalid magic for xattr (%s) &quot;
-l_string|&quot;associated with %s %k&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;Invalid magic for xattr (%s) &quot;
+l_string|&quot;associated with %k&quot;
 comma
 id|name
-comma
-id|reiserfs_bdevname
-(paren
-id|inode-&gt;i_sb
-)paren
 comma
 id|INODE_PKEY
 (paren
@@ -2824,15 +2823,12 @@ id|hash
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs: Invalid hash for xattr (%s) associated &quot;
-l_string|&quot;with %s %k&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;Invalid hash for xattr (%s) associated &quot;
+l_string|&quot;with %k&quot;
 comma
 id|name
-comma
-id|reiserfs_bdevname
-(paren
-id|inode-&gt;i_sb
-)paren
 comma
 id|INODE_PKEY
 (paren
@@ -2968,7 +2964,10 @@ id|dentry-&gt;d_inode
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;OID %08x [%.*s/%.*s] doesn&squot;t have priv flag set [parent is %sset].&bslash;n&quot;
+id|dir-&gt;i_sb
+comma
+l_string|&quot;OID %08x [%.*s/%.*s] doesn&squot;t have &quot;
+l_string|&quot;priv flag set [parent is %sset].&quot;
 comma
 id|le32_to_cpu
 (paren
@@ -3402,7 +3401,9 @@ r_else
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;Couldn&squot;t remove all entries in directory&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;Couldn&squot;t remove all entries in directory&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5218,8 +5219,10 @@ id|s
 multiline_comment|/* Old format filesystem, but optional xattrs have been enabled&n;     * at mount time. Error out. */
 id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs: xattrs/ACLs not supported on pre v3.6 &quot;
-l_string|&quot;format filesystem. Failing mount.&bslash;n&quot;
+id|s
+comma
+l_string|&quot;xattrs/ACLs not supported on pre v3.6 &quot;
+l_string|&quot;format filesystem. Failing mount.&quot;
 )paren
 suffix:semicolon
 id|err
@@ -5368,8 +5371,10 @@ id|dentry-&gt;d_inode
 )paren
 id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs: Created %s on %s - reserved for &quot;
-l_string|&quot;xattr storage.&bslash;n&quot;
+id|s
+comma
+l_string|&quot;Created %s on %s - reserved for &quot;
+l_string|&quot;xattr storage.&quot;
 comma
 id|PRIVROOT_NAME
 comma
@@ -5458,8 +5463,10 @@ multiline_comment|/* xattrs are unavailable */
 multiline_comment|/* If we&squot;re read-only it just means that the dir hasn&squot;t been&n;           * created. Not an error -- just no xattrs on the fs. We&squot;ll&n;           * check again if we go read-write */
 id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs: xattrs/ACLs enabled and couldn&squot;t &quot;
-l_string|&quot;find/create .reiserfs_priv. Failing mount.&bslash;n&quot;
+id|s
+comma
+l_string|&quot;xattrs/ACLs enabled and couldn&squot;t &quot;
+l_string|&quot;find/create .reiserfs_priv. Failing mount.&quot;
 )paren
 suffix:semicolon
 id|err

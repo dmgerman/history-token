@@ -585,7 +585,9 @@ id|ITEM_NOT_FOUND
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-2140: finish_unfinished: search_by_key returned %d&bslash;n&quot;
+id|s
+comma
+l_string|&quot;vs-2140: finish_unfinished: search_by_key returned %d&quot;
 comma
 id|retval
 )paren
@@ -622,7 +624,9 @@ id|bh
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-2060: finish_unfinished: wrong position found&bslash;n&quot;
+id|s
+comma
+l_string|&quot;vs-2060: finish_unfinished: wrong position found&quot;
 )paren
 suffix:semicolon
 r_break
@@ -737,7 +741,9 @@ id|inode
 multiline_comment|/* the unlink almost completed, it just did not manage to remove&n;&t;       &quot;save&quot; link and release objectid */
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-2180: finish_unfinished: iget failed for %K&bslash;n&quot;
+id|s
+comma
+l_string|&quot;vs-2180: finish_unfinished: iget failed for %K&quot;
 comma
 op_amp
 id|obj_key
@@ -768,7 +774,9 @@ id|inode-&gt;i_nlink
 multiline_comment|/* file is not unlinked */
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-2185: finish_unfinished: file %K is not unlinked&bslash;n&quot;
+id|s
+comma
+l_string|&quot;vs-2185: finish_unfinished: file %K is not unlinked&quot;
 comma
 op_amp
 id|obj_key
@@ -802,7 +810,9 @@ multiline_comment|/* We got a truncate request for a dir which is impossible.&n;
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;green-2101: impossible truncate on a directory %k. Please report&bslash;n&quot;
+id|s
+comma
+l_string|&quot;green-2101: impossible truncate on a directory %k. Please report&quot;
 comma
 id|INODE_PKEY
 (paren
@@ -849,8 +859,10 @@ op_or_assign
 id|i_link_saved_truncate_mask
 suffix:semicolon
 multiline_comment|/* not completed truncate found. New size was committed together&n;&t;       with &quot;save&quot; link */
-id|reiserfs_warning
+id|reiserfs_info
 (paren
+id|s
+comma
 l_string|&quot;Truncating %k to %Ld ..&quot;
 comma
 id|INODE_PKEY
@@ -890,8 +902,10 @@ op_or_assign
 id|i_link_saved_unlink_mask
 suffix:semicolon
 multiline_comment|/* not completed unlink (rmdir) found */
-id|reiserfs_warning
+id|reiserfs_info
 (paren
+id|s
+comma
 l_string|&quot;Removing %k..&quot;
 comma
 id|INODE_PKEY
@@ -937,8 +951,10 @@ c_cond
 (paren
 id|done
 )paren
-id|reiserfs_warning
+id|reiserfs_info
 (paren
+id|s
+comma
 l_string|&quot;There were %d uncompleted unlinks/truncates. &quot;
 l_string|&quot;Completed&bslash;n&quot;
 comma
@@ -1118,7 +1134,9 @@ id|inode-&gt;i_mode
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;green-2102: Adding a truncate savelink for a directory %k! Please report&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;green-2102: Adding a truncate savelink for a directory %k! Please report&quot;
 comma
 id|INODE_PKEY
 c_func
@@ -1202,8 +1220,10 @@ id|ENOSPC
 )paren
 id|reiserfs_warning
 (paren
+id|inode-&gt;i_sb
+comma
 l_string|&quot;vs-2100: add_save_link:&quot;
-l_string|&quot;search_by_key (%K) returned %d&bslash;n&quot;
+l_string|&quot;search_by_key (%K) returned %d&quot;
 comma
 op_amp
 id|key
@@ -1272,7 +1292,9 @@ id|ENOSPC
 )paren
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-2120: add_save_link: insert_item returned %d&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;vs-2120: add_save_link: insert_item returned %d&quot;
 comma
 id|retval
 )paren
@@ -1750,7 +1772,9 @@ l_int|0
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-2004: reiserfs_put_super: allocated memory left %d&bslash;n&quot;
+id|s
+comma
+l_string|&quot;vs-2004: reiserfs_put_super: allocated memory left %d&quot;
 comma
 id|REISERFS_SB
 c_func
@@ -1778,7 +1802,9 @@ l_int|0
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-2005: reiserfs_put_super: reserved blocks left %d&bslash;n&quot;
+id|s
+comma
+l_string|&quot;green-2005: reiserfs_put_super: reserved blocks left %d&quot;
 comma
 id|REISERFS_SB
 c_func
@@ -2025,11 +2051,11 @@ c_func
 id|reiserfs_inode_cachep
 )paren
 )paren
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-id|KERN_INFO
-l_string|&quot;reiserfs_inode_cache: not all structures were freed&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;reiserfs_inode_cache: not all structures were freed&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2060,7 +2086,9 @@ id|MS_RDONLY
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;clm-6006: writing inode %lu on readonly FS&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;clm-6006: writing inode %lu on readonly FS&quot;
 comma
 id|inode-&gt;i_ino
 )paren
@@ -2760,9 +2788,11 @@ op_logical_neg
 id|opt-&gt;option_name
 )paren
 (brace
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_getopt: unknown option &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+id|s
+comma
+l_string|&quot;unknown mount option &bslash;&quot;%s&bslash;&quot;&quot;
 comma
 id|p
 )paren
@@ -2796,9 +2826,11 @@ op_logical_neg
 id|opt-&gt;arg_required
 )paren
 (brace
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_getopt: the option &bslash;&quot;%s&bslash;&quot; does not require an argument&bslash;n&quot;
+id|s
+comma
+l_string|&quot;the option &bslash;&quot;%s&bslash;&quot; does not require an argument&quot;
 comma
 id|opt-&gt;option_name
 )paren
@@ -2819,9 +2851,11 @@ c_cond
 id|opt-&gt;arg_required
 )paren
 (brace
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_getopt: the option &bslash;&quot;%s&bslash;&quot; requires an argument&bslash;n&quot;
+id|s
+comma
+l_string|&quot;the option &bslash;&quot;%s&bslash;&quot; requires an argument&quot;
 comma
 id|opt-&gt;option_name
 )paren
@@ -2835,9 +2869,11 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_getopt: head of option &bslash;&quot;%s&bslash;&quot; is only correct&bslash;n&quot;
+id|s
+comma
+l_string|&quot;head of option &bslash;&quot;%s&bslash;&quot; is only correct&quot;
 comma
 id|opt-&gt;option_name
 )paren
@@ -2864,9 +2900,11 @@ id|p
 )paren
 (brace
 multiline_comment|/* this catches &quot;option=,&quot; */
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_getopt: empty argument for &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+id|s
+comma
+l_string|&quot;empty argument for &bslash;&quot;%s&bslash;&quot;&quot;
 comma
 id|opt-&gt;option_name
 )paren
@@ -2942,9 +2980,11 @@ id|opt-&gt;arg_required
 suffix:semicolon
 )brace
 )brace
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_getopt: bad value &bslash;&quot;%s&bslash;&quot; for option &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+id|s
+comma
+l_string|&quot;bad value &bslash;&quot;%s&bslash;&quot; for option &bslash;&quot;%s&bslash;&quot;&quot;
 comma
 id|p
 comma
@@ -3384,9 +3424,11 @@ l_char|&squot;&bslash;0&squot;
 )paren
 (brace
 multiline_comment|/* NNN does not look like a number */
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_parse_options: bad value %s&bslash;n&quot;
+id|s
+comma
+l_string|&quot;reiserfs_parse_options: bad value %s&quot;
 comma
 id|arg
 )paren
@@ -3443,9 +3485,11 @@ op_minus
 l_int|1
 )paren
 (brace
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_parse_options: bad value %s&bslash;n&quot;
+id|s
+comma
+l_string|&quot;reiserfs_parse_options: bad value %s&quot;
 comma
 id|arg
 )paren
@@ -3500,9 +3544,11 @@ op_ne
 l_char|&squot;&bslash;0&squot;
 )paren
 (brace
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_parse_options: non-numeric value %s for nolargeio option&bslash;n&quot;
+id|s
+comma
+l_string|&quot;reiserfs_parse_options: non-numeric value %s for nolargeio option&quot;
 comma
 id|arg
 )paren
@@ -3555,10 +3601,11 @@ id|jdev_name
 )paren
 (brace
 singleline_comment|//Hm, already assigned?
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_parse_options: journal device was already  specified to be %s&bslash;n&quot;
+id|s
+comma
+l_string|&quot;reiserfs_parse_options: journal device was already  specified to be %s&quot;
 comma
 op_star
 id|jdev_name
@@ -3687,10 +3734,11 @@ comma
 id|REISERFS_DATA_LOG
 )paren
 suffix:semicolon
-id|printk
-c_func
+id|reiserfs_info
 (paren
-l_string|&quot;reiserfs: switching to journaled data mode&bslash;n&quot;
+id|s
+comma
+l_string|&quot;switching to journaled data mode&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3727,10 +3775,11 @@ comma
 id|REISERFS_DATA_ORDERED
 )paren
 suffix:semicolon
-id|printk
-c_func
+id|reiserfs_info
 (paren
-l_string|&quot;reiserfs: switching to ordered data mode&bslash;n&quot;
+id|s
+comma
+l_string|&quot;switching to ordered data mode&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3767,10 +3816,11 @@ comma
 id|REISERFS_DATA_WRITEBACK
 )paren
 suffix:semicolon
-id|printk
-c_func
+id|reiserfs_info
 (paren
-l_string|&quot;reiserfs: switching to writeback data mode&bslash;n&quot;
+id|s
+comma
+l_string|&quot;switching to writeback data mode&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3823,7 +3873,9 @@ id|s
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;reiserfs: cannot support attributes on 3.5.x disk format&bslash;n&quot;
+id|s
+comma
+l_string|&quot;reiserfs: cannot support attributes on 3.5.x disk format&quot;
 )paren
 suffix:semicolon
 id|REISERFS_SB
@@ -3864,7 +3916,9 @@ id|reiserfs_attrs_cleared
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;reiserfs: cannot support attributes until flag is set in super-block&bslash;n&quot;
+id|s
+comma
+l_string|&quot;reiserfs: cannot support attributes until flag is set in super-block&quot;
 )paren
 suffix:semicolon
 id|REISERFS_SB
@@ -4637,7 +4691,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_REISERFS_CHECK
 singleline_comment|// This outputs a lot of unneded info on big FSes
-singleline_comment|//    reiserfs_warning (&quot;bitmap loaded from block %d: %d free blocks&bslash;n&quot;,
+singleline_comment|//    reiserfs_warning (&quot;bitmap loaded from block %d: %d free blocks&quot;,
 singleline_comment|//&t;&t;      bi-&gt;bh-&gt;b_blocknr, bi-&gt;free_count);
 macro_line|#endif
 )brace
@@ -4861,8 +4915,10 @@ id|bh
 id|reiserfs_warning
 c_func
 (paren
+id|s
+comma
 l_string|&quot;sh-2029: reiserfs read_bitmaps: &quot;
-l_string|&quot;bitmap block (#%lu) reading failed&bslash;n&quot;
+l_string|&quot;bitmap block (#%lu) reading failed&quot;
 comma
 id|SB_AP_BITMAP
 c_func
@@ -5204,7 +5260,9 @@ id|s
 )paren
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-4000: check_bitmap: %d free blocks, must be %d&bslash;n&quot;
+id|s
+comma
+l_string|&quot;vs-4000: check_bitmap: %d free blocks, must be %d&quot;
 comma
 id|free
 comma
@@ -5260,10 +5318,12 @@ op_logical_neg
 id|bh
 )paren
 (brace
-id|printk
+id|reiserfs_warning
 (paren
+id|s
+comma
 l_string|&quot;sh-2006: read_super_block: &quot;
-l_string|&quot;bread failed (dev %s, block %lu, size %lu)&bslash;n&quot;
+l_string|&quot;bread failed (dev %s, block %lu, size %lu)&quot;
 comma
 id|reiserfs_bdevname
 (paren
@@ -5350,9 +5410,10 @@ op_logical_neg
 id|bh
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
+id|s
+comma
 l_string|&quot;sh-2007: read_super_block: &quot;
 l_string|&quot;bread failed (dev %s, block %lu, size %lu)&bslash;n&quot;
 comma
@@ -5393,8 +5454,10 @@ op_ne
 id|s-&gt;s_blocksize
 )paren
 (brace
-id|printk
+id|reiserfs_warning
 (paren
+id|s
+comma
 l_string|&quot;sh-2011: read_super_block: &quot;
 l_string|&quot;can&squot;t find a reiserfs filesystem on (dev %s, block %Lu, size %lu)&bslash;n&quot;
 comma
@@ -5437,17 +5500,13 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;dev %s: Unfinished reiserfsck --rebuild-tree run detected. Please run&bslash;n&quot;
-l_string|&quot;reiserfsck --rebuild-tree and wait for a completion. If that fails&bslash;n&quot;
-l_string|&quot;get newer reiserfsprogs package&bslash;n&quot;
-comma
-id|reiserfs_bdevname
+id|reiserfs_warning
 (paren
 id|s
-)paren
+comma
+l_string|&quot;Unfinished reiserfsck --rebuild-tree run detected. Please run&bslash;n&quot;
+l_string|&quot;reiserfsck --rebuild-tree and wait for a completion. If that fails&bslash;n&quot;
+l_string|&quot;get newer reiserfsprogs package&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5489,10 +5548,12 @@ id|rs
 op_eq
 id|REISERFS_VERSION_2
 )paren
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;read_super_block: found reiserfs format &bslash;&quot;3.6&bslash;&quot; &quot;
-l_string|&quot;with non-standard journal&bslash;n&quot;
+id|s
+comma
+l_string|&quot;read_super_block: found reiserfs format &bslash;&quot;3.6&bslash;&quot;&quot;
+l_string|&quot; with non-standard journal&quot;
 )paren
 suffix:semicolon
 r_else
@@ -5507,18 +5568,22 @@ id|rs
 op_eq
 id|REISERFS_VERSION_1
 )paren
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;read_super_block: found reiserfs format &bslash;&quot;3.5&bslash;&quot; &quot;
-l_string|&quot;with non-standard journal&bslash;n&quot;
+id|s
+comma
+l_string|&quot;read_super_block: found reiserfs format &bslash;&quot;3.5&bslash;&quot;&quot;
+l_string|&quot; with non-standard journal&quot;
 )paren
 suffix:semicolon
 r_else
 (brace
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;sh-2012: read_super_block: found unknown format &bslash;&quot;%u&bslash;&quot; &quot;
-l_string|&quot;of reiserfs with non-standard magic&bslash;n&quot;
+id|s
+comma
+l_string|&quot;sh-2012: read_super_block: found unknown &quot;
+l_string|&quot;format &bslash;&quot;%u&bslash;&quot; of reiserfs with non-standard magic&quot;
 comma
 id|sb_version
 c_func
@@ -5534,8 +5599,10 @@ suffix:semicolon
 )brace
 r_else
 multiline_comment|/* s_version of standard format may contain incorrect information,&n;&t; so we just look at the magic string */
-id|printk
+id|reiserfs_info
 (paren
+id|s
+comma
 l_string|&quot;found reiserfs format &bslash;&quot;%s&bslash;&quot; with standard journal&bslash;n&quot;
 comma
 id|is_reiserfs_3_5
@@ -5632,10 +5699,11 @@ id|s
 )paren
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;reread_meta_blocks, error reading the super&bslash;n&quot;
+id|s
+comma
+l_string|&quot;reread_meta_blocks, error reading the super&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5718,10 +5786,11 @@ id|bh
 )paren
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;reread_meta_blocks, error reading bitmap block number %d at %llu&bslash;n&quot;
+id|s
+comma
+l_string|&quot;reread_meta_blocks, error reading bitmap block number %d at %llu&quot;
 comma
 id|i
 comma
@@ -5910,8 +5979,10 @@ suffix:semicolon
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;reiserfs: FS seems to be empty, autodetect &quot;
-l_string|&quot;is using the default hash&bslash;n&quot;
+id|s
+comma
+l_string|&quot;FS seems to be empty, autodetect &quot;
+l_string|&quot;is using the default hash&quot;
 )paren
 suffix:semicolon
 r_break
@@ -6044,9 +6115,10 @@ id|de.de_entry_num
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;reiserfs: Unable to automatically detect hash&quot;
-l_string|&quot;function for device %s&bslash;n&quot;
-l_string|&quot;please mount with -o hash={tea,rupasov,r5}&bslash;n&quot;
+id|s
+comma
+l_string|&quot;Unable to automatically detect hash function. &quot;
+l_string|&quot;Please mount with -o hash={tea,rupasov,r5}&quot;
 comma
 id|reiserfs_bdevname
 (paren
@@ -6141,15 +6213,10 @@ suffix:semicolon
 r_else
 (brace
 id|reiserfs_warning
-c_func
-(paren
-l_string|&quot;reiserfs: Unrecognised hash function for &quot;
-l_string|&quot;device %s&bslash;n&quot;
-comma
-id|reiserfs_bdevname
 (paren
 id|s
-)paren
+comma
+l_string|&quot;Unrecognised hash function&quot;
 )paren
 suffix:semicolon
 id|hash
@@ -6251,11 +6318,12 @@ op_ne
 id|YURA_HASH
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;REISERFS: Error, %s hash detected, &quot;
-l_string|&quot;unable to force rupasov hash&bslash;n&quot;
+id|s
+comma
+l_string|&quot;Error, %s hash detected, &quot;
+l_string|&quot;unable to force rupasov hash&quot;
 comma
 id|reiserfs_hashname
 c_func
@@ -6284,11 +6352,12 @@ op_ne
 id|TEA_HASH
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;REISERFS: Error, %s hash detected, &quot;
-l_string|&quot;unable to force tea hash&bslash;n&quot;
+id|s
+comma
+l_string|&quot;Error, %s hash detected, &quot;
+l_string|&quot;unable to force tea hash&quot;
 comma
 id|reiserfs_hashname
 c_func
@@ -6317,11 +6386,12 @@ op_ne
 id|R5_HASH
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;REISERFS: Error, %s hash detected, &quot;
-l_string|&quot;unable to force r5 hash&bslash;n&quot;
+id|s
+comma
+l_string|&quot;Error, %s hash detected, &quot;
+l_string|&quot;unable to force r5 hash&quot;
 comma
 id|reiserfs_hashname
 c_func
@@ -6456,8 +6526,10 @@ id|s
 r_case
 id|TEA_HASH
 suffix:colon
-id|reiserfs_warning
+id|reiserfs_info
 (paren
+id|s
+comma
 l_string|&quot;Using tea hash to sort names&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6467,8 +6539,10 @@ suffix:semicolon
 r_case
 id|YURA_HASH
 suffix:colon
-id|reiserfs_warning
+id|reiserfs_info
 (paren
+id|s
+comma
 l_string|&quot;Using rupasov hash to sort names&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6478,8 +6552,10 @@ suffix:semicolon
 r_case
 id|R5_HASH
 suffix:colon
-id|reiserfs_warning
+id|reiserfs_info
 (paren
+id|s
+comma
 l_string|&quot;Using r5 hash to sort names&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6540,8 +6616,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|SPRINTK
-mdefine_line|#define SPRINTK(silent, ...)&t;&t;&t;&bslash;&n;&t;if (!(silent))&t;&t;&t;&t;&bslash;&n;&t;&t;printk(__VA_ARGS__)
+DECL|macro|SWARN
+mdefine_line|#define SWARN(silent, s, ...)&t;&t;&t;&bslash;&n;&t;if (!(silent))&t;&t;&t;&t;&bslash;&n;&t;&t;reiserfs_warning (s, __VA_ARGS__)
 DECL|function|reiserfs_fill_super
 r_static
 r_int
@@ -6774,12 +6850,14 @@ c_cond
 id|blocks
 )paren
 (brace
-id|SPRINTK
-c_func
+id|SWARN
 (paren
 id|silent
 comma
-l_string|&quot;jmacd-7: reiserfs_fill_super: resize option for remount only&bslash;n&quot;
+id|s
+comma
+l_string|&quot;jmacd-7: reiserfs_fill_super: resize option &quot;
+l_string|&quot;for remount only&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -6815,12 +6893,14 @@ id|REISERFS_DISK_OFFSET_IN_BYTES
 )paren
 )paren
 (brace
-id|SPRINTK
+id|SWARN
 c_func
 (paren
 id|silent
 comma
-l_string|&quot;sh-2021: reiserfs_fill_super: can not find reiserfs on %s&bslash;n&quot;
+id|s
+comma
+l_string|&quot;sh-2021: reiserfs_fill_super: can not find reiserfs on %s&quot;
 comma
 id|reiserfs_bdevname
 (paren
@@ -6866,12 +6946,13 @@ id|rs
 )paren
 )paren
 (brace
-id|SPRINTK
-c_func
+id|SWARN
 (paren
 id|silent
 comma
-l_string|&quot;Filesystem on %s cannot be mounted because it is bigger than the device&bslash;n&quot;
+id|s
+comma
+l_string|&quot;Filesystem on %s cannot be mounted because it is bigger than the device&quot;
 comma
 id|reiserfs_bdevname
 c_func
@@ -6880,20 +6961,24 @@ id|s
 )paren
 )paren
 suffix:semicolon
-id|SPRINTK
+id|SWARN
 c_func
 (paren
 id|silent
 comma
-l_string|&quot;You may need to run fsck or increase size of your LVM partition&bslash;n&quot;
+id|s
+comma
+l_string|&quot;You may need to run fsck or increase size of your LVM partition&quot;
 )paren
 suffix:semicolon
-id|SPRINTK
+id|SWARN
 c_func
 (paren
 id|silent
 comma
-l_string|&quot;Or may be you forgot to reboot after fdisk when it told you to&bslash;n&quot;
+id|s
+comma
+l_string|&quot;Or may be you forgot to reboot after fdisk when it told you to&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -6931,12 +7016,14 @@ id|s
 )paren
 )paren
 (brace
-id|SPRINTK
+id|SWARN
 c_func
 (paren
 id|silent
 comma
-l_string|&quot;jmacd-8: reiserfs_fill_super: unable to read bitmap&bslash;n&quot;
+id|s
+comma
+l_string|&quot;jmacd-8: reiserfs_fill_super: unable to read bitmap&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -6944,20 +7031,22 @@ id|error
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_REISERFS_CHECK
-id|SPRINTK
-c_func
+id|SWARN
 (paren
 id|silent
 comma
-l_string|&quot;reiserfs:warning: CONFIG_REISERFS_CHECK is set ON&bslash;n&quot;
+id|s
+comma
+l_string|&quot;CONFIG_REISERFS_CHECK is set ON&quot;
 )paren
 suffix:semicolon
-id|SPRINTK
-c_func
+id|SWARN
 (paren
 id|silent
 comma
-l_string|&quot;reiserfs:warning: - it is slow mode for debugging.&bslash;n&quot;
+id|s
+comma
+l_string|&quot;- it is slow mode for debugging.&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7012,10 +7101,11 @@ id|s
 )paren
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_info
 (paren
-l_string|&quot;reiserfs: using journaled data mode&bslash;n&quot;
+id|s
+comma
+l_string|&quot;using journaled data mode&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7030,19 +7120,21 @@ id|s
 )paren
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_info
 (paren
-l_string|&quot;reiserfs: using ordered data mode&bslash;n&quot;
+id|s
+comma
+l_string|&quot;using ordered data mode&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
-c_func
+id|reiserfs_info
 (paren
-l_string|&quot;reiserfs: using writeback data mode&bslash;n&quot;
+id|s
+comma
+l_string|&quot;using writeback data mode&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7063,12 +7155,14 @@ id|commit_max_age
 )paren
 )paren
 (brace
-id|SPRINTK
+id|SWARN
 c_func
 (paren
 id|silent
 comma
-l_string|&quot;sh-2022: reiserfs_fill_super: unable to initialize journal space&bslash;n&quot;
+id|s
+comma
+l_string|&quot;sh-2022: reiserfs_fill_super: unable to initialize journal space&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -7093,12 +7187,14 @@ id|s
 )paren
 )paren
 (brace
-id|SPRINTK
+id|SWARN
 c_func
 (paren
 id|silent
 comma
-l_string|&quot;jmacd-9: reiserfs_fill_super: unable to reread meta blocks after journal init&bslash;n&quot;
+id|s
+comma
+l_string|&quot;jmacd-9: reiserfs_fill_super: unable to reread meta blocks after journal init&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -7133,12 +7229,14 @@ id|MS_RDONLY
 )paren
 )paren
 (brace
-id|SPRINTK
+id|SWARN
 c_func
 (paren
 id|silent
 comma
-l_string|&quot;clm-7000: Detected readonly device, marking FS readonly&bslash;n&quot;
+id|s
+comma
+l_string|&quot;clm-7000: Detected readonly device, marking FS readonly&quot;
 )paren
 suffix:semicolon
 id|s-&gt;s_flags
@@ -7183,12 +7281,14 @@ op_logical_neg
 id|root_inode
 )paren
 (brace
-id|SPRINTK
+id|SWARN
 c_func
 (paren
 id|silent
 comma
-l_string|&quot;jmacd-10: reiserfs_fill_super: get root inode failed&bslash;n&quot;
+id|s
+comma
+l_string|&quot;jmacd-10: reiserfs_fill_super: get root inode failed&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -7398,9 +7498,11 @@ op_logical_neg
 id|silent
 )paren
 (brace
-id|reiserfs_warning
+id|reiserfs_info
 (paren
-l_string|&quot;reiserfs: converting 3.5 filesystem to the 3.6 format&bslash;n&quot;
+id|s
+comma
+l_string|&quot;converting 3.5 filesystem to the 3.6 format&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7470,10 +7572,11 @@ op_logical_neg
 id|silent
 )paren
 (brace
-id|reiserfs_warning
-c_func
+id|reiserfs_info
 (paren
-l_string|&quot;reiserfs: using 3.5.x disk format&bslash;n&quot;
+id|s
+comma
+l_string|&quot;using 3.5.x disk format&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7549,10 +7652,11 @@ op_logical_neg
 id|silent
 )paren
 (brace
-id|reiserfs_warning
-c_func
+id|reiserfs_info
 (paren
-l_string|&quot;reiserfs: using 3.5.x disk format&bslash;n&quot;
+id|s
+comma
+l_string|&quot;using 3.5.x disk format&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

@@ -1135,7 +1135,9 @@ id|jb-&gt;bitmaps
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;clm-2000, unable to allocate bitmaps for journal lists&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;clm-2000, unable to allocate bitmaps for journal lists&quot;
 )paren
 suffix:semicolon
 id|failed
@@ -1532,6 +1534,8 @@ suffix:semicolon
 id|reiserfs_check_lock_depth
 c_func
 (paren
+id|p_s_sb
+comma
 l_string|&quot;get_cnode&quot;
 )paren
 suffix:semicolon
@@ -1652,6 +1656,8 @@ id|cn
 id|reiserfs_check_lock_depth
 c_func
 (paren
+id|p_s_sb
+comma
 l_string|&quot;free_cnode&quot;
 )paren
 suffix:semicolon
@@ -1893,6 +1899,11 @@ r_void
 id|reiserfs_check_lock_depth
 c_func
 (paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
 r_char
 op_star
 id|caller
@@ -1907,17 +1918,13 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_panic
 (paren
-l_string|&quot;%s called without kernel lock held&bslash;n&quot;
+id|sb
+comma
+l_string|&quot;%s called without kernel lock held&quot;
 comma
 id|caller
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -2494,19 +2501,15 @@ OL
 l_int|1
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_panic
 (paren
-l_string|&quot;trans id %lu, refcount at %d&bslash;n&quot;
+id|s
+comma
+l_string|&quot;trans id %lu, refcount at %d&quot;
 comma
 id|jl-&gt;j_trans_id
 comma
 id|jl-&gt;j_refcount
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -2687,7 +2690,9 @@ id|bh
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;clm-2084: pinned buffer %lu:%s sent to disk&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;clm-2084: pinned buffer %lu:%s sent to disk&quot;
 comma
 id|bh-&gt;b_blocknr
 comma
@@ -4203,6 +4208,8 @@ suffix:semicolon
 id|reiserfs_check_lock_depth
 c_func
 (paren
+id|s
+comma
 l_string|&quot;flush_commit_list&quot;
 )paren
 suffix:semicolon
@@ -4759,7 +4766,9 @@ l_int|1
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;clm-2200: last commit %lu, current %lu&bslash;n&quot;
+id|s
+comma
+l_string|&quot;clm-2200: last commit %lu, current %lu&quot;
 comma
 id|SB_JOURNAL
 c_func
@@ -4990,10 +4999,11 @@ c_cond
 id|debug
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;block %u, bh is %d, state %ld&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;block %u, bh is %d, state %ld&quot;
 comma
 id|cn-&gt;blocknr
 comma
@@ -5262,10 +5272,11 @@ id|j_header_bh
 )paren
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs: journal-837: IO error during journal replay&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-837: IO error during journal replay&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5549,7 +5560,9 @@ l_int|0
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;clm-2048: flush_journal_list called with wcount %d&bslash;n&quot;
+id|s
+comma
+l_string|&quot;clm-2048: flush_journal_list called with wcount %d&quot;
 comma
 id|atomic_read
 c_func
@@ -5953,10 +5966,12 @@ id|saved_bh
 )paren
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;journal-813: BAD! buffer %llu %cdirty %cjwait, not in a newer tranasction&bslash;n&quot;
+id|s
+comma
+l_string|&quot;journal-813: BAD! buffer %llu %cdirty %cjwait, &quot;
+l_string|&quot;not in a newer tranasction&quot;
 comma
 (paren
 r_int
@@ -6049,10 +6064,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;clm-2082: Unable to flush buffer %llu in flush_journal_list&bslash;n&quot;
+id|s
+comma
+l_string|&quot;clm-2082: Unable to flush buffer %llu in %s&quot;
 comma
 (paren
 r_int
@@ -6060,6 +6076,8 @@ r_int
 r_int
 )paren
 id|saved_bh-&gt;b_blocknr
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -6101,9 +6119,10 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
+id|s
+comma
 l_string|&quot;journal-945: saved_bh-&gt;b_count &lt; 0&quot;
 )paren
 suffix:semicolon
@@ -6351,7 +6370,9 @@ l_int|1
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;clm-2201: last flush %lu, current %lu&bslash;n&quot;
+id|s
+comma
+l_string|&quot;clm-2201: last flush %lu, current %lu&quot;
 comma
 id|SB_JOURNAL
 c_func
@@ -7970,7 +7991,7 @@ id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal-986: transaction &quot;
 l_string|&quot;is valid returning because trans_id %d is greater than &quot;
-l_string|&quot;oldest_invalid %lu&bslash;n&quot;
+l_string|&quot;oldest_invalid %lu&quot;
 comma
 id|get_desc_trans_id
 c_func
@@ -8009,7 +8030,7 @@ id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal-1087: transaction &quot;
 l_string|&quot;is valid returning because mount_id %d is less than &quot;
-l_string|&quot;newest_mount_id %lu&bslash;n&quot;
+l_string|&quot;newest_mount_id %lu&quot;
 comma
 id|get_desc_mount_id
 (paren
@@ -8044,7 +8065,9 @@ id|p_s_sb
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;journal-2018: Bad transaction length %d encountered, ignoring transaction&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-2018: Bad transaction length %d encountered, ignoring transaction&quot;
 comma
 id|get_desc_trans_len
 c_func
@@ -8143,7 +8166,7 @@ comma
 id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal_transaction_is_valid, commit offset %ld had bad &quot;
-l_string|&quot;time %d or length %d&bslash;n&quot;
+l_string|&quot;time %d or length %d&quot;
 comma
 id|c_bh-&gt;b_blocknr
 op_minus
@@ -8195,7 +8218,7 @@ id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal-1004: &quot;
 l_string|&quot;transaction_is_valid setting oldest invalid trans_id &quot;
-l_string|&quot;to %d&bslash;n&quot;
+l_string|&quot;to %d&quot;
 comma
 id|get_desc_trans_id
 c_func
@@ -8224,7 +8247,7 @@ comma
 id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal-1006: found valid &quot;
-l_string|&quot;transaction start offset %llu, len %d id %d&bslash;n&quot;
+l_string|&quot;transaction start offset %llu, len %d id %d&quot;
 comma
 id|d_bh-&gt;b_blocknr
 op_minus
@@ -8430,7 +8453,7 @@ comma
 id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal-1037: &quot;
-l_string|&quot;journal_read_transaction, offset %llu, len %d mount_id %d&bslash;n&quot;
+l_string|&quot;journal_read_transaction, offset %llu, len %d mount_id %d&quot;
 comma
 id|d_bh-&gt;b_blocknr
 op_minus
@@ -8473,7 +8496,7 @@ comma
 id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal-1039: &quot;
-l_string|&quot;journal_read_trans skipping because %lu is too old&bslash;n&quot;
+l_string|&quot;journal_read_trans skipping because %lu is too old&quot;
 comma
 id|cur_dblock
 op_minus
@@ -8515,7 +8538,7 @@ id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal-1146: &quot;
 l_string|&quot;journal_read_trans skipping because %d is != &quot;
-l_string|&quot;newest_mount_id %lu&bslash;n&quot;
+l_string|&quot;newest_mount_id %lu&quot;
 comma
 id|get_desc_mount_id
 c_func
@@ -8618,7 +8641,7 @@ comma
 id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal_read_transaction, &quot;
-l_string|&quot;commit offset %llu had bad time %d or length %d&bslash;n&quot;
+l_string|&quot;commit offset %llu had bad time %d or length %d&quot;
 comma
 id|c_bh-&gt;b_blocknr
 op_minus
@@ -8779,7 +8802,9 @@ suffix:semicolon
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;journal-1169: kmalloc failed, unable to mount FS&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-1169: kmalloc failed, unable to mount FS&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8919,7 +8944,9 @@ id|p_s_sb
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;journal-1207: REPLAY FAILURE fsck required! Block to replay is outside of filesystem&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-1207: REPLAY FAILURE fsck required! Block to replay is outside of filesystem&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -8947,7 +8974,9 @@ id|b_blocknr
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;journal-1204: REPLAY FAILURE fsck required! Trying to replay onto a log block&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-1204: REPLAY FAILURE fsck required! Trying to replay onto a log block&quot;
 )paren
 suffix:semicolon
 id|abort_replay
@@ -9088,7 +9117,9 @@ id|i
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;journal-1212: REPLAY FAILURE fsck required! buffer write failed&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-1212: REPLAY FAILURE fsck required! buffer write failed&quot;
 )paren
 suffix:semicolon
 id|brelse_array
@@ -9309,7 +9340,9 @@ id|i
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;journal-1226: REPLAY FAILURE, fsck required! buffer write failed&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-1226: REPLAY FAILURE, fsck required! buffer write failed&quot;
 )paren
 suffix:semicolon
 id|brelse_array
@@ -9433,7 +9466,7 @@ comma
 id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal-1095: setting journal &quot;
-l_string|&quot;start to offset %ld&bslash;n&quot;
+l_string|&quot;start to offset %ld&quot;
 comma
 id|cur_dblock
 op_minus
@@ -9853,10 +9886,11 @@ c_func
 id|p_s_sb
 )paren
 suffix:semicolon
-id|printk
-c_func
+id|reiserfs_info
 (paren
-l_string|&quot;reiserfs: checking transaction log (%s) for (%s)&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;checking transaction log (%s)&bslash;n&quot;
 comma
 id|bdevname
 c_func
@@ -9870,12 +9904,6 @@ op_member_access_from_pointer
 id|j_dev_bd
 comma
 id|b
-)paren
-comma
-id|reiserfs_bdevname
-c_func
-(paren
-id|p_s_sb
 )paren
 )paren
 suffix:semicolon
@@ -10008,7 +10036,7 @@ id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal-1153: found in &quot;
 l_string|&quot;header: first_unflushed_offset %d, last_flushed_trans_id &quot;
-l_string|&quot;%lu&bslash;n&quot;
+l_string|&quot;%lu&quot;
 comma
 id|le32_to_cpu
 c_func
@@ -10096,10 +10124,11 @@ id|p_s_sb-&gt;s_bdev
 )paren
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;clm-2076: device is readonly, unable to replay log&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;clm-2076: device is readonly, unable to replay log&quot;
 )paren
 suffix:semicolon
 r_return
@@ -10231,7 +10260,7 @@ comma
 id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal-1179: Setting &quot;
-l_string|&quot;oldest_start to offset %llu, trans_id %lu&bslash;n&quot;
+l_string|&quot;oldest_start to offset %llu, trans_id %lu&quot;
 comma
 id|oldest_start
 op_minus
@@ -10279,7 +10308,7 @@ comma
 id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal-1180: Resetting &quot;
-l_string|&quot;oldest_start to offset %lu, trans_id %lu&bslash;n&quot;
+l_string|&quot;oldest_start to offset %lu, trans_id %lu&quot;
 comma
 id|oldest_start
 op_minus
@@ -10321,7 +10350,7 @@ comma
 id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal-1299: Setting &quot;
-l_string|&quot;newest_mount_id to %d&bslash;n&quot;
+l_string|&quot;newest_mount_id to %d&quot;
 comma
 id|get_desc_mount_id
 c_func
@@ -10375,7 +10404,7 @@ comma
 id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal-1206: Starting replay &quot;
-l_string|&quot;from offset %llu, trans_id %lu&bslash;n&quot;
+l_string|&quot;from offset %llu, trans_id %lu&quot;
 comma
 id|cur_dblock
 op_minus
@@ -10488,7 +10517,7 @@ comma
 id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal-1225: No valid &quot;
-l_string|&quot;transactions found&bslash;n&quot;
+l_string|&quot;transactions found&quot;
 )paren
 suffix:semicolon
 )brace
@@ -10587,7 +10616,7 @@ comma
 id|REISERFS_DEBUG_CODE
 comma
 l_string|&quot;journal-1299: Setting &quot;
-l_string|&quot;newest_mount_id to %lu&bslash;n&quot;
+l_string|&quot;newest_mount_id to %lu&quot;
 comma
 id|SB_JOURNAL
 c_func
@@ -10622,10 +10651,11 @@ OG
 l_int|0
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_info
 (paren
-l_string|&quot;reiserfs: replayed %d transactions in %lu seconds&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;replayed %d transactions in %lu seconds&bslash;n&quot;
 comma
 id|replay_count
 comma
@@ -10929,7 +10959,9 @@ l_int|0
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;sh-457: release_journal_dev: Cannot release journal device: %i&bslash;n&quot;
+id|super
+comma
+l_string|&quot;sh-457: release_journal_dev: Cannot release journal device: %i&quot;
 comma
 id|result
 )paren
@@ -11078,10 +11110,12 @@ id|journal-&gt;j_dev_bd
 op_assign
 l_int|NULL
 suffix:semicolon
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;sh-458: journal_init_dev: cannot init journal device&bslash;n &squot;%s&squot;: %i&quot;
+id|super
+comma
+l_string|&quot;sh-458: journal_init_dev: &quot;
+l_string|&quot;cannot init journal device &squot;%s&squot;: %i&quot;
 comma
 id|__bdevname
 c_func
@@ -11165,10 +11199,12 @@ id|i_mode
 )paren
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;journal_init_dev: &squot;%s&squot; is not a block device&bslash;n&quot;
+id|super
+comma
+l_string|&quot;journal_init_dev: &squot;%s&squot; is &quot;
+l_string|&quot;not a block device&quot;
 comma
 id|jdev_name
 )paren
@@ -11218,10 +11254,11 @@ id|j_dev_file
 op_assign
 l_int|NULL
 suffix:semicolon
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;journal_init_dev: Cannot open &squot;%s&squot;: %i&bslash;n&quot;
+id|super
+comma
+l_string|&quot;journal_init_dev: Cannot open &squot;%s&squot;: %i&quot;
 comma
 id|jdev_name
 comma
@@ -11246,9 +11283,11 @@ id|journal
 )paren
 suffix:semicolon
 )brace
-id|printk
+id|reiserfs_info
 c_func
 (paren
+id|super
+comma
 l_string|&quot;journal_init_dev: journal device: %s&bslash;n&quot;
 comma
 id|bdevname
@@ -11355,10 +11394,11 @@ op_logical_neg
 id|journal
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;journal-1256: unable to get memory for journal structure&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-1256: unable to get memory for journal structure&quot;
 )paren
 suffix:semicolon
 r_return
@@ -11516,11 +11556,13 @@ l_int|8
 )paren
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;journal-1393: journal does not fit for area addressed by first of bitmap blocks. &quot;
-l_string|&quot;It starts at %u and its size is %u. Block size %ld&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-1393: journal does not fit for area &quot;
+l_string|&quot;addressed by first of bitmap blocks. It starts at &quot;
+l_string|&quot;%u and its size is %u. Block size %ld&quot;
 comma
 id|SB_JOURNAL_1st_RESERVED_BLOCK
 c_func
@@ -11557,10 +11599,11 @@ op_ne
 l_int|0
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;sh-462: unable to initialize jornal device&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;sh-462: unable to initialize jornal device&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -11603,10 +11646,11 @@ op_logical_neg
 id|bhjh
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;sh-459: unable to read  journal header&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;sh-459: unable to read journal header&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -11645,11 +11689,13 @@ id|rs
 )paren
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;sh-460: journal header magic %x (device %s) does not match &quot;
-l_string|&quot;to magic found in super block %x (device %s)&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;sh-460: journal header magic %x &quot;
+l_string|&quot;(device %s) does not match to magic found in super &quot;
+l_string|&quot;block %x&quot;
 comma
 id|jh-&gt;jh_journal.jp_journal_magic
 comma
@@ -11671,11 +11717,6 @@ id|sb_jp_journal_magic
 c_func
 (paren
 id|rs
-)paren
-comma
-id|reiserfs_bdevname
-(paren
-id|p_s_sb
 )paren
 )paren
 suffix:semicolon
@@ -11855,9 +11896,11 @@ id|p_s_sb
 op_ne
 id|initial
 )paren
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;sh-461: journal_init: wrong transaction max size (%u). Changed to %u&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;sh-461: journal_init: wrong transaction max size (%u). Changed to %u&quot;
 comma
 id|initial
 comma
@@ -11999,9 +12042,11 @@ op_assign
 id|commit_max_age
 suffix:semicolon
 )brace
-id|printk
+id|reiserfs_info
 (paren
-l_string|&quot;Reiserfs journal params: device %s, size %u, &quot;
+id|p_s_sb
+comma
+l_string|&quot;journal params: device %s, size %u, &quot;
 l_string|&quot;journal first block %u, max trans len %u, max batch %u, &quot;
 l_string|&quot;max commit age %u, max trans age %u&bslash;n&quot;
 comma
@@ -12429,7 +12474,9 @@ id|jl-&gt;j_list_bitmap
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;journal-2005, get_list_bitmap failed for journal list 0&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-2005, get_list_bitmap failed for journal list 0&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -12451,7 +12498,9 @@ l_int|0
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;Replay Failure, unable to mount&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;Replay Failure, unable to mount&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -13114,6 +13163,8 @@ suffix:semicolon
 id|reiserfs_check_lock_depth
 c_func
 (paren
+id|p_s_sb
+comma
 l_string|&quot;journal_begin&quot;
 )paren
 suffix:semicolon
@@ -13845,10 +13896,11 @@ id|th-&gt;t_refcount
 op_le
 l_int|1
 )paren
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;BAD: refcount &lt;= 1, but journal_info != 0&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;BAD: refcount &lt;= 1, but journal_info != 0&quot;
 )paren
 suffix:semicolon
 r_return
@@ -13861,7 +13913,9 @@ multiline_comment|/* we&squot;ve ended up with a handle from a different filesys
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;clm-2100: nesting info a different FS&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;clm-2100: nesting info a different FS&quot;
 )paren
 suffix:semicolon
 id|th-&gt;t_handle_save
@@ -14052,10 +14106,12 @@ id|bh
 )paren
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;journal-1777: buffer %llu bad state %cPREPARED %cLOCKED %cDIRTY %cJDIRTY_WAIT&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-1777: buffer %llu bad state &quot;
+l_string|&quot;%cPREPARED %cLOCKED %cDIRTY %cJDIRTY_WAIT&quot;
 comma
 (paren
 r_int
@@ -14127,10 +14183,11 @@ op_le
 l_int|0
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;journal-1409: journal_mark_dirty returning because j_wcount was %d&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-1409: journal_mark_dirty returning because j_wcount was %d&quot;
 comma
 id|atomic_read
 c_func
@@ -14485,10 +14542,11 @@ id|th-&gt;t_refcount
 OG
 l_int|1
 )paren
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;REISER-NESTING: th NULL, refcount %d&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;REISER-NESTING: th NULL, refcount %d&quot;
 comma
 id|th-&gt;t_refcount
 )paren
@@ -14780,10 +14838,11 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;journal-1752: remove from trans, b_count &lt; 0&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-1752: remove from trans, b_count &lt; 0&quot;
 )paren
 suffix:semicolon
 )brace
@@ -16233,10 +16292,11 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;journal-2138: cn-&gt;bh-&gt;b_count &lt; 0&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-2138: cn-&gt;bh-&gt;b_count &lt; 0&quot;
 )paren
 suffix:semicolon
 )brace
@@ -16298,10 +16358,11 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;journal-2165: bh-&gt;b_count &lt; 0&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-2165: bh-&gt;b_count &lt; 0&quot;
 )paren
 suffix:semicolon
 )brace
@@ -17092,6 +17153,8 @@ suffix:semicolon
 id|reiserfs_check_lock_depth
 c_func
 (paren
+id|p_s_sb
+comma
 l_string|&quot;journal end&quot;
 )paren
 suffix:semicolon
@@ -17995,7 +18058,9 @@ multiline_comment|/* JDirty cleared sometime during transaction.  don&squot;t lo
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;journal-2048: do_journal_end: BAD, buffer in journal hash, but not JDirty!&bslash;n&quot;
+id|p_s_sb
+comma
+l_string|&quot;journal-2048: do_journal_end: BAD, buffer in journal hash, but not JDirty!&quot;
 )paren
 suffix:semicolon
 id|brelse
@@ -18735,6 +18800,8 @@ suffix:colon
 id|reiserfs_check_lock_depth
 c_func
 (paren
+id|p_s_sb
+comma
 l_string|&quot;journal end2&quot;
 )paren
 suffix:semicolon

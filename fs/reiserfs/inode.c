@@ -3115,10 +3115,11 @@ op_ne
 op_minus
 id|ENOSPC
 )paren
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;clm-6004: convert tail failed inode %lu, error %d&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;clm-6004: convert tail failed inode %lu, error %d&quot;
 comma
 id|inode-&gt;i_ino
 comma
@@ -3646,8 +3647,10 @@ id|POSITION_FOUND
 (brace
 id|reiserfs_warning
 (paren
+id|inode-&gt;i_sb
+comma
 l_string|&quot;vs-825: reiserfs_get_block: &quot;
-l_string|&quot;%K should not be found&bslash;n&quot;
+l_string|&quot;%K should not be found&quot;
 comma
 op_amp
 id|key
@@ -5321,6 +5324,8 @@ id|IO_ERROR
 (brace
 id|reiserfs_warning
 (paren
+id|inode-&gt;i_sb
+comma
 l_string|&quot;vs-13050: reiserfs_update_sd: &quot;
 l_string|&quot;i/o failure occurred trying to update %K stat data&quot;
 comma
@@ -5362,14 +5367,16 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/*printk (&quot;vs-13050: reiserfs_update_sd: i_nlink == 0, stat data not found&bslash;n&quot;);*/
+multiline_comment|/*reiserfs_warning (inode-&gt;i_sb, &quot;vs-13050: reiserfs_update_sd: i_nlink == 0, stat data not found&quot;);*/
 r_return
 suffix:semicolon
 )brace
 id|reiserfs_warning
 (paren
+id|inode-&gt;i_sb
+comma
 l_string|&quot;vs-13060: reiserfs_update_sd: &quot;
-l_string|&quot;stat data of object %k (nlink == %d) not found (pos %d)&bslash;n&quot;
+l_string|&quot;stat data of object %k (nlink == %d) not found (pos %d)&quot;
 comma
 id|INODE_PKEY
 (paren
@@ -5667,8 +5674,10 @@ id|IO_ERROR
 (brace
 id|reiserfs_warning
 (paren
+id|inode-&gt;i_sb
+comma
 l_string|&quot;vs-13070: reiserfs_read_locked_inode: &quot;
-l_string|&quot;i/o failure occurred trying to find stat data of %K&bslash;n&quot;
+l_string|&quot;i/o failure occurred trying to find stat data of %K&quot;
 comma
 op_amp
 id|key
@@ -5745,11 +5754,12 @@ id|s_is_unlinked_ok
 )paren
 (brace
 id|reiserfs_warning
-c_func
 (paren
+id|inode-&gt;i_sb
+comma
 l_string|&quot;vs-13075: reiserfs_read_locked_inode: &quot;
 l_string|&quot;dead inode read from disk %K. &quot;
-l_string|&quot;This is likely to be race with knfsd. Ignore&bslash;n&quot;
+l_string|&quot;This is likely to be race with knfsd. Ignore&quot;
 comma
 op_amp
 id|key
@@ -6193,11 +6203,11 @@ id|len
 op_ne
 l_int|5
 )paren
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-id|KERN_WARNING
-l_string|&quot;nfsd/reiserfs, fhtype=%d, len=%d - odd&bslash;n&quot;
+id|sb
+comma
+l_string|&quot;nfsd/reiserfs, fhtype=%d, len=%d - odd&quot;
 comma
 id|fhtype
 comma
@@ -6551,9 +6561,10 @@ id|MS_RDONLY
 )paren
 (brace
 id|reiserfs_warning
-c_func
 (paren
-l_string|&quot;clm-6005: writing inode %lu on readonly FS&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;clm-6005: writing inode %lu on readonly FS&quot;
 comma
 id|inode-&gt;i_ino
 )paren
@@ -6851,8 +6862,10 @@ id|IO_ERROR
 (brace
 id|reiserfs_warning
 (paren
+id|sb
+comma
 l_string|&quot;vs-13080: reiserfs_new_directory: &quot;
-l_string|&quot;i/o failure occurred creating new directory&bslash;n&quot;
+l_string|&quot;i/o failure occurred creating new directory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6875,6 +6888,8 @@ id|path
 suffix:semicolon
 id|reiserfs_warning
 (paren
+id|sb
+comma
 l_string|&quot;vs-13070: reiserfs_new_directory: &quot;
 l_string|&quot;object with this key exists (%k)&quot;
 comma
@@ -7024,8 +7039,10 @@ id|IO_ERROR
 (brace
 id|reiserfs_warning
 (paren
+id|sb
+comma
 l_string|&quot;vs-13080: reiserfs_new_symlinik: &quot;
-l_string|&quot;i/o failure occurred creating new symlink&bslash;n&quot;
+l_string|&quot;i/o failure occurred creating new symlink&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7048,6 +7065,8 @@ id|path
 suffix:semicolon
 id|reiserfs_warning
 (paren
+id|sb
+comma
 l_string|&quot;vs-13080: reiserfs_new_symlink: &quot;
 l_string|&quot;object with this key exists (%k)&quot;
 comma
@@ -7992,7 +8011,10 @@ id|MS_POSIXACL
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;ACLs aren&squot;t enabled in the fs, but vfs thinks they are!&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;ACLs aren&squot;t enabled in the fs, &quot;
+l_string|&quot;but vfs thinks they are!&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8313,9 +8335,10 @@ id|bh
 (brace
 multiline_comment|/* note, this should never happen, prepare_write should&n;&t;** be taking care of this for us.  If the buffer isn&squot;t up to date,&n;&t;** I&squot;ve screwed up the code to find the buffer, or the code to&n;&t;** call prepare_write&n;&t;*/
 id|reiserfs_warning
-c_func
 (paren
-l_string|&quot;clm-6000: error reading block %lu on dev %s&bslash;n&quot;
+id|p_s_inode-&gt;i_sb
+comma
+l_string|&quot;clm-6000: error reading block %lu on dev %s&quot;
 comma
 id|bh-&gt;b_blocknr
 comma
@@ -8470,9 +8493,10 @@ op_minus
 id|ENOENT
 )paren
 id|reiserfs_warning
-c_func
 (paren
-l_string|&quot;clm-6001: grab_tail_page failed %d&bslash;n&quot;
+id|p_s_inode-&gt;i_sb
+comma
+l_string|&quot;clm-6001: grab_tail_page failed %d&quot;
 comma
 id|error
 )paren
@@ -8908,9 +8932,10 @@ l_int|0
 )paren
 (brace
 id|reiserfs_warning
-c_func
 (paren
-l_string|&quot;clm-6002: bytes_copied %d&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;clm-6002: bytes_copied %d&quot;
 comma
 id|bytes_copied
 )paren
@@ -9211,9 +9236,10 @@ suffix:semicolon
 r_else
 (brace
 id|reiserfs_warning
-c_func
 (paren
-l_string|&quot;clm-6003: bad item inode %lu, device %s&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;clm-6003: bad item inode %lu, device %s&quot;
 comma
 id|inode-&gt;i_ino
 comma

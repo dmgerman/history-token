@@ -155,9 +155,11 @@ id|POSITION_FOUND
 (brace
 id|reiserfs_warning
 (paren
+id|sb
+comma
 l_string|&quot;PAP-14030: direct2indirect: &quot;
 l_string|&quot;pasted or inserted byte exists in the tree %K. &quot;
-l_string|&quot;Use fsck to repair.&bslash;n&quot;
+l_string|&quot;Use fsck to repair.&quot;
 comma
 op_amp
 id|end_key
