@@ -3,6 +3,7 @@ DECL|macro|_LINUX_MSDOS_FS_H
 mdefine_line|#define _LINUX_MSDOS_FS_H
 multiline_comment|/*&n; * The MS-DOS filesystem constants/structures&n; */
 macro_line|#include &lt;linux/msdos_fs_i.h&gt;
+macro_line|#include &lt;linux/msdos_fs_sb.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|MSDOS_ROOT_INO
 mdefine_line|#define MSDOS_ROOT_INO  1 /* == MINIX_ROOT_INO */
@@ -64,8 +65,25 @@ mdefine_line|#define IS_FREE(n) (!*(n) || *(const unsigned char *) (n) == DELETE
 DECL|macro|MSDOS_VALID_MODE
 mdefine_line|#define MSDOS_VALID_MODE (S_IFREG | S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO)
 multiline_comment|/* valid file mode bits */
-DECL|macro|MSDOS_SB
-mdefine_line|#define MSDOS_SB(s) (&amp;((s)-&gt;u.msdos_sb))
+DECL|function|MSDOS_SB
+r_static
+r_inline
+r_struct
+id|msdos_sb_info
+op_star
+id|MSDOS_SB
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
+suffix:semicolon
+)brace
 DECL|function|MSDOS_I
 r_static
 r_inline
@@ -1258,11 +1276,8 @@ op_star
 id|sb
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|super_block
-op_star
-id|fat_read_super
+r_int
+id|fat_fill_super
 c_func
 (paren
 r_struct
@@ -1281,6 +1296,9 @@ r_struct
 id|inode_operations
 op_star
 id|fs_dir_inode_ops
+comma
+r_int
+id|isvfat
 )paren
 suffix:semicolon
 r_extern
