@@ -2035,6 +2035,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|p-&gt;pre_handler
+op_logical_and
 id|p
 op_member_access_from_pointer
 id|pre_handler
@@ -2045,12 +2047,10 @@ comma
 id|regs
 )paren
 )paren
-(brace
 multiline_comment|/* handler has already set things up, so skip ss setup */
 r_return
 l_int|1
 suffix:semicolon
-)brace
 id|ss_probe
 suffix:colon
 id|prepare_singlestep

@@ -367,6 +367,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|p-&gt;pre_handler
+op_logical_and
 id|p
 op_member_access_from_pointer
 id|pre_handler
