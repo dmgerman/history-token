@@ -133,6 +133,8 @@ l_string|&quot;tea&quot;
 comma
 l_string|&quot;xtea&quot;
 comma
+l_string|&quot;khazad&quot;
+comma
 l_string|&quot;wp512&quot;
 comma
 l_string|&quot;wp384&quot;
