@@ -5157,7 +5157,24 @@ id|N_TTY
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Make sure that the tty&squot;s task queue isn&squot;t activated. &n;&t; */
+multiline_comment|/*&n;&t; * Prevent flush_to_ldisc() from rescheduling the work for later.  Then&n;&t; * kill any delayed work.&n;&t; */
+id|clear_bit
+c_func
+(paren
+id|TTY_DONT_FLIP
+comma
+op_amp
+id|tty-&gt;flags
+)paren
+suffix:semicolon
+id|cancel_delayed_work
+c_func
+(paren
+op_amp
+id|tty-&gt;flip.work
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Wait for -&gt;hangup_work and -&gt;flip.work handlers to terminate&n;&t; */
 id|flush_scheduled_work
 c_func
 (paren

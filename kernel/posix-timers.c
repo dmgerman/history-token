@@ -56,6 +56,9 @@ singleline_comment|// error to use outside of SMP
 DECL|macro|set_timer_inactive
 macro_line|# define set_timer_inactive(tmr) do { } while (0)
 macro_line|#endif
+multiline_comment|/*&n; * For some reason mips/mips64 define the SIGEV constants plus 128.&n; * Here we define a mask to get rid of the common bits.&t; The&n; * optimizer should make this costless to all but mips.&n; */
+DECL|macro|MIPS_SIGEV
+mdefine_line|#define MIPS_SIGEV ~(SIGEV_NONE &amp; &bslash;&n;&t;&t;      SIGEV_SIGNAL &amp; &bslash;&n;&t;&t;      SIGEV_THREAD &amp;  &bslash;&n;&t;&t;      SIGEV_THREAD_ID)
 multiline_comment|/*&n; * The timer ID is turned into a timer address by idr_find().&n; * Verifying a valid ID consists of:&n; *&n; * a) checking that idr_find() returns other than zero.&n; * b) checking that the timer id matches the one in the timer itself.&n; * c) that the timer owner is in the callers thread group.&n; */
 multiline_comment|/*&n; * CLOCKs: The POSIX standard calls for a couple of clocks and allows us&n; *&t;    to implement others.  This structure defines the various&n; *&t;    clocks and allows the possibility of adding others.&t; We&n; *&t;    provide an interface to add clocks to the table and expect&n; *&t;    the &quot;arch&quot; code to add at least one clock that is high&n; *&t;    resolution.&t; Here we define the standard CLOCK_REALTIME as a&n; *&t;    1/HZ resolution clock.&n; *&n; * CPUTIME &amp; THREAD_CPUTIME: We are not, at this time, definding these&n; *&t;    two clocks (and the other process related clocks (Std&n; *&t;    1003.1d-1999).  The way these should be supported, we think,&n; *&t;    is to use large negative numbers for the two clocks that are&n; *&t;    pinned to the executing process and to use -pid for clocks&n; *&t;    pinned to particular pids.&t;Calls which supported these clock&n; *&t;    ids would split early in the function.&n; *&n; * RESOLUTION: Clock resolution is used to round up timer and interval&n; *&t;    times, NOT to report clock times, which are reported with as&n; *&t;    much resolution as the system can muster.  In some cases this&n; *&t;    resolution may depend on the underlaying clock hardware and&n; *&t;    may not be quantifiable until run time, and only then is the&n; *&t;    necessary code is written.&t;The standard says we should say&n; *&t;    something about this issue in the documentation...&n; *&n; * FUNCTIONS: The CLOCKs structure defines possible functions to handle&n; *&t;    various clock functions.  For clocks that use the standard&n; *&t;    system timer code these entries should be NULL.  This will&n; *&t;    allow dispatch without the overhead of indirect function&n; *&t;    calls.  CLOCKS that depend on other sources (e.g. WWV or GPS)&n; *&t;    must supply functions here, even if the function just returns&n; *&t;    ENOSYS.  The standard POSIX timer management code assumes the&n; *&t;    following: 1.) The k_itimer struct (sched.h) is used for the&n; *&t;    timer.  2.) The list, it_lock, it_clock, it_id and it_process&n; *&t;    fields are not modified by timer code.&n; *&n; *          At this time all functions EXCEPT clock_nanosleep can be&n; *          redirected by the CLOCKS structure.  Clock_nanosleep is in&n; *          there, but the code ignors it.&n; *&n; * Permissions: It is assumed that the clock_settime() function defined&n; *&t;    for each clock will take care of permission checks.&t; Some&n; *&t;    clocks may be set able by any user (i.e. local process&n; *&t;    clocks) others not.&t; Currently the only set able clock we&n; *&t;    have is CLOCK_REALTIME and its high res counter part, both of&n; *&t;    which we beg off on and pass to do_sys_settimeofday().&n; */
 DECL|variable|posix_clocks
@@ -436,16 +439,8 @@ c_cond
 op_logical_neg
 id|timr-&gt;it_incr
 )paren
-(brace
-id|set_timer_inactive
-c_func
-(paren
-id|timr
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|posix_get_now
 c_func
 (paren
@@ -535,8 +530,9 @@ c_cond
 op_logical_neg
 id|timr
 op_logical_or
-op_logical_neg
 id|timr-&gt;it_requeue_pending
+op_ne
+id|info-&gt;si_sys_private
 )paren
 r_goto
 m_exit
@@ -567,7 +563,14 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Notify the task and set up the timer for the next expiration (if&n; * applicable).  This function requires that the k_itimer structure&n; * it_lock is taken.  This code will requeue the timer only if we get&n; * either an error return or a flag (ret &gt; 0) from send_seg_info&n; * indicating that the signal was either not queued or was queued&n; * without an info block.  In this case, we will not get a call back to&n; * do_schedule_next_timer() so we do it here.  This should be rare...&n; */
+multiline_comment|/*&n; * Notify the task and set up the timer for the next expiration (if&n; * applicable).  This function requires that the k_itimer structure&n; * it_lock is taken.  This code will requeue the timer only if we get&n; * either an error return or a flag (ret &gt; 0) from send_seg_info&n; * indicating that the signal was either not queued or was queued&n; * without an info block.  In this case, we will not get a call back to&n; * do_schedule_next_timer() so we do it here.  This should be rare...&n;&n; * An interesting problem can occure if, while a signal, and thus a call&n; * back is pending, the timer is rearmed, i.e. stopped and restarted.&n; * We then need to sort out the call back and do the right thing.  What&n; * we do is to put a counter in the info block and match it with the&n; * timers copy on the call back.  If they don&squot;t match, we just ignore&n; * the call back.  Note that we do allow the timer to be deleted while&n; * a signal is pending.  The standard says we can allow that signal to&n; * be delivered, and we do.&n; */
+DECL|variable|pendcount
+r_static
+r_int
+id|pendcount
+op_assign
+l_int|1
+suffix:semicolon
 DECL|function|timer_notify_task
 r_static
 r_void
@@ -625,22 +628,31 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|timr-&gt;it_incr
 )paren
-id|set_timer_inactive
-c_func
-(paren
-id|timr
-)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Don&squot;t allow a call back counter of zero...&n;&t;&t; * and avoid the test by using 2.&n;&t;&t; */
+id|pendcount
+op_add_assign
+l_int|2
 suffix:semicolon
-r_else
 id|timr-&gt;it_requeue_pending
 op_assign
 id|info.si_sys_private
 op_assign
-l_int|1
+id|pendcount
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|timr-&gt;it_sigev_notify
+op_amp
+id|SIGEV_THREAD_ID
+op_amp
+id|MIPS_SIGEV
+)paren
+(brace
 id|ret
 op_assign
 id|send_sig_info
@@ -654,6 +666,23 @@ comma
 id|timr-&gt;it_process
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|ret
+op_assign
+id|send_group_sig_info
+c_func
+(paren
+id|info.si_signo
+comma
+op_amp
+id|info
+comma
+id|timr-&gt;it_process
+)paren
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -727,6 +756,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|set_timer_inactive
+c_func
+(paren
+id|timr
+)paren
+suffix:semicolon
 id|timer_notify_task
 c_func
 (paren
@@ -742,14 +777,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * For some reason mips/mips64 define the SIGEV constants plus 128.&n; * Here we define a mask to get rid of the common bits.&t; The&n; * optimizer should make this costless to all but mips.&n; */
-macro_line|#if defined(ARCH) &amp;&amp; ((ARCH == mips) || (ARCH == mips64))
-DECL|macro|MIPS_SIGEV
-mdefine_line|#define MIPS_SIGEV ~(SIGEV_NONE &amp; &bslash;&n;&t;&t;      SIGEV_SIGNAL &amp; &bslash;&n;&t;&t;      SIGEV_THREAD &amp;  &bslash;&n;&t;&t;      SIGEV_THREAD_ID)
-macro_line|#else
-DECL|macro|MIPS_SIGEV
-mdefine_line|#define MIPS_SIGEV (int)-1
-macro_line|#endif
 DECL|function|good_sigevent
 r_static
 r_inline
@@ -2640,9 +2667,6 @@ c_func
 op_amp
 id|timer-&gt;it_timer
 )paren
-op_logical_and
-op_logical_neg
-id|timer-&gt;it_requeue_pending
 )paren
 multiline_comment|/*&n;&t;&t; * It can only be active if on an other cpu.  Since&n;&t;&t; * we have cleared the interval stuff above, it should&n;&t;&t; * clear once we release the spin lock.  Of course once&n;&t;&t; * we do that anything could happen, including the&n;&t;&t; * complete melt down of the timer.  So return with&n;&t;&t; * a &quot;retry&quot; exit status.&n;&t;&t; */
 r_return

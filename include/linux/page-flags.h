@@ -63,6 +63,12 @@ r_int
 id|nr_writeback
 suffix:semicolon
 multiline_comment|/* Pages under writeback */
+DECL|member|nr_unstable
+r_int
+r_int
+id|nr_unstable
+suffix:semicolon
+multiline_comment|/* NFS unstable pages */
 DECL|member|nr_page_table_pages
 r_int
 r_int
@@ -239,6 +245,8 @@ DECL|macro|inc_page_state
 mdefine_line|#define inc_page_state(member)&t;mod_page_state(member, 1UL)
 DECL|macro|dec_page_state
 mdefine_line|#define dec_page_state(member)&t;mod_page_state(member, 0UL - 1)
+DECL|macro|sub_page_state
+mdefine_line|#define sub_page_state(member,delta) mod_page_state(member, 0UL - (delta))
 multiline_comment|/*&n; * Manipulation of page state flags&n; */
 DECL|macro|PageLocked
 mdefine_line|#define PageLocked(page)&t;&t;&bslash;&n;&t;&t;test_bit(PG_locked, &amp;(page)-&gt;flags)
