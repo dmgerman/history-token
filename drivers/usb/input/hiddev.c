@@ -3512,11 +3512,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;usb/hid&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|usb_register

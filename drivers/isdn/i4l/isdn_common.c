@@ -10129,12 +10129,9 @@ id|i
 suffix:semicolon
 macro_line|#  endif
 id|devfs_mk_dir
+c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;isdn&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#  ifdef CONFIG_ISDN_PPP

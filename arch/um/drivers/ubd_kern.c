@@ -2986,11 +2986,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;ubd&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3067,11 +3063,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
-comma
 id|name
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if

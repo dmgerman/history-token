@@ -7393,11 +7393,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
-comma
 id|VIDEO1394_DRIVER_NAME
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|hl_handle
