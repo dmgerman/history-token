@@ -419,7 +419,11 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
+(paren
 id|state
+op_amp
+l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * speedstep_set_state - set the SpeedStep state&n; * @state: new processor frequency state (SPEEDSTEP_LOW or SPEEDSTEP_HIGH)&n; * @notify: whether to call cpufreq_notify_transition&n; *&n; */
