@@ -37,6 +37,8 @@ DECL|macro|IPSKB_TRANSLATED
 mdefine_line|#define IPSKB_TRANSLATED&t;2
 DECL|macro|IPSKB_FORWARDED
 mdefine_line|#define IPSKB_FORWARDED&t;&t;4
+DECL|macro|IPSKB_XFRM_TUNNEL_SIZE
+mdefine_line|#define IPSKB_XFRM_TUNNEL_SIZE&t;8
 )brace
 suffix:semicolon
 DECL|struct|ipcm_cookie
