@@ -1102,6 +1102,7 @@ id|termination
 suffix:semicolon
 DECL|member|ce
 id|IXJ_CADENCE_ELEMENT
+id|__user
 op_star
 id|ce
 suffix:semicolon
