@@ -1907,7 +1907,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|variable|pci_init
-id|subsys_initcall
+id|device_initcall
 c_func
 (paren
 id|pci_init
