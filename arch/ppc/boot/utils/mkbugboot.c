@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/pp3boot/mkbugboot.c&n; * &n; * Makes a Motorola PPCBUG ROM bootable image which can be flashed &n; * into one of the FLASH banks on a Motorola PowerPlus board. &n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/pp3boot/mkbugboot.c&n; * &n; * Makes a Motorola PPCBUG ROM bootable image which can be flashed &n; * into one of the FLASH banks on a Motorola PowerPlus board. &n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 DECL|macro|ELF_HEADER_SIZE
 mdefine_line|#define ELF_HEADER_SIZE&t;65536
 macro_line|#include &lt;unistd.h&gt;
