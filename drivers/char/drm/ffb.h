@@ -11,4 +11,6 @@ mdefine_line|#define __HAVE_KERNEL_CTX_SWITCH&t;1
 DECL|macro|__HAVE_RELEASE
 mdefine_line|#define __HAVE_RELEASE&t;&t;&t;1
 macro_line|#endif
+DECL|macro|DRIVER_PCI_IDS
+mdefine_line|#define DRIVER_PCI_IDS { 0, 0, 0 }
 eof
