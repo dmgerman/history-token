@@ -1,4 +1,4 @@
-multiline_comment|/**&n; * compress.c - NTFS kernel compressed attributes handling.&n; *&t;&t;Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/**&n; * compress.c - NTFS kernel compressed attributes handling.&n; *&t;&t;Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
@@ -1055,7 +1055,7 @@ multiline_comment|/* Continue with the next token. */
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t; * We have a phrase token. Make sure it is not the first tag in&n;&t;&t; * the sb as this is illegal and would confuse the code below.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We have a phrase token. Make sure it is not the first tag in&n;&t;&t; * the sb as this is illegal and would confuse the code below.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2123,11 +2123,10 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|atomic_inc
+id|get_bh
 c_func
 (paren
-op_amp
-id|tbh-&gt;b_count
+id|tbh
 )paren
 suffix:semicolon
 id|tbh-&gt;b_end_io
