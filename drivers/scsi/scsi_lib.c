@@ -2381,13 +2381,22 @@ op_logical_neg
 id|req
 )paren
 (brace
-multiline_comment|/* can happen if the prep fails &n;&t;&t;&t; * FIXME: elv_next_request() should be plugging the&n;&t;&t;&t; * queue */
+multiline_comment|/* If the device is busy, a returning I/O&n;&t;&t;&t; * will restart the queue.  Otherwise, we have&n;&t;&t;&t; * to plug the queue */
+r_if
+c_cond
+(paren
+id|SDpnt-&gt;device_busy
+op_eq
+l_int|0
+)paren
+(brace
 id|blk_plug_device
 c_func
 (paren
 id|q
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
