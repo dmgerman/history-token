@@ -315,7 +315,7 @@ c_cond
 (paren
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_WINBOND
@@ -364,6 +364,12 @@ c_func
 l_int|0x1e
 comma
 id|PCORE_WINBOND_SEC_EDG_LVL
+)paren
+suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace
