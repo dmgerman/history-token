@@ -405,6 +405,12 @@ op_star
 op_star
 id|sdev_attrs
 suffix:semicolon
+multiline_comment|/*&n;     * List of hosts per template.&n;     *&n;     * This is only for use by scsi_module.c for legacy templates.&n;     * For these access to it is synchronized implicitly by&n;     * module_init/module_exit.&n;     */
+DECL|member|legacy_hosts
+r_struct
+id|list_head
+id|legacy_hosts
+suffix:semicolon
 DECL|typedef|Scsi_Host_Template
 )brace
 id|Scsi_Host_Template
@@ -416,11 +422,6 @@ id|Scsi_Host
 (brace
 multiline_comment|/* private: */
 multiline_comment|/*&n;     * This information is private to the scsi mid-layer.  Wrapping it in a&n;     * struct private is a way of marking it in a sort of C++ type of way.&n;     */
-DECL|member|sh_list
-r_struct
-id|list_head
-id|sh_list
-suffix:semicolon
 DECL|member|my_devices
 r_struct
 id|list_head
@@ -690,6 +691,12 @@ DECL|member|class_dev
 r_struct
 id|class_device
 id|class_dev
+suffix:semicolon
+multiline_comment|/*&n;     * List of hosts per template.&n;     *&n;     * This is only for use by scsi_module.c for legacy templates.&n;     * For these access to it is synchronized implicitly by&n;     * module_init/module_exit.&n;     */
+DECL|member|sht_legacy_list
+r_struct
+id|list_head
+id|sht_legacy_list
 suffix:semicolon
 multiline_comment|/*&n;     * We should ensure that this is aligned, both for better performance&n;     * and also because some compilers (m68k) don&squot;t automatically force&n;     * alignment to a long boundary.&n;     */
 DECL|member|hostdata
@@ -988,24 +995,6 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* legacy interfaces */
-r_extern
-r_int
-id|scsi_register_host
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|scsi_unregister_host
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-)paren
-suffix:semicolon
 r_extern
 r_struct
 id|Scsi_Host
