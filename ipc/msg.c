@@ -3159,7 +3159,7 @@ suffix:semicolon
 )brace
 id|msq-&gt;q_lspid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|msq-&gt;q_stime
 op_assign
@@ -3617,7 +3617,7 @@ c_func
 suffix:semicolon
 id|msq-&gt;q_lrpid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|msq-&gt;q_cbytes
 op_sub_assign

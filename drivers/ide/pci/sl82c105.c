@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#include &quot;sl82c105.h&quot;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
