@@ -739,11 +739,16 @@ r_struct
 id|page
 op_star
 id|page
+comma
+op_star
+id|next
 suffix:semicolon
-id|list_for_each_entry
+id|list_for_each_entry_safe
 c_func
 (paren
 id|page
+comma
+id|next
 comma
 op_amp
 id|hugepage_freelists
