@@ -10,7 +10,6 @@ macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/pstate.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
@@ -95,6 +94,7 @@ DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&bslash;&n;/* smp_lock_count, smp_lock_pc, */&t;&t;&t;&bslash;&n;   0,&t;&t;   0,&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#endif /* !(CONFIG_DEBUG_SPINLOCK) */
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* Return saved PC of a blocked thread. */
 r_struct
 id|task_struct
