@@ -2744,8 +2744,18 @@ c_func
 (paren
 l_string|&quot;remote_ino already set? %Lx:%Lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|dd-&gt;remote_ino
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|dd-&gt;remote_generation
 )paren
 suffix:semicolon
@@ -2772,8 +2782,18 @@ id|dd
 comma
 id|buf
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|data-&gt;ioc_ino
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|data-&gt;ioc_generation
 )paren
 suffix:semicolon

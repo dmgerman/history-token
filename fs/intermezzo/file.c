@@ -215,6 +215,11 @@ l_string|&quot;get_fileid failed %d, ino: %Lx, fetching by name&bslash;n&quot;
 comma
 id|rc
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|dd-&gt;remote_ino
 )paren
 suffix:semicolon
@@ -1510,7 +1515,7 @@ c_func
 (paren
 id|D_INODE
 comma
-l_string|&quot;Reserved %Ld for %d&bslash;n&quot;
+l_string|&quot;Reserved %Ld for %Zd&bslash;n&quot;
 comma
 id|res_size
 comma
@@ -1764,7 +1769,7 @@ c_func
 (paren
 id|D_FILE
 comma
-l_string|&quot;file write returns short write: size %d, res %d&bslash;n&quot;
+l_string|&quot;file write returns short write: size %Zd, res %Zd&bslash;n&quot;
 comma
 id|size
 comma

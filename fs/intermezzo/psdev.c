@@ -795,7 +795,7 @@ id|count
 id|CERROR
 c_func
 (paren
-l_string|&quot;psdev_write: too much cnt: %d, cnt: %d, &quot;
+l_string|&quot;psdev_write: too much cnt: %d, cnt: %Zd, &quot;
 l_string|&quot;opc: %d, uniq: %d.&bslash;n&quot;
 comma
 id|req-&gt;rq_bufsize
@@ -1050,7 +1050,7 @@ id|req-&gt;rq_bufsize
 (brace
 id|CERROR
 (paren
-l_string|&quot;psdev_read: buffer too small, read %d of %d bytes&bslash;n&quot;
+l_string|&quot;psdev_read: buffer too small, read %Zd of %d bytes&bslash;n&quot;
 comma
 id|count
 comma
@@ -2366,18 +2366,12 @@ c_func
 (paren
 id|D_UPCALL
 comma
-l_string|&quot;..process %d woken up by Lento for req at 0x%x, data at %x&bslash;n&quot;
+l_string|&quot;..process %d woken up by Lento for req at 0x%p, data at %p&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
-(paren
-r_int
-)paren
 id|req
 comma
-(paren
-r_int
-)paren
 id|req-&gt;rq_data
 )paren
 suffix:semicolon
