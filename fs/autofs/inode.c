@@ -604,11 +604,9 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|autofs_read_super
-r_struct
-id|super_block
-op_star
-id|autofs_read_super
+DECL|function|autofs_fill_super
+r_int
+id|autofs_fill_super
 c_func
 (paren
 r_struct
@@ -909,7 +907,7 @@ op_assign
 id|root
 suffix:semicolon
 r_return
-id|s
+l_int|0
 suffix:semicolon
 id|fail_fput
 suffix:colon
@@ -961,7 +959,8 @@ suffix:semicolon
 id|fail_unlock
 suffix:colon
 r_return
-l_int|NULL
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|autofs_statfs
