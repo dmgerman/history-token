@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_PCI
@@ -2692,6 +2693,13 @@ multiline_comment|/*&n; *&t;Define the calculation for the timeout routine.&n; *
 DECL|macro|STLI_TIMEOUT
 mdefine_line|#define&t;STLI_TIMEOUT&t;(jiffies + 1)
 multiline_comment|/*****************************************************************************/
+DECL|variable|istallion_class
+r_static
+r_struct
+id|class_simple
+op_star
+id|istallion_class
+suffix:semicolon
 macro_line|#ifdef MODULE
 multiline_comment|/*&n; *&t;Loadable module initialization stuff.&n; */
 DECL|function|istallion_module_init
@@ -2872,6 +2880,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|devfs_remove
 c_func
 (paren
@@ -2880,10 +2889,29 @@ comma
 id|i
 )paren
 suffix:semicolon
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|STL_SIOMEMMAJOR
+comma
+id|i
+)paren
+)paren
+suffix:semicolon
+)brace
 id|devfs_remove
 c_func
 (paren
 l_string|&quot;staliomem&quot;
+)paren
+suffix:semicolon
+id|class_simple_destroy
+c_func
+(paren
+id|istallion_class
 )paren
 suffix:semicolon
 r_if
@@ -22911,6 +22939,16 @@ c_func
 l_string|&quot;staliomem&quot;
 )paren
 suffix:semicolon
+id|istallion_class
+op_assign
+id|class_simple_create
+c_func
+(paren
+id|THIS_MODULE
+comma
+l_string|&quot;staliomem&quot;
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -22942,6 +22980,26 @@ op_or
 id|S_IRUSR
 op_or
 id|S_IWUSR
+comma
+l_string|&quot;staliomem/%d&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+id|class_simple_device_add
+c_func
+(paren
+id|istallion_class
+comma
+id|MKDEV
+c_func
+(paren
+id|STL_SIOMEMMAJOR
+comma
+id|i
+)paren
+comma
+l_int|NULL
 comma
 l_string|&quot;staliomem/%d&quot;
 comma
