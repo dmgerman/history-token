@@ -626,6 +626,11 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+r_extern
+r_struct
+id|semaphore
+id|ipt_mutex
+suffix:semicolon
 multiline_comment|/* Standard return verdict, or do jump. */
 DECL|macro|IPT_STANDARD_TARGET
 mdefine_line|#define IPT_STANDARD_TARGET &quot;&quot;
@@ -665,6 +670,13 @@ multiline_comment|/* fn returns 0 to continue iteration */
 DECL|macro|IPT_ENTRY_ITERATE
 mdefine_line|#define IPT_ENTRY_ITERATE(entries, size, fn, args...)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int __i;&t;&t;&t;&t;&t;&bslash;&n;&t;int __ret = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct ipt_entry *__entry;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (__i = 0; __i &lt; (size); __i += __entry-&gt;next_offset) { &bslash;&n;&t;&t;__entry = (void *)(entries) + __i;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__ret = fn(__entry , ## args);&t;&t;&t;&bslash;&n;&t;&t;if (__ret != 0)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; *&t;Main firewall chains definitions and global var&squot;s definitions.&n; */
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|ipt_mutex
+)paren
+suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/init.h&gt;
 r_extern
@@ -909,6 +921,50 @@ op_star
 id|me
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|ipt_target
+op_star
+id|ipt_find_target_lock
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+comma
+r_int
+op_star
+id|error
+comma
+r_struct
+id|semaphore
+op_star
+id|mutex
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|arpt_target
+op_star
+id|arpt_find_target_lock
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+comma
+r_int
+op_star
+id|error
+comma
+r_struct
+id|semaphore
+op_star
+id|mutex
+)paren
 suffix:semicolon
 r_extern
 r_int
