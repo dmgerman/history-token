@@ -2851,6 +2851,13 @@ c_func
 id|dev_remove_pack
 )paren
 suffix:semicolon
+DECL|variable|__dev_remove_pack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__dev_remove_pack
+)paren
+suffix:semicolon
 DECL|variable|dev_get
 id|EXPORT_SYMBOL
 c_func
