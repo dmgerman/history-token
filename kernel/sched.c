@@ -1733,7 +1733,7 @@ c_cond
 (paren
 id|busiest-&gt;nr_running
 op_le
-id|this_rq-&gt;nr_running
+id|nr_running
 op_plus
 l_int|1
 )paren
