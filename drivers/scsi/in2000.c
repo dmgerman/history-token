@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *    in2000.c -  Linux device driver for the&n; *                Always IN2000 ISA SCSI card.&n; *&n; * Copyright (c) 1996 John Shifflett, GeoLog Consulting&n; *    john@geolog.com&n; *    jshiffle@netcom.com&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; *&n; * Drew Eckhardt&squot;s excellent &squot;Generic NCR5380&squot; sources provided&n; * much of the inspiration and some of the code for this driver.&n; * The Linux IN2000 driver distributed in the Linux kernels through&n; * version 1.2.13 was an extremely valuable reference on the arcane&n; * (and still mysterious) workings of the IN2000&squot;s fifo. It also&n; * is where I lifted in2000_biosparam(), the gist of the card&n; * detection scheme, and other bits of code. Many thanks to the&n; * talented and courageous people who wrote, contributed to, and&n; * maintained that driver (including Brad McLean, Shaun Savage,&n; * Bill Earnest, Larry Doolittle, Roger Sunshine, John Luckey,&n; * Matt Postiff, Peter Lu, zerucha@shell.portal.com, and Eric&n; * Youngdale). I should also mention the driver written by&n; * Hamish Macdonald for the (GASP!) Amiga A2091 card, included&n; * in the Linux-m68k distribution; it gave me a good initial&n; * understanding of the proper way to run a WD33c93 chip, and I&n; * ended up stealing lots of code from it.&n; *&n; * _This_ driver is (I feel) an improvement over the old one in&n; * several respects:&n; *    -  All problems relating to the data size of a SCSI request are&n; *          gone (as far as I know). The old driver couldn&squot;t handle&n; *          swapping to partitions because that involved 4k blocks, nor&n; *          could it deal with the st.c tape driver unmodified, because&n; *          that usually involved 4k - 32k blocks. The old driver never&n; *          quite got away from a morbid dependence on 2k block sizes -&n; *          which of course is the size of the card&squot;s fifo.&n; *&n; *    -  Target Disconnection/Reconnection is now supported. Any&n; *          system with more than one device active on the SCSI bus&n; *          will benefit from this. The driver defaults to what I&squot;m&n; *          calling &squot;adaptive disconnect&squot; - meaning that each command&n; *          is evaluated individually as to whether or not it should&n; *          be run with the option to disconnect/reselect (if the&n; *          device chooses), or as a &quot;SCSI-bus-hog&quot;.&n; *&n; *    -  Synchronous data transfers are now supported. Because there&n; *          are a few devices (and many improperly terminated systems)&n; *          that choke when doing sync, the default is sync DISABLED&n; *          for all devices. This faster protocol can (and should!)&n; *          be enabled on selected devices via the command-line.&n; *&n; *    -  Runtime operating parameters can now be specified through&n; *       either the LILO or the &squot;insmod&squot; command line. For LILO do:&n; *          &quot;in2000=blah,blah,blah&quot;&n; *       and with insmod go like:&n; *          &quot;insmod /usr/src/linux/modules/in2000.o setup_strings=blah,blah&quot;&n; *       The defaults should be good for most people. See the comment&n; *       for &squot;setup_strings&squot; below for more details.&n; *&n; *    -  The old driver relied exclusively on what the Western Digital&n; *          docs call &quot;Combination Level 2 Commands&quot;, which are a great&n; *          idea in that the CPU is relieved of a lot of interrupt&n; *          overhead. However, by accepting a certain (user-settable)&n; *          amount of additional interrupts, this driver achieves&n; *          better control over the SCSI bus, and data transfers are&n; *          almost as fast while being much easier to define, track,&n; *          and debug.&n; *&n; *    -  You can force detection of a card whose BIOS has been disabled.&n; *&n; *    -  Multiple IN2000 cards might almost be supported. I&squot;ve tried to&n; *       keep it in mind, but have no way to test...&n; *&n; *&n; * TODO:&n; *       tagged queuing. multiple cards.&n; *&n; *&n; * NOTE:&n; *       When using this or any other SCSI driver as a module, you&squot;ll&n; *       find that with the stock kernel, at most _two_ SCSI hard&n; *       drives will be linked into the device list (ie, usable).&n; *       If your IN2000 card has more than 2 disks on its bus, you&n; *       might want to change the define of &squot;SD_EXTRA_DEVS&squot; in the&n; *       &squot;hosts.h&squot; file from 2 to whatever is appropriate. It took&n; *       me a while to track down this surprisingly obscure and&n; *       undocumented little &quot;feature&quot;.&n; *&n; *&n; * People with bug reports, wish-lists, complaints, comments,&n; * or improvements are asked to pah-leeez email me (John Shifflett)&n; * at john@geolog.com or jshiffle@netcom.com! I&squot;m anxious to get&n; * this thing into as good a shape as possible, and I&squot;m positive&n; * there are lots of lurking bugs and &quot;Stupid Places&quot;.&n; *&n; */
+multiline_comment|/*&n; *    in2000.c -  Linux device driver for the&n; *                Always IN2000 ISA SCSI card.&n; *&n; * Copyright (c) 1996 John Shifflett, GeoLog Consulting&n; *    john@geolog.com&n; *    jshiffle@netcom.com&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * For the avoidance of doubt the &quot;preferred form&quot; of this code is one which&n; * is in an open non patent encumbered format. Where cryptographic key signing&n; * forms part of the process of creating an executable the information&n; * including keys needed to generate an equivalently functional executable&n; * are deemed to be part of the source code.&n; *&n; * Drew Eckhardt&squot;s excellent &squot;Generic NCR5380&squot; sources provided&n; * much of the inspiration and some of the code for this driver.&n; * The Linux IN2000 driver distributed in the Linux kernels through&n; * version 1.2.13 was an extremely valuable reference on the arcane&n; * (and still mysterious) workings of the IN2000&squot;s fifo. It also&n; * is where I lifted in2000_biosparam(), the gist of the card&n; * detection scheme, and other bits of code. Many thanks to the&n; * talented and courageous people who wrote, contributed to, and&n; * maintained that driver (including Brad McLean, Shaun Savage,&n; * Bill Earnest, Larry Doolittle, Roger Sunshine, John Luckey,&n; * Matt Postiff, Peter Lu, zerucha@shell.portal.com, and Eric&n; * Youngdale). I should also mention the driver written by&n; * Hamish Macdonald for the (GASP!) Amiga A2091 card, included&n; * in the Linux-m68k distribution; it gave me a good initial&n; * understanding of the proper way to run a WD33c93 chip, and I&n; * ended up stealing lots of code from it.&n; *&n; * _This_ driver is (I feel) an improvement over the old one in&n; * several respects:&n; *    -  All problems relating to the data size of a SCSI request are&n; *          gone (as far as I know). The old driver couldn&squot;t handle&n; *          swapping to partitions because that involved 4k blocks, nor&n; *          could it deal with the st.c tape driver unmodified, because&n; *          that usually involved 4k - 32k blocks. The old driver never&n; *          quite got away from a morbid dependence on 2k block sizes -&n; *          which of course is the size of the card&squot;s fifo.&n; *&n; *    -  Target Disconnection/Reconnection is now supported. Any&n; *          system with more than one device active on the SCSI bus&n; *          will benefit from this. The driver defaults to what I&squot;m&n; *          calling &squot;adaptive disconnect&squot; - meaning that each command&n; *          is evaluated individually as to whether or not it should&n; *          be run with the option to disconnect/reselect (if the&n; *          device chooses), or as a &quot;SCSI-bus-hog&quot;.&n; *&n; *    -  Synchronous data transfers are now supported. Because there&n; *          are a few devices (and many improperly terminated systems)&n; *          that choke when doing sync, the default is sync DISABLED&n; *          for all devices. This faster protocol can (and should!)&n; *          be enabled on selected devices via the command-line.&n; *&n; *    -  Runtime operating parameters can now be specified through&n; *       either the LILO or the &squot;insmod&squot; command line. For LILO do:&n; *          &quot;in2000=blah,blah,blah&quot;&n; *       and with insmod go like:&n; *          &quot;insmod /usr/src/linux/modules/in2000.o setup_strings=blah,blah&quot;&n; *       The defaults should be good for most people. See the comment&n; *       for &squot;setup_strings&squot; below for more details.&n; *&n; *    -  The old driver relied exclusively on what the Western Digital&n; *          docs call &quot;Combination Level 2 Commands&quot;, which are a great&n; *          idea in that the CPU is relieved of a lot of interrupt&n; *          overhead. However, by accepting a certain (user-settable)&n; *          amount of additional interrupts, this driver achieves&n; *          better control over the SCSI bus, and data transfers are&n; *          almost as fast while being much easier to define, track,&n; *          and debug.&n; *&n; *    -  You can force detection of a card whose BIOS has been disabled.&n; *&n; *    -  Multiple IN2000 cards might almost be supported. I&squot;ve tried to&n; *       keep it in mind, but have no way to test...&n; *&n; *&n; * TODO:&n; *       tagged queuing. multiple cards.&n; *&n; *&n; * NOTE:&n; *       When using this or any other SCSI driver as a module, you&squot;ll&n; *       find that with the stock kernel, at most _two_ SCSI hard&n; *       drives will be linked into the device list (ie, usable).&n; *       If your IN2000 card has more than 2 disks on its bus, you&n; *       might want to change the define of &squot;SD_EXTRA_DEVS&squot; in the&n; *       &squot;hosts.h&squot; file from 2 to whatever is appropriate. It took&n; *       me a while to track down this surprisingly obscure and&n; *       undocumented little &quot;feature&quot;.&n; *&n; *&n; * People with bug reports, wish-lists, complaints, comments,&n; * or improvements are asked to pah-leeez email me (John Shifflett)&n; * at john@geolog.com or jshiffle@netcom.com! I&squot;m anxious to get&n; * this thing into as good a shape as possible, and I&squot;m positive&n; * there are lots of lurking bugs and &quot;Stupid Places&quot;.&n; *&n; * Updated for Linux 2.5 by Alan Cox &lt;alan@redhat.com&gt;&n; *&t;- Using new_eh handler&n; *&t;- Hopefully got all the locking right again&n; *&t;See &quot;FIXME&quot; notes for items that could do with more work&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -13,9 +13,9 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 DECL|macro|IN2000_VERSION
-mdefine_line|#define IN2000_VERSION    &quot;1.33&quot;
+mdefine_line|#define IN2000_VERSION    &quot;1.33-2.5&quot;
 DECL|macro|IN2000_DATE
-mdefine_line|#define IN2000_DATE       &quot;26/August/1998&quot;
+mdefine_line|#define IN2000_DATE       &quot;2002/11/03&quot;
 macro_line|#include &quot;in2000.h&quot;
 multiline_comment|/*&n; * &squot;setup_strings&squot; is a single string used to pass operating parameters and&n; * settings from the kernel/module command-line to the driver. &squot;setup_args[]&squot;&n; * is an array of strings that define the compile-time default values for&n; * these settings. If Linux boots with a LILO or insmod command-line, those&n; * settings are combined with &squot;setup_args[]&squot;. Note that LILO command-lines&n; * are prefixed with &quot;in2000=&quot; while insmod uses a &quot;setup_strings=&quot; prefix.&n; * The driver recognizes the following keywords (lower case required) and&n; * arguments:&n; *&n; * -  ioport:addr    -Where addr is IO address of a (usually ROM-less) card.&n; * -  noreset        -No optional args. Prevents SCSI bus reset at boot time.&n; * -  nosync:x       -x is a bitmask where the 1st 7 bits correspond with&n; *                    the 7 possible SCSI devices (bit 0 for device #0, etc).&n; *                    Set a bit to PREVENT sync negotiation on that device.&n; *                    The driver default is sync DISABLED on all devices.&n; * -  period:ns      -ns is the minimum # of nanoseconds in a SCSI data transfer&n; *                    period. Default is 500; acceptable values are 250 - 1000.&n; * -  disconnect:x   -x = 0 to never allow disconnects, 2 to always allow them.&n; *                    x = 1 does &squot;adaptive&squot; disconnects, which is the default&n; *                    and generally the best choice.&n; * -  debug:x        -If &squot;DEBUGGING_ON&squot; is defined, x is a bitmask that causes&n; *                    various types of debug output to printed - see the DB_xxx&n; *                    defines in in2000.h&n; * -  proc:x         -If &squot;PROC_INTERFACE&squot; is defined, x is a bitmask that&n; *                    determines how the /proc interface works and what it&n; *                    does - see the PR_xxx defines in in2000.h&n; *&n; * Syntax Notes:&n; * -  Numeric arguments can be decimal or the &squot;0x&squot; form of hex notation. There&n; *    _must_ be a colon between a keyword and its numeric argument, with no&n; *    spaces.&n; * -  Keywords are separated by commas, no spaces, in the standard kernel&n; *    command-line manner.&n; * -  A keyword in the &squot;nth&squot; comma-separated command-line member will overwrite&n; *    the &squot;nth&squot; element of setup_args[]. A blank command-line member (in&n; *    other words, a comma with no preceding keyword) will _not_ overwrite&n; *    the corresponding setup_args[] element.&n; *&n; * A few LILO examples (for insmod, use &squot;setup_strings&squot; instead of &squot;in2000&squot;):&n; * -  in2000=ioport:0x220,noreset&n; * -  in2000=period:250,disconnect:2,nosync:0x03&n; * -  in2000=debug:0x1e&n; * -  in2000=proc:3&n; */
 multiline_comment|/* Normally, no defaults are specified... */
@@ -66,15 +66,6 @@ l_string|&quot;s&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|instance_list
-r_static
-r_struct
-id|Scsi_Host
-op_star
-id|instance_list
-op_assign
-l_int|0
-suffix:semicolon
 DECL|function|read_3393
 r_static
 r_inline
@@ -702,6 +693,7 @@ DECL|function|in2000_queuecommand
 r_static
 r_int
 id|in2000_queuecommand
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -731,10 +723,6 @@ suffix:semicolon
 id|Scsi_Cmnd
 op_star
 id|tmp
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 id|instance
 op_assign
@@ -857,15 +845,7 @@ op_assign
 id|ILLEGAL_STATUS_BYTE
 suffix:semicolon
 multiline_comment|/* We need to disable interrupts before messing with the input&n; * queue and calling in2000_execute().&n; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|instance-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/*&n;    * Add the cmd to the end of &squot;input_Q&squot;. Note that REQUEST_SENSE&n;    * commands are added to the head of the queue so that the desired&n;    * sense data is not lost before REQUEST_SENSE executes.&n;    */
+multiline_comment|/*&n;&t; * Add the cmd to the end of &squot;input_Q&squot;. Note that REQUEST_SENSE&n;&t; * commands are added to the head of the queue so that the desired&n;&t; * sense data is not lost before REQUEST_SENSE executes.&n;&t; */
 r_if
 c_cond
 (paren
@@ -951,14 +931,6 @@ comma
 id|cmd-&gt;pid
 )paren
 )paren
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|instance-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -968,6 +940,7 @@ DECL|function|in2000_execute
 r_static
 r_void
 id|in2000_execute
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -1048,7 +1021,7 @@ l_string|&quot;)EX-0 &quot;
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * Search through the input_Q for a command destined&n;     * for an idle target/lun.&n;     */
+multiline_comment|/*&n;&t; * Search through the input_Q for a command destined&n;&t; * for an idle target/lun.&n;&t; */
 id|cmd
 op_assign
 (paren
@@ -1398,7 +1371,7 @@ id|SS_UNSET
 )paren
 )paren
 (brace
-multiline_comment|/*&n;          * Do a &squot;Select-With-ATN&squot; command. This will end with&n;          * one of the following interrupts:&n;          *    CSR_RESEL_AM:  failure - can try again later.&n;          *    CSR_TIMEOUT:   failure - give up.&n;          *    CSR_SELECT:    success - proceed.&n;          */
+multiline_comment|/*&n;&t;&t; * Do a &squot;Select-With-ATN&squot; command. This will end with&n;&t;&t; * one of the following interrupts:&n;&t;&t; *    CSR_RESEL_AM:  failure - can try again later.&n;&t;&t; *    CSR_TIMEOUT:   failure - give up.&n;&t;&t; *    CSR_SELECT:    success - proceed.&n;&t;&t; */
 id|hostdata-&gt;selecting
 op_assign
 id|cmd
@@ -1466,7 +1439,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;          * Do a &squot;Select-With-ATN-Xfer&squot; command. This will end with&n;          * one of the following interrupts:&n;          *    CSR_RESEL_AM:  failure - can try again later.&n;          *    CSR_TIMEOUT:   failure - give up.&n;          *    anything else: success - proceed.&n;          */
+multiline_comment|/*&n;&t;&t; * Do a &squot;Select-With-ATN-Xfer&squot; command. This will end with&n;&t;&t; * one of the following interrupts:&n;&t;&t; *    CSR_RESEL_AM:  failure - can try again later.&n;&t;&t; *    CSR_TIMEOUT:   failure - give up.&n;&t;&t; *    anything else: success - proceed.&n;&t;&t; */
 id|hostdata-&gt;connected
 op_assign
 id|cmd
@@ -1481,7 +1454,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* copy command_descriptor_block into WD chip&n;    * (take advantage of auto-incrementing)&n;    */
+multiline_comment|/* copy command_descriptor_block into WD chip&n;&t;&t; * (take advantage of auto-incrementing)&n;&t;&t; */
 id|write1_io
 c_func
 (paren
@@ -1515,7 +1488,7 @@ comma
 id|IO_WD_DATA
 )paren
 suffix:semicolon
-multiline_comment|/* The wd33c93 only knows about Group 0, 1, and 5 commands when&n;    * it&squot;s doing a &squot;select-and-transfer&squot;. To be safe, we write the&n;    * size of the CDB into the OWN_ID register for every case. This&n;    * way there won&squot;t be problems with vendor-unique, audio, etc.&n;    */
+multiline_comment|/* The wd33c93 only knows about Group 0, 1, and 5 commands when&n;&t;&t; * it&squot;s doing a &squot;select-and-transfer&squot;. To be safe, we write the&n;&t;&t; * size of the CDB into the OWN_ID register for every case. This&n;&t;&t; * way there won&squot;t be problems with vendor-unique, audio, etc.&n;&t;&t; */
 id|write_3393
 c_func
 (paren
@@ -1526,7 +1499,7 @@ comma
 id|cmd-&gt;cmd_len
 )paren
 suffix:semicolon
-multiline_comment|/* When doing a non-disconnect command, we can save ourselves a DATA&n;    * phase interrupt later by setting everything up now. With writes we&n;    * need to pre-fill the fifo; if there&squot;s room for the 32 flush bytes,&n;    * put them in there too - that&squot;ll avoid a fifo interrupt. Reads are&n;    * somewhat simpler.&n;    * KLUDGE NOTE: It seems that you can&squot;t completely fill the fifo here:&n;    * This results in the IO_FIFO_COUNT register rolling over to zero,&n;    * and apparently the gate array logic sees this as empty, not full,&n;    * so the 3393 chip is never signalled to start reading from the&n;    * fifo. Or maybe it&squot;s seen as a permanent fifo interrupt condition.&n;    * Regardless, we fix this by temporarily pretending that the fifo&n;    * is 16 bytes smaller. (I see now that the old driver has a comment&n;    * about &quot;don&squot;t fill completely&quot; in an analogous place - must be the&n;    * same deal.) This results in CDROM, swap partitions, and tape drives&n;    * needing an extra interrupt per write command - I think we can live&n;    * with that!&n;    */
+multiline_comment|/* When doing a non-disconnect command, we can save ourselves a DATA&n;&t;&t; * phase interrupt later by setting everything up now. With writes we&n;&t;&t; * need to pre-fill the fifo; if there&squot;s room for the 32 flush bytes,&n;&t;&t; * put them in there too - that&squot;ll avoid a fifo interrupt. Reads are&n;&t;&t; * somewhat simpler.&n;&t;&t; * KLUDGE NOTE: It seems that you can&squot;t completely fill the fifo here:&n;&t;&t; * This results in the IO_FIFO_COUNT register rolling over to zero,&n;&t;&t; * and apparently the gate array logic sees this as empty, not full,&n;&t;&t; * so the 3393 chip is never signalled to start reading from the&n;&t;&t; * fifo. Or maybe it&squot;s seen as a permanent fifo interrupt condition.&n;&t;&t; * Regardless, we fix this by temporarily pretending that the fifo&n;&t;&t; * is 16 bytes smaller. (I see now that the old driver has a comment&n;&t;&t; * about &quot;don&squot;t fill completely&quot; in an analogous place - must be the&n;&t;&t; * same deal.) This results in CDROM, swap partitions, and tape drives&n;&t;&t; * needing an extra interrupt per write command - I think we can live&n;&t;&t; * with that!&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1747,7 +1720,7 @@ id|WD_CMD_SEL_ATN_XFER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    * Since the SCSI bus can handle only 1 connection at a time,&n;    * we get out of here now. If the selection fails, or when&n;    * the command disconnects, we&squot;ll come back to this routine&n;    * to search the input_Q again...&n;    */
+multiline_comment|/*&n;&t; * Since the SCSI bus can handle only 1 connection at a time,&n;&t; * we get out of here now. If the selection fails, or when&n;&t; * the command disconnects, we&squot;ll come back to this routine&n;&t; * to search the input_Q again...&n;&t; */
 id|DB
 c_func
 (paren
@@ -1938,7 +1911,7 @@ id|ASR_INT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Note: we are returning with the interrupt UN-cleared.&n;   * Since (presumably) an entire I/O operation has&n;   * completed, the bus phase is probably different, and&n;   * the interrupt routine will discover this when it&n;   * responds to the uncleared int.&n;   */
+multiline_comment|/* Note: we are returning with the interrupt UN-cleared.&n;&t; * Since (presumably) an entire I/O operation has&n;&t; * completed, the bus phase is probably different, and&n;&t; * the interrupt routine will discover this when it&n;&t; * responds to the uncleared int.&n;&t; */
 )brace
 DECL|function|transfer_bytes
 r_static
@@ -2260,6 +2233,7 @@ DECL|function|in2000_intr
 r_static
 r_void
 id|in2000_intr
+c_func
 (paren
 r_int
 id|irqnum
@@ -4883,7 +4857,7 @@ id|id
 op_and_assign
 id|SRCID_MASK
 suffix:semicolon
-multiline_comment|/* and extract the lun from the ID message. (Note that we don&squot;t&n;    * bother to check for a valid message here - I guess this is&n;    * not the right way to go, but....)&n;    */
+multiline_comment|/* and extract the lun from the ID message. (Note that we don&squot;t&n;&t;&t; * bother to check for a valid message here - I guess this is&n;&t;&t; * not the right way to go, but....)&n;&t;&t; */
 id|lun
 op_assign
 id|read_3393
@@ -5002,7 +4976,7 @@ id|hostdata-&gt;connected
 op_assign
 id|cmd
 suffix:semicolon
-multiline_comment|/* We don&squot;t need to worry about &squot;initialize_SCp()&squot; or &squot;hostdata-&gt;busy[]&squot;&n;    * because these things are preserved over a disconnect.&n;    * But we DO need to fix the DPD bit so it&squot;s correct for this command.&n;    */
+multiline_comment|/* We don&squot;t need to worry about &squot;initialize_SCp()&squot; or &squot;hostdata-&gt;busy[]&squot;&n;&t;&t; * because these things are preserved over a disconnect.&n;&t;&t; * But we DO need to fix the DPD bit so it&squot;s correct for this command.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5422,10 +5396,6 @@ op_star
 id|cmd
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|Scsi_Host
 op_star
@@ -5459,14 +5429,6 @@ id|KERN_WARNING
 l_string|&quot;scsi%d: Reset. &quot;
 comma
 id|instance-&gt;host_no
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|instance-&gt;host_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* do scsi-reset here */
@@ -5562,14 +5524,6 @@ id|DID_RESET
 op_lshift
 l_int|16
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|instance-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|SUCCESS
 suffix:semicolon
@@ -5608,6 +5562,7 @@ DECL|function|in2000_abort
 r_static
 r_int
 id|in2000_abort
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -5630,10 +5585,6 @@ id|tmp
 comma
 op_star
 id|prev
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 id|uchar
 id|sr
@@ -5696,14 +5647,6 @@ id|IO_FIFO_COUNT
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Case 1 : If the command hasn&squot;t been issued yet, we simply remove it&n; *     from the inout_Q.&n; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|instance-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|tmp
 op_assign
 (paren
@@ -5766,14 +5709,6 @@ id|scsi_done
 c_func
 (paren
 id|cmd
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|instance-&gt;host_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -5921,7 +5856,7 @@ comma
 id|timeout
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    * Abort command processed.&n;    * Still connected.&n;    * We must disconnect.&n;    */
+multiline_comment|/*&n;&t;&t; * Abort command processed.&n;&t;&t; * Still connected.&n;&t;&t; * We must disconnect.&n;&t;&t; */
 id|printk
 c_func
 (paren
@@ -6023,12 +5958,13 @@ id|cmd
 )paren
 suffix:semicolon
 id|in2000_execute
+c_func
 (paren
 id|instance
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_SUCCESS
+id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Case 3: If the command is currently disconnected from the bus,&n; * we&squot;re not going to expend much effort here: Let&squot;s just return&n; * an ABORT_SNOOZE and hope for the best...&n; */
@@ -6061,14 +5997,6 @@ op_eq
 id|tmp
 )paren
 (brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|instance-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -6084,16 +6012,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Case 4 : If we reached this point, the command was not found in any of&n; *     the queues.&n; *&n; * We probably reached this point because of an unlikely race condition&n; * between the command completing successfully and the abortion code,&n; * so we won&squot;t panic, but we will notify the user in case something really&n; * broke.&n; */
 id|in2000_execute
-(paren
-id|instance
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
 c_func
 (paren
-id|instance-&gt;host_lock
-comma
-id|flags
+id|instance
 )paren
 suffix:semicolon
 id|printk
@@ -6143,6 +6064,7 @@ r_static
 r_void
 id|__init
 id|in2000_setup
+c_func
 (paren
 r_char
 op_star
@@ -6871,22 +6793,10 @@ id|instance
 op_eq
 l_int|NULL
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 id|detect_count
 op_increment
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|instance_list
-)paren
-id|instance_list
-op_assign
-id|instance
 suffix:semicolon
 id|hostdata
 op_assign
@@ -7367,7 +7277,7 @@ op_assign
 id|val
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* FIXME: not strictly needed I think but the called code expects&n;         to be locked */
+multiline_comment|/* FIXME: not strictly needed I think but the called code expects&n;&t;&t;   to be locked */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -8863,11 +8773,11 @@ c_func
 id|bp
 )paren
 suffix:semicolon
-macro_line|#else    /* PROC_INTERFACE */
+macro_line|#else&t;&t;&t;&t;/* PROC_INTERFACE */
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif   /* PROC_INTERFACE */
+macro_line|#endif&t;&t;&t;&t;/* PROC_INTERFACE */
 )brace
 id|MODULE_LICENSE
 c_func
