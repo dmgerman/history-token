@@ -1032,6 +1032,13 @@ id|next
 op_assign
 id|f-&gt;next
 suffix:semicolon
+multiline_comment|/* Don&squot;t translate NULL pointer for last entry */
+r_if
+c_cond
+(paren
+id|f-&gt;next
+)paren
+(brace
 id|f-&gt;next
 op_assign
 (paren
@@ -1048,6 +1055,12 @@ r_int
 )paren
 id|f-&gt;next
 )paren
+suffix:semicolon
+)brace
+r_else
+id|f-&gt;next
+op_assign
+l_int|0LL
 suffix:semicolon
 multiline_comment|/* make num_blocks into the version/length field */
 id|f-&gt;num_blocks
