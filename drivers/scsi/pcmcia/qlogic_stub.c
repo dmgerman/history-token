@@ -1159,7 +1159,7 @@ op_amp
 id|link-&gt;irq
 )paren
 suffix:semicolon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|info-&gt;host
