@@ -460,6 +460,12 @@ id|u8
 id|power_budget
 suffix:semicolon
 multiline_comment|/* in 2mA units; or zero */
+DECL|member|quiescing
+r_int
+id|quiescing
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|has_indicators
 r_int
 id|has_indicators

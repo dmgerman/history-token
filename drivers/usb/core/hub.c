@@ -26,7 +26,7 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;hcd.h&quot;
 macro_line|#include &quot;hub.h&quot;
-multiline_comment|/* Protect all struct usb_device state members */
+multiline_comment|/* Protect struct usb_device state and children members */
 DECL|variable|device_state_lock
 r_static
 id|spinlock_t
@@ -536,6 +536,8 @@ c_cond
 id|hdev-&gt;state
 op_ne
 id|USB_STATE_CONFIGURED
+op_logical_or
+id|hub-&gt;quiescing
 )paren
 r_return
 suffix:semicolon
@@ -1077,6 +1079,13 @@ id|hub_event_lock
 suffix:semicolon
 id|resubmit
 suffix:colon
+r_if
+c_cond
+(paren
+id|hub-&gt;quiescing
+)paren
+r_return
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2658,6 +2667,120 @@ r_static
 r_int
 id|highspeed_hubs
 suffix:semicolon
+DECL|function|hub_quiesce
+r_static
+r_void
+id|hub_quiesce
+c_func
+(paren
+r_struct
+id|usb_hub
+op_star
+id|hub
+)paren
+(brace
+multiline_comment|/* stop khubd and related activity */
+id|hub-&gt;quiescing
+op_assign
+l_int|1
+suffix:semicolon
+id|usb_kill_urb
+c_func
+(paren
+id|hub-&gt;urb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hub-&gt;has_indicators
+)paren
+id|cancel_delayed_work
+c_func
+(paren
+op_amp
+id|hub-&gt;leds
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hub-&gt;has_indicators
+op_logical_or
+id|hub-&gt;tt.hub
+)paren
+id|flush_scheduled_work
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#ifdef&t;CONFIG_USB_SUSPEND
+DECL|function|hub_reactivate
+r_static
+r_void
+id|hub_reactivate
+c_func
+(paren
+r_struct
+id|usb_hub
+op_star
+id|hub
+)paren
+(brace
+r_int
+id|status
+suffix:semicolon
+id|hub-&gt;quiescing
+op_assign
+l_int|0
+suffix:semicolon
+id|status
+op_assign
+id|usb_submit_urb
+c_func
+(paren
+id|hub-&gt;urb
+comma
+id|GFP_NOIO
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+OL
+l_int|0
+)paren
+id|dev_err
+c_func
+(paren
+op_amp
+id|hub-&gt;intf-&gt;dev
+comma
+l_string|&quot;reactivate --&gt; %d&bslash;n&quot;
+comma
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hub-&gt;has_indicators
+op_logical_and
+id|blinkenlights
+)paren
+id|schedule_delayed_work
+c_func
+(paren
+op_amp
+id|hub-&gt;leds
+comma
+id|LED_CYCLE_PERIOD
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|hub_disconnect
 r_static
 r_void
@@ -2714,16 +2837,10 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hub-&gt;urb
-)paren
-(brace
-id|usb_kill_urb
+id|hub_quiesce
 c_func
 (paren
-id|hub-&gt;urb
+id|hub
 )paren
 suffix:semicolon
 id|usb_free_urb
@@ -2736,7 +2853,6 @@ id|hub-&gt;urb
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 id|spin_lock_irq
 c_func
 (paren
@@ -2756,29 +2872,6 @@ c_func
 (paren
 op_amp
 id|hub_event_lock
-)paren
-suffix:semicolon
-multiline_comment|/* assuming we used keventd, it must quiesce too */
-r_if
-c_cond
-(paren
-id|hub-&gt;has_indicators
-)paren
-id|cancel_delayed_work
-(paren
-op_amp
-id|hub-&gt;leds
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hub-&gt;has_indicators
-op_logical_or
-id|hub-&gt;tt.hub
-)paren
-id|flush_scheduled_work
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -3267,6 +3360,7 @@ id|ENOSYS
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* caller has locked the hub */
 DECL|function|hub_reset
 r_static
 r_int
@@ -3383,6 +3477,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* caller has locked the hub */
 multiline_comment|/* FIXME!  This routine should be subsumed into hub_reset */
 DECL|function|hub_start_disconnect
 r_static
@@ -3517,7 +3612,169 @@ op_assign
 id|USB_STATE_NOTATTACHED
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_set_device_state - change a device&squot;s current state (usbcore-internal)&n; * @udev: pointer to device whose state should be changed&n; * @new_state: new state value to be stored&n; *&n; * udev-&gt;state is _not_ protected by the udev-&gt;serialize semaphore.  This&n; * is so that devices can be marked as disconnected as soon as possible,&n; * without having to wait for the semaphore to be released.  Instead,&n; * changes to the state must be protected by the device_state_lock spinlock.&n; *&n; * Once a device has been added to the device tree, all changes to its state&n; * should be made using this routine.  The state should _not_ be set directly.&n; *&n; * If udev-&gt;state is already USB_STATE_NOTATTACHED then no change is made.&n; * Otherwise udev-&gt;state is set to new_state, and if new_state is&n; * USB_STATE_NOTATTACHED then all of udev&squot;s descendant&squot;s states are also set&n; * to USB_STATE_NOTATTACHED.&n; */
+multiline_comment|/* grab device/port lock, returning index of that port (zero based).&n; * protects the upstream link used by this device from concurrent&n; * tree operations like suspend, resume, reset, and disconnect, which&n; * apply to everything downstream of a given port.&n; */
+DECL|function|locktree
+r_static
+r_int
+id|locktree
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
+)paren
+(brace
+r_int
+id|t
+suffix:semicolon
+r_struct
+id|usb_device
+op_star
+id|hdev
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|udev
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+multiline_comment|/* root hub is always the first lock in the series */
+id|hdev
+op_assign
+id|udev-&gt;parent
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hdev
+)paren
+(brace
+id|down
+c_func
+(paren
+op_amp
+id|udev-&gt;serialize
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* on the path from root to us, lock everything from&n;&t; * top down, dropping parent locks when not needed&n;&t; *&n;&t; * NOTE: if disconnect were to ignore the locking, we&squot;d need&n;&t; * to get extra refcounts to everything since hdev-&gt;children&n;&t; * and udev-&gt;parent could be invalidated while we work...&n;&t; */
+id|t
+op_assign
+id|locktree
+c_func
+(paren
+id|hdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t
+OL
+l_int|0
+)paren
+r_return
+id|t
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|device_state_lock
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|t
+op_assign
+l_int|0
+suffix:semicolon
+id|t
+OL
+id|hdev-&gt;maxchild
+suffix:semicolon
+id|t
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|hdev-&gt;children
+(braket
+id|t
+)braket
+op_eq
+id|udev
+)paren
+(brace
+multiline_comment|/* everything is fail-fast once disconnect&n;&t;&t;&t; * processing starts&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|udev-&gt;state
+op_eq
+id|USB_STATE_NOTATTACHED
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* when everyone grabs locks top-&gt;bottom,&n;&t;&t;&t; * non-overlapping work may be concurrent&n;&t;&t;&t; */
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|device_state_lock
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|udev-&gt;serialize
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|hdev-&gt;serialize
+)paren
+suffix:semicolon
+r_return
+id|t
+suffix:semicolon
+)brace
+)brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|device_state_lock
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|hdev-&gt;serialize
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_set_device_state - change a device&squot;s current state (usbcore-internal)&n; * @udev: pointer to device whose state should be changed&n; * @new_state: new state value to be stored&n; *&n; * udev-&gt;state is _not_ protected by the device lock.  This&n; * is so that devices can be marked as disconnected as soon as possible,&n; * without having to wait for the semaphore to be released.  Instead,&n; * changes to the state must be protected by the device_state_lock spinlock.&n; *&n; * Once a device has been added to the device tree, all changes to its state&n; * should be made using this routine.  The state should _not_ be set directly.&n; *&n; * If udev-&gt;state is already USB_STATE_NOTATTACHED then no change is made.&n; * Otherwise udev-&gt;state is set to new_state, and if new_state is&n; * USB_STATE_NOTATTACHED then all of udev&squot;s descendant&squot;s states are also set&n; * to USB_STATE_NOTATTACHED.&n; */
 DECL|function|usb_set_device_state
 r_void
 id|usb_set_device_state
@@ -3711,7 +3968,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * usb_disconnect - disconnect a device (usbcore-internal)&n; * @pdev: pointer to device being disconnected&n; * Context: !in_interrupt ()&n; *&n; * Something got disconnected. Get rid of it, and all of its children.&n; * If *pdev is a normal device then the parent hub should be locked.&n; * If *pdev is a root hub then this routine will acquire the&n; * usb_bus_list_lock on behalf of the caller.&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; */
+multiline_comment|/**&n; * usb_disconnect - disconnect a device (usbcore-internal)&n; * @pdev: pointer to device being disconnected, into a locked hub&n; * Context: !in_interrupt ()&n; *&n; * Something got disconnected. Get rid of it, and all of its children.&n; * If *pdev is a normal device then the parent hub should be locked.&n; * If *pdev is a root hub then this routine will acquire the&n; * usb_bus_list_lock on behalf of the caller.&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; */
 DECL|function|usb_disconnect
 r_void
 id|usb_disconnect
@@ -3752,7 +4009,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* mark the device as inactive, so any further urb submissions for&n;&t; * this device will fail.&n;&t; */
+multiline_comment|/* mark the device as inactive, so any further urb submissions for&n;&t; * this device (and any of its children) will fail immediately.&n;&t; * this quiesces everyting except pending urbs.&n;&t; */
 id|usb_set_device_state
 c_func
 (paren
@@ -3827,7 +4084,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* deallocate hcd/hardware state ... nuking all pending urbs and&n;&t; * cleaning up all state associated with the current configuration&n;&t; */
+multiline_comment|/* deallocate hcd/hardware state ... nuking all pending urbs and&n;&t; * cleaning up all state associated with the current configuration&n;&t; * so that the hardware is now fully quiesced.&n;&t; */
 id|usb_disable_device
 c_func
 (paren
@@ -3863,7 +4120,7 @@ c_func
 id|udev
 )paren
 suffix:semicolon
-multiline_comment|/* Avoid races with recursively_mark_NOTATTACHED() */
+multiline_comment|/* Avoid races with recursively_mark_NOTATTACHED() and locktree() */
 id|spin_lock_irq
 c_func
 (paren
@@ -4854,6 +5111,7 @@ comma
 id|USB_PORT_FEAT_C_RESET
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME need disconnect() for NOTATTACHED device */
 id|usb_set_device_state
 c_func
 (paren
@@ -4928,6 +5186,8 @@ id|hdev-&gt;children
 id|port
 )braket
 )paren
+(brace
+multiline_comment|/* FIXME need disconnect() for NOTATTACHED device */
 id|usb_set_device_state
 c_func
 (paren
@@ -4939,6 +5199,7 @@ comma
 id|USB_STATE_NOTATTACHED
 )paren
 suffix:semicolon
+)brace
 id|ret
 op_assign
 id|clear_port_feature
@@ -7893,7 +8154,7 @@ r_return
 id|remaining
 suffix:semicolon
 )brace
-multiline_comment|/* Handle physical or logical connection change events.&n; * This routine is called when:&n; * &t;a port connection-change occurs;&n; *&t;a port enable-change occurs (often caused by EMI);&n; *&t;usb_reset_device() encounters changed descriptors (as from&n; *&t;&t;a firmware download)&n; */
+multiline_comment|/* Handle physical or logical connection change events.&n; * This routine is called when:&n; * &t;a port connection-change occurs;&n; *&t;a port enable-change occurs (often caused by EMI);&n; *&t;usb_reset_device() encounters changed descriptors (as from&n; *&t;&t;a firmware download)&n; * caller already locked the hub&n; */
 DECL|function|hub_port_connect_change
 r_static
 r_void
@@ -8697,12 +8958,18 @@ id|hub_event_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Lock the device, then check to see if we were&n;&t;&t; * disconnected while waiting for the lock to succeed. */
-id|down
+r_if
+c_cond
+(paren
+id|locktree
 c_func
 (paren
-op_amp
-id|hdev-&gt;serialize
+id|hdev
 )paren
+OL
+l_int|0
+)paren
+r_break
 suffix:semicolon
 r_if
 c_cond
@@ -9760,7 +10027,7 @@ op_ne
 id|udev-&gt;descriptor.bNumConfigurations
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_reset_devce - perform a USB port reset to reinitialize a device&n; * @udev: device to reset (not in SUSPENDED or NOTATTACHED state)&n; *&n; * WARNING - don&squot;t reset any device unless drivers for all of its&n; * interfaces are expecting that reset!  Maybe some driver-&gt;reset()&n; * method should eventually help ensure sufficient cooperation.&n; *&n; * Do a port reset, reassign the device&squot;s address, and establish its&n; * former operating configuration.  If the reset fails, or the device&squot;s&n; * descriptors change from their values before the reset, or the original&n; * configuration and altsettings cannot be restored, a flag will be set&n; * telling khubd to pretend the device has been disconnected and then&n; * re-connected.  All drivers will be unbound, and the device will be&n; * re-enumerated and probed all over again.&n; *&n; * Returns 0 if the reset succeeded, -ENODEV if the device has been&n; * flagged for logical disconnection, or some other negative error code&n; * if the reset wasn&squot;t even attempted.&n; *&n; * The caller must own the device lock.  For example, it&squot;s safe to use&n; * this from a driver probe() routine after downloading new firmware.&n; */
+multiline_comment|/**&n; * usb_reset_device - perform a USB port reset to reinitialize a device&n; * @udev: device to reset (not in SUSPENDED or NOTATTACHED state)&n; *&n; * WARNING - don&squot;t reset any device unless drivers for all of its&n; * interfaces are expecting that reset!  Maybe some driver-&gt;reset()&n; * method should eventually help ensure sufficient cooperation.&n; *&n; * Do a port reset, reassign the device&squot;s address, and establish its&n; * former operating configuration.  If the reset fails, or the device&squot;s&n; * descriptors change from their values before the reset, or the original&n; * configuration and altsettings cannot be restored, a flag will be set&n; * telling khubd to pretend the device has been disconnected and then&n; * re-connected.  All drivers will be unbound, and the device will be&n; * re-enumerated and probed all over again.&n; *&n; * Returns 0 if the reset succeeded, -ENODEV if the device has been&n; * flagged for logical disconnection, or some other negative error code&n; * if the reset wasn&squot;t even attempted.&n; *&n; * The caller must own the device lock.  For example, it&squot;s safe to use&n; * this from a driver probe() routine after downloading new firmware.&n; */
 DECL|function|__usb_reset_device
 r_int
 id|__usb_reset_device
@@ -10074,7 +10341,7 @@ id|usb_interface_descriptor
 op_star
 id|desc
 suffix:semicolon
-multiline_comment|/* set_interface resets host side toggle and halt status even&n;&t;&t; * for altsetting zero.  the interface may have no driver.&n;&t;&t; */
+multiline_comment|/* set_interface resets host side toggle even&n;&t;&t; * for altsetting zero.  the interface may have no driver.&n;&t;&t; */
 id|desc
 op_assign
 op_amp
