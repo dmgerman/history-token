@@ -906,6 +906,7 @@ l_int|0
 r_goto
 id|out_free
 suffix:semicolon
+macro_line|#error &quot;Fix security hole before enabling me&quot;
 id|retval
 op_assign
 id|get_unused_fd
