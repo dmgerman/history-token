@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * RNDIS MSG parser&n; * &n; * Version:     $Id: rndis.c,v 1.19 2004/03/25 21:33:46 robert Exp $&n; * &n; * Authors:&t;Benedikt Spranger, Pengutronix&n; * &t;&t;Robert Schwebel, Pengutronix&n; * &n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              version 2, as published by the Free Software Foundation. &n; * &n; *&t;&t;This software was originally developed in conformance with&n; *&t;&t;Microsoft&squot;s Remote NDIS Specification License Agreement.&n; *              &n; * 03/12/2004 Kai-Uwe Bloem &lt;linux-development@auerswald.de&gt;&n; *&t;&t;Fixed message length bug in init_response&n; * &n; * 03/25/2004 Kai-Uwe Bloem &lt;linux-development@auerswald.de&gt;&n; * &t;&t;Fixed rndis_rm_hdr length bug.&n; */
+multiline_comment|/* &n; * RNDIS MSG parser&n; * &n; * Version:     $Id: rndis.c,v 1.19 2004/03/25 21:33:46 robert Exp $&n; * &n; * Authors:&t;Benedikt Spranger, Pengutronix&n; * &t;&t;Robert Schwebel, Pengutronix&n; * &n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              version 2, as published by the Free Software Foundation. &n; * &n; *&t;&t;This software was originally developed in conformance with&n; *&t;&t;Microsoft&squot;s Remote NDIS Specification License Agreement.&n; *              &n; * 03/12/2004 Kai-Uwe Bloem &lt;linux-development@auerswald.de&gt;&n; *&t;&t;Fixed message length bug in init_response&n; * &n; * 03/25/2004 Kai-Uwe Bloem &lt;linux-development@auerswald.de&gt;&n; * &t;&t;Fixed rndis_rm_hdr length bug.&n; *&n; * Copyright (C) 2004 by David Brownell&n; *&t;&t;updates to merge with Linux 2.6, better match RNDIS spec&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -12,13 +12,17 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+DECL|macro|RNDIS_PM
+macro_line|#undef&t;RNDIS_PM
+DECL|macro|VERBOSE
+macro_line|#undef&t;VERBOSE
 macro_line|#include &quot;rndis.h&quot;
-multiline_comment|/* The driver for your USB chip needs to support ep0 OUT to work with&n; * RNDIS, plus the same three descriptors as CDC Ethernet.&n; *&n; * Windows hosts need an INF file like Documentation/usb/linux.inf&n; */
+multiline_comment|/* The driver for your USB chip needs to support ep0 OUT to work with&n; * RNDIS, plus all three CDC Ethernet endpoints (interrupt not optional).&n; *&n; * Windows hosts need an INF file like Documentation/usb/linux.inf&n; * and will be happier if you provide the host_addr module parameter.&n; */
 macro_line|#ifndef&t;__LITTLE_ENDIAN
 macro_line|#warning this code is missing all cpu_to_leXX() calls ...
 macro_line|#endif
 macro_line|#if 0
-mdefine_line|#define DEBUG if (rndis_debug) printk 
+mdefine_line|#define DEBUG(str,args...) do { &bslash;&n;&t;if (rndis_debug) &bslash;&n;&t;&t;printk(KERN_DEBUG str , ## args ); &bslash;&n;&t;} while (0)
 r_static
 r_int
 id|rndis_debug
@@ -42,8 +46,10 @@ l_string|&quot;enable debugging&quot;
 )paren
 suffix:semicolon
 macro_line|#else
+DECL|macro|rndis_debug
+mdefine_line|#define rndis_debug&t;&t;0
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG(str,args...) do{}while(0)
+mdefine_line|#define DEBUG(str,args...)&t;do{}while(0)
 macro_line|#endif
 DECL|macro|RNDIS_MAX_CONFIGS
 mdefine_line|#define RNDIS_MAX_CONFIGS&t;1
@@ -157,7 +163,6 @@ id|u32
 id|length
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME OMITTED OIDs, that RNDIS-on-USB &quot;must&quot; support, include&n; *  - power management (OID_PNP_CAPABILITIES, ...)&n; *  - network wakeup (OID_PNP_ENABLE_WAKE_UP, ...)&n; */
 multiline_comment|/* NDIS Functions */
 DECL|function|gen_ndis_query_resp
 r_static
@@ -224,6 +229,7 @@ c_cond
 id|OID
 )paren
 (brace
+multiline_comment|/* general oids (table 4-1) */
 multiline_comment|/* mandatory */
 r_case
 id|OID_GEN_SUPPORTED_LIST
@@ -380,19 +386,6 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|OID_GEN_MAXIMUM_LOOKAHEAD
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_MAXIMUM_LOOKAHEAD&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 multiline_comment|/* mandatory */
 r_case
 id|OID_GEN_MAXIMUM_FRAME_SIZE
@@ -528,53 +521,6 @@ suffix:semicolon
 id|retval
 op_assign
 l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_TRANSMIT_BUFFER_SPACE
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_TRANSMIT_BUFFER_SPACE&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|length
-op_assign
-l_int|4
-suffix:semicolon
-op_star
-(paren
-(paren
-id|u32
-op_star
-)paren
-id|resp
-op_plus
-l_int|6
-)paren
-op_assign
-l_int|0
-suffix:semicolon
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_RECEIVE_BUFFER_SPACE
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_RECEIVE_BUFFER_SPACE&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -772,6 +718,40 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|OID_GEN_VENDOR_DRIVER_VERSION
+suffix:colon
+id|DEBUG
+c_func
+(paren
+l_string|&quot;%s: OID_GEN_VENDOR_DRIVER_VERSION&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|length
+op_assign
+l_int|4
+suffix:semicolon
+op_star
+(paren
+(paren
+id|u32
+op_star
+)paren
+id|resp
+op_plus
+l_int|6
+)paren
+op_assign
+id|rndis_driver_version
+suffix:semicolon
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
 multiline_comment|/* mandatory */
 r_case
 id|OID_GEN_CURRENT_PACKET_FILTER
@@ -812,32 +792,6 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|OID_GEN_CURRENT_LOOKAHEAD
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_CURRENT_LOOKAHEAD&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_DRIVER_VERSION
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_DRIVER_VERSION&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 multiline_comment|/* mandatory */
 r_case
 id|OID_GEN_MAXIMUM_TOTAL_SIZE
@@ -866,55 +820,6 @@ l_int|6
 )paren
 op_assign
 id|RNDIS_MAX_TOTAL_SIZE
-suffix:semicolon
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_PROTOCOL_OPTIONS
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_PROTOCOL_OPTIONS&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_MAC_OPTIONS
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_MAC_OPTIONS&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|length
-op_assign
-l_int|4
-suffix:semicolon
-op_star
-(paren
-(paren
-id|u32
-op_star
-)paren
-id|resp
-op_plus
-l_int|6
-)paren
-op_assign
-id|NDIS_MAC_OPTION_RECEIVE_SERIALIZED
-op_or
-id|NDIS_MAC_OPTION_FULL_DUPLEX
 suffix:semicolon
 id|retval
 op_assign
@@ -963,166 +868,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|OID_GEN_MAXIMUM_SEND_PACKETS
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_MAXIMUM_SEND_PACKETS&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/* mandatory */
-r_case
-id|OID_GEN_VENDOR_DRIVER_VERSION
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_VENDOR_DRIVER_VERSION&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|length
-op_assign
-l_int|4
-suffix:semicolon
-op_star
-(paren
-(paren
-id|u32
-op_star
-)paren
-id|resp
-op_plus
-l_int|6
-)paren
-op_assign
-id|rndis_driver_version
-suffix:semicolon
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_SUPPORTED_GUIDS
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_SUPPORTED_GUIDS&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_NETWORK_LAYER_ADDRESSES
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_NETWORK_LAYER_ADDRESSES&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_TRANSPORT_HEADER_OFFSET
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_TRANSPORT_HEADER_OFFSET&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_MACHINE_NAME
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_MACHINE_NAME&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_RNDIS_CONFIG_PARAMETER
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_RNDIS_CONFIG_PARAMETER&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|length
-op_assign
-l_int|4
-suffix:semicolon
-op_star
-(paren
-(paren
-id|u32
-op_star
-)paren
-id|resp
-op_plus
-l_int|6
-)paren
-op_assign
-l_int|0
-suffix:semicolon
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_VLAN_ID
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_VLAN_ID&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_MEDIA_CAPABILITIES
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_MEDIA_CAPABILITIES&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 id|OID_GEN_PHYSICAL_MEDIUM
 suffix:colon
 id|DEBUG
@@ -1156,6 +901,7 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
+multiline_comment|/* statistics OIDs (table 4-2) */
 multiline_comment|/* mandatory */
 r_case
 id|OID_GEN_XMIT_OK
@@ -1536,6 +1282,7 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+macro_line|#ifdef&t;RNDIS_OPTIONAL_STATS
 r_case
 id|OID_GEN_DIRECTED_BYTES_XMIT
 suffix:colon
@@ -2425,136 +2172,8 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|OID_GEN_GET_TIME_CAPS
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_GET_TIME_CAPS&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_GET_NETCARD_TIME
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_GET_NETCARD_TIME&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_NETCARD_LOAD
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_NETCARD_LOAD&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_DEVICE_PROFILE
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_DEVICE_PROFILE&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_INIT_TIME_MS
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_INIT_TIME_MS&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_RESET_COUNTS
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_RESET_COUNTS&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_MEDIA_SENSE_COUNTS
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_MEDIA_SENSE_COUNTS&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_FRIENDLY_NAME
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_FRIENDLY_NAME&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_MINIPORT_INFO
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_MINIPORT_INFO&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|OID_GEN_RESET_VERIFY_PARAMETERS
-suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_RESET_VERIFY_PARAMETERS&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
+macro_line|#endif&t;/* RNDIS_OPTIONAL_STATS */
+multiline_comment|/* ieee802.3 OIDs (table 4-3) */
 multiline_comment|/* mandatory */
 r_case
 id|OID_802_3_PERMANENT_ADDRESS
@@ -2768,6 +2387,7 @@ id|__FUNCTION__
 suffix:semicolon
 r_break
 suffix:semicolon
+multiline_comment|/* ieee802.3 statistics OIDs (table 4-4) */
 multiline_comment|/* mandatory */
 r_case
 id|OID_802_3_RCV_ERROR_ALIGNMENT
@@ -2890,6 +2510,7 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef&t;RNDIS_OPTIONAL_STATS
 r_case
 id|OID_802_3_XMIT_DEFERRED
 suffix:colon
@@ -2988,12 +2609,91 @@ suffix:semicolon
 multiline_comment|/* TODO */
 r_break
 suffix:semicolon
+macro_line|#endif&t;/* RNDIS_OPTIONAL_STATS */
+macro_line|#ifdef&t;RNDIS_PM
+multiline_comment|/* power management OIDs (table 4-5) */
+r_case
+id|OID_PNP_CAPABILITIES
+suffix:colon
+id|DEBUG
+c_func
+(paren
+l_string|&quot;%s: OID_PNP_CAPABILITIES&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+multiline_comment|/* just PM, and remote wakeup on link status change&n;&t;&t; * (not magic packet or pattern match)&n;&t;&t; */
+id|length
+op_assign
+r_sizeof
+(paren
+r_struct
+id|NDIS_PNP_CAPABILITIES
+)paren
+suffix:semicolon
+id|memset
+(paren
+id|resp
+comma
+l_int|0
+comma
+id|length
+)paren
+suffix:semicolon
+(brace
+r_struct
+id|NDIS_PNP_CAPABILITIES
+op_star
+id|caps
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|resp
+suffix:semicolon
+id|caps-&gt;Flags
+op_assign
+id|NDIS_DEVICE_WAKE_UP_ENABLE
+suffix:semicolon
+id|caps-&gt;WakeUpCapabilities.MinLinkChangeWakeUp
+op_assign
+id|NdisDeviceStateD3
+suffix:semicolon
+multiline_comment|/* FIXME then use usb_gadget_wakeup(), and&n;&t;&t;&t; * set USB_CONFIG_ATT_WAKEUP in config desc&n;&t;&t;&t; */
+)brace
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|OID_PNP_QUERY_POWER
+suffix:colon
+id|DEBUG
+c_func
+(paren
+l_string|&quot;%s: OID_PNP_QUERY_POWER&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+multiline_comment|/* sure, handle any power state that maps to USB suspend */
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 id|printk
 (paren
-id|KERN_ERR
-l_string|&quot;%s: unknown OID 0x%08X&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;%s: query unknown OID 0x%08X&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3061,11 +2761,6 @@ op_minus
 id|ENOTSUPP
 suffix:semicolon
 r_struct
-id|rndis_config_parameter
-op_star
-id|param
-suffix:semicolon
-r_struct
 id|rndis_params
 op_star
 id|params
@@ -3110,6 +2805,155 @@ op_star
 )paren
 id|resp
 suffix:semicolon
+id|DEBUG
+c_func
+(paren
+l_string|&quot;set OID %08x value, len %d:&bslash;n&quot;
+comma
+id|OID
+comma
+id|buf_len
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|buf_len
+suffix:semicolon
+id|i
+op_add_assign
+l_int|16
+)paren
+(brace
+id|DEBUG
+(paren
+l_string|&quot;%03d: &quot;
+l_string|&quot; %02x %02x %02x %02x&quot;
+l_string|&quot; %02x %02x %02x %02x&quot;
+l_string|&quot; %02x %02x %02x %02x&quot;
+l_string|&quot; %02x %02x %02x %02x&quot;
+l_string|&quot;&bslash;n&quot;
+comma
+id|i
+comma
+id|buf
+(braket
+id|i
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|1
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|2
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|3
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|4
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|5
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|6
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|7
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|8
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|9
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|10
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|11
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|12
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|13
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|14
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|15
+)braket
+)paren
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -3131,7 +2975,7 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* FIXME use this NDIS_PACKET_TYPE_* bitflags to&n;&t;&t; * filter packets in hard_start_xmit()&n;&t;&t; * NDIS_PACKET_TYPE_x == CDC_PACKET_TYPE_x for x in:&n;&t;&t; *&t;PROMISCUOUS, DIRECTED,&n;&t;&t; *&t;MULTICAST, ALL_MULTICAST, BROADCAST&n;&t;&t; */
+multiline_comment|/* FIXME use these NDIS_PACKET_TYPE_* bitflags to&n;&t;&t; * filter packets in hard_start_xmit()&n;&t;&t; * NDIS_PACKET_TYPE_x == CDC_PACKET_TYPE_x for x in:&n;&t;&t; *&t;PROMISCUOUS, DIRECTED,&n;&t;&t; *&t;MULTICAST, ALL_MULTICAST, BROADCAST&n;&t;&t; */
 id|params-&gt;filter
 op_assign
 op_star
@@ -3220,16 +3064,15 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#if 0
 r_case
 id|OID_GEN_RNDIS_CONFIG_PARAMETER
 suffix:colon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID_GEN_RNDIS_CONFIG_PARAMETER&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
+(brace
+r_struct
+id|rndis_config_parameter
+op_star
+id|param
 suffix:semicolon
 id|param
 op_assign
@@ -3240,64 +3083,74 @@ op_star
 )paren
 id|buf
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|param
-)paren
-(brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|param-&gt;ParameterNameLength
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
 id|DEBUG
+c_func
 (paren
-l_string|&quot;%c&quot;
+l_string|&quot;%s: OID_GEN_RNDIS_CONFIG_PARAMETER &squot;%*s&squot;&bslash;n&quot;
 comma
-op_star
-(paren
+id|__FUNCTION__
+comma
+id|param-&gt;ParameterNameLength
+comma
 id|buf
 op_plus
 id|param-&gt;ParameterNameOffset
-op_plus
-id|i
-)paren
 )paren
 suffix:semicolon
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef&t;RNDIS_PM
+r_case
+id|OID_PNP_SET_POWER
+suffix:colon
 id|DEBUG
 (paren
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;OID_PNP_SET_POWER&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* sure, handle any power state that maps to USB suspend */
 id|retval
 op_assign
 l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|OID_PNP_ENABLE_WAKE_UP
+suffix:colon
+multiline_comment|/* always-connected ... */
+id|DEBUG
+(paren
+l_string|&quot;OID_PNP_ENABLE_WAKE_UP&bslash;n&quot;
+)paren
+suffix:semicolon
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+singleline_comment|// no PM resume patterns supported (specified where?)
+singleline_comment|// so OID_PNP_{ADD,REMOVE}_WAKE_UP_PATTERN always fails
+macro_line|#endif
 r_default
 suffix:colon
 id|printk
 (paren
-id|KERN_ERR
-l_string|&quot;%s: unknown OID 0x%08X&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;%s: set unknown OID 0x%08X, size %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|OID
+comma
+id|buf_len
 )paren
 suffix:semicolon
 )brace
@@ -3503,16 +3356,7 @@ id|rndis_resp_t
 op_star
 id|r
 suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: OID = %08X&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|buf-&gt;OID
-)paren
-suffix:semicolon
+singleline_comment|// DEBUG(&quot;%s: OID = %08X&bslash;n&quot;, __FUNCTION__, buf-&gt;OID);
 r_if
 c_cond
 (paren
@@ -3663,9 +3507,6 @@ id|rndis_resp_t
 op_star
 id|r
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|r
 op_assign
 id|rndis_add_response
@@ -3706,6 +3547,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+macro_line|#ifdef&t;VERBOSE
 id|DEBUG
 c_func
 (paren
@@ -3777,6 +3619,7 @@ id|DEBUG
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 id|resp-&gt;MessageType
 op_assign
 id|REMOTE_NDIS_SET_CMPLT
@@ -4346,7 +4189,6 @@ suffix:colon
 id|DEBUG
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: REMOTE_NDIS_INITIALIZE_MSG&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -4374,7 +4216,6 @@ suffix:colon
 id|DEBUG
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: REMOTE_NDIS_HALT_MSG&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -4407,15 +4248,6 @@ suffix:semicolon
 r_case
 id|REMOTE_NDIS_QUERY_MSG
 suffix:colon
-id|DEBUG
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: REMOTE_NDIS_QUERY_MSG&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_return
 id|rndis_query_response
 (paren
@@ -4431,15 +4263,6 @@ suffix:semicolon
 r_case
 id|REMOTE_NDIS_SET_MSG
 suffix:colon
-id|DEBUG
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: REMOTE_NDIS_SET_MSG&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_return
 id|rndis_set_response
 (paren
@@ -4458,7 +4281,6 @@ suffix:colon
 id|DEBUG
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: REMOTE_NDIS_RESET_MSG&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -4480,15 +4302,16 @@ r_case
 id|REMOTE_NDIS_KEEPALIVE_MSG
 suffix:colon
 multiline_comment|/* For USB: host does this every 5 seconds */
+macro_line|#ifdef&t;VERBOSE
 id|DEBUG
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: REMOTE_NDIS_KEEPALIVE_MSG&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|rndis_keepalive_response
 (paren
@@ -4505,14 +4328,160 @@ r_default
 suffix:colon
 id|printk
 (paren
-id|KERN_ERR
-l_string|&quot;%s: unknown RNDIS Message Type 0x%08X&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;%s: unknown RNDIS message 0x%08X len %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|MsgType
+comma
+id|MsgLength
 )paren
 suffix:semicolon
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|MsgLength
+suffix:semicolon
+id|i
+op_add_assign
+l_int|16
+)paren
+(brace
+id|DEBUG
+(paren
+l_string|&quot;%03d: &quot;
+l_string|&quot; %02x %02x %02x %02x&quot;
+l_string|&quot; %02x %02x %02x %02x&quot;
+l_string|&quot; %02x %02x %02x %02x&quot;
+l_string|&quot; %02x %02x %02x %02x&quot;
+l_string|&quot;&bslash;n&quot;
+comma
+id|i
+comma
+id|buf
+(braket
+id|i
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|1
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|2
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|3
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|4
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|5
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|6
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|7
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|8
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|9
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|10
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|11
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|12
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|13
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|14
+)braket
+comma
+id|buf
+(braket
+id|i
+op_plus
+l_int|15
+)braket
+)paren
+suffix:semicolon
+)brace
+)brace
 r_break
 suffix:semicolon
 )brace
@@ -4539,14 +4508,6 @@ op_star
 (brace
 id|u8
 id|i
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_string|&quot;%s: &quot;
-comma
-id|__FUNCTION__
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -4596,7 +4557,9 @@ suffix:semicolon
 id|DEBUG
 c_func
 (paren
-l_string|&quot;configNr = %d&bslash;n&quot;
+l_string|&quot;%s: configNr = %d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|i
 )paren
