@@ -27226,6 +27226,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -27239,6 +27240,27 @@ id|cmd
 )paren
 r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|additional_ioctls
+(braket
+id|i
+)braket
+dot
+id|cmd
+op_eq
+id|cmd
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;duplicate ioctl found: %x&bslash;n&quot;
+comma
+id|cmd
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
