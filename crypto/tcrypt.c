@@ -4855,7 +4855,7 @@ id|key
 suffix:semicolon
 id|tfm-&gt;crt_flags
 op_assign
-id|CRYPTO_TFM_REQ_ATOMIC
+l_int|0
 suffix:semicolon
 id|ret
 op_assign
@@ -6713,10 +6713,6 @@ id|i
 op_plus
 l_int|1
 )paren
-suffix:semicolon
-id|tfm-&gt;crt_flags
-op_or_assign
-id|CRYPTO_TFM_REQ_ATOMIC
 suffix:semicolon
 id|key
 op_assign

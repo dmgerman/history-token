@@ -75,8 +75,6 @@ op_assign
 id|crypto_kmap
 c_func
 (paren
-id|tfm
-comma
 id|sg
 (braket
 id|i
@@ -112,8 +110,6 @@ suffix:semicolon
 id|crypto_kunmap
 c_func
 (paren
-id|tfm
-comma
 id|p
 )paren
 suffix:semicolon
@@ -213,8 +209,6 @@ op_assign
 id|crypto_kmap
 c_func
 (paren
-id|tfm
-comma
 id|sg
 (braket
 id|i
@@ -250,8 +244,6 @@ suffix:semicolon
 id|crypto_kunmap
 c_func
 (paren
-id|tfm
-comma
 id|p
 )paren
 suffix:semicolon

@@ -316,8 +316,6 @@ op_assign
 id|crypto_kmap
 c_func
 (paren
-id|tfm
-comma
 id|sg
 (braket
 id|i
@@ -372,8 +370,6 @@ suffix:semicolon
 id|crypto_kunmap
 c_func
 (paren
-id|tfm
-comma
 id|p
 )paren
 suffix:semicolon
@@ -553,7 +549,7 @@ suffix:semicolon
 id|u8
 id|tmp
 (braket
-id|CRYPTO_MAX_BLOCK_SIZE
+id|CRYPTO_MAX_CIPHER_BLOCK_SIZE
 )braket
 suffix:semicolon
 r_if
@@ -626,8 +622,6 @@ op_assign
 id|crypto_kmap
 c_func
 (paren
-id|tfm
-comma
 id|sg
 (braket
 id|i
@@ -662,8 +656,6 @@ id|bsize
 id|crypto_kunmap
 c_func
 (paren
-id|tfm
-comma
 id|p
 )paren
 suffix:semicolon
@@ -742,8 +734,6 @@ suffix:semicolon
 id|crypto_kunmap
 c_func
 (paren
-id|tfm
-comma
 id|p
 )paren
 suffix:semicolon
@@ -763,8 +753,6 @@ op_assign
 id|crypto_kmap
 c_func
 (paren
-id|tfm
-comma
 id|sg
 (braket
 id|i
@@ -807,8 +795,6 @@ suffix:semicolon
 id|crypto_kunmap
 c_func
 (paren
-id|tfm
-comma
 id|p
 )paren
 suffix:semicolon
@@ -889,7 +875,7 @@ r_else
 id|u8
 id|buf
 (braket
-id|CRYPTO_MAX_BLOCK_SIZE
+id|CRYPTO_MAX_CIPHER_BLOCK_SIZE
 )braket
 suffix:semicolon
 id|fn

@@ -26,10 +26,8 @@ DECL|macro|CRYPTO_TFM_MODE_CFB
 mdefine_line|#define CRYPTO_TFM_MODE_CFB&t;&t;0x00000004
 DECL|macro|CRYPTO_TFM_MODE_CTR
 mdefine_line|#define CRYPTO_TFM_MODE_CTR&t;&t;0x00000008
-DECL|macro|CRYPTO_TFM_REQ_ATOMIC
-mdefine_line|#define CRYPTO_TFM_REQ_ATOMIC&t;&t;0x00000100
 DECL|macro|CRYPTO_TFM_REQ_WEAK_KEY
-mdefine_line|#define CRYPTO_TFM_REQ_WEAK_KEY&t;&t;0x00000200
+mdefine_line|#define CRYPTO_TFM_REQ_WEAK_KEY&t;&t;0x00000100
 DECL|macro|CRYPTO_TFM_RES_WEAK_KEY
 mdefine_line|#define CRYPTO_TFM_RES_WEAK_KEY&t;&t;0x00100000
 DECL|macro|CRYPTO_TFM_RES_BAD_KEY_LEN
@@ -45,8 +43,8 @@ DECL|macro|CRYPTO_UNSPEC
 mdefine_line|#define CRYPTO_UNSPEC&t;&t;&t;0
 DECL|macro|CRYPTO_MAX_ALG_NAME
 mdefine_line|#define CRYPTO_MAX_ALG_NAME&t;&t;64
-DECL|macro|CRYPTO_MAX_BLOCK_SIZE
-mdefine_line|#define CRYPTO_MAX_BLOCK_SIZE&t;&t;16
+DECL|macro|CRYPTO_MAX_CIPHER_BLOCK_SIZE
+mdefine_line|#define CRYPTO_MAX_CIPHER_BLOCK_SIZE&t;16
 r_struct
 id|scatterlist
 suffix:semicolon
