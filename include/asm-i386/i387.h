@@ -87,7 +87,7 @@ suffix:semicolon
 id|tsk-&gt;thread_info-&gt;flags
 op_and_assign
 op_complement
-id|TIF_USEDFPU
+id|_TIF_USEDFPU
 suffix:semicolon
 )brace
 DECL|function|save_init_fpu
