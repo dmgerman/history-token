@@ -95,6 +95,11 @@ r_char
 op_star
 id|trampoline_base
 suffix:semicolon
+DECL|variable|trampoline_exec
+r_static
+r_int
+id|trampoline_exec
+suffix:semicolon
 multiline_comment|/*&n; * Currently trivial. Write the real-&gt;protected mode&n; * bootstrap into the page concerned. The caller&n; * has made sure it&squot;s suitably aligned.&n; */
 DECL|function|setup_trampoline
 r_static
@@ -164,6 +169,21 @@ l_int|0x9F000
 id|BUG
 c_func
 (paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Make the SMP trampoline executable:&n;&t; */
+id|trampoline_exec
+op_assign
+id|set_kernel_exec
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|trampoline_base
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -5134,6 +5154,19 @@ macro_line|#endif
 id|zap_low_mappings
 c_func
 (paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Disable executability of the SMP trampoline:&n;&t; */
+id|set_kernel_exec
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|trampoline_base
+comma
+id|trampoline_exec
 )paren
 suffix:semicolon
 )brace
