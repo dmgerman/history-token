@@ -2565,7 +2565,13 @@ c_func
 )paren
 macro_line|#ifndef CONFIG_SMP
 comma
-id|loops_per_jiffy
+id|cpu_data
+c_func
+(paren
+l_int|0
+)paren
+dot
+id|udelay_val
 op_div
 (paren
 l_int|500000
@@ -2574,7 +2580,13 @@ id|HZ
 )paren
 comma
 (paren
-id|loops_per_jiffy
+id|cpu_data
+c_func
+(paren
+l_int|0
+)paren
+dot
+id|udelay_val
 op_div
 (paren
 l_int|5000

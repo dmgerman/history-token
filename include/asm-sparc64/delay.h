@@ -158,13 +158,8 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SMP
 DECL|macro|__udelay_val
 mdefine_line|#define __udelay_val cpu_data(smp_processor_id()).udelay_val
-macro_line|#else
-DECL|macro|__udelay_val
-mdefine_line|#define __udelay_val loops_per_jiffy
-macro_line|#endif
 DECL|macro|udelay
 mdefine_line|#define udelay(usecs) __udelay((usecs),__udelay_val)
 DECL|macro|ndelay
