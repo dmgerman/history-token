@@ -389,11 +389,7 @@ id|yenta_get_socket
 comma
 id|yenta_set_socket
 comma
-id|yenta_get_io_map
-comma
 id|yenta_set_io_map
-comma
-id|yenta_get_mem_map
 comma
 id|yenta_set_mem_map
 comma
