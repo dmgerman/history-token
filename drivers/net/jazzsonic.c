@@ -29,9 +29,9 @@ mdefine_line|#define SREGS_PAD(n)    u16 n;
 macro_line|#include &quot;sonic.h&quot;
 multiline_comment|/*&n; * Macros to access SONIC registers&n; */
 DECL|macro|SONIC_READ
-mdefine_line|#define SONIC_READ(reg) &bslash;&n;&t;*((volatile unsigned int *)base_addr+reg)
+mdefine_line|#define SONIC_READ(reg) (*((volatile unsigned int *)base_addr+reg))
 DECL|macro|SONIC_WRITE
-mdefine_line|#define SONIC_WRITE(reg,val) &bslash;&n;&t;*((volatile unsigned int *)base_addr+reg) = val
+mdefine_line|#define SONIC_WRITE(reg,val)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*((volatile unsigned int *)base_addr+reg) = val;&t;&t;&bslash;&n;}
 multiline_comment|/* use 0 for production, 1 for verification, &gt;2 for debug */
 macro_line|#ifdef SONIC_DEBUG
 DECL|variable|sonic_debug
@@ -161,7 +161,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;     * Don&squot;t probe if we&squot;re not running on a Jazz board.&n;     */
+multiline_comment|/*&n;&t; * Don&squot;t probe if we&squot;re not running on a Jazz board.&n;&t; */
 r_if
 c_cond
 (paren
@@ -316,7 +316,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;     * get the Silicon Revision ID. If this is one of the known&n;     * one assume that we found a SONIC ethernet controller at&n;     * the expected location.&n;     */
+multiline_comment|/*&n;&t; * get the Silicon Revision ID. If this is one of the known&n;&t; * one assume that we found a SONIC ethernet controller at&n;&t; * the expected location.&n;&t; */
 id|silicon_revision
 op_assign
 id|SONIC_READ
@@ -347,23 +347,19 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-(paren
 id|known_revisions
 (braket
 id|i
 )braket
 op_ne
 l_int|0xffff
-)paren
 op_logical_and
-(paren
 id|known_revisions
 (braket
 id|i
 )braket
 op_ne
 id|silicon_revision
-)paren
 )paren
 id|i
 op_increment
@@ -429,11 +425,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %s found at 0x%08x, &quot;
+l_string|&quot;%s: Sonic ethernet found at 0x%08lx, &quot;
 comma
 id|dev-&gt;name
-comma
-l_string|&quot;SONIC ethernet&quot;
 comma
 id|base_addr
 )paren
@@ -447,7 +441,7 @@ id|dev-&gt;irq
 op_assign
 id|irq
 suffix:semicolon
-multiline_comment|/*&n;     * Put the sonic into software reset, then&n;     * retrieve and print the ethernet address.&n;     */
+multiline_comment|/*&n;&t; * Put the sonic into software reset, then&n;&t; * retrieve and print the ethernet address.&n;&t; */
 id|SONIC_WRITE
 c_func
 (paren
@@ -575,7 +569,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-multiline_comment|/*&n;&t; * the memory be located in the same 64kb segment&n;&t; */
+multiline_comment|/*&n;&t;&t; * the memory be located in the same 64kb segment&n;&t;&t; */
 id|lp
 op_assign
 l_int|NULL
@@ -588,11 +582,6 @@ r_do
 (brace
 id|lp
 op_assign
-(paren
-r_struct
-id|sonic_local
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -635,6 +624,7 @@ l_int|16
 (brace
 multiline_comment|/* FIXME, free the memory later */
 id|kfree
+c_func
 (paren
 id|lp
 )paren
@@ -667,6 +657,7 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;%s: couldn&squot;t allocate memory for descriptors&bslash;n&quot;
 comma
@@ -721,8 +712,10 @@ l_int|0UL
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;%s: couldn&squot;t get DMA page entry for descriptors&bslash;n&quot;
+l_string|&quot;%s: couldn&squot;t get DMA page entry for &quot;
+l_string|&quot;descriptors&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -761,16 +754,8 @@ id|lp-&gt;rra
 suffix:semicolon
 multiline_comment|/* allocate receive buffer area */
 multiline_comment|/* FIXME, maybe we should use skbs */
-r_if
-c_cond
-(paren
-(paren
 id|lp-&gt;rba
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -780,12 +765,16 @@ id|SONIC_RBSIZE
 comma
 id|GFP_KERNEL
 )paren
-)paren
-op_eq
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|lp-&gt;rba
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;%s: couldn&squot;t allocate receive buffers&bslash;n&quot;
 comma
@@ -798,10 +787,6 @@ id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* get virtual dma address */
-r_if
-c_cond
-(paren
-(paren
 id|lp-&gt;rba_laddr
 op_assign
 id|vdma_alloc
@@ -817,15 +802,21 @@ id|SONIC_NUM_RRS
 op_star
 id|SONIC_RBSIZE
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lp-&gt;rba_laddr
 op_eq
 op_complement
 l_int|0UL
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;%s: couldn&squot;t get DMA page entry for receive buffers&bslash;n&quot;
+l_string|&quot;%s: couldn&squot;t get DMA page entry for receive &quot;
+l_string|&quot;buffers&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -897,7 +888,11 @@ op_assign
 op_amp
 id|sonic_multicast_list
 suffix:semicolon
-multiline_comment|/*&n;     * clear tally counter&n;     */
+id|dev-&gt;watchdog_timeo
+op_assign
+id|TX_TIMEOUT
+suffix:semicolon
+multiline_comment|/*&n;&t; * clear tally counter&n;&t; */
 id|SONIC_WRITE
 c_func
 (paren

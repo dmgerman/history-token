@@ -258,13 +258,15 @@ mdefine_line|#define CPU_TX3927&t;&t;36
 DECL|macro|CPU_AU1000
 mdefine_line|#define CPU_AU1000&t;&t;37
 DECL|macro|CPU_4KEC
-mdefine_line|#define CPU_4KEC&t;&t;37
+mdefine_line|#define CPU_4KEC&t;&t;38
 DECL|macro|CPU_4KSC
-mdefine_line|#define CPU_4KSC&t;&t;38
+mdefine_line|#define CPU_4KSC&t;&t;39
+DECL|macro|CPU_VR41XX
+mdefine_line|#define CPU_VR41XX&t;&t;40
 DECL|macro|CPU_LAST
-mdefine_line|#define CPU_LAST&t;&t;39
+mdefine_line|#define CPU_LAST&t;&t;40
 DECL|macro|CPU_NAMES
-mdefine_line|#define CPU_NAMES { &quot;unknown&quot;, &quot;R2000&quot;, &quot;R3000&quot;, &quot;R3000A&quot;, &quot;R3041&quot;, &quot;R3051&quot;, &bslash;&n;        &quot;R3052&quot;, &quot;R3081&quot;, &quot;R3081E&quot;, &quot;R4000PC&quot;, &quot;R4000SC&quot;, &quot;R4000MC&quot;,         &bslash;&n;        &quot;R4200&quot;, &quot;R4400PC&quot;, &quot;R4400SC&quot;, &quot;R4400MC&quot;, &quot;R4600&quot;, &quot;R6000&quot;,          &bslash;&n;        &quot;R6000A&quot;, &quot;R8000&quot;, &quot;R10000&quot;, &quot;R4300&quot;, &quot;R4650&quot;, &quot;R4700&quot;, &quot;R5000&quot;,     &bslash;&n;        &quot;R5000A&quot;, &quot;R4640&quot;, &quot;Nevada&quot;, &quot;RM7000&quot;, &quot;R5432&quot;, &quot;MIPS 4Kc&quot;,          &bslash;&n;        &quot;MIPS 5Kc&quot;, &quot;R4310&quot;, &quot;SiByte SB1&quot;, &quot;TX3912&quot;, &quot;TX3922&quot;, &quot;TX3927&quot;,     &bslash;&n;&t;&quot;Au1000&quot;, &quot;MIPS 4KEc&quot;, &quot;MIPS 4KSc&quot; }
+mdefine_line|#define CPU_NAMES { &quot;unknown&quot;, &quot;R2000&quot;, &quot;R3000&quot;, &quot;R3000A&quot;, &quot;R3041&quot;, &quot;R3051&quot;, &bslash;&n;        &quot;R3052&quot;, &quot;R3081&quot;, &quot;R3081E&quot;, &quot;R4000PC&quot;, &quot;R4000SC&quot;, &quot;R4000MC&quot;,         &bslash;&n;        &quot;R4200&quot;, &quot;R4400PC&quot;, &quot;R4400SC&quot;, &quot;R4400MC&quot;, &quot;R4600&quot;, &quot;R6000&quot;,          &bslash;&n;        &quot;R6000A&quot;, &quot;R8000&quot;, &quot;R10000&quot;, &quot;R4300&quot;, &quot;R4650&quot;, &quot;R4700&quot;, &quot;R5000&quot;,     &bslash;&n;        &quot;R5000A&quot;, &quot;R4640&quot;, &quot;Nevada&quot;, &quot;RM7000&quot;, &quot;R5432&quot;, &quot;MIPS 4Kc&quot;,          &bslash;&n;        &quot;MIPS 5Kc&quot;, &quot;R4310&quot;, &quot;SiByte SB1&quot;, &quot;TX3912&quot;, &quot;TX3922&quot;, &quot;TX3927&quot;,     &bslash;&n;&t;&quot;Au1000&quot;, &quot;MIPS 4KEc&quot;, &quot;MIPS 4KSc&quot;, &quot;NEC Vr41xx&quot; }
 DECL|macro|COMMAND_LINE_SIZE
 mdefine_line|#define COMMAND_LINE_SIZE&t;256
 DECL|macro|BOOT_MEM_MAP_MAX

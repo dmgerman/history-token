@@ -3261,7 +3261,7 @@ c_func
 l_int|0x0021
 )paren
 comma
-l_int|NULL
+l_int|0
 )brace
 comma
 (brace

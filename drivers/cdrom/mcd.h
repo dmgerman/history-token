@@ -62,12 +62,6 @@ mdefine_line|#define MCMD_GET_VERSION  &t;0xDC
 DECL|macro|MCMD_EJECT
 mdefine_line|#define MCMD_EJECT&t;&t;0xF6            /* eject (FX drive) */
 multiline_comment|/* borrowed from hd.c */
-DECL|macro|READ_DATA
-mdefine_line|#define READ_DATA(port, buf, nr) &bslash;&n;insb(port, buf, nr)
-DECL|macro|SET_TIMER
-mdefine_line|#define SET_TIMER(func, jifs) &t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;mcd_timer.function = func;&t;&t;&bslash;&n;&t;&t;mod_timer(&amp;mcd_timer, jiffies + jifs);&t;&bslash;&n;&t;} while (0)
-DECL|macro|CLEAR_TIMER
-mdefine_line|#define CLEAR_TIMER&t;&t;del_timer_async(&amp;mcd_timer);
 DECL|macro|MAX_TRACKS
 mdefine_line|#define MAX_TRACKS&t;&t;104
 DECL|struct|msf
@@ -164,4 +158,14 @@ id|diskTime
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|test1
+mdefine_line|#define test1(x)
+DECL|macro|test2
+mdefine_line|#define test2(x)
+DECL|macro|test3
+mdefine_line|#define test3(x)
+DECL|macro|test4
+mdefine_line|#define test4(x)
+DECL|macro|test5
+mdefine_line|#define test5(x)
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ip22-rtc.c,v 1.1 1999/08/20 21:13:34 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * RTC routines for Indy style attached Dallas chip.&n; *&n; * Copyright (C) 1998 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * RTC routines for Indy style attached Dallas chip.&n; *&n; * Copyright (C) 1998, 2001 by Ralf Baechle&n; */
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/sgi/sgihpc.h&gt;
 DECL|function|indy_rtc_read_data

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;Qtronix 990P infrared keyboard driver.&n; *&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or support@mvista.com&n; *&n; *&n; *  The bottom portion of this driver was take from &n; *  pc_keyb.c  Please see that file for copyrights.&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;Qtronix 990P infrared keyboard driver.&n; *&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; *&n; *  The bottom portion of this driver was take from &n; *  pc_keyb.c  Please see that file for copyrights.&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* &n; * NOTE:  &n; *&n; *&t;This driver has only been tested with the Consumer IR&n; *&t;port of the ITE 8172 system controller.&n; *&n; *&t;You do not need this driver if you are using the ps/2 or&n; *&t;USB adapter that the keyboard ships with.  You only need &n; *&t;this driver if your board has a IR port and the keyboard&n; *&t;data is being sent directly to the IR.  In that case,&n; *&t;you also need some low-level IR support. See it8172_cir.c.&n; *&t;&n; */
 macro_line|#ifdef CONFIG_QTRONIX_KEYBOARD
@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1340,9 +1340,9 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|function|pckbd_setkeycode
+DECL|function|kbd_setkeycode
 r_int
-id|pckbd_setkeycode
+id|kbd_setkeycode
 c_func
 (paren
 r_int
@@ -1357,7 +1357,7 @@ id|keycode
 id|printk
 c_func
 (paren
-l_string|&quot;pckbd_setkeycode scancode %x keycode %x&bslash;n&quot;
+l_string|&quot;kbd_setkeycode scancode %x keycode %x&bslash;n&quot;
 comma
 id|scancode
 comma
@@ -1368,9 +1368,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|pckbd_getkeycode
+DECL|function|kbd_getkeycode
 r_int
-id|pckbd_getkeycode
+id|kbd_getkeycode
 c_func
 (paren
 r_int
@@ -1382,9 +1382,9 @@ r_return
 id|scancode
 suffix:semicolon
 )brace
-DECL|function|pckbd_translate
+DECL|function|kbd_translate
 r_int
-id|pckbd_translate
+id|kbd_translate
 c_func
 (paren
 r_int
@@ -1524,9 +1524,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|pckbd_unexpected_up
+DECL|function|kbd_unexpected_up
 r_char
-id|pckbd_unexpected_up
+id|kbd_unexpected_up
 c_func
 (paren
 r_int
@@ -1534,7 +1534,7 @@ r_char
 id|keycode
 )paren
 (brace
-singleline_comment|//printk(&quot;pckbd_unexpected_up&bslash;n&quot;);
+singleline_comment|//printk(&quot;kbd_unexpected_up&bslash;n&quot;);
 r_return
 l_int|0
 suffix:semicolon
@@ -1582,9 +1582,9 @@ id|keyboard_tasklet
 )paren
 suffix:semicolon
 )brace
-DECL|function|pckbd_leds
+DECL|function|kbd_leds
 r_void
-id|pckbd_leds
+id|kbd_leds
 c_func
 (paren
 r_int
@@ -1594,9 +1594,9 @@ id|leds
 (brace
 )brace
 multiline_comment|/* dummy */
-DECL|function|pckbd_init_hw
+DECL|function|kbd_init_hw
 r_void
-id|pckbd_init_hw
+id|kbd_init_hw
 c_func
 (paren
 r_void

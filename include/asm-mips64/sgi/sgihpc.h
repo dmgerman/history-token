@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sgihpc.h,v 1.2 1999/10/19 20:51:54 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * sgihpc.h: Various HPC I/O controller defines.  The HPC is basically&n; *           the approximate functional equivalent of the Sun SYSIO&n; *           on SGI INDY machines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1998 Ralf Baechle (ralf@gnu.org)&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * sgihpc.h: Various HPC I/O controller defines.  The HPC is basically&n; *           the approximate functional equivalent of the Sun SYSIO&n; *           on SGI INDY machines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1998 Ralf Baechle (ralf@gnu.org)&n; */
 macro_line|#ifndef _ASM_SGI_SGIHPC_H
 DECL|macro|_ASM_SGI_SGIHPC_H
 mdefine_line|#define _ASM_SGI_SGIHPC_H
@@ -975,8 +975,6 @@ id|sgi_hpc_write1
 comma
 id|sgi_hpc_write2
 suffix:semicolon
-DECL|macro|SGI_KEYBOARD_IRQ
-mdefine_line|#define SGI_KEYBOARD_IRQ 20
 DECL|struct|hpc_keyb
 r_struct
 id|hpc_keyb

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * Copyright (C) 1999, 2000 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * Copyright (C) 1999, 2000 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -232,6 +232,64 @@ c_cond
 id|start-&gt;brd_type
 op_eq
 id|brd_type
+)paren
+r_return
+id|start
+suffix:semicolon
+id|start
+op_assign
+id|KLCF_NEXT
+c_func
+(paren
+id|start
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Didn&squot;t find it. */
+r_return
+(paren
+id|lboard_t
+op_star
+)paren
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|find_lboard_class
+id|lboard_t
+op_star
+id|find_lboard_class
+c_func
+(paren
+id|lboard_t
+op_star
+id|start
+comma
+r_int
+r_char
+id|brd_type
+)paren
+(brace
+multiline_comment|/* Search all boards stored on this node. */
+r_while
+c_loop
+(paren
+id|start
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|KLCLASS
+c_func
+(paren
+id|start-&gt;brd_type
+)paren
+op_eq
+id|KLCLASS
+c_func
+(paren
+id|brd_type
+)paren
 )paren
 r_return
 id|start

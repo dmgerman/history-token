@@ -28,7 +28,7 @@ DECL|macro|HALT
 mdefine_line|#define HALT&t;&t;10
 DECL|macro|NR_INTS
 mdefine_line|#define NR_INTS&t;11
-macro_line|#ifndef _LANGUAGE_ASSEMBLY
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Data structure to hide the differences between the DECstation Interrupts&n; *&n; * If asic_mask == NULL, the interrupt is directly handled by the CPU.&n; * Otherwise this Interrupt is handled the IRQ Controller.&n; */
 r_typedef
 r_struct
@@ -48,6 +48,29 @@ multiline_comment|/* enabling interrupts in IRQ Controller&t;*/
 DECL|typedef|decint_t
 )brace
 id|decint_t
+suffix:semicolon
+r_extern
+r_volatile
+r_int
+r_int
+op_star
+id|isr
+suffix:semicolon
+multiline_comment|/* address of the interrupt status register  */
+r_extern
+r_volatile
+r_int
+r_int
+op_star
+id|imr
+suffix:semicolon
+multiline_comment|/* address of the interrupt mask register    */
+r_extern
+id|decint_t
+id|dec_interrupt
+(braket
+id|NR_INTS
+)braket
 suffix:semicolon
 multiline_comment|/*&n; * Interrupt table structure to hide differences between different&n; * systems such.&n; */
 r_extern
@@ -121,7 +144,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|kn02ba_io_int
+id|kn02xa_io_int
 c_func
 (paren
 r_void
@@ -130,14 +153,6 @@ suffix:semicolon
 r_extern
 r_void
 id|kn03_io_int
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|intr_halt
 c_func
 (paren
 r_void

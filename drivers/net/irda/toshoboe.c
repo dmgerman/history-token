@@ -2335,11 +2335,6 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
-r_struct
-id|pm_dev
-op_star
-id|pmdev
-suffix:semicolon
 r_int
 id|i
 op_assign
@@ -2939,7 +2934,6 @@ comma
 id|self
 )paren
 suffix:semicolon
-multiline_comment|/*  pmdev = pm_register (PM_PCI_DEV, PM_PCI_ID(pci_dev), toshoboe_pmproc);&n;  if (pmdev)&n;&t;  pmdev-&gt;data = self;&n;&t;  */
 id|printk
 (paren
 id|KERN_WARNING

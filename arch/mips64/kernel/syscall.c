@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995 - 2000 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995 - 2000, 2001 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -488,8 +488,8 @@ suffix:semicolon
 )brace
 id|asmlinkage
 r_int
-DECL|function|sys_sysmips
-id|sys_sysmips
+DECL|function|_sys_sysmips
+id|_sys_sysmips
 c_func
 (paren
 r_int
@@ -624,151 +624,17 @@ suffix:semicolon
 r_case
 id|MIPS_ATOMIC_SET
 suffix:colon
-(brace
-r_int
-r_int
-id|tmp
-suffix:semicolon
-id|p
-op_assign
-(paren
-r_int
-op_star
-)paren
-id|arg1
-suffix:semicolon
-id|errno
-op_assign
-id|verify_area
+id|printk
 c_func
 (paren
-id|VERIFY_WRITE
-comma
-id|p
-comma
-r_sizeof
-(paren
-op_star
-id|p
-)paren
+id|KERN_CRIT
+l_string|&quot;How did I get here?&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|errno
-)paren
-r_return
-id|errno
-suffix:semicolon
-id|errno
-op_assign
-l_int|0
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;.set&bslash;tpush&bslash;t&bslash;t&bslash;t# sysmips(MIPS_ATOMIC, ...)&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
-l_string|&quot;1:&bslash;tll&bslash;t%0, %4&bslash;n&bslash;t&quot;
-l_string|&quot;2:&bslash;tmove&bslash;t$1, %3&bslash;n&bslash;t&quot;
-l_string|&quot;3:&bslash;tsc&bslash;t$1, %1&bslash;n&bslash;t&quot;
-l_string|&quot;beqzl&bslash;t$1, 2b&bslash;n&bslash;t&quot;
-l_string|&quot;4:&bslash;t ll&bslash;t%0, %4&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tpop&bslash;n&bslash;t&quot;
-l_string|&quot;.section&bslash;t.fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
-l_string|&quot;5:&bslash;tli&bslash;t%2, 1&bslash;t&bslash;t&bslash;t# error&bslash;n&bslash;t&quot;
-l_string|&quot;.previous&bslash;n&bslash;t&quot;
-l_string|&quot;.section&bslash;t__ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;
-l_string|&quot;.dword&bslash;t1b, 5b&bslash;n&bslash;t&quot;
-l_string|&quot;.dword&bslash;t3b, 5b&bslash;n&bslash;t&quot;
-l_string|&quot;.dword&bslash;t4b, 5b&bslash;n&bslash;t&quot;
-l_string|&quot;.previous&bslash;n&bslash;t&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|tmp
-)paren
-comma
-l_string|&quot;=o&quot;
-(paren
-op_star
-(paren
-id|u32
-op_star
-)paren
-id|p
-)paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|errno
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|arg2
-)paren
-comma
-l_string|&quot;o&quot;
-(paren
-op_star
-(paren
-id|u32
-op_star
-)paren
-id|p
-)paren
-comma
-l_string|&quot;2&quot;
-(paren
-id|errno
-)paren
-suffix:colon
-l_string|&quot;$1&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|errno
-)paren
 r_return
 op_minus
-id|EFAULT
+id|EINVAL
 suffix:semicolon
-multiline_comment|/* We&squot;re skipping error handling etc.  */
-r_if
-c_cond
-(paren
-id|current-&gt;ptrace
-op_amp
-id|PT_TRACESYS
-)paren
-id|syscall_trace
-c_func
-(paren
-)paren
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;move&bslash;t$29, %0&bslash;n&bslash;t&quot;
-l_string|&quot;j&bslash;tret_from_sys_call&quot;
-suffix:colon
-multiline_comment|/* No outputs */
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-op_amp
-id|cmd
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Unreached */
-)brace
 r_case
 id|MIPS_FIXADE
 suffix:colon

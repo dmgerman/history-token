@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1999 by Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1999, 2001 Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; */
 macro_line|#ifndef _ASM_TERMBITS_H
 DECL|macro|_ASM_TERMBITS_H
 mdefine_line|#define _ASM_TERMBITS_H
@@ -137,26 +137,19 @@ DECL|macro|IGNCR
 mdefine_line|#define IGNCR&t;0000200&t;&t;/* Ignore CR.  */
 DECL|macro|ICRNL
 mdefine_line|#define ICRNL&t;0000400&t;&t;/* Map CR to NL on input.  */
-macro_line|#if defined (__USE_BSD) || defined (__KERNEL__)
 DECL|macro|IUCLC
 mdefine_line|#define IUCLC&t;0001000&t;&t;/* Map upper case to lower case on input.  */
-macro_line|#endif
 DECL|macro|IXON
 mdefine_line|#define IXON&t;0002000&t;&t;/* Enable start/stop output control.  */
-macro_line|#if defined (__USE_BSD) || defined (__KERNEL__)
 DECL|macro|IXANY
 mdefine_line|#define IXANY&t;0004000&t;&t;/* Any character will restart after stop.  */
-macro_line|#endif
 DECL|macro|IXOFF
 mdefine_line|#define IXOFF&t;0010000&t;&t;/* Enable start/stop input control.  */
-macro_line|#if defined (__USE_BSD) || defined (__KERNEL__)
 DECL|macro|IMAXBEL
 mdefine_line|#define IMAXBEL&t;0020000&t;&t;/* Ring bell when input queue is full.  */
-macro_line|#endif
 multiline_comment|/* c_oflag bits */
 DECL|macro|OPOST
 mdefine_line|#define OPOST&t;0000001&t;&t;/* Perform output processing.  */
-macro_line|#if defined (__USE_BSD) || defined (__KERNEL__)
 DECL|macro|OLCUC
 mdefine_line|#define OLCUC&t;0000002&t;&t;/* Map lower case to upper case on output.  */
 DECL|macro|ONLCR
@@ -218,7 +211,6 @@ mdefine_line|#define   FF0&t;0000000
 DECL|macro|FF1
 mdefine_line|#define   FF1&t;0100000
 multiline_comment|/*&n;#define PAGEOUT ???&n;#define WRAP    ???&n; */
-macro_line|#endif
 multiline_comment|/* c_cflag bit meaning */
 DECL|macro|CBAUD
 mdefine_line|#define CBAUD&t;0010017
@@ -280,7 +272,6 @@ DECL|macro|HUPCL
 mdefine_line|#define HUPCL&t;0002000&t;&t;/* Hang up on last close.  */
 DECL|macro|CLOCAL
 mdefine_line|#define CLOCAL&t;0004000&t;&t;/* Ignore modem status lines.  */
-macro_line|#if defined (__USE_BSD) || defined (__KERNEL__)
 DECL|macro|CBAUDEX
 mdefine_line|#define CBAUDEX 0010000
 DECL|macro|B57600
@@ -319,7 +310,6 @@ DECL|macro|CMSPAR
 mdefine_line|#define CMSPAR    010000000000&t;/* mark or space (stick) parity */
 DECL|macro|CRTSCTS
 mdefine_line|#define CRTSCTS&t;  020000000000&t;&t;/* flow control */
-macro_line|#endif
 multiline_comment|/* c_lflag bits */
 DECL|macro|ISIG
 mdefine_line|#define ISIG&t;0000001&t;&t;/* Enable signals.  */
@@ -339,20 +329,16 @@ DECL|macro|NOFLSH
 mdefine_line|#define NOFLSH&t;0000200&t;&t;/* Disable flush after interrupt.  */
 DECL|macro|IEXTEN
 mdefine_line|#define IEXTEN&t;0000400&t;&t;/* Enable DISCARD and LNEXT.  */
-macro_line|#if defined (__USE_BSD) || defined (__KERNEL__)
 DECL|macro|ECHOCTL
 mdefine_line|#define ECHOCTL&t;0001000&t;&t;/* Echo control characters as ^X.  */
 DECL|macro|ECHOPRT
 mdefine_line|#define ECHOPRT&t;0002000&t;&t;/* Hardcopy visual erase.  */
 DECL|macro|ECHOKE
 mdefine_line|#define ECHOKE&t;0004000&t;&t;/* Visual erase for KILL.  */
-macro_line|#endif
 DECL|macro|FLUSHO
 mdefine_line|#define FLUSHO&t;0020000
-macro_line|#if defined (__USE_BSD) || defined (__KERNEL__)
 DECL|macro|PENDIN
 mdefine_line|#define PENDIN&t;0040000&t;&t;/* Retype pending input (state).  */
-macro_line|#endif
 DECL|macro|TOSTOP
 mdefine_line|#define TOSTOP&t;0100000&t;&t;/* Send SIGTTOU for background output.  */
 DECL|macro|ITOSTOP

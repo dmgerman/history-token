@@ -1619,13 +1619,6 @@ c_func
 id|ioctl_by_bdev
 )paren
 suffix:semicolon
-DECL|variable|gendisk_head
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|gendisk_head
-)paren
-suffix:semicolon
 DECL|variable|grok_partitions
 id|EXPORT_SYMBOL
 c_func

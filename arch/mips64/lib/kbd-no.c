@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: kbd-no.c,v 1.1 1999/08/21 21:43:00 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Stub keyboard and psaux routines to keep Linux from crashing on machines&n; * without a keyboard.&n; *&n; * Copyright (C) 1998 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Stub keyboard and psaux routines to keep Linux from crashing on machines&n; * without a keyboard.&n; *&n; * Copyright (C) 1998 by Ralf Baechle&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
 DECL|function|no_kbd_request_region

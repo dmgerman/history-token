@@ -107,13 +107,6 @@ op_star
 id|kbd_ops
 suffix:semicolon
 multiline_comment|/*&n; * Setup information&n; *&n; * These are initialized so they are in the .data section&n; */
-DECL|variable|mips_memory_upper
-r_int
-r_int
-id|mips_memory_upper
-op_assign
-id|KSEG0
-suffix:semicolon
 DECL|variable|mips_cputype
 r_int
 r_int

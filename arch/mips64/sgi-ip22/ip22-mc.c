@@ -1,11 +1,10 @@
-multiline_comment|/* $Id: ip22-mc.c,v 1.2 1999/10/19 20:51:52 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * indy_mc.c: Routines for manipulating the INDY memory controller.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 2001 Ralf Baechle (ralf@gnu.org)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/sgi/sgimc.h&gt;
 macro_line|#include &lt;asm/sgi/sgihpc.h&gt;
-macro_line|#include &lt;asm/sgialib.h&gt;
 multiline_comment|/* #define DEBUG_SGIMC */
 DECL|variable|mcmisc_regs
 r_struct

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Derived from IRIX &lt;sys/SN/SN0/sn0_fru.h&gt;&n; *&n; * Copyright (C) 1992 - 1997, 1999 Silcon Graphics, Inc.&n; * Copyright (C) 1999 Ralf Baechle (ralf@gnu.org)&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Derived from IRIX &lt;sys/SN/SN0/sn0_fru.h&gt;&n; *&n; * Copyright (C) 1992 - 1997, 1999 Silcon Graphics, Inc.&n; * Copyright (C) 1999 Ralf Baechle (ralf@gnu.org)&n; */
 macro_line|#ifndef _ASM_SN_SN0_SN0_FRU_H
 DECL|macro|_ASM_SN_SN0_SN0_FRU_H
 mdefine_line|#define _ASM_SN_SN0_SN0_FRU_H

@@ -307,7 +307,7 @@ op_amp
 id|MIPS_CPU_4KTLB
 )paren
 (brace
-macro_line|#if defined(CONFIG_CPU_R4X00) || defined(CONFIG_CPU_R4300) || &bslash;&n;    defined(CONFIG_CPU_R5000) || defined(CONFIG_CPU_NEVADA)
+macro_line|#if defined(CONFIG_CPU_R4X00) || defined(CONFIG_CPU_VR41XX) || &bslash;&n;    defined(CONFIG_CPU_R4300) || defined(CONFIG_CPU_R5000) || &bslash;&n;    defined(CONFIG_CPU_NEVADA)
 id|printk
 c_func
 (paren
@@ -346,7 +346,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_MIPS32)
+macro_line|#if defined(CONFIG_CPU_MIPS32) || defined(CONFIG_CPU_MIPS64)
 id|printk
 c_func
 (paren

@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;ITE 8172G interrupt/setup routines.&n; *&n; * Copyright 2000,2001 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or support@mvista.com&n; *&n; * Part of this file was derived from Carsten Langgaard&squot;s &n; * arch/mips/mips-boards/atlas/atlas_int.c.&n; *&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;ITE 8172G interrupt/setup routines.&n; *&n; * Copyright 2000,2001 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; * Part of this file was derived from Carsten Langgaard&squot;s &n; * arch/mips/mips-boards/atlas/atlas_int.c.&n; *&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
@@ -77,13 +76,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|irq_stat
-id|irq_cpustat_t
-id|irq_stat
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 DECL|variable|local_bh_count
 r_int
 r_int
@@ -124,6 +116,24 @@ id|irq_desc
 (braket
 l_int|0
 )braket
+suffix:semicolon
+r_void
+id|disable_it8172_irq
+c_func
+(paren
+r_int
+r_int
+id|irq_nr
+)paren
+suffix:semicolon
+r_void
+id|enable_it8172_irq
+c_func
+(paren
+r_int
+r_int
+id|irq_nr
+)paren
 suffix:semicolon
 DECL|variable|it8172_hw0_icregs
 r_struct
@@ -267,7 +277,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|mask_irq
+id|disable_it8172_irq
 c_func
 (paren
 id|irq_nr
@@ -300,7 +310,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|unmask_irq
+id|enable_it8172_irq
 c_func
 (paren
 id|irq_nr
@@ -323,10 +333,6 @@ r_int
 id|irq_nr
 )paren
 (brace
-r_int
-r_int
-id|mask
-suffix:semicolon
 id|DPRINTK
 c_func
 (paren
@@ -1286,7 +1292,6 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-singleline_comment|//disable_irq(1&lt;&lt;irq);
 )brace
 id|irq_exit
 c_func
@@ -1424,7 +1429,6 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-singleline_comment|//disable_irq(1&lt;&lt;irq);
 id|restore_flags
 c_func
 (paren
@@ -1663,7 +1667,17 @@ c_func
 r_void
 )paren
 (brace
-id|enable_irq
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|save_and_cli
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|unmask_irq
 c_func
 (paren
 l_int|1
@@ -1672,6 +1686,12 @@ id|EXT_IRQ5_TO_IP
 )paren
 suffix:semicolon
 multiline_comment|/* timer interrupt */
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 )brace
 DECL|function|probe_irq_on
 r_int
@@ -1709,6 +1729,10 @@ r_void
 (brace
 r_int
 id|i
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|memset
 c_func
@@ -1873,7 +1897,13 @@ id|it8172_irq_type
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Enable external int line 2&n;&t; * All ITE interrupts are masked for now.&n;&t; */
-id|enable_irq
+id|save_and_cli
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|unmask_irq
 c_func
 (paren
 l_int|1
@@ -1881,7 +1911,12 @@ op_lshift
 id|EXT_IRQ0_TO_IP
 )paren
 suffix:semicolon
-singleline_comment|//change_cp0_status(ST0_IM, IE_IRQ2);
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_REMOTE_DEBUG
 multiline_comment|/* If local serial I/O used for debug port, enter kgdb at once */
 id|puts

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Code to handle DECstation IRQs plus some generic interrupt stuff.&n; *&n; * Copyright (C) 1992 Linus Torvalds&n; * Copyright (C) 1994, 1995, 1996, 1997 Ralf Baechle&n; *&n; * $Id: irq.c,v 1.6 2000/02/04 07:40:23 ralf Exp $&n; */
+multiline_comment|/*&n; * Code to handle DECstation IRQs plus some generic interrupt stuff.&n; *&n; * Copyright (C) 1992 Linus Torvalds&n; * Copyright (C) 1994, 1995, 1996, 1997, 2000 Ralf Baechle&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
@@ -18,27 +18,61 @@ macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/dec/interrupts.h&gt;
 r_extern
-r_volatile
-r_int
-r_int
-op_star
-id|isr
+r_void
+id|dec_init_kn01
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
-multiline_comment|/* address of the interrupt status register     */
 r_extern
-r_volatile
-r_int
-r_int
-op_star
-id|imr
+r_void
+id|dec_init_kn230
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
-multiline_comment|/* address of the interrupt mask register       */
 r_extern
-id|decint_t
-id|dec_interrupt
-(braket
-id|NR_INTS
-)braket
+r_void
+id|dec_init_kn02
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dec_init_kn02ba
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dec_init_kn02ca
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dec_init_kn03
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+id|asmlinkage
+r_void
+id|decstation_handle_int
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 DECL|variable|spurious_count
 r_int
@@ -99,7 +133,7 @@ suffix:semicolon
 )brace
 r_else
 multiline_comment|/* This is a cpu interrupt        */
-id|set_cp0_status
+id|change_cp0_status
 c_func
 (paren
 id|ST0_IM
@@ -169,7 +203,7 @@ op_star
 id|imr
 suffix:semicolon
 )brace
-id|set_cp0_status
+id|change_cp0_status
 c_func
 (paren
 id|ST0_IM
@@ -521,6 +555,8 @@ id|irq_enter
 c_func
 (paren
 id|cpu
+comma
+id|irq
 )paren
 suffix:semicolon
 id|kstat.irqs
@@ -623,15 +659,15 @@ c_func
 id|irq
 )paren
 suffix:semicolon
+id|__cli
+c_func
+(paren
+)paren
+suffix:semicolon
 id|unmask_irq
 c_func
 (paren
 id|irq
-)paren
-suffix:semicolon
-id|__cli
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -639,6 +675,8 @@ id|irq_exit
 c_func
 (paren
 id|cpu
+comma
+id|irq
 )paren
 suffix:semicolon
 multiline_comment|/* unmasking and bottom half handling is done magically for us. */
@@ -1121,9 +1159,120 @@ c_func
 r_void
 )paren
 (brace
-id|irq_setup
+r_switch
+c_cond
+(paren
+id|mips_machtype
+)paren
+(brace
+r_case
+id|MACH_DS23100
+suffix:colon
+id|dec_init_kn01
 c_func
 (paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MACH_DS5100
+suffix:colon
+multiline_comment|/*  DS5100 MIPSMATE */
+id|dec_init_kn230
+c_func
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MACH_DS5000_200
+suffix:colon
+multiline_comment|/* DS5000 3max */
+id|dec_init_kn02
+c_func
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MACH_DS5000_1XX
+suffix:colon
+multiline_comment|/* DS5000/100 3min */
+id|dec_init_kn02ba
+c_func
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MACH_DS5000_2X0
+suffix:colon
+multiline_comment|/* DS5000/240 3max+ */
+id|dec_init_kn03
+c_func
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MACH_DS5000_XX
+suffix:colon
+multiline_comment|/* Personal DS5000/2x */
+id|dec_init_kn02ca
+c_func
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MACH_DS5800
+suffix:colon
+multiline_comment|/* DS5800 Isis */
+id|panic
+c_func
+(paren
+l_string|&quot;Don&squot;t know how to set this up!&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MACH_DS5400
+suffix:colon
+multiline_comment|/* DS5400 MIPSfair */
+id|panic
+c_func
+(paren
+l_string|&quot;Don&squot;t know how to set this up!&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MACH_DS5500
+suffix:colon
+multiline_comment|/* DS5500 MIPSfair-2 */
+id|panic
+c_func
+(paren
+l_string|&quot;Don&squot;t know how to set this up!&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|set_except_vector
+c_func
+(paren
+l_int|0
+comma
+id|decstation_handle_int
 )paren
 suffix:semicolon
 )brace

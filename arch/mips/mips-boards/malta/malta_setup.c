@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; * Malta specific setup, including init of the feature struct.&n; *&n; */
+multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -73,24 +73,25 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
 r_extern
 r_struct
 id|ide_ops
 id|std_ide_ops
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_FD
 r_extern
 r_struct
 id|fd_ops
 id|std_fd_ops
 suffix:semicolon
-macro_line|#endif
 r_extern
 r_struct
 id|rtc_ops
 id|malta_rtc_ops
+suffix:semicolon
+r_extern
+r_struct
+id|kbd_ops
+id|std_kbd_ops
 suffix:semicolon
 r_extern
 r_void
@@ -119,16 +120,6 @@ id|IORESOURCE_BUSY
 )brace
 comma
 (brace
-l_string|&quot;pic1&quot;
-comma
-l_int|0x20
-comma
-l_int|0x3f
-comma
-id|IORESOURCE_BUSY
-)brace
-comma
-(brace
 l_string|&quot;timer&quot;
 comma
 l_int|0x40
@@ -149,16 +140,6 @@ id|IORESOURCE_BUSY
 )brace
 comma
 (brace
-l_string|&quot;pic2&quot;
-comma
-l_int|0xa0
-comma
-l_int|0xbf
-comma
-id|IORESOURCE_BUSY
-)brace
-comma
-(brace
 l_string|&quot;dma2&quot;
 comma
 l_int|0xc0
@@ -172,41 +153,6 @@ comma
 suffix:semicolon
 DECL|macro|STANDARD_IO_RESOURCES
 mdefine_line|#define STANDARD_IO_RESOURCES (sizeof(standard_io_resources)/sizeof(struct resource))
-DECL|function|malta_irq_setup
-r_static
-r_void
-id|__init
-id|malta_irq_setup
-c_func
-(paren
-r_void
-)paren
-(brace
-id|maltaint_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_REMOTE_DEBUG
-r_if
-c_cond
-(paren
-id|remote_debug
-)paren
-(brace
-id|set_debug_traps
-c_func
-(paren
-)paren
-suffix:semicolon
-id|breakpoint
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-)brace
 DECL|function|malta_setup
 r_void
 id|__init
@@ -235,7 +181,7 @@ r_extern
 r_int
 (paren
 op_star
-id|putDebugChar
+id|generic_putDebugChar
 )paren
 (paren
 r_char
@@ -245,7 +191,7 @@ r_extern
 r_char
 (paren
 op_star
-id|getDebugChar
+id|generic_getDebugChar
 )paren
 (paren
 r_void
@@ -258,10 +204,6 @@ id|argptr
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-id|irq_setup
-op_assign
-id|malta_irq_setup
 suffix:semicolon
 multiline_comment|/* Request I/O space for devices used on the Malta board. */
 r_for
@@ -430,11 +372,11 @@ c_func
 id|line
 )paren
 suffix:semicolon
-id|putDebugChar
+id|generic_putDebugChar
 op_assign
 id|rs_putDebugChar
 suffix:semicolon
-id|getDebugChar
+id|generic_getDebugChar
 op_assign
 id|rs_getDebugChar
 suffix:semicolon
@@ -456,7 +398,7 @@ id|remote_debug
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Breakpoints and stuff are in malta_irq_setup() */
+multiline_comment|/* Breakpoints are in init_IRQ() */
 )brace
 macro_line|#endif
 id|argptr
@@ -505,6 +447,13 @@ id|fd_ops
 op_assign
 op_amp
 id|std_fd_ops
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PC_KEYB
+id|kbd_ops
+op_assign
+op_amp
+id|std_kbd_ops
 suffix:semicolon
 macro_line|#endif
 id|mips_reboot_setup

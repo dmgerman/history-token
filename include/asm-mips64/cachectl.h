@@ -9,7 +9,7 @@ DECL|macro|DCACHE
 mdefine_line|#define&t;DCACHE&t;(1&lt;&lt;1)&t;&t;/* writeback and flush data cache */
 DECL|macro|BCACHE
 mdefine_line|#define&t;BCACHE&t;(ICACHE|DCACHE)&t;/* flush both caches              */
-multiline_comment|/*&n; * Caching modes for the cachectl(2) call&n; *&n; * cachctl(2) is currently not supported and returns ENOSYS.&n; */
+multiline_comment|/*&n; * Caching modes for the cachectl(2) call&n; *&n; * cachectl(2) is currently not supported and returns ENOSYS.&n; */
 DECL|macro|CACHEABLE
 mdefine_line|#define CACHEABLE&t;0&t;/* make pages cacheable */
 DECL|macro|UNCACHEABLE

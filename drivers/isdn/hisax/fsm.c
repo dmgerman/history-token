@@ -1,10 +1,59 @@
-multiline_comment|/* $Id: fsm.c,v 1.14.6.2 2001/05/26 15:19:57 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: fsm.c,v 1.14.6.3 2001/08/23 19:44:23 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 DECL|macro|FSM_TIMER_DEBUG
 mdefine_line|#define FSM_TIMER_DEBUG 0
+DECL|variable|FsmNew
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|FsmNew
+)paren
+suffix:semicolon
+DECL|variable|FsmFree
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|FsmFree
+)paren
+suffix:semicolon
+DECL|variable|FsmEvent
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|FsmEvent
+)paren
+suffix:semicolon
+DECL|variable|FsmChangeState
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|FsmChangeState
+)paren
+suffix:semicolon
+DECL|variable|FsmInitTimer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|FsmInitTimer
+)paren
+suffix:semicolon
+DECL|variable|FsmDelTimer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|FsmDelTimer
+)paren
+suffix:semicolon
+DECL|variable|FsmRestartTimer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|FsmRestartTimer
+)paren
+suffix:semicolon
 r_int
 id|__init
 DECL|function|FsmNew

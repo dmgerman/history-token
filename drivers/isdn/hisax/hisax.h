@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hisax.h,v 2.52.6.7 2001/07/18 16:02:15 kai Exp $&n; *&n; *   Basic declarations, defines and prototypes&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: hisax.h,v 2.52.6.8 2001/08/23 19:44:23 kai Exp $&n; *&n; *   Basic declarations, defines and prototypes&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -1784,6 +1784,12 @@ r_struct
 id|w6692B_hw
 id|w6692
 suffix:semicolon
+DECL|member|b_if
+r_struct
+id|hisax_b_if
+op_star
+id|b_if
+suffix:semicolon
 DECL|member|hw
 )brace
 id|hw
@@ -3374,6 +3380,12 @@ r_struct
 id|w6692_hw
 id|w6692
 suffix:semicolon
+DECL|member|hisax_d_if
+r_struct
+id|hisax_d_if
+op_star
+id|hisax_d_if
+suffix:semicolon
 DECL|member|hw
 )brace
 id|hw
@@ -3814,8 +3826,10 @@ DECL|macro|ISDN_CTYPE_NETJET_U
 mdefine_line|#define  ISDN_CTYPE_NETJET_U&t;38
 DECL|macro|ISDN_CTYPE_HFC_SP_PCMCIA
 mdefine_line|#define  ISDN_CTYPE_HFC_SP_PCMCIA      39
+DECL|macro|ISDN_CTYPE_DYNAMIC
+mdefine_line|#define  ISDN_CTYPE_DYNAMIC     40
 DECL|macro|ISDN_CTYPE_COUNT
-mdefine_line|#define  ISDN_CTYPE_COUNT&t;39
+mdefine_line|#define  ISDN_CTYPE_COUNT&t;40
 macro_line|#ifdef ISDN_CHIP_ISAC
 DECL|macro|ISDN_CHIP_ISAC
 macro_line|#undef ISDN_CHIP_ISAC

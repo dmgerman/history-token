@@ -957,7 +957,7 @@ multiline_comment|/* This is for machines which generate the exact clock. */
 DECL|macro|USECS_PER_JIFFY
 mdefine_line|#define USECS_PER_JIFFY (1000000/HZ)
 DECL|macro|USECS_PER_JIFFY_FRAC
-mdefine_line|#define USECS_PER_JIFFY_FRAC (0x100000000*1000000/HZ&amp;0xffffffff)
+mdefine_line|#define USECS_PER_JIFFY_FRAC ((1000000 &lt;&lt; 32) / HZ &amp; 0xffffffff)
 multiline_comment|/* Cycle counter value at the previous timer interrupt.. */
 DECL|variable|timerhi
 DECL|variable|timerlo

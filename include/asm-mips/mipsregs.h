@@ -29,6 +29,8 @@ DECL|macro|CP0_PAGEMASK
 mdefine_line|#define CP0_PAGEMASK $5
 DECL|macro|CP0_WIRED
 mdefine_line|#define CP0_WIRED $6
+DECL|macro|CP0_INFO
+mdefine_line|#define CP0_INFO $7
 DECL|macro|CP0_BADVADDR
 mdefine_line|#define CP0_BADVADDR $8
 DECL|macro|CP0_COUNT
@@ -169,6 +171,19 @@ mdefine_line|#define FPU_CSR_RU      0x2     /* towards +Infinity */
 DECL|macro|FPU_CSR_RD
 mdefine_line|#define FPU_CSR_RD      0x3     /* towards -Infinity */
 multiline_comment|/*&n; * Values for PageMask register&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_CPU_VR41XX
+DECL|macro|PM_1K
+mdefine_line|#define PM_1K   0x00000000
+DECL|macro|PM_4K
+mdefine_line|#define PM_4K   0x00001800
+DECL|macro|PM_16K
+mdefine_line|#define PM_16K  0x00007800
+DECL|macro|PM_64K
+mdefine_line|#define PM_64K  0x0001f800
+DECL|macro|PM_256K
+mdefine_line|#define PM_256K 0x0007f800
+macro_line|#else
 DECL|macro|PM_4K
 mdefine_line|#define PM_4K   0x00000000
 DECL|macro|PM_16K
@@ -183,6 +198,7 @@ DECL|macro|PM_4M
 mdefine_line|#define PM_4M   0x007fe000
 DECL|macro|PM_16M
 mdefine_line|#define PM_16M  0x01ffe000
+macro_line|#endif
 multiline_comment|/*&n; * Values used for computation of new tlb entries&n; */
 DECL|macro|PL_4K
 mdefine_line|#define PL_4K   12
@@ -212,11 +228,9 @@ DECL|macro|write_32bit_cp0_set1_register
 mdefine_line|#define write_32bit_cp0_set1_register(register,value)           &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;        &quot;ctc0&bslash;t%0,&quot;STR(register)&quot;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        : : &quot;r&quot; (value));
 DECL|macro|write_64bit_cp0_register
 mdefine_line|#define write_64bit_cp0_register(register,value)                &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;        &quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;                                       &bslash;&n;        &quot;dmtc0&bslash;t%0,&quot;STR(register)&quot;&bslash;n&bslash;t&quot;                         &bslash;&n;        &quot;.set&bslash;tmips0&quot;                                           &bslash;&n;        : : &quot;r&quot; (value))
-macro_line|#ifdef CONFIG_CPU_MIPS32
 multiline_comment|/* &n; * This should be changed when we get a compiler that support the MIPS32 ISA. &n; */
 DECL|macro|read_mips32_cp0_config1
 mdefine_line|#define read_mips32_cp0_config1()                               &bslash;&n;({ int __res;                                                   &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;                                   &bslash;&n;&t;&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;                                        &bslash;&n;     &t;&quot;.word&bslash;t0x40018001&bslash;n&bslash;t&quot;                                 &bslash;&n;&t;&quot;move&bslash;t%0,$1&bslash;n&bslash;t&quot;                                       &bslash;&n;&t;&quot;.set&bslash;tat&bslash;n&bslash;t&quot;                                          &bslash;&n;&t;&quot;.set&bslash;treorder&quot;                                         &bslash;&n;&t;:&quot;=r&quot; (__res));                                         &bslash;&n;        __res;})
-macro_line|#endif
 multiline_comment|/*&n; * R4x00 interrupt enable / cause bits&n; */
 DECL|macro|IE_SW0
 mdefine_line|#define IE_SW0          (1&lt;&lt; 8)
@@ -320,6 +334,8 @@ DECL|macro|ST0_ISC
 mdefine_line|#define ST0_ISC&t;&t;&t;0x00010000
 DECL|macro|ST0_SWC
 mdefine_line|#define ST0_SWC&t;&t;&t;0x00020000
+DECL|macro|ST0_CM
+mdefine_line|#define ST0_CM&t;&t;&t;0x00080000
 multiline_comment|/*&n; * Bits specific to the R4640/R4650&n; */
 DECL|macro|ST0_UM
 mdefine_line|#define ST0_UM                 (1   &lt;&lt;  4)
@@ -629,62 +645,5 @@ DECL|macro|CEB_KERNEL
 mdefine_line|#define CEB_KERNEL&t;2&t;/* Count events in kernel mode EXL = ERL = 0 */
 DECL|macro|CEB_EXL
 mdefine_line|#define CEB_EXL&t;&t;1&t;/* Count events with EXL = 1, ERL = 0 */
-macro_line|#ifndef _LANGUAGE_ASSEMBLY
-multiline_comment|/*&n; * Functions to access the performance counter and control registers&n; */
-r_extern
-id|asmlinkage
-r_int
-r_int
-id|read_perf_cntr
-c_func
-(paren
-r_int
-r_int
-id|counter
-)paren
-suffix:semicolon
-r_extern
-id|asmlinkage
-r_void
-id|write_perf_cntr
-c_func
-(paren
-r_int
-r_int
-id|counter
-comma
-r_int
-r_int
-id|val
-)paren
-suffix:semicolon
-r_extern
-id|asmlinkage
-r_int
-r_int
-id|read_perf_cntl
-c_func
-(paren
-r_int
-r_int
-id|counter
-)paren
-suffix:semicolon
-r_extern
-id|asmlinkage
-r_void
-id|write_perf_cntl
-c_func
-(paren
-r_int
-r_int
-id|counter
-comma
-r_int
-r_int
-id|val
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* _ASM_MIPSREGS_H */
 eof

@@ -1,4 +1,5 @@
-multiline_comment|/*&n; *  linux/arch/mips/kernel/proc.c&n; *&n; *  Copyright (C) 1995, 1996  Ralf Baechle&n; */
+multiline_comment|/*&n; *  linux/arch/mips/kernel/proc.c&n; *&n; *  Copyright (C) 1995, 1996, 2001  Ralf Baechle&n; *  Copyright (C) 2001  MIPS Technologies, Inc.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -7,7 +8,7 @@ macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/watch.h&gt;
-DECL|variable|unaligned_instructions
+r_extern
 r_int
 r_int
 id|unaligned_instructions
@@ -20,7 +21,7 @@ id|vced_count
 comma
 id|vcei_count
 suffix:semicolon
-macro_line|#if !defined(CONFIG_CPU_HAS_LLSC)
+macro_line|#ifndef CONFIG_CPU_HAS_LLSC
 DECL|variable|ll_ops
 DECL|variable|sc_ops
 r_int
@@ -495,7 +496,11 @@ id|len
 comma
 l_string|&quot;extra interrupt vector&bslash;t: %s&bslash;n&quot;
 comma
-id|dedicated_iv_available
+(paren
+id|mips_cpu.options
+op_amp
+id|MIPS_CPU_DIVEC
+)paren
 ques
 c_cond
 l_string|&quot;yes&quot;
@@ -573,7 +578,7 @@ comma
 id|vcei_count
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_CPU_HAS_LLSC)
+macro_line|#ifndef CONFIG_CPU_HAS_LLSC
 id|len
 op_add_assign
 id|sprintf

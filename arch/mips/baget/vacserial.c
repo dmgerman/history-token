@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: vacserial.c,v 1.3 1999/08/17 22:18:37 ralf Exp $&n; * vacserial.c: VAC UART serial driver&n; *              This code stealed and adopted from linux/drivers/char/serial.c&n; *              See that for author info&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
+multiline_comment|/*&n; * vacserial.c: VAC UART serial driver&n; *              This code stealed and adopted from linux/drivers/char/serial.c&n; *              See that for author info&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
 DECL|macro|SERIAL_PARANOIA_CHECK
 macro_line|#undef  SERIAL_PARANOIA_CHECK
 DECL|macro|CONFIG_SERIAL_NOPAUSE_IO
@@ -4856,11 +4856,7 @@ suffix:semicolon
 )brace
 id|new_serial.irq
 op_assign
-id|irq_cannonicalize
-c_func
-(paren
 id|new_serial.irq
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5420,14 +5416,12 @@ id|value
 )paren
 (brace
 r_int
-id|error
-suffix:semicolon
-r_int
 r_int
 id|arg
 suffix:semicolon
-id|error
-op_assign
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -5435,14 +5429,10 @@ id|arg
 comma
 id|value
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_return
-id|error
+op_minus
+id|EFAULT
 suffix:semicolon
 r_switch
 c_cond
@@ -9587,11 +9577,7 @@ l_int|0
 suffix:semicolon
 id|state-&gt;irq
 op_assign
-id|irq_cannonicalize
-c_func
-(paren
 id|state-&gt;irq
-)paren
 suffix:semicolon
 r_if
 c_cond

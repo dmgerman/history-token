@@ -296,43 +296,45 @@ id|gendisk
 id|xd_gendisk
 op_assign
 (brace
+id|major
+suffix:colon
 id|MAJOR_NR
 comma
-multiline_comment|/* Major number */
+id|major_name
+suffix:colon
 l_string|&quot;xd&quot;
 comma
-multiline_comment|/* Major name */
+id|minor_shift
+suffix:colon
 l_int|6
 comma
-multiline_comment|/* Bits to shift to get real from partition */
+id|max_p
+suffix:colon
 l_int|1
 op_lshift
 l_int|6
 comma
-multiline_comment|/* Number of partitions per real */
+id|part
+suffix:colon
 id|xd_struct
 comma
-multiline_comment|/* hd struct */
+id|sizes
+suffix:colon
 id|xd_sizes
 comma
-multiline_comment|/* block sizes */
-l_int|0
-comma
-multiline_comment|/* number */
+id|real_devices
+suffix:colon
 (paren
 r_void
 op_star
 )paren
 id|xd_info
 comma
-multiline_comment|/* internal */
-l_int|NULL
-comma
-multiline_comment|/* next */
+id|fops
+suffix:colon
 op_amp
 id|xd_fops
 comma
-multiline_comment|/* file operations */
 )brace
 suffix:semicolon
 DECL|variable|xd_fops

@@ -39,10 +39,6 @@ r_int
 id|write
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|console_loglevel
-suffix:semicolon
 multiline_comment|/*&n; * Macro for exception fixup code to access integer registers.&n; */
 DECL|macro|dpf_reg
 mdefine_line|#define dpf_reg(r) (regs-&gt;regs[r])
@@ -126,9 +122,11 @@ suffix:semicolon
 )brace
 r_extern
 id|spinlock_t
+id|console_lock
+comma
 id|timerlist_lock
 suffix:semicolon
-multiline_comment|/*&n; * Unlock any spinlocks which will prevent us from getting the&n; * message out (timerlist_lock is aquired through the&n; * console unblank code)&n; */
+multiline_comment|/*&n; * Unlock any spinlocks which will prevent us from getting the&n; * message out (timerlist_lock is acquired through the&n; * console unblank code)&n; */
 DECL|function|bust_spinlocks
 r_void
 id|bust_spinlocks
@@ -155,13 +153,6 @@ id|oops_in_progress
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-id|global_irq_lock
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Many serial drivers do __global_cli() */
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -170,11 +161,13 @@ id|loglevel_save
 op_assign
 id|console_loglevel
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
 id|unblank_screen
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|oops_in_progress
 op_assign
 l_int|0
@@ -671,12 +664,6 @@ id|do_exit
 c_func
 (paren
 id|SIGKILL
-)paren
-suffix:semicolon
-id|bust_spinlocks
-c_func
-(paren
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * We ran out of memory, or some other thing happened to us that made&n; * us unable to handle the page fault gracefully.&n; */

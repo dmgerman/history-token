@@ -1075,6 +1075,26 @@ DECL|macro|DSP_BIND_I2S
 macro_line|#&t;define DSP_BIND_I2S&t;&t;0x00000080
 DECL|macro|DSP_BIND_SPDIF
 macro_line|#&t;define DSP_BIND_SPDIF&t;&t;0x00000100
+DECL|macro|SNDCTL_DSP_SETSPDIF
+mdefine_line|#define SNDCTL_DSP_SETSPDIF&t;&t;_SIOW (&squot;P&squot;, 66, int)
+DECL|macro|SNDCTL_DSP_GETSPDIF
+mdefine_line|#define SNDCTL_DSP_GETSPDIF&t;&t;_SIOR (&squot;P&squot;, 67, int)
+DECL|macro|SPDIF_PRO
+macro_line|#&t;define SPDIF_PRO&t;0x0001
+DECL|macro|SPDIF_N_AUD
+macro_line|#&t;define SPDIF_N_AUD&t;0x0002
+DECL|macro|SPDIF_COPY
+macro_line|#&t;define SPDIF_COPY&t;0x0004
+DECL|macro|SPDIF_PRE
+macro_line|#&t;define SPDIF_PRE&t;0x0008
+DECL|macro|SPDIF_CC
+macro_line|#&t;define SPDIF_CC&t;&t;0x07f0
+DECL|macro|SPDIF_L
+macro_line|#&t;define SPDIF_L&t;&t;0x0800
+DECL|macro|SPDIF_DRS
+macro_line|#&t;define SPDIF_DRS&t;0x4000
+DECL|macro|SPDIF_V
+macro_line|#&t;define SPDIF_V&t;&t;0x8000
 multiline_comment|/*&n; * Application&squot;s profile defines the way how playback underrun situations should be handled.&n; * &n; *&t;APF_NORMAL (the default) and APF_NETWORK make the driver to cleanup the&n; *&t;playback buffer whenever an underrun occurs. This consumes some time&n; *&t;prevents looping the existing buffer.&n; *&t;APF_CPUINTENS is intended to be set by CPU intensive applications which&n; *&t;are likely to run out of time occasionally. In this mode the buffer cleanup is&n; *&t;disabled which saves CPU time but also let&squot;s the previous buffer content to&n; *&t;be played during the &quot;pause&quot; after the underrun.&n; */
 DECL|macro|SNDCTL_DSP_PROFILE
 mdefine_line|#define SNDCTL_DSP_PROFILE&t;&t;_SIOW (&squot;P&squot;, 23, int)

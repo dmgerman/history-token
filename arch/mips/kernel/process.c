@@ -237,7 +237,6 @@ id|last_task_used_math
 op_eq
 id|current
 )paren
-macro_line|#ifdef CONFIG_MIPS_FPU_EMULATOR
 r_if
 c_cond
 (paren
@@ -245,7 +244,6 @@ id|mips_cpu.options
 op_amp
 id|MIPS_CPU_FPU
 )paren
-macro_line|#endif
 (brace
 id|set_cp0_status
 c_func
@@ -414,8 +412,6 @@ id|CP0_STATUS
 op_amp
 op_complement
 (paren
-id|ST0_CU3
-op_or
 id|ST0_CU2
 op_or
 id|ST0_CU1
@@ -427,8 +423,6 @@ id|childregs-&gt;cp0_status
 op_and_assign
 op_complement
 (paren
-id|ST0_CU3
-op_or
 id|ST0_CU2
 op_or
 id|ST0_CU1

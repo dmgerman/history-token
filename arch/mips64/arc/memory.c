@@ -97,7 +97,7 @@ l_string|&quot;FreeContiguous&quot;
 )brace
 suffix:semicolon
 DECL|macro|mtypes
-mdefine_line|#define mtypes(a) (prom_flags &amp; PROM_FLAG_ARCS) ? arcs_mtypes[a.arcs] : arc_mtypes[a.arc]
+mdefine_line|#define mtypes(a) (prom_flags &amp; PROM_FLAG_ARCS) ? arcs_mtypes[a.arcs] &bslash;&n;&t;&t;&t;&t;&t;&t;: arc_mtypes[a.arc]
 macro_line|#endif
 DECL|function|memtype_classify_arcs
 r_static
@@ -419,19 +419,14 @@ id|type
 suffix:semicolon
 )brace
 )brace
+DECL|function|prom_free_prom_memory
 r_void
 id|__init
-DECL|function|prom_free_prom_memory
 id|prom_free_prom_memory
 (paren
 r_void
 )paren
 (brace
-r_struct
-id|prom_pmemblock
-op_star
-id|p
-suffix:semicolon
 r_int
 r_int
 id|freed
@@ -560,6 +555,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Freeing prom memory: %ldkb freed&bslash;n&quot;
 comma
 id|freed

@@ -881,6 +881,9 @@ id|scsi_result
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
+id|saved_result
+suffix:semicolon
 id|ASSERT_LOCK
 c_func
 (paren
@@ -1001,6 +1004,10 @@ comma
 l_int|256
 )paren
 suffix:semicolon
+id|saved_result
+op_assign
+id|SCpnt-&gt;result
+suffix:semicolon
 id|SCpnt-&gt;request_buffer
 op_assign
 id|scsi_result
@@ -1110,6 +1117,10 @@ r_sizeof
 id|SCpnt-&gt;data_cmnd
 )paren
 )paren
+suffix:semicolon
+id|SCpnt-&gt;result
+op_assign
+id|saved_result
 suffix:semicolon
 id|SCpnt-&gt;request_buffer
 op_assign

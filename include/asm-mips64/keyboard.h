@@ -1,10 +1,11 @@
-multiline_comment|/* $Id: keyboard.h,v 1.1 1999/08/19 22:56:34 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999 Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999, 2001 Ralf Baechle&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; */
 macro_line|#ifndef _ASM_KEYBOARD_H
 DECL|macro|_ASM_KEYBOARD_H
 mdefine_line|#define _ASM_KEYBOARD_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 DECL|macro|DISABLE_KBD_DURING_INTERRUPTS
 mdefine_line|#define DISABLE_KBD_DURING_INTERRUPTS 0
@@ -71,6 +72,17 @@ id|leds
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|pckbd_rate
+c_func
+(paren
+r_struct
+id|kbd_repeat
+op_star
+id|rep
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|pckbd_init_hw
 c_func
@@ -96,6 +108,8 @@ DECL|macro|kbd_unexpected_up
 mdefine_line|#define kbd_unexpected_up&t;pckbd_unexpected_up
 DECL|macro|kbd_leds
 mdefine_line|#define kbd_leds&t;&t;pckbd_leds
+DECL|macro|kbd_rate
+mdefine_line|#define kbd_rate&t;&t;pckbd_rate
 DECL|macro|kbd_init_hw
 mdefine_line|#define kbd_init_hw&t;&t;pckbd_init_hw
 DECL|macro|kbd_sysrq_xlate

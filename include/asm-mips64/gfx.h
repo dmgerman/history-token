@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * This is the user-visible SGI GFX interface.&n; *&n; * This must be used verbatim into the GNU libc.  It does not include&n; * any kernel-only bits on it.  &n; *&n; * miguel@nuclecu.unam.mx&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * This is the user-visible SGI GFX interface.&n; *&n; * This must be used verbatim into the GNU libc.  It does not include&n; * any kernel-only bits on it.  &n; *&n; * miguel@nuclecu.unam.mx&n; */
 macro_line|#ifndef _ASM_GFX_H
 DECL|macro|_ASM_GFX_H
 mdefine_line|#define _ASM_GFX_H

@@ -1277,7 +1277,6 @@ id|irq
 op_assign
 l_int|9
 suffix:semicolon
-macro_line|#ifdef LINUX_21
 id|MODULE_PARM
 c_func
 (paren
@@ -1329,7 +1328,13 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Bulding Number Three Ltd&quot;
+l_string|&quot;Alan Cox&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -1338,7 +1343,6 @@ c_func
 l_string|&quot;Modular driver for the Comtrol Hostess SV11&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|sv11_unit
 r_static
 r_struct

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_net.h,v 1.19.6.1 2001/04/20 02:41:58 keil Exp $&n;&n; * header for Linux ISDN subsystem, network related functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: isdn_net.h,v 1.19.6.2 2001/08/14 14:04:21 kai Exp $&n;&n; * header for Linux ISDN subsystem, network related functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 multiline_comment|/* Definitions for hupflags:                */
 DECL|macro|ISDN_WAITCHARGE
 mdefine_line|#define ISDN_WAITCHARGE  1      /* did not get a charge info yet            */
@@ -17,6 +17,8 @@ DECL|macro|CISCO_ADDR_BROADCAST
 mdefine_line|#define CISCO_ADDR_BROADCAST  0x8f
 DECL|macro|CISCO_CTRL
 mdefine_line|#define CISCO_CTRL            0x00
+DECL|macro|CISCO_TYPE_CDP
+mdefine_line|#define CISCO_TYPE_CDP        0x2000
 DECL|macro|CISCO_TYPE_INET
 mdefine_line|#define CISCO_TYPE_INET       0x0800
 DECL|macro|CISCO_TYPE_SLARP

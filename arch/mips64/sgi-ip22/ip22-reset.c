@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ip22-reset.c,v 1.3 1999/10/08 21:07:51 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Reset an IP22.&n; *&n; * Copyright (C) 1997, 1998, 1999 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Reset an IP22.&n; *&n; * Copyright (C) 1997, 1998, 1999, 2001 by Ralf Baechle&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;

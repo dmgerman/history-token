@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ip22-sc.c,v 1.2 1999/12/04 03:59:01 ralf Exp $&n; *&n; * indy_sc.c: Indy cache management functions.&n; *&n; * Copyright (C) 1997 Ralf Baechle (ralf@gnu.org),&n; * derived from r4xx0.c by David S. Miller (dm@engr.sgi.com).&n; */
+multiline_comment|/*&n; * indy_sc.c: Indy cache management functions.&n; *&n; * Copyright (C) 1997 Ralf Baechle (ralf@gnu.org),&n; * derived from r4xx0.c by David S. Miller (dm@engr.sgi.com).&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -9,7 +9,6 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 multiline_comment|/* Secondary cache size in bytes, if present.  */
 DECL|variable|scache_size
@@ -48,53 +47,13 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-dot
-id|set
-id|noreorder
-op_logical_or
-op_mod
-l_int|0
-comma
-op_mod
-l_int|4
-macro_line|# first line to flush
-op_logical_or
-op_mod
-l_int|1
-comma
-op_mod
-l_int|4
-macro_line|# last line to flush
-l_int|1
-suffix:colon
-id|sw
-"$"
-l_int|0
-comma
-l_int|0
-(paren
-op_mod
-l_int|0
-)paren
-id|bne
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-comma
-l_int|1
-id|b
-id|daddu
-op_mod
-l_int|0
-comma
-l_int|32
-dot
-id|set
-id|reorder
-"&quot;"
+l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
+l_string|&quot;or&bslash;t%0, %4&bslash;t&bslash;t&bslash;t# first line to flush&bslash;n&bslash;t&quot;
+l_string|&quot;or&bslash;t%1, %4&bslash;t&bslash;t&bslash;t# last line to flush&bslash;n&quot;
+l_string|&quot;1:&bslash;tsw&t;$0, 0(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;bne&bslash;t%0, %1, 1b&bslash;n&bslash;t&quot;
+l_string|&quot;daddu&bslash;t%0, 32&bslash;n&bslash;t&quot;
+l_string|&quot;.set reorder&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: indy_sc.c,v 1.14 2000/03/25 22:35:07 ralf Exp $&n; *&n; * indy_sc.c: Indy cache management functions.&n; *&n; * Copyright (C) 1997 Ralf Baechle (ralf@gnu.org),&n; * derived from r4xx0.c by David S. Miller (dm@engr.sgi.com).&n; */
+multiline_comment|/*&n; * indy_sc.c: Indy cache management functions.&n; *&n; * Copyright (C) 1997, 2001 Ralf Baechle (ralf@gnu.org),&n; * derived from r4xx0.c by David S. Miller (dm@engr.sgi.com).&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -53,103 +53,23 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-dot
-id|set
-id|noreorder
-dot
-id|set
-id|mips3
-dot
-id|set
-id|noat
-id|mfc0
-op_mod
-l_int|2
-comma
-"$"
-l_int|12
-id|li
-"$"
-l_int|1
-comma
-l_int|0x80
-macro_line|# Go 64 bit
-id|mtc0
-"$"
-l_int|1
-comma
-"$"
-l_int|12
-id|dli
-"$"
-l_int|1
-comma
-l_int|0x9000000080000000
-op_logical_or
-op_mod
-l_int|0
-comma
-"$"
-l_int|1
-macro_line|# first line to flush
-op_logical_or
-op_mod
-l_int|1
-comma
-"$"
-l_int|1
-macro_line|# last line to flush
-dot
-id|set
-id|at
-l_int|1
-suffix:colon
-id|sw
-"$"
-l_int|0
-comma
-l_int|0
-(paren
-op_mod
-l_int|0
-)paren
-id|bne
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-comma
-l_int|1
-id|b
-id|daddu
-op_mod
-l_int|0
-comma
-l_int|32
-id|mtc0
-op_mod
-l_int|2
-comma
-"$"
-l_int|12
-macro_line|# Back to 32 bit
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-dot
-id|set
-id|mips0
-dot
-id|set
-id|reorder
-"&quot;"
+l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# indy_sc_wipe&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
+l_string|&quot;mfc0&bslash;t%2, $12&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t$1, 0x80&bslash;t&bslash;t&bslash;t# Go 64 bit&bslash;n&bslash;t&quot;
+l_string|&quot;mtc0&bslash;t$1, $12&bslash;n&bslash;t&quot;
+l_string|&quot;dli&bslash;t$1, 0x9000000080000000&bslash;n&bslash;t&quot;
+l_string|&quot;or&bslash;t%0, $1&bslash;t&bslash;t&bslash;t# first line to flush&bslash;n&bslash;t&quot;
+l_string|&quot;or&bslash;t%1, $1&bslash;t&bslash;t&bslash;t# last line to flush&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tat&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;tsw&bslash;t$0, 0(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;bne&bslash;t%0, %1, 1b&bslash;n&bslash;t&quot;
+l_string|&quot;daddu&bslash;t%0, 32&bslash;n&bslash;t&quot;
+l_string|&quot;mtc0&bslash;t%2, $12&bslash;t&bslash;t&bslash;t# Back to 32 bit&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop; nop;&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tmips0&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;treorder&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -329,119 +249,25 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-dot
-id|set
-id|push
-dot
-id|set
-id|noreorder
-dot
-id|set
-id|mips3
-id|mfc0
-op_mod
-l_int|2
-comma
-"$"
-l_int|12
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|li
-op_mod
-l_int|1
-comma
-l_int|0x80
-id|mtc0
-op_mod
-l_int|1
-comma
-"$"
-l_int|12
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|li
-op_mod
-l_int|0
-comma
-l_int|0x1
-id|dsll
-op_mod
-l_int|0
-comma
-l_int|31
-id|lui
-op_mod
-l_int|1
-comma
-l_int|0x9000
-id|dsll32
-op_mod
-l_int|1
-comma
-l_int|0
-op_logical_or
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-comma
-op_mod
-l_int|0
-id|sb
-"$"
-l_int|0
-comma
-l_int|0
-(paren
-op_mod
-l_int|0
-)paren
-id|mtc0
-"$"
-l_int|0
-comma
-"$"
-l_int|12
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|mtc0
-op_mod
-l_int|2
-comma
-"$"
-l_int|12
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-dot
-id|set
-id|pop
-"&quot;"
+l_string|&quot;.set&bslash;tpush&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;
+l_string|&quot;mfc0&bslash;t%2, $12&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop; nop;&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t%1, 0x80&bslash;n&bslash;t&quot;
+l_string|&quot;mtc0&bslash;t%1, $12&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop; nop;&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t%0, 0x1&bslash;n&bslash;t&quot;
+l_string|&quot;dsll&bslash;t%0, 31&bslash;n&bslash;t&quot;
+l_string|&quot;lui&bslash;t%1, 0x9000&bslash;n&bslash;t&quot;
+l_string|&quot;dsll32&bslash;t%1, 0&bslash;n&bslash;t&quot;
+l_string|&quot;or&bslash;t%0, %1, %0&bslash;n&bslash;t&quot;
+l_string|&quot;sb&bslash;t$0, 0(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;mtc0&bslash;t$0, $12&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop; nop;&bslash;n&bslash;t&quot;
+l_string|&quot;mtc0&bslash;t%2, $12&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop; nop;&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tpop&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -489,119 +315,25 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-dot
-id|set
-id|push
-dot
-id|set
-id|noreorder
-dot
-id|set
-id|mips3
-id|li
-op_mod
-l_int|0
-comma
-l_int|0x1
-id|dsll
-op_mod
-l_int|0
-comma
-l_int|31
-id|lui
-op_mod
-l_int|1
-comma
-l_int|0x9000
-id|dsll32
-op_mod
-l_int|1
-comma
-l_int|0
-op_logical_or
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-comma
-op_mod
-l_int|0
-id|mfc0
-op_mod
-l_int|2
-comma
-"$"
-l_int|12
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|li
-op_mod
-l_int|1
-comma
-l_int|0x80
-id|mtc0
-op_mod
-l_int|1
-comma
-"$"
-l_int|12
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|sh
-"$"
-l_int|0
-comma
-l_int|0
-(paren
-op_mod
-l_int|0
-)paren
-id|mtc0
-"$"
-l_int|0
-comma
-"$"
-l_int|12
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|mtc0
-op_mod
-l_int|2
-comma
-"$"
-l_int|12
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-dot
-id|set
-id|pop
-"&quot;"
+l_string|&quot;.set&bslash;tpush&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t%0, 0x1&bslash;n&bslash;t&quot;
+l_string|&quot;dsll&bslash;t%0, 31&bslash;n&bslash;t&quot;
+l_string|&quot;lui&bslash;t%1, 0x9000&bslash;n&bslash;t&quot;
+l_string|&quot;dsll32&bslash;t%1, 0&bslash;n&bslash;t&quot;
+l_string|&quot;or&bslash;t%0, %1, %0&bslash;n&bslash;t&quot;
+l_string|&quot;mfc0&bslash;t%2, $12&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop; nop&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t%1, 0x80&bslash;n&bslash;t&quot;
+l_string|&quot;mtc0&bslash;t%1, $12&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop; nop&bslash;n&bslash;t&quot;
+l_string|&quot;sh&bslash;t$0, 0(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;mtc0&bslash;t$0, $12&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop; nop&bslash;n&bslash;t&quot;
+l_string|&quot;mtc0&bslash;t%2, $12&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop; nop&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tpop&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren

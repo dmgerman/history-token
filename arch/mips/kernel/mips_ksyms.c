@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -112,6 +113,13 @@ r_const
 r_char
 op_star
 id|s
+)paren
+suffix:semicolon
+DECL|variable|mips_machtype
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mips_machtype
 )paren
 suffix:semicolon
 DECL|variable|EISA_bus
@@ -464,29 +472,6 @@ id|fcr31
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MIPS_FPE_MODULE
-DECL|variable|__compute_return_epc
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__compute_return_epc
-)paren
-suffix:semicolon
-DECL|variable|register_fpe
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|register_fpe
-)paren
-suffix:semicolon
-DECL|variable|unregister_fpe
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|unregister_fpe
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_VT
 DECL|variable|screen_info
 id|EXPORT_SYMBOL

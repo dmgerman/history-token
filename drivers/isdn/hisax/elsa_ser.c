@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: elsa_ser.c,v 2.10.6.2 2001/06/09 15:14:17 kai Exp $&n; *&n; * stuff for the serial modem on ELSA cards&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: elsa_ser.c,v 2.10.6.3 2001/08/17 12:34:26 kai Exp $&n; *&n; * stuff for the serial modem on ELSA cards&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
@@ -10,10 +10,6 @@ DECL|macro|RS_ISR_PASS_LIMIT
 mdefine_line|#define RS_ISR_PASS_LIMIT 256
 DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD ( 1843200 / 16 )
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 singleline_comment|//#define SERIAL_DEBUG_OPEN 1
 singleline_comment|//#define SERIAL_DEBUG_INTR 1
 singleline_comment|//#define SERIAL_DEBUG_FLOW 1
@@ -1089,8 +1085,6 @@ comma
 id|len
 comma
 id|fp
-comma
-id|buflen
 suffix:semicolon
 r_int
 id|flags
@@ -1125,21 +1119,24 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|buflen
+id|len
+op_assign
+id|bcs-&gt;tx_skb-&gt;len
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OG
+id|MAX_MODEM_BUF
+op_minus
+id|cs-&gt;hw.elsa.transcnt
+)paren
+id|len
 op_assign
 id|MAX_MODEM_BUF
 op_minus
 id|cs-&gt;hw.elsa.transcnt
-suffix:semicolon
-id|len
-op_assign
-id|MIN
-c_func
-(paren
-id|buflen
-comma
-id|bcs-&gt;tx_skb-&gt;len
-)paren
 suffix:semicolon
 id|fp
 op_assign
@@ -1157,24 +1154,24 @@ l_int|1
 suffix:semicolon
 id|count
 op_assign
-id|MIN
-c_func
-(paren
 id|len
-comma
-id|MAX_MODEM_BUF
-op_minus
-id|fp
-)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|count
-OL
-id|len
+OG
+id|MAX_MODEM_BUF
+op_minus
+id|fp
 )paren
 (brace
+id|count
+op_assign
+id|MAX_MODEM_BUF
+op_minus
+id|fp
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -2241,24 +2238,24 @@ l_int|1
 suffix:semicolon
 id|count
 op_assign
-id|MIN
-c_func
-(paren
 id|len
-comma
-id|MAX_MODEM_BUF
-op_minus
-id|fp
-)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|count
-OL
-id|len
+OG
+id|MAX_MODEM_BUF
+op_minus
+id|fp
 )paren
 (brace
+id|count
+op_assign
+id|MAX_MODEM_BUF
+op_minus
+id|fp
+suffix:semicolon
 id|memcpy
 c_func
 (paren

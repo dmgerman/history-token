@@ -1,13 +1,13 @@
-multiline_comment|/*&n; * cp1emu.c: a MIPS coprocessor 1 (fpu) instruction emulator&n; * &n; * MIPS floating point support&n; * Copyright (C) 1994-2000 Algorithmics Ltd.  All rights reserved.&n; * http://www.algor.co.uk&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; * A complete emulator for MIPS coprocessor 1 instructions.  This is&n; * required for #float(switch) or #float(trap), where it catches all&n; * COP1 instructions via the &quot;CoProcessor Unusable&quot; exception.  &n; *&n; * More surprisingly it is also required for #float(ieee), to help out&n; * the hardware fpu at the boundaries of the IEEE-754 representation&n; * (denormalised values, infinities, underflow, etc).  It is made&n; * quite nasty because emulation of some non-COP1 instructions is&n; * required, e.g. in branch delay slots.&n; * &n; * Notes: &n; *  1) the IEEE754 library (-le) performs the actual arithmetic;&n; *  2) if you know that you won&squot;t have an fpu, then you&squot;ll get much &n; *     better performance by compiling with -msoft-float!  */
-multiline_comment|/**************************************************************************&n; *  Nov 7, 2000&n; *  Massive changes to integrate with Linux kernel.&n; *&n; *  Replace use of kernel data area with use of user stack &n; *  for execution of instructions in branch delay slots.&n; *&n; *  Replace use of static kernel variables with thread_struct elements.&n; *&n; *  Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; *  Copyright (C) 2000  MIPS Technologies, Inc.  All rights reserved.&n; *************************************************************************/
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; * cp1emu.c: a MIPS coprocessor 1 (fpu) instruction emulator&n; * &n; * MIPS floating point support&n; * Copyright (C) 1994-2000 Algorithmics Ltd.  All rights reserved.&n; * http://www.algor.co.uk&n; *&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000  MIPS Technologies, Inc.&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * A complete emulator for MIPS coprocessor 1 instructions.  This is&n; * required for #float(switch) or #float(trap), where it catches all&n; * COP1 instructions via the &quot;CoProcessor Unusable&quot; exception.  &n; *&n; * More surprisingly it is also required for #float(ieee), to help out&n; * the hardware fpu at the boundaries of the IEEE-754 representation&n; * (denormalised values, infinities, underflow, etc).  It is made&n; * quite nasty because emulation of some non-COP1 instructions is&n; * required, e.g. in branch delay slots.&n; * &n; * Note if you know that you won&squot;t have an fpu, then you&squot;ll get much &n; * better performance by compiling with -msoft-float!&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/asm.h&gt;
 macro_line|#include &lt;asm/branch.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/inst.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -309,10 +309,10 @@ DECL|macro|REG_TO_VA
 mdefine_line|#define REG_TO_VA (vaddr_t)
 DECL|macro|VA_TO_REG
 mdefine_line|#define VA_TO_REG (unsigned long)
+DECL|function|mips_get_word
 r_static
 r_int
 r_int
-DECL|function|mips_get_word
 id|mips_get_word
 c_func
 (paren
@@ -362,9 +362,6 @@ id|va
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-multiline_comment|/* Use kernel get_user() macro */
 op_star
 id|perr
 op_assign
@@ -387,7 +384,6 @@ suffix:semicolon
 r_return
 id|temp
 suffix:semicolon
-)brace
 )brace
 r_static
 r_int
@@ -445,9 +441,6 @@ id|va
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-multiline_comment|/* Use kernel get_user() macro */
 op_star
 id|perr
 op_assign
@@ -471,7 +464,6 @@ suffix:semicolon
 r_return
 id|temp
 suffix:semicolon
-)brace
 )brace
 DECL|function|mips_put_word
 r_static
@@ -518,13 +510,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_else
-(brace
-multiline_comment|/* Use kernel get_user() macro */
 r_return
-(paren
-r_int
-)paren
 id|put_user
 c_func
 (paren
@@ -538,7 +524,6 @@ op_star
 id|va
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|mips_put_dword
 r_static
@@ -586,13 +571,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_else
-(brace
-multiline_comment|/* Use kernel get_user() macro */
 r_return
-(paren
-r_int
-)paren
 id|put_user
 c_func
 (paren
@@ -608,20 +587,16 @@ id|va
 )paren
 suffix:semicolon
 )brace
-)brace
 multiline_comment|/*&n; * In the Linux kernel, we support selection of FPR format on the&n; * basis of the Status.FR bit.  This does imply that, if a full 32&n; * FPRs are desired, there needs to be a flip-flop that can be written&n; * to one at that bit position.  In any case, normal MIPS ABI uses&n; * only the even FPRs (Status.FR = 0).&n; */
 DECL|macro|CP0_STATUS_FR_SUPPORT
 mdefine_line|#define CP0_STATUS_FR_SUPPORT
 multiline_comment|/*&n; * Emulate the single floating point instruction pointed at by EPC.&n; * Two instructions if the instruction is in a branch delay slot.&n; */
+DECL|function|cop1Emulate
 r_static
 r_int
-DECL|function|cop1Emulate
 id|cop1Emulate
 c_func
 (paren
-r_int
-id|xcptno
-comma
 r_struct
 id|pt_regs
 op_star
@@ -1763,8 +1738,8 @@ suffix:semicolon
 r_case
 id|dmtc_op
 suffix:colon
-multiline_comment|/* copregister fs &lt;- rt */
 (brace
+multiline_comment|/* copregister fs &lt;- rt */
 id|fpureg_t
 id|value
 suffix:semicolon
@@ -1823,9 +1798,9 @@ id|fs
 op_assign
 id|value
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
+)brace
 macro_line|#endif
 r_case
 id|mfc_op
@@ -2332,6 +2307,12 @@ suffix:semicolon
 r_case
 id|bc_op
 suffix:colon
+(brace
+r_int
+id|likely
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2339,16 +2320,8 @@ id|xcp-&gt;cp0_cause
 op_amp
 id|CAUSEF_BD
 )paren
-(brace
 r_return
 id|SIGILL
-suffix:semicolon
-)brace
-(brace
-r_int
-id|likely
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#if __mips &gt;= 4
 id|cond
@@ -2464,9 +2437,7 @@ comma
 id|REG_TO_VA
 c_func
 (paren
-id|xcp
-op_member_access_from_pointer
-id|cp0_epc
+id|xcp-&gt;cp0_epc
 )paren
 comma
 op_amp
@@ -2479,9 +2450,7 @@ c_cond
 id|err
 )paren
 (brace
-id|fpuemuprivate.stats
-dot
-id|errors
+id|fpuemuprivate.stats.errors
 op_increment
 suffix:semicolon
 r_return
@@ -2546,7 +2515,7 @@ r_break
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/* single step the non-cp1 instruction in the dslot */
+multiline_comment|/*&n;&t;&t;&t;&t; * Single step the non-cp1 instruction in the&n;&t;&t;&t;&t; * dslot&n;&t;&t;&t;&t; */
 r_return
 id|mips_dsemul
 c_func
@@ -2567,20 +2536,24 @@ c_cond
 (paren
 id|likely
 )paren
-multiline_comment|/* branch likely nullifies dslot if not taken */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * branch likely nullifies dslot if not&n;&t;&t;&t;&t;&t; * taken&n;&t;&t;&t;&t;&t; */
 id|xcp-&gt;cp0_epc
 op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/* else continue &amp; execute dslot as normal insn */
 )brace
-)brace
 r_break
 suffix:semicolon
+)brace
 r_default
 suffix:colon
 (brace
 )brace
+(brace
+r_int
+id|sig
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2595,16 +2568,10 @@ op_amp
 l_int|0x10
 )paren
 )paren
-(brace
 r_return
 id|SIGILL
 suffix:semicolon
-)brace
 multiline_comment|/* a real fpu computation instruction */
-(brace
-r_int
-id|sig
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2906,6 +2873,7 @@ r_if
 c_cond
 (paren
 id|verify_area
+c_func
 (paren
 id|VERIFY_WRITE
 comma
@@ -2944,9 +2912,7 @@ id|fpuemuprivate.stats.errors
 op_increment
 suffix:semicolon
 r_return
-(paren
 id|SIGBUS
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* &n;&t; * Algorithmics used a system call instruction, and&n;&t; * borrowed that vector.  MIPS/Linux version is a bit&n;&t; * more heavyweight in the interests of portability and&n;&t; * multiprocessor support.  We flag the thread for special&n;&t; * handling in the unaligned access handler and force an&n;&t; * address error excpetion.&n;&t; */
@@ -3033,12 +2999,14 @@ id|dsemul_insns
 l_int|0
 )braket
 suffix:semicolon
-multiline_comment|/* What we&squot;d really like to do is just flush the line(s) of the */
-multiline_comment|/* icache containing the dsemulret instructions, but there&squot;s no */
-multiline_comment|/* mechanism to do this yet...  */
-id|flush_cache_all
+id|flush_cache_sigtramp
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
+id|dsemul_insns
 )paren
 suffix:semicolon
 r_return
@@ -3498,9 +3466,9 @@ id|r
 )paren
 suffix:semicolon
 )brace
+DECL|function|fpux_emu
 r_static
 r_int
-DECL|function|fpux_emu
 id|fpux_emu
 c_func
 (paren
@@ -4448,9 +4416,9 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * Emulate a single COP1 arithmetic instruction.&n; */
+DECL|function|fpu_emu
 r_static
 r_int
-DECL|function|fpu_emu
 id|fpu_emu
 c_func
 (paren
@@ -4959,13 +4927,13 @@ multiline_comment|/* not defined */
 r_case
 id|fcvtd_op
 suffix:colon
-macro_line|#if defined(SINGLE_ONLY_FPU)
+(brace
+macro_line|#ifdef SINGLE_ONLY_FPU
 r_return
 id|SIGILL
 suffix:semicolon
 multiline_comment|/* not defined */
 macro_line|#else
-(brace
 id|ieee754sp
 id|fs
 suffix:semicolon
@@ -5101,7 +5069,7 @@ r_goto
 id|copcsr
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;/* __mips &gt;= 2 */
+macro_line|#endif /* __mips &gt;= 2 */
 macro_line|#if __mips64 &amp;&amp; !defined(SINGLE_ONLY_FPU)
 r_case
 id|fcvtl_op
@@ -6030,7 +5998,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;/* !defined(SINGLE_ONLY_FPU) */
+macro_line|#endif /* !defined(SINGLE_ONLY_FPU) */
 r_case
 id|w_fmt
 suffix:colon
@@ -6362,15 +6330,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Emulate the floating point instruction at EPC, and continue&n; * to run until we hit a non-fp instruction, or a backward&n; * branch.  This cuts down dramatically on the per instruction &n; * exception overhead.&n; */
+multiline_comment|/*&n; * Emulate the floating point instruction at EPC, and continue to run until we&n; * hit a non-fp instruction, or a backward branch.  This cuts down dramatically&n; * on the per instruction exception overhead.&n; */
 DECL|function|fpu_emulator_cop1Handler
 r_int
 id|fpu_emulator_cop1Handler
 c_func
 (paren
-r_int
-id|xcptno
-comma
 r_struct
 id|pt_regs
 op_star
@@ -6411,6 +6376,16 @@ id|xcp-&gt;cp0_epc
 suffix:semicolon
 r_do
 (brace
+r_if
+c_cond
+(paren
+id|current-&gt;need_resched
+)paren
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
 id|prevepc
 op_assign
 id|xcp-&gt;cp0_epc
@@ -6457,8 +6432,6 @@ op_assign
 id|cop1Emulate
 c_func
 (paren
-id|xcptno
-comma
 id|xcp
 comma
 id|ctx
@@ -6470,6 +6443,15 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/* skip nops */
+r_if
+c_cond
+(paren
+id|mips_cpu.options
+op_amp
+id|MIPS_CPU_FPU
+)paren
+r_break
+suffix:semicolon
 )brace
 r_while
 c_loop
@@ -6575,8 +6557,6 @@ op_assign
 id|cop1Emulate
 c_func
 (paren
-id|xcptno
-comma
 id|xcp
 comma
 id|ctx

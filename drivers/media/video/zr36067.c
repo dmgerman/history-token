@@ -15805,10 +15805,6 @@ id|zr-&gt;window.clips
 op_assign
 l_int|NULL
 suffix:semicolon
-id|zr-&gt;window.clipcount
-op_assign
-id|vw.clipcount
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * If an overlay is running, we have to switch it off&n;&t;&t;&t; * and switch it on again in order to get the new settings in effect.&n;&t;&t;&t; *&n;&t;&t;&t; * We also want to avoid that the overlay mask is written&n;&t;&t;&t; * when an overlay is running.&n;&t;&t;&t; */
 id|on
 op_assign
@@ -15935,6 +15931,10 @@ id|vcp
 )paren
 suffix:semicolon
 )brace
+id|zr-&gt;window.clipcount
+op_assign
+id|vw.clipcount
+suffix:semicolon
 r_if
 c_cond
 (paren

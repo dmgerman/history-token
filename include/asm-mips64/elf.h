@@ -71,7 +71,7 @@ mdefine_line|#define ELF_PLAT_INIT(_r)&t;do { &bslash;&n;&t;_r-&gt;regs[1] = _r-
 multiline_comment|/* This is the location that an ET_DYN program is loaded if exec&squot;ed.  Typical&n;   use of this is to invoke &quot;./ld.so someprog&quot; to test out a new version of&n;   the loader.  We need to make sure that it is out of the way of the program&n;   that it will &quot;exec&quot;, and that there is sufficient room for the brk.  */
 macro_line|#ifndef ELF_ET_DYN_BASE
 DECL|macro|ELF_ET_DYN_BASE
-mdefine_line|#define ELF_ET_DYN_BASE         (2 * TASK_SIZE / 3)
+mdefine_line|#define ELF_ET_DYN_BASE         (TASK_SIZE / 3 * 2)
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY

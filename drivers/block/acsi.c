@@ -5482,43 +5482,45 @@ id|gendisk
 id|acsi_gendisk
 op_assign
 (brace
+id|major
+suffix:colon
 id|MAJOR_NR
 comma
-multiline_comment|/* Major number */
+id|major_name
+suffix:colon
 l_string|&quot;ad&quot;
 comma
-multiline_comment|/* Major name */
+id|minor_shift
+suffix:colon
 l_int|4
 comma
-multiline_comment|/* Bits to shift to get real from partition */
+id|max_p
+suffix:colon
 l_int|1
 op_lshift
 l_int|4
 comma
-multiline_comment|/* Number of partitions per real */
+id|part
+suffix:colon
 id|acsi_part
 comma
-multiline_comment|/* hd struct */
+id|sizes
+suffix:colon
 id|acsi_sizes
 comma
-multiline_comment|/* block sizes */
-l_int|0
-comma
-multiline_comment|/* number */
+id|real_devices
+suffix:colon
 (paren
 r_void
 op_star
 )paren
 id|acsi_info
 comma
-multiline_comment|/* internal */
-l_int|NULL
-comma
-multiline_comment|/* next */
+id|fops
+suffix:colon
 op_amp
 id|acsi_fops
 comma
-multiline_comment|/* file operations */
 )brace
 suffix:semicolon
 DECL|macro|MAX_SCSI_DEVICE_CODE

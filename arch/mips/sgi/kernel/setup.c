@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/sgi/sgimc.h&gt;
 macro_line|#include &lt;asm/sgi/sgihpc.h&gt;
 macro_line|#include &lt;asm/sgi/sgint23.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/gdb-stub.h&gt;
 macro_line|#ifdef CONFIG_REMOTE_DEBUG
 r_extern
@@ -44,7 +45,7 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_SGI_PROM_CONSOLE)
+macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_ARC_CONSOLE)
 r_extern
 r_void
 id|console_setup
@@ -299,96 +300,6 @@ comma
 id|sgi_read_status
 )brace
 suffix:semicolon
-DECL|function|sgi_irq_setup
-r_static
-r_void
-id|__init
-id|sgi_irq_setup
-c_func
-(paren
-r_void
-)paren
-(brace
-id|sgint_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_REMOTE_DEBUG
-r_if
-c_cond
-(paren
-id|remote_debug
-)paren
-id|set_debug_traps
-c_func
-(paren
-)paren
-suffix:semicolon
-id|breakpoint
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* you may move this line to whereever you want :-) */
-macro_line|#endif
-)brace
-DECL|function|page_is_ram
-r_int
-id|__init
-id|page_is_ram
-c_func
-(paren
-r_int
-r_int
-id|pagenr
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|pagenr
-op_lshift
-id|PAGE_SHIFT
-)paren
-OL
-l_int|0x2000UL
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|pagenr
-op_lshift
-id|PAGE_SHIFT
-)paren
-OG
-l_int|0x08002000
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|board_time_init
-r_void
-(paren
-op_star
-id|board_time_init
-)paren
-(paren
-r_struct
-id|irqaction
-op_star
-id|irq
-)paren
-suffix:semicolon
 DECL|function|dosample
 r_static
 r_int
@@ -511,7 +422,7 @@ op_or
 id|SGINT_TCWORD_MSWST
 )paren
 suffix:semicolon
-multiline_comment|/* Return the difference, this is how far the r4k counter increments&n;         * for every 1/HZ seconds. We round off the nearest 1 MHz of&n;&t; * master clock (= 1000000 / 100 / 2 = 5000 count).&n;         */
+multiline_comment|/*&n;&t; * Return the difference, this is how far the r4k counter increments&n;&t; * for every 1/HZ seconds. We round off the nearest 1 MHz of master&n;&t; * clock (= 1000000 / 100 / 2 = 5000 count).&n;&t; */
 r_return
 (paren
 (paren
@@ -559,14 +470,6 @@ id|r4k_ticks
 (braket
 l_int|3
 )braket
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
 suffix:semicolon
 r_int
 r_int
@@ -612,15 +515,8 @@ id|tc2p
 suffix:semicolon
 multiline_comment|/* Prime cache. */
 multiline_comment|/* Zero is NOT an option. */
-r_while
-c_loop
-(paren
-op_logical_neg
-id|r4k_ticks
-(braket
-l_int|0
-)braket
-)paren
+r_do
+(brace
 id|r4k_ticks
 (braket
 l_int|0
@@ -633,15 +529,19 @@ comma
 id|tc2p
 )paren
 suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
 op_logical_neg
 id|r4k_ticks
 (braket
-l_int|1
+l_int|0
 )braket
 )paren
+suffix:semicolon
+r_do
+(brace
 id|r4k_ticks
 (braket
 l_int|1
@@ -652,6 +552,17 @@ id|dosample
 id|tcwp
 comma
 id|tc2p
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+op_logical_neg
+id|r4k_ticks
+(braket
+l_int|1
+)braket
 )paren
 suffix:semicolon
 r_if
@@ -805,7 +716,7 @@ comma
 id|r4k_next
 )paren
 suffix:semicolon
-id|set_cp0_status
+id|change_cp0_status
 c_func
 (paren
 id|ST0_IM
@@ -839,10 +750,6 @@ op_star
 id|kgdb_ttyd
 suffix:semicolon
 macro_line|#endif
-id|irq_setup
-op_assign
-id|sgi_irq_setup
-suffix:semicolon
 id|board_time_init
 op_assign
 id|sgi_time_init
@@ -1002,7 +909,7 @@ c_func
 id|line
 )paren
 suffix:semicolon
-id|prom_printf
+id|printk
 c_func
 (paren
 l_string|&quot;KGDB: Using serial line /dev/ttyd%d for session, &quot;
@@ -1023,7 +930,7 @@ suffix:semicolon
 multiline_comment|/* Breakpoints and stuff are in sgi_irq_setup() */
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_SGI_PROM_CONSOLE
+macro_line|#ifdef CONFIG_ARC_CONSOLE
 id|console_setup
 c_func
 (paren

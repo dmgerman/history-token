@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_common.c,v 1.114.6.13 2001/08/13 07:46:15 kai Exp $&n;&n; * Linux ISDN subsystem, common used functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: isdn_common.c,v 1.114.6.14 2001/08/17 12:34:25 kai Exp $&n;&n; * Linux ISDN subsystem, common used functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -37,7 +37,7 @@ r_char
 op_star
 id|isdn_revision
 op_assign
-l_string|&quot;$Revision: 1.114.6.13 $&quot;
+l_string|&quot;$Revision: 1.114.6.14 $&quot;
 suffix:semicolon
 r_extern
 r_char
@@ -3438,9 +3438,6 @@ id|sleep
 )paren
 (brace
 r_int
-id|left
-suffix:semicolon
-r_int
 id|count
 suffix:semicolon
 r_int
@@ -3508,13 +3505,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|left
-op_assign
-id|MIN
-c_func
+r_if
+c_cond
 (paren
 id|len
-comma
+OG
 id|dev-&gt;drv
 (braket
 id|di
@@ -3525,6 +3520,17 @@ id|rcvcount
 id|channel
 )braket
 )paren
+id|len
+op_assign
+id|dev-&gt;drv
+(braket
+id|di
+)braket
+op_member_access_from_pointer
+id|rcvcount
+(braket
+id|channel
+)braket
 suffix:semicolon
 id|cp
 op_assign
@@ -3537,7 +3543,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|left
+id|len
 )paren
 (brace
 r_if
@@ -3648,13 +3654,13 @@ id|skb-&gt;len
 )paren
 op_logical_and
 (paren
-id|left
+id|len
 OG
 l_int|0
 )paren
 )paren
 (brace
-id|left
+id|len
 op_decrement
 suffix:semicolon
 r_if
@@ -3764,12 +3770,12 @@ op_assign
 id|skb-&gt;len
 )paren
 OG
-id|left
+id|len
 )paren
 (brace
 id|count_pull
 op_assign
-id|left
+id|len
 suffix:semicolon
 id|dflag
 op_assign
@@ -3794,7 +3800,7 @@ id|cp
 op_add_assign
 id|count_put
 suffix:semicolon
-id|left
+id|len
 op_sub_assign
 id|count_put
 suffix:semicolon
@@ -4905,6 +4911,28 @@ id|drvidx
 op_member_access_from_pointer
 id|interface-&gt;readstat
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|count
+OG
+id|dev-&gt;drv
+(braket
+id|drvidx
+)braket
+op_member_access_from_pointer
+id|stavail
+)paren
+id|count
+op_assign
+id|dev-&gt;drv
+(braket
+id|drvidx
+)braket
+op_member_access_from_pointer
+id|stavail
+suffix:semicolon
 id|len
 op_assign
 id|dev-&gt;drv
@@ -4919,18 +4947,7 @@ c_func
 (paren
 id|buf
 comma
-id|MIN
-c_func
-(paren
 id|count
-comma
-id|dev-&gt;drv
-(braket
-id|drvidx
-)braket
-op_member_access_from_pointer
-id|stavail
-)paren
 comma
 l_int|1
 comma
@@ -4943,11 +4960,14 @@ id|minor
 )paren
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
 id|len
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 id|save_flags
 c_func
 (paren

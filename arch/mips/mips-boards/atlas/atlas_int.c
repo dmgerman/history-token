@@ -65,6 +65,24 @@ macro_line|#else
 DECL|macro|DEBUG_INT
 mdefine_line|#define DEBUG_INT(x...)
 macro_line|#endif
+DECL|function|disable_irq_nosync
+r_void
+r_inline
+id|disable_irq_nosync
+c_func
+(paren
+r_int
+r_int
+id|irq_nr
+)paren
+(brace
+id|disable_atlas_irq
+c_func
+(paren
+id|irq_nr
+)paren
+suffix:semicolon
+)brace
 DECL|function|disable_atlas_irq
 r_void
 id|disable_atlas_irq

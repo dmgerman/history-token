@@ -69,7 +69,7 @@ DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(_r)&t;do { &bslash;&n;&t;_r-&gt;regs[1] = _r-&gt;regs[2] = _r-&gt;regs[3] = _r-&gt;regs[4] = 0;&t;&bslash;&n;&t;_r-&gt;regs[5] = _r-&gt;regs[6] = _r-&gt;regs[7] = _r-&gt;regs[8] = 0;&t;&bslash;&n;&t;_r-&gt;regs[9] = _r-&gt;regs[10] = _r-&gt;regs[11] = _r-&gt;regs[12] = 0;&t;&bslash;&n;&t;_r-&gt;regs[13] = _r-&gt;regs[14] = _r-&gt;regs[15] = _r-&gt;regs[16] = 0;&t;&bslash;&n;&t;_r-&gt;regs[17] = _r-&gt;regs[18] = _r-&gt;regs[19] = _r-&gt;regs[20] = 0;&t;&bslash;&n;&t;_r-&gt;regs[21] = _r-&gt;regs[22] = _r-&gt;regs[23] = _r-&gt;regs[24] = 0;&t;&bslash;&n;&t;_r-&gt;regs[25] = _r-&gt;regs[26] = _r-&gt;regs[27] = _r-&gt;regs[28] = 0;&t;&bslash;&n;&t;_r-&gt;regs[30] = _r-&gt;regs[31] = 0;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* This is the location that an ET_DYN program is loaded if exec&squot;ed.  Typical&n;   use of this is to invoke &quot;./ld.so someprog&quot; to test out a new version of&n;   the loader.  We need to make sure that it is out of the way of the program&n;   that it will &quot;exec&quot;, and that there is sufficient room for the brk.  */
 DECL|macro|ELF_ET_DYN_BASE
-mdefine_line|#define ELF_ET_DYN_BASE         (2 * TASK_SIZE / 3)
+mdefine_line|#define ELF_ET_DYN_BASE         (TASK_SIZE / 3 * 2)
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality((ibcs2)?PER_SVR4:PER_LINUX)

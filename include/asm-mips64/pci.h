@@ -2,10 +2,23 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_PCI_H
 DECL|macro|_ASM_PCI_H
 mdefine_line|#define _ASM_PCI_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n;   already-configured bus numbers - to be used for buggy BIOSes&n;   or architectures with incomplete PCI setup by the loader */
+macro_line|#ifdef CONFIG_PCI
+r_extern
+r_int
+r_int
+id|pcibios_assign_all_busses
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()&t;0
+macro_line|#endif
 DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x1000
 DECL|macro|PCIBIOS_MIN_MEM
@@ -90,9 +103,138 @@ id|dma_addr_t
 id|dma_handle
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MAPPED_PCI_IO
+r_extern
+id|dma_addr_t
+id|pci_map_single
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+r_void
+op_star
+id|ptr
+comma
+r_int
+id|size
+comma
+r_int
+id|direction
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pci_unmap_single
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+id|dma_addr_t
+id|dma_addr
+comma
+r_int
+id|size
+comma
+r_int
+id|direction
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pci_map_sg
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+r_struct
+id|scatterlist
+op_star
+id|sg
+comma
+r_int
+id|nents
+comma
+r_int
+id|direction
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pci_unmap_sg
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+r_struct
+id|scatterlist
+op_star
+id|sg
+comma
+r_int
+id|nents
+comma
+r_int
+id|direction
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pci_dma_sync_single
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+id|dma_addr_t
+id|dma_handle
+comma
+r_int
+id|size
+comma
+r_int
+id|direction
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pci_dma_sync_sg
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+r_struct
+id|scatterlist
+op_star
+id|sg
+comma
+r_int
+id|nelems
+comma
+r_int
+id|direction
+)paren
+suffix:semicolon
+macro_line|#else /* CONFIG_MAPPED_PCI_IO  */
 multiline_comment|/*&n; * Map a single buffer of the indicated size for DMA in streaming mode.&n; * The 32-bit bus address to use is returned.&n; *&n; * Once the device is given the dma address, the device owns this memory&n; * until either pci_unmap_single or pci_dma_sync_single is performed.&n; */
 DECL|function|pci_map_single
-r_extern
+r_static
 r_inline
 id|dma_addr_t
 id|pci_map_single
@@ -141,23 +283,16 @@ id|size
 suffix:semicolon
 macro_line|#endif
 r_return
-(paren
-id|bus_to_baddr
-(braket
-id|hwdev-&gt;bus-&gt;number
-)braket
-op_or
-id|__pa
+id|virt_to_bus
 c_func
 (paren
 id|ptr
-)paren
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Unmap a single streaming mode DMA translation.  The dma_addr and size&n; * must match what was provided for in a previous pci_map_single call.  All&n; * other usages are undefined.&n; *&n; * After this call, reads by the cpu to the buffer are guarenteed to see&n; * whatever the device wrote there.&n; */
 DECL|function|pci_unmap_single
-r_extern
+r_static
 r_inline
 r_void
 id|pci_unmap_single
@@ -194,7 +329,7 @@ multiline_comment|/* Nothing to do */
 )brace
 multiline_comment|/*&n; * Map a set of buffers described by scatterlist in streaming&n; * mode for DMA.  This is the scather-gather version of the&n; * above pci_map_single interface.  Here the scatter gather list&n; * elements are each tagged with the appropriate dma address&n; * and length.  They are obtained via sg_dma_{address,length}(SG).&n; *&n; * NOTE: An implementation may be able to use a smaller number of&n; *       DMA address/length pairs than there are SG table elements.&n; *       (for example via virtual mapping capabilities)&n; *       The routine returns the number of addr/length pairs actually&n; *       used, at most nents.&n; *&n; * Device ownership issues as mentioned above for pci_map_single are&n; * the same here.&n; */
 DECL|function|pci_map_sg
-r_extern
+r_static
 r_inline
 r_int
 id|pci_map_sg
@@ -291,7 +426,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Unmap a set of streaming mode DMA translations.&n; * Again, cpu read rules concerning calls here are the same as for&n; * pci_unmap_single() above.&n; */
 DECL|function|pci_unmap_sg
-r_extern
+r_static
 r_inline
 r_void
 id|pci_unmap_sg
@@ -330,7 +465,7 @@ multiline_comment|/* Nothing to do */
 )brace
 multiline_comment|/*&n; * Make physical memory consistent for a single&n; * streaming mode DMA translation after a transfer.&n; *&n; * If you perform a pci_map_single() but wish to interrogate the&n; * buffer using the cpu, yet do not wish to teardown the PCI dma&n; * mapping, you must call this function before doing so.  At the&n; * next point you give the PCI dma address back to the card, the&n; * device again owns the buffer.&n; */
 DECL|function|pci_dma_sync_single
-r_extern
+r_static
 r_inline
 r_void
 id|pci_dma_sync_single
@@ -389,7 +524,7 @@ macro_line|#endif
 )brace
 multiline_comment|/*&n; * Make physical memory consistent for a set of streaming&n; * mode DMA translations after a transfer.&n; *&n; * The same as pci_dma_sync_single but for a scatter-gather list,&n; * same rules and usage.&n; */
 DECL|function|pci_dma_sync_sg
-r_extern
+r_static
 r_inline
 r_void
 id|pci_dma_sync_sg
@@ -462,8 +597,9 @@ id|sg-&gt;length
 suffix:semicolon
 macro_line|#endif
 )brace
+macro_line|#endif /* CONFIG_MAPPED_PCI_IO  */
 DECL|function|pci_dma_supported
-r_extern
+r_static
 r_inline
 r_int
 id|pci_dma_supported
@@ -493,7 +629,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Return the index of the PCI controller for device. */
+multiline_comment|/*&n; * Return the index of the PCI controller for device.&n; */
 DECL|macro|pci_controller_num
 mdefine_line|#define pci_controller_num(pdev)&t;(0)
 multiline_comment|/*&n; * These macros should be used after a pci_map_sg call has been done&n; * to get bus addresses of each of the SG entries and their lengths.&n; * You should only work with the number of sg entries pci_map_sg&n; * returns, or alternatively stop on the first sg_dma_len(sg) which&n; * is 0.&n; */

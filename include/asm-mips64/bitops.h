@@ -969,7 +969,7 @@ l_string|&quot;1:&bslash;tsubu&bslash;t$1,%6,%0&bslash;n&bslash;t&quot;
 l_string|&quot;blez&bslash;t$1,2f&bslash;n&bslash;t&quot;
 l_string|&quot;lw&bslash;t$1,(%5)&bslash;n&bslash;t&quot;
 l_string|&quot;addiu&bslash;t%5,4&bslash;n&bslash;t&quot;
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS2) || (_MIPS_ISA == _MIPS_ISA_MIPS3) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS4) || (_MIPS_ISA == _MIPS_ISA_MIPS5)
+macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS2 ) || (_MIPS_ISA == _MIPS_ISA_MIPS3 ) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS4 ) || (_MIPS_ISA == _MIPS_ISA_MIPS5 ) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS32) || (_MIPS_ISA == _MIPS_ISA_MIPS64)
 l_string|&quot;beql&bslash;t%1,$1,1b&bslash;n&bslash;t&quot;
 l_string|&quot;addiu&bslash;t%0,32&bslash;n&bslash;t&quot;
 macro_line|#else

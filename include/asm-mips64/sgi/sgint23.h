@@ -654,14 +654,6 @@ id|ioc_tclear
 suffix:semicolon
 r_extern
 r_void
-id|sgint_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|indy_timer_init
 c_func
 (paren

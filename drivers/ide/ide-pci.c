@@ -37,6 +37,8 @@ DECL|macro|DEVID_PIIX4U4
 mdefine_line|#define DEVID_PIIX4U4&t;((ide_pci_devid_t){PCI_VENDOR_ID_INTEL,   PCI_DEVICE_ID_INTEL_82801BA_8})
 DECL|macro|DEVID_VIA_IDE
 mdefine_line|#define DEVID_VIA_IDE&t;((ide_pci_devid_t){PCI_VENDOR_ID_VIA,     PCI_DEVICE_ID_VIA_82C561})
+DECL|macro|DEVID_MR_IDE
+mdefine_line|#define DEVID_MR_IDE&t;((ide_pci_devid_t){PCI_VENDOR_ID_VIA,     PCI_DEVICE_ID_VIA_82C576_1})
 DECL|macro|DEVID_VP_IDE
 mdefine_line|#define DEVID_VP_IDE&t;((ide_pci_devid_t){PCI_VENDOR_ID_VIA,     PCI_DEVICE_ID_VIA_82C586_1})
 DECL|macro|DEVID_PDC20246
@@ -1702,6 +1704,42 @@ comma
 l_int|0x00
 comma
 l_int|0x00
+)brace
+)brace
+comma
+id|ON_BOARD
+comma
+l_int|0
+)brace
+comma
+(brace
+id|DEVID_MR_IDE
+comma
+l_string|&quot;VP_IDE&quot;
+comma
+id|PCI_VIA82CXXX
+comma
+id|ATA66_VIA82CXXX
+comma
+id|INIT_VIA82CXXX
+comma
+id|DMA_VIA82CXXX
+comma
+(brace
+(brace
+l_int|0x40
+comma
+l_int|0x02
+comma
+l_int|0x02
+)brace
+comma
+(brace
+l_int|0x40
+comma
+l_int|0x01
+comma
+l_int|0x01
 )brace
 )brace
 comma
@@ -5005,6 +5043,14 @@ c_func
 (paren
 id|d-&gt;devid
 comma
+id|DEVID_MR_IDE
+)paren
+op_logical_or
+id|IDE_PCI_DEVID_EQ
+c_func
+(paren
+id|d-&gt;devid
+comma
 id|DEVID_VP_IDE
 )paren
 )paren
@@ -5062,6 +5108,14 @@ c_func
 id|d-&gt;devid
 comma
 id|DEVID_PDC20268
+)paren
+op_logical_or
+id|IDE_PCI_DEVID_EQ
+c_func
+(paren
+id|d-&gt;devid
+comma
+id|DEVID_PDC20268R
 )paren
 op_logical_or
 id|IDE_PCI_DEVID_EQ

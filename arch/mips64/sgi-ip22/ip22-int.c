@@ -24,7 +24,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sgi/sgi.h&gt;
 macro_line|#include &lt;asm/sgi/sgihpc.h&gt;
 macro_line|#include &lt;asm/sgi/sgint23.h&gt;
-macro_line|#include &lt;asm/sgialib.h&gt;
 multiline_comment|/*&n; * Linux has a controller-independent x86 interrupt architecture.&n; * every controller has a &squot;controller-template&squot;, that is used&n; * by the main code to do the right thing. Each driver-visible&n; * interrupt source is transparently wired to the apropriate&n; * controller. Thus drivers need not be aware of the&n; * interrupt-controller.&n; *&n; * Various interrupt controllers we handle: 8259 PIC, SMP IO-APIC,&n; * PIIX4&squot;s internal 8259 PIC and SGI&squot;s Visual Workstation Cobalt (IO-)APIC.&n; * (IO-APICs assumed to be messaging to Pentium local-APICs)&n; *&n; * the code is designed to be easily extended with new/different&n; * interrupt controllers, without having to do assembly magic.&n; */
 DECL|variable|sgi_i2regs
 r_struct
@@ -1275,22 +1274,13 @@ id|irq
 )braket
 op_increment
 suffix:semicolon
-id|printk
+id|panic
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Got irq %d, press a key.&quot;
 comma
 id|irq
-)paren
-suffix:semicolon
-id|prom_getchar
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ArcEnterInteractiveMode
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * mask and ack quickly, we don&squot;t want the irq controller&n;&t; * thinking we&squot;re snobs just because some other CPU has&n;&t; * disabled global interrupts (we have already done the&n;&t; * INT_ACK cycles, it&squot;s too late to try to pretend to the&n;&t; * controller that we aren&squot;t taking the interrupt).&n;&t; *&n;&t; * Commented out because we&squot;ve already done this in the&n;&t; * machinespecific part of the handler.  It&squot;s reasonable to&n;&t; * do this here in a highlevel language though because that way&n;&t; * we could get rid of a good part of duplicated code ...&n;&t; */

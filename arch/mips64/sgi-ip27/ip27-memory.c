@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
@@ -882,6 +883,18 @@ c_func
 r_void
 )paren
 (brace
+id|pmd_t
+op_star
+id|pmd
+op_assign
+id|kpmdtbl
+suffix:semicolon
+id|pte_t
+op_star
+id|pte
+op_assign
+id|kptbl
+suffix:semicolon
 id|cnodeid_t
 id|node
 suffix:semicolon
@@ -899,6 +912,9 @@ l_int|0
 comma
 l_int|0
 )brace
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 multiline_comment|/* Initialize the entire pgd.  */
 id|pgd_init
@@ -946,20 +962,21 @@ op_star
 id|PTRS_PER_PTE
 )paren
 suffix:semicolon
-id|pmd_init
+multiline_comment|/* This is for vmalloc  */
+id|memset
 c_func
 (paren
 (paren
-r_int
-r_int
+r_void
+op_star
 )paren
-id|empty_bad_pmd_table
+id|kptbl
 comma
-(paren
-r_int
-r_int
-)paren
-id|empty_bad_page_table
+l_int|0
+comma
+id|PAGE_SIZE
+op_lshift
+id|KPTBL_PAGE_ORDER
 )paren
 suffix:semicolon
 id|memset
@@ -969,17 +986,58 @@ c_func
 r_void
 op_star
 )paren
-id|empty_bad_page_table
+id|kpmdtbl
 comma
 l_int|0
 comma
-r_sizeof
-(paren
-id|pte_t
+id|PAGE_SIZE
 )paren
-op_star
+suffix:semicolon
+id|pgd_set
+c_func
+(paren
+id|swapper_pg_dir
+comma
+id|kpmdtbl
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+(paren
+l_int|1
+op_lshift
+id|KPTBL_PAGE_ORDER
+)paren
+suffix:semicolon
+id|pmd
+op_increment
+comma
+id|i
+op_increment
+comma
+id|pte
+op_add_assign
 id|PTRS_PER_PTE
 )paren
+id|pmd_val
+c_func
+(paren
+op_star
+id|pmd
+)paren
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|pte
 suffix:semicolon
 r_for
 c_loop

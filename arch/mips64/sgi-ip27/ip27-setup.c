@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/sn0/addrs.h&gt;
 macro_line|#include &lt;asm/sn/sn0/hubni.h&gt;
@@ -30,6 +31,13 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)
 macro_line|#endif
+DECL|variable|mips_io_port_base
+r_int
+r_int
+id|mips_io_port_base
+op_assign
+id|IO_BASE
+suffix:semicolon
 multiline_comment|/*&n; * get_nasid() returns the physical node id number of the caller.&n; */
 id|nasid_t
 DECL|function|get_nasid

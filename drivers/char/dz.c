@@ -1,15 +1,7 @@
 multiline_comment|/*&n; * dz.c: Serial port driver for DECStations equiped &n; *       with the DZ chipset.&n; *&n; * Copyright (C) 1998 Olivier A. D. Lebaillif &n; *             &n; * Email: olivier.lebaillif@ifrsys.com&n; *&n; * [31-AUG-98] triemer&n; * Changed IRQ to use Harald&squot;s dec internals interrupts.h&n; * removed base_addr code - moving address assignment to setup.c&n; * Changed name of dz_init to rs_init to be consistent with tc code&n; * [13-NOV-98] triemer fixed code to receive characters&n; *    after patches by harald to irq code.  &n; * [09-JAN-99] triemer minor fix for schedule - due to removal of timeout&n; *            field from &quot;current&quot; - somewhere between 2.1.121 and 2.1.131&n;Qua Jun 27 15:02:26 BRT 2001&n; * [27-JUN-2001] Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - cleanups&n; *  &n; * Parts (C) 1999 David Airlie, airlied@linux.ie &n; * [07-SEP-99] Bugfixes &n; */
-DECL|macro|DEBUG_DZ
-mdefine_line|#define DEBUG_DZ 1
-macro_line|#ifdef MODULE
-macro_line|#include &lt;linux/module.h&gt;
+multiline_comment|/* #define DEBUG_DZ 1 */
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#else
-DECL|macro|MOD_INC_USE_COUNT
-mdefine_line|#define MOD_INC_USE_COUNT
-DECL|macro|MOD_DEC_USE_COUNT
-mdefine_line|#define MOD_DEC_USE_COUNT
-macro_line|#endif
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -20,9 +12,10 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;asm-mips/wbflush.h&gt;
-multiline_comment|/* for definition of SERIAL */
-macro_line|#include &lt;asm/dec/interrupts.h&gt;
+macro_line|#include &lt;asm/dec/interrupts.h&gt;&t;&t;&t;/* for definition of SERIAL */
 multiline_comment|/* for definition of struct console */
 macro_line|#ifdef CONFIG_SERIAL_CONSOLE
 DECL|macro|CONSOLE_LINE
@@ -174,15 +167,13 @@ id|offset
 )paren
 (brace
 r_volatile
-r_int
-r_int
+id|u16
 op_star
 id|addr
 op_assign
 (paren
 r_volatile
-r_int
-r_int
+id|u16
 op_star
 )paren
 (paren
@@ -216,15 +207,13 @@ id|value
 )paren
 (brace
 r_volatile
-r_int
-r_int
+id|u16
 op_star
 id|addr
 op_assign
 (paren
 r_volatile
-r_int
-r_int
+id|u16
 op_star
 )paren
 (paren
@@ -265,9 +254,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|tty
-op_eq
-l_int|0
 )paren
 r_return
 suffix:semicolon
@@ -396,6 +384,7 @@ op_lshift
 id|event
 suffix:semicolon
 id|queue_task
+c_func
 (paren
 op_amp
 id|info-&gt;tqueue
@@ -405,6 +394,7 @@ id|tq_serial
 )paren
 suffix:semicolon
 id|mark_bh
+c_func
 (paren
 id|SERIAL_BH
 )paren
@@ -455,7 +445,7 @@ r_int
 r_char
 id|ch
 suffix:semicolon
-multiline_comment|/* this code is going to be a problem...&n;     the call to tty_flip_buffer is going to need&n;     to be rethought...&n;   */
+multiline_comment|/*&n;&t; * This code is going to be a problem...  the call to tty_flip_buffer&n;&t; * is going to need to be rethought...&n;&t; */
 r_do
 (brace
 id|status
@@ -616,7 +606,7 @@ multiline_comment|/* overrun error */
 id|icount-&gt;overrun
 op_increment
 suffix:semicolon
-multiline_comment|/*  check to see if we should ignore the character&n;&t; and mask off conditions that should be ignored&n;      */
+multiline_comment|/*&n;&t;&t;&t; * Check to see if we should ignore the character and&n;&t;&t;&t; * mask off conditions that should be ignored&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -659,6 +649,7 @@ id|tty-&gt;flip.flag_buf_ptr
 op_assign
 id|TTY_PARITY
 suffix:semicolon
+macro_line|#ifdef DEBUG_DZ
 id|debug_console
 c_func
 (paren
@@ -667,6 +658,7 @@ comma
 l_int|5
 )paren
 suffix:semicolon
+macro_line|#endif /* DEBUG_DZ */
 )brace
 r_else
 r_if
@@ -682,6 +674,7 @@ id|tty-&gt;flip.flag_buf_ptr
 op_assign
 id|TTY_FRAME
 suffix:semicolon
+macro_line|#ifdef DEBUG_DZ
 id|debug_console
 c_func
 (paren
@@ -690,6 +683,7 @@ comma
 l_int|5
 )paren
 suffix:semicolon
+macro_line|#endif /* DEBUG_DZ */
 )brace
 r_if
 c_cond
@@ -699,6 +693,7 @@ op_amp
 id|DZ_OERR
 )paren
 (brace
+macro_line|#ifdef DEBUG_DZ
 id|debug_console
 c_func
 (paren
@@ -707,6 +702,7 @@ comma
 l_int|5
 )paren
 suffix:semicolon
+macro_line|#endif /* DEBUG_DZ */
 r_if
 c_cond
 (paren
@@ -743,6 +739,7 @@ op_increment
 suffix:semicolon
 id|ignore_char
 suffix:colon
+suffix:semicolon
 )brace
 r_while
 c_loop
@@ -789,6 +786,7 @@ id|info-&gt;x_char
 (brace
 multiline_comment|/* XON/XOFF chars */
 id|dz_out
+c_func
 (paren
 id|info
 comma
@@ -823,6 +821,7 @@ id|info-&gt;tty-&gt;hw_stopped
 )paren
 (brace
 id|dz_stop
+c_func
 (paren
 id|info-&gt;tty
 )paren
@@ -830,7 +829,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* if something to do ... (rember the dz has no output fifo so we go one char at a time :-&lt; */
+multiline_comment|/*&n;&t; * If something to do ... (rember the dz has no output fifo so we go&n;&t; * one char at a time :-&lt;&n;&t; */
 id|tmp
 op_assign
 (paren
@@ -844,6 +843,7 @@ op_increment
 )braket
 suffix:semicolon
 id|dz_out
+c_func
 (paren
 id|info
 comma
@@ -874,6 +874,7 @@ OL
 id|WAKEUP_CHARS
 )paren
 id|dz_sched_event
+c_func
 (paren
 id|info
 comma
@@ -889,6 +890,7 @@ op_le
 l_int|0
 )paren
 id|dz_stop
+c_func
 (paren
 id|info-&gt;tty
 )paren
@@ -924,6 +926,7 @@ suffix:semicolon
 id|status
 op_assign
 id|dz_in
+c_func
 (paren
 id|info
 comma
@@ -968,9 +971,11 @@ r_int
 r_int
 id|status
 suffix:semicolon
+multiline_comment|/* get the reason why we just got an irq */
 id|status
 op_assign
 id|dz_in
+c_func
 (paren
 (paren
 r_struct
@@ -982,7 +987,6 @@ comma
 id|DZ_CSR
 )paren
 suffix:semicolon
-multiline_comment|/* get the reason why we just got an irq */
 id|info
 op_assign
 id|lines
@@ -1003,6 +1007,7 @@ op_amp
 id|DZ_RDONE
 )paren
 id|receive_chars
+c_func
 (paren
 id|info
 )paren
@@ -1079,6 +1084,7 @@ r_if
 c_cond
 (paren
 id|test_and_clear_bit
+c_func
 (paren
 id|DZ_EVENT_WRITE_WAKEUP
 comma
@@ -1157,6 +1163,7 @@ id|tty
 r_return
 suffix:semicolon
 id|tty_hangup
+c_func
 (paren
 id|tty
 )paren
@@ -1192,13 +1199,10 @@ id|info-&gt;is_initialized
 r_return
 l_int|0
 suffix:semicolon
-id|save_flags
+id|save_and_cli
+c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -1214,6 +1218,7 @@ c_cond
 id|info-&gt;tty
 )paren
 id|set_bit
+c_func
 (paren
 id|TTY_IO_ERROR
 comma
@@ -1222,6 +1227,7 @@ id|info-&gt;tty-&gt;flags
 )paren
 suffix:semicolon
 id|restore_flags
+c_func
 (paren
 id|flags
 )paren
@@ -1241,6 +1247,7 @@ id|info-&gt;xmit_buf
 id|page
 op_assign
 id|get_free_page
+c_func
 (paren
 id|GFP_KERNEL
 )paren
@@ -1278,6 +1285,7 @@ c_cond
 id|info-&gt;tty
 )paren
 id|clear_bit
+c_func
 (paren
 id|TTY_IO_ERROR
 comma
@@ -1289,6 +1297,7 @@ multiline_comment|/* enable the interrupt and the scanning */
 id|tmp
 op_assign
 id|dz_in
+c_func
 (paren
 id|info
 comma
@@ -1306,6 +1315,7 @@ id|DZ_MSE
 )paren
 suffix:semicolon
 id|dz_out
+c_func
 (paren
 id|info
 comma
@@ -1322,19 +1332,20 @@ id|info-&gt;xmit_tail
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* set up the speed */
 id|change_speed
+c_func
 (paren
 id|info
 )paren
 suffix:semicolon
-multiline_comment|/* clear the line transmitter buffer &n;     I can&squot;t figure out why I need to do this - but&n;     its necessary - in order for the console portion&n;     and the interrupt portion to live happily side by side.&n;  */
-multiline_comment|/* clear the line transmitter buffer &n;     I can&squot;t figure out why I need to do this - but&n;     its necessary - in order for the console portion&n;     and the interrupt portion to live happily side by side.&n;  */
+multiline_comment|/* set up the speed */
+multiline_comment|/*&n;&t; * Clear the line transmitter buffer I can&squot;t figure out why I need to&n;&t; * do this - but its necessary - in order for the console portion and&n;&t; * the interrupt portion to live happily side by side.&n;&t; */
 id|info-&gt;is_initialized
 op_assign
 l_int|1
 suffix:semicolon
 id|restore_flags
+c_func
 (paren
 id|flags
 )paren
@@ -1371,13 +1382,10 @@ id|info-&gt;is_initialized
 )paren
 r_return
 suffix:semicolon
-id|save_flags
+id|save_and_cli
+c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 id|dz_stop
@@ -1392,6 +1400,7 @@ id|DZ_CREAD
 suffix:semicolon
 multiline_comment|/* turn off receive enable flag */
 id|dz_out
+c_func
 (paren
 id|info
 comma
@@ -1408,6 +1417,7 @@ id|info-&gt;xmit_buf
 (brace
 multiline_comment|/* free Tx buffer */
 id|free_page
+c_func
 (paren
 (paren
 r_int
@@ -1437,6 +1447,7 @@ id|HUPCL
 id|tmp
 op_assign
 id|dz_in
+c_func
 (paren
 id|info
 comma
@@ -1457,6 +1468,7 @@ op_complement
 id|DZ_MODEM_DTR
 suffix:semicolon
 id|dz_out
+c_func
 (paren
 id|info
 comma
@@ -1523,13 +1535,10 @@ id|info-&gt;tty-&gt;termios
 )paren
 r_return
 suffix:semicolon
-id|save_flags
+id|save_and_cli
+c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 id|info-&gt;cflags
@@ -1621,6 +1630,7 @@ suffix:semicolon
 id|baud
 op_assign
 id|tty_get_baud_rate
+c_func
 (paren
 id|info-&gt;tty
 )paren
@@ -1772,6 +1782,7 @@ op_or_assign
 id|DZ_RXENAB
 suffix:semicolon
 id|dz_out
+c_func
 (paren
 id|info
 comma
@@ -1825,6 +1836,7 @@ id|DZ_PERR
 )paren
 suffix:semicolon
 id|restore_flags
+c_func
 (paren
 id|flags
 )paren
@@ -1874,13 +1886,10 @@ id|info-&gt;xmit_buf
 )paren
 r_return
 suffix:semicolon
-id|save_flags
+id|save_and_cli
+c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 id|dz_start
@@ -1889,6 +1898,7 @@ id|info-&gt;tty
 )paren
 suffix:semicolon
 id|restore_flags
+c_func
 (paren
 id|flags
 )paren
@@ -2050,13 +2060,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|save_flags
+id|save_and_cli
+c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 id|c
@@ -2133,6 +2140,7 @@ id|c
 suffix:semicolon
 )brace
 id|up
+c_func
 (paren
 op_amp
 id|tmp_buf_sem
@@ -2147,13 +2155,10 @@ c_loop
 l_int|1
 )paren
 (brace
-id|save_flags
+id|save_and_cli
+c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 id|c
@@ -2195,6 +2200,7 @@ r_break
 suffix:semicolon
 )brace
 id|memcpy
+c_func
 (paren
 id|info-&gt;xmit_buf
 op_plus
@@ -2226,6 +2232,7 @@ op_add_assign
 id|c
 suffix:semicolon
 id|restore_flags
+c_func
 (paren
 id|flags
 )paren
@@ -2379,6 +2386,7 @@ op_star
 id|tty-&gt;driver_data
 suffix:semicolon
 id|cli
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2391,6 +2399,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|sti
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2415,9 +2424,10 @@ id|TTY_DO_WRITE_WAKEUP
 op_logical_and
 id|tty-&gt;ldisc.write_wakeup
 )paren
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
+id|tty-&gt;ldisc
+dot
+id|write_wakeup
+c_func
 (paren
 id|tty
 )paren
@@ -2554,6 +2564,7 @@ c_cond
 id|ch
 )paren
 id|dz_start
+c_func
 (paren
 id|info-&gt;tty
 )paren
@@ -2564,6 +2575,7 @@ DECL|function|get_serial_info
 r_static
 r_int
 id|get_serial_info
+c_func
 (paren
 r_struct
 id|dz_serial
@@ -2701,6 +2713,7 @@ r_if
 c_cond
 (paren
 id|copy_from_user
+c_func
 (paren
 op_amp
 id|new_serial
@@ -2713,12 +2726,10 @@ id|new_serial
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|old_info
 op_assign
 op_star
@@ -2749,7 +2760,7 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-multiline_comment|/*&n;   * OK, past this point, all the error checking has been done.&n;   * At this point, we start making changes.....&n;   */
+multiline_comment|/*&n;&t; * OK, past this point, all the error checking has been done.&n;&t; * At this point, we start making changes.....&n;&t; */
 id|info-&gt;baud_base
 op_assign
 id|new_serial.baud_base
@@ -2769,6 +2780,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|startup
+c_func
 (paren
 id|info
 )paren
@@ -2870,17 +2882,14 @@ id|current-&gt;state
 op_assign
 id|TASK_INTERRUPTIBLE
 suffix:semicolon
-id|save_flags
+id|save_and_cli
+c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|dz_out
+c_func
 (paren
 id|info
 comma
@@ -2901,6 +2910,7 @@ op_complement
 id|mask
 suffix:semicolon
 id|dz_out
+c_func
 (paren
 id|info
 comma
@@ -2910,6 +2920,7 @@ id|tmp
 )paren
 suffix:semicolon
 id|restore_flags
+c_func
 (paren
 id|flags
 )paren
@@ -2919,6 +2930,7 @@ DECL|function|dz_ioctl
 r_static
 r_int
 id|dz_ioctl
+c_func
 (paren
 r_struct
 id|tty_struct
@@ -2939,6 +2951,9 @@ r_int
 id|arg
 )paren
 (brace
+r_int
+id|error
+suffix:semicolon
 r_struct
 id|dz_serial
 op_star
@@ -2957,41 +2972,29 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|cmd
 op_ne
 id|TIOCGSERIAL
-)paren
 op_logical_and
-(paren
 id|cmd
 op_ne
 id|TIOCSSERIAL
-)paren
 op_logical_and
-(paren
 id|cmd
 op_ne
 id|TIOCSERCONFIG
-)paren
 op_logical_and
-(paren
 id|cmd
 op_ne
 id|TIOCSERGWILD
-)paren
 op_logical_and
-(paren
 id|cmd
 op_ne
 id|TIOCSERSWILD
-)paren
 op_logical_and
-(paren
 id|cmd
 op_ne
 id|TIOCSERGSTRUCT
-)paren
 )paren
 (brace
 r_if
@@ -3023,6 +3026,7 @@ multiline_comment|/* SVID version: non-zero arg --&gt; no break */
 id|retval
 op_assign
 id|tty_check_change
+c_func
 (paren
 id|tty
 )paren
@@ -3036,6 +3040,7 @@ r_return
 id|retval
 suffix:semicolon
 id|tty_wait_until_sent
+c_func
 (paren
 id|tty
 comma
@@ -3049,6 +3054,7 @@ op_logical_neg
 id|arg
 )paren
 id|send_break
+c_func
 (paren
 id|info
 comma
@@ -3068,6 +3074,7 @@ multiline_comment|/* support for POSIX tcsendbreak() */
 id|retval
 op_assign
 id|tty_check_change
+c_func
 (paren
 id|tty
 )paren
@@ -3081,6 +3088,7 @@ r_return
 id|retval
 suffix:semicolon
 id|tty_wait_until_sent
+c_func
 (paren
 id|tty
 comma
@@ -3088,6 +3096,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|send_break
+c_func
 (paren
 id|info
 comma
@@ -3113,7 +3122,32 @@ suffix:semicolon
 r_case
 id|TIOCGSOFTCAR
 suffix:colon
+id|error
+op_assign
+id|verify_area
+(paren
+id|VERIFY_WRITE
+comma
+(paren
+r_void
+op_star
+)paren
+id|arg
+comma
+r_sizeof
+(paren
+r_int
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
 r_return
+id|error
+suffix:semicolon
 id|put_user
 c_func
 (paren
@@ -3135,6 +3169,9 @@ op_star
 )paren
 id|arg
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 r_case
 id|TIOCSSOFTCAR
@@ -3161,7 +3198,6 @@ suffix:semicolon
 id|tty-&gt;termios-&gt;c_cflag
 op_assign
 (paren
-(paren
 id|tty-&gt;termios-&gt;c_cflag
 op_amp
 op_complement
@@ -3176,7 +3212,6 @@ id|CLOCAL
 suffix:colon
 l_int|0
 )paren
-)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -3184,8 +3219,37 @@ suffix:semicolon
 r_case
 id|TIOCGSERIAL
 suffix:colon
+id|error
+op_assign
+id|verify_area
+c_func
+(paren
+id|VERIFY_WRITE
+comma
+(paren
+r_void
+op_star
+)paren
+id|arg
+comma
+r_sizeof
+(paren
+r_struct
+id|serial_struct
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
+suffix:semicolon
 r_return
 id|get_serial_info
+c_func
 (paren
 id|info
 comma
@@ -3202,6 +3266,7 @@ id|TIOCSSERIAL
 suffix:colon
 r_return
 id|set_serial_info
+c_func
 (paren
 id|info
 comma
@@ -3334,6 +3399,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|dz_start
+c_func
 (paren
 id|tty
 )paren
@@ -3345,6 +3411,7 @@ DECL|function|dz_close
 r_static
 r_void
 id|dz_close
+c_func
 (paren
 r_struct
 id|tty_struct
@@ -3381,26 +3448,24 @@ id|info
 )paren
 r_return
 suffix:semicolon
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
+id|save_and_cli
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|tty_hung_up_p
+c_func
 (paren
 id|filp
 )paren
 )paren
 (brace
 id|restore_flags
+c_func
 (paren
 id|flags
 )paren
@@ -3424,7 +3489,7 @@ l_int|1
 )paren
 )paren
 (brace
-multiline_comment|/*&n;     * Uh, oh.  tty-&gt;count is 1, which means that the tty&n;     * structure will be freed.  Info-&gt;count should always&n;     * be one in these conditions.  If it&squot;s greater than&n;     * one, we&squot;ve got real problems, since it means the&n;     * serial port won&squot;t be shutdown.&n;     */
+multiline_comment|/*&n;&t;&t; * Uh, oh.  tty-&gt;count is 1, which means that the tty structure&n;&t;&t; * will be freed.  Info-&gt;count should always be one in these&n;&t;&t; * conditions.  If it&squot;s greater than one, we&squot;ve got real&n;&t;&t; * problems, since it means the serial port won&squot;t be shutdown.&n;&t;&t; */
 id|printk
 c_func
 (paren
@@ -3451,7 +3516,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;ds_close: bad serial port count for ttys%d: %d&bslash;n&quot;
+l_string|&quot;ds_close: bad serial port count for ttyS%02d: %d&bslash;n&quot;
 comma
 id|info-&gt;line
 comma
@@ -3470,6 +3535,7 @@ id|info-&gt;count
 )paren
 (brace
 id|restore_flags
+c_func
 (paren
 id|flags
 )paren
@@ -3481,7 +3547,7 @@ id|info-&gt;flags
 op_or_assign
 id|DZ_CLOSING
 suffix:semicolon
-multiline_comment|/*&n;   * Save the termios structure, since this port may have&n;   * separate termios for callout and dialin.&n;   */
+multiline_comment|/*&n;&t; * Save the termios structure, since this port may have&n;&t; * separate termios for callout and dialin.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3506,7 +3572,7 @@ op_assign
 op_star
 id|tty-&gt;termios
 suffix:semicolon
-multiline_comment|/*&n;   * Now we wait for the transmit buffer to clear; and we notify &n;   * the line discipline to only process XON/XOFF characters.&n;   */
+multiline_comment|/*&n;&t; * Now we wait for the transmit buffer to clear; and we notify the line&n;&t; * discipline to only process XON/XOFF characters.&n;&t; */
 id|tty-&gt;closing
 op_assign
 l_int|1
@@ -3519,14 +3585,16 @@ op_ne
 id|DZ_CLOSING_WAIT_NONE
 )paren
 id|tty_wait_until_sent
+c_func
 (paren
 id|tty
 comma
 id|info-&gt;closing_wait
 )paren
 suffix:semicolon
-multiline_comment|/*&n;   * At this point we stop accepting input.  To do this, we&n;   * disable the receive line status interrupts.&n;   */
+multiline_comment|/*&n;&t; * At this point we stop accepting input.  To do this, we disable the&n;&t; * receive line status interrupts.&n;&t; */
 id|shutdown
+c_func
 (paren
 id|info
 )paren
@@ -3581,9 +3649,10 @@ c_cond
 (paren
 id|tty-&gt;ldisc.close
 )paren
-(paren
-id|tty-&gt;ldisc.close
-)paren
+id|tty-&gt;ldisc
+dot
+id|close
+c_func
 (paren
 id|tty
 )paren
@@ -3604,9 +3673,10 @@ c_cond
 (paren
 id|tty-&gt;ldisc.open
 )paren
-(paren
-id|tty-&gt;ldisc.open
-)paren
+id|tty-&gt;ldisc
+dot
+id|open
+c_func
 (paren
 id|tty
 )paren
@@ -3636,6 +3706,7 @@ id|info-&gt;close_delay
 suffix:semicolon
 )brace
 id|wake_up_interruptible
+c_func
 (paren
 op_amp
 id|info-&gt;open_wait
@@ -3654,12 +3725,14 @@ id|DZ_CLOSING
 )paren
 suffix:semicolon
 id|wake_up_interruptible
+c_func
 (paren
 op_amp
 id|info-&gt;close_wait
 )paren
 suffix:semicolon
 id|restore_flags
+c_func
 (paren
 id|flags
 )paren
@@ -3690,11 +3763,13 @@ op_star
 id|tty-&gt;driver_data
 suffix:semicolon
 id|dz_flush_buffer
+c_func
 (paren
 id|tty
 )paren
 suffix:semicolon
 id|shutdown
+c_func
 (paren
 id|info
 )paren
@@ -3721,6 +3796,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|wake_up_interruptible
+c_func
 (paren
 op_amp
 id|info-&gt;open_wait
@@ -3732,6 +3808,7 @@ DECL|function|block_til_ready
 r_static
 r_int
 id|block_til_ready
+c_func
 (paren
 r_struct
 id|tty_struct
@@ -3765,7 +3842,7 @@ id|do_clocal
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;   * If the device is in the middle of being closed, then block&n;   * until it&squot;s done, and then try again.&n;   */
+multiline_comment|/*&n;&t; * If the device is in the middle of being closed, then block&n;&t; * until it&squot;s done, and then try again.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3775,6 +3852,7 @@ id|DZ_CLOSING
 )paren
 (brace
 id|interruptible_sleep_on
+c_func
 (paren
 op_amp
 id|info-&gt;close_wait
@@ -3785,7 +3863,7 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   * If this is a callout device, then just make sure the normal&n;   * device isn&squot;t being used.&n;   */
+multiline_comment|/*&n;&t; * If this is a callout device, then just make sure the normal&n;&t; * device isn&squot;t being used.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3863,7 +3941,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   * If non-blocking mode is set, or the port is not enabled,&n;   * then make the check up front and then exit.&n;   */
+multiline_comment|/*&n;&t; * If non-blocking mode is set, or the port is not enabled, then make&n;&t; * the check up front and then exit.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3937,12 +4015,13 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   * Block waiting for the carrier detect and the line to become&n;   * free (i.e., not in use by the callout).  While we are in&n;   * this loop, info-&gt;count is dropped by one, so that&n;   * dz_close() knows when to free things.  We restore it upon&n;   * exit, either normal or abnormal.&n;   */
+multiline_comment|/*&n;&t; * Block waiting for the carrier detect and the line to become free&n;&t; * (i.e., not in use by the callout).  While we are in this loop,&n;&t; * info-&gt;count is dropped by one, so that dz_close() knows when to free&n;&t; * things.  We restore it upon exit, either normal or abnormal.&n;&t; */
 id|retval
 op_assign
 l_int|0
 suffix:semicolon
 id|add_wait_queue
+c_func
 (paren
 op_amp
 id|info-&gt;open_wait
@@ -4016,6 +4095,7 @@ r_if
 c_cond
 (paren
 id|signal_pending
+c_func
 (paren
 id|current
 )paren
@@ -4117,7 +4197,7 @@ id|tty-&gt;device
 op_minus
 id|tty-&gt;driver.minor_start
 suffix:semicolon
-multiline_comment|/* The dz lines for the mouse/keyboard must be&n;   * opened using their respective drivers.&n;   */
+multiline_comment|/*&n;&t; * The dz lines for the mouse/keyboard must be opened using their&n;&t; * respective drivers.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4174,7 +4254,7 @@ id|info-&gt;tty
 op_assign
 id|tty
 suffix:semicolon
-multiline_comment|/*&n;   * Start up serial port&n;   */
+multiline_comment|/*&n;&t; * Start up serial port&n;&t; */
 id|retval
 op_assign
 id|startup
@@ -4244,6 +4324,7 @@ op_assign
 id|info-&gt;callout_termios
 suffix:semicolon
 id|change_speed
+c_func
 (paren
 id|info
 )paren
@@ -4291,9 +4372,7 @@ r_void
 (brace
 r_int
 id|i
-suffix:semicolon
-r_int
-r_int
+comma
 id|flags
 suffix:semicolon
 r_struct
@@ -4303,6 +4382,7 @@ id|info
 suffix:semicolon
 multiline_comment|/* Setup base handler, and timer table. */
 id|init_bh
+c_func
 (paren
 id|SERIAL_BH
 comma
@@ -4310,6 +4390,7 @@ id|do_serial_bh
 )paren
 suffix:semicolon
 id|show_serial_version
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -4332,10 +4413,17 @@ id|serial_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+macro_line|#if (LINUX_VERSION_CODE &gt; 0x2032D &amp;&amp; defined(CONFIG_DEVFS_FS))
 id|serial_driver.name
 op_assign
 l_string|&quot;ttyS&quot;
 suffix:semicolon
+macro_line|#else
+id|serial_driver.name
+op_assign
+l_string|&quot;tts/%d&quot;
+suffix:semicolon
+macro_line|#endif
 id|serial_driver.major
 op_assign
 id|TTY_MAJOR
@@ -4375,6 +4463,8 @@ suffix:semicolon
 id|serial_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
+op_or
+id|TTY_DRIVER_NO_DEVFS
 suffix:semicolon
 id|serial_driver.refcount
 op_assign
@@ -4453,15 +4543,22 @@ id|serial_driver.hangup
 op_assign
 id|dz_hangup
 suffix:semicolon
-multiline_comment|/*&n;   * The callout device is just like normal device except for&n;   * major number and the subtype code.&n;   */
+multiline_comment|/*&n;&t; * The callout device is just like normal device except for major&n;&t; * number and the subtype code.&n;&t; */
 id|callout_driver
 op_assign
 id|serial_driver
 suffix:semicolon
+macro_line|#if (LINUX_VERSION_CODE &gt; 0x2032D &amp;&amp; defined(CONFIG_DEVFS_FS))
 id|callout_driver.name
 op_assign
 l_string|&quot;cua&quot;
 suffix:semicolon
+macro_line|#else
+id|callout_driver.name
+op_assign
+l_string|&quot;cua/%d&quot;
+suffix:semicolon
+macro_line|#endif
 id|callout_driver.major
 op_assign
 id|TTYAUX_MAJOR
@@ -4647,7 +4744,7 @@ op_amp
 id|info-&gt;close_wait
 )paren
 suffix:semicolon
-multiline_comment|/* If we are pointing to address zero then punt - not correctly&n;       set up in setup.c to handle this. */
+multiline_comment|/*&n;&t;&t; * If we are pointing to address zero then punt - not correctly&n;&t;&t; * set up in setup.c to handle this.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4660,7 +4757,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ttyS%02d at 0x%04x (irq = %d)&bslash;n&quot;
+l_string|&quot;ttyS%02d at 0x%08x (irq = %d)&bslash;n&quot;
 comma
 id|info-&gt;line
 comma
@@ -4669,9 +4766,39 @@ comma
 id|SERIAL
 )paren
 suffix:semicolon
+id|tty_register_devfs
+c_func
+(paren
+op_amp
+id|serial_driver
+comma
+l_int|0
+comma
+id|serial_driver.minor_start
+op_plus
+id|info-&gt;line
+)paren
+suffix:semicolon
+id|tty_register_devfs
+c_func
+(paren
+op_amp
+id|callout_driver
+comma
+l_int|0
+comma
+id|callout_driver.minor_start
+op_plus
+id|info-&gt;line
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/* reset the chip */
+multiline_comment|/* Reset the chip */
 macro_line|#ifndef CONFIG_SERIAL_CONSOLE
+(brace
+r_int
+id|tmp
+suffix:semicolon
 id|dz_out
 c_func
 (paren
@@ -4705,7 +4832,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* enable scanning */
+multiline_comment|/* Enable scanning */
 id|dz_out
 c_func
 (paren
@@ -4716,8 +4843,9 @@ comma
 id|DZ_MSE
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
-multiline_comment|/* order matters here... the trick is that flags&n;     is updated... in request_irq - to immediatedly obliterate&n;     it is unwise. */
+multiline_comment|/*&n;&t; * Order matters here... the trick is that flags is updated... in&n;&t; * request_irq - to immediatedly obliterate it is unwise.&n;&t; */
 id|restore_flags
 c_func
 (paren
@@ -4728,6 +4856,7 @@ r_if
 c_cond
 (paren
 id|request_irq
+c_func
 (paren
 id|SERIAL
 comma
@@ -4744,6 +4873,7 @@ l_int|0
 )paren
 )paren
 id|panic
+c_func
 (paren
 l_string|&quot;Unable to register DZ interrupt&bslash;n&quot;
 )paren
@@ -4778,7 +4908,7 @@ id|tmp
 op_assign
 id|ch
 suffix:semicolon
-multiline_comment|/* this code sends stuff out to serial device - spinning its&n;      wheels and waiting. */
+multiline_comment|/*&n;&t; * this code sends stuff out to serial device - spinning its wheels and&n;&t; * waiting.&n;&t; */
 multiline_comment|/* force the issue - point it at lines[3]*/
 id|dz_console
 op_assign
@@ -4788,15 +4918,10 @@ id|multi
 id|CONSOLE_LINE
 )braket
 suffix:semicolon
-id|save_flags
+id|save_and_cli
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* spin our wheels */
@@ -4825,6 +4950,7 @@ op_decrement
 suffix:semicolon
 multiline_comment|/* Actually transmit the character. */
 id|dz_out
+c_func
 (paren
 id|dz_console
 comma
@@ -4889,11 +5015,13 @@ op_eq
 l_char|&squot;&bslash;n&squot;
 )paren
 id|dz_console_put_char
+c_func
 (paren
 l_char|&squot;&bslash;r&squot;
 )paren
 suffix:semicolon
 id|dz_console_put_char
+c_func
 (paren
 op_star
 id|str
@@ -5028,11 +5156,9 @@ id|s
 op_le
 l_char|&squot;9&squot;
 )paren
-(brace
 id|s
 op_increment
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5059,7 +5185,7 @@ op_minus
 l_char|&squot;0&squot;
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *&t;Now construct a cflag setting.&n;&t; */
+multiline_comment|/*&n;&t; * Now construct a cflag setting.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -5261,6 +5387,7 @@ op_or_assign
 id|DZ_PARENB
 suffix:semicolon
 id|dz_out
+c_func
 (paren
 id|dz_console
 comma
@@ -5372,4 +5499,10 @@ id|dz_sercons
 suffix:semicolon
 )brace
 macro_line|#endif /* ifdef CONFIG_SERIAL_CONSOLE */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

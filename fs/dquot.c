@@ -2730,7 +2730,7 @@ op_assign
 id|mntget
 c_func
 (paren
-id|file-&gt;f_vfsmnt
+id|filp-&gt;f_vfsmnt
 )paren
 suffix:semicolon
 r_struct
@@ -2741,7 +2741,7 @@ op_assign
 id|dget
 c_func
 (paren
-id|file-&gt;f_dentry
+id|filp-&gt;f_dentry
 )paren
 suffix:semicolon
 id|file_list_unlock

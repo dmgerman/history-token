@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1997, 1998, 1999, 2000 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1997, 1998, 1999, 2000, 2001 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; */
 macro_line|#ifndef _ASM_HARDIRQ_H
 DECL|macro|_ASM_HARDIRQ_H
 mdefine_line|#define _ASM_HARDIRQ_H
@@ -6,19 +6,13 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-multiline_comment|/* entry.S is sensitive to the offsets of these fields */
 r_typedef
 r_struct
 (brace
-DECL|member|__softirq_active
+DECL|member|__softirq_pending
 r_int
 r_int
-id|__softirq_active
-suffix:semicolon
-DECL|member|__softirq_mask
-r_int
-r_int
-id|__softirq_mask
+id|__softirq_pending
 suffix:semicolon
 DECL|member|__local_irq_count
 r_int
@@ -35,6 +29,13 @@ r_int
 r_int
 id|__syscall_count
 suffix:semicolon
+DECL|member|__ksoftirqd_task
+r_struct
+id|task_struct
+op_star
+id|__ksoftirqd_task
+suffix:semicolon
+multiline_comment|/* waitqueue is too large */
 DECL|typedef|irq_cpustat_t
 )brace
 id|____cacheline_aligned

@@ -56,7 +56,7 @@ multiline_comment|/* ----------------------------------------------------- */
 multiline_comment|/* === CONFIG === */
 multiline_comment|/* [stevel] we use the IT8712 serial port for kgdb */
 DECL|macro|DEBUG_BASE
-mdefine_line|#define&t;DEBUG_BASE  0xB40003F8 /* 8712 serial port 1 base address */
+mdefine_line|#define&t;DEBUG_BASE  0xB40003F8&t;/* 8712 serial port 1 base address */
 DECL|macro|MAX_BAUD
 mdefine_line|#define MAX_BAUD    115200
 multiline_comment|/* === END OF CONFIG === */
@@ -246,9 +246,7 @@ l_int|0x1
 op_eq
 l_int|0
 )paren
-(brace
 suffix:semicolon
-)brace
 r_return
 id|UART16550_READ
 c_func

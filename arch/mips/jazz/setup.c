@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: setup.c,v 1.24 1999/10/09 00:00:58 ralf Exp $&n; *&n; * Setup pointers to hardware-dependent routines.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998 by Ralf Baechle&n; */
+multiline_comment|/*&n; * Setup pointers to hardware-dependent routines.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 2001 by Ralf Baechle&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -216,7 +216,7 @@ id|JAZZ_R4030_INVAL_ADDR
 )paren
 suffix:semicolon
 multiline_comment|/* clear error bits */
-id|set_cp0_status
+id|change_cp0_status
 c_func
 (paren
 id|ST0_IM
@@ -269,21 +269,6 @@ id|irq2
 )paren
 suffix:semicolon
 )brace
-DECL|function|page_is_ram
-r_int
-id|__init
-id|page_is_ram
-c_func
-(paren
-r_int
-r_int
-id|pagenr
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
 DECL|function|jazz_setup
 r_void
 id|__init
@@ -333,6 +318,17 @@ suffix:semicolon
 id|mips_io_port_base
 op_assign
 id|JAZZ_PORT_BASE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mips_machtype
+op_eq
+id|MACH_MIPS_MAGNUM_4000
+)paren
+id|EISA_bus
+op_assign
+l_int|1
 suffix:semicolon
 id|isa_slot_offset
 op_assign

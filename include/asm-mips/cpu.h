@@ -30,6 +30,8 @@ DECL|macro|PRID_IMP_R10000
 mdefine_line|#define PRID_IMP_R10000&t;&t;0x0900
 DECL|macro|PRID_IMP_R4300
 mdefine_line|#define PRID_IMP_R4300&t;&t;0x0b00
+DECL|macro|PRID_IMP_VR41XX
+mdefine_line|#define PRID_IMP_VR41XX&t;&t;0x0c00
 DECL|macro|PRID_IMP_R12000
 mdefine_line|#define PRID_IMP_R12000&t;&t;0x0e00
 DECL|macro|PRID_IMP_R8000
@@ -46,8 +48,6 @@ DECL|macro|PRID_IMP_R4650
 mdefine_line|#define PRID_IMP_R4650&t;&t;0x2200&t;&t;/* Same as R4640 */
 DECL|macro|PRID_IMP_R5000
 mdefine_line|#define PRID_IMP_R5000&t;&t;0x2300
-DECL|macro|PRID_IMP_R5432
-mdefine_line|#define PRID_IMP_R5432&t;&t;0x5400
 DECL|macro|PRID_IMP_SONIC
 mdefine_line|#define PRID_IMP_SONIC&t;&t;0x2400
 DECL|macro|PRID_IMP_MAGIC
@@ -56,6 +56,8 @@ DECL|macro|PRID_IMP_RM7000
 mdefine_line|#define PRID_IMP_RM7000&t;&t;0x2700
 DECL|macro|PRID_IMP_NEVADA
 mdefine_line|#define PRID_IMP_NEVADA&t;&t;0x2800&t;&t;/* RM5260 ??? */
+DECL|macro|PRID_IMP_R5432
+mdefine_line|#define PRID_IMP_R5432&t;&t;0x5400
 DECL|macro|PRID_IMP_4KC
 mdefine_line|#define PRID_IMP_4KC&t;&t;0x8000
 DECL|macro|PRID_IMP_5KC
@@ -168,7 +170,7 @@ mdefine_line|#define MIPS_CPU_FPU&t;&t;0x00000010  /* CPU has FPU */
 DECL|macro|MIPS_CPU_32FPR
 mdefine_line|#define MIPS_CPU_32FPR&t;&t;0x00000020  /* 32 dbl. prec. FP registers */
 DECL|macro|MIPS_CPU_COUNTER
-mdefine_line|#define MIPS_CPU_COUNTER&t;0x00000040 /* Cycle count/compare */
+mdefine_line|#define MIPS_CPU_COUNTER&t;0x00000040  /* Cycle count/compare */
 DECL|macro|MIPS_CPU_WATCH
 mdefine_line|#define MIPS_CPU_WATCH&t;&t;0x00000080  /* watchpoint registers */
 DECL|macro|MIPS_CPU_MIPS16

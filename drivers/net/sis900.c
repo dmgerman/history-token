@@ -2675,7 +2675,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * &t;sis900_set_capability: - set the media capability of network adapter.&n; *&t;@net_dev : the net device to probe for&n; *&t;@mii_phy : default PHY&n; *&n; *&t;Set the media capability of network adapter according to&n; *&t;mii status register. It&squot;s necessary before auto-negotiate.&n; */
+multiline_comment|/**&n; * &t;sis900_set_capability: - set the media capability of network adapter.&n; *&t;@net_dev : the net device to probe for&n; *&t;@phy : default PHY&n; *&n; *&t;Set the media capability of network adapter according to&n; *&t;mii status register. It&squot;s necessary before auto-negotiate.&n; */
 DECL|function|sis900_set_capability
 r_static
 r_void
@@ -5278,7 +5278,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;sis900_set_mode: - Set the media mode of mac register.&n; *&t;@speed : the transmit speed to be determined&n; *&t;@duplex: the duplex mode to be determined&n; *&n; *&t;Set the media mode of mac register txcfg/rxcfg according to&n; *&t;speed and duplex of phy. Bit EDB_MASTER_EN indicates the EDB&n; *&t;bus is used instead of PCI bus. When this bit is set 1, the&n; *&t;Max DMA Burst Size for TX/RX DMA should be no larger than 16&n; *&t;double words.&n; */
+multiline_comment|/**&n; *&t;sis900_set_mode: - Set the media mode of mac register.&n; *&t;@ioaddr: the address of the device&n; *&t;@speed : the transmit speed to be determined&n; *&t;@duplex: the duplex mode to be determined&n; *&n; *&t;Set the media mode of mac register txcfg/rxcfg according to&n; *&t;speed and duplex of phy. Bit EDB_MASTER_EN indicates the EDB&n; *&t;bus is used instead of PCI bus. When this bit is set 1, the&n; *&t;Max DMA Burst Size for TX/RX DMA should be no larger than 16&n; *&t;double words.&n; */
 DECL|function|sis900_set_mode
 r_static
 r_void

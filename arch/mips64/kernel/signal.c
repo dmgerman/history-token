@@ -1461,9 +1461,9 @@ id|rs_uc
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|function|sys_sigreturn
 id|asmlinkage
 r_void
-DECL|function|sys_sigreturn
 id|sys_sigreturn
 c_func
 (paren
@@ -1627,9 +1627,9 @@ id|current
 )paren
 suffix:semicolon
 )brace
+DECL|function|sys_rt_sigreturn
 id|asmlinkage
 r_void
-DECL|function|sys_rt_sigreturn
 id|sys_rt_sigreturn
 c_func
 (paren
@@ -1820,10 +1820,10 @@ id|current
 )paren
 suffix:semicolon
 )brace
+DECL|function|setup_sigcontext
 r_static
 r_int
 r_inline
-DECL|function|setup_sigcontext
 id|setup_sigcontext
 c_func
 (paren
@@ -2189,11 +2189,11 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Determine which stack to use..&n; */
+DECL|function|get_sigframe
 r_static
 r_inline
 r_void
 op_star
-DECL|function|get_sigframe
 id|get_sigframe
 c_func
 (paren
@@ -2262,10 +2262,10 @@ id|ALMASK
 )paren
 suffix:semicolon
 )brace
+DECL|function|setup_frame
 r_static
 r_void
 r_inline
-DECL|function|setup_frame
 id|setup_frame
 c_func
 (paren
@@ -2533,10 +2533,10 @@ id|current
 )paren
 suffix:semicolon
 )brace
+DECL|function|setup_rt_frame
 r_static
 r_void
 r_inline
-DECL|function|setup_rt_frame
 id|setup_rt_frame
 c_func
 (paren
@@ -2630,7 +2630,7 @@ id|ka-&gt;sa.sa_restorer
 suffix:semicolon
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Set up the return code ...&n;&t;&t; *&n;&t;&t; *         li      v0, __NR_sigreturn&n;&t;&t; *         syscall&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Set up the return code ...&n;&t;&t; *&n;&t;&t; *         li      v0, __NR_rt_sigreturn&n;&t;&t; *         syscall&n;&t;&t; */
 id|err
 op_or_assign
 id|__put_user
@@ -2638,7 +2638,7 @@ c_func
 (paren
 l_int|0x24020000
 op_plus
-id|__NR_sigreturn
+id|__NR_rt_sigreturn
 comma
 id|frame-&gt;rs_code
 op_plus
@@ -2892,10 +2892,10 @@ id|current
 )paren
 suffix:semicolon
 )brace
+DECL|function|handle_signal
 r_static
 r_inline
 r_void
-DECL|function|handle_signal
 id|handle_signal
 c_func
 (paren
@@ -3022,10 +3022,10 @@ id|current-&gt;sigmask_lock
 suffix:semicolon
 )brace
 )brace
+DECL|function|syscall_restart
 r_static
 r_inline
 r_void
-DECL|function|syscall_restart
 id|syscall_restart
 c_func
 (paren
@@ -3187,24 +3187,6 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#ifdef CONFIG_BINFMT_IRIX
-r_if
-c_cond
-(paren
-id|current-&gt;personality
-op_ne
-id|PER_LINUX
-)paren
-r_return
-id|do_irix_signal
-c_func
-(paren
-id|oldset
-comma
-id|regs
-)paren
-suffix:semicolon
 macro_line|#endif
 r_if
 c_cond

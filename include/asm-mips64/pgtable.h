@@ -1164,6 +1164,49 @@ r_return
 id|pte
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Macro to make mark a page protection value as &quot;uncacheable&quot;.  Note&n; * that &quot;protection&quot; is really a misnomer here as the protection value&n; * contains the memory attribute bits, dirty bits, and various other&n; * bits as well.&n; */
+DECL|macro|pgprot_noncached
+mdefine_line|#define pgprot_noncached pgprot_noncached
+DECL|function|pgprot_noncached
+r_static
+r_inline
+id|pgprot_t
+id|pgprot_noncached
+c_func
+(paren
+id|pgprot_t
+id|_prot
+)paren
+(brace
+r_int
+r_int
+id|prot
+op_assign
+id|pgprot_val
+c_func
+(paren
+id|_prot
+)paren
+suffix:semicolon
+id|prot
+op_assign
+(paren
+id|prot
+op_amp
+op_complement
+id|_CACHE_MASK
+)paren
+op_or
+id|_CACHE_UNCACHED
+suffix:semicolon
+r_return
+id|__pgprot
+c_func
+(paren
+id|prot
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|PAGE_TO_PA
@@ -1619,11 +1662,11 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
-l_string|&quot;mtc0 %0, $5&bslash;n&bslash;t&quot;
+l_string|&quot;mtc0 %z0, $5&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
 suffix:colon
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;Jr&quot;
 (paren
 id|val
 )paren
@@ -1681,11 +1724,11 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
-l_string|&quot;dmtc0 %0, $2&bslash;n&bslash;t&quot;
+l_string|&quot;dmtc0 %z0, $2&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
 suffix:colon
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;Jr&quot;
 (paren
 id|val
 )paren
@@ -1742,11 +1785,11 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
-l_string|&quot;dmtc0 %0, $3&bslash;n&bslash;t&quot;
+l_string|&quot;dmtc0 %z0, $3&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
 suffix:colon
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;Jr&quot;
 (paren
 id|val
 )paren
@@ -1804,11 +1847,11 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
-l_string|&quot;dmtc0 %0, $10&bslash;n&bslash;t&quot;
+l_string|&quot;dmtc0 %z0, $10&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
 suffix:colon
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;Jr&quot;
 (paren
 id|val
 )paren
@@ -1866,11 +1909,11 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
-l_string|&quot;mtc0 %0, $0&bslash;n&bslash;t&quot;
+l_string|&quot;mtc0 %z0, $0&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&bslash;n&bslash;t&quot;
 suffix:colon
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;Jr&quot;
 (paren
 id|val
 )paren
@@ -1928,11 +1971,11 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;&bslash;n&bslash;t.set noreorder&bslash;n&bslash;t&quot;
-l_string|&quot;mtc0 %0, $6&bslash;n&bslash;t&quot;
+l_string|&quot;mtc0 %z0, $6&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
 suffix:colon
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;Jr&quot;
 (paren
 id|val
 )paren
@@ -2023,11 +2066,11 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
-l_string|&quot;mtc0 %0, $28&bslash;n&bslash;t&quot;
+l_string|&quot;mtc0 %z0, $28&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
 suffix:colon
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;Jr&quot;
 (paren
 id|val
 )paren
@@ -2084,11 +2127,11 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
-l_string|&quot;mtc0 %0, $29&bslash;n&bslash;t&quot;
+l_string|&quot;mtc0 %z0, $29&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
 suffix:colon
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;Jr&quot;
 (paren
 id|val
 )paren
@@ -2146,11 +2189,11 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
-l_string|&quot;dmtc0 %0, $4&bslash;n&bslash;t&quot;
+l_string|&quot;dmtc0 %z0, $4&bslash;n&bslash;t&quot;
 l_string|&quot;.set reorder&quot;
 suffix:colon
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;Jr&quot;
 (paren
 id|val
 )paren
@@ -2159,5 +2202,8 @@ suffix:semicolon
 )brace
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* !defined (_LANGUAGE_ASSEMBLY) */
+multiline_comment|/*&n; * No page table caches to initialise&n; */
+DECL|macro|pgtable_cache_init
+mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
 macro_line|#endif /* _ASM_PGTABLE_H */
 eof

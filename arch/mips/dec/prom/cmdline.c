@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * cmdline.c: read the command line passed to us by the PROM.&n; *&n; * Copyright (C) 1998 Harald Koerfgen&n; *&n; * $Id: cmdline.c,v 1.2 1999/10/09 00:00:57 ralf Exp $&n; */
+multiline_comment|/*&n; * cmdline.c: read the command line passed to us by the PROM.&n; *&n; * Copyright (C) 1998 Harald Koerfgen&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -27,7 +27,7 @@ DECL|variable|arcs_cmdline
 r_char
 id|arcs_cmdline
 (braket
-id|CL_SIZE
+id|COMMAND_LINE_SIZE
 )braket
 suffix:semicolon
 DECL|function|prom_init_cmdline

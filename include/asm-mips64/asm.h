@@ -1,7 +1,7 @@
-multiline_comment|/* $Id: asm.h,v 1.2 1999/12/04 03:59:12 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 1999 by Ralf Baechle&n; * Copyright (C) 1999 by Silicon Graphics, Inc.&n; *&n; * Some useful macros for MIPS assembler code&n; *&n; * Some of the routines below contain useless nops that will be optimized&n; * away by gas in -O mode. These nops are however required to fill delay&n; * slots in noreorder mode.&n; */
-macro_line|#ifndef&t;_ASM_ASM_H
-DECL|macro|_ASM_ASM_H
-mdefine_line|#define&t;_ASM_ASM_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 1999, 2001 by Ralf Baechle&n; * Copyright (C) 1999 by Silicon Graphics, Inc.&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; *&n; * Some useful macros for MIPS assembler code&n; *&n; * Some of the routines below contain useless nops that will be optimized&n; * away by gas in -O mode. These nops are however required to fill delay&n; * slots in noreorder mode.&n; */
+macro_line|#ifndef&t;__ASM_ASM_H
+DECL|macro|__ASM_ASM_H
+mdefine_line|#define&t;__ASM_ASM_H
 macro_line|#include &lt;asm/sgidefs.h&gt;
 multiline_comment|/*&n; * PIC specific declarations&n; * Not used for the kernel but here seems to be the right place.&n; */
 macro_line|#ifdef __PIC__
@@ -30,28 +30,25 @@ DECL|macro|END
 mdefine_line|#define&t;END(function)                                   &bslash;&n;&t;&t;.end&t;function;&t;&t;        &bslash;&n;&t;&t;.size&t;function,.-function
 multiline_comment|/*&n; * EXPORT - export definition of symbol&n; */
 DECL|macro|EXPORT
-mdefine_line|#define&t;EXPORT(symbol)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.globl&t;symbol;                         &bslash;&n;symbol:
+mdefine_line|#define EXPORT(symbol)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.globl&t;symbol;                         &bslash;&n;symbol:
 multiline_comment|/*&n; * FEXPORT - export definition of a function symbol&n; */
 DECL|macro|FEXPORT
-mdefine_line|#define&t;FEXPORT(symbol)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.globl&t;symbol;                         &bslash;&n;&t;&t;.type&t;symbol,@function;&t;&t;&bslash;&n;symbol:
+mdefine_line|#define FEXPORT(symbol)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.globl&t;symbol;&t;&t;&t;&t;&bslash;&n;&t;&t;.type&t;symbol,@function;&t;&t;&bslash;&n;symbol:
 multiline_comment|/*&n; * ABS - export absolute symbol&n; */
 DECL|macro|ABS
 mdefine_line|#define&t;ABS(symbol,value)                               &bslash;&n;&t;&t;.globl&t;symbol;                         &bslash;&n;symbol&t;&t;=&t;value
 DECL|macro|PANIC
 mdefine_line|#define&t;PANIC(msg)                                      &bslash;&n;&t;&t;.set&t;push;&t;&t;&t;&t;&bslash;&n;&t;&t;.set&t;reorder;                        &bslash;&n;&t;&t;la&t;a0,8f;                          &bslash;&n;&t;&t;jal&t;panic;                          &bslash;&n;9:&t;&t;b&t;9b;                             &bslash;&n;&t;&t;.set&t;pop;&t;&t;&t;&t;&bslash;&n;&t;&t;TEXT(msg)
-multiline_comment|/*&n; * Print formated string&n; */
+multiline_comment|/*&n; * Print formatted string&n; */
 DECL|macro|PRINT
 mdefine_line|#define PRINT(string)                                   &bslash;&n;&t;&t;.set&t;push;&t;&t;&t;&t;&bslash;&n;&t;&t;.set&t;reorder;                        &bslash;&n;&t;&t;la&t;a0,8f;                          &bslash;&n;&t;&t;jal&t;printk;                         &bslash;&n;&t;&t;.set&t;pop;&t;&t;&t;&t;&bslash;&n;&t;&t;TEXT(string)
-multiline_comment|/*&n; * Print formated string&n; */
-DECL|macro|PROM_PRINT
-mdefine_line|#define PROM_PRINT(string)                              &bslash;&n;&t;&t;.set&t;push;&t;&t;&t;&t;&bslash;&n;&t;&t;.set&t;reorder;                        &bslash;&n;&t;&t;la&t;a0,8f;                          &bslash;&n;&t;&t;jal&t;prom_printf;                    &bslash;&n;&t;&t;.set&t;pop;&t;&t;&t;&t;&bslash;&n;&t;&t;TEXT(string)
 DECL|macro|TEXT
 mdefine_line|#define&t;TEXT(msg)                                       &bslash;&n;&t;&t;.data;                                  &bslash;&n;8:&t;&t;.asciiz&t;msg;                            &bslash;&n;&t;&t;.previous;
 multiline_comment|/*&n; * Build text tables&n; */
 DECL|macro|TTABLE
 mdefine_line|#define TTABLE(string)                                  &bslash;&n;&t;&t;.text;                                  &bslash;&n;&t;&t;.word&t;1f;                             &bslash;&n;&t;&t;.previous;                              &bslash;&n;&t;&t;.data;                                  &bslash;&n;1:&t;&t;.asciz&t;string;                         &bslash;&n;&t;&t;.previous
 multiline_comment|/*&n; * MIPS IV pref instruction.&n; * Use with .set noreorder only!&n; *&n; * MIPS IV implementations are free to treat this as a nop.  The R5000&n; * is one of them.  So we should have an option not to use this instruction.&n; */
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS4) || (_MIPS_ISA == _MIPS_ISA_MIPS5)
+macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS4 ) || (_MIPS_ISA == _MIPS_ISA_MIPS5) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS64)
 DECL|macro|PREF
 mdefine_line|#define PREF(hint,addr)                                 &bslash;&n;&t;&t;pref&t;hint,addr
 DECL|macro|PREFX
@@ -75,20 +72,20 @@ mdefine_line|#define MOVN(rd,rs,rt)                                  &bslash;&n;
 DECL|macro|MOVZ
 mdefine_line|#define MOVZ(rd,rs,rt)                                  &bslash;&n;&t;&t;.set&t;push;&t;&t;&t;&t;&bslash;&n;&t;&t;.set&t;noreorder;&t;&t;&t;&bslash;&n;&t;&t;beqzl&t;rt,9f;                          &bslash;&n;&t;&t;movz&t;rd,rs;                          &bslash;&n;&t;&t;.set&t;pop;&t;&t;&t;&t;&bslash;&n;9:
 macro_line|#endif /* (_MIPS_ISA == _MIPS_ISA_MIPS2) || (_MIPS_ISA == _MIPS_ISA_MIPS3) */
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS4) || (_MIPS_ISA == _MIPS_ISA_MIPS5)
+macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS4 ) || (_MIPS_ISA == _MIPS_ISA_MIPS5) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS64)
 DECL|macro|MOVN
 mdefine_line|#define MOVN(rd,rs,rt)                                  &bslash;&n;&t;&t;movn&t;rd,rs,rt
 DECL|macro|MOVZ
 mdefine_line|#define MOVZ(rd,rs,rt)                                  &bslash;&n;&t;&t;movz&t;rd,rs,rt
-macro_line|#endif /* (_MIPS_ISA == _MIPS_ISA_MIPS4) || (_MIPS_ISA == _MIPS_ISA_MIPS5) */
+macro_line|#endif /* MIPS IV, MIPS V or MIPS64 */
 multiline_comment|/*&n; * Stack alignment&n; */
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS1) || (_MIPS_ISA == _MIPS_ISA_MIPS2)
+macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS1) || (_MIPS_ISA == _MIPS_ISA_MIPS2) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS32)
 DECL|macro|ALSZ
 mdefine_line|#define ALSZ&t;7
 DECL|macro|ALMASK
 mdefine_line|#define ALMASK&t;~7
 macro_line|#endif
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS3) || (_MIPS_ISA == _MIPS_ISA_MIPS4) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS5)
+macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS3) || (_MIPS_ISA == _MIPS_ISA_MIPS4) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS5) || (_MIPS_ISA == _MIPS_ISA_MIPS64)
 DECL|macro|ALSZ
 mdefine_line|#define ALSZ&t;15
 DECL|macro|ALMASK
@@ -103,7 +100,7 @@ DECL|macro|SZREG
 mdefine_line|#define SZREG&t;4
 macro_line|#endif
 multiline_comment|/*&n; * Use the following macros in assemblercode to load/store registers,&n; * pointers etc.&n; */
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS1) || (_MIPS_ISA == _MIPS_ISA_MIPS2)
+macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS1) || (_MIPS_ISA == _MIPS_ISA_MIPS2) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS32)
 DECL|macro|REG_S
 mdefine_line|#define REG_S sw
 DECL|macro|REG_L
@@ -113,7 +110,7 @@ mdefine_line|#define PTR_SUBU dsubu
 DECL|macro|PTR_ADDU
 mdefine_line|#define PTR_ADDU daddu
 macro_line|#endif
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS3) || (_MIPS_ISA == _MIPS_ISA_MIPS4) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS5)
+macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS3) || (_MIPS_ISA == _MIPS_ISA_MIPS4) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS5) || (_MIPS_ISA == _MIPS_ISA_MIPS64)
 DECL|macro|REG_S
 mdefine_line|#define REG_S sd
 DECL|macro|REG_L
@@ -135,7 +132,7 @@ mdefine_line|#define INT_ADDU&t;addu
 DECL|macro|INT_ADDIU
 mdefine_line|#define INT_ADDIU&t;addiu
 DECL|macro|INT_SUB
-mdefine_line|#define INT_SUB&t;add
+mdefine_line|#define INT_SUB&t;&t;add
 DECL|macro|INT_SUBI
 mdefine_line|#define INT_SUBI&t;subi
 DECL|macro|INT_SUBU
@@ -157,7 +154,7 @@ mdefine_line|#define INT_ADDU&t;daddu
 DECL|macro|INT_ADDIU
 mdefine_line|#define INT_ADDIU&t;daddiu
 DECL|macro|INT_SUB
-mdefine_line|#define INT_SUB&t;dadd
+mdefine_line|#define INT_SUB&t;&t;dadd
 DECL|macro|INT_SUBI
 mdefine_line|#define INT_SUBI&t;dsubi
 DECL|macro|INT_SUBU
@@ -324,17 +321,17 @@ DECL|macro|PTRLOG
 mdefine_line|#define PTRLOG&t;&t;3
 macro_line|#endif
 multiline_comment|/*&n; * Some cp0 registers were extended to 64bit for MIPS III.&n; */
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS1) || (_MIPS_ISA == _MIPS_ISA_MIPS2)
+macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS1) || (_MIPS_ISA == _MIPS_ISA_MIPS2) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS32)
 DECL|macro|MFC0
 mdefine_line|#define MFC0&t;mfc0
 DECL|macro|MTC0
 mdefine_line|#define MTC0&t;mtc0
 macro_line|#endif
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS3) || (_MIPS_ISA == _MIPS_ISA_MIPS4) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS5)
+macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS3) || (_MIPS_ISA == _MIPS_ISA_MIPS4) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS5) || (_MIPS_ISA == _MIPS_ISA_MIPS64)
 DECL|macro|MFC0
 mdefine_line|#define MFC0&t;dmfc0
 DECL|macro|MTC0
 mdefine_line|#define MTC0&t;dmtc0
 macro_line|#endif
-macro_line|#endif /* _ASM_ASM_H */
+macro_line|#endif /* __ASM_ASM_H */
 eof

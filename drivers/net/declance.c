@@ -4037,6 +4037,11 @@ id|__init
 id|dec_lance_init
 c_func
 (paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
 r_const
 r_int
 id|type
@@ -4076,11 +4081,6 @@ r_char
 op_star
 id|esar
 suffix:semicolon
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
 macro_line|#ifndef CONFIG_TC
 id|system_base
 op_assign
@@ -4112,7 +4112,7 @@ op_assign
 id|init_etherdev
 c_func
 (paren
-l_int|NULL
+l_int|0
 comma
 r_sizeof
 (paren
@@ -4134,6 +4134,11 @@ suffix:semicolon
 multiline_comment|/* init_etherdev ensures the data structures used by the LANCE are aligned. */
 id|lp
 op_assign
+(paren
+r_struct
+id|lance_private
+op_star
+)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|spin_lock_init
@@ -4973,6 +4978,13 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|net_device
+op_star
+id|dev
+op_assign
+l_int|NULL
+suffix:semicolon
 r_static
 r_int
 id|called
@@ -5104,6 +5116,8 @@ r_return
 id|dec_lance_init
 c_func
 (paren
+id|dev
+comma
 id|type
 )paren
 suffix:semicolon

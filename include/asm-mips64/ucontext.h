@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ucontext.h,v 1.1 1999/09/27 16:01:40 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Low level exception handling&n; *&n; * Copyright (C) 1998, 1999 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Low level exception handling&n; *&n; * Copyright (C) 1998, 1999 by Ralf Baechle&n; */
 macro_line|#ifndef _ASM_UCONTEXT_H
 DECL|macro|_ASM_UCONTEXT_H
 mdefine_line|#define _ASM_UCONTEXT_H

@@ -1201,5 +1201,19 @@ id|b
 )paren
 suffix:semicolon
 )brace
+DECL|function|pcibios_assign_all_busses
+r_int
+id|__init
+r_int
+id|pcibios_assign_all_busses
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_PCI */
 eof

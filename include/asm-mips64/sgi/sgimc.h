@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sgimc.h,v 1.2 1999/10/19 20:51:54 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * sgimc.h: Definitions for memory controller hardware found on&n; *          SGI IP20, IP22, IP26, and IP28 machines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1999 Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * sgimc.h: Definitions for memory controller hardware found on&n; *          SGI IP20, IP22, IP26, and IP28 machines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1999 Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_SGI_SGIMC_H
 DECL|macro|_ASM_SGI_SGIMC_H
 mdefine_line|#define _ASM_SGI_SGIMC_H

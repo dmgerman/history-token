@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Code to handle Baget/MIPS IRQs plus some generic interrupt stuff.&n; *&n; * Copyright (C) 1998 Vladimir Roganov &amp; Gleb Raiko&n; *      Code (mostly sleleton and comments) derived from DECstation IRQ&n; *      handling.&n; *&n; * $Id: irq.c,v 1.6 2000/02/04 07:40:23 ralf Exp $&n; */
+multiline_comment|/*&n; * Code to handle Baget/MIPS IRQs plus some generic interrupt stuff.&n; *&n; * Copyright (C) 1998 Vladimir Roganov &amp; Gleb Raiko&n; *      Code (mostly sleleton and comments) derived from DECstation IRQ&n; *      handling.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
@@ -763,6 +763,8 @@ id|irq_enter
 c_func
 (paren
 id|cpu
+comma
+id|irq
 )paren
 suffix:semicolon
 id|kstat.irqs
@@ -892,6 +894,8 @@ id|irq_exit
 c_func
 (paren
 id|cpu
+comma
+id|irq
 )paren
 suffix:semicolon
 multiline_comment|/* unmasking and bottom half handling is done magically for us. */
@@ -1601,33 +1605,6 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-DECL|function|baget_irq_canonicalize
-r_static
-r_int
-id|baget_irq_canonicalize
-c_func
-(paren
-r_int
-id|irq
-)paren
-(brace
-r_return
-id|irq
-suffix:semicolon
-)brace
-DECL|variable|irq_cannonicalize
-r_int
-(paren
-op_star
-id|irq_cannonicalize
-)paren
-(paren
-r_int
-id|irq
-)paren
-op_assign
-id|baget_irq_canonicalize
-suffix:semicolon
 DECL|function|probe_irq_on
 r_int
 r_int

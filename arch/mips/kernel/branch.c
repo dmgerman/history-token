@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * Branch and jump emulation.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 97, 2000 by Ralf Baechle&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; * Branch and jump emulation.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 97, 2000, 2001 by Ralf Baechle&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -49,28 +48,9 @@ id|epc
 op_amp
 l_int|3
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: unaligned epc - sending SIGBUS.&bslash;n&quot;
-comma
-id|current-&gt;comm
-)paren
+r_goto
+id|unaligned
 suffix:semicolon
-id|force_sig
-c_func
-(paren
-id|SIGBUS
-comma
-id|current
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Read the instruction&n;&t; */
 id|addr
 op_assign
@@ -578,7 +558,6 @@ multiline_comment|/*&n;&t; * And now the FPA/cp1 branch instructions.&n;&t; */
 r_case
 id|cop1_op
 suffix:colon
-macro_line|#ifdef CONFIG_MIPS_FPU_EMULATOR
 r_if
 c_cond
 (paren
@@ -596,7 +575,6 @@ id|current-&gt;thread.fpu.soft.sr
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 id|asm
 (paren
 l_string|&quot;cfc1&bslash;t%0,$31&quot;
@@ -724,6 +702,28 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
+suffix:semicolon
+id|unaligned
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;%s: unaligned epc - sending SIGBUS.&bslash;n&quot;
+comma
+id|current-&gt;comm
+)paren
+suffix:semicolon
+id|force_sig
+c_func
+(paren
+id|SIGBUS
+comma
+id|current
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 eof

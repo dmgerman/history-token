@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/mips/jazz/jazzdma.c&n; *&n; * Mips Jazz DMA controller support&n; * Copyright (C) 1995, 1996 by Andreas Busse&n; *&n; * NOTE: Some of the argument checking could be removed when&n; * things have settled down. Also, instead of returning 0xffffffff&n; * on failure of vdma_alloc() one could leave page #0 unused&n; * and return the more usual NULL pointer as logical address.&n; */
+multiline_comment|/*&n; * Mips Jazz DMA controller support&n; * Copyright (C) 1995, 1996 by Andreas Busse&n; *&n; * NOTE: Some of the argument checking could be removed when&n; * things have settled down. Also, instead of returning 0xffffffff&n; * on failure of vdma_alloc() one could leave page #0 unused&n; * and return the more usual NULL pointer as logical address.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -19,8 +19,6 @@ r_static
 r_int
 r_int
 id|vdma_pagetable_start
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Debug stuff&n; */
 DECL|macro|vdma_debug
@@ -187,13 +185,6 @@ c_func
 l_string|&quot;VDMA: R4030 DMA pagetables initialized.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-id|KSEG0ADDR
-c_func
-(paren
-id|vdma_pagetable_end
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Allocate DMA pagetables using a simple first-fit algorithm&n; */
 DECL|function|vdma_alloc
@@ -303,11 +294,12 @@ suffix:semicolon
 multiline_comment|/* invalid physical address */
 )brace
 id|save_and_cli
+c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Find free chunk&n;     */
+multiline_comment|/*&n;&t; * Find free chunk&n;&t; */
 id|pages
 op_assign
 (paren
@@ -360,6 +352,7 @@ id|VDMA_PGTBL_ENTRIES
 (brace
 multiline_comment|/* nothing free */
 id|restore_flags
+c_func
 (paren
 id|flags
 )paren
@@ -408,7 +401,7 @@ r_break
 suffix:semicolon
 multiline_comment|/* found */
 )brace
-multiline_comment|/*&n;     * Mark pages as allocated&n;     */
+multiline_comment|/*&n;&t; * Mark pages as allocated&n;&t; */
 id|laddr
 op_assign
 (paren
@@ -476,7 +469,7 @@ op_add_assign
 id|VDMA_PAGESIZE
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * Update translation table and return logical start address&n;     */
+multiline_comment|/*&n;&t; * Update translation table and return logical start address&n;&t; */
 id|r4030_write_reg32
 c_func
 (paren
@@ -493,7 +486,6 @@ OG
 l_int|1
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;vdma_alloc: Allocated %d pages starting from %08lx&bslash;n&quot;
 comma
@@ -667,7 +659,6 @@ id|laddr
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;vdma_free: trying to free other&squot;s dma pages, laddr=%8lx&bslash;n&quot;
 comma
@@ -786,7 +777,6 @@ c_cond
 id|vdma_debug
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;vdma_map: Invalid logical address: %08lx&bslash;n&quot;
 comma
@@ -813,7 +803,6 @@ c_cond
 id|vdma_debug
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;vdma_map: Invalid physical address: %08lx&bslash;n&quot;
 comma
@@ -970,7 +959,7 @@ id|pages
 op_decrement
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * Update translation table&n;     */
+multiline_comment|/*&n;&t; * Update translation table&n;&t; */
 id|r4030_write_reg32
 c_func
 (paren
@@ -1502,7 +1491,7 @@ comma
 id|channel
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Check error conditions first&n;     */
+multiline_comment|/*&n;&t; * Check error conditions first&n;&t; */
 id|status
 op_assign
 id|r4030_read_reg32
@@ -1547,7 +1536,7 @@ comma
 id|channel
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Clear all interrupt flags&n;     */
+multiline_comment|/*&n;&t; * Clear all interrupt flags&n;&t; */
 id|r4030_write_reg32
 c_func
 (paren
@@ -1578,7 +1567,7 @@ op_or
 id|R4030_ADDR_INTR
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Enable the desired channel&n;     */
+multiline_comment|/*&n;&t; * Enable the desired channel&n;&t; */
 id|r4030_write_reg32
 c_func
 (paren
@@ -1742,7 +1731,7 @@ op_complement
 id|R4030_CHNL_ENABLE
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * After disabling a DMA channel a remote bus register should be&n;     * read to ensure that the current DMA acknowledge cycle is completed.&n;     */
+multiline_comment|/*&n;&t; * After disabling a DMA channel a remote bus register should be&n;&t; * read to ensure that the current DMA acknowledge cycle is completed.&n;&t; */
 op_star
 (paren
 (paren
@@ -1858,7 +1847,6 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
-c_func
 (paren
 l_string|&quot;VDMA: vdma_set_mode() called with unsupported channel %d!&bslash;n&quot;
 comma
@@ -1938,7 +1926,6 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
-c_func
 (paren
 l_string|&quot;VDMA: vdma_set_mode() called with unknown dma mode 0x%x&bslash;n&quot;
 comma

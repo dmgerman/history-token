@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: r10kcache.h,v 1.1 2000/01/16 01:27:14 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Inline assembly cache operations.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1999 Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; *&n; * FIXME: Handle split L2 caches.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Inline assembly cache operations.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1999 Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; *&n; * FIXME: Handle split L2 caches.&n; */
 macro_line|#ifndef _ASM_R10KCACHE_H
 DECL|macro|_ASM_R10KCACHE_H
 mdefine_line|#define _ASM_R10KCACHE_H

@@ -2308,7 +2308,7 @@ id|VIA_PCM_TYPE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;via_chan_clear - Stop DMA channel operation, and reset pointers&n; *&t;@chan: Channel to be cleared&n; *&n; *&t;Call via_chan_stop to halt DMA operations, and then resets&n; *&t;all software pointers which track DMA operation.&n; */
+multiline_comment|/**&n; *&t;via_chan_clear - Stop DMA channel operation, and reset pointers&n; *&t;@card: the chip to accessed&n; *&t;@chan: Channel to be cleared&n; *&n; *&t;Call via_chan_stop to halt DMA operations, and then resets&n; *&t;all software pointers which track DMA operation.&n; */
 DECL|function|via_chan_clear
 r_static
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: mman.h,v 1.3 2000/02/04 23:12:27 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1999 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1999 by Ralf Baechle&n; */
 macro_line|#ifndef _ASM_MMAN_H
 DECL|macro|_ASM_MMAN_H
 mdefine_line|#define _ASM_MMAN_H

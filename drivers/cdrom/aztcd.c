@@ -3,7 +3,7 @@ mdefine_line|#define AZT_VERSION &quot;2.60&quot;
 multiline_comment|/*      $Id: aztcd.c,v 2.60 1997/11/29 09:51:19 root Exp root $&n;&t;linux/drivers/block/aztcd.c - Aztech CD268 CDROM driver&n;&n;&t;Copyright (C) 1994-98 Werner Zimmermann(Werner.Zimmermann@fht-esslingen.de)&n;&n;&t;based on Mitsumi CDROM driver by  Martin Hariss and preworks by&n;&t;Eberhard Moenkeberg; contains contributions by Joe Nardone and Robby &n;&t;Schirmer.&n;&n;&t;This program is free software; you can redistribute it and/or modify&n;&t;it under the terms of the GNU General Public License as published by&n;&t;the Free Software Foundation; either version 2, or (at your option)&n;&t;any later version.&n;&n;&t;This program is distributed in the hope that it will be useful,&n;&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n;&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;&t;GNU General Public License for more details.&n;&n;&t;You should have received a copy of the GNU General Public License&n;&t;along with this program; if not, write to the Free Software&n;&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;&t;HISTORY&n;&t;V0.0    Adaption to Aztech CD268-01A Version 1.3&n;&t;&t;Version is PRE_ALPHA, unresolved points:&n;&t;&t;1. I use busy wait instead of timer wait in STEN_LOW,DTEN_LOW&n;&t;&t;   thus driver causes CPU overhead and is very slow &n;&t;&t;2. could not find a way to stop the drive, when it is&n;&t;&t;   in data read mode, therefore I had to set&n;&t;&t;   msf.end.min/sec/frame to 0:0:1 (in azt_poll); so only one&n;&t;&t;   frame can be read in sequence, this is also the reason for&n;&t;&t;3. getting &squot;timeout in state 4&squot; messages, but nevertheless&n;&t;&t;   it works&n;&t;&t;W.Zimmermann, Oct. 31, 1994&n;&t;V0.1    Version is ALPHA, problems #2 and #3 resolved.  &n;&t;&t;W.Zimmermann, Nov. 3, 1994&n;&t;V0.2    Modification to some comments, debugging aids for partial test&n;&t;&t;with Borland C under DOS eliminated. Timer interrupt wait &n;&t;&t;STEN_LOW_WAIT additionally to busy wait for STEN_LOW implemented; &n;&t;&t;use it only for the &squot;slow&squot; commands (ACMD_GET_Q_CHANNEL, ACMD_&n;&t;&t;SEEK_TO_LEAD_IN), all other commands are so &squot;fast&squot;, that busy &n;&t;&t;waiting seems better to me than interrupt rescheduling.&n;&t;&t;Besides that, when used in the wrong place, STEN_LOW_WAIT causes&n;&t;&t;kernel panic.&n;&t;&t;In function aztPlay command ACMD_PLAY_AUDIO added, should make&n;&t;&t;audio functions work. The Aztech drive needs different commands&n;&t;&t;to read data tracks and play audio tracks.&n;&t;&t;W.Zimmermann, Nov. 8, 1994&n;&t;V0.3    Recognition of missing drive during boot up improved (speeded up).&n;&t;&t;W.Zimmermann, Nov. 13, 1994&n;&t;V0.35   Rewrote the control mechanism in azt_poll (formerly mcd_poll) &n;&t;&t;including removal of all &squot;goto&squot; commands. :-); &n;&t;&t;J. Nardone, Nov. 14, 1994&n;&t;V0.4    Renamed variables and constants to &squot;azt&squot; instead of &squot;mcd&squot;; had&n;&t;&t;to make some &quot;compatibility&quot; defines in azt.h; please note,&n;&t;&t;that the source file was renamed to azt.c, the include file to&n;&t;&t;azt.h                &n;&t;&t;Speeded up drive recognition during init (will be a little bit &n;&t;&t;slower than before if no drive is installed!); suggested by&n;&t;&t;Robby Schirmer.&n;&t;&t;read_count declared volatile and set to AZT_BUF_SIZ to make&n;&t;&t;drive faster (now 300kB/sec, was 60kB/sec before, measured&n;&t;&t;by &squot;time dd if=/dev/cdrom of=/dev/null bs=2048 count=4096&squot;;&n;&t;&t;different AZT_BUF_SIZes were test, above 16 no further im-&n;&t;&t;provement seems to be possible; suggested by E.Moenkeberg.&n;&t;&t;W.Zimmermann, Nov. 18, 1994&n;&t;V0.42   Included getAztStatus command in GetQChannelInfo() to allow&n;&t;&t;reading Q-channel info on audio disks, if drive is stopped, &n;&t;&t;and some other bug fixes in the audio stuff, suggested by &n;&t;&t;Robby Schirmer.&n;&t;&t;Added more ioctls (reading data in mode 1 and mode 2).&n;&t;&t;Completely removed the old azt_poll() routine.&n;&t;&t;Detection of ORCHID CDS-3110 in aztcd_init implemented.&n;&t;&t;Additional debugging aids (see the readme file).&n;&t;&t;W.Zimmermann, Dec. 9, 1994  &n;&t;V0.50   Autodetection of drives implemented.&n;&t;&t;W.Zimmermann, Dec. 12, 1994&n;&t;V0.52   Prepared for including in the standard kernel, renamed most&n;&t;&t;variables to contain &squot;azt&squot;, included autoconf.h&n;&t;&t;W.Zimmermann, Dec. 16, 1994        &n;&t;V0.6    Version for being included in the standard Linux kernel.&n;&t;&t;Renamed source and header file to aztcd.c and aztcd.h&n;&t;&t;W.Zimmermann, Dec. 24, 1994&n;&t;V0.7    Changed VERIFY_READ to VERIFY_WRITE in aztcd_ioctl, case&n;&t;&t;CDROMREADMODE1 and CDROMREADMODE2; bug fix in the ioctl,&n;&t;&t;which causes kernel crashes when playing audio, changed &n;&t;&t;include-files (config.h instead of autoconf.h, removed&n;&t;&t;delay.h)&n;&t;&t;W.Zimmermann, Jan. 8, 1995&n;&t;V0.72   Some more modifications for adaption to the standard kernel.&n;&t;&t;W.Zimmermann, Jan. 16, 1995&n;        V0.80   aztcd is now part of the standard kernel since version 1.1.83.&n;                Modified the SET_TIMER and CLEAR_TIMER macros to comply with&n;                the new timer scheme.&n;                W.Zimmermann, Jan. 21, 1995&n;        V0.90   Included CDROMVOLCTRL, but with my Aztech drive I can only turn&n;                the channels on and off. If it works better with your drive, &n;                please mail me. Also implemented ACMD_CLOSE for CDROMSTART.&n;                W.Zimmermann, Jan. 24, 1995&n;        V1.00   Implemented close and lock tray commands. Patches supplied by&n;&t;&t;Frank Racis        &n;                Added support for loadable MODULEs, so aztcd can now also be&n;                loaded by insmod and removed by rmmod during run time&n;                Werner Zimmermann, Mar. 24, 95&n;        V1.10   Implemented soundcard configuration for Orchid CDS-3110 drives&n;                connected to Soundwave32 cards. Release for LST 2.1.&n;                (still experimental)&n;                Werner Zimmermann, May 8, 95&n;        V1.20   Implemented limited support for DOSEMU0.60&squot;s cdrom.c. Now it works, but&n;                sometimes DOSEMU may hang for 30 seconds or so. A fully functional ver-&n;                sion needs an update of Dosemu0.60&squot;s cdrom.c, which will come with the &n;                next revision of Dosemu.&n;                Also Soundwave32 support now works.&n;                Werner Zimmermann, May 22, 95&n;&t;V1.30   Auto-eject feature. Inspired by Franc Racis (racis@psu.edu)&n;&t;        Werner Zimmermann, July 4, 95&n;&t;V1.40   Started multisession support. Implementation copied from mcdx.c&n;&t;        by Heiko Schlittermann. Not tested yet.&n;&t;        Werner Zimmermann, July 15, 95&n;        V1.50   Implementation of ioctl CDROMRESET, continued multisession, began&n;                XA, but still untested. Heavy modifications to drive status de-&n;                tection.&n;                Werner Zimmermann, July 25, 95&n;        V1.60   XA support now should work. Speeded up drive recognition in cases, &n;                where no drive is installed.&n;                Werner Zimmermann, August 8, 1995&n;        V1.70   Multisession support now is completed, but there is still not &n;                enough testing done. If you can test it, please contact me. For&n;                details please read /usr/src/linux/Documentation/cdrom/aztcd&n;                Werner Zimmermann, August 19, 1995&n;        V1.80   Modification to suit the new kernel boot procedure introduced&n;                with kernel 1.3.33. Will definitely not work with older kernels.&n;                Programming done by Linus himself.&n;                Werner Zimmermann, October 11, 1995&n;&t;V1.90   Support for Conrad TXC drives, thank&squot;s to Jochen Kunz and Olaf Kaluza.&n;&t;        Werner Zimmermann, October 21, 1995&n;        V2.00   Changed #include &quot;blk.h&quot; to &lt;linux/blk.h&gt; as the directory&n;                structure was changed. README.aztcd is now /usr/src/docu-&n;                mentation/cdrom/aztcd&n;                Werner Zimmermann, November 10, 95&n;        V2.10   Started to modify azt_poll to prevent reading beyond end of&n;                tracks.&n;                Werner Zimmermann, December 3, 95&n;        V2.20   Changed some comments&n;                Werner Zimmermann, April 1, 96&n;        V2.30   Implemented support for CyCDROM CR520, CR940, Code for CR520 &n;        &t;delivered by H.Berger with preworks by E.Moenkeberg.&n;                Werner Zimmermann, April 29, 96&n;        V2.40   Reorganized the placement of functions in the source code file&n;                to reflect the layered approach; did not actually change code&n;                Werner Zimmermann, May 1, 96&n;        V2.50   Heiko Eissfeldt suggested to remove some VERIFY_READs in &n;                aztcd_ioctl; check_aztcd_media_change modified &n;                Werner Zimmermann, May 16, 96       &n;&t;V2.60   Implemented Auto-Probing; made changes for kernel&squot;s 2.1.xx blocksize&n;                Adaption to linux kernel &gt; 2.1.0&n;&t;&t;Werner Zimmermann, Nov 29, 97&n;&t;&t;&n;        November 1999 -- Make kernel-parameter implementation work with 2.3.x &n;&t;                 Removed init_module &amp; cleanup_module in favor of &n;&t;&t;&t; module_init &amp; module_exit.&n;&t;&t;&t; Torben Mathiasen &lt;tmm@image.dk&gt;&n;*/
 macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR AZTECH_CDROM_MAJOR 
+mdefine_line|#define MAJOR_NR AZTECH_CDROM_MAJOR
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;aztcd.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
@@ -36,7 +36,7 @@ l_int|2048
 suffix:semicolon
 multiline_comment|/*###########################################################################&n;  Defines&n;  ###########################################################################&n;*/
 DECL|macro|SET_TIMER
-mdefine_line|#define SET_TIMER(func, jifs)   delay_timer.expires = jiffies + (jifs); &bslash;&n;                                delay_timer.function = (void *) (func); &bslash;&n;                                add_timer(&amp;delay_timer); 
+mdefine_line|#define SET_TIMER(func, jifs)   delay_timer.expires = jiffies + (jifs); &bslash;&n;                                delay_timer.function = (void *) (func); &bslash;&n;                                add_timer(&amp;delay_timer);
 DECL|macro|CLEAR_TIMER
 mdefine_line|#define CLEAR_TIMER             del_timer(&amp;delay_timer);
 DECL|macro|RETURNM
@@ -45,16 +45,16 @@ DECL|macro|RETURN
 mdefine_line|#define RETURN(message)        {printk(&quot;aztcd: Warning: %s failed&bslash;n&quot;,message);&bslash;&n;                                return;}
 multiline_comment|/* Macros to switch the IDE-interface to the slave device and back to the master*/
 DECL|macro|SWITCH_IDE_SLAVE
-mdefine_line|#define SWITCH_IDE_SLAVE  outb_p(0xa0,azt_port+6); &bslash;&n;&t;                  outb_p(0x10,azt_port+6); &bslash;&n;&t;                  outb_p(0x00,azt_port+7); &bslash;&n;&t;                  outb_p(0x10,azt_port+6); 
+mdefine_line|#define SWITCH_IDE_SLAVE  outb_p(0xa0,azt_port+6); &bslash;&n;&t;                  outb_p(0x10,azt_port+6); &bslash;&n;&t;                  outb_p(0x00,azt_port+7); &bslash;&n;&t;                  outb_p(0x10,azt_port+6);
 DECL|macro|SWITCH_IDE_MASTER
 mdefine_line|#define SWITCH_IDE_MASTER outb_p(0xa0,azt_port+6);
 macro_line|#if 0
 mdefine_line|#define AZT_TEST
-mdefine_line|#define AZT_TEST1 /* &lt;int-..&gt; */
-mdefine_line|#define AZT_TEST2 /* do_aztcd_request */
-mdefine_line|#define AZT_TEST3 /* AZT_S_state */
-mdefine_line|#define AZT_TEST4 /* QUICK_LOOP-counter */
-mdefine_line|#define AZT_TEST5 /* port(1) state */
+mdefine_line|#define AZT_TEST1&t;&t;/* &lt;int-..&gt; */
+mdefine_line|#define AZT_TEST2&t;&t;/* do_aztcd_request */
+mdefine_line|#define AZT_TEST3&t;&t;/* AZT_S_state */
+mdefine_line|#define AZT_TEST4&t;&t;/* QUICK_LOOP-counter */
+mdefine_line|#define AZT_TEST5&t;&t;/* port(1) state */
 mdefine_line|#define AZT_DEBUG
 mdefine_line|#define AZT_DEBUG_MULTISESSION
 macro_line|#endif
@@ -67,12 +67,12 @@ mdefine_line|#define AZT_BUF_SIZ 16
 DECL|macro|READ_TIMEOUT
 mdefine_line|#define READ_TIMEOUT 3000
 DECL|macro|azt_port
-mdefine_line|#define azt_port aztcd  /*needed for the modutils*/
+mdefine_line|#define azt_port aztcd&t;&t;/*needed for the modutils */
 multiline_comment|/*##########################################################################&n;  Type Definitions&n;  ##########################################################################&n;*/
 DECL|enum|azt_state_e
+DECL|enumerator|AZT_S_IDLE
 r_enum
 id|azt_state_e
-DECL|enumerator|AZT_S_IDLE
 (brace
 id|AZT_S_IDLE
 comma
@@ -103,20 +103,20 @@ multiline_comment|/* 6 */
 )brace
 suffix:semicolon
 DECL|enum|azt_read_modes
+DECL|enumerator|AZT_MODE_0
 r_enum
 id|azt_read_modes
-DECL|enumerator|AZT_MODE_0
 (brace
 id|AZT_MODE_0
 comma
-multiline_comment|/*read mode for audio disks, not supported by Aztech firmware*/
+multiline_comment|/*read mode for audio disks, not supported by Aztech firmware */
 DECL|enumerator|AZT_MODE_1
 id|AZT_MODE_1
 comma
-multiline_comment|/*read mode for normal CD-ROMs*/
+multiline_comment|/*read mode for normal CD-ROMs */
 DECL|enumerator|AZT_MODE_2
 id|AZT_MODE_2
-multiline_comment|/*read mode for XA CD-ROMs*/
+multiline_comment|/*read mode for XA CD-ROMs */
 )brace
 suffix:semicolon
 multiline_comment|/*##########################################################################&n;  Global Variables&n;  ##########################################################################&n;*/
@@ -145,7 +145,7 @@ op_star
 id|AZT_BUF_SIZ
 )braket
 suffix:semicolon
-multiline_comment|/*buffer for block size conversion*/
+multiline_comment|/*buffer for block size conversion */
 macro_line|#if AZT_PRIVATE_IOCTLS
 DECL|variable|buf
 r_static
@@ -155,7 +155,7 @@ id|buf
 id|CD_FRAMESIZE_RAW
 )braket
 suffix:semicolon
-multiline_comment|/*separate buffer for the ioctls*/
+multiline_comment|/*separate buffer for the ioctls */
 macro_line|#endif
 DECL|variable|azt_buf_bn
 DECL|variable|azt_next_bn
@@ -555,7 +555,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#if AZT_MULTISESSION 
+macro_line|#if AZT_MULTISESSION
 r_static
 r_int
 id|aztGetMultiDiskInfo
@@ -906,7 +906,6 @@ c_cond
 id|azt_init_end
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: Error Wait STEN_LOW commands:%x&bslash;n&quot;
 comma
@@ -1149,7 +1148,7 @@ l_int|0x170
 )paren
 id|SWITCH_IDE_SLAVE
 suffix:semicolon
-multiline_comment|/*switch IDE interface to slave configuration*/
+multiline_comment|/*switch IDE interface to slave configuration */
 id|aztCmd
 op_assign
 id|cmd
@@ -1271,7 +1270,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*OP_OK?*/
+multiline_comment|/*OP_OK? */
 r_if
 c_cond
 (paren
@@ -1291,7 +1290,6 @@ id|DATA_PORT
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;### Error 1 aztcd: aztSendCmd %x  Error Code %x&bslash;n&quot;
 comma
@@ -1362,14 +1360,12 @@ c_func
 (paren
 l_string|&quot;aztcd: play start=%02x:%02x:%02x  end=%02x:%02x:%02x&bslash;n&quot;
 comma
-"&bslash;"
 id|params-&gt;start.min
 comma
 id|params-&gt;start.sec
 comma
 id|params-&gt;start.frame
 comma
-"&bslash;"
 id|params-&gt;end.min
 comma
 id|params-&gt;end.sec
@@ -1377,7 +1373,7 @@ comma
 id|params-&gt;end.frame
 )paren
 suffix:semicolon
-macro_line|#endif   
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -1402,9 +1398,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|params
-op_member_access_from_pointer
-id|start.min
+id|params-&gt;start.min
 comma
 id|CMD_PORT
 )paren
@@ -1412,9 +1406,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|params
-op_member_access_from_pointer
-id|start.sec
+id|params-&gt;start.sec
 comma
 id|CMD_PORT
 )paren
@@ -1422,9 +1414,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|params
-op_member_access_from_pointer
-id|start.frame
+id|params-&gt;start.frame
 comma
 id|CMD_PORT
 )paren
@@ -1432,9 +1422,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|params
-op_member_access_from_pointer
-id|end.min
+id|params-&gt;end.min
 comma
 id|CMD_PORT
 )paren
@@ -1442,9 +1430,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|params
-op_member_access_from_pointer
-id|end.sec
+id|params-&gt;end.sec
 comma
 id|CMD_PORT
 )paren
@@ -1452,9 +1438,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|params
-op_member_access_from_pointer
-id|end.frame
+id|params-&gt;end.frame
 comma
 id|CMD_PORT
 )paren
@@ -1481,7 +1465,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*PA_OK ?*/
+multiline_comment|/*PA_OK ? */
 r_if
 c_cond
 (paren
@@ -1501,7 +1485,6 @@ id|DATA_PORT
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;### Error 1 aztcd: sendAztCmd %x  Error Code %x&bslash;n&quot;
 comma
@@ -1569,7 +1552,6 @@ c_func
 (paren
 l_string|&quot;aztcd: aztSeek %02x:%02x:%02x&bslash;n&quot;
 comma
-"&bslash;"
 id|params-&gt;start.min
 comma
 id|params-&gt;start.sec
@@ -1577,7 +1559,7 @@ comma
 id|params-&gt;start.frame
 )paren
 suffix:semicolon
-macro_line|#endif   
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -1602,9 +1584,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|params
-op_member_access_from_pointer
-id|start.min
+id|params-&gt;start.min
 comma
 id|CMD_PORT
 )paren
@@ -1612,9 +1592,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|params
-op_member_access_from_pointer
-id|start.sec
+id|params-&gt;start.sec
 comma
 id|CMD_PORT
 )paren
@@ -1622,9 +1600,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|params
-op_member_access_from_pointer
-id|start.frame
+id|params-&gt;start.frame
 comma
 id|CMD_PORT
 )paren
@@ -1651,7 +1627,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*PA_OK ?*/
+multiline_comment|/*PA_OK ? */
 r_if
 c_cond
 (paren
@@ -1781,8 +1757,8 @@ id|data
 op_eq
 id|AFL_PA_OK
 )paren
-multiline_comment|/*PA_OK ?*/
 (brace
+multiline_comment|/*PA_OK ? */
 id|azt_read_mode
 op_assign
 id|type
@@ -1810,7 +1786,6 @@ id|DATA_PORT
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;### Error 1 aztcd: aztSetDiskType %x Error Code %x&bslash;n&quot;
 comma
@@ -1971,7 +1946,6 @@ id|AST_CMD_CHECK
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: AST_CMD_CHECK error or no status available&bslash;n&quot;
 )paren
@@ -2273,7 +2247,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*STEN_LOW_WAIT; ??? Dosemu0.60&squot;s cdrom.c does not like STEN_LOW_WAIT here*/
+multiline_comment|/*STEN_LOW_WAIT; ??? Dosemu0.60&squot;s cdrom.c does not like STEN_LOW_WAIT here */
 r_if
 c_cond
 (paren
@@ -2293,7 +2267,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*??? Nullbyte einlesen*/
+multiline_comment|/*??? Nullbyte einlesen */
 r_if
 c_cond
 (paren
@@ -2357,9 +2331,7 @@ id|aztGetValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|ctrl_addr
+id|qp-&gt;ctrl_addr
 )paren
 OL
 l_int|0
@@ -2380,9 +2352,7 @@ id|aztGetValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|track
+id|qp-&gt;track
 )paren
 OL
 l_int|0
@@ -2403,9 +2373,7 @@ id|aztGetValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|pointIndex
+id|qp-&gt;pointIndex
 )paren
 OL
 l_int|0
@@ -2426,9 +2394,7 @@ id|aztGetValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|trackTime.min
+id|qp-&gt;trackTime.min
 )paren
 OL
 l_int|0
@@ -2449,9 +2415,7 @@ id|aztGetValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|trackTime.sec
+id|qp-&gt;trackTime.sec
 )paren
 OL
 l_int|0
@@ -2472,9 +2436,7 @@ id|aztGetValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|trackTime.frame
+id|qp-&gt;trackTime.frame
 )paren
 OL
 l_int|0
@@ -2516,9 +2478,7 @@ id|aztGetValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|diskTime.min
+id|qp-&gt;diskTime.min
 )paren
 OL
 l_int|0
@@ -2539,9 +2499,7 @@ id|aztGetValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|diskTime.sec
+id|qp-&gt;diskTime.sec
 )paren
 OL
 l_int|0
@@ -2562,9 +2520,7 @@ id|aztGetValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|diskTime.frame
+id|qp-&gt;diskTime.frame
 )paren
 OL
 l_int|0
@@ -2614,7 +2570,7 @@ comma
 id|jiffies
 )paren
 suffix:semicolon
-macro_line|#endif  
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2652,7 +2608,7 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-multiline_comment|/*audio disk detection&n;          with my Aztech drive there is no audio status bit, so I use the copy&n;          protection bit of the first track. If this track is copy protected &n;          (copy bit = 0), I assume, it&squot;s an audio  disk. Strange, but works ??? */
+multiline_comment|/*audio disk detection&n;&t;   with my Aztech drive there is no audio status bit, so I use the copy&n;&t;   protection bit of the first track. If this track is copy protected &n;&t;   (copy bit = 0), I assume, it&squot;s an audio  disk. Strange, but works ??? */
 r_if
 c_cond
 (paren
@@ -2689,12 +2645,12 @@ id|azt_Play.start.min
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*XA detection only seems to work*/
+multiline_comment|/*XA detection only seems to work */
 id|azt_Play.start.sec
 op_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/*when we play a track*/
+multiline_comment|/*when we play a track */
 id|azt_Play.start.frame
 op_assign
 l_int|0
@@ -2766,13 +2722,12 @@ id|DiskInfo.xa
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: XA support experimental - mail results to Werner.Zimmermann@fht-esslingen.de&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*multisession detection&n;          support for multisession CDs is done automatically with Aztech drives,&n;          we don&squot;t have to take care about TOC redirection; if we want the isofs&n;          to take care about redirection, we have to set AZT_MULTISESSION to 1*/
+multiline_comment|/*multisession detection&n;&t;   support for multisession CDs is done automatically with Aztech drives,&n;&t;   we don&squot;t have to take care about TOC redirection; if we want the isofs&n;&t;   to take care about redirection, we have to set AZT_MULTISESSION to 1 */
 id|DiskInfo.multi
 op_assign
 l_int|0
@@ -2789,7 +2744,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*here Disk.Info.multi is set*/
+multiline_comment|/*here Disk.Info.multi is set */
 )brace
 macro_line|#endif
 r_if
@@ -2977,8 +2932,8 @@ id|qInfo.pointIndex
 op_eq
 l_int|0xA0
 )paren
-multiline_comment|/*Number of FirstTrack*/
 (brace
+multiline_comment|/*Number of FirstTrack */
 id|DiskInfo.first
 op_assign
 id|qInfo.diskTime.min
@@ -3005,8 +2960,8 @@ id|qInfo.pointIndex
 op_eq
 l_int|0xA1
 )paren
-multiline_comment|/*Number of LastTrack*/
 (brace
+multiline_comment|/*Number of LastTrack */
 id|DiskInfo.last
 op_assign
 id|qInfo.diskTime.min
@@ -3033,8 +2988,8 @@ id|qInfo.pointIndex
 op_eq
 l_int|0xA2
 )paren
-multiline_comment|/*DiskLength*/
 (brace
+multiline_comment|/*DiskLength */
 id|DiskInfo.diskLength.min
 op_assign
 id|qInfo.diskTime.min
@@ -3069,8 +3024,8 @@ op_amp
 l_int|0x01
 )paren
 )paren
-multiline_comment|/*StartTime of First Track*/
 (brace
+multiline_comment|/*StartTime of First Track */
 id|DiskInfo.firstTrack.min
 op_assign
 id|qInfo.diskTime.min
@@ -3102,6 +3057,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef AZT_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;aztcd: exiting aztGetDiskInfo  Time:%li&bslash;n&quot;
 comma
@@ -3109,7 +3065,6 @@ id|jiffies
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;Disk Info: first %d last %d length %02X:%02X.%02X dez  first %02X:%02X.%02X dez&bslash;n&quot;
 comma
@@ -3233,8 +3188,8 @@ suffix:semicolon
 id|limit
 op_decrement
 )paren
-multiline_comment|/*Seek for LeadIn of next session*/
 (brace
+multiline_comment|/*Seek for LeadIn of next session */
 r_if
 c_cond
 (paren
@@ -3290,7 +3245,7 @@ id|qInfo.pointIndex
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/*LeadIn found*/
+multiline_comment|/*LeadIn found */
 r_if
 c_cond
 (paren
@@ -3320,7 +3275,7 @@ id|limit
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/*Check, if a leadin track was found, if not we&squot;re&n;                             at the end of the disk*/
+multiline_comment|/*Check, if a leadin track was found, if not we&squot;re&n;&t;&t;&t;&t;   at the end of the disk */
 macro_line|#ifdef AZT_DEBUG_MULTISESSION
 id|printk
 c_func
@@ -3427,8 +3382,8 @@ id|qInfo.pointIndex
 op_eq
 l_int|0xA0
 )paren
-multiline_comment|/*Number of NextTrack*/
 (brace
+multiline_comment|/*Number of NextTrack */
 id|DiskInfo.next
 op_assign
 id|qInfo.diskTime.min
@@ -3455,8 +3410,8 @@ id|qInfo.pointIndex
 op_eq
 l_int|0xA1
 )paren
-multiline_comment|/*Number of LastTrack*/
 (brace
+multiline_comment|/*Number of LastTrack */
 id|DiskInfo.last
 op_assign
 id|qInfo.diskTime.min
@@ -3483,8 +3438,8 @@ id|qInfo.pointIndex
 op_eq
 l_int|0xA2
 )paren
-multiline_comment|/*DiskLength*/
 (brace
+multiline_comment|/*DiskLength */
 id|DiskInfo.diskLength.min
 op_assign
 id|qInfo.diskTime.min
@@ -3519,8 +3474,8 @@ op_amp
 l_int|0x01
 )paren
 )paren
-multiline_comment|/*StartTime of Next Track*/
 (brace
+multiline_comment|/*StartTime of Next Track */
 id|DiskInfo.nextSession.min
 op_assign
 id|qInfo.diskTime.min
@@ -3595,7 +3550,7 @@ id|DiskInfo.multi
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*found TOC of more than one session*/
+multiline_comment|/*found TOC of more than one session */
 id|aztGetToc
 c_func
 (paren
@@ -3609,11 +3564,10 @@ c_loop
 op_decrement
 id|k
 )paren
-(brace
 suffix:semicolon
-)brace
 macro_line|#ifdef AZT_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;aztcd: exiting aztGetMultiDiskInfo  Time:%li&bslash;n&quot;
 comma
@@ -3912,7 +3866,7 @@ id|trackTime
 op_assign
 id|DiskInfo.diskLength
 suffix:semicolon
-macro_line|#ifdef AZT_DEBUG_MULTISESSION 
+macro_line|#ifdef AZT_DEBUG_MULTISESSION
 id|printk
 c_func
 (paren
@@ -3936,7 +3890,6 @@ id|i
 op_increment
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;i = %2d ctl-adr = %02X track %2d px %02X %02X:%02X.%02X dez  %02X:%02X.%02X dez&bslash;n&quot;
 comma
@@ -4021,7 +3974,6 @@ id|i
 op_increment
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;i = %2d ctl-adr = %02X track %2d px %02X %02X:%02X.%02X dez  %02X:%02X.%02X dez&bslash;n&quot;
 comma
@@ -4187,7 +4139,7 @@ comma
 id|aztcd_setup
 )paren
 suffix:semicolon
-macro_line|#endif /* !MODULE */
+macro_line|#endif&t;&t;&t;&t;/* !MODULE */
 multiline_comment|/* &n; * Checking if the media has been changed&n;*/
 DECL|function|check_aztcd_media_change
 r_static
@@ -4204,8 +4156,8 @@ c_cond
 (paren
 id|aztDiskChanged
 )paren
-multiline_comment|/* disk changed */
 (brace
+multiline_comment|/* disk changed */
 id|aztDiskChanged
 op_assign
 l_int|0
@@ -4385,8 +4337,8 @@ id|cmd
 r_case
 id|CDROMSTART
 suffix:colon
-multiline_comment|/* Spin up the drive. Don&squot;t know, what to do,&n;&t;                        at least close the tray */
-macro_line|#if AZT_PRIVATE_IOCTLS 
+multiline_comment|/* Spin up the drive. Don&squot;t know, what to do,&n;&t;&t;&t;&t;   at least close the tray */
+macro_line|#if AZT_PRIVATE_IOCTLS
 r_if
 c_cond
 (paren
@@ -4565,7 +4517,7 @@ suffix:semicolon
 r_case
 id|CDROMMULTISESSION
 suffix:colon
-multiline_comment|/*multisession support -- experimental*/
+multiline_comment|/*multisession support -- experimental */
 (brace
 r_struct
 id|cdrom_multisession
@@ -4583,7 +4535,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|ms
@@ -4601,12 +4552,10 @@ id|cdrom_multisession
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4636,7 +4585,9 @@ op_assign
 id|azt_bcd2bin
 c_func
 (paren
-id|DiskInfo.lastSession.frame
+id|DiskInfo.lastSession
+dot
+id|frame
 )paren
 suffix:semicolon
 )brace
@@ -4670,7 +4621,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 (paren
 r_void
@@ -4688,13 +4638,11 @@ id|cdrom_multisession
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
-macro_line|#ifdef AZT_DEBUG 
+macro_line|#ifdef AZT_DEBUG
 r_if
 c_cond
 (paren
@@ -4703,7 +4651,6 @@ op_eq
 id|CDROM_MSF
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd multisession xa:%d, msf:%02x:%02x.%02x [%02x:%02x.%02x])&bslash;n&quot;
 comma
@@ -4724,7 +4671,6 @@ id|DiskInfo.lastSession.frame
 suffix:semicolon
 r_else
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd multisession %d, lba:0x%08x [%02x:%02x.%02x])&bslash;n&quot;
 comma
@@ -4767,12 +4713,10 @@ r_sizeof
 id|ti
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4897,12 +4841,10 @@ r_sizeof
 id|msf
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 multiline_comment|/* convert to bcd */
 id|azt_bin2bcd
 c_func
@@ -5053,12 +4995,10 @@ r_sizeof
 id|tocHdr
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -5084,12 +5024,10 @@ r_sizeof
 id|entry
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5151,15 +5089,11 @@ id|entry.cdte_track
 suffix:semicolon
 id|entry.cdte_adr
 op_assign
-id|tocPtr
-op_member_access_from_pointer
-id|ctrl_addr
+id|tocPtr-&gt;ctrl_addr
 suffix:semicolon
 id|entry.cdte_ctrl
 op_assign
-id|tocPtr
-op_member_access_from_pointer
-id|ctrl_addr
+id|tocPtr-&gt;ctrl_addr
 op_rshift
 l_int|4
 suffix:semicolon
@@ -5176,9 +5110,7 @@ id|azt_msf2hsg
 c_func
 (paren
 op_amp
-id|tocPtr
-op_member_access_from_pointer
-id|diskTime
+id|tocPtr-&gt;diskTime
 )paren
 suffix:semicolon
 r_else
@@ -5195,9 +5127,7 @@ op_assign
 id|azt_bcd2bin
 c_func
 (paren
-id|tocPtr
-op_member_access_from_pointer
-id|diskTime.min
+id|tocPtr-&gt;diskTime.min
 )paren
 suffix:semicolon
 id|entry.cdte_addr.msf.second
@@ -5205,9 +5135,7 @@ op_assign
 id|azt_bcd2bin
 c_func
 (paren
-id|tocPtr
-op_member_access_from_pointer
-id|diskTime.sec
+id|tocPtr-&gt;diskTime.sec
 )paren
 suffix:semicolon
 id|entry.cdte_addr.msf.frame
@@ -5215,9 +5143,7 @@ op_assign
 id|azt_bcd2bin
 c_func
 (paren
-id|tocPtr
-op_member_access_from_pointer
-id|diskTime.frame
+id|tocPtr-&gt;diskTime.frame
 )paren
 suffix:semicolon
 )brace
@@ -5247,12 +5173,10 @@ r_sizeof
 id|entry
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -5263,7 +5187,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|subchnl
@@ -5281,12 +5204,10 @@ id|cdrom_subchnl
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5302,7 +5223,6 @@ l_int|0
 (brace
 macro_line|#ifdef AZT_DEBUG
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: exiting aztcd_ioctl - Error 3 - Command:%x&bslash;n&quot;
 comma
@@ -5373,8 +5293,8 @@ id|qInfo.trackTime
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/*default*/
 (brace
+multiline_comment|/*default */
 id|subchnl.cdsc_format
 op_assign
 id|CDROM_MSF
@@ -5432,7 +5352,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 (paren
 r_void
@@ -5450,23 +5369,20 @@ id|cdrom_subchnl
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
 id|CDROMVOLCTRL
 suffix:colon
-multiline_comment|/* Volume control &n;&t; * With my Aztech CD268-01A volume control does not work, I can only&n;&t;   turn the channels on (any value !=0) or off (value==0). Maybe it&n;           works better with your drive */
+multiline_comment|/* Volume control &n;&t;&t;&t;&t;   * With my Aztech CD268-01A volume control does not work, I can only&n;&t;&t;&t;&t;   turn the channels on (any value !=0) or off (value==0). Maybe it&n;&t;&t;&t;&t;   works better with your drive */
 r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|volctrl
@@ -5483,12 +5399,10 @@ id|volctrl
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|azt_Play.start.min
 op_assign
 l_int|0x21
@@ -5614,7 +5528,7 @@ comma
 id|CMD_PORT
 )paren
 suffix:semicolon
-multiline_comment|/*send reset*/
+multiline_comment|/*send reset */
 id|STEN_LOW
 suffix:semicolon
 r_if
@@ -5628,10 +5542,9 @@ id|DATA_PORT
 op_ne
 id|AFL_OP_OK
 )paren
-multiline_comment|/*OP_OK?*/
 (brace
+multiline_comment|/*OP_OK? */
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: AZTECH CD-ROM drive does not respond&bslash;n&quot;
 )paren
@@ -5640,15 +5553,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 multiline_comment|/*Take care, the following code is not compatible with other CD-ROM drivers,&n;  use it at your own risk with cdplay.c. Set AZT_PRIVATE_IOCTLS to 0 in aztcd.h,&n;  if you do not want to use it!&n;*/
-macro_line|#if AZT_PRIVATE_IOCTLS 
+macro_line|#if AZT_PRIVATE_IOCTLS
 r_case
 id|CDROMREADCOOKED
 suffix:colon
-multiline_comment|/*read data in mode 1 (2048 Bytes)*/
+multiline_comment|/*read data in mode 1 (2048 Bytes) */
 r_case
 id|CDROMREADRAW
 suffix:colon
-multiline_comment|/*read data in mode 2 (2336 Bytes)*/
+multiline_comment|/*read data in mode 2 (2336 Bytes) */
 (brace
 r_if
 c_cond
@@ -5669,12 +5582,10 @@ r_sizeof
 id|msf
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 multiline_comment|/* convert to bcd */
 id|azt_bin2bcd
 c_func
@@ -5709,7 +5620,7 @@ id|msf.cdmsf_frame1
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*read only one frame*/
+multiline_comment|/*read only one frame */
 id|azt_Play.start.min
 op_assign
 id|msf.cdmsf_min0
@@ -5752,7 +5663,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/*XA Disks can&squot;t be read raw*/
+multiline_comment|/*XA Disks can&squot;t be read raw */
 )brace
 r_else
 (brace
@@ -5760,7 +5671,6 @@ r_if
 c_cond
 (paren
 id|sendAztCmd
-c_func
 (paren
 id|ACMD_PLAY_READ_RAW
 comma
@@ -5788,7 +5698,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 (paren
 r_void
@@ -5802,12 +5711,10 @@ comma
 id|CD_FRAMESIZE_RAW
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 )brace
 )brace
 r_else
@@ -5845,7 +5752,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 (paren
 r_void
@@ -5859,12 +5765,10 @@ comma
 id|CD_FRAMESIZE
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 )brace
 )brace
 r_break
@@ -5872,7 +5776,7 @@ suffix:semicolon
 r_case
 id|CDROMSEEK
 suffix:colon
-multiline_comment|/*seek msf address*/
+multiline_comment|/*seek msf address */
 r_if
 c_cond
 (paren
@@ -5892,12 +5796,10 @@ r_sizeof
 id|msf
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 multiline_comment|/* convert to bcd */
 id|azt_bin2bcd
 c_func
@@ -5948,11 +5850,11 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /*end of incompatible code*/       
+macro_line|#endif&t;&t;&t;&t;/*end of incompatible code */
 r_case
 id|CDROMREADMODE1
 suffix:colon
-multiline_comment|/*set read data in mode 1*/
+multiline_comment|/*set read data in mode 1 */
 r_return
 id|aztSetDiskType
 c_func
@@ -5963,7 +5865,7 @@ suffix:semicolon
 r_case
 id|CDROMREADMODE2
 suffix:colon
-multiline_comment|/*set read data in mode 2*/
+multiline_comment|/*set read data in mode 2 */
 r_return
 id|aztSetDiskType
 c_func
@@ -6023,17 +5925,13 @@ id|CURRENT_VALID
 r_while
 c_loop
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 )paren
 (brace
 r_int
 id|bn
 op_assign
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_div
 l_int|4
 suffix:semicolon
@@ -6079,9 +5977,7 @@ op_star
 l_int|4
 op_plus
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_amp
 l_int|3
 )paren
@@ -6095,9 +5991,7 @@ op_assign
 l_int|4
 op_minus
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_amp
 l_int|3
 )paren
@@ -6139,22 +6033,16 @@ c_cond
 (paren
 id|nr_sectors
 OG
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 )paren
 id|nr_sectors
 op_assign
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|buffer
+id|CURRENT-&gt;buffer
 comma
 id|azt_buf
 op_plus
@@ -6165,21 +6053,15 @@ op_star
 l_int|512
 )paren
 suffix:semicolon
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 op_sub_assign
 id|nr_sectors
 suffix:semicolon
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_add_assign
 id|nr_sectors
 suffix:semicolon
-id|CURRENT
-op_member_access_from_pointer
-id|buffer
+id|CURRENT-&gt;buffer
 op_add_assign
 id|nr_sectors
 op_star
@@ -6216,13 +6098,9 @@ c_func
 (paren
 l_string|&quot; do_aztcd_request(%ld+%ld) Time:%li&bslash;n&quot;
 comma
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 comma
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 comma
 id|jiffies
 )paren
@@ -6291,9 +6169,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 op_eq
 l_int|0
 )paren
@@ -6387,11 +6263,9 @@ l_int|0
 suffix:semicolon
 macro_line|#ifdef AZT_TEST2
 id|printk
-c_func
 (paren
 l_string|&quot;azt_next_bn:%x  azt_buf_in:%x azt_buf_out:%x  azt_buf_bn:%x&bslash;n&quot;
 comma
-"&bslash;"
 id|azt_next_bn
 comma
 id|azt_buf_in
@@ -6583,10 +6457,9 @@ op_amp
 id|AST_DSK_CHG
 )paren
 )paren
-multiline_comment|/*no disk in drive or changed*/
 (brace
+multiline_comment|/*no disk in drive or changed */
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: Disk Changed or No Disk in Drive?&bslash;n&quot;
 )paren
@@ -6763,7 +6636,6 @@ id|EIO
 suffix:semicolon
 )brace
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: AZTECH, ORCHID, OKANO, WEARNES, TXC, CyDROM CD-ROM Driver&bslash;n&quot;
 )paren
@@ -6784,7 +6656,6 @@ l_int|1
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: KernelVersion=%s DriverVersion=%s For IDE/ATAPI-drives use ide-cd.c&bslash;n&quot;
 comma
@@ -6796,7 +6667,6 @@ suffix:semicolon
 )brace
 r_else
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: DriverVersion=%s BaseAddress=0x%x  For IDE/ATAPI-drives use ide-cd.c&bslash;n&quot;
 comma
@@ -6806,12 +6676,11 @@ id|azt_port
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: If you have problems, read /usr/src/linux/Documentation/cdrom/aztcd&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef AZT_SW32   /*CDROM connected to Soundwave32 card*/
+macro_line|#ifdef AZT_SW32&t;&t;&t;/*CDROM connected to Soundwave32 card */
 r_if
 c_cond
 (paren
@@ -6829,7 +6698,6 @@ l_int|0x4500
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: no Soundwave32 card detected at base:%x init:%x config:%x id:%x&bslash;n&quot;
 comma
@@ -6887,9 +6755,9 @@ id|count
 op_increment
 )paren
 suffix:semicolon
-multiline_comment|/*delay a bit*/
+multiline_comment|/*delay a bit */
 )brace
-macro_line|#endif&t;
+macro_line|#endif
 multiline_comment|/* check for presence of drive */
 r_if
 c_cond
@@ -6899,8 +6767,8 @@ op_eq
 op_minus
 l_int|1
 )paren
-multiline_comment|/* autoprobing */
 (brace
+multiline_comment|/* autoprobing */
 r_for
 c_loop
 (paren
@@ -6952,7 +6820,7 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-multiline_comment|/*proprietary interfaces need 4 bytes*/
+multiline_comment|/*proprietary interfaces need 4 bytes */
 r_if
 c_cond
 (paren
@@ -6988,7 +6856,7 @@ comma
 id|CMD_PORT
 )paren
 suffix:semicolon
-multiline_comment|/*Try to get version info*/
+multiline_comment|/*Try to get version info */
 id|aztTimeOutCount
 op_assign
 l_int|0
@@ -7070,8 +6938,8 @@ suffix:semicolon
 )brace
 )brace
 r_else
-multiline_comment|/* no autoprobing */
 (brace
+multiline_comment|/* no autoprobing */
 r_if
 c_cond
 (paren
@@ -7097,7 +6965,7 @@ comma
 l_int|8
 )paren
 suffix:semicolon
-multiline_comment|/*IDE-interfaces need 8 bytes*/
+multiline_comment|/*IDE-interfaces need 8 bytes */
 r_else
 id|st
 op_assign
@@ -7109,7 +6977,7 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-multiline_comment|/*proprietary interfaces need 4 bytes*/
+multiline_comment|/*proprietary interfaces need 4 bytes */
 r_if
 c_cond
 (paren
@@ -7117,7 +6985,6 @@ id|st
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: conflict, I/O port (%X) already used&bslash;n&quot;
 comma
@@ -7146,7 +7013,7 @@ l_int|0x170
 )paren
 id|SWITCH_IDE_SLAVE
 suffix:semicolon
-multiline_comment|/*switch IDE interface to slave configuration*/
+multiline_comment|/*switch IDE interface to slave configuration */
 id|outb
 c_func
 (paren
@@ -7175,7 +7042,7 @@ comma
 id|CMD_PORT
 )paren
 suffix:semicolon
-multiline_comment|/*Try to get version info*/
+multiline_comment|/*Try to get version info */
 id|aztTimeOutCount
 op_assign
 l_int|0
@@ -7222,8 +7089,8 @@ id|DATA_PORT
 op_ne
 id|AFL_OP_OK
 )paren
-multiline_comment|/*OP_OK? If not, reset and try again*/
 (brace
+multiline_comment|/*OP_OK? If not, reset and try again */
 macro_line|#ifndef MODULE
 r_if
 c_cond
@@ -7234,7 +7101,6 @@ l_int|0x79
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: no AZTECH CD-ROM drive found-Try boot parameter aztcd=&lt;BaseAddress&gt;,0x79&bslash;n&quot;
 )paren
@@ -7244,7 +7110,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#else        
+macro_line|#else
 r_if
 c_cond
 (paren
@@ -7252,11 +7118,10 @@ l_int|0
 )paren
 (brace
 )brace
-macro_line|#endif&t;     
+macro_line|#endif
 r_else
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: drive reset - please wait&bslash;n&quot;
 )paren
@@ -7282,7 +7147,7 @@ c_func
 id|STATUS_PORT
 )paren
 suffix:semicolon
-multiline_comment|/*removing all data from earlier tries*/
+multiline_comment|/*removing all data from earlier tries */
 id|inb
 c_func
 (paren
@@ -7315,7 +7180,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*trap errors*/
+multiline_comment|/*trap errors */
 id|outb
 c_func
 (paren
@@ -7324,7 +7189,7 @@ comma
 id|CMD_PORT
 )paren
 suffix:semicolon
-multiline_comment|/*send reset*/
+multiline_comment|/*send reset */
 id|STEN_LOW
 suffix:semicolon
 r_if
@@ -7338,10 +7203,9 @@ id|DATA_PORT
 op_ne
 id|AFL_OP_OK
 )paren
-multiline_comment|/*OP_OK?*/
 (brace
+multiline_comment|/*OP_OK? */
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: no AZTECH CD-ROM drive found&bslash;n&quot;
 )paren
@@ -7388,7 +7252,6 @@ l_int|1
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: Drive Status Error Status=%x&bslash;n&quot;
 comma
@@ -7438,7 +7301,7 @@ comma
 id|CMD_PORT
 )paren
 suffix:semicolon
-multiline_comment|/*GetVersion*/
+multiline_comment|/*GetVersion */
 id|STEN_LOW
 suffix:semicolon
 id|OP_OK
@@ -7463,7 +7326,7 @@ c_func
 id|DATA_PORT
 )paren
 suffix:semicolon
-multiline_comment|/*reading in a null byte???*/
+multiline_comment|/*reading in a null byte??? */
 r_for
 c_loop
 (paren
@@ -7478,13 +7341,13 @@ suffix:semicolon
 id|count
 op_increment
 )paren
-multiline_comment|/*Reading version string*/
 (brace
+multiline_comment|/*Reading version string */
 id|aztTimeOutCount
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*here we must implement STEN_LOW differently*/
+multiline_comment|/*here we must implement STEN_LOW differently */
 r_do
 (brace
 id|aztIndatum
@@ -7495,7 +7358,7 @@ c_func
 id|STATUS_PORT
 )paren
 suffix:semicolon
-multiline_comment|/*because we want to exit by timeout*/
+multiline_comment|/*because we want to exit by timeout */
 id|aztTimeOutCount
 op_increment
 suffix:semicolon
@@ -7526,7 +7389,7 @@ id|AZT_FAST_TIMEOUT
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/*all chars read?*/
+multiline_comment|/*all chars read? */
 id|result
 (braket
 id|count
@@ -7550,7 +7413,7 @@ id|max_count
 op_assign
 l_int|30
 suffix:semicolon
-multiline_comment|/*print max.30 chars of the version string*/
+multiline_comment|/*print max.30 chars of the version string */
 r_else
 id|max_count
 op_assign
@@ -7671,7 +7534,7 @@ c_func
 l_string|&quot;ORCHID or WEARNES drive detected&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*ORCHID or WEARNES*/
+multiline_comment|/*ORCHID or WEARNES */
 )brace
 r_else
 r_if
@@ -7702,11 +7565,11 @@ c_func
 l_string|&quot;TXC or CyCDROM drive detected&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*Conrad TXC, CyCDROM*/
+multiline_comment|/*Conrad TXC, CyCDROM */
 )brace
 r_else
-multiline_comment|/*OTHERS or none*/
 (brace
+multiline_comment|/*OTHERS or none */
 id|printk
 c_func
 (paren
@@ -7714,7 +7577,6 @@ l_string|&quot;&bslash;nunknown drive or firmware version detected&bslash;n&quot
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd may not run stable, if you want to try anyhow,&bslash;n&quot;
 )paren
@@ -7785,6 +7647,7 @@ suffix:semicolon
 )brace
 )brace
 id|devfs_register
+c_func
 (paren
 l_int|NULL
 comma
@@ -7910,7 +7773,7 @@ comma
 l_string|&quot;aztcd&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*IDE-interface*/
+multiline_comment|/*IDE-interface */
 r_else
 id|request_region
 c_func
@@ -7922,7 +7785,7 @@ comma
 l_string|&quot;aztcd&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*proprietary interface*/
+multiline_comment|/*proprietary interface */
 id|azt_invalidate_buffers
 c_func
 (paren
@@ -7956,7 +7819,6 @@ id|devfs_unregister
 c_func
 (paren
 id|devfs_find_handle
-c_func
 (paren
 l_int|NULL
 comma
@@ -8034,7 +7896,7 @@ comma
 l_int|8
 )paren
 suffix:semicolon
-multiline_comment|/*IDE-interface*/
+multiline_comment|/*IDE-interface */
 )brace
 r_else
 id|release_region
@@ -8045,7 +7907,7 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-multiline_comment|/*proprietary interface*/
+multiline_comment|/*proprietary interface */
 id|printk
 c_func
 (paren
@@ -8150,7 +8012,6 @@ op_eq
 l_int|5
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: Read of Block %d Failed - Maybe Audio Disk?&bslash;n&quot;
 comma
@@ -8167,7 +8028,6 @@ op_decrement
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: Read of Block %d Failed, Maybe Audio Disk? Giving up&bslash;n&quot;
 comma
@@ -8224,7 +8084,7 @@ id|loop_ctl
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* each case must flip this back to 1 if we want&n;&t;&t;&t; to come back up here */
+multiline_comment|/* each case must flip this back to 1 if we want&n;&t;&t;&t;&t;   to come back up here */
 r_switch
 c_cond
 (paren
@@ -8290,14 +8150,12 @@ c_func
 id|ACMD_GET_STATUS
 )paren
 )paren
-(brace
 id|RETURN
 c_func
 (paren
 l_string|&quot;azt_poll 2&quot;
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*result will be checked by aztStatus() */
 id|azt_state
 op_assign
@@ -8399,7 +8257,6 @@ l_int|0
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: Disk Changed or Not Ready 1 - Unmount Disk!&bslash;n&quot;
 )paren
@@ -8439,7 +8296,6 @@ op_assign
 l_int|0
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: Disk Changed or Not Ready 2 - Unmount Disk!&bslash;n&quot;
 )paren
@@ -8610,7 +8466,6 @@ c_func
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: Disk Changed or Not Ready 3 - Unmount Disk!&bslash;n&quot;
 )paren
@@ -8720,9 +8575,7 @@ id|i
 suffix:semicolon
 id|azt_next_bn
 op_assign
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_div
 l_int|4
 suffix:semicolon
@@ -8795,12 +8648,12 @@ id|azt_read_count
 op_assign
 id|AZT_BUF_SIZ
 suffix:semicolon
-multiline_comment|/*fast, because we read ahead*/
-multiline_comment|/*azt_read_count=CURRENT-&gt;nr_sectors;    slow, no read ahead*/
+multiline_comment|/*fast, because we read ahead */
+multiline_comment|/*azt_read_count=CURRENT-&gt;nr_sectors;    slow, no read ahead */
 )brace
 r_else
 multiline_comment|/* don&squot;t read beyond end of track */
-macro_line|#if AZT_MULTISESSION 
+macro_line|#if AZT_MULTISESSION
 (brace
 id|azt_read_count
 op_assign
@@ -8852,7 +8705,6 @@ op_assign
 id|AZT_BUF_SIZ
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: warning - trying to read beyond end of track&bslash;n&quot;
 )paren
@@ -8879,10 +8731,9 @@ id|msf.end.frame
 op_assign
 id|azt_read_count
 suffix:semicolon
-multiline_comment|/*Mitsumi here reads 0xffffff sectors*/
+multiline_comment|/*Mitsumi here reads 0xffffff sectors */
 macro_line|#ifdef AZT_TEST3
 id|printk
-c_func
 (paren
 l_string|&quot;---reading msf-address %x:%x:%x  %x:%x:%x&bslash;n&quot;
 comma
@@ -8900,11 +8751,9 @@ id|msf.end.frame
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;azt_next_bn:%x  azt_buf_in:%x azt_buf_out:%x  azt_buf_bn:%x&bslash;n&quot;
 comma
-"&bslash;"
 id|azt_next_bn
 comma
 id|azt_buf_in
@@ -8917,7 +8766,7 @@ id|azt_buf_in
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8935,7 +8784,7 @@ op_amp
 id|msf
 )paren
 suffix:semicolon
-multiline_comment|/*XA disks in raw mode*/
+multiline_comment|/*XA disks in raw mode */
 )brace
 r_else
 (brace
@@ -8948,7 +8797,7 @@ op_amp
 id|msf
 )paren
 suffix:semicolon
-multiline_comment|/*others in cooked mode*/
+multiline_comment|/*others in cooked mode */
 )brace
 id|azt_state
 op_assign
@@ -9049,7 +8898,6 @@ op_decrement
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: Read of Block %d Failed, Maybe Audio Disk ? Giving up&bslash;n&quot;
 comma
@@ -9116,7 +8964,6 @@ op_assign
 id|st
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;---AFL_STATUSorDATA st:%x&bslash;n&quot;
 comma
@@ -9188,7 +9035,6 @@ op_le
 l_int|0
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: warning - try to read 0 frames&bslash;n&quot;
 )paren
@@ -9198,8 +9044,8 @@ c_loop
 (paren
 id|azt_read_count
 )paren
-multiline_comment|/*??? fast read ahead loop*/
 (brace
+multiline_comment|/*??? fast read ahead loop */
 id|azt_buf_bn
 (braket
 id|azt_buf_in
@@ -9210,7 +9056,7 @@ l_int|1
 suffix:semicolon
 id|DTEN_LOW
 suffix:semicolon
-multiline_comment|/*??? unsolved problem, very&n;&t;&t;&t;&t;&t;&t;      seldom we get timeouts&n;&t;&t;&t;&t;&t;&t;      here, don&squot;t now the real&n;&t;&t;&t;&t;&t;&t;      reason. With my drive this&n;&t;&t;&t;&t;&t;&t;      sometimes also happens with&n;&t;&t;&t;&t;&t;&t;      Aztech&squot;s original driver under&n;&t;&t;&t;&t;&t;&t;      DOS. Is it a hardware bug? &n;&t;&t;&t;&t;&t;&t;      I tried to recover from such&n;&t;&t;&t;&t;&t;&t;      situations here. Zimmermann*/
+multiline_comment|/*??? unsolved problem, very&n;&t;&t;&t;&t;&t;&t;&t;   seldom we get timeouts&n;&t;&t;&t;&t;&t;&t;&t;   here, don&squot;t now the real&n;&t;&t;&t;&t;&t;&t;&t;   reason. With my drive this&n;&t;&t;&t;&t;&t;&t;&t;   sometimes also happens with&n;&t;&t;&t;&t;&t;&t;&t;   Aztech&squot;s original driver under&n;&t;&t;&t;&t;&t;&t;&t;   DOS. Is it a hardware bug? &n;&t;&t;&t;&t;&t;&t;&t;   I tried to recover from such&n;&t;&t;&t;&t;&t;&t;&t;   situations here. Zimmermann */
 r_if
 c_cond
 (paren
@@ -9220,7 +9066,6 @@ id|AZT_TIMEOUT
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;read_count:%d CURRENT-&gt;nr_sectors:%ld azt_buf_in:%d&bslash;n&quot;
 comma
@@ -9232,7 +9077,6 @@ id|azt_buf_in
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;azt_transfer_is_active:%x&bslash;n&quot;
 comma
@@ -9306,7 +9150,6 @@ op_decrement
 suffix:semicolon
 macro_line|#ifdef AZT_TEST3
 id|printk
-c_func
 (paren
 l_string|&quot;AZT_S_DATA; ---I&squot;ve read data- read_count: %d&bslash;n&quot;
 comma
@@ -9314,11 +9157,9 @@ id|azt_read_count
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;azt_next_bn:%d  azt_buf_in:%d azt_buf_out:%d  azt_buf_bn:%d&bslash;n&quot;
 comma
-"&bslash;"
 id|azt_next_bn
 comma
 id|azt_buf_in
@@ -9390,9 +9231,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 op_eq
 l_int|0
 )paren
@@ -9413,9 +9252,7 @@ c_cond
 id|CURRENT_VALID
 op_logical_and
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_div
 l_int|4
 template_param
@@ -9689,7 +9526,6 @@ c_func
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;aztcd: Disk Changed or Not Ready 4 - Unmount Disk!&bslash;n&quot;
 )paren
@@ -9878,9 +9714,7 @@ id|hsg
 op_add_assign
 l_int|150
 suffix:semicolon
-id|msf
-op_member_access_from_pointer
-id|min
+id|msf-&gt;min
 op_assign
 id|hsg
 op_div
@@ -9890,17 +9724,13 @@ id|hsg
 op_mod_assign
 l_int|4500
 suffix:semicolon
-id|msf
-op_member_access_from_pointer
-id|sec
+id|msf-&gt;sec
 op_assign
 id|hsg
 op_div
 l_int|75
 suffix:semicolon
-id|msf
-op_member_access_from_pointer
-id|frame
+id|msf-&gt;frame
 op_assign
 id|hsg
 op_mod
@@ -9951,9 +9781,7 @@ id|azt_bin2bcd
 c_func
 (paren
 op_amp
-id|msf
-op_member_access_from_pointer
-id|min
+id|msf-&gt;min
 )paren
 suffix:semicolon
 multiline_comment|/* convert to BCD */
@@ -9961,18 +9789,14 @@ id|azt_bin2bcd
 c_func
 (paren
 op_amp
-id|msf
-op_member_access_from_pointer
-id|sec
+id|msf-&gt;sec
 )paren
 suffix:semicolon
 id|azt_bin2bcd
 c_func
 (paren
 op_amp
-id|msf
-op_member_access_from_pointer
-id|frame
+id|msf-&gt;frame
 )paren
 suffix:semicolon
 )brace
@@ -9992,17 +9816,13 @@ r_return
 id|azt_bcd2bin
 c_func
 (paren
-id|mp
-op_member_access_from_pointer
-id|frame
+id|mp-&gt;frame
 )paren
 op_plus
 id|azt_bcd2bin
 c_func
 (paren
-id|mp
-op_member_access_from_pointer
-id|sec
+id|mp-&gt;sec
 )paren
 op_star
 l_int|75
@@ -10010,9 +9830,7 @@ op_plus
 id|azt_bcd2bin
 c_func
 (paren
-id|mp
-op_member_access_from_pointer
-id|min
+id|mp-&gt;min
 )paren
 op_star
 l_int|4500

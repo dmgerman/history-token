@@ -2608,6 +2608,10 @@ c_cond
 id|uprog.len
 OG
 l_int|0
+op_logical_and
+id|uprog.len
+OL
+l_int|65536
 )paren
 (brace
 id|err

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: salone.c,v 1.2 1999/08/21 21:42:59 ralf Exp $&n; *&n; * Routines to load into memory and execute stand-along program images using&n; * ARCS PROM firmware.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+multiline_comment|/*&n; * Routines to load into memory and execute stand-along program images using&n; * ARCS PROM firmware.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
 id|LONG

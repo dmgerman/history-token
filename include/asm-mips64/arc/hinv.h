@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * ARCS hardware/memory inventory/configuration and system ID definitions.&n; */
+multiline_comment|/*&n; * ARCS hardware/memory inventory/configuration and system ID definitions.&n; */
 macro_line|#ifndef _ASM_ARC_HINV_H
 DECL|macro|_ASM_ARC_HINV_H
 mdefine_line|#define _ASM_ARC_HINV_H

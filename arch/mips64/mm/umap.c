@@ -15,10 +15,10 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+DECL|function|remove_mapping_pte_range
 r_static
 r_inline
 r_void
-DECL|function|remove_mapping_pte_range
 id|remove_mapping_pte_range
 (paren
 id|pmd_t
@@ -158,10 +158,10 @@ id|end
 )paren
 suffix:semicolon
 )brace
+DECL|function|remove_mapping_pmd_range
 r_static
 r_inline
 r_void
-DECL|function|remove_mapping_pmd_range
 id|remove_mapping_pmd_range
 (paren
 id|pgd_t
@@ -293,8 +293,8 @@ id|end
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine is called from the page fault handler to remove a&n; * range of active mappings at this point&n; */
-r_void
 DECL|function|remove_mapping
+r_void
 id|remove_mapping
 (paren
 r_struct
@@ -545,10 +545,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * maps a range of vmalloc()ed memory into the requested pages. the old&n; * mappings are removed. &n; */
+DECL|function|vmap_pte_range
 r_static
 r_inline
 r_void
-DECL|function|vmap_pte_range
 id|vmap_pte_range
 (paren
 id|pte_t
@@ -699,10 +699,10 @@ id|end
 )paren
 suffix:semicolon
 )brace
+DECL|function|vmap_pmd_range
 r_static
 r_inline
 r_int
-DECL|function|vmap_pmd_range
 id|vmap_pmd_range
 (paren
 id|pmd_t
@@ -761,6 +761,8 @@ op_assign
 id|pte_alloc
 c_func
 (paren
+id|current-&gt;mm
+comma
 id|pmd
 comma
 id|address
@@ -818,8 +820,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_int
 DECL|function|vmap_page_range
+r_int
 id|vmap_page_range
 (paren
 r_int
@@ -897,6 +899,8 @@ op_assign
 id|pmd_alloc
 c_func
 (paren
+id|current-&gt;mm
+comma
 id|dir
 comma
 id|from

@@ -3321,41 +3321,10 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
-id|smp_alloc_memory
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* AP processor realmode stacks in low memory*/
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_IO_APIC
 multiline_comment|/*&n;&t; * Find and reserve possible boot-time SMP configuration:&n;&t; */
 id|find_smp_config
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-id|paging_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_X86_IO_APIC
-multiline_comment|/*&n;&t; * get boot-time SMP configuration:&n;&t; */
-r_if
-c_cond
-(paren
-id|smp_found_config
-)paren
-id|get_smp_config
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-id|init_apic_mappings
 c_func
 (paren
 )paren
@@ -3434,6 +3403,40 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
+multiline_comment|/*&n;&t; * NOTE: before this point _nobody_ is allowed to allocate&n;&t; * any memory using the bootmem allocator.&n;&t; */
+macro_line|#ifdef CONFIG_SMP
+id|smp_alloc_memory
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* AP processor realmode stacks in low memory*/
+macro_line|#endif
+id|paging_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_X86_IO_APIC
+multiline_comment|/*&n;&t; * get boot-time SMP configuration:&n;&t; */
+r_if
+c_cond
+(paren
+id|smp_found_config
+)paren
+id|get_smp_config
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+id|init_apic_mappings
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; * Request address space for all standard RAM and ROM resources&n;&t; * and also for regions reported as reserved by the e820.&n;&t; */
 id|probe_roms

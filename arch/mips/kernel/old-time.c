@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; * Copyright (C) 1996 - 2000  Ralf Baechle&n; *&n; * This file contains the time handling details for PC-style clocks as&n; * found in some MIPS systems.&n; */
-multiline_comment|/**************************************************************************&n; *  9 Nov, 2000.&n; *  Changed init_cycle_counter() routine, use the mips_cpu structure.&n; *&n; *  Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips&n; *  Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; *************************************************************************/
+multiline_comment|/*&n; * Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; * Copyright (C) 1996 - 2000  Ralf Baechle&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * Don&squot;t use.  Deprecated.  Dead meat.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1172,6 +1171,14 @@ id|INDY_R4K_TIMER_IRQ
 op_assign
 l_int|7
 suffix:semicolon
+r_int
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
 id|r4k_timer_interrupt
 (paren
 id|INDY_R4K_TIMER_IRQ
@@ -1179,6 +1186,20 @@ comma
 l_int|NULL
 comma
 id|regs
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|softirq_pending
+c_func
+(paren
+id|cpu
+)paren
+)paren
+id|do_softirq
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

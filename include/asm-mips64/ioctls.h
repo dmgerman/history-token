@@ -1,12 +1,8 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1999 by Ralf Baechle&n; */
-macro_line|#ifndef _ASM_IOCTLS_H
-DECL|macro|_ASM_IOCTLS_H
-mdefine_line|#define _ASM_IOCTLS_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 2001 Ralf Baechle&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; */
+macro_line|#ifndef __ASM_IOCTLS_H
+DECL|macro|__ASM_IOCTLS_H
+mdefine_line|#define __ASM_IOCTLS_H
 macro_line|#include &lt;asm/ioctl.h&gt;
-macro_line|#if defined(__USE_MISC) || defined (__KERNEL__)
-DECL|macro|tIOC
-mdefine_line|#define tIOC&t;&t;(&squot;t&squot; &lt;&lt; 8)
-macro_line|#endif
 DECL|macro|TCGETA
 mdefine_line|#define TCGETA&t;&t;0x5401
 DECL|macro|TCSETA
@@ -48,22 +44,20 @@ mdefine_line|#define TIOCMSET&t;0x741a&t;&t;/* set all modem bits */
 DECL|macro|TIOCPKT
 mdefine_line|#define TIOCPKT&t;&t;0x5470&t;&t;/* pty: set/clear packet mode */
 DECL|macro|TIOCPKT_DATA
-mdefine_line|#define&t;&t;TIOCPKT_DATA&t;&t;0x00&t;/* data packet */
+mdefine_line|#define&t; TIOCPKT_DATA&t;&t;0x00&t;/* data packet */
 DECL|macro|TIOCPKT_FLUSHREAD
-mdefine_line|#define&t;&t;TIOCPKT_FLUSHREAD&t;0x01&t;/* flush packet */
+mdefine_line|#define&t; TIOCPKT_FLUSHREAD&t;0x01&t;/* flush packet */
 DECL|macro|TIOCPKT_FLUSHWRITE
-mdefine_line|#define&t;&t;TIOCPKT_FLUSHWRITE&t;0x02&t;/* flush packet */
+mdefine_line|#define&t; TIOCPKT_FLUSHWRITE&t;0x02&t;/* flush packet */
 DECL|macro|TIOCPKT_STOP
-mdefine_line|#define&t;&t;TIOCPKT_STOP&t;&t;0x04&t;/* stop output */
+mdefine_line|#define&t; TIOCPKT_STOP&t;&t;0x04&t;/* stop output */
 DECL|macro|TIOCPKT_START
-mdefine_line|#define&t;&t;TIOCPKT_START&t;&t;0x08&t;/* start output */
+mdefine_line|#define&t; TIOCPKT_START&t;&t;0x08&t;/* start output */
 DECL|macro|TIOCPKT_NOSTOP
-mdefine_line|#define&t;&t;TIOCPKT_NOSTOP&t;&t;0x10&t;/* no more ^S, ^Q */
+mdefine_line|#define&t; TIOCPKT_NOSTOP&t;&t;0x10&t;/* no more ^S, ^Q */
 DECL|macro|TIOCPKT_DOSTOP
-mdefine_line|#define&t;&t;TIOCPKT_DOSTOP&t;&t;0x20&t;/* now do ^S ^Q */
-macro_line|#if 0
-mdefine_line|#define&t;&t;TIOCPKT_IOCTL&t;&t;0x40&t;/* state change of pty driver */
-macro_line|#endif
+mdefine_line|#define&t; TIOCPKT_DOSTOP&t;&t;0x20&t;/* now do ^S ^Q */
+multiline_comment|/* #define  TIOCPKT_IOCTL&t;&t;0x40&t;state change of pty driver */
 DECL|macro|TIOCSWINSZ
 mdefine_line|#define TIOCSWINSZ&t;_IOW(&squot;t&squot;, 103, struct winsize)&t;/* set window size */
 DECL|macro|TIOCGWINSZ
@@ -71,9 +65,9 @@ mdefine_line|#define TIOCGWINSZ&t;_IOR(&squot;t&squot;, 104, struct winsize)&t;/
 DECL|macro|TIOCNOTTY
 mdefine_line|#define TIOCNOTTY&t;0x5471&t;&t;/* void tty association */
 DECL|macro|TIOCSETD
-mdefine_line|#define TIOCSETD&t;(tIOC | 1)
+mdefine_line|#define TIOCSETD&t;0x7401
 DECL|macro|TIOCGETD
-mdefine_line|#define TIOCGETD&t;(tIOC | 0)
+mdefine_line|#define TIOCGETD&t;0x7400
 DECL|macro|FIOCLEX
 mdefine_line|#define FIOCLEX&t;&t;0x6601
 DECL|macro|FIONCLEX
@@ -82,12 +76,12 @@ DECL|macro|FIOASYNC
 mdefine_line|#define FIOASYNC&t;0x667d
 DECL|macro|FIONBIO
 mdefine_line|#define FIONBIO&t;&t;0x667e
-macro_line|#if defined(__USE_MISC) || defined (__KERNEL__)
+DECL|macro|FIOQSIZE
+mdefine_line|#define FIOQSIZE&t;0x667f
 DECL|macro|TIOCGLTC
-mdefine_line|#define TIOCGLTC&t;(tIOC | 116)&t;&t;/* get special local chars */
+mdefine_line|#define TIOCGLTC&t;0x7474&t;&t;&t;/* get special local chars */
 DECL|macro|TIOCSLTC
-mdefine_line|#define TIOCSLTC&t;(tIOC | 117)&t;&t;/* set special local chars */
-macro_line|#endif
+mdefine_line|#define TIOCSLTC&t;0x7475&t;&t;&t;/* set special local chars */
 DECL|macro|TIOCSPGRP
 mdefine_line|#define TIOCSPGRP&t;_IOW(&squot;t&squot;, 118, int)&t;/* set pgrp of tty */
 DECL|macro|TIOCGPGRP
@@ -98,22 +92,18 @@ DECL|macro|FIONREAD
 mdefine_line|#define FIONREAD&t;0x467f
 DECL|macro|TIOCINQ
 mdefine_line|#define TIOCINQ&t;&t;FIONREAD
-macro_line|#if defined(__USE_MISC) || defined (__KERNEL__)
 DECL|macro|TIOCGETP
-mdefine_line|#define TIOCGETP        (tIOC | 8)
+mdefine_line|#define TIOCGETP        0x7408
 DECL|macro|TIOCSETP
-mdefine_line|#define TIOCSETP        (tIOC | 9)
+mdefine_line|#define TIOCSETP        0x7409
 DECL|macro|TIOCSETN
-mdefine_line|#define TIOCSETN        (tIOC | 10)&t;&t;/* TIOCSETP wo flush */
-macro_line|#endif
-macro_line|#if 0
-mdefine_line|#define&t;TIOCSETA&t;_IOW(&squot;t&squot;, 20, struct termios) /* set termios struct */
-mdefine_line|#define&t;TIOCSETAW&t;_IOW(&squot;t&squot;, 21, struct termios) /* drain output, set */
-mdefine_line|#define&t;TIOCSETAF&t;_IOW(&squot;t&squot;, 22, struct termios) /* drn out, fls in, set */
-mdefine_line|#define&t;TIOCGETD&t;_IOR(&squot;t&squot;, 26, int)&t;/* get line discipline */
-mdefine_line|#define&t;TIOCSETD&t;_IOW(&squot;t&squot;, 27, int)&t;/* set line discipline */
+mdefine_line|#define TIOCSETN        0x740a&t;&t;&t;/* TIOCSETP wo flush */
+multiline_comment|/* #define TIOCSETA&t;_IOW(&squot;t&squot;, 20, struct termios) set termios struct */
+multiline_comment|/* #define TIOCSETAW&t;_IOW(&squot;t&squot;, 21, struct termios) drain output, set */
+multiline_comment|/* #define TIOCSETAF&t;_IOW(&squot;t&squot;, 22, struct termios) drn out, fls in, set */
+multiline_comment|/* #define TIOCGETD&t;_IOR(&squot;t&squot;, 26, int)&t;get line discipline */
+multiline_comment|/* #define TIOCSETD&t;_IOW(&squot;t&squot;, 27, int)&t;set line discipline */
 multiline_comment|/* 127-124 compat */
-macro_line|#endif
 multiline_comment|/* I hope the range from 0x5480 on is free ... */
 DECL|macro|TIOCSCTTY
 mdefine_line|#define TIOCSCTTY&t;0x5480&t;&t;/* become controlling tty */
@@ -167,5 +157,5 @@ DECL|macro|TIOCGHAYESESP
 mdefine_line|#define TIOCGHAYESESP&t;0x5493 /* Get Hayes ESP configuration */
 DECL|macro|TIOCSHAYESESP
 mdefine_line|#define TIOCSHAYESESP&t;0x5494 /* Set Hayes ESP configuration */
-macro_line|#endif /* _ASM_IOCTLS_H */
+macro_line|#endif /* __ASM_IOCTLS_H */
 eof

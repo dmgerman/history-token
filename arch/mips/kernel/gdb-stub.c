@@ -35,14 +35,6 @@ suffix:semicolon
 multiline_comment|/* read and return a single char */
 r_extern
 r_void
-id|fltr_set_mem_err
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|trap_low
 c_func
 (paren
@@ -195,6 +187,32 @@ id|hexchars
 )braket
 op_assign
 l_string|&quot;0123456789abcdef&quot;
+suffix:semicolon
+multiline_comment|/* Used to prevent crashes in memory access.  Note that they&squot;ll crash anyway if&n;   we haven&squot;t set up fault handlers yet... */
+r_int
+id|kgdb_read_byte
+c_func
+(paren
+r_int
+op_star
+id|address
+comma
+r_int
+op_star
+id|dest
+)paren
+suffix:semicolon
+r_int
+id|kgdb_write_byte
+c_func
+(paren
+r_int
+id|val
+comma
+r_int
+op_star
+id|dest
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Convert ch from a hex digit to an int&n; */
 DECL|function|hex
@@ -653,56 +671,7 @@ l_char|&squot;+&squot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Indicate to caller of mem2hex or hex2mem that there&n; * has been an error.&n; */
-DECL|variable|mem_err
-r_static
-r_volatile
-r_int
-id|mem_err
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#if 0
-r_static
-r_void
-id|set_mem_fault_trap
-c_func
-(paren
-r_int
-id|enable
-)paren
-(brace
-id|mem_err
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|enable
-)paren
-id|exceptionHandler
-c_func
-(paren
-l_int|9
-comma
-id|fltr_set_mem_err
-)paren
-suffix:semicolon
-r_else
-id|exceptionHandler
-c_func
-(paren
-l_int|9
-comma
-id|trap_low
-)paren
-suffix:semicolon
-macro_line|#endif  
-)brace
-macro_line|#endif /* dead code */
-multiline_comment|/*&n; * Convert the memory pointed to by mem into hex, placing result in buf.&n; * Return a pointer to the last char put in buf (null), in case of mem fault,&n; * return 0.&n; * If MAY_FAULT is non-zero, then we will handle memory faults by returning&n; * a 0, else treat a fault like any other fault in the stub.&n; */
+multiline_comment|/*&n; * Convert the memory pointed to by mem into hex, placing result in buf.&n; * Return a pointer to the last char put in buf (null), in case of mem fault,&n; * return 0.&n; * may_fault is non-zero if we are reading from arbitrary memory, but is currently&n; * not used.&n; */
 DECL|function|mem2hex
 r_static
 r_int
@@ -730,7 +699,6 @@ r_int
 r_char
 id|ch
 suffix:semicolon
-multiline_comment|/*&t;set_mem_fault_trap(may_fault); */
 r_while
 c_loop
 (paren
@@ -740,18 +708,20 @@ OG
 l_int|0
 )paren
 (brace
-id|ch
-op_assign
-op_star
-(paren
-id|mem
-op_increment
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|mem_err
+id|kgdb_read_byte
+c_func
+(paren
+id|mem
+op_increment
+comma
+op_amp
+id|ch
+)paren
+op_ne
+l_int|0
 )paren
 r_return
 l_int|0
@@ -784,12 +754,11 @@ id|buf
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&t;set_mem_fault_trap(0); */
 r_return
 id|buf
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * convert the hex array pointed to by buf into binary to be placed in mem&n; * return a pointer to the character AFTER the last byte written&n; */
+multiline_comment|/*&n; * convert the hex array pointed to by buf into binary to be placed in mem&n; * return a pointer to the character AFTER the last byte written&n; * may_fault is non-zero if we are reading from arbitrary memory, but is currently&n; * not used.&n; */
 DECL|function|hex2mem
 r_static
 r_char
@@ -819,7 +788,6 @@ r_int
 r_char
 id|ch
 suffix:semicolon
-multiline_comment|/*&t;set_mem_fault_trap(may_fault); */
 r_for
 c_loop
 (paren
@@ -857,24 +825,24 @@ id|buf
 op_increment
 )paren
 suffix:semicolon
-op_star
-(paren
-id|mem
-op_increment
-)paren
-op_assign
-id|ch
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|mem_err
+id|kgdb_write_byte
+c_func
+(paren
+id|ch
+comma
+id|mem
+op_increment
+)paren
+op_ne
+l_int|0
 )paren
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&t;set_mem_fault_trap(0); */
 r_return
 id|mem
 suffix:semicolon
@@ -984,6 +952,15 @@ l_int|0
 multiline_comment|/* Must be last */
 )brace
 suffix:semicolon
+multiline_comment|/* Save the normal trap handlers for user-mode traps. */
+DECL|variable|saved_vectors
+r_void
+op_star
+id|saved_vectors
+(braket
+l_int|32
+)braket
+suffix:semicolon
 multiline_comment|/*&n; * Set up exception handlers for tracing and breakpoints&n; */
 DECL|function|set_debug_traps
 r_void
@@ -1026,6 +1003,11 @@ suffix:semicolon
 id|ht
 op_increment
 )paren
+id|saved_vectors
+(braket
+id|ht-&gt;tt
+)braket
+op_assign
 id|set_except_vector
 c_func
 (paren
@@ -1109,18 +1091,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * Trap handler for memory errors.  This just sets mem_err to be non-zero.  It&n; * assumes that %l1 is non-zero.  This should be safe, as it is doubtful that&n; * 0 would ever contain code that could mem fault.  This routine will skip&n; * past the faulting instruction after setting mem_err.&n; */
-DECL|function|fltr_set_mem_err
-r_extern
-r_void
-id|fltr_set_mem_err
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* FIXME: Needs to be written... */
 )brace
 multiline_comment|/*&n; * Convert the MIPS hardware trap type code to a Unix signal number.&n; */
 DECL|function|computeSignal

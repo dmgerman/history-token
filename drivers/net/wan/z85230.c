@@ -5161,7 +5161,6 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Module support&n; */
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|banner
 (braket
@@ -5214,6 +5213,24 @@ id|module_exit
 c_func
 (paren
 id|z85230_cleanup_driver
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Red Hat Inc.&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Z85x30 synchronous driver core&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

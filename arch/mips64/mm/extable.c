@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: extable.c,v 1.2 1999/11/23 17:12:50 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995, 1996, 1999 by Ralf Baechle&n; * Copyright (C) 1999 by Silicon Graphics&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995, 1996, 1999 by Ralf Baechle&n; * Copyright (C) 1999 by Silicon Graphics&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -119,9 +119,9 @@ r_extern
 id|spinlock_t
 id|modlist_lock
 suffix:semicolon
-r_int
-r_int
 DECL|function|search_exception_table
+r_int
+r_int
 id|search_exception_table
 c_func
 (paren

@@ -49,7 +49,7 @@ mdefine_line|#define TASK32_SIZE&t;&t;0x80000000UL
 DECL|macro|ELF_ET_DYN_BASE
 macro_line|#undef ELF_ET_DYN_BASE
 DECL|macro|ELF_ET_DYN_BASE
-mdefine_line|#define ELF_ET_DYN_BASE         (2 * TASK32_SIZE / 3)
+mdefine_line|#define ELF_ET_DYN_BASE         (TASK32_SIZE / 3 * 2)
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;

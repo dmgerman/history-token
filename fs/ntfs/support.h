@@ -44,7 +44,7 @@ dot
 suffix:semicolon
 macro_line|#else
 DECL|macro|ntfs_debug
-mdefine_line|#define ntfs_debug(mask, fmt, ...)&t;do {} while (0)
+mdefine_line|#define ntfs_debug(mask, fmt...)&t;do {} while (0)
 macro_line|#endif
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;

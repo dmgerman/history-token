@@ -10,6 +10,8 @@ DECL|macro|PCI_DEVICE_ID_RADEON_QF
 mdefine_line|#define PCI_DEVICE_ID_RADEON_QF&t;&t;0x5146
 DECL|macro|PCI_DEVICE_ID_RADEON_QG
 mdefine_line|#define PCI_DEVICE_ID_RADEON_QG&t;&t;0x5147
+DECL|macro|PCI_DEVICE_ID_RADEON_VE
+mdefine_line|#define PCI_DEVICE_ID_RADEON_VE&t;&t;0x5159
 DECL|macro|RADEON_REGSIZE
 mdefine_line|#define RADEON_REGSIZE&t;&t;&t;0x4000
 DECL|macro|MM_INDEX

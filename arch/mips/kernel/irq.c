@@ -948,13 +948,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|softirq_active
-c_func
-(paren
-id|cpu
-)paren
-op_amp
-id|softirq_mask
+id|softirq_pending
 c_func
 (paren
 id|cpu

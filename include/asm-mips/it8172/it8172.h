@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;IT8172 system controller defines.&n; *&n; * Copyright 2000 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or support@mvista.com&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;IT8172 system controller defines.&n; *&n; * Copyright 2000 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#ifndef __IT8172__H__
 DECL|macro|__IT8172__H__
 mdefine_line|#define __IT8172__H__
@@ -498,107 +498,6 @@ DECL|macro|IT_AC_OPL3DW
 mdefine_line|#define IT_AC_OPL3DW&t;&t;&t;&t;0x6B
 DECL|macro|IT_AC_BPDC
 mdefine_line|#define IT_AC_BPDC&t;&t;&t;&t;0x70
-singleline_comment|// Audio : IT_AC_PCC bit definition &amp; mask
-DECL|macro|PCC_SM
-mdefine_line|#define&t;PCC_SM&t;&t;&t;&t;&t;0x8000
-DECL|macro|PCC_SM_BIT
-mdefine_line|#define&t;PCC_SM_BIT&t;&t;&t;&t;15
-DECL|macro|PCC_SM_STEREO
-mdefine_line|#define&t;PCC_SM_STEREO&t;&t;&t;&t;1
-DECL|macro|PCC_SM_MONO
-mdefine_line|#define PCC_SM_MONO&t;&t;&t;&t;0
-DECL|macro|PCC_DF
-mdefine_line|#define&t;PCC_DF&t;&t;&t;&t;&t;0x4000
-DECL|macro|PCC_DF_BIT
-mdefine_line|#define PCC_DF_BIT&t;&t;&t;&t;14
-DECL|macro|PCC_DF_8
-mdefine_line|#define&t;PCC_DF_8&t;&t;&t;&t;0
-DECL|macro|PCC_DF_16
-mdefine_line|#define PCC_DF_16&t;&t;&t;&t;1
-DECL|macro|PCC_CF
-mdefine_line|#define&t;PCC_CF&t;&t;&t;&t;&t;0x3000
-DECL|macro|PCC_CF_BIT
-mdefine_line|#define PCC_CF_BIT&t;&t;&t;&t;12
-DECL|macro|PCC_CF_2
-mdefine_line|#define&t;PCC_CF_2&t;&t;&t;&t;0
-DECL|macro|PCC_CF_4
-mdefine_line|#define PCC_CF_4&t;&t;&t;&t;1
-DECL|macro|PCC_CF_6
-mdefine_line|#define PCC_CF_6&t;&t;&t;&t;2
-DECL|macro|PCC_SR
-mdefine_line|#define PCC_SR&t;&t;&t;&t;&t;0x0F00
-DECL|macro|PCC_SR_BIT
-mdefine_line|#define PCC_SR_BIT&t;&t;&t;&t;8
-DECL|macro|PCC_SR_5500
-mdefine_line|#define&t;PCC_SR_5500&t;&t;&t;&t;0
-DECL|macro|PCC_SR_8000
-mdefine_line|#define&t;PCC_SR_8000&t;&t;&t;&t;1
-DECL|macro|PCC_SR_9600
-mdefine_line|#define&t;PCC_SR_9600&t;&t;&t;&t;2
-DECL|macro|PCC_SR_11025
-mdefine_line|#define&t;PCC_SR_11025&t;&t;&t;&t;3
-DECL|macro|PCC_SR_16000
-mdefine_line|#define&t;PCC_SR_16000&t;&t;&t;&t;4
-DECL|macro|PCC_SR_19200
-mdefine_line|#define&t;PCC_SR_19200&t;&t;&t;&t;5
-DECL|macro|PCC_SR_22050
-mdefine_line|#define&t;PCC_SR_22050&t;&t;&t;&t;6
-DECL|macro|PCC_SR_32000
-mdefine_line|#define&t;PCC_SR_32000&t;&t;&t;&t;7
-DECL|macro|PCC_SR_38400
-mdefine_line|#define&t;PCC_SR_38400&t;&t;&t;&t;8
-DECL|macro|PCC_SR_44100
-mdefine_line|#define&t;PCC_SR_44100&t;&t;&t;&t;9
-DECL|macro|PCC_SR_48000
-mdefine_line|#define&t;PCC_SR_48000&t;&t;&t;&t;10
-DECL|macro|PCC_CSP
-mdefine_line|#define PCC_CSP&t;&t;&t;&t;&t;0x0080
-DECL|macro|PCC_CSP_BIT
-mdefine_line|#define PCC_CSP_BIT&t;&t;&t;&t;7
-DECL|macro|PCC_CSP_STOP
-mdefine_line|#define PCC_CSP_STOP&t;&t;&t;&t;0
-DECL|macro|PCC_CSP_STOP_NOW
-mdefine_line|#define PCC_CSP_STOP_NOW&t;&t;&t;1
-DECL|macro|PCC_CP
-mdefine_line|#define PCC_CP&t;&t;&t;&t;&t;0x0040
-DECL|macro|PCC_CP_BIT
-mdefine_line|#define&t;PCC_CP_BIT&t;&t;&t;&t;6
-DECL|macro|PCC_CP_NORMAL
-mdefine_line|#define PCC_CP_NORMAL&t;&t;&t;&t;0
-DECL|macro|PCC_CP_PAUSE
-mdefine_line|#define PCC_CP_PAUSE&t;&t;&t;&t;1
-DECL|macro|PCC_CA
-mdefine_line|#define PCC_CA&t;&t;&t;&t;&t;0x0020
-DECL|macro|PCC_CA_BIT
-mdefine_line|#define PCC_CA_BIT&t;&t;&t;&t;5
-DECL|macro|PCC_CA_NO_START
-mdefine_line|#define PCC_CA_NO_START&t;&t;&t;&t;0
-DECL|macro|PCC_CA_START
-mdefine_line|#define PCC_CA_START&t;&t;&t;&t;1
-DECL|macro|PCC_CB2L
-mdefine_line|#define PCC_CB2L&t;&t;&t;&t;0x0004
-DECL|macro|PCC_CB2L_BIT
-mdefine_line|#define PCC_CB2L_BIT&t;&t;&t;&t;2
-DECL|macro|PCC_CB2L_NO
-mdefine_line|#define PCC_CB2L_NO&t;&t;&t;&t;0
-DECL|macro|PCC_CB2L_YES
-mdefine_line|#define PCC_CB2L_YES&t;&t;&t;&t;1
-DECL|macro|PCC_CB1L
-mdefine_line|#define PCC_CB1L&t;&t;&t;&t;0x0002
-DECL|macro|PCC_CB1L_BIT
-mdefine_line|#define PCC_CB1L_BIT&t;&t;&t;&t;1
-DECL|macro|PCC_CB1L_NO
-mdefine_line|#define PCC_CB1L_NO&t;&t;&t;&t;0
-DECL|macro|PCC_CB1L_YES
-mdefine_line|#define PCC_CB1L_YES&t;&t;&t;&t;1
-DECL|macro|PCC_DE
-mdefine_line|#define PCC_DE&t;&t;&t;&t;&t;0x0001
-DECL|macro|PCC_DE_BIT
-mdefine_line|#define PCC_DE_BIT&t;&t;&t;&t;0
-DECL|macro|PCC_DE_NOT_EMPTY
-mdefine_line|#define PCC_DE_NOT_EMPTY&t;&t;&t;0
-DECL|macro|PCC_DE_EMPTY
-mdefine_line|#define PCC_DE_EMPTY&t;&t;&t;&t;1
 singleline_comment|// IT8172 Timer
 DECL|macro|IT_TIMER_BASE
 mdefine_line|#define IT_TIMER_BASE&t;&t;&t;&t;0x10800

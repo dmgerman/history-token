@@ -1,6 +1,6 @@
-multiline_comment|/*&n; *&t;drivers/video/radeonfb.c&n; *&t;framebuffer driver for ATI Radeon chipset video boards&n; *&n; *&t;Copyright 2000&t;Ani Joshi &lt;ajoshi@unixbox.com&gt;&n; *&n; *&n; *&t;ChangeLog:&n; *&t;2000-08-03&t;initial version 0.0.1&n; *&t;2000-09-10&t;more bug fixes, public release 0.0.5&n; *&t;2001-02-19&t;mode bug fixes, 0.0.7&n; *&t;2001-07-05&t;fixed scrolling issues, engine initialization,&n; *&t;&t;&t;and minor mode tweaking, 0.0.9&n; *&n; *&n; *&t;Special thanks to ATI DevRel team for their hardware donations.&n; *&n; */
+multiline_comment|/*&n; *&t;drivers/video/radeonfb.c&n; *&t;framebuffer driver for ATI Radeon chipset video boards&n; *&n; *&t;Copyright 2000&t;Ani Joshi &lt;ajoshi@unixbox.com&gt;&n; *&n; *&n; *&t;ChangeLog:&n; *&t;2000-08-03&t;initial version 0.0.1&n; *&t;2000-09-10&t;more bug fixes, public release 0.0.5&n; *&t;2001-02-19&t;mode bug fixes, 0.0.7&n; *&t;2001-07-05&t;fixed scrolling issues, engine initialization,&n; *&t;&t;&t;and minor mode tweaking, 0.0.9&n; *&n; *&t;2001-09-07&t;Radeon VE support&n; *&n; *&t;Special thanks to ATI DevRel team for their hardware donations.&n; *&n; */
 DECL|macro|RADEON_VERSION
-mdefine_line|#define RADEON_VERSION&t;&quot;0.0.9&quot;
+mdefine_line|#define RADEON_VERSION&t;&quot;0.0.10&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -47,6 +47,9 @@ id|RADEON_QF
 comma
 DECL|enumerator|RADEON_QG
 id|RADEON_QG
+comma
+DECL|enumerator|RADEON_VE
+id|RADEON_VE
 )brace
 suffix:semicolon
 DECL|variable|__devinitdata
@@ -121,6 +124,22 @@ comma
 l_int|0
 comma
 id|RADEON_QG
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_ATI
+comma
+id|PCI_DEVICE_ID_RADEON_VE
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|RADEON_VE
 )brace
 comma
 (brace
@@ -2399,6 +2418,19 @@ l_string|&quot;Radeon QG &quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|PCI_DEVICE_ID_RADEON_VE
+suffix:colon
+id|strcpy
+c_func
+(paren
+id|rinfo-&gt;name
+comma
+l_string|&quot;Radeon VE &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 r_return
@@ -2877,9 +2909,9 @@ suffix:semicolon
 )brace
 id|printk
 (paren
-l_string|&quot;radeonfb: ATI Radeon %s %d MB&bslash;n&quot;
+l_string|&quot;radeonfb: ATI %s %d MB&bslash;n&quot;
 comma
-id|rinfo-&gt;ram_type
+id|rinfo-&gt;name
 comma
 (paren
 id|rinfo-&gt;video_ram

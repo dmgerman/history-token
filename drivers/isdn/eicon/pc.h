@@ -8,14 +8,6 @@ DECL|macro|word
 mdefine_line|#define word unsigned short
 DECL|macro|dword
 mdefine_line|#define dword unsigned long
-macro_line|#if !defined(MIN)
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ((a)&gt;(b) ? (b) : (a))
-macro_line|#endif
-macro_line|#if !defined(MAX)
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b) ((a)&gt;(b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/* buffer definition                                                */
 multiline_comment|/*------------------------------------------------------------------*/

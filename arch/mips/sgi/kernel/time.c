@@ -27,6 +27,8 @@ id|irq_enter
 c_func
 (paren
 id|cpu
+comma
+id|irq
 )paren
 suffix:semicolon
 id|kstat.irqs
@@ -49,7 +51,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|prom_imode
+id|ArcEnterInteractiveMode
 c_func
 (paren
 )paren
@@ -58,6 +60,8 @@ id|irq_exit
 c_func
 (paren
 id|cpu
+comma
+id|irq
 )paren
 suffix:semicolon
 )brace

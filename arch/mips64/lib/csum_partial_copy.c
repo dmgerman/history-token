@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: csum_partial_copy.c,v 1.2 1999/12/04 03:59:00 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * MIPS64 specific IP/TCP/UDP checksumming routines&n; *&n; * Copyright (C) 1998, 1999 Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * MIPS64 specific IP/TCP/UDP checksumming routines&n; *&n; * Copyright (C) 1998, 1999 Ralf Baechle&n; */
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;

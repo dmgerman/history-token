@@ -143,7 +143,7 @@ id|address
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * isa_slot_offset is the address where E(ISA) busaddress 0 is is mapped&n; * for the processor.&n; */
+multiline_comment|/*&n; * isa_slot_offset is the address where E(ISA) busaddress 0 is mapped&n; * for the processor.&n; */
 r_extern
 r_int
 r_int

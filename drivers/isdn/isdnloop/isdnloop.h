@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdnloop.h,v 1.5.6.1 2001/02/10 14:41:23 kai Exp $&n;&n; * Loopback lowlevel module for testing of linklevel.&n; *&n; * Copyright 1997 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: isdnloop.h,v 1.5.6.2 2001/08/17 12:34:27 kai Exp $&n;&n; * Loopback lowlevel module for testing of linklevel.&n; *&n; * Copyright 1997 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#ifndef isdnloop_h
 DECL|macro|isdnloop_h
 mdefine_line|#define isdnloop_h
@@ -335,10 +335,6 @@ macro_line|#endif                          /* __KERNEL__ */
 multiline_comment|/* Utility-Macros */
 DECL|macro|CID
 mdefine_line|#define CID (card-&gt;interface.id)
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ((a&lt;b)?a:b)
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b) ((a&gt;b)?a:b)
 macro_line|#endif                          /* defined(__KERNEL__) || defined(__DEBUGVAR__) */
 macro_line|#endif                          /* isdnloop_h */
 eof

@@ -11,6 +11,8 @@ DECL|macro|KN02_RTC_BASE
 mdefine_line|#define KN02_RTC_BASE&t;KSEG1ADDR(0x1fe80000)
 DECL|macro|KN02_DZ11_BASE
 mdefine_line|#define KN02_DZ11_BASE&t;KSEG1ADDR(0x1fe00000)
+DECL|macro|KN02_CSR_BNK32M
+mdefine_line|#define KN02_CSR_BNK32M&t;(1&lt;&lt;10)&t;&t;&t;/* 32M stride */
 multiline_comment|/*&n; * Interrupt enable Bits&n; */
 DECL|macro|KN02_SLOT0
 mdefine_line|#define KN02_SLOT0&t;(1&lt;&lt;16)

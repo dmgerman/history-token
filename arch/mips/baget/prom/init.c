@@ -1,15 +1,16 @@
-multiline_comment|/*&n; * init.c: PROM library initialisation code.&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov &n; *&n; * $Id: init.c,v 1.3 1999/10/09 00:00:57 ralf Exp $&n; */
+multiline_comment|/*&n; * init.c: PROM library initialisation code.&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov &n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 DECL|variable|arcs_cmdline
 r_char
 id|arcs_cmdline
 (braket
-id|CL_SIZE
+id|COMMAND_LINE_SIZE
 )braket
 suffix:semicolon
 DECL|function|prom_init
-r_int
+r_void
 id|__init
 id|prom_init
 c_func
@@ -19,9 +20,13 @@ r_int
 id|mem_upper
 )paren
 (brace
-id|mips_memory_upper
-op_assign
 id|mem_upper
+op_assign
+id|PHYSADDR
+c_func
+(paren
+id|mem_upper
+)paren
 suffix:semicolon
 id|mips_machgroup
 op_assign
@@ -38,25 +43,20 @@ l_int|0
 op_assign
 l_int|0
 suffix:semicolon
-r_return
-l_int|0
+id|vac_memory_upper
+op_assign
+id|mem_upper
 suffix:semicolon
-)brace
-DECL|function|prom_fixup_mem_map
-r_void
-id|__init
-id|prom_fixup_mem_map
+id|add_memory_region
 c_func
 (paren
-r_int
-r_int
-id|start
+l_int|0
 comma
-r_int
-r_int
-id|end
+id|mem_upper
+comma
+id|BOOT_MEM_RAM
 )paren
-(brace
+suffix:semicolon
 )brace
 DECL|function|prom_free_prom_memory
 r_void

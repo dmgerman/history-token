@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SMP- and interrupt-safe semaphores..&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * (C) Copyright 1996  Linus Torvalds&n; * (C) Copyright 1998, 1999, 2000  Ralf Baechle&n; * (C) Copyright 1999, 2000  Silicon Graphics, Inc.&n; *  Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; */
+multiline_comment|/*&n; * SMP- and interrupt-safe semaphores..&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * (C) Copyright 1996  Linus Torvalds&n; * (C) Copyright 1998, 99, 2000, 01  Ralf Baechle&n; * (C) Copyright 1999, 2000  Silicon Graphics, Inc.&n; * Copyright (C) 2000, 01 MIPS Technologies, Inc.  All rights reserved.&n; */
 macro_line|#ifndef _ASM_SEMAPHORE_H
 DECL|macro|_ASM_SEMAPHORE_H
 mdefine_line|#define _ASM_SEMAPHORE_H
@@ -301,7 +301,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#if !defined(CONFIG_CPU_HAS_LLSC) || defined(CONFIG_CPU_MIPS32)
+macro_line|#ifndef CONFIG_CPU_HAS_LLDSCD
 DECL|function|down_trylock
 r_static
 r_inline
@@ -429,7 +429,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_CPU_HAS_LLDSCD */
 multiline_comment|/*&n; * Note! This is subtle. We jump to wake people up only if&n; * the semaphore was negative (== somebody was waiting on it).&n; */
 DECL|function|up
 r_static

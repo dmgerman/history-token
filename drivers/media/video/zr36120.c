@@ -4988,6 +4988,10 @@ op_logical_or
 id|v.channel
 op_ge
 id|ztv-&gt;card-&gt;video_inputs
+op_logical_or
+id|v.channel
+OL
+l_int|0
 )paren
 r_return
 op_minus

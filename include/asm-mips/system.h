@@ -227,7 +227,7 @@ r_int
 id|val
 )paren
 (brace
-macro_line|#if defined(CONFIG_CPU_HAS_LLSC)
+macro_line|#ifdef CONFIG_CPU_HAS_LLSC
 r_int
 r_int
 id|dummy

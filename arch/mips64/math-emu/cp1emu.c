@@ -111,7 +111,9 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/asm.h&gt;
 macro_line|#include &lt;asm/branch.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/inst.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -3137,12 +3139,14 @@ id|dsemul_insns
 l_int|0
 )braket
 suffix:semicolon
-multiline_comment|/* What we&squot;d really like to do is just flush the line(s) of the */
-multiline_comment|/* icache containing the dsemulret instructions, but there&squot;s no */
-multiline_comment|/* mechanism to do this yet...  */
-id|flush_cache_all
+id|flush_cache_sigtramp
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
+id|dsemul_insns
 )paren
 suffix:semicolon
 r_return
@@ -6515,6 +6519,16 @@ id|xcp-&gt;cp0_epc
 suffix:semicolon
 r_do
 (brace
+r_if
+c_cond
+(paren
+id|current-&gt;need_resched
+)paren
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
 id|prevepc
 op_assign
 id|xcp-&gt;cp0_epc
@@ -6574,6 +6588,15 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/* skip nops */
+r_if
+c_cond
+(paren
+id|mips_cpu.options
+op_amp
+id|MIPS_CPU_FPU
+)paren
+r_break
+suffix:semicolon
 )brace
 r_while
 c_loop

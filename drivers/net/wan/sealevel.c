@@ -1,6 +1,6 @@
 DECL|macro|LINUX_21
 mdefine_line|#define LINUX_21
-multiline_comment|/*&n; *&t;Sealevel Systems 4021 driver.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;(c) Copyright 1999 Building Number Three Ltd&n; *&n; */
+multiline_comment|/*&n; *&t;Sealevel Systems 4021 driver.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;(c) Copyright 1999 Building Number Three Ltd&n; *&t;(c) Copyright 2001 Alan Cox.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -1588,7 +1588,13 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Bulding Number Three Ltd&quot;
+l_string|&quot;Alan Cox&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

@@ -311,7 +311,32 @@ r_int
 id|page
 )paren
 (brace
-multiline_comment|/* XXX */
+id|protected_writeback_dcache_line
+c_func
+(paren
+id|addr
+op_amp
+op_complement
+(paren
+id|dc_lsize
+op_minus
+l_int|1
+)paren
+)paren
+suffix:semicolon
+id|protected_flush_icache_line
+c_func
+(paren
+id|addr
+op_amp
+op_complement
+(paren
+id|ic_lsize
+op_minus
+l_int|1
+)paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* TLB operations. XXX Write these dave... */
 DECL|function|flush_tlb_all
@@ -463,6 +488,14 @@ id|_flush_icache_range
 op_assign
 id|andes_flush_icache_range
 suffix:semicolon
+id|write_32bit_cp0_register
+c_func
+(paren
+id|CP0_FRAMEMASK
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|flush_cache_all
 c_func
 (paren
@@ -471,6 +504,13 @@ suffix:semicolon
 id|flush_tlb_all
 c_func
 (paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * The R10k might even work for Linux/MIPS - but we&squot;re paranoid&n;&t; * and refuse to run until this is tested on real silicon&n;&t; */
+id|panic
+c_func
+(paren
+l_string|&quot;CPU too expensive - making holiday in the ANDES!&quot;
 )paren
 suffix:semicolon
 )brace

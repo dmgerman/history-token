@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_tty.h,v 1.22 2000/06/21 09:54:29 keil Exp $&n;&n; * header for Linux ISDN subsystem, tty related functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: isdn_tty.h,v 1.22.6.1 2001/08/14 14:12:18 kai Exp $&n;&n; * header for Linux ISDN subsystem, tty related functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|DLE
 mdefine_line|#define DLE 0x10
@@ -105,8 +105,14 @@ DECL|macro|REG_CPN
 mdefine_line|#define REG_CPN      23
 DECL|macro|BIT_CPN
 mdefine_line|#define BIT_CPN       1
+DECL|macro|REG_CPNFCON
+mdefine_line|#define REG_CPNFCON  23
 DECL|macro|BIT_CPNFCON
 mdefine_line|#define BIT_CPNFCON   2
+DECL|macro|REG_CDN
+mdefine_line|#define REG_CDN      23
+DECL|macro|BIT_CDN
+mdefine_line|#define BIT_CDN       4
 multiline_comment|/* defines for result codes */
 DECL|macro|RESULT_OK
 mdefine_line|#define RESULT_OK&t;&t;0

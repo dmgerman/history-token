@@ -9807,6 +9807,12 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n;&t; * Register the driver as a character device, for applications to access&n;&t; * it for ioctls.&n;&t; * Ideally, this should go in the init_module() routine, but since it is&n;&t; * hidden in the file &quot;scsi_module.c&quot; ( included in the end ), we define&n;&t; * it here&n;&t; * First argument (major) to register_chrdev implies a dynamic major&n;&t; * number allocation.&n;&t; */
+r_if
+c_cond
+(paren
+id|count
+)paren
+(brace
 id|major
 op_assign
 id|register_chrdev
@@ -9819,7 +9825,7 @@ op_amp
 id|megadev_fops
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Register the Shutdown Notification hook in kernel&n;&t; */
+multiline_comment|/*&n;&t;&t; * Register the Shutdown Notification hook in kernel&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -9842,6 +9848,7 @@ op_amp
 id|mimd_entry_mtx
 )paren
 suffix:semicolon
+)brace
 r_return
 id|count
 suffix:semicolon

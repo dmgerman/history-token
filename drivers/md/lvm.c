@@ -991,33 +991,34 @@ id|gendisk
 id|lvm_gendisk
 op_assign
 (brace
+id|major
+suffix:colon
 id|MAJOR_NR
 comma
-multiline_comment|/* major # */
+id|major_name
+suffix:colon
 id|LVM_NAME
 comma
-multiline_comment|/* name of major */
+id|minor_shift
+suffix:colon
 l_int|0
 comma
-multiline_comment|/* number of times minor is shifted&n;&t;&t;&t;&t;   to get real minor */
+id|max_p
+suffix:colon
 l_int|1
 comma
-multiline_comment|/* maximum partitions per device */
+id|part
+suffix:colon
 id|lvm_hd_struct
 comma
-multiline_comment|/* partition table */
+id|sizes
+suffix:colon
 id|lvm_size
 comma
-multiline_comment|/* device size in blocks, copied&n;&t;&t;&t;&t;   to block_size[] */
+id|nr_real
+suffix:colon
 id|MAX_LV
 comma
-multiline_comment|/* number or real devices */
-l_int|NULL
-comma
-multiline_comment|/* internal */
-l_int|NULL
-comma
-multiline_comment|/* pointer to next gendisk struct (internal) */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Driver initialization...&n; */

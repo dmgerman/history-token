@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ip22-timer.c,v 1.6 2000/02/04 07:40:24 ralf Exp $&n; *&n; * indy_timer.c: Setting up the clock on the INDY 8254 controller.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copytight (C) 1997, 1998 Ralf Baechle (ralf@gnu.org)&n; */
+multiline_comment|/*&n; * indy_timer.c: Setting up the clock on the INDY 8254 controller.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copytight (C) 1997, 1998 Ralf Baechle (ralf@gnu.org)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -898,20 +898,10 @@ id|irq
 )braket
 op_increment
 suffix:semicolon
-id|printk
+id|panic
 c_func
 (paren
 l_string|&quot;indy_8254timer_irq: Whoops, should not have gotten this IRQ&bslash;n&quot;
-)paren
-suffix:semicolon
-id|prom_getchar
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ArcEnterInteractiveMode
-c_func
-(paren
 )paren
 suffix:semicolon
 id|irq_exit

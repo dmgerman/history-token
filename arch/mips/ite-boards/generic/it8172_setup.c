@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;IT8172/QED5231 board setup.&n; *&n; * Copyright 2000 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or support@mvista.com&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;IT8172/QED5231 board setup.&n; *&n; * Copyright 2000 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -110,7 +110,9 @@ r_void
 id|it8172_restart
 c_func
 (paren
-r_void
+r_char
+op_star
+id|command
 )paren
 suffix:semicolon
 r_extern
@@ -358,12 +360,10 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_IT8172
 r_int
 r_int
 id|dsr
 suffix:semicolon
-macro_line|#endif
 r_char
 op_star
 id|argptr
@@ -387,31 +387,36 @@ c_func
 (paren
 id|argptr
 comma
-l_string|&quot;console=ttyS0&quot;
+l_string|&quot;console=&quot;
 )paren
 )paren
 op_eq
 l_int|NULL
 )paren
 (brace
-id|strcpy
+id|argptr
+op_assign
+id|prom_getcmdline
 c_func
 (paren
-id|serial_console
-comma
-l_string|&quot;ttyS0,115200&quot;
 )paren
 suffix:semicolon
-id|console_setup
+id|strcat
 c_func
 (paren
-id|serial_console
+id|argptr
 comma
-l_int|NULL
+l_string|&quot; console=ttyS0,115200&quot;
 )paren
 suffix:semicolon
 )brace
 macro_line|#endif&t;  
+id|clear_cp0_status
+c_func
+(paren
+id|ST0_FR
+)paren
+suffix:semicolon
 id|rtc_ops
 op_assign
 op_amp
@@ -473,8 +478,7 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_IT8172
-multiline_comment|/*&n;&t; * Pull IDE device out of standby mode.&n;&t; */
+multiline_comment|/*&n;&t; * Pull enabled devices out of standby&n;&t; */
 id|IT_IO_READ16
 c_func
 (paren
@@ -483,11 +487,35 @@ comma
 id|dsr
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SOUND_IT8172
+id|dsr
+op_and_assign
+op_complement
+id|IT_PM_DSR_ACSB
+suffix:semicolon
+macro_line|#else
+id|dsr
+op_or_assign
+id|IT_PM_DSR_ACSB
+suffix:semicolon
+macro_line|#endif&t;
+macro_line|#ifdef CONFIG_BLK_DEV_IT8172
 id|dsr
 op_and_assign
 op_complement
 id|IT_PM_DSR_IDESB
 suffix:semicolon
+id|ide_ops
+op_assign
+op_amp
+id|std_ide_ops
+suffix:semicolon
+macro_line|#else
+id|dsr
+op_or_assign
+id|IT_PM_DSR_IDESB
+suffix:semicolon
+macro_line|#endif
 id|IT_IO_WRITE16
 c_func
 (paren
@@ -496,12 +524,6 @@ comma
 id|dsr
 )paren
 suffix:semicolon
-id|ide_ops
-op_assign
-op_amp
-id|std_ide_ops
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_FB
 id|conswitchp
 op_assign
@@ -917,12 +939,6 @@ id|data
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;8712 keyboard init&quot;
-)paren
 suffix:semicolon
 id|outb
 c_func

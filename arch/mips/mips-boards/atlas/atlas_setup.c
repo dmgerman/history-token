@@ -119,7 +119,7 @@ r_extern
 r_int
 (paren
 op_star
-id|putDebugChar
+id|generic_putDebugChar
 )paren
 (paren
 r_char
@@ -129,7 +129,7 @@ r_extern
 r_char
 (paren
 op_star
-id|getDebugChar
+id|generic_getDebugChar
 )paren
 (paren
 r_void
@@ -344,11 +344,11 @@ c_func
 id|line
 )paren
 suffix:semicolon
-id|putDebugChar
+id|generic_putDebugChar
 op_assign
 id|rs_putDebugChar
 suffix:semicolon
-id|getDebugChar
+id|generic_getDebugChar
 op_assign
 id|rs_getDebugChar
 suffix:semicolon
@@ -360,11 +360,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|putDebugChar
+id|generic_putDebugChar
 op_assign
 id|saa9730_putDebugChar
 suffix:semicolon
-id|getDebugChar
+id|generic_getDebugChar
 op_assign
 id|saa9730_getDebugChar
 suffix:semicolon

@@ -148,6 +148,120 @@ l_string|&quot;ALL&quot;
 )brace
 comma
 (brace
+l_string|&quot;CRD-8480B&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;CRD-8480C&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;CRD-8482B&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;CRD-84&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;SanDisk SDP3B&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;SanDisk SDP3B-64&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;SANYO CD-ROM CRD&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;HITACHI CDR-8&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;HITACHI CDR-8335&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;HITACHI CDR-8435&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;Toshiba CD-ROM XM-6202B&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;CD-532E-A&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;E-IDE CD-ROM CR-840&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;CD-ROM Drive/F5A&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;RICOH CD-R/RW MP7083A&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;WPI CDD-820&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;SAMSUNG CD-ROM SC-148C&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;SAMSUNG CD-ROM SC-148F&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;SAMSUNG CD-ROM SC&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
 l_string|&quot;SanDisk SDP3B-64&quot;
 comma
 l_string|&quot;ALL&quot;
@@ -167,6 +281,12 @@ l_string|&quot;ALL&quot;
 comma
 (brace
 l_string|&quot;ATAPI CD-ROM DRIVE 40X MAXIMUM&quot;
+comma
+l_string|&quot;ALL&quot;
+)brace
+comma
+(brace
+l_string|&quot;_NEC DV5800A&quot;
 comma
 l_string|&quot;ALL&quot;
 )brace

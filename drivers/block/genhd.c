@@ -1,16 +1,34 @@
 multiline_comment|/*&n; *  Code extracted from&n; *  linux/kernel/hd.c&n; *&n; *  Copyright (C) 1991-1998  Linus Torvalds&n; *&n; *  devfs support - jj, rgooch, 980122&n; *&n; *  Moved partition checking code to fs/partitions* - Russell King&n; *  (linux@arm.uk.linux.org)&n; */
+multiline_comment|/*&n; * TODO:  rip out the remaining init crap from this file  --hch&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+DECL|variable|gendisk_lock
+r_static
+id|rwlock_t
+id|gendisk_lock
+suffix:semicolon
+multiline_comment|/*&n; * Global kernel list of partitioning information.&n; *&n; * XXX: you should _never_ access this directly.&n; *&t;the only reason this is exported is source compatiblity.&n; */
 DECL|variable|gendisk_head
+multiline_comment|/*static*/
 r_struct
 id|gendisk
 op_star
 id|gendisk_head
 suffix:semicolon
+DECL|variable|gendisk_head
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|gendisk_head
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * add_gendisk - add partitioning information to kernel list&n; * @gp: per-device partitioning information&n; *&n; * This function registers the partitioning information in @gp&n; * with the kernel.&n; */
 r_void
 DECL|function|add_gendisk
 id|add_gendisk
@@ -22,6 +40,13 @@ op_star
 id|gp
 )paren
 (brace
+id|write_lock
+c_func
+(paren
+op_amp
+id|gendisk_lock
+)paren
+suffix:semicolon
 id|gp-&gt;next
 op_assign
 id|gendisk_head
@@ -30,7 +55,22 @@ id|gendisk_head
 op_assign
 id|gp
 suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|gendisk_lock
+)paren
+suffix:semicolon
 )brace
+DECL|variable|add_gendisk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|add_gendisk
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * del_gendisk - remove partitioning information from kernel list&n; * @gp: per-device partitioning information&n; *&n; * This function unregisters the partitioning information in @gp&n; * with the kernel.&n; */
 r_void
 DECL|function|del_gendisk
 id|del_gendisk
@@ -47,6 +87,13 @@ id|gendisk
 op_star
 op_star
 id|gpp
+suffix:semicolon
+id|write_lock
+c_func
+(paren
+op_amp
+id|gendisk_lock
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -97,7 +144,22 @@ id|gpp
 op_member_access_from_pointer
 id|next
 suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|gendisk_lock
+)paren
+suffix:semicolon
 )brace
+DECL|variable|del_gendisk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|del_gendisk
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * get_gendisk - get partitioning information for a given device&n; * @dev: device to get partitioning information for&n; *&n; * This function gets the structure containing partitioning&n; * information for the given device @dev.&n; */
 r_struct
 id|gendisk
 op_star
@@ -125,6 +187,13 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|gendisk_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -145,13 +214,26 @@ id|gp-&gt;major
 op_eq
 id|maj
 )paren
+r_break
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|gendisk_lock
+)paren
+suffix:semicolon
 r_return
 id|gp
 suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
 )brace
+DECL|variable|get_gendisk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_gendisk
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 r_int
 DECL|function|get_partition_list
@@ -198,6 +280,13 @@ c_func
 id|page
 comma
 l_string|&quot;major minor  #blocks  name&bslash;n&bslash;n&quot;
+)paren
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|gendisk_lock
 )paren
 suffix:semicolon
 r_for
@@ -312,6 +401,13 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|gendisk_lock
+)paren
+suffix:semicolon
 op_star
 id|start
 op_assign
@@ -431,6 +527,13 @@ c_func
 r_void
 )paren
 (brace
+id|rwlock_init
+c_func
+(paren
+op_amp
+id|gendisk_lock
+)paren
+suffix:semicolon
 id|blk_dev_init
 c_func
 (paren

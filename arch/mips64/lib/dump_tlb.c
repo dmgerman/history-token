@@ -784,8 +784,8 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|dump_list_current
+r_void
 id|dump_list_current
 c_func
 (paren
@@ -803,9 +803,9 @@ id|address
 )paren
 suffix:semicolon
 )brace
-r_int
-r_int
 DECL|function|vtop
+r_int
+r_int
 id|vtop
 c_func
 (paren
@@ -902,8 +902,8 @@ r_return
 id|paddr
 suffix:semicolon
 )brace
-r_void
 DECL|function|dump16
+r_void
 id|dump16
 c_func
 (paren
@@ -948,8 +948,10 @@ r_int
 )paren
 op_star
 id|p
-op_increment
 )paren
+suffix:semicolon
+id|p
+op_increment
 suffix:semicolon
 id|printk
 c_func
@@ -968,8 +970,10 @@ r_int
 )paren
 op_star
 id|p
-op_increment
 )paren
+suffix:semicolon
+id|p
+op_increment
 suffix:semicolon
 )brace
 )brace

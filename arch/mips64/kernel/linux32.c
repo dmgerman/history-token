@@ -7884,11 +7884,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|third
+op_amp
+op_complement
+id|IPC_64
+)paren
 op_eq
 id|SETVAL
 )paren
-(brace
 id|fourth.val
 op_assign
 (paren
@@ -7896,7 +7900,6 @@ r_int
 )paren
 id|pad
 suffix:semicolon
-)brace
 r_else
 id|fourth.__pad
 op_assign
@@ -7914,6 +7917,9 @@ r_switch
 c_cond
 (paren
 id|third
+op_amp
+op_complement
+id|IPC_64
 )paren
 (brace
 r_case

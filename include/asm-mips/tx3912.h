@@ -3,18 +3,6 @@ macro_line|#ifndef __TX3912_H__
 DECL|macro|__TX3912_H__
 mdefine_line|#define __TX3912_H__
 macro_line|#include &lt;asm/addrspace.h&gt;
-DECL|macro|inb
-mdefine_line|#define inb(addr)&t;(*(volatile unsigned char *)(addr))
-DECL|macro|inw
-mdefine_line|#define inw(addr)&t;(*(volatile unsigned short *)(addr))
-DECL|macro|inl
-mdefine_line|#define inl(addr)&t;(*(volatile unsigned int *)(addr))
-DECL|macro|outb
-mdefine_line|#define outb(b,addr)&t;(*(volatile unsigned char *)(addr)) = (b)
-DECL|macro|outw
-mdefine_line|#define outw(b,addr)&t;(*(volatile unsigned short *)(addr)) = (b)
-DECL|macro|outl
-mdefine_line|#define outl(b,addr)&t;(*(volatile unsigned int *)(addr)) = (b)
 multiline_comment|/******************************************************************************&n;*&n;* &t;01  General macro definitions&n;*&n;******************************************************************************/
 DECL|macro|REGISTER_BASE
 mdefine_line|#define REGISTER_BASE   0xb0c00000

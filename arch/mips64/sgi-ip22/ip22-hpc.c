@@ -1,10 +1,9 @@
-multiline_comment|/* $Id: ip22-hpc.c,v 1.2 1999/10/19 20:51:52 ralf Exp $&n; *&n; * ip22-hpc.c: Routines for generic manipulation of the HPC controllers.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1998, 1999 Ralf Baechle&n; */
+multiline_comment|/*&n; * ip22-hpc.c: Routines for generic manipulation of the HPC controllers.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1998, 1999, 2001 Ralf Baechle&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/sgi/sgihpc.h&gt;
 macro_line|#include &lt;asm/sgi/sgint23.h&gt;
-macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 DECL|macro|DEBUG_SGIHPC
 macro_line|#undef DEBUG_SGIHPC

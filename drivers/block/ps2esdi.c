@@ -624,43 +624,45 @@ id|gendisk
 id|ps2esdi_gendisk
 op_assign
 (brace
+id|major
+suffix:colon
 id|MAJOR_NR
 comma
-multiline_comment|/* Major number */
+id|major_name
+suffix:colon
 l_string|&quot;ed&quot;
 comma
-multiline_comment|/* Major name */
+id|minor_shift
+suffix:colon
 l_int|6
 comma
-multiline_comment|/* Bits to shift to get real from partition */
+id|max_p
+suffix:colon
 l_int|1
 op_lshift
 l_int|6
 comma
-multiline_comment|/* Number of partitions per real disk */
+id|part
+suffix:colon
 id|ps2esdi
 comma
-multiline_comment|/* hd struct */
+id|sizes
+suffix:colon
 id|ps2esdi_sizes
 comma
-multiline_comment|/* block sizes */
-l_int|0
-comma
-multiline_comment|/* number */
+id|real_devices
+suffix:colon
 (paren
 r_void
 op_star
 )paren
 id|ps2esdi_info
 comma
-multiline_comment|/* internal */
-l_int|NULL
-comma
-multiline_comment|/* next */
+id|fops
+suffix:colon
 op_amp
 id|ps2esdi_fops
 comma
-multiline_comment|/* file operations */
 )brace
 suffix:semicolon
 multiline_comment|/* initialization routine called by ll_rw_blk.c   */
@@ -1001,6 +1003,7 @@ id|PS2ESDI_IRQ
 comma
 l_int|NULL
 )paren
+suffix:semicolon
 id|devfs_unregister_blkdev
 c_func
 (paren

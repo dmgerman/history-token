@@ -24,7 +24,7 @@ mdefine_line|#define atomic_read(v)&t;((v)-&gt;counter)
 multiline_comment|/*&n; * atomic_set - set atomic variable&n; * @v: pointer of type atomic_t&n; * @i: required value&n; *&n; * Atomically sets the value of @v to @i.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
 DECL|macro|atomic_set
 mdefine_line|#define atomic_set(v,i)&t;((v)-&gt;counter = (i))
-macro_line|#if !defined(CONFIG_CPU_HAS_LLSC)
+macro_line|#ifndef CONFIG_CPU_HAS_LLSC
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * The MIPS I implementation is only atomic with respect to&n; * interrupts.  R3000 based multiprocessor machines are rare anyway ...&n; *&n; * atomic_add - add integer to atomic variable&n; * @i: integer value to add&n; * @v: pointer of type atomic_t&n; *&n; * Atomically adds @i to @v.  Note that the guaranteed useful range&n; * of an atomic_t is only 24 bits.&n; */
 DECL|function|atomic_add

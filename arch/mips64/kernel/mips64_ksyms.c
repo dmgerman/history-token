@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/floppy.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -108,6 +109,13 @@ r_const
 r_char
 op_star
 id|s
+)paren
+suffix:semicolon
+DECL|variable|mips_machtype
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mips_machtype
 )paren
 suffix:semicolon
 DECL|variable|EISA_bus

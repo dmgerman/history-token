@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sysmips.h,v 1.1 1999/10/08 21:07:57 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1999 by Ralf Baechle&n; * Copyright 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1999 by Ralf Baechle&n; * Copyright 1999 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_SYSMIPS_H
 DECL|macro|_ASM_SYSMIPS_H
 mdefine_line|#define _ASM_SYSMIPS_H

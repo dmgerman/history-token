@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: asmmacro.h,v 1.2 1999/10/19 20:51:53 ralf Exp $&n; *&n; * asmmacro.h: Assembler macros to make things easier to read.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1998, 1999 Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * asmmacro.h: Assembler macros to make things easier to read.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1998, 1999 Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_ASMMACRO_H
 DECL|macro|_ASM_ASMMACRO_H
 mdefine_line|#define _ASM_ASMMACRO_H

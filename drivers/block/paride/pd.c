@@ -962,37 +962,35 @@ id|gendisk
 id|pd_gendisk
 op_assign
 (brace
+id|major
+suffix:colon
 id|PD_MAJOR
 comma
-multiline_comment|/* Major number */
+id|major_name
+suffix:colon
 id|PD_NAME
 comma
-multiline_comment|/* Major name */
+id|minor_shift
+suffix:colon
 id|PD_BITS
 comma
-multiline_comment|/* Bits to shift to get real from partition */
+id|max_p
+suffix:colon
 id|PD_PARTNS
 comma
-multiline_comment|/* Number of partitions per real */
+id|part
+suffix:colon
 id|pd_hd
 comma
-multiline_comment|/* hd struct */
+id|sizes
+suffix:colon
 id|pd_sizes
 comma
-multiline_comment|/* block sizes */
-l_int|0
-comma
-multiline_comment|/* number */
-l_int|NULL
-comma
-multiline_comment|/* internal */
-l_int|NULL
-comma
-multiline_comment|/* next */
+id|fops
+suffix:colon
 op_amp
 id|pd_fops
 comma
-multiline_comment|/* block device operations */
 )brace
 suffix:semicolon
 DECL|variable|pd_fops

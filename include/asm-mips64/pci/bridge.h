@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * bridge.h - bridge chip header file, derived from IRIX &lt;sys/PCI/bridge.h&gt;,&n; * revision 1.76.&n; *&n; * Copyright (C) 1996, 1999 Silcon Graphics, Inc.&n; * Copyright (C) 1999 Ralf Baechle (ralf@gnu.org)&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * bridge.h - bridge chip header file, derived from IRIX &lt;sys/PCI/bridge.h&gt;,&n; * revision 1.76.&n; *&n; * Copyright (C) 1996, 1999 Silcon Graphics, Inc.&n; * Copyright (C) 1999 Ralf Baechle (ralf@gnu.org)&n; */
 macro_line|#ifndef _ASM_PCI_BRIDGE_H
 DECL|macro|_ASM_PCI_BRIDGE_H
 mdefine_line|#define _ASM_PCI_BRIDGE_H
@@ -1667,26 +1667,24 @@ DECL|macro|mkate
 mdefine_line|#define mkate(xaddr, xid, attr) ((xaddr) &amp; 0x0000fffffffff000ULL) | &bslash;&n;&t;&t;&t;&t;((xid)&lt;&lt;ATE_TIDSHIFT) | &bslash;&n;&t;&t;&t;&t;(attr)
 DECL|macro|BRIDGE_INTERNAL_ATES
 mdefine_line|#define BRIDGE_INTERNAL_ATES&t;128
-multiline_comment|/* ========================================================================&n; *    Linux pci bus mappings to sn physical id&squot;s&n; */
-DECL|variable|bus_to_wid
+multiline_comment|/*&n; * Linux pci bus mappings to sn physical id&squot;s&n; */
+r_extern
 r_int
 r_char
 id|bus_to_wid
 (braket
-l_int|256
 )braket
 suffix:semicolon
 multiline_comment|/* widget id for linux pci bus */
-DECL|variable|bus_to_nid
+r_extern
 r_int
 r_char
 id|bus_to_nid
 (braket
-l_int|256
 )braket
 suffix:semicolon
 multiline_comment|/* nasid for linux pci bus */
-DECL|variable|num_bridges
+r_extern
 r_int
 r_char
 id|num_bridges

@@ -4115,12 +4115,6 @@ id|nftl_ioctl
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/****************************************************************************&n; *&n; * Module stuff&n; *&n; ****************************************************************************/
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
-DECL|macro|init_nftl
-mdefine_line|#define init_nftl init_module
-DECL|macro|cleanup_nftl
-mdefine_line|#define cleanup_nftl cleanup_module
-macro_line|#endif
 DECL|variable|nftl_notifier
 r_static
 r_struct
@@ -4196,17 +4190,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20320
-id|blk_dev
-(braket
-id|MAJOR_NR
-)braket
-dot
-id|request_fn
-op_assign
-id|nftl_request
-suffix:semicolon
-macro_line|#else
 id|blk_init_queue
 c_func
 (paren
@@ -4220,7 +4203,6 @@ op_amp
 id|nftl_request
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* set block size to 1kB each */
 r_for
 c_loop
@@ -4281,15 +4263,6 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|gendisk
-op_star
-id|gd
-comma
-op_star
-op_star
-id|gdp
-suffix:semicolon
 id|unregister_mtd_user
 c_func
 (paren
@@ -4305,17 +4278,6 @@ comma
 l_string|&quot;nftl&quot;
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20320
-id|blk_dev
-(braket
-id|MAJOR_NR
-)braket
-dot
-id|request_fn
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#else
 id|blk_cleanup_queue
 c_func
 (paren
@@ -4326,8 +4288,6 @@ id|MAJOR_NR
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;
-multiline_comment|/* remove ourself from generic harddisk list&n;&t;   FIXME: why can&squot;t I found this partition on /proc/partition */
 id|del_gendisk
 c_func
 (paren
@@ -4335,7 +4295,6 @@ op_amp
 id|nftl_gendisk
 )paren
 suffix:semicolon
-suffix:colon
 )brace
 DECL|variable|init_nftl
 id|module_init

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * memory.c: memory initialisation code.&n; *&n; * Copyright (C) 1998 Harald Koerfgen, Frieder Streffer and Paul M. Antoine&n; *&n; * $Id: memory.c,v 1.3 1999/10/09 00:00:58 ralf Exp $&n; */
+multiline_comment|/*&n; * memory.c: memory initialisation code.&n; *&n; * Copyright (C) 1998 Harald Koerfgen, Frieder Streffer and Paul M. Antoine&n; * Copyright (C) 2000 Maciej W. Rozycki&n; *&n; * $Id: memory.c,v 1.3 1999/10/09 00:00:58 ralf Exp $&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/dec/machtype.h&gt;
 macro_line|#include &quot;prom.h&quot;
 r_typedef
@@ -66,22 +67,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* So we know an error occurred */
-r_extern
-r_char
-id|_end
-suffix:semicolon
-DECL|macro|PFN_UP
-mdefine_line|#define PFN_UP(x)&t;(((x) + PAGE_SIZE-1) &gt;&gt; PAGE_SHIFT)
-DECL|macro|PFN_ALIGN
-mdefine_line|#define PFN_ALIGN(x)&t;(((unsigned long)(x) + (PAGE_SIZE - 1)) &amp; PAGE_MASK)
 multiline_comment|/*&n; * Probe memory in 4MB chunks, waiting for an error to tell us we&squot;ve fallen&n; * off the end of real memory.  Only suitable for the 2100/3100&squot;s (PMAX).&n; */
 DECL|macro|CHUNK_SIZE
 mdefine_line|#define CHUNK_SIZE 0x400000
-DECL|function|pmax_get_memory_size
-r_int
-r_int
+DECL|function|pmax_setup_memory_region
+r_static
+r_void
 id|__init
-id|pmax_get_memory_size
+id|pmax_setup_memory_region
 c_func
 (paren
 r_void
@@ -210,7 +203,11 @@ comma
 l_int|0x80
 )paren
 suffix:semicolon
-r_return
+id|add_memory_region
+c_func
+(paren
+l_int|0
+comma
 (paren
 r_int
 r_int
@@ -220,14 +217,17 @@ op_minus
 id|KSEG1
 op_minus
 id|CHUNK_SIZE
+comma
+id|BOOT_MEM_RAM
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Use the REX prom calls to get hold of the memory bitmap, and thence&n; * determine memory size.&n; */
-DECL|function|rex_get_memory_size
-r_int
-r_int
+DECL|function|rex_setup_memory_region
+r_static
+r_void
 id|__init
-id|rex_get_memory_size
+id|rex_setup_memory_region
 c_func
 (paren
 r_void
@@ -240,6 +240,10 @@ id|bitmap_size
 suffix:semicolon
 r_int
 r_int
+id|mem_start
+op_assign
+l_int|0
+comma
 id|mem_size
 op_assign
 l_int|0
@@ -299,10 +303,62 @@ op_star
 id|bm-&gt;pagesize
 )paren
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mem_size
+)paren
+id|mem_start
+op_add_assign
+(paren
+l_int|8
+op_star
+id|bm-&gt;pagesize
+)paren
+suffix:semicolon
+r_else
+(brace
+id|add_memory_region
+c_func
+(paren
+id|mem_start
+comma
+id|mem_size
+comma
+id|BOOT_MEM_RAM
+)paren
+suffix:semicolon
+id|mem_start
+op_add_assign
+id|mem_size
+op_plus
+(paren
+l_int|8
+op_star
+id|bm-&gt;pagesize
+)paren
+suffix:semicolon
+id|mem_size
+op_assign
+l_int|0
+suffix:semicolon
 )brace
-r_return
+)brace
+r_if
+c_cond
 (paren
 id|mem_size
+)paren
+id|add_memory_region
+c_func
+(paren
+id|mem_start
+comma
+id|mem_size
+comma
+id|BOOT_MEM_RAM
 )paren
 suffix:semicolon
 )brace
@@ -317,22 +373,6 @@ r_int
 id|magic
 )paren
 (brace
-r_int
-r_int
-id|free_start
-comma
-id|free_end
-comma
-id|start_pfn
-comma
-id|bootmap_size
-suffix:semicolon
-r_int
-r_int
-id|mem_size
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -340,122 +380,21 @@ id|magic
 op_ne
 id|REX_PROM_MAGIC
 )paren
-id|mem_size
-op_assign
-id|pmax_get_memory_size
+id|pmax_setup_memory_region
 c_func
 (paren
 )paren
 suffix:semicolon
 r_else
-id|mem_size
-op_assign
-id|rex_get_memory_size
+id|rex_setup_memory_region
 c_func
 (paren
 )paren
-suffix:semicolon
-id|free_start
-op_assign
-id|PHYSADDR
-c_func
-(paren
-id|PFN_ALIGN
-c_func
-(paren
-op_amp
-id|_end
-)paren
-)paren
-suffix:semicolon
-id|free_end
-op_assign
-id|mem_size
-suffix:semicolon
-id|start_pfn
-op_assign
-id|PFN_UP
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|_end
-)paren
-suffix:semicolon
-macro_line|#ifdef PROM_DEBUG
-id|prom_printf
-c_func
-(paren
-l_string|&quot;free_start: 0x%08x&bslash;n&quot;
-comma
-id|free_start
-)paren
-suffix:semicolon
-id|prom_printf
-c_func
-(paren
-l_string|&quot;free_end: 0x%08x&bslash;n&quot;
-comma
-id|free_end
-)paren
-suffix:semicolon
-id|prom_printf
-c_func
-(paren
-l_string|&quot;start_pfn: 0x%08x&bslash;n&quot;
-comma
-id|start_pfn
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Register all the contiguous memory with the bootmem allocator&n;&t;   and free it.  Be careful about the bootmem freemap.  */
-id|bootmap_size
-op_assign
-id|init_bootmem
-c_func
-(paren
-id|start_pfn
-comma
-id|mem_size
-op_rshift
-id|PAGE_SHIFT
-)paren
-suffix:semicolon
-id|free_bootmem
-c_func
-(paren
-id|free_start
-op_plus
-id|bootmap_size
-comma
-id|free_end
-op_minus
-id|free_start
-op_minus
-id|bootmap_size
-)paren
-suffix:semicolon
-)brace
-DECL|function|page_is_ram
-r_int
-id|__init
-id|page_is_ram
-c_func
-(paren
-r_int
-r_int
-id|pagenr
-)paren
-(brace
-r_return
-l_int|1
 suffix:semicolon
 )brace
 DECL|function|prom_free_prom_memory
 r_void
+id|__init
 id|prom_free_prom_memory
 (paren
 r_void
@@ -481,7 +420,7 @@ id|IOASIC
 )paren
 id|end
 op_assign
-id|PHYSADDR
+id|__pa
 c_func
 (paren
 op_amp
@@ -494,7 +433,7 @@ r_else
 macro_line|#endif
 id|end
 op_assign
-id|PHYSADDR
+id|__pa
 c_func
 (paren
 op_amp
@@ -519,7 +458,11 @@ c_func
 id|virt_to_page
 c_func
 (paren
+id|__va
+c_func
+(paren
 id|addr
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -529,7 +472,11 @@ c_func
 id|virt_to_page
 c_func
 (paren
+id|__va
+c_func
+(paren
 id|addr
+)paren
 )paren
 comma
 l_int|1
@@ -538,7 +485,15 @@ suffix:semicolon
 id|free_page
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
+id|__va
+c_func
+(paren
 id|addr
+)paren
 )paren
 suffix:semicolon
 id|addr

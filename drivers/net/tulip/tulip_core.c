@@ -8308,6 +8308,24 @@ comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#else
+multiline_comment|/* MWI is broken for DC21143 rev 65... */
+r_if
+c_cond
+(paren
+id|chip_idx
+op_eq
+id|DC21143
+op_logical_and
+id|chip_rev
+op_eq
+l_int|65
+)paren
+id|tp-&gt;csr0
+op_and_assign
+op_complement
+id|MWI
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Stop the chip&squot;s Tx and Rx processes. */
 id|tulip_stop_rxtx

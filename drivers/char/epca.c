@@ -2459,10 +2459,8 @@ op_amp
 id|ch-&gt;close_wait
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-macro_line|#endif
 id|restore_flags
 c_func
 (paren
@@ -2691,7 +2689,6 @@ c_func
 id|ch
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 r_if
 c_cond
 (paren
@@ -2699,7 +2696,6 @@ id|ch-&gt;count
 )paren
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-macro_line|#endif /* MODULE */
 id|ch-&gt;tty
 op_assign
 l_int|NULL
@@ -4459,10 +4455,8 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-macro_line|#endif
 id|ch
 op_assign
 op_amp
@@ -13454,4 +13448,10 @@ suffix:semicolon
 )brace
 multiline_comment|/* End init_PCI */
 macro_line|#endif /* ENABLE_PCI */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

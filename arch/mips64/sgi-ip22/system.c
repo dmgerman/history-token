@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: system.c,v 1.3 1999/10/19 20:51:52 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * system.c: Probe the system type using ARCS prom interface library.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * system.c: Probe the system type using ARCS prom interface library.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 2000, 2001 Ralf Baechle (ralf@gnu.org)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -6,11 +6,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/sgi/sgi.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-DECL|variable|sgimach
-r_enum
-id|sgi_mach
-id|sgimach
-suffix:semicolon
 DECL|struct|smatch
 r_struct
 id|smatch
@@ -150,28 +145,12 @@ id|type
 suffix:semicolon
 )brace
 )brace
-id|prom_printf
+id|panic
 c_func
 (paren
-l_string|&quot;&bslash;nYeee, could not determine MIPS cpu type &lt;%s&gt;&bslash;n&quot;
+l_string|&quot;&bslash;nYeee, could not determine MIPS cpu type &lt;%s&gt;&quot;
 comma
 id|s
-)paren
-suffix:semicolon
-id|prom_printf
-c_func
-(paren
-l_string|&quot;press a key to reboot&bslash;n&quot;
-)paren
-suffix:semicolon
-id|prom_getchar
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ArcEnterInteractiveMode
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -253,30 +232,12 @@ id|ncpus
 OG
 l_int|1
 )paren
-(brace
-id|prom_printf
+id|panic
 c_func
 (paren
-l_string|&quot;&bslash;nYeee, SGI MP not ready yet&bslash;n&quot;
+l_string|&quot;&bslash;nYeee, SGI MP not ready yet&quot;
 )paren
 suffix:semicolon
-id|prom_printf
-c_func
-(paren
-l_string|&quot;press a key to reboot&bslash;n&quot;
-)paren
-suffix:semicolon
-id|prom_getchar
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ArcEnterInteractiveMode
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -316,26 +277,10 @@ op_minus
 l_int|1
 )paren
 (brace
-id|prom_printf
+id|panic
 c_func
 (paren
-l_string|&quot;&bslash;nYeee, could not find cpu ARCS component&bslash;n&quot;
-)paren
-suffix:semicolon
-id|prom_printf
-c_func
-(paren
-l_string|&quot;press a key to reboot&bslash;n&quot;
-)paren
-suffix:semicolon
-id|prom_getchar
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ArcEnterInteractiveMode
-c_func
-(paren
+l_string|&quot;&bslash;nYeee, could not find cpu ARCS component&quot;
 )paren
 suffix:semicolon
 )brace

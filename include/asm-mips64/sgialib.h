@@ -4,10 +4,6 @@ DECL|macro|_ASM_SGIALIB_H
 mdefine_line|#define _ASM_SGIALIB_H
 macro_line|#include &lt;asm/sgiarcs.h&gt;
 r_extern
-id|PSYSTEM_PARAMETER_BLOCK
-id|sgi_pblock
-suffix:semicolon
-r_extern
 r_struct
 id|linux_romvec
 op_star

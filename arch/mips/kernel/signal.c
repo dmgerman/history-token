@@ -2434,7 +2434,7 @@ id|ka-&gt;sa.sa_restorer
 suffix:semicolon
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Set up the return code ...&n;&t;&t; *&n;&t;&t; *         li      v0, __NR_sigreturn&n;&t;&t; *         syscall&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Set up the return code ...&n;&t;&t; *&n;&t;&t; *         li      v0, __NR_rt_sigreturn&n;&t;&t; *         syscall&n;&t;&t; */
 id|err
 op_or_assign
 id|__put_user
@@ -2442,7 +2442,7 @@ c_func
 (paren
 l_int|0x24020000
 op_plus
-id|__NR_sigreturn
+id|__NR_rt_sigreturn
 comma
 id|frame-&gt;rs_code
 op_plus

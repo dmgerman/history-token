@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/gdb-stub.h&gt;
 macro_line|#include &lt;asm/nile4.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
 macro_line|#ifdef CONFIG_REMOTE_DEBUG
 r_extern
 r_void
@@ -203,19 +204,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|board_time_init
-r_void
-(paren
-op_star
-id|board_time_init
-)paren
-(paren
-r_struct
-id|irqaction
-op_star
-id|irq
-)paren
-suffix:semicolon
 DECL|function|ddb_time_init
 r_static
 r_void
@@ -229,13 +217,76 @@ op_star
 id|irq
 )paren
 (brace
-multiline_comment|/* set the clock to 1 Hz */
+id|printk
+c_func
+(paren
+l_string|&quot;ddb_time_init invoked.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|mips_counter_frequency
+op_assign
+l_int|83000000
+suffix:semicolon
+)brace
+DECL|function|ddb_timer_setup
+r_static
+r_void
+id|__init
+id|ddb_timer_setup
+c_func
+(paren
+r_struct
+id|irqaction
+op_star
+id|irq
+)paren
+(brace
+r_int
+r_int
+id|count
+suffix:semicolon
+multiline_comment|/* we are using the cpu counter for timer interrupts */
+id|i8259_setup_irq
+c_func
+(paren
+l_int|0
+comma
+id|irq
+)paren
+suffix:semicolon
+id|set_cp0_status
+c_func
+(paren
+id|IE_IRQ5
+)paren
+suffix:semicolon
+multiline_comment|/* to generate the first timer interrupt */
+id|count
+op_assign
+id|read_32bit_cp0_register
+c_func
+(paren
+id|CP0_COUNT
+)paren
+suffix:semicolon
+id|write_32bit_cp0_register
+c_func
+(paren
+id|CP0_COMPARE
+comma
+id|count
+op_plus
+l_int|1000
+)paren
+suffix:semicolon
+macro_line|#if 0&t;&t;/* the old way to do timer interrupt */
+multiline_comment|/* set the clock to 100 Hz */
 id|nile4_out32
 c_func
 (paren
 id|NILE4_T2CTRL
 comma
-l_int|1000000
+l_int|830000
 )paren
 suffix:semicolon
 multiline_comment|/* enable the General-Purpose Timer */
@@ -277,6 +328,7 @@ comma
 id|irq
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_static
 r_struct
@@ -448,6 +500,10 @@ suffix:semicolon
 id|board_time_init
 op_assign
 id|ddb_time_init
+suffix:semicolon
+id|board_timer_setup
+op_assign
+id|ddb_timer_setup
 suffix:semicolon
 id|_machine_restart
 op_assign

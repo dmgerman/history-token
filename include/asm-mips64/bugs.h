@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; *  Copyright (C) 1995 Waldorf Electronics&n; *  Copyright (C) 1997, 1999 Ralf Baechle&n; */
+multiline_comment|/*&n; *  Copyright (C) 1995 Waldorf Electronics&n; *  Copyright (C) 1997, 1999 Ralf Baechle&n; */
 macro_line|#include &lt;asm/bootinfo.h&gt;
 multiline_comment|/*&n; * This is included by init/main.c to check for architecture-dependent bugs.&n; *&n; * Needs:&n; *&t;void check_bugs(void);&n; */
 DECL|function|check_wait

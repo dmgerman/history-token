@@ -1665,7 +1665,6 @@ multiline_comment|/* Reverse the source SABM&squot;s path */
 id|memcpy
 c_func
 (paren
-op_amp
 id|ax25-&gt;digipeat
 comma
 op_amp

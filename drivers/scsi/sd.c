@@ -2234,39 +2234,29 @@ id|gendisk
 id|sd_gendisk
 op_assign
 (brace
+id|major
+suffix:colon
 id|SCSI_DISK0_MAJOR
 comma
-multiline_comment|/* Major number */
+id|major_name
+suffix:colon
 l_string|&quot;sd&quot;
 comma
-multiline_comment|/* Major name */
+id|minor_shift
+suffix:colon
 l_int|4
 comma
-multiline_comment|/* Bits to shift to get real from partition */
+id|max_p
+suffix:colon
 l_int|1
 op_lshift
 l_int|4
 comma
-multiline_comment|/* Number of partitions per real */
-l_int|NULL
-comma
-multiline_comment|/* hd struct */
-l_int|NULL
-comma
-multiline_comment|/* block sizes */
-l_int|0
-comma
-multiline_comment|/* number */
-l_int|NULL
-comma
-multiline_comment|/* internal */
-l_int|NULL
-comma
-multiline_comment|/* next */
+id|fops
+suffix:colon
 op_amp
 id|sd_fops
 comma
-multiline_comment|/* file operations */
 )brace
 suffix:semicolon
 DECL|variable|sd_gendisks
@@ -4158,7 +4148,7 @@ l_int|4
 op_assign
 l_int|255
 suffix:semicolon
-multiline_comment|/* But we only want the 8 byte header */
+multiline_comment|/* Ask for 255 bytes, even tho we want just the first 8 */
 id|SRpnt-&gt;sr_cmd_len
 op_assign
 l_int|0

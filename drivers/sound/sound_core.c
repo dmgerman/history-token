@@ -363,6 +363,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This lock guards the sound loader list.&n; */
 DECL|variable|sound_loader_lock
+r_static
 id|spinlock_t
 id|sound_loader_lock
 op_assign

@@ -1,7 +1,7 @@
-multiline_comment|/* $Id: string.h,v 1.13 2000/02/19 14:12:14 harald Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1994, 1995, 1996, 1997, 1998 by Ralf Baechle&n; */
-macro_line|#ifndef __ASM_MIPS_STRING_H
-DECL|macro|__ASM_MIPS_STRING_H
-mdefine_line|#define __ASM_MIPS_STRING_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1994, 1995, 1996, 1997, 1998, 2001 Ralf Baechle&n; * Copyright (c) 2001 MIPS Technologies, Inc.&n; */
+macro_line|#ifndef __ASM_STRING_H
+DECL|macro|__ASM_STRING_H
+mdefine_line|#define __ASM_STRING_H
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|__HAVE_ARCH_STRCPY
 mdefine_line|#define __HAVE_ARCH_STRCPY
@@ -440,7 +440,7 @@ l_string|&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;
 l_string|&quot;1:&bslash;tbeq&bslash;t%0,%1,2f&bslash;n&bslash;t&quot;
 l_string|&quot;addiu&bslash;t%0,1&bslash;n&bslash;t&quot;
 l_string|&quot;lb&bslash;t$1,-1(%0)&bslash;n&bslash;t&quot;
-l_string|&quot;bne&bslash;t$1,%4,1b&bslash;n&quot;
+l_string|&quot;bne&bslash;t$1,%z4,1b&bslash;n&quot;
 l_string|&quot;2:&bslash;t.set&bslash;tpop&quot;
 suffix:colon
 l_string|&quot;=r&quot;
@@ -463,7 +463,7 @@ l_string|&quot;1&quot;
 id|__end
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;Jr&quot;
 (paren
 id|__c
 )paren
@@ -475,5 +475,5 @@ r_return
 id|__addr
 suffix:semicolon
 )brace
-macro_line|#endif /* __ASM_MIPS_STRING_H */
+macro_line|#endif /* __ASM_STRING_H */
 eof

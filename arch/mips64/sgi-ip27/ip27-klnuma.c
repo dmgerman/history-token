@@ -1,10 +1,11 @@
-multiline_comment|/*&n; * Ported from IRIX to Linux by Kanoj Sarcar, 06/08/00.&n; * Copyright 2000 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * Ported from IRIX to Linux by Kanoj Sarcar, 06/08/00.&n; * Copyright 2000 - 2001 Silicon Graphics, Inc.&n; * Copyright 2000 - 2001 Kanoj Sarcar (kanoj@sgi.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/gda.h&gt;
@@ -12,12 +13,6 @@ macro_line|#include &lt;asm/mmzone.h&gt;
 macro_line|#include &lt;asm/sn/klkernvars.h&gt;
 macro_line|#include &lt;asm/sn/mapped_kernel.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
-DECL|macro|CPUMASK_CLRALL
-mdefine_line|#define CPUMASK_CLRALL(p)&t;(p) = 0
-DECL|macro|CPUMASK_SETB
-mdefine_line|#define CPUMASK_SETB(p, bit)&t;(p) |= 1 &lt;&lt; (bit)
-DECL|macro|CPUMASK_TSTB
-mdefine_line|#define CPUMASK_TSTB(p, bit)&t;((p) &amp; (1ULL &lt;&lt; (bit)))
 r_extern
 r_char
 id|_end

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: div64.h,v 1.1 2000/01/28 23:18:55 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
 macro_line|#ifndef _ASM_DIV64_H
 DECL|macro|_ASM_DIV64_H
 mdefine_line|#define _ASM_DIV64_H

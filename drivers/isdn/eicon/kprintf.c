@@ -3,10 +3,6 @@ multiline_comment|/*&n; * Source file for kernel interface to kernel log facilit
 macro_line|#include &quot;eicon.h&quot;
 macro_line|#include &quot;sys.h&quot;
 macro_line|#include &lt;stdarg.h&gt;
-DECL|macro|MAX
-macro_line|#undef MAX
-DECL|macro|MIN
-macro_line|#undef MIN
 macro_line|#include &quot;divas.h&quot;
 macro_line|#include &quot;divalog.h&quot;
 macro_line|#include &quot;uxio.h&quot;

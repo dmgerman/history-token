@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000  Ani Joshi &lt;ajoshi@unixbox.com&gt;&n; * Copyright (C) 2000  Ralf Baechle &lt;ralf@gnu.org&gt;&n; * swiped from i386, and cloned for MIPS by Geert, polished by Ralf.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000  Ani Joshi &lt;ajoshi@unixbox.com&gt;&n; * Copyright (C) 2000, 2001  Ralf Baechle &lt;ralf@gnu.org&gt;&n; * swiped from i386, and cloned for MIPS by Geert, polished by Ralf.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -83,6 +84,7 @@ comma
 id|size
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_COHERENT_IO
 id|dma_cache_wback_inv
 c_func
 (paren
@@ -95,18 +97,19 @@ comma
 id|size
 )paren
 suffix:semicolon
-op_star
-id|dma_handle
+id|ret
 op_assign
-id|virt_to_bus
+id|KSEG1ADDR
 c_func
 (paren
 id|ret
 )paren
 suffix:semicolon
-id|ret
+macro_line|#endif
+op_star
+id|dma_handle
 op_assign
-id|KSEG1ADDR
+id|virt_to_bus
 c_func
 (paren
 id|ret
@@ -138,18 +141,30 @@ id|dma_addr_t
 id|dma_handle
 )paren
 (brace
-id|free_pages
-c_func
-(paren
+r_int
+r_int
+id|addr
+op_assign
 (paren
 r_int
 r_int
 )paren
+id|vaddr
+suffix:semicolon
+macro_line|#ifndef CONFIG_COHERENT_IO
+id|addr
+op_assign
 id|KSEG0ADDR
 c_func
 (paren
-id|vaddr
+id|addr
 )paren
+suffix:semicolon
+macro_line|#endif
+id|free_pages
+c_func
+(paren
+id|addr
 comma
 id|get_order
 c_func

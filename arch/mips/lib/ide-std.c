@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ide-std.c,v 1.4 1999/06/11 14:29:45 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * IDE routines for typical pc-like standard configurations.&n; *&n; * Copyright (C) 1998, 1999 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * IDE routines for typical pc-like standard configurations.&n; *&n; * Copyright (C) 1998, 1999, 2001 by Ralf Baechle&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -216,6 +216,13 @@ l_int|NULL
 )paren
 op_star
 id|irq
+op_assign
+l_int|0
+suffix:semicolon
+id|hw-&gt;io_ports
+(braket
+id|IDE_IRQ_OFFSET
+)braket
 op_assign
 l_int|0
 suffix:semicolon

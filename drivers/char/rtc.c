@@ -1,6 +1,6 @@
-multiline_comment|/*&n; *&t;Real Time Clock interface for Linux&t;&n; *&n; *&t;Copyright (C) 1996 Paul Gortmaker&n; *&n; *&t;This driver allows use of the real time clock (built into&n; *&t;nearly all computers) from user space. It exports the /dev/rtc&n; *&t;interface supporting various ioctl() and also the&n; *&t;/proc/driver/rtc pseudo-file for status information.&n; *&n; *&t;The ioctls can be used to set the interrupt behaviour and&n; *&t;generation rate from the RTC via IRQ 8. Then the /dev/rtc&n; *&t;interface can be used to make use of these timer interrupts,&n; *&t;be they interval or alarm based.&n; *&n; *&t;The /dev/rtc interface will block on reads until an interrupt&n; *&t;has been received. If a RTC interrupt has already happened,&n; *&t;it will output an unsigned long and then block. The output value&n; *&t;contains the interrupt status in the low byte and the number of&n; *&t;interrupts since the last read in the remaining high bytes. The &n; *&t;/dev/rtc interface can also be used with the select(2) call.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Based on other minimal char device drivers, like Alan&squot;s&n; *&t;watchdog, Ted&squot;s random, etc. etc.&n; *&n; *&t;1.07&t;Paul Gortmaker.&n; *&t;1.08&t;Miquel van Smoorenburg: disallow certain things on the&n; *&t;&t;DEC Alpha as the CMOS clock is also used for other things.&n; *&t;1.09&t;Nikita Schmidt: epoch support and some Alpha cleanup.&n; *&t;1.09a&t;Pete Zaitcev: Sun SPARC&n; *&t;1.09b&t;Jeff Garzik: Modularize, init cleanup&n; *&t;1.09c&t;Jeff Garzik: SMP cleanup&n; *&t;1.10    Paul Barton-Davis: add support for async I/O&n; *&t;1.10a&t;Andrea Arcangeli: Alpha updates&n; *&t;1.10b&t;Andrew Morton: SMP lock fix&n; *&t;1.10c&t;Cesar Barros: SMP locking fixes and cleanup&n; *&t;1.10d&t;Paul Gortmaker: delete paranoia check in rtc_exit&n; */
+multiline_comment|/*&n; *&t;Real Time Clock interface for Linux&t;&n; *&n; *&t;Copyright (C) 1996 Paul Gortmaker&n; *&n; *&t;This driver allows use of the real time clock (built into&n; *&t;nearly all computers) from user space. It exports the /dev/rtc&n; *&t;interface supporting various ioctl() and also the&n; *&t;/proc/driver/rtc pseudo-file for status information.&n; *&n; *&t;The ioctls can be used to set the interrupt behaviour and&n; *&t;generation rate from the RTC via IRQ 8. Then the /dev/rtc&n; *&t;interface can be used to make use of these timer interrupts,&n; *&t;be they interval or alarm based.&n; *&n; *&t;The /dev/rtc interface will block on reads until an interrupt&n; *&t;has been received. If a RTC interrupt has already happened,&n; *&t;it will output an unsigned long and then block. The output value&n; *&t;contains the interrupt status in the low byte and the number of&n; *&t;interrupts since the last read in the remaining high bytes. The &n; *&t;/dev/rtc interface can also be used with the select(2) call.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Based on other minimal char device drivers, like Alan&squot;s&n; *&t;watchdog, Ted&squot;s random, etc. etc.&n; *&n; *&t;1.07&t;Paul Gortmaker.&n; *&t;1.08&t;Miquel van Smoorenburg: disallow certain things on the&n; *&t;&t;DEC Alpha as the CMOS clock is also used for other things.&n; *&t;1.09&t;Nikita Schmidt: epoch support and some Alpha cleanup.&n; *&t;1.09a&t;Pete Zaitcev: Sun SPARC&n; *&t;1.09b&t;Jeff Garzik: Modularize, init cleanup&n; *&t;1.09c&t;Jeff Garzik: SMP cleanup&n; *&t;1.10    Paul Barton-Davis: add support for async I/O&n; *&t;1.10a&t;Andrea Arcangeli: Alpha updates&n; *&t;1.10b&t;Andrew Morton: SMP lock fix&n; *&t;1.10c&t;Cesar Barros: SMP locking fixes and cleanup&n; *&t;1.10d&t;Paul Gortmaker: delete paranoia check in rtc_exit&n; *&t;1.10e&t;Maciej W. Rozycki: Handle DECstation&squot;s year weirdness.&n; */
 DECL|macro|RTC_VERSION
-mdefine_line|#define RTC_VERSION&t;&t;&quot;1.10d&quot;
+mdefine_line|#define RTC_VERSION&t;&t;&quot;1.10e&quot;
 DECL|macro|RTC_IO_EXTENT
 mdefine_line|#define RTC_IO_EXTENT&t;0x10&t;/* Only really two ports, but...&t;*/
 multiline_comment|/*&n; *&t;Note that *all* calls to CMOS_READ and CMOS_WRITE are done with&n; *&t;interrupts disabled. Due to the index-port/data-port (0x70/0x71)&n; *&t;design of the RTC, we don&squot;t want two different things trying to&n; *&t;get to it at once. (e.g. the periodic 11 min sync from time.c vs.&n; *&t;this driver.)&n; */
@@ -1061,6 +1061,12 @@ r_int
 r_int
 id|yrs
 suffix:semicolon
+macro_line|#ifdef CONFIG_DECSTATION
+r_int
+r_int
+id|real_yrs
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1261,6 +1267,36 @@ op_amp
 id|rtc_lock
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DECSTATION
+id|real_yrs
+op_assign
+id|yrs
+suffix:semicolon
+id|yrs
+op_assign
+l_int|72
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We want to keep the year set to 73 until March&n;&t;&t; * for non-leap years, so that Feb, 29th is handled&n;&t;&t; * correctly.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|leap_yr
+op_logical_and
+id|mon
+OL
+l_int|3
+)paren
+(brace
+id|real_yrs
+op_decrement
+suffix:semicolon
+id|yrs
+op_assign
+l_int|73
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1386,6 +1422,16 @@ comma
 id|RTC_FREQ_SELECT
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DECSTATION
+id|CMOS_WRITE
+c_func
+(paren
+id|real_yrs
+comma
+id|RTC_DEC_YEAR
+)paren
+suffix:semicolon
+macro_line|#endif
 id|CMOS_WRITE
 c_func
 (paren
@@ -1617,7 +1663,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#elif !defined(CONFIG_DECSTATION)
+macro_line|#endif
 r_case
 id|RTC_EPOCH_READ
 suffix:colon
@@ -1676,7 +1722,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 r_default
 suffix:colon
 r_return
@@ -2510,7 +2555,7 @@ l_int|48
 op_logical_and
 id|year
 OL
-l_int|70
+l_int|72
 )paren
 (brace
 id|epoch
@@ -2529,16 +2574,16 @@ c_cond
 (paren
 id|year
 op_ge
-l_int|70
+l_int|72
 op_logical_and
 id|year
 OL
-l_int|100
+l_int|74
 )paren
 (brace
 id|epoch
 op_assign
-l_int|1928
+l_int|2000
 suffix:semicolon
 id|guess
 op_assign
@@ -3293,6 +3338,12 @@ r_int
 r_char
 id|ctrl
 suffix:semicolon
+macro_line|#ifdef CONFIG_DECSTATION
+r_int
+r_int
+id|real_year
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * read RTC once any update in progress is done. The update&n;&t; * can take just over 2ms. We wait 10 to 20ms. There is no need to&n;&t; * to poll-wait (up to 1s - eeccch) for the falling edge of RTC_UIP.&n;&t; * If you need to know *exactly* when a second has started, enable&n;&t; * periodic update complete interrupts, (via ioctl) and then &n;&t; * immediately read /dev/rtc which will block until you get the IRQ.&n;&t; * Once the read clears, read the RTC time (again via ioctl). Easy.&n;&t; */
 r_if
 c_cond
@@ -3378,6 +3429,16 @@ c_func
 id|RTC_YEAR
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DECSTATION
+id|real_year
+op_assign
+id|CMOS_READ
+c_func
+(paren
+id|RTC_DEC_YEAR
+)paren
+suffix:semicolon
+macro_line|#endif
 id|ctrl
 op_assign
 id|CMOS_READ
@@ -3443,6 +3504,14 @@ id|rtc_tm-&gt;tm_year
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_DECSTATION
+id|rtc_tm-&gt;tm_year
+op_add_assign
+id|real_year
+op_minus
+l_int|72
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Account for differences between how the RTC uses the values&n;&t; * and how they are defined in a struct rtc_time;&n;&t; */
 r_if
 c_cond
@@ -3687,4 +3756,16 @@ id|rtc_lock
 suffix:semicolon
 )brace
 macro_line|#endif
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Paul Gortmaker&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -550,18 +550,6 @@ id|_CACHEMASK040
 op_or
 id|_PAGE_NOCACHE_S
 suffix:semicolon
-macro_line|#elif defined(__mips__)
-id|prot
-op_assign
-(paren
-id|prot
-op_amp
-op_complement
-id|_CACHE_MASK
-)paren
-op_or
-id|_CACHE_UNCACHED
-suffix:semicolon
 macro_line|#endif
 r_return
 id|__pgprot

@@ -64,7 +64,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ROTTEN_IRQ
+macro_line|#ifndef CONFIG_NEW_IRQ
 DECL|macro|disable_irq_nosync
 mdefine_line|#define disable_irq_nosync&t;disable_irq
 macro_line|#else

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; * This is the interface to the remote debugger stub.&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
@@ -28,21 +27,21 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
-DECL|variable|putDebugChar
+DECL|variable|generic_putDebugChar
 r_int
 (paren
 op_star
-id|putDebugChar
+id|generic_putDebugChar
 )paren
 (paren
 r_char
 )paren
 suffix:semicolon
-DECL|variable|getDebugChar
+DECL|variable|generic_getDebugChar
 r_char
 (paren
 op_star
-id|getDebugChar
+id|generic_getDebugChar
 )paren
 (paren
 r_void
@@ -308,6 +307,38 @@ comma
 id|UART_LCR
 comma
 id|UART_LCR_WLEN8
+)paren
+suffix:semicolon
+)brace
+DECL|function|putDebugChar
+r_int
+id|putDebugChar
+c_func
+(paren
+r_char
+id|c
+)paren
+(brace
+r_return
+id|generic_putDebugChar
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+)brace
+DECL|function|getDebugChar
+r_char
+id|getDebugChar
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|generic_getDebugChar
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

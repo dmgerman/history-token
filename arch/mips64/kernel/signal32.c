@@ -704,16 +704,6 @@ id|newset
 comma
 id|saveset
 suffix:semicolon
-macro_line|#if DEBUG_MIPS64
-id|printk
-c_func
-(paren
-l_string|&quot;%s called.&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-macro_line|#endif
 id|save_static
 c_func
 (paren
@@ -859,16 +849,6 @@ suffix:semicolon
 r_int
 id|sigsetsize
 suffix:semicolon
-macro_line|#if DEBUG_MIPS64
-id|printk
-c_func
-(paren
-l_string|&quot;%s called.&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-macro_line|#endif
 id|save_static
 c_func
 (paren
@@ -1984,16 +1964,6 @@ suffix:semicolon
 id|sigset_t
 id|blocked
 suffix:semicolon
-macro_line|#if DEBUG_MIPS64
-id|printk
-c_func
-(paren
-l_string|&quot;%s called.&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-macro_line|#endif
 id|frame
 op_assign
 (paren
@@ -2162,14 +2132,6 @@ id|set
 suffix:semicolon
 id|stack_t
 id|st
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%s called.&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
 suffix:semicolon
 id|frame
 op_assign
@@ -3150,7 +3112,7 @@ id|ka-&gt;sa.sa_restorer
 suffix:semicolon
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Set up the return code ...&n;&t;&t; *&n;&t;&t; *         li      v0, __NR_Linux32_sigreturn&n;&t;&t; *         syscall&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Set up the return code ...&n;&t;&t; *&n;&t;&t; *         li      v0, __NR_Linux32_rt_sigreturn&n;&t;&t; *         syscall&n;&t;&t; */
 id|err
 op_or_assign
 id|__put_user
@@ -3158,7 +3120,7 @@ c_func
 (paren
 l_int|0x24020000
 op_plus
-id|__NR_Linux32_sigreturn
+id|__NR_Linux32_rt_sigreturn
 comma
 id|frame-&gt;rs_code
 op_plus
@@ -3664,16 +3626,6 @@ suffix:semicolon
 id|siginfo_t
 id|info
 suffix:semicolon
-macro_line|#if DEBUG_MIPS64
-id|printk
-c_func
-(paren
-l_string|&quot;%s: delivering signal.&bslash;n&quot;
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4100,16 +4052,6 @@ id|ka
 )paren
 suffix:semicolon
 multiline_comment|/* Whee!  Actually deliver the signal.  */
-macro_line|#if DEBUG_MIPS64
-id|printk
-c_func
-(paren
-l_string|&quot;%s: delivering signal.&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-macro_line|#endif
 id|handle_signal
 c_func
 (paren

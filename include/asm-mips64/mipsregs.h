@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: mipsregs.h,v 1.1 1999/08/18 23:37:51 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995, 1996, 1997, 1999 by Ralf Baechle&n; * Modified for further R[236]000 support by Paul M. Antoine, 1996.&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995, 1996, 1997, 1999 by Ralf Baechle&n; * Modified for further R[236]000 support by Paul M. Antoine, 1996.&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_MIPSREGS_H
 DECL|macro|_ASM_MIPSREGS_H
 mdefine_line|#define _ASM_MIPSREGS_H
@@ -27,6 +27,8 @@ DECL|macro|CP0_PAGEMASK
 mdefine_line|#define CP0_PAGEMASK $5
 DECL|macro|CP0_WIRED
 mdefine_line|#define CP0_WIRED $6
+DECL|macro|CP0_INFO
+mdefine_line|#define CP0_INFO $7
 DECL|macro|CP0_BADVADDR
 mdefine_line|#define CP0_BADVADDR $8
 DECL|macro|CP0_COUNT

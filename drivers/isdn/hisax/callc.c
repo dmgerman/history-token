@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: callc.c,v 2.51.6.4 2001/06/09 15:14:17 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* $Id: callc.c,v 2.51.6.5 2001/08/23 19:44:23 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -14,7 +14,7 @@ r_char
 op_star
 id|lli_revision
 op_assign
-l_string|&quot;$Revision: 2.51.6.4 $&quot;
+l_string|&quot;$Revision: 2.51.6.5 $&quot;
 suffix:semicolon
 r_extern
 r_struct
@@ -32,7 +32,10 @@ r_void
 id|HiSax_mod_dec_use_count
 c_func
 (paren
-r_void
+r_struct
+id|IsdnCardState
+op_star
+id|cs
 )paren
 suffix:semicolon
 r_extern
@@ -40,7 +43,10 @@ r_void
 id|HiSax_mod_inc_use_count
 c_func
 (paren
-r_void
+r_struct
+id|IsdnCardState
+op_star
+id|cs
 )paren
 suffix:semicolon
 r_static
@@ -8280,6 +8286,7 @@ suffix:colon
 id|HiSax_mod_inc_use_count
 c_func
 (paren
+id|csta
 )paren
 suffix:semicolon
 macro_line|#ifdef MODULE
@@ -8318,6 +8325,7 @@ suffix:colon
 id|HiSax_mod_dec_use_count
 c_func
 (paren
+id|csta
 )paren
 suffix:semicolon
 macro_line|#ifdef MODULE
@@ -8530,6 +8538,7 @@ op_increment
 id|HiSax_mod_dec_use_count
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 r_break
@@ -8562,6 +8571,7 @@ op_increment
 id|HiSax_mod_inc_use_count
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 r_break
@@ -9040,6 +9050,7 @@ suffix:semicolon
 id|HiSax_mod_inc_use_count
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 r_break
@@ -9703,6 +9714,10 @@ c_cond
 id|nskb
 )paren
 (brace
+id|nskb-&gt;truesize
+op_assign
+id|nskb-&gt;len
+suffix:semicolon
 r_if
 c_cond
 (paren

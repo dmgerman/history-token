@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: addrspace.h,v 1.5 2000/02/01 00:32:01 kanoj Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1999 by Ralf Baechle&n; * Copyright (C) 1990, 1999 by Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1999 by Ralf Baechle&n; * Copyright (C) 1990, 1999 by Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_ADDRSPACE_H
 DECL|macro|_ASM_ADDRSPACE_H
 mdefine_line|#define _ASM_ADDRSPACE_H

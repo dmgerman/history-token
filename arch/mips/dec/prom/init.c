@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * init.c: PROM library initialisation code.&n; *&n; * Copyright (C) 1998 Harald Koerfgen&n; *&n; * $Id: init.c,v 1.3 1999/08/09 19:43:13 harald Exp $&n; */
+multiline_comment|/*&n; * init.c: PROM library initialisation code.&n; *&n; * Copyright (C) 1998 Harald Koerfgen&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &quot;prom.h&quot;
 multiline_comment|/*&n; * PROM Interface (whichprom.c)&n; */
 r_typedef
@@ -610,13 +611,13 @@ r_if
 c_cond
 (paren
 (paren
-id|mips_cputype
+id|mips_cpu.cputype
 op_eq
 id|CPU_R4000SC
 )paren
 op_logical_or
 (paren
-id|mips_cputype
+id|mips_cpu.cputype
 op_eq
 id|CPU_R4400SC
 )paren
@@ -641,18 +642,18 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_R4x00)
+macro_line|#if defined(CONFIG_CPU_R4X00)
 r_if
 c_cond
 (paren
 (paren
-id|mips_cputype
+id|mips_cpu.cputype
 op_eq
 id|CPU_R3000
 )paren
 op_logical_or
 (paren
-id|mips_cputype
+id|mips_cpu.cputype
 op_eq
 id|CPU_R3000A
 )paren

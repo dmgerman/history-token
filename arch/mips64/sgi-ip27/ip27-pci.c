@@ -9,7 +9,7 @@ macro_line|#include &lt;asm/sn/sn0/ip27.h&gt;
 macro_line|#include &lt;asm/sn/sn0/hub.h&gt;
 multiline_comment|/*&n; * Max #PCI busses we can handle; ie, max #PCI bridges.&n; */
 DECL|macro|MAX_PCI_BUSSES
-mdefine_line|#define MAX_PCI_BUSSES&t;&t;20
+mdefine_line|#define MAX_PCI_BUSSES&t;&t;40
 multiline_comment|/*&n; * Max #PCI devices (like scsi controllers) we handle on a bus.&n; */
 DECL|macro|MAX_DEVICES_PER_PCIBUS
 mdefine_line|#define MAX_DEVICES_PER_PCIBUS&t;8
@@ -51,7 +51,7 @@ id|MAX_DEVICES_PER_PCIBUS
 suffix:semicolon
 multiline_comment|/*&n; * The Bridge ASIC supports both type 0 and type 1 access.  Type 1 is&n; * not really documented, so right now I can&squot;t write code which uses it.&n; * Therefore we use type 0 accesses for now even though they won&squot;t work&n; * correcly for PCI-to-PCI bridges.&n; */
 DECL|macro|CF0_READ_PCI_CFG
-mdefine_line|#define CF0_READ_PCI_CFG(dev,where,value,bm,mask)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;bridge_t *bridge;                                               &bslash;&n;&t;int slot = PCI_SLOT(dev-&gt;devfn);&t;&t;&t;&t;&bslash;&n;&t;int fn = PCI_FUNC(dev-&gt;devfn);&t;&t;&t;&t;&t;&bslash;&n;&t;volatile u32 *addr;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32 cf, __bit;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int bus_id = (unsigned) dev-&gt;bus-&gt;number;              &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;bridge = (bridge_t *) NODE_SWIN_BASE(bus_to_nid[bus_id],        &bslash;&n;                                             bus_to_wid[bus_id]);       &bslash;&n;                                                                        &bslash;&n;&t;/*if (dev-&gt;bus-&gt;number)&t;&t;&t; */&t;&t;&t;&bslash;&n;&t;/*&t;return PCIBIOS_DEVICE_NOT_FOUND; */&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__bit = (((where) &amp; (bm)) &lt;&lt; 3);&t;&t;&t;&t;&bslash;&n;&t;addr = &amp;bridge-&gt;b_type0_cfg_dev[slot].f[fn].l[where &gt;&gt; 2];&t;&bslash;&n;&t;if (get_dbe(cf, addr))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return PCIBIOS_DEVICE_NOT_FOUND;&t;&t;&t;&bslash;&n;&t;*value = (cf &gt;&gt; __bit) &amp; (mask);&t;&t;&t;&t;&bslash;&n;&t;return PCIBIOS_SUCCESSFUL;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define CF0_READ_PCI_CFG(dev,where,value,bm,mask)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;bridge_t *bridge;                                               &bslash;&n;&t;int slot = PCI_SLOT(dev-&gt;devfn);&t;&t;&t;&t;&bslash;&n;&t;int fn = PCI_FUNC(dev-&gt;devfn);&t;&t;&t;&t;&t;&bslash;&n;&t;volatile u32 *addr;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32 cf, __bit;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int bus_id = (unsigned) dev-&gt;bus-&gt;number;              &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;bridge = (bridge_t *) NODE_SWIN_BASE(bus_to_nid[bus_id],        &bslash;&n;                                             bus_to_wid[bus_id]);       &bslash;&n;                                                                        &bslash;&n;&t;if (dev-&gt;vendor == PCI_VENDOR_ID_SGI&t;&t;&t;&t;&bslash;&n;&t;    &amp;&amp; dev-&gt;device == PCI_DEVICE_ID_SGI_IOC3&t;&t;&t;&bslash;&n;&t;    &amp;&amp; ((where &gt;= 0x14 &amp;&amp; where &lt; 0x40) || (where &gt;= 0x48))) {&t;&bslash;&n;&t;&t;*value = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return PCIBIOS_SUCCESSFUL;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__bit = (((where) &amp; (bm)) &lt;&lt; 3);&t;&t;&t;&t;&bslash;&n;&t;addr = &amp;bridge-&gt;b_type0_cfg_dev[slot].f[fn].l[where &gt;&gt; 2];&t;&bslash;&n;&t;if (get_dbe(cf, addr))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return PCIBIOS_DEVICE_NOT_FOUND;&t;&t;&t;&bslash;&n;&t;*value = (cf &gt;&gt; __bit) &amp; (mask);&t;&t;&t;&t;&bslash;&n;&t;return PCIBIOS_SUCCESSFUL;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 r_static
 r_int
 DECL|function|pci_conf0_read_config_byte
@@ -155,7 +155,7 @@ l_int|0xffffffff
 suffix:semicolon
 )brace
 DECL|macro|CF0_WRITE_PCI_CFG
-mdefine_line|#define CF0_WRITE_PCI_CFG(dev,where,value,bm,mask)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;bridge_t *bridge;                                               &bslash;&n;&t;int slot = PCI_SLOT(dev-&gt;devfn);&t;&t;&t;&t;&bslash;&n;&t;int fn = PCI_FUNC(dev-&gt;devfn);&t;&t;&t;&t;&t;&bslash;&n;&t;volatile u32 *addr;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32 cf, __bit;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int bus_id = (unsigned) dev-&gt;bus-&gt;number;              &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;bridge = (bridge_t *) NODE_SWIN_BASE(bus_to_nid[bus_id],        &bslash;&n;                                             bus_to_wid[bus_id]);       &bslash;&n;                                                                        &bslash;&n;&t;/* if (dev-&gt;bus-&gt;number)&t;&t; */&t;&t;&t;&bslash;&n;&t;/* &t;return PCIBIOS_DEVICE_NOT_FOUND; */&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (dev-&gt;vendor == PCI_VENDOR_ID_SGI&t;&t;&t;&t;&bslash;&n;&t;    &amp;&amp; dev-&gt;device == PCI_DEVICE_ID_SGI_IOC3)&t;&t;&t;&bslash;&n;&t;&t;return PCIBIOS_SUCCESSFUL;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__bit = (((where) &amp; (bm)) &lt;&lt; 3);&t;&t;&t;&t;&bslash;&n;&t;addr = &amp;bridge-&gt;b_type0_cfg_dev[slot].f[fn].l[where &gt;&gt; 2];&t;&bslash;&n;&t;if (get_dbe(cf, addr))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return PCIBIOS_DEVICE_NOT_FOUND;&t;&t;&t;&bslash;&n;&t;cf &amp;= (~mask);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;cf |= (value);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_dbe(cf, addr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return PCIBIOS_SUCCESSFUL;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define CF0_WRITE_PCI_CFG(dev,where,value,bm,mask)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;bridge_t *bridge;                                               &bslash;&n;&t;int slot = PCI_SLOT(dev-&gt;devfn);&t;&t;&t;&t;&bslash;&n;&t;int fn = PCI_FUNC(dev-&gt;devfn);&t;&t;&t;&t;&t;&bslash;&n;&t;volatile u32 *addr;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32 cf, __bit;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int bus_id = (unsigned) dev-&gt;bus-&gt;number;              &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;bridge = (bridge_t *) NODE_SWIN_BASE(bus_to_nid[bus_id],        &bslash;&n;                                             bus_to_wid[bus_id]);       &bslash;&n;                                                                        &bslash;&n;&t;if (dev-&gt;vendor == PCI_VENDOR_ID_SGI&t;&t;&t;&t;&bslash;&n;&t;    &amp;&amp; dev-&gt;device == PCI_DEVICE_ID_SGI_IOC3&t;&t;&t;&bslash;&n;&t;    &amp;&amp; ((where &gt;= 0x14 &amp;&amp; where &lt; 0x40) || (where &gt;= 0x48)))&t;&bslash;&n;&t;&t;return PCIBIOS_SUCCESSFUL;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__bit = (((where) &amp; (bm)) &lt;&lt; 3);&t;&t;&t;&t;&bslash;&n;&t;addr = &amp;bridge-&gt;b_type0_cfg_dev[slot].f[fn].l[where &gt;&gt; 2];&t;&bslash;&n;&t;if (get_dbe(cf, addr))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return PCIBIOS_DEVICE_NOT_FOUND;&t;&t;&t;&bslash;&n;&t;cf &amp;= (~mask);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;cf |= (value);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_dbe(cf, addr);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return PCIBIOS_SUCCESSFUL;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 r_static
 r_int
 DECL|function|pci_conf0_write_config_byte
@@ -300,6 +300,11 @@ op_assign
 op_complement
 l_int|0UL
 suffix:semicolon
+id|iomem_resource.end
+op_assign
+op_complement
+l_int|0UL
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -429,7 +434,7 @@ id|dev-&gt;devfn
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * All observed requests have pin == 1. We could have a global here, that&n; * gets incremented and returned every time - unfortunately, pci_map_irq&n; * may be called on the same device over and over, and need to return the&n; * same value. On o2000, pin can be 0 or 1, and PCI slots can be [0..7]. &n; *&n; * A given PCI device, in general, should be able to intr any of the cpus&n; * on any one of the hubs connected to its xbow.&n; */
+multiline_comment|/*&n; * All observed requests have pin == 1. We could have a global here, that&n; * gets incremented and returned every time - unfortunately, pci_map_irq&n; * may be called on the same device over and over, and need to return the&n; * same value. On O2000, pin can be 0 or 1, and PCI slots can be [0..7]. &n; *&n; * A given PCI device, in general, should be able to intr any of the cpus&n; * on any one of the hubs connected to its xbow.&n; */
 r_static
 r_int
 id|__init
@@ -464,20 +469,17 @@ op_ne
 l_int|1
 )paren
 op_logical_or
-"&bslash;"
 (paren
 id|slot
 op_ge
 id|MAX_DEVICES_PER_PCIBUS
 )paren
 )paren
-(brace
-id|printk
+id|panic
 c_func
 (paren
 l_string|&quot;Increase supported PCI busses %d,%d,%d&bslash;n&quot;
 comma
-"&bslash;"
 id|dev-&gt;bus-&gt;number
 comma
 id|slot
@@ -485,15 +487,6 @@ comma
 id|pin
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/*&n;&t; * Already assigned? Then return previously assigned value ...&n;&t; */
 r_if
 c_cond
@@ -515,8 +508,6 @@ id|dev-&gt;bus-&gt;number
 id|slot
 )braket
 suffix:semicolon
-r_else
-(brace
 id|irq_to_bus
 (braket
 id|lastirq
@@ -545,13 +536,10 @@ id|lastirq
 op_increment
 suffix:semicolon
 r_return
-(paren
 id|lastirq
 op_minus
 l_int|1
-)paren
 suffix:semicolon
-)brace
 )brace
 r_void
 id|__init
@@ -788,6 +776,20 @@ id|size
 )paren
 (brace
 )brace
+DECL|function|pcibios_assign_all_busses
+r_int
+id|__init
+r_int
+id|pcibios_assign_all_busses
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_char
 op_star
 id|__init
@@ -805,6 +807,7 @@ r_return
 id|str
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Device might live on a subordinate PCI bus.  XXX Walk up the chain of buses&n; * to find the slot number in sense of the bridge device register.&n; * XXX This also means multiple devices might rely on conflicting bridge&n; * settings.&n; */
 r_static
 r_void
 id|__init
@@ -858,32 +861,16 @@ c_func
 id|dev-&gt;devfn
 )paren
 suffix:semicolon
-id|bridgereg_t
-id|devreg
-suffix:semicolon
-id|devreg
-op_assign
+multiline_comment|/* Turn off byte swapping */
 id|bridge-&gt;b_device
 (braket
 id|slot
 )braket
 dot
 id|reg
-suffix:semicolon
-id|devreg
 op_and_assign
 op_complement
 id|BRIDGE_DEV_SWAP_DIR
-suffix:semicolon
-multiline_comment|/* turn off byte swapping */
-id|bridge-&gt;b_device
-(braket
-id|slot
-)braket
-dot
-id|reg
-op_assign
-id|devreg
 suffix:semicolon
 id|bridge-&gt;b_widget.w_tflush
 suffix:semicolon
@@ -942,31 +929,15 @@ c_func
 id|dev-&gt;devfn
 )paren
 suffix:semicolon
-id|bridgereg_t
-id|devreg
-suffix:semicolon
-id|devreg
-op_assign
+multiline_comment|/* Turn on byte swapping */
 id|bridge-&gt;b_device
 (braket
 id|slot
 )braket
 dot
 id|reg
-suffix:semicolon
-id|devreg
 op_or_assign
 id|BRIDGE_DEV_SWAP_DIR
-suffix:semicolon
-multiline_comment|/* turn on byte swapping */
-id|bridge-&gt;b_device
-(braket
-id|slot
-)braket
-dot
-id|reg
-op_assign
-id|devreg
 suffix:semicolon
 id|bridge-&gt;b_widget.w_tflush
 suffix:semicolon
@@ -994,10 +965,6 @@ r_int
 )paren
 id|d-&gt;bus-&gt;number
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-multiline_comment|/* IOC3 only decodes 0x20 bytes of the config space, so we end up&n;&t;   with tons of bogus information in the pci_dev.  On Origins the&n;&t;   INTA, INTB and INTC pins are all wired together as if it&squot;d only&n;&t;   use INTA.  */
 id|printk
 c_func
 (paren
@@ -1038,103 +1005,12 @@ id|bus_id
 )braket
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|1
-suffix:semicolon
-id|i
-op_le
-id|PCI_ROM_RESOURCE
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|d-&gt;resource
-(braket
-id|i
-)braket
-dot
-id|start
-op_assign
-l_int|0UL
-suffix:semicolon
-id|d-&gt;resource
-(braket
-id|i
-)braket
-dot
-id|end
-op_assign
-l_int|0UL
-suffix:semicolon
-id|d-&gt;resource
-(braket
-id|i
-)braket
-dot
-id|flags
-op_assign
-l_int|0UL
-suffix:semicolon
-)brace
 id|pci_disable_swapping
 c_func
 (paren
 id|d
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The serial driver will try to probe for serial ports&n;&t; * later on. MENET boards dbe out unrecoverably on sio space&n;&t; * access to the 4th ioc3. (The first 3 iocs work okay, they&n;&t; * have kbd/ms ports; all have ethernet ports). Catch this&n;&t; * case now and disable the serial driver from looking at &n;&t; * these ioc3s. Identify MENET cards by seeing if an ioc3 is&n;&t; * at slot 3.&n;&t; */
-id|d-&gt;subsystem_vendor
-op_assign
-l_int|0xFF00
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|PCI_SLOT
-c_func
-(paren
-id|d-&gt;devfn
-)paren
-op_eq
-l_int|3
-)paren
-(brace
-r_struct
-id|list_head
-op_star
-id|p
-suffix:semicolon
-id|list_for_each
-c_func
-(paren
-id|p
-comma
-op_amp
-id|d-&gt;bus-&gt;devices
-)paren
-(brace
-id|list_entry
-c_func
-(paren
-id|p
-comma
-r_struct
-id|pci_dev
-comma
-id|bus_list
-)paren
-op_member_access_from_pointer
-id|subsystem_vendor
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-)brace
 )brace
 r_static
 r_void
@@ -1183,7 +1059,7 @@ comma
 id|d-&gt;slot_name
 )paren
 suffix:semicolon
-multiline_comment|/* Configure device to allow bus mastering, i/o and memory mapping. &n;&t; * Older qlogicisp driver expects to have the IO space enable &n;&t; * bit set. Things stop working if we program the controllers as not &n;&t; * having PCI_COMMAND_MEMORY, so we have to fudge the mem_flags.&n;&t; */
+multiline_comment|/*&n;&t; * Configure device to allow bus mastering, i/o and memory mapping. &n;&t; * Older qlogicisp driver expects to have the IO space enable &n;&t; * bit set. Things stop working if we program the controllers as not &n;&t; * having PCI_COMMAND_MEMORY, so we have to fudge the mem_flags.&n;&t; */
 id|pci_set_master
 c_func
 (paren

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Handle unaligned accesses by emulation.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1998, 1999 by Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; *&n; * This file contains exception handler for address error exception with the&n; * special capability to execute faulting instructions in software.  The&n; * handler does not try to handle the case when the program counter points&n; * to an address not aligned to a word boundary.&n; *&n; * Putting data to unaligned addresses is a bad practice even on Intel where&n; * only the performance is affected.  Much worse is that such code is non-&n; * portable.  Due to several programs that die on MIPS due to alignment&n; * problems I decided to implement this handler anyway though I originally&n; * didn&squot;t intend to do this at all for user code.&n; *&n; * For now I enable fixing of address errors by default to make life easier.&n; * I however intend to disable this somewhen in the future when the alignment&n; * problems with user programs have been fixed.  For programmers this is the&n; * right way to go.&n; *&n; * Fixing address errors is a per process option.  The option is inherited&n; * across fork(2) and execve(2) calls.  If you really want to use the&n; * option in your user programs - I discourage the use of the software&n; * emulation strongly - use the following code in your userland stuff:&n; *&n; * #include &lt;sys/sysmips.h&gt;&n; *&n; * ...&n; * sysmips(MIPS_FIXADE, x);&n; * ...&n; *&n; * The argument x is 0 for disabling software emulation, enabled otherwise.&n; *&n; * Below a little program to play around with this feature.&n; *&n; * #include &lt;stdio.h&gt;&n; * #include &lt;asm/sysmips.h&gt;&n; * &n; * struct foo {&n; *         unsigned char bar[8];&n; * };&n; *&n; * main(int argc, char *argv[])&n; * {&n; *         struct foo x = {0, 1, 2, 3, 4, 5, 6, 7};&n; *         unsigned int *p = (unsigned int *) (x.bar + 3);&n; *         int i;&n; *&n; *         if (argc &gt; 1)&n; *                 sysmips(MIPS_FIXADE, atoi(argv[1]));&n; *&n; *         printf(&quot;*p = %08lx&bslash;n&quot;, *p);&n; *&n; *         *p = 0xdeadface;&n; *&n; *         for(i = 0; i &lt;= 7; i++)&n; *         printf(&quot;%02x &quot;, x.bar[i]);&n; *         printf(&quot;&bslash;n&quot;);&n; * }&n; *&n; * Coprocessor loads are not supported; I think this case is unimportant&n; * in the practice.&n; *&n; * TODO: Handle ndc (attempted store to doubleword in uncached memory)&n; *       exception for the R6000.&n; *       A store crossing a page boundary might be executed only partially.&n; *       Undo the partial store in this case.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -831,11 +832,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|unaligned_instructions
 r_int
 r_int
 id|unaligned_instructions
 suffix:semicolon
+macro_line|#endif
 DECL|function|do_ade
 id|asmlinkage
 r_void
@@ -915,9 +918,11 @@ comma
 id|pc
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 id|unaligned_instructions
 op_increment
 suffix:semicolon
+macro_line|#endif
 r_return
 suffix:semicolon
 id|sigbus

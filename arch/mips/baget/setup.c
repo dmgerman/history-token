@@ -6,9 +6,10 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/baget/baget.h&gt;
-r_extern
+DECL|variable|vac_memory_upper
 r_int
-id|mips_memory_upper
+r_int
+id|vac_memory_upper
 suffix:semicolon
 DECL|macro|CACHEABLE_STR
 mdefine_line|#define CACHEABLE_STR(val) ((val) ? &quot;not cached&quot; : &quot;cached&quot;)
@@ -1233,11 +1234,7 @@ r_int
 id|mem_limit
 op_assign
 (paren
-(paren
-id|mips_memory_upper
-op_minus
-id|KSEG0
-)paren
+id|vac_memory_upper
 op_rshift
 l_int|16
 )paren

@@ -58,15 +58,6 @@ macro_line|#if !defined(NULL)
 DECL|macro|NULL
 mdefine_line|#define NULL    ((void *) 0)
 macro_line|#endif
-multiline_comment|/* MIN and MAX */
-macro_line|#if !defined(MIN)
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ((a)&gt;(b) ? (b) : (a))
-macro_line|#endif
-macro_line|#if !defined(MAX)
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b) ((a)&gt;(b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/* Return the dimension of an array */
 macro_line|#if !defined(DIM)
 DECL|macro|DIM
@@ -135,6 +126,7 @@ r_void
 suffix:semicolon
 multiline_comment|/* void HwAssert(char *file, int line, char *condition); */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 DECL|macro|_PRINTK
 mdefine_line|#define _PRINTK printk
 DECL|macro|_PRINTF

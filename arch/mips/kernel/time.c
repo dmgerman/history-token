@@ -1,4 +1,4 @@
-multiline_comment|/***********************************************************************&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * arch/mips/kernel/time.c&n; *     Common time service routines for MIPS machines.  See &n; *     Documents/MIPS/time.txt. &n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; ***********************************************************************&n; */
+multiline_comment|/*&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * Common time service routines for MIPS machines. See &n; * Documents/MIPS/README.txt. &n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -14,23 +14,12 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
-multiline_comment|/* &n; * macro for catching spurious errors.  Eable to LL_DEBUG in kernel hacking&n; * config menu.&n; */
-macro_line|#ifdef CONFIG_LL_DEBUG
-DECL|macro|MIPS_ASSERT
-mdefine_line|#define&t;MIPS_ASSERT(x)&t;if (!(x)) { panic(&quot;MIPS_ASSERT failed at %s:%d&bslash;n&quot;, __FILE__, __LINE__); }
-DECL|macro|MIPS_DEBUG
-mdefine_line|#define MIPS_DEBUG(x)  do { x; } while (0)
-macro_line|#else
-DECL|macro|MIPS_ASSERT
-mdefine_line|#define MIPS_ASSERT(x)
-DECL|macro|MIPS_DEBUG
-mdefine_line|#define MIPS_DEBUG(x)
-macro_line|#endif
+macro_line|#include &lt;asm/div64.h&gt;
 multiline_comment|/* This is for machines which generate the exact clock. */
 DECL|macro|USECS_PER_JIFFY
 mdefine_line|#define USECS_PER_JIFFY (1000000/HZ)
 DECL|macro|USECS_PER_JIFFY_FRAC
-mdefine_line|#define USECS_PER_JIFFY_FRAC (0x100000000*1000000/HZ&amp;0xffffffff)
+mdefine_line|#define USECS_PER_JIFFY_FRAC ((1000000ULL &lt;&lt; 32) / HZ &amp; 0xffffffff)
 multiline_comment|/*&n; * forward reference&n; */
 r_extern
 id|rwlock_t
@@ -148,7 +137,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * xtime is atomically updated in timer_bh. jiffies - wall_jiffies&n;         * is nonzero if the timer bottom half hasnt executed yet.&n;         */
+multiline_comment|/*&n;&t; * xtime is atomically updated in timer_bh. jiffies - wall_jiffies&n;&t; * is nonzero if the timer bottom half hasnt executed yet.&n;&t; */
 r_if
 c_cond
 (paren
@@ -202,7 +191,7 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-multiline_comment|/* This is revolting. We need to set the xtime.tv_usec&n;         * correctly. However, the value in this location is&n;         * is value at the last tick.&n;         * Discover what correction gettimeofday&n;         * would have done, and then undo it!&n;         */
+multiline_comment|/* This is revolting. We need to set the xtime.tv_usec&n;&t; * correctly. However, the value in this location is&n;&t; * is value at the last tick.&n;&t; * Discover what correction gettimeofday&n;&t; * would have done, and then undo it!&n;&t; */
 id|tv-&gt;tv_usec
 op_sub_assign
 id|do_gettimeoffset
@@ -336,30 +325,6 @@ r_int
 r_int
 id|res
 suffix:semicolon
-id|MIPS_ASSERT
-c_func
-(paren
-id|mips_cpu.options
-op_amp
-id|MIPS_CPU_COUNTER
-)paren
-suffix:semicolon
-id|MIPS_ASSERT
-c_func
-(paren
-id|mips_counter_frequency
-op_ne
-l_int|0
-)paren
-suffix:semicolon
-id|MIPS_ASSERT
-c_func
-(paren
-id|sll32_usecs_per_cycle
-op_ne
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/* Get last timer tick in absolute kernel time */
 id|count
 op_assign
@@ -396,7 +361,7 @@ id|sll32_usecs_per_cycle
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * Due to possible jiffies inconsistencies, we need to check&n;         * the result so that we&squot;ll get a timer that is monotonic.&n;         */
+multiline_comment|/*&n;&t; * Due to possible jiffies inconsistencies, we need to check&n;&t; * the result so that we&squot;ll get a timer that is monotonic.&n;&t; */
 r_if
 c_cond
 (paren
@@ -430,9 +395,6 @@ id|last_jiffies
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* &n; * copied from include/asm/div64.  &n; * We do the copy instead of include the header file because we don&squot;t&n; * want to reply on _MIPS_ISA value.&n; */
-DECL|macro|do_div64_32
-mdefine_line|#define do_div64_32(res, high, low, base) ({ &bslash;&n;        unsigned long __quot, __mod; &bslash;&n;        unsigned long __cf, __tmp, __i; &bslash;&n;        &bslash;&n;        __asm__(&quot;.set   push&bslash;n&bslash;t&quot; &bslash;&n;                &quot;.set   noat&bslash;n&bslash;t&quot; &bslash;&n;                &quot;.set   noreorder&bslash;n&bslash;t&quot; &bslash;&n;                &quot;b      1f&bslash;n&bslash;t&quot; &bslash;&n;                &quot; li    %4,0x21&bslash;n&quot; &bslash;&n;                &quot;0:&bslash;n&bslash;t&quot; &bslash;&n;                &quot;sll    $1,%0,0x1&bslash;n&bslash;t&quot; &bslash;&n;                &quot;srl    %3,%0,0x1f&bslash;n&bslash;t&quot; &bslash;&n;                &quot;or     %0,$1,$2&bslash;n&bslash;t&quot; &bslash;&n;                &quot;sll    %1,%1,0x1&bslash;n&bslash;t&quot; &bslash;&n;                &quot;sll    %2,%2,0x1&bslash;n&quot; &bslash;&n;                &quot;1:&bslash;n&bslash;t&quot; &bslash;&n;                &quot;bnez   %3,2f&bslash;n&bslash;t&quot; &bslash;&n;                &quot;sltu   $2,%0,%z5&bslash;n&bslash;t&quot; &bslash;&n;                &quot;bnez   $2,3f&bslash;n&bslash;t&quot; &bslash;&n;                &quot;2:&bslash;n&bslash;t&quot; &bslash;&n;                &quot; addiu %4,%4,-1&bslash;n&bslash;t&quot; &bslash;&n;                &quot;subu   %0,%0,%z5&bslash;n&bslash;t&quot; &bslash;&n;                &quot;addiu  %2,%2,1&bslash;n&quot; &bslash;&n;                &quot;3:&bslash;n&bslash;t&quot; &bslash;&n;                &quot;bnez   %4,0b&bslash;n&bslash;t&quot; &bslash;&n;                &quot; srl   $2,%1,0x1f&bslash;n&bslash;t&quot; &bslash;&n;                &quot;.set   pop&quot; &bslash;&n;                : &quot;=&amp;r&quot; (__mod), &quot;=&amp;r&quot; (__tmp), &quot;=&amp;r&quot; (__quot), &quot;=&amp;r&quot; (__cf), &bslash;&n;                  &quot;=&amp;r&quot; (__i) &bslash;&n;                : &quot;Jr&quot; (base), &quot;0&quot; (high), &quot;1&quot; (low), &quot;2&quot; (0), &quot;3&quot; (0) &bslash;&n;                /* Aarrgh!  Ran out of gcc&squot;s limit on constraints... */ &bslash;&n;                : &quot;$1&quot;, &quot;$2&quot;); &bslash;&n;        &bslash;&n;        (res) = __quot; &bslash;&n;        __mod; })
 multiline_comment|/*&n; * This is copied from dec/time.c:do_ioasic_gettimeoffset() by Mercij.&n; */
 DECL|function|calibrate_div32_gettimeoffset
 r_int
@@ -455,14 +417,6 @@ suffix:semicolon
 r_int
 r_int
 id|quotient
-suffix:semicolon
-id|MIPS_ASSERT
-c_func
-(paren
-id|mips_cpu.options
-op_amp
-id|MIPS_CPU_COUNTER
-)paren
 suffix:semicolon
 id|tmp
 op_assign
@@ -566,7 +520,7 @@ id|quotient
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * Due to possible jiffies inconsistencies, we need to check&n;         * the result so that we&squot;ll get a timer that is monotonic.&n;         */
+multiline_comment|/*&n;&t; * Due to possible jiffies inconsistencies, we need to check&n;&t; * the result so that we&squot;ll get a timer that is monotonic.&n;&t; */
 r_if
 c_cond
 (paren
@@ -605,36 +559,6 @@ suffix:semicolon
 r_int
 r_int
 id|quotient
-suffix:semicolon
-id|MIPS_ASSERT
-c_func
-(paren
-id|mips_cpu.options
-op_amp
-id|MIPS_CPU_COUNTER
-)paren
-suffix:semicolon
-id|MIPS_ASSERT
-c_func
-(paren
-(paren
-id|mips_cpu.isa_level
-op_ne
-id|MIPS_CPU_ISA_I
-)paren
-op_logical_and
-(paren
-id|mips_cpu.isa_level
-op_ne
-id|MIPS_CPU_ISA_II
-)paren
-op_logical_and
-(paren
-id|mips_cpu.isa_level
-op_ne
-id|MIPS_CPU_ISA_M32
-)paren
-)paren
 suffix:semicolon
 id|tmp
 op_assign
@@ -746,7 +670,7 @@ id|quotient
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * Due to possible jiffies inconsistencies, we need to check&n;         * the result so that we&squot;ll get a timer that is monotonic.&n;         */
+multiline_comment|/*&n;&t; * Due to possible jiffies inconsistencies, we need to check&n;&t; * the result so that we&squot;ll get a timer that is monotonic.&n;&t; */
 r_if
 c_cond
 (paren
@@ -870,7 +794,7 @@ id|pc
 op_rshift_assign
 id|prof_shift
 suffix:semicolon
-multiline_comment|/*&n;                         * Dont ignore out-of-bounds pc values silently,&n;                         * put them into the last histogram slot, so if&n;                         * present, they will show up as a sharp peak.&n;                         */
+multiline_comment|/*&n;&t;&t;&t; * Dont ignore out-of-bounds pc values silently,&n;&t;&t;&t; * put them into the last histogram slot, so if&n;&t;&t;&t; * present, they will show up as a sharp peak.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -909,7 +833,7 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * If we have an externally synchronized Linux clock, then update&n;         * CMOS clock accordingly every ~11 minutes. rtc_set_time() has to be&n;         * called as close as possible to 500 ms before the new second starts.&n;         */
+multiline_comment|/*&n;&t; * If we have an externally synchronized Linux clock, then update&n;&t; * CMOS clock accordingly every ~11 minutes. rtc_set_time() has to be&n;&t; * called as close as possible to 500 ms before the new second starts.&n;&t; */
 id|read_lock
 (paren
 op_amp
@@ -1069,17 +993,10 @@ comma
 id|irq
 )paren
 suffix:semicolon
-multiline_comment|/* check for bottom half */
 r_if
 c_cond
 (paren
-id|softirq_active
-c_func
-(paren
-id|cpu
-)paren
-op_amp
-id|softirq_mask
+id|softirq_pending
 c_func
 (paren
 id|cpu
@@ -1155,12 +1072,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;New MIPS time_init() invoked.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1169,14 +1080,6 @@ id|board_time_init
 id|board_time_init
 c_func
 (paren
-)paren
-suffix:semicolon
-multiline_comment|/* setup xtime */
-id|write_lock_irq
-c_func
-(paren
-op_amp
-id|xtime_lock
 )paren
 suffix:semicolon
 id|xtime.tv_sec
@@ -1189,13 +1092,6 @@ suffix:semicolon
 id|xtime.tv_usec
 op_assign
 l_int|0
-suffix:semicolon
-id|write_unlock_irq
-c_func
-(paren
-op_amp
-id|xtime_lock
-)paren
 suffix:semicolon
 multiline_comment|/* choose appropriate gettimeoffset routine */
 r_if
@@ -1298,46 +1194,230 @@ id|sll32_usecs_per_cycle
 op_mul_assign
 l_int|10
 suffix:semicolon
-id|MIPS_DEBUG
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;cycles_per_jiffy = %d&bslash;n&quot;
-comma
-id|cycles_per_jiffy
-)paren
-)paren
-suffix:semicolon
-id|MIPS_DEBUG
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;sll32_usecs_per_cycle = %d &bslash;n&quot;
-comma
-id|sll32_usecs_per_cycle
-)paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* &n;&t; * Call board specific timer interrupt setup.&n;&t; *&n;&t; * this pointer must be setup in machine setup routine. &n;&t; *&n;&t; * Even if the machine choose to use low-level timer interrupt,&n;&t; * it still needs to setup the timer_irqaction.&n;&t; * In that case, it might be better to set timer_irqaction.handler &n;&t; * to be NULL function so that we are sure the high-level code&n;&t; * is not invoked accidentally.&n;&t; */
-id|MIPS_ASSERT
-c_func
-(paren
-id|board_timer_setup
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
 id|board_timer_setup
 c_func
 (paren
 op_amp
 id|timer_irqaction
 )paren
+suffix:semicolon
+)brace
+DECL|macro|FEBRUARY
+mdefine_line|#define FEBRUARY&t;&t;2
+DECL|macro|STARTOFTIME
+mdefine_line|#define STARTOFTIME&t;&t;1970
+DECL|macro|SECDAY
+mdefine_line|#define SECDAY&t;&t;&t;86400L
+DECL|macro|SECYR
+mdefine_line|#define SECYR&t;&t;&t;(SECDAY * 365)
+DECL|macro|leapyear
+mdefine_line|#define leapyear(year)&t;&t;((year) % 4 == 0)
+DECL|macro|days_in_year
+mdefine_line|#define days_in_year(a)&t;&t;(leapyear(a) ? 366 : 365)
+DECL|macro|days_in_month
+mdefine_line|#define days_in_month(a)&t;(month_days[(a) - 1])
+DECL|variable|month_days
+r_static
+r_int
+id|month_days
+(braket
+l_int|12
+)braket
+op_assign
+(brace
+l_int|31
+comma
+l_int|28
+comma
+l_int|31
+comma
+l_int|30
+comma
+l_int|31
+comma
+l_int|30
+comma
+l_int|31
+comma
+l_int|31
+comma
+l_int|30
+comma
+l_int|31
+comma
+l_int|30
+comma
+l_int|31
+)brace
+suffix:semicolon
+DECL|function|to_tm
+r_void
+id|to_tm
+c_func
+(paren
+r_int
+r_int
+id|tim
+comma
+r_struct
+id|rtc_time
+op_star
+id|tm
+)paren
+(brace
+r_int
+id|hms
+comma
+id|day
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|day
+op_assign
+id|tim
+op_div
+id|SECDAY
+suffix:semicolon
+id|hms
+op_assign
+id|tim
+op_mod
+id|SECDAY
+suffix:semicolon
+multiline_comment|/* Hours, minutes, seconds are easy */
+id|tm-&gt;tm_hour
+op_assign
+id|hms
+op_div
+l_int|3600
+suffix:semicolon
+id|tm-&gt;tm_min
+op_assign
+(paren
+id|hms
+op_mod
+l_int|3600
+)paren
+op_div
+l_int|60
+suffix:semicolon
+id|tm-&gt;tm_sec
+op_assign
+(paren
+id|hms
+op_mod
+l_int|3600
+)paren
+op_mod
+l_int|60
+suffix:semicolon
+multiline_comment|/* Number of years in days */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+id|STARTOFTIME
+suffix:semicolon
+id|day
+op_ge
+id|days_in_year
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|day
+op_sub_assign
+id|days_in_year
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+id|tm-&gt;tm_year
+op_assign
+id|i
+suffix:semicolon
+multiline_comment|/* Number of months in days left */
+r_if
+c_cond
+(paren
+id|leapyear
+c_func
+(paren
+id|tm-&gt;tm_year
+)paren
+)paren
+id|days_in_month
+c_func
+(paren
+id|FEBRUARY
+)paren
+op_assign
+l_int|29
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|1
+suffix:semicolon
+id|day
+op_ge
+id|days_in_month
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|day
+op_sub_assign
+id|days_in_month
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+id|days_in_month
+c_func
+(paren
+id|FEBRUARY
+)paren
+op_assign
+l_int|28
+suffix:semicolon
+id|tm-&gt;tm_mon
+op_assign
+id|i
+suffix:semicolon
+multiline_comment|/* Days are what is left over (+1) from all that. */
+id|tm-&gt;tm_mday
+op_assign
+id|day
+op_plus
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; * Determine the day of week&n;&t; */
+id|tm-&gt;tm_wday
+op_assign
+(paren
+id|day
+op_plus
+l_int|3
+)paren
+op_mod
+l_int|7
 suffix:semicolon
 )brace
 eof

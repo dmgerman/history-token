@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&t;linux/kernel/blk_drv/mcd.c - Mitsumi CDROM driver&n;&n;&t;Copyright (C) 1992  Martin Harriss&n;&n;&t;martin@bdsi.com (no longer valid - where are you now, Martin?)&n;&n;&t;This program is free software; you can redistribute it and/or modify&n;&t;it under the terms of the GNU General Public License as published by&n;&t;the Free Software Foundation; either version 2, or (at your option)&n;&t;any later version.&n;&n;&t;This program is distributed in the hope that it will be useful,&n;&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n;&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;&t;GNU General Public License for more details.&n;&n;&t;You should have received a copy of the GNU General Public License&n;&t;along with this program; if not, write to the Free Software&n;&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;&t;HISTORY&n;&n;&t;0.1&t;First attempt - internal use only&n;&t;0.2&t;Cleaned up delays and use of timer - alpha release&n;&t;0.3&t;Audio support added&n;&t;0.3.1 Changes for mitsumi CRMC LU005S march version&n;&t;&t;   (stud11@cc4.kuleuven.ac.be)&n;        0.3.2 bug fixes to the ioctls and merged with ALPHA0.99-pl12&n;&t;&t;   (Jon Tombs &lt;jon@robots.ox.ac.uk&gt;)&n;        0.3.3 Added more #defines and mcd_setup()&n;   &t;&t;   (Jon Tombs &lt;jon@gtex02.us.es&gt;)&n;&n;&t;October 1993 Bernd Huebner and Ruediger Helsch, Unifix Software GmbH,&n;&t;Braunschweig, Germany: rework to speed up data read operation.&n;&t;Also enabled definition of irq and address from bootstrap, using the&n;&t;environment.&n;&t;November 93 added code for FX001 S,D (single &amp; double speed).&n;&t;February 94 added code for broken M 5/6 series of 16-bit single speed.&n;&n;&n;        0.4   &n;        Added support for loadable MODULEs, so mcd can now also be loaded by &n;        insmod and removed by rmmod during runtime.&n;        Werner Zimmermann (zimmerma@rz.fht-esslingen.de), Mar. 26, 95&n;&n;&t;0.5&n;&t;I added code for FX001 D to drop from double speed to single speed &n;&t;when encountering errors... this helps with some &quot;problematic&quot; CD&squot;s&n;&t;that are supposedly &quot;OUT OF TOLERANCE&quot; (but are really shitty presses!)&n;&t;severely scratched, or possibly slightly warped! I have noticed that&n;&t;the Mitsumi 2x/4x drives are just less tolerant and the firmware is &n;&t;not smart enough to drop speed,&t;so let&squot;s just kludge it with software!&n;&t;****** THE 4X SPEED MITSUMI DRIVES HAVE THE SAME PROBLEM!!!!!! ******&n;&t;Anyone want to &quot;DONATE&quot; one to me?! ;) I hear sometimes they are&n;&t;even WORSE! ;)&n;&t;** HINT... HINT... TAKE NOTES MITSUMI This could save some hassles with&n;&t;certain &quot;large&quot; CD&squot;s that have data on the outside edge in your &n;&t;DOS DRIVERS .... Accuracy counts... speed is secondary ;)&n;&t;17 June 95 Modifications By Andrew J. Kroll &lt;ag784@freenet.buffalo.edu&gt;&n;&t;07 July 1995 Modifications by Andrew J. Kroll&n;&n;&t;Bjorn Ekwall &lt;bj0rn@blox.se&gt; added unregister_blkdev to mcd_init()&n;&n;&t;Michael K. Johnson &lt;johnsonm@redhat.com&gt; added retries on open&n;&t;for slow drives which take a while to recognize that they contain&n;&t;a CD.&n;&n;&t;November 1997 -- ported to the Uniform CD-ROM driver by Erik Andersen.&n;&t;March    1999 -- made io base and irq CONFIG_ options (Tigran Aivazian).&n;&t;&n;&t;November 1999 -- Make kernel-parameter implementation work with 2.3.x &n;&t;                 Removed init_module &amp; cleanup_module in favor of &n;&t;&t;&t; module_init &amp; module_exit.&n;&t;&t;&t; Torben Mathiasen &lt;tmm@image.dk&gt;&n;&t;&t;&n;&t;&t;&t; &n;*/
+multiline_comment|/*&n;&t;linux/kernel/blk_drv/mcd.c - Mitsumi CDROM driver&n;&n;&t;Copyright (C) 1992  Martin Harriss&n;&t;Portions Copyright (C) 2001 Red Hat&n;&n;&t;martin@bdsi.com (no longer valid - where are you now, Martin?)&n;&n;&t;This program is free software; you can redistribute it and/or modify&n;&t;it under the terms of the GNU General Public License as published by&n;&t;the Free Software Foundation; either version 2, or (at your option)&n;&t;any later version.&n;&n;&t;This program is distributed in the hope that it will be useful,&n;&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n;&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;&t;GNU General Public License for more details.&n;&n;&t;You should have received a copy of the GNU General Public License&n;&t;along with this program; if not, write to the Free Software&n;&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;&t;HISTORY&n;&n;&t;0.1&t;First attempt - internal use only&n;&t;0.2&t;Cleaned up delays and use of timer - alpha release&n;&t;0.3&t;Audio support added&n;&t;0.3.1 Changes for mitsumi CRMC LU005S march version&n;&t;&t;   (stud11@cc4.kuleuven.ac.be)&n;        0.3.2 bug fixes to the ioctls and merged with ALPHA0.99-pl12&n;&t;&t;   (Jon Tombs &lt;jon@robots.ox.ac.uk&gt;)&n;        0.3.3 Added more #defines and mcd_setup()&n;   &t;&t;   (Jon Tombs &lt;jon@gtex02.us.es&gt;)&n;&n;&t;October 1993 Bernd Huebner and Ruediger Helsch, Unifix Software GmbH,&n;&t;Braunschweig, Germany: rework to speed up data read operation.&n;&t;Also enabled definition of irq and address from bootstrap, using the&n;&t;environment.&n;&t;November 93 added code for FX001 S,D (single &amp; double speed).&n;&t;February 94 added code for broken M 5/6 series of 16-bit single speed.&n;&n;&n;        0.4   &n;        Added support for loadable MODULEs, so mcd can now also be loaded by &n;        insmod and removed by rmmod during runtime.&n;        Werner Zimmermann (zimmerma@rz.fht-esslingen.de), Mar. 26, 95&n;&n;&t;0.5&n;&t;I added code for FX001 D to drop from double speed to single speed &n;&t;when encountering errors... this helps with some &quot;problematic&quot; CD&squot;s&n;&t;that are supposedly &quot;OUT OF TOLERANCE&quot; (but are really shitty presses!)&n;&t;severely scratched, or possibly slightly warped! I have noticed that&n;&t;the Mitsumi 2x/4x drives are just less tolerant and the firmware is &n;&t;not smart enough to drop speed,&t;so let&squot;s just kludge it with software!&n;&t;****** THE 4X SPEED MITSUMI DRIVES HAVE THE SAME PROBLEM!!!!!! ******&n;&t;Anyone want to &quot;DONATE&quot; one to me?! ;) I hear sometimes they are&n;&t;even WORSE! ;)&n;&t;** HINT... HINT... TAKE NOTES MITSUMI This could save some hassles with&n;&t;certain &quot;large&quot; CD&squot;s that have data on the outside edge in your &n;&t;DOS DRIVERS .... Accuracy counts... speed is secondary ;)&n;&t;17 June 95 Modifications By Andrew J. Kroll &lt;ag784@freenet.buffalo.edu&gt;&n;&t;07 July 1995 Modifications by Andrew J. Kroll&n;&n;&t;Bjorn Ekwall &lt;bj0rn@blox.se&gt; added unregister_blkdev to mcd_init()&n;&n;&t;Michael K. Johnson &lt;johnsonm@redhat.com&gt; added retries on open&n;&t;for slow drives which take a while to recognize that they contain&n;&t;a CD.&n;&n;&t;November 1997 -- ported to the Uniform CD-ROM driver by Erik Andersen.&n;&t;March    1999 -- made io base and irq CONFIG_ options (Tigran Aivazian).&n;&t;&n;&t;November 1999 -- Make kernel-parameter implementation work with 2.3.x &n;&t;                 Removed init_module &amp; cleanup_module in favor of &n;&t;&t;&t; module_init &amp; module_exit.&n;&t;&t;&t; Torben Mathiasen &lt;tmm@image.dk&gt;&n;&t;&t;&n;&t;September 2001 - Reformatted and cleaned up the code&n;&t;&t;&t; Alan Cox &lt;alan@redhat.com&gt;&t;&t;&t; &n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -50,25 +50,10 @@ r_static
 r_int
 id|mcdPresent
 suffix:semicolon
-macro_line|#if 0
-mdefine_line|#define TEST1&t;&t;&t;/* &lt;int-..&gt; */
-mdefine_line|#define TEST2&t;&t;&t;/* do_mcd_req */
-mdefine_line|#define TEST3 */&t;&t;/* MCD_S_state */
-mdefine_line|#define TEST4&t;&t;&t;/* QUICK_LOOP-counter */
-mdefine_line|#define TEST5 */&t;&t;/* port(1) state */
-macro_line|#endif
-macro_line|#if 1
 DECL|macro|QUICK_LOOP_DELAY
 mdefine_line|#define QUICK_LOOP_DELAY udelay(45)&t;/* use udelay */
 DECL|macro|QUICK_LOOP_COUNT
 mdefine_line|#define QUICK_LOOP_COUNT 20
-macro_line|#else
-DECL|macro|QUICK_LOOP_DELAY
-mdefine_line|#define QUICK_LOOP_DELAY
-DECL|macro|QUICK_LOOP_COUNT
-mdefine_line|#define QUICK_LOOP_COUNT 140&t;/* better wait constant time */
-macro_line|#endif
-multiline_comment|/* #define DOUBLE_QUICK_ONLY */
 DECL|macro|CURRENT_VALID
 mdefine_line|#define CURRENT_VALID &bslash;&n;(!QUEUE_EMPTY &amp;&amp; MAJOR(CURRENT -&gt; rq_dev) == MAJOR_NR &amp;&amp; CURRENT -&gt; cmd == READ &bslash;&n;&amp;&amp; CURRENT -&gt; sector != -1)
 DECL|macro|MFL_STATUSorDATA
@@ -186,16 +171,10 @@ id|MCMD_PLAY_READ
 suffix:semicolon
 DECL|macro|READ_TIMEOUT
 mdefine_line|#define READ_TIMEOUT 3000
-DECL|macro|WORK_AROUND_MITSUMI_BUG_92
-mdefine_line|#define WORK_AROUND_MITSUMI_BUG_92
-DECL|macro|WORK_AROUND_MITSUMI_BUG_93
-mdefine_line|#define WORK_AROUND_MITSUMI_BUG_93
-macro_line|#ifdef WORK_AROUND_MITSUMI_BUG_93
 DECL|variable|mitsumi_bug_93_wait
 r_int
 id|mitsumi_bug_93_wait
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* WORK_AROUND_MITSUMI_BUG_93 */
 DECL|variable|mcd_port
 r_static
 r_int
@@ -643,7 +622,6 @@ id|ints
 l_int|2
 )braket
 suffix:semicolon
-macro_line|#ifdef WORK_AROUND_MITSUMI_BUG_93
 r_if
 c_cond
 (paren
@@ -661,7 +639,6 @@ id|ints
 l_int|3
 )braket
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* WORK_AROUND_MITSUMI_BUG_93 */
 r_return
 l_int|1
 suffix:semicolon
@@ -690,39 +667,8 @@ r_int
 id|disc_nr
 )paren
 (brace
-r_int
-id|retval
-suffix:semicolon
-macro_line|#if 1&t;&t;&t;&t;/* the below is not reliable */
 r_return
 l_int|0
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|cdi-&gt;dev
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;mcd: Mitsumi CD-ROM request error: invalid device.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-id|retval
-op_assign
-id|mcdDiskChanged
-suffix:semicolon
-id|mcdDiskChanged
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Do a &squot;get status&squot; command and get the result.  Only use from the top half&n; * because it calls &squot;getMcdStatus&squot; which sleeps.&n; */
@@ -758,6 +704,7 @@ id|retry
 op_increment
 )paren
 (brace
+multiline_comment|/* send get-status cmd */
 id|outb
 c_func
 (paren
@@ -770,7 +717,6 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* send get-status cmd */
 id|st
 op_assign
 id|getMcdStatus
@@ -2156,7 +2102,9 @@ l_int|1
 op_amp
 l_int|0xFF
 suffix:semicolon
-macro_line|#ifdef TEST1
+id|test1
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -2164,8 +2112,8 @@ l_string|&quot;&lt;int1-%02X&gt;&quot;
 comma
 id|st
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2191,7 +2139,9 @@ l_int|0
 op_amp
 l_int|0xFF
 suffix:semicolon
-macro_line|#ifdef TEST1
+id|test1
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -2199,8 +2149,8 @@ l_string|&quot;&lt;int0-%02X&gt;&quot;
 comma
 id|st
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2237,7 +2187,9 @@ op_star
 id|q
 )paren
 (brace
-macro_line|#ifdef TEST2
+id|test2
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -2247,8 +2199,8 @@ id|CURRENT-&gt;sector
 comma
 id|CURRENT-&gt;nr_sectors
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 id|mcd_transfer_is_active
 op_assign
 l_int|1
@@ -2360,11 +2312,18 @@ id|McdTries
 op_assign
 l_int|5
 suffix:semicolon
-id|SET_TIMER
+id|mcd_timer.function
+op_assign
+id|mcd_poll
+suffix:semicolon
+id|mod_timer
 c_func
 (paren
-id|mcd_poll
+op_amp
+id|mcd_timer
 comma
+id|jiffies
+op_plus
 l_int|1
 )paren
 suffix:semicolon
@@ -2377,14 +2336,16 @@ id|mcd_transfer_is_active
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef TEST2
+id|test2
+c_func
+(paren
 id|printk
 c_func
 (paren
 l_string|&quot; do_mcd_request ends&bslash;n&quot;
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|mcd_poll
 r_static
@@ -2417,6 +2378,7 @@ l_int|0xA5
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;mcd: I/O error 0x%02x&quot;
 comma
 id|mcd_error
@@ -2526,6 +2488,7 @@ id|MCD_RETRY_ATTEMPTS
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;mcd: read of block %d failed&bslash;n&quot;
 comma
 id|mcd_next_bn
@@ -2543,7 +2506,9 @@ op_decrement
 multiline_comment|/* Nuts! This cd is ready for recycling! */
 multiline_comment|/* When WAS the last time YOU cleaned it CORRECTLY?! */
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;mcd: read of block %d failed, giving up&bslash;n&quot;
 comma
 id|mcd_next_bn
@@ -2626,6 +2591,7 @@ multiline_comment|/* Uhhh... BACK You GO! */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;mcd: Switching back to 2X speed!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2649,28 +2615,32 @@ id|mcd_state
 r_case
 id|MCD_S_IDLE
 suffix:colon
-macro_line|#ifdef TEST3
+id|test3
+c_func
+(paren
 id|printk
 c_func
 (paren
 l_string|&quot;MCD_S_IDLE&bslash;n&quot;
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|out
 suffix:semicolon
 r_case
 id|MCD_S_START
 suffix:colon
-macro_line|#ifdef TEST3
+id|test3
+c_func
+(paren
 id|printk
 c_func
 (paren
 l_string|&quot;MCD_S_START&bslash;n&quot;
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 id|outb
 c_func
 (paren
@@ -2703,14 +2673,16 @@ suffix:semicolon
 r_case
 id|MCD_S_MODE
 suffix:colon
-macro_line|#ifdef TEST3
+id|test3
+c_func
+(paren
 id|printk
 c_func
 (paren
 l_string|&quot;MCD_S_MODE&bslash;n&quot;
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2793,6 +2765,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
 (paren
 id|st
 op_amp
@@ -2866,14 +2844,16 @@ suffix:semicolon
 r_case
 id|MCD_S_READ
 suffix:colon
-macro_line|#ifdef TEST3
+id|test3
+c_func
+(paren
 id|printk
 c_func
 (paren
 l_string|&quot;MCD_S_READ&bslash;n&quot;
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2953,6 +2933,12 @@ r_goto
 id|immediately
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3061,14 +3047,16 @@ suffix:semicolon
 r_case
 id|MCD_S_DATA
 suffix:colon
-macro_line|#ifdef TEST3
+id|test3
+c_func
+(paren
 id|printk
 c_func
 (paren
 l_string|&quot;MCD_S_DATA&bslash;n&quot;
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 id|st
 op_assign
 id|inb
@@ -3087,7 +3075,9 @@ id|MFL_STATUSorDATA
 suffix:semicolon
 id|data_immediately
 suffix:colon
-macro_line|#ifdef TEST5
+id|test5
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -3095,8 +3085,7 @@ l_string|&quot;Status %02x&bslash;n&quot;
 comma
 id|st
 )paren
-suffix:semicolon
-macro_line|#endif
+)paren
 r_switch
 c_cond
 (paren
@@ -3117,6 +3106,7 @@ l_int|5
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;mcd: read of block %d failed&bslash;n&quot;
 comma
 id|mcd_next_bn
@@ -3132,7 +3122,9 @@ op_decrement
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;mcd: read of block %d failed, giving up&bslash;n&quot;
 comma
 id|mcd_next_bn
@@ -3216,7 +3208,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|READ_DATA
+id|insb
 c_func
 (paren
 id|MCDPORT
@@ -3333,15 +3325,6 @@ id|McdTimeout
 op_assign
 id|READ_TIMEOUT
 suffix:semicolon
-macro_line|#ifdef DOUBLE_QUICK_ONLY
-r_if
-c_cond
-(paren
-id|MCMD_DATA_READ
-op_ne
-id|MCMD_PLAY_READ
-)paren
-macro_line|#endif
 (brace
 r_int
 id|count
@@ -3385,8 +3368,9 @@ id|MFL_STATUSorDATA
 )paren
 )paren
 (brace
-macro_line|#   ifdef TEST4
-multiline_comment|/*&t;    printk(&quot;Quickloop success at %d&bslash;n&quot;,QUICK_LOOP_COUNT-count); */
+id|test4
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -3396,22 +3380,23 @@ id|QUICK_LOOP_COUNT
 op_minus
 id|count
 )paren
+)paren
 suffix:semicolon
-macro_line|#   endif
 r_goto
 id|data_immediately
 suffix:semicolon
 )brace
 )brace
-macro_line|#   ifdef TEST4
-multiline_comment|/*      printk(&quot;Quickloop ended at %d&bslash;n&quot;,QUICK_LOOP_COUNT); */
+id|test4
+c_func
+(paren
 id|printk
 c_func
 (paren
 l_string|&quot;ended &quot;
 )paren
+)paren
 suffix:semicolon
-macro_line|#   endif
 )brace
 r_break
 suffix:semicolon
@@ -3421,15 +3406,16 @@ suffix:semicolon
 r_case
 id|MCD_S_STOP
 suffix:colon
-macro_line|#ifdef TEST3
+id|test3
+c_func
+(paren
 id|printk
 c_func
 (paren
 l_string|&quot;MCD_S_STOP&bslash;n&quot;
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef WORK_AROUND_MITSUMI_BUG_93
 r_if
 c_cond
 (paren
@@ -3469,7 +3455,6 @@ r_break
 suffix:semicolon
 id|do_not_work_around_mitsumi_bug_93_1
 suffix:colon
-macro_line|#endif&t;&t;&t;&t;/* WORK_AROUND_MITSUMI_BUG_93 */
 id|outb
 c_func
 (paren
@@ -3482,7 +3467,6 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef WORK_AROUND_MITSUMI_BUG_92
 r_if
 c_cond
 (paren
@@ -3630,7 +3614,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif&t;&t;&t;&t;/* WORK_AROUND_MITSUMI_BUG_92 */
 id|mcd_state
 op_assign
 id|MCD_S_STOPPING
@@ -3644,14 +3627,16 @@ suffix:semicolon
 r_case
 id|MCD_S_STOPPING
 suffix:colon
-macro_line|#ifdef TEST3
+id|test3
+c_func
+(paren
 id|printk
 c_func
 (paren
 l_string|&quot;MCD_S_STOPPING&bslash;n&quot;
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3702,7 +3687,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef WORK_AROUND_MITSUMI_BUG_93
 r_if
 c_cond
 (paren
@@ -3747,8 +3731,9 @@ l_int|1
 suffix:semicolon
 id|do_not_work_around_mitsumi_bug_93_2
 suffix:colon
-macro_line|#endif&t;&t;&t;&t;/* WORK_AROUND_MITSUMI_BUG_93 */
-macro_line|#ifdef TEST3
+id|test3
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -3758,8 +3743,8 @@ id|CURRENT_VALID
 comma
 id|mcd_mode
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3819,6 +3804,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;mcd: invalid state %d&bslash;n&quot;
 comma
 id|mcd_state
@@ -3841,6 +3827,7 @@ op_decrement
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;mcd: timeout in state %d&bslash;n&quot;
 comma
 id|mcd_state
@@ -3851,11 +3838,18 @@ op_assign
 id|MCD_S_STOP
 suffix:semicolon
 )brace
-id|SET_TIMER
+id|mcd_timer.function
+op_assign
+id|mcd_poll
+suffix:semicolon
+id|mod_timer
 c_func
 (paren
-id|mcd_poll
+op_amp
+id|mcd_timer
 comma
+id|jiffies
+op_plus
 l_int|1
 )paren
 suffix:semicolon
@@ -4067,8 +4061,6 @@ op_star
 id|cdi
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4083,6 +4075,8 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 )brace
 multiline_comment|/* This routine gets called during initialization if things go wrong,&n; * and is used in mcd_exit as well. */
 DECL|function|cleanup
@@ -4225,7 +4219,8 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;skip mcd_init&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;mcd: not probing.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4253,7 +4248,8 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;Unable to get major %d for Mitsumi CD-ROM&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;mcd: Unable to get major %d for Mitsumi CD-ROM&bslash;n&quot;
 comma
 id|MAJOR_NR
 )paren
@@ -4284,7 +4280,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Init failed, I/O port (%X) already in use&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;mcd: Initialization failed, I/O port (%X) already in use&bslash;n&quot;
 comma
 id|mcd_port
 )paren
@@ -4420,7 +4417,8 @@ l_int|2000000
 id|printk
 c_func
 (paren
-l_string|&quot;Init failed. No mcd device at 0x%x irq %d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;mcd: initialisation failed - No mcd device at 0x%x irq %d&bslash;n&quot;
 comma
 id|mcd_port
 comma
@@ -4492,7 +4490,8 @@ id|count
 id|printk
 c_func
 (paren
-l_string|&quot;mitsumi get version failed at 0x%x&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;mcd: mitsumi get version failed at 0x%x&bslash;n&quot;
 comma
 id|mcd_port
 )paren
@@ -4575,6 +4574,7 @@ r_if
 c_cond
 (paren
 id|request_irq
+c_func
 (paren
 id|mcd_irq
 comma
@@ -4591,7 +4591,8 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;Unable to get IRQ%d for Mitsumi CD-ROM&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;mcd: Unable to get IRQ%d for Mitsumi CD-ROM&bslash;n&quot;
 comma
 id|mcd_irq
 )paren
@@ -4784,7 +4785,8 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;Cannot register Mitsumi CD-ROM!&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;mcd: Unable to register Mitsumi CD-ROM.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|cleanup
@@ -5166,11 +5168,18 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|SET_TIMER
+id|mcd_timer.function
+op_assign
+id|mcdStatTimer
+suffix:semicolon
+id|mod_timer
 c_func
 (paren
-id|mcdStatTimer
+op_amp
+id|mcd_timer
 comma
+id|jiffies
+op_plus
 l_int|1
 )paren
 suffix:semicolon
@@ -5193,11 +5202,18 @@ id|McdTimeout
 op_assign
 id|timeout
 suffix:semicolon
-id|SET_TIMER
+id|mcd_timer.function
+op_assign
+id|mcdStatTimer
+suffix:semicolon
+id|mod_timer
 c_func
 (paren
-id|mcdStatTimer
+op_amp
+id|mcd_timer
 comma
+id|jiffies
+op_plus
 l_int|1
 )paren
 suffix:semicolon
@@ -5723,6 +5739,7 @@ r_int
 id|updateToc
 c_func
 (paren
+r_void
 )paren
 (brace
 r_if
@@ -5776,6 +5793,7 @@ r_int
 id|GetDiskInfo
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -6012,6 +6030,7 @@ r_int
 id|GetToc
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int

@@ -3323,39 +3323,37 @@ id|gendisk
 id|hd_gendisk
 op_assign
 (brace
+id|major
+suffix:colon
 id|MAJOR_NR
 comma
-multiline_comment|/* Major number */
+id|major_name
+suffix:colon
 l_string|&quot;hd&quot;
 comma
-multiline_comment|/* Major name */
+id|minor_shift
+suffix:colon
 l_int|6
 comma
-multiline_comment|/* Bits to shift to get real from partition */
+id|max_p
+suffix:colon
 l_int|1
 op_lshift
 l_int|6
 comma
-multiline_comment|/* Number of partitions per real */
+id|part
+suffix:colon
 id|hd
 comma
-multiline_comment|/* hd struct */
+id|sizes
+suffix:colon
 id|hd_sizes
 comma
-multiline_comment|/* block sizes */
-l_int|0
-comma
-multiline_comment|/* number */
-l_int|NULL
-comma
-multiline_comment|/* internal use, not presently used */
-l_int|NULL
-comma
-multiline_comment|/* next */
+id|fops
+suffix:colon
 op_amp
 id|hd_fops
 comma
-multiline_comment|/* file operations */
 )brace
 suffix:semicolon
 DECL|function|hd_interrupt
@@ -4032,8 +4030,6 @@ c_func
 (paren
 op_amp
 id|hd_gendisk
-comma
-id|MAJOR_NR
 )paren
 suffix:semicolon
 id|init_timer

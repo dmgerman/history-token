@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Derived from IRIX &lt;sys/SN/gda.h&gt;.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; *&n; * gda.h -- Contains the data structure for the global data area,&n; * &t;The GDA contains information communicated between the&n; *&t;PROM, SYMMON, and the kernel. &n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Derived from IRIX &lt;sys/SN/gda.h&gt;.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; *&n; * gda.h -- Contains the data structure for the global data area,&n; * &t;The GDA contains information communicated between the&n; *&t;PROM, SYMMON, and the kernel. &n; */
 macro_line|#ifndef _ASM_SN_GDA_H
 DECL|macro|_ASM_SN_GDA_H
 mdefine_line|#define _ASM_SN_GDA_H

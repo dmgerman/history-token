@@ -4950,11 +4950,7 @@ c_cond
 r_int
 r_int
 )paren
-id|virt_to_bus
-c_func
-(paren
 id|lp-&gt;dma_buff
-)paren
 op_ge
 id|MAX_DMA_ADDRESS
 op_logical_or

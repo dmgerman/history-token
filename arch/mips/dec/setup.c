@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * Setup the interrupt stuff.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1998 Harald Koerfgen&n; */
+multiline_comment|/*&n; * Setup the interrupt stuff.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1998 Harald Koerfgen&n; * Copyright (C) 2000 Maciej W. Rozycki&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -13,70 +14,28 @@ macro_line|#include &lt;asm/dec/kn01.h&gt;
 macro_line|#include &lt;asm/dec/kn02.h&gt;
 macro_line|#include &lt;asm/dec/kn02xa.h&gt;
 macro_line|#include &lt;asm/dec/kn03.h&gt;
+macro_line|#include &lt;asm/dec/ioasic.h&gt;
+macro_line|#include &lt;asm/dec/ioasic_addrs.h&gt;
 macro_line|#include &lt;asm/dec/ioasic_ints.h&gt;
-r_extern
-id|asmlinkage
-r_void
-id|decstation_handle_int
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|dec_init_kn01
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|dec_init_kn230
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|dec_init_kn02
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|dec_init_kn02ba
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|dec_init_kn02ca
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|dec_init_kn03
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|dec_rtc_base
 r_char
 op_star
 id|dec_rtc_base
 op_assign
 (paren
-r_char
+r_void
 op_star
 )paren
 id|KN01_RTC_BASE
 suffix:semicolon
 multiline_comment|/* Assume DS2100/3100 initially */
+DECL|variable|ioasic_base
+r_volatile
+r_int
+r_int
+op_star
+id|ioasic_base
+suffix:semicolon
 DECL|variable|dec_interrupt
 id|decint_t
 id|dec_interrupt
@@ -84,7 +43,7 @@ id|dec_interrupt
 id|NR_INTS
 )braket
 suffix:semicolon
-multiline_comment|/* &n; * Information regarding the IRQ Controller&n; *&n; * isr and imr are also hardcoded for different machines in int_handler.S&n; */
+multiline_comment|/*&n; * Information regarding the IRQ Controller&n; */
 DECL|variable|isr
 r_volatile
 r_int
@@ -133,6 +92,24 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|dec_intr_halt
+c_func
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|wbflush_setup
 c_func
 (paren
@@ -143,14 +120,6 @@ r_extern
 r_struct
 id|rtc_ops
 id|dec_rtc_ops
-suffix:semicolon
-r_extern
-r_void
-id|intr_halt
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 r_extern
 r_int
@@ -177,133 +146,26 @@ op_star
 id|irq
 )paren
 suffix:semicolon
-DECL|function|dec_irq_setup
+DECL|variable|irq10
 r_static
-r_void
-id|__init
-id|dec_irq_setup
-c_func
-(paren
-r_void
-)paren
+r_struct
+id|irqaction
+id|irq10
+op_assign
 (brace
-r_switch
-c_cond
-(paren
-id|mips_machtype
-)paren
-(brace
-r_case
-id|MACH_DS23100
-suffix:colon
-id|dec_init_kn01
-c_func
-(paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|MACH_DS5100
-suffix:colon
-multiline_comment|/*  DS5100 MIPSMATE */
-id|dec_init_kn230
-c_func
-(paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|MACH_DS5000_200
-suffix:colon
-multiline_comment|/* DS5000 3max */
-id|dec_init_kn02
-c_func
-(paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|MACH_DS5000_1XX
-suffix:colon
-multiline_comment|/* DS5000/100 3min */
-id|dec_init_kn02ba
-c_func
-(paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|MACH_DS5000_2X0
-suffix:colon
-multiline_comment|/* DS5000/240 3max+ */
-id|dec_init_kn03
-c_func
-(paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|MACH_DS5000_XX
-suffix:colon
-multiline_comment|/* Personal DS5000/2x */
-id|dec_init_kn02ca
-c_func
-(paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|MACH_DS5800
-suffix:colon
-multiline_comment|/* DS5800 Isis */
-id|panic
-c_func
-(paren
-l_string|&quot;Don&squot;t know how to set this up!&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|MACH_DS5400
-suffix:colon
-multiline_comment|/* DS5400 MIPSfair */
-id|panic
-c_func
-(paren
-l_string|&quot;Don&squot;t know how to set this up!&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|MACH_DS5500
-suffix:colon
-multiline_comment|/* DS5500 MIPSfair-2 */
-id|panic
-c_func
-(paren
-l_string|&quot;Don&squot;t know how to set this up!&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|set_except_vector
-c_func
-(paren
+id|dec_intr_halt
+comma
 l_int|0
 comma
-id|decstation_handle_int
-)paren
-suffix:semicolon
+l_int|0
+comma
+l_string|&quot;halt&quot;
+comma
+l_int|NULL
+comma
+l_int|NULL
 )brace
+suffix:semicolon
 multiline_comment|/*&n; * enable the periodic interrupts&n; */
 DECL|function|dec_time_init
 r_static
@@ -360,6 +222,29 @@ id|irq
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Enable the halt interrupt.&n; */
+DECL|function|dec_halt_init
+r_static
+r_void
+id|__init
+id|dec_halt_init
+c_func
+(paren
+r_struct
+id|irqaction
+op_star
+id|irq
+)paren
+(brace
+id|setup_dec_irq
+c_func
+(paren
+id|HALT
+comma
+id|irq
+)paren
+suffix:semicolon
+)brace
 DECL|function|decstation_setup
 r_void
 id|__init
@@ -369,10 +254,6 @@ c_func
 r_void
 )paren
 (brace
-id|irq_setup
-op_assign
-id|dec_irq_setup
-suffix:semicolon
 id|board_time_init
 op_assign
 id|dec_time_init
@@ -394,6 +275,13 @@ id|_machine_power_off
 op_assign
 id|dec_machine_power_off
 suffix:semicolon
+macro_line|#ifdef CONFIG_FB
+id|conswitchp
+op_assign
+op_amp
+id|dummy_con
+suffix:semicolon
+macro_line|#endif
 id|rtc_ops
 op_assign
 op_amp
@@ -722,9 +610,7 @@ suffix:semicolon
 id|isr
 op_assign
 (paren
-r_volatile
-r_int
-r_int
+r_void
 op_star
 )paren
 id|KN02_CSR_ADDR
@@ -732,9 +618,7 @@ suffix:semicolon
 id|imr
 op_assign
 (paren
-r_volatile
-r_int
-r_int
+r_void
 op_star
 )paren
 id|KN02_CSR_ADDR
@@ -1072,6 +956,14 @@ r_void
 )paren
 (brace
 multiline_comment|/*&n;     * Setup some memory addresses.&n;     */
+id|ioasic_base
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|KN02XA_IOASIC_BASE
+suffix:semicolon
 id|dec_rtc_base
 op_assign
 (paren
@@ -1083,22 +975,26 @@ suffix:semicolon
 id|isr
 op_assign
 (paren
-r_volatile
-r_int
-r_int
+r_void
 op_star
 )paren
-id|KN02XA_SIR_ADDR
+id|KN02XA_IOASIC_REG
+c_func
+(paren
+id|SIR
+)paren
 suffix:semicolon
 id|imr
 op_assign
 (paren
-r_volatile
-r_int
-r_int
+r_void
 op_star
 )paren
-id|KN02XA_SIRM_ADDR
+id|KN02XA_IOASIC_REG
+c_func
+(paren
+id|SIMR
+)paren
 suffix:semicolon
 multiline_comment|/*&n;     * Setup IOASIC interrupt&n;     */
 id|cpu_mask_tbl
@@ -1121,7 +1017,7 @@ id|cpu_ivec_tbl
 l_int|0
 )braket
 op_assign
-id|kn02ba_io_int
+id|kn02xa_io_int
 suffix:semicolon
 op_star
 id|imr
@@ -1480,6 +1376,13 @@ l_int|5
 )braket
 op_assign
 id|FPU
+suffix:semicolon
+id|dec_halt_init
+c_func
+(paren
+op_amp
+id|irq10
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* dec_init_kn02ba */
@@ -1494,6 +1397,14 @@ r_void
 )paren
 (brace
 multiline_comment|/*&n;     * Setup some memory addresses. FIXME: probably incomplete!&n;     */
+id|ioasic_base
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|KN02XA_IOASIC_BASE
+suffix:semicolon
 id|dec_rtc_base
 op_assign
 (paren
@@ -1505,22 +1416,26 @@ suffix:semicolon
 id|isr
 op_assign
 (paren
-r_volatile
-r_int
-r_int
+r_void
 op_star
 )paren
-id|KN02XA_SIR_ADDR
+id|KN02XA_IOASIC_REG
+c_func
+(paren
+id|SIR
+)paren
 suffix:semicolon
 id|imr
 op_assign
 (paren
-r_volatile
-r_int
-r_int
+r_void
 op_star
 )paren
-id|KN02XA_SIRM_ADDR
+id|KN02XA_IOASIC_REG
+c_func
+(paren
+id|SIMR
+)paren
 suffix:semicolon
 multiline_comment|/*&n;     * Setup IOASIC interrupt&n;     */
 id|cpu_ivec_tbl
@@ -1528,7 +1443,7 @@ id|cpu_ivec_tbl
 l_int|1
 )braket
 op_assign
-id|kn02ba_io_int
+id|kn02xa_io_int
 suffix:semicolon
 id|cpu_irq_nr
 (braket
@@ -1871,6 +1786,13 @@ l_int|4
 op_assign
 id|FPU
 suffix:semicolon
+id|dec_halt_init
+c_func
+(paren
+op_amp
+id|irq10
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* dec_init_kn02ca */
 multiline_comment|/*&n; * Machine-specific initialisation for kn03, aka 3max+, aka DS5000/240.&n; */
@@ -1884,6 +1806,14 @@ r_void
 )paren
 (brace
 multiline_comment|/*&n;     * Setup some memory addresses. FIXME: probably incomplete!&n;     */
+id|ioasic_base
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|KN03_IOASIC_BASE
+suffix:semicolon
 id|dec_rtc_base
 op_assign
 (paren
@@ -1895,22 +1825,26 @@ suffix:semicolon
 id|isr
 op_assign
 (paren
-r_volatile
-r_int
-r_int
+r_void
 op_star
 )paren
-id|KN03_SIR_ADDR
+id|KN03_IOASIC_REG
+c_func
+(paren
+id|SIR
+)paren
 suffix:semicolon
 id|imr
 op_assign
 (paren
-r_volatile
-r_int
-r_int
+r_void
 op_star
 )paren
-id|KN03_SIRM_ADDR
+id|KN03_IOASIC_REG
+c_func
+(paren
+id|SIMR
+)paren
 suffix:semicolon
 multiline_comment|/*&n;     * Setup IOASIC interrupt&n;     */
 id|cpu_ivec_tbl
@@ -2292,6 +2226,13 @@ l_int|4
 )braket
 op_assign
 id|FPU
+suffix:semicolon
+id|dec_halt_init
+c_func
+(paren
+op_amp
+id|irq10
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* dec_init_kn03 */

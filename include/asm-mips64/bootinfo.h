@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: bootinfo.h,v 1.1 1999/08/18 23:37:50 ralf Exp $&n; *&n; * bootinfo.h -- Definition of the Linux/MIPS boot information structure&n; *&n; * Copyright (C) 1995 - 1999 by Ralf Baechle&n; * Copyright (C) 1995, 1996 by Stoned Elipot and Paul M. Antoine.&n; * Copyright (C) 1999 Ralf Baechle&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * bootinfo.h -- Definition of the Linux/MIPS boot information structure&n; *&n; * Copyright (C) 1995 - 1999 by Ralf Baechle&n; * Copyright (C) 1995, 1996 by Stoned Elipot and Paul M. Antoine.&n; * Copyright (C) 1999 Ralf Baechle&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#ifndef _ASM_BOOTINFO_H
 DECL|macro|_ASM_BOOTINFO_H
 mdefine_line|#define _ASM_BOOTINFO_H

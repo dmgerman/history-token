@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ip22-setup.c,v 1.4 1999/10/08 21:07:51 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * SGI IP22 specific setup.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997, 1998, 1999 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 1999 Silcon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * SGI IP22 specific setup.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997, 1998, 1999 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 1999 Silcon Graphics, Inc.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kbd_ll.h&gt;
@@ -345,7 +345,7 @@ macro_line|#ifdef CONFIG_SERIAL_CONSOLE
 multiline_comment|/* ARCS console environment variable is set to &quot;g?&quot; for&n;&t; * graphics console, it is set to &quot;d&quot; for the first serial&n;&t; * line and &quot;d2&quot; for the second serial line.&n;&t; */
 id|ctype
 op_assign
-id|ArcArcGetEnvironmentVariable
+id|ArcGetEnvironmentVariable
 c_func
 (paren
 l_string|&quot;console&quot;

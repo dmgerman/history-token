@@ -2,11 +2,23 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_PCI_H
 DECL|macro|_ASM_PCI_H
 mdefine_line|#define _ASM_PCI_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n;   already-configured bus numbers - to be used for buggy BIOSes&n;   or architectures with incomplete PCI setup by the loader */
-singleline_comment|//#define pcibios_assign_all_busses()&t;0
+macro_line|#ifdef CONFIG_PCI
+r_extern
+r_int
+r_int
+id|pcibios_assign_all_busses
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
 DECL|macro|pcibios_assign_all_busses
-mdefine_line|#define pcibios_assign_all_busses()&t;1
+mdefine_line|#define pcibios_assign_all_busses()&t;0
+macro_line|#endif
 DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x1000
 DECL|macro|PCIBIOS_MIN_MEM
@@ -137,6 +149,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_COHERENT_IO
 id|dma_cache_wback_inv
 c_func
 (paren
@@ -149,6 +162,7 @@ comma
 id|size
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|virt_to_bus
 c_func
@@ -346,6 +360,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_COHERENT_IO
 id|dma_cache_wback_inv
 c_func
 (paren
@@ -362,6 +377,7 @@ comma
 id|size
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * Make physical memory consistent for a set of streaming&n; * mode DMA translations after a transfer.&n; *&n; * The same as pci_dma_sync_single but for a scatter-gather list,&n; * same rules and usage.&n; */
 DECL|function|pci_dma_sync_sg
@@ -461,7 +477,7 @@ c_cond
 (paren
 id|mask
 OL
-l_int|0x00ffffff
+l_int|0x1fffffff
 )paren
 r_return
 l_int|0

@@ -36,7 +36,7 @@ mdefine_line|#define __bi_save_and_cli(x)
 DECL|macro|__bi_restore_flags
 mdefine_line|#define __bi_restore_flags(x)
 macro_line|#endif /* __KERNEL__ */
-macro_line|#if defined(CONFIG_CPU_HAS_LLSC)
+macro_line|#ifdef CONFIG_CPU_HAS_LLSC
 macro_line|#include &lt;asm/mipsregs.h&gt;
 multiline_comment|/*&n; * These functions for MIPS ISA &gt; 1 are interrupt and SMP proof and&n; * interrupt friendly&n; */
 multiline_comment|/*&n; * set_bit - Atomically set a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * This function is atomic and may not be reordered.  See __set_bit()&n; * if you do not require the atomic guarantees.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
@@ -1691,7 +1691,7 @@ l_string|&quot;1:&bslash;tsubu&bslash;t$1,%6,%0&bslash;n&bslash;t&quot;
 l_string|&quot;blez&bslash;t$1,2f&bslash;n&bslash;t&quot;
 l_string|&quot;lw&bslash;t$1,(%5)&bslash;n&bslash;t&quot;
 l_string|&quot;addiu&bslash;t%5,4&bslash;n&bslash;t&quot;
-macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS2) || (_MIPS_ISA == _MIPS_ISA_MIPS3) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS4) || (_MIPS_ISA == _MIPS_ISA_MIPS5)
+macro_line|#if (_MIPS_ISA == _MIPS_ISA_MIPS2 ) || (_MIPS_ISA == _MIPS_ISA_MIPS3 ) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS4 ) || (_MIPS_ISA == _MIPS_ISA_MIPS5 ) || &bslash;&n;    (_MIPS_ISA == _MIPS_ISA_MIPS32) || (_MIPS_ISA == _MIPS_ISA_MIPS64)
 l_string|&quot;beql&bslash;t%1,$1,1b&bslash;n&bslash;t&quot;
 l_string|&quot;addiu&bslash;t%0,32&bslash;n&bslash;t&quot;
 macro_line|#else
@@ -2257,6 +2257,12 @@ r_char
 op_star
 )paren
 id|addr
+suffix:semicolon
+id|ADDR
+op_add_assign
+id|nr
+op_rshift
+l_int|3
 suffix:semicolon
 id|mask
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: paccess.h,v 1.2 2000/01/21 22:34:07 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 1999, 2000 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; *&n; * Protected memory access.  Used for everything that might take revenge&n; * by sending a DBE error like accessing possibly non-existant memory or&n; * devices.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 1999, 2000 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; *&n; * Protected memory access.  Used for everything that might take revenge&n; * by sending a DBE error like accessing possibly non-existant memory or&n; * devices.&n; */
 macro_line|#ifndef _ASM_PACCESS_H
 DECL|macro|_ASM_PACCESS_H
 mdefine_line|#define _ASM_PACCESS_H

@@ -13,32 +13,6 @@ macro_line|#include &lt;net/irda/irlap.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
 macro_line|#include &lt;net/irda/irda-usb.h&gt;
-DECL|variable|min_turn_times
-r_static
-id|u32
-id|min_turn_times
-(braket
-)braket
-op_assign
-(brace
-l_int|10000
-comma
-l_int|5000
-comma
-l_int|1000
-comma
-l_int|500
-comma
-l_int|100
-comma
-l_int|50
-comma
-l_int|10
-comma
-l_int|0
-)brace
-suffix:semicolon
-multiline_comment|/* us */
 DECL|variable|qos_mtt_bits
 r_static
 r_int

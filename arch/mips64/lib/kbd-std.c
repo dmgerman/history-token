@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: kbd-std.c,v 1.1 1999/08/21 21:43:01 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Routines for standard PC style keyboards accessible via I/O ports.&n; *&n; * Copyright (C) 1998, 1999 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Routines for standard PC style keyboards accessible via I/O ports.&n; *&n; * Copyright (C) 1998, 1999 by Ralf Baechle&n; */
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pc_keyb.h&gt;

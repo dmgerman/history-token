@@ -746,6 +746,7 @@ c_cond
 id|atomic_read
 c_func
 (paren
+op_amp
 id|rd_bdev
 (braket
 id|minor
@@ -1228,6 +1229,8 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
+comma
+id|BDEV_FILE
 )paren
 suffix:semicolon
 id|bdput

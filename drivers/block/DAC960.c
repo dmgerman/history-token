@@ -7267,10 +7267,6 @@ id|DAC960_MAJOR
 op_plus
 id|Controller-&gt;ControllerNumber
 suffix:semicolon
-id|GenericDiskInfo_T
-op_star
-id|GenericDiskInfo
-suffix:semicolon
 id|RequestQueue_T
 op_star
 id|RequestQueue

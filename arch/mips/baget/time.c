@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.3 1999/08/17 22:18:37 ralf Exp $&n; * time.c: Baget/MIPS specific time handling details&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
+multiline_comment|/*&n; * time.c: Baget/MIPS specific time handling details&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -8,13 +8,17 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
-macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;  
 macro_line|#include &lt;asm/baget/baget.h&gt;
+r_extern
+id|rwlock_t
+id|xtime_lock
+suffix:semicolon
 multiline_comment|/* &n; *  To have precision clock, we need to fix available clock frequency&n; */
 DECL|macro|FREQ_NOM
 mdefine_line|#define FREQ_NOM  79125  /* Baget frequency ratio */
@@ -233,9 +237,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
-c_func
+id|read_lock_irqsave
 (paren
+op_amp
+id|xtime_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -244,9 +250,11 @@ id|tv
 op_assign
 id|xtime
 suffix:semicolon
-id|restore_flags
-c_func
+id|read_unlock_irqrestore
 (paren
+op_amp
+id|xtime_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -262,14 +270,10 @@ op_star
 id|tv
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|save_and_cli
-c_func
+id|write_lock_irq
 (paren
-id|flags
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 id|xtime
@@ -277,22 +281,27 @@ op_assign
 op_star
 id|tv
 suffix:semicolon
-id|time_state
+id|time_adjust
 op_assign
-id|TIME_BAD
+l_int|0
+suffix:semicolon
+multiline_comment|/* stop active adjtime() */
+id|time_status
+op_or_assign
+id|STA_UNSYNC
 suffix:semicolon
 id|time_maxerror
 op_assign
-id|MAXPHASE
+id|NTP_PHASE_LIMIT
 suffix:semicolon
 id|time_esterror
 op_assign
-id|MAXPHASE
+id|NTP_PHASE_LIMIT
 suffix:semicolon
-id|restore_flags
-c_func
+id|write_unlock_irq
 (paren
-id|flags
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 )brace

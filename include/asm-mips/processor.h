@@ -75,11 +75,6 @@ id|cyclecounter_available
 suffix:semicolon
 multiline_comment|/* only available from R4000 upwards. */
 r_extern
-r_char
-id|dedicated_iv_available
-suffix:semicolon
-multiline_comment|/* some embedded MIPS like Nevada */
-r_extern
 r_struct
 id|mips_cpuinfo
 id|boot_cpu_data
