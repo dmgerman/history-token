@@ -1080,19 +1080,18 @@ comma
 id|ide_dma_action_t
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * ide soft-power support&n; */
-DECL|typedef|ide_busproc_t
-r_typedef
-r_int
-(paren
-id|ide_busproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
+r_enum
+(brace
+DECL|enumerator|ATA_PRIMARY
+id|ATA_PRIMARY
+op_assign
+l_int|0
 comma
-r_int
-)paren
+DECL|enumerator|ATA_SECONDARY
+id|ATA_SECONDARY
+op_assign
+l_int|1
+)brace
 suffix:semicolon
 DECL|struct|ata_channel
 r_struct
@@ -1249,13 +1248,6 @@ r_int
 id|sg_dma_direction
 suffix:semicolon
 multiline_comment|/* dma transfer direction */
-DECL|member|mate
-r_struct
-id|ata_channel
-op_star
-id|mate
-suffix:semicolon
-multiline_comment|/* other hwif from same PCI chip */
 DECL|member|dma_base
 r_int
 r_int
@@ -1334,7 +1326,7 @@ id|serialized
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* serialized operation with mate hwif */
+multiline_comment|/* serialized operation between channels */
 DECL|member|sharing_irq
 r_int
 id|sharing_irq
@@ -1384,9 +1376,17 @@ id|straight8
 suffix:semicolon
 multiline_comment|/* Alan&squot;s straight 8 check */
 DECL|member|busproc
-id|ide_busproc_t
+r_int
+(paren
 op_star
 id|busproc
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_int
+)paren
 suffix:semicolon
 multiline_comment|/* driver soft-power interface */
 DECL|member|bus_state
@@ -1460,17 +1460,6 @@ r_typedef
 id|ide_startstop_t
 (paren
 id|ide_handler_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|ide_post_handler_t
-r_typedef
-id|ide_startstop_t
-(paren
-id|ide_post_handler_t
 )paren
 (paren
 id|ide_drive_t

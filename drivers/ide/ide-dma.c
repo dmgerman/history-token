@@ -1480,7 +1480,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|report_drive_dmaing
-r_static
 r_int
 id|report_drive_dmaing
 (paren

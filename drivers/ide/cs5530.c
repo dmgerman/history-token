@@ -1374,14 +1374,7 @@ op_star
 id|hwif
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|hwif-&gt;mate
-)paren
 id|hwif-&gt;serialized
-op_assign
-id|hwif-&gt;mate-&gt;serialized
 op_assign
 l_int|1
 suffix:semicolon

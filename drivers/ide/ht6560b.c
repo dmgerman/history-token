@@ -935,26 +935,9 @@ id|ide_hwifs
 l_int|0
 )braket
 dot
-id|mate
+id|unit
 op_assign
-op_amp
-id|ide_hwifs
-(braket
-l_int|1
-)braket
-suffix:semicolon
-id|ide_hwifs
-(braket
-l_int|1
-)braket
-dot
-id|mate
-op_assign
-op_amp
-id|ide_hwifs
-(braket
-l_int|0
-)braket
+id|ATA_PRIMARY
 suffix:semicolon
 id|ide_hwifs
 (braket
@@ -963,7 +946,7 @@ l_int|1
 dot
 id|unit
 op_assign
-l_int|1
+id|ATA_SECONDARY
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Setting default configurations for drives&n;&t;&t;&t; */
 id|t

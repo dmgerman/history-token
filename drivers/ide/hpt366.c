@@ -5252,7 +5252,7 @@ op_amp
 id|hpt366_get_info
 suffix:semicolon
 )brace
-macro_line|#endif /* DISPLAY_HPT366_TIMINGS &amp;&amp; CONFIG_PROC_FS */
+macro_line|#endif
 r_return
 id|dev-&gt;irq
 suffix:semicolon
@@ -5324,7 +5324,7 @@ id|hwif-&gt;pci_dev-&gt;devfn
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
+macro_line|#endif
 r_return
 (paren
 (paren

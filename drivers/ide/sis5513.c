@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/sis5513.c&t;&t;Version 0.13&t;March 4, 2002&n; *&n; * Copyright (C) 1999-2000&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Copyright (C) 2002&t;&t;Lionel Bouton &lt;Lionel.Bouton@inet6.fr&gt;, Maintainer&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n;*/
-multiline_comment|/* Thanks :&n; * For direct support and hardware : SiS Taiwan.&n; * For ATA100 support advice       : Daniela Engert.&n; * For checking code correctness, providing patches :&n; * John Fremlin, Manfred Spraul&n; */
+multiline_comment|/*&n; * linux/drivers/ide/sis5513.c&t;&t;Version 0.13&t;March 6, 2002&n; *&n; * Copyright (C) 1999-2000&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Copyright (C) 2002&t;&t;Lionel Bouton &lt;Lionel.Bouton@inet6.fr&gt;, Maintainer&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; *&n; * Thanks :&n; *&n; * SiS Taiwan&t;&t;: for direct support and hardware.&n; * Daniela Engert&t;: for initial ATA100 advices and numerous others.&n; * John Fremlin, Manfred Spraul :&n; *&t;&t;&t;  for checking code correctness, providing patches.&n; */
 multiline_comment|/*&n; * Original tests and design on the SiS620/5513 chipset.&n; * ATA100 tests and design on the SiS735/5513 chipset.&n; * ATA16/33 design from specs&n; */
 multiline_comment|/*&n; * TODO:&n; *&t;- Get ridden of SisHostChipInfo[] completness dependancy.&n; *&t;- Get ATA-133 datasheets, implement ATA-133 init code.&n; *&t;- Are there pre-ATA_16 SiS chips ? -&gt; tune init code for them&n; *&t;  or remove ATA_00 define&n; *&t;- More checks in the config registers (force values instead of&n; *&t;  relying on the BIOS setting them correctly).&n; *&t;- Further optimisations ?&n; *&t;  . for example ATA66+ regs 0x48 &amp; 0x4A&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -18,15 +17,17 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
+multiline_comment|/* When DEBUG is defined it outputs initial PCI config register&n;   values and changes made to them by the driver */
 singleline_comment|// #define DEBUG
-multiline_comment|/* if BROKEN_LEVEL is defined it limits the DMA mode&n;   at boot time to its value */
+multiline_comment|/* When BROKEN_LEVEL is defined it limits the DMA mode&n;   at boot time to its value */
 singleline_comment|// #define BROKEN_LEVEL XFER_SW_DMA_0
 DECL|macro|DISPLAY_SIS_TIMINGS
 mdefine_line|#define DISPLAY_SIS_TIMINGS
 multiline_comment|/* Miscellaneaous flags */
 DECL|macro|SIS5513_LATENCY
 mdefine_line|#define SIS5513_LATENCY&t;&t;0x01
-multiline_comment|/* ATA transfer mode capabilities */
+multiline_comment|/* registers layout and init values are chipset family dependant */
+multiline_comment|/* 1/ define families */
 DECL|macro|ATA_00
 mdefine_line|#define ATA_00&t;&t;0x00
 DECL|macro|ATA_16
@@ -36,207 +37,30 @@ mdefine_line|#define ATA_33&t;&t;0x02
 DECL|macro|ATA_66
 mdefine_line|#define ATA_66&t;&t;0x03
 DECL|macro|ATA_100a
-mdefine_line|#define ATA_100a&t;0x04
+mdefine_line|#define ATA_100a&t;0x04&t;
+singleline_comment|// SiS730 is ATA100 with ATA66 layout
 DECL|macro|ATA_100
 mdefine_line|#define ATA_100&t;&t;0x05
 DECL|macro|ATA_133
 mdefine_line|#define ATA_133&t;&t;0x06
-DECL|variable|dma_capability
+multiline_comment|/* 2/ variable holding the controller chipset family value */
+DECL|variable|chipset_family
 r_static
 r_int
 r_char
-id|dma_capability
-op_assign
-l_int|0x00
+id|chipset_family
 suffix:semicolon
 multiline_comment|/*&n; * Debug code: following IDE config registers&squot; changes&n; */
 macro_line|#ifdef DEBUG
-multiline_comment|/* Copy of IDE Config registers 0x00 -&gt; 0x58&n;   Fewer might be used depending on the actual chipset */
+multiline_comment|/* Copy of IDE Config registers 0x00 -&gt; 0x57&n;   Fewer might be used depending on the actual chipset */
 DECL|variable|ide_regs_copy
 r_static
 r_int
 r_char
 id|ide_regs_copy
 (braket
+l_int|0x58
 )braket
-op_assign
-(brace
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-)brace
 suffix:semicolon
 DECL|function|sis5513_max_config_register
 r_static
@@ -250,7 +74,7 @@ r_void
 r_switch
 c_cond
 (paren
-id|dma_capability
+id|chipset_family
 )paren
 (brace
 r_case
@@ -648,10 +472,10 @@ r_int
 r_int
 id|host_id
 suffix:semicolon
-DECL|member|dma_capability
+DECL|member|chipset_family
 r_int
 r_char
-id|dma_capability
+id|chipset_family
 suffix:semicolon
 DECL|member|flags
 r_int
@@ -857,7 +681,7 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Cycle time bits and values vary accross chip dma capabilities&n;   These three arrays hold the register layout and the values to set.&n;   Indexed by dma_capability and (dma_mode - XFER_UDMA_0) */
+multiline_comment|/* Cycle time bits and values vary accross chip dma capabilities&n;   These three arrays hold the register layout and the values to set.&n;   Indexed by chipset_family and (dma_mode - XFER_UDMA_0) */
 DECL|variable|cycle_time_offset
 r_static
 id|byte
@@ -1359,7 +1183,7 @@ multiline_comment|/* UDMA */
 r_if
 c_cond
 (paren
-id|dma_capability
+id|chipset_family
 op_ge
 id|ATA_33
 )paren
@@ -1409,7 +1233,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dma_capability
+id|chipset_family
 )paren
 (brace
 r_case
@@ -1514,7 +1338,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dma_capability
+id|chipset_family
 )paren
 (brace
 r_case
@@ -1631,7 +1455,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dma_capability
+id|chipset_family
 )paren
 (brace
 r_case
@@ -1722,7 +1546,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dma_capability
+id|chipset_family
 )paren
 (brace
 r_case
@@ -1932,7 +1756,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dma_capability
+id|chipset_family
 )paren
 (brace
 r_case
@@ -2076,7 +1900,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dma_capability
+id|chipset_family
 OL
 id|ATA_66
 )paren
@@ -2197,7 +2021,7 @@ multiline_comment|/* 80-pin cable ? */
 r_if
 c_cond
 (paren
-id|dma_capability
+id|chipset_family
 OG
 id|ATA_33
 )paren
@@ -2704,7 +2528,7 @@ multiline_comment|/* register layout changed with newer ATA100 chips */
 r_if
 c_cond
 (paren
-id|dma_capability
+id|chipset_family
 OL
 id|ATA_100
 )paren
@@ -3148,7 +2972,7 @@ id|XFER_UDMA_0
 )paren
 op_logical_and
 (paren
-id|dma_capability
+id|chipset_family
 OG
 id|ATA_16
 )paren
@@ -3215,14 +3039,14 @@ l_int|8
 op_minus
 id|cycle_time_range
 (braket
-id|dma_capability
+id|chipset_family
 )braket
 )paren
 )paren
 op_lshift
 id|cycle_time_offset
 (braket
-id|dma_capability
+id|chipset_family
 )braket
 )paren
 suffix:semicolon
@@ -3231,7 +3055,7 @@ id|reg
 op_or_assign
 id|cycle_time_value
 (braket
-id|dma_capability
+id|chipset_family
 op_minus
 id|ATA_00
 )braket
@@ -3243,7 +3067,7 @@ id|XFER_UDMA_0
 op_lshift
 id|cycle_time_offset
 (braket
-id|dma_capability
+id|chipset_family
 )braket
 suffix:semicolon
 id|pci_write_config_byte
@@ -3491,7 +3315,7 @@ op_logical_and
 id|udma_66
 op_logical_and
 (paren
-id|dma_capability
+id|chipset_family
 op_ge
 id|ATA_100a
 )paren
@@ -3515,7 +3339,7 @@ op_logical_and
 id|udma_66
 op_logical_and
 (paren
-id|dma_capability
+id|chipset_family
 op_ge
 id|ATA_66
 )paren
@@ -3539,7 +3363,7 @@ op_logical_and
 id|udma_66
 op_logical_and
 (paren
-id|dma_capability
+id|chipset_family
 op_ge
 id|ATA_66
 )paren
@@ -3561,7 +3385,7 @@ op_logical_and
 id|ultra
 op_logical_and
 (paren
-id|dma_capability
+id|chipset_family
 op_ge
 id|ATA_33
 )paren
@@ -3583,7 +3407,7 @@ op_logical_and
 id|ultra
 op_logical_and
 (paren
-id|dma_capability
+id|chipset_family
 op_ge
 id|ATA_33
 )paren
@@ -3605,7 +3429,7 @@ op_logical_and
 id|ultra
 op_logical_and
 (paren
-id|dma_capability
+id|chipset_family
 op_ge
 id|ATA_33
 )paren
@@ -3811,6 +3635,14 @@ id|ide_dma_action_t
 id|dma_func
 op_assign
 id|ide_dma_off_quietly
+suffix:semicolon
+id|config_chipset_for_pio
+c_func
+(paren
+id|drive
+comma
+l_int|5
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4131,16 +3963,6 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|sis5513_print_registers
-c_func
-(paren
-id|dev
-comma
-l_string|&quot;pci_init_sis5513 start&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Find the chip */
 r_for
 c_loop
@@ -4192,14 +4014,14 @@ id|host_dev
 op_assign
 id|host
 suffix:semicolon
-id|dma_capability
+id|chipset_family
 op_assign
 id|SiSHostChipInfo
 (braket
 id|i
 )braket
 dot
-id|dma_capability
+id|chipset_family
 suffix:semicolon
 id|printk
 c_func
@@ -4218,6 +4040,16 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef DEBUG
+id|sis5513_print_registers
+c_func
+(paren
+id|dev
+comma
+l_string|&quot;pci_init_sis5513 start&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4235,7 +4067,7 @@ id|byte
 id|latency
 op_assign
 (paren
-id|dma_capability
+id|chipset_family
 op_eq
 id|ATA_100
 )paren
@@ -4271,7 +4103,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dma_capability
+id|chipset_family
 )paren
 (brace
 r_case
@@ -4535,7 +4367,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dma_capability
+id|chipset_family
 op_ge
 id|ATA_66
 )paren
@@ -4609,7 +4441,7 @@ macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
-id|dma_capability
+id|chipset_family
 OG
 id|ATA_16
 )paren
