@@ -44,8 +44,9 @@ DECL|macro|MEMORY_INCREMENT_SHIFT
 mdefine_line|#define MEMORY_INCREMENT_SHIFT 28
 DECL|macro|MEMORY_INCREMENT
 mdefine_line|#define MEMORY_INCREMENT (1UL &lt;&lt; MEMORY_INCREMENT_SHIFT)
+multiline_comment|/* NUMA debugging, will not work on a DLPAR machine */
 DECL|macro|DEBUG_NUMA
-mdefine_line|#define DEBUG_NUMA
+macro_line|#undef DEBUG_NUMA
 DECL|function|pa_to_nid
 r_static
 r_inline
