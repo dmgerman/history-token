@@ -10886,6 +10886,19 @@ id|chip-&gt;nr_ac97_codecs
 op_eq
 l_int|1
 op_logical_and
+(paren
+id|snd_cs46xx_codec_read
+c_func
+(paren
+id|chip
+comma
+id|AC97_VENDOR_ID2
+comma
+id|CS46XX_PRIMARY_CODEC_INDEX
+)paren
+op_eq
+l_int|0x592b
+op_logical_or
 id|snd_cs46xx_codec_read
 c_func
 (paren
@@ -10897,6 +10910,7 @@ id|CS46XX_PRIMARY_CODEC_INDEX
 )paren
 op_eq
 l_int|0x592d
+)paren
 )paren
 (brace
 multiline_comment|/* set primary cs4294 codec into Extended Audio Mode */
