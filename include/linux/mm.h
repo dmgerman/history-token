@@ -1762,24 +1762,26 @@ DECL|macro|__GFP_HIGHIO
 mdefine_line|#define __GFP_HIGHIO&t;0x80&t;/* Can start high mem physical IO? */
 DECL|macro|__GFP_FS
 mdefine_line|#define __GFP_FS&t;0x100&t;/* Can call down to low-level FS? */
+DECL|macro|__GFP_WAITBUF
+mdefine_line|#define __GFP_WAITBUF&t;0x200&t;/* Can we wait for buffers to complete? */
 DECL|macro|GFP_NOHIGHIO
 mdefine_line|#define GFP_NOHIGHIO&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO)
 DECL|macro|GFP_NOIO
 mdefine_line|#define GFP_NOIO&t;(__GFP_HIGH | __GFP_WAIT)
 DECL|macro|GFP_NOFS
-mdefine_line|#define GFP_NOFS&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_HIGHIO)
+mdefine_line|#define GFP_NOFS&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_WAITBUF)
 DECL|macro|GFP_ATOMIC
 mdefine_line|#define GFP_ATOMIC&t;(__GFP_HIGH)
 DECL|macro|GFP_USER
-mdefine_line|#define GFP_USER&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
+mdefine_line|#define GFP_USER&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_WAITBUF | __GFP_FS)
 DECL|macro|GFP_HIGHUSER
-mdefine_line|#define GFP_HIGHUSER&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS | __GFP_HIGHMEM)
+mdefine_line|#define GFP_HIGHUSER&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_WAITBUF | __GFP_FS | __GFP_HIGHMEM)
 DECL|macro|GFP_KERNEL
-mdefine_line|#define GFP_KERNEL&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
+mdefine_line|#define GFP_KERNEL&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_WAITBUF | __GFP_FS)
 DECL|macro|GFP_NFS
-mdefine_line|#define GFP_NFS&t;&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
+mdefine_line|#define GFP_NFS&t;&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_WAITBUF | __GFP_FS)
 DECL|macro|GFP_KSWAPD
-mdefine_line|#define GFP_KSWAPD&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
+mdefine_line|#define GFP_KSWAPD&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_WAITBUF | __GFP_FS)
 multiline_comment|/* Flag - indicates that the buffer will be suitable for DMA.  Ignored on some&n;   platforms, used as appropriate on others */
 DECL|macro|GFP_DMA
 mdefine_line|#define GFP_DMA&t;&t;__GFP_DMA

@@ -8960,7 +8960,7 @@ r_struct
 id|compressor_entry
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -9394,7 +9394,7 @@ r_struct
 id|ppp
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -9432,7 +9432,7 @@ r_struct
 id|net_device
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -9731,6 +9731,9 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
+r_int
+id|n_channels
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -9842,6 +9845,10 @@ id|ppp-&gt;dev
 op_assign
 l_int|0
 suffix:semicolon
+id|n_channels
+op_assign
+id|ppp-&gt;n_channels
+suffix:semicolon
 id|ppp_unlock
 c_func
 (paren
@@ -9881,7 +9888,7 @@ multiline_comment|/*&n;&t; * We can&squot;t acquire any new channels (since we h
 r_if
 c_cond
 (paren
-id|ppp-&gt;n_channels
+id|n_channels
 op_eq
 l_int|0
 )paren

@@ -2211,7 +2211,11 @@ id|zonelist
 op_assign
 id|pgdat-&gt;node_zonelists
 op_plus
-id|__GFP_HIGHMEM
+(paren
+id|GFP_USER
+op_amp
+id|GFP_ZONEMASK
+)paren
 suffix:semicolon
 id|zonep
 op_assign

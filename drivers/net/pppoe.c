@@ -1770,6 +1770,7 @@ c_cond
 (paren
 id|po-&gt;pppoe_pa.sid
 )paren
+(brace
 id|delete_item
 c_func
 (paren
@@ -1778,6 +1779,11 @@ comma
 id|po-&gt;pppoe_pa.remote
 )paren
 suffix:semicolon
+id|po-&gt;pppoe_pa.sid
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1788,6 +1794,10 @@ c_func
 (paren
 id|po-&gt;pppoe_dev
 )paren
+suffix:semicolon
+id|po-&gt;pppoe_dev
+op_assign
+l_int|NULL
 suffix:semicolon
 id|sock_orphan
 c_func
