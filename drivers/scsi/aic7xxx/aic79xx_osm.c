@@ -441,17 +441,6 @@ id|aic79xx
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n; * Just in case someone uses commas to separate items on the insmod&n; * command line, we define a dummy buffer here to avoid having insmod&n; * write wild stuff into our code segment&n; */
-DECL|variable|dummy_buffer
-r_static
-r_char
-id|dummy_buffer
-(braket
-l_int|60
-)braket
-op_assign
-l_string|&quot;Please don&squot;t trounce on me insmod!!&bslash;n&quot;
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -2355,26 +2344,6 @@ id|aic79xx_setup
 c_func
 (paren
 id|aic79xx
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dummy_buffer
-(braket
-l_int|0
-)braket
-op_ne
-l_char|&squot;P&squot;
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;aic79xx: Please read the file /usr/src/linux/drivers/scsi/README.aic79xx&bslash;n&quot;
-l_string|&quot;aic79xx: to see the proper way to specify options to the aic79xx module&bslash;n&quot;
-l_string|&quot;aic79xx: Specifically, don&squot;t use any commas when passing arguments to&bslash;n&quot;
-l_string|&quot;aic79xx: insmod or else it might trash certain memory areas.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
