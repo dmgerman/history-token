@@ -46,6 +46,7 @@ macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/of_device.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
+macro_line|#include &lt;asm/smu.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 macro_line|#include &quot;mpic.h&quot;
 macro_line|#ifdef DEBUG
@@ -73,6 +74,31 @@ DECL|variable|sccdbg
 r_int
 id|sccdbg
 suffix:semicolon
+DECL|variable|sys_ctrler
+id|sys_ctrler_t
+id|sys_ctrler
+suffix:semicolon
+DECL|variable|sys_ctrler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sys_ctrler
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PMAC_SMU
+DECL|variable|smu_cmdbuf_abs
+r_int
+r_int
+id|smu_cmdbuf_abs
+suffix:semicolon
+DECL|variable|smu_cmdbuf_abs
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smu_cmdbuf_abs
+)paren
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_void
 id|udbg_init_scc
@@ -422,12 +448,22 @@ id|powersave_nap
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Initialize the PMU */
+macro_line|#ifdef CONFIG_ADB_PMU
+multiline_comment|/* Initialize the PMU if any */
 id|find_via_pmu
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PMAC_SMU
+multiline_comment|/* Initialize the SMU if any */
+id|smu_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Init NVRAM access */
 id|pmac_nvram_init
 c_func
@@ -625,11 +661,40 @@ op_star
 id|cmd
 )paren
 (brace
+r_switch
+c_cond
+(paren
+id|sys_ctrler
+)paren
+(brace
+macro_line|#ifdef CONFIG_ADB_PMU
+r_case
+id|SYS_CTRLER_PMU
+suffix:colon
 id|pmu_restart
 c_func
 (paren
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PMAC_SMU
+r_case
+id|SYS_CTRLER_SMU
+suffix:colon
+id|smu_restart
+c_func
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+r_default
+suffix:colon
+suffix:semicolon
+)brace
 )brace
 DECL|function|pmac_power_off
 r_void
@@ -640,11 +705,40 @@ c_func
 r_void
 )paren
 (brace
+r_switch
+c_cond
+(paren
+id|sys_ctrler
+)paren
+(brace
+macro_line|#ifdef CONFIG_ADB_PMU
+r_case
+id|SYS_CTRLER_PMU
+suffix:colon
 id|pmu_shutdown
 c_func
 (paren
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PMAC_SMU
+r_case
+id|SYS_CTRLER_SMU
+suffix:colon
+id|smu_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+r_default
+suffix:colon
+suffix:semicolon
+)brace
 )brace
 DECL|function|pmac_halt
 r_void
@@ -1549,6 +1643,21 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PMAC_SMU
+multiline_comment|/*&n;&t; * SMU based G5s need some memory below 2Gb, at least the current&n;&t; * driver needs that. We have to allocate it now. We allocate 4k&n;&t; * (1 small page) for now.&n;&t; */
+id|smu_cmdbuf_abs
+op_assign
+id|lmb_alloc_base
+c_func
+(paren
+l_int|4096
+comma
+l_int|4096
+comma
+l_int|0x80000000UL
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PMAC_SMU */
 r_return
 l_int|1
 suffix:semicolon
