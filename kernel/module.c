@@ -18,7 +18,6 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#if 0
-DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP printk
 macro_line|#else
 DECL|macro|DEBUGP
@@ -6430,6 +6429,7 @@ op_logical_neg
 id|gplcrcindex
 )paren
 )paren
+(brace
 id|printk
 c_func
 (paren
