@@ -4,7 +4,7 @@ macro_line|#ifndef __ASM_IBM4XX_H__
 DECL|macro|__ASM_IBM4XX_H__
 mdefine_line|#define __ASM_IBM4XX_H__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_4xx
+macro_line|#ifdef CONFIG_40x
 macro_line|#if defined(CONFIG_ASH)
 macro_line|#include &lt;platforms/ash.h&gt;
 macro_line|#endif
@@ -32,10 +32,6 @@ macro_line|#endif
 macro_line|#ifndef PPC4xx_MACHINE_NAME
 DECL|macro|PPC4xx_MACHINE_NAME
 mdefine_line|#define PPC4xx_MACHINE_NAME&t;&quot;Unidentified 4xx class&quot;
-macro_line|#endif
-macro_line|#ifndef NR_BOARD_IRQS
-DECL|macro|NR_BOARD_IRQS
-mdefine_line|#define NR_BOARD_IRQS 0
 macro_line|#endif
 multiline_comment|/* IO_BASE is for PCI I/O.&n; * ISA not supported, just here to resolve copilation.&n; */
 macro_line|#ifndef _IO_BASE
@@ -67,7 +63,7 @@ mdefine_line|#define mfdcr_or_dflt(rn,default_rval) &bslash;&n;&t;({unsigned int
 DECL|macro|mtdcr
 mdefine_line|#define mtdcr(rn, v)  &bslash;&n;&t;{if (rn != 0) &bslash;&n;&t;&t;asm volatile(&quot;mtdcr &quot; stringify(rn) &quot;,%0&quot; : : &quot;r&quot; (v));}
 macro_line|#endif /* __ASSEMBLY__ */
-macro_line|#endif /* CONFIG_4xx */
+macro_line|#endif /* CONFIG_40x */
 macro_line|#endif /* __ASM_IBM4XX_H__ */
 macro_line|#endif /* __KERNEL__ */
 eof

@@ -33,13 +33,33 @@ r_int
 r_int
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx)
+macro_line|#if defined(CONFIG_40x)
 macro_line|#include &lt;asm/ibm4xx.h&gt;
-multiline_comment|/*&n; * The PowerPC 403 cores&squot; Asynchronous Interrupt Controller (AIC) has&n; * 32 possible interrupts, a majority of which are not implemented on&n; * all cores. There are six configurable, external interrupt pins and&n; * there are eight internal interrupts for the on-chip serial port&n; * (SPU), DMA controller, and JTAG controller.&n; *&n; * The PowerPC 405 cores&squot; Universal Interrupt Controller (UIC) has 32&n; * possible interrupts as well. There are seven, configurable external&n; * interrupt pins and there are 17 internal interrupts for the on-chip&n; * serial port, DMA controller, on-chip Ethernet controller, PCI, etc.&n; *&n; */
+macro_line|#ifndef NR_BOARD_IRQS
+DECL|macro|NR_BOARD_IRQS
+mdefine_line|#define NR_BOARD_IRQS 0
+macro_line|#endif
+macro_line|#ifndef UIC_WIDTH /* Number of interrupts per device */
+DECL|macro|UIC_WIDTH
+mdefine_line|#define UIC_WIDTH 32
+macro_line|#endif
+macro_line|#ifndef NR_UICS /* number  of UIC devices */
+DECL|macro|NR_UICS
+mdefine_line|#define NR_UICS 1
+macro_line|#endif
+macro_line|#if defined (CONFIG_403)
+multiline_comment|/*&n; * The PowerPC 403 cores&squot; Asynchronous Interrupt Controller (AIC) has&n; * 32 possible interrupts, a majority of which are not implemented on&n; * all cores. There are six configurable, external interrupt pins and&n; * there are eight internal interrupts for the on-chip serial port&n; * (SPU), DMA controller, and JTAG controller.&n; *&n; */
 DECL|macro|NR_AIC_IRQS
-mdefine_line|#define&t;NR_AIC_IRQS&t;32
+mdefine_line|#define&t;NR_AIC_IRQS 32 
 DECL|macro|NR_IRQS
-mdefine_line|#define&t;NR_IRQS&t;&t;(NR_AIC_IRQS + NR_BOARD_IRQS)
+mdefine_line|#define&t;NR_IRQS&t; (NR_AIC_IRQS + NR_BOARD_IRQS)
+macro_line|#elif !defined (CONFIG_403)
+multiline_comment|/*&n; *  The PowerPC 405 cores&squot; Universal Interrupt Controller (UIC) has 32&n; * possible interrupts as well. There are seven, configurable external&n; * interrupt pins and there are 17 internal interrupts for the on-chip&n; * serial port, DMA controller, on-chip Ethernet controller, PCI, etc.&n; *&n; */
+DECL|macro|NR_UIC_IRQS
+mdefine_line|#define NR_UIC_IRQS UIC_WIDTH
+DECL|macro|NR_IRQS
+mdefine_line|#define NR_IRQS&t;&t;((NR_UIC_IRQS * NR_UICS) + NR_BOARD_IRQS)
+macro_line|#endif
 r_static
 id|__inline__
 r_int
@@ -57,11 +77,12 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-macro_line|#elif defined (CONFIG_NP405)
-DECL|macro|NR_AIC_IRQS
-mdefine_line|#define NR_AIC_IRQS&t;32
+macro_line|#elif defined(CONFIG_440)
+macro_line|#include &lt;asm/ibm440.h&gt;
+DECL|macro|NR_UIC_IRQS
+mdefine_line|#define&t;NR_UIC_IRQS&t;64
 DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS&t;&t;(NR_AIC_IRQS + NR_BOARD_IRQS)
+mdefine_line|#define&t;NR_IRQS&t;&t;(NR_UIC_IRQS + NR_BOARD_IRQS)
 r_static
 id|__inline__
 r_int
@@ -156,7 +177,7 @@ r_return
 id|irq
 suffix:semicolon
 )brace
-macro_line|#else /* CONFIG_4xx + CONFIG_8xx */
+macro_line|#else /* CONFIG_40x + CONFIG_8xx */
 multiline_comment|/*&n; * this is the # irq&squot;s for all ppc arch&squot;s (pmac/chrp/prep)&n; * so it is the max of them all&n; */
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;256

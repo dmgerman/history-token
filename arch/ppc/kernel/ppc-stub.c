@@ -1820,7 +1820,7 @@ id|hard_trap_info
 )braket
 op_assign
 (brace
-macro_line|#if defined(CONFIG_4xx)
+macro_line|#if defined(CONFIG_40x)
 (brace
 l_int|0x100
 comma
@@ -2228,7 +2228,7 @@ id|ptr
 op_assign
 id|remcomOutBuffer
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx)
+macro_line|#if defined(CONFIG_40x)
 op_star
 id|ptr
 op_increment
@@ -3150,7 +3150,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx)
+macro_line|#if defined(CONFIG_40x)
 id|strcpy
 c_func
 (paren
@@ -3220,7 +3220,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx)
+macro_line|#if defined(CONFIG_40x)
 id|regs-&gt;msr
 op_or_assign
 id|MSR_DE

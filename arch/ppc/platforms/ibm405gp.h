@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ibm405gp.h&n; *&n; *&t;This was derived from the ppc4xx.h and all 405GP specific&n; *&t;definition and board inclusions were moved here.&n; *&n; *      Armin Kuster akuster@mvista.com&n; *      Oct, 2001&n; *&n; *&n; * Copyright 2001 MontaVista Softare Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR   IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,  INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *&t;Version 1.0 (01/10/10) - A. Kuster&n; *&t;Initial version&t; - moved 40GP  specific out of ppc4xx.h&n; *&t;&t;&t;- moved emac reg from ppc405_enet.h&n; *&n; *&t;Version 1.1 02/01/17 - A. Kuster&n; *&t;Moved offsets to ibm405.h&n; */
+multiline_comment|/*&n; * ibm405gp.h&n; *&n; *&t;This was derived from the ppc4xx.h and all 405GP specific&n; *&t;definition and board inclusions were moved here.&n; *&n; *      Armin Kuster akuster@mvista.com&n; *      Oct, 2001&n; *&n; *&n; * Copyright 2001 MontaVista Softare Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR   IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,  INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *&t;Version 1.0 (01/10/10) - A. Kuster&n; *&t;Initial version&t; - moved 40GP  specific out of ppc4xx.h&n; *&t;&t;&t;- moved emac reg from ppc405_enet.h&n; *&n; *&t;Version 1.1 02/01/17 - A. Kuster&n; *&t;Moved offsets to ibm405.h&n; *&n; *&t;Version 1.2 05/01/02 - Armin&n; *&t; added IIC_PORT_DFNS&n; *&n; *&t;Version 1.3 - armin&n; *&t;  removed iic &amp; uart num defines&n; *&t;  and IIC_PORT_DFNS&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_IBM405GP_H__
 DECL|macro|__ASM_IBM405GP_H__
@@ -64,9 +64,9 @@ mdefine_line|#define UART1_INT&t;1
 DECL|macro|PCIL0_BASE
 mdefine_line|#define PCIL0_BASE&t;0xEF400000
 DECL|macro|UART0_IO_BASE
-mdefine_line|#define UART0_IO_BASE&t;(u8 *) 0xEF600300
+mdefine_line|#define UART0_IO_BASE&t;0xEF600300
 DECL|macro|UART1_IO_BASE
-mdefine_line|#define UART1_IO_BASE&t;(u8 *) 0xEF600400
+mdefine_line|#define UART1_IO_BASE&t;0xEF600400
 DECL|macro|IIC0_BASE
 mdefine_line|#define IIC0_BASE&t;0xEF600500
 DECL|macro|OPB0_BASE
@@ -77,17 +77,27 @@ DECL|macro|EMAC0_BASE
 mdefine_line|#define EMAC0_BASE&t;0xEF600800
 DECL|macro|EMAC_NUMS
 mdefine_line|#define EMAC_NUMS&t;1
-DECL|macro|UART_NUMS
-mdefine_line|#define UART_NUMS&t;2
+DECL|macro|IIC0_IRQ
+mdefine_line|#define IIC0_IRQ&t;2
+DECL|macro|IIC1_IRQ
+mdefine_line|#define IIC1_IRQ&t;0
+DECL|macro|IIC_OWN
+mdefine_line|#define IIC_OWN&t;&t;0x55
+DECL|macro|IIC_CLOCK
+mdefine_line|#define IIC_CLOCK&t;50
 DECL|macro|BD_EMAC_ADDR
 mdefine_line|#define BD_EMAC_ADDR(e,i) bi_enetaddr[i]
 DECL|macro|STD_UART_OP
-mdefine_line|#define STD_UART_OP(num)&t;&t;&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0, UART##num##_INT,&t;&t;&t;&bslash;&n;&t;&t;(ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST),&t;&bslash;&n;&t;&t;iomem_base: UART##num##_IO_BASE,&t;&t;&bslash;&n;&t;&t;io_type: SERIAL_IO_MEM},
+mdefine_line|#define STD_UART_OP(num)&t;&t;&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0, UART##num##_INT,&t;&t;&t;&bslash;&n;&t;&t;(ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST),&t;&bslash;&n;&t;&t;iomem_base: (u8 *)UART##num##_IO_BASE,&t;&t;&bslash;&n;&t;&t;io_type: SERIAL_IO_MEM},
 macro_line|#if defined(CONFIG_UART0_TTYS0)
+DECL|macro|SERIAL_DEBUG_IO_BASE
+mdefine_line|#define SERIAL_DEBUG_IO_BASE&t;UART0_IO_BASE
 DECL|macro|SERIAL_PORT_DFNS
 mdefine_line|#define SERIAL_PORT_DFNS&t;&bslash;&n;&t;STD_UART_OP(0)&t;&t;&bslash;&n;&t;STD_UART_OP(1)
 macro_line|#endif
 macro_line|#if defined(CONFIG_UART0_TTYS1)
+DECL|macro|SERIAL_DEBUG_IO_BASE
+mdefine_line|#define SERIAL_DEBUG_IO_BASE&t;UART1_IO_BASE
 DECL|macro|SERIAL_PORT_DFNS
 mdefine_line|#define SERIAL_PORT_DFNS&t;&bslash;&n;&t;STD_UART_OP(1)&t;&t;&bslash;&n;&t;STD_UART_OP(0)
 macro_line|#endif
@@ -100,6 +110,14 @@ DECL|macro|DCRN_CPMSR_BASE
 mdefine_line|#define DCRN_CPMSR_BASE&t;&t;0x0B8
 DECL|macro|DCRN_CPMFR_BASE
 mdefine_line|#define DCRN_CPMFR_BASE&t;&t;0x0BA
+DECL|macro|CHR0_U0EC
+mdefine_line|#define CHR0_U0EC&t;0x00000080&t;/* Select external clock for UART0 */
+DECL|macro|CHR0_U1EC
+mdefine_line|#define CHR0_U1EC&t;0x00000040&t;/* Select external clock for UART1 */
+DECL|macro|CHR0_UDIV
+mdefine_line|#define CHR0_UDIV&t;0x0000003E&t;/* UART internal clock divisor */
+DECL|macro|CHR1_CETE
+mdefine_line|#define CHR1_CETE&t;0x00800000&t;/* CPU external timer enable */
 DECL|macro|DCRN_CHPSR_BASE
 mdefine_line|#define DCRN_CHPSR_BASE         0x0B4
 DECL|macro|PSR_PLL_FWD_MASK
@@ -188,6 +206,8 @@ DECL|macro|DCRN_SDRAM0_BASE
 mdefine_line|#define DCRN_SDRAM0_BASE&t;0x010
 DECL|macro|DCRN_UIC0_BASE
 mdefine_line|#define DCRN_UIC0_BASE&t;&t;0x0C0
+DECL|macro|UIC0
+mdefine_line|#define UIC0 DCRN_UIC0_BASE
 macro_line|#include &lt;platforms/ibm405.h&gt;
 macro_line|#endif&t;&t;&t;&t;/* __ASM_IBM405GP_H__ */
 macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */
