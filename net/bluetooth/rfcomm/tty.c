@@ -3931,6 +3931,11 @@ id|rfcomm_tty_driver
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|magic
 op_assign
 id|TTY_DRIVER_MAGIC
