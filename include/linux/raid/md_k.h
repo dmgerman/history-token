@@ -529,6 +529,11 @@ r_int
 id|faulty
 suffix:semicolon
 multiline_comment|/* if faulty do not issue IO requests */
+DECL|member|in_sync
+r_int
+id|in_sync
+suffix:semicolon
+multiline_comment|/* device is a full member of the array */
 DECL|member|desc_nr
 r_int
 id|desc_nr

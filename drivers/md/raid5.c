@@ -9278,6 +9278,10 @@ op_assign
 id|spare_disk
 suffix:semicolon
 )brace
+id|spare_rdev-&gt;in_sync
+op_assign
+l_int|1
+suffix:semicolon
 id|xchg_values
 c_func
 (paren
