@@ -758,6 +758,7 @@ op_star
 id|dongle
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ISA
 r_void
 id|setup_dma
 c_func
@@ -776,6 +777,7 @@ r_int
 id|mode
 )paren
 suffix:semicolon
+macro_line|#endif
 r_void
 id|irda_task_delete
 c_func
