@@ -9143,7 +9143,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Cut a %d byte packet (%d bytes remaining)%s&bslash;n&quot;
+l_string|&quot;%s: Cut a %d byte packet (%zd bytes remaining)%s&bslash;n&quot;
 comma
 id|strip_info-&gt;dev-&gt;name
 comma
