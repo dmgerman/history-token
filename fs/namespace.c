@@ -67,7 +67,7 @@ suffix:semicolon
 r_extern
 r_int
 id|__init
-id|sysfs_init
+id|fs_subsys_init
 c_func
 (paren
 r_void
@@ -5693,7 +5693,7 @@ c_loop
 id|i
 )paren
 suffix:semicolon
-id|sysfs_init
+id|fs_subsys_init
 c_func
 (paren
 )paren
