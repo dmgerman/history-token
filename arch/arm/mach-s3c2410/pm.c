@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/pm.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 Power Manager (Suspend-To-RAM) support&n; *&n; * See Documentation/arm/Samsung-S3C24XX/Suspend.txt for more information&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Parts based on arch/arm/mach-pxa/pm.c&n; *&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/pm.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 Power Manager (Suspend-To-RAM) support&n; *&n; * See Documentation/arm/Samsung-S3C24XX/Suspend.txt for more information&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Parts based on arch/arm/mach-pxa/pm.c&n; *&n; * Thanks to Dimitry Andric for debugging&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
@@ -7,8 +7,10 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &lt;asm/arch/regs-clock.h&gt;
 macro_line|#include &lt;asm/arch/regs-gpio.h&gt;
 macro_line|#include &lt;asm/arch/regs-mem.h&gt;
@@ -71,6 +73,38 @@ c_func
 (paren
 id|S3C2410_CLKCON
 )paren
+comma
+multiline_comment|/* we restore the timings here, with the proviso that the board&n;&t; * brings the system up in an slower, or equal frequency setting&n;&t; * to the original system.&n;&t; *&n;&t; * if we cannot guarantee this, then things are going to go very&n;&t; * wrong here, as we modify the refresh and both pll settings.&n;&t; */
+id|SAVE_ITEM
+c_func
+(paren
+id|S3C2410_REFRESH
+)paren
+comma
+id|SAVE_ITEM
+c_func
+(paren
+id|S3C2410_MPLLCON
+)paren
+comma
+id|SAVE_ITEM
+c_func
+(paren
+id|S3C2410_UPLLCON
+)paren
+comma
+id|SAVE_ITEM
+c_func
+(paren
+id|S3C2410_CLKDIVN
+)paren
+comma
+id|SAVE_ITEM
+c_func
+(paren
+id|S3C2410_CLKSLOW
+)paren
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* this lot should be really saved by the IRQ code */
@@ -270,6 +304,37 @@ comma
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_S3C2410_PM_DEBUG
+DECL|macro|SAVE_UART
+mdefine_line|#define SAVE_UART(va) &bslash;&n;&t;SAVE_ITEM((va) + S3C2410_ULCON), &bslash;&n;&t;SAVE_ITEM((va) + S3C2410_UCON), &bslash;&n;&t;SAVE_ITEM((va) + S3C2410_UFCON), &bslash;&n;&t;SAVE_ITEM((va) + S3C2410_UMCON), &bslash;&n;&t;SAVE_ITEM((va) + S3C2410_UBRDIV)
+DECL|variable|uart_save
+r_static
+r_struct
+id|sleep_save
+id|uart_save
+(braket
+)braket
+op_assign
+(brace
+id|SAVE_UART
+c_func
+(paren
+id|S3C2410_VA_UART0
+)paren
+comma
+id|SAVE_UART
+c_func
+(paren
+id|S3C2410_VA_UART1
+)paren
+comma
+id|SAVE_UART
+c_func
+(paren
+id|S3C2410_VA_UART2
+)paren
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* debug&n; *&n; * we send the debug to printascii() to allow it to be seen if the&n; * system never wakes up from the sleep&n;*/
 r_extern
 r_void
@@ -337,11 +402,60 @@ id|buff
 )paren
 suffix:semicolon
 )brace
+DECL|function|s3c2410_pm_debug_init
+r_static
+r_void
+id|s3c2410_pm_debug_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|tmp
+op_assign
+id|__raw_readl
+c_func
+(paren
+id|S3C2410_CLKCON
+)paren
+suffix:semicolon
+multiline_comment|/* re-start uart clocks */
+id|tmp
+op_or_assign
+id|S3C2410_CLKCON_UART0
+suffix:semicolon
+id|tmp
+op_or_assign
+id|S3C2410_CLKCON_UART1
+suffix:semicolon
+id|tmp
+op_or_assign
+id|S3C2410_CLKCON_UART2
+suffix:semicolon
+id|__raw_writel
+c_func
+(paren
+id|tmp
+comma
+id|S3C2410_CLKCON
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
+)brace
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt...) pm_dbg(fmt)
 macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt...) printk(KERN_DEBUG fmt)
+DECL|macro|s3c2410_pm_debug_init
+mdefine_line|#define s3c2410_pm_debug_init() do { } while(0)
 macro_line|#endif
 macro_line|#if defined(CONFIG_S3C2410_PM_CHECK) &amp;&amp; CONFIG_S3C2410_PM_CHECK_CHUNKSIZE != 0
 multiline_comment|/* suspend checking code...&n; *&n; * this next area does a set of crc checks over all the installed&n; * memory, so the system can verify if the resume was ok.&n; *&n; * CONFIG_S3C2410_PM_CHECK_CHUNKSIZE defines the block-size for the CRC,&n; * increasing it will mean that the area corrupted will be less easy to spot,&n; * and reducing the size will cause the CRC save area to grow&n;*/
@@ -1028,6 +1142,17 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#else
+DECL|variable|uart_save
+r_static
+r_struct
+id|sleep_save
+id|uart_save
+(braket
+)braket
+op_assign
+(brace
+)brace
+suffix:semicolon
 DECL|macro|s3c2410_pm_check_prepare
 mdefine_line|#define s3c2410_pm_check_prepare() do { } while(0)
 DECL|macro|s3c2410_pm_check_restore
@@ -1086,6 +1211,7 @@ id|ptr-&gt;val
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* s3c2410_pm_do_restore&n; *&n; * restore the system from the given list of saved registers&n; *&n; * Note, we do not use DBG() in here, as the system may not have&n; * restore the UARTs state yet&n;*/
 DECL|function|s3c2410_pm_do_restore
 r_static
 r_void
@@ -1116,10 +1242,11 @@ id|ptr
 op_increment
 )paren
 (brace
-id|DBG
+id|printk
 c_func
 (paren
-l_string|&quot;restore %08lx (restore %08lx, current %08x)&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;restore %08lx (restore %08lx, was %08x)&bslash;n&quot;
 comma
 id|ptr-&gt;reg
 comma
@@ -1426,7 +1553,7 @@ r_int
 id|s3c2410_pm_enter
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 (brace
@@ -1440,6 +1567,12 @@ suffix:semicolon
 r_int
 r_int
 id|tmp
+suffix:semicolon
+multiline_comment|/* ensure the debug is initialised (if enabled) */
+id|s3c2410_pm_debug_init
+c_func
+(paren
+)paren
 suffix:semicolon
 id|DBG
 c_func
@@ -1611,6 +1744,18 @@ id|core_save
 )paren
 )paren
 suffix:semicolon
+id|s3c2410_pm_do_save
+c_func
+(paren
+id|uart_save
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|uart_save
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* set the irq configuration for wake */
 id|s3c2410_pm_configure_extint
 c_func
@@ -1647,13 +1792,13 @@ multiline_comment|/* ack any outstanding external interrupts before we go to sle
 id|__raw_writel
 c_func
 (paren
-id|S3C2410_EINTPEND
-comma
 id|__raw_readl
 c_func
 (paren
 id|S3C2410_EINTPEND
 )paren
+comma
+id|S3C2410_EINTPEND
 )paren
 suffix:semicolon
 multiline_comment|/* flush cache back to ram */
@@ -1695,7 +1840,7 @@ id|S3C2410_GSTATUS2
 suffix:semicolon
 id|tmp
 op_and_assign
-id|S3C2410_GSTATUs2_OFFRESET
+id|S3C2410_GSTATUS2_OFFRESET
 suffix:semicolon
 id|__raw_writel
 c_func
@@ -1703,6 +1848,60 @@ c_func
 id|tmp
 comma
 id|S3C2410_GSTATUS2
+)paren
+suffix:semicolon
+multiline_comment|/* restore the system state */
+id|s3c2410_pm_do_restore
+c_func
+(paren
+id|core_save
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|core_save
+)paren
+)paren
+suffix:semicolon
+id|s3c2410_pm_do_restore
+c_func
+(paren
+id|gpio_save
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|gpio_save
+)paren
+)paren
+suffix:semicolon
+id|s3c2410_pm_do_restore
+c_func
+(paren
+id|irq_save
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|irq_save
+)paren
+)paren
+suffix:semicolon
+id|s3c2410_pm_do_restore
+c_func
+(paren
+id|uart_save
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|uart_save
+)paren
+)paren
+suffix:semicolon
+id|s3c2410_pm_debug_init
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* check what irq (if any) restored the system */
@@ -1757,48 +1956,6 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;post sleep, restoring state...&bslash;n&quot;
-)paren
-suffix:semicolon
-id|s3c2410_pm_do_restore
-c_func
-(paren
-id|core_save
-comma
-id|ARRAY_SIZE
-c_func
-(paren
-id|core_save
-)paren
-)paren
-suffix:semicolon
-id|s3c2410_pm_do_restore
-c_func
-(paren
-id|gpio_save
-comma
-id|ARRAY_SIZE
-c_func
-(paren
-id|gpio_save
-)paren
-)paren
-suffix:semicolon
-id|s3c2410_pm_do_restore
-c_func
-(paren
-id|irq_save
-comma
-id|ARRAY_SIZE
-c_func
-(paren
-id|irq_save
-)paren
-)paren
-suffix:semicolon
-id|DBG
-c_func
-(paren
 l_string|&quot;post sleep, preparing to return&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1825,7 +1982,7 @@ r_int
 id|s3c2410_pm_prepare
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 (brace
@@ -1840,7 +1997,7 @@ r_int
 id|s3c2410_pm_finish
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 (brace

@@ -5182,6 +5182,27 @@ id|used_node_mask
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* Use the local node if we haven&squot;t already */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_bit
+c_func
+(paren
+id|node
+comma
+id|used_node_mask
+)paren
+)paren
+(brace
+id|best_node
+op_assign
+id|node
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 multiline_comment|/* Use the distance array to find the distance */
 id|val
 op_assign

@@ -4032,7 +4032,6 @@ c_cond
 id|par-&gt;palette_blanked
 )paren
 (brace
-singleline_comment|//do_install_cmap(info-&gt;currcon, info);
 id|par-&gt;palette_blanked
 op_assign
 l_int|0

@@ -2386,11 +2386,6 @@ op_assign
 op_amp
 id|cg14_ops
 suffix:semicolon
-id|all-&gt;info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|all-&gt;info.par
 op_assign
 op_amp

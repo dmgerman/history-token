@@ -3018,7 +3018,7 @@ c_func
 (paren
 l_int|0x54000000
 op_or
-id|i2o_systab.phys
+id|i2o_systab.len
 comma
 op_amp
 id|msg-&gt;body

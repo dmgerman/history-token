@@ -1561,11 +1561,6 @@ comma
 l_string|&quot;bw2 ram&quot;
 )paren
 suffix:semicolon
-id|all-&gt;info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|all-&gt;info.par
 op_assign
 op_amp

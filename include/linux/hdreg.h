@@ -1,6 +1,7 @@
 macro_line|#ifndef _LINUX_HDREG_H
 DECL|macro|_LINUX_HDREG_H
 mdefine_line|#define _LINUX_HDREG_H
+macro_line|#include &lt;linux/ata.h&gt;
 multiline_comment|/*&n; * This file contains some defines for the AT-hd-controller.&n; * Various sources.&n; */
 multiline_comment|/* ide.c has its own port definitions in &quot;ide.h&quot; */
 DECL|macro|HD_IRQ
@@ -674,48 +675,6 @@ DECL|macro|SETFEATURES_EN_8BIT
 mdefine_line|#define SETFEATURES_EN_8BIT&t;0x01&t;/* Enable 8-Bit Transfers */
 DECL|macro|SETFEATURES_EN_WCACHE
 mdefine_line|#define SETFEATURES_EN_WCACHE&t;0x02&t;/* Enable write cache */
-DECL|macro|SETFEATURES_XFER
-mdefine_line|#define SETFEATURES_XFER&t;0x03&t;/* Set transfer mode */
-DECL|macro|XFER_UDMA_7
-macro_line|#&t;define XFER_UDMA_7&t;0x47&t;/* 0100|0111 */
-DECL|macro|XFER_UDMA_6
-macro_line|#&t;define XFER_UDMA_6&t;0x46&t;/* 0100|0110 */
-DECL|macro|XFER_UDMA_5
-macro_line|#&t;define XFER_UDMA_5&t;0x45&t;/* 0100|0101 */
-DECL|macro|XFER_UDMA_4
-macro_line|#&t;define XFER_UDMA_4&t;0x44&t;/* 0100|0100 */
-DECL|macro|XFER_UDMA_3
-macro_line|#&t;define XFER_UDMA_3&t;0x43&t;/* 0100|0011 */
-DECL|macro|XFER_UDMA_2
-macro_line|#&t;define XFER_UDMA_2&t;0x42&t;/* 0100|0010 */
-DECL|macro|XFER_UDMA_1
-macro_line|#&t;define XFER_UDMA_1&t;0x41&t;/* 0100|0001 */
-DECL|macro|XFER_UDMA_0
-macro_line|#&t;define XFER_UDMA_0&t;0x40&t;/* 0100|0000 */
-DECL|macro|XFER_MW_DMA_2
-macro_line|#&t;define XFER_MW_DMA_2&t;0x22&t;/* 0010|0010 */
-DECL|macro|XFER_MW_DMA_1
-macro_line|#&t;define XFER_MW_DMA_1&t;0x21&t;/* 0010|0001 */
-DECL|macro|XFER_MW_DMA_0
-macro_line|#&t;define XFER_MW_DMA_0&t;0x20&t;/* 0010|0000 */
-DECL|macro|XFER_SW_DMA_2
-macro_line|#&t;define XFER_SW_DMA_2&t;0x12&t;/* 0001|0010 */
-DECL|macro|XFER_SW_DMA_1
-macro_line|#&t;define XFER_SW_DMA_1&t;0x11&t;/* 0001|0001 */
-DECL|macro|XFER_SW_DMA_0
-macro_line|#&t;define XFER_SW_DMA_0&t;0x10&t;/* 0001|0000 */
-DECL|macro|XFER_PIO_4
-macro_line|#&t;define XFER_PIO_4&t;0x0C&t;/* 0000|1100 */
-DECL|macro|XFER_PIO_3
-macro_line|#&t;define XFER_PIO_3&t;0x0B&t;/* 0000|1011 */
-DECL|macro|XFER_PIO_2
-macro_line|#&t;define XFER_PIO_2&t;0x0A&t;/* 0000|1010 */
-DECL|macro|XFER_PIO_1
-macro_line|#&t;define XFER_PIO_1&t;0x09&t;/* 0000|1001 */
-DECL|macro|XFER_PIO_0
-macro_line|#&t;define XFER_PIO_0&t;0x08&t;/* 0000|1000 */
-DECL|macro|XFER_PIO_SLOW
-macro_line|#&t;define XFER_PIO_SLOW&t;0x00&t;/* 0000|0000 */
 DECL|macro|SETFEATURES_DIS_DEFECT
 mdefine_line|#define SETFEATURES_DIS_DEFECT&t;0x04&t;/* Disable Defect Management */
 DECL|macro|SETFEATURES_EN_APM

@@ -761,7 +761,7 @@ op_assign
 l_int|1UL
 op_lshift
 (paren
-id|root-&gt;index_bits
+id|BITS_PER_LONG
 op_minus
 l_int|1
 )paren
@@ -1104,7 +1104,7 @@ op_assign
 l_int|1UL
 op_lshift
 (paren
-id|iter-&gt;root-&gt;index_bits
+id|BITS_PER_LONG
 op_minus
 l_int|1
 )paren
@@ -1282,7 +1282,7 @@ op_assign
 l_int|1UL
 op_lshift
 (paren
-id|iter-&gt;root-&gt;index_bits
+id|BITS_PER_LONG
 op_minus
 l_int|1
 )paren

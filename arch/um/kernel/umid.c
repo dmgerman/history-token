@@ -194,6 +194,11 @@ op_star
 id|add
 )paren
 (brace
+op_star
+id|add
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 id|set_umid
 c_func

@@ -1126,6 +1126,7 @@ id|var-&gt;yres_virtual
 )paren
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 id|offset
@@ -6323,7 +6324,7 @@ id|n
 id|dinfo-&gt;ring_head
 op_assign
 (paren
-id|u32
+id|u8
 id|__iomem
 op_star
 )paren
@@ -6622,7 +6623,7 @@ macro_line|#endif
 id|dinfo-&gt;ring_head
 op_assign
 (paren
-id|u32
+id|u8
 id|__iomem
 op_star
 )paren
@@ -8045,7 +8046,9 @@ c_func
 (paren
 id|CURSOR_A_BASEADDR
 comma
-id|dinfo-&gt;cursor.physical
+id|dinfo-&gt;cursor.offset
+op_lshift
+l_int|12
 )paren
 suffix:semicolon
 id|tmp

@@ -8191,7 +8191,7 @@ id|node-&gt;bussubno
 op_assign
 id|node-&gt;busno
 suffix:semicolon
-id|iommu_devnode_init
+id|iommu_devnode_init_pSeries
 c_func
 (paren
 id|node
@@ -8444,6 +8444,41 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Prepare an OF node for removal from system&n; */
+DECL|function|of_cleanup_node
+r_static
+r_void
+id|of_cleanup_node
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|np
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|np-&gt;iommu_table
+op_logical_and
+id|get_property
+c_func
+(paren
+id|np
+comma
+l_string|&quot;ibm,dma-window&quot;
+comma
+l_int|NULL
+)paren
+)paren
+id|iommu_free_table
+c_func
+(paren
+id|np
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Remove an OF device node from the system.&n; * Caller should have already &quot;gotten&quot; np.&n; */
 DECL|function|of_remove_node
 r_int
@@ -8509,20 +8544,12 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-multiline_comment|/* XXX This is a layering violation, should be moved to the caller&n;&t; * --BenH.&n;&t; */
-macro_line|#ifdef CONFIG_PPC_PSERIES
-r_if
-c_cond
-(paren
-id|np-&gt;iommu_table
-)paren
-id|iommu_free_table
+id|of_cleanup_node
 c_func
 (paren
 id|np
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PPC_PSERIES */
 id|write_lock
 c_func
 (paren

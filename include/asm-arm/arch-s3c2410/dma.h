@@ -344,18 +344,19 @@ op_star
 id|regs
 suffix:semicolon
 multiline_comment|/* channels registers */
+DECL|member|addr_reg
+r_void
+id|__iomem
+op_star
+id|addr_reg
+suffix:semicolon
+multiline_comment|/* data address register */
 DECL|member|irq
 r_int
 r_int
 id|irq
 suffix:semicolon
 multiline_comment|/* channel irq */
-DECL|member|addr_reg
-r_int
-r_int
-id|addr_reg
-suffix:semicolon
-multiline_comment|/* data address register */
 DECL|member|dcon
 r_int
 r_int

@@ -145,7 +145,7 @@ comma
 dot
 id|idcode
 op_assign
-l_int|0x3241002
+l_int|0x32410002
 comma
 dot
 id|idmask

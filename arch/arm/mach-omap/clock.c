@@ -79,6 +79,21 @@ id|rate_table
 op_assign
 (brace
 multiline_comment|/* MPU MHz, xtal MHz, dpll1 MHz, CKCTL, DPLL_CTL&n;&t; * armdiv, dspdiv, dspmmu, tcdiv, perdiv, lcddiv&n;&t; */
+macro_line|#if defined(CONFIG_OMAP_ARM_216MHZ) &amp;&amp; defined(CONFIG_ARCH_OMAP16XX)
+(brace
+l_int|216000000
+comma
+l_int|12000000
+comma
+l_int|216000000
+comma
+l_int|0x050d
+comma
+l_int|0x2910
+)brace
+comma
+multiline_comment|/* 1/1/2/2/2/8 */
+macro_line|#endif
 macro_line|#if defined(CONFIG_OMAP_ARM_195MHZ) &amp;&amp; defined(CONFIG_ARCH_OMAP730)
 (brace
 l_int|195000000
@@ -395,6 +410,10 @@ comma
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+op_or
 id|ALWAYS_ENABLED
 comma
 )brace
@@ -420,6 +439,10 @@ comma
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+op_or
 id|RATE_PROPAGATES
 op_or
 id|ALWAYS_ENABLED
@@ -447,7 +470,7 @@ comma
 dot
 id|flags
 op_assign
-id|DOES_NOT_EXIST_ON_1510
+id|CLOCK_IN_OMAP16XX
 comma
 dot
 id|enable_reg
@@ -488,6 +511,10 @@ comma
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+op_or
 id|RATE_CKCTL
 op_or
 id|RATE_PROPAGATES
@@ -528,6 +555,10 @@ comma
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+op_or
 id|RATE_CKCTL
 comma
 dot
@@ -574,7 +605,7 @@ comma
 dot
 id|flags
 op_assign
-id|DOES_NOT_EXIST_ON_1610
+id|CLOCK_IN_OMAP1510
 comma
 dot
 id|enable_reg
@@ -613,6 +644,13 @@ op_amp
 id|ck_ref
 comma
 dot
+id|flags
+op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+comma
+dot
 id|enable_reg
 op_assign
 id|ARM_IDLECT2
@@ -649,6 +687,13 @@ op_amp
 id|ck_ref
 comma
 dot
+id|flags
+op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+comma
+dot
 id|enable_reg
 op_assign
 id|ARM_IDLECT2
@@ -683,6 +728,13 @@ id|parent
 op_assign
 op_amp
 id|ck_ref
+comma
+dot
+id|flags
+op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
 comma
 dot
 id|enable_reg
@@ -723,7 +775,7 @@ comma
 dot
 id|flags
 op_assign
-id|DOES_NOT_EXIST_ON_1510
+id|CLOCK_IN_OMAP16XX
 comma
 dot
 id|recalc
@@ -755,6 +807,10 @@ comma
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+op_or
 id|RATE_CKCTL
 comma
 dot
@@ -801,6 +857,10 @@ comma
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+op_or
 id|RATE_CKCTL
 op_or
 id|ALWAYS_ENABLED
@@ -839,6 +899,10 @@ comma
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+op_or
 id|RATE_CKCTL
 op_or
 id|RATE_PROPAGATES
@@ -879,7 +943,7 @@ comma
 dot
 id|flags
 op_assign
-id|DOES_NOT_EXIST_ON_1610
+id|CLOCK_IN_OMAP1510
 comma
 dot
 id|recalc
@@ -911,7 +975,7 @@ comma
 dot
 id|flags
 op_assign
-id|DOES_NOT_EXIST_ON_1610
+id|CLOCK_IN_OMAP1510
 comma
 dot
 id|recalc
@@ -942,7 +1006,7 @@ comma
 dot
 id|flags
 op_assign
-id|DOES_NOT_EXIST_ON_1510
+id|CLOCK_IN_OMAP16XX
 comma
 dot
 id|enable_reg
@@ -983,7 +1047,7 @@ comma
 dot
 id|flags
 op_assign
-id|DOES_NOT_EXIST_ON_1510
+id|CLOCK_IN_OMAP16XX
 comma
 dot
 id|enable_reg
@@ -1024,7 +1088,7 @@ comma
 dot
 id|flags
 op_assign
-id|DOES_NOT_EXIST_ON_1510
+id|CLOCK_IN_OMAP16XX
 comma
 dot
 id|enable_reg
@@ -1063,6 +1127,13 @@ op_amp
 id|tc_ck
 comma
 dot
+id|flags
+op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+comma
+dot
 id|recalc
 op_assign
 op_amp
@@ -1091,7 +1162,7 @@ comma
 dot
 id|flags
 op_assign
-id|DOES_NOT_EXIST_ON_1510
+id|CLOCK_IN_OMAP16XX
 comma
 dot
 id|recalc
@@ -1118,6 +1189,13 @@ id|parent
 op_assign
 op_amp
 id|tc_ck
+comma
+dot
+id|flags
+op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
 comma
 dot
 id|enable_reg
@@ -1158,7 +1236,7 @@ comma
 dot
 id|flags
 op_assign
-id|DOES_NOT_EXIST_ON_1610
+id|CLOCK_IN_OMAP1510
 comma
 dot
 id|enable_reg
@@ -1199,7 +1277,7 @@ comma
 dot
 id|flags
 op_assign
-id|DOES_NOT_EXIST_ON_1510
+id|CLOCK_IN_OMAP16XX
 comma
 dot
 id|recalc
@@ -1230,7 +1308,7 @@ comma
 dot
 id|flags
 op_assign
-id|DOES_NOT_EXIST_ON_1510
+id|CLOCK_IN_OMAP16XX
 comma
 dot
 id|recalc
@@ -1261,6 +1339,10 @@ comma
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+op_or
 id|RATE_CKCTL
 comma
 dot
@@ -1307,6 +1389,10 @@ comma
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+op_or
 id|RATE_FIXED
 op_or
 id|ENABLE_REG_32BIT
@@ -1345,6 +1431,10 @@ comma
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+op_or
 id|RATE_FIXED
 op_or
 id|ENABLE_REG_32BIT
@@ -1383,6 +1473,10 @@ comma
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+op_or
 id|RATE_FIXED
 op_or
 id|ENABLE_REG_32BIT
@@ -1421,11 +1515,11 @@ comma
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP16XX
+op_or
 id|RATE_FIXED
 op_or
 id|ENABLE_REG_32BIT
-op_or
-id|DOES_NOT_EXIST_ON_1510
 comma
 dot
 id|enable_reg
@@ -1460,9 +1554,9 @@ comma
 dot
 id|flags
 op_assign
-id|RATE_FIXED
+id|CLOCK_IN_OMAP1510
 op_or
-id|DOES_NOT_EXIST_ON_1610
+id|RATE_FIXED
 comma
 )brace
 suffix:semicolon
@@ -1488,6 +1582,10 @@ multiline_comment|/* Actually 2 clocks, 12MHz and 48MHz */
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+op_or
 id|RATE_FIXED
 op_or
 id|ENABLE_REG_32BIT
@@ -1505,51 +1603,6 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* To be done --&n;static struct clk mclk = {&n;&t;.name&t;&t;= &quot;mclk&quot;,&n;};&n;&n;static struct clk bclk = {&n;&t;.name&t;&t;= &quot;bclk&quot;,&n;};&n;-- to be done */
-DECL|variable|mmc_ck
-r_static
-r_struct
-id|clk
-id|mmc_ck
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;mmc1_ck&quot;
-comma
-dot
-id|parent
-op_assign
-op_amp
-id|armxor_ck
-comma
-multiline_comment|/* (1510) */
-dot
-id|rate
-op_assign
-l_int|48000000
-comma
-dot
-id|flags
-op_assign
-id|RATE_FIXED
-op_or
-id|ENABLE_REG_32BIT
-op_or
-id|DOES_NOT_EXIST_ON_1610
-comma
-dot
-id|enable_reg
-op_assign
-id|MOD_CONF_CTRL_0
-comma
-dot
-id|enable_bit
-op_assign
-l_int|23
-comma
-)brace
-suffix:semicolon
 DECL|variable|mmc1_ck
 r_static
 r_struct
@@ -1562,7 +1615,13 @@ id|name
 op_assign
 l_string|&quot;mmc1_ck&quot;
 comma
-multiline_comment|/* Direct from ULPD, no parent (1610/1710) */
+multiline_comment|/* Functional clock is direct from ULPD, interface clock is ARMPER */
+dot
+id|parent
+op_assign
+op_amp
+id|armper_ck
+comma
 dot
 id|rate
 op_assign
@@ -1571,11 +1630,13 @@ comma
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+op_or
 id|RATE_FIXED
 op_or
 id|ENABLE_REG_32BIT
-op_or
-id|DOES_NOT_EXIST_ON_1510
 comma
 dot
 id|enable_reg
@@ -1601,7 +1662,13 @@ id|name
 op_assign
 l_string|&quot;mmc2_ck&quot;
 comma
-multiline_comment|/* Direct from ULPD, no parent */
+multiline_comment|/* Functional clock is direct from ULPD, interface clock is ARMPER */
+dot
+id|parent
+op_assign
+op_amp
+id|armper_ck
+comma
 dot
 id|rate
 op_assign
@@ -1610,11 +1677,11 @@ comma
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP16XX
+op_or
 id|RATE_FIXED
 op_or
 id|ENABLE_REG_32BIT
-op_or
-id|DOES_NOT_EXIST_ON_1510
 comma
 dot
 id|enable_reg
@@ -1643,6 +1710,10 @@ comma
 dot
 id|flags
 op_assign
+id|CLOCK_IN_OMAP1510
+op_or
+id|CLOCK_IN_OMAP16XX
+op_or
 id|VIRTUAL_CLOCK
 op_or
 id|ALWAYS_ENABLED
@@ -1784,13 +1855,8 @@ id|usb_hhc_ck
 comma
 multiline_comment|/* To be done --&n;&t;&amp;mclk,&n;&t;&amp;bclk,&n;&t;-- to be done */
 op_amp
-id|mmc_ck
-comma
-multiline_comment|/* 1510 */
-op_amp
 id|mmc1_ck
 comma
-multiline_comment|/* 1610/1710 */
 op_amp
 id|mmc2_ck
 comma
@@ -1976,7 +2042,8 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;Enable for %s without enable enabled&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;clock.c: Enable for %s without enable code&bslash;n&quot;
 comma
 id|clk-&gt;name
 )paren
@@ -2502,23 +2569,6 @@ op_star
 id|clk
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|clk-&gt;rate
-op_eq
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Get rate for %s without cached clock&bslash;n&quot;
-comma
-id|clk-&gt;name
-)paren
-suffix:semicolon
-)brace
 r_return
 id|clk-&gt;rate
 suffix:semicolon
@@ -3569,14 +3619,13 @@ c_cond
 (paren
 (paren
 (paren
-(paren
 op_star
 id|clkp
 )paren
 op_member_access_from_pointer
 id|flags
 op_amp
-id|DOES_NOT_EXIST_ON_1510
+id|CLOCK_IN_OMAP1510
 )paren
 op_logical_and
 id|cpu_is_omap1510
@@ -3584,7 +3633,19 @@ c_func
 (paren
 )paren
 )paren
-op_logical_or
+(brace
+id|clk_register
+c_func
+(paren
+op_star
+id|clkp
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
 (paren
 (paren
 (paren
@@ -3594,35 +3655,15 @@ id|clkp
 op_member_access_from_pointer
 id|flags
 op_amp
-id|DOES_NOT_EXIST_ON_1610
+id|CLOCK_IN_OMAP16XX
 )paren
 op_logical_and
-(paren
-id|cpu_is_omap1610
+id|cpu_is_omap16xx
 c_func
 (paren
-)paren
-op_logical_or
-id|cpu_is_omap1710
-c_func
-(paren
-)paren
-)paren
 )paren
 )paren
 (brace
-(paren
-op_star
-id|clkp
-)paren
-op_member_access_from_pointer
-id|parent
-op_assign
-l_int|0
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 id|clk_register
 c_func
 (paren
@@ -3630,6 +3671,9 @@ op_star
 id|clkp
 )paren
 suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 )brace
 id|info
 op_assign
@@ -3706,6 +3750,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;System frequencies not set. Check your config.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3740,6 +3785,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Clocking rate (xtal/DPLL1/MPU): %ld/%ld/%ld&bslash;n&quot;
 comma
 id|ck_ref.rate
@@ -3861,12 +3907,6 @@ c_func
 (paren
 op_amp
 id|arm_gpio_ck
-)paren
-suffix:semicolon
-id|start_mputimer1
-c_func
-(paren
-l_int|0xffffffff
 )paren
 suffix:semicolon
 r_return

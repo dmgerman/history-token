@@ -494,12 +494,30 @@ op_amp
 id|sys.enable_user
 )paren
 suffix:semicolon
+id|oprofilefs_create_ulong
+c_func
+(paren
+id|sb
+comma
+id|root
+comma
+l_string|&quot;backtrace_spinlocks&quot;
+comma
+op_amp
+id|sys.backtrace_spinlocks
+)paren
+suffix:semicolon
 multiline_comment|/* Default to tracing both kernel and user */
 id|sys.enable_kernel
 op_assign
 l_int|1
 suffix:semicolon
 id|sys.enable_user
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Turn on backtracing through spinlocks by default */
+id|sys.backtrace_spinlocks
 op_assign
 l_int|1
 suffix:semicolon

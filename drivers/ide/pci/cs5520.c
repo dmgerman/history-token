@@ -763,22 +763,6 @@ op_amp
 id|index
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Index.b %d %d&bslash;n&quot;
-comma
-id|index.b.low
-comma
-id|index.b.high
-)paren
-suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|2000
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

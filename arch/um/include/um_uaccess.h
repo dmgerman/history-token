@@ -5,10 +5,10 @@ mdefine_line|#define __ARCH_UM_UACCESS_H
 macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;choose-mode.h&quot;
 macro_line|#ifdef CONFIG_MODE_TT
-macro_line|#include &quot;../kernel/tt/include/uaccess.h&quot;
+macro_line|#include &quot;uaccess-tt.h&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_MODE_SKAS
-macro_line|#include &quot;../kernel/skas/include/uaccess.h&quot;
+macro_line|#include &quot;uaccess-skas.h&quot;
 macro_line|#endif
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type, addr, size) &bslash;&n;&t;CHOOSE_MODE_PROC(access_ok_tt, access_ok_skas, type, addr, size)
