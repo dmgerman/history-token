@@ -10,19 +10,10 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR SCSI_DISK0_MAJOR&t;/* For DEVICE_NR() */
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;aacraid.h&quot;
-macro_line|#warning this is broken
-DECL|macro|N_SD_MAJORS
-mdefine_line|#define N_SD_MAJORS&t;8
-DECL|macro|SD_MAJOR_MASK
-mdefine_line|#define SD_MAJOR_MASK&t;(N_SD_MAJORS - 1)
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (((major(device) &amp; SD_MAJOR_MASK) &lt;&lt; (8 - 4)) + (minor(device) &gt;&gt; 4))
 multiline_comment|/*&t;SCSI Commands */
 multiline_comment|/*&t;TODO:  dmb - use the ones defined in include/scsi/scsi.h */
 DECL|macro|SS_TEST
@@ -2118,14 +2109,7 @@ c_func
 (paren
 id|dev-&gt;pdev
 comma
-(paren
-id|dma_addr_t
-)paren
-(paren
-r_int
-r_int
-)paren
-id|scsicmd-&gt;SCp.ptr
+id|scsicmd-&gt;SCp.dma_handle
 comma
 id|scsicmd-&gt;request_bufflen
 comma
@@ -2406,14 +2390,7 @@ c_func
 (paren
 id|dev-&gt;pdev
 comma
-(paren
-id|dma_addr_t
-)paren
-(paren
-r_int
-r_int
-)paren
-id|scsicmd-&gt;SCp.ptr
+id|scsicmd-&gt;SCp.dma_handle
 comma
 id|scsicmd-&gt;request_bufflen
 comma
@@ -5395,10 +5372,7 @@ c_func
 (paren
 id|dev-&gt;pdev
 comma
-(paren
-id|ulong
-)paren
-id|scsicmd-&gt;SCp.ptr
+id|scsicmd-&gt;SCp.dma_handle
 comma
 id|scsicmd-&gt;request_bufflen
 comma
@@ -6776,12 +6750,8 @@ c_func
 id|scsicmd-&gt;request_bufflen
 )paren
 suffix:semicolon
-id|scsicmd-&gt;SCp.ptr
+id|scsicmd-&gt;SCp.dma_handle
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|addr
 suffix:semicolon
 id|byte_count
@@ -7187,12 +7157,8 @@ c_func
 id|scsicmd-&gt;request_bufflen
 )paren
 suffix:semicolon
-id|scsicmd-&gt;SCp.ptr
+id|scsicmd-&gt;SCp.dma_handle
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|addr
 suffix:semicolon
 id|byte_count

@@ -1716,12 +1716,16 @@ suffix:semicolon
 )brace
 id|param-&gt;cylinders
 op_assign
+id|cap_to_cyls
+c_func
+(paren
 id|capacity
-op_div
+comma
 (paren
 id|param-&gt;heads
 op_star
 id|param-&gt;sectors
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Read the partition table block&n;&t; */
@@ -1898,12 +1902,16 @@ suffix:semicolon
 )brace
 id|param-&gt;cylinders
 op_assign
+id|cap_to_cyls
+c_func
+(paren
 id|capacity
-op_div
+comma
 (paren
 id|param-&gt;heads
 op_star
 id|param-&gt;sectors
+)paren
 )paren
 suffix:semicolon
 r_if
