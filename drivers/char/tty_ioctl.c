@@ -360,11 +360,12 @@ op_assign
 op_star
 id|tty-&gt;termios
 suffix:semicolon
-id|cli
+id|__cli
 c_func
 (paren
 )paren
 suffix:semicolon
+singleline_comment|// FIXME: is this safe?
 op_star
 id|tty-&gt;termios
 op_assign
@@ -423,11 +424,12 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|sti
+id|__sti
 c_func
 (paren
 )paren
 suffix:semicolon
+singleline_comment|// FIXME: is this safe?
 r_if
 c_cond
 (paren

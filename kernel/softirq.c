@@ -72,9 +72,6 @@ c_func
 (paren
 )paren
 (brace
-r_int
-id|cpu
-suffix:semicolon
 id|__u32
 id|pending
 suffix:semicolon
@@ -83,6 +80,9 @@ id|flags
 suffix:semicolon
 id|__u32
 id|mask
+suffix:semicolon
+r_int
+id|cpu
 suffix:semicolon
 r_if
 c_cond
@@ -241,7 +241,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function must run with irq disabled!&n; */
+multiline_comment|/*&n; * This function must run with irqs disabled!&n; */
 DECL|function|cpu_raise_softirq
 r_inline
 r_void
@@ -270,18 +270,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
-id|local_irq_count
+id|in_interrupt
 c_func
 (paren
-id|cpu
-)paren
-op_or
-id|local_bh_count
-c_func
-(paren
-id|cpu
-)paren
 )paren
 )paren
 id|wakeup_softirqd
@@ -1033,14 +1024,6 @@ r_int
 id|nr
 )paren
 (brace
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1054,19 +1037,6 @@ id|global_bh_lock
 )paren
 r_goto
 id|resched
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hardirq_trylock
-c_func
-(paren
-id|cpu
-)paren
-)paren
-r_goto
-id|resched_unlock
 suffix:semicolon
 r_if
 c_cond
@@ -1086,7 +1056,6 @@ suffix:semicolon
 id|hardirq_endlock
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -1098,8 +1067,6 @@ id|global_bh_lock
 suffix:semicolon
 r_return
 suffix:semicolon
-id|resched_unlock
-suffix:colon
 id|spin_unlock
 c_func
 (paren

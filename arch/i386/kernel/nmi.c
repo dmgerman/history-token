@@ -145,7 +145,7 @@ id|tmp
 )paren
 )paren
 suffix:semicolon
-id|sti
+id|__sti
 c_func
 (paren
 )paren

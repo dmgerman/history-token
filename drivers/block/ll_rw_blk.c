@@ -6841,16 +6841,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(__i386__)&t;/* Do we even need this? */
-id|outb_p
-c_func
-(paren
-l_int|0xc
-comma
-l_int|0x3f2
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

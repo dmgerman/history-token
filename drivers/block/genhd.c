@@ -608,11 +608,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_I2O
 id|i2o_init
 c_func

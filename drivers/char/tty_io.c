@@ -1753,23 +1753,24 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME! What are the locking issues here? This may me overdoing things.. */
+multiline_comment|/* FIXME! What are the locking issues here? This may me overdoing things..&n;&t;* this question is especially important now that we&squot;ve removed the irqlock. */
 (brace
 r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|__save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
+id|__cli
 c_func
 (paren
 )paren
 suffix:semicolon
+singleline_comment|// FIXME: is this safe?
 r_if
 c_cond
 (paren
@@ -1819,12 +1820,13 @@ id|tty-&gt;ldisc.write_wakeup
 id|tty
 )paren
 suffix:semicolon
-id|restore_flags
+id|__restore_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
+singleline_comment|// FIXME: is this safe?
 )brace
 id|wake_up_interruptible
 c_func
@@ -7988,17 +7990,18 @@ id|tty-&gt;flip.buf_num
 op_assign
 l_int|0
 suffix:semicolon
-id|save_flags
+id|__save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
+id|__cli
 c_func
 (paren
 )paren
 suffix:semicolon
+singleline_comment|// FIXME: is this safe?
 id|tty-&gt;flip.char_buf_ptr
 op_assign
 id|tty-&gt;flip.char_buf
@@ -8022,17 +8025,18 @@ id|tty-&gt;flip.buf_num
 op_assign
 l_int|1
 suffix:semicolon
-id|save_flags
+id|__save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
+id|__cli
 c_func
 (paren
 )paren
 suffix:semicolon
+singleline_comment|// FIXME: is this safe?
 id|tty-&gt;flip.char_buf_ptr
 op_assign
 id|tty-&gt;flip.char_buf
@@ -8054,12 +8058,13 @@ id|tty-&gt;flip.count
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|__restore_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
+singleline_comment|// FIXME: is this safe?
 id|tty-&gt;ldisc
 dot
 id|receive_buf

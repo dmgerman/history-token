@@ -1883,7 +1883,7 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|preempt_get_count
+id|preempt_count
 c_func
 (paren
 )paren
@@ -1899,7 +1899,7 @@ id|current-&gt;comm
 comma
 id|current-&gt;pid
 comma
-id|preempt_get_count
+id|preempt_count
 c_func
 (paren
 )paren

@@ -4177,19 +4177,18 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|__save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* all CPUs */
-id|cli
+singleline_comment|// FIXME: is this safe?
+id|__cli
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* all CPUs */
 macro_line|#if 0
 r_if
 c_cond
@@ -4207,12 +4206,13 @@ id|owner
 )paren
 )paren
 (brace
-id|restore_flags
+id|__restore_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
+singleline_comment|// FIXME: is this safe?
 r_return
 l_int|1
 suffix:semicolon
@@ -4233,13 +4233,13 @@ id|drive
 )paren
 )paren
 (brace
-id|restore_flags
+id|__restore_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* all CPUs */
+singleline_comment|// FIXME: is this safe?
 r_return
 l_int|1
 suffix:semicolon
@@ -4256,13 +4256,13 @@ id|drive-&gt;driver
 op_assign
 l_int|NULL
 suffix:semicolon
-id|restore_flags
+id|__restore_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* all CPUs */
+singleline_comment|// FIXME: is this safe?
 r_return
 l_int|0
 suffix:semicolon

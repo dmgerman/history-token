@@ -3931,11 +3931,12 @@ id|tty
 )paren
 )paren
 (brace
-id|cli
+id|__cli
 c_func
 (paren
 )paren
 suffix:semicolon
+singleline_comment|// FIXME: is this safe?
 id|memset
 c_func
 (paren
@@ -4213,11 +4214,12 @@ comma
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
-id|sti
+id|__sti
 c_func
 (paren
 )paren
 suffix:semicolon
+singleline_comment|// FIXME: is this safe?
 id|tty-&gt;raw
 op_assign
 l_int|0
