@@ -1492,7 +1492,6 @@ id|device_id
 op_assign
 id|PCI_DEVICE_ID_VIA_8753_0
 comma
-singleline_comment|// 0x3128
 dot
 id|chipset_name
 op_assign
@@ -1535,7 +1534,6 @@ id|device_id
 op_assign
 id|PCI_DEVICE_ID_VIA_KM266
 comma
-singleline_comment|// 0x3116
 dot
 id|chipset_name
 op_assign
@@ -1550,7 +1548,6 @@ id|device_id
 op_assign
 id|PCI_DEVICE_ID_VIA_CLE266
 comma
-singleline_comment|// 0x3123
 dot
 id|chipset_name
 op_assign
@@ -1596,7 +1593,6 @@ id|device_id
 op_assign
 id|PCI_DEVICE_ID_VIA_8752
 comma
-singleline_comment|// 0x3148
 dot
 id|chipset_name
 op_assign
@@ -1609,9 +1605,8 @@ multiline_comment|/* KN266/PN266 */
 dot
 id|device_id
 op_assign
-id|PCI_DEVICE_ID_KN266
+id|PCI_DEVICE_ID_VIA_KN266
 comma
-singleline_comment|// 0x3156
 dot
 id|chipset_name
 op_assign
@@ -1639,7 +1634,6 @@ id|device_id
 op_assign
 id|PCI_DEVICE_ID_VIA_P4N333
 comma
-singleline_comment|// 0x3178
 dot
 id|chipset_name
 op_assign
@@ -1654,7 +1648,6 @@ id|device_id
 op_assign
 id|PCI_DEVICE_ID_VIA_P4X600
 comma
-singleline_comment|// 0x0198
 dot
 id|chipset_name
 op_assign
@@ -1669,7 +1662,6 @@ id|device_id
 op_assign
 id|PCI_DEVICE_ID_VIA_KM400
 comma
-singleline_comment|// 0x3205
 dot
 id|chipset_name
 op_assign
@@ -1684,7 +1676,6 @@ id|device_id
 op_assign
 id|PCI_DEVICE_ID_VIA_P4M400
 comma
-singleline_comment|// 0x3209
 dot
 id|chipset_name
 op_assign
