@@ -15,18 +15,6 @@ mdefine_line|#define DEVICE_NR(device) (device)
 DECL|macro|LOCAL_END_REQUEST
 mdefine_line|#define LOCAL_END_REQUEST
 macro_line|#include &lt;linux/blk.h&gt;
-multiline_comment|/* for old kernels... */
-macro_line|#ifndef QUEUE_EMPTY
-DECL|macro|QUEUE_EMPTY
-mdefine_line|#define QUEUE_EMPTY  (!CURRENT)
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20300
-DECL|macro|QUEUE_PLUGGED
-mdefine_line|#define QUEUE_PLUGGED (blk_dev[MAJOR_NR].plug_tq.sync)
-macro_line|#else
-DECL|macro|QUEUE_PLUGGED
-mdefine_line|#define QUEUE_PLUGGED (blk_queue_plugged(QUEUE))
-macro_line|#endif
 macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 r_static
@@ -1893,9 +1881,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|QUEUE_EMPTY
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
 op_logical_or
-id|QUEUE_PLUGGED
+id|blk_queue_plugged
+c_func
+(paren
+id|QUEUE
+)paren
 )paren
 (brace
 id|spin_unlock_irq

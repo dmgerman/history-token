@@ -2434,7 +2434,11 @@ r_while
 c_loop
 (paren
 op_logical_neg
-id|QUEUE_EMPTY
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
 op_logical_and
 id|fs-&gt;state
 op_eq
