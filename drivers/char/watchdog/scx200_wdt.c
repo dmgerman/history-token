@@ -1,4 +1,4 @@
-multiline_comment|/* linux/drivers/char/scx200_wdt.c &n;&n;   National Semiconductor SCx200 Watchdog support&n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;   Som code taken from:&n;   National Semiconductor PC87307/PC97307 (ala SC1200) WDT driver&n;   (c) Copyright 2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;&n;&n;   This program is free software; you can redistribute it and/or&n;   modify it under the terms of the GNU General Public License as&n;   published by the Free Software Foundation; either version 2 of the&n;   License, or (at your option) any later version.&n;&n;   The author(s) of this software shall not be held liable for damages&n;   of any nature resulting due to the use of this software. This&n;   software is provided AS-IS with no warranties. */
+multiline_comment|/* drivers/char/watchdog/scx200_wdt.c&n;&n;   National Semiconductor SCx200 Watchdog support&n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;   Som code taken from:&n;   National Semiconductor PC87307/PC97307 (ala SC1200) WDT driver&n;   (c) Copyright 2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;&n;&n;   This program is free software; you can redistribute it and/or&n;   modify it under the terms of the GNU General Public License as&n;   published by the Free Software Foundation; either version 2 of the&n;   License, or (at your option) any later version.&n;&n;   The author(s) of this software shall not be held liable for damages&n;   of any nature resulting due to the use of this software. This&n;   software is provided AS-IS with no warranties. */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -99,7 +99,7 @@ id|open_semaphore
 suffix:semicolon
 DECL|variable|expect_close
 r_static
-r_int
+r_char
 id|expect_close
 suffix:semicolon
 multiline_comment|/* Bits of the WDCNFG register */
@@ -296,10 +296,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|expect_close
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -324,8 +320,9 @@ id|file
 r_if
 c_cond
 (paren
-op_logical_neg
 id|expect_close
+op_ne
+l_int|42
 )paren
 (brace
 id|printk
@@ -351,6 +348,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|expect_close
+op_assign
+l_int|0
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -419,6 +420,7 @@ dot
 id|notifier_call
 op_assign
 id|scx200_wdt_notify_sys
+comma
 )brace
 suffix:semicolon
 DECL|function|scx200_wdt_write
@@ -520,7 +522,7 @@ l_char|&squot;V&squot;
 )paren
 id|expect_close
 op_assign
-l_int|1
+l_int|42
 suffix:semicolon
 )brace
 r_return
@@ -596,7 +598,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|ENOTTY
+id|ENOIOCTLCMD
 suffix:semicolon
 r_case
 id|WDIOC_GETSUPPORT

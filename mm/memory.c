@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/rmap-locking.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/rmap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -3005,58 +3006,21 @@ comma
 id|start
 )paren
 suffix:semicolon
-macro_line|#ifdef FIXADDR_USER_START
 r_if
 c_cond
 (paren
 op_logical_neg
 id|vma
 op_logical_and
+id|in_gate_area
+c_func
+(paren
+id|tsk
+comma
 id|start
-op_ge
-id|FIXADDR_USER_START
-op_logical_and
-id|start
-OL
-id|FIXADDR_USER_END
+)paren
 )paren
 (brace
-r_static
-r_struct
-id|vm_area_struct
-id|fixmap_vma
-op_assign
-(brace
-multiline_comment|/* Catch users - if there are any valid&n;&t;&t;&t;&t;   ones, we can make this be &quot;&amp;init_mm&quot; or&n;&t;&t;&t;&t;   something.  */
-dot
-id|vm_mm
-op_assign
-l_int|NULL
-comma
-dot
-id|vm_start
-op_assign
-id|FIXADDR_USER_START
-comma
-dot
-id|vm_end
-op_assign
-id|FIXADDR_USER_END
-comma
-dot
-id|vm_page_prot
-op_assign
-id|PAGE_READONLY
-comma
-dot
-id|vm_flags
-op_assign
-id|VM_READ
-op_or
-id|VM_EXEC
-comma
-)brace
-suffix:semicolon
 r_int
 r_int
 id|pg
@@ -3064,6 +3028,17 @@ op_assign
 id|start
 op_amp
 id|PAGE_MASK
+suffix:semicolon
+r_struct
+id|vm_area_struct
+op_star
+id|gate_vma
+op_assign
+id|get_gate_vma
+c_func
+(paren
+id|tsk
+)paren
 suffix:semicolon
 id|pgd_t
 op_star
@@ -3082,7 +3057,7 @@ c_cond
 (paren
 id|write
 )paren
-multiline_comment|/* user fixmap pages are read-only */
+multiline_comment|/* user gate pages are read-only */
 r_return
 id|i
 ques
@@ -3207,8 +3182,7 @@ id|vmas
 id|i
 )braket
 op_assign
-op_amp
-id|fixmap_vma
+id|gate_vma
 suffix:semicolon
 id|i
 op_increment
@@ -3223,7 +3197,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6577,17 +6550,9 @@ c_cond
 op_logical_neg
 id|page
 )paren
-(brace
-id|page_cache_release
-c_func
-(paren
-id|new_page
-)paren
-suffix:semicolon
 r_goto
 id|oom
 suffix:semicolon
-)brace
 id|copy_user_highpage
 c_func
 (paren
@@ -6823,6 +6788,12 @@ id|out
 suffix:semicolon
 id|oom
 suffix:colon
+id|page_cache_release
+c_func
+(paren
+id|new_page
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|VM_FAULT_OOM
@@ -7735,4 +7706,52 @@ c_func
 id|vmalloc_to_page
 )paren
 suffix:semicolon
+macro_line|#if !defined(CONFIG_ARCH_GATE_AREA) &amp;&amp; defined(AT_SYSINFO_EHDR)
+DECL|variable|gate_vma
+r_struct
+id|vm_area_struct
+id|gate_vma
+suffix:semicolon
+DECL|function|gate_vma_init
+r_static
+r_int
+id|__init
+id|gate_vma_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|gate_vma.vm_mm
+op_assign
+l_int|NULL
+suffix:semicolon
+id|gate_vma.vm_start
+op_assign
+id|FIXADDR_USER_START
+suffix:semicolon
+id|gate_vma.vm_end
+op_assign
+id|FIXADDR_USER_END
+suffix:semicolon
+id|gate_vma.vm_page_prot
+op_assign
+id|PAGE_READONLY
+suffix:semicolon
+id|gate_vma.vm_flags
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|gate_vma_init
+id|__initcall
+c_func
+(paren
+id|gate_vma_init
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divamnt.c,v 1.28 2003/09/18 06:57:18 schindler Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divamnt.c,v 1.32 2004/01/15 09:48:13 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -19,7 +19,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.28 $&quot;
+l_string|&quot;$Revision: 1.32 $&quot;
 suffix:semicolon
 DECL|variable|major
 r_static
@@ -165,6 +165,9 @@ c_func
 r_void
 op_star
 id|buf
+comma
+r_int
+id|count
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  helper functions&n; */
@@ -1482,6 +1485,11 @@ r_char
 op_star
 )paren
 id|buf
+comma
+(paren
+r_int
+)paren
+id|count
 )paren
 )paren
 suffix:semicolon
@@ -1515,6 +1523,11 @@ id|maint_read_write
 c_func
 (paren
 id|buf
+comma
+(paren
+r_int
+)paren
+id|count
 )paren
 )paren
 suffix:semicolon

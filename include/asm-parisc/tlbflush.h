@@ -27,17 +27,13 @@ op_star
 id|mm
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|mm
 op_eq
 op_amp
 id|init_mm
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Should never happen */

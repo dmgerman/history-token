@@ -151,7 +151,8 @@ suffix:semicolon
 DECL|function|AFS_FS_I
 r_static
 r_inline
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|AFS_FS_I
 c_func
@@ -168,7 +169,8 @@ c_func
 (paren
 id|inode
 comma
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 comma
 id|vfs_inode
 )paren
@@ -183,7 +185,8 @@ op_star
 id|AFS_VNODE_TO_I
 c_func
 (paren
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 )paren
@@ -198,7 +201,8 @@ r_int
 id|afs_vnode_fetch_status
 c_func
 (paren
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 )paren
@@ -208,7 +212,8 @@ r_int
 id|afs_vnode_fetch_data
 c_func
 (paren
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 comma
@@ -223,7 +228,8 @@ r_int
 id|afs_vnode_give_up_callback
 c_func
 (paren
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 )paren
