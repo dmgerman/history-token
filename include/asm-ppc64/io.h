@@ -314,8 +314,6 @@ DECL|macro|outsl_ns
 mdefine_line|#define outsl_ns(port, buf, nl)&t;_outsl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT ~(0UL)
-DECL|macro|MEM_SPACE_LIMIT
-mdefine_line|#define MEM_SPACE_LIMIT ~(0UL)
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Map in an area of physical address space, for accessing&n; * I/O devices etc.&n; */
 r_extern
