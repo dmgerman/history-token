@@ -240,6 +240,7 @@ DECL|macro|MOXA_GET_CUMAJOR
 mdefine_line|#define         MOXA_GET_CUMAJOR      (MOXA + 64)
 DECL|macro|MOXA_GETMSTATUS
 mdefine_line|#define         MOXA_GETMSTATUS       (MOXA + 65)
+macro_line|#ifdef CONFIG_PCI
 DECL|variable|mxser_pcibrds
 r_static
 r_struct
@@ -358,6 +359,7 @@ comma
 id|mxser_pcibrds
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_PCI */
 DECL|variable|ioaddr
 r_static
 r_int
@@ -828,22 +830,6 @@ r_int
 id|mxser_get_ISA_conf
 c_func
 (paren
-r_int
-comma
-r_struct
-id|mxser_hwconf
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|mxser_get_PCI_conf
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
 r_int
 comma
 r_struct
@@ -1738,6 +1724,7 @@ op_star
 id|hwconf
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PCI
 DECL|function|mxser_get_PCI_conf
 r_static
 r_int
@@ -1872,6 +1859,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PCI */
 DECL|variable|mxser_ops
 r_static
 r_struct
