@@ -1692,14 +1692,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Ok, at this point all CPU&squot;s should be initialized, so&n;&t; * we can start looking into devices..&n;&t; */
-macro_line|#if defined(CONFIG_ARCH_S390)
-id|s390_init_machine_check
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Networking initialization needs a process context */
 id|sock_init
 c_func
