@@ -1209,10 +1209,6 @@ id|usblp-&gt;writeurb-&gt;transfer_buffer_length
 op_assign
 l_int|0
 suffix:semicolon
-id|usblp-&gt;writeurb-&gt;status
-op_assign
-l_int|0
-suffix:semicolon
 id|usblp-&gt;wcomplete
 op_assign
 l_int|1
