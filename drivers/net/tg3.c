@@ -476,6 +476,38 @@ l_int|0UL
 )brace
 comma
 (brace
+id|PCI_VENDOR_ID_BROADCOM
+comma
+id|PCI_DEVICE_ID_TIGON3_5704S_2
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0UL
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_BROADCOM
+comma
+id|PCI_DEVICE_ID_TIGON3_5705F
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0UL
+)brace
+comma
+(brace
 id|PCI_VENDOR_ID_SYSKONNECT
 comma
 id|PCI_DEVICE_ID_SYSKONNECT_9DXX
@@ -33189,7 +33221,7 @@ op_assign
 (brace
 multiline_comment|/* Broadcom boards. */
 (brace
-l_int|0x14e4
+id|PCI_VENDOR_ID_BROADCOM
 comma
 l_int|0x1644
 comma
@@ -33198,7 +33230,7 @@ id|PHY_ID_BCM5401
 comma
 multiline_comment|/* BCM95700A6 */
 (brace
-l_int|0x14e4
+id|PCI_VENDOR_ID_BROADCOM
 comma
 l_int|0x0001
 comma
@@ -33207,7 +33239,7 @@ id|PHY_ID_BCM5701
 comma
 multiline_comment|/* BCM95701A5 */
 (brace
-l_int|0x14e4
+id|PCI_VENDOR_ID_BROADCOM
 comma
 l_int|0x0002
 comma
@@ -33216,7 +33248,7 @@ id|PHY_ID_BCM8002
 comma
 multiline_comment|/* BCM95700T6 */
 (brace
-l_int|0x14e4
+id|PCI_VENDOR_ID_BROADCOM
 comma
 l_int|0x0003
 comma
@@ -33225,7 +33257,7 @@ id|PHY_ID_SERDES
 comma
 multiline_comment|/* BCM95700A9 */
 (brace
-l_int|0x14e4
+id|PCI_VENDOR_ID_BROADCOM
 comma
 l_int|0x0005
 comma
@@ -33234,7 +33266,7 @@ id|PHY_ID_BCM5701
 comma
 multiline_comment|/* BCM95701T1 */
 (brace
-l_int|0x14e4
+id|PCI_VENDOR_ID_BROADCOM
 comma
 l_int|0x0006
 comma
@@ -33243,7 +33275,7 @@ id|PHY_ID_BCM5701
 comma
 multiline_comment|/* BCM95701T8 */
 (brace
-l_int|0x14e4
+id|PCI_VENDOR_ID_BROADCOM
 comma
 l_int|0x0007
 comma
@@ -33252,7 +33284,7 @@ id|PHY_ID_SERDES
 comma
 multiline_comment|/* BCM95701A7 */
 (brace
-l_int|0x14e4
+id|PCI_VENDOR_ID_BROADCOM
 comma
 l_int|0x0008
 comma
@@ -33261,7 +33293,7 @@ id|PHY_ID_BCM5701
 comma
 multiline_comment|/* BCM95701A10 */
 (brace
-l_int|0x14e4
+id|PCI_VENDOR_ID_BROADCOM
 comma
 l_int|0x8008
 comma
@@ -33270,7 +33302,7 @@ id|PHY_ID_BCM5701
 comma
 multiline_comment|/* BCM95701A12 */
 (brace
-l_int|0x14e4
+id|PCI_VENDOR_ID_BROADCOM
 comma
 l_int|0x0009
 comma
@@ -33279,7 +33311,7 @@ id|PHY_ID_BCM5701
 comma
 multiline_comment|/* BCM95703Ax1 */
 (brace
-l_int|0x14e4
+id|PCI_VENDOR_ID_BROADCOM
 comma
 l_int|0x8009
 comma
@@ -33306,8 +33338,6 @@ id|PHY_ID_BCM5701
 )brace
 comma
 multiline_comment|/* 3C996BT */
-multiline_comment|/* { PCI_VENDOR_ID_3COM, 0x1002, PHY_ID_XXX },     3C996CT */
-multiline_comment|/* { PCI_VENDOR_ID_3COM, 0x1003, PHY_ID_XXX },     3C997T */
 (brace
 id|PCI_VENDOR_ID_3COM
 comma
@@ -33317,7 +33347,6 @@ id|PHY_ID_SERDES
 )brace
 comma
 multiline_comment|/* 3C996SX */
-multiline_comment|/* { PCI_VENDOR_ID_3COM, 0x1005, PHY_ID_XXX },     3C997SZ */
 (brace
 id|PCI_VENDOR_ID_3COM
 comma
@@ -33417,7 +33446,17 @@ l_int|0x0099
 comma
 id|PHY_ID_BCM5701
 )brace
+comma
 multiline_comment|/* NC7780_2 */
+multiline_comment|/* IBM boards. */
+(brace
+id|PCI_VENDOR_ID_IBM
+comma
+l_int|0x0281
+comma
+id|PHY_ID_SERDES
+)brace
+multiline_comment|/* IBM??? */
 )brace
 suffix:semicolon
 DECL|function|tg3_phy_probe
@@ -35669,6 +35708,10 @@ op_logical_or
 id|tp-&gt;pdev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_TIGON3_5901_2
+op_logical_or
+id|tp-&gt;pdev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_TIGON3_5705F
 )paren
 )paren
 )paren
