@@ -249,6 +249,11 @@ op_star
 id|special
 suffix:semicolon
 multiline_comment|/*&n;&t; * when request is used as a packet command carrier&n;&t; */
+DECL|member|cmd_len
+r_int
+r_int
+id|cmd_len
+suffix:semicolon
 DECL|member|cmd
 r_int
 r_char
