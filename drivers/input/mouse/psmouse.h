@@ -182,6 +182,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+multiline_comment|/* Used to signal completion from interrupt handler */
+DECL|member|wait
+id|wait_queue_head_t
+id|wait
+suffix:semicolon
 DECL|member|protocol_handler
 id|psmouse_ret_t
 (paren
