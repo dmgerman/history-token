@@ -2782,7 +2782,6 @@ id|p-&gt;error_info
 comma
 r_sizeof
 (paren
-op_amp
 id|arg32-&gt;error_info
 )paren
 )paren
@@ -3015,7 +3014,6 @@ id|p-&gt;error_info
 comma
 r_sizeof
 (paren
-op_amp
 id|arg32-&gt;error_info
 )paren
 )paren
