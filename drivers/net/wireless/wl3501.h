@@ -506,6 +506,16 @@ id|WL3501_STATUS_ALREADY_BSS
 comma
 )brace
 suffix:semicolon
+DECL|macro|WL3501_MGMT_CAPABILITY_ESS
+mdefine_line|#define WL3501_MGMT_CAPABILITY_ESS&t;&t;0x0001  /* see 802.11 p.58 */
+DECL|macro|WL3501_MGMT_CAPABILITY_IBSS
+mdefine_line|#define WL3501_MGMT_CAPABILITY_IBSS&t;&t;0x0002  /*      - &quot; -&t;   */
+DECL|macro|WL3501_MGMT_CAPABILITY_CF_POLLABLE
+mdefine_line|#define WL3501_MGMT_CAPABILITY_CF_POLLABLE&t;0x0004  /*      - &quot; -&t;   */
+DECL|macro|WL3501_MGMT_CAPABILITY_CF_POLL_REQUEST
+mdefine_line|#define WL3501_MGMT_CAPABILITY_CF_POLL_REQUEST&t;0x0008  /*      - &quot; -&t;   */
+DECL|macro|WL3501_MGMT_CAPABILITY_PRIVACY
+mdefine_line|#define WL3501_MGMT_CAPABILITY_PRIVACY&t;&t;0x0010  /*      - &quot; -&t;   */
 DECL|macro|WL3501_FREQ_DOMAIN_FCC
 mdefine_line|#define WL3501_FREQ_DOMAIN_FCC    0x10&t;/* Channel 1 to 11 */
 DECL|macro|WL3501_FREQ_DOMAIN_IC
