@@ -963,7 +963,7 @@ id|sigsetsize
 suffix:semicolon
 multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * Note, this macro can only be used in the file which defines sys_ni_syscall, i.e., in&n; * kernel/sys.c.  This version causes warnings because the declaration isn&squot;t a&n; * proper prototype, but we can&squot;t use __typeof__ either, because not all cond_syscall()&n; * declarations have prototypes at the moment.&n; */
 DECL|macro|cond_syscall
-mdefine_line|#define cond_syscall(x) asmlinkage long x() __attribute__((weak,alias(&quot;sys_ni_syscall&quot;)));
+mdefine_line|#define cond_syscall(x) asmlinkage long x (void) __attribute__((weak,alias(&quot;sys_ni_syscall&quot;)));
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_UNISTD_H */
