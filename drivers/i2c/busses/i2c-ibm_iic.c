@@ -2604,7 +2604,7 @@ suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|adap-&gt;dev.name
+id|adap-&gt;name
 comma
 l_string|&quot;IBM IIC&quot;
 )paren
