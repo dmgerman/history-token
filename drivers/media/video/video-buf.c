@@ -1642,6 +1642,8 @@ id|page
 )paren
 comma
 id|vaddr
+comma
+id|page
 )paren
 suffix:semicolon
 r_return
