@@ -656,11 +656,11 @@ multiline_comment|/* Register access convenience macros */
 DECL|macro|hermes_read_reg
 mdefine_line|#define hermes_read_reg(hw, off) ((hw)-&gt;io_space ? &bslash;&n;&t;inw((hw)-&gt;iobase + ( (off) &lt;&lt; (hw)-&gt;reg_spacing )) : &bslash;&n;&t;readw((hw)-&gt;iobase + ( (off) &lt;&lt; (hw)-&gt;reg_spacing )))
 DECL|macro|hermes_write_reg
-mdefine_line|#define hermes_write_reg(hw, off, val) ((hw)-&gt;io_space ? &bslash;&n;&t;outw_p((val), (hw)-&gt;iobase + ( (off) &lt;&lt; (hw)-&gt;reg_spacing )) : &bslash;&n;&t;writew((val), (hw)-&gt;iobase + ( (off) &lt;&lt; (hw)-&gt;reg_spacing )))
+mdefine_line|#define hermes_write_reg(hw, off, val) do { &bslash;&n;&t;if ((hw)-&gt;io_space) &bslash;&n;&t;&t;outw_p((val), (hw)-&gt;iobase + ((off) &lt;&lt; (hw)-&gt;reg_spacing)); &bslash;&n;&t;else &bslash;&n;&t;&t;writew((val), (hw)-&gt;iobase + ((off) &lt;&lt; (hw)-&gt;reg_spacing)); &bslash;&n;&t;} while (0)
 DECL|macro|hermes_read_regn
-mdefine_line|#define hermes_read_regn(hw, name) (hermes_read_reg((hw), HERMES_##name))
+mdefine_line|#define hermes_read_regn(hw, name) hermes_read_reg((hw), HERMES_##name)
 DECL|macro|hermes_write_regn
-mdefine_line|#define hermes_write_regn(hw, name, val) (hermes_write_reg((hw), HERMES_##name, (val)))
+mdefine_line|#define hermes_write_regn(hw, name, val) hermes_write_reg((hw), HERMES_##name, (val))
 multiline_comment|/* Function prototypes */
 r_void
 id|hermes_struct_init
