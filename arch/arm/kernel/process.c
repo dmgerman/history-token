@@ -1405,7 +1405,7 @@ id|tsk-&gt;thread.debug.bp
 l_int|0
 )braket
 dot
-id|insn
+id|insn.arm
 suffix:semicolon
 id|dump-&gt;u_debugreg
 (braket
@@ -1417,7 +1417,7 @@ id|tsk-&gt;thread.debug.bp
 l_int|1
 )braket
 dot
-id|insn
+id|insn.arm
 suffix:semicolon
 id|dump-&gt;u_debugreg
 (braket
