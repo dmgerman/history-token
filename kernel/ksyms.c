@@ -577,13 +577,6 @@ c_func
 id|path_lookup
 )paren
 suffix:semicolon
-DECL|variable|path_init
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|path_init
-)paren
-suffix:semicolon
 DECL|variable|path_walk
 id|EXPORT_SYMBOL
 c_func
