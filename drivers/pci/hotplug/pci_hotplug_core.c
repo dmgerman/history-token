@@ -1003,8 +1003,6 @@ op_assign
 id|S_IFREG
 op_or
 id|S_IRUGO
-op_or
-id|S_IWUSR
 )brace
 comma
 dot
@@ -1092,8 +1090,6 @@ op_assign
 id|S_IFREG
 op_or
 id|S_IRUGO
-op_or
-id|S_IWUSR
 )brace
 comma
 dot
@@ -1318,8 +1314,6 @@ op_assign
 id|S_IFREG
 op_or
 id|S_IRUGO
-op_or
-id|S_IWUSR
 )brace
 comma
 dot
@@ -1431,8 +1425,6 @@ op_assign
 id|S_IFREG
 op_or
 id|S_IRUGO
-op_or
-id|S_IWUSR
 )brace
 comma
 dot
