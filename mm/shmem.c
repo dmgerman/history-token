@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/shmem_fs.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* This magic number is used in glibc for posix shared memory */
 DECL|macro|TMPFS_MAGIC

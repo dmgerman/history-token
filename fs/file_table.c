@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/eventpoll.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 multiline_comment|/* sysctl tunables... */
 DECL|variable|files_stat
 r_struct

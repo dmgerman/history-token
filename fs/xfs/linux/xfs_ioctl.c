@@ -4,6 +4,7 @@ macro_line|#include &lt;xfs_fsops.h&gt;
 macro_line|#include &lt;xfs_dfrag.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 r_extern
 r_int
 id|xfs_change_file_space

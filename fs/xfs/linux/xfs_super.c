@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &quot;xfs_version.h&quot;
 multiline_comment|/* xfs_vfs[ops].c */
 r_extern

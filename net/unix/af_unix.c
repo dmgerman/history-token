@@ -32,6 +32,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 DECL|variable|sysctl_unix_max_dgram_qlen
 r_int

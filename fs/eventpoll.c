@@ -17,13 +17,14 @@ macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/eventpoll.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;linux/eventpoll.h&gt;
 DECL|macro|EVENTPOLLFS_MAGIC
 mdefine_line|#define EVENTPOLLFS_MAGIC 0x03111965 /* My birthday should work for this :) */
 DECL|macro|DEBUG_EPOLL
