@@ -3305,7 +3305,8 @@ id|BLK_BOUNCE_HIGH
 suffix:semicolon
 )brace
 DECL|function|scsi_alloc_queue
-id|request_queue_t
+r_struct
+id|request_queue
 op_star
 id|scsi_alloc_queue
 c_func
@@ -3316,15 +3317,16 @@ op_star
 id|sdev
 )paren
 (brace
-id|request_queue_t
-op_star
-id|q
-suffix:semicolon
 r_struct
 id|Scsi_Host
 op_star
 id|shost
+op_assign
+id|sdev-&gt;host
 suffix:semicolon
+r_struct
+id|request_queue
+op_star
 id|q
 op_assign
 id|kmalloc
@@ -3362,24 +3364,6 @@ id|q
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * XXX move host code to scsi_register&n;&t; */
-id|shost
-op_assign
-id|sdev-&gt;host
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|shost-&gt;max_sectors
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Driver imposes no hard sector transfer limit.&n;&t;&t; * start at machine infinity initially.&n;&t;&t; */
-id|shost-&gt;max_sectors
-op_assign
-id|SCSI_DEFAULT_MAX_SECTORS
-suffix:semicolon
-)brace
 id|blk_init_queue
 c_func
 (paren
@@ -3459,7 +3443,8 @@ r_void
 id|scsi_free_queue
 c_func
 (paren
-id|request_queue_t
+r_struct
+id|request_queue
 op_star
 id|q
 )paren

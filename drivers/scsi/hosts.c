@@ -1286,6 +1286,20 @@ id|shost-&gt;highmem_io
 op_assign
 id|shost_tp-&gt;highmem_io
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|shost_tp-&gt;max_sectors
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Driver imposes no hard sector transfer limit.&n;&t;&t; * start at machine infinity initially.&n;&t;&t; */
+id|shost-&gt;max_sectors
+op_assign
+id|SCSI_DEFAULT_MAX_SECTORS
+suffix:semicolon
+)brace
+r_else
 id|shost-&gt;max_sectors
 op_assign
 id|shost_tp-&gt;max_sectors
