@@ -1676,8 +1676,8 @@ id|copy_to_user
 c_func
 (paren
 (paren
-r_int
-r_char
+r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -1798,8 +1798,8 @@ id|copy_to_user
 c_func
 (paren
 (paren
-r_int
-r_char
+r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2051,8 +2051,8 @@ id|copy_to_user
 c_func
 (paren
 (paren
-r_int
-r_char
+r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2156,8 +2156,8 @@ id|copy_to_user
 c_func
 (paren
 (paren
-r_int
-r_char
+r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2264,7 +2264,8 @@ c_cond
 id|copy_to_user
 (paren
 (paren
-r_int
+r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2318,6 +2319,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -2706,6 +2708,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma

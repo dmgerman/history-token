@@ -1583,6 +1583,11 @@ id|copy_from_user
 (paren
 id|temp_buffer
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|buf
 comma
 id|count

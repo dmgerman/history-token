@@ -1316,6 +1316,11 @@ c_func
 (paren
 id|acm-&gt;writeurb-&gt;transfer_buffer
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|buf
 comma
 id|count
