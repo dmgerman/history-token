@@ -317,8 +317,9 @@ id|tq_struct
 id|wanpipe_tq_task
 op_assign
 (brace
+dot
 id|routine
-suffix:colon
+op_assign
 (paren
 r_void
 (paren
@@ -331,8 +332,9 @@ op_star
 )paren
 id|run_wanpipe_tq
 comma
+dot
 id|data
-suffix:colon
+op_assign
 op_amp
 id|wanpipe_tq_custom
 )brace

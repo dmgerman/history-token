@@ -8392,20 +8392,24 @@ id|pci_driver
 id|xircom_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 id|DRV_NAME
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|xircom_pci_table
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|xircom_init_one
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|__devexit_p
 c_func
 (paren
@@ -8413,12 +8417,14 @@ id|xircom_remove_one
 )paren
 comma
 macro_line|#ifdef CONFIG_PM
+dot
 id|suspend
-suffix:colon
+op_assign
 id|xircom_suspend
 comma
+dot
 id|resume
-suffix:colon
+op_assign
 id|xircom_resume
 macro_line|#endif /* CONFIG_PM */
 )brace

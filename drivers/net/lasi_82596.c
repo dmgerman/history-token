@@ -7126,13 +7126,15 @@ id|net_device
 id|dev_82596
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 id|devicename
 comma
 multiline_comment|/* device name inserted by drivers/net/net_init.c */
+dot
 id|init
-suffix:colon
+op_assign
 id|lasi_i82596_probe
 comma
 )brace

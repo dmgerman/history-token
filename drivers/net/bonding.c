@@ -8194,8 +8194,9 @@ id|notifier_block
 id|bond_netdev_notifier
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|bond_event
 comma
 )brace
