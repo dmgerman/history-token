@@ -6263,7 +6263,7 @@ c_cond
 (paren
 id|retval
 op_assign
-id|hcd_register_root
+id|usb_hcd_register_root_hub
 (paren
 id|root
 comma

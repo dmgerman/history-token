@@ -2247,6 +2247,7 @@ suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/**&n; * usb_register_bus - registers the USB host controller with the usb core&n; * @bus: pointer to the bus to register&n; * Context: !in_interrupt()&n; *&n; * Assigns a bus number, and links the controller into usbcore data&n; * structures so that it can be seen by scanning the bus list.&n; */
 DECL|function|usb_register_bus
+r_static
 r_int
 id|usb_register_bus
 c_func
@@ -2413,6 +2414,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_deregister_bus - deregisters the USB host controller&n; * @bus: pointer to the bus to deregister&n; * Context: !in_interrupt()&n; *&n; * Recycles the bus number, and unlinks the controller from usbcore data&n; * structures so that it won&squot;t be seen by scanning the bus list.&n; */
 DECL|function|usb_deregister_bus
+r_static
 r_void
 id|usb_deregister_bus
 (paren
@@ -2475,10 +2477,10 @@ id|bus-&gt;class_dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_register_root_hub - called by HCD to register its root hub &n; * @usb_dev: the usb root hub device to be registered.&n; * @parent_dev: the parent device of this root hub.&n; *&n; * The USB host controller calls this function to register the root hub&n; * properly with the USB subsystem.  It sets up the device properly in&n; * the device tree and stores the root_hub pointer in the bus structure,&n; * then calls usb_new_device() to register the usb device.  It also&n; * assigns the root hub&squot;s USB address (always 1).&n; */
-DECL|function|usb_register_root_hub
+multiline_comment|/**&n; * usb_hcd_register_root_hub - called by HCD to register its root hub &n; * @usb_dev: the usb root hub device to be registered.&n; * @hcd: host controller for this root hub&n; *&n; * The USB host controller calls this function to register the root hub&n; * properly with the USB subsystem.  It sets up the device properly in&n; * the device tree and stores the root_hub pointer in the bus structure,&n; * then calls usb_new_device() to register the usb device.  It also&n; * assigns the root hub&squot;s USB address (always 1).&n; */
+DECL|function|usb_hcd_register_root_hub
 r_int
-id|usb_register_root_hub
+id|usb_hcd_register_root_hub
 (paren
 r_struct
 id|usb_device
@@ -2486,11 +2488,18 @@ op_star
 id|usb_dev
 comma
 r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+(brace
+r_struct
 id|device
 op_star
 id|parent_dev
-)paren
-(brace
+op_assign
+id|hcd-&gt;self.controller
+suffix:semicolon
 r_const
 r_int
 id|devnum
@@ -2499,6 +2508,23 @@ l_int|1
 suffix:semicolon
 r_int
 id|retval
+suffix:semicolon
+multiline_comment|/* hcd-&gt;driver-&gt;start() reported can_wakeup, probably with&n;&t; * assistance from board&squot;s boot firmware.&n;&t; * NOTE:  normal devices won&squot;t enable wakeup by default.&n;&t; */
+r_if
+c_cond
+(paren
+id|hcd-&gt;can_wakeup
+)paren
+id|dev_dbg
+(paren
+id|parent_dev
+comma
+l_string|&quot;supports USB remote wakeup&bslash;n&quot;
+)paren
+suffix:semicolon
+id|hcd-&gt;remote_wakeup
+op_assign
+id|hcd-&gt;can_wakeup
 suffix:semicolon
 id|usb_dev-&gt;devnum
 op_assign
@@ -2657,10 +2683,11 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|variable|usb_register_root_hub
-id|EXPORT_SYMBOL
+DECL|variable|usb_hcd_register_root_hub
+id|EXPORT_SYMBOL_GPL
+c_func
 (paren
-id|usb_register_root_hub
+id|usb_hcd_register_root_hub
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/

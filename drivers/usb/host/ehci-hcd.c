@@ -2063,7 +2063,7 @@ c_cond
 (paren
 id|first
 op_logical_and
-id|hcd_register_root
+id|usb_hcd_register_root_hub
 (paren
 id|udev
 comma

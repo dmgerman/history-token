@@ -2200,7 +2200,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hcd_register_root
+id|usb_hcd_register_root_hub
 (paren
 id|udev
 comma
