@@ -7,21 +7,6 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/asi.h&gt;
 r_extern
 r_void
-id|__memmove
-c_func
-(paren
-r_void
-op_star
-comma
-r_const
-r_void
-op_star
-comma
-id|__kernel_size_t
-)paren
-suffix:semicolon
-r_extern
-r_void
 op_star
 id|__memset
 c_func
@@ -34,30 +19,26 @@ comma
 id|__kernel_size_t
 )paren
 suffix:semicolon
+macro_line|#ifndef EXPORT_SYMTAB_STROPS
+multiline_comment|/* First the mem*() things. */
+DECL|macro|__HAVE_ARCH_MEMMOVE
+mdefine_line|#define __HAVE_ARCH_MEMMOVE
 r_extern
 r_void
 op_star
-id|__builtin_memset
+id|memmove
 c_func
 (paren
 r_void
 op_star
 comma
-r_int
+r_const
+r_void
+op_star
 comma
 id|__kernel_size_t
 )paren
 suffix:semicolon
-macro_line|#ifndef EXPORT_SYMTAB_STROPS
-multiline_comment|/* First the mem*() things. */
-DECL|macro|__HAVE_ARCH_BCOPY
-mdefine_line|#define __HAVE_ARCH_BCOPY
-DECL|macro|__HAVE_ARCH_MEMMOVE
-mdefine_line|#define __HAVE_ARCH_MEMMOVE
-DECL|macro|memmove
-macro_line|#undef memmove
-DECL|macro|memmove
-mdefine_line|#define memmove(_to, _from, _n) &bslash;&n;({ &bslash;&n;&t;void *_t = (_to); &bslash;&n;&t;__memmove(_t, (_from), (_n)); &bslash;&n;&t;_t; &bslash;&n;})
 DECL|macro|__HAVE_ARCH_MEMCPY
 mdefine_line|#define __HAVE_ARCH_MEMCPY
 r_extern
@@ -78,6 +59,20 @@ id|__kernel_size_t
 suffix:semicolon
 DECL|macro|__HAVE_ARCH_MEMSET
 mdefine_line|#define __HAVE_ARCH_MEMSET
+r_extern
+r_void
+op_star
+id|__builtin_memset
+c_func
+(paren
+r_void
+op_star
+comma
+r_int
+comma
+id|__kernel_size_t
+)paren
+suffix:semicolon
 DECL|function|__constant_memset
 r_static
 r_inline
@@ -149,7 +144,7 @@ mdefine_line|#define __HAVE_ARCH_MEMSCAN
 DECL|macro|memscan
 macro_line|#undef memscan
 DECL|macro|memscan
-mdefine_line|#define memscan(__arg0, __char, __arg2)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern void *__memscan_zero(void *, size_t);&t;&t;&t;&t;&bslash;&n;&t;extern void *__memscan_generic(void *, int, size_t);&t;&t;&t;&bslash;&n;&t;void *__retval, *__addr = (__arg0);&t;&t;&t;&t;&t;&bslash;&n;&t;size_t __size = (__arg2);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if(__builtin_constant_p(__char) &amp;&amp; !(__char))&t;&t;&t;&t;&bslash;&n;&t;&t;__retval = __memscan_zero(__addr, __size);&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__retval = __memscan_generic(__addr, (__char), __size);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__retval;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define memscan(__arg0, __char, __arg2)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern void *__memscan_zero(void *, size_t);&t;&t;&t;&bslash;&n;&t;extern void *__memscan_generic(void *, int, size_t);&t;&t;&bslash;&n;&t;void *__retval, *__addr = (__arg0);&t;&t;&t;&t;&bslash;&n;&t;size_t __size = (__arg2);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if(__builtin_constant_p(__char) &amp;&amp; !(__char))&t;&t;&t;&bslash;&n;&t;&t;__retval = __memscan_zero(__addr, __size);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__retval = __memscan_generic(__addr, (__char), __size);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__retval;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__HAVE_ARCH_MEMCMP
 mdefine_line|#define __HAVE_ARCH_MEMCMP
 r_extern
