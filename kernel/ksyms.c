@@ -1788,6 +1788,7 @@ c_func
 id|dentry_open
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MMU
 DECL|variable|filemap_nopage
 id|EXPORT_SYMBOL
 c_func
@@ -1795,6 +1796,7 @@ c_func
 id|filemap_nopage
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|filemap_fdatawrite
 id|EXPORT_SYMBOL
 c_func
@@ -2802,6 +2804,7 @@ id|single_release
 )paren
 suffix:semicolon
 multiline_comment|/* Program loader interfaces */
+macro_line|#ifdef CONFIG_MMU
 DECL|variable|setup_arg_pages
 id|EXPORT_SYMBOL
 c_func
@@ -2809,6 +2812,7 @@ c_func
 id|setup_arg_pages
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|copy_strings_kernel
 id|EXPORT_SYMBOL
 c_func
