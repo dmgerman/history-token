@@ -145,7 +145,8 @@ r_int
 id|priority
 )paren
 (brace
-id|sctp_opt_t
+r_struct
+id|sctp_opt
 op_star
 id|sp
 suffix:semicolon
@@ -525,14 +526,14 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Create an input queue.  */
-id|sctp_inqueue_init
+id|sctp_inq_init
 c_func
 (paren
 op_amp
 id|asoc-&gt;base.inqueue
 )paren
 suffix:semicolon
-id|sctp_inqueue_set_th_handler
+id|sctp_inq_set_th_handler
 c_func
 (paren
 op_amp
@@ -608,10 +609,6 @@ id|SCTP_TSN_MAP_SIZE
 comma
 l_int|0
 )paren
-suffix:semicolon
-id|asoc-&gt;peer.next_dup_tsn
-op_assign
-l_int|0
 suffix:semicolon
 id|skb_queue_head_init
 c_func
@@ -737,7 +734,7 @@ id|asoc-&gt;ulpq
 )paren
 suffix:semicolon
 multiline_comment|/* Dispose of any pending chunks on the inqueue. */
-id|sctp_inqueue_free
+id|sctp_inq_free
 c_func
 (paren
 op_amp
@@ -949,7 +946,8 @@ id|sctp_transport
 op_star
 id|peer
 suffix:semicolon
-id|sctp_opt_t
+r_struct
+id|sctp_opt
 op_star
 id|sp
 suffix:semicolon
@@ -1329,7 +1327,8 @@ id|sctp_transport
 op_star
 id|second
 suffix:semicolon
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon
@@ -2091,7 +2090,8 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
 id|inqueue
 suffix:semicolon
@@ -2136,7 +2136,7 @@ op_ne
 (paren
 id|chunk
 op_assign
-id|sctp_pop_inqueue
+id|sctp_inq_pop
 c_func
 (paren
 id|inqueue
@@ -2165,6 +2165,13 @@ id|chunk
 id|asoc-&gt;peer.last_data_from
 op_assign
 id|chunk-&gt;transport
+suffix:semicolon
+r_else
+id|SCTP_INC_STATS
+c_func
+(paren
+id|SctpInCtrlChunks
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2245,7 +2252,8 @@ op_star
 id|newsk
 )paren
 (brace
-id|sctp_opt_t
+r_struct
+id|sctp_opt
 op_star
 id|newsp
 op_assign
@@ -2336,12 +2344,6 @@ r_new
 op_member_access_from_pointer
 id|peer.rwnd
 suffix:semicolon
-id|asoc-&gt;peer.next_dup_tsn
-op_assign
-r_new
-op_member_access_from_pointer
-id|peer.next_dup_tsn
-suffix:semicolon
 id|asoc-&gt;peer.sack_needed
 op_assign
 r_new
@@ -2426,12 +2428,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* Choose the transport for sending a shutdown packet.&n; * Round-robin through the active transports, else round-robin&n; * through the inactive transports as this is the next best thing&n; * we can try.&n; */
-DECL|function|sctp_assoc_choose_shutdown_transport
-r_struct
-id|sctp_transport
-op_star
-id|sctp_assoc_choose_shutdown_transport
+multiline_comment|/* Update the retran path for sending a retransmitted packet.&n; * Round-robin through the active transports, else round-robin&n; * through the inactive transports as this is the next best thing&n; * we can try.&n; */
+DECL|function|sctp_assoc_update_retran_path
+r_void
+id|sctp_assoc_update_retran_path
 c_func
 (paren
 id|sctp_association_t
@@ -2460,20 +2460,10 @@ id|list_head
 op_star
 id|pos
 suffix:semicolon
-multiline_comment|/* If this is the first time SHUTDOWN is sent, use the active&n;&t; * path.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|asoc-&gt;shutdown_last_sent_to
-)paren
-r_return
-id|asoc-&gt;peer.active_path
-suffix:semicolon
-multiline_comment|/* Otherwise, find the next transport in a round-robin fashion. */
+multiline_comment|/* Find the next transport in a round-robin fashion. */
 id|t
 op_assign
-id|asoc-&gt;shutdown_last_sent_to
+id|asoc-&gt;peer.retran_path
 suffix:semicolon
 id|pos
 op_assign
@@ -2550,7 +2540,7 @@ c_cond
 (paren
 id|t
 op_eq
-id|asoc-&gt;shutdown_last_sent_to
+id|asoc-&gt;peer.retran_path
 )paren
 (brace
 id|t
@@ -2561,9 +2551,53 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_return
+id|asoc-&gt;peer.retran_path
+op_assign
 id|t
 suffix:semicolon
+)brace
+multiline_comment|/* Choose the transport for sending a SHUTDOWN packet.  */
+DECL|function|sctp_assoc_choose_shutdown_transport
+r_struct
+id|sctp_transport
+op_star
+id|sctp_assoc_choose_shutdown_transport
+c_func
+(paren
+id|sctp_association_t
+op_star
+id|asoc
+)paren
+(brace
+multiline_comment|/* If this is the first time SHUTDOWN is sent, use the active path,&n;&t; * else use the retran path. If the last SHUTDOWN was sent over the&n;&t; * retran path, update the retran path and use it. &n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|asoc-&gt;shutdown_last_sent_to
+)paren
+r_return
+id|asoc-&gt;peer.active_path
+suffix:semicolon
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|asoc-&gt;shutdown_last_sent_to
+op_eq
+id|asoc-&gt;peer.retran_path
+)paren
+id|sctp_assoc_update_retran_path
+c_func
+(paren
+id|asoc
+)paren
+suffix:semicolon
+r_return
+id|asoc-&gt;peer.retran_path
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Update the association&squot;s pmtu and frag_point by going through all the&n; * transports. This routine is called when a transport&squot;s PMTU has changed.&n; */
 DECL|function|sctp_assoc_sync_pmtu
@@ -2746,7 +2780,8 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;%s: asoc %p rwnd increased by %d to (%u, %u) - %u&bslash;n&quot;
+l_string|&quot;%s: asoc %p rwnd increased by %d to (%u, %u) &quot;
+l_string|&quot;- %u&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2761,7 +2796,7 @@ comma
 id|asoc-&gt;a_rwnd
 )paren
 suffix:semicolon
-multiline_comment|/* Send a window update SACK if the rwnd has increased by at least the&n;&t; * minimum of the association&squot;s PMTU and half of the receive buffer.&n;&t; * The algorithm used is similar to the one described in &n;&t; * Section 4.2.3.3 of RFC 1122.&n;&t; */
+multiline_comment|/* Send a window update SACK if the rwnd has increased by at least the&n;&t; * minimum of the association&squot;s PMTU and half of the receive buffer.&n;&t; * The algorithm used is similar to the one described in&n;&t; * Section 4.2.3.3 of RFC 1122.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2837,10 +2872,6 @@ op_assign
 id|asoc-&gt;rwnd
 suffix:semicolon
 id|asoc-&gt;peer.sack_needed
-op_assign
-l_int|0
-suffix:semicolon
-id|asoc-&gt;peer.next_dup_tsn
 op_assign
 l_int|0
 suffix:semicolon

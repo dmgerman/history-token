@@ -1117,6 +1117,12 @@ l_int|1
 )paren
 )paren
 (brace
+id|dst_release
+c_func
+(paren
+id|dst
+)paren
+suffix:semicolon
 id|sctp_transport_route
 c_func
 (paren

@@ -2,13 +2,14 @@ multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 199
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-multiline_comment|/* Initialize an SCTP_inqueue.  */
-DECL|function|sctp_inqueue_init
+multiline_comment|/* Initialize an SCTP inqueue.  */
+DECL|function|sctp_inq_init
 r_void
-id|sctp_inqueue_init
+id|sctp_inq_init
 c_func
 (paren
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
 id|queue
 )paren
@@ -41,17 +42,19 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Create an initialized SCTP_inqueue.  */
-DECL|function|sctp_inqueue_new
-id|sctp_inqueue_t
+multiline_comment|/* Create an initialized sctp_inq.  */
+DECL|function|sctp_inq_new
+r_struct
+id|sctp_inq
 op_star
-id|sctp_inqueue_new
+id|sctp_inq_new
 c_func
 (paren
 r_void
 )paren
 (brace
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
 id|retval
 suffix:semicolon
@@ -60,7 +63,8 @@ op_assign
 id|t_new
 c_func
 (paren
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 comma
 id|GFP_ATOMIC
 )paren
@@ -71,7 +75,7 @@ c_cond
 id|retval
 )paren
 (brace
-id|sctp_inqueue_init
+id|sctp_inq_init
 c_func
 (paren
 id|retval
@@ -87,12 +91,13 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/* Release the memory associated with an SCTP inqueue.  */
-DECL|function|sctp_inqueue_free
+DECL|function|sctp_inq_free
 r_void
-id|sctp_inqueue_free
+id|sctp_inq_free
 c_func
 (paren
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
 id|queue
 )paren
@@ -156,12 +161,13 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Put a new packet in an SCTP inqueue.&n; * We assume that packet-&gt;sctp_hdr is set and in host byte order.&n; */
-DECL|function|sctp_push_inqueue
+DECL|function|sctp_inq_push
 r_void
-id|sctp_push_inqueue
+id|sctp_inq_push
 c_func
 (paren
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
 id|q
 comma
@@ -198,13 +204,14 @@ id|q-&gt;immediate.data
 suffix:semicolon
 )brace
 multiline_comment|/* Extract a chunk from an SCTP inqueue.&n; *&n; * WARNING:  If you need to put the chunk on another queue, you need to&n; * make a shallow copy (clone) of it.&n; */
-DECL|function|sctp_pop_inqueue
+DECL|function|sctp_inq_pop
 id|sctp_chunk_t
 op_star
-id|sctp_pop_inqueue
+id|sctp_inq_pop
 c_func
 (paren
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
 id|queue
 )paren
@@ -396,7 +403,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;+++sctp_pop_inqueue+++ chunk %p[%s],&quot;
+l_string|&quot;+++sctp_inq_pop+++ chunk %p[%s],&quot;
 l_string|&quot; length %d, skb-&gt;len %d&bslash;n&quot;
 comma
 id|chunk
@@ -424,13 +431,14 @@ r_return
 id|chunk
 suffix:semicolon
 )brace
-multiline_comment|/* Set a top-half handler.&n; *&n; * Originally, we the top-half handler was scheduled as a BH.  We now&n; * call the handler directly in sctp_push_inqueue() at a time that&n; * we know we are lock safe.&n; * The intent is that this routine will pull stuff out of the&n; * inqueue and process it.&n; */
-DECL|function|sctp_inqueue_set_th_handler
+multiline_comment|/* Set a top-half handler.&n; *&n; * Originally, we the top-half handler was scheduled as a BH.  We now&n; * call the handler directly in sctp_inq_push() at a time that&n; * we know we are lock safe.&n; * The intent is that this routine will pull stuff out of the&n; * inqueue and process it.&n; */
+DECL|function|sctp_inq_set_th_handler
 r_void
-id|sctp_inqueue_set_th_handler
+id|sctp_inq_set_th_handler
 c_func
 (paren
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
 id|q
 comma
