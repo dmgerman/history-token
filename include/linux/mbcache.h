@@ -18,8 +18,14 @@ op_star
 id|e_cache
 suffix:semicolon
 DECL|member|e_used
-id|atomic_t
+r_int
+r_int
 id|e_used
+suffix:semicolon
+DECL|member|e_queued
+r_int
+r_int
+id|e_queued
 suffix:semicolon
 DECL|member|e_bdev
 r_struct
