@@ -1853,6 +1853,14 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|init_cpu_vtimer
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|pfault_init
 c_func
@@ -1891,6 +1899,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_VIRT_TIMER
+id|init_cpu_vtimer
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PFAULT
 multiline_comment|/* Enable pfault pseudo page faults on this cpu. */
 id|pfault_init

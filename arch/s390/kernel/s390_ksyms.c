@@ -15,9 +15,6 @@ macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#ifdef CONFIG_IP_MULTICAST
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#endif
-macro_line|#ifdef CONFIG_VIRT_TIMER
-macro_line|#include &lt;asm/timer.h&gt;
-macro_line|#endif
 multiline_comment|/*&n; * memory management&n; */
 DECL|variable|_oi_bitmap
 id|EXPORT_SYMBOL_NOVERS

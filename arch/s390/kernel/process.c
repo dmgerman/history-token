@@ -19,15 +19,15 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#if defined(CONFIG_VIRT_TIMER) || defined (CONFIG_NO_IDLE_HZ)
 macro_line|#include &lt;asm/timer.h&gt;
-macro_line|#endif
 id|asmlinkage
 r_void
 id|ret_from_fork
@@ -104,6 +104,117 @@ l_int|112
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/*&n; * Need to know about CPUs going idle?&n; */
+DECL|variable|idle_chain
+r_static
+r_struct
+id|notifier_block
+op_star
+id|idle_chain
+suffix:semicolon
+DECL|function|register_idle_notifier
+r_int
+id|register_idle_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+id|notifier_chain_register
+c_func
+(paren
+op_amp
+id|idle_chain
+comma
+id|nb
+)paren
+suffix:semicolon
+)brace
+DECL|variable|register_idle_notifier
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|register_idle_notifier
+)paren
+suffix:semicolon
+DECL|function|unregister_idle_notifier
+r_int
+id|unregister_idle_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+id|notifier_chain_unregister
+c_func
+(paren
+op_amp
+id|idle_chain
+comma
+id|nb
+)paren
+suffix:semicolon
+)brace
+DECL|variable|unregister_idle_notifier
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unregister_idle_notifier
+)paren
+suffix:semicolon
+DECL|function|do_monitor_call
+r_void
+id|do_monitor_call
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_int
+id|interruption_code
+)paren
+(brace
+multiline_comment|/* disable monitor call class 0 */
+id|__ctl_clear_bit
+c_func
+(paren
+l_int|8
+comma
+l_int|15
+)paren
+suffix:semicolon
+id|notifier_call_chain
+c_func
+(paren
+op_amp
+id|idle_chain
+comma
+id|CPU_NOT_IDLE
+comma
+(paren
+r_void
+op_star
+)paren
+(paren
+r_int
+)paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The idle loop on a S390...&n; */
 DECL|function|default_idle
 r_void
@@ -119,6 +230,11 @@ suffix:semicolon
 r_int
 r_int
 id|reg
+suffix:semicolon
+r_int
+id|cpu
+comma
+id|rc
 suffix:semicolon
 id|local_irq_disable
 c_func
@@ -147,15 +263,56 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_VIRT_TIMER) || defined (CONFIG_NO_IDLE_HZ)
-multiline_comment|/*&n;&t; * hook to stop timers that should not tick while CPU is idle&n;&t; */
-r_if
-c_cond
-(paren
-id|stop_timers
+multiline_comment|/* CPU is going idle. */
+id|cpu
+op_assign
+id|smp_processor_id
 c_func
 (paren
 )paren
+suffix:semicolon
+id|rc
+op_assign
+id|notifier_call_chain
+c_func
+(paren
+op_amp
+id|idle_chain
+comma
+id|CPU_IDLE
+comma
+(paren
+r_void
+op_star
+)paren
+(paren
+r_int
+)paren
+id|cpu
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_ne
+id|NOTIFY_OK
+op_logical_and
+id|rc
+op_ne
+id|NOTIFY_DONE
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_ne
+id|NOTIFY_OK
 )paren
 (brace
 id|local_irq_enable
@@ -166,7 +323,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
+multiline_comment|/* enable monitor call class 0 */
+id|__ctl_set_bit
+c_func
+(paren
+l_int|8
+comma
+l_int|15
+)paren
+suffix:semicolon
 multiline_comment|/* &n;&t; * Wait for external, I/O or machine check interrupt and&n;&t; * switch off machine check bit after the wait has ended.&n;&t; */
 id|wait_psw.mask
 op_assign
