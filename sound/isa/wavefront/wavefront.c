@@ -2521,6 +2521,13 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|acard-&gt;wavefront.irq_lock
+)paren
+suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren
