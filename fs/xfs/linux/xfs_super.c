@@ -4331,6 +4331,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|uuid_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|vfs_initdmapi
 c_func
 (paren

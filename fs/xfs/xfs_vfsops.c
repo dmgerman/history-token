@@ -125,17 +125,6 @@ l_string|&quot;xfsda&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|mutex_init
-c_func
-(paren
-op_amp
-id|xfs_uuidtabmon
-comma
-id|MUTEX_DEFAULT
-comma
-l_string|&quot;xfs_uuidtab&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize all of the zone allocators we use.&n;&t; */
 id|xfs_bmap_free_item_zone
 op_assign
