@@ -2975,6 +2975,13 @@ id|avenrun
 l_int|3
 )braket
 suffix:semicolon
+DECL|variable|avenrun
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|avenrun
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * calc_load - given tick count, update the avenrun load estimates.&n; * This is called while holding a write_lock on xtime_lock.&n; */
 DECL|function|calc_load
 r_static

@@ -97,7 +97,7 @@ op_star
 id|pdu
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
