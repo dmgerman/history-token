@@ -822,13 +822,13 @@ suffix:semicolon
 multiline_comment|/* try to free the page below */
 )brace
 )brace
+macro_line|#endif /* CONFIG_SWAP */
 id|pte_chain_unlock
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_SWAP */
 multiline_comment|/*&n;&t;&t; * If the page is dirty, only perform writeback if that write&n;&t;&t; * will be non-blocking.  To prevent this allocation from being&n;&t;&t; * stalled by pagecache activity.  But note that there may be&n;&t;&t; * stalls if we need to run get_block().  We could test&n;&t;&t; * PagePrivate for that.&n;&t;&t; *&n;&t;&t; * If this process is currently in generic_file_write() against&n;&t;&t; * this page&squot;s queue, we can perform writeback even if that&n;&t;&t; * will block.&n;&t;&t; *&n;&t;&t; * If the page is swapcache, write it back even if that would&n;&t;&t; * block, for some throttling. This happens by accident, because&n;&t;&t; * swap_backing_dev_info is bust: it doesn&squot;t reflect the&n;&t;&t; * congestion state of the swapdevs.  Easy to fix, if needed.&n;&t;&t; * See swapfile.c:page_queue_congested().&n;&t;&t; */
 r_if
 c_cond
