@@ -2391,10 +2391,40 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+l_int|0x4f60
+suffix:colon
+singleline_comment|// Fujitsu Siemens Activy Budget-S PCI rev AL (stv0299/ALPS BSRU6(tsa5059))
+id|budget-&gt;dvb_frontend
+op_assign
+id|stv0299_attach
+c_func
+(paren
+op_amp
+id|alps_bsru6_config
+comma
+op_amp
+id|budget-&gt;i2c_adap
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|budget-&gt;dvb_frontend
+)paren
+(brace
+id|budget-&gt;dvb_frontend-&gt;ops-&gt;set_voltage
+op_assign
+id|siemens_budget_set_voltage
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
 l_int|0x4f61
 suffix:colon
-singleline_comment|// Fujitsu Siemens Activy Budget-S PCI (tda8083/Grundig 29504-451(tsa5522))
-singleline_comment|// grundig 29504-451
+singleline_comment|// Fujitsu Siemens Activy Budget-S PCI rev GR (tda8083/Grundig 29504-451(tsa5522))
 id|budget-&gt;dvb_frontend
 op_assign
 id|tda8083_attach
@@ -2711,9 +2741,19 @@ suffix:semicolon
 id|MAKE_BUDGET_INFO
 c_func
 (paren
-id|fsacs
+id|fsacs0
 comma
-l_string|&quot;Fujitsu Siemens Activy Budget-S PCI&quot;
+l_string|&quot;Fujitsu Siemens Activy Budget-S PCI (rev GR/grundig frontend)&quot;
+comma
+id|BUDGET_FS_ACTIVY
+)paren
+suffix:semicolon
+id|MAKE_BUDGET_INFO
+c_func
+(paren
+id|fsacs1
+comma
+l_string|&quot;Fujitsu Siemens Activy Budget-S PCI (rev AL/alps frontend)&quot;
 comma
 id|BUDGET_FS_ACTIVY
 )paren
@@ -2770,7 +2810,17 @@ comma
 id|MAKE_EXTENSION_PCI
 c_func
 (paren
-id|fsacs
+id|fsacs1
+comma
+l_int|0x1131
+comma
+l_int|0x4f60
+)paren
+comma
+id|MAKE_EXTENSION_PCI
+c_func
+(paren
+id|fsacs0
 comma
 l_int|0x1131
 comma
