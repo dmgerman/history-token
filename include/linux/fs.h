@@ -1851,9 +1851,9 @@ DECL|macro|DQUOT_USR_ENABLED
 mdefine_line|#define DQUOT_USR_ENABLED&t;0x01&t;&t;/* User diskquotas enabled */
 DECL|macro|DQUOT_GRP_ENABLED
 mdefine_line|#define DQUOT_GRP_ENABLED&t;0x02&t;&t;/* Group diskquotas enabled */
-DECL|struct|quota_mount_options
+DECL|struct|quota_info
 r_struct
-id|quota_mount_options
+id|quota_info
 (brace
 DECL|member|flags
 r_int
@@ -1883,30 +1883,25 @@ id|MAXQUOTAS
 )braket
 suffix:semicolon
 multiline_comment|/* fp&squot;s to quotafiles */
-DECL|member|inode_expire
-id|time_t
-id|inode_expire
+DECL|member|info
+r_struct
+id|mem_dqinfo
+id|info
 (braket
 id|MAXQUOTAS
 )braket
 suffix:semicolon
-multiline_comment|/* expiretime for inode-quota */
-DECL|member|block_expire
-id|time_t
-id|block_expire
+multiline_comment|/* Information for each quota type */
+DECL|member|ops
+r_struct
+id|quota_format_ops
+op_star
+id|ops
 (braket
 id|MAXQUOTAS
 )braket
 suffix:semicolon
-multiline_comment|/* expiretime for block-quota */
-DECL|member|rsquash
-r_char
-id|rsquash
-(braket
-id|MAXQUOTAS
-)braket
-suffix:semicolon
-multiline_comment|/* for quotas threat root as any other user */
+multiline_comment|/* Operations for each format */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Umount options&n; */
@@ -2073,7 +2068,7 @@ id|s_instances
 suffix:semicolon
 DECL|member|s_dquot
 r_struct
-id|quota_mount_options
+id|quota_info
 id|s_dquot
 suffix:semicolon
 multiline_comment|/* Diskquota specific options */

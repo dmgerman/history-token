@@ -3,10 +3,17 @@ macro_line|#ifndef _LINUX_QUOTA_
 DECL|macro|_LINUX_QUOTA_
 mdefine_line|#define _LINUX_QUOTA_
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 DECL|macro|__DQUOT_VERSION__
 mdefine_line|#define __DQUOT_VERSION__&t;&quot;dquot_6.5.1&quot;
 DECL|macro|__DQUOT_NUM_VERSION__
 mdefine_line|#define __DQUOT_NUM_VERSION__&t;6*10000+5*100+1
+DECL|typedef|qid_t
+r_typedef
+id|__kernel_uid32_t
+id|qid_t
+suffix:semicolon
+multiline_comment|/* Type in which we store ids in memory */
 multiline_comment|/*&n; * Convert diskblocks to blocks and the other way around.&n; */
 DECL|macro|dbtob
 mdefine_line|#define dbtob(num) (num &lt;&lt; BLOCK_SIZE_BITS)
@@ -40,28 +47,12 @@ DECL|macro|SUBCMDSHIFT
 mdefine_line|#define SUBCMDSHIFT 8
 DECL|macro|QCMD
 mdefine_line|#define QCMD(cmd, type)  (((cmd) &lt;&lt; SUBCMDSHIFT) | ((type) &amp; SUBCMDMASK))
-DECL|macro|Q_QUOTAON
-mdefine_line|#define Q_QUOTAON  0x0100&t;/* enable quotas */
-DECL|macro|Q_QUOTAOFF
-mdefine_line|#define Q_QUOTAOFF 0x0200&t;/* disable quotas */
-DECL|macro|Q_GETQUOTA
-mdefine_line|#define Q_GETQUOTA 0x0300&t;/* get limits and usage */
-DECL|macro|Q_SETQUOTA
-mdefine_line|#define Q_SETQUOTA 0x0400&t;/* set limits and usage */
-DECL|macro|Q_SETUSE
-mdefine_line|#define Q_SETUSE   0x0500&t;/* set usage */
 DECL|macro|Q_SYNC
 mdefine_line|#define Q_SYNC     0x0600&t;/* sync disk copy of a filesystems quotas */
-DECL|macro|Q_SETQLIM
-mdefine_line|#define Q_SETQLIM  0x0700&t;/* set limits */
-DECL|macro|Q_GETSTATS
-mdefine_line|#define Q_GETSTATS 0x0800&t;/* get collected stats */
-DECL|macro|Q_RSQUASH
-mdefine_line|#define Q_RSQUASH  0x1000&t;/* set root_squash option */
-multiline_comment|/*&n; * The following structure defines the format of the disk quota file&n; * (as it appears on disk) - the file is an array of these structures&n; * indexed by user or group number.&n; */
-DECL|struct|dqblk
+multiline_comment|/*&n; * Data for one user/group kept in memory&n; */
+DECL|struct|mem_dqblk
 r_struct
-id|dqblk
+id|mem_dqblk
 (brace
 DECL|member|dqb_bhardlimit
 id|__u32
@@ -105,6 +96,61 @@ suffix:semicolon
 multiline_comment|/* time limit for excessive inode use */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Data for one quotafile kept in memory&n; */
+DECL|struct|mem_dqinfo
+r_struct
+id|mem_dqinfo
+(brace
+DECL|member|dqi_flags
+r_int
+id|dqi_flags
+suffix:semicolon
+DECL|member|dqi_bgrace
+r_int
+r_int
+id|dqi_bgrace
+suffix:semicolon
+DECL|member|dqi_igrace
+r_int
+r_int
+id|dqi_igrace
+suffix:semicolon
+r_union
+(brace
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#ifdef __KERNEL__
+DECL|macro|DQF_MASK
+mdefine_line|#define DQF_MASK 0xffff&t;&t;/* Mask for format specific flags */
+DECL|macro|DQF_INFO_DIRTY
+mdefine_line|#define DQF_INFO_DIRTY 0x10000  /* Is info dirty? */
+DECL|function|mark_info_dirty
+r_extern
+r_inline
+r_void
+id|mark_info_dirty
+c_func
+(paren
+r_struct
+id|mem_dqinfo
+op_star
+id|info
+)paren
+(brace
+id|info-&gt;dqi_flags
+op_or_assign
+id|DQF_INFO_DIRTY
+suffix:semicolon
+)brace
+DECL|macro|info_dirty
+mdefine_line|#define info_dirty(info) ((info)-&gt;dqi_flags &amp; DQF_INFO_DIRTY)
+DECL|macro|sb_dqopt
+mdefine_line|#define sb_dqopt(sb) (&amp;(sb)-&gt;s_dquot)
+macro_line|#endif  /* __KERNEL__ */
 multiline_comment|/*&n; * Shorthand notation.&n; */
 DECL|macro|dq_bhardlimit
 mdefine_line|#define&t;dq_bhardlimit&t;dq_dqb.dqb_bhardlimit
@@ -124,6 +170,17 @@ DECL|macro|dq_itime
 mdefine_line|#define&t;dq_itime&t;dq_dqb.dqb_itime
 DECL|macro|dqoff
 mdefine_line|#define dqoff(UID)      ((loff_t)((UID) * sizeof (struct dqblk)))
+macro_line|#ifdef __KERNEL__
+r_extern
+r_int
+id|nr_dquots
+comma
+id|nr_free_dquots
+suffix:semicolon
+r_extern
+r_int
+id|dquot_root_squash
+suffix:semicolon
 DECL|struct|dqstats
 r_struct
 id|dqstats
@@ -161,11 +218,6 @@ id|__u32
 id|syncs
 suffix:semicolon
 )brace
-suffix:semicolon
-macro_line|#ifdef __KERNEL__
-r_extern
-r_int
-id|dquot_root_squash
 suffix:semicolon
 DECL|macro|NR_DQHASH
 mdefine_line|#define NR_DQHASH 43            /* Just an arbitrary number */
@@ -255,25 +307,141 @@ suffix:semicolon
 multiline_comment|/* Number of times this dquot was &n;&t;&t;&t;&t;&t;   referenced during its lifetime */
 DECL|member|dq_dqb
 r_struct
-id|dqblk
+id|mem_dqblk
 id|dq_dqb
 suffix:semicolon
 multiline_comment|/* Diskquota usage */
 )brace
 suffix:semicolon
+DECL|function|mark_dquot_dirty
+r_extern
+r_inline
+r_void
+id|mark_dquot_dirty
+c_func
+(paren
+r_struct
+id|dquot
+op_star
+id|dquot
+)paren
+(brace
+id|dquot-&gt;dq_flags
+op_or_assign
+id|DQ_MOD
+suffix:semicolon
+)brace
+DECL|macro|dquot_dirty
+mdefine_line|#define dquot_dirty(dquot) ((dquot)-&gt;dq_flags &amp; DQ_MOD)
 DECL|macro|NODQUOT
 mdefine_line|#define NODQUOT (struct dquot *)NULL
-multiline_comment|/*&n; * Flags used for set_dqblk.&n; */
-DECL|macro|SET_QUOTA
-mdefine_line|#define SET_QUOTA         0x02
-DECL|macro|SET_USE
-mdefine_line|#define SET_USE           0x04
-DECL|macro|SET_QLIMIT
-mdefine_line|#define SET_QLIMIT        0x08
 DECL|macro|QUOTA_OK
 mdefine_line|#define QUOTA_OK          0
 DECL|macro|NO_QUOTA
 mdefine_line|#define NO_QUOTA          1
+multiline_comment|/* Operations which must be implemented by each quota format */
+DECL|struct|quota_format_ops
+r_struct
+id|quota_format_ops
+(brace
+DECL|member|check_quota_file
+r_int
+(paren
+op_star
+id|check_quota_file
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+id|type
+)paren
+suffix:semicolon
+multiline_comment|/* Detect whether file is in our format */
+DECL|member|read_file_info
+r_int
+(paren
+op_star
+id|read_file_info
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+id|type
+)paren
+suffix:semicolon
+multiline_comment|/* Read main info about file */
+DECL|member|write_file_info
+r_int
+(paren
+op_star
+id|write_file_info
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+id|type
+)paren
+suffix:semicolon
+multiline_comment|/* Write main info about file */
+DECL|member|free_file_info
+r_int
+(paren
+op_star
+id|free_file_info
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+id|type
+)paren
+suffix:semicolon
+multiline_comment|/* Called on quotaoff() */
+DECL|member|read_dqblk
+r_int
+(paren
+op_star
+id|read_dqblk
+)paren
+(paren
+r_struct
+id|dquot
+op_star
+id|dquot
+)paren
+suffix:semicolon
+multiline_comment|/* Read structure for one user */
+DECL|member|commit_dqblk
+r_int
+(paren
+op_star
+id|commit_dqblk
+)paren
+(paren
+r_struct
+id|dquot
+op_star
+id|dquot
+)paren
+suffix:semicolon
+multiline_comment|/* Write (or delete) structure for one user */
+)brace
+suffix:semicolon
 macro_line|#else
 macro_line|# /* nodep */ include &lt;sys/cdefs.h&gt;
 id|__BEGIN_DECLS
