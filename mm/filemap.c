@@ -1952,7 +1952,7 @@ comma
 r_struct
 id|file_ra_state
 op_star
-id|ra
+id|_ra
 comma
 r_struct
 id|file
@@ -1991,6 +1991,13 @@ id|cached_page
 suffix:semicolon
 r_int
 id|error
+suffix:semicolon
+r_struct
+id|file_ra_state
+id|ra
+op_assign
+op_star
+id|_ra
 suffix:semicolon
 id|cached_page
 op_assign
@@ -2094,6 +2101,7 @@ c_func
 (paren
 id|mapping
 comma
+op_amp
 id|ra
 comma
 id|filp
@@ -2136,6 +2144,7 @@ c_func
 (paren
 id|mapping
 comma
+op_amp
 id|ra
 comma
 id|index
@@ -2458,6 +2467,11 @@ r_goto
 id|readpage
 suffix:semicolon
 )brace
+op_star
+id|_ra
+op_assign
+id|ra
+suffix:semicolon
 op_star
 id|ppos
 op_assign
