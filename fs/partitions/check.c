@@ -2421,9 +2421,9 @@ dot
 id|de
 )paren
 suffix:semicolon
-id|dev-&gt;part
-(braket
 id|p
+(braket
+id|part
 )braket
 dot
 id|de
