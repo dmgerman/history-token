@@ -461,7 +461,7 @@ suffix:semicolon
 r_int
 id|oplock
 op_assign
-id|REQ_OPLOCK
+l_int|0
 suffix:semicolon
 r_int
 id|desiredAccess
@@ -611,7 +611,6 @@ multiline_comment|/* BB add processing to set equivalent of mode - e.g. via Crea
 r_if
 c_cond
 (paren
-op_logical_neg
 id|oplockEnabled
 )paren
 id|oplock
@@ -848,7 +847,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pCifsInode-&gt;openFileList.next
+id|pCifsInode
 )paren
 (brace
 id|list_add
