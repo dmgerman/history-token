@@ -1956,6 +1956,22 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
+id|usb_clear_halt
+c_func
+(paren
+id|serial-&gt;dev
+comma
+id|port-&gt;write_urb-&gt;pipe
+)paren
+suffix:semicolon
+id|usb_clear_halt
+c_func
+(paren
+id|serial-&gt;dev
+comma
+id|port-&gt;read_urb-&gt;pipe
+)paren
+suffix:semicolon
 DECL|macro|FISH
 mdefine_line|#define FISH(a,b,c,d)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;result=usb_control_msg(serial-&gt;dev, usb_rcvctrlpipe(serial-&gt;dev,0),&t;&bslash;&n;&t;&t;&t;       b, a, c, d, buf, 1, 100);&t;&t;&t;&bslash;&n;&t;dbg(&quot;0x%x:0x%x:0x%x:0x%x  %d - %x&quot;,a,b,c,d,result,buf[0]);
 DECL|macro|SOUP
