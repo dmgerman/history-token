@@ -5502,6 +5502,13 @@ id|bdp-&gt;mdi_access_lock
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Initialize configuration data */
+id|e100_config_init
+c_func
+(paren
+id|bdp
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
