@@ -49,7 +49,7 @@ id|buf
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|fat_write_inode
 c_func
 (paren
@@ -6115,6 +6115,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|fat_write_inode
+r_static
 r_int
 id|fat_write_inode
 c_func
