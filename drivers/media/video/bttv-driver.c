@@ -14069,7 +14069,9 @@ c_func
 l_string|&quot;  main: %08Lx&bslash;n&quot;
 comma
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|btv-&gt;main.dma
 )paren
@@ -14083,7 +14085,9 @@ id|btv-&gt;vcurr
 ques
 c_cond
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|btv-&gt;vcurr-&gt;top.dma
 suffix:colon
@@ -14093,7 +14097,9 @@ id|btv-&gt;vcurr
 ques
 c_cond
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|btv-&gt;vcurr-&gt;bottom.dma
 suffix:colon
@@ -14109,7 +14115,9 @@ id|btv-&gt;top
 ques
 c_cond
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|btv-&gt;top-&gt;top.dma
 suffix:colon
@@ -14119,7 +14127,9 @@ id|btv-&gt;bottom
 ques
 c_cond
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|btv-&gt;bottom-&gt;bottom.dma
 suffix:colon
@@ -14135,7 +14145,9 @@ id|btv-&gt;screen
 ques
 c_cond
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|btv-&gt;screen-&gt;top.dma
 suffix:colon
@@ -14145,7 +14157,9 @@ id|btv-&gt;screen
 ques
 c_cond
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|btv-&gt;screen-&gt;bottom.dma
 suffix:colon

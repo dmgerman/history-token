@@ -213,7 +213,6 @@ r_while
 c_loop
 (paren
 id|count
-op_decrement
 op_logical_and
 (paren
 op_star
@@ -227,22 +226,25 @@ op_increment
 op_ne
 l_char|&squot;&bslash;0&squot;
 )paren
-multiline_comment|/* nothing */
+id|count
+op_decrement
 suffix:semicolon
 r_while
 c_loop
 (paren
 id|count
-op_decrement
-OG
-l_int|0
 )paren
+(brace
 op_star
 id|dest
 op_increment
 op_assign
 l_int|0
 suffix:semicolon
+id|count
+op_decrement
+suffix:semicolon
+)brace
 r_return
 id|tmp
 suffix:semicolon
