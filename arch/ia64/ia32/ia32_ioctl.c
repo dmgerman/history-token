@@ -2631,6 +2631,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%x:unimplemented IA32 ioctl system call&bslash;n&quot;
 comma
 id|cmd

@@ -142,6 +142,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;booting generic kernel on platform %s&bslash;n&quot;
 comma
 id|name

@@ -491,7 +491,7 @@ id|ipi_irqaction
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PERFMON
-id|perfmon_init_percpu
+id|pfm_init_percpu
 c_func
 (paren
 )paren

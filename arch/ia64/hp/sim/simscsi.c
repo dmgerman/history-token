@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Simulated SCSI driver.&n; *&n; * Copyright (C) 1999, 2001-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 02/01/15 David Mosberger&t;Updated for v2.5.1&n; * 99/12/18 David Mosberger&t;Added support for READ10/WRITE10 needed by linux v2.3.33&n; */
+multiline_comment|/*&n; * Simulated SCSI driver.&n; *&n; * Copyright (C) 1999, 2001-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 02/01/15 David Mosberger&t;Updated for v2.5.1&n; * 99/12/18 David Mosberger&t;Added support for READ10/WRITE10 needed by linux v2.3.33&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -248,6 +248,7 @@ id|MAX_ROOT_LEN
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;simscsi_setup: prefix too long---using default %s&bslash;n&quot;
 comma
 id|simscsi_root
@@ -1637,6 +1638,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;START_STOP&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1753,7 +1755,9 @@ id|sc
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;simscsi_host_reset: not implemented&bslash;n&quot;
 )paren
 suffix:semicolon
