@@ -28,6 +28,22 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+r_int
+id|map_page
+c_func
+(paren
+r_int
+r_int
+id|va
+comma
+r_int
+r_int
+id|pa
+comma
+r_int
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* This function will allocate the requested contiguous pages and&n; * map them into the kernel&squot;s vmalloc() space.  This is done so we&n; * get unique mapping for these pages, outside of the kernel&squot;s 1:1&n; * virtual:physical mapping.  This is necessary so we can cover large&n; * portions of the kernel with single large page TLB entries, and&n; * still get unique uncached pages for consistent DMA.&n; */
 DECL|function|consistent_alloc
 r_void
@@ -195,6 +211,10 @@ op_assign
 id|virt_to_bus
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|page
 )paren
 suffix:semicolon
@@ -430,6 +450,10 @@ suffix:semicolon
 id|consistent_sync
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|start
 comma
 id|size

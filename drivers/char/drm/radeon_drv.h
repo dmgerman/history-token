@@ -2,6 +2,10 @@ multiline_comment|/* radeon_drv.h -- Private header for radeon driver -*- linux-
 macro_line|#ifndef __RADEON_DRV_H__
 DECL|macro|__RADEON_DRV_H__
 mdefine_line|#define __RADEON_DRV_H__
+DECL|macro|GET_RING_HEAD
+mdefine_line|#define GET_RING_HEAD(ring)&t;&t;readl( (volatile u32 *) (ring)-&gt;head )
+DECL|macro|SET_RING_HEAD
+mdefine_line|#define SET_RING_HEAD(ring,val)&t;&t;writel( (val), (volatile u32 *) (ring)-&gt;head )
 DECL|struct|drm_radeon_freelist
 r_typedef
 r_struct
@@ -543,13 +547,11 @@ id|ring
 id|ring-&gt;space
 op_assign
 (paren
-op_star
+id|GET_RING_HEAD
+c_func
 (paren
-r_volatile
-r_int
-op_star
+id|ring
 )paren
-id|ring-&gt;head
 op_minus
 id|ring-&gt;tail
 )paren
@@ -989,6 +991,16 @@ DECL|macro|RADEON_ISYNC_WAIT_IDLEGUI
 macro_line|#&t;define RADEON_ISYNC_WAIT_IDLEGUI&t;(1 &lt;&lt; 4)
 DECL|macro|RADEON_ISYNC_CPSCRATCH_IDLEGUI
 macro_line|#&t;define RADEON_ISYNC_CPSCRATCH_IDLEGUI&t;(1 &lt;&lt; 5)
+DECL|macro|RADEON_RBBM_GUICNTL
+mdefine_line|#define RADEON_RBBM_GUICNTL&t;&t;0x172c
+DECL|macro|RADEON_HOST_DATA_SWAP_NONE
+macro_line|#&t;define RADEON_HOST_DATA_SWAP_NONE&t;(0 &lt;&lt; 0)
+DECL|macro|RADEON_HOST_DATA_SWAP_16BIT
+macro_line|#&t;define RADEON_HOST_DATA_SWAP_16BIT&t;(1 &lt;&lt; 0)
+DECL|macro|RADEON_HOST_DATA_SWAP_32BIT
+macro_line|#&t;define RADEON_HOST_DATA_SWAP_32BIT&t;(2 &lt;&lt; 0)
+DECL|macro|RADEON_HOST_DATA_SWAP_HDW
+macro_line|#&t;define RADEON_HOST_DATA_SWAP_HDW&t;(3 &lt;&lt; 0)
 DECL|macro|RADEON_MC_AGP_LOCATION
 mdefine_line|#define RADEON_MC_AGP_LOCATION&t;&t;0x014c
 DECL|macro|RADEON_MC_FB_LOCATION
@@ -1322,6 +1334,8 @@ DECL|macro|RADEON_CP_RB_BASE
 mdefine_line|#define RADEON_CP_RB_BASE&t;&t;0x0700
 DECL|macro|RADEON_CP_RB_CNTL
 mdefine_line|#define RADEON_CP_RB_CNTL&t;&t;0x0704
+DECL|macro|RADEON_BUF_SWAP_32BIT
+macro_line|#&t;define RADEON_BUF_SWAP_32BIT&t;&t;(2 &lt;&lt; 16)
 DECL|macro|RADEON_CP_RB_RPTR_ADDR
 mdefine_line|#define RADEON_CP_RB_RPTR_ADDR&t;&t;0x070c
 DECL|macro|RADEON_CP_RB_RPTR
@@ -1397,6 +1411,8 @@ DECL|macro|RADEON_CNTL_PAINT_MULTI
 macro_line|#&t;define RADEON_CNTL_PAINT_MULTI&t;&t;0x00009A00
 DECL|macro|RADEON_CNTL_BITBLT_MULTI
 macro_line|#&t;define RADEON_CNTL_BITBLT_MULTI&t;&t;0x00009B00
+DECL|macro|RADEON_CNTL_SET_SCISSORS
+macro_line|#&t;define RADEON_CNTL_SET_SCISSORS&t;&t;0xC0001E00
 DECL|macro|RADEON_CP_PACKET_MASK
 mdefine_line|#define RADEON_CP_PACKET_MASK&t;&t;0xC0000000
 DECL|macro|RADEON_CP_PACKET_COUNT_MASK
@@ -1504,86 +1520,14 @@ DECL|macro|RADEON_BASE
 mdefine_line|#define RADEON_BASE(reg)&t;((unsigned long)(dev_priv-&gt;mmio-&gt;handle))
 DECL|macro|RADEON_ADDR
 mdefine_line|#define RADEON_ADDR(reg)&t;(RADEON_BASE( reg ) + reg)
-DECL|macro|RADEON_DEREF
-mdefine_line|#define RADEON_DEREF(reg)&t;*(volatile u32 *)RADEON_ADDR( reg )
-macro_line|#ifdef __alpha__
 DECL|macro|RADEON_READ
-mdefine_line|#define RADEON_READ(reg)&t;(_RADEON_READ((u32 *)RADEON_ADDR( reg )))
-DECL|function|_RADEON_READ
-r_static
-r_inline
-id|u32
-id|_RADEON_READ
-c_func
-(paren
-id|u32
-op_star
-id|addr
-)paren
-(brace
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-op_star
-(paren
-r_volatile
-id|u32
-op_star
-)paren
-id|addr
-suffix:semicolon
-)brace
+mdefine_line|#define RADEON_READ(reg)&t;readl( (volatile u32 *) RADEON_ADDR(reg) )
 DECL|macro|RADEON_WRITE
-mdefine_line|#define RADEON_WRITE(reg,val)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wmb();&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;RADEON_DEREF(reg) = val;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-macro_line|#else
-DECL|macro|RADEON_READ
-mdefine_line|#define RADEON_READ(reg)&t;RADEON_DEREF( reg )
-DECL|macro|RADEON_WRITE
-mdefine_line|#define RADEON_WRITE(reg, val)&t;do { RADEON_DEREF( reg ) = val; } while (0)
-macro_line|#endif
-DECL|macro|RADEON_DEREF8
-mdefine_line|#define RADEON_DEREF8(reg)&t;*(volatile u8 *)RADEON_ADDR( reg )
-macro_line|#ifdef __alpha__
+mdefine_line|#define RADEON_WRITE(reg,val)&t;writel( (val), (volatile u32 *) RADEON_ADDR(reg) )
 DECL|macro|RADEON_READ8
-mdefine_line|#define RADEON_READ8(reg)&t;_RADEON_READ8((u8 *)RADEON_ADDR( reg ))
-DECL|function|_RADEON_READ8
-r_static
-r_inline
-id|u8
-id|_RADEON_READ8
-c_func
-(paren
-id|u8
-op_star
-id|addr
-)paren
-(brace
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-op_star
-(paren
-r_volatile
-id|u8
-op_star
-)paren
-id|addr
-suffix:semicolon
-)brace
+mdefine_line|#define RADEON_READ8(reg)&t;readb( (volatile u8 *) RADEON_ADDR(reg) )
 DECL|macro|RADEON_WRITE8
-mdefine_line|#define RADEON_WRITE8(reg,val)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wmb();&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;RADEON_DEREF8( reg ) = val;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-macro_line|#else
-DECL|macro|RADEON_READ8
-mdefine_line|#define RADEON_READ8(reg)&t;RADEON_DEREF8( reg )
-DECL|macro|RADEON_WRITE8
-mdefine_line|#define RADEON_WRITE8(reg, val)&t;do { RADEON_DEREF8( reg ) = val; } while (0)
-macro_line|#endif
+mdefine_line|#define RADEON_WRITE8(reg,val)&t;writeb( (val), (volatile u8 *) RADEON_ADDR(reg) )
 DECL|macro|RADEON_WRITE_PLL
 mdefine_line|#define RADEON_WRITE_PLL( addr, val )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;RADEON_WRITE8( RADEON_CLOCK_CNTL_INDEX,&t;&t;&t;&t;&bslash;&n;&t;&t;       ((addr) &amp; 0x1f) | RADEON_PLL_WR_EN );&t;&t;&bslash;&n;&t;RADEON_WRITE( RADEON_CLOCK_CNTL_DATA, (val) );&t;&t;&t;&bslash;&n;} while (0)
 r_extern
@@ -1630,7 +1574,7 @@ multiline_comment|/* ===========================================================
 DECL|macro|LOCK_TEST_WITH_RETURN
 mdefine_line|#define LOCK_TEST_WITH_RETURN( dev )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( !_DRM_LOCK_IS_HELD( dev-&gt;lock.hw_lock-&gt;lock ) ||&t;&t;&bslash;&n;&t;     dev-&gt;lock.pid != current-&gt;pid ) {&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;%s called without lock held&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   __FUNCTION__ );&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|RING_SPACE_TEST_WITH_RETURN
-mdefine_line|#define RING_SPACE_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;drm_radeon_ring_buffer_t *ring = &amp;dev_priv-&gt;ring; int i;&t;&bslash;&n;&t;if ( ring-&gt;space &lt; ring-&gt;high_mark ) {&t;&t;&t;&t;&bslash;&n;&t;&t;for ( i = 0 ; i &lt; dev_priv-&gt;usec_timeout ; i++ ) {&t;&bslash;&n;&t;&t;&t;radeon_update_ring_snapshot( ring );&t;&t;&bslash;&n;&t;&t;&t;if ( ring-&gt;space &gt;= ring-&gt;high_mark )&t;&t;&bslash;&n;&t;&t;&t;&t;goto __ring_space_done;&t;&t;&t;&bslash;&n;&t;&t;&t;udelay( 1 );&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;ring space check failed!&bslash;n&quot; );&t;&t;&bslash;&n;&t;&t;return -EBUSY;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; __ring_space_done:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define RING_SPACE_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;drm_radeon_ring_buffer_t *ring = &amp;dev_priv-&gt;ring; int i;&t;&bslash;&n;&t;if ( ring-&gt;space &lt; ring-&gt;high_mark ) {&t;&t;&t;&t;&bslash;&n;&t;&t;for ( i = 0 ; i &lt; dev_priv-&gt;usec_timeout ; i++ ) {&t;&bslash;&n;&t;&t;&t;radeon_update_ring_snapshot( ring );&t;&t;&bslash;&n;&t;&t;&t;if ( ring-&gt;space &gt;= ring-&gt;high_mark )&t;&t;&bslash;&n;&t;&t;&t;&t;goto __ring_space_done;&t;&t;&t;&bslash;&n;&t;&t;&t;udelay( 1 );&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;ring space check from memory failed, reading register...&bslash;n&quot; );&t;&bslash;&n;&t;&t;/* If ring space check fails from RAM, try reading the&t;&bslash;&n;&t;&t;   register directly */&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ring-&gt;space = 4 * ( RADEON_READ( RADEON_CP_RB_RPTR ) - ring-&gt;tail );&t;&bslash;&n;&t;&t;if ( ring-&gt;space &lt;= 0 )&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;ring-&gt;space += ring-&gt;size;&t;&t;&t;&bslash;&n;&t;&t;if ( ring-&gt;space &gt;= ring-&gt;high_mark )&t;&t;&t;&bslash;&n;&t;&t;&t;goto __ring_space_done;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;ring space check failed!&bslash;n&quot; );&t;&t;&bslash;&n;&t;&t;return -EBUSY;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; __ring_space_done:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|VB_AGE_TEST_WITH_RETURN
 mdefine_line|#define VB_AGE_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;drm_radeon_sarea_t *sarea_priv = dev_priv-&gt;sarea_priv;&t;&t;&bslash;&n;&t;if ( sarea_priv-&gt;last_dispatch &gt;= RADEON_MAX_VB_AGE ) {&t;&t;&bslash;&n;&t;&t;int __ret = radeon_do_cp_idle( dev_priv );&t;&t;&bslash;&n;&t;&t;if ( __ret &lt; 0 ) return __ret;&t;&t;&t;&t;&bslash;&n;&t;&t;sarea_priv-&gt;last_dispatch = 0;&t;&t;&t;&t;&bslash;&n;&t;&t;radeon_freelist_reset( dev );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|RADEON_DISPATCH_AGE
@@ -1640,8 +1584,13 @@ mdefine_line|#define RADEON_FRAME_AGE( age ) do {&t;&t;&t;&t;&t;&bslash;&n;&t;OU
 DECL|macro|RADEON_CLEAR_AGE
 mdefine_line|#define RADEON_CLEAR_AGE( age ) do {&t;&t;&t;&t;&t;&bslash;&n;&t;OUT_RING( CP_PACKET0( RADEON_LAST_CLEAR_REG, 0 ) );&t;&t;&bslash;&n;&t;OUT_RING( age );&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* ================================================================&n; * Ring control&n; */
+macro_line|#if defined(__powerpc__)
+DECL|macro|radeon_flush_write_combine
+mdefine_line|#define radeon_flush_write_combine()&t;(void) GET_RING_HEAD( &amp;dev_priv-&gt;ring )
+macro_line|#else
 DECL|macro|radeon_flush_write_combine
 mdefine_line|#define radeon_flush_write_combine()&t;mb()
+macro_line|#endif
 DECL|macro|RADEON_VERBOSE
 mdefine_line|#define RADEON_VERBOSE&t;0
 DECL|macro|RING_LOCALS
@@ -1651,7 +1600,7 @@ mdefine_line|#define BEGIN_RING( n ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( RA
 DECL|macro|ADVANCE_RING
 mdefine_line|#define ADVANCE_RING() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( RADEON_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;ADVANCE_RING() wr=0x%06x tail=0x%06x&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;  write, dev_priv-&gt;ring.tail );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((dev_priv-&gt;ring.tail + _nr) &amp; mask) != write) {&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;ADVANCE_RING(): mismatch: nr: %x write: %x&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;((dev_priv-&gt;ring.tail + _nr) &amp; mask),&t;&t;&bslash;&n;&t;&t;&t;write);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;dev_priv-&gt;ring.tail = write;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|COMMIT_RING
-mdefine_line|#define COMMIT_RING() do {&t;&t;&t;&t;&t;    &bslash;&n;&t;RADEON_WRITE( RADEON_CP_RB_WPTR, dev_priv-&gt;ring.tail );&t;&t;    &bslash;&n;} while (0)
+mdefine_line|#define COMMIT_RING() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;radeon_flush_write_combine();&t;&t;&t;&t;&t;&bslash;&n;&t;RADEON_WRITE( RADEON_CP_RB_WPTR, dev_priv-&gt;ring.tail );&t;&t;&bslash;&n;} while (0)
 DECL|macro|OUT_RING
 mdefine_line|#define OUT_RING( x ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( RADEON_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;   OUT_RING( 0x%08x ) at 0x%x&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   (unsigned int)(x), write );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ring[write++] = (x);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write &amp;= mask;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|OUT_RING_REG

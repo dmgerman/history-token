@@ -3411,7 +3411,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|list_splice
+id|list_splice_init
 c_func
 (paren
 op_amp
@@ -3419,13 +3419,6 @@ id|host-&gt;pending_packets
 comma
 op_amp
 id|llist
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|host-&gt;pending_packets
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore

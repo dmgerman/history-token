@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mousedev.c,v 1.38 2001/12/26 21:08:33 jsimmons Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; *&n; *  Input driver to ExplorerPS/2 device driver module.&n; */
+multiline_comment|/*&n; * $Id: mousedev.c,v 1.42 2002/04/09 20:51:26 jdeneux Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; *&n; *  Input driver to ExplorerPS/2 device driver module.&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 DECL|macro|MOUSEDEV_MINOR_BASE
 mdefine_line|#define MOUSEDEV_MINOR_BASE &t;32
@@ -14,6 +14,10 @@ macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
+macro_line|#include &lt;linux/major.h&gt;
+macro_line|#ifdef CONFIG_INPUT_MOUSEDEV_PSAUX
+macro_line|#include &lt;linux/miscdevice.h&gt;
+macro_line|#endif
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -999,6 +1003,26 @@ op_star
 id|list
 suffix:semicolon
 r_int
+id|i
+suffix:semicolon
+macro_line|#ifdef CONFIG_INPUT_MOUSEDEV_PSAUX
+r_if
+c_cond
+(paren
+id|major
+c_func
+(paren
+id|inode-&gt;i_rdev
+)paren
+op_eq
+id|MISC_MAJOR
+)paren
+id|i
+op_assign
+id|MOUSEDEV_MIX
+suffix:semicolon
+r_else
+macro_line|#endif
 id|i
 op_assign
 id|minor
@@ -2481,6 +2505,23 @@ id|mousedev_ids
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_INPUT_MOUSEDEV_PSAUX
+DECL|variable|psaux_mouse
+r_static
+r_struct
+id|miscdevice
+id|psaux_mouse
+op_assign
+(brace
+id|PSMOUSE_MINOR
+comma
+l_string|&quot;psaux&quot;
+comma
+op_amp
+id|mousedev_fops
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|function|mousedev_init
 r_static
 r_int
@@ -2548,6 +2589,15 @@ comma
 id|MOUSEDEV_MINOR_BASE
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_INPUT_MOUSEDEV_PSAUX
+id|misc_register
+c_func
+(paren
+op_amp
+id|psaux_mouse
+)paren
+suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -2569,6 +2619,15 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_INPUT_MOUSEDEV_PSAUX
+id|misc_deregister
+c_func
+(paren
+op_amp
+id|psaux_mouse
+)paren
+suffix:semicolon
+macro_line|#endif
 id|input_unregister_minor
 c_func
 (paren

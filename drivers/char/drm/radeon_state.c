@@ -3,8 +3,9 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;radeon.h&quot;
 macro_line|#include &quot;drmP.h&quot;
-macro_line|#include &quot;radeon_drv.h&quot;
 macro_line|#include &quot;drm.h&quot;
+macro_line|#include &quot;radeon_drm.h&quot;
+macro_line|#include &quot;radeon_drv.h&quot;
 macro_line|#include &lt;linux/delay.h&gt;
 multiline_comment|/* ================================================================&n; * CP hardware state programming functions&n; */
 DECL|function|radeon_emit_clip_rect
@@ -42,18 +43,18 @@ suffix:semicolon
 id|BEGIN_RING
 c_func
 (paren
-l_int|4
+l_int|3
 )paren
 suffix:semicolon
 id|OUT_RING
 c_func
 (paren
-id|CP_PACKET0
+id|CP_PACKET3
 c_func
 (paren
-id|RADEON_RE_TOP_LEFT
+id|RADEON_CNTL_SET_SCISSORS
 comma
-l_int|0
+l_int|1
 )paren
 )paren
 suffix:semicolon
@@ -72,26 +73,21 @@ suffix:semicolon
 id|OUT_RING
 c_func
 (paren
-id|CP_PACKET0
-c_func
-(paren
-id|RADEON_RE_WIDTH_HEIGHT
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&t;OUT_RING( ((box-&gt;y2 - 1) &lt;&lt; 16) | (box-&gt;x2 - 1) );*/
-id|OUT_RING
-c_func
 (paren
 (paren
 id|box-&gt;y2
+op_minus
+l_int|1
+)paren
 op_lshift
 l_int|16
 )paren
 op_or
+(paren
 id|box-&gt;x2
+op_minus
+l_int|1
+)paren
 )paren
 suffix:semicolon
 id|ADVANCE_RING
@@ -3891,6 +3887,28 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+multiline_comment|/* The Mesa texture functions provide the data in little endian as the&n;&t; * chip wants it, but we need to compensate for the fact that the CP&n;&t; * ring gets byte-swapped&n;&t; */
+id|BEGIN_RING
+c_func
+(paren
+l_int|2
+)paren
+suffix:semicolon
+id|OUT_RING_REG
+c_func
+(paren
+id|RADEON_RBBM_GUICNTL
+comma
+id|RADEON_HOST_DATA_SWAP_32BIT
+)paren
+suffix:semicolon
+id|ADVANCE_RING
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Make a copy of the parameters in case we have to update them&n;&t; * for a multi-pass texture blit.&n;&t; */
 id|y
 op_assign
@@ -4626,6 +4644,10 @@ id|dev_priv-&gt;current_page
 op_assign
 l_int|0
 suffix:semicolon
+id|dev_priv-&gt;sarea_priv-&gt;pfCurrentPage
+op_assign
+id|dev_priv-&gt;current_page
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4677,6 +4699,10 @@ suffix:semicolon
 id|dev_priv-&gt;current_page
 op_assign
 l_int|0
+suffix:semicolon
+id|dev_priv-&gt;sarea_priv-&gt;pfCurrentPage
+op_assign
+id|dev_priv-&gt;current_page
 suffix:semicolon
 r_return
 l_int|0
@@ -6683,14 +6709,19 @@ id|cmdbuf
 )paren
 (brace
 r_int
-id|sz
+id|id
 op_assign
-id|packet
-(braket
 (paren
 r_int
 )paren
 id|header.packet.packet_id
+suffix:semicolon
+r_int
+id|sz
+op_assign
+id|packet
+(braket
+id|id
 )braket
 dot
 id|len
@@ -6700,10 +6731,7 @@ id|reg
 op_assign
 id|packet
 (braket
-(paren
-r_int
-)paren
-id|header.packet.packet_id
+id|id
 )braket
 dot
 id|start

@@ -6,10 +6,6 @@ DECL|struct|dev_info
 r_struct
 id|dev_info
 (brace
-DECL|member|dev
-id|kdev_t
-id|dev
-suffix:semicolon
 DECL|member|bdev
 r_struct
 id|block_device

@@ -1320,7 +1320,7 @@ id|jiffies
 suffix:semicolon
 id|last_stime
 op_assign
-id|current-&gt;times.tms_stime
+id|current-&gt;stime
 suffix:semicolon
 )brace
 r_else
@@ -1338,7 +1338,7 @@ id|idle_percentage
 suffix:semicolon
 id|idle_percentage
 op_assign
-id|current-&gt;times.tms_stime
+id|current-&gt;stime
 op_minus
 id|last_stime
 suffix:semicolon
@@ -1364,7 +1364,7 @@ id|jiffies
 suffix:semicolon
 id|last_stime
 op_assign
-id|current-&gt;times.tms_stime
+id|current-&gt;stime
 suffix:semicolon
 )brace
 id|bucket

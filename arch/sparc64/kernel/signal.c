@@ -4047,7 +4047,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef DEBUG_SIGNALS_MAPS
 DECL|macro|MAPS_LINE_FORMAT
-mdefine_line|#define MAPS_LINE_FORMAT&t;  &quot;%016lx-%016lx %s %016lx %s %lu &quot;
+mdefine_line|#define MAPS_LINE_FORMAT&t;  &quot;%016lx-%016lx %s %016lx %02x:%02x %lu &quot;
 DECL|function|read_maps
 r_static
 r_inline
@@ -4125,7 +4125,7 @@ suffix:semicolon
 r_int
 id|flags
 suffix:semicolon
-id|kdev_t
+id|dev_t
 id|dev
 suffix:semicolon
 r_int
@@ -4253,7 +4253,13 @@ id|map-&gt;vm_pgoff
 op_lshift
 id|PAGE_SHIFT
 comma
-id|kdevname
+id|MAJOR
+c_func
+(paren
+id|dev
+)paren
+comma
+id|MINOR
 c_func
 (paren
 id|dev

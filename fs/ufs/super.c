@@ -5062,6 +5062,11 @@ id|ufs_super_block_first
 op_star
 id|usb1
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|uspi
 op_assign
 id|sb-&gt;u.ufs_sb.s_uspi
@@ -5159,6 +5164,11 @@ suffix:semicolon
 id|buf-&gt;f_namelen
 op_assign
 id|UFS_MAXNAMLEN
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0

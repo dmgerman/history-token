@@ -1315,6 +1315,11 @@ op_star
 id|buf
 )paren
 (brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|buf-&gt;f_type
 op_assign
 id|sb-&gt;s_magic
@@ -1354,6 +1359,11 @@ suffix:semicolon
 id|buf-&gt;f_namelen
 op_assign
 id|QNX4_NAME_MAX
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0

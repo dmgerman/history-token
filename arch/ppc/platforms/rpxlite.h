@@ -110,7 +110,6 @@ mdefine_line|#define BCSR1_PCVCTL7          ((uint)0x00010000)
 macro_line|#if defined(CONFIG_HTDMSOUND)
 macro_line|#include &lt;platforms/rpxhiox.h&gt;
 macro_line|#endif
-macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* define IO_BASE for pcmcia */
 DECL|macro|_IO_BASE
 mdefine_line|#define _IO_BASE 0x80000000
@@ -122,9 +121,29 @@ macro_line|# define MAX_HWIFS 1
 DECL|macro|request_irq
 macro_line|# define request_irq(irq,hand,flg,dev,id)    request_8xxirq((irq),(hand),(flg),(dev),(id))
 macro_line|#endif
+multiline_comment|/* CPM Ethernet through SCCx.&n; *&n; * This ENET stuff is for the MPC850 with ethernet on SCC2.  Some of&n; * this may be unique to the RPX-Lite configuration.&n; * Note TENA is on Port B.&n; */
+DECL|macro|PA_ENET_RXD
+mdefine_line|#define PA_ENET_RXD&t;((ushort)0x0004)
+DECL|macro|PA_ENET_TXD
+mdefine_line|#define PA_ENET_TXD&t;((ushort)0x0008)
+DECL|macro|PA_ENET_TCLK
+mdefine_line|#define PA_ENET_TCLK&t;((ushort)0x0200)
+DECL|macro|PA_ENET_RCLK
+mdefine_line|#define PA_ENET_RCLK&t;((ushort)0x0800)
+DECL|macro|PB_ENET_TENA
+mdefine_line|#define PB_ENET_TENA&t;((uint)0x00002000)
+DECL|macro|PC_ENET_CLSN
+mdefine_line|#define PC_ENET_CLSN&t;((ushort)0x0040)
+DECL|macro|PC_ENET_RENA
+mdefine_line|#define PC_ENET_RENA&t;((ushort)0x0080)
+DECL|macro|SICR_ENET_MASK
+mdefine_line|#define SICR_ENET_MASK&t;((uint)0x0000ff00)
+DECL|macro|SICR_ENET_CLKRT
+mdefine_line|#define SICR_ENET_CLKRT&t;((uint)0x00003d00)
 multiline_comment|/* We don&squot;t use the 8259.&n;*/
 DECL|macro|NR_8259_INTS
 mdefine_line|#define NR_8259_INTS&t;0
-macro_line|#endif
+macro_line|#endif /* !__ASSEMBLY__ */
+macro_line|#endif /* __MACH_RPX_DEFS */
 macro_line|#endif /* __KERNEL__ */
 eof

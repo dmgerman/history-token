@@ -397,4 +397,12 @@ c_func
 id|scsi_delete_timer
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * driverfs support for determining driver types&n; */
+DECL|variable|scsi_driverfs_bus_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_driverfs_bus_type
+)paren
+suffix:semicolon
 eof

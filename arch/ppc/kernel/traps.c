@@ -469,6 +469,10 @@ id|regs
 )paren
 )paren
 (brace
+id|regs-&gt;msr
+op_or_assign
+id|MSR_RI
+suffix:semicolon
 id|_exception
 c_func
 (paren
@@ -506,6 +510,10 @@ c_func
 (paren
 id|regs
 )paren
+suffix:semicolon
+id|regs-&gt;msr
+op_or_assign
+id|MSR_RI
 suffix:semicolon
 r_return
 suffix:semicolon

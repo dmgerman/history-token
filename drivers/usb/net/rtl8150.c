@@ -1,6 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2002 Petko Manolov (petkan@users.sourceforge.net)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation; either version 2 of&n; *&t;the License, or (at your option) any later version.&n; *&n; */
+multiline_comment|/*&n; *  Copyright (c) 2002 Petko Manolov (petkan@users.sourceforge.net)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * version 2 as published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -10,7 +11,6 @@ macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Version Information */
 DECL|macro|DRIVER_VERSION
@@ -265,6 +265,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
+r_inline
 r_struct
 id|sk_buff
 op_star
@@ -1384,7 +1385,7 @@ suffix:colon
 id|warn
 c_func
 (paren
-l_string|&quot;reset needed may be?..&quot;
+l_string|&quot;may be reset is needed?..&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1473,12 +1474,26 @@ id|dev-&gt;stats.rx_bytes
 op_add_assign
 id|pkt_len
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dev-&gt;rx_pool_lock
+)paren
+suffix:semicolon
 id|skb
 op_assign
 id|pull_skb
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dev-&gt;rx_pool_lock
 )paren
 suffix:semicolon
 r_if
@@ -1489,18 +1504,6 @@ id|skb
 )paren
 r_goto
 id|resched
-suffix:semicolon
-id|skb-&gt;dev
-op_assign
-id|netdev
-suffix:semicolon
-id|skb_reserve
-c_func
-(paren
-id|skb
-comma
-l_int|2
-)paren
 suffix:semicolon
 id|dev-&gt;rx_skb
 op_assign
@@ -1609,10 +1612,24 @@ op_star
 )paren
 id|data
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|dev-&gt;rx_pool_lock
+)paren
+suffix:semicolon
 id|fill_skb_pool
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|dev-&gt;rx_pool_lock
 )paren
 suffix:semicolon
 r_if
@@ -1635,11 +1652,13 @@ id|dev-&gt;rx_skb
 r_goto
 id|try_again
 suffix:semicolon
-r_if
-c_cond
+id|spin_lock_irq
+c_func
 (paren
-op_logical_neg
-(paren
+op_amp
+id|dev-&gt;rx_pool_lock
+)paren
+suffix:semicolon
 id|skb
 op_assign
 id|pull_skb
@@ -1647,7 +1666,20 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|dev-&gt;rx_pool_lock
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb
+op_eq
+l_int|NULL
 )paren
 r_goto
 id|tlsched
@@ -1881,19 +1913,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|dev-&gt;rx_pool_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1936,15 +1955,6 @@ op_logical_neg
 id|skb
 )paren
 (brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|dev-&gt;rx_pool_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -1968,15 +1978,6 @@ op_assign
 id|skb
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|dev-&gt;rx_pool_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 DECL|function|free_skb_pool
 r_static
@@ -1991,13 +1992,6 @@ id|dev
 (brace
 r_int
 id|i
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|dev-&gt;rx_pool_lock
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -2030,16 +2024,10 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|dev-&gt;rx_pool_lock
-)paren
-suffix:semicolon
 )brace
 DECL|function|pull_skb
 r_static
+r_inline
 r_struct
 id|sk_buff
 op_star
@@ -2058,19 +2046,6 @@ id|skb
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|dev-&gt;rx_pool_lock
-comma
-id|flags
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -2110,29 +2085,11 @@ id|i
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|dev-&gt;rx_pool_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|skb
 suffix:semicolon
 )brace
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|dev-&gt;rx_pool_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -2678,6 +2635,13 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|dev-&gt;rx_skb
+op_eq
+l_int|NULL
+)paren
 id|dev-&gt;rx_skb
 op_assign
 id|pull_skb
@@ -3948,7 +3912,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|usb_rtl8150_init
-r_static
 r_int
 id|__init
 id|usb_rtl8150_init
@@ -3975,7 +3938,6 @@ id|rtl8150_driver
 suffix:semicolon
 )brace
 DECL|function|usb_rtl8150_exit
-r_static
 r_void
 id|__exit
 id|usb_rtl8150_exit

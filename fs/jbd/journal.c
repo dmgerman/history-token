@@ -134,6 +134,13 @@ c_func
 id|journal_revoke
 )paren
 suffix:semicolon
+DECL|variable|journal_callback_set
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|journal_callback_set
+)paren
+suffix:semicolon
 DECL|variable|journal_init_dev
 id|EXPORT_SYMBOL
 c_func

@@ -521,6 +521,13 @@ op_star
 id|current_urb
 suffix:semicolon
 multiline_comment|/* non-int USB requests */
+DECL|member|dr
+r_struct
+id|usb_ctrlrequest
+op_star
+id|dr
+suffix:semicolon
+multiline_comment|/* control requests&t; */
 multiline_comment|/* the semaphore for sleeping the control thread */
 DECL|member|sema
 r_struct

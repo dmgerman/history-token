@@ -23,6 +23,14 @@ id|repeat_counter
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;   * FIXME! Temporary cludge until ReiserFS people tell what they&n;   * actually are trying to protect against!&n;   */
+r_if
+c_cond
+(paren
+l_int|1
+)paren
+r_return
+suffix:semicolon
 r_while
 c_loop
 (paren

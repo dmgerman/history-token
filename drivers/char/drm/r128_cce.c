@@ -3,6 +3,8 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;r128.h&quot;
 macro_line|#include &quot;drmP.h&quot;
+macro_line|#include &quot;drm.h&quot;
+macro_line|#include &quot;r128_drm.h&quot;
 macro_line|#include &quot;r128_drv.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* For task queue support */
 macro_line|#include &lt;linux/delay.h&gt;

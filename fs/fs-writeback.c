@@ -635,7 +635,7 @@ op_assign
 id|jiffies
 suffix:semicolon
 multiline_comment|/* livelock avoidance */
-id|list_splice
+id|list_splice_init
 c_func
 (paren
 op_amp
@@ -643,13 +643,6 @@ id|sb-&gt;s_dirty
 comma
 op_amp
 id|sb-&gt;s_io
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|sb-&gt;s_dirty
 )paren
 suffix:semicolon
 id|head
@@ -882,20 +875,8 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|sb-&gt;s_io
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Put the rest back, in the correct order.&n;&t;&t; */
-id|list_splice
+multiline_comment|/*&n;&t; * Put the rest back, in the correct order.&n;&t; */
+id|list_splice_init
 c_func
 (paren
 op_amp
@@ -904,14 +885,6 @@ comma
 id|sb-&gt;s_dirty.prev
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|sb-&gt;s_io
-)paren
-suffix:semicolon
-)brace
 r_return
 suffix:semicolon
 )brace
@@ -925,7 +898,8 @@ r_int
 op_star
 id|nr_to_write
 comma
-r_int
+r_enum
+id|writeback_sync_modes
 id|sync_mode
 comma
 r_int

@@ -556,10 +556,6 @@ id|fattr-&gt;f_gid
 op_assign
 id|inode-&gt;i_gid
 suffix:semicolon
-id|fattr-&gt;f_rdev
-op_assign
-id|inode-&gt;i_rdev
-suffix:semicolon
 id|fattr-&gt;f_size
 op_assign
 id|inode-&gt;i_size
@@ -667,10 +663,6 @@ suffix:semicolon
 id|inode-&gt;i_gid
 op_assign
 id|fattr-&gt;f_gid
-suffix:semicolon
-id|inode-&gt;i_rdev
-op_assign
-id|fattr-&gt;f_rdev
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
@@ -2463,6 +2455,13 @@ id|buf
 (brace
 r_int
 id|result
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+id|result
 op_assign
 id|smb_proc_dskattr
 c_func
@@ -2470,6 +2469,11 @@ c_func
 id|sb
 comma
 id|buf
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|buf-&gt;f_type
