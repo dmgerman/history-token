@@ -378,7 +378,7 @@ l_int|0
 comma
 id|dev-&gt;slot_name
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 id|PPCDBG_ENTER_DEBUGGER
@@ -398,7 +398,7 @@ l_int|0
 comma
 id|dev-&gt;slot_name
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 )brace
@@ -949,7 +949,7 @@ l_string|&quot;EEH: %s %s user requested to run without EEH.&bslash;n&quot;
 comma
 id|dev-&gt;slot_name
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 r_return

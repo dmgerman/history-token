@@ -3843,7 +3843,7 @@ c_func
 (paren
 l_string|&quot;&bslash;tname            = %s  &bslash;n&quot;
 comma
-id|Pci_Dev-&gt;name
+id|Pci_Dev-&gt;dev.name
 )paren
 suffix:semicolon
 id|udbg_printf

@@ -3,67 +3,6 @@ DECL|macro|_PPC64_STAT_H
 mdefine_line|#define _PPC64_STAT_H
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/types.h&gt;
-DECL|struct|__old_kernel_stat
-r_struct
-id|__old_kernel_stat
-(brace
-DECL|member|st_dev
-r_int
-r_int
-id|st_dev
-suffix:semicolon
-DECL|member|st_ino
-r_int
-r_int
-id|st_ino
-suffix:semicolon
-DECL|member|st_mode
-r_int
-r_int
-id|st_mode
-suffix:semicolon
-DECL|member|st_nlink
-r_int
-r_int
-id|st_nlink
-suffix:semicolon
-DECL|member|st_uid
-r_int
-r_int
-id|st_uid
-suffix:semicolon
-DECL|member|st_gid
-r_int
-r_int
-id|st_gid
-suffix:semicolon
-DECL|member|st_rdev
-r_int
-r_int
-id|st_rdev
-suffix:semicolon
-DECL|member|st_size
-r_int
-r_int
-id|st_size
-suffix:semicolon
-DECL|member|st_atime
-r_int
-r_int
-id|st_atime
-suffix:semicolon
-DECL|member|st_mtime
-r_int
-r_int
-id|st_mtime
-suffix:semicolon
-DECL|member|st_ctime
-r_int
-r_int
-id|st_ctime
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|stat
 r_struct
 id|stat
@@ -159,7 +98,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|STAT_HAVE_NSEC
 mdefine_line|#define STAT_HAVE_NSEC 1
-multiline_comment|/* This matches struct stat64 in glibc2.1. */
+multiline_comment|/* This matches struct stat64 in glibc2.1. Only used for 32 bit. */
 DECL|struct|stat64
 r_struct
 id|stat64

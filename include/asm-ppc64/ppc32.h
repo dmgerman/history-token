@@ -478,8 +478,6 @@ id|__kernel_dev_t32
 id|st_dev
 suffix:semicolon
 multiline_comment|/* 2 */
-multiline_comment|/* __kernel_dev_t32 __pad1; */
-multiline_comment|/* 2 */
 DECL|member|st_ino
 id|__kernel_ino_t32
 id|st_ino
@@ -509,8 +507,6 @@ DECL|member|st_rdev
 id|__kernel_dev_t32
 id|st_rdev
 suffix:semicolon
-multiline_comment|/* 2 */
-multiline_comment|/* __kernel_dev_t32 __pad2; */
 multiline_comment|/* 2 */
 DECL|member|st_size
 id|__kernel_off_t32
@@ -569,67 +565,6 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* 2*4 */
-)brace
-suffix:semicolon
-DECL|struct|__old_kernel_stat32
-r_struct
-id|__old_kernel_stat32
-(brace
-DECL|member|st_dev
-r_int
-r_int
-id|st_dev
-suffix:semicolon
-DECL|member|st_ino
-r_int
-r_int
-id|st_ino
-suffix:semicolon
-DECL|member|st_mode
-r_int
-r_int
-id|st_mode
-suffix:semicolon
-DECL|member|st_nlink
-r_int
-r_int
-id|st_nlink
-suffix:semicolon
-DECL|member|st_uid
-r_int
-r_int
-id|st_uid
-suffix:semicolon
-DECL|member|st_gid
-r_int
-r_int
-id|st_gid
-suffix:semicolon
-DECL|member|st_rdev
-r_int
-r_int
-id|st_rdev
-suffix:semicolon
-DECL|member|st_size
-r_int
-r_int
-id|st_size
-suffix:semicolon
-DECL|member|st_atime
-r_int
-r_int
-id|st_atime
-suffix:semicolon
-DECL|member|st_mtime
-r_int
-r_int
-id|st_mtime
-suffix:semicolon
-DECL|member|st_ctime
-r_int
-r_int
-id|st_ctime
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|sigcontext32
