@@ -47,9 +47,9 @@ suffix:semicolon
 multiline_comment|/*&n; * HW access macros.&n; */
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|NV_WR08
-mdefine_line|#define NV_WR08(p,i,d)  (__raw_writeb((d), (void __iomem *)(p) + (i)))
+mdefine_line|#define NV_WR08(p,i,d)  (writeb((d), (void __iomem *)(p) + (i)))
 DECL|macro|NV_RD08
-mdefine_line|#define NV_RD08(p,i)    (__raw_readb((void __iomem *)(p) + (i)))
+mdefine_line|#define NV_RD08(p,i)    (readb((void __iomem *)(p) + (i)))
 DECL|macro|NV_WR16
 mdefine_line|#define NV_WR16(p,i,d)  (__raw_writew((d), (void __iomem *)(p) + (i)))
 DECL|macro|NV_RD16
