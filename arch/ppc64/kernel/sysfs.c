@@ -560,7 +560,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|lppaca.xPMCRegsInUse
+id|lppaca.pmcregs_in_use
 op_assign
 l_int|1
 suffix:semicolon

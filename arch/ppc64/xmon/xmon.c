@@ -7269,7 +7269,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|ItLpPaca
+id|lppaca
 op_star
 id|ptrLpPaca
 op_assign
@@ -7448,9 +7448,9 @@ c_func
 (paren
 l_string|&quot;    Saved Srr0=%.16lx  Saved Srr1=%.16lx &bslash;n&quot;
 comma
-id|ptrLpPaca-&gt;xSavedSrr0
+id|ptrLpPaca-&gt;saved_srr0
 comma
-id|ptrLpPaca-&gt;xSavedSrr1
+id|ptrLpPaca-&gt;saved_srr1
 )paren
 suffix:semicolon
 id|printf
@@ -7458,9 +7458,9 @@ c_func
 (paren
 l_string|&quot;    Saved Gpr3=%.16lx  Saved Gpr4=%.16lx &bslash;n&quot;
 comma
-id|ptrLpPaca-&gt;xSavedGpr3
+id|ptrLpPaca-&gt;saved_gpr3
 comma
-id|ptrLpPaca-&gt;xSavedGpr4
+id|ptrLpPaca-&gt;saved_gpr4
 )paren
 suffix:semicolon
 id|printf
@@ -7468,7 +7468,7 @@ c_func
 (paren
 l_string|&quot;    Saved Gpr5=%.16lx &bslash;n&quot;
 comma
-id|ptrLpPaca-&gt;xSavedGpr5
+id|ptrLpPaca-&gt;saved_gpr5
 )paren
 suffix:semicolon
 id|printf

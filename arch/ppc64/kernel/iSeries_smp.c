@@ -259,7 +259,7 @@ id|paca
 id|i
 )braket
 dot
-id|lppaca.xDynProcStatus
+id|lppaca.dyn_proc_status
 OL
 l_int|2
 )paren
@@ -340,7 +340,7 @@ id|paca
 id|i
 )braket
 dot
-id|lppaca.xDynProcStatus
+id|lppaca.dyn_proc_status
 OL
 l_int|2
 )paren
@@ -386,7 +386,7 @@ id|paca
 id|nr
 )braket
 dot
-id|lppaca.xDynProcStatus
+id|lppaca.dyn_proc_status
 op_ge
 l_int|2
 )paren

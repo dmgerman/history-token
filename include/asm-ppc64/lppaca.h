@@ -10,9 +10,9 @@ singleline_comment|//
 singleline_comment|//
 singleline_comment|//----------------------------------------------------------------------------
 macro_line|#include &lt;asm/types.h&gt;
-DECL|struct|ItLpPaca
+DECL|struct|lppaca
 r_struct
-id|ItLpPaca
+id|lppaca
 (brace
 singleline_comment|//=============================================================================
 singleline_comment|// CACHE_LINE_1 0x0000 - 0x007F Contains read-only data
@@ -20,108 +20,108 @@ singleline_comment|// NOTE: The xDynXyz fields are fields that will be dynamical
 singleline_comment|// PLIC when preparing to bring a processor online or when dispatching a
 singleline_comment|// virtual processor!
 singleline_comment|//=============================================================================
-DECL|member|xDesc
+DECL|member|desc
 id|u32
-id|xDesc
+id|desc
 suffix:semicolon
 singleline_comment|// Eye catcher 0xD397D781&t;x00-x03
-DECL|member|xSize
+DECL|member|size
 id|u16
-id|xSize
+id|size
 suffix:semicolon
 singleline_comment|// Size of this struct&t;&t;x04-x05
-DECL|member|xRsvd1_0
+DECL|member|reserved1
 id|u16
-id|xRsvd1_0
+id|reserved1
 suffix:semicolon
 singleline_comment|// Reserved&t;&t;&t;x06-x07
-DECL|member|xRsvd1_1
+DECL|member|reserved2
 id|u16
-id|xRsvd1_1
+id|reserved2
 suffix:colon
 l_int|14
 suffix:semicolon
 singleline_comment|// Reserved&t;&t;&t;x08-x09
-DECL|member|xSharedProc
+DECL|member|shared_proc
 id|u8
-id|xSharedProc
+id|shared_proc
 suffix:colon
 l_int|1
 suffix:semicolon
 singleline_comment|// Shared processor indicator&t;...
-DECL|member|xSecondaryThread
+DECL|member|secondary_thread
 id|u8
-id|xSecondaryThread
+id|secondary_thread
 suffix:colon
 l_int|1
 suffix:semicolon
 singleline_comment|// Secondary thread indicator&t;...
-DECL|member|xDynProcStatus
+DECL|member|dyn_proc_status
 r_volatile
 id|u8
-id|xDynProcStatus
+id|dyn_proc_status
 suffix:colon
 l_int|8
 suffix:semicolon
 singleline_comment|// Dynamic Status of this proc&t;x0A-x0A
-DECL|member|xSecondaryThreadCnt
+DECL|member|secondary_thread_count
 id|u8
-id|xSecondaryThreadCnt
+id|secondary_thread_count
 suffix:semicolon
 singleline_comment|// Secondary thread count&t;x0B-x0B
-DECL|member|xDynHvPhysicalProcIndex
+DECL|member|dyn_hv_phys_proc_index
 r_volatile
 id|u16
-id|xDynHvPhysicalProcIndex
+id|dyn_hv_phys_proc_index
 suffix:semicolon
 singleline_comment|// Dynamic HV Physical Proc Index0C-x0D
-DECL|member|xDynHvLogicalProcIndex
+DECL|member|dyn_hv_log_proc_index
 r_volatile
 id|u16
-id|xDynHvLogicalProcIndex
+id|dyn_hv_log_proc_index
 suffix:semicolon
 singleline_comment|// Dynamic HV Logical Proc Indexx0E-x0F
-DECL|member|xDecrVal
+DECL|member|decr_val
 id|u32
-id|xDecrVal
+id|decr_val
 suffix:semicolon
 singleline_comment|// Value for Decr programming &t;x10-x13
-DECL|member|xPMCVal
+DECL|member|pmc_val
 id|u32
-id|xPMCVal
+id|pmc_val
 suffix:semicolon
 singleline_comment|// Value for PMC regs         &t;x14-x17
-DECL|member|xDynHwNodeId
+DECL|member|dyn_hw_node_id
 r_volatile
 id|u32
-id|xDynHwNodeId
+id|dyn_hw_node_id
 suffix:semicolon
 singleline_comment|// Dynamic Hardware Node id&t;x18-x1B
-DECL|member|xDynHwProcId
+DECL|member|dyn_hw_proc_id
 r_volatile
 id|u32
-id|xDynHwProcId
+id|dyn_hw_proc_id
 suffix:semicolon
 singleline_comment|// Dynamic Hardware Proc Id&t;x1C-x1F
-DECL|member|xDynPIR
+DECL|member|dyn_pir
 r_volatile
 id|u32
-id|xDynPIR
+id|dyn_pir
 suffix:semicolon
 singleline_comment|// Dynamic ProcIdReg value&t;x20-x23
-DECL|member|xDseiData
+DECL|member|dsei_data
 id|u32
-id|xDseiData
+id|dsei_data
 suffix:semicolon
 singleline_comment|// DSEI data                  &t;x24-x27
-DECL|member|xSPRG3
+DECL|member|sprg3
 id|u64
-id|xSPRG3
+id|sprg3
 suffix:semicolon
 singleline_comment|// SPRG3 value                &t;x28-x2F
-DECL|member|xRsvd1_3
+DECL|member|reserved3
 id|u8
-id|xRsvd1_3
+id|reserved3
 (braket
 l_int|80
 )braket
@@ -134,54 +134,54 @@ singleline_comment|// This Dword contains a byte for each type of interrupt that
 singleline_comment|// The IPI is a count while the others are just a binary 1 or 0.
 r_union
 (brace
-DECL|member|xAnyInt
+DECL|member|any_int
 id|u64
-id|xAnyInt
+id|any_int
 suffix:semicolon
 r_struct
 (brace
-DECL|member|xRsvd
+DECL|member|reserved
 id|u16
-id|xRsvd
+id|reserved
 suffix:semicolon
 singleline_comment|// Reserved - cleared by #mpasmbl
-DECL|member|xXirrInt
+DECL|member|xirr_int
 id|u8
-id|xXirrInt
+id|xirr_int
 suffix:semicolon
 singleline_comment|// Indicates xXirrValue is valid or Immed IO
-DECL|member|xIpiCnt
+DECL|member|ipi_cnt
 id|u8
-id|xIpiCnt
+id|ipi_cnt
 suffix:semicolon
 singleline_comment|// IPI Count
-DECL|member|xDecrInt
+DECL|member|decr_int
 id|u8
-id|xDecrInt
+id|decr_int
 suffix:semicolon
 singleline_comment|// DECR interrupt occurred
-DECL|member|xPdcInt
+DECL|member|pdc_int
 id|u8
-id|xPdcInt
+id|pdc_int
 suffix:semicolon
 singleline_comment|// PDC interrupt occurred
-DECL|member|xQuantumInt
+DECL|member|quantum_int
 id|u8
-id|xQuantumInt
+id|quantum_int
 suffix:semicolon
 singleline_comment|// Interrupt quantum reached
-DECL|member|xOldPlicDeferredExtInt
+DECL|member|old_plic_deferred_ext_int
 id|u8
-id|xOldPlicDeferredExtInt
+id|old_plic_deferred_ext_int
 suffix:semicolon
 singleline_comment|// Old PLIC has a deferred XIRR pending
-DECL|member|xFields
+DECL|member|fields
 )brace
-id|xFields
+id|fields
 suffix:semicolon
-DECL|member|xIntDword
+DECL|member|int_dword
 )brace
-id|xIntDword
+id|int_dword
 suffix:semicolon
 singleline_comment|// Whenever any fields in this Dword are set then PLIC will defer the
 singleline_comment|// processing of external interrupts.  Note that PLIC will store the
@@ -191,141 +191,141 @@ singleline_comment|// 4-bytes of this Dword is upto SLIC - PLIC just checks whet
 singleline_comment|// entire Dword is zero or not.  A non-zero value in the low order
 singleline_comment|// 2-bytes will result in SLIC being granted the highest thread
 singleline_comment|// priority upon return.  A 0 will return to SLIC as medium priority.
-DECL|member|xPlicDeferIntsArea
+DECL|member|plic_defer_ints_area
 id|u64
-id|xPlicDeferIntsArea
+id|plic_defer_ints_area
 suffix:semicolon
 singleline_comment|// Entire Dword
 singleline_comment|// Used to pass the real SRR0/1 from PLIC to SLIC as well as to
 singleline_comment|// pass the target SRR0/1 from SLIC to PLIC on a SetAsrAndRfid.
-DECL|member|xSavedSrr0
+DECL|member|saved_srr0
 id|u64
-id|xSavedSrr0
+id|saved_srr0
 suffix:semicolon
 singleline_comment|// Saved SRR0                   x10-x17
-DECL|member|xSavedSrr1
+DECL|member|saved_srr1
 id|u64
-id|xSavedSrr1
+id|saved_srr1
 suffix:semicolon
 singleline_comment|// Saved SRR1                   x18-x1F
 singleline_comment|// Used to pass parms from the OS to PLIC for SetAsrAndRfid
-DECL|member|xSavedGpr3
+DECL|member|saved_gpr3
 id|u64
-id|xSavedGpr3
+id|saved_gpr3
 suffix:semicolon
 singleline_comment|// Saved GPR3                   x20-x27
-DECL|member|xSavedGpr4
+DECL|member|saved_gpr4
 id|u64
-id|xSavedGpr4
+id|saved_gpr4
 suffix:semicolon
 singleline_comment|// Saved GPR4                   x28-x2F
-DECL|member|xSavedGpr5
+DECL|member|saved_gpr5
 id|u64
-id|xSavedGpr5
+id|saved_gpr5
 suffix:semicolon
 singleline_comment|// Saved GPR5                   x30-x37
-DECL|member|xRsvd2_1
+DECL|member|reserved4
 id|u8
-id|xRsvd2_1
+id|reserved4
 suffix:semicolon
 singleline_comment|// Reserved&t;&t;&t;x38-x38
-DECL|member|xCpuCtlsTaskAttributes
+DECL|member|cpuctls_task_attrs
 id|u8
-id|xCpuCtlsTaskAttributes
+id|cpuctls_task_attrs
 suffix:semicolon
 singleline_comment|// Task attributes for cpuctls  x39-x39
-DECL|member|xFPRegsInUse
+DECL|member|fpregs_in_use
 id|u8
-id|xFPRegsInUse
+id|fpregs_in_use
 suffix:semicolon
 singleline_comment|// FP regs in use               x3A-x3A
-DECL|member|xPMCRegsInUse
+DECL|member|pmcregs_in_use
 id|u8
-id|xPMCRegsInUse
+id|pmcregs_in_use
 suffix:semicolon
 singleline_comment|// PMC regs in use              x3B-x3B
-DECL|member|xSavedDecr
+DECL|member|saved_decr
 r_volatile
 id|u32
-id|xSavedDecr
+id|saved_decr
 suffix:semicolon
 singleline_comment|// Saved Decr Value             x3C-x3F
-DECL|member|xEmulatedTimeBase
+DECL|member|emulated_time_base
 r_volatile
 id|u64
-id|xEmulatedTimeBase
+id|emulated_time_base
 suffix:semicolon
 singleline_comment|// Emulated TB for this thread  x40-x47
-DECL|member|xCurPLICLatency
+DECL|member|cur_plic_latency
 r_volatile
 id|u64
-id|xCurPLICLatency
+id|cur_plic_latency
 suffix:semicolon
 singleline_comment|// Unaccounted PLIC latency     x48-x4F
-DECL|member|xTotPLICLatency
+DECL|member|tot_plic_latency
 id|u64
-id|xTotPLICLatency
+id|tot_plic_latency
 suffix:semicolon
 singleline_comment|// Accumulated PLIC latency     x50-x57
-DECL|member|xWaitStateCycles
+DECL|member|wait_state_cycles
 id|u64
-id|xWaitStateCycles
+id|wait_state_cycles
 suffix:semicolon
 singleline_comment|// Wait cycles for this proc    x58-x5F
-DECL|member|xEndOfQuantum
+DECL|member|end_of_quantum
 id|u64
-id|xEndOfQuantum
+id|end_of_quantum
 suffix:semicolon
 singleline_comment|// TB at end of quantum         x60-x67
-DECL|member|xPDCSavedSPRG1
+DECL|member|pdc_saved_sprg1
 id|u64
-id|xPDCSavedSPRG1
+id|pdc_saved_sprg1
 suffix:semicolon
 singleline_comment|// Saved SPRG1 for PMC int      x68-x6F
-DECL|member|xPDCSavedSRR0
+DECL|member|pdc_saved_srr0
 id|u64
-id|xPDCSavedSRR0
+id|pdc_saved_srr0
 suffix:semicolon
 singleline_comment|// Saved SRR0 for PMC int       x70-x77
-DECL|member|xVirtualDecr
+DECL|member|virtual_decr
 r_volatile
 id|u32
-id|xVirtualDecr
+id|virtual_decr
 suffix:semicolon
 singleline_comment|// Virtual DECR for shared procsx78-x7B
-DECL|member|xSLBCount
+DECL|member|slb_count
 id|u16
-id|xSLBCount
+id|slb_count
 suffix:semicolon
 singleline_comment|// # of SLBs to maintain        x7C-x7D
-DECL|member|xIdle
+DECL|member|idle
 id|u8
-id|xIdle
+id|idle
 suffix:semicolon
 singleline_comment|// Indicate OS is idle          x7E
-DECL|member|xRsvd2_2
+DECL|member|reserved5
 id|u8
-id|xRsvd2_2
+id|reserved5
 suffix:semicolon
 singleline_comment|// Reserved                     x7F
 singleline_comment|//=============================================================================
 singleline_comment|// CACHE_LINE_3 0x0100 - 0x007F: This line is shared with other processors
 singleline_comment|//=============================================================================
-singleline_comment|// This is the xYieldCount.  An &quot;odd&quot; value (low bit on) means that
+singleline_comment|// This is the yield_count.  An &quot;odd&quot; value (low bit on) means that
 singleline_comment|// the processor is yielded (either because of an OS yield or a PLIC
 singleline_comment|// preempt).  An even value implies that the processor is currently
 singleline_comment|// executing.
 singleline_comment|// NOTE: This value will ALWAYS be zero for dedicated processors and
 singleline_comment|// will NEVER be zero for shared processors (ie, initialized to a 1).
-DECL|member|xYieldCount
+DECL|member|yield_count
 r_volatile
 id|u32
-id|xYieldCount
+id|yield_count
 suffix:semicolon
 singleline_comment|// PLIC increments each dispatchx00-x03
-DECL|member|xRsvd3_0
+DECL|member|reserved6
 id|u8
-id|xRsvd3_0
+id|reserved6
 (braket
 l_int|124
 )braket
@@ -334,9 +334,9 @@ singleline_comment|// Reserved                     x04-x7F
 singleline_comment|//=============================================================================
 singleline_comment|// CACHE_LINE_4-5 0x0100 - 0x01FF Contains PMC interrupt data
 singleline_comment|//=============================================================================
-DECL|member|xPmcSaveArea
+DECL|member|pmc_save_area
 id|u8
-id|xPmcSaveArea
+id|pmc_save_area
 (braket
 l_int|256
 )braket

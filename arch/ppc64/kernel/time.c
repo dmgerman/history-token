@@ -614,7 +614,7 @@ id|tb
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * For iSeries shared processors, we have to let the hypervisor&n; * set the hardware decrementer.  We set a virtual decrementer&n; * in the ItLpPaca and call the hypervisor if the virtual&n; * decrementer is less than the current value in the hardware&n; * decrementer. (almost always the new decrementer value will&n; * be greater than the current hardware decementer so the hypervisor&n; * call will not be needed)&n; */
+multiline_comment|/*&n; * For iSeries shared processors, we have to let the hypervisor&n; * set the hardware decrementer.  We set a virtual decrementer&n; * in the lppaca and call the hypervisor if the virtual&n; * decrementer is less than the current value in the hardware&n; * decrementer. (almost always the new decrementer value will&n; * be greater than the current hardware decementer so the hypervisor&n; * call will not be needed)&n; */
 DECL|variable|__cacheline_aligned_in_smp
 r_int
 r_int
@@ -674,7 +674,7 @@ id|regs
 )paren
 suffix:semicolon
 macro_line|#endif
-id|lpaca-&gt;lppaca.xIntDword.xFields.xDecrInt
+id|lpaca-&gt;lppaca.int_dword.fields.decr_int
 op_assign
 l_int|0
 suffix:semicolon

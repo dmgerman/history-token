@@ -135,7 +135,7 @@ suffix:semicolon
 DECL|macro|LPARCFG_BUFF_SIZE
 mdefine_line|#define LPARCFG_BUFF_SIZE 4096
 macro_line|#ifdef CONFIG_PPC_ISERIES
-multiline_comment|/*&n; * For iSeries legacy systems, the PPA purr function is available from the&n; * xEmulatedTimeBase field in the paca.&n; */
+multiline_comment|/*&n; * For iSeries legacy systems, the PPA purr function is available from the&n; * emulated_time_base field in the paca.&n; */
 DECL|function|get_purr
 r_static
 r_int
@@ -174,7 +174,7 @@ id|cpu
 suffix:semicolon
 id|sum_purr
 op_add_assign
-id|lpaca-&gt;lppaca.xEmulatedTimeBase
+id|lpaca-&gt;lppaca.emulated_time_base
 suffix:semicolon
 macro_line|#ifdef PURR_DEBUG
 id|printk
@@ -185,7 +185,7 @@ l_string|&quot;get_purr for cpu (%d) has value (%ld) &bslash;n&quot;
 comma
 id|cpu
 comma
-id|lpaca-&gt;lppaca.xEmulatedTimeBase
+id|lpaca-&gt;lppaca.emulated_time_base
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -268,7 +268,7 @@ op_assign
 r_int
 )paren
 (paren
-id|lpaca-&gt;lppaca_ptr-&gt;xSharedProc
+id|lpaca-&gt;lppaca_ptr-&gt;shared_proc
 )paren
 suffix:semicolon
 id|seq_printf
@@ -1628,7 +1628,7 @@ id|paca
 l_int|0
 )braket
 dot
-id|lppaca.xSharedProc
+id|lppaca.shared_proc
 )paren
 (brace
 id|h_pic
@@ -1858,7 +1858,7 @@ id|paca
 l_int|0
 )braket
 dot
-id|lppaca.xSharedProc
+id|lppaca.shared_proc
 )paren
 suffix:semicolon
 r_return

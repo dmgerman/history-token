@@ -711,9 +711,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|ItLpPaca
+id|lppaca
 comma
-id|xSavedSrr0
+id|saved_srr0
 )paren
 )paren
 suffix:semicolon
@@ -725,9 +725,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|ItLpPaca
+id|lppaca
 comma
-id|xSavedSrr1
+id|saved_srr1
 )paren
 )paren
 suffix:semicolon
@@ -739,9 +739,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|ItLpPaca
+id|lppaca
 comma
-id|xIntDword.xAnyInt
+id|int_dword.any_int
 )paren
 )paren
 suffix:semicolon
@@ -753,9 +753,9 @@ comma
 m_offsetof
 (paren
 r_struct
-id|ItLpPaca
+id|lppaca
 comma
-id|xIntDword.xFields.xDecrInt
+id|int_dword.fields.decr_int
 )paren
 )paren
 suffix:semicolon

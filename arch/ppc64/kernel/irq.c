@@ -933,10 +933,10 @@ macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
-id|lpaca-&gt;lppaca.xIntDword.xFields.xIpiCnt
+id|lpaca-&gt;lppaca.int_dword.fields.ipi_cnt
 )paren
 (brace
-id|lpaca-&gt;lppaca.xIntDword.xFields.xIpiCnt
+id|lpaca-&gt;lppaca.int_dword.fields.ipi_cnt
 op_assign
 l_int|0
 suffix:semicolon
@@ -981,10 +981,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lpaca-&gt;lppaca.xIntDword.xFields.xDecrInt
+id|lpaca-&gt;lppaca.int_dword.fields.decr_int
 )paren
 (brace
-id|lpaca-&gt;lppaca.xIntDword.xFields.xDecrInt
+id|lpaca-&gt;lppaca.int_dword.fields.decr_int
 op_assign
 l_int|0
 suffix:semicolon
