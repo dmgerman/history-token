@@ -220,6 +220,16 @@ id|u64
 id|imsto_sal_check_ra
 suffix:semicolon
 multiline_comment|/* Return address in SAL_CHECK while going&n;&t;&t;&t;&t;&t;&t; * back to SAL from OS after MCA handling.&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|pal_min_state
+id|u64
+id|pal_min_state
+suffix:semicolon
+multiline_comment|/* from PAL in r17 */
+DECL|member|proc_state_param
+id|u64
+id|proc_state_param
+suffix:semicolon
+multiline_comment|/* from PAL in r18. See SDV 2:268 11.3.2.1 */
 DECL|typedef|ia64_mca_sal_to_os_state_t
 )brace
 id|ia64_mca_sal_to_os_state_t

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc. All Rights Reserved.&n; */
 macro_line|#ifndef _ASM_SN_SN_XTALK_XBOW_H
 DECL|macro|_ASM_SN_SN_XTALK_XBOW_H
 mdefine_line|#define _ASM_SN_SN_XTALK_XBOW_H
@@ -869,10 +869,6 @@ mdefine_line|#define XXBOW_PART_REV_2_0&t;&t;(XXBOW_WIDGET_PART_NUM &lt;&lt; 4 |
 multiline_comment|/* XBOW_WID_ARB_RELOAD */
 DECL|macro|XBOW_WID_ARB_RELOAD_INT
 mdefine_line|#define&t;XBOW_WID_ARB_RELOAD_INT&t;0x3f&t;/* GBR reload interval */
-macro_line|#ifdef&t;CONFIG_IA64_SGI_SN1
-DECL|macro|nasid_has_xbridge
-mdefine_line|#define nasid_has_xbridge(nasid)        &bslash;&n;        (XWIDGET_PART_NUM(XWIDGET_ID_READ(nasid, 0)) == XXBOW_WIDGET_PART_NUM)
-macro_line|#endif
 DECL|macro|IS_XBRIDGE_XBOW
 mdefine_line|#define IS_XBRIDGE_XBOW(wid) &bslash;&n;        (XWIDGET_PART_NUM(wid) == XXBOW_WIDGET_PART_NUM &amp;&amp; &bslash;&n;                        XWIDGET_MFG_NUM(wid) == XXBOW_WIDGET_MFGR_NUM)
 DECL|macro|IS_PIC_XBOW

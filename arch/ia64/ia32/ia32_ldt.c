@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/ia32.h&gt;
+macro_line|#include &quot;ia32priv.h&quot;
 DECL|macro|P
 mdefine_line|#define P(p)&t;((void *) (unsigned long) (p))
 multiline_comment|/*&n; * read_ldt() is not really atomic - this is not a problem since synchronization of reads&n; * and writes done to the LDT has to be assured by user-space anyway. Writes are atomic,&n; * to protect the security checks done on new descriptors.&n; */

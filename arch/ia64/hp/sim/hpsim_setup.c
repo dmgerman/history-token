@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Platform dependent support for HP simulator.&n; *&n; * Copyright (C) 1998, 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Vijay Chander &lt;vijay@engr.sgi.com&gt;&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
@@ -15,11 +16,6 @@ macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &quot;hpsim_ssc.h&quot;
-r_extern
-r_struct
-id|console
-id|hpsim_cons
-suffix:semicolon
 multiline_comment|/*&n; * Simulator system call.&n; */
 id|asm
 (paren
@@ -99,6 +95,22 @@ op_assign
 id|Root_SDA1
 suffix:semicolon
 multiline_comment|/* default to first SCSI drive */
+macro_line|#ifdef CONFIG_HP_SIMSERIAL_CONSOLE
+(brace
+r_extern
+r_struct
+id|console
+id|hpsim_cons
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ia64_platform_is
+c_func
+(paren
+l_string|&quot;hpsim&quot;
+)paren
+)paren
 id|register_console
 c_func
 (paren
@@ -106,5 +118,7 @@ op_amp
 id|hpsim_cons
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 eof

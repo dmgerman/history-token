@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_HCL_UTIL_H
 DECL|macro|_ASM_IA64_SN_HCL_UTIL_H
 mdefine_line|#define _ASM_IA64_SN_HCL_UTIL_H
@@ -9,7 +9,7 @@ op_star
 id|dev_to_name
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -22,17 +22,17 @@ r_int
 id|device_master_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|device_master_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -40,7 +40,7 @@ id|cnodeid_t
 id|master_node_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -48,7 +48,7 @@ id|cnodeid_t
 id|nodevertex_to_cnodeid
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -56,7 +56,7 @@ r_void
 id|mark_nodevertex_as_node
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|cnodeid_t
 )paren

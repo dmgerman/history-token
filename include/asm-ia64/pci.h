@@ -42,9 +42,14 @@ suffix:semicolon
 r_struct
 id|pci_dev
 suffix:semicolon
-multiline_comment|/*&n; * The PCI address space does equal the physical memory address space.&n; * The networking and block device layers use this boolean for bounce&n; * buffer decisions.&n; */
+multiline_comment|/*&n; * PCI_DMA_BUS_IS_PHYS should be set to 1 if there is _necessarily_ a direct correspondence&n; * between device bus addresses and CPU physical addresses.  Platforms with a hardware I/O&n; * MMU _must_ turn this off to suppress the bounce buffer handling code in the block and&n; * network device layers.  Platforms with separate bus address spaces _must_ turn this off&n; * and provide a device DMA mapping implementation that takes care of the necessary&n; * address translation.&n; *&n; * For now, the ia64 platforms which may have separate/multiple bus address spaces all&n; * have I/O MMUs which support the merging of physically discontiguous buffers, so we can&n; * use that as the sole factor to determine the setting of PCI_DMA_BUS_IS_PHYS.&n; */
+r_extern
+r_int
+r_int
+id|ia64_max_iommu_merge_mask
+suffix:semicolon
 DECL|macro|PCI_DMA_BUS_IS_PHYS
-mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;(1)
+mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;(ia64_max_iommu_merge_mask == ~0UL)
 r_static
 r_inline
 r_void

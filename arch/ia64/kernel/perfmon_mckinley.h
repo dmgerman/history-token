@@ -1,34 +1,9 @@
-multiline_comment|/*&n; * This file contains the McKinley PMU register description tables&n; * and pmc checker used by perfmon.c.&n; *&n; * Copyright (C) 2002  Hewlett Packard Co&n; *               Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file contains the McKinley PMU register description tables&n; * and pmc checker used by perfmon.c.&n; *&n; * Copyright (C) 2002-2003  Hewlett Packard Co&n; *               Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
 DECL|macro|RDEP
 mdefine_line|#define RDEP(x)&t;(1UL&lt;&lt;(x))
 macro_line|#ifndef CONFIG_MCKINLEY
 macro_line|#error &quot;This file is only valid when CONFIG_MCKINLEY is defined&quot;
 macro_line|#endif
-r_static
-r_int
-id|pfm_mck_reserved
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
-r_int
-r_int
-id|cnum
-comma
-r_int
-r_int
-op_star
-id|val
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 r_static
 r_int
 id|pfm_mck_pmc_check
@@ -38,6 +13,10 @@ r_struct
 id|task_struct
 op_star
 id|task
+comma
+id|pfm_context_t
+op_star
+id|ctx
 comma
 r_int
 r_int
@@ -62,10 +41,9 @@ c_func
 r_int
 id|mode
 comma
-r_struct
-id|task_struct
+id|pfm_context_t
 op_star
-id|task
+id|ctx
 comma
 r_void
 op_star
@@ -115,11 +93,6 @@ DECL|function|pfm_mck_reserved
 id|pfm_mck_reserved
 c_func
 (paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
 r_int
 r_int
 id|cnum
@@ -180,7 +153,7 @@ id|tmp1
 op_or
 id|tmp2
 suffix:semicolon
-id|DBprintk
+id|DPRINT
 c_func
 (paren
 (paren
@@ -211,6 +184,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * task can be NULL if the context is unloaded&n; */
 r_static
 r_int
 DECL|function|pfm_mck_pmc_check
@@ -221,6 +195,10 @@ r_struct
 id|task_struct
 op_star
 id|task
+comma
+id|pfm_context_t
+op_star
+id|ctx
 comma
 r_int
 r_int
@@ -237,20 +215,6 @@ op_star
 id|regs
 )paren
 (brace
-r_struct
-id|thread_struct
-op_star
-id|th
-op_assign
-op_amp
-id|task-&gt;thread
-suffix:semicolon
-id|pfm_context_t
-op_star
-id|ctx
-op_assign
-id|task-&gt;thread.pfm_context
-suffix:semicolon
 r_int
 id|ret
 op_assign
@@ -278,8 +242,6 @@ multiline_comment|/* first preserve the reserved fields */
 id|pfm_mck_reserved
 c_func
 (paren
-id|task
-comma
 id|cnum
 comma
 id|val
@@ -287,7 +249,19 @@ comma
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * we must clear the debug registers if any pmc13.ena_dbrpX bit is enabled &n;&t; * before they are written (fl_using_dbreg==0) to avoid picking up stale information. &n;&t; */
+multiline_comment|/* sanitfy check */
+r_if
+c_cond
+(paren
+id|ctx
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+multiline_comment|/*&n;&t; * we must clear the debug registers if any pmc13.ena_dbrpX bit is enabled&n;&t; * before they are written (fl_using_dbreg==0) to avoid picking up stale information.&n;&t; */
 r_if
 c_cond
 (paren
@@ -315,6 +289,8 @@ multiline_comment|/* don&squot;t mix debug with perfmon */
 r_if
 c_cond
 (paren
+id|task
+op_logical_and
 (paren
 id|task-&gt;thread.flags
 op_amp
@@ -327,7 +303,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * a count of 0 will mark the debug registers as in use and also&n;&t;&t; * ensure that they are properly cleared.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * a count of 0 will mark the debug registers as in use and also&n;&t;&t; * ensure that they are properly cleared.&n;&t;&t; */
 id|ret
 op_assign
 id|pfm_write_ibr_dbr
@@ -335,7 +311,7 @@ c_func
 (paren
 l_int|1
 comma
-id|task
+id|ctx
 comma
 l_int|NULL
 comma
@@ -353,7 +329,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * we must clear the (instruction) debug registers if any pmc14.ibrpX bit is enabled &n;&t; * before they are (fl_using_dbreg==0) to avoid picking up stale information. &n;&t; */
+multiline_comment|/*&n;&t; * we must clear the (instruction) debug registers if any pmc14.ibrpX bit is enabled&n;&t; * before they are (fl_using_dbreg==0) to avoid picking up stale information.&n;&t; */
 r_if
 c_cond
 (paren
@@ -381,6 +357,8 @@ multiline_comment|/* don&squot;t mix debug with perfmon */
 r_if
 c_cond
 (paren
+id|task
+op_logical_and
 (paren
 id|task-&gt;thread.flags
 op_amp
@@ -393,7 +371,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * a count of 0 will mark the debug registers as in use and also&n;&t;&t; * ensure that they are properly cleared.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * a count of 0 will mark the debug registers as in use and also&n;&t;&t; * ensure that they are properly cleared.&n;&t;&t; */
 id|ret
 op_assign
 id|pfm_write_ibr_dbr
@@ -401,7 +379,7 @@ c_func
 (paren
 l_int|0
 comma
-id|task
+id|ctx
 comma
 l_int|NULL
 comma
@@ -448,14 +426,14 @@ id|val
 suffix:semicolon
 id|val13
 op_assign
-id|th-&gt;pmc
+id|ctx-&gt;ctx_pmcs
 (braket
 l_int|13
 )braket
 suffix:semicolon
 id|val14
 op_assign
-id|th-&gt;pmc
+id|ctx-&gt;ctx_pmcs
 (braket
 l_int|14
 )braket
@@ -471,7 +449,7 @@ l_int|13
 suffix:colon
 id|val8
 op_assign
-id|th-&gt;pmc
+id|ctx-&gt;ctx_pmcs
 (braket
 l_int|8
 )braket
@@ -483,7 +461,7 @@ id|val
 suffix:semicolon
 id|val14
 op_assign
-id|th-&gt;pmc
+id|ctx-&gt;ctx_pmcs
 (braket
 l_int|14
 )braket
@@ -499,14 +477,14 @@ l_int|14
 suffix:colon
 id|val8
 op_assign
-id|th-&gt;pmc
+id|ctx-&gt;ctx_pmcs
 (braket
 l_int|13
 )braket
 suffix:semicolon
 id|val13
 op_assign
-id|th-&gt;pmc
+id|ctx-&gt;ctx_pmcs
 (braket
 l_int|13
 )braket
@@ -616,7 +594,6 @@ id|ret
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;perfmon: failure check_case1&bslash;n&quot;
 )paren
 suffix:semicolon

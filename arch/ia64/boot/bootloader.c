@@ -721,7 +721,7 @@ op_assign
 id|__pa
 c_func
 (paren
-id|elf_phdr-&gt;p_vaddr
+id|elf_phdr-&gt;p_paddr
 )paren
 suffix:semicolon
 id|ssc
@@ -770,7 +770,7 @@ op_star
 id|__pa
 c_func
 (paren
-id|elf_phdr-&gt;p_vaddr
+id|elf_phdr-&gt;p_paddr
 )paren
 op_plus
 id|elf_phdr-&gt;p_filesz

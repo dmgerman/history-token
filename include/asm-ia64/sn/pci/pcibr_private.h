@@ -1,9 +1,10 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_SN_PCI_PCIBR_PRIVATE_H
 DECL|macro|_ASM_SN_PCI_PCIBR_PRIVATE_H
 mdefine_line|#define _ASM_SN_PCI_PCIBR_PRIVATE_H
 multiline_comment|/*&n; * pcibr_private.h -- private definitions for pcibr&n; * only the pcibr driver (and its closest friends)&n; * should ever peek into this file.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio_private.h&gt;
 macro_line|#include &lt;asm/sn/ksys/l1.h&gt;
@@ -148,7 +149,7 @@ c_func
 (paren
 r_uint32
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -468,6 +469,11 @@ id|pcibr_intr_cbuf_s
 id|bi_ibuf
 suffix:semicolon
 multiline_comment|/* circular buffer of wrap ptrs */
+DECL|member|bi_last_intr
+r_int
+id|bi_last_intr
+suffix:semicolon
+multiline_comment|/* For Shub lb lost intr. bug */
 )brace
 suffix:semicolon
 multiline_comment|/* &n; * PCIBR_INFO_SLOT_GET_EXT returns the external slot number that the card&n; * resides in.  (i.e the slot number silk screened on the back of the I/O &n; * brick).  PCIBR_INFO_SLOT_GET_INT returns the internal slot (or device)&n; * number used by the pcibr code to represent that external slot (i.e to &n; * set bit patterns in BRIDGE/PIC registers to represent the device, or to&n; * offset into an array, or ...).&n; *&n; * In BRIDGE and XBRIDGE the external slot and internal device numbering &n; * are the same.  (0-&gt;0, 1-&gt;1, 2-&gt;2,... 7-&gt;7)  BUT in the PIC the external&n; * slot number is always 1 greater than the internal device number (1-&gt;0, &n; * 2-&gt;1, 3-&gt;2, 4-&gt;3).  This is due to the fact that the PCI-X spec requires&n; * that the &squot;bridge&squot; (i.e PIC) be designated as &squot;device 0&squot;, thus external&n; * slot numbering can&squot;t start at zero.&n; *&n; * PCIBR_DEVICE_TO_SLOT converts an internal device number to an external&n; * slot number.  NOTE: PCIIO_SLOT_NONE stays as PCIIO_SLOT_NONE.&n; *&n; * PCIBR_SLOT_TO_DEVICE converts an external slot number to an internal&n; * device number.  NOTE: PCIIO_SLOT_NONE stays as PCIIO_SLOT_NONE.&n; */
@@ -591,19 +597,11 @@ op_star
 id|iw_stat
 suffix:semicolon
 multiline_comment|/* ptr to b_int_status */
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-DECL|member|iw_intr
-id|bridgereg_t
-id|iw_intr
-suffix:semicolon
-multiline_comment|/* bit in b_int_status */
-macro_line|#else
 DECL|member|iw_ibit
 id|bridgereg_t
 id|iw_ibit
 suffix:semicolon
 multiline_comment|/* bit in b_int_status */
-macro_line|#endif
 DECL|member|iw_list
 id|pcibr_intr_list_t
 id|iw_list
@@ -664,6 +662,8 @@ DECL|macro|IS_XBRIDGE_SOFT
 mdefine_line|#define IS_XBRIDGE_SOFT(ps) (ps-&gt;bs_bridge_type == PCIBR_BRIDGETYPE_XBRIDGE)
 DECL|macro|IS_PIC_SOFT
 mdefine_line|#define IS_PIC_SOFT(ps)     (ps-&gt;bs_bridge_type == PCIBR_BRIDGETYPE_PIC)
+DECL|macro|IS_PIC_BUSNUM_SOFT
+mdefine_line|#define IS_PIC_BUSNUM_SOFT(ps, bus)&t;&bslash;&n;&t;&t;(IS_PIC_SOFT(ps) &amp;&amp; ((ps)-&gt;bs_busnum == (bus)))
 DECL|macro|IS_BRIDGE_SOFT
 mdefine_line|#define IS_BRIDGE_SOFT(ps)  (ps-&gt;bs_bridge_type == PCIBR_BRIDGETYPE_BRIDGE)
 DECL|macro|IS_XBRIDGE_OR_PIC_SOFT
@@ -726,12 +726,12 @@ r_struct
 id|pcibr_soft_s
 (brace
 DECL|member|bs_conn
-id|devfs_handle_t
+id|vertex_hdl_t
 id|bs_conn
 suffix:semicolon
 multiline_comment|/* xtalk connection point */
 DECL|member|bs_vhdl
-id|devfs_handle_t
+id|vertex_hdl_t
 id|bs_vhdl
 suffix:semicolon
 multiline_comment|/* vertex owned by pcibr */
@@ -758,7 +758,7 @@ id|bs_xid
 suffix:semicolon
 multiline_comment|/* Bridge&squot;s xtalk ID number */
 DECL|member|bs_master
-id|devfs_handle_t
+id|vertex_hdl_t
 id|bs_master
 suffix:semicolon
 multiline_comment|/* xtalk master vertex */
@@ -841,10 +841,6 @@ r_int
 id|bs_bridge_mode
 suffix:semicolon
 multiline_comment|/* see defines above */
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-DECL|macro|bs_xbridge
-mdefine_line|#define bs_xbridge&t;    bs_bridge_type
-macro_line|#endif
 DECL|member|bs_rev_num
 r_int
 id|bs_rev_num
@@ -856,14 +852,6 @@ r_int
 id|bs_dma_flags
 suffix:semicolon
 multiline_comment|/* forced DMA flags */
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-DECL|member|bs_l1sc
-id|l1sc_t
-op_star
-id|bs_l1sc
-suffix:semicolon
-multiline_comment|/* io brick l1 system cntr */
-macro_line|#endif
 DECL|member|bs_moduleid
 id|moduleid_t
 id|bs_moduleid
@@ -880,7 +868,7 @@ id|spinlock_t
 id|bs_lock
 suffix:semicolon
 DECL|member|bs_noslot_conn
-id|devfs_handle_t
+id|vertex_hdl_t
 id|bs_noslot_conn
 suffix:semicolon
 multiline_comment|/* NO-SLOT connection point */
@@ -903,7 +891,7 @@ id|pciio_slot_t
 id|host_slot
 suffix:semicolon
 DECL|member|slot_conn
-id|devfs_handle_t
+id|vertex_hdl_t
 id|slot_conn
 suffix:semicolon
 multiline_comment|/* PCI Hot-Plug status word */
@@ -1067,22 +1055,6 @@ id|bs_rrb_res_dflt
 l_int|8
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-DECL|member|bs_rrb_valid
-r_int
-id|bs_rrb_valid
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|bs_rrb_valid_dflt
-r_int
-id|bs_rrb_valid_dflt
-(braket
-l_int|16
-)braket
-suffix:semicolon
-macro_line|#else
 DECL|member|bs_rrb_valid
 r_int
 id|bs_rrb_valid
@@ -1103,7 +1075,6 @@ l_int|8
 l_int|4
 )braket
 suffix:semicolon
-macro_line|#endif
 r_struct
 (brace
 multiline_comment|/* Each Bridge interrupt bit has a single XIO&n;&t; * interrupt channel allocated.&n;&t; */
@@ -1148,7 +1119,7 @@ DECL|member|bserr_addr
 id|iopaddr_t
 id|bserr_addr
 suffix:semicolon
-multiline_comment|/* Address where error occurred */
+multiline_comment|/* Address where error occured */
 DECL|member|bserr_intstat
 r_uint64
 id|bserr_intstat
@@ -1159,40 +1130,6 @@ DECL|member|bs_errinfo
 id|bs_errinfo
 suffix:semicolon
 multiline_comment|/*&n;     * PCI Bus Space allocation data structure.&n;     *&n;     * The resource mapping functions rmalloc() and rmfree() are used&n;     * to manage the PCI bus I/O, small window, and memory  address &n;     * spaces.&n;     *&n;     * This info is used to assign PCI bus space addresses to cards&n;     * via their BARs and to the callers of the pcibr_piospace_alloc()&n;     * interface.&n;     *&n;     * Users of the pcibr_piospace_alloc() interface, such as the VME&n;     * Universe chip, need PCI bus space that is not acquired by BARs.&n;     * Most of these users need &quot;large&quot; amounts of PIO space (typically&n;     * in Megabytes), and they generally tend to take once and never&n;     * release. &n;     */
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-DECL|struct|br_pcisp_info
-r_struct
-id|br_pcisp_info
-(brace
-DECL|member|pci_io_base
-id|iopaddr_t
-id|pci_io_base
-suffix:semicolon
-DECL|member|pci_io_last
-id|iopaddr_t
-id|pci_io_last
-suffix:semicolon
-DECL|member|pci_swin_base
-id|iopaddr_t
-id|pci_swin_base
-suffix:semicolon
-DECL|member|pci_swin_last
-id|iopaddr_t
-id|pci_swin_last
-suffix:semicolon
-DECL|member|pci_mem_base
-id|iopaddr_t
-id|pci_mem_base
-suffix:semicolon
-DECL|member|pci_mem_last
-id|iopaddr_t
-id|pci_mem_last
-suffix:semicolon
-DECL|member|bs_spinfo
-)brace
-id|bs_spinfo
-suffix:semicolon
-macro_line|#endif&t;/* CONFIG_IA64_SGI_SN1 */
 DECL|member|bs_io_win_map
 r_struct
 id|pciio_win_map_s
@@ -1295,12 +1232,6 @@ suffix:semicolon
 multiline_comment|/* map PCI INT[ABCD] to Bridge Int(n) */
 )brace
 suffix:semicolon
-r_extern
-r_int
-id|pcibr_prefetch_enable_rev
-comma
-id|pcibr_wg_enable_rev
-suffix:semicolon
 multiline_comment|/*&n; * Number of bridge non-fatal error interrupts we can see before&n; * we decide to disable that interrupt.&n; */
 DECL|macro|PCIBR_ERRINTR_DISABLE_LEVEL
 mdefine_line|#define&t;PCIBR_ERRINTR_DISABLE_LEVEL&t;10000
@@ -1322,7 +1253,6 @@ DECL|macro|NEW
 mdefine_line|#define NEW(ptr)&t;NEWA(ptr,1)
 DECL|macro|DEL
 mdefine_line|#define DEL(ptr)&t;DELA(ptr,1)
-macro_line|#ifndef CONFIG_IA64_SGI_SN1
 multiline_comment|/*&n; * Additional PIO spaces per slot are&n; * recorded in this structure.&n; */
 DECL|struct|pciio_piospace_s
 r_struct
@@ -1355,7 +1285,6 @@ suffix:semicolon
 multiline_comment|/* size of PIO space */
 )brace
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_IA64_SGI_SN1 */
 multiline_comment|/* Use io spin locks. This ensures that all the PIO writes from a particular&n; * CPU to a particular IO device are synched before the start of the next&n; * set of PIO operations to the same device.&n; */
 macro_line|#ifdef PCI_LATER
 DECL|macro|pcibr_lock
@@ -1368,14 +1297,12 @@ mdefine_line|#define pcibr_lock(pcibr_soft)&t;&t;1
 DECL|macro|pcibr_unlock
 mdefine_line|#define pcibr_unlock(pcibr_soft, s)&t;
 macro_line|#endif&t;/* PCI_LATER */
-macro_line|#ifndef CONFIG_IA64_SGI_SN1
 DECL|macro|PCIBR_VALID_SLOT
 mdefine_line|#define PCIBR_VALID_SLOT(ps, s)     (s &lt; PCIBR_NUM_SLOTS(ps))
 DECL|macro|PCIBR_D64_BASE_UNSET
 mdefine_line|#define PCIBR_D64_BASE_UNSET    (0xFFFFFFFFFFFFFFFF)
 DECL|macro|PCIBR_D32_BASE_UNSET
 mdefine_line|#define PCIBR_D32_BASE_UNSET    (0xFFFFFFFF)
-macro_line|#endif
 DECL|macro|INFO_LBL_PCIBR_ASIC_REV
 mdefine_line|#define INFO_LBL_PCIBR_ASIC_REV &quot;_pcibr_asic_rev&quot;
 DECL|macro|PCIBR_SOFT_LIST
@@ -1401,11 +1328,112 @@ id|pcibr_soft_t
 id|bl_soft
 suffix:semicolon
 DECL|member|bl_vhdl
-id|devfs_handle_t
+id|vertex_hdl_t
 id|bl_vhdl
 suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* PCIBR_SOFT_LIST */
+singleline_comment|// Devices per widget: 2 buses, 2 slots per bus, 8 functions per slot.
+DECL|macro|DEV_PER_WIDGET
+mdefine_line|#define DEV_PER_WIDGET (2*2*8)
+DECL|struct|sn_flush_device_list
+r_struct
+id|sn_flush_device_list
+(brace
+DECL|member|bus
+r_int
+id|bus
+suffix:semicolon
+DECL|member|pin
+r_int
+id|pin
+suffix:semicolon
+DECL|struct|bar_list
+r_struct
+id|bar_list
+(brace
+DECL|member|start
+r_int
+r_int
+id|start
+suffix:semicolon
+DECL|member|end
+r_int
+r_int
+id|end
+suffix:semicolon
+DECL|member|bar_list
+)brace
+id|bar_list
+(braket
+id|PCI_ROM_RESOURCE
+)braket
+suffix:semicolon
+DECL|member|force_int_addr
+r_int
+r_int
+id|force_int_addr
+suffix:semicolon
+DECL|member|flush_addr
+r_volatile
+r_int
+r_int
+id|flush_addr
+suffix:semicolon
+DECL|member|flush_lock
+id|spinlock_t
+id|flush_lock
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|sn_flush_nasid_entry
+r_struct
+id|sn_flush_nasid_entry
+(brace
+DECL|member|widget_p
+r_struct
+id|sn_flush_device_list
+op_star
+op_star
+id|widget_p
+suffix:semicolon
+DECL|member|iio_itte1
+r_int
+r_int
+id|iio_itte1
+suffix:semicolon
+DECL|member|iio_itte2
+r_int
+r_int
+id|iio_itte2
+suffix:semicolon
+DECL|member|iio_itte3
+r_int
+r_int
+id|iio_itte3
+suffix:semicolon
+DECL|member|iio_itte4
+r_int
+r_int
+id|iio_itte4
+suffix:semicolon
+DECL|member|iio_itte5
+r_int
+r_int
+id|iio_itte5
+suffix:semicolon
+DECL|member|iio_itte6
+r_int
+r_int
+id|iio_itte6
+suffix:semicolon
+DECL|member|iio_itte7
+r_int
+r_int
+id|iio_itte7
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _ASM_SN_PCI_PCIBR_PRIVATE_H */
 eof

@@ -49,11 +49,7 @@ mdefine_line|#define N_SYMSIZE(x)&t;0
 DECL|macro|N_TXTOFF
 mdefine_line|#define N_TXTOFF(x)&t;0
 macro_line|#ifdef __KERNEL__
-macro_line|# include &lt;asm/page.h&gt;
-DECL|macro|STACK_TOP
-macro_line|# define STACK_TOP&t;(0x6000000000000000UL + (1UL &lt;&lt; (4*PAGE_SHIFT - 12)) - PAGE_SIZE)
-DECL|macro|IA64_RBS_BOT
-macro_line|# define IA64_RBS_BOT&t;(STACK_TOP - 0x80000000L + PAGE_SIZE)&t;/* bottom of reg. backing store */
+macro_line|#include &lt;asm/ustack.h&gt;
 macro_line|#endif
 macro_line|#endif /* _ASM_IA64_A_OUT_H */
 eof

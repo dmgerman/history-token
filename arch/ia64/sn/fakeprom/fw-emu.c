@@ -1,13 +1,12 @@
-multiline_comment|/*&n; * PAL &amp; SAL emulation.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; *&n; * Copyright (C) 2000-2002 Silicon Graphics, Inc.  All rights reserved.&n; * &n; * This program is free software; you can redistribute it and/or modify it &n; * under the terms of version 2 of the GNU General Public License &n; * as published by the Free Software Foundation.&n; * &n; * This program is distributed in the hope that it would be useful, but &n; * WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. &n; * &n; * Further, this software is distributed without any warranty that it is &n; * free of the rightful claim of any third person regarding infringement &n; * or the like.  Any license provided herein, whether implied or &n; * otherwise, applies only to this software file.  Patent licenses, if &n; * any, provided herein do not apply to combinations of this program with &n; * other software, or any other product whatsoever.&n; * &n; * You should have received a copy of the GNU General Public &n; * License along with this program; if not, write the Free Software &n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; * &n; * Contact information:  Silicon Graphics, Inc., 1600 Amphitheatre Pkwy, &n; * Mountain View, CA  94043, or:&n; * &n; * http://www.sgi.com &n; * &n; * For further information regarding this notice, see: &n; * &n; * http://oss.sgi.com/projects/GenInfo/NoticeExplan&n; */
+multiline_comment|/*&n; * PAL &amp; SAL emulation.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; *&n; * Copyright (C) 2000-2003 Silicon Graphics, Inc.  All rights reserved.&n; * &n; * This program is free software; you can redistribute it and/or modify it &n; * under the terms of version 2 of the GNU General Public License &n; * as published by the Free Software Foundation.&n; * &n; * This program is distributed in the hope that it would be useful, but &n; * WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. &n; * &n; * Further, this software is distributed without any warranty that it is &n; * free of the rightful claim of any third person regarding infringement &n; * or the like.  Any license provided herein, whether implied or &n; * otherwise, applies only to this software file.  Patent licenses, if &n; * any, provided herein do not apply to combinations of this program with &n; * other software, or any other product whatsoever.&n; * &n; * You should have received a copy of the GNU General Public &n; * License along with this program; if not, write the Free Software &n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; * &n; * Contact information:  Silicon Graphics, Inc., 1600 Amphitheatre Pkwy, &n; * Mountain View, CA  94043, or:&n; * &n; * http://www.sgi.com &n; * &n; * For further information regarding this notice, see: &n; * &n; * http://oss.sgi.com/projects/GenInfo/NoticeExplan&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/sn/pda.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
+macro_line|#ifdef SGI_SN2
 macro_line|#include &lt;asm/sn/sn2/addrs.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
 macro_line|#endif
@@ -49,12 +48,7 @@ DECL|macro|ACPI_SLIT_REVISION
 mdefine_line|#define ACPI_SLIT_REVISION 1
 DECL|macro|OEMID
 mdefine_line|#define OEMID&t;&t;&t;&quot;SGI&quot;
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-DECL|macro|PRODUCT
-mdefine_line|#define PRODUCT&t;&t;&t;&quot;SN1&quot;
-DECL|macro|PROXIMITY_DOMAIN
-mdefine_line|#define PROXIMITY_DOMAIN(nasid)&t;(nasid)
-macro_line|#else
+macro_line|#ifdef SGI_SN2
 DECL|macro|PRODUCT
 mdefine_line|#define PRODUCT&t;&t;&t;&quot;SN2&quot;
 DECL|macro|PROXIMITY_DOMAIN
@@ -101,40 +95,8 @@ id|ia64_nasid_va
 (brace
 r_struct
 (brace
-macro_line|#if defined(CONFIG_IA64_SGI_SN1)
+macro_line|#if defined(SGI_SN2)
 DECL|member|off
-r_int
-r_int
-id|off
-suffix:colon
-l_int|33
-suffix:semicolon
-multiline_comment|/* intra-region offset */
-DECL|member|nasid
-r_int
-r_int
-id|nasid
-suffix:colon
-l_int|7
-suffix:semicolon
-multiline_comment|/* NASID */
-DECL|member|off2
-r_int
-r_int
-id|off2
-suffix:colon
-l_int|21
-suffix:semicolon
-multiline_comment|/* fill */
-DECL|member|reg
-r_int
-r_int
-id|reg
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* region number */
-macro_line|#elif defined(CONFIG_IA64_SGI_SN2)
 r_int
 r_int
 id|off
@@ -142,12 +104,14 @@ suffix:colon
 l_int|36
 suffix:semicolon
 multiline_comment|/* intra-region offset */
+DECL|member|attr
 r_int
 r_int
 id|attr
 suffix:colon
 l_int|2
 suffix:semicolon
+DECL|member|nasid
 r_int
 r_int
 id|nasid
@@ -155,6 +119,7 @@ suffix:colon
 l_int|11
 suffix:semicolon
 multiline_comment|/* NASID */
+DECL|member|off2
 r_int
 r_int
 id|off2
@@ -162,6 +127,7 @@ suffix:colon
 l_int|12
 suffix:semicolon
 multiline_comment|/* fill */
+DECL|member|reg
 r_int
 r_int
 id|reg
@@ -209,10 +175,7 @@ DECL|macro|IS_VIRTUAL_MODE
 mdefine_line|#define IS_VIRTUAL_MODE() &t; ({struct ia64_psr psr; asm(&quot;mov %0=psr&quot; : &quot;=r&quot;(psr)); psr.dt;})
 DECL|macro|ADDR_OF
 mdefine_line|#define ADDR_OF(p)&t;&t;(IS_VIRTUAL_MODE() ? ((void*)((long)(p)+PAGE_OFFSET)) : ((void*) (p)))
-macro_line|#if defined(CONFIG_IA64_SGI_SN1)
-DECL|macro|__fwtab_pa
-mdefine_line|#define __fwtab_pa(n,x)&t;&t;({ia64_nasid_va _v; _v.l = (long) (x); _v.f.nasid = (x) ? (n) : 0; _v.f.reg = 0; _v.l;})
-macro_line|#elif defined(CONFIG_IA64_SGI_SN2)
+macro_line|#if defined(SGI_SN2)
 DECL|macro|__fwtab_pa
 mdefine_line|#define __fwtab_pa(n,x)&t;&t;({ia64_nasid_va _v; _v.l = (long) (x); _v.f.nasid = (x) ? (n) : 0; _v.f.reg = 0; _v.f.attr = 3; _v.l;})
 macro_line|#endif
@@ -544,7 +507,7 @@ r_return
 id|EFI_UNSUPPORTED
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
+macro_line|#ifdef SGI_SN2
 DECL|macro|cpu_physical_id
 macro_line|#undef cpu_physical_id
 DECL|macro|cpu_physical_id
@@ -936,7 +899,7 @@ id|SAL_UPDATE_PAL
 )paren
 (brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
+macro_line|#ifdef SGI_SN2
 )brace
 r_else
 r_if
@@ -1974,18 +1937,7 @@ comma
 id|cpus_found
 suffix:semicolon
 multiline_comment|/*&n;&t; * Pass the parameter base address to the build_efi_xxx routines.&n;&t; */
-macro_line|#if defined(CONFIG_IA64_SGI_SN1)
-id|build_init
-c_func
-(paren
-l_int|8LL
-op_star
-id|GB
-op_star
-id|base_nasid
-)paren
-suffix:semicolon
-macro_line|#else
+macro_line|#if defined(SGI_SN2)
 id|build_init
 c_func
 (paren
@@ -2563,7 +2515,7 @@ c_func
 (paren
 id|cmd_line
 comma
-l_string|&quot;init=/bin/bash ktreplicate=0&quot;
+l_string|&quot;init=/bin/bash console=ttyS0&quot;
 )paren
 suffix:semicolon
 id|memset
@@ -3051,16 +3003,7 @@ id|lsapic20-&gt;flags.enabled
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#if defined(CONFIG_IA64_SGI_SN1)
-id|lsapic20-&gt;eid
-op_assign
-id|cpu
-suffix:semicolon
-id|lsapic20-&gt;id
-op_assign
-id|nasid
-suffix:semicolon
-macro_line|#else
+macro_line|#if defined(SGI_SN2)
 id|lsapic20-&gt;eid
 op_assign
 id|nasid
@@ -3206,20 +3149,7 @@ id|srat_memory_affinity-&gt;length_lo
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if defined(CONFIG_IA64_SGI_SN1)
-id|srat_memory_affinity-&gt;base_addr_hi
-op_assign
-id|nasid
-op_lshift
-l_int|1
-suffix:semicolon
-id|srat_memory_affinity-&gt;length_hi
-op_assign
-id|SN1_NODE_SIZE
-op_rshift
-l_int|32
-suffix:semicolon
-macro_line|#else
+macro_line|#if defined(SGI_SN2)
 id|srat_memory_affinity-&gt;base_addr_hi
 op_assign
 (paren
@@ -3236,7 +3166,11 @@ l_int|4
 suffix:semicolon
 id|srat_memory_affinity-&gt;length_hi
 op_assign
-id|SN2_NODE_SIZE
+(paren
+id|MD_BANKSIZE
+op_star
+id|MD_BANKS_PER_NODE
+)paren
 op_rshift
 l_int|32
 suffix:semicolon
@@ -3336,16 +3270,7 @@ id|srat_cpu_affinity-&gt;flags.enabled
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#if defined(CONFIG_IA64_SGI_SN1)
-id|srat_cpu_affinity-&gt;apic_id
-op_assign
-id|nasid
-suffix:semicolon
-id|srat_cpu_affinity-&gt;lsapic_eid
-op_assign
-id|cpu
-suffix:semicolon
-macro_line|#else
+macro_line|#if defined(SGI_SN2)
 id|srat_cpu_affinity-&gt;lsapic_eid
 op_assign
 id|nasid
@@ -3587,7 +3512,7 @@ c_func
 (paren
 id|sal_systab-&gt;product_id
 comma
-l_string|&quot;SN1&quot;
+l_string|&quot;SN2&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* fill in an entry point: */
@@ -3839,7 +3764,7 @@ op_assign
 op_minus
 id|checksum
 suffix:semicolon
-multiline_comment|/* If the checksum is correct, the kernel tries to use the&n;&t; * table. We don&squot;t build enough table &amp; the kernel aborts.&n;&t; * Note that the PROM hasd thhhe same problem!!&n;&t; */
+multiline_comment|/* If the checksum is correct, the kernel tries to use the&n;&t; * table. We dont build enough table &amp; the kernel aborts.&n;&t; * Note that the PROM hasd thhhe same problem!!&n;&t; */
 id|md
 op_assign
 op_amp
@@ -3987,26 +3912,7 @@ id|cpu
 )paren
 r_continue
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-id|bsp_lid
-op_assign
-(paren
-id|GetNasid
-c_func
-(paren
-id|cnode
-)paren
-op_lshift
-l_int|24
-)paren
-op_or
-(paren
-id|cpu
-op_lshift
-l_int|16
-)paren
-suffix:semicolon
-macro_line|#else
+macro_line|#ifdef SGI_SN2
 id|bsp_lid
 op_assign
 (paren
