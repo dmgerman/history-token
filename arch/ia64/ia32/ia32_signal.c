@@ -191,7 +191,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|from-&gt;si_code
+id|to-&gt;si_code
 OL
 l_int|0
 )paren
@@ -214,7 +214,7 @@ r_else
 r_switch
 c_cond
 (paren
-id|from-&gt;si_code
+id|to-&gt;si_code
 op_rshift
 l_int|16
 )paren
