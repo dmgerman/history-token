@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptscsih.c&n; *      High performance SCSI / Fibre Channel SCSI Host device driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Original author: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptscsih.c,v 1.102 2002/10/03 13:10:14 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptscsih.c&n; *      High performance SCSI / Fibre Channel SCSI Host device driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Original author: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptscsih.c,v 1.103 2002/10/17 20:15:59 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -15,6 +15,9 @@ macro_line|#include &lt;linux/interrupt.h&gt;&t;/* needed for in_interrupt() pro
 macro_line|#include &lt;linux/reboot.h&gt;&t;/* notifier code */
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,45)
+macro_line|#include &quot;../../scsi/sd.h&quot;
+macro_line|#endif
 macro_line|#include &quot;mptbase.h&quot;
 macro_line|#include &quot;mptscsih.h&quot;
 macro_line|#include &quot;isense.h&quot;
@@ -751,6 +754,9 @@ c_func
 id|MPT_SCSI_HOST
 op_star
 id|hd
+comma
+r_int
+id|id
 )paren
 suffix:semicolon
 r_static
@@ -1472,6 +1478,22 @@ op_assign
 id|DID_NO_CONNECT
 op_lshift
 l_int|16
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hd-&gt;sel_timeout
+(braket
+id|pScsiReq-&gt;TargetID
+)braket
+OL
+l_int|0xFFFF
+)paren
+id|hd-&gt;sel_timeout
+(braket
+id|pScsiReq-&gt;TargetID
+)braket
+op_increment
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -4519,7 +4541,7 @@ op_assign
 id|MPT_SCSI_MAX_SECTORS
 suffix:semicolon
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,1)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,1) || defined CONFIG_HIGHIO
 id|sh-&gt;highmem_io
 op_assign
 l_int|1
@@ -4534,6 +4556,13 @@ id|portnum
 dot
 id|PortSCSIID
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,44)
+multiline_comment|/* OS entry to allow host drivers to force&n;&t;&t;&t;&t; * a queue depth on a per device basis.&n;&t;&t;&t;&t; */
+id|sh-&gt;select_queue_depths
+op_assign
+id|mptscsih_select_queue_depths
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Required entry.&n;&t;&t;&t;&t; */
 id|sh-&gt;unique_id
 op_assign
@@ -9017,6 +9046,17 @@ id|MPI_DOORBELL_ACTIVE
 )paren
 (brace
 multiline_comment|/* Isse the Task Mgmt request.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|hd-&gt;hard_resets
+OL
+op_minus
+l_int|1
+)paren
+id|hd-&gt;hard_resets
+op_increment
+suffix:semicolon
 id|rc
 op_assign
 id|mptscsih_IssueTaskMgmt
@@ -9041,12 +9081,6 @@ c_cond
 id|rc
 )paren
 (brace
-macro_line|#ifdef MPT_SCSI_USE_NEW_EH
-id|hd-&gt;tmState
-op_assign
-id|TM_STATE_ERROR
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -9059,13 +9093,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|MYIOC_s_INFO_FMT
 l_string|&quot;Issue of TaskMgmt Successful!&bslash;n&quot;
 comma
 id|hd-&gt;ioc-&gt;name
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -9497,10 +9533,6 @@ id|MPT_FRAME_HDR
 op_star
 id|mf
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|u32
 id|ctx2abort
 suffix:semicolon
@@ -9560,21 +9592,11 @@ c_func
 (paren
 id|KERN_WARNING
 id|MYNAM
-l_string|&quot;: %s: &gt;&gt; Attempting task abort! (sc=%p)&bslash;n&quot;
+l_string|&quot;: %s: &gt;&gt; Attempting task abort! (sc=%p, numIOs=%d)&bslash;n&quot;
 comma
 id|hd-&gt;ioc-&gt;name
 comma
 id|SCpnt
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|MYNAM
-l_string|&quot;: %s: IOs outstanding = %d&bslash;n&quot;
-comma
-id|hd-&gt;ioc-&gt;name
 comma
 id|atomic_read
 c_func
@@ -9583,6 +9605,17 @@ op_amp
 id|queue_depth
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hd-&gt;timeouts
+OL
+op_minus
+l_int|1
+)paren
+id|hd-&gt;timeouts
+op_increment
 suffix:semicolon
 multiline_comment|/* Find this command&n;&t; */
 r_if
@@ -9762,14 +9795,10 @@ id|SCpnt-&gt;lun
 comma
 id|ctx2abort
 comma
-id|CAN_SLEEP
+id|NO_SLEEP
 )paren
 OL
 l_int|0
-op_logical_or
-id|hd-&gt;tmState
-op_eq
-id|TM_STATE_ERROR
 )paren
 (brace
 multiline_comment|/* The TM request failed and the subsequent FW-reload failed!&n;&t;&t; * Fatal error case.&n;&t;&t; */
@@ -9784,31 +9813,6 @@ comma
 id|SCpnt
 )paren
 suffix:semicolon
-multiline_comment|/* If command not found, do not do callback,&n;&t;&t; *  just return failed.  CHECKME&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|hd-&gt;ScsiLookup
-(braket
-id|scpnt_idx
-)braket
-op_ne
-l_int|NULL
-)paren
-(brace
-id|SCpnt-&gt;result
-op_assign
-id|STS_BUSY
-suffix:semicolon
-id|SCpnt
-op_member_access_from_pointer
-id|scsi_done
-c_func
-(paren
-id|SCpnt
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* We must clear our pending flag before clearing our state.&n;&t;&t; */
 id|hd-&gt;tmPending
 op_assign
@@ -9822,109 +9826,8 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
-multiline_comment|/* Our task management request will either complete or time out.  So we&n;&t; * spin until tmPending is != 1. If tmState is set to TM_STATE_ERROR, &n;&t; * we encountered an error executing the task management request.&n;&t; */
-r_while
-c_loop
-(paren
-id|hd-&gt;tmPending
-op_eq
-l_int|1
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|4
-)paren
-suffix:semicolon
-)brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|hd-&gt;ioc-&gt;FreeQlock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hd-&gt;tmState
-op_eq
-id|TM_STATE_ERROR
-)paren
-(brace
-id|hd-&gt;tmState
-op_assign
-id|TM_STATE_NONE
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|hd-&gt;ioc-&gt;FreeQlock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|nehprintk
-c_func
-(paren
-(paren
-id|KERN_WARNING
-id|MYNAM
-l_string|&quot;: %s: mptscsih_abort: &quot;
-l_string|&quot;TM timeout error! (sc=%p)&bslash;n&quot;
-comma
-id|hd-&gt;ioc-&gt;name
-comma
-id|SCpnt
-)paren
-)paren
-suffix:semicolon
 r_return
 id|FAILED
-suffix:semicolon
-)brace
-id|hd-&gt;tmState
-op_assign
-id|TM_STATE_NONE
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|hd-&gt;ioc-&gt;FreeQlock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|nehprintk
-c_func
-(paren
-(paren
-id|KERN_WARNING
-id|MYNAM
-l_string|&quot;: %s: mptscsih_abort: &quot;
-l_string|&quot;Abort was successful! (sc=%p)&bslash;n&quot;
-comma
-id|hd-&gt;ioc-&gt;name
-comma
-id|SCpnt
-)paren
-)paren
-suffix:semicolon
-r_return
-id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -9942,10 +9845,6 @@ id|SCpnt
 id|MPT_SCSI_HOST
 op_star
 id|hd
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 multiline_comment|/* If we can&squot;t locate our host adapter structure, return FAILED status.&n;&t; */
 r_if
@@ -9986,21 +9885,11 @@ c_func
 (paren
 id|KERN_WARNING
 id|MYNAM
-l_string|&quot;: %s: &gt;&gt; Attempting target reset! (sc=%p)&bslash;n&quot;
+l_string|&quot;: %s: &gt;&gt; Attempting target reset! (sc=%p, numIOs=%d)&bslash;n&quot;
 comma
 id|hd-&gt;ioc-&gt;name
 comma
 id|SCpnt
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|MYNAM
-l_string|&quot;: %s: IOs outstanding = %d&bslash;n&quot;
-comma
-id|hd-&gt;ioc-&gt;name
 comma
 id|atomic_read
 c_func
@@ -10009,6 +9898,15 @@ op_amp
 id|queue_depth
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* Unsupported for SCSI. Suppored for FCP&n;&t; */
+r_if
+c_cond
+(paren
+id|hd-&gt;is_spi
+)paren
+r_return
+id|FAILED
 suffix:semicolon
 multiline_comment|/*  Wait a fixed amount of time for the TM pending flag to be cleared.&n;&t; *  If we time out, then we return a FAILED status to the caller.  This&n;&t; *  call to mptscsih_tm_pending_wait() will set the pending flag if we are&n;&t; *  successful.&n;&t; */
 r_if
@@ -10059,7 +9957,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|CAN_SLEEP
+id|NO_SLEEP
 )paren
 OL
 l_int|0
@@ -10089,107 +9987,6 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
-multiline_comment|/* Our task management request will either complete or time out.  So we&n;&t; * spin until tmPending is != 1. If tmState is set to TM_STATE_ERROR, &n;&t; * we encountered an error executing the task management request.&n;&t; */
-r_while
-c_loop
-(paren
-id|hd-&gt;tmPending
-op_eq
-l_int|1
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|4
-)paren
-suffix:semicolon
-)brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|hd-&gt;ioc-&gt;FreeQlock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hd-&gt;tmState
-op_eq
-id|TM_STATE_ERROR
-)paren
-(brace
-id|hd-&gt;tmState
-op_assign
-id|TM_STATE_NONE
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|hd-&gt;ioc-&gt;FreeQlock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|nehprintk
-c_func
-(paren
-(paren
-id|KERN_WARNING
-id|MYNAM
-l_string|&quot;: %s: mptscsih_dev_reset: &quot;
-l_string|&quot;TM timeout error! (sc=%p)&bslash;n&quot;
-comma
-id|hd-&gt;ioc-&gt;name
-comma
-id|SCpnt
-)paren
-)paren
-suffix:semicolon
-r_return
-id|FAILED
-suffix:semicolon
-)brace
-id|hd-&gt;tmState
-op_assign
-id|TM_STATE_NONE
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|hd-&gt;ioc-&gt;FreeQlock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|nehprintk
-c_func
-(paren
-(paren
-id|KERN_WARNING
-id|MYNAM
-l_string|&quot;: %s: mptscsih_dev_reset: &quot;
-l_string|&quot;Device reset was successful! (sc=%p)&bslash;n&quot;
-comma
-id|hd-&gt;ioc-&gt;name
-comma
-id|SCpnt
-)paren
-)paren
-suffix:semicolon
 r_return
 id|SUCCESS
 suffix:semicolon
@@ -10209,10 +10006,6 @@ id|SCpnt
 id|MPT_SCSI_HOST
 op_star
 id|hd
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 multiline_comment|/* If we can&squot;t locate our host adapter structure, return FAILED status.&n;&t; */
 r_if
@@ -10253,21 +10046,11 @@ c_func
 (paren
 id|KERN_WARNING
 id|MYNAM
-l_string|&quot;: %s: &gt;&gt; Attempting bus reset! (sc=%p)&bslash;n&quot;
+l_string|&quot;: %s: &gt;&gt; Attempting bus reset! (sc=%p, numIOs=%d)&bslash;n&quot;
 comma
 id|hd-&gt;ioc-&gt;name
 comma
 id|SCpnt
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|MYNAM
-l_string|&quot;: %s: IOs outstanding = %d&bslash;n&quot;
-comma
-id|hd-&gt;ioc-&gt;name
 comma
 id|atomic_read
 c_func
@@ -10276,6 +10059,17 @@ op_amp
 id|queue_depth
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hd-&gt;timeouts
+OL
+op_minus
+l_int|1
+)paren
+id|hd-&gt;timeouts
+op_increment
 suffix:semicolon
 multiline_comment|/*  Wait a fixed amount of time for the TM pending flag to be cleared.&n;&t; *  If we time out, then we return a FAILED status to the caller.  This&n;&t; *  call to mptscsih_tm_pending_wait() will set the pending flag if we are&n;&t; *  successful.&n;&t; */
 r_if
@@ -10327,7 +10121,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|CAN_SLEEP
+id|NO_SLEEP
 )paren
 OL
 l_int|0
@@ -10357,107 +10151,6 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
-multiline_comment|/* Our task management request will either complete or time out.  So we&n;&t; * spin until tmPending is != 1. If tmState is set to TM_STATE_ERROR, &n;&t; * we encountered an error executing the task management request.&n;&t; */
-r_while
-c_loop
-(paren
-id|hd-&gt;tmPending
-op_eq
-l_int|1
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|4
-)paren
-suffix:semicolon
-)brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|hd-&gt;ioc-&gt;FreeQlock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hd-&gt;tmState
-op_eq
-id|TM_STATE_ERROR
-)paren
-(brace
-id|hd-&gt;tmState
-op_assign
-id|TM_STATE_NONE
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|hd-&gt;ioc-&gt;FreeQlock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|nehprintk
-c_func
-(paren
-(paren
-id|KERN_WARNING
-id|MYNAM
-l_string|&quot;: %s: mptscsih_bus_reset: &quot;
-l_string|&quot;TM timeout error! (sc=%p)&bslash;n&quot;
-comma
-id|hd-&gt;ioc-&gt;name
-comma
-id|SCpnt
-)paren
-)paren
-suffix:semicolon
-r_return
-id|FAILED
-suffix:semicolon
-)brace
-id|hd-&gt;tmState
-op_assign
-id|TM_STATE_NONE
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|hd-&gt;ioc-&gt;FreeQlock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|nehprintk
-c_func
-(paren
-(paren
-id|KERN_WARNING
-id|MYNAM
-l_string|&quot;: %s: mptscsih_bus_reset: &quot;
-l_string|&quot;Bus reset was successful! (sc=%p)&bslash;n&quot;
-comma
-id|hd-&gt;ioc-&gt;name
-comma
-id|SCpnt
-)paren
-)paren
-suffix:semicolon
 r_return
 id|SUCCESS
 suffix:semicolon
@@ -10555,7 +10248,7 @@ c_func
 (paren
 id|hd-&gt;ioc
 comma
-id|CAN_SLEEP
+id|NO_SLEEP
 )paren
 OL
 l_int|0
@@ -10686,18 +10379,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|set_current_state
+id|mdelay
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|4
+l_int|250
 )paren
 suffix:semicolon
 )brace
@@ -10814,6 +10499,17 @@ r_return
 id|SCSI_ABORT_NOT_RUNNING
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|hd-&gt;timeouts
+OL
+op_minus
+l_int|1
+)paren
+id|hd-&gt;timeouts
+op_increment
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11108,7 +10804,7 @@ comma
 id|scpnt_idx
 )paren
 suffix:semicolon
-multiline_comment|/* For the time being, force bus reset on any abort&n;&t; * requests for the 1030 FW.&n;&t; */
+multiline_comment|/* For the time being, force bus reset on any abort&n;&t; * requests for the 1030/1035 FW.&n;&t; */
 r_if
 c_cond
 (paren
@@ -11317,6 +11013,17 @@ r_return
 id|SCSI_RESET_SUCCESS
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|hd-&gt;timeouts
+OL
+op_minus
+l_int|1
+)paren
+id|hd-&gt;timeouts
+op_increment
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12717,12 +12424,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef MPT_SCSI_USE_NEW_EH
-id|hd-&gt;tmState
-op_assign
-id|TM_STATE_ERROR
-suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -12851,6 +12552,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
+macro_line|#ifdef MPT_SCSI_USE_NEW_EH
+id|hd-&gt;tmState
+op_assign
+id|TM_STATE_NONE
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
@@ -12858,7 +12565,7 @@ suffix:semicolon
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *&t;This is anyones guess quite frankly.&n; */
 r_int
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,44)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,45)
 DECL|function|mptscsih_bios_param
 id|mptscsih_bios_param
 c_func
@@ -12881,6 +12588,29 @@ op_star
 id|ip
 )paren
 (brace
+macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,28)
+id|mptscsih_bios_param
+c_func
+(paren
+id|Disk
+op_star
+id|disk
+comma
+r_struct
+id|block_device
+op_star
+id|bdev
+comma
+r_int
+op_star
+id|ip
+)paren
+(brace
+id|sector_t
+id|capacity
+op_assign
+id|disk-&gt;capacity
+suffix:semicolon
 macro_line|#else
 id|mptscsih_bios_param
 c_func
@@ -12897,7 +12627,7 @@ op_star
 id|ip
 )paren
 (brace
-id|sector_t
+r_int
 id|capacity
 op_assign
 id|disk-&gt;capacity
@@ -12981,6 +12711,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *&t;OS entry point to adjust the queue_depths on a per-device basis.&n; *&t;Called once per device the bus scan. Use it to force the queue_depth&n; *&t;member to 1 if a device does not support Q tags.&n; */
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,44)
 r_int
 DECL|function|mptscsih_slave_attach
 id|mptscsih_slave_attach
@@ -12991,14 +12722,54 @@ op_star
 id|device
 )paren
 (brace
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|device-&gt;host
+suffix:semicolon
 id|VirtDevice
 op_star
 id|pTarget
 suffix:semicolon
+id|MPT_SCSI_HOST
+op_star
+id|hd
+suffix:semicolon
+id|hd
+op_assign
+(paren
+id|MPT_SCSI_HOST
+op_star
+)paren
+id|host-&gt;hostdata
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hd
+op_logical_and
+(paren
+id|hd-&gt;Targets
+op_ne
+l_int|NULL
+)paren
+)paren
+(brace
 id|pTarget
 op_assign
-id|device-&gt;hostdata
+id|hd-&gt;Targets
+(braket
+id|device-&gt;id
+)braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pTarget
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -13039,10 +12810,162 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+)brace
+)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else /* LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,44) */
+r_void
+DECL|function|mptscsih_select_queue_depths
+id|mptscsih_select_queue_depths
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|sh
+comma
+id|Scsi_Device
+op_star
+id|sdList
+)paren
+(brace
+r_struct
+id|scsi_device
+op_star
+id|device
+suffix:semicolon
+id|VirtDevice
+op_star
+id|pTarget
+suffix:semicolon
+id|MPT_SCSI_HOST
+op_star
+id|hd
+suffix:semicolon
+r_int
+id|ii
+comma
+id|max
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|device
+op_assign
+id|sdList
+suffix:semicolon
+id|device
+op_ne
+l_int|NULL
+suffix:semicolon
+id|device
+op_assign
+id|device-&gt;next
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|device-&gt;host
+op_ne
+id|sh
+)paren
+r_continue
+suffix:semicolon
+id|hd
+op_assign
+(paren
+id|MPT_SCSI_HOST
+op_star
+)paren
+id|sh-&gt;hostdata
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hd
+op_eq
+l_int|NULL
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hd-&gt;Targets
+op_ne
+l_int|NULL
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|hd-&gt;is_spi
+)paren
+id|max
+op_assign
+id|MPT_MAX_SCSI_DEVICES
+suffix:semicolon
+r_else
+id|max
+op_assign
+id|MPT_MAX_FC_DEVICES
+OL
+l_int|256
+ques
+c_cond
+id|MPT_MAX_FC_DEVICES
+suffix:colon
+l_int|255
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|ii
+op_assign
+l_int|0
+suffix:semicolon
+id|ii
+OL
+id|max
+suffix:semicolon
+id|ii
+op_increment
+)paren
+(brace
+id|pTarget
+op_assign
+id|hd-&gt;Targets
+(braket
+id|ii
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pTarget
+op_logical_and
+op_logical_neg
+(paren
+id|pTarget-&gt;tflags
+op_amp
+id|MPT_TARGET_FLAGS_Q_YES
+)paren
+)paren
+(brace
+id|device-&gt;queue_depth
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+)brace
+)brace
+)brace
+)brace
+macro_line|#endif /* LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,44) */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *  Private routines...&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -14582,6 +14505,12 @@ id|hd-&gt;numTMrequests
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef MPT_SCSI_USE_NEW_EH
+id|hd-&gt;tmState
+op_assign
+id|TM_STATE_NONE
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* 6. If there was an internal command,&n;&t;&t; * wake this process up.&n;&t;&t; */
 r_if
 c_cond
@@ -14700,14 +14629,48 @@ r_case
 id|MPI_EVENT_IOC_BUS_RESET
 suffix:colon
 multiline_comment|/* 04 */
-multiline_comment|/* FIXME! */
-r_break
-suffix:semicolon
 r_case
 id|MPI_EVENT_EXT_BUS_RESET
 suffix:colon
 multiline_comment|/* 05 */
-multiline_comment|/* FIXME! */
+id|hd
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ioc-&gt;sh
+)paren
+(brace
+id|hd
+op_assign
+(paren
+id|MPT_SCSI_HOST
+op_star
+)paren
+id|ioc-&gt;sh-&gt;hostdata
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hd
+op_logical_and
+(paren
+id|hd-&gt;is_spi
+)paren
+op_logical_and
+(paren
+id|hd-&gt;soft_resets
+OL
+op_minus
+l_int|1
+)paren
+)paren
+id|hd-&gt;soft_resets
+op_increment
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -17371,10 +17334,23 @@ op_lshift
 id|target_id
 )paren
 )paren
+(brace
 id|vdev-&gt;raidVolume
 op_assign
 l_int|1
 suffix:semicolon
+id|ddvtprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+l_string|&quot;RAID Volume @ id %d&bslash;n&quot;
+comma
+id|target_id
+)paren
+)paren
+suffix:semicolon
+)brace
 r_else
 id|vdev-&gt;raidVolume
 op_assign
@@ -17635,6 +17611,19 @@ id|noQas
 op_assign
 l_int|1
 suffix:semicolon
+id|ddvtprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+l_string|&quot;set Target: (id %d) byte56 0x%x&bslash;n&quot;
+comma
+id|id
+comma
+id|byte56
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Set flags based on Inquiry data&n;&t; */
 r_if
 c_cond
@@ -17720,20 +17709,37 @@ op_assign
 id|MPT_ULTRA2
 suffix:semicolon
 r_else
+r_if
+c_cond
+(paren
+(paren
+id|byte56
+op_amp
+l_int|0x03
+)paren
+op_eq
+l_int|0
+)paren
+id|factor
+op_assign
+id|MPT_ULTRA160
+suffix:semicolon
+r_else
 id|factor
 op_assign
 id|MPT_ULTRA320
 suffix:semicolon
-multiline_comment|/* bit 1 QAS support, non-raid only&n;&t;&t;&t;&t; */
+multiline_comment|/* If RAID, never disable QAS&n;&t;&t;&t;&t; * else if non RAID, do not disable &n;&t;&t;&t;&t; *   QAS if bit 1 is set&n;&t;&t;&t;&t; * bit 1 QAS support, non-raid only&n;&t;&t;&t;&t; * bit 0 IU support&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
 (paren
 id|target-&gt;raidVolume
 op_eq
-l_int|0
+l_int|1
 )paren
-op_logical_and
+op_logical_or
+(paren
 (paren
 id|byte56
 op_amp
@@ -17741,6 +17747,7 @@ l_int|0x02
 )paren
 op_ne
 l_int|0
+)paren
 )paren
 id|noQas
 op_assign
@@ -18058,6 +18065,15 @@ id|vdev
 suffix:semicolon
 r_int
 id|ii
+suffix:semicolon
+id|ddvtprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+l_string|&quot;Disabling QAS!&bslash;n&quot;
+)paren
+)paren
 suffix:semicolon
 id|pspi_data-&gt;noQas
 op_assign
@@ -18859,6 +18875,37 @@ suffix:semicolon
 singleline_comment|//negoFlags = 0;
 singleline_comment|//negoFlags = MPT_TARGET_NO_NEGO_SYNC;
 )brace
+macro_line|#ifndef MPTSCSIH_DISABLE_DOMAIN_VALIDATION
+multiline_comment|/* Force to async and narrow if DV has not been executed&n;&t;&t; * for this ID&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|hd-&gt;ioc-&gt;spi_data.dvStatus
+(braket
+id|id
+)braket
+op_amp
+id|MPT_SCSICFG_DV_NOT_DONE
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|width
+op_assign
+l_int|0
+suffix:semicolon
+id|factor
+op_assign
+id|MPT_ASYNC
+suffix:semicolon
+id|offset
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* If id is not a raid volume, get the updated&n;&t;&t; * transmission settings from the target structure.&n;&t;&t; */
 r_if
 c_cond
@@ -19280,13 +19327,6 @@ op_amp
 id|hd-&gt;TMtimer
 )paren
 suffix:semicolon
-macro_line|#ifdef MPT_SCSI_USE_NEW_EH
-multiline_comment|/* Set the error flag to 1 so that the function that started the&n;&t; * task management request knows it timed out.&n;&t; */
-id|hd-&gt;tmState
-op_assign
-id|TM_STATE_ERROR
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Call the reset handler. Already had a TM request&n;&t; * timeout - so issue a diagnostic reset&n;&t; */
 r_if
 c_cond
@@ -21088,6 +21128,38 @@ op_or
 id|MPI_SCSIIO_CONTROL_UNTAGGED
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd
+op_eq
+id|CMD_RequestSense
+)paren
+(brace
+id|pScsiReq-&gt;Control
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|dir
+op_or
+id|MPI_SCSIIO_CONTROL_UNTAGGED
+)paren
+suffix:semicolon
+id|ddvprintk
+c_func
+(paren
+(paren
+id|MYIOC_s_INFO_FMT
+l_string|&quot;Untagged! 0x%2x&bslash;n&quot;
+comma
+id|hd-&gt;ioc-&gt;name
+comma
+id|cmd
+)paren
+)paren
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -22369,6 +22441,8 @@ id|mptscsih_qas_check
 c_func
 (paren
 id|hd
+comma
+id|id
 )paren
 suffix:semicolon
 )brace
@@ -22472,6 +22546,9 @@ c_func
 id|MPT_SCSI_HOST
 op_star
 id|hd
+comma
+r_int
+id|id
 )paren
 (brace
 id|VirtDevice
@@ -22507,6 +22584,15 @@ id|ii
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ii
+op_eq
+id|id
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -23621,6 +23707,10 @@ id|MPT_SCANDV_SENSE
 )paren
 (brace
 id|dv.max.width
+op_assign
+l_int|0
+suffix:semicolon
+id|doFallback
 op_assign
 l_int|0
 suffix:semicolon
@@ -26003,6 +26093,8 @@ op_star
 id|pcfg1Data
 )paren
 suffix:semicolon
+macro_line|#if 0&t;
+multiline_comment|/* Double writes to SDP1 can cause problems, &n;&t; * skip here since unnecessary&n;&t; */
 multiline_comment|/* Save the final negotiated settings to&n;&t;&t; * SCSI device page 1.&n;&t;&t; */
 id|cfg.hdr
 op_assign
@@ -26030,6 +26122,7 @@ op_amp
 id|cfg
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* If this is a RAID Passthrough, enable internal IOs&n;&t; */
 r_if
@@ -26061,7 +26154,7 @@ c_func
 (paren
 (paren
 id|MYIOC_s_ERR_FMT
-l_string|&quot;RAID Queisce FAILED!&bslash;n&quot;
+l_string|&quot;RAID Enable FAILED!&bslash;n&quot;
 comma
 id|ioc-&gt;name
 )paren
@@ -26756,11 +26849,11 @@ c_func
 (paren
 l_string|&quot;width %d, factor %x, offset %x request %x config %x&bslash;n&quot;
 comma
-id|dv-&gt;now.width
+id|width
 comma
-id|dv-&gt;now.factor
+id|factor
 comma
-id|dv-&gt;now.offset
+id|offset
 comma
 id|val
 comma
