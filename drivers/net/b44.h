@@ -1245,6 +1245,11 @@ DECL|member|core_unit
 id|u8
 id|core_unit
 suffix:semicolon
+DECL|member|mii_if
+r_struct
+id|mii_if_info
+id|mii_if
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* _B44_H */
