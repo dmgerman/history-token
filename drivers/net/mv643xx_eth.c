@@ -1,28 +1,8 @@
 multiline_comment|/*&n; * drivers/net/mv64340_eth.c - Driver for MV64340X ethernet ports&n; * Copyright (C) 2002 Matthew Dharm &lt;mdharm@momenco.com&gt;&n; *&n; * Based on the 64360 driver from:&n; * Copyright (C) 2002 rabeeh@galileo.co.il&n; *&n; * Copyright (C) 2003 PMC-Sierra, Inc.,&n; *&t;written by Manish Lachwani (lachwani@pmc-sierra.com)&n; *&n; * Copyright (C) 2003 Ralf Baechle &lt;ralf@linux-mips.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
-macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
@@ -991,11 +971,6 @@ id|pkt_info.return_info
 id|dev_kfree_skb_irq
 c_func
 (paren
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
 id|pkt_info.return_info
 )paren
 suffix:semicolon
@@ -1090,10 +1065,6 @@ op_star
 id|dev
 comma
 r_int
-r_int
-id|max
-comma
-r_int
 id|budget
 )paren
 macro_line|#else
@@ -1106,10 +1077,6 @@ r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_int
-r_int
-id|max
 )paren
 macro_line|#endif
 (brace
@@ -1171,11 +1138,6 @@ macro_line|#else
 r_while
 c_loop
 (paren
-(paren
-op_decrement
-id|max
-)paren
-op_logical_and
 id|eth_port_receive
 c_func
 (paren
@@ -1210,11 +1172,6 @@ id|pkt_info.byte_cnt
 suffix:semicolon
 id|skb
 op_assign
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
 id|pkt_info.return_info
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * In case received a packet without first / last bits on OR&n;&t;&t; * the error summary bit is on, the packets needs to be dropeed.&n;&t;&t; */
@@ -1927,8 +1884,6 @@ id|mp-&gt;port_num
 suffix:semicolon
 r_int
 id|err
-op_assign
-id|err
 suffix:semicolon
 id|spin_lock_irq
 c_func
@@ -2039,10 +1994,10 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ether_init_rx_desc_ring - Curve a Rx chain desc list and buffer in memory.&n; *&n; * DESCRIPTION:&n; *       This function prepares a Rx chained list of descriptors and packet &n; *       buffers in a form of a ring. The routine must be called after port &n; *       initialization routine and before port start routine. &n; *       The Ethernet SDMA engine uses CPU bus addresses to access the various &n; *       devices in the system (i.e. DRAM). This function uses the ethernet &n; *       struct &squot;virtual to physical&squot; routine (set by the user) to set the ring &n; *       with physical addresses.&n; *&n; * INPUT:&n; *&t;struct mv64340_private   *mp   Ethernet Port Control srtuct. &n; *      int &t;&t;&t;rx_desc_num       Number of Rx descriptors&n; *      int &t;&t;&t;rx_buff_size      Size of Rx buffer&n; *      unsigned int    rx_desc_base_addr  Rx descriptors memory area base addr.&n; *      unsigned int    rx_buff_base_addr  Rx buffer memory area base addr.&n; *&n; * OUTPUT:&n; *      The routine updates the Ethernet port control struct with information &n; *      regarding the Rx descriptors and buffers.&n; *&n; * RETURN:&n; *      false if the given descriptors memory area is not aligned according to&n; *      Ethernet SDMA specifications.&n; *      true otherwise.&n; */
+multiline_comment|/*&n; * ether_init_rx_desc_ring - Curve a Rx chain desc list and buffer in memory.&n; *&n; * DESCRIPTION:&n; *       This function prepares a Rx chained list of descriptors and packet &n; *       buffers in a form of a ring. The routine must be called after port &n; *       initialization routine and before port start routine. &n; *       The Ethernet SDMA engine uses CPU bus addresses to access the various &n; *       devices in the system (i.e. DRAM). This function uses the ethernet &n; *       struct &squot;virtual to physical&squot; routine (set by the user) to set the ring &n; *       with physical addresses.&n; *&n; * INPUT:&n; *&t;struct mv64340_private   *mp   Ethernet Port Control srtuct. &n; *&n; * OUTPUT:&n; *      The routine updates the Ethernet port control struct with information &n; *      regarding the Rx descriptors and buffers.&n; *&n; * RETURN:&n; *      None.&n; */
 DECL|function|ether_init_rx_desc_ring
 r_static
-r_int
+r_void
 id|ether_init_rx_desc_ring
 c_func
 (paren
@@ -2050,18 +2005,8 @@ r_struct
 id|mv64340_private
 op_star
 id|mp
-comma
-r_int
-r_int
-id|rx_buff_base_addr
 )paren
 (brace
-r_int
-r_int
-id|buffer_addr
-op_assign
-id|rx_buff_base_addr
-suffix:semicolon
 r_volatile
 r_struct
 id|eth_rx_desc
@@ -2074,24 +2019,9 @@ op_assign
 id|mp-&gt;rx_ring_size
 suffix:semicolon
 r_int
-r_int
-id|rx_desc_base_addr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|mp-&gt;p_rx_desc_area
-suffix:semicolon
-r_int
-id|rx_buff_size
-op_assign
-l_int|1536
-suffix:semicolon
-multiline_comment|/* Dummy, will be replaced later */
-r_int
 id|i
 suffix:semicolon
+multiline_comment|/* initialize the next_desc_ptr links in the Rx descriptors ring */
 id|p_rx_desc
 op_assign
 (paren
@@ -2099,54 +2029,8 @@ r_struct
 id|eth_rx_desc
 op_star
 )paren
-id|rx_desc_base_addr
+id|mp-&gt;p_rx_desc_area
 suffix:semicolon
-multiline_comment|/* Rx desc Must be 4LW aligned (i.e. Descriptor_Address[3:0]=0000). */
-r_if
-c_cond
-(paren
-id|rx_buff_base_addr
-op_amp
-l_int|0xf
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* Rx buffers are limited to 64K bytes and Minimum size is 8 bytes  */
-r_if
-c_cond
-(paren
-(paren
-id|rx_buff_size
-OL
-l_int|8
-)paren
-op_logical_or
-(paren
-id|rx_buff_size
-OG
-id|RX_BUFFER_MAX_SIZE
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* Rx buffers must be 64-bit aligned.       */
-r_if
-c_cond
-(paren
-(paren
-id|rx_buff_base_addr
-op_plus
-id|rx_buff_size
-)paren
-op_amp
-l_int|0x7
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* initialize the Rx descriptors ring */
 r_for
 c_loop
 (paren
@@ -2162,35 +2046,6 @@ id|i
 op_increment
 )paren
 (brace
-id|p_rx_desc
-(braket
-id|i
-)braket
-dot
-id|buf_size
-op_assign
-id|rx_buff_size
-suffix:semicolon
-id|p_rx_desc
-(braket
-id|i
-)braket
-dot
-id|byte_cnt
-op_assign
-l_int|0x0000
-suffix:semicolon
-id|p_rx_desc
-(braket
-id|i
-)braket
-dot
-id|cmd_sts
-op_assign
-id|ETH_BUFFER_OWNED_BY_DMA
-op_or
-id|ETH_RX_ENABLE_INTERRUPT
-suffix:semicolon
 id|p_rx_desc
 (braket
 id|i
@@ -2216,26 +2071,6 @@ r_struct
 id|eth_rx_desc
 )paren
 suffix:semicolon
-id|p_rx_desc
-(braket
-id|i
-)braket
-dot
-id|buf_ptr
-op_assign
-id|buffer_addr
-suffix:semicolon
-id|mp-&gt;rx_skb
-(braket
-id|i
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-id|buffer_addr
-op_add_assign
-id|rx_buff_size
-suffix:semicolon
 )brace
 multiline_comment|/* Save Rx desc pointer to driver struct. */
 id|mp-&gt;rx_curr_desc_q
@@ -2256,18 +2091,16 @@ r_struct
 id|eth_rx_desc
 )paren
 suffix:semicolon
+multiline_comment|/* Add the queue to the list of RX queues of this port */
 id|mp-&gt;port_rx_queue_command
 op_or_assign
 l_int|1
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 )brace
-multiline_comment|/*&n; * ether_init_tx_desc_ring - Curve a Tx chain desc list and buffer in memory.&n; *&n; * DESCRIPTION:&n; *       This function prepares a Tx chained list of descriptors and packet &n; *       buffers in a form of a ring. The routine must be called after port &n; *       initialization routine and before port start routine. &n; *       The Ethernet SDMA engine uses CPU bus addresses to access the various &n; *       devices in the system (i.e. DRAM). This function uses the ethernet &n; *       struct &squot;virtual to physical&squot; routine (set by the user) to set the ring &n; *       with physical addresses.&n; *&n; * INPUT:&n; *&t;struct mv64340_private   *mp   Ethernet Port Control srtuct. &n; *      int &t;&t;tx_desc_num        Number of Tx descriptors&n; *      int &t;&t;tx_buff_size&t;   Size of Tx buffer&n; *      unsigned int    tx_desc_base_addr  Tx descriptors memory area base addr.&n; *&n; * OUTPUT:&n; *      The routine updates the Ethernet port control struct with information &n; *      regarding the Tx descriptors and buffers.&n; *&n; * RETURN:&n; *      false if the given descriptors memory area is not aligned according to&n; *      Ethernet SDMA specifications.&n; *      true otherwise.&n; */
+multiline_comment|/*&n; * ether_init_tx_desc_ring - Curve a Tx chain desc list and buffer in memory.&n; *&n; * DESCRIPTION:&n; *       This function prepares a Tx chained list of descriptors and packet &n; *       buffers in a form of a ring. The routine must be called after port &n; *       initialization routine and before port start routine. &n; *       The Ethernet SDMA engine uses CPU bus addresses to access the various &n; *       devices in the system (i.e. DRAM). This function uses the ethernet &n; *       struct &squot;virtual to physical&squot; routine (set by the user) to set the ring &n; *       with physical addresses.&n; *&n; * INPUT:&n; *&t;struct mv64340_private   *mp   Ethernet Port Control srtuct. &n; *&n; * OUTPUT:&n; *      The routine updates the Ethernet port control struct with information &n; *      regarding the Tx descriptors and buffers.&n; *&n; * RETURN:&n; *      None.&n; */
 DECL|function|ether_init_tx_desc_ring
 r_static
-r_int
+r_void
 id|ether_init_tx_desc_ring
 c_func
 (paren
@@ -2277,16 +2110,6 @@ op_star
 id|mp
 )paren
 (brace
-r_int
-r_int
-id|tx_desc_base_addr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|mp-&gt;p_tx_desc_area
-suffix:semicolon
 r_int
 id|tx_desc_num
 op_assign
@@ -2300,18 +2123,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* Tx desc Must be 4LW aligned (i.e. Descriptor_Address[3:0]=0000). */
-r_if
-c_cond
-(paren
-id|tx_desc_base_addr
-op_amp
-l_int|0xf
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* save the first desc pointer to link with the last descriptor */
+multiline_comment|/* Initialize the next_desc_ptr links in the Tx descriptors ring */
 id|p_tx_desc
 op_assign
 (paren
@@ -2319,9 +2131,8 @@ r_struct
 id|eth_tx_desc
 op_star
 )paren
-id|tx_desc_base_addr
+id|mp-&gt;p_tx_desc_area
 suffix:semicolon
-multiline_comment|/* Initialize the Tx descriptors ring */
 r_for
 c_loop
 (paren
@@ -2337,33 +2148,6 @@ id|i
 op_increment
 )paren
 (brace
-id|p_tx_desc
-(braket
-id|i
-)braket
-dot
-id|byte_cnt
-op_assign
-l_int|0x0000
-suffix:semicolon
-id|p_tx_desc
-(braket
-id|i
-)braket
-dot
-id|l4i_chk
-op_assign
-l_int|0x0000
-suffix:semicolon
-id|p_tx_desc
-(braket
-id|i
-)braket
-dot
-id|cmd_sts
-op_assign
-l_int|0x00000000
-suffix:semicolon
 id|p_tx_desc
 (braket
 id|i
@@ -2389,24 +2173,7 @@ r_struct
 id|eth_tx_desc
 )paren
 suffix:semicolon
-id|p_tx_desc
-(braket
-id|i
-)braket
-dot
-id|buf_ptr
-op_assign
-l_int|0x00000000
-suffix:semicolon
-id|mp-&gt;tx_skb
-(braket
-id|i
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
-multiline_comment|/* Set Tx desc pointer in driver struct. */
 id|mp-&gt;tx_curr_desc_q
 op_assign
 l_int|0
@@ -2421,7 +2188,6 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Init Tx ring base and size parameters */
 id|mp-&gt;tx_desc_area_size
 op_assign
 id|tx_desc_num
@@ -2435,9 +2201,6 @@ suffix:semicolon
 multiline_comment|/* Add the queue to the list of Tx queues of this port */
 id|mp-&gt;port_tx_queue_command
 op_or_assign
-l_int|1
-suffix:semicolon
-r_return
 l_int|1
 suffix:semicolon
 )brace
@@ -2792,26 +2555,10 @@ comma
 id|size
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
 id|ether_init_rx_desc_ring
 c_func
 (paren
 id|mp
-comma
-l_int|0
-)paren
-)paren
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;%s: Error initializing RX Ring&quot;
-comma
-id|dev-&gt;name
 )paren
 suffix:semicolon
 id|mv64340_eth_rx_task
@@ -3391,11 +3138,6 @@ id|pkt_info.return_info
 id|dev_kfree_skb_irq
 c_func
 (paren
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
 id|pkt_info.return_info
 )paren
 suffix:semicolon
@@ -3602,8 +3344,6 @@ id|mv64340_eth_receive_queue
 c_func
 (paren
 id|dev
-comma
-l_int|0
 comma
 id|orig_budget
 )paren
@@ -4672,17 +4412,6 @@ op_star
 id|dev
 )paren
 (brace
-r_struct
-id|mv64340_private
-op_star
-id|mp
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
@@ -4902,12 +4631,6 @@ multiline_comment|/* defines */
 multiline_comment|/* SDMA command macros */
 DECL|macro|ETH_ENABLE_TX_QUEUE
 mdefine_line|#define ETH_ENABLE_TX_QUEUE(eth_port) &bslash;&n;&t;MV_WRITE(MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG(eth_port), 1)
-DECL|macro|ETH_DISABLE_TX_QUEUE
-mdefine_line|#define ETH_DISABLE_TX_QUEUE(eth_port) &bslash;&n;&t;MV_WRITE(MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG(eth_port),&t;&bslash;&n;&t;         (1 &lt;&lt; 8))
-DECL|macro|ETH_ENABLE_RX_QUEUE
-mdefine_line|#define ETH_ENABLE_RX_QUEUE(rx_queue, eth_port) &bslash;&n;&t;MV_WRITE(MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG(eth_port),&t;&bslash;&n;&t;         (1 &lt;&lt; rx_queue))
-DECL|macro|ETH_DISABLE_RX_QUEUE
-mdefine_line|#define ETH_DISABLE_RX_QUEUE(rx_queue, eth_port) &bslash;&n;&t;MV_WRITE(MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG(eth_port),&t;&bslash;&n;&t;         (1 &lt;&lt; (8 + rx_queue)))
 DECL|macro|LINK_UP_TIMEOUT
 mdefine_line|#define LINK_UP_TIMEOUT&t;&t;100000
 DECL|macro|PHY_BUSY_TIMEOUT
@@ -6553,11 +6276,6 @@ id|mp-&gt;tx_skb
 id|tx_desc_curr
 )braket
 op_assign
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
 id|p_pkt_info-&gt;return_info
 suffix:semicolon
 id|wmb
@@ -6826,11 +6544,6 @@ id|mp-&gt;tx_skb
 id|tx_desc_curr
 )braket
 op_assign
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
 id|p_pkt_info-&gt;return_info
 suffix:semicolon
 id|mb
