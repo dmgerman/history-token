@@ -433,6 +433,10 @@ id|asoc-&gt;rwnd
 op_assign
 id|sk-&gt;rcvbuf
 suffix:semicolon
+id|asoc-&gt;a_rwnd
+op_assign
+l_int|0
+suffix:semicolon
 id|asoc-&gt;rwnd_over
 op_assign
 l_int|0

@@ -2089,6 +2089,11 @@ id|sack
 r_goto
 id|nomem
 suffix:semicolon
+multiline_comment|/* Update the last advertised rwnd value. */
+id|asoc-&gt;a_rwnd
+op_assign
+id|asoc-&gt;rwnd
+suffix:semicolon
 id|asoc-&gt;peer.sack_needed
 op_assign
 l_int|0

@@ -3170,6 +3170,11 @@ DECL|member|rwnd
 id|__u32
 id|rwnd
 suffix:semicolon
+multiline_comment|/* This is the last advertised value of rwnd over a SACK chunk. */
+DECL|member|a_rwnd
+id|__u32
+id|a_rwnd
+suffix:semicolon
 multiline_comment|/* Number of bytes by which the rwnd has slopped.  The rwnd is allowed&n;&t; * to slop over a maximum of the association&squot;s frag_point.&n;&t; */
 DECL|member|rwnd_over
 id|__u32
