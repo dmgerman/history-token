@@ -3257,11 +3257,6 @@ op_amp
 id|xfs_fs_type
 )paren
 suffix:semicolon
-id|XFS_DM_EXIT
-c_func
-(paren
-)paren
-suffix:semicolon
 id|xfs_cleanup
 c_func
 (paren

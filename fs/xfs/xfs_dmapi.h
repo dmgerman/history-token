@@ -215,30 +215,21 @@ r_struct
 id|bhv_vfsops
 id|xfs_dmops
 suffix:semicolon
-macro_line|#if defined(CONFIG_XFS_DMAPI) || defined(CONFIG_XFS_DMAPI_MODULE)
-r_void
-id|xfs_dm_init
+r_extern
+r_int
+id|dmapi_init
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
-id|xfs_dm_exit
+id|dmapi_uninit
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-DECL|macro|XFS_DM_INIT
-mdefine_line|#define XFS_DM_INIT()&t;xfs_dm_init()
-DECL|macro|XFS_DM_EXIT
-mdefine_line|#define XFS_DM_EXIT()&t;xfs_dm_exit()
-macro_line|#else
-DECL|macro|XFS_DM_INIT
-mdefine_line|#define XFS_DM_INIT()
-DECL|macro|XFS_DM_EXIT
-mdefine_line|#define XFS_DM_EXIT()
-macro_line|#endif
 macro_line|#endif  /* __XFS_DMAPI_H__ */
 eof
