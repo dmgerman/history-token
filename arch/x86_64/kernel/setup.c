@@ -55,13 +55,6 @@ r_int
 r_int
 id|mmu_cr4_features
 suffix:semicolon
-DECL|variable|mmu_cr4_features
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|mmu_cr4_features
-)paren
-suffix:semicolon
 DECL|variable|acpi_disabled
 r_int
 id|acpi_disabled
