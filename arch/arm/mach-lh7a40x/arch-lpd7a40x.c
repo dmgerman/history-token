@@ -104,7 +104,7 @@ id|smc91x_resources
 comma
 )brace
 suffix:semicolon
-macro_line|#if 0
+DECL|variable|lh7a40x_usbclient_resources
 r_static
 r_struct
 id|resource
@@ -147,12 +147,12 @@ op_assign
 dot
 id|start
 op_assign
-id|IRQ_USB
+id|IRQ_USBINTR
 comma
 dot
 id|end
 op_assign
-id|IRQ_USB
+id|IRQ_USBINTR
 comma
 dot
 id|flags
@@ -163,12 +163,14 @@ comma
 comma
 )brace
 suffix:semicolon
+DECL|variable|lh7a40x_usbclient_dma_mask
 r_static
 id|u64
 id|lh7a40x_usbclient_dma_mask
 op_assign
 l_int|0xffffffffUL
 suffix:semicolon
+DECL|variable|lh7a40x_usbclient_device
 r_static
 r_struct
 id|platform_device
@@ -178,7 +180,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;lh7a40x-udc&quot;
+l_string|&quot;lh7a40x_udc&quot;
 comma
 dot
 id|id
@@ -217,7 +219,6 @@ id|lh7a40x_usbclient_resources
 comma
 )brace
 suffix:semicolon
-macro_line|#endif
 macro_line|#if defined (CONFIG_ARCH_LH7A404)
 DECL|variable|lh7a404_usbhost_resources
 r_static
@@ -349,7 +350,9 @@ op_assign
 op_amp
 id|smc91x_device
 comma
-multiline_comment|/*&t;&amp;lh7a40x_usbclient_device, */
+op_amp
+id|lh7a40x_usbclient_device
+comma
 macro_line|#if defined (CONFIG_ARCH_LH7A404)
 op_amp
 id|lh7a404_usbhost_device
