@@ -2604,7 +2604,12 @@ comma
 dot
 m_exit
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|sbs_exit
+)paren
+comma
 )brace
 comma
 multiline_comment|/*&n;&t; * SBS Technologies, Inc., PMC-OCTALPRO 422&n;&t; */
@@ -2642,7 +2647,12 @@ comma
 dot
 m_exit
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|sbs_exit
+)paren
+comma
 )brace
 comma
 multiline_comment|/*&n;&t; * SBS Technologies, Inc., P-Octal 232&n;&t; */
@@ -2680,7 +2690,12 @@ comma
 dot
 m_exit
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|sbs_exit
+)paren
+comma
 )brace
 comma
 multiline_comment|/*&n;&t; * SBS Technologies, Inc., P-Octal 422&n;&t; */
@@ -2718,7 +2733,12 @@ comma
 dot
 m_exit
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|sbs_exit
+)paren
+comma
 )brace
 comma
 multiline_comment|/*&n;&t; * SIIG cards.&n;&t; *  It is not clear whether these could be collapsed.&n;&t; */
