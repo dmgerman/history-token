@@ -692,12 +692,9 @@ c_func
 id|q-&gt;qdisc
 )paren
 suffix:semicolon
-id|skb_queue_purge
-c_func
-(paren
-op_amp
-id|sch-&gt;q
-)paren
+id|sch-&gt;q.qlen
+op_assign
+l_int|0
 suffix:semicolon
 id|sch-&gt;stats.backlog
 op_assign
