@@ -6024,7 +6024,6 @@ id|end_lapic_irq
 )brace
 suffix:semicolon
 DECL|function|enable_NMI_through_LVT0
-r_static
 r_void
 id|enable_NMI_through_LVT0
 (paren
