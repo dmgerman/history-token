@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-pxa/leds.c&n; *&n; * xscale LEDs dispatcher&n; *&n; * Copyright (C) 2001 Nicolas Pitre&n; *&n; * Copyright (c) 2001 Jeff Sutherland, Accelent Systems Inc.&n; */
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;

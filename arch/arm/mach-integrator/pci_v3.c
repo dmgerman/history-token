@@ -1569,7 +1569,7 @@ op_assign
 id|request_irq
 c_func
 (paren
-id|IRQ_V3INT
+id|IRQ_AP_V3INT
 comma
 id|v3_irq
 comma
@@ -1657,7 +1657,7 @@ op_assign
 id|request_irq
 c_func
 (paren
-id|IRQ_LBUSTIMEOUT
+id|IRQ_AP_LBUSTIMEOUT
 comma
 id|lb_timeout
 comma
