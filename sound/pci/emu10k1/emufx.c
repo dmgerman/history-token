@@ -14814,7 +14814,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;Line LiveDrive Playback Volume&quot;
+l_string|&quot;Line2 LiveDrive Playback Volume&quot;
 comma
 id|gpr
 comma
@@ -14905,7 +14905,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;Line LiveDrive Capture Volume&quot;
+l_string|&quot;Line2 LiveDrive Capture Volume&quot;
 comma
 id|gpr
 comma
@@ -14920,7 +14920,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;Line LiveDrive Capture Switch&quot;
+l_string|&quot;Line2 LiveDrive Capture Switch&quot;
 comma
 id|gpr
 op_plus
