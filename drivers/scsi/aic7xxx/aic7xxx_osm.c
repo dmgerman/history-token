@@ -4924,6 +4924,7 @@ c_cond
 id|rvalue
 )paren
 (brace
+macro_line|#ifdef CONFIG_PCI
 r_case
 id|AHC_PCI
 suffix:colon
@@ -5051,6 +5052,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#endif
 r_case
 id|AHC_EISA
 suffix:colon
