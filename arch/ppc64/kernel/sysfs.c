@@ -15,6 +15,8 @@ macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/systemcfg.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
+macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
 r_static
 id|DEFINE_PER_CPU
 c_func
@@ -553,34 +555,15 @@ id|cur_cpu_spec-&gt;firmware_features
 op_amp
 id|FW_FEATURE_SPLPAR
 )paren
-(brace
-r_char
-op_star
-id|ptr
-op_assign
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|paca
-(braket
-id|smp_processor_id
+id|get_paca
 c_func
 (paren
 )paren
-)braket
-dot
-id|lppaca
-suffix:semicolon
-id|ptr
-(braket
-l_int|0xBB
-)braket
+op_member_access_from_pointer
+id|lppaca.xPMCRegsInUse
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * On SMT machines we have to set the run latch in the ctrl register&n;&t; * in order to make PMC6 spin.&n;&t; */
 r_if
 c_cond
