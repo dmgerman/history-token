@@ -309,6 +309,8 @@ r_int
 )paren
 op_amp
 id|__binary_start
+op_amp
+id|PAGE_MASK
 suffix:semicolon
 r_if
 c_cond
