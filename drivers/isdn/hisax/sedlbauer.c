@@ -2170,12 +2170,6 @@ op_eq
 id|SEDL_CHIP_ISAC_ISAR
 )paren
 (brace
-id|clear_pending_isac_ints
-c_func
-(paren
-id|cs
-)paren
-suffix:semicolon
 id|writereg
 c_func
 (paren

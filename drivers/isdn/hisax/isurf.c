@@ -700,12 +700,6 @@ suffix:semicolon
 r_case
 id|CARD_INIT
 suffix:colon
-id|clear_pending_isac_ints
-c_func
-(paren
-id|cs
-)paren
-suffix:semicolon
 id|writeb
 c_func
 (paren

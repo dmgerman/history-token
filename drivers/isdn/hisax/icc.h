@@ -132,15 +132,4 @@ id|u_char
 id|val
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|clear_pending_icc_ints
-c_func
-(paren
-r_struct
-id|IsdnCardState
-op_star
-id|cs
-)paren
-suffix:semicolon
 eof

@@ -591,12 +591,6 @@ c_func
 id|cs
 )paren
 suffix:semicolon
-id|clear_pending_isac_ints
-c_func
-(paren
-id|cs
-)paren
-suffix:semicolon
 id|initisac
 c_func
 (paren
