@@ -616,6 +616,8 @@ id|__get_free_pages
 c_func
 (paren
 id|GFP_KERNEL
+op_or
+id|__GFP_REPEAT
 comma
 l_int|1
 )paren
