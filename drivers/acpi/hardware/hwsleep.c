@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: hwsleep.c - ACPI Hardware Sleep/Wake Interface&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_HARDWARE
@@ -486,7 +486,6 @@ suffix:semicolon
 id|status
 op_assign
 id|acpi_hw_disable_non_wakeup_gpes
-c_func
 (paren
 )paren
 suffix:semicolon
@@ -575,6 +574,7 @@ op_lshift
 id|sleep_type_reg_info-&gt;bit_position
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * We split the writes of SLP_TYP and SLP_EN to workaround&n;&t; * poorly implemented hardware.&n;&t; */
 multiline_comment|/* Write #1: fill in SLP_TYP data */
 id|status
 op_assign
@@ -702,7 +702,7 @@ OG
 id|ACPI_STATE_S3
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * We wanted to sleep &gt; S3, but it didn&squot;t happen (by virtue of the fact that&n;&t;&t; * we are still executing!)&n;&t;&t; *&n;&t;&t; * Wait ten seconds, then try again. This is to get S4/S5 to work on all machines.&n;&t;&t; *&n;&t;&t; * We wait so long to allow chipsets that poll this reg very slowly to&n;&t;&t; * still read the right value. Ideally, this entire block would go&n;&t;&t; * away entirely.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We wanted to sleep &gt; S3, but it didn&squot;t happen (by virtue of the fact that&n;&t;&t; * we are still executing!)&n;&t;&t; *&n;&t;&t; * Wait ten seconds, then try again. This is to get S4/S5 to work on all machines.&n;&t;&t; *&n;&t;&t; * We wait so long to allow chipsets that poll this reg very slowly to&n;&t;&t; * still read the right value. Ideally, this block would go&n;&t;&t; * away entirely.&n;&t;&t; */
 id|acpi_os_stall
 (paren
 l_int|10000000
@@ -799,6 +799,8 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;acpi_enter_sleep_state_s4bios&quot;
 )paren
 suffix:semicolon
+id|status
+op_assign
 id|acpi_set_register
 (paren
 id|ACPI_BITREG_WAKE_STATUS
@@ -808,19 +810,65 @@ comma
 id|ACPI_MTX_DO_NOT_LOCK
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|status
+op_assign
 id|acpi_hw_clear_acpi_status
-c_func
 (paren
 id|ACPI_MTX_DO_NOT_LOCK
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|status
+op_assign
 id|acpi_hw_disable_non_wakeup_gpes
-c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 id|ACPI_FLUSH_CPU_CACHE
-c_func
 (paren
 )paren
 suffix:semicolon
@@ -918,14 +966,39 @@ op_star
 id|sleep_enable_reg_info
 suffix:semicolon
 id|u32
-id|pm1x_control
+id|PM1Acontrol
+suffix:semicolon
+id|u32
+id|PM1Bcontrol
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;acpi_leave_sleep_state&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Some machines require SLP_TYPE and SLP_EN to be cleared */
+multiline_comment|/*&n;&t; * Set SLP_TYPE and SLP_EN to state S0.&n;&t; * This is unclear from the ACPI Spec, but it is required&n;&t; * by some machines.&n;&t; */
+id|status
+op_assign
+id|acpi_get_sleep_type_data
+(paren
+id|ACPI_STATE_S0
+comma
+op_amp
+id|acpi_gbl_sleep_type_a
+comma
+op_amp
+id|acpi_gbl_sleep_type_b
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_SUCCESS
+(paren
+id|status
+)paren
+)paren
+(brace
 id|sleep_type_reg_info
 op_assign
 id|acpi_hw_get_bit_register_info
@@ -950,7 +1023,7 @@ comma
 id|ACPI_REGISTER_PM1_CONTROL
 comma
 op_amp
-id|pm1x_control
+id|PM1Acontrol
 )paren
 suffix:semicolon
 r_if
@@ -962,8 +1035,8 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/* Clear SLP_TYP and SLP_EN */
-id|pm1x_control
+multiline_comment|/* Clear SLP_EN and SLP_TYP fields */
+id|PM1Acontrol
 op_and_assign
 op_complement
 (paren
@@ -972,24 +1045,53 @@ op_or
 id|sleep_enable_reg_info-&gt;access_bit_mask
 )paren
 suffix:semicolon
+id|PM1Bcontrol
+op_assign
+id|PM1Acontrol
+suffix:semicolon
+multiline_comment|/* Insert SLP_TYP bits */
+id|PM1Acontrol
+op_or_assign
+(paren
+id|acpi_gbl_sleep_type_a
+op_lshift
+id|sleep_type_reg_info-&gt;bit_position
+)paren
+suffix:semicolon
+id|PM1Bcontrol
+op_or_assign
+(paren
+id|acpi_gbl_sleep_type_b
+op_lshift
+id|sleep_type_reg_info-&gt;bit_position
+)paren
+suffix:semicolon
+multiline_comment|/* Just ignore any errors */
+(paren
+r_void
+)paren
 id|acpi_hw_register_write
 (paren
 id|ACPI_MTX_DO_NOT_LOCK
 comma
 id|ACPI_REGISTER_PM1A_CONTROL
 comma
-id|pm1x_control
+id|PM1Acontrol
 )paren
 suffix:semicolon
+(paren
+r_void
+)paren
 id|acpi_hw_register_write
 (paren
 id|ACPI_MTX_DO_NOT_LOCK
 comma
 id|ACPI_REGISTER_PM1B_CONTROL
 comma
-id|pm1x_control
+id|PM1Bcontrol
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Ensure enter_sleep_state_prep -&gt; enter_sleep_state ordering */
 id|acpi_gbl_sleep_type_a
@@ -1143,7 +1245,6 @@ multiline_comment|/* _WAK returns stuff - do we want to look at it? */
 id|status
 op_assign
 id|acpi_hw_enable_non_wakeup_gpes
-c_func
 (paren
 )paren
 suffix:semicolon
