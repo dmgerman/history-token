@@ -673,7 +673,6 @@ l_string|&quot;Mapped:       %8lu kB&bslash;n&quot;
 l_string|&quot;Slab:         %8lu kB&bslash;n&quot;
 l_string|&quot;Committed_AS: %8u kB&bslash;n&quot;
 l_string|&quot;PageTables:   %8lu kB&bslash;n&quot;
-l_string|&quot;ReverseMaps:  %8lu&bslash;n&quot;
 comma
 id|K
 c_func
@@ -799,8 +798,6 @@ c_func
 (paren
 id|ps.nr_page_table_pages
 )paren
-comma
-id|ps.nr_reverse_maps
 )paren
 suffix:semicolon
 id|len
