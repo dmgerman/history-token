@@ -2343,12 +2343,12 @@ suffix:semicolon
 id|unchar
 id|target
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 id|unchar
 id|lun
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 suffix:semicolon
 r_int
 r_int
@@ -2390,7 +2390,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|mb
@@ -2400,7 +2400,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|ccb
@@ -2648,7 +2648,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|aha1542_last_mbo_used
@@ -2683,7 +2683,7 @@ op_logical_and
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|SCint
@@ -2718,7 +2718,7 @@ op_ne
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|aha1542_last_mbo_used
@@ -2737,7 +2737,7 @@ op_logical_or
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|SCint
@@ -2754,7 +2754,7 @@ suffix:semicolon
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|SCint
@@ -2768,7 +2768,7 @@ multiline_comment|/* This will effectively prevent someone else from&n;&t;&t;&t;
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|aha1542_last_mbo_used
@@ -3574,7 +3574,7 @@ suffix:semicolon
 id|aha1542_out
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 comma
 op_amp
 id|ahacmd
@@ -6645,7 +6645,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;aha1542.c: Unable to abort command for target %d&bslash;n&quot;
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )paren
 suffix:semicolon
 r_return
@@ -6676,12 +6676,12 @@ suffix:semicolon
 id|unchar
 id|target
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 id|unchar
 id|lun
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 suffix:semicolon
 r_int
 id|mbo
@@ -6701,7 +6701,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|ccb
@@ -6711,7 +6711,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|mb
@@ -6730,7 +6730,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|aha1542_last_mbo_used
@@ -6765,7 +6765,7 @@ op_logical_and
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|SCint
@@ -6800,7 +6800,7 @@ op_ne
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|aha1542_last_mbo_used
@@ -6819,7 +6819,7 @@ op_logical_or
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|SCint
@@ -6836,7 +6836,7 @@ suffix:semicolon
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|SCint
@@ -6850,7 +6850,7 @@ multiline_comment|/* This will effectively&n;&t;&t;&t;&t;&t;&t;&t;   prevent som
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|aha1542_last_mbo_used
@@ -6983,7 +6983,7 @@ multiline_comment|/* &n;&t; * Now tell the 1542 to flush all pending commands fo
 id|aha1542_out
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 comma
 op_amp
 id|ahacmd
@@ -6997,7 +6997,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;aha1542.c: Trying device reset for target %d&bslash;n&quot;
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )paren
 suffix:semicolon
 r_return
@@ -7155,7 +7155,7 @@ comma
 id|CONTROL
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 )paren
 )paren
 suffix:semicolon
@@ -7163,7 +7163,7 @@ multiline_comment|/*&n;&t; * Wait for the thing to settle down a bit.  Unfortuna
 id|spin_unlock_irq
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;host_lock
+id|SCpnt-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|scsi_sleep
@@ -7177,7 +7177,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;host_lock
+id|SCpnt-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|WAIT
@@ -7186,7 +7186,7 @@ c_func
 id|STATUS
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 )paren
 comma
 id|STATMASK
@@ -7213,7 +7213,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;Sent BUS RESET to scsi host %d&bslash;n&quot;
 comma
-id|SCpnt-&gt;host-&gt;host_no
+id|SCpnt-&gt;device-&gt;host-&gt;host_no
 )paren
 suffix:semicolon
 r_for
@@ -7237,7 +7237,7 @@ c_cond
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|SCint
@@ -7257,7 +7257,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|SCint
@@ -7295,7 +7295,7 @@ suffix:semicolon
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|SCint
@@ -7308,7 +7308,7 @@ suffix:semicolon
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|mb
@@ -7356,7 +7356,7 @@ comma
 id|CONTROL
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 )paren
 )paren
 suffix:semicolon
@@ -7364,7 +7364,7 @@ multiline_comment|/*&n;&t; * Wait for the thing to settle down a bit.  Unfortuna
 id|spin_unlock_irq
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;host_lock
+id|SCpnt-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|scsi_sleep
@@ -7378,7 +7378,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;host_lock
+id|SCpnt-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|WAIT
@@ -7387,7 +7387,7 @@ c_func
 id|STATUS
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 )paren
 comma
 id|STATMASK
@@ -7411,9 +7411,9 @@ multiline_comment|/*&n;&t; * We need to do this too before the 1542 can interact
 id|setup_mailboxes
 c_func
 (paren
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 comma
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Now try to pick up the pieces.  For all pending commands,&n;&t; * free any internal data structures, and basically clear things&n;&t; * out.  We do not try and restart any commands or anything - &n;&t; * the strategy handler takes care of that crap.&n;&t; */
@@ -7423,7 +7423,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;Sent BUS RESET to scsi host %d&bslash;n&quot;
 comma
-id|SCpnt-&gt;host-&gt;host_no
+id|SCpnt-&gt;device-&gt;host-&gt;host_no
 )paren
 suffix:semicolon
 r_for
@@ -7447,7 +7447,7 @@ c_cond
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|SCint
@@ -7467,7 +7467,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|SCint
@@ -7505,7 +7505,7 @@ suffix:semicolon
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|SCint
@@ -7518,7 +7518,7 @@ suffix:semicolon
 id|HOSTDATA
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|mb
