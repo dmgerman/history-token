@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 multiline_comment|/* #define DEBUG */
 multiline_comment|/**&n; * int_sqrt - oom_kill.c internal function, rough approximation to sqrt&n; * @x: integer of which to calculate the sqrt&n; * &n; * A very rough approximation to the sqrt() function.&n; */
 DECL|function|int_sqrt
@@ -99,7 +100,7 @@ id|points
 op_assign
 id|p-&gt;mm-&gt;total_vm
 suffix:semicolon
-multiline_comment|/*&n;&t; * CPU time is in seconds and run time is in minutes. There is no&n;&t; * particular reason for this other than that it turned out to work&n;&t; * very well in practice. This is not safe against jiffie wraps&n;&t; * but we don&squot;t care _that_ much...&n;&t; */
+multiline_comment|/*&n;&t; * CPU time is in seconds and run time is in minutes. There is no&n;&t; * particular reason for this other than that it turned out to work&n;&t; * very well in practice.&n;&t; */
 id|cpu_time
 op_assign
 (paren
@@ -117,7 +118,10 @@ suffix:semicolon
 id|run_time
 op_assign
 (paren
-id|jiffies
+id|get_jiffies_64
+c_func
+(paren
+)paren
 op_minus
 id|p-&gt;start_time
 )paren

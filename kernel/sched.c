@@ -368,7 +368,7 @@ op_assign
 op_amp
 id|node_nr_running
 (braket
-id|__cpu_to_node
+id|cpu_to_node
 c_func
 (paren
 id|i
@@ -2159,7 +2159,7 @@ l_int|10000000
 suffix:semicolon
 id|cpumask
 op_assign
-id|__node_to_cpu_mask
+id|node_to_cpumask
 c_func
 (paren
 id|node
@@ -2455,7 +2455,7 @@ id|this_rq
 r_int
 id|this_node
 op_assign
-id|__cpu_to_node
+id|cpu_to_node
 c_func
 (paren
 id|this_cpu
@@ -2495,7 +2495,7 @@ l_int|0
 )paren
 r_return
 (paren
-id|__node_to_cpu_mask
+id|node_to_cpumask
 c_func
 (paren
 id|node
@@ -2510,7 +2510,7 @@ id|this_cpu
 suffix:semicolon
 )brace
 r_return
-id|__node_to_cpu_mask
+id|node_to_cpumask
 c_func
 (paren
 id|this_node

@@ -1135,7 +1135,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;%d (%s) %c %d %d %d %d %d %lu %lu &bslash;&n;%lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %lu %lu %ld %lu %lu %lu %lu %lu &bslash;&n;%lu %lu %lu %lu %lu %lu %lu %lu %d %d %lu %lu&bslash;n&quot;
+l_string|&quot;%d (%s) %c %d %d %d %d %d %lu %lu &bslash;&n;%lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu &bslash;&n;%lu %lu %lu %lu %lu %lu %lu %lu %d %d %lu %lu&bslash;n&quot;
 comma
 id|task-&gt;pid
 comma
@@ -1200,7 +1200,12 @@ c_func
 id|task-&gt;it_real_value
 )paren
 comma
-id|jiffies_to_clock_t
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies_64_to_clock_t
 c_func
 (paren
 id|task-&gt;start_time

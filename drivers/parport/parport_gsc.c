@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/superio.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
+macro_line|#include &lt;asm/parisc-device.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/parport_gsc.h&gt;
 id|MODULE_AUTHOR

@@ -40,7 +40,7 @@ id|num
 r_int
 id|p_node
 op_assign
-id|__memblk_to_node
+id|memblk_to_node
 c_func
 (paren
 id|num

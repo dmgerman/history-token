@@ -1,10 +1,12 @@
-multiline_comment|/*&n; * Definitions for the FTDI USB Single Port Serial Converter - &n; * known as FTDI_SIO (Serial Input/Output application of the chipset) &n; *&n; * The example I have is known as the USC-1000 which is available from&n; * http://www.dse.co.nz - cat no XH4214 It looks similar to this:&n; * http://www.dansdata.com/usbser.htm but I can&squot;t be sure There are other&n; * USC-1000s which don&squot;t look like my device though so beware!&n; *&n; * The device is based on the FTDI FT8U100AX chip. It has a DB25 on one side, &n; * USB on the other.&n; *&n; * Thanx to FTDI (http://www.ftdi.co.uk) for so kindly providing details&n; * of the protocol required to talk to the device and ongoing assistence&n; * during development.&n; *&n; * Bill Ryder - bryder@sgi.com of Silicon Graphics, Inc.- wrote the &n; * FTDI_SIO implementation.&n; *&n; */
+multiline_comment|/*&n; * Definitions for the FTDI USB Single Port Serial Converter - &n; * known as FTDI_SIO (Serial Input/Output application of the chipset) &n; *&n; * The example I have is known as the USC-1000 which is available from&n; * http://www.dse.co.nz - cat no XH4214 It looks similar to this:&n; * http://www.dansdata.com/usbser.htm but I can&squot;t be sure There are other&n; * USC-1000s which don&squot;t look like my device though so beware!&n; *&n; * The device is based on the FTDI FT8U100AX chip. It has a DB25 on one side, &n; * USB on the other.&n; *&n; * Thanx to FTDI (http://www.ftdi.co.uk) for so kindly providing details&n; * of the protocol required to talk to the device and ongoing assistence&n; * during development.&n; *&n; * Bill Ryder - bryder@sgi.com of Silicon Graphics, Inc.- wrote the &n; * FTDI_SIO implementation.&n; *&n; * Philipp G&#xfffd;hring - pg@futureware.at - added the Device ID of the USB relais&n; * from Rudolf Gugler&n; */
 DECL|macro|FTDI_VID
 mdefine_line|#define FTDI_VID&t;0x0403&t;/* Vendor Id */
 DECL|macro|FTDI_SIO_PID
 mdefine_line|#define FTDI_SIO_PID&t;0x8372&t;/* Product Id SIO application of 8U100AX  */
 DECL|macro|FTDI_8U232AM_PID
 mdefine_line|#define FTDI_8U232AM_PID 0x6001 /* Similar device to SIO above */
+DECL|macro|FTDI_RELAIS_PID
+mdefine_line|#define FTDI_RELAIS_PID&t;0xFA10  /* Relais device from Rudolf Gugler */
 DECL|macro|FTDI_NF_RIC_VID
 mdefine_line|#define FTDI_NF_RIC_VID&t;0x0DCD&t;/* Vendor Id */
 DECL|macro|FTDI_NF_RIC_PID

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/futex.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
@@ -3369,7 +3370,10 @@ suffix:semicolon
 multiline_comment|/* -1 = no lock */
 id|p-&gt;start_time
 op_assign
-id|jiffies
+id|get_jiffies_64
+c_func
+(paren
+)paren
 suffix:semicolon
 id|p-&gt;security
 op_assign

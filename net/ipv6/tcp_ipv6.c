@@ -102,6 +102,9 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+r_int
+id|ipfragok
 )paren
 suffix:semicolon
 DECL|variable|ipv6_mapped

@@ -172,12 +172,24 @@ r_int
 id|pgsteal
 suffix:semicolon
 multiline_comment|/* total pages reclaimed */
+DECL|member|pginodesteal
+r_int
+r_int
+id|pginodesteal
+suffix:semicolon
+multiline_comment|/* pages reclaimed via inode freeing */
 DECL|member|kswapd_steal
 r_int
 r_int
 id|kswapd_steal
 suffix:semicolon
 multiline_comment|/* pages reclaimed by kswapd */
+DECL|member|kswapd_inodesteal
+r_int
+r_int
+id|kswapd_inodesteal
+suffix:semicolon
+multiline_comment|/* reclaimed via kswapd inode freeing */
 DECL|member|pageoutrun
 r_int
 r_int

@@ -149,15 +149,6 @@ id|page
 op_star
 )paren
 suffix:semicolon
-r_void
-id|hugetlb_release_key
-c_func
-(paren
-r_struct
-id|hugetlb_key
-op_star
-)paren
-suffix:semicolon
 r_int
 id|hugetlb_report_meminfo
 c_func

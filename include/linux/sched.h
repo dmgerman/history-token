@@ -945,8 +945,7 @@ comma
 id|cstime
 suffix:semicolon
 DECL|member|start_time
-r_int
-r_int
+id|u64
 id|start_time
 suffix:semicolon
 multiline_comment|/* mm fault and swap info: this can arguably be seen as either mm-specific or thread-specific */

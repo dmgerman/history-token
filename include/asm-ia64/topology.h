@@ -7,34 +7,34 @@ macro_line|#include &lt;asm/numa.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/*&n; * Returns the number of the node containing CPU &squot;cpu&squot;&n; */
-DECL|macro|__cpu_to_node
-mdefine_line|#define __cpu_to_node(cpu) (int)(cpu_to_node_map[cpu])
+DECL|macro|cpu_to_node
+mdefine_line|#define cpu_to_node(cpu) (int)(cpu_to_node_map[cpu])
 multiline_comment|/*&n; * Returns a bitmask of CPUs on Node &squot;node&squot;.&n; */
-DECL|macro|__node_to_cpu_mask
-mdefine_line|#define __node_to_cpu_mask(node) (node_to_cpu_mask[node])
+DECL|macro|node_to_cpumask
+mdefine_line|#define node_to_cpumask(node) (node_to_cpumask[node])
 macro_line|#else
-DECL|macro|__cpu_to_node
-mdefine_line|#define __cpu_to_node(cpu) (0)
-DECL|macro|__node_to_cpu_mask
-mdefine_line|#define __node_to_cpu_mask(node) (phys_cpu_present_map)
+DECL|macro|cpu_to_node
+mdefine_line|#define cpu_to_node(cpu) (0)
+DECL|macro|node_to_cpumask
+mdefine_line|#define node_to_cpumask(node) (phys_cpu_present_map)
 macro_line|#endif
 multiline_comment|/*&n; * Returns the number of the node containing MemBlk &squot;memblk&squot;&n; */
 macro_line|#ifdef CONFIG_ACPI_NUMA
-DECL|macro|__memblk_to_node
-mdefine_line|#define __memblk_to_node(memblk) (node_memblk[memblk].nid)
+DECL|macro|memblk_to_node
+mdefine_line|#define memblk_to_node(memblk) (node_memblk[memblk].nid)
 macro_line|#else
-DECL|macro|__memblk_to_node
-mdefine_line|#define __memblk_to_node(memblk) (memblk)
+DECL|macro|memblk_to_node
+mdefine_line|#define memblk_to_node(memblk) (memblk)
 macro_line|#endif
 multiline_comment|/*&n; * Returns the number of the node containing Node &squot;nid&squot;.&n; * Not implemented here. Multi-level hierarchies detected with&n; * the help of node_distance().&n; */
-DECL|macro|__parent_node
-mdefine_line|#define __parent_node(nid) (nid)
+DECL|macro|parent_node
+mdefine_line|#define parent_node(nid) (nid)
 multiline_comment|/*&n; * Returns the number of the first CPU on Node &squot;node&squot;.&n; */
-DECL|macro|__node_to_first_cpu
-mdefine_line|#define __node_to_first_cpu(node) (__ffs(__node_to_cpu_mask(node)))
+DECL|macro|node_to_first_cpu
+mdefine_line|#define node_to_first_cpu(node) (__ffs(node_to_cpumask(node)))
 multiline_comment|/*&n; * Returns the number of the first MemBlk on Node &squot;node&squot;&n; * Should be fixed when IA64 discontigmem goes in.&n; */
-DECL|macro|__node_to_memblk
-mdefine_line|#define __node_to_memblk(node) (node)
+DECL|macro|node_to_memblk
+mdefine_line|#define node_to_memblk(node) (node)
 multiline_comment|/* Cross-node load balancing interval. */
 DECL|macro|NODE_BALANCE_RATE
 mdefine_line|#define NODE_BALANCE_RATE 10

@@ -9,6 +9,7 @@ mdefine_line|#define PDC_OS_BOOT_RENDEZVOUS     0x10
 DECL|macro|PDC_OS_BOOT_RENDEZVOUS_HI
 mdefine_line|#define PDC_OS_BOOT_RENDEZVOUS_HI  0x28
 macro_line|#ifndef ASSEMBLY
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;&t;/* for NR_CPUS */
 DECL|typedef|address_t
 r_typedef

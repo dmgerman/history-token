@@ -218,7 +218,9 @@ id|tfm
 comma
 id|sg
 comma
-l_int|1
+id|sg
+comma
+id|length
 )paren
 suffix:semicolon
 id|out
@@ -443,7 +445,9 @@ id|tfm
 comma
 id|sg
 comma
-l_int|1
+id|sg
+comma
+id|length
 )paren
 suffix:semicolon
 id|out

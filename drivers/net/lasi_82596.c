@@ -23,6 +23,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
+macro_line|#include &lt;asm/parisc-device.h&gt;
 DECL|variable|__devinitdata
 r_static
 r_char
@@ -71,11 +72,11 @@ mdefine_line|#define DEB_ANY&t;&t;0xffff
 DECL|macro|DEB
 mdefine_line|#define DEB(x,y)&t;if (i596_debug &amp; (x)) { y; }
 DECL|macro|CHECK_WBACK
-mdefine_line|#define  CHECK_WBACK(addr,len) &bslash;&n;&t;do { if (!dma_consistent) dma_cache_wback((unsigned long)addr,len); } while (0)
+mdefine_line|#define  CHECK_WBACK(addr,len) &bslash;&n;&t;do { dma_cache_sync((void *)addr, len, DMA_TO_DEVICE); } while (0)
 DECL|macro|CHECK_INV
-mdefine_line|#define  CHECK_INV(addr,len) &bslash;&n;&t;do { if (!dma_consistent) dma_cache_inv((unsigned long)addr,len); } while(0)
+mdefine_line|#define  CHECK_INV(addr,len) &bslash;&n;&t;do { dma_cache_sync((void *)addr,len, DMA_FROM_DEVICE); } while(0)
 DECL|macro|CHECK_WBACK_INV
-mdefine_line|#define  CHECK_WBACK_INV(addr,len) &bslash;&n;&t;do { if (!dma_consistent) dma_cache_wback_inv((unsigned long)addr,len); } while (0)
+mdefine_line|#define  CHECK_WBACK_INV(addr,len) &bslash;&n;&t;do { dma_cache_sync((void *)addr,len, DMA_BIDIRECTIONAL); } while (0)
 DECL|macro|PA_I82596_RESET
 mdefine_line|#define PA_I82596_RESET&t;&t;0&t;/* Offsets relative to LASI-LAN-Addr.*/
 DECL|macro|PA_CPU_PORT_L_ACCESS
@@ -976,6 +977,12 @@ DECL|member|dma_addr
 id|dma_addr_t
 id|dma_addr
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|device
+op_star
+id|dev
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|init_setup
@@ -1027,22 +1034,6 @@ l_int|0x7f
 multiline_comment|/*  *multi IA */
 )brace
 suffix:semicolon
-DECL|variable|fake_pci_dev
-r_static
-r_struct
-id|pci_dev
-op_star
-id|fake_pci_dev
-suffix:semicolon
-multiline_comment|/* The fake pci_dev needed for &n;&t;&t;&t;&t;&t;pci_* functions under ccio. */
-DECL|variable|dma_consistent
-r_static
-r_int
-id|dma_consistent
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Zero if pci_alloc_consistent() fails */
 r_static
 r_int
 id|i596_open
@@ -1935,16 +1926,16 @@ l_int|2
 suffix:semicolon
 id|dma_addr
 op_assign
-id|pci_map_single
+id|dma_map_single
 c_func
 (paren
-id|fake_pci_dev
+id|lp-&gt;dev
 comma
 id|skb-&gt;tail
 comma
 id|PKT_BUF_SZ
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|skb-&gt;dev
@@ -2251,10 +2242,10 @@ l_int|NULL
 )paren
 r_break
 suffix:semicolon
-id|pci_unmap_single
+id|dma_unmap_single
 c_func
 (paren
-id|fake_pci_dev
+id|lp-&gt;dev
 comma
 (paren
 id|dma_addr_t
@@ -2267,7 +2258,7 @@ id|rbd-&gt;b_data
 comma
 id|PKT_BUF_SZ
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -3202,10 +3193,10 @@ suffix:semicolon
 id|dma_addr_t
 id|dma_addr
 suffix:semicolon
-id|pci_unmap_single
+id|dma_unmap_single
 c_func
 (paren
-id|fake_pci_dev
+id|lp-&gt;dev
 comma
 (paren
 id|dma_addr_t
@@ -3218,7 +3209,7 @@ id|rbd-&gt;b_data
 comma
 id|PKT_BUF_SZ
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 multiline_comment|/* Get fresh skbuff to replace filled one. */
@@ -3280,16 +3271,16 @@ id|dev
 suffix:semicolon
 id|dma_addr
 op_assign
-id|pci_map_single
+id|dma_map_single
 c_func
 (paren
-id|fake_pci_dev
+id|lp-&gt;dev
 comma
 id|newskb-&gt;tail
 comma
 id|PKT_BUF_SZ
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|rbd-&gt;v_data
@@ -3364,10 +3355,10 @@ id|rx_in_place
 )paren
 (brace
 multiline_comment|/* 16 byte align the data fields */
-id|pci_dma_sync_single
+id|dma_sync_single
 c_func
 (paren
-id|fake_pci_dev
+id|lp-&gt;dev
 comma
 (paren
 id|dma_addr_t
@@ -3380,7 +3371,7 @@ id|rbd-&gt;b_data
 comma
 id|PKT_BUF_SZ
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|skb_reserve
@@ -3749,16 +3740,16 @@ id|skb
 op_assign
 id|tx_cmd-&gt;skb
 suffix:semicolon
-id|pci_unmap_single
+id|dma_unmap_single
 c_func
 (paren
-id|fake_pci_dev
+id|lp-&gt;dev
 comma
 id|tx_cmd-&gt;dma_addr
 comma
 id|skb-&gt;len
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -4818,16 +4809,16 @@ id|length
 suffix:semicolon
 id|tx_cmd-&gt;dma_addr
 op_assign
-id|pci_map_single
+id|dma_map_single
 c_func
 (paren
-id|fake_pci_dev
+id|lp-&gt;dev
 comma
 id|skb-&gt;data
 comma
 id|skb-&gt;len
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|tbd-&gt;data
@@ -5029,6 +5020,14 @@ r_struct
 id|i596_private
 op_star
 id|lp
+suffix:semicolon
+multiline_comment|/* we&squot;re going to overwrite dev-&gt;priv, so pull the device out */
+r_struct
+id|device
+op_star
+id|gen_dev
+op_assign
+id|dev-&gt;priv
 suffix:semicolon
 r_char
 id|eth_addr
@@ -5262,10 +5261,10 @@ op_assign
 r_int
 r_int
 )paren
-id|pci_alloc_consistent
+id|dma_alloc_noncoherent
 c_func
 (paren
-id|fake_pci_dev
+id|gen_dev
 comma
 r_sizeof
 (paren
@@ -5275,38 +5274,8 @@ id|i596_private
 comma
 op_amp
 id|dma_addr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev-&gt;mem_start
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: Couldn&squot;t get consistent shared memory&bslash;n&quot;
 comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|dma_consistent
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;mem_start
-op_assign
-(paren
-r_int
-)paren
-id|__get_free_pages
-c_func
-(paren
-id|GFP_ATOMIC
-comma
-l_int|0
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -5327,15 +5296,6 @@ suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
-suffix:semicolon
-)brace
-id|dma_addr
-op_assign
-id|virt_to_bus
-c_func
-(paren
-id|dev-&gt;mem_start
-)paren
 suffix:semicolon
 )brace
 id|ether_setup
@@ -5535,6 +5495,10 @@ suffix:semicolon
 id|lp-&gt;dma_addr
 op_assign
 id|dma_addr
+suffix:semicolon
+id|lp-&gt;dev
+op_assign
+id|gen_dev
 suffix:semicolon
 id|CHECK_WBACK_INV
 c_func
@@ -5952,16 +5916,16 @@ id|lp-&gt;stats.tx_aborted_errors
 op_increment
 suffix:semicolon
 )brace
-id|pci_unmap_single
+id|dma_unmap_single
 c_func
 (paren
-id|fake_pci_dev
+id|lp-&gt;dev
 comma
 id|tx_cmd-&gt;dma_addr
 comma
 id|skb-&gt;len
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|dev_kfree_skb_irq
@@ -7079,14 +7043,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|fake_pci_dev
-op_assign
-id|ccio_get_fake
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7149,6 +7105,11 @@ suffix:semicolon
 id|netdevice-&gt;init
 op_assign
 id|i82596_probe
+suffix:semicolon
+id|netdevice-&gt;priv
+op_assign
+op_amp
+id|dev-&gt;dev
 suffix:semicolon
 id|retval
 op_assign
@@ -7392,15 +7353,10 @@ op_star
 )paren
 id|netdevice-&gt;priv
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dma_consistent
-)paren
-id|pci_free_consistent
+id|dma_free_noncoherent
 c_func
 (paren
-id|fake_pci_dev
+id|lp-&gt;dev
 comma
 r_sizeof
 (paren
@@ -7415,13 +7371,6 @@ op_star
 id|netdevice-&gt;mem_start
 comma
 id|lp-&gt;dma_addr
-)paren
-suffix:semicolon
-r_else
-id|free_page
-c_func
-(paren
-id|netdevice-&gt;mem_start
 )paren
 suffix:semicolon
 id|netdevice-&gt;priv
