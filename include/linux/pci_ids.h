@@ -926,7 +926,9 @@ mdefine_line|#define PCI_VENDOR_ID_AI&t;&t;0x1025
 DECL|macro|PCI_DEVICE_ID_AI_M1435
 mdefine_line|#define PCI_DEVICE_ID_AI_M1435&t;&t;0x1435
 DECL|macro|PCI_VENDOR_ID_DELL
-mdefine_line|#define PCI_VENDOR_ID_DELL              0x1028
+mdefine_line|#define PCI_VENDOR_ID_DELL&t;&t;0x1028
+DECL|macro|PCI_DEVICE_ID_DELL_RACIII
+mdefine_line|#define PCI_DEVICE_ID_DELL_RACIII&t;0x0008
 DECL|macro|PCI_VENDOR_ID_MATROX
 mdefine_line|#define PCI_VENDOR_ID_MATROX&t;&t;0x102B
 DECL|macro|PCI_DEVICE_ID_MATROX_MGA_2
