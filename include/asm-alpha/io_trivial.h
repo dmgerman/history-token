@@ -123,7 +123,7 @@ op_star
 id|a
 )paren
 (brace
-id|__kernel_stb
+id|__kernel_stw
 c_func
 (paren
 id|b
@@ -332,7 +332,7 @@ op_star
 id|a
 )paren
 (brace
-id|__kernel_stb
+id|__kernel_stw
 c_func
 (paren
 id|b
