@@ -1218,7 +1218,7 @@ l_int|3
 dot
 id|csr
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set up the PCI to main memory translation windows.&n;&t; *&n;&t; * Note: Window 3 is scatter-gather only&n;&t; * &n;&t; * Window 0 is scatter-gather 8MB at 8MB (for isa)&n;&t; * Window 1 is scatter-gather (up to) 1GB at 1GB&n;&t; * Window 2 is direct access 2GB at 2GB&n;&t; */
+multiline_comment|/*&n;&t; * Set up the PCI to main memory translation windows.&n;&t; *&n;&t; * Note: Window 3 is scatter-gather only&n;&t; * &n;&t; * Window 0 is scatter-gather 8MB at 8MB (for isa)&n;&t; * Window 1 is scatter-gather (up to) 1GB at 1GB&n;&t; * Window 2 is direct access 2GB at 2GB&n;&t; *&n;&t; * NOTE: we need the align_entry settings for Acer devices on ES40,&n;&t; * specifically floppy and IDE when memory is larger than 2GB.&n;&t; */
 id|hose-&gt;sg_isa
 op_assign
 id|iommu_arena_new
@@ -1232,6 +1232,11 @@ l_int|0x00800000
 comma
 l_int|0
 )paren
+suffix:semicolon
+multiline_comment|/* Initially set for 4 PTEs, but will be overridden to 64K for ISA. */
+id|hose-&gt;sg_isa-&gt;align_entry
+op_assign
+l_int|4
 suffix:semicolon
 id|hose-&gt;sg_pci
 op_assign
@@ -1251,6 +1256,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|hose-&gt;sg_pci-&gt;align_entry
+op_assign
+l_int|4
+suffix:semicolon
+multiline_comment|/* Tsunami caches 4 PTEs at a time */
 id|__direct_map_base
 op_assign
 l_int|0x80000000

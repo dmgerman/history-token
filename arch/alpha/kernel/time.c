@@ -524,7 +524,7 @@ id|EV4_CPU
 )braket
 op_assign
 (brace
-l_int|150000000
+l_int|100000000
 comma
 l_int|300000000
 )brace
@@ -534,7 +534,7 @@ id|LCA4_CPU
 )braket
 op_assign
 (brace
-l_int|150000000
+l_int|100000000
 comma
 l_int|300000000
 )brace
@@ -863,8 +863,10 @@ suffix:semicolon
 r_do
 (brace
 id|count
-op_increment
+op_add_assign
+l_int|100
 suffix:semicolon
+multiline_comment|/* by 1 takes too long to timeout from 0 */
 )brace
 r_while
 c_loop
@@ -901,7 +903,7 @@ c_cond
 (paren
 id|count
 op_le
-l_int|1
+l_int|100
 )paren
 r_return
 l_int|0
