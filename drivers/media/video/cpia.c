@@ -15991,7 +15991,7 @@ suffix:semicolon
 )brace
 DECL|function|cpia_read
 r_static
-r_int
+id|ssize_t
 id|cpia_read
 c_func
 (paren

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;media/video-buf.h&gt;
 macro_line|#include &lt;media/tuner.h&gt;
 macro_line|#include &lt;media/audiochip.h&gt;

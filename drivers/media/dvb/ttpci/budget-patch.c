@@ -675,6 +675,9 @@ comma
 (paren
 r_int
 )paren
+(paren
+r_int
+)paren
 id|arg
 )paren
 suffix:semicolon

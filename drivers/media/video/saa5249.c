@@ -3153,6 +3153,9 @@ op_assign
 (paren
 r_int
 )paren
+(paren
+r_int
+)paren
 id|arg
 suffix:semicolon
 r_return

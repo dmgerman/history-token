@@ -2,6 +2,8 @@ multiline_comment|/*&n; * skystar2.c - driver for the Technisat SkyStar2 PCI DVB
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;dvb_i2c.h&quot;
 macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dvb_functions.h&quot;
@@ -122,11 +124,13 @@ id|u32
 id|irq
 suffix:semicolon
 DECL|member|io_mem
-id|u32
+r_int
+r_int
 id|io_mem
 suffix:semicolon
 DECL|member|io_port
-id|u32
+r_int
+r_int
 id|io_port
 suffix:semicolon
 DECL|member|mac_addr
@@ -1207,7 +1211,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;message %d: flags=%x, addr=0x%04x, buf=%x, len=%d &bslash;n&quot;
+l_string|&quot;message %d: flags=%x, addr=0x%04x, buf=%p, len=%d &bslash;n&quot;
 comma
 id|i
 comma
@@ -1225,9 +1229,6 @@ id|i
 dot
 id|addr
 comma
-(paren
-id|u32
-)paren
 id|msgs
 (braket
 id|i
@@ -8388,13 +8389,10 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s: allocated dma buffer at 0x%x, length=%d&bslash;n&quot;
+l_string|&quot;%s: allocated dma buffer at 0x%p, length=%d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-(paren
-r_int
-)paren
 id|adapter-&gt;dmaq1.buffer
 comma
 id|SizeOfBufDMA1
@@ -8490,13 +8488,10 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s: allocated dma buffer at 0x%x, length=%d&bslash;n&quot;
+l_string|&quot;%s: allocated dma buffer at 0x%p, length=%d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-(paren
-r_int
-)paren
 id|adapter-&gt;dmaq2.buffer
 comma
 (paren
@@ -8858,7 +8853,8 @@ suffix:semicolon
 id|adapter-&gt;io_mem
 op_assign
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|ioremap
 c_func
@@ -8896,7 +8892,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s: io memory maped at %x&bslash;n&quot;
+l_string|&quot;%s: io memory maped at %lx&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
