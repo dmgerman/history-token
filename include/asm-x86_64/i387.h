@@ -47,6 +47,7 @@ c_func
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
@@ -106,6 +107,7 @@ c_func
 (paren
 r_struct
 id|user_i387_struct
+id|__user
 op_star
 id|buf
 comma
@@ -127,6 +129,7 @@ id|tsk
 comma
 r_struct
 id|user_i387_struct
+id|__user
 op_star
 id|buf
 )paren
@@ -226,6 +229,7 @@ c_func
 (paren
 r_struct
 id|i387_fxsave_struct
+id|__user
 op_star
 id|fx
 )paren
@@ -392,6 +396,7 @@ c_func
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren

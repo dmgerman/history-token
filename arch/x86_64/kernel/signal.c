@@ -75,6 +75,7 @@ id|sys_rt_sigsuspend
 c_func
 (paren
 id|sigset_t
+id|__user
 op_star
 id|unewset
 comma
@@ -228,10 +229,12 @@ c_func
 (paren
 r_const
 id|stack_t
+id|__user
 op_star
 id|uss
 comma
 id|stack_t
+id|__user
 op_star
 id|uoss
 comma
@@ -287,6 +290,7 @@ id|regs
 comma
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 comma
@@ -451,6 +455,7 @@ multiline_comment|/* disable syscall checks */
 (brace
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 suffix:semicolon
@@ -535,12 +540,22 @@ id|regs
 (brace
 r_struct
 id|rt_sigframe
+id|__user
 op_star
+id|frame
+suffix:semicolon
+id|sigset_t
+id|set
+suffix:semicolon
+r_int
+id|eax
+suffix:semicolon
 id|frame
 op_assign
 (paren
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 )paren
 (paren
@@ -548,12 +563,6 @@ id|regs.rsp
 op_minus
 l_int|8
 )paren
-suffix:semicolon
-id|sigset_t
-id|set
-suffix:semicolon
-r_int
-id|eax
 suffix:semicolon
 r_if
 c_cond
@@ -722,6 +731,7 @@ c_func
 (paren
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 comma
@@ -1016,6 +1026,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Determine which stack to use..&n; */
 r_static
 r_void
+id|__user
 op_star
 DECL|function|get_stack
 id|get_stack
@@ -1078,6 +1089,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|round_down
@@ -1121,11 +1133,13 @@ id|regs
 (brace
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 id|frame
 suffix:semicolon
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|fp
 op_assign
@@ -1169,6 +1183,7 @@ id|frame
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|round_down
@@ -2197,6 +2212,7 @@ op_star
 id|regs
 comma
 r_void
+id|__user
 op_star
 id|frame
 comma

@@ -15,6 +15,7 @@ id|tsk
 comma
 r_struct
 id|_fpstate_ia32
+id|__user
 op_star
 id|buf
 comma
@@ -33,6 +34,7 @@ id|tsk
 comma
 r_struct
 id|_fpstate_ia32
+id|__user
 op_star
 id|buf
 comma
