@@ -2687,6 +2687,12 @@ id|idx
 dot
 id|size
 suffix:semicolon
+multiline_comment|/* FIXME: is this always true? */
+r_if
+c_cond
+(paren
+id|count
+)paren
 id|res
 op_assign
 id|viadev-&gt;idx_table
@@ -2699,6 +2705,16 @@ op_plus
 id|size
 op_minus
 id|count
+suffix:semicolon
+r_else
+id|res
+op_assign
+id|viadev-&gt;idx_table
+(braket
+id|idx
+)braket
+dot
+id|offset
 suffix:semicolon
 multiline_comment|/* check the validity of the calculated position */
 r_if
