@@ -1133,11 +1133,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|sysctl_overcommit_memory
-suffix:semicolon
-multiline_comment|/* FIXME!! */
 multiline_comment|/*&n; * Expand (or shrink) an existing mapping, potentially moving it at the&n; * same time (controlled by the MREMAP_MAYMOVE flag and available VM space)&n; *&n; * MREMAP_FIXED option added 5-Dec-1999 by Benjamin LaHaise&n; * This option implies MREMAP_MAYMOVE.&n; */
 DECL|function|do_mremap
 r_int
@@ -1511,18 +1506,6 @@ id|rlim_cur
 )paren
 r_goto
 id|out
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sysctl_overcommit_memory
-OG
-l_int|1
-)paren
-id|flags
-op_and_assign
-op_complement
-id|MAP_NORESERVE
 suffix:semicolon
 r_if
 c_cond
