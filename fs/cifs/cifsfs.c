@@ -840,7 +840,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|cifs_sb-&gt;tcon-&gt;ses
+)paren
+op_logical_and
+(paren
 id|cifs_sb-&gt;tcon-&gt;ses-&gt;userName
+)paren
 )paren
 id|seq_printf
 c_func

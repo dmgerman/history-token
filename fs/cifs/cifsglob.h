@@ -373,7 +373,12 @@ DECL|member|Suid
 r_int
 id|Suid
 suffix:semicolon
-multiline_comment|/* needed for user level security */
+multiline_comment|/* remote smb uid  */
+DECL|member|linux_uid
+id|uid_t
+id|linux_uid
+suffix:semicolon
+multiline_comment|/* local Linux uid */
 DECL|member|capabilities
 r_int
 id|capabilities

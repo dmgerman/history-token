@@ -73,6 +73,28 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ses-&gt;server
+op_eq
+l_int|NULL
+)paren
+(brace
+id|cERROR
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Null TCP session in AllocMidQEntry&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|temp
 op_assign
 (paren
@@ -187,18 +209,6 @@ id|CifsGood
 )paren
 comma
 id|timeout
-)paren
-suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;timeout (after reconnection wait) %d&quot;
-comma
-id|timeout
-)paren
 )paren
 suffix:semicolon
 )brace
