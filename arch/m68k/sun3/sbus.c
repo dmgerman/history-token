@@ -10,7 +10,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|function|sbus_init
-r_void
+r_int
 id|__init
 id|sbus_init
 c_func
@@ -22,6 +22,9 @@ id|rs_init
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sparc_alloc_io
@@ -58,4 +61,11 @@ op_star
 id|address
 suffix:semicolon
 )brace
+DECL|variable|sbus_init
+id|subsys_initcall
+c_func
+(paren
+id|sbus_init
+)paren
+suffix:semicolon
 eof
