@@ -2573,10 +2573,10 @@ comma
 id|RELOC
 c_func
 (paren
-l_string|&quot;on&quot;
+l_string|&quot;force&quot;
 )paren
 comma
-l_int|2
+l_int|5
 )paren
 )paren
 id|RELOC
