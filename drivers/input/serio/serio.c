@@ -216,6 +216,10 @@ id|serio-&gt;event
 op_assign
 l_int|0
 suffix:semicolon
+id|serio
+op_assign
+id|serio-&gt;next
+suffix:semicolon
 )brace
 )brace
 DECL|function|serio_thread
@@ -267,12 +271,11 @@ c_func
 id|PF_IOTHREAD
 )paren
 suffix:semicolon
-id|wait_event_interruptible
+id|interruptible_sleep_on
 c_func
 (paren
+op_amp
 id|serio_wait
-comma
-l_int|1
 )paren
 suffix:semicolon
 )brace
