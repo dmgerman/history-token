@@ -2298,7 +2298,11 @@ id|length
 comma
 l_string|&quot; module:%s&quot;
 comma
-id|serial-&gt;type-&gt;owner-&gt;name
+id|module_name
+c_func
+(paren
+id|serial-&gt;type-&gt;owner
+)paren
 )paren
 suffix:semicolon
 id|length
