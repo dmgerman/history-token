@@ -861,6 +861,7 @@ suffix:colon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|hwif
 op_member_access_from_pointer
 id|ide_dma_write
@@ -870,7 +871,7 @@ id|drive
 )paren
 )paren
 r_return
-id|ide_stopped
+id|ide_started
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -889,6 +890,7 @@ suffix:colon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|hwif
 op_member_access_from_pointer
 id|ide_dma_read
@@ -898,7 +900,7 @@ id|drive
 )paren
 )paren
 r_return
-id|ide_stopped
+id|ide_started
 suffix:semicolon
 r_break
 suffix:semicolon

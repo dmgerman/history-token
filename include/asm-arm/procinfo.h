@@ -10,6 +10,9 @@ r_struct
 id|cpu_user_fns
 suffix:semicolon
 r_struct
+id|cpu_cache_fns
+suffix:semicolon
+r_struct
 id|processor
 suffix:semicolon
 multiline_comment|/*&n; * Note!  struct processor is always defined if we&squot;re&n; * using MULTI_CPU, otherwise this entry is unused,&n; * but still exists.&n; *&n; * NOTE! The following structure is defined by assembly&n; * language, NOT C code.  For more information, check:&n; *  arch/arm/mm/proc-*.S and arch/arm/kernel/head-armv.S&n; */
@@ -80,6 +83,12 @@ id|cpu_user_fns
 op_star
 id|user
 suffix:semicolon
+DECL|member|cache
+r_struct
+id|cpu_cache_fns
+op_star
+id|cache
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -89,7 +98,7 @@ id|elf_hwcap
 suffix:semicolon
 macro_line|#endif&t;/* __ASSEMBLY__ */
 DECL|macro|PROC_INFO_SZ
-mdefine_line|#define PROC_INFO_SZ&t;44
+mdefine_line|#define PROC_INFO_SZ&t;48
 DECL|macro|HWCAP_SWP
 mdefine_line|#define HWCAP_SWP&t;1
 DECL|macro|HWCAP_HALF
