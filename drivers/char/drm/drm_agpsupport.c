@@ -38,7 +38,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|DRM_AGP_KERN
 op_star
@@ -174,7 +174,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 r_if
 c_cond
@@ -256,7 +256,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 r_if
 c_cond
@@ -338,7 +338,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_agp_mode_t
 id|mode
@@ -441,7 +441,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_agp_buffer_t
 id|request
@@ -795,7 +795,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_agp_binding_t
 id|request
@@ -934,7 +934,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_agp_binding_t
 id|request
@@ -1106,7 +1106,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_agp_buffer_t
 id|request
