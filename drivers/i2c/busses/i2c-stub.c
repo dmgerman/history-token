@@ -7,6 +7,11 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
+DECL|variable|stub_pointer
+r_static
+id|u8
+id|stub_pointer
+suffix:semicolon
 DECL|variable|stub_bytes
 r_static
 id|u8
@@ -87,6 +92,67 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|I2C_SMBUS_BYTE
+suffix:colon
+r_if
+c_cond
+(paren
+id|read_write
+op_eq
+id|I2C_SMBUS_WRITE
+)paren
+(brace
+id|stub_pointer
+op_assign
+id|command
+suffix:semicolon
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;smbus byte - addr 0x%02x, &quot;
+l_string|&quot;wrote 0x%02x.&bslash;n&quot;
+comma
+id|addr
+comma
+id|command
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|data-&gt;byte
+op_assign
+id|stub_bytes
+(braket
+id|stub_pointer
+op_increment
+)braket
+suffix:semicolon
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;smbus byte - addr 0x%02x, &quot;
+l_string|&quot;read  0x%02x.&bslash;n&quot;
+comma
+id|addr
+comma
+id|data-&gt;byte
+)paren
+suffix:semicolon
+)brace
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|I2C_SMBUS_BYTE_DATA
 suffix:colon
 r_if
@@ -147,6 +213,12 @@ id|command
 )paren
 suffix:semicolon
 )brace
+id|stub_pointer
+op_assign
+id|command
+op_plus
+l_int|1
+suffix:semicolon
 id|ret
 op_assign
 l_int|0
@@ -258,6 +330,8 @@ id|adapter
 (brace
 r_return
 id|I2C_FUNC_SMBUS_QUICK
+op_or
+id|I2C_FUNC_SMBUS_BYTE
 op_or
 id|I2C_FUNC_SMBUS_BYTE_DATA
 op_or
