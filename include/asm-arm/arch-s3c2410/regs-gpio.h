@@ -1,4 +1,4 @@
-multiline_comment|/* linux/include/asm/hardware/s3c2410/&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;           http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 GPIO register definitions&n; *&n; *  Changelog:&n; *    19-06-2003     BJD     Created file&n; *    23-06-2003     BJD     Updated GSTATUS registers&n; *    12-03-2004     BJD     Updated include protection&n; *    20-07-2004     BJD     Added GPIO pin numbers, added Port A definitions&n; *    04-10-2004     BJD     Fixed number of bugs, added EXT IRQ filter defs&n;*/
+multiline_comment|/* linux/include/asm/hardware/s3c2410/regs-gpio.h&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;           http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 GPIO register definitions&n; *&n; *  Changelog:&n; *    19-06-2003     BJD     Created file&n; *    23-06-2003     BJD     Updated GSTATUS registers&n; *    12-03-2004     BJD     Updated include protection&n; *    20-07-2004     BJD     Added GPIO pin numbers, added Port A definitions&n; *    04-10-2004     BJD     Fixed number of bugs, added EXT IRQ filter defs&n; *    17-10-2004     BJD     Added GSTATUS1 register definitions&n;*/
 macro_line|#ifndef __ASM_ARCH_REGS_GPIO_H
 DECL|macro|__ASM_ARCH_REGS_GPIO_H
 mdefine_line|#define __ASM_ARCH_REGS_GPIO_H &quot;$Id: gpio.h,v 1.5 2003/05/19 12:51:08 ben Exp $&quot;
@@ -1128,6 +1128,12 @@ DECL|macro|S3C2410_GSTATUS0_RnB
 mdefine_line|#define S3C2410_GSTATUS0_RnB&t;   (1&lt;&lt;1)
 DECL|macro|S3C2410_GSTATUS0_nBATTFLT
 mdefine_line|#define S3C2410_GSTATUS0_nBATTFLT  (1&lt;&lt;0)
+DECL|macro|S3C2410_GSTATUS1_IDMASK
+mdefine_line|#define S3C2410_GSTATUS1_IDMASK&t;   (0xffff0000)
+DECL|macro|S3C2410_GSTATUS1_2410
+mdefine_line|#define S3C2410_GSTATUS1_2410&t;   (0x32410000)
+DECL|macro|S3C2410_GSTATUS1_2440
+mdefine_line|#define S3C2410_GSTATUS1_2440&t;   (0x32440000)
 DECL|macro|S3C2410_GSTATUS2_WTRESET
 mdefine_line|#define S3C2410_GSTATUS2_WTRESET   (1&lt;&lt;2)
 DECL|macro|S3C2410_GSTATUs2_OFFRESET

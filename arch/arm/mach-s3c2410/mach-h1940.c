@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/mach-types.h&gt;
 singleline_comment|//#include &lt;asm/debug-ll.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &quot;s3c2410.h&quot;
+macro_line|#include &quot;clock.h&quot;
 macro_line|#include &quot;devs.h&quot;
 macro_line|#include &quot;cpu.h&quot;
 DECL|variable|__initdata
@@ -65,7 +66,7 @@ dot
 id|clock
 op_assign
 op_amp
-id|s3c2410_pclk
+id|s3c24xx_pclk
 comma
 dot
 id|ucon
@@ -103,7 +104,7 @@ dot
 id|clock
 op_assign
 op_amp
-id|s3c2410_pclk
+id|s3c24xx_pclk
 comma
 dot
 id|ucon
@@ -142,7 +143,7 @@ dot
 id|clock
 op_assign
 op_amp
-id|s3c2410_pclk
+id|s3c24xx_pclk
 comma
 dot
 id|ucon
