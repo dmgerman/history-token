@@ -26,6 +26,40 @@ DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;&t;(~(PAGE_SIZE - 1))
 DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr) + PAGE_SIZE - 1) &amp; PAGE_MASK)
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+macro_line|# if defined(CONFIG_HUGETLB_PAGE_SIZE_4GB)
+DECL|macro|HPAGE_SHIFT
+macro_line|#  define HPAGE_SHIFT&t;32
+macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_256MB)
+DECL|macro|HPAGE_SHIFT
+macro_line|#  define HPAGE_SHIFT&t;28
+macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_64MB)
+DECL|macro|HPAGE_SHIFT
+macro_line|#  define HPAGE_SHIFT&t;26
+macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_16MB)
+DECL|macro|HPAGE_SHIFT
+macro_line|#  define HPAGE_SHIFT&t;24
+macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_4MB)
+DECL|macro|HPAGE_SHIFT
+macro_line|#  define HPAGE_SHIFT&t;22
+macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_1MB)
+DECL|macro|HPAGE_SHIFT
+macro_line|#  define HPAGE_SHIFT&t;20
+macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_256KB)
+DECL|macro|HPAGE_SHIFT
+macro_line|#  define HPAGE_SHIFT&t;18
+macro_line|# else
+macro_line|#  error Unsupported IA-64 HugeTLB Page Size!
+macro_line|# endif
+DECL|macro|REGION_HPAGE
+macro_line|# define REGION_HPAGE&t;(4UL)&t;/* note: this is hardcoded in mmu_context.h:reload_context()!*/
+DECL|macro|REGION_SHIFT
+macro_line|# define REGION_SHIFT&t;61
+DECL|macro|HPAGE_SIZE
+macro_line|# define HPAGE_SIZE&t;(__IA64_UL_CONST(1) &lt;&lt; HPAGE_SHIFT)
+DECL|macro|HPAGE_MASK
+macro_line|# define HPAGE_MASK&t;(~(HPAGE_SIZE - 1))
+macro_line|#endif /* CONFIG_HUGETLB_PAGE */
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|__pa
 macro_line|# define __pa(x)&t;&t;((x) - PAGE_OFFSET)
@@ -128,6 +162,12 @@ DECL|macro|REGION_SIZE
 mdefine_line|#define REGION_SIZE&t;&t;REGION_NUMBER(1)
 DECL|macro|REGION_KERNEL
 mdefine_line|#define REGION_KERNEL&t;&t;7
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|macro|htlbpage_to_page
+macro_line|# define htlbpage_to_page(x)&t;((REGION_NUMBER(x) &lt;&lt; 61)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t; | (REGION_OFFSET(x) &gt;&gt; (HPAGE_SHIFT-PAGE_SHIFT)))
+DECL|macro|HUGETLB_PAGE_ORDER
+macro_line|# define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
+macro_line|#endif
 macro_line|#if (__GNUC__ &gt; 3) || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt;= 1)
 DECL|macro|ia64_abort
 macro_line|# define ia64_abort()&t;__builtin_trap()

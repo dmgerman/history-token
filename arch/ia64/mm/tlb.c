@@ -110,7 +110,7 @@ id|tasklist_lock
 suffix:semicolon
 id|repeat
 suffix:colon
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|tsk

@@ -16,10 +16,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;&t;&t;/* PAGE_OFFSET */
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME &quot;SBA&quot;
-macro_line|#ifndef CONFIG_IA64_HP_PROTO
 DECL|macro|ALLOW_IOV_BYPASS
 mdefine_line|#define ALLOW_IOV_BYPASS
-macro_line|#endif
 DECL|macro|ENABLE_MARK_CLEAN
 mdefine_line|#define ENABLE_MARK_CLEAN
 multiline_comment|/*&n;** The number of debug flags is a clue - this code is fragile.&n;*/
@@ -4010,22 +4008,6 @@ l_int|0xFFFFFFFFUL
 op_plus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_HP_PROTO
-r_if
-c_cond
-(paren
-op_logical_neg
-id|iova_space_size
-)paren
-id|iova_space_size
-op_assign
-id|GB
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;** iov_order is always based on a 1GB IOVA space since we want to&n;&t;** turn on the other half for AGP GART.&n;&t;*/
 id|iov_order
 op_assign
@@ -5768,22 +5750,13 @@ l_int|0x20
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s WARNING rev 2.0 or greater will be required for IO MMU support in the future&bslash;n&quot;
+l_string|&quot;%s: SBA rev less than 2.0 not supported&quot;
 comma
 id|DRIVER_NAME
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_HP_PROTO
-id|panic
-c_func
-(paren
-l_string|&quot;%s: CONFIG_IA64_HP_PROTO MUST be enabled to support SBA rev less than 2.0&quot;
-comma
-id|DRIVER_NAME
-)paren
+r_return
 suffix:semicolon
-macro_line|#endif
 )brace
 id|sba_dev
 op_assign

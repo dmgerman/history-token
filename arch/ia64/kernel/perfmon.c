@@ -5951,6 +5951,9 @@ id|val
 r_struct
 id|task_struct
 op_star
+id|g
+comma
+op_star
 id|p
 suffix:semicolon
 r_struct
@@ -5977,9 +5980,11 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|for_each_task
+id|do_each_thread
 c_func
 (paren
+id|g
+comma
 id|p
 )paren
 (brace
@@ -6016,6 +6021,14 @@ op_assign
 id|val
 suffix:semicolon
 )brace
+id|while_each_thread
+c_func
+(paren
+id|g
+comma
+id|p
+)paren
+suffix:semicolon
 id|read_unlock
 c_func
 (paren
@@ -13307,6 +13320,9 @@ id|task
 r_struct
 id|task_struct
 op_star
+id|g
+comma
+op_star
 id|p
 suffix:semicolon
 id|pfm_context_t
@@ -13332,9 +13348,11 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|for_each_task
+id|do_each_thread
 c_func
 (paren
+id|g
+comma
 id|p
 )paren
 (brace
@@ -13397,6 +13415,14 @@ id|p-&gt;pid
 suffix:semicolon
 )brace
 )brace
+id|while_each_thread
+c_func
+(paren
+id|g
+comma
+id|p
+)paren
+suffix:semicolon
 id|read_unlock
 c_func
 (paren
@@ -13429,6 +13455,9 @@ id|task
 r_struct
 id|task_struct
 op_star
+id|g
+comma
+op_star
 id|p
 suffix:semicolon
 id|pfm_context_t
@@ -13454,13 +13483,15 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|for_each_task
+id|do_each_thread
 c_func
 (paren
+id|g
+comma
 id|p
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * It is safe to do the 2-step test here, because thread.ctx&n;&t;&t; * is cleaned up only in release_thread() and at that point&n;&t;&t; * the task has been detached from the tasklist which is an&n;&t;&t; * operation which uses the write_lock() on the tasklist_lock&n;&t;&t; * so it cannot run concurrently to this loop. So we have the&n;&t;&t; * guarantee that if we find p and it has a perfmon ctx then&n;&t;&t; * it is going to stay like this for the entire execution of this&n;&t;&t; * loop.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * It is safe to do the 2-step test here, because thread.ctx is cleaned up&n;&t;&t; * only in release_thread() and at that point the task has been detached&n;&t;&t; * from the tasklist which is an operation which uses the write_lock() on&n;&t;&t; * the tasklist_lock so it cannot run concurrently to this loop. So we&n;&t;&t; * have the guarantee that if we find p and it has a perfmon ctx then it&n;&t;&t; * is going to stay like this for the entire execution of this loop.&n;&t;&t; */
 id|ctx
 op_assign
 id|p-&gt;thread.pfm_context
@@ -13488,7 +13519,7 @@ id|p-&gt;pid
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * the spinlock is required to take care of a race condition&n;&t;&t;&t; * with the send_sig_info() call. We must make sure that &n;&t;&t;&t; * either the send_sig_info() completes using a valid task,&n;&t;&t;&t; * or the notify_task is cleared before the send_sig_info()&n;&t;&t;&t; * can pick up a stale value. Note that by the time this&n;&t;&t;&t; * function is executed the &squot;task&squot; is already detached from the&n;&t;&t;&t; * tasklist. The problem is that the notifiers have a direct&n;&t;&t;&t; * pointer to it. It is okay to send a signal to a task in this&n;&t;&t;&t; * stage, it simply will have no effect. But it is better than sending&n;&t;&t;&t; * to a completely destroyed task or worse to a new task using the same&n;&t;&t;&t; * task_struct address.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * the spinlock is required to take care of a race condition with&n;&t;&t;&t; * the send_sig_info() call. We must make sure that either the&n;&t;&t;&t; * send_sig_info() completes using a valid task, or the&n;&t;&t;&t; * notify_task is cleared before the send_sig_info() can pick up a&n;&t;&t;&t; * stale value. Note that by the time this function is executed&n;&t;&t;&t; * the &squot;task&squot; is already detached from the tasklist. The problem&n;&t;&t;&t; * is that the notifiers have a direct pointer to it. It is okay&n;&t;&t;&t; * to send a signal to a task in this stage, it simply will have&n;&t;&t;&t; * no effect. But it is better than sending to a completely&n;&t;&t;&t; * destroyed task or worse to a new task using the same&n;&t;&t;&t; * task_struct address.&n;&t;&t;&t; */
 id|LOCK_CTX
 c_func
 (paren
@@ -13519,6 +13550,14 @@ id|p-&gt;pid
 suffix:semicolon
 )brace
 )brace
+id|while_each_thread
+c_func
+(paren
+id|g
+comma
+id|p
+)paren
+suffix:semicolon
 id|read_unlock
 c_func
 (paren

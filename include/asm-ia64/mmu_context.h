@@ -339,6 +339,27 @@ l_int|4
 op_star
 id|rid_incr
 suffix:semicolon
+macro_line|#ifdef  CONFIG_HUGETLB_PAGE
+id|rr4
+op_assign
+(paren
+id|rr4
+op_amp
+(paren
+op_complement
+(paren
+l_int|0xfcUL
+)paren
+)paren
+)paren
+op_or
+(paren
+id|HPAGE_SHIFT
+op_lshift
+l_int|2
+)paren
+suffix:semicolon
+macro_line|#endif
 id|ia64_set_rr
 c_func
 (paren
