@@ -38,7 +38,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* --- Convenience defines for the parallel port:&t;&t;&t;*/
 DECL|macro|BASE
-mdefine_line|#define BASE&t;(unsigned int)(data)
+mdefine_line|#define BASE&t;(unsigned long)(data)
 DECL|macro|DATA
 mdefine_line|#define DATA&t;BASE&t;&t;&t;/* Centronics data port&t;&t;*/
 DECL|macro|STAT
