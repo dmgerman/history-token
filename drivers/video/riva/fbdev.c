@@ -10733,8 +10733,7 @@ id|flatpanel
 comma
 r_int
 comma
-op_minus
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -10752,8 +10751,7 @@ id|forceCRTC
 comma
 r_int
 comma
-op_minus
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
