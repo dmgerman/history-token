@@ -609,9 +609,88 @@ DECL|macro|CCISS_REGNEWDISK
 mdefine_line|#define CCISS_REGNEWDISK  _IOW(CCISS_IOC_MAGIC, 13, int)
 DECL|macro|CCISS_REGNEWD
 mdefine_line|#define CCISS_REGNEWD&t;   _IO(CCISS_IOC_MAGIC, 14)
+DECL|macro|CCISS_RESCANDISK
+mdefine_line|#define CCISS_RESCANDISK   _IO(CCISS_IOC_MAGIC, 16)
 DECL|macro|CCISS_GETLUNINFO
 mdefine_line|#define CCISS_GETLUNINFO   _IOR(CCISS_IOC_MAGIC, 17, LogvolInfo_struct)
 DECL|macro|CCISS_BIG_PASSTHRU
 mdefine_line|#define CCISS_BIG_PASSTHRU _IOWR(CCISS_IOC_MAGIC, 18, BIG_IOCTL_Command_struct)
+macro_line|#ifdef __KERNEL__
+macro_line|#ifdef CONFIG_COMPAT
+multiline_comment|/* 32 bit compatible ioctl structs */
+DECL|struct|_IOCTL32_Command_struct
+r_typedef
+r_struct
+id|_IOCTL32_Command_struct
+(brace
+DECL|member|LUN_info
+id|LUNAddr_struct
+id|LUN_info
+suffix:semicolon
+DECL|member|Request
+id|RequestBlock_struct
+id|Request
+suffix:semicolon
+DECL|member|error_info
+id|ErrorInfo_struct
+id|error_info
+suffix:semicolon
+DECL|member|buf_size
+id|WORD
+id|buf_size
+suffix:semicolon
+multiline_comment|/* size in bytes of the buf */
+DECL|member|buf
+id|__u32
+id|buf
+suffix:semicolon
+multiline_comment|/* 32 bit pointer to data buffer */
+DECL|typedef|IOCTL32_Command_struct
+)brace
+id|IOCTL32_Command_struct
+suffix:semicolon
+DECL|struct|_BIG_IOCTL32_Command_struct
+r_typedef
+r_struct
+id|_BIG_IOCTL32_Command_struct
+(brace
+DECL|member|LUN_info
+id|LUNAddr_struct
+id|LUN_info
+suffix:semicolon
+DECL|member|Request
+id|RequestBlock_struct
+id|Request
+suffix:semicolon
+DECL|member|error_info
+id|ErrorInfo_struct
+id|error_info
+suffix:semicolon
+DECL|member|malloc_size
+id|DWORD
+id|malloc_size
+suffix:semicolon
+multiline_comment|/* &lt; MAX_KMALLOC_SIZE in cciss.c */
+DECL|member|buf_size
+id|DWORD
+id|buf_size
+suffix:semicolon
+multiline_comment|/* size in bytes of the buf */
+multiline_comment|/* &lt; malloc_size * MAXSGENTRIES */
+DECL|member|buf
+id|__u32
+id|buf
+suffix:semicolon
+multiline_comment|/* 32 bit pointer to data buffer */
+DECL|typedef|BIG_IOCTL32_Command_struct
+)brace
+id|BIG_IOCTL32_Command_struct
+suffix:semicolon
+DECL|macro|CCISS_PASSTHRU32
+mdefine_line|#define CCISS_PASSTHRU32   _IOWR(CCISS_IOC_MAGIC, 11, IOCTL32_Command_struct)
+DECL|macro|CCISS_BIG_PASSTHRU32
+mdefine_line|#define CCISS_BIG_PASSTHRU32 _IOWR(CCISS_IOC_MAGIC, 18, BIG_IOCTL32_Command_struct)
+macro_line|#endif /* CONFIG_COMPAT */
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif  
 eof
