@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/pmc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
+macro_line|#include &lt;asm/rtas.h&gt;
 DECL|variable|proc_pmc_control_mode
 r_static
 r_int
@@ -643,6 +644,17 @@ c_func
 (paren
 op_amp
 id|proc_ppc64_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Placeholder for rtas interfaces. */
+id|rtas_proc_dir
+op_assign
+id|proc_mkdir
+c_func
+(paren
+l_string|&quot;rtas&quot;
+comma
+id|proc_ppc64_root
 )paren
 suffix:semicolon
 id|proc_ppc64_pmc_root
@@ -1697,6 +1709,10 @@ op_assign
 r_void
 op_star
 )paren
+l_int|0
+suffix:semicolon
+id|ent-&gt;size
+op_assign
 l_int|0
 suffix:semicolon
 id|ent-&gt;read_proc
