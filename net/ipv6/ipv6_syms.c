@@ -136,4 +136,11 @@ c_func
 id|ipv6_get_saddr
 )paren
 suffix:semicolon
+DECL|variable|ipv6_chk_addr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ipv6_chk_addr
+)paren
+suffix:semicolon
 eof

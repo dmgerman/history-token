@@ -187,7 +187,7 @@ id|sctp_addr
 id|dest
 suffix:semicolon
 r_struct
-id|sctp_func
+id|sctp_af
 op_star
 id|af
 suffix:semicolon
