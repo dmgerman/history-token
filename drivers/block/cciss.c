@@ -24,20 +24,27 @@ macro_line|#include &lt;linux/completion.h&gt;
 DECL|macro|CCISS_DRIVER_VERSION
 mdefine_line|#define CCISS_DRIVER_VERSION(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME &quot;Compaq CISS Driver (v 2.5.0)&quot;
+mdefine_line|#define DRIVER_NAME &quot;Compaq CISS Driver (v 2.6.0)&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,5,0)
+mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,6,0)
 multiline_comment|/* Embedded module documentation macros - see modules.h */
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Charles M. White III - Compaq Computer Corporation&quot;
+l_string|&quot;Hewlett-Packard Company&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Driver for Compaq Smart Array Controller 5xxx v. 2.5.0&quot;
+l_string|&quot;Driver for HP Controller SA5xxx SA6xxx version 2.6.0&quot;
+)paren
+suffix:semicolon
+id|MODULE_SUPPORTED_DEVICE
+c_func
+(paren
+l_string|&quot;HP SA5i SA5i+ SA532 SA5300 SA5312 SA641 SA642 SA6400&quot;
+l_string|&quot; SA6i&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -188,6 +195,22 @@ l_int|0
 )brace
 comma
 (brace
+id|PCI_VENDOR_ID_COMPAQ
+comma
+id|PCI_DEVICE_ID_COMPAQ_CISSC
+comma
+l_int|0x0E11
+comma
+l_int|0x4091
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
 l_int|0
 comma
 )brace
@@ -280,6 +303,15 @@ comma
 l_int|0x409D0E11
 comma
 l_string|&quot;Smart Array 6400 EM&quot;
+comma
+op_amp
+id|SA5_access
+)brace
+comma
+(brace
+l_int|0x40910E11
+comma
+l_string|&quot;Smart Array 6i&quot;
 comma
 op_amp
 id|SA5_access
