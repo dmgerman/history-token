@@ -56,7 +56,7 @@ id|dev
 multiline_comment|/* round up to page size */
 id|n_bytes
 op_assign
-id|round_up_to_page
+id|PAGE_ALIGN
 c_func
 (paren
 id|n_bytes
@@ -65,8 +65,8 @@ suffix:semicolon
 id|prog-&gt;n_pages
 op_assign
 id|n_bytes
-op_div
-id|PAGE_SIZE
+op_rshift
+id|PAGE_SHIFT
 suffix:semicolon
 id|prog-&gt;kvirt
 op_assign
@@ -75,9 +75,7 @@ c_func
 (paren
 id|dev
 comma
-id|prog-&gt;n_pages
-op_star
-id|PAGE_SIZE
+id|n_bytes
 comma
 op_amp
 id|prog-&gt;bus_addr
@@ -139,8 +137,8 @@ c_func
 id|prog-&gt;dev
 comma
 id|prog-&gt;n_pages
-op_star
-id|PAGE_SIZE
+op_lshift
+id|PAGE_SHIFT
 comma
 id|prog-&gt;kvirt
 comma
@@ -224,32 +222,28 @@ id|direction
 r_int
 r_int
 id|i
-comma
-id|n_pages
 suffix:semicolon
 multiline_comment|/* round up to page size */
 id|n_bytes
 op_assign
-id|round_up_to_page
+id|PAGE_ALIGN
 c_func
 (paren
 id|n_bytes
 )paren
 suffix:semicolon
-id|n_pages
+id|dma-&gt;n_pages
 op_assign
 id|n_bytes
-op_div
-id|PAGE_SIZE
+op_rshift
+id|PAGE_SHIFT
 suffix:semicolon
 id|dma-&gt;kvirt
 op_assign
 id|vmalloc_32
 c_func
 (paren
-id|n_pages
-op_star
-id|PAGE_SIZE
+id|n_bytes
 )paren
 suffix:semicolon
 r_if
@@ -270,10 +264,6 @@ r_goto
 id|err
 suffix:semicolon
 )brace
-id|dma-&gt;n_pages
-op_assign
-id|n_pages
-suffix:semicolon
 multiline_comment|/* Clear the ram out, no junk to the user */
 id|memset
 c_func
@@ -282,26 +272,22 @@ id|dma-&gt;kvirt
 comma
 l_int|0
 comma
-id|n_pages
-op_star
-id|PAGE_SIZE
+id|n_bytes
 )paren
 suffix:semicolon
 multiline_comment|/* allocate scatter/gather list */
 id|dma-&gt;sglist
 op_assign
-id|kmalloc
+id|vmalloc
 c_func
 (paren
 id|dma-&gt;n_pages
 op_star
 r_sizeof
 (paren
-r_struct
-id|scatterlist
+op_star
+id|dma-&gt;sglist
 )paren
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -315,7 +301,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;dma_region_alloc: kmalloc(sglist) failed&bslash;n&quot;
+l_string|&quot;dma_region_alloc: vmalloc(sglist) failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -334,8 +320,8 @@ id|dma-&gt;n_pages
 op_star
 r_sizeof
 (paren
-r_struct
-id|scatterlist
+op_star
+id|dma-&gt;sglist
 )paren
 )paren
 suffix:semicolon
@@ -365,9 +351,11 @@ r_int
 )paren
 id|dma-&gt;kvirt
 op_plus
+(paren
 id|i
-op_star
-id|PAGE_SIZE
+op_lshift
+id|PAGE_SHIFT
+)paren
 suffix:semicolon
 id|dma-&gt;sglist
 (braket
@@ -404,11 +392,7 @@ c_func
 (paren
 id|dev
 comma
-op_amp
 id|dma-&gt;sglist
-(braket
-l_int|0
-)braket
 comma
 id|dma-&gt;n_pages
 comma
@@ -502,7 +486,7 @@ c_cond
 id|dma-&gt;sglist
 )paren
 (brace
-id|kfree
+id|vfree
 c_func
 (paren
 id|dma-&gt;sglist
@@ -851,9 +835,9 @@ r_int
 id|area-&gt;vm_start
 op_plus
 (paren
-id|PAGE_SIZE
-op_star
 id|dma-&gt;n_pages
+op_lshift
+id|PAGE_SHIFT
 )paren
 )paren
 )paren
@@ -984,9 +968,9 @@ c_cond
 id|size
 OG
 (paren
-id|PAGE_SIZE
-op_star
 id|dma-&gt;n_pages
+op_lshift
+id|PAGE_SHIFT
 )paren
 )paren
 r_return
