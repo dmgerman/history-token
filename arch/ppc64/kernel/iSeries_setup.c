@@ -1650,8 +1650,7 @@ op_star
 l_int|256
 )paren
 suffix:semicolon
-multiline_comment|/* Fill in the htab_data structure */
-multiline_comment|/* Fill in size of hashed page table */
+multiline_comment|/* Fill in the hashed page table hash mask */
 id|num_ptegs
 op_assign
 id|hptSizePages
@@ -1669,18 +1668,14 @@ id|HPTES_PER_GROUP
 )paren
 )paren
 suffix:semicolon
-id|htab_data.htab_num_ptegs
-op_assign
-id|num_ptegs
-suffix:semicolon
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 op_assign
 id|num_ptegs
 op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * The actual hashed page table is in the hypervisor,&n;&t; * we have no direct access&n;&t; */
-id|htab_data.htab
+id|htab_address
 op_assign
 l_int|NULL
 suffix:semicolon

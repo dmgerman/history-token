@@ -163,7 +163,7 @@ id|HPTE
 op_star
 id|hptep
 op_assign
-id|htab_data.htab
+id|htab_address
 op_plus
 id|hpte_group
 suffix:semicolon
@@ -384,7 +384,7 @@ op_increment
 (brace
 id|hptep
 op_assign
-id|htab_data.htab
+id|htab_address
 op_plus
 id|hpte_group
 op_plus
@@ -586,7 +586,7 @@ op_assign
 (paren
 id|hash
 op_amp
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 )paren
 op_star
 id|HPTES_PER_GROUP
@@ -608,7 +608,7 @@ op_increment
 (brace
 id|hptep
 op_assign
-id|htab_data.htab
+id|htab_address
 op_plus
 id|slot
 suffix:semicolon
@@ -697,7 +697,7 @@ id|HPTE
 op_star
 id|hptep
 op_assign
-id|htab_data.htab
+id|htab_address
 op_plus
 id|slot
 suffix:semicolon
@@ -949,7 +949,7 @@ l_string|&quot;could not find page to bolt&bslash;n&quot;
 suffix:semicolon
 id|hptep
 op_assign
-id|htab_data.htab
+id|htab_address
 op_plus
 id|slot
 suffix:semicolon
@@ -1024,7 +1024,7 @@ id|HPTE
 op_star
 id|hptep
 op_assign
-id|htab_data.htab
+id|htab_address
 op_plus
 id|slot
 suffix:semicolon
@@ -1395,7 +1395,7 @@ op_assign
 (paren
 id|hash
 op_amp
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 )paren
 op_star
 id|HPTES_PER_GROUP
@@ -1419,7 +1419,7 @@ l_int|12
 suffix:semicolon
 id|hptep
 op_assign
-id|htab_data.htab
+id|htab_address
 op_plus
 id|slot
 suffix:semicolon

@@ -46,21 +46,15 @@ r_int
 id|dart_tablebase
 suffix:semicolon
 macro_line|#endif /* CONFIG_U3_DART */
-DECL|variable|htab_data
-id|HTAB
-id|htab_data
-op_assign
-(brace
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
+DECL|variable|htab_address
+id|HPTE
+op_star
+id|htab_address
+suffix:semicolon
+DECL|variable|htab_hash_mask
+r_int
+r_int
+id|htab_hash_mask
 suffix:semicolon
 r_extern
 r_int
@@ -239,7 +233,7 @@ op_assign
 (paren
 id|hash
 op_amp
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 )paren
 op_star
 id|HPTES_PER_GROUP
@@ -399,11 +393,7 @@ op_lshift
 l_int|7
 suffix:semicolon
 )brace
-id|htab_data.htab_num_ptegs
-op_assign
-id|pteg_count
-suffix:semicolon
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 op_assign
 id|pteg_count
 op_minus
@@ -418,7 +408,7 @@ id|PLATFORM_LPAR
 )paren
 (brace
 multiline_comment|/* Using a hypervisor which owns the htab */
-id|htab_data.htab
+id|htab_address
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -471,7 +461,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|htab_data.htab
+id|htab_address
 op_assign
 id|abs_to_virt
 c_func
@@ -1250,7 +1240,7 @@ op_assign
 (paren
 id|hash
 op_amp
-id|htab_data.htab_hash_mask
+id|htab_hash_mask
 )paren
 op_star
 id|HPTES_PER_GROUP

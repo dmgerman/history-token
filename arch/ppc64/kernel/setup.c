@@ -44,6 +44,7 @@ macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt...) udbg_printf(fmt)
@@ -99,10 +100,6 @@ mdefine_line|#define EARLY_DEBUG_INIT() udbg_init_pmac_realmode()
 mdefine_line|#define EARLY_DEBUG_INIT()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do { ppc_md.udbg_putc = call_rtas_display_status_delay; } while(0)
 macro_line|#endif
 multiline_comment|/* extern void *stab; */
-r_extern
-id|HTAB
-id|htab_data
-suffix:semicolon
 r_extern
 r_int
 r_int
@@ -1999,17 +1996,17 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;htab_data.htab                = 0x%p&bslash;n&quot;
+l_string|&quot;htab_address                  = 0x%p&bslash;n&quot;
 comma
-id|htab_data.htab
+id|htab_address
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;htab_data.num_ptegs           = 0x%lx&bslash;n&quot;
+l_string|&quot;htab_hash_mask                = 0x%lx&bslash;n&quot;
 comma
-id|htab_data.htab_num_ptegs
+id|htab_hash_mask
 )paren
 suffix:semicolon
 id|printk
