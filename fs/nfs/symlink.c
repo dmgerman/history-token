@@ -29,6 +29,7 @@ DECL|member|body
 r_char
 id|body
 (braket
+l_int|0
 )braket
 suffix:semicolon
 )brace
