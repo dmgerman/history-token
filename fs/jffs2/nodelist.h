@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.120 2004/10/07 15:11:54 havasi Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.121 2004/11/14 17:07:07 dedekind Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_NODELIST_H__
 DECL|macro|__JFFS2_NODELIST_H__
 mdefine_line|#define __JFFS2_NODELIST_H__
@@ -909,9 +909,6 @@ r_struct
 id|jffs2_sb_info
 op_star
 id|c
-comma
-id|ino_t
-id|ino
 comma
 r_struct
 id|jffs2_inode_info
