@@ -180,11 +180,18 @@ r_char
 op_star
 id|name
 suffix:semicolon
-DECL|member|size
+DECL|member|spanned_pages
 r_int
 r_int
-id|size
+id|spanned_pages
 suffix:semicolon
+multiline_comment|/* total size, including holes */
+DECL|member|present_pages
+r_int
+r_int
+id|present_pages
+suffix:semicolon
+multiline_comment|/* amount of memory (excluding holes) */
 DECL|variable|____cacheline_maxaligned_in_smp
 )brace
 id|____cacheline_maxaligned_in_smp

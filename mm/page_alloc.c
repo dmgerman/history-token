@@ -151,7 +151,7 @@ id|page
 op_ge
 id|zone-&gt;zone_start_pfn
 op_plus
-id|zone-&gt;size
+id|zone-&gt;spanned_pages
 )paren
 r_return
 l_int|1
@@ -2361,7 +2361,7 @@ r_int
 r_int
 id|size
 op_assign
-id|zone-&gt;size
+id|zone-&gt;present_pages
 suffix:semicolon
 r_int
 r_int
@@ -3044,7 +3044,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|zone-&gt;size
+id|zone-&gt;present_pages
 )paren
 r_continue
 suffix:semicolon
@@ -3197,7 +3197,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|zone-&gt;size
+id|zone-&gt;present_pages
 )paren
 (brace
 macro_line|#ifndef CONFIG_HIGHMEM
@@ -3228,7 +3228,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|zone-&gt;size
+id|zone-&gt;present_pages
 )paren
 id|zonelist-&gt;zones
 (braket
@@ -3250,7 +3250,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|zone-&gt;size
+id|zone-&gt;present_pages
 )paren
 id|zonelist-&gt;zones
 (braket
@@ -3832,9 +3832,13 @@ comma
 id|realsize
 )paren
 suffix:semicolon
-id|zone-&gt;size
+id|zone-&gt;spanned_pages
 op_assign
 id|size
+suffix:semicolon
+id|zone-&gt;present_pages
+op_assign
+id|realsize
 suffix:semicolon
 id|zone-&gt;name
 op_assign
@@ -4551,7 +4555,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|zone-&gt;size
+id|zone-&gt;present_pages
 )paren
 r_continue
 suffix:semicolon
