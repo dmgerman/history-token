@@ -8402,8 +8402,11 @@ c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 id|KERN_DEBUG
-l_string|&quot;  Tx ring at %8.8x:&bslash;n&quot;
+l_string|&quot;  Tx ring at %9.9Lx:&bslash;n&quot;
 comma
+(paren
+id|u64
+)paren
 id|np-&gt;tx_ring_dma
 )paren
 suffix:semicolon
@@ -8468,8 +8471,11 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;  Rx ring at %8.8x -&gt; %p:&bslash;n&quot;
+l_string|&quot;  Rx ring at %9.9Lx -&gt; %p:&bslash;n&quot;
 comma
+(paren
+id|u64
+)paren
 id|np-&gt;rx_ring_dma
 comma
 id|np-&gt;rx_done_q
