@@ -2734,6 +2734,7 @@ suffix:semicolon
 DECL|function|atm_tc_drop
 r_static
 r_int
+r_int
 id|atm_tc_drop
 c_func
 (paren
@@ -2758,6 +2759,10 @@ r_struct
 id|atm_flow_data
 op_star
 id|flow
+suffix:semicolon
+r_int
+r_int
+id|len
 suffix:semicolon
 id|DPRINTK
 c_func
@@ -2787,6 +2792,9 @@ c_cond
 (paren
 id|flow-&gt;q-&gt;ops-&gt;drop
 op_logical_and
+(paren
+id|len
+op_assign
 id|flow-&gt;q-&gt;ops
 op_member_access_from_pointer
 id|drop
@@ -2795,8 +2803,9 @@ c_func
 id|flow-&gt;q
 )paren
 )paren
+)paren
 r_return
-l_int|1
+id|len
 suffix:semicolon
 r_return
 l_int|0

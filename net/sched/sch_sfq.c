@@ -662,6 +662,7 @@ suffix:semicolon
 DECL|function|sfq_drop
 r_static
 r_int
+r_int
 id|sfq_drop
 c_func
 (paren
@@ -693,6 +694,10 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
+r_int
+r_int
+id|len
+suffix:semicolon
 multiline_comment|/* Queue is full! Find the longest slot and&n;&t;   drop a packet from it */
 r_if
 c_cond
@@ -722,6 +727,10 @@ id|x
 )braket
 dot
 id|prev
+suffix:semicolon
+id|len
+op_assign
+id|skb-&gt;len
 suffix:semicolon
 id|__skb_unlink
 c_func
@@ -756,7 +765,7 @@ id|sch-&gt;stats.drops
 op_increment
 suffix:semicolon
 r_return
-l_int|1
+id|len
 suffix:semicolon
 )brace
 r_if
@@ -804,6 +813,10 @@ id|d
 dot
 id|prev
 suffix:semicolon
+id|len
+op_assign
+id|skb-&gt;len
+suffix:semicolon
 id|__skb_unlink
 c_func
 (paren
@@ -847,7 +860,7 @@ id|sch-&gt;stats.drops
 op_increment
 suffix:semicolon
 r_return
-l_int|1
+id|len
 suffix:semicolon
 )brace
 r_return

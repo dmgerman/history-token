@@ -3153,6 +3153,13 @@ c_func
 id|pfifo_qdisc_ops
 )paren
 suffix:semicolon
+DECL|variable|bfifo_qdisc_ops
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bfifo_qdisc_ops
+)paren
+suffix:semicolon
 DECL|variable|register_qdisc
 id|EXPORT_SYMBOL
 c_func

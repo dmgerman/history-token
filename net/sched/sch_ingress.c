@@ -578,6 +578,7 @@ suffix:semicolon
 DECL|function|ingress_drop
 r_static
 r_int
+r_int
 id|ingress_drop
 c_func
 (paren
