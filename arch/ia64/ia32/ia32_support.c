@@ -665,6 +665,23 @@ c_func
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ia32_shared_page
+(braket
+id|cpu
+)braket
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;failed to allocate ia32_shared_page[%d]&bslash;n&quot;
+comma
+id|cpu
+)paren
+suffix:semicolon
 id|cpu_gdt_table
 (braket
 id|cpu
@@ -715,6 +732,21 @@ id|alloc_page
 c_func
 (paren
 id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ia32_shared_page
+(braket
+l_int|0
+)braket
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;failed to allocate ia32_shared_page[0]&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ia32_boot_gdt
