@@ -560,12 +560,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 r_char

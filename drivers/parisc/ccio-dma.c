@@ -3029,13 +3029,25 @@ op_assign
 id|ccio_unmap_sg
 comma
 dot
-id|dma_sync_single
+id|dma_sync_single_for_cpu
 op_assign
 l_int|NULL
 comma
 multiline_comment|/* NOP for U2/Uturn */
 dot
-id|dma_sync_sg
+id|dma_sync_single_for_device
+op_assign
+l_int|NULL
+comma
+multiline_comment|/* NOP for U2/Uturn */
+dot
+id|dma_sync_sg_for_cpu
+op_assign
+l_int|NULL
+comma
+multiline_comment|/* ditto */
+dot
+id|dma_sync_sg_for_device
 op_assign
 l_int|NULL
 comma

@@ -1844,10 +1844,10 @@ id|sdev
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_int
 r_int
 id|ata_host_intr
+c_func
 (paren
 r_struct
 id|ata_port

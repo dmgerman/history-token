@@ -2896,6 +2896,64 @@ DECL|macro|netif_msg_hw
 mdefine_line|#define netif_msg_hw(p)&t;&t;((p)-&gt;msg_enable &amp; NETIF_MSG_HW)
 DECL|macro|netif_msg_wol
 mdefine_line|#define netif_msg_wol(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_WOL)
+DECL|function|netif_msg_init
+r_static
+r_inline
+id|u32
+id|netif_msg_init
+c_func
+(paren
+r_int
+id|debug_value
+comma
+r_int
+id|default_msg_enable_bits
+)paren
+(brace
+multiline_comment|/* use default */
+r_if
+c_cond
+(paren
+id|debug_value
+OL
+l_int|0
+op_logical_or
+id|debug_value
+op_ge
+(paren
+r_sizeof
+(paren
+id|u32
+)paren
+op_star
+l_int|8
+)paren
+)paren
+r_return
+id|default_msg_enable_bits
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|debug_value
+op_eq
+l_int|0
+)paren
+multiline_comment|/* no output */
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* set low N bits */
+r_return
+(paren
+l_int|1
+op_lshift
+id|debug_value
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* Schedule rx intr now? */
 DECL|function|netif_rx_schedule_prep
 r_static

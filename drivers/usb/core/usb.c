@@ -3797,8 +3797,9 @@ r_return
 id|urb
 suffix:semicolon
 )brace
+multiline_comment|/* XXX DISABLED, no users currently.  If you wish to re-enable this&n; * XXX please determine whether the sync is to transfer ownership of&n; * XXX the buffer from device to cpu or vice verse, and thusly use the&n; * XXX appropriate _for_{cpu,device}() method.  -DaveM&n; */
+macro_line|#if 0
 multiline_comment|/**&n; * usb_buffer_dmasync - synchronize DMA and CPU view of buffer(s)&n; * @urb: urb whose transfer_buffer/setup_packet will be synchronized&n; */
-DECL|function|usb_buffer_dmasync
 r_void
 id|usb_buffer_dmasync
 (paren
@@ -3900,6 +3901,7 @@ id|DMA_TO_DEVICE
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 multiline_comment|/**&n; * usb_buffer_unmap - free DMA mapping(s) for an urb&n; * @urb: urb whose transfer_buffer will be unmapped&n; *&n; * Reverses the effect of usb_buffer_map().&n; */
 DECL|function|usb_buffer_unmap
 r_void
@@ -4098,8 +4100,9 @@ id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* XXX DISABLED, no users currently.  If you wish to re-enable this&n; * XXX please determine whether the sync is to transfer ownership of&n; * XXX the buffer from device to cpu or vice verse, and thusly use the&n; * XXX appropriate _for_{cpu,device}() method.  -DaveM&n; */
+macro_line|#if 0
 multiline_comment|/**&n; * usb_buffer_dmasync_sg - synchronize DMA and CPU view of scatterlist buffer(s)&n; * @dev: device to which the scatterlist will be mapped&n; * @pipe: endpoint defining the mapping direction&n; * @sg: the scatterlist to synchronize&n; * @n_hw_ents: the positive return value from usb_buffer_map_sg&n; *&n; * Use this when you are re-using a scatterlist&squot;s data buffers for&n; * another USB request.&n; */
-DECL|function|usb_buffer_dmasync_sg
 r_void
 id|usb_buffer_dmasync_sg
 (paren
@@ -4175,6 +4178,7 @@ id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/**&n; * usb_buffer_unmap_sg - free DMA mapping(s) for a scatterlist&n; * @dev: device to which the scatterlist will be mapped&n; * @pipe: endpoint defining the mapping direction&n; * @sg: the scatterlist to unmap&n; * @n_hw_ents: the positive return value from usb_buffer_map_sg&n; *&n; * Reverses the effect of usb_buffer_map_sg().&n; */
 DECL|function|usb_buffer_unmap_sg
 r_void
@@ -4783,12 +4787,13 @@ id|EXPORT_SYMBOL
 id|usb_buffer_map
 )paren
 suffix:semicolon
-DECL|variable|usb_buffer_dmasync
+macro_line|#if 0
 id|EXPORT_SYMBOL
 (paren
 id|usb_buffer_dmasync
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|usb_buffer_unmap
 id|EXPORT_SYMBOL
 (paren
@@ -4801,12 +4806,13 @@ id|EXPORT_SYMBOL
 id|usb_buffer_map_sg
 )paren
 suffix:semicolon
-DECL|variable|usb_buffer_dmasync_sg
+macro_line|#if 0
 id|EXPORT_SYMBOL
 (paren
 id|usb_buffer_dmasync_sg
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|usb_buffer_unmap_sg
 id|EXPORT_SYMBOL
 (paren

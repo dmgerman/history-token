@@ -20,7 +20,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;e100&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;3.0.16&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&quot;3.0.17&quot;
 DECL|macro|DRV_DESCRIPTION
 mdefine_line|#define DRV_DESCRIPTION&t;&t;&quot;Intel(R) PRO/100 Network Driver&quot;
 DECL|macro|DRV_COPYRIGHT
@@ -6261,6 +6261,10 @@ c_func
 id|cb-&gt;skb
 )paren
 suffix:semicolon
+id|cb-&gt;skb
+op_assign
+l_int|NULL
+suffix:semicolon
 id|tx_cleaned
 op_assign
 l_int|1
@@ -6590,6 +6594,10 @@ id|cb
 )paren
 )paren
 suffix:semicolon
+id|cb-&gt;skb
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 id|nic-&gt;cb_to_use
 op_assign
@@ -6787,7 +6795,7 @@ c_func
 id|cb_el
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|nic-&gt;pdev
@@ -6880,7 +6888,7 @@ id|EAGAIN
 suffix:semicolon
 )brace
 multiline_comment|/* Need to sync before taking a peek at cb_complete bit */
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|nic-&gt;pdev
@@ -6978,24 +6986,6 @@ id|rfd
 suffix:semicolon
 )brace
 multiline_comment|/* Get data */
-id|pci_dma_sync_single
-c_func
-(paren
-id|nic-&gt;pdev
-comma
-id|rx-&gt;dma_addr
-comma
-r_sizeof
-(paren
-r_struct
-id|rfd
-)paren
-op_plus
-id|actual_size
-comma
-id|PCI_DMA_FROMDEVICE
-)paren
-suffix:semicolon
 id|pci_unmap_single
 c_func
 (paren

@@ -49,7 +49,7 @@ macro_line|#undef CARM_NDEBUG
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME &quot;carmel&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION &quot;0.6&quot;
+mdefine_line|#define DRV_VERSION &quot;0.7&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_NAME &quot;: &quot;
 DECL|macro|NEXT_RESP
@@ -317,10 +317,25 @@ id|CARM_MSG_WRITE
 op_assign
 l_int|2
 comma
+DECL|enumerator|CARM_MSG_VERIFY
+id|CARM_MSG_VERIFY
+op_assign
+l_int|3
+comma
+DECL|enumerator|CARM_MSG_GET_CAPACITY
+id|CARM_MSG_GET_CAPACITY
+op_assign
+l_int|4
+comma
+DECL|enumerator|CARM_MSG_FLUSH
+id|CARM_MSG_FLUSH
+op_assign
+l_int|5
+comma
 DECL|enumerator|CARM_MSG_IOCTL
 id|CARM_MSG_IOCTL
 op_assign
-l_int|4
+l_int|6
 comma
 DECL|enumerator|CARM_MSG_ARRAY
 id|CARM_MSG_ARRAY
@@ -393,6 +408,19 @@ id|CARM_IOC_SCAN_CHAN
 op_assign
 l_int|5
 comma
+multiline_comment|/* scan channels for devices */
+DECL|enumerator|CARM_IOC_GET_TCQ
+id|CARM_IOC_GET_TCQ
+op_assign
+l_int|13
+comma
+multiline_comment|/* get tcq/ncq depth */
+DECL|enumerator|CARM_IOC_SET_TCQ
+id|CARM_IOC_SET_TCQ
+op_assign
+l_int|14
+comma
+multiline_comment|/* set tcq/ncq depth */
 DECL|enumerator|IOC_SCAN_CHAN_NODEV
 id|IOC_SCAN_CHAN_NODEV
 op_assign
@@ -466,8 +494,8 @@ id|MISC_ALLOC_MEM
 op_assign
 l_int|3
 comma
-DECL|enumerator|MISC_SYNC_TIME
-id|MISC_SYNC_TIME
+DECL|enumerator|MISC_SET_TIME
+id|MISC_SET_TIME
 op_assign
 l_int|5
 comma
@@ -2754,7 +2782,7 @@ id|CARM_MSG_MISC
 suffix:semicolon
 id|st-&gt;subtype
 op_assign
-id|MISC_SYNC_TIME
+id|MISC_SET_TIME
 suffix:semicolon
 id|st-&gt;handle
 op_assign
@@ -4987,7 +5015,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|MISC_SYNC_TIME
+id|MISC_SET_TIME
 suffix:colon
 id|carm_handle_generic
 c_func

@@ -21,9 +21,6 @@ macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#include &lt;asm/sbi.h&gt;
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;linux/unistd.h&gt;
 DECL|macro|IRQ_CROSS_CALL
 mdefine_line|#define IRQ_CROSS_CALL&t;&t;15
 r_extern

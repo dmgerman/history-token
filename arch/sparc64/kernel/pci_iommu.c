@@ -3023,9 +3023,9 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/* Make physical memory consistent for a single&n; * streaming mode DMA translation after a transfer.&n; */
-DECL|function|pci_dma_sync_single
+DECL|function|pci_dma_sync_single_for_cpu
 r_void
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 r_struct
@@ -3311,9 +3311,9 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/* Make physical memory consistent for a set of streaming&n; * mode DMA translations after a transfer.&n; */
-DECL|function|pci_dma_sync_sg
+DECL|function|pci_dma_sync_sg_for_cpu
 r_void
-id|pci_dma_sync_sg
+id|pci_dma_sync_sg_for_cpu
 c_func
 (paren
 r_struct

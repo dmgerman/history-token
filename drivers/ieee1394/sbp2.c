@@ -6697,7 +6697,7 @@ comma
 id|global_outstanding_command_orbs
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -6713,7 +6713,7 @@ comma
 id|PCI_DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -6847,7 +6847,7 @@ id|scsi_id-&gt;last_orb-&gt;next_ORB_hi
 op_assign
 l_int|0x0
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -8258,7 +8258,7 @@ c_func
 l_string|&quot;Found status for command ORB&quot;
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -8274,7 +8274,7 @@ comma
 id|PCI_DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -8815,7 +8815,7 @@ comma
 id|list
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -8831,7 +8831,7 @@ comma
 id|PCI_DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -9321,7 +9321,7 @@ c_func
 l_string|&quot;Found command to abort&quot;
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -9337,7 +9337,7 @@ comma
 id|PCI_DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev

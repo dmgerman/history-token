@@ -1053,7 +1053,7 @@ id|hostdata-&gt;pScript
 op_assign
 id|pScript
 suffix:semicolon
-id|dma_sync_single
+id|dma_sync_single_for_device
 c_func
 (paren
 id|hostdata-&gt;dev
@@ -4132,7 +4132,7 @@ id|SCp-&gt;sc_data_direction
 op_assign
 id|SCSI_DATA_READ
 suffix:semicolon
-id|dma_sync_single
+id|dma_sync_single_for_device
 c_func
 (paren
 id|hostdata-&gt;dev
@@ -4280,7 +4280,7 @@ singleline_comment|//if(status_byte(hostdata-&gt;status[0]) == GOOD &amp;&amp;
 singleline_comment|//   SCp-&gt;cmnd[0] == INQUIRY &amp;&amp; SCp-&gt;use_sg == 0) {
 singleline_comment|//&t;/* Piggy back the tag queueing support
 singleline_comment|//&t; * on this command */
-singleline_comment|//&t;dma_sync_single(hostdata-&gt;dev,
+singleline_comment|//&t;dma_sync_single_for_cpu(hostdata-&gt;dev,
 singleline_comment|//&t;&t;&t;    slot-&gt;dma_handle,
 singleline_comment|//&t;&t;&t;    SCp-&gt;request_bufflen,
 singleline_comment|//&t;&t;&t;    DMA_FROM_DEVICE);

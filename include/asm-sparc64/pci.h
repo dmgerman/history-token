@@ -93,7 +93,7 @@ id|dma_addr_t
 id|dma_handle
 )paren
 suffix:semicolon
-multiline_comment|/* Map a single buffer of the indicated size for DMA in streaming mode.&n; * The 32-bit bus address to use is returned.&n; *&n; * Once the device is given the dma address, the device owns this memory&n; * until either pci_unmap_single or pci_dma_sync_single is performed.&n; */
+multiline_comment|/* Map a single buffer of the indicated size for DMA in streaming mode.&n; * The 32-bit bus address to use is returned.&n; *&n; * Once the device is given the dma address, the device owns this memory&n; * until either pci_unmap_single or pci_dma_sync_single_for_cpu is performed.&n; */
 r_extern
 id|dma_addr_t
 id|pci_map_single
@@ -200,10 +200,10 @@ r_int
 id|direction
 )paren
 suffix:semicolon
-multiline_comment|/* Make physical memory consistent for a single&n; * streaming mode DMA translation after a transfer.&n; *&n; * If you perform a pci_map_single() but wish to interrogate the&n; * buffer using the cpu, yet do not wish to teardown the PCI dma&n; * mapping, you must call this function before doing so.  At the&n; * next point you give the PCI dma address back to the card, the&n; * device again owns the buffer.&n; */
+multiline_comment|/* Make physical memory consistent for a single&n; * streaming mode DMA translation after a transfer.&n; *&n; * If you perform a pci_map_single() but wish to interrogate the&n; * buffer using the cpu, yet do not wish to teardown the PCI dma&n; * mapping, you must call this function before doing so.  At the&n; * next point you give the PCI dma address back to the card, you&n; * must first perform a pci_dma_sync_for_device, and then the&n; * device again owns the buffer.&n; */
 r_extern
 r_void
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 r_struct
@@ -221,10 +221,42 @@ r_int
 id|direction
 )paren
 suffix:semicolon
-multiline_comment|/* Make physical memory consistent for a set of streaming&n; * mode DMA translations after a transfer.&n; *&n; * The same as pci_dma_sync_single but for a scatter-gather list,&n; * same rules and usage.&n; */
+r_static
+r_inline
+r_void
+DECL|function|pci_dma_sync_single_for_device
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+id|dma_addr_t
+id|dma_handle
+comma
+r_int
+id|size
+comma
+r_int
+id|direction
+)paren
+(brace
+multiline_comment|/* No flushing needed to sync cpu writes to the device.  */
+id|BUG_ON
+c_func
+(paren
+id|direction
+op_eq
+id|PCI_DMA_NONE
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Make physical memory consistent for a set of streaming&n; * mode DMA translations after a transfer.&n; *&n; * The same as pci_dma_sync_single_* but for a scatter-gather list,&n; * same rules and usage.&n; */
 r_extern
 r_void
-id|pci_dma_sync_sg
+id|pci_dma_sync_sg_for_cpu
 c_func
 (paren
 r_struct
@@ -244,6 +276,40 @@ r_int
 id|direction
 )paren
 suffix:semicolon
+r_static
+r_inline
+r_void
+DECL|function|pci_dma_sync_sg_for_device
+id|pci_dma_sync_sg_for_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+r_struct
+id|scatterlist
+op_star
+id|sg
+comma
+r_int
+id|nelems
+comma
+r_int
+id|direction
+)paren
+(brace
+multiline_comment|/* No flushing needed to sync cpu writes to the device.  */
+id|BUG_ON
+c_func
+(paren
+id|direction
+op_eq
+id|PCI_DMA_NONE
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Return whether the given PCI device DMA address mask can&n; * be supported properly.  For example, if your device can&n; * only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
 r_extern
 r_int
@@ -269,7 +335,7 @@ multiline_comment|/* Usage of the pci_dac_foo interfaces is only valid if this&n
 DECL|macro|pci_dac_dma_supported
 mdefine_line|#define pci_dac_dma_supported(pci_dev, mask) &bslash;&n;&t;((((mask) &amp; PCI64_REQUIRED_MASK) == PCI64_REQUIRED_MASK) ? 1 : 0)
 r_static
-id|__inline__
+r_inline
 id|dma64_addr_t
 DECL|function|pci_dac_page_to_dma
 id|pci_dac_page_to_dma
@@ -312,7 +378,7 @@ id|offset
 suffix:semicolon
 )brace
 r_static
-id|__inline__
+r_inline
 r_struct
 id|page
 op_star
@@ -354,7 +420,7 @@ id|paddr
 suffix:semicolon
 )brace
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 DECL|function|pci_dac_dma_to_offset
@@ -380,10 +446,34 @@ id|PAGE_MASK
 suffix:semicolon
 )brace
 r_static
-id|__inline__
+r_inline
 r_void
-DECL|function|pci_dac_dma_sync_single
-id|pci_dac_dma_sync_single
+DECL|function|pci_dac_dma_sync_single_for_cpu
+id|pci_dac_dma_sync_single_for_cpu
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+id|dma64_addr_t
+id|dma_addr
+comma
+r_int
+id|len
+comma
+r_int
+id|direction
+)paren
+(brace
+multiline_comment|/* DAC cycle addressing does not make use of the&n;&t; * PCI controller&squot;s streaming cache, so nothing to do.&n;&t; */
+)brace
+r_static
+r_inline
+r_void
+DECL|function|pci_dac_dma_sync_single_for_device
+id|pci_dac_dma_sync_single_for_device
 c_func
 (paren
 r_struct

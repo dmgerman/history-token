@@ -1652,6 +1652,7 @@ op_star
 id|urb
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_void
 id|usb_buffer_dmasync
 (paren
@@ -1661,6 +1662,7 @@ op_star
 id|urb
 )paren
 suffix:semicolon
+macro_line|#endif
 r_void
 id|usb_buffer_unmap
 (paren
@@ -1693,6 +1695,7 @@ r_int
 id|nents
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_void
 id|usb_buffer_dmasync_sg
 (paren
@@ -1713,6 +1716,7 @@ r_int
 id|n_hw_ents
 )paren
 suffix:semicolon
+macro_line|#endif
 r_void
 id|usb_buffer_unmap_sg
 (paren

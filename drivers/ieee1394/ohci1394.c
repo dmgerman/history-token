@@ -7007,7 +7007,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* OK, the block is finished... */
 multiline_comment|/* sync our view of the block */
-id|dma_region_sync
+id|dma_region_sync_for_cpu
 c_func
 (paren
 op_amp
@@ -7243,7 +7243,7 @@ id|event
 suffix:semicolon
 )brace
 multiline_comment|/* sync our view of the buffer */
-id|dma_region_sync
+id|dma_region_sync_for_cpu
 c_func
 (paren
 op_amp
@@ -8156,7 +8156,7 @@ op_assign
 id|info-&gt;sy
 suffix:semicolon
 multiline_comment|/* sync up the card&squot;s view of the buffer */
-id|dma_region_sync
+id|dma_region_sync_for_device
 c_func
 (paren
 op_amp

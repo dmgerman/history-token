@@ -230,7 +230,7 @@ id|size
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Read block 0 to test for gzipped kernel&n;&t; */
-id|lseek
+id|sys_lseek
 c_func
 (paren
 id|fd
@@ -242,7 +242,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|read
+id|sys_read
 c_func
 (paren
 id|fd
@@ -377,7 +377,7 @@ id|done
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Read block 1 to test for minix and ext2 superblock&n;&t; */
-id|lseek
+id|sys_lseek
 c_func
 (paren
 id|fd
@@ -393,7 +393,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|read
+id|sys_read
 c_func
 (paren
 id|fd
@@ -480,7 +480,7 @@ id|start_block
 suffix:semicolon
 id|done
 suffix:colon
-id|lseek
+id|sys_lseek
 c_func
 (paren
 id|fd
@@ -568,7 +568,7 @@ suffix:semicolon
 macro_line|#endif
 id|out_fd
 op_assign
-id|open
+id|sys_open
 c_func
 (paren
 l_string|&quot;/dev/ram&quot;
@@ -590,7 +590,7 @@ id|out
 suffix:semicolon
 id|in_fd
 op_assign
-id|open
+id|sys_open
 c_func
 (paren
 id|from
@@ -895,7 +895,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|close
+id|sys_close
 c_func
 (paren
 id|in_fd
@@ -922,7 +922,7 @@ id|disk
 suffix:semicolon
 id|in_fd
 op_assign
-id|open
+id|sys_open
 c_func
 (paren
 id|from
@@ -959,7 +959,7 @@ id|disk
 )paren
 suffix:semicolon
 )brace
-id|read
+id|sys_read
 c_func
 (paren
 id|in_fd
@@ -969,7 +969,7 @@ comma
 id|BLOCK_SIZE
 )paren
 suffix:semicolon
-id|write
+id|sys_write
 c_func
 (paren
 id|out_fd
@@ -1024,7 +1024,7 @@ l_int|1
 suffix:semicolon
 id|done
 suffix:colon
-id|close
+id|sys_close
 c_func
 (paren
 id|in_fd
@@ -1032,7 +1032,7 @@ id|in_fd
 suffix:semicolon
 id|noclose_input
 suffix:colon
-id|close
+id|sys_close
 c_func
 (paren
 id|out_fd
@@ -1370,7 +1370,7 @@ l_int|1
 suffix:semicolon
 id|insize
 op_assign
-id|read
+id|sys_read
 c_func
 (paren
 id|crd_infd
@@ -1440,7 +1440,7 @@ id|ch
 suffix:semicolon
 id|written
 op_assign
-id|write
+id|sys_write
 c_func
 (paren
 id|crd_outfd

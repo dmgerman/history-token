@@ -1648,8 +1648,7 @@ r_int
 r_int
 id|jif
 suffix:semicolon
-r_int
-r_int
+id|u64
 id|sum
 op_assign
 l_int|0
@@ -1807,45 +1806,80 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;cpu  %u %u %u %u %u %u %u&bslash;n&quot;
+l_string|&quot;cpu  %llu %llu %llu %llu %llu %llu %llu&bslash;n&quot;
 comma
-id|jiffies_to_clock_t
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies_64_to_clock_t
 c_func
 (paren
 id|user
 )paren
 comma
-id|jiffies_to_clock_t
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies_64_to_clock_t
 c_func
 (paren
 id|nice
 )paren
 comma
-id|jiffies_to_clock_t
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies_64_to_clock_t
 c_func
 (paren
 id|system
 )paren
 comma
-id|jiffies_to_clock_t
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies_64_to_clock_t
 c_func
 (paren
 id|idle
 )paren
 comma
-id|jiffies_to_clock_t
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies_64_to_clock_t
 c_func
 (paren
 id|iowait
 )paren
 comma
-id|jiffies_to_clock_t
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies_64_to_clock_t
 c_func
 (paren
 id|irq
 )paren
 comma
-id|jiffies_to_clock_t
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies_64_to_clock_t
 c_func
 (paren
 id|softirq
@@ -1858,16 +1892,22 @@ c_func
 id|i
 )paren
 (brace
+multiline_comment|/* two separate calls here to work around gcc-2.95.3 ICE */
 id|seq_printf
 c_func
 (paren
 id|p
 comma
-l_string|&quot;cpu%d %u %u %u %u %u %u %u&bslash;n&quot;
+l_string|&quot;cpu%d %llu %llu %llu &quot;
 comma
 id|i
 comma
-id|jiffies_to_clock_t
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies_64_to_clock_t
 c_func
 (paren
 id|kstat_cpu
@@ -1879,7 +1919,12 @@ dot
 id|cpustat.user
 )paren
 comma
-id|jiffies_to_clock_t
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies_64_to_clock_t
 c_func
 (paren
 id|kstat_cpu
@@ -1891,7 +1936,12 @@ dot
 id|cpustat.nice
 )paren
 comma
-id|jiffies_to_clock_t
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies_64_to_clock_t
 c_func
 (paren
 id|kstat_cpu
@@ -1902,8 +1952,21 @@ id|i
 dot
 id|cpustat.system
 )paren
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|p
 comma
-id|jiffies_to_clock_t
+l_string|&quot;%llu %llu %llu %llu&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies_64_to_clock_t
 c_func
 (paren
 id|kstat_cpu
@@ -1915,7 +1978,12 @@ dot
 id|cpustat.idle
 )paren
 comma
-id|jiffies_to_clock_t
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies_64_to_clock_t
 c_func
 (paren
 id|kstat_cpu
@@ -1927,7 +1995,12 @@ dot
 id|cpustat.iowait
 )paren
 comma
-id|jiffies_to_clock_t
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies_64_to_clock_t
 c_func
 (paren
 id|kstat_cpu
@@ -1939,7 +2012,12 @@ dot
 id|cpustat.irq
 )paren
 comma
-id|jiffies_to_clock_t
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies_64_to_clock_t
 c_func
 (paren
 id|kstat_cpu
@@ -1958,8 +2036,13 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;intr %u&quot;
+l_string|&quot;intr %llu&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sum
 )paren
 suffix:semicolon
@@ -1998,7 +2081,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;&bslash;nctxt %lu&bslash;n&quot;
+l_string|&quot;&bslash;nctxt %llu&bslash;n&quot;
 l_string|&quot;btime %lu&bslash;n&quot;
 l_string|&quot;processes %lu&bslash;n&quot;
 l_string|&quot;procs_running %lu&bslash;n&quot;

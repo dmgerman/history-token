@@ -4392,7 +4392,7 @@ id|frame_length
 op_sub_assign
 id|copy_len
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|xl_priv-&gt;pdev
@@ -4430,6 +4430,23 @@ comma
 id|copy_len
 )paren
 suffix:semicolon
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|xl_priv-&gt;pdev
+comma
+id|xl_priv-&gt;xl_rx_ring
+(braket
+id|xl_priv-&gt;rx_ring_tail
+)braket
+dot
+id|upfragaddr
+comma
+id|xl_priv-&gt;pkt_buf_sz
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
 id|adv_rx_ring
 c_func
 (paren
@@ -4438,7 +4455,7 @@ id|dev
 suffix:semicolon
 )brace
 multiline_comment|/* Now we have found the last fragment */
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|xl_priv-&gt;pdev
@@ -4477,6 +4494,23 @@ id|frame_length
 )paren
 suffix:semicolon
 multiline_comment|/*&t;&t;&t;memcpy(skb_put(skb,frame_length), bus_to_virt(xl_priv-&gt;xl_rx_ring[xl_priv-&gt;rx_ring_tail].upfragaddr), frame_length) ; */
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|xl_priv-&gt;pdev
+comma
+id|xl_priv-&gt;xl_rx_ring
+(braket
+id|xl_priv-&gt;rx_ring_tail
+)braket
+dot
+id|upfragaddr
+comma
+id|xl_priv-&gt;pkt_buf_sz
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
 id|adv_rx_ring
 c_func
 (paren

@@ -2029,8 +2029,10 @@ DECL|macro|__map_scsi_single_data
 mdefine_line|#define __map_scsi_single_data(dev, cmd) (__vtobus(dev,(cmd)-&gt;request_buffer))
 DECL|macro|__map_scsi_sg_data
 mdefine_line|#define __map_scsi_sg_data(dev, cmd)&t;((cmd)-&gt;use_sg)
-DECL|macro|__sync_scsi_data
-mdefine_line|#define __sync_scsi_data(dev, cmd)&t;do {; } while (0)
+DECL|macro|__sync_scsi_data_for_cpu
+mdefine_line|#define __sync_scsi_data_for_cpu(dev, cmd)&t;do {; } while (0)
+DECL|macro|__sync_scsi_data_for_device
+mdefine_line|#define __sync_scsi_data_for_device(dev, cmd)&t;do {; } while (0)
 DECL|macro|scsi_sg_dma_address
 mdefine_line|#define scsi_sg_dma_address(sc)&t;&t;vtobus((sc)-&gt;address)
 DECL|macro|scsi_sg_dma_len
@@ -2256,10 +2258,10 @@ r_return
 id|use_sg
 suffix:semicolon
 )brace
-DECL|function|__sync_scsi_data
+DECL|function|__sync_scsi_data_for_cpu
 r_static
 r_void
-id|__sync_scsi_data
+id|__sync_scsi_data_for_cpu
 c_func
 (paren
 r_struct
@@ -2295,7 +2297,7 @@ id|cmd-&gt;__data_mapped
 r_case
 l_int|2
 suffix:colon
-id|dma_sync_sg
+id|dma_sync_sg_for_cpu
 c_func
 (paren
 id|dev
@@ -2312,7 +2314,79 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|dma_sync_single
+id|dma_sync_single_for_cpu
+c_func
+(paren
+id|dev
+comma
+id|cmd-&gt;__data_mapping
+comma
+id|cmd-&gt;request_bufflen
+comma
+id|dma_dir
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+DECL|function|__sync_scsi_data_for_device
+r_static
+r_void
+id|__sync_scsi_data_for_device
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+(brace
+r_enum
+id|dma_data_direction
+id|dma_dir
+op_assign
+(paren
+r_enum
+id|dma_data_direction
+)paren
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|cmd-&gt;sc_data_direction
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cmd-&gt;__data_mapped
+)paren
+(brace
+r_case
+l_int|2
+suffix:colon
+id|dma_sync_sg_for_device
+c_func
+(paren
+id|dev
+comma
+id|cmd-&gt;buffer
+comma
+id|cmd-&gt;use_sg
+comma
+id|dma_dir
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+id|dma_sync_single_for_device
 c_func
 (paren
 id|dev
@@ -2339,8 +2413,10 @@ DECL|macro|map_scsi_single_data
 mdefine_line|#define map_scsi_single_data(np, cmd)&t;__map_scsi_single_data(np-&gt;dev, cmd)
 DECL|macro|map_scsi_sg_data
 mdefine_line|#define map_scsi_sg_data(np, cmd)&t;__map_scsi_sg_data(np-&gt;dev, cmd)
-DECL|macro|sync_scsi_data
-mdefine_line|#define sync_scsi_data(np, cmd)&t;&t;__sync_scsi_data(np-&gt;dev, cmd)
+DECL|macro|sync_scsi_data_for_cpu
+mdefine_line|#define sync_scsi_data_for_cpu(np, cmd)&t;__sync_scsi_data_for_cpu(np-&gt;dev, cmd)
+DECL|macro|sync_scsi_data_for_device
+mdefine_line|#define sync_scsi_data_for_device(np, cmd) __sync_scsi_data_for_device(np-&gt;dev, cmd)
 multiline_comment|/*==========================================================&n;**&n;**&t;SCSI data transfer direction&n;**&n;**&t;Until some linux kernel version near 2.3.40, &n;**&t;low-level scsi drivers were not told about data &n;**&t;transfer direction. We check the existence of this &n;**&t;feature that has been expected for a _long_ time by &n;**&t;all SCSI driver developers by just testing against &n;**&t;the definition of SCSI_DATA_UNKNOWN. Indeed this is &n;**&t;a hack, but testing against a kernel version would &n;**&t;have been a shame. ;-)&n;**&n;**==========================================================&n;*/
 macro_line|#ifdef&t;SCSI_DATA_UNKNOWN
 DECL|macro|scsi_data_direction

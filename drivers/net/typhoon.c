@@ -7263,7 +7263,7 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|tp-&gt;pdev
@@ -7285,6 +7285,18 @@ comma
 id|pkt_len
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|tp-&gt;pdev
+comma
+id|dma_addr
+comma
+id|PKT_BUF_SZ
+comma
+id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
 id|skb_put

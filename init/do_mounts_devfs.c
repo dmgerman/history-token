@@ -77,7 +77,7 @@ id|p
 op_assign
 id|buf
 suffix:semicolon
-id|lseek
+id|sys_lseek
 c_func
 (paren
 id|fd
@@ -175,7 +175,7 @@ suffix:semicolon
 r_int
 id|fd
 op_assign
-id|open
+id|sys_open
 c_func
 (paren
 id|path
@@ -265,7 +265,7 @@ OG
 l_int|0
 )paren
 (brace
-id|close
+id|sys_close
 c_func
 (paren
 id|fd
@@ -307,7 +307,7 @@ l_int|0
 r_break
 suffix:semicolon
 )brace
-id|close
+id|sys_close
 c_func
 (paren
 id|fd

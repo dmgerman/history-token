@@ -570,6 +570,7 @@ mdefine_line|#define _syscall6(type,name,type1,arg1,type2,arg2,type3,arg3,type4,
 macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 multiline_comment|/*&n; * we need this inline - forking from kernel space will result&n; * in NO COPY ON WRITE (!!!), until an execve is executed. This&n; * is no problem, but for the stack. This is handled by not letting&n; * main() use the stack at all after fork(). Thus, no function&n; * calls - which means inline code for fork too, as otherwise we&n; * would use the stack upon exit from &squot;fork()&squot;.&n; *&n; * Actually only pause and fork are needed inline, so that there&n; * won&squot;t be any messing with the stack from main(), but we define&n; * some others too.&n; */
 r_static

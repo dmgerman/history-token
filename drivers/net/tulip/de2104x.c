@@ -1952,7 +1952,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|de-&gt;pdev
@@ -1986,6 +1986,18 @@ comma
 id|skb-&gt;tail
 comma
 id|len
+)paren
+suffix:semicolon
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|de-&gt;pdev
+comma
+id|mapping
+comma
+id|len
+comma
+id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
 multiline_comment|/* We&squot;ll reuse the original ring buffer. */

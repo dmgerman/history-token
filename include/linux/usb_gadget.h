@@ -206,7 +206,7 @@ id|bytes
 )paren
 suffix:semicolon
 singleline_comment|// NOTE:  on 2.5, drivers may also use dma_map() and
-singleline_comment|// dma_sync_single() to manage dma overhead. 
+singleline_comment|// dma_sync_single_*() to manage dma overhead.
 DECL|member|queue
 r_int
 (paren
