@@ -21,14 +21,14 @@ mdefine_line|#define SG_ENT_PHYS_ADDRESS(SG)&t;virt_to_phys(SG_ENT_VIRT_ADDRESS(
 multiline_comment|/*&n; * Maximum allowable number of contiguous slabs to map,&n; * must be a power of 2.  What is the appropriate value ?&n; * The complexity of {map,unmap}_single is linearly dependent on this value.&n; */
 DECL|macro|IO_TLB_SEGSIZE
 mdefine_line|#define IO_TLB_SEGSIZE&t;128
-multiline_comment|/*&n; * log of the size of each IO TLB slab.  The number of slabs is command line controllable.&n; */
+multiline_comment|/*&n; * log of the size of each IO TLB slab.  The number of slabs is command line&n; * controllable.&n; */
 DECL|macro|IO_TLB_SHIFT
 mdefine_line|#define IO_TLB_SHIFT 11
 DECL|variable|swiotlb_force
 r_int
 id|swiotlb_force
 suffix:semicolon
-multiline_comment|/*&n; * Used to do a quick range check in swiotlb_unmap_single and swiotlb_sync_single_*, to see&n; * if the memory was in fact allocated by this API.&n; */
+multiline_comment|/*&n; * Used to do a quick range check in swiotlb_unmap_single and&n; * swiotlb_sync_single_*, to see if the memory was in fact allocated by this&n; * API.&n; */
 DECL|variable|io_tlb_start
 DECL|variable|io_tlb_end
 r_static
@@ -39,7 +39,7 @@ comma
 op_star
 id|io_tlb_end
 suffix:semicolon
-multiline_comment|/*&n; * The number of IO TLB blocks (in groups of 64) betweeen io_tlb_start and io_tlb_end.&n; * This is command line adjustable via setup_io_tlb_npages.&n; * Default to 64MB.&n; */
+multiline_comment|/*&n; * The number of IO TLB blocks (in groups of 64) betweeen io_tlb_start and&n; * io_tlb_end.  This is command line adjustable via setup_io_tlb_npages.&n; * Default to 64MB.&n; */
 DECL|variable|io_tlb_nslabs
 r_static
 r_int
@@ -48,7 +48,7 @@ id|io_tlb_nslabs
 op_assign
 l_int|32768
 suffix:semicolon
-multiline_comment|/* &n; * When the IOMMU overflows we return a fallback buffer. This sets the size.&n; */
+multiline_comment|/*&n; * When the IOMMU overflows we return a fallback buffer. This sets the size.&n; */
 DECL|variable|io_tlb_overflow
 r_static
 r_int
@@ -64,7 +64,7 @@ r_void
 op_star
 id|io_tlb_overflow_buffer
 suffix:semicolon
-multiline_comment|/*&n; * This is a free list describing the number of free entries available from each index&n; */
+multiline_comment|/*&n; * This is a free list describing the number of free entries available from&n; * each index&n; */
 DECL|variable|io_tlb_list
 r_static
 r_int
@@ -78,7 +78,7 @@ r_int
 r_int
 id|io_tlb_index
 suffix:semicolon
-multiline_comment|/*&n; * We need to save away the original address corresponding to a mapped entry for the sync&n; * operations.&n; */
+multiline_comment|/*&n; * We need to save away the original address corresponding to a mapped entry&n; * for the sync operations.&n; */
 DECL|variable|io_tlb_orig_addr
 r_static
 r_int
@@ -100,6 +100,7 @@ r_int
 id|__init
 DECL|function|setup_io_tlb_npages
 id|setup_io_tlb_npages
+c_func
 (paren
 r_char
 op_star
@@ -188,10 +189,11 @@ id|setup_io_tlb_npages
 )paren
 suffix:semicolon
 multiline_comment|/* make io_tlb_overflow tunable too? */
-multiline_comment|/*&n; * Statically reserve bounce buffer space and initialize bounce buffer data structures for&n; * the software IO TLB used to implement the PCI DMA API.&n; */
+multiline_comment|/*&n; * Statically reserve bounce buffer space and initialize bounce buffer data&n; * structures for the software IO TLB used to implement the PCI DMA API.&n; */
 r_void
 DECL|function|swiotlb_init
 id|swiotlb_init
+c_func
 (paren
 r_void
 )paren
@@ -300,7 +302,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Get the overflow emergency buffer &n;&t; */
+multiline_comment|/*&n;&t; * Get the overflow emergency buffer&n;&t; */
 id|io_tlb_overflow_buffer
 op_assign
 id|alloc_bootmem_low
@@ -329,10 +331,10 @@ id|io_tlb_end
 )paren
 suffix:semicolon
 )brace
-DECL|function|address_needs_mapping
 r_static
 r_inline
 r_int
+DECL|function|address_needs_mapping
 id|address_needs_mapping
 c_func
 (paren
@@ -350,6 +352,7 @@ id|mask
 op_assign
 l_int|0xffffffff
 suffix:semicolon
+multiline_comment|/* If the device has a mask, use it, otherwise default to 32 bits */
 r_if
 c_cond
 (paren
@@ -379,6 +382,7 @@ r_void
 op_star
 DECL|function|map_single
 id|map_single
+c_func
 (paren
 r_struct
 id|device
@@ -417,7 +421,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t; * For mappings greater than a page size, we limit the stride (and hence alignment)&n;&t; * to a page size.&n;&t; */
+multiline_comment|/*&n;&t; * For mappings greater than a page, we limit the stride (and&n;&t; * hence alignment) to a page size.&n;&t; */
 id|nslots
 op_assign
 id|ALIGN
@@ -437,11 +441,7 @@ c_cond
 (paren
 id|size
 OG
-(paren
-l_int|1
-op_lshift
-id|PAGE_SHIFT
-)paren
+id|PAGE_SIZE
 )paren
 id|stride
 op_assign
@@ -471,7 +471,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Find suitable number of IO TLB entries size that will fit this request and&n;&t; * allocate a buffer from that IO TLB pool.&n;&t; */
+multiline_comment|/*&n;&t; * Find suitable number of IO TLB entries size that will fit this&n;&t; * request and allocate a buffer from that IO TLB pool.&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -509,7 +509,7 @@ l_int|0
 suffix:semicolon
 r_do
 (brace
-multiline_comment|/*&n;&t;&t;&t; * If we find a slot that indicates we have &squot;nslots&squot; number of&n;&t;&t;&t; * contiguous buffers, we allocate the buffers from that slot and&n;&t;&t;&t; * mark the entries as &squot;0&squot; indicating unavailable.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If we find a slot that indicates we have &squot;nslots&squot;&n;&t;&t;&t; * number of contiguous buffers, we allocate the&n;&t;&t;&t; * buffers from that slot and mark the entries as &squot;0&squot;&n;&t;&t;&t; * indicating unavailable.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -603,7 +603,7 @@ op_lshift
 id|IO_TLB_SHIFT
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Update the indices to avoid searching in the next round.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Update the indices to avoid searching in&n;&t;&t;&t;&t; * the next round.&n;&t;&t;&t;&t; */
 id|io_tlb_index
 op_assign
 (paren
@@ -677,7 +677,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Save away the mapping from the original address to the DMA address.  This is&n;&t; * needed when we sync the memory.  Then we sync the buffer if needed.&n;&t; */
+multiline_comment|/*&n;&t; * Save away the mapping from the original address to the DMA address.&n;&t; * This is needed when we sync the memory.  Then we sync the buffer if&n;&t; * needed.&n;&t; */
 id|io_tlb_orig_addr
 (braket
 id|index
@@ -715,6 +715,7 @@ r_static
 r_void
 DECL|function|unmap_single
 id|unmap_single
+c_func
 (paren
 r_struct
 id|device
@@ -738,6 +739,8 @@ id|flags
 suffix:semicolon
 r_int
 id|i
+comma
+id|count
 comma
 id|nslots
 op_assign
@@ -793,7 +796,7 @@ id|DMA_BIDIRECTIONAL
 )paren
 )paren
 )paren
-multiline_comment|/*&n;&t;&t; * bounce... copy the data back into the original buffer * and delete the&n;&t;&t; * bounce buffer.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * bounce... copy the data back into the original buffer * and&n;&t;&t; * delete the bounce buffer.&n;&t;&t; */
 id|memcpy
 c_func
 (paren
@@ -804,7 +807,7 @@ comma
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Return the buffer to the free list by setting the corresponding entries to&n;&t; * indicate the number of contigous entries available.  While returning the&n;&t; * entries to the free list, we merge the entries with slots below and above the&n;&t; * pool being returned.&n;&t; */
+multiline_comment|/*&n;&t; * Return the buffer to the free list by setting the corresponding&n;&t; * entries to indicate the number of contigous entries available.&n;&t; * While returning the entries to the free list, we merge the entries&n;&t; * with slots below and above the pool being returned.&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -815,7 +818,6 @@ id|flags
 )paren
 suffix:semicolon
 (brace
-r_int
 id|count
 op_assign
 (paren
@@ -846,7 +848,7 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Step 1: return the slots to the free list, merging the slots with&n;&t;&t; * superceeding slots&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Step 1: return the slots to the free list, merging the&n;&t;&t; * slots with superceeding slots&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -873,7 +875,7 @@ op_assign
 op_increment
 id|count
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Step 2: merge the returned slots with the preceding slots, if&n;&t;&t; * available (non zero)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Step 2: merge the returned slots with the preceding slots,&n;&t;&t; * if available (non zero)&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -928,6 +930,7 @@ r_static
 r_void
 DECL|function|sync_single
 id|sync_single
+c_func
 (paren
 r_struct
 id|device
@@ -1012,6 +1015,7 @@ r_void
 op_star
 DECL|function|swiotlb_alloc_coherent
 id|swiotlb_alloc_coherent
+c_func
 (paren
 r_struct
 id|device
@@ -1046,7 +1050,7 @@ c_func
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/* XXX fix me: the DMA API should pass us an explicit DMA mask instead: */
+multiline_comment|/*&n;&t; * XXX fix me: the DMA API should pass us an explicit DMA mask&n;&t; * instead, or use ZONE_DMA32 (ia64 overloads ZONE_DMA to be a ~32&n;&t; * bit range instead of a 16MB one).&n;&t; */
 id|flags
 op_or_assign
 id|GFP_DMA
@@ -1165,6 +1169,7 @@ c_func
 id|ret
 )paren
 suffix:semicolon
+multiline_comment|/* Confirm address can be DMA&squot;d by device */
 r_if
 c_cond
 (paren
@@ -1176,12 +1181,26 @@ comma
 id|dev_addr
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;hwdev DMA mask = 0x%016lx, dev_addr = 0x%016lx&bslash;n&quot;
+comma
+op_star
+id|hwdev-&gt;dma_mask
+comma
+id|dev_addr
+)paren
+suffix:semicolon
 id|panic
 c_func
 (paren
-l_string|&quot;swiotlb_alloc_consistent: allocated memory is out of range for device&quot;
+l_string|&quot;swiotlb_alloc_coherent: allocated memory is out of &quot;
+l_string|&quot;range for device&quot;
 )paren
 suffix:semicolon
+)brace
 op_star
 id|dma_handle
 op_assign
@@ -1194,6 +1213,7 @@ suffix:semicolon
 r_void
 DECL|function|swiotlb_free_coherent
 id|swiotlb_free_coherent
+c_func
 (paren
 r_struct
 id|device
@@ -1263,9 +1283,9 @@ id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
-DECL|function|swiotlb_full
 r_static
 r_void
+DECL|function|swiotlb_full
 id|swiotlb_full
 c_func
 (paren
@@ -1284,12 +1304,13 @@ r_int
 id|do_panic
 )paren
 (brace
-multiline_comment|/* &n;&t; * Ran out of IOMMU space for this operation. This is very bad.&n;&t; * Unfortunately the drivers cannot handle this operation properly.&n;&t; * unless they check for pci_dma_mapping_error (most don&squot;t)&n;&t; * When the mapping is small enough return a static buffer to limit&n;&t; * the damage, or panic when the transfer is too big. &n;&t; */
+multiline_comment|/*&n;&t; * Ran out of IOMMU space for this operation. This is very bad.&n;&t; * Unfortunately the drivers cannot handle this operation properly.&n;&t; * unless they check for pci_dma_mapping_error (most don&squot;t)&n;&t; * When the mapping is small enough return a static buffer to limit&n;&t; * the damage, or panic when the transfer is too big.&n;&t; */
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PCI-DMA: Out of SW-IOMMU space for %lu bytes at device %s&bslash;n&quot;
+l_string|&quot;PCI-DMA: Out of SW-IOMMU space for %lu bytes at &quot;
+l_string|&quot;device %s&bslash;n&quot;
 comma
 id|size
 comma
@@ -1347,10 +1368,11 @@ l_string|&quot;PCI-DMA: Random memory would be DMAed&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Map a single buffer of the indicated size for DMA in streaming mode.  The PCI address&n; * to use is returned.&n; *&n; * Once the device is given the dma address, the device owns this memory until either&n; * swiotlb_unmap_single or swiotlb_dma_sync_single is performed.&n; */
+multiline_comment|/*&n; * Map a single buffer of the indicated size for DMA in streaming mode.  The&n; * PCI address to use is returned.&n; *&n; * Once the device is given the dma address, the device owns this memory until&n; * either swiotlb_unmap_single or swiotlb_dma_sync_single is performed.&n; */
 id|dma_addr_t
 DECL|function|swiotlb_map_single
 id|swiotlb_map_single
+c_func
 (paren
 r_struct
 id|device
@@ -1394,7 +1416,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check if the PCI device can DMA to ptr... if so, just return ptr&n;&t; */
+multiline_comment|/*&n;&t; * If the pointer passed in happens to be in the device&squot;s DMA window,&n;&t; * we can safely return the device addr and not worry about bounce&n;&t; * buffering it.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1410,11 +1432,10 @@ op_logical_and
 op_logical_neg
 id|swiotlb_force
 )paren
-multiline_comment|/*&n;&t;&t; * Device is bit capable of DMA&squot;ing to the buffer... just return the PCI&n;&t;&t; * address of ptr&n;&t;&t; */
 r_return
 id|dev_addr
 suffix:semicolon
-multiline_comment|/*&n;&t; * get a bounce buffer:&n;&t; */
+multiline_comment|/*&n;&t; * Oh well, have to allocate and map a bounce buffer.&n;&t; */
 id|map
 op_assign
 id|map_single
@@ -1461,7 +1482,7 @@ c_func
 id|map
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Ensure that the address returned is DMA&squot;ble:&n;&t; */
+multiline_comment|/*&n;&t; * Ensure that the address returned is DMA&squot;ble&n;&t; */
 r_if
 c_cond
 (paren
@@ -1488,6 +1509,7 @@ r_static
 r_void
 DECL|function|mark_clean
 id|mark_clean
+c_func
 (paren
 r_void
 op_star
@@ -1561,10 +1583,11 @@ id|PAGE_SIZE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Unmap a single streaming mode DMA translation.  The dma_addr and size must match what&n; * was provided for in a previous swiotlb_map_single call.  All other usages are&n; * undefined.&n; *&n; * After this call, reads by the cpu to the buffer are guaranteed to see whatever the&n; * device wrote there.&n; */
+multiline_comment|/*&n; * Unmap a single streaming mode DMA translation.  The dma_addr and size must&n; * match what was provided for in a previous swiotlb_map_single call.  All&n; * other usages are undefined.&n; *&n; * After this call, reads by the cpu to the buffer are guaranteed to see&n; * whatever the device wrote there.&n; */
 r_void
 DECL|function|swiotlb_unmap_single
 id|swiotlb_unmap_single
+c_func
 (paren
 r_struct
 id|device
@@ -1643,10 +1666,11 @@ id|size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Make physical memory consistent for a single streaming mode DMA translation after a&n; * transfer.&n; *&n; * If you perform a swiotlb_map_single() but wish to interrogate the buffer using the cpu,&n; * yet do not wish to teardown the PCI dma mapping, you must call this function before&n; * doing so.  At the next point you give the PCI dma address back to the card, you must&n; * first perform a swiotlb_dma_sync_for_device, and then the device again owns the buffer&n; */
+multiline_comment|/*&n; * Make physical memory consistent for a single streaming mode DMA translation&n; * after a transfer.&n; *&n; * If you perform a swiotlb_map_single() but wish to interrogate the buffer&n; * using the cpu, yet do not wish to teardown the PCI dma mapping, you must&n; * call this function before doing so.  At the next point you give the PCI dma&n; * address back to the card, you must first perform a&n; * swiotlb_dma_sync_for_device, and then the device again owns the buffer&n; */
 r_void
 DECL|function|swiotlb_sync_single_for_cpu
 id|swiotlb_sync_single_for_cpu
+c_func
 (paren
 r_struct
 id|device
@@ -1728,6 +1752,7 @@ suffix:semicolon
 r_void
 DECL|function|swiotlb_sync_single_for_device
 id|swiotlb_sync_single_for_device
+c_func
 (paren
 r_struct
 id|device
@@ -1806,10 +1831,11 @@ id|size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Map a set of buffers described by scatterlist in streaming mode for DMA.  This is the&n; * scatter-gather version of the above swiotlb_map_single interface.  Here the scatter&n; * gather list elements are each tagged with the appropriate dma address and length.  They&n; * are obtained via sg_dma_{address,length}(SG).&n; *&n; * NOTE: An implementation may be able to use a smaller number of&n; *       DMA address/length pairs than there are SG table elements.&n; *       (for example via virtual mapping capabilities)&n; *       The routine returns the number of addr/length pairs actually&n; *       used, at most nents.&n; *&n; * Device ownership issues as mentioned above for swiotlb_map_single are the same here.&n; */
+multiline_comment|/*&n; * Map a set of buffers described by scatterlist in streaming mode for DMA.&n; * This is the scatter-gather version of the above swiotlb_map_single&n; * interface.  Here the scatter gather list elements are each tagged with the&n; * appropriate dma address and length.  They are obtained via&n; * sg_dma_{address,length}(SG).&n; *&n; * NOTE: An implementation may be able to use a smaller number of&n; *       DMA address/length pairs than there are SG table elements.&n; *       (for example via virtual mapping capabilities)&n; *       The routine returns the number of addr/length pairs actually&n; *       used, at most nents.&n; *&n; * Device ownership issues as mentioned above for swiotlb_map_single are the&n; * same here.&n; */
 r_int
 DECL|function|swiotlb_map_sg
 id|swiotlb_map_sg
+c_func
 (paren
 r_struct
 id|device
@@ -1927,7 +1953,7 @@ op_logical_neg
 id|sg-&gt;dma_address
 )paren
 (brace
-multiline_comment|/* Don&squot;t panic here, we expect pci_map_sg users&n;&t;&t;&t;&t;   to do proper error handling. */
+multiline_comment|/* Don&squot;t panic here, we expect map_sg users&n;&t;&t;&t;&t;   to do proper error handling. */
 id|swiotlb_full
 c_func
 (paren
@@ -1982,10 +2008,11 @@ r_return
 id|nelems
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Unmap a set of streaming mode DMA translations.  Again, cpu read rules concerning calls&n; * here are the same as for swiotlb_unmap_single() above.&n; */
+multiline_comment|/*&n; * Unmap a set of streaming mode DMA translations.  Again, cpu read rules&n; * concerning calls here are the same as for swiotlb_unmap_single() above.&n; */
 r_void
 DECL|function|swiotlb_unmap_sg
 id|swiotlb_unmap_sg
+c_func
 (paren
 r_struct
 id|device
@@ -2088,10 +2115,11 @@ id|sg-&gt;dma_length
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Make physical memory consistent for a set of streaming mode DMA translations after a&n; * transfer.&n; *&n; * The same as swiotlb_sync_single_* but for a scatter-gather list, same rules and&n; * usage.&n; */
+multiline_comment|/*&n; * Make physical memory consistent for a set of streaming mode DMA translations&n; * after a transfer.&n; *&n; * The same as swiotlb_sync_single_* but for a scatter-gather list, same rules&n; * and usage.&n; */
 r_void
 DECL|function|swiotlb_sync_sg_for_cpu
 id|swiotlb_sync_sg_for_cpu
+c_func
 (paren
 r_struct
 id|device
@@ -2173,6 +2201,7 @@ suffix:semicolon
 r_void
 DECL|function|swiotlb_sync_sg_for_device
 id|swiotlb_sync_sg_for_device
+c_func
 (paren
 r_struct
 id|device
@@ -2254,6 +2283,7 @@ suffix:semicolon
 r_int
 DECL|function|swiotlb_dma_mapping_error
 id|swiotlb_dma_mapping_error
+c_func
 (paren
 id|dma_addr_t
 id|dma_addr
@@ -2271,7 +2301,7 @@ id|io_tlb_overflow_buffer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return whether the given PCI device DMA address mask can be supported properly.  For&n; * example, if your device can only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
+multiline_comment|/*&n; * Return whether the given PCI device DMA address mask can be supported&n; * properly.  For example, if your device can only drive the low 24-bits&n; * during PCI bus mastering, then you would pass 0x00ffffff as the mask to&n; * this function.&n; */
 r_int
 DECL|function|swiotlb_dma_supported
 id|swiotlb_dma_supported
