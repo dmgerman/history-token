@@ -1773,6 +1773,13 @@ id|index
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* notify BIOS that we exist */
+id|acpi_processor_notify_smm
+c_func
+(paren
+id|THIS_MODULE
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
