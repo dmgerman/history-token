@@ -2,8 +2,8 @@ multiline_comment|/*&n; * Device tables which are exported to userspace via&n; *
 macro_line|#ifndef LINUX_MOD_DEVICETABLE_H
 DECL|macro|LINUX_MOD_DEVICETABLE_H
 mdefine_line|#define LINUX_MOD_DEVICETABLE_H
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/types.h&gt;
 DECL|typedef|kernel_ulong_t
 r_typedef
 r_int
@@ -19,17 +19,15 @@ id|pci_device_id
 (brace
 DECL|member|vendor
 DECL|member|device
-r_int
-r_int
+id|__u32
 id|vendor
 comma
 id|device
 suffix:semicolon
-multiline_comment|/* Vendor and device ID or PCI_ANY_ID */
+multiline_comment|/* Vendor and device ID or PCI_ANY_ID*/
 DECL|member|subvendor
 DECL|member|subdevice
-r_int
-r_int
+id|__u32
 id|subvendor
 comma
 id|subdevice
@@ -37,8 +35,7 @@ suffix:semicolon
 multiline_comment|/* Subsystem ID&squot;s or PCI_ANY_ID */
 DECL|member|class
 DECL|member|class_mask
-r_int
-r_int
+id|__u32
 r_class
 comma
 id|class_mask
