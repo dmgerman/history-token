@@ -1752,12 +1752,6 @@ op_logical_neg
 id|gus-&gt;max_flag
 )paren
 (brace
-id|snd_card_free
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1765,6 +1759,12 @@ id|KERN_ERR
 l_string|&quot;GUS MAX soundcard was not detected at 0x%lx&bslash;n&quot;
 comma
 id|gus-&gt;gf1.port
+)paren
+suffix:semicolon
+id|snd_card_free
+c_func
+(paren
+id|card
 )paren
 suffix:semicolon
 r_return

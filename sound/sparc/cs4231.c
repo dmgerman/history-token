@@ -9712,12 +9712,6 @@ id|chip
 )paren
 )paren
 (brace
-id|snd_cs4231_sbus_free
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
 id|snd_printk
 c_func
 (paren
@@ -9733,6 +9727,12 @@ id|sdev-&gt;irqs
 l_int|0
 )braket
 )paren
+)paren
+suffix:semicolon
+id|snd_cs4231_sbus_free
+c_func
+(paren
+id|chip
 )paren
 suffix:semicolon
 r_return

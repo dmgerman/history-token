@@ -621,6 +621,18 @@ id|vlandev
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/** NOTE:  This will consume the memory pointed to by dent, it seems. */
+r_if
+c_cond
+(paren
+id|VLAN_DEV_INFO
+c_func
+(paren
+id|vlandev
+)paren
+op_member_access_from_pointer
+id|dent
+)paren
+(brace
 id|remove_proc_entry
 c_func
 (paren
@@ -645,6 +657,7 @@ id|dent
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

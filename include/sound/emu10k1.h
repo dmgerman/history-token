@@ -1468,7 +1468,7 @@ r_int
 r_int
 id|translation
 suffix:semicolon
-multiline_comment|/* translation type (EMU10K1_GRP_TRANSLATION*) */
+multiline_comment|/* translation type (EMU10K1_GPR_TRANSLATION*) */
 DECL|member|kcontrol
 id|snd_kcontrol_t
 op_star
@@ -3284,10 +3284,10 @@ DECL|macro|EMU10K1_GPR_TRANSLATION_NONE
 mdefine_line|#define EMU10K1_GPR_TRANSLATION_NONE&t;&t;0
 DECL|macro|EMU10K1_GPR_TRANSLATION_TABLE100
 mdefine_line|#define EMU10K1_GPR_TRANSLATION_TABLE100&t;1
-DECL|macro|EMU10K1_GRP_TRANSLATION_BASS
-mdefine_line|#define EMU10K1_GRP_TRANSLATION_BASS&t;&t;2
-DECL|macro|EMU10K1_GRP_TRANSLATION_TREBLE
-mdefine_line|#define EMU10K1_GRP_TRANSLATION_TREBLE&t;&t;3
+DECL|macro|EMU10K1_GPR_TRANSLATION_BASS
+mdefine_line|#define EMU10K1_GPR_TRANSLATION_BASS&t;&t;2
+DECL|macro|EMU10K1_GPR_TRANSLATION_TREBLE
+mdefine_line|#define EMU10K1_GPR_TRANSLATION_TREBLE&t;&t;3
 DECL|macro|EMU10K1_GPR_TRANSLATION_ONOFF
 mdefine_line|#define EMU10K1_GPR_TRANSLATION_ONOFF&t;&t;4
 r_typedef
@@ -3345,7 +3345,7 @@ r_int
 r_int
 id|translation
 suffix:semicolon
-multiline_comment|/* translation type (EMU10K1_GRP_TRANSLATION*) */
+multiline_comment|/* translation type (EMU10K1_GPR_TRANSLATION*) */
 DECL|typedef|emu10k1_fx8010_control_gpr_t
 )brace
 id|emu10k1_fx8010_control_gpr_t

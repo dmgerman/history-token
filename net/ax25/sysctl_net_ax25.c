@@ -1134,8 +1134,17 @@ id|GFP_ATOMIC
 op_eq
 l_int|NULL
 )paren
+(brace
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|ax25_dev_lock
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|memset
 c_func
 (paren

@@ -3261,7 +3261,12 @@ id|nr_neigh-&gt;ax25
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|// ax25_cb_put(ax25);
+id|ax25_cb_put
+c_func
+(paren
+id|ax25
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3726,7 +3731,12 @@ id|ax25s
 )paren
 (brace
 multiline_comment|/* We were already holding this ax25_cb */
-singleline_comment|// ax25_cb_put(ax25s);
+id|ax25_cb_put
+c_func
+(paren
+id|ax25s
+)paren
+suffix:semicolon
 )brace
 id|nr_neigh-&gt;ax25
 op_assign

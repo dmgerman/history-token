@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ax25.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|AX25_T1CLAMPLO
 mdefine_line|#define&t;AX25_T1CLAMPLO  &t;&t;1
@@ -417,11 +418,10 @@ r_typedef
 r_struct
 id|ax25_cb
 (brace
-DECL|member|next
+DECL|member|ax25_node
 r_struct
-id|ax25_cb
-op_star
-id|next
+id|hlist_node
+id|ax25_node
 suffix:semicolon
 DECL|member|source_addr
 DECL|member|dest_addr
@@ -551,9 +551,12 @@ r_char
 id|window
 suffix:semicolon
 DECL|member|timer
+DECL|member|dtimer
 r_struct
 id|timer_list
 id|timer
+comma
+id|dtimer
 suffix:semicolon
 DECL|member|sk
 r_struct
@@ -562,16 +565,66 @@ op_star
 id|sk
 suffix:semicolon
 multiline_comment|/* Backlink to socket */
+DECL|member|refcount
+id|atomic_t
+id|refcount
+suffix:semicolon
 DECL|typedef|ax25_cb
 )brace
 id|ax25_cb
 suffix:semicolon
 DECL|macro|ax25_sk
 mdefine_line|#define ax25_sk(__sk) ((ax25_cb *)(__sk)-&gt;sk_protinfo)
-multiline_comment|/* af_ax25.c */
-r_extern
+DECL|macro|ax25_for_each
+mdefine_line|#define ax25_for_each(__ax25, node, list) &bslash;&n;&t;hlist_for_each_entry(__ax25, node, list, ax25_node)
+DECL|macro|ax25_cb_hold
+mdefine_line|#define ax25_cb_hold(__ax25) &bslash;&n;&t;atomic_inc(&amp;((__ax25)-&gt;refcount))
+DECL|function|ax25_cb_put
+r_static
+id|__inline__
+r_void
+id|ax25_cb_put
+c_func
+(paren
 id|ax25_cb
 op_star
+id|ax25
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|atomic_dec_and_test
+c_func
+(paren
+op_amp
+id|ax25-&gt;refcount
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ax25-&gt;digipeat
+)paren
+id|kfree
+c_func
+(paren
+id|ax25-&gt;digipeat
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ax25
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* af_ax25.c */
+r_extern
+r_struct
+id|hlist_head
 id|ax25_list
 suffix:semicolon
 r_extern
@@ -580,16 +633,7 @@ id|ax25_list_lock
 suffix:semicolon
 r_extern
 r_void
-id|ax25_free_cb
-c_func
-(paren
-id|ax25_cb
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ax25_insert_socket
+id|ax25_cb_add
 c_func
 (paren
 id|ax25_cb

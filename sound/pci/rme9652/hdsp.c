@@ -17986,6 +17986,9 @@ suffix:colon
 r_case
 l_int|0xb
 suffix:colon
+r_case
+l_int|0x32
+suffix:colon
 id|hdsp-&gt;card_name
 op_assign
 l_string|&quot;RME Hammerfall DSP&quot;
