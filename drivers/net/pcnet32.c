@@ -317,7 +317,7 @@ id|MAX_UNITS
 )braket
 suffix:semicolon
 multiline_comment|/*&n; *&t;&t;&t;&t;Theory of Operation&n; *&n; * This driver uses the same software structure as the normal lance&n; * driver. So look for a verbose description in lance.c. The differences&n; * to the normal lance driver is the use of the 32bit mode of PCnet32&n; * and PCnetPCI chips. Because these chips are 32bit chips, there is no&n; * 16MB limitation and we don&squot;t need bounce buffers.&n; */
-multiline_comment|/*&n; * History:&n; * v0.01:  Initial version&n; *&t;   only tested on Alpha Noname Board&n; * v0.02:  changed IRQ handling for new interrupt scheme (dev_id)&n; *&t;   tested on a ASUS SP3G&n; * v0.10:  fixed an odd problem with the 79C974 in a Compaq Deskpro XL&n; *&t;   looks like the 974 doesn&squot;t like stopping and restarting in a&n; *&t;   short period of time; now we do a reinit of the lance; the&n; *&t;   bug was triggered by doing ifconfig eth0 &lt;ip&gt; broadcast &lt;addr&gt;&n; *&t;   and hangs the machine (thanks to Klaus Liedl for debugging)&n; * v0.12:  by suggestion from Donald Becker: Renamed driver to pcnet32,&n; *&t;   made it standalone (no need for lance.c)&n; * v0.13:  added additional PCI detecting for special PCI devices (Compaq)&n; * v0.14:  stripped down additional PCI probe (thanks to David C Niemi&n; *&t;   and sveneric@xs4all.nl for testing this on their Compaq boxes)&n; * v0.15:  added 79C965 (VLB) probe&n; *&t;   added interrupt sharing for PCI chips&n; * v0.16:  fixed set_multicast_list on Alpha machines&n; * v0.17:  removed hack from dev.c; now pcnet32 uses ethif_probe in Space.c&n; * v0.19:  changed setting of autoselect bit&n; * v0.20:  removed additional Compaq PCI probe; there is now a working one&n; *&t;   in arch/i386/bios32.c&n; * v0.21:  added endian conversion for ppc, from work by cort@cs.nmt.edu&n; * v0.22:  added printing of status to ring dump&n; * v0.23:  changed enet_statistics to net_devive_stats&n; * v0.90:  added multicast filter&n; *&t;   added module support&n; *&t;   changed irq probe to new style&n; *&t;   added PCnetFast chip id&n; *&t;   added fix for receive stalls with Intel saturn chipsets&n; *&t;   added in-place rx skbs like in the tulip driver&n; *&t;   minor cleanups&n; * v0.91:  added PCnetFast+ chip id&n; *&t;   back port to 2.0.x&n; * v1.00:  added some stuff from Donald Becker&squot;s 2.0.34 version&n; *&t;   added support for byte counters in net_dev_stats&n; * v1.01:  do ring dumps, only when debugging the driver&n; *&t;   increased the transmit timeout&n; * v1.02:  fixed memory leak in pcnet32_init_ring()&n; * v1.10:  workaround for stopped transmitter&n; *&t;   added port selection for modules&n; *&t;   detect special T1/E1 WAN card and setup port selection&n; * v1.11:  fixed wrong checking of Tx errors&n; * v1.20:  added check of return value kmalloc (cpeterso@cs.washington.edu)&n; *&t;   added save original kmalloc addr for freeing (mcr@solidum.com)&n; *&t;   added support for PCnetHome chip (joe@MIT.EDU)&n; *&t;   rewritten PCI card detection&n; *&t;   added dwio mode to get driver working on some PPC machines&n; * v1.21:  added mii selection and mii ioctl&n; * v1.22:  changed pci scanning code to make PPC people happy&n; *&t;   fixed switching to 32bit mode in pcnet32_open() (thanks&n; *&t;   to Michael Richard &lt;mcr@solidum.com&gt; for noticing this one)&n; *&t;   added sub vendor/device id matching (thanks again to&n; *&t;   Michael Richard &lt;mcr@solidum.com&gt;)&n; *&t;   added chip id for 79c973/975 (thanks to Zach Brown &lt;zab@zabbo.net&gt;)&n; * v1.23   fixed small bug, when manual selecting MII speed/duplex&n; * v1.24   Applied Thomas&squot; patch to use TxStartPoint and thus decrease TxFIFO&n; *&t;   underflows.&t;Added tx_start_pt module parameter. Increased&n; *&t;   TX_RING_SIZE from 16 to 32.&t;Added #ifdef&squot;d code to use DXSUFLO&n; *&t;   for FAST[+] chipsets. &lt;kaf@fc.hp.com&gt;&n; * v1.24ac Added SMP spinlocking - Alan Cox &lt;alan@redhat.com&gt;&n; * v1.25kf Added No Interrupt on successful Tx for some Tx&squot;s &lt;kaf@fc.hp.com&gt;&n; * v1.26   Converted to pci_alloc_consistent, Jamey Hicks / George France&n; *                                           &lt;jamey@crl.dec.com&gt;&n; * -&t;   Fixed a few bugs, related to running the controller in 32bit mode.&n; *&t;   23 Oct, 2000.  Carsten Langgaard, carstenl@mips.com&n; *&t;   Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; * v1.26p  Fix oops on rmmod+insmod; plug i/o resource leak - Paul Gortmaker&n; * v1.27   improved CSR/PROM address detection, lots of cleanups,&n; * &t;   new pcnet32vlb module option, HP-PARISC support,&n; * &t;   added module parameter descriptions,&n; * &t;   initial ethtool support - Helge Deller &lt;deller@gmx.de&gt;&n; * v1.27a  Sun Feb 10 2002 Go Taniguchi &lt;go@turbolinux.co.jp&gt;&n; *&t;   use alloc_etherdev and register_netdev&n; *&t;   fix pci probe not increment cards_found&n; *&t;   FD auto negotiate error workaround for xSeries250&n; *&t;   clean up and using new mii module&n; * v1.27b  Sep 30 2002 Kent Yoder &lt;yoder1@us.ibm.com&gt;&n; * &t;   Added timer for cable connection state changes.&n; * v1.28   20 Feb 2004 Don Fry &lt;brazilnut@us.ibm.com&gt;&n; *&t;   Jon Mason &lt;jonmason@us.ibm.com&gt;, Chinmay Albal &lt;albal@in.ibm.com&gt;&n; *&t;   Now uses ethtool_ops, netif_msg_* and generic_mii_ioctl.&n; *&t;   Fixes bogus &squot;Bus master arbitration failure&squot;, pci_[un]map_single&n; *&t;   length errors, and transmit hangs.  Cleans up after errors in open.&n; *&t;   Jim Lewis &lt;jklewis@us.ibm.com&gt; added ethernet loopback test.&n; *&t;   Thomas Munck Steenholdt &lt;tmus@tmus.dk&gt; non-mii ioctl corrections.&n; * v1.29   6 Apr 2004 Jim Lewis &lt;jklewis@us.ibm.com&gt; added physical&n; *&t;   identification code (blink led&squot;s) and register dump.&n; */
+multiline_comment|/*&n; * History:&n; * v0.01:  Initial version&n; *&t;   only tested on Alpha Noname Board&n; * v0.02:  changed IRQ handling for new interrupt scheme (dev_id)&n; *&t;   tested on a ASUS SP3G&n; * v0.10:  fixed an odd problem with the 79C974 in a Compaq Deskpro XL&n; *&t;   looks like the 974 doesn&squot;t like stopping and restarting in a&n; *&t;   short period of time; now we do a reinit of the lance; the&n; *&t;   bug was triggered by doing ifconfig eth0 &lt;ip&gt; broadcast &lt;addr&gt;&n; *&t;   and hangs the machine (thanks to Klaus Liedl for debugging)&n; * v0.12:  by suggestion from Donald Becker: Renamed driver to pcnet32,&n; *&t;   made it standalone (no need for lance.c)&n; * v0.13:  added additional PCI detecting for special PCI devices (Compaq)&n; * v0.14:  stripped down additional PCI probe (thanks to David C Niemi&n; *&t;   and sveneric@xs4all.nl for testing this on their Compaq boxes)&n; * v0.15:  added 79C965 (VLB) probe&n; *&t;   added interrupt sharing for PCI chips&n; * v0.16:  fixed set_multicast_list on Alpha machines&n; * v0.17:  removed hack from dev.c; now pcnet32 uses ethif_probe in Space.c&n; * v0.19:  changed setting of autoselect bit&n; * v0.20:  removed additional Compaq PCI probe; there is now a working one&n; *&t;   in arch/i386/bios32.c&n; * v0.21:  added endian conversion for ppc, from work by cort@cs.nmt.edu&n; * v0.22:  added printing of status to ring dump&n; * v0.23:  changed enet_statistics to net_devive_stats&n; * v0.90:  added multicast filter&n; *&t;   added module support&n; *&t;   changed irq probe to new style&n; *&t;   added PCnetFast chip id&n; *&t;   added fix for receive stalls with Intel saturn chipsets&n; *&t;   added in-place rx skbs like in the tulip driver&n; *&t;   minor cleanups&n; * v0.91:  added PCnetFast+ chip id&n; *&t;   back port to 2.0.x&n; * v1.00:  added some stuff from Donald Becker&squot;s 2.0.34 version&n; *&t;   added support for byte counters in net_dev_stats&n; * v1.01:  do ring dumps, only when debugging the driver&n; *&t;   increased the transmit timeout&n; * v1.02:  fixed memory leak in pcnet32_init_ring()&n; * v1.10:  workaround for stopped transmitter&n; *&t;   added port selection for modules&n; *&t;   detect special T1/E1 WAN card and setup port selection&n; * v1.11:  fixed wrong checking of Tx errors&n; * v1.20:  added check of return value kmalloc (cpeterso@cs.washington.edu)&n; *&t;   added save original kmalloc addr for freeing (mcr@solidum.com)&n; *&t;   added support for PCnetHome chip (joe@MIT.EDU)&n; *&t;   rewritten PCI card detection&n; *&t;   added dwio mode to get driver working on some PPC machines&n; * v1.21:  added mii selection and mii ioctl&n; * v1.22:  changed pci scanning code to make PPC people happy&n; *&t;   fixed switching to 32bit mode in pcnet32_open() (thanks&n; *&t;   to Michael Richard &lt;mcr@solidum.com&gt; for noticing this one)&n; *&t;   added sub vendor/device id matching (thanks again to&n; *&t;   Michael Richard &lt;mcr@solidum.com&gt;)&n; *&t;   added chip id for 79c973/975 (thanks to Zach Brown &lt;zab@zabbo.net&gt;)&n; * v1.23   fixed small bug, when manual selecting MII speed/duplex&n; * v1.24   Applied Thomas&squot; patch to use TxStartPoint and thus decrease TxFIFO&n; *&t;   underflows.&t;Added tx_start_pt module parameter. Increased&n; *&t;   TX_RING_SIZE from 16 to 32.&t;Added #ifdef&squot;d code to use DXSUFLO&n; *&t;   for FAST[+] chipsets. &lt;kaf@fc.hp.com&gt;&n; * v1.24ac Added SMP spinlocking - Alan Cox &lt;alan@redhat.com&gt;&n; * v1.25kf Added No Interrupt on successful Tx for some Tx&squot;s &lt;kaf@fc.hp.com&gt;&n; * v1.26   Converted to pci_alloc_consistent, Jamey Hicks / George France&n; *                                           &lt;jamey@crl.dec.com&gt;&n; * -&t;   Fixed a few bugs, related to running the controller in 32bit mode.&n; *&t;   23 Oct, 2000.  Carsten Langgaard, carstenl@mips.com&n; *&t;   Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; * v1.26p  Fix oops on rmmod+insmod; plug i/o resource leak - Paul Gortmaker&n; * v1.27   improved CSR/PROM address detection, lots of cleanups,&n; * &t;   new pcnet32vlb module option, HP-PARISC support,&n; * &t;   added module parameter descriptions,&n; * &t;   initial ethtool support - Helge Deller &lt;deller@gmx.de&gt;&n; * v1.27a  Sun Feb 10 2002 Go Taniguchi &lt;go@turbolinux.co.jp&gt;&n; *&t;   use alloc_etherdev and register_netdev&n; *&t;   fix pci probe not increment cards_found&n; *&t;   FD auto negotiate error workaround for xSeries250&n; *&t;   clean up and using new mii module&n; * v1.27b  Sep 30 2002 Kent Yoder &lt;yoder1@us.ibm.com&gt;&n; * &t;   Added timer for cable connection state changes.&n; * v1.28   20 Feb 2004 Don Fry &lt;brazilnut@us.ibm.com&gt;&n; *&t;   Jon Mason &lt;jonmason@us.ibm.com&gt;, Chinmay Albal &lt;albal@in.ibm.com&gt;&n; *&t;   Now uses ethtool_ops, netif_msg_* and generic_mii_ioctl.&n; *&t;   Fixes bogus &squot;Bus master arbitration failure&squot;, pci_[un]map_single&n; *&t;   length errors, and transmit hangs.  Cleans up after errors in open.&n; *&t;   Jim Lewis &lt;jklewis@us.ibm.com&gt; added ethernet loopback test.&n; *&t;   Thomas Munck Steenholdt &lt;tmus@tmus.dk&gt; non-mii ioctl corrections.&n; * v1.29   6 Apr 2004 Jim Lewis &lt;jklewis@us.ibm.com&gt; added physical&n; *&t;   identification code (blink led&squot;s) and register dump.&n; *&t;   Don Fry added timer for 971/972 so skbufs don&squot;t remain on tx ring&n; *&t;   forever.&n; */
 multiline_comment|/*&n; * Set the number of Tx and Rx buffers, using Log_2(# buffers).&n; * Reasonable default values are 4 Tx buffers, and 16 Rx buffers.&n; * That translates to 2 (4 == 2^^2) and 4 (16 == 2^^4).&n; */
 macro_line|#ifndef PCNET32_LOG_TX_BUFFERS
 DECL|macro|PCNET32_LOG_TX_BUFFERS
@@ -4968,6 +4968,26 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ltint
+)paren
+(brace
+multiline_comment|/* Enable timer to prevent skbuffs from remaining on the tx ring&n;&t; * forever if no other tx being done.  Set timer period to about&n;&t; * 122 ms */
+id|a
+op_member_access_from_pointer
+id|write_bcr
+c_func
+(paren
+id|ioaddr
+comma
+l_int|31
+comma
+l_int|0x253b
+)paren
+suffix:semicolon
+)brace
 id|dev
 op_assign
 id|alloc_etherdev
@@ -6939,6 +6959,27 @@ comma
 l_int|0x0001
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|lp-&gt;ltint
+)paren
+(brace
+multiline_comment|/* start the software timer */
+id|lp-&gt;a
+dot
+id|write_csr
+c_func
+(paren
+id|ioaddr
+comma
+l_int|7
+comma
+l_int|0x0400
+)paren
+suffix:semicolon
+multiline_comment|/* set STINTE */
+)brace
 id|netif_start_queue
 c_func
 (paren
@@ -7996,6 +8037,15 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8026,15 +8076,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Default status -- will not enable Successful-TxDone&n;     * interrupt when that option is available to us.&n;     */
 id|status
 op_assign
@@ -8291,6 +8332,8 @@ suffix:semicolon
 id|u16
 id|csr0
 comma
+id|csr7
+comma
 id|rap
 suffix:semicolon
 r_int
@@ -8354,10 +8397,6 @@ c_func
 id|ioaddr
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
 id|csr0
 op_assign
 id|lp-&gt;a.read_csr
@@ -8366,9 +8405,36 @@ id|ioaddr
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|csr7
+op_assign
+id|lp-&gt;ltint
+ques
+c_cond
+id|lp-&gt;a
+dot
+id|read_csr
+c_func
+(paren
+id|ioaddr
+comma
+l_int|7
 )paren
+suffix:colon
+l_int|0
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|csr0
 op_amp
 l_int|0x8600
+op_logical_or
+id|csr7
+op_amp
+l_int|0x0800
+)paren
 op_logical_and
 op_decrement
 id|boguscnt
@@ -8399,6 +8465,25 @@ id|csr0
 op_amp
 op_complement
 l_int|0x004f
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|csr7
+op_amp
+l_int|0x0800
+)paren
+id|lp-&gt;a
+dot
+id|write_csr
+c_func
+(paren
+id|ioaddr
+comma
+l_int|7
+comma
+id|csr7
 )paren
 suffix:semicolon
 id|must_restart
@@ -8452,9 +8537,13 @@ c_cond
 id|csr0
 op_amp
 l_int|0x0200
+op_logical_or
+id|csr7
+op_amp
+l_int|0x0800
 )paren
 (brace
-multiline_comment|/* Tx-done interrupt */
+multiline_comment|/* Tx-done or Timer interrupt */
 r_int
 r_int
 id|dirty_tx
@@ -8910,6 +8999,32 @@ l_int|0x0002
 )paren
 suffix:semicolon
 )brace
+id|csr0
+op_assign
+id|lp-&gt;a.read_csr
+(paren
+id|ioaddr
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|csr7
+op_assign
+id|lp-&gt;ltint
+ques
+c_cond
+id|lp-&gt;a
+dot
+id|read_csr
+c_func
+(paren
+id|ioaddr
+comma
+l_int|7
+)paren
+suffix:colon
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* Clear any other interrupt, and set interrupt enable. */
 id|lp-&gt;a.write_csr
@@ -9402,6 +9517,12 @@ c_func
 l_int|0x8000
 )paren
 suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure adapter sees owner change */
 id|lp-&gt;cur_rx
 op_increment
 suffix:semicolon
@@ -9673,6 +9794,26 @@ comma
 l_int|0x0004
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|lp-&gt;ltint
+)paren
+(brace
+multiline_comment|/* Disable timer interrupts */
+id|lp-&gt;a
+dot
+id|write_csr
+c_func
+(paren
+id|ioaddr
+comma
+l_int|7
+comma
+l_int|0x0000
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;     * Switch back to 16bit mode to avoid problems with dumb&n;     * DOS packet driver after a warm reboot&n;     */
 id|lp-&gt;a.write_bcr
 (paren
@@ -9700,6 +9841,15 @@ comma
 id|dev
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* free all allocated skbuffs */
 r_for
 c_loop
@@ -9725,6 +9875,12 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure adapter sees owner change */
 r_if
 c_cond
 (paren
@@ -9791,6 +9947,22 @@ id|i
 op_increment
 )paren
 (brace
+id|lp-&gt;tx_ring
+(braket
+id|i
+)braket
+dot
+id|status
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* CPU owns buffer */
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure adapter sees owner change */
 r_if
 c_cond
 (paren
@@ -9845,6 +10017,15 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
