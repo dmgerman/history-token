@@ -348,6 +348,13 @@ op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|cursor-&gt;d_child
+)paren
+suffix:semicolon
 id|p
 op_assign
 id|file-&gt;f_dentry-&gt;d_subdirs.next
@@ -401,13 +408,6 @@ op_assign
 id|p-&gt;next
 suffix:semicolon
 )brace
-id|list_del
-c_func
-(paren
-op_amp
-id|cursor-&gt;d_child
-)paren
-suffix:semicolon
 id|list_add_tail
 c_func
 (paren
