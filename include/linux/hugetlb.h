@@ -253,9 +253,36 @@ id|pmd_t
 id|pmd
 )paren
 suffix:semicolon
+r_struct
+id|page
+op_star
+id|alloc_huge_page
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|free_huge_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_int
-id|htlbpage_max
+r_int
+id|max_huge_pages
+suffix:semicolon
+r_extern
+r_const
+r_int
+r_int
+id|hugetlb_zero
+comma
+id|hugetlb_infinity
 suffix:semicolon
 r_static
 r_inline
@@ -380,6 +407,10 @@ DECL|macro|is_hugepage_only_range
 mdefine_line|#define is_hugepage_only_range(addr, len)&t;0
 DECL|macro|hugetlb_free_pgtables
 mdefine_line|#define hugetlb_free_pgtables(tlb, prev, start, end) do { } while (0)
+DECL|macro|alloc_huge_page
+mdefine_line|#define alloc_huge_page()&t;&t;&t;({ NULL; })
+DECL|macro|free_huge_page
+mdefine_line|#define free_huge_page(p)&t;&t;&t;({ (void)(p); BUG(); })
 macro_line|#ifndef HPAGE_MASK
 DECL|macro|HPAGE_MASK
 mdefine_line|#define HPAGE_MASK&t;0&t;&t;/* Keep the compiler happy */
