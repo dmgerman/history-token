@@ -505,7 +505,7 @@ comma
 id|offset
 )paren
 suffix:semicolon
-multiline_comment|/* Page is pinned, can&squot;t fail */
+multiline_comment|/* Page is pinned, but may no longer be in this address space. */
 r_if
 c_cond
 (paren
@@ -519,11 +519,16 @@ id|uaddr
 op_ne
 l_int|0
 )paren
-id|BUG
-c_func
-(paren
-)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -536,12 +541,6 @@ id|ret
 op_assign
 op_minus
 id|EWOULDBLOCK
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
 suffix:semicolon
 r_goto
 id|out
@@ -593,6 +592,12 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
 multiline_comment|/* Were we woken up anyway? */
 r_if
 c_cond
