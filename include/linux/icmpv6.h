@@ -220,6 +220,24 @@ DECL|macro|ICMPV6_MGM_REPORT
 mdefine_line|#define ICMPV6_MGM_REPORT       &t;131
 DECL|macro|ICMPV6_MGM_REDUCTION
 mdefine_line|#define ICMPV6_MGM_REDUCTION    &t;132
+multiline_comment|/* definitions for MLDv2 */
+DECL|macro|MLD2_MODE_IS_INCLUDE
+mdefine_line|#define MLD2_MODE_IS_INCLUDE&t;1
+DECL|macro|MLD2_MODE_IS_EXCLUDE
+mdefine_line|#define MLD2_MODE_IS_EXCLUDE&t;2
+DECL|macro|MLD2_CHANGE_TO_INCLUDE
+mdefine_line|#define MLD2_CHANGE_TO_INCLUDE&t;3
+DECL|macro|MLD2_CHANGE_TO_EXCLUDE
+mdefine_line|#define MLD2_CHANGE_TO_EXCLUDE&t;4
+DECL|macro|MLD2_ALLOW_NEW_SOURCES
+mdefine_line|#define MLD2_ALLOW_NEW_SOURCES&t;5
+DECL|macro|MLD2_BLOCK_OLD_SOURCES
+mdefine_line|#define MLD2_BLOCK_OLD_SOURCES&t;6
+multiline_comment|/* this must be an IANA-assigned value; 206 for testing only */
+DECL|macro|ICMPV6_MLD2_REPORT
+mdefine_line|#define ICMPV6_MLD2_REPORT&t;&t;206
+DECL|macro|MLD2_ALL_MCR_INIT
+mdefine_line|#define MLD2_ALL_MCR_INIT { { { 0xff,0x02,0,0,0,0,0,0,0,0,0,0,0,0,0,0x16 } } }
 multiline_comment|/*&n; *&t;Codes for Destination Unreachable&n; */
 DECL|macro|ICMPV6_NOROUTE
 mdefine_line|#define ICMPV6_NOROUTE&t;&t;&t;0

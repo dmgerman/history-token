@@ -821,6 +821,9 @@ id|skb-&gt;dev
 comma
 op_amp
 id|hdr-&gt;daddr
+comma
+op_amp
+id|hdr-&gt;saddr
 )paren
 )paren
 id|deliver

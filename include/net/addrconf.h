@@ -349,7 +349,12 @@ comma
 r_struct
 id|in6_addr
 op_star
-id|addr
+id|mc_addr
+comma
+r_struct
+id|in6_addr
+op_star
+id|src_addr
 )paren
 suffix:semicolon
 r_extern
@@ -452,7 +457,12 @@ comma
 r_struct
 id|in6_addr
 op_star
-id|addr
+id|group
+comma
+r_struct
+id|in6_addr
+op_star
+id|src_addr
 )paren
 suffix:semicolon
 r_extern

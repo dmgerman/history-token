@@ -103,6 +103,7 @@ mdefine_line|#define&t;IPOPT_TS_TSANDADDR&t;1&t;&t;/* timestamps and addresses *
 DECL|macro|IPOPT_TS_PRESPEC
 mdefine_line|#define&t;IPOPT_TS_PRESPEC&t;3&t;&t;/* specified modules only */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/igmp.h&gt;

@@ -343,6 +343,8 @@ c_func
 id|s
 comma
 id|loc_addr
+comma
+id|rmt_addr
 )paren
 )paren
 r_break

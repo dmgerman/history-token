@@ -329,6 +329,9 @@ id|dev
 comma
 op_amp
 id|skb-&gt;nh.ipv6h-&gt;daddr
+comma
+op_amp
+id|skb-&gt;nh.ipv6h-&gt;saddr
 )paren
 )paren
 (brace
