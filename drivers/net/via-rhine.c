@@ -339,55 +339,6 @@ l_string|&quot;VIA Rhine full duplex setting(s) (1)&quot;
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This driver is designed for the VIA 86c100A Rhine-II PCI Fast Ethernet&n;controller.&n;&n;II. Board-specific settings&n;&n;Boards with this chip are functional only in a bus-master PCI slot.&n;&n;Many operational settings are loaded from the EEPROM to the Config word at&n;offset 0x78. For most of these settings, this driver assumes that they are&n;correct.&n;If this driver is compiled to use PCI memory space operations the EEPROM&n;must be configured to enable memory ops.&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;This driver uses two statically allocated fixed-size descriptor lists&n;formed into rings by a branch from the final descriptor to the beginning of&n;the list. The ring sizes are set at compile time by RX/TX_RING_SIZE.&n;&n;IIIb/c. Transmit/Receive Structure&n;&n;This driver attempts to use a zero-copy receive and transmit scheme.&n;&n;Alas, all data buffers are required to start on a 32 bit boundary, so&n;the driver must often copy transmit packets into bounce buffers.&n;&n;The driver allocates full frame size skbuffs for the Rx ring buffers at&n;open() time and passes the skb-&gt;data field to the chip as receive data&n;buffers. When an incoming frame is less than RX_COPYBREAK bytes long,&n;a fresh skbuff is allocated and the frame is copied to the new skbuff.&n;When the incoming frame is larger, the skbuff is passed directly up the&n;protocol stack. Buffers consumed this way are replaced by newly allocated&n;skbuffs in the last phase of rhine_rx().&n;&n;The RX_COPYBREAK value is chosen to trade-off the memory wasted by&n;using a full-sized skbuff for small frames vs. the copying costs of larger&n;frames. New boards are typically used in generously configured machines&n;and the underfilled buffers have negligible impact compared to the benefit of&n;a single allocation size, so the default value of zero results in never&n;copying packets. When copying is done, the cost is usually mitigated by using&n;a combined copy/checksum routine. Copying also preloads the cache, which is&n;most useful with small frames.&n;&n;Since the VIA chips are only able to transfer data to buffers on 32 bit&n;boundaries, the IP header at offset 14 in an ethernet frame isn&squot;t&n;longword aligned for further processing. Copying these unaligned buffers&n;has the beneficial effect of 16-byte aligning the IP header.&n;&n;IIId. Synchronization&n;&n;The driver runs as two independent, single-threaded flows of control. One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;priv-&gt;lock spinlock. The other thread is the interrupt handler, which&n;is single threaded by the hardware and interrupt handling software.&n;&n;The send packet thread has partial control over the Tx ring. It locks the&n;dev-&gt;priv-&gt;lock whenever it&squot;s queuing a Tx packet. If the next slot in the ring&n;is not available it stops the transmit queue by calling netif_stop_queue.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring. After reaping the stats, it marks the Tx queue entry as&n;empty by incrementing the dirty_tx mark. If at least half of the entries in&n;the Rx ring are available the transmit queue is woken up if it was stopped.&n;&n;IV. Notes&n;&n;IVb. References&n;&n;Preliminary VT86C100A manual from http://www.via.com.tw/&n;http://www.scyld.com/expert/100mbps.html&n;http://www.scyld.com/expert/NWay.html&n;ftp://ftp.via.com.tw/public/lan/Products/NIC/VT86C100A/Datasheet/VT86C100A03.pdf&n;ftp://ftp.via.com.tw/public/lan/Products/NIC/VT6102/Datasheet/VT6102_021.PDF&n;&n;&n;IVc. Errata&n;&n;The VT86C100A manual is not reliable information.&n;The 3043 chip does not handle unaligned transmit or receive buffers, resulting&n;in significant performance degradation for bounce buffer copies on transmit&n;and unaligned IP headers on receive.&n;The chip does not pad to minimum transmit length.&n;&n;*/
 multiline_comment|/* This table drives the PCI probe routines. It&squot;s mostly boilerplate in all&n;   of the drivers, and will likely be provided by some future kernel.&n;   Note the matching code -- the first table entry matchs all 56** cards but&n;   second only the 1234 card.&n;*/
-DECL|enum|pci_flags_bit
-r_enum
-id|pci_flags_bit
-(brace
-DECL|enumerator|PCI_USES_IO
-DECL|enumerator|PCI_USES_MEM
-DECL|enumerator|PCI_USES_MASTER
-id|PCI_USES_IO
-op_assign
-l_int|1
-comma
-id|PCI_USES_MEM
-op_assign
-l_int|2
-comma
-id|PCI_USES_MASTER
-op_assign
-l_int|4
-comma
-DECL|enumerator|PCI_ADDR0
-DECL|enumerator|PCI_ADDR1
-DECL|enumerator|PCI_ADDR2
-DECL|enumerator|PCI_ADDR3
-id|PCI_ADDR0
-op_assign
-l_int|0x10
-op_lshift
-l_int|0
-comma
-id|PCI_ADDR1
-op_assign
-l_int|0x10
-op_lshift
-l_int|1
-comma
-id|PCI_ADDR2
-op_assign
-l_int|0x10
-op_lshift
-l_int|2
-comma
-id|PCI_ADDR3
-op_assign
-l_int|0x10
-op_lshift
-l_int|3
-comma
-)brace
-suffix:semicolon
 DECL|enum|rhine_chips
 r_enum
 id|rhine_chips
@@ -416,10 +367,6 @@ r_const
 r_char
 op_star
 id|name
-suffix:semicolon
-DECL|member|pci_flags
-id|u16
-id|pci_flags
 suffix:semicolon
 DECL|member|io_size
 r_int
@@ -452,13 +399,6 @@ l_int|0x20
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef USE_MMIO
-DECL|macro|RHINE_IOTYPE
-mdefine_line|#define RHINE_IOTYPE (PCI_USES_MEM | PCI_USES_MASTER | PCI_ADDR1)
-macro_line|#else
-DECL|macro|RHINE_IOTYPE
-mdefine_line|#define RHINE_IOTYPE (PCI_USES_IO  | PCI_USES_MASTER | PCI_ADDR0)
-macro_line|#endif
 multiline_comment|/* Beware of PCI posted writes */
 DECL|macro|IOSYNC
 mdefine_line|#define IOSYNC&t;do { readb(dev-&gt;base_addr + StationAddr); } while (0)
@@ -476,8 +416,6 @@ op_assign
 (brace
 l_string|&quot;VIA VT86C100A Rhine&quot;
 comma
-id|RHINE_IOTYPE
-comma
 l_int|128
 comma
 id|ReqTxAlign
@@ -488,8 +426,6 @@ comma
 (brace
 l_string|&quot;VIA VT6102 Rhine-II&quot;
 comma
-id|RHINE_IOTYPE
-comma
 l_int|256
 comma
 id|HasWOL
@@ -498,8 +434,6 @@ comma
 (brace
 l_string|&quot;VIA VT6105 Rhine-III&quot;
 comma
-id|RHINE_IOTYPE
-comma
 l_int|256
 comma
 id|HasWOL
@@ -507,8 +441,6 @@ id|HasWOL
 comma
 (brace
 l_string|&quot;VIA VT6105M Rhine-III&quot;
-comma
-id|RHINE_IOTYPE
 comma
 l_int|256
 comma
@@ -1882,9 +1814,6 @@ r_int
 id|io_size
 suffix:semicolon
 r_int
-id|pci_flags
-suffix:semicolon
-r_int
 id|phy
 comma
 id|phy_idx
@@ -1941,15 +1870,6 @@ id|chip_id
 )braket
 dot
 id|io_size
-suffix:semicolon
-id|pci_flags
-op_assign
-id|rhine_chip_info
-(braket
-id|chip_id
-)braket
-dot
-id|pci_flags
 suffix:semicolon
 r_if
 c_cond
@@ -2048,13 +1968,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pci_flags
-op_amp
-id|PCI_USES_MASTER
-)paren
 id|pci_set_master
 c_func
 (paren
@@ -2699,16 +2612,11 @@ id|chip_id
 dot
 id|name
 comma
-(paren
-id|pci_flags
-op_amp
-id|PCI_USES_IO
-)paren
-ques
-c_cond
-id|ioaddr
-suffix:colon
+macro_line|#ifdef USE_MMIO
 id|memaddr
+macro_line|#else
+id|ioaddr
+macro_line|#endif
 )paren
 suffix:semicolon
 r_for
