@@ -5502,9 +5502,22 @@ comma
 id|errp
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|SCTP_PARAM_HOST_NAME_ADDRESS
+op_eq
+id|param.p-&gt;type
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_else
 r_return
 l_int|1
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* for (loop through all parameters) */
 r_return
