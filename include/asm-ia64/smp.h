@@ -260,9 +260,10 @@ id|lid
 suffix:semicolon
 id|lid.bits
 op_assign
-id|ia64_get_lid
+id|ia64_getreg
 c_func
 (paren
+id|_IA64_REG_CR_LID
 )paren
 suffix:semicolon
 r_return

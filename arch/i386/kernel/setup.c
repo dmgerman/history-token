@@ -2147,12 +2147,11 @@ comma
 l_int|6
 )paren
 )paren
-(brace
-id|skip_ioapic_setup
-op_assign
-l_int|1
+id|disable_ioapic_setup
+c_func
+(paren
+)paren
 suffix:semicolon
-)brace
 macro_line|#endif /* CONFIG_X86_LOCAL_APIC */
 macro_line|#endif /* CONFIG_ACPI_BOOT */
 multiline_comment|/*&n;&t;&t; * highmem=size forces highmem to be exactly &squot;size&squot; bytes.&n;&t;&t; * This works even on boxes that have no highmem otherwise.&n;&t;&t; * This also works to reduce highmem size on bigger boxes.&n;&t;&t; */
@@ -4208,17 +4207,12 @@ id|cmdline_p
 )paren
 suffix:semicolon
 macro_line|#endif&t;
-macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/*&n;&t; * Parse the ACPI tables for possible boot-time SMP configuration.&n;&t; */
-(paren
-r_void
-)paren
 id|acpi_boot_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 r_if
 c_cond

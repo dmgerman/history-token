@@ -1311,6 +1311,20 @@ suffix:semicolon
 macro_line|#else&t;/*!CONFIG_ACPI_BOOT*/
 DECL|macro|acpi_mp_config
 mdefine_line|#define acpi_mp_config&t;0
+DECL|function|acpi_boot_init
+r_static
+r_inline
+r_int
+id|acpi_boot_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif &t;/*!CONFIG_ACPI_BOOT*/
 macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|struct|acpi_prt_entry
@@ -1477,6 +1491,21 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|acpi_blacklisted
+r_static
+r_inline
+r_int
+id|acpi_blacklisted
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif /*CONFIG_ACPI*/
 macro_line|#endif /*_LINUX_ACPI_H*/
 eof

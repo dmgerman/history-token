@@ -23,8 +23,9 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Forward definition */
+macro_line|#include &lt;asm/intrinsics.h&gt;
 DECL|macro|__sn_mf_a
-mdefine_line|#define __sn_mf_a()   __asm__ __volatile__ (&quot;mf.a&quot; ::: &quot;memory&quot;)
+mdefine_line|#define __sn_mf_a()   ia64_mfa()
 r_extern
 r_void
 id|sn_dma_flush
@@ -34,13 +35,33 @@ r_int
 r_int
 )paren
 suffix:semicolon
+DECL|macro|__sn_inb
+mdefine_line|#define __sn_inb ___sn_inb
+DECL|macro|__sn_inw
+mdefine_line|#define __sn_inw ___sn_inw
+DECL|macro|__sn_inl
+mdefine_line|#define __sn_inl ___sn_inl
+DECL|macro|__sn_outb
+mdefine_line|#define __sn_outb ___sn_outb
+DECL|macro|__sn_outw
+mdefine_line|#define __sn_outw ___sn_outw
+DECL|macro|__sn_outl
+mdefine_line|#define __sn_outl ___sn_outl
+DECL|macro|__sn_readb
+mdefine_line|#define __sn_readb ___sn_readb
+DECL|macro|__sn_readw
+mdefine_line|#define __sn_readw ___sn_readw
+DECL|macro|__sn_readl
+mdefine_line|#define __sn_readl ___sn_readl
+DECL|macro|__sn_readq
+mdefine_line|#define __sn_readq ___sn_readq
 multiline_comment|/*&n; * The following routines are SN Platform specific, called when&n; * a reference is made to inX/outX set macros.  SN Platform&n; * inX set of macros ensures that Posted DMA writes on the&n; * Bridge is flushed.&n; *&n; * The routines should be self explainatory.&n; */
 r_static
 r_inline
 r_int
 r_int
-DECL|function|__sn_inb
-id|__sn_inb
+DECL|function|___sn_inb
+id|___sn_inb
 (paren
 r_int
 r_int
@@ -103,8 +124,8 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|__sn_inw
-id|__sn_inw
+DECL|function|___sn_inw
+id|___sn_inw
 (paren
 r_int
 r_int
@@ -167,8 +188,8 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|__sn_inl
-id|__sn_inl
+DECL|function|___sn_inl
+id|___sn_inl
 (paren
 r_int
 r_int
@@ -230,8 +251,8 @@ suffix:semicolon
 r_static
 r_inline
 r_void
-DECL|function|__sn_outb
-id|__sn_outb
+DECL|function|___sn_outb
+id|___sn_outb
 (paren
 r_int
 r_char
@@ -277,8 +298,8 @@ suffix:semicolon
 r_static
 r_inline
 r_void
-DECL|function|__sn_outw
-id|__sn_outw
+DECL|function|___sn_outw
+id|___sn_outw
 (paren
 r_int
 r_int
@@ -324,8 +345,8 @@ suffix:semicolon
 r_static
 r_inline
 r_void
-DECL|function|__sn_outl
-id|__sn_outl
+DECL|function|___sn_outl
+id|___sn_outl
 (paren
 r_int
 r_int
@@ -373,8 +394,8 @@ r_static
 r_inline
 r_int
 r_char
-DECL|function|__sn_readb
-id|__sn_readb
+DECL|function|___sn_readb
+id|___sn_readb
 (paren
 r_void
 op_star
@@ -419,8 +440,8 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|__sn_readw
-id|__sn_readw
+DECL|function|___sn_readw
+id|___sn_readw
 (paren
 r_void
 op_star
@@ -465,8 +486,8 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|__sn_readl
-id|__sn_readl
+DECL|function|___sn_readl
+id|___sn_readl
 (paren
 r_void
 op_star
@@ -511,8 +532,8 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|__sn_readq
-id|__sn_readq
+DECL|function|___sn_readq
+id|___sn_readq
 (paren
 r_void
 op_star

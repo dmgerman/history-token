@@ -99,6 +99,12 @@ r_int
 id|ctx_nextra_sets
 suffix:semicolon
 multiline_comment|/* number of extra event sets (you always get 1) */
+DECL|member|ctx_reserved1
+r_int
+r_int
+id|ctx_reserved1
+suffix:semicolon
+multiline_comment|/* for future use */
 DECL|member|ctx_fd
 r_int
 id|ctx_fd
@@ -110,10 +116,10 @@ op_star
 id|ctx_smpl_vaddr
 suffix:semicolon
 multiline_comment|/* return arg: virtual address of sampling buffer, is used */
-DECL|member|ctx_reserved
+DECL|member|ctx_reserved2
 r_int
 r_int
-id|ctx_reserved
+id|ctx_reserved2
 (braket
 l_int|11
 )braket
@@ -132,37 +138,43 @@ r_int
 r_int
 id|reg_num
 suffix:semicolon
-multiline_comment|/* which register                             */
+multiline_comment|/* which register */
 DECL|member|reg_set
 r_int
 r_int
 id|reg_set
 suffix:semicolon
-multiline_comment|/* event set for this register                */
+multiline_comment|/* event set for this register */
+DECL|member|reg_reserved1
+r_int
+r_int
+id|reg_reserved1
+suffix:semicolon
+multiline_comment|/* for future use */
 DECL|member|reg_value
 r_int
 r_int
 id|reg_value
 suffix:semicolon
-multiline_comment|/* initial pmc/pmd value                      */
+multiline_comment|/* initial pmc/pmd value */
 DECL|member|reg_flags
 r_int
 r_int
 id|reg_flags
 suffix:semicolon
-multiline_comment|/* input: pmc/pmd flags, return: reg error    */
+multiline_comment|/* input: pmc/pmd flags, return: reg error */
 DECL|member|reg_long_reset
 r_int
 r_int
 id|reg_long_reset
 suffix:semicolon
-multiline_comment|/* reset after buffer overflow notification   */
+multiline_comment|/* reset after buffer overflow notification */
 DECL|member|reg_short_reset
 r_int
 r_int
 id|reg_short_reset
 suffix:semicolon
-multiline_comment|/* reset after counter overflow               */
+multiline_comment|/* reset after counter overflow */
 DECL|member|reg_reset_pmds
 r_int
 r_int
@@ -171,25 +183,25 @@ id|reg_reset_pmds
 l_int|4
 )braket
 suffix:semicolon
-multiline_comment|/* which other counters to reset on overflow  */
+multiline_comment|/* which other counters to reset on overflow */
 DECL|member|reg_random_seed
 r_int
 r_int
 id|reg_random_seed
 suffix:semicolon
-multiline_comment|/* seed value when randomization is used      */
+multiline_comment|/* seed value when randomization is used */
 DECL|member|reg_random_mask
 r_int
 r_int
 id|reg_random_mask
 suffix:semicolon
-multiline_comment|/* bitmask used to limit random value         */
+multiline_comment|/* bitmask used to limit random value */
 DECL|member|reg_last_reset_val
 r_int
 r_int
 id|reg_last_reset_val
 suffix:semicolon
-multiline_comment|/* return: PMD last reset value               */
+multiline_comment|/* return: PMD last reset value */
 DECL|member|reg_smpl_pmds
 r_int
 r_int
@@ -204,16 +216,16 @@ r_int
 r_int
 id|reg_smpl_eventid
 suffix:semicolon
-multiline_comment|/* opaque sampling event identifier           */
-DECL|member|reserved
+multiline_comment|/* opaque sampling event identifier */
+DECL|member|reg_reserved2
 r_int
 r_int
-id|reserved
+id|reg_reserved2
 (braket
 l_int|3
 )braket
 suffix:semicolon
-multiline_comment|/* for future use                             */
+multiline_comment|/* for future use */
 DECL|typedef|pfarg_reg_t
 )brace
 id|pfarg_reg_t
@@ -226,34 +238,40 @@ r_int
 r_int
 id|dbreg_num
 suffix:semicolon
-multiline_comment|/* which debug register        */
+multiline_comment|/* which debug register */
 DECL|member|dbreg_set
 r_int
 r_int
 id|dbreg_set
 suffix:semicolon
 multiline_comment|/* event set for this register */
+DECL|member|dbreg_reserved1
+r_int
+r_int
+id|dbreg_reserved1
+suffix:semicolon
+multiline_comment|/* for future use */
 DECL|member|dbreg_value
 r_int
 r_int
 id|dbreg_value
 suffix:semicolon
-multiline_comment|/* value for debug register    */
+multiline_comment|/* value for debug register */
 DECL|member|dbreg_flags
 r_int
 r_int
 id|dbreg_flags
 suffix:semicolon
-multiline_comment|/* return: dbreg error         */
-DECL|member|dbreg_reserved
+multiline_comment|/* return: dbreg error */
+DECL|member|dbreg_reserved2
 r_int
 r_int
-id|dbreg_reserved
+id|dbreg_reserved2
 (braket
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* for future use              */
+multiline_comment|/* for future use */
 DECL|typedef|pfarg_dbreg_t
 )brace
 id|pfarg_dbreg_t
@@ -272,7 +290,7 @@ r_int
 r_int
 id|ft_reserved
 suffix:semicolon
-multiline_comment|/* reserved for future use              */
+multiline_comment|/* reserved for future use */
 DECL|member|reserved
 r_int
 r_int
@@ -281,7 +299,7 @@ id|reserved
 l_int|4
 )braket
 suffix:semicolon
-multiline_comment|/* for future use                       */
+multiline_comment|/* for future use */
 DECL|typedef|pfarg_features_t
 )brace
 id|pfarg_features_t
@@ -299,16 +317,22 @@ r_int
 r_int
 id|load_set
 suffix:semicolon
-multiline_comment|/* first event set to load          */
-DECL|member|load_reserved
+multiline_comment|/* first event set to load */
+DECL|member|load_reserved1
 r_int
 r_int
-id|load_reserved
+id|load_reserved1
+suffix:semicolon
+multiline_comment|/* for future use */
+DECL|member|load_reserved2
+r_int
+r_int
+id|load_reserved2
 (braket
-l_int|2
+l_int|3
 )braket
 suffix:semicolon
-multiline_comment|/* for future use                   */
+multiline_comment|/* for future use */
 DECL|typedef|pfarg_load_t
 )brace
 id|pfarg_load_t
@@ -326,18 +350,6 @@ r_int
 id|msg_ctx_fd
 suffix:semicolon
 multiline_comment|/* generic message header */
-DECL|member|msg_tstamp
-r_int
-r_int
-id|msg_tstamp
-suffix:semicolon
-multiline_comment|/* for perf tuning */
-DECL|member|msg_active_set
-r_int
-r_int
-id|msg_active_set
-suffix:semicolon
-multiline_comment|/* active set at the time of overflow */
 DECL|member|msg_ovfl_pmds
 r_int
 r_int
@@ -347,6 +359,30 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* which PMDs overflowed */
+DECL|member|msg_active_set
+r_int
+r_int
+id|msg_active_set
+suffix:semicolon
+multiline_comment|/* active set at the time of overflow */
+DECL|member|msg_reserved1
+r_int
+r_int
+id|msg_reserved1
+suffix:semicolon
+multiline_comment|/* for future use */
+DECL|member|msg_reserved2
+r_int
+r_int
+id|msg_reserved2
+suffix:semicolon
+multiline_comment|/* for future use */
+DECL|member|msg_tstamp
+r_int
+r_int
+id|msg_tstamp
+suffix:semicolon
+multiline_comment|/* for perf tuning/debug */
 DECL|typedef|pfm_ovfl_msg_t
 )brace
 id|pfm_ovfl_msg_t
@@ -567,6 +603,13 @@ mdefine_line|#define PFM_PMD_LONG_RESET&t;1
 DECL|macro|PFM_PMD_SHORT_RESET
 mdefine_line|#define PFM_PMD_SHORT_RESET&t;2
 r_typedef
+r_union
+(brace
+DECL|member|val
+r_int
+r_int
+id|val
+suffix:semicolon
 r_struct
 (brace
 DECL|member|notify_user
@@ -576,39 +619,43 @@ id|notify_user
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* notify user program of overflow                           */
-DECL|member|reset_pmds
+multiline_comment|/* notify user program of overflow */
+DECL|member|reset_ovfl_pmds
 r_int
 r_int
-id|reset_pmds
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* PFM_PMD_NO_RESET, PFM_PMD_LONG_RESET, PFM_PMD_SHORT_RESET */
-DECL|member|block
-r_int
-r_int
-id|block
+id|reset_ovfl_pmds
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* block monitored task on kernel exit                       */
-DECL|member|stop_monitoring
+multiline_comment|/* reset overflowed PMDs */
+DECL|member|block_task
 r_int
 r_int
-id|stop_monitoring
+id|block_task
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* will mask monitoring via PMCx.plm                         */
+multiline_comment|/* block monitored task on kernel exit */
+DECL|member|mask_monitoring
+r_int
+r_int
+id|mask_monitoring
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* mask monitors via PMCx.plm */
 DECL|member|reserved
 r_int
 r_int
 id|reserved
 suffix:colon
-l_int|26
+l_int|28
 suffix:semicolon
-multiline_comment|/* for future use                                            */
+multiline_comment|/* for future use */
+DECL|member|bits
+)brace
+id|bits
+suffix:semicolon
 DECL|typedef|pfm_ovfl_ctrl_t
 )brace
 id|pfm_ovfl_ctrl_t
@@ -616,53 +663,35 @@ suffix:semicolon
 r_typedef
 r_struct
 (brace
-DECL|member|ovfl_pmds
+DECL|member|ovfl_pmd
 r_int
-r_int
-id|ovfl_pmds
-(braket
-l_int|4
-)braket
+r_char
+id|ovfl_pmd
 suffix:semicolon
-multiline_comment|/* bitmask of overflowed pmds                            */
+multiline_comment|/* index of overflowed PMD  */
 DECL|member|ovfl_notify
 r_int
-r_int
+r_char
 id|ovfl_notify
-(braket
-l_int|4
-)braket
 suffix:semicolon
-multiline_comment|/* bitmask of overflow pmds which asked for notification */
-DECL|member|pmd_value
-r_int
-r_int
-id|pmd_value
-suffix:semicolon
-multiline_comment|/* current 64-bit value of 1st pmd which overflowed      */
-DECL|member|pmd_last_reset
-r_int
-r_int
-id|pmd_last_reset
-suffix:semicolon
-multiline_comment|/* last reset value of 1st pmd which overflowed          */
-DECL|member|pmd_eventid
-r_int
-r_int
-id|pmd_eventid
-suffix:semicolon
-multiline_comment|/* eventid associated with 1st pmd which overflowed      */
+multiline_comment|/* =1 if monitor requested overflow notification */
 DECL|member|active_set
 r_int
 r_int
 id|active_set
 suffix:semicolon
-multiline_comment|/* event set active at the time of the overflow          */
-DECL|member|reserved1
-r_int
-r_int
-id|reserved1
+multiline_comment|/* event set active at the time of the overflow */
+DECL|member|ovfl_ctrl
+id|pfm_ovfl_ctrl_t
+id|ovfl_ctrl
 suffix:semicolon
+multiline_comment|/* return: perfmon controls to set by handler */
+DECL|member|pmd_last_reset
+r_int
+r_int
+id|pmd_last_reset
+suffix:semicolon
+multiline_comment|/* last reset value of of the PMD */
 DECL|member|smpl_pmds
 r_int
 r_int
@@ -671,6 +700,7 @@ id|smpl_pmds
 l_int|4
 )braket
 suffix:semicolon
+multiline_comment|/* bitmask of other PMD of interest on overflow */
 DECL|member|smpl_pmds_values
 r_int
 r_int
@@ -679,11 +709,19 @@ id|smpl_pmds_values
 id|PMU_MAX_PMDS
 )braket
 suffix:semicolon
-DECL|member|ovfl_ctrl
-id|pfm_ovfl_ctrl_t
-id|ovfl_ctrl
+multiline_comment|/* values for the other PMDs of interest */
+DECL|member|pmd_value
+r_int
+r_int
+id|pmd_value
 suffix:semicolon
-multiline_comment|/* return: perfmon controls to set by handler            */
+multiline_comment|/* current 64-bit value of the PMD */
+DECL|member|pmd_eventid
+r_int
+r_int
+id|pmd_eventid
+suffix:semicolon
+multiline_comment|/* eventid associated with PMD */
 DECL|typedef|pfm_ovfl_arg_t
 )brace
 id|pfm_ovfl_arg_t
@@ -816,6 +854,10 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+comma
+r_int
+r_int
+id|stamp
 )paren
 suffix:semicolon
 DECL|member|fmt_restart

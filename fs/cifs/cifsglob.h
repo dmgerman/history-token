@@ -979,6 +979,12 @@ r_int
 r_int
 id|oplockEnabled
 suffix:semicolon
+DECL|variable|quotaEnabled
+id|GLOBAL_EXTERN
+r_int
+r_int
+id|quotaEnabled
+suffix:semicolon
 DECL|variable|lookupCacheEnabled
 id|GLOBAL_EXTERN
 r_int

@@ -553,6 +553,10 @@ r_int
 id|dummy_exr
 suffix:semicolon
 macro_line|#endif
+DECL|member|dummy_pc
+r_int
+id|dummy_pc
+suffix:semicolon
 DECL|member|pretcode
 r_char
 op_star
@@ -614,6 +618,10 @@ r_int
 id|dummy_exr
 suffix:semicolon
 macro_line|#endif
+DECL|member|dummy_pc
+r_int
+id|dummy_pc
+suffix:semicolon
 DECL|member|pretcode
 r_char
 op_star
@@ -1050,8 +1058,12 @@ r_struct
 id|pt_regs
 op_star
 )paren
+(paren
 op_amp
 id|__unused
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -2139,7 +2151,6 @@ op_amp
 id|frame-&gt;pretcode
 )paren
 suffix:semicolon
-multiline_comment|/* moveq #,d0; notb d0; movea.l #,a5; trap #0 */
 multiline_comment|/* sub.l er0,er0; mov.b #__NR_rt_sigreturn,r0l; trapa #0 */
 id|err
 op_ne

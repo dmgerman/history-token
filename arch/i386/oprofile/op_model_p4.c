@@ -1136,9 +1136,9 @@ mdefine_line|#define CCCR_SET_ENABLE(cccr) ((cccr) |= (1&lt;&lt;12))
 DECL|macro|CCCR_SET_DISABLE
 mdefine_line|#define CCCR_SET_DISABLE(cccr) ((cccr) &amp;= ~(1&lt;&lt;12))
 DECL|macro|CCCR_READ
-mdefine_line|#define CCCR_READ(low, high, i) do {rdmsr (p4_counters[(i)].cccr_address, (low), (high));} while (0)
+mdefine_line|#define CCCR_READ(low, high, i) do {rdmsr(p4_counters[(i)].cccr_address, (low), (high));} while (0)
 DECL|macro|CCCR_WRITE
-mdefine_line|#define CCCR_WRITE(low, high, i) do {wrmsr (p4_counters[(i)].cccr_address, (low), (high));} while (0)
+mdefine_line|#define CCCR_WRITE(low, high, i) do {wrmsr(p4_counters[(i)].cccr_address, (low), (high));} while (0)
 DECL|macro|CCCR_OVF_P
 mdefine_line|#define CCCR_OVF_P(cccr) ((cccr) &amp; (1U&lt;&lt;31))
 DECL|macro|CCCR_CLEAR_OVF
@@ -1263,10 +1263,12 @@ op_increment
 id|i
 )paren
 (brace
-id|msrs-&gt;counters.addrs
+id|msrs-&gt;counters
 (braket
 id|i
 )braket
+dot
+id|addr
 op_assign
 id|p4_counters
 (braket
@@ -1312,10 +1314,12 @@ c_func
 )paren
 )paren
 (brace
-id|msrs-&gt;controls.addrs
+id|msrs-&gt;controls
 (braket
 id|i
 )braket
+dot
+id|addr
 op_assign
 id|addr
 suffix:semicolon
@@ -1345,10 +1349,12 @@ c_func
 )paren
 )paren
 (brace
-id|msrs-&gt;controls.addrs
+id|msrs-&gt;controls
 (braket
 id|i
 )braket
+dot
+id|addr
 op_assign
 id|addr
 suffix:semicolon
@@ -1377,10 +1383,12 @@ c_func
 )paren
 )paren
 (brace
-id|msrs-&gt;controls.addrs
+id|msrs-&gt;controls
 (braket
 id|i
 )braket
+dot
+id|addr
 op_assign
 id|addr
 suffix:semicolon
@@ -1409,10 +1417,12 @@ c_func
 )paren
 )paren
 (brace
-id|msrs-&gt;controls.addrs
+id|msrs-&gt;controls
 (braket
 id|i
 )braket
+dot
+id|addr
 op_assign
 id|addr
 suffix:semicolon
@@ -1427,19 +1437,23 @@ id|NUM_COUNTERS_NON_HT
 )paren
 (brace
 multiline_comment|/* standard non-HT CPUs handle both remaining ESCRs*/
-id|msrs-&gt;controls.addrs
+id|msrs-&gt;controls
 (braket
 id|i
 op_increment
 )braket
+dot
+id|addr
 op_assign
 id|MSR_P4_CRU_ESCR5
 suffix:semicolon
-id|msrs-&gt;controls.addrs
+id|msrs-&gt;controls
 (braket
 id|i
 op_increment
 )braket
+dot
+id|addr
 op_assign
 id|MSR_P4_CRU_ESCR4
 suffix:semicolon
@@ -1454,11 +1468,13 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* HT CPUs give the first remainder to the even thread, as&n;&t;&t;   the 32nd control register */
-id|msrs-&gt;controls.addrs
+id|msrs-&gt;controls
 (braket
 id|i
 op_increment
 )braket
+dot
+id|addr
 op_assign
 id|MSR_P4_CRU_ESCR4
 suffix:semicolon
@@ -1466,19 +1482,23 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* and two copies of the second to the odd thread,&n;&t;&t;   for the 22st and 23nd control registers */
-id|msrs-&gt;controls.addrs
+id|msrs-&gt;controls
 (braket
 id|i
 op_increment
 )braket
+dot
+id|addr
 op_assign
 id|MSR_P4_CRU_ESCR5
 suffix:semicolon
-id|msrs-&gt;controls.addrs
+id|msrs-&gt;controls
 (braket
 id|i
 op_increment
 )braket
+dot
+id|addr
 op_assign
 id|MSR_P4_CRU_ESCR5
 suffix:semicolon

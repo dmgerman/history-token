@@ -355,8 +355,40 @@ id|SMB_COM_NEGOTIATE
 r_return
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifs_pdu-&gt;Command
+op_eq
+id|SMB_COM_LOCKING_ANDX
+)paren
+(brace
+r_struct
+id|smb_com_lock_req
+op_star
+id|pSMB
+op_assign
+(paren
+r_struct
+id|smb_com_lock_req
+op_star
+)paren
+id|cifs_pdu
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pSMB-&gt;LockType
+op_amp
+id|LOCKING_ANDX_OPLOCK_RELEASE
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* BB what if signatures are supposed to be on for session but server does not&n;&t;&t;send one? BB */
-multiline_comment|/* BB also do not verify oplock breaks for signature */
 multiline_comment|/* Do not need to verify session setups with signature &quot;BSRSPYL &quot;  */
 r_if
 c_cond

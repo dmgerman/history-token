@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
@@ -28,6 +29,8 @@ DECL|macro|__IA32_NR_sigreturn
 mdefine_line|#define __IA32_NR_sigreturn            119
 DECL|macro|__IA32_NR_rt_sigreturn
 mdefine_line|#define __IA32_NR_rt_sigreturn         173
+macro_line|#ifdef ASM_SUPPORTED
+multiline_comment|/*&n; * Don&squot;t let GCC uses f16-f31 so that save_ia32_fpstate_live() and&n; * restore_ia32_fpstate_live() can be sure the live register contain user-level state.&n; */
 r_register
 r_float
 id|f16
@@ -156,6 +159,7 @@ id|asm
 l_string|&quot;f31&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|struct|sigframe_ia32
 r_struct
 id|sigframe_ia32
@@ -750,14 +754,6 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  SAVE and RESTORE of ia32 fpstate info, from ia64 current state&n; *  Used in exception handler to pass the fpstate to the user, and restore&n; *  the fpstate while returning from the exception handler.&n; *&n; *    fpstate info and their mapping to IA64 regs:&n; *    fpstate    REG(BITS)      Attribute    Comments&n; *    cw         ar.fcr(0:12)                with bits 7 and 6 not used&n; *    sw         ar.fsr(0:15)&n; *    tag        ar.fsr(16:31)               with odd numbered bits not used&n; *                                           (read returns 0, writes ignored)&n; *    ipoff      ar.fir(0:31)&n; *    cssel      ar.fir(32:47)&n; *    dataoff    ar.fdr(0:31)&n; *    datasel    ar.fdr(32:47)&n; *&n; *    _st[(0+TOS)%8]   f8&n; *    _st[(1+TOS)%8]   f9&n; *    _st[(2+TOS)%8]   f10&n; *    _st[(3+TOS)%8]   f11                   (f8..f11 from ptregs)&n; *      : :            :                     (f12..f15 from live reg)&n; *      : :            :&n; *    _st[(7+TOS)%8]   f15                   TOS=sw.top(bits11:13)&n; *&n; *    status     Same as sw     RO&n; *    magic      0                           as X86_FXSR_MAGIC in ia32&n; *    mxcsr      Bits(7:15)=ar.fcr(39:47)&n; *               Bits(0:5) =ar.fsr(32:37)    with bit 6 reserved&n; *    _xmm[0..7] f16..f31                    (live registers)&n; *                                           with _xmm[0]&n; *                                             Bit(64:127)=f17(0:63)&n; *                                             Bit(0:63)=f16(0:63)&n; *    All other fields unused...&n; */
-DECL|macro|__ldfe
-mdefine_line|#define __ldfe(regnum, x)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;register double __f__ asm (&quot;f&quot;#regnum);&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;ldfe %0=[%1] ;;&quot; :&quot;=f&quot;(__f__): &quot;r&quot;(x));&t;&bslash;&n;})
-DECL|macro|__ldf8
-mdefine_line|#define __ldf8(regnum, x)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;register double __f__ asm (&quot;f&quot;#regnum);&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;ldf8 %0=[%1] ;;&quot; :&quot;=f&quot;(__f__): &quot;r&quot;(x));&t;&bslash;&n;})
-DECL|macro|__stfe
-mdefine_line|#define __stfe(x, regnum)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;register double __f__ asm (&quot;f&quot;#regnum);&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;stfe [%0]=%1&quot; :: &quot;r&quot;(x), &quot;f&quot;(__f__) : &quot;memory&quot;);&t;&bslash;&n;})
-DECL|macro|__stf8
-mdefine_line|#define __stf8(x, regnum)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;register double __f__ asm (&quot;f&quot;#regnum);&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;stf8 [%0]=%1&quot; :: &quot;r&quot;(x), &quot;f&quot;(__f__) : &quot;memory&quot;);&t;&bslash;&n;})
 r_static
 r_int
 DECL|function|save_ia32_fpstate_live
@@ -846,49 +842,37 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/* Readin fsr, fcr, fir, fdr and copy onto fpstate */
-id|asm
-r_volatile
-(paren
-l_string|&quot;mov %0=ar.fsr;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
+multiline_comment|/* Read in fsr, fcr, fir, fdr and copy onto fpstate */
 id|fsr
-)paren
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_FSR
 )paren
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;mov %0=ar.fcr;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|fcr
-)paren
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_FCR
 )paren
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;mov %0=ar.fir;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|fir
-)paren
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_FIR
 )paren
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;mov %0=ar.fdr;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|fdr
-)paren
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_FDR
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We need to clear the exception state before calling the signal handler. Clear&n;&t; * the bits 15, bits 0-7 in fp status word. Similar to the functionality of fnclex&n;&t; * instruction.&n;&t; */
@@ -899,15 +883,12 @@ op_amp
 op_complement
 l_int|0x80ff
 suffix:semicolon
-id|asm
-r_volatile
+id|ia64_setreg
+c_func
 (paren
-l_string|&quot;mov ar.fsr=%0;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|_IA64_REG_AR_FSR
+comma
 id|new_fsr
-)paren
 )paren
 suffix:semicolon
 id|__put_user
@@ -1233,7 +1214,7 @@ id|_fpreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__stfe
+id|ia64_stfe
 c_func
 (paren
 id|fpregp
@@ -1265,7 +1246,7 @@ id|_fpreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__stfe
+id|ia64_stfe
 c_func
 (paren
 id|fpregp
@@ -1297,7 +1278,7 @@ id|_fpreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__stfe
+id|ia64_stfe
 c_func
 (paren
 id|fpregp
@@ -1329,7 +1310,7 @@ id|_fpreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__stfe
+id|ia64_stfe
 c_func
 (paren
 id|fpregp
@@ -1361,7 +1342,7 @@ id|_fpreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1373,7 +1354,7 @@ comma
 l_int|16
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1403,7 +1384,7 @@ id|_xmmreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1415,7 +1396,7 @@ comma
 l_int|18
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1445,7 +1426,7 @@ id|_xmmreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1457,7 +1438,7 @@ comma
 l_int|20
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1487,7 +1468,7 @@ id|_xmmreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1499,7 +1480,7 @@ comma
 l_int|22
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1529,7 +1510,7 @@ id|_xmmreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1541,7 +1522,7 @@ comma
 l_int|24
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1571,7 +1552,7 @@ id|_xmmreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1583,7 +1564,7 @@ comma
 l_int|26
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1613,7 +1594,7 @@ id|_xmmreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1625,7 +1606,7 @@ comma
 l_int|28
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1655,7 +1636,7 @@ id|_xmmreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1667,7 +1648,7 @@ comma
 l_int|30
 )paren
 suffix:semicolon
-id|__stf8
+id|ia64_stf8
 c_func
 (paren
 op_amp
@@ -1792,48 +1773,36 @@ op_minus
 id|EFAULT
 suffix:semicolon
 multiline_comment|/*&n;&t; * Updating fsr, fcr, fir, fdr.&n;&t; * Just a bit more complicated than save.&n;&t; * - Need to make sure that we don&squot;t write any value other than the&n;&t; *   specific fpstate info&n;&t; * - Need to make sure that the untouched part of frs, fdr, fir, fcr&n;&t; *   should remain same while writing.&n;&t; * So, we do a read, change specific fields and write.&n;&t; */
-id|asm
-r_volatile
-(paren
-l_string|&quot;mov %0=ar.fsr;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|fsr
-)paren
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_FSR
 )paren
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;mov %0=ar.fcr;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|fcr
-)paren
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_FCR
 )paren
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;mov %0=ar.fir;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|fir
-)paren
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_FIR
 )paren
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;mov %0=ar.fdr;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|fdr
-)paren
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_FDR
 )paren
 suffix:semicolon
 id|__get_user
@@ -2108,48 +2077,36 @@ l_int|0xffffffffffff
 op_or
 id|num64
 suffix:semicolon
-id|asm
-r_volatile
+id|ia64_setreg
+c_func
 (paren
-l_string|&quot;mov ar.fsr=%0;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|_IA64_REG_AR_FSR
+comma
 id|fsr
 )paren
-)paren
 suffix:semicolon
-id|asm
-r_volatile
+id|ia64_setreg
+c_func
 (paren
-l_string|&quot;mov ar.fcr=%0;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|_IA64_REG_AR_FCR
+comma
 id|fcr
 )paren
-)paren
 suffix:semicolon
-id|asm
-r_volatile
+id|ia64_setreg
+c_func
 (paren
-l_string|&quot;mov ar.fir=%0;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|_IA64_REG_AR_FIR
+comma
 id|fir
 )paren
-)paren
 suffix:semicolon
-id|asm
-r_volatile
+id|ia64_setreg
+c_func
 (paren
-l_string|&quot;mov ar.fdr=%0;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|_IA64_REG_AR_FDR
+comma
 id|fdr
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * restore f8..f11 onto pt_regs&n;&t; * restore f12..f15 onto live registers&n;&t; */
@@ -2360,7 +2317,7 @@ id|_fpreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__ldfe
+id|ia64_ldfe
 c_func
 (paren
 l_int|12
@@ -2392,7 +2349,7 @@ id|_fpreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__ldfe
+id|ia64_ldfe
 c_func
 (paren
 l_int|13
@@ -2424,7 +2381,7 @@ id|_fpreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__ldfe
+id|ia64_ldfe
 c_func
 (paren
 l_int|14
@@ -2456,7 +2413,7 @@ id|_fpreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__ldfe
+id|ia64_ldfe
 c_func
 (paren
 l_int|15
@@ -2482,7 +2439,7 @@ id|_xmmreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|16
@@ -2494,7 +2451,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|17
@@ -2524,7 +2481,7 @@ id|_xmmreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|18
@@ -2536,7 +2493,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|19
@@ -2566,7 +2523,7 @@ id|_xmmreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|20
@@ -2578,7 +2535,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|21
@@ -2608,7 +2565,7 @@ id|_xmmreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|22
@@ -2620,7 +2577,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|23
@@ -2650,7 +2607,7 @@ id|_xmmreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|24
@@ -2662,7 +2619,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|25
@@ -2692,7 +2649,7 @@ id|_xmmreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|26
@@ -2704,7 +2661,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|27
@@ -2734,7 +2691,7 @@ id|_xmmreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|28
@@ -2746,7 +2703,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|29
@@ -2776,7 +2733,7 @@ id|_xmmreg_ia32
 )paren
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|30
@@ -2788,7 +2745,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|__ldf8
+id|ia64_ldf8
 c_func
 (paren
 l_int|31
@@ -4337,15 +4294,12 @@ id|sc-&gt;cs
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  `eflags&squot; is in an ar register for this context&n;&t; */
-id|asm
-r_volatile
-(paren
-l_string|&quot;mov %0=ar.eflag ;;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|flag
-)paren
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_EFLAG
 )paren
 suffix:semicolon
 id|err
@@ -4699,15 +4653,12 @@ op_amp
 id|sc-&gt;eflags
 )paren
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;mov %0=ar.eflag ;;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|flag
-)paren
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_EFLAG
 )paren
 suffix:semicolon
 id|flag
@@ -4723,15 +4674,12 @@ op_amp
 l_int|0x40DD5
 )paren
 suffix:semicolon
-id|asm
-r_volatile
+id|ia64_setreg
+c_func
 (paren
-l_string|&quot;mov ar.eflag=%0 ;;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|_IA64_REG_AR_EFLAG
+comma
 id|flag
-)paren
 )paren
 suffix:semicolon
 id|regs-&gt;r1

@@ -8,11 +8,7 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-r_extern
-r_int
-r_char
-id|software_suspend_enabled
-suffix:semicolon
+macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
 multiline_comment|/* page backup entry */
 DECL|struct|pbe
@@ -132,35 +128,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* kernel/suspend.c */
-r_extern
-r_int
-id|software_suspend
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|register_suspend_notifier
-c_func
-(paren
-r_struct
-id|notifier_block
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|unregister_suspend_notifier
-c_func
-(paren
-r_struct
-id|notifier_block
-op_star
-)paren
-suffix:semicolon
 r_extern
 r_int
 r_int
@@ -172,39 +139,6 @@ id|suspend_pagedir_t
 op_star
 id|pagedir_nosave
 id|__nosavedata
-suffix:semicolon
-multiline_comment|/* Communication between kernel/suspend.c and arch/i386/suspend.c */
-r_extern
-r_void
-id|do_magic_resume_1
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|do_magic_resume_2
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|do_magic_suspend_1
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|do_magic_suspend_2
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 multiline_comment|/* Communication between acpi and arch/i386/suspend.c */
 r_extern
@@ -241,10 +175,6 @@ op_minus
 id|EPERM
 suffix:semicolon
 )brace
-DECL|macro|register_suspend_notifier
-mdefine_line|#define register_suspend_notifier(a)&t;do { } while(0)
-DECL|macro|unregister_suspend_notifier
-mdefine_line|#define unregister_suspend_notifier(a)&t;do { } while(0)
 macro_line|#endif&t;/* CONFIG_SOFTWARE_SUSPEND */
 macro_line|#ifdef CONFIG_PM
 r_extern
@@ -254,38 +184,6 @@ c_func
 (paren
 r_int
 r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|freeze_processes
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|thaw_processes
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pm_prepare_console
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pm_restore_console
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 macro_line|#else
@@ -299,31 +197,6 @@ c_func
 r_int
 r_int
 id|flag
-)paren
-(brace
-)brace
-DECL|function|freeze_processes
-r_static
-r_inline
-r_int
-id|freeze_processes
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|thaw_processes
-r_static
-r_inline
-r_void
-id|thaw_processes
-c_func
-(paren
-r_void
 )paren
 (brace
 )brace

@@ -985,8 +985,17 @@ c_cond
 op_logical_neg
 id|cookie
 )paren
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|oprofile_stats.sample_lost_no_mapping
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

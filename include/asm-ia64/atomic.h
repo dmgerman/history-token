@@ -90,7 +90,7 @@ c_loop
 id|ia64_cmpxchg
 c_func
 (paren
-l_string|&quot;acq&quot;
+id|acq
 comma
 id|v
 comma
@@ -160,7 +160,7 @@ c_loop
 id|ia64_cmpxchg
 c_func
 (paren
-l_string|&quot;acq&quot;
+id|acq
 comma
 id|v
 comma
@@ -230,7 +230,7 @@ c_loop
 id|ia64_cmpxchg
 c_func
 (paren
-l_string|&quot;acq&quot;
+id|acq
 comma
 id|v
 comma
@@ -300,7 +300,7 @@ c_loop
 id|ia64_cmpxchg
 c_func
 (paren
-l_string|&quot;acq&quot;
+id|acq
 comma
 id|v
 comma

@@ -1209,6 +1209,12 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|reset_iter
+c_func
+(paren
+id|iter
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|seq_open

@@ -55,6 +55,7 @@ r_int
 id|num_io_spaces
 suffix:semicolon
 macro_line|# ifdef __KERNEL__
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -116,7 +117,7 @@ mdefine_line|#define page_to_bus&t;page_to_phys
 macro_line|# endif /* KERNEL */
 multiline_comment|/*&n; * Memory fence w/accept.  This should never be used in code that is&n; * not IA-64 specific.&n; */
 DECL|macro|__ia64_mf_a
-mdefine_line|#define __ia64_mf_a()&t;__asm__ __volatile__ (&quot;mf.a&quot; ::: &quot;memory&quot;)
+mdefine_line|#define __ia64_mf_a()&t;ia64_mfa()
 r_static
 r_inline
 r_const

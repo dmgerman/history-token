@@ -9,15 +9,15 @@ mdefine_line|#define NUM_COUNTERS 4
 DECL|macro|NUM_CONTROLS
 mdefine_line|#define NUM_CONTROLS 4
 DECL|macro|CTR_READ
-mdefine_line|#define CTR_READ(l,h,msrs,c) do {rdmsr(msrs-&gt;counters.addrs[(c)], (l), (h));} while (0)
+mdefine_line|#define CTR_READ(l,h,msrs,c) do {rdmsr(msrs-&gt;counters[(c)].addr, (l), (h));} while (0)
 DECL|macro|CTR_WRITE
-mdefine_line|#define CTR_WRITE(l,msrs,c) do {wrmsr(msrs-&gt;counters.addrs[(c)], -(unsigned int)(l), -1);} while (0)
+mdefine_line|#define CTR_WRITE(l,msrs,c) do {wrmsr(msrs-&gt;counters[(c)].addr, -(unsigned int)(l), -1);} while (0)
 DECL|macro|CTR_OVERFLOWED
 mdefine_line|#define CTR_OVERFLOWED(n) (!((n) &amp; (1U&lt;&lt;31)))
 DECL|macro|CTRL_READ
-mdefine_line|#define CTRL_READ(l,h,msrs,c) do {rdmsr(msrs-&gt;controls.addrs[(c)], (l), (h));} while (0)
+mdefine_line|#define CTRL_READ(l,h,msrs,c) do {rdmsr(msrs-&gt;controls[(c)].addr, (l), (h));} while (0)
 DECL|macro|CTRL_WRITE
-mdefine_line|#define CTRL_WRITE(l,h,msrs,c) do {wrmsr(msrs-&gt;controls.addrs[(c)], (l), (h));} while (0)
+mdefine_line|#define CTRL_WRITE(l,h,msrs,c) do {wrmsr(msrs-&gt;controls[(c)].addr, (l), (h));} while (0)
 DECL|macro|CTRL_SET_ACTIVE
 mdefine_line|#define CTRL_SET_ACTIVE(n) (n |= (1&lt;&lt;22))
 DECL|macro|CTRL_SET_INACTIVE
@@ -56,59 +56,75 @@ r_const
 id|msrs
 )paren
 (brace
-id|msrs-&gt;counters.addrs
+id|msrs-&gt;counters
 (braket
 l_int|0
 )braket
+dot
+id|addr
 op_assign
 id|MSR_K7_PERFCTR0
 suffix:semicolon
-id|msrs-&gt;counters.addrs
+id|msrs-&gt;counters
 (braket
 l_int|1
 )braket
+dot
+id|addr
 op_assign
 id|MSR_K7_PERFCTR1
 suffix:semicolon
-id|msrs-&gt;counters.addrs
+id|msrs-&gt;counters
 (braket
 l_int|2
 )braket
+dot
+id|addr
 op_assign
 id|MSR_K7_PERFCTR2
 suffix:semicolon
-id|msrs-&gt;counters.addrs
+id|msrs-&gt;counters
 (braket
 l_int|3
 )braket
+dot
+id|addr
 op_assign
 id|MSR_K7_PERFCTR3
 suffix:semicolon
-id|msrs-&gt;controls.addrs
+id|msrs-&gt;controls
 (braket
 l_int|0
 )braket
+dot
+id|addr
 op_assign
 id|MSR_K7_EVNTSEL0
 suffix:semicolon
-id|msrs-&gt;controls.addrs
+id|msrs-&gt;controls
 (braket
 l_int|1
 )braket
+dot
+id|addr
 op_assign
 id|MSR_K7_EVNTSEL1
 suffix:semicolon
-id|msrs-&gt;controls.addrs
+id|msrs-&gt;controls
 (braket
 l_int|2
 )braket
+dot
+id|addr
 op_assign
 id|MSR_K7_EVNTSEL2
 suffix:semicolon
-id|msrs-&gt;controls.addrs
+id|msrs-&gt;controls
 (braket
 l_int|3
 )braket
+dot
+id|addr
 op_assign
 id|MSR_K7_EVNTSEL3
 suffix:semicolon

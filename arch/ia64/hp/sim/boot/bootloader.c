@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ia64/boot/bootloader.c&n; *&n; * Loads an ELF kernel.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 01/07/99 S.Eranian modified to pass command line arguments to kernel&n; */
+multiline_comment|/*&n; * arch/ia64/hp/sim/boot/bootloader.c&n; *&n; * Loads an ELF kernel.&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 01/07/99 S.Eranian modified to pass command line arguments to kernel&n; */
 r_struct
 id|task_struct
 suffix:semicolon
@@ -8,45 +8,12 @@ macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-multiline_comment|/* Simulator system calls: */
-DECL|macro|SSC_CONSOLE_INIT
-mdefine_line|#define SSC_CONSOLE_INIT&t;&t;20
-DECL|macro|SSC_GETCHAR
-mdefine_line|#define SSC_GETCHAR&t;&t;&t;21
-DECL|macro|SSC_PUTCHAR
-mdefine_line|#define SSC_PUTCHAR&t;&t;&t;31
-DECL|macro|SSC_OPEN
-mdefine_line|#define SSC_OPEN&t;&t;&t;50
-DECL|macro|SSC_CLOSE
-mdefine_line|#define SSC_CLOSE&t;&t;&t;51
-DECL|macro|SSC_READ
-mdefine_line|#define SSC_READ&t;&t;&t;52
-DECL|macro|SSC_WRITE
-mdefine_line|#define SSC_WRITE&t;&t;&t;53
-DECL|macro|SSC_GET_COMPLETION
-mdefine_line|#define SSC_GET_COMPLETION&t;&t;54
-DECL|macro|SSC_WAIT_COMPLETION
-mdefine_line|#define SSC_WAIT_COMPLETION&t;&t;55
-DECL|macro|SSC_CONNECT_INTERRUPT
-mdefine_line|#define SSC_CONNECT_INTERRUPT&t;&t;58
-DECL|macro|SSC_GENERATE_INTERRUPT
-mdefine_line|#define SSC_GENERATE_INTERRUPT&t;&t;59
-DECL|macro|SSC_SET_PERIODIC_INTERRUPT
-mdefine_line|#define SSC_SET_PERIODIC_INTERRUPT&t;60
-DECL|macro|SSC_GET_RTC
-mdefine_line|#define SSC_GET_RTC&t;&t;&t;65
-DECL|macro|SSC_EXIT
-mdefine_line|#define SSC_EXIT&t;&t;&t;66
-DECL|macro|SSC_LOAD_SYMBOLS
-mdefine_line|#define SSC_LOAD_SYMBOLS&t;&t;69
-DECL|macro|SSC_GET_TOD
-mdefine_line|#define SSC_GET_TOD&t;&t;&t;74
-DECL|macro|SSC_GET_ARGS
-mdefine_line|#define SSC_GET_ARGS&t;&t;&t;75
+macro_line|#include &quot;ssc.h&quot;
 DECL|struct|disk_req
 r_struct
 id|disk_req
@@ -76,11 +43,32 @@ id|count
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#include &quot;../kernel/fw-emu.c&quot;
-multiline_comment|/* This needs to be defined because lib/string.c:strlcat() calls it in case of error... */
-id|asm
+r_extern
+r_void
+id|jmp_to_kernel
 (paren
-l_string|&quot;.global printk; printk = 0&quot;
+r_int
+r_int
+id|bp
+comma
+r_int
+r_int
+id|e_entry
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|ia64_boot_param
+op_star
+id|sys_fw_init
+(paren
+r_const
+r_char
+op_star
+id|args
+comma
+r_int
+id|arglen
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Set a break point on this function so that symbols are available to set breakpoints in&n; * the kernel being debugged.&n; */
@@ -162,28 +150,12 @@ suffix:semicolon
 DECL|macro|MAX_ARGS
 mdefine_line|#define MAX_ARGS 32
 r_void
-DECL|function|_start
-id|_start
+DECL|function|start_bootloader
+id|start_bootloader
 (paren
 r_void
 )paren
 (brace
-r_static
-r_char
-id|stack
-(braket
-l_int|16384
-)braket
-id|__attribute__
-(paren
-(paren
-id|aligned
-(paren
-l_int|16
-)paren
-)paren
-)paren
-suffix:semicolon
 r_static
 r_char
 id|mem
@@ -251,34 +223,6 @@ r_int
 id|arglen
 op_assign
 l_int|0
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;movl gp=__gp;;&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;mov sp=%0&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
-id|stack
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;bsw.1;;&quot;
-)paren
 suffix:semicolon
 id|ssc
 c_func
@@ -810,15 +754,12 @@ l_string|&quot;starting kernel...&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* fake an I/O base address: */
-id|asm
-r_volatile
+id|ia64_setreg
+c_func
 (paren
-l_string|&quot;mov ar.k0=%0&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|_IA64_REG_AR_KR0
+comma
 l_int|0xffffc000000UL
-)paren
 )paren
 suffix:semicolon
 id|bp
@@ -853,30 +794,16 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;mov sp=%2; mov r28=%1; br.sptk.few %0&quot;
-op_scope_resolution
-l_string|&quot;b&quot;
-(paren
-id|e_entry
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|bp
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|__pa
+id|jmp_to_kernel
 c_func
 (paren
-op_amp
-id|stack
+(paren
+r_int
+r_int
 )paren
-)paren
+id|bp
+comma
+id|e_entry
 )paren
 suffix:semicolon
 id|cons_write

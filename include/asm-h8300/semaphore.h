@@ -211,7 +211,6 @@ id|spinlock_t
 id|semaphore_wake_lock
 suffix:semicolon
 multiline_comment|/*&n; * This is ugly, but we want the default case to fall through.&n; * &quot;down_failed&quot; is a special asm handler that calls the C&n; * routine that actually waits. See arch/m68k/lib/semaphore.S&n; */
-macro_line|#if defined(__H8300H__)
 DECL|function|down
 r_static
 r_inline
@@ -256,9 +255,9 @@ c_func
 (paren
 l_string|&quot;stc ccr,r3l&bslash;n&bslash;t&quot;
 l_string|&quot;orc #0x80,ccr&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l @%1, er1&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %0, er1&bslash;n&bslash;t&quot;
 l_string|&quot;dec.l #1,er1&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l er1,@%1&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l er1,%0&bslash;n&bslash;t&quot;
 l_string|&quot;bpl 1f&bslash;n&bslash;t&quot;
 l_string|&quot;ldc r3l,ccr&bslash;n&bslash;t&quot;
 l_string|&quot;jsr @___down&bslash;n&bslash;t&quot;
@@ -267,15 +266,12 @@ l_string|&quot;1:&bslash;n&bslash;t&quot;
 l_string|&quot;ldc r3l,ccr&bslash;n&quot;
 l_string|&quot;2:&quot;
 suffix:colon
-l_string|&quot;=m&quot;
+l_string|&quot;+m&quot;
 (paren
-id|sem-&gt;count
-)paren
-suffix:colon
-l_string|&quot;g&quot;
-(paren
+op_star
 id|count
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;cc&quot;
 comma
@@ -284,91 +280,9 @@ comma
 l_string|&quot;er2&quot;
 comma
 l_string|&quot;er3&quot;
-comma
-l_string|&quot;er4&quot;
-comma
-l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if defined(__H8300S__)
-DECL|function|down
-r_static
-r_inline
-r_void
-id|down
-c_func
-(paren
-r_struct
-id|semaphore
-op_star
-id|sem
-)paren
-(brace
-r_register
-id|atomic_t
-op_star
-id|count
-id|asm
-c_func
-(paren
-l_string|&quot;er0&quot;
-)paren
-suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
-id|CHECK_MAGIC
-c_func
-(paren
-id|sem-&gt;__magic
-)paren
-suffix:semicolon
-macro_line|#endif
-id|count
-op_assign
-op_amp
-(paren
-id|sem-&gt;count
-)paren
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;stc exr,r3l&bslash;n&bslash;t&quot;
-l_string|&quot;orc #0x07,exr&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l @%1, er1&bslash;n&bslash;t&quot;
-l_string|&quot;dec.l #1,er1&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l er1,@%1&bslash;n&bslash;t&quot;
-l_string|&quot;ldc r3l,exr&bslash;n&bslash;t&quot;
-l_string|&quot;bpl 1f&bslash;n&bslash;t&quot;
-l_string|&quot;jsr @___down&bslash;n&quot;
-l_string|&quot;1:&quot;
-suffix:colon
-l_string|&quot;=m&quot;
-(paren
-id|sem-&gt;count
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|count
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-comma
-l_string|&quot;er1&quot;
-comma
-l_string|&quot;er2&quot;
-comma
-l_string|&quot;er3&quot;
-comma
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#if defined(__H8300H__)
 DECL|function|down_interruptible
 r_static
 r_inline
@@ -411,303 +325,18 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stc ccr,r3l&bslash;n&bslash;t&quot;
+l_string|&quot;stc ccr,r1l&bslash;n&bslash;t&quot;
 l_string|&quot;orc #0x80,ccr&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l @%2, er2&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %1, er2&bslash;n&bslash;t&quot;
 l_string|&quot;dec.l #1,er2&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l er2,@%2&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l er2,%1&bslash;n&bslash;t&quot;
 l_string|&quot;bpl 1f&bslash;n&bslash;t&quot;
-l_string|&quot;ldc r3l,ccr&bslash;n&bslash;t&quot;
+l_string|&quot;ldc r1l,ccr&bslash;n&bslash;t&quot;
 l_string|&quot;jsr @___down_interruptible&bslash;n&bslash;t&quot;
 l_string|&quot;bra 2f&bslash;n&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;ldc r3l,ccr&bslash;n&bslash;t&quot;
-l_string|&quot;sub.l %0,%0&bslash;n&quot;
-l_string|&quot;2:&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|count
-)paren
-comma
-l_string|&quot;=m&quot;
-(paren
-id|sem-&gt;count
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|count
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-comma
-l_string|&quot;er1&quot;
-comma
-l_string|&quot;er2&quot;
-comma
-l_string|&quot;er3&quot;
-comma
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-r_int
-)paren
-id|count
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#if defined(__H8300S__)
-DECL|function|down_interruptible
-r_static
-r_inline
-r_int
-id|down_interruptible
-c_func
-(paren
-r_struct
-id|semaphore
-op_star
-id|sem
-)paren
-(brace
-r_register
-id|atomic_t
-op_star
-id|count
-id|asm
-c_func
-(paren
-l_string|&quot;er0&quot;
-)paren
-suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
-id|CHECK_MAGIC
-c_func
-(paren
-id|sem-&gt;__magic
-)paren
-suffix:semicolon
-macro_line|#endif
-id|count
-op_assign
-op_amp
-(paren
-id|sem-&gt;count
-)paren
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;stc exr,r3l&bslash;n&bslash;t&quot;
-l_string|&quot;orc #0x07,exr&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l @%2, er2&bslash;n&bslash;t&quot;
-l_string|&quot;dec.l #1,er2&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l er2,@%2&bslash;n&bslash;t&quot;
-l_string|&quot;ldc r3l,exr&bslash;n&bslash;t&quot;
-l_string|&quot;bmi 1f&bslash;n&bslash;t&quot;
+l_string|&quot;ldc r1l,ccr&bslash;n&bslash;t&quot;
 l_string|&quot;sub.l %0,%0&bslash;n&bslash;t&quot;
-l_string|&quot;bra 2f&bslash;n&quot;
-l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;jsr @___down_interruptible&bslash;n&quot;
-l_string|&quot;2:&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|count
-)paren
-comma
-l_string|&quot;=m&quot;
-(paren
-id|sem-&gt;count
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|count
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-comma
-l_string|&quot;er1&quot;
-comma
-l_string|&quot;er2&quot;
-comma
-l_string|&quot;er3&quot;
-comma
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-r_int
-)paren
-id|count
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#if defined(__H8300H__)
-DECL|function|down_trylock
-r_static
-r_inline
-r_int
-id|down_trylock
-c_func
-(paren
-r_struct
-id|semaphore
-op_star
-id|sem
-)paren
-(brace
-r_register
-id|atomic_t
-op_star
-id|count
-id|asm
-c_func
-(paren
-l_string|&quot;er0&quot;
-)paren
-suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
-id|CHECK_MAGIC
-c_func
-(paren
-id|sem-&gt;__magic
-)paren
-suffix:semicolon
-macro_line|#endif
-id|count
-op_assign
-op_amp
-(paren
-id|sem-&gt;count
-)paren
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;stc ccr,r3l&bslash;n&bslash;t&quot;
-l_string|&quot;orc #0x80,ccr&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l @%2,er2&bslash;n&bslash;t&quot;
-l_string|&quot;dec.l #1,er2&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l er2,@%2&bslash;n&bslash;t&quot;
-l_string|&quot;bpl 1f&bslash;n&bslash;t&quot;
-l_string|&quot;ldc r3l,ccr&bslash;n&bslash;t&quot;
-l_string|&quot;jmp @3f&bslash;n&quot;
-l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;ldc r3l,ccr&bslash;n&bslash;t&quot;
-l_string|&quot;sub.l %0,%0&bslash;n&quot;
-id|LOCK_SECTION_START
-c_func
-(paren
-l_string|&quot;.align 2&bslash;n&bslash;t&quot;
-)paren
-l_string|&quot;3:&bslash;n&bslash;t&quot;
-l_string|&quot;jsr @___down_trylock&bslash;n&bslash;t&quot;
-l_string|&quot;jmp @2f&bslash;n&bslash;t&quot;
-id|LOCK_SECTION_END
-l_string|&quot;2:&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|count
-)paren
-comma
-l_string|&quot;=m&quot;
-(paren
-id|sem-&gt;count
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|count
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-comma
-l_string|&quot;er2&quot;
-comma
-l_string|&quot;er3&quot;
-comma
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-r_int
-)paren
-id|count
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#if defined(__H8300S__)
-DECL|function|down_trylock
-r_static
-r_inline
-r_int
-id|down_trylock
-c_func
-(paren
-r_struct
-id|semaphore
-op_star
-id|sem
-)paren
-(brace
-r_register
-id|atomic_t
-op_star
-id|count
-id|asm
-c_func
-(paren
-l_string|&quot;er0&quot;
-)paren
-suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
-id|CHECK_MAGIC
-c_func
-(paren
-id|sem-&gt;__magic
-)paren
-suffix:semicolon
-macro_line|#endif
-id|count
-op_assign
-op_amp
-(paren
-id|sem-&gt;count
-)paren
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;stc exr,r3l&bslash;n&bslash;t&quot;
-l_string|&quot;orc #0x07,exr&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l @%2,er2&bslash;n&bslash;t&quot;
-l_string|&quot;dec.l #1,er2&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l er2,@%2&bslash;n&bslash;t&quot;
-l_string|&quot;ldc r3l,exr&bslash;n&bslash;t&quot;
-l_string|&quot;bpl 1f&bslash;n&bslash;t&quot;
-l_string|&quot;jmp @3f&bslash;n&quot;
-l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;sub.l %0,%0&bslash;n&bslash;t&quot;
-id|LOCK_SECTION_START
-c_func
-(paren
-l_string|&quot;.align 2&bslash;n&bslash;t&quot;
-)paren
-l_string|&quot;3:&bslash;n&bslash;t&quot;
-l_string|&quot;jsr @___down_trylock&bslash;n&bslash;t&quot;
-l_string|&quot;jmp @2f&bslash;n&bslash;t&quot;
-id|LOCK_SECTION_END
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=r&quot;
@@ -715,15 +344,12 @@ l_string|&quot;=r&quot;
 id|count
 )paren
 comma
-l_string|&quot;=m&quot;
+l_string|&quot;+m&quot;
 (paren
-id|sem-&gt;count
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
+op_star
 id|count
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;cc&quot;
 comma
@@ -732,8 +358,6 @@ comma
 l_string|&quot;er2&quot;
 comma
 l_string|&quot;er3&quot;
-comma
-l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -743,9 +367,99 @@ r_int
 id|count
 suffix:semicolon
 )brace
+DECL|function|down_trylock
+r_static
+r_inline
+r_int
+id|down_trylock
+c_func
+(paren
+r_struct
+id|semaphore
+op_star
+id|sem
+)paren
+(brace
+r_register
+id|atomic_t
+op_star
+id|count
+id|asm
+c_func
+(paren
+l_string|&quot;er0&quot;
+)paren
+suffix:semicolon
+macro_line|#if WAITQUEUE_DEBUG
+id|CHECK_MAGIC
+c_func
+(paren
+id|sem-&gt;__magic
+)paren
+suffix:semicolon
 macro_line|#endif
+id|count
+op_assign
+op_amp
+(paren
+id|sem-&gt;count
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;stc ccr,r3l&bslash;n&bslash;t&quot;
+l_string|&quot;orc #0x80,ccr&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %0,er2&bslash;n&bslash;t&quot;
+l_string|&quot;dec.l #1,er2&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l er2,%0&bslash;n&bslash;t&quot;
+l_string|&quot;bpl 1f&bslash;n&bslash;t&quot;
+l_string|&quot;ldc r3l,ccr&bslash;n&bslash;t&quot;
+l_string|&quot;jmp @3f&bslash;n&bslash;t&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;.align 2&bslash;n&bslash;t&quot;
+)paren
+l_string|&quot;3:&bslash;n&bslash;t&quot;
+l_string|&quot;jsr @___down_trylock&bslash;n&bslash;t&quot;
+l_string|&quot;jmp @2f&bslash;n&bslash;t&quot;
+id|LOCK_SECTION_END
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+l_string|&quot;ldc r3l,ccr&bslash;n&bslash;t&quot;
+l_string|&quot;sub.l %1,%1&bslash;n&quot;
+l_string|&quot;2:&quot;
+suffix:colon
+l_string|&quot;+m&quot;
+(paren
+op_star
+id|count
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|count
+)paren
+suffix:colon
+suffix:colon
+l_string|&quot;cc&quot;
+comma
+l_string|&quot;er1&quot;
+comma
+l_string|&quot;er2&quot;
+comma
+l_string|&quot;er3&quot;
+)paren
+suffix:semicolon
+r_return
+(paren
+r_int
+)paren
+id|count
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Note! This is subtle. We jump to wake people up only if&n; * the semaphore was negative (== somebody was waiting on it).&n; * The default case (no contention) will result in NO&n; * jumps for both down() and up().&n; */
-macro_line|#if defined(__H8300H__)
 DECL|function|up
 r_static
 r_inline
@@ -790,9 +504,9 @@ c_func
 (paren
 l_string|&quot;stc ccr,r3l&bslash;n&bslash;t&quot;
 l_string|&quot;orc #0x80,ccr&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l @%1,er1&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %0,er1&bslash;n&bslash;t&quot;
 l_string|&quot;inc.l #1,er1&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l er1,@%1&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l er1,%0&bslash;n&bslash;t&quot;
 l_string|&quot;ldc r3l,ccr&bslash;n&bslash;t&quot;
 l_string|&quot;sub.l er2,er2&bslash;n&bslash;t&quot;
 l_string|&quot;cmp.l er2,er1&bslash;n&bslash;t&quot;
@@ -800,15 +514,12 @@ l_string|&quot;bgt 1f&bslash;n&bslash;t&quot;
 l_string|&quot;jsr @___up&bslash;n&quot;
 l_string|&quot;1:&quot;
 suffix:colon
-l_string|&quot;=m&quot;
+l_string|&quot;+m&quot;
 (paren
-id|sem-&gt;count
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
+op_star
 id|count
 )paren
+suffix:colon
 suffix:colon
 l_string|&quot;cc&quot;
 comma
@@ -817,90 +528,9 @@ comma
 l_string|&quot;er2&quot;
 comma
 l_string|&quot;er3&quot;
-comma
-l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if defined(__H8300S__)
-DECL|function|up
-r_static
-r_inline
-r_void
-id|up
-c_func
-(paren
-r_struct
-id|semaphore
-op_star
-id|sem
-)paren
-(brace
-r_register
-id|atomic_t
-op_star
-id|count
-id|asm
-c_func
-(paren
-l_string|&quot;er0&quot;
-)paren
-suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
-id|CHECK_MAGIC
-c_func
-(paren
-id|sem-&gt;__magic
-)paren
-suffix:semicolon
-macro_line|#endif
-id|count
-op_assign
-op_amp
-(paren
-id|sem-&gt;count
-)paren
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;stc exr,r3l&bslash;n&bslash;t&quot;
-l_string|&quot;orc #0x07,exr&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l @%1,er1&bslash;n&bslash;t&quot;
-l_string|&quot;inc.l #1,er1&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l er1,@%1&bslash;n&bslash;t&quot;
-l_string|&quot;ldc r3l,exr&bslash;n&bslash;t&quot;
-l_string|&quot;sub.l er2,er2&bslash;n&bslash;t&quot;
-l_string|&quot;cmp.l er2,er1&bslash;n&bslash;t&quot;
-l_string|&quot;bgt 1f&bslash;n&bslash;t&quot;
-l_string|&quot;jsr @___up&bslash;n&quot;
-l_string|&quot;1:&quot;
-suffix:colon
-l_string|&quot;=m&quot;
-(paren
-id|sem-&gt;count
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|count
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-comma
-l_string|&quot;er1&quot;
-comma
-l_string|&quot;er2&quot;
-comma
-l_string|&quot;er3&quot;
-comma
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif
 eof

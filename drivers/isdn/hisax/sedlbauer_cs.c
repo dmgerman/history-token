@@ -1853,13 +1853,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|del_timer
-c_func
-(paren
-op_amp
-id|dev_list-&gt;release
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

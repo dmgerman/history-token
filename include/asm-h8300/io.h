@@ -100,8 +100,6 @@ DECL|macro|writew
 mdefine_line|#define writew(b,addr) (void)((*(volatile unsigned short *) (addr &amp; 0x00ffffff)) = (b))
 DECL|macro|writel
 mdefine_line|#define writel(b,addr) (void)((*(volatile unsigned int *) (addr &amp; 0x00ffffff)) = (b))
-multiline_comment|/*&n; * The following are some defines we need for MTD with our&n; * COBRA5272 board.&n; * Because I don&squot;t know if they break something I have&n; * #ifdef&squot;d them.&n; * (020325 - hede)&n; */
-macro_line|#ifdef CONFIG_senTec
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb readb
 DECL|macro|__raw_readw
@@ -114,7 +112,6 @@ DECL|macro|__raw_writew
 mdefine_line|#define __raw_writew writew
 DECL|macro|__raw_writel
 mdefine_line|#define __raw_writel writel
-macro_line|#endif /* CONFIG_senTec */
 DECL|function|io_outsb
 r_static
 r_inline

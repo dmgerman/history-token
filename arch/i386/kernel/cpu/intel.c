@@ -1085,21 +1085,32 @@ id|l1d
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* SEP CPUID bug: Pentium Pro reports SEP but doesn&squot;t have it */
+multiline_comment|/* SEP CPUID bug: Pentium Pro reports SEP but doesn&squot;t have it until model 3 mask 3 */
 r_if
 c_cond
 (paren
 id|c-&gt;x86
 op_eq
 l_int|6
-op_logical_and
+)paren
+(brace
+r_int
+id|model_mask
+op_assign
+(paren
 id|c-&gt;x86_model
-OL
-l_int|3
-op_logical_and
+op_lshift
+l_int|8
+)paren
+op_plus
 id|c-&gt;x86_mask
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|model_mask
 OL
-l_int|3
+l_int|0x0303
 )paren
 id|clear_bit
 c_func
@@ -1109,6 +1120,7 @@ comma
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Names for the Pentium II/Celeron processors &n;&t;   detectable only by also checking the cache size.&n;&t;   Dixon is NOT a Celeron. */
 r_if
 c_cond

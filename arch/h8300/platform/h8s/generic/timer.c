@@ -13,41 +13,6 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/regs267x.h&gt;
-r_extern
-r_int
-id|request_irq_boot
-c_func
-(paren
-r_int
-r_int
-comma
-id|irqreturn_t
-(paren
-op_star
-id|handler
-)paren
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-comma
-r_int
-r_int
-comma
-r_const
-r_char
-op_star
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
 DECL|function|platform_timer_setup
 r_int
 id|platform_timer_setup
@@ -86,7 +51,7 @@ comma
 id|_8TCSR1
 )paren
 suffix:semicolon
-id|request_irq_boot
+id|request_irq
 c_func
 (paren
 l_int|76

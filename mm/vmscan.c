@@ -3902,7 +3902,7 @@ id|zone-&gt;zone_pgdat-&gt;kswapd_wait
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+macro_line|#ifdef CONFIG_PM
 multiline_comment|/*&n; * Try to free `nr_pages&squot; of memory, system-wide.  Returns the number of freed&n; * pages.&n; */
 DECL|function|shrink_all_memory
 r_int

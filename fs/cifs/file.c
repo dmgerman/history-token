@@ -217,6 +217,14 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_EXCL
+)paren
+(brace
 id|cERROR
 c_func
 (paren
@@ -229,6 +237,7 @@ id|file
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 id|full_path
@@ -245,7 +254,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; inode = 0x%p file flags are %x for %s&quot;
+l_string|&quot; inode = 0x%p file flags are 0x%x for %s&quot;
 comma
 id|inode
 comma
@@ -5348,38 +5357,6 @@ suffix:semicolon
 id|tmp_dentry-&gt;d_time
 op_assign
 id|jiffies
-suffix:semicolon
-(paren
-op_star
-id|ptmp_inode
-)paren
-op_member_access_from_pointer
-id|i_blksize
-op_assign
-(paren
-id|pTcon-&gt;ses-&gt;server-&gt;maxBuf
-op_minus
-id|MAX_CIFS_HDR_SIZE
-)paren
-op_amp
-l_int|0xFFFFFE00
-suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;i_blksize = %ld&quot;
-comma
-(paren
-op_star
-id|ptmp_inode
-)paren
-op_member_access_from_pointer
-id|i_blksize
-)paren
-)paren
 suffix:semicolon
 op_star
 id|pnew_dentry
