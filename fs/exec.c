@@ -1064,6 +1064,12 @@ id|pte
 r_goto
 id|out
 suffix:semicolon
+id|lru_cache_add
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|flush_dcache_page
 c_func
 (paren

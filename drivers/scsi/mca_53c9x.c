@@ -159,6 +159,7 @@ op_star
 suffix:semicolon
 multiline_comment|/* This is where all commands are put before they are trasfered to the &n; *  53c9x via PIO.&n; */
 DECL|variable|cmd_buffer
+r_static
 r_volatile
 r_int
 r_char

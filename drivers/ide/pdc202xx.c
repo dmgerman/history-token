@@ -3560,7 +3560,7 @@ id|hwif-&gt;channel
 ques
 c_cond
 l_string|&quot;Secondary&quot;
-comma
+suffix:colon
 l_string|&quot;Primary&quot;
 )paren
 suffix:semicolon

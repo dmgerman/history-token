@@ -836,7 +836,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|STAT
 macro_line|#undef STAT
-macro_line|#ifndef HOSTS_C
 DECL|macro|NCR5380_implementation_fields
 mdefine_line|#define NCR5380_implementation_fields &bslash;&n;    int port, ctrl
 DECL|macro|NCR5380_local_declare

@@ -1,7 +1,5 @@
-multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * $Id: //depot/src/linux/drivers/scsi/aic7xxx/aic7xxx_linux.c#72 $&n; *&n; * Copyright (c) 1994 John Aycock&n; *   The University of Calgary Department of Computer Science.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Sources include the Adaptec 1740 driver (aha1740.c), the Ultrastor 24F&n; * driver (ultrastor.c), various Linux kernel source, the Adaptec EISA&n; * config file (!adp7771.cfg), the Adaptec AHA-2740A Series User&squot;s Guide,&n; * the Linux Kernel Hacker&squot;s Guide, Writing a SCSI Device Driver for Linux,&n; * the Adaptec 1542 driver (aha1542.c), the Adaptec EISA overlay file&n; * (adp7770.ovl), the Adaptec AHA-2740 Series Technical Reference Manual,&n; * the Adaptec AIC-7770 Data Book, the ANSI SCSI specification, the&n; * ANSI SCSI-2 specification (draft 10c), ...&n; *&n; * --------------------------------------------------------------------------&n; *&n; *  Modifications by Daniel M. Eischen (deischen@iworks.InterWorks.org):&n; *&n; *  Substantially modified to include support for wide and twin bus&n; *  adapters, DMAing of SCBs, tagged queueing, IRQ sharing, bug fixes,&n; *  SCB paging, and other rework of the code.&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994, 1995, 1996, 1997, 1998, 1999, 2000 Justin T. Gibbs.&n; * Copyright (c) 2000 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; *---------------------------------------------------------------------------&n; *&n; *  Thanks also go to (in alphabetical order) the following:&n; *&n; *    Rory Bolt     - Sequencer bug fixes&n; *    Jay Estabrook - Initial DEC Alpha support&n; *    Doug Ledford  - Much needed abort/reset bug fixes&n; *    Kai Makisara  - DMAing of SCBs&n; *&n; *  A Boot time option was also added for not resetting the scsi bus.&n; *&n; *    Form:  aic7xxx=extended&n; *           aic7xxx=no_reset&n; *           aic7xxx=ultra&n; *           aic7xxx=irq_trigger:[0,1]  # 0 edge, 1 level&n; *           aic7xxx=verbose&n; *&n; *  Daniel M. Eischen, deischen@iworks.InterWorks.org, 1/23/97&n; *&n; *  Id: aic7xxx.c,v 4.1 1997/06/12 08:23:42 deang Exp&n; */
+multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7xxx_linux.c#79 $&n; *&n; * Copyright (c) 1994 John Aycock&n; *   The University of Calgary Department of Computer Science.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Sources include the Adaptec 1740 driver (aha1740.c), the Ultrastor 24F&n; * driver (ultrastor.c), various Linux kernel source, the Adaptec EISA&n; * config file (!adp7771.cfg), the Adaptec AHA-2740A Series User&squot;s Guide,&n; * the Linux Kernel Hacker&squot;s Guide, Writing a SCSI Device Driver for Linux,&n; * the Adaptec 1542 driver (aha1542.c), the Adaptec EISA overlay file&n; * (adp7770.ovl), the Adaptec AHA-2740 Series Technical Reference Manual,&n; * the Adaptec AIC-7770 Data Book, the ANSI SCSI specification, the&n; * ANSI SCSI-2 specification (draft 10c), ...&n; *&n; * --------------------------------------------------------------------------&n; *&n; *  Modifications by Daniel M. Eischen (deischen@iworks.InterWorks.org):&n; *&n; *  Substantially modified to include support for wide and twin bus&n; *  adapters, DMAing of SCBs, tagged queueing, IRQ sharing, bug fixes,&n; *  SCB paging, and other rework of the code.&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; *---------------------------------------------------------------------------&n; *&n; *  Thanks also go to (in alphabetical order) the following:&n; *&n; *    Rory Bolt     - Sequencer bug fixes&n; *    Jay Estabrook - Initial DEC Alpha support&n; *    Doug Ledford  - Much needed abort/reset bug fixes&n; *    Kai Makisara  - DMAing of SCBs&n; *&n; *  A Boot time option was also added for not resetting the scsi bus.&n; *&n; *    Form:  aic7xxx=extended&n; *           aic7xxx=no_reset&n; *           aic7xxx=verbose&n; *&n; *  Daniel M. Eischen, deischen@iworks.InterWorks.org, 1/23/97&n; *&n; *  Id: aic7xxx.c,v 4.1 1997/06/12 08:23:42 deang Exp&n; */
 multiline_comment|/*&n; * Further driver modifications made by Doug Ledford &lt;dledford@redhat.com&gt;&n; *&n; * Copyright (c) 1997-1999 Doug Ledford&n; *&n; * These changes are released under the same licensing terms as the FreeBSD&n; * driver written by Justin Gibbs.  Please see his Copyright notice above&n; * for the exact terms and conditions covering my changes as well as the&n; * warranty statement.&n; *&n; * Modifications made to the aic7xxx.c,v 4.1 driver from Dan Eischen include&n; * but are not limited to:&n; *&n; *  1: Import of the latest FreeBSD sequencer code for this driver&n; *  2: Modification of kernel code to accomodate different sequencer semantics&n; *  3: Extensive changes throughout kernel portion of driver to improve&n; *     abort/reset processing and error hanndling&n; *  4: Other work contributed by various people on the Internet&n; *  5: Changes to printk information and verbosity selection code&n; *  6: General reliability related changes, especially in IRQ management&n; *  7: Modifications to the default probe/attach order for supported cards&n; *  8: SMP friendliness has been improved&n; *&n; */
-multiline_comment|/*&n; * The next three defines are user configurable.  These should be the only&n; * defines a user might need to get in here and change.  There are other&n; * defines buried deeper in the code, but those really shouldn&squot;t need touched&n; * under normal conditions.&n; */
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;aic7xxx_osm.h&quot;
 macro_line|#include &quot;aic7xxx_inline.h&quot;
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
@@ -265,54 +263,11 @@ id|aic7xxx_extended
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n; * The IRQ trigger method used on EISA controllers. Does not effect PCI cards.&n; *   -1 = Use detected settings.&n; *    0 = Force Edge triggered mode.&n; *    1 = Force Level triggered mode.&n; */
-DECL|variable|aic7xxx_irq_trigger
-r_static
-r_int
-id|aic7xxx_irq_trigger
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n; * This variable is used to override the termination settings on a controller.&n; * This should not be used under normal conditions.  However, in the case&n; * that a controller does not have a readable SEEPROM (so that we can&squot;t&n; * read the SEEPROM settings directly) and that a controller has a buggered&n; * version of the cable detection logic, this can be used to force the&n; * correct termination.  It is preferable to use the manual termination&n; * settings in the BIOS if possible, but some motherboard controllers store&n; * those settings in a format we can&squot;t read.  In other cases, auto term&n; * should also work, but the chipset was put together with no auto term&n; * logic (common on motherboard controllers).  In those cases, we have&n; * 32 bits here to work with.  That&squot;s good for 8 controllers/channels.  The&n; * bits are organized as 4 bits per channel, with scsi0 getting the lowest&n; * 4 bits in the int.  A 1 in a bit position indicates the termination setting&n; * that corresponds to that bit should be enabled, a 0 is disabled.&n; * It looks something like this:&n; *&n; *    0x0f =  1111-Single Ended Low Byte Termination on/off&n; *            ||&bslash;-Single Ended High Byte Termination on/off&n; *            |&bslash;-LVD Low Byte Termination on/off&n; *            &bslash;-LVD High Byte Termination on/off&n; *&n; * For non-Ultra2 controllers, the upper 2 bits are not important.  So, to&n; * enable both high byte and low byte termination on scsi0, I would need to&n; * make sure that the override_term variable was set to 0x03 (bits 0011).&n; * To make sure that all termination is enabled on an Ultra2 controller at&n; * scsi2 and only high byte termination on scsi1 and high and low byte&n; * termination on scsi0, I would set override_term=0xf23 (bits 1111 0010 0011)&n; *&n; * For the most part, users should never have to use this, that&squot;s why I&n; * left it fairly cryptic instead of easy to understand.  If you need it,&n; * most likely someone will be telling you what your&squot;s needs to be set to.&n; */
-DECL|variable|aic7xxx_override_term
-r_static
-r_int
-id|aic7xxx_override_term
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n; * Certain motherboard chipset controllers tend to screw&n; * up the polarity of the term enable output pin.  Use this variable&n; * to force the correct polarity for your system.  This is a bitfield variable&n; * similar to the previous one, but this one has one bit per channel instead&n; * of four.&n; *    0 = Force the setting to active low.&n; *    1 = Force setting to active high.&n; * Most Adaptec cards are active high, several motherboards are active low.&n; * To force a 2940 card at SCSI 0 to active high and a motherboard 7895&n; * controller at scsi1 and scsi2 to active low, and a 2910 card at scsi3&n; * to active high, you would need to set stpwlev=0x9 (bits 1001).&n; *&n; * People shouldn&squot;t need to use this, but if you are experiencing lots of&n; * SCSI timeout problems, this may help.  There is one sure way to test what&n; * this option needs to be.  Using a boot floppy to boot the system, configure&n; * your system to enable all SCSI termination (in the Adaptec SCSI BIOS) and&n; * if needed then also pass a value to override_term to make sure that the&n; * driver is enabling SCSI termination, then set this variable to either 0&n; * or 1.  When the driver boots, make sure there are *NO* SCSI cables&n; * connected to your controller.  If it finds and inits the controller&n; * without problem, then the setting you passed to stpwlev was correct.  If&n; * the driver goes into a reset loop and hangs the system, then you need the&n; * other setting for this variable.  If neither setting lets the machine&n; * boot then you have definite termination problems that may not be fixable.&n; */
-DECL|variable|aic7xxx_stpwlev
-r_static
-r_int
-id|aic7xxx_stpwlev
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n; * Set this to non-0 in order to force the driver to panic the kernel&n; * and print out debugging info on a SCSI abort or reset cycle.&n; */
-DECL|variable|aic7xxx_panic_on_abort
-r_static
-r_int
-id|aic7xxx_panic_on_abort
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n; * PCI bus parity checking of the Adaptec controllers.  This is somewhat&n; * dubious at best.  To my knowledge, this option has never actually&n; * solved a PCI parity problem, but on certain machines with broken PCI&n; * chipset configurations, it can generate tons of false error messages.&n; * It&squot;s included in the driver for completeness.&n; *   0 = Shut off PCI parity check&n; *  -1 = Normal polarity pci parity checking&n; *   1 = reverse polarity pci parity checking&n; *&n; * NOTE: you can&squot;t actually pass -1 on the lilo prompt.  So, to set this&n; * variable to -1 you would actually want to simply pass the variable&n; * name without a number.  That will invert the 0 which will result in&n; * -1.&n; */
 DECL|variable|aic7xxx_pci_parity
 r_static
 r_int
 id|aic7xxx_pci_parity
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/*&n; * Set this to a non-0 value to make us dump out the 32 bit instruction&n; * registers on the card after completing the sequencer download.  This&n; * allows the actual sequencer download to be verified.  It is possible&n; * to use this option and still boot up and run your system.  This is&n; * only intended for debugging purposes.&n; */
-DECL|variable|aic7xxx_dump_sequencer
-r_static
-r_int
-id|aic7xxx_dump_sequencer
 op_assign
 l_int|0
 suffix:semicolon
@@ -334,7 +289,12 @@ id|aic7xxx_seltime
 op_assign
 l_int|0x00
 suffix:semicolon
-multiline_comment|/*&n; * So that insmod can find the variable and make it point to something&n; */
+multiline_comment|/*&n; * Certain devices do not perform any aging on commands.  Should the&n; * device be saturated by commands in one portion of the disk, it is&n; * possible for transactions on far away sectors to never be serviced.&n; * To handle these devices, we can periodically send an ordered tag to&n; * force all outstanding transactions to be serviced prior to a new&n; * transaction.&n; */
+DECL|variable|aic7xxx_periodic_otag
+r_int
+id|aic7xxx_periodic_otag
+suffix:semicolon
+multiline_comment|/*&n; * Module information and settable options.&n; */
 macro_line|#ifdef MODULE
 DECL|variable|aic7xxx
 r_static
@@ -343,14 +303,6 @@ op_star
 id|aic7xxx
 op_assign
 l_int|NULL
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|aic7xxx
-comma
-l_string|&quot;s&quot;
-)paren
 suffix:semicolon
 multiline_comment|/*&n; * Just in case someone uses commas to separate items on the insmod&n; * command line, we define a dummy buffer here to avoid having insmod&n; * write wild stuff into our code segment&n; */
 DECL|variable|dummy_buffer
@@ -362,6 +314,188 @@ l_int|60
 )braket
 op_assign
 l_string|&quot;Please don&squot;t trounce on me insmod!!&bslash;n&quot;
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Maintainer: Justin T. Gibbs &lt;gibbs@scsiguy.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Adaptec Aic77XX/78XX SCSI Host Bus Adapter driver&quot;
+)paren
+suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,10)
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual BSD/GPL&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|MODULE_PARM
+c_func
+(paren
+id|aic7xxx
+comma
+l_string|&quot;s&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|aic7xxx
+comma
+"&quot;"
+id|period
+id|delimited
+comma
+id|options
+id|string
+dot
+id|verbose
+id|Enable
+id|verbose
+op_div
+id|diagnostic
+id|logging
+id|no_probe
+id|Disable
+id|EISA
+op_div
+id|VLB
+id|controller
+id|probing
+id|no_reset
+id|Supress
+id|initial
+id|bus
+id|resets
+id|extended
+id|Enable
+id|extended
+id|geometry
+id|on
+id|all
+id|controllers
+id|periodic_otag
+id|Send
+id|an
+id|ordered
+id|tagged
+id|transaction
+id|periodically
+id|to
+id|prevent
+id|tag
+id|starvation
+dot
+id|This
+id|may
+id|be
+id|required
+id|by
+id|some
+id|older
+id|disk
+id|drives
+op_div
+id|RAID
+id|arrays
+dot
+id|reverse_scan
+id|Sort
+id|PCI
+id|devices
+id|highest
+id|Bus
+op_div
+id|Slot
+id|to
+id|lowest
+id|tag_info
+suffix:colon
+template_param
+id|Set
+id|per
+op_minus
+id|target
+id|tag
+id|depth
+id|seltime
+suffix:colon
+template_param
+id|Selection
+id|Timeout
+c_func
+(paren
+l_int|0
+op_div
+l_int|256
+id|ms
+comma
+l_int|1
+op_div
+l_int|128
+id|ms
+comma
+l_int|2
+op_div
+l_int|64
+id|ms
+comma
+l_int|3
+op_div
+l_int|32
+id|ms
+)paren
+id|Sample
+op_div
+id|etc
+op_div
+id|modules.conf
+id|line
+suffix:colon
+id|Enable
+id|verbose
+id|logging
+id|Disable
+id|EISA
+op_div
+id|VLB
+id|probing
+id|Set
+id|tag
+id|depth
+id|on
+id|Controller
+l_int|2
+op_div
+id|Target
+l_int|2
+id|to
+l_int|10
+id|tags
+id|Shorten
+id|the
+id|selection
+id|timeout
+id|to
+l_int|128
+id|ms
+id|from
+id|its
+r_default
+id|of
+l_int|256
+id|options
+id|aic7xxx
+op_assign
+l_char|&squot;&bslash;&quot;verbose.no_probe.tag_info:{{}.{}.{..10}}.seltime:1&bslash;&quot;&squot;
+"&quot;"
+)paren
 suffix:semicolon
 macro_line|#endif
 r_static
@@ -1371,6 +1505,25 @@ id|cmd-&gt;request_bufflen
 op_ne
 l_int|0
 )paren
+(brace
+id|u_int32_t
+id|high_addr
+suffix:semicolon
+id|high_addr
+op_assign
+id|ahc_le32toh
+c_func
+(paren
+id|scb-&gt;sg_list
+(braket
+l_int|0
+)braket
+dot
+id|len
+)paren
+op_amp
+id|AHC_SG_HIGH_ADDR_MASK
+suffix:semicolon
 id|pci_unmap_single
 c_func
 (paren
@@ -1386,6 +1539,17 @@ l_int|0
 dot
 id|addr
 )paren
+op_or
+(paren
+(paren
+(paren
+id|dma_addr_t
+)paren
+id|high_addr
+)paren
+op_lshift
+l_int|8
+)paren
 comma
 id|cmd-&gt;request_bufflen
 comma
@@ -1396,6 +1560,7 @@ id|cmd-&gt;sc_data_direction
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 r_static
 id|__inline
@@ -1652,6 +1817,18 @@ id|ahc_softc
 op_star
 id|ahc
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|event
+op_eq
+id|SYS_DOWN
+op_logical_or
+id|event
+op_eq
+id|SYS_HALT
+)paren
+(brace
 id|TAILQ_FOREACH
 c_func
 (paren
@@ -1669,6 +1846,7 @@ c_func
 id|ahc
 )paren
 suffix:semicolon
+)brace
 )brace
 r_return
 (paren
@@ -1867,6 +2045,12 @@ id|ENOMEM
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Although we can dma data above 4GB, our&n;&t; * &quot;consistent&quot; memory is below 4GB for&n;&t; * space efficiency reasons (only need a 4byte&n;&t; * address).  For this reason, we have to reset&n;&t; * our dma mask when doing allocations.&n;&t; */
+r_if
+c_cond
+(paren
+id|ahc-&gt;dev_softc
+)paren
+(brace
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,3)
 id|pci_set_dma_mask
 c_func
@@ -1876,6 +2060,7 @@ comma
 l_int|0xFFFFFFFF
 )paren
 suffix:semicolon
+)brace
 macro_line|#else
 id|ahc-&gt;dev_softc-&gt;dma_mask
 op_assign
@@ -1896,6 +2081,11 @@ op_amp
 id|map-&gt;bus_addr
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ahc-&gt;dev_softc
+)paren
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,3)
 id|pci_set_dma_mask
 c_func
@@ -1912,7 +2102,7 @@ id|ahc-&gt;platform_data-&gt;hw_dma_mask
 suffix:semicolon
 macro_line|#endif
 macro_line|#else /* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0) */
-multiline_comment|/*&n;&t; * At least in 2.2.14, malloc is a slab allocator so all&n;&t; * allocations are aligned.  We assume, for these kernel versions&n;&t; * that all allocations will be bellow 4Gig, physically contiguous,&n;&t; * and accessable via DMA by the controller.&n;&t; */
+multiline_comment|/*&n;&t; * At least in 2.2.14, malloc is a slab allocator so all&n;&t; * allocations are aligned.  We assume for these kernel versions&n;&t; * that all allocations will be bellow 4Gig, physically contiguous,&n;&t; * and accessable via DMA by the controller.&n;&t; */
 id|map
 op_assign
 l_int|NULL
@@ -2262,6 +2452,28 @@ suffix:colon
 r_char
 id|primary_channel
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|aic7xxx_reverse_scan
+op_ne
+l_int|0
+)paren
+id|value
+op_assign
+id|ahc_get_pci_bus
+c_func
+(paren
+id|rahc-&gt;dev_softc
+)paren
+op_minus
+id|ahc_get_pci_bus
+c_func
+(paren
+id|lahc-&gt;dev_softc
+)paren
+suffix:semicolon
+r_else
 id|value
 op_assign
 id|ahc_get_pci_bus
@@ -2285,6 +2497,28 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|aic7xxx_reverse_scan
+op_ne
+l_int|0
+)paren
+id|value
+op_assign
+id|ahc_get_pci_slot
+c_func
+(paren
+id|rahc-&gt;dev_softc
+)paren
+op_minus
+id|ahc_get_pci_slot
+c_func
+(paren
+id|lahc-&gt;dev_softc
+)paren
+suffix:semicolon
+r_else
 id|value
 op_assign
 id|ahc_get_pci_slot
@@ -2832,7 +3066,7 @@ l_string|&quot;,.&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Handle Linux boot parameters. This routine allows for assigning a value&n; * to a parameter with a &squot;:&squot; between the parameter and the value.&n; * ie. aic7xxx=unpause:0x0A,extended&n; */
+multiline_comment|/*&n; * Handle Linux boot parameters. This routine allows for assigning a value&n; * to a parameter with a &squot;:&squot; between the parameter and the value.&n; * ie. aic7xxx=stpwlev:1,extended&n; */
 r_int
 DECL|function|aic7xxx_setup
 id|aic7xxx_setup
@@ -2889,13 +3123,6 @@ id|aic7xxx_no_reset
 )brace
 comma
 (brace
-l_string|&quot;irq_trigger&quot;
-comma
-op_amp
-id|aic7xxx_irq_trigger
-)brace
-comma
-(brace
 l_string|&quot;verbose&quot;
 comma
 op_amp
@@ -2910,20 +3137,6 @@ id|aic7xxx_reverse_scan
 )brace
 comma
 (brace
-l_string|&quot;override_term&quot;
-comma
-op_amp
-id|aic7xxx_override_term
-)brace
-comma
-(brace
-l_string|&quot;stpwlev&quot;
-comma
-op_amp
-id|aic7xxx_stpwlev
-)brace
-comma
-(brace
 l_string|&quot;no_probe&quot;
 comma
 op_amp
@@ -2931,10 +3144,10 @@ id|aic7xxx_no_probe
 )brace
 comma
 (brace
-l_string|&quot;panic_on_abort&quot;
+l_string|&quot;periodic_otag&quot;
 comma
 op_amp
-id|aic7xxx_panic_on_abort
+id|aic7xxx_periodic_otag
 )brace
 comma
 (brace
@@ -2942,13 +3155,6 @@ l_string|&quot;pci_parity&quot;
 comma
 op_amp
 id|aic7xxx_pci_parity
-)brace
-comma
-(brace
-l_string|&quot;dump_sequencer&quot;
-comma
-op_amp
-id|aic7xxx_dump_sequencer
 )brace
 comma
 (brace
@@ -3325,6 +3531,13 @@ r_template
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|aic7xxx_no_probe
+op_eq
+l_int|0
+)paren
 id|aic7770_linux_probe
 c_func
 (paren
@@ -3503,6 +3716,10 @@ l_int|16
 suffix:colon
 l_int|8
 suffix:semicolon
+id|host-&gt;max_lun
+op_assign
+id|AHC_NUM_LUNS
+suffix:semicolon
 id|host-&gt;max_channel
 op_assign
 (paren
@@ -3515,10 +3732,6 @@ c_cond
 l_int|1
 suffix:colon
 l_int|0
-suffix:semicolon
-id|host-&gt;max_lun
-op_assign
-id|AHC_NUM_LUNS
 suffix:semicolon
 id|ahc_set_unit
 c_func
@@ -4471,6 +4684,8 @@ op_complement
 id|AHC_DEV_Q_BASIC
 op_or
 id|AHC_DEV_Q_TAGGED
+op_or
+id|AHC_DEV_PERIODIC_OTAG
 )paren
 suffix:semicolon
 r_if
@@ -4505,10 +4720,23 @@ id|alg
 op_eq
 id|AHC_QUEUE_TAGGED
 )paren
+(brace
 id|dev-&gt;flags
 op_or_assign
 id|AHC_DEV_Q_TAGGED
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|aic7xxx_periodic_otag
+op_ne
+l_int|0
+)paren
+id|dev-&gt;flags
+op_or_assign
+id|AHC_DEV_PERIODIC_OTAG
+suffix:semicolon
+)brace
 r_else
 id|dev-&gt;flags
 op_or_assign
@@ -5155,11 +5383,13 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;scsi%d:%d:%d:%d: Tagged Queuing enabled.  Depth %d&bslash;n&quot;
+l_string|&quot;scsi%d:%c:%d:%d: Tagged Queuing enabled.  Depth %d&bslash;n&quot;
 comma
 id|ahc-&gt;platform_data-&gt;host-&gt;host_no
 comma
 id|device-&gt;channel
+op_plus
+l_char|&squot;A&squot;
 comma
 id|device-&gt;id
 comma
@@ -6084,6 +6314,17 @@ suffix:semicolon
 id|dev-&gt;commands_issued
 op_increment
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|dev-&gt;flags
+op_amp
+id|AHC_DEV_PERIODIC_OTAG
+)paren
+op_ne
+l_int|0
+)paren
 id|dev-&gt;commands_since_idle_or_otag
 op_increment
 suffix:semicolon
@@ -8220,7 +8461,7 @@ id|spi3data
 op_plus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * This is a kludge to deal with inquiry requests that&n;&t;&t; * are not large enough for us to pull the spi3 bits.&n;&t;&t; * In this case, we assume that a device that tells us&n;&t;&t; * they can provide inquiry data that spans the SPI3&n;&t;&t; * bits can handle a PPR request.  If the inquiry&n;&t;&t; * request has sufficient buffer space to cover these&n;&t;&t; * bits, we check them to see if any ppr options are&n;&t;&t; * available.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This is a kludge to deal with inquiry requests that&n;&t;&t; * are not large enough for us to pull the spi3 bits.&n;&t;&t; * In this case, we assume that a device that tells us&n;&t;&t; * they can provide inquiry data that spans the SPI3&n;&t;&t; * bits and says its SCSI3 can handle a PPR request.&n;&t;&t; * If the inquiry request has sufficient buffer space to&n;&t;&t; * cover these bits, we check them to see if any ppr options&n;&t;&t; * are available.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -8262,6 +8503,11 @@ id|SCSI_REV_2
 id|targ_info-&gt;curr.transport_version
 op_assign
 l_int|3
+suffix:semicolon
+r_else
+id|ppr_options
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_else
@@ -9043,11 +9289,6 @@ id|paused
 op_assign
 id|TRUE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|bootverbose
-)paren
 id|ahc_dump_card_state
 c_func
 (paren
@@ -9326,7 +9567,7 @@ c_cond
 id|disconnected
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Actually re-queue this SCB in an attempt&n;&t;&t; * to select the device before it reconnects.&n;&t;&t; * In either case (selection or reselection),&n;&t;&t; * we will now issue a the approprate message&n;&t;&t; * to the timed-out device.&n;&t;&t; *&n;&t;&t; * Set the MK_MESSAGE control bit indicating&n;&t;&t; * that we desire to send a message.  We&n;&t;&t; * also set the disconnected flag since&n;&t;&t; * in the paging case there is no guarantee&n;&t;&t; * that our SCB control byte matches the&n;&t;&t; * version on the card.  We don&squot;t want the&n;&t;&t; * sequencer to abort the command thinking&n;&t;&t; * an unsolicited reselection occurred.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Actually re-queue this SCB in an attempt&n;&t;&t; * to select the device before it reconnects.&n;&t;&t; * In either case (selection or reselection),&n;&t;&t; * we will now issue the approprate message&n;&t;&t; * to the timed-out device.&n;&t;&t; *&n;&t;&t; * Set the MK_MESSAGE control bit indicating&n;&t;&t; * that we desire to send a message.  We&n;&t;&t; * also set the disconnected flag since&n;&t;&t; * in the paging case there is no guarantee&n;&t;&t; * that our SCB control byte matches the&n;&t;&t; * version on the card.  We don&squot;t want the&n;&t;&t; * sequencer to abort the command thinking&n;&t;&t; * an unsolicited reselection occurred.&n;&t;&t; */
 id|pending_scb-&gt;hscb-&gt;control
 op_or_assign
 id|MK_MESSAGE
@@ -9741,7 +9982,7 @@ l_int|0
 id|printf
 c_func
 (paren
-l_string|&quot;aic7xxx_abort returns %d&bslash;n&quot;
+l_string|&quot;aic7xxx_abort returns 0x%x&bslash;n&quot;
 comma
 id|error
 )paren
@@ -9786,7 +10027,7 @@ l_int|0
 id|printf
 c_func
 (paren
-l_string|&quot;aic7xxx_dev_reset returns %d&bslash;n&quot;
+l_string|&quot;aic7xxx_dev_reset returns 0x%x&bslash;n&quot;
 comma
 id|error
 )paren
@@ -10096,6 +10337,18 @@ op_star
 id|sectors
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|aic7xxx_extended
+op_ne
+l_int|0
+)paren
+id|extended
+op_assign
+l_int|1
+suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
@@ -10445,12 +10698,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;Dual BSD/GPL&quot;
-)paren
-suffix:semicolon
 macro_line|#if defined(MODULE) || LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 DECL|variable|driver_template
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/time.h&n; *&n; * by Alexander Schulz &lt;aschulz@netwinder.org&gt;&n; *&n; * Uses the real time clock because you can&squot;t run&n; * the timer with level triggered interrupts and&n; * you can&squot;t run the shark with edge triggered&n; * inetrrupts (loses ints and hangs).&n; *&n; * derived from linux/drivers/char/rtc.c and:&n; * linux/include/asm-arm/arch-ebsa110/time.h&n; * Copyright (c) 1996,1997,1998 Russell King.&n; */
+multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/time.h&n; *&n; * by Alexander Schulz&n; *&n; * Uses the real time clock because you can&squot;t run&n; * the timer with level triggered interrupts and&n; * you can&squot;t run the shark with edge triggered&n; * inetrrupts (loses ints and hangs).&n; *&n; * derived from linux/drivers/char/rtc.c and:&n; * linux/include/asm-arm/arch-ebsa110/time.h&n; * Copyright (c) 1996,1997,1998 Russell King.&n; */
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 DECL|macro|IRQ_TIMER

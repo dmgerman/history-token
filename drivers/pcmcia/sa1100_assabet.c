@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/arch/pcmcia.h&gt;
+macro_line|#include &lt;asm/arch/assabet.h&gt;
 DECL|function|assabet_pcmcia_init
 r_static
 r_int
@@ -23,10 +24,10 @@ comma
 id|res
 suffix:semicolon
 multiline_comment|/* Enable CF bus: */
-id|BCR_clear
+id|ASSABET_BCR_clear
 c_func
 (paren
-id|BCR_CF_BUS_OFF
+id|ASSABET_BCR_CF_BUS_OFF
 )paren
 suffix:semicolon
 multiline_comment|/* All those are inputs */
@@ -34,24 +35,24 @@ id|GPDR
 op_and_assign
 op_complement
 (paren
-id|GPIO_CF_CD
+id|ASSABET_GPIO_CF_CD
 op_or
-id|GPIO_CF_BVD2
+id|ASSABET_GPIO_CF_BVD2
 op_or
-id|GPIO_CF_BVD1
+id|ASSABET_GPIO_CF_BVD1
 op_or
-id|GPIO_CF_IRQ
+id|ASSABET_GPIO_CF_IRQ
 )paren
 suffix:semicolon
 multiline_comment|/* Set transition detect */
 id|set_GPIO_IRQ_edge
 c_func
 (paren
-id|GPIO_CF_CD
+id|ASSABET_GPIO_CF_CD
 op_or
-id|GPIO_CF_BVD2
+id|ASSABET_GPIO_CF_BVD2
 op_or
-id|GPIO_CF_BVD1
+id|ASSABET_GPIO_CF_BVD1
 comma
 id|GPIO_BOTH_EDGES
 )paren
@@ -59,7 +60,7 @@ suffix:semicolon
 id|set_GPIO_IRQ_edge
 c_func
 (paren
-id|GPIO_CF_IRQ
+id|ASSABET_GPIO_CF_IRQ
 comma
 id|GPIO_FALLING_EDGE
 )paren
@@ -67,7 +68,7 @@ suffix:semicolon
 multiline_comment|/* Register interrupts */
 id|irq
 op_assign
-id|IRQ_GPIO_CF_CD
+id|ASSABET_IRQ_GPIO_CF_CD
 suffix:semicolon
 id|res
 op_assign
@@ -99,7 +100,7 @@ suffix:semicolon
 )brace
 id|irq
 op_assign
-id|IRQ_GPIO_CF_BVD2
+id|ASSABET_IRQ_GPIO_CF_BVD2
 suffix:semicolon
 id|res
 op_assign
@@ -131,7 +132,7 @@ suffix:semicolon
 )brace
 id|irq
 op_assign
-id|IRQ_GPIO_CF_BVD1
+id|ASSABET_IRQ_GPIO_CF_BVD1
 suffix:semicolon
 id|res
 op_assign
@@ -197,7 +198,7 @@ multiline_comment|/* disable IRQs */
 id|free_irq
 c_func
 (paren
-id|IRQ_GPIO_CF_CD
+id|ASSABET_IRQ_GPIO_CF_CD
 comma
 l_int|NULL
 )paren
@@ -205,7 +206,7 @@ suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|IRQ_GPIO_CF_BVD2
+id|ASSABET_IRQ_GPIO_CF_BVD2
 comma
 l_int|NULL
 )paren
@@ -213,16 +214,16 @@ suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|IRQ_GPIO_CF_BVD1
+id|ASSABET_IRQ_GPIO_CF_BVD1
 comma
 l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Disable CF bus: */
-id|BCR_set
+id|ASSABET_BCR_set
 c_func
 (paren
-id|BCR_CF_BUS_OFF
+id|ASSABET_BCR_CF_BUS_OFF
 )paren
 suffix:semicolon
 r_return
@@ -292,7 +293,7 @@ op_assign
 (paren
 id|levels
 op_amp
-id|GPIO_CF_CD
+id|ASSABET_GPIO_CF_CD
 )paren
 op_eq
 l_int|0
@@ -313,7 +314,7 @@ op_assign
 (paren
 id|levels
 op_amp
-id|GPIO_CF_IRQ
+id|ASSABET_GPIO_CF_IRQ
 )paren
 ques
 c_cond
@@ -331,7 +332,7 @@ op_assign
 (paren
 id|levels
 op_amp
-id|GPIO_CF_BVD1
+id|ASSABET_GPIO_CF_BVD1
 )paren
 ques
 c_cond
@@ -349,7 +350,7 @@ op_assign
 (paren
 id|levels
 op_amp
-id|GPIO_CF_BVD2
+id|ASSABET_GPIO_CF_BVD2
 )paren
 ques
 c_cond
@@ -427,7 +428,7 @@ l_int|1
 (brace
 id|info-&gt;irq
 op_assign
-id|IRQ_GPIO_CF_IRQ
+id|ASSABET_IRQ_GPIO_CF_IRQ
 suffix:semicolon
 )brace
 r_return
@@ -501,7 +502,7 @@ suffix:colon
 id|value
 op_and_assign
 op_complement
-id|BCR_CF_PWR
+id|ASSABET_BCR_CF_PWR
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -523,7 +524,7 @@ suffix:colon
 multiline_comment|/* Can only apply 3.3V to the CF slot. */
 id|value
 op_or_assign
-id|BCR_CF_PWR
+id|ASSABET_BCR_CF_PWR
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -561,18 +562,18 @@ c_cond
 (paren
 id|value
 op_or
-id|BCR_CF_RST
+id|ASSABET_BCR_CF_RST
 )paren
 suffix:colon
 (paren
 id|value
 op_amp
 op_complement
-id|BCR_CF_RST
+id|ASSABET_BCR_CF_RST
 )paren
 suffix:semicolon
 multiline_comment|/* Silently ignore Vpp, output enable, speaker enable. */
-id|BCR
+id|ASSABET_BCR
 op_assign
 id|BCR_value
 op_assign

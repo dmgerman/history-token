@@ -1141,5 +1141,7 @@ DECL|macro|FLOPPY_MOTOR_MASK
 mdefine_line|#define FLOPPY_MOTOR_MASK 0xf0
 DECL|macro|AUTO_DMA
 mdefine_line|#define AUTO_DMA
+DECL|macro|EXTRA_FLOPPY_PARAMS
+mdefine_line|#define EXTRA_FLOPPY_PARAMS
 macro_line|#endif /* __ASM_I386_FLOPPY_H */
 eof

@@ -1,188 +1,9 @@
-multiline_comment|/*&n; *&t;FILE    &t;SA-1100.h&n; *&n; *&t;Version &t;1.2&n; *&t;Author  &t;Copyright (c) Marc A. Viredaz, 1998&n; *&t;        &t;DEC Western Research Laboratory, Palo Alto, CA&n; *&t;Date    &t;January 1998 (April 1997)&n; *&t;System  &t;StrongARM SA-1100&n; *&t;Language&t;C or ARM Assembly&n; *&t;Purpose &t;Definition of constants related to the StrongARM&n; *&t;        &t;SA-1100 microprocessor (Advanced RISC Machine (ARM)&n; *&t;        &t;architecture version 4). This file is based on the&n; *&t;        &t;StrongARM SA-1100 data sheet version 2.2.&n; *&n; *&t;        &t;Language-specific definitions are selected by the&n; *&t;        &t;macro &quot;LANGUAGE&quot;, which should be defined as either&n; *&t;        &t;&quot;C&quot; (default) or &quot;Assembly&quot;.&n; */
+multiline_comment|/*&n; *&t;FILE    &t;SA-1100.h&n; *&n; *&t;Version &t;1.2&n; *&t;Author  &t;Copyright (c) Marc A. Viredaz, 1998&n; *&t;        &t;DEC Western Research Laboratory, Palo Alto, CA&n; *&t;Date    &t;January 1998 (April 1997)&n; *&t;System  &t;StrongARM SA-1100&n; *&t;Language&t;C or ARM Assembly&n; *&t;Purpose &t;Definition of constants related to the StrongARM&n; *&t;        &t;SA-1100 microprocessor (Advanced RISC Machine (ARM)&n; *&t;        &t;architecture version 4). This file is based on the&n; *&t;        &t;StrongARM SA-1100 data sheet version 2.2.&n; *&n; */
 multiline_comment|/* Be sure that virtual mapping is defined right */
 macro_line|#ifndef __ASM_ARCH_HARDWARE_H
 macro_line|#error You must include hardware.h not SA-1100.h
 macro_line|#endif
-macro_line|#ifndef LANGUAGE
-macro_line|# ifdef __ASSEMBLY__
-DECL|macro|LANGUAGE
-macro_line|#  define LANGUAGE Assembly
-macro_line|# else
-DECL|macro|LANGUAGE
-macro_line|#  define LANGUAGE C
-macro_line|# endif
-macro_line|#endif
-macro_line|#ifndef io_p2v
-DECL|macro|io_p2v
-mdefine_line|#define io_p2v(PhAdd)&t;(PhAdd)
-macro_line|#endif
-macro_line|#include &lt;asm/arch/bitfield.h&gt;
-DECL|macro|C
-mdefine_line|#define C       &t;0
-DECL|macro|Assembly
-mdefine_line|#define Assembly&t;1
-macro_line|#if LANGUAGE == C
-DECL|typedef|Word16
-r_typedef
-r_int
-r_int
-id|Word16
-suffix:semicolon
-DECL|typedef|Word32
-r_typedef
-r_int
-r_int
-id|Word32
-suffix:semicolon
-DECL|typedef|Word
-r_typedef
-id|Word32
-id|Word
-suffix:semicolon
-DECL|typedef|Quad
-r_typedef
-id|Word
-id|Quad
-(braket
-l_int|4
-)braket
-suffix:semicolon
-DECL|typedef|Address
-r_typedef
-r_void
-op_star
-id|Address
-suffix:semicolon
-DECL|typedef|ExcpHndlr
-r_typedef
-r_void
-(paren
-op_star
-id|ExcpHndlr
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* LANGUAGE == C */
-multiline_comment|/*&n; * Memory&n; */
-DECL|macro|MemBnkSp
-mdefine_line|#define MemBnkSp&t;0x08000000&t;/* Memory Bank Space [byte]        */
-DECL|macro|StMemBnkSp
-mdefine_line|#define StMemBnkSp&t;MemBnkSp&t;/* Static Memory Bank Space [byte] */
-DECL|macro|StMemBnk0Sp
-mdefine_line|#define StMemBnk0Sp&t;StMemBnkSp&t;/* Static Memory Bank 0 Space      */
-multiline_comment|/* [byte]                          */
-DECL|macro|StMemBnk1Sp
-mdefine_line|#define StMemBnk1Sp&t;StMemBnkSp&t;/* Static Memory Bank 1 Space      */
-multiline_comment|/* [byte]                          */
-DECL|macro|StMemBnk2Sp
-mdefine_line|#define StMemBnk2Sp&t;StMemBnkSp&t;/* Static Memory Bank 2 Space      */
-multiline_comment|/* [byte]                          */
-DECL|macro|StMemBnk3Sp
-mdefine_line|#define StMemBnk3Sp&t;StMemBnkSp&t;/* Static Memory Bank 3 Space      */
-multiline_comment|/* [byte]                          */
-DECL|macro|DRAMBnkSp
-mdefine_line|#define DRAMBnkSp&t;MemBnkSp&t;/* DRAM Bank Space [byte]          */
-DECL|macro|DRAMBnk0Sp
-mdefine_line|#define DRAMBnk0Sp&t;DRAMBnkSp&t;/* DRAM Bank 0 Space [byte]        */
-DECL|macro|DRAMBnk1Sp
-mdefine_line|#define DRAMBnk1Sp&t;DRAMBnkSp&t;/* DRAM Bank 1 Space [byte]        */
-DECL|macro|DRAMBnk2Sp
-mdefine_line|#define DRAMBnk2Sp&t;DRAMBnkSp&t;/* DRAM Bank 2 Space [byte]        */
-DECL|macro|DRAMBnk3Sp
-mdefine_line|#define DRAMBnk3Sp&t;DRAMBnkSp&t;/* DRAM Bank 3 Space [byte]        */
-DECL|macro|ZeroMemSp
-mdefine_line|#define ZeroMemSp&t;MemBnkSp&t;/* Zero Memory bank Space [byte]   */
-DECL|macro|_StMemBnk
-mdefine_line|#define _StMemBnk(Nb)&t;        &t;/* Static Memory Bank [0..3]       */ &bslash;&n;                &t;(0x00000000 + (Nb)*StMemBnkSp)
-DECL|macro|_StMemBnk0
-mdefine_line|#define _StMemBnk0&t;_StMemBnk (0)&t;/* Static Memory Bank 0            */
-DECL|macro|_StMemBnk1
-mdefine_line|#define _StMemBnk1&t;_StMemBnk (1)&t;/* Static Memory Bank 1            */
-DECL|macro|_StMemBnk2
-mdefine_line|#define _StMemBnk2&t;_StMemBnk (2)&t;/* Static Memory Bank 2            */
-DECL|macro|_StMemBnk3
-mdefine_line|#define _StMemBnk3&t;_StMemBnk (3)&t;/* Static Memory Bank 3            */
-macro_line|#if LANGUAGE == C
-DECL|typedef|StMemBnkType
-r_typedef
-id|Quad
-id|StMemBnkType
-(braket
-id|StMemBnkSp
-op_div
-r_sizeof
-(paren
-id|Quad
-)paren
-)braket
-suffix:semicolon
-DECL|macro|StMemBnk
-mdefine_line|#define StMemBnk&t;        &t;/* Static Memory Bank [0..3]       */ &bslash;&n;                &t;((StMemBnkType *) io_p2v (_StMemBnk (0)))
-DECL|macro|StMemBnk0
-mdefine_line|#define StMemBnk0&t;(StMemBnk [0])&t;/* Static Memory Bank 0            */
-DECL|macro|StMemBnk1
-mdefine_line|#define StMemBnk1&t;(StMemBnk [1])&t;/* Static Memory Bank 1            */
-DECL|macro|StMemBnk2
-mdefine_line|#define StMemBnk2&t;(StMemBnk [2])&t;/* Static Memory Bank 2            */
-DECL|macro|StMemBnk3
-mdefine_line|#define StMemBnk3&t;(StMemBnk [3])&t;/* Static Memory Bank 3            */
-macro_line|#endif /* LANGUAGE == C */
-DECL|macro|_DRAMBnk
-mdefine_line|#define _DRAMBnk(Nb)&t;        &t;/* DRAM Bank [0..3]                */ &bslash;&n;                &t;(0xC0000000 + (Nb)*DRAMBnkSp)
-DECL|macro|_DRAMBnk0
-mdefine_line|#define _DRAMBnk0&t;_DRAMBnk (0)&t;/* DRAM Bank 0                     */
-DECL|macro|_DRAMBnk1
-mdefine_line|#define _DRAMBnk1&t;_DRAMBnk (1)&t;/* DRAM Bank 1                     */
-DECL|macro|_DRAMBnk2
-mdefine_line|#define _DRAMBnk2&t;_DRAMBnk (2)&t;/* DRAM Bank 2                     */
-DECL|macro|_DRAMBnk3
-mdefine_line|#define _DRAMBnk3&t;_DRAMBnk (3)&t;/* DRAM Bank 3                     */
-macro_line|#if LANGUAGE == C
-DECL|typedef|DRAMBnkType
-r_typedef
-id|Quad
-id|DRAMBnkType
-(braket
-id|DRAMBnkSp
-op_div
-r_sizeof
-(paren
-id|Quad
-)paren
-)braket
-suffix:semicolon
-DECL|macro|DRAMBnk
-mdefine_line|#define DRAMBnk &t;        &t;/* DRAM Bank [0..3]                */ &bslash;&n;                &t;((DRAMBnkType *) io_p2v (_DRAMBnk (0)))
-DECL|macro|DRAMBnk0
-mdefine_line|#define DRAMBnk0&t;(DRAMBnk [0])&t;/* DRAM Bank 0                     */
-DECL|macro|DRAMBnk1
-mdefine_line|#define DRAMBnk1&t;(DRAMBnk [1])&t;/* DRAM Bank 1                     */
-DECL|macro|DRAMBnk2
-mdefine_line|#define DRAMBnk2&t;(DRAMBnk [2])&t;/* DRAM Bank 2                     */
-DECL|macro|DRAMBnk3
-mdefine_line|#define DRAMBnk3&t;(DRAMBnk [3])&t;/* DRAM Bank 3                     */
-macro_line|#endif /* LANGUAGE == C */
-DECL|macro|_ZeroMem
-mdefine_line|#define _ZeroMem&t;0xE0000000&t;/* Zero Memory bank                */
-macro_line|#if LANGUAGE == C
-DECL|typedef|ZeroMemType
-r_typedef
-id|Quad
-id|ZeroMemType
-(braket
-id|ZeroMemSp
-op_div
-r_sizeof
-(paren
-id|Quad
-)paren
-)braket
-suffix:semicolon
-DECL|macro|ZeroMem
-mdefine_line|#define ZeroMem &t;        &t;/* Zero Memory bank                */ &bslash;&n;                &t;(*((ZeroMemType *) io_p2v (_ZeroMem)))
-macro_line|#endif /* LANGUAGE == C */
+macro_line|#include &quot;bitfield.h&quot;
 multiline_comment|/*&n; * Personal Computer Memory Card International Association (PCMCIA) sockets&n; */
 DECL|macro|PCMCIAPrtSp
 mdefine_line|#define PCMCIAPrtSp&t;0x04000000&t;/* PCMCIA Partition Space [byte]   */
@@ -234,101 +55,29 @@ DECL|macro|_PCMCIA1Attr
 mdefine_line|#define _PCMCIA1Attr&t;_PCMCIAAttr (1)&t;/* PCMCIA 1 Attribute              */
 DECL|macro|_PCMCIA1Mem
 mdefine_line|#define _PCMCIA1Mem&t;_PCMCIAMem (1)&t;/* PCMCIA 1 Memory                 */
-macro_line|#if LANGUAGE == C
-DECL|typedef|PCMCIAPrtType
-r_typedef
-id|Quad
-id|PCMCIAPrtType
-(braket
-id|PCMCIAPrtSp
-op_div
-r_sizeof
-(paren
-id|Quad
-)paren
-)braket
-suffix:semicolon
-DECL|typedef|PCMCIAType
-r_typedef
-id|PCMCIAPrtType
-id|PCMCIAType
-(braket
-id|PCMCIASp
-op_div
-id|PCMCIAPrtSp
-)braket
-suffix:semicolon
-DECL|macro|PCMCIA0
-mdefine_line|#define PCMCIA0 &t;        &t;/* PCMCIA 0                        */ &bslash;&n;                &t;(*((PCMCIAType *) io_p2v (_PCMCIA0)))
-DECL|macro|PCMCIA0IO
-mdefine_line|#define PCMCIA0IO&t;        &t;/* PCMCIA 0 I/O                    */ &bslash;&n;                &t;(*((PCMCIAPrtType *) io_p2v (_PCMCIA0IO)))
-DECL|macro|PCMCIA0Attr
-mdefine_line|#define PCMCIA0Attr&t;        &t;/* PCMCIA 0 Attribute              */ &bslash;&n;                &t;(*((PCMCIAPrtType *) io_p2v (_PCMCIA0Attr)))
-DECL|macro|PCMCIA0Mem
-mdefine_line|#define PCMCIA0Mem&t;        &t;/* PCMCIA 0 Memory                 */ &bslash;&n;                &t;(*((PCMCIAPrtType *) io_p2v (_PCMCIA0Mem)))
-DECL|macro|PCMCIA1
-mdefine_line|#define PCMCIA1 &t;        &t;/* PCMCIA 1                        */ &bslash;&n;                &t;(*((PCMCIAType *) io_p2v (_PCMCIA1)))
-DECL|macro|PCMCIA1IO
-mdefine_line|#define PCMCIA1IO&t;        &t;/* PCMCIA 1 I/O                    */ &bslash;&n;                &t;(*((PCMCIAPrtType *) io_p2v (_PCMCIA1IO)))
-DECL|macro|PCMCIA1Attr
-mdefine_line|#define PCMCIA1Attr&t;        &t;/* PCMCIA 1 Attribute              */ &bslash;&n;                &t;(*((PCMCIAPrtType *) io_p2v (_PCMCIA1Attr)))
-DECL|macro|PCMCIA1Mem
-mdefine_line|#define PCMCIA1Mem&t;        &t;/* PCMCIA 1 Memory                 */ &bslash;&n;                &t;(*((PCMCIAPrtType *) io_p2v (_PCMCIA1Mem)))
-macro_line|#endif /* LANGUAGE == C */
 multiline_comment|/*&n; * Universal Serial Bus (USB) Device Controller (UDC) control registers&n; *&n; * Registers&n; *    Ser0UDCCR &t;Serial port 0 Universal Serial Bus (USB) Device&n; *              &t;Controller (UDC) Control Register (read/write).&n; *    Ser0UDCAR &t;Serial port 0 Universal Serial Bus (USB) Device&n; *              &t;Controller (UDC) Address Register (read/write).&n; *    Ser0UDCOMP&t;Serial port 0 Universal Serial Bus (USB) Device&n; *              &t;Controller (UDC) Output Maximum Packet size register&n; *              &t;(read/write).&n; *    Ser0UDCIMP&t;Serial port 0 Universal Serial Bus (USB) Device&n; *              &t;Controller (UDC) Input Maximum Packet size register&n; *              &t;(read/write).&n; *    Ser0UDCCS0&t;Serial port 0 Universal Serial Bus (USB) Device&n; *              &t;Controller (UDC) Control/Status register end-point 0&n; *              &t;(read/write).&n; *    Ser0UDCCS1&t;Serial port 0 Universal Serial Bus (USB) Device&n; *              &t;Controller (UDC) Control/Status register end-point 1&n; *              &t;(output, read/write).&n; *    Ser0UDCCS2&t;Serial port 0 Universal Serial Bus (USB) Device&n; *              &t;Controller (UDC) Control/Status register end-point 2&n; *              &t;(input, read/write).&n; *    Ser0UDCD0 &t;Serial port 0 Universal Serial Bus (USB) Device&n; *              &t;Controller (UDC) Data register end-point 0&n; *              &t;(read/write).&n; *    Ser0UDCWC &t;Serial port 0 Universal Serial Bus (USB) Device&n; *              &t;Controller (UDC) Write Count register end-point 0&n; *              &t;(read).&n; *    Ser0UDCDR &t;Serial port 0 Universal Serial Bus (USB) Device&n; *              &t;Controller (UDC) Data Register (read/write).&n; *    Ser0UDCSR &t;Serial port 0 Universal Serial Bus (USB) Device&n; *              &t;Controller (UDC) Status Register (read/write).&n; */
-DECL|macro|_Ser0UDCCR
-mdefine_line|#define _Ser0UDCCR&t;0x80000000&t;/* Ser. port 0 UDC Control Reg.    */
-DECL|macro|_Ser0UDCAR
-mdefine_line|#define _Ser0UDCAR&t;0x80000004&t;/* Ser. port 0 UDC Address Reg.    */
-DECL|macro|_Ser0UDCOMP
-mdefine_line|#define _Ser0UDCOMP&t;0x80000008&t;/* Ser. port 0 UDC Output Maximum  */
-multiline_comment|/* Packet size reg.                */
-DECL|macro|_Ser0UDCIMP
-mdefine_line|#define _Ser0UDCIMP&t;0x8000000C&t;/* Ser. port 0 UDC Input Maximum   */
-multiline_comment|/* Packet size reg.                */
-DECL|macro|_Ser0UDCCS0
-mdefine_line|#define _Ser0UDCCS0&t;0x80000010&t;/* Ser. port 0 UDC Control/Status  */
-multiline_comment|/* reg. end-point 0                */
-DECL|macro|_Ser0UDCCS1
-mdefine_line|#define _Ser0UDCCS1&t;0x80000014&t;/* Ser. port 0 UDC Control/Status  */
-multiline_comment|/* reg. end-point 1 (output)       */
-DECL|macro|_Ser0UDCCS2
-mdefine_line|#define _Ser0UDCCS2&t;0x80000018&t;/* Ser. port 0 UDC Control/Status  */
-multiline_comment|/* reg. end-point 2 (input)        */
-DECL|macro|_Ser0UDCD0
-mdefine_line|#define _Ser0UDCD0&t;0x8000001C&t;/* Ser. port 0 UDC Data reg.       */
-multiline_comment|/* end-point 0                     */
-DECL|macro|_Ser0UDCWC
-mdefine_line|#define _Ser0UDCWC&t;0x80000020&t;/* Ser. port 0 UDC Write Count     */
-multiline_comment|/* reg. end-point 0                */
-DECL|macro|_Ser0UDCDR
-mdefine_line|#define _Ser0UDCDR&t;0x80000028&t;/* Ser. port 0 UDC Data Reg.       */
-DECL|macro|_Ser0UDCSR
-mdefine_line|#define _Ser0UDCSR&t;0x80000030&t;/* Ser. port 0 UDC Status Reg.     */
-macro_line|#if LANGUAGE == C
 DECL|macro|Ser0UDCCR
-mdefine_line|#define Ser0UDCCR&t;        &t;/* Ser. port 0 UDC Control Reg.    */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser0UDCCR)))
+mdefine_line|#define Ser0UDCCR&t;__REG(0x80000000)  /* Ser. port 0 UDC Control Reg. */
 DECL|macro|Ser0UDCAR
-mdefine_line|#define Ser0UDCAR&t;        &t;/* Ser. port 0 UDC Address Reg.    */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser0UDCAR)))
+mdefine_line|#define Ser0UDCAR&t;__REG(0x80000004)  /* Ser. port 0 UDC Address Reg. */
 DECL|macro|Ser0UDCOMP
-mdefine_line|#define Ser0UDCOMP&t;        &t;/* Ser. port 0 UDC Output Maximum  */ &bslash;&n;                &t;        &t;/* Packet size reg.                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser0UDCOMP)))
+mdefine_line|#define Ser0UDCOMP&t;__REG(0x80000008)  /* Ser. port 0 UDC Output Maximum Packet size reg. */
 DECL|macro|Ser0UDCIMP
-mdefine_line|#define Ser0UDCIMP&t;        &t;/* Ser. port 0 UDC Input Maximum   */ &bslash;&n;                &t;        &t;/* Packet size reg.                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser0UDCIMP)))
+mdefine_line|#define Ser0UDCIMP&t;__REG(0x8000000C)  /* Ser. port 0 UDC Input Maximum Packet size reg. */
 DECL|macro|Ser0UDCCS0
-mdefine_line|#define Ser0UDCCS0&t;        &t;/* Ser. port 0 UDC Control/Status  */ &bslash;&n;                &t;        &t;/* reg. end-point 0                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser0UDCCS0)))
+mdefine_line|#define Ser0UDCCS0&t;__REG(0x80000010)  /* Ser. port 0 UDC Control/Status reg. end-point 0 */
 DECL|macro|Ser0UDCCS1
-mdefine_line|#define Ser0UDCCS1&t;        &t;/* Ser. port 0 UDC Control/Status  */ &bslash;&n;                &t;        &t;/* reg. end-point 1 (output)       */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser0UDCCS1)))
+mdefine_line|#define Ser0UDCCS1&t;__REG(0x80000014)  /* Ser. port 0 UDC Control/Status reg. end-point 1 (output) */
 DECL|macro|Ser0UDCCS2
-mdefine_line|#define Ser0UDCCS2&t;        &t;/* Ser. port 0 UDC Control/Status  */ &bslash;&n;                &t;        &t;/* reg. end-point 2 (input)        */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser0UDCCS2)))
+mdefine_line|#define Ser0UDCCS2&t;__REG(0x80000018)  /* Ser. port 0 UDC Control/Status reg. end-point 2 (input) */
 DECL|macro|Ser0UDCD0
-mdefine_line|#define Ser0UDCD0&t;        &t;/* Ser. port 0 UDC Data reg.       */ &bslash;&n;                &t;        &t;/* end-point 0                     */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser0UDCD0)))
+mdefine_line|#define Ser0UDCD0&t;__REG(0x8000001C)  /* Ser. port 0 UDC Data reg. end-point 0 */
 DECL|macro|Ser0UDCWC
-mdefine_line|#define Ser0UDCWC&t;        &t;/* Ser. port 0 UDC Write Count     */ &bslash;&n;                &t;        &t;/* reg. end-point 0                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser0UDCWC)))
+mdefine_line|#define Ser0UDCWC&t;__REG(0x80000020)  /* Ser. port 0 UDC Write Count reg. end-point 0 */
 DECL|macro|Ser0UDCDR
-mdefine_line|#define Ser0UDCDR&t;        &t;/* Ser. port 0 UDC Data Reg.       */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser0UDCDR)))
+mdefine_line|#define Ser0UDCDR&t;__REG(0x80000028)  /* Ser. port 0 UDC Data Reg. */
 DECL|macro|Ser0UDCSR
-mdefine_line|#define Ser0UDCSR&t;        &t;/* Ser. port 0 UDC Status Reg.     */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser0UDCSR)))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define Ser0UDCSR&t;__REG(0x80000030)  /* Ser. port 0 UDC Status Reg. */
 DECL|macro|UDCCR_UDD
 mdefine_line|#define UDCCR_UDD&t;0x00000001&t;/* UDC Disable                     */
 DECL|macro|UDCCR_UDA
@@ -426,66 +175,73 @@ DECL|macro|UDCSR_RSTIR
 mdefine_line|#define UDCSR_RSTIR&t;0x00000020&t;/* ReSeT Interrupt Request         */
 multiline_comment|/*&n; * Universal Asynchronous Receiver/Transmitter (UART) control registers&n; *&n; * Registers&n; *    Ser1UTCR0 &t;Serial port 1 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Control Register 0&n; *              &t;(read/write).&n; *    Ser1UTCR1 &t;Serial port 1 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Control Register 1&n; *              &t;(read/write).&n; *    Ser1UTCR2 &t;Serial port 1 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Control Register 2&n; *              &t;(read/write).&n; *    Ser1UTCR3 &t;Serial port 1 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Control Register 3&n; *              &t;(read/write).&n; *    Ser1UTDR  &t;Serial port 1 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Data Register&n; *              &t;(read/write).&n; *    Ser1UTSR0 &t;Serial port 1 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Status Register 0&n; *              &t;(read/write).&n; *    Ser1UTSR1 &t;Serial port 1 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Status Register 1 (read).&n; *&n; *    Ser2UTCR0 &t;Serial port 2 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Control Register 0&n; *              &t;(read/write).&n; *    Ser2UTCR1 &t;Serial port 2 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Control Register 1&n; *              &t;(read/write).&n; *    Ser2UTCR2 &t;Serial port 2 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Control Register 2&n; *              &t;(read/write).&n; *    Ser2UTCR3 &t;Serial port 2 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Control Register 3&n; *              &t;(read/write).&n; *    Ser2UTCR4 &t;Serial port 2 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Control Register 4&n; *              &t;(read/write).&n; *    Ser2UTDR  &t;Serial port 2 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Data Register&n; *              &t;(read/write).&n; *    Ser2UTSR0 &t;Serial port 2 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Status Register 0&n; *              &t;(read/write).&n; *    Ser2UTSR1 &t;Serial port 2 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Status Register 1 (read).&n; *&n; *    Ser3UTCR0 &t;Serial port 3 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Control Register 0&n; *              &t;(read/write).&n; *    Ser3UTCR1 &t;Serial port 3 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Control Register 1&n; *              &t;(read/write).&n; *    Ser3UTCR2 &t;Serial port 3 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Control Register 2&n; *              &t;(read/write).&n; *    Ser3UTCR3 &t;Serial port 3 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Control Register 3&n; *              &t;(read/write).&n; *    Ser3UTDR  &t;Serial port 3 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Data Register&n; *              &t;(read/write).&n; *    Ser3UTSR0 &t;Serial port 3 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Status Register 0&n; *              &t;(read/write).&n; *    Ser3UTSR1 &t;Serial port 3 Universal Asynchronous&n; *              &t;Receiver/Transmitter (UART) Status Register 1 (read).&n; *&n; * Clocks&n; *    fxtl, Txtl&t;Frequency, period of the system crystal (3.6864 MHz&n; *              &t;or 3.5795 MHz).&n; *    fua, Tua  &t;Frequency, period of the UART communication.&n; */
 DECL|macro|_UTCR0
-mdefine_line|#define _UTCR0(Nb)&t;        &t;/* UART Control Reg. 0 [1..3]      */ &bslash;&n;                &t;(0x80010000 + ((Nb) - 1)*0x00020000)
+mdefine_line|#define _UTCR0(Nb)&t;__REG(0x80010000 + ((Nb) - 1)*0x00020000)  /* UART Control Reg. 0 [1..3] */
 DECL|macro|_UTCR1
-mdefine_line|#define _UTCR1(Nb)&t;        &t;/* UART Control Reg. 1 [1..3]      */ &bslash;&n;                &t;(0x80010004 + ((Nb) - 1)*0x00020000)
+mdefine_line|#define _UTCR1(Nb)&t;__REG(0x80010004 + ((Nb) - 1)*0x00020000)  /* UART Control Reg. 1 [1..3] */
 DECL|macro|_UTCR2
-mdefine_line|#define _UTCR2(Nb)&t;        &t;/* UART Control Reg. 2 [1..3]      */ &bslash;&n;                &t;(0x80010008 + ((Nb) - 1)*0x00020000)
+mdefine_line|#define _UTCR2(Nb)&t;__REG(0x80010008 + ((Nb) - 1)*0x00020000)  /* UART Control Reg. 2 [1..3] */
 DECL|macro|_UTCR3
-mdefine_line|#define _UTCR3(Nb)&t;        &t;/* UART Control Reg. 3 [1..3]      */ &bslash;&n;                &t;(0x8001000C + ((Nb) - 1)*0x00020000)
+mdefine_line|#define _UTCR3(Nb)&t;__REG(0x8001000C + ((Nb) - 1)*0x00020000)  /* UART Control Reg. 3 [1..3] */
 DECL|macro|_UTCR4
-mdefine_line|#define _UTCR4(Nb)&t;        &t;/* UART Control Reg. 4 [2]         */ &bslash;&n;                &t;(0x80010010 + ((Nb) - 1)*0x00020000)
+mdefine_line|#define _UTCR4(Nb)&t;__REG(0x80010010 + ((Nb) - 1)*0x00020000)  /* UART Control Reg. 4 [2] */
 DECL|macro|_UTDR
-mdefine_line|#define _UTDR(Nb)&t;        &t;/* UART Data Reg. [1..3]           */ &bslash;&n;                &t;(0x80010014 + ((Nb) - 1)*0x00020000)
+mdefine_line|#define _UTDR(Nb)&t;__REG(0x80010014 + ((Nb) - 1)*0x00020000)  /* UART Data Reg. [1..3] */
 DECL|macro|_UTSR0
-mdefine_line|#define _UTSR0(Nb)&t;        &t;/* UART Status Reg. 0 [1..3]       */ &bslash;&n;                &t;(0x8001001C + ((Nb) - 1)*0x00020000)
+mdefine_line|#define _UTSR0(Nb)&t;__REG(0x8001001C + ((Nb) - 1)*0x00020000)  /* UART Status Reg. 0 [1..3] */
 DECL|macro|_UTSR1
-mdefine_line|#define _UTSR1(Nb)&t;        &t;/* UART Status Reg. 1 [1..3]       */ &bslash;&n;                &t;(0x80010020 + ((Nb) - 1)*0x00020000)
+mdefine_line|#define _UTSR1(Nb)&t;__REG(0x80010020 + ((Nb) - 1)*0x00020000)  /* UART Status Reg. 1 [1..3] */
+DECL|macro|Ser1UTCR0
+mdefine_line|#define Ser1UTCR0&t;_UTCR0 (1)&t;/* Ser. port 1 UART Control Reg. 0 */
+DECL|macro|Ser1UTCR1
+mdefine_line|#define Ser1UTCR1&t;_UTCR1 (1)&t;/* Ser. port 1 UART Control Reg. 1 */
+DECL|macro|Ser1UTCR2
+mdefine_line|#define Ser1UTCR2&t;_UTCR2 (1)&t;/* Ser. port 1 UART Control Reg. 2 */
+DECL|macro|Ser1UTCR3
+mdefine_line|#define Ser1UTCR3&t;_UTCR3 (1)&t;/* Ser. port 1 UART Control Reg. 3 */
+DECL|macro|Ser1UTDR
+mdefine_line|#define Ser1UTDR&t;_UTDR (1)&t;/* Ser. port 1 UART Data Reg.      */
+DECL|macro|Ser1UTSR0
+mdefine_line|#define Ser1UTSR0&t;_UTSR0 (1)&t;/* Ser. port 1 UART Status Reg. 0  */
+DECL|macro|Ser1UTSR1
+mdefine_line|#define Ser1UTSR1&t;_UTSR1 (1)&t;/* Ser. port 1 UART Status Reg. 1  */
+DECL|macro|Ser2UTCR0
+mdefine_line|#define Ser2UTCR0&t;_UTCR0 (2)&t;/* Ser. port 2 UART Control Reg. 0 */
+DECL|macro|Ser2UTCR1
+mdefine_line|#define Ser2UTCR1&t;_UTCR1 (2)&t;/* Ser. port 2 UART Control Reg. 1 */
+DECL|macro|Ser2UTCR2
+mdefine_line|#define Ser2UTCR2&t;_UTCR2 (2)&t;/* Ser. port 2 UART Control Reg. 2 */
+DECL|macro|Ser2UTCR3
+mdefine_line|#define Ser2UTCR3&t;_UTCR3 (2)&t;/* Ser. port 2 UART Control Reg. 3 */
+DECL|macro|Ser2UTCR4
+mdefine_line|#define Ser2UTCR4&t;_UTCR4 (2)&t;/* Ser. port 2 UART Control Reg. 4 */
+DECL|macro|Ser2UTDR
+mdefine_line|#define Ser2UTDR&t;_UTDR (2)&t;/* Ser. port 2 UART Data Reg.      */
+DECL|macro|Ser2UTSR0
+mdefine_line|#define Ser2UTSR0&t;_UTSR0 (2)&t;/* Ser. port 2 UART Status Reg. 0  */
+DECL|macro|Ser2UTSR1
+mdefine_line|#define Ser2UTSR1&t;_UTSR1 (2)&t;/* Ser. port 2 UART Status Reg. 1  */
+DECL|macro|Ser3UTCR0
+mdefine_line|#define Ser3UTCR0&t;_UTCR0 (3)&t;/* Ser. port 3 UART Control Reg. 0 */
+DECL|macro|Ser3UTCR1
+mdefine_line|#define Ser3UTCR1&t;_UTCR1 (3)&t;/* Ser. port 3 UART Control Reg. 1 */
+DECL|macro|Ser3UTCR2
+mdefine_line|#define Ser3UTCR2&t;_UTCR2 (3)&t;/* Ser. port 3 UART Control Reg. 2 */
+DECL|macro|Ser3UTCR3
+mdefine_line|#define Ser3UTCR3&t;_UTCR3 (3)&t;/* Ser. port 3 UART Control Reg. 3 */
+DECL|macro|Ser3UTDR
+mdefine_line|#define Ser3UTDR&t;_UTDR (3)&t;/* Ser. port 3 UART Data Reg.      */
+DECL|macro|Ser3UTSR0
+mdefine_line|#define Ser3UTSR0&t;_UTSR0 (3)&t;/* Ser. port 3 UART Status Reg. 0  */
+DECL|macro|Ser3UTSR1
+mdefine_line|#define Ser3UTSR1&t;_UTSR1 (3)&t;/* Ser. port 3 UART Status Reg. 1  */
+multiline_comment|/* Those are still used in some places */
 DECL|macro|_Ser1UTCR0
-mdefine_line|#define _Ser1UTCR0&t;_UTCR0 (1)&t;/* Ser. port 1 UART Control Reg. 0 */
-DECL|macro|_Ser1UTCR1
-mdefine_line|#define _Ser1UTCR1&t;_UTCR1 (1)&t;/* Ser. port 1 UART Control Reg. 1 */
-DECL|macro|_Ser1UTCR2
-mdefine_line|#define _Ser1UTCR2&t;_UTCR2 (1)&t;/* Ser. port 1 UART Control Reg. 2 */
-DECL|macro|_Ser1UTCR3
-mdefine_line|#define _Ser1UTCR3&t;_UTCR3 (1)&t;/* Ser. port 1 UART Control Reg. 3 */
-DECL|macro|_Ser1UTDR
-mdefine_line|#define _Ser1UTDR&t;_UTDR (1)&t;/* Ser. port 1 UART Data Reg.      */
-DECL|macro|_Ser1UTSR0
-mdefine_line|#define _Ser1UTSR0&t;_UTSR0 (1)&t;/* Ser. port 1 UART Status Reg. 0  */
-DECL|macro|_Ser1UTSR1
-mdefine_line|#define _Ser1UTSR1&t;_UTSR1 (1)&t;/* Ser. port 1 UART Status Reg. 1  */
+mdefine_line|#define _Ser1UTCR0&t;__PREG(Ser1UTCR0)
 DECL|macro|_Ser2UTCR0
-mdefine_line|#define _Ser2UTCR0&t;_UTCR0 (2)&t;/* Ser. port 2 UART Control Reg. 0 */
-DECL|macro|_Ser2UTCR1
-mdefine_line|#define _Ser2UTCR1&t;_UTCR1 (2)&t;/* Ser. port 2 UART Control Reg. 1 */
-DECL|macro|_Ser2UTCR2
-mdefine_line|#define _Ser2UTCR2&t;_UTCR2 (2)&t;/* Ser. port 2 UART Control Reg. 2 */
-DECL|macro|_Ser2UTCR3
-mdefine_line|#define _Ser2UTCR3&t;_UTCR3 (2)&t;/* Ser. port 2 UART Control Reg. 3 */
-DECL|macro|_Ser2UTCR4
-mdefine_line|#define _Ser2UTCR4&t;_UTCR4 (2)&t;/* Ser. port 2 UART Control Reg. 4 */
-DECL|macro|_Ser2UTDR
-mdefine_line|#define _Ser2UTDR&t;_UTDR (2)&t;/* Ser. port 2 UART Data Reg.      */
-DECL|macro|_Ser2UTSR0
-mdefine_line|#define _Ser2UTSR0&t;_UTSR0 (2)&t;/* Ser. port 2 UART Status Reg. 0  */
-DECL|macro|_Ser2UTSR1
-mdefine_line|#define _Ser2UTSR1&t;_UTSR1 (2)&t;/* Ser. port 2 UART Status Reg. 1  */
+mdefine_line|#define _Ser2UTCR0&t;__PREG(Ser2UTCR0)
 DECL|macro|_Ser3UTCR0
-mdefine_line|#define _Ser3UTCR0&t;_UTCR0 (3)&t;/* Ser. port 3 UART Control Reg. 0 */
-DECL|macro|_Ser3UTCR1
-mdefine_line|#define _Ser3UTCR1&t;_UTCR1 (3)&t;/* Ser. port 3 UART Control Reg. 1 */
-DECL|macro|_Ser3UTCR2
-mdefine_line|#define _Ser3UTCR2&t;_UTCR2 (3)&t;/* Ser. port 3 UART Control Reg. 2 */
-DECL|macro|_Ser3UTCR3
-mdefine_line|#define _Ser3UTCR3&t;_UTCR3 (3)&t;/* Ser. port 3 UART Control Reg. 3 */
-DECL|macro|_Ser3UTDR
-mdefine_line|#define _Ser3UTDR&t;_UTDR (3)&t;/* Ser. port 3 UART Data Reg.      */
-DECL|macro|_Ser3UTSR0
-mdefine_line|#define _Ser3UTSR0&t;_UTSR0 (3)&t;/* Ser. port 3 UART Status Reg. 0  */
-DECL|macro|_Ser3UTSR1
-mdefine_line|#define _Ser3UTSR1&t;_UTSR1 (3)&t;/* Ser. port 3 UART Status Reg. 1  */
-multiline_comment|/*&n; * Register offsets&n; */
+mdefine_line|#define _Ser3UTCR0&t;__PREG(Ser3UTCR0)
+multiline_comment|/* Register offsets */
 DECL|macro|UTCR0
 mdefine_line|#define UTCR0&t;&t;0x00
 DECL|macro|UTCR1
@@ -500,97 +256,6 @@ DECL|macro|UTSR0
 mdefine_line|#define UTSR0&t;&t;0x1c
 DECL|macro|UTSR1
 mdefine_line|#define UTSR1&t;&t;0x20
-macro_line|#if LANGUAGE == C
-DECL|macro|Ser1UTCR0
-mdefine_line|#define Ser1UTCR0&t;        &t;/* Ser. port 1 UART Control Reg. 0 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1UTCR0)))
-DECL|macro|Ser1UTCR1
-mdefine_line|#define Ser1UTCR1&t;        &t;/* Ser. port 1 UART Control Reg. 1 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1UTCR1)))
-DECL|macro|Ser1UTCR2
-mdefine_line|#define Ser1UTCR2&t;        &t;/* Ser. port 1 UART Control Reg. 2 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1UTCR2)))
-DECL|macro|Ser1UTCR3
-mdefine_line|#define Ser1UTCR3&t;        &t;/* Ser. port 1 UART Control Reg. 3 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1UTCR3)))
-DECL|macro|Ser1UTDR
-mdefine_line|#define Ser1UTDR&t;        &t;/* Ser. port 1 UART Data Reg.      */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1UTDR)))
-DECL|macro|Ser1UTSR0
-mdefine_line|#define Ser1UTSR0&t;        &t;/* Ser. port 1 UART Status Reg. 0  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1UTSR0)))
-DECL|macro|Ser1UTSR1
-mdefine_line|#define Ser1UTSR1&t;        &t;/* Ser. port 1 UART Status Reg. 1  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1UTSR1)))
-DECL|macro|Ser2UTCR0
-mdefine_line|#define Ser2UTCR0&t;        &t;/* Ser. port 2 UART Control Reg. 0 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser2UTCR0)))
-DECL|macro|Ser2UTCR1
-mdefine_line|#define Ser2UTCR1&t;        &t;/* Ser. port 2 UART Control Reg. 1 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser2UTCR1)))
-DECL|macro|Ser2UTCR2
-mdefine_line|#define Ser2UTCR2&t;        &t;/* Ser. port 2 UART Control Reg. 2 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser2UTCR2)))
-DECL|macro|Ser2UTCR3
-mdefine_line|#define Ser2UTCR3&t;        &t;/* Ser. port 2 UART Control Reg. 3 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser2UTCR3)))
-DECL|macro|Ser2UTCR4
-mdefine_line|#define Ser2UTCR4&t;        &t;/* Ser. port 2 UART Control Reg. 4 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser2UTCR4)))
-DECL|macro|Ser2UTDR
-mdefine_line|#define Ser2UTDR&t;        &t;/* Ser. port 2 UART Data Reg.      */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser2UTDR)))
-DECL|macro|Ser2UTSR0
-mdefine_line|#define Ser2UTSR0&t;        &t;/* Ser. port 2 UART Status Reg. 0  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser2UTSR0)))
-DECL|macro|Ser2UTSR1
-mdefine_line|#define Ser2UTSR1&t;        &t;/* Ser. port 2 UART Status Reg. 1  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser2UTSR1)))
-DECL|macro|Ser3UTCR0
-mdefine_line|#define Ser3UTCR0&t;        &t;/* Ser. port 3 UART Control Reg. 0 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser3UTCR0)))
-DECL|macro|Ser3UTCR1
-mdefine_line|#define Ser3UTCR1&t;        &t;/* Ser. port 3 UART Control Reg. 1 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser3UTCR1)))
-DECL|macro|Ser3UTCR2
-mdefine_line|#define Ser3UTCR2&t;        &t;/* Ser. port 3 UART Control Reg. 2 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser3UTCR2)))
-DECL|macro|Ser3UTCR3
-mdefine_line|#define Ser3UTCR3&t;        &t;/* Ser. port 3 UART Control Reg. 3 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser3UTCR3)))
-DECL|macro|Ser3UTDR
-mdefine_line|#define Ser3UTDR&t;        &t;/* Ser. port 3 UART Data Reg.      */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser3UTDR)))
-DECL|macro|Ser3UTSR0
-mdefine_line|#define Ser3UTSR0&t;        &t;/* Ser. port 3 UART Status Reg. 0  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser3UTSR0)))
-DECL|macro|Ser3UTSR1
-mdefine_line|#define Ser3UTSR1&t;        &t;/* Ser. port 3 UART Status Reg. 1  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser3UTSR1)))
-macro_line|#elif LANGUAGE == Assembly
-DECL|macro|Ser1UTCR0
-mdefine_line|#define Ser1UTCR0&t;( io_p2v (_Ser1UTCR0))
-DECL|macro|Ser1UTCR1
-mdefine_line|#define Ser1UTCR1&t;( io_p2v (_Ser1UTCR1))
-DECL|macro|Ser1UTCR2
-mdefine_line|#define Ser1UTCR2&t;( io_p2v (_Ser1UTCR2))
-DECL|macro|Ser1UTCR3
-mdefine_line|#define Ser1UTCR3&t;( io_p2v (_Ser1UTCR3))
-DECL|macro|Ser1UTDR
-mdefine_line|#define Ser1UTDR&t;( io_p2v (_Ser1UTDR))
-DECL|macro|Ser1UTSR0
-mdefine_line|#define Ser1UTSR0&t;( io_p2v (_Ser1UTSR0))
-DECL|macro|Ser1UTSR1
-mdefine_line|#define Ser1UTSR1&t;( io_p2v (_Ser1UTSR1))
-DECL|macro|Ser2UTCR0
-mdefine_line|#define Ser2UTCR0&t;( io_p2v (_Ser2UTCR0))
-DECL|macro|Ser2UTCR1
-mdefine_line|#define Ser2UTCR1&t;( io_p2v (_Ser2UTCR1))
-DECL|macro|Ser2UTCR2
-mdefine_line|#define Ser2UTCR2&t;( io_p2v (_Ser2UTCR2))
-DECL|macro|Ser2UTCR3
-mdefine_line|#define Ser2UTCR3&t;( io_p2v (_Ser2UTCR3))
-DECL|macro|Ser2UTCR4
-mdefine_line|#define Ser2UTCR4&t;( io_p2v (_Ser2UTCR4))
-DECL|macro|Ser2UTDR
-mdefine_line|#define Ser2UTDR&t;( io_p2v (_Ser2UTDR))
-DECL|macro|Ser2UTSR0
-mdefine_line|#define Ser2UTSR0&t;( io_p2v (_Ser2UTSR0))
-DECL|macro|Ser2UTSR1
-mdefine_line|#define Ser2UTSR1&t;( io_p2v (_Ser2UTSR1))
-DECL|macro|Ser3UTCR0
-mdefine_line|#define Ser3UTCR0&t;( io_p2v (_Ser3UTCR0))
-DECL|macro|Ser3UTCR1
-mdefine_line|#define Ser3UTCR1&t;( io_p2v (_Ser3UTCR1))
-DECL|macro|Ser3UTCR2
-mdefine_line|#define Ser3UTCR2&t;( io_p2v (_Ser3UTCR2))
-DECL|macro|Ser3UTCR3
-mdefine_line|#define Ser3UTCR3&t;( io_p2v (_Ser3UTCR3))
-DECL|macro|Ser3UTDR
-mdefine_line|#define Ser3UTDR&t;( io_p2v (_Ser3UTDR))
-DECL|macro|Ser3UTSR0
-mdefine_line|#define Ser3UTSR0&t;( io_p2v (_Ser3UTSR0))
-DECL|macro|Ser3UTSR1
-mdefine_line|#define Ser3UTSR1&t;( io_p2v (_Ser3UTSR1))
-macro_line|#endif /* LANGUAGE == C */
 DECL|macro|UTCR0_PE
 mdefine_line|#define UTCR0_PE&t;0x00000001&t;/* Parity Enable                   */
 DECL|macro|UTCR0_OES
@@ -710,40 +375,22 @@ mdefine_line|#define UTSR1_FRE&t;0x00000010&t;/* receive FRaming Error (read)   
 DECL|macro|UTSR1_ROR
 mdefine_line|#define UTSR1_ROR&t;0x00000020&t;/* Receive FIFO Over-Run (read)    */
 multiline_comment|/*&n; * Synchronous Data Link Controller (SDLC) control registers&n; *&n; * Registers&n; *    Ser1SDCR0 &t;Serial port 1 Synchronous Data Link Controller (SDLC)&n; *              &t;Control Register 0 (read/write).&n; *    Ser1SDCR1 &t;Serial port 1 Synchronous Data Link Controller (SDLC)&n; *              &t;Control Register 1 (read/write).&n; *    Ser1SDCR2 &t;Serial port 1 Synchronous Data Link Controller (SDLC)&n; *              &t;Control Register 2 (read/write).&n; *    Ser1SDCR3 &t;Serial port 1 Synchronous Data Link Controller (SDLC)&n; *              &t;Control Register 3 (read/write).&n; *    Ser1SDCR4 &t;Serial port 1 Synchronous Data Link Controller (SDLC)&n; *              &t;Control Register 4 (read/write).&n; *    Ser1SDDR  &t;Serial port 1 Synchronous Data Link Controller (SDLC)&n; *              &t;Data Register (read/write).&n; *    Ser1SDSR0 &t;Serial port 1 Synchronous Data Link Controller (SDLC)&n; *              &t;Status Register 0 (read/write).&n; *    Ser1SDSR1 &t;Serial port 1 Synchronous Data Link Controller (SDLC)&n; *              &t;Status Register 1 (read/write).&n; *&n; * Clocks&n; *    fxtl, Txtl&t;Frequency, period of the system crystal (3.6864 MHz&n; *              &t;or 3.5795 MHz).&n; *    fsd, Tsd  &t;Frequency, period of the SDLC communication.&n; */
-DECL|macro|_Ser1SDCR0
-mdefine_line|#define _Ser1SDCR0&t;0x80020060&t;/* Ser. port 1 SDLC Control Reg. 0 */
-DECL|macro|_Ser1SDCR1
-mdefine_line|#define _Ser1SDCR1&t;0x80020064&t;/* Ser. port 1 SDLC Control Reg. 1 */
-DECL|macro|_Ser1SDCR2
-mdefine_line|#define _Ser1SDCR2&t;0x80020068&t;/* Ser. port 1 SDLC Control Reg. 2 */
-DECL|macro|_Ser1SDCR3
-mdefine_line|#define _Ser1SDCR3&t;0x8002006C&t;/* Ser. port 1 SDLC Control Reg. 3 */
-DECL|macro|_Ser1SDCR4
-mdefine_line|#define _Ser1SDCR4&t;0x80020070&t;/* Ser. port 1 SDLC Control Reg. 4 */
-DECL|macro|_Ser1SDDR
-mdefine_line|#define _Ser1SDDR&t;0x80020078&t;/* Ser. port 1 SDLC Data Reg.      */
-DECL|macro|_Ser1SDSR0
-mdefine_line|#define _Ser1SDSR0&t;0x80020080&t;/* Ser. port 1 SDLC Status Reg. 0  */
-DECL|macro|_Ser1SDSR1
-mdefine_line|#define _Ser1SDSR1&t;0x80020084&t;/* Ser. port 1 SDLC Status Reg. 1  */
-macro_line|#if LANGUAGE == C
 DECL|macro|Ser1SDCR0
-mdefine_line|#define Ser1SDCR0&t;        &t;/* Ser. port 1 SDLC Control Reg. 0 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1SDCR0)))
+mdefine_line|#define Ser1SDCR0&t;__REG(0x80020060)  /* Ser. port 1 SDLC Control Reg. 0 */
 DECL|macro|Ser1SDCR1
-mdefine_line|#define Ser1SDCR1&t;        &t;/* Ser. port 1 SDLC Control Reg. 1 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1SDCR1)))
+mdefine_line|#define Ser1SDCR1&t;__REG(0x80020064)  /* Ser. port 1 SDLC Control Reg. 1 */
 DECL|macro|Ser1SDCR2
-mdefine_line|#define Ser1SDCR2&t;        &t;/* Ser. port 1 SDLC Control Reg. 2 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1SDCR2)))
+mdefine_line|#define Ser1SDCR2&t;__REG(0x80020068)  /* Ser. port 1 SDLC Control Reg. 2 */
 DECL|macro|Ser1SDCR3
-mdefine_line|#define Ser1SDCR3&t;        &t;/* Ser. port 1 SDLC Control Reg. 3 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1SDCR3)))
+mdefine_line|#define Ser1SDCR3&t;__REG(0x8002006C)  /* Ser. port 1 SDLC Control Reg. 3 */
 DECL|macro|Ser1SDCR4
-mdefine_line|#define Ser1SDCR4&t;        &t;/* Ser. port 1 SDLC Control Reg. 4 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1SDCR4)))
+mdefine_line|#define Ser1SDCR4&t;__REG(0x80020070)  /* Ser. port 1 SDLC Control Reg. 4 */
 DECL|macro|Ser1SDDR
-mdefine_line|#define Ser1SDDR&t;        &t;/* Ser. port 1 SDLC Data Reg.      */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1SDDR)))
+mdefine_line|#define Ser1SDDR&t;__REG(0x80020078)  /* Ser. port 1 SDLC Data Reg.      */
 DECL|macro|Ser1SDSR0
-mdefine_line|#define Ser1SDSR0&t;        &t;/* Ser. port 1 SDLC Status Reg. 0  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1SDSR0)))
+mdefine_line|#define Ser1SDSR0&t;__REG(0x80020080)  /* Ser. port 1 SDLC Status Reg. 0  */
 DECL|macro|Ser1SDSR1
-mdefine_line|#define Ser1SDSR1&t;        &t;/* Ser. port 1 SDLC Status Reg. 1  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1SDSR1)))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define Ser1SDSR1&t;__REG(0x80020084)  /* Ser. port 1 SDLC Status Reg. 1  */
 DECL|macro|SDCR0_SUS
 mdefine_line|#define SDCR0_SUS&t;0x00000001&t;/* SDLC/UART Select                */
 DECL|macro|SDCR0_SDLC
@@ -864,32 +511,18 @@ mdefine_line|#define SDSR1_CRE&t;0x00000040&t;/* receive CRC Error (read)       
 DECL|macro|SDSR1_ROR
 mdefine_line|#define SDSR1_ROR&t;0x00000080&t;/* Receive FIFO Over-Run (read)    */
 multiline_comment|/*&n; * High-Speed Serial to Parallel controller (HSSP) control registers&n; *&n; * Registers&n; *    Ser2HSCR0 &t;Serial port 2 High-Speed Serial to Parallel&n; *              &t;controller (HSSP) Control Register 0 (read/write).&n; *    Ser2HSCR1 &t;Serial port 2 High-Speed Serial to Parallel&n; *              &t;controller (HSSP) Control Register 1 (read/write).&n; *    Ser2HSDR  &t;Serial port 2 High-Speed Serial to Parallel&n; *              &t;controller (HSSP) Data Register (read/write).&n; *    Ser2HSSR0 &t;Serial port 2 High-Speed Serial to Parallel&n; *              &t;controller (HSSP) Status Register 0 (read/write).&n; *    Ser2HSSR1 &t;Serial port 2 High-Speed Serial to Parallel&n; *              &t;controller (HSSP) Status Register 1 (read).&n; *    Ser2HSCR2 &t;Serial port 2 High-Speed Serial to Parallel&n; *              &t;controller (HSSP) Control Register 2 (read/write).&n; *              &t;[The HSCR2 register is only implemented in&n; *              &t;versions 2.0 (rev. = 8) and higher of the StrongARM&n; *              &t;SA-1100.]&n; */
-DECL|macro|_Ser2HSCR0
-mdefine_line|#define _Ser2HSCR0&t;0x80040060&t;/* Ser. port 2 HSSP Control Reg. 0 */
-DECL|macro|_Ser2HSCR1
-mdefine_line|#define _Ser2HSCR1&t;0x80040064&t;/* Ser. port 2 HSSP Control Reg. 1 */
-DECL|macro|_Ser2HSDR
-mdefine_line|#define _Ser2HSDR&t;0x8004006C&t;/* Ser. port 2 HSSP Data Reg.      */
-DECL|macro|_Ser2HSSR0
-mdefine_line|#define _Ser2HSSR0&t;0x80040074&t;/* Ser. port 2 HSSP Status Reg. 0  */
-DECL|macro|_Ser2HSSR1
-mdefine_line|#define _Ser2HSSR1&t;0x80040078&t;/* Ser. port 2 HSSP Status Reg. 1  */
-DECL|macro|_Ser2HSCR2
-mdefine_line|#define _Ser2HSCR2&t;0x90060028&t;/* Ser. port 2 HSSP Control Reg. 2 */
-macro_line|#if LANGUAGE == C
 DECL|macro|Ser2HSCR0
-mdefine_line|#define Ser2HSCR0&t;        &t;/* Ser. port 2 HSSP Control Reg. 0 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser2HSCR0)))
+mdefine_line|#define Ser2HSCR0&t;__REG(0x80040060)  /* Ser. port 2 HSSP Control Reg. 0 */
 DECL|macro|Ser2HSCR1
-mdefine_line|#define Ser2HSCR1&t;        &t;/* Ser. port 2 HSSP Control Reg. 1 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser2HSCR1)))
+mdefine_line|#define Ser2HSCR1&t;__REG(0x80040064)  /* Ser. port 2 HSSP Control Reg. 1 */
 DECL|macro|Ser2HSDR
-mdefine_line|#define Ser2HSDR&t;        &t;/* Ser. port 2 HSSP Data Reg.      */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser2HSDR)))
+mdefine_line|#define Ser2HSDR&t;__REG(0x8004006C)  /* Ser. port 2 HSSP Data Reg.      */
 DECL|macro|Ser2HSSR0
-mdefine_line|#define Ser2HSSR0&t;        &t;/* Ser. port 2 HSSP Status Reg. 0  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser2HSSR0)))
+mdefine_line|#define Ser2HSSR0&t;__REG(0x80040074)  /* Ser. port 2 HSSP Status Reg. 0  */
 DECL|macro|Ser2HSSR1
-mdefine_line|#define Ser2HSSR1&t;        &t;/* Ser. port 2 HSSP Status Reg. 1  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser2HSSR1)))
+mdefine_line|#define Ser2HSSR1&t;__REG(0x80040078)  /* Ser. port 2 HSSP Status Reg. 1  */
 DECL|macro|Ser2HSCR2
-mdefine_line|#define Ser2HSCR2&t;        &t;/* Ser. port 2 HSSP Control Reg. 2 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser2HSCR2)))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define Ser2HSCR2&t;__REG(0x90060028)  /* Ser. port 2 HSSP Control Reg. 2 */
 DECL|macro|HSCR0_ITR
 mdefine_line|#define HSCR0_ITR&t;0x00000001&t;/* IrDA Transmission Rate          */
 DECL|macro|HSCR0_UART
@@ -970,35 +603,18 @@ DECL|macro|HSCR2_RcDataH
 mdefine_line|#define HSCR2_RcDataH&t;(HSCR2_RXP*1)&t;/*  Receive Data active High       */
 multiline_comment|/*  (non-inverted)                 */
 multiline_comment|/*&n; * Multi-media Communications Port (MCP) control registers&n; *&n; * Registers&n; *    Ser4MCCR0 &t;Serial port 4 Multi-media Communications Port (MCP)&n; *              &t;Control Register 0 (read/write).&n; *    Ser4MCDR0 &t;Serial port 4 Multi-media Communications Port (MCP)&n; *              &t;Data Register 0 (audio, read/write).&n; *    Ser4MCDR1 &t;Serial port 4 Multi-media Communications Port (MCP)&n; *              &t;Data Register 1 (telecom, read/write).&n; *    Ser4MCDR2 &t;Serial port 4 Multi-media Communications Port (MCP)&n; *              &t;Data Register 2 (CODEC registers, read/write).&n; *    Ser4MCSR  &t;Serial port 4 Multi-media Communications Port (MCP)&n; *              &t;Status Register (read/write).&n; *    Ser4MCCR1 &t;Serial port 4 Multi-media Communications Port (MCP)&n; *              &t;Control Register 1 (read/write).&n; *              &t;[The MCCR1 register is only implemented in&n; *              &t;versions 2.0 (rev. = 8) and higher of the StrongARM&n; *              &t;SA-1100.]&n; *&n; * Clocks&n; *    fmc, Tmc  &t;Frequency, period of the MCP communication (10 MHz,&n; *              &t;12 MHz, or GPIO [21]).&n; *    faud, Taud&t;Frequency, period of the audio sampling.&n; *    ftcm, Ttcm&t;Frequency, period of the telecom sampling.&n; */
-DECL|macro|_Ser4MCCR0
-mdefine_line|#define _Ser4MCCR0&t;0x80060000&t;/* Ser. port 4 MCP Control Reg. 0  */
-DECL|macro|_Ser4MCDR0
-mdefine_line|#define _Ser4MCDR0&t;0x80060008&t;/* Ser. port 4 MCP Data Reg. 0     */
-multiline_comment|/* (audio)                         */
-DECL|macro|_Ser4MCDR1
-mdefine_line|#define _Ser4MCDR1&t;0x8006000C&t;/* Ser. port 4 MCP Data Reg. 1     */
-multiline_comment|/* (telecom)                       */
-DECL|macro|_Ser4MCDR2
-mdefine_line|#define _Ser4MCDR2&t;0x80060010&t;/* Ser. port 4 MCP Data Reg. 2     */
-multiline_comment|/* (CODEC reg.)                    */
-DECL|macro|_Ser4MCSR
-mdefine_line|#define _Ser4MCSR&t;0x80060018&t;/* Ser. port 4 MCP Status Reg.     */
-DECL|macro|_Ser4MCCR1
-mdefine_line|#define _Ser4MCCR1&t;0x90060030&t;/* Ser. port 4 MCP Control Reg. 1  */
-macro_line|#if LANGUAGE == C
 DECL|macro|Ser4MCCR0
-mdefine_line|#define Ser4MCCR0&t;        &t;/* Ser. port 4 MCP Control Reg. 0  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser4MCCR0)))
+mdefine_line|#define Ser4MCCR0&t;__REG(0x80060000)  /* Ser. port 4 MCP Control Reg. 0 */
 DECL|macro|Ser4MCDR0
-mdefine_line|#define Ser4MCDR0&t;        &t;/* Ser. port 4 MCP Data Reg. 0     */ &bslash;&n;                &t;        &t;/* (audio)                         */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser4MCDR0)))
+mdefine_line|#define Ser4MCDR0&t;__REG(0x80060008)  /* Ser. port 4 MCP Data Reg. 0 (audio) */
 DECL|macro|Ser4MCDR1
-mdefine_line|#define Ser4MCDR1&t;        &t;/* Ser. port 4 MCP Data Reg. 1     */ &bslash;&n;                &t;        &t;/* (telecom)                       */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser4MCDR1)))
+mdefine_line|#define Ser4MCDR1&t;__REG(0x8006000C)  /* Ser. port 4 MCP Data Reg. 1 (telecom) */
 DECL|macro|Ser4MCDR2
-mdefine_line|#define Ser4MCDR2&t;        &t;/* Ser. port 4 MCP Data Reg. 2     */ &bslash;&n;                &t;        &t;/* (CODEC reg.)                    */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser4MCDR2)))
+mdefine_line|#define Ser4MCDR2&t;__REG(0x80060010)  /* Ser. port 4 MCP Data Reg. 2 (CODEC reg.) */
 DECL|macro|Ser4MCSR
-mdefine_line|#define Ser4MCSR&t;        &t;/* Ser. port 4 MCP Status Reg.     */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser4MCSR)))
+mdefine_line|#define Ser4MCSR&t;__REG(0x80060018)  /* Ser. port 4 MCP Status Reg. */
 DECL|macro|Ser4MCCR1
-mdefine_line|#define Ser4MCCR1&t;        &t;/* Ser. port 4 MCP Control Reg. 1  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser4MCCR1)))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define Ser4MCCR1&t;__REG(0x90060030)  /* Ser. port 4 MCP Control Reg. 1 */
 DECL|macro|MCCR0_ASD
 mdefine_line|#define MCCR0_ASD&t;Fld (7, 0)&t;/* Audio Sampling rate Divisor/32  */
 multiline_comment|/* [6..127]                        */
@@ -1127,24 +743,14 @@ DECL|macro|MCCR1_F10MHz
 mdefine_line|#define MCCR1_F10MHz&t;(MCCR1_CFS*1)&t;/*  Freq. (fmc) = ~ 10 MHz         */
 multiline_comment|/*  (9.585 MHz)                    */
 multiline_comment|/*&n; * Synchronous Serial Port (SSP) control registers&n; *&n; * Registers&n; *    Ser4SSCR0 &t;Serial port 4 Synchronous Serial Port (SSP) Control&n; *              &t;Register 0 (read/write).&n; *    Ser4SSCR1 &t;Serial port 4 Synchronous Serial Port (SSP) Control&n; *              &t;Register 1 (read/write).&n; *              &t;[Bits SPO and SP are only implemented in versions 2.0&n; *              &t;(rev. = 8) and higher of the StrongARM SA-1100.]&n; *    Ser4SSDR  &t;Serial port 4 Synchronous Serial Port (SSP) Data&n; *              &t;Register (read/write).&n; *    Ser4SSSR  &t;Serial port 4 Synchronous Serial Port (SSP) Status&n; *              &t;Register (read/write).&n; *&n; * Clocks&n; *    fxtl, Txtl&t;Frequency, period of the system crystal (3.6864 MHz&n; *              &t;or 3.5795 MHz).&n; *    fss, Tss  &t;Frequency, period of the SSP communication.&n; */
-DECL|macro|_Ser4SSCR0
-mdefine_line|#define _Ser4SSCR0&t;0x80070060&t;/* Ser. port 4 SSP Control Reg. 0  */
-DECL|macro|_Ser4SSCR1
-mdefine_line|#define _Ser4SSCR1&t;0x80070064&t;/* Ser. port 4 SSP Control Reg. 1  */
-DECL|macro|_Ser4SSDR
-mdefine_line|#define _Ser4SSDR&t;0x8007006C&t;/* Ser. port 4 SSP Data Reg.       */
-DECL|macro|_Ser4SSSR
-mdefine_line|#define _Ser4SSSR&t;0x80070074&t;/* Ser. port 4 SSP Status Reg.     */
-macro_line|#if LANGUAGE == C
 DECL|macro|Ser4SSCR0
-mdefine_line|#define Ser4SSCR0&t;        &t;/* Ser. port 4 SSP Control Reg. 0  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser4SSCR0)))
+mdefine_line|#define Ser4SSCR0&t;__REG(0x80070060)  /* Ser. port 4 SSP Control Reg. 0 */
 DECL|macro|Ser4SSCR1
-mdefine_line|#define Ser4SSCR1&t;        &t;/* Ser. port 4 SSP Control Reg. 1  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser4SSCR1)))
+mdefine_line|#define Ser4SSCR1&t;__REG(0x80070064)  /* Ser. port 4 SSP Control Reg. 1 */
 DECL|macro|Ser4SSDR
-mdefine_line|#define Ser4SSDR&t;        &t;/* Ser. port 4 SSP Data Reg.       */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser4SSDR)))
+mdefine_line|#define Ser4SSDR&t;__REG(0x8007006C)  /* Ser. port 4 SSP Data Reg. */
 DECL|macro|Ser4SSSR
-mdefine_line|#define Ser4SSSR&t;        &t;/* Ser. port 4 SSP Status Reg.     */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser4SSSR)))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define Ser4SSSR&t;__REG(0x80070074)  /* Ser. port 4 SSP Status Reg. */
 DECL|macro|SSCR0_DSS
 mdefine_line|#define SSCR0_DSS&t;Fld (4, 0)&t;/* Data Size - 1 Select [3..15]    */
 DECL|macro|SSCR0_DataSize
@@ -1216,44 +822,22 @@ multiline_comment|/* Service request (read)          */
 DECL|macro|SSSR_ROR
 mdefine_line|#define SSSR_ROR&t;0x00000040&t;/* Receive FIFO Over-Run           */
 multiline_comment|/*&n; * Operating System (OS) timer control registers&n; *&n; * Registers&n; *    OSMR0     &t;Operating System (OS) timer Match Register 0&n; *              &t;(read/write).&n; *    OSMR1     &t;Operating System (OS) timer Match Register 1&n; *              &t;(read/write).&n; *    OSMR2     &t;Operating System (OS) timer Match Register 2&n; *              &t;(read/write).&n; *    OSMR3     &t;Operating System (OS) timer Match Register 3&n; *              &t;(read/write).&n; *    OSCR      &t;Operating System (OS) timer Counter Register&n; *              &t;(read/write).&n; *    OSSR      &t;Operating System (OS) timer Status Register&n; *              &t;(read/write).&n; *    OWER      &t;Operating System (OS) timer Watch-dog Enable Register&n; *              &t;(read/write).&n; *    OIER      &t;Operating System (OS) timer Interrupt Enable Register&n; *              &t;(read/write).&n; */
-DECL|macro|_OSMR
-mdefine_line|#define _OSMR(Nb)&t;        &t;/* OS timer Match Reg. [0..3]      */ &bslash;&n;                &t;(0x90000000 + (Nb)*4)
-DECL|macro|_OSMR0
-mdefine_line|#define _OSMR0  &t;_OSMR (0)&t;/* OS timer Match Reg. 0           */
-DECL|macro|_OSMR1
-mdefine_line|#define _OSMR1  &t;_OSMR (1)&t;/* OS timer Match Reg. 1           */
-DECL|macro|_OSMR2
-mdefine_line|#define _OSMR2  &t;_OSMR (2)&t;/* OS timer Match Reg. 2           */
-DECL|macro|_OSMR3
-mdefine_line|#define _OSMR3  &t;_OSMR (3)&t;/* OS timer Match Reg. 3           */
-DECL|macro|_OSCR
-mdefine_line|#define _OSCR   &t;0x90000010&t;/* OS timer Counter Reg.           */
-DECL|macro|_OSSR
-mdefine_line|#define _OSSR   &t;0x90000014&t;/* OS timer Status Reg.            */
-DECL|macro|_OWER
-mdefine_line|#define _OWER   &t;0x90000018&t;/* OS timer Watch-dog Enable Reg.  */
-DECL|macro|_OIER
-mdefine_line|#define _OIER   &t;0x9000001C&t;/* OS timer Interrupt Enable Reg.  */
-macro_line|#if LANGUAGE == C
-DECL|macro|OSMR
-mdefine_line|#define OSMR    &t;        &t;/* OS timer Match Reg. [0..3]      */ &bslash;&n;                &t;((volatile Word *) io_p2v (_OSMR (0)))
 DECL|macro|OSMR0
-mdefine_line|#define OSMR0   &t;(OSMR [0])&t;/* OS timer Match Reg. 0           */
+mdefine_line|#define OSMR0  &t;&t;__REG(0x90000000)  /* OS timer Match Reg. 0 */
 DECL|macro|OSMR1
-mdefine_line|#define OSMR1   &t;(OSMR [1])&t;/* OS timer Match Reg. 1           */
+mdefine_line|#define OSMR1  &t;&t;__REG(0x90000004)  /* OS timer Match Reg. 1 */
 DECL|macro|OSMR2
-mdefine_line|#define OSMR2   &t;(OSMR [2])&t;/* OS timer Match Reg. 2           */
+mdefine_line|#define OSMR2  &t;&t;__REG(0x90000008)  /* OS timer Match Reg. 2 */
 DECL|macro|OSMR3
-mdefine_line|#define OSMR3   &t;(OSMR [3])&t;/* OS timer Match Reg. 3           */
+mdefine_line|#define OSMR3  &t;&t;__REG(0x9000000c)  /* OS timer Match Reg. 3 */
 DECL|macro|OSCR
-mdefine_line|#define OSCR    &t;        &t;/* OS timer Counter Reg.           */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_OSCR)))
+mdefine_line|#define OSCR   &t;__REG(0x90000010)  /* OS timer Counter Reg. */
 DECL|macro|OSSR
-mdefine_line|#define OSSR    &t;        &t;/* OS timer Status Reg.            */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_OSSR)))
+mdefine_line|#define OSSR   &t;__REG(0x90000014&t;)  /* OS timer Status Reg. */
 DECL|macro|OWER
-mdefine_line|#define OWER    &t;        &t;/* OS timer Watch-dog Enable Reg.  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_OWER)))
+mdefine_line|#define OWER   &t;__REG(0x90000018&t;)  /* OS timer Watch-dog Enable Reg. */
 DECL|macro|OIER
-mdefine_line|#define OIER    &t;        &t;/* OS timer Interrupt Enable Reg.  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_OIER)))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define OIER   &t;__REG(0x9000001C&t;)  /* OS timer Interrupt Enable Reg. */
 DECL|macro|OSSR_M
 mdefine_line|#define OSSR_M(Nb)&t;        &t;/* Match detected [0..3]           */ &bslash;&n;                &t;(0x00000001 &lt;&lt; (Nb))
 DECL|macro|OSSR_M0
@@ -1278,24 +862,14 @@ mdefine_line|#define OIER_E2 &t;OIER_E (2)&t;/* match interrupt Enable 2        
 DECL|macro|OIER_E3
 mdefine_line|#define OIER_E3 &t;OIER_E (3)&t;/* match interrupt Enable 3        */
 multiline_comment|/*&n; * Real-Time Clock (RTC) control registers&n; *&n; * Registers&n; *    RTAR      &t;Real-Time Clock (RTC) Alarm Register (read/write).&n; *    RCNR      &t;Real-Time Clock (RTC) CouNt Register (read/write).&n; *    RTTR      &t;Real-Time Clock (RTC) Trim Register (read/write).&n; *    RTSR      &t;Real-Time Clock (RTC) Status Register (read/write).&n; *&n; * Clocks&n; *    frtx, Trtx&t;Frequency, period of the real-time clock crystal&n; *              &t;(32.768 kHz nominal).&n; *    frtc, Trtc&t;Frequency, period of the real-time clock counter&n; *              &t;(1 Hz nominal).&n; */
-DECL|macro|_RTAR
-mdefine_line|#define _RTAR   &t;0x90010000&t;/* RTC Alarm Reg.                  */
-DECL|macro|_RCNR
-mdefine_line|#define _RCNR   &t;0x90010004&t;/* RTC CouNt Reg.                  */
-DECL|macro|_RTTR
-mdefine_line|#define _RTTR   &t;0x90010008&t;/* RTC Trim Reg.                   */
-DECL|macro|_RTSR
-mdefine_line|#define _RTSR   &t;0x90010010&t;/* RTC Status Reg.                 */
-macro_line|#if LANGUAGE == C
 DECL|macro|RTAR
-mdefine_line|#define RTAR    &t;        &t;/* RTC Alarm Reg.                  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_RTAR)))
+mdefine_line|#define RTAR&t;&t;__REG(0x90010000)  /* RTC Alarm Reg. */
 DECL|macro|RCNR
-mdefine_line|#define RCNR    &t;        &t;/* RTC CouNt Reg.                  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_RCNR)))
+mdefine_line|#define RCNR&t;&t;__REG(0x90010004)  /* RTC CouNt Reg. */
 DECL|macro|RTTR
-mdefine_line|#define RTTR    &t;        &t;/* RTC Trim Reg.                   */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_RTTR)))
+mdefine_line|#define RTTR&t;&t;__REG(0x90010008)  /* RTC Trim Reg. */
 DECL|macro|RTSR
-mdefine_line|#define RTSR    &t;        &t;/* RTC Status Reg.                 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_RTSR)))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define RTSR&t;&t;__REG(0x90010010)  /* RTC Status Reg. */
 DECL|macro|RTTR_C
 mdefine_line|#define RTTR_C  &t;Fld (16, 0)&t;/* clock divider Count - 1         */
 DECL|macro|RTTR_D
@@ -1313,57 +887,22 @@ mdefine_line|#define RTSR_ALE&t;0x00000004&t;/* ALarm interrupt Enable          
 DECL|macro|RTSR_HZE
 mdefine_line|#define RTSR_HZE&t;0x00000008&t;/* 1 Hz clock interrupt Enable     */
 multiline_comment|/*&n; * Power Manager (PM) control registers&n; *&n; * Registers&n; *    PMCR      &t;Power Manager (PM) Control Register (read/write).&n; *    PSSR      &t;Power Manager (PM) Sleep Status Register (read/write).&n; *    PSPR      &t;Power Manager (PM) Scratch-Pad Register (read/write).&n; *    PWER      &t;Power Manager (PM) Wake-up Enable Register&n; *              &t;(read/write).&n; *    PCFR      &t;Power Manager (PM) general ConFiguration Register&n; *              &t;(read/write).&n; *    PPCR      &t;Power Manager (PM) Phase-Locked Loop (PLL)&n; *              &t;Configuration Register (read/write).&n; *    PGSR      &t;Power Manager (PM) General-Purpose Input/Output (GPIO)&n; *              &t;Sleep state Register (read/write, see GPIO pins).&n; *    POSR      &t;Power Manager (PM) Oscillator Status Register (read).&n; *&n; * Clocks&n; *    fxtl, Txtl&t;Frequency, period of the system crystal (3.6864 MHz&n; *              &t;or 3.5795 MHz).&n; *    fcpu, Tcpu&t;Frequency, period of the CPU core clock (CCLK).&n; */
-DECL|macro|_PMCR
-mdefine_line|#define _PMCR   &t;0x90020000&t;/* PM Control Reg.                 */
-DECL|macro|_PSSR
-mdefine_line|#define _PSSR   &t;0x90020004&t;/* PM Sleep Status Reg.            */
-DECL|macro|_PSPR
-mdefine_line|#define _PSPR   &t;0x90020008&t;/* PM Scratch-Pad Reg.             */
-DECL|macro|_PWER
-mdefine_line|#define _PWER   &t;0x9002000C&t;/* PM Wake-up Enable Reg.          */
-DECL|macro|_PCFR
-mdefine_line|#define _PCFR   &t;0x90020010&t;/* PM general ConFiguration Reg.   */
-DECL|macro|_PPCR
-mdefine_line|#define _PPCR   &t;0x90020014&t;/* PM PLL Configuration Reg.       */
-DECL|macro|_PGSR
-mdefine_line|#define _PGSR   &t;0x90020018&t;/* PM GPIO Sleep state Reg.        */
-DECL|macro|_POSR
-mdefine_line|#define _POSR   &t;0x9002001C&t;/* PM Oscillator Status Reg.       */
-macro_line|#if LANGUAGE == C
 DECL|macro|PMCR
-mdefine_line|#define PMCR    &t;        &t;/* PM Control Reg.                 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_PMCR)))
+mdefine_line|#define PMCR&t;&t;__REG(0x90020000)  /* PM Control Reg. */
 DECL|macro|PSSR
-mdefine_line|#define PSSR    &t;        &t;/* PM Sleep Status Reg.            */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_PSSR)))
+mdefine_line|#define PSSR&t;&t;__REG(0x90020004)  /* PM Sleep Status Reg. */
 DECL|macro|PSPR
-mdefine_line|#define PSPR    &t;        &t;/* PM Scratch-Pad Reg.             */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_PSPR)))
+mdefine_line|#define PSPR&t;&t;__REG(0x90020008)  /* PM Scratch-Pad Reg. */
 DECL|macro|PWER
-mdefine_line|#define PWER    &t;        &t;/* PM Wake-up Enable Reg.          */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_PWER)))
+mdefine_line|#define PWER&t;&t;__REG(0x9002000C)  /* PM Wake-up Enable Reg. */
 DECL|macro|PCFR
-mdefine_line|#define PCFR    &t;        &t;/* PM general ConFiguration Reg.   */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_PCFR)))
+mdefine_line|#define PCFR&t;&t;__REG(0x90020010)  /* PM general ConFiguration Reg. */
 DECL|macro|PPCR
-mdefine_line|#define PPCR    &t;        &t;/* PM PLL Configuration Reg.       */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_PPCR)))
+mdefine_line|#define PPCR&t;&t;__REG(0x90020014)  /* PM PLL Configuration Reg. */
 DECL|macro|PGSR
-mdefine_line|#define PGSR    &t;        &t;/* PM GPIO Sleep state Reg.        */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_PGSR)))
+mdefine_line|#define PGSR&t;&t;__REG(0x90020018)  /* PM GPIO Sleep state Reg. */
 DECL|macro|POSR
-mdefine_line|#define POSR    &t;        &t;/* PM Oscillator Status Reg.       */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_POSR)))
-macro_line|#elif LANGUAGE == Assembly
-DECL|macro|PMCR
-mdefine_line|#define PMCR          &t;(io_p2v (_PMCR))
-DECL|macro|PSSR
-mdefine_line|#define PSSR          &t;(io_p2v (_PSSR))
-DECL|macro|PSPR
-mdefine_line|#define PSPR          &t;(io_p2v (_PSPR))
-DECL|macro|PWER
-mdefine_line|#define PWER          &t;(io_p2v (_PWER))
-DECL|macro|PCFR
-mdefine_line|#define PCFR          &t;(io_p2v (_PCFR))
-DECL|macro|PPCR
-mdefine_line|#define PPCR          &t;(io_p2v (_PPCR))
-DECL|macro|PGSR
-mdefine_line|#define PGSR          &t;(io_p2v (_PGSR))
-DECL|macro|POSR
-mdefine_line|#define POSR          &t;(io_p2v (_POSR))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define POSR&t;&t;__REG(0x9002001C)  /* PM Oscillator Status Reg. */
 DECL|macro|PMCR_SF
 mdefine_line|#define PMCR_SF &t;0x00000001&t;/* Sleep Force (set only)          */
 DECL|macro|PSSR_SS
@@ -1561,16 +1100,10 @@ mdefine_line|#define PPCR_F272_0MHz&t;PPCR_Fx76&t;/*   Freq. (fcpu) = 272.0 MHz 
 DECL|macro|POSR_OOK
 mdefine_line|#define POSR_OOK&t;0x00000001&t;/* RTC Oscillator (32.768 kHz) OK  */
 multiline_comment|/*&n; * Reset Controller (RC) control registers&n; *&n; * Registers&n; *    RSRR      &t;Reset Controller (RC) Software Reset Register&n; *              &t;(read/write).&n; *    RCSR      &t;Reset Controller (RC) Status Register (read/write).&n; */
-DECL|macro|_RSRR
-mdefine_line|#define _RSRR   &t;0x90030000&t;/* RC Software Reset Reg.          */
-DECL|macro|_RCSR
-mdefine_line|#define _RCSR   &t;0x90030004&t;/* RC Status Reg.                  */
-macro_line|#if LANGUAGE == C
 DECL|macro|RSRR
-mdefine_line|#define RSRR    &t;        &t;/* RC Software Reset Reg.          */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_RSRR)))
+mdefine_line|#define RSRR&t;&t;__REG(0x90030000)  /* RC Software Reset Reg. */
 DECL|macro|RCSR
-mdefine_line|#define RCSR    &t;        &t;/* RC Status Reg.                  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_RCSR)))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define RCSR&t;&t;__REG(0x90030004)  /* RC Status Reg. */
 DECL|macro|RSRR_SWR
 mdefine_line|#define RSRR_SWR&t;0x00000001&t;/* SoftWare Reset (set only)       */
 DECL|macro|RCSR_HWR
@@ -1582,12 +1115,8 @@ mdefine_line|#define RCSR_WDR&t;0x00000004&t;/* Watch-Dog Reset                 
 DECL|macro|RCSR_SMR
 mdefine_line|#define RCSR_SMR&t;0x00000008&t;/* Sleep-Mode Reset                */
 multiline_comment|/*&n; * Test unit control registers&n; *&n; * Registers&n; *    TUCR      &t;Test Unit Control Register (read/write).&n; */
-DECL|macro|_TUCR
-mdefine_line|#define _TUCR   &t;0x90030008&t;/* Test Unit Control Reg.          */
-macro_line|#if LANGUAGE == C
 DECL|macro|TUCR
-mdefine_line|#define TUCR    &t;        &t;/* Test Unit Control Reg.          */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_TUCR)))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define TUCR&t;&t;__REG(0x90030008)  /* Test Unit Control Reg. */
 DECL|macro|TUCR_TIC
 mdefine_line|#define TUCR_TIC&t;0x00000040&t;/* TIC mode                        */
 DECL|macro|TUCR_TTST
@@ -1633,57 +1162,22 @@ mdefine_line|#define TUCR_MainPLL&t;        &t;/*  Main PLL/16 on GPIO [27]     
 DECL|macro|TUCR_VDDL
 mdefine_line|#define TUCR_VDDL&t;        &t;/*  VDDL ring osc./4 on GPIO [27]  */ &bslash;&n;                &t;(7 &lt;&lt; FShft (TUCR_TSEL))
 multiline_comment|/*&n; * General-Purpose Input/Output (GPIO) control registers&n; *&n; * Registers&n; *    GPLR      &t;General-Purpose Input/Output (GPIO) Pin Level&n; *              &t;Register (read).&n; *    GPDR      &t;General-Purpose Input/Output (GPIO) Pin Direction&n; *              &t;Register (read/write).&n; *    GPSR      &t;General-Purpose Input/Output (GPIO) Pin output Set&n; *              &t;Register (write).&n; *    GPCR      &t;General-Purpose Input/Output (GPIO) Pin output Clear&n; *              &t;Register (write).&n; *    GRER      &t;General-Purpose Input/Output (GPIO) Rising-Edge&n; *              &t;detect Register (read/write).&n; *    GFER      &t;General-Purpose Input/Output (GPIO) Falling-Edge&n; *              &t;detect Register (read/write).&n; *    GEDR      &t;General-Purpose Input/Output (GPIO) Edge Detect&n; *              &t;status Register (read/write).&n; *    GAFR      &t;General-Purpose Input/Output (GPIO) Alternate&n; *              &t;Function Register (read/write).&n; *&n; * Clock&n; *    fcpu, Tcpu&t;Frequency, period of the CPU core clock (CCLK).&n; */
-DECL|macro|_GPLR
-mdefine_line|#define _GPLR   &t;0x90040000&t;/* GPIO Pin Level Reg.             */
-DECL|macro|_GPDR
-mdefine_line|#define _GPDR   &t;0x90040004&t;/* GPIO Pin Direction Reg.         */
-DECL|macro|_GPSR
-mdefine_line|#define _GPSR   &t;0x90040008&t;/* GPIO Pin output Set Reg.        */
-DECL|macro|_GPCR
-mdefine_line|#define _GPCR   &t;0x9004000C&t;/* GPIO Pin output Clear Reg.      */
-DECL|macro|_GRER
-mdefine_line|#define _GRER   &t;0x90040010&t;/* GPIO Rising-Edge detect Reg.    */
-DECL|macro|_GFER
-mdefine_line|#define _GFER   &t;0x90040014&t;/* GPIO Falling-Edge detect Reg.   */
-DECL|macro|_GEDR
-mdefine_line|#define _GEDR   &t;0x90040018&t;/* GPIO Edge Detect status Reg.    */
-DECL|macro|_GAFR
-mdefine_line|#define _GAFR   &t;0x9004001C&t;/* GPIO Alternate Function Reg.    */
-macro_line|#if LANGUAGE == C
 DECL|macro|GPLR
-mdefine_line|#define GPLR    &t;        &t;/* GPIO Pin Level Reg.             */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_GPLR)))
+mdefine_line|#define GPLR&t;&t;__REG(0x90040000)  /* GPIO Pin Level Reg.             */
 DECL|macro|GPDR
-mdefine_line|#define GPDR    &t;        &t;/* GPIO Pin Direction Reg.         */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_GPDR)))
+mdefine_line|#define GPDR&t;&t;__REG(0x90040004)  /* GPIO Pin Direction Reg.         */
 DECL|macro|GPSR
-mdefine_line|#define GPSR    &t;        &t;/* GPIO Pin output Set Reg.        */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_GPSR)))
+mdefine_line|#define GPSR&t;&t;__REG(0x90040008)  /* GPIO Pin output Set Reg.        */
 DECL|macro|GPCR
-mdefine_line|#define GPCR    &t;        &t;/* GPIO Pin output Clear Reg.      */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_GPCR)))
+mdefine_line|#define GPCR&t;&t;__REG(0x9004000C)  /* GPIO Pin output Clear Reg.      */
 DECL|macro|GRER
-mdefine_line|#define GRER    &t;        &t;/* GPIO Rising-Edge detect Reg.    */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_GRER)))
+mdefine_line|#define GRER&t;&t;__REG(0x90040010)  /* GPIO Rising-Edge detect Reg.    */
 DECL|macro|GFER
-mdefine_line|#define GFER    &t;        &t;/* GPIO Falling-Edge detect Reg.   */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_GFER)))
+mdefine_line|#define GFER&t;&t;__REG(0x90040014)  /* GPIO Falling-Edge detect Reg.   */
 DECL|macro|GEDR
-mdefine_line|#define GEDR    &t;        &t;/* GPIO Edge Detect status Reg.    */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_GEDR)))
+mdefine_line|#define GEDR&t;&t;__REG(0x90040018)  /* GPIO Edge Detect status Reg.    */
 DECL|macro|GAFR
-mdefine_line|#define GAFR    &t;        &t;/* GPIO Alternate Function Reg.    */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_GAFR)))
-macro_line|#elif LANGUAGE == Assembly
-DECL|macro|GPLR
-mdefine_line|#define GPLR  (io_p2v (_GPLR))
-DECL|macro|GPDR
-mdefine_line|#define GPDR  (io_p2v (_GPDR))
-DECL|macro|GPSR
-mdefine_line|#define GPSR  (io_p2v (_GPSR))
-DECL|macro|GPCR
-mdefine_line|#define GPCR  (io_p2v (_GPCR))
-DECL|macro|GRER
-mdefine_line|#define GRER  (io_p2v (_GRER))
-DECL|macro|GFER
-mdefine_line|#define GFER  (io_p2v (_GFER))
-DECL|macro|GEDR
-mdefine_line|#define GEDR  (io_p2v (_GEDR))
-DECL|macro|GAFR
-mdefine_line|#define GAFR  (io_p2v (_GAFR))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define GAFR&t;&t;__REG(0x9004001C)  /* GPIO Alternate Function Reg.    */
 DECL|macro|GPIO_MIN
 mdefine_line|#define GPIO_MIN&t;(0)
 DECL|macro|GPIO_MAX
@@ -1815,32 +1309,18 @@ mdefine_line|#define GPDR_In &t;0       &t;/* Input                           */
 DECL|macro|GPDR_Out
 mdefine_line|#define GPDR_Out&t;1       &t;/* Output                          */
 multiline_comment|/*&n; * Interrupt Controller (IC) control registers&n; *&n; * Registers&n; *    ICIP      &t;Interrupt Controller (IC) Interrupt ReQuest (IRQ)&n; *              &t;Pending register (read).&n; *    ICMR      &t;Interrupt Controller (IC) Mask Register (read/write).&n; *    ICLR      &t;Interrupt Controller (IC) Level Register (read/write).&n; *    ICCR      &t;Interrupt Controller (IC) Control Register&n; *              &t;(read/write).&n; *              &t;[The ICCR register is only implemented in versions 2.0&n; *              &t;(rev. = 8) and higher of the StrongARM SA-1100.]&n; *    ICFP      &t;Interrupt Controller (IC) Fast Interrupt reQuest&n; *              &t;(FIQ) Pending register (read).&n; *    ICPR      &t;Interrupt Controller (IC) Pending Register (read).&n; *              &t;[The ICPR register is active low (inverted) in&n; *              &t;versions 1.0 (rev. = 1) and 1.1 (rev. = 2) of the&n; *              &t;StrongARM SA-1100, it is active high (non-inverted) in&n; *              &t;versions 2.0 (rev. = 8) and higher.]&n; */
-DECL|macro|_ICIP
-mdefine_line|#define _ICIP   &t;0x90050000&t;/* IC IRQ Pending reg.             */
-DECL|macro|_ICMR
-mdefine_line|#define _ICMR   &t;0x90050004&t;/* IC Mask Reg.                    */
-DECL|macro|_ICLR
-mdefine_line|#define _ICLR   &t;0x90050008&t;/* IC Level Reg.                   */
-DECL|macro|_ICCR
-mdefine_line|#define _ICCR   &t;0x9005000C&t;/* IC Control Reg.                 */
-DECL|macro|_ICFP
-mdefine_line|#define _ICFP   &t;0x90050010&t;/* IC FIQ Pending reg.             */
-DECL|macro|_ICPR
-mdefine_line|#define _ICPR   &t;0x90050020&t;/* IC Pending Reg.                 */
-macro_line|#if LANGUAGE == C
 DECL|macro|ICIP
-mdefine_line|#define ICIP    &t;        &t;/* IC IRQ Pending reg.             */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_ICIP)))
+mdefine_line|#define ICIP&t;&t;__REG(0x90050000)  /* IC IRQ Pending reg.             */
 DECL|macro|ICMR
-mdefine_line|#define ICMR    &t;        &t;/* IC Mask Reg.                    */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_ICMR)))
+mdefine_line|#define ICMR&t;&t;__REG(0x90050004)  /* IC Mask Reg.                    */
 DECL|macro|ICLR
-mdefine_line|#define ICLR    &t;        &t;/* IC Level Reg.                   */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_ICLR)))
+mdefine_line|#define ICLR&t;&t;__REG(0x90050008)  /* IC Level Reg.                   */
 DECL|macro|ICCR
-mdefine_line|#define ICCR    &t;        &t;/* IC Control Reg.                 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_ICCR)))
+mdefine_line|#define ICCR&t;&t;__REG(0x9005000C)  /* IC Control Reg.                 */
 DECL|macro|ICFP
-mdefine_line|#define ICFP    &t;        &t;/* IC FIQ Pending reg.             */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_ICFP)))
+mdefine_line|#define ICFP&t;&t;__REG(0x90050010)  /* IC FIQ Pending reg.             */
 DECL|macro|ICPR
-mdefine_line|#define ICPR    &t;        &t;/* IC Pending Reg.                 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_ICPR)))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define ICPR&t;&t;__REG(0x90050020)  /* IC Pending Reg.                 */
 DECL|macro|IC_GPIO
 mdefine_line|#define IC_GPIO(Nb)&t;        &t;/* GPIO [0..10]                    */ &bslash;&n;                &t;(0x00000001 &lt;&lt; (Nb))
 DECL|macro|IC_GPIO0
@@ -1925,29 +1405,16 @@ DECL|macro|ICCR_IdleMskInt
 mdefine_line|#define ICCR_IdleMskInt&t;(ICCR_DIM*1)&t;/*  Idle-mode non-Masked Interrupt */
 multiline_comment|/*  enable (ICMR used)             */
 multiline_comment|/*&n; * Peripheral Pin Controller (PPC) control registers&n; *&n; * Registers&n; *    PPDR      &t;Peripheral Pin Controller (PPC) Pin Direction&n; *              &t;Register (read/write).&n; *    PPSR      &t;Peripheral Pin Controller (PPC) Pin State Register&n; *              &t;(read/write).&n; *    PPAR      &t;Peripheral Pin Controller (PPC) Pin Assignment&n; *              &t;Register (read/write).&n; *    PSDR      &t;Peripheral Pin Controller (PPC) Sleep-mode pin&n; *              &t;Direction Register (read/write).&n; *    PPFR      &t;Peripheral Pin Controller (PPC) Pin Flag Register&n; *              &t;(read).&n; */
-DECL|macro|_PPDR
-mdefine_line|#define _PPDR   &t;0x90060000&t;/* PPC Pin Direction Reg.          */
-DECL|macro|_PPSR
-mdefine_line|#define _PPSR   &t;0x90060004&t;/* PPC Pin State Reg.              */
-DECL|macro|_PPAR
-mdefine_line|#define _PPAR   &t;0x90060008&t;/* PPC Pin Assignment Reg.         */
-DECL|macro|_PSDR
-mdefine_line|#define _PSDR   &t;0x9006000C&t;/* PPC Sleep-mode pin Direction    */
-multiline_comment|/* Reg.                            */
-DECL|macro|_PPFR
-mdefine_line|#define _PPFR   &t;0x90060010&t;/* PPC Pin Flag Reg.               */
-macro_line|#if LANGUAGE == C
 DECL|macro|PPDR
-mdefine_line|#define PPDR    &t;        &t;/* PPC Pin Direction Reg.          */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_PPDR)))
+mdefine_line|#define PPDR&t;&t;__REG(0x90060000)  /* PPC Pin Direction Reg.          */
 DECL|macro|PPSR
-mdefine_line|#define PPSR    &t;        &t;/* PPC Pin State Reg.              */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_PPSR)))
+mdefine_line|#define PPSR&t;&t;__REG(0x90060004)  /* PPC Pin State Reg.              */
 DECL|macro|PPAR
-mdefine_line|#define PPAR    &t;        &t;/* PPC Pin Assignment Reg.         */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_PPAR)))
+mdefine_line|#define PPAR&t;&t;__REG(0x90060008)  /* PPC Pin Assignment Reg.         */
 DECL|macro|PSDR
-mdefine_line|#define PSDR    &t;        &t;/* PPC Sleep-mode pin Direction    */ &bslash;&n;                &t;        &t;/* Reg.                            */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_PSDR)))
+mdefine_line|#define PSDR&t;&t;__REG(0x9006000C)  /* PPC Sleep-mode pin Direction Reg. */
 DECL|macro|PPFR
-mdefine_line|#define PPFR    &t;        &t;/* PPC Pin Flag Reg.               */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_PPFR)))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define PPFR&t;&t;__REG(0x90060010)  /* PPC Pin Flag Reg.               */
 DECL|macro|PPC_LDD
 mdefine_line|#define PPC_LDD(Nb)&t;        &t;/* LCD Data [0..7]                 */ &bslash;&n;                &t;(0x00000001 &lt;&lt; (Nb))
 DECL|macro|PPC_LDD0
@@ -2042,33 +1509,14 @@ mdefine_line|#define PPFR_PerEn&t;0       &t;/* Peripheral Enabled              
 DECL|macro|PPFR_PPCEn
 mdefine_line|#define PPFR_PPCEn&t;1       &t;/* PPC Enabled                     */
 multiline_comment|/*&n; * Dynamic Random-Access Memory (DRAM) control registers&n; *&n; * Registers&n; *    MDCNFG    &t;Memory system: Dynamic Random-Access Memory (DRAM)&n; *              &t;CoNFiGuration register (read/write).&n; *    MDCAS0    &t;Memory system: Dynamic Random-Access Memory (DRAM)&n; *              &t;Column Address Strobe (CAS) shift register 0&n; *              &t;(read/write).&n; *    MDCAS1    &t;Memory system: Dynamic Random-Access Memory (DRAM)&n; *              &t;Column Address Strobe (CAS) shift register 1&n; *              &t;(read/write).&n; *    MDCAS2    &t;Memory system: Dynamic Random-Access Memory (DRAM)&n; *              &t;Column Address Strobe (CAS) shift register 2&n; *              &t;(read/write).&n; *&n; * Clocks&n; *    fcpu, Tcpu&t;Frequency, period of the CPU core clock (CCLK).&n; *    fmem, Tmem&t;Frequency, period of the memory clock (fmem = fcpu/2).&n; *    fcas, Tcas&t;Frequency, period of the DRAM CAS shift registers.&n; */
-multiline_comment|/* Memory system:                  */
-DECL|macro|_MDCNFG
-mdefine_line|#define _MDCNFG &t;0xA0000000&t;/*  DRAM CoNFiGuration reg.        */
-DECL|macro|_MDCAS
-mdefine_line|#define _MDCAS(Nb)&t;        &t;/*  DRAM CAS shift reg. [0..3]     */ &bslash;&n;                &t;(0xA0000004 + (Nb)*4)
-DECL|macro|_MDCAS0
-mdefine_line|#define _MDCAS0 &t;_MDCAS (0)&t;/*  DRAM CAS shift reg. 0          */
-DECL|macro|_MDCAS1
-mdefine_line|#define _MDCAS1 &t;_MDCAS (1)&t;/*  DRAM CAS shift reg. 1          */
-DECL|macro|_MDCAS2
-mdefine_line|#define _MDCAS2 &t;_MDCAS (2)&t;/*  DRAM CAS shift reg. 2          */
-macro_line|#if LANGUAGE == C
-multiline_comment|/* Memory system:                  */
 DECL|macro|MDCNFG
-mdefine_line|#define MDCNFG  &t;        &t;/*  DRAM CoNFiGuration reg.        */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_MDCNFG)))
-DECL|macro|MDCAS
-mdefine_line|#define MDCAS   &t;        &t;/*  DRAM CAS shift reg. [0..3]     */ &bslash;&n;                &t;((volatile Word *) io_p2v (_MDCAS (0)))
+mdefine_line|#define MDCNFG&t;&t;__REG(0xA0000000)  /*  DRAM CoNFiGuration reg. */
 DECL|macro|MDCAS0
-mdefine_line|#define MDCAS0  &t;(MDCAS [0])&t;/*  DRAM CAS shift reg. 0          */
+mdefine_line|#define MDCAS0&t;&t;__REG(0xA0000004)  /* DRAM CAS shift reg. 0 */
 DECL|macro|MDCAS1
-mdefine_line|#define MDCAS1  &t;(MDCAS [1])&t;/*  DRAM CAS shift reg. 1          */
+mdefine_line|#define MDCAS1&t;&t;__REG(0xA0000008)  /* DRAM CAS shift reg. 1 */
 DECL|macro|MDCAS2
-mdefine_line|#define MDCAS2  &t;(MDCAS [2])&t;/*  DRAM CAS shift reg. 2          */
-macro_line|#elif LANGUAGE == Assembly
-DECL|macro|MDCNFG
-mdefine_line|#define MDCNFG&t;&t;(io_p2v(_MDCNFG))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define MDCAS2&t;&t;__REG(0xA000000c)  /* DRAM CAS shift reg. 2 */
 multiline_comment|/* SA1100 MDCNFG values */
 DECL|macro|MDCNFG_DE
 mdefine_line|#define MDCNFG_DE(Nb)&t;        &t;/* DRAM Enable bank [0..3]         */ &bslash;&n;                &t;(0x00000001 &lt;&lt; (Nb))
@@ -2150,33 +1598,12 @@ multiline_comment|/* deassertion 0/1           */
 DECL|macro|MDCNFG_SA1110_TWR2
 mdefine_line|#define MDCNFG_SA1110_TWR2&t;Fld(2, 30)&t;/* SDRAM write recovery 0/1  */
 multiline_comment|/*&n; * Static memory control registers&n; *&n; * Registers&n; *    MSC0      &t;Memory system: Static memory Control register 0&n; *              &t;(read/write).&n; *    MSC1      &t;Memory system: Static memory Control register 1&n; *              &t;(read/write).&n; *&n; * Clocks&n; *    fcpu, Tcpu&t;Frequency, period of the CPU core clock (CCLK).&n; *    fmem, Tmem&t;Frequency, period of the memory clock (fmem = fcpu/2).&n; */
-multiline_comment|/* Memory system:                  */
-DECL|macro|_MSC
-mdefine_line|#define _MSC(Nb)&t;        &t;/*  Static memory Control reg.     */ &bslash;&n;                &t;        &t;/*  [0..1]                         */ &bslash;&n;                &t;(0xA0000010 + (Nb)*4)
-DECL|macro|_MSC0
-mdefine_line|#define _MSC0   &t;_MSC (0)&t;/*  Static memory Control reg. 0   */
-DECL|macro|_MSC1
-mdefine_line|#define _MSC1   &t;_MSC (1)&t;/*  Static memory Control reg. 1   */
-DECL|macro|_MSC2
-mdefine_line|#define _MSC2&t;&t;0xA000002C&t;/*  Static memory Control reg. 2, not contiguous   */
-macro_line|#if LANGUAGE == C
-multiline_comment|/* Memory system:                  */
-DECL|macro|MSC
-mdefine_line|#define MSC     &t;        &t;/*  Static memory Control reg.     */ &bslash;&n;                &t;        &t;/*  [0..1]                         */ &bslash;&n;                &t;((volatile Word *) io_p2v (_MSC (0)))
 DECL|macro|MSC0
-mdefine_line|#define MSC0    &t;(MSC [0])&t;/*  Static memory Control reg. 0   */
+mdefine_line|#define MSC0&t;&t;__REG(0xa0000010)  /* Static memory Control reg. 0 */
 DECL|macro|MSC1
-mdefine_line|#define MSC1    &t;(MSC [1])&t;/*  Static memory Control reg. 1   */
+mdefine_line|#define MSC1&t;&t;__REG(0xa0000014)  /* Static memory Control reg. 1 */
 DECL|macro|MSC2
-mdefine_line|#define MSC2    &t;(*(volatile Word *) io_p2v (_MSC2))&t;/*  Static memory Control reg. 2   */
-macro_line|#elif LANGUAGE == Assembly
-DECL|macro|MSC0
-mdefine_line|#define MSC0&t;&t;io_p2v(0xa0000010)
-DECL|macro|MSC1
-mdefine_line|#define MSC1&t;&t;io_p2v(0xa0000014)
-DECL|macro|MSC2
-mdefine_line|#define MSC2&t;&t;io_p2v(0xa000002c)
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define MSC2&t;&t;__REG(0xa000002c)  /* Static memory Control reg. 2, not contiguous   */
 DECL|macro|MSC_Bnk
 mdefine_line|#define MSC_Bnk(Nb)&t;        &t;/* static memory Bank [0..3]       */ &bslash;&n;                &t;Fld (16, ((Nb) Modulo 2)*16)
 DECL|macro|MSC0_Bnk0
@@ -2234,14 +1661,8 @@ DECL|macro|MSC_CeilRec
 mdefine_line|#define MSC_CeilRec(Tcpu)       &t;/*  Ceil. of Rec [0..28 Tcpu]      */ &bslash;&n;                &t;((((Tcpu) + 3)/4) &lt;&lt; FShft (MSC_RRR))
 multiline_comment|/*&n; * Personal Computer Memory Card International Association (PCMCIA) control&n; * register&n; *&n; * Register&n; *    MECR      &t;Memory system: Expansion memory bus (PCMCIA)&n; *              &t;Configuration Register (read/write).&n; *&n; * Clocks&n; *    fcpu, Tcpu&t;Frequency, period of the CPU core clock (CCLK).&n; *    fmem, Tmem&t;Frequency, period of the memory clock (fmem = fcpu/2).&n; *    fbclk, Tbclk&t;Frequency, period of the PCMCIA clock (BCLK).&n; */
 multiline_comment|/* Memory system:                  */
-DECL|macro|_MECR
-mdefine_line|#define _MECR   &t;0xA0000018&t;/*  Expansion memory bus (PCMCIA)  */
-multiline_comment|/*  Configuration Reg.             */
-macro_line|#if LANGUAGE == C
-multiline_comment|/* Memory system:                  */
 DECL|macro|MECR
-mdefine_line|#define MECR    &t;        &t;/*  Expansion memory bus (PCMCIA)  */ &bslash;&n;                &t;        &t;/*  Configuration Reg.             */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_MECR)))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define MECR&t;&t;__REG(0xA0000018)  /*  Expansion memory bus (PCMCIA) Configuration Reg.             */
 DECL|macro|MECR_PCMCIA
 mdefine_line|#define MECR_PCMCIA(Nb)&t;        &t;/* PCMCIA [0..1]                   */ &bslash;&n;                &t;Fld (15, (Nb)*16)
 DECL|macro|MECR_PCMCIA0
@@ -2268,16 +1689,8 @@ mdefine_line|#define MECR_MemClk(Tcpu)       &t;/*  Memory Clock [2..64 Tcpu]   
 DECL|macro|MECR_CeilMemClk
 mdefine_line|#define MECR_CeilMemClk(Tcpu)   &t;/*  Ceil. of MemClk [2..64 Tcpu]   */ &bslash;&n;                &t;((((Tcpu) - 1)/2) &lt;&lt; FShft (MECR_BSM))
 multiline_comment|/*&n; * On SA1110 only&n; */
-DECL|macro|_MDREFR
-mdefine_line|#define _MDREFR&t;&t;0xA000001C
-macro_line|#if LANGUAGE == C
-multiline_comment|/* Memory system:                  */
 DECL|macro|MDREFR
-mdefine_line|#define MDREFR &bslash;&n;                &t;(*((volatile Word *) io_p2v (_MDREFR)))
-macro_line|#elif LANGUAGE == Assembly
-DECL|macro|MDREFR
-mdefine_line|#define MDREFR&t;&t;(io_p2v(_MDREFR))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define MDREFR&t;&t;__REG(0xA000001C)
 DECL|macro|MDREFR_TRASR
 mdefine_line|#define MDREFR_TRASR&t;&t;Fld (4, 0)
 DECL|macro|MDREFR_DRI
@@ -2307,264 +1720,22 @@ mdefine_line|#define MDREFR_SLFRSH&t;&t;(1 &lt;&lt; 31)
 multiline_comment|/*&n; * Direct Memory Access (DMA) control registers&n; *&n; * Registers&n; *    DDAR0     &t;Direct Memory Access (DMA) Device Address Register&n; *              &t;channel 0 (read/write).&n; *    DCSR0     &t;Direct Memory Access (DMA) Control and Status&n; *              &t;Register channel 0 (read/write).&n; *    DBSA0     &t;Direct Memory Access (DMA) Buffer Start address&n; *              &t;register A channel 0 (read/write).&n; *    DBTA0     &t;Direct Memory Access (DMA) Buffer Transfer count&n; *              &t;register A channel 0 (read/write).&n; *    DBSB0     &t;Direct Memory Access (DMA) Buffer Start address&n; *              &t;register B channel 0 (read/write).&n; *    DBTB0     &t;Direct Memory Access (DMA) Buffer Transfer count&n; *              &t;register B channel 0 (read/write).&n; *&n; *    DDAR1     &t;Direct Memory Access (DMA) Device Address Register&n; *              &t;channel 1 (read/write).&n; *    DCSR1     &t;Direct Memory Access (DMA) Control and Status&n; *              &t;Register channel 1 (read/write).&n; *    DBSA1     &t;Direct Memory Access (DMA) Buffer Start address&n; *              &t;register A channel 1 (read/write).&n; *    DBTA1     &t;Direct Memory Access (DMA) Buffer Transfer count&n; *              &t;register A channel 1 (read/write).&n; *    DBSB1     &t;Direct Memory Access (DMA) Buffer Start address&n; *              &t;register B channel 1 (read/write).&n; *    DBTB1     &t;Direct Memory Access (DMA) Buffer Transfer count&n; *              &t;register B channel 1 (read/write).&n; *&n; *    DDAR2     &t;Direct Memory Access (DMA) Device Address Register&n; *              &t;channel 2 (read/write).&n; *    DCSR2     &t;Direct Memory Access (DMA) Control and Status&n; *              &t;Register channel 2 (read/write).&n; *    DBSA2     &t;Direct Memory Access (DMA) Buffer Start address&n; *              &t;register A channel 2 (read/write).&n; *    DBTA2     &t;Direct Memory Access (DMA) Buffer Transfer count&n; *              &t;register A channel 2 (read/write).&n; *    DBSB2     &t;Direct Memory Access (DMA) Buffer Start address&n; *              &t;register B channel 2 (read/write).&n; *    DBTB2     &t;Direct Memory Access (DMA) Buffer Transfer count&n; *              &t;register B channel 2 (read/write).&n; *&n; *    DDAR3     &t;Direct Memory Access (DMA) Device Address Register&n; *              &t;channel 3 (read/write).&n; *    DCSR3     &t;Direct Memory Access (DMA) Control and Status&n; *              &t;Register channel 3 (read/write).&n; *    DBSA3     &t;Direct Memory Access (DMA) Buffer Start address&n; *              &t;register A channel 3 (read/write).&n; *    DBTA3     &t;Direct Memory Access (DMA) Buffer Transfer count&n; *              &t;register A channel 3 (read/write).&n; *    DBSB3     &t;Direct Memory Access (DMA) Buffer Start address&n; *              &t;register B channel 3 (read/write).&n; *    DBTB3     &t;Direct Memory Access (DMA) Buffer Transfer count&n; *              &t;register B channel 3 (read/write).&n; *&n; *    DDAR4     &t;Direct Memory Access (DMA) Device Address Register&n; *              &t;channel 4 (read/write).&n; *    DCSR4     &t;Direct Memory Access (DMA) Control and Status&n; *              &t;Register channel 4 (read/write).&n; *    DBSA4     &t;Direct Memory Access (DMA) Buffer Start address&n; *              &t;register A channel 4 (read/write).&n; *    DBTA4     &t;Direct Memory Access (DMA) Buffer Transfer count&n; *              &t;register A channel 4 (read/write).&n; *    DBSB4     &t;Direct Memory Access (DMA) Buffer Start address&n; *              &t;register B channel 4 (read/write).&n; *    DBTB4     &t;Direct Memory Access (DMA) Buffer Transfer count&n; *              &t;register B channel 4 (read/write).&n; *&n; *    DDAR5     &t;Direct Memory Access (DMA) Device Address Register&n; *              &t;channel 5 (read/write).&n; *    DCSR5     &t;Direct Memory Access (DMA) Control and Status&n; *              &t;Register channel 5 (read/write).&n; *    DBSA5     &t;Direct Memory Access (DMA) Buffer Start address&n; *              &t;register A channel 5 (read/write).&n; *    DBTA5     &t;Direct Memory Access (DMA) Buffer Transfer count&n; *              &t;register A channel 5 (read/write).&n; *    DBSB5     &t;Direct Memory Access (DMA) Buffer Start address&n; *              &t;register B channel 5 (read/write).&n; *    DBTB5     &t;Direct Memory Access (DMA) Buffer Transfer count&n; *              &t;register B channel 5 (read/write).&n; */
 DECL|macro|DMASp
 mdefine_line|#define DMASp   &t;0x00000020&t;/* DMA control reg. Space [byte]   */
-DECL|macro|_DDAR
-mdefine_line|#define _DDAR(Nb)&t;        &t;/* DMA Device Address Reg.         */ &bslash;&n;                &t;        &t;/* channel [0..5]                  */ &bslash;&n;                &t;(0xB0000000 + (Nb)*DMASp)
-DECL|macro|_SetDCSR
-mdefine_line|#define _SetDCSR(Nb)&t;        &t;/* Set DMA Control &amp; Status Reg.   */ &bslash;&n;                &t;        &t;/* channel [0..5] (write)          */ &bslash;&n;                &t;(0xB0000004 + (Nb)*DMASp)
-DECL|macro|_ClrDCSR
-mdefine_line|#define _ClrDCSR(Nb)&t;        &t;/* Clear DMA Control &amp; Status Reg. */ &bslash;&n;                &t;        &t;/* channel [0..5] (write)          */ &bslash;&n;                &t;(0xB0000008 + (Nb)*DMASp)
-DECL|macro|_RdDCSR
-mdefine_line|#define _RdDCSR(Nb)&t;        &t;/* Read DMA Control &amp; Status Reg.  */ &bslash;&n;                &t;        &t;/* channel [0..5] (read)           */ &bslash;&n;                &t;(0xB000000C + (Nb)*DMASp)
-DECL|macro|_DBSA
-mdefine_line|#define _DBSA(Nb)&t;        &t;/* DMA Buffer Start address reg. A */ &bslash;&n;                &t;        &t;/* channel [0..5]                  */ &bslash;&n;                &t;(0xB0000010 + (Nb)*DMASp)
-DECL|macro|_DBTA
-mdefine_line|#define _DBTA(Nb)&t;        &t;/* DMA Buffer Transfer count       */ &bslash;&n;                &t;        &t;/* reg. A channel [0..5]           */ &bslash;&n;                &t;(0xB0000014 + (Nb)*DMASp)
-DECL|macro|_DBSB
-mdefine_line|#define _DBSB(Nb)&t;        &t;/* DMA Buffer Start address reg. B */ &bslash;&n;                &t;        &t;/* channel [0..5]                  */ &bslash;&n;                &t;(0xB0000018 + (Nb)*DMASp)
-DECL|macro|_DBTB
-mdefine_line|#define _DBTB(Nb)&t;        &t;/* DMA Buffer Transfer count       */ &bslash;&n;                &t;        &t;/* reg. B channel [0..5]           */ &bslash;&n;                &t;(0xB000001C + (Nb)*DMASp)
-DECL|macro|_DDAR0
-mdefine_line|#define _DDAR0  &t;_DDAR (0)&t;/* DMA Device Address Reg.         */
-multiline_comment|/* channel 0                       */
-DECL|macro|_SetDCSR0
-mdefine_line|#define _SetDCSR0&t;_SetDCSR (0)&t;/* Set DMA Control &amp; Status Reg.   */
-multiline_comment|/* channel 0 (write)               */
-DECL|macro|_ClrDCSR0
-mdefine_line|#define _ClrDCSR0&t;_ClrDCSR (0)&t;/* Clear DMA Control &amp; Status Reg. */
-multiline_comment|/* channel 0 (write)               */
-DECL|macro|_RdDCSR0
-mdefine_line|#define _RdDCSR0&t;_RdDCSR (0)&t;/* Read DMA Control &amp; Status Reg.  */
-multiline_comment|/* channel 0 (read)                */
-DECL|macro|_DBSA0
-mdefine_line|#define _DBSA0  &t;_DBSA (0)&t;/* DMA Buffer Start address reg. A */
-multiline_comment|/* channel 0                       */
-DECL|macro|_DBTA0
-mdefine_line|#define _DBTA0  &t;_DBTA (0)&t;/* DMA Buffer Transfer count       */
-multiline_comment|/* reg. A channel 0                */
-DECL|macro|_DBSB0
-mdefine_line|#define _DBSB0  &t;_DBSB (0)&t;/* DMA Buffer Start address reg. B */
-multiline_comment|/* channel 0                       */
-DECL|macro|_DBTB0
-mdefine_line|#define _DBTB0  &t;_DBTB (0)&t;/* DMA Buffer Transfer count       */
-multiline_comment|/* reg. B channel 0                */
-DECL|macro|_DDAR1
-mdefine_line|#define _DDAR1  &t;_DDAR (1)&t;/* DMA Device Address Reg.         */
-multiline_comment|/* channel 1                       */
-DECL|macro|_SetDCSR1
-mdefine_line|#define _SetDCSR1&t;_SetDCSR (1)&t;/* Set DMA Control &amp; Status Reg.   */
-multiline_comment|/* channel 1 (write)               */
-DECL|macro|_ClrDCSR1
-mdefine_line|#define _ClrDCSR1&t;_ClrDCSR (1)&t;/* Clear DMA Control &amp; Status Reg. */
-multiline_comment|/* channel 1 (write)               */
-DECL|macro|_RdDCSR1
-mdefine_line|#define _RdDCSR1&t;_RdDCSR (1)&t;/* Read DMA Control &amp; Status Reg.  */
-multiline_comment|/* channel 1 (read)                */
-DECL|macro|_DBSA1
-mdefine_line|#define _DBSA1  &t;_DBSA (1)&t;/* DMA Buffer Start address reg. A */
-multiline_comment|/* channel 1                       */
-DECL|macro|_DBTA1
-mdefine_line|#define _DBTA1  &t;_DBTA (1)&t;/* DMA Buffer Transfer count       */
-multiline_comment|/* reg. A channel 1                */
-DECL|macro|_DBSB1
-mdefine_line|#define _DBSB1  &t;_DBSB (1)&t;/* DMA Buffer Start address reg. B */
-multiline_comment|/* channel 1                       */
-DECL|macro|_DBTB1
-mdefine_line|#define _DBTB1  &t;_DBTB (1)&t;/* DMA Buffer Transfer count       */
-multiline_comment|/* reg. B channel 1                */
-DECL|macro|_DDAR2
-mdefine_line|#define _DDAR2  &t;_DDAR (2)&t;/* DMA Device Address Reg.         */
-multiline_comment|/* channel 2                       */
-DECL|macro|_SetDCSR2
-mdefine_line|#define _SetDCSR2&t;_SetDCSR (2)&t;/* Set DMA Control &amp; Status Reg.   */
-multiline_comment|/* channel 2 (write)               */
-DECL|macro|_ClrDCSR2
-mdefine_line|#define _ClrDCSR2&t;_ClrDCSR (2)&t;/* Clear DMA Control &amp; Status Reg. */
-multiline_comment|/* channel 2 (write)               */
-DECL|macro|_RdDCSR2
-mdefine_line|#define _RdDCSR2&t;_RdDCSR (2)&t;/* Read DMA Control &amp; Status Reg.  */
-multiline_comment|/* channel 2 (read)                */
-DECL|macro|_DBSA2
-mdefine_line|#define _DBSA2  &t;_DBSA (2)&t;/* DMA Buffer Start address reg. A */
-multiline_comment|/* channel 2                       */
-DECL|macro|_DBTA2
-mdefine_line|#define _DBTA2  &t;_DBTA (2)&t;/* DMA Buffer Transfer count       */
-multiline_comment|/* reg. A channel 2                */
-DECL|macro|_DBSB2
-mdefine_line|#define _DBSB2  &t;_DBSB (2)&t;/* DMA Buffer Start address reg. B */
-multiline_comment|/* channel 2                       */
-DECL|macro|_DBTB2
-mdefine_line|#define _DBTB2  &t;_DBTB (2)&t;/* DMA Buffer Transfer count       */
-multiline_comment|/* reg. B channel 2                */
-DECL|macro|_DDAR3
-mdefine_line|#define _DDAR3  &t;_DDAR (3)&t;/* DMA Device Address Reg.         */
-multiline_comment|/* channel 3                       */
-DECL|macro|_SetDCSR3
-mdefine_line|#define _SetDCSR3&t;_SetDCSR (3)&t;/* Set DMA Control &amp; Status Reg.   */
-multiline_comment|/* channel 3 (write)               */
-DECL|macro|_ClrDCSR3
-mdefine_line|#define _ClrDCSR3&t;_ClrDCSR (3)&t;/* Clear DMA Control &amp; Status Reg. */
-multiline_comment|/* channel 3 (write)               */
-DECL|macro|_RdDCSR3
-mdefine_line|#define _RdDCSR3&t;_RdDCSR (3)&t;/* Read DMA Control &amp; Status Reg.  */
-multiline_comment|/* channel 3 (read)                */
-DECL|macro|_DBSA3
-mdefine_line|#define _DBSA3  &t;_DBSA (3)&t;/* DMA Buffer Start address reg. A */
-multiline_comment|/* channel 3                       */
-DECL|macro|_DBTA3
-mdefine_line|#define _DBTA3  &t;_DBTA (3)&t;/* DMA Buffer Transfer count       */
-multiline_comment|/* reg. A channel 3                */
-DECL|macro|_DBSB3
-mdefine_line|#define _DBSB3  &t;_DBSB (3)&t;/* DMA Buffer Start address reg. B */
-multiline_comment|/* channel 3                       */
-DECL|macro|_DBTB3
-mdefine_line|#define _DBTB3  &t;_DBTB (3)&t;/* DMA Buffer Transfer count       */
-multiline_comment|/* reg. B channel 3                */
-DECL|macro|_DDAR4
-mdefine_line|#define _DDAR4  &t;_DDAR (4)&t;/* DMA Device Address Reg.         */
-multiline_comment|/* channel 4                       */
-DECL|macro|_SetDCSR4
-mdefine_line|#define _SetDCSR4&t;_SetDCSR (4)&t;/* Set DMA Control &amp; Status Reg.   */
-multiline_comment|/* channel 4 (write)               */
-DECL|macro|_ClrDCSR4
-mdefine_line|#define _ClrDCSR4&t;_ClrDCSR (4)&t;/* Clear DMA Control &amp; Status Reg. */
-multiline_comment|/* channel 4 (write)               */
-DECL|macro|_RdDCSR4
-mdefine_line|#define _RdDCSR4&t;_RdDCSR (4)&t;/* Read DMA Control &amp; Status Reg.  */
-multiline_comment|/* channel 4 (read)                */
-DECL|macro|_DBSA4
-mdefine_line|#define _DBSA4  &t;_DBSA (4)&t;/* DMA Buffer Start address reg. A */
-multiline_comment|/* channel 4                       */
-DECL|macro|_DBTA4
-mdefine_line|#define _DBTA4  &t;_DBTA (4)&t;/* DMA Buffer Transfer count       */
-multiline_comment|/* reg. A channel 4                */
-DECL|macro|_DBSB4
-mdefine_line|#define _DBSB4  &t;_DBSB (4)&t;/* DMA Buffer Start address reg. B */
-multiline_comment|/* channel 4                       */
-DECL|macro|_DBTB4
-mdefine_line|#define _DBTB4  &t;_DBTB (4)&t;/* DMA Buffer Transfer count       */
-multiline_comment|/* reg. B channel 4                */
-DECL|macro|_DDAR5
-mdefine_line|#define _DDAR5  &t;_DDAR (5)&t;/* DMA Device Address Reg.         */
-multiline_comment|/* channel 5                       */
-DECL|macro|_SetDCSR5
-mdefine_line|#define _SetDCSR5&t;_SetDCSR (5)&t;/* Set DMA Control &amp; Status Reg.   */
-multiline_comment|/* channel 5 (write)               */
-DECL|macro|_ClrDCSR5
-mdefine_line|#define _ClrDCSR5&t;_ClrDCSR (5)&t;/* Clear DMA Control &amp; Status Reg. */
-multiline_comment|/* channel 5 (write)               */
-DECL|macro|_RdDCSR5
-mdefine_line|#define _RdDCSR5&t;_RdDCSR (5)&t;/* Read DMA Control &amp; Status Reg.  */
-multiline_comment|/* channel 5 (read)                */
-DECL|macro|_DBSA5
-mdefine_line|#define _DBSA5  &t;_DBSA (5)&t;/* DMA Buffer Start address reg. A */
-multiline_comment|/* channel 5                       */
-DECL|macro|_DBTA5
-mdefine_line|#define _DBTA5  &t;_DBTA (5)&t;/* DMA Buffer Transfer count       */
-multiline_comment|/* reg. A channel 5                */
-DECL|macro|_DBSB5
-mdefine_line|#define _DBSB5  &t;_DBSB (5)&t;/* DMA Buffer Start address reg. B */
-multiline_comment|/* channel 5                       */
-DECL|macro|_DBTB5
-mdefine_line|#define _DBTB5  &t;_DBTB (5)&t;/* DMA Buffer Transfer count       */
-multiline_comment|/* reg. B channel 5                */
-macro_line|#if LANGUAGE == C
-DECL|macro|DDAR0
-mdefine_line|#define DDAR0   &t;        &t;/* DMA Device Address Reg.         */ &bslash;&n;                &t;        &t;/* channel 0                       */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DDAR0)))
-DECL|macro|SetDCSR0
-mdefine_line|#define SetDCSR0&t;        &t;/* Set DMA Control &amp; Status Reg.   */ &bslash;&n;                &t;        &t;/* channel 0 (write)               */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_SetDCSR0)))
-DECL|macro|ClrDCSR0
-mdefine_line|#define ClrDCSR0&t;        &t;/* Clear DMA Control &amp; Status Reg. */ &bslash;&n;                &t;        &t;/* channel 0 (write)               */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_ClrDCSR0)))
-DECL|macro|RdDCSR0
-mdefine_line|#define RdDCSR0 &t;        &t;/* Read DMA Control &amp; Status Reg.  */ &bslash;&n;                &t;        &t;/* channel 0 (read)                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_RdDCSR0)))
-DECL|macro|DBSA0
-mdefine_line|#define DBSA0   &t;        &t;/* DMA Buffer Start address reg. A */ &bslash;&n;                &t;        &t;/* channel 0                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DBSA0)))
-DECL|macro|DBTA0
-mdefine_line|#define DBTA0   &t;        &t;/* DMA Buffer Transfer count       */ &bslash;&n;                &t;        &t;/* reg. A channel 0                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DBTA0)))
-DECL|macro|DBSB0
-mdefine_line|#define DBSB0   &t;        &t;/* DMA Buffer Start address reg. B */ &bslash;&n;                &t;        &t;/* channel 0                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DBSB0)))
-DECL|macro|DBTB0
-mdefine_line|#define DBTB0   &t;        &t;/* DMA Buffer Transfer count       */ &bslash;&n;                &t;        &t;/* reg. B channel 0                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DBTB0)))
-DECL|macro|DDAR1
-mdefine_line|#define DDAR1   &t;        &t;/* DMA Device Address Reg.         */ &bslash;&n;                &t;        &t;/* channel 1                       */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DDAR1)))
-DECL|macro|SetDCSR1
-mdefine_line|#define SetDCSR1&t;        &t;/* Set DMA Control &amp; Status Reg.   */ &bslash;&n;                &t;        &t;/* channel 1 (write)               */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_SetDCSR1)))
-DECL|macro|ClrDCSR1
-mdefine_line|#define ClrDCSR1&t;        &t;/* Clear DMA Control &amp; Status Reg. */ &bslash;&n;                &t;        &t;/* channel 1 (write)               */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_ClrDCSR1)))
-DECL|macro|RdDCSR1
-mdefine_line|#define RdDCSR1 &t;        &t;/* Read DMA Control &amp; Status Reg.  */ &bslash;&n;                &t;        &t;/* channel 1 (read)                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_RdDCSR1)))
-DECL|macro|DBSA1
-mdefine_line|#define DBSA1   &t;        &t;/* DMA Buffer Start address reg. A */ &bslash;&n;                &t;        &t;/* channel 1                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DBSA1)))
-DECL|macro|DBTA1
-mdefine_line|#define DBTA1   &t;        &t;/* DMA Buffer Transfer count       */ &bslash;&n;                &t;        &t;/* reg. A channel 1                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DBTA1)))
-DECL|macro|DBSB1
-mdefine_line|#define DBSB1   &t;        &t;/* DMA Buffer Start address reg. B */ &bslash;&n;                &t;        &t;/* channel 1                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DBSB1)))
-DECL|macro|DBTB1
-mdefine_line|#define DBTB1   &t;        &t;/* DMA Buffer Transfer count       */ &bslash;&n;                &t;        &t;/* reg. B channel 1                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DBTB1)))
-DECL|macro|DDAR2
-mdefine_line|#define DDAR2   &t;        &t;/* DMA Device Address Reg.         */ &bslash;&n;                &t;        &t;/* channel 2                       */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DDAR2)))
-DECL|macro|SetDCSR2
-mdefine_line|#define SetDCSR2&t;        &t;/* Set DMA Control &amp; Status Reg.   */ &bslash;&n;                &t;        &t;/* channel 2 (write)               */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_SetDCSR2)))
-DECL|macro|ClrDCSR2
-mdefine_line|#define ClrDCSR2&t;        &t;/* Clear DMA Control &amp; Status Reg. */ &bslash;&n;                &t;        &t;/* channel 2 (write)               */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_ClrDCSR2)))
-DECL|macro|RdDCSR2
-mdefine_line|#define RdDCSR2 &t;        &t;/* Read DMA Control &amp; Status Reg.  */ &bslash;&n;                &t;        &t;/* channel 2 (read)                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_RdDCSR2)))
-DECL|macro|DBSA2
-mdefine_line|#define DBSA2   &t;        &t;/* DMA Buffer Start address reg. A */ &bslash;&n;                &t;        &t;/* channel 2                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DBSA2)))
-DECL|macro|DBTA2
-mdefine_line|#define DBTA2   &t;        &t;/* DMA Buffer Transfer count       */ &bslash;&n;                &t;        &t;/* reg. A channel 2                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DBTA2)))
-DECL|macro|DBSB2
-mdefine_line|#define DBSB2   &t;        &t;/* DMA Buffer Start address reg. B */ &bslash;&n;                &t;        &t;/* channel 2                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DBSB2)))
-DECL|macro|DBTB2
-mdefine_line|#define DBTB2   &t;        &t;/* DMA Buffer Transfer count       */ &bslash;&n;                &t;        &t;/* reg. B channel 2                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DBTB2)))
-DECL|macro|DDAR3
-mdefine_line|#define DDAR3   &t;        &t;/* DMA Device Address Reg.         */ &bslash;&n;                &t;        &t;/* channel 3                       */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DDAR3)))
-DECL|macro|SetDCSR3
-mdefine_line|#define SetDCSR3&t;        &t;/* Set DMA Control &amp; Status Reg.   */ &bslash;&n;                &t;        &t;/* channel 3 (write)               */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_SetDCSR3)))
-DECL|macro|ClrDCSR3
-mdefine_line|#define ClrDCSR3&t;        &t;/* Clear DMA Control &amp; Status Reg. */ &bslash;&n;                &t;        &t;/* channel 3 (write)               */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_ClrDCSR3)))
-DECL|macro|RdDCSR3
-mdefine_line|#define RdDCSR3 &t;        &t;/* Read DMA Control &amp; Status Reg.  */ &bslash;&n;                &t;        &t;/* channel 3 (read)                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_RdDCSR3)))
-DECL|macro|DBSA3
-mdefine_line|#define DBSA3   &t;        &t;/* DMA Buffer Start address reg. A */ &bslash;&n;                &t;        &t;/* channel 3                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DBSA3)))
-DECL|macro|DBTA3
-mdefine_line|#define DBTA3   &t;        &t;/* DMA Buffer Transfer count       */ &bslash;&n;                &t;        &t;/* reg. A channel 3                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DBTA3)))
-DECL|macro|DBSB3
-mdefine_line|#define DBSB3   &t;        &t;/* DMA Buffer Start address reg. B */ &bslash;&n;                &t;        &t;/* channel 3                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DBSB3)))
-DECL|macro|DBTB3
-mdefine_line|#define DBTB3   &t;        &t;/* DMA Buffer Transfer count       */ &bslash;&n;                &t;        &t;/* reg. B channel 3                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DBTB3)))
-DECL|macro|DDAR4
-mdefine_line|#define DDAR4   &t;        &t;/* DMA Device Address Reg.         */ &bslash;&n;                &t;        &t;/* channel 4                       */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DDAR4)))
-DECL|macro|SetDCSR4
-mdefine_line|#define SetDCSR4&t;        &t;/* Set DMA Control &amp; Status Reg.   */ &bslash;&n;                &t;        &t;/* channel 4 (write)               */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_SetDCSR4)))
-DECL|macro|ClrDCSR4
-mdefine_line|#define ClrDCSR4&t;        &t;/* Clear DMA Control &amp; Status Reg. */ &bslash;&n;                &t;        &t;/* channel 4 (write)               */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_ClrDCSR4)))
-DECL|macro|RdDCSR4
-mdefine_line|#define RdDCSR4 &t;        &t;/* Read DMA Control &amp; Status Reg.  */ &bslash;&n;                &t;        &t;/* channel 4 (read)                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_RdDCSR4)))
-DECL|macro|DBSA4
-mdefine_line|#define DBSA4   &t;        &t;/* DMA Buffer Start address reg. A */ &bslash;&n;                &t;        &t;/* channel 4                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DBSA4)))
-DECL|macro|DBTA4
-mdefine_line|#define DBTA4   &t;        &t;/* DMA Buffer Transfer count       */ &bslash;&n;                &t;        &t;/* reg. A channel 4                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DBTA4)))
-DECL|macro|DBSB4
-mdefine_line|#define DBSB4   &t;        &t;/* DMA Buffer Start address reg. B */ &bslash;&n;                &t;        &t;/* channel 4                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DBSB4)))
-DECL|macro|DBTB4
-mdefine_line|#define DBTB4   &t;        &t;/* DMA Buffer Transfer count       */ &bslash;&n;                &t;        &t;/* reg. B channel 4                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DBTB4)))
-DECL|macro|DDAR5
-mdefine_line|#define DDAR5   &t;        &t;/* DMA Device Address Reg.         */ &bslash;&n;                &t;        &t;/* channel 5                       */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DDAR5)))
-DECL|macro|SetDCSR5
-mdefine_line|#define SetDCSR5&t;        &t;/* Set DMA Control &amp; Status Reg.   */ &bslash;&n;                &t;        &t;/* channel 5 (write)               */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_SetDCSR5)))
-DECL|macro|ClrDCSR5
-mdefine_line|#define ClrDCSR5&t;        &t;/* Clear DMA Control &amp; Status Reg. */ &bslash;&n;                &t;        &t;/* channel 5 (write)               */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_ClrDCSR5)))
-DECL|macro|RdDCSR5
-mdefine_line|#define RdDCSR5 &t;        &t;/* Read DMA Control &amp; Status Reg.  */ &bslash;&n;                &t;        &t;/* channel 5 (read)                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_RdDCSR5)))
-DECL|macro|DBSA5
-mdefine_line|#define DBSA5   &t;        &t;/* DMA Buffer Start address reg. A */ &bslash;&n;                &t;        &t;/* channel 5                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DBSA5)))
-DECL|macro|DBTA5
-mdefine_line|#define DBTA5   &t;        &t;/* DMA Buffer Transfer count       */ &bslash;&n;                &t;        &t;/* reg. A channel 5                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DBTA5)))
-DECL|macro|DBSB5
-mdefine_line|#define DBSB5   &t;        &t;/* DMA Buffer Start address reg. B */ &bslash;&n;                &t;        &t;/* channel 5                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DBSB5)))
-DECL|macro|DBTB5
-mdefine_line|#define DBTB5   &t;        &t;/* DMA Buffer Transfer count       */ &bslash;&n;                &t;        &t;/* reg. B channel 5                */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_DBTB5)))
-macro_line|#endif /* LANGUAGE == C */
+DECL|macro|DDAR
+mdefine_line|#define DDAR(Nb)&t;__REG(0xB0000000 + (Nb)*DMASp)  /* DMA Device Address Reg. channel [0..5] */
+DECL|macro|SetDCSR
+mdefine_line|#define SetDCSR(Nb)&t;__REG(0xB0000004 + (Nb)*DMASp)  /* Set DMA Control &amp; Status Reg. channel [0..5] (write) */
+DECL|macro|ClrDCSR
+mdefine_line|#define ClrDCSR(Nb)&t;__REG(0xB0000008 + (Nb)*DMASp)  /* Clear DMA Control &amp; Status Reg. channel [0..5] (write) */
+DECL|macro|RdDCSR
+mdefine_line|#define RdDCSR(Nb)&t;__REG(0xB000000C + (Nb)*DMASp)  /* Read DMA Control &amp; Status Reg. channel [0..5] (read) */
+DECL|macro|DBSA
+mdefine_line|#define DBSA(Nb)&t;__REG(0xB0000010 + (Nb)*DMASp)  /* DMA Buffer Start address reg. A channel [0..5] */
+DECL|macro|DBTA
+mdefine_line|#define DBTA(Nb)&t;__REG(0xB0000014 + (Nb)*DMASp)  /* DMA Buffer Transfer count reg. A channel [0..5] */
+DECL|macro|DBSB
+mdefine_line|#define DBSB(Nb)&t;__REG(0xB0000018 + (Nb)*DMASp)  /* DMA Buffer Start address reg. B channel [0..5] */
+DECL|macro|DBTB
+mdefine_line|#define DBTB(Nb)&t;__REG(0xB000001C + (Nb)*DMASp)  /* DMA Buffer Transfer count reg. B channel [0..5] */
 DECL|macro|DDAR_RW
 mdefine_line|#define DDAR_RW &t;0x00000001&t;/* device data Read/Write          */
 DECL|macro|DDAR_DevWr
@@ -2630,41 +1801,41 @@ mdefine_line|#define DDAR_DA &t;Fld (24, 8)&t;/* Device Address                 
 DECL|macro|DDAR_DevAdd
 mdefine_line|#define DDAR_DevAdd(Add)        &t;/*  Device Address                 */ &bslash;&n;                &t;(((Add) &amp; 0xF0000000) | &bslash;&n;                &t; (((Add) &amp; 0X003FFFFC) &lt;&lt; (FShft (DDAR_DA) - 2)))
 DECL|macro|DDAR_Ser0UDCWr
-mdefine_line|#define DDAR_Ser0UDCWr&t;        &t;/* Ser. port 0 UDC Write           */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst8 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser0UDCTr + DDAR_DevAdd (_Ser0UDCDR))
+mdefine_line|#define DDAR_Ser0UDCWr&t;        &t;/* Ser. port 0 UDC Write           */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst8 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser0UDCTr + DDAR_DevAdd (__PREG(Ser0UDCDR)))
 DECL|macro|DDAR_Ser0UDCRd
-mdefine_line|#define DDAR_Ser0UDCRd&t;        &t;/* Ser. port 0 UDC Read            */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst8 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser0UDCRc + DDAR_DevAdd (_Ser0UDCDR))
+mdefine_line|#define DDAR_Ser0UDCRd&t;        &t;/* Ser. port 0 UDC Read            */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst8 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser0UDCRc + DDAR_DevAdd (__PREG(Ser0UDCDR)))
 DECL|macro|DDAR_Ser1UARTWr
-mdefine_line|#define DDAR_Ser1UARTWr&t;        &t;/* Ser. port 1 UART Write          */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser1UARTTr + DDAR_DevAdd (_Ser1UTDR))
+mdefine_line|#define DDAR_Ser1UARTWr&t;        &t;/* Ser. port 1 UART Write          */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser1UARTTr + DDAR_DevAdd (__PREG(Ser1UTDR)))
 DECL|macro|DDAR_Ser1UARTRd
-mdefine_line|#define DDAR_Ser1UARTRd&t;        &t;/* Ser. port 1 UART Read           */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser1UARTRc + DDAR_DevAdd (_Ser1UTDR))
+mdefine_line|#define DDAR_Ser1UARTRd&t;        &t;/* Ser. port 1 UART Read           */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser1UARTRc + DDAR_DevAdd (__PREG(Ser1UTDR)))
 DECL|macro|DDAR_Ser1SDLCWr
-mdefine_line|#define DDAR_Ser1SDLCWr&t;        &t;/* Ser. port 1 SDLC Write          */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser1SDLCTr + DDAR_DevAdd (_Ser1SDDR))
+mdefine_line|#define DDAR_Ser1SDLCWr&t;        &t;/* Ser. port 1 SDLC Write          */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser1SDLCTr + DDAR_DevAdd (__PREG(Ser1SDDR)))
 DECL|macro|DDAR_Ser1SDLCRd
-mdefine_line|#define DDAR_Ser1SDLCRd&t;        &t;/* Ser. port 1 SDLC Read           */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser1SDLCRc + DDAR_DevAdd (_Ser1SDDR))
+mdefine_line|#define DDAR_Ser1SDLCRd&t;        &t;/* Ser. port 1 SDLC Read           */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser1SDLCRc + DDAR_DevAdd (__PREG(Ser1SDDR)))
 DECL|macro|DDAR_Ser2UARTWr
-mdefine_line|#define DDAR_Ser2UARTWr&t;        &t;/* Ser. port 2 UART Write          */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser2ICPTr + DDAR_DevAdd (_Ser2UTDR))
+mdefine_line|#define DDAR_Ser2UARTWr&t;        &t;/* Ser. port 2 UART Write          */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser2ICPTr + DDAR_DevAdd (__PREG(Ser2UTDR)))
 DECL|macro|DDAR_Ser2UARTRd
-mdefine_line|#define DDAR_Ser2UARTRd&t;        &t;/* Ser. port 2 UART Read           */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser2ICPRc + DDAR_DevAdd (_Ser2UTDR))
+mdefine_line|#define DDAR_Ser2UARTRd&t;        &t;/* Ser. port 2 UART Read           */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser2ICPRc + DDAR_DevAdd (__PREG(Ser2UTDR)))
 DECL|macro|DDAR_Ser2HSSPWr
-mdefine_line|#define DDAR_Ser2HSSPWr&t;        &t;/* Ser. port 2 HSSP Write          */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst8 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser2ICPTr + DDAR_DevAdd (_Ser2HSDR))
+mdefine_line|#define DDAR_Ser2HSSPWr&t;        &t;/* Ser. port 2 HSSP Write          */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst8 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser2ICPTr + DDAR_DevAdd (__PREG(Ser2HSDR)))
 DECL|macro|DDAR_Ser2HSSPRd
-mdefine_line|#define DDAR_Ser2HSSPRd&t;        &t;/* Ser. port 2 HSSP Read           */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst8 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser2ICPRc + DDAR_DevAdd (_Ser2HSDR))
+mdefine_line|#define DDAR_Ser2HSSPRd&t;        &t;/* Ser. port 2 HSSP Read           */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst8 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser2ICPRc + DDAR_DevAdd (__PREG(Ser2HSDR)))
 DECL|macro|DDAR_Ser3UARTWr
-mdefine_line|#define DDAR_Ser3UARTWr&t;        &t;/* Ser. port 3 UART Write          */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser3UARTTr + DDAR_DevAdd (_Ser3UTDR))
+mdefine_line|#define DDAR_Ser3UARTWr&t;        &t;/* Ser. port 3 UART Write          */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser3UARTTr + DDAR_DevAdd (__PREG(Ser3UTDR)))
 DECL|macro|DDAR_Ser3UARTRd
-mdefine_line|#define DDAR_Ser3UARTRd&t;        &t;/* Ser. port 3 UART Read           */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser3UARTRc + DDAR_DevAdd (_Ser3UTDR))
+mdefine_line|#define DDAR_Ser3UARTRd&t;        &t;/* Ser. port 3 UART Read           */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser3UARTRc + DDAR_DevAdd (__PREG(Ser3UTDR)))
 DECL|macro|DDAR_Ser4MCP0Wr
-mdefine_line|#define DDAR_Ser4MCP0Wr&t;        &t;/* Ser. port 4 MCP 0 Write (audio) */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP0Tr + DDAR_DevAdd (_Ser4MCDR0))
+mdefine_line|#define DDAR_Ser4MCP0Wr&t;        &t;/* Ser. port 4 MCP 0 Write (audio) */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP0Tr + DDAR_DevAdd (__PREG(Ser4MCDR0)))
 DECL|macro|DDAR_Ser4MCP0Rd
-mdefine_line|#define DDAR_Ser4MCP0Rd&t;        &t;/* Ser. port 4 MCP 0 Read (audio)  */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP0Rc + DDAR_DevAdd (_Ser4MCDR0))
+mdefine_line|#define DDAR_Ser4MCP0Rd&t;        &t;/* Ser. port 4 MCP 0 Read (audio)  */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP0Rc + DDAR_DevAdd (__PREG(Ser4MCDR0)))
 DECL|macro|DDAR_Ser4MCP1Wr
-mdefine_line|#define DDAR_Ser4MCP1Wr&t;        &t;/* Ser. port 4 MCP 1 Write         */ &bslash;&n;                &t;        &t;/* (telecom)                       */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP1Tr + DDAR_DevAdd (_Ser4MCDR1))
+mdefine_line|#define DDAR_Ser4MCP1Wr&t;        &t;/* Ser. port 4 MCP 1 Write         */ &bslash;&n;                &t;        &t;/* (telecom)                       */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP1Tr + DDAR_DevAdd (__PREG(Ser4MCDR1)))
 DECL|macro|DDAR_Ser4MCP1Rd
-mdefine_line|#define DDAR_Ser4MCP1Rd&t;        &t;/* Ser. port 4 MCP 1 Read          */ &bslash;&n;                &t;        &t;/* (telecom)                       */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP1Rc + DDAR_DevAdd (_Ser4MCDR1))
+mdefine_line|#define DDAR_Ser4MCP1Rd&t;        &t;/* Ser. port 4 MCP 1 Read          */ &bslash;&n;                &t;        &t;/* (telecom)                       */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP1Rc + DDAR_DevAdd (__PREG(Ser4MCDR1)))
 DECL|macro|DDAR_Ser4SSPWr
-mdefine_line|#define DDAR_Ser4SSPWr&t;        &t;/* Ser. port 4 SSP Write (16 bits) */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4SSPTr + DDAR_DevAdd (_Ser4SSDR))
+mdefine_line|#define DDAR_Ser4SSPWr&t;        &t;/* Ser. port 4 SSP Write (16 bits) */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4SSPTr + DDAR_DevAdd (__PREG(Ser4SSDR)))
 DECL|macro|DDAR_Ser4SSPRd
-mdefine_line|#define DDAR_Ser4SSPRd&t;        &t;/* Ser. port 4 SSP Read (16 bits)  */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4SSPRc + DDAR_DevAdd (_Ser4SSDR))
+mdefine_line|#define DDAR_Ser4SSPRd&t;        &t;/* Ser. port 4 SSP Read (16 bits)  */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4SSPRc + DDAR_DevAdd (__PREG(Ser4SSDR)))
 DECL|macro|DCSR_RUN
 mdefine_line|#define DCSR_RUN&t;0x00000001&t;/* DMA RUNing                      */
 DECL|macro|DCSR_IE
@@ -2749,48 +1920,24 @@ mdefine_line|#define LCD_Int100_0&t;0xE     &t;/* LCD Intensity = 100.0% =  1   
 DECL|macro|LCD_Int100_0A
 mdefine_line|#define LCD_Int100_0A&t;0xF     &t;/* LCD Intensity = 100.0% =  1     */
 multiline_comment|/* (Alternative)                   */
-DECL|macro|_LCCR0
-mdefine_line|#define _LCCR0  &t;0xB0100000&t;/* LCD Control Reg. 0              */
-DECL|macro|_LCSR
-mdefine_line|#define _LCSR   &t;0xB0100004&t;/* LCD Status Reg.                 */
-DECL|macro|_DBAR1
-mdefine_line|#define _DBAR1  &t;0xB0100010&t;/* LCD DMA Base Address Reg.       */
-multiline_comment|/* channel 1                       */
-DECL|macro|_DCAR1
-mdefine_line|#define _DCAR1  &t;0xB0100014&t;/* LCD DMA Current Address Reg.    */
-multiline_comment|/* channel 1                       */
-DECL|macro|_DBAR2
-mdefine_line|#define _DBAR2  &t;0xB0100018&t;/* LCD DMA Base Address Reg.       */
-multiline_comment|/* channel 2                       */
-DECL|macro|_DCAR2
-mdefine_line|#define _DCAR2  &t;0xB010001C&t;/* LCD DMA Current Address Reg.    */
-multiline_comment|/* channel 2                       */
-DECL|macro|_LCCR1
-mdefine_line|#define _LCCR1  &t;0xB0100020&t;/* LCD Control Reg. 1              */
-DECL|macro|_LCCR2
-mdefine_line|#define _LCCR2  &t;0xB0100024&t;/* LCD Control Reg. 2              */
-DECL|macro|_LCCR3
-mdefine_line|#define _LCCR3  &t;0xB0100028&t;/* LCD Control Reg. 3              */
-macro_line|#if LANGUAGE == C
 DECL|macro|LCCR0
-mdefine_line|#define LCCR0   &t;        &t;/* LCD Control Reg. 0              */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_LCCR0)))
+mdefine_line|#define LCCR0&t;&t;__REG(0xB0100000)  /* LCD Control Reg. 0 */
 DECL|macro|LCSR
-mdefine_line|#define LCSR    &t;        &t;/* LCD Status Reg.                 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_LCSR)))
+mdefine_line|#define LCSR&t;&t;__REG(0xB0100004)  /* LCD Status Reg. */
 DECL|macro|DBAR1
-mdefine_line|#define DBAR1   &t;        &t;/* LCD DMA Base Address Reg.       */ &bslash;&n;                &t;        &t;/* channel 1                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DBAR1)))
+mdefine_line|#define DBAR1&t;&t;__REG(0xB0100010)  /* LCD DMA Base Address Reg. channel 1 */
 DECL|macro|DCAR1
-mdefine_line|#define DCAR1   &t;        &t;/* LCD DMA Current Address Reg.    */ &bslash;&n;                &t;        &t;/* channel 1                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DCAR1)))
+mdefine_line|#define DCAR1&t;&t;__REG(0xB0100014)  /* LCD DMA Current Address Reg. channel 1 */
 DECL|macro|DBAR2
-mdefine_line|#define DBAR2   &t;        &t;/* LCD DMA Base Address Reg.       */ &bslash;&n;                &t;        &t;/* channel 2                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DBAR2)))
+mdefine_line|#define DBAR2&t;&t;__REG(0xB0100018)  /* LCD DMA Base Address Reg.  channel 2 */
 DECL|macro|DCAR2
-mdefine_line|#define DCAR2   &t;        &t;/* LCD DMA Current Address Reg.    */ &bslash;&n;                &t;        &t;/* channel 2                       */ &bslash;&n;                &t;(*((volatile Address *) io_p2v (_DCAR2)))
+mdefine_line|#define DCAR2&t;&t;__REG(0xB010001C)  /* LCD DMA Current Address Reg. channel 2 */
 DECL|macro|LCCR1
-mdefine_line|#define LCCR1   &t;        &t;/* LCD Control Reg. 1              */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_LCCR1)))
+mdefine_line|#define LCCR1&t;&t;__REG(0xB0100020)  /* LCD Control Reg. 1 */
 DECL|macro|LCCR2
-mdefine_line|#define LCCR2   &t;        &t;/* LCD Control Reg. 2              */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_LCCR2)))
+mdefine_line|#define LCCR2&t;&t;__REG(0xB0100024)  /* LCD Control Reg. 2 */
 DECL|macro|LCCR3
-mdefine_line|#define LCCR3   &t;        &t;/* LCD Control Reg. 3              */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_LCCR3)))
-macro_line|#endif /* LANGUAGE == C */
+mdefine_line|#define LCCR3&t;&t;__REG(0xB0100028)  /* LCD Control Reg. 3 */
 DECL|macro|LCCR0_LEN
 mdefine_line|#define LCCR0_LEN&t;0x00000001&t;/* LCD ENable                      */
 DECL|macro|LCCR0_CMS
@@ -2974,8 +2121,31 @@ DECL|macro|LCCR3_OutEnH
 mdefine_line|#define LCCR3_OutEnH&t;(LCCR3_OEP*0)&t;/*  Output Enable active High      */
 DECL|macro|LCCR3_OutEnL
 mdefine_line|#define LCCR3_OutEnL&t;(LCCR3_OEP*1)&t;/*  Output Enable active Low       */
-DECL|macro|C
-macro_line|#undef C
-DECL|macro|Assembly
-macro_line|#undef Assembly
+macro_line|#ifndef __ASSEMBLY__
+r_extern
+r_int
+r_int
+id|processor_id
+suffix:semicolon
+macro_line|#endif
+DECL|macro|CPU_REVISION
+mdefine_line|#define CPU_REVISION&t;(processor_id &amp; 15)
+DECL|macro|CPU_SA1110_A0
+mdefine_line|#define CPU_SA1110_A0&t;(0)
+DECL|macro|CPU_SA1110_B0
+mdefine_line|#define CPU_SA1110_B0&t;(4)
+DECL|macro|CPU_SA1110_B1
+mdefine_line|#define CPU_SA1110_B1&t;(5)
+DECL|macro|CPU_SA1110_B2
+mdefine_line|#define CPU_SA1110_B2&t;(6)
+DECL|macro|CPU_SA1110_B4
+mdefine_line|#define CPU_SA1110_B4&t;(8)
+DECL|macro|CPU_SA1100_ID
+mdefine_line|#define CPU_SA1100_ID&t;(0x4401a110)
+DECL|macro|CPU_SA1100_MASK
+mdefine_line|#define CPU_SA1100_MASK&t;(0xfffffff0)
+DECL|macro|CPU_SA1110_ID
+mdefine_line|#define CPU_SA1110_ID&t;(0x6901b110)
+DECL|macro|CPU_SA1110_MASK
+mdefine_line|#define CPU_SA1110_MASK&t;(0xfffffff0)
 eof

@@ -8051,9 +8051,6 @@ id|ide_drive_t
 op_star
 id|drive
 suffix:semicolon
-r_int
-id|rc
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8072,8 +8069,6 @@ l_int|NULL
 r_return
 op_minus
 id|ENXIO
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond
@@ -8184,13 +8179,7 @@ id|drive-&gt;driver
 op_ne
 l_int|NULL
 )paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|rc
-op_assign
+r_return
 id|DRIVER
 c_func
 (paren
@@ -8206,14 +8195,7 @@ id|filp
 comma
 id|drive
 )paren
-)paren
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
-r_return
-id|rc
-suffix:semicolon
-)brace
 id|printk
 (paren
 l_string|&quot;%s: driver not present&bslash;n&quot;
@@ -8223,8 +8205,6 @@ id|drive-&gt;name
 suffix:semicolon
 id|drive-&gt;usage
 op_decrement
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -8293,8 +8273,6 @@ id|file
 comma
 id|drive
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 r_return
@@ -16713,6 +16691,10 @@ id|ide_fops
 op_assign
 (brace
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|ide_open

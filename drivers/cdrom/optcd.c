@@ -7433,8 +7433,6 @@ l_string|&quot;starting opt_open&quot;
 )paren
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7674,8 +7672,6 @@ l_int|0
 suffix:semicolon
 id|err_out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -7821,8 +7817,6 @@ id|req_timer
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -8142,6 +8136,10 @@ id|block_device_operations
 id|opt_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|opt_open

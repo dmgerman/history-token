@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/arm/kernel/leds-shark.c&n; * by Alexander Schulz &lt;aschulz@netwinder.org&gt;&n; *&n; * derived from:&n; * arch/arm/kernel/leds-footbridge.c&n; * Copyright (C) 1998-1999 Russell King&n; *&n; * DIGITAL Shark LED control routines.&n; *&n; * The leds use is as follows:&n; *  - Green front - toggles state every 50 timer interrupts&n; *  - Amber front - Unused, this is a dual color led (Amber/Green)&n; *  - Amber back  - On if system is not idle&n; *&n; * Changelog:&n; */
+multiline_comment|/*&n; * arch/arm/kernel/leds-shark.c&n; * by Alexander Schulz&n; *&n; * derived from:&n; * arch/arm/kernel/leds-footbridge.c&n; * Copyright (C) 1998-1999 Russell King&n; *&n; * DIGITAL Shark LED control routines.&n; *&n; * The leds use is as follows:&n; *  - Green front - toggles state every 50 timer interrupts&n; *  - Amber front - Unused, this is a dual color led (Amber/Green)&n; *  - Amber back  - On if system is not idle&n; *&n; * Changelog:&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;

@@ -2616,6 +2616,12 @@ id|revalidate
 id|kdev_t
 )paren
 suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * NOTE:&n; * read, write, poll, fsync, readv, writev can be called&n; *   without the big kernel lock held in all filesystems.&n; */

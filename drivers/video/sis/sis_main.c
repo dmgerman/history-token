@@ -21,7 +21,6 @@ macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/sisfb.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;video/fbcon-cfb8.h&gt;
 macro_line|#include &lt;video/fbcon-cfb16.h&gt;

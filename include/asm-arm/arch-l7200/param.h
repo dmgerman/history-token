@@ -5,5 +5,10 @@ mdefine_line|#define __ASM_ARCH_PARAM_H
 multiline_comment|/*&n; * See &squot;time.h&squot; for how the RTC HZ rate is set&n; */
 DECL|macro|HZ
 mdefine_line|#define HZ 128
+multiline_comment|/*&n; * Define hz_to_std, since we have a non 100Hz define&n; * (see include/asm-arm/param.h)&n; */
+macro_line|#if defined(__KERNEL__)
+DECL|macro|hz_to_std
+mdefine_line|#define hz_to_std(a) ((a * HZ)/100)
+macro_line|#endif
 macro_line|#endif
 eof

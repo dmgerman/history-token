@@ -10,8 +10,20 @@ DECL|macro|PCI_DEVICE_ID_RADEON_QF
 mdefine_line|#define PCI_DEVICE_ID_RADEON_QF&t;&t;0x5146
 DECL|macro|PCI_DEVICE_ID_RADEON_QG
 mdefine_line|#define PCI_DEVICE_ID_RADEON_QG&t;&t;0x5147
-DECL|macro|PCI_DEVICE_ID_RADEON_VE
-mdefine_line|#define PCI_DEVICE_ID_RADEON_VE&t;&t;0x5159
+DECL|macro|PCI_DEVICE_ID_RADEON_QY
+mdefine_line|#define PCI_DEVICE_ID_RADEON_QY&t;&t;0x5159
+DECL|macro|PCI_DEVICE_ID_RADEON_QZ
+mdefine_line|#define PCI_DEVICE_ID_RADEON_QZ&t;&t;0x515a
+DECL|macro|PCI_DEVICE_ID_RADEON_LW
+mdefine_line|#define PCI_DEVICE_ID_RADEON_LW&t;&t;0x4c57
+DECL|macro|PCI_DEVICE_ID_RADEON_LY
+mdefine_line|#define PCI_DEVICE_ID_RADEON_LY&t;&t;0x4c59
+DECL|macro|PCI_DEVICE_ID_RADEON_LZ
+mdefine_line|#define PCI_DEVICE_ID_RADEON_LZ&t;&t;0x4c5a
+DECL|macro|PCI_DEVICE_ID_RADEON_QL
+mdefine_line|#define PCI_DEVICE_ID_RADEON_QL&t;&t;0x514c
+DECL|macro|PCI_DEVICE_ID_RADEON_QW
+mdefine_line|#define PCI_DEVICE_ID_RADEON_QW&t;&t;0x5157
 DECL|macro|RADEON_REGSIZE
 mdefine_line|#define RADEON_REGSIZE&t;&t;&t;0x4000
 DECL|macro|MM_INDEX
@@ -732,6 +744,30 @@ DECL|macro|SRC_SC_BOTTOM_RIGHT
 mdefine_line|#define SRC_SC_BOTTOM_RIGHT                    0x16F4  
 DECL|macro|RB2D_DSTCACHE_CTLSTAT
 mdefine_line|#define RB2D_DSTCACHE_CTLSTAT&t;&t;       0x342C
+DECL|macro|LVDS_GEN_CNTL
+mdefine_line|#define LVDS_GEN_CNTL&t;&t;&t;       0x02d0
+DECL|macro|LVDS_PLL_CNTL
+mdefine_line|#define LVDS_PLL_CNTL&t;&t;&t;       0x02d4
+DECL|macro|TMDS_CRC
+mdefine_line|#define TMDS_CRC&t;&t;&t;       0x02a0
+DECL|macro|RADEON_BASE_CODE
+mdefine_line|#define RADEON_BASE_CODE&t;&t;       0x0f0b
+DECL|macro|RADEON_BIOS_0_SCRATCH
+mdefine_line|#define RADEON_BIOS_0_SCRATCH&t;&t;       0x0010
+DECL|macro|RADEON_BIOS_1_SCRATCH
+mdefine_line|#define RADEON_BIOS_1_SCRATCH&t;&t;       0x0014
+DECL|macro|RADEON_BIOS_2_SCRATCH
+mdefine_line|#define RADEON_BIOS_2_SCRATCH&t;&t;       0x0018
+DECL|macro|RADEON_BIOS_3_SCRATCH
+mdefine_line|#define RADEON_BIOS_3_SCRATCH&t;&t;       0x001c
+DECL|macro|RADEON_BIOS_4_SCRATCH
+mdefine_line|#define RADEON_BIOS_4_SCRATCH&t;&t;       0x0020
+DECL|macro|RADEON_BIOS_5_SCRATCH
+mdefine_line|#define RADEON_BIOS_5_SCRATCH&t;&t;       0x0024
+DECL|macro|RADEON_BIOS_6_SCRATCH
+mdefine_line|#define RADEON_BIOS_6_SCRATCH&t;&t;       0x0028
+DECL|macro|RADEON_BIOS_7_SCRATCH
+mdefine_line|#define RADEON_BIOS_7_SCRATCH&t;&t;       0x002c
 DECL|macro|CLK_PIN_CNTL
 mdefine_line|#define CLK_PIN_CNTL                               0x0001
 DECL|macro|PPLL_CNTL
@@ -845,6 +881,8 @@ DECL|macro|CRTC_VSYNC_DIS
 mdefine_line|#define CRTC_VSYNC_DIS&t;&t;&t;&t;   (1 &lt;&lt; 9)
 DECL|macro|CRTC_DISPLAY_DIS
 mdefine_line|#define CRTC_DISPLAY_DIS&t;&t;&t;   (1 &lt;&lt; 10)
+DECL|macro|CRTC_CRT_ON
+mdefine_line|#define CRTC_CRT_ON&t;&t;&t;&t;   (1 &lt;&lt; 15)
 multiline_comment|/* DSTCACHE_CTLSTAT bit constants */
 DECL|macro|RB2D_DC_FLUSH
 mdefine_line|#define RB2D_DC_FLUSH&t;&t;&t;&t;   (3 &lt;&lt; 0)
@@ -857,6 +895,8 @@ DECL|macro|CRTC_DBL_SCAN_EN
 mdefine_line|#define CRTC_DBL_SCAN_EN                           0x00000001
 DECL|macro|CRTC_CUR_EN
 mdefine_line|#define CRTC_CUR_EN                                0x00010000
+DECL|macro|CRTC_INTERLACE_EN
+mdefine_line|#define CRTC_INTERLACE_EN&t;&t;&t;   (1 &lt;&lt; 1)
 DECL|macro|CRTC_EXT_DISP_EN
 mdefine_line|#define CRTC_EXT_DISP_EN      &t;&t;&t;   (1 &lt;&lt; 24)
 DECL|macro|CRTC_EN
@@ -867,6 +907,134 @@ mdefine_line|#define CRTC_VBLANK                                0x00000001
 multiline_comment|/* CUR_OFFSET, CUR_HORZ_VERT_POSN, CUR_HORZ_VERT_OFF bit constants */
 DECL|macro|CUR_LOCK
 mdefine_line|#define CUR_LOCK                                   0x80000000
+multiline_comment|/* FP bit constants */
+DECL|macro|FP_CRTC_H_TOTAL_MASK
+mdefine_line|#define FP_CRTC_H_TOTAL_MASK&t;&t;&t;   0x000003ff
+DECL|macro|FP_CRTC_H_DISP_MASK
+mdefine_line|#define FP_CRTC_H_DISP_MASK&t;&t;&t;   0x01ff0000
+DECL|macro|FP_CRTC_V_TOTAL_MASK
+mdefine_line|#define FP_CRTC_V_TOTAL_MASK&t;&t;&t;   0x00000fff
+DECL|macro|FP_CRTC_V_DISP_MASK
+mdefine_line|#define FP_CRTC_V_DISP_MASK&t;&t;&t;   0x0fff0000
+DECL|macro|FP_H_SYNC_STRT_CHAR_MASK
+mdefine_line|#define FP_H_SYNC_STRT_CHAR_MASK&t;&t;   0x00001ff8
+DECL|macro|FP_H_SYNC_WID_MASK
+mdefine_line|#define FP_H_SYNC_WID_MASK&t;&t;&t;   0x003f0000
+DECL|macro|FP_V_SYNC_STRT_MASK
+mdefine_line|#define FP_V_SYNC_STRT_MASK&t;&t;&t;   0x00000fff
+DECL|macro|FP_V_SYNC_WID_MASK
+mdefine_line|#define FP_V_SYNC_WID_MASK&t;&t;&t;   0x001f0000
+DECL|macro|FP_CRTC_H_TOTAL_SHIFT
+mdefine_line|#define FP_CRTC_H_TOTAL_SHIFT&t;&t;&t;   0x00000000
+DECL|macro|FP_CRTC_H_DISP_SHIFT
+mdefine_line|#define FP_CRTC_H_DISP_SHIFT&t;&t;&t;   0x00000010
+DECL|macro|FP_CRTC_V_TOTAL_SHIFT
+mdefine_line|#define FP_CRTC_V_TOTAL_SHIFT&t;&t;&t;   0x00000000
+DECL|macro|FP_CRTC_V_DISP_SHIFT
+mdefine_line|#define FP_CRTC_V_DISP_SHIFT&t;&t;&t;   0x00000010
+DECL|macro|FP_H_SYNC_STRT_CHAR_SHIFT
+mdefine_line|#define FP_H_SYNC_STRT_CHAR_SHIFT&t;&t;   0x00000003
+DECL|macro|FP_H_SYNC_WID_SHIFT
+mdefine_line|#define FP_H_SYNC_WID_SHIFT&t;&t;&t;   0x00000010
+DECL|macro|FP_V_SYNC_STRT_SHIFT
+mdefine_line|#define FP_V_SYNC_STRT_SHIFT&t;&t;&t;   0x00000000
+DECL|macro|FP_V_SYNC_WID_SHIFT
+mdefine_line|#define FP_V_SYNC_WID_SHIFT&t;&t;&t;   0x00000010
+multiline_comment|/* FP_GEN_CNTL bit constants */
+DECL|macro|FP_FPON
+mdefine_line|#define FP_FPON&t;&t;&t;&t;&t;   (1 &lt;&lt; 0)
+DECL|macro|FP_TMDS_EN
+mdefine_line|#define FP_TMDS_EN&t;&t;&t;&t;   (1 &lt;&lt; 2)
+DECL|macro|FP_EN_TMDS
+mdefine_line|#define FP_EN_TMDS&t;&t;&t;&t;   (1 &lt;&lt; 7)
+DECL|macro|FP_DETECT_SENSE
+mdefine_line|#define FP_DETECT_SENSE&t;&t;&t;&t;   (1 &lt;&lt; 8)
+DECL|macro|FP_SEL_CRTC2
+mdefine_line|#define FP_SEL_CRTC2&t;&t;&t;&t;   (1 &lt;&lt; 13)
+DECL|macro|FP_CRTC_DONT_SHADOW_HPAR
+mdefine_line|#define FP_CRTC_DONT_SHADOW_HPAR&t;&t;   (1 &lt;&lt; 15)
+DECL|macro|FP_CRTC_DONT_SHADOW_VPAR
+mdefine_line|#define FP_CRTC_DONT_SHADOW_VPAR&t;&t;   (1 &lt;&lt; 16)
+DECL|macro|FP_CRTC_DONT_SHADOW_HEND
+mdefine_line|#define FP_CRTC_DONT_SHADOW_HEND&t;&t;   (1 &lt;&lt; 17)
+DECL|macro|FP_CRTC_USE_SHADOW_VEND
+mdefine_line|#define FP_CRTC_USE_SHADOW_VEND&t;&t;&t;   (1 &lt;&lt; 18)
+DECL|macro|FP_RMX_HVSYNC_CONTROL_EN
+mdefine_line|#define FP_RMX_HVSYNC_CONTROL_EN&t;&t;   (1 &lt;&lt; 20)
+DECL|macro|FP_DFP_SYNC_SEL
+mdefine_line|#define FP_DFP_SYNC_SEL&t;&t;&t;&t;   (1 &lt;&lt; 21)
+DECL|macro|FP_CRTC_LOCK_8DOT
+mdefine_line|#define FP_CRTC_LOCK_8DOT&t;&t;&t;   (1 &lt;&lt; 22)
+DECL|macro|FP_CRT_SYNC_SEL
+mdefine_line|#define FP_CRT_SYNC_SEL&t;&t;&t;&t;   (1 &lt;&lt; 23)
+DECL|macro|FP_USE_SHADOW_EN
+mdefine_line|#define FP_USE_SHADOW_EN&t;&t;&t;   (1 &lt;&lt; 24)
+DECL|macro|FP_CRT_SYNC_ALT
+mdefine_line|#define FP_CRT_SYNC_ALT&t;&t;&t;&t;   (1 &lt;&lt; 26)
+multiline_comment|/* LVDS_GEN_CNTL bit constants */
+DECL|macro|LVDS_ON
+mdefine_line|#define LVDS_ON&t;&t;&t;&t;&t;   (1 &lt;&lt; 0)
+DECL|macro|LVDS_DISPLAY_DIS
+mdefine_line|#define LVDS_DISPLAY_DIS&t;&t;&t;   (1 &lt;&lt; 1)
+DECL|macro|LVDS_PANEL_TYPE
+mdefine_line|#define LVDS_PANEL_TYPE&t;&t;&t;&t;   (1 &lt;&lt; 2)
+DECL|macro|LVDS_PANEL_FORMAT
+mdefine_line|#define LVDS_PANEL_FORMAT&t;&t;&t;   (1 &lt;&lt; 3)
+DECL|macro|LVDS_EN
+mdefine_line|#define LVDS_EN&t;&t;&t;&t;&t;   (1 &lt;&lt; 7)
+DECL|macro|LVDS_DIGON
+mdefine_line|#define LVDS_DIGON&t;&t;&t;&t;   (1 &lt;&lt; 18)
+DECL|macro|LVDS_BLON
+mdefine_line|#define LVDS_BLON&t;&t;&t;&t;   (1 &lt;&lt; 19)
+DECL|macro|LVDS_SEL_CRTC2
+mdefine_line|#define LVDS_SEL_CRTC2&t;&t;&t;&t;   (1 &lt;&lt; 23)
+multiline_comment|/* LVDS_PLL_CNTL bit constatns */
+DECL|macro|HSYNC_DELAY_SHIFT
+mdefine_line|#define HSYNC_DELAY_SHIFT&t;&t;&t;   0x1c
+DECL|macro|HSYNC_DELAY_MASK
+mdefine_line|#define HSYNC_DELAY_MASK&t;&t;&t;   (0xf &lt;&lt; 0x1c)
+multiline_comment|/* FP_HORZ_STRETCH bit constants */
+DECL|macro|HORZ_STRETCH_RATIO_MASK
+mdefine_line|#define HORZ_STRETCH_RATIO_MASK&t;&t;&t;   0xffff
+DECL|macro|HORZ_STRETCH_RATIO_MAX
+mdefine_line|#define HORZ_STRETCH_RATIO_MAX&t;&t;&t;   4096
+DECL|macro|HORZ_PANEL_SIZE
+mdefine_line|#define HORZ_PANEL_SIZE&t;&t;&t;&t;   (0x1ff &lt;&lt; 16)
+DECL|macro|HORZ_PANEL_SHIFT
+mdefine_line|#define HORZ_PANEL_SHIFT&t;&t;&t;   16
+DECL|macro|HORZ_STRETCH_PIXREP
+mdefine_line|#define HORZ_STRETCH_PIXREP&t;&t;&t;   (0 &lt;&lt; 25)
+DECL|macro|HORZ_STRETCH_BLEND
+mdefine_line|#define HORZ_STRETCH_BLEND&t;&t;&t;   (1 &lt;&lt; 26)
+DECL|macro|HORZ_STRETCH_ENABLE
+mdefine_line|#define HORZ_STRETCH_ENABLE&t;&t;&t;   (1 &lt;&lt; 25)
+DECL|macro|HORZ_AUTO_RATIO
+mdefine_line|#define HORZ_AUTO_RATIO&t;&t;&t;&t;   (1 &lt;&lt; 27)
+DECL|macro|HORZ_FP_LOOP_STRETCH
+mdefine_line|#define HORZ_FP_LOOP_STRETCH&t;&t;&t;   (0x7 &lt;&lt; 28)
+DECL|macro|HORZ_AUTO_RATIO_INC
+mdefine_line|#define HORZ_AUTO_RATIO_INC&t;&t;&t;   (1 &lt;&lt; 31)
+multiline_comment|/* FP_VERT_STRETCH bit constants */
+DECL|macro|VERT_STRETCH_RATIO_MASK
+mdefine_line|#define VERT_STRETCH_RATIO_MASK&t;&t;&t;   0xfff
+DECL|macro|VERT_STRETCH_RATIO_MAX
+mdefine_line|#define VERT_STRETCH_RATIO_MAX&t;&t;&t;   4096
+DECL|macro|VERT_PANEL_SIZE
+mdefine_line|#define VERT_PANEL_SIZE&t;&t;&t;&t;   (0xfff &lt;&lt; 12)
+DECL|macro|VERT_PANEL_SHIFT
+mdefine_line|#define VERT_PANEL_SHIFT&t;&t;&t;   12
+DECL|macro|VERT_STRETCH_LINREP
+mdefine_line|#define VERT_STRETCH_LINREP&t;&t;&t;   (0 &lt;&lt; 26)
+DECL|macro|VERT_STRETCH_BLEND
+mdefine_line|#define VERT_STRETCH_BLEND&t;&t;&t;   (1 &lt;&lt; 26)
+DECL|macro|VERT_STRETCH_ENABLE
+mdefine_line|#define VERT_STRETCH_ENABLE&t;&t;&t;   (1 &lt;&lt; 25)
+DECL|macro|VERT_AUTO_RATIO_EN
+mdefine_line|#define VERT_AUTO_RATIO_EN&t;&t;&t;   (1 &lt;&lt; 27)
+DECL|macro|VERT_FP_LOOP_STRETCH
+mdefine_line|#define VERT_FP_LOOP_STRETCH&t;&t;&t;   (0x7 &lt;&lt; 28)
+DECL|macro|VERT_STRETCH_RESERVED
+mdefine_line|#define VERT_STRETCH_RESERVED&t;&t;&t;   0xf1000000
 multiline_comment|/* DAC_CNTL bit constants */
 DECL|macro|DAC_8BIT_EN
 mdefine_line|#define DAC_8BIT_EN                                0x00000100
@@ -927,6 +1095,13 @@ DECL|macro|SOFT_RESET_RB
 mdefine_line|#define SOFT_RESET_RB           &t;&t;   (1 &lt;&lt;  6)
 DECL|macro|SOFT_RESET_HDP
 mdefine_line|#define SOFT_RESET_HDP          &t;&t;   (1 &lt;&lt;  7)
+multiline_comment|/* SURFACE_CNTL bit consants */
+DECL|macro|SURF_TRANSLATION_DIS
+mdefine_line|#define SURF_TRANSLATION_DIS&t;&t;&t;   (1 &lt;&lt; 8)
+DECL|macro|NONSURF_AP0_SWP_16BPP
+mdefine_line|#define NONSURF_AP0_SWP_16BPP&t;&t;&t;   (1 &lt;&lt; 20)
+DECL|macro|NONSURF_AP0_SWP_32BPP
+mdefine_line|#define NONSURF_AP0_SWP_32BPP&t;&t;&t;   (1 &lt;&lt; 21)
 multiline_comment|/* DEFAULT_SC_BOTTOM_RIGHT bit constants */
 DECL|macro|DEFAULT_SC_RIGHT_MAX
 mdefine_line|#define DEFAULT_SC_RIGHT_MAX&t;&t;&t;   (0x1fff &lt;&lt; 0)

@@ -46,7 +46,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Driver for Compaq 64-bit/66Mhz PCI Fibre Channel HBA&quot;
+l_string|&quot;Driver for Compaq 64-bit/66Mhz PCI Fibre Channel HBA v. 2.1.1&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -774,6 +774,30 @@ id|PciDev
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|PciDev
+comma
+id|CPQFCTS_DMA_MASK
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;cpqfc: HBA cannot support required DMA mask, skipping.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 singleline_comment|// NOTE: (kernel 2.2.12-32) limits allocation to 128k bytes...
 id|printk
 c_func
@@ -1214,6 +1238,9 @@ id|cpqfcTStimer
 suffix:semicolon
 singleline_comment|// give it to Linux
 singleline_comment|// now initialize our hardware...
+r_if
+c_cond
+(paren
 id|cpqfcHBAdata-&gt;fcChip
 dot
 id|InitializeTachyon
@@ -1225,7 +1252,17 @@ l_int|1
 comma
 l_int|1
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;cpqfc: initialization of HBA hardware failed.&bslash;n&quot;
+)paren
 suffix:semicolon
+singleline_comment|// FIXME: might want to do something better than nothing here.
+)brace
 id|cpqfcHBAdata-&gt;fcStatsTime
 op_assign
 id|jiffies
@@ -1977,7 +2014,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_case
-id|SCSI_IOCTL_FC_TARGET_ADDRESS
+id|CPQFC_IOCTL_FC_TARGET_ADDRESS
 suffix:colon
 id|result
 op_assign
@@ -2107,7 +2144,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_IOCTL_FC_TDR
+id|CPQFC_IOCTL_FC_TDR
 suffix:colon
 id|result
 op_assign
@@ -3808,6 +3845,9 @@ suffix:semicolon
 )brace
 singleline_comment|// The file &quot;hosts.h&quot; says not to call scsi_done from
 singleline_comment|// inside _queuecommand, so we&squot;ll do it from the heartbeat timer
+singleline_comment|// (clarification: Turns out it&squot;s ok to call scsi_done from queuecommand 
+singleline_comment|// for cases that don&squot;t go to the hardware like scsi cmds destined
+singleline_comment|// for LUNs we know don&squot;t exist, so this code might be simplified...)
 DECL|function|QueBadTargetCmnd
 r_static
 r_void
@@ -5262,10 +5302,60 @@ op_amp
 l_int|0x1
 )paren
 (brace
+id|UCHAR
+id|IntStat
+suffix:semicolon
 id|printk
 c_func
 (paren
 l_string|&quot; cpqfcTS adapter PCI error detected&bslash;n&quot;
+)paren
+suffix:semicolon
+id|IntStat
+op_assign
+id|readb
+c_func
+(paren
+id|cpqfcHBA-&gt;fcChip.Registers.INTSTAT.address
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IntStat
+op_amp
+l_int|0x4
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;(INT)&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IntStat
+op_amp
+l_int|0x8
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;CRS: PCI master address crossed 46 bit bouandary&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IntStat
+op_amp
+l_int|0x10
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;MRE: external memory parity error.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5907,6 +5997,11 @@ op_star
 id|fcMemManager
 c_func
 (paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
 id|ALIGNED_MEM
 op_star
 id|dynamic_mem
@@ -5919,6 +6014,10 @@ id|ab
 comma
 id|ULONG
 id|u32_AlignedAddress
+comma
+id|dma_addr_t
+op_star
+id|dma_handle
 )paren
 (brace
 id|USHORT
@@ -6004,18 +6103,28 @@ dot
 id|BaseAllocated
 suffix:semicolon
 singleline_comment|// &squot;success&squot; status
-id|kfree
+id|pci_free_consistent
 c_func
 (paren
+id|pdev
+comma
 id|dynamic_mem
 (braket
 id|i
 )braket
 dot
-id|BaseAllocated
+id|size
+comma
+id|alloc_address
+comma
+id|dynamic_mem
+(braket
+id|i
+)braket
+dot
+id|dma_handle
 )paren
 suffix:semicolon
-singleline_comment|// return pages to kernel
 id|dynamic_mem
 (braket
 id|i
@@ -6035,6 +6144,15 @@ id|AlignedAddress
 op_assign
 l_int|0
 suffix:semicolon
+id|dynamic_mem
+(braket
+id|i
+)braket
+dot
+id|size
+op_assign
+l_int|0
+suffix:semicolon
 r_break
 suffix:semicolon
 singleline_comment|// quit for loop; done
@@ -6049,6 +6167,9 @@ id|n_alloc
 )paren
 singleline_comment|// want new memory?
 (brace
+id|dma_addr_t
+id|handle
+suffix:semicolon
 id|t_alloc
 op_assign
 id|n_alloc
@@ -6060,19 +6181,22 @@ id|allocBoundary
 )paren
 suffix:semicolon
 singleline_comment|// pad bytes for alignment
-singleline_comment|//    printk(&quot;kmalloc() for Tach alignment: %ld bytes&bslash;n&quot;, t_alloc);
+singleline_comment|//    printk(&quot;pci_alloc_consistent() for Tach alignment: %ld bytes&bslash;n&quot;, t_alloc);
+singleline_comment|// (would like to) allow thread block to free pages 
 id|alloc_address
 op_assign
 singleline_comment|// total bytes (NumberOfBytes)
-id|kmalloc
+id|pci_alloc_consistent
 c_func
 (paren
+id|pdev
+comma
 id|t_alloc
 comma
-id|GFP_KERNEL
+op_amp
+id|handle
 )paren
 suffix:semicolon
-singleline_comment|// allow thread block to free pages 
 singleline_comment|// now mask off least sig. bits of address
 r_if
 c_cond
@@ -6083,6 +6207,24 @@ singleline_comment|// (only if non-NULL)
 (brace
 singleline_comment|// find place to store ptr, so we
 singleline_comment|// can free it later...
+id|mask
+op_assign
+(paren
+id|LONG
+)paren
+(paren
+id|ab
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+singleline_comment|// mask all low-order bits
+id|mask
+op_assign
+op_complement
+id|mask
+suffix:semicolon
+singleline_comment|// invert bits
 r_for
 c_loop
 (paren
@@ -6123,28 +6265,64 @@ op_assign
 id|alloc_address
 suffix:semicolon
 singleline_comment|// address from O/S
+id|dynamic_mem
+(braket
+id|i
+)braket
+dot
+id|dma_handle
+op_assign
+id|handle
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dma_handle
+op_ne
+l_int|NULL
+)paren
+(brace
+singleline_comment|//             printk(&quot;handle = %p, ab=%d, boundary = %d, mask=0x%08x&bslash;n&quot;, 
+singleline_comment|//&t;&t;&t;handle, ab, allocBoundary, mask);
+op_star
+id|dma_handle
+op_assign
+(paren
+id|dma_addr_t
+)paren
+(paren
+(paren
+(paren
+(paren
+id|ULONG
+)paren
+id|handle
+)paren
+op_plus
+(paren
+id|ab
+op_minus
+id|allocBoundary
+)paren
+)paren
+op_amp
+id|mask
+)paren
+suffix:semicolon
+)brace
+id|dynamic_mem
+(braket
+id|i
+)braket
+dot
+id|size
+op_assign
+id|t_alloc
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
 )brace
-id|mask
-op_assign
-(paren
-id|LONG
-)paren
-(paren
-id|ab
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-singleline_comment|// mask all low-order bits
-id|mask
-op_assign
-op_complement
-id|mask
-suffix:semicolon
-singleline_comment|// invert bits
 id|ulAddress
 op_assign
 (paren

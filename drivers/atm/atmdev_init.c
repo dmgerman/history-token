@@ -62,6 +62,16 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_ATM_LANAI
+r_extern
+r_int
+id|lanai_detect
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * For historical reasons, atmdev_init returns the number of devices found.&n; * Note that some detections may not go via atmdev_init (e.g. eni.c), so this&n; * number is meaningless.&n; */
 DECL|function|atmdev_init
 r_int
@@ -128,6 +138,15 @@ macro_line|#ifdef CONFIG_ATM_FORE200E
 id|devs
 op_add_assign
 id|fore200e_detect
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ATM_LANAI
+id|devs
+op_add_assign
+id|lanai_detect
 c_func
 (paren
 )paren

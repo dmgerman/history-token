@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_MC146818RTC_H
 DECL|macro|_ASM_MC146818RTC_H
 mdefine_line|#define _ASM_MC146818RTC_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/atarihw.h&gt;
 macro_line|#ifdef CONFIG_ATARI
 multiline_comment|/* RTC in Atari machines */
 macro_line|#include &lt;asm/atarihw.h&gt;
@@ -30,9 +31,9 @@ mdefine_line|#define RTC_CENTURY_SWITCH&t;-1&t;/* no century switch */
 DECL|macro|RTC_MINYEAR
 mdefine_line|#define RTC_MINYEAR&t;&t;epoch
 DECL|macro|CMOS_READ
-mdefine_line|#define CMOS_READ(addr) ({ &bslash;&n;outb_p((addr),RTC_PORT(0)); &bslash;&n;inb_p(RTC_PORT(1)); &bslash;&n;})
+mdefine_line|#define CMOS_READ(addr) ({ &bslash;&n;atari_outb_p((addr),RTC_PORT(0)); &bslash;&n;atari_inb_p(RTC_PORT(1)); &bslash;&n;})
 DECL|macro|CMOS_WRITE
-mdefine_line|#define CMOS_WRITE(val, addr) ({ &bslash;&n;outb_p((addr),RTC_PORT(0)); &bslash;&n;outb_p((val),RTC_PORT(1)); &bslash;&n;})
+mdefine_line|#define CMOS_WRITE(val, addr) ({ &bslash;&n;atari_outb_p((addr),RTC_PORT(0)); &bslash;&n;atari_outb_p((val),RTC_PORT(1)); &bslash;&n;})
 macro_line|#endif /* CONFIG_ATARI */
 macro_line|#endif /* _ASM_MC146818RTC_H */
 eof

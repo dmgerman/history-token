@@ -117,6 +117,8 @@ suffix:semicolon
 )brace
 DECL|macro|set_bit
 mdefine_line|#define set_bit(nr,vaddr) &bslash;&n;  (__builtin_constant_p(nr) ? &bslash;&n;   __constant_set_bit(nr, vaddr) : &bslash;&n;   __generic_set_bit(nr, vaddr))
+DECL|macro|__set_bit
+mdefine_line|#define __set_bit(nr,vaddr) set_bit(nr,vaddr) 
 DECL|function|__constant_set_bit
 r_extern
 id|__inline__
@@ -208,6 +210,8 @@ suffix:semicolon
 )brace
 DECL|macro|test_and_clear_bit
 mdefine_line|#define test_and_clear_bit(nr,vaddr) &bslash;&n;  (__builtin_constant_p(nr) ? &bslash;&n;   __constant_test_and_clear_bit(nr, vaddr) : &bslash;&n;   __generic_test_and_clear_bit(nr, vaddr))
+DECL|macro|__test_and_clear_bit
+mdefine_line|#define __test_and_clear_bit(nr,vaddr) test_and_clear_bit(nr,vaddr)
 DECL|function|__constant_test_and_clear_bit
 r_extern
 id|__inline__

@@ -12465,7 +12465,7 @@ c_func
 l_string|&quot;cleanup_module: aurora_release_drivers&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif;
+macro_line|#endif
 id|aurora_release_drivers
 c_func
 (paren

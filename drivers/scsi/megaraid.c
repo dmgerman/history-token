@@ -1,4 +1,4 @@
-multiline_comment|/*===================================================================&n; *&n; *                    Linux MegaRAID device driver&n; *&n; * Copyright 2001  American Megatrends Inc.&n; *&n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              as published by the Free Software Foundation; either version&n; *              2 of the License, or (at your option) any later version.&n; *&n; * Version : v1.17a (July 13, 2001)&n; *&n; * Description: Linux device driver for AMI MegaRAID controller&n; *&n; * Supported controllers: MegaRAID 418, 428, 438, 466, 762, 467, 471, 490&n; *                                      493.&n; * History:&n; *&n; * Version 0.90:&n; *     Original source contributed by Dell; integrated it into the kernel and&n; *     cleaned up some things.  Added support for 438/466 controllers.&n; * Version 0.91:&n; *     Aligned mailbox area on 16-byte boundary.&n; *     Added schedule() at the end to properly clean up.&n; *     Made improvements for conformity to linux driver standards.&n; *&n; * Version 0.92:&n; *     Added support for 2.1 kernels.&n; *         Reads from pci_dev struct, so it&squot;s not dependent on pcibios.&n; *         Added some missing virt_to_bus() translations.&n; *     Added support for SMP.&n; *         Changed global cli()&squot;s to spinlocks for 2.1, and simulated&n; *          spinlocks for 2.0.&n; *     Removed setting of SA_INTERRUPT flag when requesting Irq.&n; *&n; * Version 0.92ac:&n; *     Small changes to the comments/formatting. Plus a couple of&n; *      added notes. Returned to the authors. No actual code changes&n; *      save printk levels.&n; *     8 Oct 98        Alan Cox &lt;alan.cox@linux.org&gt;&n; *&n; *     Merged with 2.1.131 source tree.&n; *     12 Dec 98       K. Baranowski &lt;kgb@knm.org.pl&gt;&n; *&n; * Version 0.93:&n; *     Added support for vendor specific ioctl commands (M_RD_IOCTL_CMD+xxh)&n; *     Changed some fields in MEGARAID struct to better values.&n; *     Added signature check for Rp controllers under 2.0 kernels&n; *     Changed busy-wait loop to be time-based&n; *     Fixed SMP race condition in isr&n; *     Added kfree (sgList) on release&n; *     Added #include linux/version.h to megaraid.h for hosts.h&n; *     Changed max_id to represent max logical drives instead of targets.&n; *&n; * Version 0.94:&n; *     Got rid of some excess locking/unlocking&n; *     Fixed slight memory corruption problem while memcpy&squot;ing into mailbox&n; *     Changed logical drives to be reported as luns rather than targets&n; *     Changed max_id to 16 since it is now max targets/chan again.&n; *     Improved ioctl interface for upcoming megamgr&n; *&n; * Version 0.95:&n; *     Fixed problem of queueing multiple commands to adapter;&n; *       still has some strange problems on some setups, so still&n; *       defaults to single.  To enable parallel commands change&n; *       #define MULTI_IO in megaraid.h&n; *     Changed kmalloc allocation to be done in beginning.&n; *     Got rid of C++ style comments&n; *&n; * Version 0.96:&n; *     762 fully supported.&n; *&n; * Version 0.97:&n; *     Changed megaraid_command to use wait_queue.&n; *&n; * Version 1.00:&n; *     Checks to see if an irq occurred while in isr, and runs through&n; *       routine again.&n; *     Copies mailbox to temp area before processing in isr&n; *     Added barrier() in busy wait to fix volatility bug&n; *     Uses separate list for freed Scbs, keeps track of cmd state&n; *     Put spinlocks around entire queue function for now...&n; *     Full multi-io commands working stablely without previous problems&n; *     Added skipXX LILO option for Madrona motherboard support&n; *&n; * Version 1.01:&n; *     Fixed bug in mega_cmd_done() for megamgr control commands,&n; *       the host_byte in the result code from the scsi request to&n; *       scsi midlayer is set to DID_BAD_TARGET when adapter&squot;s&n; *       returned codes are 0xF0 and 0xF4.&n; *&n; * Version 1.02:&n; *     Fixed the tape drive bug by extending the adapter timeout value&n; *       for passthrough command to 60 seconds in mega_build_cmd().&n; *&n; * Version 1.03:&n; *    Fixed Madrona support.&n; *    Changed the adapter timeout value from 60 sec in 1.02 to 10 min&n; *      for bigger and slower tape drive.&n; *    Added driver version printout at driver loadup time&n; *&n; * Version 1.04&n; *    Added code for 40 ld FW support.&n; *    Added new ioctl command 0x81 to support NEW_READ/WRITE_CONFIG with&n; *      data area greater than 4 KB, which is the upper bound for data&n; *      tranfer through scsi_ioctl interface.&n; *    The additional 32 bit field for 64bit address in the newly defined&n; *      mailbox64 structure is set to 0 at this point.&n; *&n; * Version 1.05&n; *    Changed the queing implementation for handling SCBs and completed&n; *      commands.&n; *    Added spinlocks in the interrupt service routine to enable the driver&n; *      function in the SMP environment.&n; *    Fixed the problem of unnecessary aborts in the abort entry point, which&n; *      also enables the driver to handle large amount of I/O requests for&n; *      long duration of time.&n; * Version 1.06&n; *              Intel Release&n; * Version 1.07&n; *    Removed the usage of uaccess.h file for kernel versions less than&n; *    2.0.36, as this file is not present in those versions.&n; *&n; * Version 108&n; *    Modified mega_ioctl so that 40LD megamanager would run&n; *    Made some changes for 2.3.XX compilation , esp wait structures&n; *    Code merge between 1.05 and 1.06 .&n; *    Bug fixed problem with ioctl interface for concurrency between&n; *    8ld and 40ld firwmare&n; *    Removed the flawed semaphore logic for handling new config command&n; *    Added support for building own scatter / gather list for big user&n; *    mode buffers&n; *    Added /proc file system support ,so that information is available in&n; *    human readable format&n; *&n; * Version 1a08&n; *    Changes for IA64 kernels. Checked for CONFIG_PROC_FS flag&n; *&n; * Version 1b08&n; *    Include file changes.&n; * Version 1b08b&n; *    Change PCI ID value for the 471 card, use #defines when searching&n; *    for megaraid cards.&n; *&n; * Version 1.10&n; *&n; *      I) Changes made to make following ioctl commands work in 0x81 interface&n; *              a)DCMD_DELETE_LOGDRV&n; *              b)DCMD_GET_DISK_CONFIG&n; *              c)DCMD_DELETE_DRIVEGROUP&n; *              d)NC_SUBOP_ENQUIRY3&n; *              e)DCMD_CHANGE_LDNO&n; *              f)DCMD_CHANGE_LOOPID&n; *              g)DCMD_FC_READ_NVRAM_CONFIG&n; *      h)DCMD_WRITE_CONFIG&n; *      II) Added mega_build_kernel_sg function&n; *  III)Firmware flashing option added&n; *&n; * Version 1.10a&n; *&n; *      I)Dell updates included in the source code.&n; *              Note:   This change is not tested due to the unavailability of IA64 kernel&n; *      and it is in the #ifdef DELL_MODIFICATION macro which is not defined&n; *&n; * Version 1.10b&n; *&n; *      I)In M_RD_IOCTL_CMD_NEW command the wrong way of copying the data&n; *    to the user address corrected&n; *&n; * Version 1.10c&n; *&n; *      I) DCMD_GET_DISK_CONFIG opcode updated for the firmware changes.&n; *&n; * Version 1.11&n; *      I)  Version number changed from 1.10c to 1.11&n; *  II) DCMD_WRITE_CONFIG(0x0D) command in the driver changed from&n; *      scatter/gather list mode to direct pointer mode..&n; *     Fixed bug of undesirably detecting HP onboard controllers which&n; *       are disabled.&n; *&n; *      Version 1.12 (Sep 21, 2000)&n; *&n; *     I. Changes have been made for Dynamic DMA mapping in IA64 platform.&n; *                To enable all these changes define M_RD_DYNAMIC_DMA_SUPPORT in megaraid.h&n; *        II. Got rid of windows mode comments&n; *       III. Removed unwanted code segments&n; *    IV. Fixed bug of HP onboard controller information (commented with&n; *                 MEGA_HP_FIX)&n; *&n; *      Version 1a12&n; *      I.      reboot notifier and new ioctl changes ported from 1c09&n; *&n; *      Version 1b12&n; *      I.      Changes in new ioctl interface routines ( Nov 06, 2000 )&n; *&n; *      Version 1c12&n; *      I.      Changes in new ioctl interface routines ( Nov 07, 2000 )&n; *&n; *      Version 1d12&n; *      I.      Compilation error under kernel 2.4.0 for 32-bit machine in mega_ioctl&n; *&n; *      Version 1e12, 1f12&n; *      1.  Fixes for pci_map_single, pci_alloc_consistent along with mailbox&n; *          alignment&n; *&n; *&t;Version 1.13beta&n; *&t;Added Support for Full 64bit address space support. If firmware&n; *&t;supports 64bit, it goes to 64 bit mode even on x86 32bit &n; *&t;systems. Data Corruption Issues while running on test9 kernel&n; *&t;on IA64 systems. This issue not seen on test11 on x86 system&n; *&n; *&t;Version 1.13c&n; *&t;1. Resolved Memory Leak when using M_RD_IOCTL_CMD interface&n; *&t;2. Resolved Queuing problem when MailBox Blocks&n; *&t;3. Added unregister_reboot_notifier support&n; * &n; *&t;Version 1.13d&n; *&t;Experimental changes in interfacing with the controller in ISR&n; *&n; *&t;Version 1.13e&n; *&t;Fixed Broken 2.2.XX compilation changes + misc changes&n; *&n; *&t;Version 1.13f to 1.13i&n; *&t;misc changes + code clean up&n; *&t;Cleaned up the ioctl code and added set_mbox_xfer_addr()&n; *&t;Support for START_DEV (6)&n; * &t;&n; *&t;Version 1.13j&n; *&t;Moved some code to megaraid.h file, replaced some hard coded values &n; *      with respective macros. Changed some functions to static&n; *&n; *&t;Version 1.13k&n; *&t;Only some idendation correction to 1.13j &n; *&n; *&t;Version 1.13l , 1.13m, 1.13n, 1.13o&n; *&t;Minor Identation changes + misc changes&n; *&n; *&t;Version 1.13q&n; *&t;Paded the new uioctl_t MIMD structure for maintaining alignment &n; *&t;and size across 32 / 64 bit platforms&n; *&t;Changed the way MIMD IOCTL interface used virt_to_bus() to use pci&n; *&t;memory location&n; *&n; *&t;Version 1.13r&n; *&t;2.4.xx SCSI Changes.&n; *&n; *&t;Version 1.13s&n; *&t;Stats counter fixes&n; *&t;Temporary fix for some 64 bit firmwares in 2.4.XX kernels&n; *&n; *&t;Version&t;1.13t&n; *&t;Support for 64bit version of READ/WRITE/VIEW DISK CONFIG&n; *&n; *&t;Version 1.14&n; *&t;Did away with MEGADEV_IOCTL flag. It is now standard part of driver&n; *&t;without need for a special #define flag&n; *&t;Disabled old scsi ioctl path for kernel versions &gt; 2.3.xx. This is due&n; *&t;to the nature in which the new scsi code queues a new scsi command to &n; *&t;controller during SCSI IO Completion&n; *&t;Driver now checks for sub-system vendor id before taking ownership of&n; *&t;the controller&n; *&n; *&t;Version 1.14a&n; *&t;Added Host re-ordering&n; *&n; *&t;Version 1.14b&n; *&t;Corrected some issue which caused the older cards not to work&n; *&t;&n; *&t;Version 1.14c&n; *&t;IOCTL changes for not handling the non-64bit firmwares under 2.4.XX&n; *&t;kernel&n; *&n; *&t;Version 1.14d&n; *&t;Fixed Various MIMD Synchronization Issues&n; *&t;&n; *&t;Version 1.14e&n; *&t;Fixed the error handling during card initialization&n; *&n; *&t;Version 1.14f&n; *&t;Multiple invocations of mimd phase I ioctl stalls the cpu. Replaced&n; *&t;spinlock with semaphore(mutex)&n; *&n; *&t;Version 1.14g&n; *&t;Fixed running out of scbs issues while running MIMD apps under heavy IO&n; *&n; *&t;Version 1.14g-ac - 02/03/01&n; *&t;Reformatted to Linux format so I could compare to old one and cross&n; *&t;check bug fixes&n; *&t;Re fixed the assorted missing &squot;static&squot; cases&n; *&t;Removed some unneeded version checks&n; *&t;Cleaned up some of the VERSION checks in the code&n; *&t;Left 2.0 support but removed 2.1.x support.&n; *&t;Collected much of the compat glue into one spot&n; *&n; *&t;Version 1.14g-ac2 - 22/03/01&n; *&t;Fixed a non obvious dereference after free in the driver unload path&n; *&n; *&t;Version 1.14i&n; *&t;changes for making 32bit application run on IA64&n; *&n; *&t;Version 1.14j&n; *&t;Tue Mar 13 14:27:54 EST 2001 - AM&n; *&t;Changes made in the driver to be able to run applications if the&n; *&t;system has memory &gt;4GB.&n; *&n; *&n; *&t;Version 1.14k&n; *&t;Thu Mar 15 18:38:11 EST 2001 - AM&n; *&n; *&t;Firmware version check removed if subsysid==0x1111 and&n; *&t;subsysvid==0x1111, since its not yet initialized.&n; *&n; *&t;changes made to correctly calculate the base in mega_findCard.&n; *&n; *&t;Driver informational messages now appear on the console as well as&n; *&t;with dmesg&n; *&n; *&t;Older ioctl interface is returned failure on newer(2.4.xx) kernels.&n; *&n; *&t;Inclusion of &quot;modversions.h&quot; is still a debatable question. It is&n; *&t;included anyway with this release.&n; *&n; *&t;Version 1.14l&n; *&t;Mon Mar 19 17:39:46 EST 2001 - AM&n; *&n; *&t;Assorted changes to remove compilation error in 1.14k when compiled&n; *&t;with kernel &lt; 2.4.0&n; *&n; *&t;Version 1.14m&n; *&t;Tue Mar 27 12:09:22 EST 2001 - AM&n; *&n; *&t;Added support for extended CDBs ( &gt; 10 bytes ) and OBDR ( One Button&n; *&t;Disaster Recovery ) feature.&n; *&n; *&n; *&t;Version 1.14n&n; *&t;Tue Apr 10 14:28:13 EDT 2001 - AM&n; *&n; *&t;&quot;modeversions.h&quot; is no longer included in the code.&n; *&t;2.4.xx style mutex initialization used for older kernels also&n; *&n; *&t;Version 1.14o&n; *&t;Wed Apr 18 17:47:26 EDT 2001 - PJ&n; *&n; *&t;Before returning status for &squot;inquiry&squot;, we first check if request buffer&n; *&t;is SG list, and then return appropriate status&n; *&n; *&t;Version 1.14p&n; *&t;Wed Apr 25 13:44:48 EDT 2001 - PJ&n; *&n; *&t;SCSI result made appropriate in case of check conditions for extended&n; *&t;passthru commands&n; *&n; *&t;Do not support lun &gt;7 for physically accessed devices &n; *&n; *&t;&n; *&t;Version 1.15&n; *&t;Thu Apr 19 09:38:38 EDT 2001 - AM&n; *&n; *&t;1.14l rollover to 1.15 - merged with main trunk after 1.15d&n; *&n; *&t;Version 1.15b&n; *  Wed May 16 20:10:01 EDT 2001 - AM&n; *&n; *&t;&quot;modeversions.h&quot; is no longer included in the code.&n; *&t;2.4.xx style mutex initialization used for older kernels also&n; *&t;Brought in-sync with Alan&squot;s changes in 2.4.4&n; *&t;Note: 1.15a is on OBDR branch(main trunk), and is not merged with yet.&n; *&n; * Version 1.15c&n; * Mon May 21 23:10:42 EDT 2001 - AM&n; *&n; * ioctl interface uses 2.4.x conforming pci dma calls&n; * similar calls used for older kernels&n; *&n; * Version 1.15d&n; * Wed May 30 17:30:41 EDT 2001 - AM&n; *&n; * NULL is not a valid first argument for pci_alloc_consistent() on&n; * IA64(2.4.3-2.10.1). Code shuffling done in ioctl interface to get&n; * &quot;pci_dev&quot; before making calls to pci interface routines.&n; *&n; * Version 1.16pre&n; * Fri Jun  1 19:40:48 EDT 2001 - AM&n; *&n; * 1.14p and 1.15d merged&n; * ROMB support added&n; *&n; * Version 1.16-pre1&n; * Mon Jun  4 15:01:01 EDT 2001 - AM&n; *&n; * Non-ROMB firmware do no DMA support 0xA9 command. Value 0xFF&n; * (all channels are raid ) is chosen for those firmware.&n; *&n; * Version 1.16-pre2&n; * Mon Jun 11 18:15:31 EDT 2001 - AM&n; *&n; * Changes for boot from any logical drive&n; *&n; * Version 1.16&n; * Tue Jun 26 18:07:02 EDT 2001 - AM&n; *&n; * branched at 1.14p&n; *&n; * Check added for HP 1M/2M controllers if having firmware H.01.07 or&n; * H.01.08. If found, disable 64 bit support since these firmware have&n; * limitations for 64 bit addressing&n; *&n; *&n; * Version 1.17&n; * Thu Jul 12 11:14:09 EDT 2001 - AM&n; *&n; * 1.16pre2 and 1.16 merged.&n; *&n; * init_MUTEX and init_MUTEX_LOCKED are defined in 2.2.19. Pre-processor&n; * statements are added for them&n; *&n; * Linus&squot;s 2.4.7pre3 kernel introduces a new field &squot;max_sectors&squot; in Scsi_Host&n; * structure, to improve IO performance.&n; *&n; *&n; * Version 1.17a&n; * Fri Jul 13 18:44:01 EDT 2001 - AM&n; *&n; * Starting from kernel 2.4.x, LUN is not &lt; 8 - following SCSI-III. So to have&n; * our current formula working to calculate logical drive number, return&n; * failure for LUN &gt; 7&n; *&n; * Version 1.17a-ac&n; * Mon Aug 6 14:59:29 BST 2001 - &quot;Michael Johnson&quot; &lt;johnsom@home.com&gt;&n; *&n; * Make the HP print formatting and check for buggy firmware runtime not&n; * ifdef dependant.&n; *&n; * BUGS:&n; *     Some older 2.1 kernels (eg. 2.1.90) have a bug in pci.c that&n; *     fails to detect the controller as a pci device on the system.&n; *&n; *     Timeout period for upper scsi layer, i.e. SD_TIMEOUT in&n; *     /drivers/scsi/sd.c, is too short for this controller. SD_TIMEOUT&n; *     value must be increased to (30 * HZ) otherwise false timeouts&n; *     will occur in the upper layer.&n; *&n; *     Never set skip_id. The existing PCI code the megaraid uses fails&n; *     to properly check the vendor subid in some cases. Setting this then&n; *     makes it steal other i960&squot;s and crashes some boxes&n; *&n; *     Far too many ifdefs for versions.&n; *&n; *===================================================================*/
+multiline_comment|/*===================================================================&n; *&n; *                    Linux MegaRAID device driver&n; *&n; * Copyright 2001  American Megatrends Inc.&n; *&n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              as published by the Free Software Foundation; either version&n; *              2 of the License, or (at your option) any later version.&n; *&n; * Version : v1.18 (Oct 11, 2001)&n; *&n; * Description: Linux device driver for LSI Logic MegaRAID controller&n; *&n; * Supported controllers: MegaRAID 418, 428, 438, 466, 762, 467, 471, 490&n; *                                      493.&n; * History:&n; *&n; * Version 0.90:&n; *     Original source contributed by Dell; integrated it into the kernel and&n; *     cleaned up some things.  Added support for 438/466 controllers.&n; * Version 0.91:&n; *     Aligned mailbox area on 16-byte boundary.&n; *     Added schedule() at the end to properly clean up.&n; *     Made improvements for conformity to linux driver standards.&n; *&n; * Version 0.92:&n; *     Added support for 2.1 kernels.&n; *         Reads from pci_dev struct, so it&squot;s not dependent on pcibios.&n; *         Added some missing virt_to_bus() translations.&n; *     Added support for SMP.&n; *         Changed global cli()&squot;s to spinlocks for 2.1, and simulated&n; *          spinlocks for 2.0.&n; *     Removed setting of SA_INTERRUPT flag when requesting Irq.&n; *&n; * Version 0.92ac:&n; *     Small changes to the comments/formatting. Plus a couple of&n; *      added notes. Returned to the authors. No actual code changes&n; *      save printk levels.&n; *     8 Oct 98        Alan Cox &lt;alan.cox@linux.org&gt;&n; *&n; *     Merged with 2.1.131 source tree.&n; *     12 Dec 98       K. Baranowski &lt;kgb@knm.org.pl&gt;&n; *&n; * Version 0.93:&n; *     Added support for vendor specific ioctl commands (M_RD_IOCTL_CMD+xxh)&n; *     Changed some fields in MEGARAID struct to better values.&n; *     Added signature check for Rp controllers under 2.0 kernels&n; *     Changed busy-wait loop to be time-based&n; *     Fixed SMP race condition in isr&n; *     Added kfree (sgList) on release&n; *     Added #include linux/version.h to megaraid.h for hosts.h&n; *     Changed max_id to represent max logical drives instead of targets.&n; *&n; * Version 0.94:&n; *     Got rid of some excess locking/unlocking&n; *     Fixed slight memory corruption problem while memcpy&squot;ing into mailbox&n; *     Changed logical drives to be reported as luns rather than targets&n; *     Changed max_id to 16 since it is now max targets/chan again.&n; *     Improved ioctl interface for upcoming megamgr&n; *&n; * Version 0.95:&n; *     Fixed problem of queueing multiple commands to adapter;&n; *       still has some strange problems on some setups, so still&n; *       defaults to single.  To enable parallel commands change&n; *       #define MULTI_IO in megaraid.h&n; *     Changed kmalloc allocation to be done in beginning.&n; *     Got rid of C++ style comments&n; *&n; * Version 0.96:&n; *     762 fully supported.&n; *&n; * Version 0.97:&n; *     Changed megaraid_command to use wait_queue.&n; *&n; * Version 1.00:&n; *     Checks to see if an irq occurred while in isr, and runs through&n; *       routine again.&n; *     Copies mailbox to temp area before processing in isr&n; *     Added barrier() in busy wait to fix volatility bug&n; *     Uses separate list for freed Scbs, keeps track of cmd state&n; *     Put spinlocks around entire queue function for now...&n; *     Full multi-io commands working stablely without previous problems&n; *     Added skipXX LILO option for Madrona motherboard support&n; *&n; * Version 1.01:&n; *     Fixed bug in mega_cmd_done() for megamgr control commands,&n; *       the host_byte in the result code from the scsi request to&n; *       scsi midlayer is set to DID_BAD_TARGET when adapter&squot;s&n; *       returned codes are 0xF0 and 0xF4.&n; *&n; * Version 1.02:&n; *     Fixed the tape drive bug by extending the adapter timeout value&n; *       for passthrough command to 60 seconds in mega_build_cmd().&n; *&n; * Version 1.03:&n; *    Fixed Madrona support.&n; *    Changed the adapter timeout value from 60 sec in 1.02 to 10 min&n; *      for bigger and slower tape drive.&n; *    Added driver version printout at driver loadup time&n; *&n; * Version 1.04&n; *    Added code for 40 ld FW support.&n; *    Added new ioctl command 0x81 to support NEW_READ/WRITE_CONFIG with&n; *      data area greater than 4 KB, which is the upper bound for data&n; *      tranfer through scsi_ioctl interface.&n; *    The additional 32 bit field for 64bit address in the newly defined&n; *      mailbox64 structure is set to 0 at this point.&n; *&n; * Version 1.05&n; *    Changed the queing implementation for handling SCBs and completed&n; *      commands.&n; *    Added spinlocks in the interrupt service routine to enable the driver&n; *      function in the SMP environment.&n; *    Fixed the problem of unnecessary aborts in the abort entry point, which&n; *      also enables the driver to handle large amount of I/O requests for&n; *      long duration of time.&n; * Version 1.06&n; *              Intel Release&n; * Version 1.07&n; *    Removed the usage of uaccess.h file for kernel versions less than&n; *    2.0.36, as this file is not present in those versions.&n; *&n; * Version 108&n; *    Modified mega_ioctl so that 40LD megamanager would run&n; *    Made some changes for 2.3.XX compilation , esp wait structures&n; *    Code merge between 1.05 and 1.06 .&n; *    Bug fixed problem with ioctl interface for concurrency between&n; *    8ld and 40ld firwmare&n; *    Removed the flawed semaphore logic for handling new config command&n; *    Added support for building own scatter / gather list for big user&n; *    mode buffers&n; *    Added /proc file system support ,so that information is available in&n; *    human readable format&n; *&n; * Version 1a08&n; *    Changes for IA64 kernels. Checked for CONFIG_PROC_FS flag&n; *&n; * Version 1b08&n; *    Include file changes.&n; * Version 1b08b&n; *    Change PCI ID value for the 471 card, use #defines when searching&n; *    for megaraid cards.&n; *&n; * Version 1.10&n; *&n; *      I) Changes made to make following ioctl commands work in 0x81 interface&n; *              a)DCMD_DELETE_LOGDRV&n; *              b)DCMD_GET_DISK_CONFIG&n; *              c)DCMD_DELETE_DRIVEGROUP&n; *              d)NC_SUBOP_ENQUIRY3&n; *              e)DCMD_CHANGE_LDNO&n; *              f)DCMD_CHANGE_LOOPID&n; *              g)DCMD_FC_READ_NVRAM_CONFIG&n; *      h)DCMD_WRITE_CONFIG&n; *      II) Added mega_build_kernel_sg function&n; *  III)Firmware flashing option added&n; *&n; * Version 1.10a&n; *&n; *      I)Dell updates included in the source code.&n; *              Note:   This change is not tested due to the unavailability of IA64 kernel&n; *      and it is in the #ifdef DELL_MODIFICATION macro which is not defined&n; *&n; * Version 1.10b&n; *&n; *      I)In M_RD_IOCTL_CMD_NEW command the wrong way of copying the data&n; *    to the user address corrected&n; *&n; * Version 1.10c&n; *&n; *      I) DCMD_GET_DISK_CONFIG opcode updated for the firmware changes.&n; *&n; * Version 1.11&n; *      I)  Version number changed from 1.10c to 1.11&n; *  II) DCMD_WRITE_CONFIG(0x0D) command in the driver changed from&n; *      scatter/gather list mode to direct pointer mode..&n; *     Fixed bug of undesirably detecting HP onboard controllers which&n; *       are disabled.&n; *&n; *      Version 1.12 (Sep 21, 2000)&n; *&n; *     I. Changes have been made for Dynamic DMA mapping in IA64 platform.&n; *                To enable all these changes define M_RD_DYNAMIC_DMA_SUPPORT in megaraid.h&n; *        II. Got rid of windows mode comments&n; *       III. Removed unwanted code segments&n; *    IV. Fixed bug of HP onboard controller information (commented with&n; *                 MEGA_HP_FIX)&n; *&n; *      Version 1a12&n; *      I.      reboot notifier and new ioctl changes ported from 1c09&n; *&n; *      Version 1b12&n; *      I.      Changes in new ioctl interface routines ( Nov 06, 2000 )&n; *&n; *      Version 1c12&n; *      I.      Changes in new ioctl interface routines ( Nov 07, 2000 )&n; *&n; *      Version 1d12&n; *      I.      Compilation error under kernel 2.4.0 for 32-bit machine in mega_ioctl&n; *&n; *      Version 1e12, 1f12&n; *      1.  Fixes for pci_map_single, pci_alloc_consistent along with mailbox&n; *          alignment&n; *&n; *&t;Version 1.13beta&n; *&t;Added Support for Full 64bit address space support. If firmware&n; *&t;supports 64bit, it goes to 64 bit mode even on x86 32bit &n; *&t;systems. Data Corruption Issues while running on test9 kernel&n; *&t;on IA64 systems. This issue not seen on test11 on x86 system&n; *&n; *&t;Version 1.13c&n; *&t;1. Resolved Memory Leak when using M_RD_IOCTL_CMD interface&n; *&t;2. Resolved Queuing problem when MailBox Blocks&n; *&t;3. Added unregister_reboot_notifier support&n; * &n; *&t;Version 1.13d&n; *&t;Experimental changes in interfacing with the controller in ISR&n; *&n; *&t;Version 1.13e&n; *&t;Fixed Broken 2.2.XX compilation changes + misc changes&n; *&n; *&t;Version 1.13f to 1.13i&n; *&t;misc changes + code clean up&n; *&t;Cleaned up the ioctl code and added set_mbox_xfer_addr()&n; *&t;Support for START_DEV (6)&n; * &t;&n; *&t;Version 1.13j&n; *&t;Moved some code to megaraid.h file, replaced some hard coded values &n; *      with respective macros. Changed some functions to static&n; *&n; *&t;Version 1.13k&n; *&t;Only some idendation correction to 1.13j &n; *&n; *&t;Version 1.13l , 1.13m, 1.13n, 1.13o&n; *&t;Minor Identation changes + misc changes&n; *&n; *&t;Version 1.13q&n; *&t;Paded the new uioctl_t MIMD structure for maintaining alignment &n; *&t;and size across 32 / 64 bit platforms&n; *&t;Changed the way MIMD IOCTL interface used virt_to_bus() to use pci&n; *&t;memory location&n; *&n; *&t;Version 1.13r&n; *&t;2.4.xx SCSI Changes.&n; *&n; *&t;Version 1.13s&n; *&t;Stats counter fixes&n; *&t;Temporary fix for some 64 bit firmwares in 2.4.XX kernels&n; *&n; *&t;Version&t;1.13t&n; *&t;Support for 64bit version of READ/WRITE/VIEW DISK CONFIG&n; *&n; *&t;Version 1.14&n; *&t;Did away with MEGADEV_IOCTL flag. It is now standard part of driver&n; *&t;without need for a special #define flag&n; *&t;Disabled old scsi ioctl path for kernel versions &gt; 2.3.xx. This is due&n; *&t;to the nature in which the new scsi code queues a new scsi command to &n; *&t;controller during SCSI IO Completion&n; *&t;Driver now checks for sub-system vendor id before taking ownership of&n; *&t;the controller&n; *&n; *&t;Version 1.14a&n; *&t;Added Host re-ordering&n; *&n; *&t;Version 1.14b&n; *&t;Corrected some issue which caused the older cards not to work&n; *&t;&n; *&t;Version 1.14c&n; *&t;IOCTL changes for not handling the non-64bit firmwares under 2.4.XX&n; *&t;kernel&n; *&n; *&t;Version 1.14d&n; *&t;Fixed Various MIMD Synchronization Issues&n; *&t;&n; *&t;Version 1.14e&n; *&t;Fixed the error handling during card initialization&n; *&n; *&t;Version 1.14f&n; *&t;Multiple invocations of mimd phase I ioctl stalls the cpu. Replaced&n; *&t;spinlock with semaphore(mutex)&n; *&n; *&t;Version 1.14g&n; *&t;Fixed running out of scbs issues while running MIMD apps under heavy IO&n; *&n; *&t;Version 1.14g-ac - 02/03/01&n; *&t;Reformatted to Linux format so I could compare to old one and cross&n; *&t;check bug fixes&n; *&t;Re fixed the assorted missing &squot;static&squot; cases&n; *&t;Removed some unneeded version checks&n; *&t;Cleaned up some of the VERSION checks in the code&n; *&t;Left 2.0 support but removed 2.1.x support.&n; *&t;Collected much of the compat glue into one spot&n; *&n; *&t;Version 1.14g-ac2 - 22/03/01&n; *&t;Fixed a non obvious dereference after free in the driver unload path&n; *&n; *&t;Version 1.14i&n; *&t;changes for making 32bit application run on IA64&n; *&n; *&t;Version 1.14j&n; *&t;Tue Mar 13 14:27:54 EST 2001 - AM&n; *&t;Changes made in the driver to be able to run applications if the&n; *&t;system has memory &gt;4GB.&n; *&n; *&n; *&t;Version 1.14k&n; *&t;Thu Mar 15 18:38:11 EST 2001 - AM&n; *&n; *&t;Firmware version check removed if subsysid==0x1111 and&n; *&t;subsysvid==0x1111, since its not yet initialized.&n; *&n; *&t;changes made to correctly calculate the base in mega_findCard.&n; *&n; *&t;Driver informational messages now appear on the console as well as&n; *&t;with dmesg&n; *&n; *&t;Older ioctl interface is returned failure on newer(2.4.xx) kernels.&n; *&n; *&t;Inclusion of &quot;modversions.h&quot; is still a debatable question. It is&n; *&t;included anyway with this release.&n; *&n; *&t;Version 1.14l&n; *&t;Mon Mar 19 17:39:46 EST 2001 - AM&n; *&n; *&t;Assorted changes to remove compilation error in 1.14k when compiled&n; *&t;with kernel &lt; 2.4.0&n; *&n; *&t;Version 1.14m&n; *&t;Tue Mar 27 12:09:22 EST 2001 - AM&n; *&n; *&t;Added support for extended CDBs ( &gt; 10 bytes ) and OBDR ( One Button&n; *&t;Disaster Recovery ) feature.&n; *&n; *&n; *&t;Version 1.14n&n; *&t;Tue Apr 10 14:28:13 EDT 2001 - AM&n; *&n; *&t;&quot;modeversions.h&quot; is no longer included in the code.&n; *&t;2.4.xx style mutex initialization used for older kernels also&n; *&n; *&t;Version 1.14o&n; *&t;Wed Apr 18 17:47:26 EDT 2001 - PJ&n; *&n; *&t;Before returning status for &squot;inquiry&squot;, we first check if request buffer&n; *&t;is SG list, and then return appropriate status&n; *&n; *&t;Version 1.14p&n; *&t;Wed Apr 25 13:44:48 EDT 2001 - PJ&n; *&n; *&t;SCSI result made appropriate in case of check conditions for extended&n; *&t;passthru commands&n; *&n; *&t;Do not support lun &gt;7 for physically accessed devices &n; *&n; *&t;&n; *&t;Version 1.15&n; *&t;Thu Apr 19 09:38:38 EDT 2001 - AM&n; *&n; *&t;1.14l rollover to 1.15 - merged with main trunk after 1.15d&n; *&n; *&t;Version 1.15b&n; *  Wed May 16 20:10:01 EDT 2001 - AM&n; *&n; *&t;&quot;modeversions.h&quot; is no longer included in the code.&n; *&t;2.4.xx style mutex initialization used for older kernels also&n; *&t;Brought in-sync with Alan&squot;s changes in 2.4.4&n; *&t;Note: 1.15a is on OBDR branch(main trunk), and is not merged with yet.&n; *&n; * Version 1.15c&n; * Mon May 21 23:10:42 EDT 2001 - AM&n; *&n; * ioctl interface uses 2.4.x conforming pci dma calls&n; * similar calls used for older kernels&n; *&n; * Version 1.15d&n; * Wed May 30 17:30:41 EDT 2001 - AM&n; *&n; * NULL is not a valid first argument for pci_alloc_consistent() on&n; * IA64(2.4.3-2.10.1). Code shuffling done in ioctl interface to get&n; * &quot;pci_dev&quot; before making calls to pci interface routines.&n; *&n; * Version 1.16pre&n; * Fri Jun  1 19:40:48 EDT 2001 - AM&n; *&n; * 1.14p and 1.15d merged&n; * ROMB support added&n; *&n; * Version 1.16-pre1&n; * Mon Jun  4 15:01:01 EDT 2001 - AM&n; *&n; * Non-ROMB firmware do no DMA support 0xA9 command. Value 0xFF&n; * (all channels are raid ) is chosen for those firmware.&n; *&n; * Version 1.16-pre2&n; * Mon Jun 11 18:15:31 EDT 2001 - AM&n; *&n; * Changes for boot from any logical drive&n; *&n; * Version 1.16&n; * Tue Jun 26 18:07:02 EDT 2001 - AM&n; *&n; * branched at 1.14p&n; *&n; * Check added for HP 1M/2M controllers if having firmware H.01.07 or&n; * H.01.08. If found, disable 64 bit support since these firmware have&n; * limitations for 64 bit addressing&n; *&n; *&n; * Version 1.17&n; * Thu Jul 12 11:14:09 EDT 2001 - AM&n; *&n; * 1.16pre2 and 1.16 merged.&n; *&n; * init_MUTEX and init_MUTEX_LOCKED are defined in 2.2.19. Pre-processor&n; * statements are added for them&n; *&n; * Linus&squot;s 2.4.7pre3 kernel introduces a new field &squot;max_sectors&squot; in Scsi_Host&n; * structure, to improve IO performance.&n; *&n; *&n; * Version 1.17a&n; * Fri Jul 13 18:44:01 EDT 2001 - AM&n; *&n; * Starting from kernel 2.4.x, LUN is not &lt; 8 - following SCSI-III. So to have&n; * our current formula working to calculate logical drive number, return&n; * failure for LUN &gt; 7&n; *&n; *&n; * Version 1.17b&n; * Mon Jul 30 19:24:02 EDT 2001 - AM&n; *&n; * Added support for random deletion of logical drives&n; *&n; * Version 1.17c&n; * Tue Sep 25 09:37:49 EDT 2001 - Atul Mukker &lt;atulm@lsil.com&gt;&n; *&n; * With single and dual channel controllers, some virtaul channels are&n; * displayed negative.&n; *&n; * Version 1.17a-ac&n; * Mon Aug 6 14:59:29 BST 2001 - &quot;Michael Johnson&quot; &lt;johnsom@home.com&gt;&n; *&n; * Make the HP print formatting and check for buggy firmware runtime not&n; * ifdef dependant.&n; *&n; *&n; * Version 1.17d&n; * Thu Oct 11 10:48:45 EDT 2001 - Atul Mukker &lt;atulm@lsil.com&gt;&n; *&n; * Driver 1.17c oops when loaded without controller.&n; *&n; * Special case for &quot;use_sg == 1&quot; removed while building the scatter gather&n; * list.&n; *&n; * Version 1.18&n; * Thu Oct 11 15:02:53 EDT 2001 - Atul Mukker &lt;atulm@lsil.com&gt;&n; *&n; * References to AMI have been changed to LSI Logic.&n; *&n; *&n; * BUGS:&n; *     Some older 2.1 kernels (eg. 2.1.90) have a bug in pci.c that&n; *     fails to detect the controller as a pci device on the system.&n; *&n; *     Timeout period for upper scsi layer, i.e. SD_TIMEOUT in&n; *     /drivers/scsi/sd.c, is too short for this controller. SD_TIMEOUT&n; *     value must be increased to (30 * HZ) otherwise false timeouts&n; *     will occur in the upper layer.&n; *&n; *     Never set skip_id. The existing PCI code the megaraid uses fails&n; *     to properly check the vendor subid in some cases. Setting this then&n; *     makes it steal other i960&squot;s and crashes some boxes&n; *&n; *     Far too many ifdefs for versions.&n; *&n; *===================================================================*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -144,16 +144,15 @@ macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)&t;/* 0x020400 */
 multiline_comment|/*&n; *&t;Linux 2.4 and higher&n; *&n; *&t;No driver private lock&n; *&t;Use the io_request_lock not cli/sti&n; *&t;queue task is a simple api without irq forms&n; */
 id|MODULE_AUTHOR
 (paren
-l_string|&quot;American Megatrends Inc.&quot;
+l_string|&quot;LSI Logic Corporation&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 (paren
-l_string|&quot;AMI MegaRAID driver&quot;
+l_string|&quot;LSI Logic MegaRAID driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
-c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
@@ -167,7 +166,7 @@ mdefine_line|#define DRIVER_LOCK(p)
 DECL|macro|DRIVER_UNLOCK
 mdefine_line|#define DRIVER_UNLOCK(p)
 DECL|macro|IO_LOCK_T
-mdefine_line|#define IO_LOCK_T unsigned long io_flags = 0;
+mdefine_line|#define IO_LOCK_T unsigned long io_flags = 0
 DECL|macro|IO_LOCK
 mdefine_line|#define IO_LOCK spin_lock_irqsave(&amp;io_request_lock,io_flags);
 DECL|macro|IO_UNLOCK
@@ -189,12 +188,12 @@ id|UTS_RELEASE
 suffix:semicolon
 id|MODULE_AUTHOR
 (paren
-l_string|&quot;American Megatrends Inc.&quot;
+l_string|&quot;LSI Logic Corporation&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 (paren
-l_string|&quot;AMI MegaRAID driver&quot;
+l_string|&quot;LSI Logic MegaRAID driver&quot;
 )paren
 suffix:semicolon
 DECL|macro|DRIVER_LOCK_T
@@ -206,7 +205,7 @@ mdefine_line|#define DRIVER_LOCK(p)
 DECL|macro|DRIVER_UNLOCK
 mdefine_line|#define DRIVER_UNLOCK(p)
 DECL|macro|IO_LOCK_T
-mdefine_line|#define IO_LOCK_T unsigned long io_flags = 0;
+mdefine_line|#define IO_LOCK_T unsigned long io_flags = 0
 DECL|macro|IO_LOCK
 mdefine_line|#define IO_LOCK spin_lock_irqsave(&amp;io_request_lock,io_flags);
 DECL|macro|IO_UNLOCK
@@ -526,7 +525,7 @@ r_static
 id|u32
 id|driver_ver
 op_assign
-l_int|117
+l_int|114
 suffix:semicolon
 multiline_comment|/* major number used by the device for character interface */
 DECL|variable|major
@@ -1554,11 +1553,29 @@ suffix:semicolon
 id|islogical
 op_assign
 (paren
+(paren
+id|SCpnt-&gt;channel
+op_ge
+id|megaCfg-&gt;productInfo.SCSIChanPresent
+)paren
+op_logical_and
+(paren
+id|SCpnt-&gt;channel
+op_le
+id|megaCfg-&gt;host-&gt;max_channel
+)paren
+)paren
+suffix:semicolon
+macro_line|#if 0
+id|islogical
+op_assign
+(paren
 id|SCpnt-&gt;channel
 op_eq
 id|megaCfg-&gt;host-&gt;max_channel
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 multiline_comment|/* Special Case to handle PassThrough-&gt;XferAddrress &gt; 4GB */
 r_switch
@@ -2046,10 +2063,13 @@ suffix:semicolon
 r_char
 id|islogical
 suffix:semicolon
-r_char
+r_int
 id|lun
 op_assign
 id|SCpnt-&gt;lun
+suffix:semicolon
+r_int
+id|max_lun
 suffix:semicolon
 r_if
 c_cond
@@ -2120,6 +2140,23 @@ macro_line|#endif
 id|islogical
 op_assign
 (paren
+(paren
+id|SCpnt-&gt;channel
+op_ge
+id|megaCfg-&gt;productInfo.SCSIChanPresent
+)paren
+op_logical_and
+(paren
+id|SCpnt-&gt;channel
+op_le
+id|megaCfg-&gt;host-&gt;max_channel
+)paren
+)paren
+suffix:semicolon
+macro_line|#if 0
+id|islogical
+op_assign
+(paren
 id|IS_RAID_CH
 c_func
 (paren
@@ -2134,6 +2171,7 @@ id|megaCfg-&gt;host-&gt;max_channel
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2198,13 +2236,19 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Return error for LUN &gt; 7. The way we calculate logical drive number&n;&t; * requires it to be so.&n;&t; */
 r_if
 c_cond
 (paren
-id|lun
-OG
-l_int|7
+id|islogical
+)paren
+(brace
+multiline_comment|/* have just LUN 0 for each target on virtual channels */
+r_if
+c_cond
+(paren
+id|SCpnt-&gt;lun
+op_ne
+l_int|0
 )paren
 (brace
 id|SCpnt-&gt;result
@@ -2224,28 +2268,47 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|islogical
-)paren
-(brace
 id|lun
 op_assign
+id|mega_get_lun
+c_func
 (paren
-id|SCpnt-&gt;target
-op_star
-l_int|8
+id|megaCfg
+comma
+id|SCpnt
 )paren
-op_plus
-id|lun
 suffix:semicolon
+id|max_lun
+op_assign
+(paren
+id|megaCfg-&gt;flag
+op_amp
+id|BOARD_40LD
+)paren
+ques
+c_cond
+id|FC_MAX_LOGICAL_DRIVES
+suffix:colon
+id|MAX_LOGICAL_DRIVES
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;  * max_lun increases by 0x80 if some logical drive was deleted.&n;&t;&t;  */
+r_if
+c_cond
+(paren
+id|megaCfg-&gt;read_ldidmap
+)paren
+(brace
+id|max_lun
+op_add_assign
+l_int|0x80
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|lun
-op_ge
-id|megaCfg-&gt;numldrv
+OG
+id|max_lun
 )paren
 (brace
 id|SCpnt-&gt;result
@@ -2300,6 +2363,35 @@ op_decrement
 suffix:semicolon
 )brace
 )brace
+)brace
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|lun
+OG
+l_int|7
+)paren
+(brace
+multiline_comment|/* Do not support lun &gt;7 for physically accessed devices */
+id|SCpnt-&gt;result
+op_assign
+(paren
+id|DID_BAD_TARGET
+op_lshift
+l_int|16
+)paren
+suffix:semicolon
+id|callDone
+(paren
+id|SCpnt
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*-----------------------------------------------------&n;&t; *&n;&t; *               Logical drive commands&n;&t; *&n;&t; *-----------------------------------------------------*/
@@ -3405,6 +3497,104 @@ suffix:semicolon
 )brace
 r_return
 l_int|NULL
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|mega_get_lun
+id|mega_get_lun
+c_func
+(paren
+id|mega_host_config
+op_star
+id|this_hba
+comma
+id|Scsi_Cmnd
+op_star
+id|sc
+)paren
+(brace
+r_int
+id|tgt
+suffix:semicolon
+r_int
+id|lun
+suffix:semicolon
+r_int
+id|virt_chan
+suffix:semicolon
+id|tgt
+op_assign
+id|sc-&gt;target
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tgt
+OG
+l_int|7
+)paren
+id|tgt
+op_decrement
+suffix:semicolon
+multiline_comment|/* we do not get inquires for tgt 7 */
+id|virt_chan
+op_assign
+id|sc-&gt;channel
+op_minus
+id|this_hba-&gt;productInfo.SCSIChanPresent
+suffix:semicolon
+id|lun
+op_assign
+(paren
+id|virt_chan
+op_star
+l_int|15
+)paren
+op_plus
+id|tgt
+suffix:semicolon
+multiline_comment|/*&n;&t; * If &quot;delete logical drive&quot; feature is enabled on this controller.&n;&t; * Do only if at least one delete logical drive operation was done.&n;&t; *&n;&t; * Also, after logical drive deletion, instead of logical drive number,&n;&t; * the value returned should be 0x80+logical drive id.&n;&t; *&n;&t; * These is valid only for IO commands.&n;&t; */
+r_if
+c_cond
+(paren
+id|this_hba-&gt;support_random_del
+op_logical_and
+id|this_hba-&gt;read_ldidmap
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|sc-&gt;cmnd
+(braket
+l_int|0
+)braket
+)paren
+(brace
+r_case
+id|READ_6
+suffix:colon
+multiline_comment|/* fall through */
+r_case
+id|WRITE_6
+suffix:colon
+multiline_comment|/* fall through */
+r_case
+id|READ_10
+suffix:colon
+multiline_comment|/* fall through */
+r_case
+id|WRITE_10
+suffix:colon
+id|lun
+op_add_assign
+l_int|0x80
+suffix:semicolon
+)brace
+)brace
+r_return
+id|lun
 suffix:semicolon
 )brace
 r_static
@@ -5452,6 +5642,7 @@ id|regs
 )paren
 (brace
 id|IO_LOCK_T
+suffix:semicolon
 id|mega_host_config
 op_star
 id|megaCfg
@@ -6849,6 +7040,7 @@ op_star
 )paren
 id|scb-&gt;SCpnt-&gt;request_buffer
 suffix:semicolon
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -6994,6 +7186,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Copy Scatter-Gather list info into controller structure */
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 id|sgcnt
@@ -8020,7 +8213,7 @@ l_int|0
 )paren
 id|printk
 (paren
-l_string|&quot;ami:Product_info cmd failed with error: %d&bslash;n&quot;
+l_string|&quot;megaraid: Product_info cmd failed with error: %d&bslash;n&quot;
 comma
 id|retval
 )paren
@@ -8040,9 +8233,14 @@ id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * kernel scans the channels from 0 to &lt;= max_channel&n;&t; */
 id|megaCfg-&gt;host-&gt;max_channel
 op_assign
 id|megaCfg-&gt;productInfo.SCSIChanPresent
+op_plus
+id|NVIRT_CHAN
+op_minus
+l_int|1
 suffix:semicolon
 id|megaCfg-&gt;host-&gt;max_id
 op_assign
@@ -8050,13 +8248,12 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* max targets per channel */
 multiline_comment|/*(megaCfg-&gt;flag &amp; BOARD_40LD)?FC_MAX_TARGETS_PER_CHANNEL:MAX_TARGET+1; */
+macro_line|#if 0
 id|megaCfg-&gt;host-&gt;max_lun
 op_assign
 multiline_comment|/* max lun */
 (paren
-id|megaCfg
-op_member_access_from_pointer
-id|flag
+id|megaCfg-&gt;flag
 op_amp
 id|BOARD_40LD
 )paren
@@ -8066,6 +8263,12 @@ id|FC_MAX_LOGICAL_DRIVES
 suffix:colon
 id|MAX_LOGICAL_DRIVES
 suffix:semicolon
+macro_line|#endif
+id|megaCfg-&gt;host-&gt;max_lun
+op_assign
+l_int|7
+suffix:semicolon
+multiline_comment|/* Upto 7 luns for non disk devices */
 id|megaCfg-&gt;host-&gt;cmd_per_lun
 op_assign
 id|MAX_CMD_PER_LUN
@@ -8150,14 +8353,14 @@ l_int|0x0f
 comma
 id|megaCfg-&gt;productInfo.FwVer
 (braket
-l_int|2
+l_int|0
 )braket
 op_rshift
 l_int|8
 comma
 id|megaCfg-&gt;productInfo.FwVer
 (braket
-l_int|2
+l_int|0
 )braket
 op_amp
 l_int|0x0f
@@ -8190,14 +8393,14 @@ l_int|0x0f
 comma
 id|megaCfg-&gt;productInfo.BiosVer
 (braket
-l_int|2
+l_int|0
 )braket
 op_rshift
 l_int|8
 comma
 id|megaCfg-&gt;productInfo.BiosVer
 (braket
-l_int|2
+l_int|0
 )braket
 op_amp
 l_int|0x0f
@@ -8788,13 +8991,11 @@ id|host
 r_goto
 id|err_unmap
 suffix:semicolon
-macro_line|#if 0
 multiline_comment|/*&n;&t;&t; * Comment the following initialization if you know &squot;max_sectors&squot; is&n;&t;&t; * not defined for this kernel.&n;&t;&t; * This field was introduced in Linus&squot;s kernel 2.4.7pre3 and it&n;&t;&t; * greatly increases the IO performance - AM&n;&t;&t; */
 id|host-&gt;max_sectors
 op_assign
 l_int|1024
 suffix:semicolon
-macro_line|#endif
 id|scsi_set_pci_device
 c_func
 (paren
@@ -8906,6 +9107,18 @@ suffix:semicolon
 id|megaCfg-&gt;flag
 op_assign
 id|flag
+suffix:semicolon
+id|megaCfg-&gt;int_qh
+op_assign
+l_int|NULL
+suffix:semicolon
+id|megaCfg-&gt;int_qt
+op_assign
+l_int|NULL
+suffix:semicolon
+id|megaCfg-&gt;int_qlen
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 id|megaCfg-&gt;dev
@@ -9244,7 +9457,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|megaCfg-&gt;host-&gt;max_channel
+id|megaCfg-&gt;productInfo.SCSIChanPresent
 suffix:semicolon
 id|i
 op_increment
@@ -9300,6 +9513,20 @@ dot
 id|hostdata_addr
 op_assign
 id|megaCfg
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Do we support random deletion and addition of logical drives&n;&t;&t; */
+id|megaCfg-&gt;read_ldidmap
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* set it after first logdrv delete cmd */
+id|megaCfg-&gt;support_random_del
+op_assign
+id|mega_support_random_del
+c_func
+(paren
+id|megaCfg
+)paren
 suffix:semicolon
 multiline_comment|/* Initialize SCBs */
 r_if
@@ -9672,7 +9899,6 @@ id|printk
 id|KERN_NOTICE
 l_string|&quot;megaraid: &quot;
 id|MEGARAID_VERSION
-id|M_RD_CRLFSTR
 )paren
 suffix:semicolon
 id|memset
@@ -10237,6 +10463,9 @@ id|mbox
 l_int|16
 )braket
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 id|dma_addr_t
 id|dma_handle
@@ -10366,15 +10595,35 @@ op_star
 id|megacfg-&gt;mega_buffer
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NVIRT_CHAN
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 multiline_comment|/* logical drives channel is RAID */
 id|mega_ch_class
 op_or_assign
 (paren
 l_int|0x01
 op_lshift
-id|megacfg-&gt;host-&gt;max_channel
+(paren
+id|megacfg-&gt;productInfo.SCSIChanPresent
+op_plus
+id|i
+)paren
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -11377,7 +11626,7 @@ id|sprintf
 (paren
 id|buffer
 comma
-l_string|&quot;AMI MegaRAID %s %d commands %d targs %d chans %d luns&quot;
+l_string|&quot;LSI Logic MegaRAID %s %d commands %d targs %d chans %d luns&quot;
 comma
 id|megaCfg-&gt;fwVer
 comma
@@ -11462,27 +11711,31 @@ c_cond
 (paren
 id|SCpnt-&gt;channel
 OL
-id|SCpnt-&gt;host-&gt;max_channel
+id|megaCfg-&gt;productInfo.SCSIChanPresent
 )paren
 id|printk
 (paren
 id|KERN_NOTICE
-l_string|&quot;scsi%d: scanning channel %c for devices.&bslash;n&quot;
+l_string|&quot;scsi%d: scanning channel %d for devices.&bslash;n&quot;
 comma
 id|megaCfg-&gt;host-&gt;host_no
 comma
 id|SCpnt-&gt;channel
-op_plus
-l_char|&squot;1&squot;
 )paren
 suffix:semicolon
 r_else
 id|printk
 (paren
 id|KERN_NOTICE
-l_string|&quot;scsi%d: scanning virtual channel for logical drives.&bslash;n&quot;
+l_string|&quot;scsi%d: scanning virtual channel %d for logical drives.&bslash;n&quot;
 comma
 id|megaCfg-&gt;host-&gt;host_no
+comma
+id|SCpnt-&gt;channel
+op_minus
+id|megaCfg-&gt;productInfo.SCSIChanPresent
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 id|megaCfg-&gt;flag
@@ -11673,8 +11926,14 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/*build SCpnt for M_RD_IOCTL_CMD_NEW cmd in mega_ioctl() */
-multiline_comment|/* Add SCB to the head of the pending queue */
+multiline_comment|/*&n;&t;&t; * Check if the HBA is in quiescent state, e.g., during a delete&n;&t;&t; * logical drive opertion. If it is, queue the commands in the&n;&t;&t; * internal queue until the delete operation is complete.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|megaCfg-&gt;quiescent
+)paren
+(brace
 multiline_comment|/* Add SCB to the head of the pending queue */
 r_if
 c_cond
@@ -11728,6 +11987,44 @@ id|megaCfg
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/* Add SCB to the internal queue */
+r_if
+c_cond
+(paren
+id|megaCfg-&gt;int_qh
+op_eq
+l_int|NULL
+)paren
+(brace
+id|megaCfg-&gt;int_qh
+op_assign
+id|megaCfg-&gt;int_qt
+op_assign
+id|pScb
+suffix:semicolon
+)brace
+r_else
+(brace
+id|megaCfg-&gt;int_qt-&gt;next
+op_assign
+id|pScb
+suffix:semicolon
+id|megaCfg-&gt;int_qt
+op_assign
+id|pScb
+suffix:semicolon
+)brace
+id|megaCfg-&gt;int_qt-&gt;next
+op_assign
+l_int|NULL
+suffix:semicolon
+id|megaCfg-&gt;int_qlen
+op_increment
 suffix:semicolon
 )brace
 r_if
@@ -14824,6 +15121,30 @@ suffix:semicolon
 r_case
 id|M_RD_IOCTL_CMD_NEW
 suffix:colon
+multiline_comment|/*&n;&t;&t; * Deletion of logical drives is only handled in 0x80 commands&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|ioc.mbox
+(braket
+l_int|0
+)braket
+op_eq
+id|FC_DEL_LOGDRV
+op_logical_and
+id|ioc.mbox
+(braket
+l_int|2
+)braket
+op_eq
+id|OP_DEL_LOGDRV
+)paren
+(brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 multiline_comment|/* which adapter?  */
 id|adapno
 op_assign
@@ -15539,6 +15860,96 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * ioctls for deleting logical drives is a special case, so check&n;&t;&t; * for it first&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|ioc.mbox
+(braket
+l_int|0
+)braket
+op_eq
+id|FC_DEL_LOGDRV
+op_logical_and
+id|ioc.mbox
+(braket
+l_int|2
+)braket
+op_eq
+id|OP_DEL_LOGDRV
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|megacfg-&gt;support_random_del
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;megaraid: logdrv delete on non supporting f/w.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+id|uioc
+op_assign
+(paren
+r_struct
+id|uioctl_t
+op_star
+)paren
+id|arg
+suffix:semicolon
+id|ret
+op_assign
+id|mega_del_logdrv
+c_func
+(paren
+id|megacfg
+comma
+id|ioc.mbox
+(braket
+l_int|3
+)braket
+)paren
+suffix:semicolon
+id|put_user
+c_func
+(paren
+l_int|1
+comma
+op_amp
+id|uioc-&gt;mbox
+(braket
+l_int|16
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/* numstatus */
+id|put_user
+c_func
+(paren
+id|ret
+comma
+op_amp
+id|uioc-&gt;mbox
+(braket
+l_int|17
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/* status */
+multiline_comment|/* if deletion failed, let the user know by failing ioctl */
+r_return
+id|ret
+suffix:semicolon
+)brace
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 id|scsicmd
 op_assign
@@ -15877,7 +16288,6 @@ l_int|16
 )paren
 suffix:semicolon
 multiline_comment|/* numstatus */
-multiline_comment|/* status */
 id|put_user
 (paren
 id|scsicmd-&gt;result
@@ -15889,6 +16299,7 @@ l_int|17
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* status */
 )brace
 r_if
 c_cond
@@ -16416,6 +16827,396 @@ suffix:semicolon
 r_return
 op_logical_neg
 id|ret
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Find out if this controller supports random deletion and addition of&n; * logical drives&n; */
+r_static
+r_int
+DECL|function|mega_support_random_del
+id|mega_support_random_del
+c_func
+(paren
+id|mega_host_config
+op_star
+id|this_hba
+)paren
+(brace
+id|mega_mailbox
+op_star
+id|mboxpnt
+suffix:semicolon
+r_int
+r_char
+id|mbox
+(braket
+l_int|16
+)braket
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|mboxpnt
+op_assign
+(paren
+id|mega_mailbox
+op_star
+)paren
+id|mbox
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|mbox
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|mbox
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * issue command&n;&t; */
+id|mbox
+(braket
+l_int|0
+)braket
+op_assign
+id|FC_DEL_LOGDRV
+suffix:semicolon
+id|mbox
+(braket
+l_int|2
+)braket
+op_assign
+id|OP_SUP_DEL_LOGDRV
+suffix:semicolon
+id|ret
+op_assign
+id|megaIssueCmd
+c_func
+(paren
+id|this_hba
+comma
+id|mbox
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+op_logical_neg
+id|ret
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|mega_del_logdrv
+id|mega_del_logdrv
+c_func
+(paren
+id|mega_host_config
+op_star
+id|this_hba
+comma
+r_int
+id|logdrv
+)paren
+(brace
+r_int
+id|rval
+suffix:semicolon
+id|IO_LOCK_T
+suffix:semicolon
+id|DECLARE_WAIT_QUEUE_HEAD
+c_func
+(paren
+id|wq
+)paren
+suffix:semicolon
+id|mega_scb
+op_star
+id|scbp
+suffix:semicolon
+multiline_comment|/*&n;&t; * Stop sending commands to the controller, queue them internally.&n;&t; * When deletion is complete, ISR will flush the queue.&n;&t; */
+id|IO_LOCK
+suffix:semicolon
+id|this_hba-&gt;quiescent
+op_assign
+l_int|1
+suffix:semicolon
+id|IO_UNLOCK
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|this_hba-&gt;qPcnt
+)paren
+(brace
+id|sleep_on_timeout
+c_func
+(paren
+op_amp
+id|wq
+comma
+l_int|1
+op_star
+id|HZ
+)paren
+suffix:semicolon
+multiline_comment|/* sleep for 1s */
+)brace
+id|rval
+op_assign
+id|mega_do_del_logdrv
+c_func
+(paren
+id|this_hba
+comma
+id|logdrv
+)paren
+suffix:semicolon
+id|IO_LOCK
+suffix:semicolon
+multiline_comment|/*&n;&t; * Attach the internal queue to the pending queue&n;&t; */
+r_if
+c_cond
+(paren
+id|this_hba-&gt;qPendingH
+op_eq
+l_int|NULL
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * If pending queue head is null, make internal queue as&n;&t;&t; * pending queue&n;&t;&t; */
+id|this_hba-&gt;qPendingH
+op_assign
+id|this_hba-&gt;int_qh
+suffix:semicolon
+id|this_hba-&gt;qPendingT
+op_assign
+id|this_hba-&gt;int_qt
+suffix:semicolon
+id|this_hba-&gt;qPcnt
+op_assign
+id|this_hba-&gt;int_qlen
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t; * Append pending queue to internal queue&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|this_hba-&gt;int_qt
+)paren
+(brace
+id|this_hba-&gt;int_qt-&gt;next
+op_assign
+id|this_hba-&gt;qPendingH
+suffix:semicolon
+id|this_hba-&gt;qPendingH
+op_assign
+id|this_hba-&gt;int_qh
+suffix:semicolon
+id|this_hba-&gt;qPcnt
+op_add_assign
+id|this_hba-&gt;int_qlen
+suffix:semicolon
+)brace
+)brace
+id|this_hba-&gt;int_qh
+op_assign
+id|this_hba-&gt;int_qt
+op_assign
+l_int|NULL
+suffix:semicolon
+id|this_hba-&gt;int_qlen
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t; * If delete operation was successful, add 0x80 to the logical drive&n;&t; * ids for commands in the pending queue.&n;&t; */
+r_if
+c_cond
+(paren
+id|this_hba-&gt;read_ldidmap
+)paren
+(brace
+r_for
+c_loop
+(paren
+id|scbp
+op_assign
+id|this_hba-&gt;qPendingH
+suffix:semicolon
+id|scbp
+suffix:semicolon
+id|scbp
+op_assign
+id|scbp-&gt;next
+)paren
+(brace
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
+r_if
+c_cond
+(paren
+id|scbp-&gt;pthru-&gt;logdrv
+OL
+l_int|0x80
+)paren
+(brace
+id|scbp-&gt;pthru-&gt;logdrv
+op_add_assign
+l_int|0x80
+suffix:semicolon
+)brace
+macro_line|#else
+r_if
+c_cond
+(paren
+id|scbp-&gt;pthru.logdrv
+OL
+l_int|0x80
+)paren
+(brace
+id|scbp-&gt;pthru.logdrv
+op_add_assign
+l_int|0x80
+suffix:semicolon
+)brace
+macro_line|#endif
+)brace
+)brace
+id|this_hba-&gt;quiescent
+op_assign
+l_int|0
+suffix:semicolon
+id|IO_UNLOCK
+suffix:semicolon
+r_return
+id|rval
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|mega_do_del_logdrv
+id|mega_do_del_logdrv
+c_func
+(paren
+id|mega_host_config
+op_star
+id|this_hba
+comma
+r_int
+id|logdrv
+)paren
+(brace
+id|mega_mailbox
+op_star
+id|mboxpnt
+suffix:semicolon
+r_int
+r_char
+id|mbox
+(braket
+l_int|16
+)braket
+suffix:semicolon
+r_int
+id|rval
+suffix:semicolon
+id|mboxpnt
+op_assign
+(paren
+id|mega_mailbox
+op_star
+)paren
+id|mbox
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|mbox
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|mbox
+)paren
+)paren
+suffix:semicolon
+id|mbox
+(braket
+l_int|0
+)braket
+op_assign
+id|FC_DEL_LOGDRV
+suffix:semicolon
+id|mbox
+(braket
+l_int|2
+)braket
+op_assign
+id|OP_DEL_LOGDRV
+suffix:semicolon
+id|mbox
+(braket
+l_int|3
+)braket
+op_assign
+id|logdrv
+suffix:semicolon
+id|rval
+op_assign
+id|megaIssueCmd
+c_func
+(paren
+id|this_hba
+comma
+id|mbox
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* log this event */
+r_if
+c_cond
+(paren
+id|rval
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;megaraid: Attempt to delete logical drive %d failed.&quot;
+comma
+id|logdrv
+)paren
+suffix:semicolon
+r_return
+id|rval
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;megaraid: logical drive %d deleted.&bslash;n&quot;
+comma
+id|logdrv
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * After deleting first logical drive, the logical drives must be&n;&t; * addressed by adding 0x80 to the logical drive id.&n;&t; */
+id|this_hba-&gt;read_ldidmap
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+id|rval
 suffix:semicolon
 )brace
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,0)

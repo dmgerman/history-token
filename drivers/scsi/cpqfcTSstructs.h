@@ -12,12 +12,13 @@ DECL|macro|DbgDelay
 mdefine_line|#define DbgDelay(secs) { int wait_time; printk( &quot; DbgDelay %ds &quot;, secs); &bslash;&n;                         for( wait_time=jiffies + (secs*HZ); &bslash;&n;&t;&t;         wait_time &gt; jiffies ;) ; }
 DECL|macro|CPQFCTS_DRIVER_VER
 mdefine_line|#define CPQFCTS_DRIVER_VER(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
+singleline_comment|// don&squot;t forget to also change MODULE_DESCRIPTION in cpqfcTSinit.c
 DECL|macro|VER_MAJOR
 mdefine_line|#define VER_MAJOR 2
 DECL|macro|VER_MINOR
-mdefine_line|#define VER_MINOR 0
+mdefine_line|#define VER_MINOR 1
 DECL|macro|VER_SUBMINOR
-mdefine_line|#define VER_SUBMINOR 5
+mdefine_line|#define VER_SUBMINOR 1
 singleline_comment|// Macros for kernel (esp. SMP) tracing using a PCI analyzer
 singleline_comment|// (e.g. x86).
 singleline_comment|//#define PCI_KERNEL_TRACE
@@ -918,12 +919,25 @@ DECL|typedef|TachLiteERQ
 )brace
 id|TachLiteERQ
 suffix:semicolon
-DECL|macro|TL_MAX_SGPAGES
-mdefine_line|#define TL_MAX_SGPAGES 4  
-singleline_comment|// arbitrary limit to # of TL Ext. S/G pages
-singleline_comment|// stores array of allocated page blocks used
-singleline_comment|// in extended S/G lists.  Affects amount of static
-singleline_comment|// memory consumed by driver.
+singleline_comment|// for now, just 32 bit DMA, eventually 40something, with code changes
+DECL|macro|CPQFCTS_DMA_MASK
+mdefine_line|#define CPQFCTS_DMA_MASK ((unsigned long) (0x00000000FFFFFFFF))
+DECL|macro|TL_MAX_SG_ELEM_LEN
+mdefine_line|#define TL_MAX_SG_ELEM_LEN 0x7ffff  
+singleline_comment|// Max buffer length a single S/G entry
+singleline_comment|// may represent (a hardware limitation).  The
+singleline_comment|// only reason to ever change this is if you
+singleline_comment|// want to exercise very-hard-to-reach code in
+singleline_comment|// cpqfcTSworker.c:build_SEST_sglist().
+DECL|macro|TL_DANGER_SGPAGES
+mdefine_line|#define TL_DANGER_SGPAGES 7  
+singleline_comment|// arbitrary high water mark for # of S/G pages
+singleline_comment|// we must exceed to elicit a warning indicative
+singleline_comment|// of EXTREMELY large data transfers or 
+singleline_comment|// EXTREME memory fragmentation.
+singleline_comment|// (means we just used up 2048 S/G elements,
+singleline_comment|// Never seen this is real life, only in 
+singleline_comment|// testing with tricked up driver.)
 DECL|macro|TL_EXT_SG_PAGE_COUNT
 mdefine_line|#define TL_EXT_SG_PAGE_COUNT 256  
 singleline_comment|// Number of Extended Scatter/Gather a/l PAIRS
@@ -956,6 +970,8 @@ DECL|member|Buff_Off
 id|ULONG
 id|Buff_Off
 suffix:semicolon
+DECL|macro|USES_EXTENDED_SGLIST
+mdefine_line|#define USES_EXTENDED_SGLIST(this_sest, x_ID) &bslash;&n;&t;(!((this_sest)-&gt;u[ x_ID ].IWE.Buff_Off &amp; 0x80000000))
 DECL|member|Link
 id|ULONG
 id|Link
@@ -1233,24 +1249,47 @@ DECL|typedef|TachLiteTRE
 )brace
 id|TachLiteTRE
 suffix:semicolon
+DECL|typedef|PSGPAGES
 r_typedef
 r_struct
-(brace
-DECL|member|PoolPage
-r_void
-op_star
-id|PoolPage
-(braket
-id|TL_MAX_SGPAGES
-)braket
-suffix:semicolon
-DECL|typedef|SGPAGES
-DECL|typedef|PSGPAGES
-)brace
-id|SGPAGES
-comma
+id|ext_sg_page_ptr_t
 op_star
 id|PSGPAGES
+suffix:semicolon
+DECL|struct|ext_sg_page_ptr_t
+r_typedef
+r_struct
+id|ext_sg_page_ptr_t
+(brace
+DECL|member|page
+r_int
+r_char
+id|page
+(braket
+id|TL_EXT_SG_PAGE_BYTELEN
+op_star
+l_int|2
+)braket
+suffix:semicolon
+singleline_comment|// 2x for alignment
+DECL|member|busaddr
+id|dma_addr_t
+id|busaddr
+suffix:semicolon
+singleline_comment|// need the bus addresses and
+DECL|member|maplen
+r_int
+r_int
+id|maplen
+suffix:semicolon
+singleline_comment|// lengths for later pci unmapping.
+DECL|member|next
+id|PSGPAGES
+id|next
+suffix:semicolon
+DECL|typedef|SGPAGES
+)brace
+id|SGPAGES
 suffix:semicolon
 singleline_comment|// linked list of S/G pairs, by Exchange
 r_typedef
@@ -1301,13 +1340,13 @@ id|TACH_SEST_LEN
 suffix:semicolon
 singleline_comment|// space for SEST FCP_RSP frame
 DECL|member|sgPages
-id|SGPAGES
+id|PSGPAGES
 id|sgPages
 (braket
 id|TACH_SEST_LEN
 )braket
 suffix:semicolon
-singleline_comment|// array of Pool-allocations
+singleline_comment|// head of linked list of Pool-allocations
 DECL|member|length
 id|ULONG
 id|length
@@ -1754,6 +1793,14 @@ r_int
 id|AlignedAddress
 suffix:semicolon
 singleline_comment|// aligned address (used by Tachyon DMA)
+DECL|member|dma_handle
+id|dma_addr_t
+id|dma_handle
+suffix:semicolon
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
 DECL|typedef|ALIGNED_MEM
 )brace
 id|ALIGNED_MEM
@@ -2134,6 +2181,10 @@ op_star
 id|SEST
 suffix:semicolon
 singleline_comment|// SCSI Exchange State Table
+DECL|member|exch_dma_handle
+id|dma_addr_t
+id|exch_dma_handle
+suffix:semicolon
 singleline_comment|// these function pointers are for &quot;generic&quot; functions, which are
 singleline_comment|// replaced with Host Bus Adapter types at
 singleline_comment|// runtime.
@@ -2542,6 +2593,11 @@ op_star
 id|fcMemManager
 c_func
 (paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
 id|ALIGNED_MEM
 op_star
 id|dyn_mem_pair
@@ -2554,6 +2610,10 @@ id|ab
 comma
 id|ULONG
 id|ulAlignedAddress
+comma
+id|dma_addr_t
+op_star
+id|dma_handle
 )paren
 suffix:semicolon
 r_void
@@ -2736,6 +2796,10 @@ r_struct
 id|pci_dev
 op_star
 id|PciDev
+suffix:semicolon
+DECL|member|fcLQ_dma_handle
+id|dma_addr_t
+id|fcLQ_dma_handle
 suffix:semicolon
 DECL|member|LinkDnCmnd
 id|Scsi_Cmnd
@@ -2945,6 +3009,11 @@ r_void
 id|cpqfcTSCompleteExchange
 c_func
 (paren
+r_struct
+id|pci_dev
+op_star
+id|pcidev
+comma
 id|PTACHYON
 id|fcChip
 comma
@@ -3034,6 +3103,26 @@ c_func
 (paren
 id|CPQFCHBA
 op_star
+)paren
+suffix:semicolon
+r_void
+id|cpqfc_pci_unmap
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pcidev
+comma
+id|Scsi_Cmnd
+op_star
+id|cmd
+comma
+id|PTACHYON
+id|fcChip
+comma
+id|ULONG
+id|x_ID
 )paren
 suffix:semicolon
 r_extern
@@ -3907,6 +3996,31 @@ suffix:semicolon
 DECL|typedef|ADISC_PAYLOAD
 )brace
 id|ADISC_PAYLOAD
+suffix:semicolon
+DECL|struct|ext_sg_entry_t
+r_struct
+id|ext_sg_entry_t
+(brace
+DECL|member|len
+id|__u32
+id|len
+suffix:colon
+l_int|18
+suffix:semicolon
+multiline_comment|/* buffer length, bits 0-17 */
+DECL|member|uba
+id|__u32
+id|uba
+suffix:colon
+l_int|13
+suffix:semicolon
+multiline_comment|/* upper bus address bits 18-31 */
+DECL|member|lba
+id|__u32
+id|lba
+suffix:semicolon
+multiline_comment|/* lower bus address bits 0-31 */
+)brace
 suffix:semicolon
 singleline_comment|// J. McCarty&squot;s LINK.H
 singleline_comment|//

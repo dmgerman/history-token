@@ -58,13 +58,19 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Scott J. Bertin &lt;sbertin@mindspring.com&gt; &amp; Peter Pregler &lt;Peter_Pregler@email.com&gt; &amp; Johannes Erdfelt &lt;johannes@erdfelt.com&gt;&quot;
+l_string|&quot;Scott J. Bertin &lt;sbertin@mindspring.com&gt; &amp; Peter Pregler &lt;Peter_Pregler@email.com&gt; &amp; Johannes Erdfelt &lt;jerdfelt@valinux.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;V4L-driver for Vision CPiA based cameras&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE
@@ -12898,7 +12904,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cam-&gt;video_size
+id|video_size
 OL
 l_int|0
 )paren
@@ -14305,86 +14311,14 @@ id|cam
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/****************************************************************************&n; *&n; *  Module routines&n; *&n; ***************************************************************************/
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s v%d.%d.%d&bslash;n&quot;
-comma
-id|ABOUT
-comma
-id|CPIA_MAJ_VER
-comma
-id|CPIA_MIN_VER
-comma
-id|CPIA_PATCH_VER
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-id|proc_cpia_create
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_KMOD
-macro_line|#ifdef CONFIG_VIDEO_CPIA_PP_MODULE
-id|request_module
-c_func
-(paren
-l_string|&quot;cpia_pp&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_VIDEO_CPIA_USB_MODULE
-id|request_module
-c_func
-(paren
-l_string|&quot;cpia_usb&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef CONFIG_PROC_FS
-id|proc_cpia_destroy
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-macro_line|#else
 DECL|function|cpia_init
+r_static
 r_int
+id|__init
 id|cpia_init
 c_func
 (paren
-r_struct
-id|video_init
-op_star
-id|unused
+r_void
 )paren
 (brace
 id|printk
@@ -14445,6 +14379,38 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|cpia_exit
+r_static
+r_void
+id|__exit
+id|cpia_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_PROC_FS
+id|proc_cpia_destroy
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+DECL|variable|cpia_init
+id|module_init
+c_func
+(paren
+id|cpia_init
+)paren
+suffix:semicolon
+DECL|variable|cpia_exit
+id|module_exit
+c_func
+(paren
+id|cpia_exit
+)paren
+suffix:semicolon
 multiline_comment|/* Exported symbols for modules. */
 DECL|variable|cpia_register_camera
 id|EXPORT_SYMBOL
@@ -14460,5 +14426,4 @@ c_func
 id|cpia_unregister_camera
 )paren
 suffix:semicolon
-macro_line|#endif
 eof

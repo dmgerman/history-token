@@ -27,6 +27,9 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/generic_serial.h&gt;
+macro_line|#if BITS_PER_LONG != 32
+macro_line|#  error FIXME: this driver only works on 32-bit platforms
+macro_line|#endif
 macro_line|#include &quot;linux_compat.h&quot;
 macro_line|#include &quot;typdef.h&quot;
 macro_line|#include &quot;pkt.h&quot;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/ide.h&n; *&n; * by Alexander Schulz &lt;aschulz@netwinder.org&gt;&n; *&n; * derived from:&n; * linux/include/asm-arm/arch-ebsa285/ide.h&n; * Copyright (c) 1998 Russell King&n; */
+multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/ide.h&n; *&n; * by Alexander Schulz&n; *&n; * derived from:&n; * linux/include/asm-arm/arch-ebsa285/ide.h&n; * Copyright (c) 1998 Russell King&n; */
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/*&n; * Set up a hw structure for a specified data port, control port and IRQ.&n; * This should follow whatever the default interface uses.&n; */
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/aic7xxx/aic7xxx.h#29 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aic7xxx.h,v 1.30 2000/11/10 20:13:40 gibbs Exp $&n; */
+multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx.h#34 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aic7xxx.h,v 1.30 2000/11/10 20:13:40 gibbs Exp $&n; */
 macro_line|#ifndef _AIC7XXX_H_
 DECL|macro|_AIC7XXX_H_
 mdefine_line|#define _AIC7XXX_H_
@@ -84,6 +84,9 @@ mdefine_line|#define AHC_SCB_MAX&t;255
 multiline_comment|/*&n; * The maximum number of concurrent transactions supported per driver instance.&n; * Sequencer Control Blocks (SCBs) store per-transaction information.  Although&n; * the space for SCBs on the host adapter varies by model, the driver will&n; * page the SCBs between host and controller memory as needed.  We are limited&n; * to 253 because:&n; * &t;1) The 8bit nature of the RISC engine holds us to an 8bit value.&n; * &t;2) We reserve one value, 255, to represent the invalid element.&n; *&t;3) Our input queue scheme requires one SCB to always be reserved&n; *&t;   in advance of queuing any SCBs.  This takes us down to 254.&n; *&t;4) To handle our output queue correctly on machines that only&n; * &t;   support 32bit stores, we must clear the array 4 bytes at a&n; *&t;   time.  To avoid colliding with a DMA write from the sequencer,&n; *&t;   we must be sure that 4 slots are empty when we write to clear&n; *&t;   the queue.  This reduces us to 253 SCBs: 1 that just completed&n; *&t;   and the known three additional empty slots in the queue that&n; *&t;   precede it.&n; */
 DECL|macro|AHC_MAX_QUEUE
 mdefine_line|#define AHC_MAX_QUEUE&t;253
+multiline_comment|/*&n; * The maximum amount of SCB storage we allocate in host memory.  This&n; * number should reflect the 1 additional SCB we require to handle our&n; * qinfifo mechanism.&n; */
+DECL|macro|AHC_SCB_MAX_ALLOC
+mdefine_line|#define AHC_SCB_MAX_ALLOC (AHC_MAX_QUEUE+1)
 multiline_comment|/*&n; * Ring Buffer of incoming target commands.&n; * We allocate 256 to simplify the logic in the sequencer&n; * by using the natural wrap point of an 8bit counter.&n; */
 DECL|macro|AHC_TMODE_CMDS
 mdefine_line|#define AHC_TMODE_CMDS&t;256
@@ -654,6 +657,21 @@ DECL|struct|target_data
 r_struct
 id|target_data
 (brace
+DECL|member|residual_datacnt
+r_uint32
+id|residual_datacnt
+suffix:semicolon
+multiline_comment|/* Residual in the current S/G seg */
+DECL|member|residual_sg_ptr
+r_uint32
+id|residual_sg_ptr
+suffix:semicolon
+multiline_comment|/* The next S/G for this transfer */
+DECL|member|scsi_status
+r_uint8
+id|scsi_status
+suffix:semicolon
+multiline_comment|/* SCSI status to give to initiator */
 DECL|member|target_phases
 r_uint8
 id|target_phases
@@ -664,11 +682,6 @@ r_uint8
 id|data_phase
 suffix:semicolon
 multiline_comment|/* Data-In or Data-Out */
-DECL|member|scsi_status
-r_uint8
-id|scsi_status
-suffix:semicolon
-multiline_comment|/* SCSI status to give to initiator */
 DECL|member|initiator_tag
 r_uint8
 id|initiator_tag
@@ -1010,12 +1023,10 @@ id|scb
 op_star
 id|scbindex
 (braket
-id|AHC_SCB_MAX
-op_plus
-l_int|1
+l_int|256
 )braket
 suffix:semicolon
-multiline_comment|/* Mapping from tag to SCB */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Mapping from tag to SCB.&n;&t;&t;&t;&t;&t; * As tag identifiers are an&n;&t;&t;&t;&t;&t; * 8bit value, we provide space&n;&t;&t;&t;&t;&t; * for all possible tag values.&n;&t;&t;&t;&t;&t; * Any lookups to entries at or&n;&t;&t;&t;&t;&t; * above AHC_SCB_MAX_ALLOC will&n;&t;&t;&t;&t;&t; * always fail.&n;&t;&t;&t;&t;&t; */
 DECL|member|hscbs
 r_struct
 id|hardware_scb
@@ -2706,6 +2717,34 @@ id|channel
 comma
 r_int
 id|initiate_reset
+)paren
+suffix:semicolon
+r_int
+id|ahc_abort_scbs
+c_func
+(paren
+r_struct
+id|ahc_softc
+op_star
+id|ahc
+comma
+r_int
+id|target
+comma
+r_char
+id|channel
+comma
+r_int
+id|lun
+comma
+id|u_int
+id|tag
+comma
+id|role_t
+id|role
+comma
+r_uint32
+id|status
 )paren
 suffix:semicolon
 r_void

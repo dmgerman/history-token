@@ -267,27 +267,14 @@ DECL|member|SASR
 r_volatile
 r_int
 r_char
+op_star
 id|SASR
 suffix:semicolon
-macro_line|#if !defined(CONFIG_MVME147_SCSI)
-DECL|member|pad
-r_char
-id|pad
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SGI_IP22
-DECL|member|pad2
-DECL|member|pad3
-r_char
-id|pad2
-comma
-id|pad3
-suffix:semicolon
-macro_line|#endif
 DECL|member|SCMD
 r_volatile
 r_int
 r_char
+op_star
 id|SCMD
 suffix:semicolon
 DECL|typedef|wd33c93_regs
@@ -371,10 +358,9 @@ id|Scsi_Host
 op_star
 id|next
 suffix:semicolon
-DECL|member|regp
+DECL|member|regs
 id|wd33c93_regs
-op_star
-id|regp
+id|regs
 suffix:semicolon
 DECL|member|clock_freq
 id|uchar
@@ -699,8 +685,8 @@ id|Scsi_Host
 op_star
 id|instance
 comma
+r_const
 id|wd33c93_regs
-op_star
 id|regs
 comma
 id|dma_setup_t

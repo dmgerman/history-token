@@ -329,14 +329,6 @@ DECL|macro|FLOPPY1_TYPE
 mdefine_line|#define FLOPPY1_TYPE&t;&t;sun_floppy_types[1]
 DECL|macro|FDC1
 mdefine_line|#define FDC1&t;&t;&t;((unsigned long)sun_fdc)
-DECL|variable|FDC2
-r_static
-r_int
-id|FDC2
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 DECL|macro|N_FDC
 mdefine_line|#define N_FDC    1
 DECL|macro|N_DRIVE
@@ -3420,5 +3412,7 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
+DECL|macro|EXTRA_FLOPPY_PARAMS
+mdefine_line|#define EXTRA_FLOPPY_PARAMS
 macro_line|#endif /* !(__ASM_SPARC64_FLOPPY_H) */
 eof

@@ -22391,12 +22391,4 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif /* def MODULE */
-DECL|variable|driver_template
-r_static
-id|Scsi_Host_Template
-id|driver_template
-op_assign
-id|NCR53c7xx
-suffix:semicolon
-macro_line|#include &quot;scsi_module.c&quot;
 eof

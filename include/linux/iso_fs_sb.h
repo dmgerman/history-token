@@ -83,6 +83,11 @@ r_int
 r_char
 id|s_nodev
 suffix:semicolon
+DECL|member|s_nocompress
+r_int
+r_char
+id|s_nocompress
+suffix:semicolon
 DECL|member|s_mode
 id|mode_t
 id|s_mode

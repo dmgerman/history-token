@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/system.h&n; *&n; * by Alexander Schulz &lt;aschulz@netwinder.org&gt;&n; */
+multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/system.h&n; *&n; * by Alexander Schulz&n; */
 macro_line|#ifndef __ASM_ARCH_SYSTEM_H
 DECL|macro|__ASM_ARCH_SYSTEM_H
 mdefine_line|#define __ASM_ARCH_SYSTEM_H

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  ATI Mach64 CT/VT/GT/LT Cursor Support&n; */
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

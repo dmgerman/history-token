@@ -1,6 +1,27 @@
 macro_line|#ifndef _ISO_FS_I
 DECL|macro|_ISO_FS_I
 mdefine_line|#define _ISO_FS_I
+DECL|enum|isofs_file_format
+r_enum
+id|isofs_file_format
+(brace
+DECL|enumerator|isofs_file_normal
+id|isofs_file_normal
+op_assign
+l_int|0
+comma
+DECL|enumerator|isofs_file_sparse
+id|isofs_file_sparse
+op_assign
+l_int|1
+comma
+DECL|enumerator|isofs_file_compressed
+id|isofs_file_compressed
+op_assign
+l_int|2
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * iso fs inode data in memory&n; */
 DECL|struct|iso_inode_info
 r_struct
@@ -15,6 +36,14 @@ DECL|member|i_file_format
 r_int
 r_char
 id|i_file_format
+suffix:semicolon
+DECL|member|i_format_parm
+r_int
+r_char
+id|i_format_parm
+(braket
+l_int|3
+)braket
 suffix:semicolon
 DECL|member|i_next_section_ino
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Inline routines shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/aic7xxx/aic7xxx_inline.h#27 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aic7xxx_inline.h,v 1.8 2000/11/12 05:19:46 gibbs Exp $&n; */
+multiline_comment|/*&n; * Inline routines shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx_inline.h#31 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aic7xxx_inline.h,v 1.8 2000/11/12 05:19:46 gibbs Exp $&n; */
 macro_line|#ifndef _AIC7XXX_INLINE_H_
 DECL|macro|_AIC7XXX_INLINE_H_
 mdefine_line|#define _AIC7XXX_INLINE_H_
@@ -1802,9 +1802,6 @@ id|ahc
 id|u_int
 id|intstat
 suffix:semicolon
-id|u_int
-id|queuestat
-suffix:semicolon
 multiline_comment|/*&n;&t; * Instead of directly reading the interrupt status register,&n;&t; * infer the cause of the interrupt by checking our in-core&n;&t; * completion queues.  This avoids a costly PCI bus read in&n;&t; * most cases.&n;&t; */
 r_if
 c_cond
@@ -1822,16 +1819,14 @@ op_eq
 l_int|0
 op_logical_and
 (paren
-id|queuestat
-op_assign
 id|ahc_check_cmdcmpltqueues
 c_func
 (paren
 id|ahc
 )paren
-)paren
 op_ne
 l_int|0
+)paren
 )paren
 id|intstat
 op_assign
@@ -1849,27 +1844,6 @@ comma
 id|INTSTAT
 )paren
 suffix:semicolon
-id|queuestat
-op_assign
-id|AHC_RUN_QOUTFIFO
-suffix:semicolon
-macro_line|#ifdef AHC_TARGET_MODE
-r_if
-c_cond
-(paren
-(paren
-id|ahc-&gt;flags
-op_amp
-id|AHC_TARGETROLE
-)paren
-op_ne
-l_int|0
-)paren
-id|queuestat
-op_or_assign
-id|AHC_RUN_TQINFIFO
-suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond
@@ -1901,9 +1875,9 @@ r_if
 c_cond
 (paren
 (paren
-id|queuestat
+id|ahc-&gt;flags
 op_amp
-id|AHC_RUN_QOUTFIFO
+id|AHC_INITIATORROLE
 )paren
 op_ne
 l_int|0
@@ -1920,9 +1894,9 @@ r_if
 c_cond
 (paren
 (paren
-id|queuestat
+id|ahc-&gt;flags
 op_amp
-id|AHC_RUN_TQINFIFO
+id|AHC_TARGETROLE
 )paren
 op_ne
 l_int|0

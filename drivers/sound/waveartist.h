@@ -119,6 +119,36 @@ DECL|macro|WACMD_RST_MIXER
 mdefine_line|#define&t;WACMD_RST_MIXER&t;&t;0x33
 DECL|macro|WACMD_SET_MONO
 mdefine_line|#define&t;WACMD_SET_MONO&t;&t;0x34
+multiline_comment|/*&n; * Definitions for left/right recording input mux&n; */
+DECL|macro|ADC_MUX_NONE
+mdefine_line|#define ADC_MUX_NONE&t;0
+DECL|macro|ADC_MUX_MIXER
+mdefine_line|#define ADC_MUX_MIXER&t;1
+DECL|macro|ADC_MUX_LINE
+mdefine_line|#define ADC_MUX_LINE&t;2
+DECL|macro|ADC_MUX_AUX2
+mdefine_line|#define ADC_MUX_AUX2&t;3
+DECL|macro|ADC_MUX_AUX1
+mdefine_line|#define ADC_MUX_AUX1&t;4
+DECL|macro|ADC_MUX_MIC
+mdefine_line|#define ADC_MUX_MIC&t;5
+multiline_comment|/*&n; * Definitions for mixer gain settings&n; */
+DECL|macro|MIX_GAIN_LINE
+mdefine_line|#define MIX_GAIN_LINE&t;0&t;/* line in&t; */
+DECL|macro|MIX_GAIN_AUX1
+mdefine_line|#define MIX_GAIN_AUX1&t;1&t;/* aux1&t;&t; */
+DECL|macro|MIX_GAIN_AUX2
+mdefine_line|#define MIX_GAIN_AUX2&t;2&t;/* aux2&t;&t; */
+DECL|macro|MIX_GAIN_XMIC
+mdefine_line|#define MIX_GAIN_XMIC&t;3&t;/* crossover mic */
+DECL|macro|MIX_GAIN_MIC
+mdefine_line|#define MIX_GAIN_MIC&t;4&t;/* normal mic&t; */
+DECL|macro|MIX_GAIN_PREMIC
+mdefine_line|#define MIX_GAIN_PREMIC&t;5&t;/* preamp mic&t; */
+DECL|macro|MIX_GAIN_OUT
+mdefine_line|#define MIX_GAIN_OUT&t;6&t;/* output&t; */
+DECL|macro|MIX_GAIN_MONO
+mdefine_line|#define MIX_GAIN_MONO&t;7&t;/* mono in&t; */
 r_int
 id|wa_sendcmd
 c_func

@@ -23,8 +23,8 @@ DECL|macro|Q40_ISA_MEM_B
 mdefine_line|#define Q40_ISA_MEM_B(madr)  (q40_isa_mem_base+1+4*((unsigned long)(madr)))
 DECL|macro|Q40_ISA_MEM_W
 mdefine_line|#define Q40_ISA_MEM_W(madr)  (q40_isa_mem_base+  4*((unsigned long)(madr)))
-DECL|macro|MACH_HAS_ISA
-mdefine_line|#define MACH_HAS_ISA 1
+DECL|macro|MULTI_ISA
+mdefine_line|#define MULTI_ISA 0
 macro_line|#endif /* Q40 */
 multiline_comment|/* GG-II Zorro to ISA bridge */
 macro_line|#ifdef CONFIG_GG2
@@ -41,14 +41,14 @@ DECL|macro|GG2_ISA_MEM_B
 mdefine_line|#define GG2_ISA_MEM_B(madr)  (gg2_isa_base+1+(((unsigned long)(madr)*4) &amp; 0xfffff))
 DECL|macro|GG2_ISA_MEM_W
 mdefine_line|#define GG2_ISA_MEM_W(madr)  (gg2_isa_base+  (((unsigned long)(madr)*4) &amp; 0xfffff))
-macro_line|#ifndef MACH_HAS_ISA
-DECL|macro|MACH_HAS_ISA
-mdefine_line|#define MACH_HAS_ISA 1
+macro_line|#ifndef MULTI_ISA
+DECL|macro|MULTI_ISA
+mdefine_line|#define MULTI_ISA 0
 macro_line|#else 
-DECL|macro|MACH_HAS_ISA
-macro_line|#undef MACH_HAS_ISA
-DECL|macro|MACH_HAS_ISA
-mdefine_line|#define MACH_HAS_ISA m
+DECL|macro|MULTI_ISA
+macro_line|#undef MULTI_ISA
+DECL|macro|MULTI_ISA
+mdefine_line|#define MULTI_ISA 1
 macro_line|#endif
 macro_line|#endif /* GG2 */
 macro_line|#ifdef CONFIG_AMIGA_PCMCIA
@@ -57,42 +57,46 @@ DECL|macro|AG_ISA_IO_B
 mdefine_line|#define AG_ISA_IO_B(ioaddr) ( GAYLE_IO+(ioaddr)+(((ioaddr)&amp;1)*GAYLE_ODD) )
 DECL|macro|AG_ISA_IO_W
 mdefine_line|#define AG_ISA_IO_W(ioaddr) ( GAYLE_IO+(ioaddr) )
-macro_line|#ifndef MACH_HAS_ISA
-DECL|macro|MACH_HAS_ISA
-mdefine_line|#define MACH_HAS_ISA 1
+macro_line|#ifndef MULTI_ISA
+DECL|macro|MULTI_ISA
+mdefine_line|#define MULTI_ISA 0
 macro_line|#else 
-DECL|macro|MACH_HAS_ISA
-macro_line|#undef MACH_HAS_ISA
-DECL|macro|MACH_HAS_ISA
-mdefine_line|#define MACH_HAS_ISA m
+DECL|macro|MULTI_ISA
+macro_line|#undef MULTI_ISA
+DECL|macro|MULTI_ISA
+mdefine_line|#define MULTI_ISA 1
 macro_line|#endif
 macro_line|#endif /* AMIGA_PCMCIA */
-macro_line|#ifdef MACH_HAS_ISA
+macro_line|#ifdef CONFIG_ISA
+macro_line|#if MULTI_ISA == 0
+DECL|macro|MULTI_ISA
+macro_line|#undef MULTI_ISA
+macro_line|#endif
 DECL|macro|Q40_ISA
 mdefine_line|#define Q40_ISA (1)
 DECL|macro|GG2_ISA
 mdefine_line|#define GG2_ISA (2)
 DECL|macro|AG_ISA
 mdefine_line|#define AG_ISA  (3)
-macro_line|#if defined(CONFIG_Q40) &amp;&amp; MACH_HAS_ISA==1
+macro_line|#if defined(CONFIG_Q40) &amp;&amp; !defined(MULTI_ISA)
 DECL|macro|ISA_TYPE
 mdefine_line|#define ISA_TYPE Q40_ISA
 DECL|macro|ISA_SEX
 mdefine_line|#define ISA_SEX  0
 macro_line|#endif
-macro_line|#if defined(CONFIG_AMIGA_PCMCIA) &amp;&amp; MACH_HAS_ISA==1
+macro_line|#if defined(CONFIG_AMIGA_PCMCIA) &amp;&amp; !defined(MULTI_ISA)
 DECL|macro|ISA_TYPE
 mdefine_line|#define ISA_TYPE AG_ISA
 DECL|macro|ISA_SEX
 mdefine_line|#define ISA_SEX  1
 macro_line|#endif 
-macro_line|#if defined(CONFIG_GG2) &amp;&amp; MACH_HAS_ISA==1
+macro_line|#if defined(CONFIG_GG2) &amp;&amp; !defined(MULTI_ISA)
 DECL|macro|ISA_TYPE
 mdefine_line|#define ISA_TYPE GG2_ISA
 DECL|macro|ISA_SEX
 mdefine_line|#define ISA_SEX  0
 macro_line|#endif
-macro_line|#ifdef CONFIG_ISA
+macro_line|#ifdef MULTI_ISA
 r_extern
 r_int
 id|isa_type
@@ -348,10 +352,62 @@ DECL|macro|isa_writeb
 mdefine_line|#define isa_writeb(val,p)  out_8(isa_mtb(p),(val))
 DECL|macro|isa_writew
 mdefine_line|#define isa_writew(val,p)  out_le16(isa_mtw(p),(val))
+DECL|function|isa_delay
+r_static
+r_inline
+r_void
+id|isa_delay
+c_func
+(paren
+r_void
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|ISA_TYPE
+)paren
+(brace
+macro_line|#ifdef CONFIG_Q40
+r_case
+id|Q40_ISA
+suffix:colon
+id|isa_outb
+c_func
+(paren
+l_int|0
+comma
+l_int|0x80
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_GG2
+r_case
+id|GG2_ISA
+suffix:colon
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_AMIGA_PCMCIA
+r_case
+id|AG_ISA
+suffix:colon
+r_break
+suffix:semicolon
+macro_line|#endif
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+multiline_comment|/* avoid warnings */
+)brace
+)brace
 DECL|macro|isa_inb_p
-mdefine_line|#define isa_inb_p(p)      ({unsigned char v=isa_inb(p);isa_outb(0,0x80);v;})
+mdefine_line|#define isa_inb_p(p)      ({unsigned char v=isa_inb(p);isa_delay();v;})
 DECL|macro|isa_outb_p
-mdefine_line|#define isa_outb_p(v,p)   ({isa_outb((v),(p));isa_outb(0,0x80);})
+mdefine_line|#define isa_outb_p(v,p)   ({isa_outb((v),(p));isa_delay();})
 DECL|macro|isa_insb
 mdefine_line|#define isa_insb(port, buf, nr) raw_insb(isa_itb(port), (buf), (nr))
 DECL|macro|isa_outsb
@@ -360,7 +416,7 @@ DECL|macro|isa_insw
 mdefine_line|#define isa_insw(port, buf, nr)     &bslash;&n;       (ISA_SEX ? raw_insw(isa_itw(port), (buf), (nr)) :    &bslash;&n;                  raw_insw_swapw(isa_itw(port), (buf), (nr)))
 DECL|macro|isa_outsw
 mdefine_line|#define isa_outsw(port, buf, nr)    &bslash;&n;       (ISA_SEX ? raw_outsw(isa_itw(port), (buf), (nr)) :  &bslash;&n;                  raw_outsw_swapw(isa_itw(port), (buf), (nr)))
-macro_line|#endif  /* MACH_HAS_ISA */
+macro_line|#endif  /* CONFIG_ISA */
 macro_line|#if defined(CONFIG_ISA) &amp;&amp; !defined(CONFIG_PCI) 
 DECL|macro|inb
 mdefine_line|#define inb     isa_inb
@@ -386,24 +442,33 @@ DECL|macro|outsb
 mdefine_line|#define outsb   isa_outsb
 DECL|macro|outsw
 mdefine_line|#define outsw   isa_outsw
-macro_line|#endif /* MACH_HAS_ISA */
+DECL|macro|readb
+mdefine_line|#define readb   isa_readb
+DECL|macro|readw
+mdefine_line|#define readw   isa_readw
+DECL|macro|writeb
+mdefine_line|#define writeb  isa_writeb
+DECL|macro|writew
+mdefine_line|#define writew  isa_writeb
+macro_line|#endif /* CONFIG_ISA */
 macro_line|#if defined(CONFIG_PCI)
 DECL|macro|inl
-mdefine_line|#define inl(port)       in_le32(port)
+mdefine_line|#define inl(port)        in_le32(port)
 DECL|macro|outl
-mdefine_line|#define outl(val,port)  out_le32((port),(val))
-DECL|macro|readb
-mdefine_line|#define readb(addr)  in_8(addr)
-DECL|macro|readw
-mdefine_line|#define readw(addr)  in_le16(addr)
+mdefine_line|#define outl(val,port)   out_le32((port),(val))
 DECL|macro|readl
-mdefine_line|#define readl(addr)  in_le32(addr)
+mdefine_line|#define readl(addr)      in_le32(addr)
+DECL|macro|writel
+mdefine_line|#define writel(val,addr) out_le32((addr),(val))
+multiline_comment|/* those can be defined for both ISA and PCI - it wont work though */
+DECL|macro|readb
+mdefine_line|#define readb(addr)       in_8(addr)
+DECL|macro|readw
+mdefine_line|#define readw(addr)       in_le16(addr)
 DECL|macro|writeb
 mdefine_line|#define writeb(val,addr)  out_8((addr),(val))
 DECL|macro|writew
 mdefine_line|#define writew(val,addr)  out_le16((addr),(val))
-DECL|macro|writel
-mdefine_line|#define writel(val,addr)  out_le32((addr),(val))
 macro_line|#ifndef CONFIG_ISA
 DECL|macro|inb
 mdefine_line|#define inb(port)      in_8(port)
@@ -414,7 +479,7 @@ mdefine_line|#define inw(port)      in_le16(port)
 DECL|macro|outw
 mdefine_line|#define outw(val,port) out_le16((port),(val))
 macro_line|#else
-multiline_comment|/*&n; * kernel with both ISA and PCI compiled in, those have &n; * conflicting defs for in/out. Simply consider port &lt; 1024 &n; * ISA and everything else PCI&n; */
+multiline_comment|/*&n; * kernel with both ISA and PCI compiled in, those have &n; * conflicting defs for in/out. Simply consider port &lt; 1024 &n; * ISA and everything else PCI. read,write not defined&n; * in this case&n; */
 DECL|macro|inb
 mdefine_line|#define inb(port) ((port)&lt;1024 ? isa_inb(port) : in_8(port))
 DECL|macro|inb_p
@@ -596,23 +661,49 @@ id|IOMAP_FULL_CACHING
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* m68k caches aren&squot;t DMA coherent */
 r_extern
 r_void
-id|iounmap
+id|dma_cache_wback_inv
 c_func
 (paren
-r_void
-op_star
-id|addr
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|size
 )paren
 suffix:semicolon
-multiline_comment|/* Nothing to do */
-DECL|macro|dma_cache_inv
-mdefine_line|#define dma_cache_inv(_start,_size)&t;&t;do { } while (0)
-DECL|macro|dma_cache_wback
-mdefine_line|#define dma_cache_wback(_start,_size)&t;&t;do { } while (0)
-DECL|macro|dma_cache_wback_inv
-mdefine_line|#define dma_cache_wback_inv(_start,_size)&t;do { } while (0)
+r_extern
+r_void
+id|dma_cache_wback
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dma_cache_inv
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
 macro_line|#ifndef CONFIG_SUN3
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffff

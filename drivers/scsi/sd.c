@@ -2252,6 +2252,10 @@ id|block_device_operations
 id|sd_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|sd_open

@@ -3034,6 +3034,15 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
+l_string|&quot;.......     : PRQ implemented: %X&bslash;n&quot;
+comma
+id|reg_01.PRQ
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
 l_string|&quot;.......     : IO APIC version: %04X&bslash;n&quot;
 comma
 id|reg_01.version
@@ -5146,6 +5155,13 @@ l_int|0x1f
 )paren
 )paren
 (brace
+macro_line|#ifdef APIC_LOCKUP_DEBUG
+r_struct
+id|irq_pin_list
+op_star
+id|entry
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef APIC_MISMATCH_DEBUG
 id|atomic_inc
 c_func
@@ -5172,19 +5188,15 @@ macro_line|#ifdef APIC_LOCKUP_DEBUG
 r_for
 c_loop
 (paren
-suffix:semicolon
-suffix:semicolon
-)paren
-(brace
-r_struct
-id|irq_pin_list
-op_star
 id|entry
 op_assign
 id|irq_2_pin
 op_plus
 id|irq
 suffix:semicolon
+suffix:semicolon
+)paren
+(brace
 r_int
 r_int
 id|reg

@@ -20103,6 +20103,7 @@ id|AC97_POWER_CONTROL
 )paren
 suffix:semicolon
 id|ali_ac97_set
+c_func
 (paren
 id|card
 comma
@@ -20112,6 +20113,9 @@ id|AC97_POWER_CONTROL
 comma
 id|ac97_data
 op_or
+id|ALI_EAPD_POWER_DOWN
+)paren
+suffix:semicolon
 )brace
 )brace
 macro_line|#endif

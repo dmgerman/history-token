@@ -32,6 +32,40 @@ DECL|macro|io_p2v
 mdefine_line|#define io_p2v( x )             &bslash;&n;   ( (((x)&amp;0x00ffffff) | (((x)&amp;0x30000000)&gt;&gt;VIO_SHIFT)) + VIO_BASE )
 DECL|macro|io_v2p
 mdefine_line|#define io_v2p( x )             &bslash;&n;   ( (((x)&amp;0x00ffffff) | (((x)&amp;(0x30000000&gt;&gt;VIO_SHIFT))&lt;&lt;VIO_SHIFT)) + PIO_START )
+macro_line|#ifndef __ASSEMBLY__
+macro_line|#if 0
+macro_line|# define __REG(x)&t;(*((volatile unsigned long *)io_p2v(x)))
+macro_line|#else
+multiline_comment|/*&n; * This __REG() version gives the same results as the one above,  except&n; * that we are fooling gcc somehow so it generates far better and smaller&n; * assembly code for access to contigous registers.  It&squot;s a shame that gcc&n; * doesn&squot;t guess this by itself.&n; */
+DECL|member|offset
+DECL|typedef|__regbase
+r_typedef
+r_struct
+(brace
+r_volatile
+r_int
+r_int
+id|offset
+(braket
+l_int|4096
+)braket
+suffix:semicolon
+)brace
+id|__regbase
+suffix:semicolon
+DECL|macro|__REGP
+macro_line|# define __REGP(x)&t;((__regbase *)((x)&amp;~4095))-&gt;offset[((x)&amp;4095)&gt;&gt;2]
+DECL|macro|__REG
+macro_line|# define __REG(x)&t;__REGP(io_p2v(x))
+macro_line|#endif
+DECL|macro|__PREG
+macro_line|# define __PREG(x)&t;(io_v2p((unsigned long)&amp;(x)))
+macro_line|#else
+DECL|macro|__REG
+macro_line|# define __REG(x)&t;io_p2v(x)
+DECL|macro|__PREG
+macro_line|# define __PREG(x)&t;io_v2p(x)
+macro_line|#endif
 macro_line|#include &quot;SA-1100.h&quot;
 multiline_comment|/*&n; * SA1100 GPIO edge detection for IRQs:&n; * IRQs are generated on Falling-Edge, Rising-Edge, or both.&n; * This must be called *before* the corresponding IRQ is registered.&n; * Use this instead of directly setting GRER/GFER.&n; */
 DECL|macro|GPIO_FALLING_EDGE
@@ -64,15 +98,9 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Implementation specifics&n; */
+multiline_comment|/*&n; * Implementation specifics.&n; *&n; * *** NOTE ***&n; * Any definitions in these files should be prefixed by an identifier -&n; * eg, ASSABET_UCB1300_IRQ  This will allow us to eleminate these&n; * ifdefs, and lots of other preprocessor gunk elsewhere.&n; */
 macro_line|#ifdef CONFIG_SA1100_PANGOLIN
 macro_line|#include &quot;pangolin.h&quot;
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_ASSABET
-macro_line|#include &quot;assabet.h&quot;
-macro_line|#else
-DECL|macro|machine_has_neponset
-mdefine_line|#define machine_has_neponset()&t;(0)
 macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_HUW_WEBPANEL
 macro_line|#include &quot;huw_webpanel.h&quot;
@@ -140,10 +168,13 @@ macro_line|#if defined(CONFIG_SA1100_FLEXANET)
 macro_line|#include &quot;flexanet.h&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_SA1111
+multiline_comment|/*&n; * The SA1111 is always located at virtual 0xf4000000.&n; */
+DECL|macro|SA1111_VBASE
+mdefine_line|#define SA1111_VBASE&t;&t;0xf4000000
 DECL|macro|SA1111_p2v
-mdefine_line|#define SA1111_p2v( x )         ((x) - SA1111_BASE + 0xf4000000)
+mdefine_line|#define SA1111_p2v( x )         ((x) - SA1111_BASE + SA1111_VBASE)
 DECL|macro|SA1111_v2p
-mdefine_line|#define SA1111_v2p( x )         ((x) - 0xf4000000 + SA1111_BASE)
+mdefine_line|#define SA1111_v2p( x )         ((x) - SA1111_VBASE + SA1111_BASE)
 macro_line|#include &quot;SA-1111.h&quot;
 macro_line|#endif
 macro_line|#endif  /* _ASM_ARCH_HARDWARE_H */

@@ -884,6 +884,10 @@ id|block_device_operations
 id|ida_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|ida_open
@@ -4577,8 +4581,6 @@ op_member_access_from_pointer
 id|usage_count
 op_increment
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4659,8 +4661,6 @@ id|ctlr
 op_member_access_from_pointer
 id|usage_count
 op_decrement
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

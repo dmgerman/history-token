@@ -227,7 +227,7 @@ DECL|macro|pte_to_swp_entry
 mdefine_line|#define pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|swp_entry_to_pte
 mdefine_line|#define swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
-macro_line|#endif CONFIG_SUN3
+macro_line|#endif /* CONFIG_SUN3 */
 macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* Needs to be defined here and not in linux/mm.h, as it is arch dependent */
 DECL|macro|PageSkip
@@ -245,5 +245,8 @@ macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* !__ASSEMBLY__ */
+multiline_comment|/*&n; * No page table caches to initialise&n; */
+DECL|macro|pgtable_cache_init
+mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
 macro_line|#endif /* _M68K_PGTABLE_H */
 eof

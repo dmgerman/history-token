@@ -2729,6 +2729,7 @@ op_minus
 id|EINTR
 suffix:semicolon
 )brace
+r_return
 id|put_user
 c_func
 (paren
@@ -2744,8 +2745,11 @@ op_star
 )paren
 id|buf
 )paren
-suffix:semicolon
-r_return
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
 l_int|4
 suffix:semicolon
 )brace

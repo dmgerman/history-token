@@ -267,7 +267,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* it is allowed to have multiple ATAG_MEM nodes */
 DECL|macro|ATAG_MEM
-mdefine_line|#define ATAG_MEM&t;&t;0x54410002
+mdefine_line|#define ATAG_MEM&t;0x54410002
 DECL|struct|tag_mem32
 r_struct
 id|tag_mem32

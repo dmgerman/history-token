@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -13,21 +14,21 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
-macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;asm/arch/assabet.h&gt;
 macro_line|#include &quot;generic.h&quot;
 DECL|variable|BCR_value
 r_int
 r_int
 id|BCR_value
 op_assign
-id|BCR_DB1110
+id|ASSABET_BCR_DB1110
 suffix:semicolon
 DECL|variable|SCR_value
 r_int
 r_int
 id|SCR_value
 op_assign
-id|SCR_INIT
+id|ASSABET_SCR_INIT
 suffix:semicolon
 DECL|variable|BCR_value
 id|EXPORT_SYMBOL
@@ -68,11 +69,11 @@ c_func
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Angel sets this, but other bootloaders may not.&n;&t;&t; *&n;&t;&t; * This must precede any driver calls to BCR_set()&n;&t;&t; * or BCR_clear().&n;&t;&t; */
-id|BCR
+id|ASSABET_BCR
 op_assign
 id|BCR_value
 op_assign
-id|BCR_DB1111
+id|ASSABET_BCR_DB1111
 suffix:semicolon
 id|NCR_0
 op_assign
@@ -114,7 +115,11 @@ r_int
 r_int
 id|phys
 op_assign
-id|_GPLR
+id|__PREG
+c_func
+(paren
+id|GPLR
+)paren
 op_amp
 id|PMD_MASK
 suffix:semicolon
@@ -649,22 +654,22 @@ c_cond
 (paren
 id|state
 )paren
-id|BCR_clear
+id|ASSABET_BCR_clear
 c_func
 (paren
-id|BCR_RS232EN
+id|ASSABET_BCR_RS232EN
 )paren
 suffix:semicolon
 r_else
-id|BCR_set
+id|ASSABET_BCR_set
 c_func
 (paren
-id|BCR_RS232EN
+id|ASSABET_BCR_RS232EN
 )paren
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Note! this can be called from IRQ context.&n; * FIXME: You _need_ to handle BCR carefully, which doesn&squot;t&n; * happen at the moment.  Suggest putting interrupt save/restore&n; * in BCR_set/clear.&n; *&n; * NB: Assabet uses COM_RTS and COM_DTR for both UART1 (com port)&n; * and UART3 (radio module).  We only handle them for UART1 here.&n; */
+multiline_comment|/*&n; * Note! this can be called from IRQ context.&n; * FIXME: You _need_ to handle ASSABET_BCR carefully, which doesn&squot;t&n; * happen at the moment.  Suggest putting interrupt save/restore&n; * in ASSABET_BCR_set/clear.&n; *&n; * NB: Assabet uses COM_RTS and COM_DTR for both UART1 (com port)&n; * and UART3 (radio module).  We only handle them for UART1 here.&n; */
 DECL|function|assabet_set_mctrl
 r_static
 r_void
@@ -706,12 +711,12 @@ id|TIOCM_RTS
 )paren
 id|set
 op_or_assign
-id|BCR_COM_RTS
+id|ASSABET_BCR_COM_RTS
 suffix:semicolon
 r_else
 id|clear
 op_or_assign
-id|BCR_COM_RTS
+id|ASSABET_BCR_COM_RTS
 suffix:semicolon
 r_if
 c_cond
@@ -722,20 +727,20 @@ id|TIOCM_DTR
 )paren
 id|set
 op_or_assign
-id|BCR_COM_DTR
+id|ASSABET_BCR_COM_DTR
 suffix:semicolon
 r_else
 id|clear
 op_or_assign
-id|BCR_COM_DTR
+id|ASSABET_BCR_COM_DTR
 suffix:semicolon
-id|BCR_clear
+id|ASSABET_BCR_clear
 c_func
 (paren
 id|clear
 )paren
 suffix:semicolon
-id|BCR_set
+id|ASSABET_BCR_set
 c_func
 (paren
 id|set
@@ -763,12 +768,12 @@ suffix:semicolon
 id|u_int
 id|bsr
 op_assign
-id|BSR
+id|ASSABET_BSR
 suffix:semicolon
 multiline_comment|/* need 2 reads to read current value */
 id|bsr
 op_assign
-id|BSR
+id|ASSABET_BSR
 suffix:semicolon
 r_if
 c_cond
@@ -783,7 +788,7 @@ c_cond
 (paren
 id|bsr
 op_amp
-id|BSR_COM_DCD
+id|ASSABET_BSR_COM_DCD
 )paren
 id|ret
 op_or_assign
@@ -794,7 +799,7 @@ c_cond
 (paren
 id|bsr
 op_amp
-id|BSR_COM_CTS
+id|ASSABET_BSR_COM_CTS
 )paren
 id|ret
 op_or_assign
@@ -805,7 +810,7 @@ c_cond
 (paren
 id|bsr
 op_amp
-id|BSR_COM_DSR
+id|ASSABET_BSR_COM_DSR
 )paren
 id|ret
 op_or_assign
@@ -826,7 +831,7 @@ c_cond
 (paren
 id|bsr
 op_amp
-id|BSR_RAD_DCD
+id|ASSABET_BSR_RAD_DCD
 )paren
 id|ret
 op_or_assign
@@ -837,7 +842,7 @@ c_cond
 (paren
 id|bsr
 op_amp
-id|BSR_RAD_CTS
+id|ASSABET_BSR_RAD_CTS
 )paren
 id|ret
 op_or_assign
@@ -848,7 +853,7 @@ c_cond
 (paren
 id|bsr
 op_amp
-id|BSR_RAD_DSR
+id|ASSABET_BSR_RAD_DSR
 )paren
 id|ret
 op_or_assign
@@ -859,7 +864,7 @@ c_cond
 (paren
 id|bsr
 op_amp
-id|BSR_RAD_RI
+id|ASSABET_BSR_RAD_RI
 )paren
 id|ret
 op_or_assign
@@ -1016,6 +1021,30 @@ op_or
 id|GPIO_SSP_SCLK
 op_or
 id|GPIO_SSP_SFRM
+suffix:semicolon
+multiline_comment|/*&n;&t; * Set up registers for sleep mode.&n;&t; */
+id|PWER
+op_assign
+id|PWER_GPIO0
+suffix:semicolon
+id|PGSR
+op_assign
+l_int|0
+suffix:semicolon
+id|PCFR
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t; * Clear all possible wakeup reasons.&n;&t; */
+id|RCSR
+op_assign
+id|RCSR_HWR
+op_or
+id|RCSR_SWR
+op_or
+id|RCSR_WDR
+op_or
+id|RCSR_SMR
 suffix:semicolon
 )brace
 id|MACHINE_START

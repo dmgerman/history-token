@@ -24518,7 +24518,7 @@ id|cmnd
 comma
 l_int|0xff
 comma
-l_int|12
+id|MAX_COMMAND_SIZE
 )paren
 suffix:semicolon
 id|TRACE2
@@ -24892,7 +24892,7 @@ id|cmnd
 comma
 l_int|0xff
 comma
-l_int|12
+id|MAX_COMMAND_SIZE
 )paren
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x020322

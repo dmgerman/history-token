@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/uncompress.h&n; * by Alexander Schulz &lt;aschulz@netwinder.org&gt;&n; *&n; * derived from:&n; * linux/include/asm-arm/arch-ebsa285/uncompress.h&n; * Copyright (C) 1996,1997,1998 Russell King&n; */
+multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/uncompress.h&n; * by Alexander Schulz&n; *&n; * derived from:&n; * linux/include/asm-arm/arch-ebsa285/uncompress.h&n; * Copyright (C) 1996,1997,1998 Russell King&n; */
 DECL|macro|SERIAL_BASE
 mdefine_line|#define SERIAL_BASE ((volatile unsigned char *)0x400003f8)
 DECL|function|putc

@@ -35,6 +35,10 @@ id|tapeblock_fops
 op_assign
 (brace
 macro_line|#endif
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|tapeblock_open
@@ -848,10 +852,6 @@ comma
 id|lockflags
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* MODULE */
 r_return
 l_int|0
 suffix:semicolon
@@ -1053,10 +1053,6 @@ comma
 id|lockflags
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* MODULE */
 id|invalidate_buffers
 c_func
 (paren

@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * uncompress.c&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; *&n; * cramfs interfaces to the uncompression library. There&squot;s really just&n; * three entrypoints:&n; *&n; *  - cramfs_uncompress_init() - called to initialize the thing.&n; *  - cramfs_uncompress_exit() - tell me when you&squot;re done&n; *  - cramfs_uncompress_block() - uncompress a block.&n; *&n; * NOTE NOTE NOTE! The uncompression is entirely single-threaded. We&n; * only have one stream, and we&squot;ll initialize it only once even if it&n; * then is used by multiple filesystems.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &quot;inflate/zlib.h&quot;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/zlib_fs.h&gt;
 DECL|variable|stream
 r_static
 id|z_stream
@@ -53,7 +55,7 @@ id|dstlen
 suffix:semicolon
 id|err
 op_assign
-id|cramfs_inflateReset
+id|zlib_fs_inflateReset
 c_func
 (paren
 op_amp
@@ -71,19 +73,19 @@ id|Z_OK
 id|printk
 c_func
 (paren
-l_string|&quot;cramfs_inflateReset error %d&bslash;n&quot;
+l_string|&quot;zlib_fs_inflateReset error %d&bslash;n&quot;
 comma
 id|err
 )paren
 suffix:semicolon
-id|cramfs_inflateEnd
+id|zlib_fs_inflateEnd
 c_func
 (paren
 op_amp
 id|stream
 )paren
 suffix:semicolon
-id|cramfs_inflateInit
+id|zlib_fs_inflateInit
 c_func
 (paren
 op_amp
@@ -93,7 +95,7 @@ suffix:semicolon
 )brace
 id|err
 op_assign
-id|cramfs_inflate
+id|zlib_fs_inflate
 c_func
 (paren
 op_amp
@@ -159,6 +161,33 @@ id|initialized
 op_increment
 )paren
 (brace
+id|stream.workspace
+op_assign
+id|vmalloc
+c_func
+(paren
+id|zlib_fs_inflate_workspacesize
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|stream.workspace
+)paren
+(brace
+id|initialized
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|stream.next_in
 op_assign
 l_int|NULL
@@ -167,7 +196,7 @@ id|stream.avail_in
 op_assign
 l_int|0
 suffix:semicolon
-id|cramfs_inflateInit
+id|zlib_fs_inflateInit
 c_func
 (paren
 op_amp
@@ -194,13 +223,21 @@ op_logical_neg
 op_decrement
 id|initialized
 )paren
-id|cramfs_inflateEnd
+(brace
+id|zlib_fs_inflateEnd
 c_func
 (paren
 op_amp
 id|stream
 )paren
 suffix:semicolon
+id|vfree
+c_func
+(paren
+id|stream.workspace
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

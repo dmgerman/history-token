@@ -7988,6 +7988,12 @@ c_func
 l_string|&quot;IT8172 AudioPCI97 Driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|it8172_probe
 r_static

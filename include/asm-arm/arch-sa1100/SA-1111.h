@@ -16,20 +16,23 @@ mdefine_line|#define SA1111_DMA_ADDR(x)&t;((x)&amp;SA1111_ADDR_MASK)
 multiline_comment|/*&n; * Don&squot;t ask the (SAC) DMA engines to move less than this amount.&n; */
 DECL|macro|SA1111_SAC_DMA_MIN_XFER
 mdefine_line|#define SA1111_SAC_DMA_MIN_XFER&t;(0x800)
+multiline_comment|/*&n; * SA1111 register definitions.&n; */
+DECL|macro|__CCREG
+mdefine_line|#define __CCREG(x)&t;__REGP(SA1111_VBASE + (x))
 multiline_comment|/* System Bus Interface (SBI)&n; *&n; * Registers&n; *    SKCR&t;Control Register&n; *    SMCR&t;Shared Memory Controller Register&n; *    SKID&t;ID Register&n; */
 DECL|macro|_SBI_SKCR
-mdefine_line|#define _SBI_SKCR&t;_SA1111( 0x0000 )
+mdefine_line|#define _SBI_SKCR&t;_SA1111(0x0000)
 DECL|macro|_SBI_SMCR
-mdefine_line|#define _SBI_SMCR&t;_SA1111( 0x0004 )
+mdefine_line|#define _SBI_SMCR&t;_SA1111(0x0004)
 DECL|macro|_SBI_SKID
-mdefine_line|#define _SBI_SKID&t;_SA1111( 0x0008 )
+mdefine_line|#define _SBI_SKID&t;_SA1111(0x0008)
 macro_line|#if LANGUAGE == C
 DECL|macro|SBI_SKCR
-mdefine_line|#define SBI_SKCR&t;(*((volatile Word *) SA1111_p2v (_SBI_SKCR)))
+mdefine_line|#define SBI_SKCR&t;__CCREG(0x0000)
 DECL|macro|SBI_SMCR
-mdefine_line|#define SBI_SMCR&t;(*((volatile Word *) SA1111_p2v (_SBI_SMCR)))
+mdefine_line|#define SBI_SMCR&t;__CCREG(0x0004)
 DECL|macro|SBI_SKID
-mdefine_line|#define SBI_SKID&t;(*((volatile Word *) SA1111_p2v (_SBI_SKID)))
+mdefine_line|#define SBI_SKID&t;__CCREG(0x0008)
 macro_line|#endif  /* LANGUAGE == C */
 DECL|macro|SKCR_PLL_BYPASS
 mdefine_line|#define SKCR_PLL_BYPASS&t;(1&lt;&lt;0)
@@ -101,23 +104,23 @@ DECL|macro|_SKPWM1
 mdefine_line|#define _SKPWM1&t;&t;_SA1111(0x0220)
 macro_line|#if LANGUAGE == C
 DECL|macro|SKPCR
-mdefine_line|#define SKPCR&t;&t;(*((volatile Word *) SA1111_p2v (_SKPCR)))
+mdefine_line|#define SKPCR&t;&t;__CCREG(0x0200)
 DECL|macro|SKCDR
-mdefine_line|#define SKCDR&t;&t;(*((volatile Word *) SA1111_p2v (_SKCDR)))
+mdefine_line|#define SKCDR&t;&t;__CCREG(0x0204)
 DECL|macro|SKAUD
-mdefine_line|#define SKAUD&t;&t;(*((volatile Word *) SA1111_p2v (_SKAUD)))
+mdefine_line|#define SKAUD&t;&t;__CCREG(0x0208)
 DECL|macro|SKPMC
-mdefine_line|#define SKPMC&t;&t;(*((volatile Word *) SA1111_p2v (_SKPMC)))
+mdefine_line|#define SKPMC&t;&t;__CCREG(0x020c)
 DECL|macro|SKPTC
-mdefine_line|#define SKPTC&t;&t;(*((volatile Word *) SA1111_p2v (_SKPTC)))
+mdefine_line|#define SKPTC&t;&t;__CCREG(0x0210)
 DECL|macro|SKPEN0
-mdefine_line|#define SKPEN0&t;&t;(*((volatile Word *) SA1111_p2v (_SKPEN0)))
+mdefine_line|#define SKPEN0&t;&t;__CCREG(0x0214)
 DECL|macro|SKPWM0
-mdefine_line|#define SKPWM0&t;&t;(*((volatile Word *) SA1111_p2v (_SKPWM0)))
+mdefine_line|#define SKPWM0&t;&t;__CCREG(0x0218)
 DECL|macro|SKPEN1
-mdefine_line|#define SKPEN1&t;&t;(*((volatile Word *) SA1111_p2v (_SKPEN1)))
+mdefine_line|#define SKPEN1&t;&t;__CCREG(0x021c)
 DECL|macro|SKPWM1
-mdefine_line|#define SKPWM1&t;&t;(*((volatile Word *) SA1111_p2v (_SKPWM1)))
+mdefine_line|#define SKPWM1&t;&t;__CCREG(0x0220)
 macro_line|#endif  /* LANGUAGE == C */
 DECL|macro|SKPCR_UCLKEN
 mdefine_line|#define SKPCR_UCLKEN&t;(1&lt;&lt;0)
@@ -150,13 +153,13 @@ DECL|macro|_USB_EXTENT
 mdefine_line|#define _USB_EXTENT&t;&t;(_USB_INTERRUPTEST - _USB_OHCI_OP_BASE + 4)
 macro_line|#if LANGUAGE == C
 DECL|macro|USB_OHCI_OP_BASE
-mdefine_line|#define USB_OHCI_OP_BASE&t;(*((volatile Word *) SA1111_p2v (_USB_OHCI_OP_BASE)))
+mdefine_line|#define USB_OHCI_OP_BASE&t;__CCREG(0x0400)
 DECL|macro|USB_STATUS
-mdefine_line|#define USB_STATUS&t;&t;(*((volatile Word *) SA1111_p2v (_USB_STATUS)))
+mdefine_line|#define USB_STATUS&t;&t;__CCREG(0x0518)
 DECL|macro|USB_RESET
-mdefine_line|#define USB_RESET&t;&t;(*((volatile Word *) SA1111_p2v (_USB_RESET)))
+mdefine_line|#define USB_RESET&t;&t;__CCREG(0x051c)
 DECL|macro|USB_INTERRUPTEST
-mdefine_line|#define USB_INTERRUPTEST&t;(*((volatile Word *) SA1111_p2v (_USB_INTERRUPTEST)))
+mdefine_line|#define USB_INTERRUPTEST&t;__CCReG(0x0520)
 macro_line|#endif  /* LANGUAGE == C */
 DECL|macro|USB_RESET_FORCEIFRESET
 mdefine_line|#define USB_RESET_FORCEIFRESET&t;(1 &lt;&lt; 0)
@@ -225,53 +228,53 @@ DECL|macro|_SADR
 mdefine_line|#define _SADR           _SA1111( 0x0680 )
 macro_line|#if LANGUAGE == C
 DECL|macro|SACR0
-mdefine_line|#define SACR0&t;&t;(*((volatile Word *) SA1111_p2v (_SACR0)))
+mdefine_line|#define SACR0&t;&t;__CCREG(0x0600)
 DECL|macro|SACR1
-mdefine_line|#define SACR1&t;&t;(*((volatile Word *) SA1111_p2v (_SACR1)))
+mdefine_line|#define SACR1&t;&t;__CCREG(0x0604)
 DECL|macro|SACR2
-mdefine_line|#define SACR2&t;&t;(*((volatile Word *) SA1111_p2v (_SACR2)))
+mdefine_line|#define SACR2&t;&t;__CCREG(0x0608)
 DECL|macro|SASR0
-mdefine_line|#define SASR0&t;&t;(*((volatile Word *) SA1111_p2v (_SASR0)))
+mdefine_line|#define SASR0&t;&t;__CCREG(0x060c)
 DECL|macro|SASR1
-mdefine_line|#define SASR1&t;&t;(*((volatile Word *) SA1111_p2v (_SASR1)))
+mdefine_line|#define SASR1&t;&t;__CCREG(0x0610)
 DECL|macro|SASCR
-mdefine_line|#define SASCR&t;&t;(*((volatile Word *) SA1111_p2v (_SASCR)))
+mdefine_line|#define SASCR&t;&t;__CCREG(0x0618)
 DECL|macro|L3_CAR
-mdefine_line|#define L3_CAR&t;&t;(*((volatile Word *) SA1111_p2v (_L3_CAR)))
+mdefine_line|#define L3_CAR&t;&t;__CCREG(0x061c)
 DECL|macro|L3_CDR
-mdefine_line|#define L3_CDR&t;&t;(*((volatile Word *) SA1111_p2v (_L3_CDR)))
+mdefine_line|#define L3_CDR&t;&t;__CCREG(0x0620)
 DECL|macro|ACCAR
-mdefine_line|#define ACCAR&t;&t;(*((volatile Word *) SA1111_p2v (_ACCAR)))
+mdefine_line|#define ACCAR&t;&t;__CCREG(0x0624)
 DECL|macro|ACCDR
-mdefine_line|#define ACCDR&t;&t;(*((volatile Word *) SA1111_p2v (_ACCDR)))
+mdefine_line|#define ACCDR&t;&t;__CCREG(0x0628)
 DECL|macro|ACSAR
-mdefine_line|#define ACSAR&t;&t;(*((volatile Word *) SA1111_p2v (_ACSAR)))
+mdefine_line|#define ACSAR&t;&t;__CCREG(0x062c)
 DECL|macro|ACSDR
-mdefine_line|#define ACSDR&t;&t;(*((volatile Word *) SA1111_p2v (_ACSDR)))
+mdefine_line|#define ACSDR&t;&t;__CCREG(0x0630)
 DECL|macro|SADTCS
-mdefine_line|#define SADTCS&t;&t;(*((volatile Word *) SA1111_p2v (_SADTCS)))
+mdefine_line|#define SADTCS&t;&t;__CCREG(0x0634)
 DECL|macro|SADTSA
-mdefine_line|#define SADTSA&t;&t;(*((volatile Word *) SA1111_p2v (_SADTSA)))
+mdefine_line|#define SADTSA&t;&t;__CCREG(0x0638)
 DECL|macro|SADTCA
-mdefine_line|#define SADTCA&t;&t;(*((volatile Word *) SA1111_p2v (_SADTCA)))
+mdefine_line|#define SADTCA&t;&t;__CCREG(0x063c)
 DECL|macro|SADTSB
-mdefine_line|#define SADTSB&t;&t;(*((volatile Word *) SA1111_p2v (_SADTSB)))
+mdefine_line|#define SADTSB&t;&t;__CCREG(0x0640)
 DECL|macro|SADTCB
-mdefine_line|#define SADTCB&t;&t;(*((volatile Word *) SA1111_p2v (_SADTCB)))
+mdefine_line|#define SADTCB&t;&t;__CCREG(0x0644)
 DECL|macro|SADRCS
-mdefine_line|#define SADRCS&t;&t;(*((volatile Word *) SA1111_p2v (_SADRCS)))
+mdefine_line|#define SADRCS&t;&t;__CCREG(0x0648)
 DECL|macro|SADRSA
-mdefine_line|#define SADRSA&t;&t;(*((volatile Word *) SA1111_p2v (_SADRSA)))
+mdefine_line|#define SADRSA&t;&t;__CCREG(0x064c)
 DECL|macro|SADRCA
-mdefine_line|#define SADRCA&t;&t;(*((volatile Word *) SA1111_p2v (_SADRCA)))
+mdefine_line|#define SADRCA&t;&t;__CCREG(0x0650)
 DECL|macro|SADRSB
-mdefine_line|#define SADRSB&t;&t;(*((volatile Word *) SA1111_p2v (_SADRSB)))
+mdefine_line|#define SADRSB&t;&t;__CCREG(0x0654)
 DECL|macro|SADRCB
-mdefine_line|#define SADRCB&t;&t;(*((volatile Word *) SA1111_p2v (_SADRCB)))
+mdefine_line|#define SADRCB&t;&t;__CCREG(0x0658)
 DECL|macro|SAITR
-mdefine_line|#define SAITR&t;&t;(*((volatile Word *) SA1111_p2v (_SAITR)))
+mdefine_line|#define SAITR&t;&t;__CCREG(0x065c)
 DECL|macro|SADR
-mdefine_line|#define SADR&t;&t;(*((volatile Word *) SA1111_p2v (_SADR)))
+mdefine_line|#define SADR&t;&t;__CCREG(0x0680)
 macro_line|#endif  /* LANGUAGE == C */
 DECL|macro|SACR0_ENB
 mdefine_line|#define SACR0_ENB&t;(1&lt;&lt;0)
@@ -458,35 +461,35 @@ DECL|macro|_PC_SSR
 mdefine_line|#define _PC_SSR&t;&t;_SA1111( 0x102c )
 macro_line|#if LANGUAGE == C
 DECL|macro|PA_DDR
-mdefine_line|#define PA_DDR&t;&t;(*((volatile Word *) SA1111_p2v (_PA_DDR)))
+mdefine_line|#define PA_DDR&t;&t;__CCREG(0x1000)
 DECL|macro|PA_DRR
-mdefine_line|#define PA_DRR&t;&t;(*((volatile Word *) SA1111_p2v (_PA_DRR)))
+mdefine_line|#define PA_DRR&t;&t;__CCREG(0x1004)
 DECL|macro|PA_DWR
-mdefine_line|#define PA_DWR&t;&t;(*((volatile Word *) SA1111_p2v (_PA_DWR)))
+mdefine_line|#define PA_DWR&t;&t;__CCREG(0x1004)
 DECL|macro|PA_SDR
-mdefine_line|#define PA_SDR&t;&t;(*((volatile Word *) SA1111_p2v (_PA_SDR)))
+mdefine_line|#define PA_SDR&t;&t;__CCREG(0x1008)
 DECL|macro|PA_SSR
-mdefine_line|#define PA_SSR&t;&t;(*((volatile Word *) SA1111_p2v (_PA_SSR)))
+mdefine_line|#define PA_SSR&t;&t;__CCREG(0x100c)
 DECL|macro|PB_DDR
-mdefine_line|#define PB_DDR&t;&t;(*((volatile Word *) SA1111_p2v (_PB_DDR)))
+mdefine_line|#define PB_DDR&t;&t;__CCREG(0x1010)
 DECL|macro|PB_DRR
-mdefine_line|#define PB_DRR&t;&t;(*((volatile Word *) SA1111_p2v (_PB_DRR)))
+mdefine_line|#define PB_DRR&t;&t;__CCREG(0x1014)
 DECL|macro|PB_DWR
-mdefine_line|#define PB_DWR&t;&t;(*((volatile Word *) SA1111_p2v (_PB_DWR)))
+mdefine_line|#define PB_DWR&t;&t;__CCREG(0x1014)
 DECL|macro|PB_SDR
-mdefine_line|#define PB_SDR&t;&t;(*((volatile Word *) SA1111_p2v (_PB_SDR)))
+mdefine_line|#define PB_SDR&t;&t;__CCREG(0x1018)
 DECL|macro|PB_SSR
-mdefine_line|#define PB_SSR&t;&t;(*((volatile Word *) SA1111_p2v (_PB_SSR)))
+mdefine_line|#define PB_SSR&t;&t;__CCREG(0x101c)
 DECL|macro|PC_DDR
-mdefine_line|#define PC_DDR&t;&t;(*((volatile Word *) SA1111_p2v (_PC_DDR)))
+mdefine_line|#define PC_DDR&t;&t;__CCREG(0x1020)
 DECL|macro|PC_DRR
-mdefine_line|#define PC_DRR&t;&t;(*((volatile Word *) SA1111_p2v (_PC_DRR)))
+mdefine_line|#define PC_DRR&t;&t;__CCREG(0x1024)
 DECL|macro|PC_DWR
-mdefine_line|#define PC_DWR&t;&t;(*((volatile Word *) SA1111_p2v (_PC_DWR)))
+mdefine_line|#define PC_DWR&t;&t;__CCREG(0x1024)
 DECL|macro|PC_SDR
-mdefine_line|#define PC_SDR&t;&t;(*((volatile Word *) SA1111_p2v (_PC_SDR)))
+mdefine_line|#define PC_SDR&t;&t;__CCREG(0x1028)
 DECL|macro|PC_SSR
-mdefine_line|#define PC_SSR&t;&t;(*((volatile Word *) SA1111_p2v (_PC_SSR)))
+mdefine_line|#define PC_SSR&t;&t;__CCREG(0x102c)
 macro_line|#endif  /* LANGUAGE == C */
 multiline_comment|/*&n; * Interrupt Controller&n; *&n; * Registers&n; *    INTTEST0&t;&t;Test register 0&n; *    INTTEST1&t;&t;Test register 1&n; *    INTEN0&t;&t;Interrupt Enable register 0&n; *    INTEN1&t;&t;Interrupt Enable register 1&n; *    INTPOL0&t;&t;Interrupt Polarity selection 0&n; *    INTPOL1&t;&t;Interrupt Polarity selection 1&n; *    INTTSTSEL&t;&t;Interrupt source selection&n; *    INTSTATCLR0&t;Interrupt Status/Clear 0&n; *    INTSTATCLR1&t;Interrupt Status/Clear 1&n; *    INTSET0&t;&t;Interrupt source set 0&n; *    INTSET1&t;&t;Interrupt source set 1&n; *    WAKE_EN0&t;&t;Wake-up source enable 0&n; *    WAKE_EN1&t;&t;Wake-up source enable 1&n; *    WAKE_POL0&t;&t;Wake-up polarity selection 0&n; *    WAKE_POL1&t;&t;Wake-up polarity selection 1&n; */
 DECL|macro|_INTTEST0
@@ -521,35 +524,35 @@ DECL|macro|_WAKE_POL1
 mdefine_line|#define _WAKE_POL1&t;_SA1111( 0x1638 )
 macro_line|#if LANGUAGE == C
 DECL|macro|INTTEST0
-mdefine_line|#define INTTEST0&t;(*((volatile Word *) SA1111_p2v (_INTTEST0)))
+mdefine_line|#define INTTEST0&t;__CCREG(0x1600)
 DECL|macro|INTTEST1
-mdefine_line|#define INTTEST1&t;(*((volatile Word *) SA1111_p2v (_INTTEST1)))
+mdefine_line|#define INTTEST1&t;__CCREG(0x1604)
 DECL|macro|INTEN0
-mdefine_line|#define INTEN0&t;&t;(*((volatile Word *) SA1111_p2v (_INTEN0)))
+mdefine_line|#define INTEN0&t;&t;__CCREG(0x1608)
 DECL|macro|INTEN1
-mdefine_line|#define INTEN1&t;&t;(*((volatile Word *) SA1111_p2v (_INTEN1)))
+mdefine_line|#define INTEN1&t;&t;__CCREG(0x160c)
 DECL|macro|INTPOL0
-mdefine_line|#define INTPOL0&t;&t;(*((volatile Word *) SA1111_p2v (_INTPOL0)))
+mdefine_line|#define INTPOL0&t;&t;__CCREG(0x1610)
 DECL|macro|INTPOL1
-mdefine_line|#define INTPOL1&t;&t;(*((volatile Word *) SA1111_p2v (_INTPOL1)))
+mdefine_line|#define INTPOL1&t;&t;__CCREG(0x1614)
 DECL|macro|INTTSTSEL
-mdefine_line|#define INTTSTSEL&t;(*((volatile Word *) SA1111_p2v (_INTTSTSEL)))
+mdefine_line|#define INTTSTSEL&t;__CCREG(0x1618)
 DECL|macro|INTSTATCLR0
-mdefine_line|#define INTSTATCLR0&t;(*((volatile Word *) SA1111_p2v (_INTSTATCLR0)))
+mdefine_line|#define INTSTATCLR0&t;__CCREG(0x161c)
 DECL|macro|INTSTATCLR1
-mdefine_line|#define INTSTATCLR1&t;(*((volatile Word *) SA1111_p2v (_INTSTATCLR1)))
+mdefine_line|#define INTSTATCLR1&t;__CCREG(0x1620)
 DECL|macro|INTSET0
-mdefine_line|#define INTSET0&t;&t;(*((volatile Word *) SA1111_p2v (_INTSET0)))
+mdefine_line|#define INTSET0&t;&t;__CCREG(0x1624)
 DECL|macro|INTSET1
-mdefine_line|#define INTSET1&t;&t;(*((volatile Word *) SA1111_p2v (_INTSET1)))
+mdefine_line|#define INTSET1&t;&t;__CCREG(0x1628)
 DECL|macro|WAKE_EN0
-mdefine_line|#define WAKE_EN0&t;(*((volatile Word *) SA1111_p2v (_WAKE_EN0)))
+mdefine_line|#define WAKE_EN0&t;__CCREG(0x162c)
 DECL|macro|WAKE_EN1
-mdefine_line|#define WAKE_EN1&t;(*((volatile Word *) SA1111_p2v (_WAKE_EN1)))
+mdefine_line|#define WAKE_EN1&t;__CCREG(0x1630)
 DECL|macro|WAKE_POL0
-mdefine_line|#define WAKE_POL0&t;(*((volatile Word *) SA1111_p2v (_WAKE_POL0)))
+mdefine_line|#define WAKE_POL0&t;__CCREG(0x1634)
 DECL|macro|WAKE_POL1
-mdefine_line|#define WAKE_POL1&t;(*((volatile Word *) SA1111_p2v (_WAKE_POL1)))
+mdefine_line|#define WAKE_POL1&t;__CCREG(0x1638)
 macro_line|#endif  /* LANGUAGE == C */
 multiline_comment|/*&n; * PS/2 Trackpad and Mouse Interfaces&n; *&n; * Registers   (prefix kbd applies to trackpad interface, mse to mouse)&n; *    KBDCR     Control Register&n; *    KBDSTAT       Status Register&n; *    KBDDATA       Transmit/Receive Data register&n; *    KBDCLKDIV     Clock Division Register&n; *    KBDPRECNT     Clock Precount Register&n; *    KBDTEST1      Test register 1&n; *    KBDTEST2      Test register 2&n; *    KBDTEST3      Test register 3&n; *    KBDTEST4      Test register 4&n; *    MSECR&n; *    MSESTAT&n; *    MSEDATA&n; *    MSECLKDIV&n; *    MSEPRECNT&n; *    MSETEST1&n; *    MSETEST2&n; *    MSETEST3&n; *    MSETEST4&n; *&n; */
 DECL|macro|_KBD
@@ -557,7 +560,7 @@ mdefine_line|#define _KBD( x )   _SA1111( 0x0A00 )
 DECL|macro|_MSE
 mdefine_line|#define _MSE( x )   _SA1111( 0x0C00 )
 DECL|macro|_KBDCR
-mdefine_line|#define _KBDCR      _SA1111( 0x0A00 )
+mdefine_line|#define _KBDCR&t;    _SA1111( 0x0A00 )
 DECL|macro|_KBDSTAT
 mdefine_line|#define _KBDSTAT    _SA1111( 0x0A04 )
 DECL|macro|_KBDDATA
@@ -567,7 +570,7 @@ mdefine_line|#define _KBDCLKDIV  _SA1111( 0x0A0C )
 DECL|macro|_KBDPRECNT
 mdefine_line|#define _KBDPRECNT  _SA1111( 0x0A10 )
 DECL|macro|_MSECR
-mdefine_line|#define _MSECR      _SA1111( 0x0C00 )
+mdefine_line|#define _MSECR&t;    _SA1111( 0x0C00 )
 DECL|macro|_MSESTAT
 mdefine_line|#define _MSESTAT    _SA1111( 0x0C04 )
 DECL|macro|_MSEDATA
@@ -578,41 +581,25 @@ DECL|macro|_MSEPRECNT
 mdefine_line|#define _MSEPRECNT  _SA1111( 0x0C10 )
 macro_line|#if ( LANGUAGE == C )
 DECL|macro|KBDCR
-mdefine_line|#define KBDCR       (*((volatile Word *) SA1111_p2v (_KBDCR)))
+mdefine_line|#define KBDCR&t;&t;__CCREG(0x0a00)
 DECL|macro|KBDSTAT
-mdefine_line|#define KBDSTAT     (*((volatile Word *) SA1111_p2v (_KBDSTAT)))
+mdefine_line|#define KBDSTAT&t;&t;__CCREG(0x0a04)
 DECL|macro|KBDDATA
-mdefine_line|#define KBDDATA     (*((volatile Word *) SA1111_p2v (_KBDDATA)))
+mdefine_line|#define KBDDATA&t;&t;__CCREG(0x0a08)
 DECL|macro|KBDCLKDIV
-mdefine_line|#define KBDCLKDIV   (*((volatile Word *) SA1111_p2v (_KBDCLKDIV)))
+mdefine_line|#define KBDCLKDIV&t;__CCREG(0x0a0c)
 DECL|macro|KBDPRECNT
-mdefine_line|#define KBDPRECNT   (*((volatile Word *) SA1111_p2v (_KBDPRECNT)))
-DECL|macro|KBDTEST1
-mdefine_line|#define KBDTEST1    (*((volatile Word *) SA1111_p2v (_KBDTEST1)))
-DECL|macro|KBDTEST2
-mdefine_line|#define KBDTEST2    (*((volatile Word *) SA1111_p2v (_KBDTEST2)))
-DECL|macro|KBDTEST3
-mdefine_line|#define KBDTEST3    (*((volatile Word *) SA1111_p2v (_KBDTEST3)))
-DECL|macro|KBDTEST4
-mdefine_line|#define KBDTEST4    (*((volatile Word *) SA1111_p2v (_KBDTEST4)))
+mdefine_line|#define KBDPRECNT&t;__CCREG(0x0a10)
 DECL|macro|MSECR
-mdefine_line|#define MSECR       (*((volatile Word *) SA1111_p2v (_MSECR)))
+mdefine_line|#define MSECR&t;&t;__CCREG(0x0c00)
 DECL|macro|MSESTAT
-mdefine_line|#define MSESTAT     (*((volatile Word *) SA1111_p2v (_MSESTAT)))
+mdefine_line|#define MSESTAT&t;&t;__CCREG(0x0c04)
 DECL|macro|MSEDATA
-mdefine_line|#define MSEDATA     (*((volatile Word *) SA1111_p2v (_MSEDATA)))
+mdefine_line|#define MSEDATA&t;&t;__CCREG(0x0c08)
 DECL|macro|MSECLKDIV
-mdefine_line|#define MSECLKDIV   (*((volatile Word *) SA1111_p2v (_MSECLKDIV)))
+mdefine_line|#define MSECLKDIV&t;__CCREG(0x0c0c)
 DECL|macro|MSEPRECNT
-mdefine_line|#define MSEPRECNT   (*((volatile Word *) SA1111_p2v (_MSEPRECNT)))
-DECL|macro|MSETEST1
-mdefine_line|#define MSETEST1    (*((volatile Word *) SA1111_p2v (_MSETEST1)))
-DECL|macro|MSETEST2
-mdefine_line|#define MSETEST2    (*((volatile Word *) SA1111_p2v (_MSETEST2)))
-DECL|macro|MSETEST3
-mdefine_line|#define MSETEST3    (*((volatile Word *) SA1111_p2v (_MSETEST3)))
-DECL|macro|MSETEST4
-mdefine_line|#define MSETEST4    (*((volatile Word *) SA1111_p2v (_MSETEST4)))
+mdefine_line|#define MSEPRECNT&t;__CCREG(0x0c10)
 DECL|macro|KBDCR_ENA
 mdefine_line|#define KBDCR_ENA        0x08
 DECL|macro|KBDCR_FKD
@@ -779,11 +766,11 @@ DECL|macro|_PCSR
 mdefine_line|#define _PCSR&t;&t;_SA1111( 0x1808 )
 macro_line|#if LANGUAGE == C
 DECL|macro|PCCR
-mdefine_line|#define PCCR&t;&t;(*((volatile Word *) SA1111_p2v (_PCCR)))
+mdefine_line|#define PCCR&t;&t;__CCREG(0x1800)
 DECL|macro|PCSSR
-mdefine_line|#define PCSSR&t;&t;(*((volatile Word *) SA1111_p2v (_PCSSR)))
+mdefine_line|#define PCSSR&t;&t;__CCREG(0x1804)
 DECL|macro|PCSR
-mdefine_line|#define PCSR&t;&t;(*((volatile Word *) SA1111_p2v (_PCSR)))
+mdefine_line|#define PCSR&t;&t;__CCREG(0x1808)
 macro_line|#endif  /* LANGUAGE == C */
 DECL|macro|PCSR_S0_READY
 mdefine_line|#define PCSR_S0_READY&t;(1&lt;&lt;0)

@@ -5352,8 +5352,6 @@ op_minus
 id|EROFS
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5559,8 +5557,6 @@ l_int|0
 suffix:semicolon
 id|err_out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 (paren
 op_minus
@@ -5595,10 +5591,6 @@ c_func
 (paren
 l_string|&quot;SJCD: release&bslash;n&quot;
 )paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 macro_line|#endif
 r_if
@@ -5691,6 +5683,10 @@ id|block_device_operations
 id|sjcd_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|sjcd_open

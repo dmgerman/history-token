@@ -1780,6 +1780,8 @@ singleline_comment|//&t;&t;    x_ID, Exchanges-&gt;fcExchange[x_ID].status);
 id|cpqfcTSCompleteExchange
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 id|fcChip
 comma
 id|x_ID
@@ -5272,6 +5274,8 @@ singleline_comment|// the exchange is done - complete
 id|cpqfcTSCompleteExchange
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 id|fcChip
 comma
 (paren
@@ -5281,7 +5285,6 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// complete
 id|Quit
 suffix:colon
 r_return
@@ -5477,6 +5480,8 @@ singleline_comment|// the exchange is done - complete
 id|cpqfcTSCompleteExchange
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 id|fcChip
 comma
 (paren
@@ -5486,7 +5491,6 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// complete
 id|Quit
 suffix:colon
 r_return
@@ -5999,6 +6003,8 @@ l_int|0x80000000
 id|cpqfcTSCompleteExchange
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 id|fcChip
 comma
 id|ExchangeID
@@ -6111,6 +6117,8 @@ l_int|0xFFFFFF
 id|cpqfcTSCompleteExchange
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 id|fcChip
 comma
 id|ExchangeID
@@ -6209,6 +6217,8 @@ singleline_comment|//            printk(&quot;complete x_ID %Xh on ABTS RJT&bsla
 id|cpqfcTSCompleteExchange
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 id|fcChip
 comma
 id|ExchangeID
@@ -6947,6 +6957,8 @@ macro_line|#endif
 id|cpqfcTSCompleteExchange
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 id|fcChip
 comma
 id|ExchangeID
@@ -7688,6 +7700,63 @@ singleline_comment|//&t;printk(&quot;&bslash;n&quot;);
 id|Done
 suffix:colon
 )brace
+r_static
+r_void
+DECL|function|call_scsi_done
+id|call_scsi_done
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|Cmnd
+)paren
+(brace
+singleline_comment|// We have to reinitialize sent_command here, so the scsi-mid
+singleline_comment|// layer won&squot;t re-use the scsi command leaving it set incorrectly.
+singleline_comment|// (incorrectly for our purposes...it&squot;s normally unused.)
+r_if
+c_cond
+(paren
+id|Cmnd-&gt;SCp.sent_command
+op_ne
+l_int|0
+)paren
+(brace
+singleline_comment|// was it a passthru?
+id|Cmnd-&gt;SCp.sent_command
+op_assign
+l_int|0
+suffix:semicolon
+id|Cmnd-&gt;result
+op_and_assign
+l_int|0xff00ffff
+suffix:semicolon
+id|Cmnd-&gt;result
+op_or_assign
+(paren
+id|DID_PASSTHROUGH
+op_lshift
+l_int|16
+)paren
+suffix:semicolon
+singleline_comment|// prevents retry
+)brace
+r_if
+c_cond
+(paren
+id|Cmnd-&gt;scsi_done
+op_ne
+l_int|NULL
+)paren
+(paren
+op_star
+id|Cmnd-&gt;scsi_done
+)paren
+(paren
+id|Cmnd
+)paren
+suffix:semicolon
+)brace
 singleline_comment|// After successfully getting a &quot;Process Login&quot; (PRLI) from an
 singleline_comment|// FC port, we want to Discover the LUNs so that we know the
 singleline_comment|// addressing type (e.g., FCP-SCSI Volume Set Address, Peripheral
@@ -8037,23 +8106,12 @@ suffix:semicolon
 singleline_comment|// ask for retry
 singleline_comment|//      printk(&quot; BoardLockCmnd[%d] %p Complete, chnl/target/lun %d/%d/%d&bslash;n&quot;,
 singleline_comment|//        i,Cmnd, Cmnd-&gt;channel, Cmnd-&gt;target, Cmnd-&gt;lun);
-r_if
-c_cond
-(paren
-id|Cmnd-&gt;scsi_done
-op_ne
-l_int|NULL
-)paren
-(brace
-(paren
-op_star
-id|Cmnd-&gt;scsi_done
-)paren
+id|call_scsi_done
+c_func
 (paren
 id|Cmnd
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 )brace
@@ -8176,7 +8234,9 @@ suffix:semicolon
 singleline_comment|// our IRQ
 singleline_comment|// Complete the &quot;bad target&quot; commands (normally only used during
 singleline_comment|// initialization, since we aren&squot;t supposed to call &quot;scsi_done&quot;
-singleline_comment|// inside the queuecommand() function).
+singleline_comment|// inside the queuecommand() function).  (this is overly contorted,
+singleline_comment|// scsi_done can be safely called from queuecommand for
+singleline_comment|// this bad target case.  May want to simplify this later)
 r_for
 c_loop
 (paren
@@ -8225,23 +8285,12 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|Cmnd-&gt;scsi_done
-op_ne
-l_int|NULL
-)paren
-(brace
-(paren
-op_star
-id|Cmnd-&gt;scsi_done
-)paren
+id|call_scsi_done
+c_func
 (paren
 id|Cmnd
 )paren
 suffix:semicolon
-)brace
 )brace
 r_else
 r_break
@@ -8361,6 +8410,8 @@ singleline_comment|// Link Service Exchange
 id|cpqfcTSCompleteExchange
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 id|fcChip
 comma
 id|i
@@ -9271,26 +9322,28 @@ r_if
 c_cond
 (paren
 id|Cmnd-&gt;scsi_done
-op_ne
+op_eq
 l_int|NULL
 )paren
 (brace
-(paren
-op_star
-id|Cmnd-&gt;scsi_done
-)paren
-(paren
-id|Cmnd
-)paren
-suffix:semicolon
-)brace
-r_else
 id|printk
 c_func
 (paren
 l_string|&quot;LinkDnCmnd scsi_done ptr null, port_id %Xh&bslash;n&quot;
 comma
 id|pLoggedInPort-&gt;port_id
+)paren
+suffix:semicolon
+id|Cmnd-&gt;SCp.sent_command
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+id|call_scsi_done
+c_func
+(paren
+id|Cmnd
 )paren
 suffix:semicolon
 op_star
@@ -11237,6 +11290,11 @@ id|ULONG
 id|build_SEST_sgList
 c_func
 (paren
+r_struct
+id|pci_dev
+op_star
+id|pcidev
+comma
 id|ULONG
 op_star
 id|SESTalPairStart
@@ -11250,7 +11308,8 @@ op_star
 id|sgPairs
 comma
 id|PSGPAGES
-id|sgPages
+op_star
+id|sgPages_head
 singleline_comment|// link list of TL Ext. S/G pages from O/S Pool
 )paren
 suffix:semicolon
@@ -12811,10 +12870,25 @@ suffix:semicolon
 singleline_comment|// add xmit FC frame len for data phase
 id|pIWE-&gt;Hdr_Addr
 op_assign
-id|virt_to_bus
-c_func
+id|fcChip-&gt;SEST-&gt;base
+op_plus
 (paren
-id|dataHDR
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|fcChip-&gt;SEST-&gt;DataHDR
+(braket
+op_star
+id|fcExchangeIndex
+)braket
+op_minus
+(paren
+r_int
+r_int
+)paren
+id|fcChip-&gt;SEST
 )paren
 suffix:semicolon
 id|pIWE-&gt;RSP_Len
@@ -12857,15 +12931,25 @@ suffix:semicolon
 singleline_comment|// clear out previous status
 id|pIWE-&gt;RSP_Addr
 op_assign
-id|virt_to_bus
-c_func
+id|fcChip-&gt;SEST-&gt;base
+op_plus
 (paren
+(paren
+r_int
+r_int
+)paren
 op_amp
 id|fcChip-&gt;SEST-&gt;RspHDR
 (braket
 op_star
 id|fcExchangeIndex
 )braket
+op_minus
+(paren
+r_int
+r_int
+)paren
+id|fcChip-&gt;SEST
 )paren
 suffix:semicolon
 singleline_comment|// Do we need local or extended gather list?
@@ -12876,6 +12960,8 @@ op_assign
 id|build_SEST_sgList
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 op_amp
 id|pIWE-&gt;GLen1
 comma
@@ -13165,15 +13251,25 @@ suffix:semicolon
 singleline_comment|// MS 24 bits Remote_ID
 id|pIRE-&gt;RSP_Addr
 op_assign
-id|virt_to_bus
-c_func
+id|fcChip-&gt;SEST-&gt;base
+op_plus
 (paren
+(paren
+r_int
+r_int
+)paren
 op_amp
 id|fcChip-&gt;SEST-&gt;RspHDR
 (braket
 op_star
 id|fcExchangeIndex
 )braket
+op_minus
+(paren
+r_int
+r_int
+)paren
+id|fcChip-&gt;SEST
 )paren
 suffix:semicolon
 singleline_comment|// Do we need local or extended gather list?
@@ -13184,6 +13280,8 @@ op_assign
 id|build_SEST_sgList
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 op_amp
 id|pIRE-&gt;SLen1
 comma
@@ -13488,6 +13586,8 @@ op_assign
 id|build_SEST_sgList
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 op_amp
 id|pTWE-&gt;SLen1
 comma
@@ -13772,10 +13872,26 @@ suffix:semicolon
 singleline_comment|// data frame Len always 32 bytes
 id|pTRE-&gt;Hdr_Addr
 op_assign
-id|virt_to_bus
-c_func
+singleline_comment|// bus address of dataHDR;
+id|fcChip-&gt;SEST-&gt;base
+op_plus
 (paren
-id|dataHDR
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|fcChip-&gt;SEST-&gt;DataHDR
+(braket
+op_star
+id|fcExchangeIndex
+)braket
+op_minus
+(paren
+r_int
+r_int
+)paren
+id|fcChip-&gt;SEST
 )paren
 suffix:semicolon
 id|pTRE-&gt;RSP_Len
@@ -13794,10 +13910,26 @@ suffix:semicolon
 singleline_comment|// MS 24 bits Remote_ID
 id|pTRE-&gt;RSP_Addr
 op_assign
-id|virt_to_bus
-c_func
+singleline_comment|// bus address of rspHDR
+id|fcChip-&gt;SEST-&gt;base
+op_plus
 (paren
-id|rspHDR
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|fcChip-&gt;SEST-&gt;RspHDR
+(braket
+op_star
+id|fcExchangeIndex
+)braket
+op_minus
+(paren
+r_int
+r_int
+)paren
+id|fcChip-&gt;SEST
 )paren
 suffix:semicolon
 singleline_comment|// Do we need local or extended gather list?
@@ -13808,6 +13940,8 @@ op_assign
 id|build_SEST_sgList
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 op_amp
 id|pTRE-&gt;GLen1
 comma
@@ -14032,14 +14166,21 @@ suffix:semicolon
 singleline_comment|// includes IRB flags &amp; len
 id|pIRB-&gt;Req_A_SFS_Addr
 op_assign
-id|virt_to_bus
-c_func
+singleline_comment|// TL needs physical addr of frame to send
+id|fcChip-&gt;exch_dma_handle
+op_plus
 (paren
-id|CMDfchs
+r_int
+r_int
 )paren
+id|CMDfchs
+op_minus
+(paren
+r_int
+r_int
+)paren
+id|Exchanges
 suffix:semicolon
-singleline_comment|// TL needs physical addr
-singleline_comment|// of frame to send
 id|pIRB-&gt;Req_A_SFS_D_ID
 op_assign
 id|CMDfchs-&gt;d_id
@@ -14067,6 +14208,8 @@ singleline_comment|// return resources...
 id|cpqfcTSCompleteExchange
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 id|fcChip
 comma
 op_star
@@ -14194,6 +14337,279 @@ singleline_comment|// RSP_CODE
 )brace
 )brace
 )brace
+r_static
+id|dma_addr_t
+DECL|function|cpqfc_pci_map_sg_page
+id|cpqfc_pci_map_sg_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pcidev
+comma
+id|ULONG
+op_star
+id|hw_paddr
+comma
+singleline_comment|// where to put phys addr for HW use
+r_void
+op_star
+id|sgp_vaddr
+comma
+singleline_comment|// the virtual address of the sg page 
+id|dma_addr_t
+op_star
+id|umap_paddr
+comma
+singleline_comment|// where to put phys addr for unmap
+r_int
+r_int
+op_star
+id|maplen
+comma
+singleline_comment|// where to store sg entry length
+r_int
+id|PairCount
+)paren
+singleline_comment|// number of sg pairs used in the page.&t;
+(brace
+r_int
+r_int
+id|aligned_addr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|sgp_vaddr
+suffix:semicolon
+op_star
+id|maplen
+op_assign
+id|PairCount
+op_star
+l_int|8
+suffix:semicolon
+id|aligned_addr
+op_add_assign
+id|TL_EXT_SG_PAGE_BYTELEN
+suffix:semicolon
+id|aligned_addr
+op_and_assign
+op_complement
+(paren
+id|TL_EXT_SG_PAGE_BYTELEN
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+op_star
+id|umap_paddr
+op_assign
+id|pci_map_single
+c_func
+(paren
+id|pcidev
+comma
+(paren
+r_void
+op_star
+)paren
+id|aligned_addr
+comma
+op_star
+id|maplen
+comma
+id|PCI_DMA_TODEVICE
+)paren
+suffix:semicolon
+op_star
+id|hw_paddr
+op_assign
+(paren
+id|ULONG
+)paren
+op_star
+id|umap_paddr
+suffix:semicolon
+macro_line|#       if BITS_PER_LONG &gt; 32
+r_if
+c_cond
+(paren
+op_star
+id|umap_paddr
+op_rshift
+l_int|32
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;cqpfcTS:Tach SG DMA addr %p&gt;32 bits&bslash;n&quot;
+comma
+(paren
+r_void
+op_star
+)paren
+id|umap_paddr
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#       endif
+r_return
+op_star
+id|umap_paddr
+suffix:semicolon
+)brace
+r_static
+r_void
+DECL|function|cpqfc_undo_SEST_mappings
+id|cpqfc_undo_SEST_mappings
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pcidev
+comma
+r_int
+r_int
+id|contigaddr
+comma
+r_int
+id|len
+comma
+r_int
+id|dir
+comma
+r_struct
+id|scatterlist
+op_star
+id|sgl
+comma
+r_int
+id|use_sg
+comma
+id|PSGPAGES
+op_star
+id|sgPages_head
+comma
+r_int
+id|allocated_pages
+)paren
+(brace
+id|PSGPAGES
+id|i
+comma
+id|next
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|contigaddr
+op_ne
+(paren
+r_int
+r_int
+)paren
+l_int|NULL
+)paren
+id|pci_unmap_single
+c_func
+(paren
+id|pcidev
+comma
+id|contigaddr
+comma
+id|len
+comma
+id|dir
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sgl
+op_ne
+l_int|NULL
+)paren
+id|pci_unmap_sg
+c_func
+(paren
+id|pcidev
+comma
+id|sgl
+comma
+id|use_sg
+comma
+id|dir
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+op_star
+id|sgPages_head
+suffix:semicolon
+id|i
+op_ne
+l_int|NULL
+suffix:semicolon
+id|i
+op_assign
+id|next
+)paren
+(brace
+id|pci_unmap_single
+c_func
+(paren
+id|pcidev
+comma
+id|i-&gt;busaddr
+comma
+id|i-&gt;maplen
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|PCI_DMA_TODEVICE
+)paren
+)paren
+suffix:semicolon
+id|i-&gt;busaddr
+op_assign
+(paren
+id|dma_addr_t
+)paren
+l_int|NULL
+suffix:semicolon
+id|i-&gt;maplen
+op_assign
+l_int|0L
+suffix:semicolon
+id|next
+op_assign
+id|i-&gt;next
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+)brace
+op_star
+id|sgPages_head
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 singleline_comment|// This routine builds scatter/gather lists into SEST entries
 singleline_comment|// INPUTS:
 singleline_comment|//   SESTalPair - SEST address @DWordA &quot;Local Buffer Length&quot;
@@ -14208,12 +14624,24 @@ singleline_comment|//   require this Extended S/G list page.  The page holds 4, 
 singleline_comment|//   len/addr pairs, per Scatter/Gather List Page Length Reg.
 singleline_comment|//   TachLite allows pages to be linked to any depth.
 singleline_comment|//#define DBG_SEST_SGLIST 1 // for printing out S/G pairs with Ext. pages
+DECL|variable|ap_hi_water
+r_static
+r_int
+id|ap_hi_water
+op_assign
+id|TL_DANGER_SGPAGES
+suffix:semicolon
 DECL|function|build_SEST_sgList
 r_static
 id|ULONG
 id|build_SEST_sgList
 c_func
 (paren
+r_struct
+id|pci_dev
+op_star
+id|pcidev
+comma
 id|ULONG
 op_star
 id|SESTalPairStart
@@ -14228,7 +14656,8 @@ op_star
 id|sgPairs
 comma
 id|PSGPAGES
-id|sgPages
+op_star
+id|sgPages_head
 )paren
 singleline_comment|// link list of TL Ext. S/G pages from O/S Pool
 (brace
@@ -14247,15 +14676,19 @@ op_assign
 id|SESTalPairStart
 suffix:semicolon
 id|ULONG
-id|alignedPageAddress
+op_star
+id|ext_sg_page_phys_addr_place
+op_assign
+l_int|NULL
 suffix:semicolon
-singleline_comment|// TL hardware alignment requirement
 r_int
 id|PairCount
 suffix:semicolon
 r_int
 r_int
 id|ulBuff
+comma
+id|contigaddr
 suffix:semicolon
 id|ULONG
 id|total_data_len
@@ -14276,8 +14709,45 @@ r_struct
 id|scatterlist
 op_star
 id|sgl
+op_assign
+l_int|NULL
 suffix:semicolon
 singleline_comment|// S/G list (Linux format)
+r_int
+id|sg_count
+comma
+id|totalsgs
+suffix:semicolon
+id|dma_addr_t
+id|busaddr
+suffix:semicolon
+r_int
+r_int
+id|thislen
+comma
+id|offset
+suffix:semicolon
+id|PSGPAGES
+op_star
+id|sgpage
+op_assign
+id|sgPages_head
+suffix:semicolon
+id|PSGPAGES
+id|prev_page
+op_assign
+l_int|NULL
+suffix:semicolon
+DECL|macro|WE_HAVE_SG_LIST
+macro_line|# define WE_HAVE_SG_LIST (sgl != (unsigned long) NULL)
+id|contigaddr
+op_assign
+(paren
+r_int
+r_int
+)paren
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -14285,6 +14755,14 @@ op_logical_neg
 id|Cmnd-&gt;use_sg
 )paren
 singleline_comment|// no S/G list?
+(brace
+r_if
+c_cond
+(paren
+id|bytes_to_go
+op_le
+id|TL_MAX_SG_ELEM_LEN
+)paren
 (brace
 op_star
 id|sgPairs
@@ -14298,19 +14776,66 @@ id|alPair
 op_increment
 op_assign
 id|bytes_to_go
-op_amp
-l_int|0x7ffff
 suffix:semicolon
 singleline_comment|// bits 18-0, length
+r_if
+c_cond
+(paren
+id|bytes_to_go
+op_ne
+l_int|0
+)paren
+(brace
+id|contigaddr
+op_assign
 id|ulBuff
 op_assign
-id|virt_to_bus
+id|pci_map_single
 c_func
 (paren
+id|pcidev
+comma
 id|Cmnd-&gt;request_buffer
+comma
+id|Cmnd-&gt;request_bufflen
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|Cmnd-&gt;sc_data_direction
+)paren
 )paren
 suffix:semicolon
-macro_line|#if BITS_PER_LONG &gt; 32
+singleline_comment|// printk(&quot;ms %p &quot;, ulBuff);
+)brace
+r_else
+(brace
+singleline_comment|// No data transfer, (e.g.: Test Unit Ready)
+singleline_comment|// printk(&quot;btg=0 &quot;);
+op_star
+id|sgPairs
+op_assign
+l_int|0
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|alPair
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|alPair
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#&t;&t;if BITS_PER_LONG &gt; 32
 r_if
 c_cond
 (paren
@@ -14322,7 +14847,8 @@ l_int|32
 id|printk
 c_func
 (paren
-l_string|&quot;FATAL! Tachyon DMA address %p exceeds 32 bits&bslash;n&quot;
+l_string|&quot;FATAL! Tachyon DMA address %p &quot;
+l_string|&quot;exceeds 32 bits&bslash;n&quot;
 comma
 (paren
 r_void
@@ -14335,7 +14861,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#&t;&t;endif
 op_star
 id|alPair
 op_assign
@@ -14348,14 +14874,88 @@ r_return
 id|bytes_to_go
 suffix:semicolon
 )brace
-singleline_comment|// [TBD - update for Linux to support &gt; 32 bits addressing]
-singleline_comment|// since the format for local &amp; extended S/G lists is different,
-singleline_comment|// check if S/G pairs exceeds 3.
+r_else
+singleline_comment|// We have a single large (too big) contiguous buffer.
+(brace
+singleline_comment|// We will have to break it up.  We&squot;ll use the scatter
+singleline_comment|// gather code way below, but use contigaddr instead
+singleline_comment|// of sg_dma_addr(). (this is a very rare case).
+r_int
+r_int
+id|btg
+suffix:semicolon
+id|contigaddr
+op_assign
+id|pci_map_single
+c_func
+(paren
+id|pcidev
+comma
+id|Cmnd-&gt;request_buffer
+comma
+id|Cmnd-&gt;request_bufflen
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|Cmnd-&gt;sc_data_direction
+)paren
+)paren
+suffix:semicolon
+singleline_comment|// printk(&quot;contigaddr = %p, len = %d&bslash;n&quot;, 
+singleline_comment|//&t;(void *) contigaddr, bytes_to_go);
+id|totalsgs
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|btg
+op_assign
+id|bytes_to_go
+suffix:semicolon
+id|btg
+OG
+l_int|0
+suffix:semicolon
+)paren
+(brace
+id|btg
+op_sub_assign
+(paren
+id|btg
+OG
+id|TL_MAX_SG_ELEM_LEN
+ques
+c_cond
+id|TL_MAX_SG_ELEM_LEN
+suffix:colon
+id|btg
+)paren
+suffix:semicolon
+id|totalsgs
+op_increment
+suffix:semicolon
+)brace
+id|sgl
+op_assign
+l_int|NULL
+suffix:semicolon
 op_star
 id|sgPairs
 op_assign
-id|Cmnd-&gt;use_sg
+id|totalsgs
 suffix:semicolon
+)brace
+)brace
+r_else
+singleline_comment|// we do have a scatter gather list
+(brace
+singleline_comment|// [TBD - update for Linux to support &gt; 32 bits addressing]
+singleline_comment|// since the format for local &amp; extended S/G lists is different,
+singleline_comment|// check if S/G pairs exceeds 3.
+singleline_comment|// *sgPairs = Cmnd-&gt;use_sg; Nope, that&squot;s wrong.
 id|sgl
 op_assign
 (paren
@@ -14365,15 +14965,128 @@ op_star
 )paren
 id|Cmnd-&gt;request_buffer
 suffix:semicolon
+id|sg_count
+op_assign
+id|pci_map_sg
+c_func
+(paren
+id|pcidev
+comma
+id|sgl
+comma
+id|Cmnd-&gt;use_sg
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|Cmnd-&gt;sc_data_direction
+)paren
+)paren
+suffix:semicolon
+singleline_comment|// printk(&quot;sgl = %p, sg_count = %d&bslash;n&quot;, (void *) sgl, sg_count);
 r_if
 c_cond
 (paren
-op_star
-id|sgPairs
+id|sg_count
 op_le
 l_int|3
 )paren
-singleline_comment|// need &quot;local&quot; SEST list
+(brace
+singleline_comment|// we need to be careful here that no individual mapping
+singleline_comment|// is too large, and if any is, that breaking it up
+singleline_comment|// doesn&squot;t push us over 3 sgs, or, if it does, that we
+singleline_comment|// handle that case.  Tachyon can take 0x7FFFF bits for length,
+singleline_comment|// but sg structure uses &quot;unsigned int&quot;, on the face of it, 
+singleline_comment|// up to 0xFFFFFFFF or even more.
+r_int
+id|i
+suffix:semicolon
+r_int
+r_int
+id|thislen
+suffix:semicolon
+id|totalsgs
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|sg_count
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|thislen
+op_assign
+id|sg_dma_len
+c_func
+(paren
+op_amp
+id|sgl
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|thislen
+op_ge
+id|TL_MAX_SG_ELEM_LEN
+)paren
+(brace
+id|totalsgs
+op_increment
+suffix:semicolon
+id|thislen
+op_sub_assign
+id|TL_MAX_SG_ELEM_LEN
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|thislen
+OG
+l_int|0
+)paren
+id|totalsgs
+op_increment
+suffix:semicolon
+)brace
+op_star
+id|sgPairs
+op_assign
+id|totalsgs
+suffix:semicolon
+)brace
+r_else
+id|totalsgs
+op_assign
+l_int|999
+suffix:semicolon
+singleline_comment|// as a first estimate, definitely &gt;3, 
+singleline_comment|// if (totalsgs != sg_count) 
+singleline_comment|//&t;printk(&quot;totalsgs = %d, sgcount=%d&bslash;n&quot;,totalsgs,sg_count);
+)brace
+singleline_comment|// printk(&quot;totalsgs = %d, sgcount=%d&bslash;n&quot;, totalsgs, sg_count);
+r_if
+c_cond
+(paren
+id|totalsgs
+op_le
+l_int|3
+)paren
+singleline_comment|// can (must) use &quot;local&quot; SEST list
 (brace
 r_while
 c_loop
@@ -14381,53 +15094,96 @@ c_loop
 id|bytes_to_go
 )paren
 (brace
+id|offset
+op_assign
+l_int|0L
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|WE_HAVE_SG_LIST
+)paren
 id|thisMappingLen
 op_assign
-id|sgl-&gt;length
+id|sg_dma_len
+c_func
+(paren
+id|sgl
+)paren
 suffix:semicolon
-singleline_comment|// we want them ALL on every pass
+r_else
+singleline_comment|// or contiguous buffer?
+id|thisMappingLen
+op_assign
+id|bytes_to_go
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|thisMappingLen
+OG
+l_int|0
+)paren
+(brace
+id|thislen
+op_assign
+id|thisMappingLen
+OG
+id|TL_MAX_SG_ELEM_LEN
+ques
+c_cond
+id|TL_MAX_SG_ELEM_LEN
+suffix:colon
+id|thisMappingLen
+suffix:semicolon
 id|bytes_to_go
 op_assign
 id|bytes_to_go
 op_minus
-id|thisMappingLen
+id|thislen
 suffix:semicolon
-singleline_comment|// we have L/A pair; L = thisMappingLen, A = physicalAddress
+singleline_comment|// we have L/A pair; L = thislen, A = physicalAddress
 singleline_comment|// load into SEST...
 id|total_data_len
 op_add_assign
-id|thisMappingLen
-op_amp
-l_int|0x7ffff
+id|thislen
 suffix:semicolon
-singleline_comment|// mask in valid bits
-singleline_comment|// per SEST format
 op_star
 id|alPair
 op_assign
-id|thisMappingLen
-op_amp
-l_int|0x7ffff
+id|thislen
 suffix:semicolon
 singleline_comment|// bits 18-0, length
-singleline_comment|//      physicalAddress.HighPart &lt;= 19;  // shift to bit 19
-singleline_comment|// pick up bits 44-32 of upper 64-bit address
-singleline_comment|// and load into 31-19 LBAU (upper addr) of SEST entry
-singleline_comment|//      *alPair++ |=(ULONG)((physicalAddress.HighPart &amp; 0xFFF8)); 
-singleline_comment|// on Tachlite TS&squot;s local S/G, we can handle 13 extra address bits
-singleline_comment|// i.e., bits 31-19 are actually bits  44-32 of physicalAddress
 id|alPair
 op_increment
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|WE_HAVE_SG_LIST
+)paren
 id|ulBuff
 op_assign
-id|virt_to_bus
+id|sg_dma_address
 c_func
 (paren
-id|sgl-&gt;address
+id|sgl
 )paren
+op_plus
+id|offset
 suffix:semicolon
-macro_line|#if BITS_PER_LONG &gt; 32
+r_else
+id|ulBuff
+op_assign
+id|contigaddr
+op_plus
+id|offset
+suffix:semicolon
+id|offset
+op_add_assign
+id|thislen
+suffix:semicolon
+macro_line|#&t;if BITS_PER_LONG &gt; 32
 r_if
 c_cond
 (paren
@@ -14439,7 +15195,7 @@ l_int|32
 id|printk
 c_func
 (paren
-l_string|&quot;cqpfcTS: Tach DMA address %p &gt; 32 bits&bslash;n&quot;
+l_string|&quot;cqpfcTS: 2Tach DMA address %p &gt; 32 bits&bslash;n&quot;
 comma
 (paren
 r_void
@@ -14448,11 +15204,41 @@ op_star
 id|ulBuff
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s = %p, offset = %ld&bslash;n&quot;
+comma
+id|WE_HAVE_SG_LIST
+ques
+c_cond
+l_string|&quot;ulBuff&quot;
+suffix:colon
+l_string|&quot;contigaddr&quot;
+comma
+id|WE_HAVE_SG_LIST
+ques
+c_cond
+(paren
+r_void
+op_star
+)paren
+id|ulBuff
+suffix:colon
+(paren
+r_void
+op_star
+)paren
+id|contigaddr
+comma
+id|offset
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#&t;endif
 op_star
 id|alPair
 op_increment
@@ -14463,15 +15249,39 @@ id|ULONG
 id|ulBuff
 suffix:semicolon
 singleline_comment|// lower 32 bits (31-0)
+id|thisMappingLen
+op_sub_assign
+id|thislen
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|WE_HAVE_SG_LIST
+)paren
 op_increment
 id|sgl
 suffix:semicolon
 singleline_comment|// next S/G pair
-macro_line|#ifdef DBG_SEST_SGLIST
+r_else
+r_if
+c_cond
+(paren
+id|bytes_to_go
+op_ne
+l_int|0
+)paren
 id|printk
 c_func
 (paren
-l_string|&quot; thisLen %d &quot;
+l_string|&quot;BTG not zero!&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#     ifdef DBG_SEST_SGLIST
+id|printk
+c_func
+(paren
+l_string|&quot;L=%d &quot;
 comma
 id|thisMappingLen
 )paren
@@ -14479,13 +15289,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; remain %d&bslash;n&quot;
+l_string|&quot;btg=%d &quot;
 comma
 id|bytes_to_go
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#     endif
 )brace
+singleline_comment|// printk(&quot;i:%d&bslash;n&quot;, *sgPairs);
 )brace
 r_else
 singleline_comment|// more than 3 pairs requires Extended S/G page (Pool Allocation)
@@ -14519,42 +15330,65 @@ op_assign
 id|TL_EXT_SG_PAGE_COUNT
 suffix:semicolon
 singleline_comment|// forces initial page allocation
+id|totalsgs
+op_assign
+l_int|0
+suffix:semicolon
 r_while
 c_loop
 (paren
 id|bytes_to_go
 )paren
 (brace
-singleline_comment|// Per SEST format, we can support 524287 byte lenghts per
+singleline_comment|// Per SEST format, we can support 524287 byte lengths per
 singleline_comment|// S/G pair.  Typical user buffers are 4k, and very rarely
 singleline_comment|// exceed 12k due to fragmentation of physical memory pages.
 singleline_comment|// However, on certain O/S system (not &quot;user&quot;) buffers (on platforms 
-singleline_comment|// with huge memories like 256Meg), it&squot;s possible to exceed this
-singleline_comment|// length in a single S/G address/len mapping.
-singleline_comment|//
-singleline_comment|// Check for Tachyon length boundary
-singleline_comment|//
+singleline_comment|// with huge memories), it&squot;s possible to exceed this
+singleline_comment|// length in a single S/G address/len mapping, so we have to handle
+singleline_comment|// that.
+id|offset
+op_assign
+l_int|0L
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|sgl-&gt;length
-OG
-l_int|0x7ffff
+id|WE_HAVE_SG_LIST
 )paren
-(brace
-singleline_comment|// never ask for more than we can handle
 id|thisMappingLen
 op_assign
-id|sgl-&gt;length
-op_amp
-l_int|0x7ffff
+id|sg_dma_len
+c_func
+(paren
+id|sgl
+)paren
 suffix:semicolon
-)brace
 r_else
 id|thisMappingLen
 op_assign
-id|sgl-&gt;length
+id|bytes_to_go
 suffix:semicolon
+r_while
+c_loop
+(paren
+id|thisMappingLen
+OG
+l_int|0
+)paren
+(brace
+id|thislen
+op_assign
+id|thisMappingLen
+OG
+id|TL_MAX_SG_ELEM_LEN
+ques
+c_cond
+id|TL_MAX_SG_ELEM_LEN
+suffix:colon
+id|thisMappingLen
+suffix:semicolon
+singleline_comment|// printk(&quot;%d/%d/%d&bslash;n&quot;, thislen, thisMappingLen, bytes_to_go);
 singleline_comment|// should we load into &quot;this&quot; extended S/G page, or allocate
 singleline_comment|// new page?
 r_if
@@ -14565,67 +15399,73 @@ op_ge
 id|TL_EXT_SG_PAGE_COUNT
 )paren
 (brace
-singleline_comment|// have we exceeded the max possible extended pages?      
+singleline_comment|// Now, we have to map the previous page, (triggering buffer bounce)
+singleline_comment|// The first time thru the loop, there won&squot;t be a previous page.
 r_if
 c_cond
 (paren
-id|AllocatedPages
-op_ge
-id|TL_MAX_SGPAGES
+id|prev_page
+op_ne
+l_int|NULL
 )paren
+singleline_comment|// is there a prev page? 
 (brace
-id|printk
+singleline_comment|// this code is normally kind of hard to trigger, 
+singleline_comment|// you have to use up more than 256 scatter gather 
+singleline_comment|// elements to get here.  Cranking down TL_MAX_SG_ELEM_LEN
+singleline_comment|// to an absurdly low value (128 bytes or so) to artificially
+singleline_comment|// break i/o&squot;s into a zillion pieces is how I tested it. 
+id|busaddr
+op_assign
+id|cpqfc_pci_map_sg_page
 c_func
 (paren
-l_string|&quot;Error: aborted loop on %d Ext. S/G page allocations&bslash;n&quot;
+id|pcidev
 comma
-id|AllocatedPages
+id|ext_sg_page_phys_addr_place
+comma
+id|prev_page-&gt;page
+comma
+op_amp
+id|prev_page-&gt;busaddr
+comma
+op_amp
+id|prev_page-&gt;maplen
+comma
+id|PairCount
 )paren
 suffix:semicolon
-id|total_data_len
-op_assign
-l_int|0
-suffix:semicolon
-singleline_comment|// failure!! Ext. S/G is All-or-none affair
-r_break
-suffix:semicolon
-singleline_comment|// failed
 )brace
-singleline_comment|// Allocate the TL Extended S/G list page from O/S pool.  We have
-singleline_comment|// to allocated twice what we want to ensure required TL alignment
+singleline_comment|// Allocate the TL Extended S/G list page.  We have
+singleline_comment|// to allocate twice what we want to ensure required TL alignment
 singleline_comment|// (Tachlite TL/TS User Man. Rev 6.0, p 168)
 singleline_comment|// We store the original allocated PVOID so we can free later
-id|sgPages-&gt;PoolPage
-(braket
-id|AllocatedPages
-)braket
+op_star
+id|sgpage
 op_assign
 id|kmalloc
 c_func
 (paren
-id|TL_EXT_SG_PAGE_BYTELEN
-op_star
-l_int|2
+r_sizeof
+(paren
+id|SGPAGES
+)paren
 comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-singleline_comment|// double for alignment
 r_if
 c_cond
 (paren
 op_logical_neg
-id|sgPages-&gt;PoolPage
-(braket
-id|AllocatedPages
-)braket
+op_star
+id|sgpage
 )paren
-singleline_comment|// Allocation failed?
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;Error: Allocation failed @ %d S/G page allocations&bslash;n&quot;
+l_string|&quot;cpqfc: Allocation failed @ %d S/G page allocations&bslash;n&quot;
 comma
 id|AllocatedPages
 )paren
@@ -14635,18 +15475,51 @@ op_assign
 l_int|0
 suffix:semicolon
 singleline_comment|// failure!! Ext. S/G is All-or-none affair
-r_break
+singleline_comment|// unmap the previous mappings, if any.
+id|cpqfc_undo_SEST_mappings
+c_func
+(paren
+id|pcidev
+comma
+id|contigaddr
+comma
+id|Cmnd-&gt;request_bufflen
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|Cmnd-&gt;sc_data_direction
+)paren
+comma
+id|sgl
+comma
+id|Cmnd-&gt;use_sg
+comma
+id|sgPages_head
+comma
+id|AllocatedPages
+op_plus
+l_int|1
+)paren
 suffix:semicolon
-singleline_comment|// give up
+singleline_comment|// FIXME: testing shows that if we get here, 
+singleline_comment|// it&squot;s bad news.  (this has been this way for a long 
+singleline_comment|// time though, AFAIK.  Not that that excuses it.)
+r_return
+l_int|0
+suffix:semicolon
+singleline_comment|// give up (and probably hang the system)
 )brace
-singleline_comment|// clear out memory we just allocated                     
+singleline_comment|// clear out memory we just allocated
 id|memset
 c_func
 (paren
-id|sgPages-&gt;PoolPage
-(braket
-id|AllocatedPages
-)braket
+(paren
+op_star
+id|sgpage
+)paren
+op_member_access_from_pointer
+id|page
 comma
 l_int|0
 comma
@@ -14655,119 +15528,85 @@ op_star
 l_int|2
 )paren
 suffix:semicolon
+(paren
+op_star
+id|sgpage
+)paren
+op_member_access_from_pointer
+id|next
+op_assign
+l_int|NULL
+suffix:semicolon
+(paren
+op_star
+id|sgpage
+)paren
+op_member_access_from_pointer
+id|busaddr
+op_assign
+(paren
+id|dma_addr_t
+)paren
+l_int|NULL
+suffix:semicolon
+(paren
+op_star
+id|sgpage
+)paren
+op_member_access_from_pointer
+id|maplen
+op_assign
+l_int|0L
+suffix:semicolon
 singleline_comment|// align the memory - TL requires sizeof() Ext. S/G page alignment.
 singleline_comment|// We doubled the actual required size so we could mask off LSBs 
-singleline_comment|// to get desired offset
+singleline_comment|// to get desired offset 
 id|ulBuff
 op_assign
-id|virt_to_bus
-c_func
 (paren
-id|sgPages-&gt;PoolPage
-(braket
-id|AllocatedPages
-)braket
+r_int
+r_int
 )paren
-suffix:semicolon
-macro_line|#if BITS_PER_LONG &gt; 32
-r_if
-c_cond
 (paren
-id|ulBuff
-op_rshift
-l_int|32
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;cqpfcTS: Tach ext. S/G DMA address %p &gt; 32 bits&bslash;n&quot;
-comma
-(paren
-r_void
 op_star
+id|sgpage
 )paren
-id|ulBuff
-)paren
+op_member_access_from_pointer
+id|page
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 id|ulBuff
 op_add_assign
 id|TL_EXT_SG_PAGE_BYTELEN
 suffix:semicolon
-singleline_comment|// ensures we pass align. boundary
 id|ulBuff
 op_and_assign
-(paren
-l_int|0xFFFFFFFF
-op_minus
+op_complement
 (paren
 id|TL_EXT_SG_PAGE_BYTELEN
 op_minus
 l_int|1
 )paren
-)paren
 suffix:semicolon
-singleline_comment|// mask off LSBs
-id|alignedPageAddress
+singleline_comment|// set pointer, in SEST if first Ext. S/G page, or in last pair
+singleline_comment|// of linked Ext. S/G pages... (Only 32-bit PVOIDs, so just 
+singleline_comment|// load lower 32 bits)
+singleline_comment|// NOTE: the Len field must be &squot;0&squot; if this is the first Ext. S/G
+singleline_comment|// pointer in SEST, and not 0 otherwise (we know thislen != 0).
+op_star
+id|alPair
 op_assign
 (paren
-id|ULONG
-)paren
-id|ulBuff
-suffix:semicolon
-macro_line|#ifdef DBG_SEST_SGLIST
-id|printk
-c_func
-(paren
-l_string|&quot;new PoolPage: %p, alignedPageAddress %lXh&bslash;n&quot;
-comma
-id|sgPages-&gt;PoolPage
-(braket
-id|AllocatedPages
-)braket
-comma
-id|ulBuff
-)paren
-suffix:semicolon
-macro_line|#endif
-singleline_comment|// set pointer, in SEST if first Ext. S/G page, or in last pair
-singleline_comment|// of linked Ext. S/G pages...
-singleline_comment|// (Only 32-bit PVOIDs, so just load lower 32 bits)
-singleline_comment|// NOTE: the Len field must be &squot;0&squot; if this is the first Ext. S/G
-singleline_comment|// pointer in SEST, and not 0 otherwise.
-r_if
-c_cond
-(paren
 id|alPair
-op_eq
+op_ne
 id|SESTalPairStart
 )paren
-(brace
-singleline_comment|// initial Ext. S/G list?
-op_star
-id|alPair
-op_assign
+ques
+c_cond
+id|thislen
+suffix:colon
 l_int|0
 suffix:semicolon
-)brace
-r_else
-singleline_comment|// not the SEST entry... Len must be non-0, so
-singleline_comment|// arbitrarily set it to number bytes remaining
-op_star
-id|alPair
-op_assign
-(paren
-id|bytes_to_go
-op_amp
-l_int|0x7ffff
-)paren
-suffix:semicolon
-macro_line|#ifdef DBG_SEST_SGLIST
+macro_line|#&t;  ifdef DBG_SEST_SGLIST
 id|printk
 c_func
 (paren
@@ -14781,59 +15620,96 @@ op_star
 id|alPair
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#&t;  endif
+singleline_comment|// Save the place where we need to store the physical
+singleline_comment|// address of this scatter gather page which we get when we map it
+singleline_comment|// (and mapping we can do only after we fill it in.)
 id|alPair
 op_increment
 suffix:semicolon
-singleline_comment|// next DWORD
-op_star
-id|alPair
+singleline_comment|// next DWORD, will contain phys addr of the ext page
+id|ext_sg_page_phys_addr_place
 op_assign
-id|alignedPageAddress
-suffix:semicolon
-singleline_comment|// TL needs 32-bit physical
-macro_line|#ifdef DBG_SEST_SGLIST
-id|printk
-c_func
-(paren
-l_string|&quot;odd %Xh&bslash;n&quot;
-comma
-op_star
 id|alPair
-)paren
 suffix:semicolon
-macro_line|#endif
-singleline_comment|// now reset the pointer to the ACTUAL (Extended) S/G page
+singleline_comment|// Now, set alPair = the virtual addr of the (Extended) S/G page
 singleline_comment|// which will accept the Len/ PhysicalAddress pairs
 id|alPair
 op_assign
-id|bus_to_virt
-c_func
 (paren
-id|alignedPageAddress
+id|ULONG
+op_star
 )paren
+id|ulBuff
 suffix:semicolon
 id|AllocatedPages
 op_increment
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|AllocatedPages
+op_ge
+id|ap_hi_water
+)paren
+(brace
+singleline_comment|// This message should rarely, if ever, come out.
+singleline_comment|// Previously (cpqfc version &lt;= 2.0.5) the driver would
+singleline_comment|// just puke if more than 4 SG pages were used, and nobody
+singleline_comment|// ever complained about that.  This only comes out if 
+singleline_comment|// more than 8 pages are used.
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;cpqfc: Possible danger.  %d scatter gather pages used.&bslash;n&quot;
+l_string|&quot;cpqfc: detected seemingly extreme memory &quot;
+l_string|&quot;fragmentation or huge data transfers.&bslash;n&quot;
+comma
+id|AllocatedPages
+)paren
+suffix:semicolon
+id|ap_hi_water
+op_assign
+id|AllocatedPages
+op_plus
+l_int|1
+suffix:semicolon
+)brace
 id|PairCount
 op_assign
 l_int|1
 suffix:semicolon
 singleline_comment|// starting new Ext. S/G page
+id|prev_page
+op_assign
+(paren
+op_star
+id|sgpage
+)paren
+suffix:semicolon
+singleline_comment|// remember this page, for next time thru
+id|sgpage
+op_assign
+op_amp
+(paren
+(paren
+op_star
+id|sgpage
+)paren
+op_member_access_from_pointer
+id|next
+)paren
+suffix:semicolon
 )brace
 singleline_comment|// end of new TL Ext. S/G page allocation
 op_star
 id|alPair
 op_assign
-id|thisMappingLen
+id|thislen
 suffix:semicolon
 singleline_comment|// bits 18-0, length (range check above)
-singleline_comment|//      physicalAddress.HighPart &lt;= 19;  // shift to bit 19
-singleline_comment|// pick up bits 44-32 of upper 64-bit address
-singleline_comment|// and load into 31-19 LBAU (upper addr) of SEST entry
-singleline_comment|//      *alPair |=(ULONG)((physicalAddress.HighPart &amp; 0xFFF8)); 
-macro_line|#ifdef DBG_SEST_SGLIST
+macro_line|#&t;ifdef DBG_SEST_SGLIST
 id|printk
 c_func
 (paren
@@ -14847,22 +15723,38 @@ op_star
 id|alPair
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#&t;endif
 id|alPair
 op_increment
 suffix:semicolon
-singleline_comment|// next DWORD
-singleline_comment|// on Tachlite TS&squot;s local S/G, we can handle 13 extra address bits
-singleline_comment|// i.e., bits 31-19 are actually bits  44-32 of physicalAddress
+singleline_comment|// next DWORD, physical address 
+r_if
+c_cond
+(paren
+id|WE_HAVE_SG_LIST
+)paren
 id|ulBuff
 op_assign
-id|virt_to_bus
+id|sg_dma_address
 c_func
 (paren
-id|sgl-&gt;address
+id|sgl
 )paren
+op_plus
+id|offset
 suffix:semicolon
-macro_line|#if BITS_PER_LONG &gt; 32
+r_else
+id|ulBuff
+op_assign
+id|contigaddr
+op_plus
+id|offset
+suffix:semicolon
+id|offset
+op_add_assign
+id|thislen
+suffix:semicolon
+macro_line|#&t;if BITS_PER_LONG &gt; 32
 r_if
 c_cond
 (paren
@@ -14874,7 +15766,7 @@ l_int|32
 id|printk
 c_func
 (paren
-l_string|&quot;cqpfcTS: Tach DMA address %p &gt; 32 bits&bslash;n&quot;
+l_string|&quot;cqpfcTS: 1Tach DMA address %p &gt; 32 bits&bslash;n&quot;
 comma
 (paren
 r_void
@@ -14883,11 +15775,41 @@ op_star
 id|ulBuff
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s = %p, offset = %ld&bslash;n&quot;
+comma
+id|WE_HAVE_SG_LIST
+ques
+c_cond
+l_string|&quot;ulBuff&quot;
+suffix:colon
+l_string|&quot;contigaddr&quot;
+comma
+id|WE_HAVE_SG_LIST
+ques
+c_cond
+(paren
+r_void
+op_star
+)paren
+id|ulBuff
+suffix:colon
+(paren
+r_void
+op_star
+)paren
+id|contigaddr
+comma
+id|offset
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#&t;endif
 op_star
 id|alPair
 op_assign
@@ -14897,7 +15819,7 @@ id|ULONG
 id|ulBuff
 suffix:semicolon
 singleline_comment|// lower 32 bits (31-0)
-macro_line|#ifdef DBG_SEST_SGLIST
+macro_line|#       ifdef DBG_SEST_SGLIST
 id|printk
 c_func
 (paren
@@ -14907,28 +15829,75 @@ op_star
 id|alPair
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#       endif
 id|alPair
 op_increment
 suffix:semicolon
-singleline_comment|// next DWORD
+singleline_comment|// next DWORD, next address/length pair
 id|PairCount
 op_increment
 suffix:semicolon
 singleline_comment|// next Length/Address pair
+singleline_comment|// if (PairCount &gt; pc_hi_water)
+singleline_comment|// {
+singleline_comment|// printk(&quot;pc hi = %d &quot;, PairCount);
+singleline_comment|// pc_hi_water = PairCount;
+singleline_comment|// }
 id|bytes_to_go
 op_sub_assign
-id|thisMappingLen
+id|thislen
 suffix:semicolon
 id|total_data_len
 op_add_assign
-id|thisMappingLen
+id|thislen
 suffix:semicolon
+id|thisMappingLen
+op_sub_assign
+id|thislen
+suffix:semicolon
+id|totalsgs
+op_increment
+suffix:semicolon
+)brace
+singleline_comment|// while (thisMappingLen &gt; 0)
+r_if
+c_cond
+(paren
+id|WE_HAVE_SG_LIST
+)paren
 id|sgl
 op_increment
 suffix:semicolon
 singleline_comment|// next S/G pair
 )brace
+singleline_comment|// while (bytes_to_go)
+singleline_comment|// printk(&quot;Totalsgs=%d&bslash;n&quot;, totalsgs);
+op_star
+id|sgPairs
+op_assign
+id|totalsgs
+suffix:semicolon
+singleline_comment|// PCI map (and bounce) the last (and usually only) extended SG page
+id|busaddr
+op_assign
+id|cpqfc_pci_map_sg_page
+c_func
+(paren
+id|pcidev
+comma
+id|ext_sg_page_phys_addr_place
+comma
+id|prev_page-&gt;page
+comma
+op_amp
+id|prev_page-&gt;busaddr
+comma
+op_amp
+id|prev_page-&gt;maplen
+comma
+id|PairCount
+)paren
+suffix:semicolon
 )brace
 r_return
 id|total_data_len
@@ -15534,6 +16503,8 @@ singleline_comment|// typically, can get FRAME_TO
 id|cpqfcTSCompleteExchange
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 id|fcChip
 comma
 id|ExchangeID
@@ -15559,6 +16530,8 @@ singleline_comment|// by Type of exchange (e.g. end-of-xchng)
 id|cpqfcTSCompleteExchange
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 id|fcChip
 comma
 id|ExchangeID
@@ -15936,6 +16909,169 @@ r_return
 id|i
 suffix:semicolon
 )brace
+r_static
+r_void
+DECL|function|cpqfc_pci_unmap_extended_sg
+id|cpqfc_pci_unmap_extended_sg
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pcidev
+comma
+id|PTACHYON
+id|fcChip
+comma
+id|ULONG
+id|x_ID
+)paren
+(brace
+singleline_comment|// Unmaps the memory regions used to hold the scatter gather lists
+id|PSGPAGES
+id|i
+suffix:semicolon
+singleline_comment|// Were there any such regions needing unmapping?
+r_if
+c_cond
+(paren
+op_logical_neg
+id|USES_EXTENDED_SGLIST
+c_func
+(paren
+id|fcChip-&gt;SEST
+comma
+id|x_ID
+)paren
+)paren
+r_return
+suffix:semicolon
+singleline_comment|// No such regions, we&squot;re outta here.
+singleline_comment|// for each extended scatter gather region needing unmapping... 
+r_for
+c_loop
+(paren
+id|i
+op_assign
+id|fcChip-&gt;SEST-&gt;sgPages
+(braket
+id|x_ID
+)braket
+suffix:semicolon
+id|i
+op_ne
+l_int|NULL
+suffix:semicolon
+id|i
+op_assign
+id|i-&gt;next
+)paren
+id|pci_unmap_single
+c_func
+(paren
+id|pcidev
+comma
+id|i-&gt;busaddr
+comma
+id|i-&gt;maplen
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|PCI_DMA_TODEVICE
+)paren
+)paren
+suffix:semicolon
+)brace
+singleline_comment|// Called also from cpqfcTScontrol.o, so can&squot;t be static
+r_void
+DECL|function|cpqfc_pci_unmap
+id|cpqfc_pci_unmap
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pcidev
+comma
+id|Scsi_Cmnd
+op_star
+id|cmd
+comma
+id|PTACHYON
+id|fcChip
+comma
+id|ULONG
+id|x_ID
+)paren
+(brace
+singleline_comment|// Undo the DMA mappings
+r_if
+c_cond
+(paren
+id|cmd-&gt;use_sg
+)paren
+(brace
+singleline_comment|// Used scatter gather list for data buffer?
+id|cpqfc_pci_unmap_extended_sg
+c_func
+(paren
+id|pcidev
+comma
+id|fcChip
+comma
+id|x_ID
+)paren
+suffix:semicolon
+id|pci_unmap_sg
+c_func
+(paren
+id|pcidev
+comma
+id|cmd-&gt;buffer
+comma
+id|cmd-&gt;use_sg
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|cmd-&gt;sc_data_direction
+)paren
+)paren
+suffix:semicolon
+singleline_comment|// printk(&quot;umsg %d&bslash;n&quot;, cmd-&gt;use_sg);
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|cmd-&gt;request_bufflen
+)paren
+(brace
+singleline_comment|// printk(&quot;ums %p &quot;, fcChip-&gt;SEST-&gt;u[ x_ID ].IWE.GAddr1);
+id|pci_unmap_single
+c_func
+(paren
+id|pcidev
+comma
+id|fcChip-&gt;SEST-&gt;u
+(braket
+id|x_ID
+)braket
+dot
+id|IWE.GAddr1
+comma
+id|cmd-&gt;request_bufflen
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|cmd-&gt;sc_data_direction
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
 singleline_comment|// We call this routine to free an Exchange for any reason:
 singleline_comment|// completed successfully, completed with error, aborted, etc.
 singleline_comment|// returns FALSE if Exchange failed and &quot;retry&quot; is acceptable
@@ -15947,6 +17083,11 @@ r_void
 id|cpqfcTSCompleteExchange
 c_func
 (paren
+r_struct
+id|pci_dev
+op_star
+id|pcidev
+comma
 id|PTACHYON
 id|fcChip
 comma
@@ -15959,6 +17100,11 @@ op_star
 id|Exchanges
 op_assign
 id|fcChip-&gt;Exchanges
+suffix:semicolon
+r_int
+id|already_unmapped
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -16475,10 +17621,21 @@ singleline_comment|// implies something new is happening that we&squot;ve never 
 singleline_comment|// case for.  Need code maintenance!  Return &quot;ERROR&quot;
 r_else
 (brace
+r_int
+r_int
+id|stat
+op_assign
+id|Exchanges-&gt;fcExchange
+(braket
+id|x_ID
+)braket
+dot
+id|status
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;DEFAULT result %Xh, x_ID %Xh, Cmnd %p&bslash;n&quot;
+l_string|&quot;DEFAULT result %Xh, x_ID %Xh, Cmnd %p&quot;
 comma
 id|Exchanges-&gt;fcExchange
 (braket
@@ -16495,6 +17652,337 @@ id|x_ID
 )braket
 dot
 id|Cmnd
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|INVALID_ARGS
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; INVALID_ARGS &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|LNKDWN_OSLS
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; LNKDWN_OSLS &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|LNKDWN_LASER
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; LNKDWN_LASER &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|OUTQUE_FULL
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; OUTQUE_FULL &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|DRIVERQ_FULL
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; DRIVERQ_FULL &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|SEST_FULL
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; SEST_FULL &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|BAD_ALPA
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; BAD_ALPA &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|OVERFLOW
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; OVERFLOW &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|COUNT_ERROR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; COUNT_ERROR &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|LINKFAIL_RX
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; LINKFAIL_RX &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|ABORTSEQ_NOTIFY
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; ABORTSEQ_NOTIFY &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|LINKFAIL_TX
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; LINKFAIL_TX &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|HOSTPROG_ERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; HOSTPROG_ERR &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|FRAME_TO
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; FRAME_TO &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|INV_ENTRY
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; INV_ENTRY &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|SESTPROG_ERR
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; SESTPROG_ERR &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|OUTBOUND_TIMEOUT
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; OUTBOUND_TIMEOUT &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|INITIATOR_ABORT
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; INITIATOR_ABORT &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|MEMPOOL_FAIL
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; MEMPOOL_FAIL &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|FC2_TIMEOUT
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; FC2_TIMEOUT &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|TARGET_ABORT
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; TARGET_ABORT &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|EXCHANGE_QUEUED
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; EXCHANGE_QUEUED &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|PORTID_CHANGED
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; PORTID_CHANGED &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|DEVICE_REMOVED
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; DEVICE_REMOVED &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+id|SFQ_FRAME
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; SFQ_FRAME &quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|Exchanges-&gt;fcExchange
@@ -16529,6 +18017,28 @@ id|x_ID
 suffix:semicolon
 singleline_comment|// (will set -&gt;result)    
 )brace
+id|cpqfc_pci_unmap
+c_func
+(paren
+id|pcidev
+comma
+id|Exchanges-&gt;fcExchange
+(braket
+id|x_ID
+)braket
+dot
+id|Cmnd
+comma
+id|fcChip
+comma
+id|x_ID
+)paren
+suffix:semicolon
+singleline_comment|// undo DMA mappings.
+id|already_unmapped
+op_assign
+l_int|1
+suffix:semicolon
 singleline_comment|// OK, we&squot;ve set the Scsi &quot;-&gt;result&quot; field, so proceed with calling
 singleline_comment|// Linux Scsi &quot;done&quot; (if not NULL), and free any kernel memory we
 singleline_comment|// may have allocated for the exchange.
@@ -16587,15 +18097,8 @@ c_func
 (paren
 l_int|0xAC
 )paren
-(paren
-op_star
-id|Exchanges-&gt;fcExchange
-(braket
-id|x_ID
-)braket
-dot
-id|Cmnd-&gt;scsi_done
-)paren
+id|call_scsi_done
+c_func
 (paren
 id|Exchanges-&gt;fcExchange
 (braket
@@ -16608,12 +18111,30 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|Exchanges-&gt;fcExchange
+(braket
+id|x_ID
+)braket
+dot
+id|Cmnd-&gt;SCp.sent_command
+op_assign
+l_int|0
+suffix:semicolon
 singleline_comment|//&t;printk(&quot; not calling scsi_done on x_ID %Xh, Cmnd %p&bslash;n&quot;,
 singleline_comment|//&t;&t;&t;x_ID, Exchanges-&gt;fcExchange[ x_ID ].Cmnd);
 )brace
 )brace
 r_else
 (brace
+id|Exchanges-&gt;fcExchange
+(braket
+id|x_ID
+)braket
+dot
+id|Cmnd-&gt;SCp.sent_command
+op_assign
+l_int|0
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -16649,6 +18170,30 @@ suffix:semicolon
 singleline_comment|// Now, clean up non-Scsi_Cmnd items...
 id|CleanUpSestResources
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|already_unmapped
+)paren
+id|cpqfc_pci_unmap
+c_func
+(paren
+id|pcidev
+comma
+id|Exchanges-&gt;fcExchange
+(braket
+id|x_ID
+)braket
+dot
+id|Cmnd
+comma
+id|fcChip
+comma
+id|x_ID
+)paren
+suffix:semicolon
+singleline_comment|// undo DMA mappings.
 singleline_comment|// Was an Extended Scatter/Gather page allocated?  We know
 singleline_comment|// this by checking DWORD 4, bit 31 (&quot;LOC&quot;) of SEST entry
 r_if
@@ -16667,62 +18212,49 @@ l_int|0x80000000
 )paren
 )paren
 (brace
-r_int
-id|i
-op_assign
-l_int|0
+id|PSGPAGES
+id|p
+comma
+id|next
 suffix:semicolon
 singleline_comment|// extended S/G list was used -- Free the allocated ext. S/G pages
-r_while
+r_for
 c_loop
 (paren
+id|p
+op_assign
 id|fcChip-&gt;SEST-&gt;sgPages
 (braket
 id|x_ID
 )braket
-dot
-id|PoolPage
-(braket
-id|i
-)braket
-op_logical_and
-(paren
-id|i
-OL
-id|TL_MAX_SGPAGES
-)paren
+suffix:semicolon
+id|p
+op_ne
+l_int|NULL
+suffix:semicolon
+id|p
+op_assign
+id|next
 )paren
 (brace
+id|next
+op_assign
+id|p-&gt;next
+suffix:semicolon
 id|kfree
 c_func
 (paren
-id|fcChip-&gt;SEST-&gt;sgPages
-(braket
-id|x_ID
-)braket
-dot
-id|PoolPage
-(braket
-id|i
-)braket
+id|p
 )paren
 suffix:semicolon
+)brace
 id|fcChip-&gt;SEST-&gt;sgPages
 (braket
 id|x_ID
-)braket
-dot
-id|PoolPage
-(braket
-id|i
 )braket
 op_assign
 l_int|NULL
 suffix:semicolon
-id|i
-op_increment
-suffix:semicolon
-)brace
 )brace
 id|Exchanges-&gt;fcExchange
 (braket

@@ -19,7 +19,6 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;NCR53C9x.h&quot;
@@ -425,6 +424,7 @@ op_star
 id|current_esp
 suffix:semicolon
 DECL|variable|cmd_buffer
+r_static
 r_volatile
 r_int
 r_char

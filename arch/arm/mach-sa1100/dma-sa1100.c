@@ -2429,14 +2429,11 @@ op_assign
 id|dma_regs_t
 op_star
 )paren
-id|io_p2v
-c_func
-(paren
-id|_DDAR
+op_amp
+id|DDAR
 c_func
 (paren
 id|channel
-)paren
 )paren
 suffix:semicolon
 id|dma_chan

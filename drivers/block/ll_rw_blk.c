@@ -1771,6 +1771,38 @@ c_cond
 id|q
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * If nobody is waiting for requests, don&squot;t bother&n;&t;&t; * batching up.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|q-&gt;request_freelist
+(braket
+id|rw
+)braket
+)paren
+)paren
+(brace
+id|list_add
+c_func
+(paren
+op_amp
+id|req-&gt;queue
+comma
+op_amp
+id|q-&gt;request_freelist
+(braket
+id|rw
+)braket
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Add to pending free list and batch wakeups&n;&t;&t; */
 id|list_add
 c_func
@@ -3734,7 +3766,7 @@ multiline_comment|/*&n;&t; * Batch frees according to queue length&n;&t; */
 id|batch_requests
 op_assign
 id|queue_nr_requests
-op_rshift
+op_div
 l_int|3
 suffix:semicolon
 id|printk

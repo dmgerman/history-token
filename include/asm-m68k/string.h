@@ -1543,6 +1543,22 @@ DECL|macro|memset
 mdefine_line|#define memset(s, c, count) &bslash;&n;(__builtin_constant_p(count) ? &bslash;&n; __memset_const((s),(c),(count)) : &bslash;&n; __memset_g((s),(c),(count)))
 DECL|macro|__HAVE_ARCH_MEMCPY
 mdefine_line|#define __HAVE_ARCH_MEMCPY
+r_extern
+r_void
+op_star
+id|memcpy
+c_func
+(paren
+r_void
+op_star
+comma
+r_const
+r_void
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * __builtin_memcpy() does not handle page-sized memcpys very well,&n; * thus following the same assumptions as for page-sized memsets, this&n; * function copies page-sized areas using an unrolled loop, without&n; * considering alignment.&n; *&n; * For the 680[46]0 only kernels we use the move16 instruction instead&n; * as it writes through the data-cache, invalidating the cache-lines&n; * touched. In this way we do not use up the entire data-cache (well,&n; * half of it on the 68060) by copying a page. An unrolled loop of two&n; * move16 instructions seem to the fastest. The only caveat is that&n; * both source and destination must be 16-byte aligned, if not we fall&n; * back to the generic memcpy function.  - Jes&n; */
 DECL|function|__memcpy_page
 r_static
@@ -2218,6 +2234,22 @@ suffix:semicolon
 )brace
 DECL|macro|__HAVE_ARCH_MEMCMP
 mdefine_line|#define __HAVE_ARCH_MEMCMP
+r_extern
+r_int
+id|memcmp
+c_func
+(paren
+r_const
+r_void
+op_star
+comma
+r_const
+r_void
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 DECL|macro|memcmp
 mdefine_line|#define memcmp(cs, ct, n) &bslash;&n;(__builtin_constant_p(n) ? &bslash;&n; __builtin_memcmp((cs),(ct),(n)) : &bslash;&n; memcmp((cs),(ct),(n)))
 DECL|macro|__HAVE_ARCH_MEMCHR

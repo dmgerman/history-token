@@ -525,6 +525,10 @@ id|block_device_operations
 id|gscd_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|gscd_open
@@ -1270,8 +1274,6 @@ op_minus
 id|ENXIO
 suffix:semicolon
 multiline_comment|/* no hardware */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|get_status
 c_func
 (paren
@@ -1298,8 +1300,6 @@ c_func
 (paren
 l_string|&quot;GSCD: no disk or door open&bslash;n&quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -1341,8 +1341,6 @@ id|gscd_bn
 op_assign
 op_minus
 l_int|1
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

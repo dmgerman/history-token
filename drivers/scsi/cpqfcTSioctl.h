@@ -126,4 +126,13 @@ DECL|macro|CPQFCTS_GETDRIVVER
 mdefine_line|#define CPQFCTS_GETDRIVVER _IOR( CCPQFCTS_IOC_MAGIC, 9, DriverVer_type)
 DECL|macro|CPQFCTS_SCSI_PASSTHRU
 mdefine_line|#define CPQFCTS_SCSI_PASSTHRU _IOWR( CCPQFCTS_IOC_MAGIC,11, VENDOR_IOCTL_REQ)
+multiline_comment|/* We would rather have equivalent generic, low-level driver agnostic &n;ioctls that do what CPQFC_IOCTL_FC_TARGET_ADDRESS and &n;CPQFC_IOCTL_FC_TDR 0x5388 do, but currently, we do not have them, &n;consequently applications would have to know they are talking to cpqfc. */
+multiline_comment|/* Used to get Fibre Channel WWN and port_id from device */
+singleline_comment|// #define CPQFC_IOCTL_FC_TARGET_ADDRESS 0x5387
+DECL|macro|CPQFC_IOCTL_FC_TARGET_ADDRESS
+mdefine_line|#define CPQFC_IOCTL_FC_TARGET_ADDRESS &bslash;&n;&t;_IOR( CCPQFCTS_IOC_MAGIC, 13, Scsi_FCTargAddress)
+multiline_comment|/* Used to invoke Target Defice Reset for Fibre Channel */
+singleline_comment|// #define CPQFC_IOCTL_FC_TDR 0x5388
+DECL|macro|CPQFC_IOCTL_FC_TDR
+mdefine_line|#define CPQFC_IOCTL_FC_TDR _IO( CCPQFCTS_IOC_MAGIC, 15)
 eof

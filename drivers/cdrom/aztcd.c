@@ -678,6 +678,10 @@ id|block_device_operations
 id|azt_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|aztcd_open
@@ -6376,8 +6380,6 @@ op_minus
 id|ENXIO
 suffix:semicolon
 multiline_comment|/* no hardware */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6502,8 +6504,6 @@ l_int|0
 suffix:semicolon
 id|err_out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -6547,8 +6547,6 @@ id|file
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren

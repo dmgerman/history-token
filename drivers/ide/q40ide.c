@@ -38,6 +38,7 @@ multiline_comment|/* PCIDE_BASE3, PCIDE_BASE4  , PCIDE_BASE5,&n;    PCIDE_BASE6 
 )brace
 suffix:semicolon
 multiline_comment|/*&n;     *  Offsets from one of the above bases&n;     */
+multiline_comment|/* HD_DATA was redefined in asm-m68k/ide.h */
 DECL|macro|HD_DATA
 macro_line|#undef HD_DATA
 DECL|macro|HD_DATA

@@ -266,5 +266,7 @@ DECL|macro|CROSS_64KB
 macro_line|#  define CROSS_64KB(a,s)  (0)
 macro_line|# endif
 macro_line|#endif
+DECL|macro|EXTRA_FLOPPY_PARAMS
+mdefine_line|#define EXTRA_FLOPPY_PARAMS
 macro_line|#endif /* __ASM_ALPHA_FLOPPY_H */
 eof

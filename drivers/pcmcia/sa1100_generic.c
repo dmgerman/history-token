@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/arch/assabet.h&gt;
 macro_line|#include &quot;sa1100.h&quot;
 macro_line|#ifdef PCMCIA_DEBUG
 DECL|variable|pc_debug
@@ -1221,7 +1222,6 @@ multiline_comment|/* sa1100_pcmcia_suspend()&n; * ^^^^^^^^^^^^^^^^^^^^^^^&n; * W
 DECL|function|sa1100_pcmcia_suspend
 r_static
 r_int
-(def_block
 id|sa1100_pcmcia_suspend
 c_func
 (paren
@@ -1230,6 +1230,13 @@ r_int
 id|sock
 )paren
 (brace
+r_struct
+id|pcmcia_configure
+id|conf
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 id|DEBUG
 c_func
 (paren
@@ -1242,11 +1249,61 @@ comma
 id|sock
 )paren
 suffix:semicolon
-r_return
+id|conf.sock
+op_assign
+id|sock
+suffix:semicolon
+id|conf.vcc
+op_assign
 l_int|0
 suffix:semicolon
+id|conf.vpp
+op_assign
+l_int|0
+suffix:semicolon
+id|conf.output
+op_assign
+l_int|0
+suffix:semicolon
+id|conf.speaker
+op_assign
+l_int|0
+suffix:semicolon
+id|conf.reset
+op_assign
+l_int|1
+suffix:semicolon
+id|ret
+op_assign
+id|pcmcia_low_level
+op_member_access_from_pointer
+id|configure_socket
+c_func
+(paren
+op_amp
+id|conf
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
+id|sa1100_pcmcia_socket
+(braket
+id|sock
+)braket
+dot
+id|cs_state
+op_assign
+id|dead_socket
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
-)def_block
 multiline_comment|/* sa1100_pcmcia_events()&n; * ^^^^^^^^^^^^^^^^^^^^^^&n; * Helper routine to generate a Card Services event mask based on&n; * state information obtained from the kernel low-level PCMCIA layer&n; * in a recent (and previous) sampling. Updates `prev_state&squot;.&n; *&n; * Returns: an event mask for the given socket state.&n; */
 DECL|function|sa1100_pcmcia_events
 r_static

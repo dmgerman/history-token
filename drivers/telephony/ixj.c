@@ -386,7 +386,8 @@ macro_line|#ifdef PERFMON_STATS
 DECL|macro|ixj_perfmon
 mdefine_line|#define ixj_perfmon(x)&t;((x)++)
 macro_line|#else
-macro_line|#deifne ixj_perfmon(x)&t;do {} while(0);
+DECL|macro|ixj_perfmon
+mdefine_line|#define ixj_perfmon(x)&t;do {} while(0);
 macro_line|#endif
 DECL|variable|ixj_convert_loaded
 r_static

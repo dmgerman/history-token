@@ -21,6 +21,18 @@ r_int
 r_int
 id|hw_led_state
 suffix:semicolon
+macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
+DECL|macro|LED_D0
+mdefine_line|#define LED_D0&t;&t;GPIO_GPIO(0)
+DECL|macro|LED_D1
+mdefine_line|#define LED_D1&t;&t;GPIO_GPIO(0)
+DECL|macro|LED_D2
+mdefine_line|#define LED_D2&t;&t;GPIO_GPIO(0)
+DECL|macro|LED_D3
+mdefine_line|#define LED_D3&t;&t;GPIO_GPIO(0)
+DECL|macro|LED_MASK
+mdefine_line|#define LED_MASK&t;(LED_D0|LED_D1|LED_D2|LED_D3)
+macro_line|#else
 DECL|macro|LED_D0
 mdefine_line|#define LED_D0          GPIO_GPIO(0)
 DECL|macro|LED_D1
@@ -31,6 +43,7 @@ DECL|macro|LED_D3
 mdefine_line|#define LED_D3          GPIO_GPIO(3)
 DECL|macro|LED_MASK
 mdefine_line|#define LED_MASK        (LED_D0|LED_D1|LED_D2|LED_D3)
+macro_line|#endif
 DECL|function|cerf_leds_event
 r_void
 id|cerf_leds_event

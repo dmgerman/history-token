@@ -1072,7 +1072,7 @@ c_func
 op_logical_and
 id|addr
 op_ge
-id|_DRAMBnk1
+l_int|0xc8000000
 )paren
 (brace
 r_return
@@ -1253,7 +1253,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s(): invalid SMCR DRAC value 0%o&bslash;n&quot;
+l_string|&quot;%s(): invalid SMCR DRAC value 0%lo&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

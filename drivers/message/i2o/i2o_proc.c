@@ -5221,13 +5221,6 @@ id|i2o_driver_store_table
 op_star
 id|dst
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|i2o_proc_lock
-)paren
-suffix:semicolon
 id|len
 op_assign
 l_int|0
@@ -5258,6 +5251,13 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|i2o_proc_lock
+)paren
+suffix:semicolon
 id|token
 op_assign
 id|i2o_query_table

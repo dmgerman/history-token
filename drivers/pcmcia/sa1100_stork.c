@@ -647,12 +647,7 @@ id|configure-&gt;vcc
 r_case
 l_int|0
 suffix:colon
-id|storkClearLatchA
-c_func
-(paren
-id|STORK_PCMCIA_PULL_UPS_POWER_ON
-)paren
-suffix:semicolon
+multiline_comment|/*&t;&t;storkClearLatchA(STORK_PCMCIA_PULL_UPS_POWER_ON); */
 id|storkClearLatchA
 c_func
 (paren

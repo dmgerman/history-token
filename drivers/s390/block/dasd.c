@@ -9758,8 +9758,6 @@ id|dasd_device_t
 op_star
 id|device
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9918,11 +9916,6 @@ id|device-&gt;discipline-&gt;owner
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
 id|unlock
 suffix:colon
 id|spin_unlock_irqrestore
@@ -9936,13 +9929,6 @@ id|flags
 suffix:semicolon
 id|fail
 suffix:colon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -10068,7 +10054,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-singleline_comment|// fsync_dev (inp-&gt;i_rdev);&t;/* sync the device */
 id|count
 op_assign
 id|atomic_dec_return
@@ -10100,8 +10085,6 @@ c_func
 (paren
 id|device-&gt;discipline-&gt;owner
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 r_else
@@ -10144,6 +10127,10 @@ id|block_device_operations
 id|dasd_device_operations
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|dasd_open

@@ -138,8 +138,6 @@ dot
 id|refcnt
 op_increment
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2042,8 +2040,6 @@ id|lo-&gt;refcnt
 op_decrement
 suffix:semicolon
 multiline_comment|/* N.B. Doesn&squot;t lo-&gt;file need an fput?? */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2055,6 +2051,10 @@ id|block_device_operations
 id|nbd_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+dot
 id|open
 suffix:colon
 id|nbd_open

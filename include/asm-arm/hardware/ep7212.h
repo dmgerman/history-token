@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/include/asm-arm/hardware/ep7212.h&n; *&n; *  Th
 macro_line|#ifndef __ASM_HARDWARE_EP7212_H
 DECL|macro|__ASM_HARDWARE_EP7212_H
 mdefine_line|#define __ASM_HARDWARE_EP7212_H
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * define EP7212_BASE to be the base address of the region&n; * you want to access.&n; */
 DECL|macro|EP7212_PHYS_BASE
 mdefine_line|#define EP7212_PHYS_BASE&t;(0x80000000)
@@ -30,6 +31,12 @@ DECL|macro|INTMR3
 mdefine_line|#define INTMR3&t;&t;&t;0x2280
 DECL|macro|LEDFLSH
 mdefine_line|#define LEDFLSH&t;&t;&t;0x22c0
+macro_line|#if defined (CONFIG_ARCH_CDB89712)
+DECL|macro|SDCONF
+mdefine_line|#define SDCONF&t;&t;&t;0x2300
+DECL|macro|SDRFPR
+mdefine_line|#define SDRFPR&t;&t;&t;0x2340
+macro_line|#endif
 DECL|macro|DAIR_DAIEN
 mdefine_line|#define DAIR_DAIEN&t;&t;(1 &lt;&lt; 16)
 DECL|macro|DAIR_ECS
@@ -86,5 +93,31 @@ DECL|macro|SYSCON3_FASTWAKE
 mdefine_line|#define SYSCON3_FASTWAKE&t;(1 &lt;&lt; 8)
 DECL|macro|SYSCON3_DAIEN
 mdefine_line|#define SYSCON3_DAIEN&t;&t;(1 &lt;&lt; 9)
+macro_line|#if defined (CONFIG_ARCH_CDB89712)
+DECL|macro|SDCONF_ACTIVE
+mdefine_line|#define SDCONF_ACTIVE&t;&t;(1 &lt;&lt; 10)
+DECL|macro|SDCONF_CLKCTL
+mdefine_line|#define SDCONF_CLKCTL&t;&t;(1 &lt;&lt; 9)
+DECL|macro|SDCONF_WIDTH_4
+mdefine_line|#define SDCONF_WIDTH_4&t;&t;(0 &lt;&lt; 7)
+DECL|macro|SDCONF_WIDTH_8
+mdefine_line|#define SDCONF_WIDTH_8&t;&t;(1 &lt;&lt; 7)
+DECL|macro|SDCONF_WIDTH_16
+mdefine_line|#define SDCONF_WIDTH_16&t;&t;(2 &lt;&lt; 7)
+DECL|macro|SDCONF_WIDTH_32
+mdefine_line|#define SDCONF_WIDTH_32&t;&t;(3 &lt;&lt; 7)
+DECL|macro|SDCONF_SIZE_16
+mdefine_line|#define SDCONF_SIZE_16&t;&t;(0 &lt;&lt; 5)
+DECL|macro|SDCONF_SIZE_64
+mdefine_line|#define SDCONF_SIZE_64&t;&t;(1 &lt;&lt; 5)
+DECL|macro|SDCONF_SIZE_128
+mdefine_line|#define SDCONF_SIZE_128&t;&t;(2 &lt;&lt; 5)
+DECL|macro|SDCONF_SIZE_256
+mdefine_line|#define SDCONF_SIZE_256&t;&t;(3 &lt;&lt; 5)
+DECL|macro|SDCONF_CASLAT_2
+mdefine_line|#define SDCONF_CASLAT_2&t;&t;(2)
+DECL|macro|SDCONF_CASLAT_3
+mdefine_line|#define SDCONF_CASLAT_3&t;&t;(3)
+macro_line|#endif
 macro_line|#endif /* __ASM_HARDWARE_EP7212_H */
 eof

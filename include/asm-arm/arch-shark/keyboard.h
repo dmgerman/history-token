@@ -1,8 +1,16 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/keyboard.h&n; * by Alexander Schulz &lt;aschulz@netwinder.org&gt;&n; * &n; * Derived from linux/include/asm-arm/arch-ebsa285/keyboard.h&n; * (C) 1998 Russell King&n; * (C) 1998 Phil Blundell&n; */
+multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/keyboard.h&n; * by Alexander Schulz&n; * &n; * Derived from linux/include/asm-arm/arch-ebsa285/keyboard.h&n; * (C) 1998 Russell King&n; * (C) 1998 Phil Blundell&n; */
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+DECL|macro|KEYBOARD_IRQ
+mdefine_line|#define KEYBOARD_IRQ&t;&t;&t;IRQ_ISA_KEYBOARD
+DECL|macro|NR_SCANCODES
+mdefine_line|#define NR_SCANCODES&t;&t;&t;128
+DECL|macro|kbd_disable_irq
+mdefine_line|#define kbd_disable_irq()&t;&t;do { } while (0)
+DECL|macro|kbd_enable_irq
+mdefine_line|#define kbd_enable_irq()&t;&t;do { } while (0)
 r_extern
 r_int
 id|pckbd_setkeycode
@@ -81,30 +89,60 @@ id|pckbd_sysrq_xlate
 l_int|128
 )braket
 suffix:semicolon
-DECL|macro|KEYBOARD_IRQ
-mdefine_line|#define KEYBOARD_IRQ&t;&t;&t;IRQ_ISA_KEYBOARD
-DECL|macro|NR_SCANCODES
-mdefine_line|#define NR_SCANCODES 128
-DECL|macro|kbd_setkeycode
-mdefine_line|#define kbd_setkeycode(sc,kc)&t;&t;pckbd_setkeycode(sc,kc)
-DECL|macro|kbd_getkeycode
-mdefine_line|#define kbd_getkeycode(sc)&t;&t;pckbd_getkeycode(sc)
-DECL|macro|kbd_translate
-mdefine_line|#define kbd_translate(sc, kcp, rm)&t;pckbd_translate(sc, kcp, rm)
-DECL|macro|kbd_unexpected_up
-mdefine_line|#define kbd_unexpected_up&t;&t;pckbd_unexpected_up
-DECL|macro|kbd_leds
-mdefine_line|#define kbd_leds(leds)&t;&t;&t;pckbd_leds(leds)
-DECL|macro|kbd_init_hw
-mdefine_line|#define kbd_init_hw()&t;&t;&t;pckbd_init_hw()
-DECL|macro|kbd_sysrq_xlate
-mdefine_line|#define kbd_sysrq_xlate&t;&t;&t;pckbd_sysrq_xlate
-DECL|macro|kbd_disable_irq
-mdefine_line|#define kbd_disable_irq()
-DECL|macro|kbd_enable_irq
-mdefine_line|#define kbd_enable_irq()
-DECL|macro|SYSRQ_KEY
-mdefine_line|#define SYSRQ_KEY&t;0x54
+DECL|function|kbd_init_hw
+r_static
+r_inline
+r_void
+id|kbd_init_hw
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|have_isa_bridge
+)paren
+(brace
+id|k_setkeycode
+op_assign
+id|pckbd_setkeycode
+suffix:semicolon
+id|k_getkeycode
+op_assign
+id|pckbd_getkeycode
+suffix:semicolon
+id|k_translate
+op_assign
+id|pckbd_translate
+suffix:semicolon
+id|k_unexpected_up
+op_assign
+id|pckbd_unexpected_up
+suffix:semicolon
+id|k_leds
+op_assign
+id|pckbd_leds
+suffix:semicolon
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+id|k_sysrq_key
+op_assign
+l_int|0x54
+suffix:semicolon
+id|k_sysrq_xlate
+op_assign
+id|pckbd_sysrq_xlate
+suffix:semicolon
+macro_line|#endif
+id|pckbd_init_hw
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n; * PC Keyboard specifics&n; */
 multiline_comment|/* resource allocation */
 DECL|macro|kbd_request_region
 mdefine_line|#define kbd_request_region() request_region(0x60, 16, &quot;keyboard&quot;)

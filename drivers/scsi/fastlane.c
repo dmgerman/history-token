@@ -16,7 +16,6 @@ macro_line|#include &quot;NCR53C9x.h&quot;
 macro_line|#include &quot;fastlane.h&quot;
 macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -218,6 +217,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Keep backup of the stuff written&n;&t;&t;&t;&t; * to ctrl_reg. Always write a copy&n;&t;&t;&t;&t; * to this register when writing to&n;&t;&t;&t;&t; * the hardware register!&n;&t;&t;&t;&t; */
 DECL|variable|cmd_buffer
+r_static
 r_volatile
 r_int
 r_char

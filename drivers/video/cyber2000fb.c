@@ -7061,14 +7061,6 @@ comma
 )brace
 )brace
 suffix:semicolon
-id|MODULE_DEVICE_TABLE
-c_func
-(paren
-id|pci
-comma
-id|cyberpro_pci_table
-)paren
-suffix:semicolon
 DECL|variable|cyberpro_driver
 r_static
 r_struct
@@ -7164,6 +7156,14 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;CyberPro 2000, 2010 and 5000 framebuffer driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|cyberpro_pci_table
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

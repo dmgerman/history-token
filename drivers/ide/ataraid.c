@@ -143,6 +143,10 @@ id|block_device_operations
 id|ataraid_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|ataraid_open
@@ -924,8 +928,6 @@ id|fops
 r_int
 id|bit
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -948,8 +950,6 @@ c_func
 op_amp
 id|ataraid_sem
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -1047,8 +1047,6 @@ c_func
 op_amp
 id|ataraid_sem
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|ataraid_register_disk

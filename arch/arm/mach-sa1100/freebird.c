@@ -214,6 +214,23 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* Set up sleep mode registers */
+id|PWER
+op_assign
+l_int|0x1
+suffix:semicolon
+id|PGSR
+op_assign
+l_int|0x0
+suffix:semicolon
+id|PCFR
+op_assign
+id|PCFR_OPDE
+op_or
+id|PCFR_FP
+op_or
+id|PCFR_FS
+suffix:semicolon
 )brace
 id|MACHINE_START
 c_func

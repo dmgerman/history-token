@@ -191,7 +191,7 @@ r_int
 r_char
 id|__pad1
 (braket
-l_int|4
+l_int|2
 )braket
 suffix:semicolon
 DECL|macro|STAT64_HAS_BROKEN_ST_INO
@@ -239,7 +239,7 @@ r_int
 r_char
 id|__pad3
 (braket
-l_int|4
+l_int|2
 )braket
 suffix:semicolon
 DECL|member|st_size

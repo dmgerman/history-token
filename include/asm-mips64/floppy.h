@@ -276,17 +276,6 @@ DECL|macro|FLOPPY1_TYPE
 mdefine_line|#define FLOPPY1_TYPE&t;&t;&t;fd_drive_type(1)
 DECL|macro|FDC1
 mdefine_line|#define FDC1&t;&t;&t;fd_ops-&gt;fd_getfdaddr1();
-multiline_comment|/*&n; * Hack: The floppy drivrer defines this, before including fdreg.h.  We use&n; * to define FDC2 only one and keep it a static variable in floppy.c.&n; */
-macro_line|#ifdef FDPATCHES
-DECL|variable|FDC2
-r_static
-r_int
-id|FDC2
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-macro_line|#endif
 DECL|macro|N_FDC
 mdefine_line|#define N_FDC 1&t;&t;&t;/* do you *really* want a second controller? */
 DECL|macro|N_DRIVE
@@ -296,5 +285,7 @@ mdefine_line|#define FLOPPY_MOTOR_MASK 0xf0
 multiline_comment|/*&n; * The DMA channel used by the floppy controller cannot access data at&n; * addresses &gt;= 16MB&n; *&n; * Went back to the 1MB limit, as some people had problems with the floppy&n; * driver otherwise. It doesn&squot;t matter much for performance anyway, as most&n; * floppy accesses go through the track buffer.&n; *&n; * On MIPSes using vdma, this actually means that *all* transfers go thru&n; * the * track buffer since 0x1000000 is always smaller than KSEG0/1.&n; * Actually this needs to be a bit more complicated since the so much different&n; * hardware available with MIPS CPUs ...&n; */
 DECL|macro|CROSS_64KB
 mdefine_line|#define CROSS_64KB(a,s) ((unsigned long)(a)/K_64 != ((unsigned long)(a) + (s) - 1) / K_64)
+DECL|macro|EXTRA_FLOPPY_PARAMS
+mdefine_line|#define EXTRA_FLOPPY_PARAMS
 macro_line|#endif /* _ASM_FLOPPY_H */
 eof

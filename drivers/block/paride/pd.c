@@ -1008,6 +1008,10 @@ id|block_device_operations
 id|pd_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|pd_open
@@ -1418,8 +1422,6 @@ id|PD.present
 r_return
 op_minus
 id|ENODEV
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|wait_event
 (paren
@@ -1956,8 +1958,6 @@ id|unit
 comma
 id|IDE_DOORUNLOCK
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

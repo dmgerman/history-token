@@ -8069,6 +8069,12 @@ c_func
 l_string|&quot;NEC Vrc5477 audio (AC97) Driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 r_extern
 r_void

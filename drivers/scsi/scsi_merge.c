@@ -2212,6 +2212,17 @@ op_minus
 l_int|1
 )braket
 dot
+id|page
+op_assign
+l_int|NULL
+suffix:semicolon
+id|sgpnt
+(braket
+id|count
+op_minus
+l_int|1
+)braket
+dot
 id|length
 op_add_assign
 id|bh-&gt;b_size

@@ -344,6 +344,10 @@ id|block_device_operations
 id|xd_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|xd_open
@@ -1171,8 +1175,6 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1209,8 +1211,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -1787,16 +1787,12 @@ id|target
 OL
 id|xd_drives
 )paren
-(brace
 id|xd_access
 (braket
 id|target
 )braket
 op_decrement
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon

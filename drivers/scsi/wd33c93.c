@@ -74,15 +74,16 @@ id|uchar
 id|read_wd33c93
 c_func
 (paren
+r_const
 id|wd33c93_regs
-op_star
-id|regp
+id|regs
 comma
 id|uchar
 id|reg_num
 )paren
 (brace
-id|regp-&gt;SASR
+op_star
+id|regs.SASR
 op_assign
 id|reg_num
 suffix:semicolon
@@ -92,11 +93,12 @@ c_func
 )paren
 suffix:semicolon
 r_return
-id|regp-&gt;SCMD
+op_star
+id|regs.SCMD
 suffix:semicolon
 )brace
 DECL|macro|READ_AUX_STAT
-mdefine_line|#define READ_AUX_STAT() (regp-&gt;SASR)
+mdefine_line|#define READ_AUX_STAT() (*regs.SASR)
 DECL|function|write_wd33c93
 r_static
 r_inline
@@ -104,9 +106,9 @@ r_void
 id|write_wd33c93
 c_func
 (paren
+r_const
 id|wd33c93_regs
-op_star
-id|regp
+id|regs
 comma
 id|uchar
 id|reg_num
@@ -115,7 +117,8 @@ id|uchar
 id|value
 )paren
 (brace
-id|regp-&gt;SASR
+op_star
+id|regs.SASR
 op_assign
 id|reg_num
 suffix:semicolon
@@ -124,7 +127,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|regp-&gt;SCMD
+op_star
+id|regs.SCMD
 op_assign
 id|value
 suffix:semicolon
@@ -141,15 +145,16 @@ r_void
 id|write_wd33c93_cmd
 c_func
 (paren
+r_const
 id|wd33c93_regs
-op_star
-id|regp
+id|regs
 comma
 id|uchar
 id|cmd
 )paren
 (brace
-id|regp-&gt;SASR
+op_star
+id|regs.SASR
 op_assign
 id|WD_COMMAND
 suffix:semicolon
@@ -158,7 +163,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|regp-&gt;SCMD
+op_star
+id|regs.SCMD
 op_assign
 id|cmd
 suffix:semicolon
@@ -175,9 +181,9 @@ id|uchar
 id|read_1_byte
 c_func
 (paren
+r_const
 id|wd33c93_regs
-op_star
-id|regp
+id|regs
 )paren
 (brace
 id|uchar
@@ -191,7 +197,7 @@ suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CONTROL
 comma
@@ -205,7 +211,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_TRANS_INFO
 op_or
@@ -233,7 +239,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_DATA
 )paren
@@ -260,16 +266,17 @@ r_void
 id|write_wd33c93_count
 c_func
 (paren
+r_const
 id|wd33c93_regs
-op_star
-id|regp
+id|regs
 comma
 r_int
 r_int
 id|value
 )paren
 (brace
-id|regp-&gt;SASR
+op_star
+id|regs.SASR
 op_assign
 id|WD_TRANSFER_COUNT_MSB
 suffix:semicolon
@@ -278,19 +285,22 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|regp-&gt;SCMD
+op_star
+id|regs.SCMD
 op_assign
 id|value
 op_rshift
 l_int|16
 suffix:semicolon
-id|regp-&gt;SCMD
+op_star
+id|regs.SCMD
 op_assign
 id|value
 op_rshift
 l_int|8
 suffix:semicolon
-id|regp-&gt;SCMD
+op_star
+id|regs.SCMD
 op_assign
 id|value
 suffix:semicolon
@@ -307,16 +317,17 @@ r_int
 id|read_wd33c93_count
 c_func
 (paren
+r_const
 id|wd33c93_regs
-op_star
-id|regp
+id|regs
 )paren
 (brace
 r_int
 r_int
 id|value
 suffix:semicolon
-id|regp-&gt;SASR
+op_star
+id|regs.SASR
 op_assign
 id|WD_TRANSFER_COUNT_MSB
 suffix:semicolon
@@ -327,19 +338,22 @@ c_func
 suffix:semicolon
 id|value
 op_assign
-id|regp-&gt;SCMD
+op_star
+id|regs.SCMD
 op_lshift
 l_int|16
 suffix:semicolon
 id|value
 op_or_assign
-id|regp-&gt;SCMD
+op_star
+id|regs.SCMD
 op_lshift
 l_int|8
 suffix:semicolon
 id|value
 op_or_assign
-id|regp-&gt;SCMD
+op_star
+id|regs.SCMD
 suffix:semicolon
 id|mb
 c_func
@@ -930,10 +944,19 @@ r_struct
 id|WD33C93_hostdata
 op_star
 id|hostdata
-suffix:semicolon
-id|wd33c93_regs
+op_assign
+(paren
+r_struct
+id|WD33C93_hostdata
 op_star
-id|regp
+)paren
+id|instance-&gt;hostdata
+suffix:semicolon
+r_const
+id|wd33c93_regs
+id|regs
+op_assign
+id|hostdata-&gt;regs
 suffix:semicolon
 id|Scsi_Cmnd
 op_star
@@ -944,19 +967,6 @@ id|prev
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-id|hostdata
-op_assign
-(paren
-r_struct
-id|WD33C93_hostdata
-op_star
-)paren
-id|instance-&gt;hostdata
-suffix:semicolon
-id|regp
-op_assign
-id|hostdata-&gt;regp
 suffix:semicolon
 id|DB
 c_func
@@ -1104,7 +1114,7 @@ id|cmd
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_DESTINATION_ID
 comma
@@ -1115,7 +1125,7 @@ r_else
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_DESTINATION_ID
 comma
@@ -1272,7 +1282,7 @@ suffix:colon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SOURCE_ID
 comma
@@ -1291,7 +1301,7 @@ suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_TARGET_LUN
 comma
@@ -1301,7 +1311,7 @@ suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SYNCHRONOUS_TRANSFER
 comma
@@ -1371,7 +1381,7 @@ suffix:semicolon
 id|write_wd33c93_count
 c_func
 (paren
-id|regp
+id|regs
 comma
 l_int|0
 )paren
@@ -1380,7 +1390,7 @@ multiline_comment|/* guarantee a DATA_PHASE interrupt */
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_SEL_ATN
 )paren
@@ -1396,7 +1406,7 @@ suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_COMMAND_PHASE
 comma
@@ -1404,7 +1414,8 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* copy command_descriptor_block into WD chip&n;    * (take advantage of auto-incrementing)&n;    */
-id|regp-&gt;SASR
+op_star
+id|regs.SASR
 op_assign
 id|WD_CDB_1
 suffix:semicolon
@@ -1422,7 +1433,8 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|regp-&gt;SCMD
+op_star
+id|regs.SCMD
 op_assign
 id|cmd-&gt;cmnd
 (braket
@@ -1433,7 +1445,7 @@ multiline_comment|/* The wd33c93 only knows about Group 0, 1, and 5 commands whe
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_OWN_ID
 comma
@@ -1484,7 +1496,7 @@ id|DATA_IN_DIR
 id|write_wd33c93_count
 c_func
 (paren
-id|regp
+id|regs
 comma
 l_int|0
 )paren
@@ -1495,7 +1507,7 @@ r_else
 id|write_wd33c93_count
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|cmd-&gt;SCp.this_residual
 )paren
@@ -1503,7 +1515,7 @@ suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CONTROL
 comma
@@ -1524,7 +1536,7 @@ r_else
 id|write_wd33c93_count
 c_func
 (paren
-id|regp
+id|regs
 comma
 l_int|0
 )paren
@@ -1537,7 +1549,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_SEL_ATN_XFER
 )paren
@@ -1573,9 +1585,9 @@ r_void
 id|transfer_pio
 c_func
 (paren
+r_const
 id|wd33c93_regs
-op_star
-id|regp
+id|regs
 comma
 id|uchar
 op_star
@@ -1621,7 +1633,7 @@ l_string|&quot;out&quot;
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CONTROL
 comma
@@ -1635,7 +1647,7 @@ suffix:semicolon
 id|write_wd33c93_count
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|cnt
 )paren
@@ -1643,7 +1655,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_TRANS_INFO
 )paren
@@ -1677,7 +1689,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_DATA
 )paren
@@ -1716,7 +1728,7 @@ id|ASR_DBR
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_DATA
 comma
@@ -1746,9 +1758,9 @@ r_void
 id|transfer_bytes
 c_func
 (paren
+r_const
 id|wd33c93_regs
-op_star
-id|regp
+id|regs
 comma
 id|Scsi_Cmnd
 op_star
@@ -1804,7 +1816,7 @@ suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SYNCHRONOUS_TRANSFER
 comma
@@ -1849,7 +1861,7 @@ macro_line|#endif
 id|transfer_pio
 c_func
 (paren
-id|regp
+id|regs
 comma
 (paren
 id|uchar
@@ -1873,7 +1885,7 @@ op_assign
 id|read_wd33c93_count
 c_func
 (paren
-id|regp
+id|regs
 )paren
 suffix:semicolon
 id|cmd-&gt;SCp.ptr
@@ -1896,7 +1908,7 @@ macro_line|#endif
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CONTROL
 comma
@@ -1910,7 +1922,7 @@ suffix:semicolon
 id|write_wd33c93_count
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|cmd-&gt;SCp.this_residual
 )paren
@@ -1938,7 +1950,7 @@ l_int|0
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_COMMAND_PHASE
 comma
@@ -1948,7 +1960,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_SEL_ATN_XFER
 )paren
@@ -1962,7 +1974,7 @@ r_else
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_TRANS_INFO
 )paren
@@ -1987,6 +1999,19 @@ r_struct
 id|WD33C93_hostdata
 op_star
 id|hostdata
+op_assign
+(paren
+r_struct
+id|WD33C93_hostdata
+op_star
+)paren
+id|instance-&gt;hostdata
+suffix:semicolon
+r_const
+id|wd33c93_regs
+id|regs
+op_assign
+id|hostdata-&gt;regs
 suffix:semicolon
 id|Scsi_Cmnd
 op_star
@@ -1994,10 +2019,6 @@ id|patch
 comma
 op_star
 id|cmd
-suffix:semicolon
-id|wd33c93_regs
-op_star
-id|regp
 suffix:semicolon
 id|uchar
 id|asr
@@ -2020,19 +2041,6 @@ r_int
 id|length
 comma
 id|flags
-suffix:semicolon
-id|hostdata
-op_assign
-(paren
-r_struct
-id|WD33C93_hostdata
-op_star
-)paren
-id|instance-&gt;hostdata
-suffix:semicolon
-id|regp
-op_assign
-id|hostdata-&gt;regp
 suffix:semicolon
 id|asr
 op_assign
@@ -2084,7 +2092,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SCSI_STATUS
 )paren
@@ -2095,7 +2103,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_COMMAND_PHASE
 )paren
@@ -2164,7 +2172,7 @@ op_assign
 id|read_wd33c93_count
 c_func
 (paren
-id|regp
+id|regs
 )paren
 suffix:semicolon
 id|cmd-&gt;SCp.ptr
@@ -2485,7 +2493,7 @@ id|cmd-&gt;SCp.buffers_residual
 id|transfer_bytes
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|cmd
 comma
@@ -2538,7 +2546,7 @@ id|cmd-&gt;SCp.buffers_residual
 id|transfer_bytes
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|cmd
 comma
@@ -2595,7 +2603,7 @@ id|cmd-&gt;pid
 id|transfer_pio
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|cmd-&gt;cmnd
 comma
@@ -2643,7 +2651,7 @@ op_assign
 id|read_1_byte
 c_func
 (paren
-id|regp
+id|regs
 )paren
 suffix:semicolon
 id|DB
@@ -2672,7 +2680,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SCSI_STATUS
 )paren
@@ -2685,7 +2693,7 @@ suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_COMMAND_PHASE
 comma
@@ -2695,7 +2703,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_SEL_ATN_XFER
 )paren
@@ -2741,7 +2749,7 @@ op_assign
 id|read_1_byte
 c_func
 (paren
-id|regp
+id|regs
 )paren
 suffix:semicolon
 id|sr
@@ -2749,7 +2757,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SCSI_STATUS
 )paren
@@ -2810,7 +2818,7 @@ id|cmd-&gt;pid
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_NEGATE_ACK
 )paren
@@ -2838,7 +2846,7 @@ l_string|&quot;SDP&quot;
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_NEGATE_ACK
 )paren
@@ -2874,7 +2882,7 @@ id|L2_BASIC
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_COMMAND_PHASE
 comma
@@ -2884,7 +2892,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_SEL_ATN_XFER
 )paren
@@ -2899,7 +2907,7 @@ r_else
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_NEGATE_ACK
 )paren
@@ -2932,7 +2940,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_NEGATE_ACK
 )paren
@@ -2985,7 +2993,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_NEGATE_ACK
 )paren
@@ -3095,7 +3103,7 @@ multiline_comment|/* A device has sent an unsolicited SDTR message; rather than 
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_ASSERT_ATN
 )paren
@@ -3191,7 +3199,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_NEGATE_ACK
 )paren
@@ -3208,7 +3216,7 @@ suffix:colon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_ASSERT_ATN
 )paren
@@ -3256,7 +3264,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_NEGATE_ACK
 )paren
@@ -3272,7 +3280,7 @@ suffix:colon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_ASSERT_ATN
 )paren
@@ -3303,7 +3311,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_NEGATE_ACK
 )paren
@@ -3329,7 +3337,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_NEGATE_ACK
 )paren
@@ -3354,7 +3362,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_ASSERT_ATN
 )paren
@@ -3374,7 +3382,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_NEGATE_ACK
 )paren
@@ -3400,7 +3408,7 @@ multiline_comment|/* Make sure that reselection is enabled at this point - it ma
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SOURCE_ID
 comma
@@ -3437,7 +3445,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_TARGET_LUN
 )paren
@@ -3590,7 +3598,7 @@ suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_COMMAND_PHASE
 comma
@@ -3600,7 +3608,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_SEL_ATN_XFER
 )paren
@@ -3657,7 +3665,7 @@ suffix:semicolon
 id|transfer_pio
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|hostdata-&gt;outgoing_msg
 comma
@@ -3702,7 +3710,7 @@ multiline_comment|/* Make sure that reselection is enabled at this point - it ma
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SOURCE_ID
 comma
@@ -3833,7 +3841,7 @@ multiline_comment|/* Make sure that reselection is enabled at this point - it ma
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SOURCE_ID
 comma
@@ -4181,7 +4189,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SOURCE_ID
 )paren
@@ -4204,7 +4212,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_DATA
 )paren
@@ -4219,7 +4227,7 @@ id|L2_RESELECT
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_NEGATE_ACK
 )paren
@@ -4298,7 +4306,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SCSI_STATUS
 )paren
@@ -4337,7 +4345,7 @@ op_assign
 id|read_1_byte
 c_func
 (paren
-id|regp
+id|regs
 )paren
 suffix:semicolon
 multiline_comment|/* Now we expect a &squot;paused with ACK asserted&squot; int.. */
@@ -4396,7 +4404,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SCSI_STATUS
 )paren
@@ -4423,7 +4431,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_NEGATE_ACK
 )paren
@@ -4548,7 +4556,7 @@ id|cmd
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_DESTINATION_ID
 comma
@@ -4559,7 +4567,7 @@ r_else
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_DESTINATION_ID
 comma
@@ -4579,7 +4587,7 @@ id|L2_RESELECT
 id|write_wd33c93_count
 c_func
 (paren
-id|regp
+id|regs
 comma
 l_int|0
 )paren
@@ -4588,7 +4596,7 @@ multiline_comment|/* we want a DATA_PHASE interrupt */
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_COMMAND_PHASE
 comma
@@ -4598,7 +4606,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_SEL_ATN_XFER
 )paren
@@ -4671,15 +4679,6 @@ r_struct
 id|WD33C93_hostdata
 op_star
 id|hostdata
-suffix:semicolon
-id|wd33c93_regs
-op_star
-id|regp
-suffix:semicolon
-id|uchar
-id|sr
-suffix:semicolon
-id|hostdata
 op_assign
 (paren
 r_struct
@@ -4688,14 +4687,19 @@ op_star
 )paren
 id|instance-&gt;hostdata
 suffix:semicolon
-id|regp
+r_const
+id|wd33c93_regs
+id|regs
 op_assign
-id|hostdata-&gt;regp
+id|hostdata-&gt;regs
+suffix:semicolon
+id|uchar
+id|sr
 suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_OWN_ID
 comma
@@ -4711,7 +4715,7 @@ suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CONTROL
 comma
@@ -4725,7 +4729,7 @@ suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SYNCHRONOUS_TRANSFER
 comma
@@ -4743,7 +4747,7 @@ suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_COMMAND
 comma
@@ -4778,7 +4782,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SCSI_STATUS
 )paren
@@ -4788,7 +4792,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CDB_1
 )paren
@@ -4816,7 +4820,7 @@ l_int|0x01
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_QUEUE_TAG
 comma
@@ -4829,7 +4833,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_QUEUE_TAG
 )paren
@@ -4849,7 +4853,7 @@ suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_QUEUE_TAG
 comma
@@ -4871,7 +4875,7 @@ suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_TIMEOUT_PERIOD
 comma
@@ -4881,7 +4885,7 @@ suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CONTROL
 comma
@@ -5086,8 +5090,7 @@ op_star
 id|hostdata
 suffix:semicolon
 id|wd33c93_regs
-op_star
-id|regp
+id|regs
 suffix:semicolon
 id|Scsi_Cmnd
 op_star
@@ -5115,9 +5118,9 @@ op_star
 )paren
 id|instance-&gt;hostdata
 suffix:semicolon
-id|regp
+id|regs
 op_assign
-id|hostdata-&gt;regp
+id|hostdata-&gt;regs
 suffix:semicolon
 multiline_comment|/*&n; * Case 1 : If the command hasn&squot;t been issued yet, we simply remove it&n; *     from the input_Q.&n; */
 id|tmp
@@ -5283,7 +5286,7 @@ suffix:semicolon
 id|write_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CONTROL
 comma
@@ -5297,7 +5300,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_ABORT
 )paren
@@ -5332,7 +5335,7 @@ id|ASR_DBR
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_DATA
 )paren
@@ -5359,7 +5362,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SCSI_STATUS
 )paren
@@ -5376,7 +5379,7 @@ comma
 id|read_wd33c93_count
 c_func
 (paren
-id|regp
+id|regs
 )paren
 comma
 id|timeout
@@ -5392,7 +5395,7 @@ suffix:semicolon
 id|write_wd33c93_cmd
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_CMD_DISCONNECT
 )paren
@@ -5434,7 +5437,7 @@ op_assign
 id|read_wd33c93
 c_func
 (paren
-id|regp
+id|regs
 comma
 id|WD_SCSI_STATUS
 )paren
@@ -6038,14 +6041,15 @@ suffix:semicolon
 DECL|function|wd33c93_init
 r_void
 id|wd33c93_init
+c_func
 (paren
 r_struct
 id|Scsi_Host
 op_star
 id|instance
 comma
+r_const
 id|wd33c93_regs
-op_star
 id|regs
 comma
 id|dma_setup_t
@@ -6101,7 +6105,7 @@ op_star
 )paren
 id|instance-&gt;hostdata
 suffix:semicolon
-id|hostdata-&gt;regp
+id|hostdata-&gt;regs
 op_assign
 id|regs
 suffix:semicolon
@@ -7802,6 +7806,7 @@ r_void
 )paren
 (brace
 )brace
+macro_line|#endif
 DECL|function|wd33c93_release
 r_void
 id|wd33c93_release
@@ -7813,5 +7818,4 @@ r_void
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
-macro_line|#endif
 eof

@@ -396,6 +396,36 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/*&n; *&t;Cache management&n; *&n; *&t;This needed for two cases&n; *&t;1. Out of order aware processors&n; *&t;2. Accidentally out of order processors (PPro errata #51)&n; */
+macro_line|#if defined(CONFIG_X86_OOSTORE) || defined(CONFIG_X86_PPRO_FENCE)
+DECL|function|flush_write_buffers
+r_static
+r_inline
+r_void
+id|flush_write_buffers
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;lock; addl $0,0(%%esp)&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|macro|dma_cache_inv
+mdefine_line|#define dma_cache_inv(_start,_size)&t;&t;flush_write_buffers()
+DECL|macro|dma_cache_wback
+mdefine_line|#define dma_cache_wback(_start,_size)&t;&t;flush_write_buffers()
+DECL|macro|dma_cache_wback_inv
+mdefine_line|#define dma_cache_wback_inv(_start,_size)&t;flush_write_buffers()
+macro_line|#else
 multiline_comment|/* Nothing to do */
 DECL|macro|dma_cache_inv
 mdefine_line|#define dma_cache_inv(_start,_size)&t;&t;do { } while (0)
@@ -403,6 +433,9 @@ DECL|macro|dma_cache_wback
 mdefine_line|#define dma_cache_wback(_start,_size)&t;&t;do { } while (0)
 DECL|macro|dma_cache_wback_inv
 mdefine_line|#define dma_cache_wback_inv(_start,_size)&t;do { } while (0)
+DECL|macro|flush_write_buffers
+mdefine_line|#define flush_write_buffers()
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#ifdef SLOW_IO_BY_JUMPING
 DECL|macro|__SLOW_DOWN_IO

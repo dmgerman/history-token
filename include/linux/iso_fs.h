@@ -1269,6 +1269,13 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* high sierra is identical to iso, except that the date is only 6 bytes, and&n;   there is an extra reserved byte after the flags */
 DECL|struct|iso_directory_record
@@ -1413,6 +1420,13 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 DECL|macro|ISOFS_BLOCK_BITS
 mdefine_line|#define ISOFS_BLOCK_BITS 11
@@ -1653,6 +1667,10 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_struct
+id|inode
+suffix:semicolon
+multiline_comment|/* To make gcc happy */
 r_extern
 r_int
 id|parse_rock_ridge_inode
@@ -1777,6 +1795,26 @@ op_star
 comma
 r_int
 r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|isofs_get_blocks
+c_func
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_int
+comma
+r_struct
+id|buffer_head
+op_star
+op_star
 comma
 r_int
 r_int

@@ -5231,8 +5231,6 @@ id|sony_inuse
 op_assign
 l_int|1
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5260,8 +5258,6 @@ suffix:semicolon
 id|sony_inuse
 op_assign
 l_int|0
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -5306,8 +5302,6 @@ suffix:semicolon
 id|sony_inuse
 op_assign
 l_int|0
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -5389,8 +5383,6 @@ suffix:semicolon
 id|sony_inuse
 op_assign
 l_int|0
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond
@@ -5483,6 +5475,10 @@ id|block_device_operations
 id|cdu_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|cdu_open

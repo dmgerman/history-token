@@ -81,7 +81,7 @@ c_func
 id|KERN_CRIT
 l_string|&quot;ADFS-fs error (device %s)%s%s: %s&bslash;n&quot;
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
 id|sb-&gt;s_dev
@@ -1612,7 +1612,7 @@ c_func
 l_string|&quot;VFS: Can&squot;t find an adfs filesystem on dev &quot;
 l_string|&quot;%s.&bslash;n&quot;
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
 id|dev
@@ -1659,7 +1659,7 @@ c_func
 l_string|&quot;VPS: Can&squot;t find an adfs filesystem on dev &quot;
 l_string|&quot;%s.&bslash;n&quot;
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
 id|dev
@@ -1821,7 +1821,7 @@ id|KERN_ERR
 l_string|&quot;VFS: Unsupported blocksize on dev &quot;
 l_string|&quot;%s.&bslash;n&quot;
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
 id|dev

@@ -284,12 +284,6 @@ r_else
 (brace
 singleline_comment|//&t;&t;printk(&quot;VM: __lru_cache_del, found unknown page ?!&bslash;n&quot;);
 )brace
-id|DEBUG_LRU_PAGE
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * lru_cache_del: remove a page from the page lists&n; * @page: the page to remove&n; */
 DECL|function|lru_cache_del

@@ -160,4 +160,12 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|driver_template
+r_static
+id|Scsi_Host_Template
+id|driver_template
+op_assign
+id|MVME16x_SCSI
+suffix:semicolon
+macro_line|#include &quot;scsi_module.c&quot;
 eof

@@ -864,7 +864,7 @@ mdefine_line|#define NS_CFG_LGBUFSIZE NS_CFG_LGBUFSIZE_2048
 macro_line|#elif (NS_LGBUFSIZE == 4096)
 DECL|macro|NS_CFG_LGBUFSIZE
 mdefine_line|#define NS_CFG_LGBUFSIZE NS_CFG_LGBUFSIZE_4096
-macro_line|#eliif (NS_LGBUFSIZE == 8192)
+macro_line|#elif (NS_LGBUFSIZE == 8192)
 DECL|macro|NS_CFG_LGBUFSIZE
 mdefine_line|#define NS_CFG_LGBUFSIZE NS_CFG_LGBUFSIZE_8192
 macro_line|#elif (NS_LGBUFSIZE == 16384)

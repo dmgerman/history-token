@@ -16,12 +16,35 @@ c_cond
 op_logical_neg
 id|hlt_counter
 )paren
+(brace
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|current-&gt;need_resched
+)paren
 id|cpu_do_idle
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+)brace
 )brace
 macro_line|#ifdef CONFIG_SA1100_VICTOR
 multiline_comment|/* power off unconditionally */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/asm-m68k/io_native.h &n; *&n; * 10/20/00 RZ: - created from bits of io.h and ide.h to cleanup namespace&n; *&n; */
+multiline_comment|/*&n; * linux/include/asm-m68k/raw_io.h &n; *&n; * 10/20/00 RZ: - created from bits of io.h and ide.h to cleanup namespace&n; *&n; */
 macro_line|#ifndef _RAW_IO_H
 DECL|macro|_RAW_IO_H
 mdefine_line|#define _RAW_IO_H

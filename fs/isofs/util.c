@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/isofs/util.c&n; */
 macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/iso_fs.h&gt;
 multiline_comment|/* &n; * We have to convert from a MM/DD/YY format to the Unix ctime format.&n; * We have to take into account leap years and all of that good stuff.&n; * Unfortunately, the kernel does not have the information on hand to&n; * take into account daylight savings time, but it shouldn&squot;t matter.&n; * The time stored should be localtime (with or without DST in effect),&n; * and the timezone offset should hold the offset required to get back&n; * to GMT.  Thus  we should always be correct.&n; */
 DECL|function|iso_date

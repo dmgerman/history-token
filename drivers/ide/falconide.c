@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/drivers/ide/falconide.c -- Atari Falcon IDE Driver&n; *&n; *     Created 12 Jul 1997 by Geert Uytterhoeven&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -6,6 +7,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/atarihw.h&gt;
 macro_line|#include &lt;asm/atariints.h&gt;
 macro_line|#include &lt;asm/atari_stdma.h&gt;
@@ -31,14 +33,14 @@ DECL|macro|ATA_HD_STATUS
 mdefine_line|#define ATA_HD_STATUS&t;0x1d&t;&t;/* see status-bits */
 DECL|macro|ATA_HD_CONTROL
 mdefine_line|#define ATA_HD_CONTROL&t;0x39
-DECL|variable|falconide_offsets
+DECL|variable|__initdata
 r_static
 r_int
-id|__init
 id|falconide_offsets
 (braket
 id|IDE_NR_PORTS
 )braket
+id|__initdata
 op_assign
 (brace
 id|ATA_HD_DATA

@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware/iomd.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -810,6 +811,7 @@ id|K_NONE
 suffix:semicolon
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 DECL|variable|ps2kbd_sysrq_xlate
+r_static
 r_int
 r_char
 id|ps2kbd_sysrq_xlate
@@ -1721,12 +1723,13 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ps2kbd_leds
+r_static
 r_void
 id|ps2kbd_leds
 c_func
 (paren
 r_int
-r_int
+r_char
 id|leds
 )paren
 (brace
@@ -1825,6 +1828,49 @@ id|regs
 )paren
 (brace
 )brace
+DECL|function|ps2kbd_translate
+r_static
+r_int
+id|ps2kbd_translate
+c_func
+(paren
+r_int
+r_char
+id|scancode
+comma
+r_int
+r_char
+op_star
+id|keycode
+comma
+r_char
+id|rawmode
+)paren
+(brace
+op_star
+id|keycode
+op_assign
+id|scancode
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|ps2kbd_unexpected_up
+r_static
+r_char
+id|ps2kbd_unexpected_up
+c_func
+(paren
+r_int
+r_char
+id|scancode
+)paren
+(brace
+r_return
+l_int|0200
+suffix:semicolon
+)brace
 DECL|function|ps2kbd_init_hw
 r_int
 id|__init
@@ -1905,6 +1951,28 @@ c_func
 l_string|&quot;Could not allocate keyboard transmit IRQ!&quot;
 )paren
 suffix:semicolon
+id|k_translate
+op_assign
+id|ps2kbd_translate
+suffix:semicolon
+id|k_unexpected_up
+op_assign
+id|ps2kbd_unexpected_up
+suffix:semicolon
+id|k_leds
+op_assign
+id|ps2kbd_leds
+suffix:semicolon
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+id|k_sysrq_xlate
+op_assign
+id|ps2kbd_sysrq_xlate
+suffix:semicolon
+id|k_sysrq_key
+op_assign
+l_int|13
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

@@ -331,8 +331,6 @@ l_string|&quot;a&quot;
 id|sem1
 )paren
 suffix:colon
-l_string|&quot;%d0&quot;
-comma
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
@@ -406,8 +404,6 @@ l_string|&quot;a&quot;
 id|sem1
 )paren
 suffix:colon
-l_string|&quot;%d0&quot;
-comma
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon

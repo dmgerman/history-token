@@ -1519,7 +1519,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;Alignment trap: not handling instruction &quot;
-l_string|&quot;%08lx at [&lt;%08lx&gt;]&quot;
+l_string|&quot;%08lx at [&lt;%08lx&gt;]&bslash;n&quot;
 comma
 id|instr
 comma

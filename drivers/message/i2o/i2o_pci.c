@@ -627,6 +627,18 @@ id|c-&gt;bus.pci.queue_buggy
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;subsystem_device
+op_eq
+l_int|0x0000
+)paren
+multiline_comment|/* SX6000 ???? */
+id|c-&gt;bus.pci.queue_buggy
+op_assign
+l_int|2
+suffix:semicolon
 id|printk
 c_func
 (paren

@@ -1,0 +1,137 @@
+multiline_comment|/*&n; *  linux/include/asm-arm/arch-epxa10db/time.h&n; *&n; *  Copyright (C) 2001 Altera Corporation&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/leds.h&gt;
+macro_line|#include &lt;asm/arch/hardware.h&gt;
+DECL|macro|TIMER00_TYPE
+mdefine_line|#define TIMER00_TYPE (volatile unsigned int*)
+macro_line|#include &lt;asm/arch/timer00.h&gt;
+multiline_comment|/*&n; * IRQ handler for the timer&n; */
+DECL|function|excalibur_timer_interrupt
+r_static
+r_void
+id|excalibur_timer_interrupt
+c_func
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+singleline_comment|// ...clear the interrupt
+op_star
+id|TIMER0_CR
+c_func
+(paren
+id|IO_ADDRESS
+c_func
+(paren
+id|EXC_TIMER00_BASE
+)paren
+)paren
+op_or_assign
+id|TIMER0_CR_CI_MSK
+suffix:semicolon
+id|do_leds
+c_func
+(paren
+)paren
+suffix:semicolon
+id|do_timer
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+id|do_profile
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; */
+DECL|function|setup_timer
+r_extern
+id|__inline__
+r_void
+id|setup_timer
+c_func
+(paren
+r_void
+)paren
+(brace
+id|timer_irq.handler
+op_assign
+id|excalibur_timer_interrupt
+suffix:semicolon
+multiline_comment|/* &n;&t; * Make irqs happen for the system timer&n;&t; */
+id|setup_arm_irq
+c_func
+(paren
+id|IRQ_TIMER0
+comma
+op_amp
+id|timer_irq
+)paren
+suffix:semicolon
+multiline_comment|/* Start the timer */
+op_star
+id|TIMER0_LIMIT
+c_func
+(paren
+id|IO_ADDRESS
+c_func
+(paren
+id|EXC_TIMER00_BASE
+)paren
+)paren
+op_assign
+(paren
+r_int
+r_int
+)paren
+(paren
+id|EXC_AHB2_CLK_FREQUENCY
+op_div
+l_int|50
+)paren
+suffix:semicolon
+op_star
+id|TIMER0_PRESCALE
+c_func
+(paren
+id|IO_ADDRESS
+c_func
+(paren
+id|EXC_TIMER00_BASE
+)paren
+)paren
+op_assign
+l_int|1
+suffix:semicolon
+op_star
+id|TIMER0_CR
+c_func
+(paren
+id|IO_ADDRESS
+c_func
+(paren
+id|EXC_TIMER00_BASE
+)paren
+)paren
+op_assign
+id|TIMER0_CR_IE_MSK
+op_or
+id|TIMER0_CR_S_MSK
+suffix:semicolon
+)brace
+eof

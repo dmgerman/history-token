@@ -4,6 +4,7 @@ mdefine_line|#define __MEGARAID_H__
 macro_line|#ifndef LINUX_VERSION_CODE
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#endif
+multiline_comment|/*&n; * For state flag. Do not use LSB(8 bits) which are&n; * reserved for storing info about channels.&n; */
 DECL|macro|IN_ISR
 mdefine_line|#define IN_ISR&t;&t;  &t;0x80000000L
 DECL|macro|IN_ABORT
@@ -41,7 +42,7 @@ mdefine_line|#define M_RD_IOCTL_CMD_NEW&t;&t;0x81
 DECL|macro|M_RD_DRIVER_IOCTL_INTERFACE
 mdefine_line|#define M_RD_DRIVER_IOCTL_INTERFACE&t;0x82
 DECL|macro|MEGARAID_VERSION
-mdefine_line|#define MEGARAID_VERSION &quot;v1.17a (Release Date: Fri Jul 13 18:44:01 EDT 2001)&quot;
+mdefine_line|#define MEGARAID_VERSION &quot;v1.18 (Release Date: Thu Oct 11 15:02:53 EDT 2001&bslash;n)&quot;
 DECL|macro|MEGARAID_IOCTL_VERSION
 mdefine_line|#define MEGARAID_IOCTL_VERSION &t;114
 multiline_comment|/* Methods */
@@ -2030,6 +2031,37 @@ DECL|member|boot_ldrv
 r_int
 id|boot_ldrv
 suffix:semicolon
+DECL|member|support_random_del
+r_int
+id|support_random_del
+suffix:semicolon
+multiline_comment|/* Do we support random deletion of logdrvs */
+DECL|member|read_ldidmap
+r_int
+id|read_ldidmap
+suffix:semicolon
+multiline_comment|/* set after logical drive deltion. The logical&n;&t;&t;&t;&t;&t;&t;&t;&t;drive number must be read from the map */
+DECL|member|quiescent
+r_int
+id|quiescent
+suffix:semicolon
+multiline_comment|/* a stage reached when delete logical drive needs to&n;&t;&t;&t;&t;&t;&t;   be done. Stop sending requests to the hba till&n;&t;&t;&t;&t;&t;&t;   delete operation is completed */
+DECL|member|int_qh
+id|mega_scb
+op_star
+id|int_qh
+suffix:semicolon
+multiline_comment|/* commands are queued in the internal queue */
+DECL|member|int_qt
+id|mega_scb
+op_star
+id|int_qt
+suffix:semicolon
+multiline_comment|/* while the hba is quiescent */
+DECL|member|int_qlen
+r_int
+id|int_qlen
+suffix:semicolon
 DECL|typedef|mega_host_config
 )brace
 id|mega_host_config
@@ -2359,6 +2391,17 @@ multiline_comment|/* 0-(sum of first 13 bytes of this structure) */
 )brace
 suffix:semicolon
 macro_line|#pragma pack()
+DECL|macro|NVIRT_CHAN
+mdefine_line|#define NVIRT_CHAN&t;&t;4&t;/* # of virtual channels to represent 60 logical&n;&t;&t;&t;&t;&t;&t;&t;drives */
+multiline_comment|/*&n; * Command for random deletion of logical drives&n; */
+DECL|macro|FC_DEL_LOGDRV
+mdefine_line|#define&t;FC_DEL_LOGDRV&t;&t;0xA4&t;/* f/w command */
+DECL|macro|OP_SUP_DEL_LOGDRV
+mdefine_line|#define&t;OP_SUP_DEL_LOGDRV&t;0x2A&t;/* is feature supported */
+DECL|macro|OP_GET_LDID_MAP
+mdefine_line|#define OP_GET_LDID_MAP&t;&t;0x18&t;/* get logdrv id and logdrv number map */
+DECL|macro|OP_DEL_LOGDRV
+mdefine_line|#define OP_DEL_LOGDRV&t;&t;0x1C&t;/* delete logical drive */
 multiline_comment|/*================================================================&n; *&n; *                    Function prototypes&n; *&n; *================================================================&n; */
 r_const
 r_char
@@ -2839,6 +2882,49 @@ c_func
 (paren
 id|mega_host_config
 op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|mega_get_lun
+c_func
+(paren
+id|mega_host_config
+op_star
+comma
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|mega_support_random_del
+c_func
+(paren
+id|mega_host_config
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|mega_del_logdrv
+c_func
+(paren
+id|mega_host_config
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_static
+r_int
+id|mega_do_del_logdrv
+c_func
+(paren
+id|mega_host_config
+op_star
+comma
+r_int
 )paren
 suffix:semicolon
 macro_line|#endif

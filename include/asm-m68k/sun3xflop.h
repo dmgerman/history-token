@@ -434,7 +434,7 @@ id|lptr
 op_increment
 )paren
 (brace
-singleline_comment|//&t;&t;&t;st=fd_inb(virtual_dma_port+4) &amp; 0x80 ;
+multiline_comment|/*&t;&t;&t;st=fd_inb(virtual_dma_port+4) &amp; 0x80 ;  */
 id|st
 op_assign
 op_star
@@ -442,8 +442,8 @@ op_star
 id|sun3x_fdc.status_r
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;&t;if(st != 0xa0)
-singleline_comment|//&t;&t;&t;&t;break;
+multiline_comment|/*&t;&t;&t;if(st != 0xa0)                  */
+multiline_comment|/*&t;&t;&t;&t;break;                  */
 r_if
 c_cond
 (paren
@@ -488,7 +488,7 @@ c_cond
 id|virtual_dma_mode
 )paren
 (brace
-singleline_comment|//&t;&t;&t;&t;fd_outb(*lptr, virtual_dma_port+5);
+multiline_comment|/*&t;&t;&t;&t;fd_outb(*lptr, virtual_dma_port+5); */
 op_star
 (paren
 id|sun3x_fdc.data_r
@@ -499,7 +499,7 @@ id|lptr
 suffix:semicolon
 )brace
 r_else
-singleline_comment|//&t;&t;&t;&t;*lptr = fd_inb(virtual_dma_port+5);
+multiline_comment|/*&t;&t;&t;&t;*lptr = fd_inb(virtual_dma_port+5); */
 op_star
 id|lptr
 op_assign
@@ -517,7 +517,7 @@ id|virtual_dma_addr
 op_assign
 id|lptr
 suffix:semicolon
-singleline_comment|//&t;&t;st = fd_inb(virtual_dma_port+4);
+multiline_comment|/*&t;&t;st = fd_inb(virtual_dma_port+4);   */
 id|st
 op_assign
 op_star

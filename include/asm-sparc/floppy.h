@@ -200,14 +200,6 @@ macro_line|#undef HAVE_DISABLE_HLT
 multiline_comment|/* Here is where we catch the floppy driver trying to initialize,&n; * therefore this is where we call the PROM device tree probing&n; * routine etc. on the Sparc.&n; */
 DECL|macro|FDC1
 mdefine_line|#define FDC1                      sun_floppy_init()
-DECL|variable|FDC2
-r_static
-r_int
-id|FDC2
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 DECL|macro|N_FDC
 mdefine_line|#define N_FDC    1
 DECL|macro|N_DRIVE
@@ -1299,5 +1291,7 @@ suffix:semicolon
 )brace
 DECL|macro|fd_eject
 mdefine_line|#define fd_eject(drive) sparc_eject()
+DECL|macro|EXTRA_FLOPPY_PARAMS
+mdefine_line|#define EXTRA_FLOPPY_PARAMS
 macro_line|#endif /* !(__ASM_SPARC_FLOPPY_H) */
 eof

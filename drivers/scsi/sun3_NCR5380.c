@@ -1559,12 +1559,14 @@ id|tq_struct
 id|NCR5380_tqueue
 op_assign
 (brace
-l_int|NULL
-comma
-multiline_comment|/* next */
+singleline_comment|//    NULL,&t;&t;/* next */
+id|sync
+suffix:colon
 l_int|0
 comma
 multiline_comment|/* sync */
+id|routine
+suffix:colon
 (paren
 r_void
 (paren
@@ -1578,6 +1580,8 @@ op_star
 id|NCR5380_main
 comma
 multiline_comment|/* routine, must have (void *) arg... */
+id|data
+suffix:colon
 l_int|NULL
 multiline_comment|/* data */
 )brace
@@ -3482,6 +3486,7 @@ c_cond
 id|sun3scsi_dma_finish
 c_func
 (paren
+id|hostdata-&gt;connected-&gt;request.cmd
 )paren
 )paren
 )paren

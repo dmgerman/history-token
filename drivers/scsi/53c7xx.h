@@ -3,76 +3,6 @@ multiline_comment|/*&n; * NCR 53c{7,8}0x0 driver, header file&n; *&n; * Sponsore
 macro_line|#ifndef NCR53c710_H
 DECL|macro|NCR53c710_H
 mdefine_line|#define NCR53c710_H
-macro_line|#include &lt;linux/version.h&gt;
-multiline_comment|/* &n; * Prevent name space pollution in hosts.c, and only provide the &n; * define we need to get the NCR53c7x0 driver into the host template&n; * array.&n; */
-macro_line|#include &lt;scsi/scsicam.h&gt;
-r_extern
-r_int
-id|NCR53c7xx_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|NCR53c7xx_detect
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-id|tpnt
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|NCR53c7xx_queue_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|NCR53c7xx_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-macro_line|#ifdef MODULE
-r_extern
-r_int
-id|NCR53c7xx_release
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|macro|NCR53c7xx_release
-mdefine_line|#define NCR53c7xx_release NULL
-macro_line|#endif
-DECL|macro|NCR53c7xx
-mdefine_line|#define NCR53c7xx {NULL, NULL, NULL, NULL, &bslash;&n;        &quot;NCR53c{7,8}xx (rel 17)&quot;, NCR53c7xx_detect,&bslash;&n;        NULL, /* info */ NULL, /* command, deprecated */ NULL,&t;&t;&bslash;&n;&t;NCR53c7xx_queue_command, NCR53c7xx_abort, NCR53c7xx_reset,&t;&bslash;&n;&t;NULL /* slave attach */, scsicam_bios_param, /* can queue */ 24, &bslash;&n;&t;/* id */ 7, 127 /* old SG_ALL */, /* cmd per lun */ 3, &t;&t;&bslash;&n;&t;/* present */ 0, /* unchecked isa dma */ 0, DISABLE_CLUSTERING} 
 macro_line|#ifndef HOSTS_C
 multiline_comment|/* SCSI control 0 rw, default = 0xc0 */
 DECL|macro|SCNTL0_REG
@@ -2354,18 +2284,30 @@ DECL|macro|NCR53c7x0_local_setup
 mdefine_line|#define NCR53c7x0_local_setup(host)&t;&t;&t;&t;&t;&bslash;&n;    NCR53c7x0_address_memory = (void *) (host)-&gt;base;&t;&t;&t;&bslash;&n;    NCR53c7x0_address_io = (unsigned int) (host)-&gt;io_port;&t;&t;&bslash;&n;    NCR53c7x0_memory_mapped = ((struct NCR53c7x0_hostdata *) &t;&t;&bslash;&n;&t;host-&gt;hostdata[0])-&gt; options &amp; OPTION_MEMORY_MAPPED 
 macro_line|#ifdef BIG_ENDIAN
 multiline_comment|/* These could be more efficient, given that we are always memory mapped,&n; * but they don&squot;t give the same problems as the write macros, so leave&n; * them. */
+macro_line|#ifdef __mc68000__
+DECL|macro|NCR53c7x0_read8
+mdefine_line|#define NCR53c7x0_read8(address) &t;&t;&t;&t;&t;&bslash;&n;    ((unsigned int)raw_inb((u32)NCR53c7x0_address_memory + ((u32)(address)^3)) )
+DECL|macro|NCR53c7x0_read16
+mdefine_line|#define NCR53c7x0_read16(address) &t;&t;&t;&t;&t;&bslash;&n;    ((unsigned int)raw_inw((u32)NCR53c7x0_address_memory + ((u32)(address)^2)))
+macro_line|#else
 DECL|macro|NCR53c7x0_read8
 mdefine_line|#define NCR53c7x0_read8(address) &t;&t;&t;&t;&t;&bslash;&n;    (NCR53c7x0_memory_mapped ? &t;&t;&t;&t;&t;&t;&bslash;&n;&t;(unsigned int)readb((u32)NCR53c7x0_address_memory + ((u32)(address)^3)) :&t;&bslash;&n;&t;inb(NCR53c7x0_address_io + (address)))
 DECL|macro|NCR53c7x0_read16
 mdefine_line|#define NCR53c7x0_read16(address) &t;&t;&t;&t;&t;&bslash;&n;    (NCR53c7x0_memory_mapped ? &t;&t;&t;&t;&t;&t;&bslash;&n;&t;(unsigned int)readw((u32)NCR53c7x0_address_memory + ((u32)(address)^2)) :&t;&bslash;&n;&t;inw(NCR53c7x0_address_io + (address)))
+macro_line|#endif /* mc68000 */
 macro_line|#else
 DECL|macro|NCR53c7x0_read8
 mdefine_line|#define NCR53c7x0_read8(address) &t;&t;&t;&t;&t;&bslash;&n;    (NCR53c7x0_memory_mapped ? &t;&t;&t;&t;&t;&t;&bslash;&n;&t;(unsigned int)readb((u32)NCR53c7x0_address_memory + (u32)(address)) :&t;&bslash;&n;&t;inb(NCR53c7x0_address_io + (address)))
 DECL|macro|NCR53c7x0_read16
 mdefine_line|#define NCR53c7x0_read16(address) &t;&t;&t;&t;&t;&bslash;&n;    (NCR53c7x0_memory_mapped ? &t;&t;&t;&t;&t;&t;&bslash;&n;&t;(unsigned int)readw((u32)NCR53c7x0_address_memory + (u32)(address)) :&t;&bslash;&n;&t;inw(NCR53c7x0_address_io + (address)))
 macro_line|#endif
+macro_line|#ifdef __mc68000__
+DECL|macro|NCR53c7x0_read32
+mdefine_line|#define NCR53c7x0_read32(address) &t;&t;&t;&t;&t;&bslash;&n;    ((unsigned int) raw_inl((u32)NCR53c7x0_address_memory + (u32)(address)))
+macro_line|#else
 DECL|macro|NCR53c7x0_read32
 mdefine_line|#define NCR53c7x0_read32(address) &t;&t;&t;&t;&t;&bslash;&n;    (NCR53c7x0_memory_mapped ? &t;&t;&t;&t;&t;&t;&bslash;&n;&t;(unsigned int) readl((u32)NCR53c7x0_address_memory + (u32)(address)) : &t;&bslash;&n;&t;inl(NCR53c7x0_address_io + (address)))
+macro_line|#endif /* mc68000*/
 macro_line|#ifdef BIG_ENDIAN
 multiline_comment|/* If we are big-endian, then we are not Intel, so probably don&squot;t have&n; * an i/o map as well as a memory map.  So, let&squot;s assume memory mapped.&n; * Also, I am having terrible problems trying to persuade the compiler&n; * not to lay down code which does a read after write for these macros.&n; * If you remove &squot;volatile&squot; from writeb() and friends it is ok....&n; */
 DECL|macro|NCR53c7x0_write8

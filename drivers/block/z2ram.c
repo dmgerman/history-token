@@ -505,8 +505,6 @@ op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|device
 op_assign
 id|DEVICE_NR
@@ -1045,8 +1043,6 @@ id|z2ram_map
 suffix:semicolon
 id|err_out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -1080,8 +1076,6 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;     * FIXME: unmap memory&n;     */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1093,6 +1087,10 @@ id|block_device_operations
 id|z2_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|z2_open

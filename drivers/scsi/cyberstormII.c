@@ -180,6 +180,7 @@ id|write
 )paren
 suffix:semicolon
 DECL|variable|cmd_buffer
+r_static
 r_volatile
 r_int
 r_char

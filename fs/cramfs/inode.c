@@ -662,7 +662,7 @@ comma
 id|PAGE_CACHE_SIZE
 )paren
 suffix:semicolon
-id|bforget
+id|brelse
 c_func
 (paren
 id|bh
@@ -1944,4 +1944,10 @@ c_func
 (paren
 id|exit_cramfs_fs
 )paren
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -75,5 +75,7 @@ multiline_comment|/*&n; * The PowerPC has no problems with floppy DMA crossing 6
 DECL|macro|CROSS_64KB
 mdefine_line|#define CROSS_64KB(a,s)&t;(0)
 macro_line|#endif /* __ASM_PPC_FLOPPY_H */
+DECL|macro|EXTRA_FLOPPY_PARAMS
+mdefine_line|#define EXTRA_FLOPPY_PARAMS
 macro_line|#endif /* __KERNEL__ */
 eof

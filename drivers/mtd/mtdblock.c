@@ -1069,8 +1069,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1142,8 +1140,6 @@ c_func
 (paren
 id|mtd
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -1226,8 +1222,6 @@ c_func
 (paren
 id|mtdblk
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -1535,8 +1529,6 @@ id|MTD_DEBUG_LEVEL1
 comma
 l_string|&quot;ok&bslash;n&quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|release_return
 c_func
@@ -2241,6 +2233,10 @@ id|block_device_operations
 id|mtd_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|mtdblock_open

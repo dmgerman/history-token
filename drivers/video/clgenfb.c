@@ -23,6 +23,14 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_AMIGA
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#include &lt;asm/processor.h&gt;
+DECL|macro|isPReP
+mdefine_line|#define isPReP (_machine == _MACH_prep)
+macro_line|#else
+DECL|macro|isPReP
+mdefine_line|#define isPReP 0
+macro_line|#endif
 macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;video/fbcon-mfb.h&gt;
 macro_line|#include &lt;video/fbcon-cfb8.h&gt;
@@ -3237,7 +3245,12 @@ id|_par-&gt;visual
 op_assign
 id|FB_VISUAL_DIRECTCOLOR
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREP
+r_if
+c_cond
+(paren
+id|isPReP
+)paren
+(brace
 id|_par-&gt;var.red.offset
 op_assign
 l_int|2
@@ -3251,7 +3264,9 @@ id|_par-&gt;var.blue.offset
 op_assign
 l_int|8
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
+(brace
 id|_par-&gt;var.red.offset
 op_assign
 l_int|10
@@ -3264,7 +3279,7 @@ id|_par-&gt;var.blue.offset
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
+)brace
 id|_par-&gt;var.red.length
 op_assign
 l_int|5
@@ -3292,7 +3307,12 @@ id|_par-&gt;visual
 op_assign
 id|FB_VISUAL_DIRECTCOLOR
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREP
+r_if
+c_cond
+(paren
+id|isPReP
+)paren
+(brace
 id|_par-&gt;var.red.offset
 op_assign
 l_int|8
@@ -3305,7 +3325,9 @@ id|_par-&gt;var.blue.offset
 op_assign
 l_int|24
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
+(brace
 id|_par-&gt;var.red.offset
 op_assign
 l_int|16
@@ -3318,7 +3340,7 @@ id|_par-&gt;var.blue.offset
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
+)brace
 id|_par-&gt;var.red.length
 op_assign
 l_int|8
@@ -3346,7 +3368,12 @@ id|_par-&gt;visual
 op_assign
 id|FB_VISUAL_DIRECTCOLOR
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREP
+r_if
+c_cond
+(paren
+id|isPReP
+)paren
+(brace
 id|_par-&gt;var.red.offset
 op_assign
 l_int|8
@@ -3359,7 +3386,9 @@ id|_par-&gt;var.blue.offset
 op_assign
 l_int|24
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
+(brace
 id|_par-&gt;var.red.offset
 op_assign
 l_int|16
@@ -3372,7 +3401,7 @@ id|_par-&gt;var.blue.offset
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
+)brace
 id|_par-&gt;var.red.length
 op_assign
 l_int|8
@@ -6740,7 +6769,12 @@ OL
 l_int|16
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREP
+r_if
+c_cond
+(paren
+id|isPReP
+)paren
+(brace
 id|fb_info-&gt;fbcon_cmap.cfb16
 (braket
 id|regno
@@ -6786,7 +6820,9 @@ op_rshift
 l_int|3
 )paren
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
+(brace
 id|fb_info-&gt;fbcon_cmap.cfb16
 (braket
 id|regno
@@ -6822,7 +6858,7 @@ op_rshift
 l_int|11
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 macro_line|#endif /* FBCON_HAS_CFB16 */
 macro_line|#ifdef FBCON_HAS_CFB24
 r_case
@@ -6872,7 +6908,12 @@ OL
 l_int|16
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREP
+r_if
+c_cond
+(paren
+id|isPReP
+)paren
+(brace
 id|fb_info-&gt;fbcon_cmap.cfb32
 (braket
 id|regno
@@ -6906,7 +6947,9 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
+(brace
 id|fb_info-&gt;fbcon_cmap.cfb32
 (braket
 id|regno
@@ -6940,7 +6983,7 @@ op_rshift
 l_int|8
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 r_break
 suffix:semicolon
 macro_line|#endif /* FBCON_HAS_CFB32 */
@@ -10177,7 +10220,7 @@ l_string|&quot;EXIT&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;&t;/* FBCON_HAS_CFB32 */
-macro_line|#ifdef CONFIG_PREP
+macro_line|#ifdef CONFIG_ALL_PPC
 DECL|macro|PREP_VIDEO_BASE
 mdefine_line|#define PREP_VIDEO_BASE ((volatile unsigned long) 0xC0000000)
 DECL|macro|PREP_IO_BASE
@@ -10224,7 +10267,7 @@ l_string|&quot;EXIT&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PREP */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_ALL_PPC */
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/* Pulled the logic from XFree86 Cirrus driver to get the memory size,&n; * based on the DRAM bandwidth bit and DRAM bank switching bit.  This&n; * works with 1MB, 2MB and 4MB configurations (which the Motorola boards&n; * seem to have. */
 DECL|function|clgen_get_memsize
@@ -10699,7 +10742,12 @@ id|info-&gt;pdev
 op_assign
 id|pdev
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREP
+r_if
+c_cond
+(paren
+id|isPReP
+)paren
+(brace
 multiline_comment|/* Xbh does this, though 0 seems to be the init value */
 id|pcibios_write_config_dword
 (paren
@@ -10712,8 +10760,7 @@ comma
 l_int|0x00000000
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_PREP
+macro_line|#ifdef CONFIG_ALL_PPC
 id|get_prep_addrs
 (paren
 op_amp
@@ -10723,7 +10770,10 @@ op_amp
 id|info-&gt;fbregs_phys
 )paren
 suffix:semicolon
-macro_line|#else&t;&t;&t;&t;/* CONFIG_PREP */
+macro_line|#endif
+)brace
+r_else
+(brace
 id|DPRINTK
 (paren
 l_string|&quot;Attempt to get PCI info for Cirrus Graphics Card&bslash;n&quot;
@@ -10740,7 +10790,7 @@ op_amp
 id|info-&gt;fbregs_phys
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PREP */
+)brace
 id|DPRINTK
 (paren
 l_string|&quot;Board address: 0x%lx, register address: 0x%lx&bslash;n&quot;
@@ -10750,7 +10800,12 @@ comma
 id|info-&gt;fbregs_phys
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREP
+r_if
+c_cond
+(paren
+id|isPReP
+)paren
+(brace
 multiline_comment|/* PReP dies if we ioremap the IO registers, but it works w/out... */
 id|info-&gt;regs
 op_assign
@@ -10760,13 +10815,13 @@ op_star
 )paren
 id|info-&gt;fbregs_phys
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
 id|info-&gt;regs
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* FIXME: this forces VGA.  alternatives? */
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -12092,6 +12147,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Accelerated FBDev driver for Cirrus Logic chips&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|function|clgenfb_exit
@@ -13776,8 +13837,6 @@ l_string|&quot;EXIT&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * bestclock() - determine closest possible clock lower(?) than the&n; * desired pixel clock&n; **************************************************************************/
-DECL|macro|abs
-mdefine_line|#define abs(x) ((x)&lt;0 ? -(x) : (x))
 DECL|function|bestclock
 r_static
 r_void

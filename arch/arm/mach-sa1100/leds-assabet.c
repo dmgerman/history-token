@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/arch/assabet.h&gt;
 macro_line|#include &quot;leds.h&quot;
 DECL|macro|LED_STATE_ENABLED
 mdefine_line|#define LED_STATE_ENABLED&t;1
@@ -21,8 +22,8 @@ r_int
 r_int
 id|hw_led_state
 suffix:semicolon
-DECL|macro|BCR_LED_MASK
-mdefine_line|#define BCR_LED_MASK&t;(BCR_LED_GREEN | BCR_LED_RED)
+DECL|macro|ASSABET_BCR_LED_MASK
+mdefine_line|#define ASSABET_BCR_LED_MASK&t;(ASSABET_BCR_LED_GREEN | ASSABET_BCR_LED_RED)
 DECL|function|assabet_leds_event
 r_void
 id|assabet_leds_event
@@ -53,9 +54,9 @@ id|led_start
 suffix:colon
 id|hw_led_state
 op_assign
-id|BCR_LED_RED
+id|ASSABET_BCR_LED_RED
 op_or
-id|BCR_LED_GREEN
+id|ASSABET_BCR_LED_GREEN
 suffix:semicolon
 id|led_state
 op_assign
@@ -82,9 +83,9 @@ id|LED_STATE_CLAIMED
 suffix:semicolon
 id|hw_led_state
 op_assign
-id|BCR_LED_RED
+id|ASSABET_BCR_LED_RED
 op_or
-id|BCR_LED_GREEN
+id|ASSABET_BCR_LED_GREEN
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -98,9 +99,9 @@ id|LED_STATE_CLAIMED
 suffix:semicolon
 id|hw_led_state
 op_assign
-id|BCR_LED_RED
+id|ASSABET_BCR_LED_RED
 op_or
-id|BCR_LED_GREEN
+id|ASSABET_BCR_LED_GREEN
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -120,7 +121,7 @@ id|LED_STATE_CLAIMED
 )paren
 id|hw_led_state
 op_xor_assign
-id|BCR_LED_GREEN
+id|ASSABET_BCR_LED_GREEN
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -141,7 +142,7 @@ id|LED_STATE_CLAIMED
 )paren
 id|hw_led_state
 op_or_assign
-id|BCR_LED_RED
+id|ASSABET_BCR_LED_RED
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -161,7 +162,7 @@ id|LED_STATE_CLAIMED
 id|hw_led_state
 op_and_assign
 op_complement
-id|BCR_LED_RED
+id|ASSABET_BCR_LED_RED
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -184,7 +185,7 @@ id|LED_STATE_CLAIMED
 id|hw_led_state
 op_and_assign
 op_complement
-id|BCR_LED_GREEN
+id|ASSABET_BCR_LED_GREEN
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -200,7 +201,7 @@ id|LED_STATE_CLAIMED
 )paren
 id|hw_led_state
 op_or_assign
-id|BCR_LED_GREEN
+id|ASSABET_BCR_LED_GREEN
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -227,7 +228,7 @@ id|LED_STATE_CLAIMED
 id|hw_led_state
 op_and_assign
 op_complement
-id|BCR_LED_RED
+id|ASSABET_BCR_LED_RED
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -243,7 +244,7 @@ id|LED_STATE_CLAIMED
 )paren
 id|hw_led_state
 op_or_assign
-id|BCR_LED_RED
+id|ASSABET_BCR_LED_RED
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -259,7 +260,7 @@ id|led_state
 op_amp
 id|LED_STATE_ENABLED
 )paren
-id|BCR
+id|ASSABET_BCR
 op_assign
 id|BCR_value
 op_assign
@@ -267,7 +268,7 @@ op_assign
 id|BCR_value
 op_amp
 op_complement
-id|BCR_LED_MASK
+id|ASSABET_BCR_LED_MASK
 )paren
 op_or
 id|hw_led_state

@@ -22,9 +22,6 @@ id|irq
 comma
 id|res
 suffix:semicolon
-multiline_comment|/* Enable CF bus: */
-singleline_comment|//  BCR_clear(BCR_CF_BUS_OFF);
-multiline_comment|/* All those are inputs */
 id|GPDR
 op_and_assign
 op_complement
@@ -38,7 +35,12 @@ op_or
 id|GPIO_CF_IRQ
 )paren
 suffix:semicolon
-multiline_comment|/* Set transition detect */
+id|GPDR
+op_or_assign
+(paren
+id|GPIO_CF_RESET
+)paren
+suffix:semicolon
 id|set_GPIO_IRQ_edge
 c_func
 (paren
@@ -59,7 +61,6 @@ comma
 id|GPIO_FALLING_EDGE
 )paren
 suffix:semicolon
-multiline_comment|/* Register interrupts */
 id|irq
 op_assign
 id|IRQ_GPIO_CF_CD
@@ -156,7 +157,6 @@ r_goto
 id|irq_err
 suffix:semicolon
 )brace
-multiline_comment|/* There&squot;s only one slot, but it&squot;s &quot;Slot 1&quot;: */
 r_return
 l_int|2
 suffix:semicolon
@@ -188,7 +188,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* disable IRQs */
 id|free_irq
 c_func
 (paren
@@ -213,8 +212,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* Disable CF bus: */
-singleline_comment|//  BCR_set(BCR_CF_BUS_OFF);
 r_return
 l_int|0
 suffix:semicolon
@@ -236,6 +233,19 @@ r_int
 r_int
 id|levels
 suffix:semicolon
+macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
+r_int
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#else
+r_int
+id|i
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -273,7 +283,7 @@ id|GPLR
 suffix:semicolon
 id|state_array-&gt;state
 (braket
-l_int|1
+id|i
 )braket
 dot
 id|detect
@@ -295,7 +305,7 @@ l_int|0
 suffix:semicolon
 id|state_array-&gt;state
 (braket
-l_int|1
+id|i
 )braket
 dot
 id|ready
@@ -313,7 +323,7 @@ l_int|0
 suffix:semicolon
 id|state_array-&gt;state
 (braket
-l_int|1
+id|i
 )braket
 dot
 id|bvd1
@@ -331,7 +341,7 @@ l_int|0
 suffix:semicolon
 id|state_array-&gt;state
 (braket
-l_int|1
+id|i
 )braket
 dot
 id|bvd2
@@ -349,27 +359,25 @@ l_int|0
 suffix:semicolon
 id|state_array-&gt;state
 (braket
-l_int|1
+id|i
 )braket
 dot
 id|wrprot
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Not available on Assabet. */
 id|state_array-&gt;state
 (braket
-l_int|1
+id|i
 )braket
 dot
 id|vs_3v
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Can only apply 3.3V on Assabet. */
 id|state_array-&gt;state
 (braket
-l_int|1
+id|i
 )braket
 dot
 id|vs_Xv
@@ -407,6 +415,15 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
+r_if
+c_cond
+(paren
+id|info-&gt;sock
+op_eq
+l_int|0
+)paren
+macro_line|#else
 r_if
 c_cond
 (paren
@@ -415,6 +432,7 @@ op_eq
 l_int|1
 )paren
 (brace
+macro_line|#endif
 id|info-&gt;irq
 op_assign
 id|IRQ_GPIO_CF_IRQ
@@ -440,8 +458,6 @@ id|configure
 (brace
 r_int
 r_int
-id|value
-comma
 id|flags
 suffix:semicolon
 r_if
@@ -457,6 +473,15 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
+r_if
+c_cond
+(paren
+id|configure-&gt;sock
+op_eq
+l_int|1
+)paren
+macro_line|#else
 r_if
 c_cond
 (paren
@@ -465,6 +490,7 @@ op_eq
 l_int|0
 )paren
 (brace
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -475,7 +501,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-singleline_comment|//  value = BCR_value;
 r_switch
 c_cond
 (paren
@@ -485,26 +510,24 @@ id|configure-&gt;vcc
 r_case
 l_int|0
 suffix:colon
-singleline_comment|//    value &amp;= ~BCR_CF_PWR;
 r_break
 suffix:semicolon
 r_case
 l_int|50
 suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s(): CS asked for 5V, applying 3.3V...&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_case
 l_int|33
 suffix:colon
-multiline_comment|/* Can only apply 3.3V to the CF slot. */
-singleline_comment|//    value |= BCR_CF_PWR;
+macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
+id|GPDR
+op_or_assign
+id|GPIO_PWR_SHUTDOWN
+suffix:semicolon
+id|GPCR
+op_or_assign
+id|GPIO_PWR_SHUTDOWN
+suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 r_default
@@ -531,9 +554,36 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-singleline_comment|//  value = (configure-&gt;reset) ? (value | BCR_CF_RST) : (value &amp; ~BCR_CF_RST);
-multiline_comment|/* Silently ignore Vpp, output enable, speaker enable. */
-singleline_comment|//  BCR = BCR_value = value;
+r_if
+c_cond
+(paren
+id|configure-&gt;reset
+)paren
+(brace
+macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
+id|GPDR
+op_or_assign
+id|GPIO_CF_RESET
+suffix:semicolon
+id|GPSR
+op_or_assign
+id|GPIO_CF_RESET
+suffix:semicolon
+macro_line|#endif
+)brace
+r_else
+(brace
+macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
+id|GPDR
+op_or_assign
+id|GPIO_CF_RESET
+suffix:semicolon
+id|GPCR
+op_or_assign
+id|GPIO_CF_RESET
+suffix:semicolon
+macro_line|#endif
+)brace
 id|restore_flags
 c_func
 (paren

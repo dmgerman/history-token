@@ -149,8 +149,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|mtd_sizes
 (braket
 id|dev
@@ -259,8 +257,6 @@ id|KERN_WARNING
 l_string|&quot;MTD device is absent on mtd_release!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|release_return
 c_func
 (paren
@@ -295,8 +291,6 @@ l_int|1
 comma
 l_string|&quot;ok&bslash;n&quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|release_return
 c_func
@@ -798,6 +792,10 @@ id|block_device_operations
 id|mtd_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|mtdblock_open

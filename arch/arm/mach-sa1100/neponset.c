@@ -3,13 +3,14 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/arch/irq.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
-macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;asm/arch/assabet.h&gt;
 macro_line|#include &quot;sa1111.h&quot;
 multiline_comment|/*&n; * Install handler for Neponset IRQ.  Yes, yes... we are way down the IRQ&n; * cascade which is not good for IRQ latency, but the hardware has been&n; * designed that way...&n; */
 DECL|function|neponset_IRQ_demux
@@ -214,7 +215,7 @@ suffix:semicolon
 id|set_GPIO_IRQ_edge
 c_func
 (paren
-id|GPIO_NEP_IRQ
+id|ASSABET_GPIO_NEP_IRQ
 comma
 id|GPIO_RISING_EDGE
 )paren
@@ -222,7 +223,7 @@ suffix:semicolon
 id|setup_arm_irq
 c_func
 (paren
-id|IRQ_GPIO_NEP_IRQ
+id|ASSABET_IRQ_GPIO_NEP_IRQ
 comma
 op_amp
 id|neponset_irq

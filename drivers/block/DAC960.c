@@ -64,6 +64,10 @@ DECL|variable|DAC960_BlockDeviceOperations
 id|DAC960_BlockDeviceOperations
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|DAC960_Open
@@ -20157,8 +20161,6 @@ op_increment
 suffix:semicolon
 id|ModuleOnly
 suffix:colon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -20242,8 +20244,6 @@ op_decrement
 suffix:semicolon
 id|ModuleOnly
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -434,7 +434,7 @@ DECL|macro|TIME_NAME
 mdefine_line|#define TIME_NAME&t;&quot;TSC&quot;
 macro_line|#elif __alpha__
 DECL|macro|GET_TIME
-mdefine_line|#define GET_TIME(x)&t;get_cycles(x)
+mdefine_line|#define GET_TIME(x)&t;((x) = get_cycles())
 DECL|macro|DELTA
 mdefine_line|#define DELTA(x,y)&t;((y)-(x))
 DECL|macro|TIME_NAME

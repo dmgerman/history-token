@@ -1,22 +1,14 @@
 multiline_comment|/*&n; *&t;FILE    &t;bitfield.h&n; *&n; *&t;Version &t;1.1&n; *&t;Author  &t;Copyright (c) Marc A. Viredaz, 1998&n; *&t;        &t;DEC Western Research Laboratory, Palo Alto, CA&n; *&t;Date    &t;April 1998 (April 1997)&n; *&t;System  &t;Advanced RISC Machine (ARM)&n; *&t;Language&t;C or ARM Assembly&n; *&t;Purpose &t;Definition of macros to operate on bit fields.&n; */
-macro_line|#ifndef BITFIELD
-DECL|macro|BITFIELD
-mdefine_line|#define BITFIELD
-macro_line|#ifndef LANGUAGE
-DECL|macro|LANGUAGE
-mdefine_line|#define LANGUAGE&t;C
-macro_line|#endif /* !defined (LANGUAGE) */
-DECL|macro|C
-mdefine_line|#define C       &t;0
-DECL|macro|Assembly
-mdefine_line|#define Assembly&t;1
-macro_line|#if LANGUAGE == C
+macro_line|#ifndef __BITFIELD_H
+DECL|macro|__BITFIELD_H
+mdefine_line|#define __BITFIELD_H
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|UData
-mdefine_line|#define UData(Data)&t;((unsigned int) (Data))
-macro_line|#elif LANGUAGE == Assembly
+mdefine_line|#define UData(Data)&t;((unsigned long) (Data))
+macro_line|#else
 DECL|macro|UData
 mdefine_line|#define UData(Data)&t;(Data)
-macro_line|#endif /* LANGUAGE == C || LANGUAGE == Assembly */
+macro_line|#endif
 multiline_comment|/*&n; * MACRO: Fld&n; *&n; * Purpose&n; *    The macro &quot;Fld&quot; encodes a bit field, given its size and its shift value&n; *    with respect to bit 0.&n; *&n; * Note&n; *    A more intuitive way to encode bit fields would have been to use their&n; *    mask. However, extracting size and shift value information from a bit&n; *    field&squot;s mask is cumbersome and might break the assembler (255-character&n; *    line-size limit).&n; *&n; * Input&n; *    Size      &t;Size of the bit field, in number of bits.&n; *    Shft      &t;Shift value of the bit field with respect to bit 0.&n; *&n; * Output&n; *    Fld       &t;Encoded bit field.&n; */
 DECL|macro|Fld
 mdefine_line|#define Fld(Size, Shft)&t;(((Size) &lt;&lt; 16) + (Shft))
@@ -37,9 +29,5 @@ mdefine_line|#define FInsrt(Value, Field) &bslash;&n;                &t;(UData (
 multiline_comment|/*&n; * MACRO: FExtr&n; *&n; * Purpose&n; *    The macro &quot;FExtr&quot; extracts the value of a bit field by masking and&n; *    shifting it appropriately.&n; *&n; * Input&n; *    Data      &t;Data containing the bit-field to be extracted.&n; *    Field     &t;Encoded bit field (using the macro &quot;Fld&quot;).&n; *&n; * Output&n; *    FExtr     &t;Bit-field value.&n; */
 DECL|macro|FExtr
 mdefine_line|#define FExtr(Data, Field) &bslash;&n;                &t;((UData (Data) &gt;&gt; FShft (Field)) &amp; FAlnMsk (Field))
-DECL|macro|C
-macro_line|#undef C
-DECL|macro|Assembly
-macro_line|#undef Assembly
-macro_line|#endif /* !defined (BITFIELD) */
+macro_line|#endif /* __BITFIELD_H */
 eof

@@ -4013,8 +4013,6 @@ macro_line|#endif /* !CONFIG_NFTL_RW */
 id|thisNFTL-&gt;usecount
 op_increment
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4028,15 +4026,11 @@ op_minus
 l_int|1
 )paren
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 multiline_comment|/* -E&squot;SBUGGEREDOFF */
 op_minus
 id|ENXIO
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -4108,8 +4102,6 @@ suffix:semicolon
 id|thisNFTL-&gt;usecount
 op_decrement
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|put_mtd_device
 c_func
 (paren
@@ -4162,6 +4154,10 @@ id|block_device_operations
 id|nftl_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|nftl_open

@@ -912,6 +912,10 @@ id|file_operations
 id|lvm_chr_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|lvm_chr_open
@@ -934,6 +938,10 @@ id|block_device_operations
 id|lvm_blk_dops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|lvm_blk_open
@@ -1580,8 +1588,6 @@ id|ENXIO
 suffix:semicolon
 id|lvm_chr_open_count
 op_increment
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -2508,8 +2514,6 @@ id|lvm_wait
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2705,8 +2709,6 @@ op_increment
 suffix:semicolon
 id|lv_ptr-&gt;lv_open
 op_increment
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 macro_line|#ifdef DEBUG_LVM_BLK_OPEN
 id|printk
@@ -3627,8 +3629,6 @@ op_decrement
 suffix:semicolon
 id|lv_ptr-&gt;lv_open
 op_decrement
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

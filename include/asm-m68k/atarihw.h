@@ -4,6 +4,7 @@ DECL|macro|_LINUX_ATARIHW_H_
 mdefine_line|#define _LINUX_ATARIHW_H_
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/raw_io.h&gt;
 r_extern
 id|u_long
 id|atari_mch_cookie
@@ -288,6 +289,14 @@ multiline_comment|/* Reading the MFP port register gives a machine independent d
 DECL|macro|MFPDELAY
 mdefine_line|#define&t;MFPDELAY() &bslash;&n;&t;__asm__ __volatile__ ( &quot;tstb %0&quot; : : &quot;m&quot; (mfp.par_dt_reg) : &quot;cc&quot; );
 multiline_comment|/* Do cache push/invalidate for DMA read/write. This function obeys the&n; * snooping on some machines (Medusa) and processors: The Medusa itself can&n; * snoop, but only the &squot;040 can source data from its cache to DMA writes i.e.,&n; * reads from memory). Both &squot;040 and &squot;060 invalidate cache entries on snooped&n; * DMA reads (i.e., writes to memory).&n; */
+DECL|macro|atari_readb
+mdefine_line|#define atari_readb   raw_inb
+DECL|macro|atari_writeb
+mdefine_line|#define atari_writeb  raw_outb
+DECL|macro|atari_inb_p
+mdefine_line|#define atari_inb_p   raw_inb
+DECL|macro|atari_outb_p
+mdefine_line|#define atari_outb_p  raw_outb
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 DECL|function|dma_cache_maintenance

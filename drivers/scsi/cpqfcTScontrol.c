@@ -54,6 +54,77 @@ id|BOOLEAN
 id|UpdateChip
 )paren
 suffix:semicolon
+r_static
+r_void
+DECL|function|cpqfc_free_dma_consistent
+id|cpqfc_free_dma_consistent
+c_func
+(paren
+id|CPQFCHBA
+op_star
+id|cpqfcHBAdata
+)paren
+(brace
+singleline_comment|// free up the primary EXCHANGES struct and Link Q
+id|PTACHYON
+id|fcChip
+op_assign
+op_amp
+id|cpqfcHBAdata-&gt;fcChip
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fcChip-&gt;Exchanges
+op_ne
+l_int|NULL
+)paren
+id|pci_free_consistent
+c_func
+(paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
+r_sizeof
+(paren
+id|FC_EXCHANGES
+)paren
+comma
+id|fcChip-&gt;Exchanges
+comma
+id|fcChip-&gt;exch_dma_handle
+)paren
+suffix:semicolon
+id|fcChip-&gt;Exchanges
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpqfcHBAdata-&gt;fcLQ
+op_ne
+l_int|NULL
+)paren
+id|pci_free_consistent
+c_func
+(paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
+r_sizeof
+(paren
+id|FC_LINK_QUE
+)paren
+comma
+id|cpqfcHBAdata-&gt;fcLQ
+comma
+id|cpqfcHBAdata-&gt;fcLQ_dma_handle
+)paren
+suffix:semicolon
+id|cpqfcHBAdata-&gt;fcLQ
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 singleline_comment|// Note special requirements for Q alignment!  (TL/TS UG pg. 190)
 singleline_comment|// We place critical index pointers at end of QUE elements to assist
 singleline_comment|// in non-symbolic (i.e. memory dump) debugging
@@ -96,6 +167,18 @@ r_int
 r_int
 id|ulAddr
 suffix:semicolon
+id|dma_addr_t
+id|ERQdma
+comma
+id|IMQdma
+comma
+id|SPQdma
+comma
+id|SESTdma
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 singleline_comment|// NOTE! fcMemManager() will return system virtual addresses.
 singleline_comment|// System (kernel) virtual addresses, though non-paged, still
 singleline_comment|// aren&squot;t physical addresses.  Convert to PHYSICAL_ADDRESS for Tachyon&squot;s
@@ -107,6 +190,14 @@ l_string|&quot;CreateTachLiteQues&quot;
 )paren
 suffix:semicolon
 singleline_comment|// Allocate primary EXCHANGES array...
+id|fcChip-&gt;Exchanges
+op_assign
+l_int|NULL
+suffix:semicolon
+id|cpqfcHBAdata-&gt;fcLQ
+op_assign
+l_int|NULL
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -125,15 +216,18 @@ id|TACH_MAX_XID
 suffix:semicolon
 id|fcChip-&gt;Exchanges
 op_assign
-id|kmalloc
+id|pci_alloc_consistent
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 r_sizeof
 (paren
 id|FC_EXCHANGES
 )paren
 comma
-id|GFP_KERNEL
+op_amp
+id|fcChip-&gt;exch_dma_handle
 )paren
 suffix:semicolon
 id|printk
@@ -156,7 +250,7 @@ singleline_comment|// fatal error!!
 id|printk
 c_func
 (paren
-l_string|&quot;kmalloc failure on Exchanges: fatal error&bslash;n&quot;
+l_string|&quot;pci_alloc_consistent failure on Exchanges: fatal error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -194,15 +288,18 @@ id|FC_LINK_QUE
 suffix:semicolon
 id|cpqfcHBAdata-&gt;fcLQ
 op_assign
-id|kmalloc
+id|pci_alloc_consistent
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 r_sizeof
 (paren
 id|FC_LINK_QUE
 )paren
 comma
-id|GFP_KERNEL
+op_amp
+id|cpqfcHBAdata-&gt;fcLQ_dma_handle
 )paren
 suffix:semicolon
 id|printk
@@ -237,10 +334,16 @@ l_int|NULL
 )paren
 singleline_comment|// fatal error!!
 (brace
+id|cpqfc_free_dma_consistent
+c_func
+(paren
+id|cpqfcHBAdata
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;kmalloc failure on fc Link Que: fatal error&bslash;n&quot;
+l_string|&quot;pci_alloc_consistent() failure on fc Link Que: fatal error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -270,6 +373,12 @@ op_logical_neg
 id|fcChip-&gt;Registers.ReMapMemBase
 )paren
 (brace
+id|cpqfc_free_dma_consistent
+c_func
+(paren
+id|cpqfcHBAdata
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -302,6 +411,8 @@ op_assign
 id|fcMemManager
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 op_amp
 id|cpqfcHBAdata-&gt;dynamic_mem
 (braket
@@ -320,6 +431,9 @@ id|ERQ_LEN
 )paren
 comma
 l_int|0L
+comma
+op_amp
+id|ERQdma
 )paren
 suffix:semicolon
 r_if
@@ -329,10 +443,16 @@ op_logical_neg
 id|fcChip-&gt;ERQ
 )paren
 (brace
+id|cpqfc_free_dma_consistent
+c_func
+(paren
+id|cpqfcHBAdata
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;kmalloc/alignment failure on ERQ: fatal error&bslash;n&quot;
+l_string|&quot;pci_alloc_consistent/alignment failure on ERQ: fatal error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -348,11 +468,10 @@ l_int|1
 suffix:semicolon
 id|ulAddr
 op_assign
-id|virt_to_bus
-c_func
 (paren
-id|fcChip-&gt;ERQ
+id|ULONG
 )paren
+id|ERQdma
 suffix:semicolon
 macro_line|#if BITS_PER_LONG &gt; 32
 r_if
@@ -365,6 +484,12 @@ l_int|32
 )paren
 )paren
 (brace
+id|cpqfc_free_dma_consistent
+c_func
+(paren
+id|cpqfcHBAdata
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -398,6 +523,8 @@ op_assign
 id|fcMemManager
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 op_amp
 id|cpqfcHBAdata-&gt;dynamic_mem
 (braket
@@ -416,6 +543,9 @@ id|IMQ_LEN
 )paren
 comma
 l_int|0L
+comma
+op_amp
+id|IMQdma
 )paren
 suffix:semicolon
 r_if
@@ -425,10 +555,16 @@ op_logical_neg
 id|fcChip-&gt;IMQ
 )paren
 (brace
+id|cpqfc_free_dma_consistent
+c_func
+(paren
+id|cpqfcHBAdata
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;kmalloc/alignment failure on IMQ: fatal error&bslash;n&quot;
+l_string|&quot;pci_alloc_consistent/alignment failure on IMQ: fatal error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -444,11 +580,7 @@ l_int|1
 suffix:semicolon
 id|ulAddr
 op_assign
-id|virt_to_bus
-c_func
-(paren
-id|fcChip-&gt;IMQ
-)paren
+id|IMQdma
 suffix:semicolon
 macro_line|#if BITS_PER_LONG &gt; 32
 r_if
@@ -461,6 +593,12 @@ l_int|32
 )paren
 )paren
 (brace
+id|cpqfc_free_dma_consistent
+c_func
+(paren
+id|cpqfcHBAdata
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -494,6 +632,8 @@ op_assign
 id|fcMemManager
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 op_amp
 id|cpqfcHBAdata-&gt;dynamic_mem
 (braket
@@ -512,6 +652,9 @@ id|SFQ_LEN
 )paren
 comma
 l_int|0L
+comma
+op_amp
+id|SPQdma
 )paren
 suffix:semicolon
 r_if
@@ -521,10 +664,16 @@ op_logical_neg
 id|fcChip-&gt;SFQ
 )paren
 (brace
+id|cpqfc_free_dma_consistent
+c_func
+(paren
+id|cpqfcHBAdata
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;kmalloc/alignment failure on SFQ: fatal error&bslash;n&quot;
+l_string|&quot;pci_alloc_consistent/alignment failure on SFQ: fatal error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -542,11 +691,7 @@ singleline_comment|// i.e. Que length [# entries -
 singleline_comment|// min. 32; max.  4096 (0xffff)]
 id|ulAddr
 op_assign
-id|virt_to_bus
-c_func
-(paren
-id|fcChip-&gt;SFQ
-)paren
+id|SPQdma
 suffix:semicolon
 macro_line|#if BITS_PER_LONG &gt; 32
 r_if
@@ -559,6 +704,12 @@ l_int|32
 )paren
 )paren
 (brace
+id|cpqfc_free_dma_consistent
+c_func
+(paren
+id|cpqfcHBAdata
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -611,6 +762,8 @@ op_assign
 id|fcMemManager
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 op_amp
 id|cpqfcHBAdata-&gt;dynamic_mem
 (braket
@@ -625,6 +778,9 @@ comma
 l_int|4
 comma
 l_int|0L
+comma
+op_amp
+id|SESTdma
 )paren
 suffix:semicolon
 singleline_comment|//&t;&t;  sizeof(TachSEST),  64*TACH_SEST_LEN, 0L );
@@ -635,15 +791,45 @@ op_logical_neg
 id|fcChip-&gt;SEST
 )paren
 (brace
+id|cpqfc_free_dma_consistent
+c_func
+(paren
+id|cpqfcHBAdata
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;kmalloc/alignment failure on SEST: fatal error&bslash;n&quot;
+l_string|&quot;pci_alloc_consistent/alignment failure on SEST: fatal error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 op_minus
 l_int|1
+suffix:semicolon
+)brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|TACH_SEST_LEN
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+singleline_comment|// for each exchange
+id|fcChip-&gt;SEST-&gt;sgPages
+(braket
+id|i
+)braket
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 id|fcChip-&gt;SEST-&gt;length
@@ -654,11 +840,7 @@ singleline_comment|// e.g. DON&squot;T subtract one
 singleline_comment|// (TL/TS UG, pg 153)
 id|ulAddr
 op_assign
-id|virt_to_bus
-c_func
-(paren
-id|fcChip-&gt;SEST
-)paren
+id|SESTdma
 suffix:semicolon
 macro_line|#if BITS_PER_LONG &gt; 32
 r_if
@@ -671,6 +853,12 @@ l_int|32
 )paren
 )paren
 (brace
+id|cpqfc_free_dma_consistent
+c_func
+(paren
+id|cpqfcHBAdata
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -745,12 +933,26 @@ singleline_comment|// NOTE! write consumer index last, since the write
 singleline_comment|// causes Tachyon to process the other registers
 id|ulAddr
 op_assign
-id|virt_to_bus
-c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 op_amp
 id|fcChip-&gt;ERQ-&gt;consumerIndex
+op_minus
+(paren
+r_int
+r_int
 )paren
+id|fcChip-&gt;ERQ
+)paren
+op_plus
+(paren
+r_int
+r_int
+)paren
+id|ERQdma
 suffix:semicolon
 singleline_comment|// NOTE! Tachyon DMAs to the ERQ consumer Index host
 singleline_comment|// address; must be correctly aligned
@@ -821,12 +1023,26 @@ singleline_comment|// must be correctly aligned with address bits 1-0 cleared
 singleline_comment|// Writing the BASE register clears the PI register, so write it last
 id|ulAddr
 op_assign
-id|virt_to_bus
-c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 op_amp
 id|fcChip-&gt;IMQ-&gt;producerIndex
+op_minus
+(paren
+r_int
+r_int
 )paren
+id|fcChip-&gt;IMQ
+)paren
+op_plus
+(paren
+r_int
+r_int
+)paren
+id|IMQdma
 suffix:semicolon
 macro_line|#if BITS_PER_LONG &gt; 32
 r_if
@@ -839,6 +1055,12 @@ l_int|32
 )paren
 )paren
 (brace
+id|cpqfc_free_dma_consistent
+c_func
+(paren
+id|cpqfcHBAdata
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3452,6 +3674,8 @@ suffix:semicolon
 id|cpqfcTSCompleteExchange
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 id|fcChip
 comma
 id|i
@@ -4137,6 +4361,8 @@ singleline_comment|// complete the command in our driver...
 id|cpqfcTSCompleteExchange
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 id|fcChip
 comma
 id|x_ID
@@ -4647,6 +4873,15 @@ comma
 id|opcode2
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|iStatus
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
 singleline_comment|// now that the Queues exist, Tach can DMA to them, so
 singleline_comment|// we can begin processing INTs
 singleline_comment|// INTEN register - enable INT (TachLite interrupt)
@@ -4660,15 +4895,7 @@ op_plus
 id|IINTEN
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|iStatus
-)paren
-(brace
-r_break
-suffix:semicolon
-)brace
+singleline_comment|// Fall through
 r_case
 l_int|4
 suffix:colon
@@ -4745,8 +4972,6 @@ suffix:semicolon
 id|USHORT
 id|i
 comma
-id|j
-comma
 id|iStatus
 op_assign
 l_int|0
@@ -4761,6 +4986,17 @@ r_int
 id|ulPtr
 suffix:semicolon
 singleline_comment|// for 64-bit pointer cast (e.g. Alpa machine)
+id|FC_EXCHANGES
+op_star
+id|Exchanges
+op_assign
+id|fcChip-&gt;Exchanges
+suffix:semicolon
+id|PSGPAGES
+id|j
+comma
+id|next
+suffix:semicolon
 id|ENTER
 c_func
 (paren
@@ -4780,10 +5016,6 @@ c_loop
 id|i
 op_assign
 l_int|0
-comma
-id|j
-op_assign
-l_int|0
 suffix:semicolon
 id|i
 OL
@@ -4791,52 +5023,79 @@ id|TACH_SEST_LEN
 suffix:semicolon
 id|i
 op_increment
-comma
-id|j
-op_assign
-l_int|0
 )paren
 singleline_comment|// for each exchange
 (brace
-singleline_comment|// It&squot;s possible that extended S/G pages were allocated and
+singleline_comment|// It&squot;s possible that extended S/G pages were allocated, mapped, and
 singleline_comment|// not cleared due to error conditions or O/S driver termination.
 singleline_comment|// Make sure they&squot;re all gone.
-r_while
-c_loop
+r_if
+c_cond
 (paren
-id|fcChip-&gt;SEST-&gt;sgPages
+id|Exchanges-&gt;fcExchange
 (braket
 id|i
 )braket
 dot
-id|PoolPage
+id|Cmnd
+op_ne
+l_int|NULL
+)paren
+id|cpqfc_pci_unmap
+c_func
+(paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
+id|Exchanges-&gt;fcExchange
 (braket
-id|j
+id|i
 )braket
-op_logical_and
+dot
+id|Cmnd
+comma
+id|fcChip
+comma
+id|i
+)paren
+suffix:semicolon
+singleline_comment|// undo DMA mappings.
+r_for
+c_loop
 (paren
 id|j
-OL
-id|TL_MAX_SGPAGES
-)paren
+op_assign
+id|fcChip-&gt;SEST-&gt;sgPages
+(braket
+id|i
+)braket
+suffix:semicolon
+id|j
+op_ne
+l_int|NULL
+suffix:semicolon
+id|j
+op_assign
+id|next
 )paren
 (brace
+id|next
+op_assign
+id|j-&gt;next
+suffix:semicolon
 id|kfree
 c_func
 (paren
+id|j
+)paren
+suffix:semicolon
+)brace
 id|fcChip-&gt;SEST-&gt;sgPages
 (braket
 id|i
 )braket
-dot
-id|PoolPage
-(braket
-id|j
-op_increment
-)braket
-)paren
+op_assign
+l_int|NULL
 suffix:semicolon
-)brace
 )brace
 id|ulPtr
 op_assign
@@ -4851,6 +5110,8 @@ op_assign
 id|fcMemManager
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 op_amp
 id|cpqfcHBAdata-&gt;dynamic_mem
 (braket
@@ -4865,6 +5126,8 @@ comma
 id|ULONG
 )paren
 id|ulPtr
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 singleline_comment|// &squot;free&squot; mem
@@ -4912,6 +5175,8 @@ op_assign
 id|fcMemManager
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 op_amp
 id|cpqfcHBAdata-&gt;dynamic_mem
 (braket
@@ -4926,6 +5191,8 @@ comma
 id|ULONG
 )paren
 id|ulPtr
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 singleline_comment|// &squot;free&squot; mem
@@ -4982,6 +5249,8 @@ op_assign
 id|fcMemManager
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 op_amp
 id|cpqfcHBAdata-&gt;dynamic_mem
 (braket
@@ -4996,6 +5265,8 @@ comma
 id|ULONG
 )paren
 id|ulPtr
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 singleline_comment|// &squot;free&squot; mem
@@ -5044,6 +5315,8 @@ op_assign
 id|fcMemManager
 c_func
 (paren
+id|cpqfcHBAdata-&gt;PciDev
+comma
 op_amp
 id|cpqfcHBAdata-&gt;dynamic_mem
 (braket
@@ -5058,6 +5331,8 @@ comma
 id|ULONG
 )paren
 id|ulPtr
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 singleline_comment|// &squot;free&squot; mem
@@ -5086,40 +5361,13 @@ l_int|4
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// free up the primary EXCHANGES struct
-r_if
-c_cond
-(paren
-id|fcChip-&gt;Exchanges
-op_ne
-l_int|NULL
-)paren
-(brace
-singleline_comment|//    printk(&quot;kfree() on Exchanges @%p&bslash;n&quot;, fcChip-&gt;Exchanges);
-id|kfree
+singleline_comment|// free up the primary EXCHANGES struct and Link Q
+id|cpqfc_free_dma_consistent
 c_func
 (paren
-id|fcChip-&gt;Exchanges
+id|cpqfcHBAdata
 )paren
 suffix:semicolon
-)brace
-singleline_comment|// free up Link Q
-r_if
-c_cond
-(paren
-id|cpqfcHBAdata-&gt;fcLQ
-op_ne
-l_int|NULL
-)paren
-(brace
-singleline_comment|//    printk(&quot;kfree() on LinkQ @%p&bslash;n&quot;, fcChip-&gt;fcLQ);
-id|kfree
-c_func
-(paren
-id|cpqfcHBAdata-&gt;fcLQ
-)paren
-suffix:semicolon
-)brace
 id|LEAVE
 c_func
 (paren

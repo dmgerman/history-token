@@ -4215,6 +4215,10 @@ id|block_device_operations
 id|lo_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|lo_open

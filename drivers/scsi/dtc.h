@@ -111,21 +111,21 @@ mdefine_line|#define NCR5380_setup(instance) &bslash;&n;    base = (unsigned int
 DECL|macro|DTC_address
 mdefine_line|#define DTC_address(reg) (base + DTC_5380_OFFSET + reg)
 DECL|macro|dbNCR5380_read
-mdefine_line|#define dbNCR5380_read(reg)                                              &bslash;&n;    (rval=readb(DTC_address(reg)), &bslash;&n;     (((unsigned char) printk(&quot;DTC : read register %d at addr %08x is: %02x&bslash;n&quot;&bslash;&n;    , (reg), (int)DTC_address(reg), rval)), rval ) )
+mdefine_line|#define dbNCR5380_read(reg)                                              &bslash;&n;    (rval=isa_readb(DTC_address(reg)), &bslash;&n;     (((unsigned char) printk(&quot;DTC : read register %d at addr %08x is: %02x&bslash;n&quot;&bslash;&n;    , (reg), (int)DTC_address(reg), rval)), rval ) )
 DECL|macro|dbNCR5380_write
-mdefine_line|#define dbNCR5380_write(reg, value) do {                                  &bslash;&n;    printk(&quot;DTC : write %02x to register %d at address %08x&bslash;n&quot;,         &bslash;&n;            (value), (reg), (int)DTC_address(reg));     &bslash;&n;    writeb(value, DTC_address(reg));} while(0)
+mdefine_line|#define dbNCR5380_write(reg, value) do {                                  &bslash;&n;    printk(&quot;DTC : write %02x to register %d at address %08x&bslash;n&quot;,         &bslash;&n;            (value), (reg), (int)DTC_address(reg));     &bslash;&n;    isa_writeb(value, DTC_address(reg));} while(0)
 macro_line|#if !(DTCDEBUG &amp; DTCDEBUG_TRANSFER) 
 DECL|macro|NCR5380_read
-mdefine_line|#define NCR5380_read(reg) (readb(DTC_address(reg)))
+mdefine_line|#define NCR5380_read(reg) (isa_readb(DTC_address(reg)))
 DECL|macro|NCR5380_write
-mdefine_line|#define NCR5380_write(reg, value) (writeb(value, DTC_address(reg)))
+mdefine_line|#define NCR5380_write(reg, value) (isa_writeb(value, DTC_address(reg)))
 macro_line|#else
 DECL|macro|NCR5380_read
-mdefine_line|#define NCR5380_read(reg) (readb(DTC_address(reg)))
+mdefine_line|#define NCR5380_read(reg) (isa_readb(DTC_address(reg)))
 DECL|macro|xNCR5380_read
-mdefine_line|#define xNCR5380_read(reg)&t;&t;&t;&t;&t;&t;&bslash;&n;    (((unsigned char) printk(&quot;DTC : read register %d at address %08x&bslash;n&quot;&bslash;&n;    , (reg), DTC_address(reg))), readb(DTC_address(reg)))
+mdefine_line|#define xNCR5380_read(reg)&t;&t;&t;&t;&t;&t;&bslash;&n;    (((unsigned char) printk(&quot;DTC : read register %d at address %08x&bslash;n&quot;&bslash;&n;    , (reg), DTC_address(reg))), isa_readb(DTC_address(reg)))
 DECL|macro|NCR5380_write
-mdefine_line|#define NCR5380_write(reg, value) do {&t;&t;&t;&t;&t;&bslash;&n;    printk(&quot;DTC : write %02x to register %d at address %08x&bslash;n&quot;, &t;&bslash;&n;&t;    (value), (reg), (int)DTC_address(reg));&t;&bslash;&n;    writeb(value, DTC_address(reg));} while(0)
+mdefine_line|#define NCR5380_write(reg, value) do {&t;&t;&t;&t;&t;&bslash;&n;    printk(&quot;DTC : write %02x to register %d at address %08x&bslash;n&quot;, &t;&bslash;&n;&t;    (value), (reg), (int)DTC_address(reg));&t;&bslash;&n;    isa_writeb(value, DTC_address(reg));} while(0)
 macro_line|#endif
 DECL|macro|NCR5380_intr
 mdefine_line|#define NCR5380_intr dtc_intr

@@ -8,6 +8,74 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &quot;generic.h&quot;
+DECL|function|cerf_init_irq
+r_static
+r_void
+id|__init
+id|cerf_init_irq
+(paren
+r_void
+)paren
+(brace
+id|sa1100_init_irq
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Need to register these as rising edge interrupts&n;   * For standard 16550 serial driver support&n;   * Basically - I copied it from pfs168.c :)&n;   */
+macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
+id|set_GPIO_IRQ_edge
+c_func
+(paren
+id|GPIO_GPIO
+c_func
+(paren
+l_int|3
+)paren
+comma
+id|GPIO_RISING_EDGE
+)paren
+suffix:semicolon
+multiline_comment|/* PDA Full serial port */
+id|set_GPIO_IRQ_edge
+c_func
+(paren
+id|GPIO_GPIO
+c_func
+(paren
+l_int|2
+)paren
+comma
+id|GPIO_RISING_EDGE
+)paren
+suffix:semicolon
+multiline_comment|/* PDA Bluetooth */
+id|GPDR
+op_and_assign
+op_complement
+(paren
+id|GPIO_GPIO
+c_func
+(paren
+l_int|3
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Set the direction of serial port GPIO pin to in */
+id|GPDR
+op_and_assign
+op_complement
+(paren
+id|GPIO_GPIO
+c_func
+(paren
+l_int|2
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Set the direction of bluetooth GPIO pin to in */
+macro_line|#endif /* CONFIG_SA1100_CERF_CPLD */
+)brace
 r_static
 r_void
 id|__init
@@ -36,7 +104,27 @@ op_star
 id|mi
 )paren
 (brace
-macro_line|#ifdef CONFIG_SA1100_CERF_32MB
+macro_line|#if defined(CONFIG_SA1100_CERF_64MB)
+singleline_comment|// 64MB RAM
+id|SET_BANK
+c_func
+(paren
+l_int|0
+comma
+l_int|0xc0000000
+comma
+l_int|64
+op_star
+l_int|1024
+op_star
+l_int|1024
+)paren
+suffix:semicolon
+id|mi-&gt;nr_banks
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#elif defined(CONFIG_SA1100_CERF_32MB)&t;
 singleline_comment|// 32MB RAM
 id|SET_BANK
 c_func
@@ -56,7 +144,7 @@ id|mi-&gt;nr_banks
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#else
+macro_line|#elif defined(CONFIG_SA1100_CERF_16MB)&t;
 singleline_comment|// 16Meg Ram.
 id|SET_BANK
 c_func
@@ -86,47 +174,37 @@ op_star
 l_int|1024
 )paren
 suffix:semicolon
-singleline_comment|// comment this out for 8MB Cerfs
 id|mi-&gt;nr_banks
 op_assign
 l_int|2
 suffix:semicolon
-macro_line|#endif
-id|ROOT_DEV
+macro_line|#elif defined(CONFIG_SA1100_CERF_8MB)
+singleline_comment|// 8Meg Ram.
+id|SET_BANK
+c_func
+(paren
+l_int|0
+comma
+l_int|0xc0000000
+comma
+l_int|8
+op_star
+l_int|1024
+op_star
+l_int|1024
+)paren
+suffix:semicolon
+id|mi-&gt;nr_banks
 op_assign
-id|MKDEV
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|setup_ramdisk
-c_func
-(paren
 l_int|1
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|8192
-)paren
 suffix:semicolon
-singleline_comment|// Save 2Meg for RAMDisk
-id|setup_initrd
-c_func
-(paren
-l_int|0xc0500000
-comma
-l_int|3
-op_star
-l_int|1024
-op_star
-l_int|1024
-)paren
-suffix:semicolon
+macro_line|#else
+macro_line|#error &quot;Undefined memory size for Cerfboard.&quot;
+macro_line|#endif
+singleline_comment|//&t;ROOT_DEV = MKDEV(RAMDISK_MAJOR,0);
+singleline_comment|//&t;setup_ramdisk(1,  0, 0, 8192);
+singleline_comment|//&t;// Save 2Meg for RAMDisk
+singleline_comment|//&t;setup_initrd(0xc0500000, 3*1024*1024);
 )brace
 DECL|variable|__initdata
 r_static
@@ -144,7 +222,7 @@ l_int|0xe8000000
 comma
 l_int|0x00000000
 comma
-l_int|0x01000000
+l_int|0x02000000
 comma
 id|DOMAIN_IO
 comma
@@ -176,7 +254,66 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* Crystal Chip */
+multiline_comment|/* Crystal Ethernet Chip */
+macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
+(brace
+l_int|0xf1000000
+comma
+l_int|0x40000000
+comma
+l_int|0x00100000
+comma
+id|DOMAIN_IO
+comma
+l_int|1
+comma
+l_int|1
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* CPLD Chip */
+(brace
+l_int|0xf2000000
+comma
+l_int|0x10000000
+comma
+l_int|0x00100000
+comma
+id|DOMAIN_IO
+comma
+l_int|1
+comma
+l_int|1
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* CerfPDA Bluetooth */
+(brace
+l_int|0xf3000000
+comma
+l_int|0x18000000
+comma
+l_int|0x00100000
+comma
+id|DOMAIN_IO
+comma
+l_int|1
+comma
+l_int|1
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* CerfPDA Serial */
+macro_line|#endif
 id|LAST_DESC
 )brace
 suffix:semicolon
@@ -209,6 +346,7 @@ comma
 l_int|3
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SA1100_CERF_IRDA_ENABLED
 id|sa1100_register_uart
 c_func
 (paren
@@ -217,18 +355,36 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#else
+id|sa1100_register_uart
+c_func
+(paren
+l_int|1
+comma
+l_int|2
+)paren
+suffix:semicolon
+id|sa1100_register_uart
+c_func
+(paren
+l_int|2
+comma
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 id|MACHINE_START
 c_func
 (paren
 id|CERF
 comma
-l_string|&quot;Intrinsyc CerfBoard&quot;
+l_string|&quot;Intrinsyc&squot;s Cerf Family of Products&quot;
 )paren
 id|MAINTAINER
 c_func
 (paren
-l_string|&quot;Pieter Truter&quot;
+l_string|&quot;support@intrinsyc.com&quot;
 )paren
 id|BOOT_MEM
 c_func
@@ -252,7 +408,7 @@ id|cerf_map_io
 id|INITIRQ
 c_func
 (paren
-id|sa1100_init_irq
+id|cerf_init_irq
 )paren
 id|MACHINE_END
 eof

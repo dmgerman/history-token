@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-m68k/serial.h&n; *&n; * currently this seems useful only for a Q40,&n; * its an almost exact copy of ../asm/alpha/serial.h &n; *&n; */
+multiline_comment|/*&n; * include/asm-m68k/serial.h&n; *&n; * currently this seems useful only for a Q40,&n; * its an almost exact copy of ../asm-alpha/serial.h &n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * This assumes you have a 1.8432 MHz clock for your UART.&n; *&n; * It&squot;d be nice if someone built a serial card with a 24.576 MHz&n; * clock, since the 16550A is capable of handling a top speed of 1.5&n; * megabits/second; but this requires the faster clock.&n; */
 DECL|macro|BASE_BAUD

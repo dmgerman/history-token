@@ -5,6 +5,7 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/arch/pcmcia.h&gt;
+macro_line|#include &lt;asm/arch/assabet.h&gt;
 DECL|function|neponset_pcmcia_init
 r_static
 r_int

@@ -35,7 +35,7 @@ mdefine_line|#define DEBUG(x...) &t;&t;/* Don&squot;t debug driver */
 macro_line|#endif
 macro_line|#if 0
 mdefine_line|#define IDEBUG(x...) printk(KERN_DEBUG ## x) /* Debug interrupt part */
-macro_line|#endif
+macro_line|#else
 DECL|macro|IDEBUG
 mdefine_line|#define IDEBUG(x...) &t;&t;/* Don&squot;t debug interrupt part */
 macro_line|#endif

@@ -160,6 +160,7 @@ id|write
 )paren
 suffix:semicolon
 DECL|variable|cmd_buffer
+r_static
 r_volatile
 r_int
 r_char
@@ -202,6 +203,10 @@ id|ESP_regs
 op_star
 id|eregs
 suffix:semicolon
+r_int
+r_int
+id|board
+suffix:semicolon
 macro_line|#if MKIV
 DECL|macro|REAL_BLZ1230_ID
 mdefine_line|#define REAL_BLZ1230_ID&t;&t;ZORRO_PROD_PHASE5_BLIZZARD_1230_IV_1260
@@ -230,8 +235,6 @@ id|z
 )paren
 )paren
 (brace
-r_int
-r_int
 id|board
 op_assign
 id|z-&gt;resource.start

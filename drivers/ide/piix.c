@@ -172,6 +172,9 @@ suffix:colon
 r_case
 id|PCI_DEVICE_ID_INTEL_82801BA_9
 suffix:colon
+r_case
+id|PCI_DEVICE_ID_INTEL_82801CA_10
+suffix:colon
 id|p
 op_add_assign
 id|sprintf
@@ -2057,6 +2060,12 @@ op_logical_or
 id|dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_INTEL_82801BA_9
+)paren
+op_logical_or
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_INTEL_82801CA_10
 )paren
 )paren
 ques

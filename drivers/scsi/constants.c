@@ -290,6 +290,89 @@ id|unknown
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* The following are 16 byte commands in group 4 */
+DECL|variable|group_4_commands
+r_static
+r_const
+r_char
+op_star
+id|group_4_commands
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* 80-84 */
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+multiline_comment|/* 85-89 */
+l_string|&quot;Memory Export In (16)&quot;
+comma
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+l_string|&quot;Memory Export Out (16)&quot;
+comma
+multiline_comment|/* 8a-8f */
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+multiline_comment|/* 90-94 */
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+multiline_comment|/* 95-99 */
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+multiline_comment|/* 9a-9f */
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+id|unknown
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* The following are 12 byte commands in group 5 */
 DECL|variable|group_5_commands
 r_static
@@ -406,13 +489,7 @@ op_star
 )paren
 id|RESERVED_GROUP
 comma
-(paren
-r_const
-r_char
-op_star
-op_star
-)paren
-id|RESERVED_GROUP
+id|group_4_commands
 comma
 id|group_5_commands
 comma

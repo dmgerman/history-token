@@ -491,6 +491,10 @@ id|block_device_operations
 id|ftl_blk_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|ftl_open
@@ -3534,8 +3538,6 @@ r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3549,15 +3551,11 @@ op_minus
 l_int|1
 )paren
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 multiline_comment|/* -E&squot;SBUGGEREDOFF */
 op_minus
 id|ENXIO
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3580,8 +3578,6 @@ c_func
 (paren
 id|partition-&gt;mtd
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -3731,8 +3727,6 @@ c_func
 (paren
 id|part-&gt;mtd
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|release_return
 c_func

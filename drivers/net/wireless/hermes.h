@@ -5,6 +5,7 @@ mdefine_line|#define _HERMES_H
 multiline_comment|/* Notes on locking:&n; *&n; * As a module of low level hardware access routines, there is no&n; * locking. Users of this module should ensure that they serialize&n; * access to the hermes_t structure, and to the hardware&n;*/
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/*&n; * Limits and constants&n; */
 DECL|macro|HERMES_ALLOC_LEN_MIN
 mdefine_line|#define&t;&t;HERMES_ALLOC_LEN_MIN&t;&t;(4)

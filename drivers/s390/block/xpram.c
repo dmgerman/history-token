@@ -1588,8 +1588,6 @@ id|dev-&gt;usage
 )paren
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1663,8 +1661,6 @@ id|dev-&gt;usage
 multiline_comment|/* but flush it right now */
 multiline_comment|/* Everything is already flushed by caller -- AV */
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2057,6 +2053,10 @@ id|block_device_operations
 id|xpram_devops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|ioctl
 suffix:colon
 id|xpram_ioctl
