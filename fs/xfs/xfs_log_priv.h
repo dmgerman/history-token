@@ -859,6 +859,11 @@ op_star
 op_star
 id|l_buf_cancel_table
 suffix:semicolon
+DECL|member|l_stripemask
+r_int
+id|l_stripemask
+suffix:semicolon
+multiline_comment|/* log stripe mask */
 DECL|member|l_iclog_hsize
 r_int
 id|l_iclog_hsize

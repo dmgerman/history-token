@@ -1908,10 +1908,6 @@ r_int
 id|num_bblks
 )paren
 (brace
-id|xlog_t
-op_star
-id|log
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1960,8 +1956,6 @@ id|VFS_RDONLY
 suffix:semicolon
 )brace
 id|mp-&gt;m_log
-op_assign
-id|log
 op_assign
 id|xlog_alloc_log
 c_func
@@ -2047,7 +2041,7 @@ op_assign
 id|xlog_recover
 c_func
 (paren
-id|log
+id|mp-&gt;m_log
 comma
 id|readonly
 )paren
@@ -2078,7 +2072,7 @@ suffix:semicolon
 id|xlog_unalloc_log
 c_func
 (paren
-id|log
+id|mp-&gt;m_log
 )paren
 suffix:semicolon
 r_return
@@ -2087,7 +2081,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Normal transactions can now occur */
-id|log-&gt;l_flags
+id|mp-&gt;m_log-&gt;l_flags
 op_and_assign
 op_complement
 id|XLOG_ACTIVE_RECOVERY
@@ -4139,7 +4133,7 @@ suffix:semicolon
 id|log
 op_assign
 (paren
-r_void
+id|xlog_t
 op_star
 )paren
 id|kmem_zalloc
@@ -4202,7 +4196,7 @@ comma
 id|ARCH_NOCONVERT
 )paren
 suffix:semicolon
-multiline_comment|/* log-&gt;l_tail_lsn    = 0x100000000LL; cycle = 1; current block = 0 */
+multiline_comment|/* log-&gt;l_tail_lsn = 0x100000000LL; cycle = 1; current block = 0 */
 id|log-&gt;l_last_sync_lsn
 op_assign
 id|log-&gt;l_tail_lsn
@@ -4220,6 +4214,46 @@ id|log-&gt;l_grant_write_cycle
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|XFS_SB_VERSION_HASLOGV2
+c_func
+(paren
+op_amp
+id|mp-&gt;m_sb
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mp-&gt;m_sb.sb_logsunit
+op_le
+l_int|1
+)paren
+(brace
+id|log-&gt;l_stripemask
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+(brace
+id|log-&gt;l_stripemask
+op_assign
+l_int|1
+op_lshift
+id|xfs_highbit32
+c_func
+(paren
+id|mp-&gt;m_sb.sb_logsunit
+op_rshift
+id|BBSHIFT
+)paren
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -10204,7 +10238,7 @@ c_cond
 id|log-&gt;l_curr_block
 op_amp
 (paren
-id|log-&gt;l_mp-&gt;m_lstripemask
+id|log-&gt;l_stripemask
 op_minus
 l_int|1
 )paren
@@ -10212,13 +10246,13 @@ l_int|1
 (brace
 id|roundup
 op_assign
-id|log-&gt;l_mp-&gt;m_lstripemask
+id|log-&gt;l_stripemask
 op_minus
 (paren
 id|log-&gt;l_curr_block
 op_amp
 (paren
-id|log-&gt;l_mp-&gt;m_lstripemask
+id|log-&gt;l_stripemask
 op_minus
 l_int|1
 )paren
