@@ -7644,6 +7644,14 @@ id|qc-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
+id|qc-&gt;cursect
+op_assign
+id|qc-&gt;cursg
+op_assign
+id|qc-&gt;cursg_ofs
+op_assign
+l_int|0
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
