@@ -3415,9 +3415,29 @@ comma
 id|reg_00.ID
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;.......    : Delivery Type: %X&bslash;n&quot;
+comma
+id|reg_00.delivery_type
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;.......    : LTS          : %X&bslash;n&quot;
+comma
+id|reg_00.LTS
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|reg_00.__reserved_0
+op_logical_or
 id|reg_00.__reserved_1
 op_logical_or
 id|reg_00.__reserved_2
