@@ -1690,7 +1690,8 @@ suffix:semicolon
 r_int
 id|group
 suffix:semicolon
-id|ino_t
+r_int
+r_int
 id|ino
 suffix:semicolon
 r_struct
@@ -2791,17 +2792,20 @@ r_struct
 id|inode
 op_star
 id|ext3_orphan_get
+c_func
 (paren
 r_struct
 id|super_block
 op_star
 id|sb
 comma
-id|ino_t
+r_int
+r_int
 id|ino
 )paren
 (brace
-id|ino_t
+r_int
+r_int
 id|max_ino
 op_assign
 id|le32_to_cpu
@@ -2855,10 +2859,6 @@ id|__FUNCTION__
 comma
 l_string|&quot;bad orphan ino %lu!  e2fsck was run?&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|ino
 )paren
 suffix:semicolon
@@ -2920,10 +2920,6 @@ id|__FUNCTION__
 comma
 l_string|&quot;inode bitmap error for orphan %lu&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|ino
 )paren
 suffix:semicolon
@@ -2981,10 +2977,6 @@ id|__FUNCTION__
 comma
 l_string|&quot;bad orphan inode %lu!  e2fsck was run?&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|ino
 )paren
 suffix:semicolon
@@ -3044,7 +3036,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;NEXT_ORPHAN(inode)=%d&bslash;n&quot;
+l_string|&quot;NEXT_ORPHAN(inode)=%u&bslash;n&quot;
 comma
 id|NEXT_ORPHAN
 c_func
@@ -3059,10 +3051,6 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;max_ino=%lu&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|max_ino
 )paren
 suffix:semicolon

@@ -396,6 +396,11 @@ r_int
 r_int
 op_star
 id|inactive
+comma
+r_int
+r_int
+op_star
+id|free
 )paren
 suffix:semicolon
 r_void
