@@ -395,15 +395,10 @@ c_func
 id|kobj
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-id|kobject_cleanup
+id|WARN_ON
 c_func
 (paren
-id|kobj
+id|error
 )paren
 suffix:semicolon
 )brace
