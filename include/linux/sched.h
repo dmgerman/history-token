@@ -2822,6 +2822,25 @@ id|__user
 op_star
 )paren
 suffix:semicolon
+r_extern
+id|asmlinkage
+r_int
+id|sys_sched_setscheduler
+c_func
+(paren
+id|pid_t
+id|pid
+comma
+r_int
+id|policy
+comma
+r_struct
+id|sched_param
+id|__user
+op_star
+id|parm
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void

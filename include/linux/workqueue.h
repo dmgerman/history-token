@@ -193,6 +193,14 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|keventd_up
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|init_workqueues
 c_func
