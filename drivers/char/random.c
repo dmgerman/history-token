@@ -11423,6 +11423,13 @@ r_return
 id|seq
 suffix:semicolon
 )brace
+DECL|variable|secure_tcpv6_sequence_number
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|secure_tcpv6_sequence_number
+)paren
+suffix:semicolon
 DECL|function|secure_ipv6_id
 id|__u32
 id|secure_ipv6_id
@@ -11494,6 +11501,13 @@ id|secret
 )paren
 suffix:semicolon
 )brace
+DECL|variable|secure_ipv6_id
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|secure_ipv6_id
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|function|secure_tcp_sequence_number
 id|__u32
