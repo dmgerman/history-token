@@ -609,7 +609,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_int
 id|elv_rq_merge_ok
 c_func
@@ -624,7 +623,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_int
 id|elv_try_merge
 c_func
@@ -639,7 +637,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_int
 id|elv_try_last_merge
 c_func
