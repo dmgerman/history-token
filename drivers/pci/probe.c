@@ -2528,10 +2528,6 @@ id|dev
 id|u32
 r_class
 suffix:semicolon
-id|dev-&gt;slot_name
-op_assign
-id|dev-&gt;dev.bus_id
-suffix:semicolon
 id|sprintf
 c_func
 (paren
