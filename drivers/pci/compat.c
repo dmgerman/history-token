@@ -4,24 +4,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 multiline_comment|/* Obsolete functions, these will be going away... */
-r_int
-DECL|function|pcibios_present
-id|pcibios_present
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|pci_devices
-)paren
-suffix:semicolon
-)brace
 DECL|macro|PCI_OP
 mdefine_line|#define PCI_OP(rw,size,type)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;int pcibios_##rw##_config_##size (unsigned char bus, unsigned char dev_fn,&t;&bslash;&n;&t;&t;&t;&t;  unsigned char where, unsigned type val)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct pci_dev *dev = pci_find_slot(bus, dev_fn);&t;&t;&t;&bslash;&n;&t;if (!dev) return PCIBIOS_DEVICE_NOT_FOUND;&t;&t;&t;&t;&bslash;&n;&t;return pci_##rw##_config_##size(dev, where, val);&t;&t;&t;&bslash;&n;}
 id|PCI_OP
@@ -81,13 +63,6 @@ id|dword
 comma
 r_int
 )paren
-DECL|variable|pcibios_present
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pcibios_present
-)paren
-suffix:semicolon
 DECL|variable|pcibios_read_config_byte
 id|EXPORT_SYMBOL
 c_func
