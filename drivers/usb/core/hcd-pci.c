@@ -869,7 +869,7 @@ macro_line|#ifdef&t;CONFIG_PM
 multiline_comment|/*&n; * Some &quot;sleep&quot; power levels imply updating struct usb_driver&n; * to include a callback asking hcds to do their bit by checking&n; * if all the drivers can suspend.  Gets involved with remote wakeup.&n; *&n; * If there are pending urbs, then HCs will need to access memory,&n; * causing extra power drain.  New sleep()/wakeup() PM calls might&n; * be needed, beyond PCI suspend()/resume().  The root hub timer&n; * still be accessing memory though ...&n; *&n; * FIXME:  USB should have some power budgeting support working with&n; * all kinds of hubs.&n; *&n; * FIXME:  This assumes only D0-&gt;D3 suspend and D3-&gt;D0 resume.&n; * D1 and D2 states should do something, yes?&n; *&n; * FIXME:  Should provide generic enable_wake(), calling pci_enable_wake()&n; * for all supported states, so that USB remote wakeup can work for any&n; * devices that support it (and are connected via powered hubs).&n; *&n; * FIXME:  resume doesn&squot;t seem to work right any more...&n; */
 singleline_comment|// 2.4 kernels have issued concurrent resumes (w/APM)
 singleline_comment|// we defend against that error; PCI doesn&squot;t yet.
-multiline_comment|/**&n; * usb_hcd_pci_suspend - power management suspend of a PCI-based HCD&n; * @dev: USB Host Controller being suspended&n; *&n; * Store this function in the HCD&squot;s struct pci_driver as suspend().&n; */
+multiline_comment|/**&n; * usb_hcd_pci_suspend - power management suspend of a PCI-based HCD&n; * @dev: USB Host Controller being suspended&n; * @state: state that the controller is going into&n; *&n; * Store this function in the HCD&squot;s struct pci_driver as suspend().&n; */
 DECL|function|usb_hcd_pci_suspend
 r_int
 id|usb_hcd_pci_suspend
