@@ -283,6 +283,11 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|dentry_operations
+id|jfs_ci_dentry_operations
+suffix:semicolon
 macro_line|#ifdef PROC_FS_JFS&t;&t;/* see jfs_debug.h */
 r_extern
 r_void
@@ -1985,6 +1990,18 @@ id|sb-&gt;s_root
 )paren
 r_goto
 id|out_no_root
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sbi-&gt;mntflag
+op_amp
+id|JFS_OS2
+)paren
+id|sb-&gt;s_root-&gt;d_op
+op_assign
+op_amp
+id|jfs_ci_dentry_operations
 suffix:semicolon
 multiline_comment|/* logical blocks are represented by 40 bits in pxd_t, etc. */
 id|sb-&gt;s_maxbytes
