@@ -269,13 +269,6 @@ id|proto_handler
 suffix:semicolon
 multiline_comment|/* protocol handler&t;   */
 multiline_comment|/* SCSI interfaces */
-DECL|member|host
-r_struct
-id|Scsi_Host
-op_star
-id|host
-suffix:semicolon
-multiline_comment|/* our dummy host data */
 DECL|member|srb
 r_struct
 id|scsi_cmnd
@@ -369,6 +362,63 @@ suffix:semicolon
 multiline_comment|/* extra data destructor   */
 )brace
 suffix:semicolon
+multiline_comment|/* Convert between us_data and the corresponding Scsi_Host */
+DECL|function|us_to_host
+r_static
+r_struct
+id|Scsi_Host
+r_inline
+op_star
+id|us_to_host
+c_func
+(paren
+r_struct
+id|us_data
+op_star
+id|us
+)paren
+(brace
+r_return
+id|container_of
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|us
+comma
+r_struct
+id|Scsi_Host
+comma
+id|hostdata
+)paren
+suffix:semicolon
+)brace
+DECL|function|host_to_us
+r_static
+r_struct
+id|us_data
+r_inline
+op_star
+id|host_to_us
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|us_data
+op_star
+)paren
+id|host-&gt;hostdata
+suffix:semicolon
+)brace
 multiline_comment|/* Function to fill an inquiry response. See usb.c for details */
 r_extern
 r_void

@@ -3539,7 +3539,11 @@ multiline_comment|/* Let the SCSI layer know we are doing a reset, set the&n;&t;
 id|scsi_lock
 c_func
 (paren
-id|us-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 id|usb_stor_report_device_reset
@@ -3569,7 +3573,11 @@ suffix:semicolon
 id|scsi_unlock
 c_func
 (paren
-id|us-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* A 20-second timeout may seem rather long, but a LaCie&n;&t; * StudioDrive USB2 device takes 16+ seconds to get going&n;&t; * following a powerup or USB attach event.&n;&t; */

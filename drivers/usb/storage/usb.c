@@ -864,7 +864,11 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|us-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -2447,53 +2451,6 @@ op_amp
 id|us-&gt;dev_semaphore
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Since this is a new device, we need to register a SCSI&n;&t; * host definition with the higher SCSI layers.&n;&t; */
-id|us-&gt;host
-op_assign
-id|scsi_host_alloc
-c_func
-(paren
-op_amp
-id|usb_stor_host_template
-comma
-r_sizeof
-(paren
-id|us
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|us-&gt;host
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|USB_STORAGE
-l_string|&quot;Unable to allocate the scsi host&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-multiline_comment|/* Set the hostdata to prepare for scanning */
-id|us-&gt;host-&gt;hostdata
-(braket
-l_int|0
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|us
-suffix:semicolon
 multiline_comment|/* Start up our control thread */
 id|p
 op_assign
@@ -2591,7 +2548,11 @@ multiline_comment|/* If the SCSI midlayer queued a final command just before&n;&
 id|scsi_lock
 c_func
 (paren
-id|us-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 id|us-&gt;srb
@@ -2601,7 +2562,11 @@ suffix:semicolon
 id|scsi_unlock
 c_func
 (paren
-id|us-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 id|up
@@ -2648,18 +2613,6 @@ id|us-&gt;extra
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Finish the host removal sequence */
-r_if
-c_cond
-(paren
-id|us-&gt;host
-)paren
-id|scsi_host_put
-c_func
-(paren
-id|us-&gt;host
-)paren
-suffix:semicolon
 multiline_comment|/* Free the extra data and the URB */
 id|kfree
 c_func
@@ -2741,13 +2694,6 @@ c_func
 id|us-&gt;pusb_intf
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/* Free the structure itself */
-id|kfree
-c_func
-(paren
-id|us
 )paren
 suffix:semicolon
 )brace
@@ -2876,7 +2822,11 @@ id|us-&gt;flags
 id|scsi_scan_host
 c_func
 (paren
-id|us-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 id|printk
@@ -2917,6 +2867,11 @@ id|id
 )paren
 (brace
 r_struct
+id|Scsi_Host
+op_star
+id|host
+suffix:semicolon
+r_struct
 id|us_data
 op_star
 id|us
@@ -2938,31 +2893,27 @@ c_func
 l_string|&quot;USB Mass Storage device detected&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Allocate the us_data structure and initialize the mutexes */
-id|us
+multiline_comment|/*&n;&t; * Ask the SCSI layer to allocate a host structure, with extra&n;&t; * space at the end for our private us_data structure.&n;&t; */
+id|host
 op_assign
-(paren
-r_struct
-id|us_data
-op_star
-)paren
-id|kmalloc
+id|scsi_host_alloc
 c_func
 (paren
+op_amp
+id|usb_stor_host_template
+comma
 r_sizeof
 (paren
 op_star
 id|us
 )paren
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|us
+id|host
 )paren
 (brace
 id|printk
@@ -2970,7 +2921,7 @@ c_func
 (paren
 id|KERN_WARNING
 id|USB_STORAGE
-l_string|&quot;Out of memory&bslash;n&quot;
+l_string|&quot;Unable to allocate the scsi host&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2978,6 +2929,14 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|us
+op_assign
+id|host_to_us
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -3229,7 +3188,7 @@ op_assign
 id|scsi_add_host
 c_func
 (paren
-id|us-&gt;host
+id|host
 comma
 op_amp
 id|intf-&gt;dev
@@ -3285,7 +3244,7 @@ suffix:semicolon
 id|scsi_remove_host
 c_func
 (paren
-id|us-&gt;host
+id|host
 )paren
 suffix:semicolon
 r_goto
@@ -3314,6 +3273,12 @@ id|dissociate_dev
 c_func
 (paren
 id|us
+)paren
+suffix:semicolon
+id|scsi_host_put
+c_func
+(paren
+id|host
 )paren
 suffix:semicolon
 r_return
@@ -3406,7 +3371,11 @@ suffix:semicolon
 id|scsi_remove_host
 c_func
 (paren
-id|us-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for everything to become idle and release all our resources */
@@ -3420,6 +3389,17 @@ id|dissociate_dev
 c_func
 (paren
 id|us
+)paren
+suffix:semicolon
+multiline_comment|/* Drop our reference to the host; the SCSI core will free it&n;&t; * (and &quot;us&quot; along with it) when the refcount becomes 0. */
+id|scsi_host_put
+c_func
+(paren
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 )brace

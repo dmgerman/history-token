@@ -67,15 +67,11 @@ id|us_data
 op_star
 id|us
 op_assign
+id|host_to_us
+c_func
 (paren
-r_struct
-id|us_data
-op_star
+id|sdev-&gt;host
 )paren
-id|sdev-&gt;host-&gt;hostdata
-(braket
-l_int|0
-)braket
 suffix:semicolon
 multiline_comment|/* Scatter-gather buffers (all but the last) must have a length&n;&t; * divisible by the bulk maxpacket size.  Otherwise a data packet&n;&t; * would end up being short, causing a premature end to the data&n;&t; * transfer.  Since high-speed bulk pipes have a maxpacket size&n;&t; * of 512, we&squot;ll use that as the scsi device queue&squot;s DMA alignment&n;&t; * mask.  Guaranteeing proper alignment of the first buffer will&n;&t; * have the desired effect because, except at the beginning and&n;&t; * the end, scatter-gather buffers follow page boundaries. */
 id|blk_queue_dma_alignment
@@ -203,7 +199,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* queue a command */
-multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
+multiline_comment|/* This is always called with scsi_lock(host) held */
 DECL|function|queuecommand
 r_static
 r_int
@@ -232,15 +228,11 @@ id|us_data
 op_star
 id|us
 op_assign
+id|host_to_us
+c_func
 (paren
-r_struct
-id|us_data
-op_star
+id|srb-&gt;device-&gt;host
 )paren
-id|srb-&gt;device-&gt;host-&gt;hostdata
-(braket
-l_int|0
-)braket
 suffix:semicolon
 id|US_DEBUGP
 c_func
@@ -249,15 +241,6 @@ l_string|&quot;%s called&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
-suffix:semicolon
-id|srb-&gt;host_scribble
-op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-id|us
 suffix:semicolon
 multiline_comment|/* check for state-transition errors */
 r_if
@@ -344,7 +327,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Error handling functions&n; ***********************************************************************/
 multiline_comment|/* Command timeout and abort */
-multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
+multiline_comment|/* This is always called with scsi_lock(host) held */
 DECL|function|command_abort
 r_static
 r_int
@@ -358,26 +341,15 @@ id|srb
 )paren
 (brace
 r_struct
-id|Scsi_Host
-op_star
-id|host
-op_assign
-id|srb-&gt;device-&gt;host
-suffix:semicolon
-r_struct
 id|us_data
 op_star
 id|us
 op_assign
+id|host_to_us
+c_func
 (paren
-r_struct
-id|us_data
-op_star
+id|srb-&gt;device-&gt;host
 )paren
-id|host-&gt;hostdata
-(braket
-l_int|0
-)braket
 suffix:semicolon
 id|US_DEBUGP
 c_func
@@ -448,7 +420,11 @@ suffix:semicolon
 id|scsi_unlock
 c_func
 (paren
-id|host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for the aborted command to finish */
@@ -463,7 +439,11 @@ multiline_comment|/* Reacquire the lock and allow USB transfers to resume */
 id|scsi_lock
 c_func
 (paren
-id|host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 id|clear_bit
@@ -489,7 +469,7 @@ id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* This invokes the transport reset mechanism to reset the state of the&n; * device */
-multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
+multiline_comment|/* This is always called with scsi_lock(host) held */
 DECL|function|device_reset
 r_static
 r_int
@@ -507,15 +487,11 @@ id|us_data
 op_star
 id|us
 op_assign
+id|host_to_us
+c_func
 (paren
-r_struct
-id|us_data
-op_star
+id|srb-&gt;device-&gt;host
 )paren
-id|srb-&gt;device-&gt;host-&gt;hostdata
-(braket
-l_int|0
-)braket
 suffix:semicolon
 r_int
 id|result
@@ -531,7 +507,11 @@ suffix:semicolon
 id|scsi_unlock
 c_func
 (paren
-id|srb-&gt;device-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* lock the device pointers and do the reset */
@@ -592,7 +572,11 @@ multiline_comment|/* lock the host for the return */
 id|scsi_lock
 c_func
 (paren
-id|srb-&gt;device-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -601,7 +585,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This resets the device&squot;s USB port. */
 multiline_comment|/* It refuses to work if there&squot;s more than one interface in&n; * the device, so that other users are not affected. */
-multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
+multiline_comment|/* This is always called with scsi_lock(host) held */
 DECL|function|bus_reset
 r_static
 r_int
@@ -619,15 +603,11 @@ id|us_data
 op_star
 id|us
 op_assign
+id|host_to_us
+c_func
 (paren
-r_struct
-id|us_data
-op_star
+id|srb-&gt;device-&gt;host
 )paren
-id|srb-&gt;device-&gt;host-&gt;hostdata
-(braket
-l_int|0
-)braket
 suffix:semicolon
 r_int
 id|result
@@ -645,7 +625,11 @@ suffix:semicolon
 id|scsi_unlock
 c_func
 (paren
-id|srb-&gt;device-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* The USB subsystem doesn&squot;t handle synchronisation between&n;&t; * a device&squot;s several drivers. Therefore we reset only devices&n;&t; * with just one interface, which we of course own. */
@@ -781,7 +765,11 @@ multiline_comment|/* lock the host for the return */
 id|scsi_lock
 c_func
 (paren
-id|srb-&gt;device-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -810,10 +798,21 @@ id|us
 r_int
 id|i
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
+suffix:semicolon
 id|scsi_report_device_reset
 c_func
 (paren
-id|us-&gt;host
+id|host
 comma
 l_int|0
 comma
@@ -837,7 +836,7 @@ l_int|1
 suffix:semicolon
 id|i
 OL
-id|us-&gt;host-&gt;max_id
+id|host-&gt;max_id
 suffix:semicolon
 op_increment
 id|i
@@ -845,7 +844,7 @@ id|i
 id|scsi_report_device_reset
 c_func
 (paren
-id|us-&gt;host
+id|host
 comma
 l_int|0
 comma
@@ -868,7 +867,7 @@ id|proc_info
 r_struct
 id|Scsi_Host
 op_star
-id|hostptr
+id|host
 comma
 r_char
 op_star
@@ -893,6 +892,12 @@ r_struct
 id|us_data
 op_star
 id|us
+op_assign
+id|host_to_us
+c_func
+(paren
+id|host
+)paren
 suffix:semicolon
 r_char
 op_star
@@ -914,25 +919,13 @@ id|inout
 r_return
 id|length
 suffix:semicolon
-id|us
-op_assign
-(paren
-r_struct
-id|us_data
-op_star
-)paren
-id|hostptr-&gt;hostdata
-(braket
-l_int|0
-)braket
-suffix:semicolon
 multiline_comment|/* print the controller name */
 id|SPRINTF
 c_func
 (paren
 l_string|&quot;   Host scsi%d: usb-storage&bslash;n&quot;
 comma
-id|hostptr-&gt;host_no
+id|host-&gt;host_no
 )paren
 suffix:semicolon
 multiline_comment|/* print product, vendor, and serial number strings */
