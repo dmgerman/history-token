@@ -9562,7 +9562,7 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-id|pci_set_dma_mask
+id|pci_set_consistent_dma_mask
 c_func
 (paren
 id|pci

@@ -13300,7 +13300,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-id|pci_set_dma_mask
+id|pci_set_consistent_dma_mask
 c_func
 (paren
 id|pci

@@ -2766,7 +2766,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pci_set_dma_mask
+id|pci_set_consistent_dma_mask
 c_func
 (paren
 id|pci

@@ -15771,7 +15771,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-id|pci_set_dma_mask
+id|pci_set_consistent_dma_mask
 c_func
 (paren
 id|pci
@@ -17946,7 +17946,7 @@ c_func
 id|trident-&gt;pci
 )paren
 suffix:semicolon
-id|pci_set_dma_mask
+id|pci_set_consistent_dma_mask
 c_func
 (paren
 id|trident-&gt;pci
@@ -17954,7 +17954,7 @@ comma
 l_int|0x3fffffff
 )paren
 suffix:semicolon
-multiline_comment|/* to be sure */
+multiline_comment|/* FIXME: correct? */
 id|pci_set_master
 c_func
 (paren
