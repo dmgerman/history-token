@@ -9,10 +9,6 @@ macro_line|#include &lt;asm/numaq.h&gt;
 macro_line|#else
 DECL|macro|pfn_to_nid
 mdefine_line|#define pfn_to_nid(pfn)&t;&t;(0)
-macro_line|#ifdef CONFIG_NUMA
-DECL|macro|_cpu_to_node
-mdefine_line|#define _cpu_to_node(cpu) 0
-macro_line|#endif /* CONFIG_NUMA */
 macro_line|#endif /* CONFIG_X86_NUMAQ */
 r_extern
 r_struct

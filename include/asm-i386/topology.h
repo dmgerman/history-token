@@ -10,9 +10,9 @@ mdefine_line|#define __cpu_to_node(cpu) (cpu_to_logical_apicid(cpu) &gt;&gt; 4)
 multiline_comment|/* Returns the number of the node containing MemBlk &squot;memblk&squot; */
 DECL|macro|__memblk_to_node
 mdefine_line|#define __memblk_to_node(memblk) (memblk)
-multiline_comment|/* Returns the number of the node containing Node &squot;nid&squot;.  This architecture is flat, &n;   so it is a pretty simple function! */
+multiline_comment|/* Returns the number of the node containing Node &squot;node&squot;.  This architecture is flat, &n;   so it is a pretty simple function! */
 DECL|macro|__parent_node
-mdefine_line|#define __parent_node(nid) (nid)
+mdefine_line|#define __parent_node(node) (node)
 multiline_comment|/* Returns the number of the first CPU on Node &squot;node&squot;.&n; * This should be changed to a set of cached values&n; * but this will do for now.&n; */
 DECL|function|__node_to_first_cpu
 r_static
@@ -73,8 +73,15 @@ multiline_comment|/* if yes, return it to caller */
 r_return
 id|cpu
 suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* couldn&squot;t find a cpu on given node */
 r_return
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Returns a bitmask of CPUs on Node &squot;node&squot;.&n; * This should be changed to a set of cached bitmasks&n; * but this will do for now.&n; */
@@ -106,6 +113,24 @@ r_int
 id|mask
 op_assign
 l_int|0UL
+suffix:semicolon
+r_if
+c_cond
+(paren
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+op_star
+l_int|8
+OL
+id|NR_CPUS
+)paren
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 r_for
 c_loop

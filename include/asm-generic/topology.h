@@ -9,11 +9,11 @@ mdefine_line|#define __cpu_to_node(cpu)&t;&t;(0)
 macro_line|#endif
 macro_line|#ifndef __memblk_to_node
 DECL|macro|__memblk_to_node
-mdefine_line|#define __memblk_to_node(memblk)&t;&t;(0)
+mdefine_line|#define __memblk_to_node(memblk)&t;(0)
 macro_line|#endif
 macro_line|#ifndef __parent_node
 DECL|macro|__parent_node
-mdefine_line|#define __parent_node(nid)&t;&t;(0)
+mdefine_line|#define __parent_node(node)&t;&t;(0)
 macro_line|#endif
 macro_line|#ifndef __node_to_first_cpu
 DECL|macro|__node_to_first_cpu
@@ -21,7 +21,7 @@ mdefine_line|#define __node_to_first_cpu(node)&t;(0)
 macro_line|#endif
 macro_line|#ifndef __node_to_cpu_mask
 DECL|macro|__node_to_cpu_mask
-mdefine_line|#define __node_to_cpu_mask(node)&t;&t;(cpu_online_map)
+mdefine_line|#define __node_to_cpu_mask(node)&t;(cpu_online_map)
 macro_line|#endif
 macro_line|#ifndef __node_to_memblk
 DECL|macro|__node_to_memblk

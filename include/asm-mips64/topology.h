@@ -4,7 +4,5 @@ mdefine_line|#define _ASM_MIPS64_TOPOLOGY_H
 macro_line|#include &lt;asm/mmzone.h&gt;
 DECL|macro|__cpu_to_node
 mdefine_line|#define __cpu_to_node(cpu)&t;&t;(cputocnode(cpu))
-multiline_comment|/* Get the rest of the topology definitions */
-macro_line|#include &lt;asm-generic/topology.h&gt;
 macro_line|#endif /* _ASM_MIPS64_TOPOLOGY_H */
 eof
