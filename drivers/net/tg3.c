@@ -31455,6 +31455,7 @@ op_assign
 id|value
 suffix:semicolon
 )brace
+macro_line|#if TG3_TSO_SUPPORT != 0
 DECL|function|tg3_set_tso
 r_static
 r_int
@@ -31511,6 +31512,7 @@ id|value
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|tg3_nway_reset
 r_static
 r_int
@@ -32562,6 +32564,7 @@ id|set_sg
 op_assign
 id|ethtool_op_set_sg
 comma
+macro_line|#if TG3_TSO_SUPPORT != 0
 dot
 id|get_tso
 op_assign
@@ -32572,6 +32575,7 @@ id|set_tso
 op_assign
 id|tg3_set_tso
 comma
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* Chips other than 5700/5701 use the NVRAM for fetching info. */
