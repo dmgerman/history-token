@@ -3420,7 +3420,7 @@ op_star
 id|m
 comma
 r_int
-id|flags
+id|len
 )paren
 (brace
 r_return

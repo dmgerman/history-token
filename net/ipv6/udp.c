@@ -1612,7 +1612,8 @@ id|skb
 suffix:semicolon
 r_int
 id|copied
-comma
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 r_if
@@ -4011,7 +4012,7 @@ r_if
 c_cond
 (paren
 id|len
-template_param
+OG
 id|INT_MAX
 op_minus
 r_sizeof
