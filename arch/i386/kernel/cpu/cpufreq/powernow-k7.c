@@ -1256,6 +1256,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_X86_POWERNOW_K7_ACPI
 DECL|variable|acpi_processor_perf
+r_static
 r_struct
 id|acpi_processor_performance
 op_star
