@@ -527,6 +527,11 @@ r_int
 id|ctx_fd
 suffix:semicolon
 multiline_comment|/* file descriptor used my this context */
+DECL|member|ctx_ovfl_arg
+id|pfm_ovfl_arg_t
+id|ctx_ovfl_arg
+suffix:semicolon
+multiline_comment|/* argument to custom buffer format handler */
 DECL|member|ctx_buf_fmt
 id|pfm_buffer_fmt_t
 op_star
@@ -17778,6 +17783,7 @@ id|regs
 )paren
 (brace
 id|pfm_ovfl_arg_t
+op_star
 id|ovfl_arg
 suffix:semicolon
 r_int
@@ -18110,6 +18116,11 @@ id|ovfl_pmds
 op_rshift
 id|PMU_FIRST_COUNTER
 suffix:semicolon
+id|ovfl_arg
+op_assign
+op_amp
+id|ctx-&gt;ctx_ovfl_arg
+suffix:semicolon
 id|prefetch
 c_func
 (paren
@@ -18156,7 +18167,7 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
-id|ovfl_arg.ovfl_pmd
+id|ovfl_arg-&gt;ovfl_pmd
 op_assign
 (paren
 r_int
@@ -18164,7 +18175,7 @@ r_char
 )paren
 id|i
 suffix:semicolon
-id|ovfl_arg.ovfl_notify
+id|ovfl_arg-&gt;ovfl_notify
 op_assign
 id|ovfl_notify
 op_amp
@@ -18175,16 +18186,16 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|ovfl_arg.active_set
+id|ovfl_arg-&gt;active_set
 op_assign
 l_int|0
 suffix:semicolon
-id|ovfl_arg.ovfl_ctrl.val
+id|ovfl_arg-&gt;ovfl_ctrl.val
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* module must fill in all fields */
-id|ovfl_arg.smpl_pmds
+id|ovfl_arg-&gt;smpl_pmds
 (braket
 l_int|0
 )braket
@@ -18201,7 +18212,7 @@ id|smpl_pmds
 l_int|0
 )braket
 suffix:semicolon
-id|ovfl_arg.pmd_value
+id|ovfl_arg-&gt;pmd_value
 op_assign
 id|ctx-&gt;ctx_pmds
 (braket
@@ -18210,7 +18221,7 @@ id|i
 dot
 id|val
 suffix:semicolon
-id|ovfl_arg.pmd_last_reset
+id|ovfl_arg-&gt;pmd_last_reset
 op_assign
 id|ctx-&gt;ctx_pmds
 (braket
@@ -18219,7 +18230,7 @@ id|i
 dot
 id|lval
 suffix:semicolon
-id|ovfl_arg.pmd_eventid
+id|ovfl_arg-&gt;pmd_eventid
 op_assign
 id|ctx-&gt;ctx_pmds
 (braket
@@ -18269,7 +18280,7 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
-id|ovfl_arg.smpl_pmds_values
+id|ovfl_arg-&gt;smpl_pmds_values
 (braket
 id|k
 op_increment
@@ -18308,7 +18319,7 @@ l_int|1
 comma
 id|j
 comma
-id|ovfl_arg.smpl_pmds_values
+id|ovfl_arg-&gt;smpl_pmds_values
 (braket
 id|k
 op_minus
@@ -18346,7 +18357,6 @@ id|task
 comma
 id|ctx-&gt;ctx_smpl_hdr
 comma
-op_amp
 id|ovfl_arg
 comma
 id|regs
@@ -18364,21 +18374,21 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * For those controls, we take the union because they have&n;&t;&t;&t; * an all or nothing behavior.&n;&t;&t;&t; */
 id|ovfl_ctrl.bits.notify_user
 op_or_assign
-id|ovfl_arg.ovfl_ctrl.bits.notify_user
+id|ovfl_arg-&gt;ovfl_ctrl.bits.notify_user
 suffix:semicolon
 id|ovfl_ctrl.bits.block_task
 op_or_assign
-id|ovfl_arg.ovfl_ctrl.bits.block_task
+id|ovfl_arg-&gt;ovfl_ctrl.bits.block_task
 suffix:semicolon
 id|ovfl_ctrl.bits.mask_monitoring
 op_or_assign
-id|ovfl_arg.ovfl_ctrl.bits.mask_monitoring
+id|ovfl_arg-&gt;ovfl_ctrl.bits.mask_monitoring
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * build the bitmask of pmds to reset now&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
-id|ovfl_arg.ovfl_ctrl.bits.reset_ovfl_pmds
+id|ovfl_arg-&gt;ovfl_ctrl.bits.reset_ovfl_pmds
 )paren
 id|reset_pmds
 op_or_assign
