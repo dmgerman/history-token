@@ -14,6 +14,49 @@ macro_line|#ifdef CONFIG_ISDN_X25
 macro_line|#include &lt;linux/concap.h&gt;
 macro_line|#include &quot;isdn_concap.h&quot;
 macro_line|#endif
+r_enum
+(brace
+DECL|enumerator|ST_0
+id|ST_0
+comma
+DECL|enumerator|ST_1
+id|ST_1
+comma
+DECL|enumerator|ST_2
+id|ST_2
+comma
+DECL|enumerator|ST_3
+id|ST_3
+comma
+DECL|enumerator|ST_4
+id|ST_4
+comma
+DECL|enumerator|ST_5
+id|ST_5
+comma
+DECL|enumerator|ST_6
+id|ST_6
+comma
+DECL|enumerator|ST_7
+id|ST_7
+comma
+DECL|enumerator|ST_8
+id|ST_8
+comma
+DECL|enumerator|ST_9
+id|ST_9
+comma
+DECL|enumerator|ST_10
+id|ST_10
+comma
+DECL|enumerator|ST_11
+id|ST_11
+comma
+DECL|enumerator|ST_12
+id|ST_12
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Outline of new tbusy handling: &n; *&n; * Old method, roughly spoken, consisted of setting tbusy when entering&n; * isdn_net_start_xmit() and at several other locations and clearing&n; * it from isdn_net_start_xmit() thread when sending was successful.&n; *&n; * With 2.3.x multithreaded network core, to prevent problems, tbusy should&n; * only be set by the isdn_net_start_xmit() thread and only when a tx-busy&n; * condition is detected. Other threads (in particular isdn_net_stat_callb())&n; * are only allowed to clear tbusy.&n; *&n; * -HE&n; */
 multiline_comment|/*&n; * About SOFTNET:&n; * Most of the changes were pretty obvious and basically done by HE already.&n; *&n; * One problem of the isdn net device code is that is uses struct net_device&n; * for masters and slaves. However, only master interface are registered to &n; * the network layer, and therefore, it only makes sense to call netif_* &n; * functions on them.&n; *&n; * --KG&n; */
 multiline_comment|/* &n; * Find out if the netdevice has been ifup-ed yet.&n; * For slaves, look at the corresponding master.&n; */
@@ -907,7 +950,7 @@ suffix:semicolon
 )brace
 id|lp-&gt;dialstate
 op_assign
-l_int|0
+id|ST_0
 suffix:semicolon
 id|isdn_slot_set_rx_netdev
 c_func
@@ -1049,8 +1092,9 @@ id|ISDN_NET_CONNECTED
 )paren
 op_logical_and
 (paren
-op_logical_neg
 id|l-&gt;dialstate
+op_eq
+id|ST_0
 )paren
 )paren
 (brace
@@ -1393,8 +1437,9 @@ id|ISDN_NET_CONNECTED
 )paren
 op_logical_and
 (paren
-op_logical_neg
 id|lp-&gt;dialstate
+op_eq
+id|ST_0
 )paren
 )paren
 (brace
@@ -1426,16 +1471,31 @@ id|lp-&gt;dialstate
 )paren
 (brace
 r_case
-l_int|4
-suffix:colon
-r_case
-l_int|7
-suffix:colon
-r_case
-l_int|8
+id|ST_4
 suffix:colon
 id|lp-&gt;dialstate
-op_increment
+op_assign
+id|ST_5
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+r_case
+id|ST_7
+suffix:colon
+id|lp-&gt;dialstate
+op_assign
+id|ST_8
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+r_case
+id|ST_8
+suffix:colon
+id|lp-&gt;dialstate
+op_assign
+id|ST_9
 suffix:semicolon
 r_return
 l_int|1
@@ -1445,7 +1505,7 @@ l_int|12
 suffix:colon
 id|lp-&gt;dialstate
 op_assign
-l_int|5
+id|ST_5
 suffix:semicolon
 r_return
 l_int|1
@@ -1490,8 +1550,9 @@ r_if
 c_cond
 (paren
 (paren
-op_logical_neg
 id|lp-&gt;dialstate
+op_eq
+id|ST_0
 )paren
 op_logical_and
 (paren
@@ -1621,32 +1682,36 @@ id|lp-&gt;dialstate
 )paren
 (brace
 r_case
-l_int|5
+id|ST_5
 suffix:colon
 r_case
-l_int|6
+id|ST_6
 suffix:colon
 r_case
-l_int|7
+id|ST_7
 suffix:colon
 r_case
-l_int|8
+id|ST_8
 suffix:colon
 r_case
-l_int|9
+id|ST_9
 suffix:colon
 r_case
-l_int|10
+id|ST_10
 suffix:colon
 r_case
-l_int|12
+id|ST_12
 suffix:colon
 r_if
 c_cond
 (paren
 id|lp-&gt;dialstate
-op_le
-l_int|6
+op_eq
+id|ST_5
+op_logical_or
+id|lp-&gt;dialstate
+op_eq
+id|ST_6
 )paren
 id|isdn_slot_set_usage
 c_func
@@ -1673,7 +1738,7 @@ id|p
 suffix:semicolon
 id|lp-&gt;dialstate
 op_assign
-l_int|0
+id|ST_0
 suffix:semicolon
 id|isdn_timer_ctrl
 c_func
@@ -1825,11 +1890,12 @@ c_cond
 (paren
 id|lp-&gt;dialstate
 op_eq
-l_int|4
+id|ST_4
 )paren
 (brace
 id|lp-&gt;dialstate
-op_decrement
+op_assign
+id|ST_3
 suffix:semicolon
 r_return
 l_int|1
@@ -2009,7 +2075,7 @@ suffix:semicolon
 )brace
 id|lp-&gt;dialstate
 op_assign
-l_int|2
+id|ST_2
 suffix:semicolon
 r_return
 l_int|1
@@ -2163,7 +2229,7 @@ id|flags
 suffix:semicolon
 id|lp-&gt;dialstate
 op_assign
-l_int|4
+id|ST_4
 suffix:semicolon
 id|printk
 c_func
@@ -2426,9 +2492,9 @@ id|ISDN_NET_CBOUT
 )paren
 ques
 c_cond
-l_int|12
+id|ST_12
 suffix:colon
-l_int|4
+id|ST_4
 suffix:semicolon
 r_return
 l_int|1
@@ -2502,13 +2568,13 @@ id|lp-&gt;dialstate
 )paren
 (brace
 r_case
-l_int|0
+id|ST_0
 suffix:colon
 multiline_comment|/* Nothing to do for this interface */
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|ST_1
 suffix:colon
 id|anymore
 op_assign
@@ -2520,7 +2586,7 @@ id|lp
 suffix:semicolon
 multiline_comment|/* Fall through */
 r_case
-l_int|2
+id|ST_2
 suffix:colon
 id|lp-&gt;dialretry
 op_assign
@@ -2531,11 +2597,12 @@ op_assign
 l_int|1
 suffix:semicolon
 id|lp-&gt;dialstate
-op_increment
+op_assign
+id|ST_3
 suffix:semicolon
 multiline_comment|/* Fall through */
 r_case
-l_int|3
+id|ST_3
 suffix:colon
 id|anymore
 op_assign
@@ -2548,7 +2615,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|4
+id|ST_4
 suffix:colon
 multiline_comment|/* Wait for D-Channel-connect.&n;&t;&t;&t; * If timeout, switch back to state 3.&n;&t;&t;&t; * Dialmax-handling moved to state 3.&n;&t;&t;&t; */
 r_if
@@ -2561,7 +2628,7 @@ id|ISDN_TIMER_DTIMEOUT10
 )paren
 id|lp-&gt;dialstate
 op_assign
-l_int|3
+id|ST_3
 suffix:semicolon
 id|anymore
 op_assign
@@ -2570,7 +2637,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|5
+id|ST_5
 suffix:colon
 multiline_comment|/* Got D-Channel-Connect, send B-Channel-request */
 id|anymore
@@ -2582,7 +2649,8 @@ op_assign
 l_int|0
 suffix:semicolon
 id|lp-&gt;dialstate
-op_increment
+op_assign
+id|ST_6
 suffix:semicolon
 id|isdn_slot_command
 c_func
@@ -2598,7 +2666,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|6
+id|ST_6
 suffix:colon
 multiline_comment|/* Wait for B- or D-Channel-connect. If timeout,&n;&t;&t;&t; * switch back to state 3.&n;&t;&t;&t; */
 macro_line|#ifdef ISDN_DEBUG_NET_DIAL
@@ -2622,7 +2690,7 @@ id|ISDN_TIMER_DTIMEOUT10
 )paren
 id|lp-&gt;dialstate
 op_assign
-l_int|3
+id|ST_3
 suffix:semicolon
 id|anymore
 op_assign
@@ -2631,7 +2699,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|7
+id|ST_7
 suffix:colon
 multiline_comment|/* Got incoming Call, setup L2 and L3 protocols,&n;&t;&t;&t; * then wait for D-Channel-connect&n;&t;&t;&t; */
 macro_line|#ifdef ISDN_DEBUG_NET_DIAL
@@ -2701,13 +2769,14 @@ op_assign
 l_int|1
 suffix:semicolon
 id|lp-&gt;dialstate
-op_increment
+op_assign
+id|ST_8
 suffix:semicolon
 )brace
 r_break
 suffix:semicolon
 r_case
-l_int|9
+id|ST_9
 suffix:colon
 multiline_comment|/* Got incoming D-Channel-Connect, send B-Channel-request */
 id|isdn_slot_command
@@ -2730,15 +2799,16 @@ op_assign
 l_int|0
 suffix:semicolon
 id|lp-&gt;dialstate
-op_increment
+op_assign
+id|ST_10
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|8
+id|ST_8
 suffix:colon
 r_case
-l_int|10
+id|ST_10
 suffix:colon
 multiline_comment|/*  Wait for B- or D-channel-connect */
 macro_line|#ifdef ISDN_DEBUG_NET_DIAL
@@ -2775,7 +2845,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|11
+id|ST_11
 suffix:colon
 multiline_comment|/* Callback Delay */
 r_if
@@ -2788,7 +2858,7 @@ id|lp-&gt;cbdelay
 )paren
 id|lp-&gt;dialstate
 op_assign
-l_int|1
+id|ST_1
 suffix:semicolon
 id|anymore
 op_assign
@@ -2797,7 +2867,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|12
+id|ST_12
 suffix:colon
 multiline_comment|/* Remote does callback. Hangup after cbdelay, then wait for incoming&n;&t;&t;&t; * call (in state 4).&n;&t;&t;&t; */
 r_if
@@ -2824,7 +2894,7 @@ l_int|0
 suffix:semicolon
 id|lp-&gt;dialstate
 op_assign
-l_int|4
+id|ST_4
 suffix:semicolon
 id|isdn_slot_command
 c_func
@@ -4302,8 +4372,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|lp-&gt;dialstate
+op_eq
+id|ST_0
 )paren
 (brace
 id|lp-&gt;stats.tx_errors
@@ -4701,7 +4772,7 @@ id|lp
 suffix:semicolon
 id|lp-&gt;dialstate
 op_assign
-l_int|1
+id|ST_1
 suffix:semicolon
 multiline_comment|/* Connect interface with channel */
 id|isdn_net_bind_channel
@@ -4836,8 +4907,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|lp-&gt;dialstate
+op_eq
+id|ST_0
 )paren
 (brace
 multiline_comment|/* ISDN connection is established, try sending */
@@ -5745,6 +5817,8 @@ id|ISDN_NET_CONNECTED
 )paren
 op_logical_or
 id|lp-&gt;dialstate
+op_ne
+id|ST_0
 )paren
 (brace
 id|printk
@@ -7404,8 +7478,9 @@ id|ISDN_NET_CONNECTED
 )paren
 op_logical_and
 (paren
-op_logical_neg
 id|lp-&gt;dialstate
+op_eq
+id|ST_0
 )paren
 )paren
 (brace
@@ -8804,13 +8879,13 @@ multiline_comment|/* and ch. unused or */
 (paren
 id|lp-&gt;dialstate
 op_eq
-l_int|4
+id|ST_4
 )paren
 op_logical_or
 (paren
 id|lp-&gt;dialstate
 op_eq
-l_int|12
+id|ST_12
 )paren
 )paren
 op_logical_and
@@ -9468,7 +9543,7 @@ l_int|0
 suffix:semicolon
 id|lp-&gt;dialstate
 op_assign
-l_int|11
+id|ST_11
 suffix:semicolon
 multiline_comment|/* Connect interface with channel */
 id|isdn_net_bind_channel
@@ -9578,13 +9653,13 @@ c_cond
 (paren
 id|lp-&gt;dialstate
 op_eq
-l_int|4
+id|ST_4
 )paren
 op_logical_or
 (paren
 id|lp-&gt;dialstate
 op_eq
-l_int|12
+id|ST_12
 )paren
 )paren
 (brace
@@ -9671,7 +9746,7 @@ id|ISDN_NET_CONNECTED
 suffix:semicolon
 id|lp-&gt;dialstate
 op_assign
-l_int|7
+id|ST_7
 suffix:semicolon
 id|lp-&gt;dtimer
 op_assign
@@ -9872,8 +9947,9 @@ id|ISDN_NET_CONNECTED
 )paren
 )paren
 op_logical_and
-op_logical_neg
 id|lp-&gt;dialstate
+op_eq
+id|ST_0
 )paren
 (brace
 r_int
@@ -9951,7 +10027,7 @@ suffix:semicolon
 )brace
 id|lp-&gt;dialstate
 op_assign
-l_int|1
+id|ST_1
 suffix:semicolon
 multiline_comment|/* Connect interface with channel */
 id|isdn_net_bind_channel
