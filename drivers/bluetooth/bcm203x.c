@@ -19,6 +19,13 @@ mdefine_line|#define BT_DBG(D...)
 macro_line|#endif
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;1.0&quot;
+DECL|variable|ignore
+r_static
+r_int
+id|ignore
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|bcm203x_table
 r_static
 r_struct
@@ -578,9 +585,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ignore
+op_logical_or
+(paren
 id|intf-&gt;cur_altsetting-&gt;desc.bInterfaceNumber
 op_ne
 l_int|0
+)paren
 )paren
 r_return
 op_minus
@@ -1173,6 +1184,24 @@ id|module_exit
 c_func
 (paren
 id|bcm203x_exit
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|ignore
+comma
+r_bool
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ignore
+comma
+l_string|&quot;Ignore devices from the matching table&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
