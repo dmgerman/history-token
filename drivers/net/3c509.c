@@ -7645,7 +7645,7 @@ id|eisa_driver_register
 op_amp
 id|el3_eisa_driver
 )paren
-OL
+op_le
 l_int|0
 )paren
 (brace
