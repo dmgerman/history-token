@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 224 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 227 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTYPES_H__
 DECL|macro|__ACTYPES_H__
@@ -36,6 +36,11 @@ r_int
 r_int
 id|UINT32
 suffix:semicolon
+DECL|typedef|INT64
+r_typedef
+id|COMPILER_DEPENDENT_INT64
+id|INT64
+suffix:semicolon
 DECL|typedef|UINT64
 r_typedef
 id|COMPILER_DEPENDENT_UINT64
@@ -53,7 +58,7 @@ id|NATIVE_INT
 suffix:semicolon
 DECL|typedef|ACPI_TBLPTR
 r_typedef
-id|NATIVE_UINT
+id|UINT64
 id|ACPI_TBLPTR
 suffix:semicolon
 DECL|typedef|ACPI_IO_ADDRESS
@@ -201,6 +206,11 @@ r_int
 r_int
 id|UINT32
 suffix:semicolon
+DECL|typedef|INT64
+r_typedef
+id|COMPILER_DEPENDENT_INT64
+id|INT64
+suffix:semicolon
 DECL|typedef|UINT64
 r_typedef
 id|COMPILER_DEPENDENT_UINT64
@@ -218,7 +228,7 @@ id|NATIVE_INT
 suffix:semicolon
 DECL|typedef|ACPI_TBLPTR
 r_typedef
-id|NATIVE_UINT
+id|UINT64
 id|ACPI_TBLPTR
 suffix:semicolon
 DECL|typedef|ACPI_IO_ADDRESS
@@ -299,6 +309,51 @@ id|u64
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*! [End] no source code translation !*/
+multiline_comment|/*&n; * Pointer overlays to avoid lots of typecasting for&n; * code that accepts both physical and logical pointers.&n; */
+DECL|union|acpi_pointers
+r_typedef
+r_union
+id|acpi_pointers
+(brace
+DECL|member|physical
+id|ACPI_PHYSICAL_ADDRESS
+id|physical
+suffix:semicolon
+DECL|member|logical
+r_void
+op_star
+id|logical
+suffix:semicolon
+DECL|member|value
+id|ACPI_TBLPTR
+id|value
+suffix:semicolon
+DECL|typedef|ACPI_POINTERS
+)brace
+id|ACPI_POINTERS
+suffix:semicolon
+DECL|struct|acpi_pointer
+r_typedef
+r_struct
+id|acpi_pointer
+(brace
+DECL|member|pointer_type
+id|u32
+id|pointer_type
+suffix:semicolon
+DECL|member|pointer
+id|ACPI_POINTERS
+id|pointer
+suffix:semicolon
+DECL|typedef|ACPI_POINTER
+)brace
+id|ACPI_POINTER
+suffix:semicolon
+multiline_comment|/* Pointer_types for above */
+DECL|macro|ACPI_LOGICAL_POINTER
+mdefine_line|#define ACPI_LOGICAL_POINTER            0x01
+DECL|macro|ACPI_PHYSICAL_POINTER
+mdefine_line|#define ACPI_PHYSICAL_POINTER           0x02
 multiline_comment|/*&n; * Useful defines&n; */
 macro_line|#ifdef FALSE
 DECL|macro|FALSE

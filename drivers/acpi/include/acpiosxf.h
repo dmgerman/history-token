@@ -86,15 +86,29 @@ id|acpi_os_terminate
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * ACPI Table interfaces&n; */
 id|acpi_status
 id|acpi_os_get_root_pointer
 (paren
 id|u32
 id|flags
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|ACPI_POINTER
 op_star
-id|rsdp_physical_address
+id|address
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_os_table_override
+(paren
+id|acpi_table_header
+op_star
+id|existing_table
+comma
+id|acpi_table_header
+op_star
+op_star
+id|new_table
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Synchronization primitives&n; */

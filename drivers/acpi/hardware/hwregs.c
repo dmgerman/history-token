@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *              $Revision: 120 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *              $Revision: 121 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -88,19 +88,16 @@ id|acpi_gbl_FADT-&gt;Xpm1b_evt_blk.address
 )paren
 )paren
 (brace
-id|acpi_os_write_port
+id|acpi_hw_low_level_write
 (paren
-(paren
-id|ACPI_IO_ADDRESS
-)paren
-id|ACPI_GET_ADDRESS
-(paren
-id|acpi_gbl_FADT-&gt;Xpm1b_evt_blk.address
-)paren
+l_int|16
 comma
 id|ACPI_BITMASK_ALL_FIXED_STATUS
 comma
-l_int|16
+op_amp
+id|acpi_gbl_FADT-&gt;Xpm1b_evt_blk
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -140,25 +137,20 @@ id|i
 op_increment
 )paren
 (brace
-id|acpi_os_write_port
+id|acpi_hw_low_level_write
 (paren
-(paren
-id|ACPI_IO_ADDRESS
-)paren
-(paren
+l_int|8
+comma
+l_int|0xFF
+comma
 id|acpi_gbl_gpe_block_info
 (braket
 id|gpe_block
 )braket
 dot
 id|block_address
-op_plus
+comma
 id|i
-)paren
-comma
-l_int|0xFF
-comma
-l_int|8
 )paren
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfldio - Aml Field I/O&n; *              $Revision: 82 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfldio - Aml Field I/O&n; *              $Revision: 84 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -239,7 +239,7 @@ id|address
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_ex_access_region&quot;
+l_string|&quot;Ex_access_region&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The physical address of this field datum is:&n;&t; *&n;&t; * 1) The base of the region, plus&n;&t; * 2) The base offset of the field, plus&n;&t; * 3) The current offset into the field&n;&t; */
@@ -1451,7 +1451,7 @@ id|buffer_length
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_BFIELD
 comma
 l_string|&quot;Field size %X (bytes) too large for buffer (%X)&bslash;n&quot;
 comma
@@ -1480,7 +1480,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_BFIELD
 comma
 l_string|&quot;Byte_len=%x, Datum_len=%x, Byte_gran=%x&bslash;n&quot;
 comma
@@ -1833,7 +1833,7 @@ id|byte_field_length
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_BFIELD
 comma
 l_string|&quot;Buffer length %X too small for field %X&bslash;n&quot;
 comma
@@ -1862,7 +1862,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_BFIELD
 comma
 l_string|&quot;Byte_len=%x, Datum_len=%x, Byte_gran=%x&bslash;n&quot;
 comma

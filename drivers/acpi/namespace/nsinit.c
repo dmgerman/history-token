@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsinit - namespace initialization&n; *              $Revision: 41 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsinit - namespace initialization&n; *              $Revision: 43 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -43,29 +43,23 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_OK
 comma
-l_string|&quot;Completing Region and Field initialization:&quot;
+l_string|&quot;Completing Region/Field/Buffer/Package initialization:&quot;
 )paren
 )paren
 suffix:semicolon
-id|info.field_count
-op_assign
+multiline_comment|/* Set all init info to zero */
+id|ACPI_MEMSET
+(paren
+op_amp
+id|info
+comma
 l_int|0
-suffix:semicolon
-id|info.field_init
-op_assign
-l_int|0
-suffix:semicolon
-id|info.op_region_count
-op_assign
-l_int|0
-suffix:semicolon
-id|info.op_region_init
-op_assign
-l_int|0
-suffix:semicolon
-id|info.object_count
-op_assign
-l_int|0
+comma
+r_sizeof
+(paren
+id|acpi_init_walk_info
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Walk entire namespace from the supplied root */
 id|status
@@ -112,7 +106,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_OK
 comma
-l_string|&quot;&bslash;n%d/%d Regions, %d/%d Fields initialized (%d nodes total)&bslash;n&quot;
+l_string|&quot;&bslash;n Initialized %d/%d Regions %d/%d Fields %d/%d Buffers %d/%d Packages (%d nodes)&bslash;n&quot;
 comma
 id|info.op_region_init
 comma
@@ -121,6 +115,14 @@ comma
 id|info.field_init
 comma
 id|info.field_count
+comma
+id|info.buffer_init
+comma
+id|info.buffer_count
+comma
+id|info.package_init
+comma
+id|info.package_count
 comma
 id|info.object_count
 )paren
@@ -173,6 +175,7 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;Ns_initialize_devices&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Init counters */
 id|info.device_count
 op_assign
 l_int|0
@@ -190,10 +193,11 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_OK
 comma
-l_string|&quot;Executing device _INI methods:&quot;
+l_string|&quot;Executing all Device _STA and_INI methods:&quot;
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Walk namespace for all objects of type Device */
 id|status
 op_assign
 id|acpi_ns_walk_namespace
@@ -240,7 +244,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_OK
 comma
-l_string|&quot;&bslash;n%d Devices found: %d _STA, %d _INI&bslash;n&quot;
+l_string|&quot;&bslash;n%d Devices found containing: %d _STA, %d _INI methods&bslash;n&quot;
 comma
 id|info.device_count
 comma
@@ -343,20 +347,61 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Increment counters for object types we are looking for */
+r_switch
+c_cond
+(paren
+id|type
+)paren
+(brace
+r_case
+id|ACPI_TYPE_REGION
+suffix:colon
+id|info-&gt;op_region_count
+op_increment
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_BUFFER_FIELD
+suffix:colon
+id|info-&gt;field_count
+op_increment
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_BUFFER
+suffix:colon
+id|info-&gt;buffer_count
+op_increment
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_PACKAGE
+suffix:colon
+id|info-&gt;package_count
+op_increment
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* No init required, just exit now */
+r_return
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * If the object is already initialized, nothing else to do&n;&t; */
 r_if
 c_cond
 (paren
-(paren
-id|type
-op_ne
-id|ACPI_TYPE_REGION
-)paren
-op_logical_and
-(paren
-id|type
-op_ne
-id|ACPI_TYPE_BUFFER_FIELD
-)paren
+id|obj_desc-&gt;common.flags
+op_amp
+id|AOPOBJ_DATA_VALID
 )paren
 (brace
 r_return
@@ -387,6 +432,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Each of these types can contain executable AML code within&n;&t; * the declaration.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -396,20 +442,6 @@ id|type
 r_case
 id|ACPI_TYPE_REGION
 suffix:colon
-id|info-&gt;op_region_count
-op_increment
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|obj_desc-&gt;common.flags
-op_amp
-id|AOPOBJ_DATA_VALID
-)paren
-(brace
-r_break
-suffix:semicolon
-)brace
 id|info-&gt;op_region_init
 op_increment
 suffix:semicolon
@@ -420,86 +452,11 @@ id|acpi_ds_get_region_arguments
 id|obj_desc
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|ACPI_DEBUG_PRINT_RAW
-(paren
-(paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;%s while getting region arguments [%4.4s]&bslash;n&quot;
-comma
-id|acpi_format_exception
-(paren
-id|status
-)paren
-comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|node-&gt;name
-)paren
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|acpi_dbg_level
-op_amp
-id|ACPI_LV_INIT
-)paren
-)paren
-(brace
-id|ACPI_DEBUG_PRINT_RAW
-(paren
-(paren
-id|ACPI_DB_OK
-comma
-l_string|&quot;.&quot;
-)paren
-)paren
-suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER_FIELD
 suffix:colon
-id|info-&gt;field_count
-op_increment
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|obj_desc-&gt;common.flags
-op_amp
-id|AOPOBJ_DATA_VALID
-)paren
-(brace
-r_break
-suffix:semicolon
-)brace
 id|info-&gt;field_init
 op_increment
 suffix:semicolon
@@ -510,6 +467,39 @@ id|acpi_ds_get_buffer_field_arguments
 id|obj_desc
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_BUFFER
+suffix:colon
+id|info-&gt;buffer_init
+op_increment
+suffix:semicolon
+id|status
+op_assign
+id|acpi_ds_get_buffer_arguments
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_PACKAGE
+suffix:colon
+id|info-&gt;package_init
+op_increment
+suffix:semicolon
+id|status
+op_assign
+id|acpi_ds_get_package_arguments
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -533,12 +523,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;%s while getting buffer field arguments [%4.4s]&bslash;n&quot;
-comma
-id|acpi_format_exception
-(paren
-id|status
-)paren
+l_string|&quot;Could not execute arguments for [%4.4s] (%s), %s&bslash;n&quot;
 comma
 (paren
 r_char
@@ -546,6 +531,16 @@ op_star
 )paren
 op_amp
 id|node-&gt;name
+comma
+id|acpi_ut_get_type_name
+(paren
+id|type
+)paren
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -571,14 +566,7 @@ l_string|&quot;.&quot;
 )paren
 suffix:semicolon
 )brace
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * We ignore errors from above, and always return OK, since&n;&t; * we don&squot;t want to abort the walk on a single error.&n;&t; */
+multiline_comment|/*&n;&t; * We ignore errors from above, and always return OK, since&n;&t; * we don&squot;t want to abort the walk on any single error.&n;&t; */
 id|acpi_ex_exit_interpreter
 (paren
 )paren

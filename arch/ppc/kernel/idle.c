@@ -67,9 +67,9 @@ r_int
 r_int
 id|powersave_nap
 suffix:semicolon
-DECL|function|idled
-r_int
-id|idled
+DECL|function|default_idle
+r_void
+id|default_idle
 c_func
 (paren
 r_void
@@ -99,14 +99,6 @@ id|do_power_save
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* endless loop with no priority at all */
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-(brace
 macro_line|#ifdef CONFIG_PPC_ISERIES
 r_if
 c_cond
@@ -241,10 +233,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PPC_ISERIES */
 )brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * SMP entry into the idle task - calls the same thing as the&n; * non-smp versions. -- Cort&n; */
 DECL|function|cpu_idle
 r_int
@@ -254,7 +242,13 @@ c_func
 r_void
 )paren
 (brace
-id|idled
+r_for
+c_loop
+(paren
+suffix:semicolon
+suffix:semicolon
+)paren
+id|default_idle
 c_func
 (paren
 )paren

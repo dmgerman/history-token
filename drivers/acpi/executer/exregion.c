@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exregion - ACPI default Op_region (address space) handlers&n; *              $Revision: 72 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exregion - ACPI default Op_region (address space) handlers&n; *              $Revision: 74 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -61,9 +61,6 @@ id|length
 suffix:semicolon
 id|u32
 id|window_size
-suffix:semicolon
-id|u32
-id|remaining
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -180,7 +177,7 @@ id|mem_info-&gt;mapped_length
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Don&squot;t attempt to map memory beyond the end of the region, and&n;&t;&t; * constrain the maximum mapping size to something reasonable.&n;&t;&t; */
-id|remaining
+id|window_size
 op_assign
 (paren
 id|u32
@@ -189,9 +186,6 @@ id|u32
 (paren
 id|mem_info-&gt;address
 op_plus
-(paren
-id|ACPI_PHYSICAL_ADDRESS
-)paren
 id|mem_info-&gt;length
 )paren
 op_minus
@@ -201,7 +195,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remaining
+id|window_size
 OG
 id|SYSMEM_REGION_WINDOW_SIZE
 )paren
@@ -209,13 +203,6 @@ id|SYSMEM_REGION_WINDOW_SIZE
 id|window_size
 op_assign
 id|SYSMEM_REGION_WINDOW_SIZE
-suffix:semicolon
-)brace
-r_else
-(brace
-id|window_size
-op_assign
-id|remaining
 suffix:semicolon
 )brace
 multiline_comment|/* Create a new mapping starting at the address given */

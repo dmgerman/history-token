@@ -87,6 +87,11 @@ r_int
 id|selfid_count
 suffix:semicolon
 multiline_comment|/* total number of SelfIDs received */
+DECL|member|nodes_active
+r_int
+id|nodes_active
+suffix:semicolon
+multiline_comment|/* number of nodes that are actually active */
 DECL|member|node_id
 id|nodeid_t
 id|node_id

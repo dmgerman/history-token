@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acdispat.h - dispatcher (parser to interpreter interface)&n; *       $Revision: 51 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acdispat.h - dispatcher (parser to interpreter interface)&n; *       $Revision: 52 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACDISPAT_H_
 DECL|macro|_ACDISPAT_H_
@@ -71,6 +71,22 @@ id|acpi_ds_get_region_arguments
 id|acpi_operand_object
 op_star
 id|rgn_desc
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ds_get_buffer_arguments
+(paren
+id|acpi_operand_object
+op_star
+id|obj_desc
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ds_get_package_arguments
+(paren
+id|acpi_operand_object
+op_star
+id|obj_desc
 )paren
 suffix:semicolon
 multiline_comment|/* dsctrl - Parser/Interpreter interface, control stack routines */
@@ -515,6 +531,26 @@ id|start_node
 )paren
 suffix:semicolon
 id|acpi_status
+id|acpi_ds_build_internal_buffer_obj
+(paren
+id|acpi_walk_state
+op_star
+id|walk_state
+comma
+id|acpi_parse_object
+op_star
+id|op
+comma
+id|u32
+id|buffer_length
+comma
+id|acpi_operand_object
+op_star
+op_star
+id|obj_desc_ptr
+)paren
+suffix:semicolon
+id|acpi_status
 id|acpi_ds_build_internal_package_obj
 (paren
 id|acpi_walk_state
@@ -524,6 +560,9 @@ comma
 id|acpi_parse_object
 op_star
 id|op
+comma
+id|u32
+id|package_length
 comma
 id|acpi_operand_object
 op_star
@@ -607,6 +646,22 @@ comma
 id|acpi_parse_object
 op_star
 id|op
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ds_eval_data_object_operands
+(paren
+id|acpi_walk_state
+op_star
+id|walk_state
+comma
+id|acpi_parse_object
+op_star
+id|op
+comma
+id|acpi_operand_object
+op_star
+id|obj_desc
 )paren
 suffix:semicolon
 id|acpi_status

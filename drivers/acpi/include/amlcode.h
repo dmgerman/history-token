@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 66 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 67 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __AMLCODE_H__
 DECL|macro|__AMLCODE_H__
@@ -279,6 +279,8 @@ DECL|macro|AML_INT_METHODCALL_OP
 mdefine_line|#define AML_INT_METHODCALL_OP       (u16) 0x0035
 DECL|macro|AML_INT_RETURN_VALUE_OP
 mdefine_line|#define AML_INT_RETURN_VALUE_OP     (u16) 0x0036
+DECL|macro|AML_INT_EVAL_SUBTREE_OP
+mdefine_line|#define AML_INT_EVAL_SUBTREE_OP     (u16) 0x0037
 DECL|macro|ARG_NONE
 mdefine_line|#define ARG_NONE                    0x0
 multiline_comment|/*&n; * Argument types for the AML Parser&n; * Each field in the Arg_types u32 is 5 bits, allowing for a maximum of 6 arguments.&n; * There can be up to 31 unique argument types&n; */
@@ -470,22 +472,24 @@ mdefine_line|#define AML_TYPE_METHOD_CALL        0x10
 multiline_comment|/* Misc */
 DECL|macro|AML_TYPE_CREATE_FIELD
 mdefine_line|#define AML_TYPE_CREATE_FIELD       0x11
+DECL|macro|AML_TYPE_CREATE_OBJECT
+mdefine_line|#define AML_TYPE_CREATE_OBJECT      0x12
 DECL|macro|AML_TYPE_CONTROL
-mdefine_line|#define AML_TYPE_CONTROL            0x12
+mdefine_line|#define AML_TYPE_CONTROL            0x13
 DECL|macro|AML_TYPE_NAMED_NO_OBJ
-mdefine_line|#define AML_TYPE_NAMED_NO_OBJ       0x13
+mdefine_line|#define AML_TYPE_NAMED_NO_OBJ       0x14
 DECL|macro|AML_TYPE_NAMED_FIELD
-mdefine_line|#define AML_TYPE_NAMED_FIELD        0x14
+mdefine_line|#define AML_TYPE_NAMED_FIELD        0x15
 DECL|macro|AML_TYPE_NAMED_SIMPLE
-mdefine_line|#define AML_TYPE_NAMED_SIMPLE       0x15
+mdefine_line|#define AML_TYPE_NAMED_SIMPLE       0x16
 DECL|macro|AML_TYPE_NAMED_COMPLEX
-mdefine_line|#define AML_TYPE_NAMED_COMPLEX      0x16
+mdefine_line|#define AML_TYPE_NAMED_COMPLEX      0x17
 DECL|macro|AML_TYPE_RETURN
-mdefine_line|#define AML_TYPE_RETURN             0x17
+mdefine_line|#define AML_TYPE_RETURN             0x18
 DECL|macro|AML_TYPE_UNDEFINED
-mdefine_line|#define AML_TYPE_UNDEFINED          0x18
+mdefine_line|#define AML_TYPE_UNDEFINED          0x19
 DECL|macro|AML_TYPE_BOGUS
-mdefine_line|#define AML_TYPE_BOGUS              0x19
+mdefine_line|#define AML_TYPE_BOGUS              0x1A
 multiline_comment|/*&n; * Opcode classes&n; */
 DECL|macro|AML_CLASS_EXECUTE
 mdefine_line|#define AML_CLASS_EXECUTE           0x00

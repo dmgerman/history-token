@@ -1,7 +1,6 @@
 multiline_comment|/*&n; *&t;Intel Multiprocessor Specificiation 1.1 and 1.4&n; *&t;compliant MP-table parsing routines.&n; *&n; *&t;(c) 1995 Alan Cox, Building #3 &lt;alan@redhat.com&gt;&n; *&t;(c) 1998, 1999, 2000 Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; *&t;Fixes&n; *&t;&t;Erich Boleyn&t;:&t;MP v1.4 and additional changes.&n; *&t;&t;Alan Cox&t;:&t;Added EBDA scanning&n; *&t;&t;Ingo Molnar&t;:&t;various cleanups and rewrites&n; *&t;Maciej W. Rozycki&t;:&t;Bits for default MP configurations&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -10,6 +9,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -17,13 +17,6 @@ multiline_comment|/* Have we found an MP table */
 DECL|variable|smp_found_config
 r_int
 id|smp_found_config
-suffix:semicolon
-multiline_comment|/* Have we found an ACPI MADT table */
-DECL|variable|acpi_found_madt
-r_int
-id|acpi_found_madt
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Various Linux-internal data structures created from the&n; * MP-table.&n; */
 DECL|variable|apic_version
@@ -45,25 +38,6 @@ r_int
 id|mp_bus_id_to_node
 (braket
 id|MAX_MP_BUSSES
-)braket
-suffix:semicolon
-DECL|variable|mp_bus_id_to_local
-r_int
-id|mp_bus_id_to_local
-(braket
-id|MAX_MP_BUSSES
-)braket
-suffix:semicolon
-DECL|variable|quad_local_to_mp_bus_id
-r_int
-id|quad_local_to_mp_bus_id
-(braket
-id|NR_CPUS
-op_div
-l_int|4
-)braket
-(braket
-l_int|4
 )braket
 suffix:semicolon
 DECL|variable|mp_bus_id_to_pci_bus
@@ -158,54 +132,6 @@ r_int
 r_int
 id|phys_cpu_present_map
 suffix:semicolon
-multiline_comment|/* ACPI MADT entry parsing functions */
-macro_line|#ifdef CONFIG_ACPI_BOOT
-r_extern
-r_struct
-id|acpi_boot_flags
-id|acpi_boot
-suffix:semicolon
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-r_extern
-r_int
-id|acpi_parse_lapic
-(paren
-id|acpi_table_entry_header
-op_star
-id|header
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|acpi_parse_lapic_addr_ovr
-(paren
-id|acpi_table_entry_header
-op_star
-id|header
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|acpi_parse_lapic_nmi
-(paren
-id|acpi_table_entry_header
-op_star
-id|header
-)paren
-suffix:semicolon
-macro_line|#endif /*CONFIG_X86_LOCAL_APIC*/
-macro_line|#ifdef CONFIG_X86_IO_APIC
-r_extern
-r_int
-id|acpi_parse_ioapic
-(paren
-id|acpi_table_entry_header
-op_star
-id|header
-)paren
-suffix:semicolon
-macro_line|#endif /*CONFIG_X86_IO_APIC*/
-macro_line|#endif /*CONFIG_ACPI_BOOT*/
 multiline_comment|/*&n; * Intel MP BIOS table parsing routines:&n; */
 macro_line|#ifndef CONFIG_X86_VISWS_APIC
 multiline_comment|/*&n; * Checksum an MP configuration block.&n; */
@@ -376,7 +302,7 @@ r_return
 id|n
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Have to match translation table entries to main table entries by counter&n; * hence the mpc_record variable .... can&squot;t see a less disgusting way of&n; * doing this ....&n; */
+multiline_comment|/* &n; * Have to match translation table entries to main table entries by counter&n; * hence the mpc_record variable .... can&squot;t see a less disgusting way of&n; * doing this ....&n; */
 DECL|variable|mpc_record
 r_static
 r_int
@@ -1037,9 +963,6 @@ id|str
 l_int|7
 )braket
 suffix:semicolon
-r_int
-id|quad
-suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -1063,7 +986,10 @@ c_cond
 id|clustered_apic_mode
 )paren
 (brace
-id|quad
+id|mp_bus_id_to_node
+(braket
+id|m-&gt;mpc_busid
+)braket
 op_assign
 id|translation_table
 (braket
@@ -1071,40 +997,6 @@ id|mpc_record
 )braket
 op_member_access_from_pointer
 id|trans_quad
-suffix:semicolon
-id|mp_bus_id_to_node
-(braket
-id|m-&gt;mpc_busid
-)braket
-op_assign
-id|quad
-suffix:semicolon
-id|mp_bus_id_to_local
-(braket
-id|m-&gt;mpc_busid
-)braket
-op_assign
-id|translation_table
-(braket
-id|mpc_record
-)braket
-op_member_access_from_pointer
-id|trans_local
-suffix:semicolon
-id|quad_local_to_mp_bus_id
-(braket
-id|quad
-)braket
-(braket
-id|translation_table
-(braket
-id|mpc_record
-)braket
-op_member_access_from_pointer
-id|trans_local
-)braket
-op_assign
-id|m-&gt;mpc_busid
 suffix:semicolon
 id|printk
 c_func
@@ -1115,7 +1007,10 @@ id|m-&gt;mpc_busid
 comma
 id|str
 comma
-id|quad
+id|mp_bus_id_to_node
+(braket
+id|m-&gt;mpc_busid
+)braket
 )paren
 suffix:semicolon
 )brace
@@ -1561,21 +1456,6 @@ op_assign
 id|m
 suffix:semicolon
 multiline_comment|/* stash this for later */
-r_if
-c_cond
-(paren
-id|m-&gt;trans_quad
-op_plus
-l_int|1
-OG
-id|numnodes
-)paren
-id|numnodes
-op_assign
-id|m-&gt;trans_quad
-op_plus
-l_int|1
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read/parse the MPC oem tables&n; */
 DECL|function|smp_read_mpc_oem
@@ -1998,12 +1878,12 @@ comma
 id|mpc-&gt;mpc_lapic
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Save the local APIC address, it might be non-default,&n;&t; * but only if we&squot;re not using the ACPI tables&n;&t; */
+multiline_comment|/* &n;&t; * Save the local APIC address (it might be non-default), but only &n;&t; * if we&squot;re not using the ACPI tables.&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|acpi_found_madt
+id|acpi_mp_config
 )paren
 id|mp_lapic_addr
 op_assign
@@ -2077,7 +1957,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|acpi_found_madt
+id|acpi_mp_config
 )paren
 id|MP_processor_info
 c_func
@@ -2283,6 +2163,22 @@ suffix:semicolon
 )brace
 op_increment
 id|mpc_record
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|clustered_apic_mode
+op_logical_and
+id|nr_ioapics
+OG
+l_int|2
+)paren
+(brace
+multiline_comment|/* don&squot;t initialise IO apics on secondary quads */
+id|nr_ioapics
+op_assign
+l_int|2
 suffix:semicolon
 )brace
 r_if
@@ -2951,41 +2847,6 @@ id|mpf
 op_assign
 id|mpf_found
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_BOOT
-multiline_comment|/*&n;&t; * Check if the MADT exists, and if so, use it to get processor&n;&t; * information (ACPI_MADT_LAPIC).  The MADT supports the concept&n;&t; * of both logical (e.g. HT) and physical processor(s); where the&n;&t; * MPS only supports physical.&n;&t; */
-r_if
-c_cond
-(paren
-id|acpi_boot.madt
-)paren
-(brace
-id|acpi_found_madt
-op_assign
-id|acpi_table_parse
-c_func
-(paren
-id|ACPI_APIC
-comma
-id|acpi_parse_madt
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|acpi_found_madt
-OG
-l_int|0
-)paren
-id|acpi_table_parse_madt
-c_func
-(paren
-id|ACPI_MADT_LAPIC
-comma
-id|acpi_parse_lapic
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /*CONFIG_ACPI_BOOT*/
 id|printk
 c_func
 (paren

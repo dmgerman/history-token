@@ -6,6 +6,7 @@ macro_line|#ifndef _LINUX
 DECL|macro|_LINUX
 mdefine_line|#define _LINUX
 macro_line|#endif
+multiline_comment|/*&n; * YES this is ugly.&n; * But, moving all of ACPI&squot;s private headers to include/acpi isn&squot;t the right&n; * answer either.&n; * Please just ignore it for now.&n; */
 macro_line|#include &quot;../../drivers/acpi/include/acpi.h&quot;
 macro_line|#include &lt;asm/acpi.h&gt;
 multiline_comment|/* --------------------------------------------------------------------------&n;                             Boot-Time Table Parsing&n;   -------------------------------------------------------------------------- */
@@ -902,6 +903,12 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* real size = localities^2 */
 )brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Smart Battery Description Table (SBST) */
 DECL|struct|acpi_table_sbst
@@ -937,7 +944,44 @@ id|packed
 )paren
 suffix:semicolon
 multiline_comment|/* Embedded Controller Boot Resources Table (ECDT) */
-multiline_comment|/* TBD: acpi_generic_address&n;struct acpi_table_ecdt {&n;&t;struct acpi_table_header header;&n;&t;acpi_generic_address&t;ec_control;&n;&t;acpi_generic_address&t;ec_data;&n;&t;u32&t;&t;&t;uid;&n;&t;u8&t;&t;&t;gpe_bit;&n;&t;char&t;&t;&t;*ec_id;&n;} __attribute__ ((packed));&n;*/
+DECL|struct|acpi_table_ecdt
+r_struct
+id|acpi_table_ecdt
+(brace
+DECL|member|header
+r_struct
+id|acpi_table_header
+id|header
+suffix:semicolon
+DECL|member|ec_control
+id|acpi_generic_address
+id|ec_control
+suffix:semicolon
+DECL|member|ec_data
+id|acpi_generic_address
+id|ec_data
+suffix:semicolon
+DECL|member|uid
+id|u32
+id|uid
+suffix:semicolon
+DECL|member|gpe_bit
+id|u8
+id|gpe_bit
+suffix:semicolon
+DECL|member|ec_id
+r_char
+op_star
+id|ec_id
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Table Handlers */
 DECL|enum|acpi_table_id
 r_enum
@@ -1102,12 +1146,12 @@ suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
 multiline_comment|/* --------------------------------------------------------------------------&n;                           PCI Interrupt Routing (PRT)&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_PCI
-DECL|macro|ACPI_PCI_ROUTING_PIC
-mdefine_line|#define ACPI_PCI_ROUTING_PIC&t;0
-DECL|macro|ACPI_PCI_ROUTING_IOAPIC
-mdefine_line|#define ACPI_PCI_ROUTING_IOAPIC 1
-DECL|macro|ACPI_PCI_ROUTING_IOSAPIC
-mdefine_line|#define ACPI_PCI_ROUTING_IOSAPIC 2
+DECL|macro|ACPI_INT_MODEL_PIC
+mdefine_line|#define ACPI_INT_MODEL_PIC&t;0
+DECL|macro|ACPI_INT_MODEL_IOAPIC
+mdefine_line|#define ACPI_INT_MODEL_IOAPIC&t;1
+DECL|macro|ACPI_INT_MODEL_IOSAPIC
+mdefine_line|#define ACPI_INT_MODEL_IOSAPIC&t;2
 DECL|struct|acpi_prt_entry
 r_struct
 id|acpi_prt_entry

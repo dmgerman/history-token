@@ -11,9 +11,7 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,0)
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#endif
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
@@ -4097,8 +4095,6 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-id|V22_COMPAT_MOD_INC_USE_COUNT
-suffix:semicolon
 id|fi
 op_assign
 id|kmalloc
@@ -4120,14 +4116,10 @@ id|fi
 op_eq
 l_int|NULL
 )paren
-(brace
-id|V22_COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -4429,8 +4421,6 @@ c_func
 id|fi
 )paren
 suffix:semicolon
-id|V22_COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4471,7 +4461,10 @@ id|file_operations
 id|file_ops
 op_assign
 (brace
-id|OWNER_THIS_MODULE
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|read
 suffix:colon
 id|raw1394_read
