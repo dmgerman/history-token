@@ -1296,6 +1296,13 @@ r_int
 id|n
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREP_RESIDUAL
+DECL|macro|have_residual_data
+mdefine_line|#define have_residual_data&t;(res &amp;&amp; res-&gt;ResidualLength)
+macro_line|#else
+DECL|macro|have_residual_data
+mdefine_line|#define have_residual_data&t;0
+macro_line|#endif
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif  /* ndef _RESIDUAL_ */
 macro_line|#endif /* __KERNEL__ */

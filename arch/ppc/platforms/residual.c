@@ -2210,9 +2210,8 @@ multiline_comment|/* make sure we have residual data first */
 r_if
 c_cond
 (paren
-id|res-&gt;ResidualLength
-op_eq
-l_int|0
+op_logical_neg
+id|have_residual_data
 )paren
 r_return
 suffix:semicolon
@@ -2994,9 +2993,8 @@ multiline_comment|/* make sure we have residual data first */
 r_if
 c_cond
 (paren
-id|res-&gt;ResidualLength
-op_eq
-l_int|0
+op_logical_neg
+id|have_residual_data
 )paren
 r_return
 suffix:semicolon
@@ -3532,7 +3530,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|res-&gt;ResidualLength
+id|have_residual_data
 )paren
 r_return
 l_int|NULL
@@ -3673,7 +3671,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|res-&gt;ResidualLength
+id|have_residual_data
 )paren
 r_return
 l_int|NULL
@@ -4196,7 +4194,7 @@ r_void
 r_if
 c_cond
 (paren
-id|res-&gt;ResidualLength
+id|have_residual_data
 )paren
 id|create_proc_read_entry
 c_func

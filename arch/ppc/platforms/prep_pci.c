@@ -2951,7 +2951,12 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PREP_RESIDUAL
+r_if
+c_cond
+(paren
+id|have_residual_data
+)paren
+(brace
 id|u32
 id|addr
 comma
@@ -2967,7 +2972,7 @@ id|PnP_TAG_PACKET
 op_star
 id|pkt
 suffix:semicolon
-multiline_comment|/* Use the PReP residual data to determine if an OpenPIC is&n;&t; * present.  If so, get the large vendor packet which will&n;&t; * tell us the base address and length in memory.&n;&t; * If we are successful, ioremap the memory area and set&n;&t; * OpenPIC_Addr (this indicates that the OpenPIC was found).&n;&t; */
+multiline_comment|/* Use the PReP residual data to determine if an OpenPIC is&n;&t;&t; * present.  If so, get the large vendor packet which will&n;&t;&t; * tell us the base address and length in memory.&n;&t;&t; * If we are successful, ioremap the memory area and set&n;&t;&t; * OpenPIC_Addr (this indicates that the OpenPIC was found).&n;&t;&t; */
 id|mpic
 op_assign
 id|residual_find_device
@@ -3147,7 +3152,7 @@ comma
 id|OpenPIC_Addr
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 )brace
 r_static
 r_void
@@ -4884,7 +4889,11 @@ c_func
 l_string|&quot;PReP architecture&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREP_RESIDUAL
+r_if
+c_cond
+(paren
+id|have_residual_data
+)paren
 (brace
 id|PPC_DEVICE
 op_star
@@ -4993,7 +5002,6 @@ l_int|0x80000cfc
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_PREP_RESIDUAL */
 id|ppc_md.pcibios_fixup
 op_assign
 id|prep_pcibios_fixup

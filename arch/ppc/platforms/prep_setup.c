@@ -499,14 +499,11 @@ comma
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREP_RESIDUAL
 multiline_comment|/* print info about SIMMs */
 r_if
 c_cond
 (paren
-id|res-&gt;ResidualLength
-op_ne
-l_int|0
+id|have_residual_data
 )paren
 (brace
 r_int
@@ -601,7 +598,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 r_static
 r_int
@@ -1590,14 +1586,11 @@ suffix:semicolon
 )brace
 id|no_l2
 suffix:colon
-macro_line|#ifdef CONFIG_PREP_RESIDUAL
 multiline_comment|/* print info about SIMMs */
 r_if
 c_cond
 (paren
-id|res-&gt;ResidualLength
-op_ne
-l_int|0
+id|have_residual_data
 )paren
 (brace
 r_int
@@ -1692,7 +1685,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -2030,11 +2022,10 @@ comma
 l_string|&quot;clock&bslash;t&bslash;t: &quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREP_RESIDUAL
 r_if
 c_cond
 (paren
-id|res-&gt;ResidualLength
+id|have_residual_data
 )paren
 id|seq_printf
 c_func
@@ -2058,7 +2049,6 @@ id|res-&gt;VitalProductData.ProcessorHz
 )paren
 suffix:semicolon
 r_else
-macro_line|#endif /* CONFIG_PREP_RESIDUAL */
 id|seq_printf
 c_func
 (paren
@@ -2125,7 +2115,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the needed resource informations from residual data.&n;&t; *&n;&t; */
-macro_line|#ifdef CONFIG_PREP_RESIDUAL
+r_if
+c_cond
+(paren
+id|have_residual_data
+)paren
 id|audiodevice
 op_assign
 id|residual_find_device
@@ -2231,7 +2225,6 @@ id|pkt-&gt;S5_Pack.DMAMask
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * These are the PReP specs&squot; defaults for the cs4231.  We use these&n;&t; * as fallback incase we don&squot;t have residual data.&n;&t; * At least the IBM Thinkpad 850 with IDE DMA Channels at 6 and 7&n;&t; * will use the other values.&n;&t; */
 r_if
 c_cond
@@ -2287,11 +2280,18 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_PREP_RESIDUAL) &amp;&amp; &bslash;&n;&t;(defined(CONFIG_FB_VGA16) || defined(CONFIG_FB_VGA_16_MODULE) || &bslash;&n;&t; defined(CONFIG_FB_VESA))
+macro_line|#if     (defined(CONFIG_FB_VGA16) || defined(CONFIG_FB_VGA_16_MODULE) || &bslash;&n;&t; defined(CONFIG_FB_VESA))
 id|PPC_DEVICE
 op_star
 id|vgadev
+op_assign
+l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|have_residual_data
+)paren
 id|vgadev
 op_assign
 id|residual_find_device
@@ -2479,7 +2479,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* CONFIG_PREP_RESIDUAL */
+macro_line|#endif
 )brace
 r_static
 r_void
@@ -2922,7 +2922,12 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PREP_RESIDUAL
+r_if
+c_cond
+(paren
+id|have_residual_data
+)paren
+(brace
 r_int
 r_int
 id|freq
@@ -2984,8 +2989,8 @@ op_div
 id|divisor
 suffix:semicolon
 )brace
+)brace
 r_else
-macro_line|#endif
 id|todc_calibrate_decr
 c_func
 (paren
@@ -3614,13 +3619,10 @@ op_assign
 l_int|0x48
 suffix:semicolon
 multiline_comment|/* figure out what kind of prep workstation we are */
-macro_line|#ifdef CONFIG_PREP_RESIDUAL
 r_if
 c_cond
 (paren
-id|res-&gt;ResidualLength
-op_ne
-l_int|0
+id|have_residual_data
 )paren
 (brace
 r_if
@@ -3648,9 +3650,8 @@ id|_PREP_Motorola
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* assume motorola if no residual (netboot?) */
-macro_line|#endif
 (brace
+multiline_comment|/* assume motorola if no residual (netboot?) */
 id|_prep_type
 op_assign
 id|_PREP_Motorola
