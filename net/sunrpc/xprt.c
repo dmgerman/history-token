@@ -1156,7 +1156,7 @@ c_func
 id|sock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;TCP doesnt require the rpciod now - other things may&n;&t; *&t;but rpciod handles that not us.&n;&t; */
+multiline_comment|/*&n;&t; *&t;TCP doesn&squot;t require the rpciod now - other things may&n;&t; *&t;but rpciod handles that not us.&n;&t; */
 r_if
 c_cond
 (paren
