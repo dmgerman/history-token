@@ -128,7 +128,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* Store incoming device index. When the packet will&n;&t;   be queued, we cannot refer to skb-&gt;dev anymore.&n;&t; */
+multiline_comment|/*&n;&t; * Store incoming device index. When the packet will&n;&t; * be queued, we cannot refer to skb-&gt;dev anymore.&n;&t; *&n;&t; * BTW, when we send a packet for our own local address on a&n;&t; * non-loopback interface (e.g. ethX), it is being delivered&n;&t; * via the loopback interface (lo) here; skb-&gt;dev = &amp;loopback_dev.&n;&t; * It, however, should be considered as if it is being&n;&t; * arrived via the sending interface (ethX), because of the&n;&t; * nature of scoping architecture. --yoshfuji&n;&t; */
 id|IP6CB
 c_func
 (paren
@@ -137,6 +137,20 @@ id|skb
 op_member_access_from_pointer
 id|iif
 op_assign
+id|skb-&gt;dst
+ques
+c_cond
+(paren
+(paren
+r_struct
+id|rt6_info
+op_star
+)paren
+id|skb-&gt;dst
+)paren
+op_member_access_from_pointer
+id|rt6i_idev-&gt;dev-&gt;ifindex
+suffix:colon
 id|dev-&gt;ifindex
 suffix:semicolon
 r_if
