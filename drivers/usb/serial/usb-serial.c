@@ -3202,7 +3202,6 @@ l_int|0
 multiline_comment|/* check out the endpoints of the other interface*/
 id|iface_desc
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 l_int|0
