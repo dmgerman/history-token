@@ -4136,7 +4136,7 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* We are changing the virtual color of the page(s)&n;&t; * so we must flush the cache to guarentee consistency.&n;&t; */
+multiline_comment|/* We are changing the virtual color of the page(s)&n;&t; * so we must flush the cache to guarantee consistency.&n;&t; */
 id|sun4c_flush_page
 c_func
 (paren

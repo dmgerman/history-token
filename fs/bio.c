@@ -1124,7 +1124,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;bio_get_nr_vecs&t;&t;- return approx number of vecs&n; *&t;@bdev:  I/O target&n; *&n; *&t;Return the approximate number of pages we can send to this target.&n; *&t;There&squot;s no guarentee that you will be able to fit this number of pages&n; *&t;into a bio, it does not account for dynamic restrictions that vary&n; *&t;on offset.&n; */
+multiline_comment|/**&n; *&t;bio_get_nr_vecs&t;&t;- return approx number of vecs&n; *&t;@bdev:  I/O target&n; *&n; *&t;Return the approximate number of pages we can send to this target.&n; *&t;There&squot;s no guarantee that you will be able to fit this number of pages&n; *&t;into a bio, it does not account for dynamic restrictions that vary&n; *&t;on offset.&n; */
 DECL|function|bio_get_nr_vecs
 r_int
 id|bio_get_nr_vecs

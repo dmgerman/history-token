@@ -9084,7 +9084,7 @@ r_int
 id|i
 suffix:semicolon
 macro_line|#if !PCI_DMA_BUS_IS_PHYS
-multiline_comment|/* IOMMU, just map the guilty area again which is guarenteed to&n;&t; * use different addresses.&n;&t; */
+multiline_comment|/* IOMMU, just map the guilty area again which is guaranteed to&n;&t; * use different addresses.&n;&t; */
 id|i
 op_assign
 l_int|0
@@ -9253,7 +9253,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* New SKB is guarenteed to be linear. */
+multiline_comment|/* New SKB is guaranteed to be linear. */
 id|entry
 op_assign
 op_star

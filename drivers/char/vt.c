@@ -9246,7 +9246,7 @@ op_assign
 id|con_buf
 suffix:semicolon
 )brace
-multiline_comment|/* At this point &squot;buf&squot; is guarenteed to be a kernel buffer&n;&t; * and therefore no access to userspace (and therefore sleeping)&n;&t; * will be needed.  The con_buf_sem serializes all tty based&n;&t; * console rendering and vcs write/read operations.  We hold&n;&t; * the console spinlock during the entire write.&n;&t; */
+multiline_comment|/* At this point &squot;buf&squot; is guaranteed to be a kernel buffer&n;&t; * and therefore no access to userspace (and therefore sleeping)&n;&t; * will be needed.  The con_buf_sem serializes all tty based&n;&t; * console rendering and vcs write/read operations.  We hold&n;&t; * the console spinlock during the entire write.&n;&t; */
 id|acquire_console_sem
 c_func
 (paren
