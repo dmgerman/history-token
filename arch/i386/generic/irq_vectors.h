@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * This file should contain #defines for all of the interrupt vector&n; * numbers used by this architecture.&n; *&n; * In addition, there are some standard defines:&n; *&n; *&t;FIRST_EXTERNAL_VECTOR:&n; *&t;&t;The first free place for external interrupts&n; *&n; *&t;SYSCALL_VECTOR:&n; *&t;&t;The IRQ vector a syscall makes the user to kernel transition&n; *&t;&t;under.&n; *&n; *&t;TIMER_IRQ:&n; *&t;&t;The IRQ number the timer interrupt comes in at.&n; *&n; *&t;NR_IRQS:&n; *&t;&t;The total number of interrupt vectors (including all the&n; *&t;&t;architecture specific interrupts) needed.&n; *&n; */
 macro_line|#ifndef _ASM_IRQ_VECTORS_H
 DECL|macro|_ASM_IRQ_VECTORS_H
 mdefine_line|#define _ASM_IRQ_VECTORS_H

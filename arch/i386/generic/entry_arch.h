@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * This file is designed to contain the BUILD_INTERRUPT specifications for&n; * all of the extra named interrupt vectors used by the architecture.&n; * Usually this is the Inter Process Interrupts (IPIs)&n; */
 multiline_comment|/*&n; * The following vectors are part of the Linux architecture, there&n; * is no hardware IRQ pin equivalent for them, they are triggered&n; * through the ICC by us (IPIs)&n; */
 macro_line|#ifdef CONFIG_X86_SMP
 id|BUILD_INTERRUPT

@@ -1,4 +1,4 @@
-multiline_comment|/* Hook for machine specific memory setup.&n; *&n; * This is included late in kernel/setup.c so that it can make use of all of&n; * the static functions. */
+multiline_comment|/**&n; * machine_specific_memory_setup - Hook for machine specific memory setup.&n; *&n; * Description:&n; *&t;This is included late in kernel/setup.c so that it can make&n; *&t;use of all of the static functions.&n; **/
 DECL|function|machine_specific_memory_setup
 r_static
 r_inline
