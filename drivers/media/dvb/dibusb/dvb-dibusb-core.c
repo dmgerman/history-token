@@ -2,31 +2,42 @@ multiline_comment|/*&n; * Driver for mobile USB Budget DVB-T devices based on re
 macro_line|#include &quot;dvb-dibusb.h&quot;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 multiline_comment|/* debug */
-macro_line|#ifdef CONFIG_DVB_DIBCOM_DEBUG
-DECL|variable|debug
+DECL|variable|dvb_dibusb_debug
 r_int
-id|debug
+id|dvb_dibusb_debug
 suffix:semicolon
-id|module_param
+id|module_param_named
 c_func
 (paren
 id|debug
+comma
+id|dvb_dibusb_debug
 comma
 r_int
 comma
 l_int|0644
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DVB_DIBCOM_DEBUG
+DECL|macro|DBSTATUS
+mdefine_line|#define DBSTATUS &quot;&quot;
+macro_line|#else
+DECL|macro|DBSTATUS
+mdefine_line|#define DBSTATUS &quot; (debugging is not enabled)&quot;
+macro_line|#endif
 id|MODULE_PARM_DESC
 c_func
 (paren
 id|debug
 comma
 l_string|&quot;set debugging level (1=info,2=xfer,4=alotmore,8=ts,16=err,32=rc (|-able)).&quot;
+id|DBSTATUS
 )paren
 suffix:semicolon
-macro_line|#endif
+DECL|macro|DBSTATUS
+macro_line|#undef DBSTATUS
 DECL|variable|pid_parse
+r_static
 r_int
 id|pid_parse
 suffix:semicolon
@@ -49,6 +60,7 @@ l_string|&quot;enable pid parsing (filtering) when running at USB2.0&quot;
 )paren
 suffix:semicolon
 DECL|variable|rc_query_interval
+r_static
 r_int
 id|rc_query_interval
 suffix:semicolon
@@ -2042,6 +2054,15 @@ suffix:semicolon
 id|dib-&gt;dibdev
 op_assign
 id|dibdev
+suffix:semicolon
+multiline_comment|/* store parameters to structures */
+id|dib-&gt;rc_query_interval
+op_assign
+id|rc_query_interval
+suffix:semicolon
+id|dib-&gt;pid_parse
+op_assign
+id|pid_parse
 suffix:semicolon
 id|usb_set_intfdata
 c_func

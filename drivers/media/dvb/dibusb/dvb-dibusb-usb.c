@@ -698,6 +698,10 @@ comma
 id|i
 comma
 id|bufsize
+comma
+id|def_pid_parse
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * when reloading the driver w/o replugging the device &n;&t; * a timeout occures, this helps&n;&t; */
 id|usb_clear_halt
@@ -986,10 +990,8 @@ op_or_assign
 id|DIBUSB_STATE_URB_SUBMIT
 suffix:semicolon
 )brace
-id|dib-&gt;pid_parse
-op_assign
-l_int|1
-suffix:semicolon
+multiline_comment|/* dib-&gt;pid_parse here contains the value of the module parameter */
+multiline_comment|/* decide if pid parsing can be deactivated:&n;&t; * is possible (by speed) and wanted (by user)&n;&t; */
 r_switch
 c_cond
 (paren
@@ -1007,10 +1009,10 @@ op_eq
 id|USB_SPEED_HIGH
 op_logical_and
 op_logical_neg
-id|pid_parse
+id|dib-&gt;pid_parse
 )paren
 (brace
-id|dib-&gt;pid_parse
+id|def_pid_parse
 op_assign
 l_int|0
 suffix:semicolon
@@ -1035,6 +1037,11 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* from here on it contains the device and user decision */
+id|dib-&gt;pid_parse
+op_assign
+id|def_pid_parse
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
