@@ -5,6 +5,7 @@ multiline_comment|/*&n; *&t;The following information is in its entirety obtaine
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;net/datalink.h&gt;
 macro_line|#include &lt;linux/ipx.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 DECL|struct|ipx_address
 r_struct
 id|ipx_address
@@ -196,12 +197,12 @@ r_int
 r_char
 id|if_primary
 suffix:semicolon
-DECL|member|if_next
+DECL|member|node
 r_struct
-id|ipx_interface
-op_star
-id|if_next
+id|list_head
+id|node
 suffix:semicolon
+multiline_comment|/* node in ipx_interfaces list */
 )brace
 suffix:semicolon
 DECL|struct|ipx_route
@@ -340,9 +341,18 @@ id|ipx_routes_lock
 suffix:semicolon
 r_extern
 r_struct
+id|list_head
+id|ipx_interfaces
+suffix:semicolon
+r_extern
+r_struct
 id|ipx_interface
 op_star
-id|ipx_interfaces
+id|ipx_interfaces_head
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 r_extern
 id|spinlock_t
