@@ -807,7 +807,7 @@ c_func
 (paren
 id|current
 comma
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 r_int
@@ -1050,7 +1050,7 @@ c_func
 (paren
 id|current
 comma
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 r_int
