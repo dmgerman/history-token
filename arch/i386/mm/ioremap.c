@@ -903,6 +903,11 @@ op_assign
 id|remove_kernel_area
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
+(paren
 id|PAGE_MASK
 op_amp
 (paren
@@ -910,6 +915,7 @@ r_int
 r_int
 )paren
 id|addr
+)paren
 )paren
 suffix:semicolon
 r_if
