@@ -4725,6 +4725,19 @@ comma
 )brace
 comma
 (brace
+dot
+id|vendor
+op_assign
+id|PCI_VENDOR_ID_MICRO_MEMORY
+comma
+dot
+id|device
+op_assign
+id|PCI_DEVICE_ID_MICRO_MEMORY_5425CN
+comma
+)brace
+comma
+(brace
 multiline_comment|/* end: all zeroes */
 )brace
 )brace
