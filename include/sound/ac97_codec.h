@@ -1440,6 +1440,7 @@ r_int
 r_int
 id|pcms_count
 comma
+r_const
 r_struct
 id|ac97_pcm
 op_star
