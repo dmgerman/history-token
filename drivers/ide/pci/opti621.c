@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#include &quot;opti621.h&quot;
 DECL|macro|OPTI621_MAX_PIO
 mdefine_line|#define OPTI621_MAX_PIO 3
 multiline_comment|/* In fact, I do not have any PIO 4 drive&n; * (address: 25 ns, data: 70 ns, recovery: 35 ns),&n; * but OPTi 82C621 is programmable and it can do (minimal values):&n; * on 40MHz PCI bus (pulse 25 ns):&n; *  address: 25 ns, data: 25 ns, recovery: 50 ns;&n; * on 20MHz PCI bus (pulse 50 ns):&n; *  address: 50 ns, data: 50 ns, recovery: 100 ns.&n; */
@@ -36,6 +37,7 @@ mdefine_line|#define STRAP_REG 5&t;/* index of Strap register */
 DECL|macro|MISC_REG
 mdefine_line|#define MISC_REG 6&t;/* index of Miscellaneous register */
 DECL|variable|reg_base
+r_static
 r_int
 id|reg_base
 suffix:semicolon
@@ -54,7 +56,7 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 multiline_comment|/* Store values into drive-&gt;drive_data&n; *&t;second_contr - 0 for primary controller, 1 for secondary&n; *&t;slave_drive - 0 -&gt; pio is for master, 1 -&gt; pio is for slave&n; *&t;pio - PIO mode for selected drive (for other we don&squot;t know)&n; */
@@ -159,6 +161,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|cmpt_clk
+r_static
 r_int
 id|cmpt_clk
 c_func
@@ -191,7 +194,11 @@ r_void
 id|write_reg
 c_func
 (paren
-id|byte
+id|ide_hwif_t
+op_star
+id|hwif
+comma
+id|u8
 id|value
 comma
 r_int
@@ -199,7 +206,9 @@ id|reg
 )paren
 multiline_comment|/* Write value to register reg, base of register&n; * is at reg_base (0x1f0 primary, 0x170 secondary,&n; * if not changed by PCI configuration).&n; * This is from setupvic.exe program.&n; */
 (brace
-id|IN_WORD
+id|hwif
+op_member_access_from_pointer
+id|INW
 c_func
 (paren
 id|reg_base
@@ -207,7 +216,9 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|IN_WORD
+id|hwif
+op_member_access_from_pointer
+id|INW
 c_func
 (paren
 id|reg_base
@@ -215,7 +226,9 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 l_int|3
@@ -225,7 +238,9 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|value
@@ -235,7 +250,9 @@ op_plus
 id|reg
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 l_int|0x83
@@ -248,19 +265,27 @@ suffix:semicolon
 )brace
 DECL|function|read_reg
 r_static
-id|byte
+id|u8
 id|read_reg
 c_func
 (paren
+id|ide_hwif_t
+op_star
+id|hwif
+comma
 r_int
 id|reg
 )paren
 multiline_comment|/* Read value from register reg, base of register&n; * is at reg_base (0x1f0 primary, 0x170 secondary,&n; * if not changed by PCI configuration).&n; * This is from setupvic.exe program.&n; */
 (brace
-id|byte
+id|u8
 id|ret
+op_assign
+l_int|0
 suffix:semicolon
-id|IN_WORD
+id|hwif
+op_member_access_from_pointer
+id|INW
 c_func
 (paren
 id|reg_base
@@ -268,7 +293,9 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|IN_WORD
+id|hwif
+op_member_access_from_pointer
+id|INW
 c_func
 (paren
 id|reg_base
@@ -276,7 +303,9 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 l_int|3
@@ -288,7 +317,9 @@ l_int|2
 suffix:semicolon
 id|ret
 op_assign
-id|IN_BYTE
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
 id|reg_base
@@ -296,7 +327,9 @@ op_plus
 id|reg
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 l_int|0x83
@@ -520,7 +553,7 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 (brace
@@ -529,10 +562,14 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|byte
+id|u8
 id|pio1
+op_assign
+l_int|0
 comma
 id|pio2
+op_assign
+l_int|0
 suffix:semicolon
 id|pio_clocks_t
 id|first
@@ -544,7 +581,7 @@ id|ax
 comma
 id|drdy
 suffix:semicolon
-id|byte
+id|u8
 id|cycle1
 comma
 id|cycle2
@@ -689,7 +726,8 @@ macro_line|#ifdef OPTI621_DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;%s: master: address: %d, data: %d, recovery: %d, drdy: %d [clk]&bslash;n&quot;
+l_string|&quot;%s: master: address: %d, data: %d, &quot;
+l_string|&quot;recovery: %d, drdy: %d [clk]&bslash;n&quot;
 comma
 id|hwif-&gt;name
 comma
@@ -705,7 +743,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: slave:  address: %d, data: %d, recovery: %d, drdy: %d [clk]&bslash;n&quot;
+l_string|&quot;%s: slave:  address: %d, data: %d, &quot;
+l_string|&quot;recovery: %d, drdy: %d [clk]&bslash;n&quot;
 comma
 id|hwif-&gt;name
 comma
@@ -735,7 +774,10 @@ id|hwif-&gt;io_ports
 id|IDE_DATA_OFFSET
 )braket
 suffix:semicolon
-id|OUT_BYTE
+multiline_comment|/* allow Register-B */
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 l_int|0xc0
@@ -745,8 +787,10 @@ op_plus
 id|CNTRL_REG
 )paren
 suffix:semicolon
-multiline_comment|/* allow Register-B */
-id|OUT_BYTE
+multiline_comment|/* hmm, setupvic.exe does this ;-) */
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 l_int|0xff
@@ -756,8 +800,13 @@ op_plus
 l_int|5
 )paren
 suffix:semicolon
-multiline_comment|/* hmm, setupvic.exe does this ;-) */
-id|IN_BYTE
+multiline_comment|/* if reads 0xff, adapter not exist? */
+(paren
+r_void
+)paren
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
 id|reg_base
@@ -765,83 +814,90 @@ op_plus
 id|CNTRL_REG
 )paren
 suffix:semicolon
-multiline_comment|/* if reads 0xff, adapter not exist? */
-id|read_reg
-c_func
-(paren
-id|CNTRL_REG
-)paren
-suffix:semicolon
 multiline_comment|/* if reads 0xc0, no interface exist? */
 id|read_reg
 c_func
 (paren
-id|STRAP_REG
+id|hwif
+comma
+id|CNTRL_REG
 )paren
 suffix:semicolon
 multiline_comment|/* read version, probably 0 */
+id|read_reg
+c_func
+(paren
+id|hwif
+comma
+id|STRAP_REG
+)paren
+suffix:semicolon
 multiline_comment|/* program primary drive */
+multiline_comment|/* select Index-0 for Register-A */
 id|write_reg
 c_func
 (paren
+id|hwif
+comma
 l_int|0
 comma
 id|MISC_REG
 )paren
 suffix:semicolon
-multiline_comment|/* select Index-0 for Register-A */
+multiline_comment|/* set read cycle timings */
 id|write_reg
 c_func
 (paren
+id|hwif
+comma
 id|cycle1
 comma
 id|READ_REG
 )paren
 suffix:semicolon
-multiline_comment|/* set read cycle timings */
+multiline_comment|/* set write cycle timings */
 id|write_reg
 c_func
 (paren
+id|hwif
+comma
 id|cycle1
 comma
 id|WRITE_REG
 )paren
 suffix:semicolon
-multiline_comment|/* set write cycle timings */
 multiline_comment|/* program secondary drive */
+multiline_comment|/* select Index-1 for Register-B */
 id|write_reg
 c_func
 (paren
+id|hwif
+comma
 l_int|1
 comma
 id|MISC_REG
 )paren
 suffix:semicolon
-multiline_comment|/* select Index-1 for Register-B */
-id|write_reg
-c_func
-(paren
-id|cycle2
-comma
-id|READ_REG
-)paren
-suffix:semicolon
 multiline_comment|/* set read cycle timings */
 id|write_reg
 c_func
 (paren
+id|hwif
+comma
 id|cycle2
 comma
-id|WRITE_REG
+id|READ_REG
 )paren
 suffix:semicolon
 multiline_comment|/* set write cycle timings */
 id|write_reg
 c_func
 (paren
-l_int|0x85
+id|hwif
 comma
-id|CNTRL_REG
+id|cycle2
+comma
+id|WRITE_REG
 )paren
 suffix:semicolon
 multiline_comment|/* use Register-A for drive 0 */
@@ -849,13 +905,25 @@ multiline_comment|/* use Register-B for drive 1 */
 id|write_reg
 c_func
 (paren
+id|hwif
+comma
+l_int|0x85
+comma
+id|CNTRL_REG
+)paren
+suffix:semicolon
+multiline_comment|/* set address setup, DRDY timings,   */
+multiline_comment|/*  and read prefetch for both drives */
+id|write_reg
+c_func
+(paren
+id|hwif
+comma
 id|misc
 comma
 id|MISC_REG
 )paren
 suffix:semicolon
-multiline_comment|/* set address setup, DRDY timings,   */
-multiline_comment|/*  and read prefetch for both drives */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -866,11 +934,12 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ide_init_opti621() is called once for each hwif found at boot.&n; */
-DECL|function|ide_init_opti621
+multiline_comment|/*&n; * init_hwif_opti621() is called once for each hwif found at boot.&n; */
+DECL|function|init_hwif_opti621
+r_static
 r_void
 id|__init
-id|ide_init_opti621
+id|init_hwif_opti621
 (paren
 id|ide_hwif_t
 op_star
@@ -904,30 +973,103 @@ op_assign
 op_amp
 id|opti621_tune_drive
 suffix:semicolon
-multiline_comment|/* safety call for Anton A */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
 id|hwif-&gt;dma_base
+)paren
+)paren
+r_return
+suffix:semicolon
+id|hwif-&gt;atapi_dma
 op_assign
+l_int|1
+suffix:semicolon
+id|hwif-&gt;mwdma_mask
+op_assign
+l_int|0x07
+suffix:semicolon
+id|hwif-&gt;swdma_mask
+op_assign
+l_int|0x07
+suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
+r_if
+c_cond
+(paren
+op_logical_neg
+id|noautodma
+)paren
+id|hwif-&gt;autodma
+op_assign
+l_int|1
+suffix:semicolon
+id|hwif-&gt;drives
+(braket
 l_int|0
+)braket
+dot
+id|autodma
+op_assign
+id|hwif-&gt;autodma
+suffix:semicolon
+id|hwif-&gt;drives
+(braket
+l_int|1
+)braket
+dot
+id|autodma
+op_assign
+id|hwif-&gt;autodma
+suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+)brace
+DECL|function|init_dma_opti621
+r_static
+r_void
+id|__init
+id|init_dma_opti621
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+comma
+r_int
+r_int
+id|dmabase
+)paren
+(brace
+id|ide_setup_dma
+c_func
+(paren
+id|hwif
+comma
+id|dmabase
+comma
+l_int|8
+)paren
 suffix:semicolon
 )brace
 r_extern
 r_void
 id|ide_setup_pci_device
+c_func
 (paren
 r_struct
 id|pci_dev
 op_star
-id|dev
 comma
 id|ide_pci_device_t
 op_star
-id|d
 )paren
 suffix:semicolon
-DECL|function|fixup_device_opti621
+DECL|function|init_setup_opti621
+r_static
 r_void
 id|__init
-id|fixup_device_opti621
+id|init_setup_opti621
 (paren
 r_struct
 id|pci_dev
@@ -939,68 +1081,6 @@ op_star
 id|d
 )paren
 (brace
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|IDE_PCI_DEVID_EQ
-c_func
-(paren
-id|d-&gt;devid
-comma
-id|DEVID_OPTI621V
-)paren
-op_logical_and
-op_logical_neg
-(paren
-id|PCI_FUNC
-c_func
-(paren
-id|dev-&gt;devfn
-)paren
-op_amp
-l_int|1
-)paren
-)paren
-macro_line|#else
-r_if
-c_cond
-(paren
-(paren
-id|dev-&gt;device
-op_eq
-id|PCI_DEVICE_ID_OPTI_82C558
-)paren
-op_logical_and
-(paren
-op_logical_neg
-(paren
-id|PCI_FUNC
-c_func
-(paren
-id|dev-&gt;devfn
-)paren
-op_amp
-l_int|1
-)paren
-)paren
-)paren
-macro_line|#endif
-r_return
-suffix:semicolon
-multiline_comment|/* OPTI621 is more than only a IDE controller */
-id|printk
-c_func
-(paren
-l_string|&quot;%s: IDE controller on PCI bus %02x dev %02x&bslash;n&quot;
-comma
-id|d-&gt;name
-comma
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
-)paren
-suffix:semicolon
 id|ide_setup_pci_device
 c_func
 (paren
@@ -1008,6 +1088,89 @@ id|dev
 comma
 id|d
 )paren
+suffix:semicolon
+)brace
+DECL|function|opti621_scan_pcidev
+r_int
+id|__init
+id|opti621_scan_pcidev
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+id|ide_pci_device_t
+op_star
+id|d
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;vendor
+op_ne
+id|PCI_VENDOR_ID_OPTI
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|d
+op_assign
+id|opti621_chipsets
+suffix:semicolon
+id|d
+op_logical_and
+id|d-&gt;vendor
+op_logical_and
+id|d-&gt;device
+suffix:semicolon
+op_increment
+id|d
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|d-&gt;vendor
+op_eq
+id|dev-&gt;vendor
+)paren
+op_logical_and
+(paren
+id|d-&gt;device
+op_eq
+id|dev-&gt;device
+)paren
+)paren
+op_logical_and
+(paren
+id|d-&gt;init_setup
+)paren
+)paren
+(brace
+id|d
+op_member_access_from_pointer
+id|init_setup
+c_func
+(paren
+id|dev
+comma
+id|d
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof
