@@ -21,8 +21,6 @@ DECL|macro|DEBUG_ADDRESSES
 macro_line|#undef DEBUG_ADDRESSES
 DECL|macro|DEBUG_LAST_STEPS
 macro_line|#undef DEBUG_LAST_STEPS
-DECL|macro|DEBUG_SP
-mdefine_line|#define DEBUG_SP(x) &bslash;&n;    {register long sp asm(&quot;30&quot;); srm_printk(&quot;%s (sp=%lx)&bslash;n&quot;, x, sp);}
 r_extern
 r_int
 r_int
@@ -67,6 +65,16 @@ id|ksize
 comma
 r_int
 id|kzsize
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|move_stack
+c_func
+(paren
+r_int
+r_int
+id|new_stack
 )paren
 suffix:semicolon
 DECL|variable|hwrpb
@@ -427,7 +435,6 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;bis %1,%1,$30&bslash;n&bslash;t&quot;
 l_string|&quot;bis %0,%0,$27&bslash;n&bslash;t&quot;
 l_string|&quot;jmp ($27)&quot;
 suffix:colon
@@ -436,13 +443,6 @@ suffix:colon
 l_string|&quot;r&quot;
 (paren
 id|START_ADDR
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|PAGE_SIZE
-op_plus
-id|INIT_STACK
 )paren
 )paren
 suffix:semicolon
@@ -500,8 +500,9 @@ mdefine_line|#define K_KERNEL_IMAGE_END&t;(START_ADDR + KERNEL_SIZE)
 multiline_comment|/* Define to where we may have to decompress the kernel image, before&n;   we move it to the final position, in case of overlap. This will be&n;   above the final position of the kernel.&n;&n;   Regardless of overlap, we move the INITRD image to the end of this&n;   copy area, because there needs to be a buffer area after the kernel&n;   for &quot;bootmem&quot; anyway.&n;*/
 DECL|macro|K_COPY_IMAGE_START
 mdefine_line|#define K_COPY_IMAGE_START&t;NEXT_PAGE(K_KERNEL_IMAGE_END)
+multiline_comment|/* Reserve one page below INITRD for the new stack. */
 DECL|macro|K_INITRD_START
-mdefine_line|#define K_INITRD_START&t;&t;NEXT_PAGE(K_COPY_IMAGE_START + KERNEL_SIZE)
+mdefine_line|#define K_INITRD_START &bslash;&n;    NEXT_PAGE(K_COPY_IMAGE_START + KERNEL_SIZE + PAGE_SIZE)
 DECL|macro|K_COPY_IMAGE_END
 mdefine_line|#define K_COPY_IMAGE_END &bslash;&n;    (K_INITRD_START + REAL_INITRD_SIZE + MALLOC_AREA_SIZE)
 DECL|macro|K_COPY_IMAGE_SIZE
@@ -936,6 +937,15 @@ id|KERNEL_SIZE
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t;&t; * Move the stack to a safe place to ensure it won&squot;t be&n;&t;&t; * overwritten by kernel image.&n;&t;&t; */
+id|move_stack
+c_func
+(paren
+id|initrd_image_start
+op_minus
+id|PAGE_SIZE
+)paren
+suffix:semicolon
 id|memcpy
 c_func
 (paren
