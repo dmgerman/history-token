@@ -2348,7 +2348,7 @@ c_func
 l_string|&quot;Starting monitor auto detection...&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#if DEBUG &amp;&amp; defined(CONFIG_FB_RADEON_I2C)
 (brace
 id|u8
 op_star
