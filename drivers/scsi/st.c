@@ -2096,7 +2096,7 @@ l_int|0
 comma
 id|SCSI_DATA_NONE
 comma
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 comma
 id|MAX_RETRIES
 comma
@@ -2428,7 +2428,7 @@ id|transfer
 comma
 id|SCSI_DATA_WRITE
 comma
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 comma
 id|MAX_WRITE_RETRIES
 comma
@@ -3931,7 +3931,7 @@ l_int|6
 comma
 id|SCSI_DATA_READ
 comma
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 comma
 id|MAX_READY_RETRIES
 comma
@@ -4130,7 +4130,7 @@ l_int|12
 comma
 id|SCSI_DATA_READ
 comma
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 comma
 id|MAX_READY_RETRIES
 comma
@@ -5368,7 +5368,7 @@ l_int|0
 comma
 id|SCSI_DATA_NONE
 comma
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 comma
 id|MAX_WRITE_RETRIES
 comma
@@ -7241,7 +7241,7 @@ id|transfer
 comma
 id|SCSI_DATA_WRITE
 comma
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 comma
 id|MAX_WRITE_RETRIES
 comma
@@ -8068,7 +8068,7 @@ id|bytes
 comma
 id|SCSI_DATA_READ
 comma
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 comma
 id|MAX_RETRIES
 comma
@@ -10307,7 +10307,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 op_assign
 id|value
 op_star
@@ -10874,7 +10874,7 @@ l_int|4
 comma
 id|SCSI_DATA_READ
 comma
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 comma
 l_int|0
 comma
@@ -11072,7 +11072,7 @@ ques
 c_cond
 id|STp-&gt;long_timeout
 suffix:colon
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 )paren
 comma
 l_int|0
@@ -11614,7 +11614,7 @@ suffix:semicolon
 multiline_comment|/* Don&squot;t wait for completion */
 id|timeout
 op_assign
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 suffix:semicolon
 )brace
 r_else
@@ -12738,7 +12738,7 @@ id|arg
 suffix:semicolon
 id|timeout
 op_assign
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 suffix:semicolon
 id|DEBC
 c_func
@@ -12858,7 +12858,7 @@ suffix:semicolon
 multiline_comment|/* Don&squot;t wait for completion */
 id|timeout
 op_assign
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 suffix:semicolon
 )brace
 id|DEBC
@@ -12932,7 +12932,7 @@ suffix:semicolon
 multiline_comment|/* Don&squot;t wait for completion */
 id|timeout
 op_assign
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 suffix:semicolon
 )brace
 id|cmd
@@ -13101,7 +13101,7 @@ suffix:semicolon
 multiline_comment|/* Don&squot;t wait for completion */
 id|timeout
 op_assign
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 suffix:semicolon
 )brace
 r_else
@@ -13463,7 +13463,7 @@ id|ltmp
 suffix:semicolon
 id|timeout
 op_assign
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 suffix:semicolon
 id|DEBC
 c_func
@@ -14530,7 +14530,7 @@ l_int|20
 comma
 id|SCSI_DATA_READ
 comma
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 comma
 id|MAX_READY_RETRIES
 comma
@@ -15210,7 +15210,7 @@ suffix:semicolon
 multiline_comment|/* Don&squot;t wait for completion */
 id|timeout
 op_assign
-id|STp-&gt;timeout
+id|STp-&gt;device-&gt;timeout
 suffix:semicolon
 )brace
 id|SRpnt
@@ -20096,7 +20096,7 @@ id|tpnt-&gt;nbr_partitions
 op_assign
 l_int|0
 suffix:semicolon
-id|tpnt-&gt;timeout
+id|tpnt-&gt;device-&gt;timeout
 op_assign
 id|ST_TIMEOUT
 suffix:semicolon
