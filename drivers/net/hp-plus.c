@@ -929,7 +929,9 @@ c_func
 (paren
 id|HP_START_PG
 op_plus
-id|TX_2X_PAGES
+id|TX_PAGES
+op_div
+l_int|2
 )paren
 op_or
 (paren
@@ -987,7 +989,9 @@ id|ei_status.rx_start_page
 op_assign
 id|HP_START_PG
 op_plus
-id|TX_2X_PAGES
+id|TX_PAGES
+op_div
+l_int|2
 suffix:semicolon
 id|ei_status.stop_page
 op_assign
@@ -1043,7 +1047,9 @@ id|ei_status.rmem_start
 op_assign
 id|dev-&gt;mem_start
 op_plus
-id|TX_2X_PAGES
+id|TX_PAGES
+op_div
+l_int|2
 op_star
 l_int|256
 suffix:semicolon
@@ -1238,7 +1244,9 @@ c_func
 (paren
 id|HP_START_PG
 op_plus
-id|TX_2X_PAGES
+id|TX_PAGES
+op_div
+l_int|2
 )paren
 op_or
 (paren
