@@ -163,6 +163,7 @@ l_string|&quot;TV_REMOTE&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_DEBUG
 DECL|variable|task_state
 r_static
 r_const
@@ -193,6 +194,7 @@ l_string|&quot;IRDA_TASK_CHILD_DONE&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#endif&t;/* CONFIG_IRDA_DEBUG */
 r_static
 r_void
 id|irda_task_timer_expired

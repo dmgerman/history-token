@@ -47,6 +47,7 @@ l_string|&quot;LSAP_SETUP_PEND&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_DEBUG
 DECL|variable|irlmp_event
 r_static
 r_const
@@ -98,6 +99,7 @@ l_string|&quot;LM_LAP_IDLE_TIMEOUT&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#endif&t;/* CONFIG_IRDA_DEBUG */
 multiline_comment|/* LAP Connection control proto declarations */
 r_static
 r_void

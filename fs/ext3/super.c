@@ -1676,6 +1676,8 @@ r_if
 c_cond
 (paren
 id|sbi-&gt;journal_bdev
+op_logical_and
+id|sbi-&gt;journal_bdev
 op_ne
 id|sb-&gt;s_bdev
 )paren

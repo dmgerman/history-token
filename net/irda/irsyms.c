@@ -811,7 +811,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|irda_cleanup
-r_static
 r_void
 id|__exit
 id|irda_cleanup

@@ -2123,7 +2123,7 @@ id|cpu_to_le16
 id|index
 )paren
 suffix:semicolon
-id|dr-&gt;wlength
+id|dr-&gt;wLength
 op_assign
 id|cpu_to_le16
 (paren
@@ -2890,20 +2890,20 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* fill the control message */
-id|bp-&gt;dr-&gt;requesttype
+id|bp-&gt;dr-&gt;bRequestType
 op_assign
 id|AUT_RREQ
 suffix:semicolon
-id|bp-&gt;dr-&gt;request
+id|bp-&gt;dr-&gt;bRequest
 op_assign
 id|AUV_RBLOCK
 suffix:semicolon
-id|bp-&gt;dr-&gt;length
+id|bp-&gt;dr-&gt;wLength
 op_assign
-id|bp-&gt;dr-&gt;value
+id|bp-&gt;dr-&gt;wValue
 suffix:semicolon
 multiline_comment|/* temporary stored */
-id|bp-&gt;dr-&gt;value
+id|bp-&gt;dr-&gt;wValue
 op_assign
 id|cpu_to_le16
 (paren
@@ -2936,7 +2936,7 @@ id|bp-&gt;bufp
 comma
 id|le16_to_cpu
 (paren
-id|bp-&gt;dr-&gt;length
+id|bp-&gt;dr-&gt;wLength
 )paren
 comma
 (paren
@@ -3121,21 +3121,21 @@ id|bp-&gt;retries
 )paren
 suffix:semicolon
 multiline_comment|/* send a long dummy control-write-message to allow device firmware to react */
-id|bp-&gt;dr-&gt;requesttype
+id|bp-&gt;dr-&gt;bRequestType
 op_assign
 id|AUT_WREQ
 suffix:semicolon
-id|bp-&gt;dr-&gt;request
+id|bp-&gt;dr-&gt;bRequest
 op_assign
 id|AUV_DUMMY
 suffix:semicolon
-id|bp-&gt;dr-&gt;value
+id|bp-&gt;dr-&gt;wValue
 op_assign
-id|bp-&gt;dr-&gt;length
+id|bp-&gt;dr-&gt;wLength
 suffix:semicolon
 multiline_comment|/* temporary storage */
-singleline_comment|// bp-&gt;dr-&gt;index    channel ID remains
-id|bp-&gt;dr-&gt;length
+singleline_comment|// bp-&gt;dr-&gt;wIndex    channel ID remains
+id|bp-&gt;dr-&gt;wLength
 op_assign
 id|cpu_to_le16
 (paren
@@ -3555,22 +3555,22 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* fill the control message */
-id|bp-&gt;dr-&gt;requesttype
+id|bp-&gt;dr-&gt;bRequestType
 op_assign
 id|AUT_RREQ
 suffix:semicolon
-id|bp-&gt;dr-&gt;request
+id|bp-&gt;dr-&gt;bRequest
 op_assign
 id|AUV_RBLOCK
 suffix:semicolon
-id|bp-&gt;dr-&gt;value
+id|bp-&gt;dr-&gt;wValue
 op_assign
 id|cpu_to_le16
 (paren
 l_int|0
 )paren
 suffix:semicolon
-id|bp-&gt;dr-&gt;index
+id|bp-&gt;dr-&gt;wIndex
 op_assign
 id|cpu_to_le16
 (paren
@@ -3581,7 +3581,7 @@ op_or
 id|AUH_UNSPLIT
 )paren
 suffix:semicolon
-id|bp-&gt;dr-&gt;length
+id|bp-&gt;dr-&gt;wLength
 op_assign
 id|cpu_to_le16
 (paren
@@ -6363,22 +6363,22 @@ id|len
 op_plus
 id|AUH_SIZE
 suffix:semicolon
-id|bp-&gt;dr-&gt;requesttype
+id|bp-&gt;dr-&gt;bRequestType
 op_assign
 id|AUT_WREQ
 suffix:semicolon
-id|bp-&gt;dr-&gt;request
+id|bp-&gt;dr-&gt;bRequest
 op_assign
 id|AUV_WBLOCK
 suffix:semicolon
-id|bp-&gt;dr-&gt;value
+id|bp-&gt;dr-&gt;wValue
 op_assign
 id|cpu_to_le16
 (paren
 l_int|0
 )paren
 suffix:semicolon
-id|bp-&gt;dr-&gt;index
+id|bp-&gt;dr-&gt;wIndex
 op_assign
 id|cpu_to_le16
 (paren
@@ -6389,7 +6389,7 @@ op_or
 id|AUH_UNSPLIT
 )paren
 suffix:semicolon
-id|bp-&gt;dr-&gt;length
+id|bp-&gt;dr-&gt;wLength
 op_assign
 id|cpu_to_le16
 (paren

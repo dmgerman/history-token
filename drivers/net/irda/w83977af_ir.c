@@ -590,7 +590,8 @@ id|w83977af_ir
 op_star
 id|self
 suffix:semicolon
-r_int
+r_void
+op_star
 id|ret
 suffix:semicolon
 r_int
@@ -707,20 +708,21 @@ suffix:semicolon
 multiline_comment|/* Lock the port that we need */
 id|ret
 op_assign
-id|check_region
+id|request_region
 c_func
 (paren
 id|self-&gt;io.fir_base
 comma
 id|self-&gt;io.fir_ext
+comma
+id|driver_name
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ret
-OL
-l_int|0
 )paren
 (brace
 id|IRDA_DEBUG
@@ -740,16 +742,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|self-&gt;io.fir_base
-comma
-id|self-&gt;io.fir_ext
-comma
-id|driver_name
-)paren
-suffix:semicolon
 multiline_comment|/* Initialize QoS for this device */
 id|irda_init_max_qos_capabilies
 c_func

@@ -365,6 +365,7 @@ id|irlap_info
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_DEBUG
 DECL|variable|irlap_event
 r_static
 r_const
@@ -453,6 +454,7 @@ l_string|&quot;MEDIA_BUSY_TIMER_EXPIRED&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#endif&t;/* CONFIG_IRDA_DEBUG */
 DECL|variable|irlap_state
 r_const
 r_char
@@ -1082,9 +1084,6 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|ASSERT
 c_func
 (paren
@@ -1564,6 +1563,10 @@ macro_line|#ifdef CONFIG_IRDA_ULTRA
 r_case
 id|SEND_UI_FRAME
 suffix:colon
+(brace
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/* Only allowed to repeat an operation twice */
 r_for
 c_loop
@@ -1640,6 +1643,7 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+)brace
 r_case
 id|RECV_UI_FRAME
 suffix:colon

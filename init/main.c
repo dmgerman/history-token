@@ -1041,12 +1041,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|init_idle
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* This will also wait for all other CPUs */
 id|cpu_idle
 c_func
 (paren
@@ -1350,6 +1344,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Finally, we wait for all other CPU&squot;s, and initialize this&n;&t; * thread that will become the idle thread for the boot CPU.&n;&t; * After this, the scheduler is fully initialized, and we can&n;&t; * start creating and running new threads.&n;&t; */
+id|init_idle
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Do the rest non-__init&squot;ed, we&squot;re now alive */
 id|rest_init
 c_func
 (paren

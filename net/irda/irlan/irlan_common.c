@@ -939,6 +939,18 @@ op_amp
 id|self-&gt;watchdog_timer
 )paren
 suffix:semicolon
+multiline_comment|/* If you want to pass the skb to *both* state machines, you will&n;&t; * need to skb_clone() it, so that you don&squot;t free it twice.&n;&t; * As the state machines don&squot;t need it, git rid of it here...&n;&t; * Jean II */
+r_if
+c_cond
+(paren
+id|skb
+)paren
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|irlan_do_provider_event
 c_func
 (paren
@@ -946,7 +958,7 @@ id|self
 comma
 id|IRLAN_DATA_CONNECT_INDICATION
 comma
-id|skb
+l_int|NULL
 )paren
 suffix:semicolon
 id|irlan_do_client_event
@@ -956,7 +968,7 @@ id|self
 comma
 id|IRLAN_DATA_CONNECT_INDICATION
 comma
-id|skb
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1363,6 +1375,18 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* If you want to pass the skb to *both* state machines, you will&n;&t; * need to skb_clone() it, so that you don&squot;t free it twice.&n;&t; * As the state machines don&squot;t need it, git rid of it here...&n;&t; * Jean II */
+r_if
+c_cond
+(paren
+id|userdata
+)paren
+id|dev_kfree_skb
+c_func
+(paren
+id|userdata
+)paren
+suffix:semicolon
 id|irlan_do_client_event
 c_func
 (paren

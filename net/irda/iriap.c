@@ -13,6 +13,7 @@ macro_line|#include &lt;net/irda/irlmp.h&gt;
 macro_line|#include &lt;net/irda/irias_object.h&gt;
 macro_line|#include &lt;net/irda/iriap_event.h&gt;
 macro_line|#include &lt;net/irda/iriap.h&gt;
+macro_line|#ifdef CONFIG_IRDA_DEBUG
 multiline_comment|/* FIXME: This one should go in irlmp.c */
 DECL|variable|ias_charset_types
 r_static
@@ -47,6 +48,7 @@ comma
 l_string|&quot;CS_UNICODE&quot;
 )brace
 suffix:semicolon
+macro_line|#endif&t;/* CONFIG_IRDA_DEBUG */
 DECL|variable|iriap
 r_static
 id|hashbin_t

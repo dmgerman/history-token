@@ -4713,9 +4713,11 @@ op_star
 id|dev
 )paren
 (brace
+macro_line|#ifdef RAY_IMMEDIATE_INIT
 r_int
 id|i
 suffix:semicolon
+macro_line|#endif&t;/* RAY_IMMEDIATE_INIT */
 id|ray_dev_t
 op_star
 id|local
@@ -4762,6 +4764,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef RAY_IMMEDIATE_INIT
 multiline_comment|/* Download startup parameters */
 r_if
 c_cond
@@ -4794,6 +4797,19 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#else&t;/* RAY_IMMEDIATE_INIT */
+multiline_comment|/* Postpone the card init so that we can still configure the card,&n;     * for example using the Wireless Extensions. The init will happen&n;     * in ray_open() - Jean II */
+id|DEBUG
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;ray_dev_init: postponing card init to ray_open() ; Status = %d&bslash;n&quot;
+comma
+id|local-&gt;card_status
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* RAY_IMMEDIATE_INIT */
 multiline_comment|/* copy mac and broadcast addresses to linux device */
 id|memcpy
 c_func
@@ -6108,6 +6124,55 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
+multiline_comment|/* Set frequency/channel */
+r_case
+id|SIOCSIWFREQ
+suffix:colon
+multiline_comment|/* Reject if card is already initialised */
+r_if
+c_cond
+(paren
+id|local-&gt;card_status
+op_ne
+id|CARD_AWAITING_PARAM
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Setting by channel number */
+r_if
+c_cond
+(paren
+(paren
+id|wrq-&gt;u.freq.m
+OG
+id|USA_HOP_MOD
+)paren
+op_logical_or
+(paren
+id|wrq-&gt;u.freq.e
+OG
+l_int|0
+)paren
+)paren
+id|err
+op_assign
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_else
+id|local-&gt;sparm.b5.a_hop_pattern
+op_assign
+id|wrq-&gt;u.freq.m
+suffix:semicolon
+r_break
+suffix:semicolon
 multiline_comment|/* Get current network name (ESSID) */
 r_case
 id|SIOCGIWESSID
@@ -6173,6 +6238,110 @@ id|essid
 )paren
 )paren
 suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+multiline_comment|/* Set desired network name (ESSID) */
+r_case
+id|SIOCSIWESSID
+suffix:colon
+multiline_comment|/* Reject if card is already initialised */
+r_if
+c_cond
+(paren
+id|local-&gt;card_status
+op_ne
+id|CARD_AWAITING_PARAM
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|wrq-&gt;u.data.pointer
+)paren
+(brace
+r_char
+id|card_essid
+(braket
+id|IW_ESSID_MAX_SIZE
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* Check if we asked for `any&squot; */
+r_if
+c_cond
+(paren
+id|wrq-&gt;u.data.flags
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* Corey : can you do that ? */
+id|err
+op_assign
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Check the size of the string */
+r_if
+c_cond
+(paren
+id|wrq-&gt;u.data.length
+OG
+id|IW_ESSID_MAX_SIZE
+op_plus
+l_int|1
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|E2BIG
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|copy_from_user
+c_func
+(paren
+id|card_essid
+comma
+id|wrq-&gt;u.data.pointer
+comma
+id|wrq-&gt;u.data.length
+)paren
+suffix:semicolon
+id|card_essid
+(braket
+id|IW_ESSID_MAX_SIZE
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+multiline_comment|/* Set the ESSID in the card */
+id|memcpy
+c_func
+(paren
+id|local-&gt;sparm.b5.a_current_ess_id
+comma
+id|card_essid
+comma
+id|IW_ESSID_MAX_SIZE
+)paren
+suffix:semicolon
+)brace
 )brace
 r_break
 suffix:semicolon
@@ -6325,6 +6494,98 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+multiline_comment|/* Set the desired RTS threshold */
+r_case
+id|SIOCSIWRTS
+suffix:colon
+(brace
+r_int
+id|rthr
+op_assign
+id|wrq-&gt;u.rts.value
+suffix:semicolon
+multiline_comment|/* Reject if card is already initialised */
+r_if
+c_cond
+(paren
+id|local-&gt;card_status
+op_ne
+id|CARD_AWAITING_PARAM
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* if(wrq-&gt;u.rts.fixed == 0) we should complain */
+macro_line|#if WIRELESS_EXT &gt; 8
+r_if
+c_cond
+(paren
+id|wrq-&gt;u.rts.disabled
+)paren
+(brace
+id|rthr
+op_assign
+l_int|32767
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif /* WIRELESS_EXT &gt; 8 */
+r_if
+c_cond
+(paren
+(paren
+id|rthr
+OL
+l_int|0
+)paren
+op_logical_or
+(paren
+id|rthr
+OG
+l_int|2347
+)paren
+)paren
+multiline_comment|/* What&squot;s the max packet size ??? */
+(brace
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|local-&gt;sparm.b5.a_rts_threshold
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+id|rthr
+op_rshift
+l_int|8
+)paren
+op_amp
+l_int|0xFF
+suffix:semicolon
+id|local-&gt;sparm.b5.a_rts_threshold
+(braket
+l_int|1
+)braket
+op_assign
+id|rthr
+op_amp
+l_int|0xFF
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
 multiline_comment|/* Get the current fragmentation threshold */
 r_case
 id|SIOCGIWFRAG
@@ -6361,6 +6622,98 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+multiline_comment|/* Set the desired fragmentation threshold */
+r_case
+id|SIOCSIWFRAG
+suffix:colon
+(brace
+r_int
+id|fthr
+op_assign
+id|wrq-&gt;u.frag.value
+suffix:semicolon
+multiline_comment|/* Reject if card is already initialised */
+r_if
+c_cond
+(paren
+id|local-&gt;card_status
+op_ne
+id|CARD_AWAITING_PARAM
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* if(wrq-&gt;u.frag.fixed == 0) should complain */
+macro_line|#if WIRELESS_EXT &gt; 8
+r_if
+c_cond
+(paren
+id|wrq-&gt;u.frag.disabled
+)paren
+(brace
+id|fthr
+op_assign
+l_int|32767
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif /* WIRELESS_EXT &gt; 8 */
+r_if
+c_cond
+(paren
+(paren
+id|fthr
+OL
+l_int|256
+)paren
+op_logical_or
+(paren
+id|fthr
+OG
+l_int|2347
+)paren
+)paren
+multiline_comment|/* To check out ! */
+(brace
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|local-&gt;sparm.b5.a_frag_threshold
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+id|fthr
+op_rshift
+l_int|8
+)paren
+op_amp
+l_int|0xFF
+suffix:semicolon
+id|local-&gt;sparm.b5.a_frag_threshold
+(braket
+l_int|1
+)braket
+op_assign
+id|fthr
+op_amp
+l_int|0xFF
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
 macro_line|#endif&t;/* WIRELESS_EXT &gt; 7 */
 macro_line|#if WIRELESS_EXT &gt; 8
 multiline_comment|/* Get the current mode of operation */
@@ -6383,6 +6736,67 @@ id|wrq-&gt;u.mode
 op_assign
 id|IW_MODE_ADHOC
 suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* Set the current mode of operation */
+r_case
+id|SIOCSIWMODE
+suffix:colon
+(brace
+r_char
+id|card_mode
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Reject if card is already initialised */
+r_if
+c_cond
+(paren
+id|local-&gt;card_status
+op_ne
+id|CARD_AWAITING_PARAM
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_switch
+c_cond
+(paren
+id|wrq-&gt;u.mode
+)paren
+(brace
+r_case
+id|IW_MODE_ADHOC
+suffix:colon
+id|card_mode
+op_assign
+l_int|0
+suffix:semicolon
+singleline_comment|// Fall through
+r_case
+id|IW_MODE_INFRA
+suffix:colon
+id|local-&gt;sparm.b5.a_network_type
+op_assign
+id|card_mode
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+)brace
 r_break
 suffix:semicolon
 macro_line|#endif /* WIRELESS_EXT &gt; 8 */
@@ -7369,6 +7783,59 @@ suffix:semicolon
 id|link-&gt;open
 op_increment
 suffix:semicolon
+multiline_comment|/* If the card is not started, time to start it ! - Jean II */
+r_if
+c_cond
+(paren
+id|local-&gt;card_status
+op_eq
+id|CARD_AWAITING_PARAM
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|DEBUG
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;ray_open: doing init now !&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Download startup parameters */
+r_if
+c_cond
+(paren
+(paren
+id|i
+op_assign
+id|dl_startup_params
+c_func
+(paren
+id|dev
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ray_dev_init dl_startup_params failed - &quot;
+l_string|&quot;returns 0x%x&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -7489,6 +7956,7 @@ op_div
 l_int|20
 )paren
 suffix:semicolon
+multiline_comment|/* In here, we should stop the hardware (stop card from beeing active)&n;     * and set local-&gt;card_status to CARD_AWAITING_PARAM, so that while the&n;     * card is closed we can chage its configuration.&n;     * Probably also need a COR reset to get sane state - Jean II */
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return

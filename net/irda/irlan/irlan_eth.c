@@ -80,10 +80,8 @@ id|dev-&gt;set_multicast_list
 op_assign
 id|irlan_eth_set_multicast_list
 suffix:semicolon
-id|dev-&gt;features
-op_or_assign
-id|NETIF_F_DYNALLOC
-suffix:semicolon
+multiline_comment|/* NETIF_F_DYNALLOC feature was set by irlan_eth_init() and would&n;&t; * cause the unregister_netdev() to do asynch completion _and_&n;&t; * kfree self-&gt;dev afterwards. Which is really bad because the&n;&t; * netdevice was not allocated separately but is embedded in&n;&t; * our control block and therefore gets freed with *self.&n;&t; * The only reason why this would have been enabled is to hide&n;&t; * some netdev refcount issues. If unregister_netdev() blocks&n;&t; * forever, tell us about it... */
+singleline_comment|//dev-&gt;features          |= NETIF_F_DYNALLOC;
 id|ether_setup
 c_func
 (paren

@@ -67,6 +67,7 @@ op_star
 id|self
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_DEBUG
 DECL|variable|lap_reasons
 r_static
 r_char
@@ -94,6 +95,7 @@ l_string|&quot;ERROR, NOT USED&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#endif&t;/* CONFIG_IRDA_DEBUG */
 macro_line|#ifdef CONFIG_PROC_FS
 r_int
 id|irlap_proc_read

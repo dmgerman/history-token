@@ -494,7 +494,8 @@ id|irport_cb
 op_star
 id|self
 suffix:semicolon
-r_int
+r_void
+op_star
 id|ret
 suffix:semicolon
 r_int
@@ -600,20 +601,21 @@ suffix:semicolon
 multiline_comment|/* Lock the port that we need */
 id|ret
 op_assign
-id|check_region
+id|request_region
 c_func
 (paren
 id|self-&gt;io.sir_base
 comma
 id|self-&gt;io.sir_ext
+comma
+id|driver_name
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ret
-OL
-l_int|0
 )paren
 (brace
 id|IRDA_DEBUG
@@ -631,16 +633,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|self-&gt;io.sir_base
-comma
-id|self-&gt;io.sir_ext
-comma
-id|driver_name
-)paren
-suffix:semicolon
 multiline_comment|/* Initialize QoS for this device */
 id|irda_init_max_qos_capabilies
 c_func

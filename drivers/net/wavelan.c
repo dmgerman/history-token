@@ -16127,6 +16127,10 @@ id|dev-&gt;irq
 op_assign
 id|irq
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -16139,6 +16143,10 @@ id|ha_t
 comma
 l_string|&quot;wavelan&quot;
 )paren
+)paren
+r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 id|dev-&gt;mem_start
 op_assign
