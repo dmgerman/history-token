@@ -9201,13 +9201,6 @@ c_func
 id|pcmcia_get_status
 )paren
 suffix:semicolon
-DECL|variable|pcmcia_get_tuple_data
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pcmcia_get_tuple_data
-)paren
-suffix:semicolon
 DECL|variable|pcmcia_insert_card
 id|EXPORT_SYMBOL
 c_func

@@ -1639,6 +1639,7 @@ op_star
 id|cis
 )paren
 suffix:semicolon
+multiline_comment|/* don&squot;t use outside of PCMCIA core yet */
 r_int
 id|pccard_get_next_tuple
 c_func
@@ -1669,6 +1670,20 @@ comma
 r_int
 r_int
 id|function
+comma
+id|tuple_t
+op_star
+id|tuple
+)paren
+suffix:semicolon
+r_int
+id|pccard_get_tuple_data
+c_func
+(paren
+r_struct
+id|pcmcia_socket
+op_star
+id|s
 comma
 id|tuple_t
 op_star

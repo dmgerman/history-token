@@ -3940,10 +3940,10 @@ id|buf.tuple_parse.data
 suffix:semicolon
 id|ret
 op_assign
-id|pcmcia_get_tuple_data
+id|pccard_get_tuple_data
 c_func
 (paren
-id|s-&gt;handle
+id|s-&gt;parent
 comma
 op_amp
 id|buf.tuple
