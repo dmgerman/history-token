@@ -30,6 +30,12 @@ DECL|variable|is_unsafe_smbus
 r_int
 id|is_unsafe_smbus
 suffix:semicolon
+DECL|variable|es7000_plat
+r_int
+id|es7000_plat
+op_assign
+l_int|0
+suffix:semicolon
 DECL|struct|dmi_header
 r_struct
 id|dmi_header

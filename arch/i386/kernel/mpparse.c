@@ -4619,6 +4619,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|es7000_plat
+)paren
+(brace
+r_if
+c_cond
+(paren
 op_logical_neg
 id|ioapic
 op_logical_and
@@ -4632,6 +4638,7 @@ id|irq
 op_add_assign
 l_int|16
 suffix:semicolon
+)brace
 multiline_comment|/* &n;&t;&t; * Avoid pin reprogramming.  PRTs typically include entries  &n;&t;&t; * with redundant pin-&gt;irq mappings (but unique PCI devices);&n;&t;&t; * we only only program the IOAPIC on the first.&n;&t;&t; */
 id|bit
 op_assign

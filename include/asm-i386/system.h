@@ -781,6 +781,10 @@ r_extern
 r_int
 id|is_sony_vaio_laptop
 suffix:semicolon
+r_extern
+r_int
+id|es7000_plat
+suffix:semicolon
 DECL|macro|BROKEN_ACPI_Sx
 mdefine_line|#define BROKEN_ACPI_Sx&t;&t;0x0001
 DECL|macro|BROKEN_INIT_AFTER_S1
