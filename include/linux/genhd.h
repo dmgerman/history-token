@@ -1131,7 +1131,7 @@ r_void
 op_star
 )paren
 comma
-r_void
+r_int
 (paren
 op_star
 id|lock

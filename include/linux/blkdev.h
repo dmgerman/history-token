@@ -996,7 +996,7 @@ id|bdev
 )paren
 (brace
 r_return
-id|bdev-&gt;bd_queue
+id|bdev-&gt;bd_disk-&gt;queue
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * get ready for proper ref counting&n; */

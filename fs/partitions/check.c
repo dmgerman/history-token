@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  fs/partitions/check.c&n; *&n; *  Code extracted from drivers/block/genhd.c&n; *  Copyright (C) 1991-1998  Linus Torvalds&n; *  Re-organised Feb 1998 Russell King&n; *&n; *  We now have independent partition support from the&n; *  block drivers, which allows all the partition code to&n; *  be grouped in one location, and it to be mostly self&n; *  contained.&n; *&n; *  Added needed MAJORS for new pairs, {hdi,hdj}, {hdk,hdl}&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -2666,9 +2667,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bdev-&gt;bd_op-&gt;revalidate_disk
+id|disk-&gt;fops-&gt;revalidate_disk
 )paren
-id|bdev-&gt;bd_op
+id|disk-&gt;fops
 op_member_access_from_pointer
 id|revalidate_disk
 c_func
@@ -3270,6 +3271,7 @@ c_cond
 (paren
 id|hd
 )paren
+(brace
 id|dname-&gt;name
 op_assign
 id|disk_name
@@ -3282,12 +3284,24 @@ comma
 id|dname-&gt;namebuf
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|hd-&gt;fops-&gt;owner
+)paren
+id|__MOD_DEC_USE_COUNT
+c_func
+(paren
+id|hd-&gt;fops-&gt;owner
+)paren
+suffix:semicolon
 id|put_disk
 c_func
 (paren
 id|hd
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
