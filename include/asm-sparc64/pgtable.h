@@ -3,7 +3,7 @@ macro_line|#ifndef _SPARC64_PGTABLE_H
 DECL|macro|_SPARC64_PGTABLE_H
 mdefine_line|#define _SPARC64_PGTABLE_H
 multiline_comment|/* This file contains the functions and defines necessary to modify and use&n; * the SpitFire page tables.&n; */
-macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
+macro_line|#include &lt;asm-generic/pgtable-nopud.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
@@ -331,14 +331,14 @@ suffix:semicolon
 )brace
 DECL|macro|pmd_set
 mdefine_line|#define pmd_set(pmdp, ptep)&t;&bslash;&n;&t;(pmd_val(*(pmdp)) = (__pa((unsigned long) (ptep)) &gt;&gt; 11UL))
-DECL|macro|pgd_set
-mdefine_line|#define pgd_set(pgdp, pmdp)&t;&bslash;&n;&t;(pgd_val(*(pgdp)) = (__pa((unsigned long) (pmdp)) &gt;&gt; 11UL))
+DECL|macro|pud_set
+mdefine_line|#define pud_set(pudp, pmdp)&t;&bslash;&n;&t;(pud_val(*(pudp)) = (__pa((unsigned long) (pmdp)) &gt;&gt; 11UL))
 DECL|macro|__pmd_page
 mdefine_line|#define __pmd_page(pmd)&t;&t;&bslash;&n;&t;((unsigned long) __va((((unsigned long)pmd_val(pmd))&lt;&lt;11UL)))
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd) &t;&t;&t;virt_to_page((void *)__pmd_page(pmd))
-DECL|macro|pgd_page
-mdefine_line|#define pgd_page(pgd)&t;&t;&bslash;&n;&t;((unsigned long) __va((((unsigned long)pgd_val(pgd))&lt;&lt;11UL)))
+DECL|macro|pud_page
+mdefine_line|#define pud_page(pud)&t;&t;&bslash;&n;&t;((unsigned long) __va((((unsigned long)pud_val(pud))&lt;&lt;11UL)))
 DECL|macro|pte_none
 mdefine_line|#define pte_none(pte) &t;&t;&t;(!pte_val(pte))
 DECL|macro|pte_present
@@ -351,14 +351,14 @@ DECL|macro|pmd_present
 mdefine_line|#define pmd_present(pmd)&t;&t;(pmd_val(pmd) != 0U)
 DECL|macro|pmd_clear
 mdefine_line|#define pmd_clear(pmdp)&t;&t;&t;(pmd_val(*(pmdp)) = 0U)
-DECL|macro|pgd_none
-mdefine_line|#define pgd_none(pgd)&t;&t;&t;(!pgd_val(pgd))
-DECL|macro|pgd_bad
-mdefine_line|#define pgd_bad(pgd)&t;&t;&t;(0)
-DECL|macro|pgd_present
-mdefine_line|#define pgd_present(pgd)&t;&t;(pgd_val(pgd) != 0U)
-DECL|macro|pgd_clear
-mdefine_line|#define pgd_clear(pgdp)&t;&t;&t;(pgd_val(*(pgdp)) = 0U)
+DECL|macro|pud_none
+mdefine_line|#define pud_none(pud)&t;&t;&t;(!pud_val(pud))
+DECL|macro|pud_bad
+mdefine_line|#define pud_bad(pud)&t;&t;&t;(0)
+DECL|macro|pud_present
+mdefine_line|#define pud_present(pud)&t;&t;(pud_val(pud) != 0U)
+DECL|macro|pud_clear
+mdefine_line|#define pud_clear(pudp)&t;&t;&t;(pud_val(*(pudp)) = 0U)
 multiline_comment|/* The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
 DECL|macro|pte_read
 mdefine_line|#define pte_read(pte)&t;&t;(pte_val(pte) &amp; _PAGE_READ)
@@ -398,7 +398,7 @@ DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
-mdefine_line|#define pmd_offset(dir, address)&t;&bslash;&n;&t;((pmd_t *) pgd_page(*(dir)) + &bslash;&n;&t; (((address) &gt;&gt; PMD_SHIFT) &amp; (REAL_PTRS_PER_PMD-1)))
+mdefine_line|#define pmd_offset(pudp, address)&t;&bslash;&n;&t;((pmd_t *) pud_page(*(pudp)) + &bslash;&n;&t; (((address) &gt;&gt; PMD_SHIFT) &amp; (REAL_PTRS_PER_PMD-1)))
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|macro|pte_index
 mdefine_line|#define pte_index(dir, address)&t;&bslash;&n;&t;((pte_t *) __pmd_page(*(dir)) + &bslash;&n;&t; ((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
@@ -624,6 +624,10 @@ id|pgd_t
 op_star
 id|pgdp
 suffix:semicolon
+id|pud_t
+op_star
+id|pudp
+suffix:semicolon
 id|pmd_t
 op_star
 id|pmdp
@@ -676,12 +680,22 @@ c_func
 id|addr
 )paren
 suffix:semicolon
+id|pudp
+op_assign
+id|pud_offset
+c_func
+(paren
+id|pgdp
+comma
+id|addr
+)paren
+suffix:semicolon
 id|pmdp
 op_assign
 id|pmd_offset
 c_func
 (paren
-id|pgdp
+id|pudp
 comma
 id|addr
 )paren

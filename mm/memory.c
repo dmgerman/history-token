@@ -9587,7 +9587,6 @@ id|VM_FAULT_OOM
 suffix:semicolon
 )brace
 macro_line|#ifndef __ARCH_HAS_4LEVEL_HACK
-macro_line|#if (PTRS_PER_PUD &gt; 1)
 multiline_comment|/*&n; * Allocate page upper directory.&n; *&n; * We&squot;ve already handled the fast-path in-line, and we own the&n; * page table lock.&n; *&n; * On a two-level or three-level page table, this ends up actually being&n; * entirely optimized away.&n; */
 DECL|function|__pud_alloc
 id|pud_t
@@ -9691,8 +9690,6 @@ id|address
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if (PTRS_PER_PMD &gt; 1)
 multiline_comment|/*&n; * Allocate page middle directory.&n; *&n; * We&squot;ve already handled the fast-path in-line, and we own the&n; * page table lock.&n; *&n; * On a two-level page table, this ends up actually being entirely&n; * optimized away.&n; */
 DECL|function|__pmd_alloc
 id|pmd_t
@@ -9796,7 +9793,6 @@ id|address
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#else
 DECL|function|__pmd_alloc
 id|pmd_t
