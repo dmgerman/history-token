@@ -6725,6 +6725,7 @@ c_cond
 (paren
 id|pfmem
 )paren
+(brace
 id|debug
 (paren
 l_string|&quot;pfmem-&gt;start = %x&bslash;n&quot;
@@ -6733,10 +6734,12 @@ id|pfmem-&gt;start
 )paren
 suffix:semicolon
 id|ibmphp_remove_resource
+c_func
 (paren
 id|pfmem
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -6781,6 +6784,7 @@ c_cond
 (paren
 id|mem
 )paren
+(brace
 id|debug
 (paren
 l_string|&quot;mem-&gt;start = %x&bslash;n&quot;
@@ -6789,10 +6793,12 @@ id|mem-&gt;start
 )paren
 suffix:semicolon
 id|ibmphp_remove_resource
+c_func
 (paren
 id|mem
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -7249,6 +7255,7 @@ c_cond
 (paren
 id|pfmem
 )paren
+(brace
 id|debug
 (paren
 l_string|&quot;pfmem-&gt;start = %x&bslash;n&quot;
@@ -7257,10 +7264,12 @@ id|pfmem-&gt;start
 )paren
 suffix:semicolon
 id|ibmphp_remove_resource
+c_func
 (paren
 id|pfmem
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -7298,6 +7307,7 @@ c_cond
 (paren
 id|mem
 )paren
+(brace
 id|debug
 (paren
 l_string|&quot;mem-&gt;start = %x&bslash;n&quot;
@@ -7306,10 +7316,12 @@ id|mem-&gt;start
 )paren
 suffix:semicolon
 id|ibmphp_remove_resource
+c_func
 (paren
 id|mem
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
