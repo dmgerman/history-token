@@ -1475,12 +1475,9 @@ suffix:semicolon
 r_return
 id|bmap
 (braket
-op_minus
-(paren
 id|idx
 op_rshift
 l_int|3
-)paren
 )braket
 op_amp
 (paren
