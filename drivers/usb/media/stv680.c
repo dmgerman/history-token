@@ -3540,7 +3540,7 @@ id|i
 )braket
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|stv680-&gt;urb
 (braket
@@ -8097,7 +8097,7 @@ id|i
 )braket
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|stv680-&gt;urb
 (braket
