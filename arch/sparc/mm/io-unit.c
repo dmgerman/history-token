@@ -140,6 +140,13 @@ l_int|2
 op_assign
 id|IOUNIT_BMAPM_START
 suffix:semicolon
+id|xpt
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|prom_getproperty
 c_func
 (paren
@@ -158,7 +165,11 @@ r_sizeof
 id|iommu_promregs
 )paren
 )paren
-suffix:semicolon
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
 id|prom_apply_generic_ranges
 c_func
 (paren
@@ -224,6 +235,7 @@ comma
 l_string|&quot;XPT&quot;
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

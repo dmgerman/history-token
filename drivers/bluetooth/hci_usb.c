@@ -223,7 +223,7 @@ comma
 dot
 id|driver_info
 op_assign
-id|HCI_BCM92035
+id|HCI_RESET
 )brace
 comma
 multiline_comment|/* ISSC Bluetooth Adapter v3.1 */

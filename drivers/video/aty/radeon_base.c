@@ -10500,6 +10500,39 @@ comma
 id|info
 )paren
 suffix:semicolon
+multiline_comment|/* Register with fbdev layer */
+id|ret
+op_assign
+id|register_framebuffer
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+(brace
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;radeonfb (%s): could not register framebuffer&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|rinfo-&gt;pdev
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|err_unmap_fb
+suffix:semicolon
+)brace
 multiline_comment|/* Setup Power Management capabilities */
 r_if
 c_cond
@@ -10535,39 +10568,6 @@ comma
 id|default_dynclk
 )paren
 suffix:semicolon
-multiline_comment|/* Register with fbdev layer */
-id|ret
-op_assign
-id|register_framebuffer
-c_func
-(paren
-id|info
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-(brace
-id|printk
-(paren
-id|KERN_ERR
-l_string|&quot;radeonfb (%s): could not register framebuffer&bslash;n&quot;
-comma
-id|pci_name
-c_func
-(paren
-id|rinfo-&gt;pdev
-)paren
-)paren
-suffix:semicolon
-r_goto
-id|err_unmap_fb
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_MTRR
 id|rinfo-&gt;mtrr_hdl
 op_assign

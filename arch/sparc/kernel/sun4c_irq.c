@@ -738,6 +738,13 @@ l_string|&quot;Cannot find /interrupt-enable node&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* Depending on the &quot;address&quot; property is bad news... */
+id|interrupt_enable
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|prom_getproperty
 c_func
 (paren
@@ -756,7 +763,11 @@ r_sizeof
 id|int_regs
 )paren
 )paren
-suffix:semicolon
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
 id|memset
 c_func
 (paren
@@ -815,6 +826,19 @@ l_string|&quot;sun4c_intr&quot;
 )paren
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|interrupt_enable
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Cannot map interrupt_enable&quot;
+)paren
+suffix:semicolon
 id|BTFIXUPSET_CALL
 c_func
 (paren

@@ -420,12 +420,13 @@ id|local_fadt-&gt;reset_register
 comma
 op_amp
 (paren
+id|ACPI_CAST_PTR
 (paren
 r_struct
 id|fadt_descriptor_rev2_minus
-op_star
-)paren
+comma
 id|original_fadt
+)paren
 )paren
 op_member_access_from_pointer
 id|reset_register

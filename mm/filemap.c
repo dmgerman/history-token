@@ -8165,6 +8165,14 @@ op_assign
 op_star
 id|ppos
 suffix:semicolon
+id|vfs_check_frozen
+c_func
+(paren
+id|inode-&gt;i_sb
+comma
+id|SB_FREEZE_WRITE
+)paren
+suffix:semicolon
 multiline_comment|/* We can write back this queue in page reclaim */
 id|current-&gt;backing_dev_info
 op_assign

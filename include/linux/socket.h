@@ -198,7 +198,7 @@ macro_line|#else
 DECL|macro|__KINLINE
 mdefine_line|#define __KINLINE static
 macro_line|#endif
-multiline_comment|/*&n; *&t;Get the next cmsg header&n; *&n; *&t;PLEASE, do not touch this function. If you think, that it is&n; *&t;incorrect, grep kernel sources and think about consequences&n; *&t;before trying to improve it.&n; *&n; *&t;Now it always returns valid, not truncated ancillary object&n; *&t;HEADER. But caller still MUST check, that cmsg-&gt;cmsg_len is&n; *&t;inside range, given by msg-&gt;msg_controllen before using&n; *&t;ansillary object DATA.&t;&t;&t;&t;--ANK (980731)&n; */
+multiline_comment|/*&n; *&t;Get the next cmsg header&n; *&n; *&t;PLEASE, do not touch this function. If you think, that it is&n; *&t;incorrect, grep kernel sources and think about consequences&n; *&t;before trying to improve it.&n; *&n; *&t;Now it always returns valid, not truncated ancillary object&n; *&t;HEADER. But caller still MUST check, that cmsg-&gt;cmsg_len is&n; *&t;inside range, given by msg-&gt;msg_controllen before using&n; *&t;ancillary object DATA.&t;&t;&t;&t;--ANK (980731)&n; */
 DECL|function|__cmsg_nxthdr
 id|__KINLINE
 r_struct

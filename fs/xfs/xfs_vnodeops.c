@@ -13669,6 +13669,10 @@ id|xfs_mount_t
 op_star
 id|mp
 suffix:semicolon
+id|xfs_inode_log_item_t
+op_star
+id|iip
+suffix:semicolon
 r_int
 id|error
 op_assign
@@ -13686,6 +13690,10 @@ id|mp
 op_assign
 id|ip-&gt;i_mount
 suffix:semicolon
+id|iip
+op_assign
+id|ip-&gt;i_itemp
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13702,7 +13710,7 @@ c_func
 id|EIO
 )paren
 suffix:semicolon
-multiline_comment|/* Bypass inodes which have already been cleaned by&n;&t; * the inode flush clustering code inside xfs_iflush&n;&t; */
+multiline_comment|/*&n;&t; * Bypass inodes which have already been cleaned by&n;&t; * the inode flush clustering code inside xfs_iflush&n;&t; */
 r_if
 c_cond
 (paren
@@ -13714,14 +13722,14 @@ l_int|0
 op_logical_and
 (paren
 (paren
-id|ip-&gt;i_itemp
+id|iip
 op_eq
 l_int|NULL
 )paren
 op_logical_or
 op_logical_neg
 (paren
-id|ip-&gt;i_itemp-&gt;ili_format.ilf_fields
+id|iip-&gt;ili_format.ilf_fields
 op_amp
 id|XFS_ILOG_ALL
 )paren
@@ -13738,12 +13746,6 @@ op_amp
 id|FLUSH_LOG
 )paren
 (brace
-id|xfs_inode_log_item_t
-op_star
-id|iip
-op_assign
-id|ip-&gt;i_itemp
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13830,7 +13832,7 @@ id|log_flags
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* We make this non-blocking if the inode is contended,&n;&t; * return EAGAIN to indicate to the caller that they&n;&t; * did not succeed. This prevents the flush path from&n;&t; * blocking on inodes inside another operation right&n;&t; * now, they get caught later by xfs_sync.&n;&t; */
+multiline_comment|/*&n;&t; * We make this non-blocking if the inode is contended,&n;&t; * return EAGAIN to indicate to the caller that they&n;&t; * did not succeed. This prevents the flush path from&n;&t; * blocking on inodes inside another operation right&n;&t; * now, they get caught later by xfs_sync.&n;&t; */
 r_if
 c_cond
 (paren

@@ -809,6 +809,13 @@ id|cur
 op_amp
 l_int|0x40
 )paren
+(brace
+id|high
+op_assign
+id|cur
+op_amp
+l_int|0xf
+suffix:semicolon
 id|low
 op_assign
 (paren
@@ -825,6 +832,7 @@ l_int|8
 op_or
 id|sect
 suffix:semicolon
+)brace
 r_else
 (brace
 id|low

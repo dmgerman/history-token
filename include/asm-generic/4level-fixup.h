@@ -26,7 +26,7 @@ mdefine_line|#define pud_present(pud)&t;&t;1
 DECL|macro|pud_ERROR
 mdefine_line|#define pud_ERROR(pud)&t;&t;&t;do { } while (0)
 DECL|macro|pud_clear
-mdefine_line|#define pud_clear(pud)&t;&t;&t;do { } while (0)
+mdefine_line|#define pud_clear(pud)&t;&t;&t;pgd_clear(pud)
 DECL|macro|pud_free_tlb
 macro_line|#undef pud_free_tlb
 DECL|macro|pud_free_tlb

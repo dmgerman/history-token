@@ -1,12 +1,14 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/shannon.c&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
@@ -146,6 +148,7 @@ c_func
 op_amp
 id|shannon_flash_data
 comma
+op_amp
 id|shannon_flash_resource
 comma
 l_int|1

@@ -1345,6 +1345,11 @@ id|NET_TCP_TSO_WIN_DIVISOR
 op_assign
 l_int|107
 comma
+DECL|enumerator|NET_TCP_BIC_BETA
+id|NET_TCP_BIC_BETA
+op_assign
+l_int|108
+comma
 )brace
 suffix:semicolon
 r_enum
