@@ -216,8 +216,10 @@ DECL|macro|RADEON_EMIT_PP_CUBIC_FACES_2
 mdefine_line|#define RADEON_EMIT_PP_CUBIC_FACES_2                82
 DECL|macro|RADEON_EMIT_PP_CUBIC_OFFSETS_T2
 mdefine_line|#define RADEON_EMIT_PP_CUBIC_OFFSETS_T2             83
+DECL|macro|R200_EMIT_PP_TRI_PERF_CNTL
+mdefine_line|#define R200_EMIT_PP_TRI_PERF_CNTL                  84
 DECL|macro|RADEON_MAX_STATE_PACKETS
-mdefine_line|#define RADEON_MAX_STATE_PACKETS                    84
+mdefine_line|#define RADEON_MAX_STATE_PACKETS                    85
 multiline_comment|/* Commands understood by cmd_buffer ioctl.  More can be added but&n; * obviously these can&squot;t be removed or changed:&n; */
 DECL|macro|RADEON_CMD_PACKET
 mdefine_line|#define RADEON_CMD_PACKET      1 /* emit one of the register packets above */
