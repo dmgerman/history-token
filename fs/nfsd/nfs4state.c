@@ -5530,13 +5530,6 @@ c_func
 l_string|&quot;nfsv4-recall&quot;
 )paren
 suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|dp-&gt;dl_count
-)paren
-suffix:semicolon
 id|nfsd4_cb_recall
 c_func
 (paren
@@ -5547,7 +5540,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Spawn a thread to perform a recall on the delegation represented&n; * by the lease (file_lock)&n; *&n; * Called from break_lease() with lock_kernel() held,&n; *&n; */
+multiline_comment|/*&n; * Spawn a thread to perform a recall on the delegation represented&n; * by the lease (file_lock)&n; *&n; * Called from break_lease() with lock_kernel() held.&n; * Note: we assume break_lease will only call this *once* for any given&n; * lease.&n; */
 r_static
 DECL|function|nfsd_break_deleg_cb
 r_void
@@ -5595,7 +5588,14 @@ id|dp
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* schedule delegation for recall */
+multiline_comment|/* We&squot;re assuming the state code never drops its reference&n;&t; * without first removing the lease.  Since we&squot;re in this lease&n;&t; * callback (and since the lease code is serialized by the kernel&n;&t; * lock) we know the server hasn&squot;t removed the lease yet, we know&n;&t; * it&squot;s safe to take a reference: */
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|dp-&gt;dl_count
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
