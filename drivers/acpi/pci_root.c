@@ -908,7 +908,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;%s [%s] (%02x:%02x)&bslash;n&quot;
+l_string|&quot;%s [%s] (%04x:%02x)&bslash;n&quot;
 comma
 id|acpi_device_name
 c_func
@@ -953,7 +953,7 @@ c_func
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Bus %02x:%02x not present in PCI namespace&bslash;n&quot;
+l_string|&quot;Bus %04x:%02x not present in PCI namespace&bslash;n&quot;
 comma
 id|root-&gt;id.segment
 comma
