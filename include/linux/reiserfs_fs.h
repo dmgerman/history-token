@@ -5070,7 +5070,7 @@ op_star
 id|inode
 )paren
 suffix:semicolon
-r_void
+r_int
 id|reiserfs_write_inode
 (paren
 r_struct

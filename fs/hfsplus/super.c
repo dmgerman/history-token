@@ -426,7 +426,7 @@ id|inode
 suffix:semicolon
 )brace
 DECL|function|hfsplus_write_inode
-r_void
+r_int
 id|hfsplus_write_inode
 c_func
 (paren
@@ -443,6 +443,11 @@ r_struct
 id|hfsplus_vh
 op_star
 id|vhdr
+suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
 suffix:semicolon
 id|dprint
 c_func
@@ -468,13 +473,12 @@ op_ge
 id|HFSPLUS_FIRSTUSER_CNID
 )paren
 (brace
+r_return
 id|hfsplus_cat_write_inode
 c_func
 (paren
 id|inode
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 id|vhdr
@@ -496,6 +500,8 @@ id|inode-&gt;i_ino
 r_case
 id|HFSPLUS_ROOT_CNID
 suffix:colon
+id|ret
+op_assign
 id|hfsplus_cat_write_inode
 c_func
 (paren
@@ -746,6 +752,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_return
+id|ret
+suffix:semicolon
 )brace
 DECL|function|hfsplus_clear_inode
 r_static

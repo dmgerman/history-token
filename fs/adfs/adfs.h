@@ -301,7 +301,7 @@ op_star
 id|obj
 )paren
 suffix:semicolon
-r_void
+r_int
 id|adfs_write_inode
 c_func
 (paren

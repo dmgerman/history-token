@@ -6054,7 +6054,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|fat_write_inode
-r_void
+r_int
 id|fat_write_inode
 c_func
 (paren
@@ -6111,6 +6111,7 @@ id|i_pos
 )paren
 (brace
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|lock_kernel
@@ -6159,7 +6160,8 @@ c_func
 )paren
 suffix:semicolon
 r_return
-multiline_comment|/* -EIO */
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|spin_lock
@@ -6385,6 +6387,9 @@ id|unlock_kernel
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|fat_notify_change

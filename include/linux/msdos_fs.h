@@ -1163,7 +1163,7 @@ id|buf
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|fat_write_inode
 c_func
 (paren

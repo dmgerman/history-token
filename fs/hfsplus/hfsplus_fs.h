@@ -1333,7 +1333,7 @@ id|hfs_find_data
 op_star
 )paren
 suffix:semicolon
-r_void
+r_int
 id|hfsplus_cat_write_inode
 c_func
 (paren

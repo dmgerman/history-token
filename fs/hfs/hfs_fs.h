@@ -655,7 +655,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|hfs_write_inode
 c_func
 (paren
