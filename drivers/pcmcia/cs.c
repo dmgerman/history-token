@@ -1271,6 +1271,10 @@ id|socket_info_t
 )paren
 )paren
 suffix:semicolon
+id|cls_d-&gt;s_info
+op_assign
+id|s_info
+suffix:semicolon
 multiline_comment|/* socket initialization */
 r_for
 c_loop
@@ -1297,13 +1301,6 @@ id|s_info
 id|i
 )braket
 suffix:semicolon
-id|cls_d-&gt;s_info
-(braket
-id|i
-)braket
-op_assign
-id|s
-suffix:semicolon
 id|s-&gt;ss_entry
 op_assign
 id|cls_d-&gt;ops
@@ -1311,6 +1308,8 @@ suffix:semicolon
 id|s-&gt;sock
 op_assign
 id|i
+op_plus
+id|cls_d-&gt;sock_offset
 suffix:semicolon
 multiline_comment|/* base address = 0, map = 0 */
 id|s-&gt;cis_mem.flags
@@ -1394,7 +1393,7 @@ op_member_access_from_pointer
 id|inquire_socket
 c_func
 (paren
-id|i
+id|s-&gt;sock
 comma
 op_amp
 id|s-&gt;cap
