@@ -337,7 +337,7 @@ id|PCI_REGION_FLAG_MASK
 suffix:semicolon
 )brace
 r_int
-id|__init
+id|__devinit
 DECL|function|pci_claim_resource
 id|pci_claim_resource
 c_func
