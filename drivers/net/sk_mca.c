@@ -1723,7 +1723,7 @@ id|njiffies
 op_assign
 id|jiffies
 op_plus
-l_int|100
+id|HZ
 suffix:semicolon
 r_do
 (brace

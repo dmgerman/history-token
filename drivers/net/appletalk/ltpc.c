@@ -3316,6 +3316,7 @@ id|dev
 r_return
 suffix:semicolon
 multiline_comment|/* we&squot;ve been downed */
+multiline_comment|/* poll 20 times per second */
 id|idle
 c_func
 (paren
@@ -3326,7 +3327,9 @@ id|ltpc_timer.expires
 op_assign
 id|jiffies
 op_plus
-l_int|5
+id|HZ
+op_div
+l_int|20
 suffix:semicolon
 id|add_timer
 c_func
@@ -4827,7 +4830,9 @@ id|ltpc_timer.expires
 op_assign
 id|jiffies
 op_plus
-l_int|5
+id|HZ
+op_div
+l_int|20
 suffix:semicolon
 id|add_timer
 c_func
