@@ -2550,6 +2550,8 @@ comma
 id|pagedir_order
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if
