@@ -50,6 +50,8 @@ DECL|macro|W1_READ_PSUPPLY
 mdefine_line|#define W1_READ_PSUPPLY&t;&t;0xB4
 DECL|macro|W1_MATCH_ROM
 mdefine_line|#define W1_MATCH_ROM&t;&t;0x55
+DECL|macro|W1_SLAVE_ACTIVE
+mdefine_line|#define W1_SLAVE_ACTIVE&t;&t;(1&lt;&lt;0)
 DECL|struct|w1_slave
 r_struct
 id|w1_slave
@@ -89,6 +91,10 @@ id|rom
 l_int|9
 )braket
 suffix:semicolon
+DECL|member|flags
+id|u32
+id|flags
+suffix:semicolon
 DECL|member|master
 r_struct
 id|w1_master
@@ -110,6 +116,19 @@ DECL|member|dev_released
 r_struct
 id|completion
 id|dev_released
+suffix:semicolon
+DECL|member|attr_bin
+r_struct
+id|bin_attribute
+id|attr_bin
+suffix:semicolon
+DECL|member|attr_name
+DECL|member|attr_val
+r_struct
+id|device_attribute
+id|attr_name
+comma
+id|attr_val
 suffix:semicolon
 )brace
 suffix:semicolon
