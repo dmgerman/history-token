@@ -8808,7 +8808,7 @@ r_return
 id|tmp.b_blocknr
 suffix:semicolon
 )brace
-DECL|function|generic_direct_IO
+macro_line|#if 0
 r_int
 id|generic_direct_IO
 c_func
@@ -9032,6 +9032,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Start I/O on a physical range of kernel memory, defined by a vector&n; * of kiobuf structs (much like a user-space iovec list).&n; *&n; * The kiobuf must already be locked for IO.  IO is submitted&n; * asynchronously: you need to check page-&gt;locked and page-&gt;uptodate.&n; *&n; * It is up to the caller to make sure that there are enough blocks&n; * passed in to completely map the iobufs to disk.&n; */
 DECL|function|brw_kiovec
 r_int
