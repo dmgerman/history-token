@@ -6190,6 +6190,11 @@ op_logical_neg
 id|delta
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6199,9 +6204,8 @@ id|pmc-&gt;sfcount
 id|sfmode
 )braket
 )paren
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out_unlock
 suffix:semicolon
 id|pmc-&gt;sfcount
 (braket
@@ -6358,6 +6362,8 @@ id|pmc-&gt;interface
 suffix:semicolon
 macro_line|#endif
 )brace
+id|out_unlock
+suffix:colon
 id|spin_unlock_bh
 c_func
 (paren
