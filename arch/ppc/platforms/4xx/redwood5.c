@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *    Copyright 2000-2001 MontaVista Software Inc.&n; *      Completed implementation.&n; *      Author: Armin Kuster&n; *&n; *    Module name: redwood5.c&n; *&n; *    Description:&n; *    &t;IBM redwood5 eval board file&n; *&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/4xx/redwood5.c&n; *&n; * Support for the IBM redwood5 eval board file&n; *&n; * Author: Armin Kuster &lt;akuster@mvista.com&gt;&n; *&n; * 2000-2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;

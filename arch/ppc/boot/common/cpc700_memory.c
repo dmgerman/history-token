@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/boot/common/cpc700_memory.c&n; *&n; * Find memory based upon settings in the CPC700 bridge&n; *&n; * Author: Dan Cox&n; *&n; * Copyright 2001-2002 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * arch/ppc/boot/common/cpc700_memory.c&n; *&n; * Find memory based upon settings in the CPC700 bridge&n; *&n; * Author: Dan Cox&n; *&n; * 2001-2002 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;cpc700.h&quot;
