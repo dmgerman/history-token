@@ -364,6 +364,8 @@ DECL|macro|RPC_TASK_QUEUED
 mdefine_line|#define RPC_TASK_QUEUED&t;&t;1
 DECL|macro|RPC_TASK_WAKEUP
 mdefine_line|#define RPC_TASK_WAKEUP&t;&t;2
+DECL|macro|RPC_TASK_HAS_TIMER
+mdefine_line|#define RPC_TASK_HAS_TIMER&t;3
 DECL|macro|RPC_IS_RUNNING
 mdefine_line|#define RPC_IS_RUNNING(t)&t;(test_bit(RPC_TASK_RUNNING, &amp;(t)-&gt;tk_runstate))
 DECL|macro|rpc_set_running
