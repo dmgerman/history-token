@@ -411,4 +411,25 @@ r_void
 (brace
 )brace
 macro_line|#endif
+macro_line|#ifdef CONFIG_MOUNT_ROOT_FAILED_MSG
+r_void
+id|mount_root_failed_msg
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|mount_root_failed_msg
+r_static
+r_inline
+r_void
+id|mount_root_failed_msg
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+macro_line|#endif
 eof

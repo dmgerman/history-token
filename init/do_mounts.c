@@ -1294,35 +1294,12 @@ c_func
 l_string|&quot;Please append a correct &bslash;&quot;root=&bslash;&quot; boot option&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef __i386__
-(brace
-r_extern
-r_void
-id|dmi_dump_system
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;You may want to retry boot with pci=noacpi, &quot;
-l_string|&quot;acpi=ht, or acpi=off on the command line.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;If one of them helps please report it with &quot;
-l_string|&quot;the following lines:&bslash;n&quot;
-)paren
-suffix:semicolon
-id|dmi_dump_system
+id|mount_root_failed_msg
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
+multiline_comment|/* architecture dependent */
 id|panic
 c_func
 (paren

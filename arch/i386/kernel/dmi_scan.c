@@ -639,6 +639,7 @@ id|DMI_STRING_MAX
 suffix:semicolon
 multiline_comment|/* print some information suitable for a blacklist entry. */
 DECL|function|dmi_dump_system
+r_static
 r_void
 id|dmi_dump_system
 c_func
@@ -1254,78 +1255,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Some BIOS / motherboard combinations require the APIC to be enabled&n; * even on UP systems or will exhibit instability. */
-DECL|function|abit_apic_required
-r_static
-r_int
-id|__init
-id|abit_apic_required
-c_func
-(paren
-r_struct
-id|dmi_blacklist
-op_star
-id|d
-)paren
-(brace
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-macro_line|#ifndef CONFIG_SMP
-r_extern
-r_int
-id|enable_apic_up
-suffix:semicolon
-r_extern
-r_int
-id|dont_enable_local_apic
-suffix:semicolon
-r_extern
-r_int
-id|skip_ioapic_setup
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|enable_apic_up
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot; *** %s: APIC forcibly enabled to avoid &quot;
-l_string|&quot;RANDOM CRASHES.&bslash;n&quot;
-comma
-id|d-&gt;ident
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot; *** PLEASE add &squot;apic&squot; to the kernel &quot;
-l_string|&quot;commandline AND enable it in the BIOS! ***&bslash;n&quot;
-)paren
-suffix:semicolon
-id|dont_enable_local_apic
-op_assign
-l_int|0
-suffix:semicolon
-id|enable_apic_up
-op_assign
-l_int|1
-suffix:semicolon
-id|skip_ioapic_setup
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *  Check for clue free BIOS implementations who use&n; *  the following QA technique&n; *&n; *      [ Write BIOS Code ]&lt;------&n; *               |                ^&n; *      &lt; Does it Compile &gt;----N--&n; *               |Y               ^&n; *&t;&lt; Does it Boot Win98 &gt;-N--&n; *               |Y&n; *           [Ship It]&n; *&n; *&t;Phoenix A04  08/24/2000 is known bad (Dell Inspiron 5000e)&n; *&t;Phoenix A07  09/29/2000 is known good (Dell Inspiron 5000)&n; */
 DECL|function|broken_apm_power
 r_static
@@ -1734,8 +1663,6 @@ id|acpi_force
 suffix:semicolon
 r_extern
 r_int
-id|enable_apic_up
-comma
 id|skip_ioapic_setup
 suffix:semicolon
 DECL|function|acpi_disable
@@ -1895,42 +1822,6 @@ id|pci_disable_acpi
 c_func
 (paren
 )paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#ifndef CONFIG_SMP
-DECL|function|force_apic
-r_static
-id|__init
-r_int
-id|force_apic
-c_func
-(paren
-r_struct
-id|dmi_blacklist
-op_star
-id|d
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;%s detected: force APIC&bslash;n&quot;
-comma
-id|d-&gt;ident
-)paren
-suffix:semicolon
-id|enable_apic_up
-op_assign
-l_int|1
-suffix:semicolon
-id|skip_ioapic_setup
-op_assign
-l_int|0
 suffix:semicolon
 r_return
 l_int|0
@@ -2572,4 +2463,34 @@ c_func
 id|is_unsafe_smbus
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MOUNT_ROOT_FAILED_MSG
+multiline_comment|/*&n; * mount_root_failed_msg()&n; *&n; * Called from mount_block_root() upon failure to mount root.&n; * architecture dependent to give different platforms&n; * the opportunity to print different handy messages&n; * On x86 this lives here b/c it dumps out some DMI info.&n; */
+r_void
+DECL|function|mount_root_failed_msg
+id|mount_root_failed_msg
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef&t;CONFIG_ACPI_BOOT
+id|printk
+(paren
+l_string|&quot;Try booting with pci=noacpi, acpi=ht, &quot;
+l_string|&quot;or acpi=off on the command line.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+(paren
+l_string|&quot;If one helps, please report the following lines:&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dmi_dump_system
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+macro_line|#endif&t;/* CONFIG_MOUNT_ROOT_FAILED_MSG */
 eof
