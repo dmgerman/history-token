@@ -8,9 +8,15 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sysfs.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/kref.h&gt;
+macro_line|#include &lt;linux/kobject_uevent.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|KOBJ_NAME_LEN
 mdefine_line|#define KOBJ_NAME_LEN&t;20
+multiline_comment|/* counter to tag the hotplug event, read only except for the kobject core */
+r_extern
+id|u64
+id|hotplug_seqnum
+suffix:semicolon
 DECL|struct|kobject
 r_struct
 id|kobject
@@ -211,30 +217,11 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|kobject_hotplug
-c_func
-(paren
-r_const
-r_char
-op_star
-id|action
-comma
-r_struct
-id|kobject
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_char
 op_star
 id|kobject_get_path
 c_func
 (paren
-r_struct
-id|kset
-op_star
-comma
 r_struct
 id|kobject
 op_star
@@ -755,6 +742,42 @@ id|subsys_attribute
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG
+r_extern
+r_void
+id|kobject_hotplug
+c_func
+(paren
+r_struct
+id|kobject
+op_star
+id|kobj
+comma
+r_enum
+id|kobject_action
+id|action
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|kobject_hotplug
+r_static
+r_inline
+r_void
+id|kobject_hotplug
+c_func
+(paren
+r_struct
+id|kobject
+op_star
+id|kobj
+comma
+r_enum
+id|kobject_action
+id|action
+)paren
+(brace
+)brace
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _KOBJECT_H_ */
 eof
