@@ -14688,7 +14688,6 @@ id|mdp_super_t
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 id|p
 op_assign
 id|create_proc_entry
@@ -14711,7 +14710,6 @@ op_assign
 op_amp
 id|md_seq_fops
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|md_init
 r_int
