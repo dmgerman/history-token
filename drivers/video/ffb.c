@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/upa.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
+macro_line|#include &lt;asm/fbio.h&gt;
 macro_line|#include &quot;sbuslib.h&quot;
 multiline_comment|/*&n; * Local functions.&n; */
 r_static
@@ -126,6 +127,30 @@ id|vm_area_struct
 op_star
 )paren
 suffix:semicolon
+r_static
+r_int
+id|ffb_ioctl
+c_func
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|file
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_struct
+id|fb_info
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *  Frame buffer operations&n; */
 DECL|variable|ffb_ops
 r_static
@@ -173,6 +198,11 @@ dot
 id|fb_mmap
 op_assign
 id|ffb_mmap
+comma
+dot
+id|fb_ioctl
+op_assign
+id|ffb_ioctl
 comma
 multiline_comment|/* XXX Use FFB hw cursor once fb cursor API is better understood... */
 dot
@@ -3327,6 +3357,64 @@ comma
 l_int|0
 comma
 id|vma
+)paren
+suffix:semicolon
+)brace
+DECL|function|ffb_ioctl
+r_static
+r_int
+id|ffb_ioctl
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+comma
+r_struct
+id|fb_info
+op_star
+id|info
+)paren
+(brace
+r_struct
+id|ffb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|ffb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
+r_return
+id|sbusfb_ioctl_helper
+c_func
+(paren
+id|cmd
+comma
+id|info
+comma
+id|FBTYPE_CREATOR
+comma
+l_int|24
+comma
+id|par-&gt;fbsize
 )paren
 suffix:semicolon
 )brace
