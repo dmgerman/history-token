@@ -211,6 +211,7 @@ id|mrp-&gt;mr_lock
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef DEBUG
 multiline_comment|/*&n; * Debug-only routine, without some platform-specific asm code, we can&n; * now only answer requests regarding whether we hold the lock for write&n; * (reader state is outside our visibility, we only track writer state).&n; * Note: means !ismrlocked would give false positivies, so don&squot;t do that.&n; */
 DECL|function|ismrlocked
 r_static
@@ -230,6 +231,8 @@ id|type
 r_if
 c_cond
 (paren
+id|mrp
+op_logical_and
 id|type
 op_eq
 id|MR_UPDATE
@@ -241,5 +244,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#endif /* __XFS_SUPPORT_MRLOCK_H__ */
 eof
