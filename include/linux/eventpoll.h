@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  include/linux/eventpoll.h ( Efficent event polling im
 macro_line|#ifndef _LINUX_EVENTPOLL_H
 DECL|macro|_LINUX_EVENTPOLL_H
 mdefine_line|#define _LINUX_EVENTPOLL_H
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* Valid opcodes to issue to sys_epoll_ctl() */
 DECL|macro|EPOLL_CTL_ADD
 mdefine_line|#define EPOLL_CTL_ADD 1
@@ -103,7 +104,21 @@ op_star
 id|file
 )paren
 suffix:semicolon
-multiline_comment|/* Used in fs/file_table.c:__fput() to unlink files from the eventpoll interface */
+multiline_comment|/* Used to release the epoll bits inside the &quot;struct file&quot; */
+r_void
+id|eventpoll_release_file
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * This is called from inside fs/file_table.c:__fput() to unlink files&n; * from the eventpoll interface. We need to have this facility to cleanup&n; * correctly files that are closed without being removed from the eventpoll&n; * interface.&n; */
+DECL|function|eventpoll_release
+r_static
+r_inline
 r_void
 id|eventpoll_release
 c_func
@@ -113,7 +128,32 @@ id|file
 op_star
 id|file
 )paren
+(brace
+multiline_comment|/*&n;&t; * Fast check to avoid the get/release of the semaphore. Since&n;&t; * we&squot;re doing this outside the semaphore lock, it might return&n;&t; * false negatives, but we don&squot;t care. It&squot;ll help in 99.99% of cases&n;&t; * to avoid the semaphore lock. False positives simply cannot happen&n;&t; * because the file in on the way to be removed and nobody ( but&n;&t; * eventpoll ) has still a reference to this file.&n;&t; */
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+id|file-&gt;f_ep_links
+)paren
+)paren
+)paren
+r_return
 suffix:semicolon
+multiline_comment|/*&n;&t; * The file is being closed while it is still linked to an epoll&n;&t; * descriptor. We need to handle this by correctly unlinking it&n;&t; * from its containers.&n;&t; */
+id|eventpoll_release_file
+c_func
+(paren
+id|file
+)paren
+suffix:semicolon
+)brace
 macro_line|#else
 DECL|function|eventpoll_init_file
 r_static
