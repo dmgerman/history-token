@@ -2703,7 +2703,6 @@ op_assign
 id|probe_irq_on
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 id|outw
