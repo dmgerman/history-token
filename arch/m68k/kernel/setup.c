@@ -2498,6 +2498,6 @@ l_string|&quot;no FPU&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_SUN3 */
+macro_line|#endif /* !CONFIG_M68KFPU_EMU */
 )brace
 eof
