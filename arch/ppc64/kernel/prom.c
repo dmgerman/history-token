@@ -6802,7 +6802,7 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_FB
+macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 r_for
 c_loop
 (paren
@@ -6861,7 +6861,7 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_FB */
+macro_line|#endif /* CONFIG_FRAMEBUFFER_CONSOLE */
 multiline_comment|/*&n;&t;&t; * If this display is the device that OF is using for stdout,&n;&t;&t; * move it to the front of the list.&n;&t;&t; */
 id|mem
 op_add_assign
