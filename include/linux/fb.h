@@ -792,8 +792,6 @@ DECL|macro|FB_CUR_SETSHAPE
 mdefine_line|#define FB_CUR_SETSHAPE 0x10
 DECL|macro|FB_CUR_SETSIZE
 mdefine_line|#define FB_CUR_SETSIZE&t;0x20
-DECL|macro|FB_CUR_SETDEST
-mdefine_line|#define FB_CUR_SETDEST&t;0x40
 DECL|macro|FB_CUR_SETALL
 mdefine_line|#define FB_CUR_SETALL   0xFF
 DECL|struct|fbcurpos
@@ -834,12 +832,6 @@ op_star
 id|mask
 suffix:semicolon
 multiline_comment|/* cursor mask bits */
-DECL|member|dest
-r_char
-op_star
-id|dest
-suffix:semicolon
-multiline_comment|/* destination */
 DECL|member|hot
 r_struct
 id|fbcurpos
@@ -1487,14 +1479,14 @@ id|fb_set_var
 c_func
 (paren
 r_struct
-id|fb_var_screeninfo
-op_star
-id|var
-comma
-r_struct
 id|fb_info
 op_star
 id|info
+comma
+r_struct
+id|fb_var_screeninfo
+op_star
+id|var
 )paren
 suffix:semicolon
 r_extern
@@ -1503,14 +1495,14 @@ id|fb_pan_display
 c_func
 (paren
 r_struct
-id|fb_var_screeninfo
-op_star
-id|var
-comma
-r_struct
 id|fb_info
 op_star
 id|info
+comma
+r_struct
+id|fb_var_screeninfo
+op_star
+id|var
 )paren
 suffix:semicolon
 r_extern
@@ -1518,13 +1510,13 @@ r_int
 id|fb_blank
 c_func
 (paren
-r_int
-id|blank
-comma
 r_struct
 id|fb_info
 op_star
 id|info
+comma
+r_int
+id|blank
 )paren
 suffix:semicolon
 r_extern
@@ -1846,7 +1838,7 @@ id|cmap
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|fb_copy_cmap
 c_func
 (paren
