@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * firmware.c - firmware subsystem hoohaw.&n; */
+multiline_comment|/*&n; * firmware.c - firmware subsystem hoohaw.&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; * &n; * This file is released under the GPLv2&n; *&n; */
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

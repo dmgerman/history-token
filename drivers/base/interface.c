@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/base/interface.c - common driverfs interface that&squot;s exported to &n; * &t;the world for all devices.&n; * Copyright (c) 2002 Patrick Mochel&n; *&t;&t; 2002 Open Source Development Lab&n; */
+multiline_comment|/*&n; * drivers/base/interface.c - common driverfs interface that&squot;s exported to &n; * &t;the world for all devices.&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; * &n; * This file is released under the GPLv2&n; *&n; */
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
