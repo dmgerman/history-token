@@ -1792,7 +1792,7 @@ c_func
 (paren
 id|ali1535_adapter.name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 comma
 l_string|&quot;SMBus ALI1535 adapter at %04x&quot;
 comma

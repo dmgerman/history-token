@@ -462,6 +462,8 @@ r_struct
 id|bus_type
 id|i2c_bus_type
 suffix:semicolon
+DECL|macro|I2C_NAME_SIZE
+mdefine_line|#define I2C_NAME_SIZE&t;50
 multiline_comment|/*&n; * i2c_client identifies a single device (i.e. chip) that is connected to an &n; * i2c bus. The behaviour is defined by the routines of the driver. This&n; * function is mainly used for lookup &amp; other admin. functions.&n; */
 DECL|struct|i2c_client
 r_struct
@@ -521,7 +523,7 @@ DECL|member|name
 r_char
 id|name
 (braket
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )braket
 suffix:semicolon
 DECL|member|released
@@ -869,7 +871,7 @@ DECL|member|name
 r_char
 id|name
 (braket
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )braket
 suffix:semicolon
 DECL|member|dev_released

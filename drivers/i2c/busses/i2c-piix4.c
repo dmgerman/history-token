@@ -1859,7 +1859,7 @@ c_func
 (paren
 id|piix4_adapter.name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 comma
 l_string|&quot;SMBus PIIX4 adapter at %04x&quot;
 comma

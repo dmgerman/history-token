@@ -1557,7 +1557,7 @@ c_func
 (paren
 id|smbus-&gt;adapter.name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 comma
 l_string|&quot;SMBus2 AMD8111 adapter at %04x&quot;
 comma
