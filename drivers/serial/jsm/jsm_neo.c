@@ -2413,7 +2413,8 @@ r_int
 id|force
 )paren
 (brace
-id|u64
+r_int
+r_int
 id|lock_flags
 suffix:semicolon
 id|spin_lock_irqsave
@@ -2526,7 +2527,8 @@ suffix:semicolon
 id|u8
 id|cause
 suffix:semicolon
-id|u64
+r_int
+r_int
 id|lock_flags
 suffix:semicolon
 r_if
@@ -3005,7 +3007,8 @@ suffix:semicolon
 r_int
 id|linestatus
 suffix:semicolon
-id|u64
+r_int
+r_int
 id|lock_flags
 suffix:semicolon
 r_if

@@ -23,7 +23,6 @@ r_char
 id|mstat
 suffix:semicolon
 r_int
-r_char
 id|result
 suffix:semicolon
 id|jsm_printk
@@ -1418,7 +1417,8 @@ id|brd
 r_int
 id|i
 suffix:semicolon
-id|u8
+r_void
+id|__iomem
 op_star
 id|vaddr
 suffix:semicolon
@@ -1451,10 +1451,6 @@ l_string|&quot;start&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize board structure elements.&n;&t; */
-id|vaddr
-op_assign
-id|brd-&gt;re_map_membase
-suffix:semicolon
 id|brd-&gt;nasync
 op_assign
 id|brd-&gt;maxports
@@ -1611,22 +1607,12 @@ l_int|0x200
 )paren
 id|ch-&gt;ch_neo_uart
 op_assign
-(paren
-r_struct
-id|neo_uart_struct
-op_star
-)paren
-(paren
-(paren
-id|u64
-)paren
 id|vaddr
 op_plus
 (paren
 id|brd-&gt;bd_uart_offset
 op_star
 id|i
-)paren
 )paren
 suffix:semicolon
 id|ch-&gt;ch_bd
@@ -1681,10 +1667,6 @@ id|brd
 r_int
 id|i
 suffix:semicolon
-id|u8
-op_star
-id|vaddr
-suffix:semicolon
 r_struct
 id|jsm_channel
 op_star
@@ -1714,10 +1696,6 @@ l_string|&quot;start&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize board structure elements.&n;&t; */
-id|vaddr
-op_assign
-id|brd-&gt;re_map_membase
-suffix:semicolon
 id|brd-&gt;nasync
 op_assign
 id|brd-&gt;maxports
@@ -2026,7 +2004,8 @@ suffix:semicolon
 r_int
 id|data_len
 suffix:semicolon
-id|u64
+r_int
+r_int
 id|lock_flags
 suffix:semicolon
 r_int

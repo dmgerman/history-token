@@ -502,6 +502,7 @@ suffix:semicolon
 multiline_comment|/* End of base memory of the card */
 DECL|member|re_map_membase
 id|u8
+id|__iomem
 op_star
 id|re_map_membase
 suffix:semicolon
@@ -720,6 +721,7 @@ multiline_comment|/* FEP input modem status&t;*/
 DECL|member|ch_neo_uart
 r_struct
 id|neo_uart_struct
+id|__iomem
 op_star
 id|ch_neo_uart
 suffix:semicolon
