@@ -6333,7 +6333,8 @@ id|sctp_addr
 op_star
 id|addr
 comma
-id|sctp_addr_param_t
+r_union
+id|sctp_addr_param
 op_star
 id|param
 comma
@@ -6502,7 +6503,8 @@ id|sctp_addr
 op_star
 id|sa
 comma
-id|sctp_addr_param_t
+r_union
+id|sctp_addr_param
 op_star
 id|p
 )paren

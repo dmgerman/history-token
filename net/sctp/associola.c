@@ -263,10 +263,6 @@ id|asoc-&gt;state
 op_assign
 id|SCTP_STATE_CLOSED
 suffix:semicolon
-id|asoc-&gt;state_timestamp
-op_assign
-id|jiffies
-suffix:semicolon
 multiline_comment|/* Set these values from the socket values, a conversion between&n;&t; * millsecons to seconds/microseconds must also be done.&n;&t; */
 id|asoc-&gt;cookie_life.tv_sec
 op_assign

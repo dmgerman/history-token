@@ -274,7 +274,7 @@ id|sctp_bind_hashbucket
 op_star
 id|port_hashtable
 suffix:semicolon
-multiline_comment|/* This is the global local address list.&n;&t; * We actively maintain this complete list of interfaces on&n;&t; * the system by catching routing events.&n;&t; *&n;&t; * It is a list of struct sockaddr_storage_list.&n;&t; */
+multiline_comment|/* This is the global local address list.&n;&t; * We actively maintain this complete list of interfaces on&n;&t; * the system by catching routing events.&n;&t; *&n;&t; * It is a list of sctp_sockaddr_entry.&n;&t; */
 DECL|member|local_addr_list
 r_struct
 id|list_head
@@ -1127,8 +1127,9 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* This is another convenience type to allocate memory for address&n; * params for the maximum size and pass such structures around&n; * internally.&n; */
-r_typedef
+DECL|union|sctp_addr_param
 r_union
+id|sctp_addr_param
 (brace
 DECL|member|v4
 r_struct
@@ -1140,9 +1141,7 @@ r_struct
 id|sctp_ipv6addr_param
 id|v6
 suffix:semicolon
-DECL|typedef|sctp_addr_param_t
 )brace
-id|sctp_addr_param_t
 suffix:semicolon
 multiline_comment|/* A convenience type to allow walking through the various&n; * parameters and avoid casting all over the place.&n; */
 DECL|union|sctp_params
@@ -1197,7 +1196,7 @@ op_star
 id|v6
 suffix:semicolon
 DECL|member|addr
-r_struct
+r_union
 id|sctp_addr_param
 op_star
 id|addr
@@ -1910,9 +1909,9 @@ id|chunk
 suffix:semicolon
 multiline_comment|/* This is a structure for holding either an IPv6 or an IPv4 address.  */
 multiline_comment|/* sin_family -- AF_INET or AF_INET6&n; * sin_port -- ordinary port number&n; * sin_addr -- cast to either (struct in_addr) or (struct in6_addr)&n; */
-DECL|struct|sockaddr_storage_list
+DECL|struct|sctp_sockaddr_entry
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 (brace
 DECL|member|list
 r_struct
@@ -3697,11 +3696,6 @@ multiline_comment|/* State       : A state variable indicating what state the&n;
 DECL|member|state
 id|sctp_state_t
 id|state
-suffix:semicolon
-multiline_comment|/* When did we enter this state?  */
-DECL|member|state_timestamp
-r_int
-id|state_timestamp
 suffix:semicolon
 multiline_comment|/* The cookie life I award for any cookie.  */
 DECL|member|cookie_life

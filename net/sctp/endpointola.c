@@ -907,7 +907,7 @@ op_star
 id|pos
 suffix:semicolon
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 op_star
 id|addr
 suffix:semicolon
@@ -945,7 +945,7 @@ c_func
 id|pos
 comma
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 comma
 id|list
 )paren
