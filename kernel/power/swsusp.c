@@ -3032,7 +3032,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Restore control flow magically appears here */
 id|restore_processor_state
+c_func
+(paren
+)paren
+suffix:semicolon
+id|restore_highmem
 c_func
 (paren
 )paren
@@ -3095,6 +3101,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* We&squot;ll ignore saved state, but this gets preempt count (etc) right */
 id|save_processor_state
 c_func
 (paren
@@ -3105,6 +3112,14 @@ op_assign
 id|swsusp_arch_resume
 c_func
 (paren
+)paren
+suffix:semicolon
+multiline_comment|/* Code below is only ever reached in case of failure. Otherwise&n;&t; * execution continues at place where swsusp_arch_suspend was called&n;         */
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|error
 )paren
 suffix:semicolon
 id|restore_processor_state
