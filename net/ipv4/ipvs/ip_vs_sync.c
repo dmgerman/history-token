@@ -2283,11 +2283,6 @@ r_return
 id|len
 suffix:semicolon
 )brace
-DECL|variable|errno
-r_static
-r_int
-id|errno
-suffix:semicolon
 r_static
 id|DECLARE_WAIT_QUEUE_HEAD
 c_func
@@ -2881,7 +2876,7 @@ id|IP_VS_STATE_MASTER
 suffix:semicolon
 id|name
 op_assign
-l_string|&quot;ipvs syncmaster&quot;
+l_string|&quot;ipvs_syncmaster&quot;
 suffix:semicolon
 )brace
 r_else
@@ -2902,7 +2897,7 @@ id|IP_VS_STATE_BACKUP
 suffix:semicolon
 id|name
 op_assign
-l_string|&quot;ipvs syncbackup&quot;
+l_string|&quot;ipvs_syncbackup&quot;
 suffix:semicolon
 )brace
 r_else
@@ -3126,10 +3121,18 @@ op_star
 id|startup
 )paren
 (brace
+id|pid_t
+id|pid
+suffix:semicolon
 multiline_comment|/* fork the sync thread here, then the parent process of the&n;&t;   sync thread is the init process after this thread exits. */
+id|repeat
+suffix:colon
 r_if
 c_cond
 (paren
+(paren
+id|pid
+op_assign
 id|kernel_thread
 c_func
 (paren
@@ -3139,14 +3142,34 @@ id|startup
 comma
 l_int|0
 )paren
+)paren
 OL
 l_int|0
 )paren
-id|IP_VS_BUG
+(brace
+id|IP_VS_ERR
 c_func
 (paren
+l_string|&quot;could not create sync_thread due to %d... &quot;
+l_string|&quot;retrying.&bslash;n&quot;
+comma
+id|pid
 )paren
 suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_UNINTERRUPTIBLE
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+)paren
+suffix:semicolon
+r_goto
+id|repeat
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -3265,6 +3288,8 @@ op_assign
 id|syncid
 suffix:semicolon
 )brace
+id|repeat
+suffix:colon
 r_if
 c_cond
 (paren
@@ -3285,11 +3310,30 @@ l_int|0
 OL
 l_int|0
 )paren
-id|IP_VS_BUG
+(brace
+id|IP_VS_ERR
 c_func
 (paren
+l_string|&quot;could not create fork_sync_thread due to %d... &quot;
+l_string|&quot;retrying.&bslash;n&quot;
+comma
+id|pid
 )paren
 suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_UNINTERRUPTIBLE
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+)paren
+suffix:semicolon
+r_goto
+id|repeat
+suffix:semicolon
+)brace
 id|wait_for_completion
 c_func
 (paren
