@@ -493,7 +493,7 @@ op_assign
 id|transport-&gt;asoc
 suffix:semicolon
 r_struct
-id|sctp_func
+id|sctp_af
 op_star
 id|af
 op_assign
