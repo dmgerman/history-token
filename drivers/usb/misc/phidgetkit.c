@@ -411,16 +411,11 @@ c_func
 op_amp
 id|kit-&gt;udev-&gt;dev
 comma
-l_string|&quot;data: %02x %02x&bslash;n&quot;
+l_string|&quot;sending data: %02x&bslash;n&quot;
 comma
 id|buffer
 (braket
 l_int|0
-)braket
-comma
-id|buffer
-(braket
-l_int|1
 )braket
 )paren
 suffix:semicolon
@@ -467,7 +462,7 @@ c_func
 op_amp
 id|kit-&gt;udev-&gt;dev
 comma
-l_string|&quot;retval = %d&bslash;n&quot;
+l_string|&quot;usb_control_msg returned %d&bslash;n&quot;
 comma
 id|retval
 )paren
@@ -1646,7 +1641,7 @@ id|status
 suffix:semicolon
 )brace
 DECL|macro|show_set_output
-mdefine_line|#define show_set_output(value)&t;&t;&bslash;&n;static ssize_t set_output##value(struct device *dev, const char *buf, &t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_interface *intf = to_usb_interface(dev);&t;&t;&bslash;&n;&t;struct phidget_interfacekit *kit = usb_get_intfdata(intf);&t;&bslash;&n;&t;int enabled;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int retval;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sscanf(buf, &quot;%d&quot;, &amp;enabled) &lt; 1) {&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;retval = change_outputs(kit, value - 1, enabled ? 1 : 0);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return retval ? retval : count;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_output##value(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_interface *intf = to_usb_interface(dev);&t;&t;&bslash;&n;&t;struct phidget_interfacekit *kit = usb_get_intfdata(intf);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, kit-&gt;outputs[value - 1 ]);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(output##value, S_IWUGO | S_IRUGO,&t;&t;&t;&bslash;&n;&t;&t;show_output##value, set_output##value);
+mdefine_line|#define show_set_output(value)&t;&t;&bslash;&n;static ssize_t set_output##value(struct device *dev, const char *buf, &t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_interface *intf = to_usb_interface(dev);&t;&t;&bslash;&n;&t;struct phidget_interfacekit *kit = usb_get_intfdata(intf);&t;&bslash;&n;&t;int enabled;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int retval;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sscanf(buf, &quot;%d&quot;, &amp;enabled) &lt; 1) {&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;retval = change_outputs(kit, value - 1, enabled ? 1 : 0);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return retval ? retval : count;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_output##value(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_interface *intf = to_usb_interface(dev);&t;&t;&bslash;&n;&t;struct phidget_interfacekit *kit = usb_get_intfdata(intf);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, kit-&gt;outputs[value - 1]);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(output##value, S_IWUGO | S_IRUGO,&t;&t;&t;&bslash;&n;&t;&t;show_output##value, set_output##value);
 id|show_set_output
 c_func
 (paren
@@ -2144,8 +2139,8 @@ r_if
 c_cond
 (paren
 id|ifkit-&gt;outputs
-op_eq
-l_int|8
+op_ge
+l_int|4
 )paren
 (brace
 id|device_create_file
@@ -2188,6 +2183,15 @@ op_amp
 id|dev_attr_output4
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ifkit-&gt;outputs
+op_eq
+l_int|8
+)paren
+(brace
 id|device_create_file
 c_func
 (paren
@@ -2457,11 +2461,11 @@ id|intf-&gt;dev
 comma
 l_string|&quot;USB PhidgetInterfaceKit %d/%d/%d attached&bslash;n&quot;
 comma
+id|ifkit-&gt;sensors
+comma
 id|ifkit-&gt;inputs
 comma
 id|ifkit-&gt;outputs
-comma
-id|ifkit-&gt;sensors
 )paren
 suffix:semicolon
 r_return
@@ -2513,8 +2517,8 @@ r_if
 c_cond
 (paren
 id|kit-&gt;ifkit-&gt;outputs
-op_eq
-id|MAX_INTERFACES
+op_ge
+l_int|4
 )paren
 (brace
 id|device_remove_file
@@ -2557,6 +2561,15 @@ op_amp
 id|dev_attr_output4
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|kit-&gt;ifkit-&gt;outputs
+op_eq
+l_int|8
+)paren
+(brace
 id|device_remove_file
 c_func
 (paren
@@ -2594,7 +2607,7 @@ op_amp
 id|interface-&gt;dev
 comma
 op_amp
-id|dev_attr_output7
+id|dev_attr_output8
 )paren
 suffix:semicolon
 )brace
@@ -2808,7 +2821,7 @@ c_cond
 (paren
 id|kit-&gt;ifkit-&gt;has_lcd
 )paren
-id|device_create_file
+id|device_remove_file
 c_func
 (paren
 op_amp
@@ -2826,11 +2839,11 @@ id|interface-&gt;dev
 comma
 l_string|&quot;USB PhidgetInterfaceKit %d/%d/%d detached&bslash;n&quot;
 comma
+id|kit-&gt;ifkit-&gt;sensors
+comma
 id|kit-&gt;ifkit-&gt;inputs
 comma
 id|kit-&gt;ifkit-&gt;outputs
-comma
-id|kit-&gt;ifkit-&gt;sensors
 )paren
 suffix:semicolon
 id|usb_kill_urb
