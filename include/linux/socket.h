@@ -465,6 +465,8 @@ DECL|macro|SOL_IPV6
 mdefine_line|#define SOL_IPV6&t;41
 DECL|macro|SOL_ICMPV6
 mdefine_line|#define SOL_ICMPV6&t;58
+DECL|macro|SOL_SCTP
+mdefine_line|#define SOL_SCTP&t;132
 DECL|macro|SOL_RAW
 mdefine_line|#define SOL_RAW&t;&t;255
 DECL|macro|SOL_IPX

@@ -3210,7 +3210,11 @@ op_assign
 id|dst-&gt;dev-&gt;features
 op_amp
 op_complement
+(paren
 id|NETIF_F_IP_CSUM
+op_or
+id|NETIF_F_TSO
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6467,7 +6471,11 @@ op_assign
 id|dst-&gt;dev-&gt;features
 op_amp
 op_complement
+(paren
 id|NETIF_F_IP_CSUM
+op_or
+id|NETIF_F_TSO
+)paren
 suffix:semicolon
 id|newtcp6sk
 op_assign
@@ -8112,7 +8120,11 @@ op_assign
 id|dst-&gt;dev-&gt;features
 op_amp
 op_complement
+(paren
 id|NETIF_F_IP_CSUM
+op_or
+id|NETIF_F_TSO
+)paren
 suffix:semicolon
 )brace
 r_return

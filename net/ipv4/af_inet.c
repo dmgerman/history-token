@@ -1418,7 +1418,6 @@ r_int
 id|sysctl_ip_nonlocal_bind
 suffix:semicolon
 DECL|function|inet_bind
-r_static
 r_int
 id|inet_bind
 c_func
@@ -2354,7 +2353,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This does both peername and sockname.&n; */
 DECL|function|inet_getname
-r_static
 r_int
 id|inet_getname
 c_func
@@ -2837,7 +2835,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;ioctl() calls you can issue on an INET socket. Most of these are&n; *&t;device configuration and stuff and very rarely used. Some ioctls&n; *&t;pass on to the socket itself.&n; *&n; *&t;NOTE: I like the idea of a module for the config stuff. ie ifconfig&n; *&t;loads the devconfigure module does its configuring and unloads it.&n; *&t;There&squot;s a good 20K of config code hanging around the kernel.&n; */
 DECL|function|inet_ioctl
-r_static
 r_int
 id|inet_ioctl
 c_func

@@ -909,7 +909,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* bind for INET6 API */
 DECL|function|inet6_bind
-r_static
 r_int
 id|inet6_bind
 c_func
@@ -1373,7 +1372,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|inet6_release
-r_static
 r_int
 id|inet6_release
 c_func
@@ -1523,7 +1521,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This does both peername and sockname.&n; */
 DECL|function|inet6_getname
-r_static
 r_int
 id|inet6_getname
 c_func
@@ -1752,7 +1749,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|inet6_ioctl
-r_static
 r_int
 id|inet6_ioctl
 c_func
@@ -2272,7 +2268,6 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|inet6_family_ops
-r_static
 r_struct
 id|net_proto_family
 id|inet6_family_ops

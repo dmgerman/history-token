@@ -2943,6 +2943,9 @@ r_struct
 id|dst_entry
 op_star
 id|dst
+comma
+r_int
+id|more
 )paren
 (brace
 r_struct
@@ -2994,6 +2997,8 @@ id|inet_getid
 c_func
 (paren
 id|rt-&gt;peer
+comma
+id|more
 )paren
 )paren
 suffix:semicolon

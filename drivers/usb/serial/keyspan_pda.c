@@ -2469,8 +2469,9 @@ l_int|0
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - roomquery failed&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - roomquery failed&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2488,8 +2489,9 @@ l_int|0
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - roomquery returned 0 bytes&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - roomquery returned 0 bytes&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -2586,8 +2588,9 @@ id|rc
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - usb_submit_urb(read int) failed&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - usb_submit_urb(read int) failed&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2746,8 +2749,9 @@ l_int|NULL
 id|err
 c_func
 (paren
+l_string|&quot;%s: unknown vendor, aborting.&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: unknown vendor, aborting.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2974,7 +2978,10 @@ id|serial
 )paren
 (brace
 id|dbg
+c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon

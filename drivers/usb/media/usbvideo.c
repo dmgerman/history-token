@@ -311,7 +311,8 @@ id|uvd
 op_star
 id|uvd
 comma
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|frame
 )paren
@@ -561,7 +562,8 @@ r_void
 id|RingQueue_Initialize
 c_func
 (paren
-id|RingQueue_t
+r_struct
+id|RingQueue
 op_star
 id|rq
 )paren
@@ -587,7 +589,8 @@ r_void
 id|RingQueue_Allocate
 c_func
 (paren
-id|RingQueue_t
+r_struct
+id|RingQueue
 op_star
 id|rq
 comma
@@ -681,7 +684,8 @@ id|RingQueue_IsAllocated
 c_func
 (paren
 r_const
-id|RingQueue_t
+r_struct
+id|RingQueue
 op_star
 id|rq
 )paren
@@ -716,7 +720,8 @@ r_void
 id|RingQueue_Free
 c_func
 (paren
-id|RingQueue_t
+r_struct
+id|RingQueue
 op_star
 id|rq
 )paren
@@ -761,7 +766,8 @@ r_int
 id|RingQueue_Dequeue
 c_func
 (paren
-id|RingQueue_t
+r_struct
+id|RingQueue
 op_star
 id|rq
 comma
@@ -944,7 +950,8 @@ r_int
 id|RingQueue_Enqueue
 c_func
 (paren
-id|RingQueue_t
+r_struct
+id|RingQueue
 op_star
 id|rq
 comma
@@ -1095,7 +1102,8 @@ r_void
 id|RingQueue_InterruptibleSleepOn
 c_func
 (paren
-id|RingQueue_t
+r_struct
+id|RingQueue
 op_star
 id|rq
 )paren
@@ -1120,7 +1128,8 @@ r_void
 id|RingQueue_WakeUpInterruptible
 c_func
 (paren
-id|RingQueue_t
+r_struct
+id|RingQueue
 op_star
 id|rq
 )paren
@@ -1162,7 +1171,8 @@ r_void
 id|RingQueue_Flush
 c_func
 (paren
-id|RingQueue_t
+r_struct
+id|RingQueue
 op_star
 id|rq
 )paren
@@ -1296,7 +1306,8 @@ id|uvd
 op_star
 id|uvd
 comma
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|frame
 comma
@@ -1558,7 +1569,8 @@ id|uvd
 op_star
 id|uvd
 comma
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|frame
 comma
@@ -1618,7 +1630,8 @@ id|uvd
 op_star
 id|uvd
 comma
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|frame
 )paren
@@ -2727,7 +2740,8 @@ r_void
 id|usbvideo_DrawLine
 c_func
 (paren
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|frame
 comma
@@ -3079,7 +3093,8 @@ r_int
 id|pmode
 )paren
 (brace
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|frame
 suffix:semicolon
@@ -3828,7 +3843,8 @@ op_star
 id|driverName
 comma
 r_const
-id|usbvideo_cb_t
+r_struct
+id|usbvideo_cb
 op_star
 id|cbTbl
 comma
@@ -7549,7 +7565,8 @@ l_int|1
 comma
 id|i
 suffix:semicolon
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|frame
 suffix:semicolon
@@ -8973,7 +8990,8 @@ r_int
 id|framenum
 )paren
 (brace
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|frame
 suffix:semicolon
@@ -9186,7 +9204,8 @@ id|uvd
 op_star
 id|uvd
 comma
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|frame
 )paren
@@ -9304,7 +9323,8 @@ r_int
 id|frameNum
 )paren
 (brace
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|frame
 op_assign
@@ -9824,7 +9844,8 @@ id|uvd
 op_star
 id|uvd
 comma
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|frame
 )paren
@@ -10145,7 +10166,8 @@ id|uvd
 op_star
 id|uvd
 comma
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|frame
 )paren

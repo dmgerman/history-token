@@ -982,8 +982,9 @@ id|serial
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - bad serial pointer, exiting&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - bad serial pointer, exiting&quot;
 )paren
 suffix:semicolon
 r_return
@@ -997,8 +998,9 @@ id|urb-&gt;status
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - nonzero read bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero read bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -1130,8 +1132,9 @@ l_int|2
 (brace
 id|info
 (paren
+l_string|&quot;%s - actual: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - actual: %d&quot;
 comma
 id|actual_length
 )paren
@@ -1174,8 +1177,9 @@ r_else
 (brace
 id|err
 (paren
+l_string|&quot;%s - inconsistant lengths %d:%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - inconsistant lengths %d:%d&quot;
 comma
 id|actual_length
 comma
@@ -1188,8 +1192,9 @@ r_else
 (brace
 id|err
 (paren
+l_string|&quot;%s - bad CRC %x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - bad CRC %x&quot;
 comma
 id|fcs
 )paren
@@ -1272,8 +1277,9 @@ id|GFP_ATOMIC
 (brace
 id|err
 (paren
+l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed resubmitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -1346,8 +1352,9 @@ id|port-&gt;write_urb
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - write urb NULL&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - write urb NULL&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1372,8 +1379,9 @@ id|port-&gt;write_urb-&gt;transfer_buffer_length
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - write urb transfer_buffer_length zero&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - write urb transfer_buffer_length zero&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1392,8 +1400,9 @@ l_int|0
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - write request of 0 bytes&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - write request of 0 bytes&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1413,8 +1422,9 @@ id|EINPROGRESS
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - already writing&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - already writing&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1692,8 +1702,9 @@ id|GFP_KERNEL
 (brace
 id|err
 (paren
+l_string|&quot;%s - failed submitting write urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting write urb, error %d&quot;
 comma
 id|result
 )paren
@@ -1704,8 +1715,9 @@ suffix:semicolon
 )brace
 id|dbg
 (paren
+l_string|&quot;%s urb: %p submitted&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; urb: %p submitted&quot;
 comma
 id|port-&gt;write_urb
 )paren
