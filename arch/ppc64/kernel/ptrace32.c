@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/ppc/kernel/ptrace32.c&n; *&n; *  PowerPC version&n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Derived from &quot;arch/m68k/kernel/ptrace.c&quot;&n; *  Copyright (C) 1994 by Hamish Macdonald&n; *  Taken from linux/kernel/ptrace.c and modified for M680x0.&n; *  linux/kernel/ptrace.c is by Ross Biro 1/23/92, edited by Linus Torvalds&n; *&n; * Modified by Cort Dougan (cort@hq.fsmlabs.com)&n; * and Paul Mackerras (paulus@linuxcare.com.au).&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file README.legal in the main directory of&n; * this archive for more details.&n; */
+multiline_comment|/*&n; *  linux/arch/ppc64/kernel/ptrace32.c&n; *&n; *  PowerPC version&n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Derived from &quot;arch/m68k/kernel/ptrace.c&quot;&n; *  Copyright (C) 1994 by Hamish Macdonald&n; *  Taken from linux/kernel/ptrace.c and modified for M680x0.&n; *  linux/kernel/ptrace.c is by Ross Biro 1/23/92, edited by Linus Torvalds&n; *&n; * Modified by Cort Dougan (cort@hq.fsmlabs.com)&n; * and Paul Mackerras (paulus@linuxcare.com.au).&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file README.legal in the main directory of&n; * this archive for more details.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -11,203 +11,8 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-multiline_comment|/*&n; * Set of msr bits that gdb can change on behalf of a process.&n; */
-DECL|macro|MSR_DEBUGCHANGE
-mdefine_line|#define MSR_DEBUGCHANGE&t;(MSR_FE0 | MSR_SE | MSR_BE | MSR_FE1)
+macro_line|#include &lt;asm/ptrace-common.h&gt;
 multiline_comment|/*&n; * does not yet catch signals sent when the child dies.&n; * in exit.c or in signal.c.&n; */
-multiline_comment|/*&n; * Get contents of register REGNO in task TASK.&n; */
-DECL|function|get_reg
-r_static
-r_inline
-r_int
-r_int
-id|get_reg
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
-r_int
-id|regno
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|regno
-OL
-r_sizeof
-(paren
-r_struct
-id|pt_regs
-)paren
-op_div
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-r_return
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-id|task-&gt;thread.regs
-)paren
-(braket
-id|regno
-)braket
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Write contents of register REGNO in task TASK.&n; * (Put DATA into task TASK&squot;s register REGNO.)&n; */
-DECL|function|put_reg
-r_static
-r_inline
-r_int
-id|put_reg
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
-r_int
-id|regno
-comma
-r_int
-r_int
-id|data
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|regno
-OL
-id|PT_SOFTE
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|regno
-op_eq
-id|PT_MSR
-)paren
-id|data
-op_assign
-(paren
-id|data
-op_amp
-id|MSR_DEBUGCHANGE
-)paren
-op_or
-(paren
-id|task-&gt;thread.regs-&gt;msr
-op_amp
-op_complement
-id|MSR_DEBUGCHANGE
-)paren
-suffix:semicolon
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-id|task-&gt;thread.regs
-)paren
-(braket
-id|regno
-)braket
-op_assign
-id|data
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_void
-DECL|function|set_single_step
-id|set_single_step
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-)paren
-(brace
-r_struct
-id|pt_regs
-op_star
-id|regs
-op_assign
-id|task-&gt;thread.regs
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|regs
-op_ne
-l_int|NULL
-)paren
-id|regs-&gt;msr
-op_or_assign
-id|MSR_SE
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_void
-DECL|function|clear_single_step
-id|clear_single_step
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-)paren
-(brace
-r_struct
-id|pt_regs
-op_star
-id|regs
-op_assign
-id|task-&gt;thread.regs
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|regs
-op_ne
-l_int|NULL
-)paren
-id|regs-&gt;msr
-op_and_assign
-op_complement
-id|MSR_SE
-suffix:semicolon
-)brace
 DECL|function|sys32_ptrace
 r_int
 id|sys32_ptrace
@@ -387,7 +192,6 @@ c_cond
 id|request
 )paren
 (brace
-multiline_comment|/* Read word at location ADDR */
 multiline_comment|/* when I and D space are separate, these will need to be fixed. */
 r_case
 id|PTRACE_PEEKTEXT
@@ -399,7 +203,7 @@ suffix:colon
 (brace
 r_int
 r_int
-id|tmp_mem_value
+id|tmp
 suffix:semicolon
 r_int
 id|copied
@@ -414,11 +218,11 @@ comma
 id|addr
 comma
 op_amp
-id|tmp_mem_value
+id|tmp
 comma
 r_sizeof
 (paren
-id|tmp_mem_value
+id|tmp
 )paren
 comma
 l_int|0
@@ -436,7 +240,7 @@ id|copied
 op_ne
 r_sizeof
 (paren
-id|tmp_mem_value
+id|tmp
 )paren
 )paren
 r_break
@@ -446,7 +250,7 @@ op_assign
 id|put_user
 c_func
 (paren
-id|tmp_mem_value
+id|tmp
 comma
 (paren
 id|u32
@@ -455,15 +259,10 @@ op_star
 id|data
 )paren
 suffix:semicolon
-singleline_comment|// copy 4 bytes of data into the user location specified by the 8 byte pointer in &quot;data&quot;.
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Read 4 bytes of the other process&squot; storage */
-multiline_comment|/*  data is a pointer specifying where the user wants the 4 bytes copied into */
-multiline_comment|/*  addr is a pointer in the user&squot;s storage that contains an 8 byte address in the other process of the 4 bytes that is to be read */
-multiline_comment|/* (this is run in a 32-bit process looking at a 64-bit process) */
-multiline_comment|/* when I and D space are separate, these will need to be fixed. */
+multiline_comment|/*&n;&t; * Read 4 bytes of the other process&squot; storage&n;&t; *  data is a pointer specifying where the user wants the&n;&t; *&t;4 bytes copied into&n;&t; *  addr is a pointer in the user&squot;s storage that contains an 8 byte&n;&t; *&t;address in the other process of the 4 bytes that is to be read&n;&t; * (this is run in a 32-bit process looking at a 64-bit process)&n;&t; * when I and D space are separate, these will need to be fixed.&n;&t; */
 r_case
 id|PPC_PTRACE_PEEKTEXT_3264
 suffix:colon
@@ -472,7 +271,7 @@ id|PPC_PTRACE_PEEKDATA_3264
 suffix:colon
 (brace
 id|u32
-id|tmp_mem_value
+id|tmp
 suffix:semicolon
 r_int
 id|copied
@@ -520,11 +319,11 @@ id|u64
 id|addrOthers
 comma
 op_amp
-id|tmp_mem_value
+id|tmp
 comma
 r_sizeof
 (paren
-id|tmp_mem_value
+id|tmp
 )paren
 comma
 l_int|0
@@ -537,7 +336,7 @@ id|copied
 op_ne
 r_sizeof
 (paren
-id|tmp_mem_value
+id|tmp
 )paren
 )paren
 r_break
@@ -547,7 +346,7 @@ op_assign
 id|put_user
 c_func
 (paren
-id|tmp_mem_value
+id|tmp
 comma
 (paren
 id|u32
@@ -556,7 +355,6 @@ op_star
 id|data
 )paren
 suffix:semicolon
-singleline_comment|// copy 4 bytes of data into the user location specified by the 8 byte pointer in &quot;data&quot;.
 r_break
 suffix:semicolon
 )brace
@@ -570,11 +368,7 @@ id|index
 suffix:semicolon
 r_int
 r_int
-id|reg32bits
-suffix:semicolon
-r_int
-r_int
-id|tmp_reg_value
+id|tmp
 suffix:semicolon
 id|ret
 op_assign
@@ -601,9 +395,11 @@ op_amp
 l_int|3
 )paren
 op_logical_or
+(paren
 id|index
 OG
 id|PT_FPSCR32
+)paren
 )paren
 r_break
 suffix:semicolon
@@ -615,7 +411,7 @@ OL
 id|PT_FPR0
 )paren
 (brace
-id|tmp_reg_value
+id|tmp
 op_assign
 id|get_reg
 c_func
@@ -641,8 +437,8 @@ c_func
 id|child
 )paren
 suffix:semicolon
-multiline_comment|/* the user space code considers the floating point to be &n;&t;&t;&t; *   an array of unsigned int (32 bits) - the index passed &n;&t;&t;&t; *   in is based on this assumption.&n;&t;&t;&t; */
-id|tmp_reg_value
+multiline_comment|/*&n;&t;&t;&t; * the user space code considers the floating point&n;&t;&t;&t; * to be an array of unsigned int (32 bits) - the&n;&t;&t;&t; * index passed in is based on this assumption.&n;&t;&t;&t; */
+id|tmp
 op_assign
 (paren
 (paren
@@ -659,16 +455,16 @@ id|PT_FPR0
 )braket
 suffix:semicolon
 )brace
-id|reg32bits
-op_assign
-id|tmp_reg_value
-suffix:semicolon
 id|ret
 op_assign
 id|put_user
 c_func
 (paren
-id|reg32bits
+(paren
+r_int
+r_int
+)paren
+id|tmp
 comma
 (paren
 id|u32
@@ -677,14 +473,10 @@ op_star
 id|data
 )paren
 suffix:semicolon
-singleline_comment|// copy 4 bytes of data into the user location specified by the 8 byte pointer in &quot;data&quot;.
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Read 4 bytes out of the other process&squot; pt_regs area */
-multiline_comment|/*  data is a pointer specifying where the user wants the 4 bytes copied into */
-multiline_comment|/*  addr is the offset into the other process&squot; pt_regs structure that is to be read */
-multiline_comment|/* (this is run in a 32-bit process looking at a 64-bit process) */
+multiline_comment|/*&n;&t; * Read 4 bytes out of the other process&squot; pt_regs area&n;&t; *  data is a pointer specifying where the user wants the&n;&t; *&t;4 bytes copied into&n;&t; *  addr is the offset into the other process&squot; pt_regs structure&n;&t; *&t;that is to be read&n;&t; * (this is run in a 32-bit process looking at a 64-bit process)&n;&t; */
 r_case
 id|PPC_PTRACE_PEEKUSR_3264
 suffix:colon
@@ -696,7 +488,7 @@ id|u32
 id|reg32bits
 suffix:semicolon
 id|u64
-id|tmp_reg_value
+id|tmp
 suffix:semicolon
 id|u32
 id|numReg
@@ -719,7 +511,6 @@ id|addr
 op_rshift
 l_int|2
 suffix:semicolon
-multiline_comment|/* Divide addr by 4 */
 id|numReg
 op_assign
 id|index
@@ -783,7 +574,7 @@ id|child
 )paren
 suffix:semicolon
 )brace
-id|tmp_reg_value
+id|tmp
 op_assign
 id|get_reg
 c_func
@@ -801,7 +592,7 @@ id|u32
 op_star
 )paren
 op_amp
-id|tmp_reg_value
+id|tmp
 )paren
 (braket
 id|part
@@ -821,11 +612,9 @@ op_star
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/* copy 4 bytes of data into the user location specified by the 8 byte pointer in &quot;data&quot;. */
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Write the word at location ADDR */
 multiline_comment|/* If I and D space are separate, this will have to be fixed. */
 r_case
 id|PTRACE_POKETEXT
@@ -837,9 +626,9 @@ suffix:colon
 (brace
 r_int
 r_int
-id|tmp_value_to_write
+id|tmp
 suffix:semicolon
-id|tmp_value_to_write
+id|tmp
 op_assign
 id|data
 suffix:semicolon
@@ -858,11 +647,11 @@ comma
 id|addr
 comma
 op_amp
-id|tmp_value_to_write
+id|tmp
 comma
 r_sizeof
 (paren
-id|tmp_value_to_write
+id|tmp
 )paren
 comma
 l_int|1
@@ -870,7 +659,7 @@ l_int|1
 op_eq
 r_sizeof
 (paren
-id|tmp_value_to_write
+id|tmp
 )paren
 )paren
 r_break
@@ -883,11 +672,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Write 4 bytes into the other process&squot; storage */
-multiline_comment|/*  data is the 4 bytes that the user wants written */
-multiline_comment|/*  addr is a pointer in the user&squot;s storage that contains an 8 byte address in the other process where the 4 bytes that is to be written */
-multiline_comment|/* (this is run in a 32-bit process looking at a 64-bit process) */
-multiline_comment|/* when I and D space are separate, these will need to be fixed. */
+multiline_comment|/*&n;&t; * Write 4 bytes into the other process&squot; storage&n;&t; *  data is the 4 bytes that the user wants written&n;&t; *  addr is a pointer in the user&squot;s storage that contains an&n;&t; *&t;8 byte address in the other process where the 4 bytes&n;&t; *&t;that is to be written&n;&t; * (this is run in a 32-bit process looking at a 64-bit process)&n;&t; * when I and D space are separate, these will need to be fixed.&n;&t; */
 r_case
 id|PPC_PTRACE_POKETEXT_3264
 suffix:colon
@@ -896,16 +681,13 @@ id|PPC_PTRACE_POKEDATA_3264
 suffix:colon
 (brace
 id|u32
-id|tmp_value_to_write
+id|tmp
 op_assign
 id|data
 suffix:semicolon
 id|u32
 op_star
 id|addrOthers
-suffix:semicolon
-r_int
-id|bytesWritten
 suffix:semicolon
 multiline_comment|/* Get the addr in the other process that we want to write into */
 id|ret
@@ -937,8 +719,9 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|bytesWritten
-op_assign
+r_if
+c_cond
+(paren
 id|access_process_vm
 c_func
 (paren
@@ -950,24 +733,19 @@ id|u64
 id|addrOthers
 comma
 op_amp
-id|tmp_value_to_write
+id|tmp
 comma
 r_sizeof
 (paren
-id|tmp_value_to_write
+id|tmp
 )paren
 comma
 l_int|1
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|bytesWritten
 op_eq
 r_sizeof
 (paren
-id|tmp_value_to_write
+id|tmp
 )paren
 )paren
 r_break
@@ -980,7 +758,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Write DATA into location ADDR within the USER area  */
+multiline_comment|/* write the word at location addr in the USER area */
 r_case
 id|PTRACE_POKEUSR
 suffix:colon
@@ -1014,9 +792,11 @@ op_amp
 l_int|3
 )paren
 op_logical_or
+(paren
 id|index
 OG
 id|PT_FPSCR32
+)paren
 )paren
 r_break
 suffix:semicolon
@@ -1065,7 +845,7 @@ c_func
 id|child
 )paren
 suffix:semicolon
-multiline_comment|/* the user space code considers the floating point to be &n;       *   an array of unsigned int (32 bits) - the index passed &n;       *   in is based on this assumption.&n;       */
+multiline_comment|/*&n;&t;&t;&t; * the user space code considers the floating point&n;&t;&t;&t; * to be an array of unsigned int (32 bits) - the&n;&t;&t;&t; * index passed in is based on this assumption.&n;&t;&t;&t; */
 (paren
 (paren
 r_int
@@ -1090,10 +870,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Write 4 bytes into the other process&squot; pt_regs area */
-multiline_comment|/*  data is the 4 bytes that the user wants written */
-multiline_comment|/*  addr is the offset into the other process&squot; pt_regs structure that is to be written into */
-multiline_comment|/* (this is run in a 32-bit process looking at a 64-bit process) */
+multiline_comment|/*&n;&t; * Write 4 bytes into the other process&squot; pt_regs area&n;&t; *  data is the 4 bytes that the user wants written&n;&t; *  addr is the offset into the other process&squot; pt_regs structure&n;&t; *&t;that is to be written into&n;&t; * (this is run in a 32-bit process looking at a 64-bit process)&n;&t; */
 r_case
 id|PPC_PTRACE_POKEUSR_3264
 suffix:colon
@@ -1119,14 +896,13 @@ id|addr
 op_rshift
 l_int|2
 suffix:semicolon
-multiline_comment|/* Divide addr by 4 */
 id|numReg
 op_assign
 id|index
 op_div
 l_int|2
 suffix:semicolon
-multiline_comment|/* Validate the input - check to see if address is on the wrong boundary or beyond the end of the user area */
+multiline_comment|/*&n;&t;&t; * Validate the input - check to see if address is on the&n;&t;&t; * wrong boundary or beyond the end of the user area&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1136,9 +912,11 @@ op_amp
 l_int|3
 )paren
 op_logical_or
+(paren
 id|numReg
 OG
 id|PT_FPSCR
+)paren
 )paren
 r_break
 suffix:semicolon
@@ -1307,7 +1085,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * make the child exit.  Best I can do is send it a sigkill. &n;&t; * perhaps it should be put in the status that it wants to &n;&t; * exit.&n;&t; */
+multiline_comment|/*&n;&t; * make the child exit.  Best I can do is send it a sigkill.&n;&t; * perhaps it should be put in the status that it wants to&n;&t; * exit.&n;&t; */
 r_case
 id|PTRACE_KILL
 suffix:colon
