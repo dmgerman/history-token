@@ -500,7 +500,9 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* linux/mm/rmap.c */
-r_extern
+r_struct
+id|pte_chain
+suffix:semicolon
 r_int
 id|FASTCALL
 c_func
@@ -514,8 +516,9 @@ op_star
 )paren
 )paren
 suffix:semicolon
-r_extern
-r_void
+r_struct
+id|pte_chain
+op_star
 id|FASTCALL
 c_func
 (paren
@@ -528,10 +531,13 @@ op_star
 comma
 id|pte_t
 op_star
+comma
+r_struct
+id|pte_chain
+op_star
 )paren
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|FASTCALL
 c_func
@@ -548,7 +554,6 @@ op_star
 )paren
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|FASTCALL
 c_func
@@ -562,7 +567,6 @@ op_star
 )paren
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|FASTCALL
 c_func
