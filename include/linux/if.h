@@ -4,6 +4,7 @@ DECL|macro|_LINUX_IF_H
 mdefine_line|#define _LINUX_IF_H
 macro_line|#include &lt;linux/types.h&gt;&t;&t;/* for &quot;__kernel_caddr_t&quot; et al&t;*/
 macro_line|#include &lt;linux/socket.h&gt;&t;&t;/* for &quot;struct sockaddr&quot; et al&t;*/
+macro_line|#include &lt;linux/compiler.h&gt;&t;&t;/* for &quot;__user&quot; et al           */
 DECL|macro|IFNAMSIZ
 mdefine_line|#define&t;IFNAMSIZ&t;16
 macro_line|#include &lt;linux/hdlc/ioctl.h&gt;
