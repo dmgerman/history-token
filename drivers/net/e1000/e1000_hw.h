@@ -33,6 +33,12 @@ comma
 DECL|enumerator|e1000_82540
 id|e1000_82540
 comma
+DECL|enumerator|e1000_82545
+id|e1000_82545
+comma
+DECL|enumerator|e1000_82546
+id|e1000_82546
+comma
 DECL|enumerator|e1000_num_macs
 id|e1000_num_macs
 DECL|typedef|e1000_mac_type
@@ -818,6 +824,23 @@ id|hw
 )paren
 suffix:semicolon
 r_void
+id|e1000_read_pci_cfg
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+comma
+r_uint32
+id|reg
+comma
+r_uint16
+op_star
+id|value
+)paren
+suffix:semicolon
+r_void
 id|e1000_write_pci_cfg
 c_func
 (paren
@@ -853,8 +876,16 @@ DECL|macro|E1000_DEV_ID_82540EM
 mdefine_line|#define E1000_DEV_ID_82540EM        0x100E
 DECL|macro|E1000_DEV_ID_82540EM_LOM
 mdefine_line|#define E1000_DEV_ID_82540EM_LOM    0x1015
+DECL|macro|E1000_DEV_ID_82545EM_COPPER
+mdefine_line|#define E1000_DEV_ID_82545EM_COPPER 0x100F
+DECL|macro|E1000_DEV_ID_82545EM_FIBER
+mdefine_line|#define E1000_DEV_ID_82545EM_FIBER  0x1011
+DECL|macro|E1000_DEV_ID_82546EB_COPPER
+mdefine_line|#define E1000_DEV_ID_82546EB_COPPER 0x1010
+DECL|macro|E1000_DEV_ID_82546EB_FIBER
+mdefine_line|#define E1000_DEV_ID_82546EB_FIBER  0x1012
 DECL|macro|NUM_DEV_IDS
-mdefine_line|#define NUM_DEV_IDS 9
+mdefine_line|#define NUM_DEV_IDS 13
 DECL|macro|NODE_ADDRESS_SIZE
 mdefine_line|#define NODE_ADDRESS_SIZE 6
 DECL|macro|ETH_LENGTH_OF_ADDRESS
@@ -2231,9 +2262,17 @@ DECL|member|tx_packet_delta
 r_uint32
 id|tx_packet_delta
 suffix:semicolon
-DECL|member|ledctl
+DECL|member|ledctl_default
 r_uint32
-id|ledctl
+id|ledctl_default
+suffix:semicolon
+DECL|member|ledctl_mode1
+r_uint32
+id|ledctl_mode1
+suffix:semicolon
+DECL|member|ledctl_mode2
+r_uint32
+id|ledctl_mode2
 suffix:semicolon
 DECL|member|autoneg_advertised
 r_uint16
@@ -3082,14 +3121,41 @@ mdefine_line|#define EEPROM_EWEN_OPCODE  0x13 /* EERPOM erase/write enable */
 DECL|macro|EEPROM_EWDS_OPCODE
 mdefine_line|#define EEPROM_EWDS_OPCODE  0x10 /* EERPOM erast/write disable */
 multiline_comment|/* EEPROM Word Offsets */
+DECL|macro|EEPROM_ID_LED_SETTINGS
+mdefine_line|#define EEPROM_ID_LED_SETTINGS     0x0004
 DECL|macro|EEPROM_INIT_CONTROL1_REG
-mdefine_line|#define EEPROM_INIT_CONTROL1_REG 0x000A
+mdefine_line|#define EEPROM_INIT_CONTROL1_REG   0x000A
 DECL|macro|EEPROM_INIT_CONTROL2_REG
-mdefine_line|#define EEPROM_INIT_CONTROL2_REG 0x000F
+mdefine_line|#define EEPROM_INIT_CONTROL2_REG   0x000F
 DECL|macro|EEPROM_FLASH_VERSION
-mdefine_line|#define EEPROM_FLASH_VERSION     0x0032
+mdefine_line|#define EEPROM_FLASH_VERSION       0x0032
 DECL|macro|EEPROM_CHECKSUM_REG
-mdefine_line|#define EEPROM_CHECKSUM_REG      0x003F
+mdefine_line|#define EEPROM_CHECKSUM_REG        0x003F
+multiline_comment|/* Word definitions for ID LED Settings */
+DECL|macro|ID_LED_RESERVED_0000
+mdefine_line|#define ID_LED_RESERVED_0000 0x0000
+DECL|macro|ID_LED_RESERVED_FFFF
+mdefine_line|#define ID_LED_RESERVED_FFFF 0xFFFF
+DECL|macro|ID_LED_DEFAULT
+mdefine_line|#define ID_LED_DEFAULT       ((ID_LED_OFF1_ON2 &lt;&lt; 12) | &bslash;&n;&t;&t;              (ID_LED_OFF1_OFF2 &lt;&lt; 8) | &bslash;&n;&t;&t;              (ID_LED_DEF1_DEF2 &lt;&lt; 4) | &bslash;&n;&t;&t;&t;      (ID_LED_DEF1_DEF2))
+DECL|macro|ID_LED_DEF1_DEF2
+mdefine_line|#define ID_LED_DEF1_DEF2     0x1
+DECL|macro|ID_LED_DEF1_ON2
+mdefine_line|#define ID_LED_DEF1_ON2      0x2
+DECL|macro|ID_LED_DEF1_OFF2
+mdefine_line|#define ID_LED_DEF1_OFF2     0x3
+DECL|macro|ID_LED_ON1_DEF2
+mdefine_line|#define ID_LED_ON1_DEF2      0x4
+DECL|macro|ID_LED_ON1_ON2
+mdefine_line|#define ID_LED_ON1_ON2       0x5
+DECL|macro|ID_LED_ON1_OFF2
+mdefine_line|#define ID_LED_ON1_OFF2      0x6
+DECL|macro|ID_LED_OFF1_DEF2
+mdefine_line|#define ID_LED_OFF1_DEF2     0x7
+DECL|macro|ID_LED_OFF1_ON2
+mdefine_line|#define ID_LED_OFF1_ON2      0x8
+DECL|macro|ID_LED_OFF1_OFF2
+mdefine_line|#define ID_LED_OFF1_OFF2     0x9
 multiline_comment|/* Mask bits for fields in Word 0x0a of the EEPROM */
 DECL|macro|EEPROM_WORD0A_ILOS
 mdefine_line|#define EEPROM_WORD0A_ILOS   0x0010
@@ -3216,6 +3282,21 @@ DECL|macro|FC_DEFAULT_LO_THRESH
 mdefine_line|#define FC_DEFAULT_LO_THRESH        (0x4000)    /* 16KB */
 DECL|macro|FC_DEFAULT_TX_TIMER
 mdefine_line|#define FC_DEFAULT_TX_TIMER         (0x100)     /* ~130 us */
+multiline_comment|/* PCIX Config space */
+DECL|macro|PCIX_COMMAND_REGISTER
+mdefine_line|#define PCIX_COMMAND_REGISTER    0xE6
+DECL|macro|PCIX_STATUS_REGISTER_LO
+mdefine_line|#define PCIX_STATUS_REGISTER_LO  0xE8
+DECL|macro|PCIX_STATUS_REGISTER_HI
+mdefine_line|#define PCIX_STATUS_REGISTER_HI  0xEA
+DECL|macro|PCIX_COMMAND_MMRBC_MASK
+mdefine_line|#define PCIX_COMMAND_MMRBC_MASK      0x000C
+DECL|macro|PCIX_COMMAND_MMRBC_SHIFT
+mdefine_line|#define PCIX_COMMAND_MMRBC_SHIFT     0x2
+DECL|macro|PCIX_STATUS_HI_MMRBC_MASK
+mdefine_line|#define PCIX_STATUS_HI_MMRBC_MASK    0x0060
+DECL|macro|PCIX_STATUS_HI_MMRBC_SHIFT
+mdefine_line|#define PCIX_STATUS_HI_MMRBC_SHIFT   0x5
 multiline_comment|/* The number of bits that we need to shift right to move the &quot;pause&quot;&n; * bits from the EEPROM (bits 13:12) to the &quot;pause&quot; (bits 8:7) field&n; * in the TXCW register &n; */
 DECL|macro|PAUSE_SHIFT
 mdefine_line|#define PAUSE_SHIFT 5
