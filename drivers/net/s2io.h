@@ -1643,7 +1643,9 @@ id|tasklet_struct
 id|task
 suffix:semicolon
 DECL|member|tasklet_status
-id|atomic_t
+r_volatile
+r_int
+r_int
 id|tasklet_status
 suffix:semicolon
 DECL|member|timer
@@ -1897,6 +1899,20 @@ macro_line|#endif
 DECL|member|task_flag
 r_int
 id|task_flag
+suffix:semicolon
+DECL|macro|CARD_DOWN
+mdefine_line|#define CARD_DOWN 1
+DECL|macro|CARD_UP
+mdefine_line|#define CARD_UP 2
+DECL|member|card_state
+id|atomic_t
+id|card_state
+suffix:semicolon
+DECL|member|link_state
+r_volatile
+r_int
+r_int
+id|link_state
 suffix:semicolon
 DECL|typedef|nic_t
 )brace
@@ -2483,6 +2499,26 @@ c_func
 r_int
 r_int
 id|data
+)paren
+suffix:semicolon
+r_static
+r_void
+id|s2io_card_down
+c_func
+(paren
+id|nic_t
+op_star
+id|nic
+)paren
+suffix:semicolon
+r_static
+r_int
+id|s2io_card_up
+c_func
+(paren
+id|nic_t
+op_star
+id|nic
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _S2IO_H */
