@@ -4987,12 +4987,6 @@ id|power_state
 r_case
 id|SNDRV_CTL_POWER_D0
 suffix:colon
-r_case
-id|SNDRV_CTL_POWER_D1
-suffix:colon
-r_case
-id|SNDRV_CTL_POWER_D2
-suffix:colon
 r_if
 c_cond
 (paren
@@ -5000,6 +4994,7 @@ id|card-&gt;power_state
 op_ne
 id|power_state
 )paren
+(brace
 multiline_comment|/* FIXME: pass the correct state value */
 id|card
 op_member_access_from_pointer
@@ -5011,13 +5006,19 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|snd_power_change_state
+c_func
+(paren
+id|card
+comma
+id|power_state
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
 id|SNDRV_CTL_POWER_D3hot
-suffix:colon
-r_case
-id|SNDRV_CTL_POWER_D3cold
 suffix:colon
 r_if
 c_cond
@@ -5026,6 +5027,7 @@ id|card-&gt;power_state
 op_ne
 id|power_state
 )paren
+(brace
 multiline_comment|/* FIXME: pass the correct state value */
 id|card
 op_member_access_from_pointer
@@ -5037,8 +5039,27 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|snd_power_change_state
+c_func
+(paren
+id|card
+comma
+id|power_state
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
+r_case
+id|SNDRV_CTL_POWER_D1
+suffix:colon
+r_case
+id|SNDRV_CTL_POWER_D2
+suffix:colon
+r_case
+id|SNDRV_CTL_POWER_D3cold
+suffix:colon
+multiline_comment|/* not supported yet */
 r_default
 suffix:colon
 r_return

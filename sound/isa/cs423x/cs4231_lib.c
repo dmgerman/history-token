@@ -7797,7 +7797,6 @@ c_cond
 (paren
 id|chip-&gt;suspend
 )paren
-(brace
 id|chip
 op_member_access_from_pointer
 id|suspend
@@ -7806,15 +7805,6 @@ c_func
 id|chip
 )paren
 suffix:semicolon
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D3hot
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -7845,7 +7835,6 @@ c_cond
 (paren
 id|chip-&gt;resume
 )paren
-(brace
 id|chip
 op_member_access_from_pointer
 id|resume
@@ -7854,15 +7843,6 @@ c_func
 id|chip
 )paren
 suffix:semicolon
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D0
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
