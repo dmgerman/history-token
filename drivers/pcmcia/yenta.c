@@ -3882,7 +3882,7 @@ comma
 l_int|0x0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This does not work currently. The controller&n;&t; * loses too much informationduring D3 to come up&n;&t; * cleanly. We should probably fix yenta_init()&n;&t; * to update all the critical registers, notably&n;&t; * the IO and MEM bridging region data.. That is&n;&t; * something that pci_set_power_state() should&n;&t; * probably know about bridges anyway.&n;&t; *&n;&t;pci_set_power_state(socket-&gt;dev, 3);&n;&t; */
+multiline_comment|/*&n;&t; * This does not work currently. The controller&n;&t; * loses too much information during D3 to come up&n;&t; * cleanly. We should probably fix yenta_init()&n;&t; * to update all the critical registers, notably&n;&t; * the IO and MEM bridging region data.. That is&n;&t; * something that pci_set_power_state() should&n;&t; * probably know about bridges anyway.&n;&t; *&n;&t;pci_set_power_state(socket-&gt;dev, 3);&n;&t; */
 r_return
 l_int|0
 suffix:semicolon
