@@ -1048,8 +1048,6 @@ comma
 id|offset
 op_assign
 id|board-&gt;first_offset
-comma
-id|maxnr
 suffix:semicolon
 id|bar
 op_assign
