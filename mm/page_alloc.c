@@ -128,7 +128,6 @@ l_int|255
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Free_page() adds the page to the free lists. This is optimized for&n; * fast normal cases (no error jumps taken normally).&n; *&n; * The way to optimize jumps for gcc-2.2.2 is to:&n; *  - select the &quot;normal&quot; case and put it inside the if () { XXX }&n; *  - no else-statements if you can avoid them&n; *&n; * With the above two rules, you get a straight-line execution path&n; * for the normal case, giving better asm-code.&n; */
 DECL|macro|memlist_init
 mdefine_line|#define memlist_init(x) INIT_LIST_HEAD(x)
 DECL|macro|memlist_add_head
