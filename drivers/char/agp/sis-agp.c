@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SiS AGPGART routines. &n; */
+multiline_comment|/*&n; * SiS AGPGART routines.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -352,6 +352,8 @@ op_assign
 id|agp_collect_device_status
 c_func
 (paren
+id|agp_bridge
+comma
 id|mode
 comma
 id|command
@@ -424,7 +426,7 @@ comma
 id|command
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Weird: on some sis chipsets any rate change in the target&n;&t;&t; * command register triggers a 5ms screwup during which the master&n;&t;&t; * cannot be configured&t;&t; &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Weird: on some sis chipsets any rate change in the target&n;&t;&t; * command register triggers a 5ms screwup during which the master&n;&t;&t; * cannot be configured&n;&t;&t; */
 r_if
 c_cond
 (paren

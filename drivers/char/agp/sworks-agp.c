@@ -1866,6 +1866,8 @@ op_assign
 id|agp_collect_device_status
 c_func
 (paren
+id|agp_bridge
+comma
 id|mode
 comma
 id|command
