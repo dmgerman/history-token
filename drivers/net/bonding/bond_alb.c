@@ -853,6 +853,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Caller must hold bond lock for read */
 DECL|function|tlb_choose_channel
+r_static
 r_struct
 id|slave
 op_star
@@ -2280,6 +2281,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Caller must hold both bond and ptr locks for read */
 DECL|function|rlb_choose_channel
+r_static
 r_struct
 id|slave
 op_star
