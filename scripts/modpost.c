@@ -1796,6 +1796,14 @@ c_func
 (paren
 id|b
 comma
+l_string|&quot;#include &lt;linux/compiler.h&gt;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|buf_printf
+c_func
+(paren
+id|b
+comma
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2104,6 +2112,14 @@ c_func
 id|b
 comma
 l_string|&quot;static const char __module_depends[]&bslash;n&quot;
+)paren
+suffix:semicolon
+id|buf_printf
+c_func
+(paren
+id|b
+comma
+l_string|&quot;__attribute_used__&bslash;n&quot;
 )paren
 suffix:semicolon
 id|buf_printf
