@@ -871,6 +871,8 @@ comma
 r_int
 )paren
 id|emu-&gt;fx8010.etram_pages.bytes
+op_div
+l_int|2
 )paren
 suffix:semicolon
 id|snd_iprintf

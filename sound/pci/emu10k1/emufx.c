@@ -17449,6 +17449,8 @@ suffix:semicolon
 id|info-&gt;external_tram_size
 op_assign
 id|emu-&gt;fx8010.etram_pages.bytes
+op_div
+l_int|2
 suffix:semicolon
 id|fxbus
 op_assign
