@@ -5606,7 +5606,7 @@ id|p
 r_return
 id|p-&gt;prio
 op_minus
-id|MAX_USER_RT_PRIO
+id|MAX_RT_PRIO
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * task_nice - return the nice value of a given task.&n; * @p: the task in question.&n; */
