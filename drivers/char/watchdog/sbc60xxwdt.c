@@ -1057,6 +1057,30 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|timeout
+template_param
+l_int|3600
+)paren
+multiline_comment|/* arbitrary upper limit */
+(brace
+id|timeout
+op_assign
+id|WATCHDOG_TIMEOUT
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;timeout value must be 1&lt;=x&lt;=3600, using %d&bslash;n&quot;
+comma
+id|timeout
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 op_logical_neg
 id|request_region
 c_func
@@ -1134,30 +1158,6 @@ r_goto
 id|err_out_region1
 suffix:semicolon
 )brace
-)brace
-r_if
-c_cond
-(paren
-id|timeout
-template_param
-l_int|3600
-)paren
-multiline_comment|/* arbitrary upper limit */
-(brace
-id|timeout
-op_assign
-id|WATCHDOG_TIMEOUT
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;timeout value must be 1&lt;=x&lt;=3600, using %d&bslash;n&quot;
-comma
-id|timeout
-)paren
-suffix:semicolon
 )brace
 id|init_timer
 c_func
@@ -1239,7 +1239,11 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;WDT driver for 60XX single board computer initialised.&bslash;n&quot;
+l_string|&quot;WDT driver for 60XX single board computer initialised. timeout=%d sec (nowayout=%d)&bslash;n&quot;
+comma
+id|timeout
+comma
+id|nowayout
 )paren
 suffix:semicolon
 r_return
