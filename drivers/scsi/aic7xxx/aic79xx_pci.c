@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Product specific probe and attach routines for:&n; *&t;aic7901 and aic7902 SCSI controllers&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx_pci.c#60 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Product specific probe and attach routines for:&n; *&t;aic7901 and aic7902 SCSI controllers&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx_pci.c#61 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifdef __linux__
 macro_line|#include &quot;aic79xx_osm.h&quot;
 macro_line|#include &quot;aic79xx_inline.h&quot;
@@ -1007,11 +1007,14 @@ id|ahd
 id|ahd_mode_state
 id|saved_modes
 suffix:semicolon
+r_uint32
+id|cmd
+suffix:semicolon
 r_int
 id|error
 suffix:semicolon
 r_uint8
-id|seqctl
+id|hcntrl
 suffix:semicolon
 id|saved_modes
 op_assign
@@ -1025,15 +1028,80 @@ id|error
 op_assign
 id|EIO
 suffix:semicolon
-multiline_comment|/* Enable PCI error interrupt status */
-id|seqctl
+multiline_comment|/*&n;&t; * Enable PCI error interrupt status, but suppress NMIs&n;&t; * generated by SERR raised due to target aborts.&n;&t; */
+id|cmd
+op_assign
+id|ahd_pci_read_config
+c_func
+(paren
+id|ahd-&gt;dev_softc
+comma
+id|PCIR_COMMAND
+comma
+multiline_comment|/*bytes*/
+l_int|2
+)paren
+suffix:semicolon
+id|ahd_pci_write_config
+c_func
+(paren
+id|ahd-&gt;dev_softc
+comma
+id|PCIR_COMMAND
+comma
+id|cmd
+op_amp
+op_complement
+id|PCIM_CMD_SERRESPEN
+comma
+multiline_comment|/*bytes*/
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * First a simple test to see if any&n;&t; * registers can be read.  Reading&n;&t; * HCNTRL has no side effects and has&n;&t; * at least one bit that is guaranteed to&n;&t; * be zero so it is a good register to&n;&t; * use for this test.&n;&t; */
+id|hcntrl
 op_assign
 id|ahd_inb
 c_func
 (paren
 id|ahd
 comma
-id|SEQCTL0
+id|HCNTRL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hcntrl
+op_eq
+l_int|0xFF
+)paren
+r_goto
+id|fail
+suffix:semicolon
+multiline_comment|/*&n;&t; * Next create a situation where write combining&n;&t; * or read prefetching could be initiated by the&n;&t; * CPU or host bridge.  Our device does not support&n;&t; * either, so look for data corruption and/or flaged&n;&t; * PCI errors.&n;&t; */
+id|ahd_outb
+c_func
+(paren
+id|ahd
+comma
+id|HCNTRL
+comma
+id|hcntrl
+op_or
+id|PAUSE
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|ahd_is_paused
+c_func
+(paren
+id|ahd
+)paren
+op_eq
+l_int|0
 )paren
 suffix:semicolon
 id|ahd_outb
@@ -1043,30 +1111,9 @@ id|ahd
 comma
 id|SEQCTL0
 comma
-id|seqctl
-op_amp
-op_complement
-id|FAILDIS
+id|PERRORDIS
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * First a simple test to see if any&n;&t; * registers can be read.  Reading&n;&t; * HCNTRL has no side effects and has&n;&t; * at least one bit that is guaranteed to&n;&t; * be zero so it is a good register to&n;&t; * use for this test.&n;&t; */
-r_if
-c_cond
-(paren
-id|ahd_inb
-c_func
-(paren
-id|ahd
-comma
-id|HCNTRL
-)paren
-op_eq
-l_int|0xFF
-)paren
-r_goto
-id|fail
-suffix:semicolon
-multiline_comment|/*&n;&t; * Next create a situation where write combining&n;&t; * or read prefetching could be initiated by the&n;&t; * CPU or host bridge.  Our device does not support&n;&t; * either, so look for data corruption and/or flaged&n;&t; * PCI errors.&n;&t; */
 id|ahd_outl
 c_func
 (paren
@@ -1266,7 +1313,22 @@ id|ahd
 comma
 id|SEQCTL0
 comma
-id|seqctl
+id|PERRORDIS
+op_or
+id|FAILDIS
+)paren
+suffix:semicolon
+id|ahd_pci_write_config
+c_func
+(paren
+id|ahd-&gt;dev_softc
+comma
+id|PCIR_COMMAND
+comma
+id|cmd
+comma
+multiline_comment|/*bytes*/
+l_int|2
 )paren
 suffix:semicolon
 r_return
