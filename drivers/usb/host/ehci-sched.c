@@ -864,7 +864,13 @@ op_assign
 id|QH_STATE_IDLE
 suffix:semicolon
 multiline_comment|/* update per-qh bandwidth utilization (for usbfs) */
-id|ehci-&gt;hcd.self.bandwidth_allocated
+id|hcd_to_bus
+(paren
+op_amp
+id|ehci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_allocated
 op_sub_assign
 (paren
 id|qh-&gt;usecs
@@ -1439,7 +1445,13 @@ id|ehci-&gt;periodic_size
 )paren
 suffix:semicolon
 multiline_comment|/* update per-qh bandwidth for usbfs */
-id|ehci-&gt;hcd.self.bandwidth_allocated
+id|hcd_to_bus
+(paren
+op_amp
+id|ehci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_allocated
 op_add_assign
 (paren
 id|qh-&gt;usecs
@@ -1664,7 +1676,13 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* ... update usbfs periodic stats */
-id|ehci-&gt;hcd.self.bandwidth_int_reqs
+id|hcd_to_bus
+(paren
+op_amp
+id|ehci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_int_reqs
 op_increment
 suffix:semicolon
 id|done

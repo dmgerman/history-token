@@ -647,7 +647,13 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* ... update hc-wide periodic stats (for usbfs) */
-id|ehci-&gt;hcd.self.bandwidth_int_reqs
+id|hcd_to_bus
+(paren
+op_amp
+id|ehci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_int_reqs
 op_decrement
 suffix:semicolon
 macro_line|#ifdef&t;INTR_AUTOMAGIC
@@ -800,7 +806,7 @@ id|dev
 suffix:semicolon
 id|status
 op_assign
-id|usb_submit_urb
+id|SUBMIT_URB
 (paren
 id|resubmit
 comma
@@ -2484,9 +2490,9 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-macro_line|#ifdef DEBUG
 r_default
 suffix:colon
+macro_line|#ifdef DEBUG
 id|BUG
 (paren
 )paren
@@ -3202,7 +3208,13 @@ id|vdbg
 (paren
 l_string|&quot;%s: submit_async urb %p len %d ep %d-%s qtd %p [qh %p]&quot;
 comma
-id|ehci-&gt;hcd.self.bus_name
+id|hcd_to_bus
+(paren
+op_amp
+id|ehci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bus_name
 comma
 id|urb
 comma
