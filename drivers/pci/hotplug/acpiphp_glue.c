@@ -3989,6 +3989,50 @@ id|objname
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|ACPI_NOTIFY_FREQUENCY_MISMATCH
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Device %s cannot be configured due&quot;
+l_string|&quot; to a frequency mismatch&bslash;n&quot;
+comma
+id|objname
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_NOTIFY_BUS_MODE_MISMATCH
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Device %s cannot be configured due&quot;
+l_string|&quot; to a bus mode mismatch&bslash;n&quot;
+comma
+id|objname
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_NOTIFY_POWER_FAULT
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Device %s has suffered a power fault&bslash;n&quot;
+comma
+id|objname
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|warn
