@@ -309,6 +309,7 @@ op_assign
 l_int|2
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_if
