@@ -406,10 +406,11 @@ id|dev
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * pci_find_subsys - begin or continue searching for a PCI device by vendor/subvendor/device/subdevice id&n; * @vendor: PCI vendor id to match, or %PCI_ANY_ID to match all vendor ids&n; * @device: PCI device id to match, or %PCI_ANY_ID to match all device ids&n; * @ss_vendor: PCI subsystem vendor id to match, or %PCI_ANY_ID to match all vendor ids&n; * @ss_device: PCI subsystem device id to match, or %PCI_ANY_ID to match all device ids&n; * @from: Previous PCI device found in search, or %NULL for new search.&n; *&n; * Iterates through the list of known PCI devices.  If a PCI device is&n; * found with a matching @vendor, @device, @ss_vendor and @ss_device, a pointer to its&n; * device structure is returned.  Otherwise, %NULL is returned.&n; * A new search is initiated by passing %NULL to the @from argument.&n; * Otherwise if @from is not %NULL, searches continue from next device on the global list.&n; *&n; * NOTE: Do not use this function anymore, use pci_get_subsys() instead, as&n; * the pci device returned by this function can disappear at any moment in&n; * time.&n; */
+DECL|function|pci_find_subsys
+r_static
 r_struct
 id|pci_dev
 op_star
-DECL|function|pci_find_subsys
 id|pci_find_subsys
 c_func
 (paren
@@ -1065,13 +1066,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pci_find_slot
-)paren
-suffix:semicolon
-DECL|variable|pci_find_subsys
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_find_subsys
 )paren
 suffix:semicolon
 DECL|variable|pci_get_device
