@@ -3631,7 +3631,7 @@ multiline_comment|/* Give the device some time to recover from the reset,&n; &t;
 id|wait_event_interruptible_timeout
 c_func
 (paren
-id|us-&gt;dev_reset_wait
+id|us-&gt;delay_wait
 comma
 id|test_bit
 c_func

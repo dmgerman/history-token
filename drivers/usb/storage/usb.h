@@ -325,29 +325,18 @@ r_struct
 id|semaphore
 id|sema
 suffix:semicolon
-multiline_comment|/* to sleep thread on   */
+multiline_comment|/* to sleep thread on&t;    */
 DECL|member|notify
 r_struct
 id|completion
 id|notify
 suffix:semicolon
-multiline_comment|/* thread begin/end&t; */
-DECL|member|dev_reset_wait
+multiline_comment|/* thread begin/end&t;    */
+DECL|member|delay_wait
 id|wait_queue_head_t
-id|dev_reset_wait
+id|delay_wait
 suffix:semicolon
-multiline_comment|/* wait during reset    */
-DECL|member|scsi_scan_wait
-id|wait_queue_head_t
-id|scsi_scan_wait
-suffix:semicolon
-multiline_comment|/* wait before scanning */
-DECL|member|scsi_scan_done
-r_struct
-id|completion
-id|scsi_scan_done
-suffix:semicolon
-multiline_comment|/* scan thread end&t; */
+multiline_comment|/* wait during scan, reset */
 multiline_comment|/* subdriver information */
 DECL|member|extra
 r_void

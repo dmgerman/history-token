@@ -2752,7 +2752,7 @@ suffix:colon
 id|wait_event_interruptible_timeout
 c_func
 (paren
-id|us-&gt;scsi_scan_wait
+id|us-&gt;delay_wait
 comma
 id|test_bit
 c_func
@@ -2976,21 +2976,7 @@ id|init_waitqueue_head
 c_func
 (paren
 op_amp
-id|us-&gt;dev_reset_wait
-)paren
-suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|us-&gt;scsi_scan_wait
-)paren
-suffix:semicolon
-id|init_completion
-c_func
-(paren
-op_amp
-id|us-&gt;scsi_scan_done
+id|us-&gt;delay_wait
 )paren
 suffix:semicolon
 multiline_comment|/* Associate the us_data structure with the USB device */
@@ -3335,7 +3321,7 @@ c_func
 l_string|&quot;storage_disconnect() called&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Prevent new USB transfers, stop the current command, and&n;&t; * interrupt a device-reset delay */
+multiline_comment|/* Prevent new USB transfers, stop the current command, and&n;&t; * interrupt a SCSI-scan or device-reset delay */
 id|set_bit
 c_func
 (paren
@@ -3355,17 +3341,10 @@ id|wake_up
 c_func
 (paren
 op_amp
-id|us-&gt;dev_reset_wait
+id|us-&gt;delay_wait
 )paren
 suffix:semicolon
-multiline_comment|/* Interrupt the SCSI-device-scanning thread&squot;s time delay */
-id|wake_up
-c_func
-(paren
-op_amp
-id|us-&gt;scsi_scan_wait
-)paren
-suffix:semicolon
+multiline_comment|/* It doesn&squot;t matter if the SCSI-scanning thread is still running.&n;&t; * The thread will exit when it sees the DISCONNECTING flag. */
 multiline_comment|/* Wait for the current command to finish, then remove the host */
 id|down
 c_func
