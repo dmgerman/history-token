@@ -5741,6 +5741,16 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|temp
+comma
+l_int|0
+comma
+id|mem.len
+)paren
+suffix:semicolon
 id|sdla_read
 c_func
 (paren
