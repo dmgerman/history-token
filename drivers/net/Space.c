@@ -909,7 +909,7 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-macro_line|#if defined(CONFIG_NE2000) || defined(CONFIG_NE2K_CBUS)&t;/* ISA &amp; PC-9800 CBUS (use ne2k-pci for PCI cards) */
+macro_line|#if defined(CONFIG_NE2000) || defined(CONFIG_NE2K_CBUS)&t;|| &bslash;&n;    defined(CONFIG_NE_H8300)  /* ISA &amp; PC-9800 CBUS (use ne2k-pci for PCI cards) */
 (brace
 id|ne_probe
 comma
