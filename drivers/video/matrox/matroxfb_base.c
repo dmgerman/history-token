@@ -2715,8 +2715,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|fb_fix_screeninfo
+op_star
+id|fix
 )paren
 )paren
 suffix:semicolon
