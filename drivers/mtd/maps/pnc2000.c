@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;pnc2000.c - mapper for Photron PNC-2000 board.&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: pnc2000.c,v 1.16 2004/09/16 23:27:13 gleixner Exp $&n; */
+multiline_comment|/*&n; *&t;pnc2000.c - mapper for Photron PNC-2000 board.&n; *&n; * Copyright (C) 2000 Crossnet Co. &lt;info@crossnet.co.jp&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: pnc2000.c,v 1.17 2004/11/16 18:29:02 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -12,6 +12,7 @@ DECL|macro|WINDOW_SIZE
 mdefine_line|#define WINDOW_SIZE 0x00400000
 multiline_comment|/* &n; * MAP DRIVER STUFF&n; */
 DECL|variable|pnc_map
+r_static
 r_struct
 id|map_info
 id|pnc_map
@@ -121,6 +122,7 @@ op_star
 id|mymtd
 suffix:semicolon
 DECL|function|init_pnc2000
+r_static
 r_int
 id|__init
 id|init_pnc2000

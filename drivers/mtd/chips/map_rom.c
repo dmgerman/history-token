@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common code to handle map devices which are simple ROM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_rom.c,v 1.21 2004/07/12 14:06:01 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Common code to handle map devices which are simple ROM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_rom.c,v 1.22 2004/11/16 18:29:00 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -58,6 +58,7 @@ id|mtd_info
 op_star
 )paren
 suffix:semicolon
+r_static
 r_struct
 id|mtd_info
 op_star
@@ -94,6 +95,7 @@ id|THIS_MODULE
 )brace
 suffix:semicolon
 DECL|function|map_rom_probe
+r_static
 r_struct
 id|mtd_info
 op_star
@@ -327,6 +329,7 @@ id|EIO
 suffix:semicolon
 )brace
 DECL|function|map_rom_init
+r_static
 r_int
 id|__init
 id|map_rom_init

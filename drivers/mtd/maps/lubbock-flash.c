@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: lubbock-flash.c,v 1.18 2004/09/28 18:54:40 nico Exp $&n; *&n; * Map driver for the Lubbock developer platform.&n; *&n; * Author:&t;Nicolas Pitre&n; * Copyright:&t;(C) 2001 MontaVista Software Inc.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * $Id: lubbock-flash.c,v 1.19 2004/11/04 13:24:15 gleixner Exp $&n; *&n; * Map driver for the Lubbock developer platform.&n; *&n; * Author:&t;Nicolas Pitre&n; * Copyright:&t;(C) 2001 MontaVista Software Inc.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -323,11 +323,6 @@ id|i
 dot
 id|virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren

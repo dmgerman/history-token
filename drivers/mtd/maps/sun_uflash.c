@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sun_uflash.c,v 1.10 2004/09/16 23:27:14 gleixner Exp $&n; *&n; * sun_uflash - Driver implementation for user-programmable flash&n; * present on many Sun Microsystems SME boardsets.&n; *&n; * This driver does NOT provide access to the OBP-flash for&n; * safety reasons-- use &lt;linux&gt;/drivers/sbus/char/flash.c instead.&n; *&n; * Copyright (c) 2001 Eric Brower (ebrower@usa.net)&n; *&n; */
+multiline_comment|/* $Id: sun_uflash.c,v 1.11 2004/11/04 13:24:15 gleixner Exp $&n; *&n; * sun_uflash - Driver implementation for user-programmable flash&n; * present on many Sun Microsystems SME boardsets.&n; *&n; * This driver does NOT provide access to the OBP-flash for&n; * safety reasons-- use &lt;linux&gt;/drivers/sbus/char/flash.c instead.&n; *&n; * Copyright (c) 2001 Eric Brower (ebrower@usa.net)&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -350,11 +350,6 @@ id|start
 suffix:semicolon
 id|pdev-&gt;map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap_nocache
 c_func
 (paren

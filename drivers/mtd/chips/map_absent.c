@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common code to handle absent &quot;placeholder&quot; devices&n; * Copyright 2001 Resilience Corporation &lt;ebrower@resilience.com&gt;&n; * $Id: map_absent.c,v 1.4 2003/05/28 12:51:49 dwmw2 Exp $&n; *&n; * This map driver is used to allocate &quot;placeholder&quot; MTD&n; * devices on systems that have socketed/removable media. &n; * Use of this driver as a fallback preserves the expected &n; * registration of MTD device nodes regardless of probe outcome.&n; * A usage example is as follows:&n; *&n; *&t;&t;my_dev[i] = do_map_probe(&quot;cfi&quot;, &amp;my_map[i]);&n; *&t;&t;if(NULL == my_dev[i]) {&n; *&t;&t;&t;my_dev[i] = do_map_probe(&quot;map_absent&quot;, &amp;my_map[i]);&n; *&t;&t;}&n; *&n; * Any device &squot;probed&squot; with this driver will return -ENODEV&n; * upon open.&n; */
+multiline_comment|/*&n; * Common code to handle absent &quot;placeholder&quot; devices&n; * Copyright 2001 Resilience Corporation &lt;ebrower@resilience.com&gt;&n; * $Id: map_absent.c,v 1.5 2004/11/16 18:29:00 dwmw2 Exp $&n; *&n; * This map driver is used to allocate &quot;placeholder&quot; MTD&n; * devices on systems that have socketed/removable media. &n; * Use of this driver as a fallback preserves the expected &n; * registration of MTD device nodes regardless of probe outcome.&n; * A usage example is as follows:&n; *&n; *&t;&t;my_dev[i] = do_map_probe(&quot;cfi&quot;, &amp;my_map[i]);&n; *&t;&t;if(NULL == my_dev[i]) {&n; *&t;&t;&t;my_dev[i] = do_map_probe(&quot;map_absent&quot;, &amp;my_map[i]);&n; *&t;&t;}&n; *&n; * Any device &squot;probed&squot; with this driver will return -ENODEV&n; * upon open.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -356,6 +356,7 @@ id|mtd
 multiline_comment|/* nop */
 )brace
 DECL|function|map_absent_init
+r_static
 r_int
 id|__init
 id|map_absent_init

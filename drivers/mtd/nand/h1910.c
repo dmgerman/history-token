@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand/h1910.c&n; *&n; *  Copyright (C) 2003 Joshua Wise (joshua@joshuawise.com)&n; *&n; *  Derived from drivers/mtd/nand/edb7312.c&n; *       Copyright (C) 2002 Marius Gr&#xfffd;ger (mag@sysgo.de)&n; *       Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: h1910.c,v 1.4 2004/10/05 13:50:20 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   iPAQ h1910 board which utilizes the Samsung K9F2808 part. This is&n; *   a 128Mibit (16MiB x 8 bits) NAND flash device.&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand/h1910.c&n; *&n; *  Copyright (C) 2003 Joshua Wise (joshua@joshuawise.com)&n; *&n; *  Derived from drivers/mtd/nand/edb7312.c&n; *       Copyright (C) 2002 Marius Gr&#xfffd;ger (mag@sysgo.de)&n; *       Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: h1910.c,v 1.5 2004/11/04 12:53:10 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   iPAQ h1910 board which utilizes the Samsung K9F2808 part. This is&n; *   a 128Mibit (16MiB x 8 bits) NAND flash device.&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -274,11 +274,6 @@ id|ENODEV
 suffix:semicolon
 id|nandaddr
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|__ioremap
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand/edb7312.c&n; *&n; *  Copyright (C) 2002 Marius Gr&#xfffd;ger (mag@sysgo.de)&n; *&n; *  Derived from drivers/mtd/nand/autcpu12.c&n; *       Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: edb7312.c,v 1.10 2004/10/05 13:50:20 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   CLEP7312 board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand/edb7312.c&n; *&n; *  Copyright (C) 2002 Marius Gr&#xfffd;ger (mag@sysgo.de)&n; *&n; *  Derived from drivers/mtd/nand/autcpu12.c&n; *       Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: edb7312.c,v 1.11 2004/11/04 12:53:10 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   CLEP7312 board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -63,56 +63,6 @@ op_star
 )paren
 id|EP7312_PXDDR
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MODULE_PARM
-c_func
-(paren
-id|ep7312_fio_pbase
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|ep7312_pxdr
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|ep7312_pxddr
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;ep7312_fio_pbase=&quot;
-comma
-id|ep7312_fio_pbase
-)paren
-suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;ep7312_pxdr=&quot;
-comma
-id|ep7312_pxdr
-)paren
-suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;ep7312_pxddr=&quot;
-comma
-id|ep7312_pxddr
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_MTD_PARTITIONS
 multiline_comment|/*&n; * Define static partitions for flash device&n; */
 DECL|variable|partition_info
@@ -412,11 +362,6 @@ suffix:semicolon
 multiline_comment|/* map physical adress */
 id|ep7312_fio_base
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren
