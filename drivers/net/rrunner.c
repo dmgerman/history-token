@@ -7747,6 +7747,15 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|rrpriv-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_goto
 id|gf_out
 suffix:semicolon
