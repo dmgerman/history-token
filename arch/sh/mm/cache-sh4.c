@@ -1631,10 +1631,12 @@ id|flags
 suffix:semicolon
 id|entry
 op_assign
-id|mk_pte_phys
+id|pfn_pte
 c_func
 (paren
 id|phys_addr
+op_rshift
+id|PAGE_SHIFT
 comma
 id|pgprot
 )paren
@@ -1886,10 +1888,12 @@ id|flags
 suffix:semicolon
 id|entry
 op_assign
-id|mk_pte_phys
+id|pfn_pte
 c_func
 (paren
 id|phys_addr
+op_rshift
+id|PAGE_SHIFT
 comma
 id|pgprot
 )paren

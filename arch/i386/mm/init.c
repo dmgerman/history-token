@@ -425,10 +425,12 @@ c_func
 (paren
 id|pte
 comma
-id|mk_pte_phys
+id|pfn_pte
 c_func
 (paren
 id|phys
+op_rshift
+id|PAGE_SHIFT
 comma
 id|flags
 )paren
@@ -1131,7 +1133,7 @@ suffix:semicolon
 op_star
 id|pte
 op_assign
-id|mk_pte_phys
+id|pfn_pte
 c_func
 (paren
 id|__pa
@@ -1139,6 +1141,8 @@ c_func
 (paren
 id|vaddr
 )paren
+op_rshift
+id|PAGE_SHIFT
 comma
 id|PAGE_KERNEL
 )paren
@@ -1586,7 +1590,7 @@ suffix:semicolon
 op_star
 id|pte
 op_assign
-id|mk_pte_phys
+id|pfn_pte
 c_func
 (paren
 l_int|0

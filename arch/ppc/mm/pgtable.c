@@ -863,12 +863,12 @@ c_func
 (paren
 id|pg
 comma
-id|mk_pte_phys
+id|pfn_pte
 c_func
 (paren
 id|pa
-op_amp
-id|PAGE_MASK
+op_rshift
+id|PAGE_SHIFT
 comma
 id|__pgprot
 c_func

@@ -92,7 +92,7 @@ r_char
 id|reset_reason
 suffix:semicolon
 DECL|macro|ENTRYLO
-mdefine_line|#define ENTRYLO(x) ((pte_val(mk_pte_phys((x), PAGE_KERNEL_UNCACHED)) &gt;&gt; 6)|1)
+mdefine_line|#define ENTRYLO(x) ((pte_val(pfn_pte((x) &gt;&gt; PAGE_SHIFT, PAGE_KERNEL_UNCACHED)) &gt;&gt; 6)|1)
 r_static
 r_void
 id|__init

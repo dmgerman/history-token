@@ -1097,14 +1097,6 @@ id|hpt366_proc
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|hpt363_shared_irq
-id|byte
-id|hpt363_shared_irq
-suffix:semicolon
-DECL|variable|hpt363_shared_pin
-id|byte
-id|hpt363_shared_pin
-suffix:semicolon
 r_extern
 r_char
 op_star

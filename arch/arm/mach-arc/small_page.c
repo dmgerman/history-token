@@ -474,6 +474,16 @@ id|page
 op_star
 id|page
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|virt_addr_valid
+c_func
+(paren
+id|spage
+)paren
+)paren
+(brace
 id|page
 op_assign
 id|virt_to_page
@@ -482,16 +492,6 @@ c_func
 id|spage
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|VALID_PAGE
-c_func
-(paren
-id|page
-)paren
-)paren
-(brace
 multiline_comment|/*&n;&t;&t; * The container-page must be marked Reserved&n;&t;&t; */
 r_if
 c_cond

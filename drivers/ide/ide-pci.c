@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 1998-2000  Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *  Copyright (c) 1995-1998  Mark Lord&n; *&n; *  May be copied or modified under the terms of the GNU General Public License&n; */
+multiline_comment|/**** vi:set ts=8 sts=8 sw=8:************************************************&n; *&n; *  Copyright (C) 2002&t;     Marcin Dalecki &lt;martin@dalecki.de&gt;&n; *  Copyright (C) 1998-2000  Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *  Copyright (C) 1995-1998  Mark Lord&n; *&n; *  May be copied or modified under the terms of the GNU General Public License&n; */
 multiline_comment|/*&n; *  This module provides support for automatic detection and configuration of&n; *  all PCI ATA host chip chanells interfaces present in a system.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -280,14 +280,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_HPT366
 r_extern
-id|byte
-id|hpt363_shared_irq
-suffix:semicolon
-r_extern
-id|byte
-id|hpt363_shared_pin
-suffix:semicolon
-r_extern
 r_int
 r_int
 id|pci_init_hpt366
@@ -331,18 +323,6 @@ comma
 r_int
 r_int
 )paren
-suffix:semicolon
-macro_line|#else
-multiline_comment|/* FIXME: those have to be killed */
-DECL|variable|hpt363_shared_irq
-r_static
-id|byte
-id|hpt363_shared_irq
-suffix:semicolon
-DECL|variable|hpt363_shared_pin
-r_static
-id|byte
-id|hpt363_shared_pin
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_NS87415
@@ -736,10 +716,9 @@ DECL|macro|ATA_F_PHACK
 mdefine_line|#define ATA_F_PHACK&t;0x40&t;/* apply PROMISE hacks */
 DECL|macro|ATA_F_HPTHACK
 mdefine_line|#define ATA_F_HPTHACK&t;0x80&t;/* apply HPT366 hacks */
-DECL|struct|ide_pci_device_s
-r_typedef
+DECL|struct|ata_pci_device
 r_struct
-id|ide_pci_device_s
+id|ata_pci_device
 (brace
 DECL|member|vendor
 r_int
@@ -831,13 +810,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-DECL|typedef|ide_pci_device_t
 )brace
-id|ide_pci_device_t
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-id|ide_pci_device_t
+r_struct
+id|ata_pci_device
 id|pci_chipsets
 (braket
 )braket
@@ -3685,7 +3663,8 @@ id|__init
 id|trust_pci_irq
 c_func
 (paren
-id|ide_pci_device_t
+r_struct
+id|ata_pci_device
 op_star
 id|d
 comma
@@ -4423,7 +4402,8 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|ide_pci_device_t
+r_struct
+id|ata_pci_device
 op_star
 id|d
 comma
@@ -4672,7 +4652,8 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|ide_pci_device_t
+r_struct
+id|ata_pci_device
 op_star
 id|d
 comma
@@ -5198,7 +5179,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Looks at the primary/secondary channels on a PCI IDE device and, if they&n; * are enabled, prepares the IDE driver for use with them.  This generic code&n; * works for most PCI chipsets.&n; *&n; * One thing that is not standardized is the location of the primary/secondary&n; * interface &quot;enable/disable&quot; bits.  For chipsets that we &quot;know&quot; about, this&n; * information is in the ide_pci_device_t struct; for all other chipsets, we&n; * just assume both interfaces are enabled.&n; */
+multiline_comment|/*&n; * Looks at the primary/secondary channels on a PCI IDE device and, if they are&n; * enabled, prepares the IDE driver for use with them.  This generic code works&n; * for most PCI chipsets.&n; *&n; * One thing that is not standardized is the location of the primary/secondary&n; * interface &quot;enable/disable&quot; bits.  For chipsets that we &quot;know&quot; about, this&n; * information is in the struct ata_pci_device struct; for all other chipsets,&n; * we just assume both interfaces are enabled.&n; */
 DECL|function|setup_pci_device
 r_static
 r_void
@@ -5211,7 +5192,8 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|ide_pci_device_t
+r_struct
+id|ata_pci_device
 op_star
 id|d
 )paren
@@ -5711,7 +5693,8 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|ide_pci_device_t
+r_struct
+id|ata_pci_device
 op_star
 id|d
 )paren
@@ -5722,11 +5705,14 @@ op_star
 id|dev2
 op_assign
 l_int|NULL
-comma
+suffix:semicolon
+r_struct
+id|pci_dev
 op_star
 id|findev
 suffix:semicolon
-id|ide_pci_device_t
+r_struct
+id|ata_pci_device
 op_star
 id|d2
 suffix:semicolon
@@ -5921,7 +5907,8 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|ide_pci_device_t
+r_struct
+id|ata_pci_device
 op_star
 id|d
 )paren
@@ -5936,7 +5923,8 @@ comma
 op_star
 id|findev
 suffix:semicolon
-id|ide_pci_device_t
+r_struct
+id|ata_pci_device
 op_star
 id|d2
 suffix:semicolon
@@ -6083,38 +6071,20 @@ op_amp
 id|pin2
 )paren
 suffix:semicolon
-id|hpt363_shared_pin
-op_assign
+r_if
+c_cond
+(paren
 (paren
 id|pin1
 op_ne
 id|pin2
 )paren
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
-suffix:semicolon
-id|hpt363_shared_irq
-op_assign
+op_logical_and
 (paren
 id|dev-&gt;irq
 op_eq
 id|dev2-&gt;irq
 )paren
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hpt363_shared_pin
-op_logical_and
-id|hpt363_shared_irq
 )paren
 (brace
 id|d-&gt;bootable
@@ -6209,7 +6179,8 @@ r_int
 r_int
 id|device
 suffix:semicolon
-id|ide_pci_device_t
+r_struct
+id|ata_pci_device
 op_star
 id|d
 suffix:semicolon
@@ -6255,7 +6226,8 @@ id|ATA_PCI_IGNORE
 id|printk
 c_func
 (paren
-l_string|&quot;%s: has been ignored by PCI bus scan&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;ATA: %s: ignored by PCI bus scan&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -6477,22 +6449,24 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;%s: unknown IDE controller on PCI slot %s, vendor=%04x, device=%04x&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;ATA: unknown ATA interface %s (%04x:%04x) on PCI slot %s&bslash;n&quot;
 comma
 id|dev-&gt;name
-comma
-id|dev-&gt;slot_name
 comma
 id|vendor
 comma
 id|device
+comma
+id|dev-&gt;slot_name
 )paren
 suffix:semicolon
 r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: IDE controller on PCI slot %s&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;ATA: interface %s on PCI slot %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma

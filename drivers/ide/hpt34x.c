@@ -1271,10 +1271,17 @@ DECL|function|config_drive_xfer_rate
 r_static
 r_int
 id|config_drive_xfer_rate
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
 )paren
 (brace
 r_struct
@@ -1313,6 +1320,8 @@ c_func
 id|ide_dma_bad_drive
 comma
 id|drive
+comma
+id|rq
 )paren
 )paren
 (brace
@@ -1435,6 +1444,8 @@ c_func
 id|ide_dma_good_drive
 comma
 id|drive
+comma
+id|rq
 )paren
 )paren
 (brace
@@ -1527,12 +1538,14 @@ macro_line|#endif /* CONFIG_HPT34X_AUTODMA */
 r_return
 id|drive-&gt;channel
 op_member_access_from_pointer
-id|dmaproc
+id|udma
 c_func
 (paren
 id|dma_func
 comma
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 )brace
@@ -1544,9 +1557,15 @@ id|hpt34x_dmaproc
 id|ide_dma_action_t
 id|func
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
 )paren
 (brace
 r_struct
@@ -1587,6 +1606,8 @@ id|config_drive_xfer_rate
 c_func
 (paren
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 r_case
@@ -1789,6 +1810,8 @@ c_func
 id|func
 comma
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 multiline_comment|/* use standard DMA stuff */
@@ -2210,7 +2233,7 @@ id|hwif-&gt;autodma
 op_assign
 l_int|0
 suffix:semicolon
-id|hwif-&gt;dmaproc
+id|hwif-&gt;udma
 op_assign
 op_amp
 id|hpt34x_dmaproc
