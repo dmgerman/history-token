@@ -1267,6 +1267,14 @@ comma
 id|range
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * In this case page-&gt;private holds a bitmap&n;&t;&t;&t;&t; * of uptodate sectors within the page&n;&t;&t;&t;&t; */
+id|ASSERT
+c_func
+(paren
+id|blocksize
+OL
+id|PAGE_CACHE_SIZE
+)paren
+suffix:semicolon
 id|range
 op_assign
 (paren
