@@ -7331,6 +7331,15 @@ c_func
 id|dev-&gt;net_dev
 )paren
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev-&gt;net_dev
+comma
+op_amp
+id|pcid-&gt;dev
+)paren
+suffix:semicolon
 id|dev-&gt;net_dev.priv
 op_assign
 id|dev

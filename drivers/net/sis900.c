@@ -1588,6 +1588,15 @@ c_func
 id|net_dev
 )paren
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|net_dev
+comma
+op_amp
+id|pci_dev-&gt;dev
+)paren
+suffix:semicolon
 multiline_comment|/* We do a request_region() to register /proc/ioports info. */
 id|ioaddr
 op_assign

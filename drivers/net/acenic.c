@@ -276,6 +276,10 @@ mdefine_line|#define ACE_MOD_INC_USE_COUNT&t;&t;do{} while(0)
 DECL|macro|ACE_MOD_DEC_USE_COUNT
 mdefine_line|#define ACE_MOD_DEC_USE_COUNT&t;&t;do{} while(0)
 macro_line|#endif
+macro_line|#ifndef SET_NETDEV_DEV
+DECL|macro|SET_NETDEV_DEV
+mdefine_line|#define SET_NETDEV_DEV(net, pdev)&t;do{} while(0)
+macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x2051c
 DECL|macro|ace_sync_irq
 mdefine_line|#define ace_sync_irq(irq)&t;synchronize_irq(irq)
@@ -1070,6 +1074,15 @@ id|SET_MODULE_OWNER
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|pdev-&gt;dev
 )paren
 suffix:semicolon
 r_if

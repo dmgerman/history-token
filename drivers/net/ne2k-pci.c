@@ -1002,6 +1002,15 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|pdev-&gt;dev
+)paren
+suffix:semicolon
 multiline_comment|/* Reset card. Who knows what dain-bramaged state it was left in. */
 (brace
 r_int
