@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/qdio.h&gt;
 macro_line|#include &quot;cio.h&quot;
 macro_line|#include &quot;cio_debug.h&quot;
 macro_line|#include &quot;css.h&quot;
+macro_line|#include &quot;chsc.h&quot;
 macro_line|#include &quot;device.h&quot;
 macro_line|#include &quot;qdio.h&quot;
 r_int
@@ -2668,6 +2669,44 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_void
+op_star
+DECL|function|ccw_device_get_chp_desc
+id|ccw_device_get_chp_desc
+c_func
+(paren
+r_struct
+id|ccw_device
+op_star
+id|cdev
+comma
+r_int
+id|chp_no
+)paren
+(brace
+r_struct
+id|subchannel
+op_star
+id|sch
+suffix:semicolon
+id|sch
+op_assign
+id|to_subchannel
+c_func
+(paren
+id|cdev-&gt;dev.parent
+)paren
+suffix:semicolon
+r_return
+id|chsc_get_chp_desc
+c_func
+(paren
+id|sch
+comma
+id|chp_no
+)paren
+suffix:semicolon
+)brace
 singleline_comment|// FIXME: these have to go:
 r_int
 DECL|function|_ccw_device_get_subchannel_number
@@ -2809,6 +2848,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|_ccw_device_get_device_number
+)paren
+suffix:semicolon
+DECL|variable|ccw_device_get_chp_desc
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ccw_device_get_chp_desc
 )paren
 suffix:semicolon
 DECL|variable|read_conf_data_lpm

@@ -665,5 +665,18 @@ id|device
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+op_star
+id|ccw_device_get_chp_desc
+c_func
+(paren
+r_struct
+id|ccw_device
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 macro_line|#endif /* _S390_CCWDEV_H_ */
 eof

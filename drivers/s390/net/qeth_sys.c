@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_sys.c ($Revision: 1.49 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to sysfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; * &t;      Frank Pavlic &lt;pavlic@de.ibm.com&gt;&n; *&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_sys.c ($Revision: 1.51 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to sysfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; * &t;      Frank Pavlic &lt;pavlic@de.ibm.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
@@ -11,7 +11,7 @@ r_char
 op_star
 id|VERSION_QETH_SYS_C
 op_assign
-l_string|&quot;$Revision: 1.49 $&quot;
+l_string|&quot;$Revision: 1.51 $&quot;
 suffix:semicolon
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*                                                                           */
@@ -1131,6 +1131,31 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+multiline_comment|/* check if 1920 devices are supported ,&n;&t; * if though we have to permit priority queueing&n;&t; */
+r_if
+c_cond
+(paren
+id|card-&gt;qdio.no_out_queues
+op_eq
+l_int|1
+)paren
+(brace
+id|PRINT_WARN
+c_func
+(paren
+l_string|&quot;Priority queueing disabled due &quot;
+l_string|&quot;to hardware limitations!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|card-&gt;qdio.do_prio_queueing
+op_assign
+id|QETH_PRIOQ_DEFAULT
+suffix:semicolon
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+)brace
 id|tmp
 op_assign
 id|strsep
