@@ -430,7 +430,7 @@ suffix:semicolon
 id|xfrm_state_hold
 c_func
 (paren
-l_int|0
+id|x0
 )paren
 suffix:semicolon
 id|list_add_tail
