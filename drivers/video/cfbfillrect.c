@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  Generic fillrect for frame buffers with packed pixels
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#if BITS_PER_LONG == 32
 DECL|macro|FB_READ
 mdefine_line|#define FB_READ&t;&t;fb_readl

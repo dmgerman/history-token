@@ -22,6 +22,11 @@ suffix:semicolon
 r_extern
 r_struct
 id|display_switch
+id|fbcon_vga8_planes
+suffix:semicolon
+r_extern
+r_struct
+id|display_switch
 id|fbcon_ega_planes
 suffix:semicolon
 r_extern
