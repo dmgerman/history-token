@@ -4906,7 +4906,6 @@ suffix:semicolon
 multiline_comment|/* Reset policy of current process to default.&n; * Assumes fs == KERNEL_DS */
 DECL|function|numa_default_policy
 r_void
-id|__init
 id|numa_default_policy
 c_func
 (paren
