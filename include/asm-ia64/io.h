@@ -1141,6 +1141,11 @@ mdefine_line|#define dma_cache_wback(_start,_size)           do { } while (0)
 DECL|macro|dma_cache_wback_inv
 mdefine_line|#define dma_cache_wback_inv(_start,_size)       do { } while (0)
 macro_line|# endif /* __KERNEL__ */
+multiline_comment|/*&n; * Enabling BIO_VMERGE_BOUNDARY forces us to turn off I/O MMU bypassing.  It is said that&n; * BIO-level virtual merging can give up to 4% performance boost (not verified for ia64).&n; * On the other hand, we know that I/O MMU bypassing gives ~8% performance improvement on&n; * SPECweb-like workloads on zx1-based machines.  Thus, for now we favor I/O MMU bypassing&n; * over BIO-level virtual merging.&n; */
+macro_line|#if 1
+DECL|macro|BIO_VMERGE_BOUNDARY
+mdefine_line|#define BIO_VMERGE_BOUNDARY&t;0
+macro_line|#else
 multiline_comment|/*&n; * It makes no sense at all to have this BIO_VMERGE_BOUNDARY macro here.  Should be&n; * replaced by dma_merge_mask() or something of that sort.  Note: the only way&n; * BIO_VMERGE_BOUNDARY is used is to mask off bits.  Effectively, our definition gets&n; * expanded into:&n; *&n; *&t;addr &amp; ((ia64_max_iommu_merge_mask + 1) - 1) == (addr &amp; ia64_max_iommu_vmerge_mask)&n; *&n; * which is precisely what we want.&n; */
 r_extern
 r_int
@@ -1149,5 +1154,6 @@ id|ia64_max_iommu_merge_mask
 suffix:semicolon
 DECL|macro|BIO_VMERGE_BOUNDARY
 mdefine_line|#define BIO_VMERGE_BOUNDARY&t;(ia64_max_iommu_merge_mask + 1)
+macro_line|#endif
 macro_line|#endif /* _ASM_IA64_IO_H */
 eof
