@@ -15,7 +15,7 @@ r_static
 r_int
 id|dma_channel
 op_assign
-l_int|3
+id|CONFIG_DMA_PAGE_OPS_CHANNEL
 suffix:semicolon
 DECL|function|copy_page_dma
 r_static

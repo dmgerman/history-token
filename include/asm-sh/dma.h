@@ -4,6 +4,7 @@ DECL|macro|__ASM_SH_DMA_H
 mdefine_line|#define __ASM_SH_DMA_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/cpu/dma.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/* The maximum address that we can perform a DMA transfer to on this platform */
@@ -156,6 +157,13 @@ id|configured
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|tei_capable
+r_int
+r_int
+id|tei_capable
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|busy
 id|atomic_t
 id|busy
@@ -165,6 +173,10 @@ r_struct
 id|semaphore
 id|sem
 suffix:semicolon
+DECL|member|wait_queue
+id|wait_queue_head_t
+id|wait_queue
+suffix:semicolon
 DECL|member|ops
 r_struct
 id|dma_ops
@@ -172,12 +184,6 @@ op_star
 id|ops
 suffix:semicolon
 )brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/* arch/sh/drivers/dma/dma-api.c */
 r_extern
