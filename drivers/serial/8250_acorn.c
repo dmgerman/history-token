@@ -556,12 +556,6 @@ id|drv
 op_assign
 (brace
 dot
-id|devclass
-op_assign
-op_amp
-id|tty_devclass
-comma
-dot
 id|name
 op_assign
 l_string|&quot;8250_acorn&quot;
