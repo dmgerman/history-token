@@ -6384,7 +6384,7 @@ r_struct
 id|bio
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|submit_bio
 c_func
 (paren

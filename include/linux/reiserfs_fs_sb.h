@@ -494,6 +494,12 @@ r_int
 id|s_journal_max_commit_age
 suffix:semicolon
 multiline_comment|/* in seconds, how old can an async commit be */
+DECL|member|s_journal_default_max_commit_age
+r_int
+r_int
+id|s_journal_default_max_commit_age
+suffix:semicolon
+multiline_comment|/* the default for the max commit age */
 DECL|member|s_journal_max_trans_age
 r_int
 r_int
@@ -1339,6 +1345,8 @@ DECL|macro|SB_JOURNAL_MAX_BATCH
 mdefine_line|#define SB_JOURNAL_MAX_BATCH(s)      (SB_JOURNAL(s)-&gt;s_journal_max_batch)
 DECL|macro|SB_JOURNAL_MAX_COMMIT_AGE
 mdefine_line|#define SB_JOURNAL_MAX_COMMIT_AGE(s) (SB_JOURNAL(s)-&gt;s_journal_max_commit_age)
+DECL|macro|SB_JOURNAL_DEFAULT_MAX_COMMIT_AGE
+mdefine_line|#define SB_JOURNAL_DEFAULT_MAX_COMMIT_AGE(s) (SB_JOURNAL(s)-&gt;s_journal_default_max_commit_age)
 DECL|macro|SB_JOURNAL_MAX_TRANS_AGE
 mdefine_line|#define SB_JOURNAL_MAX_TRANS_AGE(s)  (SB_JOURNAL(s)-&gt;s_journal_max_trans_age)
 multiline_comment|/* A safe version of the &quot;bdevname&quot;, which returns the &quot;s_id&quot; field of&n; * a superblock or else &quot;Null superblock&quot; if the super block is NULL.&n; */

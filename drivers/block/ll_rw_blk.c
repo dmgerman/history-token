@@ -8002,7 +8002,7 @@ id|generic_make_request
 suffix:semicolon
 multiline_comment|/**&n; * submit_bio: submit a bio to the block device layer for I/O&n; * @rw: whether to %READ or %WRITE, or maybe to %READA (read ahead)&n; * @bio: The &amp;struct bio which describes the I/O&n; *&n; * submit_bio() is very similar in purpose to generic_make_request(), and&n; * uses that function to do most of the work. Both are fairly rough&n; * interfaces, @bio must be presetup and ready for I/O.&n; *&n; */
 DECL|function|submit_bio
-r_int
+r_void
 id|submit_bio
 c_func
 (paren
@@ -8124,9 +8124,6 @@ c_func
 (paren
 id|bio
 )paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 DECL|variable|submit_bio

@@ -908,7 +908,6 @@ c_cond
 (paren
 id|page
 )paren
-(brace
 id|page
 op_add_assign
 (paren
@@ -922,13 +921,6 @@ op_rshift
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
-id|get_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
 r_return
 id|page
 suffix:semicolon
