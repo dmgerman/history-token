@@ -692,7 +692,10 @@ id|from-&gt;si_code
 OL
 l_int|0
 )paren
-r_return
+(brace
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -705,7 +708,12 @@ r_sizeof
 id|siginfo_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_else
 (brace
 r_int
