@@ -49,7 +49,7 @@ op_eq
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * On the swap_out path, the radix-tree node allocations are performing&n; * GFP_ATOMIC allocations under PF_MEMALLOC.  They can completely&n; * exhaust the page allocator.  This is bad; some pages should be left&n; * available for the I/O system to start sending the swapcache contents&n; * to disk.&n; *&n; * So PF_MEMALLOC is dropped here.  This causes the slab allocations to fail&n; * earlier, so radix-tree nodes will then be allocated from the mempool&n; * reserves.&n; */
+multiline_comment|/*&n; * On the swap_out path, the radix-tree node allocations are performing&n; * GFP_ATOMIC allocations under PF_MEMALLOC.  They can completely&n; * exhaust the page allocator.  This is bad; some pages should be left&n; * available for the I/O system to start sending the swapcache contents&n; * to disk.&n; *&n; * So PF_MEMALLOC is dropped here.  This causes the slab allocations to fail&n; * earlier, so radix-tree nodes will then be allocated from the mempool&n; * reserves.&n; *&n; * We&squot;re still using __GFP_HIGH for radix-tree node allocations, so some of&n; * the emergency pools are available - just not all of them.&n; */
 r_static
 r_inline
 r_int
@@ -81,8 +81,22 @@ id|PF_MEMALLOC
 suffix:semicolon
 id|current-&gt;flags
 op_or_assign
-id|PF_RADIX_TREE
+id|PF_NOWARN
 suffix:semicolon
+id|ClearPageUptodate
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+multiline_comment|/* why? */
+id|ClearPageReferenced
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+multiline_comment|/* why? */
 id|ret
 op_assign
 id|add_to_swap_cache

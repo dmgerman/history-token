@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.uaccess.h 1.8 09/11/01 18:10:06 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_UACCESS_H
 DECL|macro|_PPC_UACCESS_H
@@ -432,14 +432,48 @@ comma
 id|size
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+r_int
+r_int
+)paren
+id|addr
+OL
+id|TASK_SIZE
+)paren
+(brace
+r_int
+r_int
+id|over
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|addr
+op_plus
+id|size
+op_minus
+id|TASK_SIZE
+suffix:semicolon
+r_return
+id|__clear_user
+c_func
+(paren
+id|addr
+comma
+id|size
+op_minus
+id|over
+)paren
+op_plus
+id|over
+suffix:semicolon
+)brace
 r_return
 id|size
-ques
-c_cond
-op_minus
-id|EFAULT
-suffix:colon
-l_int|0
 suffix:semicolon
 )brace
 r_extern

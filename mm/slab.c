@@ -3726,10 +3726,8 @@ op_logical_and
 (paren
 id|flags
 op_amp
-id|SLAB_LEVEL_MASK
+id|__GFP_WAIT
 )paren
-op_ne
-id|SLAB_ATOMIC
 )paren
 id|BUG
 c_func
@@ -3751,9 +3749,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|local_flags
-op_eq
-id|SLAB_ATOMIC
+op_amp
+id|__GFP_WAIT
+)paren
 )paren
 multiline_comment|/*&n;&t;&t; * Not allowed to sleep.  Need to tell a constructor about&n;&t;&t; * this - it might need to know...&n;&t;&t; */
 id|ctor_flags

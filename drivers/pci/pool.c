@@ -1161,7 +1161,7 @@ id|vaddr
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;pci_pool_free %s/%s, %p (bad vaddr)/%lx&bslash;n&quot;
+l_string|&quot;pci_pool_free %s/%s, %p (bad vaddr)/%Lx&bslash;n&quot;
 comma
 id|pool-&gt;dev
 ques
@@ -1175,6 +1175,7 @@ comma
 id|vaddr
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -1202,7 +1203,7 @@ id|block
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;pci_pool_free %s/%s, dma %x already free&bslash;n&quot;
+l_string|&quot;pci_pool_free %s/%s, dma %Lx already free&bslash;n&quot;
 comma
 id|pool-&gt;dev
 ques
@@ -1213,6 +1214,11 @@ l_int|NULL
 comma
 id|pool-&gt;name
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|dma
 )paren
 suffix:semicolon

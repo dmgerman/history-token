@@ -368,20 +368,6 @@ id|bio
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|bio_ioctl
-c_func
-(paren
-id|kdev_t
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
 multiline_comment|/*&n; * remember to add offset! and never ever reenable interrupts between a&n; * bio_kmap_irq and bio_kunmap_irq!!&n; *&n; * This function MUST be inlined - it plays with the CPU interrupt flags.&n; * Hence the `extern inline&squot;.&n; */
 DECL|function|bio_kmap_irq

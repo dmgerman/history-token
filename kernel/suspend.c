@@ -485,12 +485,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|sys_sched_yield
-c_func
-(paren
-)paren
-suffix:semicolon
-id|schedule
+id|yield
 c_func
 (paren
 )paren

@@ -20,10 +20,6 @@ DECL|member|raid_disk
 r_int
 id|raid_disk
 suffix:semicolon
-DECL|member|dev
-id|kdev_t
-id|dev
-suffix:semicolon
 DECL|member|bdev
 r_struct
 id|block_device

@@ -2538,10 +2538,6 @@ op_star
 id|bdp
 )paren
 suffix:semicolon
-macro_line|#ifndef yield
-DECL|macro|yield
-mdefine_line|#define yield()&t;&t;&t;&t;&t;&bslash;&n;        do {&t;&t;&t;&t;&t;&bslash;&n;                current-&gt;policy |= SCHED_YIELD;&t;&bslash;&n;                schedule();&t;&t;&t;&bslash;&n;        } while (0)                                     
-macro_line|#endif
 r_extern
 r_void
 id|e100_deisolate_driver
