@@ -305,6 +305,7 @@ op_star
 suffix:semicolon
 multiline_comment|/** &n; * Mailbox IOCB callback array.&n; **/
 DECL|variable|iocb_function_cb_list
+r_static
 r_int
 (paren
 op_star

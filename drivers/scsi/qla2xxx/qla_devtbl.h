@@ -2,6 +2,7 @@ DECL|macro|QLA_MODEL_NAMES
 mdefine_line|#define QLA_MODEL_NAMES         0x21
 multiline_comment|/*&n; * Adapter model names.&n; */
 DECL|variable|qla2x00_model_name
+r_static
 r_char
 op_star
 id|qla2x00_model_name
@@ -105,6 +106,7 @@ multiline_comment|/* 0x120 */
 )brace
 suffix:semicolon
 DECL|variable|qla2x00_model_desc
+r_static
 r_char
 op_star
 id|qla2x00_model_desc
