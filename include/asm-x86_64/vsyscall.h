@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASM_X86_64_VSYSCALL_H_
 DECL|macro|_ASM_X86_64_VSYSCALL_H_
 mdefine_line|#define _ASM_X86_64_VSYSCALL_H_
+macro_line|#include &lt;linux/time.h&gt;
 DECL|enum|vsyscall_num
 r_enum
 id|vsyscall_num
@@ -22,22 +23,61 @@ mdefine_line|#define VSYSCALL_END (-2UL &lt;&lt; 20)
 DECL|macro|VSYSCALL_ADDR
 mdefine_line|#define VSYSCALL_ADDR(vsyscall_nr) (VSYSCALL_START+VSYSCALL_SIZE*(vsyscall_nr))
 macro_line|#ifdef __KERNEL__
-DECL|macro|__section_last_tsc_low
-mdefine_line|#define __section_last_tsc_low&t;__attribute__ ((unused, __section__ (&quot;.last_tsc_low&quot;)))
-DECL|macro|__section_delay_at_last_interrupt
-mdefine_line|#define __section_delay_at_last_interrupt&t;__attribute__ ((unused, __section__ (&quot;.delay_at_last_interrupt&quot;)))
-DECL|macro|__section_fast_gettimeoffset_quotient
-mdefine_line|#define __section_fast_gettimeoffset_quotient&t;__attribute__ ((unused, __section__ (&quot;.fast_gettimeoffset_quotient&quot;)))
+DECL|macro|__section_hpet
+mdefine_line|#define __section_hpet __attribute__ ((unused, __section__ (&quot;.hpet&quot;), aligned(16)))
 DECL|macro|__section_wall_jiffies
-mdefine_line|#define __section_wall_jiffies __attribute__ ((unused, __section__ (&quot;.wall_jiffies&quot;)))
+mdefine_line|#define __section_wall_jiffies __attribute__ ((unused, __section__ (&quot;.wall_jiffies&quot;), aligned(16)))
 DECL|macro|__section_jiffies
-mdefine_line|#define __section_jiffies __attribute__ ((unused, __section__ (&quot;.jiffies&quot;)))
+mdefine_line|#define __section_jiffies __attribute__ ((unused, __section__ (&quot;.jiffies&quot;), aligned(16)))
 DECL|macro|__section_sys_tz
-mdefine_line|#define __section_sys_tz __attribute__ ((unused, __section__ (&quot;.sys_tz&quot;)))
+mdefine_line|#define __section_sys_tz __attribute__ ((unused, __section__ (&quot;.sys_tz&quot;), aligned(16)))
 DECL|macro|__section_xtime
-mdefine_line|#define __section_xtime __attribute__ ((unused, __section__ (&quot;.xtime&quot;)))
+mdefine_line|#define __section_xtime __attribute__ ((unused, __section__ (&quot;.xtime&quot;), aligned(16)))
 DECL|macro|__section_vxtime_sequence
-mdefine_line|#define __section_vxtime_sequence __attribute__ ((unused, __section__ (&quot;.vxtime_sequence&quot;)))
+mdefine_line|#define __section_vxtime_sequence __attribute__ ((unused, __section__ (&quot;.vxtime_sequence&quot;), aligned(16)))
+DECL|struct|hpet_data
+r_struct
+id|hpet_data
+(brace
+DECL|member|address
+r_int
+id|address
+suffix:semicolon
+multiline_comment|/* base address */
+DECL|member|hz
+r_int
+r_int
+id|hz
+suffix:semicolon
+multiline_comment|/* HPET clocks / sec */
+DECL|member|trigger
+r_int
+id|trigger
+suffix:semicolon
+multiline_comment|/* value at last interrupt */
+DECL|member|last
+r_int
+id|last
+suffix:semicolon
+DECL|member|offset
+r_int
+id|offset
+suffix:semicolon
+DECL|member|last_tsc
+r_int
+r_int
+id|last_tsc
+suffix:semicolon
+DECL|member|ticks
+r_int
+id|ticks
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|hpet_readl
+mdefine_line|#define hpet_readl(a)           readl(fix_to_virt(FIX_HPET_BASE) + a)
+DECL|macro|hpet_writel
+mdefine_line|#define hpet_writel(d,a)        writel(d, fix_to_virt(FIX_HPET_BASE) + a)
 multiline_comment|/* vsyscall space (readonly) */
 r_extern
 r_int
@@ -47,22 +87,13 @@ l_int|2
 )braket
 suffix:semicolon
 r_extern
-r_int
-id|__delay_at_last_interrupt
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|__last_tsc_low
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|__fast_gettimeoffset_quotient
+r_struct
+id|hpet_data
+id|__hpet
 suffix:semicolon
 r_extern
 r_struct
-id|timeval
+id|timespec
 id|__xtime
 suffix:semicolon
 r_extern
@@ -84,17 +115,15 @@ suffix:semicolon
 multiline_comment|/* kernel space (writeable) */
 r_extern
 r_int
-r_int
-id|last_tsc_low
+id|vxtime_sequence
+(braket
+l_int|2
+)braket
 suffix:semicolon
 r_extern
-r_int
-id|delay_at_last_interrupt
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|fast_gettimeoffset_quotient
+r_struct
+id|hpet_data
+id|hpet
 suffix:semicolon
 r_extern
 r_int
@@ -105,13 +134,6 @@ r_extern
 r_struct
 id|timezone
 id|sys_tz
-suffix:semicolon
-r_extern
-r_int
-id|vxtime_sequence
-(braket
-l_int|2
-)braket
 suffix:semicolon
 DECL|macro|vxtime_lock
 mdefine_line|#define vxtime_lock() do { vxtime_sequence[0]++; wmb(); } while(0)
