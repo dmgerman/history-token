@@ -1230,12 +1230,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 suffix:semicolon
 DECL|member|store
@@ -1254,12 +1248,6 @@ r_const
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 suffix:semicolon
 )brace
