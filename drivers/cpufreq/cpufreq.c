@@ -1733,6 +1733,14 @@ id|policy-&gt;cpu
 op_assign
 id|cpu
 suffix:semicolon
+id|policy-&gt;cpus
+op_assign
+id|cpumask_of_cpu
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
 id|init_MUTEX_LOCKED
 c_func
 (paren

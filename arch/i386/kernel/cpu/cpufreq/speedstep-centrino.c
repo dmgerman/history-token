@@ -2337,11 +2337,7 @@ c_func
 (paren
 id|current
 comma
-id|cpumask_of_cpu
-c_func
-(paren
-id|policy-&gt;cpu
-)paren
+id|policy-&gt;cpus
 )paren
 suffix:semicolon
 r_if
