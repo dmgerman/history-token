@@ -74,11 +74,21 @@ l_int|68
 suffix:semicolon
 multiline_comment|/* allocated */
 macro_line|#ifdef CONFIG_ISDN_CAPI_MIDDLEWARE
+DECL|macro|CAPINC_NR_PORTS
+mdefine_line|#define CAPINC_NR_PORTS&t;32
+DECL|macro|CAPINC_MAX_PORTS
+mdefine_line|#define CAPINC_MAX_PORTS&t;256
 DECL|variable|capi_ttymajor
 r_int
 id|capi_ttymajor
 op_assign
 l_int|191
+suffix:semicolon
+DECL|variable|capi_ttyminors
+r_int
+id|capi_ttyminors
+op_assign
+id|CAPINC_NR_PORTS
 suffix:semicolon
 macro_line|#endif /* CONFIG_ISDN_CAPI_MIDDLEWARE */
 id|MODULE_PARM
@@ -94,6 +104,14 @@ id|MODULE_PARM
 c_func
 (paren
 id|capi_ttymajor
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|capi_ttyminors
 comma
 l_string|&quot;i&quot;
 )paren
@@ -5822,8 +5840,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|CAPINC_NR_PORTS
-mdefine_line|#define CAPINC_NR_PORTS 256
 DECL|variable|capinc_tty_driver
 r_static
 r_struct
@@ -5948,11 +5964,35 @@ r_struct
 id|tty_driver
 op_star
 id|drv
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|capi_ttyminors
+OG
+id|CAPINC_MAX_PORTS
+)paren
+id|capi_ttyminors
+op_assign
+id|CAPINC_MAX_PORTS
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|capi_ttyminors
+op_le
+l_int|0
+)paren
+id|capi_ttyminors
+op_assign
+id|CAPINC_NR_PORTS
+suffix:semicolon
+id|drv
 op_assign
 id|alloc_tty_driver
 c_func
 (paren
-id|CAPINC_NR_PORTS
+id|capi_ttyminors
 )paren
 suffix:semicolon
 r_if
@@ -6880,15 +6920,6 @@ op_or
 id|S_IWUSR
 comma
 l_string|&quot;isdn/capi20&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;capi20: started up with major %d&bslash;n&quot;
-comma
-id|capi_major
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_CAPI_MIDDLEWARE
