@@ -970,6 +970,16 @@ id|task_struct
 op_star
 id|p
 suffix:semicolon
+r_int
+op_star
+id|user_tid
+op_assign
+(paren
+r_int
+op_star
+)paren
+id|p3
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1001,6 +1011,8 @@ comma
 id|regs
 comma
 l_int|0
+comma
+id|user_tid
 )paren
 suffix:semicolon
 r_return
@@ -1082,6 +1094,8 @@ comma
 id|regs
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -1167,6 +1181,8 @@ comma
 id|regs
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
