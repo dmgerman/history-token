@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/arch/udc.h&gt;
+macro_line|#include &lt;asm/arch/pxafb.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &quot;generic.h&quot;
 DECL|function|lubbock_set_misc_wr
@@ -633,6 +634,104 @@ id|smc91x_device
 comma
 )brace
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_struct
+id|pxafb_mach_info
+id|sharp_lm8v31
+id|__initdata
+op_assign
+(brace
+dot
+id|pixclock
+op_assign
+l_int|270000
+comma
+dot
+id|xres
+op_assign
+l_int|640
+comma
+dot
+id|yres
+op_assign
+l_int|480
+comma
+dot
+id|bpp
+op_assign
+l_int|16
+comma
+dot
+id|hsync_len
+op_assign
+l_int|1
+comma
+dot
+id|left_margin
+op_assign
+l_int|3
+comma
+dot
+id|right_margin
+op_assign
+l_int|3
+comma
+dot
+id|vsync_len
+op_assign
+l_int|1
+comma
+dot
+id|upper_margin
+op_assign
+l_int|0
+comma
+dot
+id|lower_margin
+op_assign
+l_int|0
+comma
+dot
+id|sync
+op_assign
+id|FB_SYNC_HOR_HIGH_ACT
+op_or
+id|FB_SYNC_VERT_HIGH_ACT
+comma
+dot
+id|cmap_greyscale
+op_assign
+l_int|0
+comma
+dot
+id|cmap_inverse
+op_assign
+l_int|0
+comma
+dot
+id|cmap_static
+op_assign
+l_int|0
+comma
+dot
+id|lccr0
+op_assign
+id|LCCR0_SDS
+comma
+dot
+id|lccr3
+op_assign
+id|LCCR3_PCP
+op_or
+id|LCCR3_Acb
+c_func
+(paren
+l_int|255
+)paren
+comma
+)brace
+suffix:semicolon
 DECL|function|lubbock_init
 r_static
 r_void
@@ -648,6 +747,13 @@ c_func
 (paren
 op_amp
 id|udc_info
+)paren
+suffix:semicolon
+id|set_pxa_fb_info
+c_func
+(paren
+op_amp
+id|sharp_lm8v31
 )paren
 suffix:semicolon
 (paren
