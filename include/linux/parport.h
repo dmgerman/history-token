@@ -1045,11 +1045,10 @@ id|pardevice
 op_star
 id|waittail
 suffix:semicolon
-DECL|member|next
+DECL|member|list
 r_struct
-id|parport
-op_star
-id|next
+id|list_head
+id|list
 suffix:semicolon
 DECL|member|flags
 r_int
@@ -1215,16 +1214,6 @@ r_struct
 id|parport
 op_star
 id|port
-)paren
-suffix:semicolon
-multiline_comment|/* parport_enumerate returns a pointer to the linked list of all the&n;   ports in this machine.  DON&squot;T USE THIS.  Use&n;   parport_register_driver instead. */
-r_struct
-id|parport
-op_star
-id|parport_enumerate
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Register a new high-level driver. */
