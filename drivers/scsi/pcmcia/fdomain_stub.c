@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    A driver for Future Domain-compatible PCMCIA SCSI cards&n;&n;    fdomain_cs.c 1.43 2000/06/12 21:27:25&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in which&n;    case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    A driver for Future Domain-compatible PCMCIA SCSI cards&n;&n;    fdomain_cs.c 1.47 2001/10/13 00:08:52&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n;    which case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -18,45 +18,36 @@ macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
-macro_line|#ifdef PCMCIA_DEBUG
-DECL|variable|pc_debug
-r_static
-r_int
-id|pc_debug
-op_assign
-id|PCMCIA_DEBUG
-suffix:semicolon
-id|MODULE_PARM
+multiline_comment|/*====================================================================*/
+multiline_comment|/* Module parameters */
+id|MODULE_AUTHOR
 c_func
 (paren
-id|pc_debug
-comma
-l_string|&quot;i&quot;
+l_string|&quot;David Hinds &lt;dahinds@users.sourceforge.net&gt;&quot;
 )paren
 suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
-DECL|variable|version
-r_static
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;fdomain_cs.c 1.43 2000/06/12 21:27:25 (David Hinds)&quot;
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Future Domain PCMCIA SCSI driver&quot;
+)paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...)
-macro_line|#endif
-multiline_comment|/*====================================================================*/
-multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual MPL/GPL&quot;
+)paren
+suffix:semicolon
+DECL|macro|INT_MODULE_PARM
+mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, &quot;i&quot;)
 multiline_comment|/* Bit map of interrupts to choose from */
-DECL|variable|irq_mask
-r_static
-id|u_int
+id|INT_MODULE_PARM
+c_func
+(paren
 id|irq_mask
-op_assign
+comma
 l_int|0xdeb8
+)paren
 suffix:semicolon
 DECL|variable|irq_list
 r_static
@@ -74,19 +65,34 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|irq_mask
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
 id|irq_list
 comma
 l_string|&quot;1-4i&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef PCMCIA_DEBUG
+id|INT_MODULE_PARM
+c_func
+(paren
+id|pc_debug
+comma
+id|PCMCIA_DEBUG
+)paren
+suffix:semicolon
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
+DECL|variable|version
+r_static
+r_char
+op_star
+id|version
+op_assign
+l_string|&quot;fdomain_cs.c 1.47 2001/10/13 00:08:52 (David Hinds)&quot;
+suffix:semicolon
+macro_line|#else
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...)
+macro_line|#endif
 multiline_comment|/*====================================================================*/
 DECL|struct|scsi_info_t
 r_typedef
@@ -699,6 +705,12 @@ op_star
 op_star
 id|tail
 suffix:semicolon
+r_char
+id|str
+(braket
+l_int|16
+)braket
+suffix:semicolon
 r_struct
 id|Scsi_Host
 op_star
@@ -928,10 +940,22 @@ l_int|2
 op_assign
 id|link-&gt;irq.AssignedIRQ
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|str
+comma
+l_string|&quot;%d,%d&quot;
+comma
+id|link-&gt;io.BasePort1
+comma
+id|link-&gt;irq.AssignedIRQ
+)paren
+suffix:semicolon
 id|fdomain_setup
 c_func
 (paren
-l_string|&quot;PCMCIA setup&quot;
+id|str
 comma
 id|ints
 )paren
