@@ -606,6 +606,8 @@ macro_line|# elif defined (CONFIG_IA64_DIG)
 macro_line|#  include &lt;asm/machvec_dig.h&gt;
 macro_line|# elif defined (CONFIG_IA64_HP_ZX1)
 macro_line|#  include &lt;asm/machvec_hpzx1.h&gt;
+macro_line|# elif defined (CONFIG_IA64_HP_ZX1_SWIOTLB)
+macro_line|#  include &lt;asm/machvec_hpzx1_swiotlb.h&gt;
 macro_line|# elif defined (CONFIG_IA64_SGI_SN2)
 macro_line|#  include &lt;asm/machvec_sn2.h&gt;
 macro_line|# elif defined (CONFIG_IA64_GENERIC)
