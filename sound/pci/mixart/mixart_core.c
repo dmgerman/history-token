@@ -333,10 +333,6 @@ c_func
 (paren
 id|resp-&gt;data
 comma
-(paren
-r_void
-op_star
-)paren
 id|MIXART_MEM
 c_func
 (paren
