@@ -5,7 +5,6 @@ macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;radeon_drm.h&quot;
 macro_line|#include &quot;radeon_drv.h&quot;
-macro_line|#include &quot;ati_pcigart.h&quot;
 macro_line|#include &quot;drm_pciids.h&quot;
 DECL|function|postinit
 r_static

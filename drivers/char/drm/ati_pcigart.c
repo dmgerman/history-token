@@ -29,8 +29,6 @@ macro_line|# define ATI_MAX_PCIGART_PAGES&t;&t;8192&t;/**&lt; 32 MB aperture, 4K
 DECL|macro|ATI_PCIGART_PAGE_SIZE
 macro_line|# define ATI_PCIGART_PAGE_SIZE&t;&t;4096&t;/**&lt; PCI GART page size */
 DECL|function|drm_ati_alloc_pcigart_table
-r_static
-r_inline
 r_int
 r_int
 id|drm_ati_alloc_pcigart_table
@@ -136,7 +134,6 @@ suffix:semicolon
 )brace
 DECL|function|drm_ati_free_pcigart_table
 r_static
-r_inline
 r_void
 id|drm_ati_free_pcigart_table
 c_func
@@ -211,8 +208,6 @@ id|ATI_PCIGART_TABLE_ORDER
 suffix:semicolon
 )brace
 DECL|function|drm_ati_pcigart_cleanup
-r_static
-r_inline
 r_int
 id|drm_ati_pcigart_cleanup
 c_func
@@ -353,9 +348,14 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|drm_ati_pcigart_cleanup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|drm_ati_pcigart_cleanup
+)paren
+suffix:semicolon
 DECL|function|drm_ati_pcigart_init
-r_static
-r_inline
 r_int
 id|drm_ati_pcigart_init
 c_func
@@ -712,4 +712,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|drm_ati_pcigart_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|drm_ati_pcigart_init
+)paren
+suffix:semicolon
 eof
