@@ -3234,6 +3234,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
 id|need_resched
 suffix:colon

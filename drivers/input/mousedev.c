@@ -1687,10 +1687,6 @@ id|list-&gt;bufsiz
 op_assign
 l_int|1
 suffix:semicolon
-id|list-&gt;ready
-op_assign
-l_int|1
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -2005,6 +2001,8 @@ c_cond
 (paren
 op_logical_neg
 id|list-&gt;buffer
+op_logical_and
+id|list-&gt;ready
 )paren
 id|mousedev_packet
 c_func
@@ -2025,6 +2023,10 @@ id|count
 op_assign
 id|list-&gt;buffer
 suffix:semicolon
+id|list-&gt;buffer
+op_sub_assign
+id|count
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2038,6 +2040,8 @@ op_plus
 id|list-&gt;bufsiz
 op_minus
 id|list-&gt;buffer
+op_minus
+id|count
 comma
 id|count
 )paren
@@ -2045,10 +2049,6 @@ id|count
 r_return
 op_minus
 id|EFAULT
-suffix:semicolon
-id|list-&gt;buffer
-op_sub_assign
-id|count
 suffix:semicolon
 r_return
 id|count
