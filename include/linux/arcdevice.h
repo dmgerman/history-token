@@ -506,6 +506,12 @@ multiline_comment|/* packet currently being sent */
 multiline_comment|/* hardware-specific functions */
 r_struct
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|command
 r_void
 (paren
@@ -567,36 +573,30 @@ r_bool
 id|really_reset
 )paren
 suffix:semicolon
-DECL|member|open_close
+DECL|member|open
 r_void
 (paren
 op_star
-id|open_close
+id|open
 )paren
 (paren
 r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_bool
-id|open
 )paren
 suffix:semicolon
-DECL|member|open_close_ll
+DECL|member|close
 r_void
 (paren
 op_star
-id|open_close_ll
+id|close
 )paren
 (paren
 r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_bool
-id|open
 )paren
 suffix:semicolon
 DECL|member|copy_to_card
@@ -671,8 +671,6 @@ DECL|macro|ASTATUS
 mdefine_line|#define ASTATUS()    (lp-&gt;hw.status(dev))
 DECL|macro|AINTMASK
 mdefine_line|#define AINTMASK(x)  (lp-&gt;hw.intmask(dev, (x)))
-DECL|macro|ARCOPEN
-mdefine_line|#define ARCOPEN(x)   (lp-&gt;hw.open_close(dev, (x)))
 macro_line|#if ARCNET_DEBUG_MAX &amp; D_SKB
 r_void
 id|arcnet_dump_skb
