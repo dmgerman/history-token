@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
@@ -2985,6 +2986,11 @@ op_eq
 id|TASK_DEAD
 )paren
 (brace
+id|lock_cpu_hotplug
+c_func
+(paren
+)paren
+suffix:semicolon
 id|release_task
 c_func
 (paren
@@ -2996,6 +3002,12 @@ c_func
 (paren
 op_amp
 id|tasklist_lock
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * No preemption may happen from this point on,&n;&t;&t; * or CPU hotplug (and task exit) breaks:&n;&t;&t; */
+id|unlock_cpu_hotplug
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tsk-&gt;state
