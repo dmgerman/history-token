@@ -225,7 +225,6 @@ id|ifa-&gt;ifa_next
 )paren
 (brace
 multiline_comment|/* Add the address to the local list.  */
-multiline_comment|/* XXX BUG: sleeping allocation with lock held -DaveM */
 id|addr
 op_assign
 id|t_new
@@ -234,7 +233,7 @@ c_func
 r_struct
 id|sockaddr_storage_list
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -380,7 +379,6 @@ id|ifp-&gt;if_next
 )paren
 (brace
 multiline_comment|/* Add the address to the local list.  */
-multiline_comment|/* XXX BUG: sleeping allocation with lock held -DaveM */
 id|addr
 op_assign
 id|t_new
@@ -389,7 +387,7 @@ c_func
 r_struct
 id|sockaddr_storage_list
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
