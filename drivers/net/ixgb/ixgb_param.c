@@ -120,12 +120,6 @@ DECL|macro|MAX_TXD
 mdefine_line|#define MAX_TXD&t;&t;&t;&t;   4096
 DECL|macro|MIN_TXD
 mdefine_line|#define MIN_TXD&t;&t;&t;&t;     64
-DECL|macro|DEFAULT_RXD
-mdefine_line|#define DEFAULT_RXD&t;&t;&t;   1024
-DECL|macro|MAX_RXD
-mdefine_line|#define MAX_RXD&t;&t;&t;&t;   4096
-DECL|macro|MIN_RXD
-mdefine_line|#define MIN_RXD&t;&t;&t;&t;     64
 DECL|macro|DEFAULT_TIDV
 mdefine_line|#define DEFAULT_TIDV&t;   &t;&t;     32
 DECL|macro|MAX_TIDV
