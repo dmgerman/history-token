@@ -949,7 +949,7 @@ l_int|0
 suffix:semicolon
 id|cisco-&gt;keepalive_period
 op_assign
-id|ISDN_TIMER_KEEPINT
+l_int|10
 suffix:semicolon
 id|cisco-&gt;last_slarp_in
 op_assign
