@@ -227,6 +227,8 @@ mdefine_line|#define IRQ_NEPONSET_USAR&t;(IRQ_BOARD_START + 1)
 DECL|macro|IRQ_NEPONSET_SA1111
 mdefine_line|#define IRQ_NEPONSET_SA1111&t;(IRQ_BOARD_START + 2)
 multiline_comment|/* PT Digital Board Interrupts (CONFIG_SA1100_PT_SYSTEM3) */
+DECL|macro|IRQ_SYSTEM3_SA1111
+mdefine_line|#define IRQ_SYSTEM3_SA1111&t;(IRQ_BOARD_START + 0)
 DECL|macro|IRQ_SYSTEM3_SMC9196
-mdefine_line|#define IRQ_SYSTEM3_SMC9196&t;(IRQ_BOARD_START + 0)
+mdefine_line|#define IRQ_SYSTEM3_SMC9196&t;(IRQ_BOARD_START + 1)
 eof

@@ -57,25 +57,25 @@ DECL|macro|PTCTRL2_clear
 mdefine_line|#define PTCTRL2_clear( x )&t;PT_CTRL2 &amp;= ~(x)
 multiline_comment|/* System ID register */
 multiline_comment|/* IRQ Source Register */
-DECL|macro|PT_IRQ_LAN
-mdefine_line|#define PT_IRQ_LAN&t;&t;( 1&lt;&lt;0 )
-DECL|macro|PT_IRQ_X
-mdefine_line|#define PT_IRQ_X&t;&t;( 1&lt;&lt;1 )
-DECL|macro|PT_IRQ_SA1111
-mdefine_line|#define PT_IRQ_SA1111&t;( 1&lt;&lt;2 )
-DECL|macro|PT_IRQ_RS1
-mdefine_line|#define PT_IRQ_RS1&t;&t;( 1&lt;&lt;3 )
-DECL|macro|PT_IRQ_RS1_RING
-mdefine_line|#define PT_IRQ_RS1_RING&t;( 1&lt;&lt;4 )
-DECL|macro|PT_IRQ_RS1_DCD
-mdefine_line|#define PT_IRQ_RS1_DCD&t;( 1&lt;&lt;5 )
-DECL|macro|PT_IRQ_RS1_DSR
-mdefine_line|#define PT_IRQ_RS1_DSR&t;( 1&lt;&lt;6 )
-DECL|macro|PT_IRQ_RS2
-mdefine_line|#define PT_IRQ_RS2&t;&t;( 1&lt;&lt;7 )
+DECL|macro|PT_IRR_LAN
+mdefine_line|#define PT_IRR_LAN&t;&t;( 1&lt;&lt;0 )
+DECL|macro|PT_IRR_X
+mdefine_line|#define PT_IRR_X&t;&t;( 1&lt;&lt;1 )
+DECL|macro|PT_IRR_SA1111
+mdefine_line|#define PT_IRR_SA1111&t;( 1&lt;&lt;2 )
+DECL|macro|PT_IRR_RS1
+mdefine_line|#define PT_IRR_RS1&t;&t;( 1&lt;&lt;3 )
+DECL|macro|PT_IRR_RS1_RING
+mdefine_line|#define PT_IRR_RS1_RING&t;( 1&lt;&lt;4 )
+DECL|macro|PT_IRR_RS1_DCD
+mdefine_line|#define PT_IRR_RS1_DCD&t;( 1&lt;&lt;5 )
+DECL|macro|PT_IRR_RS1_DSR
+mdefine_line|#define PT_IRR_RS1_DSR&t;( 1&lt;&lt;6 )
+DECL|macro|PT_IRR_RS2
+mdefine_line|#define PT_IRR_RS2&t;&t;( 1&lt;&lt;7 )
 multiline_comment|/* FIXME */
-DECL|macro|PT_IRQ_USAR
-mdefine_line|#define PT_IRQ_USAR&t;&t;( 1&lt;&lt;1 )
+DECL|macro|PT_IRR_USAR
+mdefine_line|#define PT_IRR_USAR&t;&t;( 1&lt;&lt;1 )
 multiline_comment|/* CTRL 0 */
 DECL|macro|PT_CTRL0_USBSLAVE
 mdefine_line|#define PT_CTRL0_USBSLAVE&t;( 1&lt;&lt;0 )

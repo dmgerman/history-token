@@ -78,34 +78,6 @@ DECL|macro|IRQ_GC_UART1_CTS
 mdefine_line|#define IRQ_GC_UART1_CTS       IRQ_GPIO16
 DECL|macro|IRQ_GC_UART2_CTS
 mdefine_line|#define IRQ_GC_UART2_CTS       IRQ_GPIO17
-macro_line|#ifndef __ASSEMBLY__
-DECL|struct|gc_uart_ctrl_data_t
-r_struct
-id|gc_uart_ctrl_data_t
-(brace
-DECL|member|cts_gpio
-r_int
-id|cts_gpio
-suffix:semicolon
-DECL|member|cts_prev_state
-r_int
-id|cts_prev_state
-suffix:semicolon
-DECL|member|info
-r_struct
-id|uart_info
-op_star
-id|info
-suffix:semicolon
-DECL|member|port
-r_struct
-id|uart_port
-op_star
-id|port
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* LEDs */
 DECL|macro|ADS_LED0
 mdefine_line|#define ADS_LED0&t;GPIO_GPIO20&t;&t;/* on-board D22 */
