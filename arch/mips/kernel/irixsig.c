@@ -3268,7 +3268,7 @@ r_goto
 id|end_waitsys
 suffix:semicolon
 r_case
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 suffix:colon
 id|current-&gt;signal-&gt;cutime
 op_add_assign
