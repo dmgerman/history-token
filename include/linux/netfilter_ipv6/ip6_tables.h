@@ -1080,6 +1080,16 @@ op_star
 id|userdata
 )paren
 suffix:semicolon
+multiline_comment|/* Check for an extension */
+r_extern
+r_int
+id|ip6t_ext_hdr
+c_func
+(paren
+id|u8
+id|nexthdr
+)paren
+suffix:semicolon
 DECL|macro|IP6T_ALIGN
 mdefine_line|#define IP6T_ALIGN(s) (((s) + (__alignof__(struct ip6t_entry)-1)) &amp; ~(__alignof__(struct ip6t_entry)-1))
 macro_line|#endif /*__KERNEL__*/
