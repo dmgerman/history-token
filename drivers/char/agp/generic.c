@@ -295,7 +295,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|free_by_type
 c_func
@@ -329,7 +329,7 @@ id|i
 op_increment
 )paren
 (brace
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|agp_destroy_page
 c_func
@@ -437,7 +437,7 @@ l_int|0
 (brace
 r_new
 op_assign
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|alloc_by_type
 c_func
@@ -500,7 +500,7 @@ r_void
 op_star
 id|addr
 op_assign
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|agp_alloc_page
 c_func
@@ -584,7 +584,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|agp_bridge-&gt;size_type
+id|agp_bridge-&gt;driver-&gt;size_type
 )paren
 (brace
 r_case
@@ -720,7 +720,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|agp_bridge-&gt;size_type
+id|agp_bridge-&gt;driver-&gt;size_type
 )paren
 (brace
 r_case
@@ -922,7 +922,7 @@ id|agp_bridge-&gt;current_memory_agp
 suffix:semicolon
 id|info-&gt;cant_use_aperture
 op_assign
-id|agp_bridge-&gt;cant_use_aperture
+id|agp_bridge-&gt;driver-&gt;cant_use_aperture
 suffix:semicolon
 id|info-&gt;vm_ops
 op_assign
@@ -998,7 +998,7 @@ op_eq
 id|FALSE
 )paren
 (brace
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|cache_flush
 c_func
@@ -1012,7 +1012,7 @@ suffix:semicolon
 )brace
 id|ret_val
 op_assign
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|insert_memory
 c_func
@@ -1099,7 +1099,7 @@ id|EINVAL
 suffix:semicolon
 id|ret_val
 op_assign
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|remove_memory
 c_func
@@ -1776,7 +1776,7 @@ multiline_comment|/* The generic routines can&squot;t handle 2 level gatt&squot;
 r_if
 c_cond
 (paren
-id|agp_bridge-&gt;size_type
+id|agp_bridge-&gt;driver-&gt;size_type
 op_eq
 id|LVL2_APER_SIZE
 )paren
@@ -1807,7 +1807,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|agp_bridge-&gt;size_type
+id|agp_bridge-&gt;driver-&gt;size_type
 op_ne
 id|FIXED_APER_SIZE
 )paren
@@ -1817,7 +1817,7 @@ r_do
 r_switch
 c_cond
 (paren
-id|agp_bridge-&gt;size_type
+id|agp_bridge-&gt;driver-&gt;size_type
 )paren
 (brace
 r_case
@@ -1973,7 +1973,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|agp_bridge-&gt;size_type
+id|agp_bridge-&gt;driver-&gt;size_type
 )paren
 (brace
 r_case
@@ -2047,16 +2047,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-(paren
+op_logical_neg
 id|table
-op_eq
-l_int|NULL
-)paren
 op_logical_and
 (paren
 id|i
 OL
-id|agp_bridge-&gt;num_aperture_sizes
+id|agp_bridge-&gt;driver-&gt;num_aperture_sizes
 )paren
 )paren
 suffix:semicolon
@@ -2190,7 +2187,7 @@ op_star
 )paren
 id|table
 suffix:semicolon
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|cache_flush
 c_func
@@ -2219,7 +2216,7 @@ id|page_order
 )paren
 )paren
 suffix:semicolon
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|cache_flush
 c_func
@@ -2395,7 +2392,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|agp_bridge-&gt;size_type
+id|agp_bridge-&gt;driver-&gt;size_type
 )paren
 (brace
 r_case
@@ -2597,7 +2594,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|agp_bridge-&gt;size_type
+id|agp_bridge-&gt;driver-&gt;size_type
 )paren
 (brace
 r_case
@@ -2779,7 +2776,7 @@ op_eq
 id|FALSE
 )paren
 (brace
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|cache_flush
 c_func
@@ -2817,7 +2814,7 @@ id|agp_bridge-&gt;gatt_table
 id|j
 )braket
 op_assign
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|mask_memory
 c_func
@@ -2830,7 +2827,7 @@ comma
 id|mem-&gt;type
 )paren
 suffix:semicolon
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|tlb_flush
 c_func
@@ -2918,7 +2915,7 @@ r_int
 id|agp_bridge-&gt;scratch_page
 suffix:semicolon
 )brace
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|tlb_flush
 c_func
@@ -3172,7 +3169,7 @@ id|NOT_SUPPORTED
 )paren
 r_return
 suffix:semicolon
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|agp_enable
 c_func
