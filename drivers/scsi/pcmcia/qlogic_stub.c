@@ -55,6 +55,14 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+DECL|variable|qlogic_name
+r_static
+r_char
+op_star
+id|qlogic_name
+op_assign
+l_string|&quot;qlogic_cs&quot;
+suffix:semicolon
 macro_line|#ifdef PCMCIA_DEBUG
 DECL|variable|pc_debug
 r_static
@@ -987,6 +995,14 @@ comma
 id|link-&gt;irq.AssignedIRQ
 )paren
 suffix:semicolon
+id|qlogicfas_driver_template.name
+op_assign
+id|qlogic_name
+suffix:semicolon
+id|qlogicfas_driver_template.proc_name
+op_assign
+id|qlogic_name
+suffix:semicolon
 id|host
 op_assign
 id|__qlogicfas_detect
@@ -1007,7 +1023,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;qlogic_cs: no SCSI devices found&bslash;n&quot;
+l_string|&quot;%s: no SCSI devices found&bslash;n&quot;
+comma
+id|qlogic_name
 )paren
 suffix:semicolon
 r_goto
