@@ -2825,6 +2825,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|ignore_normal_resume
+op_assign
+l_int|1
+suffix:semicolon
 id|sti
 c_func
 (paren
@@ -2889,10 +2893,6 @@ id|APM_NORMAL_RESUME
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-id|ignore_normal_resume
-op_assign
-l_int|1
 suffix:semicolon
 id|out
 suffix:colon
