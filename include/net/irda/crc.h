@@ -3,75 +3,16 @@ macro_line|#ifndef IRDA_CRC_H
 DECL|macro|IRDA_CRC_H
 mdefine_line|#define IRDA_CRC_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/crc16.h&gt;
 DECL|macro|INIT_FCS
 mdefine_line|#define INIT_FCS  0xffff   /* Initial FCS value */
 DECL|macro|GOOD_FCS
 mdefine_line|#define GOOD_FCS  0xf0b8   /* Good final FCS value */
-r_extern
-id|__u16
-r_const
-id|irda_crc16_table
-(braket
-)braket
-suffix:semicolon
 multiline_comment|/* Recompute the FCS with one more character appended. */
-DECL|function|irda_fcs
-r_static
-r_inline
-id|__u16
-id|irda_fcs
-c_func
-(paren
-id|__u16
-id|fcs
-comma
-id|__u8
-id|c
-)paren
-(brace
-r_return
-(paren
-(paren
-(paren
-id|fcs
-)paren
-op_rshift
-l_int|8
-)paren
-op_xor
-id|irda_crc16_table
-(braket
-(paren
-(paren
-id|fcs
-)paren
-op_xor
-(paren
-id|c
-)paren
-)paren
-op_amp
-l_int|0xff
-)braket
-)paren
-suffix:semicolon
-)brace
+DECL|macro|irda_fcs
+mdefine_line|#define irda_fcs(fcs, c) crc16_byte(fcs, c)
 multiline_comment|/* Recompute the FCS with len bytes appended. */
-id|__u16
-id|irda_calc_crc16
-c_func
-(paren
-id|__u16
-id|fcs
-comma
-id|__u8
-r_const
-op_star
-id|buf
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
+DECL|macro|irda_calc_crc16
+mdefine_line|#define irda_calc_crc16(fcs, buf, len) crc16(fcs, buf, len)
 macro_line|#endif
 eof
