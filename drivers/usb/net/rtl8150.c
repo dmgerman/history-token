@@ -4025,6 +4025,15 @@ comma
 id|dev
 )paren
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|netdev
+comma
+op_amp
+id|intf-&gt;dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

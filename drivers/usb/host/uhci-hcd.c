@@ -8517,15 +8517,11 @@ op_logical_or
 id|uhci-&gt;hcd.pdev-&gt;vendor
 op_ne
 id|PCI_VENDOR_ID_INTEL
-op_logical_or
-id|uhci-&gt;hcd.pdev-&gt;device
-op_ne
-id|PCI_DEVICE_ID_INTEL_82371AB_2
 )paren
 r_return
 l_int|1
 suffix:semicolon
-multiline_comment|/* This is a 82371AB/EB/MB USB controller which has a bug that&n;&t; * causes false resume indications if any port has an&n;&t; * over current condition.  To prevent problems, we will not&n;&t; * allow a global suspend if any ports are OC.&n;&t; *&n;&t; * Some motherboards using the 82371AB/EB/MB (but not the USB portion)&n;&t; * appear to hardwire the over current inputs active to disable&n;&t; * the USB ports.&n;&t; */
+multiline_comment|/* Some of Intel&squot;s USB controllers have a bug that causes false&n;&t; * resume indications if any port has an over current condition.&n;&t; * To prevent problems, we will not allow a global suspend if&n;&t; * any ports are OC.&n;&t; *&n;&t; * Some motherboards using Intel&squot;s chipsets (but not using all&n;&t; * the USB ports) appear to hardwire the over current inputs active&n;&t; * to disable the USB ports.&n;&t; */
 multiline_comment|/* check for over current condition on any port */
 r_for
 c_loop

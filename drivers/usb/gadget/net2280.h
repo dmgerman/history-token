@@ -1692,7 +1692,7 @@ mdefine_line|#define net2280_led_shutdown(dev)&t;do { } while (0)
 macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|macro|xprintk
-mdefine_line|#define xprintk(dev,level,fmt,args...) &bslash;&n;&t;printk(level &quot;%s %s: &quot; fmt , driver_name , &bslash;&n;&t;&t;&t;dev-&gt;pdev-&gt;slot_name , ## args)
+mdefine_line|#define xprintk(dev,level,fmt,args...) &bslash;&n;&t;printk(level &quot;%s %s: &quot; fmt , driver_name , &bslash;&n;&t;&t;&t;pci_name(dev-&gt;pdev) , ## args)
 macro_line|#ifdef DEBUG
 DECL|macro|DEBUG
 macro_line|#undef DEBUG

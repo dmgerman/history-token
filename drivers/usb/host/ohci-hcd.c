@@ -743,6 +743,11 @@ id|ed
 op_star
 id|ed
 suffix:semicolon
+r_int
+id|limit
+op_assign
+l_int|1000
+suffix:semicolon
 multiline_comment|/* ASSERT:  any requests/urbs are being unlinked */
 multiline_comment|/* ASSERT:  nobody can be submitting urbs for this any more */
 id|epnum
@@ -818,6 +823,15 @@ r_case
 id|ED_UNLINK
 suffix:colon
 multiline_comment|/* wait for hw to finish? */
+multiline_comment|/* major IRQ delivery trouble loses INTR_SF too... */
+id|WARN_ON
+(paren
+id|limit
+op_decrement
+op_eq
+l_int|0
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 (paren
 op_amp
