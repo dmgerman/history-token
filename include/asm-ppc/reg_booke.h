@@ -25,8 +25,13 @@ mdefine_line|#define MSR_IS&t;&t;MSR_IR&t;/* Instruction Space */
 DECL|macro|MSR_DS
 mdefine_line|#define MSR_DS&t;&t;MSR_DR&t;/* Data Space */
 multiline_comment|/* Default MSR for kernel mode. */
+macro_line|#if defined (CONFIG_40x)
 DECL|macro|MSR_KERNEL
 mdefine_line|#define MSR_KERNEL&t;(MSR_ME|MSR_RI|MSR_IR|MSR_DR|MSR_CE|MSR_DE)
+macro_line|#elif defined(CONFIG_BOOKE)
+DECL|macro|MSR_KERNEL
+mdefine_line|#define MSR_KERNEL&t;(MSR_ME|MSR_RI|MSR_CE|MSR_DE)
+macro_line|#endif
 multiline_comment|/* Special Purpose Registers (SPRNs)*/
 DECL|macro|SPRN_DECAR
 mdefine_line|#define SPRN_DECAR&t;0x036&t;/* Decrementer Auto Reload Register */
@@ -176,6 +181,10 @@ DECL|macro|SPRN_DAC1
 mdefine_line|#define SPRN_DAC1&t;0x3F6&t;/* Data Address Compare 1 */
 DECL|macro|SPRN_DAC2
 mdefine_line|#define SPRN_DAC2&t;0x3F7&t;/* Data Address Compare 2 */
+DECL|macro|SPRN_CSRR0
+mdefine_line|#define SPRN_CSRR0&t;SPRN_SRR2 /* Critical Save and Restore Register 0 */
+DECL|macro|SPRN_CSRR1
+mdefine_line|#define SPRN_CSRR1&t;SPRN_SRR3 /* Critical Save and Restore Register 1 */
 macro_line|#endif
 multiline_comment|/* Bit definitions for the DBSR. */
 multiline_comment|/*&n; * DBSR bits which have conflicting definitions on true Book E versus IBM 40x.&n; */
@@ -350,10 +359,17 @@ mdefine_line|#define SGR_NORMAL&t;0&t;&t;/* Speculative fetching allowed. */
 DECL|macro|SGR_GUARDED
 mdefine_line|#define SGR_GUARDED&t;1&t;&t;/* Speculative fetching disallowed. */
 multiline_comment|/* Short-hand for various SPRs. */
+macro_line|#ifdef CONFIG_BOOKE
 DECL|macro|CSRR0
 mdefine_line|#define CSRR0&t;SPRN_CSRR0&t;/* Critical Save and Restore Register 0 */
 DECL|macro|CSRR1
 mdefine_line|#define CSRR1&t;SPRN_CSRR1&t;/* Critical Save and Restore Register 1 */
+macro_line|#else
+DECL|macro|CSRR0
+mdefine_line|#define CSRR0&t;SPRN_SRR2&t;/* Logically and functionally equivalent. */
+DECL|macro|CSRR1
+mdefine_line|#define CSRR1&t;SPRN_SRR3&t;/* Logically and functionally equivalent. */
+macro_line|#endif
 DECL|macro|DCMP
 mdefine_line|#define DCMP&t;SPRN_DCMP&t;/* Data TLB Compare Register */
 DECL|macro|SPRG4R

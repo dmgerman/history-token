@@ -7421,7 +7421,7 @@ c_func
 (paren
 )paren
 )paren
-id|radeon_engine_init
+id|radeonfb_engine_init
 (paren
 id|rinfo
 )paren
@@ -9970,9 +9970,10 @@ id|rinfo
 )paren
 suffix:semicolon
 macro_line|#endif        
-id|kfree
+id|framebuffer_release
+c_func
 (paren
-id|rinfo
+id|info
 )paren
 suffix:semicolon
 )brace

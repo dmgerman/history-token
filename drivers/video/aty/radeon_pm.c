@@ -3724,7 +3724,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|radeon_engine_reset
+id|radeonfb_engine_reset
 c_func
 (paren
 id|rinfo

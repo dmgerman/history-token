@@ -397,6 +397,9 @@ c_cond
 (paren
 op_logical_neg
 id|h
+op_logical_or
+op_logical_neg
+id|h-&gt;htable
 )paren
 r_return
 suffix:semicolon
@@ -458,6 +461,10 @@ c_func
 (paren
 id|h-&gt;htable
 )paren
+suffix:semicolon
+id|h-&gt;htable
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|avtab_map

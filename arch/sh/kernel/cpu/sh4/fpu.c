@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fpu.c,v 1.3 2003/09/23 23:15:44 lethal Exp $&n; *&n; * linux/arch/sh/kernel/fpu.c&n; *&n; * Save/restore floating point context for signal handlers.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1999, 2000  Kaz Kojima &amp; Niibe Yutaka&n; *&n; * FIXME! These routines can be optimized in big endian case.&n; */
+multiline_comment|/* $Id: fpu.c,v 1.4 2004/01/13 05:52:11 kkojima Exp $&n; *&n; * linux/arch/sh/kernel/fpu.c&n; *&n; * Save/restore floating point context for signal handlers.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1999, 2000  Kaz Kojima &amp; Niibe Yutaka&n; *&n; * FIXME! These routines can be optimized in big endian case.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -16,53 +16,78 @@ r_struct
 id|task_struct
 op_star
 id|tsk
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
+r_int
+r_int
+id|dummy
+suffix:semicolon
+id|clear_tsk_thread_flag
+c_func
+(paren
+id|tsk
+comma
+id|TIF_USEDFPU
+)paren
+suffix:semicolon
+id|enable_fpu
+c_func
+(paren
+)paren
+suffix:semicolon
 id|asm
 r_volatile
 (paren
 l_string|&quot;sts.l&t;fpul, @-%0&bslash;n&bslash;t&quot;
 l_string|&quot;sts.l&t;fpscr, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;lds&t;%1, fpscr&bslash;n&bslash;t&quot;
-l_string|&quot;frchg&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr15, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr14, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr13, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr12, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr11, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr10, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr9, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr8, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr7, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr6, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr5, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr4, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr3, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr2, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr1, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr0, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;frchg&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr15, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr14, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr13, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr12, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr11, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr10, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr9, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr8, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr7, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr6, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr5, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr4, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr3, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr2, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr1, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr0, @-%0&bslash;n&bslash;t&quot;
 l_string|&quot;lds&t;%2, fpscr&bslash;n&bslash;t&quot;
+l_string|&quot;frchg&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr15, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr14, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr13, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr12, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr11, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr10, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr9, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr8, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr7, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr6, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr5, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr4, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr3, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr2, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr1, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr0, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;frchg&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr15, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr14, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr13, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr12, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr11, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr10, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr9, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr8, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr7, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr6, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr5, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr4, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr3, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr2, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr1, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;fmov.s&t;fr0, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;lds&t;%3, fpscr&bslash;n&bslash;t&quot;
 suffix:colon
-multiline_comment|/* no output */
+l_string|&quot;=r&quot;
+(paren
+id|dummy
+)paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;0&quot;
 (paren
 (paren
 r_char
@@ -87,17 +112,15 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-id|clear_tsk_thread_flag
+id|disable_fpu
 c_func
 (paren
-id|tsk
-comma
-id|TIF_USEDFPU
 )paren
 suffix:semicolon
 id|release_fpu
 c_func
 (paren
+id|regs
 )paren
 suffix:semicolon
 )brace
@@ -113,10 +136,19 @@ op_star
 id|tsk
 )paren
 (brace
+r_int
+r_int
+id|dummy
+suffix:semicolon
+id|enable_fpu
+c_func
+(paren
+)paren
+suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;lds&t;%1, fpscr&bslash;n&bslash;t&quot;
+l_string|&quot;lds&t;%2, fpscr&bslash;n&bslash;t&quot;
 l_string|&quot;fmov.s&t;@%0+, fr0&bslash;n&bslash;t&quot;
 l_string|&quot;fmov.s&t;@%0+, fr1&bslash;n&bslash;t&quot;
 l_string|&quot;fmov.s&t;@%0+, fr2&bslash;n&bslash;t&quot;
@@ -154,9 +186,12 @@ l_string|&quot;frchg&bslash;n&bslash;t&quot;
 l_string|&quot;lds.l&t;@%0+, fpscr&bslash;n&bslash;t&quot;
 l_string|&quot;lds.l&t;@%0+, fpul&bslash;n&bslash;t&quot;
 suffix:colon
-multiline_comment|/* no output */
+l_string|&quot;=r&quot;
+(paren
+id|dummy
+)paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;0&quot;
 (paren
 op_amp
 id|tsk-&gt;thread.fpu
@@ -170,6 +205,11 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
+id|disable_fpu
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Load the FPU with signalling NANS.  This bit pattern we&squot;re using&n; * has the property that no matter wether considered as single or as&n; * double precission represents signaling NANS.  &n; */
 r_static
@@ -181,6 +221,11 @@ c_func
 r_void
 )paren
 (brace
+id|enable_fpu
+c_func
+(paren
+)paren
+suffix:semicolon
 id|asm
 r_volatile
 (paren
@@ -238,6 +283,11 @@ l_string|&quot;r&quot;
 (paren
 id|FPSCR_INIT
 )paren
+)paren
+suffix:semicolon
+id|disable_fpu
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -854,6 +904,8 @@ id|save_fpu
 c_func
 (paren
 id|tsk
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -897,6 +949,7 @@ suffix:semicolon
 id|grab_fpu
 c_func
 (paren
+id|regs
 )paren
 suffix:semicolon
 id|restore_fpu
@@ -998,6 +1051,9 @@ id|save_fpu
 c_func
 (paren
 id|tsk
+comma
+op_amp
+id|regs
 )paren
 suffix:semicolon
 id|tsk-&gt;thread.trap_no
@@ -1054,6 +1110,8 @@ suffix:semicolon
 id|grab_fpu
 c_func
 (paren
+op_amp
+id|regs
 )paren
 suffix:semicolon
 r_if

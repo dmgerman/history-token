@@ -1765,7 +1765,7 @@ id|info
 suffix:semicolon
 r_extern
 r_void
-id|radeon_engine_init
+id|radeonfb_engine_init
 (paren
 r_struct
 id|radeonfb_info
@@ -1775,7 +1775,7 @@ id|rinfo
 suffix:semicolon
 r_extern
 r_void
-id|radeon_engine_reset
+id|radeonfb_engine_reset
 c_func
 (paren
 r_struct
