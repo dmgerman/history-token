@@ -533,6 +533,8 @@ c_func
 id|cifs_req_cachep
 comma
 id|SLAB_KERNEL
+op_or
+id|SLAB_NOFS
 )paren
 suffix:semicolon
 multiline_comment|/* clear the first few header bytes */
