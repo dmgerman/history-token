@@ -11755,6 +11755,11 @@ id|local
 op_assign
 l_int|1
 suffix:semicolon
+id|lock_cpu_hotplug
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -11848,6 +11853,11 @@ id|req.done
 )paren
 suffix:semicolon
 )brace
+id|unlock_cpu_hotplug
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifdef ARCH_HAS_SCHED_DOMAIN
 r_extern
