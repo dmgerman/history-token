@@ -38,7 +38,7 @@ macro_line|#include &quot;io_ionsp.h&quot;&t;&t;/* info for the iosp messages */
 macro_line|#include &quot;io_16654.h&quot;&t;&t;/* 16654 UART defines */
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v2.2&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v2.3&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt; and David Iacovelli&quot;
 DECL|macro|DRIVER_DESC
@@ -2317,6 +2317,11 @@ id|edge_port-&gt;txCredits
 )paren
 suffix:semicolon
 multiline_comment|/* tell the tty driver that something has changed */
+r_if
+c_cond
+(paren
+id|edge_port-&gt;port-&gt;tty
+)paren
 id|wake_up_interruptible
 c_func
 (paren
@@ -2594,6 +2599,12 @@ id|tty
 op_assign
 id|edge_port-&gt;port-&gt;tty
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tty
+)paren
+(brace
 multiline_comment|/* let the tty driver wakeup if it has a special write_wakeup function */
 r_if
 c_cond
@@ -2627,6 +2638,7 @@ op_amp
 id|tty-&gt;write_wait
 )paren
 suffix:semicolon
+)brace
 singleline_comment|// Release the Write URB
 id|edge_port-&gt;write_in_progress
 op_assign
@@ -2770,6 +2782,11 @@ op_assign
 id|edge_port-&gt;port-&gt;tty
 suffix:semicolon
 multiline_comment|/* tell the tty driver that something has changed */
+r_if
+c_cond
+(paren
+id|tty
+)paren
 id|wake_up_interruptible
 c_func
 (paren
@@ -2873,6 +2890,11 @@ op_minus
 id|ENODEV
 suffix:semicolon
 multiline_comment|/* force low_latency on so that our tty_push actually forces the data through, &n;&t;   otherwise it is scheduled, and with high data rates (like with OHCI) data&n;&t;   can get lost. */
+r_if
+c_cond
+(paren
+id|port-&gt;tty
+)paren
 id|port-&gt;tty-&gt;low_latency
 op_assign
 l_int|1
@@ -4910,6 +4932,23 @@ id|tty
 op_assign
 id|port-&gt;tty
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tty
+)paren
+(brace
+id|dbg
+(paren
+l_string|&quot;%s - no tty available&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* if we are implementing XON/XOFF, send the stop character */
 r_if
 c_cond
@@ -5072,6 +5111,23 @@ id|tty
 op_assign
 id|port-&gt;tty
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tty
+)paren
+(brace
+id|dbg
+(paren
+l_string|&quot;%s - no tty available&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* if we are implementing XON/XOFF, send the start character */
 r_if
 c_cond
@@ -5202,31 +5258,30 @@ suffix:semicolon
 r_int
 r_int
 id|cflag
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|port-&gt;tty
+op_logical_or
+op_logical_neg
+id|port-&gt;tty-&gt;termios
+)paren
+(brace
+id|dbg
+(paren
+l_string|&quot;%s - no tty or termios&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|cflag
 op_assign
 id|tty-&gt;termios-&gt;c_cflag
-suffix:semicolon
-id|dbg
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; - clfag %08x %08x iflag %08x %08x&quot;
-comma
-id|tty-&gt;termios-&gt;c_cflag
-comma
-id|old_termios-&gt;c_cflag
-comma
-id|RELEVANT_IFLAG
-c_func
-(paren
-id|tty-&gt;termios-&gt;c_iflag
-)paren
-comma
-id|RELEVANT_IFLAG
-c_func
-(paren
-id|old_termios-&gt;c_iflag
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/* check that they really want us to change something */
 r_if
@@ -5269,6 +5324,45 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+)brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - clfag %08x iflag %08x&quot;
+comma
+id|__FUNCTION__
+comma
+id|tty-&gt;termios-&gt;c_cflag
+comma
+id|RELEVANT_IFLAG
+c_func
+(paren
+id|tty-&gt;termios-&gt;c_iflag
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|old_termios
+)paren
+(brace
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - old clfag %08x old iflag %08x&quot;
+comma
+id|__FUNCTION__
+comma
+id|old_termios-&gt;c_cflag
+comma
+id|RELEVANT_IFLAG
+c_func
+(paren
+id|old_termios-&gt;c_iflag
+)paren
+)paren
+suffix:semicolon
 )brace
 id|dbg
 c_func
@@ -5417,6 +5511,16 @@ op_star
 id|tty
 op_assign
 id|edge_port-&gt;port-&gt;tty
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tty
+)paren
+r_return
+op_minus
+id|ENOIOCTLCMD
 suffix:semicolon
 id|result
 op_assign
@@ -7245,6 +7349,11 @@ id|byte2
 )paren
 suffix:semicolon
 multiline_comment|/* send the current line settings to the port so we are in sync with any further termios calls */
+r_if
+c_cond
+(paren
+id|edge_port-&gt;port-&gt;tty
+)paren
 id|change_port_settings
 (paren
 id|edge_port
@@ -7615,6 +7724,8 @@ r_if
 c_cond
 (paren
 id|lsrData
+op_logical_and
+id|edge_port-&gt;port-&gt;tty
 )paren
 (brace
 id|tty_insert_flip_char
