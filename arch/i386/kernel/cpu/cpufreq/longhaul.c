@@ -1920,7 +1920,6 @@ suffix:semicolon
 r_case
 l_int|7
 suffix:colon
-multiline_comment|/* C5B / C5C */
 id|longhaul_version
 op_assign
 id|TYPE_LONGHAUL_V1
