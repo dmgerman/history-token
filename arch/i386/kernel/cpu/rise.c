@@ -81,12 +81,14 @@ id|rise_cpu_dev
 id|__initdata
 op_assign
 (brace
+dot
 id|c_vendor
-suffix:colon
+op_assign
 l_string|&quot;Rise&quot;
 comma
+dot
 id|c_ident
-suffix:colon
+op_assign
 (brace
 l_string|&quot;RiseRiseRise&quot;
 )brace
@@ -124,8 +126,9 @@ l_string|&quot;iDragon II&quot;
 comma
 )brace
 comma
+dot
 id|c_init
-suffix:colon
+op_assign
 id|init_rise
 comma
 )brace
