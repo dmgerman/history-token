@@ -13422,6 +13422,7 @@ c_cond
 (paren
 id|can_access_pmu
 )paren
+(brace
 id|ia64_set_dbr
 c_func
 (paren
@@ -13430,6 +13431,12 @@ comma
 id|dbreg.val
 )paren
 suffix:semicolon
+id|ia64_dv_serialize_data
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 id|ctx-&gt;ctx_dbrs
 (braket
 id|rnum
@@ -19307,7 +19314,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;flags                     : 0x%lx&bslash;n&quot;
+l_string|&quot;flags                     : 0x%x&bslash;n&quot;
 comma
 id|pmu_conf-&gt;flags
 )paren

@@ -163,10 +163,9 @@ DECL|macro|safe_halt
 mdefine_line|#define safe_halt()         ia64_pal_halt_light()    /* PAL_HALT_LIGHT */
 multiline_comment|/*&n; * The group barrier in front of the rsm &amp; ssm are necessary to ensure&n; * that none of the previous instructions in the same group are&n; * affected by the rsm/ssm.&n; */
 multiline_comment|/* For spinlocks etc */
-multiline_comment|/* clearing psr.i is implicitly serialized (visible by next insn) */
-multiline_comment|/* setting psr.i requires data serialization */
+multiline_comment|/*&n; * - clearing psr.i is implicitly serialized (visible by next insn)&n; * - setting psr.i requires data serialization&n; * - we need a stop-bit before reading PSR because we sometimes&n; *   write a floating-point register right before reading the PSR&n; *   and that writes to PSR.mfl&n; */
 DECL|macro|__local_irq_save
-mdefine_line|#define __local_irq_save(x)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = ia64_getreg(_IA64_REG_PSR);&t;&bslash;&n;&t;ia64_stop();&t;&t;&t;&t;&bslash;&n;&t;ia64_rsm(IA64_PSR_I);&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define __local_irq_save(x)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_stop();&t;&t;&t;&t;&bslash;&n;&t;(x) = ia64_getreg(_IA64_REG_PSR);&t;&bslash;&n;&t;ia64_stop();&t;&t;&t;&t;&bslash;&n;&t;ia64_rsm(IA64_PSR_I);&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|__local_irq_disable
 mdefine_line|#define __local_irq_disable()&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_stop();&t;&t;&t;&t;&bslash;&n;&t;ia64_rsm(IA64_PSR_I);&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|__local_irq_restore
@@ -196,7 +195,7 @@ macro_line|#endif /* !CONFIG_IA64_DEBUG_IRQ */
 DECL|macro|local_irq_enable
 mdefine_line|#define local_irq_enable()&t;({ ia64_ssm(IA64_PSR_I); ia64_srlz_d(); })
 DECL|macro|local_save_flags
-mdefine_line|#define local_save_flags(flags)&t;((flags) = ia64_getreg(_IA64_REG_PSR))
+mdefine_line|#define local_save_flags(flags)&t;({ ia64_stop(); (flags) = ia64_getreg(_IA64_REG_PSR); })
 DECL|macro|irqs_disabled
 mdefine_line|#define irqs_disabled()&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __ia64_id_flags;&t;&t;&bslash;&n;&t;local_save_flags(__ia64_id_flags);&t;&bslash;&n;&t;(__ia64_id_flags &amp; IA64_PSR_I) == 0;&t;&bslash;&n;})
 macro_line|#ifdef __KERNEL__

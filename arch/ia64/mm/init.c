@@ -1186,6 +1186,11 @@ op_lshift
 l_int|2
 )paren
 suffix:semicolon
+id|ia64_srlz_d
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#endif
 id|cpu
 op_assign

@@ -71,5 +71,14 @@ macro_line|# define TEXT_ALIGN(n)&t;.align n
 macro_line|#else
 macro_line|# define TEXT_ALIGN(n)
 macro_line|#endif
+macro_line|#ifdef HAVE_SERIALIZE_DIRECTIVE
+DECL|macro|dv_serialize_data
+macro_line|# define dv_serialize_data&t;&t;.serialize.data
+DECL|macro|dv_serialize_instruction
+macro_line|# define dv_serialize_instruction&t;.serialize.instruction
+macro_line|#else
+macro_line|# define dv_serialize_data
+macro_line|# define dv_serialize_instruction
+macro_line|#endif
 macro_line|#endif /* _ASM_IA64_ASMMACRO_H */
 eof
