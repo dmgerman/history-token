@@ -42,5 +42,11 @@ multiline_comment|/*&n; * The hardirq mask has to be large enough to have space 
 macro_line|#if (1 &lt;&lt; HARDIRQ_BITS) &lt; NR_IRQS
 macro_line|# error HARDIRQ_BITS is too low!
 macro_line|#endif
+r_extern
+r_void
+id|__iomem
+op_star
+id|ipi_base_addr
+suffix:semicolon
 macro_line|#endif /* _ASM_IA64_HARDIRQ_H */
 eof
