@@ -876,6 +876,10 @@ id|i
 op_increment
 )paren
 (brace
+r_void
+op_star
+id|p
+suffix:semicolon
 multiline_comment|/* entry for this /proc/sys/intermezzo/intermezzo&quot;i&quot; */
 id|ctl_table
 op_star
@@ -935,14 +939,14 @@ multiline_comment|/* sorry */
 id|PRESTO_ALLOC
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|psdev-&gt;procname
+id|p
 comma
 id|PROCNAME_SIZE
 )paren
+suffix:semicolon
+id|psdev-&gt;procname
+op_assign
+id|p
 suffix:semicolon
 r_if
 c_cond
