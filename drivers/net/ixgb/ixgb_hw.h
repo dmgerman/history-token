@@ -1086,12 +1086,12 @@ mdefine_line|#define IXGB_CONTEXT_DESC_TYPE 0x00000000
 DECL|macro|IXGB_CONTEXT_DESC_STATUS_DD
 mdefine_line|#define IXGB_CONTEXT_DESC_STATUS_DD 0x01
 multiline_comment|/* Filters */
-DECL|macro|IXGB_RAR_ENTRIES
-mdefine_line|#define IXGB_RAR_ENTRIES          16&t;/* Number of entries in Rx Address array */
 DECL|macro|IXGB_MC_TBL_SIZE
 mdefine_line|#define IXGB_MC_TBL_SIZE          128&t;/* Multicast Filter Table (4096 bits) */
 DECL|macro|IXGB_VLAN_FILTER_TBL_SIZE
 mdefine_line|#define IXGB_VLAN_FILTER_TBL_SIZE 128&t;/* VLAN Filter Table (4096 bits) */
+DECL|macro|IXGB_RAR_ENTRIES
+mdefine_line|#define IXGB_RAR_ENTRIES&t;&t;  3&t;/* Number of entries in Rx Address array */
 DECL|macro|IXGB_MEMORY_REGISTER_BASE_ADDRESS
 mdefine_line|#define IXGB_MEMORY_REGISTER_BASE_ADDRESS   0
 DECL|macro|ENET_HEADER_SIZE
