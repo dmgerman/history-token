@@ -39,9 +39,6 @@ mdefine_line|#define SYM_CONF_NVRAM_SUPPORT&t;&t;(1)
 macro_line|#endif
 multiline_comment|/*&n; *  Support for Immediate Arbitration.&n; *  Not advised.&n; */
 multiline_comment|/* #define SYM_CONF_IARB_SUPPORT */
-multiline_comment|/*&n; *  Support for some PCI fix-ups (or assumed so).&n; */
-DECL|macro|SYM_CONF_PCI_FIX_UP
-mdefine_line|#define SYM_CONF_PCI_FIX_UP
 multiline_comment|/*&n; *  Number of lists for the optimization of the IO timeout handling.&n; *  Not used under FreeBSD and Linux.&n; */
 macro_line|#ifndef SYM_CONF_TIMEOUT_ORDER_MAX
 DECL|macro|SYM_CONF_TIMEOUT_ORDER_MAX

@@ -242,6 +242,11 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|count
 op_assign
 op_amp
@@ -314,6 +319,11 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|count
 op_assign
 op_amp

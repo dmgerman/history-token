@@ -3160,7 +3160,7 @@ multiline_comment|/*&n;&t; * tagged queueing - allocate a new tag to this comman
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;device-&gt;tagged_queue
+id|SCpnt-&gt;device-&gt;simple_tags
 )paren
 (brace
 id|SCpnt-&gt;device-&gt;current_tag
@@ -6037,7 +6037,7 @@ id|host
 )paren
 )paren
 suffix:semicolon
-id|host-&gt;SCpnt-&gt;device-&gt;tagged_queue
+id|host-&gt;SCpnt-&gt;device-&gt;simple_tags
 op_assign
 l_int|0
 suffix:semicolon
@@ -10972,7 +10972,7 @@ id|p
 comma
 l_string|&quot;%3sabled(%3d) &quot;
 comma
-id|scd-&gt;tagged_queue
+id|scd-&gt;simple_tags
 ques
 c_cond
 l_string|&quot;en&quot;

@@ -1,6 +1,26 @@
 macro_line|#ifndef _SCSI_PRIV_H
 DECL|macro|_SCSI_PRIV_H
 mdefine_line|#define _SCSI_PRIV_H
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+r_struct
+id|request_queue
+suffix:semicolon
+r_struct
+id|scsi_cmnd
+suffix:semicolon
+r_struct
+id|scsi_device
+suffix:semicolon
+r_struct
+id|scsi_host_template
+suffix:semicolon
+r_struct
+id|scsi_request
+suffix:semicolon
+r_struct
+id|Scsi_Host
+suffix:semicolon
 multiline_comment|/*&n; * These are the values that the owner field can take.&n; * They are used as an indication of who the command belongs to.&n; */
 DECL|macro|SCSI_OWNER_HIGHLEVEL
 mdefine_line|#define SCSI_OWNER_HIGHLEVEL      0x100
@@ -382,7 +402,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* scsi_proc.c */
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 r_extern
 r_void
 id|scsi_proc_hostdir_add
@@ -454,6 +474,7 @@ DECL|macro|scsi_exit_procfs
 macro_line|# define scsi_exit_procfs()&t;&t;do { } while (0)
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* scsi_scan.c */
+r_extern
 r_int
 id|scsi_scan_host_selected
 c_func
@@ -504,6 +525,30 @@ id|device
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* scsi_sysctl.c */
+macro_line|#ifdef CONFIG_SYSCTL
+r_extern
+r_int
+id|scsi_init_sysctl
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_exit_sysctl
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|scsi_init_sysctl
+macro_line|# define scsi_init_sysctl()&t;&t;(0)
+DECL|macro|scsi_exit_sysctl
+macro_line|# define scsi_exit_sysctl()&t;&t;do { } while (0)
+macro_line|#endif /* CONFIG_SYSCTL */
 multiline_comment|/* scsi_sysfs.c */
 r_extern
 r_int

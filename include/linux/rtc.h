@@ -215,6 +215,16 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+r_void
+id|rtc_get_rtc_time
+c_func
+(paren
+r_struct
+id|rtc_time
+op_star
+id|rtc_tm
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_RTC_H_ */
 eof

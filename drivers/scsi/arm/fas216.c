@@ -7265,7 +7265,7 @@ multiline_comment|/*&n;&t; * tagged queuing - allocate a new tag to this command
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;device-&gt;tagged_queue
+id|SCpnt-&gt;device-&gt;simple_tags
 op_logical_and
 id|SCpnt-&gt;cmnd
 (braket
@@ -11122,7 +11122,7 @@ id|p
 comma
 l_string|&quot;%3sabled(%3d) &quot;
 comma
-id|scd-&gt;tagged_queue
+id|scd-&gt;simple_tags
 ques
 c_cond
 l_string|&quot;en&quot;

@@ -540,17 +540,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|get_rtc_time
-c_func
-(paren
-r_struct
-id|rtc_time
-op_star
-id|rtc_tm
-)paren
-suffix:semicolon
 DECL|macro|DEFAULT_RTC_INT_FREQ
 mdefine_line|#define DEFAULT_RTC_INT_FREQ &t;64
 DECL|macro|RTC_NUM_INTS
@@ -1137,7 +1126,7 @@ op_or
 id|AIE_on
 )paren
 (brace
-id|get_rtc_time
+id|rtc_get_rtc_time
 c_func
 (paren
 op_amp

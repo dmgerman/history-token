@@ -261,11 +261,11 @@ op_star
 id|ctrlinfo
 suffix:semicolon
 DECL|member|nr_controllers
-r_int
+id|u_int
 id|nr_controllers
 suffix:semicolon
 DECL|member|nlogcontr
-r_int
+id|u_int
 id|nlogcontr
 suffix:semicolon
 DECL|member|list

@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
-macro_line|#include &lt;linux/vcache.h&gt;
 macro_line|#include &lt;linux/rmap-locking.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -4497,16 +4496,6 @@ op_star
 id|page_table
 )paren
 (brace
-id|invalidate_vcache
-c_func
-(paren
-id|address
-comma
-id|vma-&gt;vm_mm
-comma
-id|new_page
-)paren
-suffix:semicolon
 id|flush_cache_page
 c_func
 (paren

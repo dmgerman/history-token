@@ -3517,7 +3517,6 @@ suffix:semicolon
 )brace
 DECL|function|hiddev_exit
 r_void
-id|__exit
 id|hiddev_exit
 c_func
 (paren

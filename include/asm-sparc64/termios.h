@@ -183,6 +183,7 @@ mdefine_line|#define N_SYNC_PPP&t;14&t;/* synchronous PPP */
 DECL|macro|N_HCI
 mdefine_line|#define N_HCI&t;&t;15  /* Bluetooth HCI UART */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/*&n; * c_cc characters in the termio structure.  Oh, how I love being&n; * backwardly compatible.  Notice that character 4 and 5 are&n; * interpreted differently depending on whether ICANON is set in&n; * c_lflag.  If it&squot;s set, they are used as _VEOF and _VEOL, otherwise&n; * as _VMIN and V_TIME.  This is for compatibility with OSF/1 (which&n; * is compatible with sysV)...&n; */
 DECL|macro|_VMIN
 mdefine_line|#define _VMIN&t;4

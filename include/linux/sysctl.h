@@ -2280,6 +2280,12 @@ DECL|enumerator|DEV_MAC_HID
 id|DEV_MAC_HID
 op_assign
 l_int|5
+comma
+DECL|enumerator|DEV_SCSI
+id|DEV_SCSI
+op_assign
+l_int|6
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/dev/cdrom */
@@ -2446,6 +2452,16 @@ DECL|enumerator|DEV_MAC_HID_ADB_MOUSE_SENDS_KEYCODES
 id|DEV_MAC_HID_ADB_MOUSE_SENDS_KEYCODES
 op_assign
 l_int|6
+)brace
+suffix:semicolon
+multiline_comment|/* /proc/sys/dev/scsi */
+r_enum
+(brace
+DECL|enumerator|DEV_SCSI_LOGGING_LEVEL
+id|DEV_SCSI_LOGGING_LEVEL
+op_assign
+l_int|1
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/abi */

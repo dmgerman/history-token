@@ -4072,6 +4072,9 @@ c_cond
 (paren
 id|bcs-&gt;tx_skb-&gt;len
 OG
+(paren
+id|u_int
+)paren
 id|bcs-&gt;hw.isar.mml
 )paren
 (brace

@@ -7,6 +7,9 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#ifdef CONFIG_44x
+macro_line|#include &lt;asm/ibm4xx.h&gt;
+macro_line|#endif
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;zlib.h&quot;
 multiline_comment|/* Default cmdline */
@@ -236,6 +239,59 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_44x
+multiline_comment|/* Reset MAL */
+id|mtdcr
+c_func
+(paren
+id|DCRN_MALCR
+c_func
+(paren
+id|DCRN_MAL_BASE
+)paren
+comma
+id|MALCR_MMSR
+)paren
+suffix:semicolon
+multiline_comment|/* Wait for reset */
+r_while
+c_loop
+(paren
+id|mfdcr
+c_func
+(paren
+id|DCRN_MALCR
+c_func
+(paren
+id|DCRN_MAL_BASE
+)paren
+)paren
+op_amp
+id|MALCR_MMSR
+)paren
+(brace
+)brace
+suffix:semicolon
+multiline_comment|/* Reset EMAC */
+op_star
+(paren
+r_volatile
+r_int
+r_int
+op_star
+)paren
+id|PPC44x_EMAC0_MR0
+op_assign
+l_int|0x20000000
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;eieio&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#if defined(CONFIG_LOPEC) || defined(CONFIG_PAL4)
 multiline_comment|/*&n;&t; * Call get_mem_size(), which is memory controller dependent,&n;&t; * and we must have the correct file linked in here.&n;&t; */
 id|TotalMemory

@@ -594,6 +594,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 (paren
 id|mr-&gt;range
 (braket
@@ -604,7 +605,7 @@ id|flags
 op_amp
 id|IP_NAT_RANGE_PROTO_SPECIFIED
 )paren
-op_logical_and
+op_logical_or
 id|proto
 op_member_access_from_pointer
 id|in_range

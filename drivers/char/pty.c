@@ -1335,8 +1335,6 @@ op_assign
 id|TTY_DRIVER_RESET_TERMIOS
 op_or
 id|TTY_DRIVER_REAL_RAW
-op_or
-id|TTY_DRIVER_NO_DEVFS
 suffix:semicolon
 id|pty_slave_driver-&gt;other
 op_assign

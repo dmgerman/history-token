@@ -4854,10 +4854,6 @@ id|riscom_board
 op_star
 id|bp
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|board
 op_assign
 id|RC_BOARD

@@ -8378,22 +8378,6 @@ suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_char
-id|ipx_banner
-(braket
-)braket
-id|__initdata
-op_assign
-id|KERN_INFO
-l_string|&quot;NET4: Linux IPX 0.51 for NET4.0&bslash;n&quot;
-id|KERN_INFO
-l_string|&quot;IPX Portions Copyright (c) 1995 Caldera, Inc.&bslash;n&quot;
-"&bslash;"
-id|KERN_INFO
-l_string|&quot;IPX Portions Copyright (c) 2000-2003 Conectiva, Inc.&bslash;n&quot;
-suffix:semicolon
-DECL|variable|__initdata
-r_static
-r_char
 id|ipx_EII_err_msg
 (braket
 )braket
@@ -8563,12 +8547,6 @@ suffix:semicolon
 id|ipx_proc_init
 c_func
 (paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|ipx_banner
 )paren
 suffix:semicolon
 r_return

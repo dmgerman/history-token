@@ -26545,11 +26545,6 @@ op_assign
 l_int|1
 comma
 dot
-id|supports_dma
-op_assign
-l_int|1
-comma
-dot
 id|supports_dsc_overlap
 op_assign
 l_int|1

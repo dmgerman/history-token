@@ -5,6 +5,33 @@ DECL|macro|_PPC_MMU_H_
 mdefine_line|#define _PPC_MMU_H_
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASSEMBLY__
+multiline_comment|/*&n; * Define physical address type.  Machines using split size&n; * virtual/physical addressing like 32-bit virtual / 36-bit&n; * physical need a larger than native word size type. -Matt&n; */
+macro_line|#ifndef CONFIG_PTE_64BIT
+DECL|typedef|phys_addr_t
+r_typedef
+r_int
+r_int
+id|phys_addr_t
+suffix:semicolon
+macro_line|#else
+DECL|typedef|phys_addr_t
+r_typedef
+r_int
+r_int
+r_int
+id|phys_addr_t
+suffix:semicolon
+r_extern
+id|phys_addr_t
+id|fixup_bigphys_addr
+c_func
+(paren
+id|phys_addr_t
+comma
+id|phys_addr_t
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Default &quot;unsigned long&quot; context */
 DECL|typedef|mm_context_t
 r_typedef
@@ -753,6 +780,84 @@ DECL|macro|TLB_M
 mdefine_line|#define TLB_M           0x00000002      /* Memory is coherent */
 DECL|macro|TLB_G
 mdefine_line|#define TLB_G           0x00000001      /* Memory is guarded from prefetch */
+multiline_comment|/*&n; * PPC440 support&n; */
+DECL|macro|PPC44x_MMUCR_TID
+mdefine_line|#define PPC44x_MMUCR_TID&t;0x000000ff&t;
+DECL|macro|PPC44x_MMUCR_STS
+mdefine_line|#define PPC44x_MMUCR_STS&t;0x00010000
+DECL|macro|PPC44x_TLB_PAGEID
+mdefine_line|#define&t;PPC44x_TLB_PAGEID&t;0
+DECL|macro|PPC44x_TLB_XLAT
+mdefine_line|#define&t;PPC44x_TLB_XLAT&t;&t;1
+DECL|macro|PPC44x_TLB_ATTRIB
+mdefine_line|#define&t;PPC44x_TLB_ATTRIB&t;2
+multiline_comment|/* Page identification fields */
+DECL|macro|PPC44x_TLB_EPN_MASK
+mdefine_line|#define PPC44x_TLB_EPN_MASK&t;0xfffffc00      /* Effective Page Number */
+DECL|macro|PPC44x_TLB_VALID
+mdefine_line|#define&t;PPC44x_TLB_VALID&t;0x00000200      /* Valid flag */
+DECL|macro|PPC44x_TLB_TS
+mdefine_line|#define PPC44x_TLB_TS&t;&t;0x00000100&t;/* Translation address space */
+DECL|macro|PPC44x_TLB_PAGESZ_MASK
+mdefine_line|#define PPC44x_TLB_PAGESZ_MASK&t;0x000000f0
+DECL|macro|PPC44x_TLB_PAGESZ
+mdefine_line|#define PPC44x_TLB_PAGESZ(x)&t;(x &lt;&lt; 4)
+DECL|macro|PPC44x_PAGESZ_1K
+mdefine_line|#define PPC44x_PAGESZ_1K&t;0
+DECL|macro|PPC44x_PAGESZ_4K
+mdefine_line|#define PPC44x_PAGESZ_4K&t;1
+DECL|macro|PPC44x_PAGESZ_16K
+mdefine_line|#define PPC44x_PAGESZ_16K&t;2
+DECL|macro|PPC44x_PAGESZ_64K
+mdefine_line|#define PPC44x_PAGESZ_64K&t;3
+DECL|macro|PPC44x_PAGESZ_256K
+mdefine_line|#define PPC44x_PAGESZ_256K&t;4
+DECL|macro|PPC44x_PAGESZ_1M
+mdefine_line|#define PPC44x_PAGESZ_1M&t;5
+DECL|macro|PPC44x_PAGESZ_16M
+mdefine_line|#define PPC44x_PAGESZ_16M&t;7
+DECL|macro|PPC44x_PAGESZ_256M
+mdefine_line|#define&t;PPC44x_PAGESZ_256M&t;9
+multiline_comment|/* Translation fields */
+DECL|macro|PPC44x_TLB_RPN_MASK
+mdefine_line|#define PPC44x_TLB_RPN_MASK&t;0xfffffc00      /* Real Page Number */
+DECL|macro|PPC44x_TLB_ERPN_MASK
+mdefine_line|#define&t;PPC44x_TLB_ERPN_MASK&t;0x0000000f
+multiline_comment|/* Storage attribute and access control fields */
+DECL|macro|PPC44x_TLB_ATTR_MASK
+mdefine_line|#define PPC44x_TLB_ATTR_MASK&t;0x0000ff80
+DECL|macro|PPC44x_TLB_U0
+mdefine_line|#define PPC44x_TLB_U0&t;&t;0x00008000      /* User 0 */
+DECL|macro|PPC44x_TLB_U1
+mdefine_line|#define PPC44x_TLB_U1&t;&t;0x00004000      /* User 1 */
+DECL|macro|PPC44x_TLB_U2
+mdefine_line|#define PPC44x_TLB_U2&t;&t;0x00002000      /* User 2 */
+DECL|macro|PPC44x_TLB_U3
+mdefine_line|#define PPC44x_TLB_U3&t;&t;0x00001000      /* User 3 */
+DECL|macro|PPC44x_TLB_W
+mdefine_line|#define PPC44x_TLB_W&t;&t;0x00000800      /* Caching is write-through */
+DECL|macro|PPC44x_TLB_I
+mdefine_line|#define PPC44x_TLB_I&t;&t;0x00000400      /* Caching is inhibited */
+DECL|macro|PPC44x_TLB_M
+mdefine_line|#define PPC44x_TLB_M&t;&t;0x00000200      /* Memory is coherent */
+DECL|macro|PPC44x_TLB_G
+mdefine_line|#define PPC44x_TLB_G&t;&t;0x00000100      /* Memory is guarded */
+DECL|macro|PPC44x_TLB_E
+mdefine_line|#define PPC44x_TLB_E&t;&t;0x00000080      /* Memory is guarded */
+DECL|macro|PPC44x_TLB_PERM_MASK
+mdefine_line|#define PPC44x_TLB_PERM_MASK&t;0x0000003f
+DECL|macro|PPC44x_TLB_UX
+mdefine_line|#define PPC44x_TLB_UX&t;&t;0x00000020      /* User execution */
+DECL|macro|PPC44x_TLB_UW
+mdefine_line|#define PPC44x_TLB_UW&t;&t;0x00000010      /* User write */
+DECL|macro|PPC44x_TLB_UR
+mdefine_line|#define PPC44x_TLB_UR&t;&t;0x00000008      /* User read */
+DECL|macro|PPC44x_TLB_SX
+mdefine_line|#define PPC44x_TLB_SX&t;&t;0x00000004      /* Super execution */
+DECL|macro|PPC44x_TLB_SW
+mdefine_line|#define PPC44x_TLB_SW&t;&t;0x00000002      /* Super write */
+DECL|macro|PPC44x_TLB_SR
+mdefine_line|#define PPC44x_TLB_SR&t;&t;0x00000001      /* Super read */
 macro_line|#endif /* _PPC_MMU_H_ */
 macro_line|#endif /* __KERNEL__ */
 eof

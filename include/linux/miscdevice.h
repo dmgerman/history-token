@@ -1,6 +1,8 @@
 macro_line|#ifndef _LINUX_MISCDEVICE_H
 DECL|macro|_LINUX_MISCDEVICE_H
 mdefine_line|#define _LINUX_MISCDEVICE_H
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/major.h&gt;
 DECL|macro|BUSMOUSE_MINOR
 mdefine_line|#define BUSMOUSE_MINOR 0
 DECL|macro|PSMOUSE_MINOR
@@ -127,5 +129,7 @@ op_star
 id|misc
 )paren
 suffix:semicolon
+DECL|macro|MODULE_ALIAS_MISCDEV
+mdefine_line|#define MODULE_ALIAS_MISCDEV(minor)&t;&t;&t;&t;&bslash;&n;&t;MODULE_ALIAS(&quot;char-major-&quot; __stringify(MISC_MAJOR)&t;&bslash;&n;&t;&quot;-&quot; __stringify(minor))
 macro_line|#endif
 eof

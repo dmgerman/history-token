@@ -1785,6 +1785,20 @@ c_func
 l_string|&quot;Driver for ISA ICS watchdog cards (WDT500/501)&quot;
 )paren
 suffix:semicolon
+DECL|variable|WATCHDOG_MINOR
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|WATCHDOG_MINOR
+)paren
+suffix:semicolon
+DECL|variable|TEMP_MINOR
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|TEMP_MINOR
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

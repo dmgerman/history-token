@@ -87,7 +87,7 @@ op_star
 id|np
 )paren
 (brace
-r_int
+id|u_int
 id|i
 suffix:semicolon
 id|np-&gt;msgidqueue

@@ -472,10 +472,10 @@ DECL|macro|ISDN_SERIAL_XMIT_MAX
 mdefine_line|#define ISDN_SERIAL_XMIT_MAX            4000 /* Maximum bufsize for write    */
 macro_line|#ifdef CONFIG_ISDN_AUDIO
 multiline_comment|/* For using sk_buffs with audio we need some private variables&n; * within each sk_buff. For this purpose, we declare a struct here,&n; * and put it always at skb-&gt;head. A few macros help accessing the&n; * variables. Of course, we need to check skb_headroom prior to&n; * any access.&n; */
-DECL|struct|isdn_audio_skb
+DECL|struct|_isdnaudio_header
 r_typedef
 r_struct
-id|isdn_audio_skb
+id|_isdnaudio_header
 (brace
 DECL|member|dle_count
 r_int
@@ -487,14 +487,14 @@ r_int
 r_char
 id|lock
 suffix:semicolon
-DECL|typedef|isdn_audio_skb
+DECL|typedef|isdnaudio_header
 )brace
-id|isdn_audio_skb
+id|isdnaudio_header
 suffix:semicolon
 DECL|macro|ISDN_AUDIO_SKB_DLECOUNT
-mdefine_line|#define ISDN_AUDIO_SKB_DLECOUNT(skb) (((isdn_audio_skb*)skb-&gt;head)-&gt;dle_count)
+mdefine_line|#define ISDN_AUDIO_SKB_DLECOUNT(skb) (((isdnaudio_header*)skb-&gt;head)-&gt;dle_count)
 DECL|macro|ISDN_AUDIO_SKB_LOCK
-mdefine_line|#define ISDN_AUDIO_SKB_LOCK(skb) (((isdn_audio_skb*)skb-&gt;head)-&gt;lock)
+mdefine_line|#define ISDN_AUDIO_SKB_LOCK(skb) (((isdnaudio_header*)skb-&gt;head)-&gt;lock)
 macro_line|#endif
 multiline_comment|/* Private data of AT-command-interpreter */
 DECL|struct|atemu
@@ -624,6 +624,12 @@ id|modem_info
 DECL|member|magic
 r_int
 id|magic
+suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
 suffix:semicolon
 DECL|member|flags
 r_int

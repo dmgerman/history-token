@@ -7465,17 +7465,6 @@ suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_char
-id|atalk_banner
-(braket
-)braket
-id|__initdata
-op_assign
-id|KERN_INFO
-l_string|&quot;NET4: AppleTalk 0.20 for Linux NET4.0&bslash;n&quot;
-suffix:semicolon
-DECL|variable|__initdata
-r_static
-r_char
 id|atalk_err_snap
 (braket
 )braket
@@ -7561,12 +7550,6 @@ suffix:semicolon
 id|atalk_register_sysctl
 c_func
 (paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|atalk_banner
 )paren
 suffix:semicolon
 r_return
@@ -7665,7 +7648,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;AppleTalk 0.20 for Linux NET4.0&bslash;n&quot;
+l_string|&quot;AppleTalk 0.20&bslash;n&quot;
 )paren
 suffix:semicolon
 DECL|variable|PF_APPLETALK

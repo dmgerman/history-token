@@ -11,7 +11,6 @@ mdefine_line|#define DBG_MINIMUM  (DL_LOG + DL_FTL + DL_ERR)
 DECL|macro|DBG_DEFAULT
 mdefine_line|#define DBG_DEFAULT  (DBG_MINIMUM + DL_XLOG + DL_REG)
 DECL|variable|adapter
-r_static
 id|DIVA_CAPI_ADAPTER
 op_star
 id|adapter
@@ -23,7 +22,6 @@ op_star
 l_int|NULL
 suffix:semicolon
 DECL|variable|application
-r_static
 id|APPL
 op_star
 id|application
@@ -162,7 +160,6 @@ id|DESCRIPTOR
 id|DAdapter
 suffix:semicolon
 DECL|variable|max_adapter
-r_static
 id|byte
 id|max_adapter
 op_assign
@@ -428,7 +425,6 @@ dot
 )brace
 multiline_comment|/*&n; * Controller mapping&n; */
 DECL|function|MapController
-r_static
 id|byte
 id|MapController
 c_func
@@ -4112,8 +4108,6 @@ suffix:semicolon
 id|diva_os_spin_lock_magic_t
 id|old_irql
 suffix:semicolon
-id|DIVA_LOCK_MODULE
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4210,6 +4204,29 @@ r_return
 suffix:semicolon
 multiline_comment|/* appl already registered */
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|ctrl-&gt;owner
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: cannot reserve module&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* alloc memory */
 id|bnum
 op_assign
@@ -4252,6 +4269,12 @@ c_func
 l_string|&quot;CAPI_REGISTER - memory allocation failed&quot;
 )paren
 )paren
+id|module_put
+c_func
+(paren
+id|ctrl-&gt;owner
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -4305,6 +4328,12 @@ c_func
 l_int|0
 comma
 id|DataNCCI
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|ctrl-&gt;owner
 )paren
 suffix:semicolon
 r_return
@@ -4365,6 +4394,12 @@ c_func
 l_int|0
 comma
 id|DataFlags
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|ctrl-&gt;owner
 )paren
 suffix:semicolon
 r_return
@@ -4434,6 +4469,12 @@ comma
 id|ReceiveBuffer
 )paren
 suffix:semicolon
+id|module_put
+c_func
+(paren
+id|ctrl-&gt;owner
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -4512,6 +4553,12 @@ c_func
 l_int|0
 comma
 id|xbuffer_used
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|ctrl-&gt;owner
 )paren
 suffix:semicolon
 r_return
@@ -4606,6 +4653,12 @@ c_func
 l_int|0
 comma
 id|xbuffer_ptr
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|ctrl-&gt;owner
 )paren
 suffix:semicolon
 r_return
@@ -4758,6 +4811,12 @@ c_func
 l_int|0
 comma
 id|xbuffer_internal
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|ctrl-&gt;owner
 )paren
 suffix:semicolon
 r_return
@@ -5198,7 +5257,11 @@ comma
 l_string|&quot;release_appl&quot;
 )paren
 suffix:semicolon
-id|DIVA_UNLOCK_MODULE
+id|module_put
+c_func
+(paren
+id|ctrl-&gt;owner
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  send message&n; */

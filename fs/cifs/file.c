@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   fs/cifs/file.c&n; *&n; *   vfs operations that deal with files&n; * &n; *   Copyright (c) International Business Machines  Corp., 2002&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   fs/cifs/file.c&n; *&n; *   vfs operations that deal with files&n; * &n; *   Copyright (C) International Business Machines  Corp., 2002,2003&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
@@ -512,6 +512,30 @@ c_cond
 id|pCifsInode
 )paren
 (brace
+id|list_add
+c_func
+(paren
+op_amp
+id|pCifsFile-&gt;flist
+comma
+op_amp
+id|pCifsInode-&gt;openFileList
+)paren
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|file-&gt;f_owner.lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -546,16 +570,6 @@ comma
 id|buf
 comma
 id|inode-&gt;i_sb
-)paren
-suffix:semicolon
-id|list_add
-c_func
-(paren
-op_amp
-id|pCifsFile-&gt;flist
-comma
-op_amp
-id|pCifsInode-&gt;openFileList
 )paren
 suffix:semicolon
 r_if
@@ -602,6 +616,8 @@ id|TRUE
 suffix:semicolon
 )brace
 )brace
+r_else
+(brace
 id|write_unlock
 c_func
 (paren
@@ -616,6 +632,7 @@ op_amp
 id|file-&gt;f_owner.lock
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -863,6 +880,36 @@ op_amp
 id|GlobalSMBSeslock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|file-&gt;f_dentry
+op_eq
+l_int|0
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Null dentry for file %p&quot;
+comma
+id|file
+)paren
+)paren
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|rc
 op_assign
 id|cifs_open
@@ -915,6 +962,7 @@ id|file-&gt;f_dentry-&gt;d_name.name
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 )brace

@@ -9173,6 +9173,11 @@ l_int|0x3000
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ_DEFAULT
+r_if
+c_cond
+(paren
+id|drive-&gt;using_dma
+)paren
 id|HWIF
 c_func
 (paren
@@ -9287,11 +9292,6 @@ dot
 id|busy
 op_assign
 l_int|0
-comma
-dot
-id|supports_dma
-op_assign
-l_int|1
 comma
 dot
 id|supports_dsc_overlap
