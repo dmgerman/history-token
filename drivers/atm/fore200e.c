@@ -64,8 +64,6 @@ DECL|macro|FORE200E_INDEX
 mdefine_line|#define FORE200E_INDEX(virt_addr, type, index)     (&amp;((type *)(virt_addr))[ index ])
 DECL|macro|FORE200E_NEXT_ENTRY
 mdefine_line|#define FORE200E_NEXT_ENTRY(index, modulo)         (index = ++(index) % (modulo))
-DECL|macro|MSECS
-mdefine_line|#define MSECS(ms)  (((ms)*HZ/1000)+1)
 macro_line|#if 1
 DECL|macro|ASSERT
 mdefine_line|#define ASSERT(expr)     if (!(expr)) { &bslash;&n;&t;&t;&t;     printk(FORE200E &quot;assertion failed! %s[%d]: %s&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;    __FUNCTION__, __LINE__, #expr); &bslash;&n;&t;&t;&t;     panic(FORE200E &quot;%s&quot;, __FUNCTION__); &bslash;&n;&t;&t;&t; }
@@ -580,7 +578,7 @@ id|timeout
 op_assign
 id|jiffies
 op_plus
-id|MSECS
+id|msecs_to_jiffies
 c_func
 (paren
 id|msecs
@@ -628,7 +626,7 @@ id|timeout
 op_assign
 id|jiffies
 op_plus
-id|MSECS
+id|msecs_to_jiffies
 c_func
 (paren
 id|msecs
@@ -736,7 +734,7 @@ id|timeout
 op_assign
 id|jiffies
 op_plus
-id|MSECS
+id|msecs_to_jiffies
 c_func
 (paren
 id|msecs
@@ -10922,7 +10920,7 @@ id|timeout
 op_assign
 id|jiffies
 op_plus
-id|MSECS
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|50
