@@ -4668,7 +4668,7 @@ mdefine_line|#define WRITE32(n)               *p++ = htonl(n)
 DECL|macro|WRITE64
 mdefine_line|#define WRITE64(n)               do {&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl((u32)((n) &gt;&gt; 32));&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl((u32)(n));&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|WRITEMEM
-mdefine_line|#define WRITEMEM(ptr,nbytes)     do {&t;&t;&t;&t;&bslash;&n;&t;memcpy(p, ptr, nbytes);&t;&t;&t;&t;&t;&bslash;&n;&t;p += XDR_QUADLEN(nbytes);&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define WRITEMEM(ptr,nbytes)     do {&t;&t;&t;&t;&bslash;&n;&t;*(p + XDR_QUADLEN(nbytes) -1) = 0;                      &bslash;&n;&t;memcpy(p, ptr, nbytes);&t;&t;&t;&t;&t;&bslash;&n;&t;p += XDR_QUADLEN(nbytes);&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|WRITECINFO
 mdefine_line|#define WRITECINFO(c)&t;&t;do {&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.atomic);&t;&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.before_size);&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.before_ctime);&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.after_size);&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.after_ctime);&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|RESERVE_SPACE
