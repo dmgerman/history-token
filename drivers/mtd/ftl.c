@@ -5270,6 +5270,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 (paren
 id|ret
 op_eq

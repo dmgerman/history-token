@@ -241,6 +241,8 @@ r_int
 id|swimiop_send_request
 c_func
 (paren
+id|CURRENT
+comma
 r_struct
 id|swim_iop_req
 op_star
@@ -693,6 +695,8 @@ c_cond
 id|swimiop_send_request
 c_func
 (paren
+id|CURRENT
+comma
 op_amp
 id|req
 )paren
@@ -853,6 +857,8 @@ r_int
 id|swimiop_send_request
 c_func
 (paren
+id|CURRENT
+comma
 r_struct
 id|swim_iop_req
 op_star
@@ -1307,6 +1313,8 @@ op_assign
 id|swimiop_send_request
 c_func
 (paren
+id|CURRENT
+comma
 op_amp
 id|req
 )paren
@@ -2300,6 +2308,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2325,6 +2335,8 @@ l_int|0
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -2369,6 +2381,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2535,6 +2549,8 @@ id|fs-&gt;total_secs
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2552,6 +2568,8 @@ l_int|0
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -2567,6 +2585,8 @@ id|fs-&gt;ejected
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2605,6 +2625,8 @@ id|fs-&gt;write_prot
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2645,6 +2667,8 @@ c_cond
 id|swimiop_send_request
 c_func
 (paren
+id|CURRENT
+comma
 op_amp
 id|req
 )paren
@@ -2653,6 +2677,8 @@ id|req
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon

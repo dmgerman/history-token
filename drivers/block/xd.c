@@ -1320,6 +1320,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|code
 )paren
 suffix:semicolon

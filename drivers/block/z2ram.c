@@ -185,6 +185,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|FALSE
 )paren
 suffix:semicolon
@@ -232,6 +234,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|FALSE
 )paren
 suffix:semicolon
@@ -328,6 +332,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|TRUE
 )paren
 suffix:semicolon

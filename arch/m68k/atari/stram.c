@@ -3427,6 +3427,11 @@ c_loop
 l_int|1
 )paren
 (brace
+r_struct
+id|request
+op_star
+id|req
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3438,19 +3443,23 @@ id|QUEUE
 )paren
 r_return
 suffix:semicolon
+id|req
+op_assign
+id|CURRENT
+suffix:semicolon
 id|start
 op_assign
 id|swap_start
 op_plus
 (paren
-id|CURRENT-&gt;sector
+id|req-&gt;sector
 op_lshift
 l_int|9
 )paren
 suffix:semicolon
 id|len
 op_assign
-id|CURRENT-&gt;current_nr_sectors
+id|req-&gt;current_nr_sectors
 op_lshift
 l_int|9
 suffix:semicolon
@@ -3473,14 +3482,16 @@ id|KERN_ERR
 l_string|&quot;stram: bad access beyond end of device: &quot;
 l_string|&quot;block=%ld, count=%ld&bslash;n&quot;
 comma
-id|CURRENT-&gt;sector
+id|req-&gt;sector
 comma
-id|CURRENT-&gt;current_nr_sectors
+id|req-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 id|end_request
 c_func
 (paren
+id|req
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -3490,7 +3501,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|req-&gt;cmd
 op_eq
 id|READ
 )paren
@@ -3498,7 +3509,7 @@ id|READ
 id|memcpy
 c_func
 (paren
-id|CURRENT-&gt;buffer
+id|req-&gt;buffer
 comma
 id|start
 comma
@@ -3523,7 +3534,7 @@ c_func
 (paren
 id|start
 comma
-id|CURRENT-&gt;buffer
+id|req-&gt;buffer
 comma
 id|len
 )paren
@@ -3542,6 +3553,8 @@ macro_line|#endif
 id|end_request
 c_func
 (paren
+id|req
+comma
 l_int|1
 )paren
 suffix:semicolon

@@ -2221,6 +2221,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|FAIL
 )paren
 suffix:semicolon
@@ -2363,6 +2365,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|FAIL
 )paren
 suffix:semicolon
@@ -2398,6 +2402,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|FAIL
 )paren
 suffix:semicolon
@@ -2693,6 +2699,8 @@ id|MAX_RETRIES
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|FAIL
 )paren
 suffix:semicolon
@@ -4778,6 +4786,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|ending
 )paren
 suffix:semicolon
