@@ -23,14 +23,6 @@ id|____cacheline_aligned
 id|irq_cpustat_t
 suffix:semicolon
 macro_line|#include &lt;linux/irq_cpustat.h&gt;&t;/* Standard mappings for irq_cpustat_t above */
-DECL|macro|irq_enter
-mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
-DECL|macro|nmi_enter
-mdefine_line|#define nmi_enter()&t;&t;(irq_enter())
-DECL|macro|nmi_exit
-mdefine_line|#define nmi_exit()&t;&t;(preempt_count() -= HARDIRQ_OFFSET)
-DECL|macro|irq_exit
-mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&t;&bslash;&n;&t;if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id()))&t;&bslash;&n;&t;&t;do_softirq();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_enable_no_resched();&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#ifdef CONFIG_SMP
 macro_line|#error SMP not available on FR-V
 macro_line|#endif /* CONFIG_SMP */
