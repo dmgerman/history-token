@@ -705,4678 +705,848 @@ r_typedef
 r_uint64
 id|picreg_t
 suffix:semicolon
-multiline_comment|/*********************************************************************&n; * PIC register structures&n; *&n; */
-multiline_comment|/*&n; * Identification Register&n; *&n; * The Identification register is a read only register used by the host CPU&n; * during configuration to determine the type of the widget. The format is&n; * the same as defined in IEEE 1149.1 JTAG Device Identification Register.&n; */
-DECL|union|pic_id_reg_u
+DECL|typedef|picate_t
 r_typedef
-r_union
-id|pic_id_reg_u
-(brace
-DECL|member|pic_id_reg_regval
-id|picreg_t
-id|pic_id_reg_regval
+r_uint64
+id|picate_t
 suffix:semicolon
+multiline_comment|/*****************************************************************************&n; *********************** PIC MMR structure mapping ***************************&n; *****************************************************************************/
+multiline_comment|/* NOTE: PIC WAR. PV#854697.  PIC does not allow writes just to [31:0]&n; * of a 64-bit register.  When writing PIC registers, always write the &n; * entire 64 bits.&n; */
+DECL|struct|pic_s
+r_typedef
+r_volatile
 r_struct
+id|pic_s
 (brace
-DECL|member|picreg_t
+multiline_comment|/* 0x000000-0x00FFFF -- Local Registers */
+multiline_comment|/* 0x000000-0x000057 -- Standard Widget Configuration */
+DECL|member|p_wid_id
 id|picreg_t
-suffix:colon
-l_int|32
+id|p_wid_id
 suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|rev_num
+multiline_comment|/* 0x000000 */
+DECL|member|p_wid_stat
 id|picreg_t
-id|rev_num
-suffix:colon
+id|p_wid_stat
+suffix:semicolon
+multiline_comment|/* 0x000008 */
+DECL|member|p_wid_err_upper
+id|picreg_t
+id|p_wid_err_upper
+suffix:semicolon
+multiline_comment|/* 0x000010 */
+DECL|member|p_wid_err_lower
+id|picreg_t
+id|p_wid_err_lower
+suffix:semicolon
+multiline_comment|/* 0x000018 */
+DECL|macro|p_wid_err
+mdefine_line|#define p_wid_err p_wid_err_lower
+DECL|member|p_wid_control
+id|picreg_t
+id|p_wid_control
+suffix:semicolon
+multiline_comment|/* 0x000020 */
+DECL|member|p_wid_req_timeout
+id|picreg_t
+id|p_wid_req_timeout
+suffix:semicolon
+multiline_comment|/* 0x000028 */
+DECL|member|p_wid_int_upper
+id|picreg_t
+id|p_wid_int_upper
+suffix:semicolon
+multiline_comment|/* 0x000030 */
+DECL|member|p_wid_int_lower
+id|picreg_t
+id|p_wid_int_lower
+suffix:semicolon
+multiline_comment|/* 0x000038 */
+DECL|macro|p_wid_int
+mdefine_line|#define p_wid_int p_wid_int_lower
+DECL|member|p_wid_err_cmdword
+id|picreg_t
+id|p_wid_err_cmdword
+suffix:semicolon
+multiline_comment|/* 0x000040 */
+DECL|member|p_wid_llp
+id|picreg_t
+id|p_wid_llp
+suffix:semicolon
+multiline_comment|/* 0x000048 */
+DECL|member|p_wid_tflush
+id|picreg_t
+id|p_wid_tflush
+suffix:semicolon
+multiline_comment|/* 0x000050 */
+multiline_comment|/* 0x000058-0x00007F -- Bridge-specific Widget Configuration */
+DECL|member|p_wid_aux_err
+id|picreg_t
+id|p_wid_aux_err
+suffix:semicolon
+multiline_comment|/* 0x000058 */
+DECL|member|p_wid_resp_upper
+id|picreg_t
+id|p_wid_resp_upper
+suffix:semicolon
+multiline_comment|/* 0x000060 */
+DECL|member|p_wid_resp_lower
+id|picreg_t
+id|p_wid_resp_lower
+suffix:semicolon
+multiline_comment|/* 0x000068 */
+DECL|macro|p_wid_resp
+mdefine_line|#define p_wid_resp p_wid_resp_lower
+DECL|member|p_wid_tst_pin_ctrl
+id|picreg_t
+id|p_wid_tst_pin_ctrl
+suffix:semicolon
+multiline_comment|/* 0x000070 */
+DECL|member|p_wid_addr_lkerr
+id|picreg_t
+id|p_wid_addr_lkerr
+suffix:semicolon
+multiline_comment|/* 0x000078 */
+multiline_comment|/* 0x000080-0x00008F -- PMU &amp; MAP */
+DECL|member|p_dir_map
+id|picreg_t
+id|p_dir_map
+suffix:semicolon
+multiline_comment|/* 0x000080 */
+DECL|member|_pad_000088
+id|picreg_t
+id|_pad_000088
+suffix:semicolon
+multiline_comment|/* 0x000088 */
+multiline_comment|/* 0x000090-0x00009F -- SSRAM */
+DECL|member|p_map_fault
+id|picreg_t
+id|p_map_fault
+suffix:semicolon
+multiline_comment|/* 0x000090 */
+DECL|member|_pad_000098
+id|picreg_t
+id|_pad_000098
+suffix:semicolon
+multiline_comment|/* 0x000098 */
+multiline_comment|/* 0x0000A0-0x0000AF -- Arbitration */
+DECL|member|p_arb
+id|picreg_t
+id|p_arb
+suffix:semicolon
+multiline_comment|/* 0x0000A0 */
+DECL|member|_pad_0000A8
+id|picreg_t
+id|_pad_0000A8
+suffix:semicolon
+multiline_comment|/* 0x0000A8 */
+multiline_comment|/* 0x0000B0-0x0000BF -- Number In A Can or ATE Parity Error */
+DECL|member|p_ate_parity_err
+id|picreg_t
+id|p_ate_parity_err
+suffix:semicolon
+multiline_comment|/* 0x0000B0 */
+DECL|member|_pad_0000B8
+id|picreg_t
+id|_pad_0000B8
+suffix:semicolon
+multiline_comment|/* 0x0000B8 */
+multiline_comment|/* 0x0000C0-0x0000FF -- PCI/GIO */
+DECL|member|p_bus_timeout
+id|picreg_t
+id|p_bus_timeout
+suffix:semicolon
+multiline_comment|/* 0x0000C0 */
+DECL|member|p_pci_cfg
+id|picreg_t
+id|p_pci_cfg
+suffix:semicolon
+multiline_comment|/* 0x0000C8 */
+DECL|member|p_pci_err_upper
+id|picreg_t
+id|p_pci_err_upper
+suffix:semicolon
+multiline_comment|/* 0x0000D0 */
+DECL|member|p_pci_err_lower
+id|picreg_t
+id|p_pci_err_lower
+suffix:semicolon
+multiline_comment|/* 0x0000D8 */
+DECL|macro|p_pci_err
+mdefine_line|#define p_pci_err p_pci_err_lower
+DECL|member|_pad_0000E0
+id|picreg_t
+id|_pad_0000E0
+(braket
 l_int|4
+)braket
 suffix:semicolon
-multiline_comment|/* 31:28 */
-DECL|member|part_num
+multiline_comment|/* 0x0000{E0..F8} */
+multiline_comment|/* 0x000100-0x0001FF -- Interrupt */
+DECL|member|p_int_status
 id|picreg_t
-id|part_num
-suffix:colon
-l_int|16
+id|p_int_status
 suffix:semicolon
-multiline_comment|/* 27:12 */
-DECL|member|mfg_num
+multiline_comment|/* 0x000100 */
+DECL|member|p_int_enable
 id|picreg_t
-id|mfg_num
-suffix:colon
-l_int|11
+id|p_int_enable
 suffix:semicolon
-multiline_comment|/* 11:1 */
-DECL|member|picreg_t
+multiline_comment|/* 0x000108 */
+DECL|member|p_int_rst_stat
 id|picreg_t
-suffix:colon
-l_int|1
+id|p_int_rst_stat
 suffix:semicolon
-multiline_comment|/* 0:0 */
-DECL|member|pic_id_reg_fld_s
-)brace
-id|pic_id_reg_fld_s
-suffix:semicolon
-DECL|typedef|pic_id_reg_u_t
-)brace
-id|pic_id_reg_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Status Register&n; *&n; * The status register is a read register which holds status information of the&n; * Bus Subsection.&n; */
-DECL|union|pic_stat_reg_u
-r_typedef
-r_union
-id|pic_stat_reg_u
-(brace
-DECL|member|pic_stat_reg_regval
+multiline_comment|/* 0x000110 */
+DECL|member|p_int_mode
 id|picreg_t
-id|pic_stat_reg_regval
+id|p_int_mode
 suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
+multiline_comment|/* 0x000118 */
+DECL|member|p_int_device
 id|picreg_t
-suffix:colon
-l_int|28
+id|p_int_device
 suffix:semicolon
-multiline_comment|/* 63:36 */
-DECL|member|pci_x_speed
+multiline_comment|/* 0x000120 */
+DECL|member|p_int_host_err
 id|picreg_t
-id|pci_x_speed
-suffix:colon
+id|p_int_host_err
+suffix:semicolon
+multiline_comment|/* 0x000128 */
+DECL|member|p_int_addr
+id|picreg_t
+id|p_int_addr
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* 0x0001{30,,,68} */
+DECL|member|p_err_int_view
+id|picreg_t
+id|p_err_int_view
+suffix:semicolon
+multiline_comment|/* 0x000170 */
+DECL|member|p_mult_int
+id|picreg_t
+id|p_mult_int
+suffix:semicolon
+multiline_comment|/* 0x000178 */
+DECL|member|p_force_always
+id|picreg_t
+id|p_force_always
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* 0x0001{80,,,B8} */
+DECL|member|p_force_pin
+id|picreg_t
+id|p_force_pin
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* 0x0001{C0,,,F8} */
+multiline_comment|/* 0x000200-0x000298 -- Device */
+DECL|member|p_device
+id|picreg_t
+id|p_device
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* 0x0002{00,,,18} */
+DECL|member|_pad_000220
+id|picreg_t
+id|_pad_000220
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* 0x0002{20,,,38} */
+DECL|member|p_wr_req_buf
+id|picreg_t
+id|p_wr_req_buf
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* 0x0002{40,,,58} */
+DECL|member|_pad_000260
+id|picreg_t
+id|_pad_000260
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* 0x0002{60,,,78} */
+DECL|member|p_rrb_map
+id|picreg_t
+id|p_rrb_map
+(braket
 l_int|2
+)braket
 suffix:semicolon
-multiline_comment|/* 35:34 */
-DECL|member|pci_x_active
+multiline_comment|/* 0x0002{80,,,88} */
+DECL|macro|p_even_resp
+mdefine_line|#define p_even_resp p_rrb_map[0]&t;&t;&t;/* 0x000280 */
+DECL|macro|p_odd_resp
+mdefine_line|#define p_odd_resp  p_rrb_map[1]&t;&t;&t;/* 0x000288 */
+DECL|member|p_resp_status
 id|picreg_t
-id|pci_x_active
-suffix:colon
-l_int|1
+id|p_resp_status
 suffix:semicolon
-multiline_comment|/* 33:33 */
-DECL|member|picreg_t
+multiline_comment|/* 0x000290 */
+DECL|member|p_resp_clear
 id|picreg_t
-suffix:colon
-l_int|1
+id|p_resp_clear
 suffix:semicolon
-multiline_comment|/* 32:32 */
-DECL|member|llp_rec_cnt
+multiline_comment|/* 0x000298 */
+DECL|member|_pad_0002A0
 id|picreg_t
-id|llp_rec_cnt
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 31:24 */
-DECL|member|llp_tx_cnt
-id|picreg_t
-id|llp_tx_cnt
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 23:16 */
-DECL|member|rx_credit_cnt
-id|picreg_t
-id|rx_credit_cnt
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 15:12 */
-DECL|member|tx_credit_cnt
-id|picreg_t
-id|tx_credit_cnt
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 11:8 */
-DECL|member|pci_misc_input
-id|picreg_t
-id|pci_misc_input
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 7:0 */
-DECL|member|pic_stat_reg_fld_s
-)brace
-id|pic_stat_reg_fld_s
-suffix:semicolon
-DECL|typedef|pic_stat_reg_u_t
-)brace
-id|pic_stat_reg_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Upper Address Holding Register Bus Side Errors&n; *&n; * The upper address holding register is a read only register which contains&n; * the upper 16-bits of the address when certain error occurs (see error cases&n; * chapter). Subsequent errors are not logged until the error is cleared. The&n; * last logged value is held until the group is cleared and enabled.&n; */
-DECL|union|pic_upper_bus_err_u
-r_typedef
-r_union
-id|pic_upper_bus_err_u
-(brace
-DECL|member|pic_upper_bus_err_regval
-id|picreg_t
-id|pic_upper_bus_err_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 31:16 */
-DECL|member|upp_addr
-id|picreg_t
-id|upp_addr
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 15:0 */
-DECL|member|pic_upper_bus_err_fld_s
-)brace
-id|pic_upper_bus_err_fld_s
-suffix:semicolon
-DECL|typedef|pic_upper_bus_err_u_t
-)brace
-id|pic_upper_bus_err_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Lower Address Holding Register Bus Side Errors&n; *&n; * The lower address holding register is a read only register which contains&n; * the address which either can be accessed as a word or double word. Sub-&n; * sequent errors are not logged until the error is cleared. The last logged&n; * value is held until the group is cleared and enabled.&n; */
-DECL|union|pic_lower_bus_err_u
-r_typedef
-r_union
-id|pic_lower_bus_err_u
-(brace
-DECL|member|pic_lower_bus_err_regval
-id|picreg_t
-id|pic_lower_bus_err_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 63:48 */
-DECL|member|upp_addr
-id|picreg_t
-id|upp_addr
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 47:32 */
-DECL|member|low_addr
-id|picreg_t
-id|low_addr
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 31:0 */
-DECL|member|pic_lower_bus_err_fld_s
-)brace
-id|pic_lower_bus_err_fld_s
-suffix:semicolon
-DECL|typedef|pic_lower_bus_err_u_t
-)brace
-id|pic_lower_bus_err_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Control Register&n; *&n; * The control register is a read/write register which holds control informa-&n; * tion for the bus subsection.&n; */
-DECL|union|pic_control_reg_u
-r_typedef
-r_union
-id|pic_control_reg_u
-(brace
-DECL|member|pic_control_reg_regval
-id|picreg_t
-id|pic_control_reg_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 31:28 */
-DECL|member|rst_pin_n
-id|picreg_t
-id|rst_pin_n
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 27:24 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 23:23 */
-DECL|member|mem_swap
-id|picreg_t
-id|mem_swap
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 22:22 */
-DECL|member|page_size
-id|picreg_t
-id|page_size
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 21:21 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 20:17 */
-DECL|member|f_bad_pkt
-id|picreg_t
-id|f_bad_pkt
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 16:16 */
-DECL|member|llp_xbar_crd
-id|picreg_t
-id|llp_xbar_crd
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 15:12 */
-DECL|member|clr_rllp_cnt
-id|picreg_t
-id|clr_rllp_cnt
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 11:11 */
-DECL|member|clr_tllp_cnt
-id|picreg_t
-id|clr_tllp_cnt
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 10:10 */
-DECL|member|sys_end
-id|picreg_t
-id|sys_end
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 9:9 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 8:6 */
-DECL|member|pci_speed
-id|picreg_t
-id|pci_speed
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 5:4 */
-DECL|member|widget_id
-id|picreg_t
-id|widget_id
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 3:0 */
-DECL|member|pic_control_reg_fld_s
-)brace
-id|pic_control_reg_fld_s
-suffix:semicolon
-DECL|typedef|pic_control_reg_u_t
-)brace
-id|pic_control_reg_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI/PCI-X Request Time-out Value Register&n; *&n; * This register contains the reload value for the response timer. The request&n; * timer counts every 960 nS (32 PCI clocks)&n; */
-DECL|union|pic_pci_req_to_u
-r_typedef
-r_union
-id|pic_pci_req_to_u
-(brace
-DECL|member|pic_pci_req_to_regval
-id|picreg_t
-id|pic_pci_req_to_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
+id|_pad_0002A0
+(braket
 l_int|12
+)braket
 suffix:semicolon
-multiline_comment|/* 31:20 */
-DECL|member|time_out
-id|picreg_t
-id|time_out
-suffix:colon
-l_int|20
-suffix:semicolon
-multiline_comment|/* 19:0 */
-DECL|member|pic_pci_req_to_fld_s
-)brace
-id|pic_pci_req_to_fld_s
-suffix:semicolon
-DECL|typedef|pic_pci_req_to_u_t
-)brace
-id|pic_pci_req_to_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Interrupt Destination Upper Address Register&n; *&n; * The interrupt destination upper address register is a read/write register&n; * containing the upper 16-bits of address of the host to which the interrupt&n; * is targeted. In addition the target ID is also contained in this register for&n; * use in Crosstalk mode.&n; */
-DECL|union|pic_int_desc_upper_u
-r_typedef
-r_union
-id|pic_int_desc_upper_u
-(brace
-DECL|member|pic_int_desc_upper_regval
-id|picreg_t
-id|pic_int_desc_upper_regval
-suffix:semicolon
+multiline_comment|/* 0x0002{A0..F8} */
+multiline_comment|/* 0x000300-0x0003F8 -- Buffer Address Match Registers */
 r_struct
 (brace
-DECL|member|picreg_t
+DECL|member|upper
 id|picreg_t
-suffix:colon
-l_int|32
+id|upper
 suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
+multiline_comment|/* 0x0003{00,,,F0} */
+DECL|member|lower
 id|picreg_t
-suffix:colon
-l_int|12
+id|lower
 suffix:semicolon
-multiline_comment|/* 31:20 */
-DECL|member|target_id
-id|picreg_t
-id|target_id
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 19:16 */
-DECL|member|upp_addr
-id|picreg_t
-id|upp_addr
-suffix:colon
+multiline_comment|/* 0x0003{08,,,F8} */
+DECL|member|p_buf_addr_match
+)brace
+id|p_buf_addr_match
+(braket
 l_int|16
+)braket
 suffix:semicolon
-multiline_comment|/* 15:0 */
-DECL|member|pic_int_desc_upper_fld_s
-)brace
-id|pic_int_desc_upper_fld_s
-suffix:semicolon
-DECL|typedef|pic_int_desc_upper_u_t
-)brace
-id|pic_int_desc_upper_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Interrupt Destination Lower Address Register&n; *&n; * The interrupt destination lower address register is a read/write register&n; * which contains the entire address of the host to which the interrupt is tar-&n; * geted. In addition the target ID is also contained in this register for use in&n; * Crosstalk mode.&n; */
-DECL|union|pic_int_desc_lower_u
-r_typedef
-r_union
-id|pic_int_desc_lower_u
-(brace
-DECL|member|pic_int_desc_lower_regval
-id|picreg_t
-id|pic_int_desc_lower_regval
-suffix:semicolon
+multiline_comment|/* 0x000400-0x0005FF -- Performance Monitor Registers (even only) */
 r_struct
 (brace
-DECL|member|picreg_t
+DECL|member|flush_w_touch
 id|picreg_t
-suffix:colon
-l_int|12
+id|flush_w_touch
 suffix:semicolon
-multiline_comment|/* 63:52 */
-DECL|member|target_id
+multiline_comment|/* 0x000{400,,,5C0} */
+DECL|member|flush_wo_touch
 id|picreg_t
-id|target_id
-suffix:colon
-l_int|4
+id|flush_wo_touch
 suffix:semicolon
-multiline_comment|/* 51:48 */
-DECL|member|upp_addr
+multiline_comment|/* 0x000{408,,,5C8} */
+DECL|member|inflight
 id|picreg_t
-id|upp_addr
-suffix:colon
-l_int|16
+id|inflight
 suffix:semicolon
-multiline_comment|/* 47:32 */
-DECL|member|low_addr
-id|picreg_t
-id|low_addr
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 31:0 */
-DECL|member|pic_int_desc_lower_fld_s
-)brace
-id|pic_int_desc_lower_fld_s
-suffix:semicolon
-DECL|typedef|pic_int_desc_lower_u_t
-)brace
-id|pic_int_desc_lower_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Command Word Holding Register Bus Side Errors&n; *&n; * The command word holding is a read register that holds the command&n; * word of a Crosstalk packet when errors occur on the link side (see error&n; * chapter). Errors are indicated with error bits in the interrupt status regis-&n; * ter. Subsequent errors are not logged until the interrupt is cleared..&n; */
-DECL|union|pic_cmd_word_bus_err_u
-r_typedef
-r_union
-id|pic_cmd_word_bus_err_u
-(brace
-DECL|member|pic_cmd_word_bus_err_regval
-id|picreg_t
-id|pic_cmd_word_bus_err_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|didn
-id|picreg_t
-id|didn
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 31:28 */
-DECL|member|sidn
-id|picreg_t
-id|sidn
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 27:24 */
-DECL|member|pactyp
-id|picreg_t
-id|pactyp
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 23:20 */
-DECL|member|tnum
-id|picreg_t
-id|tnum
-suffix:colon
-l_int|5
-suffix:semicolon
-multiline_comment|/* 19:15 */
-DECL|member|coherent
-id|picreg_t
-id|coherent
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 14:14 */
-DECL|member|ds
-id|picreg_t
-id|ds
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 13:12 */
-DECL|member|gbr
-id|picreg_t
-id|gbr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 11:11 */
-DECL|member|vbpm
-id|picreg_t
-id|vbpm
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 10:10 */
-DECL|member|error
-id|picreg_t
-id|error
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 9:9 */
-DECL|member|barrier
-id|picreg_t
-id|barrier
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 8:8 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 7:0 */
-DECL|member|pic_cmd_word_bus_err_fld_s
-)brace
-id|pic_cmd_word_bus_err_fld_s
-suffix:semicolon
-DECL|typedef|pic_cmd_word_bus_err_u_t
-)brace
-id|pic_cmd_word_bus_err_u_t
-suffix:semicolon
-multiline_comment|/*&n; * LLP Configuration Register&n; *&n; * This register contains the configuration information for the LLP modules&n; * and is only valid on bus 0 side.&n; */
-DECL|union|pic_llp_cfg_u
-r_typedef
-r_union
-id|pic_llp_cfg_u
-(brace
-DECL|member|pic_llp_cfg_regval
-id|picreg_t
-id|pic_llp_cfg_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|6
-suffix:semicolon
-multiline_comment|/* 31:26 */
-DECL|member|llp_maxretry
-id|picreg_t
-id|llp_maxretry
-suffix:colon
-l_int|10
-suffix:semicolon
-multiline_comment|/* 25:16 */
-DECL|member|llp_nulltimeout
-id|picreg_t
-id|llp_nulltimeout
-suffix:colon
-l_int|6
-suffix:semicolon
-multiline_comment|/* 15:10 */
-DECL|member|llp_maxburst
-id|picreg_t
-id|llp_maxburst
-suffix:colon
-l_int|10
-suffix:semicolon
-multiline_comment|/* 9:0 */
-DECL|member|pic_llp_cfg_fld_s
-)brace
-id|pic_llp_cfg_fld_s
-suffix:semicolon
-DECL|typedef|pic_llp_cfg_u_t
-)brace
-id|pic_llp_cfg_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI/PCI-X Target Flush Register&n; *&n; * When read, this register will return a 0x00 after all previous transfers to&n; * the PCI bus subsection have completed.&n; */
-multiline_comment|/*&n; * Command Word Holding Register Link Side Errors&n; *&n; * The command word holding is a read-only register that holds the com-&n; * mand word of a Crosstalk packet when request fifo overflow or unexpect-&n; * ed response errors occur. Errors are indicated with error bits in the&n; * interrupt status register. Subsequent errors are not logged until this inter-&n; * rupt is cleared.&n; */
-DECL|union|pic_cmd_word_link_err_u
-r_typedef
-r_union
-id|pic_cmd_word_link_err_u
-(brace
-DECL|member|pic_cmd_word_link_err_regval
-id|picreg_t
-id|pic_cmd_word_link_err_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|didn
-id|picreg_t
-id|didn
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 31:28 */
-DECL|member|sidn
-id|picreg_t
-id|sidn
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 27:24 */
-DECL|member|pactyp
-id|picreg_t
-id|pactyp
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 23:20 */
-DECL|member|tnum
-id|picreg_t
-id|tnum
-suffix:colon
-l_int|5
-suffix:semicolon
-multiline_comment|/* 19:15 */
-DECL|member|coherent
-id|picreg_t
-id|coherent
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 14:14 */
-DECL|member|ds
-id|picreg_t
-id|ds
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 13:12 */
-DECL|member|gbr
-id|picreg_t
-id|gbr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 11:11 */
-DECL|member|vbpm
-id|picreg_t
-id|vbpm
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 10:10 */
-DECL|member|error
-id|picreg_t
-id|error
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 9:9 */
-DECL|member|barrier
-id|picreg_t
-id|barrier
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 8:8 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 7:0 */
-DECL|member|pic_cmd_word_link_err_fld_s
-)brace
-id|pic_cmd_word_link_err_fld_s
-suffix:semicolon
-DECL|typedef|pic_cmd_word_link_err_u_t
-)brace
-id|pic_cmd_word_link_err_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI Response Buffer Error Upper Address Holding Reg&n; *&n; * The response buffer error upper address holding register is a read only&n; * register which contains the upper 16-bits of the address when error asso-&n; * ciated with response buffer entries occur. Subsequent errors are not&n; * logged until the interrupt is cleared.&n; */
-DECL|union|pic_pci_rbuf_err_upper_u
-r_typedef
-r_union
-id|pic_pci_rbuf_err_upper_u
-(brace
-DECL|member|pic_pci_rbuf_err_upper_regval
-id|picreg_t
-id|pic_pci_rbuf_err_upper_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|9
-suffix:semicolon
-multiline_comment|/* 31:23 */
-DECL|member|dev_num
-id|picreg_t
-id|dev_num
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 22:20 */
-DECL|member|buff_num
-id|picreg_t
-id|buff_num
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 19:16 */
-DECL|member|upp_addr
-id|picreg_t
-id|upp_addr
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 15:0 */
-DECL|member|pic_pci_rbuf_err_upper_fld_s
-)brace
-id|pic_pci_rbuf_err_upper_fld_s
-suffix:semicolon
-DECL|typedef|pic_pci_rbuf_err_upper_u_t
-)brace
-id|pic_pci_rbuf_err_upper_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI Response Buffer Error Lower Address Holding Reg&n; *&n; * The response buffer error lower address holding register is a read only&n; * register which contains the address of the error associated with response&n; * buffer entries. Subsequent errors are not logged until the interrupt is&n; * cleared.&n; */
-DECL|union|pic_pci_rbuf_err_lower_u
-r_typedef
-r_union
-id|pic_pci_rbuf_err_lower_u
-(brace
-DECL|member|pic_pci_rbuf_err_lower_regval
-id|picreg_t
-id|pic_pci_rbuf_err_lower_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|9
-suffix:semicolon
-multiline_comment|/* 63:55 */
-DECL|member|dev_num
-id|picreg_t
-id|dev_num
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 54:52 */
-DECL|member|buff_num
-id|picreg_t
-id|buff_num
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 51:48 */
-DECL|member|upp_addr
-id|picreg_t
-id|upp_addr
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 47:32 */
-DECL|member|low_addr
-id|picreg_t
-id|low_addr
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 31:0 */
-DECL|member|pic_pci_rbuf_err_lower_fld_s
-)brace
-id|pic_pci_rbuf_err_lower_fld_s
-suffix:semicolon
-DECL|typedef|pic_pci_rbuf_err_lower_u_t
-)brace
-id|pic_pci_rbuf_err_lower_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Test Pin Control Register&n; *&n; * This register selects the output function and value to the four test pins on&n; * the PIC .&n; */
-DECL|union|pic_test_pin_cntl_u
-r_typedef
-r_union
-id|pic_test_pin_cntl_u
-(brace
-DECL|member|pic_test_pin_cntl_regval
-id|picreg_t
-id|pic_test_pin_cntl_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 31:24 */
-DECL|member|tdata_out
-id|picreg_t
-id|tdata_out
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 23:16 */
-DECL|member|sel_tpin_7
-id|picreg_t
-id|sel_tpin_7
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 15:14 */
-DECL|member|sel_tpin_6
-id|picreg_t
-id|sel_tpin_6
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 13:12 */
-DECL|member|sel_tpin_5
-id|picreg_t
-id|sel_tpin_5
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 11:10 */
-DECL|member|sel_tpin_4
-id|picreg_t
-id|sel_tpin_4
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 9:8 */
-DECL|member|sel_tpin_3
-id|picreg_t
-id|sel_tpin_3
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 7:6 */
-DECL|member|sel_tpin_2
-id|picreg_t
-id|sel_tpin_2
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 5:4 */
-DECL|member|sel_tpin_1
-id|picreg_t
-id|sel_tpin_1
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 3:2 */
-DECL|member|sel_tpin_0
-id|picreg_t
-id|sel_tpin_0
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 1:0 */
-DECL|member|pic_test_pin_cntl_fld_s
-)brace
-id|pic_test_pin_cntl_fld_s
-suffix:semicolon
-DECL|typedef|pic_test_pin_cntl_u_t
-)brace
-id|pic_test_pin_cntl_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Address Holding Register Link Side Errors&n; *&n; * The address holding register is a read only register which contains the ad-&n; * dress which either can be accessed as a word or double word. Subsequent&n; * errors are not logged until the error is cleared. The last logged value is&n; * held until the group is cleared and enabled.&n; */
-DECL|union|pic_p_addr_lkerr_u
-r_typedef
-r_union
-id|pic_p_addr_lkerr_u
-(brace
-DECL|member|pic_p_addr_lkerr_regval
-id|picreg_t
-id|pic_p_addr_lkerr_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 63:48 */
-DECL|member|upp_addr
-id|picreg_t
-id|upp_addr
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 47:32 */
-DECL|member|low_addr
-id|picreg_t
-id|low_addr
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 31:0 */
-DECL|member|pic_p_addr_lkerr_fld_s
-)brace
-id|pic_p_addr_lkerr_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_addr_lkerr_u_t
-)brace
-id|pic_p_addr_lkerr_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI Direct Mapping Register&n; *&n; * This register is used to relocate a 2 GByte region for PCI to Crosstalk&n; * transfers.&n; */
-DECL|union|pic_p_dir_map_u
-r_typedef
-r_union
-id|pic_p_dir_map_u
-(brace
-DECL|member|pic_p_dir_map_regval
-id|picreg_t
-id|pic_p_dir_map_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 31:24 */
-DECL|member|dir_w_id
-id|picreg_t
-id|dir_w_id
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 23:20 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 19:18 */
-DECL|member|dir_add512
-id|picreg_t
-id|dir_add512
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 17:17 */
-DECL|member|dir_off
-id|picreg_t
-id|dir_off
-suffix:colon
-l_int|17
-suffix:semicolon
-multiline_comment|/* 16:0 */
-DECL|member|pic_p_dir_map_fld_s
-)brace
-id|pic_p_dir_map_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_dir_map_u_t
-)brace
-id|pic_p_dir_map_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI Page Map Fault Address Register&n; *&n; * This register contains the address and device number when a page map&n; * fault occurred.&n; */
-DECL|union|pic_p_map_fault_u
-r_typedef
-r_union
-id|pic_p_map_fault_u
-(brace
-DECL|member|pic_p_map_fault_regval
-id|picreg_t
-id|pic_p_map_fault_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|10
-suffix:semicolon
-multiline_comment|/* 31:22 */
-DECL|member|pci_addr
-id|picreg_t
-id|pci_addr
-suffix:colon
-l_int|18
-suffix:semicolon
-multiline_comment|/* 21:4 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 3:3 */
-DECL|member|pci_dev_num
-id|picreg_t
-id|pci_dev_num
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 2:0 */
-DECL|member|pic_p_map_fault_fld_s
-)brace
-id|pic_p_map_fault_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_map_fault_u_t
-)brace
-id|pic_p_map_fault_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Arbitration Register&n; *&n; * This register defines the priority and bus time out timing in PCI bus arbi-&n; * tration.&n; */
-DECL|union|pic_p_arb_u
-r_typedef
-r_union
-id|pic_p_arb_u
-(brace
-DECL|member|pic_p_arb_regval
-id|picreg_t
-id|pic_p_arb_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 31:24 */
-DECL|member|dev_broke
-id|picreg_t
-id|dev_broke
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 23:20 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 19:18 */
-DECL|member|req_wait_tick
-id|picreg_t
-id|req_wait_tick
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 17:16 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 15:12 */
-DECL|member|req_wait_en
-id|picreg_t
-id|req_wait_en
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 11:8 */
-DECL|member|disarb
-id|picreg_t
-id|disarb
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 7:7 */
-DECL|member|freeze_gnt
-id|picreg_t
-id|freeze_gnt
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 6:6 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 5:5 */
-DECL|member|en_bridge_hi
-id|picreg_t
-id|en_bridge_hi
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 4:3 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 2:2 */
-DECL|member|en_bridge_lo
-id|picreg_t
-id|en_bridge_lo
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 1:0 */
-DECL|member|pic_p_arb_fld_s
-)brace
-id|pic_p_arb_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_arb_u_t
-)brace
-id|pic_p_arb_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Internal Ram Parity Error Register&n; *&n; * This register logs information about parity errors on internal ram access.&n; */
-DECL|union|pic_p_ram_perr_u
-r_typedef
-r_union
-id|pic_p_ram_perr_u
-(brace
-DECL|member|pic_p_ram_perr_regval
-id|picreg_t
-id|pic_p_ram_perr_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|6
-suffix:semicolon
-multiline_comment|/* 63:58 */
-DECL|member|ate_err_addr
-id|picreg_t
-id|ate_err_addr
-suffix:colon
-l_int|10
-suffix:semicolon
-multiline_comment|/* 57:48 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|7
-suffix:semicolon
-multiline_comment|/* 47:41 */
-DECL|member|rd_resp_err_addr
-id|picreg_t
-id|rd_resp_err_addr
-suffix:colon
-l_int|9
-suffix:semicolon
-multiline_comment|/* 40:32 */
-DECL|member|wrt_resp_err_addr
-id|picreg_t
-id|wrt_resp_err_addr
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 31:24 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 23:22 */
-DECL|member|ate_err
-id|picreg_t
-id|ate_err
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 21:21 */
-DECL|member|rd_resp_err
-id|picreg_t
-id|rd_resp_err
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 20:20 */
-DECL|member|wrt_resp_err
-id|picreg_t
-id|wrt_resp_err
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 19:19 */
-DECL|member|dbe_ate
-id|picreg_t
-id|dbe_ate
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 18:16 */
-DECL|member|dbe_rd
-id|picreg_t
-id|dbe_rd
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 15:8 */
-DECL|member|dbe_wrt
-id|picreg_t
-id|dbe_wrt
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 7:0 */
-DECL|member|pic_p_ram_perr_fld_s
-)brace
-id|pic_p_ram_perr_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_ram_perr_u_t
-)brace
-id|pic_p_ram_perr_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Time-out Register&n; *&n; * This register determines retry hold off and max retries allowed for PIO&n; * accesses to PCI/PCI-X.&n; */
-DECL|union|pic_p_bus_timeout_u
-r_typedef
-r_union
-id|pic_p_bus_timeout_u
-(brace
-DECL|member|pic_p_bus_timeout_regval
-id|picreg_t
-id|pic_p_bus_timeout_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|11
-suffix:semicolon
-multiline_comment|/* 31:21 */
-DECL|member|pci_retry_hld
-id|picreg_t
-id|pci_retry_hld
-suffix:colon
-l_int|5
-suffix:semicolon
-multiline_comment|/* 20:16 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|6
-suffix:semicolon
-multiline_comment|/* 15:10 */
-DECL|member|pci_retry_cnt
-id|picreg_t
-id|pci_retry_cnt
-suffix:colon
-l_int|10
-suffix:semicolon
-multiline_comment|/* 9:0 */
-DECL|member|pic_p_bus_timeout_fld_s
-)brace
-id|pic_p_bus_timeout_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_bus_timeout_u_t
-)brace
-id|pic_p_bus_timeout_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI/PCI-X Type 1 Configuration Register&n; *&n; * This register is use during accesses to the PCI/PCI-X type 1 configuration&n; * space. The bits in this register are used to supplement the address during&n; * the configuration cycle to select the correct secondary bus and device.&n; */
-DECL|union|pic_type1_cfg_u
-r_typedef
-r_union
-id|pic_type1_cfg_u
-(brace
-DECL|member|pic_type1_cfg_regval
-id|picreg_t
-id|pic_type1_cfg_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 31:24 */
-DECL|member|bus_num
-id|picreg_t
-id|bus_num
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 23:16 */
-DECL|member|dev_num
-id|picreg_t
-id|dev_num
-suffix:colon
-l_int|5
-suffix:semicolon
-multiline_comment|/* 15:11 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|11
-suffix:semicolon
-multiline_comment|/* 10:0 */
-DECL|member|pic_type1_cfg_fld_s
-)brace
-id|pic_type1_cfg_fld_s
-suffix:semicolon
-DECL|typedef|pic_type1_cfg_u_t
-)brace
-id|pic_type1_cfg_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI Bus Error Upper Address Holding Register&n; *&n; * This register holds the value of the upper address on the PCI Bus when an&n; * error occurs.&n; */
-DECL|union|pic_p_pci_err_upper_u
-r_typedef
-r_union
-id|pic_p_pci_err_upper_u
-(brace
-DECL|member|pic_p_pci_err_upper_regval
-id|picreg_t
-id|pic_p_pci_err_upper_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 31:28 */
-DECL|member|pci_xtalk_did
-id|picreg_t
-id|pci_xtalk_did
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 27:24 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 23:22 */
-DECL|member|pci_dac
-id|picreg_t
-id|pci_dac
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 21:21 */
-DECL|member|pci_dev_master
-id|picreg_t
-id|pci_dev_master
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 20:20 */
-DECL|member|pci_vdev
-id|picreg_t
-id|pci_vdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 19:19 */
-DECL|member|pci_dev_num
-id|picreg_t
-id|pci_dev_num
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 18:16 */
-DECL|member|pci_uaddr_err
-id|picreg_t
-id|pci_uaddr_err
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 15:0 */
-DECL|member|pic_p_pci_err_upper_fld_s
-)brace
-id|pic_p_pci_err_upper_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_pci_err_upper_u_t
-)brace
-id|pic_p_pci_err_upper_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI Bus Error Lower Address Holding Register&n; *&n; * This register holds the value of the lower address on the PCI Bus when an&n; * error occurs.&n; */
-DECL|union|pic_p_pci_err_lower_u
-r_typedef
-r_union
-id|pic_p_pci_err_lower_u
-(brace
-DECL|member|pic_p_pci_err_lower_regval
-id|picreg_t
-id|pic_p_pci_err_lower_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 63:60 */
-DECL|member|pci_xtalk_did
-id|picreg_t
-id|pci_xtalk_did
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 59:56 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 55:54 */
-DECL|member|pci_dac
-id|picreg_t
-id|pci_dac
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 53:53 */
-DECL|member|pci_dev_master
-id|picreg_t
-id|pci_dev_master
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 52:52 */
-DECL|member|pci_vdev
-id|picreg_t
-id|pci_vdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 51:51 */
-DECL|member|pci_dev_num
-id|picreg_t
-id|pci_dev_num
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 50:48 */
-DECL|member|pci_uaddr_err
-id|picreg_t
-id|pci_uaddr_err
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 47:32 */
-DECL|member|pci_laddr_err
-id|picreg_t
-id|pci_laddr_err
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 31:0 */
-DECL|member|pic_p_pci_err_lower_fld_s
-)brace
-id|pic_p_pci_err_lower_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_pci_err_lower_u_t
-)brace
-id|pic_p_pci_err_lower_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI-X Error Address Register&n; *&n; * This register contains the address on the PCI-X bus when an error oc-&n; * curred.&n; */
-DECL|union|pic_p_pcix_err_addr_u
-r_typedef
-r_union
-id|pic_p_pcix_err_addr_u
-(brace
-DECL|member|pic_p_pcix_err_addr_regval
-id|picreg_t
-id|pic_p_pcix_err_addr_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|pcix_err_addr
-id|picreg_t
-id|pcix_err_addr
-suffix:colon
-l_int|64
-suffix:semicolon
-multiline_comment|/* 63:0 */
-DECL|member|pic_p_pcix_err_addr_fld_s
-)brace
-id|pic_p_pcix_err_addr_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_pcix_err_addr_u_t
-)brace
-id|pic_p_pcix_err_addr_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI-X Error Attribute Register&n; *&n; * This register contains the attribute data on the PCI-X bus when an error&n; * occurred.&n; */
-DECL|union|pic_p_pcix_err_attr_u
-r_typedef
-r_union
-id|pic_p_pcix_err_attr_u
-(brace
-DECL|member|pic_p_pcix_err_attr_regval
-id|picreg_t
-id|pic_p_pcix_err_attr_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 63:48 */
-DECL|member|bus_cmd
-id|picreg_t
-id|bus_cmd
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 47:44 */
-DECL|member|byte_cnt
-id|picreg_t
-id|byte_cnt
-suffix:colon
-l_int|12
-suffix:semicolon
-multiline_comment|/* 43:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 31:31 */
-DECL|member|ns
-id|picreg_t
-id|ns
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 30:30 */
-DECL|member|ro
-id|picreg_t
-id|ro
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 29:29 */
-DECL|member|tag
-id|picreg_t
-id|tag
-suffix:colon
-l_int|5
-suffix:semicolon
-multiline_comment|/* 28:24 */
-DECL|member|bus_num
-id|picreg_t
-id|bus_num
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 23:16 */
-DECL|member|dev_num
-id|picreg_t
-id|dev_num
-suffix:colon
-l_int|5
-suffix:semicolon
-multiline_comment|/* 15:11 */
-DECL|member|fun_num
-id|picreg_t
-id|fun_num
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 10:8 */
-DECL|member|l_byte_cnt
-id|picreg_t
-id|l_byte_cnt
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 7:0 */
-DECL|member|pic_p_pcix_err_attr_fld_s
-)brace
-id|pic_p_pcix_err_attr_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_pcix_err_attr_u_t
-)brace
-id|pic_p_pcix_err_attr_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI-X Error Data Register&n; *&n; * This register contains the Data on the PCI-X bus when an error occurred.&n; */
-DECL|union|pic_p_pcix_err_data_u
-r_typedef
-r_union
-id|pic_p_pcix_err_data_u
-(brace
-DECL|member|pic_p_pcix_err_data_regval
-id|picreg_t
-id|pic_p_pcix_err_data_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|pcix_err_data
-id|picreg_t
-id|pcix_err_data
-suffix:colon
-l_int|64
-suffix:semicolon
-multiline_comment|/* 63:0 */
-DECL|member|pic_p_pcix_err_data_fld_s
-)brace
-id|pic_p_pcix_err_data_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_pcix_err_data_u_t
-)brace
-id|pic_p_pcix_err_data_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI-X Read Request Timeout Error Register&n; *&n; * This register contains a pointer into the PCI-X read data structure.&n; */
-DECL|union|pic_p_pcix_read_req_to_u
-r_typedef
-r_union
-id|pic_p_pcix_read_req_to_u
-(brace
-DECL|member|pic_p_pcix_read_req_to_regval
-id|picreg_t
-id|pic_p_pcix_read_req_to_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|55
-suffix:semicolon
-multiline_comment|/* 63:9 */
-DECL|member|rd_buff_loc
-id|picreg_t
-id|rd_buff_loc
-suffix:colon
-l_int|5
-suffix:semicolon
-multiline_comment|/* 8:4 */
-DECL|member|rd_buff_struct
-id|picreg_t
-id|rd_buff_struct
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 3:0 */
-DECL|member|pic_p_pcix_read_req_to_fld_s
-)brace
-id|pic_p_pcix_read_req_to_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_pcix_read_req_to_u_t
-)brace
-id|pic_p_pcix_read_req_to_u_t
-suffix:semicolon
-multiline_comment|/*&n; * INT_STATUS Register&n; *&n; * This is the current interrupt status register which maintains the current&n; * status of all the interrupting devices which generated a n interrupt. This&n; * register is read only and all the bits are active high. A high bit at&n; * INT_STATE means the corresponding INT_N pin has been asserted&n; * (low).&n; */
-DECL|union|pic_p_int_status_u
-r_typedef
-r_union
-id|pic_p_int_status_u
-(brace
-DECL|member|pic_p_int_status_regval
-id|picreg_t
-id|pic_p_int_status_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|22
-suffix:semicolon
-multiline_comment|/* 63:42 */
-DECL|member|int_ram_perr
-id|picreg_t
-id|int_ram_perr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 41:41 */
-DECL|member|bus_arb_broke
-id|picreg_t
-id|bus_arb_broke
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 40:40 */
-DECL|member|pci_x_req_tout
-id|picreg_t
-id|pci_x_req_tout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 39:39 */
-DECL|member|pci_x_tabort
-id|picreg_t
-id|pci_x_tabort
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 38:38 */
-DECL|member|pci_x_perr
-id|picreg_t
-id|pci_x_perr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 37:37 */
-DECL|member|pci_x_serr
-id|picreg_t
-id|pci_x_serr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 36:36 */
-DECL|member|pci_x_mretry
-id|picreg_t
-id|pci_x_mretry
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 35:35 */
-DECL|member|pci_x_mtout
-id|picreg_t
-id|pci_x_mtout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 34:34 */
-DECL|member|pci_x_da_parity
-id|picreg_t
-id|pci_x_da_parity
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 33:33 */
-DECL|member|pci_x_ad_parity
-id|picreg_t
-id|pci_x_ad_parity
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 32:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 31:31 */
-DECL|member|pmu_page_fault
-id|picreg_t
-id|pmu_page_fault
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 30:30 */
-DECL|member|unexpected_resp
-id|picreg_t
-id|unexpected_resp
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 29:29 */
-DECL|member|bad_xresp_packet
-id|picreg_t
-id|bad_xresp_packet
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 28:28 */
-DECL|member|bad_xreq_packet
-id|picreg_t
-id|bad_xreq_packet
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 27:27 */
-DECL|member|resp_xtalk_error
-id|picreg_t
-id|resp_xtalk_error
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 26:26 */
-DECL|member|req_xtalk_error
-id|picreg_t
-id|req_xtalk_error
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 25:25 */
-DECL|member|invalid_access
-id|picreg_t
-id|invalid_access
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 24:24 */
-DECL|member|unsupported_xop
-id|picreg_t
-id|unsupported_xop
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 23:23 */
-DECL|member|xreq_fifo_oflow
-id|picreg_t
-id|xreq_fifo_oflow
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 22:22 */
-DECL|member|llp_rec_snerror
-id|picreg_t
-id|llp_rec_snerror
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 21:21 */
-DECL|member|llp_rec_cberror
-id|picreg_t
-id|llp_rec_cberror
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 20:20 */
-DECL|member|llp_rcty
-id|picreg_t
-id|llp_rcty
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 19:19 */
-DECL|member|llp_tx_retry
-id|picreg_t
-id|llp_tx_retry
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 18:18 */
-DECL|member|llp_tcty
-id|picreg_t
-id|llp_tcty
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 17:17 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 16:16 */
-DECL|member|pci_abort
-id|picreg_t
-id|pci_abort
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 15:15 */
-DECL|member|pci_parity
-id|picreg_t
-id|pci_parity
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 14:14 */
-DECL|member|pci_serr
-id|picreg_t
-id|pci_serr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 13:13 */
-DECL|member|pci_perr
-id|picreg_t
-id|pci_perr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 12:12 */
-DECL|member|pci_master_tout
-id|picreg_t
-id|pci_master_tout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 11:11 */
-DECL|member|pci_retry_cnt
-id|picreg_t
-id|pci_retry_cnt
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 10:10 */
-DECL|member|xread_req_tout
-id|picreg_t
-id|xread_req_tout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 9:9 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 8:8 */
-DECL|member|int_state
-id|picreg_t
-id|int_state
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 7:0 */
-DECL|member|pic_p_int_status_fld_s
-)brace
-id|pic_p_int_status_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_int_status_u_t
-)brace
-id|pic_p_int_status_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Interrupt Enable Register&n; *&n; * This register enables the reporting of interrupt to the host. Each bit in this&n; * register corresponds to the same bit in Interrupt Status register. All bits&n; * are zero after reset.&n; */
-DECL|union|pic_p_int_enable_u
-r_typedef
-r_union
-id|pic_p_int_enable_u
-(brace
-DECL|member|pic_p_int_enable_regval
-id|picreg_t
-id|pic_p_int_enable_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|22
-suffix:semicolon
-multiline_comment|/* 63:42 */
-DECL|member|en_int_ram_perr
-id|picreg_t
-id|en_int_ram_perr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 41:41 */
-DECL|member|en_bus_arb_broke
-id|picreg_t
-id|en_bus_arb_broke
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 40:40 */
-DECL|member|en_pci_x_req_tout
-id|picreg_t
-id|en_pci_x_req_tout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 39:39 */
-DECL|member|en_pci_x_tabort
-id|picreg_t
-id|en_pci_x_tabort
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 38:38 */
-DECL|member|en_pci_x_perr
-id|picreg_t
-id|en_pci_x_perr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 37:37 */
-DECL|member|en_pci_x_serr
-id|picreg_t
-id|en_pci_x_serr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 36:36 */
-DECL|member|en_pci_x_mretry
-id|picreg_t
-id|en_pci_x_mretry
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 35:35 */
-DECL|member|en_pci_x_mtout
-id|picreg_t
-id|en_pci_x_mtout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 34:34 */
-DECL|member|en_pci_x_da_parity
-id|picreg_t
-id|en_pci_x_da_parity
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 33:33 */
-DECL|member|en_pci_x_ad_parity
-id|picreg_t
-id|en_pci_x_ad_parity
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 32:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 31:31 */
-DECL|member|en_pmu_page_fault
-id|picreg_t
-id|en_pmu_page_fault
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 30:30 */
-DECL|member|en_unexpected_resp
-id|picreg_t
-id|en_unexpected_resp
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 29:29 */
-DECL|member|en_bad_xresp_packet
-id|picreg_t
-id|en_bad_xresp_packet
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 28:28 */
-DECL|member|en_bad_xreq_packet
-id|picreg_t
-id|en_bad_xreq_packet
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 27:27 */
-DECL|member|en_resp_xtalk_error
-id|picreg_t
-id|en_resp_xtalk_error
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 26:26 */
-DECL|member|en_req_xtalk_error
-id|picreg_t
-id|en_req_xtalk_error
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 25:25 */
-DECL|member|en_invalid_access
-id|picreg_t
-id|en_invalid_access
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 24:24 */
-DECL|member|en_unsupported_xop
-id|picreg_t
-id|en_unsupported_xop
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 23:23 */
-DECL|member|en_xreq_fifo_oflow
-id|picreg_t
-id|en_xreq_fifo_oflow
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 22:22 */
-DECL|member|en_llp_rec_snerror
-id|picreg_t
-id|en_llp_rec_snerror
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 21:21 */
-DECL|member|en_llp_rec_cberror
-id|picreg_t
-id|en_llp_rec_cberror
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 20:20 */
-DECL|member|en_llp_rcty
-id|picreg_t
-id|en_llp_rcty
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 19:19 */
-DECL|member|en_llp_tx_retry
-id|picreg_t
-id|en_llp_tx_retry
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 18:18 */
-DECL|member|en_llp_tcty
-id|picreg_t
-id|en_llp_tcty
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 17:17 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 16:16 */
-DECL|member|en_pci_abort
-id|picreg_t
-id|en_pci_abort
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 15:15 */
-DECL|member|en_pci_parity
-id|picreg_t
-id|en_pci_parity
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 14:14 */
-DECL|member|en_pci_serr
-id|picreg_t
-id|en_pci_serr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 13:13 */
-DECL|member|en_pci_perr
-id|picreg_t
-id|en_pci_perr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 12:12 */
-DECL|member|en_pci_master_tout
-id|picreg_t
-id|en_pci_master_tout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 11:11 */
-DECL|member|en_pci_retry_cnt
-id|picreg_t
-id|en_pci_retry_cnt
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 10:10 */
-DECL|member|en_xread_req_tout
-id|picreg_t
-id|en_xread_req_tout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 9:9 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 8:8 */
-DECL|member|en_int_state
-id|picreg_t
-id|en_int_state
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 7:0 */
-DECL|member|pic_p_int_enable_fld_s
-)brace
-id|pic_p_int_enable_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_int_enable_u_t
-)brace
-id|pic_p_int_enable_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Reset Interrupt Register&n; *&n; * A write of a &quot;1&quot; clears the bit and rearms the error registers. Writes also&n; * clear the error view register.&n; */
-DECL|union|pic_p_int_rst_u
-r_typedef
-r_union
-id|pic_p_int_rst_u
-(brace
-DECL|member|pic_p_int_rst_regval
-id|picreg_t
-id|pic_p_int_rst_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|22
-suffix:semicolon
-multiline_comment|/* 63:42 */
-DECL|member|logv_int_ram_perr
-id|picreg_t
-id|logv_int_ram_perr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 41:41 */
-DECL|member|logv_bus_arb_broke
-id|picreg_t
-id|logv_bus_arb_broke
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 40:40 */
-DECL|member|logv_pci_x_req_tout
-id|picreg_t
-id|logv_pci_x_req_tout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 39:39 */
-DECL|member|logv_pci_x_tabort
-id|picreg_t
-id|logv_pci_x_tabort
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 38:38 */
-DECL|member|logv_pci_x_perr
-id|picreg_t
-id|logv_pci_x_perr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 37:37 */
-DECL|member|logv_pci_x_serr
-id|picreg_t
-id|logv_pci_x_serr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 36:36 */
-DECL|member|logv_pci_x_mretry
-id|picreg_t
-id|logv_pci_x_mretry
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 35:35 */
-DECL|member|logv_pci_x_mtout
-id|picreg_t
-id|logv_pci_x_mtout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 34:34 */
-DECL|member|logv_pci_x_da_parity
-id|picreg_t
-id|logv_pci_x_da_parity
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 33:33 */
-DECL|member|logv_pci_x_ad_parity
-id|picreg_t
-id|logv_pci_x_ad_parity
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 32:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 31:31 */
-DECL|member|logv_pmu_page_fault
-id|picreg_t
-id|logv_pmu_page_fault
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 30:30 */
-DECL|member|logv_unexpected_resp
-id|picreg_t
-id|logv_unexpected_resp
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 29:29 */
-DECL|member|logv_bad_xresp_packet
-id|picreg_t
-id|logv_bad_xresp_packet
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 28:28 */
-DECL|member|logv_bad_xreq_packet
-id|picreg_t
-id|logv_bad_xreq_packet
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 27:27 */
-DECL|member|logv_resp_xtalk_error
-id|picreg_t
-id|logv_resp_xtalk_error
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 26:26 */
-DECL|member|logv_req_xtalk_error
-id|picreg_t
-id|logv_req_xtalk_error
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 25:25 */
-DECL|member|logv_invalid_access
-id|picreg_t
-id|logv_invalid_access
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 24:24 */
-DECL|member|logv_unsupported_xop
-id|picreg_t
-id|logv_unsupported_xop
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 23:23 */
-DECL|member|logv_xreq_fifo_oflow
-id|picreg_t
-id|logv_xreq_fifo_oflow
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 22:22 */
-DECL|member|logv_llp_rec_snerror
-id|picreg_t
-id|logv_llp_rec_snerror
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 21:21 */
-DECL|member|logv_llp_rec_cberror
-id|picreg_t
-id|logv_llp_rec_cberror
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 20:20 */
-DECL|member|logv_llp_rcty
-id|picreg_t
-id|logv_llp_rcty
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 19:19 */
-DECL|member|logv_llp_tx_retry
-id|picreg_t
-id|logv_llp_tx_retry
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 18:18 */
-DECL|member|logv_llp_tcty
-id|picreg_t
-id|logv_llp_tcty
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 17:17 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 16:16 */
-DECL|member|logv_pci_abort
-id|picreg_t
-id|logv_pci_abort
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 15:15 */
-DECL|member|logv_pci_parity
-id|picreg_t
-id|logv_pci_parity
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 14:14 */
-DECL|member|logv_pci_serr
-id|picreg_t
-id|logv_pci_serr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 13:13 */
-DECL|member|logv_pci_perr
-id|picreg_t
-id|logv_pci_perr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 12:12 */
-DECL|member|logv_pci_master_tout
-id|picreg_t
-id|logv_pci_master_tout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 11:11 */
-DECL|member|logv_pci_retry_cnt
-id|picreg_t
-id|logv_pci_retry_cnt
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 10:10 */
-DECL|member|logv_xread_req_tout
-id|picreg_t
-id|logv_xread_req_tout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 9:9 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 8:7 */
-DECL|member|multi_clr
-id|picreg_t
-id|multi_clr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 6:6 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|6
-suffix:semicolon
-multiline_comment|/* 5:0 */
-DECL|member|pic_p_int_rst_fld_s
-)brace
-id|pic_p_int_rst_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_int_rst_u_t
-)brace
-id|pic_p_int_rst_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Interrupt Mode Register&n; *&n; * This register defines the interrupting mode of the INT_N pins.&n; */
-DECL|union|pic_p_int_mode_u
-r_typedef
-r_union
-id|pic_p_int_mode_u
-(brace
-DECL|member|pic_p_int_mode_regval
-id|picreg_t
-id|pic_p_int_mode_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|24
-suffix:semicolon
-multiline_comment|/* 31:8 */
-DECL|member|en_clr_pkt
-id|picreg_t
-id|en_clr_pkt
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 7:0 */
-DECL|member|pic_p_int_mode_fld_s
-)brace
-id|pic_p_int_mode_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_int_mode_u_t
-)brace
-id|pic_p_int_mode_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Interrupt Device Select Register&n; *&n; * This register associates interrupt pins with devices thus allowing buffer&n; * management (flushing) when a device interrupt occurs.&n; */
-DECL|union|pic_p_int_device_u
-r_typedef
-r_union
-id|pic_p_int_device_u
-(brace
-DECL|member|pic_p_int_device_regval
-id|picreg_t
-id|pic_p_int_device_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 31:24 */
-DECL|member|int7_dev
-id|picreg_t
-id|int7_dev
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 23:21 */
-DECL|member|int6_dev
-id|picreg_t
-id|int6_dev
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 20:18 */
-DECL|member|int5_dev
-id|picreg_t
-id|int5_dev
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 17:15 */
-DECL|member|int4_dev
-id|picreg_t
-id|int4_dev
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 14:12 */
-DECL|member|int3_dev
-id|picreg_t
-id|int3_dev
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 11:9 */
-DECL|member|int2_dev
-id|picreg_t
-id|int2_dev
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 8:6 */
-DECL|member|int1_dev
-id|picreg_t
-id|int1_dev
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 5:3 */
-DECL|member|int0_dev
-id|picreg_t
-id|int0_dev
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 2:0 */
-DECL|member|pic_p_int_device_fld_s
-)brace
-id|pic_p_int_device_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_int_device_u_t
-)brace
-id|pic_p_int_device_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Host Error Interrupt Field Register&n; *&n; * This register tells which bit location in the host&squot;s Interrupt Status register&n; * to set or reset when any error condition happens.&n; */
-DECL|union|pic_p_int_host_err_u
-r_typedef
-r_union
-id|pic_p_int_host_err_u
-(brace
-DECL|member|pic_p_int_host_err_regval
-id|picreg_t
-id|pic_p_int_host_err_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|24
-suffix:semicolon
-multiline_comment|/* 31:8 */
-DECL|member|bridge_err_fld
-id|picreg_t
-id|bridge_err_fld
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 7:0 */
-DECL|member|pic_p_int_host_err_fld_s
-)brace
-id|pic_p_int_host_err_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_int_host_err_u_t
-)brace
-id|pic_p_int_host_err_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Interrupt (x) Host Address Register&n; *&n; * This register allow different host address to be assigned to each interrupt&n; * pin and the bit in the host.&n; */
-DECL|union|pic_p_int_addr_u
-r_typedef
-r_union
-id|pic_p_int_addr_u
-(brace
-DECL|member|pic_p_int_addr_regval
-id|picreg_t
-id|pic_p_int_addr_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 63:56 */
-DECL|member|int_fld
-id|picreg_t
-id|int_fld
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 55:48 */
-DECL|member|int_addr
-id|picreg_t
-id|int_addr
-suffix:colon
-l_int|48
-suffix:semicolon
-multiline_comment|/* 47:0 */
-DECL|member|pic_p_int_addr_fld_s
-)brace
-id|pic_p_int_addr_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_int_addr_u_t
-)brace
-id|pic_p_int_addr_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Error Interrupt View Register&n; *&n; * This register contains the view of which interrupt occur even if they are&n; * not currently enabled. The group clear is used to clear these bits just like&n; * the interrupt status register bits.&n; */
-DECL|union|pic_p_err_int_view_u
-r_typedef
-r_union
-id|pic_p_err_int_view_u
-(brace
-DECL|member|pic_p_err_int_view_regval
-id|picreg_t
-id|pic_p_err_int_view_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|22
-suffix:semicolon
-multiline_comment|/* 63:42 */
-DECL|member|int_ram_perr
-id|picreg_t
-id|int_ram_perr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 41:41 */
-DECL|member|bus_arb_broke
-id|picreg_t
-id|bus_arb_broke
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 40:40 */
-DECL|member|pci_x_req_tout
-id|picreg_t
-id|pci_x_req_tout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 39:39 */
-DECL|member|pci_x_tabort
-id|picreg_t
-id|pci_x_tabort
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 38:38 */
-DECL|member|pci_x_perr
-id|picreg_t
-id|pci_x_perr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 37:37 */
-DECL|member|pci_x_serr
-id|picreg_t
-id|pci_x_serr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 36:36 */
-DECL|member|pci_x_mretry
-id|picreg_t
-id|pci_x_mretry
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 35:35 */
-DECL|member|pci_x_mtout
-id|picreg_t
-id|pci_x_mtout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 34:34 */
-DECL|member|pci_x_da_parity
-id|picreg_t
-id|pci_x_da_parity
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 33:33 */
-DECL|member|pci_x_ad_parity
-id|picreg_t
-id|pci_x_ad_parity
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 32:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 31:31 */
-DECL|member|pmu_page_fault
-id|picreg_t
-id|pmu_page_fault
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 30:30 */
-DECL|member|unexpected_resp
-id|picreg_t
-id|unexpected_resp
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 29:29 */
-DECL|member|bad_xresp_packet
-id|picreg_t
-id|bad_xresp_packet
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 28:28 */
-DECL|member|bad_xreq_packet
-id|picreg_t
-id|bad_xreq_packet
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 27:27 */
-DECL|member|resp_xtalk_error
-id|picreg_t
-id|resp_xtalk_error
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 26:26 */
-DECL|member|req_xtalk_error
-id|picreg_t
-id|req_xtalk_error
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 25:25 */
-DECL|member|invalid_access
-id|picreg_t
-id|invalid_access
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 24:24 */
-DECL|member|unsupported_xop
-id|picreg_t
-id|unsupported_xop
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 23:23 */
-DECL|member|xreq_fifo_oflow
-id|picreg_t
-id|xreq_fifo_oflow
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 22:22 */
-DECL|member|llp_rec_snerror
-id|picreg_t
-id|llp_rec_snerror
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 21:21 */
-DECL|member|llp_rec_cberror
-id|picreg_t
-id|llp_rec_cberror
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 20:20 */
-DECL|member|llp_rcty
-id|picreg_t
-id|llp_rcty
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 19:19 */
-DECL|member|llp_tx_retry
-id|picreg_t
-id|llp_tx_retry
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 18:18 */
-DECL|member|llp_tcty
-id|picreg_t
-id|llp_tcty
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 17:17 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 16:16 */
-DECL|member|pci_abort
-id|picreg_t
-id|pci_abort
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 15:15 */
-DECL|member|pci_parity
-id|picreg_t
-id|pci_parity
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 14:14 */
-DECL|member|pci_serr
-id|picreg_t
-id|pci_serr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 13:13 */
-DECL|member|pci_perr
-id|picreg_t
-id|pci_perr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 12:12 */
-DECL|member|pci_master_tout
-id|picreg_t
-id|pci_master_tout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 11:11 */
-DECL|member|pci_retry_cnt
-id|picreg_t
-id|pci_retry_cnt
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 10:10 */
-DECL|member|xread_req_tout
-id|picreg_t
-id|xread_req_tout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 9:9 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|9
-suffix:semicolon
-multiline_comment|/* 8:0 */
-DECL|member|pic_p_err_int_view_fld_s
-)brace
-id|pic_p_err_int_view_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_err_int_view_u_t
-)brace
-id|pic_p_err_int_view_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Multiple Interrupt Register&n; *&n; * This register indicates if any interrupt occurs more than once without be-&n; * ing cleared.&n; */
-DECL|union|pic_p_mult_int_u
-r_typedef
-r_union
-id|pic_p_mult_int_u
-(brace
-DECL|member|pic_p_mult_int_regval
-id|picreg_t
-id|pic_p_mult_int_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|22
-suffix:semicolon
-multiline_comment|/* 63:42 */
-DECL|member|int_ram_perr
-id|picreg_t
-id|int_ram_perr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 41:41 */
-DECL|member|bus_arb_broke
-id|picreg_t
-id|bus_arb_broke
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 40:40 */
-DECL|member|pci_x_req_tout
-id|picreg_t
-id|pci_x_req_tout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 39:39 */
-DECL|member|pci_x_tabort
-id|picreg_t
-id|pci_x_tabort
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 38:38 */
-DECL|member|pci_x_perr
-id|picreg_t
-id|pci_x_perr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 37:37 */
-DECL|member|pci_x_serr
-id|picreg_t
-id|pci_x_serr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 36:36 */
-DECL|member|pci_x_mretry
-id|picreg_t
-id|pci_x_mretry
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 35:35 */
-DECL|member|pci_x_mtout
-id|picreg_t
-id|pci_x_mtout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 34:34 */
-DECL|member|pci_x_da_parity
-id|picreg_t
-id|pci_x_da_parity
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 33:33 */
-DECL|member|pci_x_ad_parity
-id|picreg_t
-id|pci_x_ad_parity
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 32:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 31:31 */
-DECL|member|pmu_page_fault
-id|picreg_t
-id|pmu_page_fault
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 30:30 */
-DECL|member|unexpected_resp
-id|picreg_t
-id|unexpected_resp
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 29:29 */
-DECL|member|bad_xresp_packet
-id|picreg_t
-id|bad_xresp_packet
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 28:28 */
-DECL|member|bad_xreq_packet
-id|picreg_t
-id|bad_xreq_packet
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 27:27 */
-DECL|member|resp_xtalk_error
-id|picreg_t
-id|resp_xtalk_error
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 26:26 */
-DECL|member|req_xtalk_error
-id|picreg_t
-id|req_xtalk_error
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 25:25 */
-DECL|member|invalid_access
-id|picreg_t
-id|invalid_access
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 24:24 */
-DECL|member|unsupported_xop
-id|picreg_t
-id|unsupported_xop
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 23:23 */
-DECL|member|xreq_fifo_oflow
-id|picreg_t
-id|xreq_fifo_oflow
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 22:22 */
-DECL|member|llp_rec_snerror
-id|picreg_t
-id|llp_rec_snerror
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 21:21 */
-DECL|member|llp_rec_cberror
-id|picreg_t
-id|llp_rec_cberror
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 20:20 */
-DECL|member|llp_rcty
-id|picreg_t
-id|llp_rcty
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 19:19 */
-DECL|member|llp_tx_retry
-id|picreg_t
-id|llp_tx_retry
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 18:18 */
-DECL|member|llp_tcty
-id|picreg_t
-id|llp_tcty
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 17:17 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 16:16 */
-DECL|member|pci_abort
-id|picreg_t
-id|pci_abort
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 15:15 */
-DECL|member|pci_parity
-id|picreg_t
-id|pci_parity
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 14:14 */
-DECL|member|pci_serr
-id|picreg_t
-id|pci_serr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 13:13 */
-DECL|member|pci_perr
-id|picreg_t
-id|pci_perr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 12:12 */
-DECL|member|pci_master_tout
-id|picreg_t
-id|pci_master_tout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 11:11 */
-DECL|member|pci_retry_cnt
-id|picreg_t
-id|pci_retry_cnt
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 10:10 */
-DECL|member|xread_req_tout
-id|picreg_t
-id|xread_req_tout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 9:9 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 8:8 */
-DECL|member|int_state
-id|picreg_t
-id|int_state
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* 7:0 */
-DECL|member|pic_p_mult_int_fld_s
-)brace
-id|pic_p_mult_int_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_mult_int_u_t
-)brace
-id|pic_p_mult_int_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Force Always Interrupt (x) Register&n; *&n; * A write to this data independent write only register will force a set inter-&n; * rupt to occur as if the interrupt line had transitioned. If the interrupt line&n; * is already active an addition set interrupt packet is set. All buffer flush op-&n; * erations also occur on this operation.&n; */
-multiline_comment|/*&n; * Force Interrupt (x) Register&n; *&n; * A write to this data independent write only register in conjunction with&n; * the assertion of the corresponding interrupt line will force a set interrupt&n; * to occur as if the interrupt line had transitioned. The interrupt line must&n; * be active for this operation to generate a set packet, otherwise the write&n; * PIO is ignored. All buffer flush operations also occur when the set packet&n; * is sent on this operation.&n; */
-multiline_comment|/*&n; * Device Registers&n; *&n; * The Device registers contain device specific and mapping information.&n; */
-DECL|union|pic_device_reg_u
-r_typedef
-r_union
-id|pic_device_reg_u
-(brace
-DECL|member|pic_device_reg_regval
-id|picreg_t
-id|pic_device_reg_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 31:30 */
-DECL|member|en_virtual1
-id|picreg_t
-id|en_virtual1
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 29:29 */
-DECL|member|en_error_lock
-id|picreg_t
-id|en_error_lock
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 28:28 */
-DECL|member|en_page_chk
-id|picreg_t
-id|en_page_chk
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 27:27 */
-DECL|member|force_pci_par
-id|picreg_t
-id|force_pci_par
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 26:26 */
-DECL|member|en_virtual0
-id|picreg_t
-id|en_virtual0
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 25:25 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 24:24 */
-DECL|member|dir_wrt_gen
-id|picreg_t
-id|dir_wrt_gen
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 23:23 */
-DECL|member|dev_size
-id|picreg_t
-id|dev_size
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 22:22 */
-DECL|member|real_time
-id|picreg_t
-id|real_time
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 21:21 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 20:20 */
-DECL|member|swap_direct
-id|picreg_t
-id|swap_direct
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 19:19 */
+multiline_comment|/* 0x000{410,,,5D0} */
 DECL|member|prefetch
 id|picreg_t
 id|prefetch
-suffix:colon
-l_int|1
 suffix:semicolon
-multiline_comment|/* 18:18 */
-DECL|member|precise
+multiline_comment|/* 0x000{418,,,5D8} */
+DECL|member|total_pci_retry
 id|picreg_t
-id|precise
-suffix:colon
-l_int|1
+id|total_pci_retry
 suffix:semicolon
-multiline_comment|/* 17:17 */
-DECL|member|coherent
+multiline_comment|/* 0x000{420,,,5E0} */
+DECL|member|max_pci_retry
 id|picreg_t
-id|coherent
-suffix:colon
-l_int|1
+id|max_pci_retry
 suffix:semicolon
-multiline_comment|/* 16:16 */
-DECL|member|barrier
+multiline_comment|/* 0x000{428,,,5E8} */
+DECL|member|max_latency
 id|picreg_t
-id|barrier
-suffix:colon
-l_int|1
+id|max_latency
 suffix:semicolon
-multiline_comment|/* 15:15 */
-DECL|member|gbr
+multiline_comment|/* 0x000{430,,,5F0} */
+DECL|member|clear_all
 id|picreg_t
-id|gbr
-suffix:colon
-l_int|1
+id|clear_all
 suffix:semicolon
-multiline_comment|/* 14:14 */
-DECL|member|dev_swap
-id|picreg_t
-id|dev_swap
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 13:13 */
-DECL|member|dev_io_mem
-id|picreg_t
-id|dev_io_mem
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 12:12 */
-DECL|member|dev_off
-id|picreg_t
-id|dev_off
-suffix:colon
-l_int|12
-suffix:semicolon
-multiline_comment|/* 11:0 */
-DECL|member|pic_device_reg_fld_s
+multiline_comment|/* 0x000{438,,,5F8} */
+DECL|member|p_buf_count
 )brace
-id|pic_device_reg_fld_s
-suffix:semicolon
-DECL|typedef|pic_device_reg_u_t
-)brace
-id|pic_device_reg_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Device (x) Write Request Buffer Flush&n; *&n; * When read, this register will return a 0x00 after the write buffer associat-&n; * ed with the device has been flushed. (PCI Only)&n; */
-multiline_comment|/*&n; * Even Device Read Response Buffer Register (PCI Only)&n; *&n; * This register is use to allocate the read response buffers for the even num-&n; * bered devices. (0,2)&n; */
-DECL|union|pic_p_even_resp_u
-r_typedef
-r_union
-id|pic_p_even_resp_u
-(brace
-DECL|member|pic_p_even_resp_regval
-id|picreg_t
-id|pic_p_even_resp_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|buff_14_en
-id|picreg_t
-id|buff_14_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 31:31 */
-DECL|member|buff_14_vdev
-id|picreg_t
-id|buff_14_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 30:29 */
-DECL|member|buff_14_pdev
-id|picreg_t
-id|buff_14_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 28:28 */
-DECL|member|buff_12_en
-id|picreg_t
-id|buff_12_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 27:27 */
-DECL|member|buff_12_vdev
-id|picreg_t
-id|buff_12_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 26:25 */
-DECL|member|buff_12_pdev
-id|picreg_t
-id|buff_12_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 24:24 */
-DECL|member|buff_10_en
-id|picreg_t
-id|buff_10_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 23:23 */
-DECL|member|buff_10_vdev
-id|picreg_t
-id|buff_10_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 22:21 */
-DECL|member|buff_10_pdev
-id|picreg_t
-id|buff_10_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 20:20 */
-DECL|member|buff_8_en
-id|picreg_t
-id|buff_8_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 19:19 */
-DECL|member|buff_8_vdev
-id|picreg_t
-id|buff_8_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 18:17 */
-DECL|member|buff_8_pdev
-id|picreg_t
-id|buff_8_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 16:16 */
-DECL|member|buff_6_en
-id|picreg_t
-id|buff_6_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 15:15 */
-DECL|member|buff_6_vdev
-id|picreg_t
-id|buff_6_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 14:13 */
-DECL|member|buff_6_pdev
-id|picreg_t
-id|buff_6_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 12:12 */
-DECL|member|buff_4_en
-id|picreg_t
-id|buff_4_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 11:11 */
-DECL|member|buff_4_vdev
-id|picreg_t
-id|buff_4_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 10:9 */
-DECL|member|buff_4_pdev
-id|picreg_t
-id|buff_4_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 8:8 */
-DECL|member|buff_2_en
-id|picreg_t
-id|buff_2_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 7:7 */
-DECL|member|buff_2_vdev
-id|picreg_t
-id|buff_2_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 6:5 */
-DECL|member|buff_2_pdev
-id|picreg_t
-id|buff_2_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 4:4 */
-DECL|member|buff_0_en
-id|picreg_t
-id|buff_0_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 3:3 */
-DECL|member|buff_0_vdev
-id|picreg_t
-id|buff_0_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 2:1 */
-DECL|member|buff_0_pdev
-id|picreg_t
-id|buff_0_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 0:0 */
-DECL|member|pic_p_even_resp_fld_s
-)brace
-id|pic_p_even_resp_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_even_resp_u_t
-)brace
-id|pic_p_even_resp_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Odd Device Read Response Buffer Register (PCI Only)&n; *&n; * This register is use to allocate the read response buffers for the odd num-&n; * bered devices. (1,3))&n; */
-DECL|union|pic_p_odd_resp_u
-r_typedef
-r_union
-id|pic_p_odd_resp_u
-(brace
-DECL|member|pic_p_odd_resp_regval
-id|picreg_t
-id|pic_p_odd_resp_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|buff_15_en
-id|picreg_t
-id|buff_15_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 31:31 */
-DECL|member|buff_15_vdev
-id|picreg_t
-id|buff_15_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 30:29 */
-DECL|member|buff_15_pdev
-id|picreg_t
-id|buff_15_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 28:28 */
-DECL|member|buff_13_en
-id|picreg_t
-id|buff_13_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 27:27 */
-DECL|member|buff_13_vdev
-id|picreg_t
-id|buff_13_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 26:25 */
-DECL|member|buff_13_pdev
-id|picreg_t
-id|buff_13_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 24:24 */
-DECL|member|buff_11_en
-id|picreg_t
-id|buff_11_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 23:23 */
-DECL|member|buff_11_vdev
-id|picreg_t
-id|buff_11_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 22:21 */
-DECL|member|buff_11_pdev
-id|picreg_t
-id|buff_11_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 20:20 */
-DECL|member|buff_9_en
-id|picreg_t
-id|buff_9_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 19:19 */
-DECL|member|buff_9_vdev
-id|picreg_t
-id|buff_9_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 18:17 */
-DECL|member|buff_9_pdev
-id|picreg_t
-id|buff_9_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 16:16 */
-DECL|member|buff_7_en
-id|picreg_t
-id|buff_7_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 15:15 */
-DECL|member|buff_7_vdev
-id|picreg_t
-id|buff_7_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 14:13 */
-DECL|member|buff_7_pdev
-id|picreg_t
-id|buff_7_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 12:12 */
-DECL|member|buff_5_en
-id|picreg_t
-id|buff_5_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 11:11 */
-DECL|member|buff_5_vdev
-id|picreg_t
-id|buff_5_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 10:9 */
-DECL|member|buff_5_pdev
-id|picreg_t
-id|buff_5_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 8:8 */
-DECL|member|buff_3_en
-id|picreg_t
-id|buff_3_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 7:7 */
-DECL|member|buff_3_vdev
-id|picreg_t
-id|buff_3_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 6:5 */
-DECL|member|buff_3_pdev
-id|picreg_t
-id|buff_3_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 4:4 */
-DECL|member|buff_1_en
-id|picreg_t
-id|buff_1_en
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 3:3 */
-DECL|member|buff_1_vdev
-id|picreg_t
-id|buff_1_vdev
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 2:1 */
-DECL|member|buff_1_pdev
-id|picreg_t
-id|buff_1_pdev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 0:0 */
-DECL|member|pic_p_odd_resp_fld_s
-)brace
-id|pic_p_odd_resp_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_odd_resp_u_t
-)brace
-id|pic_p_odd_resp_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Read Response Buffer Status Register (PCI Only)&n; *&n; * This read only register contains the current response buffer status.&n; */
-DECL|union|pic_p_resp_status_u
-r_typedef
-r_union
-id|pic_p_resp_status_u
-(brace
-DECL|member|pic_p_resp_status_regval
-id|picreg_t
-id|pic_p_resp_status_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|rrb_valid
-id|picreg_t
-id|rrb_valid
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 31:16 */
-DECL|member|rrb_inuse
-id|picreg_t
-id|rrb_inuse
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 15:0 */
-DECL|member|pic_p_resp_status_fld_s
-)brace
-id|pic_p_resp_status_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_resp_status_u_t
-)brace
-id|pic_p_resp_status_u_t
-suffix:semicolon
-multiline_comment|/*&n; * Read Response Buffer Clear Register (PCI Only)&n; *&n; * A write to this register clears the current contents of the buffer.&n; */
-DECL|union|pic_p_resp_clear_u
-r_typedef
-r_union
-id|pic_p_resp_clear_u
-(brace
-DECL|member|pic_p_resp_clear_regval
-id|picreg_t
-id|pic_p_resp_clear_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 31:16 */
-DECL|member|rrb_clear
-id|picreg_t
-id|rrb_clear
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 15:0 */
-DECL|member|pic_p_resp_clear_fld_s
-)brace
-id|pic_p_resp_clear_fld_s
-suffix:semicolon
-DECL|typedef|pic_p_resp_clear_u_t
-)brace
-id|pic_p_resp_clear_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI Read Response Buffer (x) Upper Address Match&n; *&n; * The PCI Bridge read response buffer upper address register is a read only&n; * register which contains the upper 16-bits of the address and status used to&n; * select the buffer for a PCI transaction.&n; */
-DECL|union|pic_p_buf_upper_addr_match_u
-r_typedef
-r_union
-id|pic_p_buf_upper_addr_match_u
-(brace
-DECL|member|pic_p_buf_upper_addr_match_regval
-id|picreg_t
-id|pic_p_buf_upper_addr_match_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|filled
-id|picreg_t
-id|filled
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 31:31 */
-DECL|member|armed
-id|picreg_t
-id|armed
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 30:30 */
-DECL|member|flush
-id|picreg_t
-id|flush
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 29:29 */
-DECL|member|xerr
-id|picreg_t
-id|xerr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 28:28 */
-DECL|member|pkterr
-id|picreg_t
-id|pkterr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 27:27 */
-DECL|member|timeout
-id|picreg_t
-id|timeout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 26:26 */
-DECL|member|prefetch
-id|picreg_t
-id|prefetch
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 25:25 */
-DECL|member|precise
-id|picreg_t
-id|precise
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 24:24 */
-DECL|member|dw_be
-id|picreg_t
-id|dw_be
-suffix:colon
+id|p_buf_count
+(braket
 l_int|8
+)braket
 suffix:semicolon
-multiline_comment|/* 23:16 */
-DECL|member|upp_addr
+multiline_comment|/* 0x000600-0x0009FF -- PCI/X registers */
+DECL|member|p_pcix_bus_err_addr
 id|picreg_t
-id|upp_addr
-suffix:colon
-l_int|16
+id|p_pcix_bus_err_addr
 suffix:semicolon
-multiline_comment|/* 15:0 */
-DECL|member|pic_p_buf_upper_addr_match_fld_s
-)brace
-id|pic_p_buf_upper_addr_match_fld_s
+multiline_comment|/* 0x000600 */
+DECL|member|p_pcix_bus_err_attr
+id|picreg_t
+id|p_pcix_bus_err_attr
 suffix:semicolon
-DECL|typedef|pic_p_buf_upper_addr_match_u_t
-)brace
-id|pic_p_buf_upper_addr_match_u_t
+multiline_comment|/* 0x000608 */
+DECL|member|p_pcix_bus_err_data
+id|picreg_t
+id|p_pcix_bus_err_data
 suffix:semicolon
-multiline_comment|/*&n; * PCI Read Response Buffer (x) Lower Address Match&n; *&n; * The PCI Bridge read response buffer lower address Match register is a&n; * read only register which contains the address and status used to select the&n; * buffer for a PCI transaction.&n; */
-DECL|union|pic_p_buf_lower_addr_match_u
-r_typedef
-r_union
-id|pic_p_buf_lower_addr_match_u
+multiline_comment|/* 0x000610 */
+DECL|member|p_pcix_pio_split_addr
+id|picreg_t
+id|p_pcix_pio_split_addr
+suffix:semicolon
+multiline_comment|/* 0x000618 */
+DECL|member|p_pcix_pio_split_attr
+id|picreg_t
+id|p_pcix_pio_split_attr
+suffix:semicolon
+multiline_comment|/* 0x000620 */
+DECL|member|p_pcix_dma_req_err_attr
+id|picreg_t
+id|p_pcix_dma_req_err_attr
+suffix:semicolon
+multiline_comment|/* 0x000628 */
+DECL|member|p_pcix_dma_req_err_addr
+id|picreg_t
+id|p_pcix_dma_req_err_addr
+suffix:semicolon
+multiline_comment|/* 0x000630 */
+DECL|member|p_pcix_timeout
+id|picreg_t
+id|p_pcix_timeout
+suffix:semicolon
+multiline_comment|/* 0x000638 */
+DECL|member|_pad_000640
+id|picreg_t
+id|_pad_000640
+(braket
+l_int|120
+)braket
+suffix:semicolon
+multiline_comment|/* 0x000{640,,,9F8} */
+multiline_comment|/* 0x000A00-0x000BFF -- PCI/X Read&amp;Write Buffer */
+r_struct
 (brace
-DECL|member|pic_p_buf_lower_addr_match_regval
+DECL|member|p_buf_addr
 id|picreg_t
-id|pic_p_buf_lower_addr_match_regval
+id|p_buf_addr
+suffix:semicolon
+multiline_comment|/* 0x000{A00,,,AF0} */
+DECL|member|p_buf_attr
+id|picreg_t
+id|p_buf_attr
+suffix:semicolon
+multiline_comment|/* 0X000{A08,,,AF8} */
+DECL|member|p_pcix_read_buf_64
+)brace
+id|p_pcix_read_buf_64
+(braket
+l_int|16
+)braket
 suffix:semicolon
 r_struct
 (brace
-DECL|member|filled
+DECL|member|p_buf_addr
 id|picreg_t
-id|filled
-suffix:colon
-l_int|1
+id|p_buf_addr
 suffix:semicolon
-multiline_comment|/* 63:63 */
-DECL|member|armed
+multiline_comment|/* 0x000{B00,,,BE0} */
+DECL|member|p_buf_attr
 id|picreg_t
-id|armed
-suffix:colon
-l_int|1
+id|p_buf_attr
 suffix:semicolon
-multiline_comment|/* 62:62 */
-DECL|member|flush
+multiline_comment|/* 0x000{B08,,,BE8} */
+DECL|member|p_buf_valid
 id|picreg_t
-id|flush
-suffix:colon
-l_int|1
+id|p_buf_valid
 suffix:semicolon
-multiline_comment|/* 61:61 */
-DECL|member|xerr
+multiline_comment|/* 0x000{B10,,,BF0} */
+DECL|member|__pad1
 id|picreg_t
-id|xerr
-suffix:colon
-l_int|1
+id|__pad1
 suffix:semicolon
-multiline_comment|/* 60:60 */
-DECL|member|pkterr
-id|picreg_t
-id|pkterr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 59:59 */
-DECL|member|timeout
-id|picreg_t
-id|timeout
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 58:58 */
-DECL|member|prefetch
-id|picreg_t
-id|prefetch
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 57:57 */
-DECL|member|precise
-id|picreg_t
-id|precise
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 56:56 */
-DECL|member|dw_be
-id|picreg_t
-id|dw_be
-suffix:colon
+multiline_comment|/* 0x000{B18,,,BF8} */
+DECL|member|p_pcix_write_buf_64
+)brace
+id|p_pcix_write_buf_64
+(braket
 l_int|8
+)braket
 suffix:semicolon
-multiline_comment|/* 55:48 */
-DECL|member|upp_addr
+multiline_comment|/* End of Local Registers -- Start of Address Map space */
+DECL|member|_pad_000c00
+r_char
+id|_pad_000c00
+(braket
+l_int|0x010000
+op_minus
+l_int|0x000c00
+)braket
+suffix:semicolon
+multiline_comment|/* 0x010000-0x011fff -- Internal ATE RAM (Auto Parity Generation) */
+DECL|member|p_int_ate_ram
+id|picate_t
+id|p_int_ate_ram
+(braket
+l_int|1024
+)braket
+suffix:semicolon
+multiline_comment|/* 0x010000-0x011fff */
+multiline_comment|/* 0x012000-0x013fff -- Internal ATE RAM (Manual Parity Generation) */
+DECL|member|p_int_ate_ram_mp
+id|picate_t
+id|p_int_ate_ram_mp
+(braket
+l_int|1024
+)braket
+suffix:semicolon
+multiline_comment|/* 0x012000-0x013fff */
+DECL|member|_pad_014000
+r_char
+id|_pad_014000
+(braket
+l_int|0x18000
+op_minus
+l_int|0x014000
+)braket
+suffix:semicolon
+multiline_comment|/* 0x18000-0x197F8 -- PIC Write Request Ram */
+DECL|member|p_wr_req_lower
 id|picreg_t
-id|upp_addr
-suffix:colon
-l_int|16
+id|p_wr_req_lower
+(braket
+l_int|256
+)braket
 suffix:semicolon
-multiline_comment|/* 47:32 */
-DECL|member|low_addr
+multiline_comment|/* 0x18000 - 0x187F8 */
+DECL|member|p_wr_req_upper
 id|picreg_t
-id|low_addr
-suffix:colon
-l_int|32
+id|p_wr_req_upper
+(braket
+l_int|256
+)braket
 suffix:semicolon
-multiline_comment|/* 31:0 */
-DECL|member|pic_p_buf_lower_addr_match_fld_s
-)brace
-id|pic_p_buf_lower_addr_match_fld_s
+multiline_comment|/* 0x18800 - 0x18FF8 */
+DECL|member|p_wr_req_parity
+id|picreg_t
+id|p_wr_req_parity
+(braket
+l_int|256
+)braket
 suffix:semicolon
-DECL|typedef|pic_p_buf_lower_addr_match_u_t
-)brace
-id|pic_p_buf_lower_addr_match_u_t
+multiline_comment|/* 0x19000 - 0x197F8 */
+DECL|member|_pad_019800
+r_char
+id|_pad_019800
+(braket
+l_int|0x20000
+op_minus
+l_int|0x019800
+)braket
 suffix:semicolon
-multiline_comment|/*&n; * PCI Buffer (x) Flush Count with Data Touch Register&n; *&n; * This counter is incremented each time the corresponding response buffer&n; * is flushed after at least a single data element in the buffer is used. A word&n; * write to this address clears the count.&n; */
-DECL|union|pic_flush_w_touch_u
-r_typedef
+multiline_comment|/* 0x020000-0x027FFF -- PCI Device Configuration Spaces */
 r_union
-id|pic_flush_w_touch_u
 (brace
-DECL|member|pic_flush_w_touch_regval
-id|picreg_t
-id|pic_flush_w_touch_regval
+DECL|member|c
+r_uint8
+id|c
+(braket
+l_int|0x1000
+op_div
+l_int|1
+)braket
 suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
+multiline_comment|/* 0x02{0000,,,7FFF} */
+DECL|member|s
+r_uint16
+id|s
+(braket
+l_int|0x1000
+op_div
+l_int|2
+)braket
 suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 31:16 */
-DECL|member|touch_cnt
-id|picreg_t
-id|touch_cnt
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 15:0 */
-DECL|member|pic_flush_w_touch_fld_s
-)brace
-id|pic_flush_w_touch_fld_s
-suffix:semicolon
-DECL|typedef|pic_flush_w_touch_u_t
-)brace
-id|pic_flush_w_touch_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI Buffer (x) Flush Count w/o Data Touch Register&n; *&n; * This counter is incremented each time the corresponding response buffer&n; * is flushed without any data element in the buffer being used. A word&n; * write to this address clears the count.&n; */
-DECL|union|pic_flush_wo_touch_u
-r_typedef
-r_union
-id|pic_flush_wo_touch_u
-(brace
-DECL|member|pic_flush_wo_touch_regval
-id|picreg_t
-id|pic_flush_wo_touch_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 31:16 */
-DECL|member|notouch_cnt
-id|picreg_t
-id|notouch_cnt
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 15:0 */
-DECL|member|pic_flush_wo_touch_fld_s
-)brace
-id|pic_flush_wo_touch_fld_s
-suffix:semicolon
-DECL|typedef|pic_flush_wo_touch_u_t
-)brace
-id|pic_flush_wo_touch_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI Buffer (x) Request in Flight Count Register&n; *&n; * This counter is incremented on each bus clock while the request is in-&n; * flight. A word write to this address clears the count. ]&n; */
-DECL|union|pic_inflight_u
-r_typedef
-r_union
-id|pic_inflight_u
-(brace
-DECL|member|pic_inflight_regval
-id|picreg_t
-id|pic_inflight_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 31:16 */
-DECL|member|inflight_cnt
-id|picreg_t
-id|inflight_cnt
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 15:0 */
-DECL|member|pic_inflight_fld_s
-)brace
-id|pic_inflight_fld_s
-suffix:semicolon
-DECL|typedef|pic_inflight_u_t
-)brace
-id|pic_inflight_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI Buffer (x) Prefetch Request Count Register&n; *&n; * This counter is incremented each time the request using this buffer was&n; * generated from the prefetcher. A word write to this address clears the&n; * count.&n; */
-DECL|union|pic_prefetch_u
-r_typedef
-r_union
-id|pic_prefetch_u
-(brace
-DECL|member|pic_prefetch_regval
-id|picreg_t
-id|pic_prefetch_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 31:16 */
-DECL|member|prefetch_cnt
-id|picreg_t
-id|prefetch_cnt
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 15:0 */
-DECL|member|pic_prefetch_fld_s
-)brace
-id|pic_prefetch_fld_s
-suffix:semicolon
-DECL|typedef|pic_prefetch_u_t
-)brace
-id|pic_prefetch_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI Buffer (x) Total PCI Retry Count Register&n; *&n; * This counter is incremented each time a PCI bus retry occurs and the ad-&n; * dress matches the tag for the selected buffer. The buffer must also has this&n; * request in-flight. A word write to this address clears the count.&n; */
-DECL|union|pic_total_pci_retry_u
-r_typedef
-r_union
-id|pic_total_pci_retry_u
-(brace
-DECL|member|pic_total_pci_retry_regval
-id|picreg_t
-id|pic_total_pci_retry_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 31:16 */
-DECL|member|retry_cnt
-id|picreg_t
-id|retry_cnt
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 15:0 */
-DECL|member|pic_total_pci_retry_fld_s
-)brace
-id|pic_total_pci_retry_fld_s
-suffix:semicolon
-DECL|typedef|pic_total_pci_retry_u_t
-)brace
-id|pic_total_pci_retry_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI Buffer (x) Max PCI Retry Count Register&n; *&n; * This counter is contains the maximum retry count for a single request&n; * which was in-flight for this buffer. A word write to this address clears the&n; * count.&n; */
-DECL|union|pic_max_pci_retry_u
-r_typedef
-r_union
-id|pic_max_pci_retry_u
-(brace
-DECL|member|pic_max_pci_retry_regval
-id|picreg_t
-id|pic_max_pci_retry_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 31:16 */
-DECL|member|max_retry_cnt
-id|picreg_t
-id|max_retry_cnt
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 15:0 */
-DECL|member|pic_max_pci_retry_fld_s
-)brace
-id|pic_max_pci_retry_fld_s
-suffix:semicolon
-DECL|typedef|pic_max_pci_retry_u_t
-)brace
-id|pic_max_pci_retry_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI Buffer (x) Max Latency Count Register&n; *&n; * This counter is contains the maximum count (in bus clocks) for a single&n; * request which was in-flight for this buffer. A word write to this address&n; * clears the count.&n; */
-DECL|union|pic_max_latency_u
-r_typedef
-r_union
-id|pic_max_latency_u
-(brace
-DECL|member|pic_max_latency_regval
-id|picreg_t
-id|pic_max_latency_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
-suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 31:16 */
-DECL|member|max_latency_cnt
-id|picreg_t
-id|max_latency_cnt
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 15:0 */
-DECL|member|pic_max_latency_fld_s
-)brace
-id|pic_max_latency_fld_s
-suffix:semicolon
-DECL|typedef|pic_max_latency_u_t
-)brace
-id|pic_max_latency_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI Buffer (x) Clear All Register&n; *&n; * Any access to this register clears all the count values for the (x) registers.&n; */
-multiline_comment|/*&n; * PCI-X Registers&n; *&n; * This register contains the address in the read buffer structure. There are&n; * 16 read buffer structures.&n; */
-DECL|union|pic_rd_buf_addr_u
-r_typedef
-r_union
-id|pic_rd_buf_addr_u
-(brace
-DECL|member|pic_rd_buf_addr_regval
-id|picreg_t
-id|pic_rd_buf_addr_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|pcix_err_addr
-id|picreg_t
-id|pcix_err_addr
-suffix:colon
-l_int|64
-suffix:semicolon
-multiline_comment|/* 63:0 */
-DECL|member|pic_rd_buf_addr_fld_s
-)brace
-id|pic_rd_buf_addr_fld_s
-suffix:semicolon
-DECL|typedef|pic_rd_buf_addr_u_t
-)brace
-id|pic_rd_buf_addr_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI-X Read Buffer (x) Attribute Register&n; *&n; * This register contains the attribute data in the read buffer structure. There&n; * are  16 read buffer structures.&n; */
-DECL|union|pic_px_read_buf_attr_u
-r_typedef
-r_union
-id|pic_px_read_buf_attr_u
-(brace
-DECL|member|pic_px_read_buf_attr_regval
-id|picreg_t
-id|pic_px_read_buf_attr_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 63:48 */
-DECL|member|bus_cmd
-id|picreg_t
-id|bus_cmd
-suffix:colon
+multiline_comment|/* 0x02{0000,,,7FFF} */
+DECL|member|l
+r_uint32
+id|l
+(braket
+l_int|0x1000
+op_div
 l_int|4
+)braket
 suffix:semicolon
-multiline_comment|/* 47:44 */
-DECL|member|byte_cnt
-id|picreg_t
-id|byte_cnt
-suffix:colon
-l_int|12
-suffix:semicolon
-multiline_comment|/* 43:32 */
-DECL|member|entry_valid
-id|picreg_t
-id|entry_valid
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 31:31 */
-DECL|member|ns
-id|picreg_t
-id|ns
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 30:30 */
-DECL|member|ro
-id|picreg_t
-id|ro
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 29:29 */
-DECL|member|tag
-id|picreg_t
-id|tag
-suffix:colon
-l_int|5
-suffix:semicolon
-multiline_comment|/* 28:24 */
-DECL|member|bus_num
-id|picreg_t
-id|bus_num
-suffix:colon
+multiline_comment|/* 0x02{0000,,,7FFF} */
+DECL|member|d
+r_uint64
+id|d
+(braket
+l_int|0x1000
+op_div
 l_int|8
+)braket
 suffix:semicolon
-multiline_comment|/* 23:16 */
-DECL|member|dev_num
-id|picreg_t
-id|dev_num
-suffix:colon
-l_int|5
+multiline_comment|/* 0x02{0000,,,7FFF} */
+r_union
+(brace
+DECL|member|c
+r_uint8
+id|c
+(braket
+l_int|0x100
+op_div
+l_int|1
+)braket
 suffix:semicolon
-multiline_comment|/* 15:11 */
-DECL|member|fun_num
-id|picreg_t
-id|fun_num
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 10:8 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
+DECL|member|s
+r_uint16
+id|s
+(braket
+l_int|0x100
+op_div
 l_int|2
+)braket
 suffix:semicolon
-multiline_comment|/* 7:6 */
-DECL|member|f_buffer_index
-id|picreg_t
-id|f_buffer_index
-suffix:colon
-l_int|6
-suffix:semicolon
-multiline_comment|/* 5:0 */
-DECL|member|pic_px_read_buf_attr_fld_s
-)brace
-id|pic_px_read_buf_attr_fld_s
-suffix:semicolon
-DECL|typedef|pic_px_read_buf_attr_u_t
-)brace
-id|pic_px_read_buf_attr_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI-X Write Buffer (x) Address Register&n; *&n; * This register contains the address in the write buffer structure. There are&n; * 8 write buffer structures.&n; */
-DECL|union|pic_px_write_buf_addr_u
-r_typedef
-r_union
-id|pic_px_write_buf_addr_u
-(brace
-DECL|member|pic_px_write_buf_addr_regval
-id|picreg_t
-id|pic_px_write_buf_addr_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|pcix_err_addr
-id|picreg_t
-id|pcix_err_addr
-suffix:colon
-l_int|64
-suffix:semicolon
-multiline_comment|/* 63:0 */
-DECL|member|pic_px_write_buf_addr_fld_s
-)brace
-id|pic_px_write_buf_addr_fld_s
-suffix:semicolon
-DECL|typedef|pic_px_write_buf_addr_u_t
-)brace
-id|pic_px_write_buf_addr_u_t
-suffix:semicolon
-multiline_comment|/*&n; * PCI-X Write Buffer (x) Attribute Register&n; *&n; * This register contains the attribute data in the write buffer structure.&n; * There are 8 write buffer structures.&n; */
-DECL|union|pic_px_write_buf_attr_u
-r_typedef
-r_union
-id|pic_px_write_buf_attr_u
-(brace
-DECL|member|pic_px_write_buf_attr_regval
-id|picreg_t
-id|pic_px_write_buf_attr_regval
-suffix:semicolon
-r_struct
-(brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|16
-suffix:semicolon
-multiline_comment|/* 63:48 */
-DECL|member|bus_cmd
-id|picreg_t
-id|bus_cmd
-suffix:colon
+DECL|member|l
+r_uint32
+id|l
+(braket
+l_int|0x100
+op_div
 l_int|4
+)braket
 suffix:semicolon
-multiline_comment|/* 47:44 */
-DECL|member|byte_cnt
-id|picreg_t
-id|byte_cnt
-suffix:colon
-l_int|12
-suffix:semicolon
-multiline_comment|/* 43:32 */
-DECL|member|entry_valid
-id|picreg_t
-id|entry_valid
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 31:31 */
-DECL|member|ns
-id|picreg_t
-id|ns
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 30:30 */
-DECL|member|ro
-id|picreg_t
-id|ro
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 29:29 */
-DECL|member|tag
-id|picreg_t
-id|tag
-suffix:colon
-l_int|5
-suffix:semicolon
-multiline_comment|/* 28:24 */
-DECL|member|bus_num
-id|picreg_t
-id|bus_num
-suffix:colon
+DECL|member|d
+r_uint64
+id|d
+(braket
+l_int|0x100
+op_div
 l_int|8
+)braket
 suffix:semicolon
-multiline_comment|/* 23:16 */
-DECL|member|dev_num
-id|picreg_t
-id|dev_num
-suffix:colon
-l_int|5
-suffix:semicolon
-multiline_comment|/* 15:11 */
-DECL|member|fun_num
-id|picreg_t
-id|fun_num
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* 10:8 */
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 7:6 */
-DECL|member|f_buffer_index
-id|picreg_t
-id|f_buffer_index
-suffix:colon
-l_int|6
-suffix:semicolon
-multiline_comment|/* 5:0 */
-DECL|member|pic_px_write_buf_attr_fld_s
+DECL|member|f
 )brace
-id|pic_px_write_buf_attr_fld_s
+id|f
+(braket
+l_int|8
+)braket
 suffix:semicolon
-DECL|typedef|pic_px_write_buf_attr_u_t
+DECL|member|p_type0_cfg_dev
 )brace
-id|pic_px_write_buf_attr_u_t
+id|p_type0_cfg_dev
+(braket
+l_int|8
+)braket
 suffix:semicolon
-multiline_comment|/*&n; * PCI-X Write Buffer (x) Valid Register&n; *&n; * This register contains the valid or inuse cache lines for this buffer struc-&n; * ture.&n; */
-DECL|union|pic_px_write_buf_valid_u
-r_typedef
+multiline_comment|/* 0x02{0000,,,7FFF} */
+multiline_comment|/* 0x028000-0x028FFF -- PCI Type 1 Configuration Space */
 r_union
-id|pic_px_write_buf_valid_u
 (brace
-DECL|member|pic_px_write_buf_valid_regval
-id|picreg_t
-id|pic_px_write_buf_valid_regval
+DECL|member|c
+r_uint8
+id|c
+(braket
+l_int|0x1000
+op_div
+l_int|1
+)braket
 suffix:semicolon
-r_struct
+multiline_comment|/* 0x028000-0x029000 */
+DECL|member|s
+r_uint16
+id|s
+(braket
+l_int|0x1000
+op_div
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 0x028000-0x029000 */
+DECL|member|l
+r_uint32
+id|l
+(braket
+l_int|0x1000
+op_div
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* 0x028000-0x029000 */
+DECL|member|d
+r_uint64
+id|d
+(braket
+l_int|0x1000
+op_div
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* 0x028000-0x029000 */
+r_union
 (brace
-DECL|member|picreg_t
-id|picreg_t
-suffix:colon
-l_int|32
+DECL|member|c
+r_uint8
+id|c
+(braket
+l_int|0x100
+op_div
+l_int|1
+)braket
 suffix:semicolon
-multiline_comment|/* 63:32 */
-DECL|member|wrt_valid_buff
-id|picreg_t
-id|wrt_valid_buff
-suffix:colon
-l_int|32
+DECL|member|s
+r_uint16
+id|s
+(braket
+l_int|0x100
+op_div
+l_int|2
+)braket
 suffix:semicolon
-multiline_comment|/* 31:0 */
-DECL|member|pic_px_write_buf_valid_fld_s
+DECL|member|l
+r_uint32
+id|l
+(braket
+l_int|0x100
+op_div
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|d
+r_uint64
+id|d
+(braket
+l_int|0x100
+op_div
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|f
 )brace
-id|pic_px_write_buf_valid_fld_s
+id|f
+(braket
+l_int|8
+)braket
 suffix:semicolon
-DECL|typedef|pic_px_write_buf_valid_u_t
+DECL|member|p_type1_cfg
 )brace
-id|pic_px_write_buf_valid_u_t
+id|p_type1_cfg
+suffix:semicolon
+multiline_comment|/* 0x028000-0x029000 */
+DECL|member|_pad_029000
+r_char
+id|_pad_029000
+(braket
+l_int|0x030000
+op_minus
+l_int|0x029000
+)braket
+suffix:semicolon
+multiline_comment|/* 0x030000-0x030007 -- PCI Interrupt Acknowledge Cycle */
+r_union
+(brace
+DECL|member|c
+r_uint8
+id|c
+(braket
+l_int|8
+op_div
+l_int|1
+)braket
+suffix:semicolon
+DECL|member|s
+r_uint16
+id|s
+(braket
+l_int|8
+op_div
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|l
+r_uint32
+id|l
+(braket
+l_int|8
+op_div
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|d
+r_uint64
+id|d
+(braket
+l_int|8
+op_div
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|p_pci_iack
+)brace
+id|p_pci_iack
+suffix:semicolon
+multiline_comment|/* 0x030000-0x030007 */
+DECL|member|_pad_030007
+r_char
+id|_pad_030007
+(braket
+l_int|0x040000
+op_minus
+l_int|0x030008
+)braket
+suffix:semicolon
+multiline_comment|/* 0x040000-0x030007 -- PCIX Special Cycle */
+r_union
+(brace
+DECL|member|c
+r_uint8
+id|c
+(braket
+l_int|8
+op_div
+l_int|1
+)braket
+suffix:semicolon
+DECL|member|s
+r_uint16
+id|s
+(braket
+l_int|8
+op_div
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|l
+r_uint32
+id|l
+(braket
+l_int|8
+op_div
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|d
+r_uint64
+id|d
+(braket
+l_int|8
+op_div
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|p_pcix_cycle
+)brace
+id|p_pcix_cycle
+suffix:semicolon
+multiline_comment|/* 0x040000-0x040007 */
+DECL|typedef|pic_t
+)brace
+id|pic_t
 suffix:semicolon
 macro_line|#endif                          /* _ASM_IA64_SN_PCI_PIC_H */
 eof

@@ -141,6 +141,52 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|pcireg_intr_enable_bit_clr
+c_func
+(paren
+r_void
+op_star
+comma
+r_uint64
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pcireg_intr_enable_bit_set
+c_func
+(paren
+r_void
+op_star
+comma
+r_uint64
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pcireg_intr_addr_addr_set
+c_func
+(paren
+r_void
+op_star
+comma
+r_int
+comma
+r_uint64
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pcireg_force_intr_set
+c_func
+(paren
+r_void
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 r_void
 id|pcibr_debug
 c_func
@@ -685,6 +731,9 @@ DECL|macro|PV862253
 mdefine_line|#define PV862253 (1 &lt;&lt; 1) /* PIC: don&squot;t enable write req RAM parity checking */
 DECL|macro|PV867308
 mdefine_line|#define PV867308 (3 &lt;&lt; 1) /* PIC: make LLP error interrupts FATAL for PIC */
+multiline_comment|/* Bridgetype macros given a pcibr_soft structure */
+DECL|macro|IS_PIC_SOFT
+mdefine_line|#define IS_PIC_SOFT(ps)     (ps-&gt;bs_bridge_type == PCIBR_BRIDGETYPE_PIC)
 multiline_comment|/* defines for pcibr_soft_s-&gt;bs_bridge_mode */
 DECL|macro|PCIBR_BRIDGEMODE_PCI_33
 mdefine_line|#define PCIBR_BRIDGEMODE_PCI_33&t;&t;0x0

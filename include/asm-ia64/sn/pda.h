@@ -133,6 +133,11 @@ DECL|member|sn_first_irq
 r_int
 id|sn_first_irq
 suffix:semicolon
+DECL|member|sn_num_irqs
+r_int
+id|sn_num_irqs
+suffix:semicolon
+multiline_comment|/* number of irqs targeted for this cpu */
 DECL|typedef|pda_t
 )brace
 id|pda_t
