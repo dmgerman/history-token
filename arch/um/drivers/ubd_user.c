@@ -2439,6 +2439,21 @@ id|end
 op_increment
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|end
+op_ne
+id|nsectors
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;end != nsectors&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 id|off
 op_assign
 id|req-&gt;offset
