@@ -238,6 +238,17 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+r_static
+r_inline
+r_void
+id|ibmveth_schedule_replenishing
+c_func
+(paren
+r_struct
+id|ibmveth_adapter
+op_star
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|macro|IBMVETH_PROC_DIR
 mdefine_line|#define IBMVETH_PROC_DIR &quot;ibmveth&quot;
@@ -270,7 +281,7 @@ op_assign
 l_string|&quot;IBM i/pSeries Virtual Ethernet Driver&quot;
 suffix:semicolon
 DECL|macro|ibmveth_driver_version
-mdefine_line|#define ibmveth_driver_version &quot;1.02&quot;
+mdefine_line|#define ibmveth_driver_version &quot;1.03&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1105,6 +1116,12 @@ c_func
 (paren
 op_amp
 id|adapter-&gt;not_replenishing
+)paren
+suffix:semicolon
+id|ibmveth_schedule_replenishing
+c_func
+(paren
+id|adapter
 )paren
 suffix:semicolon
 )brace
