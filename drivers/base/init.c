@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; * &n; * This file is released under the GPLv2&n; *&n; */
+multiline_comment|/*&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; *&n; * This file is released under the GPLv2&n; *&n; */
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 r_extern
@@ -88,7 +88,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* These are also core pieces, but must come after the &n;&t; * core core pieces.&n;&t; */
+multiline_comment|/* These are also core pieces, but must come after the&n;&t; * core core pieces.&n;&t; */
 id|platform_bus_init
 c_func
 (paren
