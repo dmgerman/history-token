@@ -206,6 +206,11 @@ r_int
 id|irqsafe
 )paren
 suffix:semicolon
+DECL|variable|mca_init
+r_static
+r_int
+id|mca_init
+suffix:semicolon
 multiline_comment|/*&n; * IA64_MCA log support&n; */
 DECL|macro|IA64_MAX_LOGS
 mdefine_line|#define IA64_MAX_LOGS&t;&t;2&t;/* Double-buffering for nested MCAs */
@@ -4180,6 +4185,10 @@ c_func
 id|SAL_INFO_TYPE_CPE
 )paren
 suffix:semicolon
+id|mca_init
+op_assign
+l_int|1
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -4199,6 +4208,15 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mca_init
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/* Setup the CMCI/P vector and handler */
 id|init_timer
 c_func
