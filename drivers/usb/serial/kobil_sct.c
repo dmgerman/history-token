@@ -328,6 +328,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|kobil_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|kobil_device

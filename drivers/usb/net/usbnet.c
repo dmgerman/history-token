@@ -1700,6 +1700,7 @@ id|buf
 suffix:semicolon
 )brace
 DECL|function|ax8817x_get_wol
+r_static
 r_void
 id|ax8817x_get_wol
 c_func
@@ -1807,6 +1808,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|ax8817x_set_wol
+r_static
 r_int
 id|ax8817x_set_wol
 c_func
@@ -1909,6 +1911,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ax8817x_get_eeprom
+r_static
 r_int
 id|ax8817x_get_eeprom
 c_func
@@ -10842,6 +10845,7 @@ id|ethtool_ops
 id|usbnet_ethtool_ops
 suffix:semicolon
 singleline_comment|// precondition: never called in_interrupt
+r_static
 r_int
 DECL|function|usbnet_probe
 id|usbnet_probe

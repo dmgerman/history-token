@@ -4247,6 +4247,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Create a report.&n; */
 DECL|function|hid_output_report
+r_static
 r_void
 id|hid_output_report
 c_func
@@ -4708,7 +4709,8 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|hid_find_field_in_report
+macro_line|#if 0
+r_static
 r_int
 id|hid_find_field_in_report
 c_func
@@ -4801,6 +4803,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|hid_submit_out
 r_static
 r_int
@@ -6322,6 +6325,7 @@ mdefine_line|#define USB_DEVICE_ID_1_PHIDGETSERVO_20&t;0x8101
 DECL|macro|USB_DEVICE_ID_4_PHIDGETSERVO_20
 mdefine_line|#define USB_DEVICE_ID_4_PHIDGETSERVO_20&t;0x8104
 DECL|struct|hid_blacklist
+r_static
 r_struct
 id|hid_blacklist
 (brace

@@ -1717,6 +1717,7 @@ id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
 )brace
 DECL|function|jumpshot_info_destructor
+r_static
 r_void
 id|jumpshot_info_destructor
 c_func

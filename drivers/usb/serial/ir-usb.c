@@ -356,6 +356,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|ir_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|ir_device

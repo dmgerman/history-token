@@ -733,6 +733,7 @@ mdefine_line|#define SENSE_BUFFER_SIZE 18
 multiline_comment|/***********************************************************************&n; * Helper routines&n; ***********************************************************************/
 multiline_comment|/**************************************************************************&n; * isd200_build_sense&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; *  Builds an artificial sense buffer to report the results of a &n; *  failed command.&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * RETURNS:&n; *    void&n; */
 DECL|function|isd200_build_sense
+r_static
 r_void
 id|isd200_build_sense
 c_func
@@ -1339,6 +1340,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * isd200_read_regs&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Read ATA Registers&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_read_regs
+r_static
 r_int
 id|isd200_read_regs
 c_func
@@ -1444,6 +1446,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * Invoke the transport and basic error-handling/recovery methods&n; *&n; * This is used by the protocol layers to actually send the message to&n; * the device and receive the response.&n; */
 DECL|function|isd200_invoke_transport
+r_static
 r_void
 id|isd200_invoke_transport
 c_func
@@ -1964,6 +1967,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/**************************************************************************&n; * isd200_write_config&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Write the ISD200 Configuration data&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_write_config
+r_static
 r_int
 id|isd200_write_config
 c_func
@@ -2091,6 +2095,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * isd200_read_config&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Reads the ISD200 Configuration data&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_read_config
+r_static
 r_int
 id|isd200_read_config
 c_func
@@ -2213,6 +2218,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * isd200_atapi_soft_reset&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Perform an Atapi Soft Reset on the device&n; *&n; * RETURNS:&n; *    NT status code&n; */
 DECL|function|isd200_atapi_soft_reset
+r_static
 r_int
 id|isd200_atapi_soft_reset
 c_func
@@ -2284,6 +2290,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * isd200_srst&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Perform an SRST on the device&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_srst
+r_static
 r_int
 id|isd200_srst
 c_func
@@ -2782,6 +2789,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * isd200_manual_enum&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Determines if the drive attached is an ATA or ATAPI and if it is a&n; * master or slave.&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_manual_enum
+r_static
 r_int
 id|isd200_manual_enum
 c_func
@@ -2971,6 +2979,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * isd200_get_inquiry_data&n; *&n; * Get inquiry data&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_get_inquiry_data
+r_static
 r_int
 id|isd200_get_inquiry_data
 c_func
@@ -3598,6 +3607,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * isd200_scsi_to_ata&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Translate SCSI commands to ATA commands.&n; *&n; * RETURNS:&n; *    TRUE if the command needs to be sent to the transport layer&n; *    FALSE otherwise&n; */
 DECL|function|isd200_scsi_to_ata
+r_static
 r_int
 id|isd200_scsi_to_ata
 c_func
@@ -4667,6 +4677,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * isd200_free_info&n; *&n; * Frees the driver structure.&n; */
 DECL|function|isd200_free_info_ptrs
+r_static
 r_void
 id|isd200_free_info_ptrs
 c_func
@@ -4710,6 +4721,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * isd200_init_info&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Allocates (if necessary) and initializes the driver structure.&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_init_info
+r_static
 r_int
 id|isd200_init_info
 c_func

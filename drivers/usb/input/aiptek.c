@@ -495,6 +495,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|variable|aiptek_features
+r_static
 r_struct
 id|aiptek_features
 id|aiptek_features
@@ -534,6 +535,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|variable|aiptek_ids
+r_static
 r_struct
 id|usb_device_id
 id|aiptek_ids
