@@ -223,13 +223,11 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|sema_init
+id|init_rwsem
 c_func
 (paren
 op_amp
 id|s-&gt;s_dquot.dqoff_sem
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|s-&gt;s_maxbytes

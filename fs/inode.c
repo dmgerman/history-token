@@ -3917,13 +3917,6 @@ id|sb-&gt;dq_op
 r_return
 suffix:semicolon
 multiline_comment|/* nothing to do */
-multiline_comment|/* We have to be protected against other CPUs */
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* This lock is for quota code */
 id|spin_lock
 c_func
 (paren
@@ -3932,6 +3925,7 @@ id|inode_lock
 )paren
 suffix:semicolon
 multiline_comment|/* This lock is for inodes code */
+multiline_comment|/* We don&squot;t have to lock against quota code - test IS_QUOTAINIT is just for speedup... */
 id|list_for_each
 c_func
 (paren
@@ -4117,11 +4111,6 @@ c_func
 (paren
 op_amp
 id|inode_lock
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 id|put_dquot_list
