@@ -591,17 +591,12 @@ id|now
 suffix:semicolon
 id|delay
 op_assign
-id|PSCHED_TDIFF_SAFE
+id|PSCHED_TDIFF
 c_func
 (paren
 id|now
 comma
 id|q-&gt;t_c
-comma
-l_int|0
-comma
-r_goto
-id|do_reset
 )paren
 suffix:semicolon
 r_if
@@ -612,8 +607,6 @@ op_rshift
 id|q-&gt;delta_log
 )paren
 (brace
-id|do_reset
-suffix:colon
 multiline_comment|/* Delta is too large.&n;&t;&t;   It is possible if MTU/BW &gt; 1&lt;&lt;q-&gt;delta_log&n;&t;&t;   (i.e. configuration error) or because of hardware&n;&t;&t;   fault. We have no choice...&n;&t;&t; */
 id|qdisc_reset
 c_func
