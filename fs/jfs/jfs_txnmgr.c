@@ -1299,14 +1299,15 @@ op_eq
 l_int|0
 )paren
 op_logical_and
+op_logical_neg
 (paren
-id|current
-op_ne
-id|jfsCommitTask
+id|flag
+op_amp
+id|COMMIT_FORCE
 )paren
 )paren
 (brace
-multiline_comment|/* Save one tblk for jfsCommit thread */
+multiline_comment|/* Don&squot;t let a non-forced transaction take the last tblk */
 id|jfs_info
 c_func
 (paren
@@ -9649,8 +9650,6 @@ c_func
 id|ip-&gt;i_sb
 comma
 id|COMMIT_INODE
-op_or
-id|COMMIT_FORCE
 )paren
 suffix:semicolon
 id|rc
