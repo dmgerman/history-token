@@ -5729,7 +5729,7 @@ id|dev
 comma
 id|fmt-&gt;iface
 comma
-id|fmt-&gt;altset_idx
+id|fmt-&gt;altsetting
 )paren
 OL
 l_int|0
@@ -12125,7 +12125,7 @@ id|chip-&gt;dev
 comma
 id|iface_no
 comma
-id|i
+id|altno
 )paren
 suffix:semicolon
 id|init_usb_pitch
