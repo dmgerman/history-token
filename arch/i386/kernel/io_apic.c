@@ -989,7 +989,7 @@ macro_line|# include &lt;asm/processor.h&gt;&t;/* kernel_thread() */
 macro_line|# include &lt;linux/kernel_stat.h&gt;&t;/* kstat */
 macro_line|# include &lt;linux/slab.h&gt;&t;&t;/* kmalloc() */
 macro_line|# include &lt;linux/timer.h&gt;&t;/* time_after() */
-macro_line|# if CONFIG_BALANCED_IRQ_DEBUG
+macro_line|# ifdef CONFIG_BALANCED_IRQ_DEBUG
 DECL|macro|TDprintk
 macro_line|#  define TDprintk(x...) do { printk(&quot;&lt;%ld:%s:%d&gt;: &quot;, jiffies, __FILE__, __LINE__); printk(x); } while (0)
 DECL|macro|Dprintk
