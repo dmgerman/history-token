@@ -29042,13 +29042,6 @@ id|hdio_getgeo
 id|HANDLE_IOCTL
 c_func
 (paren
-id|HDIO_GETGEO_BIG
-comma
-id|hdio_getgeo_big
-)paren
-id|HANDLE_IOCTL
-c_func
-(paren
 id|HDIO_GETGEO_BIG_RAW
 comma
 id|hdio_getgeo_big
