@@ -5985,6 +5985,10 @@ id|cfb-&gt;fb.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
+id|cfb-&gt;fb.node
+op_assign
+id|NODEV
+suffix:semicolon
 id|cfb-&gt;fb.disp
 op_assign
 (paren
@@ -7449,7 +7453,8 @@ l_int|1
 comma
 id|err
 op_assign
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 macro_line|#ifdef CONFIG_ARCH_SHARK
 id|err
@@ -7474,7 +7479,6 @@ id|MOD_INC_USE_COUNT
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_PCI
 id|err
 op_assign
 id|pci_module_init
@@ -7494,7 +7498,6 @@ id|ret
 op_assign
 id|err
 suffix:semicolon
-macro_line|#endif
 r_return
 id|ret
 ques
@@ -7514,7 +7517,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PCI
 id|pci_unregister_driver
 c_func
 (paren
@@ -7522,7 +7524,6 @@ op_amp
 id|cyberpro_driver
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#ifdef MODULE
 DECL|variable|cyber2000fb_init
