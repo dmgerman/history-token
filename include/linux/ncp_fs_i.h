@@ -37,10 +37,12 @@ DECL|member|access
 r_int
 id|access
 suffix:semicolon
-DECL|member|server_file_handle
-id|__u32
-id|server_file_handle
+DECL|member|flags
+r_int
+id|flags
 suffix:semicolon
+DECL|macro|NCPI_KLUDGE_SYMLINK
+mdefine_line|#define NCPI_KLUDGE_SYMLINK&t;0x0001
 DECL|member|file_handle
 id|__u8
 id|file_handle
