@@ -908,11 +908,6 @@ l_int|0
 )paren
 comma
 dot
-id|lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-comma
-dot
 id|port
 op_assign
 id|port_num
@@ -940,6 +935,13 @@ c_func
 id|port-&gt;connections
 )paren
 )brace
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|port-&gt;lock
 )paren
 suffix:semicolon
 id|list_add
