@@ -620,7 +620,7 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-r_int
+r_void
 DECL|function|_exit
 id|_exit
 (paren
@@ -628,7 +628,6 @@ r_int
 id|value
 )paren
 (brace
-r_return
 id|sys_exit
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 1999-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 2003 Fenghua Yu &lt;fenghua.yu@intel.com&gt;&n; * &t;- Change pt_regs_off() to make it less dependant on pt_regs structure.&n; */
+multiline_comment|/*&n; * Copyright (C) 1999-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 2003 Fenghua Yu &lt;fenghua.yu@intel.com&gt;&n; * &t;- Change pt_regs_off() to make it less dependant on pt_regs structure.&n; */
 multiline_comment|/*&n; * This file implements call frame unwind support for the Linux&n; * kernel.  Parsing and processing the unwind information is&n; * time-consuming, so this implementation translates the unwind&n; * descriptors into unwind scripts.  These scripts are very simple&n; * (basically a sequence of assignments) and efficient to execute.&n; * They are cached for later re-use.  Each script is specific for a&n; * given instruction pointer address and the set of predicate values&n; * that the script depends on (most unwind descriptors are&n; * unconditional and scripts often do not depend on predicates at&n; * all).  This code is based on the unwind conventions described in&n; * the &quot;IA-64 Software Conventions and Runtime Architecture&quot; manual.&n; *&n; * SMP conventions:&n; *&t;o updates to the global unwind data (in structure &quot;unw&quot;) are serialized&n; *&t;  by the unw.lock spinlock&n; *&t;o each unwind script has its own read-write lock; a thread must acquire&n; *&t;  a read lock before executing a script and must acquire a write lock&n; *&t;  before modifying a script&n; *&t;o if both the unw.lock spinlock and a script&squot;s read-write lock must be&n; *&t;  acquired, then the read-write lock must be acquired first.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
@@ -1197,17 +1197,33 @@ r_int
 DECL|function|read_only
 id|read_only
 (paren
-r_int
-r_int
+r_void
 op_star
 id|addr
 )paren
 (brace
 r_return
 (paren
+r_int
+r_int
+)paren
+(paren
+(paren
+r_char
+op_star
+)paren
 id|addr
-op_eq
+op_minus
+(paren
+r_char
+op_star
+)paren
 op_amp
+id|unw.r0
+)paren
+OL
+r_sizeof
+(paren
 id|unw.r0
 )paren
 suffix:semicolon
