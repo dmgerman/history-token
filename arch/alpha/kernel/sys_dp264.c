@@ -1897,9 +1897,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hose-&gt;bus
-op_eq
-id|dev-&gt;bus
+op_logical_neg
+id|dev-&gt;bus-&gt;parent
 )paren
 (brace
 id|slot
