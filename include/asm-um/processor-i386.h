@@ -34,6 +34,8 @@ macro_line|#include &quot;asm/arch/user.h&quot;
 multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;). Stolen&n; * from asm-i386/processor.h&n; */
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() &bslash;&n;&t;({ void *pc; __asm__(&quot;movl $1f,%0&bslash;n1:&quot;:&quot;=g&quot; (pc)); pc; })
+DECL|macro|ARCH_IS_STACKGROW
+mdefine_line|#define ARCH_IS_STACKGROW(address) &bslash;&n;       (address + 32 &gt;= UPT_SP(&amp;current-&gt;thread.regs.regs))
 macro_line|#include &quot;asm/processor-generic.h&quot;
 macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */

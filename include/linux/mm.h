@@ -58,7 +58,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#ifndef MM_VM_SIZE
 DECL|macro|MM_VM_SIZE
-mdefine_line|#define MM_VM_SIZE(mm)&t;TASK_SIZE
+mdefine_line|#define MM_VM_SIZE(mm)&t;((TASK_SIZE + PGDIR_SIZE - 1) &amp; PGDIR_MASK)
 macro_line|#endif
 DECL|macro|nth_page
 mdefine_line|#define nth_page(page,n) pfn_to_page(page_to_pfn((page)) + (n))
@@ -2703,6 +2703,7 @@ id|loff_t
 )paren
 suffix:semicolon
 multiline_comment|/* generic vm_area_ops exported for stackable file systems */
+r_extern
 r_struct
 id|page
 op_star
@@ -2718,6 +2719,29 @@ r_int
 comma
 r_int
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|filemap_populate
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+id|pgprot_t
+comma
+r_int
+r_int
+comma
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/* mm/page-writeback.c */

@@ -1555,7 +1555,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%u&bslash;n&quot;
+l_string|&quot;%d&bslash;n&quot;
 comma
 id|get_hard_smp_processor_id
 c_func

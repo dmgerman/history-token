@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
-macro_line|#include &lt;linux/prio_tree.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 r_struct
@@ -306,6 +305,7 @@ mdefine_line|#define FIGETBSZ   _IO(0x00,2)&t;/* get the block size used for bma
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/radix-tree.h&gt;
+macro_line|#include &lt;linux/prio_tree.h&gt;
 macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;

@@ -61,7 +61,7 @@ op_star
 id|ms
 suffix:semicolon
 DECL|member|region_size
-id|sector_t
+r_uint32
 id|region_size
 suffix:semicolon
 DECL|member|region_shift
@@ -325,7 +325,7 @@ id|dirty_log
 op_star
 id|log
 comma
-id|sector_t
+r_uint32
 id|region_size
 comma
 id|region_t
@@ -3534,7 +3534,7 @@ r_int
 r_int
 id|nr_mirrors
 comma
-id|sector_t
+r_uint32
 id|region_size
 comma
 r_struct
@@ -3656,7 +3656,7 @@ id|nr_mirrors
 suffix:semicolon
 id|ms-&gt;nr_regions
 op_assign
-id|dm_div_up
+id|dm_sector_div_up
 c_func
 (paren
 id|ti-&gt;len
@@ -3771,7 +3771,7 @@ id|dm_target
 op_star
 id|ti
 comma
-id|sector_t
+r_uint32
 id|size
 )paren
 (brace

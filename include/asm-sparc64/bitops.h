@@ -2,11 +2,12 @@ multiline_comment|/* $Id: bitops.h,v 1.39 2002/01/30 01:40:00 davem Exp $&n; * b
 macro_line|#ifndef _SPARC64_BITOPS_H
 DECL|macro|_SPARC64_BITOPS_H
 mdefine_line|#define _SPARC64_BITOPS_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 r_extern
 r_int
-id|___test_and_set_bit
+id|test_and_set_bit
 c_func
 (paren
 r_int
@@ -22,7 +23,7 @@ id|addr
 suffix:semicolon
 r_extern
 r_int
-id|___test_and_clear_bit
+id|test_and_clear_bit
 c_func
 (paren
 r_int
@@ -38,7 +39,7 @@ id|addr
 suffix:semicolon
 r_extern
 r_int
-id|___test_and_change_bit
+id|test_and_change_bit
 c_func
 (paren
 r_int
@@ -52,18 +53,54 @@ op_star
 id|addr
 )paren
 suffix:semicolon
-DECL|macro|test_and_set_bit
-mdefine_line|#define test_and_set_bit(nr,addr)&t;({___test_and_set_bit(nr,addr)!=0;})
-DECL|macro|test_and_clear_bit
-mdefine_line|#define test_and_clear_bit(nr,addr)&t;({___test_and_clear_bit(nr,addr)!=0;})
-DECL|macro|test_and_change_bit
-mdefine_line|#define test_and_change_bit(nr,addr)&t;({___test_and_change_bit(nr,addr)!=0;})
-DECL|macro|set_bit
-mdefine_line|#define set_bit(nr,addr)&t;&t;((void)___test_and_set_bit(nr,addr))
-DECL|macro|clear_bit
-mdefine_line|#define clear_bit(nr,addr)&t;&t;((void)___test_and_clear_bit(nr,addr))
-DECL|macro|change_bit
-mdefine_line|#define change_bit(nr,addr)&t;&t;((void)___test_and_change_bit(nr,addr))
+r_extern
+r_void
+id|set_bit
+c_func
+(paren
+r_int
+r_int
+id|nr
+comma
+r_volatile
+r_int
+r_int
+op_star
+id|addr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|clear_bit
+c_func
+(paren
+r_int
+r_int
+id|nr
+comma
+r_volatile
+r_int
+r_int
+op_star
+id|addr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|change_bit
+c_func
+(paren
+r_int
+r_int
+id|nr
+comma
+r_volatile
+r_int
+r_int
+op_star
+id|addr
+)paren
+suffix:semicolon
 multiline_comment|/* &quot;non-atomic&quot; versions... */
 DECL|function|__set_bit
 r_static
@@ -415,10 +452,17 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SMP
 DECL|macro|smp_mb__before_clear_bit
-mdefine_line|#define smp_mb__before_clear_bit()&t;do { } while(0)
+mdefine_line|#define smp_mb__before_clear_bit()&t;membar(&quot;#StoreLoad | #LoadLoad&quot;)
 DECL|macro|smp_mb__after_clear_bit
-mdefine_line|#define smp_mb__after_clear_bit()&t;do { } while(0)
+mdefine_line|#define smp_mb__after_clear_bit()&t;membar(&quot;#StoreLoad | #StoreStore&quot;)
+macro_line|#else
+DECL|macro|smp_mb__before_clear_bit
+mdefine_line|#define smp_mb__before_clear_bit()&t;barrier()
+DECL|macro|smp_mb__after_clear_bit
+mdefine_line|#define smp_mb__after_clear_bit()&t;barrier()
+macro_line|#endif
 DECL|function|test_bit
 r_static
 id|__inline__
@@ -896,9 +940,9 @@ suffix:semicolon
 DECL|macro|find_first_zero_bit
 mdefine_line|#define find_first_zero_bit(addr, size) &bslash;&n;        find_next_zero_bit((addr), (size), 0)
 DECL|macro|test_and_set_le_bit
-mdefine_line|#define test_and_set_le_bit(nr,addr)&t;&bslash;&n;&t;({ ___test_and_set_bit((nr) ^ 0x38, (addr)) != 0; })
+mdefine_line|#define test_and_set_le_bit(nr,addr)&t;&bslash;&n;&t;test_and_set_bit((nr) ^ 0x38, (addr))
 DECL|macro|test_and_clear_le_bit
-mdefine_line|#define test_and_clear_le_bit(nr,addr)&t;&bslash;&n;&t;({ ___test_and_clear_bit((nr) ^ 0x38, (addr)) != 0; })
+mdefine_line|#define test_and_clear_le_bit(nr,addr)&t;&bslash;&n;&t;test_and_clear_bit((nr) ^ 0x38, (addr))
 DECL|function|test_le_bit
 r_static
 id|__inline__
@@ -982,12 +1026,20 @@ r_int
 )paren
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+DECL|macro|__set_le_bit
+mdefine_line|#define __set_le_bit(nr, addr) &bslash;&n;&t;__set_bit((nr) ^ 0x38, (addr))
+DECL|macro|__clear_le_bit
+mdefine_line|#define __clear_le_bit(nr, addr) &bslash;&n;&t;__clear_bit((nr) ^ 0x38, (addr))
+DECL|macro|__test_and_clear_le_bit
+mdefine_line|#define __test_and_clear_le_bit(nr, addr) &bslash;&n;&t;__test_and_clear_bit((nr) ^ 0x38, (addr))
+DECL|macro|__test_and_set_le_bit
+mdefine_line|#define __test_and_set_le_bit(nr, addr) &bslash;&n;&t;__test_and_set_bit((nr) ^ 0x38, (addr))
 DECL|macro|ext2_set_bit
-mdefine_line|#define ext2_set_bit(nr,addr)&t;&bslash;&n;&t;test_and_set_le_bit((nr),(unsigned long *)(addr))
+mdefine_line|#define ext2_set_bit(nr,addr)&t;&bslash;&n;&t;__test_and_set_le_bit((nr),(unsigned long *)(addr))
 DECL|macro|ext2_set_bit_atomic
 mdefine_line|#define ext2_set_bit_atomic(lock,nr,addr) &bslash;&n;&t;test_and_set_le_bit((nr),(unsigned long *)(addr))
 DECL|macro|ext2_clear_bit
-mdefine_line|#define ext2_clear_bit(nr,addr)&t;&bslash;&n;&t;test_and_clear_le_bit((nr),(unsigned long *)(addr))
+mdefine_line|#define ext2_clear_bit(nr,addr)&t;&bslash;&n;&t;__test_and_clear_le_bit((nr),(unsigned long *)(addr))
 DECL|macro|ext2_clear_bit_atomic
 mdefine_line|#define ext2_clear_bit_atomic(lock,nr,addr) &bslash;&n;&t;test_and_clear_le_bit((nr),(unsigned long *)(addr))
 DECL|macro|ext2_test_bit

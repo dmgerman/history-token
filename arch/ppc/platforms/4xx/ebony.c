@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/4xx/ebony.c&n; *&n; * Ebony board specific routines&n; *&n; * Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; * Copyright 2002-2004 MontaVista Software Inc.&n; *&n; * Eugene Surovegin &lt;eugene.surovegin@zultys.com&gt; or &lt;ebs@ebshome.net&gt;&n; * Copyright (c) 2003, 2004 Zultys Technologies&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/4xx/ebony.c&n; *&n; * Ebony board specific routines&n; *&n; * Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; * Copyright 2002-2005 MontaVista Software Inc.&n; *&n; * Eugene Surovegin &lt;eugene.surovegin@zultys.com&gt; or &lt;ebs@ebshome.net&gt;&n; * Copyright (c) 2003, 2004 Zultys Technologies&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -360,7 +360,7 @@ c_func
 (paren
 id|PCIX0_REG_BASE
 comma
-id|PCIX0_REG_SIZE
+id|PCIX_REG_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/* Disable all windows */

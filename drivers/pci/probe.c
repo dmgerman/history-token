@@ -3849,7 +3849,7 @@ multiline_comment|/* If we already got to this bus through a different bridge, i
 id|DBG
 c_func
 (paren
-l_string|&quot;PCI: Bus %04:%02x already known&bslash;n&quot;
+l_string|&quot;PCI: Bus %04x:%02x already known&bslash;n&quot;
 comma
 id|pci_domain_nr
 c_func

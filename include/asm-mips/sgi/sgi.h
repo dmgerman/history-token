@@ -74,9 +74,11 @@ multiline_comment|/* R10k UP, Indigo2 */
 DECL|enumerator|ip30
 id|ip30
 comma
+multiline_comment|/* Octane */
 DECL|enumerator|ip32
 id|ip32
 comma
+multiline_comment|/* O2 */
 )brace
 suffix:semicolon
 r_extern

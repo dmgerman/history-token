@@ -1,10 +1,10 @@
-multiline_comment|/*&n; * 2004 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * 2004-2005 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;asm/ppcboot.h&gt;
-macro_line|#include &lt;platforms/4xx/ocotea.h&gt;
+macro_line|#include &lt;asm/ibm4xx.h&gt;
 r_extern
 r_int
 r_int
@@ -891,7 +891,7 @@ c_func
 r_char
 op_star
 )paren
-id|OCOTEA_PIBS_MAC_BASE
+id|PIBS_MAC_BASE
 comma
 l_int|0
 comma
@@ -915,6 +915,7 @@ comma
 l_int|6
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_440GX
 id|mac64
 op_assign
 id|simple_strtoull
@@ -925,9 +926,9 @@ r_char
 op_star
 )paren
 (paren
-id|OCOTEA_PIBS_MAC_BASE
+id|PIBS_MAC_BASE
 op_plus
-id|OCOTEA_PIBS_MAC_OFFSET
+id|PIBS_MAC_OFFSET
 )paren
 comma
 l_int|0
@@ -962,9 +963,9 @@ r_char
 op_star
 )paren
 (paren
-id|OCOTEA_PIBS_MAC_BASE
+id|PIBS_MAC_BASE
 op_plus
-id|OCOTEA_PIBS_MAC_OFFSET
+id|PIBS_MAC_OFFSET
 op_star
 l_int|2
 )paren
@@ -1001,9 +1002,9 @@ r_char
 op_star
 )paren
 (paren
-id|OCOTEA_PIBS_MAC_BASE
+id|PIBS_MAC_BASE
 op_plus
-id|OCOTEA_PIBS_MAC_OFFSET
+id|PIBS_MAC_OFFSET
 op_star
 l_int|3
 )paren
@@ -1030,6 +1031,7 @@ comma
 l_int|6
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 r_void

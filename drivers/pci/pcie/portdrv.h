@@ -32,11 +32,6 @@ id|bus_type
 id|pcie_port_bus_type
 suffix:semicolon
 r_extern
-r_struct
-id|device_driver
-id|pcieport_generic_driver
-suffix:semicolon
-r_extern
 r_int
 id|pcie_port_device_probe
 c_func
@@ -65,7 +60,7 @@ id|pcie_port_device_suspend
 c_func
 (paren
 r_struct
-id|pcie_device
+id|pci_dev
 op_star
 id|dev
 comma
@@ -79,7 +74,7 @@ id|pcie_port_device_resume
 c_func
 (paren
 r_struct
-id|pcie_device
+id|pci_dev
 op_star
 id|dev
 )paren
@@ -91,7 +86,7 @@ id|pcie_port_device_remove
 c_func
 (paren
 r_struct
-id|pcie_device
+id|pci_dev
 op_star
 id|dev
 )paren

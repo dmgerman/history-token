@@ -450,7 +450,7 @@ r_int
 id|touched
 suffix:semicolon
 DECL|member|region_size
-id|sector_t
+r_uint32
 id|region_size
 suffix:semicolon
 DECL|member|region_count
@@ -1133,7 +1133,7 @@ id|log_c
 op_star
 id|lc
 suffix:semicolon
-id|sector_t
+r_uint32
 id|region_size
 suffix:semicolon
 r_int
@@ -1239,7 +1239,7 @@ id|argv
 l_int|0
 )braket
 comma
-id|SECTOR_FORMAT
+l_string|&quot;%u&quot;
 comma
 op_amp
 id|region_size
@@ -1261,7 +1261,7 @@ suffix:semicolon
 )brace
 id|region_count
 op_assign
-id|dm_div_up
+id|dm_sector_div_up
 c_func
 (paren
 id|ti-&gt;len
@@ -2127,7 +2127,7 @@ suffix:semicolon
 )brace
 DECL|function|core_get_region_size
 r_static
-id|sector_t
+r_uint32
 id|core_get_region_size
 c_func
 (paren
@@ -2630,9 +2630,7 @@ suffix:colon
 id|DMEMIT
 c_func
 (paren
-l_string|&quot;%s %u &quot;
-id|SECTOR_FORMAT
-l_string|&quot; &quot;
+l_string|&quot;%s %u %u &quot;
 comma
 id|log-&gt;type-&gt;name
 comma
@@ -2721,9 +2719,7 @@ suffix:semicolon
 id|DMEMIT
 c_func
 (paren
-l_string|&quot;%s %u %s &quot;
-id|SECTOR_FORMAT
-l_string|&quot; &quot;
+l_string|&quot;%s %u %s %u &quot;
 comma
 id|log-&gt;type-&gt;name
 comma

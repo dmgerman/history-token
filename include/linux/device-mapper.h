@@ -401,6 +401,7 @@ id|sector_t
 id|len
 suffix:semicolon
 multiline_comment|/* FIXME: turn this into a mask, and merge with io_restrictions */
+multiline_comment|/* Always a power of 2 */
 DECL|member|split_io
 id|sector_t
 id|split_io

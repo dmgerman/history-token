@@ -5203,7 +5203,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|filemap_populate
-r_static
 r_int
 id|filemap_populate
 c_func
@@ -5508,6 +5507,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|filemap_populate
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|filemap_populate
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This is for filesystems which do not implement -&gt;writepage.&n; */
 DECL|function|generic_file_readonly_mmap
 r_int

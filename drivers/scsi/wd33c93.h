@@ -2,6 +2,7 @@ multiline_comment|/*&n; *    wd33c93.h -  Linux device driver definitions for th
 macro_line|#ifndef WD33C93_H
 DECL|macro|WD33C93_H
 mdefine_line|#define WD33C93_H
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|PROC_INTERFACE
 mdefine_line|#define PROC_INTERFACE     /* add code for /proc/scsi/wd33c93/xxx interface */
 macro_line|#ifdef  PROC_INTERFACE

@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &quot;../../../drivers/s390/net/smsgiucv.h&quot;
 DECL|macro|CMM_NR_PAGES
 mdefine_line|#define CMM_NR_PAGES ((PAGE_SIZE / sizeof(unsigned long)) - 2)

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-ppc/ibm44x.h&n; *&n; * PPC44x definitions&n; *&n; * Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * Copyright 2002-2003 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * include/asm-ppc/ibm44x.h&n; *&n; * PPC44x definitions&n; *&n; * Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; *&n; * Copyright 2002-2005 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_IBM44x_H__
 DECL|macro|__ASM_IBM44x_H__
@@ -22,7 +22,26 @@ mdefine_line|#define PPC44x_PIN_SIZE&t;&t;(1 &lt;&lt; PPC44x_PIN_SHIFT)
 multiline_comment|/* Lowest TLB slot consumed by the default pinned TLBs */
 DECL|macro|PPC44x_LOW_SLOT
 mdefine_line|#define PPC44x_LOW_SLOT&t;&t;63
+multiline_comment|/* LS 32-bits of UART0 physical address location for early serial text debug */
+macro_line|#ifdef CONFIG_440SP
+DECL|macro|UART0_PHYS_IO_BASE
+mdefine_line|#define UART0_PHYS_IO_BASE&t;0xf0000200
+macro_line|#else
+DECL|macro|UART0_PHYS_IO_BASE
+mdefine_line|#define UART0_PHYS_IO_BASE&t;0x40000200
+macro_line|#endif
+multiline_comment|/*&n; * XXX This 36-bit trap stuff will move somewhere in syslib/&n; * when we rework/abstract the PPC44x PCI-X handling -mdp&n; */
 multiline_comment|/*&n; * Standard 4GB &quot;page&quot; definitions&n; */
+macro_line|#ifdef CONFIG_440SP
+DECL|macro|PPC44x_IO_PAGE
+mdefine_line|#define&t;PPC44x_IO_PAGE&t;&t;0x0000000100000000ULL
+DECL|macro|PPC44x_PCICFG_PAGE
+mdefine_line|#define&t;PPC44x_PCICFG_PAGE&t;0x0000000900000000ULL
+DECL|macro|PPC44x_PCIIO_PAGE
+mdefine_line|#define&t;PPC44x_PCIIO_PAGE&t;PPC44x_PCICFG_PAGE
+DECL|macro|PPC44x_PCIMEM_PAGE
+mdefine_line|#define&t;PPC44x_PCIMEM_PAGE&t;0x0000000a00000000ULL
+macro_line|#else
 DECL|macro|PPC44x_IO_PAGE
 mdefine_line|#define&t;PPC44x_IO_PAGE&t;&t;0x0000000100000000ULL
 DECL|macro|PPC44x_PCICFG_PAGE
@@ -31,24 +50,47 @@ DECL|macro|PPC44x_PCIIO_PAGE
 mdefine_line|#define&t;PPC44x_PCIIO_PAGE&t;PPC44x_PCICFG_PAGE
 DECL|macro|PPC44x_PCIMEM_PAGE
 mdefine_line|#define&t;PPC44x_PCIMEM_PAGE&t;0x0000000300000000ULL
+macro_line|#endif
 multiline_comment|/*&n; * 36-bit trap ranges&n; */
+macro_line|#ifdef CONFIG_440SP
 DECL|macro|PPC44x_IO_LO
-mdefine_line|#define PPC44x_IO_LO&t;&t;0x40000000
+mdefine_line|#define PPC44x_IO_LO&t;&t;0xf0000000UL
 DECL|macro|PPC44x_IO_HI
-mdefine_line|#define PPC44x_IO_HI&t;&t;0x40001000
-DECL|macro|PPC44x_PCICFG_LO
-mdefine_line|#define PPC44x_PCICFG_LO&t;0x0ec00000
-DECL|macro|PPC44x_PCICFG_HI
-mdefine_line|#define PPC44x_PCICFG_HI&t;0x0ec7ffff
+mdefine_line|#define PPC44x_IO_HI&t;&t;0xf0000fffUL
+DECL|macro|PPC44x_PCI0CFG_LO
+mdefine_line|#define PPC44x_PCI0CFG_LO&t;0x0ec00000UL
+DECL|macro|PPC44x_PCI0CFG_HI
+mdefine_line|#define PPC44x_PCI0CFG_HI&t;0x0ec00007UL
+DECL|macro|PPC44x_PCI1CFG_LO
+mdefine_line|#define PPC44x_PCI1CFG_LO&t;0x1ec00000UL
+DECL|macro|PPC44x_PCI1CFG_HI
+mdefine_line|#define PPC44x_PCI1CFG_HI&t;0x1ec00007UL
+DECL|macro|PPC44x_PCI2CFG_LO
+mdefine_line|#define PPC44x_PCI2CFG_LO&t;0x2ec00000UL
+DECL|macro|PPC44x_PCI2CFG_HI
+mdefine_line|#define PPC44x_PCI2CFG_HI&t;0x2ec00007UL
 DECL|macro|PPC44x_PCIMEM_LO
-mdefine_line|#define PPC44x_PCIMEM_LO&t;0x80002000
+mdefine_line|#define PPC44x_PCIMEM_LO&t;0x80000000UL
 DECL|macro|PPC44x_PCIMEM_HI
-mdefine_line|#define PPC44x_PCIMEM_HI&t;0xffffffff
+mdefine_line|#define PPC44x_PCIMEM_HI&t;0xdfffffffUL
+macro_line|#else
+DECL|macro|PPC44x_IO_LO
+mdefine_line|#define PPC44x_IO_LO&t;&t;0x40000000UL
+DECL|macro|PPC44x_IO_HI
+mdefine_line|#define PPC44x_IO_HI&t;&t;0x40000fffUL
+DECL|macro|PPC44x_PCI0CFG_LO
+mdefine_line|#define PPC44x_PCI0CFG_LO&t;0x0ec00000UL
+DECL|macro|PPC44x_PCI0CFG_HI
+mdefine_line|#define PPC44x_PCI0CFG_HI&t;0x0ec00007UL
+DECL|macro|PPC44x_PCIMEM_LO
+mdefine_line|#define PPC44x_PCIMEM_LO&t;0x80002000UL
+DECL|macro|PPC44x_PCIMEM_HI
+mdefine_line|#define PPC44x_PCIMEM_HI&t;0xffffffffUL
+macro_line|#endif
 multiline_comment|/*&n; * The &quot;residual&quot; board information structure the boot loader passes&n; * into the kernel.&n; */
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * DCRN definitions&n; */
-macro_line|#ifdef CONFIG_440GX
-multiline_comment|/* CPRs */
+multiline_comment|/* CPRs (440GX and 440SP) */
 DECL|macro|DCRN_CPR_CONFIG_ADDR
 mdefine_line|#define DCRN_CPR_CONFIG_ADDR&t;0xc
 DECL|macro|DCRN_CPR_CONFIG_DATA
@@ -74,7 +116,7 @@ DECL|macro|CPR_READ
 mdefine_line|#define CPR_READ(offset) ({&bslash;&n;&t;mtdcr(DCRN_CPR_CONFIG_ADDR, offset); &bslash;&n;&t;mfdcr(DCRN_CPR_CONFIG_DATA);})
 DECL|macro|CPR_WRITE
 mdefine_line|#define CPR_WRITE(offset, data) ({&bslash;&n;&t;mtdcr(DCRN_CPR_CONFIG_ADDR, offset); &bslash;&n;&t;mtdcr(DCRN_CPR_CONFIG_DATA, data);})
-multiline_comment|/* SDRs */
+multiline_comment|/* SDRs (440GX and 440SP) */
 DECL|macro|DCRN_SDR_CONFIG_ADDR
 mdefine_line|#define DCRN_SDR_CONFIG_ADDR &t;0xe
 DECL|macro|DCRN_SDR_CONFIG_DATA
@@ -148,8 +190,7 @@ DECL|macro|SDR_READ
 mdefine_line|#define SDR_READ(offset) ({&bslash;&n;&t;mtdcr(DCRN_SDR_CONFIG_ADDR, offset); &bslash;&n;&t;mfdcr(DCRN_SDR_CONFIG_DATA);})
 DECL|macro|SDR_WRITE
 mdefine_line|#define SDR_WRITE(offset, data) ({&bslash;&n;&t;mtdcr(DCRN_SDR_CONFIG_ADDR, offset); &bslash;&n;&t;mtdcr(DCRN_SDR_CONFIG_DATA,data);})
-macro_line|#endif /* CONFIG_440GX */
-multiline_comment|/* Base DCRNs */
+multiline_comment|/* DMA (excluding 440SP) */
 DECL|macro|DCRN_DMA0_BASE
 mdefine_line|#define DCRN_DMA0_BASE&t;&t;0x100
 DECL|macro|DCRN_DMA1_BASE
@@ -205,7 +246,7 @@ DECL|macro|UICB_UIC1NC
 mdefine_line|#define UICB_UIC1NC&t;&t;0x10000000
 DECL|macro|UICB_UIC2NC
 mdefine_line|#define UICB_UIC2NC&t;&t;0x04000000
-multiline_comment|/* 440GP MAL DCRs */
+multiline_comment|/* 440 MAL DCRs */
 DECL|macro|DCRN_MALCR
 mdefine_line|#define DCRN_MALCR(base)&t;&t;(base + 0x0)&t;/* Configuration */
 DECL|macro|DCRN_MALESR
@@ -480,7 +521,7 @@ DECL|macro|DCRN_SLP
 mdefine_line|#define DCRN_SLP&t;(DCRN_DMASR_BASE + 0x5)&t;/* DMA Sleep Register */
 DECL|macro|DCRN_POL
 mdefine_line|#define DCRN_POL&t;(DCRN_DMASR_BASE + 0x6)&t;/* DMA Polarity Register */
-multiline_comment|/* 440GP DRAM controller DCRs */
+multiline_comment|/* 440GP/440GX SDRAM controller DCRs */
 DECL|macro|DCRN_SDRAM0_CFGADDR
 mdefine_line|#define DCRN_SDRAM0_CFGADDR&t;&t;0x010
 DECL|macro|DCRN_SDRAM0_CFGDATA
@@ -527,16 +568,51 @@ DECL|macro|PPC44x_MEM_SIZE_256M
 mdefine_line|#define PPC44x_MEM_SIZE_256M&t;&t;0x10000000
 DECL|macro|PPC44x_MEM_SIZE_512M
 mdefine_line|#define PPC44x_MEM_SIZE_512M&t;&t;0x20000000
-macro_line|#ifdef CONFIG_440GX
-multiline_comment|/* Internal SRAM Controller */
+DECL|macro|PPC44x_MEM_SIZE_1G
+mdefine_line|#define PPC44x_MEM_SIZE_1G&t;&t;0x40000000
+DECL|macro|PPC44x_MEM_SIZE_2G
+mdefine_line|#define PPC44x_MEM_SIZE_2G&t;&t;0x80000000
+multiline_comment|/* 440SP memory controller DCRs */
+DECL|macro|DCRN_MQ0_BS0BAS
+mdefine_line|#define DCRN_MQ0_BS0BAS&t;&t;&t;0x40
+DECL|macro|DCRN_MQ0_BS1BAS
+mdefine_line|#define DCRN_MQ0_BS1BAS&t;&t;&t;0x41
+DECL|macro|MQ0_CONFIG_SIZE_MASK
+mdefine_line|#define MQ0_CONFIG_SIZE_MASK&t;&t;0x0000fff0
+DECL|macro|MQ0_CONFIG_SIZE_8M
+mdefine_line|#define MQ0_CONFIG_SIZE_8M&t;&t;0x0000ffc0
+DECL|macro|MQ0_CONFIG_SIZE_16M
+mdefine_line|#define MQ0_CONFIG_SIZE_16M&t;&t;0x0000ff80
+DECL|macro|MQ0_CONFIG_SIZE_32M
+mdefine_line|#define MQ0_CONFIG_SIZE_32M&t;&t;0x0000ff00
+DECL|macro|MQ0_CONFIG_SIZE_64M
+mdefine_line|#define MQ0_CONFIG_SIZE_64M&t;&t;0x0000fe00
+DECL|macro|MQ0_CONFIG_SIZE_128M
+mdefine_line|#define MQ0_CONFIG_SIZE_128M&t;&t;0x0000fc00
+DECL|macro|MQ0_CONFIG_SIZE_256M
+mdefine_line|#define MQ0_CONFIG_SIZE_256M&t;&t;0x0000f800
+DECL|macro|MQ0_CONFIG_SIZE_512M
+mdefine_line|#define MQ0_CONFIG_SIZE_512M&t;&t;0x0000f000
+DECL|macro|MQ0_CONFIG_SIZE_1G
+mdefine_line|#define MQ0_CONFIG_SIZE_1G&t;&t;0x0000e000
+DECL|macro|MQ0_CONFIG_SIZE_2G
+mdefine_line|#define MQ0_CONFIG_SIZE_2G&t;&t;0x0000c000
+multiline_comment|/* Internal SRAM Controller 440GX/440SP */
+macro_line|#ifdef CONFIG_440SP
+DECL|macro|DCRN_SRAM0_BASE
+mdefine_line|#define DCRN_SRAM0_BASE&t;&t;0x100
+macro_line|#else /* 440GX */
+DECL|macro|DCRN_SRAM0_BASE
+mdefine_line|#define DCRN_SRAM0_BASE&t;&t;0x000
+macro_line|#endif
 DECL|macro|DCRN_SRAM0_SB0CR
-mdefine_line|#define DCRN_SRAM0_SB0CR&t;0x020
+mdefine_line|#define DCRN_SRAM0_SB0CR&t;(DCRN_SRAM0_BASE + 0x020)
 DECL|macro|DCRN_SRAM0_SB1CR
-mdefine_line|#define DCRN_SRAM0_SB1CR&t;0x021
+mdefine_line|#define DCRN_SRAM0_SB1CR&t;(DCRN_SRAM0_BASE + 0x021)
 DECL|macro|DCRN_SRAM0_SB2CR
-mdefine_line|#define DCRN_SRAM0_SB2CR&t;0x022
+mdefine_line|#define DCRN_SRAM0_SB2CR&t;(DCRN_SRAM0_BASE + 0x022)
 DECL|macro|DCRN_SRAM0_SB3CR
-mdefine_line|#define DCRN_SRAM0_SB3CR&t;0x023
+mdefine_line|#define DCRN_SRAM0_SB3CR&t;(DCRN_SRAM0_BASE + 0x023)
 DECL|macro|SRAM_SBCR_BAS0
 mdefine_line|#define  SRAM_SBCR_BAS0&t;&t;0x80000000
 DECL|macro|SRAM_SBCR_BAS1
@@ -554,22 +630,22 @@ mdefine_line|#define  SRAM_SBCR_BU_RO&t;0x00000080
 DECL|macro|SRAM_SBCR_BU_RW
 mdefine_line|#define  SRAM_SBCR_BU_RW&t;0x00000180
 DECL|macro|DCRN_SRAM0_BEAR
-mdefine_line|#define DCRN_SRAM0_BEAR&t;&t;0x024
+mdefine_line|#define DCRN_SRAM0_BEAR&t;&t;(DCRN_SRAM0_BASE + 0x024)
 DECL|macro|DCRN_SRAM0_BESR0
-mdefine_line|#define DCRN_SRAM0_BESR0&t;0x025
+mdefine_line|#define DCRN_SRAM0_BESR0&t;(DCRN_SRAM0_BASE + 0x025)
 DECL|macro|DCRN_SRAM0_BESR1
-mdefine_line|#define DCRN_SRAM0_BESR1&t;0x026
+mdefine_line|#define DCRN_SRAM0_BESR1&t;(DCRN_SRAM0_BASE + 0x026)
 DECL|macro|DCRN_SRAM0_PMEG
-mdefine_line|#define DCRN_SRAM0_PMEG&t;&t;0x027
+mdefine_line|#define DCRN_SRAM0_PMEG&t;&t;(DCRN_SRAM0_BASE + 0x027)
 DECL|macro|DCRN_SRAM0_CID
-mdefine_line|#define DCRN_SRAM0_CID&t;&t;0x028
+mdefine_line|#define DCRN_SRAM0_CID&t;&t;(DCRN_SRAM0_BASE + 0x028)
 DECL|macro|DCRN_SRAM0_REVID
-mdefine_line|#define DCRN_SRAM0_REVID&t;0x029
+mdefine_line|#define DCRN_SRAM0_REVID&t;(DCRN_SRAM0_BASE + 0x029)
 DECL|macro|DCRN_SRAM0_DPC
-mdefine_line|#define DCRN_SRAM0_DPC&t;&t;0x02a
+mdefine_line|#define DCRN_SRAM0_DPC&t;&t;(DCRN_SRAM0_BASE + 0x02a)
 DECL|macro|SRAM_DPC_ENABLE
 mdefine_line|#define  SRAM_DPC_ENABLE&t;0x80000000
-multiline_comment|/* L2 Cache Controller */
+multiline_comment|/* L2 Cache Controller 440GX/440SP */
 DECL|macro|DCRN_L2C0_CFG
 mdefine_line|#define DCRN_L2C0_CFG&t;&t;0x030
 DECL|macro|L2C_CFG_L2M
@@ -668,12 +744,38 @@ DECL|macro|L2C_SNP_SSR_32G
 mdefine_line|#define  L2C_SNP_SSR_32G&t;0x0000f000
 DECL|macro|L2C_SNP_ESR
 mdefine_line|#define  L2C_SNP_ESR&t;&t;0x00000800
-macro_line|#endif /* CONFIG_440GX */
 multiline_comment|/*&n; * PCI-X definitions&n; */
+DECL|macro|PCIX0_CFGA
+mdefine_line|#define PCIX0_CFGA&t;&t;0x0ec00000UL
+DECL|macro|PCIX1_CFGA
+mdefine_line|#define PCIX1_CFGA&t;&t;0x1ec00000UL
+DECL|macro|PCIX2_CFGA
+mdefine_line|#define PCIX2_CFGA&t;&t;0x2ec00000UL
+DECL|macro|PCIX0_CFGD
+mdefine_line|#define PCIX0_CFGD&t;&t;0x0ec00004UL
+DECL|macro|PCIX1_CFGD
+mdefine_line|#define PCIX1_CFGD&t;&t;0x1ec00004UL
+DECL|macro|PCIX2_CFGD
+mdefine_line|#define PCIX2_CFGD&t;&t;0x2ec00004UL
+DECL|macro|PCIX0_IO_BASE
+mdefine_line|#define PCIX0_IO_BASE&t;&t;0x0000000908000000ULL
+DECL|macro|PCIX1_IO_BASE
+mdefine_line|#define PCIX1_IO_BASE&t;&t;0x0000000908000000ULL
+DECL|macro|PCIX2_IO_BASE
+mdefine_line|#define PCIX2_IO_BASE&t;&t;0x0000000908000000ULL
+DECL|macro|PCIX_IO_SIZE
+mdefine_line|#define PCIX_IO_SIZE&t;&t;0x00010000
+macro_line|#ifdef CONFIG_440SP
 DECL|macro|PCIX0_REG_BASE
-mdefine_line|#define PCIX0_REG_BASE&t;&t;0x20ec80000ULL
-DECL|macro|PCIX0_REG_SIZE
-mdefine_line|#define PCIX0_REG_SIZE&t;&t;0x200
+mdefine_line|#define PCIX0_REG_BASE&t;&t;0x000000090ec80000ULL
+macro_line|#else
+DECL|macro|PCIX0_REG_BASE
+mdefine_line|#define PCIX0_REG_BASE&t;&t;0x000000020ec80000ULL
+macro_line|#endif
+DECL|macro|PCIX_REG_OFFSET
+mdefine_line|#define PCIX_REG_OFFSET&t;&t;0x10000000
+DECL|macro|PCIX_REG_SIZE
+mdefine_line|#define PCIX_REG_SIZE&t;&t;0x200
 DECL|macro|PCIX0_VENDID
 mdefine_line|#define PCIX0_VENDID&t;&t;0x000
 DECL|macro|PCIX0_DEVID
@@ -857,8 +959,6 @@ macro_line|#else
 DECL|macro|NR_UICS
 mdefine_line|#define NR_UICS 2
 macro_line|#endif
-DECL|macro|BD_EMAC_ADDR
-mdefine_line|#define BD_EMAC_ADDR(e,i) bi_enetaddr[e][i]
 macro_line|#include &lt;asm/ibm4xx.h&gt;
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __ASM_IBM44x_H__ */

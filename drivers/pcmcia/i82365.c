@@ -698,6 +698,8 @@ DECL|macro|IS_VG_PWR
 mdefine_line|#define IS_VG_PWR&t;0x0800
 DECL|macro|IS_DF_PWR
 mdefine_line|#define IS_DF_PWR&t;0x1000
+DECL|macro|IS_REGISTERED
+mdefine_line|#define IS_REGISTERED&t;0x2000
 DECL|macro|IS_ALIVE
 mdefine_line|#define IS_ALIVE&t;0x8000
 DECL|struct|pcic_t
@@ -8024,38 +8026,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ret
-op_logical_and
-id|i
-op_decrement
 )paren
-(brace
-r_for
-c_loop
-(paren
-suffix:semicolon
-id|i
-op_ge
-l_int|0
-suffix:semicolon
-id|i
-op_decrement
-)paren
-id|pcmcia_unregister_socket
-c_func
-(paren
-op_amp
 id|socket
 (braket
 id|i
 )braket
 dot
-id|socket
-)paren
+id|flags
+op_or_assign
+id|IS_REGISTERED
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 macro_line|#if 0 /* driver model ordering issue */
 id|class_device_create_file
 c_func
@@ -8160,6 +8142,18 @@ id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|socket
+(braket
+id|i
+)braket
+dot
+id|flags
+op_amp
+id|IS_REGISTERED
+)paren
 id|pcmcia_unregister_socket
 c_func
 (paren

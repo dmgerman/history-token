@@ -3993,6 +3993,10 @@ id|hvcs_tty_driver-&gt;name
 op_assign
 id|hvcs_device_node
 suffix:semicolon
+id|hvcs_tty_driver-&gt;devfs_name
+op_assign
+id|hvcs_device_node
+suffix:semicolon
 multiline_comment|/*&n;&t; * We&squot;ll let the system assign us a major number, indicated by leaving&n;&t; * it blank.&n;&t; */
 id|hvcs_tty_driver-&gt;minor_start
 op_assign

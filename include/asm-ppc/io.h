@@ -482,6 +482,12 @@ id|val
 )paren
 suffix:semicolon
 )brace
+macro_line|#if defined (CONFIG_8260_PCI9)
+DECL|macro|readb
+mdefine_line|#define readb(addr) in_8((volatile u8 *)(addr))
+DECL|macro|writeb
+mdefine_line|#define writeb(b,addr) out_8((volatile u8 *)(addr), (b))
+macro_line|#else
 DECL|function|readb
 r_static
 r_inline
@@ -530,6 +536,7 @@ id|b
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#if defined(CONFIG_APUS)
 DECL|function|readw
 r_static
@@ -647,6 +654,16 @@ op_assign
 id|b
 suffix:semicolon
 )brace
+macro_line|#elif defined (CONFIG_8260_PCI9)
+multiline_comment|/* Use macros if PCI9 workaround enabled */
+DECL|macro|readw
+mdefine_line|#define readw(addr) in_le16((volatile u16 *)(addr))
+DECL|macro|readl
+mdefine_line|#define readl(addr) in_le32((volatile u32 *)(addr))
+DECL|macro|writew
+mdefine_line|#define writew(b,addr) out_le16((volatile u16 *)(addr),(b))
+DECL|macro|writel
+mdefine_line|#define writel(b,addr) out_le32((volatile u32 *)(addr),(b))
 macro_line|#else
 DECL|function|readw
 r_static
@@ -1265,6 +1282,14 @@ DECL|macro|outsl_ns
 mdefine_line|#define outsl_ns(port, buf, nl)&t;_outsl_ns((port)+___IO_BASE, (buf), (nl))
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT ~0
+macro_line|#if defined (CONFIG_8260_PCI9)
+DECL|macro|memset_io
+mdefine_line|#define memset_io(a,b,c)       memset((void *)(a),(b),(c))
+DECL|macro|memcpy_fromio
+mdefine_line|#define memcpy_fromio(a,b,c)   memcpy((a),(void *)(b),(c))
+DECL|macro|memcpy_toio
+mdefine_line|#define memcpy_toio(a,b,c)     memcpy((void *)(a),(b),(c))
+macro_line|#else
 DECL|function|memset_io
 r_static
 r_inline
@@ -1595,6 +1620,7 @@ id|address
 suffix:semicolon
 macro_line|#endif
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv, for&n; * addresses in the area where the kernel has the RAM mapped.&n; */
 DECL|function|virt_to_phys
 r_extern

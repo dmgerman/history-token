@@ -6048,6 +6048,17 @@ id|retries
 op_assign
 l_int|4
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|buf
+comma
+l_int|0
+comma
+id|size
+)paren
+suffix:semicolon
+singleline_comment|// Make sure we parse really received data
 r_do
 (brace
 id|result
@@ -6097,7 +6108,7 @@ c_loop
 (paren
 id|result
 OL
-l_int|0
+id|size
 op_logical_and
 id|retries
 )paren
@@ -7953,7 +7964,7 @@ c_func
 (paren
 id|rdesc
 comma
-id|rsize
+id|n
 )paren
 )paren
 )paren
@@ -8388,7 +8399,7 @@ id|dev-&gt;descriptor.iProduct
 comma
 id|buf
 comma
-l_int|128
+l_int|64
 )paren
 OG
 l_int|0

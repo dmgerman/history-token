@@ -190,6 +190,7 @@ l_int|256
 )braket
 suffix:semicolon
 DECL|variable|ls_tab
+r_static
 id|u32
 id|ls_tab
 (braket
@@ -200,6 +201,7 @@ l_int|256
 )braket
 suffix:semicolon
 DECL|variable|im_tab
+r_static
 id|u32
 id|im_tab
 (braket
@@ -230,6 +232,7 @@ l_int|256
 )braket
 suffix:semicolon
 DECL|function|gen_tabs
+r_static
 r_void
 id|gen_tabs
 c_func

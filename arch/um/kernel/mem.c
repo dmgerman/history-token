@@ -309,6 +309,8 @@ r_int
 )paren
 op_amp
 id|__binary_start
+op_amp
+id|PAGE_MASK
 suffix:semicolon
 r_if
 c_cond
@@ -660,6 +662,10 @@ id|pgd_t
 op_star
 id|pgd
 suffix:semicolon
+id|pud_t
+op_star
+id|pud
+suffix:semicolon
 id|pmd_t
 op_star
 id|pmd
@@ -701,12 +707,22 @@ c_func
 id|vaddr
 )paren
 suffix:semicolon
+id|pud
+op_assign
+id|pud_offset
+c_func
+(paren
+id|pgd
+comma
+id|vaddr
+)paren
+suffix:semicolon
 id|pmd
 op_assign
 id|pmd_offset
 c_func
 (paren
-id|pgd
+id|pud
 comma
 id|vaddr
 )paren
@@ -742,7 +758,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if FIXADDR_USER_START != 0
+macro_line|#if CONFIG_ARCH_REUSE_HOST_VSYSCALL_AREA
 r_int
 id|size
 op_assign
@@ -753,6 +769,10 @@ suffix:semicolon
 id|pgd_t
 op_star
 id|pgd
+suffix:semicolon
+id|pud_t
+op_star
+id|pud
 suffix:semicolon
 id|pmd_t
 op_star
@@ -857,12 +877,22 @@ c_func
 id|vaddr
 )paren
 suffix:semicolon
+id|pud
+op_assign
+id|pud_offset
+c_func
+(paren
+id|pgd
+comma
+id|vaddr
+)paren
+suffix:semicolon
 id|pmd
 op_assign
 id|pmd_offset
 c_func
 (paren
-id|pgd
+id|pud
 comma
 id|vaddr
 )paren

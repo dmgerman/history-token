@@ -2610,8 +2610,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 op_logical_neg
+(paren
 id|p_dev-&gt;client.state
 op_amp
 id|CLIENT_UNBOUND

@@ -25,8 +25,9 @@ suffix:semicolon
 DECL|variable|mv64x60_lock
 id|spinlock_t
 id|mv64x60_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/* Only really used by PIC code once init done */
 DECL|variable|mv64x60_bridge_pbase
 r_static
 id|phys_addr_t

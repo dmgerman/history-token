@@ -1832,6 +1832,9 @@ op_logical_neg
 id|sdev
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|prom_getproperty
 c_func
 (paren
@@ -1854,10 +1857,9 @@ r_sizeof
 id|bases
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_le
+l_int|0
+op_logical_or
 op_logical_neg
 id|bases
 (braket

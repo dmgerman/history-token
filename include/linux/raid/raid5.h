@@ -127,6 +127,8 @@ DECL|macro|R5_Wantwrite
 mdefine_line|#define&t;R5_Wantwrite&t;5
 DECL|macro|R5_Syncio
 mdefine_line|#define&t;R5_Syncio&t;6&t;/* this io need to be accounted as resync io */
+DECL|macro|R5_Overlap
+mdefine_line|#define&t;R5_Overlap&t;7&t;/* There is a pending overlapping request on this block */
 multiline_comment|/*&n; * Write method&n; */
 DECL|macro|RECONSTRUCT_WRITE
 mdefine_line|#define RECONSTRUCT_WRITE&t;1
@@ -249,6 +251,10 @@ suffix:semicolon
 DECL|member|wait_for_stripe
 id|wait_queue_head_t
 id|wait_for_stripe
+suffix:semicolon
+DECL|member|wait_for_overlap
+id|wait_queue_head_t
+id|wait_for_overlap
 suffix:semicolon
 DECL|member|inactive_blocked
 r_int

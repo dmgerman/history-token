@@ -360,12 +360,13 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;&t;membar&t;#StoreLoad | #LoadLoad&bslash;n&quot;
 l_string|&quot;1:&t;lduw&t;[%2], %0&bslash;n&quot;
 l_string|&quot;&t;sub&t;%0, 1, %1&bslash;n&quot;
 l_string|&quot;&t;cas&t;[%2], %0, %1&bslash;n&quot;
 l_string|&quot;&t;cmp&t;%0, %1&bslash;n&quot;
 l_string|&quot;&t;bne,pn&t;%%xcc, 1b&bslash;n&quot;
-l_string|&quot;&t; membar&t;#StoreLoad | #StoreStore&quot;
+l_string|&quot;&t; nop&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren

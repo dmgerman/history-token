@@ -2166,6 +2166,17 @@ id|i-&gt;nat
 )paren
 )paren
 suffix:semicolon
+id|i-&gt;status
+op_and_assign
+op_complement
+(paren
+id|IPS_NAT_MASK
+op_or
+id|IPS_NAT_DONE_MASK
+op_or
+id|IPS_SEQ_ADJUST
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

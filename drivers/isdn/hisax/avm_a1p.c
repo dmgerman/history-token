@@ -969,7 +969,7 @@ id|card-&gt;para
 l_int|0
 )braket
 suffix:semicolon
-id|outb
+id|byteout
 c_func
 (paren
 id|cs-&gt;hw.avm.cfg_reg

@@ -1970,6 +1970,13 @@ op_amp
 id|bus-&gt;class_dev
 )paren
 suffix:semicolon
+id|bus-&gt;class_dev
+dot
+r_class
+op_assign
+op_amp
+id|usb_host_class
+suffix:semicolon
 )brace
 DECL|variable|usb_bus_init
 id|EXPORT_SYMBOL
@@ -2137,13 +2144,6 @@ l_string|&quot;usb%d&quot;
 comma
 id|busnum
 )paren
-suffix:semicolon
-id|bus-&gt;class_dev
-dot
-r_class
-op_assign
-op_amp
-id|usb_host_class
 suffix:semicolon
 id|bus-&gt;class_dev.dev
 op_assign
