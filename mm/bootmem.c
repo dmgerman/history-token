@@ -1166,8 +1166,6 @@ r_struct
 id|page
 op_star
 id|page
-op_assign
-id|pgdat-&gt;node_mem_map
 suffix:semicolon
 id|bootmem_data_t
 op_star
@@ -1208,6 +1206,19 @@ suffix:semicolon
 id|count
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* first extant page of the node */
+id|page
+op_assign
+id|virt_to_page
+c_func
+(paren
+id|phys_to_virt
+c_func
+(paren
+id|bdata-&gt;node_boot_start
+)paren
+)paren
 suffix:semicolon
 id|idx
 op_assign
