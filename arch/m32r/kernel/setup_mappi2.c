@@ -679,7 +679,6 @@ id|M32R_IRQ_INT1
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_USB */
-macro_line|#if defined(CONFIG_M32R_CFC)
 multiline_comment|/* ICUCR40: CFC IREQ */
 id|irq_desc
 (braket
@@ -737,6 +736,7 @@ c_func
 id|PLD_IRQ_CFIREQ
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_M32R_CFC)
 multiline_comment|/* ICUCR41: CFC Insert */
 id|irq_desc
 (braket
