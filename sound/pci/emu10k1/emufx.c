@@ -13540,7 +13540,7 @@ id|gpr
 op_add_assign
 l_int|4
 suffix:semicolon
-multiline_comment|/* Surround Digital Playback Volume */
+multiline_comment|/* Surround Digital Playback Volume (renamed later without Digital) */
 r_for
 c_loop
 (paren
@@ -13597,7 +13597,7 @@ id|gpr
 op_add_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* Surround Digital Capture Volume + Switch */
+multiline_comment|/* Surround Capture Volume + Switch */
 r_for
 c_loop
 (paren
@@ -13666,7 +13666,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;Surround Digital Capture Volume&quot;
+l_string|&quot;Surround Capture Volume&quot;
 comma
 id|gpr
 comma
@@ -13681,7 +13681,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;Surround Digital Capture Switch&quot;
+l_string|&quot;Surround Capture Switch&quot;
 comma
 id|gpr
 op_plus
@@ -13694,7 +13694,7 @@ id|gpr
 op_add_assign
 l_int|4
 suffix:semicolon
-multiline_comment|/* Center Playback Volume */
+multiline_comment|/* Center Playback Volume (renamed later without Digital) */
 id|VOLUME_ADD
 c_func
 (paren
@@ -13720,7 +13720,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;Center Playback Volume&quot;
+l_string|&quot;Center Digital Playback Volume&quot;
 comma
 id|gpr
 op_increment
@@ -13728,7 +13728,7 @@ comma
 l_int|100
 )paren
 suffix:semicolon
-multiline_comment|/* LFE Playback Volume + Switch */
+multiline_comment|/* LFE Playback Volume + Switch (renamed later without Digital) */
 id|VOLUME_ADD
 c_func
 (paren
@@ -13754,7 +13754,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;LFE Playback Volume&quot;
+l_string|&quot;LFE Digital Playback Volume&quot;
 comma
 id|gpr
 op_increment
@@ -14310,7 +14310,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;IEC958 Optical Playback Volume&quot;
+l_string|&quot;IEC958 LiveDrive Playback Volume&quot;
 comma
 id|gpr
 comma
@@ -14390,7 +14390,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;IEC958 Optical Capture Volume&quot;
+l_string|&quot;IEC958 LiveDrive Capture Volume&quot;
 comma
 id|gpr
 comma
@@ -14405,7 +14405,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;IEC958 Optical Capture Switch&quot;
+l_string|&quot;IEC958 LiveDrive Capture Switch&quot;
 comma
 id|gpr
 op_plus
