@@ -1346,10 +1346,12 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;sram_write failed (%x, %x, %d)&quot;
+id|edge_serial-&gt;serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;sram_write failed (%x, %x, %d)&bslash;n&quot;
 comma
 id|record-&gt;ExtAddr
 comma
@@ -2460,10 +2462,12 @@ c_cond
 id|result
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - Error %d submitting control urb&quot;
+id|urb-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - Error %d submitting control urb&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2647,10 +2651,12 @@ c_cond
 id|status
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - usb_submit_urb(read bulk) failed, status = %d&quot;
+id|urb-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - usb_submit_urb(read bulk) failed, status = %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3193,10 +3199,12 @@ c_cond
 id|response
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - Error %d submitting control urb&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - Error %d submitting control urb&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3293,10 +3301,12 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - error sending open port command&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - error sending open port command&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4574,10 +4584,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - no more kernel memory...&quot;
+id|edge_serial-&gt;serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - no more kernel memory...&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -7445,10 +7457,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - edge_port == NULL for port %d&quot;
+id|edge_serial-&gt;serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - edge_port == NULL for port %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -8089,9 +8103,11 @@ op_logical_neg
 id|transfer_buffer
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
+id|serial-&gt;dev-&gt;dev
+comma
 l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8260,9 +8276,11 @@ op_logical_neg
 id|transfer_buffer
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
+id|serial-&gt;dev-&gt;dev
+comma
 l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8444,9 +8462,11 @@ op_logical_neg
 id|transfer_buffer
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
+id|serial-&gt;dev-&gt;dev
+comma
 l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8628,9 +8648,11 @@ op_logical_neg
 id|buffer
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
+id|edge_port-&gt;port-&gt;dev
+comma
 l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8979,10 +9001,12 @@ c_cond
 id|status
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - bad baud rate&quot;
+id|edge_port-&gt;port-&gt;dev
+comma
+l_string|&quot;%s - bad baud rate&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -9008,9 +9032,11 @@ op_logical_neg
 id|cmdBuffer
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
+id|edge_port-&gt;port-&gt;dev
+comma
 l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -10201,10 +10227,12 @@ OL
 l_int|1
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;error in getting manufacturer descriptor&quot;
+id|edge_serial-&gt;serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;error in getting manufacturer descriptor&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -10438,10 +10466,12 @@ OL
 l_int|1
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;error in getting boot descriptor&quot;
+id|edge_serial-&gt;serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;error in getting boot descriptor&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -10688,10 +10718,12 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;sram_write failed (%x, %x, %d)&quot;
+id|edge_serial-&gt;serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;sram_write failed (%x, %x, %d)&bslash;n&quot;
 comma
 id|record-&gt;ExtAddr
 comma
@@ -10823,9 +10855,11 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
+id|serial-&gt;dev-&gt;dev
+comma
 l_string|&quot;%s - Out of memory&quot;
 comma
 id|__FUNCTION__
@@ -10908,10 +10942,12 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|info
+id|dev_info
 c_func
 (paren
-l_string|&quot;%s detected&quot;
+id|serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s detected&bslash;n&quot;
 comma
 id|edge_serial-&gt;name
 )paren
@@ -11041,12 +11077,26 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
+id|serial-&gt;dev-&gt;dev
+comma
 l_string|&quot;%s - Out of memory&quot;
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+id|serial
+op_member_access_from_pointer
+r_private
+op_assign
+l_int|NULL
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|edge_serial
 )paren
 suffix:semicolon
 r_return
