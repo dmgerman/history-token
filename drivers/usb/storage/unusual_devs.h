@@ -1988,6 +1988,31 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* Submitted by Joris Struyve &lt;joris@struyve.be&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0d96
+comma
+l_int|0x410a
+comma
+l_int|0x0001
+comma
+l_int|0xffff
+comma
+l_string|&quot;Medion&quot;
+comma
+l_string|&quot;MD 7425&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 multiline_comment|/* Reported by Kevin Cernekee &lt;kpc-usbdev@gelato.uiuc.edu&gt;&n; * Tested on hardware version 1.10.&n; * Entry is needed only for the initializer function override.&n; */
 id|UNUSUAL_DEV
 c_func
