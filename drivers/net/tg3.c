@@ -10593,6 +10593,12 @@ l_int|0
 dot
 id|rx_producer
 suffix:semicolon
+multiline_comment|/*&n;&t; * We need to order the read of hw_idx and the read of&n;&t; * the opaque cookie.&n;&t; */
+id|rmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|sw_idx
 op_assign
 id|rx_rcb_ptr
