@@ -196,6 +196,10 @@ DECL|macro|unregister_suspend_notifier
 mdefine_line|#define unregister_suspend_notifier(a)&t;do { } while(0)
 DECL|macro|refrigerator
 mdefine_line|#define refrigerator(a)&t;&t;&t;do { BUG(); } while(0)
+DECL|macro|freeze_processes
+mdefine_line|#define freeze_processes()&t;&t;do { panic(&quot;You need CONFIG_SOFTWARE_SUSPEND to do sleeps.&quot;); } while(0)
+DECL|macro|thaw_processes
+mdefine_line|#define thaw_processes()&t;&t;do { } while(0)
 macro_line|#endif
 macro_line|#endif /* _LINUX_SWSUSP_H */
 eof
