@@ -5336,7 +5336,7 @@ l_int|1
 )braket
 suffix:semicolon
 DECL|member|ex_dev
-id|__kernel_dev_t
+id|__kernel_old_dev_t
 id|ex_dev
 suffix:semicolon
 DECL|member|ex_ino
