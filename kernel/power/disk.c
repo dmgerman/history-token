@@ -1,10 +1,9 @@
 multiline_comment|/*&n; * kernel/power/disk.c - Suspend-to-disk support.&n; *&n; * Copyright (c) 2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; *&n; * This file is released under the GPLv2.&n; *&n; */
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;power.h&quot;
@@ -20,7 +19,7 @@ id|pm_ops
 suffix:semicolon
 r_extern
 r_int
-id|pmdisk_save
+id|swsusp_suspend
 c_func
 (paren
 r_void
@@ -28,7 +27,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|pmdisk_write
+id|swsusp_write
 c_func
 (paren
 r_void
@@ -36,7 +35,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|pmdisk_read
+id|swsusp_read
 c_func
 (paren
 r_void
@@ -44,7 +43,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|pmdisk_restore
+id|swsusp_resume
 c_func
 (paren
 r_void
@@ -52,11 +51,27 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|pmdisk_free
+id|swsusp_free
 c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+DECL|variable|noresume
+r_static
+r_int
+id|noresume
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|resume_file
+r_char
+id|resume_file
+(braket
+l_int|256
+)braket
+op_assign
+id|CONFIG_PM_STD_PARTITION
 suffix:semicolon
 multiline_comment|/**&n; *&t;power_down - Shut machine down for hibernate.&n; *&t;@mode:&t;&t;Suspend-to-disk mode&n; *&n; *&t;Use the platform driver, if configured so, and return gracefully if it&n; *&t;fails.&n; *&t;Otherwise, try to power off and reboot. If they fail, halt the machine,&n; *&t;there ain&squot;t no turning back.&n; */
 DECL|function|power_down
@@ -84,12 +99,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|device_power_down
-c_func
-(paren
-id|PM_SUSPEND_DISK
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -99,6 +108,12 @@ id|mode
 r_case
 id|PM_DISK_PLATFORM
 suffix:colon
+id|device_power_down
+c_func
+(paren
+id|PM_SUSPEND_DISK
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|pm_ops
@@ -120,6 +135,11 @@ c_func
 l_string|&quot;Powering off system&bslash;n&quot;
 )paren
 suffix:semicolon
+id|device_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
 id|machine_power_off
 c_func
 (paren
@@ -130,6 +150,11 @@ suffix:semicolon
 r_case
 id|PM_DISK_REBOOT
 suffix:colon
+id|device_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
 id|machine_restart
 c_func
 (paren
@@ -259,6 +284,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|enable_nonboot_cpus
+c_func
+(paren
+)paren
+suffix:semicolon
 id|thaw_processes
 c_func
 (paren
@@ -352,6 +382,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|disable_nonboot_cpus
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -380,6 +415,11 @@ c_func
 suffix:semicolon
 id|Thaw
 suffix:colon
+id|enable_nonboot_cpus
+c_func
+(paren
+)paren
+suffix:semicolon
 id|thaw_processes
 c_func
 (paren
@@ -459,7 +499,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|pmdisk_save
+id|swsusp_suspend
 c_func
 (paren
 )paren
@@ -493,7 +533,7 @@ c_func
 suffix:semicolon
 id|error
 op_assign
-id|pmdisk_write
+id|swsusp_write
 c_func
 (paren
 )paren
@@ -528,7 +568,7 @@ c_func
 l_string|&quot;PM: Image restored successfully.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|pmdisk_free
+id|swsusp_free
 c_func
 (paren
 )paren
@@ -544,11 +584,11 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pm_resume - Resume from a saved image.&n; *&n; *&t;Called as a late_initcall (so all devices are discovered and&n; *&t;initialized), we call pmdisk to see if we have a saved image or not.&n; *&t;If so, we quiesce devices, the restore the saved image. We will&n; *&t;return above (in pm_suspend_disk() ) if everything goes well.&n; *&t;Otherwise, we fail gracefully and return to the normally&n; *&t;scheduled program.&n; *&n; */
-DECL|function|pm_resume
+multiline_comment|/**&n; *&t;software_resume - Resume from a saved image.&n; *&n; *&t;Called as a late_initcall (so all devices are discovered and&n; *&t;initialized), we call pmdisk to see if we have a saved image or not.&n; *&t;If so, we quiesce devices, the restore the saved image. We will&n; *&t;return above (in pm_suspend_disk() ) if everything goes well.&n; *&t;Otherwise, we fail gracefully and return to the normally&n; *&t;scheduled program.&n; *&n; */
+DECL|function|software_resume
 r_static
 r_int
-id|pm_resume
+id|software_resume
 c_func
 (paren
 r_void
@@ -557,6 +597,17 @@ r_void
 r_int
 id|error
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|noresume
+)paren
+(brace
+multiline_comment|/**&n;&t;&t; * FIXME: If noresume is specified, we need to find the partition&n;&t;&t; * and reset it back to normal swap space.&n;&t;&t; */
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|pr_debug
 c_func
 (paren
@@ -569,7 +620,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|pmdisk_read
+id|swsusp_read
 c_func
 (paren
 )paren
@@ -609,26 +660,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: The following (comment and mdelay()) are from swsusp.&n;&t; * Are they really necessary?&n;&t; *&n;&t; * We do not want some readahead with DMA to corrupt our memory, right?&n;&t; * Do it with disabled interrupts for best effect. That way, if some&n;&t; * driver scheduled DMA, we have good chance for DMA to finish ;-).&n;&t; */
-id|pr_debug
-c_func
-(paren
-l_string|&quot;PM: Waiting for DMAs to settle down.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|1000
-)paren
-suffix:semicolon
 id|pr_debug
 c_func
 (paren
 l_string|&quot;PM: Restoring saved image.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|pmdisk_restore
+id|swsusp_resume
 c_func
 (paren
 )paren
@@ -646,7 +684,7 @@ c_func
 suffix:semicolon
 id|Free
 suffix:colon
-id|pmdisk_free
+id|swsusp_free
 c_func
 (paren
 )paren
@@ -663,11 +701,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|pm_resume
+DECL|variable|software_resume
 id|late_initcall
 c_func
 (paren
-id|pm_resume
+id|software_resume
 )paren
 suffix:semicolon
 DECL|variable|pm_disk_modes
@@ -994,6 +1032,76 @@ id|core_initcall
 c_func
 (paren
 id|pm_disk_init
+)paren
+suffix:semicolon
+DECL|function|resume_setup
+r_static
+r_int
+id|__init
+id|resume_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|noresume
+)paren
+r_return
+l_int|1
+suffix:semicolon
+id|strncpy
+c_func
+(paren
+id|resume_file
+comma
+id|str
+comma
+l_int|255
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|noresume_setup
+r_static
+r_int
+id|__init
+id|noresume_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|noresume
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;noresume&quot;
+comma
+id|noresume_setup
+)paren
+suffix:semicolon
+id|__setup
+c_func
+(paren
+l_string|&quot;resume=&quot;
+comma
+id|resume_setup
 )paren
 suffix:semicolon
 eof
