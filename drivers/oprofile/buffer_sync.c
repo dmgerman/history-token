@@ -449,6 +449,12 @@ op_amp
 id|sync_timer
 )paren
 suffix:semicolon
+multiline_comment|/* timer might have queued work, make sure it&squot;s completed. */
+id|flush_scheduled_work
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Optimisation. We can manage without taking the dcookie sem&n; * because we cannot reach this code without at least one&n; * dcookie user still being registered (namely, the reader&n; * of the event buffer). */
 DECL|function|fast_get_dcookie
