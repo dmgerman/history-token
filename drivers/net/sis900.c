@@ -1,4 +1,4 @@
-multiline_comment|/* sis900.c: A SiS 900/7016 PCI Fast Ethernet driver for Linux.&n;   Copyright 1999 Silicon Integrated System Corporation &n;   Revision:&t;1.08.06 Sep. 24 2002&n;   &n;   Modified from the driver which is originally written by Donald Becker.&n;   &n;   This software may be used and distributed according to the terms&n;   of the GNU General Public License (GPL), incorporated herein by reference.&n;   Drivers based on this skeleton fall under the GPL and must retain&n;   the authorship (implicit copyright) notice.&n;   &n;   References:&n;   SiS 7016 Fast Ethernet PCI Bus 10/100 Mbps LAN Controller with OnNow Support,&n;   preliminary Rev. 1.0 Jan. 14, 1998&n;   SiS 900 Fast Ethernet PCI Bus 10/100 Mbps LAN Single Chip with OnNow Support,&n;   preliminary Rev. 1.0 Nov. 10, 1998&n;   SiS 7014 Single Chip 100BASE-TX/10BASE-T Physical Layer Solution,&n;   preliminary Rev. 1.0 Jan. 18, 1998&n;   http://www.sis.com.tw/support/databook.htm&n;&n;   Rev 1.08.07 Nov.  2 2003 Daniele Venzano &lt;webvenza@libero.it&gt; add suspend/resume support&n;   Rev 1.08.06 Sep. 24 2002 Mufasa Yang bug fix for Tx timeout &amp; add SiS963 support&n;   Rev 1.08.05 Jun.  6 2002 Mufasa Yang bug fix for read_eeprom &amp; Tx descriptor over-boundary&n;   Rev 1.08.04 Apr. 25 2002 Mufasa Yang &lt;mufasa@sis.com.tw&gt; added SiS962 support&n;   Rev 1.08.03 Feb.  1 2002 Matt Domsch &lt;Matt_Domsch@dell.com&gt; update to use library crc32 function&n;   Rev 1.08.02 Nov. 30 2001 Hui-Fen Hsu workaround for EDB &amp; bug fix for dhcp problem&n;   Rev 1.08.01 Aug. 25 2001 Hui-Fen Hsu update for 630ET &amp; workaround for ICS1893 PHY&n;   Rev 1.08.00 Jun. 11 2001 Hui-Fen Hsu workaround for RTL8201 PHY and some bug fix&n;   Rev 1.07.11 Apr.  2 2001 Hui-Fen Hsu updates PCI drivers to use the new pci_set_dma_mask for kernel 2.4.3&n;   Rev 1.07.10 Mar.  1 2001 Hui-Fen Hsu &lt;hfhsu@sis.com.tw&gt; some bug fix &amp; 635M/B support &n;   Rev 1.07.09 Feb.  9 2001 Dave Jones &lt;davej@suse.de&gt; PCI enable cleanup&n;   Rev 1.07.08 Jan.  8 2001 Lei-Chun Chang added RTL8201 PHY support&n;   Rev 1.07.07 Nov. 29 2000 Lei-Chun Chang added kernel-doc extractable documentation and 630 workaround fix&n;   Rev 1.07.06 Nov.  7 2000 Jeff Garzik &lt;jgarzik@pobox.com&gt; some bug fix and cleaning&n;   Rev 1.07.05 Nov.  6 2000 metapirat&lt;metapirat@gmx.de&gt; contribute media type select by ifconfig&n;   Rev 1.07.04 Sep.  6 2000 Lei-Chun Chang added ICS1893 PHY support&n;   Rev 1.07.03 Aug. 24 2000 Lei-Chun Chang (lcchang@sis.com.tw) modified 630E eqaulizer workaround rule&n;   Rev 1.07.01 Aug. 08 2000 Ollie Lho minor update for SiS 630E and SiS 630E A1&n;   Rev 1.07    Mar. 07 2000 Ollie Lho bug fix in Rx buffer ring&n;   Rev 1.06.04 Feb. 11 2000 Jeff Garzik &lt;jgarzik@pobox.com&gt; softnet and init for kernel 2.4&n;   Rev 1.06.03 Dec. 23 1999 Ollie Lho Third release&n;   Rev 1.06.02 Nov. 23 1999 Ollie Lho bug in mac probing fixed&n;   Rev 1.06.01 Nov. 16 1999 Ollie Lho CRC calculation provide by Joseph Zbiciak (im14u2c@primenet.com)&n;   Rev 1.06 Nov. 4 1999 Ollie Lho (ollie@sis.com.tw) Second release&n;   Rev 1.05.05 Oct. 29 1999 Ollie Lho (ollie@sis.com.tw) Single buffer Tx/Rx&n;   Chin-Shan Li (lcs@sis.com.tw) Added AMD Am79c901 HomePNA PHY support&n;   Rev 1.05 Aug. 7 1999 Jim Huang (cmhuang@sis.com.tw) Initial release&n;*/
+multiline_comment|/* sis900.c: A SiS 900/7016 PCI Fast Ethernet driver for Linux.&n;   Copyright 1999 Silicon Integrated System Corporation &n;   Revision:&t;1.08.08 Jan. 22 2005&n;   &n;   Modified from the driver which is originally written by Donald Becker.&n;   &n;   This software may be used and distributed according to the terms&n;   of the GNU General Public License (GPL), incorporated herein by reference.&n;   Drivers based on this skeleton fall under the GPL and must retain&n;   the authorship (implicit copyright) notice.&n;   &n;   References:&n;   SiS 7016 Fast Ethernet PCI Bus 10/100 Mbps LAN Controller with OnNow Support,&n;   preliminary Rev. 1.0 Jan. 14, 1998&n;   SiS 900 Fast Ethernet PCI Bus 10/100 Mbps LAN Single Chip with OnNow Support,&n;   preliminary Rev. 1.0 Nov. 10, 1998&n;   SiS 7014 Single Chip 100BASE-TX/10BASE-T Physical Layer Solution,&n;   preliminary Rev. 1.0 Jan. 18, 1998&n;&n;   Rev 1.08.08 Jan. 22 2005 Daniele Venzano use netif_msg for debugging messages&n;   Rev 1.08.07 Nov.  2 2003 Daniele Venzano &lt;webvenza@libero.it&gt; add suspend/resume support&n;   Rev 1.08.06 Sep. 24 2002 Mufasa Yang bug fix for Tx timeout &amp; add SiS963 support&n;   Rev 1.08.05 Jun.  6 2002 Mufasa Yang bug fix for read_eeprom &amp; Tx descriptor over-boundary&n;   Rev 1.08.04 Apr. 25 2002 Mufasa Yang &lt;mufasa@sis.com.tw&gt; added SiS962 support&n;   Rev 1.08.03 Feb.  1 2002 Matt Domsch &lt;Matt_Domsch@dell.com&gt; update to use library crc32 function&n;   Rev 1.08.02 Nov. 30 2001 Hui-Fen Hsu workaround for EDB &amp; bug fix for dhcp problem&n;   Rev 1.08.01 Aug. 25 2001 Hui-Fen Hsu update for 630ET &amp; workaround for ICS1893 PHY&n;   Rev 1.08.00 Jun. 11 2001 Hui-Fen Hsu workaround for RTL8201 PHY and some bug fix&n;   Rev 1.07.11 Apr.  2 2001 Hui-Fen Hsu updates PCI drivers to use the new pci_set_dma_mask for kernel 2.4.3&n;   Rev 1.07.10 Mar.  1 2001 Hui-Fen Hsu &lt;hfhsu@sis.com.tw&gt; some bug fix &amp; 635M/B support &n;   Rev 1.07.09 Feb.  9 2001 Dave Jones &lt;davej@suse.de&gt; PCI enable cleanup&n;   Rev 1.07.08 Jan.  8 2001 Lei-Chun Chang added RTL8201 PHY support&n;   Rev 1.07.07 Nov. 29 2000 Lei-Chun Chang added kernel-doc extractable documentation and 630 workaround fix&n;   Rev 1.07.06 Nov.  7 2000 Jeff Garzik &lt;jgarzik@pobox.com&gt; some bug fix and cleaning&n;   Rev 1.07.05 Nov.  6 2000 metapirat&lt;metapirat@gmx.de&gt; contribute media type select by ifconfig&n;   Rev 1.07.04 Sep.  6 2000 Lei-Chun Chang added ICS1893 PHY support&n;   Rev 1.07.03 Aug. 24 2000 Lei-Chun Chang (lcchang@sis.com.tw) modified 630E eqaulizer workaround rule&n;   Rev 1.07.01 Aug. 08 2000 Ollie Lho minor update for SiS 630E and SiS 630E A1&n;   Rev 1.07    Mar. 07 2000 Ollie Lho bug fix in Rx buffer ring&n;   Rev 1.06.04 Feb. 11 2000 Jeff Garzik &lt;jgarzik@pobox.com&gt; softnet and init for kernel 2.4&n;   Rev 1.06.03 Dec. 23 1999 Ollie Lho Third release&n;   Rev 1.06.02 Nov. 23 1999 Ollie Lho bug in mac probing fixed&n;   Rev 1.06.01 Nov. 16 1999 Ollie Lho CRC calculation provide by Joseph Zbiciak (im14u2c@primenet.com)&n;   Rev 1.06 Nov. 4 1999 Ollie Lho (ollie@sis.com.tw) Second release&n;   Rev 1.05.05 Oct. 29 1999 Ollie Lho (ollie@sis.com.tw) Single buffer Tx/Rx&n;   Chin-Shan Li (lcs@sis.com.tw) Added AMD Am79c901 HomePNA PHY support&n;   Rev 1.05 Aug. 7 1999 Jim Huang (cmhuang@sis.com.tw) Initial release&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -25,7 +25,7 @@ macro_line|#include &quot;sis900.h&quot;
 DECL|macro|SIS900_MODULE_NAME
 mdefine_line|#define SIS900_MODULE_NAME &quot;sis900&quot;
 DECL|macro|SIS900_DRV_VERSION
-mdefine_line|#define SIS900_DRV_VERSION &quot;v1.08.07 11/02/2003&quot;
+mdefine_line|#define SIS900_DRV_VERSION &quot;v1.08.08 Jan. 22 2005&quot;
 DECL|variable|__devinitdata
 r_static
 r_char
@@ -53,13 +53,17 @@ id|multicast_filter_limit
 op_assign
 l_int|128
 suffix:semicolon
-DECL|macro|sis900_debug
-mdefine_line|#define sis900_debug debug
 DECL|variable|sis900_debug
 r_static
 r_int
 id|sis900_debug
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
+multiline_comment|/* Use SIS900_DEF_MSG as value */
+DECL|macro|SIS900_DEF_MSG
+mdefine_line|#define SIS900_DEF_MSG &bslash;&n;&t;(NETIF_MSG_DRV&t;&t;| &bslash;&n;&t; NETIF_MSG_LINK&t;&t;| &bslash;&n;&t; NETIF_MSG_RX_ERR&t;| &bslash;&n;&t; NETIF_MSG_TX_ERR)
 multiline_comment|/* Time in jiffies before concluding the transmitter is hung. */
 DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT  (4*HZ)
@@ -410,6 +414,10 @@ id|u8
 id|autong_complete
 suffix:semicolon
 multiline_comment|/* 1: auto-negotiate complete  */
+DECL|member|msg_enable
+id|u32
+id|msg_enable
+suffix:semicolon
 DECL|member|cur_rx
 DECL|member|dirty_rx
 r_int
@@ -474,6 +482,10 @@ DECL|member|host_bridge_rev
 id|u8
 id|host_bridge_rev
 suffix:semicolon
+DECL|member|chipset_rev
+id|u8
+id|chipset_rev
+suffix:semicolon
 )brace
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -517,7 +529,7 @@ suffix:semicolon
 id|module_param
 c_func
 (paren
-id|debug
+id|sis900_debug
 comma
 r_int
 comma
@@ -543,9 +555,20 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|debug
+id|sis900_debug
 comma
-l_string|&quot;SiS 900/7016 debug level (2-4)&quot;
+l_string|&quot;SiS 900/7016 bitmapped debugging message level&quot;
+)paren
+suffix:semicolon
+r_static
+r_void
+id|sis900_poll
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 suffix:semicolon
 r_static
@@ -988,7 +1011,7 @@ l_int|0x0000
 (brace
 id|printk
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;%s: Error EERPOM read %x&bslash;n&quot;
 comma
 id|net_dev-&gt;name
@@ -1114,6 +1137,7 @@ id|isa_bridge
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: Can not find ISA bridge&bslash;n&quot;
 comma
 id|net_dev-&gt;name
@@ -1551,9 +1575,6 @@ id|i
 comma
 id|ret
 suffix:semicolon
-id|u8
-id|revision
-suffix:semicolon
 r_char
 op_star
 id|card_name
@@ -1864,6 +1885,29 @@ op_assign
 op_amp
 id|sis900_ethtool_ops
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|net_dev-&gt;poll_controller
+op_assign
+op_amp
+id|sis900_poll
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|sis900_debug
+OG
+l_int|0
+)paren
+id|sis_priv-&gt;msg_enable
+op_assign
+id|sis900_debug
+suffix:semicolon
+r_else
+id|sis_priv-&gt;msg_enable
+op_assign
+id|SIS900_DEF_MSG
+suffix:semicolon
 id|ret
 op_assign
 id|register_netdev
@@ -1889,9 +1933,34 @@ comma
 id|PCI_CLASS_REVISION
 comma
 op_amp
-id|revision
+(paren
+id|sis_priv-&gt;chipset_rev
+)paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_msg_probe
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: detected revision %2.2x, &quot;
+l_string|&quot;trying to get MAC address...&bslash;n&quot;
+comma
+id|net_dev-&gt;name
+comma
+id|sis_priv-&gt;chipset_rev
+)paren
+suffix:semicolon
+)brace
 id|ret
 op_assign
 l_int|0
@@ -1899,7 +1968,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|revision
+id|sis_priv-&gt;chipset_rev
 op_eq
 id|SIS630E_900_REV
 )paren
@@ -1918,13 +1987,13 @@ r_if
 c_cond
 (paren
 (paren
-id|revision
+id|sis_priv-&gt;chipset_rev
 OG
 l_int|0x81
 )paren
 op_logical_and
 (paren
-id|revision
+id|sis_priv-&gt;chipset_rev
 op_le
 l_int|0x90
 )paren
@@ -1943,7 +2012,7 @@ r_else
 r_if
 c_cond
 (paren
-id|revision
+id|sis_priv-&gt;chipset_rev
 op_eq
 id|SIS96x_900_REV
 )paren
@@ -1976,6 +2045,15 @@ op_eq
 l_int|0
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Cannot read MAC address.&bslash;n&quot;
+comma
+id|net_dev-&gt;name
+)paren
+suffix:semicolon
 id|ret
 op_assign
 op_minus
@@ -1989,7 +2067,7 @@ multiline_comment|/* 630ET : set the mii access mode as software-mode */
 r_if
 c_cond
 (paren
-id|revision
+id|sis_priv-&gt;chipset_rev
 op_eq
 id|SIS630ET_900_REV
 )paren
@@ -2024,6 +2102,15 @@ op_eq
 l_int|0
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Error probing MII device.&bslash;n&quot;
+comma
+id|net_dev-&gt;name
+)paren
+suffix:semicolon
 id|ret
 op_assign
 op_minus
@@ -2235,9 +2322,6 @@ suffix:semicolon
 r_int
 id|phy_addr
 suffix:semicolon
-id|u8
-id|revision
-suffix:semicolon
 id|sis_priv-&gt;mii
 op_assign
 l_int|NULL
@@ -2314,9 +2398,31 @@ id|mii_status
 op_eq
 l_int|0x0000
 )paren
-multiline_comment|/* the mii is not accessible, try next one */
+(brace
+r_if
+c_cond
+(paren
+id|netif_msg_probe
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: MII at address %d&quot;
+l_string|&quot; not accessible&bslash;n&quot;
+comma
+id|net_dev-&gt;name
+comma
+id|phy_addr
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2342,7 +2448,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;Cannot allocate mem for struct mii_phy&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2513,7 +2619,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: %s transceiver found at address %d.&bslash;n&quot;
+l_string|&quot;%s: %s transceiver found &quot;
+l_string|&quot;at address %d.&bslash;n&quot;
 comma
 id|net_dev-&gt;name
 comma
@@ -2716,21 +2823,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|pci_read_config_byte
-c_func
-(paren
-id|sis_priv-&gt;pci_dev
-comma
-id|PCI_CLASS_REVISION
-comma
-op_amp
-id|revision
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|revision
+id|sis_priv-&gt;chipset_rev
 op_eq
 id|SIS630E_900_REV
 )paren
@@ -4080,6 +4176,44 @@ r_return
 id|status
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+multiline_comment|/*&n; * Polling &squot;interrupt&squot; - used by things like netconsole to send skbs&n; * without having to re-enable interrupts. It&squot;s not called while&n; * the interrupt routine is executing.&n;*/
+DECL|function|sis900_poll
+r_static
+r_void
+id|sis900_poll
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|disable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|sis900_interrupt
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/**&n; *&t;sis900_open - open sis900 device&n; *&t;@net_dev: the net device to open&n; *&n; *&t;Do some initialization and start net interface.&n; *&t;enable interrupts and set sis900 timer.&n; */
 r_static
 r_int
@@ -4105,9 +4239,6 @@ id|ioaddr
 op_assign
 id|net_dev-&gt;base_addr
 suffix:semicolon
-id|u8
-id|revision
-suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
@@ -4119,23 +4250,12 @@ id|net_dev
 )paren
 suffix:semicolon
 multiline_comment|/* Equalizer workaround Rule */
-id|pci_read_config_byte
-c_func
-(paren
-id|sis_priv-&gt;pci_dev
-comma
-id|PCI_CLASS_REVISION
-comma
-op_amp
-id|revision
-)paren
-suffix:semicolon
 id|sis630_set_eq
 c_func
 (paren
 id|net_dev
 comma
-id|revision
+id|sis_priv-&gt;chipset_rev
 )paren
 suffix:semicolon
 id|ret
@@ -4315,6 +4435,13 @@ op_star
 id|net_dev
 )paren
 (brace
+r_struct
+id|sis900_private
+op_star
+id|sis_priv
+op_assign
+id|net_dev-&gt;priv
+suffix:semicolon
 r_int
 id|ioaddr
 op_assign
@@ -4414,15 +4541,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|2
+id|netif_msg_hw
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: Receive Filter Addrss[%d]=%x&bslash;n&quot;
 comma
 id|net_dev-&gt;name
@@ -4571,14 +4700,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|2
+id|netif_msg_hw
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: TX descriptor register loaded with: %8.8x&bslash;n&quot;
 comma
 id|net_dev-&gt;name
@@ -4802,14 +4933,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|2
+id|netif_msg_hw
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: RX descriptor register loaded with: %8.8x&bslash;n&quot;
 comma
 id|net_dev-&gt;name
@@ -5308,9 +5441,6 @@ suffix:semicolon
 id|u16
 id|status
 suffix:semicolon
-id|u8
-id|revision
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5353,23 +5483,12 @@ comma
 id|duplex
 )paren
 suffix:semicolon
-id|pci_read_config_byte
-c_func
-(paren
-id|sis_priv-&gt;pci_dev
-comma
-id|PCI_CLASS_REVISION
-comma
-op_amp
-id|revision
-)paren
-suffix:semicolon
 id|sis630_set_eq
 c_func
 (paren
 id|net_dev
 comma
-id|revision
+id|sis_priv-&gt;chipset_rev
 )paren
 suffix:semicolon
 id|netif_start_queue
@@ -5490,6 +5609,16 @@ c_func
 id|net_dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_msg_link
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -5499,6 +5628,7 @@ comma
 id|net_dev-&gt;name
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Change mode issue */
 r_if
 c_cond
@@ -5527,23 +5657,12 @@ comma
 id|sis_priv-&gt;cur_phy
 )paren
 suffix:semicolon
-id|pci_read_config_byte
-c_func
-(paren
-id|sis_priv-&gt;pci_dev
-comma
-id|PCI_CLASS_REVISION
-comma
-op_amp
-id|revision
-)paren
-suffix:semicolon
 id|sis630_set_eq
 c_func
 (paren
 id|net_dev
 comma
-id|revision
+id|sis_priv-&gt;chipset_rev
 )paren
 suffix:semicolon
 r_goto
@@ -5925,6 +6044,16 @@ id|MII_STAT_LINK
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|netif_msg_link
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -5934,6 +6063,7 @@ comma
 id|net_dev-&gt;name
 )paren
 suffix:semicolon
+)brace
 id|sis_priv-&gt;autong_complete
 op_assign
 l_int|1
@@ -6191,6 +6321,16 @@ op_assign
 id|HW_SPEED_100_MBPS
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|netif_msg_link
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -6220,6 +6360,7 @@ suffix:colon
 l_string|&quot;half&quot;
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; *&t;sis900_tx_timeout - sis900 transmit timeout routine&n; *&t;@net_dev: the net device to transmit&n; *&n; *&t;print transmit timeout status&n; *&t;disable interrupts and do some tasks&n; */
 DECL|function|sis900_tx_timeout
@@ -6253,6 +6394,16 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_msg_tx_err
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -6278,6 +6429,7 @@ id|isr
 )paren
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Disable interrupts by clearing the interrupt mask. */
 id|outl
 c_func
@@ -6687,14 +6839,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|3
+id|netif_msg_tx_queued
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: Queued Tx packet at %p size %d &quot;
 l_string|&quot;to slot %d.&bslash;n&quot;
 comma
@@ -6867,6 +7021,16 @@ op_amp
 id|HIBERR
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|netif_msg_intr
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -6879,6 +7043,7 @@ comma
 id|status
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
@@ -6889,6 +7054,16 @@ op_decrement
 id|boguscnt
 OL
 l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|netif_msg_intr
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 (brace
 id|printk
@@ -6903,6 +7078,7 @@ comma
 id|status
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
@@ -6916,14 +7092,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|3
+id|netif_msg_intr
+c_func
+(paren
+id|sis_priv
 )paren
+)paren
+(brace
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: exiting interrupt, &quot;
 l_string|&quot;interrupt status = 0x%#8.8x.&bslash;n&quot;
 comma
@@ -6938,6 +7117,7 @@ id|isr
 )paren
 )paren
 suffix:semicolon
+)brace
 id|spin_unlock
 (paren
 op_amp
@@ -6998,14 +7178,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|3
+id|netif_msg_rx_status
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;sis900_rx, cur_rx:%4.4d, dirty_rx:%4.4d &quot;
 l_string|&quot;status:0x%8.8x&bslash;n&quot;
 comma
@@ -7064,14 +7246,16 @@ multiline_comment|/* corrupted packet received */
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|3
+id|netif_msg_rx_err
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: Corrupted packet &quot;
 l_string|&quot;received, buffer status = 0x%8.8x.&bslash;n&quot;
 comma
@@ -7161,6 +7345,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|netif_msg_rx_err
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -7267,6 +7460,15 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* not enough memory for skbuff, this makes a&n;&t;&t;&t;&t; * &quot;hole&quot; on the buffer ring, it is not clear&n;&t;&t;&t;&t; * how the hardware will react to this kind&n;&t;&t;&t;&t; * of degenerated buffer */
+r_if
+c_cond
+(paren
+id|netif_msg_rx_status
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -7426,6 +7628,15 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* not enough memory for skbuff, this makes a&n;&t;&t;&t;&t; * &quot;hole&quot; on the buffer ring, it is not clear&n;&t;&t;&t;&t; * how the hardware will react to this kind&n;&t;&t;&t;&t; * of degenerated buffer */
+r_if
+c_cond
+(paren
+id|netif_msg_rx_err
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -7594,14 +7805,16 @@ multiline_comment|/* packet unsuccessfully transmitted */
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|3
+id|netif_msg_tx_err
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: Transmit &quot;
 l_string|&quot;error, Tx status %8.8x.&bslash;n&quot;
 comma
@@ -8039,6 +8252,56 @@ id|sis_priv-&gt;pci_dev
 )paren
 suffix:semicolon
 )brace
+DECL|function|sis900_get_msglevel
+r_static
+id|u32
+id|sis900_get_msglevel
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|net_dev
+)paren
+(brace
+r_struct
+id|sis900_private
+op_star
+id|sis_priv
+op_assign
+id|net_dev-&gt;priv
+suffix:semicolon
+r_return
+id|sis_priv-&gt;msg_enable
+suffix:semicolon
+)brace
+DECL|function|sis900_set_msglevel
+r_static
+r_void
+id|sis900_set_msglevel
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|net_dev
+comma
+id|u32
+id|value
+)paren
+(brace
+r_struct
+id|sis900_private
+op_star
+id|sis_priv
+op_assign
+id|net_dev-&gt;priv
+suffix:semicolon
+id|sis_priv-&gt;msg_enable
+op_assign
+id|value
+suffix:semicolon
+)brace
 DECL|variable|sis900_ethtool_ops
 r_static
 r_struct
@@ -8050,6 +8313,16 @@ dot
 id|get_drvinfo
 op_assign
 id|sis900_get_drvinfo
+comma
+dot
+id|get_msglevel
+op_assign
+id|sis900_get_msglevel
+comma
+dot
+id|set_msglevel
+op_assign
+id|sis900_set_msglevel
 comma
 )brace
 suffix:semicolon
@@ -8431,13 +8704,6 @@ id|IF_PORT_100BASEFX
 suffix:colon
 multiline_comment|/* 100BaseFx */
 multiline_comment|/* These Modes are not supported (are they?)*/
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Not supported&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EOPNOTSUPP
@@ -8446,13 +8712,6 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Invalid&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
@@ -8576,32 +8835,18 @@ suffix:semicolon
 id|u32
 id|rx_mode
 suffix:semicolon
-id|u8
-id|revision
-suffix:semicolon
 multiline_comment|/* 635 Hash Table entires = 256(2^16) */
-id|pci_read_config_byte
-c_func
-(paren
-id|sis_priv-&gt;pci_dev
-comma
-id|PCI_CLASS_REVISION
-comma
-op_amp
-id|revision
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-id|revision
+id|sis_priv-&gt;chipset_rev
 op_ge
 id|SIS635A_900_REV
 )paren
 op_logical_or
 (paren
-id|revision
+id|sis_priv-&gt;chipset_rev
 op_eq
 id|SIS900B_900_REV
 )paren
@@ -8744,7 +8989,7 @@ c_func
 (paren
 id|mclist-&gt;dmi_addr
 comma
-id|revision
+id|sis_priv-&gt;chipset_rev
 )paren
 suffix:semicolon
 id|mc_filter
@@ -8954,9 +9199,6 @@ id|TxRCMP
 op_or
 id|RxRCMP
 suffix:semicolon
-id|u8
-id|revision
-suffix:semicolon
 id|outl
 c_func
 (paren
@@ -9038,28 +9280,17 @@ id|status
 )paren
 suffix:semicolon
 )brace
-id|pci_read_config_byte
-c_func
-(paren
-id|sis_priv-&gt;pci_dev
-comma
-id|PCI_CLASS_REVISION
-comma
-op_amp
-id|revision
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-id|revision
+id|sis_priv-&gt;chipset_rev
 op_ge
 id|SIS635A_900_REV
 )paren
 op_logical_or
 (paren
-id|revision
+id|sis_priv-&gt;chipset_rev
 op_eq
 id|SIS900B_900_REV
 )paren
