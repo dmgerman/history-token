@@ -875,6 +875,6 @@ multiline_comment|/* These tell get_user_pages() that the first gate page is acc
 DECL|macro|FIXADDR_START
 mdefine_line|#define FIXADDR_START&t;GATE_ADDR
 DECL|macro|FIXADDR_TOP
-mdefine_line|#define FIXADDR_TOP&t;(GATE_ADDR + PAGE_SIZE)
+mdefine_line|#define FIXADDR_TOP&t;(GATE_ADDR + 2*PAGE_SIZE)
 macro_line|#endif /* _ASM_IA64_PGTABLE_H */
 eof
