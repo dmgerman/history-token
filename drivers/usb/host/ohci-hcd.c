@@ -29,7 +29,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/*&n; * TO DO:&n; *&n; *&t;- &quot;disabled&quot; should be the hcd state&n; *&t;- bandwidth alloc to generic code&n; *&t;- lots more testing!!&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2002-Jun-10&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2002-Jun-15&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Roman Weissgaerber &lt;weissg@vienna.at&gt;, David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -123,7 +123,7 @@ id|pipe
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* every endpoint has a ed, locate and fill it */
+multiline_comment|/* every endpoint has a ed, locate and maybe (re)initialize it */
 r_if
 c_cond
 (paren
@@ -131,17 +131,15 @@ op_logical_neg
 (paren
 id|ed
 op_assign
-id|ep_add_ed
+id|ed_get
 (paren
+id|ohci
+comma
 id|urb-&gt;dev
 comma
 id|pipe
 comma
 id|urb-&gt;interval
-comma
-l_int|1
-comma
-id|mem_flags
 )paren
 )paren
 )paren
@@ -1513,6 +1511,7 @@ suffix:semicolon
 r_int
 id|ints
 suffix:semicolon
+multiline_comment|/* we can eliminate a (slow) readl() if _only_ WDH caused this irq */
 r_if
 c_cond
 (paren
