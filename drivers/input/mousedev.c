@@ -222,12 +222,6 @@ comma
 DECL|enumerator|MOUSEDEV_EMUL_EXPS
 id|MOUSEDEV_EMUL_EXPS
 )brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 DECL|macro|PACKET_QUEUE_LEN
 mdefine_line|#define PACKET_QUEUE_LEN&t;16
