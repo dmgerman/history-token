@@ -298,7 +298,7 @@ id|nb
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|do_page_fault
 c_func
 (paren
