@@ -9683,6 +9683,9 @@ suffix:semicolon
 id|u32
 op_star
 id|page
+comma
+op_star
+id|savep
 suffix:semicolon
 id|ENCODE_HEAD
 suffix:semicolon
@@ -9709,6 +9712,10 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* verifier */
+id|savep
+op_assign
+id|p
+suffix:semicolon
 multiline_comment|/* XXX: Following NFSv3, we ignore the READDIR verifier for now. */
 id|WRITE32
 c_func
@@ -9786,9 +9793,15 @@ id|maxcount
 OL
 l_int|0
 )paren
-r_return
+(brace
+id|nfserr
+op_assign
 id|nfserr_toosmall
 suffix:semicolon
+r_goto
+id|err_no_verf
+suffix:semicolon
+)brace
 id|svc_take_page
 c_func
 (paren
@@ -9870,8 +9883,8 @@ c_cond
 (paren
 id|nfserr
 )paren
-r_return
-id|nfserr
+r_goto
+id|err_no_verf
 suffix:semicolon
 r_if
 c_cond
@@ -9993,6 +10006,20 @@ l_int|4
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|err_no_verf
+suffix:colon
+id|p
+op_assign
+id|savep
+suffix:semicolon
+id|ADJUST_ARGS
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|nfserr
 suffix:semicolon
 )brace
 r_static
