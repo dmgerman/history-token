@@ -1397,6 +1397,11 @@ id|NET_IPV4_CONF_ARP_ANNOUNCE
 op_assign
 l_int|18
 comma
+DECL|enumerator|NET_IPV4_CONF_ARP_IGNORE
+id|NET_IPV4_CONF_ARP_IGNORE
+op_assign
+l_int|19
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv4/netfilter */

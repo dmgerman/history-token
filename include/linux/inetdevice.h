@@ -62,6 +62,10 @@ DECL|member|arp_announce
 r_int
 id|arp_announce
 suffix:semicolon
+DECL|member|arp_ignore
+r_int
+id|arp_ignore
+suffix:semicolon
 DECL|member|medium_id
 r_int
 id|medium_id
@@ -222,6 +226,8 @@ DECL|macro|IN_DEV_ARPFILTER
 mdefine_line|#define IN_DEV_ARPFILTER(in_dev)&t;(ipv4_devconf.arp_filter || (in_dev)-&gt;cnf.arp_filter)
 DECL|macro|IN_DEV_ARP_ANNOUNCE
 mdefine_line|#define IN_DEV_ARP_ANNOUNCE(in_dev)&t;(max(ipv4_devconf.arp_announce, (in_dev)-&gt;cnf.arp_announce))
+DECL|macro|IN_DEV_ARP_IGNORE
+mdefine_line|#define IN_DEV_ARP_IGNORE(in_dev)&t;(max(ipv4_devconf.arp_ignore, (in_dev)-&gt;cnf.arp_ignore))
 DECL|struct|in_ifaddr
 r_struct
 id|in_ifaddr
@@ -389,6 +395,27 @@ id|dev
 comma
 id|u32
 id|dst
+comma
+r_int
+id|scope
+)paren
+suffix:semicolon
+r_extern
+id|u32
+id|inet_confirm_addr
+c_func
+(paren
+r_const
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+id|u32
+id|dst
+comma
+id|u32
+id|local
 comma
 r_int
 id|scope
