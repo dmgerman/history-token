@@ -2156,22 +2156,6 @@ op_star
 id|device
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|parport_default_proc_register
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|parport_default_proc_unregister
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* If PC hardware is the only type supported, we can optimise a bit.  */
 macro_line|#if (defined(CONFIG_PARPORT_PC) || defined(CONFIG_PARPORT_PC_MODULE)) &amp;&amp; !(defined(CONFIG_PARPORT_ARC) || defined(CONFIG_PARPORT_ARC_MODULE)) &amp;&amp; !(defined(CONFIG_PARPORT_AMIGA) || defined(CONFIG_PARPORT_AMIGA_MODULE)) &amp;&amp; !(defined(CONFIG_PARPORT_MFC3) || defined(CONFIG_PARPORT_MFC3_MODULE)) &amp;&amp; !(defined(CONFIG_PARPORT_ATARI) || defined(CONFIG_PARPORT_ATARI_MODULE)) &amp;&amp; !(defined(CONFIG_USB_USS720) || defined(CONFIG_USB_USS720_MODULE)) &amp;&amp; !(defined(CONFIG_PARPORT_SUNBPP) || defined(CONFIG_PARPORT_SUNBPP_MODULE)) &amp;&amp; !defined(CONFIG_PARPORT_OTHER)
 DECL|macro|PARPORT_NEED_GENERIC_OPS

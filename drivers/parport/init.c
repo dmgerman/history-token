@@ -517,42 +517,6 @@ comma
 id|parport_setup
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef CONFIG_SYSCTL
-id|parport_default_proc_register
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef CONFIG_SYSCTL
-id|parport_default_proc_unregister
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-macro_line|#else
 DECL|function|parport_init
 r_int
 id|__init
@@ -574,12 +538,6 @@ id|PARPORT_DISABLE
 r_return
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_SYSCTL
-id|parport_default_proc_register
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PARPORT_PC
 id|parport_pc_init
 c_func
