@@ -3061,7 +3061,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;SGI &lt;sgi.com&gt;&quot;
+l_string|&quot;Silicon Graphics, Inc.&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
