@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/of_device.h&gt;
+macro_line|#include &lt;linux/kthread.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 DECL|macro|CONFIG_REG
@@ -294,11 +295,6 @@ r_struct
 id|thermostat
 op_star
 id|thermostat
-suffix:semicolon
-DECL|variable|monitor_thread_id
-r_static
-id|pid_t
-id|monitor_thread_id
 suffix:semicolon
 DECL|variable|monitor_running
 r_static
@@ -1209,30 +1205,6 @@ r_int
 id|mfan_speed
 suffix:semicolon
 macro_line|#endif
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|daemonize
-c_func
-(paren
-l_string|&quot;kfand&quot;
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|current-&gt;comm
-comma
-l_string|&quot;thermostat&quot;
-)paren
-suffix:semicolon
 id|monitor_running
 op_assign
 l_int|1
@@ -1243,7 +1215,7 @@ c_loop
 id|monitor_running
 )paren
 (brace
-id|msleep
+id|msleep_interruptible
 c_func
 (paren
 l_int|2000
@@ -2132,18 +2104,14 @@ op_amp
 id|monitor_task_compl
 )paren
 suffix:semicolon
-id|monitor_thread_id
-op_assign
-id|kernel_thread
+id|kthread_run
 c_func
 (paren
 id|monitor_task
 comma
 id|th
 comma
-id|SIGCHLD
-op_or
-id|CLONE_KERNEL
+l_string|&quot;kfand&quot;
 )paren
 suffix:semicolon
 r_return
