@@ -87,7 +87,7 @@ l_string|&quot;   tr   0(1,%0),0(%2)&bslash;n&quot;
 l_string|&quot;0: tr   0(256,%0),0(%2)&bslash;n&quot;
 l_string|&quot;   la   %0,256(%0)&bslash;n&quot;
 l_string|&quot;1: ahi  %1,-256&bslash;n&quot;
-l_string|&quot;   jp   0b&bslash;n&quot;
+l_string|&quot;   jnm  0b&bslash;n&quot;
 l_string|&quot;   ex   %1,0(1)&quot;
 suffix:colon
 l_string|&quot;+&amp;a&quot;

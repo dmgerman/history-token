@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utobject - ACPI object create/delete/size/cache routines&n; *              $Revision: 77 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utobject - ACPI object create/delete/size/cache routines&n; *              $Revision: 79 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -155,6 +155,113 @@ id|object
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_create_buffer_object&n; *&n; * PARAMETERS:  Buffer_size            - Size of buffer to be created&n; *&n; * RETURN:      Pointer to a new Buffer object&n; *&n; * DESCRIPTION: Create a fully initialized buffer object&n; *&n; ******************************************************************************/
+id|acpi_operand_object
+op_star
+DECL|function|acpi_ut_create_buffer_object
+id|acpi_ut_create_buffer_object
+(paren
+id|ACPI_SIZE
+id|buffer_size
+)paren
+(brace
+id|acpi_operand_object
+op_star
+id|buffer_desc
+suffix:semicolon
+id|u8
+op_star
+id|buffer
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE_U32
+(paren
+l_string|&quot;Ut_create_buffer_object&quot;
+comma
+id|buffer_size
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Create a new Buffer object&n;&t; */
+id|buffer_desc
+op_assign
+id|acpi_ut_create_internal_object
+(paren
+id|ACPI_TYPE_BUFFER
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buffer_desc
+)paren
+(brace
+id|return_PTR
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Allocate the actual buffer */
+id|buffer
+op_assign
+id|ACPI_MEM_CALLOCATE
+(paren
+id|buffer_size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buffer
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Create_buffer: could not allocate size %X&bslash;n&quot;
+comma
+(paren
+id|u32
+)paren
+id|buffer_size
+)paren
+)paren
+suffix:semicolon
+id|acpi_ut_remove_reference
+(paren
+id|buffer_desc
+)paren
+suffix:semicolon
+id|return_PTR
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Complete buffer object initialization */
+id|buffer_desc-&gt;buffer.flags
+op_or_assign
+id|AOPOBJ_DATA_VALID
+suffix:semicolon
+id|buffer_desc-&gt;buffer.pointer
+op_assign
+id|buffer
+suffix:semicolon
+id|buffer_desc-&gt;buffer.length
+op_assign
+(paren
+id|u32
+)paren
+id|buffer_size
+suffix:semicolon
+multiline_comment|/* Return the new buffer descriptor */
+id|return_PTR
+(paren
+id|buffer_desc
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_valid_internal_object&n; *&n; * PARAMETERS:  Object              - Object to be validated&n; *&n; * RETURN:      Validate a pointer to be an acpi_operand_object&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ut_valid_internal_object
@@ -244,16 +351,37 @@ id|object
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|ACPI_DESC_TYPE_CACHED
+suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;**** Obj %p has already been released to internal cache&bslash;n&quot;
+comma
+id|object
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_ERROR
 comma
-l_string|&quot;**** Obj %p is of unknown type&bslash;n&quot;
+l_string|&quot;**** Obj %p has unknown descriptor type %X&bslash;n&quot;
 comma
 id|object
+comma
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|object
+)paren
 )paren
 )paren
 suffix:semicolon

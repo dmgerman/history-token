@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt; /* For struct exception_table_entry */
 multiline_comment|/* Indirect stringification */
@@ -32,8 +33,6 @@ DECL|macro|MODULE_DEVICE_TABLE
 mdefine_line|#define MODULE_DEVICE_TABLE(type,name)
 DECL|macro|MODULE_PARM_DESC
 mdefine_line|#define MODULE_PARM_DESC(var,desc)
-DECL|macro|print_symbol
-mdefine_line|#define print_symbol(format, addr)
 DECL|macro|print_modules
 mdefine_line|#define print_modules()
 DECL|macro|MODULE_NAME_LEN
@@ -281,6 +280,24 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_KALLSYMS
+multiline_comment|/* We keep the symbol and string tables for kallsyms. */
+DECL|member|symtab
+id|Elf_Sym
+op_star
+id|symtab
+suffix:semicolon
+DECL|member|num_syms
+r_int
+r_int
+id|num_syms
+suffix:semicolon
+DECL|member|strtab
+r_char
+op_star
+id|strtab
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* The command line arguments (may be mangled).  People like&n;&t;   keeping pointers to this stuff */
 DECL|member|args
 r_char
@@ -498,6 +515,33 @@ DECL|macro|module_name
 mdefine_line|#define module_name(mod)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct module *__mod = (mod);&t;&t;&bslash;&n;&t;__mod ? __mod-&gt;name : &quot;kernel&quot;;&t;&t;&bslash;&n;})
 DECL|macro|__unsafe
 mdefine_line|#define __unsafe(mod)&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;if (mod &amp;&amp; !(mod)-&gt;unsafe) {&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;printk(KERN_WARNING&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;       &quot;Module %s cannot be unloaded due to unsafe usage in&quot; &bslash;&n;&t;&t;       &quot; %s:%u&bslash;n&quot;, (mod)-&gt;name, __FILE__, __LINE__);&t;     &bslash;&n;&t;&t;(mod)-&gt;unsafe = 1;&t;&t;&t;&t;&t;     &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;} while(0)
+multiline_comment|/* For kallsyms to ask for address resolution.  NULL means not found. */
+r_const
+r_char
+op_star
+id|module_address_lookup
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+op_star
+id|symbolsize
+comma
+r_int
+r_int
+op_star
+id|offset
+comma
+r_char
+op_star
+op_star
+id|modname
+)paren
+suffix:semicolon
 macro_line|#else /* !CONFIG_MODULES... */
 DECL|macro|EXPORT_SYMBOL
 mdefine_line|#define EXPORT_SYMBOL(sym)
@@ -520,6 +564,40 @@ DECL|macro|module_name
 mdefine_line|#define module_name(mod) &quot;kernel&quot;
 DECL|macro|__unsafe
 mdefine_line|#define __unsafe(mod)
+multiline_comment|/* For kallsyms to ask for address resolution.  NULL means not found. */
+DECL|function|module_address_lookup
+r_static
+r_inline
+r_const
+r_char
+op_star
+id|module_address_lookup
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+op_star
+id|symbolsize
+comma
+r_int
+r_int
+op_star
+id|offset
+comma
+r_char
+op_star
+op_star
+id|modname
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_MODULES */
 multiline_comment|/* For archs to search exception tables */
 r_extern
