@@ -2348,8 +2348,8 @@ r_if
 c_cond
 (paren
 id|ip-&gt;i_size
-op_le
-l_int|256
+OL
+id|IDATASIZE
 )paren
 (brace
 id|ip-&gt;i_size
@@ -2543,8 +2543,8 @@ r_if
 c_cond
 (paren
 id|ip-&gt;i_size
-op_le
-l_int|256
+OL
+id|IDATASIZE
 )paren
 r_return
 l_int|0
