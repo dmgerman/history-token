@@ -25,7 +25,7 @@ id|acpi_db_user_commands
 suffix:semicolon
 macro_line|#endif /* ENABLE_DEBUGGER */
 multiline_comment|/* ACPI Core Subsystem */
-macro_line|#ifdef ACPI_DEBUG
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
 DECL|variable|acpi_dbg_layer
 id|EXPORT_SYMBOL
 c_func
@@ -82,7 +82,7 @@ c_func
 id|acpi_ut_trace
 )paren
 suffix:semicolon
-macro_line|#endif /*ACPI_DEBUG*/
+macro_line|#endif /*ACPI_DEBUG_OUTPUT*/
 DECL|variable|acpi_get_handle
 id|EXPORT_SYMBOL
 c_func

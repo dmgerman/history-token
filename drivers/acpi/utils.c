@@ -12,7 +12,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;acpi_utils&quot;
 )paren
 multiline_comment|/* --------------------------------------------------------------------------&n;                            Object Evaluation Helpers&n;   -------------------------------------------------------------------------- */
-macro_line|#ifdef ACPI_DEBUG
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
 DECL|macro|acpi_util_eval_error
 mdefine_line|#define acpi_util_eval_error(h,p,s) {&bslash;&n;&t;char prefix[80] = {&squot;&bslash;0&squot;};&bslash;&n;&t;acpi_buffer buffer = {sizeof(prefix), prefix};&bslash;&n;&t;acpi_get_name(h, ACPI_FULL_PATHNAME, &amp;buffer);&bslash;&n;&t;ACPI_DEBUG_PRINT((ACPI_DB_INFO, &quot;Evaluate [%s.%s]: %s&bslash;n&quot;,&bslash;&n;&t;&t;(char *) prefix, p, acpi_format_exception(s))); }
 macro_line|#else
