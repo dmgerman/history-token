@@ -784,31 +784,35 @@ DECL|macro|TTY_MAGIC
 mdefine_line|#define TTY_MAGIC&t;&t;0x5401
 multiline_comment|/*&n; * These bits are used in the flags field of the tty structure.&n; * &n; * So that interrupts won&squot;t be able to mess up the queues,&n; * copy_to_cooked must be atomic with respect to itself, as must&n; * tty-&gt;write.  Thus, you must use the inline functions set_bit() and&n; * clear_bit() to make things atomic.&n; */
 DECL|macro|TTY_THROTTLED
-mdefine_line|#define TTY_THROTTLED 0
+mdefine_line|#define TTY_THROTTLED &t;&t;0&t;/* Call unthrottle() at threshold min */
 DECL|macro|TTY_IO_ERROR
-mdefine_line|#define TTY_IO_ERROR 1
+mdefine_line|#define TTY_IO_ERROR &t;&t;1&t;/* Canse an I/O error (may be no ldisc too) */
 DECL|macro|TTY_OTHER_CLOSED
-mdefine_line|#define TTY_OTHER_CLOSED 2
+mdefine_line|#define TTY_OTHER_CLOSED &t;2&t;/* Other side (if any) has closed */
 DECL|macro|TTY_EXCLUSIVE
-mdefine_line|#define TTY_EXCLUSIVE 3
+mdefine_line|#define TTY_EXCLUSIVE &t;&t;3&t;/* Exclusive open mode */
 DECL|macro|TTY_DEBUG
-mdefine_line|#define TTY_DEBUG 4
+mdefine_line|#define TTY_DEBUG &t;&t;4&t;/* Debugging */
 DECL|macro|TTY_DO_WRITE_WAKEUP
-mdefine_line|#define TTY_DO_WRITE_WAKEUP 5
+mdefine_line|#define TTY_DO_WRITE_WAKEUP &t;5&t;/* Call write_wakeup after queuing new */
 DECL|macro|TTY_PUSH
-mdefine_line|#define TTY_PUSH 6
+mdefine_line|#define TTY_PUSH &t;&t;6&t;/* n_tty private */
 DECL|macro|TTY_CLOSING
-mdefine_line|#define TTY_CLOSING 7
+mdefine_line|#define TTY_CLOSING &t;&t;7&t;/* -&gt;close() in progress */
 DECL|macro|TTY_DONT_FLIP
-mdefine_line|#define TTY_DONT_FLIP 8
+mdefine_line|#define TTY_DONT_FLIP &t;&t;8&t;/* Defer buffer flip */
+DECL|macro|TTY_LDISC
+mdefine_line|#define TTY_LDISC &t;&t;9&t;/* Line discipline attached */
 DECL|macro|TTY_HW_COOK_OUT
-mdefine_line|#define TTY_HW_COOK_OUT 14
+mdefine_line|#define TTY_HW_COOK_OUT &t;14&t;/* Hardware can do output cooking */
 DECL|macro|TTY_HW_COOK_IN
-mdefine_line|#define TTY_HW_COOK_IN 15
+mdefine_line|#define TTY_HW_COOK_IN &t;&t;15&t;/* Hardware can do input cooking */
 DECL|macro|TTY_PTY_LOCK
-mdefine_line|#define TTY_PTY_LOCK 16
+mdefine_line|#define TTY_PTY_LOCK &t;&t;16&t;/* pty private */
 DECL|macro|TTY_NO_WRITE_SPLIT
-mdefine_line|#define TTY_NO_WRITE_SPLIT 17
+mdefine_line|#define TTY_NO_WRITE_SPLIT &t;17&t;/* Preserve write boundaries to driver */
+DECL|macro|TTY_HUPPED
+mdefine_line|#define TTY_HUPPED &t;&t;18&t;/* Post driver-&gt;hangup() */
 DECL|macro|TTY_WRITE_FLUSH
 mdefine_line|#define TTY_WRITE_FLUSH(tty) tty_write_flush((tty))
 r_extern
@@ -825,13 +829,6 @@ r_extern
 r_struct
 id|termios
 id|tty_std_termios
-suffix:semicolon
-r_extern
-r_struct
-id|tty_ldisc
-id|ldiscs
-(braket
-)braket
 suffix:semicolon
 r_extern
 r_int
@@ -1175,6 +1172,80 @@ r_struct
 id|termios
 op_star
 id|termios
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|tty_ldisc
+op_star
+id|tty_ldisc_ref
+c_func
+(paren
+r_struct
+id|tty_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|tty_ldisc_deref
+c_func
+(paren
+r_struct
+id|tty_ldisc
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|tty_ldisc
+op_star
+id|tty_ldisc_ref_wait
+c_func
+(paren
+r_struct
+id|tty_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|tty_ldisc
+op_star
+id|tty_ldisc_get
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|tty_ldisc_put
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|tty_wakeup
+c_func
+(paren
+r_struct
+id|tty_struct
+op_star
+id|tty
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|tty_ldisc_flush
+c_func
+(paren
+r_struct
+id|tty_struct
+op_star
+id|tty
 )paren
 suffix:semicolon
 r_struct

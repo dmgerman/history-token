@@ -2422,7 +2422,7 @@ l_int|65536
 suffix:semicolon
 multiline_comment|/* We can handle an infinite amount of data. :-) */
 )brace
-multiline_comment|/*&n; * Handle the &squot;receiver data ready&squot; interrupt.&n; * This function is called by the &squot;tty_io&squot; module in the kernel when&n; * a block of SLIP data has been received, which can now be decapsulated&n; * and sent on to some IP layer for further processing.&n; */
+multiline_comment|/*&n; * Handle the &squot;receiver data ready&squot; interrupt.&n; * This function is called by the &squot;tty_io&squot; module in the kernel when&n; * a block of SLIP data has been received, which can now be decapsulated&n; * and sent on to some IP layer for further processing. This will not&n; * be re-entered while running but other ldisc functions may be called&n; * in parallel&n; */
 DECL|function|slip_receive_buf
 r_static
 r_void
@@ -3083,10 +3083,10 @@ r_return
 id|sl
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Open the high-level part of the SLIP channel.&n; * This function is called by the TTY module when the&n; * SLIP line discipline is called for.  Because we are&n; * sure the tty line exists, we only have to link it to&n; * a free SLIP channel...&n; */
+multiline_comment|/*&n; * Open the high-level part of the SLIP channel.&n; * This function is called by the TTY module when the&n; * SLIP line discipline is called for.  Because we are&n; * sure the tty line exists, we only have to link it to&n; * a free SLIP channel...&n; *&n; * Called in process context serialized from other ldisc calls.&n; */
+DECL|function|slip_open
 r_static
 r_int
-DECL|function|slip_open
 id|slip_open
 c_func
 (paren
@@ -3207,6 +3207,7 @@ id|sl-&gt;pid
 op_assign
 id|current-&gt;pid
 suffix:semicolon
+multiline_comment|/* FIXME: already done before we were called - seems this can go */
 r_if
 c_cond
 (paren
@@ -3214,19 +3215,6 @@ id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
 op_member_access_from_pointer
-id|flush_buffer
-c_func
-(paren
-id|tty
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tty-&gt;ldisc.flush_buffer
-)paren
-id|tty-&gt;ldisc
-dot
 id|flush_buffer
 c_func
 (paren
@@ -3386,8 +3374,8 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Let me to blame a bit.&n;   1. TTY module calls this funstion on soft interrupt.&n;   2. TTY module calls this function WITH MASKED INTERRUPTS!&n;   3. TTY module does not notify us about line discipline&n;      shutdown,&n;&n;   Seems, now it is clean. The solution is to consider netdevice and&n;   line discipline sides as two independent threads.&n;&n;   By-product (not desired): sl? does not feel hangups and remains open.&n;   It is supposed, that user level program (dip, diald, slattach...)&n;   will catch SIGHUP and make the rest of work. &n;&n;   I see no way to make more with current tty code. --ANK&n; */
-multiline_comment|/*&n; * Close down a SLIP channel.&n; * This means flushing out any pending queues, and then restoring the&n; * TTY line discipline to what it was before it got hooked to SLIP&n; * (which usually is TTY again).&n; */
+multiline_comment|/*&n;&n;  FIXME: 1,2 are fixed 3 was never true anyway.&n;  &n;   Let me to blame a bit.&n;   1. TTY module calls this funstion on soft interrupt.&n;   2. TTY module calls this function WITH MASKED INTERRUPTS!&n;   3. TTY module does not notify us about line discipline&n;      shutdown,&n;&n;   Seems, now it is clean. The solution is to consider netdevice and&n;   line discipline sides as two independent threads.&n;&n;   By-product (not desired): sl? does not feel hangups and remains open.&n;   It is supposed, that user level program (dip, diald, slattach...)&n;   will catch SIGHUP and make the rest of work. &n;&n;   I see no way to make more with current tty code. --ANK&n; */
+multiline_comment|/*&n; * Close down a SLIP channel.&n; * This means flushing out any pending queues, and then returning. This&n; * call is serialized against other ldisc functions.&n; */
 r_static
 r_void
 DECL|function|slip_close
