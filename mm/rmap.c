@@ -911,6 +911,9 @@ r_int
 r_int
 op_star
 id|mapcount
+comma
+r_int
+id|ignore_token
 )paren
 (brace
 r_struct
@@ -1092,6 +1095,9 @@ id|mm
 op_ne
 id|current-&gt;mm
 op_logical_and
+op_logical_neg
+id|ignore_token
+op_logical_and
 id|has_swap_token
 c_func
 (paren
@@ -1140,6 +1146,9 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_int
+id|ignore_token
 )paren
 (brace
 r_int
@@ -1208,6 +1217,8 @@ id|vma
 comma
 op_amp
 id|mapcount
+comma
+id|ignore_token
 )paren
 suffix:semicolon
 r_if
@@ -1241,6 +1252,9 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_int
+id|ignore_token
 )paren
 (brace
 r_int
@@ -1371,6 +1385,8 @@ id|vma
 comma
 op_amp
 id|mapcount
+comma
+id|ignore_token
 )paren
 suffix:semicolon
 r_if
@@ -1406,6 +1422,9 @@ id|page
 comma
 r_int
 id|is_locked
+comma
+r_int
+id|ignore_token
 )paren
 (brace
 r_int
@@ -1464,6 +1483,8 @@ id|page_referenced_anon
 c_func
 (paren
 id|page
+comma
+id|ignore_token
 )paren
 suffix:semicolon
 r_else
@@ -1478,6 +1499,8 @@ id|page_referenced_file
 c_func
 (paren
 id|page
+comma
+id|ignore_token
 )paren
 suffix:semicolon
 r_else
@@ -1506,6 +1529,8 @@ id|page_referenced_file
 c_func
 (paren
 id|page
+comma
+id|ignore_token
 )paren
 suffix:semicolon
 id|unlock_page

@@ -1082,6 +1082,10 @@ c_func
 id|page
 comma
 l_int|1
+comma
+id|sc-&gt;priority
+op_le
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* In active use or really unfreeable?  Activate it. */
@@ -2356,6 +2360,10 @@ c_func
 (paren
 id|page
 comma
+l_int|0
+comma
+id|sc-&gt;priority
+op_le
 l_int|0
 )paren
 )paren
