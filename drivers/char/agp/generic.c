@@ -1443,7 +1443,7 @@ op_and_assign
 op_complement
 id|AGPSTAT_SBA
 suffix:semicolon
-multiline_comment|/* Set speed */
+multiline_comment|/* Set rate */
 r_if
 c_cond
 (paren
@@ -1601,6 +1601,57 @@ id|AGPSTAT2_4X
 )paren
 suffix:semicolon
 multiline_comment|/* 1X */
+multiline_comment|/* Apply any errata. */
+r_if
+c_cond
+(paren
+id|agp_bridge-&gt;flags
+op_amp
+id|AGP_ERRATA_FASTWRITES
+)paren
+op_star
+id|bridge_agpstat
+op_and_assign
+op_complement
+id|AGPSTAT_FW
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|agp_bridge-&gt;flags
+op_amp
+id|AGP_ERRATA_SBA
+)paren
+op_star
+id|bridge_agpstat
+op_and_assign
+op_complement
+id|AGPSTAT_SBA
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|agp_bridge-&gt;flags
+op_amp
+id|AGP_ERRATA_1X
+)paren
+(brace
+op_star
+id|bridge_agpstat
+op_and_assign
+op_complement
+(paren
+id|AGPSTAT2_2X
+op_or
+id|AGPSTAT2_4X
+)paren
+suffix:semicolon
+op_star
+id|bridge_agpstat
+op_or_assign
+id|AGPSTAT2_1X
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * requested_mode = Mode requested by (typically) X.&n; * bridge_agpstat = PCI_AGP_STATUS from agp bridge.&n; * vga_agpstat = PCI_AGP_STATUS from graphic card.&n; */
 DECL|function|agp_v3_parse_one
@@ -1825,7 +1876,7 @@ op_amp
 id|AGPSTAT_MODE_3_0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Caller hasn&squot;t a clue what its doing. Bridge is in 3.0 mode,&n;&t;&t; * have been passed a 3.0 mode, but with 2.x speed bits set.&n;&t;&t; * AGP2.x 4x -&gt; AGP3.0 4x.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Caller hasn&squot;t a clue what it is doing. Bridge is in 3.0 mode,&n;&t;&t; * have been passed a 3.0 mode, but with 2.x speed bits set.&n;&t;&t; * AGP2.x 4x -&gt; AGP3.0 4x.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1987,7 +2038,8 @@ op_or
 id|AGPSTAT3_RSVD
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|done
 suffix:semicolon
 )brace
 r_else
@@ -2081,7 +2133,62 @@ id|PFX
 l_string|&quot;Graphic card couldn&squot;t do AGP x4.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
+)brace
+id|done
+suffix:colon
+multiline_comment|/* Apply any errata. */
+r_if
+c_cond
+(paren
+id|agp_bridge-&gt;flags
+op_amp
+id|AGP_ERRATA_FASTWRITES
+)paren
+op_star
+id|bridge_agpstat
+op_and_assign
+op_complement
+id|AGPSTAT_FW
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|agp_bridge-&gt;flags
+op_amp
+id|AGP_ERRATA_SBA
+)paren
+op_star
+id|bridge_agpstat
+op_and_assign
+op_complement
+id|AGPSTAT_SBA
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|agp_bridge-&gt;flags
+op_amp
+id|AGP_ERRATA_1X
+)paren
+(brace
+op_star
+id|bridge_agpstat
+op_and_assign
+op_complement
+(paren
+id|AGPSTAT2_2X
+op_or
+id|AGPSTAT2_4X
+)paren
+suffix:semicolon
+op_star
+id|bridge_agpstat
+op_or_assign
+id|AGPSTAT2_1X
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * agp_collect_device_status - determine correct agp_cmd from various agp_stat&squot;s&n; * @bridge: an agp_bridge_data struct allocated for the AGP host bridge.&n; * @requested_mode: requested agp_stat from userspace (Typically from X)&n; * @bridge_agpstat: current agp_stat from AGP bridge.&n; *&n; * This function will hunt for an AGP graphics card, and try to match&n; * the requested mode to the capabilities of both the bridge and the card.&n; */

@@ -483,6 +483,10 @@ DECL|member|capndx
 r_int
 id|capndx
 suffix:semicolon
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
 DECL|member|major_version
 r_char
 id|major_version
@@ -1024,5 +1028,11 @@ DECL|macro|AGP2_RESERVED_MASK
 mdefine_line|#define AGP2_RESERVED_MASK 0x00fffcc8
 DECL|macro|AGP3_RESERVED_MASK
 mdefine_line|#define AGP3_RESERVED_MASK 0x00ff00cc
+DECL|macro|AGP_ERRATA_FASTWRITES
+mdefine_line|#define AGP_ERRATA_FASTWRITES 1&lt;&lt;0
+DECL|macro|AGP_ERRATA_SBA
+mdefine_line|#define AGP_ERRATA_SBA&t; 1&lt;&lt;1
+DECL|macro|AGP_ERRATA_1X
+mdefine_line|#define AGP_ERRATA_1X 1&lt;&lt;2
 macro_line|#endif&t;/* _AGP_BACKEND_PRIV_H */
 eof
