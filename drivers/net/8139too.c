@@ -2,7 +2,7 @@ multiline_comment|/*&n;&n;&t;8139too.c: A RealTek RTL-8139 Fast Ethernet driver 
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;8139too&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.9.25&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.9.26&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
