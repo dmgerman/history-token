@@ -1,10 +1,8 @@
 multiline_comment|/* &n; * Cryptographic API.&n; *&n; * MD4 Message Digest Algorithm (RFC1320).&n; *&n; * Implementation derived from Andrew Tridgell and Steve French&squot;s&n; * CIFS MD4 implementation, and the cryptoapi implementation&n; * originally based on the public domain implementation written&n; * by Colin Plumb in 1993.&n; *&n; * Copyright (c) Andrew Tridgell 1997-1998.&n; * Modified by Steve French (sfrench@us.ibm.com) 2002&n; * Copyright (c) Cryptoapi developers.&n; * Copyright (c) 2002 David S. Miller (davem@redhat.com)&n; * Copyright (c) 2002 James Morris &lt;jmorris@intercode.com.au&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|MD4_DIGEST_SIZE
 mdefine_line|#define MD4_DIGEST_SIZE&t;&t;16
