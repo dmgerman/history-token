@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  pci_irq.c - ACPI PCI Interrupt Routing ($Revision: 7 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *  Copyright (C) 2002       Dominik Brodowski &lt;devel@brodo.de&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/*&n; *  pci_irq.c - ACPI PCI Interrupt Routing ($Revision: 10 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *  Copyright (C) 2002       Dominik Brodowski &lt;devel@brodo.de&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -750,6 +750,7 @@ id|entry-&gt;irq
 op_logical_and
 id|entry-&gt;link.handle
 )paren
+(brace
 id|entry-&gt;irq
 op_assign
 id|acpi_pci_link_get_irq
@@ -760,6 +761,31 @@ comma
 id|entry-&gt;link.index
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|entry-&gt;irq
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+c_func
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Invalid IRQ link routing entry&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_VALUE
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
+)brace
 r_else
 r_if
 c_cond
@@ -1052,7 +1078,7 @@ id|ENODEV
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * First we check the PCI IRQ routing table (PRT) for an IRQ.  PRT&n;&t; * values override any BIOS-assinged IRQs set during boot.&n;&t; */
+multiline_comment|/* &n;&t; * First we check the PCI IRQ routing table (PRT) for an IRQ.  PRT&n;&t; * values override any BIOS-assigned IRQs set during boot.&n;&t; */
 id|irq
 op_assign
 id|acpi_pci_irq_lookup
@@ -1088,20 +1114,12 @@ comma
 id|pin
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|irq
-)paren
-id|dev-&gt;irq
-op_assign
-id|irq
-suffix:semicolon
+multiline_comment|/*&n;&t; * No IRQ known to the ACPI subsystem - maybe the BIOS / &n;&t; * driver reported one, then use it. Exit in any case.&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;irq
+id|irq
 )paren
 (brace
 id|printk
@@ -1109,7 +1127,7 @@ c_func
 (paren
 id|KERN_WARNING
 id|PREFIX
-l_string|&quot;No IRQ known for interrupt pin %c of device %s&bslash;n&quot;
+l_string|&quot;No IRQ known for interrupt pin %c of device %s&quot;
 comma
 (paren
 l_char|&squot;A&squot;
@@ -1120,13 +1138,30 @@ comma
 id|dev-&gt;slot_name
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;irq
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; - using IRQ %d&bslash;n&quot;
+comma
+id|dev-&gt;irq
+)paren
+suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-l_int|0
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 )brace
+id|dev-&gt;irq
+op_assign
+id|irq
+suffix:semicolon
 id|ACPI_DEBUG_PRINT
 c_func
 (paren
