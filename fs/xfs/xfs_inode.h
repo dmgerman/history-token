@@ -352,9 +352,6 @@ DECL|typedef|xfs_ihash_t
 )brace
 id|xfs_ihash_t
 suffix:semicolon
-multiline_comment|/*&n; * Inode hashing and hash bucket locking.&n; */
-DECL|macro|XFS_BUCKETS
-mdefine_line|#define XFS_BUCKETS(mp) (37*(mp)-&gt;m_sb.sb_agcount-1)
 DECL|macro|XFS_IHASH
 mdefine_line|#define XFS_IHASH(mp,ino) ((mp)-&gt;m_ihash + (((uint)(ino)) % (mp)-&gt;m_ihsize))
 multiline_comment|/*&n; * This is the xfs inode cluster hash.  This hash is used by xfs_iflush to&n; * find inodes that share a cluster and can be flushed to disk at the same&n; * time.&n; */
@@ -409,6 +406,8 @@ DECL|typedef|xfs_chash_t
 )brace
 id|xfs_chash_t
 suffix:semicolon
+DECL|macro|XFS_CHASH
+mdefine_line|#define XFS_CHASH(mp,blk) ((mp)-&gt;m_chash + (((uint)blk) % (mp)-&gt;m_chsize))
 multiline_comment|/*&n; * This is the xfs in-core inode structure.&n; * Most of the on-disk inode is embedded in the i_d field.&n; *&n; * The extent pointers/inline file space, however, are managed&n; * separately.  The memory for this information is pointed to by&n; * the if_u1 unions depending on the type of the data.&n; * This is used to linearize the array of extents for fast in-core&n; * access.  This is used until the file&squot;s number of extents&n; * surpasses XFS_MAX_INCORE_EXTENTS, at which point all extent pointers&n; * are accessed through the buffer cache.&n; *&n; * Other state kept in the in-core inode is used for identification,&n; * locking, transactional updating, etc of the inode.&n; *&n; * Generally, we do not want to hold the i_rlock while holding the&n; * i_ilock. Hierarchy is i_iolock followed by i_rlock.&n; *&n; * xfs_iptr_t contains all the inode fields upto and including the&n; * i_mnext and i_mprev fields, it is used as a marker in the inode&n; * chain off the mount structure by xfs_sync calls.&n; */
 r_typedef
 r_struct
@@ -1028,9 +1027,6 @@ mdefine_line|#define&t;XFS_BHVTOI(bhvp)&t;&bslash;&n;&t;((xfs_inode_t *)((char *
 macro_line|#endif
 DECL|macro|BHV_IS_XFS
 mdefine_line|#define BHV_IS_XFS(bdp)&t;&t;(BHV_OPS(bdp) == &amp;xfs_vnodeops)
-multiline_comment|/*&n; * Pick the inode cluster hash bucket&n; * (m_chash is the same size as m_ihash)&n; */
-DECL|macro|XFS_CHASH
-mdefine_line|#define XFS_CHASH(mp,blk) ((mp)-&gt;m_chash + (((uint)blk) % (mp)-&gt;m_chsize))
 multiline_comment|/*&n; * For multiple groups support: if S_ISGID bit is set in the parent&n; * directory, group of new file is set to that of the parent, and&n; * new subdirectory gets S_ISGID bit from parent.&n; */
 DECL|macro|XFS_INHERIT_GID
 mdefine_line|#define XFS_INHERIT_GID(pip, vfsp)&t;&bslash;&n;&t;(((vfsp)-&gt;vfs_flag &amp; VFS_GRPID) || ((pip)-&gt;i_d.di_mode &amp; S_ISGID))

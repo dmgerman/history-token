@@ -203,5 +203,10 @@ id|block_device
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|export_operations
+id|linvfs_export_ops
+suffix:semicolon
 macro_line|#endif&t;/* __XFS_SUPER_H__ */
 eof
