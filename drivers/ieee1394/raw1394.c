@@ -1126,6 +1126,9 @@ r_struct
 id|pending_request
 op_star
 id|req
+comma
+op_star
+id|req_next
 suffix:semicolon
 r_struct
 id|iso_block_store
@@ -1380,10 +1383,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|list_for_each_entry
+id|list_for_each_entry_safe
 c_func
 (paren
 id|req
+comma
+id|req_next
 comma
 op_amp
 id|reqs
@@ -1443,6 +1448,9 @@ r_struct
 id|pending_request
 op_star
 id|req
+comma
+op_star
+id|req_next
 suffix:semicolon
 r_struct
 id|iso_block_store
@@ -1689,10 +1697,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|list_for_each_entry
+id|list_for_each_entry_safe
 c_func
 (paren
 id|req
+comma
+id|req_next
 comma
 op_amp
 id|reqs
