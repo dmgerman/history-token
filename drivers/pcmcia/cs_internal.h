@@ -796,14 +796,6 @@ r_struct
 id|list_head
 id|pcmcia_socket_list
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-r_extern
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_pccard
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef PCMCIA_DEBUG
 r_extern
 r_int

@@ -360,6 +360,15 @@ id|pcmcia_unregister_driver
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
+DECL|variable|proc_pccard
+r_static
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_pccard
+op_assign
+l_int|NULL
+suffix:semicolon
 DECL|function|proc_read_drivers_callback
 r_static
 r_int
@@ -3868,6 +3877,16 @@ op_assign
 id|i
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
+id|proc_pccard
+op_assign
+id|proc_mkdir
+c_func
+(paren
+l_string|&quot;pccard&quot;
+comma
+id|proc_bus
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3923,6 +3942,7 @@ c_cond
 (paren
 id|proc_pccard
 )paren
+(brace
 id|remove_proc_entry
 c_func
 (paren
@@ -3931,6 +3951,15 @@ comma
 id|proc_pccard
 )paren
 suffix:semicolon
+id|remove_proc_entry
+c_func
+(paren
+l_string|&quot;pccard&quot;
+comma
+id|proc_bus
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 r_if
 c_cond

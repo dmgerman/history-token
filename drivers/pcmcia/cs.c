@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -245,16 +244,6 @@ c_func
 id|pcmcia_socket_list_rwsem
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|variable|proc_pccard
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_pccard
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*====================================================================*/
 multiline_comment|/* String tables for error messages */
 DECL|struct|lookup_t
@@ -11518,15 +11507,6 @@ c_func
 id|MTDHelperEntry
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|variable|proc_pccard
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|proc_pccard
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|pcmcia_socket_class
 r_struct
 r_class
@@ -11626,18 +11606,6 @@ op_amp
 id|pcmcia_socket
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-id|proc_pccard
-op_assign
-id|proc_mkdir
-c_func
-(paren
-l_string|&quot;pccard&quot;
-comma
-id|proc_bus
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -11659,23 +11627,6 @@ id|KERN_INFO
 l_string|&quot;unloading Kernel Card Services&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-r_if
-c_cond
-(paren
-id|proc_pccard
-)paren
-(brace
-id|remove_proc_entry
-c_func
-(paren
-l_string|&quot;pccard&quot;
-comma
-id|proc_bus
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|release_resource_db
 c_func
 (paren
