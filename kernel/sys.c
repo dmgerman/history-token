@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/kernel/sys.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
@@ -4770,7 +4771,7 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if !defined(__ia64__) &amp;&amp; !defined(CONFIG_V850)
+macro_line|#if defined(COMPAT_RLIM_OLD_INFINITY) || !(defined(CONFIG_IA64) || defined(CONFIG_V850))
 multiline_comment|/*&n; *&t;Back compatibility for getrlimit. Needed for some apps.&n; */
 DECL|function|sys_old_getrlimit
 id|asmlinkage
