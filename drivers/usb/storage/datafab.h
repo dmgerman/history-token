@@ -34,6 +34,7 @@ id|ssize
 suffix:semicolon
 singleline_comment|// sector size in bytes
 DECL|member|lun
+r_int
 r_char
 id|lun
 suffix:semicolon
