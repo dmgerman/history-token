@@ -2788,7 +2788,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Set up a signal frame for a &quot;real-time&quot; signal handler&n; * (one which gets siginfo).&n; */
 DECL|function|handle_rt_signal32
 r_static
-r_void
+r_int
 id|handle_rt_signal32
 c_func
 (paren
@@ -3136,6 +3136,7 @@ id|SIGTRAP
 )paren
 suffix:semicolon
 r_return
+l_int|1
 suffix:semicolon
 id|badframe
 suffix:colon
@@ -3160,6 +3161,9 @@ id|sig
 comma
 id|current
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|do_setcontext32
@@ -3652,7 +3656,7 @@ suffix:semicolon
 multiline_comment|/*&n; * OK, we&squot;re invoking a handler&n; */
 DECL|function|handle_signal32
 r_static
-r_void
+r_int
 id|handle_signal32
 c_func
 (paren
@@ -3955,6 +3959,7 @@ id|SIGTRAP
 )paren
 suffix:semicolon
 r_return
+l_int|1
 suffix:semicolon
 id|badframe
 suffix:colon
@@ -3980,6 +3985,9 @@ id|sig
 comma
 id|current
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Do a signal return; undo the signal stack.&n; */
@@ -4433,6 +4441,8 @@ id|ka.sa.sa_flags
 op_amp
 id|SA_SIGINFO
 )paren
+id|ret
+op_assign
 id|handle_rt_signal32
 c_func
 (paren
@@ -4452,6 +4462,8 @@ id|newsp
 )paren
 suffix:semicolon
 r_else
+id|ret
+op_assign
 id|handle_signal32
 c_func
 (paren
@@ -4473,6 +4485,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ret
+op_logical_and
 op_logical_neg
 (paren
 id|ka.sa.sa_flags
@@ -4524,7 +4538,7 @@ id|current-&gt;sighand-&gt;siglock
 suffix:semicolon
 )brace
 r_return
-l_int|1
+id|ret
 suffix:semicolon
 )brace
 eof

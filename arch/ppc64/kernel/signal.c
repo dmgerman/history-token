@@ -1603,7 +1603,7 @@ suffix:semicolon
 )brace
 DECL|function|setup_rt_frame
 r_static
-r_void
+r_int
 id|setup_rt_frame
 c_func
 (paren
@@ -2057,6 +2057,7 @@ id|SIGTRAP
 )paren
 suffix:semicolon
 r_return
+l_int|1
 suffix:semicolon
 id|badframe
 suffix:colon
@@ -2082,11 +2083,14 @@ comma
 id|current
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * OK, we&squot;re invoking a handler&n; */
 DECL|function|handle_signal
 r_static
-r_void
+r_int
 id|handle_signal
 c_func
 (paren
@@ -2113,7 +2117,12 @@ op_star
 id|regs
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 multiline_comment|/* Set up Signal Frame */
+id|ret
+op_assign
 id|setup_rt_frame
 c_func
 (paren
@@ -2131,6 +2140,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ret
+op_logical_and
 op_logical_neg
 (paren
 id|ka-&gt;sa.sa_flags
@@ -2181,6 +2192,9 @@ id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
+r_return
+id|ret
+suffix:semicolon
 )brace
 DECL|function|syscall_restart
 r_static
@@ -2375,6 +2389,7 @@ op_amp
 id|ka
 )paren
 suffix:semicolon
+r_return
 id|handle_signal
 c_func
 (paren
@@ -2390,9 +2405,6 @@ id|oldset
 comma
 id|regs
 )paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 r_if
