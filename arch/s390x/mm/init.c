@@ -855,9 +855,17 @@ id|printk
 l_string|&quot;Freeing unused kernel memory: %ldk freed&bslash;n&quot;
 comma
 (paren
+(paren
+r_int
+r_int
+)paren
 op_amp
 id|__init_end
 op_minus
+(paren
+r_int
+r_int
+)paren
 op_amp
 id|__init_begin
 )paren
