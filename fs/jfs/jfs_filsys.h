@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2003&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2003&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#ifndef _H_JFS_FILSYS
 DECL|macro|_H_JFS_FILSYS
 mdefine_line|#define _H_JFS_FILSYS
@@ -7,6 +7,13 @@ multiline_comment|/*&n; *&t; file system option (superblock flag)&n; */
 multiline_comment|/* mount time flag to disable journaling to disk */
 DECL|macro|JFS_NOINTEGRITY
 mdefine_line|#define JFS_NOINTEGRITY 0x00000010
+multiline_comment|/* mount time flags for error handling */
+DECL|macro|JFS_ERR_REMOUNT_RO
+mdefine_line|#define JFS_ERR_REMOUNT_RO 0x00000002   /* remount read-only */
+DECL|macro|JFS_ERR_CONTINUE
+mdefine_line|#define JFS_ERR_CONTINUE   0x00000004   /* continue */
+DECL|macro|JFS_ERR_PANIC
+mdefine_line|#define JFS_ERR_PANIC      0x00000008   /* panic */
 multiline_comment|/* platform option (conditional compilation) */
 DECL|macro|JFS_AIX
 mdefine_line|#define JFS_AIX&t;&t;0x80000000&t;/* AIX support */

@@ -1,6 +1,7 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2003&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
+macro_line|#include &quot;jfs_superblock.h&quot;
 macro_line|#include &quot;jfs_dmap.h&quot;
 macro_line|#include &quot;jfs_extent.h&quot;
 macro_line|#include &quot;jfs_debug.h&quot;
@@ -1191,24 +1192,35 @@ id|xp-&gt;flag
 op_and_assign
 id|XAD_NOTRECORDED
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|xadl.nxad
-op_eq
+op_ne
 l_int|1
-)paren
-suffix:semicolon
-m_assert
-(paren
+op_logical_or
 id|lengthXAD
 c_func
 (paren
 id|xp
 )paren
-op_eq
+op_ne
 id|nbperpage
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;extHint: corrupt xtree&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 r_return
 (paren
 l_int|0
