@@ -1093,6 +1093,8 @@ id|MCI_DATAEND
 op_or
 id|MCI_DATABLOCKEND
 )paren
+op_logical_and
+id|data
 )paren
 id|mmci_data_irq
 c_func
