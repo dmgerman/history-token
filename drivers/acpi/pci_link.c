@@ -1131,10 +1131,6 @@ l_int|0
 op_assign
 id|irq
 suffix:semicolon
-id|resource.end.id
-op_assign
-id|ACPI_RSTYPE_END_TAG
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -1178,11 +1174,11 @@ op_assign
 id|irq
 suffix:semicolon
 multiline_comment|/* ignore resource_source, it&squot;s optional */
+)brace
 id|resource.end.id
 op_assign
 id|ACPI_RSTYPE_END_TAG
 suffix:semicolon
-)brace
 id|status
 op_assign
 id|acpi_set_current_resources
