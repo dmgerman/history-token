@@ -1842,6 +1842,11 @@ id|rn-&gt;family
 comma
 id|rn-&gt;family
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|rn-&gt;id
 comma
 id|rn-&gt;crc
