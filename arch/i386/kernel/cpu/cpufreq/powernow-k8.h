@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   (c) 2003 Advanced Micro Devices, Inc.&n; *  Your use of this code is subject to the terms and conditions of the&n; *  GNU general public license version 2. See &quot;../../../COPYING&quot; or&n; *  http://www.gnu.org/licenses/gpl.html&n; */
+multiline_comment|/*&n; *  (c) 2003, 2004 Advanced Micro Devices, Inc.&n; *  Your use of this code is subject to the terms and conditions of the&n; *  GNU general public license version 2. See &quot;COPYING&quot; or&n; *  http://www.gnu.org/licenses/gpl.html&n; */
 DECL|struct|powernow_k8_data
 r_struct
 id|powernow_k8_data
@@ -64,23 +64,13 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* processor&squot;s cpuid instruction support */
 DECL|macro|CPUID_PROCESSOR_SIGNATURE
-mdefine_line|#define CPUID_PROCESSOR_SIGNATURE             1&t;/* function 1               */
-DECL|macro|CPUID_F1_FAM
-mdefine_line|#define CPUID_F1_FAM                 0x00000f00&t;/* family mask              */
-DECL|macro|CPUID_F1_XFAM
-mdefine_line|#define CPUID_F1_XFAM                0x0ff00000&t;/* extended family mask     */
-DECL|macro|CPUID_F1_MOD
-mdefine_line|#define CPUID_F1_MOD                 0x000000f0&t;/* model mask               */
-DECL|macro|CPUID_F1_STEP
-mdefine_line|#define CPUID_F1_STEP                0x0000000f&t;/* stepping level mask      */
+mdefine_line|#define CPUID_PROCESSOR_SIGNATURE             1&t;/* function 1 */
 DECL|macro|CPUID_XFAM_MOD
-mdefine_line|#define CPUID_XFAM_MOD               0x0ff00ff0&t;/* xtended fam, fam + model */
+mdefine_line|#define CPUID_XFAM_MOD               0x0ff00ff0&t;/* extended fam, fam + model */
 DECL|macro|ATHLON64_XFAM_MOD
-mdefine_line|#define ATHLON64_XFAM_MOD            0x00000f40&t;/* xtended fam, fam + model */
+mdefine_line|#define ATHLON64_XFAM_MOD            0x00000f40&t;/* extended fam, fam + model */
 DECL|macro|OPTERON_XFAM_MOD
-mdefine_line|#define OPTERON_XFAM_MOD             0x00000f50&t;/* xtended fam, fam + model */
-DECL|macro|ATHLON64_REV_C0
-mdefine_line|#define ATHLON64_REV_C0                       8
+mdefine_line|#define OPTERON_XFAM_MOD             0x00000f50&t;/* extended fam, fam + model */
 DECL|macro|CPUID_GET_MAX_CAPABILITIES
 mdefine_line|#define CPUID_GET_MAX_CAPABILITIES   0x80000000
 DECL|macro|CPUID_FREQ_VOLT_CAPABILITIES
@@ -130,9 +120,9 @@ mdefine_line|#define MSR_C_HI_STP_GNT_BENIGN   0x00000001
 multiline_comment|/*&n; * There are restrictions frequencies have to follow:&n; * - only 1 entry in the low fid table ( &lt;=1.4GHz )&n; * - lowest entry in the high fid table must be &gt;= 2 * the entry in the&n; *   low fid table&n; * - lowest entry in the high fid table must be a &lt;= 200MHz + 2 * the entry&n; *   in the low fid table&n; * - the parts can only step at 200 MHz intervals, so 1.9 GHz is never valid&n; * - lowest frequency must be &gt;= interprocessor hypertransport link speed&n; *   (only applies to MP systems obviously)&n; */
 multiline_comment|/* fids (frequency identifiers) are arranged in 2 tables - lo and hi */
 DECL|macro|LO_FID_TABLE_TOP
-mdefine_line|#define LO_FID_TABLE_TOP     6
+mdefine_line|#define LO_FID_TABLE_TOP     6&t;/* fid values marking the boundary    */
 DECL|macro|HI_FID_TABLE_BOTTOM
-mdefine_line|#define HI_FID_TABLE_BOTTOM  8
+mdefine_line|#define HI_FID_TABLE_BOTTOM  8&t;/* between the low and high tables    */
 DECL|macro|LO_VCOFREQ_TABLE_TOP
 mdefine_line|#define LO_VCOFREQ_TABLE_TOP    1400&t;/* corresponding vco frequency values */
 DECL|macro|HI_VCOFREQ_TABLE_BOTTOM
@@ -159,7 +149,34 @@ DECL|macro|MAXIMUM_VID_STEPS
 mdefine_line|#define MAXIMUM_VID_STEPS 1  /* Current cpus only allow a single step of 25mV */
 DECL|macro|VST_UNITS_20US
 mdefine_line|#define VST_UNITS_20US 20   /* Voltage Stabalization Time is in units of 20us */
-multiline_comment|/*&n;Version 1.4 of the PSB table. This table is constructed by BIOS and is&n;to tell the OS&squot;s power management driver which VIDs and FIDs are&n;supported by this particular processor. This information is obtained from&n;the data sheets for each processor model by the system vendor and&n;incorporated into the BIOS.&n;If the data in the PSB / PST is wrong, then this driver will program the&n;wrong values into hardware, which is very likely to lead to a crash.&n;*/
+multiline_comment|/*&n; * Most values of interest are enocoded in a single field of the _PSS&n; * entries: the &quot;control&quot; value.&n; */
+DECL|macro|IRT_SHIFT
+mdefine_line|#define IRT_SHIFT      30
+DECL|macro|RVO_SHIFT
+mdefine_line|#define RVO_SHIFT      28
+DECL|macro|PLL_L_SHIFT
+mdefine_line|#define PLL_L_SHIFT    20
+DECL|macro|MVS_SHIFT
+mdefine_line|#define MVS_SHIFT      18
+DECL|macro|VST_SHIFT
+mdefine_line|#define VST_SHIFT      11
+DECL|macro|VID_SHIFT
+mdefine_line|#define VID_SHIFT       6
+DECL|macro|IRT_MASK
+mdefine_line|#define IRT_MASK        3
+DECL|macro|RVO_MASK
+mdefine_line|#define RVO_MASK        3
+DECL|macro|PLL_L_MASK
+mdefine_line|#define PLL_L_MASK   0x7f
+DECL|macro|MVS_MASK
+mdefine_line|#define MVS_MASK        3
+DECL|macro|VST_MASK
+mdefine_line|#define VST_MASK     0x7f
+DECL|macro|VID_MASK
+mdefine_line|#define VID_MASK     0x1f
+DECL|macro|FID_MASK
+mdefine_line|#define FID_MASK     0x3f
+multiline_comment|/*&n; * Version 1.4 of the PSB table. This table is constructed by BIOS and is&n; * to tell the OS&squot;s power management driver which VIDs and FIDs are&n; * supported by this particular processor.&n; * If the data in the PSB / PST is wrong, then this driver will program the&n; * wrong values into hardware, which is very likely to lead to a crash.&n; */
 DECL|macro|PSB_ID_STRING
 mdefine_line|#define PSB_ID_STRING      &quot;AMDK7PNOW!&quot;
 DECL|macro|PSB_ID_STRING_LEN
