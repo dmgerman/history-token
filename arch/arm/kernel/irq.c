@@ -238,6 +238,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|disable_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|disable_irq
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;enable_irq - enable interrupt handling on an irq&n; *&t;@irq: Interrupt to enable&n; *&n; *&t;Re-enables the processing of interrupts on this IRQ line.&n; *&t;Note that this may call the interrupt handler, so you may&n; *&t;get unexpected results if you hold IRQs disabled.&n; *&n; *&t;This function may be called from IRQ context.&n; */
 DECL|function|enable_irq
 r_void
@@ -372,6 +379,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|enable_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|enable_irq
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Enable wake on selected irq&n; */
 DECL|function|enable_irq_wake
 r_void
@@ -430,6 +444,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|enable_irq_wake
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|enable_irq_wake
+)paren
+suffix:semicolon
 DECL|function|disable_irq_wake
 r_void
 id|disable_irq_wake
@@ -487,6 +508,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|disable_irq_wake
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|disable_irq_wake
+)paren
+suffix:semicolon
 DECL|function|show_interrupts
 r_int
 id|show_interrupts
@@ -2029,6 +2057,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|set_irq_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_irq_type
+)paren
+suffix:semicolon
 DECL|function|set_irq_flags
 r_void
 id|set_irq_flags
@@ -2999,6 +3034,13 @@ r_return
 id|mask
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_mask
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Possible return values:&n; *  &gt;= 0 - interrupt number&n; *    -1 - no interrupt/many interrupts&n; */
 DECL|function|probe_irq_off
 r_int

@@ -247,6 +247,13 @@ l_int|0xfffffff0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__virt_to_bus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__virt_to_bus
+)paren
+suffix:semicolon
 DECL|function|__bus_to_virt
 r_int
 r_int
@@ -291,5 +298,12 @@ r_return
 id|res
 suffix:semicolon
 )brace
+DECL|variable|__bus_to_virt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__bus_to_virt
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

@@ -547,6 +547,11 @@ op_assign
 id|piix_pata_phy_reset
 comma
 dot
+id|bmdma_setup
+op_assign
+id|ata_bmdma_setup_pio
+comma
+dot
 id|bmdma_start
 op_assign
 id|ata_bmdma_start_pio
@@ -624,6 +629,11 @@ dot
 id|phy_reset
 op_assign
 id|piix_sata_phy_reset
+comma
+dot
+id|bmdma_setup
+op_assign
+id|ata_bmdma_setup_pio
 comma
 dot
 id|bmdma_start

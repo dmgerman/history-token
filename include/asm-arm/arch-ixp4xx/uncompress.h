@@ -1,0 +1,142 @@
+multiline_comment|/*&n; * include/asm-arm/arch-ixp4xx/uncompress.h &n; *&n; * Copyright (C) 2002 Intel Corporation.&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+macro_line|#ifndef _ARCH_UNCOMPRESS_H_
+DECL|macro|_ARCH_UNCOMPRESS_H_
+mdefine_line|#define _ARCH_UNCOMPRESS_H_
+macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
+macro_line|#include &lt;linux/serial_reg.h&gt;
+DECL|macro|TX_DONE
+mdefine_line|#define TX_DONE (UART_LSR_TEMT|UART_LSR_THRE)
+DECL|variable|uart_base
+r_static
+r_volatile
+id|u32
+op_star
+id|uart_base
+suffix:semicolon
+DECL|function|putc
+r_static
+id|__inline__
+r_void
+id|putc
+c_func
+(paren
+r_char
+id|c
+)paren
+(brace
+multiline_comment|/* Check THRE and TEMT bits before we transmit the character.&n;&t; */
+r_while
+c_loop
+(paren
+(paren
+id|uart_base
+(braket
+id|UART_LSR
+)braket
+op_amp
+id|TX_DONE
+)paren
+op_ne
+id|TX_DONE
+)paren
+suffix:semicolon
+op_star
+id|uart_base
+op_assign
+id|c
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * This does not append a newline&n; */
+DECL|function|puts
+r_static
+r_void
+id|puts
+c_func
+(paren
+r_const
+r_char
+op_star
+id|s
+)paren
+(brace
+r_while
+c_loop
+(paren
+op_star
+id|s
+)paren
+(brace
+id|putc
+c_func
+(paren
+op_star
+id|s
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|s
+op_eq
+l_char|&squot;&bslash;n&squot;
+)paren
+id|putc
+c_func
+(paren
+l_char|&squot;&bslash;r&squot;
+)paren
+suffix:semicolon
+id|s
+op_increment
+suffix:semicolon
+)brace
+)brace
+DECL|function|__arch_decomp_setup
+r_static
+id|__inline__
+r_void
+id|__arch_decomp_setup
+c_func
+(paren
+r_int
+r_int
+id|arch_id
+)paren
+(brace
+multiline_comment|/*&n;&t; * Coyote only has UART2 connected&n;&t; */
+r_if
+c_cond
+(paren
+id|__machine_arch_type
+op_eq
+id|MACH_TYPE_ADI_COYOTE
+)paren
+id|uart_base
+op_assign
+(paren
+r_volatile
+id|u32
+op_star
+)paren
+id|IXP4XX_UART2_BASE_PHYS
+suffix:semicolon
+r_else
+id|uart_base
+op_assign
+(paren
+r_volatile
+id|u32
+op_star
+)paren
+id|IXP4XX_UART1_BASE_PHYS
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * arch_id is a variable in decompress_kernel()&n; */
+DECL|macro|arch_decomp_setup
+mdefine_line|#define arch_decomp_setup()&t;__arch_decomp_setup(arch_id)
+DECL|macro|arch_decomp_wdog
+mdefine_line|#define arch_decomp_wdog()
+macro_line|#endif
+eof

@@ -17,40 +17,24 @@ mdefine_line|#define PAGE_OFFSET&t;(0xc0000000UL)
 DECL|macro|PHYS_OFFSET
 mdefine_line|#define PHYS_OFFSET&t;(0xc0000000UL)
 multiline_comment|/*&n; * On integrator, the dram is contiguous&n; */
-DECL|macro|__virt_to_phys__is_a_macro
-mdefine_line|#define __virt_to_phys__is_a_macro
 DECL|macro|__virt_to_phys
 mdefine_line|#define __virt_to_phys(vpage) ((vpage) - PAGE_OFFSET + PHYS_OFFSET)
-DECL|macro|__phys_to_virt__is_a_macro
-mdefine_line|#define __phys_to_virt__is_a_macro
 DECL|macro|__phys_to_virt
 mdefine_line|#define __phys_to_virt(ppage) ((ppage) + PAGE_OFFSET - PHYS_OFFSET)
 multiline_comment|/*&n; * Virtual view &lt;-&gt; DMA view memory address translations&n; * virt_to_bus: Used to translate the virtual address to an&n; *              address suitable to be passed to set_dma_addr&n; * bus_to_virt: Used to convert an address for DMA operations&n; *              to an address that the kernel can use.&n; */
 macro_line|#if defined(CONFIG_ARCH_CDB89712)
-DECL|macro|__virt_to_bus__is_a_macro
-mdefine_line|#define __virt_to_bus__is_a_macro
 DECL|macro|__virt_to_bus
 mdefine_line|#define __virt_to_bus(x)&t;(x)
-DECL|macro|__bus_to_virt__is_a_macro
-mdefine_line|#define __bus_to_virt__is_a_macro
 DECL|macro|__bus_to_virt
 mdefine_line|#define __bus_to_virt(x)&t;(x)
 macro_line|#elif defined (CONFIG_ARCH_AUTCPU12)
-DECL|macro|__virt_to_bus__is_a_macro
-mdefine_line|#define __virt_to_bus__is_a_macro
 DECL|macro|__virt_to_bus
 mdefine_line|#define __virt_to_bus(x)&t;(x)
-DECL|macro|__bus_to_virt__is_a_macro
-mdefine_line|#define __bus_to_virt__is_a_macro
 DECL|macro|__bus_to_virt
 mdefine_line|#define __bus_to_virt(x)&t;(x)
 macro_line|#else
-DECL|macro|__virt_to_bus__is_a_macro
-mdefine_line|#define __virt_to_bus__is_a_macro
 DECL|macro|__virt_to_bus
 mdefine_line|#define __virt_to_bus(x)&t;((x) - PAGE_OFFSET)
-DECL|macro|__bus_to_virt__is_a_macro
-mdefine_line|#define __bus_to_virt__is_a_macro
 DECL|macro|__bus_to_virt
 mdefine_line|#define __bus_to_virt(x)&t;((x) + PAGE_OFFSET)
 macro_line|#endif

@@ -208,7 +208,7 @@ l_string|&quot;&t;strexeq&t;%0, %2, [%1]&bslash;n&quot;
 l_string|&quot;&t;teq&t;%0, #0&bslash;n&quot;
 l_string|&quot;&t;bne&t;1b&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|tmp
 )paren
@@ -385,7 +385,7 @@ l_string|&quot;1:&t;ldrex&t;%0, [%1]&bslash;n&quot;
 l_string|&quot;&t;teq&t;%0, #0&bslash;n&quot;
 l_string|&quot;&t;strexeq&t;%0, %2, [%1]&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|tmp
 )paren

@@ -43,7 +43,7 @@ id|h3600_pcmcia_hw_init
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
@@ -58,7 +58,7 @@ suffix:colon
 id|IRQ_GPIO_H3600_PCMCIA_IRQ0
 suffix:semicolon
 r_return
-id|sa11xx_request_irqs
+id|soc_pcmcia_request_irqs
 c_func
 (paren
 id|skt
@@ -80,12 +80,12 @@ id|h3600_pcmcia_hw_shutdown
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
 (brace
-id|sa11xx_free_irqs
+id|soc_pcmcia_free_irqs
 c_func
 (paren
 id|skt
@@ -126,7 +126,7 @@ id|h3600_pcmcia_socket_state
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 comma
@@ -253,7 +253,7 @@ id|h3600_pcmcia_configure_socket
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 comma
@@ -331,7 +331,7 @@ id|h3600_pcmcia_socket_init
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
@@ -371,7 +371,7 @@ op_div
 l_int|1000
 )paren
 suffix:semicolon
-id|sa11xx_enable_irqs
+id|soc_pcmcia_enable_irqs
 c_func
 (paren
 id|skt
@@ -393,12 +393,12 @@ id|h3600_pcmcia_socket_suspend
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
 (brace
-id|sa11xx_disable_irqs
+id|soc_pcmcia_disable_irqs
 c_func
 (paren
 id|skt

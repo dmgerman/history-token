@@ -633,6 +633,13 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__ioremap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__ioremap
+)paren
+suffix:semicolon
 DECL|function|__iounmap
 r_void
 id|__iounmap
@@ -662,4 +669,11 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__iounmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__iounmap
+)paren
+suffix:semicolon
 eof

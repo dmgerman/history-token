@@ -22,6 +22,8 @@ DECL|macro|ATA_ENABLE_ATAPI
 macro_line|#undef ATA_ENABLE_ATAPI&t;&t;/* define to enable ATAPI support */
 DECL|macro|ATA_ENABLE_PATA
 macro_line|#undef ATA_ENABLE_PATA&t;&t;/* define to enable PATA support in some&n;&t;&t;&t;&t; * low-level drivers */
+DECL|macro|ATAPI_ENABLE_DMADIR
+macro_line|#undef ATAPI_ENABLE_DMADIR&t;/* enables ATAPI DMADIR bridge support */
 multiline_comment|/* note: prints function name for you */
 macro_line|#ifdef ATA_DEBUG
 DECL|macro|DPRINTK
@@ -310,16 +312,6 @@ l_int|4
 )paren
 comma
 multiline_comment|/* have s/g table? */
-DECL|enumerator|ATA_QCFLAG_POLL
-id|ATA_QCFLAG_POLL
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|5
-)paren
-comma
-multiline_comment|/* polling, no interrupts */
 multiline_comment|/* various lengths of time */
 DECL|enumerator|ATA_TMOUT_EDD
 id|ATA_TMOUT_EDD
@@ -1310,6 +1302,19 @@ op_star
 id|ap
 )paren
 suffix:semicolon
+DECL|member|bmdma_setup
+r_void
+(paren
+op_star
+id|bmdma_setup
+)paren
+(paren
+r_struct
+id|ata_queued_cmd
+op_star
+id|qc
+)paren
+suffix:semicolon
 DECL|member|bmdma_start
 r_void
 (paren
@@ -1871,7 +1876,27 @@ id|qc
 suffix:semicolon
 r_extern
 r_void
+id|ata_bmdma_setup_mmio
+(paren
+r_struct
+id|ata_queued_cmd
+op_star
+id|qc
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|ata_bmdma_start_mmio
+(paren
+r_struct
+id|ata_queued_cmd
+op_star
+id|qc
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ata_bmdma_setup_pio
 (paren
 r_struct
 id|ata_queued_cmd
@@ -1917,10 +1942,6 @@ id|qc
 comma
 id|u8
 id|drv_stat
-comma
-r_int
-r_int
-id|done_late
 )paren
 suffix:semicolon
 r_extern
@@ -2278,6 +2299,29 @@ suffix:semicolon
 )brace
 r_return
 id|status
+suffix:semicolon
+)brace
+DECL|function|ata_qc_set_polling
+r_static
+r_inline
+r_void
+id|ata_qc_set_polling
+c_func
+(paren
+r_struct
+id|ata_queued_cmd
+op_star
+id|qc
+)paren
+(brace
+id|qc-&gt;flags
+op_and_assign
+op_complement
+id|ATA_QCFLAG_DMA
+suffix:semicolon
+id|qc-&gt;tf.ctl
+op_or_assign
+id|ATA_NIEN
 suffix:semicolon
 )brace
 DECL|function|ata_qc_from_tag

@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/8250_pci.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/serial.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;8250.h&quot;
 multiline_comment|/*&n; * Definitions for PCI support.&n; */
@@ -2604,7 +2603,12 @@ comma
 dot
 m_exit
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|sbs_exit
+)paren
+comma
 )brace
 comma
 multiline_comment|/*&n;&t; * SBS Technologies, Inc., PMC-OCTALPRO 422&n;&t; */
@@ -2642,7 +2646,12 @@ comma
 dot
 m_exit
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|sbs_exit
+)paren
+comma
 )brace
 comma
 multiline_comment|/*&n;&t; * SBS Technologies, Inc., P-Octal 232&n;&t; */
@@ -2680,7 +2689,12 @@ comma
 dot
 m_exit
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|sbs_exit
+)paren
+comma
 )brace
 comma
 multiline_comment|/*&n;&t; * SBS Technologies, Inc., P-Octal 422&n;&t; */
@@ -2718,7 +2732,12 @@ comma
 dot
 m_exit
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|sbs_exit
+)paren
+comma
 )brace
 comma
 multiline_comment|/*&n;&t; * SIIG cards.&n;&t; *  It is not clear whether these could be collapsed.&n;&t; */
@@ -5901,8 +5920,6 @@ id|serial_struct
 id|serial_req
 suffix:semicolon
 r_int
-id|base_baud
-comma
 id|rc
 comma
 id|nr_ports
@@ -6188,30 +6205,6 @@ comma
 id|priv
 )paren
 suffix:semicolon
-id|base_baud
-op_assign
-id|board-&gt;base_baud
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|base_baud
-)paren
-(brace
-id|moan_device
-c_func
-(paren
-l_string|&quot;Board entry does not specify baud rate.&quot;
-comma
-id|dev
-)paren
-suffix:semicolon
-id|base_baud
-op_assign
-id|BASE_BAUD
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -6253,7 +6246,7 @@ id|UPF_SHARE_IRQ
 suffix:semicolon
 id|serial_req.baud_base
 op_assign
-id|base_baud
+id|board-&gt;base_baud
 suffix:semicolon
 id|serial_req.irq
 op_assign

@@ -22,17 +22,9 @@ DECL|macro|__virt_to_phys
 mdefine_line|#define __virt_to_phys(vpage) ((unsigned long)(vpage) - PAGE_OFFSET + PHYS_OFFSET)
 DECL|macro|__phys_to_virt
 mdefine_line|#define __phys_to_virt(ppage) ((unsigned long)(ppage) + PAGE_OFFSET - PHYS_OFFSET)
-DECL|macro|__virt_to_phys__is_a_macro
-mdefine_line|#define __virt_to_phys__is_a_macro
-DECL|macro|__phys_to_virt__is_a_macro
-mdefine_line|#define __phys_to_virt__is_a_macro
 multiline_comment|/*&n; * On the PCI bus the DRAM appears at address 0xe0000000&n; */
-DECL|macro|__virt_to_bus__is_a_macro
-mdefine_line|#define __virt_to_bus__is_a_macro
 DECL|macro|__virt_to_bus
 mdefine_line|#define __virt_to_bus(x) ((unsigned long)(x) - PAGE_OFFSET + BUS_OFFSET)
-DECL|macro|__bus_to_virt__is_a_macro
-mdefine_line|#define __bus_to_virt__is_a_macro
 DECL|macro|__bus_to_virt
 mdefine_line|#define __bus_to_virt(x) ((unsigned long)(x) + PAGE_OFFSET - BUS_OFFSET)
 macro_line|#endif

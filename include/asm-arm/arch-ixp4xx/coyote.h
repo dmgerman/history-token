@@ -1,0 +1,30 @@
+multiline_comment|/*&n; * include/asm-arm/arch-ixp4xx/coyote.h&n; *&n; * ADI Engineering platform specific definitions&n; *&n; * Author: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; *&n; * Copyright 2004 (c) MontaVista, Software, Inc. &n; * &n; * This file is licensed under  the terms of the GNU General Public &n; * License version 2. This program is licensed &quot;as is&quot; without any &n; * warranty of any kind, whether express or implied.&n; */
+macro_line|#ifndef __ASM_ARCH_HARDWARE_H__
+macro_line|#error &quot;Do not include this directly, instead #include &lt;asm/hardware.h&gt;&quot;
+macro_line|#endif
+DECL|macro|COYOTE_FLASH_BASE
+mdefine_line|#define&t;COYOTE_FLASH_BASE&t;IXP4XX_EXP_BUS_CS0_BASE_PHYS
+DECL|macro|COYOTE_FLASH_SIZE
+mdefine_line|#define&t;COYOTE_FLASH_SIZE&t;IXP4XX_EXP_BUS_CSX_REGION_SIZE * 2
+multiline_comment|/* PCI controller GPIO to IRQ pin mappings */
+DECL|macro|COYOTE_PCI_SLOT0_PIN
+mdefine_line|#define&t;COYOTE_PCI_SLOT0_PIN&t;6
+DECL|macro|COYOTE_PCI_SLOT1_PIN
+mdefine_line|#define&t;COYOTE_PCI_SLOT1_PIN&t;11
+DECL|macro|COYOTE_PCI_SLOT0_DEVID
+mdefine_line|#define&t;COYOTE_PCI_SLOT0_DEVID&t;14
+DECL|macro|COYOTE_PCI_SLOT1_DEVID
+mdefine_line|#define&t;COYOTE_PCI_SLOT1_DEVID&t;15
+DECL|macro|COYOTE_IDE_BASE_PHYS
+mdefine_line|#define&t;COYOTE_IDE_BASE_PHYS&t;IXP4XX_EXP_BUS_CS3_BASE_PHYS
+DECL|macro|COYOTE_IDE_BASE_VIRT
+mdefine_line|#define&t;COYOTE_IDE_BASE_VIRT&t;0xFFFE1000
+DECL|macro|COYOTE_IDE_REGION_SIZE
+mdefine_line|#define&t;COYOTE_IDE_REGION_SIZE&t;0x1000
+DECL|macro|COYOTE_IDE_DATA_PORT
+mdefine_line|#define&t;COYOTE_IDE_DATA_PORT&t;0xFFFE10E0
+DECL|macro|COYOTE_IDE_CTRL_PORT
+mdefine_line|#define&t;COYOTE_IDE_CTRL_PORT&t;0xFFFE10FC
+DECL|macro|COYOTE_IDE_ERROR_PORT
+mdefine_line|#define&t;COYOTE_IDE_ERROR_PORT&t;0xFFFE10E2
+eof

@@ -150,6 +150,13 @@ id|pm_idle
 r_void
 )paren
 suffix:semicolon
+DECL|variable|pm_idle
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pm_idle
+)paren
+suffix:semicolon
 DECL|variable|pm_power_off
 r_void
 (paren
@@ -158,6 +165,13 @@ id|pm_power_off
 )paren
 (paren
 r_void
+)paren
+suffix:semicolon
+DECL|variable|pm_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pm_power_off
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This is our default idle handler.  We need to disable&n; * interrupts here to ensure we don&squot;t miss a wakeup call.&n; */
@@ -1075,6 +1089,13 @@ op_star
 op_assign
 id|default_fp_init
 suffix:semicolon
+DECL|variable|fp_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fp_init
+)paren
+suffix:semicolon
 DECL|function|flush_thread
 r_void
 id|flush_thread
@@ -1341,6 +1362,13 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|dump_fpu
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dump_fpu
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * fill in the user structure for a core dump..&n; */
 DECL|function|dump_thread
 r_void
@@ -1500,6 +1528,13 @@ id|dump-&gt;u_fp
 )paren
 suffix:semicolon
 )brace
+DECL|variable|dump_thread
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dump_thread
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Shuffle the argument into the correct register before calling the&n; * thread function.  r1 is the thread argument, r2 is the pointer to&n; * the thread function, and r3 points to the exit function.&n; */
 r_extern
 r_void
@@ -1512,13 +1547,15 @@ suffix:semicolon
 id|asm
 c_func
 (paren
-l_string|&quot;.align&bslash;n&quot;
+l_string|&quot;.section .text&bslash;n&quot;
+l_string|&quot;&t;.align&bslash;n&quot;
 l_string|&quot;&t;.type&t;kernel_thread_helper, #function&bslash;n&quot;
 l_string|&quot;kernel_thread_helper:&bslash;n&quot;
 l_string|&quot;&t;mov&t;r0, r1&bslash;n&quot;
 l_string|&quot;&t;mov&t;lr, r3&bslash;n&quot;
 l_string|&quot;&t;mov&t;pc, r2&bslash;n&quot;
-l_string|&quot;&t;.size&t;kernel_thread_helper, . - kernel_thread_helper&quot;
+l_string|&quot;&t;.size&t;kernel_thread_helper, . - kernel_thread_helper&bslash;n&quot;
+l_string|&quot;&t;.previous&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Create a kernel thread.&n; */
@@ -1623,6 +1660,13 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kernel_thread
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kernel_thread
+)paren
+suffix:semicolon
 DECL|function|get_wchan
 r_int
 r_int
@@ -1758,4 +1802,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|get_wchan
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_wchan
+)paren
+suffix:semicolon
 eof
