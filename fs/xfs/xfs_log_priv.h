@@ -646,7 +646,7 @@ DECL|member|l_flushcnt
 r_int
 id|l_flushcnt
 suffix:semicolon
-multiline_comment|/* # of procs waiting on this sema */
+multiline_comment|/* # of procs waiting on this&n;&t;&t;&t;&t;&t;&t; * sema */
 DECL|member|l_ticket_cnt
 r_int
 id|l_ticket_cnt
@@ -661,7 +661,7 @@ DECL|member|l_covered_state
 r_int
 id|l_covered_state
 suffix:semicolon
-multiline_comment|/* state of &quot;covering disk log entries&quot; */
+multiline_comment|/* state of &quot;covering disk&n;&t;&t;&t;&t;&t;&t; * log entries&quot; */
 DECL|member|l_freelist
 id|xlog_ticket_t
 op_star
@@ -695,7 +695,7 @@ DECL|member|l_tail_lsn
 id|xfs_lsn_t
 id|l_tail_lsn
 suffix:semicolon
-multiline_comment|/* lsn of 1st LR w/ unflush buffers */
+multiline_comment|/* lsn of 1st LR with unflushed&n;&t;&t;&t;&t;&t;&t; * buffers */
 DECL|member|l_last_sync_lsn
 id|xfs_lsn_t
 id|l_last_sync_lsn
@@ -714,7 +714,7 @@ id|xfs_buf
 op_star
 id|l_xbuf
 suffix:semicolon
-multiline_comment|/* extra buffer for log wrapping */
+multiline_comment|/* extra buffer for log&n;&t;&t;&t;&t;&t;&t; * wrapping */
 DECL|member|l_dev
 id|dev_t
 id|l_dev
@@ -734,12 +734,12 @@ DECL|member|l_logBBsize
 r_int
 id|l_logBBsize
 suffix:semicolon
-multiline_comment|/* size of log in 512 byte chunks */
+multiline_comment|/* size of log in BB chunks */
 DECL|member|l_roundoff
 r_int
 id|l_roundoff
 suffix:semicolon
-multiline_comment|/* round off error of all iclogs */
+multiline_comment|/* round off error of iclogs */
 DECL|member|l_curr_cycle
 r_int
 id|l_curr_cycle
@@ -749,17 +749,17 @@ DECL|member|l_prev_cycle
 r_int
 id|l_prev_cycle
 suffix:semicolon
-multiline_comment|/* Cycle # b4 last block increment */
+multiline_comment|/* Cycle number before last&n;&t;&t;&t;&t;&t;&t; * block increment */
 DECL|member|l_curr_block
 r_int
 id|l_curr_block
 suffix:semicolon
-multiline_comment|/* current logical block of log */
+multiline_comment|/* current logical log block */
 DECL|member|l_prev_block
 r_int
 id|l_prev_block
 suffix:semicolon
-multiline_comment|/* previous logical block of log */
+multiline_comment|/* previous logical log block */
 DECL|member|l_iclog_size
 r_int
 id|l_iclog_size
@@ -789,39 +789,32 @@ DECL|member|l_grant_lock
 id|lock_t
 id|l_grant_lock
 suffix:semicolon
-multiline_comment|/* protects below fields */
 DECL|member|l_reserve_headq
 id|xlog_ticket_t
 op_star
 id|l_reserve_headq
 suffix:semicolon
-multiline_comment|/* */
 DECL|member|l_write_headq
 id|xlog_ticket_t
 op_star
 id|l_write_headq
 suffix:semicolon
-multiline_comment|/* */
 DECL|member|l_grant_reserve_cycle
 r_int
 id|l_grant_reserve_cycle
 suffix:semicolon
-multiline_comment|/* */
 DECL|member|l_grant_reserve_bytes
 r_int
 id|l_grant_reserve_bytes
 suffix:semicolon
-multiline_comment|/* */
 DECL|member|l_grant_write_cycle
 r_int
 id|l_grant_write_cycle
 suffix:semicolon
-multiline_comment|/* */
 DECL|member|l_grant_write_bytes
 r_int
 id|l_grant_write_bytes
 suffix:semicolon
-multiline_comment|/* */
 multiline_comment|/* The following fields don&squot;t need locking */
 macro_line|#ifdef DEBUG
 DECL|member|l_trace
@@ -845,7 +838,7 @@ DECL|member|l_quotaoffs_flag
 id|uint
 id|l_quotaoffs_flag
 suffix:semicolon
-multiline_comment|/* XFS_DQ_*, if QUOTAOFFs found */
+multiline_comment|/* XFS_DQ_*, for QUOTAOFFs */
 DECL|member|l_buf_cancel_table
 r_struct
 id|xfs_buf_cancel
@@ -867,17 +860,17 @@ DECL|member|l_iclog_heads
 r_int
 id|l_iclog_heads
 suffix:semicolon
-multiline_comment|/* number of iclog header sectors */
+multiline_comment|/* # of iclog header sectors */
 DECL|member|l_sectbb_log
 id|uint
 id|l_sectbb_log
 suffix:semicolon
-multiline_comment|/* log2 of sector size in bbs */
+multiline_comment|/* log2 of sector size in BBs */
 DECL|member|l_sectbb_mask
 id|uint
 id|l_sectbb_mask
 suffix:semicolon
-multiline_comment|/* sector size in bbs alignment mask */
+multiline_comment|/* sector size (in BBs)&n;&t;&t;&t;&t;&t;&t; * alignment mask */
 DECL|typedef|xlog_t
 )brace
 id|xlog_t

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_SUPPORT_KMEM_H__
 DECL|macro|__XFS_SUPPORT_KMEM_H__
 mdefine_line|#define __XFS_SUPPORT_KMEM_H__
@@ -20,19 +20,36 @@ DECL|macro|KM_NOSLEEP
 mdefine_line|#define KM_NOSLEEP&t;0x0002
 DECL|macro|KM_NOFS
 mdefine_line|#define KM_NOFS&t;&t;0x0004
+DECL|typedef|xfs_pflags_t
+r_typedef
+r_int
+r_int
+id|xfs_pflags_t
+suffix:semicolon
+DECL|macro|PFLAGS_TEST_FSTRANS
+mdefine_line|#define PFLAGS_TEST_FSTRANS()&t;&t;(current-&gt;flags &amp; PF_FSTRANS)
+DECL|macro|PFLAGS_SET_FSTRANS
+mdefine_line|#define PFLAGS_SET_FSTRANS(STATEP) do {&t;&bslash;&n;&t;*(STATEP) = current-&gt;flags;&t;&bslash;&n;&t;current-&gt;flags |= PF_FSTRANS;&t;&bslash;&n;} while (0)
+DECL|macro|PFLAGS_RESTORE
+mdefine_line|#define PFLAGS_RESTORE(STATEP) do {&t;&bslash;&n;&t;current-&gt;flags = *(STATEP);&t;&bslash;&n;} while (0)
+DECL|macro|PFLAGS_DUP
+mdefine_line|#define PFLAGS_DUP(OSTATEP, NSTATEP) do { &bslash;&n;&t;*(NSTATEP) = *(OSTATEP);&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * XXX get rid of the unconditional  __GFP_NOFAIL by adding&n; * a KM_FAIL flag and using it where we&squot;re allowed to fail.&n; */
 r_static
 id|__inline
 r_int
 r_int
-DECL|function|flag_convert
-id|flag_convert
+DECL|function|kmem_flags_convert
+id|kmem_flags_convert
 c_func
 (paren
 r_int
 id|flags
 )paren
 (brace
+r_int
+id|lflags
+suffix:semicolon
 macro_line|#if DEBUG
 r_if
 c_cond
@@ -69,42 +86,39 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
+id|lflags
+op_assign
 (paren
 id|flags
 op_amp
 id|KM_NOSLEEP
 )paren
-r_return
-id|GFP_ATOMIC
-suffix:semicolon
-multiline_comment|/* If we&squot;re in a transaction, FS activity is not ok */
-r_else
-r_if
+ques
 c_cond
+id|GFP_ATOMIC
+suffix:colon
 (paren
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_FSTRANS
-)paren
-op_logical_or
-(paren
-id|flags
-op_amp
-id|KM_NOFS
-)paren
-)paren
-r_return
-id|GFP_NOFS
-op_or
-id|__GFP_NOFAIL
-suffix:semicolon
-r_return
 id|GFP_KERNEL
 op_or
 id|__GFP_NOFAIL
+)paren
+suffix:semicolon
+multiline_comment|/* avoid recusive callbacks to filesystem during transactions */
+r_if
+c_cond
+(paren
+id|PFLAGS_TEST_FSTRANS
+c_func
+(paren
+)paren
+)paren
+id|lflags
+op_and_assign
+op_complement
+id|__GFP_FS
+suffix:semicolon
+r_return
+id|lflags
 suffix:semicolon
 )brace
 r_static
@@ -140,7 +154,7 @@ c_func
 (paren
 id|size
 comma
-id|flag_convert
+id|kmem_flags_convert
 c_func
 (paren
 id|flags
@@ -155,7 +169,7 @@ c_func
 (paren
 id|size
 comma
-id|flag_convert
+id|kmem_flags_convert
 c_func
 (paren
 id|flags
@@ -409,7 +423,7 @@ c_func
 (paren
 id|zone
 comma
-id|flag_convert
+id|kmem_flags_convert
 c_func
 (paren
 id|flags

@@ -3,8 +3,7 @@ multiline_comment|/*&n; * Dummy file that can contain a timestamp to put into th
 macro_line|#ifndef __XFS_VERSION_H__
 DECL|macro|__XFS_VERSION_H__
 mdefine_line|#define __XFS_VERSION_H__
-macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|XFS_VERSION_STRING
-mdefine_line|#define XFS_VERSION_STRING &quot;for Linux &quot; UTS_RELEASE
+mdefine_line|#define XFS_VERSION_STRING &quot;for Linux&quot;
 macro_line|#endif /* __XFS_VERSION_H__ */
 eof

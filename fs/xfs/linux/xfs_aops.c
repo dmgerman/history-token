@@ -228,6 +228,16 @@ c_func
 id|bp
 )paren
 suffix:semicolon
+id|iput
+c_func
+(paren
+id|LINVFS_GET_IP
+c_func
+(paren
+id|vp
+)paren
+)paren
+suffix:semicolon
 id|pagebuf_iodone
 c_func
 (paren
@@ -1463,8 +1473,34 @@ id|pb
 )paren
 r_return
 op_minus
-id|ENOMEM
+id|EAGAIN
 suffix:semicolon
+multiline_comment|/* Take a reference to the inode to prevent it from&n;&t; * being reclaimed while we have outstanding unwritten&n;&t; * extent IO on it.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|igrab
+c_func
+(paren
+id|inode
+)paren
+)paren
+op_ne
+id|inode
+)paren
+(brace
+id|pagebuf_free
+c_func
+(paren
+id|pb
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
+)brace
 multiline_comment|/* Set the count to 1 initially, this will stop an I/O&n;&t; * completion callout which happens before we have started&n;&t; * all the I/O from calling pagebuf_iodone too early.&n;&t; */
 id|atomic_set
 c_func
@@ -2543,6 +2579,11 @@ id|page_state_convert
 c_func
 (paren
 r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
 id|page
 op_star
 id|page
@@ -2555,13 +2596,6 @@ id|unmapped
 )paren
 multiline_comment|/* also implies page uptodate */
 (brace
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|page-&gt;mapping-&gt;host
-suffix:semicolon
 r_struct
 id|buffer_head
 op_star
@@ -4267,7 +4301,7 @@ id|head
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * writepage: Called from one of two places:&n; *&n; * 1. we are flushing a delalloc buffer head.&n; *&n; * 2. we are writing out a dirty page. Typically the page dirty&n; *    state is cleared before we get here. In this case is it&n; *    conceivable we have no buffer heads.&n; *&n; * For delalloc space on the page we need to allocate space and&n; * flush it. For unmapped buffer heads on the page we should&n; * allocate space if the page is uptodate. For any other dirty&n; * buffer heads on the page we should flush them.&n; *&n; * If we detect that a transaction would be required to flush&n; * the page, we have to check the process flags first, if we&n; * are already in a transaction or disk I/O during allocations&n; * is off, we need to fail the writepage and redirty the page.&n; * We also need to set PF_NOIO ourselves.&n; */
+multiline_comment|/*&n; * writepage: Called from one of two places:&n; *&n; * 1. we are flushing a delalloc buffer head.&n; *&n; * 2. we are writing out a dirty page. Typically the page dirty&n; *    state is cleared before we get here. In this case is it&n; *    conceivable we have no buffer heads.&n; *&n; * For delalloc space on the page we need to allocate space and&n; * flush it. For unmapped buffer heads on the page we should&n; * allocate space if the page is uptodate. For any other dirty&n; * buffer heads on the page we should flush them.&n; *&n; * If we detect that a transaction would be required to flush&n; * the page, we have to check the process flags first, if we&n; * are already in a transaction or disk I/O during allocations&n; * is off, we need to fail the writepage and redirty the page.&n; */
 id|STATIC
 r_int
 DECL|function|linvfs_writepage
@@ -4370,12 +4404,9 @@ multiline_comment|/*&n;&t; * If we need a transaction and the process flags say&
 r_if
 c_cond
 (paren
+id|PFLAGS_TEST_FSTRANS
+c_func
 (paren
-id|current-&gt;flags
-op_amp
-(paren
-id|PF_FSTRANS
-)paren
 )paren
 op_logical_and
 id|need_trans
@@ -4412,6 +4443,8 @@ op_assign
 id|page_state_convert
 c_func
 (paren
+id|inode
+comma
 id|page
 comma
 l_int|1
@@ -4492,6 +4525,13 @@ r_int
 id|gfp_mask
 )paren
 (brace
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|page-&gt;mapping-&gt;host
+suffix:semicolon
 r_int
 id|delalloc
 comma
@@ -4546,6 +4586,8 @@ c_cond
 id|page_state_convert
 c_func
 (paren
+id|inode
+comma
 id|page
 comma
 l_int|0

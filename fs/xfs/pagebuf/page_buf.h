@@ -847,6 +847,9 @@ c_func
 (paren
 multiline_comment|/* allocate pagebuf struct with&t;*/
 multiline_comment|/*  no memory or disk address&t;*/
+r_int
+id|len
+comma
 r_struct
 id|pb_target
 op_star

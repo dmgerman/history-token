@@ -163,7 +163,7 @@ id|num_bblks
 suffix:semicolon
 )brace
 r_return
-id|XFS_ngetrbuf
+id|xfs_buf_get_noaddr
 c_func
 (paren
 id|BBTOB
@@ -172,7 +172,7 @@ c_func
 id|num_bblks
 )paren
 comma
-id|log-&gt;l_mp
+id|log-&gt;l_mp-&gt;m_logdev_targp
 )paren
 suffix:semicolon
 )brace
@@ -186,7 +186,7 @@ op_star
 id|bp
 )paren
 (brace
-id|XFS_nfreerbuf
+id|xfs_buf_free
 c_func
 (paren
 id|bp

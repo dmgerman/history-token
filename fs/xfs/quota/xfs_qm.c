@@ -5435,7 +5435,11 @@ comma
 (paren
 id|xfs_ufsize_t
 )paren
-id|XFS_MAX_FILE_OFFSET
+id|XFS_MAXIOFFSET
+c_func
+(paren
+id|mp
+)paren
 )paren
 suffix:semicolon
 r_do

@@ -159,8 +159,6 @@ suffix:semicolon
 r_struct
 id|xfs_bmap_free
 suffix:semicolon
-DECL|macro|SPLDECL
-mdefine_line|#define&t;SPLDECL(s)&t;&t;unsigned long s
 DECL|macro|AIL_LOCK_T
 mdefine_line|#define&t;AIL_LOCK_T&t;&t;lock_t
 DECL|macro|AIL_LOCKINIT
@@ -1439,6 +1437,11 @@ id|__uint64_t
 id|m_maxicount
 suffix:semicolon
 multiline_comment|/* maximum inode count */
+DECL|member|m_maxioffset
+id|__uint64_t
+id|m_maxioffset
+suffix:semicolon
+multiline_comment|/* maximum inode offset */
 DECL|member|m_resblks
 id|__uint64_t
 id|m_resblks
@@ -1619,8 +1622,6 @@ DECL|macro|XFS_MOUNT_32BITINODES
 mdefine_line|#define XFS_MOUNT_32BITINODES&t;0x00008000&t;/* do not create inodes above&n;&t;&t;&t;&t;&t;&t; * 32 bits in size */
 DECL|macro|XFS_MOUNT_NOLOGFLUSH
 mdefine_line|#define XFS_MOUNT_NOLOGFLUSH&t;0x00010000
-DECL|macro|XFS_FORCED_SHUTDOWN
-mdefine_line|#define XFS_FORCED_SHUTDOWN(mp)&t;((mp)-&gt;m_flags &amp; XFS_MOUNT_FS_SHUTDOWN)
 multiline_comment|/*&n; * Default minimum read and write sizes.&n; */
 DECL|macro|XFS_READIO_LOG_LARGE
 mdefine_line|#define XFS_READIO_LOG_LARGE&t;16
@@ -1639,6 +1640,10 @@ DECL|macro|XFS_WSYNC_READIO_LOG
 mdefine_line|#define&t;XFS_WSYNC_READIO_LOG&t;15&t;/* 32K */
 DECL|macro|XFS_WSYNC_WRITEIO_LOG
 mdefine_line|#define&t;XFS_WSYNC_WRITEIO_LOG&t;14&t;/* 16K */
+DECL|macro|XFS_MAXIOFFSET
+mdefine_line|#define XFS_MAXIOFFSET(mp)&t;((mp)-&gt;m_maxioffset)
+DECL|macro|XFS_FORCED_SHUTDOWN
+mdefine_line|#define XFS_FORCED_SHUTDOWN(mp)&t;((mp)-&gt;m_flags &amp; XFS_MOUNT_FS_SHUTDOWN)
 DECL|macro|xfs_force_shutdown
 mdefine_line|#define xfs_force_shutdown(m,f)&t;&bslash;&n;&t;VFS_FORCE_SHUTDOWN((XFS_MTOVFS(m)), f, __FILE__, __LINE__)
 multiline_comment|/*&n; * Flags sent to xfs_force_shutdown.&n; */
