@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/device_ops.c&n; *&n; *   $Revision: 1.50 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/device_ops.c&n; *&n; *   $Revision: 1.53 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -168,6 +168,14 @@ op_member_access_from_pointer
 id|state
 op_ne
 id|DEV_STATE_ONLINE
+op_logical_and
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|state
+op_ne
+id|DEV_STATE_WAIT4IO
 op_logical_and
 id|cdev
 op_member_access_from_pointer
@@ -531,6 +539,14 @@ op_member_access_from_pointer
 id|state
 op_ne
 id|DEV_STATE_ONLINE
+op_logical_and
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|state
+op_ne
+id|DEV_STATE_WAIT4IO
 op_logical_and
 id|cdev
 op_member_access_from_pointer
