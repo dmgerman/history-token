@@ -4372,7 +4372,7 @@ id|vm_area_struct
 comma
 l_int|0
 comma
-id|SLAB_HWCACHE_ALIGN
+l_int|0
 comma
 l_int|NULL
 comma
