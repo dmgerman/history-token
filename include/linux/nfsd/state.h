@@ -749,7 +749,7 @@ id|clp
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|nfsd4_cb_recall
 c_func
 (paren
