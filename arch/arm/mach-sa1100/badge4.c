@@ -250,7 +250,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|badge4_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|badge4_init

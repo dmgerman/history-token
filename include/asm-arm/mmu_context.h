@@ -30,7 +30,7 @@ id|cpu
 )paren
 (brace
 )brace
-multiline_comment|/*&n; * This is the actual mm switch as far as the scheduler&n; * is concerned.  No registers are touched.&n; */
+multiline_comment|/*&n; * This is the actual mm switch as far as the scheduler&n; * is concerned.  No registers are touched.  We avoid&n; * calling the CPU specific function when the mm hasn&squot;t&n; * actually changed.&n; */
 r_static
 r_inline
 r_void
@@ -58,6 +58,14 @@ r_int
 id|cpu
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|prev
+op_ne
+id|next
+)paren
+(brace
 id|cpu_switch_mm
 c_func
 (paren
@@ -66,6 +74,7 @@ comma
 id|next
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|activate_mm
 r_static

@@ -131,7 +131,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|jornada720_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|jornada720_init

@@ -89,6 +89,8 @@ DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;(pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT))
 DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;((kaddr) &gt;= PAGE_OFFSET &amp;&amp; (kaddr) &lt; (unsigned long)high_memory)
+DECL|macro|PHYS_TO_NID
+mdefine_line|#define PHYS_TO_NID(addr)&t;(0)
 macro_line|#else
 multiline_comment|/*&n; * This is more complex.  We have a set of mem_map arrays spread&n; * around in memory.&n; */
 DECL|macro|page_to_pfn

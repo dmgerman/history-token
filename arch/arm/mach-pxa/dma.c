@@ -500,7 +500,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|variable|pxa_dma_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|pxa_dma_init
