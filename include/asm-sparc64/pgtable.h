@@ -216,15 +216,14 @@ id|mem_map_zero
 suffix:semicolon
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr)&t;(mem_map_zero)
-multiline_comment|/* Warning: These take pointers to page structs now... */
+DECL|macro|pfn_pte
+mdefine_line|#define pfn_pte(pfn, prot)&t;&bslash;&n;&t;__pte((((pfn)+(pfn_base)) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot) | _PAGE_SZBITS)
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page, pgprot)&t;&t;&bslash;&n;&t;__pte((((page - mem_map) &lt;&lt; PAGE_SHIFT)+phys_base) | pgprot_val(pgprot) | _PAGE_SZBITS)
+mdefine_line|#define mk_pte(page, pgprot)&t;pfn_pte(page_to_pfn(page), (pgprot))
 DECL|macro|page_pte_prot
 mdefine_line|#define page_pte_prot(page, prot)&t;mk_pte(page, prot)
 DECL|macro|page_pte
 mdefine_line|#define page_pte(page)&t;&t;&t;page_pte_prot(page, __pgprot(0))
-DECL|macro|mk_pte_phys
-mdefine_line|#define mk_pte_phys(physpage, pgprot)&t;(__pte((physpage) | pgprot_val(pgprot) | _PAGE_SZBITS))
 DECL|function|pte_modify
 r_extern
 r_inline
