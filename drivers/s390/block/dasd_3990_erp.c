@@ -6768,7 +6768,7 @@ suffix:semicolon
 multiline_comment|/* return address of matching erp */
 )brace
 multiline_comment|/* END dasd_3990_erp_in_erp */
-multiline_comment|/*&n; * DASD_3990_ERP_FURTHER_ERP (24 &amp; 32 byte sense)&n; *&n; * DESCRIPTION&n; *   No retry is left for the current ERP. Check what has to be done &n; *   with the ERP.&n; *     - do further defined ERP action or&n; *     - wait for interrupt or&t;&n; *     - exit with permanent error&n; *&n; * PARAMETER&n; *   erp&t;&t;ERP which is in progress wiht no retry left&n; *&n; * RETURN VALUES&n; *   erp&t;&t;modified/additional ERP&n; */
+multiline_comment|/*&n; * DASD_3990_ERP_FURTHER_ERP (24 &amp; 32 byte sense)&n; *&n; * DESCRIPTION&n; *   No retry is left for the current ERP. Check what has to be done &n; *   with the ERP.&n; *     - do further defined ERP action or&n; *     - wait for interrupt or&t;&n; *     - exit with permanent error&n; *&n; * PARAMETER&n; *   erp&t;&t;ERP which is in progress with no retry left&n; *&n; * RETURN VALUES&n; *   erp&t;&t;modified/additional ERP&n; */
 r_static
 id|dasd_ccw_req_t
 op_star
