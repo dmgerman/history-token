@@ -208,7 +208,7 @@ mdefine_line|#define ELF_EXEC_PAGESIZE&t;8192
 macro_line|#endif
 multiline_comment|/* This is the location that an ET_DYN program is loaded if exec&squot;ed.  Typical&n;   use of this is to invoke &quot;./ld.so someprog&quot; to test out a new version of&n;   the loader.  We need to make sure that it is out of the way of the program&n;   that it will &quot;exec&quot;, and that there is sufficient room for the brk.  */
 DECL|macro|ELF_ET_DYN_BASE
-mdefine_line|#define ELF_ET_DYN_BASE         (0x08000000)
+mdefine_line|#define ELF_ET_DYN_BASE         (TASK_UNMAPPED_BASE)
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this cpu supports.  This can NOT be done in userspace&n;   on Sparc.  */
 multiline_comment|/* Sun4c has none of the capabilities, most sun4m&squot;s have them all.&n; * XXX This is gross, set some global variable at boot time. -DaveM&n; */
 DECL|macro|ELF_HWCAP
