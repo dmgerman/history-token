@@ -843,7 +843,7 @@ id|line
 l_int|1
 )braket
 op_eq
-l_int|0
+l_char|&squot;&bslash;n&squot;
 )paren
 (brace
 id|help

@@ -17,6 +17,7 @@ macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;linux/socket.h&gt; /* for sa_family_t */
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
+macro_line|#include &lt;net/sctp/sm.h&gt;
 multiline_comment|/* WARNING:  Please do not remove the SCTP_STATIC attribute to&n; * any of the functions below as they are used to export functions&n; * used by a project regression testsuite.&n; */
 multiline_comment|/* Forward declarations for internal helper functions. */
 r_static

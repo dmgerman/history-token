@@ -288,9 +288,13 @@ id|delta
 suffix:semicolon
 id|delta
 op_assign
-id|scanned
+l_int|4
 op_star
+(paren
+id|scanned
+op_div
 id|shrinker-&gt;seeks
+)paren
 suffix:semicolon
 id|delta
 op_mul_assign

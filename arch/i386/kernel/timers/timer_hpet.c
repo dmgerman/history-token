@@ -348,7 +348,7 @@ id|hpet_last
 op_div
 id|hpet_tick
 suffix:semicolon
-id|jiffies
+id|jiffies_64
 op_add_assign
 id|lost_ticks
 suffix:semicolon

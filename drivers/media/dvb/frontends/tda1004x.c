@@ -162,8 +162,6 @@ comma
 dot
 id|caps
 op_assign
-id|FE_CAN_INVERSION_AUTO
-op_or
 id|FE_CAN_FEC_1_2
 op_or
 id|FE_CAN_FEC_2_3

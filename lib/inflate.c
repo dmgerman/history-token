@@ -591,7 +591,7 @@ l_int|0xffff
 )brace
 suffix:semicolon
 DECL|macro|NEXTBYTE
-mdefine_line|#define NEXTBYTE()  (uch)get_byte()
+mdefine_line|#define NEXTBYTE()  ({ int v = get_byte(); if (v &lt; 0) goto underrun; (uch)v; })
 DECL|macro|NEEDBITS
 mdefine_line|#define NEEDBITS(n) {while(k&lt;(n)){b|=((ulg)NEXTBYTE())&lt;&lt;k;k+=8;}}
 DECL|macro|DUMPBITS
@@ -2498,6 +2498,12 @@ multiline_comment|/* done */
 r_return
 l_int|0
 suffix:semicolon
+id|underrun
+suffix:colon
+r_return
+l_int|4
+suffix:semicolon
+multiline_comment|/* Input underrun */
 )brace
 DECL|function|inflate_stored
 id|STATIC
@@ -2687,6 +2693,12 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|underrun
+suffix:colon
+r_return
+l_int|4
+suffix:semicolon
+multiline_comment|/* Input underrun */
 )brace
 DECL|function|inflate_fixed
 id|STATIC
@@ -3819,6 +3831,12 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|underrun
+suffix:colon
+r_return
+l_int|4
+suffix:semicolon
+multiline_comment|/* Input underrun */
 )brace
 DECL|function|inflate_block
 id|STATIC
@@ -3962,6 +3980,12 @@ multiline_comment|/* bad block type */
 r_return
 l_int|2
 suffix:semicolon
+id|underrun
+suffix:colon
+r_return
+l_int|4
+suffix:semicolon
+multiline_comment|/* Input underrun */
 )brace
 DECL|function|inflate
 id|STATIC
@@ -4391,11 +4415,7 @@ id|magic
 l_int|0
 )braket
 op_assign
-(paren
-r_int
-r_char
-)paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4405,22 +4425,14 @@ id|magic
 l_int|1
 )braket
 op_assign
-(paren
-r_int
-r_char
-)paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
 suffix:semicolon
 id|method
 op_assign
-(paren
-r_int
-r_char
-)paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4566,55 +4578,31 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-(paren
-id|ulg
-)paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
 suffix:semicolon
 multiline_comment|/* Get timestamp */
-(paren
-(paren
-id|ulg
-)paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
-)paren
-op_lshift
-l_int|8
 suffix:semicolon
-(paren
-(paren
-id|ulg
-)paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
-)paren
-op_lshift
-l_int|16
 suffix:semicolon
-(paren
-(paren
-id|ulg
-)paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
-)paren
-op_lshift
-l_int|24
 suffix:semicolon
 (paren
 r_void
 )paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4623,7 +4611,7 @@ multiline_comment|/* Ignore extra flags for the moment */
 (paren
 r_void
 )paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4647,7 +4635,7 @@ op_assign
 (paren
 r_int
 )paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4658,7 +4646,7 @@ op_or_assign
 (paren
 r_int
 )paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4675,7 +4663,7 @@ op_decrement
 (paren
 r_void
 )paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4698,7 +4686,7 @@ multiline_comment|/* Discard the old name */
 r_while
 c_loop
 (paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4724,7 +4712,7 @@ l_int|0
 r_while
 c_loop
 (paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4792,6 +4780,17 @@ l_string|&quot;out of memory&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+id|error
+c_func
+(paren
+l_string|&quot;out of input data&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|error
@@ -4813,7 +4812,7 @@ op_assign
 (paren
 id|ulg
 )paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4823,7 +4822,7 @@ op_or_assign
 (paren
 id|ulg
 )paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4835,7 +4834,7 @@ op_or_assign
 (paren
 id|ulg
 )paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4847,7 +4846,7 @@ op_or_assign
 (paren
 id|ulg
 )paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4859,7 +4858,7 @@ op_assign
 (paren
 id|ulg
 )paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4869,7 +4868,7 @@ op_or_assign
 (paren
 id|ulg
 )paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4881,7 +4880,7 @@ op_or_assign
 (paren
 id|ulg
 )paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4893,7 +4892,7 @@ op_or_assign
 (paren
 id|ulg
 )paren
-id|get_byte
+id|NEXTBYTE
 c_func
 (paren
 )paren
@@ -4941,6 +4940,19 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
+suffix:semicolon
+id|underrun
+suffix:colon
+multiline_comment|/* NEXTBYTE() goto&squot;s here if needed */
+id|error
+c_func
+(paren
+l_string|&quot;out of input data&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 eof

@@ -1,6 +1,7 @@
 multiline_comment|/* &n;   Common Flash Interface probe code.&n;   (C) 2000 Red Hat. GPL&squot;d.&n;   $Id: jedec_probe.c,v 1.29 2003/05/28 13:57:46 dwmw2 Exp $&n;   See JEDEC (http://www.jedec.org/) standard JESD21C (section 3.5)&n;   for the standard this probe goes back to.&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

@@ -222,7 +222,7 @@ id|lost
 op_ge
 l_int|2
 )paren
-id|jiffies
+id|jiffies_64
 op_add_assign
 id|lost
 op_minus
@@ -308,7 +308,7 @@ op_div
 id|HZ
 )paren
 )paren
-id|jiffies
+id|jiffies_64
 op_increment
 suffix:semicolon
 )brace
