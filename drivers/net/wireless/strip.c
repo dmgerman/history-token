@@ -2885,6 +2885,7 @@ id|strip_info-&gt;dev
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * If the time is in the near future, time_delta prints the number of&n; * seconds to go into the buffer and returns the address of the buffer.&n; * If the time is not in the near future, it returns the address of the&n; * string &quot;Not scheduled&quot; The buffer must be long enough to contain the&n; * ascii representation of the number plus 9 charactes for the &quot; seconds&quot;&n; * and the null character.&n; */
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|time_delta
 r_static
 r_char
@@ -3955,6 +3956,7 @@ id|seq_release
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/************************************************************************/
 multiline_comment|/* Sending routines&t;&t;&t;&t;&t;&t;&t;*/
 DECL|function|ResetRadio
