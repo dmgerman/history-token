@@ -2492,11 +2492,6 @@ suffix:semicolon
 multiline_comment|/* Now take it out of the list */
 id|temp
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 op_star
 id|head
 suffix:semicolon
@@ -2540,13 +2535,11 @@ id|max-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
-r_return
-id|max
+r_break
 suffix:semicolon
 )brace
-multiline_comment|/* If we get here, we couldn&squot;t find one */
 r_return
-l_int|NULL
+id|max
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * get_resource: find resource of given size and split up larger ones.&n; * @head: the list to search for resources&n; * @size: the size limit to use&n; *&n; * Description: This function sorts the resource list by size and then&n; * returns the first node of &quot;size&quot; length.  If it finds a node&n; * larger than &quot;size&quot; it will split it up.&n; *&n; * size must be a power of two.&n; */
@@ -7413,6 +7406,7 @@ multiline_comment|/**&n; * cpqhp_pushbutton_thread&n; *&n; * Scheduled procedure
 DECL|function|cpqhp_pushbutton_thread
 r_void
 id|cpqhp_pushbutton_thread
+c_func
 (paren
 r_int
 r_int
@@ -7470,6 +7464,7 @@ r_if
 c_cond
 (paren
 id|is_slot_enabled
+c_func
 (paren
 id|ctrl
 comma
@@ -7655,6 +7650,7 @@ l_int|0
 )paren
 (brace
 id|amber_LED_on
+c_func
 (paren
 id|ctrl
 comma
@@ -7662,6 +7658,7 @@ id|hp_slot
 )paren
 suffix:semicolon
 id|green_LED_off
+c_func
 (paren
 id|ctrl
 comma
@@ -7693,6 +7690,7 @@ suffix:semicolon
 DECL|function|cpqhp_process_SI
 r_int
 id|cpqhp_process_SI
+c_func
 (paren
 r_struct
 id|controller
@@ -8090,6 +8088,7 @@ suffix:semicolon
 DECL|function|cpqhp_process_SS
 r_int
 id|cpqhp_process_SS
+c_func
 (paren
 r_struct
 id|controller
@@ -8885,6 +8884,7 @@ DECL|function|configure_new_device
 r_static
 id|u32
 id|configure_new_device
+c_func
 (paren
 r_struct
 id|controller
