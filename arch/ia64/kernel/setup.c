@@ -76,6 +76,14 @@ r_int
 id|ia64_iobase
 suffix:semicolon
 multiline_comment|/* virtual address for I/O accesses */
+DECL|variable|aux_device_present
+r_int
+r_char
+id|aux_device_present
+op_assign
+l_int|0xaa
+suffix:semicolon
+multiline_comment|/* XXX remove this when legacy I/O is gone */
 DECL|macro|COMMAND_LINE_SIZE
 mdefine_line|#define COMMAND_LINE_SIZE&t;512
 DECL|variable|saved_command_line

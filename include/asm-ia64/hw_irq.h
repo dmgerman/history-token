@@ -180,6 +180,7 @@ id|_irq_desc
 id|NR_IRQS
 )braket
 suffix:semicolon
+macro_line|#ifndef CONFIG_IA64_GENERIC
 r_static
 r_inline
 r_struct
@@ -236,6 +237,7 @@ r_int
 id|vec
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Next follows the irq descriptor interface.  On IA-64, each CPU supports 256 interrupt&n; * vectors.  On smaller systems, there is a one-to-one correspondence between interrupt&n; * vectors and the Linux irq numbers.  However, larger systems may have multiple interrupt&n; * domains meaning that the translation from vector number to irq number depends on the&n; * interrupt domain that a CPU belongs to.  This API abstracts such platform-dependent&n; * differences and provides a uniform means to translate between vector and irq numbers&n; * and to obtain the irq descriptor for a given irq number.&n; */
 multiline_comment|/* Return a pointer to the irq descriptor for IRQ.  */
 r_static

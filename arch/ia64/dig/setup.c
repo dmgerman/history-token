@@ -26,14 +26,6 @@ r_extern
 r_int
 id|pcat_compat
 suffix:semicolon
-DECL|variable|aux_device_present
-r_int
-r_char
-id|aux_device_present
-op_assign
-l_int|0xaa
-suffix:semicolon
-multiline_comment|/* XXX remove this when legacy I/O is gone */
 r_void
 id|__init
 DECL|function|dig_setup
