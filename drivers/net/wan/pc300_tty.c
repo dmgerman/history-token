@@ -2841,7 +2841,6 @@ c_cond
 (paren
 id|ld-&gt;receive_buf
 )paren
-)paren
 (brace
 id|CPC_TTY_DBG
 c_func
