@@ -2947,7 +2947,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/* lower level hcd code should use *_dma exclusively */
+multiline_comment|/* lower level hcd code should use *_dma exclusively,&n;&t; * unless it uses pio or talks to another transport.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2957,6 +2957,8 @@ id|urb-&gt;transfer_flags
 op_amp
 id|URB_NO_DMA_MAP
 )paren
+op_logical_and
+id|hcd-&gt;controller-&gt;dma_mask
 )paren
 (brace
 r_if

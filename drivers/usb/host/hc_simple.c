@@ -608,11 +608,7 @@ c_cond
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-(paren
 id|URB_ASYNC_UNLINK
-op_or
-id|URB_TIMEOUT_KILLED
-)paren
 )paren
 (brace
 multiline_comment|/* asynchronous with callback */
@@ -1026,10 +1022,6 @@ id|DBGFUNC
 (paren
 l_string|&quot;enter qu_urb_timeout&bslash;n&quot;
 )paren
-suffix:semicolon
-id|urb-&gt;transfer_flags
-op_or_assign
-id|URB_TIMEOUT_KILLED
 suffix:semicolon
 id|hci_unlink_urb
 (paren

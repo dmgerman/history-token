@@ -998,54 +998,6 @@ id|root_hub
 suffix:semicolon
 )brace
 macro_line|#else&t;/* LINUX_VERSION_CODE */
-singleline_comment|// hcd_to_bus() eventually moves to hcd.h on 2.5 too
-DECL|function|hcd_to_bus
-r_static
-r_inline
-r_struct
-id|usb_bus
-op_star
-id|hcd_to_bus
-(paren
-r_struct
-id|usb_hcd
-op_star
-id|hcd
-)paren
-(brace
-r_return
-op_amp
-id|hcd-&gt;self
-suffix:semicolon
-)brace
-singleline_comment|// ... as does hcd_register_root()
-DECL|function|hcd_register_root
-r_static
-r_inline
-r_int
-id|hcd_register_root
-(paren
-r_struct
-id|usb_hcd
-op_star
-id|hcd
-)paren
-(brace
-r_return
-id|usb_register_root_hub
-(paren
-id|hcd_to_bus
-(paren
-id|hcd
-)paren
-op_member_access_from_pointer
-id|root_hub
-comma
-op_amp
-id|hcd-&gt;pdev-&gt;dev
-)paren
-suffix:semicolon
-)brace
 DECL|macro|SUBMIT_URB
 mdefine_line|#define SUBMIT_URB(urb,mem_flags) usb_submit_urb(urb,mem_flags)
 macro_line|#ifndef DEBUG

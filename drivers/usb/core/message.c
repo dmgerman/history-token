@@ -693,6 +693,13 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|io-&gt;dev-&gt;dev.dma_mask
+op_ne
+l_int|0
+)paren
 id|usb_buffer_unmap_sg
 (paren
 id|io-&gt;dev
@@ -948,6 +955,9 @@ suffix:semicolon
 r_int
 id|urb_flags
 suffix:semicolon
+r_int
+id|dma
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1000,7 +1010,20 @@ id|io-&gt;nents
 op_assign
 id|nents
 suffix:semicolon
-multiline_comment|/* initialize all the urbs we&squot;ll use */
+multiline_comment|/* not all host controllers use DMA (like the mainstream pci ones);&n;&t; * they can use PIO (sl811) or be software over another transport.&n;&t; */
+id|dma
+op_assign
+(paren
+id|dev-&gt;dev.dma_mask
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dma
+)paren
 id|io-&gt;entries
 op_assign
 id|usb_buffer_map_sg
@@ -1014,6 +1037,12 @@ comma
 id|nents
 )paren
 suffix:semicolon
+r_else
+id|io-&gt;entries
+op_assign
+id|nents
+suffix:semicolon
+multiline_comment|/* initialize all the urbs we&squot;ll use */
 r_if
 c_cond
 (paren
@@ -1195,6 +1224,13 @@ id|actual_length
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dma
+)paren
+(brace
+multiline_comment|/* hc may use _only_ transfer_dma */
 id|io-&gt;urbs
 (braket
 id|i
@@ -1218,6 +1254,44 @@ op_plus
 id|i
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* hc may use _only_ transfer_buffer */
+id|io-&gt;urbs
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|transfer_buffer
+op_assign
+id|page_address
+(paren
+id|sg
+(braket
+id|i
+)braket
+dot
+id|page
+)paren
+op_plus
+id|sg
+(braket
+id|i
+)braket
+dot
+id|offset
+suffix:semicolon
+id|len
+op_assign
+id|sg
+(braket
+id|i
+)braket
+dot
+id|length
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1401,13 +1475,7 @@ id|i
 op_decrement
 suffix:semicolon
 singleline_comment|// FIXME:  should it usb_sg_cancel() on INTERRUPT?
-singleline_comment|// how about imposing a backoff?
-id|set_current_state
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule
+id|yield
 (paren
 )paren
 suffix:semicolon

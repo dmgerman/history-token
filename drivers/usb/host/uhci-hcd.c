@@ -7315,10 +7315,6 @@ id|tmp
 op_assign
 id|tmp-&gt;next
 suffix:semicolon
-id|u-&gt;transfer_flags
-op_or_assign
-id|URB_TIMEOUT_KILLED
-suffix:semicolon
 id|uhci_urb_dequeue
 c_func
 (paren
