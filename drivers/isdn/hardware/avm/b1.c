@@ -1442,7 +1442,7 @@ id|capi_ctr
 op_star
 id|ctrl
 comma
-id|__u16
+id|u16
 id|appl
 comma
 id|capi_register_params
@@ -1607,7 +1607,7 @@ id|capi_ctr
 op_star
 id|ctrl
 comma
-id|__u16
+id|u16
 id|appl
 )paren
 (brace
@@ -1717,7 +1717,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__u16
+id|u16
 id|len
 op_assign
 id|CAPIMSG_LEN
@@ -1726,7 +1726,7 @@ c_func
 id|skb-&gt;data
 )paren
 suffix:semicolon
-id|__u8
+id|u8
 id|cmd
 op_assign
 id|CAPIMSG_COMMAND
@@ -1735,7 +1735,7 @@ c_func
 id|skb-&gt;data
 )paren
 suffix:semicolon
-id|__u8
+id|u8
 id|subcmd
 op_assign
 id|CAPIMSG_SUBCOMMAND
@@ -1769,7 +1769,7 @@ op_eq
 id|CAPI_DATA_B3_REQ
 )paren
 (brace
-id|__u16
+id|u16
 id|dlen
 op_assign
 id|CAPIMSG_DATALEN
@@ -1871,11 +1871,11 @@ id|capi_profile
 op_star
 id|profp
 suffix:semicolon
-id|__u8
+id|u8
 op_star
 id|dversion
 suffix:semicolon
-id|__u8
+id|u8
 id|flag
 suffix:semicolon
 r_int
@@ -2087,7 +2087,7 @@ id|flag
 op_assign
 (paren
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
@@ -2238,7 +2238,7 @@ id|flag
 op_assign
 (paren
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
@@ -2346,7 +2346,7 @@ id|flag
 op_assign
 (paren
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
@@ -3138,7 +3138,7 @@ id|card
 op_assign
 id|cinfo-&gt;card
 suffix:semicolon
-id|__u8
+id|u8
 id|flag
 suffix:semicolon
 r_int
@@ -3435,7 +3435,7 @@ id|flag
 op_assign
 (paren
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
@@ -3555,7 +3555,7 @@ id|flag
 op_assign
 (paren
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
