@@ -4943,8 +4943,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_int
 DECL|function|dvb_dmx_init
+r_int
 id|dvb_dmx_init
 c_func
 (paren
@@ -5277,8 +5277,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_int
 DECL|function|dvb_dmx_release
+r_int
 id|dvb_dmx_release
 c_func
 (paren

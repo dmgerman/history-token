@@ -1,6 +1,7 @@
 macro_line|#ifndef __DVB_FUNCTIONS_H__
 DECL|macro|__DVB_FUNCTIONS_H__
 mdefine_line|#define __DVB_FUNCTIONS_H__
+macro_line|#include &lt;linux/version.h&gt;
 multiline_comment|/**&n; *  a sleeping delay function, waits i ms&n; *&n; */
 r_static
 r_inline
