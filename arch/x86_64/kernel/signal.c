@@ -1495,16 +1495,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s forgot to set SA_RESTORER for signal %d.&bslash;n&quot;
-comma
-id|me-&gt;comm
-comma
-id|sig
-)paren
-suffix:semicolon
+multiline_comment|/* could use a vstub here */
 r_goto
 id|give_sigsegv
 suffix:semicolon
@@ -1649,25 +1640,12 @@ r_return
 suffix:semicolon
 id|give_sigsegv
 suffix:colon
-r_if
-c_cond
-(paren
-id|sig
-op_eq
-id|SIGSEGV
-)paren
-id|ka-&gt;sa.sa_handler
-op_assign
-id|SIG_DFL
-suffix:semicolon
-id|signal_fault
+id|force_sigsegv
 c_func
 (paren
-id|regs
+id|sig
 comma
-id|frame
-comma
-l_string|&quot;signal deliver&quot;
+id|current
 )paren
 suffix:semicolon
 )brace
@@ -1686,6 +1664,11 @@ id|siginfo_t
 op_star
 id|info
 comma
+r_struct
+id|k_sigaction
+op_star
+id|ka
+comma
 id|sigset_t
 op_star
 id|oldset
@@ -1696,19 +1679,6 @@ op_star
 id|regs
 )paren
 (brace
-r_struct
-id|k_sigaction
-op_star
-id|ka
-op_assign
-op_amp
-id|current-&gt;sighand-&gt;action
-(braket
-id|sig
-op_minus
-l_int|1
-)braket
-suffix:semicolon
 macro_line|#ifdef DEBUG_SIG
 id|printk
 c_func
@@ -1861,17 +1831,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ka-&gt;sa.sa_flags
-op_amp
-id|SA_ONESHOT
-)paren
-id|ka-&gt;sa.sa_handler
-op_assign
-id|SIG_DFL
-suffix:semicolon
-r_if
-c_cond
-(paren
 op_logical_neg
 (paren
 id|ka-&gt;sa.sa_flags
@@ -1939,6 +1898,10 @@ op_star
 id|oldset
 )paren
 (brace
+r_struct
+id|k_sigaction
+id|ka
+suffix:semicolon
 id|siginfo_t
 id|info
 suffix:semicolon
@@ -1999,6 +1962,9 @@ c_func
 op_amp
 id|info
 comma
+op_amp
+id|ka
+comma
 id|regs
 comma
 l_int|NULL
@@ -2038,6 +2004,9 @@ id|signr
 comma
 op_amp
 id|info
+comma
+op_amp
+id|ka
 comma
 id|oldset
 comma

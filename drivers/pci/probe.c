@@ -2613,6 +2613,25 @@ r_return
 id|PCI_CFG_SPACE_SIZE
 suffix:semicolon
 )brace
+DECL|function|pci_release_bus_bridge_dev
+r_static
+r_void
+id|pci_release_bus_bridge_dev
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Read the config data for a PCI device, sanity-check it&n; * and fill in the dev structure...&n; */
 r_static
 r_struct
@@ -3405,6 +3424,10 @@ suffix:semicolon
 id|dev-&gt;parent
 op_assign
 id|parent
+suffix:semicolon
+id|dev-&gt;release
+op_assign
+id|pci_release_bus_bridge_dev
 suffix:semicolon
 id|sprintf
 c_func

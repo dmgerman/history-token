@@ -506,19 +506,12 @@ c_func
 id|disk
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
 id|kref_get
 c_func
 (paren
 op_amp
 id|sdkp-&gt;kref
 )paren
-)paren
-r_goto
-id|out_sdkp
 suffix:semicolon
 r_if
 c_cond
@@ -549,10 +542,10 @@ c_func
 (paren
 op_amp
 id|sdkp-&gt;kref
+comma
+id|scsi_disk_release
 )paren
 suffix:semicolon
-id|out_sdkp
-suffix:colon
 id|sdkp
 op_assign
 l_int|NULL
@@ -600,6 +593,8 @@ c_func
 (paren
 op_amp
 id|sdkp-&gt;kref
+comma
+id|scsi_disk_release
 )paren
 suffix:semicolon
 id|up
@@ -5863,8 +5858,6 @@ c_func
 (paren
 op_amp
 id|sdkp-&gt;kref
-comma
-id|scsi_disk_release
 )paren
 suffix:semicolon
 multiline_comment|/* Note: We can accomodate 64 partitions, but the genhd code&n;&t; * assumes partitions allocate consecutive minors, which they don&squot;t.&n;&t; * So for now stay with max 16 partitions and leave two spare bits. &n;&t; * Later, we may change the genhd code and the alloc_disk() call&n;&t; * and the -&gt;minors assignment here. &t;KG, 2004-02-10&n;&t; */
@@ -6297,6 +6290,8 @@ c_func
 (paren
 op_amp
 id|sdkp-&gt;kref
+comma
+id|scsi_disk_release
 )paren
 suffix:semicolon
 id|up

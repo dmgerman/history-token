@@ -1724,6 +1724,17 @@ id|dev
 suffix:semicolon
 r_extern
 r_void
+id|pci_remove_bus
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|b
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|pci_remove_bus_device
 c_func
 (paren

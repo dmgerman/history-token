@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/gpio.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 Clock control support&n; *&n; * Based on, and code from linux/arch/arm/mach-versatile/clock.c&n; **&n; **  Copyright (C) 2004 ARM Limited.&n; **  Written by Deep Blue Solutions Limited.&n; *&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/clock.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 Clock control support&n; *&n; * Based on, and code from linux/arch/arm/mach-versatile/clock.c&n; **&n; **  Copyright (C) 2004 ARM Limited.&n; **  Written by Deep Blue Solutions Limited.&n; *&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -216,6 +216,13 @@ op_star
 id|clk
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|clk-&gt;ctrlbit
+op_ne
+l_int|0
+)paren
 id|s3c2410_clk_enable
 c_func
 (paren
@@ -805,6 +812,24 @@ id|ctrlbit
 op_assign
 id|S3C2410_CLKCON_SPI
 )brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;watchdog&quot;
+comma
+dot
+id|parent
+op_assign
+op_amp
+id|clk_p
+comma
+dot
+id|ctrlbit
+op_assign
+l_int|0
+)brace
 )brace
 suffix:semicolon
 multiline_comment|/* initialise the clock system */
@@ -960,7 +985,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;failed to register cpu fclk&bslash;n&quot;
+l_string|&quot;failed to register cpu hclk&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -979,7 +1004,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;failed to register cpu fclk&bslash;n&quot;
+l_string|&quot;failed to register cpu pclk&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for

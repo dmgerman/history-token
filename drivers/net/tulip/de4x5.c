@@ -3216,9 +3216,6 @@ id|gendev
 suffix:semicolon
 id|lp-&gt;lock
 op_assign
-(paren
-id|spinlock_t
-)paren
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|init_timer
@@ -4012,9 +4009,6 @@ id|dev
 suffix:semicolon
 id|lp-&gt;lock
 op_assign
-(paren
-id|spinlock_t
-)paren
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|lp-&gt;state

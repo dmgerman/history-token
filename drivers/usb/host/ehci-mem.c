@@ -381,8 +381,6 @@ c_func
 (paren
 op_amp
 id|qh-&gt;kref
-comma
-id|qh_destroy
 )paren
 suffix:semicolon
 id|qh-&gt;ehci
@@ -486,6 +484,8 @@ c_func
 (paren
 op_amp
 id|qh-&gt;kref
+comma
+id|qh_destroy
 )paren
 suffix:semicolon
 )brace

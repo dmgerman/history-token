@@ -1660,7 +1660,7 @@ id|drv
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_register_driver - register a new pci driver&n; * @drv: the driver structure to register&n; * &n; * Adds the driver structure to the list of registered drivers&n; * Returns the number of pci devices which were claimed by the driver&n; * during registration.  The driver remains registered even if the&n; * return value is zero.&n; */
+multiline_comment|/**&n; * pci_register_driver - register a new pci driver&n; * @drv: the driver structure to register&n; * &n; * Adds the driver structure to the list of registered drivers.&n; * Returns a negative value on error. The driver remains registered&n; * even if no device was claimed during registration.&n; */
 r_int
 DECL|function|pci_register_driver
 id|pci_register_driver

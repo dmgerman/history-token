@@ -41,6 +41,7 @@ suffix:semicolon
 multiline_comment|/* RISC OS permissions&t;&t;*/
 DECL|member|stamped
 r_int
+r_int
 id|stamped
 suffix:colon
 l_int|1
