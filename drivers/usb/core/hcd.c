@@ -2048,9 +2048,8 @@ id|usb_register_root_hub
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * usb_calc_bus_time:&n; * Returns approximate bus time in nanoseconds for a periodic transaction.&n; * See USB 2.0 spec section 5.11.3&n; */
+multiline_comment|/**&n; * usb_calc_bus_time: approximate periodic transaction time in nanoseconds&n; * @speed: from dev-&gt;speed; USB_SPEED_{LOW,FULL,HIGH}&n; * @is_input: true iff the transaction sends data to the host&n; * @is_isoc: true for isochronous transactions, false for interrupt ones&n; * @bytecount: how many bytes in the transaction.&n; *&n; * Returns approximate bus time in nanoseconds for a periodic transaction.&n; * See USB 2.0 spec section 5.11.3; only periodic transfers need to be&n; * scheduled in software, this function is only used for such scheduling.&n; */
 DECL|function|usb_calc_bus_time
-r_static
 r_int
 id|usb_calc_bus_time
 (paren
@@ -2242,10 +2241,29 @@ r_case
 id|USB_SPEED_HIGH
 suffix:colon
 multiline_comment|/* ISOC or INTR */
-singleline_comment|// FIXME merge from EHCI code; caller will need to handle
-singleline_comment|// each part of a split separately.
+singleline_comment|// FIXME adjust for input vs output
+r_if
+c_cond
+(paren
+id|isoc
+)paren
+id|tmp
+op_assign
+id|HS_USECS
+(paren
+id|bytecount
+)paren
+suffix:semicolon
+r_else
+id|tmp
+op_assign
+id|HS_USECS_ISO
+(paren
+id|bytecount
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|tmp
 suffix:semicolon
 r_default
 suffix:colon
@@ -2260,6 +2278,12 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+DECL|variable|usb_calc_bus_time
+id|EXPORT_SYMBOL
+(paren
+id|usb_calc_bus_time
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * usb_check_bandwidth():&n; *&n; * old_alloc is from host_controller-&gt;bandwidth_allocated in microseconds;&n; * bustime is from calc_bus_time(), but converted to microseconds.&n; *&n; * returns &lt;bustime in us&gt; if successful,&n; * or -ENOSPC if bandwidth request fails.&n; *&n; * FIXME:&n; * This initial implementation does not use Endpoint.bInterval&n; * in managing bandwidth allocation.&n; * It probably needs to be expanded to use Endpoint.bInterval.&n; * This can be done as a later enhancement (correction).&n; *&n; * This will also probably require some kind of&n; * frame allocation tracking...meaning, for example,&n; * that if multiple drivers request interrupts every 10 USB frames,&n; * they don&squot;t all have to be allocated at&n; * frame numbers N, N+10, N+20, etc.  Some of them could be at&n; * N+11, N+21, N+31, etc., and others at&n; * N+12, N+22, N+32, etc.&n; *&n; * Similarly for isochronous transfers...&n; *&n; * Individual HCDs can schedule more directly ... this logic&n; * is not correct for high speed transfers.&n; */
 DECL|function|usb_check_bandwidth
 r_int

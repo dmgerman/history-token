@@ -2,13 +2,6 @@ multiline_comment|/*&n; * Copyright (c) 2001-2002 by David Brownell&n; * &n; * T
 multiline_comment|/* this file is part of ehci-hcd.c */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * EHCI scheduled transaction support:  interrupt, iso, split iso&n; * These are called &quot;periodic&quot; transactions in the EHCI spec.&n; *&n; * Note that for interrupt transfers, the QH/QTD manipulation is shared&n; * with the &quot;asynchronous&quot; transaction support (control/bulk transfers).&n; * The only real difference is in how interrupt transfers are scheduled.&n; * We get some funky API restrictions from the current URB model, which&n; * works notably better for reading transfers than for writing.  (And&n; * which accordingly needs to change before it&squot;ll work inside devices,&n; * or with &quot;USB On The Go&quot; additions to USB 2.0 ...)&n; */
-multiline_comment|/*&n; * Ceiling microseconds (typical) for that many bytes at high speed&n; * ISO is a bit less, no ACK ... from USB 2.0 spec, 5.11.3 (and needed&n; * to preallocate bandwidth)&n; */
-DECL|macro|EHCI_HOST_DELAY
-mdefine_line|#define EHCI_HOST_DELAY&t;5&t;/* nsec, guess */
-DECL|macro|HS_USECS
-mdefine_line|#define HS_USECS(bytes) NS_TO_US ( ((55 * 8 * 2083)/1000) &bslash;&n;&t;+ ((2083UL * (3167 + BitTime (bytes)))/1000) &bslash;&n;&t;+ EHCI_HOST_DELAY)
-DECL|macro|HS_USECS_ISO
-mdefine_line|#define HS_USECS_ISO(bytes) NS_TO_US ( ((long)(38 * 8 * 2.083)) &bslash;&n;&t;+ ((2083UL * (3167 + BitTime (bytes)))/1000) &bslash;&n;&t;+ EHCI_HOST_DELAY)
 r_static
 r_int
 id|ehci_get_frame
@@ -313,6 +306,27 @@ id|uframe
 id|usecs
 op_add_assign
 id|q-&gt;qh-&gt;usecs
+suffix:semicolon
+multiline_comment|/* ... or C-mask? */
+r_if
+c_cond
+(paren
+id|q-&gt;qh-&gt;hw_info2
+op_amp
+id|cpu_to_le32
+(paren
+l_int|1
+op_lshift
+(paren
+l_int|8
+op_plus
+id|uframe
+)paren
+)paren
+)paren
+id|usecs
+op_add_assign
+id|q-&gt;qh-&gt;c_usecs
 suffix:semicolon
 id|q
 op_assign
@@ -818,6 +832,17 @@ r_int
 id|usecs
 )paren
 (brace
+multiline_comment|/* complete split running into next frame?&n;&t; * given FSTN support, we could sometimes check...&n;&t; */
+r_if
+c_cond
+(paren
+id|uframe
+op_ge
+l_int|8
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * 80% periodic == 100 usec/uframe available&n;&t; * convert &quot;usecs we need&quot; to &quot;max already claimed&quot; &n;&t; */
 id|usecs
 op_assign
@@ -832,6 +857,8 @@ id|claimed
 suffix:semicolon
 singleline_comment|// FIXME delete when intr_submit handles non-empty queues
 singleline_comment|// this gives us a one intr/frame limit (vs N/uframe)
+singleline_comment|// ... and also lets us avoid tracking split transactions
+singleline_comment|// that might collide at a given TT/hub.
 r_if
 c_cond
 (paren
@@ -917,6 +944,10 @@ suffix:semicolon
 r_int
 r_int
 id|usecs
+comma
+id|c_usecs
+comma
+id|gap_uf
 suffix:semicolon
 r_int
 r_int
@@ -933,11 +964,14 @@ op_star
 id|dev
 suffix:semicolon
 r_int
+id|is_input
+suffix:semicolon
+r_int
 id|status
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* get endpoint and transfer data */
+multiline_comment|/* get endpoint and transfer/schedule data */
 id|epnum
 op_assign
 id|usb_pipeendpoint
@@ -945,72 +979,51 @@ id|usb_pipeendpoint
 id|urb-&gt;pipe
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|is_input
+op_assign
 id|usb_pipein
 (paren
 id|urb-&gt;pipe
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_input
 )paren
 id|epnum
 op_or_assign
 l_int|0x10
 suffix:semicolon
+multiline_comment|/*&n;&t; * HS interrupt transfers are simple -- only one microframe.  FS/LS&n;&t; * interrupt transfers involve a SPLIT in one microframe and CSPLIT&n;&t; * sometime later.  We need to know how much time each will be&n;&t; * needed in each microframe and, for FS/LS, how many microframes&n;&t; * separate the two in the best case.&n;&t; */
+id|usecs
+op_assign
+id|usb_calc_bus_time
+(paren
+id|USB_SPEED_HIGH
+comma
+id|is_input
+comma
+l_int|0
+comma
+id|urb-&gt;transfer_buffer_length
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|urb-&gt;dev-&gt;speed
-op_ne
+op_eq
 id|USB_SPEED_HIGH
 )paren
 (brace
-id|dbg
-(paren
-l_string|&quot;no intr/tt scheduling yet&quot;
-)paren
-suffix:semicolon
-id|status
+id|gap_uf
 op_assign
-op_minus
-id|ENOSYS
+l_int|0
 suffix:semicolon
-r_goto
-id|done
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * NOTE: current completion/restart logic doesn&squot;t handle more than&n;&t; * one qtd in a periodic qh ... 16-20 KB/urb is pretty big for this.&n;&t; * such big requests need many periods to transfer.&n;&t; *&n;&t; * FIXME want to change hcd core submit model to expect queuing&n;&t; * for all transfer types ... not just ISO and (with flag) BULK.&n;&t; * that means: getting rid of this check; handling the &quot;interrupt&n;&t; * urb already queued&quot; case below like bulk queuing is handled (no&n;&t; * errors possible!); and completly getting rid of that annoying&n;&t; * qh restart logic.  simpler/smaller overall, and more flexible.&n;&t; */
-r_if
-c_cond
-(paren
-id|unlikely
-(paren
-id|qtd_list-&gt;next
-op_ne
-id|qtd_list-&gt;prev
-)paren
-)paren
-(brace
-id|dbg
-(paren
-l_string|&quot;only one intr qtd per urb allowed&quot;
-)paren
-suffix:semicolon
-id|status
+id|c_usecs
 op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-r_goto
-id|done
-suffix:semicolon
-)brace
-id|usecs
-op_assign
-id|HS_USECS
-(paren
-id|urb-&gt;transfer_buffer_length
-)paren
+l_int|0
 suffix:semicolon
 multiline_comment|/* FIXME handle HS periods of less than 1 frame. */
 id|period
@@ -1032,6 +1045,107 @@ id|dbg
 l_string|&quot;intr period %d uframes, NYET!&quot;
 comma
 id|urb-&gt;interval
+)paren
+suffix:semicolon
+id|status
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/* gap is a function of full/low speed transfer times */
+id|gap_uf
+op_assign
+l_int|1
+op_plus
+id|usb_calc_bus_time
+(paren
+id|urb-&gt;dev-&gt;speed
+comma
+id|is_input
+comma
+l_int|0
+comma
+id|urb-&gt;transfer_buffer_length
+)paren
+op_div
+(paren
+l_int|125
+op_star
+l_int|1000
+)paren
+suffix:semicolon
+multiline_comment|/* FIXME this just approximates SPLIT/CSPLIT times */
+r_if
+c_cond
+(paren
+id|is_input
+)paren
+(brace
+singleline_comment|// SPLIT, gap, CSPLIT+DATA
+id|c_usecs
+op_assign
+id|usecs
+op_plus
+id|HS_USECS
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|usecs
+op_assign
+id|HS_USECS
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+singleline_comment|// SPLIT+DATA, gap, CSPLIT
+id|usecs
+op_assign
+id|usecs
+op_plus
+id|HS_USECS
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|c_usecs
+op_assign
+id|HS_USECS
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
+id|period
+op_assign
+id|urb-&gt;interval
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * NOTE: current completion/restart logic doesn&squot;t handle more than&n;&t; * one qtd in a periodic qh ... 16-20 KB/urb is pretty big for this.&n;&t; * such big requests need many periods to transfer.&n;&t; *&n;&t; * FIXME want to change hcd core submit model to expect queuing&n;&t; * for all transfer types ... not just ISO and (with flag) BULK.&n;&t; * that means: getting rid of this check; handling the &quot;interrupt&n;&t; * urb already queued&quot; case below like bulk queuing is handled (no&n;&t; * errors possible!); and completly getting rid of that annoying&n;&t; * qh restart logic.  simpler/smaller overall, and more flexible.&n;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+(paren
+id|qtd_list-&gt;next
+op_ne
+id|qtd_list-&gt;prev
+)paren
+)paren
+(brace
+id|dbg
+(paren
+l_string|&quot;only one intr qtd per urb allowed&quot;
 )paren
 suffix:semicolon
 id|status
@@ -1266,6 +1380,10 @@ id|qh-&gt;usecs
 op_assign
 id|usecs
 suffix:semicolon
+id|qh-&gt;c_usecs
+op_assign
+id|c_usecs
+suffix:semicolon
 id|urb-&gt;hcpriv
 op_assign
 id|qh_get
@@ -1284,7 +1402,12 @@ r_do
 r_int
 id|uframe
 suffix:semicolon
-multiline_comment|/* pick a set of slots such that all uframes have&n;&t;&t;&t; * enough periodic bandwidth available.&n;&t;&t;&t; *&n;&t;&t;&t; * FIXME for TT splits, need uframes for start and end.&n;&t;&t;&t; * FSTNs can put end into next frame (uframes 0 or 1).&n;&t;&t;&t; */
+id|u32
+id|c_mask
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* pick a set of slots such that all uframes have&n;&t;&t;&t; * enough periodic bandwidth available.&n;&t;&t;&t; */
 id|frame
 op_decrement
 suffix:semicolon
@@ -1318,9 +1441,85 @@ id|period
 comma
 id|usecs
 )paren
-op_ne
+op_eq
 l_int|0
 )paren
+r_continue
+suffix:semicolon
+multiline_comment|/* If this is a split transaction, check the&n;&t;&t;&t;&t; * bandwidth available for the completion&n;&t;&t;&t;&t; * too.  check both best and worst case gaps:&n;&t;&t;&t;&t; * worst case is SPLIT near uframe end, and&n;&t;&t;&t;&t; * CSPLIT near start ... best is vice versa.&n;&t;&t;&t;&t; * Difference can be almost two uframe times.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * FIXME don&squot;t even bother unless we know&n;&t;&t;&t;&t; * this TT is idle in that uframe ... right&n;&t;&t;&t;&t; * now we know only one interrupt transfer&n;&t;&t;&t;&t; * will be scheduled per frame, so we don&squot;t&n;&t;&t;&t;&t; * need to update/check TT state when we&n;&t;&t;&t;&t; * schedule a split (QH, SITD, or FSTN).&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * FIXME ehci 0.96 and above can use FSTNs&n;&t;&t;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|c_usecs
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|check_period
+(paren
+id|ehci
+comma
+id|frame
+comma
+id|uframe
+op_plus
+id|gap_uf
+comma
+id|period
+comma
+id|c_usecs
+)paren
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|check_period
+(paren
+id|ehci
+comma
+id|frame
+comma
+id|uframe
+op_plus
+id|gap_uf
+op_plus
+l_int|1
+comma
+id|period
+comma
+id|c_usecs
+)paren
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
+id|c_mask
+op_assign
+l_int|0x03
+op_lshift
+(paren
+l_int|8
+op_plus
+id|uframe
+op_plus
+id|gap_uf
+)paren
+suffix:semicolon
+id|c_mask
+op_assign
+id|cpu_to_le32
+(paren
+id|c_mask
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -1342,7 +1541,12 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* set S-frame mask */
+multiline_comment|/* reset S-frame and (maybe) C-frame masks */
+id|qh-&gt;hw_info2
+op_and_assign
+op_complement
+l_int|0xffff
+suffix:semicolon
 id|qh-&gt;hw_info2
 op_or_assign
 id|cpu_to_le32
@@ -1351,6 +1555,8 @@ l_int|1
 op_lshift
 id|uframe
 )paren
+op_or
+id|c_mask
 suffix:semicolon
 singleline_comment|// dbg_qh (&quot;Schedule INTR qh&quot;, ehci, qh);
 multiline_comment|/* stuff into the periodic schedule */
@@ -1360,7 +1566,7 @@ id|QH_STATE_LINKED
 suffix:semicolon
 id|vdbg
 (paren
-l_string|&quot;qh %p usecs %d period %d starting %d.%d&quot;
+l_string|&quot;qh %p usecs %d period %d.0 starting %d.%d&quot;
 comma
 id|qh
 comma
@@ -1448,7 +1654,11 @@ id|urb-&gt;dev
 comma
 id|urb
 comma
+(paren
 id|usecs
+op_plus
+id|c_usecs
+)paren
 op_div
 id|period
 comma
@@ -1898,6 +2108,9 @@ suffix:semicolon
 r_int
 id|length
 suffix:semicolon
+r_int
+id|is_input
+suffix:semicolon
 id|itd-&gt;hw_next
 op_assign
 id|EHCI_LIST_END
@@ -1998,13 +2211,17 @@ id|usb_pipeendpoint
 id|urb-&gt;pipe
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|is_input
+op_assign
 id|usb_pipein
 (paren
 id|urb-&gt;pipe
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_input
 )paren
 (brace
 id|maxp
@@ -2107,8 +2324,14 @@ suffix:semicolon
 )brace
 id|itd-&gt;usecs
 op_assign
-id|HS_USECS_ISO
+id|usb_calc_bus_time
 (paren
+id|USB_SPEED_HIGH
+comma
+id|is_input
+comma
+l_int|1
+comma
 id|length
 )paren
 suffix:semicolon
@@ -3423,7 +3646,7 @@ id|urb-&gt;number_of_packets
 r_return
 id|flags
 suffix:semicolon
-multiline_comment|/*&n;&t; * For now, always give the urb back to the driver ... expect it&n;&t; * to submit a new urb (or resubmit this), and to have another&n;&t; * already queued when un-interrupted transfers are needed.&n;&t; * No, that&squot;s not what OHCI or UHCI are now doing.&n;&t; *&n;&t; * FIXME Revisit the ISO URB model.  It&squot;s cleaner not to have all&n;&t; * the special case magic, but it&squot;d be faster to reuse existing&n;&t; * ITD/DMA setup and schedule state.  Easy to dma_sync/complete(),&n;&t; * then either reschedule or, if unlinking, free and giveback().&n;&t; * But we can&squot;t overcommit like the full and low speed HCs do, and&n;&t; * there&squot;s no clean way to report an error when rescheduling...&n;&t; *&n;&t; * NOTE that for now we don&squot;t accelerate ISO unlinks; they just&n;&t; * happen according to the current schedule.  Means a delay of&n;&t; * up to about a second (max).&n;&t; */
+multiline_comment|/*&n;&t; * Always give the urb back to the driver ... expect it to submit&n;&t; * a new urb (or resubmit this), and to have another already queued&n;&t; * when un-interrupted transfers are needed.&n;&t; *&n;&t; * NOTE that for now we don&squot;t accelerate ISO unlinks; they just&n;&t; * happen according to the current schedule.  Means a delay of&n;&t; * up to about a second (max).&n;&t; */
 id|itd_free_list
 (paren
 id|ehci
