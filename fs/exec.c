@@ -4044,8 +4044,6 @@ r_int
 r_try
 comma
 id|retval
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|linux_binfmt
@@ -4211,6 +4209,11 @@ c_func
 (paren
 id|USER_DS
 )paren
+suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|ENOENT
 suffix:semicolon
 r_for
 c_loop
