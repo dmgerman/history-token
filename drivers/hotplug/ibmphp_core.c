@@ -3039,13 +3039,13 @@ op_assign
 id|PCI_SPEED_UNKNOWN
 suffix:semicolon
 )brace
-id|info-&gt;cur_bus_speed_status
+id|info-&gt;cur_bus_speed
 op_assign
 id|bus_speed
 suffix:semicolon
-id|info-&gt;max_bus_speed_status
+id|info-&gt;max_bus_speed
 op_assign
-id|slot_cur-&gt;hotplug_slot-&gt;info-&gt;max_bus_speed_status
+id|slot_cur-&gt;hotplug_slot-&gt;info-&gt;max_bus_speed
 suffix:semicolon
 singleline_comment|// To do: bus_names 
 id|rc
