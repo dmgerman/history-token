@@ -3738,6 +3738,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * Different cardbus controllers have slightly different&n; * initialization sequences etc details. List them here..&n; */
 DECL|variable|cardbus_type
+r_static
 r_struct
 id|cardbus_type
 id|cardbus_type
