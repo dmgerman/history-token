@@ -168,7 +168,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;notify value: 0x2.2_x **Device Specific**&bslash;n&quot;
+l_string|&quot;notify value: 0x%2.2x **Device Specific**&bslash;n&quot;
 comma
 id|notify_value
 )paren
