@@ -4273,7 +4273,13 @@ l_int|4096UL
 )paren
 suffix:semicolon
 r_return
+id|max
+c_func
+(paren
 id|size
+comma
+l_int|4UL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is an integer logarithm so that shifts can be used later&n; * to extract the more random high bits from the multiplicative&n; * hash function before the remainder is taken.&n; */
