@@ -2,6 +2,7 @@ multiline_comment|/*&t;Cyclone-timer: &n; *&t;&t;This code implements timer_ops 
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -238,7 +239,8 @@ id|use_cyclone
 )paren
 (brace
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|printk
@@ -307,7 +309,8 @@ l_string|&quot;Summit chipset: Could not find valid CBAR register.&bslash;n&quot
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|base
@@ -330,7 +333,8 @@ l_string|&quot;Summit chipset: Could not find valid CBAR value.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* setup PMCC */
@@ -396,7 +400,8 @@ l_string|&quot;Summit chipset: Could not find valid PMCC register.&bslash;n&quot
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|reg
@@ -469,7 +474,8 @@ l_string|&quot;Summit chipset: Could not find valid MPCS register.&bslash;n&quot
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|reg
@@ -542,7 +548,8 @@ l_string|&quot;Summit chipset: Could not find valid MPMC register.&bslash;n&quot
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/*quick test to make sure its ticking*/
@@ -610,13 +617,14 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Everything looks good! */
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#if 0 /* XXX future work */
@@ -690,16 +698,19 @@ id|timer_opts
 id|timer_cyclone
 op_assign
 (brace
+dot
 id|init
-suffix:colon
+op_assign
 id|init_cyclone
 comma
+dot
 id|mark_offset
-suffix:colon
+op_assign
 id|mark_offset_cyclone
 comma
+dot
 id|get_offset
-suffix:colon
+op_assign
 id|get_offset_cyclone
 )brace
 suffix:semicolon
