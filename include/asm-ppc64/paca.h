@@ -99,7 +99,7 @@ id|emergency_sp
 suffix:semicolon
 multiline_comment|/* pointer to emergency stack */
 DECL|member|hw_cpu_id
-id|u16
+id|s16
 id|hw_cpu_id
 suffix:semicolon
 multiline_comment|/* Physical processor number */
