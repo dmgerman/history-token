@@ -3,7 +3,7 @@ multiline_comment|/*------------------------------------------------------------
 multiline_comment|/*&n; * OHCI Root Hub ... the nonsharable stuff&n; *&n; * Registers don&squot;t need cpu_to_le32, that happens transparently&n; */
 multiline_comment|/* AMD-756 (D2 rev) reports corrupt register contents in some cases.&n; * The erratum (#4) description is incorrect.  AMD&squot;s workaround waits&n; * till some bits (mostly reserved) are clear; ok for all revs.&n; */
 DECL|macro|read_roothub
-mdefine_line|#define read_roothub(hc, register, mask) ({ &bslash;&n;&t;u32 temp = readl (&amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;if (temp == -1) &bslash;&n;&t;&t;disable (hc); &bslash;&n;&t;else if (hc-&gt;flags &amp; OHCI_QUIRK_AMD756) &bslash;&n;&t;&t;while (temp &amp; mask) &bslash;&n;&t;&t;&t;temp = readl (&amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;temp; })
+mdefine_line|#define read_roothub(hc, register, mask) ({ &bslash;&n;&t;u32 temp = ohci_readl (&amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;if (temp == -1) &bslash;&n;&t;&t;disable (hc); &bslash;&n;&t;else if (hc-&gt;flags &amp; OHCI_QUIRK_AMD756) &bslash;&n;&t;&t;while (temp &amp; mask) &bslash;&n;&t;&t;&t;temp = ohci_readl (&amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;temp; })
 DECL|function|roothub_a
 r_static
 id|u32
@@ -39,7 +39,7 @@ id|hc
 )paren
 (brace
 r_return
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|hc-&gt;regs-&gt;roothub.b
@@ -59,7 +59,7 @@ id|hc
 )paren
 (brace
 r_return
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|hc-&gt;regs-&gt;roothub.status
@@ -200,7 +200,7 @@ id|ohci-&gt;lock
 suffix:semicolon
 id|ohci-&gt;hc_control
 op_assign
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;control
@@ -244,7 +244,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;control
@@ -321,7 +321,7 @@ id|ohci-&gt;regs-&gt;control
 suffix:semicolon
 id|ohci-&gt;hc_control
 op_assign
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;control
@@ -368,7 +368,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;intrstatus
@@ -414,7 +414,7 @@ l_int|0
 suffix:semicolon
 id|writel
 (paren
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;intrstatus
@@ -461,7 +461,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;control
@@ -611,7 +611,7 @@ id|ohci-&gt;lock
 suffix:semicolon
 id|ohci-&gt;hc_control
 op_assign
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;control
@@ -652,7 +652,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;control
@@ -770,7 +770,7 @@ op_decrement
 id|u32
 id|stat
 op_assign
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;roothub.portstatus
@@ -819,7 +819,7 @@ l_int|15
 suffix:semicolon
 id|temp
 op_assign
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;control
@@ -930,7 +930,7 @@ id|ohci-&gt;regs-&gt;intrenable
 suffix:semicolon
 id|writel
 (paren
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;intrstatus
@@ -952,7 +952,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;control
@@ -993,7 +993,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;control
@@ -1160,7 +1160,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;control
@@ -1328,7 +1328,7 @@ l_string|&quot;bogus NDP=%d, rereads as NDP=%d&bslash;n&quot;
 comma
 id|ports
 comma
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;roothub.a
@@ -2001,7 +2001,7 @@ id|wIndex
 )braket
 )paren
 suffix:semicolon
-singleline_comment|// readl (&amp;ohci-&gt;regs-&gt;roothub.portstatus [wIndex]);
+singleline_comment|// ohci_readl (&amp;ohci-&gt;regs-&gt;roothub.portstatus [wIndex]);
 r_break
 suffix:semicolon
 r_case
@@ -2212,7 +2212,7 @@ id|USB_PORT_FEAT_RESET
 suffix:colon
 id|temp
 op_assign
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;roothub.portstatus
