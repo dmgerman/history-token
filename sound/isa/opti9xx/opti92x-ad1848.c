@@ -2218,6 +2218,20 @@ comma
 id|flags
 )paren
 suffix:semicolon
+macro_line|#ifndef OPTi93X
+id|outb
+c_func
+(paren
+id|irq_bits
+op_lshift
+l_int|3
+op_or
+id|dma_bits
+comma
+id|chip-&gt;wss_base
+)paren
+suffix:semicolon
+macro_line|#else /* OPTi93X */
 id|snd_opti9xx_write
 c_func
 (paren
@@ -2238,6 +2252,7 @@ id|dma_bits
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif /* OPTi93X */
 id|spin_unlock_irqrestore
 c_func
 (paren
