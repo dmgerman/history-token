@@ -4692,6 +4692,7 @@ id|CHECKSUM_HW
 (brace
 id|th-&gt;check
 op_assign
+op_complement
 id|csum_ipv6_magic
 c_func
 (paren
