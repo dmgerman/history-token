@@ -955,10 +955,6 @@ r_break
 suffix:semicolon
 macro_line|#if 0
 r_case
-id|EEH_REGION_ID
-suffix:colon
-multiline_comment|/*&n;&t;&t; * Should only be hit if there is an access to MMIO space&n;&t;&t; * which is protected by EEH.&n;&t;&t; * Send the problem up to do_page_fault &n;&t;&t; */
-r_case
 id|KERNEL_REGION_ID
 suffix:colon
 multiline_comment|/*&n;&t;&t; * Should never get here - entire 0xC0... region is bolted.&n;&t;&t; * Send the problem up to do_page_fault &n;&t;&t; */

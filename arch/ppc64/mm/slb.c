@@ -288,6 +288,8 @@ suffix:semicolon
 r_int
 r_int
 id|esid_data
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -411,8 +413,6 @@ id|offset
 OG
 id|SLB_CACHE_ENTRIES
 )paren
-(brace
-multiline_comment|/* flush segment in EEH region, we shouldn&squot;t ever&n;&t;&t; * access addresses in this region. */
 id|asm
 r_volatile
 (paren
@@ -421,11 +421,10 @@ suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
 (paren
-id|EEHREGIONBASE
+id|esid_data
 )paren
 )paren
 suffix:semicolon
-)brace
 id|get_paca
 c_func
 (paren
