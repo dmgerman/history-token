@@ -2989,7 +2989,7 @@ id|rates
 op_assign
 id|SNDRV_PCM_RATE_KNOT
 op_or
-id|SNDRV_PCM_RATE_8000_96000
+id|SNDRV_PCM_RATE_8000_192000
 comma
 dot
 id|rate_min
@@ -3085,7 +3085,7 @@ id|rates
 op_assign
 id|SNDRV_PCM_RATE_KNOT
 op_or
-id|SNDRV_PCM_RATE_8000_96000
+id|SNDRV_PCM_RATE_8000_192000
 comma
 dot
 id|rate_min
@@ -3727,7 +3727,7 @@ id|rates
 op_assign
 id|SNDRV_PCM_RATE_KNOT
 op_or
-id|SNDRV_PCM_RATE_8000_96000
+id|SNDRV_PCM_RATE_8000_192000
 comma
 dot
 id|rate_min
@@ -4009,7 +4009,7 @@ comma
 id|SNDRV_PCM_HW_PARAM_RATE
 comma
 op_amp
-id|hw_constraints_rates_96
+id|hw_constraints_rates_192
 )paren
 suffix:semicolon
 r_return
