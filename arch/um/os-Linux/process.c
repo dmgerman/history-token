@@ -3,6 +3,8 @@ macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;signal.h&gt;
+macro_line|#include &lt;sys/mman.h&gt;
+macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;user.h&quot;
 DECL|function|os_process_pc
