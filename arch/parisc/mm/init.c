@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/nodemask.h&gt;&t;/* for node_online_map */
+macro_line|#include &lt;linux/pagemap.h&gt;&t;/* for release_pages and page_cache_release */
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/pdc_chassis.h&gt;
@@ -149,12 +150,6 @@ id|sysram_resources
 (braket
 id|MAX_PHYSMEM_RANGES
 )braket
-suffix:semicolon
-DECL|variable|max_pfn
-r_static
-r_int
-r_int
-id|max_pfn
 suffix:semicolon
 multiline_comment|/* The following array is initialized from the firmware specific&n; * information retrieved in kernel/inventory.c.&n; */
 DECL|variable|pmem_ranges
@@ -666,7 +661,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%2d) Start 0x%016lx End 0x%016lx Size %6ld Mb&bslash;n&quot;
+l_string|&quot;%2d) Start 0x%016lx End 0x%016lx Size %6ld MB&bslash;n&quot;
 comma
 id|i
 comma
@@ -826,7 +821,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Memory truncated to %ld Mb&bslash;n&quot;
+l_string|&quot;Memory truncated to %ld MB&bslash;n&quot;
 comma
 id|mem_limit
 op_rshift
@@ -906,7 +901,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Total Memory: %ld Mb&bslash;n&quot;
+l_string|&quot;Total Memory: %ld MB&bslash;n&quot;
 comma
 id|mem_max
 op_rshift
@@ -1940,15 +1935,6 @@ l_int|1
 )paren
 op_plus
 l_int|1
-suffix:semicolon
-id|mem_map
-op_assign
-id|zone_table
-(braket
-id|ZONE_DMA
-)braket
-op_member_access_from_pointer
-id|zone_mem_map
 suffix:semicolon
 id|totalram_pages
 op_add_assign
