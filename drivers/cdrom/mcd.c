@@ -20,8 +20,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MITSUMI_CDROM_MAJOR
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device))
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;mcd_queue)
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|mcd_port
 mdefine_line|#define mcd_port mcd&t;&t;/* for compatible parameter passing with &quot;insmod&quot; */
@@ -44,6 +44,12 @@ r_static
 r_int
 id|mcdPresent
 suffix:semicolon
+DECL|variable|mcd_queue
+r_static
+r_struct
+id|request_queue
+id|mcd_queue
+suffix:semicolon
 DECL|macro|QUICK_LOOP_DELAY
 mdefine_line|#define QUICK_LOOP_DELAY udelay(45)&t;/* use udelay */
 DECL|macro|QUICK_LOOP_COUNT
@@ -64,14 +70,6 @@ c_func
 (paren
 id|QUEUE
 )paren
-op_logical_and
-id|major
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
-op_eq
-id|MAJOR_NR
 op_logical_and
 id|CURRENT-&gt;cmd
 op_eq
@@ -480,6 +478,7 @@ id|mcd_spinlock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+r_static
 r_int
 id|mcd_audio_ioctl
 c_func
@@ -498,6 +497,7 @@ op_star
 id|arg
 )paren
 suffix:semicolon
+r_static
 r_int
 id|mcd_drive_status
 c_func
@@ -4460,11 +4460,8 @@ suffix:semicolon
 id|blk_init_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|mcd_queue
 comma
 id|do_mcd_request
 comma
@@ -4927,6 +4924,11 @@ r_goto
 id|out_cdrom
 suffix:semicolon
 )brace
+id|disk-&gt;queue
+op_assign
+op_amp
+id|mcd_queue
+suffix:semicolon
 id|add_disk
 c_func
 (paren
@@ -4975,11 +4977,8 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|mcd_queue
 )paren
 suffix:semicolon
 id|put_disk
@@ -6803,11 +6802,8 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|mcd_queue
 )paren
 suffix:semicolon
 id|del_timer_sync
