@@ -656,6 +656,18 @@ id|iattr
 op_star
 )paren
 suffix:semicolon
+DECL|member|sync_dquot
+r_int
+(paren
+op_star
+id|sync_dquot
+)paren
+(paren
+r_struct
+id|dquot
+op_star
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Operations handling requests from userspace */
@@ -982,6 +994,16 @@ r_struct
 id|quota_format_type
 op_star
 id|fmt
+)paren
+suffix:semicolon
+r_void
+id|init_dquot_operations
+c_func
+(paren
+r_struct
+id|dquot_operations
+op_star
+id|fsdqops
 )paren
 suffix:semicolon
 macro_line|#else
