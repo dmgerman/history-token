@@ -13752,7 +13752,7 @@ suffix:colon
 id|scsi_cmd-&gt;result
 op_or_assign
 (paren
-id|DID_ERROR
+id|DID_IMM_RETRY
 op_lshift
 l_int|16
 )paren
