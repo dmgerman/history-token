@@ -8328,16 +8328,13 @@ id|BAP0
 )paren
 suffix:semicolon
 )brace
-id|OUT4500
-c_func
+)brace
+r_if
+c_cond
 (paren
-id|apriv
-comma
-id|EVACK
-comma
-id|EV_RX
+id|len
 )paren
-suffix:semicolon
+(brace
 macro_line|#ifdef WIRELESS_SPY
 r_if
 c_cond
@@ -8523,6 +8520,16 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* WIRELESS_SPY  */
+id|OUT4500
+c_func
+(paren
+id|apriv
+comma
+id|EVACK
+comma
+id|EV_RX
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
