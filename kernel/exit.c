@@ -1939,13 +1939,6 @@ id|tsk
 )paren
 suffix:semicolon
 )brace
-DECL|variable|exit_mm
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|exit_mm
-)paren
-suffix:semicolon
 DECL|function|choose_new_parent
 r_static
 r_inline
