@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/parport_pc.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -208,12 +209,6 @@ r_extern
 r_struct
 id|parport_operations
 id|parport_pc_ops
-suffix:semicolon
-DECL|variable|parport_cs_ops
-r_static
-r_struct
-id|parport_operations
-id|parport_cs_ops
 suffix:semicolon
 multiline_comment|/*====================================================================*/
 DECL|function|cs_error
@@ -1707,23 +1702,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if (LINUX_VERSION_CODE &lt; VERSION(2,3,6))
-multiline_comment|/* This is to protect against unloading modules out of order */
-id|parport_cs_ops
-op_assign
-id|parport_pc_ops
-suffix:semicolon
-id|parport_cs_ops.inc_use_count
-op_assign
-op_amp
-id|inc_use_count
-suffix:semicolon
-id|parport_cs_ops.dec_use_count
-op_assign
-op_amp
-id|dec_use_count
-suffix:semicolon
-macro_line|#endif
 id|register_pccard_driver
 c_func
 (paren
