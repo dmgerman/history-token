@@ -5609,6 +5609,11 @@ id|sbi-&gt;s_resgid
 op_assign
 id|EXT3_DEF_RESGID
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|blocksize
 op_assign
 id|sb_min_blocksize
@@ -7351,6 +7356,11 @@ id|sb
 )paren
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -7462,6 +7472,11 @@ id|kfree
 c_func
 (paren
 id|sbi
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -9684,6 +9699,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|overhead
 op_add_assign
 id|ext3_bg_has_super
@@ -9702,6 +9718,12 @@ comma
 id|i
 )paren
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Every block group has an inode bitmap, a block&n;&t;&t; * bitmap, and an inode table.&n;&t;&t; */
 id|overhead
 op_add_assign

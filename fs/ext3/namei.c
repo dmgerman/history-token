@@ -3256,6 +3256,11 @@ suffix:semicolon
 id|count
 op_increment
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* XXX: do we need to check rec_len == 0 case? -Chris */
 id|de
