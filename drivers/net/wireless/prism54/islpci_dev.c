@@ -2279,7 +2279,6 @@ op_assign
 op_amp
 id|prism54_ioctl
 suffix:semicolon
-macro_line|#if WIRELESS_EXT &gt; 12
 id|ndev-&gt;wireless_handlers
 op_assign
 (paren
@@ -2290,7 +2289,6 @@ op_star
 op_amp
 id|prism54_handler_def
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* WIRELESS_EXT &gt; 12 */
 id|ndev-&gt;hard_start_xmit
 op_assign
 op_amp

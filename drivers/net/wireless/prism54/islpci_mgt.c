@@ -10,9 +10,7 @@ macro_line|#include &quot;isl_38xx.h&quot;
 macro_line|#include &quot;islpci_mgt.h&quot;
 macro_line|#include &quot;isl_oid.h&quot;&t;&t;/* additional types and defs for isl38xx fw */
 macro_line|#include &quot;isl_ioctl.h&quot;
-macro_line|#if WIRELESS_EXT &gt; 12
 macro_line|#include &lt;net/iw_handler.h&gt;
-macro_line|#endif
 multiline_comment|/******************************************************************************&n;        Global variable definition section&n;******************************************************************************/
 DECL|variable|pc_debug
 r_int

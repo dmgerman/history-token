@@ -9,9 +9,7 @@ macro_line|#include &quot;isl_ioctl.h&quot;
 macro_line|#include &quot;islpci_mgt.h&quot;
 macro_line|#include &quot;isl_oid.h&quot;&t;&t;/* additional types and defs for isl38xx fw */
 macro_line|#include &quot;oid_mgt.h&quot;
-macro_line|#if WIRELESS_EXT &gt; 12
 macro_line|#include &lt;net/iw_handler.h&gt;&t;/* New driver API */
-macro_line|#endif&t;&t;&t;&t;/* WIRELESS_EXT &gt; 12 */
 DECL|variable|init_mode
 r_static
 r_int
@@ -2688,7 +2686,6 @@ comma
 id|IW_EV_QUAL_LEN
 )paren
 suffix:semicolon
-macro_line|#if WIRELESS_EXT &gt; 14
 r_if
 c_cond
 (paren
@@ -2844,7 +2841,6 @@ id|buf
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif&t;&t;&t;&t;/* WIRELESS_EXT &gt; 14 */
 r_return
 id|current_ev
 suffix:semicolon
@@ -9045,7 +9041,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#if WIRELESS_EXT &gt; 12
 DECL|variable|prism54_handler
 r_static
 r_const
@@ -9151,7 +9146,6 @@ id|iw_handler
 l_int|NULL
 comma
 multiline_comment|/* SIOCGIWSTATS */
-macro_line|#if WIRELESS_EXT &gt; 15
 id|iw_handler_set_spy
 comma
 multiline_comment|/* SIOCSIWSPY */
@@ -9164,32 +9158,6 @@ multiline_comment|/* SIOCSIWTHRSPY */
 id|iw_handler_get_thrspy
 comma
 multiline_comment|/* SIOCGIWTHRSPY */
-macro_line|#else&t;&t;&t;&t;/* WIRELESS_EXT &gt; 15 */
-(paren
-id|iw_handler
-)paren
-l_int|NULL
-comma
-multiline_comment|/* SIOCSIWSPY */
-(paren
-id|iw_handler
-)paren
-l_int|NULL
-comma
-multiline_comment|/* SIOCGIWSPY */
-(paren
-id|iw_handler
-)paren
-l_int|NULL
-comma
-multiline_comment|/* -- hole -- */
-(paren
-id|iw_handler
-)paren
-l_int|NULL
-comma
-multiline_comment|/* -- hole -- */
-macro_line|#endif&t;&t;&t;&t;/* WIRELESS_EXT &gt; 15 */
 (paren
 id|iw_handler
 )paren
@@ -9214,7 +9182,6 @@ id|iw_handler
 l_int|NULL
 comma
 multiline_comment|/* SIOCGIWAPLIST depreciated */
-macro_line|#if WIRELESS_EXT &gt; 13
 (paren
 id|iw_handler
 )paren
@@ -9227,20 +9194,6 @@ id|iw_handler
 id|prism54_get_scan
 comma
 multiline_comment|/* SIOCGIWSCAN */
-macro_line|#else&t;&t;&t;&t;/* WIRELESS_EXT &gt; 13 */
-(paren
-id|iw_handler
-)paren
-l_int|NULL
-comma
-multiline_comment|/* SIOCSIWSCAN */
-(paren
-id|iw_handler
-)paren
-l_int|NULL
-comma
-multiline_comment|/* SIOCGIWSCAN */
-macro_line|#endif&t;&t;&t;&t;/* WIRELESS_EXT &gt; 13 */
 (paren
 id|iw_handler
 )paren
@@ -9786,5 +9739,4 @@ id|prism54_private_args
 comma
 )brace
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* WIRELESS_EXT &gt; 12 */
 eof

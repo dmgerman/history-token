@@ -4,9 +4,7 @@ DECL|macro|_ISL_IOCTL_H
 mdefine_line|#define _ISL_IOCTL_H
 macro_line|#include &quot;islpci_mgt.h&quot;
 macro_line|#include &quot;islpci_dev.h&quot;
-macro_line|#if WIRELESS_EXT &gt; 12
 macro_line|#include &lt;net/iw_handler.h&gt;&t;/* New driver API */
-macro_line|#endif&t;&t;&t;&t;/* WIRELESS_EXT &gt; 12 */
 DECL|macro|SUPPORTED_WIRELESS_EXT
 mdefine_line|#define SUPPORTED_WIRELESS_EXT                  16
 r_void
@@ -152,13 +150,11 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#if WIRELESS_EXT &gt; 12
 r_extern
 r_const
 r_struct
 id|iw_handler_def
 id|prism54_handler_def
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* WIRELESS_EXT &gt; 12 */
 macro_line|#endif&t;&t;&t;&t;/* _ISL_IOCTL_H */
 eof
