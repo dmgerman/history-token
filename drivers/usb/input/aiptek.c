@@ -18,114 +18,114 @@ DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC    &quot;Aiptek HyperPen USB Tablet Driver (Linux 2.6.x)&quot;
 multiline_comment|/*&n; * Aiptek status packet:&n; *&n; * (returned as Report 1 - relative coordinates from mouse and stylus)&n; *&n; *        bit7  bit6  bit5  bit4  bit3  bit2  bit1  bit0&n; * byte0   0     0     0     0     0     0     0     1&n; * byte1   0     0     0     0     0    BS2   BS    Tip&n; * byte2  X7    X6    X5    X4    X3    X2    X1    X0&n; * byte3  Y7    Y6    Y5    Y4    Y3    Y2    Y1    Y0&n; *&n; * (returned as Report 2 - absolute coordinates from the stylus)&n; *&n; *        bit7  bit6  bit5  bit4  bit3  bit2  bit1  bit0&n; * byte0   0     0     0     0     0     0     1     0&n; * byte1  X7    X6    X5    X4    X3    X2    X1    X0&n; * byte2  X15   X14   X13   X12   X11   X10   X9    X8&n; * byte3  Y7    Y6    Y5    Y4    Y3    Y2    Y1    Y0&n; * byte4  Y15   Y14   Y13   Y12   Y11   Y10   Y9    Y8&n; * byte5   *     *     *    BS2   BS1   Tip   IR    DV&n; * byte6  P7    P6    P5    P4    P3    P2    P1    P0&n; * byte7  P15   P14   P13   P12   P11   P10   P9    P8&n; *&n; * (returned as Report 3 - absolute coordinates from the mouse)&n; *&n; *        bit7  bit6  bit5  bit4  bit3  bit2  bit1  bit0&n; * byte0   0     0     0     0     0     0     1     0&n; * byte1  X7    X6    X5    X4    X3    X2    X1    X0&n; * byte2  X15   X14   X13   X12   X11   X10   X9    X8&n; * byte3  Y7    Y6    Y5    Y4    Y3    Y2    Y1    Y0&n; * byte4  Y15   Y14   Y13   Y12   Y11   Y10   Y9    Y8&n; * byte5   *     *     *    BS2   BS1   Tip   IR    DV&n; * byte6  P7    P6    P5    P4    P3    P2    P1    P0&n; * byte7  P15   P14   P13   P12   P11   P10   P9    P8&n; *&n; * (returned as Report 4 - macrokeys from the stylus)&n; *&n; *        bit7  bit6  bit5  bit4  bit3  bit2  bit1  bit0&n; * byte0   0     0     0     0     0     1     0     0&n; * byte1   0     0     0    BS2   BS    Tip   IR    DV&n; * byte2   0     0     0     0     0     0     1     0&n; * byte3   0     0     0    K4    K3    K2    K1    K0&n; * byte4  P7    P6    P5    P4    P3    P2    P1    P0&n; * byte5  P15   P14   P13   P12   P11   P10   P9    P8&n; *&n; * (returned as Report 5 - macrokeys from the mouse)&n; *&n; *        bit7  bit6  bit5  bit4  bit3  bit2  bit1  bit0&n; * byte0   0     0     0     0     0     1     0     0&n; * byte1   0     0     0    BS2   BS    Tip   IR    DV&n; * byte2   0     0     0     0     0     0     1     0&n; * byte3   0     0     0    K4    K3    K2    K1    K0&n; * byte4  P7    P6    P5    P4    P3    P2    P1    P0&n; * byte5  P15   P14   P13   P12   P11   P10   P9    P8&n; *&n; * IR: In Range = Proximity on&n; * DV = Data Valid&n; * BS = Barrel Switch (as in, macro keys)&n; * BS2 also referred to as Tablet Pick&n; *&n; * Command Summary:&n; *&n; * Use report_type CONTROL (3)&n; * Use report_id   2&n; *&n; * Command/Data    Description     Return Bytes    Return Value&n; * 0x10/0x00       SwitchToMouse       0&n; * 0x10/0x01       SwitchToTablet      0&n; * 0x18/0x04       SetResolution       0 &n; * 0x12/0xFF       AutoGainOn          0&n; * 0x17/0x00       FilterOn            0&n; * 0x01/0x00       GetXExtension       2           MaxX&n; * 0x01/0x01       GetYExtension       2           MaxY&n; * 0x02/0x00       GetModelCode        2           ModelCode = LOBYTE&n; * 0x03/0x00       GetODMCode          2           ODMCode&n; * 0x08/0x00       GetPressureLevels   2           =512&n; * 0x04/0x00       GetFirmwareVersion  2           Firmware Version&n; * 0x11/0x02       EnableMacroKeys     0&n; *&n; * To initialize the tablet:&n; *&n; * (1) Send Resolution500LPI (Command)&n; * (2) Query for Model code (Option Report)&n; * (3) Query for ODM code (Option Report)&n; * (4) Query for firmware (Option Report)&n; * (5) Query for GetXExtension (Option Report)&n; * (6) Query for GetYExtension (Option Report)&n; * (7) Query for GetPressureLevels (Option Report)&n; * (8) SwitchToTablet for Absolute coordinates, or&n; *     SwitchToMouse for Relative coordinates (Command)&n; * (9) EnableMacroKeys (Command)&n; * (10) FilterOn (Command)&n; * (11) AutoGainOn (Command)&n; *&n; * (Step 9 can be omitted, but you&squot;ll then have no function keys.)&n; */
 DECL|macro|USB_VENDOR_ID_AIPTEK
-mdefine_line|#define USB_VENDOR_ID_AIPTEK                            0x08ca
+mdefine_line|#define USB_VENDOR_ID_AIPTEK&t;&t;&t;&t;0x08ca
 DECL|macro|USB_REQ_GET_REPORT
-mdefine_line|#define USB_REQ_GET_REPORT                              0x01
+mdefine_line|#define USB_REQ_GET_REPORT&t;&t;&t;&t;0x01
 DECL|macro|USB_REQ_SET_REPORT
-mdefine_line|#define USB_REQ_SET_REPORT                              0x09
+mdefine_line|#define USB_REQ_SET_REPORT&t;&t;&t;&t;0x09
 multiline_comment|/* PointerMode codes&n;&t; */
 DECL|macro|AIPTEK_POINTER_ONLY_MOUSE_MODE
-mdefine_line|#define AIPTEK_POINTER_ONLY_MOUSE_MODE                  0
+mdefine_line|#define AIPTEK_POINTER_ONLY_MOUSE_MODE&t;&t;&t;0
 DECL|macro|AIPTEK_POINTER_ONLY_STYLUS_MODE
-mdefine_line|#define AIPTEK_POINTER_ONLY_STYLUS_MODE                 1
+mdefine_line|#define AIPTEK_POINTER_ONLY_STYLUS_MODE&t;&t;&t;1
 DECL|macro|AIPTEK_POINTER_EITHER_MODE
-mdefine_line|#define AIPTEK_POINTER_EITHER_MODE                      2
+mdefine_line|#define AIPTEK_POINTER_EITHER_MODE&t;&t;&t;2
 DECL|macro|AIPTEK_POINTER_ALLOW_MOUSE_MODE
-mdefine_line|#define AIPTEK_POINTER_ALLOW_MOUSE_MODE(a) &bslash;&n;        (a == AIPTEK_POINTER_ONLY_MOUSE_MODE || &bslash;&n;         a == AIPTEK_POINTER_EITHER_MODE)
+mdefine_line|#define AIPTEK_POINTER_ALLOW_MOUSE_MODE(a)&t;&t;&bslash;&n;&t;(a == AIPTEK_POINTER_ONLY_MOUSE_MODE ||&t;&t;&bslash;&n;&t; a == AIPTEK_POINTER_EITHER_MODE)
 DECL|macro|AIPTEK_POINTER_ALLOW_STYLUS_MODE
-mdefine_line|#define AIPTEK_POINTER_ALLOW_STYLUS_MODE(a) &bslash;&n;        (a == AIPTEK_POINTER_ONLY_STYLUS_MODE || &bslash;&n;         a == AIPTEK_POINTER_EITHER_MODE)
+mdefine_line|#define AIPTEK_POINTER_ALLOW_STYLUS_MODE(a)&t;&t;&bslash;&n;&t;(a == AIPTEK_POINTER_ONLY_STYLUS_MODE ||&t;&bslash;&n;&t; a == AIPTEK_POINTER_EITHER_MODE)
 multiline_comment|/* CoordinateMode code&n;&t; */
 DECL|macro|AIPTEK_COORDINATE_RELATIVE_MODE
-mdefine_line|#define AIPTEK_COORDINATE_RELATIVE_MODE                 0
+mdefine_line|#define AIPTEK_COORDINATE_RELATIVE_MODE&t;&t;&t;0
 DECL|macro|AIPTEK_COORDINATE_ABSOLUTE_MODE
-mdefine_line|#define AIPTEK_COORDINATE_ABSOLUTE_MODE                 1
+mdefine_line|#define AIPTEK_COORDINATE_ABSOLUTE_MODE&t;&t;&t;1
 multiline_comment|/* XTilt and YTilt values&n;        */
 DECL|macro|AIPTEK_TILT_MIN
-mdefine_line|#define AIPTEK_TILT_MIN                                 (-128)
+mdefine_line|#define AIPTEK_TILT_MIN&t;&t;&t;&t;&t;(-128)
 DECL|macro|AIPTEK_TILT_MAX
-mdefine_line|#define AIPTEK_TILT_MAX                                 127
+mdefine_line|#define AIPTEK_TILT_MAX&t;&t;&t;&t;&t;127
 DECL|macro|AIPTEK_TILT_DISABLE
-mdefine_line|#define AIPTEK_TILT_DISABLE                             (-10101)
+mdefine_line|#define AIPTEK_TILT_DISABLE&t;&t;&t;&t;(-10101)
 multiline_comment|/* Wheel values&n;&t; */
 DECL|macro|AIPTEK_WHEEL_MIN
-mdefine_line|#define AIPTEK_WHEEL_MIN                                0
+mdefine_line|#define AIPTEK_WHEEL_MIN&t;&t;&t;&t;0
 DECL|macro|AIPTEK_WHEEL_MAX
-mdefine_line|#define AIPTEK_WHEEL_MAX                                1024
+mdefine_line|#define AIPTEK_WHEEL_MAX&t;&t;&t;&t;1024
 DECL|macro|AIPTEK_WHEEL_DISABLE
-mdefine_line|#define AIPTEK_WHEEL_DISABLE                            (-10101)
+mdefine_line|#define AIPTEK_WHEEL_DISABLE&t;&t;&t;&t;(-10101)
 multiline_comment|/* ToolCode values, which BTW are 0x140 .. 0x14f&n;&t; * We have things set up such that if TOOL_BUTTON_FIRED_BIT is&n;&t; * not set, we&squot;ll send one instance of AIPTEK_TOOL_BUTTON_xxx.&n;&t; *&n;&t; * Whenever the user resets the value, TOOL_BUTTON_FIRED_BIT will&n;&t; * get reset.&n;&t; */
 DECL|macro|TOOL_BUTTON
-mdefine_line|#define TOOL_BUTTON(x)                                  ((x) &amp; 0x14f)
+mdefine_line|#define TOOL_BUTTON(x)&t;&t;&t;&t;&t;((x) &amp; 0x14f)
 DECL|macro|TOOL_BUTTON_FIRED
-mdefine_line|#define TOOL_BUTTON_FIRED(x)                            ((x) &amp; 0x200)
+mdefine_line|#define TOOL_BUTTON_FIRED(x)&t;&t;&t;&t;((x) &amp; 0x200)
 DECL|macro|TOOL_BUTTON_FIRED_BIT
-mdefine_line|#define TOOL_BUTTON_FIRED_BIT                           0x200
+mdefine_line|#define TOOL_BUTTON_FIRED_BIT&t;&t;&t;&t;0x200
 multiline_comment|/* toolMode codes&n;&t; */
 DECL|macro|AIPTEK_TOOL_BUTTON_PEN_MODE
-mdefine_line|#define AIPTEK_TOOL_BUTTON_PEN_MODE                     BTN_TOOL_PEN
+mdefine_line|#define AIPTEK_TOOL_BUTTON_PEN_MODE&t;&t;&t;BTN_TOOL_PEN
 DECL|macro|AIPTEK_TOOL_BUTTON_PEN_MODE
-mdefine_line|#define AIPTEK_TOOL_BUTTON_PEN_MODE                     BTN_TOOL_PEN
+mdefine_line|#define AIPTEK_TOOL_BUTTON_PEN_MODE&t;&t;&t;BTN_TOOL_PEN
 DECL|macro|AIPTEK_TOOL_BUTTON_PENCIL_MODE
-mdefine_line|#define AIPTEK_TOOL_BUTTON_PENCIL_MODE                  BTN_TOOL_PENCIL
+mdefine_line|#define AIPTEK_TOOL_BUTTON_PENCIL_MODE&t;&t;&t;BTN_TOOL_PENCIL
 DECL|macro|AIPTEK_TOOL_BUTTON_BRUSH_MODE
-mdefine_line|#define AIPTEK_TOOL_BUTTON_BRUSH_MODE                   BTN_TOOL_BRUSH
+mdefine_line|#define AIPTEK_TOOL_BUTTON_BRUSH_MODE&t;&t;&t;BTN_TOOL_BRUSH
 DECL|macro|AIPTEK_TOOL_BUTTON_AIRBRUSH_MODE
-mdefine_line|#define AIPTEK_TOOL_BUTTON_AIRBRUSH_MODE                BTN_TOOL_AIRBRUSH
+mdefine_line|#define AIPTEK_TOOL_BUTTON_AIRBRUSH_MODE&t;&t;BTN_TOOL_AIRBRUSH
 DECL|macro|AIPTEK_TOOL_BUTTON_ERASER_MODE
-mdefine_line|#define AIPTEK_TOOL_BUTTON_ERASER_MODE                  BTN_TOOL_RUBBER
+mdefine_line|#define AIPTEK_TOOL_BUTTON_ERASER_MODE&t;&t;&t;BTN_TOOL_RUBBER
 DECL|macro|AIPTEK_TOOL_BUTTON_MOUSE_MODE
-mdefine_line|#define AIPTEK_TOOL_BUTTON_MOUSE_MODE                   BTN_TOOL_MOUSE
+mdefine_line|#define AIPTEK_TOOL_BUTTON_MOUSE_MODE&t;&t;&t;BTN_TOOL_MOUSE
 DECL|macro|AIPTEK_TOOL_BUTTON_LENS_MODE
-mdefine_line|#define AIPTEK_TOOL_BUTTON_LENS_MODE                    BTN_TOOL_LENS
+mdefine_line|#define AIPTEK_TOOL_BUTTON_LENS_MODE&t;&t;&t;BTN_TOOL_LENS
 multiline_comment|/* Diagnostic message codes&n;&t; */
 DECL|macro|AIPTEK_DIAGNOSTIC_NA
-mdefine_line|#define AIPTEK_DIAGNOSTIC_NA                            0
+mdefine_line|#define AIPTEK_DIAGNOSTIC_NA&t;&t;&t;&t;0
 DECL|macro|AIPTEK_DIAGNOSTIC_SENDING_RELATIVE_IN_ABSOLUTE
-mdefine_line|#define AIPTEK_DIAGNOSTIC_SENDING_RELATIVE_IN_ABSOLUTE  1
+mdefine_line|#define AIPTEK_DIAGNOSTIC_SENDING_RELATIVE_IN_ABSOLUTE&t;1
 DECL|macro|AIPTEK_DIAGNOSTIC_SENDING_ABSOLUTE_IN_RELATIVE
-mdefine_line|#define AIPTEK_DIAGNOSTIC_SENDING_ABSOLUTE_IN_RELATIVE  2
+mdefine_line|#define AIPTEK_DIAGNOSTIC_SENDING_ABSOLUTE_IN_RELATIVE&t;2
 DECL|macro|AIPTEK_DIAGNOSTIC_TOOL_DISALLOWED
-mdefine_line|#define AIPTEK_DIAGNOSTIC_TOOL_DISALLOWED               3
+mdefine_line|#define AIPTEK_DIAGNOSTIC_TOOL_DISALLOWED&t;&t;3
 multiline_comment|/* Time to wait (in ms) to help mask hand jittering &n;&t; * when pressing the stylus buttons.&n;&t; */
 DECL|macro|AIPTEK_JITTER_DELAY_DEFAULT
-mdefine_line|#define AIPTEK_JITTER_DELAY_DEFAULT                     50
+mdefine_line|#define AIPTEK_JITTER_DELAY_DEFAULT&t;&t;&t;50
 multiline_comment|/* Time to wait (in ms) in-between sending the tablet&n;&t; * a command and beginning the process of reading the return&n;&t; * sequence from the tablet.&n;&t; */
 DECL|macro|AIPTEK_PROGRAMMABLE_DELAY_25
-mdefine_line|#define AIPTEK_PROGRAMMABLE_DELAY_25        25
+mdefine_line|#define AIPTEK_PROGRAMMABLE_DELAY_25&t;&t;25
 DECL|macro|AIPTEK_PROGRAMMABLE_DELAY_50
-mdefine_line|#define AIPTEK_PROGRAMMABLE_DELAY_50        50
+mdefine_line|#define AIPTEK_PROGRAMMABLE_DELAY_50&t;&t;50
 DECL|macro|AIPTEK_PROGRAMMABLE_DELAY_100
-mdefine_line|#define AIPTEK_PROGRAMMABLE_DELAY_100      100
+mdefine_line|#define AIPTEK_PROGRAMMABLE_DELAY_100&t;&t;100
 DECL|macro|AIPTEK_PROGRAMMABLE_DELAY_200
-mdefine_line|#define AIPTEK_PROGRAMMABLE_DELAY_200      200
+mdefine_line|#define AIPTEK_PROGRAMMABLE_DELAY_200&t;&t;200
 DECL|macro|AIPTEK_PROGRAMMABLE_DELAY_300
-mdefine_line|#define AIPTEK_PROGRAMMABLE_DELAY_300      300
+mdefine_line|#define AIPTEK_PROGRAMMABLE_DELAY_300&t;&t;300
 DECL|macro|AIPTEK_PROGRAMMABLE_DELAY_400
-mdefine_line|#define AIPTEK_PROGRAMMABLE_DELAY_400      400
+mdefine_line|#define AIPTEK_PROGRAMMABLE_DELAY_400&t;&t;400
 DECL|macro|AIPTEK_PROGRAMMABLE_DELAY_DEFAULT
-mdefine_line|#define AIPTEK_PROGRAMMABLE_DELAY_DEFAULT  AIPTEK_PROGRAMMABLE_DELAY_400
+mdefine_line|#define AIPTEK_PROGRAMMABLE_DELAY_DEFAULT&t;AIPTEK_PROGRAMMABLE_DELAY_400
 multiline_comment|/* Mouse button programming&n;&t; */
 DECL|macro|AIPTEK_MOUSE_LEFT_BUTTON
-mdefine_line|#define AIPTEK_MOUSE_LEFT_BUTTON                        0x01
+mdefine_line|#define AIPTEK_MOUSE_LEFT_BUTTON&t;&t;0x01
 DECL|macro|AIPTEK_MOUSE_RIGHT_BUTTON
-mdefine_line|#define AIPTEK_MOUSE_RIGHT_BUTTON                       0x02
+mdefine_line|#define AIPTEK_MOUSE_RIGHT_BUTTON&t;&t;0x02
 DECL|macro|AIPTEK_MOUSE_MIDDLE_BUTTON
-mdefine_line|#define AIPTEK_MOUSE_MIDDLE_BUTTON                      0x04
+mdefine_line|#define AIPTEK_MOUSE_MIDDLE_BUTTON&t;&t;0x04
 multiline_comment|/* Stylus button programming&n;&t; */
 DECL|macro|AIPTEK_STYLUS_LOWER_BUTTON
-mdefine_line|#define AIPTEK_STYLUS_LOWER_BUTTON                      0x08
+mdefine_line|#define AIPTEK_STYLUS_LOWER_BUTTON&t;&t;0x08
 DECL|macro|AIPTEK_STYLUS_UPPER_BUTTON
-mdefine_line|#define AIPTEK_STYLUS_UPPER_BUTTON                      0x10
+mdefine_line|#define AIPTEK_STYLUS_UPPER_BUTTON&t;&t;0x10
 multiline_comment|/* Length of incoming packet from the tablet&n;&t; */
 DECL|macro|AIPTEK_PACKET_LENGTH
-mdefine_line|#define AIPTEK_PACKET_LENGTH                            8
+mdefine_line|#define AIPTEK_PACKET_LENGTH&t;&t;&t;8
 multiline_comment|/* We report in EV_MISC both the proximity and&n;&t; * whether the report came from the stylus, tablet mouse&n;&t; * or &quot;unknown&quot; -- Unknown when the tablet is in relative&n;&t; * mode, because we only get report 1&squot;s.&n;&t; */
 DECL|macro|AIPTEK_REPORT_TOOL_UNKNOWN
-mdefine_line|#define AIPTEK_REPORT_TOOL_UNKNOWN                      0x10
+mdefine_line|#define AIPTEK_REPORT_TOOL_UNKNOWN&t;&t;0x10
 DECL|macro|AIPTEK_REPORT_TOOL_STYLUS
-mdefine_line|#define AIPTEK_REPORT_TOOL_STYLUS                       0x20
+mdefine_line|#define AIPTEK_REPORT_TOOL_STYLUS&t;&t;0x20
 DECL|macro|AIPTEK_REPORT_TOOL_MOUSE
-mdefine_line|#define AIPTEK_REPORT_TOOL_MOUSE                        0x40
+mdefine_line|#define AIPTEK_REPORT_TOOL_MOUSE&t;&t;0x40
 DECL|variable|programmableDelay
 r_static
 r_int
@@ -598,9 +598,7 @@ id|urb-&gt;status
 r_case
 l_int|0
 suffix:colon
-(brace
 multiline_comment|/* Success */
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -615,7 +613,6 @@ r_case
 op_minus
 id|ESHUTDOWN
 suffix:colon
-(brace
 multiline_comment|/* This urb is terminated, clean up */
 id|dbg
 c_func
@@ -629,12 +626,8 @@ id|urb-&gt;status
 suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 r_default
 suffix:colon
-(brace
-)brace
-(brace
 id|dbg
 c_func
 (paren
@@ -648,7 +641,6 @@ suffix:semicolon
 r_goto
 m_exit
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* See if we are in a delay loop -- throw out report if true.&n;&t; */
 r_if
@@ -753,9 +745,7 @@ id|data
 l_int|5
 )braket
 op_amp
-id|aiptek-&gt;curSetting
-dot
-id|mouseButtonLeft
+id|aiptek-&gt;curSetting.mouseButtonLeft
 )paren
 op_ne
 l_int|0
@@ -773,9 +763,7 @@ id|data
 l_int|5
 )braket
 op_amp
-id|aiptek-&gt;curSetting
-dot
-id|mouseButtonRight
+id|aiptek-&gt;curSetting.mouseButtonRight
 )paren
 op_ne
 l_int|0
@@ -793,9 +781,7 @@ id|data
 l_int|5
 )braket
 op_amp
-id|aiptek-&gt;curSetting
-dot
-id|mouseButtonMiddle
+id|aiptek-&gt;curSetting.mouseButtonMiddle
 )paren
 op_ne
 l_int|0
@@ -1083,9 +1069,7 @@ id|data
 l_int|5
 )braket
 op_amp
-id|aiptek-&gt;curSetting
-dot
-id|stylusButtonLower
+id|aiptek-&gt;curSetting.stylusButtonLower
 )paren
 op_ne
 l_int|0
@@ -1103,9 +1087,7 @@ id|data
 l_int|5
 )braket
 op_amp
-id|aiptek-&gt;curSetting
-dot
-id|stylusButtonUpper
+id|aiptek-&gt;curSetting.stylusButtonUpper
 )paren
 op_ne
 l_int|0
@@ -1144,11 +1126,7 @@ comma
 id|TOOL_BUTTON
 c_func
 (paren
-id|aiptek
-op_member_access_from_pointer
-id|curSetting
-dot
-id|toolMode
+id|aiptek-&gt;curSetting.toolMode
 )paren
 comma
 l_int|1
@@ -1242,11 +1220,7 @@ id|inputdev
 comma
 id|ABS_TILT_X
 comma
-id|aiptek
-op_member_access_from_pointer
-id|curSetting
-dot
-id|xTilt
+id|aiptek-&gt;curSetting.xTilt
 )paren
 suffix:semicolon
 )brace
@@ -1265,11 +1239,7 @@ id|inputdev
 comma
 id|ABS_TILT_Y
 comma
-id|aiptek
-op_member_access_from_pointer
-id|curSetting
-dot
-id|yTilt
+id|aiptek-&gt;curSetting.yTilt
 )paren
 suffix:semicolon
 )brace
@@ -1289,11 +1259,7 @@ id|inputdev
 comma
 id|ABS_WHEEL
 comma
-id|aiptek
-op_member_access_from_pointer
-id|curSetting
-dot
-id|wheel
+id|aiptek-&gt;curSetting.wheel
 )paren
 suffix:semicolon
 id|aiptek-&gt;curSetting.wheel
@@ -1468,9 +1434,7 @@ id|data
 l_int|5
 )braket
 op_amp
-id|aiptek-&gt;curSetting
-dot
-id|mouseButtonLeft
+id|aiptek-&gt;curSetting.mouseButtonLeft
 )paren
 op_ne
 l_int|0
@@ -1488,9 +1452,7 @@ id|data
 l_int|5
 )braket
 op_amp
-id|aiptek-&gt;curSetting
-dot
-id|mouseButtonRight
+id|aiptek-&gt;curSetting.mouseButtonRight
 )paren
 op_ne
 l_int|0
@@ -1508,9 +1470,7 @@ id|data
 l_int|5
 )braket
 op_amp
-id|aiptek-&gt;curSetting
-dot
-id|mouseButtonMiddle
+id|aiptek-&gt;curSetting.mouseButtonMiddle
 )paren
 op_ne
 l_int|0
@@ -1548,11 +1508,7 @@ comma
 id|TOOL_BUTTON
 c_func
 (paren
-id|aiptek
-op_member_access_from_pointer
-id|curSetting
-dot
-id|toolMode
+id|aiptek-&gt;curSetting.toolMode
 )paren
 comma
 l_int|1
@@ -1637,11 +1593,7 @@ id|inputdev
 comma
 id|ABS_WHEEL
 comma
-id|aiptek
-op_member_access_from_pointer
-id|curSetting
-dot
-id|wheel
+id|aiptek-&gt;curSetting.wheel
 )paren
 suffix:semicolon
 id|aiptek-&gt;curSetting.wheel
@@ -1847,9 +1799,7 @@ comma
 id|TOOL_BUTTON
 c_func
 (paren
-id|aiptek-&gt;curSetting
-dot
-id|toolMode
+id|aiptek-&gt;curSetting.toolMode
 )paren
 comma
 l_int|1
@@ -2147,9 +2097,7 @@ comma
 id|TOOL_BUTTON
 c_func
 (paren
-id|aiptek-&gt;curSetting
-dot
-id|toolMode
+id|aiptek-&gt;curSetting.toolMode
 )paren
 comma
 l_int|1
@@ -2911,12 +2859,10 @@ c_cond
 op_logical_neg
 id|buf
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|buf
 (braket
 l_int|0
@@ -3045,12 +2991,10 @@ c_cond
 op_logical_neg
 id|buf
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|buf
 (braket
 l_int|0
@@ -3225,11 +3169,9 @@ l_int|0x04
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|ret
 suffix:semicolon
-)brace
 multiline_comment|/* Query getModelCode */
 r_if
 c_cond
@@ -3250,11 +3192,9 @@ l_int|0x00
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|ret
 suffix:semicolon
-)brace
 id|aiptek-&gt;features.modelCode
 op_assign
 id|ret
@@ -3281,11 +3221,9 @@ l_int|0x00
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|ret
 suffix:semicolon
-)brace
 id|aiptek-&gt;features.odmCode
 op_assign
 id|ret
@@ -3310,11 +3248,9 @@ l_int|0x00
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|ret
 suffix:semicolon
-)brace
 id|aiptek-&gt;features.firmwareCode
 op_assign
 id|ret
@@ -3339,11 +3275,9 @@ l_int|0x00
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|ret
 suffix:semicolon
-)brace
 id|aiptek-&gt;inputdev.absmin
 (braket
 id|ABS_X
@@ -3380,11 +3314,9 @@ l_int|0x01
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|ret
 suffix:semicolon
-)brace
 id|aiptek-&gt;inputdev.absmin
 (braket
 id|ABS_Y
@@ -3421,11 +3353,9 @@ l_int|0x00
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|ret
 suffix:semicolon
-)brace
 id|aiptek-&gt;inputdev.absmin
 (braket
 id|ABS_PRESSURE
@@ -3525,11 +3455,9 @@ l_int|0x02
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|ret
 suffix:semicolon
-)brace
 macro_line|#if 0
 multiline_comment|/* Execute FilterOn */
 r_if
@@ -3551,11 +3479,9 @@ l_int|0x00
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|ret
 suffix:semicolon
-)brace
 macro_line|#endif
 multiline_comment|/* Execute AutoGainOn */
 r_if
@@ -3577,11 +3503,9 @@ l_int|0xff
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|ret
 suffix:semicolon
-)brace
 multiline_comment|/* Reset the eventCount, so we track events from last (re)programming&n;&t; */
 id|aiptek-&gt;diagnostic
 op_assign
@@ -3631,11 +3555,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_return
 id|snprintf
 c_func
@@ -3711,11 +3633,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_return
 id|snprintf
 c_func
@@ -3778,11 +3698,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_return
 id|snprintf
 c_func
@@ -3848,11 +3766,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|retval
 op_assign
 id|snprintf
@@ -3922,11 +3838,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|retval
 op_assign
 id|snprintf
@@ -3997,11 +3911,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -4011,48 +3923,38 @@ id|aiptek-&gt;curSetting.pointerMode
 r_case
 id|AIPTEK_POINTER_ONLY_STYLUS_MODE
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;stylus&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_POINTER_ONLY_MOUSE_MODE
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;mouse&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_POINTER_EITHER_MODE
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;either&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_default
 suffix:colon
-(brace
-)brace
-(brace
 id|s
 op_assign
 l_string|&quot;unknown&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 )brace
 r_return
 id|snprintf
@@ -4106,11 +4008,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4228,11 +4128,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -4242,37 +4140,29 @@ id|aiptek-&gt;curSetting.coordinateMode
 r_case
 id|AIPTEK_COORDINATE_ABSOLUTE_MODE
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;absolute&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_COORDINATE_RELATIVE_MODE
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;relative&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_default
 suffix:colon
-(brace
-)brace
-(brace
 id|s
 op_assign
 l_string|&quot;unknown&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 )brace
 r_return
 id|snprintf
@@ -4326,11 +4216,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4428,11 +4316,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -4446,92 +4332,74 @@ id|aiptek-&gt;curSetting.toolMode
 r_case
 id|AIPTEK_TOOL_BUTTON_MOUSE_MODE
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;mouse&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_TOOL_BUTTON_ERASER_MODE
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;eraser&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_TOOL_BUTTON_PENCIL_MODE
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;pencil&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_TOOL_BUTTON_PEN_MODE
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;pen&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_TOOL_BUTTON_BRUSH_MODE
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;brush&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_TOOL_BUTTON_AIRBRUSH_MODE
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;airbrush&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_TOOL_BUTTON_LENS_MODE
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;lens&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_default
 suffix:colon
-(brace
-)brace
-(brace
 id|s
 op_assign
 l_string|&quot;unknown&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 )brace
 r_return
 id|snprintf
@@ -4585,11 +4453,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4783,11 +4649,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4866,11 +4730,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4979,11 +4841,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5062,11 +4922,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5175,11 +5033,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_return
 id|snprintf
 c_func
@@ -5232,11 +5088,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|aiptek-&gt;newSetting.jitterDelay
 op_assign
 (paren
@@ -5306,11 +5160,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_return
 id|snprintf
 c_func
@@ -5363,11 +5215,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|aiptek-&gt;newSetting.programmableDelay
 op_assign
 (paren
@@ -5437,11 +5287,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_return
 id|snprintf
 c_func
@@ -5504,11 +5352,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_return
 id|snprintf
 c_func
@@ -5575,11 +5421,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -5589,40 +5433,33 @@ id|aiptek-&gt;diagnostic
 r_case
 id|AIPTEK_DIAGNOSTIC_NA
 suffix:colon
-(brace
 id|retMsg
 op_assign
 l_string|&quot;no errors&bslash;n&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_DIAGNOSTIC_SENDING_RELATIVE_IN_ABSOLUTE
 suffix:colon
-(brace
 id|retMsg
 op_assign
 l_string|&quot;Error: receiving relative reports&bslash;n&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_DIAGNOSTIC_SENDING_ABSOLUTE_IN_RELATIVE
 suffix:colon
-(brace
 id|retMsg
 op_assign
 l_string|&quot;Error: receiving absolute reports&bslash;n&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_DIAGNOSTIC_TOOL_DISALLOWED
 suffix:colon
-(brace
 r_if
 c_cond
 (paren
@@ -5645,16 +5482,11 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-)brace
 r_default
 suffix:colon
-(brace
-)brace
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 )brace
 r_return
 id|snprintf
@@ -5720,11 +5552,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -5734,37 +5564,29 @@ id|aiptek-&gt;curSetting.stylusButtonUpper
 r_case
 id|AIPTEK_STYLUS_UPPER_BUTTON
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;upper&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_STYLUS_LOWER_BUTTON
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;lower&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_default
 suffix:colon
-(brace
-)brace
-(brace
 id|s
 op_assign
 l_string|&quot;unknown&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 )brace
 r_return
 id|snprintf
@@ -5818,11 +5640,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5920,11 +5740,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -5934,37 +5752,29 @@ id|aiptek-&gt;curSetting.stylusButtonLower
 r_case
 id|AIPTEK_STYLUS_UPPER_BUTTON
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;upper&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_STYLUS_LOWER_BUTTON
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;lower&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_default
 suffix:colon
-(brace
-)brace
-(brace
 id|s
 op_assign
 l_string|&quot;unknown&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 )brace
 r_return
 id|snprintf
@@ -6018,11 +5828,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6120,11 +5928,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -6134,48 +5940,38 @@ id|aiptek-&gt;curSetting.mouseButtonLeft
 r_case
 id|AIPTEK_MOUSE_LEFT_BUTTON
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;left&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_MOUSE_MIDDLE_BUTTON
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;middle&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_MOUSE_RIGHT_BUTTON
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;right&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_default
 suffix:colon
-(brace
-)brace
-(brace
 id|s
 op_assign
 l_string|&quot;unknown&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 )brace
 r_return
 id|snprintf
@@ -6229,11 +6025,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6351,11 +6145,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -6365,48 +6157,38 @@ id|aiptek-&gt;curSetting.mouseButtonMiddle
 r_case
 id|AIPTEK_MOUSE_LEFT_BUTTON
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;left&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_MOUSE_MIDDLE_BUTTON
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;middle&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_MOUSE_RIGHT_BUTTON
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;right&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_default
 suffix:colon
-(brace
-)brace
-(brace
 id|s
 op_assign
 l_string|&quot;unknown&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 )brace
 r_return
 id|snprintf
@@ -6460,11 +6242,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6582,11 +6362,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -6596,48 +6374,38 @@ id|aiptek-&gt;curSetting.mouseButtonRight
 r_case
 id|AIPTEK_MOUSE_LEFT_BUTTON
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;left&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_MOUSE_MIDDLE_BUTTON
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;middle&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|AIPTEK_MOUSE_RIGHT_BUTTON
 suffix:colon
-(brace
 id|s
 op_assign
 l_string|&quot;right&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_default
 suffix:colon
-(brace
-)brace
-(brace
 id|s
 op_assign
 l_string|&quot;unknown&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 )brace
 r_return
 id|snprintf
@@ -6691,11 +6459,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6809,11 +6575,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6889,11 +6653,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|aiptek-&gt;newSetting.wheel
 op_assign
 (paren
@@ -6963,11 +6725,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 multiline_comment|/* There is nothing useful to display, so a one-line manual&n;&t; * is in order...&n;&t; */
 r_return
 id|snprintf
@@ -7019,11 +6779,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 multiline_comment|/* We do not care what you write to this file. Merely the action&n;&t; * of writing to this file triggers a tablet reprogramming.&n;&t; */
 id|memcpy
 c_func
@@ -7052,12 +6810,10 @@ id|aiptek
 OL
 l_int|0
 )paren
-(brace
 r_return
 op_minus
 id|EIO
 suffix:semicolon
-)brace
 r_return
 id|count
 suffix:semicolon
@@ -7112,11 +6868,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_return
 id|snprintf
 c_func
@@ -7179,11 +6933,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_return
 id|snprintf
 c_func
@@ -7246,11 +6998,9 @@ id|aiptek
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_return
 id|snprintf
 c_func
@@ -7998,12 +7748,10 @@ id|GFP_KERNEL
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -8406,7 +8154,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|set_bit
 c_func
 (paren
@@ -8418,7 +8165,6 @@ comma
 id|aiptek-&gt;inputdev.keybit
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Set up client data, pointers to open and close routines&n;&t; * for the input device.&n;&t; */
 id|aiptek-&gt;inputdev
 dot
@@ -8450,7 +8196,6 @@ l_int|64
 OG
 l_int|0
 )paren
-(brace
 id|sprintf
 c_func
 (paren
@@ -8461,7 +8206,6 @@ comma
 id|path
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Program the input device coordinate capacities. We do not yet&n;&t; * know what maximum X, Y, and Z values are, so we&squot;re putting fake&n;&t; * values in. Later, we&squot;ll ask the tablet to put in the correct&n;&t; * values.&n;&t; */
 id|aiptek-&gt;inputdev.absmin
 (braket
@@ -8929,14 +8673,12 @@ l_string|&quot;evdev&quot;
 op_ne
 l_int|0
 )paren
-(brace
 id|info
 c_func
 (paren
 l_string|&quot;aiptek: error loading &squot;evdev&squot; module&quot;
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
