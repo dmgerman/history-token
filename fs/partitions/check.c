@@ -13,7 +13,6 @@ macro_line|#include &quot;atari.h&quot;
 macro_line|#include &quot;ldm.h&quot;
 macro_line|#include &quot;mac.h&quot;
 macro_line|#include &quot;msdos.h&quot;
-macro_line|#include &quot;nec98.h&quot;
 macro_line|#include &quot;osf.h&quot;
 macro_line|#include &quot;sgi.h&quot;
 macro_line|#include &quot;sun.h&quot;
