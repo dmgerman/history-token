@@ -82,7 +82,13 @@ r_extern
 id|acpi_interrupt_flags
 id|acpi_sci_flags
 suffix:semicolon
-multiline_comment|/* int __initdata acpi_force = 0; */
+DECL|variable|acpi_force
+r_int
+id|__initdata
+id|acpi_force
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* For PCI or other memory-mapped resources */
 DECL|variable|pci_mem_start
@@ -1001,7 +1007,10 @@ l_int|10
 )paren
 (brace
 multiline_comment|/* add later when we do DMI horrors: */
-multiline_comment|/* acpi_force = 1; */
+id|acpi_force
+op_assign
+l_int|1
+suffix:semicolon
 id|acpi_disabled
 op_assign
 l_int|0
@@ -1023,7 +1032,12 @@ l_int|7
 )paren
 )paren
 (brace
-multiline_comment|/* if (!acpi_force) */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_force
+)paren
 id|disable_acpi
 c_func
 (paren
