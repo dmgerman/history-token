@@ -126,12 +126,14 @@ macro_line|#ifdef CONFIG_UNIX98_PTYS
 r_extern
 r_struct
 id|tty_driver
+op_star
 id|ptm_driver
 suffix:semicolon
 multiline_comment|/* Unix98 pty masters; for /dev/ptmx */
 r_extern
 r_struct
 id|tty_driver
+op_star
 id|pts_driver
 suffix:semicolon
 multiline_comment|/* Unix98 pty slaves;  for /dev/ptmx */
@@ -5322,7 +5324,6 @@ l_int|1
 suffix:semicolon
 id|driver
 op_assign
-op_amp
 id|ptm_driver
 suffix:semicolon
 r_for
@@ -5383,9 +5384,9 @@ comma
 id|MKDEV
 c_func
 (paren
-id|pts_driver.major
+id|pts_driver-&gt;major
 comma
-id|pts_driver.minor_start
+id|pts_driver-&gt;minor_start
 )paren
 op_plus
 id|index
