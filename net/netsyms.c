@@ -1914,13 +1914,6 @@ c_func
 id|tcp_bucket_create
 )paren
 suffix:semicolon
-DECL|variable|__tcp_put_port
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__tcp_put_port
-)paren
-suffix:semicolon
 DECL|variable|tcp_put_port
 id|EXPORT_SYMBOL
 c_func
