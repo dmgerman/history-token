@@ -60,9 +60,6 @@ id|is_retry
 op_assign
 id|FALSE
 suffix:semicolon
-singleline_comment|//ntfs_debug(&quot;Entering for blk 0x%lx.&quot;, blk);
-singleline_comment|//printk(KERN_DEBUG &quot;NTFS: &quot; __FUNCTION__ &quot;(): Entering for blk &quot;
-singleline_comment|//&t;&t;&quot;0x%lx.&bslash;n&quot;, blk);
 id|bh-&gt;b_dev
 op_assign
 id|vi-&gt;i_dev
@@ -1398,10 +1395,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * end_buffer_read_index_async - async io completion for reading index records&n; * @bh:&t;&t;buffer head on which io is completed&n; * @uptodate:&t;whether @bh is now uptodate or not&n; *&n; * Asynchronous I/O completion handler for reading pages belogning to the&n; * index allocation attribute address space of directory inodes.&n; *&n; * Perform the post read mst fixups when all IO on the page has been completed&n; * and marks the page uptodate or sets the error bit on the page.&n; *&n; * Adapted from fs/buffer.c.&n; *&n; * NOTE: We use this function as async io completion handler for reading pages&n; * belonging to the mft data attribute address space, too as this saves&n; * duplicating an almost identical function. We do this by cheating a little&n; * bit in setting the index_block_size in the mft ntfs_inode to the mft record&n; * size of the volume (vol-&gt;mft_record_size), and index_block_size_bits to&n; * mft_record_size_bits, respectively.&n; */
-DECL|function|end_buffer_read_index_async
+multiline_comment|/**&n; * end_buffer_read_mst_async - async io completion for reading index records&n; * @bh:&t;&t;buffer head on which io is completed&n; * @uptodate:&t;whether @bh is now uptodate or not&n; *&n; * Asynchronous I/O completion handler for reading pages belogning to the&n; * index allocation attribute address space of directory inodes.&n; *&n; * Perform the post read mst fixups when all IO on the page has been completed&n; * and marks the page uptodate or sets the error bit on the page.&n; *&n; * Adapted from fs/buffer.c.&n; *&n; * NOTE: We use this function as async io completion handler for reading pages&n; * belonging to the mft data attribute address space, too as this saves&n; * duplicating an almost identical function. We do this by cheating a little&n; * bit in setting the index_block_size in the mft ntfs_inode to the mft record&n; * size of the volume (vol-&gt;mft_record_size), and index_block_size_bits to&n; * mft_record_size_bits, respectively.&n; */
+DECL|function|end_buffer_read_mst_async
+r_static
 r_void
-id|end_buffer_read_index_async
+id|end_buffer_read_mst_async
 c_func
 (paren
 r_struct
@@ -1467,67 +1465,9 @@ id|uptodate
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * The below code is very cpu intensive so we add an extra&n;&t;&t; * check to ensure it is only run when processing buffer heads&n;&t;&t; * in pages reaching beyond the initialized data size.&n;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|page-&gt;index
-op_plus
-l_int|1
-)paren
-op_lshift
-id|PAGE_CACHE_SHIFT
-OG
-id|ni-&gt;initialized_size
-)paren
-(brace
 id|s64
 id|file_ofs
 suffix:semicolon
-r_char
-op_star
-id|addr
-suffix:semicolon
-r_int
-id|page_ofs
-suffix:semicolon
-id|addr
-op_assign
-id|kmap_atomic
-c_func
-(paren
-id|page
-comma
-id|KM_BIO_IRQ
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|bh-&gt;b_data
-OL
-id|addr
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|bh-&gt;b_data
-op_plus
-id|bh-&gt;b_size
-OG
-id|addr
-op_plus
-id|PAGE_CACHE_SIZE
-)paren
-suffix:semicolon
-id|page_ofs
-op_assign
-id|bh-&gt;b_data
-op_minus
-id|addr
-suffix:semicolon
 id|file_ofs
 op_assign
 (paren
@@ -1536,7 +1476,11 @@ op_lshift
 id|PAGE_CACHE_SHIFT
 )paren
 op_plus
-id|page_ofs
+id|bh_offset
+c_func
+(paren
+id|bh
+)paren
 suffix:semicolon
 multiline_comment|/* Check for the current buffer head overflowing. */
 r_if
@@ -1549,8 +1493,12 @@ OG
 id|ni-&gt;initialized_size
 )paren
 (brace
+r_char
+op_star
+id|addr
+suffix:semicolon
 r_int
-id|bh_ofs
+id|ofs
 op_assign
 l_int|0
 suffix:semicolon
@@ -1561,42 +1509,40 @@ id|file_ofs
 OL
 id|ni-&gt;initialized_size
 )paren
-(brace
-id|bh_ofs
+id|ofs
 op_assign
 id|ni-&gt;initialized_size
 op_minus
 id|file_ofs
 suffix:semicolon
-id|BUG_ON
+id|addr
+op_assign
+id|kmap_atomic
 c_func
 (paren
-id|bh_ofs
-OL
-l_int|0
+id|page
+comma
+id|KM_BIO_IRQ
 )paren
 suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|bh_ofs
-op_ge
-id|bh-&gt;b_size
-)paren
-suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
-id|bh-&gt;b_data
+id|addr
 op_plus
-id|bh_ofs
+id|bh_offset
+c_func
+(paren
+id|bh
+)paren
+op_plus
+id|ofs
 comma
 l_int|0
 comma
 id|bh-&gt;b_size
 op_minus
-id|bh_ofs
+id|ofs
 )paren
 suffix:semicolon
 id|flush_dcache_page
@@ -1605,7 +1551,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-)brace
 id|kunmap_atomic
 c_func
 (paren
@@ -1721,16 +1666,6 @@ suffix:semicolon
 id|u32
 id|rec_size
 suffix:semicolon
-id|addr
-op_assign
-id|kmap_atomic
-c_func
-(paren
-id|page
-comma
-id|KM_BIO_IRQ
-)paren
-suffix:semicolon
 id|rec_size
 op_assign
 id|ni
@@ -1746,6 +1681,16 @@ op_assign
 id|PAGE_CACHE_SIZE
 op_div
 id|rec_size
+suffix:semicolon
+id|addr
+op_assign
+id|kmap_atomic
+c_func
+(paren
+id|page
+comma
+id|KM_BIO_IRQ
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -1845,10 +1790,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 op_logical_neg
 id|nr_err
 op_logical_and
 id|recs
+)paren
 )paren
 id|SetPageUptodate
 c_func
@@ -1899,11 +1848,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_dir_readpage - fill a @page of a directory with data from the device&n; * @dir:&t;open directory to which the page @page belongs&n; * @page:&t;page cache page to fill with data&n; *&n; * Fill the page @page of the open directory @dir. We read each buffer&n; * asynchronously and when all buffers are read in our io completion&n; * handler end_buffer_read_index_block_async() automatically applies the mst&n; * fixups to the page before finally marking it uptodate and unlocking it.&n; *&n; * Contains an adapted version of fs/buffer.c::block_read_full_page(), a&n; * generic &quot;read page&quot; function for block devices that have the normal&n; * get_block functionality. This is most of the block device filesystems.&n; * Reads the page asynchronously --- the unlock_buffer() and&n; * mark_buffer_uptodate() functions propagate buffer state into the&n; * page struct once IO has completed.&n; */
-DECL|function|ntfs_dir_readpage
-r_static
+multiline_comment|/**&n; * ntfs_mst_readpage - fill a @page of the mft or a directory with data&n; * @file:&t;open file/directory to which the page @page belongs or NULL&n; * @page:&t;page cache page to fill with data&n; *&n; * Readpage method for the VFS address space operations.&n; *&n; * Fill the page @page of the $MFT or the open directory @dir. We read each&n; * buffer asynchronously and when all buffers are read in our io completion&n; * handler end_buffer_read_mst_async() automatically applies the mst fixups to&n; * the page before finally marking it uptodate and unlocking it.&n; *&n; * Contains an adapted version of fs/buffer.c::block_read_full_page().&n; *&n; * TODO:/FIXME: The current implementation is simple but wasteful as we perform&n; * actual i/o from disk for all data up to allocated size completely ignoring&n; * the fact that initialized size, and data size for that matter, may well be&n; * lower and hence there is no point in reading them in. We can just zero the&n; * page range, which is what is currently done in our async i/o completion&n; * handler anyway, once the read from disk completes. However, I am not sure how&n; * to setup the buffer heads in that case, so for now we do the pointless i/o.&n; * Any help with this would be appreciated...&n; */
+DECL|function|ntfs_mst_readpage
 r_int
-id|ntfs_dir_readpage
+id|ntfs_mst_readpage
 c_func
 (paren
 r_struct
@@ -1917,15 +1865,29 @@ op_star
 id|page
 )paren
 (brace
+id|VCN
+id|vcn
+suffix:semicolon
+id|LCN
+id|lcn
+suffix:semicolon
 r_struct
 id|inode
 op_star
 id|vi
 suffix:semicolon
+id|ntfs_inode
+op_star
+id|ni
+suffix:semicolon
 r_struct
 id|super_block
 op_star
 id|sb
+suffix:semicolon
+id|ntfs_volume
+op_star
+id|vol
 suffix:semicolon
 r_struct
 id|buffer_head
@@ -1952,12 +1914,12 @@ id|blocksize
 comma
 id|blocks
 comma
-id|nr_bu
+id|vcn_ofs
 suffix:semicolon
 r_int
-id|nr
-comma
 id|i
+comma
+id|nr
 suffix:semicolon
 r_int
 r_char
@@ -1980,16 +1942,31 @@ c_func
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Get the VFS/ntfs inodes, the super block and ntfs volume associated&n;&t; * with the page.&n;&t; */
+multiline_comment|/* Get the VFS and ntfs nodes as well as the super blocks for page. */
 id|vi
 op_assign
 id|page-&gt;mapping-&gt;host
+suffix:semicolon
+id|ni
+op_assign
+id|NTFS_I
+c_func
+(paren
+id|vi
+)paren
 suffix:semicolon
 id|sb
 op_assign
 id|vi-&gt;i_sb
 suffix:semicolon
-multiline_comment|/* We need to create buffers for the page so we can do low level io. */
+id|vol
+op_assign
+id|NTFS_SB
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 id|blocksize
 op_assign
 id|sb-&gt;s_blocksize
@@ -1998,12 +1975,7 @@ id|blocksize_bits
 op_assign
 id|sb-&gt;s_blocksize_bits
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|page-&gt;buffers
-)paren
+multiline_comment|/* We need to create buffers for the page so we can do low level io. */
 id|create_empty_buffers
 c_func
 (paren
@@ -2012,19 +1984,6 @@ comma
 id|blocksize
 )paren
 suffix:semicolon
-r_else
-id|ntfs_error
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;Page (index 0x%lx) already has buffers.&quot;
-comma
-id|page-&gt;index
-)paren
-suffix:semicolon
-id|nr_bu
-op_assign
 id|blocks
 op_assign
 id|PAGE_CACHE_SIZE
@@ -2044,7 +2003,7 @@ suffix:semicolon
 id|lblock
 op_assign
 (paren
-id|vi-&gt;i_size
+id|ni-&gt;allocated_size
 op_plus
 id|blocksize
 op_minus
@@ -2066,6 +2025,28 @@ op_logical_neg
 id|bh
 )paren
 suffix:semicolon
+macro_line|#ifdef DEBUG
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|ni-&gt;run_list.rl
+op_logical_and
+op_logical_neg
+id|ni-&gt;mft_no
+)paren
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;NTFS: $MFT/$DATA run list has been unmapped! This is a &quot;
+l_string|&quot;very serious bug! Cannot continue...&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Loop through all the buffers in the page. */
 id|i
 op_assign
@@ -2075,33 +2056,26 @@ l_int|0
 suffix:semicolon
 r_do
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
+id|buffer_mapped
+c_func
+(paren
+id|bh
+)paren
+op_logical_or
 id|buffer_uptodate
 c_func
 (paren
 id|bh
 )paren
 )paren
-(brace
-id|nr_bu
-op_decrement
 suffix:semicolon
-r_continue
+id|bh-&gt;b_dev
+op_assign
+id|vi-&gt;i_dev
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|buffer_mapped
-c_func
-(paren
-id|bh
-)paren
-)paren
-(brace
 multiline_comment|/* Is the block within the allowed limits? */
 r_if
 c_cond
@@ -2111,37 +2085,199 @@ OL
 id|lblock
 )paren
 (brace
-multiline_comment|/* Remap the inode offset to its disk block. */
+id|BOOL
+id|is_retry
+op_assign
+id|FALSE
+suffix:semicolon
+multiline_comment|/* Convert iblock into corresponding vcn and offset. */
+id|vcn
+op_assign
+(paren
+id|VCN
+)paren
+id|iblock
+op_lshift
+id|blocksize_bits
+op_rshift
+id|vol-&gt;cluster_size_bits
+suffix:semicolon
+id|vcn_ofs
+op_assign
+(paren
+(paren
+id|VCN
+)paren
+id|iblock
+op_lshift
+id|blocksize_bits
+)paren
+op_amp
+id|vol-&gt;cluster_size_mask
+suffix:semicolon
+id|retry_remap
+suffix:colon
+multiline_comment|/* Convert the vcn to the corresponding lcn. */
+id|down_read
+c_func
+(paren
+op_amp
+id|ni-&gt;run_list.lock
+)paren
+suffix:semicolon
+id|lcn
+op_assign
+id|vcn_to_lcn
+c_func
+(paren
+id|ni-&gt;run_list.rl
+comma
+id|vcn
+)paren
+suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|ni-&gt;run_list.lock
+)paren
+suffix:semicolon
+multiline_comment|/* Successful remap. */
 r_if
 c_cond
 (paren
-id|ntfs_file_get_block
-c_func
-(paren
-id|vi
-comma
-id|iblock
-comma
-id|bh
-comma
+id|lcn
+op_ge
 l_int|0
 )paren
+(brace
+multiline_comment|/* Setup buffer head to correct block. */
+id|bh-&gt;b_blocknr
+op_assign
+(paren
+(paren
+id|lcn
+op_lshift
+id|vol-&gt;cluster_size_bits
 )paren
+op_plus
+id|vcn_ofs
+)paren
+op_rshift
+id|blocksize_bits
+suffix:semicolon
+id|bh-&gt;b_state
+op_or_assign
+(paren
+l_int|1UL
+op_lshift
+id|BH_Mapped
+)paren
+suffix:semicolon
+id|arr
+(braket
+id|nr
+op_increment
+)braket
+op_assign
+id|bh
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+multiline_comment|/* It is a hole, need to zero it. */
+r_if
+c_cond
+(paren
+id|lcn
+op_eq
+id|LCN_HOLE
+)paren
+r_goto
+id|handle_hole
+suffix:semicolon
+multiline_comment|/* If first try and run list unmapped, map and retry. */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|buffer_mapped
-c_func
-(paren
-id|bh
-)paren
+id|is_retry
+op_logical_and
+id|lcn
+op_eq
+id|LCN_RL_NOT_MAPPED
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Error. Zero this portion of the page and set&n;&t;&t;&t;&t; * the buffer uptodate.&n;&t;&t;&t;&t; */
+id|is_retry
+op_assign
+id|TRUE
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|map_run_list
+c_func
+(paren
+id|ni
+comma
+id|vcn
+)paren
+)paren
+r_goto
+id|retry_remap
+suffix:semicolon
+)brace
+multiline_comment|/* Hard error, zero out region. */
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;vcn_to_lcn(vcn = 0x%Lx) failed with &quot;
+l_string|&quot;error code 0x%Lx%s.&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|vcn
+comma
+(paren
+r_int
+r_int
+)paren
+op_minus
+id|lcn
+comma
+id|is_retry
+ques
+c_cond
+l_string|&quot; even &quot;
+l_string|&quot;after retrying&quot;
+suffix:colon
+l_string|&quot;&quot;
+)paren
+suffix:semicolon
+singleline_comment|// FIXME: Depending on vol-&gt;on_errors, do something.
+)brace
+multiline_comment|/*&n;&t;&t; * Either iblock was outside lblock limits or vcn_to_lcn()&n;&t;&t; * returned error. Just zero that portion of the page and set&n;&t;&t; * the buffer uptodate.&n;&t;&t; */
+id|handle_hole
+suffix:colon
+id|bh-&gt;b_blocknr
+op_assign
+op_minus
+l_int|1UL
+suffix:semicolon
+id|bh-&gt;b_state
+op_and_assign
+op_complement
+(paren
+l_int|1UL
+op_lshift
+id|BH_Mapped
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -2180,30 +2316,6 @@ comma
 op_amp
 id|bh-&gt;b_state
 )paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-multiline_comment|/* The buffer might have been updated synchronousle. */
-r_if
-c_cond
-(paren
-id|buffer_uptodate
-c_func
-(paren
-id|bh
-)paren
-)paren
-r_continue
-suffix:semicolon
-)brace
-id|arr
-(braket
-id|nr
-op_increment
-)braket
-op_assign
-id|bh
 suffix:semicolon
 )brace
 r_while
@@ -2265,7 +2377,7 @@ id|tbh
 suffix:semicolon
 id|tbh-&gt;b_end_io
 op_assign
-id|end_buffer_read_index_async
+id|end_buffer_read_mst_async
 suffix:semicolon
 id|mark_buffer_async
 c_func
@@ -2302,49 +2414,17 @@ id|i
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* We are done. */
 r_return
 l_int|0
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|nr_bu
-)paren
-(brace
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;All buffers in the page were already uptodate, &quot;
-l_string|&quot;assuming mst fixups were already applied.&quot;
-)paren
-suffix:semicolon
-id|SetPageUptodate
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|UnlockPage
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
+multiline_comment|/* We didn&squot;t schedule any io on any of the buffers. */
 id|ntfs_error
 c_func
 (paren
 id|sb
 comma
-l_string|&quot;No io was scheduled on any of the buffers in the page, &quot;
-l_string|&quot;but buffers were not all uptodate to start with. &quot;
-l_string|&quot;Setting page error flag and returning io error.&quot;
+l_string|&quot;No I/O was scheduled on any buffers. Page I/O error.&quot;
 )paren
 suffix:semicolon
 id|SetPageError
@@ -2396,7 +2476,6 @@ suffix:colon
 l_int|NULL
 comma
 multiline_comment|/* . */
-singleline_comment|//truncatepage:&t;NULL,&t;&t;&t;/* . */
 )brace
 suffix:semicolon
 DECL|typedef|readpage_t
@@ -2414,7 +2493,7 @@ id|page
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: Kludge: Address space operations for accessing mftbmp. */
+multiline_comment|/* Address space operations for accessing mftbmp. */
 DECL|variable|ntfs_mftbmp_aops
 r_struct
 id|address_space_operations
@@ -2450,7 +2529,6 @@ suffix:colon
 l_int|NULL
 comma
 multiline_comment|/* . */
-singleline_comment|//truncatepage:&t;NULL,&t;&t;&t;/* . */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Address space operations for accessing normal directory data (i.e. index&n; * allocation attribute). We can&squot;t just use the same operations as for files&n; * because 1) the attribute is different and even more importantly 2) the index&n; * records have to be multi sector transfer deprotected (i.e. fixed-up).&n; */
@@ -2467,7 +2545,7 @@ comma
 multiline_comment|/* Write dirty page to disk. */
 id|readpage
 suffix:colon
-id|ntfs_dir_readpage
+id|ntfs_mst_readpage
 comma
 multiline_comment|/* Fill page with data. */
 id|sync_page
@@ -2485,7 +2563,6 @@ suffix:colon
 l_int|NULL
 comma
 multiline_comment|/* . */
-singleline_comment|//truncatepage:&t;NULL,&t;&t;&t;/* . */
 )brace
 suffix:semicolon
 eof

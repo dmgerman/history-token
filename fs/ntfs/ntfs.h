@@ -359,45 +359,6 @@ id|page
 suffix:semicolon
 )brace
 multiline_comment|/* Declarations of functions and global variables. */
-multiline_comment|/* From fs/ntfs/aops.c */
-r_extern
-r_int
-id|ntfs_file_get_block
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|vi
-comma
-r_const
-id|sector_t
-id|blk
-comma
-r_struct
-id|buffer_head
-op_star
-id|bh
-comma
-r_const
-r_int
-id|create
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|end_buffer_read_index_async
-c_func
-(paren
-r_struct
-id|buffer_head
-op_star
-id|bh
-comma
-r_int
-id|uptodate
-)paren
-suffix:semicolon
 multiline_comment|/* From fs/ntfs/compress.c */
 r_extern
 r_int
