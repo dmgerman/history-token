@@ -72,7 +72,7 @@ id|type
 comma
 r_int
 comma
-l_int|444
+l_int|0444
 )paren
 suffix:semicolon
 id|module_param
@@ -82,7 +82,7 @@ id|addr
 comma
 r_int
 comma
-l_int|444
+l_int|0444
 )paren
 suffix:semicolon
 multiline_comment|/* insmod options used at runtime =&gt; read/write */
@@ -125,7 +125,7 @@ id|debug
 comma
 r_int
 comma
-l_int|644
+l_int|0644
 )paren
 suffix:semicolon
 id|module_param
@@ -135,7 +135,7 @@ id|tv_antenna
 comma
 r_int
 comma
-l_int|644
+l_int|0644
 )paren
 suffix:semicolon
 id|module_param
@@ -145,7 +145,7 @@ id|radio_antenna
 comma
 r_int
 comma
-l_int|644
+l_int|0644
 )paren
 suffix:semicolon
 id|module_param
@@ -155,7 +155,7 @@ id|optimize_vco
 comma
 r_int
 comma
-l_int|644
+l_int|0644
 )paren
 suffix:semicolon
 DECL|variable|tv_range
@@ -197,7 +197,7 @@ r_int
 comma
 l_int|NULL
 comma
-l_int|644
+l_int|0644
 )paren
 suffix:semicolon
 id|module_param_array
@@ -209,7 +209,7 @@ r_int
 comma
 l_int|NULL
 comma
-l_int|644
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
