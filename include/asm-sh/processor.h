@@ -553,7 +553,9 @@ DECL|macro|KSTK_EIP
 mdefine_line|#define KSTK_EIP(tsk)  ((tsk)-&gt;thread.pc)
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)  ((tsk)-&gt;thread.sp)
+DECL|macro|cpu_sleep
+mdefine_line|#define cpu_sleep()&t;__asm__ __volatile__ (&quot;sleep&quot; : : : &quot;memory&quot;)
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;__asm__ __volatile__ (&quot;sleep&quot; : : : &quot;memory&quot;)
+mdefine_line|#define cpu_relax()&t;do { } while (0)
 macro_line|#endif /* __ASM_SH_PROCESSOR_H */
 eof

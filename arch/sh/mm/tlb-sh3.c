@@ -183,15 +183,10 @@ multiline_comment|/* VALID bit is off */
 r_if
 c_cond
 (paren
-id|test_bit
-c_func
-(paren
-id|CPU_HAS_MMU_PAGE_ASSOC
-comma
-op_amp
 (paren
 id|cpu_data-&gt;flags
-)paren
+op_amp
+id|CPU_HAS_MMU_PAGE_ASSOC
 )paren
 )paren
 (brace
