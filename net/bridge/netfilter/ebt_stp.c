@@ -796,10 +796,14 @@ suffix:semicolon
 r_int
 id|len
 op_assign
+id|EBT_ALIGN
+c_func
+(paren
 r_sizeof
 (paren
 r_struct
 id|ebt_stp_info
+)paren
 )paren
 suffix:semicolon
 r_uint8

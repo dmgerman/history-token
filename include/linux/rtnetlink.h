@@ -266,6 +266,8 @@ DECL|macro|RTM_F_CLONED
 mdefine_line|#define RTM_F_CLONED&t;&t;0x200&t;/* This route is cloned&t;&t;*/
 DECL|macro|RTM_F_EQUALIZE
 mdefine_line|#define RTM_F_EQUALIZE&t;&t;0x400&t;/* Multipath equalizer: NI&t;*/
+DECL|macro|RTM_F_PREFIX
+mdefine_line|#define RTM_F_PREFIX&t;&t;0x800&t;/* Prefix addresses&t;&t;*/
 multiline_comment|/* Reserved table identifiers */
 DECL|enum|rt_class_t
 r_enum
@@ -818,6 +820,122 @@ suffix:semicolon
 multiline_comment|/* IFF_* change mask */
 )brace
 suffix:semicolon
+multiline_comment|/* The struct should be in sync with struct net_device_stats */
+DECL|struct|rtnl_link_stats
+r_struct
+id|rtnl_link_stats
+(brace
+DECL|member|rx_packets
+id|__u32
+id|rx_packets
+suffix:semicolon
+multiline_comment|/* total packets received&t;*/
+DECL|member|tx_packets
+id|__u32
+id|tx_packets
+suffix:semicolon
+multiline_comment|/* total packets transmitted&t;*/
+DECL|member|rx_bytes
+id|__u32
+id|rx_bytes
+suffix:semicolon
+multiline_comment|/* total bytes received &t;*/
+DECL|member|tx_bytes
+id|__u32
+id|tx_bytes
+suffix:semicolon
+multiline_comment|/* total bytes transmitted&t;*/
+DECL|member|rx_errors
+id|__u32
+id|rx_errors
+suffix:semicolon
+multiline_comment|/* bad packets received&t;&t;*/
+DECL|member|tx_errors
+id|__u32
+id|tx_errors
+suffix:semicolon
+multiline_comment|/* packet transmit problems&t;*/
+DECL|member|rx_dropped
+id|__u32
+id|rx_dropped
+suffix:semicolon
+multiline_comment|/* no space in linux buffers&t;*/
+DECL|member|tx_dropped
+id|__u32
+id|tx_dropped
+suffix:semicolon
+multiline_comment|/* no space available in linux&t;*/
+DECL|member|multicast
+id|__u32
+id|multicast
+suffix:semicolon
+multiline_comment|/* multicast packets received&t;*/
+DECL|member|collisions
+id|__u32
+id|collisions
+suffix:semicolon
+multiline_comment|/* detailed rx_errors: */
+DECL|member|rx_length_errors
+id|__u32
+id|rx_length_errors
+suffix:semicolon
+DECL|member|rx_over_errors
+id|__u32
+id|rx_over_errors
+suffix:semicolon
+multiline_comment|/* receiver ring buff overflow&t;*/
+DECL|member|rx_crc_errors
+id|__u32
+id|rx_crc_errors
+suffix:semicolon
+multiline_comment|/* recved pkt with crc error&t;*/
+DECL|member|rx_frame_errors
+id|__u32
+id|rx_frame_errors
+suffix:semicolon
+multiline_comment|/* recv&squot;d frame alignment error */
+DECL|member|rx_fifo_errors
+id|__u32
+id|rx_fifo_errors
+suffix:semicolon
+multiline_comment|/* recv&squot;r fifo overrun&t;&t;*/
+DECL|member|rx_missed_errors
+id|__u32
+id|rx_missed_errors
+suffix:semicolon
+multiline_comment|/* receiver missed packet&t;*/
+multiline_comment|/* detailed tx_errors */
+DECL|member|tx_aborted_errors
+id|__u32
+id|tx_aborted_errors
+suffix:semicolon
+DECL|member|tx_carrier_errors
+id|__u32
+id|tx_carrier_errors
+suffix:semicolon
+DECL|member|tx_fifo_errors
+id|__u32
+id|tx_fifo_errors
+suffix:semicolon
+DECL|member|tx_heartbeat_errors
+id|__u32
+id|tx_heartbeat_errors
+suffix:semicolon
+DECL|member|tx_window_errors
+id|__u32
+id|tx_window_errors
+suffix:semicolon
+multiline_comment|/* for cslip etc */
+DECL|member|rx_compressed
+id|__u32
+id|rx_compressed
+suffix:semicolon
+DECL|member|tx_compressed
+id|__u32
+id|tx_compressed
+suffix:semicolon
+)brace
+suffix:semicolon
 r_enum
 (brace
 DECL|enumerator|IFLA_UNSPEC
@@ -1177,6 +1295,74 @@ id|data
 suffix:semicolon
 DECL|macro|RTA_PUT
 mdefine_line|#define RTA_PUT(skb, attrtype, attrlen, data) &bslash;&n;({ if (skb_tailroom(skb) &lt; (int)RTA_SPACE(attrlen)) goto rtattr_failure; &bslash;&n;   __rta_fill(skb, attrtype, attrlen, data); })
+r_static
+r_inline
+r_struct
+id|rtattr
+op_star
+DECL|function|__rta_reserve
+id|__rta_reserve
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_int
+id|attrtype
+comma
+r_int
+id|attrlen
+)paren
+(brace
+r_struct
+id|rtattr
+op_star
+id|rta
+suffix:semicolon
+r_int
+id|size
+op_assign
+id|RTA_LENGTH
+c_func
+(paren
+id|attrlen
+)paren
+suffix:semicolon
+id|rta
+op_assign
+(paren
+r_struct
+id|rtattr
+op_star
+)paren
+id|skb_put
+c_func
+(paren
+id|skb
+comma
+id|RTA_ALIGN
+c_func
+(paren
+id|size
+)paren
+)paren
+suffix:semicolon
+id|rta-&gt;rta_type
+op_assign
+id|attrtype
+suffix:semicolon
+id|rta-&gt;rta_len
+op_assign
+id|size
+suffix:semicolon
+r_return
+id|rta
+suffix:semicolon
+)brace
+DECL|macro|__RTA_PUT
+mdefine_line|#define __RTA_PUT(skb, attrtype, attrlen) &bslash;&n;({ if (skb_tailroom(skb) &lt; (int)RTA_SPACE(attrlen)) goto rtattr_failure; &bslash;&n;   __rta_reserve(skb, attrtype, attrlen); })
 r_extern
 r_void
 id|rtmsg_ifinfo

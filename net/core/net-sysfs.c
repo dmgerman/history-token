@@ -896,7 +896,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%ld&bslash;n&quot;
+l_string|&quot;%lu&bslash;n&quot;
 comma
 id|var
 )paren
