@@ -1711,16 +1711,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page-&gt;mapping
-op_logical_and
 id|pte_young
 c_func
 (paren
 id|pte
 )paren
 op_logical_and
-op_logical_neg
-id|PageSwapCache
+id|page_mapping
 c_func
 (paren
 id|page

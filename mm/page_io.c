@@ -5,8 +5,6 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* for block_sync_page() */
-macro_line|#include &lt;linux/mpage.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 r_static
@@ -71,7 +69,9 @@ id|page
 suffix:semicolon
 id|entry.val
 op_assign
-id|page-&gt;index
+id|page
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 id|sis
 op_assign
@@ -571,34 +571,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|variable|swap_aops
-r_struct
-id|address_space_operations
-id|swap_aops
-op_assign
-(brace
-dot
-id|writepage
-op_assign
-id|swap_writepage
-comma
-dot
-id|readpage
-op_assign
-id|swap_readpage
-comma
-dot
-id|sync_page
-op_assign
-id|block_sync_page
-comma
-dot
-id|set_page_dirty
-op_assign
-id|__set_page_dirty_nobuffers
-comma
-)brace
-suffix:semicolon
 macro_line|#if defined(CONFIG_SOFTWARE_SUSPEND) || defined(CONFIG_PM_DISK)
 multiline_comment|/*&n; * A scruffy utility function to read or write an arbitrary swap page&n; * and wait on the I/O.  The caller must have a ref on the page.&n; */
 DECL|function|rw_swap_page_sync
@@ -621,6 +593,10 @@ id|page
 r_int
 id|ret
 suffix:semicolon
+r_int
+r_int
+id|save_private
+suffix:semicolon
 r_struct
 id|writeback_control
 id|swap_wbc
@@ -639,51 +615,23 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|BUG_ON
+id|SetPageSwapCache
 c_func
 (paren
-id|page-&gt;mapping
+id|page
 )paren
 suffix:semicolon
-id|ret
+id|save_private
 op_assign
-id|add_to_page_cache
-c_func
-(paren
 id|page
-comma
-op_amp
-id|swapper_space
-comma
+op_member_access_from_pointer
+r_private
+suffix:semicolon
+id|page
+op_member_access_from_pointer
+r_private
+op_assign
 id|entry.val
-comma
-id|GFP_NOIO
-op_or
-id|__GFP_NOFAIL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-(brace
-id|unlock_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * get one more reference to make page non-exclusive so&n;&t; * remove_exclusive_swap_page won&squot;t mess with it.&n;&t; */
-id|page_cache_get
-c_func
-(paren
-id|page
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -730,37 +678,18 @@ id|page
 )paren
 suffix:semicolon
 )brace
-id|lock_page
+id|ClearPageSwapCache
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
-id|remove_from_page_cache
-c_func
-(paren
 id|page
-)paren
+op_member_access_from_pointer
+r_private
+op_assign
+id|save_private
 suffix:semicolon
-id|unlock_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|page_cache_release
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|page_cache_release
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-multiline_comment|/* For add_to_page_cache() */
 r_if
 c_cond
 (paren
@@ -788,8 +717,6 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
-id|out
-suffix:colon
 r_return
 id|ret
 suffix:semicolon

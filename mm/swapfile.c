@@ -1198,7 +1198,9 @@ id|entry
 suffix:semicolon
 id|entry.val
 op_assign
-id|page-&gt;index
+id|page
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 id|p
 op_assign
@@ -1230,8 +1232,8 @@ op_eq
 l_int|1
 )paren
 (brace
-multiline_comment|/* Recheck the page count with the pagecache lock held.. */
-id|spin_lock_irq
+multiline_comment|/* Recheck the page count with the swapcache lock held.. */
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1246,14 +1248,6 @@ c_func
 (paren
 id|page
 )paren
-op_minus
-op_logical_neg
-op_logical_neg
-id|PagePrivate
-c_func
-(paren
-id|page
-)paren
 op_eq
 l_int|2
 )paren
@@ -1261,7 +1255,7 @@ id|retval
 op_assign
 l_int|1
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1472,7 +1466,9 @@ l_int|0
 suffix:semicolon
 id|entry.val
 op_assign
-id|page-&gt;index
+id|page
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 id|p
 op_assign
@@ -1511,8 +1507,8 @@ op_eq
 l_int|1
 )paren
 (brace
-multiline_comment|/* Recheck the page count with the pagecache lock held.. */
-id|spin_lock_irq
+multiline_comment|/* Recheck the page count with the swapcache lock held.. */
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1557,7 +1553,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|spin_unlock_irq
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1647,17 +1643,48 @@ id|entry
 op_eq
 l_int|1
 )paren
-id|page
-op_assign
-id|find_trylock_page
+(brace
+id|spin_lock
 c_func
 (paren
 op_amp
-id|swapper_space
+id|swapper_space.tree_lock
+)paren
+suffix:semicolon
+id|page
+op_assign
+id|radix_tree_lookup
+c_func
+(paren
+op_amp
+id|swapper_space.page_tree
 comma
 id|entry.val
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|page
+op_logical_and
+id|TestSetPageLocked
+c_func
+(paren
+id|page
+)paren
+)paren
+id|page
+op_assign
+l_int|NULL
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|swapper_space.tree_lock
+)paren
+suffix:semicolon
+)brace
 id|swap_info_put
 c_func
 (paren
@@ -4011,10 +4038,6 @@ id|page
 )paren
 suffix:semicolon
 multiline_comment|/* It pins the swap_info_struct */
-id|bdi
-op_assign
-id|page-&gt;mapping-&gt;backing_dev_info
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4032,7 +4055,9 @@ op_assign
 dot
 id|val
 op_assign
-id|page-&gt;index
+id|page
+op_member_access_from_pointer
+r_private
 )brace
 suffix:semicolon
 r_struct
@@ -4057,6 +4082,11 @@ op_assign
 id|sis-&gt;bdev-&gt;bd_inode-&gt;i_mapping-&gt;backing_dev_info
 suffix:semicolon
 )brace
+r_else
+id|bdi
+op_assign
+id|page-&gt;mapping-&gt;backing_dev_info
+suffix:semicolon
 r_return
 id|bdi_write_congested
 c_func

@@ -422,8 +422,6 @@ r_struct
 id|address_space
 op_star
 id|mapping
-op_assign
-id|page-&gt;mapping
 suffix:semicolon
 multiline_comment|/* Page is in somebody&squot;s page tables. */
 r_if
@@ -438,16 +436,6 @@ id|page
 r_return
 l_int|1
 suffix:semicolon
-multiline_comment|/* XXX: does this happen ? */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mapping
-)paren
-r_return
-l_int|0
-suffix:semicolon
 multiline_comment|/* Be more reluctant to reclaim swapcache than pagecache */
 r_if
 c_cond
@@ -460,6 +448,23 @@ id|page
 )paren
 r_return
 l_int|1
+suffix:semicolon
+id|mapping
+op_assign
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mapping
+)paren
+r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* File is mmap&squot;d by somebody. */
 r_if
@@ -617,7 +622,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 op_eq
 id|mapping
 )paren
@@ -852,24 +861,33 @@ suffix:semicolon
 )brace
 id|mapping
 op_assign
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|may_enter_fs
+op_assign
+(paren
+id|gfp_mask
+op_amp
+id|__GFP_FS
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SWAP
-multiline_comment|/*&n;&t;&t; * Anonymous process memory without backing store. Try to&n;&t;&t; * allocate it some swap space here.&n;&t;&t; *&n;&t;&t; * XXX: implement swap clustering ?&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Anonymous process memory has backing store?&n;&t;&t; * Try to allocate it some swap space here.&n;&t;&t; *&n;&t;&t; * XXX: implement swap clustering ?&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|page_mapped
+id|PageAnon
 c_func
 (paren
 id|page
 )paren
 op_logical_and
 op_logical_neg
-id|mapping
-op_logical_and
-op_logical_neg
-id|PagePrivate
+id|PageSwapCache
 c_func
 (paren
 id|page
@@ -901,34 +919,32 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|mapping
-op_assign
-id|page-&gt;mapping
-suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_SWAP */
-id|may_enter_fs
-op_assign
-(paren
-id|gfp_mask
-op_amp
-id|__GFP_FS
-)paren
-op_logical_or
+r_if
+c_cond
 (paren
 id|PageSwapCache
 c_func
 (paren
 id|page
 )paren
-op_logical_and
+)paren
+(brace
+id|mapping
+op_assign
+op_amp
+id|swapper_space
+suffix:semicolon
+id|may_enter_fs
+op_assign
 (paren
 id|gfp_mask
 op_amp
 id|__GFP_IO
 )paren
-)paren
 suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_SWAP */
 multiline_comment|/*&n;&t;&t; * The page is mapped into the page tables of one or more&n;&t;&t; * processes. Try to unmap it here.&n;&t;&t; */
 r_if
 c_cond
@@ -1300,7 +1316,9 @@ op_assign
 dot
 id|val
 op_assign
-id|page-&gt;index
+id|page
+op_member_access_from_pointer
+r_private
 )brace
 suffix:semicolon
 id|__delete_from_swap_cache
@@ -2292,11 +2310,7 @@ id|total_swap_pages
 op_eq
 l_int|0
 op_logical_and
-op_logical_neg
-id|page-&gt;mapping
-op_logical_and
-op_logical_neg
-id|PagePrivate
+id|PageAnon
 c_func
 (paren
 id|page

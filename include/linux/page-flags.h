@@ -47,6 +47,10 @@ DECL|macro|PG_reclaim
 mdefine_line|#define PG_reclaim&t;&t;18&t;/* To be reclaimed asap */
 DECL|macro|PG_compound
 mdefine_line|#define PG_compound&t;&t;19&t;/* Part of a compound page */
+DECL|macro|PG_anon
+mdefine_line|#define PG_anon&t;&t;&t;20&t;/* Anonymous page: anon_vma in mapping*/
+DECL|macro|PG_swapcache
+mdefine_line|#define PG_swapcache&t;&t;21&t;/* Swap page: swp_entry_t in private */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.  Only unsigned longs are&n; * allowed.&n; */
 DECL|struct|page_state
 r_struct
@@ -462,18 +466,22 @@ DECL|macro|SetPageCompound
 mdefine_line|#define SetPageCompound(page)&t;set_bit(PG_compound, &amp;(page)-&gt;flags)
 DECL|macro|ClearPageCompound
 mdefine_line|#define ClearPageCompound(page)&t;clear_bit(PG_compound, &amp;(page)-&gt;flags)
-multiline_comment|/*&n; * The PageSwapCache predicate doesn&squot;t use a PG_flag at this time,&n; * but it may again do so one day.&n; */
+DECL|macro|PageAnon
+mdefine_line|#define PageAnon(page)&t;&t;test_bit(PG_anon, &amp;(page)-&gt;flags)
+DECL|macro|SetPageAnon
+mdefine_line|#define SetPageAnon(page)&t;set_bit(PG_anon, &amp;(page)-&gt;flags)
+DECL|macro|ClearPageAnon
+mdefine_line|#define ClearPageAnon(page)&t;clear_bit(PG_anon, &amp;(page)-&gt;flags)
 macro_line|#ifdef CONFIG_SWAP
-r_extern
-r_struct
-id|address_space
-id|swapper_space
-suffix:semicolon
 DECL|macro|PageSwapCache
-mdefine_line|#define PageSwapCache(page) ((page)-&gt;mapping == &amp;swapper_space)
+mdefine_line|#define PageSwapCache(page)&t;test_bit(PG_swapcache, &amp;(page)-&gt;flags)
+DECL|macro|SetPageSwapCache
+mdefine_line|#define SetPageSwapCache(page)&t;set_bit(PG_swapcache, &amp;(page)-&gt;flags)
+DECL|macro|ClearPageSwapCache
+mdefine_line|#define ClearPageSwapCache(page) clear_bit(PG_swapcache, &amp;(page)-&gt;flags)
 macro_line|#else
 DECL|macro|PageSwapCache
-mdefine_line|#define PageSwapCache(page) 0
+mdefine_line|#define PageSwapCache(page)&t;0
 macro_line|#endif
 r_struct
 id|page

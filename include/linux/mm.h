@@ -368,7 +368,7 @@ r_int
 r_int
 r_private
 suffix:semicolon
-multiline_comment|/* mapping-private opaque data */
+multiline_comment|/* Mapping-private opaque data:&n;&t;&t;&t;&t;&t; * usually used for buffer_heads&n;&t;&t;&t;&t;&t; * if PagePrivate set; used for&n;&t;&t;&t;&t;&t; * swp_entry_t if PageSwapCache&n;&t;&t;&t;&t;&t; */
 multiline_comment|/*&n;&t; * On machines where all RAM is mapped into kernel address space,&n;&t; * we can simply calculate the virtual address. On machines with&n;&t; * highmem some memory is mapped into kernel virtual memory&n;&t; * dynamically, so we need a place to store that address.&n;&t; * Note that this field could be 16 bits on x86 ... ;)&n;&t; *&n;&t; * Architectures with slow multiplication can define&n;&t; * WANT_PAGE_VIRTUAL in asm/page.h&n;&t; */
 macro_line|#if defined(WANT_PAGE_VIRTUAL)
 DECL|member|virtual
@@ -901,6 +901,35 @@ mdefine_line|#define set_page_address(page, address)  do { } while(0)
 DECL|macro|page_address_init
 mdefine_line|#define page_address_init()  do { } while(0)
 macro_line|#endif
+multiline_comment|/*&n; * On an anonymous page mapped into a user virtual memory area,&n; * page-&gt;mapping points to its anon_vma, not to a struct address_space.&n; *&n; * Please note that, confusingly, &quot;page_mapping&quot; refers to the inode&n; * address_space which maps the page from disk; whereas &quot;page_mapped&quot;&n; * refers to user virtual address space into which the page is mapped.&n; */
+DECL|function|page_mapping
+r_static
+r_inline
+r_struct
+id|address_space
+op_star
+id|page_mapping
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_return
+id|PageAnon
+c_func
+(paren
+id|page
+)paren
+ques
+c_cond
+l_int|NULL
+suffix:colon
+id|page-&gt;mapping
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Return true if this page is mapped into pagetables.  Subtle: test pte.direct&n; * rather than pte.chain.  Because sometimes pte.direct is 64-bit, and .chain&n; * is only 32-bit.&n; */
 DECL|function|page_mapped
 r_static
@@ -1443,6 +1472,20 @@ id|page
 )paren
 suffix:semicolon
 r_int
+id|FASTCALL
+c_func
+(paren
+id|set_page_dirty
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+)paren
+suffix:semicolon
+r_int
 id|set_page_dirty_lock
 c_func
 (paren
@@ -1508,64 +1551,6 @@ op_star
 id|shrinker
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * If the mapping doesn&squot;t provide a set_page_dirty a_op, then&n; * just fall through and assume that it wants buffer_heads.&n; * FIXME: make the method unconditional.&n; */
-DECL|function|set_page_dirty
-r_static
-r_inline
-r_int
-id|set_page_dirty
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|page-&gt;mapping
-)paren
-(brace
-r_int
-(paren
-op_star
-id|spd
-)paren
-(paren
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
-id|spd
-op_assign
-id|page-&gt;mapping-&gt;a_ops-&gt;set_page_dirty
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|spd
-)paren
-r_return
-(paren
-op_star
-id|spd
-)paren
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
-r_return
-id|__set_page_dirty_buffers
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * On a two-level page table, this ends up being trivial. Thus the&n; * inlining and the symmetry break with pte_alloc_map() that does all&n; * of this out-of-line.&n; */
 DECL|function|pmd_alloc
 r_static

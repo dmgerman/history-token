@@ -2660,7 +2660,7 @@ c_func
 id|mark_buffer_dirty_inode
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Add a page to the dirty page list.&n; *&n; * It is a sad fact of life that this function is called from several places&n; * deeply under spinlocking.  It may not sleep.&n; *&n; * If the page has buffers, the uptodate buffers are set dirty, to preserve&n; * dirty-state coherency between the page and the buffers.  It the page does&n; * not have buffers then when they are later attached they will all be set&n; * dirty.&n; *&n; * The buffers are dirtied before the page is dirtied.  There&squot;s a small race&n; * window in which a writepage caller may see the page cleanness but not the&n; * buffer dirtiness.  That&squot;s fine.  If this code were to set the page dirty&n; * before the buffers, a concurrent writepage caller could clear the page dirty&n; * bit, see a bunch of clean buffers and we&squot;d end up with dirty buffers/clean&n; * page on the dirty page list.&n; *&n; * We use private_lock to lock against try_to_free_buffers while using the&n; * page&squot;s buffer list.  Also use this to protect against clean buffers being&n; * added to the page after it was set dirty.&n; *&n; * FIXME: may need to call -&gt;reservepage here as well.  That&squot;s rather up to the&n; * address_space though.&n; *&n; * For now, we treat swapper_space specially.  It doesn&squot;t use the normal&n; * block a_ops.&n; */
+multiline_comment|/*&n; * Add a page to the dirty page list.&n; *&n; * It is a sad fact of life that this function is called from several places&n; * deeply under spinlocking.  It may not sleep.&n; *&n; * If the page has buffers, the uptodate buffers are set dirty, to preserve&n; * dirty-state coherency between the page and the buffers.  It the page does&n; * not have buffers then when they are later attached they will all be set&n; * dirty.&n; *&n; * The buffers are dirtied before the page is dirtied.  There&squot;s a small race&n; * window in which a writepage caller may see the page cleanness but not the&n; * buffer dirtiness.  That&squot;s fine.  If this code were to set the page dirty&n; * before the buffers, a concurrent writepage caller could clear the page dirty&n; * bit, see a bunch of clean buffers and we&squot;d end up with dirty buffers/clean&n; * page on the dirty page list.&n; *&n; * We use private_lock to lock against try_to_free_buffers while using the&n; * page&squot;s buffer list.  Also use this to protect against clean buffers being&n; * added to the page after it was set dirty.&n; *&n; * FIXME: may need to call -&gt;reservepage here as well.  That&squot;s rather up to the&n; * address_space though.&n; */
 DECL|function|__set_page_dirty_buffers
 r_int
 id|__set_page_dirty_buffers
@@ -2680,29 +2680,6 @@ id|mapping
 op_assign
 id|page-&gt;mapping
 suffix:semicolon
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mapping
-op_eq
-l_int|NULL
-)paren
-(brace
-id|SetPageDirty
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 id|spin_lock
 c_func
 (paren
@@ -2847,10 +2824,8 @@ id|I_DIRTY_PAGES
 )paren
 suffix:semicolon
 )brace
-id|out
-suffix:colon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|__set_page_dirty_buffers
@@ -5309,8 +5284,8 @@ id|mapping
 op_assign
 id|page-&gt;mapping
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|PageLocked
@@ -5318,10 +5293,6 @@ c_func
 (paren
 id|page
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -11100,7 +11071,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* swapped-in anon page */
+multiline_comment|/* can this still happen? */
 id|ret
 op_assign
 id|drop_buffers
@@ -11138,13 +11109,6 @@ r_if
 c_cond
 (paren
 id|ret
-op_logical_and
-op_logical_neg
-id|PageSwapCache
-c_func
-(paren
-id|page
-)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * If the filesystem writes its buffers by hand (eg ext3)&n;&t;&t; * then we can have clean buffers against a dirty page.  We&n;&t;&t; * clean the page here; otherwise later reattachment of buffers&n;&t;&t; * could encounter a non-uptodate page, which is unresolvable.&n;&t;&t; * This only applies in the rare case where try_to_free_buffers&n;&t;&t; * succeeds but the page is not freed.&n;&t;&t; */
