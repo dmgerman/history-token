@@ -3400,7 +3400,7 @@ id|CUJO_RAVEN_ADDR
 id|ccio_cujo20_fixup
 c_func
 (paren
-id|dev-&gt;parent
+id|dev
 comma
 id|CUJO_RAVEN_BADPAGE
 )paren
@@ -3422,7 +3422,7 @@ id|CUJO_FIREHAWK_ADDR
 id|ccio_cujo20_fixup
 c_func
 (paren
-id|dev-&gt;parent
+id|dev
 comma
 id|CUJO_FIREHAWK_BADPAGE
 )paren
