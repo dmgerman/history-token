@@ -110,8 +110,8 @@ DECL|macro|MPC10X_MCTLR_EXT_MEM_START_2
 mdefine_line|#define MPC10X_MCTLR_EXT_MEM_START_2&t;0x8c&t;/* Banks 4-7 */
 DECL|macro|MPC10X_MCTLR_MEM_END_1
 mdefine_line|#define MPC10X_MCTLR_MEM_END_1&t;&t;0x90&t;/* Banks 0-3 */
-DECL|macro|MPC10X_MCTLR_MEM_END_2i
-mdefine_line|#define MPC10X_MCTLR_MEM_END_2i&t;&t;0x94&t;/* Banks 4-7 */
+DECL|macro|MPC10X_MCTLR_MEM_END_2
+mdefine_line|#define MPC10X_MCTLR_MEM_END_2&t;&t;0x94&t;/* Banks 4-7 */
 DECL|macro|MPC10X_MCTLR_EXT_MEM_END_1
 mdefine_line|#define MPC10X_MCTLR_EXT_MEM_END_1&t;0x98&t;/* Banks 0-3 */
 DECL|macro|MPC10X_MCTLR_EXT_MEM_END_2
