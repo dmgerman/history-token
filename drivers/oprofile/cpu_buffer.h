@@ -4,7 +4,6 @@ DECL|macro|OPROFILE_CPU_BUFFER_H
 mdefine_line|#define OPROFILE_CPU_BUFFER_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 r_struct
@@ -105,11 +104,6 @@ suffix:semicolon
 DECL|member|cpu
 r_int
 id|cpu
-suffix:semicolon
-DECL|member|timer
-r_struct
-id|timer_list
-id|timer
 suffix:semicolon
 DECL|member|work
 r_struct
