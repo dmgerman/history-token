@@ -5908,13 +5908,13 @@ c_cond
 id|msr
 op_amp
 (paren
-id|MSR_DELTA_CTS
+id|EDGEPORT_MSR_DELTA_CTS
 op_or
-id|MSR_DELTA_DSR
+id|EDGEPORT_MSR_DELTA_DSR
 op_or
-id|MSR_DELTA_RI
+id|EDGEPORT_MSR_DELTA_RI
 op_or
-id|MSR_DELTA_CD
+id|EDGEPORT_MSR_DELTA_CD
 )paren
 )paren
 (brace
@@ -5929,7 +5929,7 @@ c_cond
 (paren
 id|msr
 op_amp
-id|MSR_DELTA_CTS
+id|EDGEPORT_MSR_DELTA_CTS
 )paren
 id|icount-&gt;cts
 op_increment
@@ -5939,7 +5939,7 @@ c_cond
 (paren
 id|msr
 op_amp
-id|MSR_DELTA_DSR
+id|EDGEPORT_MSR_DELTA_DSR
 )paren
 id|icount-&gt;dsr
 op_increment
@@ -5949,7 +5949,7 @@ c_cond
 (paren
 id|msr
 op_amp
-id|MSR_DELTA_CD
+id|EDGEPORT_MSR_DELTA_CD
 )paren
 id|icount-&gt;dcd
 op_increment
@@ -5959,7 +5959,7 @@ c_cond
 (paren
 id|msr
 op_amp
-id|MSR_DELTA_RI
+id|EDGEPORT_MSR_DELTA_RI
 )paren
 id|icount-&gt;rng
 op_increment
@@ -9604,7 +9604,7 @@ op_or
 (paren
 id|msr
 op_amp
-id|MSR_CTS
+id|EDGEPORT_MSR_CTS
 )paren
 ques
 c_cond
@@ -9618,7 +9618,7 @@ op_or
 (paren
 id|msr
 op_amp
-id|MSR_CD
+id|EDGEPORT_MSR_CD
 )paren
 ques
 c_cond
@@ -9632,7 +9632,7 @@ op_or
 (paren
 id|msr
 op_amp
-id|MSR_RI
+id|EDGEPORT_MSR_RI
 )paren
 ques
 c_cond
@@ -9646,7 +9646,7 @@ op_or
 (paren
 id|msr
 op_amp
-id|MSR_DSR
+id|EDGEPORT_MSR_DSR
 )paren
 ques
 c_cond
