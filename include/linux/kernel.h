@@ -713,6 +713,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|add_taint
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/* Values used for system_state */
 DECL|enum|system_states
 r_extern
@@ -745,6 +753,8 @@ DECL|macro|TAINT_UNSAFE_SMP
 mdefine_line|#define TAINT_UNSAFE_SMP&t;&t;(1&lt;&lt;2)
 DECL|macro|TAINT_FORCED_RMMOD
 mdefine_line|#define TAINT_FORCED_RMMOD&t;&t;(1&lt;&lt;3)
+DECL|macro|TAINT_MACHINE_CHECK
+mdefine_line|#define TAINT_MACHINE_CHECK&t;&t;(1&lt;&lt;4)
 r_extern
 r_void
 id|dump_stack
