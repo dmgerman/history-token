@@ -172,7 +172,7 @@ c_func
 id|page_table
 )paren
 op_or
-id|_KERNPG_TABLE
+id|_PAGE_TABLE
 )paren
 )paren
 suffix:semicolon

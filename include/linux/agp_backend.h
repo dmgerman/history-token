@@ -59,6 +59,9 @@ comma
 DECL|enumerator|INTEL_460GX
 id|INTEL_460GX
 comma
+DECL|enumerator|INTEL_I7505
+id|INTEL_I7505
+comma
 DECL|enumerator|VIA_GENERIC
 id|VIA_GENERIC
 comma
