@@ -29,10 +29,8 @@ multiline_comment|/* # of devices attached to the zone */
 DECL|member|dev
 id|mdk_rdev_t
 op_star
+op_star
 id|dev
-(braket
-id|MD_SB_DISKS
-)braket
 suffix:semicolon
 multiline_comment|/* Devices attached to the zone */
 )brace
@@ -55,6 +53,13 @@ id|strip_zone
 op_star
 id|strip_zone
 suffix:semicolon
+DECL|member|devlist
+id|mdk_rdev_t
+op_star
+op_star
+id|devlist
+suffix:semicolon
+multiline_comment|/* lists of rdevs, pointed to by strip_zone-&gt;dev */
 DECL|member|nr_strip_zones
 r_int
 id|nr_strip_zones
