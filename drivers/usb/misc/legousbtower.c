@@ -2479,11 +2479,7 @@ l_int|NULL
 suffix:semicolon
 id|iface_desc
 op_assign
-op_amp
-id|interface-&gt;altsetting
-(braket
-l_int|0
-)braket
+id|interface-&gt;cur_altsetting
 suffix:semicolon
 multiline_comment|/* set up the endpoint information */
 r_for
