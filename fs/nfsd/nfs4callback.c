@@ -1936,12 +1936,6 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Success or failure, now we&squot;re either waiting for lease expiration&n;&t; * or deleg_return. */
-id|nfs4_put_delegation
-c_func
-(paren
-id|dp
-)paren
-suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -1957,6 +1951,12 @@ c_func
 op_amp
 id|dp-&gt;dl_count
 )paren
+)paren
+suffix:semicolon
+id|nfs4_put_delegation
+c_func
+(paren
+id|dp
 )paren
 suffix:semicolon
 r_return
