@@ -453,9 +453,6 @@ id|arg
 id|tpam_dsp_ioctl
 id|tdl
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -509,8 +506,7 @@ op_minus
 id|EPERM
 suffix:semicolon
 multiline_comment|/* write the data in the board&squot;s memory */
-id|ret
-op_assign
+r_return
 id|copy_from_user_to_pam
 c_func
 (paren
@@ -536,9 +532,6 @@ comma
 id|tdl.data_len
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Extract some data from the board&squot;s memory.&n; *&n; * &t;card: the board&n; * &t;arg: IOCTL argument containing the user space address of &n; * &t;&t;the tpam_dsp_ioctl structure describing the IOCTL.&n; *&n; * Return: 0 if OK, &lt;0 on errors.&n; */
 DECL|function|tpam_command_ioctl_dspsave
@@ -557,9 +550,6 @@ id|arg
 (brace
 id|tpam_dsp_ioctl
 id|tdl
-suffix:semicolon
-r_int
-id|ret
 suffix:semicolon
 id|dprintk
 c_func
@@ -612,8 +602,7 @@ op_minus
 id|EPERM
 suffix:semicolon
 multiline_comment|/* read the data from the board&squot;s memory */
-id|ret
-op_assign
+r_return
 id|copy_from_pam_to_user
 c_func
 (paren
@@ -638,9 +627,6 @@ id|tdl.address
 comma
 id|tdl.data_len
 )paren
-suffix:semicolon
-r_return
-id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Launch the board&squot;s firmware. This function must be called after the &n; * firmware was loaded into the board&squot;s memory using TPAM_CMD_DSPLOAD &n; * IOCTL commands. After launching the firmware, this function creates&n; * the NCOs and waits for their creation.&n; *&n; * &t;card: the board&n; *&n; * Return: 0 if OK, &lt;0 on errors.&n; */
