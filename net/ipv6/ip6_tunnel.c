@@ -3345,11 +3345,7 @@ id|fl-&gt;fl6_flowlabel
 op_or_assign
 id|IPV6_TCLASS_MASK
 op_amp
-id|htonl
-c_func
-(paren
 id|p-&gt;flowinfo
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3365,11 +3361,7 @@ id|fl-&gt;fl6_flowlabel
 op_or_assign
 id|IPV6_FLOWLABEL_MASK
 op_amp
-id|htonl
-c_func
-(paren
 id|p-&gt;flowinfo
-)paren
 suffix:semicolon
 id|ip6_tnl_set_cap
 c_func
