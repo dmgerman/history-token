@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/input/adbhid.c&n; *&n; * ADB HID driver for Power Macintosh computers.&n; *&n; * Adapted from drivers/macintosh/mac_keyb.c by Franz Sirl&n; * (see that file for its authors and contributors).&n; *&n; * Copyright (C) 2000 Franz Sirl.&n; *&n; * Adapted to ADB changes and support for more devices by&n; * Benjamin Herrenschmidt. Adapted from code in MkLinux&n; * and reworked.&n; * &n; * Supported devices:&n; *&n; * - Standard 1 button mouse&n; * - All standard Apple Extended protocol (handler ID 4)&n; * - mouseman and trackman mice &amp; trackballs &n; * - PowerBook Trackpad (default setup: enable tapping)&n; * - MicroSpeed mouse &amp; trackball (needs testing)&n; * - CH Products Trackball Pro (needs testing)&n; * - Contour Design (Contour Mouse)&n; * - Hunter digital (NoHandsMouse)&n; * - Kensignton TurboMouse 5 (needs testing)&n; * - Mouse Systems A3 mice and trackballs &lt;aidan@kublai.com&gt;&n; * - MacAlly 2-buttons mouse (needs testing) &lt;pochini@denise.shiny.it&gt;&n; *&n; * To do:&n; *&n; * Improve Kensington support.&n; */
+multiline_comment|/*&n; * drivers/input/adbhid.c&n; *&n; * ADB HID driver for Power Macintosh computers.&n; *&n; * Adapted from drivers/macintosh/mac_keyb.c by Franz Sirl.&n; * drivers/macintosh/mac_keyb.c was Copyright (C) 1996 Paul Mackerras&n; * with considerable contributions from Ben Herrenschmidt and others.&n; *&n; * Copyright (C) 2000 Franz Sirl.&n; *&n; * Adapted to ADB changes and support for more devices by&n; * Benjamin Herrenschmidt. Adapted from code in MkLinux&n; * and reworked.&n; * &n; * Supported devices:&n; *&n; * - Standard 1 button mouse&n; * - All standard Apple Extended protocol (handler ID 4)&n; * - mouseman and trackman mice &amp; trackballs &n; * - PowerBook Trackpad (default setup: enable tapping)&n; * - MicroSpeed mouse &amp; trackball (needs testing)&n; * - CH Products Trackball Pro (needs testing)&n; * - Contour Design (Contour Mouse)&n; * - Hunter digital (NoHandsMouse)&n; * - Kensignton TurboMouse 5 (needs testing)&n; * - Mouse Systems A3 mice and trackballs &lt;aidan@kublai.com&gt;&n; * - MacAlly 2-buttons mouse (needs testing) &lt;pochini@denise.shiny.it&gt;&n; *&n; * To do:&n; *&n; * Improve Kensington support.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -2320,10 +2320,6 @@ op_star
 id|x
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -2337,17 +2333,6 @@ r_case
 id|ADB_MSG_POWERDOWN
 suffix:colon
 multiline_comment|/* Stop the repeat timer. Autopoll is already off at this point */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 (brace
 r_int
 id|i
@@ -2375,7 +2360,7 @@ id|adbhid
 id|i
 )braket
 )paren
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -2389,12 +2374,6 @@ id|input.timer
 suffix:semicolon
 )brace
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Stop pending led requests */
 r_while
 c_loop
@@ -2541,6 +2520,8 @@ id|adbhid
 (braket
 id|id
 )braket
+op_member_access_from_pointer
+id|input
 )paren
 suffix:semicolon
 id|adbhid
@@ -2772,7 +2753,7 @@ id|adbhid
 id|id
 )braket
 op_member_access_from_pointer
-id|input.idversion
+id|input.id.version
 op_assign
 id|ADB_KEYBOARD_UNKNOWN
 suffix:semicolon
@@ -2828,7 +2809,7 @@ id|adbhid
 id|id
 )braket
 op_member_access_from_pointer
-id|input.idversion
+id|input.id.version
 op_assign
 id|ADB_KEYBOARD_ANSI
 suffix:semicolon
@@ -2881,7 +2862,7 @@ id|adbhid
 id|id
 )braket
 op_member_access_from_pointer
-id|input.idversion
+id|input.id.version
 op_assign
 id|ADB_KEYBOARD_ISO
 suffix:semicolon
@@ -2972,7 +2953,7 @@ id|adbhid
 id|id
 )braket
 op_member_access_from_pointer
-id|input.idversion
+id|input.id.version
 op_assign
 id|ADB_KEYBOARD_JIS
 suffix:semicolon

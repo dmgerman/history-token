@@ -353,7 +353,6 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_NET_SB1000
-(brace
 r_extern
 r_int
 id|sb1000_probe
@@ -371,30 +370,17 @@ id|net_device
 id|sb1000_dev
 op_assign
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;cm0&quot;
 id|__PAD3
 comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
+dot
+id|init
+op_assign
 id|sb1000_probe
+comma
 )brace
 suffix:semicolon
 id|register_netdev
@@ -404,7 +390,6 @@ op_amp
 id|sb1000_dev
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 )brace
 multiline_comment|/*&n; *&t;Initialise network devices&n; */

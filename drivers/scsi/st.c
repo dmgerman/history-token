@@ -19,7 +19,7 @@ macro_line|#include &lt;linux/mtio.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -40,11 +40,6 @@ mdefine_line|#define DEB(a)
 DECL|macro|DEBC
 mdefine_line|#define DEBC(a)
 macro_line|#endif
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR SCSI_TAPE_MAJOR
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device) &amp; 0x7f)
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
@@ -19710,6 +19705,17 @@ c_cond
 id|SDp-&gt;host-&gt;highmem_io
 )paren
 (brace
+r_struct
+id|device
+op_star
+id|dev
+op_assign
+id|scsi_get_device
+c_func
+(paren
+id|SDp-&gt;host
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -19725,11 +19731,14 @@ r_else
 r_if
 c_cond
 (paren
-id|SDp-&gt;host-&gt;pci_dev
+id|dev
+op_logical_and
+id|dev-&gt;dma_mask
 )paren
 id|bounce_limit
 op_assign
-id|SDp-&gt;host-&gt;pci_dev-&gt;dma_mask
+op_star
+id|dev-&gt;dma_mask
 suffix:semicolon
 )brace
 r_else
