@@ -697,6 +697,7 @@ mdefine_line|#define SLOT_NAME_SIZE&t;10
 DECL|function|make_slot_name
 r_static
 r_void
+id|__init
 id|make_slot_name
 c_func
 (paren
@@ -708,6 +709,7 @@ id|slot
 (brace
 multiline_comment|/*&n;&t; * Stupid way to make a filename out of the slot name.&n;&t; * replace this if your hardware provides a better way to name slots.&n;&t; */
 id|snprintf
+c_func
 (paren
 id|slot-&gt;hotplug_slot-&gt;name
 comma
@@ -722,6 +724,7 @@ suffix:semicolon
 DECL|function|init_slots
 r_static
 r_int
+id|__init
 id|init_slots
 c_func
 (paren
@@ -1084,6 +1087,7 @@ suffix:semicolon
 DECL|function|cleanup_slots
 r_static
 r_void
+id|__exit
 id|cleanup_slots
 c_func
 (paren
