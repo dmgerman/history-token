@@ -1269,7 +1269,7 @@ r_int
 )paren
 id|s
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

@@ -11428,7 +11428,7 @@ r_else
 op_star
 id|bpp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ifp
 op_assign

@@ -46,6 +46,7 @@ id|ino
 comma
 multiline_comment|/* inode number to get data for */
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -839,7 +840,9 @@ r_int
 id|statstruct_size
 comma
 multiline_comment|/* sizeof struct filling */
-id|xfs_caddr_t
+r_char
+id|__user
+op_star
 id|ubuffer
 comma
 multiline_comment|/* buffer with inode stats */
@@ -983,10 +986,12 @@ r_int
 id|ubleft
 suffix:semicolon
 multiline_comment|/* bytes left in user&squot;s buffer */
-id|xfs_caddr_t
+r_char
+id|__user
+op_star
 id|ubufp
 suffix:semicolon
-multiline_comment|/* current pointer into user&squot;s buffer */
+multiline_comment|/* pointer into user&squot;s buffer */
 r_int
 id|ubelem
 suffix:semicolon
@@ -2464,7 +2469,9 @@ op_star
 id|lastinop
 comma
 multiline_comment|/* inode to return */
-id|xfs_caddr_t
+r_char
+id|__user
+op_star
 id|buffer
 comma
 multiline_comment|/* buffer with inode stats */
@@ -2641,7 +2648,9 @@ op_star
 id|count
 comma
 multiline_comment|/* size of buffer/count returned */
-id|xfs_caddr_t
+id|xfs_inogrp_t
+id|__user
+op_star
 id|ubuffer
 )paren
 multiline_comment|/* buffer with inode descriptions */
@@ -3099,12 +3108,6 @@ suffix:semicolon
 id|ubuffer
 op_add_assign
 id|bufidx
-op_star
-r_sizeof
-(paren
-op_star
-id|buffer
-)paren
 suffix:semicolon
 op_star
 id|count

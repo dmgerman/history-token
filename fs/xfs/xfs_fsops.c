@@ -2413,7 +2413,7 @@ op_star
 id|outval
 )paren
 (brace
-id|__uint64_t
+id|__int64_t
 id|lcounter
 comma
 id|delta
@@ -2512,9 +2512,7 @@ suffix:semicolon
 id|lcounter
 op_assign
 id|mp-&gt;m_sb.sb_fdblocks
-suffix:semicolon
-id|lcounter
-op_sub_assign
+op_minus
 id|delta
 suffix:semicolon
 r_if

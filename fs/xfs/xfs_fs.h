@@ -76,6 +76,8 @@ DECL|macro|XFS_XFLAG_NOATIME
 mdefine_line|#define XFS_XFLAG_NOATIME&t;0x00000040&t;/* do not update access time */
 DECL|macro|XFS_XFLAG_NODUMP
 mdefine_line|#define XFS_XFLAG_NODUMP&t;0x00000080&t;/* do not include in backups */
+DECL|macro|XFS_XFLAG_RTINHERIT
+mdefine_line|#define XFS_XFLAG_RTINHERIT&t;0x00000100&t;/* create with rt bit set */
 DECL|macro|XFS_XFLAG_HASATTR
 mdefine_line|#define XFS_XFLAG_HASATTR&t;0x80000000&t;/* no DIFLAG for this&t;*/
 multiline_comment|/*&n; * Structure for XFS_IOC_GETBMAP.&n; * On input, fill in bmv_offset and bmv_length of the first structure&n; * to indicate the area of interest in the file, and bmv_entry with the&n; * number of array elements given.  The first structure is updated on&n; * return to give the offset and length for the next call.&n; */
@@ -236,7 +238,7 @@ id|__s32
 id|l_sysid
 suffix:semicolon
 DECL|member|l_pid
-id|pid_t
+id|__u32
 id|l_pid
 suffix:semicolon
 DECL|member|l_pad
@@ -769,6 +771,7 @@ id|xfs_fsop_bulkreq
 (brace
 DECL|member|lastip
 id|__u64
+id|__user
 op_star
 id|lastip
 suffix:semicolon
@@ -780,12 +783,14 @@ suffix:semicolon
 multiline_comment|/* count of entries in buffer&t;*/
 DECL|member|ubuffer
 r_void
+id|__user
 op_star
 id|ubuffer
 suffix:semicolon
 multiline_comment|/* user buffer for inode desc.&t;*/
 DECL|member|ocount
 id|__s32
+id|__user
 op_star
 id|ocount
 suffix:semicolon
@@ -850,6 +855,7 @@ suffix:semicolon
 multiline_comment|/* fd for FD_TO_HANDLE&t;&t;*/
 DECL|member|path
 r_void
+id|__user
 op_star
 id|path
 suffix:semicolon
@@ -861,6 +867,7 @@ suffix:semicolon
 multiline_comment|/* open flags&t;&t;&t;*/
 DECL|member|ihandle
 r_void
+id|__user
 op_star
 id|ihandle
 suffix:semicolon
@@ -872,12 +879,14 @@ suffix:semicolon
 multiline_comment|/* user supplied length&t;&t;*/
 DECL|member|ohandle
 r_void
+id|__user
 op_star
 id|ohandle
 suffix:semicolon
 multiline_comment|/* user buffer for handle&t;*/
 DECL|member|ohandlen
 id|__u32
+id|__user
 op_star
 id|ohandlen
 suffix:semicolon
@@ -897,14 +906,15 @@ r_struct
 id|xfs_fsop_handlereq
 id|hreq
 suffix:semicolon
-multiline_comment|/* handle interface structure */
+multiline_comment|/* handle information&t;*/
 DECL|member|data
 r_struct
 id|fsdmidata
+id|__user
 op_star
 id|data
 suffix:semicolon
-multiline_comment|/* DMAPI data to set&t;      */
+multiline_comment|/* DMAPI data&t;*/
 DECL|typedef|xfs_fsop_setdm_handlereq_t
 )brace
 id|xfs_fsop_setdm_handlereq_t
@@ -946,18 +956,19 @@ DECL|member|flags
 id|__u32
 id|flags
 suffix:semicolon
-multiline_comment|/* flags, use ROOT/USER names */
+multiline_comment|/* which namespace to use */
 DECL|member|buflen
 id|__u32
 id|buflen
 suffix:semicolon
-multiline_comment|/* length of buffer supplied  */
+multiline_comment|/* length of buffer supplied */
 DECL|member|buffer
 r_void
+id|__user
 op_star
 id|buffer
 suffix:semicolon
-multiline_comment|/* attrlist data to return    */
+multiline_comment|/* returned names */
 DECL|typedef|xfs_fsop_attrlist_handlereq_t
 )brace
 id|xfs_fsop_attrlist_handlereq_t
@@ -977,11 +988,13 @@ id|am_error
 suffix:semicolon
 DECL|member|am_attrname
 r_void
+id|__user
 op_star
 id|am_attrname
 suffix:semicolon
 DECL|member|am_attrvalue
 r_void
+id|__user
 op_star
 id|am_attrvalue
 suffix:semicolon
@@ -1016,10 +1029,11 @@ multiline_comment|/* count of following multiop */
 DECL|member|ops
 r_struct
 id|xfs_attr_multiop
+id|__user
 op_star
 id|ops
 suffix:semicolon
-multiline_comment|/* attr_multi data to get/set */
+multiline_comment|/* attr_multi data */
 DECL|typedef|xfs_fsop_attrmulti_handlereq_t
 )brace
 id|xfs_fsop_attrmulti_handlereq_t
@@ -1169,6 +1183,13 @@ DECL|macro|XFS_FSOP_GOING_FLAGS_LOGFLUSH
 mdefine_line|#define XFS_FSOP_GOING_FLAGS_LOGFLUSH&t;&t;0x1&t;/* flush log but not data */
 DECL|macro|XFS_FSOP_GOING_FLAGS_NOLOGFLUSH
 mdefine_line|#define XFS_FSOP_GOING_FLAGS_NOLOGFLUSH&t;&t;0x2&t;/* don&squot;t flush log nor data */
+multiline_comment|/*&n; * ioctl commands that are used by Linux filesystems&n; */
+DECL|macro|XFS_IOC_GETXFLAGS
+mdefine_line|#define XFS_IOC_GETXFLAGS&t;_IOR(&squot;f&squot;, 1, long)
+DECL|macro|XFS_IOC_SETXFLAGS
+mdefine_line|#define XFS_IOC_SETXFLAGS&t;_IOW(&squot;f&squot;, 2, long)
+DECL|macro|XFS_IOC_GETVERSION
+mdefine_line|#define XFS_IOC_GETVERSION&t;_IOR(&squot;v&squot;, 1, long)
 multiline_comment|/*&n; * ioctl commands that replace IRIX fcntl()&squot;s&n; * For &squot;documentation&squot; purposed more than anything else,&n; * the &quot;cmd #&quot; field reflects the IRIX fcntl number.&n; */
 DECL|macro|XFS_IOC_ALLOCSP
 mdefine_line|#define XFS_IOC_ALLOCSP&t;&t;_IOW (&squot;X&squot;, 10, struct xfs_flock64)

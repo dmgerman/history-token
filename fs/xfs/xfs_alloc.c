@@ -2888,7 +2888,7 @@ id|args-&gt;agno
 comma
 id|XFS_BTNUM_BNO
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -3111,7 +3111,7 @@ id|args-&gt;agno
 comma
 id|XFS_BTNUM_CNT
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -3369,7 +3369,7 @@ id|args-&gt;agno
 comma
 id|XFS_BTNUM_CNT
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -3985,7 +3985,7 @@ id|args-&gt;agno
 comma
 id|XFS_BTNUM_BNO
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -4064,7 +4064,7 @@ id|args-&gt;agno
 comma
 id|XFS_BTNUM_BNO
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -4107,7 +4107,7 @@ id|bno_cur_lt
 suffix:semicolon
 id|bno_cur_lt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Found something.  Duplicate the cursor for the rightward search.&n;&t; */
@@ -5387,7 +5387,7 @@ id|args-&gt;agno
 comma
 id|XFS_BTNUM_CNT
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -5930,7 +5930,7 @@ id|args-&gt;agno
 comma
 id|XFS_BTNUM_BNO
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -6538,7 +6538,7 @@ id|agno
 comma
 id|XFS_BTNUM_BNO
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -6755,7 +6755,7 @@ id|agno
 comma
 id|XFS_BTNUM_CNT
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren

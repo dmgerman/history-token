@@ -663,6 +663,7 @@ id|bmv
 comma
 multiline_comment|/* user bmap structure */
 r_void
+id|__user
 op_star
 id|ap
 comma

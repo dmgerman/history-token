@@ -89,8 +89,9 @@ comma
 r_int
 r_int
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 )paren
 suffix:semicolon
 macro_line|#endif /* __XFS_IOPS_H__ */

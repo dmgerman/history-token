@@ -10418,7 +10418,7 @@ id|xfs_buf_t
 op_star
 id|bp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|xfs_buf_t
 op_star

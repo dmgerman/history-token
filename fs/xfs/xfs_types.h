@@ -109,9 +109,10 @@ suffix:semicolon
 multiline_comment|/* an instruction */
 DECL|typedef|xfs_off_t
 r_typedef
-id|__u64
+id|__s64
 id|xfs_off_t
 suffix:semicolon
+multiline_comment|/* &lt;file offset&gt; type */
 DECL|typedef|xfs_ino_t
 r_typedef
 id|__u64

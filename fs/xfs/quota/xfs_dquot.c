@@ -246,7 +246,7 @@ l_int|0
 suffix:semicolon
 id|dqp-&gt;q_hash
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ASSERT
 c_func

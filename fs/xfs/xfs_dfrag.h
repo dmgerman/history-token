@@ -62,6 +62,7 @@ c_func
 (paren
 r_struct
 id|xfs_swapext
+id|__user
 op_star
 id|sx
 )paren

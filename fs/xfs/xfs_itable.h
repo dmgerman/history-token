@@ -20,6 +20,7 @@ id|xfs_ino_t
 id|ino
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -94,7 +95,9 @@ r_int
 id|statstruct_size
 comma
 multiline_comment|/* sizeof struct that we&squot;re filling */
-id|xfs_caddr_t
+r_char
+id|__user
+op_star
 id|ubuffer
 comma
 multiline_comment|/* buffer with inode stats */
@@ -120,7 +123,9 @@ id|xfs_ino_t
 op_star
 id|lastinop
 comma
-id|xfs_caddr_t
+r_char
+id|__user
+op_star
 id|buffer
 comma
 r_int
@@ -140,6 +145,7 @@ id|xfs_ino_t
 id|ino
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -186,10 +192,12 @@ op_star
 id|count
 comma
 multiline_comment|/* size of buffer/count returned */
-id|xfs_caddr_t
+id|xfs_inogrp_t
+id|__user
+op_star
 id|buffer
 )paren
 suffix:semicolon
-multiline_comment|/* buffer with inode descriptions */
+multiline_comment|/* buffer with inode info */
 macro_line|#endif&t;/* __XFS_ITABLE_H__ */
 eof

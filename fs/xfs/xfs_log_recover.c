@@ -8254,7 +8254,7 @@ c_func
 (paren
 id|log-&gt;l_mp
 comma
-l_int|0
+l_int|NULL
 comma
 id|ino
 comma

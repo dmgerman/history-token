@@ -226,6 +226,7 @@ id|iocb
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -246,6 +247,7 @@ op_assign
 (brace
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|buf
@@ -943,6 +945,7 @@ id|read_actor_t
 id|actor
 comma
 r_void
+id|__user
 op_star
 id|target
 )paren
@@ -1718,6 +1721,11 @@ l_int|0
 comma
 id|cmd
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|arg
 comma
 id|error
@@ -1801,6 +1809,11 @@ id|IO_INVIS
 comma
 id|cmd
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|arg
 comma
 id|error
