@@ -1287,6 +1287,8 @@ r_if
 c_cond
 (paren
 id|cpu_has_tsc
+op_logical_and
+id|cpu_khz
 )paren
 id|synchronize_tsc_ap
 c_func
@@ -3961,6 +3963,8 @@ c_cond
 id|cpu_has_tsc
 op_logical_and
 id|cpucount
+op_logical_and
+id|cpu_khz
 )paren
 id|synchronize_tsc_bp
 c_func
