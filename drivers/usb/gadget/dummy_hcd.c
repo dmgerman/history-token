@@ -1168,7 +1168,7 @@ id|flags
 suffix:semicolon
 id|ep-&gt;desc
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|retval
 op_assign
@@ -1239,7 +1239,7 @@ op_logical_neg
 id|_ep
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ep
 op_assign
@@ -1266,7 +1266,7 @@ op_logical_neg
 id|req
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|memset
 (paren
@@ -1423,7 +1423,7 @@ op_logical_neg
 id|dum-&gt;driver
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|retval
 op_assign
@@ -1800,7 +1800,7 @@ id|dummy_request
 op_star
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -2613,7 +2613,7 @@ id|dum-&gt;gadget
 suffix:semicolon
 id|ep-&gt;desc
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|INIT_LIST_HEAD
 (paren
@@ -2699,11 +2699,11 @@ l_int|0
 (brace
 id|dum-&gt;driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dum-&gt;gadget.dev.driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|retval
@@ -2929,7 +2929,7 @@ id|dum-&gt;gadget
 suffix:semicolon
 id|dum-&gt;driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|device_release_driver
 (paren
@@ -4084,7 +4084,7 @@ id|dummy_ep
 op_star
 id|ep
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|type
@@ -5071,7 +5071,7 @@ id|dum
 comma
 id|urb
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|spin_lock
@@ -6235,7 +6235,7 @@ id|root
 op_assign
 id|usb_alloc_dev
 (paren
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|hcd-&gt;self
@@ -6433,7 +6433,7 @@ id|hcd
 r_return
 id|dummy_g_get_frame
 (paren
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
