@@ -18,9 +18,6 @@ mdefine_line|#define parent_node(nid) (nid)
 multiline_comment|/*&n; * Returns the number of the first CPU on Node &squot;node&squot;.&n; */
 DECL|macro|node_to_first_cpu
 mdefine_line|#define node_to_first_cpu(node) (__ffs(node_to_cpumask(node)))
-multiline_comment|/* Cross-node load balancing interval. */
-DECL|macro|NODE_BALANCE_RATE
-mdefine_line|#define NODE_BALANCE_RATE 10
 r_void
 id|build_cpu_to_node_map
 c_func

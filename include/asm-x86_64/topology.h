@@ -81,8 +81,6 @@ suffix:semicolon
 multiline_comment|/* broken generic file uses #ifndef later on this */
 DECL|macro|pcibus_to_cpumask
 mdefine_line|#define pcibus_to_cpumask(bus) __pcibus_to_cpumask(bus)
-DECL|macro|NODE_BALANCE_RATE
-mdefine_line|#define NODE_BALANCE_RATE 30&t;/* CHECKME */ 
 macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/* sched_domains SD_NODE_INIT for x86_64 machines */
 DECL|macro|SD_NODE_INIT
