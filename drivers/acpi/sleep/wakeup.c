@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * wakeup.c - support wakeup devices&n; */
+multiline_comment|/*&n; * wakeup.c - support wakeup devices&n; * Copyright (C) 2004 Li Shaohua &lt;shaohua.li@intel.com&gt;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
@@ -12,7 +12,6 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;wakeup_devices&quot;
 )paren
-multiline_comment|/**&n; * acpi_enable_wakeup_device_prep - prepare wakeup devices&n; *&t;@sleep_state:&t;ACPI state&n; * Enable all wakup devices power if the devices&squot; wakeup level&n; * is higher than requested sleep level&n; */
 r_extern
 r_struct
 id|list_head
@@ -22,6 +21,8 @@ r_extern
 id|spinlock_t
 id|acpi_device_lock
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_SLEEP
+multiline_comment|/**&n; * acpi_enable_wakeup_device_prep - prepare wakeup devices&n; *&t;@sleep_state:&t;ACPI state&n; * Enable all wakup devices power if the devices&squot; wakeup level&n; * is higher than requested sleep level&n; */
 r_void
 DECL|function|acpi_enable_wakeup_device_prep
 id|acpi_enable_wakeup_device_prep
@@ -633,4 +634,75 @@ c_func
 id|acpi_wakeup_device_init
 )paren
 suffix:semicolon
+macro_line|#endif
+multiline_comment|/*&n; * Disable all wakeup GPEs before power off.&n; * &n; * Since acpi_enter_sleep_state() will disable all&n; * RUNTIME GPEs, we simply mark all GPES that&n; * are not enabled for wakeup from S5 as RUNTIME.&n; */
+DECL|function|acpi_wakeup_gpe_poweroff_prepare
+r_void
+id|acpi_wakeup_gpe_poweroff_prepare
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|list_head
+op_star
+id|node
+comma
+op_star
+id|next
+suffix:semicolon
+id|list_for_each_safe
+c_func
+(paren
+id|node
+comma
+id|next
+comma
+op_amp
+id|acpi_wakeup_device_list
+)paren
+(brace
+r_struct
+id|acpi_device
+op_star
+id|dev
+op_assign
+id|container_of
+c_func
+(paren
+id|node
+comma
+r_struct
+id|acpi_device
+comma
+id|wakeup_list
+)paren
+suffix:semicolon
+multiline_comment|/* The GPE can wakeup system from S5, don&squot;t touch it */
+r_if
+c_cond
+(paren
+(paren
+id|u32
+)paren
+id|dev-&gt;wakeup.sleep_state
+op_eq
+id|ACPI_STATE_S5
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* acpi_set_gpe_type will automatically disable GPE */
+id|acpi_set_gpe_type
+c_func
+(paren
+id|dev-&gt;wakeup.gpe_device
+comma
+id|dev-&gt;wakeup.gpe_number
+comma
+id|ACPI_GPE_TYPE_RUNTIME
+)paren
+suffix:semicolon
+)brace
+)brace
 eof
