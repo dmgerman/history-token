@@ -11,8 +11,8 @@ macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#ifdef CONFIG_X86_IO_APIC
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#endif
-macro_line|#include &quot;acpi_bus.h&quot;
-macro_line|#include &quot;acpi_drivers.h&quot;
+macro_line|#include &lt;acpi/acpi_bus.h&gt;
+macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT&t;&t;ACPI_PCI_COMPONENT
 id|ACPI_MODULE_NAME

@@ -3,8 +3,8 @@ multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  
 macro_line|#ifndef __ACPIOSXF_H__
 DECL|macro|__ACPIOSXF_H__
 mdefine_line|#define __ACPIOSXF_H__
-macro_line|#include &quot;platform/acenv.h&quot;
-macro_line|#include &quot;actypes.h&quot;
+macro_line|#include &lt;acpi/platform/acenv.h&gt;
+macro_line|#include &lt;acpi/actypes.h&gt;
 multiline_comment|/* Priorities for acpi_os_queue_for_execution */
 DECL|macro|OSD_PRIORITY_GPE
 mdefine_line|#define OSD_PRIORITY_GPE            1
