@@ -235,7 +235,8 @@ id|s_uid
 suffix:semicolon
 multiline_comment|/* Root Info */
 DECL|member|s_recordtime
-id|time_t
+r_struct
+id|timespec
 id|s_recordtime
 suffix:semicolon
 multiline_comment|/* Fileset Info */

@@ -52,14 +52,8 @@ DECL|macro|UDF_I_NEXT_ALLOC_BLOCK
 mdefine_line|#define UDF_I_NEXT_ALLOC_BLOCK(X)&t;( UDF_I(X)-&gt;i_next_alloc_block )
 DECL|macro|UDF_I_NEXT_ALLOC_GOAL
 mdefine_line|#define UDF_I_NEXT_ALLOC_GOAL(X)&t;( UDF_I(X)-&gt;i_next_alloc_goal )
-DECL|macro|UDF_I_UMTIME
-mdefine_line|#define UDF_I_UMTIME(X)&t;&t;( UDF_I(X)-&gt;i_umtime )
-DECL|macro|UDF_I_UCTIME
-mdefine_line|#define UDF_I_UCTIME(X)&t;&t;( UDF_I(X)-&gt;i_uctime )
 DECL|macro|UDF_I_CRTIME
 mdefine_line|#define UDF_I_CRTIME(X)&t;&t;( UDF_I(X)-&gt;i_crtime )
-DECL|macro|UDF_I_UCRTIME
-mdefine_line|#define UDF_I_UCRTIME(X)&t;( UDF_I(X)-&gt;i_ucrtime )
 DECL|macro|UDF_I_SAD
 mdefine_line|#define UDF_I_SAD(X)&t;&t;( UDF_I(X)-&gt;i_ext.i_sad )
 DECL|macro|UDF_I_LAD
