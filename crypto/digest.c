@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Cryptographic API.&n; *&n; * Digest operations.&n; *&n; * Copyright (c) 2002 James Morris &lt;jmorris@intercode.com.au&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option) &n; * any later version.&n; *&n; */
 macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &quot;internal.h&quot;
