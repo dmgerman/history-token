@@ -688,6 +688,10 @@ id|wbc.nr_to_write
 op_assign
 id|MAX_WRITEBACK_PAGES
 suffix:semicolon
+id|wbc.pages_skipped
+op_assign
+l_int|0
+suffix:semicolon
 id|writeback_inodes
 c_func
 (paren
@@ -707,14 +711,13 @@ c_cond
 id|wbc.nr_to_write
 OG
 l_int|0
+op_logical_or
+id|wbc.pages_skipped
+OG
+l_int|0
 )paren
 (brace
 multiline_comment|/* Wrote less than expected */
-r_if
-c_cond
-(paren
-id|wbc.encountered_congestion
-)paren
 id|blk_congestion_wait
 c_func
 (paren
@@ -725,7 +728,12 @@ op_div
 l_int|10
 )paren
 suffix:semicolon
-r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|wbc.encountered_congestion
+)paren
 r_break
 suffix:semicolon
 )brace

@@ -706,6 +706,9 @@ id|bdi
 op_assign
 id|mapping-&gt;backing_dev_info
 suffix:semicolon
+r_int
+id|pages_skipped
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -875,6 +878,10 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|pages_skipped
+op_assign
+id|wbc-&gt;pages_skipped
+suffix:semicolon
 id|__writeback_single_inode
 c_func
 (paren
@@ -920,6 +927,26 @@ c_func
 id|bdi
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|wbc-&gt;pages_skipped
+op_ne
+id|pages_skipped
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * writeback is not making progress due to locked&n;&t;&t;&t; * buffers.  Skip this inode for now.&n;&t;&t;&t; */
+id|list_move
+c_func
+(paren
+op_amp
+id|inode-&gt;i_list
+comma
+op_amp
+id|sb-&gt;s_dirty
+)paren
+suffix:semicolon
+)brace
 id|spin_unlock
 c_func
 (paren

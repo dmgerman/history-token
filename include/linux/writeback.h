@@ -84,6 +84,11 @@ r_int
 id|nr_to_write
 suffix:semicolon
 multiline_comment|/* Write this many pages, and decrement&n;&t;&t;&t;&t;&t;   this for each page written */
+DECL|member|pages_skipped
+r_int
+id|pages_skipped
+suffix:semicolon
+multiline_comment|/* Pages which were not written */
 DECL|member|nonblocking
 r_int
 id|nonblocking

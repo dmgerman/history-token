@@ -6028,12 +6028,16 @@ id|bh
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If it&squot;s a fully non-blocking write attempt and we cannot&n;&t;&t; * lock the buffer then redirty the page.  Note that this can&n;&t;&t; * potentially cause a busy-wait loop from pdflush and kswapd&n;&t;&t; * activity, but those code paths have their own higher-level&n;&t;&t; * throttling.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|wbc-&gt;sync_mode
 op_ne
 id|WB_SYNC_NONE
+op_logical_or
+op_logical_neg
+id|wbc-&gt;nonblocking
 )paren
 (brace
 id|lock_buffer
@@ -6044,7 +6048,6 @@ id|bh
 suffix:semicolon
 )brace
 r_else
-(brace
 r_if
 c_cond
 (paren
@@ -6055,15 +6058,6 @@ id|bh
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|buffer_dirty
-c_func
-(paren
-id|bh
-)paren
-)paren
 id|__set_page_dirty_nobuffers
 c_func
 (paren
@@ -6072,7 +6066,6 @@ id|page
 suffix:semicolon
 r_continue
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -6272,6 +6265,10 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|wbc-&gt;pages_skipped
+op_increment
+suffix:semicolon
+multiline_comment|/* We didn&squot;t write this page */
 )brace
 r_return
 id|err
