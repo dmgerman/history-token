@@ -708,6 +708,10 @@ id|regs-&gt;er3
 op_assign
 id|context.sc_er3
 suffix:semicolon
+id|regs-&gt;er5
+op_assign
+id|context.sc_er5
+suffix:semicolon
 id|regs-&gt;ccr
 op_assign
 (paren
@@ -1425,6 +1429,10 @@ id|sc-&gt;sc_er3
 op_assign
 id|regs-&gt;er3
 suffix:semicolon
+id|sc-&gt;sc_er5
+op_assign
+id|regs-&gt;er5
+suffix:semicolon
 id|sc-&gt;sc_ccr
 op_assign
 id|regs-&gt;ccr
@@ -1936,6 +1944,11 @@ op_amp
 id|frame-&gt;sc
 )paren
 suffix:semicolon
+id|regs-&gt;er5
+op_assign
+id|current-&gt;mm-&gt;start_data
+suffix:semicolon
+multiline_comment|/* GOT base */
 r_return
 suffix:semicolon
 id|give_sigsegv
@@ -2254,6 +2267,11 @@ r_int
 op_amp
 id|frame-&gt;uc
 suffix:semicolon
+id|regs-&gt;er5
+op_assign
+id|current-&gt;mm-&gt;start_data
+suffix:semicolon
+multiline_comment|/* GOT base */
 r_return
 suffix:semicolon
 id|give_sigsegv

@@ -11,7 +11,7 @@ mdefine_line|#define&t;flat_old_ram_flag(flags)&t;&t;(flags)
 DECL|macro|flat_reloc_valid
 mdefine_line|#define&t;flat_reloc_valid(reloc, size)&t;&t;((reloc) &lt;= (size))
 DECL|macro|flat_get_addr_from_rp
-mdefine_line|#define&t;flat_get_addr_from_rp(rp, relval)&t;get_unaligned(rp)
+mdefine_line|#define&t;flat_get_addr_from_rp(rp, relval, flags)&t;get_unaligned(rp)
 DECL|macro|flat_put_addr_at_rp
 mdefine_line|#define&t;flat_put_addr_at_rp(rp, val, relval)&t;put_unaligned(val,rp)
 DECL|macro|flat_get_relocate_addr
