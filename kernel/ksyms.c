@@ -1848,6 +1848,13 @@ c_func
 id|devfs_register_partitions
 )paren
 suffix:semicolon
+DECL|variable|driverfs_remove_partitions
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|driverfs_remove_partitions
+)paren
+suffix:semicolon
 DECL|variable|blkdev_open
 id|EXPORT_SYMBOL
 c_func

@@ -476,6 +476,11 @@ id|scsi_command_size
 l_int|8
 )braket
 suffix:semicolon
+r_extern
+r_struct
+id|bus_type
+id|scsi_driverfs_bus_type
+suffix:semicolon
 multiline_comment|/*&n; * These are the error handling functions defined in scsi_error.c&n; */
 r_extern
 r_void
@@ -1511,6 +1516,11 @@ singleline_comment|// Flag to allow revalidate to succeed in sd_open
 DECL|member|allow_revalidate
 r_int
 id|allow_revalidate
+suffix:semicolon
+DECL|member|sdev_driverfs_dev
+r_struct
+id|device
+id|sdev_driverfs_dev
 suffix:semicolon
 )brace
 suffix:semicolon
