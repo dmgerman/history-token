@@ -5508,7 +5508,7 @@ id|cmd
 suffix:semicolon
 id|hscb-&gt;lun
 op_assign
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 suffix:semicolon
 id|hscb-&gt;cdb_len
 op_assign
