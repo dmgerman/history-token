@@ -1,9 +1,10 @@
 multiline_comment|/* &n; * Copyright (C) 2001 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
+macro_line|#include &lt;string.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;unistd.h&gt;
-macro_line|#include &lt;string.h&gt;
 macro_line|#include &lt;termios.h&gt;
 macro_line|#include &lt;sys/socket.h&gt;
 macro_line|#include &lt;sys/un.h&gt;
@@ -32,6 +33,16 @@ DECL|member|kernel_data
 r_void
 op_star
 id|kernel_data
+suffix:semicolon
+DECL|member|dev
+r_char
+id|dev
+(braket
+r_sizeof
+(paren
+l_string|&quot;32768&bslash;0&quot;
+)paren
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -198,6 +209,16 @@ id|kern_data
 )brace
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|data-&gt;dev
+comma
+l_string|&quot;%d&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 r_return
 id|data
 suffix:semicolon
@@ -219,6 +240,11 @@ comma
 r_void
 op_star
 id|d
+comma
+r_char
+op_star
+op_star
+id|dev_out
 )paren
 (brace
 r_struct
@@ -269,6 +295,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+op_star
+id|dev_out
+op_assign
+id|data-&gt;dev
+suffix:semicolon
 r_return
 id|fd
 suffix:semicolon
@@ -385,6 +416,10 @@ id|chan_ops
 id|port_ops
 op_assign
 (brace
+id|type
+suffix:colon
+l_string|&quot;port&quot;
+comma
 id|init
 suffix:colon
 id|port_init
