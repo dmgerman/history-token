@@ -1544,7 +1544,7 @@ id|Bus
 comma
 l_int|0
 comma
-id|AgentId
+id|EADsIdSel
 comma
 id|Irq
 )paren

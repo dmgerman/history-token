@@ -1111,6 +1111,7 @@ id|child_bus
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_PPC_ISERIES
 DECL|function|pcibios_claim_of_setup
 r_static
 r_void
@@ -1162,6 +1163,7 @@ id|b
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 DECL|function|pcibios_init
 r_static
 r_int
