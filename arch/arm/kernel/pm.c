@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * Tell the linker that pm_do_suspend may not be present.&n; */
 r_extern
@@ -90,12 +89,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|leds_event
-c_func
-(paren
-id|led_stop
-)paren
-suffix:semicolon
 id|sysdev_suspend
 c_func
 (paren
@@ -112,12 +105,6 @@ suffix:semicolon
 id|sysdev_resume
 c_func
 (paren
-)paren
-suffix:semicolon
-id|leds_event
-c_func
-(paren
-id|led_start
 )paren
 suffix:semicolon
 id|local_irq_enable
