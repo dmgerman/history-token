@@ -3,6 +3,12 @@ macro_line|#ifndef _KOBJECT_EVENT_H_
 DECL|macro|_KOBJECT_EVENT_H_
 mdefine_line|#define _KOBJECT_EVENT_H_
 multiline_comment|/*&n; * If you add an action here, you must also add the proper string to the&n; * lib/kobject_uevent.c file.&n; */
+DECL|typedef|kobject_action_t
+r_typedef
+r_int
+id|__bitwise
+id|kobject_action_t
+suffix:semicolon
 DECL|enum|kobject_action
 r_enum
 id|kobject_action
@@ -10,37 +16,53 @@ id|kobject_action
 DECL|enumerator|KOBJ_ADD
 id|KOBJ_ADD
 op_assign
-l_int|0x00
+(paren
+id|__force
+id|kobject_action_t
+)paren
+l_int|0x01
 comma
 multiline_comment|/* add event, for hotplug */
 DECL|enumerator|KOBJ_REMOVE
 id|KOBJ_REMOVE
 op_assign
-l_int|0x01
+(paren
+id|__force
+id|kobject_action_t
+)paren
+l_int|0x02
 comma
 multiline_comment|/* remove event, for hotplug */
 DECL|enumerator|KOBJ_CHANGE
 id|KOBJ_CHANGE
 op_assign
-l_int|0x02
+(paren
+id|__force
+id|kobject_action_t
+)paren
+l_int|0x03
 comma
 multiline_comment|/* a sysfs attribute file has changed */
 DECL|enumerator|KOBJ_MOUNT
 id|KOBJ_MOUNT
 op_assign
-l_int|0x03
+(paren
+id|__force
+id|kobject_action_t
+)paren
+l_int|0x04
 comma
 multiline_comment|/* mount event for block devices */
 DECL|enumerator|KOBJ_UMOUNT
 id|KOBJ_UMOUNT
 op_assign
-l_int|0x04
+(paren
+id|__force
+id|kobject_action_t
+)paren
+l_int|0x05
 comma
 multiline_comment|/* umount event for block devices */
-DECL|enumerator|KOBJ_MAX_ACTION
-id|KOBJ_MAX_ACTION
-comma
-multiline_comment|/* must be last action listed */
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_KOBJECT_UEVENT

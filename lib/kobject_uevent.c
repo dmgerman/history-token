@@ -7,33 +7,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kobject_uevent.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
-multiline_comment|/* &n; * These must match up with the values for enum kobject_action&n; * as found in include/linux/kobject_uevent.h&n; */
-DECL|variable|actions
-r_static
-r_char
-op_star
-id|actions
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;add&quot;
-comma
-multiline_comment|/* 0x00 */
-l_string|&quot;remove&quot;
-comma
-multiline_comment|/* 0x01 */
-l_string|&quot;change&quot;
-comma
-multiline_comment|/* 0x02 */
-l_string|&quot;mount&quot;
-comma
-multiline_comment|/* 0x03 */
-l_string|&quot;umount&quot;
-comma
-multiline_comment|/* 0x04 */
-)brace
-suffix:semicolon
 DECL|function|action_to_string
 r_static
 r_char
@@ -46,23 +19,48 @@ id|kobject_action
 id|action
 )paren
 (brace
-r_if
+r_switch
 c_cond
 (paren
 id|action
-op_ge
-id|KOBJ_MAX_ACTION
 )paren
+(brace
+r_case
+id|KOBJ_ADD
+suffix:colon
+r_return
+l_string|&quot;add&quot;
+suffix:semicolon
+r_case
+id|KOBJ_REMOVE
+suffix:colon
+r_return
+l_string|&quot;remove&quot;
+suffix:semicolon
+r_case
+id|KOBJ_CHANGE
+suffix:colon
+r_return
+l_string|&quot;change&quot;
+suffix:semicolon
+r_case
+id|KOBJ_MOUNT
+suffix:colon
+r_return
+l_string|&quot;mount&quot;
+suffix:semicolon
+r_case
+id|KOBJ_UMOUNT
+suffix:colon
+r_return
+l_string|&quot;umount&quot;
+suffix:semicolon
+r_default
+suffix:colon
 r_return
 l_int|NULL
 suffix:semicolon
-r_else
-r_return
-id|actions
-(braket
-id|action
-)braket
-suffix:semicolon
+)brace
 )brace
 macro_line|#ifdef CONFIG_KOBJECT_UEVENT
 DECL|variable|uevent_sock
