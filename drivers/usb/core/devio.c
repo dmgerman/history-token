@@ -3393,27 +3393,9 @@ id|i
 OL
 l_int|0
 )paren
-(brace
-id|dev_warn
-c_func
-(paren
-op_amp
-id|dev-&gt;dev
-comma
-l_string|&quot;usbfs: USBDEVFS_BULK failed &quot;
-l_string|&quot;ep 0x%x len %u ret %d&bslash;n&quot;
-comma
-id|bulk.ep
-comma
-id|bulk.len
-comma
-id|i
-)paren
-suffix:semicolon
 r_return
 id|i
 suffix:semicolon
-)brace
 r_return
 id|len2
 suffix:semicolon
