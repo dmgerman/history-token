@@ -4063,7 +4063,7 @@ suffix:semicolon
 id|i
 op_assign
 op_minus
-id|EBUSY
+id|EAFNOSUPPORT
 suffix:semicolon
 r_if
 c_cond
@@ -4836,7 +4836,7 @@ suffix:semicolon
 id|err
 op_assign
 op_minus
-id|EBUSY
+id|EAFNOSUPPORT
 suffix:semicolon
 r_if
 c_cond
