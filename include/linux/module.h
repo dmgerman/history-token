@@ -878,8 +878,6 @@ DECL|macro|MOD_INC_USE_COUNT
 mdefine_line|#define MOD_INC_USE_COUNT &bslash;&n;&t;_MOD_INC_USE_COUNT(THIS_MODULE)
 DECL|macro|MOD_DEC_USE_COUNT
 mdefine_line|#define MOD_DEC_USE_COUNT &bslash;&n;&t;__MOD_DEC_USE_COUNT(THIS_MODULE)
-DECL|macro|try_inc_mod_count
-mdefine_line|#define try_inc_mod_count(mod) try_module_get(mod)
 DECL|macro|EXPORT_NO_SYMBOLS
 mdefine_line|#define EXPORT_NO_SYMBOLS
 r_extern

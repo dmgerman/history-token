@@ -62,10 +62,6 @@ r_char
 op_star
 id|eicon_idi_revision
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|macro|MOD_USE_COUNT
-mdefine_line|#define MOD_USE_COUNT (GET_USE_COUNT (&amp;__this_module))
-macro_line|#endif
 DECL|macro|EICON_CTRL_VERSION
 mdefine_line|#define EICON_CTRL_VERSION 2
 DECL|variable|DebugVar
@@ -2416,25 +2412,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#ifdef MODULE
-r_case
-id|EICON_IOCTL_FREEIT
-suffix:colon
-r_while
-c_loop
-(paren
-id|MOD_USE_COUNT
-OG
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_case
 id|EICON_IOCTL_LOADPCI
 suffix:colon

@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-multiline_comment|/*&n; * Handling of filesystem drivers list.&n; * Rules:&n; *&t;Inclusion to/removals from/scanning of list are protected by spinlock.&n; *&t;During the unload module must call unregister_filesystem().&n; *&t;We can access the fields of list element if:&n; *&t;&t;1) spinlock is held or&n; *&t;&t;2) we hold the reference to the module.&n; *&t;The latter can be guaranteed by call of try_inc_mod_count(); if it&n; *&t;returned 0 we must skip the element, otherwise we got the reference.&n; *&t;Once the reference is obtained we can drop the spinlock.&n; */
+multiline_comment|/*&n; * Handling of filesystem drivers list.&n; * Rules:&n; *&t;Inclusion to/removals from/scanning of list are protected by spinlock.&n; *&t;During the unload module must call unregister_filesystem().&n; *&t;We can access the fields of list element if:&n; *&t;&t;1) spinlock is held or&n; *&t;&t;2) we hold the reference to the module.&n; *&t;The latter can be guaranteed by call of try_module_get(); if it&n; *&t;returned 0 we must skip the element, otherwise we got the reference.&n; *&t;Once the reference is obtained we can drop the spinlock.&n; */
 DECL|variable|file_systems
 r_static
 r_struct
@@ -525,7 +525,7 @@ id|index
 op_le
 l_int|0
 op_logical_and
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|tmp-&gt;owner
@@ -856,7 +856,7 @@ c_cond
 id|fs
 op_logical_and
 op_logical_neg
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|fs-&gt;owner
@@ -914,7 +914,7 @@ c_cond
 id|fs
 op_logical_and
 op_logical_neg
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|fs-&gt;owner
