@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/processor.h&gt; 
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
