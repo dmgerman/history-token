@@ -2689,8 +2689,9 @@ op_star
 id|vlan_ioctl_hook
 )paren
 (paren
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -2705,8 +2706,9 @@ op_star
 id|hook
 )paren
 (paren
-r_int
-r_int
+r_void
+id|__user
+op_star
 )paren
 )paren
 (brace
@@ -3100,7 +3102,7 @@ op_assign
 id|vlan_ioctl_hook
 c_func
 (paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 id|up
