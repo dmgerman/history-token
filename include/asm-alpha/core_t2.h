@@ -501,13 +501,15 @@ suffix:semicolon
 multiline_comment|/* size in bytes of logout area. */
 DECL|member|elfl_sbz1
 r_int
+r_int
 id|elfl_sbz1
 suffix:colon
 l_int|31
 suffix:semicolon
 multiline_comment|/* Should be zero. */
 DECL|member|elfl_retry
-r_char
+r_int
+r_int
 id|elfl_retry
 suffix:colon
 l_int|1
@@ -1120,7 +1122,8 @@ mdefine_line|#define vip&t;volatile int *
 DECL|macro|vuip
 mdefine_line|#define vuip&t;volatile unsigned int *
 DECL|function|t2_inb
-id|__EXTERN_INLINE
+r_static
+r_inline
 id|u8
 id|t2_inb
 c_func
@@ -1162,7 +1165,8 @@ l_int|3
 suffix:semicolon
 )brace
 DECL|function|t2_outb
-id|__EXTERN_INLINE
+r_static
+r_inline
 r_void
 id|t2_outb
 c_func
@@ -1216,7 +1220,8 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|t2_inw
-id|__EXTERN_INLINE
+r_static
+r_inline
 id|u16
 id|t2_inw
 c_func
@@ -1258,7 +1263,8 @@ l_int|3
 suffix:semicolon
 )brace
 DECL|function|t2_outw
-id|__EXTERN_INLINE
+r_static
+r_inline
 r_void
 id|t2_outw
 c_func
@@ -1312,7 +1318,8 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|t2_inl
-id|__EXTERN_INLINE
+r_static
+r_inline
 id|u32
 id|t2_inl
 c_func
@@ -1341,7 +1348,8 @@ l_int|0x18
 suffix:semicolon
 )brace
 DECL|function|t2_outl
-id|__EXTERN_INLINE
+r_static
+r_inline
 r_void
 id|t2_outl
 c_func
@@ -1394,11 +1402,24 @@ id|u8
 id|t2_readb
 c_func
 (paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|result
@@ -1465,11 +1486,24 @@ id|u16
 id|t2_readw
 c_func
 (paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|result
@@ -1537,11 +1571,24 @@ id|u32
 id|t2_readl
 c_func
 (paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|result
@@ -1602,11 +1649,24 @@ id|u64
 id|t2_readq
 c_func
 (paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|r0
@@ -1696,11 +1756,23 @@ c_func
 id|u8
 id|b
 comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|msb
@@ -1771,11 +1843,23 @@ c_func
 id|u16
 id|b
 comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|msb
@@ -1847,11 +1931,23 @@ c_func
 id|u32
 id|b
 comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|msb
@@ -1908,11 +2004,23 @@ c_func
 id|u64
 id|b
 comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|msb
@@ -1982,10 +2090,37 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|function|t2_ioportmap
+id|__EXTERN_INLINE
+r_void
+id|__iomem
+op_star
+id|t2_ioportmap
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+(paren
+id|addr
+op_plus
+id|T2_IO
+)paren
+suffix:semicolon
+)brace
 DECL|function|t2_ioremap
 id|__EXTERN_INLINE
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|t2_ioremap
 c_func
 (paren
@@ -1996,31 +2131,19 @@ comma
 r_int
 r_int
 id|size
-id|__attribute__
-c_func
-(paren
-(paren
-id|unused
-)paren
-)paren
 )paren
 (brace
 r_return
-id|addr
-suffix:semicolon
-)brace
-DECL|function|t2_iounmap
-id|__EXTERN_INLINE
+(paren
 r_void
-id|t2_iounmap
-c_func
-(paren
-r_int
-r_int
-id|addr
+id|__iomem
+op_star
 )paren
-(brace
-r_return
+(paren
+id|addr
+op_plus
+id|T2_DENSE_MEM
+)paren
 suffix:semicolon
 )brace
 DECL|function|t2_is_ioaddr
@@ -2043,46 +2166,75 @@ op_ge
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|t2_is_mmio
+id|__EXTERN_INLINE
+r_int
+id|t2_is_mmio
+c_func
+(paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+r_return
+(paren
+r_int
+r_int
+)paren
+id|addr
+op_ge
+id|T2_DENSE_MEM
+suffix:semicolon
+)brace
+multiline_comment|/* New-style ioread interface.  The mmio routines are so ugly for T2 that&n;   it doesn&squot;t make sense to merge the pio and mmio routines.  */
+DECL|macro|IOPORT
+mdefine_line|#define IOPORT(OS, NS)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;__EXTERN_INLINE unsigned int t2_ioread##NS(void __iomem *xaddr)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (t2_is_mmio(xaddr))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return t2_read##OS(xaddr - T2_DENSE_MEM);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return t2_in##OS((unsigned long)xaddr - T2_IO);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;__EXTERN_INLINE void t2_iowrite##NS(u##NS b, void __iomem *xaddr)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (t2_is_mmio(xaddr))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;t2_write##OS(b, xaddr - T2_DENSE_MEM);&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;t2_out##OS(b, (unsigned long)xaddr - T2_IO);&t;&t;&bslash;&n;}
+id|IOPORT
+c_func
+(paren
+id|b
+comma
+l_int|8
+)paren
+id|IOPORT
+c_func
+(paren
+id|w
+comma
+l_int|16
+)paren
+id|IOPORT
+c_func
+(paren
+id|l
+comma
+l_int|32
+)paren
+DECL|macro|IOPORT
+macro_line|#undef IOPORT
 DECL|macro|vip
 macro_line|#undef vip
 DECL|macro|vuip
 macro_line|#undef vuip
-macro_line|#ifdef __WANT_IO_DEF
-DECL|macro|__inb
-mdefine_line|#define __inb(p)&t;&t;t2_inb((unsigned long)(p))
-DECL|macro|__inw
-mdefine_line|#define __inw(p)&t;&t;t2_inw((unsigned long)(p))
-DECL|macro|__inl
-mdefine_line|#define __inl(p)&t;&t;t2_inl((unsigned long)(p))
-DECL|macro|__outb
-mdefine_line|#define __outb(x,p)&t;&t;t2_outb((x),(unsigned long)(p))
-DECL|macro|__outw
-mdefine_line|#define __outw(x,p)&t;&t;t2_outw((x),(unsigned long)(p))
-DECL|macro|__outl
-mdefine_line|#define __outl(x,p)&t;&t;t2_outl((x),(unsigned long)(p))
-DECL|macro|__readb
-mdefine_line|#define __readb(a)&t;&t;t2_readb((unsigned long)(a))
-DECL|macro|__readw
-mdefine_line|#define __readw(a)&t;&t;t2_readw((unsigned long)(a))
-DECL|macro|__readl
-mdefine_line|#define __readl(a)&t;&t;t2_readl((unsigned long)(a))
-DECL|macro|__readq
-mdefine_line|#define __readq(a)&t;&t;t2_readq((unsigned long)(a))
-DECL|macro|__writeb
-mdefine_line|#define __writeb(x,a)&t;&t;t2_writeb((x),(unsigned long)(a))
-DECL|macro|__writew
-mdefine_line|#define __writew(x,a)&t;&t;t2_writew((x),(unsigned long)(a))
-DECL|macro|__writel
-mdefine_line|#define __writel(x,a)&t;&t;t2_writel((x),(unsigned long)(a))
-DECL|macro|__writeq
-mdefine_line|#define __writeq(x,a)&t;&t;t2_writeq((x),(unsigned long)(a))
-DECL|macro|__ioremap
-mdefine_line|#define __ioremap(a,s)&t;&t;t2_ioremap((unsigned long)(a),(s))
-DECL|macro|__iounmap
-mdefine_line|#define __iounmap(a)&t;&t;t2_iounmap((unsigned long)(a))
-DECL|macro|__is_ioaddr
-mdefine_line|#define __is_ioaddr(a)&t;&t;t2_is_ioaddr((unsigned long)(a))
-macro_line|#endif /* __WANT_IO_DEF */
+DECL|macro|__IO_PREFIX
+macro_line|#undef __IO_PREFIX
+DECL|macro|__IO_PREFIX
+mdefine_line|#define __IO_PREFIX&t;&t;t2
+DECL|macro|t2_trivial_rw_bw
+mdefine_line|#define t2_trivial_rw_bw&t;0
+DECL|macro|t2_trivial_rw_lq
+mdefine_line|#define t2_trivial_rw_lq&t;0
+DECL|macro|t2_trivial_io_bw
+mdefine_line|#define t2_trivial_io_bw&t;0
+DECL|macro|t2_trivial_io_lq
+mdefine_line|#define t2_trivial_io_lq&t;0
+DECL|macro|t2_trivial_iounmap
+mdefine_line|#define t2_trivial_iounmap&t;1
+macro_line|#include &lt;asm/io_trivial.h&gt;
 macro_line|#ifdef __IO_EXTERN_INLINE
 DECL|macro|__EXTERN_INLINE
 macro_line|#undef __EXTERN_INLINE

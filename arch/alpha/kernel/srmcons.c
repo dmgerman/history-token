@@ -563,6 +563,12 @@ c_func
 (paren
 id|tmp
 comma
+(paren
+r_const
+r_char
+id|__user
+op_star
+)paren
 id|buf
 comma
 id|c

@@ -222,6 +222,7 @@ DECL|member|write_lock
 DECL|member|read_counter
 r_volatile
 r_int
+r_int
 id|write_lock
 suffix:colon
 l_int|1
@@ -305,7 +306,7 @@ l_string|&quot;=&amp;r&quot;
 id|regx
 )paren
 suffix:colon
-l_string|&quot;0&quot;
+l_string|&quot;m&quot;
 (paren
 op_star
 id|lock

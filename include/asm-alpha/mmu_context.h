@@ -5,6 +5,7 @@ multiline_comment|/*&n; * get a new mmu context..&n; *&n; * Copyright (C) 1996, 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#include &lt;asm/compiler.h&gt;
 multiline_comment|/*&n; * Force a context reload. This is needed when we change the page&n; * table pointer or when we update the ASN of the current process.&n; */
 multiline_comment|/* Don&squot;t get into trouble with dueling __EXTERN_INLINEs.  */
 macro_line|#ifndef __EXTERN_INLINE
