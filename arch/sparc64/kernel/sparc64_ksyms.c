@@ -1896,6 +1896,22 @@ c_func
 id|VISenter
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|batten_down_hatches
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* for input/keybdev */
+DECL|variable|batten_down_hatches
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|batten_down_hatches
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
 DECL|variable|do_BUG
 id|EXPORT_SYMBOL
