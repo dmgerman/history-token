@@ -6351,6 +6351,12 @@ op_star
 id|ip
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -6360,11 +6366,19 @@ id|bdevname
 c_func
 (paren
 id|bdev
+comma
+id|b
 )paren
 comma
 id|capacity
 )paren
 suffix:semicolon
+(paren
+r_void
+)paren
+id|b
+suffix:semicolon
+multiline_comment|/* unused var warning? */
 multiline_comment|/*&n;&t; * try default translation&n;&t; */
 id|ip
 (braket

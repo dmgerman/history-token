@@ -4839,6 +4839,8 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* fs/block_dev.c */
+DECL|macro|BDEVNAME_SIZE
+mdefine_line|#define BDEVNAME_SIZE&t;32&t;/* Largest string for a blockdev identifier */
 r_extern
 r_const
 r_char
@@ -4847,6 +4849,10 @@ id|__bdevname
 c_func
 (paren
 id|dev_t
+comma
+r_char
+op_star
+id|buffer
 )paren
 suffix:semicolon
 DECL|function|bdevname
@@ -4862,6 +4868,10 @@ r_struct
 id|block_device
 op_star
 id|bdev
+comma
+r_char
+op_star
+id|buffer
 )paren
 (brace
 r_return
@@ -4869,6 +4879,8 @@ id|__bdevname
 c_func
 (paren
 id|bdev-&gt;bd_dev
+comma
+id|buffer
 )paren
 suffix:semicolon
 )brace

@@ -435,6 +435,12 @@ id|sector_t
 op_star
 id|blocks
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -464,6 +470,8 @@ id|bdevname
 c_func
 (paren
 id|rawdevice-&gt;binding
+comma
+id|b
 )paren
 comma
 id|page
@@ -2251,6 +2259,12 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 multiline_comment|/* check readonly */
 r_if
 c_cond
@@ -2298,6 +2312,8 @@ id|bdevname
 c_func
 (paren
 id|rawdevice-&gt;binding
+comma
+id|b
 )paren
 comma
 id|from
@@ -2826,6 +2842,12 @@ id|pagenr
 comma
 id|pages
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 op_star
 id|retlen
 op_assign
@@ -2842,6 +2864,8 @@ id|bdevname
 c_func
 (paren
 id|rawdevice-&gt;binding
+comma
+id|b
 )paren
 comma
 (paren
@@ -3157,6 +3181,14 @@ id|pagecnt
 op_assign
 l_int|0
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
+l_int|21
+id|e3
 op_star
 id|retlen
 op_assign
@@ -3173,6 +3205,8 @@ id|bdevname
 c_func
 (paren
 id|rawdevice-&gt;binding
+comma
+id|b
 )paren
 comma
 (paren
@@ -4778,6 +4812,12 @@ suffix:semicolon
 r_int
 id|regions
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 multiline_comment|/* Check args */
 r_if
 c_cond
@@ -5108,6 +5148,8 @@ id|bdevname
 c_func
 (paren
 id|bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon

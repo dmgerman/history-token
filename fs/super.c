@@ -2215,6 +2215,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|s-&gt;s_flags
 op_assign
 id|flags
@@ -2228,6 +2234,8 @@ id|bdevname
 c_func
 (paren
 id|bdev
+comma
+id|b
 )paren
 comma
 r_sizeof

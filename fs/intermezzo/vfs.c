@@ -478,6 +478,12 @@ id|bdev
 op_assign
 id|fset-&gt;fset_dentry-&gt;d_inode-&gt;i_sb-&gt;s_bdev
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -509,6 +515,8 @@ id|bdevname
 c_func
 (paren
 id|bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon

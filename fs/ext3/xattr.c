@@ -24,7 +24,7 @@ macro_line|#ifdef EXT3_XATTR_DEBUG
 DECL|macro|ea_idebug
 macro_line|# define ea_idebug(inode, f...) do { &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;inode %s:%ld: &quot;, &bslash;&n;&t;&t;&t;inode-&gt;i_sb-&gt;s_id, inode-&gt;i_ino); &bslash;&n;&t;&t;printk(f); &bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;); &bslash;&n;&t;} while (0)
 DECL|macro|ea_bdebug
-macro_line|# define ea_bdebug(bh, f...) do { &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;block %s:%ld: &quot;, &bslash;&n;&t;&t;&t;bdevname(bh-&gt;b_bdev), bh-&gt;b_blocknr); &bslash;&n;&t;&t;printk(f); &bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;); &bslash;&n;&t;} while (0)
+macro_line|# define ea_bdebug(bh, f...) do { &bslash;&n;&t;&t;char b[BDEVNAME_SIZE]; &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;block %s:%ld: &quot;, &bslash;&n;&t;&t;&t;bdevname(bh-&gt;b_bdev, b), bh-&gt;b_blocknr); &bslash;&n;&t;&t;printk(f); &bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;); &bslash;&n;&t;} while (0)
 macro_line|#else
 DECL|macro|ea_idebug
 macro_line|# define ea_idebug(f...)

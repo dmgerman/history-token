@@ -143,6 +143,12 @@ op_star
 id|no_write
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -159,6 +165,8 @@ id|bdevname
 c_func
 (paren
 id|bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -1162,6 +1170,12 @@ op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|bdev
 op_assign
 id|bdget
@@ -1221,6 +1235,8 @@ id|__bdevname
 c_func
 (paren
 id|dev
+comma
+id|b
 )paren
 comma
 id|err
@@ -3751,6 +3767,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3766,6 +3788,8 @@ id|sb
 )paren
 op_member_access_from_pointer
 id|s_journal-&gt;j_dev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon

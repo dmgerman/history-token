@@ -4104,6 +4104,12 @@ r_int
 id|uptodate
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4125,6 +4131,8 @@ id|bdevname
 c_func
 (paren
 id|bh-&gt;b_bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -8204,6 +8212,12 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|cur_dblock
 op_assign
 id|SB_ONDISK_JOURNAL_1st_BLOCK
@@ -8227,6 +8241,8 @@ id|p_s_sb
 )paren
 op_member_access_from_pointer
 id|j_dev_bd
+comma
+id|b
 )paren
 comma
 id|reiserfs_bdevname
@@ -9549,6 +9565,12 @@ id|FMODE_READ
 op_or
 id|FMODE_WRITE
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|result
 op_assign
 l_int|0
@@ -9669,6 +9691,8 @@ id|bdevname
 c_func
 (paren
 id|journal-&gt;j_dev_bd
+comma
+id|b
 )paren
 comma
 id|result
@@ -9875,6 +9899,8 @@ id|bdevname
 c_func
 (paren
 id|journal-&gt;j_dev_bd
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -9932,6 +9958,12 @@ r_struct
 id|reiserfs_journal
 op_star
 id|journal
+suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -10227,6 +10259,8 @@ id|p_s_sb
 )paren
 op_member_access_from_pointer
 id|j_dev_bd
+comma
+id|b
 )paren
 comma
 id|sb_jp_journal_magic
@@ -10540,6 +10574,8 @@ id|p_s_sb
 )paren
 op_member_access_from_pointer
 id|j_dev_bd
+comma
+id|b
 )paren
 comma
 id|SB_ONDISK_JOURNAL_SIZE

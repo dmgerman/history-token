@@ -474,6 +474,12 @@ op_star
 id|bh
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -484,6 +490,8 @@ id|bdevname
 c_func
 (paren
 id|bh-&gt;b_bdev
+comma
+id|b
 )paren
 comma
 (paren
