@@ -1755,6 +1755,9 @@ r_int
 r_int
 id|old_serial_number
 suffix:semicolon
+r_int
+id|old_resid
+suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
@@ -1880,6 +1883,14 @@ op_xor_assign
 l_int|0x80000000
 suffix:semicolon
 multiline_comment|/* issue the auto-sense command */
+id|old_resid
+op_assign
+id|srb-&gt;resid
+suffix:semicolon
+id|srb-&gt;resid
+op_assign
+l_int|0
+suffix:semicolon
 id|temp_result
 op_assign
 id|us
@@ -1893,6 +1904,10 @@ id|us
 )paren
 suffix:semicolon
 multiline_comment|/* let&squot;s clean up right away */
+id|srb-&gt;resid
+op_assign
+id|old_resid
+suffix:semicolon
 id|srb-&gt;request_buffer
 op_assign
 id|old_request_buffer
