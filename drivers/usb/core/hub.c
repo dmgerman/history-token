@@ -4469,6 +4469,13 @@ id|string
 op_assign
 id|buf
 suffix:semicolon
+r_else
+id|kfree
+c_func
+(paren
+id|buf
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifdef&t;CONFIG_USB_OTG
 macro_line|#include &quot;otg_whitelist.h&quot;
