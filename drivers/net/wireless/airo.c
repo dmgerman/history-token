@@ -23860,7 +23860,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|clear_bit
+id|set_bit
 (paren
 id|FLAG_PCI
 comma
