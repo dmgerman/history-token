@@ -234,6 +234,43 @@ comma
 id|time_t
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NFSD_V4
+r_int
+id|nfsd4_set_nfs4_acl
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+comma
+r_struct
+id|svc_fh
+op_star
+comma
+r_struct
+id|nfs4_acl
+op_star
+)paren
+suffix:semicolon
+r_int
+id|nfsd4_get_nfs4_acl
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+comma
+r_struct
+id|dentry
+op_star
+comma
+r_struct
+id|nfs4_acl
+op_star
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_NFSD_V4 */
 r_int
 id|nfsd_create
 c_func
@@ -943,9 +980,9 @@ DECL|macro|NFSD_LEASE_TIME
 mdefine_line|#define NFSD_LEASE_TIME                 (nfs4_lease_time())
 DECL|macro|NFSD_LAUNDROMAT_MINTIMEOUT
 mdefine_line|#define NFSD_LAUNDROMAT_MINTIMEOUT      10   /* seconds */
-multiline_comment|/*&n; * The following attributes are currently not supported by the NFSv4 server:&n; *    ACL           (will be supported in a forthcoming patch)&n; *    ARCHIVE       (deprecated anyway)&n; *    FS_LOCATIONS  (will be supported eventually)&n; *    HIDDEN        (unlikely to be supported any time soon)&n; *    MIMETYPE      (unlikely to be supported any time soon)&n; *    QUOTA_*       (will be supported in a forthcoming patch)&n; *    SYSTEM        (unlikely to be supported any time soon)&n; *    TIME_BACKUP   (unlikely to be supported any time soon)&n; *    TIME_CREATE   (unlikely to be supported any time soon)&n; */
+multiline_comment|/*&n; * The following attributes are currently not supported by the NFSv4 server:&n; *    ARCHIVE       (deprecated anyway)&n; *    FS_LOCATIONS  (will be supported eventually)&n; *    HIDDEN        (unlikely to be supported any time soon)&n; *    MIMETYPE      (unlikely to be supported any time soon)&n; *    QUOTA_*       (will be supported in a forthcoming patch)&n; *    SYSTEM        (unlikely to be supported any time soon)&n; *    TIME_BACKUP   (unlikely to be supported any time soon)&n; *    TIME_CREATE   (unlikely to be supported any time soon)&n; */
 DECL|macro|NFSD_SUPPORTED_ATTRS_WORD0
-mdefine_line|#define NFSD_SUPPORTED_ATTRS_WORD0                                                          &bslash;&n;(FATTR4_WORD0_SUPPORTED_ATTRS   | FATTR4_WORD0_TYPE         | FATTR4_WORD0_FH_EXPIRE_TYPE   &bslash;&n; | FATTR4_WORD0_CHANGE          | FATTR4_WORD0_SIZE         | FATTR4_WORD0_LINK_SUPPORT     &bslash;&n; | FATTR4_WORD0_SYMLINK_SUPPORT | FATTR4_WORD0_NAMED_ATTR   | FATTR4_WORD0_FSID             &bslash;&n; | FATTR4_WORD0_UNIQUE_HANDLES  | FATTR4_WORD0_LEASE_TIME   | FATTR4_WORD0_RDATTR_ERROR     &bslash;&n; | FATTR4_WORD0_ACLSUPPORT      | FATTR4_WORD0_CANSETTIME   | FATTR4_WORD0_CASE_INSENSITIVE &bslash;&n; | FATTR4_WORD0_CASE_PRESERVING | FATTR4_WORD0_CHOWN_RESTRICTED                             &bslash;&n; | FATTR4_WORD0_FILEHANDLE      | FATTR4_WORD0_FILEID       | FATTR4_WORD0_FILES_AVAIL      &bslash;&n; | FATTR4_WORD0_FILES_FREE      | FATTR4_WORD0_FILES_TOTAL  | FATTR4_WORD0_HOMOGENEOUS      &bslash;&n; | FATTR4_WORD0_MAXFILESIZE     | FATTR4_WORD0_MAXLINK      | FATTR4_WORD0_MAXNAME          &bslash;&n; | FATTR4_WORD0_MAXREAD         | FATTR4_WORD0_MAXWRITE)
+mdefine_line|#define NFSD_SUPPORTED_ATTRS_WORD0                                                          &bslash;&n;(FATTR4_WORD0_SUPPORTED_ATTRS   | FATTR4_WORD0_TYPE         | FATTR4_WORD0_FH_EXPIRE_TYPE   &bslash;&n; | FATTR4_WORD0_CHANGE          | FATTR4_WORD0_SIZE         | FATTR4_WORD0_LINK_SUPPORT     &bslash;&n; | FATTR4_WORD0_SYMLINK_SUPPORT | FATTR4_WORD0_NAMED_ATTR   | FATTR4_WORD0_FSID             &bslash;&n; | FATTR4_WORD0_UNIQUE_HANDLES  | FATTR4_WORD0_LEASE_TIME   | FATTR4_WORD0_RDATTR_ERROR     &bslash;&n; | FATTR4_WORD0_ACLSUPPORT      | FATTR4_WORD0_CANSETTIME   | FATTR4_WORD0_CASE_INSENSITIVE &bslash;&n; | FATTR4_WORD0_CASE_PRESERVING | FATTR4_WORD0_CHOWN_RESTRICTED                             &bslash;&n; | FATTR4_WORD0_FILEHANDLE      | FATTR4_WORD0_FILEID       | FATTR4_WORD0_FILES_AVAIL      &bslash;&n; | FATTR4_WORD0_FILES_FREE      | FATTR4_WORD0_FILES_TOTAL  | FATTR4_WORD0_HOMOGENEOUS      &bslash;&n; | FATTR4_WORD0_MAXFILESIZE     | FATTR4_WORD0_MAXLINK      | FATTR4_WORD0_MAXNAME          &bslash;&n; | FATTR4_WORD0_MAXREAD         | FATTR4_WORD0_MAXWRITE     | FATTR4_WORD0_ACL)
 DECL|macro|NFSD_SUPPORTED_ATTRS_WORD1
 mdefine_line|#define NFSD_SUPPORTED_ATTRS_WORD1                                                          &bslash;&n;(FATTR4_WORD1_MODE              | FATTR4_WORD1_NO_TRUNC     | FATTR4_WORD1_NUMLINKS         &bslash;&n; | FATTR4_WORD1_OWNER&t;        | FATTR4_WORD1_OWNER_GROUP  | FATTR4_WORD1_RAWDEV           &bslash;&n; | FATTR4_WORD1_SPACE_AVAIL     | FATTR4_WORD1_SPACE_FREE   | FATTR4_WORD1_SPACE_TOTAL      &bslash;&n; | FATTR4_WORD1_SPACE_USED      | FATTR4_WORD1_TIME_ACCESS  | FATTR4_WORD1_TIME_ACCESS_SET  &bslash;&n; | FATTR4_WORD1_TIME_DELTA   | FATTR4_WORD1_TIME_METADATA    &bslash;&n; | FATTR4_WORD1_TIME_MODIFY     | FATTR4_WORD1_TIME_MODIFY_SET | FATTR4_WORD1_MOUNTED_ON_FILEID)
 multiline_comment|/* These will return ERR_INVAL if specified in GETATTR or READDIR. */
@@ -953,7 +990,7 @@ DECL|macro|NFSD_WRITEONLY_ATTRS_WORD1
 mdefine_line|#define NFSD_WRITEONLY_ATTRS_WORD1&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;(FATTR4_WORD1_TIME_ACCESS_SET   | FATTR4_WORD1_TIME_MODIFY_SET)
 multiline_comment|/* These are the only attrs allowed in CREATE/OPEN/SETATTR. */
 DECL|macro|NFSD_WRITEABLE_ATTRS_WORD0
-mdefine_line|#define NFSD_WRITEABLE_ATTRS_WORD0                            FATTR4_WORD0_SIZE
+mdefine_line|#define NFSD_WRITEABLE_ATTRS_WORD0                                                          &bslash;&n;(FATTR4_WORD0_SIZE              | FATTR4_WORD0_ACL                                         )
 DECL|macro|NFSD_WRITEABLE_ATTRS_WORD1
 mdefine_line|#define NFSD_WRITEABLE_ATTRS_WORD1                                                          &bslash;&n;(FATTR4_WORD1_MODE              | FATTR4_WORD1_OWNER         | FATTR4_WORD1_OWNER_GROUP     &bslash;&n; | FATTR4_WORD1_TIME_ACCESS_SET | FATTR4_WORD1_TIME_METADATA | FATTR4_WORD1_TIME_MODIFY_SET)
 macro_line|#endif /* CONFIG_NFSD_V4 */
