@@ -1208,7 +1208,6 @@ op_star
 id|dn
 suffix:semicolon
 r_int
-r_int
 id|ret
 suffix:semicolon
 r_int
@@ -1425,7 +1424,6 @@ op_ge
 l_int|2
 )paren
 (brace
-r_int
 r_int
 id|slot_err_ret
 suffix:semicolon
