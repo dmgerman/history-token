@@ -305,7 +305,7 @@ mdefine_line|#define SOCKET_CARDBUS_CONFIG&t;0x10000
 DECL|macro|CHECK_HANDLE
 mdefine_line|#define CHECK_HANDLE(h) &bslash;&n;    (((h) == NULL) || ((h)-&gt;client_magic != CLIENT_MAGIC))
 DECL|macro|CHECK_SOCKET
-mdefine_line|#define CHECK_SOCKET(s) &bslash;&n;    (((s) &gt;= sockets) || (socket_table[s]-&gt;ss_entry == NULL))
+mdefine_line|#define CHECK_SOCKET(s) &bslash;&n;    (((s) &gt;= sockets) || (socket_table[s]-&gt;ops == NULL))
 DECL|macro|SOCKET
 mdefine_line|#define SOCKET(h) (h-&gt;Socket)
 DECL|macro|CONFIG

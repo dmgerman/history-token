@@ -382,7 +382,7 @@ op_or_assign
 id|RL5C4XX_CONFIG_PREFETCH
 suffix:semicolon
 )brace
-id|socket-&gt;socket.ss_entry-&gt;init
+id|socket-&gt;socket.ops-&gt;init
 op_assign
 id|ricoh_init
 suffix:semicolon

@@ -962,7 +962,7 @@ id|win-&gt;ctl.card_start
 op_assign
 id|req-&gt;CardOffset
 suffix:semicolon
-id|win-&gt;sock-&gt;ss_entry
+id|win-&gt;sock-&gt;ops
 op_member_access_from_pointer
 id|set_mem_map
 c_func
@@ -1033,7 +1033,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_socket
 c_func
@@ -1110,7 +1110,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_socket
 c_func

@@ -3014,7 +3014,7 @@ id|skt
 )paren
 )paren
 suffix:semicolon
-id|skt-&gt;socket.ss_entry
+id|skt-&gt;socket.ops
 op_assign
 op_amp
 id|sa11xx_pcmcia_operations
