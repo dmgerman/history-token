@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * budget-patch.c: driver for Budget Patch,&n; * hardware modification of DVB-S cards enabling full TS&n; *&n; * Written by Emard &lt;emard@softhome.net&gt;&n; *&n; * Original idea by Roberto Deza &lt;rdeza@unav.es&gt;&n; *&n; * Special thanks to Holger Waechtler, Michael Hunold, Marian Durkovic&n; * and Metzlerbros&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
-macro_line|#include &quot;budget.h&quot;
 macro_line|#include &quot;av7110.h&quot;
 macro_line|#include &quot;av7110_hw.h&quot;
+macro_line|#include &quot;budget.h&quot;
 DECL|macro|budget_patch
 mdefine_line|#define budget_patch budget
 DECL|variable|budget_extension
@@ -79,14 +79,14 @@ id|dev
 op_assign
 id|budget-&gt;dev
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -192,14 +192,14 @@ id|length
 r_int
 id|i
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 r_for
@@ -348,14 +348,14 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 id|budget_av7110_send_fw_cmd
@@ -446,14 +446,14 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -576,14 +576,14 @@ id|budget
 op_assign
 id|fe-&gt;before_after_data
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 r_switch
@@ -747,14 +747,14 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1095,14 +1095,6 @@ c_func
 r_void
 )paren
 (brace
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;.&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 id|saa7146_unregister_extension
 c_func
 (paren

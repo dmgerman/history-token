@@ -416,10 +416,12 @@ id|av7110-&gt;arm_ready
 op_assign
 l_int|1
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
-l_string|&quot;av7110: ARM RESET&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;reset ARM&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -444,14 +446,14 @@ id|state
 r_int
 id|k
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_for
@@ -537,14 +539,14 @@ id|bootblock
 op_assign
 id|BOOT_BLOCK
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|blocks
@@ -597,14 +599,14 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Writing DRAM block %d&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;writing DRAM block %d&bslash;n&quot;
 comma
 id|i
-)paren
 )paren
 suffix:semicolon
 id|mwdebi
@@ -1348,14 +1350,14 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|saa7146_setgpio
@@ -1475,8 +1477,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;dvb: debi test in av7110_bootarm() failed: &quot;
-l_string|&quot;%08x != %08x (check your BIOS hotplug settings)&bslash;n&quot;
+l_string|&quot;dvb-ttpci: debi test in av7110_bootarm() failed: &quot;
+l_string|&quot;%08x != %08x (check your BIOS &squot;Plug&amp;Play OS&squot; settings)&bslash;n&quot;
 comma
 id|ret
 comma
@@ -1519,21 +1521,21 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110_bootarm: debi test OK&bslash;n&quot;
-)paren
+l_int|2
+comma
+l_string|&quot;debi test OK&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* boot */
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110_bootarm: load boot code&bslash;n&quot;
-)paren
+l_int|1
+comma
+l_string|&quot;load boot code&bslash;n&quot;
 )paren
 suffix:semicolon
 id|saa7146_setgpio
@@ -1593,7 +1595,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;dvb: av7110_bootarm(): &quot;
+l_string|&quot;dvb-ttpci: av7110_bootarm(): &quot;
 l_string|&quot;saa7146_wait_for_debi_done() timed out&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1618,12 +1620,12 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110_bootarm: load dram code&bslash;n&quot;
-)paren
+l_int|1
+comma
+l_string|&quot;load dram code&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1665,12 +1667,12 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110_bootarm: load dpram code&bslash;n&quot;
-)paren
+l_int|1
+comma
+l_string|&quot;load dpram code&bslash;n&quot;
 )paren
 suffix:semicolon
 id|mwdebi
@@ -1701,7 +1703,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;dvb: av7110_bootarm(): &quot;
+l_string|&quot;dvb-ttpci: av7110_bootarm(): &quot;
 l_string|&quot;saa7146_wait_for_debi_done() timed out after loading DRAM&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1799,7 +1801,7 @@ id|u32
 id|stat
 suffix:semicolon
 macro_line|#endif
-singleline_comment|//&t;DEB_EE((&quot;av7110: %p&bslash;n&quot;, av7110));
+singleline_comment|//&t;dprintk(4, &quot;%p&bslash;n&quot;, av7110);
 r_if
 c_cond
 (paren
@@ -1807,12 +1809,12 @@ op_logical_neg
 id|av7110-&gt;arm_ready
 )paren
 (brace
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
+l_int|1
+comma
 l_string|&quot;arm not ready.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -1866,7 +1868,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: timeout waiting for COMMAND idle&bslash;n&quot;
+l_string|&quot;dvb-ttpci: %s(): timeout waiting for COMMAND idle&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1924,7 +1926,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: timeout waiting for HANDSHAKE_REG&bslash;n&quot;
+l_string|&quot;dvb-ttpci: %s(): timeout waiting for HANDSHAKE_REG&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1984,7 +1986,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: timeout waiting for !OSDQFull&bslash;n&quot;
+l_string|&quot;dvb-ttpci: %s(): timeout waiting for !OSDQFull&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2144,7 +2146,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: timeout waiting for COMMAND to complete&bslash;n&quot;
+l_string|&quot;dvb-ttpci: %s(): timeout waiting for COMMAND to complete&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2183,7 +2185,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: GPMQOver&bslash;n&quot;
+l_string|&quot;dvb-ttpci: %s(): GPMQOver&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2206,7 +2208,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: OSDQOver&bslash;n&quot;
+l_string|&quot;dvb-ttpci: %s(): OSDQOver&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2242,7 +2244,7 @@ id|length
 r_int
 id|ret
 suffix:semicolon
-singleline_comment|//&t;DEB_EE((&quot;av7110: %p&bslash;n&quot;, av7110));
+singleline_comment|//&t;dprintk(4, &quot;%p&bslash;n&quot;, av7110);
 r_if
 c_cond
 (paren
@@ -2250,12 +2252,12 @@ op_logical_neg
 id|av7110-&gt;arm_ready
 )paren
 (brace
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
+l_int|1
+comma
 l_string|&quot;arm not ready.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -2304,7 +2306,9 @@ id|ret
 id|printk
 c_func
 (paren
-l_string|&quot;av7110_send_fw_cmd error&bslash;n&quot;
+l_string|&quot;dvb-ttpci: %s(): av7110_send_fw_cmd error&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -2351,7 +2355,7 @@ id|i
 comma
 id|ret
 suffix:semicolon
-singleline_comment|//&t;DEB_EE((&quot;av7110: %p&bslash;n&quot;,av7110));
+singleline_comment|//&t;dprintk(4, &quot;%p&bslash;n&quot;, av7110);
 id|buf
 (braket
 l_int|0
@@ -2446,7 +2450,7 @@ id|ret
 id|printk
 c_func
 (paren
-l_string|&quot;av7110_fw_cmd error&bslash;n&quot;
+l_string|&quot;dvb-ttpci: av7110_fw_cmd error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2531,14 +2535,14 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_for
@@ -2632,7 +2636,7 @@ id|ret
 id|printk
 c_func
 (paren
-l_string|&quot;av7110_send_ci_cmd error&bslash;n&quot;
+l_string|&quot;dvb-ttpci: av7110_send_ci_cmd error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2679,14 +2683,14 @@ id|u32
 id|stat
 suffix:semicolon
 macro_line|#endif
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2696,12 +2700,12 @@ op_logical_neg
 id|av7110-&gt;arm_ready
 )paren
 (brace
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
+l_int|1
+comma
 l_string|&quot;arm not ready.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -2753,7 +2757,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;av7110_fw_request error&bslash;n&quot;
+l_string|&quot;dvb-ttpci: av7110_fw_request error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2807,6 +2811,7 @@ id|ARM_WAIT_FREE
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: timeout waiting for COMMAND to complete&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -3065,7 +3070,7 @@ id|ret
 id|printk
 c_func
 (paren
-l_string|&quot;av7110_fw_query error&bslash;n&quot;
+l_string|&quot;dvb-ttpci: av7110_fw_query error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3104,14 +3109,14 @@ op_plus
 id|ReqVersion
 )paren
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -3133,7 +3138,7 @@ l_int|16
 id|printk
 c_func
 (paren
-l_string|&quot;DVB: AV7110-%d: ERROR: Failed to boot firmware&bslash;n&quot;
+l_string|&quot;dvb-ttpci: failed to boot firmware @ card %d&bslash;n&quot;
 comma
 id|av7110-&gt;dvb_adapter-&gt;num
 )paren
@@ -3226,9 +3231,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;DVB: AV711%d(%d) - firm %08x, rtsl %08x, vid %08x, app %08x&bslash;n&quot;
-comma
-id|av7110-&gt;avtype
+l_string|&quot;dvb-ttpci: info @ card %d: firm %08x, rtsl %08x, vid %08x, app %08x&bslash;n&quot;
 comma
 id|av7110-&gt;dvb_adapter-&gt;num
 comma
@@ -3254,9 +3257,7 @@ id|av7110-&gt;arm_app
 id|printk
 c_func
 (paren
-l_string|&quot;DVB: AV711%d(%d) - firmware supports CI link layer interface&bslash;n&quot;
-comma
-id|av7110-&gt;avtype
+l_string|&quot;dvb-ttpci: firmware @ card %d supports CI link layer interface&bslash;n&quot;
 comma
 id|av7110-&gt;dvb_adapter-&gt;num
 )paren
@@ -3265,9 +3266,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;DVB: AV711%d(%d) - no firmware support for CI link layer interface&bslash;n&quot;
-comma
-id|av7110-&gt;avtype
+l_string|&quot;dvb-ttpci: no firmware support for CI link layer interface @ card %d&bslash;n&quot;
 comma
 id|av7110-&gt;dvb_adapter-&gt;num
 )paren
@@ -3353,14 +3352,14 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -3460,7 +3459,7 @@ l_int|18
 id|printk
 c_func
 (paren
-l_string|&quot;av7110_diseqc_send error&bslash;n&quot;
+l_string|&quot;dvb-ttpci: av7110_diseqc_send error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3825,7 +3824,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: timeout waiting for BUFF1_BASE == 0&bslash;n&quot;
+l_string|&quot;dvb-ttpci: %s(): timeout waiting for BUFF1_BASE == 0&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3983,7 +3982,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: timeout waiting for BUFF1_BASE == 0&bslash;n&quot;
+l_string|&quot;dvb-ttpci: %s: timeout waiting for BUFF1_BASE == 0&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4048,7 +4047,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: timeout waiting for HANDSHAKE_REG&bslash;n&quot;
+l_string|&quot;dvb-ttpci: %s: timeout waiting for HANDSHAKE_REG&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4168,7 +4167,7 @@ id|ret
 id|printk
 c_func
 (paren
-l_string|&quot;WriteText error&bslash;n&quot;
+l_string|&quot;dvb-ttpci: WriteText error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4584,14 +4583,14 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|ret
@@ -4987,14 +4986,14 @@ id|trans
 r_int
 id|ret
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|BUG_ON
@@ -5090,14 +5089,14 @@ op_star
 id|av7110
 )paren
 (brace
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
