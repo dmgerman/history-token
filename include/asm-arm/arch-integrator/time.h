@@ -157,7 +157,11 @@ c_cond
 (paren
 id|status
 op_amp
-id|IRQMASK_TIMERINT1
+(paren
+l_int|1
+op_lshift
+id|IRQ_TIMERINT1
+)paren
 )paren
 id|ticks1
 op_add_assign

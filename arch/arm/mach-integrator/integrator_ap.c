@@ -239,8 +239,8 @@ id|ap_io_desc
 )paren
 suffix:semicolon
 )brace
-DECL|macro|ALLPCI
-mdefine_line|#define ALLPCI ( (1 &lt;&lt; IRQ_PCIINT0) | (1 &lt;&lt; IRQ_PCIINT1) | (1 &lt;&lt; IRQ_PCIINT2) | (1 &lt;&lt; IRQ_PCIINT3) )
+DECL|macro|INTEGRATOR_SC_VALID_INT
+mdefine_line|#define INTEGRATOR_SC_VALID_INT&t;0x003fffff
 DECL|function|sc_mask_irq
 r_static
 r_void
@@ -544,7 +544,7 @@ id|IORESOURCE_MEM
 suffix:semicolon
 id|lmdev-&gt;irq
 op_assign
-id|IRQ_EXPINT0
+id|IRQ_AP_EXPINT0
 op_plus
 id|i
 suffix:semicolon
