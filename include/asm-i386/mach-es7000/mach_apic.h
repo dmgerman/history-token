@@ -1,18 +1,14 @@
 macro_line|#ifndef __ASM_MACH_APIC_H
 DECL|macro|__ASM_MACH_APIC_H
 mdefine_line|#define __ASM_MACH_APIC_H
-macro_line|#include &lt;asm/smp.h&gt;
-DECL|macro|SEQUENTIAL_APICID
-mdefine_line|#define SEQUENTIAL_APICID
-macro_line|#ifdef SEQUENTIAL_APICID
+r_extern
+id|u8
+id|bios_cpu_apicid
+(braket
+)braket
+suffix:semicolon
 DECL|macro|xapic_phys_to_log_apicid
-mdefine_line|#define xapic_phys_to_log_apicid(phys_apic) ( (1ul &lt;&lt; ((phys_apic) &amp; 0x3)) |&bslash;&n;&t;&t;((phys_apic&lt;&lt;2) &amp; (~0xf)) )
-macro_line|#elif CLUSTERED_APICID
-DECL|macro|xapic_phys_to_log_apicid
-mdefine_line|#define xapic_phys_to_log_apicid(phys_apic) ( (1ul &lt;&lt; ((phys_apic) &amp; 0x3)) |&bslash;&n;&t;&t;((phys_apic) &amp; (~0xf)) )
-macro_line|#endif
-DECL|macro|NO_BALANCE_IRQ
-mdefine_line|#define NO_BALANCE_IRQ (1)
+mdefine_line|#define xapic_phys_to_log_apicid(cpu) (bios_cpu_apicid[cpu])
 DECL|macro|esr_disable
 mdefine_line|#define esr_disable (1)
 DECL|function|apic_id_registered
@@ -31,8 +27,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|macro|APIC_DFR_VALUE
-mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_CLUSTER)
 DECL|function|target_cpus
 r_static
 r_inline
@@ -44,18 +38,59 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#if defined CONFIG_ES7000_CLUSTERED_APIC
 r_return
-id|cpu_online_map
+(paren
+l_int|0xff
+)paren
 suffix:semicolon
+macro_line|#else
+r_return
+(paren
+id|bios_cpu_apicid
+(braket
+id|smp_processor_id
+c_func
+(paren
+)paren
+)braket
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|macro|TARGET_CPUS
 mdefine_line|#define TARGET_CPUS&t;(target_cpus())
+macro_line|#if defined CONFIG_ES7000_CLUSTERED_APIC
+DECL|macro|APIC_DFR_VALUE
+mdefine_line|#define APIC_DFR_VALUE&t;&t;(APIC_DFR_CLUSTER)
 DECL|macro|INT_DELIVERY_MODE
-mdefine_line|#define INT_DELIVERY_MODE dest_LowestPrio
+mdefine_line|#define INT_DELIVERY_MODE&t;(dest_LowestPrio)
 DECL|macro|INT_DEST_MODE
-mdefine_line|#define INT_DEST_MODE 1     /* logical delivery broadcast to all procs */
+mdefine_line|#define INT_DEST_MODE&t;&t;(1)    /* logical delivery broadcast to all procs */
+DECL|macro|NO_BALANCE_IRQ
+mdefine_line|#define NO_BALANCE_IRQ &t;&t;(1)
+DECL|macro|WAKE_SECONDARY_VIA_INIT
+macro_line|#undef  WAKE_SECONDARY_VIA_INIT
+DECL|macro|WAKE_SECONDARY_VIA_MIP
+mdefine_line|#define WAKE_SECONDARY_VIA_MIP
+macro_line|#else
+DECL|macro|APIC_DFR_VALUE
+mdefine_line|#define APIC_DFR_VALUE&t;&t;(APIC_DFR_FLAT)
+DECL|macro|INT_DELIVERY_MODE
+mdefine_line|#define INT_DELIVERY_MODE&t;(dest_Fixed)
+DECL|macro|INT_DEST_MODE
+mdefine_line|#define INT_DEST_MODE&t;&t;(0)    /* phys delivery to target procs */
+DECL|macro|NO_BALANCE_IRQ
+mdefine_line|#define NO_BALANCE_IRQ &t;&t;(0)
+DECL|macro|APIC_DEST_LOGICAL
+macro_line|#undef  APIC_DEST_LOGICAL
+DECL|macro|APIC_DEST_LOGICAL
+mdefine_line|#define APIC_DEST_LOGICAL&t;0x0
+DECL|macro|WAKE_SECONDARY_VIA_INIT
+mdefine_line|#define WAKE_SECONDARY_VIA_INIT
+macro_line|#endif
 DECL|macro|APIC_BROADCAST_ID
-mdefine_line|#define APIC_BROADCAST_ID     (0x0f)
+mdefine_line|#define APIC_BROADCAST_ID&t;(0xff)
 DECL|function|check_apicid_used
 r_static
 r_inline
@@ -111,8 +146,7 @@ id|calculate_ldr
 c_func
 (paren
 r_int
-r_int
-id|old
+id|cpu
 )paren
 (brace
 r_int
@@ -124,21 +158,11 @@ op_assign
 id|xapic_phys_to_log_apicid
 c_func
 (paren
-id|hard_smp_processor_id
-c_func
-(paren
-)paren
+id|cpu
 )paren
 suffix:semicolon
 r_return
 (paren
-(paren
-id|old
-op_amp
-op_complement
-id|APIC_LDR_MASK
-)paren
-op_or
 id|SET_APIC_LOGICAL_ID
 c_func
 (paren
@@ -147,7 +171,7 @@ id|id
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Set up the logical destination ID.&n; *&n; * Intel recommends to set DFR, LDR and TPR before enabling&n; * an APIC.  See e.g. &quot;AP-388 82489DX User&squot;s Manual&quot; (Intel&n; * document number 292116).  So here it goes...&n; */
+multiline_comment|/*&n; * Set up the logical destination ID.&n; *&n; * Intel recommends to set DFR, LdR and TPR before enabling&n; * an APIC.  See e.g. &quot;AP-388 82489DX User&squot;s Manual&quot; (Intel&n; * document number 292116).  So here it goes...&n; */
 DECL|function|init_apic_ldr
 r_static
 r_inline
@@ -162,6 +186,14 @@ r_int
 r_int
 id|val
 suffix:semicolon
+r_int
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
 id|apic_write_around
 c_func
 (paren
@@ -172,21 +204,10 @@ id|APIC_DFR_VALUE
 suffix:semicolon
 id|val
 op_assign
-id|apic_read
-c_func
-(paren
-id|APIC_LDR
-)paren
-op_amp
-op_complement
-id|APIC_LDR_MASK
-suffix:semicolon
-id|val
-op_assign
 id|calculate_ldr
 c_func
 (paren
-id|val
+id|cpu
 )paren
 suffix:semicolon
 id|apic_write_around
@@ -198,6 +219,39 @@ id|val
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|es7000_sw_apic
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|function|enable_apic_mode
+r_static
+r_inline
+r_void
+id|enable_apic_mode
+c_func
+(paren
+r_void
+)paren
+(brace
+id|es7000_sw_apic
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_extern
+r_int
+id|apic_version
+(braket
+id|MAX_APICS
+)braket
+suffix:semicolon
 DECL|function|clustered_apic_check
 r_static
 r_inline
@@ -208,14 +262,39 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|apic
+op_assign
+id|bios_cpu_apicid
+(braket
+id|smp_processor_id
+c_func
+(paren
+)paren
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Enabling APIC mode:  %s.  Using %d I/O APICs&bslash;n&quot;
+l_string|&quot;Enabling APIC mode:  %s.  Using %d I/O APICs, target cpus %lx&bslash;n&quot;
 comma
-l_string|&quot;Cluster&quot;
+(paren
+id|apic_version
+(braket
+id|apic
+)braket
+op_eq
+l_int|0x14
+)paren
+ques
+c_cond
+l_string|&quot;Physical Cluster&quot;
+suffix:colon
+l_string|&quot;Logical Cluster&quot;
 comma
 id|nr_ioapics
+comma
+id|TARGET_CPUS
 )paren
 suffix:semicolon
 )brace
@@ -252,12 +331,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_extern
-id|u8
-id|bios_cpu_apicid
-(braket
-)braket
-suffix:semicolon
 DECL|function|cpu_present_to_apicid
 r_static
 r_inline
@@ -269,6 +342,16 @@ r_int
 id|mps_cpu
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mps_cpu
+)paren
+r_return
+id|boot_cpu_physical_apicid
+suffix:semicolon
+r_else
 r_return
 (paren
 r_int
@@ -291,11 +374,18 @@ r_int
 id|phys_apicid
 )paren
 (brace
+r_static
+r_int
+id|cpu
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 (paren
 l_int|1ul
 op_lshift
-id|phys_apicid
+id|cpu
+op_increment
 )paren
 suffix:semicolon
 )brace
@@ -340,10 +430,8 @@ id|mpc_config_processor
 op_star
 id|m
 comma
-r_struct
-id|mpc_config_translation
-op_star
-id|translation_record
+r_int
+id|quad
 )paren
 (brace
 id|printk
@@ -392,12 +480,10 @@ id|phys_map
 multiline_comment|/* For clustered we don&squot;t have a good way to do this yet - hack */
 r_return
 (paren
-l_int|0x0F
+l_int|0xff
 )paren
 suffix:semicolon
 )brace
-DECL|macro|WAKE_SECONDARY_VIA_INIT
-mdefine_line|#define WAKE_SECONDARY_VIA_INIT
 DECL|function|setup_portio_remap
 r_static
 r_inline
@@ -409,17 +495,11 @@ r_void
 )paren
 (brace
 )brace
-DECL|function|enable_apic_mode
-r_static
-r_inline
-r_void
-id|enable_apic_mode
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
+r_extern
+r_int
+r_int
+id|boot_cpu_physical_apicid
+suffix:semicolon
 DECL|function|check_phys_apicid_present
 r_static
 r_inline
@@ -428,9 +508,21 @@ id|check_phys_apicid_present
 c_func
 (paren
 r_int
-id|boot_cpu_physical_apicid
+id|cpu_physical_apicid
 )paren
 (brace
+id|boot_cpu_physical_apicid
+op_assign
+id|GET_APIC_ID
+c_func
+(paren
+id|apic_read
+c_func
+(paren
+id|APIC_ID
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
 l_int|1
@@ -463,6 +555,16 @@ suffix:semicolon
 r_int
 id|apicid
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpumask
+op_eq
+id|TARGET_CPUS
+)paren
+r_return
+id|cpumask
+suffix:semicolon
 id|num_bits_set
 op_assign
 id|hweight32
@@ -480,10 +582,7 @@ op_eq
 l_int|32
 )paren
 r_return
-(paren
-r_int
-)paren
-l_int|0xFF
+id|TARGET_CPUS
 suffix:semicolon
 multiline_comment|/* &n;&t; * The cpus in the mask must all be on the apic cluster.  If are not &n;&t; * on the same apicid cluster return default value of TARGET_CPUS. &n;&t; */
 id|cpu
@@ -557,13 +656,11 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-l_int|0xFF
+id|TARGET_CPUS
 suffix:semicolon
 )brace
 id|apicid
 op_assign
-id|apicid
-op_or
 id|new_apicid
 suffix:semicolon
 id|cpus_found
