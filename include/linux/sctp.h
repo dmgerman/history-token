@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * Various protocol defined structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developerst@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo &lt;xingang.guo@intel.com&gt;&n; *    randall@sctp.chicago.il.us&n; *    kmorneau@cisco.com&n; *    qxie1@email.mot.com&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2003&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * Various protocol defined structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developerst@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo &lt;xingang.guo@intel.com&gt;&n; *    randall@sctp.chicago.il.us&n; *    kmorneau@cisco.com&n; *    qxie1@email.mot.com&n; *    Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; *    Kevin Gao &lt;kevin.gao@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#ifndef __LINUX_SCTP_H__
 DECL|macro|__LINUX_SCTP_H__
 mdefine_line|#define __LINUX_SCTP_H__
@@ -1344,6 +1344,30 @@ id|packed
 suffix:semicolon
 multiline_comment|/*&n; * ADDIP Section 3.1 New Chunk Types&n; */
 multiline_comment|/* ADDIP&n; * Section 3.1.1 Address Configuration Change Chunk (ASCONF)&n; *&n; * &t;Serial Number: 32 bits (unsigned integer)&n; *&t;This value represents a Serial Number for the ASCONF Chunk. The&n; *&t;valid range of Serial Number is from 0 to 2^32-1.&n; *&t;Serial Numbers wrap back to 0 after reaching 2^32 -1.&n; *&n; *&t;Address Parameter: 8 or 20 bytes (depending on type)&n; *&t;The address is an address of the sender of the ASCONF chunk,&n; *&t;the address MUST be considered part of the association by the&n; *&t;peer endpoint. This field may be used by the receiver of the &n; *&t;ASCONF to help in finding the association. This parameter MUST&n; *&t;be present in every ASCONF message i.e. it is a mandatory TLV&n; *&t;parameter.&n; *&n; *&t;ASCONF Parameter: TLV format&n; *&t;Each Address configuration change is represented by a TLV&n; *&t;parameter as defined in Section 3.2. One or more requests may&n; *&t;be present in an ASCONF Chunk.&n; *&n; * Section 3.1.2 Address Configuration Acknowledgement Chunk (ASCONF-ACK)&n; * &n; *&t;Serial Number: 32 bits (unsigned integer)&n; *&t;This value represents the Serial Number for the received ASCONF&n; *&t;Chunk that is acknowledged by this chunk. This value is copied&n; *&t;from the received ASCONF Chunk. &n; *&n; *&t;ASCONF Parameter Response: TLV format&n; *&t;The ASCONF Parameter Response is used in the ASCONF-ACK to&n; *&t;report status of ASCONF processing.&n; */
+DECL|struct|sctp_addip_param
+r_typedef
+r_struct
+id|sctp_addip_param
+(brace
+DECL|member|param_hdr
+id|sctp_paramhdr_t
+id|param_hdr
+suffix:semicolon
+DECL|member|crr_id
+id|__u32
+id|crr_id
+suffix:semicolon
+DECL|typedef|sctp_addip_param_t
+)brace
+id|sctp_addip_param_t
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 DECL|struct|sctp_addiphdr
 r_typedef
 r_struct
