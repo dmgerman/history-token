@@ -832,6 +832,22 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif /* #if defined(CONFIG_IPV6) */
+multiline_comment|/* Some wrappers, in case crypto not available. */
+macro_line|#if defined (CONFIG_CRYPTO_HMAC)
+DECL|macro|sctp_crypto_alloc_tfm
+mdefine_line|#define sctp_crypto_alloc_tfm crypto_alloc_tfm
+DECL|macro|sctp_crypto_free_tfm
+mdefine_line|#define sctp_crypto_free_tfm crypto_free_tfm
+DECL|macro|sctp_crypto_hmac
+mdefine_line|#define sctp_crypto_hmac crypto_hmac
+macro_line|#else
+DECL|macro|sctp_crypto_alloc_tfm
+mdefine_line|#define sctp_crypto_alloc_tfm(x...) NULL
+DECL|macro|sctp_crypto_free_tfm
+mdefine_line|#define sctp_crypto_free_tfm(x...) 
+DECL|macro|sctp_crypto_hmac
+mdefine_line|#define sctp_crypto_hmac(x...) 
+macro_line|#endif 
 multiline_comment|/* Map an association to an assoc_id. */
 DECL|function|sctp_assoc2id
 r_static

@@ -4160,8 +4160,6 @@ suffix:semicolon
 r_int
 r_int
 id|keylen
-op_assign
-id|SCTP_SECRET_SIZE
 suffix:semicolon
 r_char
 op_star
@@ -4392,6 +4390,10 @@ id|sg.length
 op_assign
 id|bodysize
 suffix:semicolon
+id|keylen
+op_assign
+id|SCTP_SECRET_SIZE
+suffix:semicolon
 id|key
 op_assign
 (paren
@@ -4403,7 +4405,7 @@ id|ep-&gt;secret_key
 id|ep-&gt;current_key
 )braket
 suffix:semicolon
-id|crypto_hmac
+id|sctp_crypto_hmac
 c_func
 (paren
 id|sctp_sk
@@ -4660,7 +4662,7 @@ id|digest
 )paren
 )paren
 suffix:semicolon
-id|crypto_hmac
+id|sctp_crypto_hmac
 c_func
 (paren
 id|sctp_sk
@@ -4723,7 +4725,7 @@ id|digest
 )paren
 )paren
 suffix:semicolon
-id|crypto_hmac
+id|sctp_crypto_hmac
 c_func
 (paren
 id|sctp_sk

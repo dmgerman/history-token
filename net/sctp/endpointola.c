@@ -492,7 +492,7 @@ id|ep-&gt;base.sk
 op_member_access_from_pointer
 id|hmac
 )paren
-id|crypto_free_tfm
+id|sctp_crypto_free_tfm
 c_func
 (paren
 id|sctp_sk

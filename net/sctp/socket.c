@@ -9560,7 +9560,7 @@ id|sctp_hmac_alg
 (brace
 id|tfm
 op_assign
-id|crypto_alloc_tfm
+id|sctp_crypto_alloc_tfm
 c_func
 (paren
 id|sctp_hmac_alg
@@ -9664,7 +9664,7 @@ c_cond
 (paren
 id|tfm
 )paren
-id|crypto_free_tfm
+id|sctp_crypto_free_tfm
 c_func
 (paren
 id|tfm
