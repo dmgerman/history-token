@@ -117,10 +117,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|hardirq_enter
+id|irq_enter
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 id|paca
@@ -193,10 +192,9 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-id|hardirq_exit
+id|irq_exit
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 r_if

@@ -386,6 +386,7 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
+multiline_comment|/*&n; * Compatibility macros, to be removed in future...&n; */
 DECL|macro|cli
 mdefine_line|#define cli()&t;__cli()
 DECL|macro|sti
@@ -396,49 +397,6 @@ DECL|macro|restore_flags
 mdefine_line|#define restore_flags(flags)&t;__restore_flags(flags)
 DECL|macro|save_and_cli
 mdefine_line|#define save_and_cli(flags)&t;__save_and_cli(flags)
-macro_line|#else /* CONFIG_SMP */
-r_extern
-r_void
-id|__global_cli
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__global_sti
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|__global_save_flags
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__global_restore_flags
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|macro|cli
-mdefine_line|#define cli() __global_cli()
-DECL|macro|sti
-mdefine_line|#define sti() __global_sti()
-DECL|macro|save_flags
-mdefine_line|#define save_flags(x) ((x)=__global_save_flags())
-DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) __global_restore_flags(x)
 macro_line|#endif /* !CONFIG_SMP */
 DECL|macro|local_irq_disable
 mdefine_line|#define local_irq_disable()&t;&t;__cli()
