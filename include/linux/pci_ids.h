@@ -993,6 +993,8 @@ DECL|macro|PCI_DEVICE_ID_SI_651
 mdefine_line|#define PCI_DEVICE_ID_SI_651&t;&t;0x0651
 DECL|macro|PCI_DEVICE_ID_SI_652
 mdefine_line|#define PCI_DEVICE_ID_SI_652&t;&t;0x0652
+DECL|macro|PCI_DEVICE_ID_SI_655
+mdefine_line|#define PCI_DEVICE_ID_SI_655&t;&t;0x0655
 DECL|macro|PCI_DEVICE_ID_SI_730
 mdefine_line|#define PCI_DEVICE_ID_SI_730&t;&t;0x0730
 DECL|macro|PCI_DEVICE_ID_SI_630_VGA
