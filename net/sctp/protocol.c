@@ -2549,7 +2549,7 @@ id|asoc
 suffix:semicolon
 id|asoc
 op_assign
-id|event-&gt;sndrcvinfo.sinfo_assoc_id
+id|event-&gt;asoc
 suffix:semicolon
 id|sctp_inet_msgname
 c_func
