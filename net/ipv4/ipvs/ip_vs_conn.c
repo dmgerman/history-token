@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;&t;&t;/* for proc_net_* */
 macro_line|#include &lt;linux/jhash.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;net/ip_vs.h&gt;
 multiline_comment|/*&n; *  Connection hash table: for input and output packets lookups of IPVS&n; */
 DECL|variable|ip_vs_conn_tab
@@ -300,10 +301,10 @@ id|l
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Returns hash value for IPVS connection entry&n; */
-r_static
-r_inline
-r_int
 DECL|function|ip_vs_conn_hashkey
+r_static
+r_int
+r_int
 id|ip_vs_conn_hashkey
 c_func
 (paren
@@ -317,80 +318,6 @@ id|__u16
 id|port
 )paren
 (brace
-macro_line|#ifdef CONFIG_IP_VS_HASH_SHIFTXOR
-r_int
-id|key
-op_assign
-id|ntohl
-c_func
-(paren
-id|addr
-)paren
-op_plus
-id|ip_vs_conn_rnd
-suffix:semicolon
-id|key
-op_xor_assign
-(paren
-id|key
-op_rshift
-id|IP_VS_CONN_TAB_BITS
-)paren
-suffix:semicolon
-id|key
-op_xor_assign
-(paren
-id|key
-op_rshift
-l_int|23
-)paren
-suffix:semicolon
-r_return
-(paren
-id|proto
-op_xor
-id|key
-op_xor
-id|ntohs
-c_func
-(paren
-id|port
-)paren
-)paren
-op_amp
-id|IP_VS_CONN_TAB_MASK
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_IP_VS_HASH_GOLDENRATIO
-r_return
-(paren
-(paren
-(paren
-id|ip_vs_conn_rnd
-op_xor
-(paren
-id|proto
-op_plus
-id|addr
-op_plus
-id|port
-)paren
-)paren
-op_star
-l_int|2654435761UL
-)paren
-op_rshift
-(paren
-l_int|31
-op_minus
-id|IP_VS_CONN_TAB_BITS
-)paren
-)paren
-op_amp
-id|IP_VS_CONN_TAB_MASK
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_IP_VS_HASH_JENKINS
 r_return
 id|jhash_3words
 c_func
@@ -406,7 +333,6 @@ id|ip_vs_conn_rnd
 op_amp
 id|IP_VS_CONN_TAB_MASK
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; *&t;Hashes ip_vs_conn in ip_vs_conn_tab by proto,addr,port.&n; *&t;returns bool success.&n; */
 DECL|function|ip_vs_conn_hash
@@ -3357,27 +3283,16 @@ id|ip_vs_conn_getinfo
 )paren
 suffix:semicolon
 multiline_comment|/* calculate the random value for connection hash */
+id|get_random_bytes
+c_func
+(paren
+op_amp
 id|ip_vs_conn_rnd
-op_assign
-id|jhash_3words
-c_func
-(paren
-(paren
-id|u32
-)paren
-id|jiffies
 comma
+r_sizeof
 (paren
-id|u32
+id|ip_vs_conn_rnd
 )paren
-id|ip_vs_conn_tab
-comma
-id|net_random
-c_func
-(paren
-)paren
-comma
-id|IP_VS_CONN_TAB_SIZE
 )paren
 suffix:semicolon
 r_return
