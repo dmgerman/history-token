@@ -2319,31 +2319,6 @@ comma
 id|US_FL_BULK32
 )paren
 comma
-multiline_comment|/* Aiptek PocketCAM 3Mega&n; * Nicolas DUPEUX &lt;nicolas@dupeux.net&gt; &n; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x08ca
-comma
-l_int|0x2011
-comma
-l_int|0x0000
-comma
-l_int|0x9999
-comma
-l_string|&quot;AIPTEK&quot;
-comma
-l_string|&quot;PocketCAM 3Mega&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-comma
 multiline_comment|/* Entry needed for flags. Moreover, all devices with this ID use&n; * bulk-only transport, but _some_ falsely report Control/Bulk instead.&n; * One example is &quot;Trumpion Digital Research MYMP3&quot;.&n; * Submitted by Bjoern Brill &lt;brill(at)fs.math.uni-frankfurt.de&gt;&n; */
 id|UNUSUAL_DEV
 c_func
@@ -2417,30 +2392,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_CAPACITY
-)paren
-comma
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x097a
-comma
-l_int|0x0001
-comma
-l_int|0x0000
-comma
-l_int|0x0001
-comma
-l_string|&quot;Minds@Work&quot;
-comma
-l_string|&quot;Digital Wallet&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-l_int|0
 )paren
 comma
 multiline_comment|/* This Pentax still camera is not conformant&n; * to the USB storage specification: -&n; * - It does not like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * Tested on Rev. 10.00 (0x1000)&n; * Submitted by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; */
@@ -2742,31 +2693,6 @@ comma
 id|US_PR_DEVICE
 comma
 id|usb_stor_ucr61s2b_init
-comma
-l_int|0
-)paren
-comma
-multiline_comment|/* Reported by Dan Pilone &lt;pilone@slac.com&gt;&n; * The device needs the flags only.&n; * Also reported by Brian Hall &lt;brihall@pcisys.net&gt;, again for flags.&n; * I also suspect this device may have a broken serial number.&n; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x1065
-comma
-l_int|0x2136
-comma
-l_int|0x0000
-comma
-l_int|0x9999
-comma
-l_string|&quot;CCYU TECHNOLOGY&quot;
-comma
-l_string|&quot;EasyDisk Portable Device&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
 comma
 l_int|0
 )paren
