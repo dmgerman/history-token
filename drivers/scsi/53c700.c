@@ -9185,6 +9185,18 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* NULL exit routine to keep modutils happy */
+id|STATIC
+r_void
+id|__exit
+DECL|function|NCR_700_exit
+id|NCR_700_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 DECL|variable|NCR_700_detect
 id|EXPORT_SYMBOL
 c_func
@@ -9211,6 +9223,13 @@ id|module_init
 c_func
 (paren
 id|NCR_700_init
+)paren
+suffix:semicolon
+DECL|variable|NCR_700_exit
+id|module_exit
+c_func
+(paren
+id|NCR_700_exit
 )paren
 suffix:semicolon
 eof
