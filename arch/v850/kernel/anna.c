@@ -136,17 +136,6 @@ op_star
 id|cmdline
 )paren
 (brace
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;CPU: %s&bslash;n&quot;
-l_string|&quot;Platform: %s&bslash;n&quot;
-comma
-id|CPU_MODEL_LONG
-comma
-id|PLATFORM_LONG
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_V850E_NB85E_UART_CONSOLE
 id|nb85e_uart_cons_init
 (paren

@@ -247,6 +247,16 @@ comma
 id|ram_len
 )paren
 suffix:semicolon
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;CPU: %s&bslash;nPlatform: %s&bslash;n&quot;
+comma
+id|CPU_MODEL_LONG
+comma
+id|PLATFORM_LONG
+)paren
+suffix:semicolon
 multiline_comment|/* do machine-specific setups.  */
 id|mach_setup
 (paren

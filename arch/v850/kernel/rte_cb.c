@@ -151,25 +151,6 @@ op_star
 id|cmdline
 )paren
 (brace
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;CPU: %s&bslash;n&quot;
-l_string|&quot;Platform: %s%s&bslash;n&quot;
-comma
-id|CPU_MODEL_LONG
-comma
-id|PLATFORM_LONG
-comma
-macro_line|#ifdef CONFIG_ROM_KERNEL
-l_string|&quot;&quot;
-macro_line|#elif defined (CONFIG_RTE_CB_MULTI)
-l_string|&quot; (with Multi ROM monitor)&quot;
-macro_line|#else
-l_string|&quot; (with ROM monitor)&quot;
-macro_line|#endif&t;&t;
-)paren
-suffix:semicolon
 multiline_comment|/* Probe for Mother-A, and print a message if we find it.  */
 op_star
 (paren
