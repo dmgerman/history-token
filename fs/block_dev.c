@@ -2223,7 +2223,8 @@ id|de
 suffix:semicolon
 id|de
 op_assign
-id|devfs_find_handle
+id|devfs_get_handle
+c_func
 (paren
 l_int|NULL
 comma
@@ -2251,16 +2252,24 @@ id|de
 id|bdops
 op_assign
 id|devfs_get_ops
+c_func
 (paren
 id|de
 )paren
 suffix:semicolon
 id|devfs_put_ops
+c_func
 (paren
 id|de
 )paren
 suffix:semicolon
 multiline_comment|/* We&squot;re running in owner module */
+id|devfs_put
+c_func
+(paren
+id|de
+)paren
+suffix:semicolon
 )brace
 )brace
 r_if

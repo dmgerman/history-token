@@ -8446,10 +8446,7 @@ c_func
 r_void
 )paren
 (brace
-id|devfs_unregister
-c_func
-(paren
-id|devfs_find_handle
+id|devfs_find_and_unregister
 c_func
 (paren
 l_int|NULL
@@ -8463,7 +8460,6 @@ comma
 id|DEVFS_SPECIAL_BLK
 comma
 l_int|0
-)paren
 )paren
 suffix:semicolon
 r_if
