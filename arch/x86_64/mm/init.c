@@ -2043,17 +2043,20 @@ l_int|0xffffffff
 op_rshift
 id|PAGE_SHIFT
 )paren
-(brace
+id|swiotlb
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|swiotlb
+)paren
 id|swiotlb_init
 c_func
 (paren
 )paren
 suffix:semicolon
-id|swiotlb
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 macro_line|#endif
 multiline_comment|/* How many end-of-memory variables you have, grandma! */
 id|max_low_pfn
