@@ -5254,64 +5254,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|vlsi_set_baud_lock
-r_static
-r_inline
-r_int
-id|vlsi_set_baud_lock
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|ndev
-)paren
-(brace
-id|vlsi_irda_dev_t
-op_star
-id|idev
-op_assign
-id|ndev-&gt;priv
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|idev-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|ret
-op_assign
-id|vlsi_set_baud
-c_func
-(paren
-id|idev
-comma
-id|ndev-&gt;base_addr
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|idev-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
 DECL|function|vlsi_hard_start_xmit
 r_static
 r_int
@@ -5376,12 +5318,27 @@ id|now
 comma
 id|ready
 suffix:semicolon
+r_char
+op_star
+id|msg
+op_assign
+l_int|NULL
+suffix:semicolon
 id|speed
 op_assign
 id|irda_get_next_speed
 c_func
 (paren
 id|skb
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|idev-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -5407,29 +5364,43 @@ id|idev-&gt;new_baud
 op_assign
 id|speed
 suffix:semicolon
+id|status
+op_assign
+id|RD_TX_CLRENTX
+suffix:semicolon
+multiline_comment|/* stop tx-ring after this frame */
+)brace
+r_else
+id|status
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|skb-&gt;len
+op_eq
+l_int|0
 )paren
 (brace
-id|dev_kfree_skb_any
-c_func
+multiline_comment|/* handle zero packets - should be speed change */
+r_if
+c_cond
 (paren
-id|skb
+id|status
+op_eq
+l_int|0
 )paren
+(brace
+id|msg
+op_assign
+l_string|&quot;bogus zero-length packet&quot;
 suffix:semicolon
-multiline_comment|/* due to the completely asynch tx operation we might have&n;&t;&t;&t; * IrLAP racing with the hardware here, f.e. if the controller&n;&t;&t;&t; * is just sending the last packet with current speed while&n;&t;&t;&t; * the LAP is already switching the speed using synchronous&n;&t;&t;&t; * len=0 packet. Immediate execution would lead to hw lockup&n;&t;&t;&t; * requiring a powercycle to reset. Good candidate to trigger&n;&t;&t;&t; * this is the final UA:RSP packet after receiving a DISC:CMD&n;&t;&t;&t; * when getting the LAP down.&n;&t;&t;&t; * Note that we are not protected by the queue_stop approach&n;&t;&t;&t; * because the final UA:RSP arrives _without_ request to apply&n;&t;&t;&t; * new-speed-after-this-packet - hence the driver doesn&squot;t know&n;&t;&t;&t; * this was the last packet and doesn&squot;t stop the queue. So the&n;&t;&t;&t; * forced switch to default speed from LAP gets through as fast&n;&t;&t;&t; * as only some 10 usec later while the UA:RSP is still processed&n;&t;&t;&t; * by the hardware and we would get screwed.&n;&t;&t;&t; * Note: no locking required since we (netdev-&gt;xmit) are the only&n;&t;&t;&t; * supplier for tx and the network layer provides serialization&n;&t;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|idev-&gt;lock
-comma
-id|flags
-)paren
+r_goto
+id|drop_unlock
 suffix:semicolon
+)brace
+multiline_comment|/* due to the completely asynch tx operation we might have&n;&t;&t; * IrLAP racing with the hardware here, f.e. if the controller&n;&t;&t; * is just sending the last packet with current speed while&n;&t;&t; * the LAP is already switching the speed using synchronous&n;&t;&t; * len=0 packet. Immediate execution would lead to hw lockup&n;&t;&t; * requiring a powercycle to reset. Good candidate to trigger&n;&t;&t; * this is the final UA:RSP packet after receiving a DISC:CMD&n;&t;&t; * when getting the LAP down.&n;&t;&t; * Note that we are not protected by the queue_stop approach&n;&t;&t; * because the final UA:RSP arrives _without_ request to apply&n;&t;&t; * new-speed-after-this-packet - hence the driver doesn&squot;t know&n;&t;&t; * this was the last packet and doesn&squot;t stop the queue. So the&n;&t;&t; * forced switch to default speed from LAP gets through as fast&n;&t;&t; * as only some 10 usec later while the UA:RSP is still processed&n;&t;&t; * by the hardware and we would get screwed.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5460,7 +5431,7 @@ suffix:semicolon
 )brace
 r_else
 suffix:semicolon
-multiline_comment|/* keep the speed change pending like it would&n;&t;&t;&t;&t;   * for any len&gt;0 packet. tx completion interrupt&n;&t;&t;&t;&t;   * will apply it when the tx ring becomes empty.&n;&t;&t;&t;&t;   */
+multiline_comment|/* keep the speed change pending like it would&n;&t;&t;&t; * for any len&gt;0 packet. tx completion interrupt&n;&t;&t;&t; * will apply it when the tx ring becomes empty.&n;&t;&t;&t; */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5470,39 +5441,14 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-id|status
-op_assign
-id|RD_TX_CLRENTX
-suffix:semicolon
-multiline_comment|/* stop tx-ring after this frame */
-)brace
-r_else
-id|status
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb-&gt;len
-op_eq
-l_int|0
-)paren
-(brace
-id|WARNING
+id|dev_kfree_skb_any
 c_func
 (paren
-l_string|&quot;%s: dropping len=0 packet&bslash;n&quot;
-comma
-id|__FUNCTION__
+id|skb
 )paren
 suffix:semicolon
-r_goto
-id|drop
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* sanity checks - simply drop the packet */
@@ -5521,16 +5467,12 @@ op_logical_neg
 id|rd
 )paren
 (brace
-id|ERROR
-c_func
-(paren
-l_string|&quot;%s - ring full but queue wasn&squot;t stopped&quot;
-comma
-id|__FUNCTION__
-)paren
+id|msg
+op_assign
+l_string|&quot;ring full, but queue wasn&squot;t stopped&quot;
 suffix:semicolon
 r_goto
-id|drop
+id|drop_unlock
 suffix:semicolon
 )brace
 r_if
@@ -5543,16 +5485,12 @@ id|rd
 )paren
 )paren
 (brace
-id|ERROR
-c_func
-(paren
-l_string|&quot;%s - entry still owned by hw!&quot;
-comma
-id|__FUNCTION__
-)paren
+id|msg
+op_assign
+l_string|&quot;entry still owned by hw&quot;
 suffix:semicolon
 r_goto
-id|drop
+id|drop_unlock
 suffix:semicolon
 )brace
 r_if
@@ -5562,16 +5500,12 @@ op_logical_neg
 id|rd-&gt;buf
 )paren
 (brace
-id|ERROR
-c_func
-(paren
-l_string|&quot;%s - tx ring entry without pci buffer&quot;
-comma
-id|__FUNCTION__
-)paren
+id|msg
+op_assign
+l_string|&quot;tx ring entry without pci buffer&quot;
 suffix:semicolon
 r_goto
-id|drop
+id|drop_unlock
 suffix:semicolon
 )brace
 r_if
@@ -5580,110 +5514,24 @@ c_cond
 id|rd-&gt;skb
 )paren
 (brace
-id|ERROR
-c_func
-(paren
-l_string|&quot;%s - ring entry with old skb still attached&quot;
-comma
-id|__FUNCTION__
-)paren
+id|msg
+op_assign
+l_string|&quot;ring entry with old skb still attached&quot;
 suffix:semicolon
 r_goto
-id|drop
+id|drop_unlock
 suffix:semicolon
 )brace
-multiline_comment|/* tx buffer already owned by CPU due to pci_dma_sync_single() either&n;&t; * after initial pci_map_single or after subsequent tx-completion&n;&t; */
-r_if
-c_cond
-(paren
-id|idev-&gt;mode
-op_eq
-id|IFF_SIR
-)paren
-(brace
-id|status
-op_or_assign
-id|RD_TX_DISCRC
-suffix:semicolon
-multiline_comment|/* no hw-crc creation */
-id|len
-op_assign
-id|async_wrap_skb
+multiline_comment|/* no need for serialization or interrupt disable during mtt */
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|skb
+op_amp
+id|idev-&gt;lock
 comma
-id|rd-&gt;buf
-comma
-id|r-&gt;len
+id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Some rare worst case situation in SIR mode might lead to&n;&t;&t; * potential buffer overflow. The wrapper detects this, returns&n;&t;&t; * with a shortened frame (without FCS/EOF) but doesn&squot;t provide&n;&t;&t; * any error indication about the invalid packet which we are&n;&t;&t; * going to transmit.&n;&t;&t; * Therefore we log if the buffer got filled to the point, where the&n;&t;&t; * wrapper would abort, i.e. when there are less than 5 bytes left to&n;&t;&t; * allow appending the FCS/EOF.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|len
-op_ge
-id|r-&gt;len
-op_minus
-l_int|5
-)paren
-id|WARNING
-c_func
-(paren
-l_string|&quot;%s: possible buffer overflow with SIR wrapping!&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* hw deals with MIR/FIR mode wrapping */
-id|status
-op_or_assign
-id|RD_TX_PULSE
-suffix:semicolon
-multiline_comment|/* send 2 us highspeed indication pulse */
-id|len
-op_assign
-id|skb-&gt;len
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-OG
-id|r-&gt;len
-)paren
-(brace
-id|WARNING
-c_func
-(paren
-l_string|&quot;%s: no space - skb too big (%d)&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|skb-&gt;len
-)paren
-suffix:semicolon
-r_goto
-id|drop
-suffix:semicolon
-)brace
-r_else
-id|memcpy
-c_func
-(paren
-id|rd-&gt;buf
-comma
-id|skb-&gt;data
-comma
-id|len
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* do mtt delay before we need to disable interrupts! */
 r_if
 c_cond
 (paren
@@ -5769,6 +5617,91 @@ suffix:semicolon
 multiline_comment|/* must not sleep here - we are called under xmit_lock! */
 )brace
 )brace
+multiline_comment|/* tx buffer already owned by CPU due to pci_dma_sync_single() either&n;&t; * after initial pci_map_single or after subsequent tx-completion&n;&t; */
+r_if
+c_cond
+(paren
+id|idev-&gt;mode
+op_eq
+id|IFF_SIR
+)paren
+(brace
+id|status
+op_or_assign
+id|RD_TX_DISCRC
+suffix:semicolon
+multiline_comment|/* no hw-crc creation */
+id|len
+op_assign
+id|async_wrap_skb
+c_func
+(paren
+id|skb
+comma
+id|rd-&gt;buf
+comma
+id|r-&gt;len
+)paren
+suffix:semicolon
+multiline_comment|/* Some rare worst case situation in SIR mode might lead to&n;&t;&t; * potential buffer overflow. The wrapper detects this, returns&n;&t;&t; * with a shortened frame (without FCS/EOF) but doesn&squot;t provide&n;&t;&t; * any error indication about the invalid packet which we are&n;&t;&t; * going to transmit.&n;&t;&t; * Therefore we log if the buffer got filled to the point, where the&n;&t;&t; * wrapper would abort, i.e. when there are less than 5 bytes left to&n;&t;&t; * allow appending the FCS/EOF.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|len
+op_ge
+id|r-&gt;len
+op_minus
+l_int|5
+)paren
+id|WARNING
+c_func
+(paren
+l_string|&quot;%s: possible buffer overflow with SIR wrapping!&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* hw deals with MIR/FIR mode wrapping */
+id|status
+op_or_assign
+id|RD_TX_PULSE
+suffix:semicolon
+multiline_comment|/* send 2 us highspeed indication pulse */
+id|len
+op_assign
+id|skb-&gt;len
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OG
+id|r-&gt;len
+)paren
+(brace
+id|msg
+op_assign
+l_string|&quot;frame exceeds tx buffer length&quot;
+suffix:semicolon
+r_goto
+id|drop
+suffix:semicolon
+)brace
+r_else
+id|memcpy
+c_func
+(paren
+id|rd-&gt;buf
+comma
+id|skb-&gt;data
+comma
+id|len
+)paren
+suffix:semicolon
+)brace
 id|rd-&gt;skb
 op_assign
 id|skb
@@ -5808,7 +5741,7 @@ comma
 id|r-&gt;dir
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *&t;We need to disable IR output in order to switch to TX mode.&n; *&t;Better not do this blindly anytime we want to transmit something&n; *&t;because TX may already run. However we are racing with the controller&n; *&t;which may stop TX at any time when fetching an inactive descriptor&n; *&t;or one with CLR_ENTX set. So we switch on TX only, if TX was not running&n; *&t;_after_ the new descriptor was activated on the ring. This ensures&n; *&t;we will either find TX already stopped or we can be sure, there&n; *&t;will be a TX-complete interrupt even if the chip stopped doing&n; *&t;TX just after we found it still running. The ISR will then find&n; *&t;the non-empty ring and restart TX processing. The enclosing&n; *&t;spinlock provides the correct serialization to prevent race with isr.&n; */
+multiline_comment|/*&t;Switching to TX mode here races with the controller&n; *&t;which may stop TX at any time when fetching an inactive descriptor&n; *&t;or one with CLR_ENTX set. So we switch on TX only, if TX was not running&n; *&t;_after_ the new descriptor was activated on the ring. This ensures&n; *&t;we will either find TX already stopped or we can be sure, there&n; *&t;will be a TX-complete interrupt even if the chip stopped doing&n; *&t;TX just after we found it still running. The ISR will then find&n; *&t;the non-empty ring and restart TX processing. The enclosing&n; *&t;spinlock provides the correct serialization to prevent race with isr.&n; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5887,7 +5820,7 @@ op_plus
 id|VLSI_PIO_IRCFG
 )paren
 suffix:semicolon
-id|rmb
+id|mb
 c_func
 (paren
 )paren
@@ -5904,7 +5837,7 @@ op_plus
 id|VLSI_PIO_IRCFG
 )paren
 suffix:semicolon
-id|mb
+id|wmb
 c_func
 (paren
 )paren
@@ -5965,8 +5898,29 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|drop_unlock
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|idev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|drop
 suffix:colon
+id|WARNING
+c_func
+(paren
+l_string|&quot;%s: dropping packet - %s&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|msg
+)paren
+suffix:semicolon
 id|dev_kfree_skb_any
 c_func
 (paren
@@ -5979,8 +5933,9 @@ suffix:semicolon
 id|idev-&gt;stats.tx_dropped
 op_increment
 suffix:semicolon
+multiline_comment|/* Don&squot;t even think about returning NET_XMIT_DROP (=1) here!&n;&t; * In fact any retval!=0 causes the packet scheduler to requeue the&n;&t; * packet for later retry of transmission - which isn&squot;t exactly&n;&t; * what we want after we&squot;ve just called dev_kfree_skb_any ;-)&n;&t; */
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|vlsi_tx_interrupt
@@ -6122,6 +6077,10 @@ id|ret
 suffix:semicolon
 )brace
 )brace
+id|iobase
+op_assign
+id|ndev-&gt;base_addr
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6132,15 +6091,13 @@ op_eq
 l_int|NULL
 )paren
 multiline_comment|/* tx ring empty and speed change pending */
-id|vlsi_set_baud_lock
+id|vlsi_set_baud
 c_func
 (paren
-id|ndev
-)paren
-suffix:semicolon
+id|idev
+comma
 id|iobase
-op_assign
-id|ndev-&gt;base_addr
+)paren
 suffix:semicolon
 id|config
 op_assign
