@@ -113,20 +113,6 @@ id|destroy_EII_client
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_INET
-DECL|variable|ip_options_compile
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_options_compile
-)paren
-suffix:semicolon
-DECL|variable|ip_options_undo
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_options_undo
-)paren
-suffix:semicolon
 DECL|variable|in_aton
 id|EXPORT_SYMBOL
 c_func
