@@ -1465,9 +1465,6 @@ id|iovstack
 suffix:semicolon
 id|ssize_t
 id|ret
-op_assign
-op_minus
-id|EINVAL
 suffix:semicolon
 r_int
 id|seg
@@ -1483,7 +1480,11 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
-multiline_comment|/*&n;&t; * SuS says &quot;The readv() function *may* fail if the iovcnt argument&n;&t; * was less than or equal to 0, or greater than {IOV_MAX}.  Linux has&n;&t; * traditionally returned -EINVAL for zero segments, so...&n;&t; */
+multiline_comment|/*&n;&t; * SuS says &quot;The readv() function *may* fail if the iovcnt argument&n;&t; * was less than or equal to 0, or greater than {IOV_MAX}.  Linux has&n;&t; * traditionally returned zero for zero segments, so...&n;&t; */
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1495,6 +1496,11 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/*&n;&t; * First get the &quot;struct iovec&quot; from user memory and&n;&t; * verify all the pointers&n;&t; */
+id|ret
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
