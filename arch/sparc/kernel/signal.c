@@ -5442,6 +5442,10 @@ comma
 id|current
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
 )brace
 r_static
 r_inline
