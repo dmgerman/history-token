@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
@@ -14440,6 +14441,16 @@ l_int|0
 suffix:semicolon
 id|i
 op_increment
+)paren
+r_if
+c_cond
+(paren
+id|ints
+(braket
+id|i
+)braket
+OL
+id|NR_CPUS
 )paren
 id|cpu_set
 c_func
