@@ -1,32 +1,14 @@
 multiline_comment|/*&n; *  drivers/block/ataflop.c&n; *&n; *  Copyright (C) 1993  Greg Harp&n; *  Atari Support by Bjoern Brauel, Roman Hodek&n; *&n; *  Big cleanup Sep 11..14 1994 Roman Hodek:&n; *   - Driver now works interrupt driven&n; *   - Support for two drives; should work, but I cannot test that :-(&n; *   - Reading is done in whole tracks and buffered to speed up things&n; *   - Disk change detection and drive deselecting after motor-off&n; *     similar to TOS&n; *   - Autodetection of disk format (DD/HD); untested yet, because I&n; *     don&squot;t have an HD drive :-(&n; *&n; *  Fixes Nov 13 1994 Martin Schaller:&n; *   - Autodetection works now&n; *   - Support for 5 1/4&squot;&squot; disks&n; *   - Removed drive type (unknown on atari)&n; *   - Do seeks with 8 Mhz&n; *&n; *  Changes by Andreas Schwab:&n; *   - After errors in multiple read mode try again reading single sectors&n; *  (Feb 1995):&n; *   - Clean up error handling&n; *   - Set blk_size for proper size checking&n; *   - Initialize track register when testing presence of floppy&n; *   - Implement some ioctl&squot;s&n; *&n; *  Changes by Torsten Lang:&n; *   - When probing the floppies we should add the FDCCMDADD_H flag since&n; *     the FDC will otherwise wait forever when no disk is inserted...&n; *&n; * ++ Freddi Aschwanden (fa) 20.9.95 fixes for medusa:&n; *  - MFPDELAY() after each FDC access -&gt; atari &n; *  - more/other disk formats&n; *  - DMA to the block buffer directly if we have a 32bit DMA&n; *  - for medusa, the step rate is always 3ms&n; *  - on medusa, use only cache_push()&n; * Roman:&n; *  - Make disk format numbering independent from minors&n; *  - Let user set max. supported drive type (speeds up format&n; *    detection, saves buffer space)&n; *&n; * Roman 10/15/95:&n; *  - implement some more ioctls&n; *  - disk formatting&n; *  &n; * Andreas 95/12/12:&n; *  - increase gap size at start of track for HD/ED disks&n; *&n; * Michael (MSch) 11/07/96:&n; *  - implemented FDSETPRM and FDDEFPRM ioctl&n; *&n; * Andreas (97/03/19):&n; *  - implemented missing BLK* ioctls&n; *&n; *  Things left to do:&n; *   - Formatting&n; *   - Maybe a better strategy for disk change detection (does anyone&n; *     know one?)&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/fd.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_buffers() */
-macro_line|#include &lt;asm/setup.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/atafd.h&gt;
 macro_line|#include &lt;asm/atafdreg.h&gt;
-macro_line|#include &lt;asm/atarihw.h&gt;
 macro_line|#include &lt;asm/atariints.h&gt;
 macro_line|#include &lt;asm/atari_stdma.h&gt;
 macro_line|#include &lt;asm/atari_stram.h&gt;
-macro_line|#include &lt;linux/blkpg.h&gt;
 DECL|macro|FD_MAX_UNITS
 mdefine_line|#define&t;FD_MAX_UNITS 2
 DECL|macro|DEBUG
