@@ -298,7 +298,7 @@ id|ap
 suffix:semicolon
 r_static
 r_void
-id|pdc_fill_sg
+id|pdc_qc_prep
 c_func
 (paren
 r_struct
@@ -489,9 +489,9 @@ op_assign
 id|pdc_dma_start
 comma
 dot
-id|fill_sg
+id|qc_prep
 op_assign
-id|pdc_fill_sg
+id|pdc_qc_prep
 comma
 dot
 id|eng_timeout
@@ -1168,10 +1168,10 @@ l_int|4
 )paren
 suffix:semicolon
 )brace
-DECL|function|pdc_fill_sg
+DECL|function|pdc_qc_prep
 r_static
 r_void
-id|pdc_fill_sg
+id|pdc_qc_prep
 c_func
 (paren
 r_struct
@@ -1197,7 +1197,7 @@ c_func
 l_string|&quot;ENTER&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ata_fill_sg
+id|ata_qc_prep
 c_func
 (paren
 id|qc
