@@ -3,9 +3,9 @@ macro_line|#ifndef _ASM_IA64_SN_IOCONFIG_BUS_H
 DECL|macro|_ASM_IA64_SN_IOCONFIG_BUS_H
 mdefine_line|#define _ASM_IA64_SN_IOCONFIG_BUS_H
 DECL|macro|IOCONFIG_PCIBUS
-mdefine_line|#define IOCONFIG_PCIBUS &quot;/boot/efi/ioconfig_pcibus&quot;
+mdefine_line|#define IOCONFIG_PCIBUS&t;&quot;/boot/efi/ioconfig_pcibus&quot;
 DECL|macro|POUND_CHAR
-mdefine_line|#define POUND_CHAR                   &squot;#&squot;
+mdefine_line|#define POUND_CHAR&t;&squot;#&squot;
 DECL|macro|MAX_LINE_LEN
 mdefine_line|#define MAX_LINE_LEN&t;128
 DECL|macro|MAXPATHLEN

@@ -2,12 +2,6 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_MODULE_H
 DECL|macro|_ASM_IA64_SN_MODULE_H
 mdefine_line|#define _ASM_IA64_SN_MODULE_H
-macro_line|#ifdef&t;__cplusplus
-r_extern
-l_string|&quot;C&quot;
-(brace
-macro_line|#endif
-macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/ksys/elsc.h&gt;
 DECL|macro|MODULE_MAX

@@ -4,6 +4,10 @@ macro_line|#ifndef _ASM_IA64_SN_CLKSUPPORT_H
 DECL|macro|_ASM_IA64_SN_CLKSUPPORT_H
 mdefine_line|#define _ASM_IA64_SN_CLKSUPPORT_H
 macro_line|#include &lt;asm/sn/arch.h&gt;
+macro_line|#include &lt;asm/sn/addrs.h&gt;
+macro_line|#include &lt;asm/sn/sn2/addrs.h&gt;
+macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
+macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
 DECL|typedef|clkreg_t
 r_typedef
 r_int
@@ -19,10 +23,6 @@ r_int
 r_int
 id|sn_rtc_per_itc
 suffix:semicolon
-macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/sn2/addrs.h&gt;
-macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
-macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
 DECL|macro|RTC_MASK
 mdefine_line|#define RTC_MASK&t;&t;SH_RTC_MASK
 DECL|macro|RTC_COUNTER_ADDR

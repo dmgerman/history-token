@@ -4,7 +4,6 @@ DECL|macro|_ASM_IA64_SN_SGI_H
 mdefine_line|#define _ASM_IA64_SN_SGI_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;&t;&t;/* for copy_??_user */
 macro_line|#include &lt;asm/sn/hwgfs.h&gt;
 DECL|typedef|vertex_hdl_t
 r_typedef
