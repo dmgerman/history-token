@@ -440,10 +440,11 @@ id|inode
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called at each iput()&n; */
+multiline_comment|/*&n; * Called at each iput()&n; *&n; * The inode may be &quot;bad&quot; if ext3_read_inode() saw an error from&n; * ext3_get_inode(), so we need to check that to avoid freeing random disk&n; * blocks.&n; */
 DECL|function|ext3_put_inode
 r_void
 id|ext3_put_inode
+c_func
 (paren
 r_struct
 id|inode
@@ -451,7 +452,18 @@ op_star
 id|inode
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_bad_inode
+c_func
+(paren
+id|inode
+)paren
+)paren
 id|ext3_discard_prealloc
+c_func
 (paren
 id|inode
 )paren
