@@ -668,6 +668,8 @@ comma
 id|SA_INTERRUPT
 comma
 l_string|&quot;dtc&quot;
+comma
+id|instance
 )paren
 )paren
 (brace

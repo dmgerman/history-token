@@ -2543,7 +2543,7 @@ op_amp
 id|p-&gt;alloc_lock
 )paren
 suffix:semicolon
-id|p-&gt;sigpending
+id|p-&gt;work.sigpending
 op_assign
 l_int|0
 suffix:semicolon
@@ -3041,7 +3041,7 @@ id|vfork
 suffix:semicolon
 r_else
 multiline_comment|/*&n;&t;&t; * Let the child process run first, to avoid most of the&n;&t;&t; * COW overhead when the child exec()s afterwards.&n;&t;&t; */
-id|current-&gt;need_resched
+id|current-&gt;work.need_resched
 op_assign
 l_int|1
 suffix:semicolon

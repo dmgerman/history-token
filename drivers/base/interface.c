@@ -388,7 +388,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%s %s %u&quot;
+l_string|&quot;%10s %10s %u&quot;
 comma
 id|str_command
 comma

@@ -543,14 +543,14 @@ id|need_resched
 suffix:semicolon
 id|need_resched
 op_assign
-id|p-&gt;need_resched
+id|p-&gt;work.need_resched
 suffix:semicolon
 id|wmb
 c_func
 (paren
 )paren
 suffix:semicolon
-id|p-&gt;need_resched
+id|p-&gt;work.need_resched
 op_assign
 l_int|1
 suffix:semicolon
@@ -1722,7 +1722,7 @@ id|next-&gt;prio
 OL
 id|current-&gt;prio
 )paren
-id|current-&gt;need_resched
+id|current-&gt;work.need_resched
 op_assign
 l_int|1
 suffix:semicolon
@@ -1874,7 +1874,7 @@ op_ne
 id|rq-&gt;active
 )paren
 (brace
-id|p-&gt;need_resched
+id|p-&gt;work.need_resched
 op_assign
 l_int|1
 suffix:semicolon
@@ -1925,7 +1925,7 @@ c_func
 id|p-&gt;__nice
 )paren
 suffix:semicolon
-id|p-&gt;need_resched
+id|p-&gt;work.need_resched
 op_assign
 l_int|1
 suffix:semicolon
@@ -1976,7 +1976,7 @@ comma
 id|rq-&gt;active
 )paren
 suffix:semicolon
-id|p-&gt;need_resched
+id|p-&gt;work.need_resched
 op_assign
 l_int|1
 suffix:semicolon
@@ -2321,7 +2321,7 @@ c_func
 id|next
 )paren
 suffix:semicolon
-id|prev-&gt;need_resched
+id|prev-&gt;work.need_resched
 op_assign
 l_int|0
 suffix:semicolon
@@ -4934,7 +4934,7 @@ comma
 id|rq
 )paren
 suffix:semicolon
-id|idle-&gt;need_resched
+id|idle-&gt;work.need_resched
 op_assign
 l_int|1
 suffix:semicolon

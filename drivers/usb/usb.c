@@ -3187,7 +3187,7 @@ id|dev-&gt;refcnt
 suffix:semicolon
 )brace
 multiline_comment|/* ---------------------------------------------------------------------- &n; * New USB Core Functions&n; * ----------------------------------------------------------------------*/
-multiline_comment|/**&n; *&t;usb_alloc_urb - creates a new urb for a USB driver to use&n; *&t;@iso_packets: number of iso packets for this urb&n; *&n; *&t;Creates an urb for the USB driver to use and returns a pointer to it.&n; *&t;If no memory is available, NULL is returned.&n; *&n; *&t;If the driver want to use this urb for interrupt, control, or bulk&n; *&t;endpoints, pass &squot;0&squot; as the number of iso packets.&n; *&n; *&t;The driver should call usb_free_urb() when it is finished with the urb.&n; */
+multiline_comment|/**&n; * usb_alloc_urb - creates a new urb for a USB driver to use&n; * @iso_packets: number of iso packets for this urb&n; *&n; * Creates an urb for the USB driver to use, initializes a few internal&n; * structures, incrementes the usage counter, and returns a pointer to it.&n; *&n; * If no memory is available, NULL is returned.&n; *&n; * If the driver want to use this urb for interrupt, control, or bulk&n; * endpoints, pass &squot;0&squot; as the number of iso packets.&n; *&n; * The driver must call usb_free_urb() when it is finished with the urb.&n; */
 DECL|function|usb_alloc_urb
 r_struct
 id|urb
@@ -3270,6 +3270,13 @@ id|urb
 )paren
 )paren
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|urb-&gt;count
+)paren
+suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
@@ -3281,7 +3288,7 @@ r_return
 id|urb
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;usb_free_urb - frees the memory used by a urb&n; *&t;@urb: pointer to the urb to free&n; *&n; *&t;If an urb is created with a call to usb_create_urb() it should be&n; *&t;cleaned up with a call to usb_free_urb() when the driver is finished&n; *&t;with it.&n; */
+multiline_comment|/**&n; * usb_free_urb - frees the memory used by a urb when all users of it are finished&n; * @urb: pointer to the urb to free&n; *&n; * Must be called when a user of a urb is finished with it.  When the last user&n; * of the urb calls this function, the memory of the urb is freed.&n; *&n; * Note: The transfer buffer associated with the urb is not freed, that must be&n; * done elsewhere.&n; */
 DECL|function|usb_free_urb
 r_void
 id|usb_free_urb
@@ -3298,6 +3305,16 @@ c_cond
 (paren
 id|urb
 )paren
+r_if
+c_cond
+(paren
+id|atomic_dec_and_test
+c_func
+(paren
+op_amp
+id|urb-&gt;count
+)paren
+)paren
 id|kfree
 c_func
 (paren
@@ -3305,8 +3322,44 @@ id|urb
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * usb_get_urb - incrementes the reference count of the urb&n; * @urb: pointer to the urb to modify&n; *&n; * This must be  called whenever a urb is transfered from a device driver to a&n; * host controller driver.  This allows proper reference counting to happen&n; * for urbs.&n; *&n; * A pointer to the urb with the incremented reference counter is returned.&n; */
+DECL|function|usb_get_urb
+r_struct
+id|urb
+op_star
+id|usb_get_urb
+c_func
+(paren
+r_struct
+id|urb
+op_star
+id|urb
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|urb
+)paren
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|urb-&gt;count
+)paren
+suffix:semicolon
+r_return
+id|urb
+suffix:semicolon
+)brace
+r_else
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/*-------------------------------------------------------------------*/
-multiline_comment|/**&n; * usb_submit_urb - asynchronously issue a transfer request for an endpoint&n; * @urb: pointer to the urb describing the request&n; *&n; * This submits a transfer request, and transfers control of the URB&n; * describing that request to the USB subsystem.  Request completion will&n; * indicated later, asynchronously, by calling the completion handler.&n; * This call may be issued in interrupt context.&n; *&n; * The caller must have correctly initialized the URB before submitting&n; * it.  Macros such as FILL_BULK_URB() and FILL_CONTROL_URB() are&n; * available to ensure that most fields are correctly initialized, for&n; * the particular kind of transfer, although they will not initialize&n; * any transfer flags.&n; *&n; * Successful submissions return 0; otherwise this routine returns a&n; * negative error number.  If the submission is successful, the complete&n; * fuction of the urb will be called when the USB host driver is&n; * finished with the urb (either a successful transmission, or some&n; * error case.)&n; *&n; * Unreserved Bandwidth Transfers:&n; *&n; * Bulk or control requests complete only once.  When the completion&n; * function is called, control of the URB is returned to the device&n; * driver which issued the request.  The completion handler may then&n; * immediately free or reuse that URB.&n; *&n; * Bulk URBs will be queued if the USB_QUEUE_BULK transfer flag is set&n; * in the URB.  This can be used to maximize bandwidth utilization by&n; * letting the USB controller start work on the next URB without any&n; * delay to report completion (scheduling and processing an interrupt)&n; * and then submit that next request.&n; *&n; * For control endpoints, the synchronous usb_control_msg() call is&n; * often used (in non-interrupt context) instead of this call.&n; *&n; * Reserved Bandwidth Transfers:&n; *&n; * Periodic URBs (interrupt or isochronous) are completed repeatedly,&n; * until the original request is aborted.  When the completion callback&n; * indicates the URB has been unlinked (with a special status code),&n; * control of that URB returns to the device driver.  Otherwise, the&n; * completion handler does not control the URB, and should not change&n; * any of its fields.&n; *&n; * Note that isochronous URBs should be submitted in a &quot;ring&quot; data&n; * structure (using urb-&gt;next) to ensure that they are resubmitted&n; * appropriately.&n; *&n; * If the USB subsystem can&squot;t reserve sufficient bandwidth to perform&n; * the periodic request, and bandwidth reservation is being done for&n; * this controller, submitting such a periodic request will fail. &n; */
+multiline_comment|/**&n; * usb_submit_urb - asynchronously issue a transfer request for an endpoint&n; * @urb: pointer to the urb describing the request&n; *&n; * This submits a transfer request, and transfers control of the URB&n; * describing that request to the USB subsystem.  Request completion will&n; * indicated later, asynchronously, by calling the completion handler.&n; * This call may be issued in interrupt context.&n; *&n; * The caller must have correctly initialized the URB before submitting&n; * it.  Functions such as usb_fill_bulk_urb() and usb_fill_control_urb() are&n; * available to ensure that most fields are correctly initialized, for&n; * the particular kind of transfer, although they will not initialize&n; * any transfer flags.&n; *&n; * Successful submissions return 0; otherwise this routine returns a&n; * negative error number.  If the submission is successful, the complete&n; * fuction of the urb will be called when the USB host driver is&n; * finished with the urb (either a successful transmission, or some&n; * error case.)&n; *&n; * Unreserved Bandwidth Transfers:&n; *&n; * Bulk or control requests complete only once.  When the completion&n; * function is called, control of the URB is returned to the device&n; * driver which issued the request.  The completion handler may then&n; * immediately free or reuse that URB.&n; *&n; * Bulk URBs will be queued if the USB_QUEUE_BULK transfer flag is set&n; * in the URB.  This can be used to maximize bandwidth utilization by&n; * letting the USB controller start work on the next URB without any&n; * delay to report completion (scheduling and processing an interrupt)&n; * and then submit that next request.&n; *&n; * For control endpoints, the synchronous usb_control_msg() call is&n; * often used (in non-interrupt context) instead of this call.&n; *&n; * Reserved Bandwidth Transfers:&n; *&n; * Periodic URBs (interrupt or isochronous) are completed repeatedly,&n; * until the original request is aborted.  When the completion callback&n; * indicates the URB has been unlinked (with a special status code),&n; * control of that URB returns to the device driver.  Otherwise, the&n; * completion handler does not control the URB, and should not change&n; * any of its fields.&n; *&n; * Note that isochronous URBs should be submitted in a &quot;ring&quot; data&n; * structure (using urb-&gt;next) to ensure that they are resubmitted&n; * appropriately.&n; *&n; * If the USB subsystem can&squot;t reserve sufficient bandwidth to perform&n; * the periodic request, and bandwidth reservation is being done for&n; * this controller, submitting such a periodic request will fail. &n; */
 DECL|function|usb_submit_urb
 r_int
 id|usb_submit_urb
@@ -9413,6 +9466,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|usb_free_urb
+)paren
+suffix:semicolon
+DECL|variable|usb_get_urb
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usb_get_urb
 )paren
 suffix:semicolon
 DECL|variable|usb_submit_urb

@@ -1047,11 +1047,17 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|dev
+op_assign
+id|dev_id
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1069,8 +1075,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -8053,9 +8058,10 @@ id|SA_SHIRQ
 comma
 l_string|&quot;eata_dma&quot;
 comma
-l_int|NULL
+id|first_HBA
 )paren
 suffix:semicolon
+multiline_comment|/* Check it */
 )brace
 )brace
 id|HBA_ptr

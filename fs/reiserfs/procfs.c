@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
+macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -235,18 +236,23 @@ id|super_block
 op_star
 id|sb
 suffix:semicolon
+r_char
+op_star
+id|format
+suffix:semicolon
 id|sb
 op_assign
 id|procinfo_prologue
 c_func
 (paren
+id|to_kdev_t
+c_func
 (paren
-id|kdev_t
-)paren
 (paren
 r_int
 )paren
 id|data
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -262,6 +268,48 @@ op_minus
 id|ENOENT
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|sb-&gt;u.reiserfs_sb.s_properties
+op_amp
+(paren
+l_int|1
+op_lshift
+id|REISERFS_3_6
+)paren
+)paren
+(brace
+id|format
+op_assign
+l_string|&quot;3.6&quot;
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|sb-&gt;u.reiserfs_sb.s_properties
+op_amp
+(paren
+l_int|1
+op_lshift
+id|REISERFS_3_5
+)paren
+)paren
+(brace
+id|format
+op_assign
+l_string|&quot;3.5&quot;
+suffix:semicolon
+)brace
+r_else
+(brace
+id|format
+op_assign
+l_string|&quot;unknown&quot;
+suffix:semicolon
+)brace
 id|len
 op_add_assign
 id|sprintf
@@ -275,16 +323,7 @@ id|len
 comma
 l_string|&quot;%s format&bslash;twith checks %s&bslash;n&quot;
 comma
-id|old_format_only
-c_func
-(paren
-id|sb
-)paren
-ques
-c_cond
-l_string|&quot;old&quot;
-suffix:colon
-l_string|&quot;new&quot;
+id|format
 comma
 macro_line|#if defined( CONFIG_REISERFS_CHECK )
 l_string|&quot;on&quot;
@@ -351,31 +390,6 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-op_amp
-id|buffer
-(braket
-id|len
-)braket
-comma
-l_string|&quot;%s [%s]&bslash;n&quot;
-comma
-id|reiserfs_get_version_string
-c_func
-(paren
-)paren
-comma
-macro_line|#if defined( CONFIG_REISERFS_FS_MODULE )
-l_string|&quot;as module&quot;
-macro_line|#else
-l_string|&quot;built into kernel&quot;
-macro_line|#endif
-)paren
-suffix:semicolon
 r_return
 id|reiserfs_proc_tail
 c_func
@@ -409,15 +423,19 @@ mdefine_line|#define D2C( x ) le16_to_cpu( x )
 DECL|macro|D4C
 mdefine_line|#define D4C( x ) le32_to_cpu( x )
 DECL|macro|DF
-mdefine_line|#define DF( x ) D2C( rs -&gt; x )
+mdefine_line|#define DF( x ) D2C( rs -&gt; s_v1.x )
 DECL|macro|DFL
-mdefine_line|#define DFL( x ) D4C( rs -&gt; x )
+mdefine_line|#define DFL( x ) D4C( rs -&gt; s_v1.x )
 DECL|macro|objectid_map
 mdefine_line|#define objectid_map( s, rs ) (old_format_only (s) ?&t;&t;&t;&t;&bslash;&n;                         (__u32 *)((struct reiserfs_super_block_v1 *)rs + 1) :&t;&bslash;&n;&t;&t;&t; (__u32 *)(rs + 1))
 DECL|macro|MAP
 mdefine_line|#define MAP( i ) D4C( objectid_map( sb, rs )[ i ] )
 DECL|macro|DJF
 mdefine_line|#define DJF( x ) le32_to_cpu( rs -&gt; x )
+DECL|macro|DJV
+mdefine_line|#define DJV( x ) le32_to_cpu( s_v1 -&gt; x )
+DECL|macro|DJP
+mdefine_line|#define DJP( x ) le32_to_cpu( jp -&gt; x ) 
 DECL|macro|JF
 mdefine_line|#define JF( x ) ( r -&gt; s_journal -&gt; x )
 DECL|function|reiserfs_super_in_proc
@@ -469,13 +487,14 @@ op_assign
 id|procinfo_prologue
 c_func
 (paren
+id|to_kdev_t
+c_func
 (paren
-id|kdev_t
-)paren
 (paren
 r_int
 )paren
 id|data
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -665,7 +684,7 @@ l_string|&quot;DONT_LOG &quot;
 suffix:colon
 l_string|&quot;LOG &quot;
 comma
-id|old_format_only
+id|convert_reiserfs
 c_func
 (paren
 id|sb
@@ -876,13 +895,14 @@ op_assign
 id|procinfo_prologue
 c_func
 (paren
+id|to_kdev_t
+c_func
 (paren
-id|kdev_t
-)paren
 (paren
 r_int
 )paren
 id|data
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1174,13 +1194,14 @@ op_assign
 id|procinfo_prologue
 c_func
 (paren
+id|to_kdev_t
+c_func
 (paren
-id|kdev_t
-)paren
 (paren
 r_int
 )paren
 id|data
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1352,13 +1373,14 @@ op_assign
 id|procinfo_prologue
 c_func
 (paren
+id|to_kdev_t
+c_func
 (paren
-id|kdev_t
-)paren
 (paren
 r_int
 )paren
 id|data
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1410,12 +1432,14 @@ l_string|&quot;root_block: &bslash;t%i&bslash;n&quot;
 l_string|&quot;blocksize: &bslash;t%i&bslash;n&quot;
 l_string|&quot;oid_maxsize: &bslash;t%i&bslash;n&quot;
 l_string|&quot;oid_cursize: &bslash;t%i&bslash;n&quot;
-l_string|&quot;state: &bslash;t%i&bslash;n&quot;
-l_string|&quot;magic: &bslash;t%12.12s&bslash;n&quot;
+l_string|&quot;umount_state: &bslash;t%i&bslash;n&quot;
+l_string|&quot;magic: &bslash;t%10.10s&bslash;n&quot;
+l_string|&quot;fs_state: &bslash;t%i&bslash;n&quot;
 l_string|&quot;hash: &bslash;t%s&bslash;n&quot;
 l_string|&quot;tree_height: &bslash;t%i&bslash;n&quot;
 l_string|&quot;bmap_nr: &bslash;t%i&bslash;n&quot;
 l_string|&quot;version: &bslash;t%i&bslash;n&quot;
+l_string|&quot;reserved_for_journal: &bslash;t%i&bslash;n&quot;
 comma
 id|DFL
 c_func
@@ -1456,12 +1480,18 @@ comma
 id|DF
 c_func
 (paren
-id|s_state
+id|s_umount_state
 )paren
 comma
 id|rs
 op_member_access_from_pointer
-id|s_magic
+id|s_v1.s_magic
+comma
+id|DF
+c_func
+(paren
+id|s_fs_state
+)paren
 comma
 id|hash_code
 op_eq
@@ -1515,6 +1545,11 @@ id|DF
 c_func
 (paren
 id|s_version
+)paren
+comma
+id|DF
+(paren
+id|s_reserved_for_journal
 )paren
 )paren
 suffix:semicolon
@@ -1610,13 +1645,14 @@ op_assign
 id|procinfo_prologue
 c_func
 (paren
+id|to_kdev_t
+c_func
 (paren
-id|kdev_t
-)paren
 (paren
 r_int
 )paren
 id|data
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1650,7 +1686,7 @@ c_func
 (paren
 id|rs
 op_member_access_from_pointer
-id|s_oid_cursize
+id|s_v1.s_oid_cursize
 )paren
 suffix:semicolon
 id|total_used
@@ -1859,7 +1895,7 @@ c_func
 (paren
 id|rs
 op_member_access_from_pointer
-id|s_oid_maxsize
+id|s_v1.s_oid_maxsize
 )paren
 comma
 id|total_used
@@ -1940,6 +1976,11 @@ id|reiserfs_super_block
 op_star
 id|rs
 suffix:semicolon
+r_struct
+id|journal_params
+op_star
+id|jp
+suffix:semicolon
 r_int
 id|len
 op_assign
@@ -1950,13 +1991,14 @@ op_assign
 id|procinfo_prologue
 c_func
 (paren
+id|to_kdev_t
+c_func
 (paren
-id|kdev_t
-)paren
 (paren
 r_int
 )paren
 id|data
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1983,6 +2025,11 @@ id|r
 op_member_access_from_pointer
 id|s_rs
 suffix:semicolon
+id|jp
+op_assign
+op_amp
+id|rs-&gt;s_v1.s_journal
+suffix:semicolon
 id|len
 op_add_assign
 id|sprintf
@@ -1995,15 +2042,16 @@ id|len
 )braket
 comma
 multiline_comment|/* on-disk fields */
-l_string|&quot;s_journal_block: &bslash;t%i&bslash;n&quot;
-l_string|&quot;s_journal_dev: &bslash;t%s[%x]&bslash;n&quot;
-l_string|&quot;s_orig_journal_size: &bslash;t%i&bslash;n&quot;
-l_string|&quot;s_journal_trans_max: &bslash;t%i&bslash;n&quot;
-l_string|&quot;s_journal_block_count: &bslash;t%i&bslash;n&quot;
-l_string|&quot;s_journal_max_batch: &bslash;t%i&bslash;n&quot;
-l_string|&quot;s_journal_max_commit_age: &bslash;t%i&bslash;n&quot;
-l_string|&quot;s_journal_max_trans_age: &bslash;t%i&bslash;n&quot;
+l_string|&quot;jp_journal_1st_block: &bslash;t%i&bslash;n&quot;
+l_string|&quot;jp_journal_dev: &bslash;t%s[%x]&bslash;n&quot;
+l_string|&quot;jp_journal_size: &bslash;t%i&bslash;n&quot;
+l_string|&quot;jp_journal_trans_max: &bslash;t%i&bslash;n&quot;
+l_string|&quot;jp_journal_magic: &bslash;t%i&bslash;n&quot;
+l_string|&quot;jp_journal_max_batch: &bslash;t%i&bslash;n&quot;
+l_string|&quot;jp_journal_max_commit_age: &bslash;t%i&bslash;n&quot;
+l_string|&quot;jp_journal_max_trans_age: &bslash;t%i&bslash;n&quot;
 multiline_comment|/* incore fields */
+l_string|&quot;j_1st_reserved_block: &bslash;t%i&bslash;n&quot;
 l_string|&quot;j_state: &bslash;t%i&bslash;n&quot;
 l_string|&quot;j_trans_id: &bslash;t%lu&bslash;n&quot;
 l_string|&quot;j_mount_id: &bslash;t%lu&bslash;n&quot;
@@ -2039,16 +2087,16 @@ l_string|&quot;restore_prepared: &bslash;t%12lu&bslash;n&quot;
 l_string|&quot;prepare: &bslash;t%12lu&bslash;n&quot;
 l_string|&quot;prepare_retry: &bslash;t%12lu&bslash;n&quot;
 comma
-id|DJF
+id|DJP
 c_func
 (paren
-id|s_journal_block
+id|jp_journal_1st_block
 )paren
 comma
-id|DJF
+id|DJP
 c_func
 (paren
-id|s_journal_dev
+id|jp_journal_dev
 )paren
 op_eq
 l_int|0
@@ -2059,53 +2107,63 @@ suffix:colon
 id|bdevname
 c_func
 (paren
-id|DJF
+id|to_kdev_t
 c_func
 (paren
-id|s_journal_dev
-)paren
-)paren
-comma
-id|DJF
+id|DJP
 c_func
 (paren
-id|s_journal_dev
+id|jp_journal_dev
+)paren
+)paren
 )paren
 comma
-id|DJF
+id|DJP
 c_func
 (paren
-id|s_orig_journal_size
+id|jp_journal_dev
 )paren
 comma
-id|DJF
+id|DJP
 c_func
 (paren
-id|s_journal_trans_max
+id|jp_journal_size
 )paren
 comma
-id|DJF
+id|DJP
 c_func
 (paren
-id|s_journal_block_count
+id|jp_journal_trans_max
 )paren
 comma
-id|DJF
+id|DJP
 c_func
 (paren
-id|s_journal_max_batch
+id|jp_journal_magic
 )paren
 comma
-id|DJF
+id|DJP
 c_func
 (paren
-id|s_journal_max_commit_age
+id|jp_journal_max_batch
 )paren
 comma
-id|DJF
+id|DJP
 c_func
 (paren
-id|s_journal_max_trans_age
+id|jp_journal_max_commit_age
+)paren
+comma
+id|DJP
+c_func
+(paren
+id|jp_journal_max_trans_age
+)paren
+comma
+id|JF
+c_func
+(paren
+id|j_1st_reserved_block
 )paren
 comma
 id|JF
@@ -2524,12 +2582,13 @@ comma
 r_void
 op_star
 )paren
+id|kdev_t_to_nr
+c_func
 (paren
-r_int
-)paren
 id|sb
 op_member_access_from_pointer
 id|s_dev
+)paren
 )paren
 suffix:colon
 l_int|NULL

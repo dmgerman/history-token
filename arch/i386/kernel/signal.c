@@ -19,24 +19,6 @@ DECL|macro|DEBUG_SIG
 mdefine_line|#define DEBUG_SIG 0
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
-r_int
-id|FASTCALL
-c_func
-(paren
-id|do_signal
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-id|sigset_t
-op_star
-id|oldset
-)paren
-)paren
-suffix:semicolon
 DECL|function|copy_siginfo_to_user
 r_int
 id|copy_siginfo_to_user

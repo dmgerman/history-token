@@ -19,7 +19,7 @@ macro_line|#endif
 macro_line|#include &quot;ov511.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.48 for Linux 2.4&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.48a for Linux 2.4&quot;
 DECL|macro|EMAIL
 mdefine_line|#define EMAIL &quot;mmcclell@bigfoot.com&quot;
 DECL|macro|DRIVER_AUTHOR
@@ -1798,6 +1798,19 @@ id|proc_dir_entry
 op_star
 id|video_proc_entry
 suffix:semicolon
+DECL|variable|ov511_control_fops
+r_static
+r_struct
+id|file_operations
+id|ov511_control_fops
+op_assign
+(brace
+id|ioctl
+suffix:colon
+id|ov511_control_ioctl
+comma
+)brace
+suffix:semicolon
 DECL|macro|YES_NO
 mdefine_line|#define YES_NO(x) ((x) ? &quot;yes&quot; : &quot;no&quot;)
 multiline_comment|/* /proc/video/ov511/&lt;minor#&gt;/info */
@@ -2847,13 +2860,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|ov511-&gt;proc_control-&gt;proc_fops-&gt;ioctl
-op_assign
-id|ov511_control_ioctl
-suffix:semicolon
 id|ov511-&gt;proc_control-&gt;data
 op_assign
 id|ov511
+suffix:semicolon
+id|ov511-&gt;proc_control-&gt;proc_fops
+op_assign
+op_amp
+id|ov511_control_fops
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -31876,6 +31890,14 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
+id|destroy_proc_ov511_cam
+c_func
+(paren
+id|ov511
+)paren
+suffix:semicolon
+macro_line|#endif
 id|usb_driver_release_interface
 c_func
 (paren
@@ -31893,14 +31915,6 @@ id|ov511-&gt;dev
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
-id|destroy_proc_ov511_cam
-c_func
-(paren
-id|ov511
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Free the memory */
 r_if
 c_cond

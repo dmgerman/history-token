@@ -14742,12 +14742,18 @@ suffix:semicolon
 r_int
 id|again
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|dev
+op_assign
+id|dev_id
+suffix:semicolon
 multiline_comment|/* Handle all ESP interrupts showing at this IRQ level. */
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -14856,8 +14862,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -14892,12 +14897,18 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|dev
+op_assign
+id|dev_id
+suffix:semicolon
 multiline_comment|/* Handle all ESP interrupts showing at this IRQ level. */
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -14992,8 +15003,7 @@ suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren

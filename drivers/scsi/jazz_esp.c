@@ -483,7 +483,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;JAZZ SCSI&quot;
 comma
-l_int|NULL
+id|esp-&gt;ehost
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * FIXME, look if the scsi id is availabe from NVRAM&n;&t; */

@@ -6817,12 +6817,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/* Unfortunately, we have to take the io_request_lock here&n;&t; * rather than the host lock hostdata-&gt;lock because we&squot;re&n;&t; * looking to exclude queuecommand from messing with the&n;&t; * registers while we&squot;re processing the interrupt.  Since&n;&t; * queuecommand is called holding io_request_lock, and we have&n;&t; * to take io_request_lock before we call the command&n;&t; * scsi_done, we would get a deadlock if we took&n;&t; * hostdata-&gt;lock here and in queuecommand (because the order&n;&t; * of locking in queuecommand: 1) io_request_lock then 2)&n;&t; * hostdata-&gt;lock would be the reverse of taking it in this&n;&t; * routine */
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -8150,8 +8148,7 @@ suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren

@@ -2117,6 +2117,10 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#ifdef EXT3_PREALLOCATE
+id|ei-&gt;i_prealloc_block
+op_assign
+l_int|0
+suffix:semicolon
 id|ei-&gt;i_prealloc_count
 op_assign
 l_int|0

@@ -18,33 +18,9 @@ macro_line|#undef OF
 DECL|macro|OF
 mdefine_line|#define OF(NAME, TYPE, MEMBER)&t;&t;&t;&bslash;&n;  VAL (NAME, offsetof (TYPE, MEMBER))
 multiline_comment|/* task_struct offsets.  */
-id|OF
-(paren
-id|LTASK_SIGPENDING
-comma
-r_struct
-id|task_struct
-comma
-id|sigpending
-)paren
-id|OF
-(paren
-id|LTASK_NEEDRESCHED
-comma
-r_struct
-id|task_struct
-comma
-id|need_resched
-)paren
-id|OF
-(paren
-id|LTASK_PTRACE
-comma
-r_struct
-id|task_struct
-comma
-id|ptrace
-)paren
+macro_line|#error OF (LTASK_SIGPENDING, struct task_struct, sigpending)
+macro_line|#error OF (LTASK_NEEDRESCHED, struct task_struct, need_resched)
+macro_line|#error OF (LTASK_PTRACE, struct task_struct, ptrace)
 id|OF
 (paren
 id|LTASK_PID

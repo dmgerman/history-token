@@ -2733,8 +2733,7 @@ macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|shpnt-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2752,8 +2751,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|shpnt-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2870,8 +2868,7 @@ macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|shpnt-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2889,8 +2886,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|shpnt-&gt;host_lock
 comma
 id|flags
 )paren
@@ -3874,8 +3870,7 @@ macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|shpnt-&gt;host_lock
 comma
 id|flags
 )paren
@@ -3911,8 +3906,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|shpnt-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4931,8 +4925,7 @@ multiline_comment|/* Aborts are not done well. . . */
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|shpnt-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4950,8 +4943,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|shpnt-&gt;host_lock
 comma
 id|flags
 )paren

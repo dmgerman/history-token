@@ -1668,7 +1668,7 @@ l_int|0
 comma
 l_string|&quot;Mac ESP SCSI&quot;
 comma
-id|esp
+id|esp-&gt;ehost
 )paren
 suffix:semicolon
 macro_line|#if 0&t;/* conflicts with IOP ADB */
@@ -1683,7 +1683,7 @@ l_int|0
 comma
 l_string|&quot;Mac ESP DRQ&quot;
 comma
-id|esp
+id|esp-&gt;ehost
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1727,7 +1727,7 @@ l_int|0
 comma
 l_string|&quot;Mac ESP SCSI 2&quot;
 comma
-id|esp
+id|esp-&gt;ehost
 )paren
 suffix:semicolon
 macro_line|#endif

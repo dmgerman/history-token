@@ -125,42 +125,9 @@ l_int|0
 )brace
 comma
 multiline_comment|/* spacer */
-(brace
-l_string|&quot;IA64_TASK_PTRACE_OFFSET&quot;
-comma
-m_offsetof
-(paren
-r_struct
-id|task_struct
-comma
-id|ptrace
-)paren
-)brace
-comma
-(brace
-l_string|&quot;IA64_TASK_SIGPENDING_OFFSET&quot;
-comma
-m_offsetof
-(paren
-r_struct
-id|task_struct
-comma
-id|sigpending
-)paren
-)brace
-comma
-(brace
-l_string|&quot;IA64_TASK_NEED_RESCHED_OFFSET&quot;
-comma
-m_offsetof
-(paren
-r_struct
-id|task_struct
-comma
-id|need_resched
-)paren
-)brace
-comma
+macro_line|#error    { &quot;IA64_TASK_PTRACE_OFFSET&quot;,&t;offsetof (struct task_struct, ptrace) },
+macro_line|#error    { &quot;IA64_TASK_SIGPENDING_OFFSET&quot;,&t;offsetof (struct task_struct, sigpending) },
+macro_line|#error    { &quot;IA64_TASK_NEED_RESCHED_OFFSET&quot;,&t;offsetof (struct task_struct, need_resched) },
 (brace
 l_string|&quot;IA64_TASK_PROCESSOR_OFFSET&quot;
 comma

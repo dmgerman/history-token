@@ -1188,7 +1188,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;pas16&quot;
 comma
-l_int|NULL
+id|instance
 )paren
 )paren
 (brace

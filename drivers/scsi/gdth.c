@@ -1948,13 +1948,13 @@ mdefine_line|#define GDTH_LOCK_HA(ha,flags)          spin_lock_irqsave(&amp;(ha)
 DECL|macro|GDTH_UNLOCK_HA
 mdefine_line|#define GDTH_UNLOCK_HA(ha,flags)        spin_unlock_irqrestore(&amp;(ha)-&gt;smp_lock,flags)
 DECL|macro|GDTH_LOCK_SCSI_DONE
-mdefine_line|#define GDTH_LOCK_SCSI_DONE(flags)      spin_lock_irqsave(&amp;io_request_lock,flags)
+mdefine_line|#define GDTH_LOCK_SCSI_DONE(dev, flags)      spin_lock_irqsave(dev-&gt;host_lock,flags)
 DECL|macro|GDTH_UNLOCK_SCSI_DONE
-mdefine_line|#define GDTH_UNLOCK_SCSI_DONE(flags)    spin_unlock_irqrestore(&amp;io_request_lock,flags)
+mdefine_line|#define GDTH_UNLOCK_SCSI_DONE(flags)    spin_unlock_irqrestore(dev-&gt;host_lock,flags)
 DECL|macro|GDTH_LOCK_SCSI_DOCMD
-mdefine_line|#define GDTH_LOCK_SCSI_DOCMD()          spin_lock_irq(&amp;io_request_lock)
+mdefine_line|#define GDTH_LOCK_SCSI_DOCMD(dev)          spin_lock_irq(dev-&gt;host_lock)
 DECL|macro|GDTH_UNLOCK_SCSI_DOCMD
-mdefine_line|#define GDTH_UNLOCK_SCSI_DOCMD()        spin_unlock_irq(&amp;io_request_lock)
+mdefine_line|#define GDTH_UNLOCK_SCSI_DOCMD(dev)        spin_unlock_irq(dev-&gt;host_lock)
 macro_line|#else
 DECL|macro|GDTH_INIT_LOCK_HA
 mdefine_line|#define GDTH_INIT_LOCK_HA(ha)           do {} while (0)
@@ -1963,13 +1963,13 @@ mdefine_line|#define GDTH_LOCK_HA(ha,flags)          do {save_flags(flags); cli(
 DECL|macro|GDTH_UNLOCK_HA
 mdefine_line|#define GDTH_UNLOCK_HA(ha,flags)        do {restore_flags(flags);} while (0)
 DECL|macro|GDTH_LOCK_SCSI_DONE
-mdefine_line|#define GDTH_LOCK_SCSI_DONE(flags)      do {} while (0)
+mdefine_line|#define GDTH_LOCK_SCSI_DONE(dev, flags)      do {} while (0)
 DECL|macro|GDTH_UNLOCK_SCSI_DONE
-mdefine_line|#define GDTH_UNLOCK_SCSI_DONE(flags)    do {} while (0)
+mdefine_line|#define GDTH_UNLOCK_SCSI_DONE(dev, flags)    do {} while (0)
 DECL|macro|GDTH_LOCK_SCSI_DOCMD
-mdefine_line|#define GDTH_LOCK_SCSI_DOCMD()          do {} while (0)
+mdefine_line|#define GDTH_LOCK_SCSI_DOCMD(dev)          do {} while (0)
 DECL|macro|GDTH_UNLOCK_SCSI_DOCMD
-mdefine_line|#define GDTH_UNLOCK_SCSI_DOCMD()        do {} while (0)
+mdefine_line|#define GDTH_UNLOCK_SCSI_DOCMD(dev)        do {} while (0)
 macro_line|#endif
 multiline_comment|/* LILO and modprobe/insmod parameters */
 multiline_comment|/* IRQ list for GDT3000/3020 EISA controllers */
@@ -18558,6 +18558,8 @@ l_int|1
 id|GDTH_LOCK_SCSI_DONE
 c_func
 (paren
+id|scp-&gt;host
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -18572,6 +18574,8 @@ suffix:semicolon
 id|GDTH_UNLOCK_SCSI_DONE
 c_func
 (paren
+id|scp-&gt;host
+comma
 id|flags
 )paren
 suffix:semicolon

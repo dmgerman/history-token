@@ -1048,6 +1048,13 @@ op_star
 id|regs
 )paren
 (brace
+r_struct
+id|Scsi_Host
+op_star
+id|dev
+op_assign
+id|dev_id
+suffix:semicolon
 r_int
 id|base
 op_assign
@@ -1152,8 +1159,7 @@ multiline_comment|/* Now we have the base address and we can start handling the 
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1191,8 +1197,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1227,8 +1232,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1244,8 +1248,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1290,8 +1293,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1307,8 +1309,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1345,8 +1346,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1362,8 +1362,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1400,8 +1399,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1417,8 +1415,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1458,8 +1455,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1475,8 +1471,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1540,8 +1535,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1557,8 +1551,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -3215,7 +3208,7 @@ l_int|0
 comma
 id|ID
 comma
-l_int|NULL
+id|shpnt
 )paren
 )paren
 (brace

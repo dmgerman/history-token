@@ -58,7 +58,7 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-multiline_comment|/* If current-&gt;need_resched is zero we should really&n;&t;&t; * setup for a system wakup event and execute a shutdown&n;&t;&t; * instruction.&n;&t;&t; *&n;&t;&t; * But this requires writing back the contents of the&n;&t;&t; * L2 cache etc. so implement this later. -DaveM&n;&t;&t; */
+multiline_comment|/* If current-&gt;work.need_resched is zero we should really&n;&t;&t; * setup for a system wakup event and execute a shutdown&n;&t;&t; * instruction.&n;&t;&t; *&n;&t;&t; * But this requires writing back the contents of the&n;&t;&t; * L2 cache etc. so implement this later. -DaveM&n;&t;&t; */
 r_while
 c_loop
 (paren

@@ -183,7 +183,7 @@ id|xchg
 c_func
 (paren
 op_amp
-id|current-&gt;need_resched
+id|current-&gt;work.need_resched
 comma
 op_minus
 l_int|1UL
@@ -198,7 +198,7 @@ id|oldval
 r_while
 c_loop
 (paren
-id|current-&gt;need_resched
+id|current-&gt;work.need_resched
 OL
 l_int|0
 )paren

@@ -452,6 +452,30 @@ DECL|macro|__NR_gettid
 mdefine_line|#define __NR_gettid&t;&t;224
 DECL|macro|__NR_readahead
 mdefine_line|#define __NR_readahead&t;&t;225
+DECL|macro|__NR_setxattr
+mdefine_line|#define __NR_setxattr&t;&t;226
+DECL|macro|__NR_lsetxattr
+mdefine_line|#define __NR_lsetxattr&t;&t;227
+DECL|macro|__NR_fsetxattr
+mdefine_line|#define __NR_fsetxattr&t;&t;228
+DECL|macro|__NR_getxattr
+mdefine_line|#define __NR_getxattr&t;&t;229
+DECL|macro|__NR_lgetxattr
+mdefine_line|#define __NR_lgetxattr&t;&t;230
+DECL|macro|__NR_fgetxattr
+mdefine_line|#define __NR_fgetxattr&t;&t;231
+DECL|macro|__NR_listxattr
+mdefine_line|#define __NR_listxattr&t;&t;232
+DECL|macro|__NR_llistxattr
+mdefine_line|#define __NR_llistxattr&t;&t;233
+DECL|macro|__NR_flistxattr
+mdefine_line|#define __NR_flistxattr&t;&t;234
+DECL|macro|__NR_removexattr
+mdefine_line|#define __NR_removexattr&t;235
+DECL|macro|__NR_lremovexattr
+mdefine_line|#define __NR_lremovexattr&t;236
+DECL|macro|__NR_fremovexattr
+mdefine_line|#define __NR_fremovexattr&t;237
 multiline_comment|/* user-visible error numbers are in the range -1 - -124: see &lt;asm-i386/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;&t;errno = -(res); &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)

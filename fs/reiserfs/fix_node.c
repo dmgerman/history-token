@@ -3113,7 +3113,7 @@ l_string|&quot;PAP-8135: reiserfs_new_blocknrs failed when got new blocks&quot;
 suffix:semicolon
 id|p_s_new_bh
 op_assign
-id|reiserfs_getblk
+id|sb_getblk
 c_func
 (paren
 id|p_s_sb
@@ -8673,97 +8673,6 @@ singleline_comment|// entry would eat 2 byte of virtual node space
 r_return
 id|sb-&gt;s_blocksize
 suffix:semicolon
-macro_line|#if 0
-id|size
-op_assign
-r_sizeof
-(paren
-r_struct
-id|virtual_node
-)paren
-op_plus
-r_sizeof
-(paren
-r_struct
-id|virtual_item
-)paren
-suffix:semicolon
-id|ih
-op_assign
-id|B_N_PITEM_HEAD
-(paren
-id|bh
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|nr_items
-op_assign
-id|B_NR_ITEMS
-(paren
-id|bh
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|nr_items
-suffix:semicolon
-id|i
-op_increment
-comma
-id|ih
-op_increment
-)paren
-(brace
-multiline_comment|/* each item occupies some space in virtual node */
-id|size
-op_add_assign
-r_sizeof
-(paren
-r_struct
-id|virtual_item
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|is_direntry_le_ih
-(paren
-id|ih
-)paren
-)paren
-multiline_comment|/* each entry and new one occupeis 2 byte in the virtual node */
-id|size
-op_add_assign
-(paren
-id|ih_entry_count
-c_func
-(paren
-id|ih
-)paren
-op_plus
-l_int|1
-)paren
-op_star
-r_sizeof
-(paren
-id|__u16
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* 1 bit for each bitmap block to note whether bitmap block was&n;     dirtied in the operation */
-multiline_comment|/* size += (SB_BMAP_NR (sb) * 2 / 8 + 4);*/
-r_return
-id|size
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* maybe we should fail balancing we are going to perform when kmalloc&n;   fails several times. But now it will loop until kmalloc gets&n;   required memory */
 DECL|function|get_mem_for_virtual_node
@@ -9989,9 +9898,6 @@ id|n_op_mode
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// FIXME: new items have to be of 8 byte multiples. Including new
-singleline_comment|// directory items those look like old ones
-multiline_comment|/*&n;    if (p_s_tb-&gt;insert_size[0] % 8)&n;&t;reiserfs_panic (p_s_tb-&gt;tb_sb, &quot;vs-: fix_nodes: incorrect insert_size %d, &quot;&n;&t;&t;&t;&quot;mode %c&quot;,&n;&t;&t;&t;p_s_tb-&gt;insert_size[0], n_op_mode);&n;    */
 multiline_comment|/* Check parameters. */
 r_switch
 c_cond

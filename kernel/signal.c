@@ -379,7 +379,7 @@ op_star
 id|t
 )paren
 (brace
-id|t-&gt;sigpending
+id|t-&gt;work.sigpending
 op_assign
 l_int|0
 suffix:semicolon
@@ -445,7 +445,7 @@ id|sig
 )paren
 suffix:semicolon
 )brace
-id|tsk-&gt;sigpending
+id|tsk-&gt;work.sigpending
 op_assign
 l_int|0
 suffix:semicolon
@@ -933,7 +933,7 @@ id|current-&gt;notifier_data
 )paren
 )paren
 (brace
-id|current-&gt;sigpending
+id|current-&gt;work.sigpending
 op_assign
 l_int|0
 suffix:semicolon
@@ -1701,7 +1701,7 @@ op_star
 id|t
 )paren
 (brace
-id|t-&gt;sigpending
+id|t-&gt;work.sigpending
 op_assign
 l_int|1
 suffix:semicolon

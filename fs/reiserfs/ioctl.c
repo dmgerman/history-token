@@ -121,7 +121,9 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|nopack
+id|i_flags
+op_amp
+id|i_nopack_mask
 )paren
 (brace
 r_return
@@ -166,9 +168,9 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|nopack
-op_assign
-l_int|1
+id|i_flags
+op_or_assign
+id|i_nopack_mask
 suffix:semicolon
 r_goto
 id|out
@@ -242,9 +244,9 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|nopack
-op_assign
-l_int|1
+id|i_flags
+op_or_assign
+id|i_nopack_mask
 suffix:semicolon
 id|kunmap
 c_func

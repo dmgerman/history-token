@@ -436,7 +436,6 @@ singleline_comment|// into our _quecommand function (this also disables INTs)
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|HostAdapter-&gt;host_lock
 comma
 id|flags
@@ -471,7 +470,6 @@ singleline_comment|// release the IO lock (and re-enable interrupts)
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|HostAdapter-&gt;host_lock
 comma
 id|flags
@@ -8130,7 +8128,6 @@ singleline_comment|// STOP _que function
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|cpqfcHBAdata-&gt;HostAdapter-&gt;host_lock
 comma
 id|flags
@@ -8151,7 +8148,6 @@ singleline_comment|// release the IO lock (and re-enable interrupts)
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|cpqfcHBAdata-&gt;HostAdapter-&gt;host_lock
 comma
 id|flags

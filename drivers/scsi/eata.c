@@ -7394,7 +7394,6 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|sh
 (braket
 id|j
@@ -7436,7 +7435,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|sh
 (braket
 id|j
@@ -10703,7 +10701,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|sh
 (braket
 id|j
@@ -10725,7 +10722,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|sh
 (braket
 id|j

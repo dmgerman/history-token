@@ -3126,7 +3126,7 @@ id|SA_SHIRQ
 comma
 l_string|&quot;ESP SCSI&quot;
 comma
-id|esp
+id|esp-&gt;ehost
 )paren
 )paren
 (brace

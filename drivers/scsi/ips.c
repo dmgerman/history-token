@@ -7545,7 +7545,6 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|SC-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -7561,7 +7560,6 @@ multiline_comment|/* reobtain the lock */
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|SC-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -8112,7 +8110,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|cpu_flags
@@ -8134,7 +8131,6 @@ id|ha-&gt;flags
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|cpu_flags
@@ -8162,7 +8158,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|cpu_flags
@@ -8190,7 +8185,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|cpu_flags
@@ -8219,7 +8213,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|cpu_flags
@@ -10275,7 +10268,6 @@ multiline_comment|/* Unlock the per-board lock */
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|SC-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -10307,7 +10299,6 @@ multiline_comment|/* Obtain the per-board lock */
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|SC-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -10759,7 +10750,6 @@ multiline_comment|/* Unlock the per-board lock */
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|SC-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -10791,7 +10781,6 @@ multiline_comment|/* Obtain the per-board lock */
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|SC-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -14724,7 +14713,6 @@ id|IPS_INTR_ON
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|cpu_flags2
@@ -14832,7 +14820,6 @@ id|IPS_INTR_ON
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|cpu_flags2
@@ -25600,7 +25587,6 @@ multiline_comment|/*&n;          * NOTE: since we were not called with the ioreq
 id|spin_lock
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -25642,7 +25628,6 @@ suffix:semicolon
 id|spin_unlock
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 )paren
 suffix:semicolon

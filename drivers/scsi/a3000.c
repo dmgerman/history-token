@@ -64,6 +64,13 @@ id|a3000_host
 op_member_access_from_pointer
 id|ISTR
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|dev
+op_assign
+id|dummy
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -87,8 +94,7 @@ id|ISTR_INTS
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -101,8 +107,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren

@@ -4321,6 +4321,12 @@ c_func
 id|size
 )paren
 suffix:semicolon
+id|isapnp_config_prepare
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

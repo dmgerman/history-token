@@ -30,9 +30,9 @@ multiline_comment|/* current version of this driver-source: */
 DECL|macro|IBMMCA_SCSI_DRIVER_VERSION
 mdefine_line|#define IBMMCA_SCSI_DRIVER_VERSION &quot;4.0b&quot;
 DECL|macro|IBMLOCK
-mdefine_line|#define IBMLOCK spin_lock_irqsave(&amp;io_request_lock, flags);
+mdefine_line|#define IBMLOCK(dev) spin_lock_irqsave(dev-&gt;host_lock, flags);
 DECL|macro|IBMUNLOCK
-mdefine_line|#define IBMUNLOCK spin_unlock_irqrestore(&amp;io_request_lock, flags);
+mdefine_line|#define IBMUNLOCK(dev) spin_unlock_irqrestore(dev-&gt;host_lock, flags);
 multiline_comment|/* driver configuration */
 DECL|macro|IM_MAX_HOSTS
 mdefine_line|#define IM_MAX_HOSTS     8 /* maximum number of host adapters */
@@ -1522,6 +1522,10 @@ r_int
 id|lastSCSI
 suffix:semicolon
 id|IBMLOCK
+c_func
+(paren
+id|dev_id
+)paren
 multiline_comment|/* search for one adapter-response on shared interrupt */
 r_for
 c_loop
@@ -1566,6 +1570,10 @@ id|host_index
 )paren
 (brace
 id|IBMUNLOCK
+c_func
+(paren
+id|dev_id
+)paren
 r_return
 suffix:semicolon
 )brace
@@ -1603,6 +1611,10 @@ op_assign
 id|IM_RESET_NOT_IN_PROGRESS
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|dev_id
+)paren
 r_return
 suffix:semicolon
 )brace
@@ -1633,8 +1645,16 @@ id|IM_BUSY
 r_break
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|dev_id
+)paren
 multiline_comment|/* cycle interrupt */
 id|IBMLOCK
+c_func
+(paren
+id|dev_id
+)paren
 )brace
 id|ihost_index
 op_assign
@@ -1696,6 +1716,10 @@ id|ihost_index
 )paren
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|dev_id
+)paren
 multiline_comment|/*these should never happen (hw fails, or a local programming bug) */
 r_if
 c_cond
@@ -2939,6 +2963,13 @@ l_int|1
 )paren
 (brace
 id|IBMLOCK
+c_func
+(paren
+id|hosts
+(braket
+id|host_index
+)braket
+)paren
 r_if
 c_cond
 (paren
@@ -2960,6 +2991,13 @@ id|IM_BUSY
 r_break
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|hosts
+(braket
+id|host_index
+)braket
+)paren
 )brace
 multiline_comment|/* write registers and enable system interrupts */
 id|outl
@@ -2985,6 +3023,13 @@ id|host_index
 )paren
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|hosts
+(braket
+id|host_index
+)braket
+)paren
 r_return
 suffix:semicolon
 )brace
@@ -7574,6 +7619,10 @@ r_int
 id|flags
 suffix:semicolon
 id|IBMLOCK
+c_func
+(paren
+id|dev
+)paren
 id|shpnt
 op_assign
 id|dev
@@ -7991,6 +8040,10 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|shpnt
+)paren
 r_return
 id|len
 suffix:semicolon
@@ -12138,6 +12191,10 @@ l_string|&quot;IBM MCA SCSI: Abort subroutine called...&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 id|IBMLOCK
+c_func
+(paren
+id|cmd-&gt;host
+)paren
 id|shpnt
 op_assign
 id|cmd-&gt;host
@@ -12202,6 +12259,10 @@ op_assign
 id|cmd-&gt;host
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|shpnt
+)paren
 macro_line|#ifdef IM_DEBUG_PROBE
 id|printk
 c_func
@@ -12337,6 +12398,10 @@ id|cmd
 )paren
 (brace
 id|IBMUNLOCK
+c_func
+(paren
+id|shpnt
+)paren
 r_return
 id|SCSI_ABORT_NOT_RUNNING
 suffix:semicolon
@@ -12436,7 +12501,15 @@ id|IM_BUSY
 r_break
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|shpnt
+)paren
 id|IBMLOCK
+c_func
+(paren
+id|shpnt
+)paren
 )brace
 multiline_comment|/* write registers and enable system interrupts */
 id|outl
@@ -12464,6 +12537,10 @@ id|host_index
 )paren
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|shpnt
+)paren
 macro_line|#ifdef IM_DEBUG_PROBE
 id|printk
 c_func
@@ -12508,6 +12585,10 @@ l_int|16
 )paren
 (brace
 id|IBMLOCK
+c_func
+(paren
+id|shpnt
+)paren
 id|cmd-&gt;result
 op_or_assign
 id|DID_ABORT
@@ -12540,6 +12621,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|shpnt
+)paren
 macro_line|#ifdef IM_DEBUG_PROBE
 id|printk
 c_func
@@ -12555,6 +12640,10 @@ suffix:semicolon
 r_else
 (brace
 id|IBMLOCK
+c_func
+(paren
+id|shpnt
+)paren
 id|cmd-&gt;result
 op_or_assign
 id|DID_NO_CONNECT
@@ -12587,6 +12676,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|shpnt
+)paren
 macro_line|#ifdef IM_DEBUG_PROBE
 id|printk
 c_func
@@ -12658,6 +12751,10 @@ id|SCSI_RESET_SNOOZE
 suffix:semicolon
 )brace
 id|IBMLOCK
+c_func
+(paren
+id|cmd-&gt;host
+)paren
 id|ticks
 op_assign
 id|IM_RESET_DELAY
@@ -12724,6 +12821,10 @@ l_string|&quot;IBM MCA SCSI: unable to reset while checking devices.&bslash;n&qu
 )paren
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|shpnt
+)paren
 r_return
 id|SCSI_RESET_SNOOZE
 suffix:semicolon
@@ -12825,7 +12926,15 @@ id|IM_BUSY
 r_break
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|shpnt
+)paren
 id|IBMLOCK
+c_func
+(paren
+id|shpnt
+)paren
 )brace
 multiline_comment|/*write registers and enable system interrupts */
 id|outl
@@ -12931,6 +13040,10 @@ op_assign
 id|IM_RESET_FINISHED_FAIL
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|shpnt
+)paren
 r_return
 id|SCSI_RESET_ERROR
 suffix:semicolon
@@ -13047,6 +13160,10 @@ l_string|&quot;IBM MCA SCSI: reset failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|shpnt
+)paren
 r_return
 id|SCSI_RESET_ERROR
 suffix:semicolon
@@ -13058,6 +13175,10 @@ l_string|&quot;IBM MCA SCSI: Reset successfully completed.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|shpnt
+)paren
 r_for
 c_loop
 (paren
@@ -13605,7 +13726,6 @@ suffix:semicolon
 r_int
 id|max_pun
 suffix:semicolon
-id|IBMLOCK
 r_for
 c_loop
 (paren
@@ -13631,6 +13751,15 @@ id|i
 op_increment
 )paren
 suffix:semicolon
+id|IBMLOCK
+c_func
+(paren
+id|hosts
+(braket
+id|i
+)braket
+)paren
+multiline_comment|/* Check it */
 id|shpnt
 op_assign
 id|hosts
@@ -14440,6 +14569,10 @@ op_assign
 id|length
 suffix:semicolon
 id|IBMUNLOCK
+c_func
+(paren
+id|shpnt
+)paren
 r_return
 id|len
 suffix:semicolon

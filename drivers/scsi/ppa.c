@@ -329,13 +329,6 @@ op_star
 id|pb
 suffix:semicolon
 multiline_comment|/*&n;     * unlock to allow the lowlevel parport driver to probe&n;     * the irqs&n;     */
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|io_request_lock
-)paren
-suffix:semicolon
 id|pb
 op_assign
 id|parport_enumerate
@@ -370,13 +363,6 @@ id|printk
 c_func
 (paren
 l_string|&quot;ppa: parport reports no devices.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|io_request_lock
 )paren
 suffix:semicolon
 r_return
@@ -529,8 +515,12 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|ppa_hosts
+(braket
+id|i
+)braket
+dot
+id|cur_cmd-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
@@ -851,8 +841,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|hreg-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
@@ -872,8 +861,7 @@ r_else
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|hreg-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
@@ -3743,8 +3731,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|cmd-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -3760,8 +3747,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|cmd-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren

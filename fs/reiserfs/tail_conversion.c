@@ -976,7 +976,7 @@ id|s_ih
 comma
 l_int|0
 comma
-id|inode_items_version
+id|get_inode_item_key_version
 (paren
 id|p_s_inode
 )paren

@@ -5718,7 +5718,6 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|shpnt-&gt;host_lock
 )paren
 suffix:semicolon
@@ -5731,7 +5730,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|shpnt-&gt;host_lock
 )paren
 suffix:semicolon

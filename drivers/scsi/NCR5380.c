@@ -1288,8 +1288,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|instance-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1302,8 +1301,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|instance-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1491,7 +1489,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;NCR-probe&quot;
 comma
-l_int|NULL
+id|instance
 )paren
 op_eq
 l_int|0
@@ -3362,8 +3360,7 @@ multiline_comment|/*&n;&t; * We run (with interrupts disabled) until we&squot;re
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|instance-&gt;host_lock
 )paren
 suffix:semicolon
 id|save_flags
@@ -3930,8 +3927,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|instance-&gt;host_lock
 )paren
 suffix:semicolon
 multiline_comment|/* &t;cli();*/
@@ -4293,8 +4289,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|instance-&gt;host_lock
 )paren
 suffix:semicolon
 r_while
@@ -4320,8 +4315,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|instance-&gt;host_lock
 )paren
 suffix:semicolon
 r_if
@@ -4458,11 +4452,17 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|dev
+op_assign
+id|dev_id
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4480,8 +4480,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4746,8 +4745,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|instance-&gt;host_lock
 )paren
 suffix:semicolon
 r_while
@@ -4776,8 +4774,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|instance-&gt;host_lock
 )paren
 suffix:semicolon
 r_if
@@ -5183,8 +5180,7 @@ macro_line|#else
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|instance-&gt;host_lock
 )paren
 suffix:semicolon
 r_while
@@ -5217,8 +5213,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|instance-&gt;host_lock
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5450,8 +5445,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|instance-&gt;host_lock
 )paren
 suffix:semicolon
 r_while
@@ -5480,8 +5474,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|instance-&gt;host_lock
 )paren
 suffix:semicolon
 r_if

@@ -533,7 +533,6 @@ multiline_comment|/* must unlock before kernel_thread(), for it may cause a resc
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|HostAdapter-&gt;host_lock
 )paren
 suffix:semicolon
@@ -571,7 +570,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|HostAdapter-&gt;host_lock
 )paren
 suffix:semicolon
@@ -1173,7 +1171,6 @@ singleline_comment|// start our kernel worker thread
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|HostAdapter-&gt;host_lock
 )paren
 suffix:semicolon
@@ -1275,7 +1272,6 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|HostAdapter-&gt;host_lock
 )paren
 suffix:semicolon
@@ -1308,7 +1304,6 @@ singleline_comment|// (our worker task needs to run)
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|HostAdapter-&gt;host_lock
 )paren
 suffix:semicolon
@@ -1318,7 +1313,6 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|HostAdapter-&gt;host_lock
 )paren
 suffix:semicolon
@@ -4911,7 +4905,6 @@ singleline_comment|// printk(&quot;   ENTERING cpqfcTS_eh_device_reset() &bslash
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|Cmnd-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -4928,7 +4921,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|Cmnd-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -5136,7 +5128,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|HostAdapter-&gt;host_lock
 comma
 id|flags
@@ -5358,7 +5349,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|HostAdapter-&gt;host_lock
 comma
 id|flags

@@ -59,34 +59,8 @@ id|ptrace
 )paren
 )paren
 suffix:semicolon
-id|DEFINE
-c_func
-(paren
-id|TASK_SIGPENDING
-comma
-m_offsetof
-(paren
-r_struct
-id|task_struct
-comma
-id|sigpending
-)paren
-)paren
-suffix:semicolon
-id|DEFINE
-c_func
-(paren
-id|TASK_NEEDRESCHED
-comma
-m_offsetof
-(paren
-r_struct
-id|task_struct
-comma
-id|need_resched
-)paren
-)paren
-suffix:semicolon
+macro_line|#error&t;DEFINE(TASK_SIGPENDING, offsetof(struct task_struct, work.sigpending));
+macro_line|#error&t;DEFINE(TASK_NEEDRESCHED, offsetof(struct task_struct, work.need_resched));
 id|DEFINE
 c_func
 (paren

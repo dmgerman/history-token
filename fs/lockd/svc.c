@@ -908,7 +908,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Wait for the lockd process to exit, but since we&squot;re holding&n;&t; * the lockd semaphore, we can&squot;t wait around forever ...&n;&t; */
-id|current-&gt;sigpending
+id|current-&gt;work.sigpending
 op_assign
 l_int|0
 suffix:semicolon

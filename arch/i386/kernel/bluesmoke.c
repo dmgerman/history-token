@@ -264,9 +264,9 @@ c_func
 (paren
 l_string|&quot; at %08x%08x&quot;
 comma
-id|high
+id|ahigh
 comma
-id|low
+id|alow
 )paren
 suffix:semicolon
 )brace

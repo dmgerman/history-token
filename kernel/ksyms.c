@@ -1010,6 +1010,13 @@ c_func
 id|block_sync_page
 )paren
 suffix:semicolon
+DECL|variable|generic_cont_expand
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_cont_expand
+)paren
+suffix:semicolon
 DECL|variable|cont_prepare_write
 id|EXPORT_SYMBOL
 c_func

@@ -2726,6 +2726,11 @@ id|pHCB
 comma
 r_int
 id|irqno
+comma
+r_struct
+id|Scsi_Host
+op_star
+id|dev
 )paren
 (brace
 r_int
@@ -2735,8 +2740,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2752,8 +2756,7 @@ id|irqno
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2770,8 +2773,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2807,6 +2809,8 @@ l_int|0
 )braket
 comma
 id|irqno
+comma
+id|dev_id
 )paren
 suffix:semicolon
 )brace
@@ -2839,6 +2843,8 @@ l_int|1
 )braket
 comma
 id|irqno
+comma
+id|dev_id
 )paren
 suffix:semicolon
 )brace
@@ -2871,6 +2877,8 @@ l_int|2
 )braket
 comma
 id|irqno
+comma
+id|dev_id
 )paren
 suffix:semicolon
 )brace
@@ -2903,6 +2911,8 @@ l_int|3
 )braket
 comma
 id|irqno
+comma
+id|dev_id
 )paren
 suffix:semicolon
 )brace
@@ -2935,6 +2945,8 @@ l_int|4
 )braket
 comma
 id|irqno
+comma
+id|dev_id
 )paren
 suffix:semicolon
 )brace
@@ -2967,6 +2979,8 @@ l_int|5
 )braket
 comma
 id|irqno
+comma
+id|dev_id
 )paren
 suffix:semicolon
 )brace
@@ -2999,6 +3013,8 @@ l_int|6
 )braket
 comma
 id|irqno
+comma
+id|dev_id
 )paren
 suffix:semicolon
 )brace
@@ -3031,6 +3047,8 @@ l_int|7
 )braket
 comma
 id|irqno
+comma
+id|dev_id
 )paren
 suffix:semicolon
 )brace

@@ -739,7 +739,7 @@ c_cond
 (paren
 id|to-&gt;version
 op_eq
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 )paren
 (brace
 id|to-&gt;on_disk_key.u.k_offset_v1.k_offset
@@ -2358,7 +2358,7 @@ r_return
 suffix:semicolon
 id|bh
 op_assign
-id|reiserfs_getblk
+id|sb_getblk
 (paren
 id|s
 comma
@@ -2695,9 +2695,19 @@ multiline_comment|/* repeat search from the root */
 r_continue
 suffix:semicolon
 )brace
+multiline_comment|/* only check that the key is in the buffer if p_s_key is not&n;           equal to the MAX_KEY. Latter case is only possible in&n;           &quot;finish_unfinished()&quot; processing during mount. */
 id|RFALSE
 c_func
 (paren
+id|COMP_KEYS
+c_func
+(paren
+op_amp
+id|MAX_KEY
+comma
+id|p_s_key
+)paren
+op_logical_and
 op_logical_neg
 id|key_in_buffer
 c_func
@@ -3363,12 +3373,12 @@ singleline_comment|// new file gets truncated
 r_if
 c_cond
 (paren
-id|inode_items_version
+id|get_inode_item_key_version
 (paren
 id|inode
 )paren
 op_eq
-id|ITEM_VERSION_2
+id|KEY_FORMAT_3_6
 )paren
 (brace
 singleline_comment|// 
@@ -3727,13 +3737,6 @@ c_func
 id|p_s_path
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_int
-id|n_repeat_counter
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Stat_data item. */
 r_if
 c_cond
@@ -3829,9 +3832,6 @@ comma
 multiline_comment|/* Number of the item unformatted nodes. */
 id|n_counter
 comma
-id|n_retry
-comma
-multiline_comment|/* Set to one if there is unformatted node buffer in use. */
 id|n_blk_size
 suffix:semicolon
 id|__u32
@@ -3851,11 +3851,6 @@ r_char
 id|c_mode
 suffix:semicolon
 multiline_comment|/* Returned mode of the balance. */
-r_struct
-id|buffer_head
-op_star
-id|p_s_un_bh
-suffix:semicolon
 r_int
 id|need_research
 suffix:semicolon
@@ -4174,10 +4169,6 @@ singleline_comment|// of it
 r_for
 c_loop
 (paren
-id|n_retry
-op_assign
-l_int|0
-comma
 id|n_counter
 op_assign
 op_star
@@ -4243,26 +4234,20 @@ comma
 l_string|&quot;vs-5265: pointer out of range&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|get_block_num
-c_func
-(paren
-id|p_n_unfm_pointer
-comma
-l_int|0
-)paren
-)paren
-(brace
 multiline_comment|/* Hole, nothing to remove. */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|n_retry
+id|get_block_num
+c_func
+(paren
+id|p_n_unfm_pointer
+comma
+l_int|0
 )paren
+)paren
+(brace
 (paren
 op_star
 id|p_n_removed
@@ -4272,198 +4257,11 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* Search for the buffer in cache. */
-id|p_s_un_bh
-op_assign
-id|sb_get_hash_table
-c_func
-(paren
-id|p_s_sb
-comma
-id|get_block_num
-c_func
-(paren
-id|p_n_unfm_pointer
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|p_s_un_bh
-)paren
-(brace
-id|mark_buffer_clean
-c_func
-(paren
-id|p_s_un_bh
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|buffer_locked
-c_func
-(paren
-id|p_s_un_bh
-)paren
-)paren
-(brace
-id|__wait_on_buffer
-c_func
-(paren
-id|p_s_un_bh
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* even if the item moves, the block number of the&n;&t;&t;    ** unformatted node we want to cut won&squot;t.  So, it was&n;&t;&t;    ** safe to clean the buffer here, this block _will_&n;&t;&t;    ** get freed during this call to prepare_for_delete_or_cut&n;&t;&t;    */
-r_if
-c_cond
-(paren
-id|item_moved
-(paren
-op_amp
-id|s_ih
-comma
-id|p_s_path
-)paren
-)paren
-(brace
-id|need_research
-op_assign
-l_int|1
-suffix:semicolon
-id|brelse
-c_func
-(paren
-id|p_s_un_bh
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|p_s_un_bh
-op_logical_and
-id|block_in_use
-(paren
-id|p_s_un_bh
-)paren
-)paren
-(brace
-multiline_comment|/* Block is locked or held more than by one holder and by&n;                       journal. */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
-(paren
-id|n_repeat_counter
-op_logical_and
-(paren
-id|n_repeat_counter
-op_mod
-l_int|100000
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;prepare_for_delete, waiting on buffer %lu, b_count %d, %s%cJDIRTY %cJDIRTY_WAIT&bslash;n&quot;
-comma
-id|p_s_un_bh-&gt;b_blocknr
-comma
-id|atomic_read
-(paren
-op_amp
-id|p_s_un_bh-&gt;b_count
-)paren
-comma
-id|buffer_locked
-(paren
-id|p_s_un_bh
-)paren
-ques
-c_cond
-l_string|&quot;locked, &quot;
-suffix:colon
-l_string|&quot;&quot;
-comma
-id|buffer_journaled
-c_func
-(paren
-id|p_s_un_bh
-)paren
-ques
-c_cond
-l_char|&squot; &squot;
-suffix:colon
-l_char|&squot;!&squot;
-comma
-id|buffer_journal_dirty
-c_func
-(paren
-id|p_s_un_bh
-)paren
-ques
-c_cond
-l_char|&squot; &squot;
-suffix:colon
-l_char|&squot;!&squot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-id|n_retry
-op_assign
-l_int|1
-suffix:semicolon
-id|brelse
-(paren
-id|p_s_un_bh
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|n_retry
-)paren
 (paren
 op_star
 id|p_n_removed
 )paren
 op_increment
-suffix:semicolon
-id|RFALSE
-c_func
-(paren
-id|p_s_un_bh
-op_logical_and
-id|get_block_num
-c_func
-(paren
-id|p_n_unfm_pointer
-comma
-l_int|0
-)paren
-op_ne
-id|p_s_un_bh-&gt;b_blocknr
-comma
-singleline_comment|// note: minix_truncate allows that. As truncate is
-singleline_comment|// protected by down (inode-&gt;i_sem), two truncates can not
-singleline_comment|// co-exist
-l_string|&quot;PAP-5280: blocks numbers are different&quot;
-)paren
 suffix:semicolon
 id|tmp
 op_assign
@@ -4492,11 +4290,6 @@ comma
 id|p_s_sb
 comma
 id|p_s_bh
-)paren
-suffix:semicolon
-id|bforget
-(paren
-id|p_s_un_bh
 )paren
 suffix:semicolon
 id|inode-&gt;i_blocks
@@ -4542,115 +4335,6 @@ comma
 id|p_s_bh
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|n_retry
-)paren
-(brace
-multiline_comment|/* There is block in use. Wait, they should release it soon */
-id|RFALSE
-c_func
-(paren
-op_star
-id|p_n_removed
-op_ge
-id|n_unfm_number
-comma
-l_string|&quot;PAP-5290: illegal case&quot;
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-op_increment
-id|n_repeat_counter
-op_mod
-l_int|500000
-)paren
-)paren
-(brace
-id|reiserfs_warning
-c_func
-(paren
-l_string|&quot;PAP-5300: prepare_for_delete_or_cut: (pid %u): &quot;
-l_string|&quot;could not delete item %k in (%d) iterations. New file length %Lu. (inode %Ld), Still trying&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|p_s_item_key
-comma
-id|n_repeat_counter
-comma
-id|n_new_file_length
-comma
-id|inode-&gt;i_size
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|n_repeat_counter
-op_eq
-l_int|5000000
-)paren
-(brace
-id|print_block
-(paren
-id|PATH_PLAST_BUFFER
-c_func
-(paren
-id|p_s_path
-)paren
-comma
-l_int|3
-comma
-id|PATH_LAST_POSITION
-(paren
-id|p_s_path
-)paren
-op_minus
-l_int|2
-comma
-id|PATH_LAST_POSITION
-(paren
-id|p_s_path
-)paren
-op_plus
-l_int|2
-)paren
-suffix:semicolon
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
-comma
-l_string|&quot;PAP-5305: prepare_for_delete_or_cut: key %k, new_file_length %Ld&quot;
-comma
-id|p_s_item_key
-comma
-id|n_new_file_length
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
-id|run_task_queue
-c_func
-(paren
-op_amp
-id|tq_disk
-)paren
-suffix:semicolon
-id|yield
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* This loop can be optimized. */
 )brace
 r_while
@@ -5298,7 +4982,6 @@ suffix:semicolon
 multiline_comment|/* Summary Of Mechanisms For Handling Collisions Between Processes:&n;&n; deletion of the body of the object is performed by iput(), with the&n; result that if multiple processes are operating on a file, the&n; deletion of the body of the file is deferred until the last process&n; that has an open inode performs its iput().&n;&n; writes and truncates are protected from collisions by use of&n; semaphores.&n;&n; creates, linking, and mknod are protected from collisions with other&n; processes by making the reiserfs_add_entry() the last step in the&n; creation, and then rolling back all changes if there was a collision.&n; - Hans&n;*/
 multiline_comment|/* this deletes item which never gets split */
 DECL|function|reiserfs_delete_solid_item
-r_static
 r_void
 id|reiserfs_delete_solid_item
 (paren
@@ -5374,7 +5057,7 @@ id|IO_ERROR
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-: reiserfs_delete_solid_item: &quot;
+l_string|&quot;vs-5350: reiserfs_delete_solid_item: &quot;
 l_string|&quot;i/o failure occurred trying to delete %K&bslash;n&quot;
 comma
 op_amp
@@ -5400,7 +5083,7 @@ id|path
 suffix:semicolon
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-: reiserfs_delete_solid_item: %k not found&quot;
+l_string|&quot;vs-5355: reiserfs_delete_solid_item: %k not found&quot;
 comma
 id|key
 )paren
@@ -5502,7 +5185,7 @@ suffix:semicolon
 singleline_comment|// IO_ERROR, NO_DISK_SPACE, etc
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-: reiserfs_delete_solid_item: &quot;
+l_string|&quot;vs-5360: reiserfs_delete_solid_item: &quot;
 l_string|&quot;could not delete %K due to fix_nodes failure&bslash;n&quot;
 comma
 op_amp
@@ -5558,27 +5241,6 @@ l_int|0
 multiline_comment|/*no timestamp updates*/
 )paren
 suffix:semicolon
-multiline_comment|/* delete stat data */
-multiline_comment|/* this debug code needs to go away.  Trying to find a truncate race&n;    ** -- clm -- 4/1/2000&n;    */
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|inode-&gt;i_nlink
-op_ne
-l_int|0
-)paren
-(brace
-id|reiserfs_warning
-c_func
-(paren
-l_string|&quot;clm-4001: deleting inode with link count==%d&bslash;n&quot;
-comma
-id|inode-&gt;i_nlink
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#if defined( USE_INODE_GENERATION_COUNTER )
 r_if
 c_cond
@@ -5724,13 +5386,17 @@ op_logical_or
 op_logical_neg
 id|page
 op_logical_or
+(paren
 id|REISERFS_I
 c_func
 (paren
 id|p_s_inode
 )paren
 op_member_access_from_pointer
-id|nopack
+id|i_flags
+op_amp
+id|i_nopack_mask
+)paren
 )paren
 (brace
 singleline_comment|// leave tail in an unformatted node&t;
@@ -6616,9 +6282,10 @@ c_func
 id|p_s_inode
 )paren
 op_member_access_from_pointer
-id|i_pack_on_close
-op_assign
-l_int|0
+id|i_flags
+op_and_assign
+op_complement
+id|i_pack_on_close_mask
 suffix:semicolon
 )brace
 r_return
@@ -6648,12 +6315,12 @@ id|inode-&gt;i_nlink
 )paren
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-5655: truncate_directory: link count != 0&quot;
+l_string|&quot;vs-5655: truncate_directory: link count != 0&bslash;n&quot;
 )paren
 suffix:semicolon
 id|set_le_key_k_offset
 (paren
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 comma
 id|INODE_PKEY
 (paren
@@ -6665,7 +6332,7 @@ id|DOT_OFFSET
 suffix:semicolon
 id|set_le_key_k_type
 (paren
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 comma
 id|INODE_PKEY
 (paren
@@ -6687,7 +6354,7 @@ id|inode
 suffix:semicolon
 id|set_le_key_k_offset
 (paren
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 comma
 id|INODE_PKEY
 (paren
@@ -6699,7 +6366,7 @@ id|SD_OFFSET
 suffix:semicolon
 id|set_le_key_k_type
 (paren
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 comma
 id|INODE_PKEY
 (paren
@@ -7104,7 +6771,6 @@ id|p_s_inode-&gt;i_ctime
 op_assign
 id|CURRENT_TIME
 suffix:semicolon
-singleline_comment|// FIXME: sd gets wrong size here
 )brace
 id|reiserfs_update_sd
 c_func

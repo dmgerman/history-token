@@ -555,7 +555,7 @@ id|SA_SHIRQ
 comma
 l_string|&quot;Fastlane SCSI&quot;
 comma
-id|esp_intr
+id|esp-&gt;ehost
 )paren
 )paren
 (brace

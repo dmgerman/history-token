@@ -1967,7 +1967,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|current-&gt;sigpending
+id|current-&gt;work.sigpending
 op_assign
 l_int|0
 suffix:semicolon

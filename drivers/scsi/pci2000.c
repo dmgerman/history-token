@@ -764,7 +764,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|shost-&gt;host_lock
 comma
 id|flags

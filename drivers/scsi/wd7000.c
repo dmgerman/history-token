@@ -2565,7 +2565,6 @@ multiline_comment|/* someone else is allocating */
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -2586,7 +2585,6 @@ multiline_comment|/* wait a jiffy */
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -2615,7 +2613,6 @@ r_do
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -2636,7 +2633,6 @@ multiline_comment|/* wait a jiffy */
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -3719,7 +3715,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|flags
@@ -3738,7 +3733,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|flags

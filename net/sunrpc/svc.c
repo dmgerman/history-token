@@ -652,7 +652,7 @@ c_cond
 op_logical_neg
 id|port
 )paren
-id|current-&gt;sigpending
+id|current-&gt;work.sigpending
 op_assign
 l_int|0
 suffix:semicolon

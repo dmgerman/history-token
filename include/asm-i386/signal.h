@@ -2,6 +2,7 @@ macro_line|#ifndef _ASMi386_SIGNAL_H
 DECL|macro|_ASMi386_SIGNAL_H
 mdefine_line|#define _ASMi386_SIGNAL_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
 multiline_comment|/* Avoid too many header ordering problems.  */
 r_struct
 id|siginfo
@@ -544,6 +545,28 @@ r_return
 id|word
 suffix:semicolon
 )brace
+r_struct
+id|pt_regs
+suffix:semicolon
+r_extern
+r_int
+id|FASTCALL
+c_func
+(paren
+id|do_signal
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+id|sigset_t
+op_star
+id|oldset
+)paren
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

@@ -171,9 +171,9 @@ macro_line|#  define DC390_IFLAGS unsigned long iflags;
 DECL|macro|DC390_DFLAGS
 macro_line|#  define DC390_DFLAGS unsigned long dflags; 
 DECL|macro|DC390_LOCK_IO
-macro_line|#  define DC390_LOCK_IO spin_lock_irqsave (&amp;io_request_lock, iflags)
+macro_line|#  define DC390_LOCK_IO spin_lock_irqsave (((struct Scsi_Host *)dev)-&gt;host_lock, iflags)
 DECL|macro|DC390_UNLOCK_IO
-macro_line|#  define DC390_UNLOCK_IO spin_unlock_irqrestore (&amp;io_request_lock, iflags)
+macro_line|#  define DC390_UNLOCK_IO spin_unlock_irqrestore (((struct Scsi_Host *)dev)-&gt;host_lock, iflags)
 DECL|macro|DC390_LOCK_DRV
 macro_line|#  define DC390_LOCK_DRV spin_lock_irqsave (&amp;dc390_drvlock, dflags)
 DECL|macro|DC390_UNLOCK_DRV
@@ -213,9 +213,9 @@ macro_line|#   define DC390_IFLAGS
 DECL|macro|DC390_DFLAGS
 macro_line|#  define DC390_DFLAGS unsigned long dflags; 
 DECL|macro|DC390_LOCK_IO
-macro_line|#   define DC390_LOCK_IO /* spin_lock_irqsave (&amp;io_request_lock, iflags) */
+macro_line|#   define DC390_LOCK_IO(dev) /* spin_lock_irqsave (&amp;io_request_lock, iflags) */
 DECL|macro|DC390_UNLOCK_IO
-macro_line|#   define DC390_UNLOCK_IO /* spin_unlock_irqrestore (&amp;io_request_lock, iflags) */
+macro_line|#   define DC390_UNLOCK_IO(dev) /* spin_unlock_irqrestore (&amp;io_request_lock, iflags) */
 DECL|macro|DC390_LOCK_DRV
 macro_line|#   define DC390_LOCK_DRV spin_lock_irqsave (&amp;dc390_drvlock, dflags)
 DECL|macro|DC390_UNLOCK_DRV
@@ -247,9 +247,9 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|macro|DC390_LOCK_IO
-macro_line|#   define DC390_LOCK_IO spin_lock_irqsave (&amp;io_request_lock, iflags)
+macro_line|#   define DC390_LOCK_IO(dev) spin_lock_irqsave (((struct Scsi_Host *)dev)-&gt;host_lock, iflags)
 DECL|macro|DC390_UNLOCK_IO
-macro_line|#   define DC390_UNLOCK_IO spin_unlock_irqrestore (&amp;io_request_lock, iflags)
+macro_line|#   define DC390_UNLOCK_IO(dev) spin_unlock_irqrestore (((struct Scsi_Host *)dev)-&gt;host_lock, iflags)
 DECL|macro|DC390_LOCK_DRV
 macro_line|#   define DC390_LOCK_DRV spin_lock_irqsave (&amp;dc390_drvlock, dflags)
 DECL|macro|DC390_UNLOCK_DRV
@@ -3417,6 +3417,10 @@ l_string|&quot;DC390: Debug: Waiting queue woken up by timer!&bslash;n&quot;
 suffix:semicolon
 )paren
 id|DC390_LOCK_IO
+c_func
+(paren
+id|pACB.pScsiHost
+)paren
 suffix:semicolon
 id|DC390_LOCK_ACB
 suffix:semicolon
@@ -3428,6 +3432,10 @@ suffix:semicolon
 id|DC390_UNLOCK_ACB
 suffix:semicolon
 id|DC390_UNLOCK_IO
+c_func
+(paren
+id|pACB.pScsiHost
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Function: static void dc390_SendSRB (PACB pACB, PSRB pSRB)&n; *&n; * Purpose: Send SCSI Request Block (pSRB) to adapter (pACB)&n; *&n; ***********************************************************************/
@@ -9253,6 +9261,10 @@ op_assign
 l_int|0
 suffix:semicolon
 id|DC390_LOCK_IO
+c_func
+(paren
+id|pACB.pScsiHost
+)paren
 suffix:semicolon
 id|DC390_LOCK_ACB
 suffix:semicolon
@@ -10449,6 +10461,10 @@ suffix:semicolon
 )brace
 suffix:semicolon
 id|DC390_UNLOCK_IO
+c_func
+(paren
+id|pACB.pScsiHost
+)paren
 suffix:semicolon
 r_return
 (paren
@@ -10467,6 +10483,10 @@ multiline_comment|/* spin_unlock (strtok_lock); */
 id|DC390_UNLOCK_ACB
 suffix:semicolon
 id|DC390_UNLOCK_IO
+c_func
+(paren
+id|pACB.pScsiHost
+)paren
 suffix:semicolon
 id|printk
 (paren
@@ -10516,6 +10536,10 @@ l_int|0
 )paren
 suffix:semicolon
 id|DC390_UNLOCK_IO
+c_func
+(paren
+id|pACB.pScsiHost
+)paren
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -10539,6 +10563,10 @@ suffix:semicolon
 id|DC390_UNLOCK_ACB
 suffix:semicolon
 id|DC390_UNLOCK_IO
+c_func
+(paren
+id|pACB.pScsiHost
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -10629,6 +10657,10 @@ id|pDCB
 )paren
 suffix:semicolon
 id|DC390_UNLOCK_IO
+c_func
+(paren
+id|pACB.pScsiHost
+)paren
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -10721,6 +10753,10 @@ suffix:semicolon
 id|DC390_UNLOCK_ACB
 suffix:semicolon
 id|DC390_UNLOCK_IO
+c_func
+(paren
+id|pACB.pScsiHost
+)paren
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -10843,6 +10879,10 @@ id|pDCB
 )paren
 suffix:semicolon
 id|DC390_UNLOCK_IO
+c_func
+(paren
+id|pACB.pScsiHost
+)paren
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -10967,6 +11007,10 @@ id|pDCB
 )paren
 suffix:semicolon
 id|DC390_UNLOCK_IO
+c_func
+(paren
+id|pACB.pScsiHost
+)paren
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -10992,6 +11036,10 @@ suffix:semicolon
 id|DC390_UNLOCK_ACB
 suffix:semicolon
 id|DC390_UNLOCK_IO
+c_func
+(paren
+id|pACB.pScsiHost
+)paren
 suffix:semicolon
 r_return
 (paren
@@ -11993,6 +12041,10 @@ id|host-&gt;hostdata
 )paren
 suffix:semicolon
 id|DC390_LOCK_IO
+c_func
+(paren
+id|host
+)paren
 suffix:semicolon
 id|DC390_LOCK_ACB
 suffix:semicolon
@@ -12047,6 +12099,10 @@ suffix:semicolon
 id|DC390_UNLOCK_ACB
 suffix:semicolon
 id|DC390_UNLOCK_IO
+c_func
+(paren
+id|host
+)paren
 suffix:semicolon
 r_return
 l_int|1

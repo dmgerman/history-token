@@ -814,6 +814,11 @@ suffix:semicolon
 id|loff_t
 id|retval
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -881,6 +886,11 @@ op_assign
 id|offset
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon

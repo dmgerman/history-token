@@ -1036,7 +1036,7 @@ l_string|&quot;seagate&quot;
 suffix:colon
 l_string|&quot;tmc-8xx&quot;
 comma
-l_int|NULL
+id|instance
 )paren
 )paren
 (brace
@@ -1319,10 +1319,16 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|dev
+op_assign
+id|dev_id
+suffix:semicolon
 id|spin_lock_irqsave
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1338,8 +1344,7 @@ id|regs
 suffix:semicolon
 id|spin_unlock_irqrestore
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren

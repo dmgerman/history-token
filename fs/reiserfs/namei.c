@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-multiline_comment|/* there should be an overview right&n;                                   here, as there should be in every&n;                                   conceptual grouping of code.  This&n;                                   should be combined with dir.c and&n;                                   called dir.c (naming will become&n;                                   too large to be called one file in&n;                                   a few years), stop senselessly&n;                                   imitating the incoherent&n;                                   structuring of code used by other&n;                                   filesystems.  */
 DECL|macro|INC_DIR_INODE_NLINK
 mdefine_line|#define INC_DIR_INODE_NLINK(i) if (i-&gt;i_nlink != 1) { i-&gt;i_nlink++; if (i-&gt;i_nlink &gt;= REISERFS_LINK_MAX) i-&gt;i_nlink=1; }
 DECL|macro|DEC_DIR_INODE_NLINK
@@ -388,7 +387,7 @@ suffix:semicolon
 multiline_comment|/* store key of the found entry */
 id|de-&gt;de_entry_key.version
 op_assign
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 suffix:semicolon
 id|de-&gt;de_entry_key.on_disk_key.k_dir_id
 op_assign
@@ -1151,16 +1150,18 @@ id|retval
 op_eq
 id|IO_ERROR
 )paren
-singleline_comment|// FIXME: still has to be dealt with
-id|reiserfs_panic
+(brace
+id|reiserfs_warning
 (paren
-id|dir-&gt;i_sb
-comma
 l_string|&quot;zam-7001: io error in &quot;
 id|__FUNCTION__
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+id|IO_ERROR
+suffix:semicolon
+)brace
 multiline_comment|/* compare names for all entries having given hash value */
 id|retval
 op_assign
@@ -1223,6 +1224,7 @@ singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions co
 singleline_comment|// used as a template unless they are so labeled.
 singleline_comment|//
 DECL|function|reiserfs_lookup
+r_static
 r_struct
 id|dentry
 op_star
@@ -2059,6 +2061,7 @@ singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions co
 singleline_comment|// used as a template unless they are so labeled.
 singleline_comment|//
 DECL|function|reiserfs_create
+r_static
 r_int
 id|reiserfs_create
 (paren
@@ -2321,6 +2324,7 @@ singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions co
 singleline_comment|// used as a template unless they are so labeled.
 singleline_comment|//
 DECL|function|reiserfs_mknod
+r_static
 r_int
 id|reiserfs_mknod
 (paren
@@ -2584,6 +2588,7 @@ singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions co
 singleline_comment|// used as a template unless they are so labeled.
 singleline_comment|//
 DECL|function|reiserfs_mkdir
+r_static
 r_int
 id|reiserfs_mkdir
 (paren
@@ -2909,6 +2914,7 @@ singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions co
 singleline_comment|// used as a template unless they are so labeled.
 singleline_comment|//
 DECL|function|reiserfs_rmdir
+r_static
 r_int
 id|reiserfs_rmdir
 (paren
@@ -2940,10 +2946,6 @@ id|th
 suffix:semicolon
 r_int
 id|jbegin_count
-op_assign
-id|JOURNAL_PER_BALANCE_CNT
-op_star
-l_int|3
 suffix:semicolon
 id|INITIALIZE_PATH
 (paren
@@ -2953,6 +2955,15 @@ suffix:semicolon
 r_struct
 id|reiserfs_dir_entry
 id|de
+suffix:semicolon
+multiline_comment|/* we will be doing 2 balancings and update 2 stat data */
+id|jbegin_count
+op_assign
+id|JOURNAL_PER_BALANCE_CNT
+op_star
+l_int|2
+op_plus
+l_int|2
 suffix:semicolon
 id|journal_begin
 c_func
@@ -3168,6 +3179,18 @@ comma
 id|dir
 )paren
 suffix:semicolon
+multiline_comment|/* prevent empty directory from getting lost */
+id|add_save_link
+(paren
+op_amp
+id|th
+comma
+id|inode
+comma
+l_int|0
+multiline_comment|/* not truncate */
+)paren
+suffix:semicolon
 id|pop_journal_writer
 c_func
 (paren
@@ -3233,6 +3256,7 @@ singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions co
 singleline_comment|// used as a template unless they are so labeled.
 singleline_comment|//
 DECL|function|reiserfs_unlink
+r_static
 r_int
 id|reiserfs_unlink
 (paren
@@ -3273,10 +3297,19 @@ id|th
 suffix:semicolon
 r_int
 id|jbegin_count
+suffix:semicolon
+id|inode
+op_assign
+id|dentry-&gt;d_inode
+suffix:semicolon
+multiline_comment|/* in this transaction we can be doing at max two balancings and update&n;       two stat datas */
+id|jbegin_count
 op_assign
 id|JOURNAL_PER_BALANCE_CNT
 op_star
-l_int|3
+l_int|2
+op_plus
+l_int|2
 suffix:semicolon
 id|journal_begin
 c_func
@@ -3331,10 +3364,6 @@ r_goto
 id|end_unlink
 suffix:semicolon
 )brace
-id|inode
-op_assign
-id|dentry-&gt;d_inode
-suffix:semicolon
 id|reiserfs_update_inode_transaction
 c_func
 (paren
@@ -3471,6 +3500,24 @@ comma
 id|dir
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|inode-&gt;i_nlink
+)paren
+multiline_comment|/* prevent file from getting lost */
+id|add_save_link
+(paren
+op_amp
+id|th
+comma
+id|inode
+comma
+l_int|0
+multiline_comment|/* not truncate */
+)paren
+suffix:semicolon
 id|pop_journal_writer
 c_func
 (paren
@@ -3542,6 +3589,7 @@ singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions co
 singleline_comment|// used as a template unless they are so labeled.
 singleline_comment|//
 DECL|function|reiserfs_symlink
+r_static
 r_int
 id|reiserfs_symlink
 (paren
@@ -3625,7 +3673,7 @@ c_cond
 (paren
 id|item_len
 OG
-id|MAX_ITEM_LEN
+id|MAX_DIRECT_ITEM_LEN
 (paren
 id|dir-&gt;i_sb-&gt;s_blocksize
 )paren
@@ -3899,6 +3947,7 @@ singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions co
 singleline_comment|// used as a template unless they are so labeled.
 singleline_comment|//
 DECL|function|reiserfs_link
+r_static
 r_int
 id|reiserfs_link
 (paren
@@ -4301,6 +4350,7 @@ singleline_comment|// used as a template unless they are so labeled.
 singleline_comment|//
 multiline_comment|/* &n; * process, that is going to call fix_nodes/do_balance must hold only&n; * one path. If it holds 2 or more, it can get into endless waiting in&n; * get_empty_nodes or its clones &n; */
 DECL|function|reiserfs_rename
+r_static
 r_int
 id|reiserfs_rename
 (paren
@@ -4348,6 +4398,8 @@ id|item_head
 id|new_entry_ih
 comma
 id|old_entry_ih
+comma
+id|dot_dot_ih
 suffix:semicolon
 r_struct
 id|reiserfs_dir_entry
@@ -4374,9 +4426,14 @@ id|th
 suffix:semicolon
 r_int
 id|jbegin_count
+suffix:semicolon
+multiline_comment|/* two balancings: old name removal, new name insertion or &quot;save&quot; link,&n;       stat data updates: old directory and new directory and maybe block&n;       containing &quot;..&quot; of renamed directory */
+id|jbegin_count
 op_assign
 id|JOURNAL_PER_BALANCE_CNT
 op_star
+l_int|3
+op_plus
 l_int|3
 suffix:semicolon
 id|old_inode
@@ -4578,13 +4635,11 @@ op_logical_neg
 id|new_inode
 )paren
 (brace
-id|printk
+id|reiserfs_panic
 (paren
-l_string|&quot;reiserfs_rename: new entry is found, new inode == 0&bslash;n&quot;
-)paren
-suffix:semicolon
-id|BUG
-(paren
+id|old_dir-&gt;i_sb
+comma
+l_string|&quot;vs-7050: new entry is found, new inode == 0&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4691,6 +4746,16 @@ id|old_entry_path
 )paren
 )paren
 suffix:semicolon
+id|reiserfs_prepare_for_journal
+c_func
+(paren
+id|old_inode-&gt;i_sb
+comma
+id|old_de.de_bh
+comma
+l_int|1
+)paren
+suffix:semicolon
 singleline_comment|// look for new name by reiserfs_find_entry
 id|new_de.de_gen_number_bit_string
 op_assign
@@ -4785,6 +4850,20 @@ id|BUG
 (paren
 )paren
 suffix:semicolon
+id|copy_item_head
+c_func
+(paren
+op_amp
+id|dot_dot_ih
+comma
+id|get_ih
+c_func
+(paren
+op_amp
+id|dot_dot_entry_path
+)paren
+)paren
+suffix:semicolon
 singleline_comment|// node containing &quot;..&quot; gets into transaction
 id|reiserfs_prepare_for_journal
 c_func
@@ -4803,6 +4882,16 @@ multiline_comment|/* sanity checking before doing the rename - avoid races many&
 r_if
 c_cond
 (paren
+id|item_moved
+c_func
+(paren
+op_amp
+id|new_entry_ih
+comma
+op_amp
+id|new_entry_path
+)paren
+op_logical_or
 op_logical_neg
 id|entry_points_to_object
 c_func
@@ -4815,16 +4904,6 @@ op_amp
 id|new_de
 comma
 id|new_inode
-)paren
-op_logical_or
-id|item_moved
-c_func
-(paren
-op_amp
-id|new_entry_ih
-comma
-op_amp
-id|new_entry_path
 )paren
 op_logical_or
 id|item_moved
@@ -4858,6 +4937,13 @@ comma
 id|new_de.de_bh
 )paren
 suffix:semicolon
+id|reiserfs_restore_prepared_buffer
+(paren
+id|old_inode-&gt;i_sb
+comma
+id|old_de.de_bh
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4874,34 +4960,32 @@ comma
 id|dot_dot_de.de_bh
 )paren
 suffix:semicolon
-macro_line|#if 0
-singleline_comment|// FIXME: do we need this? shouldn&squot;t we simply continue?
-id|run_task_queue
-c_func
-(paren
-op_amp
-id|tq_disk
-)paren
-suffix:semicolon
-id|yield
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_continue
 suffix:semicolon
 )brace
-id|RFALSE
-c_func
+r_if
+c_cond
 (paren
 id|S_ISDIR
 c_func
 (paren
 id|old_inode-&gt;i_mode
 )paren
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
 (paren
+id|item_moved
+c_func
+(paren
+op_amp
+id|dot_dot_ih
+comma
+op_amp
+id|dot_dot_entry_path
+)paren
+op_logical_or
 op_logical_neg
 id|entry_points_to_object
 (paren
@@ -4914,13 +4998,47 @@ id|dot_dot_de
 comma
 id|old_dir
 )paren
-op_logical_or
+)paren
+(brace
+id|reiserfs_restore_prepared_buffer
+(paren
+id|old_inode-&gt;i_sb
+comma
+id|old_de.de_bh
+)paren
+suffix:semicolon
+id|reiserfs_restore_prepared_buffer
+(paren
+id|old_inode-&gt;i_sb
+comma
+id|new_de.de_bh
+)paren
+suffix:semicolon
+id|reiserfs_restore_prepared_buffer
+(paren
+id|old_inode-&gt;i_sb
+comma
+id|dot_dot_de.de_bh
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+)brace
+id|RFALSE
+c_func
+(paren
+id|S_ISDIR
+c_func
+(paren
+id|old_inode-&gt;i_mode
+)paren
+op_logical_and
 op_logical_neg
 id|reiserfs_buffer_prepared
 c_func
 (paren
 id|dot_dot_de.de_bh
-)paren
 )paren
 comma
 l_string|&quot;&quot;
@@ -4965,6 +5083,16 @@ op_plus
 id|old_de.de_entry_num
 )paren
 suffix:semicolon
+id|journal_mark_dirty
+(paren
+op_amp
+id|th
+comma
+id|old_dir-&gt;i_sb
+comma
+id|old_de.de_bh
+)paren
+suffix:semicolon
 id|old_dir-&gt;i_ctime
 op_assign
 id|old_dir-&gt;i_mtime
@@ -4994,11 +5122,10 @@ id|new_inode-&gt;i_mode
 )paren
 )paren
 (brace
-id|DEC_DIR_INODE_NLINK
-c_func
-(paren
-id|new_inode
-)paren
+id|new_inode-&gt;i_nlink
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -5021,8 +5148,7 @@ id|old_inode-&gt;i_mode
 )paren
 )paren
 (brace
-singleline_comment|//if (dot_dot_de.de_bh) {
-singleline_comment|// adjust &quot;..&quot; of renamed directory
+singleline_comment|// adjust &quot;..&quot; of renamed directory 
 id|set_ino_in_dir_entry
 (paren
 op_amp
@@ -5044,48 +5170,26 @@ comma
 id|dot_dot_de.de_bh
 )paren
 suffix:semicolon
-id|DEC_DIR_INODE_NLINK
-c_func
-(paren
-id|old_dir
-)paren
 r_if
 c_cond
 (paren
+op_logical_neg
 id|new_inode
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|S_ISDIR
-c_func
-(paren
-id|new_inode-&gt;i_mode
-)paren
-)paren
-(brace
-id|DEC_DIR_INODE_NLINK
-c_func
-(paren
-id|new_inode
-)paren
-)brace
-r_else
-(brace
-id|new_inode-&gt;i_nlink
-op_decrement
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
+multiline_comment|/* there (in new_dir) was no directory, so it got new link&n;&t;       (&quot;..&quot;  of renamed directory) */
 id|INC_DIR_INODE_NLINK
 c_func
 (paren
 id|new_dir
 )paren
-)brace
+suffix:semicolon
+multiline_comment|/* old directory lost one link - &quot;.. &quot; of renamed directory */
+id|DEC_DIR_INODE_NLINK
+c_func
+(paren
+id|old_dir
+)paren
+suffix:semicolon
 )brace
 singleline_comment|// looks like in 2.3.99pre3 brelse is atomic. so we can use pathrelse
 id|pathrelse
@@ -5130,7 +5234,7 @@ l_int|0
 )paren
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-: reiserfs_rename: coudl not cut old name. Fsck later?&bslash;n&quot;
+l_string|&quot;vs-7060: reiserfs_rename: couldn&squot;t not cut old name. Fsck later?&bslash;n&quot;
 )paren
 suffix:semicolon
 id|old_dir-&gt;i_size
@@ -5172,6 +5276,25 @@ c_cond
 (paren
 id|new_inode
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|new_inode-&gt;i_nlink
+op_eq
+l_int|0
+)paren
+id|add_save_link
+(paren
+op_amp
+id|th
+comma
+id|new_inode
+comma
+l_int|0
+multiline_comment|/* not truncate */
+)paren
+suffix:semicolon
 id|reiserfs_update_sd
 (paren
 op_amp
@@ -5180,6 +5303,7 @@ comma
 id|new_inode
 )paren
 suffix:semicolon
+)brace
 id|pop_journal_writer
 c_func
 (paren
@@ -5201,4 +5325,50 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * directories can handle most operations...&n; */
+DECL|variable|reiserfs_dir_inode_operations
+r_struct
+id|inode_operations
+id|reiserfs_dir_inode_operations
+op_assign
+(brace
+singleline_comment|//&amp;reiserfs_dir_operations,&t;/* default_file_ops */
+id|create
+suffix:colon
+id|reiserfs_create
+comma
+id|lookup
+suffix:colon
+id|reiserfs_lookup
+comma
+id|link
+suffix:colon
+id|reiserfs_link
+comma
+id|unlink
+suffix:colon
+id|reiserfs_unlink
+comma
+id|symlink
+suffix:colon
+id|reiserfs_symlink
+comma
+id|mkdir
+suffix:colon
+id|reiserfs_mkdir
+comma
+id|rmdir
+suffix:colon
+id|reiserfs_rmdir
+comma
+id|mknod
+suffix:colon
+id|reiserfs_mknod
+comma
+id|rename
+suffix:colon
+id|reiserfs_rename
+comma
+)brace
+suffix:semicolon
 eof

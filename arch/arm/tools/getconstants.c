@@ -30,18 +30,7 @@ c_func
 r_void
 )paren
 (brace
-id|DEFN
-c_func
-(paren
-l_string|&quot;TSK_SIGPENDING&quot;
-comma
-id|OFF_TSK
-c_func
-(paren
-id|sigpending
-)paren
-)paren
-suffix:semicolon
+macro_line|#error DEFN(&quot;TSK_SIGPENDING&quot;,&t;&t;OFF_TSK(sigpending));
 id|DEFN
 c_func
 (paren
@@ -54,30 +43,8 @@ id|addr_limit
 )paren
 )paren
 suffix:semicolon
-id|DEFN
-c_func
-(paren
-l_string|&quot;TSK_NEED_RESCHED&quot;
-comma
-id|OFF_TSK
-c_func
-(paren
-id|need_resched
-)paren
-)paren
-suffix:semicolon
-id|DEFN
-c_func
-(paren
-l_string|&quot;TSK_PTRACE&quot;
-comma
-id|OFF_TSK
-c_func
-(paren
-id|ptrace
-)paren
-)paren
-suffix:semicolon
+macro_line|#error DEFN(&quot;TSK_NEED_RESCHED&quot;,&t;OFF_TSK(need_resched));
+macro_line|#error DEFN(&quot;TSK_PTRACE&quot;,&t;&t;OFF_TSK(ptrace));
 id|DEFN
 c_func
 (paren

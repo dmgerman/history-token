@@ -23,6 +23,12 @@ DECL|macro|PATH_MAX
 mdefine_line|#define PATH_MAX        4096&t;/* # chars in a path name including nul */
 DECL|macro|PIPE_BUF
 mdefine_line|#define PIPE_BUF        4096&t;/* # bytes in atomic write to a pipe */
+DECL|macro|XATTR_NAME_MAX
+mdefine_line|#define XATTR_NAME_MAX   255&t;/* # chars in an extended attribute name */
+DECL|macro|XATTR_SIZE_MAX
+mdefine_line|#define XATTR_SIZE_MAX 65536&t;/* size of an extended attribute value (64k) */
+DECL|macro|XATTR_LIST_MAX
+mdefine_line|#define XATTR_LIST_MAX 65536&t;/* size of extended attribute namelist (64k) */
 DECL|macro|RTSIG_MAX
 mdefine_line|#define RTSIG_MAX&t;  32
 macro_line|#endif

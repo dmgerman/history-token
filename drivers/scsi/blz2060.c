@@ -449,7 +449,7 @@ id|SA_SHIRQ
 comma
 l_string|&quot;Blizzard 2060 SCSI&quot;
 comma
-id|esp_intr
+id|esp-&gt;ehost
 )paren
 suffix:semicolon
 multiline_comment|/* Figure out our scsi ID on the bus */

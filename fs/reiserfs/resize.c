@@ -475,7 +475,7 @@ id|bitmap
 id|i
 )braket
 op_assign
-id|reiserfs_getblk
+id|sb_getblk
 c_func
 (paren
 id|s
@@ -499,7 +499,11 @@ id|b_data
 comma
 l_int|0
 comma
-id|sb-&gt;s_blocksize
+id|sb_blocksize
+c_func
+(paren
+id|sb
+)paren
 )paren
 suffix:semicolon
 id|reiserfs_test_and_set_le_bit

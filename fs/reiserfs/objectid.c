@@ -2,8 +2,10 @@ multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by r
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
+macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 singleline_comment|// find where objectid map starts
 DECL|macro|objectid_map
 mdefine_line|#define objectid_map(s,rs) (old_format_only (s) ? &bslash;&n;                         (__u32 *)((struct reiserfs_super_block_v1 *)(rs) + 1) :&bslash;&n;&t;&t;&t; (__u32 *)((rs) + 1))
@@ -584,9 +586,17 @@ multiline_comment|/* JDM comparing two little-endian values for equality -- safe
 r_if
 c_cond
 (paren
-id|rs-&gt;s_oid_cursize
+id|sb_oid_cursize
+c_func
+(paren
+id|rs
+)paren
 op_eq
-id|rs-&gt;s_oid_maxsize
+id|sb_oid_maxsize
+c_func
+(paren
+id|rs
+)paren
 )paren
 (brace
 multiline_comment|/* objectid map must be expanded, but there is no space */
@@ -684,7 +694,7 @@ suffix:semicolon
 )brace
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-15010: reiserfs_release_objectid: tried to free free object id (%lu)&quot;
+l_string|&quot;vs-15011: reiserfs_release_objectid: tried to free free object id (%lu)&bslash;n&quot;
 comma
 (paren
 r_int
@@ -718,10 +728,10 @@ suffix:semicolon
 r_int
 id|cur_size
 op_assign
-id|le16_to_cpu
+id|sb_oid_cursize
 c_func
 (paren
-id|disk_sb-&gt;s_oid_cursize
+id|disk_sb
 )paren
 suffix:semicolon
 r_int
@@ -745,10 +755,10 @@ suffix:semicolon
 r_int
 id|old_max
 op_assign
-id|le16_to_cpu
+id|sb_oid_maxsize
 c_func
 (paren
-id|disk_sb-&gt;s_oid_maxsize
+id|disk_sb
 )paren
 suffix:semicolon
 r_struct
@@ -830,11 +840,11 @@ op_minus
 l_int|1
 )braket
 suffix:semicolon
-id|disk_sb-&gt;s_oid_cursize
-op_assign
-id|cpu_to_le16
+id|set_sb_oid_cursize
 c_func
 (paren
+id|disk_sb
+comma
 id|new_size
 )paren
 suffix:semicolon
@@ -875,12 +885,32 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/* set the max size so we don&squot;t overflow later */
-id|disk_sb-&gt;s_oid_maxsize
-op_assign
-id|cpu_to_le16
+id|set_sb_oid_maxsize
 c_func
 (paren
+id|disk_sb
+comma
 id|new_size
+)paren
+suffix:semicolon
+multiline_comment|/* Zero out label and generate random UUID */
+id|memset
+c_func
+(paren
+id|disk_sb-&gt;s_label
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|disk_sb-&gt;s_label
+)paren
+)paren
+suffix:semicolon
+id|generate_random_uuid
+c_func
+(paren
+id|disk_sb-&gt;s_uuid
 )paren
 suffix:semicolon
 multiline_comment|/* finally, zero out the unused chunk of the new super */

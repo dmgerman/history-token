@@ -4939,7 +4939,6 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|pHba-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -4966,7 +4965,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|pHba-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -7675,7 +7673,6 @@ r_do
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|pHba-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -7704,7 +7701,6 @@ singleline_comment|//&t;&t;pHba-&gt;state &amp;= ~DPTI_STATE_IOCTL;
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|pHba-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -8738,7 +8734,6 @@ suffix:colon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|pHba-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -8753,7 +8748,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|pHba-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -8975,7 +8969,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|pHba-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -9395,7 +9388,6 @@ suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|pHba-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -10675,7 +10667,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|pHba-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -10726,7 +10717,6 @@ suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|pHba-&gt;host-&gt;host_lock
 comma
 id|flags

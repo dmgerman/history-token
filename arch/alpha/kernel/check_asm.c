@@ -50,22 +50,10 @@ id|flags
 )paren
 suffix:semicolon
 id|printf
-c_func
 (paren
 l_string|&quot;#define TASK_SIGPENDING %ld&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
-m_offsetof
-(paren
-r_struct
-id|task_struct
-comma
-id|sigpending
-)paren
-)paren
-suffix:semicolon
+macro_line|#error&t;       (long)offsetof(struct task_struct, sigpending));
 id|printf
 c_func
 (paren
@@ -101,22 +89,10 @@ id|exec_domain
 )paren
 suffix:semicolon
 id|printf
-c_func
 (paren
 l_string|&quot;#define TASK_NEED_RESCHED %ld&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
-m_offsetof
-(paren
-r_struct
-id|task_struct
-comma
-id|need_resched
-)paren
-)paren
-suffix:semicolon
+macro_line|#error&t;       (long)offsetof(struct task_struct, work.need_resched));
 id|printf
 c_func
 (paren

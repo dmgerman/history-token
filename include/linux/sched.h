@@ -565,6 +565,38 @@ r_struct
 id|prio_array
 id|prio_array_t
 suffix:semicolon
+multiline_comment|/* this struct must occupy one 32-bit chunk so that is can be read in one go */
+DECL|struct|task_work
+r_struct
+id|task_work
+(brace
+DECL|member|need_resched
+id|__s8
+id|need_resched
+suffix:semicolon
+DECL|member|syscall_trace
+id|__u8
+id|syscall_trace
+suffix:semicolon
+multiline_comment|/* count of syscall interceptors */
+DECL|member|sigpending
+id|__u8
+id|sigpending
+suffix:semicolon
+DECL|member|notify_resume
+id|__u8
+id|notify_resume
+suffix:semicolon
+multiline_comment|/* request for notification on&n;&t;&t;&t;&t;   userspace execution resumption */
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 DECL|struct|task_struct
 r_struct
 id|task_struct
@@ -582,9 +614,11 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* per process flags, defined below */
-DECL|member|sigpending
-r_int
-id|sigpending
+DECL|member|work
+r_volatile
+r_struct
+id|task_work
+id|work
 suffix:semicolon
 DECL|member|addr_limit
 id|mm_segment_t
@@ -597,10 +631,9 @@ id|exec_domain
 op_star
 id|exec_domain
 suffix:semicolon
-DECL|member|need_resched
-r_volatile
+DECL|member|__pad
 r_int
-id|need_resched
+id|__pad
 suffix:semicolon
 DECL|member|ptrace
 r_int
@@ -1130,8 +1163,8 @@ mdefine_line|#define PF_USEDFPU&t;0x00100000&t;/* task used FPU this quantum (SM
 multiline_comment|/*&n; * Ptrace flags&n; */
 DECL|macro|PT_PTRACED
 mdefine_line|#define PT_PTRACED&t;0x00000001
-DECL|macro|PT_TRACESYS
-mdefine_line|#define PT_TRACESYS&t;0x00000002
+DECL|macro|PT_SYSCALLTRACE
+mdefine_line|#define PT_SYSCALLTRACE&t;0x00000002&t;/* T if syscall_trace is +1 for ptrace() */
 DECL|macro|PT_DTRACE
 mdefine_line|#define PT_DTRACE&t;0x00000004&t;/* delayed trace (used on m68k, i386) */
 DECL|macro|PT_TRACESYSGOOD
@@ -1982,7 +2015,7 @@ id|p
 (brace
 r_return
 (paren
-id|p-&gt;sigpending
+id|p-&gt;work.sigpending
 op_ne
 l_int|0
 )paren
@@ -2002,7 +2035,7 @@ r_return
 id|unlikely
 c_func
 (paren
-id|current-&gt;need_resched
+id|current-&gt;work.need_resched
 op_ne
 l_int|0
 )paren
@@ -2223,7 +2256,7 @@ op_star
 id|t
 )paren
 (brace
-id|t-&gt;sigpending
+id|t-&gt;work.sigpending
 op_assign
 id|has_pending_signals
 c_func

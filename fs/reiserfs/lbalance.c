@@ -286,7 +286,7 @@ c_func
 op_amp
 id|new_ih
 comma
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 )paren
 suffix:semicolon
 multiline_comment|/* calculate item len */
@@ -369,7 +369,7 @@ multiline_comment|/* this item is not yet valid, but we want I_IS_DIRECTORY_ITEM
 )brace
 id|set_le_key_k_type
 (paren
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 comma
 op_amp
 (paren

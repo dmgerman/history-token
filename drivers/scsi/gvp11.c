@@ -110,8 +110,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|instance-&gt;host_lock
 comma
 id|flags
 )paren
@@ -124,8 +123,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|instance-&gt;host_lock
 comma
 id|flags
 )paren

@@ -1368,7 +1368,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|shost-&gt;host_lock
 comma
 id|flags
@@ -1387,7 +1386,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|shost-&gt;host_lock
 comma
 id|flags
@@ -7123,7 +7121,6 @@ multiline_comment|/*&n;&t; * Wait for the thing to settle down a bit.  Unfortuna
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -7138,7 +7135,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -7326,7 +7322,6 @@ multiline_comment|/*&n;&t; * Wait for the thing to settle down a bit.  Unfortuna
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
@@ -7341,7 +7336,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon

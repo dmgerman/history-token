@@ -921,9 +921,9 @@ mdefine_line|#define&t;NCR_LOCK_NCB(np, flags)    spin_lock_irqsave(&amp;np-&gt;
 DECL|macro|NCR_UNLOCK_NCB
 mdefine_line|#define&t;NCR_UNLOCK_NCB(np, flags)  spin_unlock_irqrestore(&amp;np-&gt;smp_lock, flags)
 DECL|macro|NCR_LOCK_SCSI_DONE
-mdefine_line|#define&t;NCR_LOCK_SCSI_DONE(host, flags) &bslash;&n;&t;&t;spin_lock_irqsave(&amp;(host)-&gt;host_lock, flags)
+mdefine_line|#define&t;NCR_LOCK_SCSI_DONE(host, flags) &bslash;&n;&t;&t;spin_lock_irqsave((host)-&gt;host_lock, flags)
 DECL|macro|NCR_UNLOCK_SCSI_DONE
-mdefine_line|#define&t;NCR_UNLOCK_SCSI_DONE(host, flags) &bslash;&n;&t;&t;spin_unlock_irqrestore(&amp;((host)-&gt;host_lock), flags)
+mdefine_line|#define&t;NCR_UNLOCK_SCSI_DONE(host, flags) &bslash;&n;&t;&t;spin_unlock_irqrestore(((host)-&gt;host_lock), flags)
 macro_line|#else
 DECL|macro|NCR_LOCK_DRIVER
 mdefine_line|#define&t;NCR_LOCK_DRIVER(flags)     do { save_flags(flags); cli(); } while (0)

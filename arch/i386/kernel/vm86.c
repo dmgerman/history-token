@@ -778,7 +778,7 @@ id|info-&gt;regs.__null_es
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* we are clearing fs,gs later just before &quot;jmp ret_from_sys_call&quot;,&n; * because starting with Linux 2.1.x they aren&squot;t no longer saved/restored&n; */
+multiline_comment|/* we are clearing fs,gs later just before &quot;jmp resume_userspace&quot;,&n; * because starting with Linux 2.1.x they aren&squot;t no longer saved/restored&n; */
 multiline_comment|/*&n; * The eflags register is also special: we cannot trust that the user&n; * has set it up safely, so this makes sure interrupt etc flags are&n; * inherited from protected mode.&n; */
 id|VEFLAGS
 op_assign
@@ -905,7 +905,7 @@ c_func
 (paren
 l_string|&quot;xorl %%eax,%%eax; movl %%eax,%%fs; movl %%eax,%%gs&bslash;n&bslash;t&quot;
 l_string|&quot;movl %0,%%esp&bslash;n&bslash;t&quot;
-l_string|&quot;jmp ret_from_sys_call&quot;
+l_string|&quot;jmp resume_userspace&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -963,7 +963,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;movl %0,%%esp&bslash;n&bslash;t&quot;
-l_string|&quot;jmp ret_from_sys_call&quot;
+l_string|&quot;jmp resume_userspace&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;

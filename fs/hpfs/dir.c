@@ -108,6 +108,11 @@ id|s
 op_assign
 id|i-&gt;i_sb
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*printk(&quot;dir lseek&bslash;n&quot;);*/
 r_if
 c_cond
@@ -213,6 +218,11 @@ id|i
 suffix:semicolon
 id|ok
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|filp-&gt;f_pos
 op_assign
@@ -227,6 +237,11 @@ id|i
 )paren
 suffix:semicolon
 multiline_comment|/*printk(&quot;illegal lseek: %016llx&bslash;n&quot;, new_off);*/
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ESPIPE

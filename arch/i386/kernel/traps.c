@@ -1194,6 +1194,65 @@ id|VM_MASK
 r_goto
 id|vm86_trap
 suffix:semicolon
+macro_line|#ifdef CONFIG_PNPBIOS&t;&t;
+r_if
+c_cond
+(paren
+id|regs-&gt;xcs
+op_eq
+l_int|0x60
+op_logical_or
+id|regs-&gt;xcs
+op_eq
+l_int|0x68
+)paren
+(brace
+r_extern
+id|u32
+id|pnp_bios_fault_eip
+comma
+id|pnp_bios_fault_esp
+suffix:semicolon
+r_extern
+id|u32
+id|pnp_bios_is_utter_crap
+suffix:semicolon
+id|pnp_bios_is_utter_crap
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;PNPBIOS fault.. attempting recovery.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|__asm__
+r_volatile
+(paren
+l_string|&quot;movl %0, %%esp&bslash;n&bslash;t&quot;
+l_string|&quot;jmp %1&bslash;n&bslash;t&quot;
+suffix:colon
+l_string|&quot;=a&quot;
+(paren
+id|pnp_bios_fault_esp
+)paren
+comma
+l_string|&quot;=b&quot;
+(paren
+id|pnp_bios_fault_eip
+)paren
+)paren
+suffix:semicolon
+id|panic
+c_func
+(paren
+l_string|&quot;do_trap: can&squot;t hit this&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif&t;
 r_if
 c_cond
 (paren

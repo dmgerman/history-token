@@ -4330,7 +4330,6 @@ suffix:semicolon
 multiline_comment|/*&n;     * Disable interrupts, if they aren&squot;t already disabled and acquire&n;     * the I/O spinlock.&n;     */
 id|spin_lock_irqsave
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|flags
@@ -4985,7 +4984,6 @@ suffix:semicolon
 multiline_comment|/*&n;     * Release the I/O spinlock and restore the original flags&n;     * which will enable interrupts if and only if they were&n;     * enabled on entry.&n;     */
 id|spin_unlock_irqrestore
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|flags
@@ -5111,7 +5109,6 @@ multiline_comment|/*&n;     * Disable interrupts, if they aren&squot;t already d
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|flags
@@ -6211,7 +6208,6 @@ multiline_comment|/*&n;     * Release the I/O spinlock and restore the original 
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|host-&gt;host_lock
 comma
 id|flags
@@ -6372,7 +6368,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|shost-&gt;host_lock
 comma
 id|flags
@@ -8512,7 +8507,6 @@ suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|shost-&gt;host_lock
 comma
 id|flags

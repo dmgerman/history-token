@@ -3214,6 +3214,15 @@ multiline_comment|/*&n;&t; * FIXME:  alloc periodic bandwidth here, for interrup
 singleline_comment|// NOTE:  a generic device/urb monitoring hook would go here.
 singleline_comment|// hcd_monitor_hook(MONITOR_URB_SUBMIT, urb)
 singleline_comment|// It would catch submission paths for all urbs.
+multiline_comment|/* increment the reference count of the urb, as we now also control it. */
+id|urb
+op_assign
+id|usb_get_urb
+c_func
+(paren
+id|urb
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Atomically queue the urb,  first to our records, then to the HCD.&n;&t; * Access to urb-&gt;status is controlled by urb-&gt;lock ... changes on&n;&t; * i/o completion (normal or fault) or unlinking.&n;&t; */
 singleline_comment|// FIXME:  verify that quiescing hc works right (RH cleans up)
 id|spin_lock_irqsave
@@ -4274,6 +4283,11 @@ id|dev
 )paren
 suffix:semicolon
 id|urb-&gt;complete
+(paren
+id|urb
+)paren
+suffix:semicolon
+id|usb_put_urb
 (paren
 id|urb
 )paren

@@ -2701,7 +2701,7 @@ id|SA_SHIRQ
 comma
 l_string|&quot;53c7,8xx&quot;
 comma
-l_int|NULL
+id|host
 )paren
 )paren
 macro_line|#else
@@ -2719,7 +2719,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;53c7,8xx&quot;
 comma
-l_int|NULL
+id|host
 )paren
 )paren
 macro_line|#endif
@@ -16246,11 +16246,17 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|dev
+op_assign
+id|dev_id
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren
@@ -16268,8 +16274,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|dev-&gt;host_lock
 comma
 id|flags
 )paren

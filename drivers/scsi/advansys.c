@@ -13873,7 +13873,6 @@ multiline_comment|/* against own ISR */
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|boardp-&gt;lock
 comma
 id|flags
@@ -15728,7 +15727,6 @@ id|from_isr
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|scp-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -15750,7 +15748,6 @@ id|from_isr
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|scp-&gt;host-&gt;host_lock
 comma
 id|flags

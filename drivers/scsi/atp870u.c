@@ -2070,8 +2070,7 @@ multiline_comment|/*&n;&t;&t;&t; *&t;Complete the command&n;&t;&t;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|workrequ-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2100,8 +2099,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|workrequ-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren

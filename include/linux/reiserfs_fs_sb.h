@@ -5,348 +5,87 @@ mdefine_line|#define _LINUX_REISER_FS_SB
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#endif
-singleline_comment|//
-singleline_comment|// super block&squot;s field values
-singleline_comment|//
-multiline_comment|/*#define REISERFS_VERSION 0 undistributed bitmap */
-multiline_comment|/*#define REISERFS_VERSION 1 distributed bitmap and resizer*/
-DECL|macro|REISERFS_VERSION_2
-mdefine_line|#define REISERFS_VERSION_2 2 /* distributed bitmap, resizer, 64-bit, etc*/
-DECL|macro|UNSET_HASH
-mdefine_line|#define UNSET_HASH 0 
-singleline_comment|// read_super will guess about, what hash names
-singleline_comment|// in directories were sorted with
-DECL|macro|TEA_HASH
-mdefine_line|#define TEA_HASH  1
-DECL|macro|YURA_HASH
-mdefine_line|#define YURA_HASH 2
-DECL|macro|R5_HASH
-mdefine_line|#define R5_HASH   3
-DECL|macro|DEFAULT_HASH
-mdefine_line|#define DEFAULT_HASH R5_HASH
-multiline_comment|/* this is the on disk super block */
-DECL|struct|reiserfs_super_block
-r_struct
-id|reiserfs_super_block
-(brace
-DECL|member|s_block_count
-id|__u32
-id|s_block_count
-suffix:semicolon
-DECL|member|s_free_blocks
-id|__u32
-id|s_free_blocks
-suffix:semicolon
-multiline_comment|/* free blocks count    */
-DECL|member|s_root_block
-id|__u32
-id|s_root_block
-suffix:semicolon
-multiline_comment|/* root block number    */
-DECL|member|s_journal_block
-id|__u32
-id|s_journal_block
-suffix:semicolon
-multiline_comment|/* journal block number    */
-DECL|member|s_journal_dev
-id|__u32
-id|s_journal_dev
-suffix:semicolon
-multiline_comment|/* journal device number  */
-multiline_comment|/* Since journal size is currently a #define in a header file, if &n;  ** someone creates a disk with a 16MB journal and moves it to a &n;  ** system with 32MB journal default, they will overflow their journal &n;  ** when they mount the disk.  s_orig_journal_size, plus some checks&n;  ** while mounting (inside journal_init) prevent that from happening&n;  */
-multiline_comment|/* great comment Chris. Thanks.  -Hans */
-DECL|member|s_orig_journal_size
-id|__u32
-id|s_orig_journal_size
-suffix:semicolon
-DECL|member|s_journal_trans_max
-id|__u32
-id|s_journal_trans_max
-suffix:semicolon
-multiline_comment|/* max number of blocks in a transaction.  */
-DECL|member|s_journal_block_count
-id|__u32
-id|s_journal_block_count
-suffix:semicolon
-multiline_comment|/* total size of the journal. can change over time  */
-DECL|member|s_journal_max_batch
-id|__u32
-id|s_journal_max_batch
-suffix:semicolon
-multiline_comment|/* max number of blocks to batch into a trans */
-DECL|member|s_journal_max_commit_age
-id|__u32
-id|s_journal_max_commit_age
-suffix:semicolon
-multiline_comment|/* in seconds, how old can an async commit be */
-DECL|member|s_journal_max_trans_age
-id|__u32
-id|s_journal_max_trans_age
-suffix:semicolon
-multiline_comment|/* in seconds, how old can a transaction be */
-DECL|member|s_blocksize
-id|__u16
-id|s_blocksize
-suffix:semicolon
-multiline_comment|/* block size           */
-DECL|member|s_oid_maxsize
-id|__u16
-id|s_oid_maxsize
-suffix:semicolon
-multiline_comment|/* max size of object id array, see get_objectid() commentary  */
-DECL|member|s_oid_cursize
-id|__u16
-id|s_oid_cursize
-suffix:semicolon
-multiline_comment|/* current size of object id array */
-DECL|member|s_state
-id|__u16
-id|s_state
-suffix:semicolon
-multiline_comment|/* valid or error       */
-DECL|member|s_magic
-r_char
-id|s_magic
-(braket
-l_int|12
-)braket
-suffix:semicolon
-multiline_comment|/* reiserfs magic string indicates that file system is reiserfs */
-DECL|member|s_hash_function_code
-id|__u32
-id|s_hash_function_code
-suffix:semicolon
-multiline_comment|/* indicate, what hash function is being use to sort names in a directory*/
-DECL|member|s_tree_height
-id|__u16
-id|s_tree_height
-suffix:semicolon
-multiline_comment|/* height of disk tree */
-DECL|member|s_bmap_nr
-id|__u16
-id|s_bmap_nr
-suffix:semicolon
-multiline_comment|/* amount of bitmap blocks needed to address each block of file system */
-DECL|member|s_version
-id|__u16
-id|s_version
-suffix:semicolon
-multiline_comment|/* I&squot;d prefer it if this was a string,&n;                                   something like &quot;3.6.4&quot;, and maybe&n;                                   16 bytes long mostly unused. We&n;                                   don&squot;t need to save bytes in the&n;                                   superblock. -Hans */
-DECL|member|s_reserved
-id|__u16
-id|s_reserved
-suffix:semicolon
-DECL|member|s_inode_generation
-id|__u32
-id|s_inode_generation
-suffix:semicolon
-DECL|member|s_unused
-r_char
-id|s_unused
-(braket
-l_int|124
-)braket
-suffix:semicolon
-multiline_comment|/* zero filled by mkreiserfs */
-)brace
-id|__attribute__
-(paren
-(paren
-id|__packed__
-)paren
-)paren
-suffix:semicolon
-DECL|macro|SB_SIZE
-mdefine_line|#define SB_SIZE (sizeof(struct reiserfs_super_block))
 multiline_comment|/* struct reiserfs_super_block accessors/mutators&n; * since this is a disk structure, it will always be in &n; * little endian format. */
 DECL|macro|sb_block_count
-mdefine_line|#define sb_block_count(sbp)           (le32_to_cpu((sbp)-&gt;s_block_count))
+mdefine_line|#define sb_block_count(sbp)         (le32_to_cpu((sbp)-&gt;s_v1.s_block_count))
 DECL|macro|set_sb_block_count
-mdefine_line|#define set_sb_block_count(sbp,v)     ((sbp)-&gt;s_block_count = cpu_to_le32(v))
+mdefine_line|#define set_sb_block_count(sbp,v)   ((sbp)-&gt;s_v1.s_block_count = cpu_to_le32(v))
 DECL|macro|sb_free_blocks
-mdefine_line|#define sb_free_blocks(sbp)           (le32_to_cpu((sbp)-&gt;s_free_blocks))
+mdefine_line|#define sb_free_blocks(sbp)         (le32_to_cpu((sbp)-&gt;s_v1.s_free_blocks))
 DECL|macro|set_sb_free_blocks
-mdefine_line|#define set_sb_free_blocks(sbp,v)     ((sbp)-&gt;s_free_blocks = cpu_to_le32(v))
+mdefine_line|#define set_sb_free_blocks(sbp,v)   ((sbp)-&gt;s_v1.s_free_blocks = cpu_to_le32(v))
 DECL|macro|sb_root_block
-mdefine_line|#define sb_root_block(sbp)            (le32_to_cpu((sbp)-&gt;s_root_block))
+mdefine_line|#define sb_root_block(sbp)          (le32_to_cpu((sbp)-&gt;s_v1.s_root_block))
 DECL|macro|set_sb_root_block
-mdefine_line|#define set_sb_root_block(sbp,v)      ((sbp)-&gt;s_root_block = cpu_to_le32(v))
-DECL|macro|sb_journal_block
-mdefine_line|#define sb_journal_block(sbp)         (le32_to_cpu((sbp)-&gt;s_journal_block))
-DECL|macro|set_sb_journal_block
-mdefine_line|#define set_sb_journal_block(sbp,v)   ((sbp)-&gt;s_journal_block = cpu_to_le32(v))
-DECL|macro|sb_journal_dev
-mdefine_line|#define sb_journal_dev(sbp)           (le32_to_cpu((sbp)-&gt;s_journal_dev))
-DECL|macro|set_sb_journal_dev
-mdefine_line|#define set_sb_journal_dev(sbp,v)     ((sbp)-&gt;s_journal_dev = cpu_to_le32(v))
-DECL|macro|sb_orig_journal_size
-mdefine_line|#define sb_orig_journal_size(sbp)   (le32_to_cpu((sbp)-&gt;s_orig_journal_size))
-DECL|macro|set_sb_orig_journal_size
-mdefine_line|#define set_sb_orig_journal_size(sbp,v) &bslash;&n;                            ((sbp)-&gt;s_orig_journal_size = cpu_to_le32(v))
-DECL|macro|sb_journal_trans_max
-mdefine_line|#define sb_journal_trans_max(sbp)     (le32_to_cpu((sbp)-&gt;s_journal_trans_max))
-DECL|macro|set_journal_trans_max
-mdefine_line|#define set_journal_trans_max(sbp,v) &bslash;&n;                            ((sbp)-&gt;s_journal_trans_max = cpu_to_le32(v))
-DECL|macro|sb_journal_block_count
-mdefine_line|#define sb_journal_block_count(sbp)  (le32_to_cpu((sbp)-&gt;journal_block_count))
-DECL|macro|sb_set_journal_block_count
-mdefine_line|#define sb_set_journal_block_count(sbp,v) &bslash;&n;                            ((sbp)-&gt;s_journal_block_count = cpu_to_le32(v))
-DECL|macro|sb_journal_max_batch
-mdefine_line|#define sb_journal_max_batch(sbp)     (le32_to_cpu((sbp)-&gt;s_journal_max_batch))
-DECL|macro|set_sb_journal_max_batch
-mdefine_line|#define set_sb_journal_max_batch(sbp,v) &bslash;&n;                            ((sbp)-&gt;s_journal_max_batch = cpu_to_le32(v))
-DECL|macro|sb_jourmal_max_commit_age
-mdefine_line|#define sb_jourmal_max_commit_age(sbp) &bslash;&n;                            (le32_to_cpu((sbp)-&gt;s_journal_max_commit_age))
-DECL|macro|set_sb_journal_max_commit_age
-mdefine_line|#define set_sb_journal_max_commit_age(sbp,v) &bslash;&n;                            ((sbp)-&gt;s_journal_max_commit_age = cpu_to_le32(v))
-DECL|macro|sb_jourmal_max_trans_age
-mdefine_line|#define sb_jourmal_max_trans_age(sbp) &bslash;&n;                            (le32_to_cpu((sbp)-&gt;s_journal_max_trans_age))
-DECL|macro|set_sb_journal_max_trans_age
-mdefine_line|#define set_sb_journal_max_trans_age(sbp,v) &bslash;&n;                            ((sbp)-&gt;s_journal_max_trans_age = cpu_to_le32(v))
+mdefine_line|#define set_sb_root_block(sbp,v)    ((sbp)-&gt;s_v1.s_root_block = cpu_to_le32(v))
+DECL|macro|sb_jp_journal_1st_block
+mdefine_line|#define sb_jp_journal_1st_block(sbp)  &bslash;&n;              (le32_to_cpu((sbp)-&gt;s_v1.s_journal.jp_journal_1st_block))
+DECL|macro|set_sb_jp_journal_1st_block
+mdefine_line|#define set_sb_jp_journal_1st_block(sbp,v) &bslash;&n;              ((sbp)-&gt;s_v1.s_journal.jp_journal_1st_block = cpu_to_le32(v))
+DECL|macro|sb_jp_journal_dev
+mdefine_line|#define sb_jp_journal_dev(sbp) &bslash;&n;              (le32_to_cpu((sbp)-&gt;s_v1.s_journal.jp_journal_dev))
+DECL|macro|set_sb_jp_journal_dev
+mdefine_line|#define set_sb_jp_journal_dev(sbp,v) &bslash;&n;              ((sbp)-&gt;s_v1.s_journal.jp_journal_dev = cpu_to_le32(v))
+DECL|macro|sb_jp_journal_size
+mdefine_line|#define sb_jp_journal_size(sbp) &bslash;&n;              (le32_to_cpu((sbp)-&gt;s_v1.s_journal.jp_journal_size))
+DECL|macro|set_sb_jp_journal_size
+mdefine_line|#define set_sb_jp_journal_size(sbp,v) &bslash;&n;              ((sbp)-&gt;s_v1.s_journal.jp_journal_size = cpu_to_le32(v))
+DECL|macro|sb_jp_journal_trans_max
+mdefine_line|#define sb_jp_journal_trans_max(sbp) &bslash;&n;              (le32_to_cpu((sbp)-&gt;s_v1.s_journal.jp_journal_trans_max))
+DECL|macro|set_sb_jp_journal_trans_max
+mdefine_line|#define set_sb_jp_journal_trans_max(sbp,v) &bslash;&n;              ((sbp)-&gt;s_v1.s_journal.jp_journal_trans_max = cpu_to_le32(v))
+DECL|macro|sb_jp_journal_magic
+mdefine_line|#define sb_jp_journal_magic(sbp) &bslash;&n;              (le32_to_cpu((sbp)-&gt;s_v1.s_journal.jp_journal_magic))
+DECL|macro|set_sb_jp_journal_magic
+mdefine_line|#define set_sb_jp_journal_magic(sbp,v) &bslash;&n;              ((sbp)-&gt;s_v1.s_journal.jp_journal_magic = cpu_to_le32(v))
+DECL|macro|sb_jp_journal_max_batch
+mdefine_line|#define sb_jp_journal_max_batch(sbp) &bslash;&n;              (le32_to_cpu((sbp)-&gt;s_v1.s_journal.jp_journal_max_batch))
+DECL|macro|set_sb_jp_journal_max_batch
+mdefine_line|#define set_sb_jp_journal_max_batch(sbp,v) &bslash;&n;              ((sbp)-&gt;s_v1.s_journal.jp_journal_max_batch = cpu_to_le32(v))
+DECL|macro|sb_jp_jourmal_max_commit_age
+mdefine_line|#define sb_jp_jourmal_max_commit_age(sbp) &bslash;&n;              (le32_to_cpu((sbp)-&gt;s_v1.s_journal.jp_journal_max_commit_age))
+DECL|macro|set_sb_jp_journal_max_commit_age
+mdefine_line|#define set_sb_jp_journal_max_commit_age(sbp,v) &bslash;&n;              ((sbp)-&gt;s_v1.s_journal.jp_journal_max_commit_age = cpu_to_le32(v))
 DECL|macro|sb_blocksize
-mdefine_line|#define sb_blocksize(sbp)             (le16_to_cpu((sbp)-&gt;s_blocksize))
+mdefine_line|#define sb_blocksize(sbp)          (le16_to_cpu((sbp)-&gt;s_v1.s_blocksize))
 DECL|macro|set_sb_blocksize
-mdefine_line|#define set_sb_blocksize(sbp,v)       ((sbp)-&gt;s_blocksize = cpu_to_le16(v))
+mdefine_line|#define set_sb_blocksize(sbp,v)    ((sbp)-&gt;s_v1.s_blocksize = cpu_to_le16(v))
 DECL|macro|sb_oid_maxsize
-mdefine_line|#define sb_oid_maxsize(sbp)           (le16_to_cpu((sbp)-&gt;s_oid_maxsize))
+mdefine_line|#define sb_oid_maxsize(sbp)        (le16_to_cpu((sbp)-&gt;s_v1.s_oid_maxsize))
 DECL|macro|set_sb_oid_maxsize
-mdefine_line|#define set_sb_oid_maxsize(sbp,v)     ((sbp)-&gt;s_oid_maxsize = cpu_to_le16(v))
+mdefine_line|#define set_sb_oid_maxsize(sbp,v)  ((sbp)-&gt;s_v1.s_oid_maxsize = cpu_to_le16(v))
 DECL|macro|sb_oid_cursize
-mdefine_line|#define sb_oid_cursize(sbp)           (le16_to_cpu((sbp)-&gt;s_oid_cursize))
+mdefine_line|#define sb_oid_cursize(sbp)        (le16_to_cpu((sbp)-&gt;s_v1.s_oid_cursize))
 DECL|macro|set_sb_oid_cursize
-mdefine_line|#define set_sb_oid_cursize(sbp,v)     ((sbp)-&gt;s_oid_cursize = cpu_to_le16(v))
-DECL|macro|sb_state
-mdefine_line|#define sb_state(sbp)                 (le16_to_cpu((sbp)-&gt;s_state))
-DECL|macro|set_sb_state
-mdefine_line|#define set_sb_state(sbp,v)           ((sbp)-&gt;s_state = cpu_to_le16(v))
+mdefine_line|#define set_sb_oid_cursize(sbp,v)  ((sbp)-&gt;s_v1.s_oid_cursize = cpu_to_le16(v))
+DECL|macro|sb_umount_state
+mdefine_line|#define sb_umount_state(sbp)       (le16_to_cpu((sbp)-&gt;s_v1.s_umount_state))
+DECL|macro|set_sb_umount_state
+mdefine_line|#define set_sb_umount_state(sbp,v) ((sbp)-&gt;s_v1.s_umount_state = cpu_to_le16(v))
+DECL|macro|sb_fs_state
+mdefine_line|#define sb_fs_state(sbp)           (le16_to_cpu((sbp)-&gt;s_v1.s_fs_state))
+DECL|macro|set_sb_fs_state
+mdefine_line|#define set_sb_fs_state(sbp,v)     ((sbp)-&gt;s_v1.s_fs_state = cpu_to_le16(v)) 
 DECL|macro|sb_hash_function_code
-mdefine_line|#define sb_hash_function_code(sbp) &bslash;&n;                            (le32_to_cpu((sbp)-&gt;s_hash_function_code))
+mdefine_line|#define sb_hash_function_code(sbp) &bslash;&n;              (le32_to_cpu((sbp)-&gt;s_v1.s_hash_function_code))
 DECL|macro|set_sb_hash_function_code
-mdefine_line|#define set_sb_hash_function_code(sbp,v) &bslash;&n;                            ((sbp)-&gt;s_hash_function_code = cpu_to_le32(v))
+mdefine_line|#define set_sb_hash_function_code(sbp,v) &bslash;&n;              ((sbp)-&gt;s_v1.s_hash_function_code = cpu_to_le32(v))
 DECL|macro|sb_tree_height
-mdefine_line|#define sb_tree_height(sbp)           (le16_to_cpu((sbp)-&gt;s_tree_height))
+mdefine_line|#define sb_tree_height(sbp)        (le16_to_cpu((sbp)-&gt;s_v1.s_tree_height))
 DECL|macro|set_sb_tree_height
-mdefine_line|#define set_sb_tree_height(sbp,v)     ((sbp)-&gt;s_tree_height = cpu_to_le16(v))
+mdefine_line|#define set_sb_tree_height(sbp,v)  ((sbp)-&gt;s_v1.s_tree_height = cpu_to_le16(v))
 DECL|macro|sb_bmap_nr
-mdefine_line|#define sb_bmap_nr(sbp)               (le16_to_cpu((sbp)-&gt;s_bmap_nr))
+mdefine_line|#define sb_bmap_nr(sbp)            (le16_to_cpu((sbp)-&gt;s_v1.s_bmap_nr))
 DECL|macro|set_sb_bmap_nr
-mdefine_line|#define set_sb_bmap_nr(sbp,v)         ((sbp)-&gt;s_bmap_nr = cpu_to_le16(v))
+mdefine_line|#define set_sb_bmap_nr(sbp,v)      ((sbp)-&gt;s_v1.s_bmap_nr = cpu_to_le16(v))
 DECL|macro|sb_version
-mdefine_line|#define sb_version(sbp)               (le16_to_cpu((sbp)-&gt;s_version))
+mdefine_line|#define sb_version(sbp)            (le16_to_cpu((sbp)-&gt;s_v1.s_version))
 DECL|macro|set_sb_version
-mdefine_line|#define set_sb_version(sbp,v)         ((sbp)-&gt;s_version = cpu_to_le16(v))
-multiline_comment|/* this is the super from 3.5.X, where X &gt;= 10 */
-DECL|struct|reiserfs_super_block_v1
-r_struct
-id|reiserfs_super_block_v1
-(brace
-DECL|member|s_block_count
-id|__u32
-id|s_block_count
-suffix:semicolon
-multiline_comment|/* blocks count         */
-DECL|member|s_free_blocks
-id|__u32
-id|s_free_blocks
-suffix:semicolon
-multiline_comment|/* free blocks count    */
-DECL|member|s_root_block
-id|__u32
-id|s_root_block
-suffix:semicolon
-multiline_comment|/* root block number    */
-DECL|member|s_journal_block
-id|__u32
-id|s_journal_block
-suffix:semicolon
-multiline_comment|/* journal block number    */
-DECL|member|s_journal_dev
-id|__u32
-id|s_journal_dev
-suffix:semicolon
-multiline_comment|/* journal device number  */
-DECL|member|s_orig_journal_size
-id|__u32
-id|s_orig_journal_size
-suffix:semicolon
-multiline_comment|/* size of the journal on FS creation.  used to make sure they don&squot;t overflow it */
-DECL|member|s_journal_trans_max
-id|__u32
-id|s_journal_trans_max
-suffix:semicolon
-multiline_comment|/* max number of blocks in a transaction.  */
-DECL|member|s_journal_block_count
-id|__u32
-id|s_journal_block_count
-suffix:semicolon
-multiline_comment|/* total size of the journal. can change over time  */
-DECL|member|s_journal_max_batch
-id|__u32
-id|s_journal_max_batch
-suffix:semicolon
-multiline_comment|/* max number of blocks to batch into a trans */
-DECL|member|s_journal_max_commit_age
-id|__u32
-id|s_journal_max_commit_age
-suffix:semicolon
-multiline_comment|/* in seconds, how old can an async commit be */
-DECL|member|s_journal_max_trans_age
-id|__u32
-id|s_journal_max_trans_age
-suffix:semicolon
-multiline_comment|/* in seconds, how old can a transaction be */
-DECL|member|s_blocksize
-id|__u16
-id|s_blocksize
-suffix:semicolon
-multiline_comment|/* block size           */
-DECL|member|s_oid_maxsize
-id|__u16
-id|s_oid_maxsize
-suffix:semicolon
-multiline_comment|/* max size of object id array, see get_objectid() commentary  */
-DECL|member|s_oid_cursize
-id|__u16
-id|s_oid_cursize
-suffix:semicolon
-multiline_comment|/* current size of object id array */
-DECL|member|s_state
-id|__u16
-id|s_state
-suffix:semicolon
-multiline_comment|/* valid or error       */
-DECL|member|s_magic
-r_char
-id|s_magic
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* reiserfs magic string indicates that file system is reiserfs */
-DECL|member|s_tree_height
-id|__u16
-id|s_tree_height
-suffix:semicolon
-multiline_comment|/* height of disk tree */
-DECL|member|s_bmap_nr
-id|__u16
-id|s_bmap_nr
-suffix:semicolon
-multiline_comment|/* amount of bitmap blocks needed to address each block of file system */
-DECL|member|s_reserved
-id|__u32
-id|s_reserved
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|__packed__
-)paren
-)paren
-suffix:semicolon
-DECL|macro|SB_SIZE_V1
-mdefine_line|#define SB_SIZE_V1 (sizeof(struct reiserfs_super_block_v1))
+mdefine_line|#define set_sb_version(sbp,v)      ((sbp)-&gt;s_v1.s_version = cpu_to_le16(v))
+DECL|macro|sb_reserved_for_journal
+mdefine_line|#define sb_reserved_for_journal(sbp) &bslash;&n;              (le16_to_cpu((sbp)-&gt;s_v1.s_reserved_for_journal))
+DECL|macro|set_sb_reserved_for_journal
+mdefine_line|#define set_sb_reserved_for_journal(sbp,v) &bslash;&n;              ((sbp)-&gt;s_v1.s_reserved_for_journal = cpu_to_le16(v))
 multiline_comment|/* LOGGING -- */
 multiline_comment|/* These all interelate for performance.  &n;**&n;** If the journal block count is smaller than n transactions, you lose speed. &n;** I don&squot;t know what n is yet, I&squot;m guessing 8-16.&n;**&n;** typical transaction size depends on the application, how often fsync is&n;** called, and how many metadata blocks you dirty in a 30 second period.  &n;** The more small files (&lt;16k) you use, the larger your transactions will&n;** be.&n;** &n;** If your journal fills faster than dirty buffers get flushed to disk, it must flush them before allowing the journal&n;** to wrap, which slows things down.  If you need high speed meta data updates, the journal should be big enough&n;** to prevent wrapping before dirty meta blocks get to disk.&n;**&n;** If the batch max is smaller than the transaction max, you&squot;ll waste space at the end of the journal&n;** because journal_end sets the next transaction to start at 0 if the next transaction has any chance of wrapping.&n;**&n;** The large the batch max age, the better the speed, and the more meta data changes you&squot;ll lose after a crash.&n;**&n;*/
 multiline_comment|/* don&squot;t mess with these for a while */
@@ -355,8 +94,6 @@ DECL|macro|JOURNAL_BLOCK_SIZE
 mdefine_line|#define JOURNAL_BLOCK_SIZE  4096 /* BUG gotta get rid of this */
 DECL|macro|JOURNAL_MAX_CNODE
 mdefine_line|#define JOURNAL_MAX_CNODE   1500 /* max cnodes to allocate. */
-DECL|macro|JOURNAL_TRANS_MAX
-mdefine_line|#define JOURNAL_TRANS_MAX 1024   /* biggest possible single transaction, don&squot;t change for now (8/3/99) */
 DECL|macro|JOURNAL_HASH_SIZE
 mdefine_line|#define JOURNAL_HASH_SIZE 8192   
 DECL|macro|JOURNAL_NUM_BITMAPS
@@ -630,6 +367,27 @@ op_star
 id|j_first
 suffix:semicolon
 multiline_comment|/*  oldest journal block.  start here for traverse */
+DECL|member|j_dev
+id|kdev_t
+id|j_dev
+suffix:semicolon
+DECL|member|j_dev_file
+r_struct
+id|file
+op_star
+id|j_dev_file
+suffix:semicolon
+DECL|member|j_dev_bd
+r_struct
+id|block_device
+op_star
+id|j_dev_bd
+suffix:semicolon
+DECL|member|j_1st_reserved_block
+r_int
+id|j_1st_reserved_block
+suffix:semicolon
+multiline_comment|/* first block on s_dev of reserved area journal */
 DECL|member|j_state
 r_int
 id|j_state
@@ -758,6 +516,30 @@ r_int
 id|j_cnode_free
 suffix:semicolon
 multiline_comment|/* number of cnodes on the free list */
+DECL|member|s_journal_trans_max
+r_int
+r_int
+id|s_journal_trans_max
+suffix:semicolon
+multiline_comment|/* max number of blocks in a transaction.  */
+DECL|member|s_journal_max_batch
+r_int
+r_int
+id|s_journal_max_batch
+suffix:semicolon
+multiline_comment|/* max number of blocks to batch into a trans */
+DECL|member|s_journal_max_commit_age
+r_int
+r_int
+id|s_journal_max_commit_age
+suffix:semicolon
+multiline_comment|/* in seconds, how old can an async commit be */
+DECL|member|s_journal_max_trans_age
+r_int
+r_int
+id|s_journal_max_trans_age
+suffix:semicolon
+multiline_comment|/* in seconds, how old can a transaction be */
 DECL|member|j_cnode_free_list
 r_struct
 id|reiserfs_journal_cnode
@@ -1223,6 +1005,12 @@ id|s_generation_counter
 suffix:semicolon
 singleline_comment|// increased by one every time the
 singleline_comment|// tree gets re-balanced
+DECL|member|s_properties
+r_int
+r_int
+id|s_properties
+suffix:semicolon
+multiline_comment|/* File system properties. Currently holds&n;&t;&t;&t;&t;     on-disk FS format */
 multiline_comment|/* session statistics */
 DECL|member|s_kmallocs
 r_int
@@ -1268,6 +1056,11 @@ DECL|member|s_indirect2direct
 r_int
 id|s_indirect2direct
 suffix:semicolon
+multiline_comment|/* set up when it&squot;s ok for reiserfs_read_inode2() to read from&n;&t;   disk inode with nlink==0. Currently this is only used during&n;&t;   finish_unfinished() processing at mount time */
+DECL|member|s_is_unlinked_ok
+r_int
+id|s_is_unlinked_ok
+suffix:semicolon
 DECL|member|s_proc_info_data
 id|reiserfs_proc_info_data_t
 id|s_proc_info_data
@@ -1280,6 +1073,12 @@ id|procdir
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Definitions of reiserfs on-disk properties: */
+DECL|macro|REISERFS_3_5
+mdefine_line|#define REISERFS_3_5 0
+DECL|macro|REISERFS_3_6
+mdefine_line|#define REISERFS_3_6 1
+multiline_comment|/* Mount options */
 DECL|macro|NOTAIL
 mdefine_line|#define NOTAIL 0  /* -o notail: no tails will be created in a session */
 DECL|macro|REPLAYONLY
@@ -1337,7 +1136,9 @@ mdefine_line|#define replay_only(s) ((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 
 DECL|macro|reiserfs_dont_log
 mdefine_line|#define reiserfs_dont_log(s) ((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 &lt;&lt; REISERFS_NOLOG))
 DECL|macro|old_format_only
-mdefine_line|#define old_format_only(s) ((SB_VERSION(s) != REISERFS_VERSION_2) &amp;&amp; !((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 &lt;&lt; REISERFS_CONVERT)))
+mdefine_line|#define old_format_only(s) ((s)-&gt;u.reiserfs_sb.s_properties &amp; (1 &lt;&lt; REISERFS_3_5))
+DECL|macro|convert_reiserfs
+mdefine_line|#define convert_reiserfs(s) ((s)-&gt;u.reiserfs_sb.s_mount_opt &amp; (1 &lt;&lt; REISERFS_CONVERT))
 r_void
 id|reiserfs_file_buffer
 (paren
@@ -1417,6 +1218,8 @@ DECL|macro|SB_BUFFER_WITH_SB
 mdefine_line|#define SB_BUFFER_WITH_SB(s) ((s)-&gt;u.reiserfs_sb.s_sbh)
 DECL|macro|SB_JOURNAL
 mdefine_line|#define SB_JOURNAL(s) ((s)-&gt;u.reiserfs_sb.s_journal)
+DECL|macro|SB_JOURNAL_1st_RESERVED_BLOCK
+mdefine_line|#define SB_JOURNAL_1st_RESERVED_BLOCK(s) (SB_JOURNAL(s)-&gt;j_1st_reserved_block)
 DECL|macro|SB_JOURNAL_LIST
 mdefine_line|#define SB_JOURNAL_LIST(s) (SB_JOURNAL(s)-&gt;j_journal_list)
 DECL|macro|SB_JOURNAL_LIST_INDEX
@@ -1425,38 +1228,17 @@ DECL|macro|SB_JOURNAL_LEN_FREE
 mdefine_line|#define SB_JOURNAL_LEN_FREE(s) (SB_JOURNAL(s)-&gt;j_journal_len_free) 
 DECL|macro|SB_AP_BITMAP
 mdefine_line|#define SB_AP_BITMAP(s) ((s)-&gt;u.reiserfs_sb.s_ap_bitmap)
-singleline_comment|// on-disk super block fields converted to cpu form
-DECL|macro|SB_DISK_SUPER_BLOCK
-mdefine_line|#define SB_DISK_SUPER_BLOCK(s)        ((s)-&gt;u.reiserfs_sb.s_rs)
-DECL|macro|SB_BLOCK_COUNT
-mdefine_line|#define SB_BLOCK_COUNT(s)             sb_block_count (SB_DISK_SUPER_BLOCK(s))
-DECL|macro|SB_FREE_BLOCKS
-mdefine_line|#define SB_FREE_BLOCKS(s)             sb_free_blocks (SB_DISK_SUPER_BLOCK(s))
-DECL|macro|SB_REISERFS_MAGIC
-mdefine_line|#define SB_REISERFS_MAGIC(s)          (SB_DISK_SUPER_BLOCK(s)-&gt;s_magic)
-DECL|macro|SB_ROOT_BLOCK
-mdefine_line|#define SB_ROOT_BLOCK(s)              sb_root_block (SB_DISK_SUPER_BLOCK(s))
-DECL|macro|SB_TREE_HEIGHT
-mdefine_line|#define SB_TREE_HEIGHT(s)             sb_tree_height (SB_DISK_SUPER_BLOCK(s))
-DECL|macro|SB_REISERFS_STATE
-mdefine_line|#define SB_REISERFS_STATE(s)          sb_state (SB_DISK_SUPER_BLOCK(s))
-DECL|macro|SB_VERSION
-mdefine_line|#define SB_VERSION(s)                 sb_version (SB_DISK_SUPER_BLOCK(s))
-DECL|macro|SB_BMAP_NR
-mdefine_line|#define SB_BMAP_NR(s)                 sb_bmap_nr(SB_DISK_SUPER_BLOCK(s))
-DECL|macro|PUT_SB_BLOCK_COUNT
-mdefine_line|#define PUT_SB_BLOCK_COUNT(s, val)    do { set_sb_block_count( SB_DISK_SUPER_BLOCK(s), val); } while (0)
-DECL|macro|PUT_SB_FREE_BLOCKS
-mdefine_line|#define PUT_SB_FREE_BLOCKS(s, val)    do { set_sb_free_blocks( SB_DISK_SUPER_BLOCK(s), val); } while (0)
-DECL|macro|PUT_SB_ROOT_BLOCK
-mdefine_line|#define PUT_SB_ROOT_BLOCK(s, val)     do { set_sb_root_block( SB_DISK_SUPER_BLOCK(s), val); } while (0)
-DECL|macro|PUT_SB_TREE_HEIGHT
-mdefine_line|#define PUT_SB_TREE_HEIGHT(s, val)    do { set_sb_tree_height( SB_DISK_SUPER_BLOCK(s), val); } while (0)
-DECL|macro|PUT_SB_REISERFS_STATE
-mdefine_line|#define PUT_SB_REISERFS_STATE(s, val) do { set_sb_state( SB_DISK_SUPER_BLOCK(s), val); } while (0) 
-DECL|macro|PUT_SB_VERSION
-mdefine_line|#define PUT_SB_VERSION(s, val)        do { set_sb_version( SB_DISK_SUPER_BLOCK(s), val); } while (0)
-DECL|macro|PUT_SB_BMAP_NR
-mdefine_line|#define PUT_SB_BMAP_NR(s, val)        do { set_sb_bmap_nr( SB_DISK_SUPER_BLOCK(s), val); } while (0)
+DECL|macro|SB_DISK_JOURNAL_HEAD
+mdefine_line|#define SB_DISK_JOURNAL_HEAD(s) (SB_JOURNAL(s)-&gt;j_header_bh-&gt;)
+DECL|macro|SB_JOURNAL_TRANS_MAX
+mdefine_line|#define SB_JOURNAL_TRANS_MAX(s)      (SB_JOURNAL(s)-&gt;s_journal_trans_max)
+DECL|macro|SB_JOURNAL_MAX_BATCH
+mdefine_line|#define SB_JOURNAL_MAX_BATCH(s)      (SB_JOURNAL(s)-&gt;s_journal_max_batch)
+DECL|macro|SB_JOURNAL_MAX_COMMIT_AGE
+mdefine_line|#define SB_JOURNAL_MAX_COMMIT_AGE(s) (SB_JOURNAL(s)-&gt;s_journal_max_commit_age)
+DECL|macro|SB_JOURNAL_MAX_TRANS_AGE
+mdefine_line|#define SB_JOURNAL_MAX_TRANS_AGE(s)  (SB_JOURNAL(s)-&gt;s_journal_max_trans_age)
+DECL|macro|SB_JOURNAL_DEV
+mdefine_line|#define SB_JOURNAL_DEV(s)            (SB_JOURNAL(s)-&gt;j_dev)
 macro_line|#endif&t;/* _LINUX_REISER_FS_SB */
 eof

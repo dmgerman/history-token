@@ -17,6 +17,27 @@ DECL|macro|GET_BLOCK_READ_DIRECT
 mdefine_line|#define GET_BLOCK_READ_DIRECT 4  /* read the tail if indirect item not found */
 DECL|macro|GET_BLOCK_NO_ISEM
 mdefine_line|#define GET_BLOCK_NO_ISEM     8 /* i_sem is not held, don&squot;t preallocate */
+r_static
+r_int
+id|reiserfs_get_block
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+id|sector_t
+id|block
+comma
+r_struct
+id|buffer_head
+op_star
+id|bh_result
+comma
+r_int
+id|create
+)paren
+suffix:semicolon
 singleline_comment|//
 singleline_comment|// initially this function was derived from minix or ext2&squot;s analog and
 singleline_comment|// evolved as the prototype did
@@ -111,14 +132,6 @@ c_func
 id|windex
 )paren
 suffix:semicolon
-id|reiserfs_release_objectid
-(paren
-op_amp
-id|th
-comma
-id|inode-&gt;i_ino
-)paren
-suffix:semicolon
 id|journal_end
 c_func
 (paren
@@ -134,6 +147,15 @@ id|up
 (paren
 op_amp
 id|inode-&gt;i_sem
+)paren
+suffix:semicolon
+multiline_comment|/* all items of file are deleted, so we can remove &quot;save&quot; link */
+id|remove_save_link
+(paren
+id|inode
+comma
+l_int|0
+multiline_comment|/* not truncate */
 )paren
 suffix:semicolon
 )brace
@@ -247,7 +269,7 @@ id|_make_cpu_key
 (paren
 id|key
 comma
-id|inode_items_version
+id|get_inode_item_key_version
 (paren
 id|inode
 )paren
@@ -724,6 +746,7 @@ singleline_comment|// files which were created in the earlier version can not be
 singleline_comment|// than 2 gb
 singleline_comment|//
 DECL|function|file_capable
+r_static
 r_int
 id|file_capable
 (paren
@@ -739,12 +762,12 @@ id|block
 r_if
 c_cond
 (paren
-id|inode_items_version
+id|get_inode_item_key_version
 (paren
 id|inode
 )paren
 op_ne
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 op_logical_or
 singleline_comment|// it is new file.
 id|block
@@ -976,6 +999,8 @@ c_func
 id|bh_result-&gt;b_page
 )paren
 suffix:semicolon
+singleline_comment|// We do not return -ENOENT if there is a hole but page is uptodate, because it means
+singleline_comment|// That there is some MMAPED data associated with it that is yet to be written to disk.
 r_if
 c_cond
 (paren
@@ -983,6 +1008,13 @@ c_cond
 id|args
 op_amp
 id|GET_BLOCK_NO_HOLE
+)paren
+op_logical_and
+op_logical_neg
+id|Page_Uptodate
+c_func
+(paren
+id|bh_result-&gt;b_page
 )paren
 )paren
 (brace
@@ -1069,6 +1101,8 @@ id|blocknr
 suffix:semicolon
 )brace
 r_else
+singleline_comment|// We do not return -ENOENT if there is a hole but page is uptodate, because it means
+singleline_comment|// That there is some MMAPED data associated with it that is yet to  be written to disk.
 r_if
 c_cond
 (paren
@@ -1076,6 +1110,13 @@ c_cond
 id|args
 op_amp
 id|GET_BLOCK_NO_HOLE
+)paren
+op_logical_and
+op_logical_neg
+id|Page_Uptodate
+c_func
+(paren
+id|bh_result-&gt;b_page
 )paren
 )paren
 (brace
@@ -1153,6 +1194,30 @@ id|bh_result
 )paren
 )paren
 (brace
+r_goto
+id|finished
+suffix:semicolon
+)brace
+r_else
+multiline_comment|/*&n;&t;** grab_tail_page can trigger calls to reiserfs_get_block on up to date&n;&t;** pages without any buffers.  If the page is up to date, we don&squot;t want&n;&t;** read old data off disk.  Set the up to date bit on the buffer instead&n;&t;** and jump to the end&n;&t;*/
+r_if
+c_cond
+(paren
+id|Page_Uptodate
+c_func
+(paren
+id|bh_result-&gt;b_page
+)paren
+)paren
+(brace
+id|mark_buffer_uptodate
+c_func
+(paren
+id|bh_result
+comma
+l_int|1
+)paren
+suffix:semicolon
 r_goto
 id|finished
 suffix:semicolon
@@ -2016,7 +2081,7 @@ l_int|0
 suffix:semicolon
 id|version
 op_assign
-id|inode_items_version
+id|get_inode_item_key_version
 (paren
 id|inode
 )paren
@@ -2107,9 +2172,9 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|i_pack_on_close
-op_assign
-l_int|1
+id|i_flags
+op_or_assign
+id|i_pack_on_close_mask
 suffix:semicolon
 id|windex
 op_assign
@@ -3252,7 +3317,7 @@ id|POSITION_FOUND
 id|reiserfs_warning
 (paren
 l_string|&quot;vs-825: reiserfs_get_block: &quot;
-l_string|&quot;%k should not be found&bslash;n&quot;
+l_string|&quot;%K should not be found&bslash;n&quot;
 comma
 op_amp
 id|key
@@ -3482,12 +3547,19 @@ r_int
 r_int
 id|blocks
 suffix:semicolon
-id|inode_items_version
+id|set_inode_item_key_version
 (paren
 id|inode
+comma
+id|KEY_FORMAT_3_5
 )paren
-op_assign
-id|ITEM_VERSION_1
+suffix:semicolon
+id|set_inode_sd_version
+(paren
+id|inode
+comma
+id|STAT_DATA_V1
+)paren
 suffix:semicolon
 id|inode-&gt;i_mode
 op_assign
@@ -3793,20 +3865,20 @@ id|S_ISLNK
 id|inode-&gt;i_mode
 )paren
 )paren
-id|inode_items_version
+id|set_inode_item_key_version
 (paren
 id|inode
+comma
+id|KEY_FORMAT_3_5
 )paren
-op_assign
-id|ITEM_VERSION_1
 suffix:semicolon
 r_else
-id|inode_items_version
+id|set_inode_item_key_version
 (paren
 id|inode
+comma
+id|KEY_FORMAT_3_6
 )paren
-op_assign
-id|ITEM_VERSION_2
 suffix:semicolon
 id|REISERFS_I
 c_func
@@ -3825,7 +3897,7 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|i_pack_on_close
+id|i_flags
 op_assign
 l_int|0
 suffix:semicolon
@@ -3876,9 +3948,10 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|nopack
-op_assign
-l_int|0
+id|i_flags
+op_and_assign
+op_complement
+id|i_nopack_mask
 suffix:semicolon
 id|pathrelse
 (paren
@@ -4717,7 +4790,7 @@ suffix:semicolon
 multiline_comment|/* set version 1, version 2 could be used too, because stat data&n;       key is the same in both versions */
 id|key.version
 op_assign
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 suffix:semicolon
 id|key.on_disk_key.k_dir_id
 op_assign
@@ -4807,6 +4880,45 @@ op_amp
 id|path_to_sd
 )paren
 suffix:semicolon
+multiline_comment|/* It is possible that knfsd is trying to access inode of a file&n;       that is being removed from the disk by some other thread. As we&n;       update sd on unlink all that is required is to check for nlink&n;       here. This bug was first found by Sizif when debugging&n;       SquidNG/Butterfly, forgotten, and found again after Philippe&n;       Gramoulle &lt;philippe.gramoulle@mmania.com&gt; reproduced it. &n;&n;       More logical fix would require changes in fs/inode.c:iput() to&n;       remove inode from hash-table _after_ fs cleaned disk stuff up and&n;       in iget() to return NULL if I_FREEING inode is found in&n;       hash-table. */
+multiline_comment|/* Currently there is one place where it&squot;s ok to meet inode with&n;       nlink==0: processing of open-unlinked and half-truncated files&n;       during mount (fs/reiserfs/super.c:finish_unfinished()). */
+r_if
+c_cond
+(paren
+(paren
+id|inode
+op_member_access_from_pointer
+id|i_nlink
+op_eq
+l_int|0
+)paren
+op_logical_and
+op_logical_neg
+id|inode
+op_member_access_from_pointer
+id|i_sb
+op_member_access_from_pointer
+id|u.reiserfs_sb.s_is_unlinked_ok
+)paren
+(brace
+id|reiserfs_warning
+c_func
+(paren
+l_string|&quot;vs-13075: reiserfs_read_inode2: &quot;
+l_string|&quot;dead inode read from disk %K. &quot;
+l_string|&quot;This is likely to be race with knfsd. Ignore&bslash;n&quot;
+comma
+op_amp
+id|key
+)paren
+suffix:semicolon
+id|make_bad_inode
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+)brace
 id|reiserfs_check_path
 c_func
 (paren
@@ -5582,81 +5694,6 @@ c_func
 suffix:semicolon
 )brace
 )brace
-DECL|function|reiserfs_dirty_inode
-r_void
-id|reiserfs_dirty_inode
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_struct
-id|reiserfs_transaction_handle
-id|th
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|inode-&gt;i_sb-&gt;s_flags
-op_amp
-id|MS_RDONLY
-)paren
-(brace
-id|reiserfs_warning
-c_func
-(paren
-l_string|&quot;clm-6006: writing inode %lu on readonly FS&bslash;n&quot;
-comma
-id|inode-&gt;i_ino
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* this is really only used for atime updates, so they don&squot;t have&n;    ** to be included in O_SYNC or fsync&n;    */
-id|journal_begin
-c_func
-(paren
-op_amp
-id|th
-comma
-id|inode-&gt;i_sb
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|reiserfs_update_sd
-(paren
-op_amp
-id|th
-comma
-id|inode
-)paren
-suffix:semicolon
-id|journal_end
-c_func
-(paren
-op_amp
-id|th
-comma
-id|inode-&gt;i_sb
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* FIXME: no need any more. right? */
 DECL|function|reiserfs_sync_inode
 r_int
@@ -5747,7 +5784,7 @@ id|_make_cpu_key
 op_amp
 id|key
 comma
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 comma
 id|le32_to_cpu
 (paren
@@ -5783,7 +5820,7 @@ id|ih
 comma
 l_int|0
 comma
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 comma
 id|DOT_OFFSET
 comma
@@ -5826,7 +5863,7 @@ id|ih
 comma
 l_int|0
 comma
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 comma
 id|DOT_OFFSET
 comma
@@ -5988,7 +6025,7 @@ id|_make_cpu_key
 op_amp
 id|key
 comma
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 comma
 id|le32_to_cpu
 (paren
@@ -6014,7 +6051,7 @@ id|ih
 comma
 l_int|0
 comma
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 comma
 l_int|1
 comma
@@ -6308,7 +6345,7 @@ id|ih
 comma
 l_int|0
 comma
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 comma
 id|SD_OFFSET
 comma
@@ -6327,7 +6364,7 @@ id|ih
 comma
 l_int|0
 comma
-id|ITEM_VERSION_2
+id|KEY_FORMAT_3_6
 comma
 id|SD_OFFSET
 comma
@@ -6344,7 +6381,7 @@ id|_make_cpu_key
 op_amp
 id|key
 comma
-id|ITEM_VERSION_2
+id|KEY_FORMAT_3_6
 comma
 id|le32_to_cpu
 (paren
@@ -6532,7 +6569,7 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|i_pack_on_close
+id|i_flags
 op_assign
 l_int|0
 suffix:semicolon
@@ -6553,16 +6590,6 @@ id|inode
 )paren
 op_member_access_from_pointer
 id|i_prealloc_count
-op_assign
-l_int|0
-suffix:semicolon
-id|REISERFS_I
-c_func
-(paren
-id|inode
-)paren
-op_member_access_from_pointer
-id|nopack
 op_assign
 l_int|0
 suffix:semicolon
@@ -6594,6 +6621,43 @@ id|old_format_only
 id|sb
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|inode-&gt;i_uid
+op_amp
+op_complement
+l_int|0xffff
+op_logical_or
+id|inode-&gt;i_gid
+op_amp
+op_complement
+l_int|0xffff
+)paren
+(brace
+id|pathrelse
+(paren
+op_amp
+id|path_to_key
+)paren
+suffix:semicolon
+multiline_comment|/* i_uid or i_gid is too big to be stored in stat data v3.5 */
+id|iput
+(paren
+id|inode
+)paren
+suffix:semicolon
+op_star
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|inode2sd_v1
 (paren
 op_amp
@@ -6602,6 +6666,7 @@ comma
 id|inode
 )paren
 suffix:semicolon
+)brace
 r_else
 id|inode2sd
 (paren
@@ -6661,20 +6726,43 @@ c_func
 id|mode
 )paren
 )paren
-id|inode_items_version
+id|set_inode_item_key_version
 (paren
 id|inode
+comma
+id|KEY_FORMAT_3_5
 )paren
-op_assign
-id|ITEM_VERSION_1
 suffix:semicolon
 r_else
-id|inode_items_version
+id|set_inode_item_key_version
 (paren
 id|inode
+comma
+id|KEY_FORMAT_3_6
 )paren
-op_assign
-id|ITEM_VERSION_2
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|old_format_only
+(paren
+id|sb
+)paren
+)paren
+id|set_inode_sd_version
+(paren
+id|inode
+comma
+id|STAT_DATA_V1
+)paren
+suffix:semicolon
+r_else
+id|set_inode_sd_version
+(paren
+id|inode
+comma
+id|STAT_DATA_V2
+)paren
 suffix:semicolon
 multiline_comment|/* insert the stat data into the tree */
 id|retval
@@ -7253,6 +7341,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* so, if page != NULL, we have a buffer head for the offset at &n;    ** the end of the file. if the bh is mapped, and bh-&gt;b_blocknr != 0, &n;    ** then we have an unformatted node.  Otherwise, we have a direct item, &n;    ** and no zeroing is required on disk.  We zero after the truncate, &n;    ** because the truncate might pack the item anyway &n;    ** (it will unmap bh if it packs).&n;    */
+multiline_comment|/* it is enough to reserve space in transaction for 2 balancings:&n;       one for &quot;save&quot; link adding and another for the first&n;       cut_from_item. 1 is for update_sd */
 id|journal_begin
 c_func
 (paren
@@ -7264,6 +7353,8 @@ comma
 id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|2
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 id|reiserfs_update_inode_transaction
@@ -7278,6 +7369,22 @@ id|push_journal_writer
 c_func
 (paren
 l_string|&quot;reiserfs_vfs_truncate_file&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|update_timestamps
+)paren
+multiline_comment|/* we are doing real truncate: if the system crashes before the last&n;              transaction of truncating gets committed - on reboot the file&n;              either appears truncated properly or not truncated at all */
+id|add_save_link
+(paren
+op_amp
+id|th
+comma
+id|p_s_inode
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|reiserfs_do_truncate
@@ -7309,6 +7416,21 @@ comma
 id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|2
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|update_timestamps
+)paren
+id|remove_save_link
+(paren
+id|p_s_inode
+comma
+l_int|1
+multiline_comment|/* truncate */
 )paren
 suffix:semicolon
 r_if
@@ -7500,6 +7622,12 @@ l_int|0
 suffix:semicolon
 r_int
 id|copy_size
+suffix:semicolon
+id|kmap
+c_func
+(paren
+id|bh_result-&gt;b_page
+)paren
 suffix:semicolon
 id|start_over
 suffix:colon
@@ -7934,12 +8062,6 @@ c_cond
 id|use_get_block
 )paren
 (brace
-id|kmap
-c_func
-(paren
-id|bh_result-&gt;b_page
-)paren
-suffix:semicolon
 id|retval
 op_assign
 id|reiserfs_get_block
@@ -7954,12 +8076,6 @@ comma
 id|GET_BLOCK_CREATE
 op_or
 id|GET_BLOCK_NO_ISEM
-)paren
-suffix:semicolon
-id|kunmap
-c_func
-(paren
-id|bh_result-&gt;b_page
 )paren
 suffix:semicolon
 r_if
@@ -7995,6 +8111,12 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|kunmap
+c_func
+(paren
+id|bh_result-&gt;b_page
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -8771,9 +8893,13 @@ multiline_comment|/* we test for O_SYNC here so we can commit the transaction&n;
 r_if
 c_cond
 (paren
+id|f
+op_logical_and
+(paren
 id|f-&gt;f_flags
 op_amp
 id|O_SYNC
+)paren
 )paren
 (brace
 id|lock_kernel

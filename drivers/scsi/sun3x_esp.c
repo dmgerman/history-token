@@ -555,7 +555,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;SUN3X SCSI&quot;
 comma
-l_int|NULL
+id|esp-&gt;ehost
 )paren
 )paren
 (brace

@@ -3742,7 +3742,7 @@ c_loop
 id|all_tasks
 )paren
 (brace
-id|current-&gt;sigpending
+id|current-&gt;work.sigpending
 op_assign
 l_int|0
 suffix:semicolon
@@ -4011,7 +4011,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Usually rpciod will exit very quickly, so we&n;&t; * wait briefly before checking the process id.&n;&t; */
-id|current-&gt;sigpending
+id|current-&gt;work.sigpending
 op_assign
 l_int|0
 suffix:semicolon

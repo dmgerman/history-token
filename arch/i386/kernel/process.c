@@ -143,7 +143,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * On SMP it&squot;s slightly faster (but much more power-consuming!)&n; * to poll the -&gt;need_resched flag instead of waiting for the&n; * cross-CPU IPI to arrive. Use this option with caution.&n; */
+multiline_comment|/*&n; * On SMP it&squot;s slightly faster (but much more power-consuming!)&n; * to poll the -&gt;work.need_resched flag instead of waiting for the&n; * cross-CPU IPI to arrive. Use this option with caution.&n; */
 DECL|function|poll_idle
 r_static
 r_void
@@ -167,7 +167,7 @@ id|xchg
 c_func
 (paren
 op_amp
-id|current-&gt;need_resched
+id|current-&gt;work.need_resched
 comma
 op_minus
 l_int|1
@@ -183,14 +183,14 @@ id|asm
 r_volatile
 (paren
 l_string|&quot;2:&quot;
-l_string|&quot;cmpl $-1, %0;&quot;
+l_string|&quot;cmpb $-1, %0;&quot;
 l_string|&quot;rep; nop;&quot;
 l_string|&quot;je 2b;&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;m&quot;
 (paren
-id|current-&gt;need_resched
+id|current-&gt;work.need_resched
 )paren
 )paren
 suffix:semicolon

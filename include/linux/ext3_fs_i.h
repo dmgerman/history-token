@@ -32,11 +32,6 @@ DECL|member|i_frag_size
 id|__u8
 id|i_frag_size
 suffix:semicolon
-DECL|member|unused
-id|__u16
-id|unused
-suffix:semicolon
-multiline_comment|/* formerly i_osync */
 macro_line|#endif
 DECL|member|i_file_acl
 id|__u32

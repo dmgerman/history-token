@@ -1227,32 +1227,6 @@ suffix:semicolon
 r_int
 id|zeros_num
 suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|tb-&gt;insert_size
-(braket
-l_int|0
-)braket
-op_mod
-l_int|4
-)paren
-(brace
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;balance_leaf: wrong insert_size %d&quot;
-comma
-id|tb-&gt;insert_size
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|PROC_INFO_INC
 c_func
 (paren

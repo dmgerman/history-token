@@ -5385,8 +5385,7 @@ macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,95)
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|ha-&gt;host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -5412,8 +5411,7 @@ l_char|&squot;X&squot;
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|ha-&gt;host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -5543,8 +5541,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|ha-&gt;host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -5830,8 +5827,7 @@ macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,1,95)
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|ha-&gt;host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -5894,8 +5890,7 @@ macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|ha-&gt;host-&gt;host_lock
 comma
 id|cpu_flags
 )paren

@@ -168,13 +168,13 @@ mdefine_line|#define DRIVER_UNLOCK(p)
 DECL|macro|IO_LOCK_T
 mdefine_line|#define IO_LOCK_T unsigned long io_flags = 0
 DECL|macro|IO_LOCK
-mdefine_line|#define IO_LOCK(host) spin_lock_irqsave(&amp;(host)-&gt;host_lock,io_flags)
+mdefine_line|#define IO_LOCK(host) spin_lock_irqsave(host-&gt;host_lock,io_flags)
 DECL|macro|IO_UNLOCK
-mdefine_line|#define IO_UNLOCK(host) spin_unlock_irqrestore(&amp;(host)-&gt;host_lock,io_flags)
+mdefine_line|#define IO_UNLOCK(host) spin_unlock_irqrestore(host-&gt;host_lock,io_flags)
 DECL|macro|IO_LOCK_IRQ
-mdefine_line|#define IO_LOCK_IRQ(host) spin_lock_irq(&amp;(host)-&gt;host_lock)
+mdefine_line|#define IO_LOCK_IRQ(host) spin_lock_irq(host-&gt;host_lock)
 DECL|macro|IO_UNLOCK_IRQ
-mdefine_line|#define IO_UNLOCK_IRQ(host) spin_unlock_irq(&amp;(host)-&gt;host_lock)
+mdefine_line|#define IO_UNLOCK_IRQ(host) spin_unlock_irq(host-&gt;host_lock)
 DECL|macro|queue_task_irq
 mdefine_line|#define queue_task_irq(a,b)     queue_task(a,b)
 DECL|macro|queue_task_irq_off
@@ -211,9 +211,9 @@ mdefine_line|#define DRIVER_UNLOCK(p)
 DECL|macro|IO_LOCK_T
 mdefine_line|#define IO_LOCK_T unsigned long io_flags = 0
 DECL|macro|IO_LOCK
-mdefine_line|#define IO_LOCK(host) spin_lock_irqsave(&amp;io_request_lock,io_flags);
+mdefine_line|#define IO_LOCK(host) spin_lock_irqsave(host-&gt;host_lock,io_flags);
 DECL|macro|IO_UNLOCK
-mdefine_line|#define IO_UNLOCK(host) spin_unlock_irqrestore(&amp;io_request_lock,io_flags);
+mdefine_line|#define IO_UNLOCK(host) spin_unlock_irqrestore(host-&gt;host_lock,io_flags);
 DECL|macro|pci_free_consistent
 mdefine_line|#define pci_free_consistent(a,b,c,d)
 DECL|macro|pci_unmap_single

@@ -484,7 +484,7 @@ op_star
 id|dummy
 )paren
 (brace
-id|current-&gt;need_resched
+id|current-&gt;work.need_resched
 op_assign
 l_int|1
 suffix:semicolon

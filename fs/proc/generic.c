@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 r_static
 id|ssize_t
@@ -585,6 +586,11 @@ r_int
 id|orig
 )paren
 (brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -601,13 +607,17 @@ id|offset
 OL
 l_int|0
 )paren
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out
 suffix:semicolon
 id|file-&gt;f_pos
 op_assign
 id|offset
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 id|file-&gt;f_pos
@@ -624,13 +634,17 @@ id|file-&gt;f_pos
 OL
 l_int|0
 )paren
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out
 suffix:semicolon
 id|file-&gt;f_pos
 op_add_assign
 id|offset
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 id|file-&gt;f_pos
@@ -638,17 +652,26 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out
 suffix:semicolon
 r_default
 suffix:colon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|out
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * This function parses a name such as &quot;tty/driver/serial&quot;, and&n; * returns the struct proc_dir_entry for &quot;/proc/tty/driver&quot;, and&n; * returns &quot;serial&quot; in residual.&n; */
 DECL|function|xlate_proc_name

@@ -4088,7 +4088,6 @@ macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|current_SC-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -4105,7 +4104,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|current_SC-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -4221,7 +4219,6 @@ macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|current_SC-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -4238,7 +4235,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|current_SC-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -5204,7 +5200,6 @@ macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|current_SC-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -5239,7 +5234,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|current_SC-&gt;host-&gt;host_lock
 comma
 id|flags

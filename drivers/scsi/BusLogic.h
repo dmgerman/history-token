@@ -4508,7 +4508,6 @@ id|ProcessorFlags
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|HostAdapter-&gt;SCSI_Host-&gt;host_lock
 comma
 op_star
@@ -4536,7 +4535,6 @@ id|ProcessorFlags
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|HostAdapter-&gt;SCSI_Host-&gt;host_lock
 comma
 op_star

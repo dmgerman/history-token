@@ -408,7 +408,7 @@ l_int|0
 comma
 l_string|&quot;NCR 53c9x SCSI&quot;
 comma
-id|esp_intr
+id|esp-&gt;ehost
 )paren
 )paren
 (brace

@@ -2688,17 +2688,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|offset
-c_func
-(paren
-l_string|&quot;#define TASK_SIGPENDING    &quot;
-comma
-r_struct
-id|task_struct
-comma
-id|sigpending
-)paren
-suffix:semicolon
+macro_line|#error&t;offset(&quot;#define TASK_SIGPENDING    &quot;, struct task_struct, sigpending);
 id|offset
 c_func
 (paren
@@ -2710,17 +2700,7 @@ comma
 id|addr_limit
 )paren
 suffix:semicolon
-id|offset
-c_func
-(paren
-l_string|&quot;#define TASK_NEED_RESCHED  &quot;
-comma
-r_struct
-id|task_struct
-comma
-id|need_resched
-)paren
-suffix:semicolon
+macro_line|#error&t;offset(&quot;#define TASK_NEED_RESCHED  &quot;, struct task_struct, need_resched);
 id|offset
 c_func
 (paren
@@ -2732,17 +2712,7 @@ comma
 id|counter
 )paren
 suffix:semicolon
-id|offset
-c_func
-(paren
-l_string|&quot;#define TASK_PTRACE        &quot;
-comma
-r_struct
-id|task_struct
-comma
-id|ptrace
-)paren
-suffix:semicolon
+macro_line|#error&t;offset(&quot;#define TASK_PTRACE        &quot;, struct task_struct, ptrace);
 id|offset
 c_func
 (paren

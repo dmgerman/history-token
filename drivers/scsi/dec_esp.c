@@ -763,7 +763,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;NCR 53C94 SCSI&quot;
 comma
-l_int|NULL
+id|esp-&gt;ehost
 )paren
 )paren
 r_goto
@@ -783,7 +783,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;JUNKIO SCSI DMA&quot;
 comma
-l_int|NULL
+id|esp-&gt;ehost
 )paren
 )paren
 r_goto
@@ -1037,7 +1037,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;PMAZ_AA&quot;
 comma
-l_int|NULL
+id|esp-&gt;ehost
 )paren
 )paren
 (brace

@@ -494,7 +494,7 @@ id|SA_SHIRQ
 comma
 l_string|&quot;Blizzard 1230 SCSI IV&quot;
 comma
-id|esp_intr
+id|esp-&gt;ehost
 )paren
 )paren
 r_goto

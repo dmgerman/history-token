@@ -15,38 +15,18 @@ macro_line|#include &lt;linux/reiserfs_fs_i.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; *  include/linux/reiser_fs.h&n; *&n; *  Reiser File System constants and structures&n; *&n; */
 multiline_comment|/* in reading the #defines, it may help to understand that they employ&n;   the following abbreviations:&n;&n;   B = Buffer&n;   I = Item header&n;   H = Height within the tree (should be changed to LEV)&n;   N = Number of the item in the node&n;   STAT = stat data&n;   DEH = Directory Entry Header&n;   EC = Entry Count&n;   E = Entry number&n;   UL = Unsigned Long&n;   BLKH = BLocK Header&n;   UNFM = UNForMatted node&n;   DC = Disk Child&n;   P = Path&n;&n;   These #defines are named by concatenating these abbreviations,&n;   where first comes the arguments, and last comes the return value,&n;   of the macro.&n;&n;*/
-multiline_comment|/* Vladimir, what is the story with&n;                                   new_get_new_buffer nowadays?  I&n;                                   want a complete explanation written&n;                                   here. */
-multiline_comment|/* NEW_GET_NEW_BUFFER will try to allocate new blocks better */
-multiline_comment|/*#define NEW_GET_NEW_BUFFER*/
-DECL|macro|OLD_GET_NEW_BUFFER
-mdefine_line|#define OLD_GET_NEW_BUFFER
-multiline_comment|/* Vladimir, what about this one too? */
-multiline_comment|/* if this is undefined, all inode changes get into stat data immediately, if it can be found in RAM */
-DECL|macro|DIRTY_LATER
-mdefine_line|#define DIRTY_LATER
-multiline_comment|/* enable journalling */
-DECL|macro|ENABLE_JOURNAL
-mdefine_line|#define ENABLE_JOURNAL
 DECL|macro|USE_INODE_GENERATION_COUNTER
 mdefine_line|#define USE_INODE_GENERATION_COUNTER
-macro_line|#ifdef __KERNEL__
-multiline_comment|/* #define REISERFS_CHECK */
 DECL|macro|REISERFS_PREALLOCATE
 mdefine_line|#define REISERFS_PREALLOCATE
-macro_line|#endif
 DECL|macro|PREALLOCATION_SIZE
 mdefine_line|#define PREALLOCATION_SIZE 8
-multiline_comment|/* if this is undefined, all inode changes get into stat data&n;   immediately, if it can be found in RAM */
-DECL|macro|DIRTY_LATER
-mdefine_line|#define DIRTY_LATER
-multiline_comment|/*#define READ_LOCK_REISERFS*/
 multiline_comment|/* n must be power of 2 */
 DECL|macro|_ROUND_UP
 mdefine_line|#define _ROUND_UP(x,n) (((x)+(n)-1u) &amp; ~((n)-1u))
 singleline_comment|// to be ok for alpha and others we have to align structures to 8 byte
 singleline_comment|// boundary.
 singleline_comment|// FIXME: do not change 4 by anything else: there is code which relies on that
-multiline_comment|/* what 4? -Hans */
 DECL|macro|ROUND_UP
 mdefine_line|#define ROUND_UP(x) _ROUND_UP(x,8LL)
 multiline_comment|/* debug levels.  Right now, CONFIG_REISERFS_CHECK means print all debug&n;** messages.&n;*/
@@ -70,6 +50,265 @@ multiline_comment|/*************************************************************
 multiline_comment|/*                             SUPER BLOCK                                 */
 multiline_comment|/***************************************************************************/
 multiline_comment|/*&n; * Structure of super block on disk, a version of which in RAM is often accessed as s-&gt;u.reiserfs_sb.s_rs&n; * the version in RAM is part of a larger structure containing fields never written to disk.&n; */
+DECL|macro|UNSET_HASH
+mdefine_line|#define UNSET_HASH 0 
+singleline_comment|// read_super will guess about, what hash names
+singleline_comment|// in directories were sorted with
+DECL|macro|TEA_HASH
+mdefine_line|#define TEA_HASH  1
+DECL|macro|YURA_HASH
+mdefine_line|#define YURA_HASH 2
+DECL|macro|R5_HASH
+mdefine_line|#define R5_HASH   3
+DECL|macro|DEFAULT_HASH
+mdefine_line|#define DEFAULT_HASH R5_HASH
+DECL|struct|journal_params
+r_struct
+id|journal_params
+(brace
+DECL|member|jp_journal_1st_block
+id|__u32
+id|jp_journal_1st_block
+suffix:semicolon
+multiline_comment|/* where does journal start from on its&n;&t;&t;&t;&t;       * device */
+DECL|member|jp_journal_dev
+id|__u32
+id|jp_journal_dev
+suffix:semicolon
+multiline_comment|/* journal device st_rdev */
+DECL|member|jp_journal_size
+id|__u32
+id|jp_journal_size
+suffix:semicolon
+multiline_comment|/* size of the journal */
+DECL|member|jp_journal_trans_max
+id|__u32
+id|jp_journal_trans_max
+suffix:semicolon
+multiline_comment|/* max number of blocks in a transaction. */
+DECL|member|jp_journal_magic
+id|__u32
+id|jp_journal_magic
+suffix:semicolon
+multiline_comment|/* random value made on fs creation (this&n;&t;&t;&t;&t;       * was sb_journal_block_count) */
+DECL|member|jp_journal_max_batch
+id|__u32
+id|jp_journal_max_batch
+suffix:semicolon
+multiline_comment|/* max number of blocks to batch into a&n;&t;&t;&t;&t;       * trans */
+DECL|member|jp_journal_max_commit_age
+id|__u32
+id|jp_journal_max_commit_age
+suffix:semicolon
+multiline_comment|/* in seconds, how old can an async&n;&t;&t;&t;&t;       * commit be */
+DECL|member|jp_journal_max_trans_age
+id|__u32
+id|jp_journal_max_trans_age
+suffix:semicolon
+multiline_comment|/* in seconds, how old can a transaction&n;&t;&t;&t;&t;       * be */
+)brace
+suffix:semicolon
+multiline_comment|/* this is the super from 3.5.X, where X &gt;= 10 */
+DECL|struct|reiserfs_super_block_v1
+r_struct
+id|reiserfs_super_block_v1
+(brace
+DECL|member|s_block_count
+id|__u32
+id|s_block_count
+suffix:semicolon
+multiline_comment|/* blocks count         */
+DECL|member|s_free_blocks
+id|__u32
+id|s_free_blocks
+suffix:semicolon
+multiline_comment|/* free blocks count    */
+DECL|member|s_root_block
+id|__u32
+id|s_root_block
+suffix:semicolon
+multiline_comment|/* root block number    */
+DECL|member|s_journal
+r_struct
+id|journal_params
+id|s_journal
+suffix:semicolon
+DECL|member|s_blocksize
+id|__u16
+id|s_blocksize
+suffix:semicolon
+multiline_comment|/* block size */
+DECL|member|s_oid_maxsize
+id|__u16
+id|s_oid_maxsize
+suffix:semicolon
+multiline_comment|/* max size of object id array, see&n;&t;&t;&t;&t;    * get_objectid() commentary  */
+DECL|member|s_oid_cursize
+id|__u16
+id|s_oid_cursize
+suffix:semicolon
+multiline_comment|/* current size of object id array */
+DECL|member|s_umount_state
+id|__u16
+id|s_umount_state
+suffix:semicolon
+multiline_comment|/* this is set to 1 when filesystem was&n;&t;&t;&t;&t;    * umounted, to 2 - when not */
+DECL|member|s_magic
+r_char
+id|s_magic
+(braket
+l_int|10
+)braket
+suffix:semicolon
+multiline_comment|/* reiserfs magic string indicates that&n;&t;&t;&t;&t;    * file system is reiserfs:&n;&t;&t;&t;&t;    * &quot;ReIsErFs&quot; or &quot;ReIsEr2Fs&quot; or &quot;ReIsEr3Fs&quot; */
+DECL|member|s_fs_state
+id|__u16
+id|s_fs_state
+suffix:semicolon
+multiline_comment|/* it is set to used by fsck to mark which&n;&t;&t;&t;&t;    * phase of rebuilding is done */
+DECL|member|s_hash_function_code
+id|__u32
+id|s_hash_function_code
+suffix:semicolon
+multiline_comment|/* indicate, what hash function is being use&n;&t;&t;&t;&t;    * to sort names in a directory*/
+DECL|member|s_tree_height
+id|__u16
+id|s_tree_height
+suffix:semicolon
+multiline_comment|/* height of disk tree */
+DECL|member|s_bmap_nr
+id|__u16
+id|s_bmap_nr
+suffix:semicolon
+multiline_comment|/* amount of bitmap blocks needed to address&n;&t;&t;&t;&t;    * each block of file system */
+DECL|member|s_version
+id|__u16
+id|s_version
+suffix:semicolon
+multiline_comment|/* this field is only reliable on filesystem&n;&t;&t;&t;&t;    * with non-standard journal */
+DECL|member|s_reserved_for_journal
+id|__u16
+id|s_reserved_for_journal
+suffix:semicolon
+multiline_comment|/* size in blocks of journal area on main&n;&t;&t;&t;&t;    * device, we need to keep after&n;&t;&t;&t;&t;    * making fs with non-standard journal */
+)brace
+id|__attribute__
+(paren
+(paren
+id|__packed__
+)paren
+)paren
+suffix:semicolon
+DECL|macro|SB_SIZE_V1
+mdefine_line|#define SB_SIZE_V1 (sizeof(struct reiserfs_super_block_v1))
+multiline_comment|/* this is the on disk super block */
+DECL|struct|reiserfs_super_block
+r_struct
+id|reiserfs_super_block
+(brace
+DECL|member|s_v1
+r_struct
+id|reiserfs_super_block_v1
+id|s_v1
+suffix:semicolon
+DECL|member|s_inode_generation
+id|__u32
+id|s_inode_generation
+suffix:semicolon
+DECL|member|s_flags
+id|__u32
+id|s_flags
+suffix:semicolon
+multiline_comment|/* Right now used only by inode-attributes, if enabled */
+DECL|member|s_uuid
+r_int
+r_char
+id|s_uuid
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* filesystem unique identifier */
+DECL|member|s_label
+r_int
+r_char
+id|s_label
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* filesystem volume label */
+DECL|member|s_unused
+r_char
+id|s_unused
+(braket
+l_int|88
+)braket
+suffix:semicolon
+multiline_comment|/* zero filled by mkreiserfs and&n;&t;&t;&t;&t;     * reiserfs_convert_objectid_map_v1()&n;&t;&t;&t;&t;     * so any additions must be updated&n;&t;&t;&t;&t;     * there as well. */
+)brace
+id|__attribute__
+(paren
+(paren
+id|__packed__
+)paren
+)paren
+suffix:semicolon
+DECL|macro|SB_SIZE
+mdefine_line|#define SB_SIZE (sizeof(struct reiserfs_super_block))
+DECL|macro|REISERFS_VERSION_1
+mdefine_line|#define REISERFS_VERSION_1 0
+DECL|macro|REISERFS_VERSION_2
+mdefine_line|#define REISERFS_VERSION_2 2
+singleline_comment|// on-disk super block fields converted to cpu form
+DECL|macro|SB_DISK_SUPER_BLOCK
+mdefine_line|#define SB_DISK_SUPER_BLOCK(s) ((s)-&gt;u.reiserfs_sb.s_rs)
+DECL|macro|SB_V1_DISK_SUPER_BLOCK
+mdefine_line|#define SB_V1_DISK_SUPER_BLOCK(s) (&amp;(SB_DISK_SUPER_BLOCK(s)-&gt;s_v1))
+DECL|macro|SB_BLOCKSIZE
+mdefine_line|#define SB_BLOCKSIZE(s) &bslash;&n;        le32_to_cpu ((SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_blocksize))
+DECL|macro|SB_BLOCK_COUNT
+mdefine_line|#define SB_BLOCK_COUNT(s) &bslash;&n;        le32_to_cpu ((SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_block_count))
+DECL|macro|SB_FREE_BLOCKS
+mdefine_line|#define SB_FREE_BLOCKS(s) &bslash;&n;        le32_to_cpu ((SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_free_blocks))
+DECL|macro|SB_REISERFS_MAGIC
+mdefine_line|#define SB_REISERFS_MAGIC(s) &bslash;&n;        (SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_magic)
+DECL|macro|SB_ROOT_BLOCK
+mdefine_line|#define SB_ROOT_BLOCK(s) &bslash;&n;        le32_to_cpu ((SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_root_block))
+DECL|macro|SB_TREE_HEIGHT
+mdefine_line|#define SB_TREE_HEIGHT(s) &bslash;&n;        le16_to_cpu ((SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_tree_height))
+DECL|macro|SB_REISERFS_STATE
+mdefine_line|#define SB_REISERFS_STATE(s) &bslash;&n;        le16_to_cpu ((SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_umount_state))
+DECL|macro|SB_VERSION
+mdefine_line|#define SB_VERSION(s) le16_to_cpu ((SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_version))
+DECL|macro|SB_BMAP_NR
+mdefine_line|#define SB_BMAP_NR(s) le16_to_cpu ((SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_bmap_nr))
+DECL|macro|PUT_SB_BLOCK_COUNT
+mdefine_line|#define PUT_SB_BLOCK_COUNT(s, val) &bslash;&n;   do { SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_block_count = cpu_to_le32(val); } while (0)
+DECL|macro|PUT_SB_FREE_BLOCKS
+mdefine_line|#define PUT_SB_FREE_BLOCKS(s, val) &bslash;&n;   do { SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_free_blocks = cpu_to_le32(val); } while (0)
+DECL|macro|PUT_SB_ROOT_BLOCK
+mdefine_line|#define PUT_SB_ROOT_BLOCK(s, val) &bslash;&n;   do { SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_root_block = cpu_to_le32(val); } while (0)
+DECL|macro|PUT_SB_TREE_HEIGHT
+mdefine_line|#define PUT_SB_TREE_HEIGHT(s, val) &bslash;&n;   do { SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_tree_height = cpu_to_le16(val); } while (0)
+DECL|macro|PUT_SB_REISERFS_STATE
+mdefine_line|#define PUT_SB_REISERFS_STATE(s, val) &bslash;&n;   do { SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_umount_state = cpu_to_le16(val); } while (0) 
+DECL|macro|PUT_SB_VERSION
+mdefine_line|#define PUT_SB_VERSION(s, val) &bslash;&n;   do { SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_version = cpu_to_le16(val); } while (0)
+DECL|macro|PUT_SB_BMAP_NR
+mdefine_line|#define PUT_SB_BMAP_NR(s, val) &bslash;&n;   do { SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_bmap_nr = cpu_to_le16 (val); } while (0)
+DECL|macro|SB_ONDISK_JP
+mdefine_line|#define SB_ONDISK_JP(s) (&amp;SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_journal)
+DECL|macro|SB_ONDISK_JOURNAL_SIZE
+mdefine_line|#define SB_ONDISK_JOURNAL_SIZE(s) &bslash;&n;         le32_to_cpu ((SB_ONDISK_JP(s)-&gt;jp_journal_size))
+DECL|macro|SB_ONDISK_JOURNAL_1st_BLOCK
+mdefine_line|#define SB_ONDISK_JOURNAL_1st_BLOCK(s) &bslash;&n;         le32_to_cpu ((SB_ONDISK_JP(s)-&gt;jp_journal_1st_block))
+DECL|macro|SB_ONDISK_JOURNAL_DEVICE
+mdefine_line|#define SB_ONDISK_JOURNAL_DEVICE(s) &bslash;&n;         le32_to_cpu ((SB_ONDISK_JP(s)-&gt;jp_journal_dev))
+DECL|macro|SB_ONDISK_RESERVED_FOR_JOURNAL
+mdefine_line|#define SB_ONDISK_RESERVED_FOR_JOURNAL(s) &bslash;&n;         le32_to_cpu ((SB_V1_DISK_SUPER_BLOCK(s)-&gt;s_reserved_for_journal))
+DECL|macro|is_block_in_log_or_reserved_area
+mdefine_line|#define is_block_in_log_or_reserved_area(s, block) &bslash;&n;         block &gt;= SB_JOURNAL_1st_RESERVED_BLOCK(s) &bslash;&n;         &amp;&amp; block &lt; SB_JOURNAL_1st_RESERVED_BLOCK(s) +  &bslash;&n;         ((!is_reiserfs_jr(SB_DISK_SUPER_BLOCK(s)) ? &bslash;&n;         SB_ONDISK_JOURNAL_SIZE(s) + 1 : SB_ONDISK_RESERVED_FOR_JOURNAL(s))) 
 multiline_comment|/* used by gcc */
 DECL|macro|REISERFS_SUPER_MAGIC
 mdefine_line|#define REISERFS_SUPER_MAGIC 0x52654973
@@ -78,66 +317,63 @@ DECL|macro|REISERFS_SUPER_MAGIC_STRING
 mdefine_line|#define REISERFS_SUPER_MAGIC_STRING &quot;ReIsErFs&quot;
 DECL|macro|REISER2FS_SUPER_MAGIC_STRING
 mdefine_line|#define REISER2FS_SUPER_MAGIC_STRING &quot;ReIsEr2Fs&quot;
+DECL|macro|REISER2FS_JR_SUPER_MAGIC_STRING
+mdefine_line|#define REISER2FS_JR_SUPER_MAGIC_STRING &quot;ReIsEr3Fs&quot;
 r_extern
-r_char
-id|reiserfs_super_magic_string
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_char
-id|reiser2fs_super_magic_string
-(braket
-)braket
-suffix:semicolon
-DECL|function|is_reiserfs_magic_string
-r_static
-r_inline
-r_int
-id|is_reiserfs_magic_string
-(paren
 r_const
+r_char
+id|reiserfs_3_5_magic_string
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_const
+r_char
+id|reiserfs_3_6_magic_string
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_const
+r_char
+id|reiserfs_jr_magic_string
+(braket
+)braket
+suffix:semicolon
+r_int
+id|is_reiserfs_3_5
+(paren
 r_struct
 id|reiserfs_super_block
 op_star
 id|rs
 )paren
-(brace
-r_return
+suffix:semicolon
+r_int
+id|is_reiserfs_3_6
 (paren
-op_logical_neg
-id|strncmp
-(paren
-id|rs-&gt;s_magic
-comma
-id|reiserfs_super_magic_string
-comma
-id|strlen
-(paren
-id|reiserfs_super_magic_string
-)paren
-)paren
-op_logical_or
-op_logical_neg
-id|strncmp
-(paren
-id|rs-&gt;s_magic
-comma
-id|reiser2fs_super_magic_string
-comma
-id|strlen
-(paren
-id|reiser2fs_super_magic_string
-)paren
-)paren
+r_struct
+id|reiserfs_super_block
+op_star
+id|rs
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* ReiserFS leaves the first 64k unused,&n;                                   so that partition labels have enough&n;                                   space.  If someone wants to write a&n;                                   fancy bootloader that needs more than&n;                                   64k, let us know, and this will be&n;                                   increased in size.  This number must&n;                                   be larger than than the largest block&n;                                   size on any platform, or code will&n;                                   break.  -Hans */
+r_int
+id|is_reiserfs_jr
+(paren
+r_struct
+id|reiserfs_super_block
+op_star
+id|rs
+)paren
+suffix:semicolon
+multiline_comment|/* ReiserFS leaves the first 64k unused, so that partition labels have&n;   enough space.  If someone wants to write a fancy bootloader that&n;   needs more than 64k, let us know, and this will be increased in size.&n;   This number must be larger than than the largest block size on any&n;   platform, or code will break.  -Hans */
 DECL|macro|REISERFS_DISK_OFFSET_IN_BYTES
 mdefine_line|#define REISERFS_DISK_OFFSET_IN_BYTES (64 * 1024)
 DECL|macro|REISERFS_FIRST_BLOCK
 mdefine_line|#define REISERFS_FIRST_BLOCK unused_define
+DECL|macro|REISERFS_JOURNAL_OFFSET_IN_BYTES
+mdefine_line|#define REISERFS_JOURNAL_OFFSET_IN_BYTES REISERFS_DISK_OFFSET_IN_BYTES
 multiline_comment|/* the spot for the super in versions 3.5 - 3.5.10 (inclusive) */
 DECL|macro|REISERFS_OLD_DISK_OFFSET_IN_BYTES
 mdefine_line|#define REISERFS_OLD_DISK_OFFSET_IN_BYTES (8 * 1024)
@@ -154,9 +390,6 @@ DECL|macro|NO_BALANCING_NEEDED
 mdefine_line|#define NO_BALANCING_NEEDED  (-4)
 DECL|macro|NO_MORE_UNUSED_CONTIGUOUS_BLOCKS
 mdefine_line|#define NO_MORE_UNUSED_CONTIGUOUS_BLOCKS (-5)
-singleline_comment|//#define SCHEDULE_OCCURRED  &t;1
-singleline_comment|//#define PATH_INCORRECT    &t;2
-singleline_comment|//#define NO_DISK_SPACE        (-1)
 DECL|typedef|b_blocknr_t
 r_typedef
 r_int
@@ -168,17 +401,14 @@ r_typedef
 id|__u32
 id|unp_t
 suffix:semicolon
-multiline_comment|/* who is responsible for this&n;                                   completely uncommented struct? */
 DECL|struct|unfm_nodeinfo
 r_struct
 id|unfm_nodeinfo
 (brace
-multiline_comment|/* This is what? */
 DECL|member|unfm_nodenum
 id|unp_t
 id|unfm_nodenum
 suffix:semicolon
-multiline_comment|/* now this I know what it is, and&n;                                   most of the people on our project&n;                                   know what it is, but I bet nobody&n;                                   new I hire will have a clue. */
 DECL|member|unfm_freespace
 r_int
 r_int
@@ -186,9 +416,16 @@ id|unfm_freespace
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* when reiserfs_file_write is called with a byte count &gt;= MIN_PACK_ON_CLOSE,&n;** it sets the inode to pack on close, and when extending the file, will only&n;** use unformatted nodes.&n;**&n;** This is a big speed up for the journal, which is badly hurt by direct-&gt;indirect&n;** conversions (they must be logged).&n;*/
-DECL|macro|MIN_PACK_ON_CLOSE
-mdefine_line|#define MIN_PACK_ON_CLOSE&t;&t;512
+multiline_comment|/* there are two formats of keys: 3.5 and 3.6&n; */
+DECL|macro|KEY_FORMAT_3_5
+mdefine_line|#define KEY_FORMAT_3_5 0
+DECL|macro|KEY_FORMAT_3_6
+mdefine_line|#define KEY_FORMAT_3_6 1
+multiline_comment|/* there are two stat datas */
+DECL|macro|STAT_DATA_V1
+mdefine_line|#define STAT_DATA_V1 0
+DECL|macro|STAT_DATA_V2
+mdefine_line|#define STAT_DATA_V2 1
 DECL|function|REISERFS_I
 r_static
 r_inline
@@ -217,14 +454,19 @@ id|vfs_inode
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// this says about version of all items (but stat data) the object
-singleline_comment|// consists of
-DECL|macro|inode_items_version
-mdefine_line|#define inode_items_version(inode) (REISERFS_I(inode)-&gt;i_version)
-multiline_comment|/* This is an aggressive tail suppression policy, I am hoping it&n;     improves our benchmarks. The principle behind it is that&n;     percentage space saving is what matters, not absolute space&n;     saving.  This is non-intuitive, but it helps to understand it if&n;     you consider that the cost to access 4 blocks is not much more&n;     than the cost to access 1 block, if you have to do a seek and&n;     rotate.  A tail risks a non-linear disk access that is&n;     significant as a percentage of total time cost for a 4 block file&n;     and saves an amount of space that is less significant as a&n;     percentage of space, or so goes the hypothesis.  -Hans */
+multiline_comment|/** this says about version of key of all items (but stat data) the&n;    object consists of */
+DECL|macro|get_inode_item_key_version
+mdefine_line|#define get_inode_item_key_version( inode )                                    &bslash;&n;    ((REISERFS_I(inode)-&gt;i_flags &amp; i_item_key_version_mask) ? KEY_FORMAT_3_6 : KEY_FORMAT_3_5)
+DECL|macro|set_inode_item_key_version
+mdefine_line|#define set_inode_item_key_version( inode, version )                           &bslash;&n;         ({ if((version)==KEY_FORMAT_3_6)                                      &bslash;&n;                REISERFS_I(inode)-&gt;i_flags |= i_item_key_version_mask;      &bslash;&n;            else                                                               &bslash;&n;                REISERFS_I(inode)-&gt;i_flags &amp;= ~i_item_key_version_mask; })
+DECL|macro|get_inode_sd_version
+mdefine_line|#define get_inode_sd_version(inode)                                            &bslash;&n;    ((REISERFS_I(inode)-&gt;i_flags &amp; i_stat_data_version_mask) ? STAT_DATA_V2 : STAT_DATA_V1)
+DECL|macro|set_inode_sd_version
+mdefine_line|#define set_inode_sd_version(inode, version)                                   &bslash;&n;         ({ if((version)==STAT_DATA_V2)                                        &bslash;&n;                REISERFS_I(inode)-&gt;i_flags |= i_stat_data_version_mask;     &bslash;&n;            else                                                               &bslash;&n;                REISERFS_I(inode)-&gt;i_flags &amp;= ~i_stat_data_version_mask; })
+multiline_comment|/* This is an aggressive tail suppression policy, I am hoping it&n;   improves our benchmarks. The principle behind it is that percentage&n;   space saving is what matters, not absolute space saving.  This is&n;   non-intuitive, but it helps to understand it if you consider that the&n;   cost to access 4 blocks is not much more than the cost to access 1&n;   block, if you have to do a seek and rotate.  A tail risks a&n;   non-linear disk access that is significant as a percentage of total&n;   time cost for a 4 block file and saves an amount of space that is&n;   less significant as a percentage of space, or so goes the hypothesis.&n;   -Hans */
 DECL|macro|STORE_TAIL_IN_UNFM
 mdefine_line|#define STORE_TAIL_IN_UNFM(n_file_size,n_tail_size,n_block_size) &bslash;&n;(&bslash;&n;  (!(n_tail_size)) || &bslash;&n;  (((n_tail_size) &gt; MAX_DIRECT_ITEM_LEN(n_block_size)) || &bslash;&n;   ( (n_file_size) &gt;= (n_block_size) * 4 ) || &bslash;&n;   ( ( (n_file_size) &gt;= (n_block_size) * 3 ) &amp;&amp; &bslash;&n;     ( (n_tail_size) &gt;=   (MAX_DIRECT_ITEM_LEN(n_block_size))/4) ) || &bslash;&n;   ( ( (n_file_size) &gt;= (n_block_size) * 2 ) &amp;&amp; &bslash;&n;     ( (n_tail_size) &gt;=   (MAX_DIRECT_ITEM_LEN(n_block_size))/2) ) || &bslash;&n;   ( ( (n_file_size) &gt;= (n_block_size) ) &amp;&amp; &bslash;&n;     ( (n_tail_size) &gt;=   (MAX_DIRECT_ITEM_LEN(n_block_size) * 3)/4) ) ) &bslash;&n;)
-multiline_comment|/*&n; * values for s_state field&n; */
+multiline_comment|/*&n; * values for s_umount_state field&n; */
 DECL|macro|REISERFS_VALID_FS
 mdefine_line|#define REISERFS_VALID_FS    1
 DECL|macro|REISERFS_ERROR_FS
@@ -232,19 +474,6 @@ mdefine_line|#define REISERFS_ERROR_FS    2
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                       KEY &amp; ITEM HEAD                                   */
 multiline_comment|/***************************************************************************/
-singleline_comment|//
-singleline_comment|// we do support for old format of reiserfs: the problem is to
-singleline_comment|// distinuquish keys with 32 bit offset and keys with 60 bit ones. On
-singleline_comment|// leaf level we use ih_version of struct item_head (was
-singleline_comment|// ih_reserved). For all old items it is set to 0
-singleline_comment|// (ITEM_VERSION_1). For new items it is ITEM_VERSION_2. On internal
-singleline_comment|// levels we have to know version of item key belongs to.
-singleline_comment|//
-DECL|macro|ITEM_VERSION_1
-mdefine_line|#define ITEM_VERSION_1 0
-DECL|macro|ITEM_VERSION_2
-mdefine_line|#define ITEM_VERSION_2 1
-multiline_comment|/* loff_t - long long */
 singleline_comment|//
 singleline_comment|// directories use this key as well as old files
 singleline_comment|//
@@ -337,6 +566,7 @@ id|__u16
 id|offset_v2_k_type
 c_func
 (paren
+r_const
 r_struct
 id|offset_v2
 op_star
@@ -348,6 +578,7 @@ id|tmp
 op_assign
 op_star
 (paren
+r_const
 id|offset_v2_esafe_overlay
 op_star
 )paren
@@ -419,6 +650,7 @@ id|loff_t
 id|offset_v2_k_offset
 c_func
 (paren
+r_const
 r_struct
 id|offset_v2
 op_star
@@ -430,6 +662,7 @@ id|tmp
 op_assign
 op_star
 (paren
+r_const
 id|offset_v2_esafe_overlay
 op_star
 )paren
@@ -571,7 +804,7 @@ suffix:semicolon
 multiline_comment|/* 3 in all cases but direct2indirect and&n;&t;&t;       indirect2direct conversion */
 )brace
 suffix:semicolon
-multiline_comment|/* Our function for comparing keys can compare keys of different&n;    lengths.  It takes as a parameter the length of the keys it is to&n;    compare.  These defines are used in determining what is to be&n;    passed to it as that parameter. */
+multiline_comment|/* Our function for comparing keys can compare keys of different&n;   lengths.  It takes as a parameter the length of the keys it is to&n;   compare.  These defines are used in determining what is to be passed&n;   to it as that parameter. */
 DECL|macro|REISERFS_FULL_KEY_LEN
 mdefine_line|#define REISERFS_FULL_KEY_LEN     4
 DECL|macro|REISERFS_SHORT_KEY_LEN
@@ -630,25 +863,24 @@ DECL|struct|item_head
 r_struct
 id|item_head
 (brace
+multiline_comment|/* Everything in the tree is found by searching for it based on&n;&t; * its key.*/
 DECL|member|ih_key
 r_struct
 id|key
 id|ih_key
 suffix:semicolon
-multiline_comment|/* Everything in the tree is found by searching for it based on its key.*/
-multiline_comment|/* This is bloat, this should be part&n;                                   of the item not the item&n;                                   header. -Hans */
 r_union
 (brace
+multiline_comment|/* The free space in the last unformatted node of an&n;&t;&t;   indirect item if this is an indirect item.  This&n;&t;&t;   equals 0xFFFF iff this is a direct item or stat data&n;&t;&t;   item. Note that the key, not this field, is used to&n;&t;&t;   determine the item type, and thus which field this&n;&t;&t;   union contains. */
 DECL|member|ih_free_space_reserved
 id|__u16
 id|ih_free_space_reserved
 suffix:semicolon
-multiline_comment|/* The free space in the last unformatted node of an indirect item if this&n;&t;&t;&t;&t;     is an indirect item.  This equals 0xFFFF iff this is a direct item or&n;&t;&t;&t;&t;     stat data item. Note that the key, not this field, is used to determine&n;&t;&t;&t;&t;     the item type, and thus which field this union contains. */
+multiline_comment|/* Iff this is a directory item, this field equals the&n;&t;&t;   number of directory entries in the directory item. */
 DECL|member|ih_entry_count
 id|__u16
 id|ih_entry_count
 suffix:semicolon
-multiline_comment|/* Iff this is a directory item, this field equals the number of directory&n;&t;&t;&t;&t;      entries in the directory item. */
 DECL|member|u
 )brace
 id|__attribute__
@@ -668,13 +900,12 @@ DECL|member|ih_item_location
 id|__u16
 id|ih_item_location
 suffix:semicolon
-multiline_comment|/* an offset to the item body within the block */
-multiline_comment|/* I thought we were going to use this&n;                                   for having lots of item types? Why&n;                                   don&squot;t you use this for item type&n;                                   not item version.  That is how you&n;                                   talked me into this field a year&n;                                   ago, remember?  I am still not&n;                                   convinced it needs to be 16 bits&n;                                   (for at least many years), but at&n;                                   least I can sympathize with that&n;                                   hope. Change the name from version&n;                                   to type, and tell people not to use&n;                                   FFFF in case 16 bits is someday too&n;                                   small and needs to be extended:-). */
+multiline_comment|/* an offset to the item body&n;&t;&t;&t;&t;      * within the block */
 DECL|member|ih_version
 id|__u16
 id|ih_version
 suffix:semicolon
-multiline_comment|/* 0 for all old items, 2 for new&n;                                  ones. Highest bit is set by fsck&n;                                  temporary, cleaned after all done */
+multiline_comment|/* 0 for all old items, 2 for new&n;&t;&t;&t;&t;&t;ones. Highest bit is set by fsck&n;&t;&t;&t;&t;&t;temporary, cleaned after all&n;&t;&t;&t;&t;&t;done */
 )brace
 id|__attribute__
 (paren
@@ -709,9 +940,9 @@ mdefine_line|#define put_ih_item_len(ih, val)     do { (ih)-&gt;ih_item_len = cp
 DECL|macro|unreachable_item
 mdefine_line|#define unreachable_item(ih) (ih_version(ih) &amp; (1 &lt;&lt; 15))
 DECL|macro|get_ih_free_space
-mdefine_line|#define get_ih_free_space(ih) (ih_version (ih) == ITEM_VERSION_2 ? 0 : ih_free_space (ih))
+mdefine_line|#define get_ih_free_space(ih) (ih_version (ih) == KEY_FORMAT_3_6 ? 0 : ih_free_space (ih))
 DECL|macro|set_ih_free_space
-mdefine_line|#define set_ih_free_space(ih,val) put_ih_free_space((ih), ((ih_version(ih) == ITEM_VERSION_2) ? 0 : (val)))
+mdefine_line|#define set_ih_free_space(ih,val) put_ih_free_space((ih), ((ih_version(ih) == KEY_FORMAT_3_6) ? 0 : (val)))
 multiline_comment|/* these operate on indirect items, where you&squot;ve got an array of ints&n;** at a possibly unaligned location.  These are a noop on ia32&n;** &n;** p is the array of __u32, i is the index into the array, v is the value&n;** to store there.&n;*/
 DECL|macro|get_block_num
 mdefine_line|#define get_block_num(p, i) le32_to_cpu(get_unaligned((p) + (i)))
@@ -745,6 +976,21 @@ mdefine_line|#define V1_DIRENTRY_UNIQUENESS 500
 DECL|macro|V1_ANY_UNIQUENESS
 mdefine_line|#define V1_ANY_UNIQUENESS 555 
 singleline_comment|// FIXME: comment is required
+r_extern
+r_void
+id|reiserfs_warning
+(paren
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
+multiline_comment|/* __attribute__( ( format ( printf, 1, 2 ) ) ); */
 singleline_comment|//
 singleline_comment|// here are conversion routines
 singleline_comment|//
@@ -798,11 +1044,23 @@ suffix:colon
 r_return
 id|TYPE_DIRENTRY
 suffix:semicolon
-)brace
-multiline_comment|/*&n;    if (uniqueness != V1_ANY_UNIQUENESS) {&n;&t;printk (&quot;uniqueness %d&bslash;n&quot;, uniqueness);&n;&t;BUG (); &n;    }&n;*/
+r_default
+suffix:colon
+id|reiserfs_warning
+c_func
+(paren
+l_string|&quot;vs-500: unknown uniqueness %d&bslash;n&quot;
+comma
+id|uniqueness
+)paren
+suffix:semicolon
+r_case
+id|V1_ANY_UNIQUENESS
+suffix:colon
 r_return
 id|TYPE_ANY
 suffix:semicolon
+)brace
 )brace
 r_static
 r_inline
@@ -854,11 +1112,23 @@ suffix:colon
 r_return
 id|V1_DIRENTRY_UNIQUENESS
 suffix:semicolon
-)brace
-multiline_comment|/*&n;    if (type != TYPE_ANY)&n;&t;BUG ();&n;    */
+r_default
+suffix:colon
+id|reiserfs_warning
+c_func
+(paren
+l_string|&quot;vs-501: unknown type %d&bslash;n&quot;
+comma
+id|type
+)paren
+suffix:semicolon
+r_case
+id|TYPE_ANY
+suffix:colon
 r_return
 id|V1_ANY_UNIQUENESS
 suffix:semicolon
+)brace
 )brace
 singleline_comment|//
 singleline_comment|// key is pointer to on disk key which is stored in le, result is cpu,
@@ -885,7 +1155,7 @@ r_return
 (paren
 id|version
 op_eq
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 )paren
 ques
 c_cond
@@ -953,7 +1223,7 @@ r_return
 (paren
 id|version
 op_eq
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 )paren
 ques
 c_cond
@@ -1026,7 +1296,7 @@ id|offset
 (paren
 id|version
 op_eq
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 )paren
 ques
 c_cond
@@ -1106,7 +1376,7 @@ id|type
 (paren
 id|version
 op_eq
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 )paren
 ques
 c_cond
@@ -1208,7 +1478,7 @@ r_return
 (paren
 id|key-&gt;version
 op_eq
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 )paren
 ques
 c_cond
@@ -1234,7 +1504,7 @@ r_return
 (paren
 id|key-&gt;version
 op_eq
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 )paren
 ques
 c_cond
@@ -1264,7 +1534,7 @@ id|offset
 (paren
 id|key-&gt;version
 op_eq
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 )paren
 ques
 c_cond
@@ -1299,7 +1569,7 @@ id|type
 (paren
 id|key-&gt;version
 op_eq
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 )paren
 ques
 c_cond
@@ -1336,7 +1606,7 @@ c_cond
 (paren
 id|key-&gt;version
 op_eq
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 )paren
 id|key-&gt;on_disk_key.u.k_offset_v1.k_offset
 op_decrement
@@ -1554,7 +1824,7 @@ suffix:semicolon
 DECL|macro|SD_V1_SIZE
 mdefine_line|#define SD_V1_SIZE              (sizeof(struct stat_data_v1))
 DECL|macro|stat_data_v1
-mdefine_line|#define stat_data_v1(ih)        (ih_version (ih) == ITEM_VERSION_1)
+mdefine_line|#define stat_data_v1(ih)        (ih_version (ih) == KEY_FORMAT_3_5)
 DECL|macro|sd_v1_mode
 mdefine_line|#define sd_v1_mode(sdp)         (le16_to_cpu((sdp)-&gt;sd_mode))
 DECL|macro|set_sd_v1_mode
@@ -1683,14 +1953,14 @@ id|__packed__
 )paren
 suffix:semicolon
 singleline_comment|//
-singleline_comment|// this is 40 bytes long
+singleline_comment|// this is 44 bytes long
 singleline_comment|//
 DECL|macro|SD_SIZE
 mdefine_line|#define SD_SIZE (sizeof(struct stat_data))
 DECL|macro|SD_V2_SIZE
 mdefine_line|#define SD_V2_SIZE              SD_SIZE
 DECL|macro|stat_data_v2
-mdefine_line|#define stat_data_v2(ih)        (ih_version (ih) == ITEM_VERSION_2)
+mdefine_line|#define stat_data_v2(ih)        (ih_version (ih) == KEY_FORMAT_3_6)
 DECL|macro|sd_v2_mode
 mdefine_line|#define sd_v2_mode(sdp)         (le16_to_cpu((sdp)-&gt;sd_mode))
 DECL|macro|set_sd_v2_mode
@@ -1864,11 +2134,7 @@ DECL|macro|de_visible
 mdefine_line|#define de_visible(deh)&t;    &t;    test_bit_unaligned (DEH_Visible, &amp;((deh)-&gt;deh_state))
 DECL|macro|de_hidden
 mdefine_line|#define de_hidden(deh)&t;    &t;    !test_bit_unaligned (DEH_Visible, &amp;((deh)-&gt;deh_state))
-multiline_comment|/* compose directory item containing &quot;.&quot; and &quot;..&quot; entries (entries are&n;   not aligned to 4 byte boundary) */
-multiline_comment|/* the last four params are LE */
-DECL|function|make_empty_dir_item_v1
-r_static
-r_inline
+r_extern
 r_void
 id|make_empty_dir_item_v1
 (paren
@@ -1888,241 +2154,8 @@ comma
 id|__u32
 id|par_objid
 )paren
-(brace
-r_struct
-id|reiserfs_de_head
-op_star
-id|deh
 suffix:semicolon
-id|memset
-(paren
-id|body
-comma
-l_int|0
-comma
-id|EMPTY_DIR_SIZE_V1
-)paren
-suffix:semicolon
-id|deh
-op_assign
-(paren
-r_struct
-id|reiserfs_de_head
-op_star
-)paren
-id|body
-suffix:semicolon
-multiline_comment|/* direntry header of &quot;.&quot; */
-id|put_deh_offset
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|0
-)braket
-)paren
-comma
-id|DOT_OFFSET
-)paren
-suffix:semicolon
-multiline_comment|/* these two are from make_le_item_head, and are are LE */
-id|deh
-(braket
-l_int|0
-)braket
-dot
-id|deh_dir_id
-op_assign
-id|dirid
-suffix:semicolon
-id|deh
-(braket
-l_int|0
-)braket
-dot
-id|deh_objectid
-op_assign
-id|objid
-suffix:semicolon
-id|deh
-(braket
-l_int|0
-)braket
-dot
-id|deh_state
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Endian safe if 0 */
-id|put_deh_location
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|0
-)braket
-)paren
-comma
-id|EMPTY_DIR_SIZE_V1
-op_minus
-id|strlen
-c_func
-(paren
-l_string|&quot;.&quot;
-)paren
-)paren
-suffix:semicolon
-id|mark_de_visible
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|0
-)braket
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* direntry header of &quot;..&quot; */
-id|put_deh_offset
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|1
-)braket
-)paren
-comma
-id|DOT_DOT_OFFSET
-)paren
-suffix:semicolon
-multiline_comment|/* key of &quot;..&quot; for the root directory */
-multiline_comment|/* these two are from the inode, and are are LE */
-id|deh
-(braket
-l_int|1
-)braket
-dot
-id|deh_dir_id
-op_assign
-id|par_dirid
-suffix:semicolon
-id|deh
-(braket
-l_int|1
-)braket
-dot
-id|deh_objectid
-op_assign
-id|par_objid
-suffix:semicolon
-id|deh
-(braket
-l_int|1
-)braket
-dot
-id|deh_state
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Endian safe if 0 */
-id|put_deh_location
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|1
-)braket
-)paren
-comma
-id|deh_location
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|0
-)braket
-)paren
-)paren
-op_minus
-id|strlen
-c_func
-(paren
-l_string|&quot;..&quot;
-)paren
-)paren
-suffix:semicolon
-id|mark_de_visible
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|1
-)braket
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* copy &quot;..&quot; and &quot;.&quot; */
-id|memcpy
-(paren
-id|body
-op_plus
-id|deh_location
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|0
-)braket
-)paren
-)paren
-comma
-l_string|&quot;.&quot;
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|memcpy
-(paren
-id|body
-op_plus
-id|deh_location
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|1
-)braket
-)paren
-)paren
-comma
-l_string|&quot;..&quot;
-comma
-l_int|2
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* compose directory item containing &quot;.&quot; and &quot;..&quot; entries */
-DECL|function|make_empty_dir_item
-r_static
-r_inline
+r_extern
 r_void
 id|make_empty_dir_item
 (paren
@@ -2142,245 +2175,7 @@ comma
 id|__u32
 id|par_objid
 )paren
-(brace
-r_struct
-id|reiserfs_de_head
-op_star
-id|deh
 suffix:semicolon
-id|memset
-(paren
-id|body
-comma
-l_int|0
-comma
-id|EMPTY_DIR_SIZE
-)paren
-suffix:semicolon
-id|deh
-op_assign
-(paren
-r_struct
-id|reiserfs_de_head
-op_star
-)paren
-id|body
-suffix:semicolon
-multiline_comment|/* direntry header of &quot;.&quot; */
-id|put_deh_offset
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|0
-)braket
-)paren
-comma
-id|DOT_OFFSET
-)paren
-suffix:semicolon
-multiline_comment|/* these two are from make_le_item_head, and are are LE */
-id|deh
-(braket
-l_int|0
-)braket
-dot
-id|deh_dir_id
-op_assign
-id|dirid
-suffix:semicolon
-id|deh
-(braket
-l_int|0
-)braket
-dot
-id|deh_objectid
-op_assign
-id|objid
-suffix:semicolon
-id|deh
-(braket
-l_int|0
-)braket
-dot
-id|deh_state
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Endian safe if 0 */
-id|put_deh_location
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|0
-)braket
-)paren
-comma
-id|EMPTY_DIR_SIZE
-op_minus
-id|ROUND_UP
-c_func
-(paren
-id|strlen
-c_func
-(paren
-l_string|&quot;.&quot;
-)paren
-)paren
-)paren
-suffix:semicolon
-id|mark_de_visible
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|0
-)braket
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* direntry header of &quot;..&quot; */
-id|put_deh_offset
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|1
-)braket
-)paren
-comma
-id|DOT_DOT_OFFSET
-)paren
-suffix:semicolon
-multiline_comment|/* key of &quot;..&quot; for the root directory */
-multiline_comment|/* these two are from the inode, and are are LE */
-id|deh
-(braket
-l_int|1
-)braket
-dot
-id|deh_dir_id
-op_assign
-id|par_dirid
-suffix:semicolon
-id|deh
-(braket
-l_int|1
-)braket
-dot
-id|deh_objectid
-op_assign
-id|par_objid
-suffix:semicolon
-id|deh
-(braket
-l_int|1
-)braket
-dot
-id|deh_state
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Endian safe if 0 */
-id|put_deh_location
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|1
-)braket
-)paren
-comma
-id|deh_location
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|0
-)braket
-)paren
-)paren
-op_minus
-id|ROUND_UP
-c_func
-(paren
-id|strlen
-c_func
-(paren
-l_string|&quot;..&quot;
-)paren
-)paren
-)paren
-suffix:semicolon
-id|mark_de_visible
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|1
-)braket
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* copy &quot;..&quot; and &quot;.&quot; */
-id|memcpy
-(paren
-id|body
-op_plus
-id|deh_location
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|0
-)braket
-)paren
-)paren
-comma
-l_string|&quot;.&quot;
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|memcpy
-(paren
-id|body
-op_plus
-id|deh_location
-c_func
-(paren
-op_amp
-(paren
-id|deh
-(braket
-l_int|1
-)braket
-)paren
-)paren
-comma
-l_string|&quot;..&quot;
-comma
-l_int|2
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* array of the entry headers */
 multiline_comment|/* get item body */
 DECL|macro|B_I_PITEM
@@ -2470,7 +2265,6 @@ mdefine_line|#define B_I_E_NAME(bh,ih,entry_num) ((char *)(bh-&gt;b_data + ih_lo
 singleline_comment|// two entries per block (at least)
 singleline_comment|//#define REISERFS_MAX_NAME_LEN(block_size) 
 singleline_comment|//((block_size - BLKH_SIZE - IH_SIZE - DEH_SIZE * 2) / 2)
-singleline_comment|// two entries per block (at least)
 DECL|macro|REISERFS_MAX_NAME_LEN
 mdefine_line|#define REISERFS_MAX_NAME_LEN(block_size) 255
 multiline_comment|/* this structure is used for operations on directory entries. It is&n;   not a disk structure. */
@@ -2720,16 +2514,12 @@ mdefine_line|#define UNFM_P_SIZE (sizeof(unp_t))
 singleline_comment|// in in-core inode key is stored on le form
 DECL|macro|INODE_PKEY
 mdefine_line|#define INODE_PKEY(inode) ((struct key *)(REISERFS_I(inode)-&gt;i_key))
-singleline_comment|//#define mark_tail_converted(inode) (atomic_set(&amp;(REISERFS_I(inode)-&gt;i_converted),1))
-singleline_comment|//#define unmark_tail_converted(inode) (REISERFS_I(inode)-&gt;i_converted), 0))
-singleline_comment|//#define is_tail_converted(inode) (REISERFS_I(inode)-&gt;i_converted)))
 DECL|macro|MAX_UL_INT
 mdefine_line|#define MAX_UL_INT 0xffffffff
 DECL|macro|MAX_INT
 mdefine_line|#define MAX_INT    0x7ffffff
 DECL|macro|MAX_US_INT
 mdefine_line|#define MAX_US_INT 0xffff
-singleline_comment|///#define TOO_LONG_LENGTH&t;&t;(~0ULL)
 singleline_comment|// reiserfs version 2 has max offset 60 bits. Version 1 - 32 bit offset
 DECL|macro|U32_MAX
 mdefine_line|#define U32_MAX (~(__u32)0)
@@ -2748,12 +2538,13 @@ id|inode
 r_if
 c_cond
 (paren
-id|inode_items_version
+id|get_inode_item_key_version
+c_func
 (paren
 id|inode
 )paren
 op_eq
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 )paren
 r_return
 (paren
@@ -2804,12 +2595,6 @@ mdefine_line|#define fs_changed(gen,s) (gen != get_generation (s))
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                  FIXATE NODES                                           */
 multiline_comment|/***************************************************************************/
-singleline_comment|//#define VI_TYPE_STAT_DATA 1
-singleline_comment|//#define VI_TYPE_DIRECT 2
-singleline_comment|//#define VI_TYPE_INDIRECT 4
-singleline_comment|//#define VI_TYPE_DIRECTORY 8
-singleline_comment|//#define VI_TYPE_FIRST_DIRECTORY_ITEM 16
-singleline_comment|//#define VI_TYPE_INSERTED_DIRECTORY_ITEM 32
 DECL|macro|VI_TYPE_LEFT_MERGEABLE
 mdefine_line|#define VI_TYPE_LEFT_MERGEABLE 1
 DECL|macro|VI_TYPE_RIGHT_MERGEABLE
@@ -3476,9 +3261,7 @@ DECL|macro|COMP_KEYS
 mdefine_line|#define COMP_KEYS comp_keys
 DECL|macro|COMP_SHORT_KEYS
 mdefine_line|#define COMP_SHORT_KEYS comp_short_keys
-DECL|macro|keys_of_same_object
-mdefine_line|#define keys_of_same_object comp_short_keys
-multiline_comment|/*#define COMP_KEYS(p_s_key1, p_s_key2)&t;&t;comp_keys((unsigned long *)(p_s_key1), (unsigned long *)(p_s_key2))&n;#define COMP_SHORT_KEYS(p_s_key1, p_s_key2)&t;comp_short_keys((unsigned long *)(p_s_key1), (unsigned long *)(p_s_key2))*/
+multiline_comment|/*#define keys_of_same_object comp_short_keys*/
 multiline_comment|/* number of blocks pointed to by the indirect item */
 DECL|macro|I_UNFM_NUM
 mdefine_line|#define I_UNFM_NUM(p_s_ih)&t;( ih_item_len(p_s_ih) / UNFM_P_SIZE )
@@ -3619,6 +3402,12 @@ DECL|member|j_mount_id
 id|__u32
 id|j_mount_id
 suffix:semicolon
+DECL|member|jh_journal
+multiline_comment|/* 12 */
+r_struct
+id|journal_params
+id|jh_journal
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -3632,8 +3421,14 @@ suffix:semicolon
 multiline_comment|/* biggest tunable defines are right here */
 DECL|macro|JOURNAL_BLOCK_COUNT
 mdefine_line|#define JOURNAL_BLOCK_COUNT 8192 /* number of blocks in the journal */
-DECL|macro|JOURNAL_MAX_BATCH
-mdefine_line|#define JOURNAL_MAX_BATCH   900 /* max blocks to batch into one transaction, don&squot;t make this any bigger than 900 */
+DECL|macro|JOURNAL_TRANS_MAX_DEFAULT
+mdefine_line|#define JOURNAL_TRANS_MAX_DEFAULT 1024   /* biggest possible single transaction, don&squot;t change for now (8/3/99) */
+DECL|macro|JOURNAL_TRANS_MIN_DEFAULT
+mdefine_line|#define JOURNAL_TRANS_MIN_DEFAULT 256
+DECL|macro|JOURNAL_MAX_BATCH_DEFAULT
+mdefine_line|#define JOURNAL_MAX_BATCH_DEFAULT   900 /* max blocks to batch into one transaction, don&squot;t make this any bigger than 900 */
+DECL|macro|JOURNAL_MIN_RATIO
+mdefine_line|#define JOURNAL_MIN_RATIO 2
 DECL|macro|JOURNAL_MAX_COMMIT_AGE
 mdefine_line|#define JOURNAL_MAX_COMMIT_AGE 30 
 DECL|macro|JOURNAL_MAX_TRANS_AGE
@@ -3752,6 +3547,14 @@ c_func
 r_struct
 id|super_block
 op_star
+comma
+r_const
+r_char
+op_star
+id|j_dev_name
+comma
+r_int
+id|old_format
 )paren
 suffix:semicolon
 r_int
@@ -3865,26 +3668,6 @@ id|windex
 )paren
 suffix:semicolon
 r_int
-id|journal_lock_dobalance
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|p_s_sb
-)paren
-suffix:semicolon
-r_int
-id|journal_unlock_dobalance
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|p_s_sb
-)paren
-suffix:semicolon
-r_int
 id|journal_transaction_should_end
 c_func
 (paren
@@ -3934,23 +3717,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_int
-id|journal_join
-c_func
-(paren
-r_struct
-id|reiserfs_transaction_handle
-op_star
-comma
-r_struct
-id|super_block
-op_star
-id|p_s_sb
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 r_struct
 id|super_block
 op_star
@@ -3969,23 +3735,6 @@ r_struct
 id|super_block
 op_star
 id|p_s_sb
-)paren
-suffix:semicolon
-r_int
-id|remove_from_transaction
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|p_s_sb
-comma
-r_int
-r_int
-id|blocknr
-comma
-r_int
-id|already_cleaned
 )paren
 suffix:semicolon
 r_int
@@ -4223,6 +3972,35 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_void
+id|add_save_link
+(paren
+r_struct
+id|reiserfs_transaction_handle
+op_star
+id|th
+comma
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_int
+id|truncate
+)paren
+suffix:semicolon
+r_void
+id|remove_save_link
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_int
+id|truncate
+)paren
+suffix:semicolon
 multiline_comment|/* objectid.c */
 id|__u32
 id|reiserfs_get_unused_objectid
@@ -4479,10 +4257,10 @@ op_ne
 id|TYPE_DIRENTRY
 )paren
 r_return
-id|ITEM_VERSION_1
+id|KEY_FORMAT_3_5
 suffix:semicolon
 r_return
-id|ITEM_VERSION_2
+id|KEY_FORMAT_3_6
 suffix:semicolon
 )brace
 DECL|function|copy_key
@@ -4788,6 +4566,20 @@ id|p_s_un_bh
 )paren
 suffix:semicolon
 r_void
+id|reiserfs_delete_solid_item
+(paren
+r_struct
+id|reiserfs_transaction_handle
+op_star
+id|th
+comma
+r_struct
+id|key
+op_star
+id|key
+)paren
+suffix:semicolon
+r_void
 id|reiserfs_delete_object
 (paren
 r_struct
@@ -4822,11 +4614,6 @@ r_int
 id|update_timestamps
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|//void lock_inode_to_convert (struct inode * p_s_inode);
-singleline_comment|//void unlock_inode_after_convert (struct inode * p_s_inode);
-singleline_comment|//void increment_i_read_sync_counter (struct inode * p_s_inode);
-singleline_comment|//void decrement_i_read_sync_counter (struct inode * p_s_inode);
 DECL|macro|i_block_size
 mdefine_line|#define i_block_size(inode) ((inode)-&gt;i_sb-&gt;s_blocksize)
 DECL|macro|file_size
@@ -4835,7 +4622,6 @@ DECL|macro|tail_size
 mdefine_line|#define tail_size(inode) (file_size (inode) &amp; (i_block_size (inode) - 1))
 DECL|macro|tail_has_to_be_packed
 mdefine_line|#define tail_has_to_be_packed(inode) (!dont_have_tails ((inode)-&gt;i_sb) &amp;&amp;&bslash;&n;!STORE_TAIL_IN_UNFM(file_size (inode), tail_size(inode), i_block_size (inode)))
-multiline_comment|/*&n;int get_buffer_by_range (struct super_block * p_s_sb, struct key * p_s_range_begin, struct key * p_s_range_end, &n;&t;&t;&t; struct buffer_head ** pp_s_buf, unsigned long * p_n_objectid);&n;int get_buffers_from_range (struct super_block * p_s_sb, struct key * p_s_range_start, struct key * p_s_range_end, &n;                            struct buffer_head ** p_s_range_buffers,&n;&t;&t;&t;    int n_max_nr_buffers_to_return);&n;*/
 r_void
 id|padd_item
 (paren
@@ -4851,6 +4637,95 @@ id|length
 )paren
 suffix:semicolon
 multiline_comment|/* inode.c */
+r_void
+id|reiserfs_read_inode
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
+r_void
+id|reiserfs_read_inode2
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_void
+op_star
+id|p
+)paren
+suffix:semicolon
+r_void
+id|reiserfs_delete_inode
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
+r_void
+id|reiserfs_write_inode
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_int
+)paren
+suffix:semicolon
+r_struct
+id|dentry
+op_star
+id|reiserfs_fh_to_dentry
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+id|__u32
+op_star
+id|data
+comma
+r_int
+id|len
+comma
+r_int
+id|fhtype
+comma
+r_int
+id|parent
+)paren
+suffix:semicolon
+r_int
+id|reiserfs_dentry_to_fh
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+comma
+id|__u32
+op_star
+id|data
+comma
+r_int
+op_star
+id|lenp
+comma
+r_int
+id|need_parent
+)paren
+suffix:semicolon
 r_int
 id|reiserfs_prepare_write
 c_func
@@ -4933,27 +4808,6 @@ r_int
 id|entry_count
 )paren
 suffix:semicolon
-multiline_comment|/*void store_key (struct key * key);&n;void forget_key (struct key * key);*/
-r_int
-id|reiserfs_get_block
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-id|sector_t
-id|block
-comma
-r_struct
-id|buffer_head
-op_star
-id|bh_result
-comma
-r_int
-id|create
-)paren
-suffix:semicolon
 r_struct
 id|inode
 op_star
@@ -4969,121 +4823,6 @@ r_struct
 id|cpu_key
 op_star
 id|key
-)paren
-suffix:semicolon
-r_void
-id|reiserfs_read_inode
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-suffix:semicolon
-r_void
-id|reiserfs_read_inode2
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_void
-op_star
-id|p
-)paren
-suffix:semicolon
-r_void
-id|reiserfs_delete_inode
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|reiserfs_notify_change
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-id|dentry
-comma
-r_struct
-id|iattr
-op_star
-id|attr
-)paren
-suffix:semicolon
-r_void
-id|reiserfs_write_inode
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* nfsd support functions */
-r_struct
-id|dentry
-op_star
-id|reiserfs_fh_to_dentry
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
-comma
-id|__u32
-op_star
-id|fh
-comma
-r_int
-id|len
-comma
-r_int
-id|fhtype
-comma
-r_int
-id|parent
-)paren
-suffix:semicolon
-r_int
-id|reiserfs_dentry_to_fh
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-comma
-id|__u32
-op_star
-id|fh
-comma
-r_int
-op_star
-id|lenp
-comma
-r_int
-id|need_parent
-)paren
-suffix:semicolon
-multiline_comment|/* we don&squot;t mark inodes dirty, we just log them */
-r_void
-id|reiserfs_dirty_inode
-(paren
-r_struct
-id|inode
-op_star
-id|inode
 )paren
 suffix:semicolon
 r_struct
@@ -5155,20 +4894,6 @@ op_star
 id|inode
 )paren
 suffix:semicolon
-r_int
-id|reiserfs_inode_setattr
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-comma
-r_struct
-id|iattr
-op_star
-id|attr
-)paren
-suffix:semicolon
 multiline_comment|/* namei.c */
 r_inline
 r_void
@@ -5203,258 +4928,6 @@ r_struct
 id|reiserfs_dir_entry
 op_star
 id|de
-)paren
-suffix:semicolon
-r_struct
-id|dentry
-op_star
-id|reiserfs_lookup
-(paren
-r_struct
-id|inode
-op_star
-id|dir
-comma
-r_struct
-id|dentry
-op_star
-id|dentry
-)paren
-suffix:semicolon
-r_int
-id|reiserfs_create
-(paren
-r_struct
-id|inode
-op_star
-id|dir
-comma
-r_struct
-id|dentry
-op_star
-id|dentry
-comma
-r_int
-id|mode
-)paren
-suffix:semicolon
-r_int
-id|reiserfs_mknod
-(paren
-r_struct
-id|inode
-op_star
-id|dir_inode
-comma
-r_struct
-id|dentry
-op_star
-id|dentry
-comma
-r_int
-id|mode
-comma
-r_int
-id|rdev
-)paren
-suffix:semicolon
-r_int
-id|reiserfs_mkdir
-(paren
-r_struct
-id|inode
-op_star
-id|dir
-comma
-r_struct
-id|dentry
-op_star
-id|dentry
-comma
-r_int
-id|mode
-)paren
-suffix:semicolon
-r_int
-id|reiserfs_rmdir
-(paren
-r_struct
-id|inode
-op_star
-id|dir
-comma
-r_struct
-id|dentry
-op_star
-id|dentry
-)paren
-suffix:semicolon
-r_int
-id|reiserfs_unlink
-(paren
-r_struct
-id|inode
-op_star
-id|dir
-comma
-r_struct
-id|dentry
-op_star
-id|dentry
-)paren
-suffix:semicolon
-r_int
-id|reiserfs_symlink
-(paren
-r_struct
-id|inode
-op_star
-id|dir
-comma
-r_struct
-id|dentry
-op_star
-id|dentry
-comma
-r_const
-r_char
-op_star
-id|symname
-)paren
-suffix:semicolon
-r_int
-id|reiserfs_link
-(paren
-r_struct
-id|dentry
-op_star
-id|old_dentry
-comma
-r_struct
-id|inode
-op_star
-id|dir
-comma
-r_struct
-id|dentry
-op_star
-id|dentry
-)paren
-suffix:semicolon
-r_int
-id|reiserfs_rename
-(paren
-r_struct
-id|inode
-op_star
-id|old_dir
-comma
-r_struct
-id|dentry
-op_star
-id|old_dentry
-comma
-r_struct
-id|inode
-op_star
-id|new_dir
-comma
-r_struct
-id|dentry
-op_star
-id|new_dentry
-)paren
-suffix:semicolon
-multiline_comment|/* super.c */
-r_inline
-r_void
-id|reiserfs_mark_buffer_dirty
-(paren
-r_struct
-id|buffer_head
-op_star
-id|bh
-comma
-r_int
-id|flag
-)paren
-suffix:semicolon
-r_inline
-r_void
-id|reiserfs_mark_buffer_clean
-(paren
-r_struct
-id|buffer_head
-op_star
-id|bh
-)paren
-suffix:semicolon
-r_void
-id|reiserfs_write_super
-(paren
-r_struct
-id|super_block
-op_star
-id|s
-)paren
-suffix:semicolon
-r_void
-id|reiserfs_put_super
-(paren
-r_struct
-id|super_block
-op_star
-id|s
-)paren
-suffix:semicolon
-r_int
-id|reiserfs_remount
-(paren
-r_struct
-id|super_block
-op_star
-id|s
-comma
-r_int
-op_star
-id|flags
-comma
-r_char
-op_star
-id|data
-)paren
-suffix:semicolon
-multiline_comment|/*int read_super_block (struct super_block * s, int size);&n;int read_bitmaps (struct super_block * s);&n;int read_old_bitmaps (struct super_block * s);&n;int read_old_super_block (struct super_block * s, int size);*/
-r_struct
-id|super_block
-op_star
-id|reiserfs_read_super
-(paren
-r_struct
-id|super_block
-op_star
-id|s
-comma
-r_void
-op_star
-id|data
-comma
-r_int
-id|silent
-)paren
-suffix:semicolon
-r_int
-id|reiserfs_statfs
-(paren
-r_struct
-id|super_block
-op_star
-id|s
-comma
-r_struct
-id|statfs
-op_star
-id|buf
 )paren
 suffix:semicolon
 multiline_comment|/* procfs.c */
@@ -6087,20 +5560,6 @@ id|noreturn
 )paren
 suffix:semicolon
 multiline_comment|/* __attribute__( ( format ( printf, 2, 3 ) ) ) */
-r_void
-id|reiserfs_warning
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
-multiline_comment|/* __attribute__( ( format ( printf, 1, 2 ) ) ); */
 r_void
 id|reiserfs_debug
 (paren
@@ -6798,17 +6257,6 @@ r_int
 id|len
 )paren
 suffix:semicolon
-multiline_comment|/* version.c */
-r_const
-r_char
-op_star
-id|reiserfs_get_version_string
-c_func
-(paren
-r_void
-)paren
-id|CONSTF
-suffix:semicolon
 multiline_comment|/* the ext2 bit routines adjust for big or little endian as&n;** appropriate for the arch, so in our laziness we use them rather&n;** than using the bit routines they call more directly.  These&n;** routines must be used when changing on disk bitmaps.  */
 DECL|macro|reiserfs_test_and_set_le_bit
 mdefine_line|#define reiserfs_test_and_set_le_bit   ext2_set_bit
@@ -6818,359 +6266,9 @@ DECL|macro|reiserfs_test_le_bit
 mdefine_line|#define reiserfs_test_le_bit           ext2_test_bit
 DECL|macro|reiserfs_find_next_zero_le_bit
 mdefine_line|#define reiserfs_find_next_zero_le_bit ext2_find_next_zero_bit
-singleline_comment|//
-singleline_comment|// this was totally copied from from linux&squot;s
-singleline_comment|// find_first_zero_bit and changed a bit
-singleline_comment|//
-macro_line|#ifdef __i386__
-r_static
-id|__inline__
-r_int
-DECL|function|find_first_nonzero_bit
-id|find_first_nonzero_bit
-c_func
-(paren
-r_const
-r_void
-op_star
-id|addr
-comma
-r_int
-id|size
-)paren
-(brace
-r_int
-id|res
-suffix:semicolon
-r_int
-id|__d0
-suffix:semicolon
-r_void
-op_star
-id|__d1
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|size
-)paren
-(brace
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;cld&bslash;n&bslash;t&quot;
-l_string|&quot;xorl %%eax,%%eax&bslash;n&bslash;t&quot;
-l_string|&quot;repe; scasl&bslash;n&bslash;t&quot;
-l_string|&quot;je 1f&bslash;n&bslash;t&quot;
-l_string|&quot;movl -4(%%edi),%%eax&bslash;n&bslash;t&quot;
-l_string|&quot;subl $4, %%edi&bslash;n&bslash;t&quot;
-l_string|&quot;bsfl %%eax,%%eax&bslash;n&bslash;t&quot;
-l_string|&quot;1:&bslash;tsubl %%edx,%%edi&bslash;n&bslash;t&quot;
-l_string|&quot;shll $3,%%edi&bslash;n&bslash;t&quot;
-l_string|&quot;addl %%edi,%%eax&quot;
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-id|res
-)paren
-comma
-l_string|&quot;=c&quot;
-(paren
-id|__d0
-)paren
-comma
-l_string|&quot;=D&quot;
-(paren
-id|__d1
-)paren
-suffix:colon
-l_string|&quot;1&quot;
-(paren
-(paren
-id|size
-op_plus
-l_int|31
-)paren
-op_rshift
-l_int|5
-)paren
-comma
-l_string|&quot;d&quot;
-(paren
-id|addr
-)paren
-comma
-l_string|&quot;2&quot;
-(paren
-id|addr
-)paren
-)paren
-suffix:semicolon
-r_return
-(paren
-id|res
-)paren
-suffix:semicolon
-)brace
-macro_line|#else /* __i386__ */
-DECL|function|find_next_nonzero_bit
-r_static
-id|__inline__
-r_int
-id|find_next_nonzero_bit
-c_func
-(paren
-r_const
-r_void
-op_star
-id|addr
-comma
-r_int
-id|size
-comma
-r_int
-id|offset
-)paren
-(brace
-r_int
-r_int
-op_star
-id|p
-op_assign
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-id|addr
-)paren
-op_plus
-(paren
-id|offset
-op_rshift
-l_int|5
-)paren
-suffix:semicolon
-r_int
-r_int
-id|result
-op_assign
-id|offset
-op_amp
-op_complement
-l_int|31UL
-suffix:semicolon
-r_int
-r_int
-id|tmp
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|offset
-op_ge
-id|size
-)paren
-r_return
-id|size
-suffix:semicolon
-id|size
-op_sub_assign
-id|result
-suffix:semicolon
-id|offset
-op_and_assign
-l_int|31UL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|offset
-)paren
-(brace
-id|tmp
-op_assign
-op_star
-id|p
-op_increment
-suffix:semicolon
-multiline_comment|/* set to zero first offset bits */
-id|tmp
-op_and_assign
-op_complement
-(paren
-op_complement
-l_int|0UL
-op_rshift
-(paren
-l_int|32
-op_minus
-id|offset
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|size
-OL
-l_int|32
-)paren
-r_goto
-id|found_first
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tmp
-op_ne
-l_int|0U
-)paren
-r_goto
-id|found_middle
-suffix:semicolon
-id|size
-op_sub_assign
-l_int|32
-suffix:semicolon
-id|result
-op_add_assign
-l_int|32
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|size
-op_ge
-l_int|32
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|tmp
-op_assign
-op_star
-id|p
-op_increment
-)paren
-op_ne
-l_int|0U
-)paren
-r_goto
-id|found_middle
-suffix:semicolon
-id|result
-op_add_assign
-l_int|32
-suffix:semicolon
-id|size
-op_sub_assign
-l_int|32
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|size
-)paren
-r_return
-id|result
-suffix:semicolon
-id|tmp
-op_assign
-op_star
-id|p
-suffix:semicolon
-id|found_first
-suffix:colon
-id|found_middle
-suffix:colon
-r_return
-id|result
-op_plus
-id|ffs
-c_func
-(paren
-id|tmp
-)paren
-suffix:semicolon
-)brace
-DECL|macro|find_first_nonzero_bit
-mdefine_line|#define find_first_nonzero_bit(addr,size) find_next_nonzero_bit((addr), (size), 0)
-macro_line|#endif /* 0 */
 multiline_comment|/* sometimes reiserfs_truncate may require to allocate few new blocks&n;   to perform indirect2direct conversion. People probably used to&n;   think, that truncate should work without problems on a filesystem&n;   without free disk space. They may complain that they can not&n;   truncate due to lack of free disk space. This spare space allows us&n;   to not worry about it. 500 is probably too much, but it should be&n;   absolutely safe */
 DECL|macro|SPARE_SPACE
 mdefine_line|#define SPARE_SPACE 500
-DECL|function|reiserfs_get_journal_block
-r_static
-r_inline
-r_int
-r_int
-id|reiserfs_get_journal_block
-c_func
-(paren
-r_const
-r_struct
-id|super_block
-op_star
-id|s
-)paren
-(brace
-r_return
-id|le32_to_cpu
-c_func
-(paren
-id|SB_DISK_SUPER_BLOCK
-c_func
-(paren
-id|s
-)paren
-op_member_access_from_pointer
-id|s_journal_block
-)paren
-suffix:semicolon
-)brace
-DECL|function|reiserfs_get_journal_orig_size
-r_static
-r_inline
-r_int
-r_int
-id|reiserfs_get_journal_orig_size
-c_func
-(paren
-r_const
-r_struct
-id|super_block
-op_star
-id|s
-)paren
-(brace
-r_return
-id|le32_to_cpu
-c_func
-(paren
-id|SB_DISK_SUPER_BLOCK
-c_func
-(paren
-id|s
-)paren
-op_member_access_from_pointer
-id|s_orig_journal_size
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* prototypes from ioctl.c */
 r_int
 id|reiserfs_ioctl
