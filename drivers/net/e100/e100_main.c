@@ -9876,7 +9876,7 @@ l_int|20
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Mask off our interrupt line -- its unmasked after reset */
+multiline_comment|/* Mask off our interrupt line -- it is unmasked after reset */
 id|e100_disable_clear_intr
 c_func
 (paren
