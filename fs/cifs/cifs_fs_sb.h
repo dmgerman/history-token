@@ -9,7 +9,9 @@ mdefine_line|#define CIFS_MOUNT_SET_UID      2 /* set current-&gt;euid in create
 DECL|macro|CIFS_MOUNT_SERVER_INUM
 mdefine_line|#define CIFS_MOUNT_SERVER_INUM  4 /* inode numbers from uniqueid from server */
 DECL|macro|CIFS_MOUNT_DIRECT_IO
-mdefine_line|#define CIFS_MOUNT_DIRECT_IO          8 /* do not write nor read through page cache */
+mdefine_line|#define CIFS_MOUNT_DIRECT_IO    8 /* do not write nor read through page cache */
+DECL|macro|CIFS_MOUNT_NO_XATTR
+mdefine_line|#define CIFS_MOUNT_NO_XATTR  0x10 /* if set - disable xattr support */
 DECL|struct|cifs_sb_info
 r_struct
 id|cifs_sb_info
