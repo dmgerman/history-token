@@ -111,6 +111,12 @@ id|waiter.task
 op_assign
 id|tsk
 suffix:semicolon
+id|get_task_struct
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
 id|list_add_tail
 c_func
 (paren
@@ -131,7 +137,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* wait to be given the lock */
+multiline_comment|/* wait to be given the semaphore */
 id|set_task_state
 c_func
 (paren
@@ -236,6 +242,12 @@ id|waiter.task
 op_assign
 id|tsk
 suffix:semicolon
+id|get_task_struct
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
 id|list_add_tail
 c_func
 (paren
@@ -264,7 +276,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* wait to be given the lock */
+multiline_comment|/* wait to be given the semaphore */
 id|ret
 op_assign
 l_int|0
@@ -380,6 +392,20 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+op_minus
+id|EINTR
+)paren
+id|put_task_struct
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
@@ -403,6 +429,11 @@ op_star
 id|sem
 )paren
 (brace
+r_struct
+id|task_struct
+op_star
+id|tsk
+suffix:semicolon
 r_struct
 id|sem_waiter
 op_star
@@ -430,6 +461,7 @@ comma
 id|list
 )paren
 suffix:semicolon
+multiline_comment|/* We must be careful not to touch &squot;waiter&squot; after we set -&gt;task = NULL.&n;&t; * It is an allocated on the waiter&squot;s stack and may become invalid at&n;&t; * any time after that point (due to a wakeup from another source).&n;&t; */
 id|list_del_init
 c_func
 (paren
@@ -437,10 +469,29 @@ op_amp
 id|waiter-&gt;list
 )paren
 suffix:semicolon
+id|tsk
+op_assign
+id|waiter-&gt;task
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|waiter-&gt;task
+op_assign
+l_int|NULL
+suffix:semicolon
 id|wake_up_process
 c_func
 (paren
-id|waiter-&gt;task
+id|tsk
+)paren
+suffix:semicolon
+id|put_task_struct
+c_func
+(paren
+id|tsk
 )paren
 suffix:semicolon
 id|semtrace
