@@ -3,13 +3,8 @@ macro_line|#ifndef _WANPIPE_SOCK_DRIVER_COMMON_H
 DECL|macro|_WANPIPE_SOCK_DRIVER_COMMON_H
 mdefine_line|#define _WANPIPE_SOCK_DRIVER_COMMON_H
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
 DECL|macro|netdevice_t
 mdefine_line|#define netdevice_t struct net_device
-macro_line|#else
-DECL|macro|netdevice_t
-mdefine_line|#define netdevice_t struct device
-macro_line|#endif
 r_typedef
 r_struct
 (brace

@@ -275,41 +275,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Remove a PCI device from the device trees, then&n; * free it up.  Note that this must run before&n; * the device&squot;s resources are registered because we&n; * do not handle unregistering them here.&n; */
-DECL|function|pci_device_delete
-r_static
-r_void
-id|pci_device_delete
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-(brace
-id|list_del
-c_func
-(paren
-op_amp
-id|pdev-&gt;global_list
-)paren
-suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|pdev-&gt;bus_list
-)paren
-suffix:semicolon
-multiline_comment|/* Ok, all references are gone, free it up. */
-id|kfree
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Older versions of OBP on PCI systems encode 64-bit MEM&n; * space assignments incorrectly, this fixes them up.  We also&n; * take the opportunity here to hide other kinds of bogus&n; * assignments.&n; */
 DECL|function|fixup_obp_assignments
 r_static
@@ -565,7 +530,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* If it is not in the OBP device tree then&n;&t;&t; * there must be a damn good reason for it.&n;&t;&t; *&n;&t;&t; * So what we do is delete the device from the&n;&t;&t; * PCI device tree completely.  This scenerio&n;&t;&t; * is seen, for example, on CP1500 for the&n;&t;&t; * second EBUS/HappyMeal pair if the external&n;&t;&t; * connector for it is not present.&n;&t;&t; */
-id|pci_device_delete
+id|pci_remove_bus_device
 c_func
 (paren
 id|pdev

@@ -9798,6 +9798,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; *&t;Register console.&n; */
 DECL|function|sgi_serial_console_init
+r_static
 r_void
 id|__init
 id|sgi_serial_console_init
@@ -9814,6 +9815,13 @@ id|sgi_console_driver
 )paren
 suffix:semicolon
 )brace
+DECL|variable|sgi_serial_console_init
+id|console_initcall
+c_func
+(paren
+id|sgi_serial_console_init
+)paren
+suffix:semicolon
 DECL|variable|rs_init
 id|__initcall
 c_func

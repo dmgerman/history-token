@@ -3375,6 +3375,11 @@ l_string|&quot;Local APIC not detected.&quot;
 l_string|&quot; Using dummy APIC emulation.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|map_cpu_to_logical_apicid
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace

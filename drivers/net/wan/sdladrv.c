@@ -22,38 +22,7 @@ DECL|macro|_OUTB
 mdefine_line|#define _OUTB(port, byte)&t;(outb((byte),(port)))
 DECL|macro|SYSTEM_TICK
 mdefine_line|#define&t;SYSTEM_TICK&t;&t;jiffies
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4) 
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#else
-macro_line|#include &lt;linux/bios32.h&gt;/* BIOS32, PCI BIOS functions and definitions */
-DECL|macro|ioremap
-mdefine_line|#define ioremap vremap
-DECL|macro|iounmap
-mdefine_line|#define iounmap vfree
-r_extern
-r_void
-op_star
-id|vremap
-(paren
-r_int
-r_int
-id|offset
-comma
-r_int
-r_int
-id|size
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|vfree
-(paren
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#elif&t;defined(_SCO_UNIX_)&t;/****** SCO Unix ****************************/
 macro_line|#if&t;!defined(INKERNEL)
 macro_line|#error&t;This code MUST be compiled in kernel mode!
@@ -1408,7 +1377,6 @@ r_void
 macro_line|#endif
 multiline_comment|/******* Kernel APIs ********************************************************/
 multiline_comment|/*============================================================================&n; * Set up adapter.&n; * o detect adapter type&n; * o verify hardware configuration options&n; * o check for hardware conflicts&n; * o set up adapter shared memory&n; * o test adapter memory&n; * o load firmware&n; * Return:&t;0&t;ok.&n; *&t;&t;&lt; 0&t;error&n; */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4) 
 DECL|variable|sdla_setup
 id|EXPORT_SYMBOL
 c_func
@@ -1416,7 +1384,6 @@ c_func
 id|sdla_setup
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|sdla_setup
 r_int
 id|sdla_setup
@@ -1995,7 +1962,6 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*============================================================================&n; * Shut down SDLA: disable shared memory access and interrupts, stop CPU, etc.&n; */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|variable|sdla_down
 id|EXPORT_SYMBOL
 c_func
@@ -2003,7 +1969,6 @@ c_func
 id|sdla_down
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|sdla_down
 r_int
 id|sdla_down
@@ -2202,7 +2167,6 @@ id|hw-&gt;S514_cpu_no
 l_int|0
 )braket
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 multiline_comment|/* disable the PCI IRQ and disable memory access */
 id|pci_read_config_dword
 c_func
@@ -2287,101 +2251,6 @@ comma
 id|PCI_CPU_B_MEM_DISABLE
 )paren
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* disable the PCI IRQ and disable memory access */
-id|pcibios_read_config_dword
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-id|PCI_INT_CONFIG
-comma
-op_amp
-id|int_config
-)paren
-suffix:semicolon
-id|int_config
-op_and_assign
-(paren
-id|CPU_no
-op_eq
-id|S514_CPU_A
-)paren
-ques
-c_cond
-op_complement
-id|PCI_DISABLE_IRQ_CPU_A
-suffix:colon
-op_complement
-id|PCI_DISABLE_IRQ_CPU_B
-suffix:semicolon
-id|pcibios_write_config_dword
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-id|PCI_INT_CONFIG
-comma
-id|int_config
-)paren
-suffix:semicolon
-id|read_S514_int_stat
-c_func
-(paren
-id|hw
-comma
-op_amp
-id|int_status
-)paren
-suffix:semicolon
-id|S514_intack
-c_func
-(paren
-id|hw
-comma
-id|int_status
-)paren
-suffix:semicolon
-singleline_comment|// disable PCI memory access
-r_if
-c_cond
-(paren
-id|CPU_no
-op_eq
-id|S514_CPU_A
-)paren
-(brace
-id|pcibios_write_config_dword
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-id|PCI_MAP0_DWORD
-comma
-id|PCI_CPU_A_MEM_DISABLE
-)paren
-suffix:semicolon
-)brace
-r_else
-id|pcibios_write_config_dword
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-id|PCI_MAP1_DWORD
-comma
-id|PCI_CPU_B_MEM_DISABLE
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* free up the allocated virtual memory */
 id|iounmap
 c_func
@@ -2417,7 +2286,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*============================================================================&n; * Map shared memory window into SDLA address space.&n; */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|variable|sdla_mapmem
 id|EXPORT_SYMBOL
 c_func
@@ -2425,7 +2293,6 @@ c_func
 id|sdla_mapmem
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|sdla_mapmem
 r_int
 id|sdla_mapmem
@@ -2685,7 +2552,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*============================================================================&n; * Enable interrupt generation.&n; */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|variable|sdla_inten
 id|EXPORT_SYMBOL
 c_func
@@ -2693,7 +2559,6 @@ c_func
 id|sdla_inten
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|sdla_inten
 r_int
 id|sdla_inten
@@ -2925,7 +2790,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*============================================================================&n; * Disable interrupt generation.&n; */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|variable|sdla_intde
 id|EXPORT_SYMBOL
 c_func
@@ -2933,7 +2797,6 @@ c_func
 id|sdla_intde
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|sdla_intde
 r_int
 id|sdla_intde
@@ -3151,7 +3014,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*============================================================================&n; * Acknowledge SDLA hardware interrupt.&n; */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|variable|sdla_intack
 id|EXPORT_SYMBOL
 c_func
@@ -3159,7 +3021,6 @@ c_func
 id|sdla_intack
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|sdla_intack
 r_int
 id|sdla_intack
@@ -3322,7 +3183,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*============================================================================&n; * Acknowledge S514 hardware interrupt.&n; */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|variable|S514_intack
 id|EXPORT_SYMBOL
 c_func
@@ -3330,7 +3190,6 @@ c_func
 id|S514_intack
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|S514_intack
 r_void
 id|S514_intack
@@ -3343,7 +3202,6 @@ id|u32
 id|int_status
 )paren
 (brace
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|pci_write_config_dword
 c_func
 (paren
@@ -3354,23 +3212,8 @@ comma
 id|int_status
 )paren
 suffix:semicolon
-macro_line|#else
-id|pcibios_write_config_dword
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-id|PCI_INT_STATUS
-comma
-id|int_status
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*============================================================================&n; * Read the S514 hardware interrupt status.&n; */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|variable|read_S514_int_stat
 id|EXPORT_SYMBOL
 c_func
@@ -3378,7 +3221,6 @@ c_func
 id|read_S514_int_stat
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|read_S514_int_stat
 r_void
 id|read_S514_int_stat
@@ -3392,7 +3234,6 @@ op_star
 id|int_status
 )paren
 (brace
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|pci_read_config_dword
 c_func
 (paren
@@ -3403,23 +3244,8 @@ comma
 id|int_status
 )paren
 suffix:semicolon
-macro_line|#else
-id|pcibios_read_config_dword
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-id|PCI_INT_STATUS
-comma
-id|int_status
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*============================================================================&n; * Generate an interrupt to adapter&squot;s CPU.&n; */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|variable|sdla_intr
 id|EXPORT_SYMBOL
 c_func
@@ -3427,7 +3253,6 @@ c_func
 id|sdla_intr
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|sdla_intr
 r_int
 id|sdla_intr
@@ -3578,7 +3403,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*============================================================================&n; * Execute Adapter Command.&n; * o Set exec flag.&n; * o Busy-wait until flag is reset.&n; * o Return number of loops made, or 0 if command timed out.&n; */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|variable|sdla_exec
 id|EXPORT_SYMBOL
 c_func
@@ -3586,7 +3410,6 @@ c_func
 id|sdla_exec
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|sdla_exec
 r_int
 id|sdla_exec
@@ -3699,7 +3522,6 @@ id|nloops
 suffix:semicolon
 )brace
 multiline_comment|/*============================================================================&n; * Read absolute adapter memory.&n; * Transfer data from adapter&squot;s memory to data buffer.&n; *&n; * Note:&n; * Care should be taken when crossing dual-port memory window boundary.&n; * This function is not atomic, so caller must disable interrupt if&n; * interrupt routines are accessing adapter shared memory.&n; */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|variable|sdla_peek
 id|EXPORT_SYMBOL
 c_func
@@ -3707,7 +3529,6 @@ c_func
 id|sdla_peek
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|sdla_peek
 r_int
 id|sdla_peek
@@ -4015,7 +3836,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*============================================================================&n; * Write Absolute Adapter Memory.&n; * Transfer data from data buffer to adapter&squot;s memory.&n; *&n; * Note:&n; * Care should be taken when crossing dual-port memory window boundary.&n; * This function is not atomic, so caller must disable interrupt if&n; * interrupt routines are accessing adapter shared memory.&n; */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|variable|sdla_poke
 id|EXPORT_SYMBOL
 c_func
@@ -4023,7 +3843,6 @@ c_func
 id|sdla_poke
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|sdla_poke
 r_int
 id|sdla_poke
@@ -7843,19 +7662,12 @@ suffix:semicolon
 id|u32
 id|ut_u32
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_struct
 id|pci_dev
 op_star
 id|pci_dev
 suffix:semicolon
-macro_line|#else
-id|u8
-id|ut_u8
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_if
 c_cond
 (paren
@@ -7865,17 +7677,6 @@ c_func
 (paren
 )paren
 )paren
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pcibios_present
-c_func
-(paren
-)paren
-)paren
-macro_line|#endif
 (brace
 id|printk
 c_func
@@ -8057,7 +7858,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#if defined(LINUX_2_4)
 id|pci_dev
 op_assign
 id|hw-&gt;pci_dev
@@ -8090,63 +7890,6 @@ dot
 id|start
 )paren
 suffix:semicolon
-macro_line|#elif defined (LINUX_2_1)
-id|pci_dev
-op_assign
-id|hw-&gt;pci_dev
-suffix:semicolon
-multiline_comment|/* read the physical memory base address */
-id|S514_mem_base_addr
-op_assign
-(paren
-id|CPU_no
-op_eq
-id|S514_CPU_A
-)paren
-ques
-c_cond
-(paren
-id|pci_dev-&gt;base_address
-(braket
-l_int|1
-)braket
-op_amp
-id|PCI_BASE_ADDRESS_MEM_MASK
-)paren
-suffix:colon
-(paren
-id|pci_dev-&gt;base_address
-(braket
-l_int|2
-)braket
-op_amp
-id|PCI_BASE_ADDRESS_MEM_MASK
-)paren
-suffix:semicolon
-macro_line|#else
-id|pcibios_read_config_dword
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-(paren
-id|CPU_no
-op_eq
-id|S514_CPU_A
-)paren
-ques
-c_cond
-id|PCI_MEM_BASE0_DWORD
-suffix:colon
-id|PCI_MEM_BASE1_DWORD
-comma
-op_amp
-id|S514_mem_base_addr
-)paren
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -8198,7 +7941,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* enable the PCI memory */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|pci_read_config_dword
 c_func
 (paren
@@ -8242,57 +7984,7 @@ id|PCI_MEMORY_ENABLE
 )paren
 )paren
 suffix:semicolon
-macro_line|#else
-id|pcibios_read_config_dword
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-(paren
-id|CPU_no
-op_eq
-id|S514_CPU_A
-)paren
-ques
-c_cond
-id|PCI_MAP0_DWORD
-suffix:colon
-id|PCI_MAP1_DWORD
-comma
-op_amp
-id|ut_u32
-)paren
-suffix:semicolon
-id|pcibios_write_config_dword
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-(paren
-id|CPU_no
-op_eq
-id|S514_CPU_A
-)paren
-ques
-c_cond
-id|PCI_MAP0_DWORD
-suffix:colon
-id|PCI_MAP1_DWORD
-comma
-(paren
-id|ut_u32
-op_or
-id|PCI_MEMORY_ENABLE
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* check the IRQ allocated and enable IRQ usage */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_if
 c_cond
 (paren
@@ -8364,127 +8056,6 @@ comma
 id|ut_u32
 )paren
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* the INTPIN must not be 0 - if it is, then the S514 adapter is not */
-multiline_comment|/* configured for IRQ usage */
-id|pcibios_read_config_byte
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-id|PCI_INT_PIN_BYTE
-comma
-op_amp
-id|ut_u8
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ut_u8
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: invalid setting for INTPIN on S514 card&bslash;n&quot;
-comma
-id|modname
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Please contact your Sangoma representative&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-id|pcibios_read_config_byte
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-id|PCI_INT_LINE_BYTE
-comma
-(paren
-r_int
-r_char
-op_star
-)paren
-op_amp
-id|hw-&gt;irq
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hw-&gt;irq
-op_eq
-id|PCI_IRQ_NOT_ALLOCATED
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: IRQ not allocated to S514 adapter&bslash;n&quot;
-comma
-id|modname
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-id|pcibios_read_config_dword
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-id|PCI_INT_CONFIG
-comma
-op_amp
-id|ut_u32
-)paren
-suffix:semicolon
-id|ut_u32
-op_or_assign
-(paren
-id|CPU_no
-op_eq
-id|S514_CPU_A
-)paren
-ques
-c_cond
-id|PCI_ENABLE_IRQ_CPU_A
-suffix:colon
-id|PCI_ENABLE_IRQ_CPU_B
-suffix:semicolon
-id|pcibios_write_config_dword
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-id|PCI_INT_CONFIG
-comma
-id|ut_u32
-)paren
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -8613,7 +8184,6 @@ suffix:semicolon
 id|u16
 id|PCI_subsys_vendor
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_struct
 id|pci_dev
 op_star
@@ -8621,16 +8191,10 @@ id|pci_dev
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#else
-r_int
-id|pci_index
-suffix:semicolon
-macro_line|#endif
 id|slot_no
 op_assign
 id|hw-&gt;S514_slot_no
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_while
 c_loop
 (paren
@@ -8759,150 +8323,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#else
-singleline_comment|//LINUX VERSION 2.0.X 
-r_for
-c_loop
-(paren
-id|pci_index
-op_assign
-l_int|0
-suffix:semicolon
-id|pci_index
-OL
-id|MAX_S514_CARDS
-suffix:semicolon
-id|pci_index
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pcibios_find_device
-c_func
-(paren
-id|V3_VENDOR_ID
-comma
-id|V3_DEVICE_ID
-comma
-id|pci_index
-comma
-op_amp
-id|hw-&gt;pci_bus
-comma
-op_amp
-id|hw-&gt;pci_dev_func
-)paren
-op_ne
-id|PCIBIOS_SUCCESSFUL
-)paren
-(brace
-r_break
-suffix:semicolon
-)brace
-id|pcibios_read_config_word
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-id|PCI_SUBSYS_VENDOR_WORD
-comma
-op_amp
-id|PCI_subsys_vendor
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|PCI_subsys_vendor
-op_ne
-id|SANGOMA_SUBSYS_VENDOR
-)paren
-r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|find_first_S514_card
-)paren
-r_return
-l_int|1
-suffix:semicolon
-id|number_S514_cards
-op_increment
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: S514 card found, bus #%d, slot #%d&bslash;n&quot;
-comma
-id|modname
-comma
-id|hw-&gt;pci_bus
-comma
-(paren
-(paren
-id|hw-&gt;pci_dev_func
-op_rshift
-l_int|3
-)paren
-op_amp
-id|PCI_DEV_SLOT_MASK
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hw-&gt;auto_pci_cfg
-)paren
-(brace
-id|hw-&gt;S514_slot_no
-op_assign
-(paren
-(paren
-id|hw-&gt;pci_dev_func
-op_rshift
-l_int|3
-)paren
-op_amp
-id|PCI_DEV_SLOT_MASK
-)paren
-id|slot_no
-op_assign
-id|hw-&gt;S514_slot_no
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-(paren
-(paren
-id|hw-&gt;pci_dev_func
-op_rshift
-l_int|3
-)paren
-op_amp
-id|PCI_DEV_SLOT_MASK
-)paren
-op_eq
-id|slot_no
-)paren
-(brace
-id|S514_found_in_slot
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 multiline_comment|/* if no S514 adapter has been found, then exit */
 r_if
 c_cond
@@ -9657,7 +9077,6 @@ suffix:semicolon
 id|u16
 id|PCI_card_type
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_struct
 id|pci_dev
 op_star
@@ -9672,19 +9091,10 @@ id|bus
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#else
-r_int
-id|pci_index
-suffix:semicolon
-id|u8
-id|irq
-suffix:semicolon
-macro_line|#endif
 id|slot_no
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_while
 c_loop
 (paren
@@ -9806,171 +9216,10 @@ id|pci_dev-&gt;irq
 suffix:semicolon
 )brace
 )brace
-macro_line|#else
-r_for
-c_loop
-(paren
-id|pci_index
-op_assign
-l_int|0
-suffix:semicolon
-id|pci_index
-OL
-id|MAX_S514_CARDS
-suffix:semicolon
-id|pci_index
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pcibios_find_device
-c_func
-(paren
-id|V3_VENDOR_ID
-comma
-id|V3_DEVICE_ID
-comma
-id|pci_index
-comma
-op_amp
-id|hw-&gt;pci_bus
-comma
-op_amp
-id|hw-&gt;pci_dev_func
-)paren
-op_ne
-id|PCIBIOS_SUCCESSFUL
-)paren
-(brace
-r_break
-suffix:semicolon
-)brace
-id|pcibios_read_config_word
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-id|PCI_SUBSYS_VENDOR_WORD
-comma
-op_amp
-id|PCI_subsys_vendor
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|PCI_subsys_vendor
-op_ne
-id|SANGOMA_SUBSYS_VENDOR
-)paren
-(brace
-r_continue
-suffix:semicolon
-)brace
-id|pcibios_read_config_word
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-id|PCI_CARD_TYPE
-comma
-op_amp
-id|PCI_card_type
-)paren
-suffix:semicolon
-id|pcibios_read_config_byte
-c_func
-(paren
-id|hw-&gt;pci_bus
-comma
-id|hw-&gt;pci_dev_func
-comma
-id|PCI_INT_LINE_BYTE
-comma
-op_amp
-id|irq
-)paren
-suffix:semicolon
-multiline_comment|/* A dual cpu card can support up to 4 physical connections,&n;&t;&t; * where a single cpu card can support up to 2 physical&n;&t;&t; * connections.  The FT1 card can only support a single &n;&t;&t; * connection, however we cannot distinguish between a Single&n;&t;&t; * CPU card and an FT1 card. */
-r_if
-c_cond
-(paren
-id|PCI_card_type
-op_eq
-id|S514_DUAL_CPU
-)paren
-(brace
-id|number_S514_cards
-op_add_assign
-l_int|4
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: S514-PCI card found, cpu(s) 2, bus #%d, slot #%d, irq #%d&bslash;n&quot;
-comma
-id|modname
-comma
-id|hw-&gt;pci_bus
-comma
-(paren
-(paren
-id|hw-&gt;pci_dev_func
-op_rshift
-l_int|3
-)paren
-op_amp
-id|PCI_DEV_SLOT_MASK
-)paren
-comma
-id|irq
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: S514-PCI card found, cpu(s) 1, bus #%d, slot #%d, irq #%d&bslash;n&quot;
-comma
-id|modname
-comma
-id|hw-&gt;pci_bus
-comma
-(paren
-(paren
-id|hw-&gt;pci_dev_func
-op_rshift
-l_int|3
-)paren
-op_amp
-id|PCI_DEV_SLOT_MASK
-)paren
-comma
-id|irq
-)paren
-suffix:semicolon
-id|number_S514_cards
-op_add_assign
-l_int|2
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 r_return
 id|number_S514_cards
 suffix:semicolon
 )brace
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|variable|wanpipe_hw_probe
 id|EXPORT_SYMBOL
 c_func
@@ -9978,7 +9227,6 @@ c_func
 id|wanpipe_hw_probe
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|wanpipe_hw_probe
 r_int
 id|wanpipe_hw_probe

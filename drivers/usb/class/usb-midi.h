@@ -45,6 +45,11 @@ DECL|macro|USB_VENDOR_ID_STEINBERG
 mdefine_line|#define USB_VENDOR_ID_STEINBERG&t;&t;0x0763
 DECL|macro|USBMIDI_STEINBERG_USB2MIDI
 mdefine_line|#define USBMIDI_STEINBERG_USB2MIDI&t;0x1001
+multiline_comment|/* Mark of the Unicorn MIDI Devices */
+DECL|macro|USB_VENDOR_ID_MOTU
+mdefine_line|#define USB_VENDOR_ID_MOTU&t;&t;0x07fd
+DECL|macro|USBMIDI_MOTU_FASTLANE
+mdefine_line|#define USBMIDI_MOTU_FASTLANE&t;&t;0x0001
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* Supported devices */
 DECL|struct|usb_midi_endpoint
@@ -278,7 +283,7 @@ comma
 (brace
 l_int|0x81
 comma
-l_int|15
+l_int|0x3f
 )brace
 comma
 (brace
@@ -290,12 +295,58 @@ l_int|1
 )brace
 )brace
 comma
-multiline_comment|/** cables 0,1,2, and 3 **/
 (brace
 (brace
 l_int|0x01
 comma
-l_int|15
+l_int|0x3f
+)brace
+comma
+(brace
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+)brace
+)brace
+comma
+)brace
+comma
+(brace
+multiline_comment|/* Roland SC8820 */
+l_string|&quot;Roland SC8820&quot;
+comma
+id|USB_VENDOR_ID_ROLAND
+comma
+id|USBMIDI_ROLAND_SC8820
+comma
+l_int|2
+comma
+op_minus
+l_int|1
+comma
+(brace
+(brace
+l_int|0x81
+comma
+l_int|0x13
+)brace
+comma
+(brace
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+)brace
+)brace
+comma
+(brace
+(brace
+l_int|0x01
+comma
+l_int|0x13
 )brace
 comma
 (brace
@@ -449,6 +500,52 @@ l_int|1
 )brace
 comma
 )brace
+comma
+(brace
+multiline_comment|/* MOTU Fastlane USB */
+l_string|&quot;MOTU Fastlane USB&quot;
+comma
+id|USB_VENDOR_ID_MOTU
+comma
+id|USBMIDI_MOTU_FASTLANE
+comma
+l_int|1
+comma
+l_int|0
+comma
+(brace
+(brace
+l_int|0x82
+comma
+l_int|3
+)brace
+comma
+(brace
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+)brace
+)brace
+comma
+(brace
+(brace
+l_int|0x02
+comma
+l_int|3
+)brace
+comma
+(brace
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+)brace
+)brace
+comma
+)brace
 )brace
 suffix:semicolon
 DECL|macro|VENDOR_SPECIFIC_USB_MIDI_DEVICES
@@ -538,9 +635,29 @@ comma
 id|USB_DEVICE
 c_func
 (paren
+id|USB_VENDOR_ID_ROLAND
+comma
+id|USBMIDI_ROLAND_SC8820
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
 id|USB_VENDOR_ID_YAMAHA
 comma
 id|USBMIDI_YAMAHA_MU1000
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|USB_VENDOR_ID_MOTU
+comma
+id|USBMIDI_MOTU_FASTLANE
 )paren
 )brace
 comma

@@ -2136,12 +2136,10 @@ suffix:semicolon
 id|priv-&gt;stat.rx_packets
 op_increment
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020119&t;/* byte counters for &gt;= 2.1.25 */
 id|priv-&gt;stat.rx_bytes
 op_add_assign
 id|descr.Len
 suffix:semicolon
-macro_line|#endif
 id|netif_rx
 c_func
 (paren
@@ -2349,11 +2347,9 @@ l_int|0
 id|priv-&gt;stat.tx_packets
 op_increment
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020119&t;/* byte counters for &gt;= 2.1.25 */
 id|priv-&gt;stat.tx_bytes
 op_increment
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -3463,24 +3459,12 @@ id|flags
 suffix:semicolon
 id|tx_done
 suffix:colon
-multiline_comment|/* When did that change exactly ? */
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020200
 id|dev_kfree_skb
 c_func
 (paren
 id|skb
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-comma
-id|FREE_WRITE
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|retval
 suffix:semicolon
@@ -4019,14 +4003,12 @@ comma
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020200
 id|mca_mark_as_used
 c_func
 (paren
 id|slot
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* announce success */
 id|printk
 c_func
@@ -4840,14 +4822,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020200
 id|mca_mark_as_unused
 c_func
 (paren
 id|priv-&gt;slot
 )paren
 suffix:semicolon
-macro_line|#endif
 id|mca_set_adapter_procfn
 c_func
 (paren

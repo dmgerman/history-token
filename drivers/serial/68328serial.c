@@ -6663,7 +6663,9 @@ comma
 )brace
 suffix:semicolon
 DECL|function|m68328_console_init
+r_static
 r_void
+id|__init
 id|m68328_console_init
 c_func
 (paren
@@ -6678,4 +6680,11 @@ id|m68328_driver
 )paren
 suffix:semicolon
 )brace
+DECL|variable|m68328_console_init
+id|console_initcall
+c_func
+(paren
+id|m68328_console_init
+)paren
+suffix:semicolon
 eof

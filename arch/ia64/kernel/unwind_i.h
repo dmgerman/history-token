@@ -518,7 +518,12 @@ comma
 multiline_comment|/* s[dst+1].nat.type = val */
 DECL|enumerator|UNW_INSN_LOAD
 id|UNW_INSN_LOAD
+comma
 multiline_comment|/* s[dst] = *s[val] */
+DECL|enumerator|UNW_INSN_MOVE_SCRATCH
+id|UNW_INSN_MOVE_SCRATCH
+comma
+multiline_comment|/* s[dst] = scratch reg &quot;val&quot; */
 )brace
 suffix:semicolon
 DECL|struct|unw_insn

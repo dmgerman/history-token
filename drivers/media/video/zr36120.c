@@ -4446,7 +4446,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020100
 r_static
 DECL|function|zoran_poll
 r_int
@@ -4557,7 +4556,6 @@ r_return
 id|mask
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* append a new clipregion to the vector of video_clips */
 r_static
 DECL|function|new_clip
@@ -8118,7 +8116,6 @@ r_return
 id|count
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020100
 r_static
 DECL|function|vbi_poll
 r_int
@@ -8229,7 +8226,6 @@ r_return
 id|mask
 suffix:semicolon
 )brace
-macro_line|#endif
 r_static
 DECL|function|vbi_ioctl
 r_int

@@ -13,7 +13,6 @@ op_star
 id|tcon
 suffix:semicolon
 multiline_comment|/* primary mount */
-multiline_comment|/* list of implicit mounts beneath this mount point - needed in dfs case */
 DECL|member|nested_tcon_q
 r_struct
 id|list_head
@@ -24,6 +23,16 @@ r_struct
 id|nls_table
 op_star
 id|local_nls
+suffix:semicolon
+DECL|member|rsize
+r_int
+r_int
+id|rsize
+suffix:semicolon
+DECL|member|wsize
+r_int
+r_int
+id|wsize
 suffix:semicolon
 )brace
 suffix:semicolon

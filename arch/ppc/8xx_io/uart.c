@@ -9219,7 +9219,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Register console.&n; */
 DECL|function|console_8xx_init
-r_int
+r_static
+r_void
 id|__init
 id|console_8xx_init
 c_func
@@ -9238,10 +9239,14 @@ op_amp
 id|sercons
 )paren
 suffix:semicolon
-r_return
-id|kmem_start
-suffix:semicolon
 )brace
+DECL|variable|console_8xx_init
+id|console_initcall
+c_func
+(paren
+id|console_8xx_init
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Index in baud rate table of the default console baud rate.&n;*/
 DECL|variable|baud_idx

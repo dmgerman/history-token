@@ -6,20 +6,14 @@ macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/numaq.h&gt;
 multiline_comment|/* These are needed before the pgdat&squot;s are created */
-DECL|variable|node_start_pfn
-r_int
+r_extern
 r_int
 id|node_start_pfn
 (braket
-id|MAX_NUMNODES
 )braket
-suffix:semicolon
-DECL|variable|node_end_pfn
-r_int
-r_int
+comma
 id|node_end_pfn
 (braket
-id|MAX_NUMNODES
 )braket
 suffix:semicolon
 DECL|macro|MB_TO_PAGES
@@ -137,39 +131,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * -----------------------------------------&n; *&n; * functions related to physnode_map&n; *&n; * -----------------------------------------&n; */
-multiline_comment|/*&n; * physnode_map keeps track of the physical memory layout of the&n; * numaq nodes on a 256Mb break (each element of the array will&n; * represent 256Mb of memory and will be marked by the node id.  so,&n; * if the first gig is on node 0, and the second gig is on node 1&n; * physnode_map will contain:&n; * physnode_map[0-3] = 0;&n; * physnode_map[4-7] = 1;&n; * physnode_map[8- ] = -1;&n; */
-DECL|variable|physnode_map
-r_int
-id|physnode_map
-(braket
-id|MAX_ELEMENTS
-)braket
-op_assign
-(brace
-(braket
-l_int|0
-dot
-dot
-dot
-(paren
-id|MAX_ELEMENTS
-op_minus
-l_int|1
-)paren
-)braket
-op_assign
-op_minus
-l_int|1
-)brace
-suffix:semicolon
-DECL|variable|physnode_map
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|physnode_map
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * for each node mark the regions&n; *        TOPOFMEM = hi_shrd_mem_start + hi_shrd_mem_size&n; *&n; * need to be very careful to not mark 1024+ as belonging&n; * to node 0. will want 1027 to show as belonging to node 1&n; * example:&n; *  TOPOFMEM = 1024&n; * 1024 &gt;&gt; 8 = 4 (subtract 1 for starting at 0]&n; * tmpvar = TOPOFMEM - 256 = 768&n; * 1024 &gt;&gt; 8 = 4 (subtract 1 for starting at 0]&n; * &n; */
 DECL|function|initialize_physnode_map
 r_static

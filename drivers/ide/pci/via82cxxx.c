@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * $Id: via82cxxx.c,v 3.35-ac2 2002/09/111 Alan Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Michel Aubry&n; *&t;Jeff Garzik&n; *&t;Andre Hedrick&n; */
-multiline_comment|/*&n; * Version 3.35&n; *&n; * VIA IDE driver for Linux. Supported southbridges:&n; *&n; *   vt82c576, vt82c586, vt82c586a, vt82c586b, vt82c596a, vt82c596b,&n; *   vt82c686, vt82c686a, vt82c686b, vt8231, vt8233, vt8233c, vt8233a,&n; *   vt8235&n; *&n; * Copyright (c) 2000-2002 Vojtech Pavlik&n; *&n; * Based on the work of:&n; *&t;Michel Aubry&n; *&t;Jeff Garzik&n; *&t;Andre Hedrick&n; */
+multiline_comment|/*&n; *&n; * Version 3.36&n; *&n; * VIA IDE driver for Linux. Supported southbridges:&n; *&n; *   vt82c576, vt82c586, vt82c586a, vt82c586b, vt82c596a, vt82c596b,&n; *   vt82c686, vt82c686a, vt82c686b, vt8231, vt8233, vt8233c, vt8233a,&n; *   vt8235&n; *&n; * Copyright (c) 2000-2002 Vojtech Pavlik&n; *&n; * Based on the work of:&n; *&t;Michel Aubry&n; *&t;Jeff Garzik&n; *&t;Andre Hedrick&n; *&n; * Documentation:&n; *&t;Obsolete device documentation publically available from via.com.tw&n; *&t;Current device documentation available under NDA only&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -54,6 +53,8 @@ DECL|macro|VIA_NO_UNMASK
 mdefine_line|#define VIA_NO_UNMASK&t;&t;0x080&t;/* Doesn&squot;t work with IRQ unmasking on */
 DECL|macro|VIA_BAD_ID
 mdefine_line|#define VIA_BAD_ID&t;&t;0x100&t;/* Has wrong vendor ID (0x1107) */
+DECL|macro|VIA_BAD_AST
+mdefine_line|#define VIA_BAD_AST&t;&t;0x200&t;/* Don&squot;t touch Address Setup Timing */
 multiline_comment|/*&n; * VIA SouthBridge chips.&n; */
 DECL|struct|via_isa_bridge
 r_static
@@ -112,6 +113,8 @@ comma
 l_int|0x2f
 comma
 id|VIA_UDMA_133
+op_or
+id|VIA_BAD_AST
 )brace
 comma
 (brace
@@ -124,6 +127,8 @@ comma
 l_int|0x2f
 comma
 id|VIA_UDMA_133
+op_or
+id|VIA_BAD_AST
 )brace
 comma
 (brace
@@ -552,7 +557,7 @@ suffix:semicolon
 id|via_print
 c_func
 (paren
-l_string|&quot;Driver Version:                     3.35-ac&quot;
+l_string|&quot;Driver Version:                     3.36&quot;
 )paren
 suffix:semicolon
 id|via_print
@@ -1700,6 +1705,15 @@ id|timing
 id|u8
 id|t
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_complement
+id|via_config-&gt;flags
+op_amp
+id|VIA_BAD_AST
+)paren
+(brace
 id|pci_read_config_byte
 c_func
 (paren
@@ -1768,6 +1782,7 @@ comma
 id|t
 )paren
 suffix:semicolon
+)brace
 id|pci_write_config_byte
 c_func
 (paren

@@ -8,16 +8,6 @@ macro_line|#else
 macro_line|# include &lt;string.h&gt;
 macro_line|# include &lt;sys/types.h&gt;
 macro_line|#endif
-DECL|macro|MIN
-macro_line|#undef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) (((a)&lt;(b)) ? (a): (b))
-DECL|macro|MAX
-macro_line|#undef MAX
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b) (((a)&gt;(b)) ? (a): (b))
-DECL|macro|MKSTR
-mdefine_line|#define MKSTR(ptr) ((ptr))? (ptr) : &quot;&quot;
 DECL|function|size_round
 r_static
 r_inline

@@ -884,14 +884,6 @@ id|kmsg_redirect
 suffix:semicolon
 r_extern
 r_void
-id|con_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|console_init
 c_func
 (paren

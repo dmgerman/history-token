@@ -5376,9 +5376,8 @@ id|KERN_ERR
 l_string|&quot;EXT3-fs: Can&squot;t read superblock on 2nd try.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|failed_mount
 suffix:semicolon
 )brace
 id|es

@@ -23,13 +23,13 @@ DECL|macro|local_ksoftirqd_task
 mdefine_line|#define local_ksoftirqd_task()&t;&t;(local_cpu_data-&gt;ksoftirqd)
 DECL|macro|local_nmi_count
 mdefine_line|#define local_nmi_count()&t;&t;0
-multiline_comment|/*&n; * We put the hardirq and softirq counter into the preemption counter. The bitmask has the&n; * following meaning:&n; *&n; * - bits 0-7 are the preemption count (max preemption depth: 256)&n; * - bits 8-15 are the softirq count (max # of softirqs: 256)&n; * - bits 16-31 are the hardirq count (max # of hardirqs: 65536)&n; *&n; * - (bit 63 is the PREEMPT_ACTIVE flag---not currently implemented.)&n; *&n; * PREEMPT_MASK: 0x000000ff&n; * SOFTIRQ_MASK: 0x0000ff00&n; * HARDIRQ_MASK: 0xffff0000&n; */
+multiline_comment|/*&n; * We put the hardirq and softirq counter into the preemption counter. The bitmask has the&n; * following meaning:&n; *&n; * - bits 0-7 are the preemption count (max preemption depth: 256)&n; * - bits 8-15 are the softirq count (max # of softirqs: 256)&n; * - bits 16-29 are the hardirq count (max # of hardirqs: 16384)&n; *&n; * - (bit 63 is the PREEMPT_ACTIVE flag---not currently implemented.)&n; *&n; * PREEMPT_MASK: 0x000000ff&n; * SOFTIRQ_MASK: 0x0000ff00&n; * HARDIRQ_MASK: 0x3fff0000&n; */
 DECL|macro|PREEMPT_BITS
 mdefine_line|#define PREEMPT_BITS&t;8
 DECL|macro|SOFTIRQ_BITS
 mdefine_line|#define SOFTIRQ_BITS&t;8
 DECL|macro|HARDIRQ_BITS
-mdefine_line|#define HARDIRQ_BITS&t;16
+mdefine_line|#define HARDIRQ_BITS&t;14
 DECL|macro|PREEMPT_SHIFT
 mdefine_line|#define PREEMPT_SHIFT&t;0
 DECL|macro|SOFTIRQ_SHIFT
@@ -71,15 +71,16 @@ DECL|macro|hardirq_trylock
 mdefine_line|#define hardirq_trylock()&t;(!in_interrupt())
 DECL|macro|hardirq_endlock
 mdefine_line|#define hardirq_endlock()&t;do { } while (0)
-DECL|macro|in_atomic
-mdefine_line|#define in_atomic()&t;&t;(preempt_count() != 0)
 DECL|macro|irq_enter
 mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
 macro_line|#if CONFIG_PREEMPT
-macro_line|# error CONFIG_PREEMT currently not supported.
+DECL|macro|in_atomic
+macro_line|# define in_atomic()&t;&t;((preempt_count() &amp; ~PREEMPT_ACTIVE) != kernel_locked())
 DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET (HARDIRQ_OFFSET-1)
 macro_line|#else
+DECL|macro|in_atomic
+macro_line|# define in_atomic()&t;&t;(preempt_count() != 0)
 DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET HARDIRQ_OFFSET
 macro_line|#endif
