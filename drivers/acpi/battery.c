@@ -2672,6 +2672,16 @@ op_minus
 id|ENODEV
 )paren
 suffix:semicolon
+id|acpi_device_dir
+c_func
+(paren
+id|device
+)paren
+op_member_access_from_pointer
+id|owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 )brace
 multiline_comment|/* &squot;info&squot; [R] */
 id|entry
@@ -2722,6 +2732,10 @@ c_func
 id|device
 )paren
 suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 )brace
 multiline_comment|/* &squot;status&squot; [R] */
 id|entry
@@ -2771,6 +2785,10 @@ c_func
 (paren
 id|device
 )paren
+suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 )brace
 multiline_comment|/* &squot;alarm&squot; [R/W] */
@@ -2829,6 +2847,10 @@ c_func
 (paren
 id|device
 )paren
+suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 )brace
 id|return_VALUE
@@ -3414,6 +3436,10 @@ c_func
 op_minus
 id|ENODEV
 )paren
+suffix:semicolon
+id|acpi_battery_dir-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|result
 op_assign

@@ -2061,6 +2061,15 @@ r_if
 c_cond
 (paren
 id|proc
+)paren
+id|proc-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|proc
 op_logical_and
 id|item-&gt;write_func
 )paren
@@ -2228,6 +2237,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|toshiba_proc_dir-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|status
 op_assign
 id|add_device
