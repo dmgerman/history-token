@@ -3420,6 +3420,7 @@ id|gscd_queue
 )paren
 (brace
 id|ret
+op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
