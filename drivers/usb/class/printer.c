@@ -2900,12 +2900,23 @@ id|usblp-&gt;readcount
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|usb_submit_urb
 c_func
 (paren
 id|usblp-&gt;readurb
 comma
 id|GFP_KERNEL
+)paren
+OL
+l_int|0
+)paren
+id|dbg
+c_func
+(paren
+l_string|&quot;error submitting urb&quot;
 )paren
 suffix:semicolon
 id|count
