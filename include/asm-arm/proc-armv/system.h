@@ -54,28 +54,27 @@ macro_line|#else
 DECL|macro|vectors_base
 mdefine_line|#define vectors_base()&t;(0)
 macro_line|#endif
-multiline_comment|/*&n; * A couple of speedups for the ARM&n; */
+multiline_comment|/*&n; * Save the current interrupt enable state.&n; */
+DECL|macro|local_save_flags
+mdefine_line|#define local_save_flags(x)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mrs&t;%0, cpsr&t;&t;@ local_save_flags&quot;&t;&bslash;&n;&t;: &quot;=r&quot; (x) : : &quot;memory&quot;);&t;&t;&t;&t;&bslash;&n;&t;})
 multiline_comment|/*&n; * Save the current interrupt enable state &amp; disable IRQs&n; */
-DECL|macro|local_save_flags_cli
-mdefine_line|#define local_save_flags_cli(x)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long temp;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mrs&t;%0, cpsr&t;&t;@ save_flags_cli&bslash;n&quot;&t;&bslash;&n;&quot;&t;orr&t;%1, %0, #128&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&quot;&t;msr&t;cpsr_c, %1&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (x), &quot;=r&quot; (temp)&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+DECL|macro|local_irq_save
+mdefine_line|#define local_irq_save(x)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long temp;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mrs&t;%0, cpsr&t;&t;@ local_irq_save&bslash;n&quot;&t;&bslash;&n;&quot;&t;orr&t;%1, %0, #128&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&quot;&t;msr&t;cpsr_c, %1&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (x), &quot;=r&quot; (temp)&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 multiline_comment|/*&n; * Enable IRQs&n; */
 DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long temp;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mrs&t;%0, cpsr&t;&t;@ sti&bslash;n&quot;&t;&t;&bslash;&n;&quot;&t;bic&t;%0, %0, #128&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&quot;&t;msr&t;cpsr_c, %0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (temp)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+mdefine_line|#define local_irq_enable()&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long temp;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mrs&t;%0, cpsr&t;&t;@ local_irq_enable&bslash;n&quot;&t;&bslash;&n;&quot;&t;bic&t;%0, %0, #128&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&quot;&t;msr&t;cpsr_c, %0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (temp)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 multiline_comment|/*&n; * Disable IRQs&n; */
 DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long temp;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mrs&t;%0, cpsr&t;&t;@ cli&bslash;n&quot;&t;&t;&bslash;&n;&quot;&t;orr&t;%0, %0, #128&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&quot;&t;msr&t;cpsr_c, %0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (temp)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+mdefine_line|#define local_irq_disable()&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long temp;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mrs&t;%0, cpsr&t;&t;@ local_irq_disable&bslash;n&quot;&t;&bslash;&n;&quot;&t;orr&t;%0, %0, #128&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&quot;&t;msr&t;cpsr_c, %0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (temp)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 multiline_comment|/*&n; * Enable FIQs&n; */
 DECL|macro|__stf
 mdefine_line|#define __stf()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long temp;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mrs&t;%0, cpsr&t;&t;@ stf&bslash;n&quot;&t;&t;&bslash;&n;&quot;&t;bic&t;%0, %0, #64&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&quot;&t;msr&t;cpsr_c, %0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (temp)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 multiline_comment|/*&n; * Disable FIQs&n; */
 DECL|macro|__clf
 mdefine_line|#define __clf()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long temp;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mrs&t;%0, cpsr&t;&t;@ clf&bslash;n&quot;&t;&t;&bslash;&n;&quot;&t;orr&t;%0, %0, #64&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&quot;&t;msr&t;cpsr_c, %0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (temp)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
-multiline_comment|/*&n; * save current IRQ &amp; FIQ state&n; */
-DECL|macro|local_save_flags
-mdefine_line|#define local_save_flags(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mrs&t;%0, cpsr&t;&t;@ save_flags&bslash;n&quot;&t;&t;&bslash;&n;&t;  : &quot;=r&quot; (x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  :&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  : &quot;memory&quot;)
 multiline_comment|/*&n; * restore saved IRQ &amp; FIQ state&n; */
 DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(x)&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;msr&t;cpsr_c, %0&t;&t;@ restore_flags&bslash;n&quot;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;memory&quot;)
+mdefine_line|#define local_irq_restore(x)&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;msr&t;cpsr_c, %0&t;&t;@ local_irq_restore&bslash;n&quot;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;memory&quot;)
 macro_line|#if defined(CONFIG_CPU_SA1100) || defined(CONFIG_CPU_SA110)
 multiline_comment|/*&n; * On the StrongARM, &quot;swp&quot; is terminally broken since it bypasses the&n; * cache totally.  This means that the cache becomes inconsistent, and,&n; * since we use normal loads/stores as well, this is really bad.&n; * Typically, this causes oopsen in filp_close, but could have other,&n; * more disasterous effects.  There are two work-arounds:&n; *  1. Disable interrupts and emulate the atomic swap&n; *  2. Clean the cache, perform atomic swap, flush the cache&n; *&n; * We choose (1) since its the &quot;easiest&quot; to achieve here and is not&n; * dependent on the processor type.&n; */
 DECL|macro|swp_is_buggy
@@ -134,7 +133,7 @@ macro_line|#ifdef swp_is_buggy
 r_case
 l_int|1
 suffix:colon
-id|local_save_flags_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -173,7 +172,7 @@ suffix:semicolon
 r_case
 l_int|4
 suffix:colon
-id|local_save_flags_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
