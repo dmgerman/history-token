@@ -1553,6 +1553,7 @@ multiline_comment|/*&n; * hpt34x_dmaproc() initiates/aborts (U)DMA read/write op
 DECL|function|hpt34x_dmaproc
 r_int
 id|hpt34x_dmaproc
+c_func
 (paren
 id|ide_dma_action_t
 id|func
@@ -1571,7 +1572,7 @@ id|rq
 r_struct
 id|ata_channel
 op_star
-id|hwif
+id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
@@ -1579,7 +1580,7 @@ r_int
 r_int
 id|dma_base
 op_assign
-id|hwif-&gt;dma_base
+id|ch-&gt;dma_base
 suffix:semicolon
 r_int
 r_int
@@ -1629,12 +1630,12 @@ op_logical_neg
 (paren
 id|count
 op_assign
-id|ide_build_dmatable
+id|udma_new_table
 c_func
 (paren
-id|drive
+id|ch
 comma
-id|func
+id|rq
 )paren
 )paren
 )paren
@@ -1645,7 +1646,7 @@ multiline_comment|/* try PIO instead of DMA */
 id|outl
 c_func
 (paren
-id|hwif-&gt;dmatable_dma
+id|ch-&gt;dmatable_dma
 comma
 id|dma_base
 op_plus
@@ -1781,10 +1782,10 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* clear the INTR &amp; ERROR bits */
-id|ide_destroy_dmatable
+id|udma_destroy_table
 c_func
 (paren
-id|drive
+id|ch
 )paren
 suffix:semicolon
 multiline_comment|/* purge DMA mappings */

@@ -206,7 +206,7 @@ id|rq
 r_struct
 id|ata_channel
 op_star
-id|hwif
+id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
@@ -254,12 +254,12 @@ op_logical_neg
 (paren
 id|count
 op_assign
-id|ide_build_dmatable
+id|udma_new_table
 c_func
 (paren
-id|drive
+id|ch
 comma
-id|func
+id|rq
 )paren
 )paren
 )paren
@@ -278,13 +278,13 @@ multiline_comment|/* select DMA xfer */
 id|outl
 c_func
 (paren
-id|hwif-&gt;dmatable_dma
+id|ch-&gt;dmatable_dma
 op_or
 id|reading
 op_or
 id|writing
 comma
-id|hwif-&gt;dma_base
+id|ch-&gt;dma_base
 )paren
 suffix:semicolon
 id|drive-&gt;waiting_for_dma
@@ -302,7 +302,7 @@ l_int|2
 op_minus
 l_int|1
 comma
-id|hwif-&gt;dma_base
+id|ch-&gt;dma_base
 op_plus
 l_int|2
 )paren
@@ -360,10 +360,10 @@ id|drive-&gt;waiting_for_dma
 op_assign
 l_int|0
 suffix:semicolon
-id|ide_destroy_dmatable
+id|udma_destroy_table
 c_func
 (paren
-id|drive
+id|ch
 )paren
 suffix:semicolon
 multiline_comment|/* purge DMA mappings */
@@ -372,7 +372,7 @@ r_return
 id|inw
 c_func
 (paren
-id|hwif-&gt;dma_base
+id|ch-&gt;dma_base
 op_plus
 l_int|2
 )paren
@@ -388,7 +388,7 @@ r_return
 id|inw
 c_func
 (paren
-id|hwif-&gt;dma_base
+id|ch-&gt;dma_base
 op_plus
 l_int|2
 )paren

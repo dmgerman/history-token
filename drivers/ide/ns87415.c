@@ -384,10 +384,10 @@ id|hwif-&gt;dma_base
 )paren
 suffix:semicolon
 multiline_comment|/* from ERRATA: clear the INTR &amp; ERROR bits */
-id|ide_destroy_dmatable
+id|udma_destroy_table
 c_func
 (paren
-id|drive
+id|hwif
 )paren
 suffix:semicolon
 multiline_comment|/* and free any DMA resources */
