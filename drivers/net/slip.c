@@ -3,6 +3,7 @@ DECL|macro|SL_CHECK_TRANSMIT
 mdefine_line|#define SL_CHECK_TRANSMIT
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -36,18 +37,20 @@ op_star
 id|slip_devs
 suffix:semicolon
 DECL|variable|slip_maxdev
+r_static
 r_int
 id|slip_maxdev
 op_assign
 id|SL_NRUNIT
 suffix:semicolon
-multiline_comment|/* Can be overridden with insmod! */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|slip_maxdev
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
