@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -5425,9 +5424,11 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|current-&gt;state
-op_assign
+id|__set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 multiline_comment|/* Deal with packet mode. */
 r_if
@@ -5745,9 +5746,11 @@ id|tty-&gt;minimum_to_wake
 op_assign
 id|minimum
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|__set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 id|size
 op_assign
@@ -6152,9 +6155,11 @@ suffix:semicolon
 )brace
 id|break_out
 suffix:colon
-id|current-&gt;state
-op_assign
+id|__set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 id|remove_wait_queue
 c_func
