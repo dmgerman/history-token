@@ -923,7 +923,7 @@ c_func
 (paren
 id|nxp-&gt;ex_path
 comma
-id|LOOKUP_POSITIVE
+l_int|0
 comma
 op_amp
 id|nd
@@ -1637,7 +1637,7 @@ c_func
 (paren
 id|path
 comma
-id|LOOKUP_POSITIVE
+l_int|0
 comma
 op_amp
 id|nd

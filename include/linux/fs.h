@@ -5750,8 +5750,6 @@ DECL|macro|LOOKUP_DIRECTORY
 mdefine_line|#define LOOKUP_DIRECTORY&t;(2)
 DECL|macro|LOOKUP_CONTINUE
 mdefine_line|#define LOOKUP_CONTINUE&t;&t;(4)
-DECL|macro|LOOKUP_POSITIVE
-mdefine_line|#define LOOKUP_POSITIVE&t;&t;(8)
 DECL|macro|LOOKUP_PARENT
 mdefine_line|#define LOOKUP_PARENT&t;&t;(16)
 DECL|macro|LOOKUP_NOALT
@@ -5993,9 +5991,9 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|user_path_walk
-mdefine_line|#define user_path_walk(name,nd)&t; __user_walk(name, LOOKUP_FOLLOW|LOOKUP_POSITIVE, nd)
+mdefine_line|#define user_path_walk(name,nd)&t; __user_walk(name, LOOKUP_FOLLOW, nd)
 DECL|macro|user_path_walk_link
-mdefine_line|#define user_path_walk_link(name,nd) __user_walk(name, LOOKUP_POSITIVE, nd)
+mdefine_line|#define user_path_walk_link(name,nd) __user_walk(name, 0, nd)
 r_extern
 r_void
 id|inode_init_once

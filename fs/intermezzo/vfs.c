@@ -2153,7 +2153,7 @@ m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* this looks up the parent */
-singleline_comment|//        if (path_init(pathname, LOOKUP_FOLLOW | LOOKUP_POSITIVE, &amp;nd))
+singleline_comment|//        if (path_init(pathname, LOOKUP_FOLLOW, &amp;nd))
 r_if
 c_cond
 (paren
@@ -2896,7 +2896,7 @@ c_func
 (paren
 id|from
 comma
-id|LOOKUP_POSITIVE
+l_int|0
 comma
 op_amp
 id|old_nd

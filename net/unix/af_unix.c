@@ -2250,8 +2250,6 @@ c_func
 (paren
 id|sunname-&gt;sun_path
 comma
-id|LOOKUP_POSITIVE
-op_or
 id|LOOKUP_FOLLOW
 comma
 op_amp

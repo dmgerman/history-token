@@ -1843,8 +1843,6 @@ c_func
 (paren
 id|kname
 comma
-id|LOOKUP_POSITIVE
-op_or
 id|LOOKUP_FOLLOW
 comma
 op_amp
@@ -2493,8 +2491,6 @@ c_func
 (paren
 id|old_name
 comma
-id|LOOKUP_POSITIVE
-op_or
 id|LOOKUP_FOLLOW
 comma
 op_amp
@@ -2842,8 +2838,6 @@ c_func
 (paren
 id|old_name
 comma
-id|LOOKUP_POSITIVE
-op_or
 id|LOOKUP_FOLLOW
 comma
 op_amp
@@ -3656,8 +3650,6 @@ c_func
 id|dir_name
 comma
 id|LOOKUP_FOLLOW
-op_or
-id|LOOKUP_POSITIVE
 comma
 op_amp
 id|nd
@@ -4628,8 +4620,6 @@ c_func
 (paren
 id|name
 comma
-id|LOOKUP_POSITIVE
-op_or
 id|LOOKUP_FOLLOW
 op_or
 id|LOOKUP_DIRECTORY
@@ -4721,8 +4711,6 @@ c_func
 (paren
 id|name
 comma
-id|LOOKUP_POSITIVE
-op_or
 id|LOOKUP_FOLLOW
 op_or
 id|LOOKUP_DIRECTORY

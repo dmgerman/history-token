@@ -69,7 +69,7 @@ r_int
 r_int
 id|flags
 op_assign
-id|LOOKUP_POSITIVE
+l_int|0
 suffix:semicolon
 id|ENTRY
 suffix:semicolon

@@ -2753,8 +2753,6 @@ c_func
 id|dev_name
 comma
 id|LOOKUP_FOLLOW
-op_or
-id|LOOKUP_POSITIVE
 comma
 op_amp
 id|nd
