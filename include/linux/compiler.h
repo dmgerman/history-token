@@ -8,6 +8,8 @@ DECL|macro|__kernel
 macro_line|# define __kernel&t;/* default address space */
 DECL|macro|__safe
 macro_line|# define __safe&t;&t;__attribute__((safe))
+DECL|macro|__force
+macro_line|# define __force&t;__attribute__((force))
 macro_line|#else
 DECL|macro|__user
 macro_line|# define __user
@@ -15,6 +17,8 @@ DECL|macro|__kernel
 macro_line|# define __kernel
 DECL|macro|__safe
 macro_line|# define __safe
+DECL|macro|__force
+macro_line|# define __force
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
