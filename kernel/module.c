@@ -5531,11 +5531,10 @@ op_assign
 id|m_show
 )brace
 suffix:semicolon
-DECL|function|init
-r_static
-r_int
+DECL|function|extable_init
+r_void
 id|__init
-id|init
+id|extable_init
 c_func
 (paren
 r_void
@@ -5587,9 +5586,6 @@ op_amp
 id|extables
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/* Obsolete lvalue for broken code which asks about usage */
 DECL|variable|module_dummy_usage
@@ -5603,14 +5599,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|module_dummy_usage
-)paren
-suffix:semicolon
-multiline_comment|/* Call this at boot */
-DECL|variable|init
-id|__initcall
-c_func
-(paren
-id|init
 )paren
 suffix:semicolon
 eof
