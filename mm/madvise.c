@@ -229,7 +229,7 @@ id|PAGE_SHIFT
 op_plus
 id|vma-&gt;vm_pgoff
 suffix:semicolon
-id|do_page_cache_readahead
+id|force_page_cache_readahead
 c_func
 (paren
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping

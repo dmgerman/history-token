@@ -3155,7 +3155,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|do_page_cache_readahead
+id|force_page_cache_readahead
 c_func
 (paren
 id|mapping
@@ -4349,7 +4349,7 @@ c_cond
 op_logical_neg
 id|nonblock
 )paren
-id|do_page_cache_readahead
+id|force_page_cache_readahead
 c_func
 (paren
 id|mapping
