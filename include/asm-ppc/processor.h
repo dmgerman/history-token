@@ -1365,7 +1365,7 @@ suffix:semicolon
 DECL|macro|INIT_SP
 mdefine_line|#define INIT_SP&t;&t;(sizeof(init_stack) + (unsigned long) &amp;init_stack)
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;.ksp = INIT_SP, &bslash;&n;&t;.fs = KERNEL_DS, &bslash;&n;&t;.pgdir = swapper_pg_dir, &bslash;&n;}
+mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;.ksp = INIT_SP, &bslash;&n;&t;.fs = KERNEL_DS, &bslash;&n;&t;.pgdir = swapper_pg_dir, &bslash;&n;&t;.fpexc_mode = MSR_FE0 | MSR_FE1, &bslash;&n;}
 multiline_comment|/*&n; * Return saved PC of a blocked thread. For now, this is the &quot;user&quot; PC&n; */
 DECL|macro|thread_saved_pc
 mdefine_line|#define thread_saved_pc(tsk)&t;&bslash;&n;&t;((tsk)-&gt;thread.regs? (tsk)-&gt;thread.regs-&gt;nip: 0)
