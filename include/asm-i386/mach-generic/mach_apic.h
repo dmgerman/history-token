@@ -48,5 +48,7 @@ DECL|macro|GET_APIC_ID
 mdefine_line|#define GET_APIC_ID (genapic-&gt;get_apic_id)
 DECL|macro|APIC_ID_MASK
 mdefine_line|#define APIC_ID_MASK (genapic-&gt;apic_id_mask)
+DECL|macro|cpu_mask_to_apicid
+mdefine_line|#define cpu_mask_to_apicid (genapic-&gt;cpu_mask_to_apicid)
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof
