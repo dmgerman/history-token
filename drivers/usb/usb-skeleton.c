@@ -885,9 +885,8 @@ op_amp
 id|dev-&gt;write_finished
 )paren
 suffix:semicolon
+op_decrement
 id|dev-&gt;open
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
