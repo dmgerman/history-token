@@ -12,6 +12,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|function|smapi_request
+r_static
 r_int
 id|smapi_request
 c_func
@@ -2911,7 +2912,8 @@ r_return
 id|bRC
 suffix:semicolon
 )brace
-DECL|function|SmapiQuerySystemID
+macro_line|#if 0
+r_static
 r_int
 id|SmapiQuerySystemID
 c_func
@@ -3029,6 +3031,7 @@ r_return
 id|bRC
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0  */
 DECL|function|smapi_init
 r_int
 id|smapi_init
