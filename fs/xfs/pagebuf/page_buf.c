@@ -53,7 +53,7 @@ id|pb_trace_func
 )paren
 suffix:semicolon
 DECL|macro|CIRC_INC
-mdefine_line|#define CIRC_INC(i)     (((i) + 1) &amp; (PB_TRACE_BUFSIZE - 1))
+mdefine_line|#define CIRC_INC(i)&t;(((i) + 1) &amp; (PB_TRACE_BUFSIZE - 1))
 r_void
 DECL|function|pb_trace_func
 id|pb_trace_func
@@ -427,8 +427,6 @@ op_assign
 l_int|0
 suffix:semicolon
 id|base
-op_ne
-l_int|0
 op_logical_and
 id|bit
 OL
@@ -466,7 +464,7 @@ r_return
 id|hval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Mapping of multi-page buffers into contingous virtual space&n; */
+multiline_comment|/*&n; * Mapping of multi-page buffers into contiguous virtual space&n; */
 id|STATIC
 r_void
 op_star
@@ -476,13 +474,6 @@ c_func
 id|page_buf_t
 op_star
 )paren
-suffix:semicolon
-DECL|variable|as_lock
-id|STATIC
-id|spinlock_t
-id|as_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|struct|a_list
 r_typedef
@@ -514,6 +505,13 @@ DECL|variable|as_list_len
 id|STATIC
 r_int
 id|as_list_len
+suffix:semicolon
+DECL|variable|as_lock
+id|STATIC
+id|spinlock_t
+id|as_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * Try to batch vunmaps because they are costly.&n; */
 id|STATIC
