@@ -1433,7 +1433,7 @@ id|cs-&gt;dlog
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* moves recieved data in sk-buffer */
+multiline_comment|/* moves received data in sk-buffer */
 id|memcpy
 c_func
 (paren

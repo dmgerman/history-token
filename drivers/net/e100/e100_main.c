@@ -7315,7 +7315,7 @@ id|rx_struct-&gt;list_elem
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* do not free &amp; unmap badly recieved packet.&n;&t;&t; * move it to the end of skb list for reuse */
+multiline_comment|/* do not free &amp; unmap badly received packet.&n;&t;&t; * move it to the end of skb list for reuse */
 r_if
 c_cond
 (paren

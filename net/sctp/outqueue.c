@@ -1241,7 +1241,7 @@ id|start_timer
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Stop sending DATA as there is no more room&n;&t;&t;&t; * at the reciever.&n;&t;&t;&t; */
+multiline_comment|/* Stop sending DATA as there is no more room&n;&t;&t;&t; * at the receiver.&n;&t;&t;&t; */
 id|list_add
 c_func
 (paren

@@ -5185,7 +5185,7 @@ id|vic_irq_type
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* send a CPI at level cpi to a set of cpus in cpuset (set 1 bit per&n; * processor to recieve CPI */
+multiline_comment|/* send a CPI at level cpi to a set of cpus in cpuset (set 1 bit per&n; * processor to receive CPI */
 r_static
 r_void
 DECL|function|send_CPI
