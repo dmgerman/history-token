@@ -409,7 +409,6 @@ multiline_comment|/* Sysfs stuff. */
 DECL|member|mkobj
 r_struct
 id|module_kobject
-op_star
 id|mkobj
 suffix:semicolon
 DECL|member|params_kobject
