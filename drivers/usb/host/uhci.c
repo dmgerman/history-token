@@ -231,7 +231,7 @@ id|flags
 suffix:semicolon
 id|uhci-&gt;skel_term_td-&gt;status
 op_or_assign
-id|TD_CTRL_IOC_BIT
+id|TD_CTRL_IOC
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -272,7 +272,7 @@ suffix:semicolon
 id|uhci-&gt;skel_term_td-&gt;status
 op_and_assign
 op_complement
-id|TD_CTRL_IOC_BIT
+id|TD_CTRL_IOC
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -3467,8 +3467,6 @@ suffix:semicolon
 multiline_comment|/* Alternate Data0/1 (start with Data1) */
 id|destination
 op_xor_assign
-l_int|1
-op_lshift
 id|TD_TOKEN_TOGGLE
 suffix:semicolon
 id|uhci_add_td_to_urb
@@ -3560,8 +3558,6 @@ id|USB_PID_OUT
 suffix:semicolon
 id|destination
 op_or_assign
-l_int|1
-op_lshift
 id|TD_TOKEN_TOGGLE
 suffix:semicolon
 multiline_comment|/* End in Data1 */
@@ -4466,7 +4462,7 @@ id|urb-&gt;pipe
 )paren
 )paren
 op_lshift
-id|TD_TOKEN_TOGGLE
+id|TD_TOKEN_TOGGLE_SHIFT
 )paren
 suffix:semicolon
 id|destination
@@ -4912,11 +4908,7 @@ suffix:semicolon
 id|td-&gt;info
 op_and_assign
 op_complement
-(paren
-l_int|1
-op_lshift
 id|TD_TOKEN_TOGGLE
-)paren
 suffix:semicolon
 id|td-&gt;info
 op_or_assign
@@ -4939,7 +4931,7 @@ id|urb-&gt;pipe
 )paren
 )paren
 op_lshift
-id|TD_TOKEN_TOGGLE
+id|TD_TOKEN_TOGGLE_SHIFT
 )paren
 suffix:semicolon
 id|usb_dotoggle
@@ -5215,7 +5207,7 @@ id|urb-&gt;pipe
 )paren
 )paren
 op_lshift
-id|TD_TOKEN_TOGGLE
+id|TD_TOKEN_TOGGLE_SHIFT
 )paren
 comma
 id|data
@@ -5340,7 +5332,7 @@ id|urb-&gt;pipe
 )paren
 )paren
 op_lshift
-id|TD_TOKEN_TOGGLE
+id|TD_TOKEN_TOGGLE_SHIFT
 )paren
 comma
 id|data
