@@ -8493,14 +8493,6 @@ id|tp-&gt;snd_cwnd
 op_assign
 l_int|2
 suffix:semicolon
-id|tp-&gt;frto_counter
-op_assign
-l_int|0
-suffix:semicolon
-id|tp-&gt;frto_highmark
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* See draft-stevens-tcpca-spec-01 for discussion of the&n;&t; * initialization of these values.&n;&t; */
 id|tp-&gt;snd_ssthresh
 op_assign
