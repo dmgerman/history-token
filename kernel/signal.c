@@ -5486,7 +5486,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This must be called with current-&gt;sighand-&gt;siglock held.&n; *&n; * This should be the path for all ptrace stops.&n; * We always set current-&gt;last_siginfo while stopped here.&n; * That makes it a way to test a stopped process for&n; * being ptrace-stopped vs being job-control-stopped.&n; */
+multiline_comment|/*&n; * This must be called with current-&gt;sighand-&gt;siglock held.&n; *&n; * This should be the path for all ptrace stops.&n; * We always set current-&gt;last_siginfo while stopped here.&n; * That makes it a way to test a stopped process for&n; * being ptrace-stopped vs being job-control-stopped.&n; *&n; * If we actually decide not to stop at all because the tracer is gone,&n; * we leave nostop_code in current-&gt;exit_code.&n; */
 DECL|function|ptrace_stop
 r_static
 r_void
@@ -5496,22 +5496,14 @@ c_func
 r_int
 id|exit_code
 comma
+r_int
+id|nostop_code
+comma
 id|siginfo_t
 op_star
 id|info
 )paren
 (brace
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-(paren
-id|current-&gt;ptrace
-op_amp
-id|PT_PTRACED
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * If there is a group stop in progress,&n;&t; * we must participate in the bookkeeping.&n;&t; */
 r_if
 c_cond
@@ -5552,6 +5544,33 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+id|current-&gt;ptrace
+op_amp
+id|PT_PTRACED
+)paren
+op_logical_and
+id|likely
+c_func
+(paren
+id|current-&gt;parent
+op_ne
+id|current-&gt;real_parent
+op_logical_or
+op_logical_neg
+(paren
+id|current-&gt;ptrace
+op_amp
+id|PT_ATTACHED
+)paren
+)paren
+)paren
+(brace
 id|do_notify_parent_cldstop
 c_func
 (paren
@@ -5574,6 +5593,28 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t; * By the time we got the lock, our tracer went away.&n;&t;&t; * Don&squot;t stop here.&n;&t;&t; */
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|current-&gt;exit_code
+op_assign
+id|nostop_code
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * We are back.  Now reacquire the siglock before touching&n;&t; * last_siginfo, so that we are sure to have synchronized with&n;&t; * any signal-sending on another CPU that wants to examine it.&n;&t; */
 id|spin_lock_irq
 c_func
@@ -5662,6 +5703,8 @@ id|ptrace_stop
 c_func
 (paren
 id|exit_code
+comma
+l_int|0
 comma
 op_amp
 id|info
@@ -6281,6 +6324,8 @@ multiline_comment|/* Let the debugger run.  */
 id|ptrace_stop
 c_func
 (paren
+id|signr
+comma
 id|signr
 comma
 id|info
