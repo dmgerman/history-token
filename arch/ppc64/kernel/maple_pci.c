@@ -1329,11 +1329,6 @@ suffix:semicolon
 )brace
 id|hose
 op_assign
-(paren
-r_struct
-id|pci_controller
-op_star
-)paren
 id|alloc_bootmem
 c_func
 (paren
@@ -1391,11 +1386,6 @@ l_int|0xff
 suffix:semicolon
 id|of_prop
 op_assign
-(paren
-r_struct
-id|property
-op_star
-)paren
 id|alloc_bootmem
 c_func
 (paren
