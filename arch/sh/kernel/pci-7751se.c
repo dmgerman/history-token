@@ -28,10 +28,6 @@ r_void
 (brace
 r_int
 r_int
-id|data
-suffix:semicolon
-r_int
-r_int
 id|bcr1
 comma
 id|wcr1

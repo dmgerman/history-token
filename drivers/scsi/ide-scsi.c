@@ -1156,7 +1156,7 @@ op_assign
 id|idescsi_pc_t
 op_star
 )paren
-id|rq-&gt;buffer
+id|rq-&gt;special
 suffix:semicolon
 r_int
 id|log
@@ -2331,7 +2331,7 @@ comma
 id|idescsi_pc_t
 op_star
 )paren
-id|rq-&gt;buffer
+id|rq-&gt;special
 )paren
 suffix:semicolon
 )brace
@@ -3414,6 +3414,10 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|bh-&gt;bi_vcnt
+op_assign
+l_int|1
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -4192,7 +4196,7 @@ id|ide_init_drive_cmd
 id|rq
 )paren
 suffix:semicolon
-id|rq-&gt;buffer
+id|rq-&gt;special
 op_assign
 (paren
 r_char

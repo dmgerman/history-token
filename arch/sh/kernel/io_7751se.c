@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hitachi_7751se.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
-macro_line|#include &lt;asm/pci.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/pci-sh7751.h&gt;
 macro_line|#if 0
 multiline_comment|/******************************************************************&n; * Variables from io_se.c, related to PCMCIA (not PCI); we&squot;re not&n; * compiling them in, and have removed references from functions&n; * which follow.  [Many checked for IO ports in the range bounded&n; * by sh_pcic_io_start/stop, and used sh_pcic_io_wbase as offset.&n; * As start/stop are uninitialized, only port 0x0 would match?]&n; * When used, remember to adjust names to avoid clash with io_se?&n; *****************************************************************/
@@ -119,6 +119,10 @@ c_func
 (paren
 id|name
 comma
+(paren
+r_int
+r_int
+)paren
 id|port
 )paren
 suffix:semicolon
@@ -1202,9 +1206,9 @@ id|sh_isa_memmap
 l_int|256
 )braket
 suffix:semicolon
+macro_line|#if 0
 r_static
 r_int
-DECL|function|sh_isa_mmap
 id|sh_isa_mmap
 c_func
 (paren
@@ -1264,7 +1268,6 @@ op_complement
 l_int|0xfff
 )paren
 suffix:semicolon
-macro_line|#if 0
 id|printk
 c_func
 (paren
@@ -1284,11 +1287,11 @@ id|idx
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 r_int
 r_int
 DECL|function|sh7751se_isa_port2addr

@@ -346,7 +346,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * &t;sh_wdt_read - Read from Device&n; *&n; * &t;@file: file handle of device&n; * &t;@char: buffer to write to&n; * &t;@count: length of buffer&n; * &t;@ppos: offset&n; *&n; * &t;Unsupported.&n; */
+multiline_comment|/**&n; * &t;sh_wdt_read - Read from Device&n; *&n; * &t;@file: file handle of device&n; * &t;@buf: buffer to write to&n; * &t;@count: length of buffer&n; * &t;@ppos: offset&n; *&n; * &t;Unsupported.&n; */
 DECL|function|sh_wdt_read
 r_static
 id|ssize_t
@@ -375,7 +375,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * &t;sh_wdt_write - Write to Device&n; *&n; * &t;@file: file handle of device&n; * &t;@char: buffer to write&n; * &t;@count: length of buffer&n; * &t;@ppos: offset&n; *&n; * &t;Pings the watchdog on write.&n; */
+multiline_comment|/**&n; * &t;sh_wdt_write - Write to Device&n; *&n; * &t;@file: file handle of device&n; * &t;@buf: buffer to write&n; * &t;@count: length of buffer&n; * &t;@ppos: offset&n; *&n; * &t;Pings the watchdog on write.&n; */
 DECL|function|sh_wdt_write
 r_static
 id|ssize_t
@@ -580,6 +580,8 @@ id|code
 op_eq
 id|SYS_DOWN
 op_logical_or
+id|code
+op_eq
 id|SYS_HALT
 )paren
 (brace

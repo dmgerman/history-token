@@ -173,17 +173,41 @@ DECL|struct|stat64
 r_struct
 id|stat64
 (brace
+macro_line|#if defined(__BIG_ENDIAN__)
+DECL|member|__pad0b
+r_int
+r_char
+id|__pad0b
+(braket
+l_int|6
+)braket
+suffix:semicolon
 DECL|member|st_dev
 r_int
 r_int
 id|st_dev
 suffix:semicolon
+macro_line|#elif defined(__LITTLE_ENDIAN__)
+r_int
+r_int
+id|st_dev
+suffix:semicolon
+r_int
+r_char
+id|__pad0b
+(braket
+l_int|6
+)braket
+suffix:semicolon
+macro_line|#else
+macro_line|#error Must know endian to build stat64 structure!
+macro_line|#endif
 DECL|member|__pad0
 r_int
 r_char
 id|__pad0
 (braket
-l_int|10
+l_int|4
 )braket
 suffix:semicolon
 DECL|member|st_ino
@@ -211,17 +235,41 @@ r_int
 r_int
 id|st_gid
 suffix:semicolon
+macro_line|#if defined(__BIG_ENDIAN__)
+DECL|member|__pad3b
+r_int
+r_char
+id|__pad3b
+(braket
+l_int|6
+)braket
+suffix:semicolon
 DECL|member|st_rdev
 r_int
 r_int
 id|st_rdev
 suffix:semicolon
+macro_line|#else /* Must be little */
+DECL|member|st_rdev
+r_int
+r_int
+id|st_rdev
+suffix:semicolon
+DECL|member|__pad3b
+r_int
+r_char
+id|__pad3b
+(braket
+l_int|6
+)braket
+suffix:semicolon
+macro_line|#endif
 DECL|member|__pad3
 r_int
 r_char
 id|__pad3
 (braket
-l_int|10
+l_int|4
 )braket
 suffix:semicolon
 DECL|member|st_size
@@ -234,6 +282,20 @@ r_int
 r_int
 id|st_blksize
 suffix:semicolon
+macro_line|#if defined(__BIG_ENDIAN__)
+DECL|member|__pad4
+r_int
+r_int
+id|__pad4
+suffix:semicolon
+multiline_comment|/* Future possible st_blocks hi bits */
+DECL|member|st_blocks
+r_int
+r_int
+id|st_blocks
+suffix:semicolon
+multiline_comment|/* Number 512-byte blocks allocated. */
+macro_line|#else /* Must be little */
 DECL|member|st_blocks
 r_int
 r_int
@@ -245,7 +307,8 @@ r_int
 r_int
 id|__pad4
 suffix:semicolon
-multiline_comment|/* future possible st_blocks high bits */
+multiline_comment|/* Future possible st_blocks hi bits */
+macro_line|#endif
 DECL|member|st_atime
 r_int
 r_int

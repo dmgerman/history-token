@@ -2305,4 +2305,22 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|function|show_trace_task
+r_void
+id|show_trace_task
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Backtrace not yet implemented for SH.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 eof

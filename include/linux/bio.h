@@ -11,6 +11,8 @@ macro_line|#else
 DECL|macro|BIO_BUG_ON
 mdefine_line|#define BIO_BUG_ON
 macro_line|#endif
+DECL|macro|BIO_MAX_SECTORS
+mdefine_line|#define BIO_MAX_SECTORS&t;128
 multiline_comment|/*&n; * was unsigned short, but we might as well be ready for &gt; 64kB I/O pages&n; */
 DECL|struct|bio_vec
 r_struct
@@ -120,7 +122,7 @@ r_int
 r_int
 id|bi_size
 suffix:semicolon
-multiline_comment|/* total size in bytes */
+multiline_comment|/* residual I/O count */
 DECL|member|bi_max
 r_int
 r_int
