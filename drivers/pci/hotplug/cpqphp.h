@@ -2191,6 +2191,10 @@ r_int
 id|cpqhp_debug
 suffix:semicolon
 r_extern
+r_int
+id|cpqhp_legacy_mode
+suffix:semicolon
+r_extern
 r_struct
 id|controller
 op_star
