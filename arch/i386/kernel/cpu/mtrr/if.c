@@ -460,19 +460,6 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
-multiline_comment|/*  Can&squot;t seek (pwrite) on this device  */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 id|memset
 c_func
 (paren

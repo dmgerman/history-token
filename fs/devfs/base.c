@@ -661,6 +661,11 @@ id|stat_fops
 op_assign
 (brace
 dot
+id|open
+op_assign
+id|nonseekable_open
+comma
+dot
 id|read
 op_assign
 id|stat_read
@@ -676,6 +681,11 @@ id|file_operations
 id|devfsd_fops
 op_assign
 (brace
+dot
+id|open
+op_assign
+id|nonseekable_open
+comma
 dot
 id|read
 op_assign
@@ -8615,19 +8625,6 @@ comma
 id|current
 )paren
 suffix:semicolon
-multiline_comment|/*  Can&squot;t seek (pread) on this device  */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 multiline_comment|/*  Verify the task has grabbed the queue  */
 r_if
 c_cond
@@ -9591,19 +9588,6 @@ id|stat_num_bytes
 )paren
 op_plus
 l_int|1
-suffix:semicolon
-multiline_comment|/*  Can&squot;t seek (pread) on this device  */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
 suffix:semicolon
 r_if
 c_cond

@@ -321,7 +321,13 @@ op_assign
 id|s
 suffix:semicolon
 r_return
-l_int|0
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|filp
+)paren
 suffix:semicolon
 )brace
 r_static

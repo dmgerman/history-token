@@ -1937,19 +1937,6 @@ id|ppos
 r_int
 id|rv
 suffix:semicolon
-multiline_comment|/*  Can&squot;t seek (pwrite) on this device  */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2010,19 +1997,6 @@ l_int|0
 suffix:semicolon
 id|wait_queue_t
 id|wait
-suffix:semicolon
-multiline_comment|/*  Can&squot;t seek (pread) on this device  */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
 suffix:semicolon
 r_if
 c_cond
@@ -2247,7 +2221,13 @@ op_assign
 l_int|1
 suffix:semicolon
 r_return
-l_int|0
+id|nonseekable_open
+c_func
+(paren
+id|ino
+comma
+id|filep
+)paren
 suffix:semicolon
 r_default
 suffix:colon

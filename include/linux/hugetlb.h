@@ -45,6 +45,9 @@ op_star
 comma
 r_int
 op_star
+comma
+id|loff_t
+op_star
 )paren
 suffix:semicolon
 r_int

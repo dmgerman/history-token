@@ -81,6 +81,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 suffix:semicolon
 r_extern
@@ -1312,6 +1316,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_int
@@ -1458,7 +1466,8 @@ c_cond
 (paren
 multiline_comment|/*!table-&gt;maxlen ||*/
 (paren
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_logical_and
 op_logical_neg
 id|write
@@ -2179,7 +2188,8 @@ id|lenp
 op_sub_assign
 id|left
 suffix:semicolon
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 op_star
 id|lenp

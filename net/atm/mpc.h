@@ -226,17 +226,17 @@ id|qos
 )paren
 suffix:semicolon
 multiline_comment|/* Display QoS entries. This is for the procfs */
+r_struct
+id|seq_file
+suffix:semicolon
 r_void
 id|atm_mpoa_disp_qos
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|page
-comma
-id|ssize_t
-op_star
-id|len
+id|m
 )paren
 suffix:semicolon
 macro_line|#endif /* _MPC_H_ */

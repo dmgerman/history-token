@@ -414,7 +414,13 @@ c_func
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|file
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * &t;sh_wdt_close - Close the Device&n; *&n; * &t;@inode: inode of device&n; * &t;@file: file handle of device&n; *&n; * &t;Watchdog device is closed and stopped.&n; */
@@ -507,19 +513,6 @@ op_star
 id|ppos
 )paren
 (brace
-multiline_comment|/* Can&squot;t seek (pwrite) on this device */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 r_if
 c_cond
 (paren

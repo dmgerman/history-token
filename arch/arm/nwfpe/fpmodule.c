@@ -271,7 +271,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;NWFPE: %s[%d] takes exception %08x at %p from %08x&bslash;n&quot;
+l_string|&quot;NWFPE: %s[%d] takes exception %08x at %p from %08lx&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma

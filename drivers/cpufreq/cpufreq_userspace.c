@@ -320,6 +320,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_char
@@ -355,7 +359,8 @@ op_logical_neg
 id|left
 op_logical_or
 (paren
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_logical_and
 op_logical_neg
 id|write
@@ -512,7 +517,8 @@ id|lenp
 op_assign
 id|len
 suffix:semicolon
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 id|len
 suffix:semicolon
