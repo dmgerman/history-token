@@ -2641,6 +2641,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|destroy_proc_ide_interfaces
+r_static
 r_void
 id|destroy_proc_ide_interfaces
 c_func
@@ -2694,13 +2695,6 @@ id|hwif
 suffix:semicolon
 )brace
 )brace
-DECL|variable|destroy_proc_ide_interfaces
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|destroy_proc_ide_interfaces
-)paren
-suffix:semicolon
 r_extern
 r_struct
 id|seq_operations
