@@ -953,7 +953,7 @@ id|uInt
 id|n
 suffix:semicolon
 multiline_comment|/* number of bytes to look at */
-id|Bytef
+id|Byte
 op_star
 id|p
 suffix:semicolon
@@ -1216,7 +1216,7 @@ id|uInt
 id|t
 suffix:semicolon
 multiline_comment|/* temporary storage */
-id|Bytef
+id|Byte
 op_star
 id|p
 suffix:semicolon
@@ -1225,7 +1225,7 @@ id|uInt
 id|n
 suffix:semicolon
 multiline_comment|/* bytes available there */
-id|Bytef
+id|Byte
 op_star
 id|q
 suffix:semicolon
