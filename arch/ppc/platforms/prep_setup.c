@@ -2860,6 +2860,14 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|_machine
+op_eq
+id|_MACH_prep
+)paren
+(brace
 macro_line|#ifdef CONFIG_NVRAM
 id|request_region
 c_func
@@ -2912,6 +2920,7 @@ comma
 l_string|&quot;dma2&quot;
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
