@@ -8338,11 +8338,7 @@ l_string|&quot;ViCam based webcam connected&bslash;n&quot;
 suffix:semicolon
 id|interface
 op_assign
-op_amp
-id|intf-&gt;altsetting
-(braket
-l_int|0
-)braket
+id|intf-&gt;cur_altsetting
 suffix:semicolon
 id|DBG
 c_func

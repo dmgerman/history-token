@@ -3103,12 +3103,12 @@ id|u8
 op_star
 id|buf
 op_assign
-id|intf-&gt;altsetting-&gt;extra
+id|intf-&gt;cur_altsetting-&gt;extra
 suffix:semicolon
 r_int
 id|len
 op_assign
-id|intf-&gt;altsetting-&gt;extralen
+id|intf-&gt;cur_altsetting-&gt;extralen
 suffix:semicolon
 r_struct
 id|usb_interface_descriptor
@@ -3185,7 +3185,7 @@ multiline_comment|/* this assumes that if there&squot;s a non-RNDIS vendor varia
 id|rndis
 op_assign
 (paren
-id|intf-&gt;altsetting-&gt;desc.bInterfaceProtocol
+id|intf-&gt;cur_altsetting-&gt;desc.bInterfaceProtocol
 op_eq
 l_int|0xff
 )paren
@@ -3439,7 +3439,7 @@ multiline_comment|/* a data interface altsetting does the real i/o */
 id|d
 op_assign
 op_amp
-id|info-&gt;data-&gt;altsetting-&gt;desc
+id|info-&gt;data-&gt;cur_altsetting-&gt;desc
 suffix:semicolon
 r_if
 c_cond

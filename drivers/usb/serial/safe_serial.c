@@ -1852,7 +1852,7 @@ id|serial
 r_switch
 c_cond
 (paren
-id|serial-&gt;interface-&gt;altsetting-&gt;desc.bInterfaceProtocol
+id|serial-&gt;interface-&gt;cur_altsetting-&gt;desc.bInterfaceProtocol
 )paren
 (brace
 r_case

@@ -33,8 +33,6 @@ macro_line|#ifdef CONFIG_USB_STORAGE_JUMPSHOT
 macro_line|#include &quot;jumpshot.h&quot;
 macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 multiline_comment|/* Some informational data */
@@ -1582,6 +1580,13 @@ c_cond
 id|msg
 op_ge
 l_int|0
+op_logical_and
+op_logical_neg
+(paren
+id|unusual_dev-&gt;flags
+op_amp
+id|US_FL_NEED_OVERRIDE
+)paren
 )paren
 id|printk
 c_func

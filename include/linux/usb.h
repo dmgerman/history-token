@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/errno.h&gt;        /* for -ENODEV */
 macro_line|#include &lt;linux/delay.h&gt;&t;/* for mdelay() */
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* for in_interrupt() */
 macro_line|#include &lt;linux/list.h&gt;&t;&t;/* for struct list_head */
+macro_line|#include &lt;linux/kref.h&gt;&t;&t;/* for struct kref */
 macro_line|#include &lt;linux/device.h&gt;&t;/* for struct device */
 macro_line|#include &lt;linux/fs.h&gt;&t;&t;/* for struct file_operations */
 macro_line|#include &lt;linux/completion.h&gt;&t;/* for struct completion */
@@ -242,7 +243,38 @@ suffix:semicolon
 multiline_comment|/* this maximum is arbitrary */
 DECL|macro|USB_MAXINTERFACES
 mdefine_line|#define USB_MAXINTERFACES&t;32
-multiline_comment|/**&n; * struct usb_host_config - representation of a device&squot;s configuration&n; * @desc: the device&squot;s configuration descriptor.&n; * @interface: array of usb_interface structures, one for each interface&n; *&t;in the configuration.  The number of interfaces is stored in&n; *&t;desc.bNumInterfaces.&n; * @extra: pointer to buffer containing all extra descriptors associated&n; *&t;with this configuration (those preceding the first interface&n; *&t;descriptor).&n; * @extralen: length of the extra descriptors buffer.&n; *&n; * USB devices may have multiple configurations, but only one can be active&n; * at any time.  Each encapsulates a different operational environment;&n; * for example, a dual-speed device would have separate configurations for&n; * full-speed and high-speed operation.  The number of configurations&n; * available is stored in the device descriptor as bNumConfigurations.&n; *&n; * A configuration can contain multiple interfaces.  Each corresponds to&n; * a different function of the USB device, and all are available whenever&n; * the configuration is active.  The USB standard says that interfaces&n; * are supposed to be numbered from 0 to desc.bNumInterfaces-1, but a lot&n; * of devices get this wrong.  In addition, the interface array is not&n; * guaranteed to be sorted in numerical order.  Use usb_ifnum_to_if() to&n; * look up an interface entry based on its number.&n; *&n; * Device drivers should not attempt to activate configurations.  The choice&n; * of which configuration to install is a policy decision based on such&n; * considerations as available power, functionality provided, and the user&squot;s&n; * desires (expressed through hotplug scripts).  However, drivers can call&n; * usb_reset_configuration() to reinitialize the current configuration and&n; * all its interfaces.&n; */
+multiline_comment|/**&n; * struct usb_interface_cache - long-term representation of a device interface&n; * @num_altsetting: number of altsettings defined.&n; * @ref: reference counter.&n; * @altsetting: variable-length array of interface structures, one for&n; *&t;each alternate setting that may be selected.  Each one includes a&n; *&t;set of endpoint configurations.  They will be in no particular order.&n; *&n; * These structures persist for the lifetime of a usb_device, unlike&n; * struct usb_interface (which persists only as long as its configuration&n; * is installed).  The altsetting arrays can be accessed through these&n; * structures at any time, permitting comparison of configurations and&n; * providing support for the /proc/bus/usb/devices pseudo-file.&n; */
+DECL|struct|usb_interface_cache
+r_struct
+id|usb_interface_cache
+(brace
+DECL|member|num_altsetting
+r_int
+id|num_altsetting
+suffix:semicolon
+multiline_comment|/* number of alternate settings */
+DECL|member|ref
+r_struct
+id|kref
+id|ref
+suffix:semicolon
+multiline_comment|/* reference counter */
+multiline_comment|/* variable-length array of alternate settings for this interface,&n;&t; * stored in no particular order */
+DECL|member|altsetting
+r_struct
+id|usb_host_interface
+id|altsetting
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|ref_to_usb_interface_cache
+mdefine_line|#define&t;ref_to_usb_interface_cache(r) &bslash;&n;&t;&t;container_of(r, struct usb_interface_cache, ref)
+DECL|macro|altsetting_to_usb_interface_cache
+mdefine_line|#define&t;altsetting_to_usb_interface_cache(a) &bslash;&n;&t;&t;container_of(a, struct usb_interface_cache, altsetting[0])
+multiline_comment|/**&n; * struct usb_host_config - representation of a device&squot;s configuration&n; * @desc: the device&squot;s configuration descriptor.&n; * @interface: array of pointers to usb_interface structures, one for each&n; *&t;interface in the configuration.  The number of interfaces is stored&n; *&t;in desc.bNumInterfaces.  These pointers are valid only while the&n; *&t;the configuration is active.&n; * @intf_cache: array of pointers to usb_interface_cache structures, one&n; *&t;for each interface in the configuration.  These structures exist&n; *&t;for the entire life of the device.&n; * @extra: pointer to buffer containing all extra descriptors associated&n; *&t;with this configuration (those preceding the first interface&n; *&t;descriptor).&n; * @extralen: length of the extra descriptors buffer.&n; *&n; * USB devices may have multiple configurations, but only one can be active&n; * at any time.  Each encapsulates a different operational environment;&n; * for example, a dual-speed device would have separate configurations for&n; * full-speed and high-speed operation.  The number of configurations&n; * available is stored in the device descriptor as bNumConfigurations.&n; *&n; * A configuration can contain multiple interfaces.  Each corresponds to&n; * a different function of the USB device, and all are available whenever&n; * the configuration is active.  The USB standard says that interfaces&n; * are supposed to be numbered from 0 to desc.bNumInterfaces-1, but a lot&n; * of devices get this wrong.  In addition, the interface array is not&n; * guaranteed to be sorted in numerical order.  Use usb_ifnum_to_if() to&n; * look up an interface entry based on its number.&n; *&n; * Device drivers should not attempt to activate configurations.  The choice&n; * of which configuration to install is a policy decision based on such&n; * considerations as available power, functionality provided, and the user&squot;s&n; * desires (expressed through hotplug scripts).  However, drivers can call&n; * usb_reset_configuration() to reinitialize the current configuration and&n; * all its interfaces.&n; */
 DECL|struct|usb_host_config
 r_struct
 id|usb_host_config
@@ -258,6 +290,16 @@ r_struct
 id|usb_interface
 op_star
 id|interface
+(braket
+id|USB_MAXINTERFACES
+)braket
+suffix:semicolon
+multiline_comment|/* Interface information available even when this is not the&n;&t; * active configuration */
+DECL|member|intf_cache
+r_struct
+id|usb_interface_cache
+op_star
+id|intf_cache
 (braket
 id|USB_MAXINTERFACES
 )braket
@@ -1196,16 +1238,17 @@ r_struct
 id|urb
 (brace
 multiline_comment|/* private, usb core and host controller only fields in the urb */
+DECL|member|kref
+r_struct
+id|kref
+id|kref
+suffix:semicolon
+multiline_comment|/* reference count of the URB */
 DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
 multiline_comment|/* lock for the URB */
-DECL|member|count
-id|atomic_t
-id|count
-suffix:semicolon
-multiline_comment|/* reference count of the URB */
 DECL|member|hcpriv
 r_void
 op_star

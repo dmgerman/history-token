@@ -1419,55 +1419,6 @@ id|US_FL_SINGLE_LUN
 )paren
 comma
 macro_line|#endif
-multiline_comment|/* Following three Minolta cameras reported by Martin Pool&n; * &lt;mbp@sourcefrog.net&gt;.  Originally discovered by Kedar Petankar,&n; * Matthew Geier, Mikael Lofj&quot;ard, Marcel de Boer.&n; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0686
-comma
-l_int|0x4006
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;Minolta&quot;
-comma
-l_string|&quot;DiMAGE 7&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-comma
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0686
-comma
-l_int|0x400f
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;Minolta&quot;
-comma
-l_string|&quot;DiMAGE 7Hi&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-comma
 multiline_comment|/* Submitted by Benny Sjostrand &lt;benny@hostmobility.com&gt; */
 id|UNUSUAL_DEV
 c_func
@@ -2039,6 +1990,8 @@ id|US_PR_CB
 comma
 l_int|NULL
 comma
+id|US_FL_NEED_OVERRIDE
+op_or
 id|US_FL_FIX_INQUIRY
 )paren
 comma
@@ -2231,9 +2184,9 @@ l_string|&quot;IBM&quot;
 comma
 l_string|&quot;IBM USB Memory Key&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
