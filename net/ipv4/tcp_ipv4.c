@@ -10045,6 +10045,10 @@ id|seq
 op_member_access_from_pointer
 r_private
 suffix:semicolon
+id|st-&gt;state
+op_assign
+id|TCP_SEQ_STATE_LISTENING
+suffix:semicolon
 id|st-&gt;num
 op_assign
 l_int|0
