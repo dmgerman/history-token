@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
@@ -629,30 +630,32 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_int
-r_int
-id|fixup
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|entry
 suffix:semicolon
 multiline_comment|/* Are we prepared to handle this fault?  */
 r_if
 c_cond
 (paren
 (paren
-id|fixup
+id|entry
 op_assign
-id|search_exception_table
+id|search_exception_tables
 c_func
 (paren
 id|regs-&gt;nip
 )paren
 )paren
 op_ne
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|regs-&gt;nip
 op_assign
-id|fixup
+id|entry-&gt;fixup
 suffix:semicolon
 r_return
 suffix:semicolon
