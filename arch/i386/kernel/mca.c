@@ -442,7 +442,7 @@ suffix:semicolon
 DECL|macro|MCA_STANDARD_RESOURCES
 mdefine_line|#define MCA_STANDARD_RESOURCES&t;(sizeof(mca_standard_resources)/sizeof(struct resource))
 DECL|function|mca_init
-r_void
+r_int
 id|__init
 id|mca_init
 c_func
@@ -456,10 +456,6 @@ id|i
 comma
 id|j
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/* WARNING: Be careful when making changes here. Putting an adapter&n;&t; * and the motherboard simultaneously into setup mode may result in&n;&t; * damage to chips (according to The Indispensible PC Hardware Book&n;&t; * by Hans-Peter Messmer). Also, we disable system interrupts (so&n;&t; * that we are not disturbed in the middle of this).&n;&t; */
 multiline_comment|/* Make sure the MCA bus is present */
 r_if
@@ -470,11 +466,14 @@ id|MCA_bus
 )paren
 (brace
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Micro Channel bus detected.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -509,10 +508,13 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Failed to allocate memory for mca_info!&quot;
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|memset
@@ -957,6 +959,9 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|mca_init
 id|subsys_initcall
@@ -990,6 +995,7 @@ id|MCA_MAX_SLOT_NR
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;NMI: caused by MCA adapter in slot %d (%s)&bslash;n&quot;
 comma
 id|slot
@@ -1017,6 +1023,7 @@ id|MCA_INTEGSCSI
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;NMI: caused by MCA integrated SCSI adapter (%s)&bslash;n&quot;
 comma
 id|mca_info-&gt;slot
@@ -1040,6 +1047,7 @@ id|MCA_INTEGVIDEO
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;NMI: caused by MCA integrated video adapter (%s)&bslash;n&quot;
 comma
 id|mca_info-&gt;slot
@@ -1063,6 +1071,7 @@ id|MCA_MOTHERBOARD
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;NMI: caused by motherboard (%s)&bslash;n&quot;
 comma
 id|mca_info-&gt;slot
@@ -1110,6 +1119,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;NMI: POS 6 = 0x%x, POS 7 = 0x%x&bslash;n&quot;
 comma
 id|pos6
@@ -1152,7 +1162,7 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/* Bit 7 of POS 5 is reset when this adapter has a hardware&n;&t; * error. Bit 7 it reset if there&squot;s error information&n;&t; * available in POS 6 and 7.&n;&t; */
+multiline_comment|/* Bit 7 of POS 5 is reset when this adapter has a hardware&n;&t;&t; * error. Bit 7 it reset if there&squot;s error information&n;&t;&t; * available in POS 6 and 7.&n;&t;&t; */
 id|pos5
 op_assign
 id|mca_read_pos
