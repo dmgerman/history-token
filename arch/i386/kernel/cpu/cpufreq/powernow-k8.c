@@ -940,7 +940,7 @@ id|smp_processor_id
 c_func
 (paren
 )paren
-suffix:semicolon
+comma
 id|data-&gt;currfid
 comma
 id|data-&gt;currvid
