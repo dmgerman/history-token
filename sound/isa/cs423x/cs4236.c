@@ -953,6 +953,27 @@ l_string|&quot;CSC0103&quot;
 )brace
 )brace
 comma
+multiline_comment|/* Unknown Intel mainboard - CS4235 */
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;CSC0225&quot;
+comma
+dot
+id|devs
+op_assign
+(brace
+(brace
+l_string|&quot;CSC0100&quot;
+)brace
+comma
+(brace
+l_string|&quot;CSC0110&quot;
+)brace
+)brace
+)brace
+comma
 multiline_comment|/* Genius Sound Maker 3DJ - CS4237B */
 (brace
 dot
