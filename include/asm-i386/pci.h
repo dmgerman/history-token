@@ -28,6 +28,8 @@ DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x1000
 DECL|macro|PCIBIOS_MIN_MEM
 mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;(pci_mem_start)
+DECL|macro|PCIBIOS_MIN_CARDBUS_IO
+mdefine_line|#define PCIBIOS_MIN_CARDBUS_IO&t;0x4000
 r_void
 id|pcibios_config_init
 c_func
