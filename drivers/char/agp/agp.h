@@ -763,6 +763,8 @@ DECL|macro|INTEL_I7505_ERRSTS
 mdefine_line|#define INTEL_I7505_ERRSTS&t;0x42
 DECL|macro|INTEL_I7505_AGPCTRL
 mdefine_line|#define INTEL_I7505_AGPCTRL&t;0x70
+DECL|macro|INTEL_I7505_MCHCFG
+mdefine_line|#define INTEL_I7505_MCHCFG&t;0x50
 multiline_comment|/* VIA register */
 DECL|macro|VIA_APBASE
 mdefine_line|#define VIA_APBASE&t;0x10
