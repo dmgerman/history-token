@@ -2995,10 +2995,10 @@ mdefine_line|#define CC_REG_SATURATE&t;C_00000010
 DECL|macro|CC_REG_NONZERO
 mdefine_line|#define CC_REG_NONZERO&t;C_00000100
 multiline_comment|/* FX buses */
-DECL|macro|FXBUS_WAVE_LEFT
-mdefine_line|#define FXBUS_WAVE_LEFT&t;&t;0x00
-DECL|macro|FXBUS_WAVE_RIGHT
-mdefine_line|#define FXBUS_WAVE_RIGHT&t;0x01
+DECL|macro|FXBUS_PCM_LEFT
+mdefine_line|#define FXBUS_PCM_LEFT&t;&t;0x00
+DECL|macro|FXBUS_PCM_RIGHT
+mdefine_line|#define FXBUS_PCM_RIGHT&t;&t;0x01
 DECL|macro|FXBUS_PCM_LEFT_REAR
 mdefine_line|#define FXBUS_PCM_LEFT_REAR&t;0x02
 DECL|macro|FXBUS_PCM_RIGHT_REAR
@@ -3011,10 +3011,10 @@ DECL|macro|FXBUS_PCM_CENTER
 mdefine_line|#define FXBUS_PCM_CENTER&t;0x06
 DECL|macro|FXBUS_PCM_LFE
 mdefine_line|#define FXBUS_PCM_LFE&t;&t;0x07
-DECL|macro|FXBUS_PCM_LEFT
-mdefine_line|#define FXBUS_PCM_LEFT&t;&t;0x08
-DECL|macro|FXBUS_PCM_RIGHT
-mdefine_line|#define FXBUS_PCM_RIGHT&t;&t;0x09
+DECL|macro|FXBUS_PCM_LEFT_FRONT
+mdefine_line|#define FXBUS_PCM_LEFT_FRONT&t;0x08
+DECL|macro|FXBUS_PCM_RIGHT_FRONT
+mdefine_line|#define FXBUS_PCM_RIGHT_FRONT&t;0x09
 DECL|macro|FXBUS_MIDI_REVERB
 mdefine_line|#define FXBUS_MIDI_REVERB&t;0x0c
 DECL|macro|FXBUS_MIDI_CHORUS

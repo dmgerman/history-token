@@ -7369,7 +7369,7 @@ comma
 id|A_FXBUS
 c_func
 (paren
-id|FXBUS_PCM_LEFT
+id|FXBUS_PCM_LEFT_FRONT
 )paren
 )paren
 suffix:semicolon
@@ -7404,7 +7404,7 @@ comma
 id|A_FXBUS
 c_func
 (paren
-id|FXBUS_PCM_RIGHT
+id|FXBUS_PCM_RIGHT_FRONT
 )paren
 )paren
 suffix:semicolon
@@ -7656,7 +7656,7 @@ comma
 id|A_FXBUS
 c_func
 (paren
-id|FXBUS_WAVE_LEFT
+id|FXBUS_PCM_LEFT
 )paren
 )paren
 suffix:semicolon
@@ -7691,7 +7691,7 @@ comma
 id|A_FXBUS
 c_func
 (paren
-id|FXBUS_WAVE_RIGHT
+id|FXBUS_PCM_RIGHT
 )paren
 )paren
 suffix:semicolon
