@@ -228,14 +228,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|rows
-DECL|variable|cols
-r_int
-id|rows
-comma
-id|cols
-suffix:semicolon
 DECL|variable|execute_command
+r_static
 r_char
 op_star
 id|execute_command
@@ -1612,6 +1606,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|variable|initcall_debug
+r_static
 r_int
 id|__initdata
 id|initcall_debug

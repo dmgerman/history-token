@@ -130,8 +130,9 @@ id|r1_bio
 )paren
 suffix:semicolon
 )brace
+singleline_comment|//#define RESYNC_BLOCK_SIZE (64*1024)
 DECL|macro|RESYNC_BLOCK_SIZE
-mdefine_line|#define RESYNC_BLOCK_SIZE (64*1024)
+mdefine_line|#define RESYNC_BLOCK_SIZE PAGE_SIZE
 DECL|macro|RESYNC_SECTORS
 mdefine_line|#define RESYNC_SECTORS (RESYNC_BLOCK_SIZE &gt;&gt; 9)
 DECL|macro|RESYNC_PAGES

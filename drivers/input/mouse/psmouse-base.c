@@ -65,7 +65,7 @@ r_int
 id|psmouse_max_proto
 op_assign
 op_minus
-l_int|1UL
+l_int|1U
 suffix:semicolon
 id|module_param
 c_func

@@ -90,6 +90,8 @@ mdefine_line|#define WAKE_SECONDARY_VIA_INIT
 macro_line|#endif
 DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID&t;(0xff)
+DECL|macro|NO_IOAPIC_CHECK
+mdefine_line|#define NO_IOAPIC_CHECK (0)
 DECL|function|check_apicid_used
 r_static
 r_inline
