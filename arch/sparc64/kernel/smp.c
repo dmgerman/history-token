@@ -4457,7 +4457,7 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Guarentee that the following sequences execute&n;&t;&t; * uninterrupted.&n;&t;&t; */
+multiline_comment|/* Guarantee that the following sequences execute&n;&t;&t; * uninterrupted.&n;&t;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -4560,7 +4560,7 @@ id|cpu
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Guarentee that the following sequences execute&n;&t; * uninterrupted.&n;&t; */
+multiline_comment|/* Guarantee that the following sequences execute&n;&t; * uninterrupted.&n;&t; */
 id|__asm__
 id|__volatile__
 c_func

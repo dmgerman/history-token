@@ -2,7 +2,7 @@ multiline_comment|/* $Id: ns87303.h,v 1.3 2000/01/09 15:16:34 ecd Exp $&n; * ns8
 macro_line|#ifndef _SPARC_NS87303_H
 DECL|macro|_SPARC_NS87303_H
 mdefine_line|#define _SPARC_NS87303_H 1
-multiline_comment|/*&n; * Controll Register Index Values&n; */
+multiline_comment|/*&n; * Control Register Index Values&n; */
 DECL|macro|FER
 mdefine_line|#define FER&t;0x00
 DECL|macro|FAR
@@ -75,7 +75,7 @@ DECL|macro|TUP_EPP_TIMO
 mdefine_line|#define TUP_EPP_TIMO&t;0x02&t;/* Enable EPP timeout IRQ                    */
 multiline_comment|/* Advanced SuperIO Config Register (ASC) bits */
 DECL|macro|ASC_LPT_IRQ7
-mdefine_line|#define ASC_LPT_IRQ7&t;0x01&t;/* Allways use IRQ7 for LPT                  */
+mdefine_line|#define ASC_LPT_IRQ7&t;0x01&t;/* Always use IRQ7 for LPT                  */
 DECL|macro|ASC_DRV2_SEL
 mdefine_line|#define ASC_DRV2_SEL&t;0x02&t;/* Logical Drive Exchange controlled by TDR  */
 DECL|macro|FER_RESERVED

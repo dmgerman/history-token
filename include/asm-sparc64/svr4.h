@@ -282,7 +282,7 @@ id|SVR4_SS_DISABLE
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* signal stack exection place, unsupported */
+multiline_comment|/* signal stack execution place, unsupported */
 DECL|struct|svr4_stack_t
 r_typedef
 r_struct

@@ -32,7 +32,7 @@ mdefine_line|#define CHAFSR_IVC&t;&t;0x0000400000000000
 multiline_comment|/* Uncorrectable system bus data ECC error for read of interrupt vector */
 DECL|macro|CHAFSR_IVU
 mdefine_line|#define CHAFSR_IVU&t;&t;0x0000200000000000
-multiline_comment|/* Unmappeed error from system bus */
+multiline_comment|/* Unmapped error from system bus */
 DECL|macro|CHAFSR_TO
 mdefine_line|#define CHAFSR_TO&t;&t;0x0000100000000000
 multiline_comment|/* Bus error response from system bus */
@@ -80,7 +80,7 @@ DECL|macro|CHAFSR_E_SYNDROME
 mdefine_line|#define CHAFSR_E_SYNDROME&t;0x00000000000001ff
 DECL|macro|CHAFSR_E_SYNDROME_SHIFT
 mdefine_line|#define CHAFSR_E_SYNDROME_SHIFT&t;0
-multiline_comment|/* The AFSR must be explicitly cleared by software, it is not cleared automatically&n; * by a read.  Writes to bits &lt;51:33&gt; with bits set will clear the corresponding&n; * bits in the AFSR.  Bits assosciated with disrupting traps must be cleared before&n; * interrupts are re-enabled to prevent multiple traps for the same error.  I.e.&n; * PSTATE.IE and AFSR bits control delivery of disrupting traps.&n; *&n; * Since there is only one AFAR, when multiple events have been logged by the&n; * bits in the AFSR, at most one of these events will have its status captured&n; * in the AFAR.  The highest priority of those event bits will get AFAR logging.&n; * The AFAR will be unlocked and available to capture the address of another event&n; * as soon as the one bit in AFSR that corresponds to the event logged in AFAR is&n; * cleared.  For example, if AFSR.CE is detected, then AFSR.UE (which overwrites&n; * the AFAR), and AFSR.UE is cleared by not AFSR.CE, then the AFAR will be unlocked&n; * and ready for another event, even though AFSR.CE is still set.  The same rules&n; * also apply to the M_SYNDROME and E_SYNDROME fields of the AFSR.&n; */
+multiline_comment|/* The AFSR must be explicitly cleared by software, it is not cleared automatically&n; * by a read.  Writes to bits &lt;51:33&gt; with bits set will clear the corresponding&n; * bits in the AFSR.  Bits associated with disrupting traps must be cleared before&n; * interrupts are re-enabled to prevent multiple traps for the same error.  I.e.&n; * PSTATE.IE and AFSR bits control delivery of disrupting traps.&n; *&n; * Since there is only one AFAR, when multiple events have been logged by the&n; * bits in the AFSR, at most one of these events will have its status captured&n; * in the AFAR.  The highest priority of those event bits will get AFAR logging.&n; * The AFAR will be unlocked and available to capture the address of another event&n; * as soon as the one bit in AFSR that corresponds to the event logged in AFAR is&n; * cleared.  For example, if AFSR.CE is detected, then AFSR.UE (which overwrites&n; * the AFAR), and AFSR.UE is cleared by not AFSR.CE, then the AFAR will be unlocked&n; * and ready for another event, even though AFSR.CE is still set.  The same rules&n; * also apply to the M_SYNDROME and E_SYNDROME fields of the AFSR.&n; */
 multiline_comment|/* Software bit set by linux trap handlers to indicate that the trap was&n; * signalled at %tl &gt;= 1.&n; */
 DECL|macro|CHAFSR_TL1
 mdefine_line|#define CHAFSR_TL1&t;&t;0x8000000000000000
