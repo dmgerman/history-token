@@ -5007,13 +5007,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|variable|do_execve
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|do_execve
-)paren
-suffix:semicolon
 DECL|function|set_binfmt
 r_int
 id|set_binfmt
