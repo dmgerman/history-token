@@ -1151,10 +1151,10 @@ op_ge
 id|chip-&gt;buffer_size
 )paren
 (brace
-id|printk
+id|snd_printk
 c_func
 (paren
-l_string|&quot;nm256: write_buffer invalid offset = %d size = %d&bslash;n&quot;
+l_string|&quot;write_buffer invalid offset = %d size = %d&bslash;n&quot;
 comma
 id|offset
 comma
@@ -5678,28 +5678,28 @@ id|force_load
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_ERR
 l_string|&quot;nm256: no ac97 is found!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_ERR
 l_string|&quot;  force the driver to load by passing in the module parameter&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_ERR
 l_string|&quot;    snd_force_ac97=1&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_ERR
 l_string|&quot;  or try sb16 or cs423x drivers instead.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5855,10 +5855,11 @@ id|chip-&gt;buffer_addr
 op_add_assign
 id|chip-&gt;buffer_start
 suffix:semicolon
-id|snd_printd
+id|printk
 c_func
 (paren
-l_string|&quot;NM256: Mapping port 1 from 0x%x - 0x%x&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;nm256: Mapping port 1 from 0x%x - 0x%x&bslash;n&quot;
 comma
 id|chip-&gt;buffer_start
 comma
@@ -6678,9 +6679,10 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;NeoMagic 256 audio soundchip not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon

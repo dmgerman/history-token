@@ -1638,6 +1638,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to register hardware dependant device %i:%i&bslash;n&quot;
 comma
 id|hwdep-&gt;card-&gt;number
@@ -1694,6 +1695,7 @@ l_int|0
 (brace
 id|snd_printk
 (paren
+id|KERN_WARNING
 l_string|&quot;only hwdep device 0 can be registered as OSS direct FM device!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1724,6 +1726,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to register OSS compatibility device %i:%i&bslash;n&quot;
 comma
 id|hwdep-&gt;card-&gt;number

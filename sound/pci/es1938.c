@@ -8178,10 +8178,11 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
-l_string|&quot;OPL3 not detected at 0x%lx&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;es1938: OPL3 not detected at 0x%lx&bslash;n&quot;
 comma
 id|SLSB_REG
 c_func
@@ -8285,10 +8286,11 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
-l_string|&quot;unable to initialize MPU-401&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;es1938: unable to initialize MPU-401&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8468,9 +8470,10 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ESS Solo-1 soundcard not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon

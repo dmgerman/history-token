@@ -388,9 +388,10 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;MPU401 not detected at 0x%lx&bslash;n&quot;
 comma
 id|snd_port
@@ -586,9 +587,10 @@ id|cards
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;MPU-401 device not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon

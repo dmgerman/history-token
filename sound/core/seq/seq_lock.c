@@ -193,6 +193,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;seq_lock: lock trouble [counter = %d] in %s:%d&bslash;n&quot;
 comma
 id|atomic_read
@@ -232,6 +233,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;seq_lock: timeout [%d left] in %s:%d&bslash;n&quot;
 comma
 id|atomic_read

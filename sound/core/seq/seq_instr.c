@@ -555,6 +555,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;instrument free problem&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1011,6 +1012,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;instrument free problem&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1496,6 +1498,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;free_use: fatal!!! use = %i, name = &squot;%s&squot;&bslash;n&quot;
 comma
 id|instr-&gt;use

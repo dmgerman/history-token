@@ -1087,6 +1087,7 @@ id|DRIVER_LOADED
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;driver_register: driver &squot;%s&squot; already exists&bslash;n&quot;
 comma
 id|id
@@ -1373,6 +1374,7 @@ id|DRIVER_LOCKED
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;driver_unregister: cannot unload driver &squot;%s&squot;: status=%x&bslash;n&quot;
 comma
 id|id
@@ -1450,6 +1452,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;free_driver: init_devices &gt; 0!! (%d)&bslash;n&quot;
 comma
 id|ops-&gt;num_init_devices
@@ -1633,17 +1636,12 @@ id|dev-&gt;argsize
 id|snd_printk
 c_func
 (paren
-l_string|&quot;incompatible device &squot;%s&squot; for plug-in &squot;%s&squot;&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;incompatible device &squot;%s&squot; for plug-in &squot;%s&squot; (%d %d)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|ops-&gt;id
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot; %d %d&bslash;n&quot;
 comma
 id|ops-&gt;argsize
 comma
@@ -1682,6 +1680,7 @@ r_else
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;init_device failed: %s: %s&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1749,11 +1748,16 @@ id|dev-&gt;argsize
 id|snd_printk
 c_func
 (paren
-l_string|&quot;incompatible device &squot;%s&squot; for plug-in &squot;%s&squot;&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;incompatible device &squot;%s&squot; for plug-in &squot;%s&squot; (%d %d)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|ops-&gt;id
+comma
+id|ops-&gt;argsize
+comma
+id|dev-&gt;argsize
 )paren
 suffix:semicolon
 r_return
@@ -1801,6 +1805,7 @@ r_else
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;free_device failed: %s: %s&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2047,6 +2052,7 @@ id|num_ops
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;drivers not released (%d)&bslash;n&quot;
 comma
 id|num_ops

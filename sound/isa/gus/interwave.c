@@ -5739,9 +5739,10 @@ r_continue
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;InterWave soundcard #%i not found at 0x%lx or device busy&bslash;n&quot;
 comma
 id|dev
@@ -5786,9 +5787,10 @@ id|cards
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;InterWave soundcard not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon

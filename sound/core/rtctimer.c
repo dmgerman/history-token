@@ -421,6 +421,7 @@ l_int|8192
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;rtctimer: invalid frequency %d&bslash;n&quot;
 comma
 id|rtctimer_freq
@@ -458,6 +459,7 @@ id|order
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;rtctimer: invalid frequency %d&bslash;n&quot;
 comma
 id|rtctimer_freq

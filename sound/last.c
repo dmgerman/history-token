@@ -23,6 +23,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;ALSA device list:&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -54,6 +55,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;  #%i: %s&bslash;n&quot;
 comma
 id|idx
@@ -80,6 +82,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;  No soundcards found.&bslash;n&quot;
 )paren
 suffix:semicolon

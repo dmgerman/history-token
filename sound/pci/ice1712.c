@@ -8228,6 +8228,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Consumer PCM code does not work well at the moment --jk&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -12069,9 +12070,10 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ice1712: cannot initialize ac97 for consumer, skipped&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -12182,9 +12184,10 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ice1712: cannot initialize pro ac97, skipped&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -23143,9 +23146,10 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ICE1712 soundcard not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon

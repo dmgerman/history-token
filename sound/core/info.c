@@ -1855,6 +1855,7 @@ id|data-&gt;wbuffer-&gt;error
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;data write error to %s (%i)&bslash;n&quot;
 comma
 id|entry-&gt;name

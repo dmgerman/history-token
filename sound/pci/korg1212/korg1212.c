@@ -7590,7 +7590,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|PRINTK
+id|snd_printk
 c_func
 (paren
 l_string|&quot;unable to grab region 0x%lx-0x%lx&bslash;n&quot;
@@ -7629,7 +7629,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|PRINTK
+id|snd_printk
 c_func
 (paren
 l_string|&quot;unable to grab region 0x%lx-0x%lx&bslash;n&quot;
@@ -7668,7 +7668,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|PRINTK
+id|snd_printk
 c_func
 (paren
 l_string|&quot;unable to grab region 0x%lx-0x%lx&bslash;n&quot;
@@ -7709,7 +7709,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|PRINTK
+id|snd_printk
 c_func
 (paren
 l_string|&quot;unable to remap memory region 0x%lx-0x%lx&bslash;n&quot;
@@ -7756,7 +7756,7 @@ c_cond
 id|err
 )paren
 (brace
-id|PRINTK
+id|snd_printk
 c_func
 (paren
 l_string|&quot;unable to grab IRQ %d&bslash;n&quot;
@@ -7993,7 +7993,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|PRINTK
+id|snd_printk
 c_func
 (paren
 l_string|&quot;can not allocate shared buffer memory (%d bytes)&bslash;n&quot;
@@ -8068,7 +8068,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|PRINTK
+id|snd_printk
 c_func
 (paren
 l_string|&quot;can not allocate play data buffer memory (%d bytes)&bslash;n&quot;
@@ -8127,7 +8127,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|PRINTK
+id|snd_printk
 c_func
 (paren
 l_string|&quot;can not allocate record data buffer memory (%d bytes)&bslash;n&quot;
@@ -8281,7 +8281,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|PRINTK
+id|snd_printk
 c_func
 (paren
 l_string|&quot;can not allocate dsp code memory (%d bytes)&bslash;n&quot;
@@ -8376,9 +8376,10 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-id|PRINTK
+id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;dspMemPhy       = %08x U[%08x]&bslash;n&quot;
 l_string|&quot;PlayDataPhy     = %08x L[%08x]&bslash;n&quot;
 l_string|&quot;RecDataPhy      = %08x L[%08x]&bslash;n&quot;
@@ -9225,9 +9226,10 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|PRINTK
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;No Korg 1212IO cards found&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -2955,10 +2955,11 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|snd_printk
+id|printk
 c_func
 (paren
-l_string|&quot;no MPU-401device at 0x%lx ?&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;als4000: no MPU-401device at 0x%lx ?&bslash;n&quot;
 comma
 id|gcr
 op_plus
@@ -3050,10 +3051,11 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
-l_string|&quot;no OPL device at 0x%lx-0x%lx ?&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;als4000: no OPL device at 0x%lx-0x%lx ?&bslash;n&quot;
 comma
 id|gcr
 op_plus
@@ -3263,9 +3265,10 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;no ALS4000 based soundcards found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon

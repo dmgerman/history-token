@@ -772,10 +772,11 @@ l_int|NULL
 OL
 l_int|0
 )paren
-id|snd_printk
+id|printk
 c_func
 (paren
-l_string|&quot;MPU401 not detected&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;cs4231: MPU401 not detected&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -943,9 +944,10 @@ id|cards
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;CS4231 soundcard not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon

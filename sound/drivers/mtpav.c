@@ -2937,9 +2937,10 @@ c_func
 id|mtp_card
 )paren
 suffix:semicolon
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Motu MidiTimePiece on parallel port irq: %d ioport: 0x%lx&bslash;n&quot;
 comma
 id|snd_irq

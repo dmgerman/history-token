@@ -1075,6 +1075,7 @@ suffix:colon
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Seq: Trying to free unused client %d&bslash;n&quot;
 comma
 id|client-&gt;number
@@ -1110,6 +1111,7 @@ suffix:colon
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Seq: Trying to free client %d with undefined type = %d&bslash;n&quot;
 comma
 id|client-&gt;number

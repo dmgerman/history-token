@@ -316,6 +316,7 @@ id|snd_ecards_limit
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;card %i is out of range (0-%i)&bslash;n&quot;
 comma
 id|idx
@@ -671,6 +672,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to free all devices (pre)&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -693,6 +695,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to free all devices (normal)&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -713,6 +716,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to unregister control minors&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -735,6 +739,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to free all devices (post)&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -774,6 +779,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;unable to unregister card info&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -847,8 +847,8 @@ DECL|macro|REG53
 mdefine_line|#define REG53&t;&t;&t;0x53&t;&t;/* DO NOT PROGRAM THIS REGISTER!!! MAY DESTROY CHIP */
 DECL|macro|A_DBG
 mdefine_line|#define A_DBG&t;&t;&t; 0x53
-DECL|macro|A_DBG_SINGLE_STEP_ADDR
-mdefine_line|#define A_DBG_SINGLE_STEP_ADDR&t; 0x00020000&t;/* Set to zero to start dsp */
+DECL|macro|A_DBG_SINGLE_STEP
+mdefine_line|#define A_DBG_SINGLE_STEP&t; 0x00020000&t;/* Set to zero to start dsp */
 DECL|macro|A_DBG_ZC
 mdefine_line|#define A_DBG_ZC&t;&t; 0x40000000&t;/* zero tram counter */
 DECL|macro|A_DBG_STEP_ADDR
@@ -947,6 +947,13 @@ DECL|macro|SRCS_RATELOCKED
 mdefine_line|#define SRCS_RATELOCKED&t;&t;0x01000000&t;/* Sample rate locked&t;&t;&t;&t;*/
 DECL|macro|SRCS_ESTSAMPLERATE
 mdefine_line|#define SRCS_ESTSAMPLERATE&t;0x0007ffff&t;/* Do not modify this field.&t;&t;&t;*/
+multiline_comment|/* Note that these values can vary +/- by a small amount                                        */
+DECL|macro|SRCS_SPDIFRATE_44
+mdefine_line|#define SRCS_SPDIFRATE_44&t;0x0003acd9
+DECL|macro|SRCS_SPDIFRATE_48
+mdefine_line|#define SRCS_SPDIFRATE_48&t;0x00040000
+DECL|macro|SRCS_SPDIFRATE_96
+mdefine_line|#define SRCS_SPDIFRATE_96&t;0x00080000
 DECL|macro|MICIDX
 mdefine_line|#define MICIDX                  0x63            /* Microphone recording buffer index register   */
 DECL|macro|MICIDX_MASK
@@ -986,21 +993,21 @@ mdefine_line|#define A_MUSTAT2&t;&t;A_MUCMD2&t;
 DECL|macro|A_SPDIF_SAMPLERATE
 mdefine_line|#define A_SPDIF_SAMPLERATE&t;0x76&t;&t;/* Set the sample rate of SPDIF output&t;&t;*/
 DECL|macro|A_SPDIF_48000
-mdefine_line|#define A_SPDIF_48000&t;&t;0x00000000
+mdefine_line|#define A_SPDIF_48000&t;&t;0x00000080
 DECL|macro|A_SPDIF_44100
-mdefine_line|#define A_SPDIF_44100&t;&t;0x00000040
+mdefine_line|#define A_SPDIF_44100&t;&t;0x00000000
 DECL|macro|A_SPDIF_96000
-mdefine_line|#define A_SPDIF_96000&t;&t;0x00000080
+mdefine_line|#define A_SPDIF_96000&t;&t;0x00000040
 DECL|macro|A_FXRT2
 mdefine_line|#define A_FXRT2&t;&t;&t;0x7c
 DECL|macro|A_FXRT_CHANNELE
-mdefine_line|#define A_FXRT_CHANNELE&t;&t;0x0000003f&t;/* Effects send bus number for channel&squot;s effects send A&t;*/
+mdefine_line|#define A_FXRT_CHANNELE&t;&t;0x0000003f&t;/* Effects send bus number for channel&squot;s effects send E&t;*/
 DECL|macro|A_FXRT_CHANNELF
-mdefine_line|#define A_FXRT_CHANNELF&t;&t;0x00003f00&t;/* Effects send bus number for channel&squot;s effects send B&t;*/
+mdefine_line|#define A_FXRT_CHANNELF&t;&t;0x00003f00&t;/* Effects send bus number for channel&squot;s effects send F&t;*/
 DECL|macro|A_FXRT_CHANNELG
-mdefine_line|#define A_FXRT_CHANNELG&t;&t;0x003f0000&t;/* Effects send bus number for channel&squot;s effects send C&t;*/
+mdefine_line|#define A_FXRT_CHANNELG&t;&t;0x003f0000&t;/* Effects send bus number for channel&squot;s effects send G&t;*/
 DECL|macro|A_FXRT_CHANNELH
-mdefine_line|#define A_FXRT_CHANNELH&t;&t;0x3f000000&t;/* Effects send bus number for channel&squot;s effects send D&t;*/
+mdefine_line|#define A_FXRT_CHANNELH&t;&t;0x3f000000&t;/* Effects send bus number for channel&squot;s effects send H&t;*/
 DECL|macro|A_SENDAMOUNTS
 mdefine_line|#define A_SENDAMOUNTS&t;&t;0x7d
 DECL|macro|A_FXSENDAMOUNT_E_MASK
@@ -1288,10 +1295,13 @@ r_struct
 (brace
 DECL|member|send_routing
 r_int
-r_int
+r_char
 id|send_routing
 (braket
 l_int|3
+)braket
+(braket
+l_int|8
 )braket
 suffix:semicolon
 DECL|member|send_volume
@@ -1302,7 +1312,7 @@ id|send_volume
 l_int|3
 )braket
 (braket
-l_int|4
+l_int|8
 )braket
 suffix:semicolon
 DECL|member|attn
@@ -1337,6 +1347,12 @@ DECL|typedef|emu10k1_pcm_mixer_t
 )brace
 id|emu10k1_pcm_mixer_t
 suffix:semicolon
+DECL|macro|snd_emu10k1_compose_send_routing
+mdefine_line|#define snd_emu10k1_compose_send_routing(route) &bslash;&n;((route[0] | (route[1] &lt;&lt; 4) | (route[2] &lt;&lt; 8) | (route[3] &lt;&lt; 12)) &lt;&lt; 16)
+DECL|macro|snd_emu10k1_compose_audigy_fxrt1
+mdefine_line|#define snd_emu10k1_compose_audigy_fxrt1(route) &bslash;&n;(((unsigned int)route[0] | ((unsigned int)route[1] &lt;&lt; 8) | ((unsigned int)route[2] &lt;&lt; 16) | ((unsigned int)route[3] &lt;&lt; 12)) &lt;&lt; 24)
+DECL|macro|snd_emu10k1_compose_audigy_fxrt2
+mdefine_line|#define snd_emu10k1_compose_audigy_fxrt2(route) &bslash;&n;(((unsigned int)route[4] | ((unsigned int)route[5] &lt;&lt; 8) | ((unsigned int)route[6] &lt;&lt; 16) | ((unsigned int)route[7] &lt;&lt; 12)) &lt;&lt; 24)
 DECL|struct|snd_emu10k1_memblk
 r_typedef
 r_struct
@@ -2946,15 +2962,15 @@ mdefine_line|#define GPR_IRQ&t;&t;0x5a&t;&t;/* IRQ register */
 DECL|macro|GPR_DBAC
 mdefine_line|#define GPR_DBAC&t;0x5b&t;&t;/* TRAM Delay Base Address Counter */
 DECL|macro|GPR
-mdefine_line|#define GPR(x)&t;&t;(FXGPREGBASE + (x))&t;/* free GPRs: x = 0x00 - 0xff */
+mdefine_line|#define GPR(x)&t;&t;(FXGPREGBASE + (x)) /* free GPRs: x = 0x00 - 0xff */
 DECL|macro|ITRAM_DATA
-mdefine_line|#define ITRAM_DATA(x)&t;(TANKMEMDATAREGBASE + (x))&t;/* x = 0x00 - 0x7f */
+mdefine_line|#define ITRAM_DATA(x)&t;(TANKMEMDATAREGBASE + 0x00 + (x)) /* x = 0x00 - 0x7f */
 DECL|macro|ETRAM_DATA
-mdefine_line|#define ETRAM_DATA(x)&t;(TANKMEMDATAREGBASE + 80 + (x))&t;/* x = 0x00 - 0x1f */
+mdefine_line|#define ETRAM_DATA(x)&t;(TANKMEMDATAREGBASE + 0x80 + (x)) /* x = 0x00 - 0x1f */
 DECL|macro|ITRAM_ADDR
-mdefine_line|#define ITRAM_ADDR(x)&t;(TANKMEMADDRREGBASE + (x))&t;/* x = 0x00 - 0x7f */
+mdefine_line|#define ITRAM_ADDR(x)&t;(TANKMEMADDRREGBASE + 0x00 + (x)) /* x = 0x00 - 0x7f */
 DECL|macro|ETRAM_ADDR
-mdefine_line|#define ETRAM_ADDR(x)&t;(TANKMEMADDRREGBASE + 80 + (x))&t;/* x = 0x00 - 0x1f */
+mdefine_line|#define ETRAM_ADDR(x)&t;(TANKMEMADDRREGBASE + 0x80 + (x)) /* x = 0x00 - 0x1f */
 DECL|macro|A_FXBUS
 mdefine_line|#define A_FXBUS(x)&t;(0x00 + (x))&t;/* x = 0x00 - 0x3f? */
 DECL|macro|A_EXTIN
@@ -3066,6 +3082,14 @@ DECL|macro|A_EXTIN_SPDIF_CD_L
 mdefine_line|#define A_EXTIN_SPDIF_CD_L&t;0x02&t;/* digital CD left */
 DECL|macro|A_EXTIN_SPDIF_CD_R
 mdefine_line|#define A_EXTIN_SPDIF_CD_R&t;0x03&t;/* digital CD left */
+DECL|macro|A_EXTIN_LINE2_L
+mdefine_line|#define A_EXTIN_LINE2_L&t;&t;0x08&t;/* audigy drive line2/mic2 - left */
+DECL|macro|A_EXTIN_LINE2_R
+mdefine_line|#define A_EXTIN_LINE2_R&t;&t;0x09&t;/*                           right */
+DECL|macro|A_EXTIN_AUX2_L
+mdefine_line|#define A_EXTIN_AUX2_L&t;&t;0x0c&t;/* audigy drive aux2 - left */
+DECL|macro|A_EXTIN_AUX2_R
+mdefine_line|#define A_EXTIN_AUX2_R&t;&t;0x0d&t;/*                   - right */
 multiline_comment|/* Audigiy Outputs */
 DECL|macro|A_EXTOUT_FRONT_L
 mdefine_line|#define A_EXTOUT_FRONT_L&t;0x00&t;/* digital front left */
@@ -3097,11 +3121,63 @@ DECL|macro|A_EXTOUT_AREAR_L
 mdefine_line|#define A_EXTOUT_AREAR_L&t;0x0e&t;/* analog rear left */
 DECL|macro|A_EXTOUT_AREAR_R
 mdefine_line|#define A_EXTOUT_AREAR_R&t;0x0f&t;/*             right */
-multiline_comment|/* 0x10-0x15 ?? */
+DECL|macro|A_EXTOUT_AC97_L
+mdefine_line|#define A_EXTOUT_AC97_L&t;&t;0x10&t;/* AC97 left (front) */
+DECL|macro|A_EXTOUT_AC97_R
+mdefine_line|#define A_EXTOUT_AC97_R&t;&t;0x11&t;/*      right */
 DECL|macro|A_EXTOUT_ADC_CAP_L
-mdefine_line|#define A_EXTOUT_ADC_CAP_L&t;0x16&t;/* ADC capture buffer left */
+mdefine_line|#define A_EXTOUT_ADC_CAP_L&t;0x12&t;/* ADC capture buffer left */
 DECL|macro|A_EXTOUT_ADC_CAP_R
-mdefine_line|#define A_EXTOUT_ADC_CAP_R&t;0x17&t;/*                    right */
+mdefine_line|#define A_EXTOUT_ADC_CAP_R&t;0x13&t;/*                    right */
+multiline_comment|/* Audigy constants */
+DECL|macro|A_C_00000000
+mdefine_line|#define A_C_00000000&t;0xc0
+DECL|macro|A_C_00000001
+mdefine_line|#define A_C_00000001&t;0xc1
+DECL|macro|A_C_00000002
+mdefine_line|#define A_C_00000002&t;0xc2
+DECL|macro|A_C_00000003
+mdefine_line|#define A_C_00000003&t;0xc3
+DECL|macro|A_C_00000004
+mdefine_line|#define A_C_00000004&t;0xc4
+DECL|macro|A_C_00000008
+mdefine_line|#define A_C_00000008&t;0xc5
+DECL|macro|A_C_00000010
+mdefine_line|#define A_C_00000010&t;0xc6
+DECL|macro|A_C_00000020
+mdefine_line|#define A_C_00000020&t;0xc7
+DECL|macro|A_C_00000100
+mdefine_line|#define A_C_00000100&t;0xc8
+DECL|macro|A_C_00010000
+mdefine_line|#define A_C_00010000&t;0xc9
+DECL|macro|A_C_00000800
+mdefine_line|#define A_C_00000800&t;0xca
+DECL|macro|A_C_10000000
+mdefine_line|#define A_C_10000000&t;0xcb
+DECL|macro|A_C_20000000
+mdefine_line|#define A_C_20000000&t;0xcc
+DECL|macro|A_C_40000000
+mdefine_line|#define A_C_40000000&t;0xcd
+DECL|macro|A_C_80000000
+mdefine_line|#define A_C_80000000&t;0xce
+DECL|macro|A_C_7fffffff
+mdefine_line|#define A_C_7fffffff&t;0xcf
+DECL|macro|A_C_ffffffff
+mdefine_line|#define A_C_ffffffff&t;0xd0
+DECL|macro|A_C_fffffffe
+mdefine_line|#define A_C_fffffffe&t;0xd1
+DECL|macro|A_C_c0000000
+mdefine_line|#define A_C_c0000000&t;0xd2
+DECL|macro|A_C_4f1bbcdc
+mdefine_line|#define A_C_4f1bbcdc&t;0xd3
+DECL|macro|A_C_5a7ef9db
+mdefine_line|#define A_C_5a7ef9db&t;0xd4
+DECL|macro|A_C_00100000
+mdefine_line|#define A_C_00100000&t;0xd5
+multiline_comment|/* 0xd6 = 0x7fffffff  (?) ACCUM? */
+multiline_comment|/* 0xd7 = 0x0000000   CCR */
+multiline_comment|/* 0xd8 = noise1 */
+multiline_comment|/* 0xd9 = noise2 */
 multiline_comment|/* definitions for debug register */
 DECL|macro|EMU10K1_DBG_ZC
 mdefine_line|#define EMU10K1_DBG_ZC&t;&t;&t;0x80000000&t;/* zero tram counter */

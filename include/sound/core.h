@@ -1341,9 +1341,34 @@ r_int
 id|size
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SND_VERBOSE_PRINTK
+r_int
+id|snd_verbose_printk
+c_func
+(paren
+r_const
+r_char
+op_star
+id|file
+comma
+r_int
+id|line
+comma
+r_const
+r_char
+op_star
+id|format
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* --- */
+macro_line|#ifdef CONFIG_SND_VERBOSE_PRINTK
 DECL|macro|snd_printk
-mdefine_line|#define snd_printk(format, args...) do { &bslash;&n;&t;printk(&quot;ALSA %s:%d: &quot;, __FILE__, __LINE__); &bslash;&n;&t;printk(format, ##args); &bslash;&n;} while (0)
+mdefine_line|#define snd_printk(format, args...) do { &bslash;&n;&t;printk(snd_verbose_printk(__FILE__, __LINE__, format) ? format + 3 : format, ##args); &bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|snd_printk
+mdefine_line|#define snd_printk(format, args...) do { &bslash;&n;&t;printk(format, ##args); &bslash;&n;} while (0)
+macro_line|#endif
 macro_line|#ifdef CONFIG_SND_DEBUG
 DECL|macro|__ASTRING__
 mdefine_line|#define __ASTRING__(x) #x

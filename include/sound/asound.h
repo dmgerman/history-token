@@ -207,7 +207,7 @@ comma
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *                                                                           *&n; *             Digital Audio (PCM) interface - /dev/snd/pcm??                *&n; *                                                                           *&n; *****************************************************************************/
 DECL|macro|SNDRV_PCM_VERSION
-mdefine_line|#define SNDRV_PCM_VERSION&t;&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 0)
+mdefine_line|#define SNDRV_PCM_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 1)
 DECL|typedef|sndrv_pcm_uframes_t
 r_typedef
 r_int
@@ -1450,6 +1450,17 @@ comma
 l_int|0x47
 )paren
 comma
+DECL|enumerator|SNDRV_PCM_IOCTL_XRUN
+id|SNDRV_PCM_IOCTL_XRUN
+op_assign
+id|_IO
+c_func
+(paren
+l_char|&squot;A&squot;
+comma
+l_int|0x48
+)paren
+comma
 DECL|enumerator|SNDRV_PCM_IOCTL_WRITEI_FRAMES
 id|SNDRV_PCM_IOCTL_WRITEI_FRAMES
 op_assign
@@ -2202,7 +2213,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; *                                                                          *&n; *        Section for driver control interface - /dev/snd/control?          *&n; *                                                                          *&n; ****************************************************************************/
 DECL|macro|SNDRV_CTL_VERSION
-mdefine_line|#define SNDRV_CTL_VERSION&t;&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 0)
+mdefine_line|#define SNDRV_CTL_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 0)
 DECL|struct|sndrv_ctl_card_info
 r_struct
 id|sndrv_ctl_card_info

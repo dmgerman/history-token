@@ -861,6 +861,60 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+DECL|function|snd_via686a_codec_wait
+r_static
+r_void
+id|snd_via686a_codec_wait
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+id|via686a_t
+op_star
+id|chip
+op_assign
+id|snd_magic_cast
+c_func
+(paren
+id|via686a_t
+comma
+id|ac97-&gt;private_data
+comma
+r_return
+)paren
+suffix:semicolon
+r_int
+id|err
+suffix:semicolon
+id|err
+op_assign
+id|snd_via686a_codec_ready
+c_func
+(paren
+id|chip
+comma
+id|ac97-&gt;num
+)paren
+suffix:semicolon
+multiline_comment|/* here we need to wait fairly for long time.. */
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+op_div
+l_int|2
+)paren
+suffix:semicolon
+)brace
 DECL|function|snd_via686a_codec_write
 r_static
 r_void
@@ -3742,6 +3796,10 @@ id|ac97.init
 op_assign
 id|snd_via686a_codec_init
 suffix:semicolon
+id|ac97.wait
+op_assign
+id|snd_via686a_codec_wait
+suffix:semicolon
 id|ac97.private_data
 op_assign
 id|chip
@@ -5711,9 +5769,10 @@ l_int|2
 )paren
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;unable to get MPU-401 port at 0x%lx, skipping&bslash;n&quot;
 comma
 id|snd_mpu_port
@@ -5771,9 +5830,10 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;unable to initialize MPU-401 at 0x%lx, skipping&bslash;n&quot;
 comma
 id|snd_mpu_port
@@ -6020,9 +6080,10 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;VIA 82C686A soundcard not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon

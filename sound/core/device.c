@@ -217,6 +217,7 @@ id|dev
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;device unregister failure&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -243,6 +244,7 @@ id|dev
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;device free failure&bslash;n&quot;
 )paren
 suffix:semicolon

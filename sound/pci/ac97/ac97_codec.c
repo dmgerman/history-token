@@ -657,7 +657,7 @@ comma
 l_int|NULL
 )brace
 comma
-singleline_comment|// only guess --jk
+singleline_comment|// alias VIA VT1611A?
 (brace
 l_int|0x4e534300
 comma
@@ -9124,6 +9124,21 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* reset to defaults */
+r_if
+c_cond
+(paren
+id|ac97-&gt;wait
+)paren
+id|ac97
+op_member_access_from_pointer
+id|wait
+c_func
+(paren
+id|ac97
+)paren
+suffix:semicolon
+r_else
+(brace
 id|udelay
 c_func
 (paren
@@ -9137,11 +9152,7 @@ id|end_time
 op_assign
 id|jiffies
 op_plus
-(paren
 id|HZ
-op_div
-l_int|2
-)paren
 suffix:semicolon
 r_do
 (brace
@@ -9252,6 +9263,7 @@ r_return
 op_minus
 id|ENXIO
 suffix:semicolon
+)brace
 id|__access_ok
 suffix:colon
 id|ac97-&gt;caps

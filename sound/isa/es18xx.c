@@ -29,6 +29,8 @@ mdefine_line|#define SNDRV_LEGACY_FIND_FREE_DMA
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
+DECL|macro|PFX
+mdefine_line|#define PFX &quot;es18xx: &quot;
 DECL|struct|_snd_es18xx
 r_struct
 id|_snd_es18xx
@@ -7398,9 +7400,11 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;[0x%lx] ESS chip not found&bslash;n&quot;
 comma
 id|chip-&gt;port
@@ -8552,9 +8556,11 @@ c_func
 id|chip
 )paren
 suffix:semicolon
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;unable to grap ports 0x%lx-0x%lx&bslash;n&quot;
 comma
 id|port
@@ -8599,9 +8605,11 @@ c_func
 id|chip
 )paren
 suffix:semicolon
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;unable to grap IRQ %d&bslash;n&quot;
 comma
 id|irq
@@ -8634,9 +8642,11 @@ c_func
 id|chip
 )paren
 suffix:semicolon
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;unable to grap DMA1 %d&bslash;n&quot;
 comma
 id|dma1
@@ -8669,9 +8679,11 @@ c_func
 id|chip
 )paren
 suffix:semicolon
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;unable to grap DMA2 %d&bslash;n&quot;
 comma
 id|dma2
@@ -10217,9 +10229,11 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;isapnp control configure failure (out of resources?)&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -10449,9 +10463,11 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;isapnp configure failure (out of resources?)&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -11186,9 +11202,11 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;opl3 not detected at 0x%lx&bslash;n&quot;
 comma
 id|chip-&gt;port
@@ -11731,9 +11749,10 @@ id|cards
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ESS AudioDrive ES18xx soundcard not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon

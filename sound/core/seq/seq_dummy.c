@@ -660,6 +660,7 @@ l_int|1
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;invalid number of ports %d&bslash;n&quot;
 comma
 id|ports

@@ -1717,6 +1717,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;snd_seq_pool_done timeout: %d cells remain&bslash;n&quot;
 comma
 id|atomic_read

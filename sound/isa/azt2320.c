@@ -22,6 +22,8 @@ macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/opl3.h&gt;
 DECL|macro|chip_t
 mdefine_line|#define chip_t cs4231_t
+DECL|macro|PFX
+mdefine_line|#define PFX &quot;azt2320: &quot;
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -1020,9 +1022,11 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;AUDIO isapnp configure failure&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1206,9 +1210,11 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* not fatal error */
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;MPU-401 isapnp configure failure&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1802,9 +1808,11 @@ l_int|NULL
 OL
 l_int|0
 )paren
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;no MPU-401 device at 0x%lx&bslash;n&quot;
 comma
 id|snd_mpu_port
@@ -1856,9 +1864,11 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;no OPL device at 0x%lx-0x%lx&bslash;n&quot;
 comma
 id|snd_fm_port
@@ -2145,9 +2155,11 @@ id|snd_azt2320_isapnp_detect
 )paren
 suffix:semicolon
 macro_line|#else
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
+id|PFX
 l_string|&quot;you have to enable ISA PnP support.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2159,9 +2171,10 @@ c_cond
 op_logical_neg
 id|cards
 )paren
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;no AZT2320 based soundcards found&bslash;n&quot;
 )paren
 suffix:semicolon
