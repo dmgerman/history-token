@@ -464,10 +464,21 @@ id|inode
 )paren
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|create
+)paren
 r_return
 op_minus
 id|EIO
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * for reads, we&squot;re just trying to fill a partial page.&n;&t;&t; * return a hole, they will have to call get_block again&n;&t;&t; * before they can fill it, and they will get -EIO at that&n;&t;&t; * time&n;&t;&t; */
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|bh-&gt;b_bdev
 op_assign
 id|I_BDEV
