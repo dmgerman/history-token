@@ -2202,6 +2202,9 @@ comma
 r_const
 r_int
 id|nr_pages
+comma
+r_int
+id|order
 )paren
 (brace
 r_struct
@@ -2258,6 +2261,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|order
+op_eq
+l_int|0
+op_logical_and
 id|to_reclaim
 OL
 l_int|0
@@ -2421,6 +2428,8 @@ comma
 id|gfp_mask
 comma
 id|nr_pages
+comma
+id|order
 )paren
 suffix:semicolon
 r_if
