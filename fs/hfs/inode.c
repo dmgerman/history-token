@@ -1934,7 +1934,7 @@ op_assign
 id|hfs_m_to_utime
 c_func
 (paren
-id|rec-&gt;file.MdDat
+id|rec-&gt;dir.MdDat
 )paren
 suffix:semicolon
 id|inode-&gt;i_op
