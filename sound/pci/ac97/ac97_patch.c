@@ -7141,7 +7141,7 @@ comma
 dot
 id|info
 op_assign
-id|snd_ac97_info_single
+id|snd_ac97_info_volsw
 comma
 dot
 id|get
@@ -7721,7 +7721,7 @@ comma
 dot
 id|info
 op_assign
-id|snd_ac97_info_single
+id|snd_ac97_info_volsw
 comma
 dot
 id|get
@@ -8588,7 +8588,7 @@ comma
 dot
 id|info
 op_assign
-id|snd_ac97_info_single
+id|snd_ac97_info_volsw
 comma
 dot
 id|get
@@ -8631,7 +8631,7 @@ comma
 dot
 id|info
 op_assign
-id|snd_ac97_info_single
+id|snd_ac97_info_volsw
 comma
 dot
 id|get
@@ -9468,7 +9468,7 @@ comma
 dot
 id|info
 op_assign
-id|snd_ac97_info_single
+id|snd_ac97_info_volsw
 comma
 dot
 id|get
@@ -10053,7 +10053,7 @@ comma
 dot
 id|info
 op_assign
-id|snd_ac97_info_single
+id|snd_ac97_info_volsw
 comma
 dot
 id|get
@@ -10096,7 +10096,7 @@ comma
 dot
 id|info
 op_assign
-id|snd_ac97_info_single
+id|snd_ac97_info_volsw
 comma
 dot
 id|get
