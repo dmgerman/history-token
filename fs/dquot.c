@@ -1522,12 +1522,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-id|kmem_cache_shrink_nr
+id|kmem_cache_shrink
 c_func
 (paren
 id|dquot_cachep
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* NOTE: If you change this function please check whether dqput_blocks() works right... */
