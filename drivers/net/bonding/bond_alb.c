@@ -4489,11 +4489,7 @@ id|skb
 op_member_access_from_pointer
 id|ipx_type
 op_ne
-id|__constant_htons
-c_func
-(paren
 id|IPX_TYPE_NCP
-)paren
 )paren
 (brace
 multiline_comment|/* The only protocol worth balancing in&n;&t;&t;&t; * this family since it has an &quot;ARP&quot; like&n;&t;&t;&t; * mechanism&n;&t;&t;&t; */
