@@ -1162,6 +1162,17 @@ id|skb
 suffix:semicolon
 r_extern
 r_int
+id|ip6_output2
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|ip6_forward
 c_func
 (paren

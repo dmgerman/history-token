@@ -275,6 +275,11 @@ id|neighbour
 op_star
 id|neigh
 comma
+r_struct
+id|in6_addr
+op_star
+id|addr
+comma
 r_int
 (paren
 op_star
