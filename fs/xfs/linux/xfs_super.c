@@ -1469,6 +1469,12 @@ c_func
 id|vfsp-&gt;vfs_fbhv
 )paren
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1643,6 +1649,8 @@ id|bdevname
 c_func
 (paren
 id|mp-&gt;m_logdev_targp-&gt;pbr_bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -1668,6 +1676,8 @@ id|bdevname
 c_func
 (paren
 id|mp-&gt;m_rtdev_targp-&gt;pbr_bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon

@@ -182,6 +182,8 @@ DECL|macro|MS_VERBOSE
 mdefine_line|#define MS_VERBOSE&t;32768
 DECL|macro|MS_POSIXACL
 mdefine_line|#define MS_POSIXACL&t;(1&lt;&lt;16)&t;/* VFS does not apply the umask */
+DECL|macro|MS_ONE_SECOND
+mdefine_line|#define MS_ONE_SECOND&t;(1&lt;&lt;17)&t;/* fs has 1 sec a/m/ctime resolution */
 DECL|macro|MS_ACTIVE
 mdefine_line|#define MS_ACTIVE&t;(1&lt;&lt;30)
 DECL|macro|MS_NOUSER
@@ -236,6 +238,8 @@ DECL|macro|IS_NODIRATIME
 mdefine_line|#define IS_NODIRATIME(inode)&t;__IS_FLG(inode, MS_NODIRATIME)
 DECL|macro|IS_POSIXACL
 mdefine_line|#define IS_POSIXACL(inode)&t;__IS_FLG(inode, MS_POSIXACL)
+DECL|macro|IS_ONE_SECOND
+mdefine_line|#define IS_ONE_SECOND(inode)&t;__IS_FLG(inode, MS_ONE_SECOND)
 DECL|macro|IS_DEADDIR
 mdefine_line|#define IS_DEADDIR(inode)&t;((inode)-&gt;i_flags &amp; S_DEAD)
 multiline_comment|/* the read-only stuff doesn&squot;t really belong here, but any other place is&n;   probably as bad and I don&squot;t want to create yet another include file. */
@@ -818,25 +822,6 @@ suffix:semicolon
 multiline_comment|/* ditto */
 )brace
 suffix:semicolon
-DECL|struct|char_device
-r_struct
-id|char_device
-(brace
-DECL|member|hash
-r_struct
-id|list_head
-id|hash
-suffix:semicolon
-DECL|member|count
-id|atomic_t
-id|count
-suffix:semicolon
-DECL|member|dev
-id|dev_t
-id|dev
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|block_device
 r_struct
 id|block_device
@@ -1080,12 +1065,6 @@ r_struct
 id|block_device
 op_star
 id|i_bdev
-suffix:semicolon
-DECL|member|i_cdev
-r_struct
-id|char_device
-op_star
-id|i_cdev
 suffix:semicolon
 DECL|member|i_dnotify_mask
 r_int
@@ -4624,26 +4603,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|char_device
-op_star
-id|cdget
-c_func
-(paren
-id|dev_t
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|cdput
-c_func
-(paren
-r_struct
-id|char_device
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|blkdev_open
 c_func
@@ -4792,6 +4751,28 @@ suffix:semicolon
 multiline_comment|/* fs/char_dev.c */
 r_extern
 r_int
+id|register_chrdev_region
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+comma
+r_const
+r_char
+op_star
+comma
+r_struct
+id|file_operations
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|register_chrdev
 c_func
 (paren
@@ -4835,6 +4816,8 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* fs/block_dev.c */
+DECL|macro|BDEVNAME_SIZE
+mdefine_line|#define BDEVNAME_SIZE&t;32&t;/* Largest string for a blockdev identifier */
 r_extern
 r_const
 r_char
@@ -4843,6 +4826,10 @@ id|__bdevname
 c_func
 (paren
 id|dev_t
+comma
+r_char
+op_star
+id|buffer
 )paren
 suffix:semicolon
 DECL|function|bdevname
@@ -4858,6 +4845,10 @@ r_struct
 id|block_device
 op_star
 id|bdev
+comma
+r_char
+op_star
+id|buffer
 )paren
 (brace
 r_return
@@ -4865,6 +4856,8 @@ id|__bdevname
 c_func
 (paren
 id|bdev-&gt;bd_dev
+comma
+id|buffer
 )paren
 suffix:semicolon
 )brace

@@ -2039,8 +2039,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|inode
 )paren
 suffix:semicolon
 )brace
@@ -2581,8 +2579,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|inode
 )paren
 suffix:semicolon
 id|release_and_out

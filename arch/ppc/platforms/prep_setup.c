@@ -3733,7 +3733,8 @@ DECL|function|prep_ide_default_irq
 id|prep_ide_default_irq
 c_func
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|base
 )paren
 (brace
@@ -3789,7 +3790,8 @@ suffix:semicolon
 )brace
 )brace
 r_static
-id|ide_ioreg_t
+r_int
+r_int
 id|__prep
 DECL|function|prep_ide_default_io_base
 id|prep_ide_default_io_base

@@ -110,20 +110,34 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|pmac_ide_check_base
-c_func
-(paren
-id|ide_ioreg_t
-id|base
-)paren
-suffix:semicolon
-r_extern
-id|ide_ioreg_t
+r_int
 id|pmac_ide_get_base
 c_func
 (paren
 r_int
 id|index
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pmac_ide_init_hwif_ports
+c_func
+(paren
+id|hw_regs_t
+op_star
+id|hw
+comma
+r_int
+r_int
+id|data_port
+comma
+r_int
+r_int
+id|ctrl_port
+comma
+r_int
+op_star
+id|irq
 )paren
 suffix:semicolon
 r_extern
@@ -2528,6 +2542,18 @@ id|ppc_md.feature_call
 op_assign
 id|pmac_do_feature_call
 suffix:semicolon
+macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_PMAC
+id|ppc_ide_md.ide_init_hwif
+op_assign
+id|pmac_ide_init_hwif_ports
+suffix:semicolon
+id|ppc_ide_md.default_io_base
+op_assign
+id|pmac_ide_get_base
+suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_IDE_PMAC */
+macro_line|#endif /* defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE) */
 macro_line|#ifdef CONFIG_BOOTX_TEXT
 id|ppc_md.progress
 op_assign

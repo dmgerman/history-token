@@ -1171,6 +1171,12 @@ r_char
 op_star
 id|p
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|get_fs_names
 c_func
 (paren
@@ -1246,6 +1252,14 @@ r_continue
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Allow the user to distinguish between failed open&n;&t;&t; * and bad superblock on root device.&n;&t;&t; */
+id|__bdevname
+c_func
+(paren
+id|ROOT_DEV
+comma
+id|b
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1253,11 +1267,7 @@ l_string|&quot;VFS: Cannot open root device &bslash;&quot;%s&bslash;&quot; or %s
 comma
 id|root_device_name
 comma
-id|__bdevname
-c_func
-(paren
-id|ROOT_DEV
-)paren
+id|b
 )paren
 suffix:semicolon
 id|printk
@@ -1271,11 +1281,7 @@ c_func
 (paren
 l_string|&quot;VFS: Unable to mount root fs on %s&quot;
 comma
-id|__bdevname
-c_func
-(paren
-id|ROOT_DEV
-)paren
+id|b
 )paren
 suffix:semicolon
 )brace
@@ -1288,6 +1294,8 @@ id|__bdevname
 c_func
 (paren
 id|ROOT_DEV
+comma
+id|b
 )paren
 )paren
 suffix:semicolon

@@ -545,10 +545,6 @@ id|len
 )paren
 suffix:semicolon
 )brace
-r_extern
-id|atomic_t
-id|vm_committed_space
-suffix:semicolon
 DECL|function|meminfo_read_proc
 r_static
 r_int
@@ -700,7 +696,10 @@ comma
 id|K
 c_func
 (paren
-id|ps.nr_pagecache
+id|get_page_cache_size
+c_func
+(paren
+)paren
 op_minus
 id|total_swapcache_pages
 op_minus

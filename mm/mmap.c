@@ -83,26 +83,6 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-DECL|function|vm_unacct_memory
-r_inline
-r_void
-id|vm_unacct_memory
-c_func
-(paren
-r_int
-id|pages
-)paren
-(brace
-id|atomic_sub
-c_func
-(paren
-id|pages
-comma
-op_amp
-id|vm_committed_space
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Check that a process has enough memory to allocate a new virtual&n; * mapping. 1 means there is enough memory for the allocation to&n; * succeed and 0 implies there is not.&n; *&n; * We currently support three overcommit policies, which are set via the&n; * vm.overcommit_memory sysctl.  See Documentation/vm/overcommit-acounting&n; *&n; * Strict overcommit modes added 2002 Feb 26 by Alan Cox.&n; * Additional code 2002 Jul 20 by Robert Love.&n; */
 DECL|function|vm_enough_memory
 r_int
@@ -119,13 +99,10 @@ id|free
 comma
 id|allowed
 suffix:semicolon
-id|atomic_add
+id|vm_acct_memory
 c_func
 (paren
 id|pages
-comma
-op_amp
-id|vm_committed_space
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Sometimes we want to use more memory than we have&n;&t; */

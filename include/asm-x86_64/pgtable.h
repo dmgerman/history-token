@@ -348,6 +348,8 @@ DECL|macro|_PAGE_DIRTY
 mdefine_line|#define _PAGE_DIRTY&t;0x040
 DECL|macro|_PAGE_PSE
 mdefine_line|#define _PAGE_PSE&t;0x080&t;/* 2MB page */
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE&t;0x040&t;/* pagecache or swap */
 DECL|macro|_PAGE_GLOBAL
 mdefine_line|#define _PAGE_GLOBAL&t;0x100&t;/* Global TLB entry */
 DECL|macro|_PAGE_PROTNONE
@@ -652,6 +654,27 @@ id|pte
 )paren
 op_amp
 id|_PAGE_RW
+suffix:semicolon
+)brace
+DECL|function|pte_file
+r_static
+r_inline
+r_int
+id|pte_file
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_FILE
 suffix:semicolon
 )brace
 DECL|function|pte_rdprotect
@@ -1289,6 +1312,12 @@ DECL|macro|pmd_bad
 mdefine_line|#define&t;pmd_bad(x)&t;((pmd_val(x) &amp; (~PTE_MASK &amp; ~_PAGE_USER)) != _KERNPG_TABLE )
 DECL|macro|pfn_pmd
 mdefine_line|#define pfn_pmd(nr,prot) (__pmd(((nr) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot)))
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(pte) ((pte_val(pte) &amp; PHYSICAL_PAGE_MASK) &gt;&gt; PAGE_SHIFT)
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(off) ((pte_t) { ((off) &lt;&lt; PAGE_SHIFT) | _PAGE_FILE })
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS __PHYSICAL_MASK_SHIFT
 multiline_comment|/* PTE - Level 1 access. */
 multiline_comment|/* page, protection -&gt; pte */
 DECL|macro|mk_pte

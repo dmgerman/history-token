@@ -63,12 +63,6 @@ r_int
 id|nr_writeback
 suffix:semicolon
 multiline_comment|/* Pages under writeback */
-DECL|member|nr_pagecache
-r_int
-r_int
-id|nr_pagecache
-suffix:semicolon
-multiline_comment|/* Pages in pagecache */
 DECL|member|nr_page_table_pages
 r_int
 r_int

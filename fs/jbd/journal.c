@@ -1834,6 +1834,12 @@ id|ret
 suffix:semicolon
 r_else
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1849,6 +1855,8 @@ id|bdevname
 c_func
 (paren
 id|journal-&gt;j_dev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -4309,6 +4317,10 @@ c_func
 id|journal_t
 op_star
 id|journal
+comma
+r_char
+op_star
+id|buffer
 )paren
 (brace
 r_struct
@@ -4335,6 +4347,8 @@ id|bdevname
 c_func
 (paren
 id|bdev
+comma
+id|buffer
 )paren
 suffix:semicolon
 )brace
@@ -4352,6 +4366,12 @@ id|journal
 id|transaction_t
 op_star
 id|transaction
+suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -4371,6 +4391,8 @@ id|journal_dev_name
 c_func
 (paren
 id|journal
+comma
+id|b
 )paren
 )paren
 suffix:semicolon

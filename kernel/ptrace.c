@@ -1420,9 +1420,23 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Signals sent while we were stopped might set TIF_SIGPENDING.&n;&t; */
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace

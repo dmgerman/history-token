@@ -481,26 +481,9 @@ r_if
 c_cond
 (paren
 id|locked
-OG
+op_le
 id|lock_limit
 )paren
-r_goto
-id|out
-suffix:semicolon
-multiline_comment|/* we may lock at most half of physical memory... */
-multiline_comment|/* (this check is pretty bogus, but doesn&squot;t hurt) */
-r_if
-c_cond
-(paren
-id|locked
-OG
-id|num_physpages
-op_div
-l_int|2
-)paren
-r_goto
-id|out
-suffix:semicolon
 id|error
 op_assign
 id|do_mlock
@@ -513,8 +496,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 id|up_write
 c_func
 (paren
@@ -785,26 +766,9 @@ r_if
 c_cond
 (paren
 id|current-&gt;mm-&gt;total_vm
-OG
+op_le
 id|lock_limit
 )paren
-r_goto
-id|out
-suffix:semicolon
-multiline_comment|/* we may lock at most half of physical memory... */
-multiline_comment|/* (this check is pretty bogus, but doesn&squot;t hurt) */
-r_if
-c_cond
-(paren
-id|current-&gt;mm-&gt;total_vm
-OG
-id|num_physpages
-op_div
-l_int|2
-)paren
-r_goto
-id|out
-suffix:semicolon
 id|ret
 op_assign
 id|do_mlockall

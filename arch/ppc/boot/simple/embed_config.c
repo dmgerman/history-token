@@ -1347,7 +1347,7 @@ l_int|16
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_EST8260
+macro_line|#if defined(CONFIG_EST8260) || defined(CONFIG_TQM8260)
 r_void
 DECL|function|embed_config
 id|embed_config

@@ -5550,14 +5550,6 @@ c_func
 id|de-&gt;u.cdev.dev
 )paren
 suffix:semicolon
-id|inode-&gt;i_cdev
-op_assign
-id|cdget
-c_func
-(paren
-id|de-&gt;u.cdev.dev
-)paren
-suffix:semicolon
 )brace
 r_else
 r_if

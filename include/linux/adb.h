@@ -43,6 +43,12 @@ DECL|macro|MACIIC_PACKET
 mdefine_line|#define MACIIC_PACKET&t;5
 DECL|macro|PMU_PACKET
 mdefine_line|#define PMU_PACKET&t;6
+DECL|macro|ADB_QUERY
+mdefine_line|#define ADB_QUERY&t;7
+multiline_comment|/* ADB queries */
+multiline_comment|/* ADB_QUERY_GETDEVINFO&n; * Query ADB slot for device presence&n; * data[2] = id, rep[0] = orig addr, rep[1] = handler_id&n; */
+DECL|macro|ADB_QUERY_GETDEVINFO
+mdefine_line|#define ADB_QUERY_GETDEVINFO&t;1
 macro_line|#ifdef __KERNEL__
 DECL|struct|adb_request
 r_struct
