@@ -129,16 +129,14 @@ id|partition_info
 op_assign
 (brace
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;SPIA flash partition 1&quot;
 comma
-id|offset
-suffix:colon
-l_int|0
-comma
+dot
 id|size
-suffix:colon
+op_assign
 l_int|2
 op_star
 l_int|1024
@@ -147,20 +145,23 @@ l_int|1024
 )brace
 comma
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;SPIA flash partition 2&quot;
 comma
+dot
 id|offset
-suffix:colon
+op_assign
 l_int|2
 op_star
 l_int|1024
 op_star
 l_int|1024
 comma
+dot
 id|size
-suffix:colon
+op_assign
 l_int|6
 op_star
 l_int|1024
