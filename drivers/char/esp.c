@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -9024,16 +9025,14 @@ c_cond
 id|info-&gt;close_delay
 )paren
 (brace
-id|set_current_state
+id|msleep_interruptible
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|jiffies_to_msecs
 c_func
 (paren
 id|info-&gt;close_delay
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -9211,16 +9210,14 @@ l_int|0xff
 )paren
 )paren
 (brace
-id|set_current_state
+id|msleep_interruptible
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|jiffies_to_msecs
 c_func
 (paren
 id|char_time
+)paren
 )paren
 suffix:semicolon
 r_if
