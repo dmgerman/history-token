@@ -1311,6 +1311,7 @@ id|hci_vhci_fops
 )brace
 suffix:semicolon
 DECL|function|hci_vhci_init
+r_static
 r_int
 id|__init
 id|hci_vhci_init
@@ -1356,6 +1357,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hci_vhci_cleanup
+r_static
 r_void
 id|hci_vhci_cleanup
 c_func

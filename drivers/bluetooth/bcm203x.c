@@ -1023,7 +1023,7 @@ comma
 id|intf
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|data-&gt;urb

@@ -159,6 +159,7 @@ DECL|typedef|bluecard_info_t
 )brace
 id|bluecard_info_t
 suffix:semicolon
+r_static
 r_void
 id|bluecard_config
 c_func
@@ -168,6 +169,7 @@ op_star
 id|link
 )paren
 suffix:semicolon
+r_static
 r_void
 id|bluecard_release
 c_func
@@ -177,6 +179,7 @@ op_star
 id|link
 )paren
 suffix:semicolon
+r_static
 r_int
 id|bluecard_event
 c_func
@@ -199,6 +202,7 @@ id|dev_info
 op_assign
 l_string|&quot;bluecard_cs&quot;
 suffix:semicolon
+r_static
 id|dev_link_t
 op_star
 id|bluecard_attach
@@ -207,6 +211,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
 r_void
 id|bluecard_detach
 c_func
@@ -320,6 +325,7 @@ DECL|macro|RTS_LEVEL_SHIFT_BITS
 mdefine_line|#define RTS_LEVEL_SHIFT_BITS  0x02
 multiline_comment|/* ======================== LED handling routines ======================== */
 DECL|function|bluecard_activity_led_timeout
+r_static
 r_void
 id|bluecard_activity_led_timeout
 c_func
@@ -2579,6 +2585,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ======================== Card services HCI interaction ======================== */
 DECL|function|bluecard_open
+r_static
 r_int
 id|bluecard_open
 c_func
@@ -3074,6 +3081,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|bluecard_close
+r_static
 r_int
 id|bluecard_close
 c_func
@@ -3181,6 +3189,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|bluecard_attach
+r_static
 id|dev_link_t
 op_star
 id|bluecard_attach
@@ -3423,6 +3432,7 @@ id|link
 suffix:semicolon
 )brace
 DECL|function|bluecard_detach
+r_static
 r_void
 id|bluecard_detach
 c_func
@@ -3620,6 +3630,7 @@ id|parse
 suffix:semicolon
 )brace
 DECL|function|bluecard_config
+r_static
 r_void
 id|bluecard_config
 c_func
@@ -3950,6 +3961,7 @@ id|link
 suffix:semicolon
 )brace
 DECL|function|bluecard_release
+r_static
 r_void
 id|bluecard_release
 c_func
@@ -4022,6 +4034,7 @@ id|DEV_CONFIG
 suffix:semicolon
 )brace
 DECL|function|bluecard_event
+r_static
 r_int
 id|bluecard_event
 c_func

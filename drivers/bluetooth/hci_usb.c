@@ -285,6 +285,7 @@ multiline_comment|/* Terminating entry */
 )brace
 suffix:semicolon
 DECL|function|_urb_alloc
+r_static
 r_struct
 id|_urb
 op_star
@@ -356,6 +357,7 @@ id|_urb
 suffix:semicolon
 )brace
 DECL|function|_urb_dequeue
+r_static
 r_struct
 id|_urb
 op_star
@@ -3741,6 +3743,7 @@ id|evt
 suffix:semicolon
 )brace
 DECL|function|hci_usb_probe
+r_static
 r_int
 id|hci_usb_probe
 c_func
