@@ -73,6 +73,22 @@ c_func
 id|file-&gt;f_dentry
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|full_path
+op_eq
+l_int|NULL
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+r_else
+(brace
 id|cFYI
 c_func
 (paren
@@ -85,7 +101,8 @@ id|full_path
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* CIFSSMBNotify */
+multiline_comment|/* CIFSSMBNotify(xid, pTcon, full_path, cifs_sb-&gt;local_nls);*/
+)brace
 id|FreeXid
 c_func
 (paren
