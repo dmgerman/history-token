@@ -5457,6 +5457,34 @@ comma
 id|HDA_OUTPUT
 )paren
 comma
+id|HDA_CODEC_VOLUME_MONO
+c_func
+(paren
+l_string|&quot;Mono Playback Volume&quot;
+comma
+l_int|0x0a
+comma
+l_int|1
+comma
+l_int|0x0
+comma
+id|HDA_OUTPUT
+)paren
+comma
+id|HDA_CODEC_MUTE_MONO
+c_func
+(paren
+l_string|&quot;Mono Playback Switch&quot;
+comma
+l_int|0x11
+comma
+l_int|1
+comma
+l_int|0x0
+comma
+id|HDA_OUTPUT
+)paren
+comma
 id|HDA_CODEC_VOLUME
 c_func
 (paren
@@ -5595,6 +5623,15 @@ comma
 l_int|0x40
 )brace
 comma
+multiline_comment|/* enable Mono */
+(brace
+l_int|0x11
+comma
+id|AC_VERB_SET_PIN_WIDGET_CONTROL
+comma
+l_int|0x40
+)brace
+comma
 multiline_comment|/* unmute amp left and right */
 (brace
 l_int|0x04
@@ -5643,6 +5680,24 @@ comma
 multiline_comment|/* mute pin widget amp left and right (no gain on this amp) */
 (brace
 l_int|0x10
+comma
+id|AC_VERB_SET_AMP_GAIN_MUTE
+comma
+l_int|0xb080
+)brace
+comma
+multiline_comment|/* unmute Mono mixer amp left and right (volume = 0) */
+(brace
+l_int|0x0a
+comma
+id|AC_VERB_SET_AMP_GAIN_MUTE
+comma
+l_int|0xb000
+)brace
+comma
+multiline_comment|/* mute pin widget amp left and right (no gain on this amp) */
+(brace
+l_int|0x11
 comma
 id|AC_VERB_SET_AMP_GAIN_MUTE
 comma
@@ -5763,6 +5818,39 @@ l_int|8
 comma
 (brace
 l_int|0x09
+comma
+id|AC_VERB_SET_AMP_GAIN_MUTE
+comma
+(paren
+l_int|0x7000
+op_or
+(paren
+l_int|0x01
+op_lshift
+l_int|8
+)paren
+)paren
+)brace
+comma
+multiline_comment|/* Unmute Mono out path */
+(brace
+l_int|0x0a
+comma
+id|AC_VERB_SET_AMP_GAIN_MUTE
+comma
+(paren
+l_int|0x7000
+op_or
+(paren
+l_int|0x00
+op_lshift
+l_int|8
+)paren
+)paren
+)brace
+comma
+(brace
+l_int|0x0a
 comma
 id|AC_VERB_SET_AMP_GAIN_MUTE
 comma
