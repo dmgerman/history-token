@@ -151,8 +151,10 @@ id|md
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Info functions.&n; */
-id|kdev_t
-id|dm_kdev
+r_struct
+id|gendisk
+op_star
+id|dm_disk
 c_func
 (paren
 r_struct
