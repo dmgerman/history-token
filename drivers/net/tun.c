@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  TUN - Universal TUN/TAP device driver.&n; *  Copyright (C) 1999-2002 Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *  GNU General Public License for more details.&n; *&n; *  $Id: tun.c,v 1.15 2002/03/01 02:44:24 maxk Exp $&n; */
-multiline_comment|/*&n; *  Changes:&n; *&n; *  Harald Roelle &lt;harald.roelle@ifi.lmu.de&gt;  2004/04/20&n; *    Fixes in packet dropping, queue length setting and queue wakeup.&n; *    Increased default tx queue length.&n; *    Added ethtool API.&n; *    Minor cleanups&n; *&n; *  Daniel Podlejski &lt;underley@underley.eu.org&gt;&n; *    Modifications for 2.3.99-pre5 kernel.&n; */
+multiline_comment|/*&n; *  Changes:&n; *&n; *  Mark Smith &lt;markzzzsmith@yahoo.com.au&gt;&n; *   Use random_ether_addr() for tap MAC address.&n; *&n; *  Harald Roelle &lt;harald.roelle@ifi.lmu.de&gt;  2004/04/20&n; *    Fixes in packet dropping, queue length setting and queue wakeup.&n; *    Increased default tx queue length.&n; *    Added ethtool API.&n; *    Minor cleanups&n; *&n; *  Daniel Podlejski &lt;underley@underley.eu.org&gt;&n; *    Modifications for 2.3.99-pre5 kernel.&n; */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;tun&quot;
 DECL|macro|DRV_VERSION
@@ -17,7 +17,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -369,37 +368,16 @@ id|dev-&gt;set_multicast_list
 op_assign
 id|tun_net_mclist
 suffix:semicolon
-multiline_comment|/* Generate random Ethernet address.  */
-op_star
-(paren
-id|u16
-op_star
-)paren
-id|dev-&gt;dev_addr
-op_assign
-id|htons
-c_func
-(paren
-l_int|0x00FF
-)paren
-suffix:semicolon
-id|get_random_bytes
-c_func
-(paren
-id|dev-&gt;dev_addr
-op_plus
-r_sizeof
-(paren
-id|u16
-)paren
-comma
-l_int|4
-)paren
-suffix:semicolon
 id|ether_setup
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|random_ether_addr
+c_func
+(paren
+id|dev-&gt;dev_addr
 )paren
 suffix:semicolon
 id|dev-&gt;tx_queue_len
