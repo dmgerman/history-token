@@ -679,8 +679,7 @@ macro_line|#ifdef CONFIG_ASSABET_NEPONSET
 id|pcmcia_neponset_init
 c_func
 (paren
-op_amp
-id|dev-&gt;dev
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif

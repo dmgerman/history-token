@@ -93,7 +93,7 @@ id|pcmcia_neponset_init
 c_func
 (paren
 r_struct
-id|device
+id|sa1111_dev
 op_star
 )paren
 suffix:semicolon
