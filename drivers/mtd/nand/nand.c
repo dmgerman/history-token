@@ -4038,7 +4038,7 @@ id|retlen
 comma
 l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 suffix:semicolon
