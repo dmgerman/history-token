@@ -1551,6 +1551,9 @@ id|daddr
 comma
 id|u32
 id|saddr
+comma
+r_int
+id|create
 )paren
 suffix:semicolon
 r_extern
