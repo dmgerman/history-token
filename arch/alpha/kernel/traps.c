@@ -1095,6 +1095,15 @@ comma
 id|write_mask
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|si_code
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
 )brace
 id|die_if_kernel
 c_func
