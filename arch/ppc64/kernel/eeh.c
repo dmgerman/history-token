@@ -370,10 +370,16 @@ op_ge
 l_int|2
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * XXX We should create a separate sysctl for this.&n;&t;&t;&t; *&n;&t;&t;&t; * Since the panic_on_oops sysctl is used to halt&n;&t;&t;&t; * the system in light of potential corruption, we&n;&t;&t;&t; * can use it here.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|panic_on_oops
+)paren
 id|panic
 c_func
 (paren
-l_string|&quot;EEH:  MMIO failure (%ld) on device:&bslash;n  %s %s&bslash;n&quot;
+l_string|&quot;EEH: MMIO failure (%ld) on device:&bslash;n%s&bslash;n&quot;
 comma
 id|rets
 (braket
@@ -385,8 +391,24 @@ c_func
 (paren
 id|dev
 )paren
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;EEH: MMIO failure (%ld) on device:&bslash;n%s&bslash;n&quot;
 comma
-id|dev-&gt;dev.name
+id|rets
+(braket
+l_int|0
+)braket
+comma
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 )brace
