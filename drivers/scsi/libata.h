@@ -135,6 +135,9 @@ r_struct
 id|ata_queued_cmd
 op_star
 id|qc
+comma
+id|u8
+id|drv_stat
 )paren
 suffix:semicolon
 r_extern
