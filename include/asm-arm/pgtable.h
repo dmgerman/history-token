@@ -4,6 +4,7 @@ DECL|macro|_ASMARM_PGTABLE_H
 mdefine_line|#define _ASMARM_PGTABLE_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
+macro_line|#include &lt;asm/proc-fns.h&gt;
 macro_line|#include &lt;asm/arch/vmalloc.h&gt;
 multiline_comment|/*&n; * PMD_SHIFT determines the size of the area a second-level page table can map&n; * PGDIR_SHIFT determines what a third-level page table entry can map&n; */
 DECL|macro|PMD_SHIFT

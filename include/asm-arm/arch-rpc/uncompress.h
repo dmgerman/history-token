@@ -170,10 +170,19 @@ DECL|macro|palette_setpixel
 mdefine_line|#define palette_setpixel(p)&t;*(unsigned long *)(IO_START+0x00400000) = 0x10000000|((p) &amp; 255)
 DECL|macro|palette_write
 mdefine_line|#define palette_write(v)&t;*(unsigned long *)(IO_START+0x00400000) = 0x00000000|((v) &amp; 0x00ffffff)
-r_extern
+DECL|variable|params
+r_static
 r_struct
 id|param_struct
+op_star
 id|params
+op_assign
+(paren
+r_struct
+id|param_struct
+op_star
+)paren
+id|PARAMS_PHYS
 suffix:semicolon
 macro_line|#ifndef STANDALONE_DEBUG 
 multiline_comment|/*&n; * This does not append a newline&n; */
@@ -197,8 +206,11 @@ c_func
 r_char
 op_star
 comma
-r_int
-r_int
+r_char
+id|c
+comma
+r_char
+id|white
 )paren
 suffix:semicolon
 r_int
@@ -216,11 +228,11 @@ id|ptr
 suffix:semicolon
 id|x
 op_assign
-id|params.video_x
+id|params-&gt;video_x
 suffix:semicolon
 id|y
 op_assign
-id|params.video_y
+id|params-&gt;video_y
 suffix:semicolon
 r_while
 c_loop
@@ -279,7 +291,7 @@ id|y
 op_star
 id|video_num_columns
 op_star
-id|params.bytes_per_char_v
+id|params-&gt;bytes_per_char_v
 op_plus
 id|x
 )paren
@@ -293,12 +305,8 @@ c_func
 id|ptr
 comma
 id|c
-op_or
-(paren
+comma
 id|white
-op_lshift
-l_int|16
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -330,11 +338,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|params.video_x
+id|params-&gt;video_x
 op_assign
 id|x
 suffix:semicolon
-id|params.video_y
+id|params-&gt;video_y
 op_assign
 id|y
 suffix:semicolon
@@ -364,15 +372,15 @@ id|i
 suffix:semicolon
 id|video_num_lines
 op_assign
-id|params.video_num_rows
+id|params-&gt;video_num_rows
 suffix:semicolon
 id|video_num_columns
 op_assign
-id|params.video_num_cols
+id|params-&gt;video_num_cols
 suffix:semicolon
 id|bytes_per_char_h
 op_assign
-id|params.bytes_per_char_h
+id|params-&gt;bytes_per_char_h
 suffix:semicolon
 id|video_size_row
 op_assign
@@ -669,9 +677,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|params.nr_pages
+id|params-&gt;nr_pages
 op_star
-id|params.page_size
+id|params-&gt;page_size
 OL
 l_int|4096
 op_star

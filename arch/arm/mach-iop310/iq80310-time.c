@@ -357,7 +357,11 @@ r_int
 (paren
 id|elapsed
 op_star
-id|tick
+(paren
+id|tick_nsec
+op_div
+l_int|1000
+)paren
 )paren
 op_div
 id|LATCH

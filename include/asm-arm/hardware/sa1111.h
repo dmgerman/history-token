@@ -39,12 +39,6 @@ DECL|macro|SA1111_SMCR
 mdefine_line|#define SA1111_SMCR&t;0x0004
 DECL|macro|SA1111_SKID
 mdefine_line|#define SA1111_SKID&t;0x0008
-DECL|macro|SBI_SKCR
-mdefine_line|#define SBI_SKCR&t;__CCREG(SA1111_SKCR)
-DECL|macro|SBI_SMCR
-mdefine_line|#define SBI_SMCR&t;__CCREG(SA1111_SMCR)
-DECL|macro|SBI_SKID
-mdefine_line|#define SBI_SKID&t;__CCREG(SA1111_SKID)
 DECL|macro|SKCR_PLL_BYPASS
 mdefine_line|#define SKCR_PLL_BYPASS&t;(1&lt;&lt;0)
 DECL|macro|SKCR_RCLKEN
@@ -113,24 +107,6 @@ DECL|macro|SA1111_SKPEN1
 mdefine_line|#define SA1111_SKPEN1&t;0x021c
 DECL|macro|SA1111_SKPWM1
 mdefine_line|#define SA1111_SKPWM1&t;0x0220
-DECL|macro|SKPCR
-mdefine_line|#define SKPCR&t;&t;__CCREG(SA1111_SKPCR)
-DECL|macro|SKCDR
-mdefine_line|#define SKCDR&t;&t;__CCREG(SA1111_SKCDR)
-DECL|macro|SKAUD
-mdefine_line|#define SKAUD&t;&t;__CCREG(SA1111_SKAUD)
-DECL|macro|SKPMC
-mdefine_line|#define SKPMC&t;&t;__CCREG(SA1111_SKPMC)
-DECL|macro|SKPTC
-mdefine_line|#define SKPTC&t;&t;__CCREG(SA1111_SKPTC)
-DECL|macro|SKPEN0
-mdefine_line|#define SKPEN0&t;&t;__CCREG(SA1111_SKPEN0)
-DECL|macro|SKPWM0
-mdefine_line|#define SKPWM0&t;&t;__CCREG(SA1111_SKPWM0)
-DECL|macro|SKPEN1
-mdefine_line|#define SKPEN1&t;&t;__CCREG(SA1111_SKPEN1)
-DECL|macro|SKPWM1
-mdefine_line|#define SKPWM1&t;&t;__CCREG(SA1111_SKPWM1)
 DECL|macro|SKPCR_UCLKEN
 mdefine_line|#define SKPCR_UCLKEN&t;(1&lt;&lt;0)
 DECL|macro|SKPCR_ACCLKEN

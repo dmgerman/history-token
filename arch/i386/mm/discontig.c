@@ -195,6 +195,24 @@ id|min_low_pfn
 op_add_assign
 id|node_datasz
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|NODE_DATA
+c_func
+(paren
+id|nid
+)paren
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|pglist_data
+)paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Register fully available low RAM pages with the bootmem allocator.&n; */
 DECL|function|register_bootmem_low_pages

@@ -17,6 +17,36 @@ macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/procinfo.h&gt;
 macro_line|#include &lt;asm/arch/memory.h&gt;
 macro_line|#include &lt;asm/proc/processor.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
+DECL|union|debug_insn
+r_union
+id|debug_insn
+(brace
+DECL|member|arm
+id|u32
+id|arm
+suffix:semicolon
+DECL|member|thumb
+id|u16
+id|thumb
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|debug_entry
+r_struct
+id|debug_entry
+(brace
+DECL|member|address
+id|u32
+id|address
+suffix:semicolon
+DECL|member|insn
+r_union
+id|debug_insn
+id|insn
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|debug_info
 r_struct
 id|debug_info
@@ -25,20 +55,9 @@ DECL|member|nsaved
 r_int
 id|nsaved
 suffix:semicolon
-r_struct
-(brace
-DECL|member|address
-r_int
-r_int
-id|address
-suffix:semicolon
-DECL|member|insn
-r_int
-r_int
-id|insn
-suffix:semicolon
 DECL|member|bp
-)brace
+r_struct
+id|debug_entry
 id|bp
 (braket
 l_int|2

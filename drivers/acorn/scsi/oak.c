@@ -21,14 +21,10 @@ DECL|macro|NCR5380_read
 mdefine_line|#define NCR5380_read(reg)&t;&t;oakscsi_read(_instance, reg)
 DECL|macro|NCR5380_write
 mdefine_line|#define NCR5380_write(reg, value)&t;oakscsi_write(_instance, reg, value)
-DECL|macro|do_NCR5380_intr
-mdefine_line|#define do_NCR5380_intr&t;&t;&t;do_oakscsi_intr
+DECL|macro|NCR5380_intr
+mdefine_line|#define NCR5380_intr&t;&t;&t;oakscsi_intr
 DECL|macro|NCR5380_queue_command
 mdefine_line|#define NCR5380_queue_command&t;&t;oakscsi_queue_command
-DECL|macro|NCR5380_abort
-mdefine_line|#define NCR5380_abort&t;&t;&t;oakscsi_abort
-DECL|macro|NCR5380_reset
-mdefine_line|#define NCR5380_reset&t;&t;&t;oakscsi_reset
 DECL|macro|NCR5380_proc_info
 mdefine_line|#define NCR5380_proc_info&t;&t;oakscsi_proc_info
 r_int
@@ -288,7 +284,7 @@ c_func
 (paren
 id|instance-&gt;irq
 comma
-id|do_oakscsi_intr
+id|oakscsi_intr
 comma
 id|SA_INTERRUPT
 comma
@@ -852,14 +848,24 @@ op_assign
 id|oakscsi_queue_command
 comma
 dot
-m_abort
+id|eh_abort_handler
 op_assign
-id|oakscsi_abort
+id|NCR5380_abort
 comma
 dot
-id|reset
+id|eh_device_reset_handler
 op_assign
-id|oakscsi_reset
+id|NCR5380_device_reset
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|NCR5380_bus_reset
+comma
+dot
+id|eh_host_reset_handler
+op_assign
+id|NCR5380_host_reset
 comma
 dot
 id|can_queue

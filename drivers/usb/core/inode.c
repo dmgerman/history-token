@@ -51,10 +51,16 @@ id|mount_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|variable|mount_count
+DECL|variable|usbdevfs_mount_count
 r_static
 r_int
-id|mount_count
+id|usbdevfs_mount_count
+suffix:semicolon
+multiline_comment|/* = 0 */
+DECL|variable|usbfs_mount_count
+r_static
+r_int
+id|usbfs_mount_count
 suffix:semicolon
 multiline_comment|/* = 0 */
 DECL|variable|devices_usbdevfs_dentry
@@ -2302,6 +2308,10 @@ id|vfsmount
 op_star
 op_star
 id|mount
+comma
+r_int
+op_star
+id|mount_count
 )paren
 (brace
 r_struct
@@ -2330,7 +2340,10 @@ id|mount
 )paren
 suffix:semicolon
 op_increment
+(paren
+op_star
 id|mount_count
+)paren
 suffix:semicolon
 id|spin_unlock
 (paren
@@ -2395,7 +2408,10 @@ op_assign
 id|mnt
 suffix:semicolon
 op_increment
+(paren
+op_star
 id|mount_count
+)paren
 suffix:semicolon
 id|spin_unlock
 (paren
@@ -2415,7 +2431,10 @@ id|mount
 )paren
 suffix:semicolon
 op_increment
+(paren
+op_star
 id|mount_count
+)paren
 suffix:semicolon
 id|spin_unlock
 (paren
@@ -2436,6 +2455,7 @@ c_func
 (paren
 l_string|&quot;mount_count = %d&quot;
 comma
+op_star
 id|mount_count
 )paren
 suffix:semicolon
@@ -2453,6 +2473,10 @@ id|vfsmount
 op_star
 op_star
 id|mount
+comma
+r_int
+op_star
+id|mount_count
 )paren
 (brace
 r_struct
@@ -2472,13 +2496,19 @@ op_star
 id|mount
 suffix:semicolon
 op_decrement
+(paren
+op_star
 id|mount_count
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
+(paren
+op_star
 id|mount_count
+)paren
 )paren
 op_star
 id|mount
@@ -2502,6 +2532,7 @@ c_func
 (paren
 l_string|&quot;mount_count = %d&quot;
 comma
+op_star
 id|mount_count
 )paren
 suffix:semicolon
@@ -2534,6 +2565,9 @@ id|usbdevice_fs_type
 comma
 op_amp
 id|usbdevfs_mount
+comma
+op_amp
+id|usbdevfs_mount_count
 )paren
 suffix:semicolon
 r_if
@@ -2560,6 +2594,9 @@ id|usb_fs_type
 comma
 op_amp
 id|usbfs_mount
+comma
+op_amp
+id|usbfs_mount_count
 )paren
 suffix:semicolon
 r_if
@@ -2693,6 +2730,9 @@ id|put_mount
 (paren
 op_amp
 id|usbfs_mount
+comma
+op_amp
+id|usbfs_mount_count
 )paren
 suffix:semicolon
 id|error_clean_usbdevfs_mount
@@ -2701,6 +2741,9 @@ id|put_mount
 (paren
 op_amp
 id|usbdevfs_mount
+comma
+op_amp
+id|usbdevfs_mount_count
 )paren
 suffix:semicolon
 m_exit
@@ -2749,12 +2792,18 @@ id|put_mount
 (paren
 op_amp
 id|usbdevfs_mount
+comma
+op_amp
+id|usbdevfs_mount_count
 )paren
 suffix:semicolon
 id|put_mount
 (paren
 op_amp
 id|usbfs_mount
+comma
+op_amp
+id|usbfs_mount_count
 )paren
 suffix:semicolon
 )brace

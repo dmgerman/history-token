@@ -1,20 +1,189 @@
+multiline_comment|/*&n; *  linux/include/asm-arm/tlb.h&n; *&n; *  Copyright (C) 2002 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Experimentation shows that on a StrongARM, it appears to be faster&n; *  to use the &quot;invalidate whole tlb&quot; rather than &quot;invalidate single&n; *  tlb&quot; for this.&n; *&n; *  This appears true for both the process fork+exit case, as well as&n; *  the munmap-large-area case.&n; */
 macro_line|#ifndef __ASMARM_TLB_H
 DECL|macro|__ASMARM_TLB_H
 mdefine_line|#define __ASMARM_TLB_H
-macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-DECL|macro|tlb_flush
-mdefine_line|#define tlb_flush(tlb)&t;&t;&bslash;&n;&t;flush_tlb_mm((tlb)-&gt;mm)
+multiline_comment|/*&n; * TLB handling.  This allows us to remove pages from the page&n; * tables, and efficiently handle the TLB issues.&n; */
+DECL|struct|free_pte_ctx
+r_typedef
+r_struct
+id|free_pte_ctx
+(brace
+DECL|member|mm
+r_struct
+id|mm_struct
+op_star
+id|mm
+suffix:semicolon
+DECL|member|freed
+r_int
+r_int
+id|freed
+suffix:semicolon
+DECL|member|flushes
+r_int
+r_int
+id|flushes
+suffix:semicolon
+DECL|member|avoided_flushes
+r_int
+r_int
+id|avoided_flushes
+suffix:semicolon
+DECL|typedef|mmu_gather_t
+)brace
+id|mmu_gather_t
+suffix:semicolon
+r_extern
+id|mmu_gather_t
+id|mmu_gathers
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+DECL|function|tlb_gather_mmu
+r_static
+r_inline
+id|mmu_gather_t
+op_star
+id|tlb_gather_mmu
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|full_mm_flush
+)paren
+(brace
+r_int
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+id|mmu_gather_t
+op_star
+id|tlb
+op_assign
+op_amp
+id|mmu_gathers
+(braket
+id|cpu
+)braket
+suffix:semicolon
+id|tlb-&gt;mm
+op_assign
+id|mm
+suffix:semicolon
+id|tlb-&gt;freed
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+id|tlb
+suffix:semicolon
+)brace
+DECL|function|tlb_finish_mmu
+r_static
+r_inline
+r_void
+id|tlb_finish_mmu
+c_func
+(paren
+id|mmu_gather_t
+op_star
+id|tlb
+comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+(brace
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|tlb-&gt;mm
+suffix:semicolon
+r_int
+r_int
+id|freed
+op_assign
+id|tlb-&gt;freed
+suffix:semicolon
+r_int
+id|rss
+op_assign
+id|mm-&gt;rss
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rss
+OL
+id|freed
+)paren
+id|freed
+op_assign
+id|rss
+suffix:semicolon
+id|mm-&gt;rss
+op_assign
+id|rss
+op_minus
+id|freed
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|freed
+)paren
+(brace
+id|flush_tlb_mm
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
+id|tlb-&gt;flushes
+op_increment
+suffix:semicolon
+)brace
+r_else
+(brace
+id|tlb-&gt;avoided_flushes
+op_increment
+suffix:semicolon
+)brace
+multiline_comment|/* keep the page table cache within bounds */
+id|check_pgt_cache
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|macro|tlb_remove_tlb_entry
+mdefine_line|#define tlb_remove_tlb_entry(tlb,ptep,address)&t;do { } while (0)
 DECL|macro|tlb_start_vma
-mdefine_line|#define tlb_start_vma(tlb,vma)&t;&bslash;&n;&t;flush_cache_range(vma, vma-&gt;vm_start, vma-&gt;vm_end)
+mdefine_line|#define tlb_start_vma(tlb,vma)&t;&t;&t;do { } while (0)
 DECL|macro|tlb_end_vma
-mdefine_line|#define tlb_end_vma(tlb,vma)&t;&bslash;&n;&t;flush_tlb_range(vma, vma-&gt;vm_start, vma-&gt;vm_end)
-DECL|macro|__tlb_remove_tlb_entry
-mdefine_line|#define __tlb_remove_tlb_entry(tlb, ptep, address) do { } while (0)
-macro_line|#include &lt;asm-generic/tlb.h&gt;
-DECL|macro|__pmd_free_tlb
-mdefine_line|#define __pmd_free_tlb(tlb, pmd)&t;pmd_free(pmd)
-DECL|macro|__pte_free_tlb
-mdefine_line|#define __pte_free_tlb(tlb, pte)&t;pte_free(pte)
+mdefine_line|#define tlb_end_vma(tlb,vma)&t;&t;&t;do { } while (0)
+DECL|macro|tlb_remove_page
+mdefine_line|#define tlb_remove_page(tlb,page)&t;free_page_and_swap_cache(page)
+DECL|macro|pte_free_tlb
+mdefine_line|#define pte_free_tlb(tlb,ptep)&t;&t;pte_free(ptep)
+DECL|macro|pmd_free_tlb
+mdefine_line|#define pmd_free_tlb(tlb,pmdp)&t;&t;pmd_free(pmdp)
 macro_line|#endif
 eof

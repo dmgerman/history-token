@@ -1216,6 +1216,18 @@ id|DRIVER_INFO
 l_string|&quot; (PCI)&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|usb_disabled
+c_func
+(paren
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 id|dbg
 (paren
 l_string|&quot;block sizes: ed %d td %d&quot;

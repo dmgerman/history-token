@@ -23,7 +23,6 @@ macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
-macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
@@ -262,6 +261,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|kmem_cache_size
+)paren
+suffix:semicolon
+DECL|variable|set_shrinker
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_shrinker
+)paren
+suffix:semicolon
+DECL|variable|remove_shrinker
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|remove_shrinker
 )paren
 suffix:semicolon
 DECL|variable|kmalloc
@@ -1215,13 +1228,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|d_prune_aliases
-)paren
-suffix:semicolon
-DECL|variable|prune_dcache
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|prune_dcache
 )paren
 suffix:semicolon
 DECL|variable|shrink_dcache_sb
@@ -2329,70 +2335,6 @@ id|__br_write_unlock
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Kiobufs */
-DECL|variable|alloc_kiovec
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|alloc_kiovec
-)paren
-suffix:semicolon
-DECL|variable|free_kiovec
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|free_kiovec
-)paren
-suffix:semicolon
-DECL|variable|expand_kiobuf
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|expand_kiobuf
-)paren
-suffix:semicolon
-DECL|variable|map_user_kiobuf
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|map_user_kiobuf
-)paren
-suffix:semicolon
-DECL|variable|unmap_kiobuf
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|unmap_kiobuf
-)paren
-suffix:semicolon
-DECL|variable|lock_kiovec
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|lock_kiovec
-)paren
-suffix:semicolon
-DECL|variable|unlock_kiovec
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|unlock_kiovec
-)paren
-suffix:semicolon
-DECL|variable|brw_kiovec
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|brw_kiovec
-)paren
-suffix:semicolon
-DECL|variable|kiobuf_wait_for_io
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kiobuf_wait_for_io
-)paren
-suffix:semicolon
 macro_line|#ifdef HAVE_DISABLE_HLT
 DECL|variable|disable_hlt
 id|EXPORT_SYMBOL

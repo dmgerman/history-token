@@ -662,11 +662,11 @@ id|cache
 )paren
 suffix:semicolon
 )brace
-DECL|function|dump_cpu_cache_id
+DECL|function|dump_cpu_info
 r_static
-r_inline
 r_void
-id|dump_cpu_cache_id
+id|__init
+id|dump_cpu_info
 c_func
 (paren
 r_void
@@ -674,7 +674,7 @@ r_void
 (brace
 r_int
 r_int
-id|cache_info
+id|info
 suffix:semicolon
 id|asm
 c_func
@@ -683,19 +683,18 @@ l_string|&quot;mrc p15, 0, %0, c0, c0, 1&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
-id|cache_info
+id|info
 )paren
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|cache_info
-op_eq
+id|info
+op_ne
 id|processor_id
 )paren
-r_return
-suffix:semicolon
+(brace
 id|printk
 c_func
 (paren
@@ -706,7 +705,7 @@ id|cache_types
 id|CACHE_TYPE
 c_func
 (paren
-id|cache_info
+id|info
 )paren
 )braket
 )paren
@@ -717,7 +716,7 @@ c_cond
 id|CACHE_S
 c_func
 (paren
-id|cache_info
+id|info
 )paren
 )paren
 (brace
@@ -729,7 +728,7 @@ comma
 id|CACHE_ISIZE
 c_func
 (paren
-id|cache_info
+id|info
 )paren
 )paren
 suffix:semicolon
@@ -741,7 +740,7 @@ comma
 id|CACHE_DSIZE
 c_func
 (paren
-id|cache_info
+id|info
 )paren
 )paren
 suffix:semicolon
@@ -756,15 +755,16 @@ comma
 id|CACHE_ISIZE
 c_func
 (paren
-id|cache_info
+id|info
 )paren
 )paren
 suffix:semicolon
 )brace
 )brace
+)brace
 macro_line|#else
-DECL|macro|dump_cpu_cache_id
-mdefine_line|#define dump_cpu_cache_id() do { } while (0)
+DECL|macro|dump_cpu_info
+mdefine_line|#define dump_cpu_info() do { } while (0)
 macro_line|#endif
 DECL|function|setup_processor
 r_static
@@ -887,7 +887,7 @@ op_amp
 l_int|15
 )paren
 suffix:semicolon
-id|dump_cpu_cache_id
+id|dump_cpu_info
 c_func
 (paren
 )paren
