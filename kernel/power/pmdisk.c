@@ -148,26 +148,6 @@ suffix:semicolon
 multiline_comment|/*&n; * XXX: We try to keep some more pages free so that I/O operations succeed&n; * without paging. Might this be more?&n; */
 DECL|macro|PAGES_FOR_IO
 mdefine_line|#define PAGES_FOR_IO&t;512
-DECL|variable|name_suspend
-r_static
-r_const
-r_char
-id|name_suspend
-(braket
-)braket
-op_assign
-l_string|&quot;Suspend Machine: &quot;
-suffix:semicolon
-DECL|variable|name_resume
-r_static
-r_const
-r_char
-id|name_resume
-(braket
-)braket
-op_assign
-l_string|&quot;Resume Machine: &quot;
-suffix:semicolon
 multiline_comment|/*&n; * Saving part...&n; */
 DECL|function|fill_suspend_header
 r_static
@@ -3342,9 +3322,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;%sSignature found, resuming&bslash;n&quot;
-comma
-id|name_resume
+l_string|&quot;pmdisk: Signature found, resuming&bslash;n&quot;
 )paren
 suffix:semicolon
 id|Done
@@ -4243,9 +4221,7 @@ r_else
 id|pr_debug
 c_func
 (paren
-l_string|&quot;%sError %d resuming&bslash;n&quot;
-comma
-id|name_resume
+l_string|&quot;pmdisk: Error %d resuming&bslash;n&quot;
 comma
 id|error
 )paren
