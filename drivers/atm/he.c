@@ -2906,8 +2906,6 @@ comma
 l_int|8
 comma
 l_int|0
-comma
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -3328,8 +3326,6 @@ comma
 l_int|8
 comma
 l_int|0
-comma
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -6403,8 +6399,6 @@ comma
 id|TPD_ALIGNMENT
 comma
 l_int|0
-comma
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 r_if
