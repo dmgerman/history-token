@@ -16034,6 +16034,10 @@ id|ai-&gt;config.opmode
 op_and_assign
 l_int|0xFF00
 suffix:semicolon
+id|ai-&gt;config.scanMode
+op_assign
+id|SCANMODE_ACTIVE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -16073,6 +16077,10 @@ id|RXMODE_RFMON
 op_or
 id|RXMODE_DISABLE_802_3_HEADER
 suffix:semicolon
+id|ai-&gt;config.scanMode
+op_assign
+id|SCANMODE_PASSIVE
+suffix:semicolon
 id|ai-&gt;flags
 op_or_assign
 id|FLAG_802_11
@@ -16095,6 +16103,10 @@ op_or_assign
 id|RXMODE_RFMON_ANYBSS
 op_or
 id|RXMODE_DISABLE_802_3_HEADER
+suffix:semicolon
+id|ai-&gt;config.scanMode
+op_assign
+id|SCANMODE_PASSIVE
 suffix:semicolon
 id|ai-&gt;flags
 op_or_assign
@@ -23216,6 +23228,10 @@ id|local-&gt;config.rmode
 op_and_assign
 l_int|0xfe00
 suffix:semicolon
+id|local-&gt;config.scanMode
+op_assign
+id|SCANMODE_ACTIVE
+suffix:semicolon
 id|local-&gt;flags
 op_and_assign
 op_complement
@@ -23237,6 +23253,10 @@ suffix:semicolon
 id|local-&gt;config.rmode
 op_and_assign
 l_int|0xfe00
+suffix:semicolon
+id|local-&gt;config.scanMode
+op_assign
+id|SCANMODE_ACTIVE
 suffix:semicolon
 id|local-&gt;flags
 op_and_assign
@@ -23260,6 +23280,10 @@ id|local-&gt;config.rmode
 op_and_assign
 l_int|0xfe00
 suffix:semicolon
+id|local-&gt;config.scanMode
+op_assign
+id|SCANMODE_ACTIVE
+suffix:semicolon
 id|local-&gt;flags
 op_and_assign
 op_complement
@@ -23281,6 +23305,10 @@ suffix:semicolon
 id|local-&gt;config.rmode
 op_and_assign
 l_int|0xfe00
+suffix:semicolon
+id|local-&gt;config.scanMode
+op_assign
+id|SCANMODE_ACTIVE
 suffix:semicolon
 id|local-&gt;flags
 op_and_assign
@@ -23309,6 +23337,10 @@ op_or_assign
 id|RXMODE_RFMON
 op_or
 id|RXMODE_DISABLE_802_3_HEADER
+suffix:semicolon
+id|local-&gt;config.scanMode
+op_assign
+id|SCANMODE_PASSIVE
 suffix:semicolon
 id|local-&gt;flags
 op_or_assign
