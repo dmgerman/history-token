@@ -758,13 +758,6 @@ id|sysdev
 )paren
 suffix:semicolon
 )brace
-id|list_del_init
-c_func
-(paren
-op_amp
-id|sysdev-&gt;entry
-)paren
-suffix:semicolon
 id|up_write
 c_func
 (paren
