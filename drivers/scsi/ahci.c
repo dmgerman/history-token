@@ -2736,7 +2736,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;ata%u: error occurred, port reset&bslash;n&quot;
 comma
-id|ap-&gt;port_no
+id|ap-&gt;id
 )paren
 suffix:semicolon
 )brace
