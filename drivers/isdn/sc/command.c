@@ -564,9 +564,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|err
-op_assign
 id|copy_from_user
 c_func
 (paren
@@ -582,7 +579,6 @@ comma
 r_sizeof
 (paren
 id|scs_ioctl
-)paren
 )paren
 )paren
 )paren
@@ -603,7 +599,8 @@ id|cmdptr
 )paren
 suffix:semicolon
 r_return
-id|err
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_return
