@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/netfilter_decnet.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
+macro_line|#include &lt;linux/jhash.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
@@ -403,36 +404,21 @@ op_star
 id|dev
 )paren
 (brace
-id|u32
-id|hash_val
-suffix:semicolon
-id|hash_val
-op_assign
+r_return
+id|jhash_2words
+c_func
+(paren
 op_star
 (paren
 id|dn_address
 op_star
 )paren
 id|pkey
-suffix:semicolon
-id|hash_val
-op_xor_assign
-(paren
-id|hash_val
-op_rshift
-l_int|10
+comma
+l_int|0
+comma
+id|dn_neigh_table.hash_rnd
 )paren
-suffix:semicolon
-id|hash_val
-op_xor_assign
-(paren
-id|hash_val
-op_rshift
-l_int|3
-)paren
-suffix:semicolon
-r_return
-id|hash_val
 suffix:semicolon
 )brace
 DECL|function|dn_neigh_construct

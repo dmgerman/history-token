@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
+macro_line|#include &lt;linux/jhash.h&gt;
 macro_line|#include &lt;net/route.h&gt; /* for struct rtable and routing */
 macro_line|#include &lt;net/icmp.h&gt; /* icmp_send */
 macro_line|#include &lt;asm/param.h&gt; /* for HZ */
@@ -1559,48 +1560,21 @@ op_star
 id|dev
 )paren
 (brace
-id|u32
-id|hash_val
-suffix:semicolon
-id|hash_val
-op_assign
+r_return
+id|jhash_2words
+c_func
+(paren
 op_star
 (paren
 id|u32
 op_star
 )paren
 id|pkey
-suffix:semicolon
-id|hash_val
-op_xor_assign
-(paren
-id|hash_val
-op_rshift
-l_int|16
-)paren
-suffix:semicolon
-id|hash_val
-op_xor_assign
-id|hash_val
-op_rshift
-l_int|8
-suffix:semicolon
-id|hash_val
-op_xor_assign
-id|hash_val
-op_rshift
-l_int|3
-suffix:semicolon
-id|hash_val
-op_assign
-(paren
-id|hash_val
-op_xor
+comma
 id|dev-&gt;ifindex
+comma
+id|clip_tbl.hash_rnd
 )paren
-suffix:semicolon
-r_return
-id|hash_val
 suffix:semicolon
 )brace
 DECL|variable|clip_tbl

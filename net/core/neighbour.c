@@ -14,6 +14,7 @@ macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 DECL|macro|NEIGH_DEBUG
 mdefine_line|#define NEIGH_DEBUG 1
 DECL|macro|NEIGH_PRINTK
@@ -5929,6 +5930,18 @@ comma
 l_int|0
 comma
 id|phsize
+)paren
+suffix:semicolon
+id|get_random_bytes
+c_func
+(paren
+op_amp
+id|tbl-&gt;hash_rnd
+comma
+r_sizeof
+(paren
+id|tbl-&gt;hash_rnd
+)paren
 )paren
 suffix:semicolon
 id|tbl-&gt;lock
