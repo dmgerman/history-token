@@ -1599,6 +1599,20 @@ c_func
 id|deactivate_super
 )paren
 suffix:semicolon
+DECL|variable|sget
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sget
+)paren
+suffix:semicolon
+DECL|variable|set_anon_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_anon_super
+)paren
+suffix:semicolon
 multiline_comment|/* for stackable file systems (lofs, wrapfs, cryptfs, etc.) */
 DECL|variable|default_llseek
 id|EXPORT_SYMBOL
