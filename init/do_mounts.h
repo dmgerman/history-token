@@ -208,6 +208,11 @@ r_extern
 r_int
 id|root_mountflags
 suffix:semicolon
+r_extern
+r_char
+op_star
+id|root_device_name
+suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 r_void
 id|mount_devfs

@@ -3316,6 +3316,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|sa1100_rs_console_init
+r_static
 r_void
 id|__init
 id|sa1100_rs_console_init
@@ -3337,6 +3338,13 @@ id|sa1100_console
 )paren
 suffix:semicolon
 )brace
+DECL|variable|sa1100_rs_console_init
+id|console_initcall
+c_func
+(paren
+id|sa1100_rs_console_init
+)paren
+suffix:semicolon
 DECL|macro|SA1100_CONSOLE
 mdefine_line|#define SA1100_CONSOLE&t;&amp;sa1100_console
 macro_line|#else

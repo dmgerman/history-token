@@ -1635,7 +1635,7 @@ id|reap
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is called from kswapd when we think we need some&n; * more memory. &n; */
+multiline_comment|/*&n; * shrink_icache_memory() will attempt to reclaim some unused inodes.  Here,&n; * &quot;unused&quot; means that no dentries are referring to the inodes: the files are&n; * not open and the dcache references to those inodes have already been&n; * reclaimed.&n; *&n; * This function is passed the number of inodes to scan, and it returns the&n; * total number of remaining possibly-reclaimable inodes.&n; */
 DECL|function|shrink_icache_memory
 r_static
 r_int
@@ -1672,7 +1672,7 @@ id|nr
 suffix:semicolon
 )brace
 r_return
-id|inodes_stat.nr_inodes
+id|inodes_stat.nr_unused
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called with the inode lock held.&n; * NOTE: we are not increasing the inode-refcount, you must call __iget()&n; * by hand after calling find_inode now! This simplifies iunique and won&squot;t&n; * add any additional branch in the common code.&n; */

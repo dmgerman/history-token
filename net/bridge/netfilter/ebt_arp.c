@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  ebt_arp&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bart.de.schuymer@pandora.be&gt;&n; *&t;Tim Gardner &lt;timg@tpi.com&gt;&n; *&n; *  April, 2002&n; *&n; */
+multiline_comment|/*&n; *  ebt_arp&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bdschuym@pandora.be&gt;&n; *&t;Tim Gardner &lt;timg@tpi.com&gt;&n; *&n; *  April, 2002&n; *&n; */
 macro_line|#include &lt;linux/netfilter_bridge/ebtables.h&gt;
 macro_line|#include &lt;linux/netfilter_bridge/ebt_arp.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
@@ -172,7 +172,7 @@ suffix:semicolon
 r_uint32
 id|src
 suffix:semicolon
-singleline_comment|// Make sure the packet is long enough.
+multiline_comment|/* Make sure the packet is long enough */
 r_if
 c_cond
 (paren
@@ -189,7 +189,7 @@ id|skb.tail
 r_return
 id|EBT_NOMATCH
 suffix:semicolon
-singleline_comment|// IPv4 addresses are always 4 bytes.
+multiline_comment|/* IPv4 addresses are always 4 bytes */
 r_if
 c_cond
 (paren
@@ -454,21 +454,26 @@ id|ebt_match
 id|filter_arp
 op_assign
 (brace
-(brace
-l_int|NULL
-comma
-l_int|NULL
-)brace
-comma
+dot
+id|name
+op_assign
 id|EBT_ARP_MATCH
 comma
+dot
+id|match
+op_assign
 id|ebt_filter_arp
 comma
+dot
+id|check
+op_assign
 id|ebt_arp_check
 comma
-l_int|NULL
-comma
+dot
+id|me
+op_assign
 id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 DECL|function|init

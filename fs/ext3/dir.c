@@ -460,9 +460,16 @@ id|err
 op_ne
 id|ERR_BAD_DX_DIR
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * We don&squot;t set the inode dirty flag since it&squot;s not&n;&t;&t; * critical that it get flushed back to the disk.&n;&t;&t; */
 id|EXT3_I
 c_func

@@ -11,15 +11,9 @@ macro_line|#include &lt;linux/wanpipe.h&gt;&t;/* WANPIPE common user API definit
 macro_line|#include &lt;linux/if_arp.h&gt;&t;/* ARPHRD_* defines */
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* htons(), etc. */
 macro_line|#include &lt;linux/in.h&gt;&t;&t;/* sockaddr_in */
-multiline_comment|/* ---- 2.4.X KERNEL SUPPORT -----------------------*/
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#else
-macro_line|#include &lt;asm/segment.h&gt;
-macro_line|#include &lt;net/route.h&gt;          /* Adding new route entries : 2.0.X kernels */
-macro_line|#endif
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/sdla_ppp.h&gt;&t;&t;/* PPP firmware API definitions */
 macro_line|#include &lt;linux/sdlasfm.h&gt;&t;&t;/* S514 Type Definition */
@@ -89,12 +83,6 @@ DECL|macro|NUM_AUTH_REQ_WITHOUT_REPLY
 mdefine_line|#define NUM_AUTH_REQ_WITHOUT_REPLY      10
 DECL|macro|END_OFFSET
 mdefine_line|#define END_OFFSET 0x1F0
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020125
-DECL|macro|test_and_set_bit
-mdefine_line|#define test_and_set_bit set_bit
-DECL|macro|net_ratelimit
-mdefine_line|#define net_ratelimit() 1
-macro_line|#endif
 multiline_comment|/******Data Structures*****************************************************/
 multiline_comment|/* This structure is placed in the private data area of the device structure.&n; * The card structure used to occupy the private area but now the following &n; * structure will incorporate the card structure along with PPP specific data&n; */
 DECL|struct|ppp_private_area
@@ -450,7 +438,6 @@ r_int
 id|len
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 r_static
 r_void
 id|if_tx_timeout
@@ -460,8 +447,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_static
 r_int
 id|if_rebuild_hdr
@@ -485,42 +470,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else
-r_static
-r_struct
-id|enet_statistics
-op_star
-id|if_stats
-c_func
-(paren
-id|netdevice_t
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_int
-id|if_rebuild_hdr
-(paren
-r_void
-op_star
-id|hdr
-comma
-id|netdevice_t
-op_star
-id|dev
-comma
-r_int
-r_int
-id|raddr
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
-macro_line|#endif
 r_static
 r_int
 id|if_send
@@ -2070,7 +2019,6 @@ id|card-&gt;u.p.if_name
 suffix:semicolon
 )brace
 multiline_comment|/* prepare network device data space for registration */
-macro_line|#ifdef LINUX_2_4
 id|strcpy
 c_func
 (paren
@@ -2079,57 +2027,6 @@ comma
 id|card-&gt;u.p.if_name
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;name
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-id|strlen
-c_func
-(paren
-id|card-&gt;u.p.if_name
-)paren
-op_plus
-l_int|2
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;name
-op_eq
-l_int|NULL
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|ppp_priv_area
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-id|sprintf
-c_func
-(paren
-id|dev-&gt;name
-comma
-l_string|&quot;%s&quot;
-comma
-id|card-&gt;u.p.if_name
-)paren
-suffix:semicolon
-macro_line|#endif
 id|dev-&gt;init
 op_assign
 op_amp
@@ -2275,7 +2172,6 @@ suffix:semicolon
 r_int
 id|len
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_if
 c_cond
 (paren
@@ -2409,151 +2305,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|u_cmd
-op_logical_or
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-id|u_cmd
-comma
-r_sizeof
-(paren
-id|ppp_cmd_t
-)paren
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-id|memcpy_fromfs
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-op_amp
-id|mbox-&gt;cmd
-comma
-id|u_cmd
-comma
-r_sizeof
-(paren
-id|ppp_cmd_t
-)paren
-)paren
-suffix:semicolon
-id|len
-op_assign
-id|mbox-&gt;cmd.length
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|u_data
-op_logical_or
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-id|u_data
-comma
-id|len
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-multiline_comment|/* execute command */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sdla_exec
-c_func
-(paren
-id|mbox
-)paren
-)paren
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-multiline_comment|/* return result */
-id|memcpy_tofs
-c_func
-(paren
-id|u_cmd
-comma
-(paren
-r_void
-op_star
-)paren
-op_amp
-id|mbox-&gt;cmd
-comma
-r_sizeof
-(paren
-id|ppp_cmd_t
-)paren
-)paren
-suffix:semicolon
-id|len
-op_assign
-id|mbox-&gt;cmd.length
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-op_logical_and
-id|u_data
-op_logical_and
-op_logical_neg
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-id|u_data
-comma
-id|len
-)paren
-)paren
-id|memcpy_tofs
-c_func
-(paren
-id|u_data
-comma
-(paren
-r_void
-op_star
-)paren
-op_amp
-id|mbox-&gt;data
-comma
-id|len
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -2590,11 +2341,6 @@ op_assign
 op_amp
 id|card-&gt;wandev
 suffix:semicolon
-macro_line|#ifdef LINUX_2_0
-r_int
-id|i
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Initialize device driver entry points */
 id|dev-&gt;open
 op_assign
@@ -2626,7 +2372,6 @@ op_assign
 op_amp
 id|if_stats
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 id|dev-&gt;tx_timeout
 op_assign
 op_amp
@@ -2636,7 +2381,6 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Initialize media-specific parameters */
 id|dev-&gt;type
 op_assign
@@ -2665,12 +2409,6 @@ op_or_assign
 id|IFF_MULTICAST
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_2_0
-id|dev-&gt;family
-op_assign
-id|AF_INET
-suffix:semicolon
-macro_line|#endif&t;
 id|dev-&gt;mtu
 op_assign
 id|wandev-&gt;mtu
@@ -2710,33 +2448,6 @@ id|dev-&gt;tx_queue_len
 op_assign
 l_int|100
 suffix:semicolon
-multiline_comment|/* Initialize socket buffers */
-macro_line|#if !defined(LINUX_2_1) &amp;&amp; !defined(LINUX_2_4)
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|DEV_NUMBUFFS
-suffix:semicolon
-op_increment
-id|i
-)paren
-id|skb_queue_head_init
-c_func
-(paren
-op_amp
-id|dev-&gt;buffs
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -2772,7 +2483,7 @@ singleline_comment|//unsigned long smp_flags;
 r_if
 c_cond
 (paren
-id|is_dev_running
+id|netif_running
 c_func
 (paren
 id|dev
@@ -2788,27 +2499,12 @@ c_func
 id|card
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 id|netif_start_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;interrupt
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;start
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 id|do_gettimeofday
 c_func
 (paren
@@ -2883,18 +2579,12 @@ id|card
 op_assign
 id|ppp_priv_area-&gt;card
 suffix:semicolon
-id|stop_net_queue
+id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifndef LINUX_2_4
-id|dev-&gt;start
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 id|wanpipe_close
 c_func
 (paren
@@ -2977,7 +2667,6 @@ id|PPP_HDR_LEN
 suffix:semicolon
 )brace
 multiline_comment|/*============================================================================&n; * Re-build media header.&n; *&n; * Return:&t;1&t;physical address resolved.&n; *&t;&t;0&t;physical address not resolved&n; */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|function|if_rebuild_hdr
 r_static
 r_int
@@ -3022,36 +2711,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|if_rebuild_hdr
-r_static
-r_int
-id|if_rebuild_hdr
-(paren
-r_void
-op_star
-id|hdr
-comma
-id|netdevice_t
-op_star
-id|dev
-comma
-r_int
-r_int
-id|raddr
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#ifdef LINUX_2_4
 multiline_comment|/*============================================================================&n; * Handle transmit timeout event from netif watchdog&n; */
 DECL|function|if_tx_timeout
 r_static
@@ -3101,7 +2760,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*============================================================================&n; * Send a packet on a network interface.&n; * o set tbusy flag (marks start of the transmission) to block a timer-based&n; *   transmit from overlapping.&n; * o check link state. If link is not up, then drop the packet.&n; * o execute adapter send command.&n; * o free socket buffer&n; *&n; * Return:&t;0&t;complete (socket buffer must be freed)&n; *&t;&t;non-0&t;packet may be re-transmitted (tbusy must be set)&n; *&n; * Notes:&n; * 1. This routine is called either by the protocol stack or by the &quot;net&n; *    bottom half&quot; (with interrupts enabled).&n; * 2. Setting tbusy flag will inhibit further transmit requests from the&n; *    protocol stack and can be used for flow control with protocol layer.&n; */
 DECL|function|if_send
 r_static
@@ -3156,14 +2814,12 @@ suffix:semicolon
 op_increment
 id|ppp_priv_area-&gt;if_send_stat.if_send_entry
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3187,7 +2843,7 @@ suffix:semicolon
 op_increment
 id|ppp_priv_area-&gt;if_send_stat.if_send_skb_null
 suffix:semicolon
-id|wake_net_dev
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -3197,63 +2853,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifndef LINUX_2_4
-r_if
-c_cond
-(paren
-id|dev-&gt;tbusy
-)paren
-(brace
-multiline_comment|/* If our device stays busy for at least 5 seconds then we will&n;&t;&t; * kick start the device by making dev-&gt;tbusy = 0.  We expect &n;&t;&t; * that our device never stays busy more than 5 seconds. So this&n;&t;&t; * is only used as a last resort. &n;&t;&t; */
-op_increment
-id|ppp_priv_area-&gt;if_send_stat.if_send_tbusy
-suffix:semicolon
-op_increment
-id|card-&gt;wandev.stats.collisions
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|jiffies
-op_minus
-id|ppp_priv_area-&gt;tick_counter
-)paren
-OL
-(paren
-l_int|5
-op_star
-id|HZ
-)paren
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;%s: Transmit times out on %s&bslash;n&quot;
-comma
-id|card-&gt;devname
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-op_increment
-id|ppp_priv_area-&gt;if_send_stat.if_send_tbusy_timeout
-suffix:semicolon
-op_increment
-id|card-&gt;wandev.stats.collisions
-suffix:semicolon
-multiline_comment|/* unbusy the card (because only one interface per card)*/
-id|dev-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 id|sendpacket
 op_assign
 id|skb-&gt;data
@@ -3302,7 +2901,7 @@ suffix:semicolon
 op_increment
 id|ppp_priv_area-&gt;if_send_stat.if_send_PIPE_request
 suffix:semicolon
-id|start_net_queue
+id|netif_start_queue
 c_func
 (paren
 id|dev
@@ -3330,15 +2929,13 @@ id|skb
 op_increment
 id|card-&gt;wandev.stats.tx_dropped
 suffix:semicolon
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_WRITE
 )paren
 suffix:semicolon
-id|start_net_queue
+id|netif_start_queue
 c_func
 (paren
 id|dev
@@ -3400,7 +2997,7 @@ suffix:semicolon
 op_increment
 id|ppp_priv_area-&gt;if_send_stat.if_send_critical_non_ISR
 suffix:semicolon
-id|start_net_queue
+id|netif_start_queue
 c_func
 (paren
 id|dev
@@ -3424,7 +3021,7 @@ suffix:semicolon
 op_increment
 id|card-&gt;wandev.stats.tx_dropped
 suffix:semicolon
-id|start_net_queue
+id|netif_start_queue
 c_func
 (paren
 id|dev
@@ -3445,7 +3042,7 @@ suffix:semicolon
 op_increment
 id|card-&gt;wandev.stats.tx_errors
 suffix:semicolon
-id|start_net_queue
+id|netif_start_queue
 c_func
 (paren
 id|dev
@@ -3489,7 +3086,7 @@ r_else
 op_increment
 id|card-&gt;wandev.stats.tx_dropped
 suffix:semicolon
-id|start_net_queue
+id|netif_start_queue
 c_func
 (paren
 id|dev
@@ -3516,7 +3113,7 @@ id|skb-&gt;protocol
 )paren
 )paren
 (brace
-id|stop_net_queue
+id|netif_stop_queue
 c_func
 (paren
 id|dev
@@ -3537,24 +3134,20 @@ suffix:semicolon
 op_increment
 id|card-&gt;wandev.stats.tx_packets
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|card-&gt;wandev.stats.tx_bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-macro_line|#endif
-id|start_net_queue
+id|netif_start_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 id|dev-&gt;trans_start
 op_assign
 id|jiffies
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 id|if_send_exit_crit
@@ -3566,7 +3159,7 @@ op_logical_neg
 (paren
 id|err
 op_assign
-id|is_queue_stopped
+id|netif_queue_stopped
 c_func
 (paren
 id|dev
@@ -3574,12 +3167,10 @@ id|dev
 )paren
 )paren
 (brace
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_WRITE
 )paren
 suffix:semicolon
 )brace
@@ -3713,7 +3304,6 @@ OG
 id|MAX_LGTH_UDP_MGNT_PKT
 )paren
 (brace
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|printk
 c_func
 (paren
@@ -3725,19 +3315,6 @@ comma
 id|skb-&gt;len
 )paren
 suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: PIPEMON UDP request too long : %li&bslash;n&quot;
-comma
-id|card-&gt;devname
-comma
-id|skb-&gt;len
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -3764,23 +3341,19 @@ op_eq
 id|UDP_PKT_FRM_STACK
 )paren
 (brace
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_WRITE
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_READ
 )paren
 suffix:semicolon
 )brace
@@ -4548,7 +4121,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* switch_net_numbers */
 multiline_comment|/*============================================================================&n; * Get ethernet-style interface statistics.&n; * Return a pointer to struct net_device_stats.&n; */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|function|if_stats
 r_static
 r_struct
@@ -4561,19 +4133,6 @@ id|netdevice_t
 op_star
 id|dev
 )paren
-macro_line|#else
-r_static
-r_struct
-id|enet_statistics
-op_star
-id|if_stats
-c_func
-(paren
-id|netdevice_t
-op_star
-id|dev
-)paren
-macro_line|#endif
 (brace
 id|ppp_private_area_t
 op_star
@@ -6282,7 +5841,7 @@ op_and_assign
 op_complement
 id|PPP_INTR_TXRDY
 suffix:semicolon
-id|wake_net_dev
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -6581,7 +6140,7 @@ c_cond
 (paren
 id|dev
 op_logical_and
-id|is_dev_running
+id|netif_running
 c_func
 (paren
 id|dev
@@ -6837,12 +6396,10 @@ id|ETH_P_IPX
 )paren
 suffix:semicolon
 )brace
-id|wan_dev_kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
-comma
-id|FREE_READ
 )paren
 suffix:semicolon
 )brace
@@ -6867,12 +6424,10 @@ suffix:semicolon
 op_increment
 id|card-&gt;wandev.stats.rx_packets
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|card-&gt;wandev.stats.rx_bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-macro_line|#endif
 op_increment
 id|ppp_priv_area-&gt;rx_intr_stat.rx_intr_bfr_passed_to_stack
 suffix:semicolon
@@ -8189,7 +7744,6 @@ id|ppp_priv_area
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_if
 c_cond
 (paren
@@ -8316,96 +7870,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#else
-r_if
-c_cond
-(paren
-(paren
-id|card-&gt;u.p.ip_mode
-op_eq
-id|WANOPT_PPP_PEER
-)paren
-op_logical_and
-(paren
-id|flags-&gt;ip_state
-op_eq
-l_int|0x09
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ppp_priv_area-&gt;ip_local
-op_eq
-l_int|0
-)paren
-r_return
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: IPCP State Opened.&bslash;n&quot;
-comma
-id|card-&gt;devname
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|read_info
-c_func
-(paren
-id|card
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: An error occurred in IP assignment.&bslash;n&quot;
-comma
-id|card-&gt;devname
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: Assigned Lcl. Addr: %u.%u.%u.%u&bslash;n&quot;
-comma
-id|card-&gt;devname
-comma
-id|NIPQUAD
-c_func
-(paren
-id|dev-&gt;pa_addr
-)paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: Assigned Rmt. Addr: %u.%u.%u.%U&bslash;n&quot;
-comma
-id|card-&gt;devname
-comma
-id|NIPQUAD
-c_func
-(paren
-id|dev-&gt;pa_dstaddr
-)paren
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 )brace
 multiline_comment|/*============================================================================&n; * Monitor physical link disconnected phase.&n; *  o if interface is up and the hold-down timeout has expired, then retry&n; *    connection.&n; */
 DECL|function|retrigger_comm
@@ -8490,7 +7954,6 @@ id|card
 id|ppp508_conf_t
 id|cfg
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_struct
 id|in_device
 op_star
@@ -8498,7 +7961,6 @@ id|in_dev
 op_assign
 id|dev-&gt;ip_ptr
 suffix:semicolon
-macro_line|#endif
 id|ppp_private_area_t
 op_star
 id|ppp_priv_area
@@ -8745,7 +8207,6 @@ id|L_AND_R_IP_NO_ASSIG
 op_or
 id|ENABLE_IP
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|cfg.ip_local
 op_assign
 id|in_dev-&gt;ifa_list-&gt;ifa_local
@@ -8754,16 +8215,6 @@ id|cfg.ip_remote
 op_assign
 id|in_dev-&gt;ifa_list-&gt;ifa_address
 suffix:semicolon
-macro_line|#else
-id|cfg.ip_local
-op_assign
-id|dev-&gt;pa_addr
-suffix:semicolon
-id|cfg.ip_remote
-op_assign
-id|dev-&gt;pa_dstaddr
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Debugging code used to check that IP addresses&n;                         * obtained from the kernel are correct */
 id|NEX_PRINTK
 c_func
@@ -8808,7 +8259,6 @@ id|R_IP_LOCAL_ASSIG
 op_or
 id|ENABLE_IP
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|cfg.ip_local
 op_assign
 id|in_dev-&gt;ifa_list-&gt;ifa_local
@@ -8817,16 +8267,6 @@ id|cfg.ip_remote
 op_assign
 id|in_dev-&gt;ifa_list-&gt;ifa_address
 suffix:semicolon
-macro_line|#else
-id|cfg.ip_local
-op_assign
-id|dev-&gt;pa_addr
-suffix:semicolon
-id|cfg.ip_remote
-op_assign
-id|dev-&gt;pa_dstaddr
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Debugging code used to check that IP addresses&n;                         * obtained from the kernel are correct */
 id|NEX_PRINTK
 (paren
@@ -8853,7 +8293,6 @@ suffix:semicolon
 r_case
 id|WANOPT_PPP_PEER
 suffix:colon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|printk
 c_func
 (paren
@@ -8881,18 +8320,6 @@ l_int|0x00
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* No PEER support for 2.0.X kernels, drop down to default&n;   &t;&t;&t; * condition */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: ERROR, PEER mode is not supported in 2.0.X kernels&bslash;n&quot;
-comma
-id|card-&gt;devname
-)paren
-suffix:semicolon
-macro_line|#endif
 r_default
 suffix:colon
 id|printk
@@ -10815,7 +10242,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_struct
 id|ifreq
 id|if_info
@@ -10831,15 +10257,6 @@ suffix:semicolon
 id|mm_segment_t
 id|fs
 suffix:semicolon
-macro_line|#else
-macro_line|#ifdef _DYNAMIC_ROUTE_20X_SUPPORT_
-r_struct
-id|rtentry
-id|route
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 multiline_comment|/* Set Local and remote addresses */
 id|memset
 c_func
@@ -10946,136 +10363,6 @@ id|fs
 )paren
 suffix:semicolon
 multiline_comment|/* restore old block */
-macro_line|#else
-multiline_comment|/* FIXME: Dynamic Routing in 2.0.X kernels is not&n;         * supported. Sorry ! I&squot;ll come back to it when I get&n;         * a chance. */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: ERROR, Dynamic routing is not supported in 2.0.X kernels&bslash;n&quot;
-comma
-id|card-&gt;devname
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s:        Please use the STATIC IP mode!&bslash;n&quot;
-comma
-id|card-&gt;devname
-)paren
-suffix:semicolon
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#ifdef _DYNAMIC_ROUTE_20X_SUPPORT_
-id|dev-&gt;pa_dstaddr
-op_assign
-id|ppp_priv_area-&gt;ip_remote
-suffix:semicolon
-id|dev-&gt;pa_addr
-op_assign
-id|ppp_priv_area-&gt;ip_local
-suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|route
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|route
-)paren
-)paren
-suffix:semicolon
-id|route.rt_dev
-op_assign
-id|dev-&gt;name
-suffix:semicolon
-id|route.rt_flags
-op_assign
-l_int|0
-suffix:semicolon
-(paren
-(paren
-r_struct
-id|sockaddr_in
-op_star
-)paren
-op_amp
-(paren
-id|route.rt_dst
-)paren
-)paren
-op_member_access_from_pointer
-id|sin_addr.s_addr
-op_assign
-id|dev-&gt;pa_dstaddr
-suffix:semicolon
-(paren
-(paren
-r_struct
-id|sockaddr_in
-op_star
-)paren
-op_amp
-(paren
-id|route.rt_dst
-)paren
-)paren
-op_member_access_from_pointer
-id|sin_family
-op_assign
-id|AF_INET
-suffix:semicolon
-(paren
-(paren
-r_struct
-id|sockaddr_in
-op_star
-)paren
-op_amp
-(paren
-id|route.rt_genmask
-)paren
-)paren
-op_member_access_from_pointer
-id|sin_addr.s_addr
-op_assign
-l_int|0xFFFFFFFF
-suffix:semicolon
-(paren
-(paren
-r_struct
-id|sockaddr_in
-op_star
-)paren
-op_amp
-(paren
-id|route.rt_genmask
-)paren
-)paren
-op_member_access_from_pointer
-id|sin_family
-op_assign
-id|AF_INET
-suffix:semicolon
-id|err
-op_assign
-id|ip_rt_new
-c_func
-(paren
-op_amp
-id|route
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -11149,7 +10436,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|mm_segment_t
 id|fs
 suffix:semicolon
@@ -11176,19 +10462,6 @@ id|ifa
 op_assign
 id|in_dev-&gt;ifa_list
 suffix:semicolon
-macro_line|#else
-r_int
-r_int
-id|fs
-op_assign
-l_int|0
-suffix:semicolon
-r_struct
-id|rtentry
-id|route
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|ip_addr
 op_assign
 id|ifa-&gt;ifa_local
@@ -11216,7 +10489,6 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif
 id|fs
 op_assign
 id|get_fs
@@ -11234,7 +10506,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* get user space block */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)&t;
 multiline_comment|/* Change the local ip address of the interface to 0.&n;&t; * This will also delete the destination route.&n;&t; */
 id|if_data1
 op_assign
@@ -11265,111 +10536,6 @@ op_amp
 id|if_info
 )paren
 suffix:semicolon
-macro_line|#else
-id|ip_addr
-op_assign
-id|dev-&gt;pa_addr
-suffix:semicolon
-id|dev-&gt;pa_dstaddr
-op_assign
-l_int|0
-suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|route
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|route
-)paren
-)paren
-suffix:semicolon
-id|route.rt_dev
-op_assign
-id|dev-&gt;name
-suffix:semicolon
-id|route.rt_flags
-op_assign
-l_int|0
-suffix:semicolon
-(paren
-(paren
-r_struct
-id|sockaddr_in
-op_star
-)paren
-op_amp
-(paren
-id|route.rt_dst
-)paren
-)paren
-op_member_access_from_pointer
-id|sin_addr.s_addr
-op_assign
-id|dev-&gt;pa_dstaddr
-suffix:semicolon
-(paren
-(paren
-r_struct
-id|sockaddr_in
-op_star
-)paren
-op_amp
-(paren
-id|route.rt_dst
-)paren
-)paren
-op_member_access_from_pointer
-id|sin_family
-op_assign
-id|AF_INET
-suffix:semicolon
-(paren
-(paren
-r_struct
-id|sockaddr_in
-op_star
-)paren
-op_amp
-(paren
-id|route.rt_genmask
-)paren
-)paren
-op_member_access_from_pointer
-id|sin_addr.s_addr
-op_assign
-l_int|0xFFFFFFFF
-suffix:semicolon
-(paren
-(paren
-r_struct
-id|sockaddr_in
-op_star
-)paren
-op_amp
-(paren
-id|route.rt_genmask
-)paren
-)paren
-op_member_access_from_pointer
-id|sin_family
-op_assign
-id|AF_INET
-suffix:semicolon
-id|err
-op_assign
-id|ip_rt_kill
-c_func
-(paren
-op_amp
-id|route
-)paren
-suffix:semicolon
-macro_line|#endif
 id|set_fs
 c_func
 (paren
@@ -11825,13 +10991,11 @@ id|broadcast_ip_addr
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_struct
 id|in_device
 op_star
 id|in_dev
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* read the IP source address from the outgoing packet */
 id|src_ip_addr
 op_assign
@@ -11847,7 +11011,6 @@ l_int|12
 )paren
 suffix:semicolon
 multiline_comment|/* read the IP broadcast address for the device */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|in_dev
 op_assign
 id|dev-&gt;ip_ptr
@@ -11885,12 +11048,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else
-id|broadcast_ip_addr
-op_assign
-id|dev-&gt;pa_brdaddr
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* check if the IP Source Address is a Broadcast address */
 r_if
 c_cond
@@ -11977,7 +11134,6 @@ op_star
 id|smp_flags
 )paren
 (brace
-macro_line|#if defined(__SMP__) || defined(LINUX_2_4)
 id|spin_lock_irqsave
 c_func
 (paren
@@ -11988,14 +11144,6 @@ op_star
 id|smp_flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|disable_irq
-c_func
-(paren
-id|card-&gt;hw.irq
-)paren
-suffix:semicolon
-macro_line|#endif                                                                     
 )brace
 DECL|function|s508_unlock
 r_void
@@ -12011,7 +11159,6 @@ op_star
 id|smp_flags
 )paren
 (brace
-macro_line|#if defined(__SMP__) || defined(LINUX_2_4)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -12022,14 +11169,6 @@ op_star
 id|smp_flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|enable_irq
-c_func
-(paren
-id|card-&gt;hw.irq
-)paren
-suffix:semicolon
-macro_line|#endif           
 )brace
 DECL|function|read_connection_info
 r_static

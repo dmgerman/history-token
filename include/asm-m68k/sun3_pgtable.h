@@ -764,13 +764,13 @@ id|pgd
 suffix:semicolon
 )brace
 multiline_comment|/* Find an entry in the third-level pagetable. */
-DECL|macro|__pte_offset
-mdefine_line|#define __pte_offset(address) ((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE-1))
+DECL|macro|pte_index
+mdefine_line|#define pte_index(address) ((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE-1))
 DECL|macro|pte_offset_kernel
-mdefine_line|#define pte_offset_kernel(pmd, address) ((pte_t *) __pmd_page(*pmd) + __pte_offset(address))
+mdefine_line|#define pte_offset_kernel(pmd, address) ((pte_t *) __pmd_page(*pmd) + pte_index(address))
 multiline_comment|/* FIXME: should we bother with kmap() here? */
 DECL|macro|pte_offset_map
-mdefine_line|#define pte_offset_map(pmd, address) ((pte_t *)kmap(pmd_page(*pmd)) + __pte_offset(address))
+mdefine_line|#define pte_offset_map(pmd, address) ((pte_t *)kmap(pmd_page(*pmd)) + pte_index(address))
 DECL|macro|pte_offset_map_nested
 mdefine_line|#define pte_offset_map_nested(pmd, address) pte_offset_map(pmd, address)
 DECL|macro|pte_unmap

@@ -825,10 +825,10 @@ r_int
 r_int
 id|sleep_avg
 suffix:semicolon
-DECL|member|sleep_timestamp
+DECL|member|last_run
 r_int
 r_int
-id|sleep_timestamp
+id|last_run
 suffix:semicolon
 DECL|member|policy
 r_int

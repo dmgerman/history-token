@@ -33,4 +33,8 @@ DECL|macro|TRIPP_VENDOR_ID
 mdefine_line|#define TRIPP_VENDOR_ID&t;&t;0x2478
 DECL|macro|TRIPP_PRODUCT_ID
 mdefine_line|#define TRIPP_PRODUCT_ID&t;0x2008
+DECL|macro|RADIOSHACK_VENDOR_ID
+mdefine_line|#define RADIOSHACK_VENDOR_ID&t;0x1453
+DECL|macro|RADIOSHACK_PRODUCT_ID
+mdefine_line|#define RADIOSHACK_PRODUCT_ID&t;0x4026
 eof

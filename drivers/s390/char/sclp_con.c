@@ -846,4 +846,11 @@ id|sclp_console
 )paren
 suffix:semicolon
 )brace
+DECL|variable|sclp_console_init
+id|console_initcall
+c_func
+(paren
+id|sclp_console_init
+)paren
+suffix:semicolon
 eof

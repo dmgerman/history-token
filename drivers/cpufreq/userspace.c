@@ -1628,7 +1628,7 @@ id|policy-&gt;cur
 suffix:semicolon
 id|device_create_file
 (paren
-id|policy-&gt;intf.dev
+id|policy-&gt;dev
 comma
 op_amp
 id|dev_attr_scaling_setspeed
@@ -1693,7 +1693,7 @@ l_int|0
 suffix:semicolon
 id|device_remove_file
 (paren
-id|policy-&gt;intf.dev
+id|policy-&gt;dev
 comma
 op_amp
 id|dev_attr_scaling_setspeed

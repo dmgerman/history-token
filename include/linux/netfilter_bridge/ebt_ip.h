@@ -18,7 +18,7 @@ DECL|macro|EBT_IP_MASK
 mdefine_line|#define EBT_IP_MASK (EBT_IP_SOURCE | EBT_IP_DEST | EBT_IP_TOS | EBT_IP_PROTO |&bslash;&n; EBT_IP_SPORT | EBT_IP_DPORT )
 DECL|macro|EBT_IP_MATCH
 mdefine_line|#define EBT_IP_MATCH &quot;ip&quot;
-singleline_comment|// the same values are used for the invflags
+multiline_comment|/* the same values are used for the invflags */
 DECL|struct|ebt_ip_info
 r_struct
 id|ebt_ip_info

@@ -308,6 +308,7 @@ r_int
 id|usec
 suffix:semicolon
 r_int
+r_int
 id|deadline
 suffix:semicolon
 r_int

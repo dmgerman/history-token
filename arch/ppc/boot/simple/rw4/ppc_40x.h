@@ -23,7 +23,7 @@ mdefine_line|#define dcwr            0x3ba               /* data cache write-thr
 DECL|macro|dear
 mdefine_line|#define dear            0x3d5               /* data exception address reg    */
 DECL|macro|esr
-mdefine_line|#define esr             0x3d4               /* exception syndrome registe    */
+mdefine_line|#define esr             0x3d4               /* exception syndrome register   */
 DECL|macro|evpr
 mdefine_line|#define evpr            0x3d6               /* exception vector prefix reg   */
 DECL|macro|iccr

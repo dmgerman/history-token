@@ -51,6 +51,12 @@ macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/mroute.h&gt;
 macro_line|#include &lt;linux/igmp.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
+macro_line|#if defined(CONFIG_INET_AH) || defined(CONFIG_INET_AH_MODULE) || defined(CONFIG_INET6_AH) || defined(CONFIG_INET6_AH_MODULE)
+macro_line|#include &lt;net/ah.h&gt;
+macro_line|#endif
+macro_line|#if defined(CONFIG_INET_ESP) || defined(CONFIG_INET_ESP_MODULE) || defined(CONFIG_INET6_ESP) || defined(CONFIG_INET6_ESP_MODULE)
+macro_line|#include &lt;net/esp.h&gt;
+macro_line|#endif
 r_extern
 r_struct
 id|net_proto_family
@@ -1271,11 +1277,11 @@ c_func
 id|__xfrm_state_destroy
 )paren
 suffix:semicolon
-DECL|variable|xfrm_state_find
+DECL|variable|xfrm4_state_find
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|xfrm_state_find
+id|xfrm4_state_find
 )paren
 suffix:semicolon
 DECL|variable|xfrm_state_insert
@@ -1299,11 +1305,11 @@ c_func
 id|xfrm_state_check_space
 )paren
 suffix:semicolon
-DECL|variable|xfrm_state_lookup
+DECL|variable|xfrm4_state_lookup
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|xfrm_state_lookup
+id|xfrm4_state_lookup
 )paren
 suffix:semicolon
 DECL|variable|xfrm_replay_check
@@ -1467,7 +1473,35 @@ c_func
 id|xfrm_policy_list
 )paren
 suffix:semicolon
+DECL|variable|xfrm_dst_lookup_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_dst_lookup_register
+)paren
+suffix:semicolon
+DECL|variable|xfrm_dst_lookup_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_dst_lookup_unregister
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+DECL|variable|xfrm6_state_find
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm6_state_find
+)paren
+suffix:semicolon
+DECL|variable|xfrm6_rcv
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm6_rcv
+)paren
+suffix:semicolon
 DECL|variable|xfrm6_state_lookup
 id|EXPORT_SYMBOL
 c_func
@@ -1480,13 +1514,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|xfrm6_find_acq
-)paren
-suffix:semicolon
-DECL|variable|xfrm6_alloc_spi
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|xfrm6_alloc_spi
 )paren
 suffix:semicolon
 DECL|variable|xfrm6_register_type
@@ -1508,6 +1535,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|xfrm6_get_type
+)paren
+suffix:semicolon
+DECL|variable|xfrm6_clear_mutable_options
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm6_clear_mutable_options
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1574,6 +1608,45 @@ c_func
 id|xfrm_ealg_get_byname
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_INET_AH) || defined(CONFIG_INET_AH_MODULE) || defined(CONFIG_INET6_AH) || defined(CONFIG_INET6_AH_MODULE)
+DECL|variable|skb_ah_walk
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|skb_ah_walk
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_INET_ESP) || defined(CONFIG_INET_ESP_MODULE) || defined(CONFIG_INET6_ESP) || defined(CONFIG_INET6_ESP_MODULE)
+DECL|variable|skb_cow_data
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|skb_cow_data
+)paren
+suffix:semicolon
+DECL|variable|pskb_put
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|pskb_put
+)paren
+suffix:semicolon
+DECL|variable|skb_icv_walk
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|skb_icv_walk
+)paren
+suffix:semicolon
+DECL|variable|skb_to_sgvec
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|skb_to_sgvec
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#if defined (CONFIG_IPV6_MODULE) || defined (CONFIG_IP_SCTP_MODULE)
 multiline_comment|/* inet functions common to v4 and v6 */
 DECL|variable|inet_release

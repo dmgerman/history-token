@@ -25,14 +25,6 @@ macro_line|#ifndef NULL
 DECL|macro|NULL
 mdefine_line|#define NULL     0&t;&t;/* zero          */
 macro_line|#endif
-macro_line|#ifndef TRUE
-DECL|macro|TRUE
-mdefine_line|#define TRUE     (1)&t;&t;/* boolean true  */
-macro_line|#endif
-macro_line|#ifndef FALSE
-DECL|macro|FALSE
-mdefine_line|#define FALSE    (0)&t;&t;/* boolean false */
-macro_line|#endif
 macro_line|#ifndef FAILURE
 DECL|macro|FAILURE
 mdefine_line|#define FAILURE  (-1)
@@ -1174,7 +1166,6 @@ id|ULONG
 id|pSRB_tail
 suffix:semicolon
 multiline_comment|/* SRB save queue tail       */
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 DECL|member|HCS_AvailLock
 id|spinlock_t
 id|HCS_AvailLock
@@ -1188,7 +1179,6 @@ id|spinlock_t
 id|pSRB_lock
 suffix:semicolon
 multiline_comment|/* SRB queue lock            */
-macro_line|#endif
 DECL|typedef|HCS
 )brace
 id|HCS

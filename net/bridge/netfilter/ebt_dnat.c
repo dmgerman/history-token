@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  ebt_dnat&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bart.de.schuymer@pandora.be&gt;&n; *&n; *  June, 2002&n; *&n; */
+multiline_comment|/*&n; *  ebt_dnat&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bdschuym@pandora.be&gt;&n; *&n; *  June, 2002&n; *&n; */
 macro_line|#include &lt;linux/netfilter_bridge/ebtables.h&gt;
 macro_line|#include &lt;linux/netfilter_bridge/ebt_nat.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -225,21 +225,26 @@ id|ebt_target
 id|dnat
 op_assign
 (brace
-(brace
-l_int|NULL
-comma
-l_int|NULL
-)brace
-comma
+dot
+id|name
+op_assign
 id|EBT_DNAT_TARGET
 comma
+dot
+id|target
+op_assign
 id|ebt_target_dnat
 comma
+dot
+id|check
+op_assign
 id|ebt_target_dnat_check
 comma
-l_int|NULL
-comma
+dot
+id|me
+op_assign
 id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 DECL|function|init

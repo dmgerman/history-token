@@ -1,10 +1,9 @@
-multiline_comment|/*&n; *  ebtable_broute&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bart.de.schuymer@pandora.be&gt;&n; *&n; *  April, 2002&n; *&n; *  This table lets you choose between routing and bridging for frames&n; *  entering on a bridge enslaved nic. This table is traversed before any&n; *  other ebtables table. See net/bridge/br_input.c.&n; */
+multiline_comment|/*&n; *  ebtable_broute&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bdschuym@pandora.be&gt;&n; *&n; *  April, 2002&n; *&n; *  This table lets you choose between routing and bridging for frames&n; *  entering on a bridge enslaved nic. This table is traversed before any&n; *  other ebtables table. See net/bridge/br_input.c.&n; */
 macro_line|#include &lt;linux/netfilter_bridge/ebtables.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
 macro_line|#include &lt;linux/brlock.h&gt;
-singleline_comment|// EBT_ACCEPT means the frame will be bridged
-singleline_comment|// EBT_DROP means the frame will be routed
+multiline_comment|/* EBT_ACCEPT means the frame will be bridged&n; * EBT_DROP means the frame will be routed&n; */
 DECL|variable|initial_chain
 r_static
 r_struct
@@ -74,6 +73,7 @@ op_star
 )paren
 op_amp
 id|initial_chain
+comma
 )brace
 suffix:semicolon
 DECL|function|check
@@ -198,11 +198,11 @@ id|NF_DROP
 r_return
 l_int|1
 suffix:semicolon
-singleline_comment|// route it
+multiline_comment|/* route it */
 r_return
 l_int|0
 suffix:semicolon
-singleline_comment|// bridge it
+multiline_comment|/* bridge it */
 )brace
 DECL|function|init
 r_static
@@ -242,7 +242,7 @@ c_func
 id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
-singleline_comment|// see br_input.c
+multiline_comment|/* see br_input.c */
 id|br_should_route_hook
 op_assign
 id|ebt_broute

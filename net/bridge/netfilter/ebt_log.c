@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  ebt_log&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bart.de.schuymer@pandora.be&gt;&n; *&n; *  April, 2002&n; *&n; */
+multiline_comment|/*&n; *  ebt_log&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bdschuym@pandora.be&gt;&n; *&n; *  April, 2002&n; *&n; */
 macro_line|#include &lt;linux/netfilter_bridge/ebtables.h&gt;
 macro_line|#include &lt;linux/netfilter_bridge/ebt_log.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -473,21 +473,26 @@ id|ebt_watcher
 id|log
 op_assign
 (brace
-(brace
-l_int|NULL
-comma
-l_int|NULL
-)brace
-comma
+dot
+id|name
+op_assign
 id|EBT_LOG_WATCHER
 comma
+dot
+id|watcher
+op_assign
 id|ebt_log
 comma
+dot
+id|check
+op_assign
 id|ebt_log_check
 comma
-l_int|NULL
-comma
+dot
+id|me
+op_assign
 id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 DECL|function|init

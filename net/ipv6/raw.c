@@ -22,6 +22,7 @@ macro_line|#include &lt;net/transp_v6.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;net/rawv6.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 DECL|variable|raw_v6_htable
 r_struct
 id|sock
@@ -1195,6 +1196,31 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|xfrm6_policy_check
+c_func
+(paren
+id|sk
+comma
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+id|NET_RX_DROP
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

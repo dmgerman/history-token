@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  ebtable_filter&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bart.de.schuymer@pandora.be&gt;&n; *&n; *  April, 2002&n; *&n; */
+multiline_comment|/*&n; *  ebtable_filter&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bdschuym@pandora.be&gt;&n; *&n; *  April, 2002&n; *&n; */
 macro_line|#include &lt;linux/netfilter_bridge/ebtables.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 DECL|macro|FILTER_VALID_HOOKS
@@ -50,6 +50,7 @@ op_assign
 id|EBT_ACCEPT
 comma
 )brace
+comma
 )brace
 suffix:semicolon
 DECL|variable|initial_table
@@ -124,6 +125,7 @@ r_char
 op_star
 )paren
 id|initial_chains
+comma
 )brace
 suffix:semicolon
 DECL|function|check
@@ -303,6 +305,7 @@ dot
 id|priority
 op_assign
 id|NF_BR_PRI_FILTER_BRIDGED
+comma
 )brace
 comma
 (brace
@@ -325,7 +328,9 @@ dot
 id|priority
 op_assign
 id|NF_BR_PRI_FILTER_OTHER
+comma
 )brace
+comma
 )brace
 suffix:semicolon
 DECL|function|init

@@ -5,7 +5,7 @@ DECL|struct|ebt_redirect_info
 r_struct
 id|ebt_redirect_info
 (brace
-singleline_comment|// EBT_ACCEPT, EBT_DROP or EBT_CONTINUE or EBT_RETURN
+multiline_comment|/* EBT_ACCEPT, EBT_DROP, EBT_CONTINUE or EBT_RETURN */
 DECL|member|target
 r_int
 id|target

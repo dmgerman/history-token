@@ -549,7 +549,7 @@ id|start
 suffix:semicolon
 id|i
 op_assign
-id|__pgd_offset
+id|pgd_index
 c_func
 (paren
 id|vaddr
@@ -557,7 +557,7 @@ id|vaddr
 suffix:semicolon
 id|j
 op_assign
-id|__pmd_offset
+id|pmd_index
 c_func
 (paren
 id|vaddr
@@ -1138,7 +1138,7 @@ id|pgd
 op_assign
 id|swapper_pg_dir
 op_plus
-id|__pgd_offset
+id|pgd_index
 c_func
 (paren
 id|vaddr

@@ -1028,6 +1028,16 @@ suffix:semicolon
 id|create_dev
 c_func
 (paren
+l_string|&quot;/dev/root&quot;
+comma
+id|ROOT_DEV
+comma
+id|root_device_name
+)paren
+suffix:semicolon
+id|create_dev
+c_func
+(paren
 l_string|&quot;/dev/ram&quot;
 comma
 id|MKDEV

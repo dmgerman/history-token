@@ -340,6 +340,8 @@ DECL|macro|SA5_REPLY_PORT_OFFSET
 mdefine_line|#define SA5_REPLY_PORT_OFFSET&t;&t;0x44
 DECL|macro|SA5_INTR_STATUS
 mdefine_line|#define SA5_INTR_STATUS&t;&t;0x30
+DECL|macro|SA5_SCRATCHPAD_OFFSET
+mdefine_line|#define SA5_SCRATCHPAD_OFFSET&t;0xB0
 DECL|macro|SA5_CTCFG_OFFSET
 mdefine_line|#define SA5_CTCFG_OFFSET&t;0xB4
 DECL|macro|SA5_CTMEM_OFFSET
@@ -354,6 +356,8 @@ DECL|macro|SA5B_INTR_PENDING
 mdefine_line|#define SA5B_INTR_PENDING&t;0x04
 DECL|macro|FIFO_EMPTY
 mdefine_line|#define FIFO_EMPTY&t;&t;0xffffffff&t;
+DECL|macro|CCISS_FIRMWARE_READY
+mdefine_line|#define CCISS_FIRMWARE_READY&t;0xffff0000 /* value in scratchpad register */
 DECL|macro|CISS_ERROR_BIT
 mdefine_line|#define  CISS_ERROR_BIT&t;&t;0x02
 DECL|macro|CCISS_INTR_ON

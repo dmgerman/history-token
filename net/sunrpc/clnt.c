@@ -813,6 +813,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|clnt-&gt;cl_pathname
+(braket
+l_int|0
+)braket
+)paren
 id|rpc_rmdir
 c_func
 (paren

@@ -23,6 +23,8 @@ macro_line|#include &lt;net/ndisc.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
+macro_line|#include &lt;net/dst.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_SYSCTL
 macro_line|#include &lt;linux/sysctl.h&gt;
@@ -395,6 +397,25 @@ id|rt6_lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
+multiline_comment|/*&t;Dummy rt for ndisc */
+DECL|function|ndisc_get_dummy_rt
+r_struct
+id|rt6_info
+op_star
+id|ndisc_get_dummy_rt
+c_func
+(paren
+)paren
+(brace
+r_return
+id|dst_alloc
+c_func
+(paren
+op_amp
+id|ip6_dst_ops
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;Route lookup. Any rt6_lock is implied.&n; */
 DECL|function|rt6_device_match
 r_static
@@ -1209,7 +1230,7 @@ op_amp
 id|rt-&gt;rt6i_gateway
 )paren
 suffix:semicolon
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -1242,7 +1263,7 @@ r_return
 id|rt
 suffix:semicolon
 )brace
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -1255,7 +1276,7 @@ id|ip6_null_entry
 suffix:semicolon
 )brace
 DECL|macro|BACKTRACK
-mdefine_line|#define BACKTRACK() &bslash;&n;if (rt == &amp;ip6_null_entry &amp;&amp; strict) { &bslash;&n;       while ((fn = fn-&gt;parent) != NULL) { &bslash;&n;&t;&t;if (fn-&gt;fn_flags &amp; RTN_ROOT) { &bslash;&n;&t;&t;&t;dst_clone(&amp;rt-&gt;u.dst); &bslash;&n;&t;&t;&t;goto out; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (fn-&gt;fn_flags &amp; RTN_RTINFO) &bslash;&n;&t;&t;&t;goto restart; &bslash;&n;&t;} &bslash;&n;}
+mdefine_line|#define BACKTRACK() &bslash;&n;if (rt == &amp;ip6_null_entry &amp;&amp; strict) { &bslash;&n;       while ((fn = fn-&gt;parent) != NULL) { &bslash;&n;&t;&t;if (fn-&gt;fn_flags &amp; RTN_ROOT) { &bslash;&n;&t;&t;&t;dst_hold(&amp;rt-&gt;u.dst); &bslash;&n;&t;&t;&t;goto out; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (fn-&gt;fn_flags &amp; RTN_RTINFO) &bslash;&n;&t;&t;&t;goto restart; &bslash;&n;&t;} &bslash;&n;}
 DECL|function|ip6_route_input
 r_void
 id|ip6_route_input
@@ -1357,7 +1378,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -1441,7 +1462,7 @@ r_goto
 id|relookup
 suffix:semicolon
 )brace
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -1581,7 +1602,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -1692,7 +1713,7 @@ r_goto
 id|relookup
 suffix:semicolon
 )brace
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -3138,7 +3159,7 @@ id|rt-&gt;rt6i_metric
 )paren
 r_continue
 suffix:semicolon
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -3334,7 +3355,7 @@ id|rt1-&gt;rt6i_gateway
 )paren
 )paren
 (brace
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -4111,7 +4132,7 @@ c_cond
 (paren
 id|rt
 )paren
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -8160,6 +8181,60 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif
+DECL|function|xfrm6_dst_lookup
+r_int
+id|xfrm6_dst_lookup
+c_func
+(paren
+r_struct
+id|xfrm_dst
+op_star
+op_star
+id|dst
+comma
+r_struct
+id|flowi
+op_star
+id|fl
+)paren
+(brace
+r_int
+id|err
+op_assign
+l_int|0
+suffix:semicolon
+op_star
+id|dst
+op_assign
+(paren
+r_struct
+id|xfrm_dst
+op_star
+)paren
+id|ip6_route_output
+c_func
+(paren
+l_int|NULL
+comma
+id|fl
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+op_star
+id|dst
+)paren
+id|err
+op_assign
+op_minus
+id|ENETUNREACH
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 DECL|function|ip6_route_init
 r_void
 id|__init
@@ -8194,6 +8269,14 @@ suffix:semicolon
 id|fib6_init
 c_func
 (paren
+)paren
+suffix:semicolon
+id|xfrm_dst_lookup_register
+c_func
+(paren
+id|xfrm6_dst_lookup
+comma
+id|AF_INET6
 )paren
 suffix:semicolon
 macro_line|#ifdef &t;CONFIG_PROC_FS
@@ -8242,6 +8325,12 @@ l_string|&quot;rt6_stats&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+id|xfrm_dst_lookup_unregister
+c_func
+(paren
+id|AF_INET6
+)paren
+suffix:semicolon
 id|rt6_ifdown
 c_func
 (paren

@@ -91,4 +91,15 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|sa11x0_ppcr_to_freq
+c_func
+(paren
+r_int
+r_int
+id|idx
+)paren
+suffix:semicolon
 eof

@@ -103,10 +103,11 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SERIAL_CONSOLE
 multiline_comment|/* serial_console_init handles the special case of starting&n; *   up the console on the serial port&n; */
-DECL|function|serial_console_init
+DECL|function|decserial_console_init
+r_static
 r_void
 id|__init
-id|serial_console_init
+id|decserial_console_init
 c_func
 (paren
 r_void
@@ -146,5 +147,12 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 )brace
+DECL|variable|decserial_console_init
+id|console_initcall
+c_func
+(paren
+id|decserial_console_init
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

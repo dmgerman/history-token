@@ -1,7 +1,5 @@
-multiline_comment|/*&n; *  ebt_mark&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bart.de.schuymer@pandora.be&gt;&n; *&n; *  July, 2002&n; *&n; */
-singleline_comment|// The mark target can be used in any chain
-singleline_comment|// I believe adding a mangle table just for marking is total overkill
-singleline_comment|// Marking a frame doesn&squot;t really change anything in the frame anyway
+multiline_comment|/*&n; *  ebt_mark&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bdschuym@pandora.be&gt;&n; *&n; *  July, 2002&n; *&n; */
+multiline_comment|/* The mark target can be used in any chain,&n; * I believe adding a mangle table just for marking is total overkill.&n; * Marking a frame doesn&squot;t really change anything in the frame anyway.&n; */
 macro_line|#include &lt;linux/netfilter_bridge/ebtables.h&gt;
 macro_line|#include &lt;linux/netfilter_bridge/ebt_mark_t.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -183,21 +181,26 @@ id|ebt_target
 id|mark_target
 op_assign
 (brace
-(brace
-l_int|NULL
-comma
-l_int|NULL
-)brace
-comma
+dot
+id|name
+op_assign
 id|EBT_MARK_TARGET
 comma
+dot
+id|target
+op_assign
 id|ebt_target_mark
 comma
+dot
+id|check
+op_assign
 id|ebt_target_mark_check
 comma
-l_int|NULL
-comma
+dot
+id|me
+op_assign
 id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 DECL|function|init

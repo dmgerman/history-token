@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  ebtable_nat&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bart.de.schuymer@pandora.be&gt;&n; *&n; *  April, 2002&n; *&n; */
+multiline_comment|/*&n; *  ebtable_nat&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bdschuym@pandora.be&gt;&n; *&n; *  April, 2002&n; *&n; */
 macro_line|#include &lt;linux/netfilter_bridge/ebtables.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 DECL|macro|NAT_VALID_HOOKS
@@ -124,6 +124,7 @@ r_char
 op_star
 )paren
 id|initial_chains
+comma
 )brace
 suffix:semicolon
 DECL|function|check
@@ -339,6 +340,7 @@ dot
 id|priority
 op_assign
 id|NF_BR_PRI_NAT_DST_OTHER
+comma
 )brace
 comma
 (brace
@@ -361,6 +363,7 @@ dot
 id|priority
 op_assign
 id|NF_BR_PRI_NAT_SRC
+comma
 )brace
 comma
 (brace
@@ -383,6 +386,7 @@ dot
 id|priority
 op_assign
 id|NF_BR_PRI_NAT_DST_BRIDGED
+comma
 )brace
 comma
 )brace

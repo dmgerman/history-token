@@ -1476,7 +1476,6 @@ id|ENODEV
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
-macro_line|#if LINUX_VERSION_CODE &gt; 0x20118
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1495,7 +1494,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|init_module
 r_int
 id|init_module
