@@ -1,4 +1,4 @@
-multiline_comment|/* (C) 2000 Guenter Geiger &lt;geiger@debian.org&gt;&n;   with copy/pastes from the driver of Winfried Ritsch &lt;ritsch@iem.kug.ac.at&gt;&n;   based on es1370.c&n;&n;&n;&n;   *  10 Jan 2001: 0.1 initial version&n;   *  19 Jan 2001: 0.2 fixed bug in select()&n;   *  27 Apr 2001: 0.3 more than one card usable&n;   *  11 May 2001: 0.4 fixed for SMP, included into kernel source tree&n;   *  17 May 2001: 0.5 draining code didn&squot;t work on new cards&n;   *  18 May 2001: 0.6 remove synchronize_irq() call &n;&n;TODO:&n;   - test more than one card --- done&n;   - check for pci IOREGION (see es1370) in rme96xx_probe ??&n;   - error detection&n;   - mmap interface&n;   - mixer mmap interface&n;   - mixer ioctl&n;   - get rid of noise upon first open (why ??)&n;   - allow multiple open(at least for read)&n;   - allow multiple open for non overlapping regions&n;   - recheck the multiple devices part (offsets of different devices, etc)&n;   - do decent draining in _release --- done&n;   - SMP support&n;*/
+multiline_comment|/* (C) 2000 Guenter Geiger &lt;geiger@debian.org&gt;&n;   with copy/pastes from the driver of Winfried Ritsch &lt;ritsch@iem.kug.ac.at&gt;&n;   based on es1370.c&n;&n;&n;&n;   *  10 Jan 2001: 0.1 initial version&n;   *  19 Jan 2001: 0.2 fixed bug in select()&n;   *  27 Apr 2001: 0.3 more than one card usable&n;   *  11 May 2001: 0.4 fixed for SMP, included into kernel source tree&n;   *  17 May 2001: 0.5 draining code didn&squot;t work on new cards&n;   *  18 May 2001: 0.6 remove synchronize_irq() call &n;   *  10 Aug 2002: added synchronize_irq() again&n;&n;TODO:&n;   - test more than one card --- done&n;   - check for pci IOREGION (see es1370) in rme96xx_probe ??&n;   - error detection&n;   - mmap interface&n;   - mixer mmap interface&n;   - mixer ioctl&n;   - get rid of noise upon first open (why ??)&n;   - allow multiple open(at least for read)&n;   - allow multiple open for non overlapping regions&n;   - recheck the multiple devices part (offsets of different devices, etc)&n;   - do decent draining in _release --- done&n;   - SMP support&n;*/
 macro_line|#ifndef RMEVERSION
 DECL|macro|RMEVERSION
 mdefine_line|#define RMEVERSION &quot;0.6&quot;
@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &quot;rme96xx.h&quot;
@@ -2978,7 +2979,12 @@ c_func
 id|s-&gt;mixer
 )paren
 suffix:semicolon
-multiline_comment|/*&t;synchronize_irq(); This call got lost somehow ? */
+id|synchronize_irq
+c_func
+(paren
+id|s-&gt;irq
+)paren
+suffix:semicolon
 id|free_irq
 c_func
 (paren
