@@ -30,6 +30,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/m32r.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -326,7 +327,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_M32R_SMC91111
+macro_line|#if defined(CONFIG_SMC91X)
 multiline_comment|/* INT0 : LAN controller (SMC91111) */
 id|irq_desc
 (braket
@@ -382,7 +383,7 @@ c_func
 id|M32R_IRQ_INT0
 )paren
 suffix:semicolon
-macro_line|#endif  /* CONFIG_MAPPI2_SMC9111 */
+macro_line|#endif  /* CONFIG_SMC91X */
 multiline_comment|/* MFT2 : system timer */
 id|irq_desc
 (braket
@@ -879,4 +880,127 @@ id|PLD_IRQ_CFC_EJECT
 suffix:semicolon
 macro_line|#endif /* CONFIG_MAPPI2_CFC */
 )brace
+DECL|macro|LAN_IOSTART
+mdefine_line|#define LAN_IOSTART     0x300
+DECL|macro|LAN_IOEND
+mdefine_line|#define LAN_IOEND       0x320
+DECL|variable|smc91x_resources
+r_static
+r_struct
+id|resource
+id|smc91x_resources
+(braket
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+)braket
+op_assign
+(brace
+dot
+id|start
+op_assign
+(paren
+id|LAN_IOSTART
+)paren
+comma
+dot
+id|end
+op_assign
+(paren
+id|LAN_IOEND
+)paren
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_MEM
+comma
+)brace
+comma
+(braket
+l_int|1
+)braket
+op_assign
+(brace
+dot
+id|start
+op_assign
+id|M32R_IRQ_INT0
+comma
+dot
+id|end
+op_assign
+id|M32R_IRQ_INT0
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_IRQ
+comma
+)brace
+)brace
+suffix:semicolon
+DECL|variable|smc91x_device
+r_static
+r_struct
+id|platform_device
+id|smc91x_device
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;smc91x&quot;
+comma
+dot
+id|id
+op_assign
+l_int|0
+comma
+dot
+id|num_resources
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|smc91x_resources
+)paren
+comma
+dot
+id|resource
+op_assign
+id|smc91x_resources
+comma
+)brace
+suffix:semicolon
+DECL|function|platform_init
+r_static
+r_int
+id|__init
+id|platform_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|platform_device_register
+c_func
+(paren
+op_amp
+id|smc91x_device
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|platform_init
+id|arch_initcall
+c_func
+(paren
+id|platform_init
+)paren
+suffix:semicolon
 eof
