@@ -749,7 +749,7 @@ singleline_comment|// reliablity, always 0xffff
 id|isdn_net_write_super
 c_func
 (paren
-id|lp
+id|idev
 comma
 id|skb
 )paren
@@ -781,6 +781,12 @@ op_star
 id|lp
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_struct
 id|sk_buff
 op_star
@@ -899,7 +905,7 @@ singleline_comment|// unused
 id|isdn_net_write_super
 c_func
 (paren
-id|lp
+id|idev
 comma
 id|skb
 )paren
@@ -994,10 +1000,10 @@ id|lp-&gt;cisco_timer
 )paren
 suffix:semicolon
 )brace
-id|isdn_net_device_wake_queue
+id|isdn_net_dev_wake_queue
 c_func
 (paren
-id|lp
+id|lp-&gt;netdev
 )paren
 suffix:semicolon
 )brace
@@ -1040,6 +1046,12 @@ op_star
 id|lp
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_struct
 id|sk_buff
 op_star
@@ -1215,7 +1227,7 @@ singleline_comment|// unused
 id|isdn_net_write_super
 c_func
 (paren
-id|lp
+id|idev
 comma
 id|skb
 )paren

@@ -2873,10 +2873,6 @@ r_int
 r_int
 id|mask
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|ippp_struct
 op_star
@@ -3714,8 +3710,7 @@ multiline_comment|/* keeps CCP/compression states in sync */
 id|isdn_net_write_super
 c_func
 (paren
-op_amp
-id|idev-&gt;local
+id|idev
 comma
 id|skb
 )paren
@@ -5216,9 +5211,6 @@ id|netdev
 (brace
 id|isdn_net_local
 op_star
-id|lp
-comma
-op_star
 id|mlp
 suffix:semicolon
 id|isdn_net_dev
@@ -5382,9 +5374,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|lp
+id|idev
 op_assign
-id|isdn_net_get_locked_lp
+id|isdn_net_get_locked_dev
 c_func
 (paren
 id|nd
@@ -5394,7 +5386,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|lp
+id|idev
 )paren
 (brace
 id|printk
@@ -5411,10 +5403,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* we have our lp locked from now on */
-id|idev
-op_assign
-id|lp-&gt;netdev
-suffix:semicolon
 id|slot
 op_assign
 id|idev-&gt;ppp_slot
@@ -6204,7 +6192,7 @@ suffix:semicolon
 id|isdn_net_writebuf_skb
 c_func
 (paren
-id|lp
+id|idev
 comma
 id|skb
 )paren
@@ -6215,7 +6203,7 @@ id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|lp-&gt;xmit_lock
+id|idev-&gt;xmit_lock
 )paren
 suffix:semicolon
 r_return
@@ -9041,10 +9029,14 @@ id|isdn_net_dial_req
 c_func
 (paren
 (paren
+(paren
 id|isdn_net_local
 op_star
 )paren
 id|sdev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|netdev
 )paren
 suffix:semicolon
 r_return
@@ -9502,8 +9494,7 @@ suffix:semicolon
 id|isdn_net_write_super
 c_func
 (paren
-op_amp
-id|idev-&gt;local
+id|idev
 comma
 id|skb
 )paren

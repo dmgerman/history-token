@@ -799,16 +799,6 @@ id|u_char
 id|l3_proto
 suffix:semicolon
 multiline_comment|/* Layer-3-protocol                 */
-DECL|member|sqfull
-r_int
-id|sqfull
-suffix:semicolon
-multiline_comment|/* Flag: netdev-queue overloaded    */
-DECL|member|sqfull_stamp
-id|ulong
-id|sqfull_stamp
-suffix:semicolon
-multiline_comment|/* Start-Time of overload           */
 DECL|member|slavedelay
 id|ulong
 id|slavedelay
@@ -865,27 +855,6 @@ op_star
 id|netdev
 suffix:semicolon
 multiline_comment|/* Ptr to netdev                    */
-DECL|member|super_tx_queue
-r_struct
-id|sk_buff_head
-id|super_tx_queue
-suffix:semicolon
-multiline_comment|/* List of supervisory frames to  */
-multiline_comment|/* be transmitted asap              */
-DECL|member|frame_cnt
-id|atomic_t
-id|frame_cnt
-suffix:semicolon
-multiline_comment|/* number of frames currently       */
-multiline_comment|/* queued in HL driver              */
-multiline_comment|/* Ptr to orig. hard_header_cache   */
-DECL|member|xmit_lock
-id|spinlock_t
-id|xmit_lock
-suffix:semicolon
-multiline_comment|/* used to protect the xmit path of */
-multiline_comment|/* a particular channel (including  */
-multiline_comment|/* the frame_cnt                    */
 macro_line|#ifdef CONFIG_ISDN_X25
 DECL|member|dops
 r_struct
@@ -935,11 +904,6 @@ DECL|member|cisco_timer
 r_struct
 id|timer_list
 id|cisco_timer
-suffix:semicolon
-DECL|member|tqueue
-r_struct
-id|tq_struct
-id|tqueue
 suffix:semicolon
 DECL|member|ops
 r_struct
@@ -1034,6 +998,16 @@ r_int
 id|last_jiffies
 suffix:semicolon
 multiline_comment|/* when transcount was reset        */
+DECL|member|sqfull
+r_int
+id|sqfull
+suffix:semicolon
+multiline_comment|/* Flag: netdev-queue overloaded    */
+DECL|member|sqfull_stamp
+id|ulong
+id|sqfull_stamp
+suffix:semicolon
+multiline_comment|/* Start-Time of overload           */
 DECL|member|hup_timer
 r_struct
 id|timer_list
@@ -1076,6 +1050,31 @@ r_int
 id|ppp_slot
 suffix:semicolon
 multiline_comment|/* PPPD device slot number          */
+DECL|member|xmit_lock
+id|spinlock_t
+id|xmit_lock
+suffix:semicolon
+multiline_comment|/* used to protect the xmit path of */
+multiline_comment|/* a particular channel (including  */
+multiline_comment|/* the frame_cnt                    */
+DECL|member|super_tx_queue
+r_struct
+id|sk_buff_head
+id|super_tx_queue
+suffix:semicolon
+multiline_comment|/* List of supervisory frames to  */
+multiline_comment|/* be transmitted asap              */
+DECL|member|frame_cnt
+id|atomic_t
+id|frame_cnt
+suffix:semicolon
+multiline_comment|/* number of frames currently       */
+multiline_comment|/* queued in HL driver              */
+DECL|member|tqueue
+r_struct
+id|tq_struct
+id|tqueue
+suffix:semicolon
 DECL|member|queue
 id|isdn_net_local
 op_star
