@@ -317,6 +317,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|function|ioremap
 r_void
+id|__iomem
 op_star
 id|ioremap
 c_func
@@ -333,6 +334,7 @@ id|size
 r_return
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|addr
@@ -341,6 +343,7 @@ suffix:semicolon
 DECL|function|__ioremap
 r_extern
 r_void
+id|__iomem
 op_star
 id|__ioremap
 c_func
@@ -361,6 +364,7 @@ id|flags
 r_return
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|addr
@@ -371,7 +375,9 @@ r_void
 id|iounmap
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -607,6 +613,7 @@ suffix:semicolon
 DECL|function|__ioremap_com
 r_static
 r_void
+id|__iomem
 op_star
 id|__ioremap_com
 c_func
@@ -704,6 +711,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren
@@ -719,6 +727,7 @@ id|PAGE_MASK
 suffix:semicolon
 )brace
 r_void
+id|__iomem
 op_star
 DECL|function|ioremap
 id|ioremap
@@ -734,6 +743,7 @@ id|size
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|ret
 op_assign
@@ -769,6 +779,7 @@ id|ret
 suffix:semicolon
 )brace
 r_void
+id|__iomem
 op_star
 DECL|function|__ioremap
 id|__ioremap
@@ -1365,9 +1376,11 @@ r_void
 id|iounmap
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
-id|addr
+id|token
 )paren
 (brace
 r_int
@@ -1388,6 +1401,10 @@ suffix:semicolon
 id|pgd_t
 op_star
 id|dir
+suffix:semicolon
+r_void
+op_star
+id|addr
 suffix:semicolon
 r_if
 c_cond
@@ -1410,7 +1427,7 @@ op_star
 id|IO_TOKEN_TO_ADDR
 c_func
 (paren
-id|addr
+id|token
 )paren
 op_amp
 id|PAGE_MASK
@@ -1545,8 +1562,8 @@ r_int
 id|iounmap_subset_regions
 c_func
 (paren
-r_void
-op_star
+r_int
+r_int
 id|addr
 comma
 r_int
@@ -1565,10 +1582,6 @@ op_assign
 id|im_get_area
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|addr
 comma
 id|size
@@ -1595,6 +1608,11 @@ id|area
 id|iounmap
 c_func
 (paren
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|area-&gt;addr
 )paren
 suffix:semicolon
@@ -1603,10 +1621,6 @@ op_assign
 id|im_get_area
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|addr
 comma
 id|size
@@ -1624,9 +1638,11 @@ r_int
 id|iounmap_explicit
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
-id|addr
+id|start
 comma
 r_int
 r_int
@@ -1639,20 +1655,20 @@ op_star
 id|area
 suffix:semicolon
 r_int
+r_int
+id|addr
+suffix:semicolon
+r_int
 id|rc
 suffix:semicolon
 multiline_comment|/* addr could be in EEH or IO region, map it to IO region regardless.&n;&t; */
 id|addr
 op_assign
 (paren
-r_void
-op_star
-)paren
-(paren
 id|IO_TOKEN_TO_ADDR
 c_func
 (paren
-id|addr
+id|start
 )paren
 op_amp
 id|PAGE_MASK
@@ -1664,10 +1680,6 @@ op_assign
 id|im_get_area
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|addr
 comma
 id|size
@@ -1710,10 +1722,6 @@ l_string|&quot;%s() cannot unmap nonexistent range 0x%lx&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-(paren
-r_int
-r_int
-)paren
 id|addr
 )paren
 suffix:semicolon
@@ -1727,16 +1735,16 @@ r_else
 id|iounmap
 c_func
 (paren
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|area-&gt;addr
 )paren
 suffix:semicolon
 )brace
-id|iounmap
-c_func
-(paren
-id|area-&gt;addr
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * FIXME! This can&squot;t be right:&n;&t;iounmap(area-&gt;addr);&n;&t; * Maybe it should be &quot;iounmap(area);&quot;&n;&t; */
 r_return
 l_int|0
 suffix:semicolon
