@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &quot;saa7134-reg.h&quot;
@@ -363,6 +364,26 @@ c_func
 id|SAA7134_AUDIO_PLL_CTRL
 comma
 l_int|0x00
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|need_resched
+c_func
+(paren
+)paren
+)paren
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+id|udelay
+c_func
+(paren
+l_int|10
 )paren
 suffix:semicolon
 id|saa_writeb
@@ -1683,7 +1704,7 @@ r_return
 id|value
 suffix:semicolon
 )brace
-DECL|function|sifdebug_dump_regs
+macro_line|#if 0
 r_static
 r_void
 id|sifdebug_dump_regs
@@ -1768,6 +1789,7 @@ id|ANALOG_IO_SELECT
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|tvaudio_thread
 r_static
 r_int
@@ -2198,15 +2220,11 @@ multiline_comment|/* Oops: autoscan didn&squot;t work for some reason :-/ */
 id|printk
 c_func
 (paren
-l_string|&quot;%s/audio: oops: audio carrier scan failed&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;%s/audio: oops: audio carrier &quot;
+l_string|&quot;scan failed&bslash;n&quot;
 comma
 id|dev-&gt;name
-)paren
-suffix:semicolon
-id|sifdebug_dump_regs
-c_func
-(paren
-id|dev
 )paren
 suffix:semicolon
 )brace
