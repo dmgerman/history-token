@@ -402,6 +402,25 @@ op_star
 id|ctx
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|audit_ipc_perms
+c_func
+(paren
+r_int
+r_int
+id|qbytes
+comma
+id|uid_t
+id|uid
+comma
+id|gid_t
+id|gid
+comma
+id|mode_t
+id|mode
+)paren
+suffix:semicolon
 macro_line|#else
 DECL|macro|audit_alloc
 mdefine_line|#define audit_alloc(t) ({ 0; })
@@ -419,6 +438,8 @@ DECL|macro|audit_inode
 mdefine_line|#define audit_inode(n,i,d) do { ; } while (0)
 DECL|macro|audit_get_loginuid
 mdefine_line|#define audit_get_loginuid(c) ({ -1; })
+DECL|macro|audit_ipc_perms
+mdefine_line|#define audit_ipc_perms(q,u,g,m) ({ 0; })
 macro_line|#endif
 macro_line|#ifdef CONFIG_AUDIT
 multiline_comment|/* These are defined in audit.c */
