@@ -999,7 +999,7 @@ id|save_flags
 id|flags
 )paren
 suffix:semicolon
-id|sti
+id|cli
 c_func
 (paren
 )paren
