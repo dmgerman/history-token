@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2001 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under GPL&n; * $Id: ohci-dbg.c,v 1.2 2002/01/19 00:15:45 dbrownell Exp $&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci-dbg.c,v 1.2 2002/01/19 00:15:45 dbrownell Exp $&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifdef DEBUG
 DECL|macro|pipestring
@@ -272,10 +272,11 @@ id|dma_addr_t
 id|ed_dma
 )paren
 suffix:semicolon
+macro_line|#ifdef OHCI_VERBOSE_DEBUG
 multiline_comment|/* print non-empty branches of the periodic ed tree */
-DECL|function|ep_print_int_eds
+DECL|function|ohci_dump_periodic
 r_void
-id|ep_print_int_eds
+id|ohci_dump_periodic
 (paren
 r_struct
 id|ohci_hcd
@@ -284,7 +285,7 @@ id|ohci
 comma
 r_char
 op_star
-id|str
+id|label
 )paren
 (brace
 r_int
@@ -292,9 +293,14 @@ id|i
 comma
 id|j
 suffix:semicolon
-id|__u32
+id|u32
 op_star
 id|ed_p
+suffix:semicolon
+r_int
+id|printed
+op_assign
+l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -335,15 +341,18 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
+id|printed
+op_assign
+l_int|1
+suffix:semicolon
 id|printk
 (paren
 id|KERN_DEBUG
-id|__FILE__
-l_string|&quot;: %s branch int %2d(%2x):&quot;
+l_string|&quot;%s, ohci %s frame %2d:&quot;
 comma
-id|str
+id|label
 comma
-id|i
+id|ohci-&gt;hcd.bus_name
 comma
 id|i
 )paren
@@ -378,7 +387,9 @@ id|ed_p
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot; ed: %4x;&quot;
+l_string|&quot; %p/%08x;&quot;
+comma
+id|ed
 comma
 id|ed-&gt;hwINFO
 )paren
@@ -395,7 +406,24 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|printed
+)paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s, ohci %s, empty periodic schedule&bslash;n&quot;
+comma
+id|label
+comma
+id|ohci-&gt;hcd.bus_name
+)paren
+suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|ohci_dump_intr_mask
 r_static
 r_void
@@ -623,17 +651,12 @@ id|regs-&gt;revision
 op_amp
 l_int|0xff
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|temp
-op_ne
-l_int|0x10
-)paren
 id|dbg
 (paren
-l_string|&quot;spec %d.%d&quot;
+l_string|&quot;OHCI %d.%d, %s legacy support registers&quot;
 comma
+l_int|0x03
+op_amp
 (paren
 id|temp
 op_rshift
@@ -645,6 +668,17 @@ id|temp
 op_amp
 l_int|0x0f
 )paren
+comma
+(paren
+id|temp
+op_amp
+l_int|0x10
+)paren
+ques
+c_cond
+l_string|&quot;with&quot;
+suffix:colon
+l_string|&quot;NO&quot;
 )paren
 suffix:semicolon
 id|temp
@@ -1199,18 +1233,20 @@ id|ohci_dump_status
 id|controller
 )paren
 suffix:semicolon
+macro_line|#ifdef OHCI_VERBOSE_DEBUG
 r_if
 c_cond
 (paren
 id|verbose
 )paren
-id|ep_print_int_eds
+id|ohci_dump_periodic
 (paren
 id|controller
 comma
 l_string|&quot;hcca&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 id|dbg
 (paren
 l_string|&quot;hcca frame #%04x&quot;

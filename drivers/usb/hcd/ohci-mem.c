@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2001 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under GPL&n; * $Id: ohci-mem.c,v 1.2 2002/01/19 00:22:13 dbrownell Exp $&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci-mem.c,v 1.2 2002/01/19 00:22:13 dbrownell Exp $&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * There&squot;s basically three types of memory:&n; *&t;- data used only by the HCD ... kmalloc is fine&n; *&t;- async and periodic schedules, shared by HC and HCD ... these&n; *&t;  need to use pci_pool or pci_alloc_consistent&n; *&t;- driver buffers, read/written by HC ... single shot DMA mapped &n; *&n; * There&squot;s also PCI &quot;register&quot; data, which is memory mapped.&n; * No memory seen by this driver is pagable.&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -84,7 +84,7 @@ id|hcd
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifdef DEBUG
+macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
 DECL|macro|OHCI_MEM_FLAGS
 macro_line|#&t;define OHCI_MEM_FLAGS&t;SLAB_POISON
 macro_line|#else
@@ -137,7 +137,6 @@ id|scan-&gt;virt
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_struct
 id|ed
 op_star
@@ -179,7 +178,6 @@ id|ed_dma
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_struct
 id|td
 op_star
@@ -195,6 +193,10 @@ id|dma_addr_t
 id|td_dma
 )paren
 (brace
+id|td_dma
+op_and_assign
+id|TD_MASK
+suffix:semicolon
 r_return
 (paren
 r_struct
@@ -798,7 +800,6 @@ id|td
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_void
 DECL|function|td_free
 id|td_free
@@ -925,7 +926,6 @@ id|ed
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_void
 DECL|function|ed_free
 id|ed_free

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2001 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under GPL&n; * $Id: ohci-q.c,v 1.6 2002/01/19 00:23:15 dbrownell Exp $&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci-q.c,v 1.6 2002/01/19 00:23:15 dbrownell Exp $&n; */
 DECL|function|urb_free_priv
 r_static
 r_void
@@ -307,7 +307,6 @@ id|urb-&gt;pipe
 )paren
 suffix:semicolon
 macro_line|#endif
-singleline_comment|// FIXME:  but if urb-&gt;status says it was was unlinked ...
 r_switch
 c_cond
 (paren
@@ -321,6 +320,8 @@ r_case
 id|PIPE_INTERRUPT
 suffix:colon
 macro_line|#ifdef CONFIG_PCI
+singleline_comment|// FIXME rewrite this resubmit path.  use pci_dma_sync_single()
+singleline_comment|// and requeue more cheaply, and only if needed.
 id|pci_unmap_single
 (paren
 id|hc-&gt;hcd.pdev
@@ -346,20 +347,16 @@ id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* FIXME: MP race.  If another CPU partially unlinks&n;&t;&t;&t; * this URB (urb-&gt;status was updated, hasn&squot;t yet told&n;&t;&t;&t; * us to dequeue) before we call complete() here, an&n;&t;&t;&t; * extra &quot;unlinked&quot; completion will be reported...&n;&t;&t;&t; */
 id|urb-&gt;complete
 (paren
 id|urb
 )paren
 suffix:semicolon
-multiline_comment|/* implicitly requeued */
+multiline_comment|/* always requeued, but ED_SKIP if complete() unlinks.&n;&t;&t;&t; * removed from periodic table only at SOF intr.&n;&t;&t;&t; */
 id|urb-&gt;actual_length
 op_assign
 l_int|0
-suffix:semicolon
-id|urb-&gt;status
-op_assign
-op_minus
-id|EINPROGRESS
 suffix:semicolon
 r_if
 c_cond
@@ -368,7 +365,11 @@ id|urb_priv-&gt;state
 op_ne
 id|URB_DEL
 )paren
-(brace
+id|urb-&gt;status
+op_assign
+op_minus
+id|EINPROGRESS
+suffix:semicolon
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -390,7 +391,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -425,7 +425,7 @@ id|urbt
 (brace
 multiline_comment|/* send the reply and requeue URB */
 macro_line|#ifdef CONFIG_PCI
-singleline_comment|// FIXME this style unmap is only done on this route ...
+singleline_comment|// FIXME rewrite this resubmit path too
 id|pci_unmap_single
 (paren
 id|hc-&gt;hcd.pdev
@@ -1138,8 +1138,8 @@ id|ed-&gt;dma
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
-id|ep_print_int_eds
+macro_line|#ifdef OHCI_VERBOSE_DEBUG
+id|ohci_dump_periodic
 (paren
 id|ohci
 comma
@@ -1283,8 +1283,8 @@ id|ohci-&gt;ed_isotail
 op_assign
 id|edi
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|ep_print_int_eds
+macro_line|#ifdef OHCI_VERBOSE_DEBUG
+id|ohci_dump_periodic
 (paren
 id|ohci
 comma
@@ -1335,10 +1335,7 @@ id|ed_p
 suffix:semicolon
 id|ed-&gt;hwINFO
 op_or_assign
-id|__constant_cpu_to_le32
-(paren
-id|OHCI_ED_SKIP
-)paren
+id|ED_SKIP
 suffix:semicolon
 r_switch
 c_cond
@@ -1681,8 +1678,8 @@ id|i
 op_sub_assign
 id|ed-&gt;int_load
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|ep_print_int_eds
+macro_line|#ifdef OHCI_VERBOSE_DEBUG
+id|ohci_dump_periodic
 (paren
 id|ohci
 comma
@@ -1833,8 +1830,8 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef DEBUG
-id|ep_print_int_eds
+macro_line|#ifdef OHCI_VERBOSE_DEBUG
+id|ohci_dump_periodic
 (paren
 id|ohci
 comma
@@ -1845,6 +1842,7 @@ macro_line|#endif
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME ED&squot;s &quot;unlink&quot; state is indeterminate;&n;&t; * the HC might still be caching it (till SOF).&n;&t; */
 id|ed-&gt;state
 op_assign
 id|ED_UNLINK
@@ -2037,10 +2035,7 @@ id|ED_NEW
 (brace
 id|ed-&gt;hwINFO
 op_assign
-id|__constant_cpu_to_le32
-(paren
-id|OHCI_ED_SKIP
-)paren
+id|ED_SKIP
 suffix:semicolon
 multiline_comment|/* dummy td; end of td list for ed */
 id|td
@@ -2095,16 +2090,6 @@ id|pipe
 )paren
 suffix:semicolon
 )brace
-id|ohci-&gt;dev
-(braket
-id|usb_pipedevice
-(paren
-id|pipe
-)paren
-)braket
-op_assign
-id|udev
-suffix:semicolon
 singleline_comment|// FIXME:  don&squot;t do this if it&squot;s linked to the HC,
 singleline_comment|// we might clobber data toggle or other state ...
 id|ed-&gt;hwINFO
@@ -2261,10 +2246,7 @@ id|ED_URB_DEL
 suffix:semicolon
 id|ed-&gt;hwINFO
 op_or_assign
-id|__constant_cpu_to_le32
-(paren
-id|OHCI_ED_SKIP
-)paren
+id|ED_SKIP
 suffix:semicolon
 r_switch
 c_cond
@@ -2451,9 +2433,6 @@ id|le32_to_cpup
 op_amp
 id|urb_priv-&gt;ed-&gt;hwTailP
 )paren
-op_amp
-op_complement
-l_int|0xf
 )paren
 suffix:semicolon
 id|td-&gt;ed
@@ -3462,8 +3441,6 @@ id|le32_to_cpup
 op_amp
 id|ohci-&gt;hcca-&gt;done_head
 )paren
-op_amp
-l_int|0xfffffff0
 suffix:semicolon
 id|ohci-&gt;hcca-&gt;done_head
 op_assign
@@ -3521,15 +3498,13 @@ comma
 id|td_list
 )paren
 suffix:semicolon
+multiline_comment|/* typically the endpoint halted too */
 r_if
 c_cond
 (paren
 id|td_list-&gt;ed-&gt;hwHeadP
 op_amp
-id|__constant_cpu_to_le32
-(paren
-l_int|0x1
-)paren
+id|ED_H
 )paren
 (brace
 r_if
@@ -3562,17 +3537,14 @@ id|hwNextTD
 op_amp
 id|__constant_cpu_to_le32
 (paren
-l_int|0xfffffff0
+id|TD_MASK
 )paren
 )paren
 op_or
 (paren
 id|td_list-&gt;ed-&gt;hwHeadP
 op_amp
-id|__constant_cpu_to_le32
-(paren
-l_int|0x2
-)paren
+id|ED_C
 )paren
 suffix:semicolon
 id|urb_priv-&gt;td_cnt
@@ -3587,10 +3559,8 @@ suffix:semicolon
 r_else
 id|td_list-&gt;ed-&gt;hwHeadP
 op_and_assign
-id|__constant_cpu_to_le32
-(paren
-l_int|0xfffffff2
-)paren
+op_complement
+id|ED_H
 suffix:semicolon
 )brace
 )brace
@@ -3609,8 +3579,6 @@ id|le32_to_cpup
 op_amp
 id|td_list-&gt;hwNextTD
 )paren
-op_amp
-l_int|0xfffffff0
 suffix:semicolon
 )brace
 id|spin_unlock_irqrestore
@@ -3728,8 +3696,6 @@ id|le32_to_cpup
 op_amp
 id|ed-&gt;hwTailP
 )paren
-op_amp
-l_int|0xfffffff0
 )paren
 suffix:semicolon
 id|tdHeadP
@@ -3743,8 +3709,6 @@ id|le32_to_cpup
 op_amp
 id|ed-&gt;hwHeadP
 )paren
-op_amp
-l_int|0xfffffff0
 )paren
 suffix:semicolon
 id|edINFO
@@ -3800,8 +3764,6 @@ id|le32_to_cpup
 op_amp
 id|td-&gt;hwNextTD
 )paren
-op_amp
-l_int|0xfffffff0
 )paren
 suffix:semicolon
 r_if
@@ -3898,8 +3860,6 @@ id|le32_to_cpup
 op_amp
 id|ed-&gt;hwHeadP
 )paren
-op_amp
-l_int|0xfffffff0
 )paren
 suffix:semicolon
 r_if
@@ -3933,10 +3893,7 @@ id|tdTailP
 suffix:semicolon
 id|ed-&gt;hwINFO
 op_assign
-id|__constant_cpu_to_le32
-(paren
-id|OHCI_ED_SKIP
-)paren
+id|ED_SKIP
 suffix:semicolon
 id|ed-&gt;state
 op_assign
@@ -3947,10 +3904,7 @@ r_else
 id|ed-&gt;hwINFO
 op_and_assign
 op_complement
-id|__constant_cpu_to_le32
-(paren
-id|OHCI_ED_SKIP
-)paren
+id|ED_SKIP
 suffix:semicolon
 r_switch
 c_cond
@@ -4115,10 +4069,6 @@ id|urb_priv
 suffix:semicolon
 id|__u32
 id|tdINFO
-comma
-id|edHeadP
-comma
-id|edTailP
 suffix:semicolon
 r_int
 r_int
@@ -4220,7 +4170,7 @@ op_eq
 id|urb_priv-&gt;length
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Except for periodic transfers, both branches do&n;&t;&t;&t; * the same thing.  Periodic urbs get reissued until&n;&t;&t;&t; * they&squot;re &quot;deleted&quot; with usb_unlink_urb.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Except for periodic transfers, both branches do&n;&t;&t;&t; * the same thing.  Periodic urbs get reissued until&n;&t;&t;&t; * they&squot;re &quot;deleted&quot; (in SOF intr) by usb_unlink_urb.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4301,33 +4251,26 @@ op_ne
 id|ED_NEW
 )paren
 (brace
+id|u32
 id|edHeadP
 op_assign
-id|le32_to_cpup
-(paren
-op_amp
 id|ed-&gt;hwHeadP
-)paren
-op_amp
-l_int|0xfffffff0
 suffix:semicolon
-id|edTailP
-op_assign
-id|le32_to_cpup
-(paren
-op_amp
-id|ed-&gt;hwTailP
-)paren
-suffix:semicolon
-singleline_comment|// FIXME:  ED_UNLINK is very fuzzy w.r.t. what the hc knows...
 multiline_comment|/* unlink eds if they are not busy */
+id|edHeadP
+op_and_assign
+id|__constant_cpu_to_le32
+(paren
+id|ED_MASK
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
 id|edHeadP
 op_eq
-id|edTailP
+id|ed-&gt;hwTailP
 )paren
 op_logical_and
 (paren

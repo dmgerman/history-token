@@ -1,4 +1,259 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2001 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under GPL&n; * $Id: ohci.h,v 1.5 2002/01/19 00:24:01 dbrownell Exp $&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci.h,v 1.5 2002/01/19 00:24:01 dbrownell Exp $&n; */
+multiline_comment|/*&n; * OHCI Endpoint Descriptor (ED) ... holds TD queue&n; * See OHCI spec, section 4.2&n; */
+DECL|struct|ed
+r_struct
+id|ed
+(brace
+multiline_comment|/* first fields are hardware-specified, le32 */
+DECL|member|hwINFO
+id|__u32
+id|hwINFO
+suffix:semicolon
+multiline_comment|/* endpoint config bitmap */
+DECL|macro|ED_ISO
+mdefine_line|#define ED_ISO&t;&t;__constant_cpu_to_le32(1 &lt;&lt; 15)
+DECL|macro|ED_SKIP
+mdefine_line|#define ED_SKIP&t;&t;__constant_cpu_to_le32(1 &lt;&lt; 14)
+DECL|macro|ED_LOWSPEED
+mdefine_line|#define ED_LOWSPEED&t;__constant_cpu_to_le32(1 &lt;&lt; 13)
+DECL|macro|ED_OUT
+mdefine_line|#define ED_OUT&t;&t;__constant_cpu_to_le32(0x01 &lt;&lt; 11)
+DECL|macro|ED_IN
+mdefine_line|#define ED_IN&t;&t;__constant_cpu_to_le32(0x10 &lt;&lt; 11)
+DECL|member|hwTailP
+id|__u32
+id|hwTailP
+suffix:semicolon
+multiline_comment|/* tail of TD list */
+DECL|member|hwHeadP
+id|__u32
+id|hwHeadP
+suffix:semicolon
+multiline_comment|/* head of TD list */
+DECL|macro|ED_C
+mdefine_line|#define ED_C&t;&t;__constant_cpu_to_le32(0x02)&t;/* toggle carry */
+DECL|macro|ED_H
+mdefine_line|#define ED_H&t;&t;__constant_cpu_to_le32(0x01)&t;/* halted */
+DECL|member|hwNextED
+id|__u32
+id|hwNextED
+suffix:semicolon
+multiline_comment|/* next ED in list */
+multiline_comment|/* rest are purely for the driver&squot;s use */
+DECL|member|ed_prev
+r_struct
+id|ed
+op_star
+id|ed_prev
+suffix:semicolon
+DECL|member|int_period
+id|__u8
+id|int_period
+suffix:semicolon
+DECL|member|int_branch
+id|__u8
+id|int_branch
+suffix:semicolon
+DECL|member|int_load
+id|__u8
+id|int_load
+suffix:semicolon
+DECL|member|int_interval
+id|__u8
+id|int_interval
+suffix:semicolon
+DECL|member|state
+id|__u8
+id|state
+suffix:semicolon
+singleline_comment|// ED_{NEW,UNLINK,OPER}
+DECL|macro|ED_NEW
+mdefine_line|#define ED_NEW &t;&t;0x00&t;&t;/* unused, no dummy td */
+DECL|macro|ED_UNLINK
+mdefine_line|#define ED_UNLINK &t;0x01&t;&t;/* dummy td, maybe linked to hc */
+DECL|macro|ED_OPER
+mdefine_line|#define ED_OPER&t;&t;0x02&t;&t;/* dummy td, _is_ linked to hc */
+DECL|macro|ED_URB_DEL
+mdefine_line|#define ED_URB_DEL  &t;0x08&t;&t;/* for unlinking; masked in */
+DECL|member|type
+id|__u8
+id|type
+suffix:semicolon
+DECL|member|last_iso
+id|__u16
+id|last_iso
+suffix:semicolon
+DECL|member|ed_rm_list
+r_struct
+id|ed
+op_star
+id|ed_rm_list
+suffix:semicolon
+DECL|member|dma
+id|dma_addr_t
+id|dma
+suffix:semicolon
+multiline_comment|/* addr of ED */
+)brace
+id|__attribute__
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|16
+)paren
+)paren
+)paren
+suffix:semicolon
+DECL|macro|ED_MASK
+mdefine_line|#define ED_MASK&t;((u32)~0x0f)&t;&t;/* strip hw status in low addr bits */
+multiline_comment|/*&n; * OHCI Transfer Descriptor (TD) ... one per transfer segment&n; * See OHCI spec, sections 4.3.1 (general = control/bulk/interrupt)&n; * and 4.3.2 (iso)&n; */
+DECL|struct|td
+r_struct
+id|td
+(brace
+multiline_comment|/* first fields are hardware-specified, le32 */
+DECL|member|hwINFO
+id|__u32
+id|hwINFO
+suffix:semicolon
+multiline_comment|/* transfer info bitmask */
+DECL|macro|TD_CC
+mdefine_line|#define TD_CC       0xf0000000&t;&t;&t;/* condition code */
+DECL|macro|TD_CC_GET
+mdefine_line|#define TD_CC_GET(td_p) ((td_p &gt;&gt;28) &amp; 0x0f)
+singleline_comment|//#define TD_CC_SET(td_p, cc) (td_p) = ((td_p) &amp; 0x0fffffff) | (((cc) &amp; 0x0f) &lt;&lt; 28)
+DECL|macro|TD_EC
+mdefine_line|#define TD_EC       0x0C000000&t;&t;&t;/* error count */
+DECL|macro|TD_T
+mdefine_line|#define TD_T        0x03000000&t;&t;&t;/* data toggle state */
+DECL|macro|TD_T_DATA0
+mdefine_line|#define TD_T_DATA0  0x02000000&t;&t;&t;&t;/* DATA0 */
+DECL|macro|TD_T_DATA1
+mdefine_line|#define TD_T_DATA1  0x03000000&t;&t;&t;&t;/* DATA1 */
+DECL|macro|TD_T_TOGGLE
+mdefine_line|#define TD_T_TOGGLE 0x00000000&t;&t;&t;&t;/* uses ED_C */
+DECL|macro|TD_DI
+mdefine_line|#define TD_DI       0x00E00000&t;&t;&t;/* frames before interrupt */
+singleline_comment|//#define TD_DI_SET(X) (((X) &amp; 0x07)&lt;&lt; 21)
+DECL|macro|TD_DP
+mdefine_line|#define TD_DP       0x00180000&t;&t;&t;/* direction/pid */
+DECL|macro|TD_DP_SETUP
+mdefine_line|#define TD_DP_SETUP 0x00000000&t;&t;&t;/* SETUP pid */
+DECL|macro|TD_DP_IN
+mdefine_line|#define TD_DP_IN    0x00100000&t;&t;&t;&t;/* IN pid */
+DECL|macro|TD_DP_OUT
+mdefine_line|#define TD_DP_OUT   0x00080000&t;&t;&t;&t;/* OUT pid */
+multiline_comment|/* 0x00180000 rsvd */
+DECL|macro|TD_R
+mdefine_line|#define TD_R        0x00040000&t;&t;&t;/* round: short packets OK? */
+multiline_comment|/* bits 0x1ffff are defined by HCD */
+DECL|macro|TD_ISO
+mdefine_line|#define TD_ISO&t;    0x00010000&t;&t;&t;/* copy of ED_ISO */
+DECL|member|hwCBP
+id|__u32
+id|hwCBP
+suffix:semicolon
+multiline_comment|/* Current Buffer Pointer (or 0) */
+DECL|member|hwNextTD
+id|__u32
+id|hwNextTD
+suffix:semicolon
+multiline_comment|/* Next TD Pointer */
+DECL|member|hwBE
+id|__u32
+id|hwBE
+suffix:semicolon
+multiline_comment|/* Memory Buffer End Pointer */
+multiline_comment|/* PSW is only for ISO */
+DECL|macro|MAXPSW
+mdefine_line|#define MAXPSW 1&t;&t;/* hardware allows 8 */
+DECL|member|hwPSW
+id|__u16
+id|hwPSW
+(braket
+id|MAXPSW
+)braket
+suffix:semicolon
+multiline_comment|/* rest are purely for the driver&squot;s use */
+DECL|member|index
+id|__u8
+id|index
+suffix:semicolon
+DECL|member|ed
+r_struct
+id|ed
+op_star
+id|ed
+suffix:semicolon
+DECL|member|next_dl_td
+r_struct
+id|td
+op_star
+id|next_dl_td
+suffix:semicolon
+DECL|member|urb
+r_struct
+id|urb
+op_star
+id|urb
+suffix:semicolon
+DECL|member|td_dma
+id|dma_addr_t
+id|td_dma
+suffix:semicolon
+multiline_comment|/* addr of this TD */
+DECL|member|data_dma
+id|dma_addr_t
+id|data_dma
+suffix:semicolon
+multiline_comment|/* addr of data it points to */
+)brace
+id|__attribute__
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|32
+)paren
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* c/b/i need 16; only iso needs 32 */
+DECL|macro|TD_MASK
+mdefine_line|#define TD_MASK&t;((u32)~0x1f)&t;&t;/* strip hw status in low addr bits */
+multiline_comment|/*&n; * Hardware transfer status codes -- CC from td-&gt;hwINFO or td-&gt;hwPSW&n; */
+DECL|macro|TD_CC_NOERROR
+mdefine_line|#define TD_CC_NOERROR      0x00
+DECL|macro|TD_CC_CRC
+mdefine_line|#define TD_CC_CRC          0x01
+DECL|macro|TD_CC_BITSTUFFING
+mdefine_line|#define TD_CC_BITSTUFFING  0x02
+DECL|macro|TD_CC_DATATOGGLEM
+mdefine_line|#define TD_CC_DATATOGGLEM  0x03
+DECL|macro|TD_CC_STALL
+mdefine_line|#define TD_CC_STALL        0x04
+DECL|macro|TD_DEVNOTRESP
+mdefine_line|#define TD_DEVNOTRESP      0x05
+DECL|macro|TD_PIDCHECKFAIL
+mdefine_line|#define TD_PIDCHECKFAIL    0x06
+DECL|macro|TD_UNEXPECTEDPID
+mdefine_line|#define TD_UNEXPECTEDPID   0x07
+DECL|macro|TD_DATAOVERRUN
+mdefine_line|#define TD_DATAOVERRUN     0x08
+DECL|macro|TD_DATAUNDERRUN
+mdefine_line|#define TD_DATAUNDERRUN    0x09
+multiline_comment|/* 0x0A, 0x0B reserved for hardware */
+DECL|macro|TD_BUFFEROVERRUN
+mdefine_line|#define TD_BUFFEROVERRUN   0x0C
+DECL|macro|TD_BUFFERUNDERRUN
+mdefine_line|#define TD_BUFFERUNDERRUN  0x0D
+multiline_comment|/* 0x0E, 0x0F reserved for HCD */
+DECL|macro|TD_NOTACCESSED
+mdefine_line|#define TD_NOTACCESSED     0x0F
+multiline_comment|/* map OHCI TD status codes (CC) to errno values */
 DECL|variable|cc_to_error
 r_static
 r_const
@@ -9,7 +264,6 @@ l_int|16
 )braket
 op_assign
 (brace
-multiline_comment|/* map OHCI status to errno values */
 multiline_comment|/* No  Error  */
 l_int|0
 comma
@@ -74,264 +328,13 @@ op_minus
 id|EALREADY
 )brace
 suffix:semicolon
-multiline_comment|/* ED States */
-DECL|macro|ED_NEW
-mdefine_line|#define ED_NEW &t;&t;0x00&t;&t;/* unused, no dummy td */
-DECL|macro|ED_UNLINK
-mdefine_line|#define ED_UNLINK &t;0x01&t;&t;/* dummy td, maybe linked to hc */
-DECL|macro|ED_OPER
-mdefine_line|#define ED_OPER&t;&t;0x02&t;&t;/* dummy td, _is_ linked to hc */
-DECL|macro|ED_URB_DEL
-mdefine_line|#define ED_URB_DEL  &t;0x08&t;&t;/* masked in */
-multiline_comment|/* usb_ohci_ed */
-DECL|struct|ed
-r_struct
-id|ed
-(brace
-multiline_comment|/* first fields are hardware-specified */
-DECL|member|hwINFO
-id|__u32
-id|hwINFO
-suffix:semicolon
-DECL|member|hwTailP
-id|__u32
-id|hwTailP
-suffix:semicolon
-DECL|member|hwHeadP
-id|__u32
-id|hwHeadP
-suffix:semicolon
-DECL|member|hwNextED
-id|__u32
-id|hwNextED
-suffix:semicolon
-DECL|member|ed_prev
-r_struct
-id|ed
-op_star
-id|ed_prev
-suffix:semicolon
-DECL|member|int_period
-id|__u8
-id|int_period
-suffix:semicolon
-DECL|member|int_branch
-id|__u8
-id|int_branch
-suffix:semicolon
-DECL|member|int_load
-id|__u8
-id|int_load
-suffix:semicolon
-DECL|member|int_interval
-id|__u8
-id|int_interval
-suffix:semicolon
-DECL|member|state
-id|__u8
-id|state
-suffix:semicolon
-singleline_comment|// ED_{NEW,UNLINK,OPER}
-DECL|member|type
-id|__u8
-id|type
-suffix:semicolon
-DECL|member|last_iso
-id|__u16
-id|last_iso
-suffix:semicolon
-DECL|member|ed_rm_list
-r_struct
-id|ed
-op_star
-id|ed_rm_list
-suffix:semicolon
-DECL|member|dma
-id|dma_addr_t
-id|dma
-suffix:semicolon
-DECL|member|unused
-id|__u32
-id|unused
-(braket
-l_int|3
-)braket
-suffix:semicolon
-)brace
-id|__attribute
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|16
-)paren
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* TD info field */
-DECL|macro|TD_CC
-mdefine_line|#define TD_CC       0xf0000000
-DECL|macro|TD_CC_GET
-mdefine_line|#define TD_CC_GET(td_p) ((td_p &gt;&gt;28) &amp; 0x0f)
-DECL|macro|TD_CC_SET
-mdefine_line|#define TD_CC_SET(td_p, cc) (td_p) = ((td_p) &amp; 0x0fffffff) | (((cc) &amp; 0x0f) &lt;&lt; 28)
-DECL|macro|TD_EC
-mdefine_line|#define TD_EC       0x0C000000
-DECL|macro|TD_T
-mdefine_line|#define TD_T        0x03000000
-DECL|macro|TD_T_DATA0
-mdefine_line|#define TD_T_DATA0  0x02000000
-DECL|macro|TD_T_DATA1
-mdefine_line|#define TD_T_DATA1  0x03000000
-DECL|macro|TD_T_TOGGLE
-mdefine_line|#define TD_T_TOGGLE 0x00000000
-DECL|macro|TD_R
-mdefine_line|#define TD_R        0x00040000
-DECL|macro|TD_DI
-mdefine_line|#define TD_DI       0x00E00000
-DECL|macro|TD_DI_SET
-mdefine_line|#define TD_DI_SET(X) (((X) &amp; 0x07)&lt;&lt; 21)
-DECL|macro|TD_DP
-mdefine_line|#define TD_DP       0x00180000
-DECL|macro|TD_DP_SETUP
-mdefine_line|#define TD_DP_SETUP 0x00000000
-DECL|macro|TD_DP_IN
-mdefine_line|#define TD_DP_IN    0x00100000
-DECL|macro|TD_DP_OUT
-mdefine_line|#define TD_DP_OUT   0x00080000
-DECL|macro|TD_ISO
-mdefine_line|#define TD_ISO&t;    0x00010000
-DECL|macro|TD_DEL
-mdefine_line|#define TD_DEL      0x00020000
-multiline_comment|/* CC Codes */
-DECL|macro|TD_CC_NOERROR
-mdefine_line|#define TD_CC_NOERROR      0x00
-DECL|macro|TD_CC_CRC
-mdefine_line|#define TD_CC_CRC          0x01
-DECL|macro|TD_CC_BITSTUFFING
-mdefine_line|#define TD_CC_BITSTUFFING  0x02
-DECL|macro|TD_CC_DATATOGGLEM
-mdefine_line|#define TD_CC_DATATOGGLEM  0x03
-DECL|macro|TD_CC_STALL
-mdefine_line|#define TD_CC_STALL        0x04
-DECL|macro|TD_DEVNOTRESP
-mdefine_line|#define TD_DEVNOTRESP      0x05
-DECL|macro|TD_PIDCHECKFAIL
-mdefine_line|#define TD_PIDCHECKFAIL    0x06
-DECL|macro|TD_UNEXPECTEDPID
-mdefine_line|#define TD_UNEXPECTEDPID   0x07
-DECL|macro|TD_DATAOVERRUN
-mdefine_line|#define TD_DATAOVERRUN     0x08
-DECL|macro|TD_DATAUNDERRUN
-mdefine_line|#define TD_DATAUNDERRUN    0x09
-multiline_comment|/* 0x0A, 0x0B reserved for hardware */
-DECL|macro|TD_BUFFEROVERRUN
-mdefine_line|#define TD_BUFFEROVERRUN   0x0C
-DECL|macro|TD_BUFFERUNDERRUN
-mdefine_line|#define TD_BUFFERUNDERRUN  0x0D
-multiline_comment|/* 0x0E, 0x0F reserved for HCD */
-DECL|macro|TD_NOTACCESSED
-mdefine_line|#define TD_NOTACCESSED     0x0F
-DECL|macro|MAXPSW
-mdefine_line|#define MAXPSW 1
-DECL|struct|td
-r_struct
-id|td
-(brace
-multiline_comment|/* first hardware fields are in all tds */
-DECL|member|hwINFO
-id|__u32
-id|hwINFO
-suffix:semicolon
-DECL|member|hwCBP
-id|__u32
-id|hwCBP
-suffix:semicolon
-multiline_comment|/* Current Buffer Pointer */
-DECL|member|hwNextTD
-id|__u32
-id|hwNextTD
-suffix:semicolon
-multiline_comment|/* Next TD Pointer */
-DECL|member|hwBE
-id|__u32
-id|hwBE
-suffix:semicolon
-multiline_comment|/* Memory Buffer End Pointer */
-DECL|member|hwPSW
-id|__u16
-id|hwPSW
-(braket
-id|MAXPSW
-)braket
-suffix:semicolon
-multiline_comment|/* PSW is only for ISO */
-DECL|member|unused
-id|__u8
-id|unused
-suffix:semicolon
-DECL|member|index
-id|__u8
-id|index
-suffix:semicolon
-DECL|member|ed
-r_struct
-id|ed
-op_star
-id|ed
-suffix:semicolon
-DECL|member|next_dl_td
-r_struct
-id|td
-op_star
-id|next_dl_td
-suffix:semicolon
-DECL|member|urb
-r_struct
-id|urb
-op_star
-id|urb
-suffix:semicolon
-DECL|member|td_dma
-id|dma_addr_t
-id|td_dma
-suffix:semicolon
-DECL|member|data_dma
-id|dma_addr_t
-id|data_dma
-suffix:semicolon
-DECL|member|unused2
-id|__u32
-id|unused2
-(braket
-l_int|2
-)braket
-suffix:semicolon
-)brace
-id|__attribute
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|32
-)paren
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* iso needs 32 */
-DECL|macro|OHCI_ED_SKIP
-mdefine_line|#define OHCI_ED_SKIP&t;(1 &lt;&lt; 14)
-multiline_comment|/*&n; * The HCCA (Host Controller Communications Area) is a 256 byte&n; * structure defined in the OHCI spec. The host controller is&n; * told the base address of it.  It must be 256-byte aligned.&n; */
-DECL|macro|NUM_INTS
-mdefine_line|#define NUM_INTS 32&t;/* part of the OHCI standard */
+multiline_comment|/*&n; * The HCCA (Host Controller Communications Area) is a 256 byte&n; * structure defined section 4.4.1 of the OHCI spec. The HC is&n; * told the base address of it.  It must be 256-byte aligned.&n; */
 DECL|struct|ohci_hcca
 r_struct
 id|ohci_hcca
 (brace
+DECL|macro|NUM_INTS
+mdefine_line|#define NUM_INTS 32
 DECL|member|int_table
 id|__u32
 id|int_table
@@ -339,7 +342,7 @@ id|int_table
 id|NUM_INTS
 )braket
 suffix:semicolon
-multiline_comment|/* Interrupt ED table */
+multiline_comment|/* periodic schedule */
 DECL|member|frame_no
 id|__u16
 id|frame_no
@@ -362,9 +365,16 @@ id|reserved_for_hc
 l_int|116
 )braket
 suffix:semicolon
+DECL|member|what
+id|u8
+id|what
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* spec only identifies 252 bytes :) */
 )brace
-id|__attribute
-c_func
+id|__attribute__
 (paren
 (paren
 id|aligned
@@ -375,15 +385,12 @@ l_int|256
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Maximum number of root hub ports.  &n; */
-DECL|macro|MAX_ROOT_PORTS
-mdefine_line|#define MAX_ROOT_PORTS&t;15&t;/* maximum OHCI root hub ports */
-multiline_comment|/*&n; * This is the structure of the OHCI controller&squot;s memory mapped I/O&n; * region.  This is Memory Mapped I/O.  You must use the readl() and&n; * writel() macros defined in asm/io.h to access these!!&n; */
+multiline_comment|/*&n; * This is the structure of the OHCI controller&squot;s memory mapped I/O region.&n; * You must use readl() and writel() (in &lt;asm/io.h&gt;) to access these fields!!&n; * Layout is in section 7 (and appendix B) of the spec.&n; */
 DECL|struct|ohci_regs
 r_struct
 id|ohci_regs
 (brace
-multiline_comment|/* control and status registers */
+multiline_comment|/* control and status registers (section 7.1) */
 DECL|member|revision
 id|__u32
 id|revision
@@ -408,7 +415,7 @@ DECL|member|intrdisable
 id|__u32
 id|intrdisable
 suffix:semicolon
-multiline_comment|/* memory pointers */
+multiline_comment|/* memory pointers (section 7.2) */
 DECL|member|hcca
 id|__u32
 id|hcca
@@ -437,7 +444,7 @@ DECL|member|donehead
 id|__u32
 id|donehead
 suffix:semicolon
-multiline_comment|/* frame counters */
+multiline_comment|/* frame counters (section 7.3) */
 DECL|member|fminterval
 id|__u32
 id|fminterval
@@ -458,7 +465,7 @@ DECL|member|lsthresh
 id|__u32
 id|lsthresh
 suffix:semicolon
-multiline_comment|/* Root hub ports */
+multiline_comment|/* Root hub ports (section 7.4) */
 DECL|struct|ohci_roothub_regs
 r_struct
 id|ohci_roothub_regs
@@ -475,6 +482,8 @@ DECL|member|status
 id|__u32
 id|status
 suffix:semicolon
+DECL|macro|MAX_ROOT_PORTS
+mdefine_line|#define MAX_ROOT_PORTS&t;15&t;/* maximum OHCI root hub ports (RH_A_NDP) */
 DECL|member|portstatus
 id|__u32
 id|portstatus
@@ -486,10 +495,9 @@ DECL|member|roothub
 )brace
 id|roothub
 suffix:semicolon
-multiline_comment|/* and some optional registers for legacy compatibility */
+multiline_comment|/* and optional &quot;legacy support&quot; registers (appendix B) at 0x0100 */
 )brace
-id|__attribute
-c_func
+id|__attribute__
 (paren
 (paren
 id|aligned
@@ -618,7 +626,7 @@ DECL|macro|RH_A_NOCP
 mdefine_line|#define&t;RH_A_NOCP&t;(1 &lt;&lt; 12)&t;&t;/* no over current protection */
 DECL|macro|RH_A_POTPGT
 mdefine_line|#define&t;RH_A_POTPGT&t;(0xff &lt;&lt; 24)&t;&t;/* power on to power good time */
-multiline_comment|/* urb */
+multiline_comment|/* hcd-private per-urb state */
 DECL|struct|urb_priv
 r_typedef
 r_struct
@@ -820,15 +828,6 @@ id|u32
 id|hc_control
 suffix:semicolon
 multiline_comment|/* copy of hc control reg */
-DECL|member|dev
-r_struct
-id|usb_device
-op_star
-id|dev
-(braket
-l_int|128
-)braket
-suffix:semicolon
 DECL|member|flags
 r_int
 r_int
