@@ -134,6 +134,16 @@ id|HAS_PHY_IRQ
 op_assign
 l_int|0x2000
 comma
+DECL|enumerator|HAS_SWAPPED_SEEPROM
+id|HAS_SWAPPED_SEEPROM
+op_assign
+l_int|0x4000
+comma
+DECL|enumerator|NEEDS_FAKE_MEDIA_TABLE
+id|NEEDS_FAKE_MEDIA_TABLE
+op_assign
+l_int|0x8000
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* chip types.  careful!  order is VERY IMPORTANT here, as these&n; * are used throughout the driver as indices into arrays */
@@ -1531,8 +1541,10 @@ r_int
 id|tulip_read_eeprom
 c_func
 (paren
-r_int
-id|ioaddr
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 r_int
 id|location

@@ -1844,9 +1844,17 @@ id|port
 op_member_access_from_pointer
 id|open
 )paren
+(brace
+id|netif_start_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
@@ -1991,6 +1999,12 @@ id|KERN_ERR
 l_string|&quot;%s: unable to close port&bslash;n&quot;
 comma
 id|dev-&gt;name
+)paren
+suffix:semicolon
+id|netif_stop_queue
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 r_for

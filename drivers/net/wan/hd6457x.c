@@ -3324,12 +3324,6 @@ id|port
 )paren
 suffix:semicolon
 multiline_comment|/* reset channel */
-id|netif_stop_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|sca_out
 c_func
 (paren
@@ -3443,6 +3437,12 @@ id|card
 )paren
 suffix:semicolon
 macro_line|#endif
+id|netif_stop_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 DECL|function|sca_attach
 r_static
