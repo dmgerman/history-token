@@ -555,19 +555,22 @@ l_int|2
 )paren
 (brace
 multiline_comment|/* &quot;Auto-IRQ&quot; */
-id|autoirq_setup
+r_int
+r_int
+id|irq_mask
+op_assign
+id|probe_irq_on
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Trigger an interrupt here. */
 id|dev-&gt;irq
 op_assign
-id|autoirq_report
+id|probe_irq_off
 c_func
 (paren
-l_int|0
+id|irq_mask
 )paren
 suffix:semicolon
 r_if

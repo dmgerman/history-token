@@ -1692,8 +1692,8 @@ id|timeout
 op_decrement
 suffix:semicolon
 )brace
-multiline_comment|/* there is really nothing that I can do here if timeout fails,&n;&t;   as autoirq_report will return a 0 anyway, which is what I&n;&t;   want in this case.   Plus, the clean up is needed in both&n;&t;   cases.  */
-multiline_comment|/* DELAY HERE!&n;&t;   On a fast machine, the status might change before the interrupt&n;&t;   is given to the processor.  This means that the interrupt was&n;&t;   never detected, and autoirq_report fails to report anything.&n;&t;   This should fix autoirq_* problems.&n;&t;*/
+multiline_comment|/* there is really nothing that I can do here if timeout fails,&n;&t;   as probe_irq_off will return a 0 anyway, which is what I&n;&t;   want in this case.   Plus, the clean up is needed in both&n;&t;   cases.  */
+multiline_comment|/* DELAY HERE!&n;&t;   On a fast machine, the status might change before the interrupt&n;&t;   is given to the processor.  This means that the interrupt was&n;&t;   never detected, and probe_irq_off fails to report anything.&n;&t;   This should fix probe_irq_* problems.&n;&t;*/
 id|SMC_DELAY
 c_func
 (paren
