@@ -826,6 +826,7 @@ c_func
 id|stab_capacity_castouts
 )paren
 suffix:semicolon
+multiline_comment|/* &n;&t; * Never cast out the segment for our kernel stack. Since we&n;&t; * dont invalidate the ERAT we could have a valid translation&n;&t; * for the kernel stack during the first part of exception exit &n;&t; * which gets invalidated due to a tlbie from another cpu at a&n;&t; * non recoverable point (after setting srr0/1) - Anton&n;&t; */
 id|castout_entry
 op_assign
 id|get_paca
@@ -835,6 +836,8 @@ c_func
 op_member_access_from_pointer
 id|xStab_data.next_round_robin
 suffix:semicolon
+r_do
+(brace
 id|entry
 op_assign
 id|castout_entry
@@ -852,6 +855,44 @@ id|naca-&gt;slb_size
 id|castout_entry
 op_assign
 l_int|1
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;slbmfee  %0,%1&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|esid_data
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|entry
+)paren
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|esid_data.data.esid
+op_eq
+id|GET_ESID
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|_get_SP
+c_func
+(paren
+)paren
+)paren
+op_logical_and
+id|esid_data.data.v
+)paren
 suffix:semicolon
 id|get_paca
 c_func
@@ -1560,9 +1601,12 @@ c_func
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * XXX disable 32bit slb invalidate optimisation until we fix&n;&t;&t; * the issue where a 32bit app execed out of a 64bit app can&n;&t;&t; * cause segments above 4GB not to be flushed - Anton&n;&t;&t; */
 r_if
 c_cond
 (paren
+l_int|0
+op_logical_and
 op_logical_neg
 id|STAB_PRESSURE
 op_logical_and
