@@ -5,15 +5,15 @@ multiline_comment|/*&n; * CPiA Parallel Port Video4Linux driver&n; *&n; * Suppor
 DECL|macro|CPIA_MAJ_VER
 mdefine_line|#define CPIA_MAJ_VER&t;0
 DECL|macro|CPIA_MIN_VER
-mdefine_line|#define CPIA_MIN_VER    7
+mdefine_line|#define CPIA_MIN_VER    8
 DECL|macro|CPIA_PATCH_VER
-mdefine_line|#define CPIA_PATCH_VER&t;4
+mdefine_line|#define CPIA_PATCH_VER&t;1
 DECL|macro|CPIA_PP_MAJ_VER
 mdefine_line|#define CPIA_PP_MAJ_VER       0
 DECL|macro|CPIA_PP_MIN_VER
-mdefine_line|#define CPIA_PP_MIN_VER       7
+mdefine_line|#define CPIA_PP_MIN_VER       8
 DECL|macro|CPIA_PP_PATCH_VER
-mdefine_line|#define CPIA_PP_PATCH_VER     4
+mdefine_line|#define CPIA_PP_PATCH_VER     1
 DECL|macro|CPIA_MAX_FRAME_SIZE_UNALIGNED
 mdefine_line|#define CPIA_MAX_FRAME_SIZE_UNALIGNED&t;(352 * 288 * 4)   /* CIF at RGB32 */
 DECL|macro|CPIA_MAX_FRAME_SIZE
@@ -557,6 +557,38 @@ id|format
 suffix:semicolon
 r_struct
 (brace
+multiline_comment|/* Intel QX3 specific data */
+DECL|member|qx3_detected
+id|u8
+id|qx3_detected
+suffix:semicolon
+multiline_comment|/* a QX3 is present */
+DECL|member|toplight
+id|u8
+id|toplight
+suffix:semicolon
+multiline_comment|/* top light lit , R/W */
+DECL|member|bottomlight
+id|u8
+id|bottomlight
+suffix:semicolon
+multiline_comment|/* bottom light lit, R/W */
+DECL|member|button
+id|u8
+id|button
+suffix:semicolon
+multiline_comment|/* snapshot button pressed (R/O) */
+DECL|member|cradled
+id|u8
+id|cradled
+suffix:semicolon
+multiline_comment|/* microscope is in cradle (R/O) */
+DECL|member|qx3
+)brace
+id|qx3
+suffix:semicolon
+r_struct
+(brace
 DECL|member|colStart
 id|u8
 id|colStart
@@ -992,10 +1024,6 @@ mdefine_line|#define DBG(fmn,args...) do {} while(0)
 macro_line|#endif
 DECL|macro|DEB_BYTE
 mdefine_line|#define DEB_BYTE(p)&bslash;&n;  DBG(&quot;%1d %1d %1d %1d %1d %1d %1d %1d &bslash;n&quot;,&bslash;&n;      (p)&amp;0x80?1:0, (p)&amp;0x40?1:0, (p)&amp;0x20?1:0, (p)&amp;0x10?1:0,&bslash;&n;        (p)&amp;0x08?1:0, (p)&amp;0x04?1:0, (p)&amp;0x02?1:0, (p)&amp;0x01?1:0);
-DECL|macro|ADD_TO_LIST
-mdefine_line|#define ADD_TO_LIST(l, drv) &bslash;&n;  {&bslash;&n;    lock_kernel();&bslash;&n;    (drv)-&gt;next = l;&bslash;&n;    (drv)-&gt;previous = &amp;(l);&bslash;&n;    (l) = drv;&bslash;&n;    unlock_kernel();&bslash;&n;  } while(0)
-DECL|macro|REMOVE_FROM_LIST
-mdefine_line|#define REMOVE_FROM_LIST(drv) &bslash;&n;  {&bslash;&n;    if ((drv)-&gt;previous != NULL) {&bslash;&n;      lock_kernel();&bslash;&n;      if ((drv)-&gt;next != NULL)&bslash;&n;        (drv)-&gt;next-&gt;previous = (drv)-&gt;previous;&bslash;&n;      *((drv)-&gt;previous) = (drv)-&gt;next;&bslash;&n;      (drv)-&gt;previous = NULL;&bslash;&n;      (drv)-&gt;next = NULL;&bslash;&n;      unlock_kernel();&bslash;&n;    }&bslash;&n;  } while (0)
 DECL|function|cpia_add_to_list
 r_static
 r_inline
