@@ -1,4 +1,4 @@
-multiline_comment|/************************************************************************&n; *&t;FILE NAME : TMSCSIM.C&t;&t;&t;&t;&t;&t;*&n; *&t;     BY   : C.L. Huang,  ching@tekram.com.tw&t;&t;&t;*&n; *&t;Description: Device Driver for Tekram DC-390(T) PCI SCSI&t;*&n; *&t;&t;     Bus Master Host Adapter&t;&t;&t;&t;*&n; * (C)Copyright 1995-1996 Tekram Technology Co., Ltd.&t;&t;&t;*&n; ************************************************************************&n; * (C) Copyright: put under GNU GPL in 10/96&t;&t;&t;&t;*&n; *&t;&t;&t;&t;(see Documentation/scsi/tmscsim.txt)&t;*&n; ************************************************************************&n; * $Id: tmscsim.c,v 2.60.2.30 2000/12/20 01:07:12 garloff Exp $&t;&t;*&n; *&t;Enhancements and bugfixes by&t;&t;&t;&t;&t;*&n; *&t;Kurt Garloff &lt;kurt@garloff.de&gt;&t;&lt;garloff@suse.de&gt;&t;&t;*&n; ************************************************************************&n; *&t;HISTORY:&t;&t;&t;&t;&t;&t;&t;*&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;*&n; *&t;REV#&t;DATE&t;NAME&t;DESCRIPTION&t;&t;&t;&t;*&n; *&t;1.00  96/04/24&t;CLH&t;First release&t;&t;&t;&t;*&n; *&t;1.01  96/06/12&t;CLH&t;Fixed bug of Media Change for Removable *&n; *&t;&t;&t;&t;Device, scan all LUN. Support Pre2.0.10 *&n; *&t;1.02  96/06/18&t;CLH&t;Fixed bug of Command timeout ...&t;*&n; *&t;1.03  96/09/25&t;KG&t;Added tmscsim_proc_info()&t;&t;*&n; *&t;1.04  96/10/11&t;CLH&t;Updating for support KV 2.0.x&t;&t;*&n; *&t;1.05  96/10/18&t;KG&t;Fixed bug in DC390_abort(null ptr deref)*&n; *&t;1.06  96/10/25&t;KG&t;Fixed module support&t;&t;&t;*&n; *&t;1.07  96/11/09&t;KG&t;Fixed tmscsim_proc_info()&t;&t;*&n; *&t;1.08  96/11/18&t;KG&t;Fixed null ptr in DC390_Disconnect()&t;*&n; *&t;1.09  96/11/30&t;KG&t;Added register the allocated IO space&t;*&n; *&t;1.10  96/12/05&t;CLH&t;Modified tmscsim_proc_info(), and reset *&n; *&t;&t;&t;&t;pending interrupt in DC390_detect()&t;*&n; *&t;1.11  97/02/05&t;KG/CLH&t;Fixeds problem with partitions greater&t;*&n; *&t;&t;&t;&t;than 1GB&t;&t;&t;&t;*&n; *&t;1.12  98/02/15  MJ      Rewritten PCI probing&t;&t;&t;*&n; *&t;1.13  98/04/08&t;KG&t;Support for non DC390, __initfunc decls,*&n; *&t;&t;&t;&t;changed max devs from 10 to 16&t;&t;*&n; *&t;1.14a 98/05/05&t;KG&t;Dynamic DCB allocation, add-single-dev&t;*&n; *&t;&t;&t;&t;for LUNs if LUN_SCAN (BIOS) not set&t;*&n; *&t;&t;&t;&t;runtime config using /proc interface&t;*&n; *&t;1.14b 98/05/06&t;KG&t;eliminated cli (); sti (); spinlocks&t;*&n; *&t;1.14c 98/05/07&t;KG&t;2.0.x compatibility&t;&t;&t;*&n; *&t;1.20a 98/05/07&t;KG&t;changed names of funcs to be consistent *&n; *&t;&t;&t;&t;DC390_ (entry points), dc390_ (internal)*&n; *&t;&t;&t;&t;reworked locking&t;&t;&t;*&n; *&t;1.20b 98/05/12&t;KG&t;bugs: version, kfree, _ctmp&t;&t;*&n; *&t;&t;&t;&t;debug output&t;&t;&t;&t;*&n; *&t;1.20c 98/05/12&t;KG&t;bugs: kfree, parsing, EEpromDefaults&t;*&n; *&t;1.20d 98/05/14&t;KG&t;bugs: list linkage, clear flag after  &t;*&n; *&t;&t;&t;&t;reset on startup, code cleanup&t;&t;*&n; *&t;1.20e 98/05/15&t;KG&t;spinlock comments, name space cleanup&t;*&n; *&t;&t;&t;&t;pLastDCB now part of ACB structure&t;*&n; *&t;&t;&t;&t;added stats, timeout for 2.1, TagQ bug&t;*&n; *&t;&t;&t;&t;RESET and INQUIRY interface commands&t;*&n; *&t;1.20f 98/05/18&t;KG&t;spinlocks fixes, max_lun fix, free DCBs&t;*&n; *&t;&t;&t;&t;for missing LUNs, pending int&t;&t;*&n; *&t;1.20g 98/05/19&t;KG&t;Clean up: Avoid short&t;&t;&t;*&n; *&t;1.20h 98/05/21&t;KG&t;Remove AdaptSCSIID, max_lun ...&t;&t;*&n; *&t;1.20i 98/05/21&t;KG&t;Aiiie: Bug with TagQMask       &t;&t;*&n; *&t;1.20j 98/05/24&t;KG&t;Handle STAT_BUSY, handle pACB-&gt;pLinkDCB&t;*&n; *&t;&t;&t;&t;== 0 in remove_dev and DoingSRB_Done&t;*&n; *&t;1.20k 98/05/25&t;KG&t;DMA_INT&t;(experimental)&t;       &t;&t;*&n; *&t;1.20l 98/05/27&t;KG&t;remove DMA_INT; DMA_IDLE cmds added;&t;*&n; *&t;1.20m 98/06/10&t;KG&t;glitch configurable; made some global&t;*&n; *&t;&t;&t;&t;vars part of ACB; use DC390_readX&t;*&n; *&t;1.20n 98/06/11&t;KG&t;startup params&t;&t;&t;&t;*&n; *&t;1.20o 98/06/15&t;KG&t;added TagMaxNum to boot/module params&t;*&n; *&t;&t;&t;&t;Device Nr -&gt; Idx, TagMaxNum power of 2  *&n; *&t;1.20p 98/06/17&t;KG&t;Docu updates. Reset depends on settings *&n; *&t;&t;&t;&t;pci_set_master added; 2.0.xx: pcibios_*&t;*&n; *&t;&t;&t;&t;used instead of MechNum things ...&t;*&n; *&t;1.20q 98/06/23&t;KG&t;Changed defaults. Added debug code for&t;*&n; *&t;&t;&t;&t;removable media and fixed it. TagMaxNum&t;*&n; *&t;&t;&t;&t;fixed for DC390. Locking: ACB, DRV for&t;*&n; *&t;&t;&t;&t;better IRQ sharing. Spelling: Queueing&t;*&n; *&t;&t;&t;&t;Parsing and glitch_cfg changes. Display&t;*&n; *&t;&t;&t;&t;real SyncSpeed value. Made DisConn&t;*&n; *&t;&t;&t;&t;functional (!)&t;&t;&t;&t;*&n; *&t;1.20r 98/06/30&t;KG&t;Debug macros, allow disabling DsCn, set&t;*&n; *&t;&t;&t;&t;BIT4 in CtrlR4, EN_PAGE_INT, 2.0 module&t;*&n; *&t;&t;&t;&t;param -1 fixed.&t;&t;&t;&t;*&n; *&t;1.20s 98/08/20&t;KG&t;Debug info on abort(), try to check PCI,*&n; *&t;&t;&t;&t;phys_to_bus instead of phys_to_virt,&t;*&n; *&t;&t;&t;&t;fixed sel. process, fixed locking,&t;*&n; *&t;&t;&t;&t;added MODULE_XXX infos, changed IRQ&t;*&n; *&t;&t;&t;&t;request flags, disable DMA_INT&t;&t;*&n; *&t;1.20t 98/09/07&t;KG&t;TagQ report fixed; Write Erase DMA Stat;*&n; *&t;&t;&t;&t;initfunc -&gt; __init; better abort;&t;*&n; *&t;&t;&t;&t;Timeout for XFER_DONE &amp; BLAST_COMPLETE;&t;*&n; *&t;&t;&t;&t;Allow up to 33 commands being processed *&n; *&t;2.0a  98/10/14&t;KG&t;Max Cmnds back to 17. DMA_Stat clearing *&n; *&t;&t;&t;&t;all flags. Clear within while() loops&t;*&n; *&t;&t;&t;&t;in DataIn_0/Out_0. Null ptr in dumpinfo&t;*&n; *&t;&t;&t;&t;for pSRB==0. Better locking during init.*&n; *&t;&t;&t;&t;bios_param() now respects part. table.&t;*&n; *&t;2.0b  98/10/24&t;KG&t;Docu fixes. Timeout Msg in DMA Blast.&t;*&n; *&t;&t;&t;&t;Disallow illegal idx in INQUIRY/REMOVE&t;*&n; *&t;2.0c  98/11/19&t;KG&t;Cleaned up detect/init for SMP boxes, &t;*&n; *&t;&t;&t;&t;Write Erase DMA (1.20t) caused problems&t;*&n; *&t;2.0d  98/12/25&t;KG&t;Christmas release ;-) Message handling  *&n; *&t;&t;&t;&t;completely reworked. Handle target ini-&t;*&n; *&t;&t;&t;&t;tiated SDTR correctly.&t;&t;&t;*&n; *&t;2.0d1 99/01/25&t;KG&t;Try to handle RESTORE_PTR&t;&t;*&n; *&t;2.0d2 99/02/08&t;KG&t;Check for failure of kmalloc, correct &t;*&n; *&t;&t;&t;&t;inclusion of scsicam.h, DelayReset&t;*&n; *&t;2.0d3 99/05/31&t;KG&t;DRIVER_OK -&gt; DID_OK, DID_NO_CONNECT,&t;*&n; *&t;&t;&t;&t;detect Target mode and warn.&t;&t;*&n; *&t;&t;&t;&t;pcmd-&gt;result handling cleaned up.&t;*&n; *&t;2.0d4 99/06/01&t;KG&t;Cleaned selection process. Found bug&t;*&n; *&t;&t;&t;&t;which prevented more than 16 tags. Now:&t;*&n; *&t;&t;&t;&t;24. SDTR cleanup. Cleaner multi-LUN&t;*&n; *&t;&t;&t;&t;handling. Don&squot;t modify ControlRegs/FIFO&t;*&n; *&t;&t;&t;&t;when connected.&t;&t;&t;&t;*&n; *&t;2.0d5 99/06/01&t;KG&t;Clear DevID, Fix INQUIRY after cfg chg.&t;*&n; *&t;2.0d6 99/06/02&t;KG&t;Added ADD special command to allow cfg.&t;*&n; *&t;&t;&t;&t;before detection. Reset SYNC_NEGO_DONE&t;*&n; *&t;&t;&t;&t;after a bus reset.&t;&t;&t;*&n; *&t;2.0d7 99/06/03&t;KG&t;Fixed bugs wrt add,remove commands&t;*&n; *&t;2.0d8 99/06/04&t;KG&t;Removed copying of cmnd into CmdBlock.&t;*&n; *&t;&t;&t;&t;Fixed Oops in _release().&t;&t;*&n; *&t;2.0d9 99/06/06&t;KG&t;Also tag queue INQUIRY, T_U_R, ...&t;*&n; *&t;&t;&t;&t;Allow arb. no. of Tagged Cmnds. Max 32&t;*&n; *&t;2.0d1099/06/20&t;KG&t;TagMaxNo changes now honoured! Queueing *&n; *&t;&t;&t;&t;clearified (renamed ..) TagMask handling*&n; *&t;&t;&t;&t;cleaned.&t;&t;&t;&t;*&n; *&t;2.0d1199/06/28&t;KG&t;cmd-&gt;result now identical to 2.0d2&t;*&n; *&t;2.0d1299/07/04&t;KG&t;Changed order of processing in IRQ&t;*&n; *&t;2.0d1399/07/05&t;KG&t;Don&squot;t update DCB fields if removed&t;*&n; *&t;2.0d1499/07/05&t;KG&t;remove_dev: Move kfree() to the end&t;*&n; *&t;2.0d1599/07/12&t;KG&t;use_new_eh_code: 0, ULONG -&gt; UINT where&t;*&n; *&t;&t;&t;&t;appropriate&t;&t;&t;&t;*&n; *&t;2.0d1699/07/13&t;KG&t;Reenable StartSCSI interrupt, Retry msg&t;*&n; *&t;2.0d1799/07/15&t;KG&t;Remove debug msg. Disable recfg. when&t;*&n; *&t;&t;&t;&t;there are queued cmnds&t;&t;&t;*&n; *&t;2.0d1899/07/18&t;KG&t;Selection timeout: Don&squot;t requeue&t;*&n; *&t;2.0d1999/07/18&t;KG&t;Abort: Only call scsi_done if dequeued&t;*&n; *&t;2.0d2099/07/19&t;KG&t;Rst_Detect: DoingSRB_Done&t;&t;*&n; *&t;2.0d2199/08/15&t;KG&t;dev_id for request/free_irq, cmnd[0] for*&n; *&t;&t;&t;&t;RETRY, SRBdone does DID_ABORT for the &t;*&n; *&t;&t;&t;&t;cmd passed by DC390_reset()&t;&t;*&n; *&t;2.0d2299/08/25&t;KG&t;dev_id fixed. can_queue: 42&t;&t;*&n; *&t;2.0d2399/08/25&t;KG&t;Removed some debugging code. dev_id &t;*&n; *&t;&t;&t;&t;now is set to pACB. Use u8,u16,u32. &t;*&n; *&t;2.0d2499/11/14&t;KG&t;Unreg. I/O if failed IRQ alloc. Call&t;*&n; * &t;&t;&t;&t;done () w/ DID_BAD_TARGET in case of&t;*&n; *&t;&t;&t;&t;missing DCB. We&t;are old EH!!&t;&t;*&n; *&t;2.0d2500/01/15&t;KG&t;2.3.3x compat from Andreas Schultz&t;*&n; *&t;&t;&t;&t;set unique_id. Disable RETRY message.&t;*&n; *&t;2.0d2600/01/29&t;KG&t;Go to new EH.&t;&t;&t;&t;*&n; *&t;2.0d2700/01/31&t;KG&t;... but maintain 2.0 compat.&t;&t;*&n; *&t;&t;&t;&t;and fix DCB freeing&t;&t;&t;*&n; *&t;2.0d2800/02/14&t;KG&t;Queue statistics fixed, dump special cmd*&n; *&t;&t;&t;&t;Waiting_Timer for failed StartSCSI&t;*&n; *&t;&t;&t;&t;New EH: Don&squot;t return cmnds to ML on RST *&n; *&t;&t;&t;&t;Use old EH (don&squot;t have new EH fns yet)&t;*&n; * &t;&t;&t;&t;Reset: Unlock, but refuse to queue&t;*&n; * &t;&t;&t;&t;2.3 __setup function&t;&t;&t;*&n; *&t;2.0e  00/05/22&t;KG&t;Return residual for 2.3&t;&t;&t;*&n; *&t;2.0e1 00/05/25&t;KG&t;Compile fixes for 2.3.99&t;&t;*&n; *&t;2.0e2 00/05/27&t;KG&t;Jeff Garzik&squot;s pci_enable_device()&t;*&n; *&t;2.0e3 00/09/29&t;KG&t;Some 2.4 changes. Don&squot;t try Sync Nego&t;*&n; *&t;&t;&t;&t;before INQUIRY has reported ability. &t;*&n; *&t;&t;&t;&t;Recognise INQUIRY as scanning command.&t;*&n; *&t;2.0e4 00/10/13&t;KG&t;Allow compilation into 2.4 kernel&t;*&n; *&t;2.0e5 00/11/17&t;KG&t;Store Inq.flags in DCB&t;&t;&t;*&n; *&t;2.0e6 00/11/22  KG&t;2.4 init function (Thx to O.Schumann)&t;*&n; * &t;&t;&t;&t;2.4 PCI device table (Thx to A.Richter)&t;*&n; *&t;2.0e7 00/11/28&t;KG&t;Allow overriding of BIOS settings&t;*&n; *&t;2.0f  00/12/20&t;KG&t;Handle failed INQUIRYs during scan&t;*&n; ***********************************************************************/
+multiline_comment|/************************************************************************&n; *&t;FILE NAME : TMSCSIM.C&t;&t;&t;&t;&t;&t;*&n; *&t;     BY   : C.L. Huang,  ching@tekram.com.tw&t;&t;&t;*&n; *&t;Description: Device Driver for Tekram DC-390(T) PCI SCSI&t;*&n; *&t;&t;     Bus Master Host Adapter&t;&t;&t;&t;*&n; * (C)Copyright 1995-1996 Tekram Technology Co., Ltd.&t;&t;&t;*&n; ************************************************************************&n; * (C) Copyright: put under GNU GPL in 10/96&t;&t;&t;&t;*&n; *&t;&t;&t;&t;(see Documentation/scsi/tmscsim.txt)&t;*&n; ************************************************************************&n; * $Id: tmscsim.c,v 2.60.2.30 2000/12/20 01:07:12 garloff Exp $&t;&t;*&n; *&t;Enhancements and bugfixes by&t;&t;&t;&t;&t;*&n; *&t;Kurt Garloff &lt;kurt@garloff.de&gt;&t;&lt;garloff@suse.de&gt;&t;&t;*&n; ************************************************************************&n; *&t;HISTORY:&t;&t;&t;&t;&t;&t;&t;*&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;*&n; *&t;REV#&t;DATE&t;NAME&t;DESCRIPTION&t;&t;&t;&t;*&n; *&t;1.00  96/04/24&t;CLH&t;First release&t;&t;&t;&t;*&n; *&t;1.01  96/06/12&t;CLH&t;Fixed bug of Media Change for Removable *&n; *&t;&t;&t;&t;Device, scan all LUN. Support Pre2.0.10 *&n; *&t;1.02  96/06/18&t;CLH&t;Fixed bug of Command timeout ...&t;*&n; *&t;1.03  96/09/25&t;KG&t;Added tmscsim_proc_info()&t;&t;*&n; *&t;1.04  96/10/11&t;CLH&t;Updating for support KV 2.0.x&t;&t;*&n; *&t;1.05  96/10/18&t;KG&t;Fixed bug in DC390_abort(null ptr deref)*&n; *&t;1.06  96/10/25&t;KG&t;Fixed module support&t;&t;&t;*&n; *&t;1.07  96/11/09&t;KG&t;Fixed tmscsim_proc_info()&t;&t;*&n; *&t;1.08  96/11/18&t;KG&t;Fixed null ptr in DC390_Disconnect()&t;*&n; *&t;1.09  96/11/30&t;KG&t;Added register the allocated IO space&t;*&n; *&t;1.10  96/12/05&t;CLH&t;Modified tmscsim_proc_info(), and reset *&n; *&t;&t;&t;&t;pending interrupt in DC390_detect()&t;*&n; *&t;1.11  97/02/05&t;KG/CLH&t;Fixeds problem with partitions greater&t;*&n; *&t;&t;&t;&t;than 1GB&t;&t;&t;&t;*&n; *&t;1.12  98/02/15  MJ      Rewritten PCI probing&t;&t;&t;*&n; *&t;1.13  98/04/08&t;KG&t;Support for non DC390, __initfunc decls,*&n; *&t;&t;&t;&t;changed max devs from 10 to 16&t;&t;*&n; *&t;1.14a 98/05/05&t;KG&t;Dynamic DCB allocation, add-single-dev&t;*&n; *&t;&t;&t;&t;for LUNs if LUN_SCAN (BIOS) not set&t;*&n; *&t;&t;&t;&t;runtime config using /proc interface&t;*&n; *&t;1.14b 98/05/06&t;KG&t;eliminated cli (); sti (); spinlocks&t;*&n; *&t;1.14c 98/05/07&t;KG&t;2.0.x compatibility&t;&t;&t;*&n; *&t;1.20a 98/05/07&t;KG&t;changed names of funcs to be consistent *&n; *&t;&t;&t;&t;DC390_ (entry points), dc390_ (internal)*&n; *&t;&t;&t;&t;reworked locking&t;&t;&t;*&n; *&t;1.20b 98/05/12&t;KG&t;bugs: version, kfree, _ctmp&t;&t;*&n; *&t;&t;&t;&t;debug output&t;&t;&t;&t;*&n; *&t;1.20c 98/05/12&t;KG&t;bugs: kfree, parsing, EEpromDefaults&t;*&n; *&t;1.20d 98/05/14&t;KG&t;bugs: list linkage, clear flag after  &t;*&n; *&t;&t;&t;&t;reset on startup, code cleanup&t;&t;*&n; *&t;1.20e 98/05/15&t;KG&t;spinlock comments, name space cleanup&t;*&n; *&t;&t;&t;&t;pLastDCB now part of ACB structure&t;*&n; *&t;&t;&t;&t;added stats, timeout for 2.1, TagQ bug&t;*&n; *&t;&t;&t;&t;RESET and INQUIRY interface commands&t;*&n; *&t;1.20f 98/05/18&t;KG&t;spinlocks fixes, max_lun fix, free DCBs&t;*&n; *&t;&t;&t;&t;for missing LUNs, pending int&t;&t;*&n; *&t;1.20g 98/05/19&t;KG&t;Clean up: Avoid short&t;&t;&t;*&n; *&t;1.20h 98/05/21&t;KG&t;Remove AdaptSCSIID, max_lun ...&t;&t;*&n; *&t;1.20i 98/05/21&t;KG&t;Aiiie: Bug with TagQMask       &t;&t;*&n; *&t;1.20j 98/05/24&t;KG&t;Handle STAT_BUSY, handle pACB-&gt;pLinkDCB&t;*&n; *&t;&t;&t;&t;== 0 in remove_dev and DoingSRB_Done&t;*&n; *&t;1.20k 98/05/25&t;KG&t;DMA_INT&t;(experimental)&t;       &t;&t;*&n; *&t;1.20l 98/05/27&t;KG&t;remove DMA_INT; DMA_IDLE cmds added;&t;*&n; *&t;1.20m 98/06/10&t;KG&t;glitch configurable; made some global&t;*&n; *&t;&t;&t;&t;vars part of ACB; use DC390_readX&t;*&n; *&t;1.20n 98/06/11&t;KG&t;startup params&t;&t;&t;&t;*&n; *&t;1.20o 98/06/15&t;KG&t;added TagMaxNum to boot/module params&t;*&n; *&t;&t;&t;&t;Device Nr -&gt; Idx, TagMaxNum power of 2  *&n; *&t;1.20p 98/06/17&t;KG&t;Docu updates. Reset depends on settings *&n; *&t;&t;&t;&t;pci_set_master added; 2.0.xx: pcibios_*&t;*&n; *&t;&t;&t;&t;used instead of MechNum things ...&t;*&n; *&t;1.20q 98/06/23&t;KG&t;Changed defaults. Added debug code for&t;*&n; *&t;&t;&t;&t;removable media and fixed it. TagMaxNum&t;*&n; *&t;&t;&t;&t;fixed for DC390. Locking: ACB, DRV for&t;*&n; *&t;&t;&t;&t;better IRQ sharing. Spelling: Queueing&t;*&n; *&t;&t;&t;&t;Parsing and glitch_cfg changes. Display&t;*&n; *&t;&t;&t;&t;real SyncSpeed value. Made DisConn&t;*&n; *&t;&t;&t;&t;functional (!)&t;&t;&t;&t;*&n; *&t;1.20r 98/06/30&t;KG&t;Debug macros, allow disabling DsCn, set&t;*&n; *&t;&t;&t;&t;BIT4 in CtrlR4, EN_PAGE_INT, 2.0 module&t;*&n; *&t;&t;&t;&t;param -1 fixed.&t;&t;&t;&t;*&n; *&t;1.20s 98/08/20&t;KG&t;Debug info on abort(), try to check PCI,*&n; *&t;&t;&t;&t;phys_to_bus instead of phys_to_virt,&t;*&n; *&t;&t;&t;&t;fixed sel. process, fixed locking,&t;*&n; *&t;&t;&t;&t;added MODULE_XXX infos, changed IRQ&t;*&n; *&t;&t;&t;&t;request flags, disable DMA_INT&t;&t;*&n; *&t;1.20t 98/09/07&t;KG&t;TagQ report fixed; Write Erase DMA Stat;*&n; *&t;&t;&t;&t;initfunc -&gt; __init; better abort;&t;*&n; *&t;&t;&t;&t;Timeout for XFER_DONE &amp; BLAST_COMPLETE;&t;*&n; *&t;&t;&t;&t;Allow up to 33 commands being processed *&n; *&t;2.0a  98/10/14&t;KG&t;Max Cmnds back to 17. DMA_Stat clearing *&n; *&t;&t;&t;&t;all flags. Clear within while() loops&t;*&n; *&t;&t;&t;&t;in DataIn_0/Out_0. Null ptr in dumpinfo&t;*&n; *&t;&t;&t;&t;for pSRB==0. Better locking during init.*&n; *&t;&t;&t;&t;bios_param() now respects part. table.&t;*&n; *&t;2.0b  98/10/24&t;KG&t;Docu fixes. Timeout Msg in DMA Blast.&t;*&n; *&t;&t;&t;&t;Disallow illegal idx in INQUIRY/REMOVE&t;*&n; *&t;2.0c  98/11/19&t;KG&t;Cleaned up detect/init for SMP boxes, &t;*&n; *&t;&t;&t;&t;Write Erase DMA (1.20t) caused problems&t;*&n; *&t;2.0d  98/12/25&t;KG&t;Christmas release ;-) Message handling  *&n; *&t;&t;&t;&t;completely reworked. Handle target ini-&t;*&n; *&t;&t;&t;&t;tiated SDTR correctly.&t;&t;&t;*&n; *&t;2.0d1 99/01/25&t;KG&t;Try to handle RESTORE_PTR&t;&t;*&n; *&t;2.0d2 99/02/08&t;KG&t;Check for failure of kmalloc, correct &t;*&n; *&t;&t;&t;&t;inclusion of scsicam.h, DelayReset&t;*&n; *&t;2.0d3 99/05/31&t;KG&t;DRIVER_OK -&gt; DID_OK, DID_NO_CONNECT,&t;*&n; *&t;&t;&t;&t;detect Target mode and warn.&t;&t;*&n; *&t;&t;&t;&t;pcmd-&gt;result handling cleaned up.&t;*&n; *&t;2.0d4 99/06/01&t;KG&t;Cleaned selection process. Found bug&t;*&n; *&t;&t;&t;&t;which prevented more than 16 tags. Now:&t;*&n; *&t;&t;&t;&t;24. SDTR cleanup. Cleaner multi-LUN&t;*&n; *&t;&t;&t;&t;handling. Don&squot;t modify ControlRegs/FIFO&t;*&n; *&t;&t;&t;&t;when connected.&t;&t;&t;&t;*&n; *&t;2.0d5 99/06/01&t;KG&t;Clear DevID, Fix INQUIRY after cfg chg.&t;*&n; *&t;2.0d6 99/06/02&t;KG&t;Added ADD special command to allow cfg.&t;*&n; *&t;&t;&t;&t;before detection. Reset SYNC_NEGO_DONE&t;*&n; *&t;&t;&t;&t;after a bus reset.&t;&t;&t;*&n; *&t;2.0d7 99/06/03&t;KG&t;Fixed bugs wrt add,remove commands&t;*&n; *&t;2.0d8 99/06/04&t;KG&t;Removed copying of cmnd into CmdBlock.&t;*&n; *&t;&t;&t;&t;Fixed Oops in _release().&t;&t;*&n; *&t;2.0d9 99/06/06&t;KG&t;Also tag queue INQUIRY, T_U_R, ...&t;*&n; *&t;&t;&t;&t;Allow arb. no. of Tagged Cmnds. Max 32&t;*&n; *&t;2.0d1099/06/20&t;KG&t;TagMaxNo changes now honoured! Queueing *&n; *&t;&t;&t;&t;clearified (renamed ..) TagMask handling*&n; *&t;&t;&t;&t;cleaned.&t;&t;&t;&t;*&n; *&t;2.0d1199/06/28&t;KG&t;cmd-&gt;result now identical to 2.0d2&t;*&n; *&t;2.0d1299/07/04&t;KG&t;Changed order of processing in IRQ&t;*&n; *&t;2.0d1399/07/05&t;KG&t;Don&squot;t update DCB fields if removed&t;*&n; *&t;2.0d1499/07/05&t;KG&t;remove_dev: Move kfree() to the end&t;*&n; *&t;2.0d1599/07/12&t;KG&t;use_new_eh_code: 0, ULONG -&gt; UINT where&t;*&n; *&t;&t;&t;&t;appropriate&t;&t;&t;&t;*&n; *&t;2.0d1699/07/13&t;KG&t;Reenable StartSCSI interrupt, Retry msg&t;*&n; *&t;2.0d1799/07/15&t;KG&t;Remove debug msg. Disable recfg. when&t;*&n; *&t;&t;&t;&t;there are queued cmnds&t;&t;&t;*&n; *&t;2.0d1899/07/18&t;KG&t;Selection timeout: Don&squot;t requeue&t;*&n; *&t;2.0d1999/07/18&t;KG&t;Abort: Only call scsi_done if dequeued&t;*&n; *&t;2.0d2099/07/19&t;KG&t;Rst_Detect: DoingSRB_Done&t;&t;*&n; *&t;2.0d2199/08/15&t;KG&t;dev_id for request/free_irq, cmnd[0] for*&n; *&t;&t;&t;&t;RETRY, SRBdone does DID_ABORT for the &t;*&n; *&t;&t;&t;&t;cmd passed by DC390_reset()&t;&t;*&n; *&t;2.0d2299/08/25&t;KG&t;dev_id fixed. can_queue: 42&t;&t;*&n; *&t;2.0d2399/08/25&t;KG&t;Removed some debugging code. dev_id &t;*&n; *&t;&t;&t;&t;now is set to pACB. Use u8,u16,u32. &t;*&n; *&t;2.0d2499/11/14&t;KG&t;Unreg. I/O if failed IRQ alloc. Call&t;*&n; * &t;&t;&t;&t;done () w/ DID_BAD_TARGET in case of&t;*&n; *&t;&t;&t;&t;missing DCB. We&t;are old EH!!&t;&t;*&n; *&t;2.0d2500/01/15&t;KG&t;2.3.3x compat from Andreas Schultz&t;*&n; *&t;&t;&t;&t;set unique_id. Disable RETRY message.&t;*&n; *&t;2.0d2600/01/29&t;KG&t;Go to new EH.&t;&t;&t;&t;*&n; *&t;2.0d2700/01/31&t;KG&t;... but maintain 2.0 compat.&t;&t;*&n; *&t;&t;&t;&t;and fix DCB freeing&t;&t;&t;*&n; *&t;2.0d2800/02/14&t;KG&t;Queue statistics fixed, dump special cmd*&n; *&t;&t;&t;&t;Waiting_Timer for failed StartSCSI&t;*&n; *&t;&t;&t;&t;New EH: Don&squot;t return cmnds to ML on RST *&n; *&t;&t;&t;&t;Use old EH (don&squot;t have new EH fns yet)&t;*&n; * &t;&t;&t;&t;Reset: Unlock, but refuse to queue&t;*&n; * &t;&t;&t;&t;2.3 __setup function&t;&t;&t;*&n; *&t;2.0e  00/05/22&t;KG&t;Return residual for 2.3&t;&t;&t;*&n; *&t;2.0e1 00/05/25&t;KG&t;Compile fixes for 2.3.99&t;&t;*&n; *&t;2.0e2 00/05/27&t;KG&t;Jeff Garzik&squot;s pci_enable_device()&t;*&n; *&t;2.0e3 00/09/29&t;KG&t;Some 2.4 changes. Don&squot;t try Sync Nego&t;*&n; *&t;&t;&t;&t;before INQUIRY has reported ability. &t;*&n; *&t;&t;&t;&t;Recognise INQUIRY as scanning command.&t;*&n; *&t;2.0e4 00/10/13&t;KG&t;Allow compilation into 2.4 kernel&t;*&n; *&t;2.0e5 00/11/17&t;KG&t;Store Inq.flags in DCB&t;&t;&t;*&n; *&t;2.0e6 00/11/22  KG&t;2.4 init function (Thx to O.Schumann)&t;*&n; * &t;&t;&t;&t;2.4 PCI device table (Thx to A.Richter)&t;*&n; *&t;2.0e7 00/11/28&t;KG&t;Allow overriding of BIOS settings&t;*&n; *&t;2.0f  00/12/20&t;KG&t;Handle failed INQUIRYs during scan&t;*&n; *&t;2.1a  03/11/29  GL, KG&t;Initial fixing for 2.6. Convert to&t;*&n; *&t;&t;&t;&t;use the current PCI-mapping API, update&t;*&n; *&t;&t;&t;&t;command-queuing.&t;&t;&t;*&n; ***********************************************************************/
 multiline_comment|/* Uncomment SA_INTERRUPT, if the driver refuses to share its IRQ with other devices */
 DECL|macro|DC390_IRQ
 mdefine_line|#define DC390_IRQ SA_SHIRQ /* | SA_INTERRUPT */
@@ -9,44 +9,47 @@ singleline_comment|//#define DC390_DCBDEBUG
 singleline_comment|//#define DC390_PARSEDEBUG
 singleline_comment|//#define DC390_REMOVABLEDEBUG
 singleline_comment|//#define DC390_LOCKDEBUG
+singleline_comment|//#define NOP do{}while(0)
+DECL|macro|C_NOP
+mdefine_line|#define C_NOP
 multiline_comment|/* Debug definitions */
 macro_line|#ifdef DC390_DEBUG0
 DECL|macro|DEBUG0
-macro_line|# define DEBUG0(x) x;
+macro_line|# define DEBUG0(x) x
 macro_line|#else
 DECL|macro|DEBUG0
-macro_line|# define DEBUG0(x)
+macro_line|# define DEBUG0(x) C_NOP
 macro_line|#endif
 macro_line|#ifdef DC390_DEBUG1
 DECL|macro|DEBUG1
-macro_line|# define DEBUG1(x) x;
+macro_line|# define DEBUG1(x) x
 macro_line|#else
 DECL|macro|DEBUG1
-macro_line|# define DEBUG1(x)
+macro_line|# define DEBUG1(x) C_NOP
 macro_line|#endif
 macro_line|#ifdef DC390_DCBDEBUG
 DECL|macro|DCBDEBUG
-macro_line|# define DCBDEBUG(x) x;
+macro_line|# define DCBDEBUG(x) x
 macro_line|#else
 DECL|macro|DCBDEBUG
-macro_line|# define DCBDEBUG(x)
+macro_line|# define DCBDEBUG(x) C_NOP
 macro_line|#endif
 macro_line|#ifdef DC390_PARSEDEBUG
 DECL|macro|PARSEDEBUG
-macro_line|# define PARSEDEBUG(x) x;
+macro_line|# define PARSEDEBUG(x) x
 macro_line|#else
 DECL|macro|PARSEDEBUG
-macro_line|# define PARSEDEBUG(x)
+macro_line|# define PARSEDEBUG(x) C_NOP
 macro_line|#endif
 macro_line|#ifdef DC390_REMOVABLEDEBUG
 DECL|macro|REMOVABLEDEBUG
-macro_line|# define REMOVABLEDEBUG(x) x;
+macro_line|# define REMOVABLEDEBUG(x) x
 macro_line|#else
 DECL|macro|REMOVABLEDEBUG
-macro_line|# define REMOVABLEDEBUG(x)
+macro_line|# define REMOVABLEDEBUG(x) C_NOP
 macro_line|#endif
 DECL|macro|DCBDEBUG1
-mdefine_line|#define DCBDEBUG1(x)
+mdefine_line|#define DCBDEBUG1(x) C_NOP
 multiline_comment|/* Includes */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -67,6 +70,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;linux/stat.h&gt;
@@ -85,20 +89,7 @@ macro_line|#else
 macro_line|# include &lt;asm/spinlock.h&gt;
 macro_line|#endif
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93) 
-DECL|macro|USE_SPINLOCKS
-macro_line|# define USE_SPINLOCKS 1
-DECL|macro|NEW_PCI
-macro_line|# define NEW_PCI 1
-macro_line|#else
-DECL|macro|NEW_PCI
-macro_line|# undef NEW_PCI
-macro_line|# if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,30)
-DECL|macro|USE_SPINLOCKS
-macro_line|#  define USE_SPINLOCKS 2
-macro_line|# endif
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,99)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,99) &amp;&amp; defined(MODULE)
 DECL|variable|tmscsim_pci_tbl
 r_static
 r_struct
@@ -145,97 +136,16 @@ id|tmscsim_pci_tbl
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef USE_SPINLOCKS
-macro_line|# if USE_SPINLOCKS == 3 /* both */
-macro_line|#  if defined (CONFIG_SMP)
-DECL|macro|DC390_LOCKA_INIT
-macro_line|#   define DC390_LOCKA_INIT { spinlock_t __unlocked = SPIN_LOCK_UNLOCKED; pACB-&gt;lock = __unlocked; };
-macro_line|#  else
-DECL|macro|DC390_LOCKA_INIT
-macro_line|#   define DC390_LOCKA_INIT
-macro_line|#  endif
-DECL|variable|dc390_drvlock
-id|spinlock_t
-id|dc390_drvlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
+DECL|macro|USE_SPINLOCKS
+mdefine_line|#define USE_SPINLOCKS 1
+DECL|macro|NEW_PCI
+mdefine_line|#define NEW_PCI 1
 DECL|macro|DC390_AFLAGS
-macro_line|#  define DC390_AFLAGS unsigned long aflags;
+mdefine_line|#define DC390_AFLAGS 
 DECL|macro|DC390_IFLAGS
-macro_line|#  define DC390_IFLAGS unsigned long iflags;
+mdefine_line|#define DC390_IFLAGS unsigned long iflags
 DECL|macro|DC390_DFLAGS
-macro_line|#  define DC390_DFLAGS unsigned long dflags; 
-DECL|macro|DC390_LOCK_IO
-macro_line|#  define DC390_LOCK_IO spin_lock_irqsave (((struct Scsi_Host *)dev)-&gt;host_lock, iflags)
-DECL|macro|DC390_UNLOCK_IO
-macro_line|#  define DC390_UNLOCK_IO spin_unlock_irqrestore (((struct Scsi_Host *)dev)-&gt;host_lock, iflags)
-DECL|macro|DC390_LOCK_DRV
-macro_line|#  define DC390_LOCK_DRV spin_lock_irqsave (&amp;dc390_drvlock, dflags)
-DECL|macro|DC390_UNLOCK_DRV
-macro_line|#  define DC390_UNLOCK_DRV spin_unlock_irqrestore (&amp;dc390_drvlock, dflags)
-DECL|macro|DC390_LOCK_DRV_NI
-macro_line|#  define DC390_LOCK_DRV_NI spin_lock (&amp;dc390_drvlock)
-DECL|macro|DC390_UNLOCK_DRV_NI
-macro_line|#  define DC390_UNLOCK_DRV_NI spin_unlock (&amp;dc390_drvlock)
-DECL|macro|DC390_LOCK_ACB
-macro_line|#  define DC390_LOCK_ACB spin_lock_irqsave (&amp;(pACB-&gt;lock), aflags)
-DECL|macro|DC390_UNLOCK_ACB
-macro_line|#  define DC390_UNLOCK_ACB spin_unlock_irqrestore (&amp;(pACB-&gt;lock), aflags)
-DECL|macro|DC390_LOCK_ACB_NI
-macro_line|#  define DC390_LOCK_ACB_NI spin_lock (&amp;(pACB-&gt;lock))
-DECL|macro|DC390_UNLOCK_ACB_NI
-macro_line|#  define DC390_UNLOCK_ACB_NI spin_unlock (&amp;(pACB-&gt;lock))
-singleline_comment|//#  define DC390_LOCKA_INIT spin_lock_init (&amp;(pACB-&gt;lock))
-macro_line|# else
-macro_line|#  if USE_SPINLOCKS == 2 /* adapter specific locks */
-macro_line|#   if defined (CONFIG_SMP)
-DECL|macro|DC390_LOCKA_INIT
-macro_line|#    define DC390_LOCKA_INIT { spinlock_t __unlocked = SPIN_LOCK_UNLOCKED; pACB-&gt;lock = __unlocked; };
-macro_line|#   else
-DECL|macro|DC390_LOCKA_INIT
-macro_line|#    define DC390_LOCKA_INIT
-macro_line|#   endif
-DECL|variable|dc390_drvlock
-id|spinlock_t
-id|dc390_drvlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-DECL|macro|DC390_AFLAGS
-macro_line|#   define DC390_AFLAGS unsigned long aflags;
-DECL|macro|DC390_IFLAGS
-macro_line|#   define DC390_IFLAGS 
-DECL|macro|DC390_DFLAGS
-macro_line|#  define DC390_DFLAGS unsigned long dflags; 
-DECL|macro|DC390_LOCK_IO
-macro_line|#   define DC390_LOCK_IO(dev) /* spin_lock_irqsave (&amp;io_request_lock, iflags) */
-DECL|macro|DC390_UNLOCK_IO
-macro_line|#   define DC390_UNLOCK_IO(dev) /* spin_unlock_irqrestore (&amp;io_request_lock, iflags) */
-DECL|macro|DC390_LOCK_DRV
-macro_line|#   define DC390_LOCK_DRV spin_lock_irqsave (&amp;dc390_drvlock, dflags)
-DECL|macro|DC390_UNLOCK_DRV
-macro_line|#   define DC390_UNLOCK_DRV spin_unlock_irqrestore (&amp;dc390_drvlock, dflags)
-DECL|macro|DC390_LOCK_DRV_NI
-macro_line|#   define DC390_LOCK_DRV_NI spin_lock (&amp;dc390_drvlock)
-DECL|macro|DC390_UNLOCK_DRV_NI
-macro_line|#   define DC390_UNLOCK_DRV_NI spin_unlock (&amp;dc390_drvlock)
-DECL|macro|DC390_LOCK_ACB
-macro_line|#   define DC390_LOCK_ACB spin_lock_irqsave (&amp;(pACB-&gt;lock), aflags)
-DECL|macro|DC390_UNLOCK_ACB
-macro_line|#   define DC390_UNLOCK_ACB spin_unlock_irqrestore (&amp;(pACB-&gt;lock), aflags)
-DECL|macro|DC390_LOCK_ACB_NI
-macro_line|#   define DC390_LOCK_ACB_NI spin_lock (&amp;(pACB-&gt;lock))
-DECL|macro|DC390_UNLOCK_ACB_NI
-macro_line|#   define DC390_UNLOCK_ACB_NI spin_unlock (&amp;(pACB-&gt;lock))
-singleline_comment|//#   define DC390_LOCKA_INIT spin_lock_init (&amp;(pACB-&gt;lock))
-macro_line|#  else /* USE_SPINLOCKS == 1: global lock io_request_lock */
-DECL|macro|DC390_AFLAGS
-macro_line|#   define DC390_AFLAGS 
-DECL|macro|DC390_IFLAGS
-macro_line|#   define DC390_IFLAGS unsigned long iflags;
-DECL|macro|DC390_DFLAGS
-macro_line|#   define DC390_DFLAGS unsigned long dflags; 
+mdefine_line|#define DC390_DFLAGS unsigned long dflags
 DECL|variable|dc390_drvlock
 id|spinlock_t
 id|dc390_drvlock
@@ -243,129 +153,58 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|macro|DC390_LOCK_IO
-macro_line|#   define DC390_LOCK_IO(dev) spin_lock_irqsave (((struct Scsi_Host *)dev)-&gt;host_lock, iflags)
+mdefine_line|#define DC390_LOCK_IO(dev) spin_lock_irqsave (((struct Scsi_Host *)dev)-&gt;host_lock, iflags)
 DECL|macro|DC390_UNLOCK_IO
-macro_line|#   define DC390_UNLOCK_IO(dev) spin_unlock_irqrestore (((struct Scsi_Host *)dev)-&gt;host_lock, iflags)
+mdefine_line|#define DC390_UNLOCK_IO(dev) spin_unlock_irqrestore (((struct Scsi_Host *)dev)-&gt;host_lock, iflags)
 DECL|macro|DC390_LOCK_DRV
-macro_line|#   define DC390_LOCK_DRV spin_lock_irqsave (&amp;dc390_drvlock, dflags)
+mdefine_line|#define DC390_LOCK_DRV spin_lock_irqsave (&amp;dc390_drvlock, dflags)
 DECL|macro|DC390_UNLOCK_DRV
-macro_line|#   define DC390_UNLOCK_DRV spin_unlock_irqrestore (&amp;dc390_drvlock, dflags)
+mdefine_line|#define DC390_UNLOCK_DRV spin_unlock_irqrestore (&amp;dc390_drvlock, dflags)
 DECL|macro|DC390_LOCK_DRV_NI
-macro_line|#   define DC390_LOCK_DRV_NI spin_lock (&amp;dc390_drvlock)
+mdefine_line|#define DC390_LOCK_DRV_NI spin_lock (&amp;dc390_drvlock)
 DECL|macro|DC390_UNLOCK_DRV_NI
-macro_line|#   define DC390_UNLOCK_DRV_NI spin_unlock (&amp;dc390_drvlock)
+mdefine_line|#define DC390_UNLOCK_DRV_NI spin_unlock (&amp;dc390_drvlock)
 DECL|macro|DC390_LOCK_ACB
-macro_line|#   define DC390_LOCK_ACB /* DC390_LOCK_IO */
+mdefine_line|#define DC390_LOCK_ACB /* DC390_LOCK_IO */
 DECL|macro|DC390_UNLOCK_ACB
-macro_line|#   define DC390_UNLOCK_ACB /* DC390_UNLOCK_IO */
+mdefine_line|#define DC390_UNLOCK_ACB /* DC390_UNLOCK_IO */
 DECL|macro|DC390_LOCK_ACB_NI
-macro_line|#   define DC390_LOCK_ACB_NI /* spin_lock (&amp;(pACB-&gt;lock)) */
+mdefine_line|#define DC390_LOCK_ACB_NI /* spin_lock (&amp;(pACB-&gt;lock)) */
 DECL|macro|DC390_UNLOCK_ACB_NI
-macro_line|#   define DC390_UNLOCK_ACB_NI /* spin_unlock (&amp;(pACB-&gt;lock)) */
+mdefine_line|#define DC390_UNLOCK_ACB_NI /* spin_unlock (&amp;(pACB-&gt;lock)) */
 DECL|macro|DC390_LOCKA_INIT
-macro_line|#   define DC390_LOCKA_INIT /* DC390_LOCKA_INIT */
-macro_line|#  endif /* 2 */
-macro_line|# endif /* 3 */
-macro_line|#else /* USE_SPINLOCKS undefined */
-DECL|macro|DC390_AFLAGS
-macro_line|# define DC390_AFLAGS unsigned long aflags;
-DECL|macro|DC390_IFLAGS
-macro_line|# define DC390_IFLAGS unsigned long iflags;
-DECL|macro|DC390_DFLAGS
-macro_line|# define DC390_DFLAGS unsigned long dflags; 
-DECL|macro|DC390_LOCK_IO
-macro_line|# define DC390_LOCK_IO save_flags (iflags); cli ()
-DECL|macro|DC390_UNLOCK_IO
-macro_line|# define DC390_UNLOCK_IO restore_flags (iflags)
-DECL|macro|DC390_LOCK_DRV
-macro_line|# define DC390_LOCK_DRV save_flags (dflags); cli ()
-DECL|macro|DC390_UNLOCK_DRV
-macro_line|# define DC390_UNLOCK_DRV restore_flags (dflags)
-DECL|macro|DC390_LOCK_DRV_NI
-macro_line|# define DC390_LOCK_DRV_NI
-DECL|macro|DC390_UNLOCK_DRV_NI
-macro_line|# define DC390_UNLOCK_DRV_NI
-DECL|macro|DC390_LOCK_ACB
-macro_line|# define DC390_LOCK_ACB save_flags (aflags); cli ()
-DECL|macro|DC390_UNLOCK_ACB
-macro_line|# define DC390_UNLOCK_ACB restore_flags (aflags)
-DECL|macro|DC390_LOCK_ACB_NI
-macro_line|# define DC390_LOCK_ACB_NI
-DECL|macro|DC390_UNLOCK_ACB_NI
-macro_line|# define DC390_UNLOCK_ACB_NI
-DECL|macro|DC390_LOCKA_INIT
-macro_line|# define DC390_LOCKA_INIT
-macro_line|#endif /* def */
+mdefine_line|#define DC390_LOCKA_INIT /* DC390_LOCKA_INIT */
 multiline_comment|/* These macros are used for uniform access to 2.0.x and 2.1.x PCI config space*/
-macro_line|#ifdef NEW_PCI
 DECL|macro|PDEV
-macro_line|# define PDEV pdev
+mdefine_line|#define PDEV pdev
 DECL|macro|PDEVDECL
-macro_line|# define PDEVDECL struct pci_dev *pdev
+mdefine_line|#define PDEVDECL struct pci_dev *pdev
 DECL|macro|PDEVDECL0
-macro_line|# define PDEVDECL0 struct pci_dev *pdev = NULL
+mdefine_line|#define PDEVDECL0 struct pci_dev *pdev = NULL
 DECL|macro|PDEVDECL1
-macro_line|# define PDEVDECL1 struct pci_dev *pdev
+mdefine_line|#define PDEVDECL1 struct pci_dev *pdev
 DECL|macro|PDEVSET
-macro_line|# define PDEVSET pACB-&gt;pdev=pdev
+mdefine_line|#define PDEVSET pACB-&gt;pdev=pdev
 DECL|macro|PDEVSET1
-macro_line|# define PDEVSET1 pdev=pACB-&gt;pdev
+mdefine_line|#define PDEVSET1 pdev=pACB-&gt;pdev
 DECL|macro|PCI_WRITE_CONFIG_BYTE
-macro_line|# define PCI_WRITE_CONFIG_BYTE(pd, rv, bv) pci_write_config_byte (pd, rv, bv)
+mdefine_line|#define PCI_WRITE_CONFIG_BYTE(pd, rv, bv) pci_write_config_byte (pd, rv, bv)
 DECL|macro|PCI_READ_CONFIG_BYTE
-macro_line|# define PCI_READ_CONFIG_BYTE(pd, rv, bv) pci_read_config_byte (pd, rv, bv)
+mdefine_line|#define PCI_READ_CONFIG_BYTE(pd, rv, bv) pci_read_config_byte (pd, rv, bv)
 DECL|macro|PCI_WRITE_CONFIG_WORD
-macro_line|# define PCI_WRITE_CONFIG_WORD(pd, rv, bv) pci_write_config_word (pd, rv, bv)
+mdefine_line|#define PCI_WRITE_CONFIG_WORD(pd, rv, bv) pci_write_config_word (pd, rv, bv)
 DECL|macro|PCI_READ_CONFIG_WORD
-macro_line|# define PCI_READ_CONFIG_WORD(pd, rv, bv) pci_read_config_word (pd, rv, bv)
+mdefine_line|#define PCI_READ_CONFIG_WORD(pd, rv, bv) pci_read_config_word (pd, rv, bv)
 DECL|macro|PCI_BUS_DEV
-macro_line|# define PCI_BUS_DEV pdev-&gt;bus-&gt;number, pdev-&gt;devfn
+mdefine_line|#define PCI_BUS_DEV pdev-&gt;bus-&gt;number, pdev-&gt;devfn
 DECL|macro|PCI_PRESENT
-macro_line|# define PCI_PRESENT (1)
+mdefine_line|#define PCI_PRESENT (1)
 DECL|macro|PCI_SET_MASTER
-macro_line|# define PCI_SET_MASTER pci_set_master (pdev)
+mdefine_line|#define PCI_SET_MASTER pci_set_master (pdev)
 DECL|macro|PCI_FIND_DEVICE
-macro_line|# define PCI_FIND_DEVICE(vend, id) (pdev = pci_find_device (vend, id, pdev))
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,10)
+mdefine_line|#define PCI_FIND_DEVICE(vend, id) (pdev = pci_find_device (vend, id, pdev))
 DECL|macro|PCI_GET_IO_AND_IRQ
-macro_line|# define PCI_GET_IO_AND_IRQ io_port = pci_resource_start (pdev, 0); irq = pdev-&gt;irq
-macro_line|#else
-DECL|macro|PCI_GET_IO_AND_IRQ
-macro_line|# define PCI_GET_IO_AND_IRQ io_port = pdev-&gt;base_address[0] &amp; PCI_BASE_ADDRESS_IO_MASK; irq = pdev-&gt;irq
-macro_line|#endif
-macro_line|#else
-macro_line|# include &lt;linux/bios32.h&gt;
-DECL|macro|PDEV
-macro_line|# define PDEV pbus, pdevfn
-DECL|macro|PDEVDECL
-macro_line|# define PDEVDECL UCHAR pbus, UCHAR pdevfn
-DECL|macro|PDEVDECL0
-macro_line|# define PDEVDECL0 UCHAR pbus = 0; UCHAR pdevfn = 0; USHORT pci_index = 0; int error
-DECL|macro|PDEVDECL1
-macro_line|# define PDEVDECL1 UCHAR pbus; UCHAR pdevfn /*; USHORT pci_index */
-DECL|macro|PDEVSET
-macro_line|# define PDEVSET pACB-&gt;pbus=pbus; pACB-&gt;pdevfn=pdevfn /*; pACB-&gt;pci_index=pci_index */
-DECL|macro|PDEVSET1
-macro_line|# define PDEVSET1 pbus=pACB-&gt;pbus; pdevfn=pACB-&gt;pdevfn /*; pci_index=pACB-&gt;pci_index */
-DECL|macro|PCI_WRITE_CONFIG_BYTE
-macro_line|# define PCI_WRITE_CONFIG_BYTE(pd, rv, bv) pcibios_write_config_byte (pd, rv, bv)
-DECL|macro|PCI_READ_CONFIG_BYTE
-macro_line|# define PCI_READ_CONFIG_BYTE(pd, rv, bv) pcibios_read_config_byte (pd, rv, bv)
-DECL|macro|PCI_WRITE_CONFIG_WORD
-macro_line|# define PCI_WRITE_CONFIG_WORD(pd, rv, bv) pcibios_write_config_word (pd, rv, bv)
-DECL|macro|PCI_READ_CONFIG_WORD
-macro_line|# define PCI_READ_CONFIG_WORD(pd, rv, bv) pcibios_read_config_word (pd, rv, bv)
-DECL|macro|PCI_BUS_DEV
-macro_line|# define PCI_BUS_DEV pbus, pdevfn
-DECL|macro|PCI_PRESENT
-macro_line|# define PCI_PRESENT pcibios_present ()
-DECL|macro|PCI_SET_MASTER
-macro_line|# define PCI_SET_MASTER dc390_set_master (pbus, pdevfn)
-DECL|macro|PCI_FIND_DEVICE
-macro_line|# define PCI_FIND_DEVICE(vend, id) (!pcibios_find_device (vend, id, pci_index++, &amp;pbus, &amp;pdevfn))
-DECL|macro|PCI_GET_IO_AND_IRQ
-macro_line|# define PCI_GET_IO_AND_IRQ error = pcibios_read_config_dword (pbus, pdevfn, PCI_BASE_ADDRESS_0, &amp;io_port);&t;&bslash;&n; error |= pcibios_read_config_byte (pbus, pdevfn, PCI_INTERRUPT_LINE, &amp;irq);&t;&bslash;&n; io_port &amp;= 0xfffe;&t;&bslash;&n; if (error) { printk (KERN_ERR &quot;DC390_detect: Error reading PCI config registers!&bslash;n&quot;); continue; }
-macro_line|#endif 
+mdefine_line|#define PCI_GET_IO_AND_IRQ do{io_port = pci_resource_start (pdev, 0); irq = pdev-&gt;irq;} while(0)
 macro_line|#include &quot;tmscsim.h&quot;
 macro_line|#ifndef __init
 DECL|macro|__init
@@ -708,7 +547,7 @@ id|PDCB
 id|pDCB
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|do_DC390_Interrupt
 c_func
 (paren
@@ -767,7 +606,6 @@ id|PDCB
 id|pDCB
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 r_static
 r_int
 id|DC390_release
@@ -789,7 +627,6 @@ op_star
 id|host
 )paren
 suffix:semicolon
-macro_line|#endif
 singleline_comment|//static PSHT&t;dc390_pSHT_start = NULL;
 singleline_comment|//static PSH&t;dc390_pSH_start = NULL;
 singleline_comment|//static PSH&t;dc390_pSH_current = NULL;
@@ -1346,7 +1183,6 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* EE_Speed */
 )brace
-suffix:semicolon
 )brace
 multiline_comment|/* Handle &quot;-1&quot; case */
 DECL|function|dc390_check_for_safe_settings
@@ -1525,8 +1361,8 @@ id|tmscsim
 l_int|5
 )braket
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1633,7 +1469,6 @@ op_assign
 l_int|180
 suffix:semicolon
 )brace
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Override defaults on cmdline:&n; * tmscsim: AdaptID, MaxSpeed (Index), DevMode (Bitmapped), AdaptMode (Bitmapped)&n; */
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,13)
@@ -1700,7 +1535,6 @@ op_assign
 l_int|6
 suffix:semicolon
 )brace
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1732,7 +1566,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-suffix:semicolon
 macro_line|#ifndef MODULE
 id|__setup
 c_func
@@ -1789,7 +1622,6 @@ op_assign
 l_int|6
 suffix:semicolon
 )brace
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1818,7 +1650,6 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* dc390_checkparams (); */
 )brace
-suffix:semicolon
 macro_line|#endif
 DECL|function|dc390_EEpromOutDI
 r_static
@@ -2266,7 +2097,6 @@ id|EE_DELAY
 )braket
 suffix:semicolon
 )brace
-suffix:semicolon
 DECL|function|dc390_CheckEEpromCheckSum
 r_static
 id|UCHAR
@@ -2460,14 +2290,13 @@ id|pACB-&gt;DCBmap
 id|id
 )braket
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
 )brace
-suffix:semicolon
 id|DCBDEBUG1
 c_func
 (paren
@@ -2483,17 +2312,15 @@ id|pDCB-&gt;TargetID
 comma
 id|pDCB-&gt;TargetLUN
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_return
 id|pDCB
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/* Queueing philosphy:&n; * There are a couple of lists:&n; * - Query: Contains the Scsi Commands not yet turned into SRBs (per ACB)&n; *   (Note: For new EH, it is unnecessary!)&n; * - Waiting: Contains a list of SRBs not yet sent (per DCB)&n; * - Free: List of free SRB slots&n; * &n; * If there are no waiting commands for the DCB, the new one is sent to the bus&n; * otherwise the oldest one is taken from the Waiting list and the new one is &n; * queued to the Waiting List&n; * &n; * Lists are managed using two pointers and eventually a counter&n; */
 macro_line|#if 0
 multiline_comment|/* Look for a SCSI cmd in a SRB queue */
-DECL|function|dc390_find_cmd_in_SRBq
 r_static
 id|PSRB
 id|dc390_find_cmd_in_SRBq
@@ -2545,7 +2372,6 @@ r_return
 id|q
 suffix:semicolon
 )brace
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Append to Query List */
 DECL|function|dc390_Query_append
@@ -2561,6 +2387,17 @@ id|PACB
 id|pACB
 )paren
 (brace
+id|dc390_cmd_scp_t
+op_star
+id|cmdq
+op_assign
+(paren
+id|dc390_cmd_scp_t
+op_star
+)paren
+op_amp
+id|cmd-&gt;SCp
+suffix:semicolon
 id|DEBUG0
 c_func
 (paren
@@ -2570,38 +2407,23 @@ l_string|&quot;DC390: Append cmd %li to Query&bslash;n&quot;
 comma
 id|cmd-&gt;pid
 )paren
-suffix:semicolon
 )paren
-r_if
-c_cond
+suffix:semicolon
+id|list_add_tail
+c_func
 (paren
-op_logical_neg
-id|pACB-&gt;QueryCnt
+op_amp
+id|cmdq-&gt;list
+comma
+op_amp
+id|pACB-&gt;cmdq
 )paren
-(brace
-id|pACB-&gt;pQueryHead
-op_assign
-id|cmd
-suffix:semicolon
-)brace
-r_else
-id|pACB-&gt;pQueryTail-&gt;next
-op_assign
-id|cmd
-suffix:semicolon
-id|pACB-&gt;pQueryTail
-op_assign
-id|cmd
 suffix:semicolon
 id|pACB-&gt;QueryCnt
 op_increment
 suffix:semicolon
 id|pACB-&gt;CmdOutOfSRB
 op_increment
-suffix:semicolon
-id|cmd-&gt;next
-op_assign
-l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Return next cmd from Query list */
@@ -2617,18 +2439,38 @@ id|pACB
 id|PSCSICMD
 id|pcmd
 suffix:semicolon
-id|pcmd
-op_assign
-id|pACB-&gt;pQueryHead
+id|dc390_cmd_scp_t
+op_star
+id|cmdq
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pcmd
+id|list_empty
+c_func
+(paren
+op_amp
+id|pACB-&gt;cmdq
+)paren
 )paren
 r_return
+l_int|NULL
+suffix:semicolon
 id|pcmd
+op_assign
+(paren
+id|PSCSICMD
+)paren
+id|list_entry
+c_func
+(paren
+id|pACB-&gt;cmdq.next
+comma
+r_struct
+id|scsi_cmnd_list
+comma
+id|scp.list
+)paren
 suffix:semicolon
 id|DEBUG0
 c_func
@@ -2639,25 +2481,23 @@ l_string|&quot;DC390: Get cmd %li from Query&bslash;n&quot;
 comma
 id|pcmd-&gt;pid
 )paren
-suffix:semicolon
 )paren
-id|pACB-&gt;pQueryHead
-op_assign
-id|pcmd-&gt;next
 suffix:semicolon
-id|pcmd-&gt;next
+id|cmdq
 op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
 (paren
-op_logical_neg
-id|pACB-&gt;pQueryHead
+id|dc390_cmd_scp_t
+op_star
 )paren
-id|pACB-&gt;pQueryTail
-op_assign
-l_int|NULL
+op_amp
+id|pcmd-&gt;SCp
+suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|cmdq-&gt;list
+)paren
 suffix:semicolon
 id|pACB-&gt;QueryCnt
 op_decrement
@@ -2693,8 +2533,8 @@ l_string|&quot;DC390: Get Free SRB %p&bslash;n&quot;
 comma
 id|pSRB
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2737,8 +2577,8 @@ l_string|&quot;DC390: Free SRB %p&bslash;n&quot;
 comma
 id|pSRB
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|pSRB-&gt;pNextSRB
 op_assign
 id|pACB-&gt;pFreeSRB
@@ -2773,8 +2613,8 @@ id|pSRB
 comma
 id|pSRB-&gt;pcmd-&gt;pid
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|pSRB-&gt;pNextSRB
 op_assign
 id|pDCB-&gt;pWaitingSRB
@@ -2822,8 +2662,8 @@ id|pSRB
 comma
 id|pSRB-&gt;pcmd-&gt;pid
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2881,8 +2721,8 @@ l_string|&quot;DC390: Append SRB %p to Going&bslash;n&quot;
 comma
 id|pSRB
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 multiline_comment|/* Append to the list of Going commands */
 r_if
 c_cond
@@ -2910,7 +2750,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-suffix:semicolon
 DECL|function|dc390_Going_remove
 r_static
 id|__inline__
@@ -2934,8 +2773,8 @@ l_string|&quot;DC390: Remove SRB %p from Going&bslash;n&quot;
 comma
 id|pSRB
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3005,7 +2844,6 @@ id|pDCB-&gt;GoingSRBCnt
 op_decrement
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/* Moves SRB from Going list to the top of Waiting list */
 DECL|function|dc390_Going_to_Waiting
 r_static
@@ -3032,8 +2870,8 @@ id|pSRB
 comma
 id|pSRB-&gt;pcmd-&gt;pid
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 multiline_comment|/* Remove SRB from Going */
 id|dc390_Going_remove
 (paren
@@ -3077,8 +2915,8 @@ l_string|&quot;DC390: Remove SRB %p from head of Waiting&bslash;n&quot;
 comma
 id|pSRB
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|pDCB-&gt;pWaitingSRB
 op_assign
 id|pSRB-&gt;pNextSRB
@@ -3403,7 +3241,9 @@ id|PACB
 id|ptr
 suffix:semicolon
 id|DC390_IFLAGS
+suffix:semicolon
 id|DC390_AFLAGS
+suffix:semicolon
 id|DEBUG0
 c_func
 (paren
@@ -3411,12 +3251,12 @@ id|printk
 (paren
 l_string|&quot;DC390: Debug: Waiting queue woken up by timer!&bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|DC390_LOCK_IO
 c_func
 (paren
-id|pACB.pScsiHost
+id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
 id|DC390_LOCK_ACB
@@ -3431,7 +3271,7 @@ suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func
 (paren
-id|pACB.pScsiHost
+id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
 )brace
@@ -3578,7 +3418,441 @@ l_int|5
 )paren
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* Create pci mapping */
+DECL|function|dc390_pci_map
+r_static
+r_int
+id|dc390_pci_map
+(paren
+id|PSRB
+id|pSRB
+)paren
+(brace
+r_int
+id|error
+op_assign
+l_int|0
 suffix:semicolon
+id|Scsi_Cmnd
+op_star
+id|pcmd
+op_assign
+id|pSRB-&gt;pcmd
+suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+id|pSRB-&gt;pSRBDCB-&gt;pDCBACB-&gt;pdev
+suffix:semicolon
+id|dc390_cmd_scp_t
+op_star
+id|cmdp
+op_assign
+(paren
+(paren
+id|dc390_cmd_scp_t
+op_star
+)paren
+(paren
+op_amp
+id|pcmd-&gt;SCp
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Map sense buffer */
+r_if
+c_cond
+(paren
+id|pSRB-&gt;SRBFlag
+op_amp
+id|AUTO_REQSENSE
+)paren
+(brace
+id|sg_dma_address
+c_func
+(paren
+op_amp
+id|pSRB-&gt;Segmentx
+)paren
+op_assign
+id|cmdp-&gt;saved_dma_handle
+op_assign
+id|pci_map_page
+c_func
+(paren
+id|pdev
+comma
+id|virt_to_page
+c_func
+(paren
+id|pcmd-&gt;sense_buffer
+)paren
+comma
+(paren
+r_int
+r_int
+)paren
+id|pcmd-&gt;sense_buffer
+op_amp
+op_complement
+id|PAGE_MASK
+comma
+r_sizeof
+(paren
+id|pcmd-&gt;sense_buffer
+)paren
+comma
+id|DMA_FROM_DEVICE
+)paren
+suffix:semicolon
+id|pSRB-&gt;Segmentx.length
+op_assign
+r_sizeof
+(paren
+id|pcmd-&gt;sense_buffer
+)paren
+suffix:semicolon
+id|pSRB-&gt;SGcount
+op_assign
+l_int|1
+suffix:semicolon
+id|pSRB-&gt;pSegmentList
+op_assign
+(paren
+id|PSGL
+)paren
+op_amp
+id|pSRB-&gt;Segmentx
+suffix:semicolon
+id|DEBUG1
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s(): Mapped sense buffer %p at %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|pcmd-&gt;sense_buffer
+comma
+id|cmdp-&gt;saved_dma_handle
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Make SG list */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|pcmd-&gt;use_sg
+)paren
+(brace
+id|pSRB-&gt;pSegmentList
+op_assign
+(paren
+id|PSGL
+)paren
+id|pcmd-&gt;request_buffer
+suffix:semicolon
+id|pSRB-&gt;SGcount
+op_assign
+id|pci_map_sg
+c_func
+(paren
+id|pdev
+comma
+id|pSRB-&gt;pSegmentList
+comma
+id|pcmd-&gt;use_sg
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|pcmd-&gt;sc_data_direction
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* TODO: error handling */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pSRB-&gt;SGcount
+)paren
+id|error
+op_assign
+l_int|1
+suffix:semicolon
+id|DEBUG1
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s(): Mapped SG %p with %d (%d) elements&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|pcmd-&gt;request_buffer
+comma
+id|pSRB-&gt;SGcount
+comma
+id|pcmd-&gt;use_sg
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Map single segment */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|pcmd-&gt;request_buffer
+op_logical_and
+id|pcmd-&gt;request_bufflen
+)paren
+(brace
+id|sg_dma_address
+c_func
+(paren
+op_amp
+id|pSRB-&gt;Segmentx
+)paren
+op_assign
+id|cmdp-&gt;saved_dma_handle
+op_assign
+id|pci_map_page
+c_func
+(paren
+id|pdev
+comma
+id|virt_to_page
+c_func
+(paren
+id|pcmd-&gt;request_buffer
+)paren
+comma
+(paren
+r_int
+r_int
+)paren
+id|pcmd-&gt;request_buffer
+op_amp
+op_complement
+id|PAGE_MASK
+comma
+id|pcmd-&gt;request_bufflen
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|pcmd-&gt;sc_data_direction
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* TODO: error handling */
+id|pSRB-&gt;Segmentx.length
+op_assign
+id|pcmd-&gt;request_bufflen
+suffix:semicolon
+id|pSRB-&gt;SGcount
+op_assign
+l_int|1
+suffix:semicolon
+id|pSRB-&gt;pSegmentList
+op_assign
+(paren
+id|PSGL
+)paren
+op_amp
+id|pSRB-&gt;Segmentx
+suffix:semicolon
+id|DEBUG1
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s(): Mapped request buffer %p at %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|pcmd-&gt;request_buffer
+comma
+id|cmdp-&gt;saved_dma_handle
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* No mapping !? */
+)brace
+r_else
+id|pSRB-&gt;SGcount
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+id|error
+suffix:semicolon
+)brace
+multiline_comment|/* Remove pci mapping */
+DECL|function|dc390_pci_unmap
+r_static
+r_void
+id|dc390_pci_unmap
+(paren
+id|PSRB
+id|pSRB
+)paren
+(brace
+id|Scsi_Cmnd
+op_star
+id|pcmd
+op_assign
+id|pSRB-&gt;pcmd
+suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+id|pSRB-&gt;pSRBDCB-&gt;pDCBACB-&gt;pdev
+suffix:semicolon
+id|dc390_cmd_scp_t
+op_star
+id|cmdp
+op_assign
+(paren
+(paren
+id|dc390_cmd_scp_t
+op_star
+)paren
+(paren
+op_amp
+id|pcmd-&gt;SCp
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pSRB-&gt;SRBFlag
+)paren
+(brace
+id|pci_unmap_page
+c_func
+(paren
+id|pdev
+comma
+id|cmdp-&gt;saved_dma_handle
+comma
+r_sizeof
+(paren
+id|pcmd-&gt;sense_buffer
+)paren
+comma
+id|DMA_FROM_DEVICE
+)paren
+suffix:semicolon
+id|DEBUG1
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s(): Unmapped sense buffer at %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|cmdp-&gt;saved_dma_handle
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|pcmd-&gt;use_sg
+)paren
+(brace
+id|pci_unmap_sg
+c_func
+(paren
+id|pdev
+comma
+id|pcmd-&gt;request_buffer
+comma
+id|pcmd-&gt;use_sg
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|pcmd-&gt;sc_data_direction
+)paren
+)paren
+suffix:semicolon
+id|DEBUG1
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s(): Unmapped SG at %p with %d elements&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|pcmd-&gt;request_buffer
+comma
+id|pcmd-&gt;use_sg
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|pcmd-&gt;request_buffer
+op_logical_and
+id|pcmd-&gt;request_bufflen
+)paren
+(brace
+id|pci_unmap_page
+c_func
+(paren
+id|pdev
+comma
+id|cmdp-&gt;saved_dma_handle
+comma
+id|pcmd-&gt;request_bufflen
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|pcmd-&gt;sc_data_direction
+)paren
+)paren
+suffix:semicolon
+id|DEBUG1
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s(): Unmapped request buffer at %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|cmdp-&gt;saved_dma_handle
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/***********************************************************************&n; * Function: static void dc390_BuildSRB (Scsi_Cmd *pcmd, PDCB pDCB, &n; * &t;&t;&t;&t;&t; PSRB pSRB)&n; *&n; * Purpose: Prepare SRB for being sent to Device DCB w/ command *pcmd&n; *&n; ***********************************************************************/
 DECL|function|dc390_BuildSRB
@@ -3607,63 +3881,6 @@ id|pcmd
 suffix:semicolon
 singleline_comment|//pSRB-&gt;ScsiCmdLen = pcmd-&gt;cmd_len;
 singleline_comment|//memcpy (pSRB-&gt;CmdBlock, pcmd-&gt;cmnd, pcmd-&gt;cmd_len);
-r_if
-c_cond
-(paren
-id|pcmd-&gt;use_sg
-)paren
-(brace
-id|pSRB-&gt;SGcount
-op_assign
-(paren
-id|UCHAR
-)paren
-id|pcmd-&gt;use_sg
-suffix:semicolon
-id|pSRB-&gt;pSegmentList
-op_assign
-(paren
-id|PSGL
-)paren
-id|pcmd-&gt;request_buffer
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|pcmd-&gt;request_buffer
-)paren
-(brace
-id|pSRB-&gt;SGcount
-op_assign
-l_int|1
-suffix:semicolon
-id|pSRB-&gt;pSegmentList
-op_assign
-(paren
-id|PSGL
-)paren
-op_amp
-id|pSRB-&gt;Segmentx
-suffix:semicolon
-id|pSRB-&gt;Segmentx.address
-op_assign
-(paren
-id|PUCHAR
-)paren
-id|pcmd-&gt;request_buffer
-suffix:semicolon
-id|pSRB-&gt;Segmentx.length
-op_assign
-id|pcmd-&gt;request_bufflen
-suffix:semicolon
-)brace
-r_else
-id|pSRB-&gt;SGcount
-op_assign
-l_int|0
-suffix:semicolon
 id|pSRB-&gt;SGIndex
 op_assign
 l_int|0
@@ -3734,8 +3951,8 @@ id|pSRB-&gt;TagNumber
 op_assign
 l_int|255
 suffix:semicolon
+multiline_comment|/* KG: deferred PCI mapping to dc390_StartSCSI */
 )brace
-suffix:semicolon
 multiline_comment|/* Put cmnd from Query to Waiting list and send next Waiting cmnd */
 DECL|function|dc390_Query_to_Waiting
 r_static
@@ -3818,7 +4035,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/* should not happen */
 id|pDCB
 op_assign
@@ -3875,7 +4091,6 @@ suffix:semicolon
 id|DC390_LOCK_ACB_NI
 suffix:semicolon
 )brace
-suffix:semicolon
 id|dc390_BuildSRB
 (paren
 id|pcmd
@@ -3920,7 +4135,6 @@ suffix:semicolon
 id|PSRB
 id|pSRB
 suffix:semicolon
-id|DC390_AFLAGS
 id|PACB
 id|pACB
 op_assign
@@ -3928,6 +4142,8 @@ op_assign
 id|PACB
 )paren
 id|cmd-&gt;device-&gt;host-&gt;hostdata
+suffix:semicolon
+id|DC390_AFLAGS
 suffix:semicolon
 id|DEBUG0
 c_func
@@ -3938,7 +4154,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;DC390: Queue Cmd=%02x,Tgt=%d,LUN=%d (pid=%li)&bslash;n&quot;
+l_string|&quot;DC390: Queue Cmd=%02x,Tgt=%d,LUN=%d (pid=%li), buffer=%p&bslash;n&quot;
 comma
 "&bslash;"
 id|cmd-&gt;cmnd
@@ -3951,9 +4167,11 @@ comma
 id|cmd-&gt;device-&gt;lun
 comma
 id|cmd-&gt;pid
+comma
+id|cmd-&gt;buffer
+)paren
 )paren
 suffix:semicolon
-)paren
 id|DC390_LOCK_ACB
 suffix:semicolon
 multiline_comment|/* Assume BAD_TARGET; will be cleared later */
@@ -4138,7 +4356,6 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -4246,7 +4463,6 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-suffix:semicolon
 )brace
 id|pACB-&gt;Cmds
 op_increment
@@ -4278,8 +4494,8 @@ id|printk
 (paren
 l_string|&quot;DC390: QueryCnt != 0&bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|dc390_Query_append
 (paren
 id|cmd
@@ -4325,8 +4541,8 @@ id|printk
 (paren
 l_string|&quot;DC390: Free SRB w/ Waiting&bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4392,8 +4608,8 @@ id|printk
 (paren
 l_string|&quot;DC390: Free SRB w/o Waiting&bslash;n&quot;
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4433,9 +4649,7 @@ id|pSRB
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
-suffix:semicolon
 id|DC390_UNLOCK_ACB
 suffix:semicolon
 id|DEBUG1
@@ -4448,8 +4662,8 @@ l_string|&quot; ... command (pid %li) queued successfully.&bslash;n&quot;
 comma
 id|cmd-&gt;pid
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5019,7 +5233,6 @@ id|geom
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 macro_line|#endif
 DECL|function|dc390_dumpinfo
 r_void
@@ -5091,7 +5304,6 @@ id|pSRB-&gt;SRBStatus
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 id|printk
 (paren
 l_string|&quot;DC390: Status of last IRQ (DMA/SC/Int/IRQ): %08x&bslash;n&quot;
@@ -5253,7 +5465,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 id|printk
 (paren
 l_string|&quot;DC390: Register dump: DMA engine:&bslash;n&quot;
@@ -5344,7 +5555,6 @@ l_string|&quot;DC390: In case of driver trouble read linux/Documentation/scsi/tm
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/***********************************************************************&n; * Function : int DC390_abort (Scsi_Cmnd *cmd)&n; *&n; * Purpose : Abort an errant SCSI command&n; *&n; * Inputs : cmd - command to abort&n; *&n; * Returns : 0 on success, -1 on failure.&n; *&n; * Status: Buggy !&n; ***********************************************************************/
 DECL|function|DC390_abort
 r_int
@@ -5368,14 +5578,10 @@ id|count
 comma
 id|i
 suffix:semicolon
-id|PSCSICMD
-id|pcmd
-suffix:semicolon
 r_int
 id|status
 suffix:semicolon
 singleline_comment|//ULONG sbac;
-id|DC390_AFLAGS
 id|PACB
 id|pACB
 op_assign
@@ -5383,6 +5589,8 @@ op_assign
 id|PACB
 )paren
 id|cmd-&gt;device-&gt;host-&gt;hostdata
+suffix:semicolon
+id|DC390_AFLAGS
 suffix:semicolon
 id|DC390_LOCK_ACB
 suffix:semicolon
@@ -5404,37 +5612,46 @@ c_cond
 id|pACB-&gt;QueryCnt
 )paren
 (brace
-id|pcmd
-op_assign
-id|pACB-&gt;pQueryHead
+r_struct
+id|scsi_cmnd_list
+op_star
+id|t
+comma
+op_star
+id|pcmd_l
 suffix:semicolon
+id|list_for_each_entry_safe
+c_func
+(paren
+id|pcmd_l
+comma
+id|t
+comma
+op_amp
+id|pACB-&gt;cmdq
+comma
+id|scp.list
+)paren
 r_if
 c_cond
 (paren
-id|pcmd
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+)paren
+id|pcmd_l
 op_eq
 id|cmd
 )paren
 (brace
 multiline_comment|/* Found: Dequeue */
-id|pACB-&gt;pQueryHead
-op_assign
-id|pcmd-&gt;next
-suffix:semicolon
-id|pcmd-&gt;next
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
+id|list_del
+c_func
 (paren
-id|cmd
-op_eq
-id|pACB-&gt;pQueryTail
+op_amp
+id|pcmd_l-&gt;scp.list
 )paren
-id|pACB-&gt;pQueryTail
-op_assign
-l_int|NULL
 suffix:semicolon
 id|pACB-&gt;QueryCnt
 op_decrement
@@ -5446,73 +5663,6 @@ suffix:semicolon
 r_goto
 id|ABO_X
 suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|count
-op_assign
-id|pACB-&gt;QueryCnt
-comma
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|count
-op_minus
-l_int|1
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pcmd-&gt;next
-op_eq
-id|cmd
-)paren
-(brace
-id|pcmd-&gt;next
-op_assign
-id|cmd-&gt;next
-suffix:semicolon
-id|cmd-&gt;next
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cmd
-op_eq
-id|pACB-&gt;pQueryTail
-)paren
-id|pACB-&gt;pQueryTail
-op_assign
-l_int|NULL
-suffix:semicolon
-id|pACB-&gt;QueryCnt
-op_decrement
-suffix:semicolon
-id|status
-op_assign
-id|SCSI_ABORT_SUCCESS
-suffix:semicolon
-r_goto
-id|ABO_X
-suffix:semicolon
-)brace
-r_else
-(brace
-id|pcmd
-op_assign
-id|pcmd-&gt;next
-suffix:semicolon
-)brace
 )brace
 )brace
 id|pDCB
@@ -5653,9 +5803,17 @@ suffix:semicolon
 id|pDCB-&gt;WaitSRBCnt
 op_decrement
 suffix:semicolon
-id|cmd-&gt;next
-op_assign
-l_int|NULL
+id|INIT_LIST_HEAD
+c_func
+(paren
+(paren
+r_struct
+id|list_head
+op_star
+)paren
+op_amp
+id|cmd-&gt;SCp
+)paren
 suffix:semicolon
 id|status
 op_assign
@@ -5829,7 +5987,6 @@ singleline_comment|//udelay (10000);
 singleline_comment|//DC390_read8 (INT_Status);
 singleline_comment|//DC390_write8 (ScsiCmd, EN_SEL_RESEL);
 )brace
-suffix:semicolon
 id|sbac
 op_assign
 id|DC390_read32
@@ -5894,7 +6051,6 @@ id|sbac
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 macro_line|#endif
 id|dc390_lastabortedpid
 op_assign
@@ -6019,7 +6175,6 @@ suffix:semicolon
 )brace
 macro_line|#if 0
 multiline_comment|/* Moves all SRBs from Going to Waiting for all DCBs */
-DECL|function|dc390_RecoverSRB
 r_static
 r_void
 id|dc390_RecoverSRB
@@ -6164,16 +6319,11 @@ id|DC390_reset
 id|Scsi_Cmnd
 op_star
 id|cmd
-comma
-r_int
-r_int
-id|resetFlags
 )paren
 (brace
 id|UCHAR
 id|bval
 suffix:semicolon
-id|DC390_AFLAGS
 id|PACB
 id|pACB
 op_assign
@@ -6181,6 +6331,8 @@ op_assign
 id|PACB
 )paren
 id|cmd-&gt;device-&gt;host-&gt;hostdata
+suffix:semicolon
+id|DC390_AFLAGS
 suffix:semicolon
 id|printk
 c_func
@@ -6392,16 +6544,12 @@ id|lun
 comma
 id|pDCB
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 op_star
 id|ppDCB
 op_assign
 id|pDCB
-suffix:semicolon
-id|pDCB2
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -6410,6 +6558,10 @@ op_logical_neg
 id|pDCB
 )paren
 r_return
+suffix:semicolon
+id|pDCB2
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -6435,7 +6587,6 @@ op_assign
 id|pDCB
 suffix:semicolon
 )brace
-suffix:semicolon
 id|pACB-&gt;DCBCnt
 op_increment
 suffix:semicolon
@@ -6699,7 +6850,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6730,7 +6880,6 @@ op_complement
 l_int|0x0f
 suffix:semicolon
 )brace
-suffix:semicolon
 singleline_comment|//if (! (pDCB-&gt;DevMode &amp; EN_DISCONNECT_)) pDCB-&gt;SyncMode &amp;= ~EN_ATN_STOP; 
 id|pDCB-&gt;CtrlR1
 op_assign
@@ -6750,7 +6899,6 @@ id|PARITY_ERR_REPO
 suffix:semicolon
 )brace
 )brace
-suffix:semicolon
 multiline_comment|/***********************************************************************&n; * Function : static void dc390_updateDCBs ()&n; *&n; * Purpose :  Set the configuration dependent DCB params for all DCBs&n; ***********************************************************************/
 DECL|function|dc390_updateDCBs
 r_static
@@ -6796,9 +6944,7 @@ op_assign
 id|pDCB-&gt;pNextDCB
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/***********************************************************************&n; * Function : static void dc390_initSRB()&n; *&n; * Purpose :  initialize the internal structures for a given SRB&n; *&n; * Inputs : psrb - pointer to this scsi request block structure&n; ***********************************************************************/
 DECL|function|dc390_initSRB
 r_static
@@ -6920,6 +7066,7 @@ id|UCHAR
 id|i
 suffix:semicolon
 id|DC390_AFLAGS
+suffix:semicolon
 id|psh-&gt;can_queue
 op_assign
 id|MAX_CMD_QUEUE
@@ -6988,10 +7135,6 @@ id|PACB
 )paren
 id|psh-&gt;hostdata
 suffix:semicolon
-id|DC390_LOCKA_INIT
-suffix:semicolon
-id|DC390_LOCK_ACB
-suffix:semicolon
 id|pACB-&gt;pScsiHost
 op_assign
 id|psh
@@ -7027,8 +7170,8 @@ id|io_port
 comma
 id|Irq
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|psh-&gt;max_id
 op_assign
 l_int|8
@@ -7100,9 +7243,12 @@ id|pACB-&gt;QueryCnt
 op_assign
 l_int|0
 suffix:semicolon
-id|pACB-&gt;pQueryHead
-op_assign
-l_int|NULL
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|pACB-&gt;cmdq
+)paren
 suffix:semicolon
 id|pACB-&gt;AdapterIndex
 op_assign
@@ -7277,12 +7423,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+id|request_region
 (paren
 id|io_port
 comma
 id|psh-&gt;n_io_port
+comma
+l_string|&quot;tmscsim&quot;
 )paren
+op_eq
+l_int|NULL
 )paren
 (brace
 id|printk
@@ -7297,16 +7447,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-r_else
-id|request_region
-(paren
-id|io_port
-comma
-id|psh-&gt;n_io_port
-comma
-l_string|&quot;tmscsim&quot;
-)paren
-suffix:semicolon
 id|DC390_read8_
 (paren
 id|INT_Status
@@ -7399,7 +7539,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-suffix:semicolon
 id|DC390_write8
 (paren
 id|CtrlReg1
@@ -7449,7 +7588,6 @@ id|EE_DELAY
 suffix:semicolon
 multiline_comment|/*&n;&t;for( i=0; i&lt;(500 + 1000*dc390_eepromBuf[pACB-&gt;AdapterIndex][EE_DELAY]); i++ )&n;&t;&t;udelay(1000);&n;&t; */
 )brace
-suffix:semicolon
 id|pACB-&gt;ACBFlag
 op_assign
 l_int|0
@@ -7605,6 +7743,7 @@ id|PACB
 id|pACB
 suffix:semicolon
 id|DC390_AFLAGS
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7819,27 +7958,17 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;DC390: pSH = %8x,&quot;
+l_string|&quot;DC390: pSH = %8x, Index %02i&bslash;n&quot;
 comma
 (paren
 id|UINT
 )paren
 id|psh
-)paren
-suffix:semicolon
-)paren
-id|DEBUG0
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot; Index %02i,&quot;
 comma
 id|index
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|dc390_initACB
 c_func
 (paren
@@ -7851,13 +7980,6 @@ id|Irq
 comma
 id|index
 )paren
-suffix:semicolon
-id|pACB
-op_assign
-(paren
-id|PACB
-)paren
-id|psh-&gt;hostdata
 suffix:semicolon
 id|PDEVSET
 suffix:semicolon
@@ -7884,7 +8006,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;nDC390: pACB = %8x, pDCBmap = %8x, pSRB_array = %8x&bslash;n&quot;
+l_string|&quot;DC390: pACB = %8x, pDCBmap = %8x, pSRB_array = %8x&bslash;n&quot;
 comma
 "&bslash;"
 (paren
@@ -7902,8 +8024,8 @@ id|UINT
 )paren
 id|pACB-&gt;SRB_array
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|DEBUG0
 c_func
 (paren
@@ -7928,8 +8050,8 @@ r_sizeof
 id|DC390_SRB
 )paren
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|DC390_UNLOCK_ACB
 suffix:semicolon
 r_return
@@ -8058,7 +8180,6 @@ l_int|64
 suffix:semicolon
 )brace
 )brace
-suffix:semicolon
 macro_line|#endif /* ! NEW_PCI */
 DECL|function|dc390_set_pci_cfg
 r_static
@@ -8113,7 +8234,6 @@ id|PCI_STATUS_DETECTED_PARITY
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 DECL|function|DC390_detect
 r_int
 id|__init
@@ -8131,10 +8251,6 @@ id|irq
 suffix:semicolon
 id|UINT
 id|io_port
-suffix:semicolon
-singleline_comment|//DC390_IFLAGS
-id|DC390_DFLAGS
-id|DC390_LOCK_DRV
 suffix:semicolon
 singleline_comment|//dc390_pSHT_start = psht;
 id|dc390_pACB_start
@@ -8169,7 +8285,6 @@ id|pdev
 r_continue
 suffix:semicolon
 macro_line|#endif
-singleline_comment|//DC390_LOCK_IO;&t;&t;/* Remove this when going to new eh */
 id|PCI_GET_IO_AND_IRQ
 suffix:semicolon
 id|DEBUG0
@@ -8190,8 +8305,8 @@ id|io_port
 comma
 id|irq
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8222,8 +8337,6 @@ id|dc390_adapterCnt
 op_increment
 suffix:semicolon
 )brace
-suffix:semicolon
-singleline_comment|//DC390_UNLOCK_IO;&t;&t;/* Remove when going to new eh */
 )brace
 r_else
 id|printk
@@ -8257,8 +8370,6 @@ l_string|&quot;DC390: %i adapters found&bslash;n&quot;
 comma
 id|dc390_adapterCnt
 )paren
-suffix:semicolon
-id|DC390_UNLOCK_DRV
 suffix:semicolon
 r_return
 id|dc390_adapterCnt
@@ -8343,16 +8454,13 @@ id|pDCB
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
-suffix:semicolon
 id|kfree
 (paren
 id|cmd
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 DECL|function|dc390_inquiry
 r_void
 id|dc390_inquiry
@@ -8401,7 +8509,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-suffix:semicolon
 id|buffer
 op_assign
 (paren
@@ -8514,7 +8621,7 @@ id|cmd-&gt;timeout_per_command
 op_assign
 id|HZ
 suffix:semicolon
-id|cmd-&gt;request.rq_status
+id|cmd-&gt;request-&gt;rq_status
 op_assign
 id|RQ_SCSI_BUSY
 suffix:semicolon
@@ -8541,7 +8648,6 @@ id|dc390_inquiry_done
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/***********************************************************************&n; * Functions: dc390_sendstart(), dc390_sendstart_done()&n; *&n; * Purpose: When changing speed etc., we have to issue an INQUIRY&n; *&t;    command to make sure, we agree upon the nego parameters&n; *&t;    with the device&n; ***********************************************************************/
 DECL|function|dc390_sendstart_done
 r_static
@@ -8571,7 +8677,6 @@ id|cmd
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 DECL|function|dc390_sendstart
 r_void
 id|dc390_sendstart
@@ -8620,7 +8725,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-suffix:semicolon
 id|buffer
 op_assign
 (paren
@@ -8737,7 +8841,7 @@ l_int|5
 op_star
 id|HZ
 suffix:semicolon
-id|cmd-&gt;request.rq_status
+id|cmd-&gt;request-&gt;rq_status
 op_assign
 id|RQ_SCSI_BUSY
 suffix:semicolon
@@ -8764,7 +8868,6 @@ id|dc390_sendstart_done
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/********************************************************************&n; * Function: dc390_set_info()&n; *&n; * Purpose: Change adapter config&n; *&n; * Strings are parsed similar to the output of tmscsim_proc_info ()&n; * &squot;-&squot; means no change&n; *******************************************************************/
 DECL|function|dc390_scanf
 r_static
@@ -8837,7 +8940,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-suffix:semicolon
 DECL|macro|SCANF
 mdefine_line|#define SCANF(buffer, pos, p0, var, min, max)&t;&t;&bslash;&n;if (dc390_scanf (&amp;buffer, &amp;pos, &amp;p0, &amp;var)) goto einv;&t;&bslash;&n;else if (var&lt;min || var&gt;max) goto einv2
 DECL|function|dc390_yesno
@@ -8918,9 +9020,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-suffix:semicolon
 DECL|macro|YESNO
-mdefine_line|#define YESNO(buffer, pos, var, bmask)&t;&t;&t;&bslash;&n;if (dc390_yesno (&amp;buffer, &amp;pos, &amp;var, bmask)) goto einv;&t;&bslash;&n;else dc390_updateDCB (pACB, pDCB);&t;&t;&bslash;&n;if (!p) goto ok
+mdefine_line|#define YESNO(buffer, pos, var, bmask)&t;&t;&t;&t;&t;&bslash;&n;&t;if (dc390_yesno (&amp;buffer, &amp;pos, &amp;var, bmask)) goto einv;&t;&bslash;&n;&t;else dc390_updateDCB (pACB, pDCB);&t;&t;&t;&t;&bslash;&n;&t;if (!pos) goto ok
 DECL|function|dc390_search
 r_static
 r_int
@@ -9121,7 +9222,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-suffix:semicolon
 DECL|macro|SEARCH
 mdefine_line|#define SEARCH(buffer, pos, p0, var, txt, max)&t;&t;&t;&t;&t;&t;&bslash;&n;if (dc390_search (&amp;buffer, &amp;pos, &amp;p0, (PUCHAR)(&amp;var), txt, max, 100, &quot;&quot;)) goto einv2;&t;&bslash;&n;else if (!p1) goto ok2
 DECL|macro|SEARCH2
@@ -9227,7 +9327,6 @@ r_return
 id|_prstr
 suffix:semicolon
 )brace
-suffix:semicolon
 macro_line|#endif
 DECL|function|dc390_set_info
 r_int
@@ -9274,7 +9373,9 @@ op_assign
 id|pACB-&gt;pLinkDCB
 suffix:semicolon
 id|DC390_IFLAGS
+suffix:semicolon
 id|DC390_AFLAGS
+suffix:semicolon
 id|pos
 (braket
 id|length
@@ -9285,7 +9386,7 @@ suffix:semicolon
 id|DC390_LOCK_IO
 c_func
 (paren
-id|pACB.pScsiHost
+id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
 id|DC390_LOCK_ACB
@@ -9326,7 +9427,6 @@ id|pos
 op_increment
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/* Remove WS */
 id|pos
 op_assign
@@ -9582,8 +9682,8 @@ id|length
 )braket
 )paren
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|pDCB
 op_assign
 id|pACB-&gt;pLinkDCB
@@ -9635,7 +9735,6 @@ r_goto
 id|einv2
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9657,7 +9756,6 @@ r_goto
 id|einv
 suffix:semicolon
 )brace
-suffix:semicolon
 id|olddevmode
 op_assign
 id|pDCB-&gt;DevMode
@@ -9896,7 +9994,7 @@ id|pos
 op_assign
 id|strsep
 (paren
-op_star
+op_amp
 id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;.&quot;
@@ -9908,7 +10006,7 @@ id|pos
 op_assign
 id|strsep
 (paren
-op_star
+op_amp
 id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;.&quot;
@@ -10060,7 +10158,7 @@ id|pos
 op_assign
 id|strsep
 (paren
-op_star
+op_amp
 id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;&quot;
@@ -10077,7 +10175,6 @@ r_goto
 id|ok
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10090,7 +10187,7 @@ id|pos
 op_assign
 id|strsep
 (paren
-op_star
+op_amp
 id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;&quot;
@@ -10112,7 +10209,7 @@ id|pos
 op_assign
 id|strsep
 (paren
-op_star
+op_amp
 id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;&quot;
@@ -10178,7 +10275,7 @@ id|pos
 op_assign
 id|strsep
 (paren
-op_star
+op_amp
 id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;&quot;
@@ -10252,7 +10349,7 @@ id|pos
 op_assign
 id|strsep
 (paren
-op_star
+op_amp
 id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n:=,;&quot;
@@ -10291,8 +10388,8 @@ id|length
 )braket
 )paren
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|dum
 op_assign
 id|GLITCH_TO_NS
@@ -10537,11 +10634,10 @@ id|pDCB
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func
 (paren
-id|pACB.pScsiHost
+id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
 r_return
@@ -10562,7 +10658,7 @@ suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func
 (paren
-id|pACB.pScsiHost
+id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
 id|printk
@@ -10606,18 +10702,15 @@ id|DC390_reset
 (paren
 op_amp
 id|cmd
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func
 (paren
-id|pACB.pScsiHost
+id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_return
 (paren
 id|length
@@ -10640,7 +10733,7 @@ suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func
 (paren
-id|pACB.pScsiHost
+id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
 )brace
@@ -10656,7 +10749,7 @@ id|pos
 op_assign
 id|strsep
 (paren
-op_star
+op_amp
 id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n.:;=&quot;
@@ -10736,11 +10829,10 @@ suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func
 (paren
-id|pACB.pScsiHost
+id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_return
 (paren
 id|length
@@ -10753,7 +10845,7 @@ id|pos
 op_assign
 id|strsep
 (paren
-op_star
+op_amp
 id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n.:;=&quot;
@@ -10834,11 +10926,10 @@ suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func
 (paren
-id|pACB.pScsiHost
+id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_return
 (paren
 id|length
@@ -10856,7 +10947,7 @@ id|pos
 op_assign
 id|strsep
 (paren
-op_star
+op_amp
 id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n.:;=&quot;
@@ -10942,7 +11033,6 @@ r_goto
 id|einv
 suffix:semicolon
 )brace
-suffix:semicolon
 id|dc390_initDCB
 (paren
 id|pACB
@@ -10967,11 +11057,10 @@ suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func
 (paren
-id|pACB.pScsiHost
+id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_return
 (paren
 id|length
@@ -10989,7 +11078,7 @@ id|pos
 op_assign
 id|strsep
 (paren
-op_star
+op_amp
 id|pos
 comma
 l_string|&quot; &bslash;t&bslash;n.:;=&quot;
@@ -11102,11 +11191,10 @@ suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func
 (paren
-id|pACB.pScsiHost
+id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_return
 (paren
 id|length
@@ -11131,7 +11219,7 @@ suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func
 (paren
-id|pACB.pScsiHost
+id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
 r_return
@@ -11195,16 +11283,19 @@ id|pos
 op_assign
 id|buffer
 suffix:semicolon
+r_struct
+id|scsi_cmnd_list
+op_star
+id|cl
+suffix:semicolon
 id|PACB
 id|pACB
 suffix:semicolon
 id|PDCB
 id|pDCB
 suffix:semicolon
-id|PSCSICMD
-id|pcmd
-suffix:semicolon
 id|DC390_AFLAGS
+suffix:semicolon
 id|pACB
 op_assign
 id|dc390_pACB_start
@@ -11655,24 +11746,30 @@ comma
 id|pACB-&gt;QueryCnt
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each_entry
+c_func
 (paren
-id|pcmd
-op_assign
-id|pACB-&gt;pQueryHead
-suffix:semicolon
-id|pcmd
-suffix:semicolon
-id|pcmd
-op_assign
-id|pcmd-&gt;next
+id|cl
+comma
+op_amp
+id|pACB-&gt;cmdq
+comma
+id|scp.list
 )paren
 id|SPRINTF
 (paren
 l_string|&quot; %li&quot;
 comma
-id|pcmd-&gt;pid
+(paren
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+)paren
+id|cl
+)paren
+op_member_access_from_pointer
+id|pid
 )paren
 suffix:semicolon
 r_if
@@ -11921,7 +12018,6 @@ DECL|macro|YESNO
 macro_line|#undef YESNO
 DECL|macro|SPRINTF
 macro_line|#undef SPRINTF
-macro_line|#ifdef MODULE
 multiline_comment|/***********************************************************************&n; * Function : static int dc390_shutdown (struct Scsi_Host *host)&n; *&n; * Purpose : does a clean (we hope) shutdown of the SCSI chip.&n; *&t;     Use prior to dumping core, unloading the driver, etc.&n; *&n; * Returns : 0 on success&n; ***********************************************************************/
 DECL|function|dc390_shutdown
 r_static
@@ -12067,8 +12163,8 @@ id|pDCB-&gt;TargetLUN
 comma
 id|pDCB
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 singleline_comment|//kfree (pDCB);
 id|dc390_remove_dev
 (paren
@@ -12091,7 +12187,6 @@ id|pACB-&gt;pLinkDCB
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 DECL|function|DC390_release
 r_int
 id|DC390_release
@@ -12104,6 +12199,7 @@ id|host
 (brace
 id|DC390_AFLAGS
 id|DC390_IFLAGS
+suffix:semicolon
 id|PACB
 id|pACB
 op_assign
@@ -12147,8 +12243,8 @@ l_string|&quot;DC390: Free IRQ %i&bslash;n&quot;
 comma
 id|host-&gt;irq
 )paren
-suffix:semicolon
 )paren
+suffix:semicolon
 id|free_irq
 (paren
 id|host-&gt;irq
@@ -12178,18 +12274,22 @@ c_func
 id|host
 )paren
 suffix:semicolon
+id|scsi_unregister
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* def MODULE */
 DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
-id|DC390_T
-suffix:semicolon
+(brace
 dot
 id|proc_name
 op_assign
@@ -12223,12 +12323,12 @@ op_assign
 id|DC390_queue_command
 comma
 dot
-m_abort
+id|eh_abort_handler
 op_assign
 id|DC390_abort
 comma
 dot
-id|reset
+id|eh_bus_reset_handler
 op_assign
 id|DC390_reset
 comma
