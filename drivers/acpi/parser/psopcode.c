@@ -418,7 +418,7 @@ mdefine_line|#define ARGI_LOCAL7                     ARG_NONE
 DECL|macro|ARGI_LOR_OP
 mdefine_line|#define ARGI_LOR_OP                     ARGI_LIST2 (ARGI_INTEGER,    ARGI_INTEGER)
 DECL|macro|ARGI_MATCH_OP
-mdefine_line|#define ARGI_MATCH_OP                   ARGI_LIST6 (ARGI_PACKAGE,    ARGI_INTEGER,       ARGI_INTEGER,      ARGI_INTEGER,   ARGI_INTEGER,   ARGI_INTEGER)
+mdefine_line|#define ARGI_MATCH_OP                   ARGI_LIST6 (ARGI_PACKAGE,    ARGI_INTEGER,   ARGI_COMPUTEDATA,      ARGI_INTEGER,ARGI_COMPUTEDATA,ARGI_INTEGER)
 DECL|macro|ARGI_METHOD_OP
 mdefine_line|#define ARGI_METHOD_OP                  ARGI_INVALID_OPCODE
 DECL|macro|ARGI_METHODCALL_OP
