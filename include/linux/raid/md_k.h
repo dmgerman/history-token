@@ -468,18 +468,6 @@ id|list_head
 id|same_set
 suffix:semicolon
 multiline_comment|/* RAID devices within the same set */
-DECL|member|all
-r_struct
-id|list_head
-id|all
-suffix:semicolon
-multiline_comment|/* all RAID devices */
-DECL|member|pending
-r_struct
-id|list_head
-id|pending
-suffix:semicolon
-multiline_comment|/* undetected RAID devices */
 DECL|member|dev
 id|kdev_t
 id|dev
@@ -925,16 +913,13 @@ id|mddev
 suffix:semicolon
 multiline_comment|/*&n; * iterates through some rdev ringlist. It&squot;s safe to remove the&n; * current &squot;rdev&squot;. Dont touch &squot;tmp&squot; though.&n; */
 DECL|macro|ITERATE_RDEV_GENERIC
-mdefine_line|#define ITERATE_RDEV_GENERIC(head,field,rdev,tmp)&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for ((tmp) = (head).next;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(rdev) = (list_entry((tmp), mdk_rdev_t, field)),&t;&bslash;&n;&t;&t;&t;(tmp) = (tmp)-&gt;next, (tmp)-&gt;prev != &amp;(head)&t;&bslash;&n;&t;&t;; )
+mdefine_line|#define ITERATE_RDEV_GENERIC(head,rdev,tmp)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for ((tmp) = (head).next;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(rdev) = (list_entry((tmp), mdk_rdev_t, same_set)),&t;&bslash;&n;&t;&t;&t;(tmp) = (tmp)-&gt;next, (tmp)-&gt;prev != &amp;(head)&t;&bslash;&n;&t;&t;; )
 multiline_comment|/*&n; * iterates through the &squot;same array disks&squot; ringlist&n; */
 DECL|macro|ITERATE_RDEV
-mdefine_line|#define ITERATE_RDEV(mddev,rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC((mddev)-&gt;disks,same_set,rdev,tmp)
-multiline_comment|/*&n; * Iterates through all &squot;RAID managed disks&squot;&n; */
-DECL|macro|ITERATE_RDEV_ALL
-mdefine_line|#define ITERATE_RDEV_ALL(rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC(all_raid_disks,all,rdev,tmp)
+mdefine_line|#define ITERATE_RDEV(mddev,rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC((mddev)-&gt;disks,rdev,tmp)
 multiline_comment|/*&n; * Iterates through &squot;pending RAID disks&squot;&n; */
 DECL|macro|ITERATE_RDEV_PENDING
-mdefine_line|#define ITERATE_RDEV_PENDING(rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC(pending_raid_disks,pending,rdev,tmp)
+mdefine_line|#define ITERATE_RDEV_PENDING(rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC(pending_raid_disks,rdev,tmp)
 DECL|macro|xchg_values
 mdefine_line|#define xchg_values(x,y) do { __typeof__(x) __tmp = x; &bslash;&n;&t;&t;&t;&t;x = y; y = __tmp; } while (0)
 DECL|struct|mdk_thread_s
