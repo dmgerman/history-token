@@ -101,6 +101,19 @@ id|error_code
 op_and_assign
 l_int|0x48200000
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|regs-&gt;trap
+op_ne
+l_int|0x300
+)paren
+multiline_comment|/* ensure error_code is 0 on SLB miss */
+id|error_code
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond

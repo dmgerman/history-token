@@ -499,8 +499,18 @@ DECL|macro|__NR_clock_getres
 mdefine_line|#define __NR_clock_getres&t;247
 DECL|macro|__NR_clock_nanosleep
 mdefine_line|#define __NR_clock_nanosleep&t;248
+DECL|macro|__NR_swapcontext
+mdefine_line|#define __NR_swapcontext&t;249
+DECL|macro|__NR_tgkill
+mdefine_line|#define __NR_tgkill&t;&t;250
+DECL|macro|__NR_utimes
+mdefine_line|#define __NR_utimes&t;&t;251
+DECL|macro|__NR_statfs64
+mdefine_line|#define __NR_statfs64&t;&t;252
+DECL|macro|__NR_fstatfs64
+mdefine_line|#define __NR_fstatfs64&t;&t;253
 DECL|macro|__NR_syscalls
-mdefine_line|#define __NR_syscalls&t;&t;239
+mdefine_line|#define __NR_syscalls&t;&t;254
 macro_line|#ifdef __KERNEL__
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;__NR_syscalls
