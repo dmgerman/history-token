@@ -3742,6 +3742,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PM
 id|kfree
 c_func
 (paren
@@ -3752,6 +3753,7 @@ id|dev-&gt;power.saved_state
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
 )brace
 r_return
 l_int|0

@@ -86,6 +86,7 @@ id|map
 suffix:semicolon
 DECL|member|base
 r_void
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -729,10 +730,6 @@ id|map-&gt;base
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|map-&gt;base
 )paren
 suffix:semicolon
@@ -1090,10 +1087,6 @@ id|map-&gt;base
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|map-&gt;base
 )paren
 suffix:semicolon

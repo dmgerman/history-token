@@ -102,12 +102,14 @@ suffix:semicolon
 DECL|member|control_reg
 r_volatile
 id|u8
+id|__iomem
 op_star
 id|control_reg
 suffix:semicolon
 DECL|member|data_reg
 r_volatile
 id|u8
+id|__iomem
 op_star
 id|data_reg
 suffix:semicolon
@@ -125,6 +127,7 @@ DECL|member|tx_dma_regs
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|tx_dma_regs
 suffix:semicolon
@@ -132,6 +135,7 @@ DECL|member|rx_dma_regs
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|rx_dma_regs
 suffix:semicolon

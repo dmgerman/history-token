@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt; 
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
@@ -15,7 +16,6 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &lt;asm/arch/simpad.h&gt;
-macro_line|#include &lt;asm/arch/registry.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -718,6 +718,41 @@ c_func
 suffix:semicolon
 multiline_comment|/* we won&squot;t ever call it */
 )brace
+multiline_comment|/*&n; * MediaQ Video Device&n; */
+DECL|variable|simpad_mq200fb
+r_static
+r_struct
+id|platform_device
+id|simpad_mq200fb
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;simpad-mq200&quot;
+comma
+dot
+id|id
+op_assign
+l_int|0
+comma
+)brace
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_struct
+id|platform_device
+op_star
+id|devices
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+op_amp
+id|simpad_mq200fb
+)brace
+suffix:semicolon
 DECL|function|simpad_init
 r_static
 r_int
@@ -728,12 +763,41 @@ c_func
 r_void
 )paren
 (brace
-id|set_power_off_handler
+r_int
+id|ret
+suffix:semicolon
+id|pm_power_off
+op_assign
+id|simpad_power_off
+suffix:semicolon
+id|ret
+op_assign
+id|platform_add_devices
 c_func
 (paren
-id|simpad_power_off
+id|devices
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|devices
+)paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;simpad: Unable to register mq200 framebuffer device&quot;
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -755,7 +819,7 @@ l_string|&quot;Simpad&quot;
 id|MAINTAINER
 c_func
 (paren
-l_string|&quot;Juergen Messerer&quot;
+l_string|&quot;Holger Freyther&quot;
 )paren
 id|BOOT_MEM
 c_func

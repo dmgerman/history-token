@@ -22,6 +22,7 @@ DECL|variable|regs
 r_volatile
 r_static
 id|u8
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -151,10 +152,6 @@ r_void
 id|sbus_iounmap
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|regs
 comma
 id|apc_regsize
@@ -556,10 +553,6 @@ id|reg_size
 suffix:semicolon
 id|regs
 op_assign
-(paren
-id|u8
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -579,8 +572,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|regs
 )paren
 (brace

@@ -265,6 +265,7 @@ r_void
 r_volatile
 r_int
 r_int
+id|__iomem
 op_star
 id|mmcr
 suffix:semicolon
@@ -280,11 +281,6 @@ suffix:semicolon
 multiline_comment|/* map in SC520&squot;s MMCR area */
 id|mmcr
 op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -473,10 +469,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|mmcr
 )paren
 suffix:semicolon
@@ -701,10 +693,6 @@ r_else
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|sc520cdp_map
 (braket
 id|i
@@ -874,10 +862,6 @@ id|virt
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|sc520cdp_map
 (braket
 id|i
@@ -893,7 +877,7 @@ id|i
 dot
 id|virt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

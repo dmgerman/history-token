@@ -416,6 +416,7 @@ id|membase
 suffix:semicolon
 DECL|member|re_map_port
 id|unchar
+id|__iomem
 op_star
 id|re_map_port
 suffix:semicolon
