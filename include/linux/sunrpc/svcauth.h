@@ -9,7 +9,7 @@ r_struct
 id|svc_cred
 (brace
 DECL|member|cr_flavor
-id|u32
+id|rpc_authflavor_t
 id|cr_flavor
 suffix:semicolon
 DECL|member|cr_uid
@@ -55,7 +55,7 @@ r_int
 id|svc_auth_register
 c_func
 (paren
-id|u32
+id|rpc_authflavor_t
 id|flavor
 comma
 r_void
@@ -79,7 +79,7 @@ r_void
 id|svc_auth_unregister
 c_func
 (paren
-id|u32
+id|rpc_authflavor_t
 id|flavor
 )paren
 suffix:semicolon
@@ -115,7 +115,7 @@ op_star
 id|auth_getops
 c_func
 (paren
-id|u32
+id|rpc_authflavor_t
 id|flavor
 )paren
 suffix:semicolon

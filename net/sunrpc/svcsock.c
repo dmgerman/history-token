@@ -4218,7 +4218,7 @@ id|rqstp-&gt;rq_verfed
 op_assign
 l_int|0
 suffix:semicolon
-id|svc_getlong
+id|svc_getu32
 c_func
 (paren
 op_amp
@@ -4227,7 +4227,7 @@ comma
 id|rqstp-&gt;rq_xid
 )paren
 suffix:semicolon
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 op_amp

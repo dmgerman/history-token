@@ -338,7 +338,7 @@ comma
 id|u32
 id|version
 comma
-r_int
+id|rpc_authflavor_t
 id|authflavor
 )paren
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/net/sunrpc/rpcauth_null.c&n; *&n; * AUTH_NULL authentication. Really :-)&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
+multiline_comment|/*&n; * linux/net/sunrpc/auth_null.c&n; *&n; * AUTH_NULL authentication. Really :-)&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
@@ -343,8 +343,13 @@ op_star
 id|p
 )paren
 (brace
+id|rpc_authflavor_t
+id|flavor
+suffix:semicolon
 id|u32
-id|n
+id|size
+suffix:semicolon
+id|flavor
 op_assign
 id|ntohl
 c_func
@@ -357,7 +362,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|n
+id|flavor
 op_ne
 id|RPC_AUTH_NULL
 )paren
@@ -365,24 +370,16 @@ id|RPC_AUTH_NULL
 id|printk
 c_func
 (paren
-l_string|&quot;RPC: bad verf flavor: %ld&bslash;n&quot;
+l_string|&quot;RPC: bad verf flavor: %u&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
-id|n
+id|flavor
 )paren
 suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
-id|n
+id|size
 op_assign
 id|ntohl
 c_func
@@ -391,7 +388,11 @@ op_star
 id|p
 op_increment
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|size
 op_ne
 l_int|0
 )paren
@@ -399,13 +400,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;RPC: bad verf size: %ld&bslash;n&quot;
+l_string|&quot;RPC: bad verf size: %u&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
-id|n
+id|size
 )paren
 suffix:semicolon
 r_return

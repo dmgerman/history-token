@@ -961,7 +961,7 @@ op_increment
 )paren
 suffix:semicolon
 multiline_comment|/* First words of reply: */
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 id|resp
@@ -970,7 +970,7 @@ id|xdr_one
 )paren
 suffix:semicolon
 multiline_comment|/* REPLY */
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 id|resp
@@ -1171,7 +1171,7 @@ id|statp
 op_assign
 id|resp-&gt;buf
 suffix:semicolon
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 id|resp
@@ -1455,7 +1455,7 @@ op_assign
 id|xdr_one
 suffix:semicolon
 multiline_comment|/* REJECT */
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 id|resp
@@ -1464,7 +1464,7 @@ id|xdr_zero
 )paren
 suffix:semicolon
 multiline_comment|/* RPC_MISMATCH */
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 id|resp
@@ -1473,7 +1473,7 @@ id|xdr_two
 )paren
 suffix:semicolon
 multiline_comment|/* Only RPCv2 supported */
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 id|resp
@@ -1510,7 +1510,7 @@ op_assign
 id|xdr_one
 suffix:semicolon
 multiline_comment|/* REJECT */
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 id|resp
@@ -1519,7 +1519,7 @@ id|xdr_one
 )paren
 suffix:semicolon
 multiline_comment|/* AUTH_ERROR */
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 id|resp
@@ -1560,7 +1560,7 @@ macro_line|#endif
 id|serv-&gt;sv_stats-&gt;rpcbadfmt
 op_increment
 suffix:semicolon
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 id|resp
@@ -1586,7 +1586,7 @@ macro_line|#endif
 id|serv-&gt;sv_stats-&gt;rpcbadfmt
 op_increment
 suffix:semicolon
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 id|resp
@@ -1594,7 +1594,7 @@ comma
 id|rpc_prog_mismatch
 )paren
 suffix:semicolon
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 id|resp
@@ -1606,7 +1606,7 @@ id|progp-&gt;pg_lovers
 )paren
 )paren
 suffix:semicolon
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 id|resp
@@ -1636,7 +1636,7 @@ macro_line|#endif
 id|serv-&gt;sv_stats-&gt;rpcbadfmt
 op_increment
 suffix:semicolon
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 id|resp
@@ -1660,7 +1660,7 @@ macro_line|#endif
 id|serv-&gt;sv_stats-&gt;rpcbadfmt
 op_increment
 suffix:semicolon
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 id|resp

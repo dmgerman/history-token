@@ -2037,6 +2037,11 @@ id|bio
 op_assign
 id|return_bio
 suffix:semicolon
+r_int
+id|bytes
+op_assign
+id|bio-&gt;bi_size
+suffix:semicolon
 id|return_bio
 op_assign
 id|bio-&gt;bi_next
@@ -2045,12 +2050,21 @@ id|bio-&gt;bi_next
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* should use bio_endio(), however already cleared&n;&t;&t; * BIO_UPTODATE. so set bio-&gt;bi_size = 0 manually to indicate&n;&t;&t; * completely done&n;&t;&t; */
+id|bio-&gt;bi_size
+op_assign
+l_int|0
+suffix:semicolon
 id|bio
 op_member_access_from_pointer
 id|bi_end_io
 c_func
 (paren
 id|bio
+comma
+id|bytes
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -2087,16 +2101,6 @@ comma
 id|bh-&gt;b_rsector
 comma
 id|bh-&gt;b_size
-)paren
-suffix:semicolon
-multiline_comment|/* set uptodate now, and clear it if there are any errors */
-id|set_bit
-c_func
-(paren
-id|BIO_UPTODATE
-comma
-op_amp
-id|bio-&gt;bi_flags
 )paren
 suffix:semicolon
 id|bio-&gt;bi_phys_segments
