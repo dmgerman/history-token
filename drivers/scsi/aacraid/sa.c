@@ -1039,11 +1039,6 @@ c_cond
 (paren
 id|dev-&gt;regs.sa
 op_assign
-(paren
-r_struct
-id|sa_registers
-op_star
-)paren
 id|ioremap
 c_func
 (paren

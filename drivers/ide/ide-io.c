@@ -5980,31 +5980,6 @@ op_eq
 id|ide_head_wait
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
-multiline_comment|/*&n;&t; *&t;FIXME: there should be a drive or hwif-&gt;special&n;&t; *&t;handler that points here by default, not hacks&n;&t; *&t;in the ide-io.c code&n;&t; *&n;&t; *&t;FIXME2: That code breaks power management if used with&n;&t; *&t;this chipset, that really doesn&squot;t belong here !&n;&t; */
-r_if
-c_cond
-(paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|chipset
-op_eq
-id|ide_pdc4030
-op_logical_and
-id|rq-&gt;buffer
-op_ne
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-multiline_comment|/* special drive cmds not supported */
-macro_line|#endif
 id|rq-&gt;errors
 op_assign
 l_int|0

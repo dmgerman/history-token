@@ -897,6 +897,7 @@ r_void
 id|iounmap
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star

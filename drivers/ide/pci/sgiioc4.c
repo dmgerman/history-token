@@ -2258,10 +2258,6 @@ id|hwif-&gt;swdma_mask
 op_assign
 l_int|0x2
 suffix:semicolon
-id|hwif-&gt;identify
-op_assign
-l_int|NULL
-suffix:semicolon
 id|hwif-&gt;tuneproc
 op_assign
 l_int|NULL

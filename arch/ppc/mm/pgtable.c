@@ -488,6 +488,7 @@ suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_44x
 r_void
+id|__iomem
 op_star
 DECL|function|ioremap
 id|ioremap
@@ -515,6 +516,7 @@ suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_44x */
 r_void
+id|__iomem
 op_star
 DECL|function|ioremap64
 id|ioremap64
@@ -543,6 +545,7 @@ id|_PAGE_NO_CACHE
 suffix:semicolon
 )brace
 r_void
+id|__iomem
 op_star
 DECL|function|ioremap
 id|ioremap
@@ -579,6 +582,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_44x */
 r_void
+id|__iomem
 op_star
 DECL|function|__ioremap
 id|__ioremap
@@ -871,6 +875,7 @@ suffix:colon
 r_return
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren
@@ -894,7 +899,9 @@ r_void
 id|iounmap
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren

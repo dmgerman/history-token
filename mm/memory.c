@@ -4518,6 +4518,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Physically remapped pages are special. Tell the&n;&t; * rest of the world about it:&n;&t; *   VM_IO tells people not to look at these pages&n;&t; *&t;(accesses can have side effects).&n;&t; *   VM_RESERVED tells swapout not to try to touch&n;&t; *&t;this region.&n;&t; */
+id|vma-&gt;vm_flags
+op_or_assign
+id|VM_IO
+op_or
+id|VM_RESERVED
+suffix:semicolon
 id|spin_lock
 c_func
 (paren

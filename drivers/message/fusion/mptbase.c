@@ -3710,6 +3710,7 @@ op_star
 id|ioc
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mem
 suffix:semicolon
@@ -4249,6 +4250,7 @@ id|ioc-&gt;chip
 op_assign
 (paren
 id|SYSIF_REGS
+id|__iomem
 op_star
 )paren
 id|mem
@@ -4273,6 +4275,7 @@ id|ioc-&gt;pio_chip
 op_assign
 (paren
 id|SYSIF_REGS
+id|__iomem
 op_star
 )paren
 id|pmem
@@ -7430,10 +7433,6 @@ l_int|NULL
 id|iounmap
 c_func
 (paren
-(paren
-id|u8
-op_star
-)paren
 id|ioc-&gt;memmap
 )paren
 suffix:semicolon
