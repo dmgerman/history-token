@@ -113,15 +113,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_int
-id|sg_detect
-c_func
-(paren
-id|Scsi_Device
-op_star
-)paren
-suffix:semicolon
-r_static
 r_void
 id|sg_detach
 c_func
@@ -180,11 +171,6 @@ dot
 id|scsi_type
 op_assign
 l_int|0xff
-comma
-dot
-id|detect
-op_assign
-id|sg_detect
 comma
 dot
 id|attach
@@ -998,11 +984,6 @@ op_star
 id|sg_dev_arr
 op_assign
 l_int|NULL
-suffix:semicolon
-DECL|variable|sg_dev_noticed
-r_static
-r_int
-id|sg_dev_noticed
 suffix:semicolon
 DECL|variable|sg_dev_max
 r_static
@@ -7263,24 +7244,6 @@ id|sg_fasync
 comma
 )brace
 suffix:semicolon
-r_static
-r_int
-DECL|function|sg_detect
-id|sg_detect
-c_func
-(paren
-id|Scsi_Device
-op_star
-id|scsidp
-)paren
-(brace
-id|sg_dev_noticed
-op_increment
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 macro_line|#ifndef MODULE
 r_static
 r_int
@@ -8438,10 +8401,6 @@ suffix:semicolon
 id|sg_nr_dev
 op_decrement
 suffix:semicolon
-id|sg_dev_noticed
-op_decrement
-suffix:semicolon
-multiline_comment|/* from &lt;dan@lectra.fr&gt; */
 r_break
 suffix:semicolon
 )brace
