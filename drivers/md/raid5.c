@@ -4846,7 +4846,12 @@ c_func
 id|R5_Insync
 comma
 op_amp
-id|dev-&gt;flags
+id|sh-&gt;dev
+(braket
+id|sh-&gt;pd_idx
+)braket
+dot
+id|flags
 )paren
 op_logical_and
 (paren
