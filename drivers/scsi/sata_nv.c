@@ -18,6 +18,8 @@ DECL|macro|NV_PORTS
 mdefine_line|#define NV_PORTS&t;&t;&t;2
 DECL|macro|NV_PIO_MASK
 mdefine_line|#define NV_PIO_MASK&t;&t;&t;0x1f
+DECL|macro|NV_MWDMA_MASK
+mdefine_line|#define NV_MWDMA_MASK&t;&t;&t;0x07
 DECL|macro|NV_UDMA_MASK
 mdefine_line|#define NV_UDMA_MASK&t;&t;&t;0x7f
 DECL|macro|NV_PORT0_BMDMA_REG_OFFSET
@@ -1383,6 +1385,10 @@ suffix:semicolon
 id|probe_ent-&gt;pio_mask
 op_assign
 id|NV_PIO_MASK
+suffix:semicolon
+id|probe_ent-&gt;mwdma_mask
+op_assign
+id|NV_MWDMA_MASK
 suffix:semicolon
 id|probe_ent-&gt;udma_mask
 op_assign
