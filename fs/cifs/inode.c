@@ -2051,6 +2051,12 @@ id|rc
 )paren
 )paren
 suffix:semicolon
+id|d_drop
+c_func
+(paren
+id|direntry
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
