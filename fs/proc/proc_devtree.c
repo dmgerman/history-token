@@ -369,9 +369,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|p
-op_eq
-l_int|0
 )paren
 id|p
 op_assign
