@@ -2033,6 +2033,14 @@ id|dev-&gt;out_ep
 )paren
 (brace
 multiline_comment|/* loop this OUT packet back IN to the host */
+id|req-&gt;zero
+op_assign
+(paren
+id|req-&gt;actual
+OL
+id|req-&gt;length
+)paren
+suffix:semicolon
 id|req-&gt;length
 op_assign
 id|req-&gt;actual
