@@ -51,12 +51,18 @@ r_int
 id|gp
 suffix:semicolon
 multiline_comment|/* global-pointer for module */
-DECL|member|unw_table
+DECL|member|core_unw_table
 r_void
 op_star
-id|unw_table
+id|core_unw_table
 suffix:semicolon
-multiline_comment|/* unwind-table cookie returned by unwinder */
+multiline_comment|/* core unwind-table cookie returned by unwinder */
+DECL|member|init_unw_table
+r_void
+op_star
+id|init_unw_table
+suffix:semicolon
+multiline_comment|/* init unwind-table cookie returned by unwinder */
 DECL|member|next_got_entry
 r_int
 r_int
