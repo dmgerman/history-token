@@ -699,7 +699,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|MAJOR_NR

@@ -295,21 +295,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Register the tape major number to the kernel */
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|result
-op_assign
-id|devfs_register_blkdev
-c_func
-(paren
-id|tapeblock_major
-comma
-l_string|&quot;tBLK&quot;
-comma
-op_amp
-id|tapeblock_fops
-)paren
-suffix:semicolon
-macro_line|#else
 id|result
 op_assign
 id|register_blkdev
@@ -323,7 +308,6 @@ op_amp
 id|tapeblock_fops
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -683,16 +667,6 @@ id|tapeblock_major
 suffix:semicolon
 id|out_undo_bdev
 suffix:colon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_unregister_blkdev
-c_func
-(paren
-id|tapeblock_major
-comma
-l_string|&quot;tBLK&quot;
-)paren
-suffix:semicolon
-macro_line|#else
 id|unregister_blkdev
 c_func
 (paren
@@ -701,7 +675,6 @@ comma
 l_string|&quot;tBLK&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|result
 op_assign
 op_minus
@@ -837,16 +810,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_unregister_blkdev
-c_func
-(paren
-id|tapeblock_major
-comma
-l_string|&quot;tBLK&quot;
-)paren
-suffix:semicolon
-macro_line|#else
 id|unregister_blkdev
 c_func
 (paren
@@ -855,7 +818,6 @@ comma
 l_string|&quot;tBLK&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|out
 suffix:colon
 r_return

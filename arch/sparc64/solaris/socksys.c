@@ -780,7 +780,7 @@ id|close
 suffix:semicolon
 id|ret
 op_assign
-id|devfs_register_chrdev
+id|register_chrdev
 (paren
 l_int|30
 comma
@@ -909,7 +909,7 @@ r_void
 r_if
 c_cond
 (paren
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 l_int|30

@@ -344,10 +344,10 @@ r_void
 r_int
 id|rc
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
 id|rc
 op_assign
-id|devfs_register_chrdev
+id|register_chrdev
+c_func
 (paren
 id|IBM_FS3270_MAJOR
 comma
@@ -379,6 +379,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_DEVFS_FS
 id|fs3270_devfs_dir
 op_assign
 id|devfs_mk_dir
@@ -418,42 +419,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#else
-id|rc
-op_assign
-id|register_chrdev
-c_func
-(paren
-id|IBM_FS3270_MAJOR
-comma
-l_string|&quot;fs3270&quot;
-comma
-op_amp
-id|fs3270_fops
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;tubmod can&squot;t get major nbr %d: error %d&bslash;n&quot;
-comma
-id|IBM_FS3270_MAJOR
-comma
-id|rc
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 macro_line|#endif
 id|fs3270_major
 op_assign

@@ -3259,7 +3259,7 @@ l_int|NULL
 suffix:semicolon
 id|ret
 op_assign
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|VFC_MAJOR
@@ -3505,7 +3505,7 @@ op_star
 op_star
 id|devp
 suffix:semicolon
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|VFC_MAJOR

@@ -197,8 +197,14 @@ suffix:semicolon
 multiline_comment|/*&n; * This function is needed by all SMP systems. It must _always_ be valid&n; * from the initial startup. We map APIC_BASE very early in page_setup(),&n; * so this is correct in the x86 case.&n; */
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
+r_extern
+r_volatile
+r_int
+r_int
+id|cpu_callout_map
+suffix:semicolon
 DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu) (phys_cpu_present_map &amp; (1&lt;&lt;(cpu)))
+mdefine_line|#define cpu_possible(cpu) (cpu_callout_map &amp; (1&lt;&lt;(cpu)))
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu) (cpu_online_map &amp; (1&lt;&lt;(cpu)))
 DECL|function|num_online_cpus
@@ -311,12 +317,6 @@ id|APIC_LDR
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_volatile
-r_int
-r_int
-id|cpu_callout_map
-suffix:semicolon
 multiline_comment|/* We don&squot;t mark CPUs online until __cpu_up(), so we need another measure */
 DECL|function|num_booting_cpus
 r_static

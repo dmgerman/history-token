@@ -31,7 +31,7 @@ c_func
 id|kdev_t
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This is called from the partition-table code in pt/msdos.c.&n; *&n; * It has two tasks:&n; *&n; * (I) to handle Ontrack DiskManager by offsetting everything by 63 sectors,&n; *  or to handle EZdrive by remapping sector 0 to sector 1.&n; *&n; * (II) to invent a translated geometry.&n; *&n; * Part (I) is suppressed if the user specifies the &quot;noremap&quot; option&n; * on the command line.&n; *&n; * Part (II) is suppressed if the user specifies an explicit geometry.&n; *&n; * The ptheads parameter is either 0 or tells about the number of&n; * heads shown by the end of the first nonempty partition.&n; * If this is either 16, 32, 64, 128, 240 or 255 we&squot;ll believe it.&n; *&n; * The xparm parameter has the following meaning:&n; *&t; 0 = convert to CHS with fewer than 1024 cyls&n; *&t;     using the same method as Ontrack DiskManager.&n; *&t; 1 = same as &quot;0&quot;, plus offset everything by 63 sectors.&n; *&t;-1 = similar to &quot;0&quot;, plus redirect sector 0 to sector 1.&n; *&t; 2 = convert to a CHS geometry with &quot;ptheads&quot; heads.&n; *&n; * Returns 0 if the translation was not possible, if the device was not&n; * an IDE disk drive, or if a geometry was &quot;forced&quot; on the commandline.&n; * Returns 1 if the geometry translation was successful.&n; */
+multiline_comment|/*&n; * This is called from the partition-table code in pt/msdos.c&n; * to invent a translated geometry.&n; *&n; * This is suppressed if the user specifies an explicit geometry.&n; *&n; * The ptheads parameter is either 0 or tells about the number of&n; * heads shown by the end of the first nonempty partition.&n; * If this is either 16, 32, 64, 128, 240 or 255 we&squot;ll believe it.&n; *&n; * The xparm parameter has the following meaning:&n; *&t; 0 = convert to CHS with fewer than 1024 cyls&n; *&t;     using the same method as Ontrack DiskManager.&n; *&t; 1 = same as &quot;0&quot;, plus offset everything by 63 sectors.&n; *&t;-1 = similar to &quot;0&quot;, plus redirect sector 0 to sector 1.&n; *&t; 2 = convert to a CHS geometry with &quot;ptheads&quot; heads.&n; *&n; * Returns 0 if the translation was not possible, if the device was not&n; * an IDE disk drive, or if a geometry was &quot;forced&quot; on the commandline.&n; * Returns 1 if the geometry translation was successful.&n; */
 DECL|function|ide_xlate_1024
 r_int
 id|ide_xlate_1024
@@ -104,71 +104,6 @@ id|drive
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* remap? */
-r_if
-c_cond
-(paren
-id|drive-&gt;remap_0_to_1
-op_ne
-l_int|2
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|xparm
-op_eq
-l_int|1
-)paren
-(brace
-multiline_comment|/* DM */
-id|drive-&gt;sect0
-op_assign
-l_int|63
-suffix:semicolon
-id|msg1
-op_assign
-l_string|&quot; [remap +63]&quot;
-suffix:semicolon
-id|ret
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|xparm
-op_eq
-op_minus
-l_int|1
-)paren
-(brace
-multiline_comment|/* EZ-Drive */
-r_if
-c_cond
-(paren
-id|drive-&gt;remap_0_to_1
-op_eq
-l_int|0
-)paren
-(brace
-id|drive-&gt;remap_0_to_1
-op_assign
-l_int|1
-suffix:semicolon
-id|msg1
-op_assign
-l_string|&quot; [remap 0-&gt;1]&quot;
-suffix:semicolon
-id|ret
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
-)brace
 multiline_comment|/* There used to be code here that assigned drive-&gt;id-&gt;CHS to&n;&t; * drive-&gt;CHS and that to drive-&gt;bios_CHS. However, some disks have&n;&t; * id-&gt;C/H/S = 4092/16/63 but are larger than 2.1 GB.  In such cases&n;&t; * that code was wrong.  Moreover, there seems to be no reason to do&n;&t; * any of these things.&n;&t; *&n;&t; * Please note that recent RedHat changes to the disk utils are bogous&n;&t; * and will report spurious errors.&n;&t; */
 multiline_comment|/* translate? */
 r_if
@@ -4540,7 +4475,7 @@ id|ch-&gt;drive
 op_assign
 id|drive
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Init the per device request queue&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Init the per device request queue.&n;&t;&t; */
 id|q
 op_assign
 op_amp
@@ -4548,7 +4483,7 @@ id|drive-&gt;queue
 suffix:semicolon
 id|q-&gt;queuedata
 op_assign
-id|drive-&gt;channel
+id|drive
 suffix:semicolon
 id|blk_init_queue
 c_func
@@ -4565,10 +4500,18 @@ c_func
 (paren
 id|q
 comma
-l_int|0xffff
+id|ch-&gt;seg_boundary_mask
 )paren
 suffix:semicolon
-multiline_comment|/* ATA can do up to 128K per request, pdc4030 needs smaller limit */
+id|blk_queue_max_segment_size
+c_func
+(paren
+id|q
+comma
+id|ch-&gt;max_segment_size
+)paren
+suffix:semicolon
+multiline_comment|/* ATA can do up to 128K per request, pdc4030 needs smaller&n;&t;&t; * limit. */
 macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
 r_if
 c_cond
@@ -4590,7 +4533,7 @@ comma
 id|max_sectors
 )paren
 suffix:semicolon
-multiline_comment|/* IDE DMA can do PRD_ENTRIES number of segments. */
+multiline_comment|/* ATA DMA can do PRD_ENTRIES number of segments. */
 id|blk_queue_max_hw_segments
 c_func
 (paren
@@ -4885,7 +4828,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|ch-&gt;major

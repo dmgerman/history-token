@@ -9771,7 +9771,7 @@ multiline_comment|/* If we got this far, install driver functions */
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 (paren
 id|QIC02_TAPE_MAJOR
 comma
@@ -10198,7 +10198,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|QIC02_TAPE_MAJOR
