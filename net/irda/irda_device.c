@@ -1167,6 +1167,25 @@ id|task
 )paren
 suffix:semicolon
 )brace
+DECL|function|irda_device_destructor
+r_static
+r_void
+id|irda_device_destructor
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Function irda_device_setup (dev)&n; *&n; *    This function should be used by low level device drivers in a similar way&n; *    as ether_setup() is used by normal network device drivers&n; */
 DECL|function|irda_device_setup
 r_int
@@ -1200,11 +1219,10 @@ id|dev-&gt;addr_len
 op_assign
 l_int|0
 suffix:semicolon
-id|dev-&gt;features
-op_or_assign
-id|NETIF_F_DYNALLOC
+id|dev-&gt;destructor
+op_assign
+id|irda_device_destructor
 suffix:semicolon
-multiline_comment|/* dev-&gt;destructor      = irda_device_destructor; */
 id|dev-&gt;type
 op_assign
 id|ARPHRD_IRDA

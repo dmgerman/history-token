@@ -821,8 +821,6 @@ DECL|macro|NETIF_F_NO_CSUM
 mdefine_line|#define NETIF_F_NO_CSUM&t;&t;4&t;/* Does not require checksum. F.e. loopack. */
 DECL|macro|NETIF_F_HW_CSUM
 mdefine_line|#define NETIF_F_HW_CSUM&t;&t;8&t;/* Can checksum all the packets. */
-DECL|macro|NETIF_F_DYNALLOC
-mdefine_line|#define NETIF_F_DYNALLOC&t;16&t;/* Self-dectructable device. */
 DECL|macro|NETIF_F_HIGHDMA
 mdefine_line|#define NETIF_F_HIGHDMA&t;&t;32&t;/* Can DMA to high memory. */
 DECL|macro|NETIF_F_FRAGLIST

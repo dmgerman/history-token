@@ -8718,9 +8718,9 @@ comma
 id|dev-&gt;name
 comma
 (paren
-id|dev-&gt;features
-op_amp
-id|NETIF_F_DYNALLOC
+id|dev-&gt;destructor
+op_ne
+l_int|NULL
 )paren
 ques
 c_cond
@@ -8738,19 +8738,6 @@ id|dev-&gt;destructor
 id|dev
 op_member_access_from_pointer
 id|destructor
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;features
-op_amp
-id|NETIF_F_DYNALLOC
-)paren
-id|kfree
 c_func
 (paren
 id|dev
@@ -8984,9 +8971,9 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|dev-&gt;features
-op_amp
-id|NETIF_F_DYNALLOC
+id|dev-&gt;destructor
+op_ne
+l_int|NULL
 )paren
 (brace
 macro_line|#ifdef NET_REFCNT_DEBUG

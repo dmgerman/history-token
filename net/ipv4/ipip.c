@@ -772,10 +772,6 @@ id|dev-&gt;init
 op_assign
 id|ipip_tunnel_init
 suffix:semicolon
-id|dev-&gt;features
-op_or_assign
-id|NETIF_F_DYNALLOC
-suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -947,6 +943,12 @@ op_amp
 id|ipip_fb_tunnel_dev
 )paren
 (brace
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
