@@ -1844,6 +1844,9 @@ op_logical_neg
 id|up-&gt;port.iobase
 op_logical_and
 op_logical_neg
+id|up-&gt;port.mapbase
+op_logical_and
+op_logical_neg
 id|up-&gt;port.membase
 )paren
 r_return
@@ -8093,6 +8096,10 @@ op_assign
 id|req-&gt;flags
 op_or
 id|UPF_BOOT_AUTOCONF
+suffix:semicolon
+id|port.mapbase
+op_assign
+id|req-&gt;iomap_base
 suffix:semicolon
 id|port.line
 op_assign

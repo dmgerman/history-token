@@ -7662,6 +7662,9 @@ id|port-&gt;iobase
 op_logical_and
 op_logical_neg
 id|port-&gt;mapbase
+op_logical_and
+op_logical_neg
+id|port-&gt;membase
 )paren
 r_return
 suffix:semicolon
@@ -9037,6 +9040,10 @@ op_assign
 id|state
 op_minus
 id|drv-&gt;state
+suffix:semicolon
+id|state-&gt;port-&gt;mapbase
+op_assign
+id|port-&gt;mapbase
 suffix:semicolon
 id|__uart_register_port
 c_func

@@ -515,6 +515,10 @@ id|req-&gt;io_type
 op_assign
 id|SERIAL_IO_MEM
 suffix:semicolon
+id|req-&gt;iomap_base
+op_assign
+id|port
+suffix:semicolon
 id|req-&gt;iomem_base
 op_assign
 id|ioremap
