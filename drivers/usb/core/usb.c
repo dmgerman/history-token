@@ -8205,6 +8205,8 @@ id|dev
 (brace
 r_int
 id|err
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|i
