@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.156 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.158 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -3000,6 +3000,30 @@ r_break
 suffix:semicolon
 r_case
 op_minus
+id|EACCES
+suffix:colon
+multiline_comment|/* -EACCES indicates that the request used only a&n;&t;&t; * subset of the available pathes and all these&n;&t;&t; * pathes are gone.&n;&t;&t; * Do a retry with all available pathes.&n;&t;&t; */
+id|cqr-&gt;lpm
+op_assign
+id|LPM_ANYPATH
+suffix:semicolon
+id|DBF_DEV_EVENT
+c_func
+(paren
+id|DBF_ERR
+comma
+id|device
+comma
+l_string|&quot;%s&quot;
+comma
+l_string|&quot;start_IO: selected pathes gone,&quot;
+l_string|&quot; retry on all pathes&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+op_minus
 id|ENODEV
 suffix:colon
 r_case
@@ -4984,6 +5008,23 @@ comma
 id|cqr-&gt;expires
 )paren
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+op_minus
+id|EACCES
+)paren
+(brace
+id|dasd_schedule_bh
+c_func
+(paren
+id|device
+)paren
+suffix:semicolon
+)brace
 r_else
 multiline_comment|/* Hmpf, try again in 1/2 sec */
 id|dasd_set_timer
@@ -7246,11 +7287,13 @@ id|printk
 (paren
 id|KERN_WARNING
 l_string|&quot;dasd_generic couldn&squot;t online device %s &quot;
-l_string|&quot;with discipline %s&bslash;n&quot;
+l_string|&quot;with discipline %s rc=%i&bslash;n&quot;
 comma
 id|cdev-&gt;dev.bus_id
 comma
 id|discipline-&gt;name
+comma
+id|rc
 )paren
 suffix:semicolon
 id|dasd_delete_device

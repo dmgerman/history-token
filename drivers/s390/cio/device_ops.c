@@ -1299,6 +1299,9 @@ id|ccw
 comma
 r_int
 id|magic
+comma
+id|__u8
+id|lpm
 )paren
 (brace
 r_int
@@ -1327,7 +1330,7 @@ id|sch
 comma
 id|ccw
 comma
-l_int|0
+id|lpm
 )paren
 suffix:semicolon
 r_if
@@ -1768,6 +1771,8 @@ comma
 id|rdc_ccw
 comma
 l_int|0x00D9C4C3
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Restore interrupt handler. */
@@ -1797,10 +1802,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Read Configuration data&n; */
+multiline_comment|/*&n; *  Read Configuration data using path mask&n; */
 r_int
-DECL|function|read_conf_data
-id|read_conf_data
+DECL|function|read_conf_data_lpm
+id|read_conf_data_lpm
 (paren
 r_struct
 id|ccw_device
@@ -1815,6 +1820,9 @@ comma
 r_int
 op_star
 id|length
+comma
+id|__u8
+id|lpm
 )paren
 (brace
 r_void
@@ -2103,6 +2111,8 @@ comma
 id|rcd_ccw
 comma
 l_int|0x00D9C3C4
+comma
+id|lpm
 )paren
 suffix:semicolon
 multiline_comment|/* Restore interrupt handler. */
@@ -2161,6 +2171,39 @@ id|rcd_ccw
 suffix:semicolon
 r_return
 id|ret
+suffix:semicolon
+)brace
+multiline_comment|/*&n; *  Read Configuration data&n; */
+r_int
+DECL|function|read_conf_data
+id|read_conf_data
+(paren
+r_struct
+id|ccw_device
+op_star
+id|cdev
+comma
+r_void
+op_star
+op_star
+id|buffer
+comma
+r_int
+op_star
+id|length
+)paren
+(brace
+r_return
+id|read_conf_data_lpm
+(paren
+id|cdev
+comma
+id|buffer
+comma
+id|length
+comma
+l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Try to break the lock on a boxed device.&n; */
@@ -2766,6 +2809,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|_ccw_device_get_device_number
+)paren
+suffix:semicolon
+DECL|variable|read_conf_data_lpm
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|read_conf_data_lpm
 )paren
 suffix:semicolon
 eof
