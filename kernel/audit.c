@@ -1156,6 +1156,12 @@ suffix:semicolon
 id|audit_send_reply
 c_func
 (paren
+id|NETLINK_CB
+c_func
+(paren
+id|skb
+)paren
+dot
 id|pid
 comma
 id|seq
@@ -1424,6 +1430,12 @@ c_func
 (paren
 id|nlh-&gt;nlmsg_type
 comma
+id|NETLINK_CB
+c_func
+(paren
+id|skb
+)paren
+dot
 id|pid
 comma
 id|uid

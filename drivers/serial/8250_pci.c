@@ -8460,6 +8460,23 @@ comma
 id|pbn_exar_XR17C158
 )brace
 comma
+multiline_comment|/*&n;&t; * Topic TP560 Data/Fax/Voice 56k modem (reported by Evan Clarke)&n;&t; */
+(brace
+id|PCI_VENDOR_ID_TOPIC
+comma
+id|PCI_DEVICE_ID_TOPIC_TP560
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|pbn_b0_1_115200
+)brace
+comma
 multiline_comment|/*&n;&t; * These entries match devices with class COMMUNICATION_SERIAL,&n;&t; * COMMUNICATION_MODEM or COMMUNICATION_MULTISERIAL&n;&t; */
 (brace
 id|PCI_ANY_ID
@@ -8575,7 +8592,7 @@ r_void
 )paren
 (brace
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp
