@@ -748,9 +748,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;nfsd: request from insecure port (%08x:%d)!&bslash;n&quot;
+l_string|&quot;nfsd: request from insecure port (%u.%u.%u.%u:%d)!&bslash;n&quot;
 comma
-id|ntohl
+id|NIPQUAD
 c_func
 (paren
 id|rqstp-&gt;rq_addr.sin_addr.s_addr
