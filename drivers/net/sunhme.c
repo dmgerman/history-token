@@ -6,7 +6,7 @@ id|version
 (braket
 )braket
 op_assign
-l_string|&quot;sunhme.c:v2.00 20/Mar/2002 David S. Miller (davem@redhat.com)&bslash;n&quot;
+l_string|&quot;sunhme.c:v2.01 26/Mar/2002 David S. Miller (davem@redhat.com)&bslash;n&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -2696,9 +2696,6 @@ r_struct
 id|happy_meal
 op_star
 id|hp
-comma
-r_int
-id|from_irq
 )paren
 suffix:semicolon
 DECL|function|is_lucent_phy
@@ -2777,20 +2774,10 @@ l_int|10
 op_eq
 l_int|0x1d
 )paren
-(brace
-macro_line|#if 0
-id|printk
-c_func
-(paren
-l_string|&quot;HMEDEBUG: Lucent PHY detected.&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|ret
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 r_return
 id|ret
 suffix:semicolon
@@ -2828,6 +2815,13 @@ r_int
 id|restart_timer
 op_assign
 l_int|0
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
+)paren
 suffix:semicolon
 id|hp-&gt;timer_ticks
 op_increment
@@ -3299,8 +3293,6 @@ id|happy_meal_init
 c_func
 (paren
 id|hp
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -3321,7 +3313,8 @@ id|hp-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 )brace
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -3444,11 +3437,21 @@ id|hp-&gt;happy_timer
 )paren
 suffix:semicolon
 )brace
+id|out
+suffix:colon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
+)paren
+suffix:semicolon
 )brace
 DECL|macro|TX_RESET_TRIES
 mdefine_line|#define TX_RESET_TRIES     32
 DECL|macro|RX_RESET_TRIES
 mdefine_line|#define RX_RESET_TRIES     32
+multiline_comment|/* hp-&gt;happy_lock must be held */
 DECL|function|happy_meal_tx_reset
 r_static
 r_void
@@ -3541,6 +3544,7 @@ l_string|&quot;done&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* hp-&gt;happy_lock must be held */
 DECL|function|happy_meal_rx_reset
 r_static
 r_void
@@ -3635,6 +3639,7 @@ suffix:semicolon
 )brace
 DECL|macro|STOP_TRIES
 mdefine_line|#define STOP_TRIES         16
+multiline_comment|/* hp-&gt;happy_lock must be held */
 DECL|function|happy_meal_stop
 r_static
 r_void
@@ -3723,6 +3728,7 @@ l_string|&quot;done&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* hp-&gt;happy_lock must be held */
 DECL|function|happy_meal_get_counters
 r_static
 r_void
@@ -3880,230 +3886,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-r_static
-r_void
-id|happy_meal_poll_start
-c_func
-(paren
-r_struct
-id|happy_meal
-op_star
-id|hp
-comma
-r_int
-r_int
-id|tregs
-)paren
-(brace
-id|u32
-id|tmp
-suffix:semicolon
-r_int
-id|speed
-suffix:semicolon
-id|ASD
-c_func
-(paren
-(paren
-l_string|&quot;happy_meal_poll_start: &quot;
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|hp-&gt;happy_flags
-op_amp
-id|HFLAG_POLLENABLE
-)paren
-)paren
-(brace
-id|HMD
-c_func
-(paren
-(paren
-l_string|&quot;polling disabled, return&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* Start the MIF polling on the external transceiver. */
-id|ASD
-c_func
-(paren
-(paren
-l_string|&quot;polling on, &quot;
-)paren
-)paren
-suffix:semicolon
-id|tmp
-op_assign
-id|hme_read32
-c_func
-(paren
-id|hp
-comma
-id|tregs
-op_plus
-id|TCVR_CFG
-)paren
-suffix:semicolon
-id|tmp
-op_and_assign
-op_complement
-(paren
-id|TCV_CFG_PDADDR
-op_or
-id|TCV_CFG_PREGADDR
-)paren
-suffix:semicolon
-id|tmp
-op_or_assign
-(paren
-(paren
-id|hp-&gt;paddr
-op_amp
-l_int|0x1f
-)paren
-op_lshift
-l_int|10
-)paren
-suffix:semicolon
-id|tmp
-op_or_assign
-(paren
-id|TCV_PADDR_ETX
-op_lshift
-l_int|3
-)paren
-suffix:semicolon
-id|tmp
-op_or_assign
-id|TCV_CFG_PENABLE
-suffix:semicolon
-id|hme_write32
-c_func
-(paren
-id|hp
-comma
-id|tregs
-op_plus
-id|TCVR_CFG
-comma
-id|tmp
-)paren
-suffix:semicolon
-multiline_comment|/* Let the bits set. */
-id|udelay
-c_func
-(paren
-l_int|200
-)paren
-suffix:semicolon
-multiline_comment|/* We are polling now. */
-id|ASD
-c_func
-(paren
-(paren
-l_string|&quot;now polling, &quot;
-)paren
-)paren
-suffix:semicolon
-id|hp-&gt;happy_flags
-op_or_assign
-id|HFLAG_POLL
-suffix:semicolon
-multiline_comment|/* Clear the poll flags, get the basic status as of now. */
-id|hp-&gt;poll_flag
-op_assign
-l_int|0
-suffix:semicolon
-id|hp-&gt;poll_data
-op_assign
-id|hme_read32
-c_func
-(paren
-id|hp
-comma
-id|tregs
-op_plus
-id|TCVR_STATUS
-)paren
-op_rshift
-l_int|16
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hp-&gt;happy_flags
-op_amp
-id|HFLAG_AUTO
-)paren
-id|speed
-op_assign
-id|hp-&gt;auto_speed
-suffix:semicolon
-r_else
-id|speed
-op_assign
-id|hp-&gt;forced_speed
-suffix:semicolon
-multiline_comment|/* Listen only for the MIF interrupts we want to hear. */
-id|ASD
-c_func
-(paren
-(paren
-l_string|&quot;mif ints on, &quot;
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|speed
-op_eq
-l_int|100
-)paren
-id|hme_write32
-c_func
-(paren
-id|hp
-comma
-id|tregs
-op_plus
-id|TCVR_IMASK
-comma
-l_int|0xfffb
-)paren
-suffix:semicolon
-r_else
-id|hme_write32
-c_func
-(paren
-id|hp
-comma
-id|tregs
-op_plus
-id|TCVR_IMASK
-comma
-l_int|0xfff9
-)paren
-suffix:semicolon
-id|ASD
-c_func
-(paren
-(paren
-l_string|&quot;done&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
+multiline_comment|/* hp-&gt;happy_lock must be held */
 DECL|function|happy_meal_poll_stop
 r_static
 r_void
@@ -4244,6 +4027,7 @@ DECL|macro|TCVR_RESET_TRIES
 mdefine_line|#define TCVR_RESET_TRIES       16 /* It should reset quickly        */
 DECL|macro|TCVR_UNISOLATE_TRIES
 mdefine_line|#define TCVR_UNISOLATE_TRIES   32 /* Dis-isolation can take longer. */
+multiline_comment|/* hp-&gt;happy_lock must be held */
 DECL|function|happy_meal_tcvr_reset
 r_static
 r_int
@@ -4855,7 +4639,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Figure out whether we have an internal or external transceiver. */
+multiline_comment|/* Figure out whether we have an internal or external transceiver.&n; *&n; * hp-&gt;happy_lock must be held&n; */
 DECL|function|happy_meal_transceiver_check
 r_static
 r_void
@@ -5485,6 +5269,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/* hp-&gt;happy_lock must be held */
 DECL|function|happy_meal_init_rings
 r_static
 r_void
@@ -5495,9 +5280,6 @@ r_struct
 id|happy_meal
 op_star
 id|hp
-comma
-r_int
-id|from_irq
 )paren
 (brace
 r_struct
@@ -5516,24 +5298,6 @@ id|hp-&gt;dev
 suffix:semicolon
 r_int
 id|i
-comma
-id|gfp_flags
-op_assign
-id|GFP_KERNEL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|from_irq
-op_logical_or
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-id|gfp_flags
-op_assign
-id|GFP_ATOMIC
 suffix:semicolon
 id|HMD
 c_func
@@ -5604,7 +5368,7 @@ c_func
 (paren
 id|RX_BUF_ALLOC_SIZE
 comma
-id|gfp_flags
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -5751,6 +5515,7 @@ l_string|&quot;done&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* hp-&gt;happy_lock must be held */
 DECL|function|happy_meal_begin_auto_negotiation
 r_static
 r_void
@@ -6290,6 +6055,7 @@ id|hp-&gt;happy_timer
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* hp-&gt;happy_lock must be held */
 DECL|function|happy_meal_init
 r_static
 r_int
@@ -6300,9 +6066,6 @@ r_struct
 id|happy_meal
 op_star
 id|hp
-comma
-r_int
-id|from_irq
 )paren
 (brace
 r_int
@@ -6448,8 +6211,6 @@ id|happy_meal_init_rings
 c_func
 (paren
 id|hp
-comma
-id|from_irq
 )paren
 suffix:semicolon
 multiline_comment|/* Shut up the MIF. */
@@ -7279,6 +7040,62 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Parity issues in the ERX unit of some HME revisions can cause some&n;&t; * registers to not be written unless their parity is even.  Detect such&n;&t; * lost writes and simply rewrite with a low bit set (which will be ignored&n;&t; * since the rxring needs to be 2K aligned).&n;&t; */
+r_if
+c_cond
+(paren
+id|hme_read32
+c_func
+(paren
+id|hp
+comma
+id|erxregs
+op_plus
+id|ERX_RING
+)paren
+op_ne
+(paren
+(paren
+id|__u32
+)paren
+id|hp-&gt;hblock_dvma
+op_plus
+id|hblock_offset
+c_func
+(paren
+id|happy_meal_rxd
+comma
+l_int|0
+)paren
+)paren
+)paren
+id|hme_write32
+c_func
+(paren
+id|hp
+comma
+id|erxregs
+op_plus
+id|ERX_RING
+comma
+(paren
+(paren
+id|__u32
+)paren
+id|hp-&gt;hblock_dvma
+op_plus
+id|hblock_offset
+c_func
+(paren
+id|happy_meal_rxd
+comma
+l_int|0
+)paren
+)paren
+op_or
+l_int|0x4
+)paren
+suffix:semicolon
 multiline_comment|/* Set the supported burst sizes. */
 id|HMD
 c_func
@@ -7728,6 +7545,8 @@ suffix:semicolon
 id|rxcfg
 op_assign
 id|BIGMAC_RXCFG_HENABLE
+op_or
+id|BIGMAC_RXCFG_REJME
 suffix:semicolon
 r_if
 c_cond
@@ -7783,6 +7602,7 @@ id|regtmp
 op_or_assign
 id|BIGMAC_TXCFG_FULLDPLX
 suffix:semicolon
+multiline_comment|/* Don&squot;t turn on the &quot;don&squot;t give up&quot; bit for now.  It could cause hme&n;&t; * to deadlock with the PHY if a Jabber occurs.&n;&t; */
 id|hme_write32
 c_func
 (paren
@@ -7793,8 +7613,20 @@ op_plus
 id|BMAC_TXCFG
 comma
 id|regtmp
-op_or
-id|BIGMAC_TXCFG_DGIVEUP
+multiline_comment|/*| BIGMAC_TXCFG_DGIVEUP*/
+)paren
+suffix:semicolon
+multiline_comment|/* Give up after 16 TX attempts. */
+id|hme_write32
+c_func
+(paren
+id|hp
+comma
+id|bregs
+op_plus
+id|BMAC_ALIMIT
+comma
+l_int|16
 )paren
 suffix:semicolon
 multiline_comment|/* Enable the output drivers no matter what. */
@@ -7951,6 +7783,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* hp-&gt;happy_lock must be held */
 DECL|function|happy_meal_set_initial_advertisement
 r_static
 r_void
@@ -8248,7 +8081,7 @@ id|hp-&gt;sw_advertise
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Once status is latched (by happy_meal_interrupt) it is cleared by&n; * the hardware, so we cannot re-read it and get a correct value.&n; */
+multiline_comment|/* Once status is latched (by happy_meal_interrupt) it is cleared by&n; * the hardware, so we cannot re-read it and get a correct value.&n; *&n; * hp-&gt;happy_lock must be held&n; */
 DECL|function|happy_meal_is_not_so_happy
 r_static
 r_int
@@ -8686,8 +8519,6 @@ id|happy_meal_init
 c_func
 (paren
 id|hp
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -8698,6 +8529,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* hp-&gt;happy_lock must be held */
 DECL|function|happy_meal_mif_interrupt
 r_static
 r_void
@@ -8863,6 +8695,7 @@ macro_line|#else
 DECL|macro|TXD
 mdefine_line|#define TXD(x)
 macro_line|#endif
+multiline_comment|/* hp-&gt;happy_lock must be held */
 DECL|function|happy_meal_tx
 r_static
 r_void
@@ -8900,13 +8733,6 @@ id|hp-&gt;dev
 suffix:semicolon
 r_int
 id|elem
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|hp-&gt;happy_lock
-)paren
 suffix:semicolon
 id|elem
 op_assign
@@ -9173,19 +8999,16 @@ c_func
 id|hp
 )paren
 OG
-l_int|0
+(paren
+id|MAX_SKB_FRAGS
+op_plus
+l_int|1
+)paren
 )paren
 id|netif_wake_queue
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|hp-&gt;happy_lock
 )paren
 suffix:semicolon
 )brace
@@ -9196,7 +9019,7 @@ macro_line|#else
 DECL|macro|RXD
 mdefine_line|#define RXD(x)
 macro_line|#endif
-multiline_comment|/* Originally I used to handle the allocation failure by just giving back just&n; * that one ring buffer to the happy meal.  Problem is that usually when that&n; * condition is triggered, the happy meal expects you to do something reasonable&n; * with all of the packets it has DMA&squot;d in.  So now I just drop the entire&n; * ring when we cannot get a new skb and give them all back to the happy meal,&n; * maybe things will be &quot;happier&quot; now.&n; */
+multiline_comment|/* Originally I used to handle the allocation failure by just giving back just&n; * that one ring buffer to the happy meal.  Problem is that usually when that&n; * condition is triggered, the happy meal expects you to do something reasonable&n; * with all of the packets it has DMA&squot;d in.  So now I just drop the entire&n; * ring when we cannot get a new skb and give them all back to the happy meal,&n; * maybe things will be &quot;happier&quot; now.&n; *&n; * hp-&gt;happy_lock must be held&n; */
 DECL|function|happy_meal_rx
 r_static
 r_void
@@ -9810,6 +9633,13 @@ id|happy_status
 )paren
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9838,7 +9668,8 @@ multiline_comment|/* un- */
 id|happy_status
 )paren
 )paren
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -9918,6 +9749,15 @@ c_func
 (paren
 l_string|&quot;done&bslash;n&quot;
 )paren
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
 )paren
 suffix:semicolon
 )brace
@@ -10031,6 +9871,13 @@ id|GREG_STAT_RXTOHOST
 )paren
 r_continue
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10058,7 +9905,8 @@ comma
 id|happy_status
 )paren
 )paren
-r_break
+r_goto
+id|next
 suffix:semicolon
 )brace
 r_if
@@ -10132,6 +9980,15 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+id|next
+suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
+)paren
+suffix:semicolon
 )brace
 id|HMD
 c_func
@@ -10260,14 +10117,26 @@ l_string|&quot;to happy_meal_init&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
+)paren
+suffix:semicolon
 id|res
 op_assign
 id|happy_meal_init
 c_func
 (paren
 id|hp
-comma
-l_int|0
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
 )paren
 suffix:semicolon
 r_if
@@ -10320,6 +10189,13 @@ id|hp
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
+)paren
+suffix:semicolon
 id|happy_meal_stop
 c_func
 (paren
@@ -10340,6 +10216,13 @@ c_func
 (paren
 op_amp
 id|hp-&gt;happy_timer
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
 )paren
 suffix:semicolon
 multiline_comment|/* On Quattro QFE cards, all hme interrupts are concentrated&n;&t; * into a single source which we register handling at probe&n;&t; * time and never unregister.&n;&t; */
@@ -10377,7 +10260,6 @@ macro_line|#else
 DECL|macro|SXD
 mdefine_line|#define SXD(x)
 macro_line|#endif
-macro_line|#ifdef CONFIG_SBUS
 DECL|function|happy_meal_tx_timeout
 r_static
 r_void
@@ -10448,12 +10330,24 @@ id|BMAC_TXCFG
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
+)paren
+suffix:semicolon
 id|happy_meal_init
 c_func
 (paren
 id|hp
-comma
-l_int|0
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
 )paren
 suffix:semicolon
 id|netif_wake_queue
@@ -10463,7 +10357,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|happy_meal_start_xmit
 r_static
 r_int
@@ -10606,6 +10499,15 @@ c_func
 (paren
 op_amp
 id|hp-&gt;happy_lock
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: BUG! Tx Ring full when queue awake!&bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -10926,7 +10828,11 @@ c_func
 id|hp
 )paren
 op_le
-l_int|0
+(paren
+id|MAX_SKB_FRAGS
+op_plus
+l_int|1
+)paren
 )paren
 id|netif_stop_queue
 c_func
@@ -10993,12 +10899,26 @@ id|hp
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
+)paren
+suffix:semicolon
 id|happy_meal_get_counters
 c_func
 (paren
 id|hp
 comma
 id|hp-&gt;bigmacregs
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
 )paren
 suffix:semicolon
 r_return
@@ -11048,7 +10968,13 @@ suffix:semicolon
 id|u32
 id|crc
 suffix:semicolon
-multiline_comment|/* Lock out others. */
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
+)paren
+suffix:semicolon
 id|netif_stop_queue
 c_func
 (paren
@@ -11308,11 +11234,17 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Let us get going again. */
 id|netif_wake_queue
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
 )paren
 suffix:semicolon
 )brace
@@ -11435,6 +11367,13 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* XXX fixed PHYAD */
 multiline_comment|/* Record PHY settings. */
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
+)paren
+suffix:semicolon
 id|hp-&gt;sw_bmcr
 op_assign
 id|happy_meal_tcvr_read
@@ -11457,6 +11396,13 @@ comma
 id|hp-&gt;tcvregs
 comma
 id|MII_LPA
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
 )paren
 suffix:semicolon
 r_if
@@ -11658,6 +11604,13 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* Ok, do it to it. */
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
+)paren
+suffix:semicolon
 id|del_timer
 c_func
 (paren
@@ -11674,6 +11627,13 @@ id|hp-&gt;tcvregs
 comma
 op_amp
 id|ecmd
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
 )paren
 suffix:semicolon
 r_return
@@ -13143,10 +13103,24 @@ id|sbus_hme_write32
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Grrr, Happy Meal comes up by default not advertising&n;&t; * full duplex 100baseT capabilities, fix this.&n;&t; */
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
+)paren
+suffix:semicolon
 id|happy_meal_set_initial_advertisement
 c_func
 (paren
 id|hp
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
 )paren
 suffix:semicolon
 r_if
@@ -14622,6 +14596,17 @@ op_assign
 op_amp
 id|happy_meal_set_multicast
 suffix:semicolon
+id|dev-&gt;tx_timeout
+op_assign
+op_amp
+id|happy_meal_tx_timeout
+suffix:semicolon
+id|dev-&gt;watchdog_timeo
+op_assign
+l_int|5
+op_star
+id|HZ
+suffix:semicolon
 id|dev-&gt;do_ioctl
 op_assign
 op_amp
@@ -14727,10 +14712,24 @@ id|pci_hme_write32
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Grrr, Happy Meal comes up by default not advertising&n;&t; * full duplex 100baseT capabilities, fix this.&n;&t; */
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
+)paren
+suffix:semicolon
 id|happy_meal_set_initial_advertisement
 c_func
 (paren
 id|hp
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|hp-&gt;happy_lock
 )paren
 suffix:semicolon
 r_if
