@@ -551,6 +551,11 @@ r_int
 id|string_langid
 suffix:semicolon
 multiline_comment|/* language ID for strings */
+DECL|member|present
+r_int
+id|present
+suffix:semicolon
+multiline_comment|/* if device is present or not */
 DECL|member|hcpriv
 r_void
 op_star
