@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 multiline_comment|/*&n; * Shared mappings implemented 30.11.1994. It&squot;s not fully working yet,&n; * though.&n; *&n; * Shared mappings now work. 15.8.1995  Bruno.&n; *&n; * finished &squot;unifying&squot; the page and buffer cache and SMP-threaded the&n; * page-cache, 21.05.1999, Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; * SMP-threaded pagemap-LRU 1999, Andrea Arcangeli &lt;andrea@suse.de&gt;&n; */
-multiline_comment|/*&n; * Lock ordering:&n; *&n; *  pagemap_lru_lock&n; *  -&gt;i_shared_lock&t;&t;(vmtruncate)&n; *    -&gt;i_bufferlist_lock&t;(__free_pte-&gt;__set_page_dirty_buffers)&n; *      -&gt;unused_list_lock&t;(try_to_free_buffers)&n; *        -&gt;mapping-&gt;page_lock&n; *      -&gt;inode_lock&t;&t;(__mark_inode_dirty)&n; *        -&gt;sb_lock&t;&t;(fs/fs-writeback.c)&n; */
+multiline_comment|/*&n; * Lock ordering:&n; *&n; *  pagemap_lru_lock&n; *  -&gt;i_shared_lock&t;&t;(vmtruncate)&n; *    -&gt;i_bufferlist_lock&t;(__free_pte-&gt;__set_page_dirty_buffers)&n; *      -&gt;mapping-&gt;page_lock&n; *      -&gt;inode_lock&t;&t;(__mark_inode_dirty)&n; *        -&gt;sb_lock&t;&t;(fs/fs-writeback.c)&n; */
 DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|pagemap_lru_lock
