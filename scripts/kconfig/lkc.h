@@ -19,15 +19,8 @@ macro_line|#endif
 macro_line|#include &quot;lkc_proto.h&quot;
 DECL|macro|P
 macro_line|#undef P
-r_void
-id|symbol_end
-c_func
-(paren
-r_char
-op_star
-id|help
-)paren
-suffix:semicolon
+DECL|macro|SRCTREE
+mdefine_line|#define SRCTREE &quot;srctree&quot;
 r_int
 id|zconfparse
 c_func
@@ -53,6 +46,17 @@ id|zconf_starthelp
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+id|FILE
+op_star
+id|zconf_fopen
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
 )paren
 suffix:semicolon
 r_void
@@ -269,6 +273,16 @@ id|sym_clear_all_valid
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_void
+id|sym_set_changed
+c_func
+(paren
+r_struct
+id|symbol
+op_star
+id|sym
 )paren
 suffix:semicolon
 DECL|function|sym_get_tristate_value

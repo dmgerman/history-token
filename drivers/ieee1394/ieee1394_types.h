@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/* The great kdev_t changeover in 2.5.x */
 macro_line|#include &lt;linux/kdev_t.h&gt;
@@ -63,6 +64,44 @@ mdefine_line|#define HPSB_INIT_WORK(x,y,z) INIT_WORK(x,y,z)
 DECL|macro|HPSB_PREPARE_WORK
 mdefine_line|#define HPSB_PREPARE_WORK(x,y,z) PREPARE_WORK(x,y,z)
 macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,44)
+multiline_comment|/* pci_pool_create changed. does not take the flags arg any longer */
+DECL|macro|hpsb_pci_pool_create
+mdefine_line|#define hpsb_pci_pool_create(a,b,c,d,e,f) pci_pool_create(a,b,c,d,e,f)
+macro_line|#else
+DECL|macro|hpsb_pci_pool_create
+mdefine_line|#define hpsb_pci_pool_create(a,b,c,d,e,f) pci_pool_create(a,b,c,d,e)
+macro_line|#endif
+multiline_comment|/* Transaction Label handling */
+DECL|struct|hpsb_tlabel_pool
+r_struct
+id|hpsb_tlabel_pool
+(brace
+DECL|member|pool
+id|u64
+id|pool
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+DECL|member|next
+id|u8
+id|next
+suffix:semicolon
+DECL|member|allocations
+id|u32
+id|allocations
+suffix:semicolon
+DECL|member|count
+r_struct
+id|semaphore
+id|count
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|HPSB_TPOOL_INIT
+mdefine_line|#define HPSB_TPOOL_INIT(_tp)            &bslash;&n;do {                                    &bslash;&n;&t;sema_init(&amp;(_tp)-&gt;count, 63);   &bslash;&n;&t;spin_lock_init(&amp;(_tp)-&gt;lock);   &bslash;&n;&t;(_tp)-&gt;next = 0;                &bslash;&n;&t;(_tp)-&gt;pool = 0;                &bslash;&n;} while(0)
 DECL|typedef|quadlet_t
 r_typedef
 id|u32

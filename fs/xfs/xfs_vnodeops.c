@@ -18626,6 +18626,11 @@ op_assign
 id|xfs_read
 comma
 dot
+id|vop_sendfile
+op_assign
+id|xfs_sendfile
+comma
+dot
 id|vop_write
 op_assign
 id|xfs_write

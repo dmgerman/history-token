@@ -8248,7 +8248,7 @@ op_star
 id|regs
 )paren
 (brace
-id|page_buf_private_t
+id|page_buf_t
 id|bp
 suffix:semicolon
 r_int
@@ -8339,7 +8339,7 @@ comma
 id|pb_flags
 c_func
 (paren
-id|bp.pb_common.pb_flags
+id|bp.pb_flags
 )paren
 )paren
 suffix:semicolon
@@ -8348,13 +8348,13 @@ c_func
 (paren
 l_string|&quot;  pb_target 0x%p pb_hold %d pb_next 0x%p pb_prev 0x%p&bslash;n&quot;
 comma
-id|bp.pb_common.pb_target
+id|bp.pb_target
 comma
-id|bp.pb_common.pb_hold.counter
+id|bp.pb_hold.counter
 comma
-id|bp.pb_common.pb_list.next
+id|bp.pb_list.next
 comma
-id|bp.pb_common.pb_list.prev
+id|bp.pb_list.prev
 )paren
 suffix:semicolon
 id|kdb_printf
@@ -8362,11 +8362,11 @@ c_func
 (paren
 l_string|&quot;  pb_hash_index %d pb_hash_next 0x%p pb_hash_prev 0x%p&bslash;n&quot;
 comma
-id|bp.pb_common.pb_hash_index
+id|bp.pb_hash_index
 comma
-id|bp.pb_common.pb_hash_list.next
+id|bp.pb_hash_list.next
 comma
-id|bp.pb_common.pb_hash_list.prev
+id|bp.pb_hash_list.prev
 )paren
 suffix:semicolon
 id|kdb_printf
@@ -8379,16 +8379,16 @@ r_int
 r_int
 r_int
 )paren
-id|bp.pb_common.pb_file_offset
+id|bp.pb_file_offset
 comma
 (paren
 r_int
 r_int
 r_int
 )paren
-id|bp.pb_common.pb_buffer_length
+id|bp.pb_buffer_length
 comma
-id|bp.pb_common.pb_addr
+id|bp.pb_addr
 )paren
 suffix:semicolon
 id|kdb_printf
@@ -8396,13 +8396,13 @@ c_func
 (paren
 l_string|&quot;  pb_bn 0x%Lx pb_count_desired 0x%lx&bslash;n&quot;
 comma
-id|bp.pb_common.pb_bn
+id|bp.pb_bn
 comma
 (paren
 r_int
 r_int
 )paren
-id|bp.pb_common.pb_count_desired
+id|bp.pb_count_desired
 )paren
 suffix:semicolon
 id|kdb_printf
@@ -8410,9 +8410,9 @@ c_func
 (paren
 l_string|&quot;  pb_io_remaining %d pb_error %u&bslash;n&quot;
 comma
-id|bp.pb_common.pb_io_remaining.counter
+id|bp.pb_io_remaining.counter
 comma
-id|bp.pb_common.pb_error
+id|bp.pb_error
 )paren
 suffix:semicolon
 id|kdb_printf
@@ -8420,11 +8420,11 @@ c_func
 (paren
 l_string|&quot;  pb_page_count %u pb_offset 0x%x pb_pages 0x%p&bslash;n&quot;
 comma
-id|bp.pb_common.pb_page_count
+id|bp.pb_page_count
 comma
-id|bp.pb_common.pb_offset
+id|bp.pb_offset
 comma
-id|bp.pb_common.pb_pages
+id|bp.pb_pages
 )paren
 suffix:semicolon
 macro_line|#ifdef PAGEBUF_LOCK_TRACKING
@@ -8433,9 +8433,9 @@ c_func
 (paren
 l_string|&quot;  pb_iodonesema (%d,%d) pb_sema (%d,%d) pincount (%d) last holder %d&bslash;n&quot;
 comma
-id|bp.pb_common.pb_iodonesema.count.counter
+id|bp.pb_iodonesema.count.counter
 comma
-id|bp.pb_common.pb_iodonesema.sleepers
+id|bp.pb_iodonesema.sleepers
 comma
 id|bp.pb_sema.count.counter
 comma
@@ -8452,9 +8452,9 @@ c_func
 (paren
 l_string|&quot;  pb_iodonesema (%d,%d) pb_sema (%d,%d) pincount (%d)&bslash;n&quot;
 comma
-id|bp.pb_common.pb_iodonesema.count.counter
+id|bp.pb_iodonesema.count.counter
 comma
-id|bp.pb_common.pb_iodonesema.sleepers
+id|bp.pb_iodonesema.sleepers
 comma
 id|bp.pb_sema.count.counter
 comma
@@ -8467,9 +8467,9 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|bp.pb_common.pb_fspriv
+id|bp.pb_fspriv
 op_logical_or
-id|bp.pb_common.pb_fspriv2
+id|bp.pb_fspriv2
 )paren
 (brace
 id|kdb_printf
@@ -8477,9 +8477,9 @@ c_func
 (paren
 l_string|&quot;pb_fspriv 0x%p pb_fspriv2 0x%p&bslash;n&quot;
 comma
-id|bp.pb_common.pb_fspriv
+id|bp.pb_fspriv
 comma
-id|bp.pb_common.pb_fspriv2
+id|bp.pb_fspriv2
 )paren
 suffix:semicolon
 )brace

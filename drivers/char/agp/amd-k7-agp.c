@@ -620,7 +620,8 @@ suffix:semicolon
 id|agp_bridge.gatt_table_real
 op_assign
 (paren
-id|u32
+r_int
+r_int
 op_star
 )paren
 id|page_dir.real
@@ -628,7 +629,8 @@ suffix:semicolon
 id|agp_bridge.gatt_table
 op_assign
 (paren
-id|u32
+r_int
+r_int
 op_star
 )paren
 id|page_dir.remapped
@@ -739,7 +741,8 @@ suffix:semicolon
 id|page_dir.real
 op_assign
 (paren
-id|u32
+r_int
+r_int
 op_star
 )paren
 id|agp_bridge.gatt_table_real
@@ -747,7 +750,8 @@ suffix:semicolon
 id|page_dir.remapped
 op_assign
 (paren
-id|u32
+r_int
+r_int
 op_star
 )paren
 id|agp_bridge.gatt_table

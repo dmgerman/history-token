@@ -16,7 +16,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -6291,20 +6291,6 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-r_struct
-id|video_card
-op_star
-id|video
-op_assign
-id|ctx-&gt;video
-suffix:semicolon
-r_struct
-id|ti_ohci
-op_star
-id|ohci
-op_assign
-id|video-&gt;ohci
-suffix:semicolon
 r_int
 id|res
 op_assign
@@ -6315,10 +6301,6 @@ id|lock_kernel
 c_func
 (paren
 )paren
-suffix:semicolon
-id|ohci
-op_assign
-id|video-&gt;ohci
 suffix:semicolon
 r_if
 c_cond
@@ -6333,7 +6315,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-id|ohci-&gt;id
+id|ctx-&gt;video-&gt;ohci-&gt;id
 comma
 l_string|&quot;Current iso context not set&quot;
 )paren
@@ -6345,7 +6327,7 @@ op_assign
 id|do_iso_mmap
 c_func
 (paren
-id|ohci
+id|ctx-&gt;video-&gt;ohci
 comma
 id|ctx-&gt;current_ctx
 comma

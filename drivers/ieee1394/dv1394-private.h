@@ -4,8 +4,7 @@ DECL|macro|_DV_1394_PRIVATE_H
 mdefine_line|#define _DV_1394_PRIVATE_H
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;ohci1394.h&quot;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/scatterlist.h&gt;
+macro_line|#include &quot;dma.h&quot;
 multiline_comment|/* data structures private to the dv1394 driver */
 multiline_comment|/* none of this is exposed to user-space */
 multiline_comment|/* &n;   the 8-byte CIP (Common Isochronous Packet) header that precedes&n;   each packet of DV data.&n;&n;   See the IEC 61883 standard. &n;*/
@@ -636,6 +635,9 @@ op_star
 id|il
 comma
 r_int
+id|want_interrupt
+comma
+r_int
 r_int
 id|data_size
 comma
@@ -659,6 +661,11 @@ op_lshift
 l_int|24
 suffix:semicolon
 multiline_comment|/* s = 1, update xferStatus and resCount */
+r_if
+c_cond
+(paren
+id|want_interrupt
+)paren
 id|temp
 op_or_assign
 l_int|3
@@ -887,7 +894,6 @@ r_int
 id|data
 suffix:semicolon
 multiline_comment|/* Max # of packets per frame */
-multiline_comment|/* 320 is enough for NTSC, need to check what PAL is */
 DECL|macro|MAX_PACKETS
 mdefine_line|#define MAX_PACKETS 500
 multiline_comment|/* a PAGE_SIZE memory pool for allocating CIP headers&n;&t;   !header_pool must be aligned to PAGE_SIZE! */
@@ -1062,125 +1068,6 @@ op_star
 id|f
 )paren
 suffix:semicolon
-multiline_comment|/* structure for bookkeeping of a large non-physically-contiguous DMA buffer */
-DECL|struct|dma_region
-r_struct
-id|dma_region
-(brace
-DECL|member|n_pages
-r_int
-r_int
-id|n_pages
-suffix:semicolon
-DECL|member|n_dma_pages
-r_int
-r_int
-id|n_dma_pages
-suffix:semicolon
-DECL|member|sglist
-r_struct
-id|scatterlist
-op_star
-id|sglist
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* return the DMA bus address of the byte with the given offset&n;   relative to the beginning of the dma_region */
-DECL|function|dma_offset_to_bus
-r_static
-r_inline
-id|dma_addr_t
-id|dma_offset_to_bus
-c_func
-(paren
-r_struct
-id|dma_region
-op_star
-id|dma
-comma
-r_int
-r_int
-id|offset
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_struct
-id|scatterlist
-op_star
-id|sg
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-comma
-id|sg
-op_assign
-op_amp
-id|dma-&gt;sglist
-(braket
-l_int|0
-)braket
-suffix:semicolon
-id|i
-OL
-id|dma-&gt;n_dma_pages
-suffix:semicolon
-id|i
-op_increment
-comma
-id|sg
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|offset
-OL
-id|sg_dma_len
-c_func
-(paren
-id|sg
-)paren
-)paren
-(brace
-r_return
-id|sg_dma_address
-c_func
-(paren
-id|sg
-)paren
-op_plus
-id|offset
-suffix:semicolon
-)brace
-id|offset
-op_sub_assign
-id|sg_dma_len
-c_func
-(paren
-id|sg
-)paren
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;dv1394: dma_offset_to_bus failed for offset %lu!&bslash;n&quot;
-comma
-id|offset
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* struct video_card contains all data associated with one instance&n;   of the dv1394 driver &n;*/
 DECL|enum|modes
 r_enum
@@ -1302,21 +1189,15 @@ op_star
 id|fasync
 suffix:semicolon
 multiline_comment|/* the large, non-contiguous (rvmalloc()) ringbuffer for DV&n;           data, exposed to user-space via mmap() */
-DECL|member|user_buf
+DECL|member|dv_buf_size
 r_int
-r_char
-op_star
-id|user_buf
+r_int
+id|dv_buf_size
 suffix:semicolon
-DECL|member|user_buf_size
-r_int
-r_int
-id|user_buf_size
-suffix:semicolon
-DECL|member|user_dma
+DECL|member|dv_buf
 r_struct
 id|dma_region
-id|user_dma
+id|dv_buf
 suffix:semicolon
 multiline_comment|/* next byte in the ringbuffer that a write() call will fill */
 DECL|member|write_off
@@ -1407,22 +1288,15 @@ r_int
 id|channel
 suffix:semicolon
 multiline_comment|/* physically contiguous packet ringbuffer for receive */
-DECL|macro|MAX_PACKET_BUFFER
-mdefine_line|#define MAX_PACKET_BUFFER 30
-DECL|member|packet_buffer
+DECL|member|packet_buf
 r_struct
-id|packet
-op_star
-id|packet_buffer
+id|dma_region
+id|packet_buf
 suffix:semicolon
-DECL|member|packet_buffer_dma
-id|dma_addr_t
-id|packet_buffer_dma
-suffix:semicolon
-DECL|member|packet_buffer_size
+DECL|member|packet_buf_size
 r_int
 r_int
-id|packet_buffer_size
+id|packet_buf_size
 suffix:semicolon
 DECL|member|current_packet
 r_int

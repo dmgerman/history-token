@@ -1196,7 +1196,7 @@ id|inode-&gt;i_mode
 id|r
 op_assign
 op_minus
-id|EINVAL
+id|ENOTBLK
 suffix:semicolon
 r_goto
 id|out
@@ -1357,7 +1357,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|r
 )paren
 r_return
@@ -1461,6 +1460,8 @@ suffix:semicolon
 id|dev_size
 op_assign
 id|dd-&gt;bdev-&gt;bd_inode-&gt;i_size
+op_rshift
+id|SECTOR_SHIFT
 suffix:semicolon
 r_return
 (paren

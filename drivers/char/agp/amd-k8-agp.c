@@ -696,7 +696,6 @@ suffix:semicolon
 DECL|function|flush_x86_64_tlb
 r_static
 r_void
-r_inline
 id|flush_x86_64_tlb
 c_func
 (paren

@@ -9536,12 +9536,14 @@ id|bus_type
 id|pseudo_lld_bus
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;pseudo&quot;
 comma
+dot
 id|match
-suffix:colon
+op_assign
 id|pseudo_lld_bus_match
 comma
 )brace

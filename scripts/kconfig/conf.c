@@ -1803,8 +1803,6 @@ c_func
 (paren
 id|line
 )paren
-op_minus
-l_int|1
 suffix:semicolon
 id|line
 (braket

@@ -435,6 +435,33 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * chunk_size is a power of two&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chunk_size
+op_logical_or
+(paren
+id|chunk_size
+op_amp
+(paren
+id|chunk_size
+op_minus
+l_int|1
+)paren
+)paren
+)paren
+(brace
+id|ti-&gt;error
+op_assign
+l_string|&quot;dm-stripe: Invalid chunk size&quot;
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -455,6 +482,31 @@ id|ti-&gt;error
 op_assign
 l_string|&quot;dm-stripe: Target length not divisable by &quot;
 l_string|&quot;number of stripes&quot;
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Do we have enough arguments for that many stripes ?&n;&t; */
+r_if
+c_cond
+(paren
+id|argc
+op_ne
+(paren
+l_int|2
+op_plus
+l_int|2
+op_star
+id|stripes
+)paren
+)paren
+(brace
+id|ti-&gt;error
+op_assign
+l_string|&quot;dm-stripe: Not enough destinations &quot;
+l_string|&quot;specified&quot;
 suffix:semicolon
 r_return
 op_minus
@@ -498,39 +550,6 @@ id|ti-&gt;split_io
 op_assign
 id|chunk_size
 suffix:semicolon
-multiline_comment|/*&n;&t; * chunk_size is a power of two&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|chunk_size
-op_logical_or
-(paren
-id|chunk_size
-op_amp
-(paren
-id|chunk_size
-op_minus
-l_int|1
-)paren
-)paren
-)paren
-(brace
-id|ti-&gt;error
-op_assign
-l_string|&quot;dm-stripe: Invalid chunk size&quot;
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|sc
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 id|sc-&gt;chunk_mask
 op_assign
 (paren
@@ -577,30 +596,6 @@ id|i
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|argc
-OL
-l_int|2
-)paren
-(brace
-id|ti-&gt;error
-op_assign
-l_string|&quot;dm-stripe: Not enough destinations &quot;
-l_string|&quot;specified&quot;
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|sc
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 id|argv
 op_add_assign
 l_int|2
