@@ -415,16 +415,6 @@ id|PORT_DISABLED
 op_assign
 l_int|2
 comma
-multiline_comment|/* ata_qc_cb_t flags - note uses above ATA_QCFLAG_xxx namespace,&n;&t; * but not numberspace&n;&t; */
-DECL|enumerator|ATA_QCFLAG_TIMEOUT
-id|ATA_QCFLAG_TIMEOUT
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|0
-)paren
-comma
 )brace
 suffix:semicolon
 DECL|enum|pio_task_states
