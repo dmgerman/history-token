@@ -1607,6 +1607,13 @@ r_goto
 id|err_freqfree
 suffix:semicolon
 )brace
+multiline_comment|/* notify BIOS that we exist */
+id|acpi_processor_notify_smm
+c_func
+(paren
+id|THIS_MODULE
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren

@@ -8,6 +8,10 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;tbconvrt&quot;
 )paren
+DECL|variable|acpi_fadt_is_v1
+id|u8
+id|acpi_fadt_is_v1
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_get_table_count&n; *&n; * PARAMETERS:  RSDP            - Pointer to the RSDP&n; *              RSDT            - Pointer to the RSDT/XSDT&n; *&n; * RETURN:      The number of tables pointed to by the RSDT or XSDT.&n; *&n; * DESCRIPTION: Calculate the number of tables.  Automatically handles either&n; *              an RSDT or XSDT.&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_tb_get_table_count
@@ -325,6 +329,10 @@ id|original_fadt
 (brace
 multiline_comment|/* ACPI 1.0 FACS */
 multiline_comment|/* The BIOS stored FADT should agree with Revision 1.0 */
+id|acpi_fadt_is_v1
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t; * Copy the table header and the common part of the tables.&n;&t; *&n;&t; * The 2.0 table is an extension of the 1.0 table, so the entire 1.0&n;&t; * table can be copied first, then expand some fields to 64 bits.&n;&t; */
 id|ACPI_MEMCPY
 (paren
@@ -360,7 +368,12 @@ id|local_fadt-&gt;prefer_PM_profile
 op_assign
 id|PM_UNSPECIFIED
 suffix:semicolon
-multiline_comment|/*&n;&t; * Processor Performance State Control. This is the value OSPM writes to&n;&t; * the SMI_CMD register to assume processor performance state control&n;&t; * responsibility. There isn&squot;t any equivalence in 1.0, leave it zeroed.&n;&t; */
+multiline_comment|/*&n;&t; * Processor Performance State Control. This is the value OSPM writes to&n;&t; * the SMI_CMD register to assume processor performance state control&n;&t; * responsibility. There isn&squot;t any equivalence in 1.0, but as many 1.x&n;&t; * ACPI tables contain _PCT and _PSS we also keep this value, unless&n;&t; * acpi_strict is set.&n;&t; */
+r_if
+c_cond
+(paren
+id|acpi_strict
+)paren
 id|local_fadt-&gt;pstate_cnt
 op_assign
 l_int|0

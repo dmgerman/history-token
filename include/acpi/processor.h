@@ -456,5 +456,16 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
+multiline_comment|/* note: this locks both the calling module and the processor module&n;         if a _PPC object exists, rmmod is disallowed then */
+r_int
+id|acpi_processor_notify_smm
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|calling_module
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

@@ -513,6 +513,11 @@ suffix:semicolon
 multiline_comment|/*&n; * Get the ACPI version-specific tables&n; */
 macro_line|#include &quot;actbl1.h&quot;   /* Acpi 1.0 table definitions */
 macro_line|#include &quot;actbl2.h&quot;   /* Acpi 2.0 table definitions */
+r_extern
+id|u8
+id|acpi_fadt_is_v1
+suffix:semicolon
+multiline_comment|/* is set to 1 if FADT is revision 1,&n;&t;&t;&t;    * needed for certain workarounds */
 macro_line|#pragma pack(1)
 multiline_comment|/*&n; * High performance timer&n; */
 DECL|struct|hpet_table
