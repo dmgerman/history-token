@@ -111,6 +111,36 @@ suffix:semicolon
 multiline_comment|/* Does this need case conversion? 0=need case conversion*/
 )brace
 suffix:semicolon
+DECL|macro|FAT_CACHE_NR
+mdefine_line|#define FAT_CACHE_NR&t;8 /* number of FAT cache */
+DECL|struct|fat_cache
+r_struct
+id|fat_cache
+(brace
+DECL|member|start_cluster
+r_int
+id|start_cluster
+suffix:semicolon
+multiline_comment|/* first cluster of the chain. */
+DECL|member|file_cluster
+r_int
+id|file_cluster
+suffix:semicolon
+multiline_comment|/* cluster number in the file. */
+DECL|member|disk_cluster
+r_int
+id|disk_cluster
+suffix:semicolon
+multiline_comment|/* cluster number on disk. */
+DECL|member|next
+r_struct
+id|fat_cache
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* next cache entry */
+)brace
+suffix:semicolon
 DECL|struct|msdos_sb_info
 r_struct
 id|msdos_sb_info
@@ -232,6 +262,22 @@ r_int
 id|dir_per_block_bits
 suffix:semicolon
 multiline_comment|/* log2(dir_per_block) */
+DECL|member|cache_lock
+id|spinlock_t
+id|cache_lock
+suffix:semicolon
+DECL|member|cache_array
+DECL|member|cache
+r_struct
+id|fat_cache
+id|cache_array
+(braket
+id|FAT_CACHE_NR
+)braket
+comma
+op_star
+id|cache
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif

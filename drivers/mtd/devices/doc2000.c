@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux driver for Disk-On-Chip 2000 and Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2000.c,v 1.46 2001/10/02 15:05:13 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Linux driver for Disk-On-Chip 2000 and Millennium&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * (c) 1999, 2000 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: doc2000.c,v 1.52 2003/05/20 21:03:07 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/nand.h&gt;
-macro_line|#include &lt;linux/mtd/nand_ids.h&gt;
 macro_line|#include &lt;linux/mtd/doc2000.h&gt;
 DECL|macro|DOC_SUPPORT_2000
 mdefine_line|#define DOC_SUPPORT_2000
@@ -113,6 +112,9 @@ comma
 id|u_char
 op_star
 id|eccbuf
+comma
+r_int
+id|oobsel
 )paren
 suffix:semicolon
 r_static
@@ -143,6 +145,9 @@ comma
 id|u_char
 op_star
 id|eccbuf
+comma
+r_int
+id|oobsel
 )paren
 suffix:semicolon
 r_static
@@ -399,33 +404,15 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|need_resched
-c_func
-(paren
-)paren
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_else
 id|udelay
 c_func
 (paren
 l_int|1
+)paren
+suffix:semicolon
+id|cond_resched
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1282,6 +1269,8 @@ comma
 id|id
 comma
 id|i
+comma
+id|j
 suffix:semicolon
 r_volatile
 r_char
@@ -1514,15 +1503,6 @@ op_increment
 r_if
 c_cond
 (paren
-id|mfr
-op_eq
-id|nand_flash_ids
-(braket
-id|i
-)braket
-dot
-id|manufacture_id
-op_logical_and
 id|id
 op_eq
 id|nand_flash_ids
@@ -1530,19 +1510,62 @@ id|nand_flash_ids
 id|i
 )braket
 dot
-id|model_id
+id|id
 )paren
 (brace
+multiline_comment|/* Try to identify manufacturer */
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|nand_manuf_ids
+(braket
+id|j
+)braket
+dot
+id|id
+op_ne
+l_int|0x0
+suffix:semicolon
+id|j
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|nand_manuf_ids
+(braket
+id|j
+)braket
+dot
+id|id
+op_eq
+id|mfr
+)paren
+r_break
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Flash chip found: Manufacturer ID: %2.2X, &quot;
-l_string|&quot;Chip ID: %2.2X (%s)&bslash;n&quot;
+l_string|&quot;Chip ID: %2.2X (%s:%s)&bslash;n&quot;
 comma
 id|mfr
 comma
 id|id
+comma
+id|nand_manuf_ids
+(braket
+id|j
+)braket
+dot
+id|name
 comma
 id|nand_flash_ids
 (braket
@@ -1592,7 +1615,14 @@ id|nand_flash_ids
 id|i
 )braket
 dot
-id|pageadrlen
+id|chipshift
+OG
+l_int|25
+ques
+c_cond
+l_int|3
+suffix:colon
+l_int|2
 suffix:semicolon
 id|doc-&gt;erasesize
 op_assign
@@ -2245,7 +2275,7 @@ id|mtd-&gt;oobsize
 op_assign
 l_int|16
 suffix:semicolon
-id|mtd-&gt;module
+id|mtd-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
@@ -2415,6 +2445,8 @@ comma
 id|buf
 comma
 l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -2446,6 +2478,9 @@ comma
 id|u_char
 op_star
 id|eccbuf
+comma
+r_int
+id|oobsel
 )paren
 (brace
 r_struct
@@ -3151,6 +3186,8 @@ comma
 id|buf
 comma
 id|eccbuf
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -3183,6 +3220,9 @@ comma
 id|u_char
 op_star
 id|eccbuf
+comma
+r_int
+id|oobsel
 )paren
 (brace
 r_struct

@@ -1,10 +1,10 @@
-multiline_comment|/*&n; * $Id: pmc551.h,v 1.4 2001/06/12 16:19:38 major Exp $&n; *&n; * PMC551 PCI Mezzanine Ram Device&n; *&n; * Author:&n; *       Mark Ferrell&n; *       Copyright 1999,2000 Nortel Networks&n; *&n; * License: &n; *&t; As part of this driver was derrived from the slram.c driver it falls&n; *&t; under the same license, which is GNU General Public License v2&n; */
+multiline_comment|/*&n; * $Id: pmc551.h,v 1.5 2003/01/24 16:49:53 dwmw2 Exp $&n; *&n; * PMC551 PCI Mezzanine Ram Device&n; *&n; * Author:&n; *       Mark Ferrell&n; *       Copyright 1999,2000 Nortel Networks&n; *&n; * License: &n; *&t; As part of this driver was derrived from the slram.c driver it falls&n; *&t; under the same license, which is GNU General Public License v2&n; */
 macro_line|#ifndef __MTD_PMC551_H__
 DECL|macro|__MTD_PMC551_H__
 mdefine_line|#define __MTD_PMC551_H__
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 DECL|macro|PMC551_VERSION
-mdefine_line|#define PMC551_VERSION &quot;$Id: pmc551.h,v 1.4 2001/06/12 16:19:38 major Exp $&bslash;n&quot;&bslash;&n;       &quot;Ramix PMC551 PCI Mezzanine Ram Driver. (C) 1999,2000 Nortel Networks.&bslash;n&quot;
+mdefine_line|#define PMC551_VERSION &quot;$Id: pmc551.h,v 1.5 2003/01/24 16:49:53 dwmw2 Exp $&bslash;n&quot;&bslash;&n;       &quot;Ramix PMC551 PCI Mezzanine Ram Driver. (C) 1999,2000 Nortel Networks.&bslash;n&quot;
 multiline_comment|/*&n; * Our personal and private information&n; */
 DECL|struct|mypriv
 r_struct
@@ -67,6 +67,10 @@ op_star
 comma
 id|u_char
 op_star
+comma
+id|loff_t
+comma
+r_int
 )paren
 suffix:semicolon
 r_static

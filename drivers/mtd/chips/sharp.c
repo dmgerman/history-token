@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MTD chip driver for pre-CFI Sharp flash chips&n; *&n; * Copyright 2000,2001 David A. Schleef &lt;ds@schleef.org&gt;&n; *           2000,2001 Lineo, Inc.&n; *&n; * $Id: sharp.c,v 1.6 2001/10/02 15:05:12 dwmw2 Exp $&n; *&n; * Devices supported:&n; *   LH28F016SCT Symmetrical block flash memory, 2Mx8&n; *   LH28F008SCT Symmetrical block flash memory, 1Mx8&n; *&n; * Documentation:&n; *   http://www.sharpmeg.com/datasheets/memic/flashcmp/&n; *   http://www.sharpmeg.com/datasheets/memic/flashcmp/01symf/16m/016sctl9.pdf&n; *   016sctl9.pdf&n; *&n; * Limitations:&n; *   This driver only supports 4x1 arrangement of chips.&n; *   Not tested on anything but PowerPC.&n; */
+multiline_comment|/*&n; * MTD chip driver for pre-CFI Sharp flash chips&n; *&n; * Copyright 2000,2001 David A. Schleef &lt;ds@schleef.org&gt;&n; *           2000,2001 Lineo, Inc.&n; *&n; * $Id: sharp.c,v 1.12 2003/05/28 15:39:52 dwmw2 Exp $&n; *&n; * Devices supported:&n; *   LH28F016SCT Symmetrical block flash memory, 2Mx8&n; *   LH28F008SCT Symmetrical block flash memory, 1Mx8&n; *&n; * Documentation:&n; *   http://www.sharpmeg.com/datasheets/memic/flashcmp/&n; *   http://www.sharpmeg.com/datasheets/memic/flashcmp/01symf/16m/016sctl9.pdf&n; *   016sctl9.pdf&n; *&n; * Limitations:&n; *   This driver only supports 4x1 arrangement of chips.&n; *   Not tested on anything but PowerPC.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/cfi.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 DECL|macro|CMD_RESET
@@ -668,9 +669,7 @@ l_int|4
 suffix:semicolon
 id|tmp
 op_assign
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -680,9 +679,7 @@ op_plus
 l_int|0
 )paren
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -696,9 +693,7 @@ l_int|0
 suffix:semicolon
 id|read0
 op_assign
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -710,9 +705,7 @@ l_int|0
 suffix:semicolon
 id|read4
 op_assign
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -826,9 +819,7 @@ r_if
 c_cond
 (paren
 (paren
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -849,9 +840,7 @@ c_func
 l_string|&quot;Looks like RAM&bslash;n&quot;
 )paren
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -940,9 +929,7 @@ id|chip-&gt;state
 r_case
 id|FL_READY
 suffix:colon
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -961,9 +948,7 @@ id|FL_STATUS
 suffix:colon
 id|status
 op_assign
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -1070,9 +1055,7 @@ r_goto
 id|retry
 suffix:semicolon
 )brace
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -1271,9 +1254,7 @@ l_int|0
 r_break
 suffix:semicolon
 )brace
-id|map
-op_member_access_from_pointer
-id|copy_from
+id|map_copy_from
 c_func
 (paren
 id|map
@@ -1581,9 +1562,7 @@ r_try
 op_increment
 )paren
 (brace
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -1594,9 +1573,7 @@ id|adr
 )paren
 suffix:semicolon
 multiline_comment|/* cpu_to_le32 -&gt; hack to fix the writel be-&gt;le conversion */
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -1624,9 +1601,7 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -1653,9 +1628,7 @@ op_increment
 (brace
 id|status
 op_assign
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -1718,9 +1691,7 @@ comma
 id|status
 )paren
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -1731,9 +1702,7 @@ id|adr
 )paren
 suffix:semicolon
 )brace
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -1950,6 +1919,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|instr-&gt;state
+op_assign
+id|MTD_ERASE_DONE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1994,7 +1967,6 @@ r_int
 id|ret
 suffix:semicolon
 r_int
-r_int
 id|timeo
 suffix:semicolon
 r_int
@@ -2008,9 +1980,7 @@ comma
 id|current
 )paren
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -2022,9 +1992,7 @@ id|adr
 suffix:semicolon
 id|status
 op_assign
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -2050,9 +2018,7 @@ id|timeo
 )paren
 )paren
 (brace
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -2064,9 +2030,7 @@ id|adr
 suffix:semicolon
 id|status
 op_assign
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -2207,9 +2171,7 @@ id|adr
 )paren
 suffix:semicolon
 macro_line|#endif
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -2219,9 +2181,7 @@ comma
 id|adr
 )paren
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -2259,9 +2219,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -2273,9 +2231,7 @@ id|adr
 suffix:semicolon
 id|status
 op_assign
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -2294,9 +2250,7 @@ id|SR_ERRORS
 )paren
 )paren
 (brace
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -2325,9 +2279,7 @@ comma
 id|status
 )paren
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -2371,9 +2323,7 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -2383,9 +2333,7 @@ comma
 id|adr
 )paren
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -2403,9 +2351,7 @@ l_int|100
 suffix:semicolon
 id|status
 op_assign
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -2436,12 +2382,10 @@ id|i
 op_increment
 )paren
 (brace
-singleline_comment|//map-&gt;write32(map,CMD_READ_STATUS,adr);
+singleline_comment|//map_write32(map,CMD_READ_STATUS,adr);
 id|status
 op_assign
-id|map
-op_member_access_from_pointer
-id|read32
+id|map_read32
 c_func
 (paren
 id|map
@@ -2497,9 +2441,7 @@ id|SR_ERRORS
 )paren
 )paren
 (brace
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
@@ -2526,9 +2468,7 @@ comma
 id|status
 )paren
 suffix:semicolon
-id|map
-op_member_access_from_pointer
-id|write32
+id|map_write32
 c_func
 (paren
 id|map
