@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/s390/net/lcs.c&n; *&n; *  Linux for S/390 Lan Channel Station Network Driver&n; *&n; *  Copyright (C)  1999-2001 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;     IBM Corporation&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  DJ Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; *&n; *    $Revision: 1.67 $&t; $Date: 2004/02/26 18:26:50 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *  linux/drivers/s390/net/lcs.c&n; *&n; *  Linux for S/390 Lan Channel Station Network Driver&n; *&n; *  Copyright (C)  1999-2001 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;     IBM Corporation&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  DJ Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; *&n; *    $Revision: 1.68 $&t; $Date: 2004/03/02 15:34:01 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -22,7 +22,7 @@ macro_line|#error Cannot compile lcs.c without some net devices switched on.
 macro_line|#endif
 multiline_comment|/**&n; * initialization string for output&n; */
 DECL|macro|VERSION_LCS_C
-mdefine_line|#define VERSION_LCS_C  &quot;$Revision: 1.67 $&quot;
+mdefine_line|#define VERSION_LCS_C  &quot;$Revision: 1.68 $&quot;
 DECL|variable|__initdata
 r_static
 r_char
@@ -7965,67 +7965,15 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/* Create symlinks. */
-r_if
-c_cond
-(paren
-id|sysfs_create_link
-c_func
-(paren
-op_amp
-id|ccwgdev-&gt;dev.kobj
-comma
-op_amp
-id|dev-&gt;class_dev.kobj
-comma
-id|dev-&gt;name
-)paren
-)paren
-(brace
-id|unregister_netdev
+id|SET_NETDEV_DEV
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|sysfs_create_link
-c_func
-(paren
-op_amp
-id|dev-&gt;class_dev.kobj
 comma
 op_amp
-id|ccwgdev-&gt;dev.kobj
-comma
-id|ccwgdev-&gt;dev.bus_id
-)paren
-)paren
-(brace
-id|sysfs_remove_link
-c_func
-(paren
-op_amp
-id|ccwgdev-&gt;dev.kobj
-comma
-id|dev-&gt;name
+id|ccwgdev-&gt;dev
 )paren
 suffix:semicolon
-id|unregister_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 id|netif_stop_queue
 c_func
 (paren
@@ -8120,24 +8068,6 @@ id|ret
 r_return
 id|ret
 suffix:semicolon
-id|sysfs_remove_link
-c_func
-(paren
-op_amp
-id|card-&gt;dev-&gt;class_dev.kobj
-comma
-id|ccwgdev-&gt;dev.bus_id
-)paren
-suffix:semicolon
-id|sysfs_remove_link
-c_func
-(paren
-op_amp
-id|ccwgdev-&gt;dev.kobj
-comma
-id|card-&gt;dev-&gt;name
-)paren
-suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
@@ -8208,24 +8138,6 @@ id|card-&gt;dev
 )paren
 suffix:semicolon
 multiline_comment|/* Ignore rc. */
-id|sysfs_remove_link
-c_func
-(paren
-op_amp
-id|card-&gt;dev-&gt;class_dev.kobj
-comma
-id|ccwgdev-&gt;dev.bus_id
-)paren
-suffix:semicolon
-id|sysfs_remove_link
-c_func
-(paren
-op_amp
-id|ccwgdev-&gt;dev.kobj
-comma
-id|card-&gt;dev-&gt;name
-)paren
-suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
