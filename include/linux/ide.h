@@ -2028,6 +2028,11 @@ r_struct
 id|list_head
 id|list
 suffix:semicolon
+DECL|member|gendev
+r_struct
+id|device
+id|gendev
+suffix:semicolon
 DECL|member|disk
 r_struct
 id|gendisk
@@ -4339,6 +4344,11 @@ id|atapi_prebuilder
 id|ide_drive_t
 op_star
 )paren
+suffix:semicolon
+DECL|member|gen_driver
+r_struct
+id|device_driver
+id|gen_driver
 suffix:semicolon
 DECL|member|drives
 r_struct
