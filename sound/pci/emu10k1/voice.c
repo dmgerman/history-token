@@ -106,9 +106,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* make sure the block of voices does not cross the 32 voice boundary */
-singleline_comment|//if (((i % 32) + number) &gt; 32)
-singleline_comment|//&t;continue;
 id|skip
 op_assign
 l_int|0
@@ -147,10 +144,14 @@ c_cond
 (paren
 id|voice-&gt;use
 )paren
+(brace
 id|skip
 op_assign
 l_int|1
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
