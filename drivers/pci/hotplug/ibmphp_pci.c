@@ -5501,12 +5501,8 @@ suffix:semicolon
 )brace
 id|error
 suffix:colon
-r_if
-c_cond
-(paren
-id|amount_needed
-)paren
 id|kfree
+c_func
 (paren
 id|amount_needed
 )paren
