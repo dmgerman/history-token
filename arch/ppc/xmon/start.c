@@ -359,6 +359,7 @@ id|base
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 DECL|function|sysrq_handle_xmon
 r_static
 r_void
@@ -412,6 +413,7 @@ l_string|&quot;Entering xmon&bslash;n&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 r_void
 DECL|function|xmon_map_scc
 id|xmon_map_scc
@@ -933,6 +935,7 @@ op_assign
 l_int|0x80
 suffix:semicolon
 macro_line|#endif /* platform */
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 id|__sysrq_put_key_op
 c_func
 (paren
@@ -942,6 +945,7 @@ op_amp
 id|sysrq_xmon_op
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|variable|scc_initialized
 r_static
