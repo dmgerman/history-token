@@ -2691,17 +2691,13 @@ suffix:semicolon
 multiline_comment|/* Starting Feature Number */
 id|cgc.cmd
 (braket
-l_int|7
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-id|cgc.cmd
-(braket
 l_int|8
 )braket
 op_assign
-l_int|8
+r_sizeof
+(paren
+id|buffer
+)paren
 suffix:semicolon
 multiline_comment|/* Allocation Length */
 id|cgc.quiet
