@@ -132,22 +132,9 @@ comma
 l_int|0xffffffff
 )brace
 suffix:semicolon
-macro_line|#if BITS_PER_LONG == 32
-DECL|macro|FB_WRITEL
-mdefine_line|#define FB_WRITEL fb_writel
-DECL|macro|FB_READL
-mdefine_line|#define FB_READL  fb_readl
-macro_line|#else
-DECL|macro|FB_WRITEL
-mdefine_line|#define FB_WRITEL fb_writeq
-DECL|macro|FB_READL
-mdefine_line|#define FB_READL  fb_readq
-macro_line|#endif 
 macro_line|#if defined (__BIG_ENDIAN)
 DECL|macro|LEFT_POS
 mdefine_line|#define LEFT_POS(bpp)          (BITS_PER_LONG - bpp)
-DECL|macro|NEXT_POS
-mdefine_line|#define NEXT_POS(pos, bpp)     ((pos) -= (bpp))
 DECL|macro|SHIFT_HIGH
 mdefine_line|#define SHIFT_HIGH(val, bits)  ((val) &gt;&gt; (bits))
 DECL|macro|SHIFT_LOW
@@ -155,12 +142,29 @@ mdefine_line|#define SHIFT_LOW(val, bits)   ((val) &lt;&lt; (bits))
 macro_line|#else
 DECL|macro|LEFT_POS
 mdefine_line|#define LEFT_POS(bpp)          (0)
-DECL|macro|NEXT_POS
-mdefine_line|#define NEXT_POS(pos, bpp)     ((pos) += (bpp))
 DECL|macro|SHIFT_HIGH
 mdefine_line|#define SHIFT_HIGH(val, bits)  ((val) &lt;&lt; (bits))
 DECL|macro|SHIFT_LOW
 mdefine_line|#define SHIFT_LOW(val, bits)   ((val) &gt;&gt; (bits))
+macro_line|#endif
+macro_line|#if BITS_PER_LONG == 32
+DECL|macro|FB_WRITEL
+mdefine_line|#define FB_WRITEL&t;fb_writel
+DECL|macro|FB_READL
+mdefine_line|#define FB_READL&t;fb_readl
+DECL|macro|INIT_FASTPATH
+mdefine_line|#define INIT_FASTPATH&t;{}
+DECL|macro|FASTPATH
+mdefine_line|#define FASTPATH&t;fb_writel((end_mask &amp; eorx)^bgx, dst++)
+macro_line|#else
+DECL|macro|FB_WRITEL
+mdefine_line|#define FB_WRITEL&t;fb_writeq
+DECL|macro|FB_READL
+mdefine_line|#define FB_READL&t;fb_readq
+DECL|macro|INIT_FASTPATH
+mdefine_line|#define INIT_FASTPATH&t;unsigned long val = 0, bpl = 0
+DECL|macro|FASTPATH
+mdefine_line|#define FASTPATH {&t;&t;&t;&t;&t;&bslash;&n;&t;val |= SHIFT_HIGH((end_mask &amp; eorx)^bgx, bpl);&t;&bslash;&n;&t;bpl += 32;&t;&t;&t;&t;&t;&bslash;&n;&t;bpl &amp;= BITS_PER_LONG - 1;&t;&t;&t;&bslash;&n;&t;if (!bpl) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;FB_WRITEL(val, dst++);&t;&t;&t;&bslash;&n;&t;&t;val = 0;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#endif
 DECL|function|color_imageblit
 r_static
@@ -263,10 +267,6 @@ op_decrement
 suffix:semicolon
 )paren
 (brace
-id|n
-op_assign
-id|image-&gt;width
-suffix:semicolon
 id|dst
 op_assign
 (paren
@@ -276,10 +276,12 @@ op_star
 )paren
 id|dst1
 suffix:semicolon
+id|n
+op_assign
+id|image-&gt;width
+suffix:semicolon
 id|shift
 op_assign
-l_int|0
-suffix:semicolon
 id|val
 op_assign
 l_int|0
@@ -638,20 +640,6 @@ op_decrement
 suffix:semicolon
 )paren
 (brace
-id|shift
-op_assign
-id|val
-op_assign
-l_int|0
-suffix:semicolon
-id|l
-op_assign
-l_int|8
-suffix:semicolon
-id|j
-op_assign
-id|image-&gt;width
-suffix:semicolon
 id|dst
 op_assign
 (paren
@@ -661,9 +649,23 @@ op_star
 )paren
 id|dst1
 suffix:semicolon
+id|j
+op_assign
+id|image-&gt;width
+suffix:semicolon
+id|shift
+op_assign
+id|val
+op_assign
+l_int|0
+suffix:semicolon
 id|s
 op_assign
 id|src
+suffix:semicolon
+id|l
+op_assign
+l_int|8
 suffix:semicolon
 multiline_comment|/* write leading bits */
 r_if
@@ -935,17 +937,14 @@ id|u8
 op_star
 id|dst1
 comma
-r_int
-r_int
+id|u32
 id|fgcolor
 comma
-r_int
-r_int
+id|u32
 id|bgcolor
 )paren
 (brace
-r_int
-r_int
+id|u32
 id|fgx
 op_assign
 id|fgcolor
@@ -958,8 +957,7 @@ id|bpp
 op_assign
 id|p-&gt;var.bits_per_pixel
 suffix:semicolon
-r_int
-r_int
+id|u32
 id|ppw
 op_assign
 id|BITS_PER_LONG
@@ -976,8 +974,7 @@ l_int|7
 op_div
 l_int|8
 suffix:semicolon
-r_int
-r_int
+id|u32
 id|bit_mask
 comma
 id|end_mask
@@ -1129,6 +1126,8 @@ id|src
 op_assign
 id|s
 suffix:semicolon
+id|INIT_FASTPATH
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1159,20 +1158,7 @@ op_amp
 id|bit_mask
 )braket
 suffix:semicolon
-id|FB_WRITEL
-c_func
-(paren
-(paren
-id|end_mask
-op_amp
-id|eorx
-)paren
-op_xor
-id|bgx
-comma
-id|dst
-op_increment
-)paren
+id|FASTPATH
 suffix:semicolon
 r_if
 c_cond
