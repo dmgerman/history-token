@@ -453,10 +453,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|tmr_margin
-op_assign
-id|timeout
-suffix:semicolon
 multiline_comment|/* I think someone must have missed a divide-by-2 in the 2410,&n;&t; * as a divisor of 128 gives half the calculated delay...&n;&t; */
 id|freq
 op_div_assign
@@ -550,6 +546,10 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
+id|tmr_margin
+op_assign
+id|timeout
+suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -1381,7 +1381,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;probe: mapped wdt_base=%px&bslash;n&quot;
+l_string|&quot;probe: mapped wdt_base=%p&bslash;n&quot;
 comma
 id|wdt_base
 )paren
