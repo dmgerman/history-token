@@ -1263,7 +1263,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Card Configured %i or Piggybacking %i!&bslash;n&quot;
+l_string|&quot;%s: Card Configured %lu or Piggybacking %i!&bslash;n&quot;
 comma
 id|wandev-&gt;name
 comma
