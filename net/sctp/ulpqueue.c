@@ -2718,7 +2718,7 @@ suffix:semicolon
 r_else
 id|needed
 op_assign
-id|SCTP_DEFAULT_MAXWINDOW
+id|sctp_rmem
 suffix:semicolon
 id|freed
 op_assign
