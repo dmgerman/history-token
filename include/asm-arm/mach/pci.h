@@ -36,12 +36,6 @@ op_star
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This is the offset of PCI memory base registers&n;&t; * to physical memory.&n;&t; */
-DECL|member|mem_offset
-r_int
-r_int
-id|mem_offset
-suffix:semicolon
 multiline_comment|/* IRQ swizzle */
 DECL|member|swizzle
 id|u8
