@@ -487,12 +487,10 @@ id|count
 OG
 l_int|8192
 )paren
-(brace
 id|count
 op_assign
 l_int|8192
 suffix:semicolon
-)brace
 multiline_comment|/* copy user space data to kernel space. */
 id|tmp
 op_assign

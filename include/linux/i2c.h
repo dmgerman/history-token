@@ -1091,6 +1091,10 @@ DECL|macro|I2C_M_NOSTART
 mdefine_line|#define I2C_M_NOSTART&t;0x4000
 DECL|macro|I2C_M_REV_DIR_ADDR
 mdefine_line|#define I2C_M_REV_DIR_ADDR&t;0x2000
+DECL|macro|I2C_M_IGNORE_NAK
+mdefine_line|#define I2C_M_IGNORE_NAK&t;0x1000
+DECL|macro|I2C_M_NO_RD_ACK
+mdefine_line|#define I2C_M_NO_RD_ACK&t;&t;0x0800
 DECL|member|len
 r_int
 id|len
@@ -1110,7 +1114,7 @@ mdefine_line|#define I2C_FUNC_I2C&t;&t;&t;0x00000001
 DECL|macro|I2C_FUNC_10BIT_ADDR
 mdefine_line|#define I2C_FUNC_10BIT_ADDR&t;&t;0x00000002
 DECL|macro|I2C_FUNC_PROTOCOL_MANGLING
-mdefine_line|#define I2C_FUNC_PROTOCOL_MANGLING&t;0x00000004 /* I2C_M_{REV_DIR_ADDR,NOSTART} */
+mdefine_line|#define I2C_FUNC_PROTOCOL_MANGLING&t;0x00000004 /* I2C_M_{REV_DIR_ADDR,NOSTART,..} */
 DECL|macro|I2C_FUNC_SMBUS_HWPEC_CALC
 mdefine_line|#define I2C_FUNC_SMBUS_HWPEC_CALC&t;0x00000008 /* SMBus 2.0 */
 DECL|macro|I2C_FUNC_SMBUS_READ_WORD_DATA_PEC
