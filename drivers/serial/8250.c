@@ -9906,9 +9906,6 @@ id|isa_dev
 op_assign
 id|serial8250_isa_devs
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 multiline_comment|/*&n;&t; * This tells serial8250_unregister_port() not to re-register&n;&t; * the ports (thereby making serial8250_isa_driver permanently&n;&t; * in use.)&n;&t; */
 id|serial8250_isa_devs
 op_assign
@@ -10120,7 +10117,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Serial: registering port at [%08lx,%08lx,%p] irq %d with zero baud_base&bslash;n&quot;
+l_string|&quot;Serial: registering port at [%08x,%08lx,%p] irq %d with zero baud_base&bslash;n&quot;
 comma
 id|port.iobase
 comma
