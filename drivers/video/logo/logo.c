@@ -91,7 +91,7 @@ id|linux_logo
 op_star
 id|logo
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

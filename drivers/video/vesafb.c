@@ -143,7 +143,7 @@ r_int
 op_star
 id|pmi_base
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 DECL|variable|pmi_start
 r_static

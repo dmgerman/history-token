@@ -370,7 +370,7 @@ l_int|1
 dot
 id|mapping
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|page
 (braket

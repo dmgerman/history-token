@@ -35,7 +35,7 @@ id|poweroff_work
 comma
 id|do_poweroff
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 DECL|function|handle_poweroff

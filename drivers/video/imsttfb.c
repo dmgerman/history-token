@@ -2453,7 +2453,7 @@ suffix:semicolon
 r_default
 suffix:colon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|setclkMHz
@@ -2632,7 +2632,7 @@ suffix:semicolon
 r_default
 suffix:colon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|par-&gt;init

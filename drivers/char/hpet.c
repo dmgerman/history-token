@@ -1280,7 +1280,7 @@ l_int|0
 suffix:semicolon
 id|file-&gt;private_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|0
@@ -2355,7 +2355,7 @@ c_loop
 (paren
 id|devp
 op_assign
-l_int|0
+l_int|NULL
 comma
 id|hpetp
 op_assign
@@ -2430,7 +2430,7 @@ id|devp-&gt;hd_task
 (brace
 id|devp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_continue
 suffix:semicolon
@@ -2670,7 +2670,7 @@ id|HPET_PERIODIC
 suffix:semicolon
 id|devp-&gt;hd_task
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -3117,6 +3117,8 @@ r_struct
 id|hpet_timer
 op_star
 id|timer
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -3148,10 +3150,6 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|timer
-op_assign
-l_int|0
-comma
 id|j
 op_assign
 l_int|0

@@ -182,8 +182,9 @@ suffix:semicolon
 id|status
 op_assign
 id|acpi_get_handle
+c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|ACPI_NS_SYSTEM_BUS
 comma

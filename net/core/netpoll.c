@@ -1042,7 +1042,7 @@ id|netpoll
 op_star
 id|np
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -1086,7 +1086,7 @@ r_break
 suffix:semicolon
 id|np
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|spin_unlock_irqrestore
@@ -2005,7 +2005,7 @@ c_func
 (paren
 id|cur
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|10
 )paren
@@ -2207,7 +2207,7 @@ c_func
 (paren
 id|cur
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|10
 )paren
@@ -2335,7 +2335,7 @@ c_func
 (paren
 id|cur
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|16
 )paren
@@ -2381,7 +2381,7 @@ c_func
 (paren
 id|cur
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|16
 )paren
@@ -2427,7 +2427,7 @@ c_func
 (paren
 id|cur
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|16
 )paren
@@ -2473,7 +2473,7 @@ c_func
 (paren
 id|cur
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|16
 )paren
@@ -2519,7 +2519,7 @@ c_func
 (paren
 id|cur
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|16
 )paren
@@ -2540,7 +2540,7 @@ c_func
 (paren
 id|cur
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|16
 )paren
@@ -3086,7 +3086,7 @@ id|np-&gt;dev
 suffix:semicolon
 id|np-&gt;dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|netpoll_trap
