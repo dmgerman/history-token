@@ -36,6 +36,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 DECL|macro|BAR_0
