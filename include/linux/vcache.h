@@ -87,7 +87,7 @@ id|new_page
 suffix:semicolon
 r_extern
 r_void
-id|detach_vcache
+id|__detach_vcache
 c_func
 (paren
 id|vcache_t
