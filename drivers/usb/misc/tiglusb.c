@@ -1,7 +1,6 @@
 multiline_comment|/* Hey EMACS -*- linux-c -*-&n; *&n; * tiglusb -- Texas Instruments&squot; USB GraphLink (aka SilverLink) driver.&n; * Target: Texas Instruments graphing calculators (http://lpg.ticalc.org).&n; *&n; * Copyright (C) 2001-2002:&n; *   Romain Lievin &lt;roms@lpg.ticalc.org&gt;&n; *   Julien BLACHE &lt;jb@technologeek.org&gt;&n; * under the terms of the GNU General Public License.&n; *&n; * Based on dabusb.c, printer.c &amp; scanner.c&n; *&n; * Please see the file: linux/Documentation/usb/SilverLink.txt&n; * and the website at:  http://lpg.ticalc.org/prj_usb/&n; * for more info.&n; *&n; * History :&n; *   1.0x, Romain &amp; Julien: initial submit.&n; *   1.03, Greg Kroah: modifications.&n; *   1.04, Julien: clean-up &amp; fixes; Romain: 2.4 backport.&n; *   1.05, Randy Dunlap: bug fix with the timeout parameter (divide-by-zero).&n; *   1.06, Romain: synched with 2.5, version/firmware changed (confusing).&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
-macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

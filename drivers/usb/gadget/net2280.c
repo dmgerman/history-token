@@ -5,6 +5,7 @@ multiline_comment|/*&n; * Copyright (C) 2003 David Brownell&n; *&n; * This progr
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG&t;1
 singleline_comment|// #define&t;VERBOSE&t;&t;/* extra debug messages (success too) */
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;

@@ -3,7 +3,6 @@ multiline_comment|/*&n; *      dabusb.c  --  dab usb driver.&n; *&n; *      Copy
 multiline_comment|/*****************************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
-macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
