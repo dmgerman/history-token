@@ -1679,7 +1679,6 @@ id|cifsInodeInfo
 op_star
 id|pCifsInode
 suffix:semicolon
-multiline_comment|/* BB Add following logic to mark inode for write through &n;              &t;&t;    inode-&gt;i_data.a_ops = &amp;cifs_addr_ops_writethrough; */
 id|read_unlock
 c_func
 (paren

@@ -499,9 +499,13 @@ c_func
 id|findData.EndOfFile
 )paren
 suffix:semicolon
-id|inode-&gt;i_size
-op_assign
+id|i_size_write
+c_func
+(paren
+id|inode
+comma
 id|findData.EndOfFile
+)paren
 suffix:semicolon
 multiline_comment|/* blksize needs to be multiple of two. So safer to default to blksize&n;&t;and blkbits set in superblock so 2**blkbits and blksize will match */
 multiline_comment|/*&t;&t;inode-&gt;i_blksize =&n;&t;&t;    (pTcon-&gt;ses-&gt;server-&gt;maxBuf - MAX_CIFS_HDR_SIZE) &amp; 0xFFFFFE00;*/
@@ -1222,12 +1226,16 @@ suffix:semicolon
 )brace
 multiline_comment|/* BB add code here - validate if device or weird share or device type? */
 )brace
-id|inode-&gt;i_size
-op_assign
+id|i_size_write
+c_func
+(paren
+id|inode
+comma
 id|le64_to_cpu
 c_func
 (paren
 id|pfindData-&gt;EndOfFile
+)paren
 )paren
 suffix:semicolon
 id|pfindData-&gt;AllocationSize
@@ -2294,9 +2302,13 @@ id|rc
 id|inode-&gt;i_nlink
 op_decrement
 suffix:semicolon
-id|direntry-&gt;d_inode-&gt;i_size
-op_assign
+id|i_size_write
+c_func
+(paren
+id|direntry-&gt;d_inode
+comma
 l_int|0
+)paren
 suffix:semicolon
 id|direntry-&gt;d_inode-&gt;i_nlink
 op_assign
