@@ -280,6 +280,46 @@ id|again
 suffix:semicolon
 multiline_comment|/* PROM is out to get me -DaveM */
 )brace
+r_void
+DECL|function|prom_halt_power_off
+id|prom_halt_power_off
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_SMP
+id|smp_promstop_others
+c_func
+(paren
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|8000
+)paren
+suffix:semicolon
+macro_line|#endif
+id|p1275_cmd
+(paren
+l_string|&quot;SUNW,power-off&quot;
+comma
+id|P1275_INOUT
+c_func
+(paren
+l_int|0
+comma
+l_int|0
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* if nothing else helps, we just halt */
+id|prom_halt
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Set prom sync handler to call function &squot;funcp&squot;. */
 r_void
 DECL|function|prom_setcallback
