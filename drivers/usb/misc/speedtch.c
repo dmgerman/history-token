@@ -578,6 +578,11 @@ id|proc_read
 op_assign
 id|udsl_atm_proc_read
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* USB */
@@ -632,6 +637,11 @@ id|usb_driver
 id|udsl_usb_driver
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|name
 op_assign
