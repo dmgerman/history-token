@@ -2807,37 +2807,6 @@ comma
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Reassert NMI in case it became active meanwhile&n;&t; * as it&squot;s edge-triggered.&n;&t; */
-id|outb
-c_func
-(paren
-l_int|0x8f
-comma
-l_int|0x70
-)paren
-suffix:semicolon
-id|inb
-c_func
-(paren
-l_int|0x71
-)paren
-suffix:semicolon
-multiline_comment|/* dummy */
-id|outb
-c_func
-(paren
-l_int|0x0f
-comma
-l_int|0x70
-)paren
-suffix:semicolon
-id|inb
-c_func
-(paren
-l_int|0x71
-)paren
-suffix:semicolon
-multiline_comment|/* dummy */
 )brace
 DECL|function|do_int3
 id|asmlinkage
