@@ -29879,24 +29879,9 @@ c_func
 id|MAJOR_NR
 comma
 id|major_name
-comma
-op_amp
-id|sbpcd_bdops
 )paren
-op_ne
-l_int|0
 )paren
 (brace
-id|msg
-c_func
-(paren
-id|DBG_INF
-comma
-l_string|&quot;Can&squot;t get MAJOR %d for Matsushita CDROM&bslash;n&quot;
-comma
-id|MAJOR_NR
-)paren
-suffix:semicolon
 macro_line|#ifdef MODULE
 r_return
 op_minus

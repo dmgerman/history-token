@@ -2307,26 +2307,12 @@ c_func
 id|MAJOR_NR
 comma
 id|DEVICE_NAME
-comma
-op_amp
-id|mtd_fops
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;Can&squot;t allocate major number %d for Memory Technology Devices.&bslash;n&quot;
-comma
-id|MTD_BLOCK_MAJOR
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|devfs_mk_dir
 c_func

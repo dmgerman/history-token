@@ -5799,7 +5799,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -5813,29 +5812,13 @@ id|i
 )paren
 comma
 l_string|&quot;sd&quot;
-comma
-op_amp
-id|sd_fops
 )paren
+op_eq
+l_int|0
 )paren
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;Unable to get major %d for SCSI disk&bslash;n&quot;
-comma
-id|sd_major
-c_func
-(paren
-id|i
-)paren
-)paren
-suffix:semicolon
-r_else
 id|majors
 op_increment
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5874,7 +5857,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;exit_sd - exit point for this driver (when it is&t;a module).&n; *&n; *&t;Note: this function unregisters this driver from the scsi mid-level.&n; **/
+multiline_comment|/**&n; *&t;exit_sd - exit point for this driver (when it is a module).&n; *&n; *&t;Note: this function unregisters this driver from the scsi mid-level.&n; **/
 DECL|function|exit_sd
 r_static
 r_void

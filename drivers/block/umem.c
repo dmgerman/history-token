@@ -4830,9 +4830,6 @@ c_func
 l_int|0
 comma
 l_string|&quot;umem&quot;
-comma
-op_amp
-id|mm_fops
 )paren
 suffix:semicolon
 r_if
@@ -4842,19 +4839,10 @@ id|err
 OL
 l_int|0
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;MM: Could not register block device&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EIO
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren

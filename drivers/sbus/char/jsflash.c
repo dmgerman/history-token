@@ -2081,20 +2081,9 @@ c_func
 id|JSFD_MAJOR
 comma
 l_string|&quot;jsfd&quot;
-comma
-op_amp
-id|jsfd_fops
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;jsfd_init: unable to get major number %d&bslash;n&quot;
-comma
-id|JSFD_MAJOR
-)paren
-suffix:semicolon
 id|err
 op_assign
 op_minus

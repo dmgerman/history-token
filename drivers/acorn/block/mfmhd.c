@@ -5028,9 +5028,6 @@ c_func
 id|MAJOR_NR
 comma
 l_string|&quot;mfm&quot;
-comma
-op_amp
-id|mfm_fops
 )paren
 suffix:semicolon
 r_if
@@ -5038,19 +5035,9 @@ c_cond
 (paren
 id|ret
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;mfm_init: unable to get major number %d&bslash;n&quot;
-comma
-id|MAJOR_NR
-)paren
-suffix:semicolon
 r_goto
 id|out2
 suffix:semicolon
-)brace
 multiline_comment|/* Stuff for the assembler routines to get to */
 id|hdc63463_baseaddress
 op_assign
