@@ -1823,6 +1823,11 @@ id|ciscohdlck_ops
 op_assign
 (brace
 dot
+id|hard_start_xmit
+op_assign
+id|isdn_net_start_xmit
+comma
+dot
 id|hard_header
 op_assign
 id|isdn_ciscohdlck_header

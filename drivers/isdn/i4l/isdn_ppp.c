@@ -5120,9 +5120,10 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * send ppp frame .. we expect a PIDCOMPressable proto --&n; *  (here: currently always PPP_IP,PPP_VJC_COMP,PPP_VJC_UNCOMP)&n; *&n; * VJ compression may change skb pointer!!! .. requeue with old&n; * skb isn&squot;t allowed!!&n; */
+r_static
 r_int
-DECL|function|isdn_ppp_xmit
-id|isdn_ppp_xmit
+DECL|function|isdn_ppp_start_xmit
+id|isdn_ppp_start_xmit
 c_func
 (paren
 r_struct
@@ -5133,14 +5134,14 @@ comma
 r_struct
 id|net_device
 op_star
-id|netdev
+id|ndev
 )paren
 (brace
 id|isdn_net_local
 op_star
 id|mlp
 op_assign
-id|netdev-&gt;priv
+id|ndev-&gt;priv
 suffix:semicolon
 id|isdn_net_dev
 op_star
@@ -5260,7 +5261,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: IP frame delayed.&bslash;n&quot;
 comma
-id|netdev-&gt;name
+id|ndev-&gt;name
 )paren
 suffix:semicolon
 id|netif_stop_queue
@@ -5344,7 +5345,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: all channels busy - requeuing!&bslash;n&quot;
 comma
-id|netdev-&gt;name
+id|ndev-&gt;name
 )paren
 suffix:semicolon
 id|netif_stop_queue
@@ -12560,6 +12561,11 @@ id|isdn_netif_ops
 id|isdn_ppp_ops
 op_assign
 (brace
+dot
+id|hard_start_xmit
+op_assign
+id|isdn_ppp_start_xmit
+comma
 dot
 id|hard_header
 op_assign
