@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/acpi.h&gt;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 DECL|macro|ACPI_MAX_TABLES
-mdefine_line|#define ACPI_MAX_TABLES&t;&t;ACPI_TABLE_COUNT
+mdefine_line|#define ACPI_MAX_TABLES&t;&t;256
 DECL|variable|acpi_table_signatures
 r_static
 r_char
@@ -1288,9 +1288,9 @@ id|PREFIX
 l_string|&quot;Truncated %lu XSDT entries&bslash;n&quot;
 comma
 (paren
-id|ACPI_MAX_TABLES
-op_minus
 id|sdt.count
+op_minus
+id|ACPI_MAX_TABLES
 )paren
 )paren
 suffix:semicolon
@@ -1510,9 +1510,9 @@ id|PREFIX
 l_string|&quot;Truncated %lu RSDT entries&bslash;n&quot;
 comma
 (paren
-id|ACPI_TABLE_COUNT
-op_minus
 id|sdt.count
+op_minus
+id|ACPI_TABLE_COUNT
 )paren
 )paren
 suffix:semicolon
