@@ -6,12 +6,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#ifdef CONFIG_HIGHMEM
-r_extern
-r_struct
-id|page
-op_star
-id|highmem_start_page
-suffix:semicolon
 macro_line|#include &lt;asm/highmem.h&gt;
 multiline_comment|/* declarations for linux/mm/highmem.c */
 r_int

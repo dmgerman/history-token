@@ -145,14 +145,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|highmem_start_page
-op_assign
-id|virt_to_page
-c_func
-(paren
-id|highmem_start
-)paren
-suffix:semicolon
 id|highmem_pfn
 op_assign
 id|__pa

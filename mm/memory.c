@@ -59,12 +59,6 @@ r_void
 op_star
 id|high_memory
 suffix:semicolon
-DECL|variable|highmem_start_page
-r_struct
-id|page
-op_star
-id|highmem_start_page
-suffix:semicolon
 DECL|variable|vmalloc_earlyreserve
 r_int
 r_int
@@ -75,13 +69,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|num_physpages
-)paren
-suffix:semicolon
-DECL|variable|highmem_start_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|highmem_start_page
 )paren
 suffix:semicolon
 DECL|variable|high_memory

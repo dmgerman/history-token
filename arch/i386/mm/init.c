@@ -2198,14 +2198,6 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_HIGHMEM
-id|highmem_start_page
-op_assign
-id|pfn_to_page
-c_func
-(paren
-id|highstart_pfn
-)paren
-suffix:semicolon
 id|max_mapnr
 op_assign
 id|num_physpages
