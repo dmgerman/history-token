@@ -712,10 +712,6 @@ id|retval-&gt;highmem_io
 op_assign
 id|tpnt-&gt;highmem_io
 suffix:semicolon
-id|retval-&gt;select_queue_depths
-op_assign
-id|tpnt-&gt;select_queue_depths
-suffix:semicolon
 id|retval-&gt;max_sectors
 op_assign
 id|tpnt-&gt;max_sectors
