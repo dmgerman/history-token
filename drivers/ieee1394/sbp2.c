@@ -10130,11 +10130,6 @@ id|emulated
 op_assign
 l_int|1
 comma
-dot
-id|highmem_io
-op_assign
-l_int|1
-comma
 )brace
 suffix:semicolon
 DECL|function|sbp2_module_init
