@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: speedstep.c,v 1.57 2002/11/05 12:01:12 db Exp $&n; *&n; * (C) 2001  Dave Jones, Arjan van de ven.&n; * (C) 2002  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon reverse engineered information, and on Intel documentation&n; *  for chipsets ICH2-M and ICH3-M.&n; *&n; *  Many thanks to Ducrot Bruno for finding and fixing the last&n; *  &quot;missing link&quot; for ICH2-M/ICH3-M support, and to Thomas Winkler &n; *  for extensive testing.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  $Id: speedstep.c,v 1.58 2002/11/11 15:35:46 db Exp $&n; *&n; * (C) 2001  Dave Jones, Arjan van de ven.&n; * (C) 2002  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon reverse engineered information, and on Intel documentation&n; *  for chipsets ICH2-M and ICH3-M.&n; *&n; *  Many thanks to Ducrot Bruno for finding and fixing the last&n; *  &quot;missing link&quot; for ICH2-M/ICH3-M support, and to Thomas Winkler &n; *  for extensive testing.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 multiline_comment|/*********************************************************************&n; *                        SPEEDSTEP - DEFINITIONS                    *&n; *********************************************************************/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
@@ -1690,7 +1690,7 @@ suffix:semicolon
 multiline_comment|/**&n; * speedstep_setpolicy - set a new CPUFreq policy&n; * @policy: new policy&n; *&n; * Sets a new CPUFreq policy.&n; */
 DECL|function|speedstep_setpolicy
 r_static
-r_void
+r_int
 id|speedstep_setpolicy
 (paren
 r_struct
@@ -1709,6 +1709,8 @@ op_logical_neg
 id|policy
 )paren
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -1771,11 +1773,14 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * speedstep_verify - verifies a new CPUFreq policy&n; * @freq: new policy&n; *&n; * Limit must be within speedstep_low_freq and speedstep_high_freq, with&n; * at least one border included.&n; */
 DECL|function|speedstep_verify
 r_static
-r_void
+r_int
 id|speedstep_verify
 (paren
 r_struct
@@ -1800,6 +1805,8 @@ op_logical_neg
 id|speedstep_high_freq
 )paren
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 id|policy-&gt;cpu
 op_assign
@@ -1836,6 +1843,7 @@ op_assign
 id|speedstep_high_freq
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
@@ -1940,17 +1948,6 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;a 0x%x b 0x%x&bslash;n&quot;
-comma
-id|speedstep_processor
-comma
-id|speedstep_chipset
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
 l_string|&quot;cpufreq: Intel(R) SpeedStep(TM) for this %s not (yet) available.&bslash;n&quot;
 comma
 id|speedstep_chipset
@@ -1970,7 +1967,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cpufreq: Intel(R) SpeedStep(TM) support $Revision: 1.57 $&bslash;n&quot;
+l_string|&quot;cpufreq: Intel(R) SpeedStep(TM) support $Revision: 1.58 $&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dprintk
@@ -2119,6 +2116,9 @@ l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 id|driver-&gt;cpu_min_freq
+(braket
+l_int|0
+)braket
 op_assign
 id|speedstep_low_freq
 suffix:semicolon
@@ -2194,6 +2194,10 @@ id|CPUFREQ_POLICY_POWERSAVE
 suffix:colon
 id|CPUFREQ_POLICY_PERFORMANCE
 suffix:semicolon
+id|speedstep_driver
+op_assign
+id|driver
+suffix:semicolon
 id|result
 op_assign
 id|cpufreq_register
@@ -2208,22 +2212,19 @@ c_cond
 id|result
 )paren
 (brace
+id|speedstep_driver
+op_assign
+l_int|NULL
+suffix:semicolon
 id|kfree
 c_func
 (paren
 id|driver
 )paren
 suffix:semicolon
+)brace
 r_return
 id|result
-suffix:semicolon
-)brace
-id|speedstep_driver
-op_assign
-id|driver
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * speedstep_exit - unregisters SpeedStep support&n; *&n; *   Unregisters SpeedStep support.&n; */

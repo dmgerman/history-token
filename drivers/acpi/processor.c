@@ -5093,7 +5093,7 @@ suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                               cpufreq interface&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_PROCESSOR_PERF
 r_static
-r_void
+r_int
 DECL|function|acpi_cpufreq_setpolicy
 id|acpi_cpufreq_setpolicy
 (paren
@@ -5146,7 +5146,12 @@ c_cond
 op_logical_neg
 id|policy
 )paren
-id|return_VOID
+id|return_VALUE
+c_func
+(paren
+op_minus
+id|EINVAL
+)paren
 suffix:semicolon
 multiline_comment|/* get a present, initialized CPU */
 r_if
@@ -5218,7 +5223,12 @@ c_cond
 op_logical_neg
 id|pr
 )paren
-id|return_VOID
+id|return_VALUE
+c_func
+(paren
+op_minus
+id|EINVAL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* select appropriate P-State */
@@ -5411,11 +5421,15 @@ id|next_state
 )paren
 suffix:semicolon
 )brace
-id|return_VOID
+id|return_VALUE
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|acpi_cpufreq_verify
 id|acpi_cpufreq_verify
 (paren
@@ -5468,7 +5482,12 @@ c_cond
 op_logical_neg
 id|policy
 )paren
-id|return_VOID
+id|return_VALUE
+c_func
+(paren
+op_minus
+id|EINVAL
+)paren
 suffix:semicolon
 multiline_comment|/* get a present, initialized CPU */
 r_if
@@ -5540,7 +5559,12 @@ c_cond
 op_logical_neg
 id|pr
 )paren
-id|return_VOID
+id|return_VALUE
+c_func
+(paren
+op_minus
+id|EINVAL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* first check if min and max are within valid limits */
@@ -5632,10 +5656,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|number_states
 )paren
-id|return_VOID
-suffix:semicolon
+(brace
 multiline_comment|/* round up now */
 id|policy-&gt;max
 op_assign
@@ -5648,7 +5672,12 @@ id|core_frequency
 op_star
 l_int|1000
 suffix:semicolon
-id|return_VOID
+)brace
+id|return_VALUE
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -5914,19 +5943,6 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-id|driver-&gt;cpu_min_freq
-op_assign
-id|pr-&gt;performance.states
-(braket
-id|pr-&gt;performance.state_count
-op_minus
-l_int|1
-)braket
-dot
-id|core_frequency
-op_star
-l_int|1000
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5941,6 +5957,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|driver-&gt;cpu_cur_freq
 (braket
 l_int|0
@@ -5955,6 +5972,23 @@ id|core_frequency
 op_star
 l_int|1000
 suffix:semicolon
+id|driver-&gt;cpu_min_freq
+(braket
+l_int|0
+)braket
+op_assign
+id|pr-&gt;performance.states
+(braket
+id|pr-&gt;performance.state_count
+op_minus
+l_int|1
+)braket
+dot
+id|core_frequency
+op_star
+l_int|1000
+suffix:semicolon
+)brace
 macro_line|#endif
 id|driver-&gt;verify
 op_assign

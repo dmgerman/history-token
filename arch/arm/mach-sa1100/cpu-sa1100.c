@@ -387,7 +387,7 @@ suffix:semicolon
 )brace
 DECL|function|sa1100_setspeed
 r_static
-r_void
+r_int
 id|sa1100_setspeed
 c_func
 (paren
@@ -480,6 +480,9 @@ comma
 id|CPUFREQ_POSTCHANGE
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|sa1100_policy
 r_static
@@ -530,6 +533,9 @@ id|sa1100_policy
 comma
 dot
 id|cpu_min_freq
+(braket
+l_int|0
+)braket
 op_assign
 l_int|59000
 comma
@@ -563,7 +569,7 @@ op_eq
 id|CPU_SA1100_ID
 )paren
 (brace
-id|sa1100_driver.cpu_curr_freq
+id|sa1100_driver.cpu_cur_freq
 (braket
 l_int|0
 )braket
