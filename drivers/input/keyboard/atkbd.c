@@ -4393,7 +4393,7 @@ id|atkbd-&gt;dev.keybit
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * atkbd_connect() is called when the serio module finds and interface&n; * that isn&squot;t handled yet by an appropriate device driver. We check if&n; * there is an AT keyboard out there and if yes, we register ourselves&n; * to the input module.&n; */
+multiline_comment|/*&n; * atkbd_connect() is called when the serio module finds an interface&n; * that isn&squot;t handled yet by an appropriate device driver. We check if&n; * there is an AT keyboard out there and if yes, we register ourselves&n; * to the input module.&n; */
 DECL|function|atkbd_connect
 r_static
 r_int
