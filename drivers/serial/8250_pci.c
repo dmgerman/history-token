@@ -1975,7 +1975,7 @@ comma
 id|bar
 )paren
 op_minus
-id|board-&gt;uart_offset
+id|board-&gt;first_offset
 )paren
 op_div
 (paren
