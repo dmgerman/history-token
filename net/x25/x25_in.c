@@ -50,7 +50,8 @@ id|skbn
 op_assign
 id|skb
 suffix:semicolon
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -316,7 +317,8 @@ r_case
 id|X25_CALL_ACCEPTED
 suffix:colon
 (brace
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -614,7 +616,8 @@ suffix:semicolon
 r_int
 id|modulus
 suffix:semicolon
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -1191,7 +1194,8 @@ r_case
 id|X25_RESET_CONFIRMATION
 suffix:colon
 (brace
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -1297,7 +1301,8 @@ op_star
 id|skb
 )paren
 (brace
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign

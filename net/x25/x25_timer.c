@@ -114,7 +114,8 @@ op_star
 id|sk
 )paren
 (brace
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -169,7 +170,8 @@ op_star
 id|sk
 )paren
 (brace
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -224,7 +226,8 @@ op_star
 id|sk
 )paren
 (brace
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -279,7 +282,8 @@ op_star
 id|sk
 )paren
 (brace
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -360,7 +364,8 @@ op_star
 id|sk
 )paren
 (brace
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -514,7 +519,8 @@ op_star
 id|sk
 )paren
 (brace
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign

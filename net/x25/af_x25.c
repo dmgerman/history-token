@@ -1650,7 +1650,8 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 suffix:semicolon
@@ -1808,7 +1809,8 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 suffix:semicolon
@@ -1963,7 +1965,8 @@ id|sk
 op_assign
 l_int|NULL
 suffix:semicolon
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 comma
@@ -2113,7 +2116,8 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 suffix:semicolon
@@ -2364,7 +2368,8 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -2387,9 +2392,9 @@ op_star
 id|uaddr
 suffix:semicolon
 r_struct
-id|net_device
+id|x25_route
 op_star
-id|dev
+id|rt
 suffix:semicolon
 r_int
 id|rc
@@ -2494,7 +2499,7 @@ op_assign
 op_minus
 id|ENETUNREACH
 suffix:semicolon
-id|dev
+id|rt
 op_assign
 id|x25_get_route
 c_func
@@ -2507,7 +2512,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev
+id|rt
 )paren
 r_goto
 id|out
@@ -2517,7 +2522,7 @@ op_assign
 id|x25_get_neigh
 c_func
 (paren
-id|dev
+id|rt-&gt;dev
 )paren
 suffix:semicolon
 r_if
@@ -2527,7 +2532,7 @@ op_logical_neg
 id|x25-&gt;neighbour
 )paren
 r_goto
-id|out
+id|out_put_route
 suffix:semicolon
 id|x25_limit_facilities
 c_func
@@ -2553,7 +2558,7 @@ op_logical_neg
 id|x25-&gt;lci
 )paren
 r_goto
-id|out
+id|out_put_route
 suffix:semicolon
 id|rc
 op_assign
@@ -2567,7 +2572,7 @@ id|sk-&gt;zapped
 )paren
 multiline_comment|/* Must bind first - autobinding does not work */
 r_goto
-id|out
+id|out_put_route
 suffix:semicolon
 r_if
 c_cond
@@ -2649,7 +2654,7 @@ id|O_NONBLOCK
 )paren
 )paren
 r_goto
-id|out
+id|out_put_route
 suffix:semicolon
 id|cli
 c_func
@@ -2729,6 +2734,14 @@ suffix:colon
 id|sti
 c_func
 (paren
+)paren
+suffix:semicolon
+id|out_put_route
+suffix:colon
+id|x25_route_put
+c_func
+(paren
+id|rt
 )paren
 suffix:semicolon
 id|out
@@ -2988,7 +3001,8 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -3072,7 +3086,8 @@ id|sock
 op_star
 id|make
 suffix:semicolon
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|makex25
 suffix:semicolon
@@ -3392,7 +3407,8 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -4180,7 +4196,8 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -4529,7 +4546,8 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -5231,7 +5249,8 @@ op_assign
 id|s-&gt;next
 )paren
 (brace
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
