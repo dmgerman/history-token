@@ -37,6 +37,11 @@ r_int
 r_int
 id|sc_er3
 suffix:semicolon
+DECL|member|sc_er5
+r_int
+r_int
+id|sc_er5
+suffix:semicolon
 DECL|member|sc_ccr
 r_int
 r_int
