@@ -60,7 +60,7 @@ id|device_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/**&n; * found_match - do actual binding of device to driver&n; * @dev:&t;device &n; * @drv:&t;driver&n; *&n; * We&squot;re here because the bus&squot;s bind callback returned success for this &n; * pair. We call the driver&squot;s probe callback to verify they&squot;re really a&n; * match made in heaven.&n; *&n; * In the future, we may want to notify userspace of the binding. (But, &n; * we might not want to do it here).&n; * &n; * We may also want to create a symlink in the driver&squot;s directory to the &n; * device&squot;s physical directory.&n; */
+multiline_comment|/**&n; * found_match - do actual binding of device to driver&n; * @dev:&t;device &n; * @drv:&t;driver&n; *&n; * We&squot;re here because the bus&squot;s match callback returned success for this &n; * pair. We call the driver&squot;s probe callback to verify they&squot;re really a&n; * match made in heaven.&n; *&n; * In the future, we may want to notify userspace of the binding. (But, &n; * we might not want to do it here).&n; * &n; * We may also want to create a symlink in the driver&squot;s directory to the &n; * device&squot;s physical directory.&n; */
 DECL|function|found_match
 r_static
 r_int
@@ -165,11 +165,11 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * bind_device - try to associated device with a driver&n; * @drv:&t;current driver to try&n; * @data:&t;device in disguise&n; *&n; * This function is used as a callback to bus_for_each_drv.&n; * It calls the bus&squot;s ::bind callback to check if the driver supports&n; * the device. If so, it calls the found_match() function above to &n; * take care of all the details.&n; */
-DECL|function|do_device_bind
+multiline_comment|/**&n; * device_attach - try to associated device with a driver&n; * @drv:&t;current driver to try&n; * @data:&t;device in disguise&n; *&n; * This function is used as a callback to bus_for_each_drv.&n; * It calls the bus&squot;s match callback to check if the driver supports&n; * the device. If so, it calls the found_match() function above to &n; * take care of all the details.&n; */
+DECL|function|do_device_attach
 r_static
 r_int
-id|do_device_bind
+id|do_device_attach
 c_func
 (paren
 r_struct
@@ -209,11 +209,11 @@ id|dev-&gt;driver
 r_if
 c_cond
 (paren
-id|drv-&gt;bus-&gt;bind
+id|drv-&gt;bus-&gt;match
 op_logical_and
 id|drv-&gt;bus
 op_member_access_from_pointer
-id|bind
+id|match
 c_func
 (paren
 id|dev
@@ -236,10 +236,10 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|device_bind
+DECL|function|device_attach
 r_static
 r_int
-id|device_bind
+id|device_attach
 c_func
 (paren
 r_struct
@@ -267,17 +267,17 @@ id|dev-&gt;bus
 comma
 id|dev
 comma
-id|do_device_bind
+id|do_device_attach
 )paren
 suffix:semicolon
 r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|device_unbind
+DECL|function|device_detach
 r_static
 r_void
-id|device_unbind
+id|device_detach
 c_func
 (paren
 r_struct
@@ -286,7 +286,7 @@ op_star
 id|dev
 )paren
 (brace
-multiline_comment|/* unbind from driver */
+multiline_comment|/* detach from driver */
 r_if
 c_cond
 (paren
@@ -303,10 +303,10 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-DECL|function|do_driver_bind
+DECL|function|do_driver_attach
 r_static
 r_int
-id|do_driver_bind
+id|do_driver_attach
 c_func
 (paren
 r_struct
@@ -346,11 +346,11 @@ id|dev-&gt;driver
 r_if
 c_cond
 (paren
-id|dev-&gt;bus-&gt;bind
+id|dev-&gt;bus-&gt;match
 op_logical_and
 id|dev-&gt;bus
 op_member_access_from_pointer
-id|bind
+id|match
 c_func
 (paren
 id|dev
@@ -373,9 +373,9 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|driver_bind
+DECL|function|driver_attach
 r_int
-id|driver_bind
+id|driver_attach
 c_func
 (paren
 r_struct
@@ -392,14 +392,14 @@ id|drv-&gt;bus
 comma
 id|drv
 comma
-id|do_driver_bind
+id|do_driver_attach
 )paren
 suffix:semicolon
 )brace
-DECL|function|do_driver_unbind
+DECL|function|do_driver_detach
 r_static
 r_int
-id|do_driver_unbind
+id|do_driver_detach
 c_func
 (paren
 r_struct
@@ -462,9 +462,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|driver_unbind
+DECL|function|driver_detach
 r_void
-id|driver_unbind
+id|driver_detach
 c_func
 (paren
 r_struct
@@ -562,7 +562,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|do_driver_unbind
+id|do_driver_detach
 c_func
 (paren
 id|dev
@@ -808,7 +808,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* bind to driver */
-id|device_bind
+id|device_attach
 c_func
 (paren
 id|dev
@@ -922,7 +922,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|device_unbind
+id|device_detach
 c_func
 (paren
 id|dev

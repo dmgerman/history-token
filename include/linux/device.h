@@ -93,11 +93,11 @@ r_struct
 id|driver_dir_entry
 id|driver_dir
 suffix:semicolon
-DECL|member|bind
+DECL|member|match
 r_int
 (paren
 op_star
-id|bind
+id|match
 )paren
 (paren
 r_struct

@@ -308,7 +308,7 @@ c_func
 id|drv
 )paren
 suffix:semicolon
-id|driver_bind
+id|driver_attach
 c_func
 (paren
 id|drv
@@ -352,7 +352,7 @@ comma
 id|drv-&gt;bus-&gt;name
 )paren
 suffix:semicolon
-id|driver_unbind
+id|driver_detach
 c_func
 (paren
 id|drv
