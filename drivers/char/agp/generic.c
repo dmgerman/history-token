@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * AGPGART driver.&n; * Copyright (C) 2002-2003 Dave Jones.&n; * Copyright (C) 1999 Jeff Hartmann.&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * TODO: &n; * - Allocate more than order 0 pages to avoid too much linear map splitting.&n; */
+multiline_comment|/*&n; * AGPGART driver.&n; * Copyright (C) 2002-2004 Dave Jones.&n; * Copyright (C) 1999 Jeff Hartmann.&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM,&n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR&n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE&n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * TODO:&n; * - Allocate more than order 0 pages to avoid too much linear map splitting.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -26,7 +26,7 @@ c_func
 id|agp_memory_reserved
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * Generic routines for handling agp_memory structures -&n; * They use the basic page allocation routines to do the brunt of the work.&n; */
+multiline_comment|/*&n; * Generic routines for handling agp_memory structures -&n; * They use the basic page allocation routines to do the brunt of the work.&n; */
 DECL|function|agp_free_key
 r_void
 id|agp_free_key
@@ -387,7 +387,7 @@ id|agp_free_memory
 suffix:semicolon
 DECL|macro|ENTRIES_PER_PAGE
 mdefine_line|#define ENTRIES_PER_PAGE&t;&t;(PAGE_SIZE / sizeof(unsigned long))
-multiline_comment|/**&n; *&t;agp_allocate_memory  -  allocate a group of pages of a certain type.&n; *&n; *&t;@page_count:&t;size_t argument of the number of pages&n; *&t;@type:&t;u32 argument of the type of memory to be allocated.  &n; *&n; *&t;Every agp bridge device will allow you to allocate AGP_NORMAL_MEMORY which&n; *&t;maps to physical ram.  Any other type is device dependent.&n; *&n; *&t;It returns NULL whenever memory is unavailable. &n; */
+multiline_comment|/**&n; *&t;agp_allocate_memory  -  allocate a group of pages of a certain type.&n; *&n; *&t;@page_count:&t;size_t argument of the number of pages&n; *&t;@type:&t;u32 argument of the type of memory to be allocated.&n; *&n; *&t;Every agp bridge device will allow you to allocate AGP_NORMAL_MEMORY which&n; *&t;maps to physical ram.  Any other type is device dependent.&n; *&n; *&t;It returns NULL whenever memory is unavailable.&n; */
 DECL|function|agp_allocate_memory
 r_struct
 id|agp_memory
@@ -977,7 +977,7 @@ id|agp_copy_info
 suffix:semicolon
 multiline_comment|/* End - Routine to copy over information structure */
 multiline_comment|/*&n; * Routines for handling swapping of agp_memory into the GATT -&n; * These routines take agp_memory and insert them into the GATT.&n; * They call device specific routines to actually write to the GATT.&n; */
-multiline_comment|/**&n; *&t;agp_bind_memory  -  Bind an agp_memory structure into the GATT.&n; * &n; *&t;@curr:&t;&t;agp_memory pointer&n; *&t;@pg_start:&t;an offset into the graphics aperture translation table&n; *&n; *&t;It returns -EINVAL if the pointer == NULL.&n; *&t;It returns -EBUSY if the area of the table requested is already in use.&n; */
+multiline_comment|/**&n; *&t;agp_bind_memory  -  Bind an agp_memory structure into the GATT.&n; *&n; *&t;@curr:&t;&t;agp_memory pointer&n; *&t;@pg_start:&t;an offset into the graphics aperture translation table&n; *&n; *&t;It returns -EINVAL if the pointer == NULL.&n; *&t;It returns -EBUSY if the area of the table requested is already in use.&n; */
 DECL|function|agp_bind_memory
 r_int
 id|agp_bind_memory
@@ -1099,7 +1099,7 @@ c_func
 id|agp_bind_memory
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;agp_unbind_memory  -  Removes an agp_memory structure from the GATT&n; * &n; * @curr:&t;agp_memory pointer to be removed from the GATT.&n; * &n; * It returns -EINVAL if this piece of agp_memory is not currently bound to&n; * the graphics aperture translation table or if the agp_memory pointer == NULL&n; */
+multiline_comment|/**&n; *&t;agp_unbind_memory  -  Removes an agp_memory structure from the GATT&n; *&n; * @curr:&t;agp_memory pointer to be removed from the GATT.&n; *&n; * It returns -EINVAL if this piece of agp_memory is not currently bound to&n; * the graphics aperture translation table or if the agp_memory pointer == NULL&n; */
 DECL|function|agp_unbind_memory
 r_int
 id|agp_unbind_memory
@@ -1410,8 +1410,9 @@ op_or
 id|AGPSTAT2_4X
 )paren
 suffix:semicolon
-multiline_comment|/* 1Xf */
+multiline_comment|/* 1X */
 )brace
+multiline_comment|/*&n; * mode = requested mode.&n; * cmd = PCI_AGP_STATUS from agp bridge.&n; * tmp = PCI_AGP_STATUS from graphic card.&n; */
 DECL|function|agp_v3_parse_one
 r_static
 r_void
@@ -1431,6 +1432,17 @@ op_star
 id|tmp
 )paren
 (brace
+id|u32
+id|origcmd
+op_assign
+op_star
+id|cmd
+comma
+id|origtmp
+op_assign
+op_star
+id|tmp
+suffix:semicolon
 multiline_comment|/* ARQSZ - Set the value to the maximum one.&n;&t; * Don&squot;t allow the mode register to override values. */
 op_star
 id|cmd
@@ -1586,96 +1598,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-(paren
-op_star
-id|cmd
-op_amp
-id|AGPSTAT3_8X
-)paren
-op_logical_and
-(paren
-op_star
-id|tmp
-op_amp
-id|AGPSTAT3_8X
-)paren
-op_logical_and
-(paren
 op_star
 id|mode
 op_amp
 id|AGPSTAT3_8X
 )paren
-)paren
-)paren
-op_star
-id|cmd
-op_and_assign
-op_complement
-id|AGPSTAT3_8X
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
 op_logical_neg
 (paren
-(paren
-op_star
-id|cmd
-op_amp
-id|AGPSTAT3_4X
-)paren
-op_logical_and
-(paren
-op_star
-id|tmp
-op_amp
-id|AGPSTAT3_4X
-)paren
-op_logical_and
-(paren
-op_star
-id|mode
-op_amp
-id|AGPSTAT3_4X
-)paren
-)paren
-)paren
-op_star
-id|cmd
-op_and_assign
-op_complement
-id|AGPSTAT3_4X
-suffix:semicolon
-multiline_comment|/* Clear out unwanted bits. */
-r_if
-c_cond
-(paren
 op_star
 id|cmd
 op_amp
 id|AGPSTAT3_8X
 )paren
-op_star
-id|cmd
-op_and_assign
-op_complement
-(paren
-id|AGPSTAT3_4X
-op_or
-id|AGPSTAT3_RSVD
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|cmd
-op_amp
-id|AGPSTAT3_4X
-)paren
+(brace
 op_star
 id|cmd
 op_and_assign
@@ -1686,6 +1626,165 @@ op_or
 id|AGPSTAT3_RSVD
 )paren
 suffix:semicolon
+op_star
+id|cmd
+op_or_assign
+id|AGPSTAT3_4X
+suffix:semicolon
+id|printk
+(paren
+l_string|&quot;%s requested AGPx8 but bridge not capable.&bslash;n&quot;
+comma
+id|current-&gt;comm
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+op_star
+id|tmp
+op_amp
+id|AGPSTAT3_8X
+)paren
+)paren
+(brace
+op_star
+id|cmd
+op_and_assign
+op_complement
+(paren
+id|AGPSTAT3_8X
+op_or
+id|AGPSTAT3_RSVD
+)paren
+suffix:semicolon
+op_star
+id|cmd
+op_or_assign
+id|AGPSTAT3_4X
+suffix:semicolon
+id|printk
+(paren
+l_string|&quot;%s requested AGPx8 but graphic card not capable.&bslash;n&quot;
+comma
+id|current-&gt;comm
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* All set, bridge &amp; device can do AGP x8*/
+op_star
+id|cmd
+op_and_assign
+op_complement
+(paren
+id|AGPSTAT3_4X
+op_or
+id|AGPSTAT3_RSVD
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t; * If we didn&squot;t specify AGPx8, we can only do x4.&n;&t;&t; * If the hardware can&squot;t do x4, we&squot;re up shit creek, and never&n;&t;&t; *  should have got this far.&n;&t;&t; */
+op_star
+id|cmd
+op_and_assign
+op_complement
+(paren
+id|AGPSTAT3_8X
+op_or
+id|AGPSTAT3_RSVD
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+op_star
+id|cmd
+op_amp
+id|AGPSTAT3_4X
+)paren
+op_logical_and
+(paren
+op_star
+id|tmp
+op_amp
+id|AGPSTAT3_4X
+)paren
+)paren
+op_star
+id|cmd
+op_or_assign
+id|AGPSTAT3_4X
+suffix:semicolon
+r_else
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Badness. Don&squot;t know which AGP mode to set. &quot;
+l_string|&quot;[cmd:%x tmp:%x fell back to:- cmd:%x tmp:%x]&bslash;n&quot;
+comma
+id|origcmd
+comma
+id|origtmp
+comma
+op_star
+id|cmd
+comma
+op_star
+id|tmp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+op_star
+id|cmd
+op_amp
+id|AGPSTAT3_4X
+)paren
+)paren
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Bridge couldn&squot;t do AGP x4.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+op_star
+id|tmp
+op_amp
+id|AGPSTAT3_4X
+)paren
+)paren
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Graphic card couldn&squot;t do AGP x4.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+)brace
 )brace
 singleline_comment|//FIXME: This doesn&squot;t smell right.
 singleline_comment|//We need a function we pass an agp_device to.
@@ -1755,7 +1854,9 @@ id|cap_ptr
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Ok, here we have a AGP device. Disable impossible &n;&t;&t; * settings, and adjust the readqueue to the minimum.&n;&t;&t; */
+singleline_comment|//FIXME: We should probably skip anything here that
+singleline_comment|// isn&squot;t an AGP graphic card.
+multiline_comment|/*&n;&t;&t; * Ok, here we have a AGP device. Disable impossible&n;&t;&t; * settings, and adjust the readqueue to the minimum.&n;&t;&t; */
 id|pci_read_config_dword
 c_func
 (paren
@@ -3529,7 +3630,7 @@ c_func
 id|agp_generic_free_by_type
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * Basic Page Allocation Routines -&n; * These routines handle page allocation and by default they reserve the allocated &n; * memory.  They also handle incrementing the current_memory_agp value, Which is checked&n; * against a maximum value.&n; */
+multiline_comment|/*&n; * Basic Page Allocation Routines -&n; * These routines handle page allocation and by default they reserve the allocated&n; * memory.  They also handle incrementing the current_memory_agp value, Which is checked&n; * against a maximum value.&n; */
 DECL|function|agp_generic_alloc_page
 r_void
 op_star
@@ -3678,7 +3779,7 @@ id|agp_generic_destroy_page
 )paren
 suffix:semicolon
 multiline_comment|/* End Basic Page Allocation Routines */
-multiline_comment|/** &n; * agp_enable  -  initialise the agp point-to-point connection.&n; * &n; * @mode:&t;agp mode register value to configure with.&n; */
+multiline_comment|/**&n; * agp_enable  -  initialise the agp point-to-point connection.&n; *&n; * @mode:&t;agp mode register value to configure with.&n; */
 DECL|function|agp_enable
 r_void
 id|agp_enable

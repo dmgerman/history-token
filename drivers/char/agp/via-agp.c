@@ -1495,6 +1495,12 @@ mdefine_line|#define ID(x) &bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.class
 id|ID
 c_func
 (paren
+id|PCI_DEVICE_ID_VIA_82C597_0
+)paren
+comma
+id|ID
+c_func
+(paren
 id|PCI_DEVICE_ID_VIA_82C598_0
 )paren
 comma

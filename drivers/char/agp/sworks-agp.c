@@ -2016,6 +2016,11 @@ id|temp
 comma
 id|temp2
 suffix:semicolon
+id|u8
+id|cap_ptr
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Everything is on func 1 here so we are hardcoding function one */
 id|bridge_dev
 op_assign
@@ -2058,6 +2063,16 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+id|cap_ptr
+op_assign
+id|pci_find_capability
+c_func
+(paren
+id|pdev
+comma
+id|PCI_CAP_ID_AGP
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -2092,6 +2107,13 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+(brace
+)brace
+r_if
+c_cond
+(paren
+id|cap_ptr
+)paren
 id|printk
 c_func
 (paren
