@@ -19,14 +19,10 @@ DECL|macro|ACPI_SYSTEM_FILE_INFO
 mdefine_line|#define ACPI_SYSTEM_FILE_INFO&t;&t;&quot;info&quot;
 DECL|macro|ACPI_SYSTEM_FILE_EVENT
 mdefine_line|#define ACPI_SYSTEM_FILE_EVENT&t;&t;&quot;event&quot;
-DECL|macro|ACPI_SYSTEM_FILE_ALARM
-mdefine_line|#define ACPI_SYSTEM_FILE_ALARM&t;&t;&quot;alarm&quot;
 DECL|macro|ACPI_SYSTEM_FILE_DSDT
 mdefine_line|#define ACPI_SYSTEM_FILE_DSDT&t;&t;&quot;dsdt&quot;
 DECL|macro|ACPI_SYSTEM_FILE_FADT
 mdefine_line|#define ACPI_SYSTEM_FILE_FADT&t;&t;&quot;fadt&quot;
-DECL|macro|ACPI_SYSTEM_FILE_SLEEP
-mdefine_line|#define ACPI_SYSTEM_FILE_SLEEP&t;&t;&quot;sleep&quot;
 r_extern
 id|FADT_DESCRIPTOR
 id|acpi_fadt
