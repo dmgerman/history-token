@@ -235,7 +235,7 @@ comma
 op_star
 id|envp
 (braket
-l_int|5
+l_int|6
 )braket
 comma
 id|cpu_str
@@ -246,6 +246,11 @@ comma
 id|action_str
 (braket
 l_int|32
+)braket
+comma
+id|devpath_str
+(braket
+l_int|40
 )braket
 suffix:semicolon
 r_int
@@ -271,7 +276,16 @@ comma
 id|action
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: Add DEVPATH. --RR */
+id|sprintf
+c_func
+(paren
+id|devpath_str
+comma
+l_string|&quot;DEVPATH=devices/system/cpu/cpu%d&quot;
+comma
+id|cpu
+)paren
+suffix:semicolon
 id|i
 op_assign
 l_int|0
@@ -335,6 +349,14 @@ op_increment
 )braket
 op_assign
 id|action_str
+suffix:semicolon
+id|envp
+(braket
+id|i
+op_increment
+)braket
+op_assign
+id|devpath_str
 suffix:semicolon
 id|envp
 (braket
