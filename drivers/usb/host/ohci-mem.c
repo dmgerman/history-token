@@ -58,6 +58,18 @@ id|ohci-&gt;hcd.product_desc
 op_assign
 l_string|&quot;OHCI Host Controller&quot;
 suffix:semicolon
+id|spin_lock_init
+(paren
+op_amp
+id|ohci-&gt;lock
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+(paren
+op_amp
+id|ohci-&gt;pending
+)paren
+suffix:semicolon
 r_return
 op_amp
 id|ohci-&gt;hcd

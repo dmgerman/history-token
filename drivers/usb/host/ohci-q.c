@@ -73,6 +73,12 @@ id|td
 suffix:semicolon
 )brace
 )brace
+id|list_del
+(paren
+op_amp
+id|urb_priv-&gt;pending
+)paren
+suffix:semicolon
 id|kfree
 (paren
 id|urb_priv
@@ -1500,7 +1506,7 @@ op_assign
 id|type
 suffix:semicolon
 )brace
-multiline_comment|/* NOTE: only ep0 currently needs this &quot;re&quot;init logic, during&n;&t; * enumeration (after set_address, or if ep0 maxpacket &gt;8).&n;&t; */
+multiline_comment|/* NOTE: only ep0 currently needs this &quot;re&quot;init logic, during&n;&t; * enumeration (after set_address).&n;&t; */
 r_if
 c_cond
 (paren
@@ -2097,6 +2103,15 @@ suffix:semicolon
 id|urb_priv-&gt;td_cnt
 op_assign
 l_int|0
+suffix:semicolon
+id|list_add
+(paren
+op_amp
+id|urb_priv-&gt;pending
+comma
+op_amp
+id|ohci-&gt;pending
+)paren
 suffix:semicolon
 r_if
 c_cond
