@@ -15,6 +15,8 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
+macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -34,7 +36,7 @@ DECL|macro|TG3_VLAN_TAG_USED
 mdefine_line|#define TG3_VLAN_TAG_USED 0
 macro_line|#endif
 macro_line|#ifdef NETIF_F_TSO
-multiline_comment|/* XXX some bug in tso firmware hangs tx cpu, disabled until fixed */
+multiline_comment|/* XXX Works but still disabled, decreases TCP performance to 7MB/sec even&n; * XXX over gigabit.&n; */
 DECL|macro|TG3_DO_TSO
 mdefine_line|#define TG3_DO_TSO&t;0
 macro_line|#else
@@ -10054,6 +10056,25 @@ id|tso_size
 op_ne
 l_int|0
 )paren
+(brace
+r_static
+r_int
+id|times
+op_assign
+l_int|0
+suffix:semicolon
+id|mss
+op_add_assign
+(paren
+(paren
+id|skb-&gt;h.th-&gt;doff
+op_star
+l_int|4
+)paren
+op_minus
+l_int|20
+)paren
+suffix:semicolon
 id|base_flags
 op_or_assign
 (paren
@@ -10062,6 +10083,49 @@ op_or
 id|TXD_FLAG_CPU_POST_DMA
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|times
+op_increment
+OL
+l_int|5
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;tg3_xmit: tso_size[%u] tso_segs[%u] len[%u]&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|skb_shinfo
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|tso_size
+comma
+(paren
+r_int
+r_int
+)paren
+id|skb_shinfo
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|tso_segs
+comma
+id|skb-&gt;len
+)paren
+suffix:semicolon
+)brace
+)brace
 macro_line|#else
 id|mss
 op_assign
@@ -10352,12 +10416,6 @@ comma
 id|i
 op_eq
 id|last
-)paren
-op_or
-(paren
-id|mss
-op_lshift
-l_int|1
 )paren
 )paren
 suffix:semicolon
@@ -10823,6 +10881,26 @@ id|tso_size
 op_ne
 l_int|0
 )paren
+(brace
+r_static
+r_int
+id|times
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* TSO firmware wants TCP options included in&n;&t;&t; * tx descriptor MSS value.&n;&t;&t; */
+id|mss
+op_add_assign
+(paren
+(paren
+id|skb-&gt;h.th-&gt;doff
+op_star
+l_int|4
+)paren
+op_minus
+l_int|20
+)paren
+suffix:semicolon
 id|base_flags
 op_or_assign
 (paren
@@ -10831,6 +10909,49 @@ op_or
 id|TXD_FLAG_CPU_POST_DMA
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|times
+op_increment
+OL
+l_int|5
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;tg3_xmit: tso_size[%u] tso_segs[%u] len[%u]&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|skb_shinfo
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|tso_size
+comma
+(paren
+r_int
+r_int
+)paren
+id|skb_shinfo
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|tso_segs
+comma
+id|skb-&gt;len
+)paren
+suffix:semicolon
+)brace
+)brace
 macro_line|#else
 id|mss
 op_assign
@@ -11070,12 +11191,6 @@ comma
 id|i
 op_eq
 id|last
-)paren
-op_or
-(paren
-id|mss
-op_lshift
-l_int|1
 )paren
 )paren
 suffix:semicolon
@@ -21610,6 +21725,14 @@ id|err
 suffix:semicolon
 )brace
 macro_line|#if TG3_DO_TSO != 0
+r_if
+c_cond
+(paren
+id|tp-&gt;dev-&gt;features
+op_amp
+id|NETIF_F_TSO
+)paren
+(brace
 id|err
 op_assign
 id|tg3_load_tso_firmware
@@ -21626,6 +21749,7 @@ id|err
 r_return
 id|err
 suffix:semicolon
+)brace
 macro_line|#endif
 id|tp-&gt;tx_mode
 op_assign
@@ -32876,12 +33000,6 @@ op_assign
 id|tg3_vlan_rx_kill_vid
 suffix:semicolon
 macro_line|#endif
-macro_line|#if TG3_DO_TSO != 0
-id|dev-&gt;features
-op_or_assign
-id|NETIF_F_TSO
-suffix:semicolon
-macro_line|#endif
 id|tp
 op_assign
 id|dev-&gt;priv
@@ -33207,6 +33325,48 @@ op_and_assign
 op_complement
 id|TG3_FLAG_RX_CHECKSUMS
 suffix:semicolon
+macro_line|#if TG3_DO_TSO != 0
+r_if
+c_cond
+(paren
+id|GET_ASIC_REV
+c_func
+(paren
+id|tp-&gt;pci_chip_rev_id
+)paren
+op_eq
+id|ASIC_REV_5700
+op_logical_or
+(paren
+id|GET_ASIC_REV
+c_func
+(paren
+id|tp-&gt;pci_chip_rev_id
+)paren
+op_eq
+id|ASIC_REV_5701
+op_logical_and
+id|tp-&gt;pci_chip_rev_id
+op_le
+id|CHIPREV_ID_5701_B2
+)paren
+)paren
+(brace
+multiline_comment|/* Not TSO capable. */
+id|dev-&gt;features
+op_and_assign
+op_complement
+id|NETIF_F_TSO
+suffix:semicolon
+)brace
+r_else
+(brace
+id|dev-&gt;features
+op_or_assign
+id|NETIF_F_TSO
+suffix:semicolon
+)brace
+macro_line|#endif
 id|err
 op_assign
 id|register_netdev
