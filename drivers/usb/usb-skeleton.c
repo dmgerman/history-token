@@ -393,9 +393,7 @@ comma
 op_amp
 id|count
 comma
-id|HZ
-op_star
-l_int|10
+l_int|10000
 )paren
 suffix:semicolon
 multiline_comment|/* if the read was successful, copy the data to userspace */
