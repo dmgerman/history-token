@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -233,11 +232,6 @@ id|line
 l_int|4
 )braket
 suffix:semicolon
-DECL|member|remove
-r_struct
-id|work_struct
-id|remove
-suffix:semicolon
 )brace
 suffix:semicolon
 r_static
@@ -299,17 +293,16 @@ id|dev_list
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*======================================================================&n;&n;    After a card is removed, do_serial_release() will unregister&n;    the serial device(s), and release the PCMCIA configuration.&n;    &n;======================================================================*/
-multiline_comment|/*&n; * This always runs in process context.&n; */
-DECL|function|do_serial_release
+multiline_comment|/*======================================================================&n;&n;    After a card is removed, serial_remove() will unregister&n;    the serial device(s), and release the PCMCIA configuration.&n;    &n;======================================================================*/
+DECL|function|serial_remove
 r_static
 r_void
-id|do_serial_release
+id|serial_remove
 c_func
 (paren
-r_void
+id|dev_link_t
 op_star
-id|arg
+id|link
 )paren
 (brace
 r_struct
@@ -317,10 +310,17 @@ id|serial_info
 op_star
 id|info
 op_assign
-id|arg
+id|link-&gt;priv
 suffix:semicolon
 r_int
 id|i
+comma
+id|ret
+suffix:semicolon
+id|link-&gt;state
+op_and_assign
+op_complement
+id|DEV_PRESENT
 suffix:semicolon
 id|DEBUG
 c_func
@@ -329,8 +329,7 @@ l_int|0
 comma
 l_string|&quot;serial_release(0x%p)&bslash;n&quot;
 comma
-op_amp
-id|info-&gt;link
+id|link
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Recheck to see if the device is still configured.&n;&t; */
@@ -414,46 +413,6 @@ id|DEV_CONFIG
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This may be called from IRQ context.&n; */
-DECL|function|serial_remove
-r_static
-r_void
-id|serial_remove
-c_func
-(paren
-id|dev_link_t
-op_star
-id|link
-)paren
-(brace
-r_struct
-id|serial_info
-op_star
-id|info
-op_assign
-id|link-&gt;priv
-suffix:semicolon
-id|link-&gt;state
-op_and_assign
-op_complement
-id|DEV_PRESENT
-suffix:semicolon
-multiline_comment|/*&n;&t; * FIXME: Since the card has probably been removed,&n;&t; * we should call into the serial layer and hang up&n;&t; * the ports on the card immediately.&n;&t; */
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_CONFIG
-)paren
-id|schedule_work
-c_func
-(paren
-op_amp
-id|info-&gt;remove
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*======================================================================&n;&n;    serial_attach() creates an &quot;instance&quot; of the driver, allocating&n;    local data structures for one device.  The device is registered&n;    with Card Services.&n;&n;======================================================================*/
 DECL|function|serial_attach
 r_static
@@ -536,17 +495,6 @@ suffix:semicolon
 id|link-&gt;priv
 op_assign
 id|info
-suffix:semicolon
-id|INIT_WORK
-c_func
-(paren
-op_amp
-id|info-&gt;remove
-comma
-id|do_serial_release
-comma
-id|info
-)paren
 suffix:semicolon
 id|link-&gt;io.Attributes1
 op_assign
@@ -811,10 +759,10 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ensure that the ports have been released.&n;&t; */
-id|do_serial_release
+id|serial_remove
 c_func
 (paren
-id|info
+id|link
 )paren
 suffix:semicolon
 r_if
@@ -2764,10 +2712,10 @@ id|last_ret
 suffix:semicolon
 id|failed
 suffix:colon
-id|do_serial_release
+id|serial_remove
 c_func
 (paren
-id|info
+id|link
 )paren
 suffix:semicolon
 )brace
