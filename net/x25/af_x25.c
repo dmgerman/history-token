@@ -1303,6 +1303,14 @@ id|sk-&gt;sk_timer.function
 op_assign
 id|x25_destroy_timer
 suffix:semicolon
+id|sk-&gt;sk_timer.data
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|sk
+suffix:semicolon
 id|add_timer
 c_func
 (paren

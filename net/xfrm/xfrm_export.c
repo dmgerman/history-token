@@ -182,13 +182,6 @@ c_func
 id|xfrm_parse_spi
 )paren
 suffix:semicolon
-DECL|variable|xfrm4_rcv
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|xfrm4_rcv
-)paren
-suffix:semicolon
 DECL|variable|xfrm_register_type
 id|EXPORT_SYMBOL
 c_func
