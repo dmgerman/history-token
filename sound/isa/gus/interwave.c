@@ -4859,7 +4859,7 @@ c_func
 (paren
 l_string|&quot;unable to grab IRQ %d&bslash;n&quot;
 comma
-id|irq
+id|xirq
 )paren
 suffix:semicolon
 r_return
