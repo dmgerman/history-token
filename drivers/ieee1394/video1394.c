@@ -1,6 +1,4 @@
-multiline_comment|/*&n; * video1394.c - video driver for OHCI 1394 boards&n; * Copyright (C)1999,2000 Sebastien Rougeaux &lt;sebastien.rougeaux@anu.edu.au&gt;&n; *                        Peter Schlaile &lt;udbz@rz.uni-karlsruhe.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
-multiline_comment|/* jds -- add private data to file to keep track of iso contexts associated&n;   with each open -- so release won&squot;t kill all iso transfers */
-multiline_comment|/* Damien Douxchamps: Fix failure when the number of DMA pages per frame is&n;   one */
+multiline_comment|/*&n; * video1394.c - video driver for OHCI 1394 boards&n; * Copyright (C)1999,2000 Sebastien Rougeaux &lt;sebastien.rougeaux@anu.edu.au&gt;&n; *                        Peter Schlaile &lt;udbz@rz.uni-karlsruhe.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; *&n; * NOTES:&n; *&n; * jds -- add private data to file to keep track of iso contexts associated&n; * with each open -- so release won&squot;t kill all iso transfers.&n; * &n; * Damien Douxchamps: Fix failure when the number of DMA pages per frame is&n; * one.&n; * &n; * ioctl return codes:&n; * EFAULT is only for invalid address for the argp&n; * EINVAL for out of range values&n; * EBUSY when trying to use an already used resource&n; * ESRCH when trying to free/stop a not used resource&n; * EAGAIN for resource allocation failure that could perhaps succeed later&n; * ENOTTY for unsupported ioctl request&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
@@ -3834,14 +3832,33 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|i
-OL
-id|ISO_CHANNELS
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+id|ISO_CHANNELS
+)paren
+(brace
+id|PRINT
+c_func
+(paren
+id|KERN_ERR
+comma
+id|ohci-&gt;host-&gt;id
+comma
+l_string|&quot;No free channel found&quot;
+)paren
+suffix:semicolon
+r_return
+id|EAGAIN
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3880,16 +3897,13 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+r_else
 r_if
 c_cond
 (paren
 id|v.channel
-c_func
-(paren
+op_ge
 id|ISO_CHANNELS
-op_minus
-l_int|1
-)paren
 )paren
 (brace
 id|PRINT
@@ -3906,9 +3920,11 @@ id|v.channel
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EINVAL
 suffix:semicolon
 )brace
+r_else
+(brace
 id|mask
 op_assign
 (paren
@@ -3918,9 +3934,14 @@ l_int|0x1
 op_lshift
 id|v.channel
 suffix:semicolon
-id|printk
+)brace
+id|PRINT
 c_func
 (paren
+id|KERN_INFO
+comma
+id|ohci-&gt;host-&gt;id
+comma
 l_string|&quot;mask: %08X%08X usage: %08X%08X&bslash;n&quot;
 comma
 (paren
@@ -3982,13 +4003,9 @@ id|v.channel
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EBUSY
 suffix:semicolon
 )brace
-id|ohci-&gt;ISO_channel_usage
-op_or_assign
-id|mask
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4015,7 +4032,7 @@ id|v.buf_size
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EINVAL
 suffix:semicolon
 )brace
 r_if
@@ -4044,7 +4061,7 @@ id|v.nb_buffers
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EINVAL
 suffix:semicolon
 )brace
 r_if
@@ -4073,7 +4090,7 @@ id|v.buf_size
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EINVAL
 suffix:semicolon
 )brace
 r_if
@@ -4122,7 +4139,7 @@ l_string|&quot;Couldn&squot;t allocate ir context&quot;
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EAGAIN
 suffix:semicolon
 )brace
 id|initialize_dma_ir_ctx
@@ -4208,7 +4225,7 @@ l_string|&quot;Couldn&squot;t allocate it context&quot;
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EAGAIN
 suffix:semicolon
 )brace
 id|initialize_dma_it_ctx
@@ -4262,7 +4279,11 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|argp
+(paren
+r_void
+op_star
+)paren
+id|arg
 comma
 op_amp
 id|v
@@ -4273,9 +4294,16 @@ id|v
 )paren
 )paren
 )paren
+(brace
+multiline_comment|/* FIXME : free allocated dma resources */
 r_return
 op_minus
 id|EFAULT
+suffix:semicolon
+)brace
+id|ohci-&gt;ISO_channel_usage
+op_or_assign
+id|mask
 suffix:semicolon
 r_return
 l_int|0
@@ -4324,12 +4352,12 @@ r_if
 c_cond
 (paren
 id|channel
-c_func
-(paren
+OL
+l_int|0
+op_logical_or
+id|channel
+op_ge
 id|ISO_CHANNELS
-op_minus
-l_int|1
-)paren
 )paren
 (brace
 id|PRINT
@@ -4346,7 +4374,7 @@ id|channel
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EINVAL
 suffix:semicolon
 )brace
 id|mask
@@ -4383,7 +4411,7 @@ id|channel
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|ESRCH
 suffix:semicolon
 )brace
 multiline_comment|/* Mark this channel as unused */
@@ -4435,7 +4463,7 @@ l_int|NULL
 )paren
 r_return
 op_minus
-id|EFAULT
+id|ESRCH
 suffix:semicolon
 id|PRINT
 c_func
@@ -4550,7 +4578,7 @@ id|v.buffer
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EINVAL
 suffix:semicolon
 )brace
 id|spin_lock_irqsave
@@ -4596,7 +4624,7 @@ id|flags
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EBUSY
 suffix:semicolon
 )brace
 id|d-&gt;buffer_status
@@ -4878,7 +4906,7 @@ id|v.buffer
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * I change the way it works so that it returns&n;&t;&t; * the last received frame.&n;&t;&t; */
@@ -5059,7 +5087,7 @@ id|flags
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|ESRCH
 suffix:semicolon
 )brace
 multiline_comment|/* set time of buffer */
@@ -5240,7 +5268,7 @@ id|v.buffer
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EINVAL
 suffix:semicolon
 )brace
 r_if
@@ -5392,7 +5420,7 @@ id|psizes
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EBUSY
 suffix:semicolon
 )brace
 r_if
@@ -5774,7 +5802,7 @@ id|v.buffer
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|EINVAL
 suffix:semicolon
 )brace
 r_switch
@@ -5886,7 +5914,7 @@ id|v.buffer
 suffix:semicolon
 r_return
 op_minus
-id|EFAULT
+id|ESRCH
 suffix:semicolon
 )brace
 )brace
@@ -5894,7 +5922,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|EINVAL
+id|ENOTTY
 suffix:semicolon
 )brace
 )brace
