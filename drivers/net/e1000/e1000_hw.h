@@ -1360,7 +1360,7 @@ DECL|macro|IP_PROTOCOL_TCP
 mdefine_line|#define IP_PROTOCOL_TCP    6
 DECL|macro|IP_PROTOCOL_UDP
 mdefine_line|#define IP_PROTOCOL_UDP    0x11
-multiline_comment|/* This defines the bits that are set in the Interrupt Mask&n; * Set/Read Register.  Each bit is documented below:&n; *   o RXDMT0 = Receive Descriptor Minimum Threshold hit (ring 0)&n; *   o RXSEQ  = Receive Sequence Error &n; */
+multiline_comment|/* This defines the bits that are set in the Interrupt Mask&n; * Set/Read Register.  Each bit is documented below:&n; *   o RXDMT0 = Receive Descriptor Minimum Threshold hit (ring 0)&n; *   o RXSEQ  = Receive Sequence Error&n; */
 DECL|macro|POLL_IMS_ENABLE_MASK
 mdefine_line|#define POLL_IMS_ENABLE_MASK ( &bslash;&n;    E1000_IMS_RXDMT0 |         &bslash;&n;    E1000_IMS_RXSEQ)
 multiline_comment|/* This defines the bits that are set in the Interrupt Mask&n; * Set/Read Register.  Each bit is documented below:&n; *   o RXT0   = Receiver Timer Interrupt (ring 0)&n; *   o TXDW   = Transmit Descriptor Written Back&n; *   o RXDMT0 = Receive Descriptor Minimum Threshold hit (ring 0)&n; *   o RXSEQ  = Receive Sequence Error&n; *   o LSC    = Link Status Change&n; */
@@ -1879,7 +1879,7 @@ DECL|macro|E1000_FFMT_SIZE
 mdefine_line|#define E1000_FFMT_SIZE E1000_FLEXIBLE_FILTER_SIZE_MAX
 DECL|macro|E1000_FFVT_SIZE
 mdefine_line|#define E1000_FFVT_SIZE E1000_FLEXIBLE_FILTER_SIZE_MAX
-multiline_comment|/* Register Set. (82543, 82544)&n; *&n; * Registers are defined to be 32 bits and  should be accessed as 32 bit values.&n; * These registers are physically located on the NIC, but are mapped into the &n; * host memory address space.&n; *&n; * RW - register is both readable and writable&n; * RO - register is read only&n; * WO - register is write only&n; * R/clr - register is read only and is cleared when read&n; * A - register array&n; */
+multiline_comment|/* Register Set. (82543, 82544)&n; *&n; * Registers are defined to be 32 bits and  should be accessed as 32 bit values.&n; * These registers are physically located on the NIC, but are mapped into the&n; * host memory address space.&n; *&n; * RW - register is both readable and writable&n; * RO - register is read only&n; * WO - register is write only&n; * R/clr - register is read only and is cleared when read&n; * A - register array&n; */
 DECL|macro|E1000_CTRL
 mdefine_line|#define E1000_CTRL     0x00000  /* Device Control - RW */
 DECL|macro|E1000_STATUS
@@ -3574,7 +3574,7 @@ mdefine_line|#define E1000_MANC_SNAP_EN       0x00001000 /* Accept LLC/SNAP */
 DECL|macro|E1000_MANC_ARP_EN
 mdefine_line|#define E1000_MANC_ARP_EN        0x00002000 /* Enable ARP Request Filtering */
 DECL|macro|E1000_MANC_NEIGHBOR_EN
-mdefine_line|#define E1000_MANC_NEIGHBOR_EN   0x00004000 /* Enable Neighbor Discovery &n;                                             * Filtering */
+mdefine_line|#define E1000_MANC_NEIGHBOR_EN   0x00004000 /* Enable Neighbor Discovery&n;                                             * Filtering */
 DECL|macro|E1000_MANC_TCO_RESET
 mdefine_line|#define E1000_MANC_TCO_RESET     0x00010000 /* TCO Reset Occurred */
 DECL|macro|E1000_MANC_RCV_TCO_EN
@@ -3842,16 +3842,16 @@ DECL|macro|PCIX_STATUS_HI_MMRBC_4K
 mdefine_line|#define PCIX_STATUS_HI_MMRBC_4K      0x3
 DECL|macro|PCIX_STATUS_HI_MMRBC_2K
 mdefine_line|#define PCIX_STATUS_HI_MMRBC_2K      0x2
-multiline_comment|/* The number of bits that we need to shift right to move the &quot;pause&quot;&n; * bits from the EEPROM (bits 13:12) to the &quot;pause&quot; (bits 8:7) field&n; * in the TXCW register &n; */
+multiline_comment|/* The number of bits that we need to shift right to move the &quot;pause&quot;&n; * bits from the EEPROM (bits 13:12) to the &quot;pause&quot; (bits 8:7) field&n; * in the TXCW register&n; */
 DECL|macro|PAUSE_SHIFT
 mdefine_line|#define PAUSE_SHIFT 5
-multiline_comment|/* The number of bits that we need to shift left to move the &quot;SWDPIO&quot;&n; * bits from the EEPROM (bits 8:5) to the &quot;SWDPIO&quot; (bits 25:22) field&n; * in the CTRL register &n; */
+multiline_comment|/* The number of bits that we need to shift left to move the &quot;SWDPIO&quot;&n; * bits from the EEPROM (bits 8:5) to the &quot;SWDPIO&quot; (bits 25:22) field&n; * in the CTRL register&n; */
 DECL|macro|SWDPIO_SHIFT
 mdefine_line|#define SWDPIO_SHIFT 17
-multiline_comment|/* The number of bits that we need to shift left to move the &quot;SWDPIO_EXT&quot;&n; * bits from the EEPROM word F (bits 7:4) to the bits 11:8 of The&n; * Extended CTRL register.&n; * in the CTRL register &n; */
+multiline_comment|/* The number of bits that we need to shift left to move the &quot;SWDPIO_EXT&quot;&n; * bits from the EEPROM word F (bits 7:4) to the bits 11:8 of The&n; * Extended CTRL register.&n; * in the CTRL register&n; */
 DECL|macro|SWDPIO__EXT_SHIFT
 mdefine_line|#define SWDPIO__EXT_SHIFT 4
-multiline_comment|/* The number of bits that we need to shift left to move the &quot;ILOS&quot;&n; * bit from the EEPROM (bit 4) to the &quot;ILOS&quot; (bit 7) field&n; * in the CTRL register &n; */
+multiline_comment|/* The number of bits that we need to shift left to move the &quot;ILOS&quot;&n; * bit from the EEPROM (bit 4) to the &quot;ILOS&quot; (bit 7) field&n; * in the CTRL register&n; */
 DECL|macro|ILOS_SHIFT
 mdefine_line|#define ILOS_SHIFT  3
 DECL|macro|RECEIVE_BUFFER_ALIGN_SIZE
@@ -3864,7 +3864,7 @@ mdefine_line|#define E1000_TX_BUFFER_SIZE ((uint32_t)1514)
 multiline_comment|/* The carrier extension symbol, as received by the NIC. */
 DECL|macro|CARRIER_EXTENSION
 mdefine_line|#define CARRIER_EXTENSION   0x0F
-multiline_comment|/* TBI_ACCEPT macro definition:&n; *&n; * This macro requires:&n; *      adapter = a pointer to struct e1000_hw &n; *      status = the 8 bit status field of the RX descriptor with EOP set&n; *      error = the 8 bit error field of the RX descriptor with EOP set&n; *      length = the sum of all the length fields of the RX descriptors that&n; *               make up the current frame&n; *      last_byte = the last byte of the frame DMAed by the hardware&n; *      max_frame_length = the maximum frame length we want to accept.&n; *      min_frame_length = the minimum frame length we want to accept.&n; *&n; * This macro is a conditional that should be used in the interrupt &n; * handler&squot;s Rx processing routine when RxErrors have been detected.&n; *&n; * Typical use:&n; *  ...&n; *  if (TBI_ACCEPT) {&n; *      accept_frame = TRUE;&n; *      e1000_tbi_adjust_stats(adapter, MacAddress);&n; *      frame_length--;&n; *  } else {&n; *      accept_frame = FALSE;&n; *  }&n; *  ...&n; */
+multiline_comment|/* TBI_ACCEPT macro definition:&n; *&n; * This macro requires:&n; *      adapter = a pointer to struct e1000_hw&n; *      status = the 8 bit status field of the RX descriptor with EOP set&n; *      error = the 8 bit error field of the RX descriptor with EOP set&n; *      length = the sum of all the length fields of the RX descriptors that&n; *               make up the current frame&n; *      last_byte = the last byte of the frame DMAed by the hardware&n; *      max_frame_length = the maximum frame length we want to accept.&n; *      min_frame_length = the minimum frame length we want to accept.&n; *&n; * This macro is a conditional that should be used in the interrupt&n; * handler&squot;s Rx processing routine when RxErrors have been detected.&n; *&n; * Typical use:&n; *  ...&n; *  if (TBI_ACCEPT) {&n; *      accept_frame = TRUE;&n; *      e1000_tbi_adjust_stats(adapter, MacAddress);&n; *      frame_length--;&n; *  } else {&n; *      accept_frame = FALSE;&n; *  }&n; *  ...&n; */
 DECL|macro|TBI_ACCEPT
 mdefine_line|#define TBI_ACCEPT(adapter, status, errors, length, last_byte) &bslash;&n;    ((adapter)-&gt;tbi_compatibility_on &amp;&amp; &bslash;&n;     (((errors) &amp; E1000_RXD_ERR_FRAME_ERR_MASK) == E1000_RXD_ERR_CE) &amp;&amp; &bslash;&n;     ((last_byte) == CARRIER_EXTENSION) &amp;&amp; &bslash;&n;     (((status) &amp; E1000_RXD_STAT_VP) ? &bslash;&n;          (((length) &gt; ((adapter)-&gt;min_frame_size - VLAN_TAG_SIZE)) &amp;&amp; &bslash;&n;           ((length) &lt;= ((adapter)-&gt;max_frame_size + 1))) : &bslash;&n;          (((length) &gt; (adapter)-&gt;min_frame_size) &amp;&amp; &bslash;&n;           ((length) &lt;= ((adapter)-&gt;max_frame_size + VLAN_TAG_SIZE + 1)))))
 multiline_comment|/* Structures, enums, and macros for the PHY */
@@ -4062,7 +4062,7 @@ mdefine_line|#define NWAY_ER_NEXT_PAGE_CAPS    0x0004 /* LP is 10T   Full Duplex
 DECL|macro|NWAY_ER_LP_NEXT_PAGE_CAPS
 mdefine_line|#define NWAY_ER_LP_NEXT_PAGE_CAPS 0x0008 /* LP is 100TX Half Duplex Capable */
 DECL|macro|NWAY_ER_PAR_DETECT_FAULT
-mdefine_line|#define NWAY_ER_PAR_DETECT_FAULT  0x0100 /* LP is 100TX Full Duplex Capable */
+mdefine_line|#define NWAY_ER_PAR_DETECT_FAULT  0x0010 /* LP is 100TX Full Duplex Capable */
 multiline_comment|/* Next Page TX Register */
 DECL|macro|NPTX_MSG_CODE_FIELD
 mdefine_line|#define NPTX_MSG_CODE_FIELD 0x0001 /* NP msg code or unformatted data */
@@ -4073,20 +4073,20 @@ mdefine_line|#define NPTX_ACKNOWLDGE2    0x1000 /* 1 = will comply with msg&n;  
 DECL|macro|NPTX_MSG_PAGE
 mdefine_line|#define NPTX_MSG_PAGE       0x2000 /* formatted(1)/unformatted(0) pg */
 DECL|macro|NPTX_NEXT_PAGE
-mdefine_line|#define NPTX_NEXT_PAGE      0x8000 /* 1 = addition NP will follow &n;                                    * 0 = sending last NP&n;                                    */
+mdefine_line|#define NPTX_NEXT_PAGE      0x8000 /* 1 = addition NP will follow&n;                                    * 0 = sending last NP&n;                                    */
 multiline_comment|/* Link Partner Next Page Register */
 DECL|macro|LP_RNPR_MSG_CODE_FIELD
 mdefine_line|#define LP_RNPR_MSG_CODE_FIELD 0x0001 /* NP msg code or unformatted data */
 DECL|macro|LP_RNPR_TOGGLE
 mdefine_line|#define LP_RNPR_TOGGLE         0x0800 /* Toggles between exchanges&n;                                       * of different NP&n;                                       */
 DECL|macro|LP_RNPR_ACKNOWLDGE2
-mdefine_line|#define LP_RNPR_ACKNOWLDGE2    0x1000 /* 1 = will comply with msg &n;                                       * 0 = cannot comply with msg&n;                                       */
+mdefine_line|#define LP_RNPR_ACKNOWLDGE2    0x1000 /* 1 = will comply with msg&n;                                       * 0 = cannot comply with msg&n;                                       */
 DECL|macro|LP_RNPR_MSG_PAGE
 mdefine_line|#define LP_RNPR_MSG_PAGE       0x2000  /* formatted(1)/unformatted(0) pg */
 DECL|macro|LP_RNPR_ACKNOWLDGE
 mdefine_line|#define LP_RNPR_ACKNOWLDGE     0x4000  /* 1 = ACK / 0 = NO ACK */
 DECL|macro|LP_RNPR_NEXT_PAGE
-mdefine_line|#define LP_RNPR_NEXT_PAGE      0x8000  /* 1 = addition NP will follow&n;                                        * 0 = sending last NP &n;                                        */
+mdefine_line|#define LP_RNPR_NEXT_PAGE      0x8000  /* 1 = addition NP will follow&n;                                        * 0 = sending last NP&n;                                        */
 multiline_comment|/* 1000BASE-T Control Register */
 DECL|macro|CR_1000T_ASYM_PAUSE
 mdefine_line|#define CR_1000T_ASYM_PAUSE      0x0080 /* Advertise asymmetric pause bit */
@@ -4158,18 +4158,18 @@ mdefine_line|#define M88E1000_PSCR_POLARITY_REVERSAL 0x0002 /* 1=Polarity Revers
 DECL|macro|M88E1000_PSCR_SQE_TEST
 mdefine_line|#define M88E1000_PSCR_SQE_TEST          0x0004 /* 1=SQE Test enabled */
 DECL|macro|M88E1000_PSCR_CLK125_DISABLE
-mdefine_line|#define M88E1000_PSCR_CLK125_DISABLE    0x0010 /* 1=CLK125 low, &n;                                                * 0=CLK125 toggling&n;                                                */
+mdefine_line|#define M88E1000_PSCR_CLK125_DISABLE    0x0010 /* 1=CLK125 low,&n;                                                * 0=CLK125 toggling&n;                                                */
 DECL|macro|M88E1000_PSCR_MDI_MANUAL_MODE
 mdefine_line|#define M88E1000_PSCR_MDI_MANUAL_MODE  0x0000  /* MDI Crossover Mode bits 6:5 */
 multiline_comment|/* Manual MDI configuration */
 DECL|macro|M88E1000_PSCR_MDIX_MANUAL_MODE
 mdefine_line|#define M88E1000_PSCR_MDIX_MANUAL_MODE 0x0020  /* Manual MDIX configuration */
 DECL|macro|M88E1000_PSCR_AUTO_X_1000T
-mdefine_line|#define M88E1000_PSCR_AUTO_X_1000T     0x0040  /* 1000BASE-T: Auto crossover,&n;                                                *  100BASE-TX/10BASE-T: &n;                                                *  MDI Mode&n;                                                */
+mdefine_line|#define M88E1000_PSCR_AUTO_X_1000T     0x0040  /* 1000BASE-T: Auto crossover,&n;                                                *  100BASE-TX/10BASE-T:&n;                                                *  MDI Mode&n;                                                */
 DECL|macro|M88E1000_PSCR_AUTO_X_MODE
-mdefine_line|#define M88E1000_PSCR_AUTO_X_MODE      0x0060  /* Auto crossover enabled &n;                                                * all speeds. &n;                                                */
+mdefine_line|#define M88E1000_PSCR_AUTO_X_MODE      0x0060  /* Auto crossover enabled&n;                                                * all speeds.&n;                                                */
 DECL|macro|M88E1000_PSCR_10BT_EXT_DIST_ENABLE
-mdefine_line|#define M88E1000_PSCR_10BT_EXT_DIST_ENABLE 0x0080 
+mdefine_line|#define M88E1000_PSCR_10BT_EXT_DIST_ENABLE 0x0080
 multiline_comment|/* 1=Enable Extended 10BASE-T distance&n;                                         * (Lower 10BASE-T RX Threshold)&n;                                         * 0=Normal 10BASE-T RX Threshold */
 DECL|macro|M88E1000_PSCR_MII_5BIT_ENABLE
 mdefine_line|#define M88E1000_PSCR_MII_5BIT_ENABLE      0x0100
@@ -4225,12 +4225,12 @@ multiline_comment|/* M88E1000 Extended PHY Specific Control Register */
 DECL|macro|M88E1000_EPSCR_FIBER_LOOPBACK
 mdefine_line|#define M88E1000_EPSCR_FIBER_LOOPBACK 0x4000 /* 1=Fiber loopback */
 DECL|macro|M88E1000_EPSCR_DOWN_NO_IDLE
-mdefine_line|#define M88E1000_EPSCR_DOWN_NO_IDLE   0x8000 /* 1=Lost lock detect enabled.&n;                                              * Will assert lost lock and bring&n;                                              * link down if idle not seen&n;                                              * within 1ms in 1000BASE-T &n;                                              */
+mdefine_line|#define M88E1000_EPSCR_DOWN_NO_IDLE   0x8000 /* 1=Lost lock detect enabled.&n;                                              * Will assert lost lock and bring&n;                                              * link down if idle not seen&n;                                              * within 1ms in 1000BASE-T&n;                                              */
 multiline_comment|/* Number of times we will attempt to autonegotiate before downshifting if we&n; * are the master */
 DECL|macro|M88E1000_EPSCR_MASTER_DOWNSHIFT_MASK
 mdefine_line|#define M88E1000_EPSCR_MASTER_DOWNSHIFT_MASK 0x0C00
 DECL|macro|M88E1000_EPSCR_MASTER_DOWNSHIFT_1X
-mdefine_line|#define M88E1000_EPSCR_MASTER_DOWNSHIFT_1X   0x0000    
+mdefine_line|#define M88E1000_EPSCR_MASTER_DOWNSHIFT_1X   0x0000
 DECL|macro|M88E1000_EPSCR_MASTER_DOWNSHIFT_2X
 mdefine_line|#define M88E1000_EPSCR_MASTER_DOWNSHIFT_2X   0x0400
 DECL|macro|M88E1000_EPSCR_MASTER_DOWNSHIFT_3X

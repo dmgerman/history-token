@@ -1212,7 +1212,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/******************************************************************************&n; * Performs basic configuration of the adapter.&n; *&n; * hw - Struct containing variables accessed by shared code&n; * &n; * Assumes that the controller has previously been reset and is in a &n; * post-reset uninitialized state. Initializes the receive address registers,&n; * multicast table, and VLAN filter table. Calls routines to setup link&n; * configuration and flow control settings. Clears all on-chip counters. Leaves&n; * the transmit and receive units disabled and uninitialized.&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; * Performs basic configuration of the adapter.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Assumes that the controller has previously been reset and is in a&n; * post-reset uninitialized state. Initializes the receive address registers,&n; * multicast table, and VLAN filter table. Calls routines to setup link&n; * configuration and flow control settings. Clears all on-chip counters. Leaves&n; * the transmit and receive units disabled and uninitialized.&n; *****************************************************************************/
 r_int32
 DECL|function|e1000_init_hw
 id|e1000_init_hw
@@ -1690,7 +1690,7 @@ r_return
 id|ret_val
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; * Configures flow control and link settings.&n; * &n; * hw - Struct containing variables accessed by shared code&n; * &n; * Determines which flow control settings to use. Calls the apropriate media-&n; * specific link configuration function. Configures the flow control settings.&n; * Assuming the adapter has a valid link partner, a valid link should be&n; * established. Assumes the hardware has previously been reset and the &n; * transmitter and receiver are not enabled.&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; * Configures flow control and link settings.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Determines which flow control settings to use. Calls the apropriate media-&n; * specific link configuration function. Configures the flow control settings.&n; * Assuming the adapter has a valid link partner, a valid link should be&n; * established. Assumes the hardware has previously been reset and the&n; * transmitter and receiver are not enabled.&n; *****************************************************************************/
 r_int32
 DECL|function|e1000_setup_link
 id|e1000_setup_link
@@ -1951,7 +1951,7 @@ comma
 id|hw-&gt;fc_pause_time
 )paren
 suffix:semicolon
-multiline_comment|/* Set the flow control receive threshold registers.  Normally,&n;     * these registers will be set to a default threshold that may be&n;     * adjusted later by the driver&squot;s runtime code.  However, if the&n;     * ability to transmit pause frames in not enabled, then these&n;     * registers will be set to 0. &n;     */
+multiline_comment|/* Set the flow control receive threshold registers.  Normally,&n;     * these registers will be set to a default threshold that may be&n;     * adjusted later by the driver&squot;s runtime code.  However, if the&n;     * ability to transmit pause frames in not enabled, then these&n;     * registers will be set to 0.&n;     */
 r_if
 c_cond
 (paren
@@ -2085,7 +2085,7 @@ c_func
 l_string|&quot;e1000_setup_fiber_link&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* On adapters with a MAC newer that 82544, SW Defineable pin 1 will be &n;     * set when the optics detect a signal. On older adapters, it will be &n;     * cleared when there is a signal&n;     */
+multiline_comment|/* On adapters with a MAC newer that 82544, SW Defineable pin 1 will be&n;     * set when the optics detect a signal. On older adapters, it will be&n;     * cleared when there is a signal&n;     */
 id|ctrl
 op_assign
 id|E1000_READ_REG
@@ -2128,7 +2128,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-multiline_comment|/* Check for a software override of the flow control settings, and setup&n;     * the device accordingly.  If auto-negotiation is enabled, then software&n;     * will have to set the &quot;PAUSE&quot; bits to the correct value in the Tranmsit&n;     * Config Word Register (TXCW) and re-start auto-negotiation.  However, if&n;     * auto-negotiation is disabled, then software will have to manually &n;     * configure the two flow control enable bits in the CTRL register.&n;     *&n;     * The possible values of the &quot;fc&quot; parameter are:&n;     *      0:  Flow control is completely disabled&n;     *      1:  Rx flow control is enabled (we can receive pause frames, but &n;     *          not send pause frames).&n;     *      2:  Tx flow control is enabled (we can send pause frames but we do&n;     *          not support receiving pause frames).&n;     *      3:  Both Rx and TX flow control (symmetric) are enabled.&n;     */
+multiline_comment|/* Check for a software override of the flow control settings, and setup&n;     * the device accordingly.  If auto-negotiation is enabled, then software&n;     * will have to set the &quot;PAUSE&quot; bits to the correct value in the Tranmsit&n;     * Config Word Register (TXCW) and re-start auto-negotiation.  However, if&n;     * auto-negotiation is disabled, then software will have to manually&n;     * configure the two flow control enable bits in the CTRL register.&n;     *&n;     * The possible values of the &quot;fc&quot; parameter are:&n;     *      0:  Flow control is completely disabled&n;     *      1:  Rx flow control is enabled (we can receive pause frames, but&n;     *          not send pause frames).&n;     *      2:  Tx flow control is enabled (we can send pause frames but we do&n;     *          not support receiving pause frames).&n;     *      3:  Both Rx and TX flow control (symmetric) are enabled.&n;     */
 r_switch
 c_cond
 (paren
@@ -2152,7 +2152,7 @@ suffix:semicolon
 r_case
 id|e1000_fc_rx_pause
 suffix:colon
-multiline_comment|/* RX Flow control is enabled and TX Flow control is disabled by a &n;         * software over-ride. Since there really isn&squot;t a way to advertise &n;         * that we are capable of RX Pause ONLY, we will advertise that we&n;         * support both symmetric and asymmetric RX PAUSE. Later, we will&n;         *  disable the adapter&squot;s ability to send PAUSE frames.&n;         */
+multiline_comment|/* RX Flow control is enabled and TX Flow control is disabled by a&n;         * software over-ride. Since there really isn&squot;t a way to advertise&n;         * that we are capable of RX Pause ONLY, we will advertise that we&n;         * support both symmetric and asymmetric RX PAUSE. Later, we will&n;         *  disable the adapter&squot;s ability to send PAUSE frames.&n;         */
 id|txcw
 op_assign
 (paren
@@ -2168,7 +2168,7 @@ suffix:semicolon
 r_case
 id|e1000_fc_tx_pause
 suffix:colon
-multiline_comment|/* TX Flow control is enabled, and RX Flow control is disabled, by a &n;         * software over-ride.&n;         */
+multiline_comment|/* TX Flow control is enabled, and RX Flow control is disabled, by a&n;         * software over-ride.&n;         */
 id|txcw
 op_assign
 (paren
@@ -2255,7 +2255,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* If we have a signal (the cable is plugged in) then poll for a &quot;Link-Up&quot;&n;     * indication in the Device Status Register.  Time-out if a link isn&squot;t &n;     * seen in 500 milliseconds seconds (Auto-negotiation should complete in &n;     * less than 500 milliseconds even if the other end is doing it in SW).&n;     */
+multiline_comment|/* If we have a signal (the cable is plugged in) then poll for a &quot;Link-Up&quot;&n;     * indication in the Device Status Register.  Time-out if a link isn&squot;t&n;     * seen in 500 milliseconds seconds (Auto-negotiation should complete in&n;     * less than 500 milliseconds even if the other end is doing it in SW).&n;     */
 r_if
 c_cond
 (paren
@@ -2339,7 +2339,7 @@ l_int|10
 )paren
 )paren
 (brace
-multiline_comment|/* AutoNeg failed to achieve a link, so we&squot;ll call &n;             * e1000_check_for_link. This routine will force the link up if we&n;             * detect a signal. This will allow us to communicate with&n;             * non-autonegotiating link partners.&n;             */
+multiline_comment|/* AutoNeg failed to achieve a link, so we&squot;ll call&n;             * e1000_check_for_link. This routine will force the link up if we&n;             * detect a signal. This will allow us to communicate with&n;             * non-autonegotiating link partners.&n;             */
 id|DEBUGOUT
 c_func
 (paren
@@ -4983,7 +4983,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; * Forces the MAC&squot;s flow control settings.&n; * &n; * hw - Struct containing variables accessed by shared code&n; *&n; * Sets the TFCE and RFCE bits in the device control register to reflect&n; * the adapter settings. TFCE and RFCE need to be explicitly set by&n; * software when a Copper PHY is used because autonegotiation is managed&n; * by the PHY rather than the MAC. Software must also configure these&n; * bits when link is forced on a fiber connection.&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; * Forces the MAC&squot;s flow control settings.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Sets the TFCE and RFCE bits in the device control register to reflect&n; * the adapter settings. TFCE and RFCE need to be explicitly set by&n; * software when a Copper PHY is used because autonegotiation is managed&n; * by the PHY rather than the MAC. Software must also configure these&n; * bits when link is forced on a fiber connection.&n; *****************************************************************************/
 r_static
 r_int32
 DECL|function|e1000_force_mac_fc
@@ -5128,7 +5128,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; * Configures flow control settings after link is established&n; * &n; * hw - Struct containing variables accessed by shared code&n; *&n; * Should be called immediately after a valid link has been established.&n; * Forces MAC flow control settings if link was forced. When in MII/GMII mode&n; * and autonegotiation is enabled, the MAC flow control settings will be set&n; * based on the flow control negotiated by the PHY. In TBI mode, the TFCE&n; * and RFCE bits will be automaticaly set to the negotiated flow control mode.&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; * Configures flow control settings after link is established&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Should be called immediately after a valid link has been established.&n; * Forces MAC flow control settings if link was forced. When in MII/GMII mode&n; * and autonegotiation is enabled, the MAC flow control settings will be set&n; * based on the flow control negotiated by the PHY. In TBI mode, the TFCE&n; * and RFCE bits will be automaticaly set to the negotiated flow control mode.&n; *****************************************************************************/
 r_int32
 DECL|function|e1000_config_fc_after_link_up
 id|e1000_config_fc_after_link_up
@@ -5640,7 +5640,7 @@ c_func
 l_string|&quot;e1000_check_for_link&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* On adapters with a MAC newer that 82544, SW Defineable pin 1 will be &n;     * set when the optics detect a signal. On older adapters, it will be &n;     * cleared when there is a signal&n;     */
+multiline_comment|/* On adapters with a MAC newer that 82544, SW Defineable pin 1 will be&n;     * set when the optics detect a signal. On older adapters, it will be&n;     * cleared when there is a signal&n;     */
 r_if
 c_cond
 (paren
@@ -5844,7 +5844,7 @@ id|ret_val
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Configure Flow Control now that Auto-Neg has completed. First, we &n;         * need to restore the desired flow control settings because we may&n;         * have had to re-autoneg with a different link partner.&n;         */
+multiline_comment|/* Configure Flow Control now that Auto-Neg has completed. First, we&n;         * need to restore the desired flow control settings because we may&n;         * have had to re-autoneg with a different link partner.&n;         */
 id|ret_val
 op_assign
 id|e1000_config_fc_after_link_up
@@ -5924,7 +5924,7 @@ id|NWAY_LPAR_100T4_CAPS
 )paren
 )paren
 (brace
-multiline_comment|/* If our link partner advertises anything in addition to &n;                 * gigabit, we do not need to enable TBI compatibility.&n;                 */
+multiline_comment|/* If our link partner advertises anything in addition to&n;                 * gigabit, we do not need to enable TBI compatibility.&n;                 */
 r_if
 c_cond
 (paren
@@ -6601,7 +6601,7 @@ suffix:semicolon
 r_uint32
 id|mask
 suffix:semicolon
-multiline_comment|/* We need to shift &quot;count&quot; number of bits out to the PHY. So, the value&n;     * in the &quot;data&quot; parameter will be shifted out to the PHY one bit at a &n;     * time. In order to do this, &quot;data&quot; must be broken down into bits.&n;     */
+multiline_comment|/* We need to shift &quot;count&quot; number of bits out to the PHY. So, the value&n;     * in the &quot;data&quot; parameter will be shifted out to the PHY one bit at a&n;     * time. In order to do this, &quot;data&quot; must be broken down into bits.&n;     */
 id|mask
 op_assign
 l_int|0x01
@@ -6707,7 +6707,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/******************************************************************************&n;* Shifts data bits in from the PHY&n;*&n;* hw - Struct containing variables accessed by shared code&n;*&n;* Bits are shifted in in MSB to LSB order. &n;******************************************************************************/
+multiline_comment|/******************************************************************************&n;* Shifts data bits in from the PHY&n;*&n;* hw - Struct containing variables accessed by shared code&n;*&n;* Bits are shifted in in MSB to LSB order.&n;******************************************************************************/
 r_static
 r_uint16
 DECL|function|e1000_shift_in_mdi_bits
@@ -7310,7 +7310,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* We&squot;ll need to use the SW defined pins to shift the write command&n;         * out to the PHY. We first send a preamble to the PHY to signal the&n;         * beginning of the MII instruction.  This is done by sending 32 &n;         * consecutive &quot;1&quot; bits.&n;         */
+multiline_comment|/* We&squot;ll need to use the SW defined pins to shift the write command&n;         * out to the PHY. We first send a preamble to the PHY to signal the&n;         * beginning of the MII instruction.  This is done by sending 32&n;         * consecutive &quot;1&quot; bits.&n;         */
 id|e1000_shift_out_mdi_bits
 c_func
 (paren
@@ -7321,7 +7321,7 @@ comma
 id|PHY_PREAMBLE_SIZE
 )paren
 suffix:semicolon
-multiline_comment|/* Now combine the remaining required fields that will indicate a &n;         * write operation. We use this method instead of calling the&n;         * e1000_shift_out_mdi_bits routine for each field in the command. The&n;         * format of a MII write instruction is as follows:&n;         * &lt;Preamble&gt;&lt;SOF&gt;&lt;Op Code&gt;&lt;Phy Addr&gt;&lt;Reg Addr&gt;&lt;Turnaround&gt;&lt;Data&gt;.&n;         */
+multiline_comment|/* Now combine the remaining required fields that will indicate a&n;         * write operation. We use this method instead of calling the&n;         * e1000_shift_out_mdi_bits routine for each field in the command. The&n;         * format of a MII write instruction is as follows:&n;         * &lt;Preamble&gt;&lt;SOF&gt;&lt;Op Code&gt;&lt;Phy Addr&gt;&lt;Reg Addr&gt;&lt;Turnaround&gt;&lt;Data&gt;.&n;         */
 id|mdic
 op_assign
 (paren
@@ -11764,7 +11764,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; * Initializes receive address filters.&n; *&n; * hw - Struct containing variables accessed by shared code &n; *&n; * Places the MAC address in receive address register 0 and clears the rest&n; * of the receive addresss registers. Clears the multicast table. Assumes&n; * the receiver is in reset when the routine is called.&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; * Initializes receive address filters.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Places the MAC address in receive address register 0 and clears the rest&n; * of the receive addresss registers. Clears the multicast table. Assumes&n; * the receiver is in reset when the routine is called.&n; *****************************************************************************/
 r_void
 DECL|function|e1000_init_rx_addrs
 id|e1000_init_rx_addrs
@@ -11938,7 +11938,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/******************************************************************************&n; * Updates the MAC&squot;s list of multicast addresses.&n; *&n; * hw - Struct containing variables accessed by shared code&n; * mc_addr_list - the list of new multicast addresses&n; * mc_addr_count - number of addresses&n; * pad - number of bytes between addresses in the list&n; *&n; * The given list replaces any existing list. Clears the last 15 receive&n; * address registers and the multicast table. Uses receive address registers&n; * for the first 15 multicast addresses, and hashes the rest into the &n; * multicast table.&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; * Updates the MAC&squot;s list of multicast addresses.&n; *&n; * hw - Struct containing variables accessed by shared code&n; * mc_addr_list - the list of new multicast addresses&n; * mc_addr_count - number of addresses&n; * pad - number of bytes between addresses in the list&n; *&n; * The given list replaces any existing list. Clears the last 15 receive&n; * address registers and the multicast table. Uses receive address registers&n; * for the first 15 multicast addresses, and hashes the rest into the&n; * multicast table.&n; *****************************************************************************/
 r_void
 DECL|function|e1000_mc_addr_list_update
 id|e1000_mc_addr_list_update
@@ -12211,7 +12211,7 @@ comma
 id|hash_value
 )paren
 suffix:semicolon
-multiline_comment|/* Place this multicast address in the RAR if there is room, *&n;         * else put it in the MTA            &n;         */
+multiline_comment|/* Place this multicast address in the RAR if there is room, *&n;         * else put it in the MTA&n;         */
 r_if
 c_cond
 (paren
@@ -12263,7 +12263,7 @@ l_string|&quot;MC Update Complete&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; * Hashes an address to determine its location in the multicast table&n; *&n; * hw - Struct containing variables accessed by shared code&n; * mc_addr - the multicast address to hash &n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; * Hashes an address to determine its location in the multicast table&n; *&n; * hw - Struct containing variables accessed by shared code&n; * mc_addr - the multicast address to hash&n; *****************************************************************************/
 r_uint32
 DECL|function|e1000_hash_mc_addr
 id|e1000_hash_mc_addr
@@ -12284,7 +12284,7 @@ id|hash_value
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* The portion of the address that is used for the hash table is&n;     * determined by the mc_filter_type setting.  &n;     */
+multiline_comment|/* The portion of the address that is used for the hash table is&n;     * determined by the mc_filter_type setting.&n;     */
 r_switch
 c_cond
 (paren
@@ -12457,7 +12457,7 @@ suffix:semicolon
 r_uint32
 id|temp
 suffix:semicolon
-multiline_comment|/* The MTA is a register array of 128 32-bit registers.  &n;     * It is treated like an array of 4096 bits.  We want to set &n;     * bit BitArray[hash_value]. So we figure out what register&n;     * the bit is in, read it, OR in the new bit, then write&n;     * back the new value.  The register is determined by the &n;     * upper 7 bits of the hash value and the bit within that &n;     * register are determined by the lower 5 bits of the value.&n;     */
+multiline_comment|/* The MTA is a register array of 128 32-bit registers.&n;     * It is treated like an array of 4096 bits.  We want to set&n;     * bit BitArray[hash_value]. So we figure out what register&n;     * the bit is in, read it, OR in the new bit, then write&n;     * back the new value.  The register is determined by the&n;     * upper 7 bits of the hash value and the bit within that&n;     * register are determined by the lower 5 bits of the value.&n;     */
 id|hash_reg
 op_assign
 (paren
@@ -12600,7 +12600,7 @@ id|rar_low
 comma
 id|rar_high
 suffix:semicolon
-multiline_comment|/* HW expects these in little endian so we reverse the byte order&n;     * from network order (big endian) to little endian              &n;     */
+multiline_comment|/* HW expects these in little endian so we reverse the byte order&n;     * from network order (big endian) to little endian&n;     */
 id|rar_low
 op_assign
 (paren
@@ -13819,7 +13819,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; * Clears all hardware statistics counters. &n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; * Clears all hardware statistics counters.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
 r_void
 DECL|function|e1000_clear_hw_cntrs
 id|e1000_clear_hw_cntrs
@@ -14651,7 +14651,7 @@ l_string|&quot;Not in Adaptive IFS mode!&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/******************************************************************************&n; * Adjusts the statistic counters when a frame is accepted by TBI_ACCEPT&n; * &n; * hw - Struct containing variables accessed by shared code&n; * frame_len - The length of the frame in question&n; * mac_addr - The Ethernet destination address of the frame in question&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; * Adjusts the statistic counters when a frame is accepted by TBI_ACCEPT&n; *&n; * hw - Struct containing variables accessed by shared code&n; * frame_len - The length of the frame in question&n; * mac_addr - The Ethernet destination address of the frame in question&n; *****************************************************************************/
 r_void
 DECL|function|e1000_tbi_adjust_stats
 id|e1000_tbi_adjust_stats
@@ -14702,7 +14702,7 @@ id|stats-&gt;gorcl
 op_add_assign
 id|frame_len
 suffix:semicolon
-multiline_comment|/* If the high bit of Gorcl (the low 32 bits of the Good Octets&n;     * Received Count) was one before the addition, &n;     * AND it is zero after, then we lost the carry out, &n;     * need to add one to Gorch (Good Octets Received Count High).&n;     * This could be simplified if all environments supported &n;     * 64-bit integers.&n;     */
+multiline_comment|/* If the high bit of Gorcl (the low 32 bits of the Good Octets&n;     * Received Count) was one before the addition,&n;     * AND it is zero after, then we lost the carry out,&n;     * need to add one to Gorch (Good Octets Received Count High).&n;     * This could be simplified if all environments supported&n;     * 64-bit integers.&n;     */
 r_if
 c_cond
 (paren
@@ -14723,7 +14723,7 @@ id|stats-&gt;gorch
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* Is this a broadcast or multicast?  Check broadcast first,&n;     * since the test for a multicast frame will test positive on &n;     * a broadcast frame.&n;     */
+multiline_comment|/* Is this a broadcast or multicast?  Check broadcast first,&n;     * since the test for a multicast frame will test positive on&n;     * a broadcast frame.&n;     */
 r_if
 c_cond
 (paren

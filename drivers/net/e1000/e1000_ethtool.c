@@ -1496,11 +1496,11 @@ c_cond
 id|wol-&gt;wolopts
 op_amp
 (paren
+id|WAKE_PHY
+op_or
 id|WAKE_ARP
 op_or
 id|WAKE_MAGICSECURE
-op_or
-id|WAKE_PHY
 )paren
 )paren
 (brace

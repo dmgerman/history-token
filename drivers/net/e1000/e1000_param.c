@@ -96,7 +96,7 @@ comma
 l_string|&quot;Transmit Absolute Interrupt Delay&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Receive Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 0/128&n; */
+multiline_comment|/* Receive Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 0&n; */
 id|E1000_PARAM
 c_func
 (paren
@@ -575,7 +575,6 @@ op_assign
 (brace
 dot
 id|r
-op_assign
 (brace
 dot
 id|min
@@ -901,17 +900,6 @@ suffix:semicolon
 )brace
 (brace
 multiline_comment|/* Transmit Interrupt Delay */
-r_char
-op_star
-id|tidv
-op_assign
-l_string|&quot;using default of &quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|DEFAULT_TIDV
-)paren
-suffix:semicolon
 r_struct
 id|e1000_option
 id|opt
@@ -926,6 +914,21 @@ dot
 id|name
 op_assign
 l_string|&quot;Transmit Interrupt Delay&quot;
+comma
+dot
+id|err
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_TIDV
+)paren
+comma
+dot
+id|def
+op_assign
+id|DEFAULT_TIDV
 comma
 dot
 id|arg
@@ -948,14 +951,6 @@ id|MAX_TXDELAY
 )brace
 )brace
 suffix:semicolon
-id|opt.def
-op_assign
-id|DEFAULT_TIDV
-suffix:semicolon
-id|opt.err
-op_assign
-id|tidv
-suffix:semicolon
 id|adapter-&gt;tx_int_delay
 op_assign
 id|TxIntDelay
@@ -976,17 +971,6 @@ suffix:semicolon
 )brace
 (brace
 multiline_comment|/* Transmit Absolute Interrupt Delay */
-r_char
-op_star
-id|tadv
-op_assign
-l_string|&quot;using default of &quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|DEFAULT_TADV
-)paren
-suffix:semicolon
 r_struct
 id|e1000_option
 id|opt
@@ -1001,6 +985,21 @@ dot
 id|name
 op_assign
 l_string|&quot;Transmit Absolute Interrupt Delay&quot;
+comma
+dot
+id|err
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_TADV
+)paren
+comma
+dot
+id|def
+op_assign
+id|DEFAULT_TADV
 comma
 dot
 id|arg
@@ -1023,14 +1022,6 @@ id|MAX_TXABSDELAY
 )brace
 )brace
 suffix:semicolon
-id|opt.def
-op_assign
-id|DEFAULT_TADV
-suffix:semicolon
-id|opt.err
-op_assign
-id|tadv
-suffix:semicolon
 id|adapter-&gt;tx_abs_int_delay
 op_assign
 id|TxAbsIntDelay
@@ -1051,17 +1042,6 @@ suffix:semicolon
 )brace
 (brace
 multiline_comment|/* Receive Interrupt Delay */
-r_char
-op_star
-id|rdtr
-op_assign
-l_string|&quot;using default of &quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|DEFAULT_RDTR
-)paren
-suffix:semicolon
 r_struct
 id|e1000_option
 id|opt
@@ -1076,6 +1056,21 @@ dot
 id|name
 op_assign
 l_string|&quot;Receive Interrupt Delay&quot;
+comma
+dot
+id|err
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_RDTR
+)paren
+comma
+dot
+id|def
+op_assign
+id|DEFAULT_RDTR
 comma
 dot
 id|arg
@@ -1098,14 +1093,6 @@ id|MAX_RXDELAY
 )brace
 )brace
 suffix:semicolon
-id|opt.def
-op_assign
-id|DEFAULT_RDTR
-suffix:semicolon
-id|opt.err
-op_assign
-id|rdtr
-suffix:semicolon
 id|adapter-&gt;rx_int_delay
 op_assign
 id|RxIntDelay
@@ -1126,17 +1113,6 @@ suffix:semicolon
 )brace
 (brace
 multiline_comment|/* Receive Absolute Interrupt Delay */
-r_char
-op_star
-id|radv
-op_assign
-l_string|&quot;using default of &quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|DEFAULT_RADV
-)paren
-suffix:semicolon
 r_struct
 id|e1000_option
 id|opt
@@ -1151,6 +1127,21 @@ dot
 id|name
 op_assign
 l_string|&quot;Receive Absolute Interrupt Delay&quot;
+comma
+dot
+id|err
+op_assign
+l_string|&quot;using default of &quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|DEFAULT_RADV
+)paren
+comma
+dot
+id|def
+op_assign
+id|DEFAULT_RADV
 comma
 dot
 id|arg
@@ -1172,14 +1163,6 @@ id|MAX_RXABSDELAY
 )brace
 )brace
 )brace
-suffix:semicolon
-id|opt.def
-op_assign
-id|DEFAULT_RADV
-suffix:semicolon
-id|opt.err
-op_assign
-id|radv
 suffix:semicolon
 id|adapter-&gt;rx_abs_int_delay
 op_assign
