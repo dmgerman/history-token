@@ -706,8 +706,8 @@ id|entryp
 )paren
 suffix:semicolon
 DECL|function|snd_info_set_text_ops
-r_inline
 r_static
+r_inline
 r_void
 id|snd_info_set_text_ops
 c_func
@@ -719,6 +719,9 @@ comma
 r_void
 op_star
 id|private_data
+comma
+r_int
+id|read_size
 comma
 r_void
 (paren
@@ -740,7 +743,7 @@ id|private_data
 suffix:semicolon
 id|entry-&gt;c.text.read_size
 op_assign
-l_int|1024
+id|read_size
 suffix:semicolon
 id|entry-&gt;c.text.read
 op_assign

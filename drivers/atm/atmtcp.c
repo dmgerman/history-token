@@ -1388,11 +1388,7 @@ id|dev_data-&gt;persist
 )paren
 r_return
 suffix:semicolon
-id|PRIV
-c_func
-(paren
-id|atmtcp_dev
-)paren
+id|atmtcp_dev-&gt;dev_data
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2013,11 +2009,7 @@ id|dev-&gt;ci_range.vci_bits
 op_assign
 id|MAX_VCI_BITS
 suffix:semicolon
-id|PRIV
-c_func
-(paren
-id|dev
-)paren
+id|dev-&gt;dev_data
 op_assign
 id|dev_data
 suffix:semicolon

@@ -349,6 +349,8 @@ l_int|30
 comma
 )brace
 suffix:semicolon
+DECL|macro|RxPollInt
+mdefine_line|#define RxPollInt (RxIntr|RxNoBuf|RxDied|RxJabber)
 multiline_comment|/* The bits in the CSR5 status registers, mostly interrupt sources. */
 DECL|enum|status_bits
 r_enum
@@ -931,9 +933,9 @@ comma
 suffix:semicolon
 multiline_comment|/* Keep the ring sizes a power of two for efficiency.&n;   Making the Tx ring too large decreases the effectiveness of channel&n;   bonding and packet priority.&n;   There are no ill effects from too-large receive rings. */
 DECL|macro|TX_RING_SIZE
-mdefine_line|#define TX_RING_SIZE&t;16
+mdefine_line|#define TX_RING_SIZE&t;32
 DECL|macro|RX_RING_SIZE
-mdefine_line|#define RX_RING_SIZE&t;32
+mdefine_line|#define RX_RING_SIZE&t;128 
 DECL|macro|MEDIA_MASK
 mdefine_line|#define MEDIA_MASK     31
 DECL|macro|PKT_BUF_SZ
@@ -1163,6 +1165,12 @@ id|timer_list
 id|timer
 suffix:semicolon
 multiline_comment|/* Media selection timer. */
+DECL|member|oom_timer
+r_struct
+id|timer_list
+id|oom_timer
+suffix:semicolon
+multiline_comment|/* Out of memory timer. */
 DECL|member|mc_filter
 id|u32
 id|mc_filter
@@ -1196,22 +1204,11 @@ comma
 id|dirty_tx
 suffix:semicolon
 multiline_comment|/* The ring entries to be free()ed. */
-macro_line|#ifdef CONFIG_NET_HW_FLOWCONTROL
-DECL|macro|RX_A_NBF_STOP
-mdefine_line|#define RX_A_NBF_STOP 0xffffff3f /* To disable RX and RX-NOBUF ints. */
-DECL|member|fc_bit
+macro_line|#ifdef &t;CONFIG_TULIP_NAPI_HW_MITIGATION
+DECL|member|mit_on
 r_int
-id|fc_bit
+id|mit_on
 suffix:semicolon
-DECL|member|mit_sel
-r_int
-id|mit_sel
-suffix:semicolon
-DECL|member|mit_change
-r_int
-id|mit_change
-suffix:semicolon
-multiline_comment|/* Signal for Interrupt Mitigtion */
 macro_line|#endif
 DECL|member|full_duplex
 r_int
@@ -1581,6 +1578,22 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_TULIP_NAPI
+r_int
+id|tulip_poll
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+op_star
+id|budget
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* media.c */
 r_int
 id|tulip_mdio_read
@@ -1740,6 +1753,15 @@ id|tulip_chip_table
 id|tulip_tbl
 (braket
 )braket
+suffix:semicolon
+r_void
+id|oom_timer
+c_func
+(paren
+r_int
+r_int
+id|data
+)paren
 suffix:semicolon
 r_extern
 id|u8

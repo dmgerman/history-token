@@ -2010,10 +2010,6 @@ l_int|512
 )braket
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|count1
 suffix:semicolon
 r_struct
@@ -2050,17 +2046,6 @@ id|count
 )paren
 r_return
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -2082,12 +2067,6 @@ r_sizeof
 (paren
 id|buf
 )paren
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Read the characters out of the buffer */

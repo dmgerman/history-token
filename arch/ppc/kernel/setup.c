@@ -31,6 +31,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/xmon.h&gt;
 macro_line|#if defined CONFIG_KGDB
 macro_line|#include &lt;asm/kgdb.h&gt;
@@ -348,6 +349,13 @@ op_star
 id|cmd
 )paren
 (brace
+macro_line|#ifdef CONFIG_NVRAM
+id|nvram_sync
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|ppc_md
 dot
 id|restart
@@ -372,6 +380,13 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_NVRAM
+id|nvram_sync
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|ppc_md
 dot
 id|power_off
@@ -395,6 +410,13 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_NVRAM
+id|nvram_sync
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|ppc_md
 dot
 id|halt
@@ -2307,10 +2329,10 @@ id|ppc_setup_l2cr
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NVRAM
-multiline_comment|/* Generic nvram hooks we now look into ppc_md.nvram_read_val&n; * on pmac too ;)&n; * //XX Those 2 could be moved to headers&n; */
+multiline_comment|/* Generic nvram hooks used by drivers/char/gen_nvram.c */
+DECL|function|nvram_read_byte
 r_int
 r_char
-DECL|function|nvram_read_byte
 id|nvram_read_byte
 c_func
 (paren
@@ -2336,8 +2358,15 @@ r_return
 l_int|0xff
 suffix:semicolon
 )brace
-r_void
+DECL|variable|nvram_read_byte
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|nvram_read_byte
+)paren
+suffix:semicolon
 DECL|function|nvram_write_byte
+r_void
 id|nvram_write_byte
 c_func
 (paren
@@ -2359,12 +2388,47 @@ dot
 id|nvram_write_val
 c_func
 (paren
-id|val
-comma
 id|addr
+comma
+id|val
 )paren
 suffix:semicolon
 )brace
+DECL|variable|nvram_write_byte
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|nvram_write_byte
+)paren
+suffix:semicolon
+DECL|function|nvram_sync
+r_void
+id|nvram_sync
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ppc_md.nvram_sync
+)paren
+id|ppc_md
+dot
+id|nvram_sync
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|nvram_sync
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|nvram_sync
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_NVRAM */
 DECL|variable|cpu_devices
 r_static

@@ -2228,10 +2228,22 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_IRQ_ALL_CPUS
 r_int
 id|i
 suffix:semicolon
 id|u32
+id|msk
+suffix:semicolon
+macro_line|#endif
+id|spin_lock
+c_func
+(paren
+op_amp
+id|openpic_setup_lock
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_IRQ_ALL_CPUS
 id|msk
 op_assign
 l_int|1
@@ -2244,14 +2256,6 @@ c_func
 )paren
 )braket
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|openpic_setup_lock
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_IRQ_ALL_CPUS
 multiline_comment|/* let the openpic know we want intrs. default affinity&n; &t; * is 0xffffffff until changed via /proc&n; &t; * That&squot;s how it&squot;s done on x86. If we want it differently, then&n; &t; * we should make sure we also change the default values of irq_affinity&n; &t; * in irq.c.&n; &t; */
 r_for
 c_loop
@@ -2866,6 +2870,7 @@ r_int
 id|irq_nr
 )paren
 (brace
+macro_line|#ifdef __SLOW_VERSION__
 id|openpic_disable_irq
 c_func
 (paren
@@ -2877,6 +2882,29 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+(paren
+id|irq_desc
+(braket
+id|irq_nr
+)braket
+dot
+id|status
+op_amp
+id|IRQ_LEVEL
+)paren
+op_eq
+l_int|0
+)paren
+id|openpic_eoi
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|openpic_end_irq
 r_static
@@ -2889,6 +2917,7 @@ r_int
 id|irq_nr
 )paren
 (brace
+macro_line|#ifdef __SLOW_VERSION__
 r_if
 c_cond
 (paren
@@ -2921,6 +2950,29 @@ c_func
 id|irq_nr
 )paren
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+(paren
+id|irq_desc
+(braket
+id|irq_nr
+)braket
+dot
+id|status
+op_amp
+id|IRQ_LEVEL
+)paren
+op_ne
+l_int|0
+)paren
+id|openpic_eoi
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|openpic_set_affinity
 r_static

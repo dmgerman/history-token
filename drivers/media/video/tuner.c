@@ -4630,6 +4630,9 @@ id|company_code
 )paren
 (brace
 r_case
+l_int|0x30bf
+suffix:colon
+r_case
 l_int|0x3cbf
 suffix:colon
 r_case
@@ -6006,6 +6009,11 @@ c_cond
 id|adap-&gt;id
 )paren
 (brace
+r_case
+id|I2C_ALGO_BIT
+op_or
+id|I2C_HW_SMBUS_VOODOO3
+suffix:colon
 r_case
 id|I2C_ALGO_BIT
 op_or

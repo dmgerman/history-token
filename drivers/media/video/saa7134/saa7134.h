@@ -355,6 +355,12 @@ DECL|macro|SAA7134_BOARD_TG3000TV
 mdefine_line|#define SAA7134_BOARD_TG3000TV         29
 DECL|macro|SAA7134_BOARD_ECS_TVP3XP
 mdefine_line|#define SAA7134_BOARD_ECS_TVP3XP       30
+DECL|macro|SAA7134_BOARD_ECS_TVP3XP_4CB5
+mdefine_line|#define SAA7134_BOARD_ECS_TVP3XP_4CB5  31
+DECL|macro|SAA7134_BOARD_AVACSSMARTTV
+mdefine_line|#define SAA7134_BOARD_AVACSSMARTTV     32
+DECL|macro|SAA7134_BOARD_AVERMEDIA_DVD_EZMAKER
+mdefine_line|#define SAA7134_BOARD_AVERMEDIA_DVD_EZMAKER 33
 DECL|macro|SAA7134_INPUT_MAX
 mdefine_line|#define SAA7134_INPUT_MAX 8
 DECL|struct|saa7134_input
@@ -515,26 +521,23 @@ DECL|struct|saa7134_thread
 r_struct
 id|saa7134_thread
 (brace
-DECL|member|task
+DECL|member|pid
+id|pid_t
+id|pid
+suffix:semicolon
+DECL|member|exit
 r_struct
-id|task_struct
-op_star
-id|task
+id|completion
+m_exit
 suffix:semicolon
 DECL|member|wq
 id|wait_queue_head_t
 id|wq
 suffix:semicolon
-DECL|member|notify
-r_struct
-id|semaphore
-op_star
-id|notify
-suffix:semicolon
-DECL|member|exit
+DECL|member|shutdown
 r_int
 r_int
-m_exit
+id|shutdown
 suffix:semicolon
 DECL|member|scan1
 r_int
@@ -909,6 +912,19 @@ suffix:semicolon
 DECL|member|mask_keyup
 id|u32
 id|mask_keyup
+suffix:semicolon
+DECL|member|polling
+r_int
+id|polling
+suffix:semicolon
+DECL|member|last_gpio
+id|u32
+id|last_gpio
+suffix:semicolon
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -17,9 +17,9 @@ id|snd_vt1724_aureon_cards
 suffix:semicolon
 multiline_comment|/* GPIO bits */
 DECL|macro|AUREON_CS8415_CS
-mdefine_line|#define AUREON_CS8415_CS&t;(1 &lt;&lt; 23)
+mdefine_line|#define AUREON_CS8415_CS&t;(1 &lt;&lt; 22)
 DECL|macro|AUREON_CS8415_CDTO
-mdefine_line|#define AUREON_CS8415_CDTO&t;(1 &lt;&lt; 22)
+mdefine_line|#define AUREON_CS8415_CDTO&t;(1 &lt;&lt; 21)
 DECL|macro|AUREON_WM_RESET
 mdefine_line|#define AUREON_WM_RESET&t;&t;(1 &lt;&lt; 20)
 DECL|macro|AUREON_WM_CLK

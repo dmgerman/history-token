@@ -653,9 +653,10 @@ id|idx
 comma
 id|nvol
 op_or
-l_int|0x100
+l_int|0x180
 )paren
 suffix:semicolon
+multiline_comment|/* update on zero detect */
 )brace
 id|snd_ice1712_restore_gpio_status
 c_func
@@ -1498,6 +1499,27 @@ id|wm_inits
 )braket
 op_assign
 (brace
+multiline_comment|/* These come first to reduce init pop noise */
+l_int|0x1b
+comma
+l_int|0x000
+comma
+multiline_comment|/* ADC Mux */
+l_int|0x1c
+comma
+l_int|0x009
+comma
+multiline_comment|/* Out Mux1 */
+l_int|0x1d
+comma
+l_int|0x009
+comma
+multiline_comment|/* Out Mux2 */
+l_int|0x18
+comma
+l_int|0x000
+comma
+multiline_comment|/* All power-up */
 l_int|0x16
 comma
 l_int|0x122
@@ -1508,11 +1530,6 @@ comma
 l_int|0x022
 comma
 multiline_comment|/* 256fs, slave mode */
-l_int|0x18
-comma
-l_int|0x000
-comma
-multiline_comment|/* All power-up */
 l_int|0x00
 comma
 l_int|0
@@ -1633,21 +1650,6 @@ comma
 l_int|0x000
 comma
 multiline_comment|/* -12dB ADC/R */
-l_int|0x1b
-comma
-l_int|0x000
-comma
-multiline_comment|/* ADC Mux */
-l_int|0x1c
-comma
-l_int|0x009
-comma
-multiline_comment|/* Out Mux1 */
-l_int|0x1d
-comma
-l_int|0x009
-comma
-multiline_comment|/* Out Mux2 */
 )brace
 suffix:semicolon
 r_static

@@ -999,6 +999,17 @@ op_logical_neg
 id|opl4-&gt;res_pcm_port
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;opl4: can&squot;t grab ports 0x%lx, 0x%lx&bslash;n&quot;
+comma
+id|fm_port
+comma
+id|pcm_port
+)paren
+suffix:semicolon
 id|snd_opl4_free
 c_func
 (paren

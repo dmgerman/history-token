@@ -1083,7 +1083,7 @@ r_return
 id|buf
 suffix:semicolon
 )brace
-multiline_comment|/**&n;* vsnprintf - Format a string and place it in a buffer&n;* @buf: The buffer to place the result into&n;* @size: The size of the buffer, including the trailing null space&n;* @fmt: The format string to use&n;* @args: Arguments for the format string&n;*&n;* Call this function if you are already dealing with a va_list.&n;* You probably want snprintf instead.&n; */
+multiline_comment|/**&n;* vsnprintf - Format a string and place it in a buffer&n;* @buf: The buffer to place the result into&n;* @size: The size of the buffer, including the trailing null space&n;* @fmt: The format string to use&n;* @args: Arguments for the format string&n;*&n;* The return value is the number of characters which would be&n;* generated for the given input, excluding the trailing null,&n;* as per ISO C99.  If the return is greater than or equal to&n;* @size, the resulting string is truncated.&n;*&n;* Call this function if you are already dealing with a va_list.&n;* You probably want snprintf instead.&n; */
 DECL|function|vsnprintf
 r_int
 id|vsnprintf
@@ -2268,7 +2268,7 @@ c_func
 id|vsnprintf
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * snprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @size: The size of the buffer, including the trailing null space&n; * @fmt: The format string to use&n; * @...: Arguments for the format string&n; */
+multiline_comment|/**&n; * snprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @size: The size of the buffer, including the trailing null space&n; * @fmt: The format string to use&n; * @...: Arguments for the format string&n; *&n; * The return value is the number of characters which would be&n; * generated for the given input, excluding the trailing null,&n; * as per ISO C99.  If the return is greater than or equal to&n; * @size, the resulting string is truncated.&n; */
 DECL|function|snprintf
 r_int
 id|snprintf
@@ -2780,17 +2780,15 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|field_width
 op_decrement
+id|field_width
 OG
 l_int|0
 op_logical_and
 op_star
 id|str
 )paren
-(brace
 suffix:semicolon
-)brace
 id|num
 op_increment
 suffix:semicolon

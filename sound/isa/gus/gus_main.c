@@ -729,6 +729,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;gus: can&squot;t grab SB port 0x%lx&bslash;n&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 id|snd_gus_free
 c_func
 (paren
@@ -762,6 +771,17 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;gus: can&squot;t grab synth port 0x%lx&bslash;n&quot;
+comma
+id|port
+op_plus
+l_int|0x100
+)paren
+suffix:semicolon
 id|snd_gus_free
 c_func
 (paren
@@ -799,6 +819,15 @@ id|gus
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;gus: can&squot;t grab irq %d&bslash;n&quot;
+comma
+id|irq
+)paren
+suffix:semicolon
 id|snd_gus_free
 c_func
 (paren
@@ -826,6 +855,15 @@ l_string|&quot;GUS - 1&quot;
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;gus: can&squot;t grab DMA1 %d&bslash;n&quot;
+comma
+id|dma1
+)paren
+suffix:semicolon
 id|snd_gus_free
 c_func
 (paren
@@ -865,6 +903,15 @@ l_string|&quot;GUS - 2&quot;
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;gus: can&squot;t grab DMA2 %d&bslash;n&quot;
+comma
+id|dma2
+)paren
+suffix:semicolon
 id|snd_gus_free
 c_func
 (paren

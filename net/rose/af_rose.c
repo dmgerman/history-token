@@ -461,11 +461,7 @@ id|out
 suffix:semicolon
 id|rose
 op_assign
-id|rose_sk
-c_func
-(paren
-id|sk
-)paren
+id|sk-&gt;sk_protinfo
 op_assign
 id|kmalloc
 c_func

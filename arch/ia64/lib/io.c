@@ -202,6 +202,14 @@ DECL|macro|__ia64_readl
 macro_line|#undef __ia64_readl
 DECL|macro|__ia64_readq
 macro_line|#undef __ia64_readq
+DECL|macro|__ia64_readb_relaxed
+macro_line|#undef __ia64_readb_relaxed
+DECL|macro|__ia64_readw_relaxed
+macro_line|#undef __ia64_readw_relaxed
+DECL|macro|__ia64_readl_relaxed
+macro_line|#undef __ia64_readl_relaxed
+DECL|macro|__ia64_readq_relaxed
+macro_line|#undef __ia64_readq_relaxed
 DECL|macro|__ia64_writeb
 macro_line|#undef __ia64_writeb
 DECL|macro|__ia64_writew
@@ -385,6 +393,74 @@ r_int
 r_int
 DECL|function|__ia64_readq
 id|__ia64_readq
+(paren
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_return
+id|___ia64_readq
+(paren
+id|addr
+)paren
+suffix:semicolon
+)brace
+r_int
+r_char
+DECL|function|__ia64_readb_relaxed
+id|__ia64_readb_relaxed
+(paren
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_return
+id|___ia64_readb
+(paren
+id|addr
+)paren
+suffix:semicolon
+)brace
+r_int
+r_int
+DECL|function|__ia64_readw_relaxed
+id|__ia64_readw_relaxed
+(paren
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_return
+id|___ia64_readw
+(paren
+id|addr
+)paren
+suffix:semicolon
+)brace
+r_int
+r_int
+DECL|function|__ia64_readl_relaxed
+id|__ia64_readl_relaxed
+(paren
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_return
+id|___ia64_readl
+(paren
+id|addr
+)paren
+suffix:semicolon
+)brace
+r_int
+r_int
+DECL|function|__ia64_readq_relaxed
+id|__ia64_readq_relaxed
 (paren
 r_void
 op_star

@@ -134,6 +134,22 @@ r_int
 id|irq_installed
 suffix:semicolon
 macro_line|#endif /* MODULE */
+multiline_comment|/* software implemented recording volume! */
+DECL|variable|software_input_volume
+id|uint
+id|software_input_volume
+op_assign
+id|SW_INPUT_VOLUME_SCALE
+op_star
+id|SW_INPUT_VOLUME_DEFAULT
+suffix:semicolon
+DECL|variable|software_input_volume
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|software_input_volume
+)paren
+suffix:semicolon
 multiline_comment|/* control over who can modify resources shared between play/record */
 DECL|variable|shared_resource_owner
 r_static
@@ -3741,6 +3757,10 @@ c_cond
 id|format
 op_ne
 id|data
+op_logical_and
+id|data
+op_ne
+id|AFMT_QUERY
 )paren
 r_return
 op_minus
@@ -3755,16 +3775,12 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|SNDCTL_DSP_SUBDIVIDE
 suffix:colon
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-r_break
 suffix:semicolon
 r_case
 id|SNDCTL_DSP_SETFRAGMENT

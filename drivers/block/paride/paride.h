@@ -76,6 +76,7 @@ suffix:semicolon
 multiline_comment|/* number of ports reserved */
 DECL|member|private
 r_int
+r_int
 r_private
 suffix:semicolon
 multiline_comment|/* for protocol module */
@@ -256,6 +257,16 @@ id|count
 suffix:semicolon
 r_extern
 r_void
+id|pi_unclaim
+c_func
+(paren
+id|PIA
+op_star
+id|pi
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|pi_connect
 c_func
 (paren
@@ -277,6 +288,25 @@ suffix:semicolon
 r_extern
 r_void
 id|pi_do_claimed
+c_func
+(paren
+id|PIA
+op_star
+id|pi
+comma
+r_void
+(paren
+op_star
+id|cont
+)paren
+(paren
+r_void
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pi_schedule_claimed
 c_func
 (paren
 id|PIA

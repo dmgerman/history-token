@@ -27,6 +27,25 @@ r_int
 id|devfn
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_ISERIES
+DECL|macro|pcibios_scan_all_fns
+mdefine_line|#define pcibios_scan_all_fns(a, b)&t;0
+macro_line|#else
+r_extern
+r_int
+id|pcibios_scan_all_fns
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+comma
+r_int
+id|devfn
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|pcibios_set_master
 r_static
 r_inline

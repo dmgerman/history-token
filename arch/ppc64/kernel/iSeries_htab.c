@@ -309,6 +309,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * The HyperVisor expects the &quot;flags&quot; argument in this form:&n; * &t;bits  0..59 : reserved&n; * &t;bit      60 : N&n; * &t;bits 61..63 : PP2,PP1,PP0&n; */
 DECL|function|iSeries_hpte_updatepp
 r_static
 r_int
@@ -373,7 +374,21 @@ c_func
 (paren
 id|slot
 comma
+(paren
 id|newpp
+op_amp
+l_int|0x3
+)paren
+op_or
+(paren
+(paren
+id|newpp
+op_amp
+l_int|0x4
+)paren
+op_lshift
+l_int|1
+)paren
 )paren
 suffix:semicolon
 r_return

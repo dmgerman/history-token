@@ -2142,6 +2142,9 @@ id|hw
 comma
 r_int
 id|ioaddr
+comma
+r_int
+id|irq
 )paren
 suffix:semicolon
 multiline_comment|/* End of ne2k_cbus.h */

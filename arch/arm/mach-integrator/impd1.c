@@ -829,6 +829,16 @@ op_assign
 id|IORESOURCE_MEM
 suffix:semicolon
 id|d-&gt;irq
+(braket
+l_int|0
+)braket
+op_assign
+id|dev-&gt;irq
+suffix:semicolon
+id|d-&gt;irq
+(braket
+l_int|1
+)braket
 op_assign
 id|dev-&gt;irq
 suffix:semicolon

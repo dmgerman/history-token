@@ -5,6 +5,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/soundfont.h&gt;
+macro_line|#include &lt;sound/seq_oss_legacy.h&gt;
 multiline_comment|/* Prototypes for static functions */
 r_static
 r_int
@@ -181,6 +182,7 @@ id|sflist
 comma
 r_const
 r_void
+id|__user
 op_star
 id|data
 comma
@@ -199,6 +201,7 @@ id|sflist
 comma
 r_const
 r_void
+id|__user
 op_star
 id|data
 comma
@@ -286,6 +289,7 @@ id|sflist
 comma
 r_const
 r_void
+id|__user
 op_star
 id|data
 comma
@@ -565,6 +569,7 @@ id|sflist
 comma
 r_const
 r_void
+id|__user
 op_star
 id|data
 comma
@@ -1032,6 +1037,7 @@ id|sflist
 comma
 r_const
 r_char
+id|__user
 op_star
 id|data
 comma
@@ -1727,6 +1733,7 @@ id|sflist
 comma
 r_const
 r_void
+id|__user
 op_star
 id|data
 comma
@@ -2128,6 +2135,7 @@ id|sflist
 comma
 r_const
 r_void
+id|__user
 op_star
 id|data
 comma
@@ -2786,6 +2794,7 @@ id|sflist
 comma
 r_const
 r_void
+id|__user
 op_star
 id|data
 comma
@@ -4560,6 +4569,7 @@ id|sflist
 comma
 r_const
 r_char
+id|__user
 op_star
 id|data
 comma
@@ -5399,6 +5409,7 @@ id|sflist
 comma
 r_const
 r_char
+id|__user
 op_star
 id|data
 comma

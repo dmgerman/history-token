@@ -4048,6 +4048,15 @@ op_eq
 l_int|0x65
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|id
 op_assign
 l_int|1
@@ -4077,6 +4086,15 @@ op_eq
 l_int|0x45
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|id
 op_assign
 l_int|1
@@ -5175,6 +5193,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ad1848: can&squot;t grab port 0x%lx&bslash;n&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 id|snd_ad1848_free
 c_func
 (paren
@@ -5208,6 +5235,15 @@ id|chip
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ad1848: can&squot;t grab IRQ %d&bslash;n&quot;
+comma
+id|irq
+)paren
+suffix:semicolon
 id|snd_ad1848_free
 c_func
 (paren
@@ -5235,6 +5271,15 @@ l_string|&quot;AD1848&quot;
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ad1848: can&squot;t grab DMA %d&bslash;n&quot;
+comma
+id|dma
+)paren
+suffix:semicolon
 id|snd_ad1848_free
 c_func
 (paren

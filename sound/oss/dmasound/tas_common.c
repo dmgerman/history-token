@@ -618,6 +618,14 @@ comma
 id|driver_name
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_I2C_KEYWEST
+id|request_module
+c_func
+(paren
+l_string|&quot;i2c-keywest&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|tas_node
 op_assign
 id|find_devices

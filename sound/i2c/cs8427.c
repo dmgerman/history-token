@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Routines for control of the CS8427 via i2c bus&n; *  
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -2986,14 +2987,48 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|snd_cs8427_detect
+DECL|function|alsa_cs8427_module_init
+r_static
+r_int
+id|__init
+id|alsa_cs8427_module_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|alsa_cs8427_module_exit
+r_static
+r_void
+id|__exit
+id|alsa_cs8427_module_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+id|module_init
+c_func
+(paren
+id|alsa_cs8427_module_init
+)paren
+id|module_exit
+c_func
+(paren
+id|alsa_cs8427_module_exit
+)paren
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_cs8427_detect
 )paren
 suffix:semicolon
-DECL|variable|snd_cs8427_create
+DECL|variable|EXPORT_SYMBOL
 id|EXPORT_SYMBOL
 c_func
 (paren

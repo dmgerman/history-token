@@ -143,6 +143,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* yes */
 multiline_comment|/* no, reset the reserved block */
+multiline_comment|/* if we can find bigger pages below, this block will be&n;&t;&t; * automatically removed in snd_dma_set_reserved().&n;&t;&t; */
 id|snd_dma_free_reserved
 c_func
 (paren
@@ -177,14 +178,21 @@ id|dmab
 OL
 l_int|0
 )paren
-r_return
-id|err
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
-id|dmab-&gt;area
+id|err
+op_ne
+op_minus
+id|ENOMEM
 )paren
+r_return
+id|err
+suffix:semicolon
+multiline_comment|/* fatal error */
+)brace
+r_else
 (brace
 multiline_comment|/* remember this one */
 id|snd_dma_set_reserved
@@ -576,10 +584,6 @@ id|new_dmab
 )paren
 OL
 l_int|0
-op_logical_or
-id|new_dmab.area
-op_eq
-l_int|NULL
 )paren
 (brace
 id|buffer-&gt;error
@@ -593,6 +597,13 @@ suffix:semicolon
 id|substream-&gt;buffer_bytes_max
 op_assign
 id|size
+suffix:semicolon
+id|snd_dma_free_reserved
+c_func
+(paren
+op_amp
+id|substream-&gt;dma_device
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -783,6 +794,12 @@ op_star
 id|subs
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|subs-&gt;dma_device.id
+)paren
 id|subs-&gt;dma_device.id
 op_assign
 id|subs-&gt;pcm-&gt;device
@@ -793,7 +810,11 @@ id|subs-&gt;stream
 op_lshift
 l_int|8
 op_or
+(paren
 id|subs-&gt;number
+op_plus
+l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * snd_pcm_lib_preallocate_pages - pre-allocation for the continuous memory type&n; * @substream: the pcm substream instance&n; * @size: the requested pre-allocation size in bytes&n; * @max: the max. allowed pre-allocation size&n; * @flags: allocation condition, GFP_XXX&n; *&n; * Do pre-allocation for the continuous memory type.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
@@ -1168,6 +1189,7 @@ id|dmab
 op_assign
 id|substream-&gt;dma_buffer
 suffix:semicolon
+multiline_comment|/* use the pre-allocated buffer */
 )brace
 r_else
 (brace
@@ -1185,6 +1207,10 @@ id|dmab
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* allocate a new buffer */
+r_if
+c_cond
+(paren
 id|snd_dma_alloc_pages
 c_func
 (paren
@@ -1196,18 +1222,14 @@ comma
 op_amp
 id|dmab
 )paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dmab.area
+OL
+l_int|0
 )paren
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|runtime-&gt;dma_area
 op_assign
 id|dmab.area
@@ -1290,6 +1312,7 @@ op_ne
 id|substream-&gt;dma_buffer.area
 )paren
 (brace
+multiline_comment|/* it&squot;s a newly allocated buffer.  release it now. */
 r_struct
 id|snd_dma_buffer
 id|dmab

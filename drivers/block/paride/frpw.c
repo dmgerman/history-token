@@ -1651,7 +1651,7 @@ id|verbose
 id|printk
 c_func
 (paren
-l_string|&quot;%s: frpw: port 0x%x, chip %d, mode %d, test=(%d,%d,%d)&bslash;n&quot;
+l_string|&quot;%s: frpw: port 0x%x, chip %ld, mode %d, test=(%d,%d,%d)&bslash;n&quot;
 comma
 id|pi-&gt;device
 comma

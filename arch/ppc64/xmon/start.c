@@ -101,7 +101,7 @@ comma
 dot
 id|help_msg
 op_assign
-l_string|&quot;xmon&quot;
+l_string|&quot;Xmon&quot;
 comma
 dot
 id|action_msg

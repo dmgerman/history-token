@@ -986,5 +986,24 @@ l_int|1000
 )paren
 suffix:semicolon
 )brace
+DECL|macro|SW_INPUT_VOLUME_SCALE
+mdefine_line|#define SW_INPUT_VOLUME_SCALE&t;4
+DECL|macro|SW_INPUT_VOLUME_DEFAULT
+mdefine_line|#define SW_INPUT_VOLUME_DEFAULT&t;(128 / SW_INPUT_VOLUME_SCALE)
+r_extern
+r_int
+id|expand_bal
+suffix:semicolon
+multiline_comment|/* Balance factor for expanding (not volume!) */
+r_extern
+r_int
+id|expand_read_bal
+suffix:semicolon
+multiline_comment|/* Balance factor for reading */
+r_extern
+id|uint
+id|software_input_volume
+suffix:semicolon
+multiline_comment|/* software implemented recording volume! */
 macro_line|#endif /* _dmasound_h_ */
 eof

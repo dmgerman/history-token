@@ -4756,6 +4756,8 @@ suffix:colon
 id|snd_printdd
 (paren
 l_string|&quot;period size (%d) not supported by HW&bslash;n&quot;
+comma
+id|period_size
 )paren
 suffix:semicolon
 r_return
@@ -4881,6 +4883,8 @@ suffix:colon
 id|snd_printdd
 (paren
 l_string|&quot;period size (%d) not supported by HW&bslash;n&quot;
+comma
+id|period_size
 )paren
 suffix:semicolon
 r_return

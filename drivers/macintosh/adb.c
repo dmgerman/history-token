@@ -159,6 +159,11 @@ r_static
 r_int
 id|sleepy_trackpad
 suffix:semicolon
+DECL|variable|autopoll_devs
+r_static
+r_int
+id|autopoll_devs
+suffix:semicolon
 DECL|variable|__adb_probe_sync
 r_int
 id|__adb_probe_sync
@@ -1364,8 +1369,6 @@ r_int
 id|ret
 comma
 id|nret
-comma
-id|devs
 suffix:semicolon
 r_if
 c_cond
@@ -1422,7 +1425,7 @@ op_member_access_from_pointer
 id|autopoll
 c_func
 (paren
-id|devs
+id|autopoll_devs
 )paren
 suffix:semicolon
 r_return
@@ -1519,7 +1522,7 @@ op_logical_neg
 id|ret
 )paren
 (brace
-id|devs
+id|autopoll_devs
 op_assign
 id|adb_scan_bus
 c_func
@@ -1536,7 +1539,7 @@ op_member_access_from_pointer
 id|autopoll
 c_func
 (paren
-id|devs
+id|autopoll_devs
 )paren
 suffix:semicolon
 )brace

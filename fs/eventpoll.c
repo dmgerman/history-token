@@ -236,6 +236,11 @@ r_struct
 id|list_head
 id|rdllink
 suffix:semicolon
+multiline_comment|/* The file descriptor this item refers to */
+DECL|member|fd
+r_int
+id|fd
+suffix:semicolon
 multiline_comment|/* Number of active wait queue attached to poll operations */
 DECL|member|nwait
 r_int
@@ -253,11 +258,6 @@ r_struct
 id|eventpoll
 op_star
 id|ep
-suffix:semicolon
-multiline_comment|/* The file descriptor this item refers to */
-DECL|member|fd
-r_int
-id|fd
 suffix:semicolon
 multiline_comment|/* The file this item refers to */
 DECL|member|file

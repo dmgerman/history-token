@@ -1455,6 +1455,20 @@ id|snd_info_entry_t
 op_star
 id|proc_info_entry
 suffix:semicolon
+macro_line|#ifdef CONFIG_SND_DEBUG
+DECL|member|xrun_debug
+r_int
+r_int
+id|xrun_debug
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|proc_xrun_debug_entry
+id|snd_info_entry_t
+op_star
+id|proc_xrun_debug_entry
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|struct|_snd_pcm
@@ -1606,14 +1620,6 @@ id|snd_pcm_reg
 (braket
 l_int|2
 )braket
-suffix:semicolon
-r_void
-id|snd_pcm_lock
-c_func
-(paren
-r_int
-id|unlock
-)paren
 suffix:semicolon
 r_int
 id|snd_pcm_new

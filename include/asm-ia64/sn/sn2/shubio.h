@@ -6821,7 +6821,6 @@ multiline_comment|/* Number of II perf. counters we can multiplex at once */
 DECL|macro|IO_PERF_SETS
 mdefine_line|#define IO_PERF_SETS&t;32
 macro_line|#if __KERNEL__
-macro_line|#include &lt;asm/sn/alenlist.h&gt;
 macro_line|#include &lt;asm/sn/dmamap.h&gt;
 macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
@@ -7241,23 +7240,6 @@ id|byte_count
 suffix:semicolon
 multiline_comment|/* map this many bytes */
 r_extern
-id|alenlist_t
-id|hub_dmamap_list
-c_func
-(paren
-id|hub_dmamap_t
-id|dmamap
-comma
-multiline_comment|/* use mapping resources */
-id|alenlist_t
-id|alenlist
-comma
-multiline_comment|/* map this Addr/Length List */
-r_int
-id|flags
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|hub_dmamap_done
 c_func
@@ -7294,28 +7276,6 @@ id|flags
 suffix:semicolon
 multiline_comment|/* defined in dma.h */
 r_extern
-id|alenlist_t
-id|hub_dmatrans_list
-c_func
-(paren
-id|vertex_hdl_t
-id|dev
-comma
-multiline_comment|/* translate for this device */
-id|device_desc_t
-id|dev_desc
-comma
-multiline_comment|/* device descriptor */
-id|alenlist_t
-id|palenlist
-comma
-multiline_comment|/* system addr/length list */
-r_int
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* defined in dma.h */
-r_extern
 r_void
 id|hub_dmamap_drain
 c_func
@@ -7337,18 +7297,6 @@ id|addr
 comma
 r_int
 id|bytes
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|hub_dmalist_drain
-c_func
-(paren
-id|vertex_hdl_t
-id|vhdl
-comma
-id|alenlist_t
-id|list
 )paren
 suffix:semicolon
 multiline_comment|/* INTERRUPT MANAGEMENT */

@@ -45,8 +45,8 @@ id|nonblock
 suffix:colon
 l_int|1
 comma
-DECL|member|wholefrag
-id|wholefrag
+DECL|member|partialfrag
+id|partialfrag
 suffix:colon
 l_int|1
 comma

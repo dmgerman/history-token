@@ -19,6 +19,8 @@ id|version
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|SSCAPE_MICROCODE_SIZE
+mdefine_line|#define SSCAPE_MICROCODE_SIZE  65536
 DECL|struct|sscape_microcode
 r_struct
 id|sscape_microcode
@@ -29,7 +31,6 @@ r_char
 op_star
 id|code
 suffix:semicolon
-multiline_comment|/* 65536 chars */
 )brace
 suffix:semicolon
 DECL|macro|SND_SSCAPE_LOAD_BOOTB

@@ -19,6 +19,7 @@ multiline_comment|/* lowlevel routines */
 macro_line|#include &quot;amp.h&quot;
 macro_line|#include &quot;revo.h&quot;
 macro_line|#include &quot;aureon.h&quot;
+macro_line|#include &quot;prodigy.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -50,6 +51,7 @@ l_string|&quot;{&quot;
 id|REVO_DEVICE_DESC
 id|AMP_AUDIO2000_DEVICE_DESC
 id|AUREON_DEVICE_DESC
+id|PRODIGY_DEVICE_DESC
 l_string|&quot;{VIA,VT1724},&quot;
 l_string|&quot;{ICEnsemble,Generic ICE1724},&quot;
 l_string|&quot;{ICEnsemble,Generic Envy24HT}}&quot;
@@ -1407,11 +1409,11 @@ id|substream
 )paren
 suffix:semicolon
 r_int
-r_int
+r_char
 id|what
 suffix:semicolon
 r_int
-r_int
+r_char
 id|old
 suffix:semicolon
 r_struct
@@ -1512,7 +1514,7 @@ id|ice-&gt;reg_lock
 suffix:semicolon
 id|old
 op_assign
-id|inl
+id|inb
 c_func
 (paren
 id|ICEMT1724
@@ -1541,7 +1543,7 @@ op_and_assign
 op_complement
 id|what
 suffix:semicolon
-id|outl
+id|outb
 c_func
 (paren
 id|old
@@ -1691,7 +1693,7 @@ id|ice-&gt;reg_lock
 suffix:semicolon
 id|old
 op_assign
-id|inl
+id|inb
 c_func
 (paren
 id|ICEMT1724
@@ -1720,7 +1722,7 @@ op_and_assign
 op_complement
 id|what
 suffix:semicolon
-id|outl
+id|outb
 c_func
 (paren
 id|old
@@ -4617,6 +4619,12 @@ id|VT1724_CFG_PRO_I2S
 )paren
 )paren
 (brace
+id|ac97_bus_t
+id|bus
+comma
+op_star
+id|pbus
+suffix:semicolon
 id|ac97_t
 id|ac97
 suffix:semicolon
@@ -4685,6 +4693,52 @@ id|memset
 c_func
 (paren
 op_amp
+id|bus
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|bus
+)paren
+)paren
+suffix:semicolon
+id|bus.write
+op_assign
+id|snd_vt1724_ac97_write
+suffix:semicolon
+id|bus.read
+op_assign
+id|snd_vt1724_ac97_read
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|snd_ac97_bus
+c_func
+(paren
+id|ice-&gt;card
+comma
+op_amp
+id|bus
+comma
+op_amp
+id|pbus
+)paren
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
 id|ac97
 comma
 l_int|0
@@ -4694,14 +4748,6 @@ r_sizeof
 id|ac97
 )paren
 )paren
-suffix:semicolon
-id|ac97.write
-op_assign
-id|snd_vt1724_ac97_write
-suffix:semicolon
-id|ac97.read
-op_assign
-id|snd_vt1724_ac97_read
 suffix:semicolon
 id|ac97.private_data
 op_assign
@@ -4716,7 +4762,7 @@ op_assign
 id|snd_ac97_mixer
 c_func
 (paren
-id|ice-&gt;card
+id|pbus
 comma
 op_amp
 id|ac97
@@ -5138,6 +5184,8 @@ c_func
 id|entry
 comma
 id|ice
+comma
+l_int|1024
 comma
 id|snd_vt1724_proc_read
 )paren
@@ -8274,6 +8322,8 @@ id|snd_vt1724_amp_cards
 comma
 id|snd_vt1724_aureon_cards
 comma
+id|snd_vt1724_prodigy_cards
+comma
 l_int|0
 comma
 )brace
@@ -9562,14 +9612,6 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-id|pci_set_dma_mask
-c_func
-(paren
-id|pci
-comma
-l_int|0xffffffff
-)paren
-suffix:semicolon
 id|ice
 op_assign
 id|snd_magic_kcalloc
@@ -9948,6 +9990,15 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|pci-&gt;dev
+)paren
+suffix:semicolon
 op_star
 id|r_ice1712
 op_assign

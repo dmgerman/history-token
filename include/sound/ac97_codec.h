@@ -101,6 +101,57 @@ DECL|macro|AC97_VENDOR_ID1
 mdefine_line|#define AC97_VENDOR_ID1&t;&t;0x7c&t;/* Vendor ID1 */
 DECL|macro|AC97_VENDOR_ID2
 mdefine_line|#define AC97_VENDOR_ID2&t;&t;0x7e&t;/* Vendor ID2 / revision */
+multiline_comment|/* slot allocation */
+DECL|macro|AC97_SLOT_TAG
+mdefine_line|#define AC97_SLOT_TAG&t;&t;0
+DECL|macro|AC97_SLOT_CMD_ADDR
+mdefine_line|#define AC97_SLOT_CMD_ADDR&t;1
+DECL|macro|AC97_SLOT_CMD_DATA
+mdefine_line|#define AC97_SLOT_CMD_DATA&t;2
+DECL|macro|AC97_SLOT_PCM_LEFT
+mdefine_line|#define AC97_SLOT_PCM_LEFT&t;3
+DECL|macro|AC97_SLOT_PCM_RIGHT
+mdefine_line|#define AC97_SLOT_PCM_RIGHT&t;4
+DECL|macro|AC97_SLOT_MODEM_LINE1
+mdefine_line|#define AC97_SLOT_MODEM_LINE1&t;5
+DECL|macro|AC97_SLOT_PCM_CENTER
+mdefine_line|#define AC97_SLOT_PCM_CENTER&t;6
+DECL|macro|AC97_SLOT_MIC
+mdefine_line|#define AC97_SLOT_MIC&t;&t;6&t;/* input */
+DECL|macro|AC97_SLOT_SPDIF_LEFT1
+mdefine_line|#define AC97_SLOT_SPDIF_LEFT1&t;6
+DECL|macro|AC97_SLOT_PCM_SLEFT
+mdefine_line|#define AC97_SLOT_PCM_SLEFT&t;7&t;/* surround left */
+DECL|macro|AC97_SLOT_PCM_LEFT_0
+mdefine_line|#define AC97_SLOT_PCM_LEFT_0&t;7&t;/* double rate operation */
+DECL|macro|AC97_SLOT_SPDIF_LEFT
+mdefine_line|#define AC97_SLOT_SPDIF_LEFT&t;7
+DECL|macro|AC97_SLOT_PCM_SRIGHT
+mdefine_line|#define AC97_SLOT_PCM_SRIGHT&t;8&t;/* surround right */
+DECL|macro|AC97_SLOT_PCM_RIGHT_0
+mdefine_line|#define AC97_SLOT_PCM_RIGHT_0&t;8&t;/* double rate operation */
+DECL|macro|AC97_SLOT_SPDIF_RIGHT
+mdefine_line|#define AC97_SLOT_SPDIF_RIGHT&t;8
+DECL|macro|AC97_SLOT_LFE
+mdefine_line|#define AC97_SLOT_LFE&t;&t;9
+DECL|macro|AC97_SLOT_SPDIF_RIGHT1
+mdefine_line|#define AC97_SLOT_SPDIF_RIGHT1&t;9
+DECL|macro|AC97_SLOT_MODEM_LINE2
+mdefine_line|#define AC97_SLOT_MODEM_LINE2&t;10
+DECL|macro|AC97_SLOT_PCM_LEFT_1
+mdefine_line|#define AC97_SLOT_PCM_LEFT_1&t;10&t;/* double rate operation */
+DECL|macro|AC97_SLOT_SPDIF_LEFT2
+mdefine_line|#define AC97_SLOT_SPDIF_LEFT2&t;10
+DECL|macro|AC97_SLOT_HANDSET
+mdefine_line|#define AC97_SLOT_HANDSET&t;11&t;/* output */
+DECL|macro|AC97_SLOT_PCM_RIGHT_1
+mdefine_line|#define AC97_SLOT_PCM_RIGHT_1&t;11&t;/* double rate operation */
+DECL|macro|AC97_SLOT_SPDIF_RIGHT2
+mdefine_line|#define AC97_SLOT_SPDIF_RIGHT2&t;11
+DECL|macro|AC97_SLOT_MODEM_GPIO
+mdefine_line|#define AC97_SLOT_MODEM_GPIO&t;12&t;/* modem GPIO */
+DECL|macro|AC97_SLOT_PCM_CENTER_1
+mdefine_line|#define AC97_SLOT_PCM_CENTER_1&t;12&t;/* double rate operation */
 multiline_comment|/* basic capabilities (reset register) */
 DECL|macro|AC97_BC_DEDICATED_MIC
 mdefine_line|#define AC97_BC_DEDICATED_MIC&t;0x0001&t;/* Dedicated Mic PCM In Channel */
@@ -277,6 +328,39 @@ DECL|macro|AC97_MEA_PRG
 mdefine_line|#define AC97_MEA_PRG&t;&t;0x4000&t;/* HADC power down (high) */
 DECL|macro|AC97_MEA_PRH
 mdefine_line|#define AC97_MEA_PRH&t;&t;0x8000&t;/* HDAC power down (high) */
+multiline_comment|/* modem gpio status defines */
+DECL|macro|AC97_GPIO_LINE1_OH
+mdefine_line|#define AC97_GPIO_LINE1_OH      0x0001  /* Off Hook Line1 */
+DECL|macro|AC97_GPIO_LINE1_RI
+mdefine_line|#define AC97_GPIO_LINE1_RI      0x0002  /* Ring Detect Line1 */
+DECL|macro|AC97_GPIO_LINE1_CID
+mdefine_line|#define AC97_GPIO_LINE1_CID     0x0004  /* Caller ID path enable Line1 */
+DECL|macro|AC97_GPIO_LINE1_LCS
+mdefine_line|#define AC97_GPIO_LINE1_LCS     0x0008  /* Loop Current Sense Line1 */
+DECL|macro|AC97_GPIO_LINE1_PULSE
+mdefine_line|#define AC97_GPIO_LINE1_PULSE   0x0010  /* Opt./ Pulse Dial Line1 (out) */
+DECL|macro|AC97_GPIO_LINE1_HL1R
+mdefine_line|#define AC97_GPIO_LINE1_HL1R    0x0020  /* Opt./ Handset to Line1 relay control (out) */
+DECL|macro|AC97_GPIO_LINE1_HOHD
+mdefine_line|#define AC97_GPIO_LINE1_HOHD    0x0040  /* Opt./ Handset off hook detect Line1 (in) */
+DECL|macro|AC97_GPIO_LINE12_AC
+mdefine_line|#define AC97_GPIO_LINE12_AC     0x0080  /* Opt./ Int.bit 1 / Line1/2 AC (out) */
+DECL|macro|AC97_GPIO_LINE12_DC
+mdefine_line|#define AC97_GPIO_LINE12_DC     0x0100  /* Opt./ Int.bit 2 / Line1/2 DC (out) */
+DECL|macro|AC97_GPIO_LINE12_RS
+mdefine_line|#define AC97_GPIO_LINE12_RS     0x0200  /* Opt./ Int.bit 3 / Line1/2 RS (out) */
+DECL|macro|AC97_GPIO_LINE2_OH
+mdefine_line|#define AC97_GPIO_LINE2_OH      0x0400  /* Off Hook Line2 */
+DECL|macro|AC97_GPIO_LINE2_RI
+mdefine_line|#define AC97_GPIO_LINE2_RI      0x0800  /* Ring Detect Line2 */
+DECL|macro|AC97_GPIO_LINE2_CID
+mdefine_line|#define AC97_GPIO_LINE2_CID     0x1000  /* Caller ID path enable Line2 */
+DECL|macro|AC97_GPIO_LINE2_LCS
+mdefine_line|#define AC97_GPIO_LINE2_LCS     0x2000  /* Loop Current Sense Line2 */
+DECL|macro|AC97_GPIO_LINE2_PULSE
+mdefine_line|#define AC97_GPIO_LINE2_PULSE   0x4000  /* Opt./ Pulse Dial Line2 (out) */
+DECL|macro|AC97_GPIO_LINE2_HL1R
+mdefine_line|#define AC97_GPIO_LINE2_HL1R    0x8000  /* Opt./ Handset to Line2 relay control (out) */
 multiline_comment|/* specific - SigmaTel */
 DECL|macro|AC97_SIGMATEL_ANALOG
 mdefine_line|#define AC97_SIGMATEL_ANALOG&t;0x6c&t;/* Analog Special */
@@ -433,13 +517,19 @@ DECL|macro|AC97_WM9711_OUT3VOL
 mdefine_line|#define AC97_WM9711_OUT3VOL     0x16
 multiline_comment|/* ac97-&gt;scaps */
 DECL|macro|AC97_SCAP_AUDIO
-mdefine_line|#define AC97_SCAP_AUDIO&t;&t;(1&lt;&lt;0)&t;/* audio AC&squot;97 codec */
+mdefine_line|#define AC97_SCAP_AUDIO&t;&t;(1&lt;&lt;0)&t;/* audio codec 97 */
 DECL|macro|AC97_SCAP_MODEM
-mdefine_line|#define AC97_SCAP_MODEM&t;&t;(1&lt;&lt;1)&t;/* modem AC&squot;97 codec */
+mdefine_line|#define AC97_SCAP_MODEM&t;&t;(1&lt;&lt;1)&t;/* modem codec 97 */
 DECL|macro|AC97_SCAP_SURROUND_DAC
 mdefine_line|#define AC97_SCAP_SURROUND_DAC&t;(1&lt;&lt;2)&t;/* surround L&amp;R DACs are present */
 DECL|macro|AC97_SCAP_CENTER_LFE_DAC
 mdefine_line|#define AC97_SCAP_CENTER_LFE_DAC (1&lt;&lt;3)&t;/* center and LFE DACs are present */
+DECL|macro|AC97_SCAP_SKIP_AUDIO
+mdefine_line|#define AC97_SCAP_SKIP_AUDIO&t;(1&lt;&lt;4)&t;/* skip audio part of codec */
+DECL|macro|AC97_SCAP_SKIP_MODEM
+mdefine_line|#define AC97_SCAP_SKIP_MODEM&t;(1&lt;&lt;5)&t;/* skip modem part of codec */
+DECL|macro|AC97_SCAP_INDEP_SDIN
+mdefine_line|#define AC97_SCAP_INDEP_SDIN&t;(1&lt;&lt;6)&t;/* independent SDIN */
 multiline_comment|/* ac97-&gt;flags */
 DECL|macro|AC97_HAS_PC_BEEP
 mdefine_line|#define AC97_HAS_PC_BEEP&t;(1&lt;&lt;0)&t;/* force PC Speaker usage */
@@ -465,11 +555,154 @@ mdefine_line|#define AC97_RATES_MIC_ADC&t;4
 DECL|macro|AC97_RATES_SPDIF
 mdefine_line|#define AC97_RATES_SPDIF&t;5
 multiline_comment|/*&n; *&n; */
+DECL|typedef|ac97_bus_t
+r_typedef
+r_struct
+id|_snd_ac97_bus
+id|ac97_bus_t
+suffix:semicolon
 DECL|typedef|ac97_t
 r_typedef
 r_struct
 id|_snd_ac97
 id|ac97_t
+suffix:semicolon
+DECL|enum|ac97_pcm_cfg
+r_enum
+id|ac97_pcm_cfg
+(brace
+DECL|enumerator|AC97_PCM_CFG_FRONT
+id|AC97_PCM_CFG_FRONT
+op_assign
+l_int|2
+comma
+DECL|enumerator|AC97_PCM_CFG_REAR
+id|AC97_PCM_CFG_REAR
+op_assign
+l_int|10
+comma
+multiline_comment|/* alias surround */
+DECL|enumerator|AC97_PCM_CFG_LFE
+id|AC97_PCM_CFG_LFE
+op_assign
+l_int|11
+comma
+multiline_comment|/* center + lfe */
+DECL|enumerator|AC97_PCM_CFG_40
+id|AC97_PCM_CFG_40
+op_assign
+l_int|4
+comma
+multiline_comment|/* front + rear */
+DECL|enumerator|AC97_PCM_CFG_51
+id|AC97_PCM_CFG_51
+op_assign
+l_int|6
+comma
+multiline_comment|/* front + rear + center/lfe */
+DECL|enumerator|AC97_PCM_CFG_SPDIF
+id|AC97_PCM_CFG_SPDIF
+op_assign
+l_int|20
+)brace
+suffix:semicolon
+multiline_comment|/* PCM allocation */
+DECL|struct|ac97_pcm
+r_struct
+id|ac97_pcm
+(brace
+DECL|member|bus
+id|ac97_bus_t
+op_star
+id|bus
+suffix:semicolon
+DECL|member|stream
+r_int
+r_int
+id|stream
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* stream type: 1 = capture */
+DECL|member|exclusive
+id|exclusive
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* exclusive mode, don&squot;t override with other pcms */
+DECL|member|copy_flag
+id|copy_flag
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* lowlevel driver must fill all entries */
+DECL|member|spdif
+id|spdif
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* spdif pcm */
+DECL|member|aslots
+r_int
+r_int
+id|aslots
+suffix:semicolon
+multiline_comment|/* active slots */
+DECL|member|rates
+r_int
+r_int
+id|rates
+suffix:semicolon
+multiline_comment|/* available rates */
+r_struct
+(brace
+DECL|member|slots
+r_int
+r_int
+id|slots
+suffix:semicolon
+multiline_comment|/* driver input: requested AC97 slot numbers */
+DECL|member|rslots
+r_int
+r_int
+id|rslots
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* allocated slots per codecs */
+DECL|member|rate_table
+r_int
+r_char
+id|rate_table
+(braket
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|codec
+id|ac97_t
+op_star
+id|codec
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* allocated codecs */
+DECL|member|r
+)brace
+id|r
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 0 = standard rates, 1 = double rates */
+DECL|member|private_value
+r_int
+r_int
+id|private_value
+suffix:semicolon
+multiline_comment|/* used by the hardware driver */
+)brace
 suffix:semicolon
 DECL|struct|snd_ac97_build_ops
 r_struct
@@ -525,10 +758,11 @@ id|ac97
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|_snd_ac97
+DECL|struct|_snd_ac97_bus
 r_struct
-id|_snd_ac97
+id|_snd_ac97_bus
 (brace
+multiline_comment|/* -- lowlevel (hardware) driver specific -- */
 DECL|member|reset
 r_void
 (paren
@@ -602,6 +836,104 @@ op_star
 id|ac97
 )paren
 suffix:semicolon
+DECL|member|private_data
+r_void
+op_star
+id|private_data
+suffix:semicolon
+DECL|member|private_free
+r_void
+(paren
+op_star
+id|private_free
+)paren
+(paren
+id|ac97_bus_t
+op_star
+id|bus
+)paren
+suffix:semicolon
+multiline_comment|/* --- */
+DECL|member|card
+id|snd_card_t
+op_star
+id|card
+suffix:semicolon
+DECL|member|num
+r_int
+r_int
+id|num
+suffix:semicolon
+multiline_comment|/* bus number */
+DECL|member|vra
+r_int
+r_int
+id|vra
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* bridge supports VRA */
+DECL|member|isdin
+id|isdin
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* independent SDIN */
+DECL|member|clock
+r_int
+r_int
+id|clock
+suffix:semicolon
+multiline_comment|/* AC&squot;97 base clock (usually 48000Hz) */
+DECL|member|bus_lock
+id|spinlock_t
+id|bus_lock
+suffix:semicolon
+multiline_comment|/* used mainly for slot allocation */
+DECL|member|used_slots
+r_int
+r_int
+id|used_slots
+(braket
+l_int|2
+)braket
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* actually used PCM slots */
+DECL|member|pcms_count
+r_int
+r_int
+id|pcms_count
+suffix:semicolon
+multiline_comment|/* count of PCMs */
+DECL|member|pcms
+r_struct
+id|ac97_pcm
+op_star
+id|pcms
+suffix:semicolon
+DECL|member|codec
+id|ac97_t
+op_star
+id|codec
+(braket
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|proc
+id|snd_info_entry_t
+op_star
+id|proc
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|_snd_ac97
+r_struct
+id|_snd_ac97
+(brace
+multiline_comment|/* -- lowlevel (hardware) driver specific -- */
 DECL|member|build_ops
 r_struct
 id|snd_ac97_build_ops
@@ -626,10 +958,10 @@ id|ac97
 )paren
 suffix:semicolon
 multiline_comment|/* --- */
-DECL|member|card
-id|snd_card_t
+DECL|member|bus
+id|ac97_bus_t
 op_star
-id|card
+id|bus
 suffix:semicolon
 DECL|member|pci
 r_struct
@@ -638,6 +970,16 @@ op_star
 id|pci
 suffix:semicolon
 multiline_comment|/* assigned PCI device - used for quirks */
+DECL|member|proc
+id|snd_info_entry_t
+op_star
+id|proc
+suffix:semicolon
+DECL|member|proc_regs
+id|snd_info_entry_t
+op_star
+id|proc_regs
+suffix:semicolon
 DECL|member|subsystem_vendor
 r_int
 r_int
@@ -700,12 +1042,6 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* specific code */
-DECL|member|clock
-r_int
-r_int
-id|clock
-suffix:semicolon
-multiline_comment|/* AC&squot;97 clock (usually 48000Hz) */
 DECL|member|rates
 r_int
 r_int
@@ -902,12 +1238,31 @@ suffix:semicolon
 )brace
 multiline_comment|/* functions */
 r_int
-id|snd_ac97_mixer
+id|snd_ac97_bus
 c_func
 (paren
 id|snd_card_t
 op_star
 id|card
+comma
+id|ac97_bus_t
+op_star
+id|_bus
+comma
+id|ac97_bus_t
+op_star
+op_star
+id|rbus
+)paren
+suffix:semicolon
+multiline_comment|/* create new AC97 bus */
+r_int
+id|snd_ac97_mixer
+c_func
+(paren
+id|ac97_bus_t
+op_star
+id|bus
 comma
 id|ac97_t
 op_star
@@ -920,25 +1275,6 @@ id|rac97
 )paren
 suffix:semicolon
 multiline_comment|/* create mixer controls */
-r_int
-id|snd_ac97_modem
-c_func
-(paren
-id|snd_card_t
-op_star
-id|card
-comma
-id|ac97_t
-op_star
-id|_ac97
-comma
-id|ac97_t
-op_star
-op_star
-id|rac97
-)paren
-suffix:semicolon
-multiline_comment|/* create modem controls */
 r_void
 id|snd_ac97_write
 c_func
@@ -1025,22 +1361,6 @@ r_int
 id|value
 )paren
 suffix:semicolon
-r_int
-id|snd_ac97_set_rate
-c_func
-(paren
-id|ac97_t
-op_star
-id|ac97
-comma
-r_int
-id|reg
-comma
-r_int
-r_int
-id|rate
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_PM
 r_void
 id|snd_ac97_suspend
@@ -1064,6 +1384,19 @@ macro_line|#endif
 multiline_comment|/* quirk types */
 r_enum
 (brace
+DECL|enumerator|AC97_TUNE_DEFAULT
+id|AC97_TUNE_DEFAULT
+op_assign
+op_minus
+l_int|1
+comma
+multiline_comment|/* use default from quirk list (not valid in list) */
+DECL|enumerator|AC97_TUNE_NONE
+id|AC97_TUNE_NONE
+op_assign
+l_int|0
+comma
+multiline_comment|/* nothing extra to do */
 DECL|enumerator|AC97_TUNE_HP_ONLY
 id|AC97_TUNE_HP_ONLY
 comma
@@ -1129,6 +1462,76 @@ r_struct
 id|ac97_quirk
 op_star
 id|quirk
+comma
+r_int
+id|override
+)paren
+suffix:semicolon
+r_int
+id|snd_ac97_set_rate
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+comma
+r_int
+id|reg
+comma
+r_int
+r_int
+id|rate
+)paren
+suffix:semicolon
+r_int
+id|snd_ac97_pcm_assign
+c_func
+(paren
+id|ac97_bus_t
+op_star
+id|ac97
+comma
+r_int
+r_int
+id|pcms_count
+comma
+r_const
+r_struct
+id|ac97_pcm
+op_star
+id|pcms
+)paren
+suffix:semicolon
+r_int
+id|snd_ac97_pcm_open
+c_func
+(paren
+r_struct
+id|ac97_pcm
+op_star
+id|pcm
+comma
+r_int
+r_int
+id|rate
+comma
+r_enum
+id|ac97_pcm_cfg
+id|cfg
+comma
+r_int
+r_int
+id|slots
+)paren
+suffix:semicolon
+r_int
+id|snd_ac97_pcm_close
+c_func
+(paren
+r_struct
+id|ac97_pcm
+op_star
+id|pcm
 )paren
 suffix:semicolon
 macro_line|#endif /* __SOUND_AC97_CODEC_H */

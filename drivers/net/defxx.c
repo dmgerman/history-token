@@ -866,7 +866,7 @@ id|PI_ESIC_K_CSR_IO_LEN
 suffix:semicolon
 id|err_out
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

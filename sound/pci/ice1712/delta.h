@@ -1,9 +1,9 @@
 macro_line|#ifndef __SOUND_DELTA_H
 DECL|macro|__SOUND_DELTA_H
 mdefine_line|#define __SOUND_DELTA_H
-multiline_comment|/*&n; *   ALSA driver for ICEnsemble ICE1712 (Envy24)&n; *&n; *   Lowlevel functions for M-Audio Delta 1010, 44, 66, Dio2496, Audiophile&n; *&n; *&t;Copyright (c) 2000 Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; *   ALSA driver for ICEnsemble ICE1712 (Envy24)&n; *&n; *   Lowlevel functions for M-Audio Delta 1010, 44, 66, Dio2496, Audiophile&n; *                          Digigram VX442&n; *&n; *&t;Copyright (c) 2000 Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 DECL|macro|DELTA_DEVICE_DESC
-mdefine_line|#define DELTA_DEVICE_DESC &bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 1010},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 1010LT},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta DiO 2496},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 66},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 44},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Audiophile 24/96},&quot;
+mdefine_line|#define DELTA_DEVICE_DESC &bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 1010},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 1010LT},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta DiO 2496},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 66},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 44},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Audiophile 24/96},&quot;&bslash;&n;&t;&t;&quot;{Digigram,VX442},&quot;
 DECL|macro|ICE1712_SUBDEVICE_DELTA1010
 mdefine_line|#define ICE1712_SUBDEVICE_DELTA1010&t;0x121430d6
 DECL|macro|ICE1712_SUBDEVICE_DELTADIO2496
@@ -18,6 +18,8 @@ DECL|macro|ICE1712_SUBDEVICE_DELTA410
 mdefine_line|#define ICE1712_SUBDEVICE_DELTA410&t;0x121438d6
 DECL|macro|ICE1712_SUBDEVICE_DELTA1010LT
 mdefine_line|#define ICE1712_SUBDEVICE_DELTA1010LT&t;0x12143bd6
+DECL|macro|ICE1712_SUBDEVICE_VX442
+mdefine_line|#define ICE1712_SUBDEVICE_VX442&t;&t;0x12143cd6
 multiline_comment|/* entry point */
 r_extern
 r_struct
@@ -134,5 +136,18 @@ DECL|macro|ICE1712_DELTA_1010LT_CS_NONE
 mdefine_line|#define ICE1712_DELTA_1010LT_CS_NONE&t;0x50&t;/* nothing */
 DECL|macro|ICE1712_DELTA_1010LT_WORDCLOCK
 mdefine_line|#define ICE1712_DELTA_1010LT_WORDCLOCK 0x80&t;/* sample clock source: 0 = Word Clock Input, 1 = S/PDIF Input ??? */
+multiline_comment|/* Digigram VX442 definitions */
+DECL|macro|ICE1712_VX442_CCLK
+mdefine_line|#define ICE1712_VX442_CCLK&t;&t;0x02&t;/* SPI clock */
+DECL|macro|ICE1712_VX442_DIN
+mdefine_line|#define ICE1712_VX442_DIN&t;&t;0x04&t;/* data input */
+DECL|macro|ICE1712_VX442_DOUT
+mdefine_line|#define ICE1712_VX442_DOUT&t;&t;0x08&t;/* data output */
+DECL|macro|ICE1712_VX442_CS_DIGITAL
+mdefine_line|#define ICE1712_VX442_CS_DIGITAL&t;0x10&t;/* chip select, low = CS8427 */
+DECL|macro|ICE1712_VX442_CODEC_CHIP_A
+mdefine_line|#define ICE1712_VX442_CODEC_CHIP_A&t;0x20&t;/* select chip A */
+DECL|macro|ICE1712_VX442_CODEC_CHIP_B
+mdefine_line|#define ICE1712_VX442_CODEC_CHIP_B&t;0x40&t;/* select chip B */
 macro_line|#endif /* __SOUND_DELTA_H */
 eof

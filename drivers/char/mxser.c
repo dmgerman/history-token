@@ -1986,6 +1986,10 @@ id|mxvar_sdriver-&gt;name
 op_assign
 l_string|&quot;ttyM&quot;
 suffix:semicolon
+id|mxvar_sdriver-&gt;devfs_name
+op_assign
+l_string|&quot;tts/M&quot;
+suffix:semicolon
 id|mxvar_sdriver-&gt;major
 op_assign
 id|ttymajor

@@ -8467,6 +8467,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;cs4231: can&squot;t grab port 0x%lx&bslash;n&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 id|snd_cs4231_free
 c_func
 (paren
@@ -8509,6 +8518,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;cs4231: can&squot;t grab control port 0x%lx&bslash;n&quot;
+comma
+id|cport
+)paren
+suffix:semicolon
 id|snd_cs4231_free
 c_func
 (paren
@@ -8553,6 +8571,15 @@ id|chip
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;cs4231: can&squot;t grab IRQ %d&bslash;n&quot;
+comma
+id|irq
+)paren
+suffix:semicolon
 id|snd_cs4231_free
 c_func
 (paren
@@ -8587,6 +8614,15 @@ l_string|&quot;CS4231 - 1&quot;
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;cs4231: can&squot;t grab DMA1 %d&bslash;n&quot;
+comma
+id|dma1
+)paren
+suffix:semicolon
 id|snd_cs4231_free
 c_func
 (paren
@@ -8629,6 +8665,15 @@ l_string|&quot;CS4231 - 2&quot;
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;cs4231: can&squot;t grab DMA2 %d&bslash;n&quot;
+comma
+id|dma2
+)paren
+suffix:semicolon
 id|snd_cs4231_free
 c_func
 (paren

@@ -926,6 +926,17 @@ r_int
 r_int
 id|ppc_tb_freq
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_int
+r_int
+comma
+id|pvr
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|show_cpuinfo
 r_static
 r_int
@@ -1009,12 +1020,13 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|pvr
 op_assign
-id|paca
-(braket
-id|cpu_id
-)braket
-dot
+id|per_cpu
+c_func
+(paren
 id|pvr
+comma
+id|cpu_id
+)paren
 suffix:semicolon
 macro_line|#else
 id|pvr

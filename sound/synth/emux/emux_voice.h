@@ -464,5 +464,24 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|STATE_IS_PLAYING
 mdefine_line|#define STATE_IS_PLAYING(s) ((s) &amp; SNDRV_EMUX_ST_ON)
+multiline_comment|/* emux_hwdep.c */
+r_int
+id|snd_emux_init_hwdep
+c_func
+(paren
+id|snd_emux_t
+op_star
+id|emu
+)paren
+suffix:semicolon
+r_void
+id|snd_emux_delete_hwdep
+c_func
+(paren
+id|snd_emux_t
+op_star
+id|emu
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/arch-integrator/time.h&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 multiline_comment|/*&n; * Where is the timer (VA)?&n; */
 DECL|macro|TIMER0_VA_BASE
 mdefine_line|#define TIMER0_VA_BASE (IO_ADDRESS(INTEGRATOR_CT_BASE)+0x00000000)
@@ -14,27 +15,17 @@ multiline_comment|/*&n; * How long is the timer interval?&n; */
 DECL|macro|TIMER_INTERVAL
 mdefine_line|#define TIMER_INTERVAL&t;(TICKS_PER_uSEC * mSEC_10)
 macro_line|#if TIMER_INTERVAL &gt;= 0x100000
-DECL|macro|TIMER_RELOAD
-mdefine_line|#define TIMER_RELOAD&t;(TIMER_INTERVAL &gt;&gt; 8)&t;&t;/* Divide by 256 */
-DECL|macro|TIMER_CTRL
-mdefine_line|#define TIMER_CTRL&t;0x88&t;&t;&t;&t;/* Enable, Clock / 256 */
 DECL|macro|TICKS2USECS
 mdefine_line|#define TICKS2USECS(x)&t;(256 * (x) / TICKS_PER_uSEC)
 macro_line|#elif TIMER_INTERVAL &gt;= 0x10000
-DECL|macro|TIMER_RELOAD
-mdefine_line|#define TIMER_RELOAD&t;(TIMER_INTERVAL &gt;&gt; 4)&t;&t;/* Divide by 16 */
-DECL|macro|TIMER_CTRL
-mdefine_line|#define TIMER_CTRL&t;0x84&t;&t;&t;&t;/* Enable, Clock / 16 */
 DECL|macro|TICKS2USECS
 mdefine_line|#define TICKS2USECS(x)&t;(16 * (x) / TICKS_PER_uSEC)
 macro_line|#else
-DECL|macro|TIMER_RELOAD
-mdefine_line|#define TIMER_RELOAD&t;(TIMER_INTERVAL)
-DECL|macro|TIMER_CTRL
-mdefine_line|#define TIMER_CTRL&t;0x80&t;&t;&t;&t;/* Enable */
 DECL|macro|TICKS2USECS
 mdefine_line|#define TICKS2USECS(x)&t;((x) / TICKS_PER_uSEC)
 macro_line|#endif
+DECL|macro|TIMER_CTRL_IE
+mdefine_line|#define TIMER_CTRL_IE&t;(1 &lt;&lt; 5)&t;&t;&t;/* Interrupt Enable */
 multiline_comment|/*&n; * What does it look like?&n; */
 DECL|struct|TimerStruct
 r_typedef
@@ -75,6 +66,12 @@ id|gettimeoffset
 (paren
 r_void
 )paren
+suffix:semicolon
+DECL|variable|timer_reload
+r_static
+r_int
+r_int
+id|timer_reload
 suffix:semicolon
 multiline_comment|/*&n; * Returns number of ms since last clock interrupt.  Note that interrupts&n; * will have been disabled by do_gettimeoffset()&n; */
 DECL|function|integrator_gettimeoffset
@@ -147,7 +144,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Number of ticks since last interrupt.&n;&t; */
 id|ticks1
 op_assign
-id|TIMER_RELOAD
+id|timer_reload
 op_minus
 id|ticks2
 suffix:semicolon
@@ -165,7 +162,7 @@ id|IRQ_TIMERINT1
 )paren
 id|ticks1
 op_add_assign
-id|TIMER_RELOAD
+id|timer_reload
 suffix:semicolon
 multiline_comment|/*&n;&t; * Convert the ticks to usecs&n;&t; */
 r_return
@@ -280,10 +277,91 @@ op_star
 )paren
 id|TIMER2_VA_BASE
 suffix:semicolon
-id|timer_irq.handler
+r_int
+r_int
+id|timer_ctrl
 op_assign
-id|integrator_timer_interrupt
+l_int|0x80
+op_or
+l_int|0x40
 suffix:semicolon
+multiline_comment|/* periodic */
+r_if
+c_cond
+(paren
+id|machine_is_integrator
+c_func
+(paren
+)paren
+)paren
+(brace
+id|timer_reload
+op_assign
+l_int|1000000
+op_star
+id|TICKS_PER_uSEC
+op_div
+id|HZ
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|machine_is_cintegrator
+c_func
+(paren
+)paren
+)paren
+(brace
+id|timer_reload
+op_assign
+l_int|1000000
+op_div
+id|HZ
+suffix:semicolon
+id|timer_ctrl
+op_or_assign
+id|TIMER_CTRL_IE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|timer_reload
+OG
+l_int|0x100000
+)paren
+(brace
+id|timer_reload
+op_rshift_assign
+l_int|8
+suffix:semicolon
+id|timer_ctrl
+op_or_assign
+l_int|0x08
+suffix:semicolon
+multiline_comment|/* /256 */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|timer_reload
+OG
+l_int|0x010000
+)paren
+(brace
+id|timer_reload
+op_rshift_assign
+l_int|4
+suffix:semicolon
+id|timer_ctrl
+op_or_assign
+l_int|0x04
+suffix:semicolon
+multiline_comment|/* /16 */
+)brace
 multiline_comment|/*&n;&t; * Initialise to a known state (all timers off)&n;&t; */
 id|timer0-&gt;TimerControl
 op_assign
@@ -299,16 +377,21 @@ l_int|0
 suffix:semicolon
 id|timer1-&gt;TimerLoad
 op_assign
-id|TIMER_RELOAD
+id|timer_reload
+suffix:semicolon
+id|timer1-&gt;TimerValue
+op_assign
+id|timer_reload
 suffix:semicolon
 id|timer1-&gt;TimerControl
 op_assign
-id|TIMER_CTRL
-op_or
-l_int|0x40
+id|timer_ctrl
 suffix:semicolon
-multiline_comment|/* periodic */
 multiline_comment|/* &n;&t; * Make irqs happen for the system timer&n;&t; */
+id|timer_irq.handler
+op_assign
+id|integrator_timer_interrupt
+suffix:semicolon
 id|setup_irq
 c_func
 (paren

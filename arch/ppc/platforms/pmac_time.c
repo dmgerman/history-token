@@ -1080,6 +1080,26 @@ c_func
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* Special case: QuickSilver G4s seem to have a badly calibrated&n;&t; * timebase-frequency in OF, VIA is much better on these. We should&n;&t; * probably implement calibration based on the KL timer on these&n;&t; * machines anyway... -BenH&n;&t; */
+r_if
+c_cond
+(paren
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerMac3,5&quot;
+)paren
+)paren
+r_if
+c_cond
+(paren
+id|via_calibrate_decr
+c_func
+(paren
+)paren
+)paren
+r_return
+suffix:semicolon
 multiline_comment|/*&n;&t; * The cpu node should have a timebase-frequency property&n;&t; * to tell us the rate at which the decrementer counts.&n;&t; */
 id|cpu
 op_assign

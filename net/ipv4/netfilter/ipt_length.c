@@ -1,4 +1,5 @@
 multiline_comment|/* Kernel module to match packet length. */
+multiline_comment|/* (C) 1999-2001 James Morris &lt;jmorros@intercode.com.au&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_length.h&gt;

@@ -2003,7 +2003,7 @@ c_cond
 id|chip-&gt;irq
 )paren
 (brace
-macro_line|#ifdef OPTi93X
+singleline_comment|//#ifdef OPTi93X
 r_case
 l_int|5
 suffix:colon
@@ -2013,7 +2013,7 @@ l_int|0x05
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif&t;/* OPTi93X */
+singleline_comment|//#endif&t;/* OPTi93X */
 r_case
 l_int|7
 suffix:colon
@@ -2219,6 +2219,9 @@ id|chip-&gt;mpu_port
 )paren
 (brace
 r_case
+l_int|0
+suffix:colon
+r_case
 op_minus
 l_int|1
 suffix:colon
@@ -2343,9 +2346,8 @@ l_int|6
 comma
 (paren
 id|chip-&gt;mpu_port
-op_eq
-op_minus
-l_int|1
+op_le
+l_int|0
 )paren
 ques
 c_cond
@@ -5699,6 +5701,17 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;opti9xx: can&squot;t grab port 0x%lx&bslash;n&quot;
+comma
+id|chip-&gt;wss_base
+op_plus
+l_int|4
+)paren
+suffix:semicolon
 id|snd_opti93x_free
 c_func
 (paren
@@ -5722,6 +5735,15 @@ l_string|&quot;OPTI93x - 1&quot;
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;opti9xx: can&squot;t grab DMA1 %d&bslash;n&quot;
+comma
+id|dma1
+)paren
+suffix:semicolon
 id|snd_opti93x_free
 c_func
 (paren
@@ -5749,6 +5771,15 @@ l_string|&quot;OPTI93x - 2&quot;
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;opti9xx: can&squot;t grab DMA2 %d&bslash;n&quot;
+comma
+id|dma2
+)paren
+suffix:semicolon
 id|snd_opti93x_free
 c_func
 (paren
@@ -5783,6 +5814,15 @@ id|codec
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;opti9xx: can&squot;t grab IRQ %d&bslash;n&quot;
+comma
+id|chip-&gt;irq
+)paren
+suffix:semicolon
 id|snd_opti93x_free
 c_func
 (paren
@@ -8404,10 +8444,24 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#else
+macro_line|#ifdef snd_opti9xx_fixup_dma2
+id|snd_opti9xx_fixup_dma2
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif&t;/* CS4231 || OPTi93X */
+macro_line|#ifdef OPTi93X
 r_if
 c_cond
 (paren
+id|fm_port
+OG
+l_int|0
+op_logical_and
 id|fm_port
 op_ne
 id|SNDRV_AUTO_PORT
@@ -8426,6 +8480,33 @@ comma
 l_int|4
 )paren
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+id|fm_port
+OG
+l_int|0
+op_logical_and
+id|fm_port
+op_ne
+id|SNDRV_AUTO_PORT
+)paren
+id|pnp_resource_change
+c_func
+(paren
+op_amp
+id|cfg-&gt;port_resource
+(braket
+l_int|2
+)braket
+comma
+id|fm_port
+comma
+l_int|4
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8468,7 +8549,9 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;AUDIO pnp configure failure&bslash;n&quot;
+l_string|&quot;AUDIO pnp configure failure: %d&bslash;n&quot;
+comma
+id|err
 )paren
 suffix:semicolon
 id|kfree
@@ -8573,6 +8656,10 @@ r_if
 c_cond
 (paren
 id|pdev
+op_logical_and
+id|mpu_port
+OG
+l_int|0
 )paren
 (brace
 id|pnp_init_resource_table
@@ -9663,6 +9750,15 @@ id|chip-&gt;mc_base
 op_sub_assign
 l_int|0x80
 suffix:semicolon
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|pcard-&gt;card-&gt;dev
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -9759,15 +9855,6 @@ op_assign
 id|dma2
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_PNP
-r_if
-c_cond
-(paren
-op_logical_neg
-id|isapnp
-)paren
-(brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9812,6 +9899,15 @@ id|EBUSY
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_PNP
+r_if
+c_cond
+(paren
+op_logical_neg
+id|isapnp
+)paren
+(brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -10382,12 +10478,79 @@ id|error
 suffix:semicolon
 )brace
 macro_line|#endif
+id|strcpy
+c_func
+(paren
+id|card-&gt;driver
+comma
+id|chip-&gt;name
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|card-&gt;shortname
+comma
+l_string|&quot;OPTi %s&quot;
+comma
+id|card-&gt;driver
+)paren
+suffix:semicolon
+macro_line|#if defined(CS4231) || defined(OPTi93X)
+id|sprintf
+c_func
+(paren
+id|card-&gt;longname
+comma
+l_string|&quot;%s, %s at 0x%lx, irq %d, dma %d&amp;%d&quot;
+comma
+id|card-&gt;shortname
+comma
+id|pcm-&gt;name
+comma
+id|chip-&gt;wss_base
+op_plus
+l_int|4
+comma
+id|chip-&gt;irq
+comma
+id|chip-&gt;dma1
+comma
+id|chip-&gt;dma2
+)paren
+suffix:semicolon
+macro_line|#else
+id|sprintf
+c_func
+(paren
+id|card-&gt;longname
+comma
+l_string|&quot;%s, %s at 0x%lx, irq %d, dma %d&quot;
+comma
+id|card-&gt;shortname
+comma
+id|pcm-&gt;name
+comma
+id|chip-&gt;wss_base
+op_plus
+l_int|4
+comma
+id|chip-&gt;irq
+comma
+id|chip-&gt;dma1
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* CS4231 || OPTi93X */
 r_if
 c_cond
 (paren
 id|chip-&gt;mpu_port
 op_le
 l_int|0
+op_logical_or
+id|chip-&gt;mpu_port
+op_eq
+id|SNDRV_AUTO_PORT
 )paren
 id|rmidi
 op_assign
@@ -10436,6 +10599,10 @@ c_cond
 id|chip-&gt;fm_port
 OG
 l_int|0
+op_logical_and
+id|chip-&gt;fm_port
+op_ne
+id|SNDRV_AUTO_PORT
 )paren
 (brace
 id|opl3_t
@@ -10654,69 +10821,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|strcpy
-c_func
-(paren
-id|card-&gt;driver
-comma
-id|chip-&gt;name
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|card-&gt;shortname
-comma
-l_string|&quot;OPTi %s&quot;
-comma
-id|card-&gt;driver
-)paren
-suffix:semicolon
-macro_line|#if defined(CS4231) || defined(OPTi93X)
-id|sprintf
-c_func
-(paren
-id|card-&gt;longname
-comma
-l_string|&quot;%s soundcard, %s at 0x%lx, irq %d, dma %d&amp;%d&quot;
-comma
-id|card-&gt;shortname
-comma
-id|pcm-&gt;name
-comma
-id|chip-&gt;wss_base
-op_plus
-l_int|4
-comma
-id|chip-&gt;irq
-comma
-id|chip-&gt;dma1
-comma
-id|chip-&gt;dma2
-)paren
-suffix:semicolon
-macro_line|#else
-id|sprintf
-c_func
-(paren
-id|card-&gt;longname
-comma
-l_string|&quot;%s soundcard, %s at 0x%lx, irq %d, dma %d&quot;
-comma
-id|card-&gt;shortname
-comma
-id|pcm-&gt;name
-comma
-id|chip-&gt;wss_base
-op_plus
-l_int|4
-comma
-id|chip-&gt;irq
-comma
-id|chip-&gt;dma1
-)paren
-suffix:semicolon
-macro_line|#endif&t;/* CS4231 || OPTi93X */
 r_if
 c_cond
 (paren
@@ -11069,48 +11173,36 @@ id|pnp
 op_eq
 l_int|2
 op_logical_and
-id|get_option
+id|get_option_long
 c_func
 (paren
 op_amp
 id|str
 comma
-(paren
-r_int
-op_star
-)paren
 op_amp
 id|port
 )paren
 op_eq
 l_int|2
 op_logical_and
-id|get_option
+id|get_option_long
 c_func
 (paren
 op_amp
 id|str
 comma
-(paren
-r_int
-op_star
-)paren
 op_amp
 id|mpu_port
 )paren
 op_eq
 l_int|2
 op_logical_and
-id|get_option
+id|get_option_long
 c_func
 (paren
 op_amp
 id|str
 comma
-(paren
-r_int
-op_star
-)paren
 op_amp
 id|fm_port
 )paren

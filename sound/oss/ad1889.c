@@ -1687,7 +1687,7 @@ c_func
 (paren
 id|out
 comma
-l_string|&quot;&bslash;t&bslash;t0x%p (IOVA: 0x%u)&bslash;n&quot;
+l_string|&quot;&bslash;t&bslash;t0x%p (IOVA: 0x%llu)&bslash;n&quot;
 comma
 id|dev-&gt;state
 (braket
@@ -1696,6 +1696,11 @@ id|i
 dot
 id|dmabuf.rawbuf
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|dev-&gt;state
 (braket
 id|i

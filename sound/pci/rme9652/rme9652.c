@@ -6848,16 +6848,6 @@ comma
 l_int|1
 )paren
 comma
-id|RME9652_ADAT_SYNC
-c_func
-(paren
-l_string|&quot;ADAT3 Sync Check&quot;
-comma
-l_int|0
-comma
-l_int|2
-)paren
-comma
 id|RME9652_TC_VALID
 c_func
 (paren
@@ -7970,6 +7960,8 @@ c_func
 id|entry
 comma
 id|rme9652
+comma
+l_int|1024
 comma
 id|snd_rme9652_proc_read
 )paren
@@ -11879,6 +11871,15 @@ suffix:semicolon
 id|rme9652-&gt;pci
 op_assign
 id|pci
+suffix:semicolon
+id|snd_card_set_dev
+c_func
+(paren
+id|card
+comma
+op_amp
+id|pci-&gt;dev
+)paren
 suffix:semicolon
 r_if
 c_cond

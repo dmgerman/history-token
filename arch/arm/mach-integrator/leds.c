@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/mach-integrator/leds.c&n; *&n; *  Integrator LED control routines&n; *&n; *  Copyright (C) 1999 ARM Limited&n; *  Copyright (C) 2000 Deep Blue Solutions Ltd&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  linux/arch/arm/mach-integrator/leds.c&n; *&n; *  Integrator/AP and Integrator/CP LED control routines&n; *&n; *  Copyright (C) 1999 ARM Limited&n; *  Copyright (C) 2000 Deep Blue Solutions Ltd&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
+macro_line|#include &lt;asm/arch/cm.h&gt;
 DECL|variable|saved_leds
 r_static
 r_int
@@ -36,23 +37,6 @@ c_func
 id|INTEGRATOR_DBG_BASE
 )paren
 suffix:semicolon
-r_const
-r_int
-r_int
-id|hdr_ctrl
-op_assign
-id|IO_ADDRESS
-c_func
-(paren
-id|INTEGRATOR_HDR_BASE
-)paren
-op_plus
-id|INTEGRATOR_HDR_CTRL_OFFSET
-suffix:semicolon
-r_int
-r_int
-id|ctrl
-suffix:semicolon
 r_int
 r_int
 id|update_alpha_leds
@@ -77,25 +61,12 @@ id|ledevt
 r_case
 id|led_idle_start
 suffix:colon
-id|ctrl
-op_assign
-id|__raw_readl
+id|cm_control
 c_func
 (paren
-id|hdr_ctrl
-)paren
-suffix:semicolon
-id|ctrl
-op_and_assign
-op_complement
-id|INTEGRATOR_HDR_CTRL_LED
-suffix:semicolon
-id|__raw_writel
-c_func
-(paren
-id|ctrl
+id|CM_CTRL_LED
 comma
-id|hdr_ctrl
+l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -103,24 +74,12 @@ suffix:semicolon
 r_case
 id|led_idle_end
 suffix:colon
-id|ctrl
-op_assign
-id|__raw_readl
+id|cm_control
 c_func
 (paren
-id|hdr_ctrl
-)paren
-suffix:semicolon
-id|ctrl
-op_or_assign
-id|INTEGRATOR_HDR_CTRL_LED
-suffix:semicolon
-id|__raw_writel
-c_func
-(paren
-id|ctrl
+id|CM_CTRL_LED
 comma
-id|hdr_ctrl
+id|CM_CTRL_LED
 )paren
 suffix:semicolon
 r_break
@@ -222,6 +181,11 @@ r_if
 c_cond
 (paren
 id|machine_is_integrator
+c_func
+(paren
+)paren
+op_logical_or
+id|machine_is_cintegrator
 c_func
 (paren
 )paren

@@ -77,11 +77,6 @@ id|u64
 id|xKsave
 suffix:semicolon
 multiline_comment|/* Saved Kernel stack addr or zero&t;0x20 */
-DECL|member|pvr
-id|u64
-id|pvr
-suffix:semicolon
-multiline_comment|/* Processor version register&t;&t;0x28 */
 DECL|member|lpQueuePtr
 r_struct
 id|ItLpQueue
@@ -119,7 +114,7 @@ DECL|member|resv1
 id|u8
 id|resv1
 (braket
-l_int|30
+l_int|38
 )braket
 suffix:semicolon
 multiline_comment|/*&t;&t;&t;&t;&t;0x61-0x7F */

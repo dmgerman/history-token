@@ -182,6 +182,8 @@ DECL|macro|fm801_t_magic
 mdefine_line|#define fm801_t_magic&t;&t;&t;&t;0xa15a1801
 DECL|macro|ac97_t_magic
 mdefine_line|#define ac97_t_magic&t;&t;&t;&t;0xa15a1901
+DECL|macro|ac97_bus_t_magic
+mdefine_line|#define ac97_bus_t_magic&t;&t;&t;0xa15a1902
 DECL|macro|ak4531_t_magic
 mdefine_line|#define ak4531_t_magic&t;&t;&t;&t;0xa15a1a01
 DECL|macro|snd_uart16550_t_magic
@@ -312,6 +314,8 @@ DECL|macro|azf3328_t_magic
 mdefine_line|#define azf3328_t_magic&t;&t;&t;&t;0xa15a4200
 DECL|macro|snd_card_harmony_t_magic
 mdefine_line|#define snd_card_harmony_t_magic&t;&t;0xa15a4300
+DECL|macro|bt87x_t_magic
+mdefine_line|#define bt87x_t_magic&t;&t;&t;&t;0xa15a4400
 macro_line|#else
 DECL|macro|snd_magic_kcalloc
 mdefine_line|#define snd_magic_kcalloc(type, extra, flags) (type *) snd_kcalloc(sizeof(type) + extra, flags)

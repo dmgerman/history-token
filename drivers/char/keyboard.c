@@ -4801,25 +4801,6 @@ r_char
 id|up_flag
 )paren
 (brace
-macro_line|#ifdef CONFIG_MAC_EMUMOUSEBTN
-r_if
-c_cond
-(paren
-id|mac_hid_mouse_emulate_buttons
-c_func
-(paren
-l_int|1
-comma
-id|keycode
-comma
-op_logical_neg
-id|up_flag
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif /* CONFIG_MAC_EMUMOUSEBTN */
 r_if
 c_cond
 (paren
@@ -5189,6 +5170,23 @@ op_eq
 l_int|2
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MAC_EMUMOUSEBTN
+r_if
+c_cond
+(paren
+id|mac_hid_mouse_emulate_buttons
+c_func
+(paren
+l_int|1
+comma
+id|keycode
+comma
+id|down
+)paren
+)paren
+r_return
+suffix:semicolon
+macro_line|#endif /* CONFIG_MAC_EMUMOUSEBTN */
 r_if
 c_cond
 (paren

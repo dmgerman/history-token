@@ -20,6 +20,7 @@ id|pci_dev
 op_star
 id|triflex_dev
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|triflex_get_info
 r_static
 r_int
@@ -304,6 +305,7 @@ suffix:colon
 id|len
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|triflex_tune_chipset
 r_static
 r_int

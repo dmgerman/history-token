@@ -281,7 +281,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|num_memblks
+id|num_node_memblks
 suffix:semicolon
 id|i
 op_increment
