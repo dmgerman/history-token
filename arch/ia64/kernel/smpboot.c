@@ -1644,13 +1644,6 @@ c_cond
 (paren
 op_logical_neg
 id|max_cpus
-op_logical_or
-(paren
-id|max_cpus
-OL
-op_minus
-l_int|1
-)paren
 )paren
 (brace
 id|printk
