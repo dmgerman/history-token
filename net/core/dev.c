@@ -5177,8 +5177,6 @@ suffix:semicolon
 r_int
 r_int
 id|type
-op_assign
-id|skb-&gt;protocol
 suffix:semicolon
 r_if
 c_cond
@@ -5324,6 +5322,10 @@ id|ret
 )paren
 r_goto
 id|out
+suffix:semicolon
+id|type
+op_assign
+id|skb-&gt;protocol
 suffix:semicolon
 id|list_for_each_entry_rcu
 c_func
