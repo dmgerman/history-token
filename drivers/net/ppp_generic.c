@@ -9945,30 +9945,18 @@ c_func
 id|ppp
 )paren
 suffix:semicolon
+multiline_comment|/* This will call dev_close() for us. */
 r_if
 c_cond
 (paren
 id|dev
 )paren
-(brace
-id|rtnl_lock
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* This will call dev_close() for us. */
-id|unregister_netdevice
+id|unregister_netdev
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-id|rtnl_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 id|cardmap_set
 c_func
 (paren

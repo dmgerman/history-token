@@ -199,6 +199,16 @@ r_int
 r_int
 id|gc_dst_overflow
 suffix:semicolon
+DECL|member|in_hlist_search
+r_int
+r_int
+id|in_hlist_search
+suffix:semicolon
+DECL|member|out_hlist_search
+r_int
+r_int
+id|out_hlist_search
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
