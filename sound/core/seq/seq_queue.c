@@ -2558,9 +2558,6 @@ op_star
 id|ev
 comma
 r_int
-id|from_timer_port
-comma
-r_int
 id|atomic
 comma
 r_int
@@ -2593,12 +2590,6 @@ id|sev.data.queue.queue
 op_assign
 id|q-&gt;queue
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|from_timer_port
-)paren
-(brace
 multiline_comment|/* broadcast events from Timer port */
 id|sev.source.client
 op_assign
@@ -2626,7 +2617,6 @@ id|hop
 )paren
 suffix:semicolon
 )brace
-)brace
 multiline_comment|/*&n; * process a received queue-control event.&n; * this function is exported for seq_sync.c.&n; */
 DECL|function|snd_seq_queue_process_event
 r_void
@@ -2640,9 +2630,6 @@ comma
 id|snd_seq_event_t
 op_star
 id|ev
-comma
-r_int
-id|from_timer_port
 comma
 r_int
 id|atomic
@@ -2697,8 +2684,6 @@ id|q
 comma
 id|ev
 comma
-id|from_timer_port
-comma
 id|atomic
 comma
 id|hop
@@ -2726,8 +2711,6 @@ id|q
 comma
 id|ev
 comma
-id|from_timer_port
-comma
 id|atomic
 comma
 id|hop
@@ -2750,8 +2733,6 @@ c_func
 id|q
 comma
 id|ev
-comma
-id|from_timer_port
 comma
 id|atomic
 comma
@@ -2777,8 +2758,6 @@ c_func
 id|q
 comma
 id|ev
-comma
-id|from_timer_port
 comma
 id|atomic
 comma
@@ -2811,8 +2790,6 @@ id|q
 comma
 id|ev
 comma
-id|from_timer_port
-comma
 id|atomic
 comma
 id|hop
@@ -2844,8 +2821,6 @@ c_func
 id|q
 comma
 id|ev
-comma
-id|from_timer_port
 comma
 id|atomic
 comma
@@ -2880,8 +2855,6 @@ c_func
 id|q
 comma
 id|ev
-comma
-id|from_timer_port
 comma
 id|atomic
 comma
@@ -2975,8 +2948,6 @@ c_func
 id|q
 comma
 id|ev
-comma
-l_int|1
 comma
 id|atomic
 comma
