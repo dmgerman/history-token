@@ -63,6 +63,7 @@ DECL|variable|coda_psdev_class
 r_static
 r_struct
 id|class_simple
+op_star
 id|coda_psdev_class
 suffix:semicolon
 multiline_comment|/*&n; * Device operations&n; */
