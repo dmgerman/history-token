@@ -175,6 +175,108 @@ mdefine_line|#define __MSGSEG ((MSGPOOL*1024)/ MSGSSZ) /* max no. of segments */
 DECL|macro|MSGSEG
 mdefine_line|#define MSGSEG (__MSGSEG &lt;= 0xffff ? __MSGSEG : 0xffff)
 macro_line|#ifdef __KERNEL__
+multiline_comment|/* one msg_msg structure for each message */
+DECL|struct|msg_msg
+r_struct
+id|msg_msg
+(brace
+DECL|member|m_list
+r_struct
+id|list_head
+id|m_list
+suffix:semicolon
+DECL|member|m_type
+r_int
+id|m_type
+suffix:semicolon
+DECL|member|m_ts
+r_int
+id|m_ts
+suffix:semicolon
+multiline_comment|/* message text size */
+DECL|member|next
+r_struct
+id|msg_msgseg
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* the actual message follows immediately */
+)brace
+suffix:semicolon
+DECL|macro|DATALEN_MSG
+mdefine_line|#define DATALEN_MSG&t;(PAGE_SIZE-sizeof(struct msg_msg))
+DECL|macro|DATALEN_SEG
+mdefine_line|#define DATALEN_SEG&t;(PAGE_SIZE-sizeof(struct msg_msgseg))
+multiline_comment|/* one msq_queue structure for each present queue on the system */
+DECL|struct|msg_queue
+r_struct
+id|msg_queue
+(brace
+DECL|member|q_perm
+r_struct
+id|kern_ipc_perm
+id|q_perm
+suffix:semicolon
+DECL|member|q_stime
+id|time_t
+id|q_stime
+suffix:semicolon
+multiline_comment|/* last msgsnd time */
+DECL|member|q_rtime
+id|time_t
+id|q_rtime
+suffix:semicolon
+multiline_comment|/* last msgrcv time */
+DECL|member|q_ctime
+id|time_t
+id|q_ctime
+suffix:semicolon
+multiline_comment|/* last change time */
+DECL|member|q_cbytes
+r_int
+r_int
+id|q_cbytes
+suffix:semicolon
+multiline_comment|/* current number of bytes on queue */
+DECL|member|q_qnum
+r_int
+r_int
+id|q_qnum
+suffix:semicolon
+multiline_comment|/* number of messages in queue */
+DECL|member|q_qbytes
+r_int
+r_int
+id|q_qbytes
+suffix:semicolon
+multiline_comment|/* max number of bytes on queue */
+DECL|member|q_lspid
+id|pid_t
+id|q_lspid
+suffix:semicolon
+multiline_comment|/* pid of last msgsnd */
+DECL|member|q_lrpid
+id|pid_t
+id|q_lrpid
+suffix:semicolon
+multiline_comment|/* last receive pid */
+DECL|member|q_messages
+r_struct
+id|list_head
+id|q_messages
+suffix:semicolon
+DECL|member|q_receivers
+r_struct
+id|list_head
+id|q_receivers
+suffix:semicolon
+DECL|member|q_senders
+r_struct
+id|list_head
+id|q_senders
+suffix:semicolon
+)brace
+suffix:semicolon
 id|asmlinkage
 r_int
 id|sys_msgget
