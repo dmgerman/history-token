@@ -6102,13 +6102,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;video_setup - process command line options&n; *&t;@options: string of options&n; *&n; *&t;Process command line options for frame buffer subsystem.&n; *&n; *&t;NOTE: This function is a __setup and __init function.&n; *            It only stores the options.  Drivers have to call&n; *            fb_get_options() as necessary.&n; *&n; *&t;Returns zero.&n; *&n; */
 r_extern
 r_const
 r_char
 op_star
 id|global_mode_option
 suffix:semicolon
+multiline_comment|/**&n; *&t;video_setup - process command line options&n; *&t;@options: string of options&n; *&n; *&t;Process command line options for frame buffer subsystem.&n; *&n; *&t;NOTE: This function is a __setup and __init function.&n; *            It only stores the options.  Drivers have to call&n; *            fb_get_options() as necessary.&n; *&n; *&t;Returns zero.&n; *&n; */
 DECL|function|video_setup
 r_int
 id|__init
