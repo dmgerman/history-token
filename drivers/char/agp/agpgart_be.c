@@ -9999,7 +9999,7 @@ id|page_dir.remapped
 suffix:semicolon
 id|agp_bridge.gatt_bus_addr
 op_assign
-id|virt_to_bus
+id|virt_to_phys
 c_func
 (paren
 id|page_dir.real
@@ -10060,7 +10060,7 @@ id|addr
 )paren
 )braket
 op_assign
-id|virt_to_bus
+id|virt_to_phys
 c_func
 (paren
 id|amd_irongate_private.gatt_pages
@@ -12914,7 +12914,7 @@ id|page_dir.remapped
 id|i
 )braket
 op_assign
-id|virt_to_bus
+id|virt_to_phys
 c_func
 (paren
 id|serverworks_private.scratch_dir.real
@@ -12974,7 +12974,7 @@ id|page_dir.remapped
 suffix:semicolon
 id|agp_bridge.gatt_bus_addr
 op_assign
-id|virt_to_bus
+id|virt_to_phys
 c_func
 (paren
 id|page_dir.real
@@ -13023,7 +13023,7 @@ id|page_dir.remapped
 id|i
 )braket
 op_assign
-id|virt_to_bus
+id|virt_to_phys
 c_func
 (paren
 id|serverworks_private.gatt_pages
