@@ -136,6 +136,12 @@ r_int
 r_int
 id|port_high
 suffix:semicolon
+DECL|member|iomap_base
+r_int
+r_int
+id|iomap_base
+suffix:semicolon
+multiline_comment|/* cookie passed into ioremap */
 DECL|member|reserved
 r_int
 id|reserved

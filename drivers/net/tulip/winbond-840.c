@@ -976,8 +976,6 @@ l_int|0x80000000
 comma
 )brace
 suffix:semicolon
-DECL|macro|PRIV_ALIGN
-mdefine_line|#define PRIV_ALIGN&t;15 &t;/* Required alignment mask */
 DECL|macro|MII_CNT
 mdefine_line|#define MII_CNT&t;&t;1 /* winbond only supports one MII */
 DECL|struct|netdev_private
@@ -7607,7 +7605,6 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n&quot;
 id|KERN_DEBUG
 l_string|&quot;  Tx ring at %8.8x:&bslash;n&quot;
 comma
@@ -7634,6 +7631,7 @@ op_increment
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot; #%d desc. %4.4x %4.4x %8.8x.&bslash;n&quot;
 comma
 id|i
@@ -8122,19 +8120,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|np-&gt;timer.expires
-op_assign
+id|mod_timer
+c_func
+(paren
+op_amp
+id|np-&gt;timer
+comma
 id|jiffies
 op_plus
 l_int|1
 op_star
 id|HZ
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|np-&gt;timer
 )paren
 suffix:semicolon
 )brace

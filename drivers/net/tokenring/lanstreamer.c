@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   lanstreamer.c -- driver for the IBM Auto LANStreamer PCI Adapter&n; *&n; *  Written By: Mike Sullivan, IBM Corporation&n; *&n; *  Copyright (C) 1999 IBM Corporation&n; *&n; *  Linux driver for IBM PCI tokenring cards based on the LanStreamer MPC&n; *  chipset. &n; *&n; *  This driver is based on the olympic driver for IBM PCI TokenRing cards (Pit/Pit-Phy/Olympic&n; *  chipsets) written  by:&n; *      1999 Peter De Schrijver All Rights Reserved&n; *&t;1999 Mike Phillips (phillim@amtrak.com)&n; *&n; *  Base Driver Skeleton:&n; *      Written 1993-94 by Donald Becker.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; * This program is free software; you can redistribute it and/or modify      &n; * it under the terms of the GNU General Public License as published by      &n; * the Free Software Foundation; either version 2 of the License, or         &n; * (at your option) any later version.                                       &n; *                                                                           &n; * This program is distributed in the hope that it will be useful,           &n; * but WITHOUT ANY WARRANTY; without even the implied warranty of            &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n; * GNU General Public License for more details.                              &n; *                                                                           &n; * NO WARRANTY                                                               &n; * THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n; * CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n; * LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n; * solely responsible for determining the appropriateness of using and       &n; * distributing the Program and assumes all risks associated with its        &n; * exercise of rights under this Agreement, including but not limited to     &n; * the risks and costs of program errors, damage to or loss of data,         &n; * programs or equipment, and unavailability or interruption of operations.  &n; *                                                                           &n; * DISCLAIMER OF LIABILITY                                                   &n; * NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n; * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n; * DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n; * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n; * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n; * USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n; * HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n; *                                                                           &n; * You should have received a copy of the GNU General Public License         &n; * along with this program; if not, write to the Free Software               &n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n; *                                                                           &n; * &n; *  12/10/99 - Alpha Release 0.1.0&n; *            First release to the public&n; *  03/03/00 - Merged to kernel, indented -kr -i8 -bri0, fixed some missing&n; *&t;&t;malloc free checks, reviewed code. &lt;alan@redhat.com&gt;&n; *  03/13/00 - Added spinlocks for smp&n; *  03/08/01 - Added support for module_init() and module_exit()&n; *  08/15/01 - Added ioctl() functionality for debugging, changed netif_*_queue&n; *             calls and other incorrectness - Kent Yoder &lt;yoder1@us.ibm.com&gt;&n; *  11/05/01 - Restructured the interrupt function, added delays, reduced the &n; *             the number of TX descriptors to 1, which together can prevent &n; *             the card from locking up the box - &lt;yoder1@us.ibm.com&gt;&n; *  09/27/02 - New PCI interface + bug fix. - &lt;yoder1@us.ibm.com&gt;&n; *  &n; *  To Do:&n; *&n; *&n; *  If Problems do Occur&n; *  Most problems can be rectified by either closing and opening the interface&n; *  (ifconfig down and up) or rmmod and insmod&squot;ing the driver (a bit difficult&n; *  if compiled into the kernel).&n; */
+multiline_comment|/*&n; *   lanstreamer.c -- driver for the IBM Auto LANStreamer PCI Adapter&n; *&n; *  Written By: Mike Sullivan, IBM Corporation&n; *&n; *  Copyright (C) 1999 IBM Corporation&n; *&n; *  Linux driver for IBM PCI tokenring cards based on the LanStreamer MPC&n; *  chipset. &n; *&n; *  This driver is based on the olympic driver for IBM PCI TokenRing cards (Pit/Pit-Phy/Olympic&n; *  chipsets) written  by:&n; *      1999 Peter De Schrijver All Rights Reserved&n; *&t;1999 Mike Phillips (phillim@amtrak.com)&n; *&n; *  Base Driver Skeleton:&n; *      Written 1993-94 by Donald Becker.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; * This program is free software; you can redistribute it and/or modify      &n; * it under the terms of the GNU General Public License as published by      &n; * the Free Software Foundation; either version 2 of the License, or         &n; * (at your option) any later version.                                       &n; *                                                                           &n; * This program is distributed in the hope that it will be useful,           &n; * but WITHOUT ANY WARRANTY; without even the implied warranty of            &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n; * GNU General Public License for more details.                              &n; *                                                                           &n; * NO WARRANTY                                                               &n; * THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n; * CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n; * LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n; * solely responsible for determining the appropriateness of using and       &n; * distributing the Program and assumes all risks associated with its        &n; * exercise of rights under this Agreement, including but not limited to     &n; * the risks and costs of program errors, damage to or loss of data,         &n; * programs or equipment, and unavailability or interruption of operations.  &n; *                                                                           &n; * DISCLAIMER OF LIABILITY                                                   &n; * NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n; * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n; * DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n; * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n; * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n; * USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n; * HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n; *                                                                           &n; * You should have received a copy of the GNU General Public License         &n; * along with this program; if not, write to the Free Software               &n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n; *                                                                           &n; * &n; *  12/10/99 - Alpha Release 0.1.0&n; *            First release to the public&n; *  03/03/00 - Merged to kernel, indented -kr -i8 -bri0, fixed some missing&n; *&t;&t;malloc free checks, reviewed code. &lt;alan@redhat.com&gt;&n; *  03/13/00 - Added spinlocks for smp&n; *  03/08/01 - Added support for module_init() and module_exit()&n; *  08/15/01 - Added ioctl() functionality for debugging, changed netif_*_queue&n; *             calls and other incorrectness - Kent Yoder &lt;yoder1@us.ibm.com&gt;&n; *  11/05/01 - Restructured the interrupt function, added delays, reduced the &n; *             the number of TX descriptors to 1, which together can prevent &n; *             the card from locking up the box - &lt;yoder1@us.ibm.com&gt;&n; *  09/27/02 - New PCI interface + bug fix. - &lt;yoder1@us.ibm.com&gt;&n; *  11/13/02 - Removed free_irq calls which could cause a hang, added&n; *&t;       netif_carrier_{on|off} - &lt;yoder1@us.ibm.com&gt;&n; *  &n; *  To Do:&n; *&n; *&n; *  If Problems do Occur&n; *  Most problems can be rectified by either closing and opening the interface&n; *  (ifconfig down and up) or rmmod and insmod&squot;ing the driver (a bit difficult&n; *  if compiled into the kernel).&n; */
 multiline_comment|/* Change STREAMER_DEBUG to 1 to get verbose, and I mean really verbose, messages */
 DECL|macro|STREAMER_DEBUG
 mdefine_line|#define STREAMER_DEBUG 0
@@ -45,7 +45,7 @@ id|version
 )braket
 op_assign
 l_string|&quot;LanStreamer.c v0.4.0 03/08/01 - Mike Sullivan&bslash;n&quot;
-l_string|&quot;              v0.5.2 09/30/02 - Kent Yoder&quot;
+l_string|&quot;              v0.5.3 11/13/02 - Kent Yoder&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -4328,6 +4328,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|netif_carrier_on
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5540,12 +5546,25 @@ id|LAPDINC
 )paren
 )paren
 suffix:semicolon
-id|free_irq
+id|netif_stop_queue
 c_func
 (paren
-id|dev-&gt;irq
-comma
 id|dev
+)paren
+suffix:semicolon
+id|netif_carrier_off
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Adapter must be manually reset.&bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -6053,6 +6072,12 @@ r_int
 id|i
 suffix:semicolon
 id|netif_stop_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|netif_carrier_off
 c_func
 (paren
 id|dev
@@ -8478,11 +8503,9 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|free_irq
+id|netif_carrier_off
 c_func
 (paren
-id|dev-&gt;irq
-comma
 id|dev
 )paren
 suffix:semicolon
@@ -8490,7 +8513,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Adapter has been closed &bslash;n&quot;
+l_string|&quot;%s: Adapter must be manually reset.&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren

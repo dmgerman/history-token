@@ -1342,7 +1342,9 @@ id|dir-&gt;i_sb-&gt;u.msdos_sb.options.fs_gid
 op_assign
 id|data.umsdos_dirent.gid
 suffix:semicolon
-id|dir-&gt;i_sb-&gt;u.msdos_sb.options.fs_umask
+id|dir-&gt;i_sb-&gt;u.msdos_sb.options.fs_fmask
+op_assign
+id|dir-&gt;i_sb-&gt;u.msdos_sb.options.fs_dmask
 op_assign
 id|data.umsdos_dirent.mode
 suffix:semicolon

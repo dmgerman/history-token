@@ -937,6 +937,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|sl-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|sl-&gt;rx_packets
 op_increment
 suffix:semicolon
@@ -1489,6 +1493,10 @@ op_star
 id|skb
 )paren
 (brace
+id|skb-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 r_return
 id|netif_rx
 c_func
@@ -1683,6 +1691,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|sl-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 )brace
 DECL|function|x25_asy_disconnected
 r_static
@@ -1781,6 +1793,10 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+id|sl-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 )brace
 multiline_comment|/* Open the low-level part of the X.25 channel. Easy! */
