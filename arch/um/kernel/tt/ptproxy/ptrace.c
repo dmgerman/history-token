@@ -12,6 +12,7 @@ macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;ptrace_user.h&quot;
+macro_line|#include &quot;tt.h&quot;
 DECL|function|proxy_ptrace
 r_int
 id|proxy_ptrace
