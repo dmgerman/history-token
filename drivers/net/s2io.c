@@ -9309,13 +9309,6 @@ op_star
 )paren
 id|sp-&gt;bar0
 suffix:semicolon
-macro_line|#ifndef CONFIG_S2IO_NAPI
-r_int
-id|i
-comma
-id|ret
-suffix:semicolon
-macro_line|#endif
 id|u64
 id|reason
 op_assign
