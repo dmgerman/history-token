@@ -2365,7 +2365,7 @@ id|sd
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Perform scheduler related setup for a newly forked process p.&n; * p is forked by current. It also does runqueue balancing.&n; * The cpu hotplug lock is held.&n; */
+multiline_comment|/*&n; * Perform scheduler related setup for a newly forked process p.&n; * p is forked by current. The cpu hotplug lock is held.&n; */
 DECL|function|sched_fork
 r_void
 id|fastcall
@@ -2784,7 +2784,6 @@ c_func
 suffix:semicolon
 )brace
 r_else
-(brace
 multiline_comment|/* Run child last */
 id|__activate_task
 c_func
@@ -2794,7 +2793,6 @@ comma
 id|rq
 )paren
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -11222,7 +11220,7 @@ c_func
 id|set_cpus_allowed
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Move (not current) task off this cpu, onto dest cpu.  We&squot;re doing&n; * this because either it can&squot;t run here any more (set_cpus_allowed()&n; * away from this CPU, or CPU going down), or because we&squot;re&n; * attempting to rebalance this task on exec (sched_balance_exec).&n; *&n; * So we race with normal scheduler movements, but that&squot;s OK, as long&n; * as the task is no longer on this CPU.&n; */
+multiline_comment|/*&n; * Move (not current) task off this cpu, onto dest cpu.  We&squot;re doing&n; * this because either it can&squot;t run here any more (set_cpus_allowed()&n; * away from this CPU, or CPU going down), or because we&squot;re&n; * attempting to rebalance this task on exec (sched_exec).&n; *&n; * So we race with normal scheduler movements, but that&squot;s OK, as long&n; * as the task is no longer on this CPU.&n; */
 DECL|function|__migrate_task
 r_static
 r_void
