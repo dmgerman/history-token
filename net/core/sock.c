@@ -1493,7 +1493,7 @@ op_mod
 id|HZ
 )paren
 op_star
-l_int|1000
+l_int|1000000
 )paren
 op_div
 id|HZ
@@ -1546,7 +1546,7 @@ op_mod
 id|HZ
 )paren
 op_star
-l_int|1000
+l_int|1000000
 )paren
 op_div
 id|HZ

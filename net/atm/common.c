@@ -863,6 +863,8 @@ op_amp
 id|vcc-&gt;sk-&gt;sk_receive_queue
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 id|atm_return

@@ -2635,6 +2635,8 @@ op_amp
 id|vcc-&gt;sk-&gt;sk_receive_queue
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 id|atm_return
@@ -9289,6 +9291,8 @@ op_amp
 id|entry-&gt;tx_wait
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 id|lec_send
 c_func
@@ -11221,6 +11225,8 @@ op_amp
 id|entry-&gt;tx_wait
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 id|lec_send
 c_func
