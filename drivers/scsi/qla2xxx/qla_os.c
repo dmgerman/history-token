@@ -6035,6 +6035,7 @@ multiline_comment|/* Waiting for our command in done_queue to be returned to OS.
 r_if
 c_cond
 (paren
+op_logical_neg
 id|qla2x00_eh_wait_for_pending_commands
 c_func
 (paren
