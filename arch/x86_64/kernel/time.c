@@ -2893,7 +2893,7 @@ comma
 l_int|0xcf8
 )paren
 suffix:semicolon
-id|hpet_address
+id|vxtime.hpet_address
 op_assign
 id|inl
 c_func
@@ -2910,7 +2910,7 @@ id|KERN_WARNING
 l_string|&quot;time.c: WARNING: Enabled HPET &quot;
 l_string|&quot;at %#lx.&bslash;n&quot;
 comma
-id|hpet_address
+id|vxtime.hpet_address
 )paren
 suffix:semicolon
 )brace
