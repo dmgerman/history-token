@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|DEVICE_NAME_SIZE
@@ -1595,6 +1596,16 @@ DECL|member|dev
 r_struct
 id|device
 id|dev
+suffix:semicolon
+DECL|member|res
+r_struct
+id|resource
+id|res
+suffix:semicolon
+DECL|member|irq
+r_int
+r_int
+id|irq
 suffix:semicolon
 )brace
 suffix:semicolon
