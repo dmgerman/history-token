@@ -5677,6 +5677,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|chip-&gt;spdif_over_aclink
+)paren
+id|ac97.scaps
+op_or_assign
+id|AC97_SCAP_NO_SPDIF
+suffix:semicolon
+r_if
+c_cond
+(paren
 (paren
 id|err
 op_assign

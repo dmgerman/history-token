@@ -90,6 +90,10 @@ id|ac97.private_data
 op_assign
 id|vortex
 suffix:semicolon
+id|ac97.scaps
+op_assign
+id|AC97_SCAP_NO_SPDIF
+suffix:semicolon
 id|err
 op_assign
 id|snd_ac97_mixer
