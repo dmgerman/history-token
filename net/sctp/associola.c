@@ -610,10 +610,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|asoc-&gt;peer.next_dup_tsn
-op_assign
-l_int|0
-suffix:semicolon
 id|skb_queue_head_init
 c_func
 (paren
@@ -2348,12 +2344,6 @@ r_new
 op_member_access_from_pointer
 id|peer.rwnd
 suffix:semicolon
-id|asoc-&gt;peer.next_dup_tsn
-op_assign
-r_new
-op_member_access_from_pointer
-id|peer.next_dup_tsn
-suffix:semicolon
 id|asoc-&gt;peer.sack_needed
 op_assign
 r_new
@@ -2758,7 +2748,8 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;%s: asoc %p rwnd increased by %d to (%u, %u) - %u&bslash;n&quot;
+l_string|&quot;%s: asoc %p rwnd increased by %d to (%u, %u) &quot;
+l_string|&quot;- %u&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2849,10 +2840,6 @@ op_assign
 id|asoc-&gt;rwnd
 suffix:semicolon
 id|asoc-&gt;peer.sack_needed
-op_assign
-l_int|0
-suffix:semicolon
-id|asoc-&gt;peer.next_dup_tsn
 op_assign
 l_int|0
 suffix:semicolon

@@ -3190,7 +3190,8 @@ id|last_data_from
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Mapping  An array of bits or bytes indicating which out of&n;&t;&t; * Array    order TSN&squot;s have been received (relative to the&n;&t;&t; *          Last Rcvd TSN). If no gaps exist, i.e. no out of&n;&t;&t; *          order packets have been received, this array&n;&t;&t; *          will be set to all zero. This structure may be&n;&t;&t; *          in the form of a circular buffer or bit array.&n;&t;&t; *&n;&t;&t; * Last Rcvd   : This is the last TSN received in&n;&t;&t; * TSN&t;       : sequence. This value is set initially by&n;&t;&t; *             : taking the peer&squot;s Initial TSN, received in&n;&t;&t; *             : the INIT or INIT ACK chunk, and subtracting&n;&t;&t; *             : one from it.&n;&t;&t; *&n;&t;&t; * Throughout most of the specification this is called the&n;&t;&t; * &quot;Cumulative TSN ACK Point&quot;.  In this case, we&n;&t;&t; * ignore the advice in 12.2 in favour of the term&n;&t;&t; * used in the bulk of the text.  This value is hidden&n;&t;&t; * in tsn_map--we get it by calling sctp_tsnmap_get_ctsn().&n;&t;&t; */
 DECL|member|tsn_map
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 id|tsn_map
 suffix:semicolon
 DECL|member|_map
@@ -3204,21 +3205,9 @@ id|SCTP_TSN_MAP_SIZE
 )paren
 )braket
 suffix:semicolon
-multiline_comment|/* We record duplicate TSNs here.  We clear this after&n;&t;&t; * every SACK.&n;&t;&t; * FIXME: We should move this into the tsnmap? --jgrimm&n;&t;&t; */
-DECL|member|dup_tsns
-id|sctp_dup_tsn_t
-id|dup_tsns
-(braket
-id|SCTP_MAX_DUP_TSNS
-)braket
-suffix:semicolon
-DECL|member|next_dup_tsn
-r_int
-id|next_dup_tsn
-suffix:semicolon
 multiline_comment|/* Do we need to sack the peer? */
 DECL|member|sack_needed
-r_uint8
+id|__u8
 id|sack_needed
 suffix:semicolon
 multiline_comment|/* These are capabilities which our peer advertised.  */

@@ -11097,6 +11097,7 @@ suffix:semicolon
 id|__u16
 id|num_dup_tsns
 suffix:semicolon
+multiline_comment|/* FIXME:  Protect ourselves from reading too far into&n;&t; * the skb from a bogus sender.&n;&t; */
 id|sack
 op_assign
 (paren
