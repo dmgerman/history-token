@@ -3761,7 +3761,7 @@ id|ps
 )paren
 (brace
 r_return
-id|__usb_reset_device
+id|usb_reset_device
 c_func
 (paren
 id|ps-&gt;dev
