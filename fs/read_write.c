@@ -2700,13 +2700,15 @@ op_member_access_from_pointer
 id|sendfile
 c_func
 (paren
-id|out_file
-comma
 id|in_file
 comma
 id|ppos
 comma
 id|count
+comma
+id|file_send_actor
+comma
+id|out_file
 )paren
 suffix:semicolon
 r_if

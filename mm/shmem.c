@@ -6181,11 +6181,6 @@ c_func
 r_struct
 id|file
 op_star
-id|out_file
-comma
-r_struct
-id|file
-op_star
 id|in_file
 comma
 id|loff_t
@@ -6194,6 +6189,13 @@ id|ppos
 comma
 r_int
 id|count
+comma
+id|read_actor_t
+id|actor
+comma
+r_void
+op_star
+id|target
 )paren
 (brace
 id|read_descriptor_t
@@ -6218,11 +6220,7 @@ id|count
 suffix:semicolon
 id|desc.buf
 op_assign
-(paren
-r_char
-op_star
-)paren
-id|out_file
+id|target
 suffix:semicolon
 id|desc.error
 op_assign
@@ -6238,7 +6236,7 @@ comma
 op_amp
 id|desc
 comma
-id|file_send_actor
+id|actor
 )paren
 suffix:semicolon
 r_if
