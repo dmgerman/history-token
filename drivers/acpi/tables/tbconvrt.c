@@ -13,6 +13,13 @@ DECL|variable|acpi_fadt_is_v1
 id|u8
 id|acpi_fadt_is_v1
 suffix:semicolon
+DECL|variable|acpi_fadt_is_v1
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_fadt_is_v1
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_get_table_count&n; *&n; * PARAMETERS:  RSDP            - Pointer to the RSDP&n; *              RSDT            - Pointer to the RSDT/XSDT&n; *&n; * RETURN:      The number of tables pointed to by the RSDT or XSDT.&n; *&n; * DESCRIPTION: Calculate the number of tables.  Automatically handles either&n; *              an RSDT or XSDT.&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_tb_get_table_count
