@@ -514,6 +514,51 @@ op_star
 id|address
 )paren
 suffix:semicolon
+multiline_comment|/* Protocol family functions. */
+DECL|struct|sctp_pf
+r_typedef
+r_struct
+id|sctp_pf
+(brace
+DECL|member|event_msgname
+r_void
+(paren
+op_star
+id|event_msgname
+)paren
+(paren
+id|sctp_ulpevent_t
+op_star
+comma
+r_char
+op_star
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
+DECL|member|skb_msgname
+r_void
+(paren
+op_star
+id|skb_msgname
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+comma
+r_char
+op_star
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|sctp_pf_t
+)brace
+id|sctp_pf_t
+suffix:semicolon
 multiline_comment|/* SCTP Socket type: UDP or TCP style. */
 r_typedef
 r_enum
@@ -588,6 +633,11 @@ suffix:semicolon
 DECL|member|disable_fragments
 id|__u8
 id|disable_fragments
+suffix:semicolon
+DECL|member|pf
+id|sctp_pf_t
+op_star
+id|pf
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1916,6 +1966,19 @@ comma
 id|__u8
 )paren
 suffix:semicolon
+r_void
+id|sctp_retransmit_mark
+c_func
+(paren
+id|sctp_outqueue_t
+op_star
+comma
+id|sctp_transport_t
+op_star
+comma
+id|__u8
+)paren
+suffix:semicolon
 multiline_comment|/* These bind address data fields common between endpoints and associations */
 DECL|struct|SCTP_bind_addr
 r_struct
@@ -2514,6 +2577,11 @@ id|sctp_transport_t
 op_star
 id|primary_path
 suffix:semicolon
+multiline_comment|/* Cache the primary path address here, when we&n;&t;&t; * need a an address for msg_name. &n;&t;&t; */
+DECL|member|primary_addr
+id|sockaddr_storage_t
+id|primary_addr
+suffix:semicolon
 multiline_comment|/* active_path&n;&t;&t; *   The path that we are currently using to&n;&t;&t; *   transmit new data and most control chunks.&n;&t;&t; */
 DECL|member|active_path
 id|sctp_transport_t
@@ -2568,7 +2636,7 @@ id|next_dup_tsn
 suffix:semicolon
 multiline_comment|/* Do we need to sack the peer? */
 DECL|member|sack_needed
-r_int
+r_uint8
 id|sack_needed
 suffix:semicolon
 multiline_comment|/* These are capabilities which our peer advertised.  */
