@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
@@ -3496,6 +3497,31 @@ id|pdc_cache_info
 comma
 id|dt_loop
 )paren
+)paren
+suffix:semicolon
+id|BLANK
+c_func
+(paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|PA_BLOCKSTEP_BIT
+comma
+l_int|31
+op_minus
+id|PT_BLOCKSTEP_BIT
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|PA_SINGLESTEP_BIT
+comma
+l_int|31
+op_minus
+id|PT_SINGLESTEP_BIT
 )paren
 suffix:semicolon
 id|BLANK

@@ -1615,9 +1615,19 @@ id|status
 op_assign
 id|PDC_OK
 suffix:semicolon
-multiline_comment|/*&n;&t; * first stop the usb controller, otherwise the machine&n;&t; * might crash during iommu setup&n;&t; */
-macro_line|#warning We still probably need to worry about USB here, but how?
-multiline_comment|/* pdc_suspend_usb(); */
+macro_line|#if defined(CONFIG_IOMMU_SBA) &amp;&amp; defined(CONFIG_SUPERIO)
+multiline_comment|/*&n;&t; * Stop the suckyio usb controller on Astro based systems.&n;&t; * Otherwise the machine might crash during iommu setup.&n;&t; */
+id|pdc_io_reset
+c_func
+(paren
+)paren
+suffix:semicolon
+id|pdc_io_reset_devices
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren

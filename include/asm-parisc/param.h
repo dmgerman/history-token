@@ -2,6 +2,7 @@ macro_line|#ifndef _ASMPARISC_PARAM_H
 DECL|macro|_ASMPARISC_PARAM_H
 mdefine_line|#define _ASMPARISC_PARAM_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|# ifdef CONFIG_PA20
 DECL|macro|HZ
 macro_line|#  define HZ&t;&t;1000&t;&t;/* Faster machines */

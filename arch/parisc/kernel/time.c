@@ -76,11 +76,13 @@ id|regs-&gt;iaoq
 l_int|0
 )braket
 suffix:semicolon
+macro_line|#if 0
 r_extern
 r_int
 r_int
 id|prof_cpu_mask
 suffix:semicolon
+macro_line|#endif
 r_extern
 r_char
 id|_stext
@@ -111,6 +113,7 @@ id|prof_buffer
 r_return
 suffix:semicolon
 macro_line|#if 0
+multiline_comment|/* FIXME: when we have irq affinity to cpu, we need to&n;&t; * only look at the cpus specified in this mask &n;&t; */
 r_if
 c_cond
 (paren
@@ -595,20 +598,6 @@ c_func
 op_star
 l_int|1000
 suffix:semicolon
-id|nsec
-op_sub_assign
-(paren
-id|jiffies
-op_minus
-id|wall_jiffies
-)paren
-op_star
-(paren
-id|NSEC_PER_SEC
-op_div
-id|HZ
-)paren
-suffix:semicolon
 id|wtm_sec
 op_assign
 id|wall_to_monotonic.tv_sec
@@ -678,6 +667,32 @@ id|xtime_lock
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * XXX: We can do better than this.&n; * Returns nanoseconds&n; */
+DECL|function|sched_clock
+r_int
+r_int
+r_int
+id|sched_clock
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies
+op_star
+(paren
+l_int|1000000000
+op_div
+id|HZ
+)paren
 suffix:semicolon
 )brace
 DECL|function|time_init

@@ -4,7 +4,7 @@ macro_line|#include &quot;float.h&quot;
 macro_line|#include &quot;sgl_float.h&quot;
 macro_line|#include &quot;dbl_float.h&quot;
 macro_line|#include &quot;hppa.h&quot;
-macro_line|#include &quot;types.h&quot;
+macro_line|#include &lt;linux/kernel.h&gt;
 multiline_comment|/* #include &lt;machine/sys/mdep_private.h&gt; */
 DECL|macro|Fpustatus_register
 macro_line|#undef Fpustatus_register

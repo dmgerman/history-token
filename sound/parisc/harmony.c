@@ -3,6 +3,7 @@ multiline_comment|/*&n; * Harmony chipset &squot;modus operandi&squot;.&n; * - T
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
@@ -15,8 +16,8 @@ mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
-macro_line|#include &lt;asm/gsc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/parisc-device.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -2494,14 +2495,11 @@ r_int
 id|err
 suffix:semicolon
 multiline_comment|/*&n;&t; * harmony is not &quot;real&quot; pci, but we need a pci_dev&n;&t; * to alloc PCI DMA pages&n;&t; */
-id|substream-&gt;dma_private
+id|substream-&gt;runtime-&gt;dma_private
 op_assign
 id|harmony-&gt;fake_pci_dev
 suffix:semicolon
-id|substream-&gt;dma_type
-op_assign
-id|SNDRV_PCM_DMA_TYPE_PCI
-suffix:semicolon
+singleline_comment|//&t;substream-&gt;dma_type = SNDRV_PCM_DMA_TYPE_PCI;
 id|harmony-&gt;playback_substream
 op_assign
 id|substream
@@ -2578,14 +2576,11 @@ r_int
 id|err
 suffix:semicolon
 multiline_comment|/*&n;&t; * harmony is not &quot;real&quot; pci, but we need a pci_dev&n;&t; * to alloc PCI DMA pages&n;&t; */
-id|substream-&gt;dma_private
+id|substream-&gt;runtime-&gt;dma_private
 op_assign
 id|harmony-&gt;fake_pci_dev
 suffix:semicolon
-id|substream-&gt;dma_type
-op_assign
-id|SNDRV_PCM_DMA_TYPE_PCI
-suffix:semicolon
+singleline_comment|//&t;substream-&gt;dma_type = SNDRV_PCM_DMA_TYPE_PCI;
 id|harmony-&gt;capture_substream
 op_assign
 id|substream

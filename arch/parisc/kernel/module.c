@@ -129,20 +129,8 @@ id|addr
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|fdesc_entry
-r_struct
-id|fdesc_entry
-(brace
-DECL|member|addr
-id|Elf32_Addr
-id|addr
-suffix:semicolon
-DECL|member|gp
-id|Elf32_Addr
-id|gp
-suffix:semicolon
-)brace
-suffix:semicolon
+DECL|macro|Elf_Fdesc
+mdefine_line|#define Elf_Fdesc&t;Elf32_Fdesc
 DECL|struct|stub_entry
 r_struct
 id|stub_entry
@@ -168,27 +156,8 @@ id|addr
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|fdesc_entry
-r_struct
-id|fdesc_entry
-(brace
-DECL|member|dummy
-id|Elf64_Addr
-id|dummy
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|addr
-id|Elf64_Addr
-id|addr
-suffix:semicolon
-DECL|member|gp
-id|Elf64_Addr
-id|gp
-suffix:semicolon
-)brace
-suffix:semicolon
+DECL|macro|Elf_Fdesc
+mdefine_line|#define Elf_Fdesc&t;Elf64_Fdesc
 DECL|struct|stub_entry
 r_struct
 id|stub_entry
@@ -1024,8 +993,7 @@ id|fdescs
 op_star
 r_sizeof
 (paren
-r_struct
-id|fdesc_entry
+id|Elf_Fdesc
 )paren
 suffix:semicolon
 id|me-&gt;core_size
@@ -1241,8 +1209,7 @@ r_int
 id|value
 )paren
 (brace
-r_struct
-id|fdesc_entry
+id|Elf_Fdesc
 op_star
 id|fdesc
 op_assign
@@ -3033,8 +3000,7 @@ id|loc64
 comma
 (paren
 (paren
-r_struct
-id|fdesc_entry
+id|Elf_Fdesc
 op_star
 )paren
 op_star
@@ -3154,8 +3120,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#ifdef DEBUG
-r_struct
-id|fdesc_entry
+id|Elf_Fdesc
 op_star
 id|entry
 suffix:semicolon
@@ -3166,8 +3131,7 @@ suffix:semicolon
 id|entry
 op_assign
 (paren
-r_struct
-id|fdesc_entry
+id|Elf_Fdesc
 op_star
 )paren
 id|me-&gt;init

@@ -7,6 +7,7 @@ macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|CPU_IRQ_REGION
 mdefine_line|#define CPU_IRQ_REGION&t;&t;1
 DECL|macro|TIMER_IRQ

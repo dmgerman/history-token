@@ -1,6 +1,7 @@
 macro_line|#ifndef _PARISC_PGTABLE_H
 DECL|macro|_PARISC_PGTABLE_H
 mdefine_line|#define _PARISC_PGTABLE_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * we simulate an x86-style page table for the linux mm code&n; */

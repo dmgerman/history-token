@@ -177,7 +177,7 @@ DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM  (&quot;PARISC32&bslash;0&quot;)
 multiline_comment|/*&n; * We should probably use this macro to set a flag somewhere to indicate&n; * this is a 32 on 64 process. We could use PER_LINUX_32BIT, or we&n; * could set a processor dependent flag in the thread_struct.&n; */
 DECL|macro|SET_PERSONALITY
-mdefine_line|#define SET_PERSONALITY(ex, ibcs2) &bslash;&n;&t;current-&gt;personality = PER_LINUX_32BIT
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2) &bslash;&n;&t;current-&gt;personality = PER_LINUX32; &bslash;&n;&t;current-&gt;thread.map_base = DEFAULT_MAP_BASE32; &bslash;&n;&t;current-&gt;thread.task_size = DEFAULT_TASK_SIZE32 &bslash;&n;
 DECL|macro|jiffies_to_timeval
 mdefine_line|#define jiffies_to_timeval jiffies_to_compat_timeval 
 r_static
@@ -219,4 +219,66 @@ id|HZ
 suffix:semicolon
 )brace
 macro_line|#include &quot;../../../fs/binfmt_elf.c&quot;
+multiline_comment|/* Set up a separate execution domain for ELF32 binaries running&n; * on an ELF64 kernel */
+DECL|variable|parisc32_exec_domain
+r_static
+r_struct
+id|exec_domain
+id|parisc32_exec_domain
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Linux/ELF32&quot;
+comma
+dot
+id|pers_low
+op_assign
+id|PER_LINUX32
+comma
+dot
+id|pers_high
+op_assign
+id|PER_LINUX32
+comma
+)brace
+suffix:semicolon
+DECL|function|parisc32_exec_init
+r_static
+r_int
+id|__init
+id|parisc32_exec_init
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* steal the identity signal mappings from the default domain */
+id|parisc32_exec_domain.signal_map
+op_assign
+id|default_exec_domain.signal_map
+suffix:semicolon
+id|parisc32_exec_domain.signal_invmap
+op_assign
+id|default_exec_domain.signal_invmap
+suffix:semicolon
+id|register_exec_domain
+c_func
+(paren
+op_amp
+id|parisc32_exec_domain
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|parisc32_exec_init
+id|__initcall
+c_func
+(paren
+id|parisc32_exec_init
+)paren
+suffix:semicolon
 eof

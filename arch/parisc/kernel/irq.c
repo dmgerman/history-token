@@ -672,6 +672,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|disable_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|disable_irq
+)paren
+suffix:semicolon
 DECL|function|enable_irq
 r_void
 id|enable_irq
@@ -757,6 +764,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|enable_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|enable_irq
+)paren
+suffix:semicolon
 DECL|function|show_interrupts
 r_int
 id|show_interrupts
@@ -2759,6 +2773,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|synchronize_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|synchronize_irq
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * IRQ autodetection code..&n; *&n; * This depends on the fact that any interrupt that&n; * comes in on to an unassigned handler will get stuck&n; * with &quot;IRQ_WAITING&quot; cleared and the interrupt&n; * disabled.&n; */
 r_static
@@ -3214,6 +3235,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_mask
+)paren
+suffix:semicolon
 DECL|function|init_IRQ
 r_void
 id|__init

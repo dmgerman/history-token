@@ -346,7 +346,7 @@ suffix:semicolon
 )brace
 DECL|macro|cmpxchg
 mdefine_line|#define cmpxchg(ptr,o,n)&t;&t;&t;&t;&t;&t; &bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _o_ = (o);&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _n_ = (n);&t;&t;&t;&t;&t; &bslash;&n;     (__typeof__(*(ptr))) __cmpxchg((ptr), (unsigned long)_o_,&t;&t; &bslash;&n;&t;&t;&t;&t;    (unsigned long)_n_, sizeof(*(ptr))); &bslash;&n;  })
-multiline_comment|/* It&squot;s possible to reduce all atomic operations to either&n; * __atomic_add_return, __atomic_set and __atomic_ret (the latter&n; * is there only for consistency). */
+multiline_comment|/* It&squot;s possible to reduce all atomic operations to either&n; * __atomic_add_return, atomic_set and atomic_read (the latter&n; * is there only for consistency).&n; */
 DECL|function|__atomic_add_return
 r_static
 id|__inline__
@@ -405,11 +405,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|__atomic_set
+DECL|function|atomic_set
 r_static
 id|__inline__
 r_void
-id|__atomic_set
+id|atomic_set
 c_func
 (paren
 id|atomic_t
@@ -453,13 +453,14 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|__atomic_read
+DECL|function|atomic_read
 r_static
 id|__inline__
 r_int
-id|__atomic_read
+id|atomic_read
 c_func
 (paren
+r_const
 id|atomic_t
 op_star
 id|v
@@ -471,27 +472,23 @@ suffix:semicolon
 )brace
 multiline_comment|/* exported interface */
 DECL|macro|atomic_add
-mdefine_line|#define atomic_add(i,v)&t;&t;((void)(__atomic_add_return( (i),(v))))
+mdefine_line|#define atomic_add(i,v)&t;((void)(__atomic_add_return( ((int)i),(v))))
 DECL|macro|atomic_sub
-mdefine_line|#define atomic_sub(i,v)&t;&t;((void)(__atomic_add_return(-(i),(v))))
+mdefine_line|#define atomic_sub(i,v)&t;((void)(__atomic_add_return(-((int)i),(v))))
 DECL|macro|atomic_inc
-mdefine_line|#define atomic_inc(v)&t;&t;((void)(__atomic_add_return(   1,(v))))
+mdefine_line|#define atomic_inc(v)&t;((void)(__atomic_add_return(   1,(v))))
 DECL|macro|atomic_dec
-mdefine_line|#define atomic_dec(v)&t;&t;((void)(__atomic_add_return(  -1,(v))))
+mdefine_line|#define atomic_dec(v)&t;((void)(__atomic_add_return(  -1,(v))))
 DECL|macro|atomic_add_return
-mdefine_line|#define atomic_add_return(i,v)&t;(__atomic_add_return( (i),(v)))
+mdefine_line|#define atomic_add_return(i,v)&t;(__atomic_add_return( ((int)i),(v)))
 DECL|macro|atomic_sub_return
-mdefine_line|#define atomic_sub_return(i,v)&t;(__atomic_add_return(-(i),(v)))
+mdefine_line|#define atomic_sub_return(i,v)&t;(__atomic_add_return(-((int)i),(v)))
 DECL|macro|atomic_inc_return
 mdefine_line|#define atomic_inc_return(v)&t;(__atomic_add_return(   1,(v)))
 DECL|macro|atomic_dec_return
 mdefine_line|#define atomic_dec_return(v)&t;(__atomic_add_return(  -1,(v)))
 DECL|macro|atomic_dec_and_test
 mdefine_line|#define atomic_dec_and_test(v)&t;(atomic_dec_return(v) == 0)
-DECL|macro|atomic_set
-mdefine_line|#define atomic_set(v,i)&t;&t;(__atomic_set((v),i))
-DECL|macro|atomic_read
-mdefine_line|#define atomic_read(v)&t;&t;(__atomic_read(v))
 DECL|macro|ATOMIC_INIT
 mdefine_line|#define ATOMIC_INIT(i)&t;{ (i) }
 DECL|macro|smp_mb__before_atomic_dec

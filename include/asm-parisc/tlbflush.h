@@ -2,6 +2,7 @@ macro_line|#ifndef _PARISC_TLBFLUSH_H
 DECL|macro|_PARISC_TLBFLUSH_H
 mdefine_line|#define _PARISC_TLBFLUSH_H
 multiline_comment|/* TLB flushing routines.... */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 r_extern

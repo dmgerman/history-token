@@ -14,11 +14,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/offsets.h&gt;
-multiline_comment|/* These are used in entry.S, syscall_restore_rfi.  We need to record the&n; * current stepping mode somewhere other than in PSW, because there is no&n; * concept of saving and restoring the users PSW over a syscall.  We choose&n; * to use these two bits in task-&gt;ptrace.  These bits must not clash with&n; * any PT_* defined in include/linux/sched.h, and must match with the bit&n; * tests in entry.S&n; */
-DECL|macro|PT_SINGLESTEP
-mdefine_line|#define PT_SINGLESTEP&t;0x10000
-DECL|macro|PT_BLOCKSTEP
-mdefine_line|#define PT_BLOCKSTEP&t;0x20000
 multiline_comment|/* PSW bits we allow the debugger to modify */
 DECL|macro|USER_PSW_BITS
 mdefine_line|#define USER_PSW_BITS&t;(PSW_N | PSW_V | PSW_CB)

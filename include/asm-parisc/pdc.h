@@ -1,6 +1,7 @@
 macro_line|#ifndef _PARISC_PDC_H
 DECL|macro|_PARISC_PDC_H
 mdefine_line|#define _PARISC_PDC_H
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; *&t;PDC return values ...&n; *&t;All PDC calls return a subset of these errors. &n; */
 DECL|macro|PDC_WARN
 mdefine_line|#define PDC_WARN&t;&t;  3&t;/* Call completed with a warning */
@@ -305,10 +306,10 @@ DECL|macro|PDC_IO
 mdefine_line|#define PDC_IO&t;&t;135&t;&t;/* log error info, reset IO system */
 DECL|macro|PDC_IO_READ_AND_CLEAR_ERRORS
 mdefine_line|#define PDC_IO_READ_AND_CLEAR_ERRORS&t;0
-DECL|macro|PDC_IO_READ_AND_LOG_ERRORS
-mdefine_line|#define PDC_IO_READ_AND_LOG_ERRORS&t;1
-DECL|macro|PDC_IO_SUSPEND_USB
-mdefine_line|#define PDC_IO_SUSPEND_USB&t;&t;2
+DECL|macro|PDC_IO_RESET
+mdefine_line|#define PDC_IO_RESET&t;&t;&t;1
+DECL|macro|PDC_IO_RESET_DEVICES
+mdefine_line|#define PDC_IO_RESET_DEVICES&t;&t;2
 multiline_comment|/* sets bits 6&amp;7 (little endian) of the HcControl Register */
 DECL|macro|PDC_IO_USB_SUSPEND
 mdefine_line|#define PDC_IO_USB_SUSPEND&t;0xC000000000000000
@@ -2502,7 +2503,14 @@ id|sw_control
 )paren
 suffix:semicolon
 r_void
-id|pdc_suspend_usb
+id|pdc_io_reset
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|pdc_io_reset_devices
 c_func
 (paren
 r_void

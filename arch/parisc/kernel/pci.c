@@ -79,7 +79,7 @@ DECL|macro|EISA_OUT
 mdefine_line|#define EISA_OUT(size)
 macro_line|#endif
 DECL|macro|PCI_PORT_IN
-mdefine_line|#define PCI_PORT_IN(type, size) &bslash;&n;u##size in##type (int addr) &bslash;&n;{ &bslash;&n;&t;int b = PCI_PORT_HBA(addr); &bslash;&n;&t;EISA_IN(size); &bslash;&n;&t;if (!parisc_pci_hba[b]) return (u##size) -1; &bslash;&n;&t;return pci_port-&gt;in##type(parisc_pci_hba[b], PCI_PORT_ADDR(addr)); &bslash;&n;}
+mdefine_line|#define PCI_PORT_IN(type, size) &bslash;&n;u##size in##type (int addr) &bslash;&n;{ &bslash;&n;&t;int b = PCI_PORT_HBA(addr); &bslash;&n;&t;EISA_IN(size); &bslash;&n;&t;if (!parisc_pci_hba[b]) return (u##size) -1; &bslash;&n;&t;return pci_port-&gt;in##type(parisc_pci_hba[b], PCI_PORT_ADDR(addr)); &bslash;&n;} &bslash;&n;EXPORT_SYMBOL(in##type);
 id|PCI_PORT_IN
 c_func
 (paren
@@ -102,7 +102,7 @@ comma
 l_int|32
 )paren
 DECL|macro|PCI_PORT_OUT
-mdefine_line|#define PCI_PORT_OUT(type, size) &bslash;&n;void out##type (u##size d, int addr) &bslash;&n;{ &bslash;&n;&t;int b = PCI_PORT_HBA(addr); &bslash;&n;&t;EISA_OUT(size); &bslash;&n;&t;if (!parisc_pci_hba[b]) return; &bslash;&n;&t;pci_port-&gt;out##type(parisc_pci_hba[b], PCI_PORT_ADDR(addr), d); &bslash;&n;}
+mdefine_line|#define PCI_PORT_OUT(type, size) &bslash;&n;void out##type (u##size d, int addr) &bslash;&n;{ &bslash;&n;&t;int b = PCI_PORT_HBA(addr); &bslash;&n;&t;EISA_OUT(size); &bslash;&n;&t;if (!parisc_pci_hba[b]) return; &bslash;&n;&t;pci_port-&gt;out##type(parisc_pci_hba[b], PCI_PORT_ADDR(addr), d); &bslash;&n;} &bslash;&n;EXPORT_SYMBOL(out##type);
 id|PCI_PORT_OUT
 c_func
 (paren

@@ -1060,12 +1060,14 @@ op_star
 id|regs
 )paren
 (brace
+r_static
 r_int
 r_int
 id|unaligned_count
 op_assign
 l_int|0
 suffix:semicolon
+r_static
 r_int
 r_int
 id|last_time
@@ -1116,7 +1118,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* true if this is a flop */
-multiline_comment|/* if the unaligned access is inside the kernel:&n;&t; *   if the access is caused by a syscall, then we fault the calling&n;&t; *     user process&n;&t; *   otherwise we halt the kernel&n;&t; */
+multiline_comment|/* if the unaligned access is inside the kernel:&n;&t; *   if the access is caused by a syscall, then we fault the calling&n;&t; *     user process&n;&t; */
 r_if
 c_cond
 (paren
@@ -1312,7 +1314,6 @@ id|regs
 suffix:semicolon
 macro_line|#endif&t;&t;
 )brace
-)brace
 r_if
 c_cond
 (paren
@@ -1322,6 +1323,7 @@ id|unaligned_enabled
 r_goto
 id|force_sigbus
 suffix:semicolon
+)brace
 multiline_comment|/* handle modification - OK, it&squot;s ugly, see the instruction manual */
 r_switch
 c_cond
