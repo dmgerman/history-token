@@ -7,6 +7,7 @@ multiline_comment|/*&n; * Default implementation of macro that returns current&n
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() ({ __label__ _l; _l: &amp;&amp;_l;})
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/mpc8xx.h&gt;
@@ -1012,8 +1013,6 @@ DECL|macro|_CHRP_Motorola
 mdefine_line|#define _CHRP_Motorola 0x04  /* motorola chrp, the cobra */
 DECL|macro|_CHRP_IBM
 mdefine_line|#define _CHRP_IBM      0x05  /* IBM chrp, the longtrail and longtrail 2 */
-DECL|macro|__stringify
-mdefine_line|#define __stringify(a) #a
 DECL|macro|_GLOBAL
 mdefine_line|#define _GLOBAL(n)&bslash;&n;        .stabs __stringify(n:F-1),N_FUN,0,0,n;&bslash;&n;&t;.globl n;&bslash;&n;n:
 multiline_comment|/* Macros for setting and retrieving special purpose registers */
@@ -1447,15 +1446,6 @@ id|MSR_FE1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NOTE! The task struct and the stack go together&n; */
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
-DECL|macro|alloc_task_struct
-mdefine_line|#define alloc_task_struct() &bslash;&n;&t;((struct task_struct *) __get_free_pages(GFP_KERNEL,1))
-DECL|macro|free_task_struct
-mdefine_line|#define free_task_struct(p)&t;free_pages((unsigned long)(p),1)
-DECL|macro|get_task_struct
-mdefine_line|#define get_task_struct(tsk)      atomic_inc(&amp;virt_to_page(tsk)-&gt;count)
 multiline_comment|/* in process.c - for early bootup debug -- Cort */
 r_int
 id|ll_printk
@@ -1479,10 +1469,6 @@ r_char
 op_star
 )paren
 suffix:semicolon
-DECL|macro|init_task
-mdefine_line|#define init_task&t;(init_task_union.task)
-DECL|macro|init_stack
-mdefine_line|#define init_stack&t;(init_task_union.stack)
 multiline_comment|/* In misc.c */
 r_void
 id|_nmask_and_or_msr

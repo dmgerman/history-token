@@ -100,29 +100,17 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
-multiline_comment|/* this is 16-byte aligned because it has a stack in it */
-r_union
-id|task_union
-id|__attribute
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|16
-)paren
-)paren
-)paren
-id|init_task_union
+multiline_comment|/* initial task structure */
+DECL|variable|init_task
+r_struct
+id|task_struct
+id|init_task
 op_assign
-(brace
 id|INIT_TASK
 c_func
 (paren
-id|init_task_union.task
+id|init_task
 )paren
-)brace
 suffix:semicolon
 multiline_comment|/* only used to get secondary processor up */
 DECL|variable|current_set
@@ -1282,13 +1270,9 @@ op_assign
 r_int
 r_int
 )paren
-id|p
+id|p-&gt;thread_info
 op_plus
-r_sizeof
-(paren
-r_union
-id|task_union
-)paren
+id|THREAD_SIZE
 suffix:semicolon
 r_int
 r_int
@@ -2169,7 +2153,7 @@ op_assign
 r_int
 r_int
 )paren
-id|tsk
+id|tsk-&gt;thread_info
 op_plus
 id|THREAD_SIZE
 suffix:semicolon
@@ -2670,7 +2654,7 @@ op_assign
 r_int
 r_int
 )paren
-id|p
+id|p-&gt;thread_info
 suffix:semicolon
 r_int
 id|count

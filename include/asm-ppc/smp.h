@@ -136,7 +136,7 @@ mdefine_line|#define cpu_logical_map(cpu) (cpu)
 DECL|macro|cpu_number_map
 mdefine_line|#define cpu_number_map(x) (x)
 DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id() (current-&gt;cpu)
+mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
 r_extern
 r_int
 id|smp_hw_index

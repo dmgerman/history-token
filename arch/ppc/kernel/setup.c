@@ -29,6 +29,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
+macro_line|#include &lt;asm/thread_info.h&gt;
 macro_line|#if defined CONFIG_KGDB
 macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#endif
@@ -2238,10 +2239,8 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|init_crc32
-c_func
-(paren
-)paren
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|ppc_init
@@ -2249,6 +2248,19 @@ id|arch_initcall
 c_func
 (paren
 id|ppc_init
+)paren
+suffix:semicolon
+multiline_comment|/* Initial thread_info struct, copied into init_task_union */
+DECL|variable|__initdata
+r_struct
+id|thread_info
+id|init_thread_values
+id|__initdata
+op_assign
+id|INIT_THREAD_INFO
+c_func
+(paren
+id|init_task
 )paren
 suffix:semicolon
 multiline_comment|/* Warning, IO base is not yet inited */
@@ -2290,6 +2302,11 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+multiline_comment|/* initialize the thread_info for the init task */
+id|init_thread_info
+op_assign
+id|init_thread_values
 suffix:semicolon
 multiline_comment|/* so udelay does something sensible, assume &lt;= 1000 bogomips */
 id|loops_per_jiffy

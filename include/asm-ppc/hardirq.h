@@ -66,6 +66,8 @@ DECL|macro|hardirq_exit
 mdefine_line|#define hardirq_exit(cpu)&t;(local_irq_count(cpu)--)
 DECL|macro|synchronize_irq
 mdefine_line|#define synchronize_irq()&t;do { } while (0)
+DECL|macro|release_irqlock
+mdefine_line|#define release_irqlock(cpu)    do { } while (0)
 macro_line|#else /* CONFIG_SMP */
 macro_line|#include &lt;asm/atomic.h&gt;
 r_extern
