@@ -21,17 +21,6 @@ id|fbcon_accel
 suffix:semicolon
 r_extern
 r_void
-id|fbcon_accel_setup
-c_func
-(paren
-r_struct
-id|display
-op_star
-id|p
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|fbcon_accel_bmove
 c_func
 (paren
