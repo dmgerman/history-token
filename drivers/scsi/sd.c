@@ -4945,10 +4945,6 @@ id|sd
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sd_blocksizes
-op_assign
-l_int|NULL
-suffix:semicolon
 r_if
 c_cond
 (paren
