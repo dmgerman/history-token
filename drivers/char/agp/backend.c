@@ -43,7 +43,7 @@ c_func
 id|agp_bridge
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * agp_backend_acquire :&n; * &n; * This Function attempts to acquire the agp backend.&n; * &n; * returns -EBUSY if agp is in use,&n; * returns 0 if the caller owns the agp backend&n; */
+multiline_comment|/**&n; *&t;agp_backend_acquire  -  attempt to acquire the agp backend.&n; *&n; *&t;returns -EBUSY if agp is in use,&n; *&t;returns 0 if the caller owns the agp backend&n; */
 DECL|function|agp_backend_acquire
 r_int
 id|agp_backend_acquire
@@ -90,7 +90,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * agp_backend_release :&n; * &n; * This Function releases the lock on the agp backend.&n; * &n; * The caller must insure that the graphics aperture translation table is read for use&n; * by another entity.  (Ensure that all memory it bound is unbound.)&n; */
+multiline_comment|/**&n; *&t;agp_backend_release  -  release the lock on the agp backend.&n; *&n; *&t;The caller must insure that the graphics aperture translation table is read for use&n; *&t;by another entity.  (Ensure that all memory it bound is unbound.)&n; */
 DECL|function|agp_backend_release
 r_void
 id|agp_backend_release

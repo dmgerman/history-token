@@ -18,7 +18,7 @@ DECL|variable|agp_memory_reserved
 r_int
 id|agp_memory_reserved
 suffix:semicolon
-multiline_comment|/* &n; * Generic routines for handling agp_memory structures -&n; * They use the basic page allocation routines to do the&n; * brunt of the work.&n; */
+multiline_comment|/* &n; * Generic routines for handling agp_memory structures -&n; * They use the basic page allocation routines to do the brunt of the work.&n; */
 DECL|function|agp_free_key
 r_void
 id|agp_free_key
@@ -243,7 +243,7 @@ c_func
 id|agp_create_memory
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * agp_free_memory :&n; * &n; * This function frees memory associated with an agp_memory pointer.&n; * It is the only function that can be called when the backend is not owned&n; * by the caller.  (So it can free memory on client death.)&n; * &n; * It takes an agp_memory pointer as an argument.&n; */
+multiline_comment|/**&n; *&t;agp_free_memory - free memory associated with an agp_memory pointer.&n; *&n; *&t;@curr:&t;&t;agp_memory pointer to be freed.&n; *&n; *&t;It is the only function that can be called when the backend is not owned&n; *&t;by the caller.  (So it can free memory on client death.)&n; */
 DECL|function|agp_free_memory
 r_void
 id|agp_free_memory
@@ -374,7 +374,7 @@ id|agp_free_memory
 suffix:semicolon
 DECL|macro|ENTRIES_PER_PAGE
 mdefine_line|#define ENTRIES_PER_PAGE&t;&t;(PAGE_SIZE / sizeof(unsigned long))
-multiline_comment|/*&n; * agp_allocate_memory :&n; * &n; * This function allocates a group of pages of a certain type.&n; * &n; * It takes a size_t argument of the number of pages, and an u32 argument of&n; * the type of memory to be allocated.  &n; * Every agp bridge device will allow you to allocate AGP_NORMAL_MEMORY which&n; * maps to physical ram.  Any other type is device dependent.&n; * &n; * It returns NULL whenever memory is unavailable. &n; */
+multiline_comment|/**&n; *&t;agp_allocate_memory  -  allocate a group of pages of a certain type.&n; *&n; *&t;@page_count:&t;size_t argument of the number of pages&n; *&t;@type:&t;u32 argument of the type of memory to be allocated.  &n; *&n; *&t;Every agp bridge device will allow you to allocate AGP_NORMAL_MEMORY which&n; *&t;maps to physical ram.  Any other type is device dependent.&n; *&n; *&t;It returns NULL whenever memory is unavailable. &n; */
 DECL|function|agp_allocate_memory
 id|agp_memory
 op_star
@@ -835,7 +835,7 @@ c_func
 id|agp_num_entries
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * agp_copy_info :&n; * &n; * This function copies information about the agp bridge device and the state of&n; * the agp backend into an agp_kern_info pointer.&n; * &n; * It takes an agp_kern_info pointer as an argument.  The caller should insure&n; * that this pointer is valid. &n; */
+multiline_comment|/**&n; *&t;agp_copy_info  -  copy bridge state information&n; *&n; *&t;@info:&t;&t;agp_kern_info pointer.  The caller should insure that this pointer is valid. &n; *&n; *&t;This function copies information about the agp bridge device and the state of&n; *&t;the agp backend into an agp_kern_info pointer.&n; */
 DECL|function|agp_copy_info
 r_int
 id|agp_copy_info
@@ -946,7 +946,7 @@ id|agp_copy_info
 suffix:semicolon
 multiline_comment|/* End - Routine to copy over information structure */
 multiline_comment|/*&n; * Routines for handling swapping of agp_memory into the GATT -&n; * These routines take agp_memory and insert them into the GATT.&n; * They call device specific routines to actually write to the GATT.&n; */
-multiline_comment|/*&n; * agp_bind_memory :&n; * &n; * This function binds an agp_memory structure into the graphics aperture&n; * translation table (GATT).&n; * &n; * It takes an agp_memory pointer and an offset into the graphics aperture&n; * translation table as arguments&n; * &n; * It returns -EINVAL if the pointer == NULL.&n; * It returns -EBUSY if the area of the table requested is already in use.&n; */
+multiline_comment|/**&n; *&t;agp_bind_memory  -  Bind an agp_memory structure into the GATT.&n; * &n; *&t;@curr:&t;&t;agp_memory pointer&n; *&t;@pg_start:&t;an offset into the graphics aperture translation table&n; *&n; *&t;It returns -EINVAL if the pointer == NULL.&n; *&t;It returns -EBUSY if the area of the table requested is already in use.&n; */
 DECL|function|agp_bind_memory
 r_int
 id|agp_bind_memory
@@ -1051,7 +1051,7 @@ c_func
 id|agp_bind_memory
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * agp_unbind_memory :&n; * &n; * This function removes an agp_memory structure from the graphics aperture&n; * translation table.&n; * &n; * It takes an agp_memory pointer as an argument.&n; * &n; * It returns -EINVAL if this piece of agp_memory is not currently bound to&n; * the graphics aperture translation table or if the agp_memory pointer == NULL&n; */
+multiline_comment|/**&n; *&t;agp_unbind_memory  -  Removes an agp_memory structure from the GATT&n; * &n; * @curr:&t;agp_memory pointer to be removed from the GATT.&n; * &n; * It returns -EINVAL if this piece of agp_memory is not currently bound to&n; * the graphics aperture translation table or if the agp_memory pointer == NULL&n; */
 DECL|function|agp_unbind_memory
 r_int
 id|agp_unbind_memory
@@ -3138,7 +3138,7 @@ id|agp_generic_destroy_page
 )paren
 suffix:semicolon
 multiline_comment|/* End Basic Page Allocation Routines */
-multiline_comment|/* &n; * agp_enable :&n; * &n; * This function initializes the agp point-to-point connection.&n; * &n; * It takes an agp mode register as an argument&n; */
+multiline_comment|/** &n; * agp_enable  -  initialise the agp point-to-point connection.&n; * &n; * @mode:&t;agp mode register value to configure with.&n; */
 DECL|function|agp_enable
 r_void
 id|agp_enable
